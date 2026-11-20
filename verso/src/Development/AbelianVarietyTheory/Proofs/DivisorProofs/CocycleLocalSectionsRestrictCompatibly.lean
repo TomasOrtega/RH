@@ -13,7 +13,7 @@ namespace GlobalTheory.CechDR.AffLoc
 variable {R : Type} [CommRing R] {X : Scheme.{0}} {s : X ⟶ Sp R}
 
 /- English proof (translation)
-Rewrite using `[RingHom.id_comp, ← Category.assoc, affPt_res]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem resThk_pt (T : TT s) {p q : Pair (pt T)} (hpq : p ≤ q) :
     spMap ((RingHom.id (Sec (algStr R T.obj.B) p.1.1.1)).comp
@@ -25,14 +25,14 @@ def resThk (T : TT s) {p q : Pair (pt T)} (hpq : p ≤ q) : thk T q ⟶ thk T p 
   ⟨Thick.trivHom (T := (thk T p).obj) (Sec.res (algStr R T.obj.B) (Pair.le_fst hpq)) (resThk_pt T hpq)⟩
 
 /- English proof (translation)
-The claim follows from `ObjectProperty.hom_ext _ (Thick.hom_ext fun b ↦ res_toSec R T.obj.B (homOfLE (Pair.le_fst hpq)).op b)`.
+A detailed English derivation is pending.
 -/
 theorem bM_resThk (T : TT s) {p q : Pair (pt T)} (hpq : p ≤ q) :
     bM T q ≫ resThk T hpq = bM T p :=
   ObjectProperty.hom_ext _ (Thick.hom_ext fun b ↦ res_toSec R T.obj.B (homOfLE (Pair.le_fst hpq)).op b)
 
 /- English proof (translation)
-The claim follows from `ObjectProperty.hom_ext _ (Thick.hom_ext fun u ↦ (congrArg (fun t ↦ t.hom u) ((pt T).appLE_map q.2 (homOfLE (Pair.le_fst hpq)).op)).trans (congrArg (fun t ↦ t.hom u) ((pt T).map_appLE p.2 (homOfLE (Pair.le_snd hpq)).op)).symm)`.
+A detailed English derivation is pending.
 -/
 theorem aM_resThk (T : TT s) {p q : Pair (pt T)} (hpq : p ≤ q) :
     aM T q ≫ resThk T hpq = (affF s).map (homOfLE (Pair.le_snd hpq)).op ≫ aM T p :=
@@ -41,11 +41,11 @@ theorem aM_resThk (T : TT s) {p q : Pair (pt T)} (hpq : p ≤ q) :
       (congrArg (fun t ↦ t.hom u) ((pt T).map_appLE p.2 (homOfLE (Pair.le_snd hpq)).op)).symm)
 
 /- English proof (translation)
-Use `set ρ := Sec.res (algStr R T.obj.B) (Pair.le_fst hpq) with hρ`. Set `d : op q.1.2 ⟶ op p.1.2` to `(homOfLE (Pair.le_snd hpq)).op`. Establish `e1 : fv f (bM T p) = ρ (fv f (bM T q)) + fv f (resThk T hpq)`. Rewrite using `[← bM_resThk T hpq]`. Conclude with `f.2 _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ρ (fv f (aM T q)) + fv f (resThk T hpq) = secPullA T p (fv f ((affF s).map d)) + fv f (aM T p)`. Establish `k` using `f.2 (aM T q) (resThk T hpq)`. Rewrite `k` using `[aM_resThk]`. Conclude with `k.symm.trans (f.2 ((affF s).map d) (aM T p))`. Establish `e3 : g (op p.1.2) = Sec.res s (Pair.le_snd hpq) (g (op q.1.2)) + (show Sec s p.1.2.1 from fv f ((affF s).map d))` using `sub_eq_iff_eq_add'.1 (hg d)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `e4 : ∀ u, secPullA T p (Sec.res s (Pair.le_snd hpq) u) = ρ (secPullA T q u)` using `fun u ↦ (congrArg (fun m ↦ m.hom.φ u) (aM_resThk T hpq)).symm`. Express the relevant statement in the definitionally equal form `ρ (secPullA T q (g (op q.1.2)) + fv f (aM T q) - fv f (bM T q)) = secPullA T p (g (op p.1.2)) + fv f (aM T p) - fv f (bM T p)`. Rewrite using `[map_sub, map_add, e1, e3, map_add, e4]`. Take the linear combination `e2`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem hSec_res (f : Z1 ((IsTriv s).ι ⋙ O (dp0 R) s)) (g : C0 (OAff s))
     (hg : ∀ ⦃U V : AffOp X⦄ (a : U ⟶ V), g V - Sec.res s (leOfHom a.unop) (g U) = fv f ((affF s).map a))

@@ -15,14 +15,14 @@ noncomputable section
 namespace GlobalTheory.Unf.LinkExist
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.star_apply, Pi.smul_apply, smul_eq_mul, star_mul']`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem star_smul_vec {D : D7} {n : ℕ} (k : D.host.E) (v : Fin n → D.host.E) : star (k • v) = star k • star v := by
   funext i
   simp only [Pi.star_apply, Pi.smul_apply, smul_eq_mul, star_mul']
 
 /- English proof (translation)
-Rewrite using `[star_smul_vec, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_smul_vec {D : D7} (L' : HSp D) (k : D.host.E) (v : Fin L'.rank → D.host.E) :
     star (k • v) ⬝ᵥ L'.gram *ᵥ (k • v) = star k * k * (star v ⬝ᵥ L'.gram *ᵥ v) := by
@@ -30,13 +30,13 @@ theorem norm_smul_vec {D : D7} (L' : HSp D) (k : D.host.E) (v : Fin L'.rank → 
   ring
 
 /- English proof (translation)
-Introduce `D ρ B L' ζ' c hl hn`. Establish `hxi : D.host.xi0 ≠ 0` using `GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero`. Establish `hN` using `B.line.2`. Rewrite `hN` using `[hn]`. Establish `hc : c ≠ 0` using `fun h => hN (by simp [h])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : star ζ' ⬝ᵥ L'.gram *ᵥ ζ' ≠ 0` using `fun h => hN (by simp [h])`. Establish `hk : c / D.host.xi0 ≠ 0` using `div_ne_zero hc hxi`. Establish `hsk : star (c / D.host.xi0) ≠ 0` using `star_ne_zero.2 hk`. Use `set x := (c / D.host.xi0) • ζ' with hx`. Establish `hnx : star x ⬝ᵥ L'.gram *ᵥ x = star (c / D.host.xi0) * (c / D.host.xi0) * (star ζ' ⬝ᵥ L'.gram *ᵥ ζ')` using `norm_smul_vec L' _ ζ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn0 : star x ⬝ᵥ L'.gram *ᵥ x ≠ 0`. Rewrite using `[hnx]`. Conclude with `mul_ne_zero (mul_ne_zero hsk hk) hv`. Use `⟨⟨hl.1, hn0⟩, ⟨{ τ := (-(star x ⬝ᵥ L'.gram *ᵥ x)⁻¹) • vecMulVec B.ζ (star x ᵥ* L'.gram), map := ?_, norm := ?_ }⟩⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_mulVec, vecMulVec_mulVec, ← Matrix.dotProduct_mulVec, op_smul_eq_smul, smul_smul, neg_mul, inv_mul_cancel₀ hn0, neg_one_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hn, hnx]`. Establish `hsx : star D.host.xi0 ≠ 0` using `star_ne_zero.2 hxi`. Rewrite using `[star_div₀]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem link_of_norm : ∀ (D : D7) (ρ : ℕ) (B : BesLev D ρ) (L' : HSp D) (ζ' : Fin L'.rank → D.host.E) (c : D.host.E), IsLineVec L' ζ' → star B.ζ ⬝ᵥ B.L.gram *ᵥ B.ζ = c * star c * (star ζ' ⬝ᵥ L'.gram *ᵥ ζ') → IsLineVec L' ((c / D.host.xi0) • ζ') ∧ Nonempty (Link B L' ((c / D.host.xi0) • ζ')) := by
   intro D ρ B L' ζ' c hl hn

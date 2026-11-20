@@ -9,7 +9,7 @@ open GlobalTheory.HermFrame
 namespace GlobalTheory.LineForm
 
 /- English proof (translation)
-Simplify using `only [ofValues, map_sum, map_smul, Finset.sum_mul_sum, AddSubmonoidClass.coe_finsetSum, Subalgebra.coe_smul, smul_mul_smul_comm]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem coe_ofValues_mul {n : ℕ} (u v : ReciprocityTheory.L2DbarEstimates.V n → ℂ) :
     ((ofValues (fun ξ η => u ξ * v η) : Ev n) : Alt n) =
@@ -20,9 +20,9 @@ theorem coe_ofValues_mul {n : ℕ} (u v : ReciprocityTheory.L2DbarEstimates.V n 
   rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subalgebra.coe_mul, coe_ofValues_mul]`. Generalize the expression as in `(∑ a, u (GlobalTheory.GoodMetric.coordVec a) • Pi.single (Sum.inl a) (1 : ℂ) : Fin n ⊕ Fin n → ℂ) = x`. Generalize the expression as in `(∑ b, v (GlobalTheory.GoodMetric.coordVec b) • Pi.single (Sum.inr b) (1 : ℂ) : Fin n ⊕ Fin n → ℂ) = y`. Establish `h` using `Subalgebra.mem_center_iff.1 (ι_mul_ι_mem_center x y) (ExteriorAlgebra.ι ℂ y)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, h, mul_assoc (ExteriorAlgebra.ι ℂ x), ExteriorAlgebra.ι_sq_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ofValues_mul_sq {n : ℕ} (u v : ReciprocityTheory.L2DbarEstimates.V n → ℂ) :
     (ofValues (fun ξ η => u ξ * v η) : Ev n) * ofValues (fun ξ η => u ξ * v η) = 0 := by
@@ -35,7 +35,7 @@ theorem ofValues_mul_sq {n : ℕ} (u v : ReciprocityTheory.L2DbarEstimates.V n �
   simp
 
 /- English proof (translation)
-Establish `e : extTrace G z = fun ξ η => (kappa * extFormAdj G z ξ 0 0) * extForm G z η 0 0`. Use function extensionality and compare the values at `ξ η`. Simplify using `[extTrace, Matrix.trace, Matrix.mul_apply, mul_assoc]`. Rewrite using `[e]`. Conclude with `ofValues_mul_sq _ _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofValues_extTrace_sq {n : ℕ} (G : ReciprocityTheory.L2DbarEstimates.V n → Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℂ)
     (z : ReciprocityTheory.L2DbarEstimates.V n) : (ofValues (extTrace G z) : Ev n) * ofValues (extTrace G z) = 0 := by
@@ -46,7 +46,7 @@ theorem ofValues_extTrace_sq {n : ℕ} (G : ReciprocityTheory.L2DbarEstimates.V 
   exact ofValues_mul_sq _ _
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX σ E h _ fl`. Use function extensionality and compare the values at `x`. Conclude with `ofValues_extTrace_sq _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem omF_mul_self : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ) (hX : IsRegVar p D) (σ : k →+* ℂ),
     ∀ (E : X.Modules) (h : VMetric p E 2) (H : h.IsCInf) (fl : Vert.Flag E 2), omF hX σ h fl * omF hX σ h fl = 0 := by

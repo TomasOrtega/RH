@@ -8,7 +8,7 @@ namespace GlobalTheory.TorusIntegrand
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Unfold `mtor`. Rewrite using `[val_torusElt]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `cases i <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mtor_val {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ϖ : kˣ) (e : D → ℤ) :
     (mtor ϖ e : GL (A ⊕ D) k).val = diagonal (Sum.elim (fun _ => (1 : k)) (fun d => (ϖ : k) ^ e d)) := by
@@ -19,11 +19,11 @@ theorem mtor_val {A D : Type} [Fintype A] [DecidableEq A] [Fintype D] [Decidable
   cases i <;> simp
 
 /- English proof (translation)
-Break down `le_or_gt 0 n with h | h` into its components or cases. Establish `h0 : -max 0 (-n) = 0` using `by omega`. Rewrite using `[h0, zpow_zero, mul_one]`. Take `⟨m, rfl⟩` from `Int.eq_ofNat_of_zero_le h`. Rewrite using `[zpow_natCast]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h => h.1, fun hy => ⟨hy, Subring.mul_mem _ hy (Subring.pow_mem _ hϖ m)⟩⟩`. Establish `h0 : -max 0 (-n) = n` using `by omega`. Rewrite using `[h0]`. Use `⟨fun h => h.2, fun hy => ⟨?_, hy⟩⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `Int.eq_ofNat_of_zero_le (show 0 ≤ -n by omega)`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hne : (ϖ : k) ≠ 0` using `ϖ.ne_zero`. Establish `: y = y * (ϖ : k) ^ n * (ϖ : k) ^ m`. Rewrite using `[mul_assoc, ← zpow_natCast, ← zpow_add₀ hne, ← hm, add_neg_cancel, zpow_zero, mul_one]`. Rewrite using `[this]`. Conclude with `Subring.mul_mem _ hy (Subring.pow_mem _ hϖ m)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_and_iff (ϖ : kˣ) (hϖ : (ϖ : k) ∈ 𝒪[k]) (y : k) (n : ℤ) :
     (y ∈ 𝒪[k] ∧ y * (ϖ : k) ^ n ∈ 𝒪[k]) ↔ y * (ϖ : k) ^ (-max 0 (-n)) ∈ 𝒪[k] := by
@@ -44,23 +44,23 @@ theorem integral_and_iff (ϖ : kˣ) (hϖ : (ϖ : k) ∈ 𝒪[k]) (y : k) (n : �
     exact Subring.mul_mem _ hy (Subring.pow_mem _ hϖ m)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ϖ hϖv A D E _ _ _ _ _ _ ξ hξ e x`. Establish `hϖ : (ϖ : k) ∈ 𝒪[k]`. Rewrite using `[Valuation.mem_integer_iff, hϖv]`. Conclude with `uniformizer_lt_one.le`. Establish `hA : ∀ (M : Matrix (A ⊕ E) (A ⊕ D) k) (g : D → ℤ) i a, (M * (mtor ϖ g : GL (A ⊕ D) k).val) i (.inl a) = M i (.inl a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `M g i a`. Rewrite using `[mtor_val, mul_diagonal]`. Simplify using the standard rewrite rules. Establish `hD : ∀ (M : Matrix (A ⊕ E) (A ⊕ D) k) (g : D → ℤ) i d, (M * (mtor ϖ g : GL (A ⊕ D) k).val) i (.inr d) = M i (.inr d) * (ϖ : k) ^ g d`. Introduce `M g i d`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mtor_val, mul_diagonal]`. Simplify using the standard rewrite rules. Establish `h11 : ∀ (M : Matrix (A ⊕ E) (A ⊕ D) k) (g : D → ℤ), (M * (mtor ϖ g : GL (A ⊕ D) k).val).toBlocks₁₁ = M.toBlocks₁₁`. Introduce `M g`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[toBlocks₁₁, hA]`. Establish `hsupp : ∀ M : Matrix (A ⊕ E) (A ⊕ D) k, InSupp M ↔ (∀ i a, M i (.inl a) ∈ 𝒪[k]) ∧ (∀ i d, M i (.inr d) ∈ 𝒪[k]) ∧ valuation k M.toBlocks₁₁.det = 1 ∧ ∀ i j, valuation k (M (.inr i) (.inl j)) < 1`. Introduce `M`. Unfold `InSupp`. Simplify using `only [Sum.forall, forall_and]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-The claim follows by propositional logic. Establish `hsuppm : ∀ (M : Matrix (A ⊕ E) (A ⊕ D) k) (g : D → ℤ), InSupp (M * (mtor ϖ g : GL (A ⊕ D) k).val) ↔ (∀ i a, M i (.inl a) ∈ 𝒪[k]) ∧ (∀ i d, M i (.inr d) * (ϖ : k) ^ g d ∈ 𝒪[k]) ∧ valuation k M.toBlocks₁₁.det = 1 ∧ ∀ i j, valuation k (M (.inr i) (.inl j)) < 1`. Introduce `M g`. Rewrite using `[hsupp, h11]`. Simplify using `only [hA, hD]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hQ : ((∀ i d, x i (.inr d) ∈ 𝒪[k]) ∧ ∀ i d, x i (.inr d) * (ϖ : k) ^ e d ∈ 𝒪[k]) ↔ ∀ i d, x i (.inr d) * (ϖ : k) ^ (-max 0 (-e d)) ∈ 𝒪[k]`. Simplify using `only [← forall_and]`. Conclude with `forall_congr' fun i => forall_congr' fun d => integral_and_iff ϖ hϖ _ _`. Establish `hboth : (InSupp x ∧ InSupp (x * (mtor ϖ e : GL (A ⊕ D) k).val)) ↔ InSupp (x * (mtor ϖ (fun i => -max 0 (-e i)) : GL (A ⊕ D) k).val)`. Rewrite using `[hsupp, hsuppm, hsuppm, ← hQ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. The claim follows by propositional logic. Replace the relevant objects with their definitions.
 
-The claim follows by propositional logic. Use `set S := {y : Matrix (A ⊕ E) (A ⊕ D) k | InSupp (y * (mtor ϖ (fun i => -max 0 (-e i)) : GL (A ⊕ D) k).val)} with hS`. Unfold `datum`. Distinguish the cases in `h2 : InSupp x`. Distinguish the cases in `h1 : InSupp (x * (mtor ϖ e : GL (A ⊕ D) k).val)`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[dif_pos h1, dif_pos h2, Set.indicator_of_mem (show x ∈ S from hboth.1 ⟨h2, h1⟩)]`. Establish `hu : Units.mk0 _ h1.det_ne = Units.mk0 _ h2.det_ne`. Use `ext`. Simplify using `[h11]`. Rewrite using `[hu, ← map_inv, Complex.mul_conj, Complex.normSq_eq_norm_sq, hξ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[dif_neg h1, Set.indicator_of_notMem (show x ∉ S from fun h => h1 (hboth.2 h).2)]`. Simplify using the standard rewrite rules. Rewrite using `[dif_neg h2, Set.indicator_of_notMem (show x ∉ S from fun h => h2 (hboth.2 h).1)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrand : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ϖ : kˣ), valuation k (ϖ : k) = uniformizer k →

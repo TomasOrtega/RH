@@ -21,31 +21,27 @@ end GlobalTheory.CuspMulUnit
 namespace GlobalTheory.CuspMulUnit
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `_hP D T j Y e o hY hE la f hf u _u' _t eu hu _ht _huu`. Use `⟨0, fun k _ φ _φ' _t' w hφ _ht' _hφφ _hb a n hDom hF => ?_⟩` and prove the remaining obligations. Establish `hf1 : 1 < Module.finrank ℚ D.host.E / 2` using `by omega`. Distinguish the cases in `hF0 : f ^ (k + 1) * (u * φ) = 0`. Rewrite using `[hF0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Use `set R := f ^ k * (u * φ) with hR`. Establish `hFR : f ^ (k + 1) * (u * φ) = f * R` using `by rw [hR, pow_succ', mul_assoc]`. Establish `hR0 : R ≠ 0` using `fun h => hF0 (by rw [hFR, h, mul_zero])`. Establish `hfsec : f ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ (GlobalTheory.AllWt.exOf (T.Q.Dw j) la 0)` using `GlobalTheory.AllWt.cuspW_le_secZ _ hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRsec` using `GlobalTheory.AllWt.mul_mem_secZ (pow_mem_secZ' hfsec k) (GlobalTheory.AllWt.mul_mem_secZ hu hφ)`. Establish `hFsec'` using `GlobalTheory.AllWt.mul_mem_secZ hfsec hRsec`. Rewrite `hFsec'` using `[← hR, ← hFR]`. Establish `hFsec : f ^ (k + 1) * (u * φ) ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ (exZ (T.Q.Dw j) (wtZ a n))`. Rewrite using `[GlobalTheory.AllWt.exZ_wtZ, GlobalTheory.AllWt.secZ_nat]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hF`. Establish `heq` using `eq_of_mem_secZ hFsec hFsec' hF0`. Use `set G : WTZ D.host.E := wtZ a n - wtOf (T.Q.Dw j) la 0 with hG`. Establish `hexG : exZ (T.Q.Dw j) G = exZ (T.Q.Dw j) (wtZ a n) - GlobalTheory.AllWt.exOf (T.Q.Dw j) la 0`. Apply the tactic sequence `funext i; cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRG : R ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ (exZ (T.Q.Dw j) G)`. Rewrite using `[hexG, heq, add_sub_cancel_left]`. Conclude with `hRsec`. Establish `hGe : Even G.2`. Establish `h2 : G.2 = (n : ℤ)` using `by simp [hG, wtZ, GlobalTheory.AllWt.wtOf_snd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[h2]`. Conclude with `(Int.even_coe_nat n).2 hDom.2`. Establish `hdec : ∀ (τ : D.host.E →+* ℂ) (i j' : ℕ), i ≤ j' → j' < (T.Q.Dw j).mult τ → G.1 (τ, j') ≤ G.1 (τ, i)`. Establish `hne : ∀ (τ : D.host.E →+* ℂ) (m : ℕ) (hm : m + 1 < (T.Q.Dw j).mult τ), G.1 (τ, m + 1) ≤ G.1 (τ, m)`. Introduce `τ m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Conclude with `hR0 (GlobalTheory.NonDomVanish.eq_zero_of_lt hRG τ ⟨m, by omega⟩ ⟨m + 1, hm⟩ rfl hlt)`. Introduce `τ i j' hij hj'`. Use `revert hj'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Proceed by induction on `j', hij using Nat.le_induction with`. Consider the case `base => intro _`. Conclude with `le_refl _`. Consider the case `succ m hm ih => intro hj'; exact (hne τ m hj').trans (ih (by omega))`. Rewrite using `[← GlobalTheory.AllWt.cuspW_wtZ, GlobalTheory.AllWt.mem_cuspW]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `⟨hFsec, fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `hU` using `hY.unf σ hσ`. Establish `hpq : 1 ≤ (T.Q.Dw j).p + (T.Q.Dw j).q`. Take `⟨hr, -⟩` from `hU`. Establish `h1 : 1 ≤ D.R.r`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.R.two_le_m` as an intermediate fact. Unfold `Formalism.BasicNotions.Ranks.r`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish `hK` using `GlobalTheory.HSApp.VanishingBound.keySec D T j Y e o hY σ hσ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hfh` using `(GlobalTheory.AllWt.mem_cuspW.1 hf).2 σ hσ`. Use `holCusp_mem_holSub _ _ fun kk => ?_` and prove the remaining obligations. Establish `hRs : ((Y.U σ).X kk).IsSec (GlobalTheory.AllWt.modelWt (Y.U σ) G kk) (rdU (Y.U σ) R kk)` using `GlobalTheory.FlatTw.Hol.isSec_modelWt_rdU _ _ _ _ _ _ σ _ (Y.U σ) hK hσ hU hpq G hGe hdec R hRG kk`. Establish `hfS` using `(GlobalTheory.FlatTw.mem_holSub_model _ _ _).1 hfh kk`. Establish `hw : GlobalTheory.AllWt.modelWt (Y.U σ) (wtZ a n) kk = GlobalTheory.AllWt.modelWt (Y.U σ) (wtOf (T.Q.Dw j) la 0) kk + GlobalTheory.AllWt.modelWt (Y.U σ) G kk`.
-
-Rewrite using `[← GlobalTheory.AllWt.modelWt_add (Y.U σ) (GlobalTheory.AllWt.even_wtOf la 0) hGe kk, hG, add_sub_cancel]`. Establish `hsecF : ((Y.U σ).X kk).IsSec (GlobalTheory.AllWt.modelWt (Y.U σ) (wtZ a n) kk) (rdU (Y.U σ) (f ^ (k + 1) * (u * φ)) kk)`. Rewrite using `[GlobalTheory.AllWt.modelWt_wtZ]`. Conclude with `hU.2.2.2.2.1 a n hDom _ hF kk`. Use `GlobalTheory.FJZero.mem_SS_of_isModerate _ _ _ hsecF (GlobalTheory.CuspFrom.isModerate _ hf1 hsecF) fun ξ hξ x hx => ?_` and prove the remaining obligations.
-
-Rewrite using `[hFR, GlobalTheory.AllWt.rdU_mul, Pi.mul_apply, hw]`. Conclude with `fj_mul_eq_zero _ hf1 hfS hRs ξ hξ x hx`.
+A detailed English derivation is pending.
 -/
 theorem pow_mul_mem_cusp_of_unit : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∀ (la : GlobalTheory.AllWt.Weight (T.Q.Dw j)), ∀ f ∈ Y.V (wtOf _ la 0), ∀ (u u' : Rul Y.d.Xo₂ Y.d.c₂) (t : Y.d.c₂.F) (eu : Ix (T.Q.Dw j) → ℤ), u ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ eu → t ≠ 0 → u * u' = t • 1 → ∃ K : ℕ, ∀ k, K ≤ k → ∀ (φ φ' : Rul Y.d.Xo₂ Y.d.c₂) (t' : Y.d.c₂.F) (w : GlobalTheory.AllWt.Weight (T.Q.Dw j)), φ ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ (GlobalTheory.AllWt.exOf (T.Q.Dw j) w 0) → t' ≠ 0 → φ * φ' = t' • 1 → (∀ σ, GoodEmb Y.d.c₂ σ → ∀ kk, ∃ C : ℝ, ∀ y ∈ ((Y.U σ).X kk).dom, ((Y.U σ).X kk).pnorm (GlobalTheory.AllWt.modelWt (Y.U σ) (wtOf (T.Q.Dw j) w 0) kk) (rdU (Y.U σ) φ kk) y ≤ C) → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → f ^ (k + 1) * (u * φ) ∈ sec Y.d.Xo₂ Y.d.c₂ a n → f ^ (k + 1) * (u * φ) ∈ cusp Y.d.Xo₂ Y.d.c₂ Y.U a n := by
   intro _hP D T j Y e o hY hE la f hf u _u' _t eu hu _ht _huu
@@ -123,7 +119,7 @@ open GlobalTheory.HSApp
 set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CuspMulUnit.pow_mul_mem_cusp_of_unit | exact _root_.GlobalTheory.CuspMulUnit.pow_mul_mem_cusp_of_unit | (intros; apply _root_.GlobalTheory.CuspMulUnit.pow_mul_mem_cusp_of_unit <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_pow_mul_unit_mem_cusp : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∀ (la : GlobalTheory.AllWt.Weight (T.Q.Dw j)), ∀ f ∈ Y.V (wtOf _ la 0), ∀ (u u' : Rul Y.d.Xo₂ Y.d.c₂) (t : Y.d.c₂.F) (eu : Ix (T.Q.Dw j) → ℤ), u ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ eu → t ≠ 0 → u * u' = t • 1 → ∃ K : ℕ, ∀ k, K ≤ k → ∀ (φ φ' : Rul Y.d.Xo₂ Y.d.c₂) (t' : Y.d.c₂.F) (w : GlobalTheory.AllWt.Weight (T.Q.Dw j)), φ ∈ GlobalTheory.AllWt.secZ Y.d.Xo₂ Y.d.c₂ (GlobalTheory.AllWt.exOf (T.Q.Dw j) w 0) → t' ≠ 0 → φ * φ' = t' • 1 → (∀ σ, GoodEmb Y.d.c₂ σ → ∀ kk, ∃ C : ℝ, ∀ y ∈ ((Y.U σ).X kk).dom, ((Y.U σ).X kk).pnorm (GlobalTheory.AllWt.modelWt (Y.U σ) (wtOf (T.Q.Dw j) w 0) kk) (rdU (Y.U σ) φ kk) y ≤ C) → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → f ^ (k + 1) * (u * φ) ∈ sec Y.d.Xo₂ Y.d.c₂ a n → f ^ (k + 1) * (u * φ) ∈ cusp Y.d.Xo₂ Y.d.c₂ Y.U a n := by
   first | exact @_root_.GlobalTheory.CuspMulUnit.pow_mul_mem_cusp_of_unit | exact _root_.GlobalTheory.CuspMulUnit.pow_mul_mem_cusp_of_unit | (intros; apply _root_.GlobalTheory.CuspMulUnit.pow_mul_mem_cusp_of_unit <;> assumption)

@@ -14,7 +14,7 @@ open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 namespace GlobalTheory.TorsionForm
 
 /- English proof (translation)
-Use `tendsto_subtype_rng.2 (Points.tendsto_iff.2 fun U hU => ?_)` and prove the remaining obligations. Establish `hn` using `(H U 0).1.mem_nhds (show b ∈ _ from ⟨hb, hU⟩)`. Conclude with `⟨Filter.mem_of_superset hn fun _ h => h.2, fun f => ((H U f).2.continuousOn.continuousAt hn)⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem continuousAt_of_isHolTo_cxPts {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {k : Type} [CommRing k]
     {Y : Scheme.{0}} {q : Y ⟶ Sp k} {σ : k →+* ℂ} {B : Set E} {y : E → CxPts q σ}
@@ -24,7 +24,7 @@ theorem continuousAt_of_isHolTo_cxPts {E : Type} [NormedAddCommGroup E] [NormedS
   exact ⟨Filter.mem_of_superset hn fun _ h => h.2, fun f => ((H U f).2.continuousOn.continuousAt hn)⟩
 
 /- English proof (translation)
-Establish `hs : ∀ᶠ b' in nhds b, y b' ∈ c.e.source` using `(continuousAt_of_isHolTo_cxPts H hb).eventually (c.e.open_source.mem_nhds hc)`. Use `differentiableAt_euclidean.2 fun a => ?_` and prove the remaining obligations. Establish `hn` using `(H c.U 0).1.mem_nhds (show b ∈ _ from ⟨hb, c.source_subset hc⟩)`. Use `((H c.U (c.x a)).2.differentiableAt hn).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hs] with b' hb' using c.apply_eq _ hb' a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem differentiableAt_algChart_of_isHolTo {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {k : Type}
     [CommRing k] {Y : Scheme.{0}} {q : Y ⟶ Sp k} {σ : k →+* ℂ} {B : Set E} {y : E → CxPts q σ}
@@ -38,7 +38,7 @@ theorem differentiableAt_algChart_of_isHolTo {E : Type} [NormedAddCommGroup E] [
   filter_upwards [hs] with b' hb' using c.apply_eq _ hb' a
 
 /- English proof (translation)
-Introduce `k _ S p A _ D' h' D g w σ c τ ex H P hP x hx`. Use `⟨continuousAt_of_isHolTo_cxPts H.2.1 hP, ?_⟩` and prove the remaining obligations. Conclude with `differentiableAt_algChart_of_isHolTo H.2.1 hP (x.1.1 : AlgChart (A.hom ≫ p) σ D') (hx ▸ x.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsPeriodChart.continuousAt_and_differentiableAt :
     ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (A : Over S) [GrpObj A] (D' : ℕ) (h' : IsRegVar (A.hom ≫ p) D') (D g : ℕ) (w : VMetric p (omega A) g) (σ : k →+* ℂ) (c : AlgChart p σ D) (τ : V D → Matrix (Fin g) (Fin g) ℂ) (ex : Pt (V D) g → CxPts (A.hom ≫ p) σ), IsPeriodChart w c τ ex → ∀ P ∈ cov c.e.target g, ∀ x : (h'.atlas σ).Pt, x.pt = ex P → ContinuousAt ex P ∧ DifferentiableAt ℂ (x.ch ∘ ex) P := by

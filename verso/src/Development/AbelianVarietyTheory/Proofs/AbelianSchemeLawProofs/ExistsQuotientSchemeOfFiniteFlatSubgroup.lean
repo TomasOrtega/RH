@@ -16,23 +16,21 @@ set_option backward.isDefEq.respectTransparency false
 open TensorProduct Algebra.TensorProduct in
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `Spec.map_surjective (hf.fromSpec ≫ A.hom)`. Set `: Algebra R Γ(A.left, f ⁻¹ᵁ U)` to `φ.hom.toAlgebra`. Set `v : specOver R Γ(A.left, f ⁻¹ᵁ U) ⟶ A` to `Over.homMk hf.fromSpec hφ.symm`. Establish `: Mono v.left` using `inferInstanceAs (Mono hf.fromSpec)`. Establish `P₁ : IsPullback (Spec.map (pullOver f g _ hp U)) (hg.fromSpec ≫ (fst (specOver R Λ) A).left) (Spec.map φ) (specOver R Λ).hom`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hφ]`. Conclude with `(isPullback_pullOver f g _ hp hf hg).paste_vert (IsPullback.of_hasPullback (specOver R Λ).hom A.hom).flip`. Establish `P₂ : IsPullback (specHom (includeLeft : Γ(A.left, f ⁻¹ᵁ U) →ₐ[R] Γ(A.left, f ⁻¹ᵁ U) ⊗[R] Λ)).left (specHom (includeRight : Λ →ₐ[R] Γ(A.left, f ⁻¹ᵁ U) ⊗[R] Λ)).left (Spec.map φ) (specOver R Λ).hom` using `isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct R Γ(A.left, f ⁻¹ᵁ U) Λ)`. Take `⟨e, he⟩` from `Spec.map_surjective (P₂.isoIsPullback _ _ P₁).hom`. Establish `: IsIso (Spec.map e)` using `by rw [he]; infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIso e`. Establish `: IsIso (Scheme.Spec.map e.op)` using `this`. Use `Spec.fullyFaithful.isIso_of_isIso_map e.op` as an intermediate fact. Conclude with `isIso_of_op e`. Establish `h₁` using `P₂.isoIsPullback_hom_fst _ _ P₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h₂` using `P₂.isoIsPullback_hom_snd _ _ P₁`. Rewrite `h₁`, `h₂` using `[← he]`. Establish `hw : (Spec.map e ≫ hg.fromSpec) ≫ (specOver R Λ ⊗ A).hom = (specOver R (Γ(A.left, f ⁻¹ᵁ U) ⊗[R] Λ)).hom`. Rewrite using `[← Over.w (fst (specOver R Λ) A), Category.assoc, reassoc_of% h₂, Over.w]`. Set `k : specOver R (Γ(A.left, f ⁻¹ᵁ U) ⊗[R] Λ) ⟶ specOver R Λ ⊗ A` to `Over.homMk (Spec.map e ≫ hg.fromSpec) hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `k₁ : k ≫ fst _ _ = specHom includeRight` using `by ext1`. Rewrite using `[← h₂]`. Conclude with `Category.assoc ..`. Establish `k₂ : k ≫ snd _ _ = specHom includeLeft ≫ v` using `by ext1`. Rewrite using `[Over.comp_left, Over.comp_left, ← h₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(Spec.map e ≫ hg.fromSpec) ≫ _ = (Spec.map e ≫ _) ≫ hf.fromSpec`. Rewrite using `[Category.assoc, Category.assoc, SpecMap_pullOver f g _ hp hf hg]`. Establish `k₃ : (k ≫ ((fst (specOver R Λ) A ≫ i) * snd (specOver R Λ) A)).left = Spec.map (pullOver f g _ ha U ≫ e) ≫ hf.fromSpec`. Rewrite using `[Spec.map_comp, Category.assoc, SpecMap_pullOver f g _ ha hf hg]`. Conclude with `Category.assoc ..`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h₃ : φ ≫ pullOver f g _ ha U ≫ e = CommRingCat.ofHom (algebraMap R (Γ(A.left, f ⁻¹ᵁ U) ⊗[R] Λ))`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hφ, ← Category.assoc, ← k₃, Over.w]`. Both sides reduce to the same expression. Set `ρ : Γ(A.left, f ⁻¹ᵁ U) →ₐ[R] Γ(A.left, f ⁻¹ᵁ U) ⊗[R] Λ` to `⟨(pullOver f g _ ha U ≫ e).hom, fun r ↦ congr($h₃ r)⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨inferInstance, v, Over.mono_of_mono_left v, ρ, e, this, ?_, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[← k₂, ← k₁, Category.assoc, ← comp_mul] ext1`. Conclude with `k₃.symm`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, h₁]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma exists_coaction {R Λ : Type} [CommRing R] [CommRing Λ] [HopfAlgebra R Λ]
     {A : Over (Spec (CommRingCat.of R))} [GrpObj A] (i : specOver R Λ ⟶ A) {Y : Scheme.{0}}
@@ -104,15 +102,13 @@ lemma exists_coaction {R Λ : Type} [CommRing R] [CommRing Λ] [HopfAlgebra R Λ
     rfl
 
 /- English proof (translation)
-Establish `: IsAffine (specOver R Λ).left` using `inferInstanceAs (IsAffine (Spec _))`. Establish `: IsAffineHom (specOver R Λ).hom` using `inferInstance`. Establish `: IsAffineHom (snd (specOver R Λ) A).left` using `MorphismProperty.pullback_snd (P := @IsAffineHom) (specOver R Λ).hom A.hom this`. Establish `ha : ((fst (specOver R Λ) A ≫ i) * snd (specOver R Λ) A).left ≫ f.left = (snd (specOver R Λ) A).left ≫ f.left` using `congr(($h).left)`. Take `⟨Q, q, π, h₀, h₁, h₂, h₃, h₄, h₅⟩` from `exists_quotient f.left _ _ ha _ rfl (fun U ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨_, v, _, ρ, e, _, hρ, e₁, e₂⟩` from `exists_coaction i f.left _ ha rfl U.1 (U.2.preimage _) (U.2.preimage _)`. Establish `hs` using `coaction_free i v ρ hρ`. Take `⟨-, hff, hk⟩` from `hq R Λ _ ρ (coaction_assoc i v ρ hρ) (coaction_counit i v ρ hρ) hs`. Establish `hC : invariants f.left _ _ ha _ rfl U.1 = ρ.toRingHom.eqLocus (Algebra.TensorProduct.includeLeft : Γ(A.left, f.left ⁻¹ᵁ U.1) →ₐ[R] _).toRingHom`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[mem_invariants, ← (ConcreteCategory.bijective_of_isIso e).1.eq_iff, ← CommRingCat.comp_apply, ← CommRingCat.comp_apply, e₁, e₂]`. Both sides reduce to the same expression. Rewrite using `[hC]`. Use `⟨hff, ?_⟩` and prove the remaining obligations. Use `(isPushout_equalizer ρ _ hs hk).of_iso (Iso.refl _) (Iso.refl _) (Iso.refl _) (asIso e).symm (by simp) (by simp) ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e₁]`. Simplify using the standard rewrite rules. Rewrite using `[← e₂]`. Use the proof step `simp)`. Use `⟨Over.mk (π ≫ Y.hom), Over.homMk q (by simp [reassoc_of% h₀]), Over.homMk π rfl, h₁, h₂, h₃, h₄, ?_⟩` and prove the remaining obligations.
-
-Conclude with `IsPullback.of_map_of_faithful (Over.forget _) h₅`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma exists_quotient_hopf
     (hq : (∀ (R Λ B : Type) [CommRing R] [CommRing Λ] [HopfAlgebra R Λ] [Module.Finite R Λ] [Module.Projective R Λ] [CommRing B] [Algebra R B] (ρ : B →ₐ[R] TensorProduct R B Λ), (∀ b, TensorProduct.assoc R B Λ Λ (ρ.toLinearMap.rTensor Λ (ρ b)) = (Coalgebra.comul (R := R) (A := Λ)).lTensor B (ρ b)) → (∀ b, TensorProduct.rid R B ((Coalgebra.counit (R := R) (A := Λ)).lTensor B (ρ b)) = b) → Function.Surjective (Algebra.TensorProduct.productMap (Algebra.TensorProduct.includeLeft : B →ₐ[R] TensorProduct R B Λ) ρ) → Module.Finite (AlgHom.equalizer ρ (Algebra.TensorProduct.includeLeft : B →ₐ[R] TensorProduct R B Λ)) B ∧ Module.FaithfullyFlat (AlgHom.equalizer ρ (Algebra.TensorProduct.includeLeft : B →ₐ[R] TensorProduct R B Λ)) B ∧ RingHom.ker (Algebra.TensorProduct.productMap (Algebra.TensorProduct.includeLeft : B →ₐ[R] TensorProduct R B Λ) ρ) = Ideal.span {z | ∃ b ∈ AlgHom.equalizer ρ (Algebra.TensorProduct.includeLeft : B →ₐ[R] TensorProduct R B Λ), z = b ⊗ₜ[R] (1 : B) - (1 : B) ⊗ₜ[R] b}))
@@ -153,11 +149,11 @@ lemma exists_quotient_hopf
   exact IsPullback.of_map_of_faithful (Over.forget _) h₅
 
 /- English proof (translation)
-Establish `: IsAffine H.left` using `isAffine_of_isAffineHom H.hom`. Take `⟨⟨Λ⟩, ⟨e⟩⟩` from `(essImage_hopfSpec (R := .of R) (G := Grp.mk H)).2 this`. Set `e' : specOver R Λ ≅ H` to `(Grp.forget _).mapIso e`. Establish `h₁ : IsFinite (specOver R Λ).hom`. Rewrite using `[← Over.w e'.hom]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Establish `h₂ : Flat (specOver R Λ).hom`. Rewrite using `[← Over.w e'.hom]`. Use `infer_instance`. Establish `: Module.Finite R Λ` using `RingHom.finite_algebraMap.1 ((IsFinite.SpecMap_iff _).1 h₁)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Flat R Λ` using `RingHom.flat_algebraMap_iff.1 (Flat.SpecMap_iff.1 h₂)`. Establish `: Module.FinitePresentation R Λ` using `Module.finitePresentation_of_finite R Λ`. Conclude with `⟨Λ, inferInstance, inferInstance, inferInstance, Module.Flat.projective_of_finitePresentation, e', e.hom.hom.isMonHom_hom⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma exists_hopfAlgebra (R : Type) [CommRing R] [IsNoetherianRing R]
     (H : Over (Spec (CommRingCat.of R))) [GrpObj H] [IsFinite H.hom] [Flat H.hom] :
@@ -185,13 +181,13 @@ open AffineQuotient
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Introduce `hk hq hm R _ _ P H _ i _ _ _ _`. Use `P.isAb.comm` as an intermediate fact. Use `P.isAb.proper` as an intermediate fact. Establish `: IsCommMonObj H` using `⟨by`. Rewrite using `[← cancel_mono i, Category.assoc, IsMonHom.mul_hom, ← BraidedCategory.braiding_naturality_assoc, IsCommMonObj.mul_comm]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨N, hN, hH⟩` from `hk R H ‹_› ‹_›`. Establish `: IsLocallyNoetherian P.A.left` using `LocallyOfFiniteType.isLocallyNoetherian P.A.hom`. Use `(hm _ P N hN).1` as an intermediate fact. Take `⟨Λ, _, _, _, _, e, _⟩` from `exists_hopfAlgebra R H`. Establish `hi : i ^ N = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Category.id_comp i, ← MonObj.pow_comp, hH, MonObj.one_comp]`. Take `⟨Q, q, π, h₁, h₂, h₃, h₄, h₅⟩` from `exists_quotient_hopf hq (e.hom ≫ i) (mulA P.A N) (by`. Rewrite using `[mulA, comp_pow, comp_pow, Category.comp_id, Category.comp_id, mul_pow, ← comp_pow, ← comp_pow i, hi, comp_one, comp_one, _root_.one_mul])`. Use `⟨Q, q, h₂, h₃, h₄, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Over.w π]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Rewrite using `[← Over.w π]`. Use `infer_instance`. Apply the tactic sequence `refine h₅.of_iso (whiskerRightIso e P.A) (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_ <;> simp [comp_mul]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_quotient_scheme_of_finite_flat_subgroup :
     (∀ (R : Type) [CommRing R] [IsNoetherianRing R] (H : Over (Spec (CommRingCat.of R))) [GrpObj H] [IsCommMonObj H], IsFinite H.hom → Flat H.hom → ∃ N : ℕ, 1 ≤ N ∧ 𝟙 H ^ N = 1) → (∀ (R Λ B : Type) [CommRing R] [CommRing Λ] [HopfAlgebra R Λ] [Module.Finite R Λ] [Module.Projective R Λ] [CommRing B] [Algebra R B] (ρ : B →ₐ[R] TensorProduct R B Λ), (∀ b, TensorProduct.assoc R B Λ Λ (ρ.toLinearMap.rTensor Λ (ρ b)) = (Coalgebra.comul (R := R) (A := Λ)).lTensor B (ρ b)) → (∀ b, TensorProduct.rid R B ((Coalgebra.counit (R := R) (A := Λ)).lTensor B (ρ b)) = b) → Function.Surjective (Algebra.TensorProduct.productMap (Algebra.TensorProduct.includeLeft : B →ₐ[R] TensorProduct R B Λ) ρ) → Module.Finite (AlgHom.equalizer ρ (Algebra.TensorProduct.includeLeft : B →ₐ[R] TensorProduct R B Λ)) B ∧ Module.FaithfullyFlat (AlgHom.equalizer ρ (Algebra.TensorProduct.includeLeft : B →ₐ[R] TensorProduct R B Λ)) B ∧ RingHom.ker (Algebra.TensorProduct.productMap (Algebra.TensorProduct.includeLeft : B →ₐ[R] TensorProduct R B Λ) ρ) = Ideal.span {z | ∃ b ∈ AlgHom.equalizer ρ (Algebra.TensorProduct.includeLeft : B →ₐ[R] TensorProduct R B Λ), z = b ⊗ₜ[R] (1 : B) - (1 : B) ⊗ₜ[R] b}) → (∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : PolAV S) (n : ℕ), 1 ≤ n → IsFinite (mulA P.A n).left ∧ Flat (mulA P.A n).left ∧ Surjective (mulA P.A n).left ∧ (IsUnit (n : Γ(S, ⊤)) → Etale (mulA P.A n).left)) → ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (P : PolAV (Spec (CommRingCat.of R))) (H : Over (Spec (CommRingCat.of R))) [GrpObj H] (i : H ⟶ P.A), IsMonHom i → Mono i → IsFinite H.hom → Flat H.hom → ∃ (Q : Over (Spec (CommRingCat.of R))) (q : P.A ⟶ Q), IsFinite q.left ∧ Flat q.left ∧ Surjective q.left ∧ IsSeparated Q.hom ∧ LocallyOfFiniteType Q.hom ∧ IsPullback ((fst H P.A ≫ i) * snd H P.A) (snd H P.A) q q := by

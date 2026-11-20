@@ -24,9 +24,7 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Use `(TtLin X v i j).map_add F F'` as an intermediate fact. Simplify using `only [TtLin_apply] at this`. Conclude with `this`. Use `Tt_smul v i j a F := by`. Use `(TtLin X v i j).map_smul a F` as an intermediate fact.
-
-Simplify using `only [TtLin_apply] at this`. Conclude with `this`. Use `yv_add v F F' := (yvLin X v).map_add F F'`. Use `yv_smul v a F := (yvLin X v).map_smul a F`. Use `yv_comm v v' F := funext fun i => Formalism.MainNotions.G.LatticeSystems.ef_yv_comm X.G.P v v' (F i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linD (X : Sys p) : LinD X where
   Tt_add v i j F F' := by
@@ -44,22 +42,22 @@ theorem linD (X : Sys p) : LinD X where
 variable {X : Sys p}
 
 /- English proof (translation)
-Unfold `Sys.vGe Sys.vsc at h ⊢`. Simplify `h` using `[he]`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem vGe_of_eO_zero (he : X.eO = 0) {j : ℕ} {F : X.Fm j} {g g' : ℝ} (h : X.vGe j F g) : X.vGe j F g' := by
   unfold Sys.vGe Sys.vsc at h ⊢
   simpa [he] using h
 
 /- English proof (translation)
-Introduce `Gn G0n PRn S VV _ _ _ _ F hFm`. Establish `hPl : ∀ _ : X.Pl, False` using `fun v => by have := eO_pos X v; omega`. Establish `hFint : F ∈ X.Int 0`. Unfold `Sys.Iprod at hFm`. Use `(Submodule.span_le.2 ?_) hFm` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `F' ⟨BB, _, Lv, _, _, F0, hF0, rfl⟩`. Establish `hLv : Lv = []`. Consider the cases of `Lv with`. Consider the case `nil => rfl`. Consider the case `cons v _ => exact (hPl v).elim`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Substitute `hLv` using the available equality. Establish `h1 : F0 ∈ scale (1 : X.G.Kf) (X.Int 0)` using `by simpa [he] using hF0`. Rewrite `h1` using `[scale_one]`. Conclude with `h1`. Establish `key : ∀ m' ≤ X.mm, X.chainK m' F ∈ X.Int m'`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m'`. Proceed by induction on `m' with`. Consider the case `zero => intro _`. Conclude with `hFint`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Use `h0 n (by omega) _ (ih (by omega))` as an intermediate fact. Conclude with `(vGe_zero_iff X).1 (vGe_of_eO_zero he this)`. Conclude with `vGe_of_eO_zero he ((vGe_zero_iff X).2 (key X.mm le_rfl))`.
+A detailed English derivation is pending.
 -/
 theorem low_term_bound_of_eO_eq_zero_of_aux0 (D : Formalism.BasicNotions.D7) (Y : Pend X) (he : X.eO = 0) (h0 : Conclusion0 D X) : LowTermBound D X Y := by
   intro Gn G0n PRn S VV _ _ _ _ F hFm
@@ -97,11 +95,11 @@ structure Rests (D : Formalism.BasicNotions.D7) (X : Sys p) (Y : Pend X) : Prop 
   Ent : EntCondition X Y
 
 /- English proof (translation)
-Establish `hF : FormB X Y` using `formB D X Y hA`. Establish `hH : RestHecke X` using `heckeCondition_of_adm D X Y hA countLoc (restTmFQ X)`. Take `⟨_, _, _, _, h3, h3b, _, _, _, _, _, h8, _⟩` from `hA`. Establish `p2b` using `hecke_integral_of_forms D hF R.Ent R.U2`. Establish `p3` using `latticeChain_succ_of_partial D hF R.Ent R.U2 (restricted_hecke_integral X)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pAlt` using `alternate_expansion_of_relations X D hH (restTmFQ X) h3b p3 p2b`. Establish `p4` using `theorem_of_alternate_form X D pAlt`. Establish `p5D : LowTermBound D X Y`. Break down `Nat.eq_zero_or_pos X.eO with he | he` into its components or cases. Conclude with `low_term_bound_of_eO_eq_zero_of_aux0 D Y he (form_valuation_of_bound D hF h3)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `lift_bound_of_integrality D (isFractionRing_of_pos_eO Y he) (pKf_ne Y) (linD X) hF R.Ent p4 (fun v F hFm => h8.2 v F hFm)`. Conclude with `⟨⟨form_valuation_of_bound D hF h3, R.S1, R.allPlacesExpansion, slopeEstimate_of_lemmaB_slopeLine D hF R.Ent R.U2, theorem_A_entries_of_corollary D R.Ent (restRat X) R.U2, R.U2, p2b, p3, p4, ramifiedLattice_of_chain_estimates D R.U2 p5D, p5D⟩, pAlt⟩`.
+A detailed English derivation is pending.
 -/
 theorem prv_and_kernel_commutation_up_to_units_of_rests (D : Formalism.BasicNotions.D7) (Y : Pend X) (hA : admitted D X Y) (R : Rests D X Y) :
     Conclusion₂ D X Y ∧ KernelCommutationUpToUnits D X := by
@@ -121,7 +119,7 @@ theorem prv_and_kernel_commutation_up_to_units_of_rests (D : Formalism.BasicNoti
     ramifiedLattice_of_chain_estimates D R.U2 p5D, p5D⟩, pAlt⟩
 
 /- English proof (translation)
-The claim follows from `theta_kernel_expansion D X Y hA allPlacesExpansion := expansions_multiply D X Y hA U2 := auxU_of_firstTheoremPlaceBound D (first_theorem_place_bound X Y D (restGc p) (eb_brJet X)) hA Ent := restEnt_of X Y D (second_lemma_place_bound X Y D (restGc p) (eb_brJet X)) (hecke_place_bou …`.
+A detailed English derivation is pending.
 -/
 theorem rests (D : Formalism.BasicNotions.D7) (Y : Pend X) (hA : admitted D X Y) : Rests D X Y where
   S1 := theta_kernel_expansion D X Y hA
@@ -131,25 +129,25 @@ theorem rests (D : Formalism.BasicNotions.D7) (Y : Pend X) (hA : admitted D X Y)
     (hecke_place_bound X Y D (restGc p) (eb_brJet X)) hA
 
 /- English proof (translation)
-The claim follows from `(prv_and_kernel_commutation_up_to_units_of_rests D Y hA (rests D Y hA)).1`.
+A detailed English derivation is pending.
 -/
 theorem packet_statements_hold (D : Formalism.BasicNotions.D7) (Y : Pend X) (hA : admitted D X Y) : Conclusion₂ D X Y :=
   (prv_and_kernel_commutation_up_to_units_of_rests D Y hA (rests D Y hA)).1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ Y hA => packet_statements_hold D Y hA, relative_presentation_of_d7 D⟩`.
+Supply the required witnesses or components.
 -/
 theorem stmt_proved (D : Formalism.BasicNotions.D7) : Stmt D :=
   ⟨fun _ _ _ Y hA => packet_statements_hold D Y hA, relative_presentation_of_d7 D⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ Y _ hA` and use `packet_statements_hold D Y hA`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem stmtAt_proved (D : Formalism.BasicNotions.D7) : ErrorExponentStatement D :=
   fun _ _ _ _ _ Y _ hA => packet_statements_hold D Y hA
 
 /- English proof (translation)
-Introduce `x i` and use `stmt_proved (Fm.D x i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem stmtF_proved {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : KudlaFamilyStatement Fm := fun x i => stmt_proved (Fm.D x i)
 

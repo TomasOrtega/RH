@@ -18,9 +18,9 @@ open IsDedekindDomain
 namespace GlobalTheory.IntegralTate
 
 /- English proof (translation)
-Establish `hL : LBIso t'.PP.L (t.PP.L.pull m.cm.F)`. Take `⟨w, hw, -⟩` from `m.lin`. Conclude with `⟨w, hw⟩`. Use `⟨ObjPull.tateMove (ObjPull.pushEquiv m.cart (Over.mk x)) (fun c g => ?_) (fun n g g' c hc => ?_) I⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext show (g.left ≫ _) ≫ _ = (g.left ≫ _) ≫ _` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc, m.act, Category.assoc]`. Conclude with `(weilIs_grpPullback_of_comm S S' t.G t'.G f m.cm.F t.PP.L t'.PP.L t.PP.isLB t'.PP.isLB m.cart hL (Over.mk x) n g g' _ _ _ rfl rfl).2 hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_tateIso_pull {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {S S' : Scheme.{0}} {t : SAB H S} {t' : SAB H S'} {f : S' ⟶ S} (m : SABMap t' t f) {k : Type} [Field k]
@@ -40,9 +40,9 @@ theorem nonempty_tateIso_pull {E : Type} [Field E] [NumberField E] [IsCMField E]
       (Over.mk x) n g g' _ _ _ rfl rfl).2 hc
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `T io y C P F _ _ _ _ _ _`. Use `letI := io.toAlgebra`. Take `⟨β, hβ⟩` from `GlobalTheory.LevelFibre.exists_spMap ((jFK (R := T.V) F ≫ y.1.x) ≫ Xo.s)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `⟨-, I₀, -⟩` from `Xo.univ.geom F (jFK (R := T.V) F ≫ y.1.x) β hβ`. Take `⟨I₁⟩` from `nonempty_tateIso_pull C.I.m1 (jFK (R := T.V) F) I₀`. Take `⟨I₂, -⟩` from `GlobalTheory.LevelFibre.exists_tate_push_comm C.I.m2 (jFK (R := T.V) F) _ rfl (ObjPull.pushEquiv C.I.m2.cart (Over.mk (jFK (R := T.V) F))) (fun _ => rfl) I₁`. Take `⟨I₃, -⟩` from `ReciprocityTheory.ChartRestriction.G.H1.tateTransport_holds GlobalTheory.firstFiveLaws.1.weil E H T.V _ C.I.G P F Dw I₂`. Conclude with `⟨I₃⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_tateIso_of_intChart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l),
  letI := H.starRing

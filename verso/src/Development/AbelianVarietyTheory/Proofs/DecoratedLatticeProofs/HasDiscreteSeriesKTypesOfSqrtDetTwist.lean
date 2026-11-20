@@ -16,11 +16,11 @@ namespace GlobalTheory.CoverDS.TwistTypes
 variable {p q : ℕ}
 
 /- English proof (translation)
-Establish `symm : ∀ a b : Ix p q, sameBlock a b ↔ sameBlock b a`. Apply the tactic sequence `intro a b; cases a <;> cases b <;> simp [sameBlock]`. Establish `k1 : ∑ a, ((Finset.univ.filter fun b => ¬ sameBlock a b ∧ lam b < lam a).card : ℚ) = ∑ a, ((Finset.univ.filter fun b => ¬ sameBlock a b ∧ lam a < lam b).card : ℚ)`. Simplify using `only [Finset.card_filter, Nat.cast_sum, Nat.cast_ite, Nat.cast_one, Nat.cast_zero]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [symm a b]`. Establish `k2 : ∑ a, ((Finset.univ.filter fun b => sameBlock a b ∧ lam b < lam a).card : ℚ) = ∑ a, ((Finset.univ.filter fun b => sameBlock a b ∧ lam a < lam b).card : ℚ)`. Simplify using `only [Finset.card_filter, Nat.cast_sum, Nat.cast_ite, Nat.cast_one, Nat.cast_zero]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [symm a b]`. Simplify using `only [rhoNC, Finset.sum_sub_distrib, ← Finset.sum_div, k1, k2, sub_self, zero_div]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_rhoNC (lam : Ix p q → ℚ) : ∑ a, rhoNC lam a = 0 := by
   have symm : ∀ a b : Ix p q, sameBlock a b ↔ sameBlock b a := by
@@ -40,7 +40,7 @@ theorem sum_rhoNC (lam : Ix p q → ℚ) : ∑ a, rhoNC lam a = 0 := by
   simp only [rhoNC, Finset.sum_sub_distrib, ← Finset.sum_div, k1, k2, sub_self, zero_div]
 
 /- English proof (translation)
-Establish `e : ∀ a, (lam a + 1 / 2) ^ 2 = lam a ^ 2 + (lam a + 1 / 2) - 1 / 4` using `fun a => by ring`. Simplify using `only [normSq, e, Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem normSq_add_half (lam : Ix p q → ℚ) :
     normSq (fun a => lam a + 1 / 2) =
@@ -53,11 +53,11 @@ theorem normSq_add_half (lam : Ix p q → ℚ) :
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Establish `hterm : ∀ a b, Cover.twAct act (Eab a b) (Cover.twAct act (Eab b a) v) = act (Eab a b) (act (Eab b a) v) - if a = b then act (Eab a a) v - (1 / 4 : ℂ) • v else 0`. Introduce `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `only [Cover.twAct_apply, if_true, Eab, Matrix.trace_single_eq_same, map_sub, map_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `module`. Simplify using `[Cover.twAct_apply, hab, Eab, Matrix.trace_single_eq_of_ne _ _ _ hab, Matrix.trace_single_eq_of_ne _ _ _ (Ne.symm hab)]`. Establish `h1 : act 1 v = ∑ a, act (Eab a a) v`. Rewrite using `[← Matrix.sum_single_one, map_sum, LinearMap.sum_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [casimir, LinearMap.sum_apply, Module.End.mul_apply, hterm, Finset.sum_sub_distrib, Finset.sum_ite_eq, Finset.mem_univ, if_true, h1, Finset.sum_const, Finset.card_univ]`. Use `module`.
+A detailed English derivation is pending.
 -/
 theorem casimir_twAct (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (v : V) :
     casimir (Cover.twAct act) v = casimir act v - act 1 v + ((Fintype.card (Ix p q) : ℂ) / 4) • v := by
@@ -78,7 +78,7 @@ theorem casimir_twAct (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (v : V) :
   module
 
 /- English proof (translation)
-Use extensionality with `v`. Distinguish the cases in `hv : v = 0`. Substitute `hv` using the available equality. Conclude with `iff_of_true (Submodule.zero_mem _) (Submodule.zero_mem _)`. Conclude with `⟨fun h => ((Cover.isHW_twAct act μ v).1 ⟨hv, h⟩).2, fun h => ((Cover.isHW_twAct act μ v).2 ⟨hv, h⟩).2⟩`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hwSub_twAct (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (μ : Ix p q → ℚ) :
     hwSub (Cover.twAct act) μ = hwSub act fun a => μ a + 1 / 2 := by
@@ -89,9 +89,9 @@ theorem hwSub_twAct (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (μ : Ix p q �
   · exact ⟨fun h => ((Cover.isHW_twAct act μ v).1 ⟨hv, h⟩).2, fun h => ((Cover.isHW_twAct act μ v).2 ⟨hv, h⟩).2⟩
 
 /- English proof (translation)
-Take `⟨m, -, rfl⟩` from `h`. Establish `e : ∑ c, ∑ a, ∑ b, (m a b : ℚ) * ((if c = a then 1 else 0) - (if c = b then 1 else 0)) = 0`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Simplify using `[← Finset.mul_sum, Finset.sum_sub_distrib]`. Simplify using `only [Finset.sum_add_distrib, e, blattner, sum_rhoNC, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_of_inCone {lam μ : Ix p q → ℚ} (h : InCone lam μ) : ∑ a, μ a = ∑ a, lam a := by
   obtain ⟨m, -, rfl⟩ := h
@@ -104,7 +104,7 @@ theorem sum_of_inCone {lam μ : Ix p q → ℚ} (h : InCone lam μ) : ∑ a, μ 
   simp only [Finset.sum_add_distrib, e, blattner, sum_rhoNC, add_zero]
 
 /- English proof (translation)
-Take `⟨m, hm, hμ⟩` from `h`. Use `⟨m, fun a b hab => add_lt_add_left (hm a b hab) c, funext fun a => ?_⟩` and prove the remaining obligations. Use `congrFun hμ a` as an intermediate fact. Rewrite using `[Cover.blattner_add]`. Simplify using `only at this ⊢`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -118,17 +118,15 @@ theorem inCone_add {lam μ : Ix p q → ℚ} (c : ℚ) (h : InCone lam fun a => 
   linarith
 
 /- English proof (translation)
-Establish `h1 : Module.finrank ℂ ↥(hwSub (Cover.twAct R.HK.act) (blattner lam)) = 1` using `h.1`. Establish `h2 : ∀ v, casimir (Cover.twAct R.HK.act) v = (((normSq lam - rhoSq (p + q) : ℚ)) : ℂ) • v` using `h.2.1`. Establish `h3 : ∀ (μ : Ix p q → ℚ) v, IsHW (Cover.twAct R.HK.act) μ v → InCone lam μ` using `h.2.2`. Establish `hcone : ∀ (μ : Ix p q → ℚ) v, IsHW R.HK.act μ v → InCone (fun a => lam a + 1 / 2) μ` using `fun μ v hv => inCone_add _ (h3 _ v ((Cover.isHW_twAct _ _ v).2 (by simpa only [sub_add_cancel] using hv)))`. Use `⟨by rwa [Cover.blattner_add, ← hwSub_twAct], fun v => ?_, hcone⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set c : ℂ := ((∑ a, (lam a + 1 / 2) : ℚ) : ℂ) with hc`. Establish `htop : LinearMap.ker (R.HK.act 1 - c • LinearMap.id) = ⊤`. Use `GlobalTheory.T.kStable_submodule_eq_top_of_highestWeight_le p q R.HK _ (fun X _ w hw => ?_) fun μ w hw => ?_` and prove the remaining obligations. Establish `e` using `congrArg (fun f : Module.End ℂ R.HK.V => f w) (R.HK.lie X 1)`. Simplify using `only [Matrix.mul_one, Matrix.one_mul, sub_self, map_zero, LinearMap.zero_apply, LinearMap.sub_apply, Module.End.mul_apply] at e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at hw ⊢`. Rewrite using `[← sub_eq_zero.1 e.symm, hw, map_smul]`. Distinguish the cases in `h0 : w = 0`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e` using `sum_of_inCone (hcone μ w ⟨h0, hw⟩)`. Simplify using `only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Rewrite using `[hc, ← e, ← Matrix.sum_single_one, map_sum, LinearMap.sum_apply, Rat.cast_sum, Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun a _ => ((mem_hwSub_iff _ _ _).1 hw).1 a`. Establish `hv : R.HK.act 1 v = c • v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `Submodule.eq_top_iff'.1 htop v` using `only [LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Establish `e` using `casimir_twAct R.HK.act v`. Rewrite `e` using `[h2, hv]`. Rewrite using `[normSq_add_half, Rat.cast_sub, Rat.cast_sub, Rat.cast_add, ← hc]`. Rewrite `e` using `[Rat.cast_sub]`.
-
-Use `push_cast`. Take the linear combination `(norm := module) -e`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem hasTypes_of_twist (p q : ℕ) (T : GrpData p q) (R : DSRep T) (lam : Ix p q → ℚ)
     (h : HasTypes (Cover.twist R) lam) : HasTypes R fun a => lam a + 1 / 2 := by

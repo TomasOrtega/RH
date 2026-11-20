@@ -10,17 +10,15 @@ noncomputable section
 namespace GlobalTheory.SeriesTie
 
 /- English proof (translation)
-Introduce `D Ω _ _ A _ a ha φ hφ P e he ϖ hϖP hϖP2 x hx B hB hine σ hσ`. Establish `hv` using `GlobalTheory.HeckeDetChar.val_unif hϖP hϖP2`. Establish `hϖ0 : (ϖ : D.host.E) ≠ 0`. Introduce `h0`. Rewrite `hv` using `[h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithZero.exp_ne_zero hv.symm`. Set `ϖU : D.host.Eˣ` to `Units.mk0 (ϖ : D.host.E) hϖ0`. Establish `hκ : a.κ (x : AE D) = ((Neutral.B1.localIdele D.host.E P (Formalism.L2.Host.atFin P ϖU) : Neutral.B1.Ideles D.host.E) : AdeleRing (𝓞 D.host.E) D.host.E)`. Rewrite using `[← ha.loc P e (GlobalTheory.HeckeDetChar.isPlIdem he) ϖU, hx, Formalism.L2.JoinChr.locE]`. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `show _ = 1 + e * (incA D (ϖ : D.host.E) - 1)`. Expand and normalize the polynomial expressions, which then agree. Establish `hsym : a.sym x = a.art (Neutral.B1.localIdele D.host.E P (Formalism.L2.Host.atFin P ϖU))`. Rewrite using `[Recip.sym, MonoidHom.comp_apply]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.ext hκ`. Establish `hunif : Valued.v ((Formalism.L2.Host.atFin P ϖU : (P.adicCompletion D.host.E)ˣ) : P.adicCompletion D.host.E) = WithZero.exp (-1 : ℤ)` using `by show Valued.v (((ϖ : D.host.E) : P.adicCompletion D.host.E)) = _`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', hv]`. Take `⟨y, hy, hyσ⟩` from `(ha.artin.frob P B hB _).mpr ⟨σ, hσ, rfl⟩`. Establish `hu : Valued.v (((Formalism.L2.Host.atFin P ϖU * y⁻¹ : (P.adicCompletion D.host.E)ˣ)) : P.adicCompletion D.host.E) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hy' : Valued.v ((y : (P.adicCompletion D.host.E)ˣ) : P.adicCompletion D.host.E) = WithZero.exp (-1 : ℤ)` using `hy`. Rewrite using `[Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀, hunif, hy']`. Conclude with `mul_inv_cancel₀ WithZero.exp_ne_zero`. Take `⟨τ, hτ, hτu⟩` from `(ha.artin.ine P B hB _).mp ⟨_, hu, rfl⟩`. Establish `hs : a.sym x = GlobalTheory.HeckeGal.toAb D.host.E Ω (τ * σ⁻¹)`.
-
-Rewrite using `[hsym, show Formalism.L2.Host.atFin P ϖU = (Formalism.L2.Host.atFin P ϖU * y⁻¹) * y by group, map_mul, map_mul, hyσ, ← hτu, map_mul]`. Rewrite using `[a.pull_eq hφ hs, map_mul, hine τ hτ, map_inv, one_mul]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Recip.pull_locUnif : ∀ (D : D7) (Ω : Type) [Field Ω] [Algebra D.host.E Ω] (A : Type) [CommGroup A] (a : Recip D Ω), a.Good → ∀ φ : G D.host.E Ω →* A, IsOpen (φ.ker : Set (G D.host.E Ω)) → ∀ (P : Pl D.host.E) (e : AE D), IsIdemAt e P → ∀ ϖ : 𝓞 D.host.E, ϖ ∈ P.asIdeal → ϖ ∉ P.asIdeal ^ 2 → ∀ x : (AE D)ˣ, (x : AE D) = e * incA D (ϖ : D.host.E) + (1 - e) → ∀ B : ValuationSubring Ω, IsPlaceOver B P → (∀ τ ∈ Ine (F := D.host.E) B, φ τ = 1) → ∀ σ : G D.host.E Ω, IsFrob (F := D.host.E) B (normV P) σ → a.pull φ x = (φ σ)⁻¹ := by
   intro D Ω _ _ A _ a ha φ hφ P e he ϖ hϖP hϖP2 x hx B hB hine σ hσ

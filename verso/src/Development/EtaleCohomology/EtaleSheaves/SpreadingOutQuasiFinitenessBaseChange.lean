@@ -6,14 +6,14 @@ open CategoryTheory Limits AlgebraicGeometry Opposite LateralTheory.E.E4 Lateral
 namespace LateralTheory.E.SpreadingOutQuasiFinitenessBaseChange
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toR_incl {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {R R' : Subalgebra k Ω} (hR : R ≤ R') :
     toR R' ≫ incl hR = toR R := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Use `IsPullback.of_right ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback q (incl hR))` and prove the remaining obligations. Rewrite using `[pullback.lift_fst, toR_incl]`. Conclude with `hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {R R' : Subalgebra k Ω} (hR : R ≤ R')
     {C D : Scheme.{0}} {c : C ⟶ Sp Ω} {q : D ⟶ Sp R} {v : C ⟶ D} (hv : IsPullback v c q (toR R)) :
@@ -23,17 +23,15 @@ theorem sq {k Ω : Type} [Field k] [Field Ω] [Algebra k Ω] {R R' : Subalgebra 
   rw [pullback.lift_fst, toR_incl]; exact hv
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ R R' hR C0 C1 C2 c0 γ1 γ2 D0 D1 D2 q d1 d2 v0 v1 v2 hpre`. Take `⟨-, -, -, p0, p1, p2, m1, m2⟩` from `hpre`. Set `e1 : pullback (d1 ≫ q) (incl hR) ⟶ pullback q (incl hR)` to `pullback.lift (pullback.fst _ _ ≫ d1) (pullback.snd _ _) (by rw [Category.assoc]; exact pullback.condition)`. Set `e2 : pullback (d2 ≫ d1 ≫ q) (incl hR) ⟶ pullback (d1 ≫ q) (incl hR)` to `pullback.lift (pullback.fst _ _ ≫ d2) (pullback.snd _ _) (by rw [Category.assoc]; exact pullback.condition)`. Establish `t1 : e1 ≫ pullback.snd q (incl hR) = pullback.snd _ _` using `pullback.lift_snd _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `t2 : e2 ≫ pullback.snd (d1 ≫ q) (incl hR) = pullback.snd _ _` using `pullback.lift_snd _ _ _`. Establish `t12 : e2 ≫ e1 ≫ pullback.snd q (incl hR) = pullback.snd _ _` using `by rw [t1, t2]`. Establish `P0` using `sq hR p0`. Establish `P1` using `sq hR p1`. Establish `P2` using `sq hR p2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨_, _, _, pullback.snd q (incl hR), e1, e2, _, pullback.lift v1 ((γ1 ≫ c0) ≫ toR R') (by rw [Category.assoc, toR_incl]; exact p1.w), pullback.lift v2 ((γ2 ≫ γ1 ≫ c0) ≫ toR R') (by rw [Category.assoc, toR_incl]; exact p2.w), pullback.fst _ _, pullback.fst _ _, pullback.fst _ _, ⟨P …` and prove the remaining obligations. Rewrite using `[t1]`. Conclude with `P1`. Rewrite using `[t12]`. Conclude with `P2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, pullback.lift_fst, e1, pullback.lift_fst_assoc]`. Conclude with `m1`. Simplify using `only [Category.assoc, pullback.lift_snd, e1]`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc, pullback.lift_fst, e2, pullback.lift_fst_assoc]`. Conclude with `m2`. Simplify using `only [Category.assoc, pullback.lift_snd, e2]`. Rewrite using `[t1]`. Conclude with `IsPullback.of_hasPullback _ _`.
-
-Rewrite using `[t12]`. Conclude with `IsPullback.of_hasPullback _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spread_chain_base_change_to_larger_subalgebra : LateralTheory.E.SpreadingOutQuasiFiniteness.LeafBaseChangePreR := by
   intro k _ Ω _ _ R R' hR C0 C1 C2 c0 γ1 γ2 D0 D1 D2 q d1 d2 v0 v1 v2 hpre
@@ -63,7 +61,7 @@ theorem spread_chain_base_change_to_larger_subalgebra : LateralTheory.E.Spreadin
   · rw [t12]; exact IsPullback.of_hasPullback _ _
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.SpreadingOutQuasiFiniteness.LeafSpreadQF_of hSep hSm hG hM spread_chain_base_change_to_larger_subalgebra`.
+A detailed English derivation is pending.
 -/
 theorem LeafSpreadQF_of (hSep : LateralTheory.E.LeafSpreadProperPf.LeafSpreadSeparated)
     (hSm : LateralTheory.E.SpreadingOutQuasiFiniteness.LeafSpreadSmooth1) (hG : LateralTheory.E.SpreadingOutQuasiFiniteness.LeafSpreadLQFGraph)

@@ -24,9 +24,9 @@ namespace PointsAbsIntegrable
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Establish `hev` using `hγ.eventually_nhds`. Establish `ha : ∀ᶠ y' in 𝓝 y, ContDiffAt ℝ 2 (fun y'' => Real.log (X.h (γ y''))) y'` using `by filter_upwards [hev] with y' hy'`. Conclude with `contDiffAt_log_metric hX (hy'.mono fun _ h => h.1) hy'.self_of_nhds.2`. Establish `hc : ∀ᶠ y' in 𝓝 y, ContDiffAt ℝ 2 (fun y'' => Real.log (Y.h (γ y''))) y'` using `by filter_upwards [hev] with y' hy'`. Conclude with `contDiffAt_log_metric hY (hy'.mono fun _ h => h.1) hy'.self_of_nhds.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hψ : (fun y' => Real.log ((X.tensor Y).h (γ y'))) =ᶠ[𝓝 y] fun y' => 1 * Real.log (X.h (γ y')) + 1 * Real.log (Y.h (γ y'))` using `by filter_upwards [hγ] with y' hy'`. Rewrite using `[one_mul, one_mul]`. Conclude with `Real.log_mul (X.pos _ hy'.2).ne' (Y.pos _ hy'.2).ne'`. Establish `hH` using `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.gaamix_cxHessian_comb 1 1 ha hc hψ`. Simplify `hH` using `only [Complex.ofReal_one, one_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cxHessian_tensor {D : ℕ} {X Y : HermLine ι} (hX : IsSmoothHerm X) (hY : IsSmoothHerm Y)
     {γ : (Fin D → ℂ) → (Σ k, ι k) → ℂ} {y : Fin D → ℂ}
@@ -49,7 +49,7 @@ theorem cxHessian_tensor {D : ℕ} {X Y : HermLine ι} (hX : IsSmoothHerm X) (hY
   simpa only [Complex.ofReal_one, one_smul] using hH
 
 /- English proof (translation)
-The claim follows from `|maDensity (fun j y' => pot L j (γ y')) y| ≤ 3 ^ e * maDensity (fun j y' => pot (fun j => ((L j).tensor (T j)).tensor (T j)) j (γ y')) y := by have hγ : ∀ᶠ y' in 𝓝 y, DifferentiableAt ℂ γ y' ∧ ∀ k, ∃ i, γ y' ⟨k, i⟩ ≠ 0 := by filter_upwards [hS.2] with y' hy' exact ⟨hy'.1, hy'.2.1 …`.
+A detailed English derivation is pending.
 -/
 theorem abs_maDensity_le {P : Ideal (MRing ι)} {e : ℕ} {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)}
     {L T : Fin e → HermLine ι} (hL : ∀ j, IsSmoothHerm (L j)) (hT : ∀ j, IsSmoothHerm (T j))
@@ -102,25 +102,23 @@ end PointsAbsIntegrable
 open PointsAbsIntegrable in
 
 /- English proof (translation)
-Introduce `K _ ι _ P e Ψ L A s hP hΨ hL hA hs`. Establish `hTw` using `SemiPosTwist.proof TorusInvLevi.proof`. Use `choose T hTs hTp hLTp using fun j => hTw K ι (L j) (hL j)`. Establish `hN : ∀ j, IsSmoothHerm (((L j).tensor (T j)).tensor (T j))` using `fun j => isSmoothHerm_tensor (isSmoothHerm_tensor (hL j) (hTs j)) (hTs j)`. Take `⟨a, ha, hsa, hsP⟩` from `hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs : IsSectionOn P A s` using `⟨a, ha, hsa, hsP⟩`. Use `set D := regLine A s ⟨a, ha, hsa⟩ 1 with hDdef`. Establish `hD : IsSmoothHerm D` using `isSmoothHerm_regLine hA one_pos`. Establish `hD1 : IsSectionOn P D 1`. Use `⟨0, fun k => by simp [hDdef, regLine_a], fun m hm k => ?_, fun h => hP.2.1.1.ne_top ((Ideal.eq_top_iff_one P).2 h)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite `hm` using `[MvPolynomial.support_one, Finset.mem_singleton]`. Substitute `hm` using the available equality. Simplify using the standard rewrite rules. Establish `h1` using `hInt K ι P e Ψ _ A s hP hΨ hN hA hs`. Establish `h2` using `hInt K ι P e Ψ _ D 1 hP hΨ hN hD hD1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ y w, |sheetDensity P Ψ (pot L) (logNorm A s) y w| ≤ 3 ^ e * (-2 * sheetDensity P Ψ (pot fun j => ((L j).tensor (T j)).tensor (T j)) (logNorm D 1) y w - sheetDensity P Ψ (pot fun j => ((L j).tensor (T j)).tensor (T j)) (logNorm A s) y w)`. Introduce `y w`. Unfold `sheetDensity`. Distinguish the cases in `hγ : ∃ γ, IsSheet P Ψ y w γ`. Simplify using `only [dif_pos hγ] set γ := hγ.choose`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : IsSheet P Ψ y w γ` using `hγ.choose_spec`. Establish `hmem : γ y ∈ mcPts P` using `hS.2.self_of_nhds.2.1`. Establish `hm` using `abs_maDensity_le hL hTs hTp hLTp hS`. Use `set r := Real.log (D.h (γ y)) with hr`. Establish `hr0 : 0 ≤ r`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hr, hDdef, log_regLine_h]`. Conclude with `div_nonneg (Real.log_nonneg (by nlinarith [sq_nonneg (secNorm A s (γ y))])) (by norm_num)`. Establish `hgr : logNorm A s (γ y) ≤ r`. Distinguish the cases in `h0 : eval (γ y) (map (Int.castRingHom ℂ) s) = 0`. Establish `: logNorm A s (γ y) = 0` using `by simp [logNorm, h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hr0`. Conclude with `logNorm_le_log_regLine_h zero_le_one hmem.1 h0`. Establish `hD1r : logNorm D 1 (γ y) = -r`. Simplify using `[logNorm, hr, Real.log_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hD1r]`. Establish `hg : |logNorm A s (γ y)| ≤ 2 * r - logNorm A s (γ y)`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`. Rewrite using `[abs_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [dif_neg hγ]`. Simplify using the standard rewrite rules. Use `Integrable.mono' (((h2.const_mul (-2)).sub h1).const_mul (3 ^ e)) (hMeas K ι P e Ψ L A s hP hΨ hL hA hs) (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `hfin` using `fibreFinite K ι P e Ψ hP hΨ y`.
-
-Simplify using `only [Pi.sub_apply]`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, Real.norm_eq_abs, abs_of_nonneg (Finset.sum_nonneg fun _ _ => abs_nonneg _), Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun w _ => key y w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PtsAbsIntegrable.proof (hInt : PtsIntegrableStatement) (hMeas : PtsAbsMeasurable.Statement) :
     PtsAbsIntegrable.Statement := by

@@ -16,21 +16,19 @@ open ReciprocityTheory.ChartRestriction.G.AI.I2 (IsRatSectionOn logNormRat)
 namespace GlobalTheory.CompanionTheory.MixZ.ArchEq
 
 /- English proof (translation)
-Introduce `m n X _ i _ U hU`. Establish `hx : i (genericPoint X) ∈ mchart (ptChart (i (genericPoint X)))` using `Set.mem_iInter.2 fun k => mem_ptChart _ k`. Establish `hcl : IsClosed (i '' (U : Set X)ᶜ)` using `i.isClosedEmbedding.isClosedMap _ U.isOpen.isClosed_compl`. Set `V : (MP ℤ m n).Opens` to `⟨(i '' (U : Set X)ᶜ)ᶜ, hcl.isOpen_compl⟩`. Establish `hV : i (genericPoint X) ∈ V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `⟨x, hxU, hxe⟩`. Conclude with `hxU (i.isClosedEmbedding.injective hxe ▸ hU)`. Take `⟨g, hgV, hgx⟩` from `(SmoothRep.gen m n (ptChart (i (genericPoint X)))).1.exists_basicOpen_le ⟨_, hV⟩ hx`. Take `⟨F0, rfl⟩` from `ExRat.dehomog_surjective _ g`. Take `⟨a, F, hF, e⟩` from `ExRat.exists_homog (ptChart (i (genericPoint X))) F0`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hgV`, `hgx` using `[← e]`. Establish `hm` using `homog_mul hF (ExRat.isMultiHomog_mono (ptChart (i (genericPoint X))) 1)`. Use `⟨F * ExRat.mono (ptChart (i (genericPoint X))) 1, _, hm, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_ptIdeal_iff_aeval_ptCoord m n _ _ _ hm, FnForm.aeval_ptCoord_eq_mul _ _ hx hm]`. Simplify using `only [ptCoord_ptChart, one_pow, Finset.prod_const_one, one_mul, map_mul, ExRat.dehomog_mono, mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Scheme.evaluation_ne_zero_iff_mem_basicOpen _ _ hx _).2 hgx`. Introduce `y z hyz hne`. Establish `hz : ∀ k, z ⟨k, ptChart (i (genericPoint X)) k⟩ ≠ 0`. Introduce `k h0`. Apply `hne` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: eval z (map (Int.castRingHom ℂ) (ExRat.mono (ptChart (i (genericPoint X))) 1)) = 0`. Simplify using `only [ExRat.mono, Pi.one_apply, pow_one, map_prod, map_X]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ k) ((eval_X _).trans h0)`. Rewrite using `[map_mul, map_mul, this, mul_zero]`. Establish `hF0 : eval z (map (Int.castRingHom ℂ) F) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, h0, zero_mul]`. Establish `hw : PtsOver.map i rfl _ y ∈ ptsIn (mpStr ℤ m n) σ₀ (mchart (ptChart (i (genericPoint X))))` using `mem_ptsIn.2 (Set.mem_iInter.2 fun k => mem_ptsIn.1 ((hyz k _).1.2 (hz k)))`. Establish `hev : ev (mpStr ℤ m n) σ₀ _ (dehomog (ptChart (i (genericPoint X))) F) (PtsOver.map i rfl _ y) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.T.dehomogenized_eval_eq_ratio m n _ F a hF _ z hyz hw]`. Conclude with `div_ne_zero hF0 (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hz k))`. Establish `hb` using `mem_ptsIn.1 ((mem_ptsIn_basicOpen hw _).2 hev)`. Establish `hp` using `hgV hb`. Rewrite using `[mem_ptsIn]`.
-
-Assume the negation of the conclusion as `h`. Conclude with `hp ⟨_, h, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_form_of_mem_open : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (X : Scheme.{0}) [IsIntegral X] (i : X ⟶ MP ℤ m n) [IsClosedImmersion i]
     (U : X.Opens), genericPoint X ∈ U → ∃ (j : Pol n) (a : Fin (m + 1) → ℕ), IsMultiHomog j a ∧

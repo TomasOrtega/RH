@@ -32,7 +32,7 @@ def chartVal {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} (C : Integra
 omit [StarRing (𝓞 E)] in
 
 /- English proof (translation)
-Use `⟨hP.2, fun τ i i' hτ => ?_⟩` and prove the remaining obligations. Establish `h` using `hP.1.1`. Simplify using `only [harmK, Submodule.mem_iInf, LinearMap.mem_ker] at h`. Establish `h1` using `h τ hτ i i'`. Simplify `h1` using `[lap, Matrix.one_apply, LinearMap.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isIntHarm_of_mem_FFV (T : CDVR) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (P : MvPolynomial (LtN Dw n) T.Fr)
     (hP : P ∈ FFV (Dw := Dw) T a n) : IsIntHarm Dw T n P := by
@@ -45,9 +45,9 @@ theorem isIntHarm_of_mem_FFV (T : CDVR) (a : (E →+* ℂ) × ℕ → ℕ) (n : 
 omit [StarRing (𝓞 E)] in
 
 /- English proof (translation)
-Use `⟨fun m => ?_, fun τ i i' _ => ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_X] split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[MvPolynomial.pderiv_X, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 example (T : CDVR) (n : ℕ) (ℓ : LtN Dw n) : IsIntHarm Dw T n (MvPolynomial.X ℓ) := by
   classical
@@ -73,7 +73,7 @@ def HarmonicValueIntegral : Prop :=
         ∀ f : PS Tc.Fr n (chD C.ch), IsIntPS Tc f → 0 ≤ nval Tc.V e (chartVal C k P f)
 
 /- English proof (translation)
-The claim follows from `le_iInf fun P => le_iInf fun hP => le_iInf fun f => le_iInf fun hf => hS D T h j hj hst Tc io y e la ho hy hp C k n P (isIntHarm_of_mem_FFV Tc a n P hP) f hf`.
+A detailed English derivation is pending.
 -/
 example (hS : HarmonicValueIntegral) (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j)
     [StarRing (𝓞 D.host.E)] (hst : ∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a)

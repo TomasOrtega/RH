@@ -10,11 +10,11 @@ section Bridge
 variable {O E A : Type} [CommRing O] [Field E] [CommRing A] [Algebra O A] [Algebra E A]
 
 /- English proof (translation)
-Use extensionality with `t`. Rewrite using `[MulAction.mem_stabilizer_iff, Subtype.ext_iff, stLat_smul_val]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[mem_mulLat_iff]`. Use `h (((t⁻¹ : Aˣ) : A) * x)` as an intermediate fact. Rewrite `this` using `[← mul_assoc, Units.mul_inv, one_mul]`. Conclude with `this`. Introduce `h y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `SetLike.ext_iff.mp h ((t : A) * y)` as an intermediate fact. Rewrite `this` using `[mem_mulLat_iff, ← mul_assoc, Units.inv_mul, one_mul]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabLat_eq_stabilizer (g : A) (L : stLat O E g) :
     stabLat O (L : Submodule O A) = MulAction.stabilizer Aˣ L := by
@@ -51,7 +51,7 @@ def orbEquiv (g : A) : Orb O (⊤ : Subgroup Aˣ) (stLat O E g) ≃ MulAction.or
     rfl
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `h`. Use extensionality with `s`. Rewrite using `[MulAction.mem_stabilizer_iff, MulAction.mem_stabilizer_iff, smul_smul, mul_comm, ← smul_smul, smul_left_cancel_iff]`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem stabilizer_eq_of_mem_orbit (g : A) {x y : stLat O E g} (h : y ∈ MulAction.orbit Aˣ x) :
     MulAction.stabilizer Aˣ y = MulAction.stabilizer Aˣ x := by
@@ -61,9 +61,9 @@ theorem stabilizer_eq_of_mem_orbit (g : A) {x y : stLat O E g} (h : y ∈ MulAct
     smul_left_cancel_iff]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `orbSum O ⊤ (stLat O E g) (fun _ => 1) = _`. Unfold `orbSum`. Rewrite using `[← finsum_comp_equiv (orbEquiv (O := O) (E := E) g)]`. Use `finsum_congr fun o => ?_` and prove the remaining obligations. Establish `h1 : (Quotient.mk _ (Quot.out o) : MulAction.orbitRel.Quotient Aˣ (stLat O E g)) = orbEquiv g o` using `by conv_rhs => rw [← Quot.out_eq o]`.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `h2` using `Quotient.out_eq (orbEquiv (O := O) (E := E) g o)`. Establish `h3` using `Quotient.exact (h2.trans h1.symm)`. Rewrite using `[one_mul, inf_top_eq, inf_top_eq, stabLat_eq_stabilizer g (Quot.out o), stabilizer_eq_of_mem_orbit g h3]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem countGL_eq_sum_orbits (O E A : Type) [CommRing O] [Field E] [CommRing A] [Algebra O A] [Algebra E A]
     (g : A) : countGL O E g = ∑ᶠ o : MulAction.orbitRel.Quotient Aˣ (stLat O E g),

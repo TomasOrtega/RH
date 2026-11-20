@@ -14,9 +14,9 @@ def JetR {M : Type*} [AddCommGroup M] [Module ℝ M] (U : Set ℂ) (ζ0 : ℂ) (
     ∀ f, ContDiffOn ℝ ∞ f U → Λ f = ∑ i, L i (wd (w i) f ζ0)
 
 /- English proof (translation)
-Establish `e : mono ζ0 j l = fun x => 1 * mono ζ0 j l x` using `by funext x; ring`. Establish `h1 : wn a b (fun x => c * mono ζ0 j l x) ζ0 = (c * (l.descFactorial b : ℂ) * (j.descFactorial a : ℂ)) * mono ζ0 (j - a) (l - b) ζ0`. Rewrite using `[wn, iter_dZb_cmono, iter_dZ_cmono]`. Establish `h2 : wn a b (mono ζ0 j l) ζ0 = (1 * (l.descFactorial b : ℂ) * (j.descFactorial a : ℂ)) * mono ζ0 (j - a) (l - b) ζ0`. Rewrite using `[wn, e, iter_dZb_cmono, iter_dZ_cmono]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wn_cmono (ζ0 c : ℂ) (j l a b : ℕ) :
     wn a b (fun x => c * mono ζ0 j l x) ζ0 = c * wn a b (mono ζ0 j l) ζ0 := by
@@ -35,17 +35,15 @@ section Zero
 variable {M : Type*} [AddCommGroup M] [Module ℝ M] {U : Set ℂ} {ζ0 : ℂ}
 
 /- English proof (translation)
-Take `⟨ι, _, w, L, h⟩` from `hΛ`. Set `cnt : ι → ℕ × ℕ` to `fun i => ((w i).count false, (w i).count true)`. Establish `hS : ∀ (c : ℕ × ℕ) (x : ℂ), ∑ i ∈ univ.filter (fun i => cnt i = c), L i x = 0`. Introduce `c x`. Establish `hne : ((c.1.factorial * c.2.factorial : ℕ) : ℂ) ≠ 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(Nat.mul_pos (Nat.factorial_pos _) (Nat.factorial_pos _)).ne'` after adjusting the coercions. Take `⟨y, hy⟩ : ∃ y : ℂ, y * ((c.1.factorial * c.2.factorial : ℕ) : ℂ) = x` from `⟨x / _, div_mul_cancel₀ x hne⟩`. Establish `hsm : ContDiffOn ℝ ∞ (fun t => y * mono ζ0 c.1 c.2 t) U` using `contDiffOn_const.mul (contDiff_mono ζ0 c.1 c.2).contDiffOn`. Establish `hc` using `h _ hsm`. Rewrite `hc` using `[hP]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : ∀ i, L i (wd (w i) (fun t => y * mono ζ0 c.1 c.2 t) ζ0) = if cnt i = c then L i x else 0`. Introduce `i`. Rewrite using `[wd_eq hU hsm (w i) h0, wn_cmono, wn_mono]`. Distinguish the cases in `hi : cnt i = c`. Rewrite using `[if_pos hi, if_pos (by rw [← hi]), hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hi, if_neg (by intro h'; exact hi (by rw [h'])), mul_zero, map_zero]`. Rewrite `hc` using `[Finset.sum_congr rfl (fun i _ => e1 i), ← Finset.sum_filter]`. Conclude with `hc.symm`. Introduce `f hf`. Rewrite using `[h f hf, Finset.sum_congr rfl (fun i _ => by rw [wd_eq hU hf (w i) h0]), ← Finset.sum_fiberwise_of_maps_to (g := cnt) (t := univ.image cnt) (fun i _ => Finset.mem_image_of_mem cnt (Finset.mem_univ i))]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Establish `e2 : ∀ i ∈ univ.filter (fun i => cnt i = c), L i (wn ((w i).count false) ((w i).count true) f ζ0) = L i (wn c.1 c.2 f ζ0)`. Introduce `i hi`. Establish `hi' : cnt i = c` using `(Finset.mem_filter.1 hi).2`. Rewrite using `[← hi']`.
-
-Rewrite using `[Finset.sum_congr rfl e2, hS c]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetR_zero (hU : IsOpen U) (h0 : ζ0 ∈ U) {Λ : (ℂ → ℂ) → M} (hΛ : JetR U ζ0 Λ)
     (hP : ∀ (c : ℂ) (j l : ℕ), Λ (fun x => c * mono ζ0 j l x) = 0) : ∀ f, ContDiffOn ℝ ∞ f U → Λ f = 0 := by
@@ -94,7 +92,7 @@ def smulR {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedSpace ℂ
   ((ContinuousLinearMap.compL ℝ X ℂ E).flip c).comp (ContinuousLinearMap.lsmul ℝ ℂ : ℂ →L[ℝ] E →L[ℝ] E).flip
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [smulR]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smulR_apply {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedSpace ℂ E] [IsScalarTower ℝ ℂ E]
     (c : X →L[ℝ] ℂ) (e : E) (v : X) : smulR c e v = c v • e := by
@@ -103,21 +101,21 @@ theorem smulR_apply {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [Norme
   | simp [smulR]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Introduce `E _ _ _ _ φ _`. Set `L0 : ℂ →ₗ[ℝ] ContinuousMultilinearMap ℝ (fun _ : Fin 0 => X) E` to `{ toFun := fun c => (continuousMultilinearCurryFin0 ℝ X E).symm (c • φ q) map_add' := fun a b => by rw [add_smul, map_add] map_smul' := fun s a => by`. Rewrite using `[RingHom.id_apply, smul_assoc, LinearIsometryEquiv.map_smul] }`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Unit, inferInstance, fun _ => [], fun _ => L0, fun f _ => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.univ_unique, Finset.sum_singleton]`. Both sides reduce to the same expression. Consider the case `succ j ih`. Introduce `E _ _ _ _ φ hφ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `c2 : X →L[ℝ] ℂ` to `(Complex.conjCLE : ℂ →L[ℝ] ℂ).comp p`. Establish `hφ' : ContDiffOn ℝ ∞ (fun y => fderiv ℝ φ y) V` using `hφ.fderiv_of_isOpen hV (by simp)`. Establish `hM1 : ContDiffOn ℝ ∞ (fun y => smulR (E` using `E) p (φ y)) V := (smulR (E := E) p).contDiff.comp_contDiffOn hφ`. Establish `hM2 : ContDiffOn ℝ ∞ (fun y => smulR (E` using `E) c2 (φ y)) V := (smulR (E := E) c2).contDiff.comp_contDiffOn hφ`. Take `⟨ι1, _, w1, L1, e1⟩` from `ih (X →L[ℝ] E) _ hφ'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ι2, _, w2, L2, e2⟩` from `ih (X →L[ℝ] E) _ hM1`. Take `⟨ι3, _, w3, L3, e3⟩` from `ih (X →L[ℝ] E) _ hM2`. Set `K : ContinuousMultilinearMap ℝ (fun _ : Fin j => X) (X →L[ℝ] E) →ₗ[ℝ] ContinuousMultilinearMap ℝ (fun _ : Fin (j + 1) => X) E` to `(continuousMultilinearCurryRightEquiv' ℝ j X E).symm.toLinearEquiv.toLinearMap`. Use `⟨ι1 ⊕ ι2 ⊕ ι3, inferInstance, Sum.elim w1 (Sum.elim (fun i => w2 i ++ [false]) (fun i => w3 i ++ [true])), Sum.elim (fun i => K ∘ₗ L1 i) (Sum.elim (fun i => K ∘ₗ L2 i) (fun i => K ∘ₗ L3 i)), fun f hf => ?_⟩` and prove the remaining obligations. Establish `hsm : ∀ {g : ℂ → ℂ} {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] [NormedSpace ℂ F] [IsScalarTower ℝ ℂ F] {ψ : X → F}, ContDiffOn ℝ ∞ g U → ContDiffOn ℝ ∞ ψ V → ContDiffAt ℝ j (fun y => g (p y) • ψ y) q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `g F _ _ _ _ ψ hg hψ`. Conclude with `(((hg.comp p.contDiff.contDiffOn hVU).smul hψ).contDiffAt (hV.mem_nhds hq)).of_le (inf_ge j)`. Establish `hD : ∀ y ∈ V, fderiv ℝ (fun x => f (p x) • φ x) y = (f (p y) • fderiv ℝ φ y + dZ f (p y) • smulR p (φ y)) + dZb f (p y) • smulR c2 (φ y)`. Introduce `y hy`. Establish `hfd : HasFDerivAt f (fderiv ℝ f (p y)) (p y)` using `((hf.differentiableOn (by simp)).differentiableAt (hU.mem_nhds (hVU y hy))).hasFDerivAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφd : HasFDerivAt φ (fderiv ℝ φ y) y` using `((hφ.differentiableOn (by simp)).differentiableAt (hV.mem_nhds hy)).hasFDerivAt`. Establish `hc : HasFDerivAt (fun x => f (p x)) ((fderiv ℝ f (p y)).comp p) y` using `hfd.comp y p.hasFDerivAt`. Rewrite using `[(hc.fun_smul hφd).fderiv]`. Use extensionality with `v`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.comp_apply, smulR_apply, fderiv_wirt, add_smul, mul_smul, c2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[add_assoc]`. Establish `hev : (fun y => fderiv ℝ (fun x => f (p x) • φ x) y) =ᶠ[𝓝 q] (fun y => (f (p y) • fderiv ℝ φ y + dZ f (p y) • smulR p (φ y)) + dZb f (p y) • smulR c2 (φ y))` using `Filter.eventually_of_mem (hV.mem_nhds hq) hD`. Use `beta_reduce at e1 e2 e3 ⊢`. Rewrite using `[iteratedFDeriv_succ_eq_comp_right, Function.comp_apply, (hev.iteratedFDeriv ℝ j).eq_of_nhds, fun_iteratedFDeriv_add_apply ((hsm hf hφ').add (hsm (contDiffOn_dZ hU hf) hM1)) (hsm (contDiffOn_dZb hU hf) hM2), fun_iteratedFDeriv_add_apply (hsm hf hφ') (hsm (contDiffOn_dZ hU hf) hM1 …`. Simplify using `only [map_add, map_sum, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, LinearMap.comp_apply, wd_append]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [wd, Bool.false_eq_true, ↓reduceIte, add_assoc]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem jetR_iter (p : X →L[ℝ] ℂ) {U : Set ℂ} {V : Set X} (hU : IsOpen U) (hV : IsOpen V)
     (hVU : ∀ x ∈ V, p x ∈ U) {q : X} (hq : q ∈ V) (j : ℕ) :
@@ -190,7 +188,7 @@ section Closure
 variable {M N : Type*} [AddCommGroup M] [Module ℝ M] [AddCommGroup N] [Module ℝ N] {U : Set ℂ} {ζ0 : ℂ}
 
 /- English proof (translation)
-Take `⟨ι, hι, w, L, hL⟩` from `h`. Conclude with `⟨ι, hι, w, L, fun f hf => (e f hf).symm.trans (hL f hf)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem jetR_congr {Λ Λ' : (ℂ → ℂ) → M} (h : JetR U ζ0 Λ) (e : ∀ f, ContDiffOn ℝ ∞ f U → Λ f = Λ' f) :
     JetR U ζ0 Λ' := by
@@ -198,14 +196,14 @@ theorem jetR_congr {Λ Λ' : (ℂ → ℂ) → M} (h : JetR U ζ0 Λ) (e : ∀ f
   exact ⟨ι, hι, w, L, fun f hf => (e f hf).symm.trans (hL f hf)⟩
 
 /- English proof (translation)
-Take `⟨ι, hι, w, L, hL⟩` from `h`. Conclude with `⟨ι, hι, w, fun i => Lm ∘ₗ L i, fun f hf => by simp only [hL f hf, map_sum, LinearMap.comp_apply]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem jetR_map (Lm : M →ₗ[ℝ] N) {Λ : (ℂ → ℂ) → M} (h : JetR U ζ0 Λ) : JetR U ζ0 (fun f => Lm (Λ f)) := by
   obtain ⟨ι, hι, w, L, hL⟩ := h
   exact ⟨ι, hι, w, fun i => Lm ∘ₗ L i, fun f hf => by simp only [hL f hf, map_sum, LinearMap.comp_apply]⟩
 
 /- English proof (translation)
-Take `⟨ι, hι, w, L, hL⟩` from `h`. Take `⟨ι', hι', w', L', hL'⟩` from `h'`. Conclude with `⟨ι ⊕ ι', inferInstance, Sum.elim w w', Sum.elim L L', fun f hf => by`. Simplify using `only [hL f hf, hL' f hf, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 theorem jetR_add {Λ Λ' : (ℂ → ℂ) → M} (h : JetR U ζ0 Λ) (h' : JetR U ζ0 Λ') :
     JetR U ζ0 (fun f => Λ f + Λ' f) := by
@@ -215,7 +213,7 @@ theorem jetR_add {Λ Λ' : (ℂ → ℂ) → M} (h : JetR U ζ0 Λ) (h' : JetR U
     simp only [hL f hf, hL' f hf, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr]⟩
 
 /- English proof (translation)
-Use `jetR_congr (jetR_add h (jetR_map (-LinearMap.id) h')) fun f _ => ?_` and prove the remaining obligations. Simplify using `[sub_eq_add_neg]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem jetR_sub {Λ Λ' : (ℂ → ℂ) → M} (h : JetR U ζ0 Λ) (h' : JetR U ζ0 Λ') :
     JetR U ζ0 (fun f => Λ f - Λ' f) := by
@@ -223,7 +221,7 @@ theorem jetR_sub {Λ Λ' : (ℂ → ℂ) → M} (h : JetR U ζ0 Λ) (h' : JetR U
   simp [sub_eq_add_neg]
 
 /- English proof (translation)
-Establish `h0 : JetR U ζ0 (fun _ : ℂ → ℂ => (0 : M))` using `⟨Empty, inferInstance, Empty.elim, Empty.elim, fun f _ => by simp⟩`. Establish `hs` using `Finset.sum_induction Λ (JetR U ζ0) (fun a b ha hb => jetR_add ha hb) h0 h`. Use `jetR_congr hs fun f _ => ?_` and prove the remaining obligations. Simplify using `[Finset.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem jetR_sum {κ : Type*} (s : Finset κ) {Λ : κ → (ℂ → ℂ) → M} (h : ∀ j ∈ s, JetR U ζ0 (Λ j)) :
     JetR U ζ0 (fun f => ∑ j ∈ s, Λ j f) := by
@@ -234,7 +232,7 @@ theorem jetR_sum {κ : Type*} (s : Finset κ) {Λ : κ → (ℂ → ℂ) → M} 
   simp [Finset.sum_apply]
 
 /- English proof (translation)
-Conclude with `⟨Unit, inferInstance, fun _ => w, fun _ => L, fun f _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem jetR_word (w : List Bool) (L : ℂ →ₗ[ℝ] M) : JetR U ζ0 (fun f => L (wd w f ζ0)) := by
   exact ⟨Unit, inferInstance, fun _ => w, fun _ => L, fun f _ => by simp⟩

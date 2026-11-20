@@ -5,17 +5,15 @@ open NumberField GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar
 namespace LevelTowerAlt
 
 /- English proof (translation)
-Use `letI : Module (𝓞 E) V := Module.compHom V ρ`. Establish `hρ : ∀ (a : 𝓞 E) (x : V), a • x = ρ a x` using `fun _ _ => rfl`. Set `N : Submodule (𝓞 E) V` to `Submodule.span (𝓞 E) (Set.range e)`. Set `N' : Submodule (𝓞 E) V` to `{ I.toAddSubmonoid with smul_mem' := fun a x hx => hst a x hx }`. Establish `hN : N.toAddSubgroup = I`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `le_antisymm (fun x hx => ?_) ?_` and prove the remaining obligations. Establish `: N ≤ N'` using `Submodule.span_le.2 fun y hy => by`. Express the relevant statement in the definitionally equal form `y ∈ I`. Rewrite using `[← he]`. Conclude with `AddSubgroup.subset_closure hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this hx`. Rewrite using `[← he, AddSubgroup.closure_le]`. Conclude with `Submodule.subset_span`. Use `haveI : Module.Finite (𝓞 E) N := Module.Finite.span_of_finite _ (Set.finite_range e)`. Take `⟨y, hy⟩` from `exists_linearIndependent_fin (K := E) (E := N)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hfin` using `finite_quotient_span hy (Fintype.card_fin _)`. Use `⟨_, fun i => (y i : V), fun i => ?_, fun a ha => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hN]`. Conclude with `(y i).2`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `Fintype.linearIndependent_iff.1 hy a (Subtype.ext ?_) i` and prove the remaining obligations. Simplify `ha` using `[hρ]`. Establish `h1 : oSpan ρ (fun i => (y i : V)) = ((Submodule.span (𝓞 E) (Set.range y)).map N.subtype).toAddSubgroup`. Use extensionality with `x`. Rewrite using `[TorPart.mem_oSpan_iff, Submodule.map_span, ← Set.range_comp, Submodule.mem_toAddSubgroup, Submodule.mem_span_range_iff_exists_fun]`.
-
-Conclude with `exists_congr fun c => eq_comm`. Establish `h2 : ((Submodule.span (𝓞 E) (Set.range y)).map N.subtype).toAddSubgroup.relIndex N.toAddSubgroup = Nat.card (N ⧸ ((Submodule.span (𝓞 E) (Set.range y)).map N.subtype).comap N.subtype)` using `rfl`. Rewrite using `[h1, ← hN, h2, Submodule.comap_map_eq_of_injective N.injective_subtype]`. Conclude with `Nat.card_pos.ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isOFamily {E L V : Type} [Field E] [NumberField E] [Field L] [CharZero L] [AddCommGroup V] [Module L V]
     (ρ : 𝓞 E →+* Module.End L V) (I : AddSubgroup V) (hst : ∀ a, ∀ x ∈ I, ρ a x ∈ I) {n : ℕ} (e : Fin n → V)
@@ -54,15 +52,13 @@ theorem exists_isOFamily {E L V : Type} [Field E] [NumberField E] [Field L] [Cha
     exact Nat.card_pos.ne'
 
 /- English proof (translation)
-Use `set W := Submodule.span L (Set.range w) with hW`. Take `⟨κ, a, -, hsp, hli⟩` from `exists_linearIndependent' L (fun x : S => W.mkQ (x : V))`. Use `haveI : Finite κ := hli.finite`. Take `⟨k, ⟨e⟩⟩` from `Finite.exists_equiv_fin κ`. Use `⟨k, fun c => (a (e.symm c) : V), fun c => (a _).2, ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : LinearIndependent L fun i => (⟨w i, Submodule.subset_span ⟨i, rfl⟩⟩ : W)` using `LinearIndependent.of_comp W.subtype hw`. Establish `h2` using `h1.sumElim_of_quotient (fun c => (a (e.symm c) : V)) (hli.comp e.symm e.symm.injective)`. Establish `h3` using `h2.comp finSumFinEquiv.symm finSumFinEquiv.symm.injective`. Establish `h4 : Fin.append w (fun c => (a (e.symm c) : V)) = Sum.elim w (fun c => (a (e.symm c) : V)) ∘ finSumFinEquiv.symm`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> simp`. Rewrite using `[h4]`. Conclude with `h3`. Establish `h1 : W.mkQ x ∈ Submodule.span L (Set.range ((fun x : S => W.mkQ (x : V)) ∘ a))`. Rewrite using `[hsp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Submodule.subset_span ⟨⟨x, hx⟩, rfl⟩`. Establish `h2 : Set.range ((fun x : S => W.mkQ (x : V)) ∘ a) = W.mkQ '' Set.range fun c => (a (e.symm c) : V)`. Rewrite using `[← Set.range_comp, ← e.symm.surjective.range_comp]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2, ← Submodule.map_span, ← Submodule.mem_comap, Submodule.comap_map_mkQ]`.
-
-Rewrite using `[range_append, Submodule.span_union]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_append {L V : Type} [Field L] [AddCommGroup V] [Module L V] [Module.Finite L V] {r : ℕ} {w : Fin r → V}
     (hw : LinearIndependent L w) (S : Set V) :
@@ -94,19 +90,15 @@ theorem exists_append {L V : Type} [Field L] [AddCommGroup V] [Module L V] [Modu
     exact h1
 
 /- English proof (translation)
-Introduce `E L Ψ _ _ _ _ _ V _ _ _ _ A hΨ`. Use `⟨?_, fun r v hv s => ?_⟩` and prove the remaining obligations. Take `⟨n, e, -, he⟩` from `A.I_basis`. Conclude with `exists_isOFamily A.ρ A.I A.I_stable e he`. Use `haveI : Module.Finite L V := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨S, hS⟩` from `A.fg`. Use `⟨S, ?_⟩` and prove the remaining obligations. Rewrite using `[← A.span, ← hS, Submodule.span_span_of_tower]`. Take `⟨h1, h2, h3, h4⟩` from `tor_facts A hΨ hv s`. Take `⟨k, q, hq, hli, hsp⟩` from `exists_append h1 (A.eig s : Set V)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `had : A.IsAdapted s v fun c => ⟨q c, (hq c).1⟩`. Use `⟨hli, le_antisymm ?_ fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[LinPt.fam, range_append, Submodule.span_le]`. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨c, rfl⟩)`. Conclude with `h2 a`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hq c).2`. Take `⟨c, hc, h5⟩` from `exists_smul_mem_eig A s hx`. Establish `hcL : algebraMap (𝓞 L) L c ≠ 0`. Rewrite using `[map_ne_zero_iff _ (IsFractionRing.injective (𝓞 L) L)]`. Conclude with `hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h6` using `hsp h5`. Rewrite `h6` using `[← algebraMap_smul L c]`. Conclude with `(Submodule.smul_mem_iff _ hcL).1 h6`. Take `⟨h5, h6⟩` from `sub_eig A had.2`. Establish `h7` using `relIndex_ne_zero had.1 h5 h6 h5`.
-
-Rewrite `h7` using `[LinPt.fam, (index_split A had.1 h3 h4 hq).1]`. Establish `h8` using `linearIndependent_img A had.1 h4 hq`. Use `⟨k, _, hq, had, ?_, (rank_img A h8 hq (right_ne_zero_of_mul h7)).1, fun ι => ?_⟩` and prove the remaining obligations. Rewrite using `[← had.2, finrank_span_eq_card had.1, Fintype.card_fin]`. Rewrite using `[gramDet_eq]`.
-
-Conclude with `gramDet_pos _ _ h8`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orthogonal_family_adapted_basis : ∀ (E L Ψ : Type) [Field E] [NumberField E] [Field L] [NumberField L] [Fintype Ψ] (V : Type) [AddCommGroup V] [Module L V] [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V] (A : LinPt E L Ψ V), 2 * Fintype.card Ψ = Module.finrank ℚ E → (∃ (r : ℕ) (v : Fin r → V), IsOFamily A.ρ A.I v) ∧ ∀ (r : ℕ) (v : Fin r → V), IsOFamily A.ρ A.I v → ∀ s, ∃ (k : ℕ) (q : Fin k → A.Λ), (∀ c, (q c : V) ∈ A.eig s) ∧ A.IsAdapted s v q ∧ r + k = Module.finrank L (eigSp A.ρ (A.σ s)) ∧ A.Bq.rank (A.img s) = k ∧ ∀ ι, 0 < A.gramDet ι q := by
   intro E L Ψ _ _ _ _ _ V _ _ _ _ A hΨ

@@ -21,23 +21,19 @@ variable {D : D7}
 set_option maxHeartbeats 800000 in
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Establish `hfc : Continuous (finPart D)` using `GlobalTheory.Member.continuous_finPart D`. Establish `hint : ∀ (A B : Mx D V.rank V.rank), (∀ i j, finPart D (A i j) ∈ intAE D) → (∀ i j, finPart D (B i j) ∈ intAE D) → ∀ i j, finPart D ((A * B) i j) ∈ intAE D`. Introduce `A B hA hB i j`. Rewrite using `[Matrix.mul_apply, map_sum]`. Conclude with `sum_mem fun l _ => by rw [map_mul]; exact GlobalTheory.CompanionTheory.Ipf.Bdd.mul_mem_int (hA i l) (hB l j)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hone : ∀ i j, finPart D ((1 : Mx D V.rank V.rank) i j) ∈ intAE D`. Introduce `i j`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Rewrite using `[map_one]; exact (by simpa using GlobalTheory.IwaPlace.SdComap.natCast_mem_intAE (D := D) 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[map_zero]`. Conclude with `zero_mem _`. Set `U : Subgroup (GA D V)` to `{ carrier := {k | (∀ i j, finPart D (mt V k i j) ∈ intAE D) ∧ ∀ i j, finPart D (mt V k⁻¹ i j) ∈ intAE D} one_mem' := by`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[show mt V 1 = 1 from rfl]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hone i j`. Rewrite using `[inv_one, show mt V 1 = 1 from rfl]`. Conclude with `hone i j`. Use the proof step `mul_mem' := by`. Introduce and unpack `k l ⟨hk, hk'⟩ ⟨hl, hl'⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[show mt V (k * l) = mt V k * mt V l from rfl]`. Conclude with `hint _ _ hk hl i j`. Rewrite using `[mul_inv_rev, show mt V (l⁻¹ * k⁻¹) = mt V l⁻¹ * mt V k⁻¹ from rfl]`. Conclude with `hint _ _ hl' hk' i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use the proof step `inv_mem' := by`. Introduce and unpack `k ⟨hk, hk'⟩`. Conclude with `⟨hk', by simpa using hk⟩ }`. Use `⟨U, ?_, fun k hk => hk.1⟩` and prove the remaining obligations. Establish `hmt : Continuous (mt V)` using `GlobalTheory.MixModel.continuous_mt V`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmti : Continuous fun k : GA D V => mt V k⁻¹` using `hmt.comp continuous_inv`. Establish `hopen : IsOpen {z : Af D.host.F ⊗[D.host.F] D.host.E | z ∈ intAE D}`. Establish `h1` using `GlobalTheory.CompanionTheory.Ipf.Bdd.isOpen_nsmul_mem (D := D) 1`. Simplify using `only [one_nsmul] at h1`. Conclude with `h1`.
-
-Establish `e : (U : Set (GA D V)) = (⋂ i, ⋂ j, (fun k : GA D V => finPart D (mt V k i j)) ⁻¹' {z | z ∈ intAE D}) ∩ ⋂ i, ⋂ j, (fun k : GA D V => finPart D (mt V k⁻¹ i j)) ⁻¹' {z | z ∈ intAE D}`. Use extensionality with `k`. Simplify using `[U]`. Rewrite using `[e]`. Use `IsOpen.inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_) (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_)` and prove the remaining obligations.
-
-Conclude with `hopen.preimage (hfc.comp ((continuous_apply j).comp ((continuous_apply i).comp hmt)))`. Conclude with `hopen.preimage (hfc.comp ((continuous_apply j).comp ((continuous_apply i).comp hmti)))`.
+A detailed English derivation is pending.
 -/
 theorem exists_intOpen (V : HSp D) : ∃ U : Subgroup (GA D V), IsOpen (U : Set (GA D V)) ∧
     ∀ k ∈ U, ∀ i j, finPart D (mt V k i j) ∈ intAE D := by

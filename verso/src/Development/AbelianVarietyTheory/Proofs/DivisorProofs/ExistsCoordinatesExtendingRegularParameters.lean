@@ -17,9 +17,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CoordExt
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_isTranscendenceBasis F K`. Use `haveI := hs.isAlgebraic_field`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap F K).injective`. Use `haveI : CharZero (IntermediateField.adjoin F (Set.range ((↑) : s → K))) := charZero_of_injective_algebraMap (algebraMap F _).injective`. Use `haveI : Algebra.IsSeparable (IntermediateField.adjoin F (Set.range ((↑) : s → K))) K := Algebra.IsAlgebraic.isSeparable_of_perfectField`.
-
-Conclude with `Algebra.FormallySmooth.of_algebraicIndependent_of_isSeparable hs.1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem formallySmooth_of_charZero (F K : Type) [Field F] [CharZero F] [Field K] [Algebra F K] :
     Algebra.FormallySmooth F K := by
@@ -33,13 +31,11 @@ theorem formallySmooth_of_charZero (F K : Type) [Field F] [CharZero F] [Field K]
   exact Algebra.FormallySmooth.of_algebraicIndependent_of_isSeparable hs.1
 
 /- English proof (translation)
-Use `set S := Submodule.span R (Set.range fun y : A => KaehlerDifferential.D F R (algebraMap A R y))`. Rewrite using `[eq_top_iff, ← KaehlerDifferential.span_range_derivation, Submodule.span_le]`. Introduce and unpack `_ ⟨r, rfl⟩`. Take `⟨⟨y, s⟩, rfl⟩` from `IsLocalization.mk'_surjective P.primeCompl r`. Establish `hu : IsUnit (algebraMap A R s)` using `IsLocalization.map_units R s`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `hu.exists_left_inv`. Establish `key : algebraMap A R s • KaehlerDifferential.D F R (IsLocalization.mk' R y s) = KaehlerDifferential.D F R (algebraMap A R y) - IsLocalization.mk' R y s • KaehlerDifferential.D F R (algebraMap A R s)`. Rewrite using `[eq_sub_iff_add_eq, add_comm, ← Derivation.leibniz, IsLocalization.mk'_spec]`. Establish `hmem : algebraMap A R s • KaehlerDifferential.D F R (IsLocalization.mk' R y s) ∈ S`. Rewrite using `[key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sub_mem (Submodule.subset_span ⟨y, rfl⟩) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨s, rfl⟩))`. Establish `: KaehlerDifferential.D F R (IsLocalization.mk' R y s) = v • (algebraMap A R s • KaehlerDifferential.D F R (IsLocalization.mk' R y s))`. Rewrite using `[smul_smul, hv, one_smul]`. Express the relevant statement in the definitionally equal form `_ ∈ S`. Rewrite using `[this]`.
-
-Conclude with `Submodule.smul_mem _ _ hmem`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_D_algebraMap_eq_top (F A R : Type) [Field F] [CommRing A] [CommRing R]
     [Algebra F A] [Algebra A R] [Algebra F R] [IsScalarTower F A R] (P : Ideal A) [P.IsPrime]
@@ -67,9 +63,9 @@ theorem span_D_algebraMap_eq_top (F A R : Type) [Field F] [CommRing A] [CommRing
   exact Submodule.smul_mem _ _ hmem
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.TensorUnitSpanTop.main`. Consider the case `exact _root_.GlobalTheory.TensorUnitSpanTop.main`. Consider the case `(apply _root_.GlobalTheory.TensorUnitSpanTop.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.TensorUnitSpanTop.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.TensorUnitSpanTop.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.TensorUnitSpanTop.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_tmul_eq_top {R M : Type} [CommRing R] [IsLocalRing R] [AddCommGroup M] [Module R M]
     {ι : Type} (f : ι → M) (hf : Submodule.span R (Set.range f) = ⊤) :
@@ -88,23 +84,21 @@ end GlobalTheory.CoordExt
 open GlobalTheory.CoordExt in
 
 /- English proof (translation)
-Introduce `F A R _ _ _ _ _ _ _ _ _ _ _ P _ _ n _ _ hn m a hrsp`. Use `haveI : Algebra.FormallySmooth F (IsLocalRing.ResidueField R) := formallySmooth_of_charZero F _`. Use `set r : Fin m → R := fun i => algebraMap A R (a i) with hr_def`. Establish `hr : ∀ i, r i ∈ IsLocalRing.maximalIdeal R` using `fun i => hrsp.1 ▸ Ideal.subset_span ⟨i, rfl⟩`. Establish `hcot : LinearIndependent (IsLocalRing.ResidueField R) (fun i => ((IsLocalRing.maximalIdeal R).toCotangent ⟨r i, hr i⟩ : IsLocalRing.CotangentSpace R))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfr : Module.finrank (IsLocalRing.ResidueField R) (IsLocalRing.CotangentSpace R) = m`. Use `(IsRegularLocalRing.iff_finrank_cotangentSpace R).1 inferInstance` as an intermediate fact. Rewrite `this` using `[← hrsp.2]`. Conclude with `this` after adjusting the coercions. Use `linearIndependent_of_top_le_span_of_card_eq_finrank ?_ (by simp [hfr])` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hsp : Submodule.span R (Set.range fun i => (⟨r i, hr i⟩ : IsLocalRing.maximalIdeal R)) = ⊤`. Apply `Submodule.map_injective_of_injective (IsLocalRing.maximalIdeal R).injective_subtype` to reduce the goal to its premises. Rewrite using `[Submodule.map_span, Submodule.map_subtype_top, ← Set.range_comp]`. Conclude with `hrsp.1`. Rewrite `hsp` using `[← IsLocalRing.CotangentSpace.span_image_eq_top_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `hsp` using `[← Set.range_comp]`. Conclude with `hsp.ge`. Establish `hw` using `GlobalTheory.AdaptedFrame.linearIndependent_tmul_D (k := F) r hr hcot`. Set `φ : A → IsLocalRing.ResidueField R ⊗[R] Ω[R⁄F]` to `fun y => (1 : IsLocalRing.ResidueField R) ⊗ₜ[R] KaehlerDifferential.D F R (algebraMap A R y)`. Establish `hw' : LinearIndependent (IsLocalRing.ResidueField R) (φ ∘ a)` using `hw`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : Function.Injective a` using `fun i j h => hw'.injective (by simp only [Function.comp_apply, h])`. Establish `hli : LinearIndepOn (IsLocalRing.ResidueField R) φ (Set.range a)` using `(linearIndepOn_range_iff ha φ).2 hw'`. Take `⟨b, -, hab, hbsp, hbli⟩` from `exists_linearIndepOn_extension hli (Set.subset_univ _)`. Establish `hVsp : Submodule.span (IsLocalRing.ResidueField R) (Set.range φ) = ⊤` using `span_tmul_eq_top _ (span_D_algebraMap_eq_top F A R P)`. Establish `hbtop : ⊤ ≤ Submodule.span (IsLocalRing.ResidueField R) (Set.range fun y : b => φ y)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Set.image_eq_range, ← hVsp, ← Set.image_univ]`. Conclude with `Submodule.span_le.2 hbsp`. Set `bV` to `Module.Basis.mk hbli hbtop`. Use `haveI : Finite b := Module.Finite.finite_basis bV`. Use `letI : Fintype b := Fintype.ofFinite b`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hcard : Fintype.card b = n`. Rewrite using `[← Module.finrank_eq_card_basis bV, Module.finrank_baseChange, hn]`. Set `σ` to `Fintype.equivFinOfCardEq hcard`. Set `e0 : Fin m ↪ b` to `⟨fun j => ⟨a j, hab ⟨j, rfl⟩⟩, fun i j h => ha (congrArg Subtype.val h)⟩`. Use `⟨fun i => ((σ.symm i : b) : A), e0.trans σ.toEmbedding, fun j => by` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Function.Embedding.trans_apply, Equiv.coe_toEmbedding, Equiv.symm_apply_apply]`. Use the proof step `rfl, ?_⟩`. Set `ω : Fin n → Ω[R⁄F]` to `fun i => KaehlerDifferential.D F R (algebraMap A R (σ.symm i : b))`. Establish `hb' : ∀ i, (1 : IsLocalRing.ResidueField R) ⊗ₜ[R] ω i = bV.reindex σ i`. Introduce `i`.
-
-Rewrite using `[Module.Basis.reindex_apply]`. Conclude with `(Module.Basis.mk_apply hbli hbtop _).symm`. Establish `hspan` using `IsLocalRing.span_eq_top_of_tmul_eq_basis ω (bV.reindex σ) hb'`. Establish `hli2 : LinearIndependent R ω` using `linearIndependent_of_top_le_span_of_card_eq_finrank hspan.ge (by simp [hn])`. Conclude with `⟨Module.Basis.mk hli2 hspan.ge, fun i => by rw [Module.Basis.mk_apply]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_coords_extending_regularParams : ∀ (F A R : Type) [Field F] [CharZero F] [CommRing A] [CommRing R] [IsLocalRing R] [IsNoetherianRing R] [IsRegularLocalRing R] [Algebra F A] [Algebra A R] [Algebra F R] [IsScalarTower F A R] (P : Ideal A) [P.IsPrime] [IsLocalization.AtPrime R P] (n : ℕ) [Module.Free R Ω[R⁄F]] [Module.Finite R Ω[R⁄F]], Module.finrank R Ω[R⁄F] = n → ∀ (m : ℕ) (a : Fin m → A), ReciprocityTheory.AnForm.R.FinalTheorems.Rsp R m (fun i => algebraMap A R (a i)) → ∃ (x : Fin n → A) (e : Fin m ↪ Fin n), (∀ j, x (e j) = a j) ∧ ∃ bs : Module.Basis (Fin n) R Ω[R⁄F], ∀ i, bs i = KaehlerDifferential.D F R (algebraMap A R (x i)) := by
   classical

@@ -15,11 +15,9 @@ section Group
 variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {π : Representation ℂ G V}
 
 /- English proof (translation)
-Set `H : Subgroup G` to `{ carrier := {g | π g v = v} mul_mem' := fun {x y} hx hy => by`. Simplify using `only [Set.mem_setOf_eq, map_mul, Module.End.mul_apply] at *`. Rewrite using `[hy, hx]`. Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := fun {x} hx => by`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_setOf_eq] at *`. Use `conv_lhs => rw [← hx]`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using `}`. Establish `h : A ⊔ B ≤ H` using `sup_le (fun g hg => mem_fixed.1 hA g hg) (fun g hg => mem_fixed.1 hB g hg)`.
-
-Conclude with `mem_fixed.2 fun g hg => h hg`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_fixed_sup {A B : Subgroup G} {v : V} (hA : v ∈ fixed π A) (hB : v ∈ fixed π B) :
     v ∈ fixed π (A ⊔ B) := by
@@ -36,13 +34,13 @@ theorem mem_fixed_sup {A B : Subgroup G} {v : V} (hA : v ∈ fixed π A) (hB : v
   exact mem_fixed.2 fun g hg => h hg
 
 /- English proof (translation)
-The claim follows from `mem_fixed.2 fun g hg => mem_fixed.1 hv g (h hg)`.
+A detailed English derivation is pending.
 -/
 theorem fixed_anti {A B : Subgroup G} (h : A ≤ B) {v : V} (hv : v ∈ fixed π B) : v ∈ fixed π A :=
   mem_fixed.2 fun g hg => mem_fixed.1 hv g (h hg)
 
 /- English proof (translation)
-The claim follows from `twKer_le_comap π H g hg hv`.
+A detailed English derivation is pending.
 -/
 theorem apply_mem_twKer_of_normalizer {H : Subgroup G} {g : G} (hg : g ∈ Subgroup.normalizer (H : Set G))
     {v : V} (hv : v ∈ twKer π H 1) : π g v ∈ twKer π H 1 :=
@@ -57,13 +55,13 @@ section Cong
 variable {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-The claim follows from `SplitFlip.isCompact_KO.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ isOpen_KOne) KOne_le_KO`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_KOne : IsCompact (KOne k n : Set (GL n k)) :=
   SplitFlip.isCompact_KO.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ isOpen_KOne) KOne_le_KO
 
 /- English proof (translation)
-Use `mem_KOne.2 ?_` and prove the remaining obligations. Establish `: (w * g * w⁻¹).val - 1 = w.val * (g.val - 1) * (w⁻¹).val`. Simplify using `[mul_sub, sub_mul]`. Rewrite using `[this]`. Conclude with `((mem_KO.1 hw).1.mul_maxM (mem_KOne.1 hg)).mul_intM (mem_KO.1 hw).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_KOne {w g : GL n k} (hw : w ∈ KO k n) (hg : g ∈ KOne k n) : w * g * w⁻¹ ∈ KOne k n := by
   refine mem_KOne.2 ?_
@@ -73,7 +71,7 @@ theorem conj_mem_KOne {w g : GL n k} (hw : w ∈ KO k n) (hg : g ∈ KOne k n) :
   exact ((mem_KO.1 hw).1.mul_maxM (mem_KOne.1 hg)).mul_intM (mem_KO.1 hw).2
 
 /- English proof (translation)
-Use `Subgroup.mem_normalizer_iff.2 fun g => ⟨fun hg => conj_mem_KOne hw hg, fun hg => ?_⟩` and prove the remaining obligations. Use `conj_mem_KOne (inv_mem hw) hg` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_normalizer_KOne {w : GL n k} (hw : w ∈ KO k n) :
     w ∈ Subgroup.normalizer (KOne k n : Set (GL n k)) := by
@@ -97,19 +95,19 @@ abbrev red (n : ℕ) : GL (Fin n) 𝒪[k] →* GL (Fin n) 𝓀[k] :=
 variable {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨a, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem incl_mem_KO (a : GL (Fin n) 𝒪[k]) : incl k n a ∈ KO k (Fin n) := ⟨a, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨a, h, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem incl_mem_KOne {a : GL (Fin n) 𝒪[k]} (h : red k n a = 1) : incl k n a ∈ KOne k (Fin n) := ⟨a, h, rfl⟩
 
 /- English proof (translation)
-Introduce `B`. Use `choose A hA using fun i j => IsLocalRing.residue_surjective (B.val i j)`. Establish `hm : (IsLocalRing.residue 𝒪[k]).mapMatrix (Matrix.of A) = B.val` using `Matrix.ext hA`. Establish `hdet : IsUnit (Matrix.of A).det`. Rewrite using `[← isUnit_map_iff (IsLocalRing.residue 𝒪[k]), RingHom.map_det, hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(Matrix.isUnit_iff_isUnit_det _).1 B.isUnit`. Take `⟨u, hu⟩` from `(Matrix.isUnit_iff_isUnit_det _).2 hdet`. Use `⟨u, Units.ext ?_⟩` and prove the remaining obligations. Use `show (IsLocalRing.residue 𝒪[k]).mapMatrix u.val = B.val`. Rewrite using `[hu, hm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_surjective (n : ℕ) : Function.Surjective (red k n) := by
   intro B
@@ -126,7 +124,7 @@ theorem red_surjective (n : ℕ) : Function.Surjective (red k n) := by
 variable {π : Representation ℂ (GL (Fin n) k) V}
 
 /- English proof (translation)
-Establish `h1 : incl k n (b⁻¹ * a) ∈ KOne k (Fin n)` using `incl_mem_KOne (by rw [map_mul, h, map_inv, inv_mul_cancel])`. Establish `: incl k n a = incl k n b * incl k n (b⁻¹ * a)` using `by rw [← map_mul, mul_inv_cancel_left]`. Rewrite using `[this, map_mul, Module.End.mul_apply, mem_fixed.1 hw _ h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem incl_apply_eq {w : V} (hw : w ∈ fixed π (KOne k (Fin n))) {a b : GL (Fin n) 𝒪[k]}
     (h : red k n a = red k n b) : π (incl k n a) w = π (incl k n b) w := by
@@ -135,9 +133,9 @@ theorem incl_apply_eq {w : V} (hw : w ∈ fixed π (KOne k (Fin n))) {a b : GL (
   rw [this, map_mul, Module.End.mul_apply, mem_fixed.1 hw _ h1]
 
 /- English proof (translation)
-Use `mem_fixed.2 fun h hh => ?_` and prove the remaining obligations. Use `mem_fixed.1 hw _ (conj_mem_KOne (inv_mem hg) hh)` as an intermediate fact. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Use `conv_rhs => rw [← this]`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem apply_mem_fixed {w : V} (hw : w ∈ fixed π (KOne k (Fin n))) {g : GL (Fin n) k} (hg : g ∈ KO k (Fin n)) :
     π g w ∈ fixed π (KOne k (Fin n)) := by
@@ -165,7 +163,7 @@ def repF (π : Representation ℂ (GL (Fin n) k) V) :
     rfl)
 
 /- English proof (translation)
-The claim follows from `incl_apply_eq w.2 (Function.surjInv_eq _ _)`.
+A detailed English derivation is pending.
 -/
 theorem repF_red (π : Representation ℂ (GL (Fin n) k) V) (a : GL (Fin n) 𝒪[k]) (w : fixed π (KOne k (Fin n))) :
     (repF π (red k n a) w : V) = π (incl k n a) w :=
@@ -184,77 +182,75 @@ def qr (A : Type) [Ring A] : Matrix (Fin n) (Fin n) A := diagonal fun i => if bl
 variable {A : Type} [Ring A]
 
 /- English proof (translation)
-Apply the tactic sequence `simp only [pr, diagonal_mul]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pr_mul_apply (M : Matrix (Fin n) (Fin n) A) (i j : Fin n) :
     (pr e T A * M) i j = if blk e i ∈ T then M i j else 0 := by
   simp only [pr, diagonal_mul]; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `simp only [pr, mul_diagonal]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mul_pr_apply (M : Matrix (Fin n) (Fin n) A) (i j : Fin n) :
     (M * pr e T A) i j = if blk e j ∈ T then M i j else 0 := by
   simp only [pr, mul_diagonal]; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `simp only [qr, diagonal_mul]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem qr_mul_apply (M : Matrix (Fin n) (Fin n) A) (i j : Fin n) :
     (qr e T A * M) i j = if blk e i ∈ T then 0 else M i j := by
   simp only [qr, diagonal_mul]; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `simp only [qr, mul_diagonal]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mul_qr_apply (M : Matrix (Fin n) (Fin n) A) (i j : Fin n) :
     (M * qr e T A) i j = if blk e j ∈ T then 0 else M i j := by
   simp only [qr, mul_diagonal]; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; rw [pr_mul_apply]; simp only [pr, diagonal_apply]; split_ifs <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pr_mul_pr : pr e T A * pr e T A = pr e T A := by
   ext i j; rw [pr_mul_apply]; simp only [pr, diagonal_apply]; split_ifs <;> simp_all
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; rw [qr_mul_apply]; simp only [qr, diagonal_apply]; split_ifs <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem qr_mul_qr : qr e T A * qr e T A = qr e T A := by
   ext i j; rw [qr_mul_apply]; simp only [qr, diagonal_apply]; split_ifs <;> simp_all
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; rw [pr_mul_apply]; simp only [qr, diagonal_apply]; split_ifs <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pr_mul_qr : pr e T A * qr e T A = 0 := by
   ext i j; rw [pr_mul_apply]; simp only [qr, diagonal_apply]; split_ifs <;> simp_all
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; rw [qr_mul_apply]; simp only [pr, diagonal_apply]; split_ifs <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem qr_mul_pr : qr e T A * pr e T A = 0 := by
   ext i j; rw [qr_mul_apply]; simp only [pr, diagonal_apply]; split_ifs <;> simp_all
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; simp only [pr, qr, Matrix.add_apply, diagonal_apply, one_apply]; split_ifs <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pr_add_qr : pr e T A + qr e T A = 1 := by
   ext i j; simp only [pr, qr, Matrix.add_apply, diagonal_apply, one_apply]; split_ifs <;> simp_all
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Conclude with `h Iff.rfl`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ne_of_side {i j : Fin n} (h : ¬ (blk e i ∈ T ↔ blk e j ∈ T)) : i ≠ j := by
   rintro rfl; exact h Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.OppRad.mem_U]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i j h`. Establish `a1` using `congrFun (congrFun h1 i) j`. Establish `a2` using `congrFun (congrFun h2 i) j`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a1` using `[pr_mul_apply]`. Rewrite `a2` using `[mul_qr_apply]`. Apply the tactic sequence `split_ifs at a1 a2 <;> simp_all`. Introduce `h`. Apply the tactic sequence `constructor <;> ext i j`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[pr_mul_apply]`. Use `split_ifs with h1`. Both sides reduce to the same expression. Conclude with `(h i j (by tauto)).symm`. Rewrite using `[mul_qr_apply]`.
-
-Use `split_ifs with h1`. Conclude with `(h i j (by tauto)).symm`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_U_iff (u : (Matrix (Fin n) (Fin n) A)ˣ) :
     u ∈ GlobalTheory.OppRad.U (pr e T A) (qr e T A) ↔ ∀ i j, ¬ (blk e i ∈ T ∧ blk e j ∉ T) → (u.val - 1) i j = 0 := by
@@ -276,13 +272,11 @@ theorem mem_U_iff (u : (Matrix (Fin n) (Fin n) A)ˣ) :
       · rfl
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.OppRad.mem_U]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i j h`. Establish `a1` using `congrFun (congrFun h1 i) j`. Establish `a2` using `congrFun (congrFun h2 i) j`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a1` using `[qr_mul_apply]`. Rewrite `a2` using `[mul_pr_apply]`. Apply the tactic sequence `split_ifs at a1 a2 <;> simp_all`. Introduce `h`. Apply the tactic sequence `constructor <;> ext i j`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[qr_mul_apply]`. Use `split_ifs with h1`. Conclude with `(h i j (by tauto)).symm`. Both sides reduce to the same expression. Rewrite using `[mul_pr_apply]`.
-
-Use `split_ifs with h1`. Both sides reduce to the same expression. Conclude with `(h i j (by tauto)).symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_U_iff' (u : (Matrix (Fin n) (Fin n) A)ˣ) :
     u ∈ GlobalTheory.OppRad.U (qr e T A) (pr e T A) ↔ ∀ i j, ¬ (blk e i ∉ T ∧ blk e j ∈ T) → (u.val - 1) i j = 0 := by
@@ -304,9 +298,9 @@ theorem mem_U_iff' (u : (Matrix (Fin n) (Fin n) A)ˣ) :
       · exact (h i j (by tauto)).symm
 
 /- English proof (translation)
-Establish `h' : ∀ i j, ¬ (blk e i ∈ T ↔ blk e j ∈ T) → u i j = 0` using `fun i j hij => by`. Use `h i j hij` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, one_apply_ne (ne_of_side e T hij), sub_zero]`. Then use the resulting hypothesis. Apply the tactic sequence `constructor <;> ext i j`. Rewrite using `[mul_pr_apply, pr_mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases a : blk e i ∈ T <;> by_cases b : blk e j ∈ T <;> simp only [a, b, if_true, if_false] <;> first | rfl | exact (h' i j (by tauto)).symm | exact h' i j (by tauto)`. Rewrite using `[mul_qr_apply, qr_mul_apply]`. Apply the tactic sequence `by_cases a : blk e i ∈ T <;> by_cases b : blk e j ∈ T <;> simp only [a, b, if_true, if_false] <;> first | rfl | exact (h' i j (by tauto)).symm | exact h' i j (by tauto)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem comm_pr_of_side {u : Matrix (Fin n) (Fin n) A}
     (h : ∀ i j, ¬ (blk e i ∈ T ↔ blk e j ∈ T) → (u - 1) i j = 0) :
@@ -344,19 +338,19 @@ Both sides reduce to the same expression.
 theorem dia_inv_val (C : Fin s → ℕ) : ((dia e hc C)⁻¹).val = diagonal fun i => (c ^ C (blk e i))⁻¹ := rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (by rw [Units.val_mul, dia_val, dia_val, dia_val, diagonal_mul_diagonal]; simp only [pow_add])`.
+A detailed English derivation is pending.
 -/
 theorem dia_add (C C' : Fin s → ℕ) : dia e hc (fun a => C a + C' a) = dia e hc C * dia e hc C' :=
   Units.ext (by rw [Units.val_mul, dia_val, dia_val, dia_val, diagonal_mul_diagonal]; simp only [pow_add])
 
 /- English proof (translation)
-The claim follows from `Units.ext (by rw [dia_val]; simp)`.
+A detailed English derivation is pending.
 -/
 theorem dia_zero : dia e hc (fun _ => 0) = 1 :=
   Units.ext (by rw [dia_val]; simp)
 
 /- English proof (translation)
-Establish `: (dia e hc C * g * (dia e hc C)⁻¹).val - 1 = (dia e hc C).val * (g.val - 1) * ((dia e hc C)⁻¹).val`. Simplify using `[mul_sub, sub_mul]`. Rewrite using `[this, dia_val, dia_inv_val, mul_diagonal, diagonal_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_sub_apply (C : Fin s → ℕ) (g : GL (Fin n) k) (i j : Fin n) :
     ((dia e hc C * g * (dia e hc C)⁻¹).val - 1) i j =
@@ -367,7 +361,7 @@ theorem conj_sub_apply (C : Fin s → ℕ) (g : GL (Fin n) k) (i j : Fin n) :
   rw [this, dia_val, dia_inv_val, mul_diagonal, diagonal_mul]
 
 /- English proof (translation)
-Establish `: ((dia e hc C)⁻¹ * g * dia e hc C).val - 1 = ((dia e hc C)⁻¹).val * (g.val - 1) * (dia e hc C).val`. Simplify using `[mul_sub, sub_mul]`. Rewrite using `[this, dia_val, dia_inv_val, mul_diagonal, diagonal_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj'_sub_apply (C : Fin s → ℕ) (g : GL (Fin n) k) (i j : Fin n) :
     (((dia e hc C)⁻¹ * g * dia e hc C).val - 1) i j =
@@ -378,7 +372,7 @@ theorem conj'_sub_apply (C : Fin s → ℕ) (g : GL (Fin n) k) (i j : Fin n) :
   rw [this, dia_val, dia_inv_val, mul_diagonal, diagonal_mul]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [Deep]`. Consider the case `succ m ih`. Rewrite using `[pow_succ]`. Conclude with `(ih.mul h).mono (by push_cast; linarith)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deep_pow {a : ℤ} {x : k} (h : Deep a x) (m : ℕ) : Deep (m * a) (x ^ m) := by
   induction m with
@@ -390,7 +384,7 @@ theorem deep_pow {a : ℤ} {x : k} (h : Deep a x) (m : ℕ) : Deep (m * a) (x ^ 
 variable {e hc}
 
 /- English proof (translation)
-Establish `h1` using `deep_pow hc1 A`. Establish `h2` using `deep_pow hc2 B`. Rewrite using `[← inv_pow]`. Conclude with `((h1.mul hx).mul h2).mono (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deep_conj (hc1 : Deep 1 c) (hc2 : Deep (-1) c⁻¹) {A B : ℕ} {t : ℤ} {x : k} (hx : Deep t x) :
     Deep ((A : ℤ) - B + t) (c ^ A * x * (c ^ B)⁻¹) := by
@@ -400,7 +394,7 @@ theorem deep_conj (hc1 : Deep 1 c) (hc2 : Deep (-1) c⁻¹) {A B : ℕ} {t : ℤ
   exact ((h1.mul hx).mul h2).mono (by linarith)
 
 /- English proof (translation)
-Establish `h1` using `deep_pow hc1 B`. Establish `h2` using `deep_pow hc2 A`. Rewrite using `[← inv_pow]`. Conclude with `((h2.mul hx).mul h1).mono (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deep_conj' (hc1 : Deep 1 c) (hc2 : Deep (-1) c⁻¹) {A B : ℕ} {t : ℤ} {x : k} (hx : Deep t x) :
     Deep ((B : ℤ) - A + t) ((c ^ A)⁻¹ * x * c ^ B) := by
@@ -416,17 +410,17 @@ section Lift
 variable {n : ℕ}
 
 /- English proof (translation)
-Set `L : 𝓀[k] → 𝒪[k]` to `fun y => if y = 0 then 0 else Function.surjInv IsLocalRing.residue_surjective y`. Establish `hL : ∀ y, IsLocalRing.residue 𝒪[k] (L y) = y` using `fun y => by`. Distinguish the cases in `h : y = 0`. Simplify using `[L, h]`. Simplify using `only [L, if_neg h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `Function.surjInv_eq _ _`. Set `Y : Matrix (Fin n) (Fin n) 𝒪[k]` to `fun i j => L ((u.val - 1) i j)`. Establish `hYz : ∀ i j, ¬ Z i j → Y i j = 0` using `fun i j h => by show L ((u.val - 1) i j) = 0`. Rewrite using `[hu i j h]`. Simplify using `[L]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hYY : Y * Y = 0`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun (l : Fin n) _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : Z i l`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : Z l j`. Conclude with `(hZ i l j h1 h2).elim`. Rewrite using `[hYz l j h2, mul_zero]`. Rewrite using `[hYz i l h1, zero_mul]`. Use `⟨⟨1 + Y, 1 - Y, by rw [show (1 + Y) * (1 - Y) = 1 - Y * Y by noncomm_ring, hYY, sub_zero], by rw [show (1 - Y) * (1 + Y) = 1 - Y * Y by noncomm_ring, hYY, sub_zero]⟩, Units.ext ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (IsLocalRing.residue 𝒪[k]).mapMatrix Y = u.val - 1` using `by ext i j; exact hL _ show (IsLocalRing.residue 𝒪[k]).mapMatrix (1 + Y) = u.val`. Rewrite using `[map_add, map_one, this, add_sub_cancel]`. Introduce `i j h show ((algebraMap 𝒪[k] k).mapMatrix (1 + Y) - 1) i j = 0`. Rewrite using `[map_add, map_one, add_sub_cancel_left]`. Simplify using `[hYz i j h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j h show ((algebraMap 𝒪[k] k).mapMatrix (1 - Y) - 1) i j = 0`. Rewrite using `[map_sub, map_one, sub_sub_cancel_left]`. Simplify using `[hYz i j h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_lift {Z : Fin n → Fin n → Prop} (hZ : ∀ i l j, Z i l → Z l j → False)
     (u : GL (Fin n) 𝓀[k]) (hu : ∀ i j, ¬ Z i j → (u.val - 1) i j = 0) :
@@ -466,9 +460,9 @@ theorem exists_lift {Z : Fin n → Fin n → Prop} (hZ : ∀ i l j, Z i l → Z 
     simp [hYz i j h]
 
 /- English proof (translation)
-Establish `h1 : ((a.val i j : 𝒪[k]) : k) = (((1 : Matrix (Fin n) (Fin n) 𝒪[k]) i j : 𝒪[k]) : k)`. Rewrite `h` using `[Matrix.sub_apply, sub_eq_zero]`. Use `h.trans ?_` and prove the remaining obligations. Apply the tactic sequence `simp only [one_apply]; split_ifs <;> simp`. Establish `h2 : a.val i j = (1 : Matrix (Fin n) (Fin n) 𝒪[k]) i j` using `Subtype.ext h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `show (IsLocalRing.residue 𝒪[k] (a.val i j)) - (1 : Matrix (Fin n) (Fin n) 𝓀[k]) i j = 0`. Rewrite using `[h2, sub_eq_zero]`. Apply the tactic sequence `simp only [one_apply]; split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem red_sub_apply {a : GL (Fin n) 𝒪[k]} {i j : Fin n} (h : ((incl k n a).val - 1) i j = 0) :
     ((red k n a).val - 1) i j = 0 := by
@@ -482,7 +476,7 @@ theorem red_sub_apply {a : GL (Fin n) 𝒪[k]} {i j : Fin n} (h : ((incl k n a).
   simp only [one_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `i j` and use `(a.val i j).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intM_incl (a : GL (Fin n) 𝒪[k]) : IntM (incl k n a).val := fun i j => (a.val i j).2
 
@@ -499,28 +493,28 @@ abbrev Gp : Subgroup (GL (Fin n) k) := KOne k (Fin n) ⊔ (unipRad k e ⊓ KO k 
 def ind (T : Finset (Fin s)) (a : Fin s) : ℕ := if a ∈ T then 1 else 0
 
 /- English proof (translation)
-The claim follows from `deep_zero_iff.1 h`.
+A detailed English derivation is pending.
 -/
 theorem mem_int_of_deep {x : k} (h : Deep 0 x) : x ∈ 𝒪[k] := deep_zero_iff.1 h
 
 /- English proof (translation)
-The claim follows from `deep_zero_iff.2 h`.
+A detailed English derivation is pending.
 -/
 theorem deep_of_mem_int {x : k} (h : x ∈ 𝒪[k]) : Deep 0 x := deep_zero_iff.2 h
 
 variable {e : (Σ a, Fin (d a)) ≃ Fin n} {T : Finset (Fin s)} {c : k} {hc : c ≠ 0}
 
 /- English proof (translation)
-Simplify using `only [one_apply, EmbeddingLike.apply_eq_iff_eq, Sigma.mk.injEq, heq_eq_eq, true_and]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_apply_blk (a : Fin s) (i j : Fin (d a)) :
     (1 : Matrix (Fin n) (Fin n) k) (e ⟨a, i⟩) (e ⟨a, j⟩) = (1 : Matrix (Fin (d a)) (Fin (d a)) k) i j := by
   simp only [one_apply, EmbeddingLike.apply_eq_iff_eq, Sigma.mk.injEq, heq_eq_eq, true_and]
 
 /- English proof (translation)
-Use `mem_unipRad.2 ⟨fun i j hij => ?_, fun a i j => ?_⟩` and prove the remaining obligations. Use `h i j (not_lt.2 hij.le)` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, one_apply_ne (fun e' => by rw [e'] at hij; exact lt_irrefl _ hij), sub_zero]`. Then use the resulting hypothesis. Use `h (e ⟨a, i⟩) (e ⟨a, j⟩) (by simp)` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this, one_apply_blk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_unipRad_of {g : GL (Fin n) k} (h : ∀ i j, ¬ blk e i < blk e j → (g.val - 1) i j = 0) :
     g ∈ unipRad k e := by
@@ -532,7 +526,7 @@ theorem mem_unipRad_of {g : GL (Fin n) k} (h : ∀ i j, ¬ blk e i < blk e j →
     rw [this, one_apply_blk]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `hj (hT _ _ (not_lt.1 h) hi)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem blk_lt_of_side (hT : ∀ a b : Fin s, a ≤ b → b ∈ T → a ∈ T) {i j : Fin n} (hi : blk e i ∈ T)
     (hj : blk e j ∉ T) : blk e i < blk e j := by
@@ -540,7 +534,7 @@ theorem blk_lt_of_side (hT : ∀ a b : Fin s, a ≤ b → b ∈ T → a ∈ T) {
   exact hj (hT _ _ (not_lt.1 h) hi)
 
 /- English proof (translation)
-The claim follows from `deep_of_mem_int (by rw [sub_eq_add_neg]; exact (hg.add (intM_one (k := k) (n := Fin n)).neg) i j)`.
+A detailed English derivation is pending.
 -/
 theorem deep_sub_one_of_intM {g : Matrix (Fin n) (Fin n) k} (hg : IntM g) (i j : Fin n) : Deep 0 ((g - 1) i j) :=
   deep_of_mem_int (by rw [sub_eq_add_neg]; exact (hg.add (intM_one (k := k) (n := Fin n)).neg) i j)
@@ -549,25 +543,21 @@ variable (hc1 : Deep 1 c) (hc2 : Deep (-1) c⁻¹)
 include hc1 hc2
 
 /- English proof (translation)
-Use `set h := (dia e hc (ind T))⁻¹ * g * dia e hc (ind T) with hh`. Establish `hd : ∀ i j, Deep ((ind T (blk e j) : ℤ) - ind T (blk e i) + 1) ((h.val - 1) i j)` using `fun i j => by`. Rewrite using `[hh, conj'_sub_apply]`. Conclude with `deep_conj' hc1 hc2 (deep_one_iff.2 (mem_KOne.1 hg i j))`. Set `Y : Matrix (Fin n) (Fin n) k` to `pr e T k * h.val * qr e T k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hY : ∀ i j, Y i j = if blk e i ∈ T ∧ blk e j ∉ T then h.val i j else 0` using `fun i j => by`. Apply the tactic sequence `simp only [Y, mul_qr_apply, pr_mul_apply]; split_ifs <;> simp_all`. Establish `hcu : ∀ i j, blk e i ∈ T → blk e j ∉ T → h.val i j = (h.val - 1) i j` using `fun i j hi hj => by`. Rewrite using `[Matrix.sub_apply, one_apply_ne (fun e' => by rw [e'] at hi; exact hj hi), sub_zero]`. Establish `hYi : IntM Y` using `fun i j => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hY]`. Use `split_ifs with hij`. Rewrite using `[hcu i j hij.1 hij.2]`. Use `mem_int_of_deep ((hd i j).mono ?_)` and prove the remaining obligations. Simplify using `[ind, hij.1, hij.2]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Establish `hYY : Y * Y = 0`. Simplify using `only [Y, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (qr e T k) (pr e T k), qr_mul_pr]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `E : Matrix (Fin n) (Fin n) k` to `h.val - 1 - Y`. Establish `hE : MaxM E` using `fun i j => by`. Simplify using `only [E, Matrix.sub_apply]`. Rewrite using `[hY]`. Use `split_ifs with hij`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
 
-Rewrite using `[← Matrix.sub_apply, hcu i j hij.1 hij.2, sub_self, map_zero]`. Conclude with `zero_lt_one`. Rewrite using `[sub_zero]`. Use `deep_one_iff.1 ((hd i j).mono ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases a : blk e i ∈ T <;> by_cases b : blk e j ∈ T <;> simp_all [ind]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `nu : GL (Fin n) k` to `⟨1 + Y, 1 - Y, by rw [show (1 + Y) * (1 - Y) = 1 - Y * Y by noncomm_ring, hYY, sub_zero], by rw [show (1 - Y) * (1 + Y) = 1 - Y * Y by noncomm_ring, hYY, sub_zero]⟩`. Establish `hnu : nu ∈ unipRad k e ⊓ KO k (Fin n)`. Use `⟨mem_unipRad_of fun i j hij => ?_, mem_KO.2 ⟨intM_one.add hYi, ?_⟩⟩` and prove the remaining obligations. Use `show (1 + Y - 1) i j = 0`. Rewrite using `[add_sub_cancel_left, hY, if_neg fun h' => hij (blk_lt_of_side hT h'.1 h'.2)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show IntM (1 - Y)`. Rewrite using `[sub_eq_add_neg]`. Conclude with `intM_one.add hYi.neg`. Establish `hk : nu⁻¹ * h ∈ KOne k (Fin n)`. Use `mem_KOne.2 ?_` and prove the remaining obligations.
-
-Establish `e1 : h.val = 1 + Y + E` using `by simp only [E]; abel`. Establish `e2 : (nu⁻¹ * h).val - 1 = E - Y * E` using `by show (1 - Y) * h.val - 1 = E - Y * E`. Rewrite using `[e1, show (1 - Y) * (1 + Y + E) - 1 = E - Y * E - Y * Y by noncomm_ring, hYY, sub_zero]`. Rewrite using `[e2, sub_eq_add_neg]`. Conclude with `hE.add (hYi.mul_maxM hE).neg`.
-
-Establish `: h = nu * (nu⁻¹ * h)` using `by group`. Rewrite using `[this]`. Conclude with `mul_mem (Subgroup.mem_sup_right hnu) (Subgroup.mem_sup_left hk)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_KOne_mem (hT : ∀ a b : Fin s, a ≤ b → b ∈ T → a ∈ T) {g : GL (Fin n) k} (hg : g ∈ KOne k (Fin n)) :
     (dia e hc (ind T))⁻¹ * g * dia e hc (ind T) ∈ Gp e := by
@@ -618,9 +608,9 @@ theorem conj_KOne_mem (hT : ∀ a b : Fin s, a ≤ b → b ∈ T → a ∈ T) {g
   exact mul_mem (Subgroup.mem_sup_right hnu) (Subgroup.mem_sup_left hk)
 
 /- English proof (translation)
-Use `mem_KOne.2 fun i j => ?_` and prove the remaining obligations. Rewrite using `[conj'_sub_apply]`. Distinguish the cases in `hij : blk e i ∉ T ∧ blk e j ∈ T`. Use `deep_one_iff.1 ((deep_conj' hc1 hc2 (deep_sub_one_of_intM hgi i j)).mono ?_)` and prove the remaining obligations. Simplify using `[ind, hij.1, hij.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hg i j hij]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_lower_mem {g : GL (Fin n) k} (hgi : IntM g.val)
     (hg : ∀ i j, ¬ (blk e i ∉ T ∧ blk e j ∈ T) → (g.val - 1) i j = 0) :
@@ -633,9 +623,9 @@ theorem conj_lower_mem {g : GL (Fin n) k} (hgi : IntM g.val)
   · rw [hg i j hij]; simp
 
 /- English proof (translation)
-Establish `h1 : IntM ((dia e hc C * g * (dia e hc C)⁻¹).val - 1)` using `fun i j => by`. Rewrite using `[conj_sub_apply]`. Distinguish the cases in `hij : blk e i ∈ T ∧ blk e j ∉ T`. Use `mem_int_of_deep ((deep_conj hc1 hc2 (deep_sub_one_of_intM hgi i j)).mono ?_)` and prove the remaining obligations. Use `hC _ hij.1 _ hij.2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hg i j hij]`. Simplify using the standard rewrite rules. Use `h1.add (intM_one (k := k) (n := Fin n))` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem conj_upper_intM {C : Fin s → ℕ} (hC : ∀ a ∈ T, ∀ b ∉ T, C b ≤ C a) {g : GL (Fin n) k} (hgi : IntM g.val)
     (hg : ∀ i j, ¬ (blk e i ∈ T ∧ blk e j ∉ T) → (g.val - 1) i j = 0) :
@@ -655,9 +645,9 @@ end Conj
 section Factor
 
 /- English proof (translation)
-Establish `e1 : P * g * P * h * P = P`. Establish `: P * g * P * h * P = P * g * (P + Q) * h * P - P * g * (Q * h * P)` using `by noncomm_ring`. Rewrite using `[this, one, mul_one, b, mul_zero, sub_zero, mul_assoc P g h, gh, mul_one, pp]`. Establish `e2 : Q * g * Q * h * Q = Q`. Establish `: Q * g * Q * h * Q = Q * g * (P + Q) * h * Q - Q * g * P * h * Q` using `by noncomm_ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, one, mul_one, a, zero_mul, zero_mul, sub_zero, mul_assoc Q g h, gh, mul_one, qq]`. Establish `: (P * g * P + Q * g * Q) * (P * h * P + Q * h * Q) = P * g * (P * P) * h * P + P * g * (P * Q) * h * Q + Q * g * (Q * P) * h * P + Q * g * (Q * Q) * h * Q` using `by noncomm_ring`. Rewrite using `[this, pp, pq, qp, qq, e1, e2]`. Simplify using `[one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ring_inv {R : Type} [Ring R] {P Q g h : R} (pp : P * P = P) (qq : Q * Q = Q) (pq : P * Q = 0)
     (qp : Q * P = 0) (one : P + Q = 1) (gh : g * h = 1) (a : Q * g * P = 0) (b : Q * h * P = 0) :
@@ -675,11 +665,11 @@ theorem ring_inv {R : Type} [Ring R] {P Q g h : R} (pp : P * P = P) (qq : Q * Q 
   simp [one]
 
 /- English proof (translation)
-Establish `s1 : P * h * P * g = P - P * h * Q * g`. Establish `: P * h * P * g = P * h * (P + Q) * g - P * h * Q * g` using `by noncomm_ring`. Rewrite using `[this, one, mul_one, mul_assoc P h g, hg, mul_one]`. Establish `s2 : Q * h * Q * g = Q`. Establish `: Q * h * Q * g = Q * h * (P + Q) * g - Q * h * P * g` using `by noncomm_ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, one, mul_one, b, zero_mul, sub_zero, mul_assoc Q h g, hg, mul_one]`. Establish `t : P * h * Q * g * P = 0`. Establish `: P * h * Q * g * P = P * h * (Q * Q) * g * P` using `by rw [qq]`. Rewrite using `[this, show P * h * (Q * Q) * g * P = P * h * Q * (Q * g * P) by noncomm_ring, a, mul_zero]`. Establish `s3 : P * h * Q * g = P * (h * Q * g) * Q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `: (P * h * P + Q * h * Q) * g = P * h * P * g + Q * h * Q * g` using `by noncomm_ring`. Rewrite using `[this, s1, s2, s3, ← one]`. Normalize the expressions using the abelian group laws.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem ring_factor {R : Type} [Ring R] {P Q g h : R} (qq : Q * Q = Q) (one : P + Q = 1) (hg : h * g = 1)
     (a : Q * g * P = 0) (b : Q * h * P = 0) :
@@ -704,9 +694,9 @@ theorem ring_factor {R : Type} [Ring R] {P Q g h : R} (qq : Q * Q = Q) (one : P 
 variable {n s : ℕ} {d : Fin s → ℕ} {e : (Σ a, Fin (d a)) ≃ Fin n} {T : Finset (Fin s)}
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `mem_unipRad.1 hg`. Break down `(not_lt.1 h).lt_or_eq with h3 | h3` into its components or cases. Rewrite using `[Matrix.sub_apply, mem_parab.1 h1 i j h3, one_apply_ne (fun e' => by rw [e'] at h3; exact lt_irrefl _ h3), sub_zero]`. Take `⟨⟨a, i'⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b, j'⟩, rfl⟩` from `e.surjective j`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hab : b = a` using `by simpa using h3`. Substitute `hab` using the available equality. Rewrite using `[Matrix.sub_apply, h2, one_apply_blk, sub_self]`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_one_of_mem_unipRad {g : GL (Fin n) k} (hg : g ∈ unipRad k e) {i j : Fin n}
     (h : ¬ blk e i < blk e j) : (g.val - 1) i j = 0 := by
@@ -720,21 +710,21 @@ theorem sub_one_of_mem_unipRad {g : GL (Fin n) k} (hg : g ∈ unipRad k e) {i j 
     rw [Matrix.sub_apply, h2, one_apply_blk, sub_self]
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [pr, diagonal_apply]; split_ifs <;> simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intM_pr : IntM (pr e T k) := fun i j => by
   simp only [pr, diagonal_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [qr, diagonal_apply]; split_ifs <;> simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem intM_qr : IntM (qr e T k) := fun i j => by
   simp only [qr, diagonal_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[mul_pr_apply, qr_mul_apply]`. Use `split_ifs with h1 h2`. Both sides reduce to the same expression. Use `sub_one_of_mem_unipRad hg (i := i) (j := j) (fun h => h2 (hT _ _ h.le h1))` as an intermediate fact.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Matrix.sub_apply, one_apply_ne (fun e' => by subst e'; exact h2 h1), sub_zero]`. Then use the resulting hypothesis. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem qr_mul_mul_pr_eq_zero (hT : ∀ a b : Fin s, a ≤ b → b ∈ T → a ∈ T) {g : GL (Fin n) k}
     (hg : g ∈ unipRad k e) : qr e T k * g.val * pr e T k = 0 := by
@@ -747,19 +737,17 @@ theorem qr_mul_mul_pr_eq_zero (hT : ∀ a b : Fin s, a ≤ b → b ∈ T → a �
   · rfl
 
 /- English proof (translation)
-Use `set P := pr e T k`. Use `set Q := qr e T k`. Establish `pp` using `pr_mul_pr e T (A := k)`. Establish `qq` using `qr_mul_qr e T (A := k)`. Establish `pq` using `pr_mul_qr e T (A := k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `qp` using `qr_mul_pr e T (A := k)`. Establish `one` using `pr_add_qr e T (A := k)`. Establish `a` using `qr_mul_mul_pr_eq_zero hT hg.1`. Establish `b` using `qr_mul_mul_pr_eq_zero hT (inv_mem hg.1)`. Establish `gh : g.val * (g⁻¹).val = 1` using `Units.mul_inv g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hg' : (g⁻¹).val * g.val = 1` using `Units.inv_mul g`. Set `gm : GL (Fin n) k` to `⟨P * g.val * P + Q * g.val * Q, P * (g⁻¹).val * P + Q * (g⁻¹).val * Q, ring_inv pp qq pq qp one gh a b, ring_inv pp qq pq qp one hg' b a⟩`. Establish `hgm1 : ∀ i j, ¬ (blk e i ∈ T ↔ blk e j ∈ T) → (gm.val - 1) i j = 0` using `fun i j h => by show (P * g.val * P + Q * g.val * Q - 1) i j = 0`. Rewrite using `[Matrix.sub_apply, Matrix.add_apply, mul_pr_apply, pr_mul_apply, mul_qr_apply, qr_mul_apply, one_apply_ne (ne_of_side e T h)]`. Apply the tactic sequence `by_cases h1 : blk e i ∈ T <;> by_cases h2 : blk e j ∈ T <;> simp_all`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hgmN : gm ∈ unipRad k e` using `mem_unipRad_of fun i j hij => by`. Distinguish the cases in `h : (blk e i ∈ T ↔ blk e j ∈ T)`. Use `sub_one_of_mem_unipRad hg.1 hij show (P * g.val * P + Q * g.val * Q - 1) i j = 0` as an intermediate fact. Rewrite `this`, the goal using `[Matrix.sub_apply]`. Rewrite using `[Matrix.add_apply, mul_pr_apply, pr_mul_apply, mul_qr_apply, qr_mul_apply]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases h1 : blk e i ∈ T <;> by_cases h2 : blk e j ∈ T <;> simp_all`. Conclude with `hgm1 i j h`. Establish `hgmKO : gm ∈ KO k (Fin n)`. Establish `hi` using `intM_of_mem_KO hg.2`. Establish `hi'` using `intM_of_mem_KO (inv_mem hg.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_KO.2 ⟨((intM_pr.mul hi).mul intM_pr).add ((intM_qr.mul hi).mul intM_qr), ((intM_pr.mul hi').mul intM_pr).add ((intM_qr.mul hi').mul intM_qr)⟩`. Use `⟨gm, gm⁻¹ * g, by group, ⟨hgmN, hgmKO⟩, mul_mem (inv_mem hgmKO) hg.2, hgm1, fun i j h => ?_⟩` and prove the remaining obligations. Establish `e3 : (gm⁻¹ * g).val - 1 = -(P * ((g⁻¹).val * Q * g.val) * Q)` using `by show (P * (g⁻¹).val * P + Q * (g⁻¹).val * Q) * g.val - 1 = _`. Rewrite using `[ring_factor qq one hg' a b]`. Normalize the expressions using the abelian group laws.
-
-Rewrite using `[e3, Matrix.neg_apply, mul_qr_apply, pr_mul_apply]`. Apply the tactic sequence `by_cases h1 : blk e i ∈ T <;> by_cases h2 : blk e j ∈ T <;> simp_all`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_factor (hT : ∀ a b : Fin s, a ≤ b → b ∈ T → a ∈ T) {g : GL (Fin n) k}
     (hg : g ∈ unipRad k e ⊓ KO k (Fin n)) :
@@ -806,7 +794,7 @@ theorem exists_factor (hT : ∀ a b : Fin s, a ≤ b → b ∈ T → a ∈ T) {g
   by_cases h1 : blk e i ∈ T <;> by_cases h2 : blk e j ∈ T <;> simp_all
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [dia_val, pr, qr, ind, diagonal_apply, Matrix.add_apply, Matrix.smul_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dia_ind_val {c : k} (hc : c ≠ 0) : (dia e hc (ind T)).val = c • pr e T k + qr e T k := by
   ext i j
@@ -814,7 +802,7 @@ theorem dia_ind_val {c : k} (hc : c ≠ 0) : (dia e hc (ind T)).val = c • pr e
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `comm_pr_of_side e T hg`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, dia_ind_val, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, h1, h2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_dia {c : k} (hc : c ≠ 0) {g : GL (Fin n) k}
     (hg : ∀ i j, ¬ (blk e i ∈ T ↔ blk e j ∈ T) → (g.val - 1) i j = 0) :
@@ -840,35 +828,31 @@ variable {e : (Σ a, Fin (d a)) ≃ Fin n} {π : Representation ℂ (GL (Fin n) 
 include hc1 hc2
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem apply_conj (g h : GL (Fin n) k) (w : V) : π g (π h w) = π h (π (h⁻¹ * g * h) w) := by
   rw [← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]; congr 2; group
 
 /- English proof (translation)
-Introduce `w hw hwk`. Use `set D := dia e hc (ind T) with hD`. Establish `hdia : dia e hc (fun a => C a + ind T a) = dia e hc C * D` using `dia_add e hc C (ind T)`. Establish `hx1 : π D w ∈ fixed π (KOne k (Fin n))` using `mem_fixed.2 fun g hg => by`. Rewrite using `[apply_conj hc1 hc2, mem_fixed.1 hw _ (conj_KOne_mem hc1 hc2 hT hg)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `X : fixed π (KOne k (Fin n))` to `⟨π D w, hx1⟩`. Establish `hX : ∀ u ∈ GlobalTheory.OppRad.U (qr e T 𝓀[k]) (pr e T 𝓀[k]), repF π u X = X`. Introduce `u hu`. Take `⟨a, rfl, ha, -⟩` from `exists_lift (Z := fun i j => blk e i ∉ T ∧ blk e j ∈ T) (fun i l j h1 h2 => h2.1 h1.2) u ((mem_U_iff' e T u).1 hu)`. Use `Subtype.ext ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[repF_red]`. Use `show π (incl k n a) (π D w) = π D w`. Rewrite using `[apply_conj hc1 hc2, mem_fixed.1 hw _ (Subgroup.mem_sup_left (conj_lower_mem hc1 hc2 (intM_incl a) ha))]`. Use `set W := GlobalTheory.OppRad.S (repF π) (GlobalTheory.OppRad.U (pr e T 𝓀[k]) (qr e T 𝓀[k])) X with hW`. Establish `hW2 : π (dia e hc C) (W : V) ∈ twKer π (KOne k (Fin n)) 1` using `by haveI := Fintype.ofFinite (GlobalTheory.OppRad.U (pr e T 𝓀[k]) (qr e T 𝓀[k]))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hW, GlobalTheory.OppRad.S_apply, Submodule.coe_sum, map_sum]`. Use `Submodule.sum_mem _ fun u _ => ?_` and prove the remaining obligations. Take `⟨a, hau, ha, hai⟩` from `exists_lift (Z := fun i j => blk e i ∈ T ∧ blk e j ∉ T) (fun i l j h1 h2 => h1.2 h2.1) u.1 ((mem_U_iff e T u.1).1 u.2)`. Rewrite using `[← hau, repF_red]`. Establish `hKO : dia e hc C * incl k n a * (dia e hc C)⁻¹ ∈ KO k (Fin n)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mem_KO.2 ⟨conj_upper_intM hc1 hc2 hC (intM_incl a) ha, ?_⟩` and prove the remaining obligations. Establish `: (dia e hc C * incl k n a * (dia e hc C)⁻¹)⁻¹ = dia e hc C * incl k n a⁻¹ * (dia e hc C)⁻¹`. Rewrite using `[map_inv]`. Use `group`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `conj_upper_intM hc1 hc2 hC (intM_incl _) hai`. Establish `hx : π (dia e hc C) (π D w) ∈ twKer π (KOne k (Fin n)) 1`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← hdia]`. Conclude with `hwk`. Establish `: π (dia e hc C) (π (incl k n a) (π D w)) = π (dia e hc C * incl k n a * (dia e hc C)⁻¹) (π (dia e hc C) (π D w))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e4 : dia e hc C * incl k n a * (dia e hc C)⁻¹ * dia e hc C = dia e hc C * incl k n a` using `by group`. Use `conv_rhs => rw [← Module.End.mul_apply, ← map_mul, e4, map_mul, Module.End.mul_apply]`. Rewrite using `[show ((X : fixed π (KOne k (Fin n))) : V) = π D w from rfl, this]`. Conclude with `apply_mem_twKer_of_normalizer (mem_normalizer_KOne hKO) hx`. Establish `hW1 : (W : V) ∈ fixed π (Gp e)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_fixed_sup W.2 (mem_fixed.2 fun g hg => ?_)` and prove the remaining obligations. Take `⟨gm, gc, rfl, hgm, hgc, hgm1, hgc1⟩` from `exists_factor hT hg`. Take `⟨b, rfl⟩` from `hgm.2`. Take `⟨a, rfl⟩` from `hgc`. Establish `hua : red k n a ∈ GlobalTheory.OppRad.U (pr e T 𝓀[k]) (qr e T 𝓀[k])` using `(mem_U_iff e T _).2 fun i j h => red_sub_apply (hgc1 i j h)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hp, hq⟩` from `comm_pr_of_side e T (A := 𝓀[k]) (u := (red k n b).val) fun i j h => red_sub_apply (hgm1 i j h)`. Establish `hbX : repF π (red k n b) X = X`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[repF_red]`. Use `show π (incl k n b) (π D w) = π D w`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, comm_dia hc hgm1, map_mul, Module.End.mul_apply, mem_fixed.1 hw _ (Subgroup.mem_sup_right hgm)]`. Establish `h1 : π (incl k n a) (W : V) = W`. Rewrite using `[← repF_red π a W, hW, GlobalTheory.OppRad.S_left hua]`. Establish `h2 : repF π (red k n b) W = W`. Rewrite using `[hW, GlobalTheory.OppRad.S_conj (fun u hu => GlobalTheory.OppRad.conj_mem hp hq hu) (fun u hu => GlobalTheory.OppRad.conj_mem (GlobalTheory.OppRad.inv_rel hp) (GlobalTheory.OppRad.inv_rel hq) hu), hbX]`.
-
-Rewrite using `[map_mul, Module.End.mul_apply, h1, ← repF_red, h2]`. Establish `hW0 : W = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using ih _ hW1 hW2`. Establish `hX0 : X = 0` using `GlobalTheory.OppRad.oppInj GlobalTheory.OppRad.matrix_regular (qr_mul_qr e T) (pr_mul_pr e T) (qr_mul_pr e T) (pr_mul_qr e T) X hX hW0`.
-
-Establish `h3 : π D w = 0` using `congrArg Subtype.val hX0`. Use `congrArg (π D⁻¹) h3` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem step {T : Finset (Fin s)} (hT : ∀ a b : Fin s, a ≤ b → b ∈ T → a ∈ T) {C : Fin s → ℕ}
     (hC : ∀ a ∈ T, ∀ b ∉ T, C b ≤ C a) (ih : Claim e π hc C) : Claim e π hc (fun a => C a + ind T a) := by
@@ -944,7 +928,7 @@ end Step
 def expo (s M : ℕ) (a : Fin s) : ℕ := (M + 1) * (s - 1 - a)
 
 /- English proof (translation)
-Introduce `a b hab` and use `by have : (a : ℕ) ≤ b := hab exact Nat.mul_le_mul_left _ (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem antitone_expo {s : ℕ} (M : ℕ) : Antitone (expo s M) := fun a b hab => by
   have : (a : ℕ) ≤ b := hab
@@ -958,25 +942,23 @@ variable {n s : ℕ} {d : Fin s → ℕ} {V : Type} [AddCommGroup V] [Module ℂ
 include hc1 hc2
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `C hm hC`. Distinguish the cases in `h0 : ∀ a, C a = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `: C = fun _ => 0` using `funext h0`. Substitute `this` using the available equality. Introduce `w hw hwk`. Rewrite `hwk` using `[dia_zero, map_one, Module.End.one_apply]`. Conclude with `eq_zero_of_fixed hπ isCompact_KOne (fixed_anti le_sup_left hw) hwk`.
+Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `push_neg at h0`. Take `⟨a0, ha0⟩` from `h0`. Set `T : Finset (Fin s)` to `Finset.univ.filter fun a => 0 < C a`. Establish `hmemT : ∀ a, a ∈ T ↔ 0 < C a` using `fun a => by simp [T]`. Set `C' : Fin s → ℕ` to `fun a => C a - ind T a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hCC : (fun a => C' a + ind T a) = C` using `funext fun a => by`. Simplify using `only [C', ind]`. Distinguish the cases in `h : a ∈ T`. Use `(hmemT a).1 h` as an intermediate fact. Simplify using `only [h, if_true]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[h]`. Establish `hT : ∀ a b : Fin s, a ≤ b → b ∈ T → a ∈ T` using `fun a b hab hb => (hmemT a).2 (lt_of_lt_of_le ((hmemT b).1 hb) (hC hab))`. Establish `hC' : ∀ a ∈ T, ∀ b ∉ T, C' b ≤ C' a` using `fun a _ b hb => by`. Establish `: C b = 0` using `by by_contra h; exact hb ((hmemT b).2 (Nat.pos_of_ne_zero h))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[C', ind, hb, this]`. Establish `hanti : Antitone C'` using `fun a b hab => by`. Establish `h1` using `hC hab`. Establish `hz : ∀ x, x ∉ T → C x = 0` using `fun x hx => by`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Conclude with `hx ((hmemT x).2 (Nat.pos_of_ne_zero h))`. Simplify using `only [C', ind]`. Distinguish the cases in `hb : b ∈ T`. Establish `ha` using `hT a b hab hb`. Simplify using `only [ha, hb, if_true]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use linear arithmetic over natural numbers and integers. Use `hz b hb` as an intermediate fact. Apply the tactic sequence `simp only [hb, if_false]; split_ifs <;> omega`. Establish `hlt : ∑ a, C' a < m`. Rewrite using `[← hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_lt_sum (fun a _ => Nat.sub_le _ _) ⟨a0, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Establish `: a0 ∈ T` using `(hmemT a0).2 (Nat.pos_of_ne_zero ha0)`. Simplify using `only [C', ind, this, if_true]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← hCC]`.
-
-Conclude with `step hc1 hc2 hT hC' (ih _ hlt C' rfl hanti)`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem claim_of_antitone (hπ : IsSmooth π) :
     ∀ m : ℕ, ∀ C : Fin s → ℕ, ∑ a, C a = m → Antitone C → Claim e π hc C := by
@@ -1026,13 +1008,13 @@ theorem claim_of_antitone (hπ : IsSmooth π) :
     exact step hc1 hc2 hT hC' (ih _ hlt C' rfl hanti)
 
 /- English proof (translation)
-Establish `key : ∀ᶠ M : ℕ in Filter.atTop, ∀ i j, Deep (-(M : ℤ)) (u.val i j)`. Simplify using `only [Filter.eventually_all]`. Conclude with `fun i j => eventually_deep _`. Use `filter_upwards [key] with M hM`. Use `mem_KOne.2 fun i j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[conj_sub_apply]`. Distinguish the cases in `h : blk e i < blk e j`. Establish `hij : i ≠ j` using `fun e' => by rw [e'] at h; exact lt_irrefl _ h`. Rewrite using `[Matrix.sub_apply, one_apply_ne hij, sub_zero]`. Use `deep_one_iff.1 ((deep_conj hc1 hc2 (hM i j)).mono ?_)` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ((blk e i : Fin s) : ℕ) < ((blk e j : Fin s) : ℕ)` using `h`. Establish `h2 : ((blk e j : Fin s) : ℕ) < s` using `(blk e j).2`. Establish `hN : expo s M (blk e j) + (M + 1) ≤ expo s M (blk e i)`. Simplify using `only [expo]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `: (expo s M (blk e j) : ℤ) + M + 1 ≤ expo s M (blk e i)` using `by exact_mod_cast hN`. Use linear arithmetic over natural numbers and integers. Rewrite using `[sub_one_of_mem_unipRad hu h]`. Simplify using the standard rewrite rules.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eventually_conj_mem {u : GL (Fin n) k} (hu : u ∈ unipRad k e) :
     ∀ᶠ M : ℕ in Filter.atTop, dia e hc (expo s M) * u * (dia e hc (expo s M))⁻¹ ∈ KOne k (Fin n) := by
@@ -1057,13 +1039,11 @@ theorem eventually_conj_mem {u : GL (Fin n) k} (hu : u ∈ unipRad k e) :
   · rw [sub_one_of_mem_unipRad hu h]; simp
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨u, w, rfl⟩` from `hx`. Use `filter_upwards [eventually_conj_mem hc1 hc2 u.2] with M hM`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, map_sub]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: π (dia e hc (expo s M)) (π u w) = π (dia e hc (expo s M) * u * (dia e hc (expo s M))⁻¹) (π (dia e hc (expo s M)) w)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right]`. Rewrite using `[this]`. Conclude with `sub_mem_twKer hM _`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y _ _ hx hy => filter_upwards [hx, hy] with M h1 h2`. Rewrite using `[map_add]`. Conclude with `add_mem h1 h2`. Consider the case `smul a x _ hx => filter_upwards [hx] with M h1`. Rewrite using `[map_smul]`.
-
-Conclude with `Submodule.smul_mem _ a h1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_mem_twKer {v : V} (hv : v ∈ twKer π (unipRad k e) 1) :
     ∀ᶠ M : ℕ in Filter.atTop, π (dia e hc (expo s M)) v ∈ twKer π (KOne k (Fin n)) 1 := by
@@ -1088,7 +1068,7 @@ theorem eventually_mem_twKer {v : V} (hv : v ∈ twKer π (unipRad k e) 1) :
 end Walk
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n s d e π v hv h0`. Take `⟨c, hc0, hc1, hc2⟩` from `exists_deep (k := k) 1`. Establish `h1 : v ∈ twKer π.π (unipRad k e) 1` using `(Submodule.Quotient.mk_eq_zero _).1 h0`. Take `⟨M, hM⟩` from `(eventually_mem_twKer (hc := hc0) hc1 hc2 h1).exists`. Conclude with `claim_of_antitone hc1 hc2 π.smooth _ _ rfl (antitone_expo M) v hv hM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem depthZeroJacquetInjective : GlobalTheory.Published.DepthZeroJacquetInjective := by
   intro k _ _ _ _ n s d e π v hv h0

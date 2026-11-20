@@ -8,7 +8,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-The claim follows from `HeightAsIntersection.proof OrbitCurve.full OrbitDegree.full (HeightRecR.proof hV hF hA)`.
+A detailed English derivation is pending.
 -/
 theorem HeightAsIntersection.of_parts (hV : OrbitDivVertical.Statement)
     (hF : OrbitFiniteSum.Statement) (hA : OrbitArchSum.Statement) :

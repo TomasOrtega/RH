@@ -7,7 +7,7 @@ open MeasureTheory Metric Set Filter Topology Complex
 open scoped ENNReal ContDiff Convolution
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Rewrite using `[convolution_eq_swap]`. Simplify using `only [mollify, ContinuousLinearMap.lsmul_apply, Complex.real_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mollify_eq_convolution (n : ℕ) (t : ℝ) (u : V n → ℂ) :
     mollify n t u = (moll n t) ⋆[ContinuousLinearMap.lsmul ℝ ℝ, volume] u := by
@@ -16,19 +16,17 @@ theorem mollify_eq_convolution (n : ℕ) (t : ℝ) (u : V n → ℂ) :
   simp only [mollify, ContinuousLinearMap.lsmul_apply, Complex.real_smul]
 
 /- English proof (translation)
-Introduce `n Ω f hΩ hf x₀ hx₀`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hΩ x₀ hx₀`. Use `set r := ε / 4 with hr`. Establish `hr0 : 0 < r` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : closedBall x₀ (3 * r) ⊆ Ω` using `(Metric.closedBall_subset_ball (by linarith)).trans hball`. Use `set g := (closedBall x₀ (3 * r)).indicator f with hg`. Establish `hgi : Integrable g`. Rewrite using `[hg, integrable_indicator_iff measurableSet_closedBall]`. Conclude with `(hf.continuousOn.mono hsub).integrableOn_compact (isCompact_closedBall x₀ (3 * r))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hconv : ContDiff ℝ ∞ (mollify n r g)`. Rewrite using `[mollify_eq_convolution]`. Conclude with `(moll_hasCompactSupport n hr0).contDiff_convolution_left (ContinuousLinearMap.lsmul ℝ ℝ) (moll_contDiff n r) hgi.locallyIntegrable`. Establish `heq : f =ᶠ[𝓝 x₀] mollify n r g` using `by filter_upwards [Metric.ball_mem_nhds x₀ hr0] with x hx`. Rewrite `hx` using `[Metric.mem_ball]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hx' : closedBall x r ⊆ Ω`. Use `(Metric.closedBall_subset_closedBall' ?_).trans hsub` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← holo_eq_mollify hr0 (hf.mono hx')]`. Simplify using `only [mollify]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ closedBall x₀ (3 * r)`. Simplify using `[hg, Set.indicator_of_mem hy]`. Establish `h1 : r / 2 < ‖x - y‖`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hy` using `[Metric.mem_closedBall, not_le]`. Establish `h2` using `dist_triangle y x x₀`. Establish `h3 : dist y x = ‖x - y‖` using `by rw [dist_comm, dist_eq_norm]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[hg, moll_eq_zero_of_lt hr0 h1]`.
-
-Conclude with `hconv.contDiffAt.congr_of_eventuallyEq heq`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem holoSmooth : HoloSmoothStatement := by
   intro n Ω f hΩ hf x₀ hx₀
@@ -67,7 +65,7 @@ theorem holoSmooth : HoloSmoothStatement := by
   exact hconv.contDiffAt.congr_of_eventuallyEq heq
 
 /- English proof (translation)
-Conclude with `holoSmooth n Ω f hΩ hf`.
+A detailed English derivation is pending.
 -/
 theorem holo_contDiffOn {n : ℕ} {Ω : Set (EuclideanSpace ℂ (Fin n))}
     {f : EuclideanSpace ℂ (Fin n) → ℂ} (hΩ : IsOpen Ω) (hf : DifferentiableOn ℂ f Ω) :

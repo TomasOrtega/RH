@@ -18,9 +18,9 @@ namespace GlobalTheory.MtIn
 open Formalism.L2.Col
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun g : GL (Fin n) K => (g : Matrix (Fin n) (Fin n) K)) (map_inv (Matrix.GeneralLinearGroup.map f) γE)`. Establish `h1 : ((Matrix.GeneralLinearGroup.map f γE : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = (γE : Matrix (Fin n) (Fin n) E).map f` using `rfl`. Establish `h2 : ((Matrix.GeneralLinearGroup.map f γE⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) = ((γE⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).map f` using `rfl`. Simplify using `only [Matrix.coe_units_inv] at h h2`. Rewrite `h` using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h2]`. Conclude with `h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_inv_mat {E K : Type} [Field E] [Field K] (f : E →+* K) {n : ℕ} (γE : GL (Fin n) E) :
     ((γE : Matrix (Fin n) (Fin n) E).map f)⁻¹ = ((γE : Matrix (Fin n) (Fin n) E)⁻¹).map f := by
@@ -33,7 +33,7 @@ theorem map_inv_mat {E K : Type} [Field E] [Field K] (f : E →+* K) {n : ℕ} (
   exact h.symm
 
 /- English proof (translation)
-Take `⟨hf, κ, hfi, hd, bs, P, hP⟩` from `h`. Use `⟨LinearEquiv.finiteDimensional T, κ, hfi, hd, bs.map T, P, fun γ γ₀ hm => ?_⟩` and prove the remaining obligations. Rewrite using `[← hP γ γ₀ hm]`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, LinearMap.toMatrix_apply, Module.Basis.map_apply, ← hT, Module.Basis.map_repr, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem isAlgWeight_of_equiv {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {W W' : Type}
     [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
@@ -48,17 +48,15 @@ theorem isAlgWeight_of_equiv {L : Type} [Field L] [NumberField L] [IsCMField L] 
     LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `GlobalTheory.CoefReal.exists_scalarExt φ lam c0 h1 h2`. Establish `hint : ∀ (γ : ReciprocityTheory.Aut.GQ L n) (x : VV ℂ lam), T (mtRep emb lam γ x) = ρ γ (T x)`. Introduce `γ x`. Establish `hfam : (fun τ => Formalism.UG.bc φ (invTrK (embGL lab (mtwRat γ)) τ)) = mtwInvTr (mtwEmb emb (mtwRat γ))`. Use function extensionality and compare the values at `τ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Simplify using `[mtwInvTr, mtwEmb, inside₂, invTrK_coe, bc_coe, embGL_coe, ← map_inv, hlab, map_inv_mat]`. Establish `hL : T.toLinearMap ∘ₗ mtRep emb lam γ = ρ γ ∘ₗ T.toLinearMap`. Use `LinearMap.ext_on_range (GlobalTheory.CoefModel.span_mapVV φ lam) fun i => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show T (rhoK lam (mtwInvTr (mtwEmb emb (mtwRat γ))) (GlobalTheory.CoefModel.mapVV φ lam _)) = ρ γ (T _)`. Rewrite using `[← hfam, ← GlobalTheory.CoefModel.mapVV_rhoK, hT, hT]`. Conclude with `h0 γ _`. Conclude with `LinearMap.congr_fun hL x`. Establish `hi : TenIrr emb lam` using `tenIrr_of' highest_weight_fixed_exists highest_weight_fixed_line emb hinj hcm lam`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `alg : Formalism.AUTREP.IsAlgWeight L n ρ` using `isAlgWeight_of_equiv (mtRep emb lam) ρ T hint (mtRep_alg emb lam)`. Establish `irr : ρ.IsIrreducible` using `GlobalTheory.PiIsotypic.isIrreducible_of_linearEquiv (mtRep emb lam) ρ T (fun g v => (hint g v).symm) hi`. Use `⟨alg, irr, fun a τ lam0 hd hw => ?_⟩` and prove the remaining obligations. Take `⟨B, hB0, hB⟩ : ∃ B : W →ₗ[ℂ] a.W →ₗ[ℂ] ℂ, B ≠ 0 ∧ ∀ γ x y, B (ρ γ x) (a.ρ γ y) = B x y` from `hd`. Establish `hd' : ∃ B : VV ℂ lam →ₗ[ℂ] a.W →ₗ[ℂ] ℂ, B ≠ 0 ∧ ∀ γ x y, B (mtRep emb lam γ x) (a.ρ γ y) = B x y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨B ∘ₗ T.toLinearMap, fun h => hB0 (LinearMap.ext fun w => ?_), fun γ x y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `T.surjective w`. Conclude with `LinearMap.congr_fun h x`. Use `show B (T (mtRep emb lam γ x)) (a.ρ γ y) = B (T x) y`. Rewrite using `[hint]`.
-
-Conclude with `hB γ (T x) y`. Conclude with `mtWtOf_hw_dual highest_weight_fixed_exists highest_weight_fixed_line emb hinj hcm lam τ a lam0 hd' hw`.
+A detailed English derivation is pending.
 -/
 theorem exists_weight_of_coefMap {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {ι : Type} [Fintype ι]
     {K : Type} [Field K] (φ : K →+* ℂ) (lab : ι → L →+* K) (emb : ι → L →+* ℂ) (hlab : ∀ τ x, φ (lab τ x) = emb τ x)
@@ -99,7 +97,7 @@ theorem exists_weight_of_coefMap {L : Type} [Field L] [NumberField L] [IsCMField
   exact mtWtOf_hw_dual highest_weight_fixed_exists highest_weight_fixed_line emb hinj hcm lam τ a lam0 hd' hw
 
 /- English proof (translation)
-Introduce `D V P e hR c lam c0 ht`. Conclude with `exists_weight_of_coefMap D.what₂.embLL (labLL D) (tauE D) GlobalTheory.CoefSpace.embLL_labLL (GlobalTheory.StdRat.tauE_injective D) (fun τ τ' h => (GlobalTheory.StdRat.tauE_cm D (tauE D τ')).1 ⟨τ', rfl⟩ ⟨τ, h⟩) lam (wtRep c e) c0 (fun γ v => ht.1 (e γ) (mtwRat γ) ((hR γ).2 _ (con …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem wt_main : ∀ (D : D7) (V : HSp D) (P : principalLevelFrame.RowPsi V V.rank) (e : ReciprocityTheory.Aut.GQ D.host.E V.rank ≃* Formalism.L2.Theta.GQ V), RatIso P e → ∀ (c : CoefA V) (lam : D.what₂.Tau → DomWeight V.rank) (c0 : VV D.what₂.LL lam →ₛₗ[D.what₂.embLL] c.W), Bridge.CoefMapTie V c.coef c0 (rhoVr (labLL D) lam) → ∃ (alg : Formalism.AUTREP.IsAlgWeight D.host.E V.rank (wtRep c e)) (irr : (wtRep c e).IsIrreducible), ∀ (a : NG.AlgWt D.host.E V.rank) (τ : D.what₂.Tau) (lam0 : Fin V.rank → ℤ), NG.AlgWt.IsDual { W := c.W, ρ := wtRep c e, alg := alg, irr := irr } a → a.HWAt (Formalism.L2.embT D τ) lam0 → lam0 = (lam τ).w := by
   intro D V P e hR c lam c0 ht

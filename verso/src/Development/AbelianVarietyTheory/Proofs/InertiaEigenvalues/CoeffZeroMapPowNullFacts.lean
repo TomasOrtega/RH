@@ -8,20 +8,18 @@ namespace GlobalTheory.BSP.TopBasis
 variable {S A ι : Type} [CommRing S] [CommRing A] {s : S →+* A} {I : Ideal S}
 
 /- English proof (translation)
-Rewrite using `[smul_eq_mul, Ideal.mul_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_smul_top_eq {R : Type} [CommRing R] (J : Ideal R) (n : ℕ) :
     (J ^ n • ⊤ : Submodule R R) = J ^ n := by
   rw [smul_eq_mul, Ideal.mul_top]
 
 /- English proof (translation)
-Establish `key : ∀ a : A, tb.c i (a * x) ∈ I ^ n`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨z, hz, rfl⟩` from `hy`. Introduce `a`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_comm, tb.c_mul]`. Conclude with `Ideal.mul_mem_right _ _ hz`. Consider the case `zero => intro a`. Simplify using the standard rewrite rules. Consider the case `add y z _ _ hy hz => intro a`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_add, map_add]`. Conclude with `add_mem (hy a) (hz a)`. Consider the case `smul b y _ hy => intro a`. Rewrite using `[smul_eq_mul, ← mul_assoc]`. Conclude with `hy (a * b)`.
-
-Simplify using `using key 1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem c_mem_of_mem (tb : TopBasis s I ι) (n : ℕ) {x : A} (hx : x ∈ (I ^ n).map s) (i : ι) :
     tb.c i x ∈ I ^ n := by
@@ -38,14 +36,14 @@ theorem c_mem_of_mem (tb : TopBasis s I ι) (n : ℕ) {x : A} (hx : x ∈ (I ^ n
   simpa using key 1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h i => c_mem_of_mem tb n h i, fun h => by simpa using tb.approx x n ∅ (fun i _ => h i)⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_map_pow_iff (tb : TopBasis s I ι) (n : ℕ) (x : A) :
     x ∈ (I ^ n).map s ↔ ∀ i, tb.c i x ∈ I ^ n :=
   ⟨fun h i => c_mem_of_mem tb n h i, fun h => by simpa using tb.approx x n ∅ (fun i _ => h i)⟩
 
 /- English proof (translation)
-Use `tb.complete.toIsHausdorff.haus x fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, sub_zero, pow_smul_top_eq, ← Ideal.map_pow]`. Conclude with `(mem_map_pow_iff tb n x).2 fun i => by rw [h i]; exact zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_c_eq_zero (tb : TopBasis s I ι) (x : A) (h : ∀ i, tb.c i x = 0) : x = 0 := by
   refine tb.complete.toIsHausdorff.haus x fun n => ?_
@@ -53,21 +51,19 @@ theorem eq_zero_of_c_eq_zero (tb : TopBasis s I ι) (x : A) (h : ∀ i, tb.c i x
   exact (mem_map_pow_iff tb n x).2 fun i => by rw [h i]; exact zero_mem _
 
 /- English proof (translation)
-Set `F : ℕ → Finset ι` to `fun n => (ha n).toFinset`. Establish `hF : ∀ n i, i ∉ F n → a i ∈ I ^ n` using `fun n i hi => by`. Simplify `hi` using `[F]`. Establish `hFm : Monotone F`. Introduce `m n hmn i hi`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [F, Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hi ⊢`. Conclude with `fun h => hi (Ideal.pow_le_pow_right hmn h)`. Set `y : ℕ → A` to `fun n => ∑ i ∈ F n, s (a i) * tb.b i`. Establish `hy : ∀ m n, m ≤ n → y n - y m ∈ (I ^ m).map s`. Introduce `m n hmn`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : y n - y m = ∑ i ∈ F n \ F m, s (a i) * tb.b i`. Simplify using `only [y]`. Rewrite using `[← Finset.sum_sdiff (hFm hmn)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.sum_mem _ fun i hi => Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (hF m i (Finset.mem_sdiff.1 hi).2))`. Take `⟨x, hx⟩` from `tb.complete.toIsPrecomplete.prec (f := y) (fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, pow_smul_top_eq, ← Ideal.map_pow, ← neg_sub]`. Conclude with `neg_mem (hy m n hmn))`. Use `⟨x, fun i => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← sub_eq_zero]`. Use `hS.haus _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, sub_zero, pow_smul_top_eq]`. Establish `h1 : tb.c i (x - y n) ∈ I ^ n`. Establish `h` using `hx n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[SModEq.sub_mem, pow_smul_top_eq, ← Ideal.map_pow, ← neg_sub]`. Conclude with `c_mem_of_mem tb n (by simpa using neg_mem h) i`. Establish `h2 : tb.c i (y n) - a i ∈ I ^ n`. Establish `e : tb.c i (y n) = ∑ j ∈ F n, a j * tb.c i (tb.b j)`. Simplify using `only [y, map_sum, tb.c_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Distinguish the cases in `hi : i ∈ F n`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [tb.c_ne i j (Ne.symm hj), mul_zero]) (fun h => (h hi).elim), tb.c_self, mul_one, sub_self]`. Conclude with `zero_mem _`. Rewrite using `[Finset.sum_eq_zero (fun j hj => by rw [tb.c_ne i j (fun h => hi (h ▸ hj)), mul_zero]), zero_sub]`.
-
-Conclude with `neg_mem (hF n i hi)`. Establish `e : tb.c i x - a i = tb.c i (x - y n) + (tb.c i (y n) - a i)` using `by rw [map_sub]; ring`. Rewrite using `[e]`. Conclude with `add_mem h1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coeffs_eq_of_null (tb : TopBasis s I ι) (hS : IsHausdorff I S) (a : ι → S)
     (ha : ∀ n : ℕ, {i | a i ∉ I ^ n}.Finite) : ∃ x, ∀ i, tb.c i x = a i := by
@@ -115,7 +111,7 @@ theorem exists_coeffs_eq_of_null (tb : TopBasis s I ι) (hS : IsHausdorff I S) (
 end GlobalTheory.BSP.TopBasis
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ tb` and use `⟨GlobalTheory.BSP.TopBasis.eq_zero_of_c_eq_zero tb, GlobalTheory.BSP.TopBasis.mem_map_pow_iff tb, fun hS a ha => GlobalTheory.BSP.TopBasis.exists_coeffs_eq_of_null tb hS a ha⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.BSP.TopBasis.coeff_facts : ∀ (S A ι : Type) [CommRing S] [CommRing A] (s : S →+* A) (I : Ideal S)
     (tb : TopBasis s I ι), (∀ x, (∀ i, tb.c i x = 0) → x = 0) ∧ (∀ (n : ℕ) x, x ∈ (I ^ n).map s ↔ ∀ i, tb.c i x ∈ I ^ n) ∧

@@ -21,7 +21,7 @@ def IsSmoothRealFam (u : P → GAd σ J) : Prop :=
 omit [NumberField E] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => map_one _, fun _ _ _ _ => contDiff_const⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSmoothRealFam_one : IsSmoothRealFam fun _ : P => (1 : GAd σ J) :=
   ⟨fun _ => map_one _, fun _ _ _ _ => contDiff_const⟩
@@ -29,7 +29,7 @@ theorem isSmoothRealFam_one : IsSmoothRealFam fun _ : P => (1 : GAd σ J) :=
 omit [NumberField E] in
 
 /- English proof (translation)
-Use `⟨fun t => by rw [map_mul, hu.1, hv.1, one_mul], fun w τ i j => ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, Matrix.mul_apply]`. Conclude with `ContDiff.sum fun k _ => (hu.2 w τ i k).mul (hv.2 w τ k j)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsSmoothRealFam.mul {u v : P → GAd σ J} (hu : IsSmoothRealFam u) (hv : IsSmoothRealFam v) :
     IsSmoothRealFam fun t => u t * v t := by
@@ -40,7 +40,7 @@ theorem IsSmoothRealFam.mul {u v : P → GAd σ J} (hu : IsSmoothRealFam u) (hv 
 omit [NumberField E] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => hu.1 _, fun w τ i j => (hu.2 w τ i j).comp hp⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsSmoothRealFam.comp {Q : Type} [NormedAddCommGroup Q] [NormedSpace ℝ Q] {u : P → GAd σ J}
     (hu : IsSmoothRealFam u) {p : Q → P} (hp : ContDiff ℝ ∞ p) : IsSmoothRealFam fun t => u (p t) :=
@@ -49,7 +49,7 @@ theorem IsSmoothRealFam.comp {Q : Type} [NormedAddCommGroup Q] [NormedSpace ℝ 
 omit [NumberField E] in
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using isSmoothRealFam_one`. Consider the case `succ k ih`. Simplify using `only [List.ofFn_succ, List.prod_cons]`. Conclude with `(hu 0).mul (ih fun i => hu i.succ)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSmoothRealFam_prod {k : ℕ} {u : Fin k → P → GAd σ J} (hu : ∀ i, IsSmoothRealFam (u i)) :
     IsSmoothRealFam fun t => (List.ofFn fun i => u i t).prod := by
@@ -62,7 +62,7 @@ theorem isSmoothRealFam_prod {k : ℕ} {u : Fin k → P → GAd σ J} (hu : ∀ 
 omit [NumberField E] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w τ i j`. Simplify using `only [infCoord, archCoord, matCoord, map_mul, Matrix.mul_apply, projInfArch_projInf]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem infCoord_mul (x : GInf σ J) (y : GAd σ J) : infCoord σ J (x * projInf σ J y) =
     fun w τ i j => ∑ k, infCoord σ J x w τ i k * archMat σ J τ (projArch σ J w y) k j := by
@@ -70,9 +70,9 @@ theorem infCoord_mul (x : GInf σ J) (y : GAd σ J) : infCoord σ J (x * projInf
   simp only [infCoord, archCoord, matCoord, map_mul, Matrix.mul_apply, projInfArch_projInf]
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨a, ⟨-, Φ, hΦ, e⟩, b, -, rfl⟩` from `hf`. Simplify using `only [infFin, map_mul, hu.1, mul_one, e, infCoord_mul]`. Use `(hΦ.comp (contDiff_pi.2 fun w => contDiff_pi.2 fun τ => contDiff_pi.2 fun i => contDiff_pi.2 fun j => ContDiff.sum fun k _ => contDiff_const.mul (hu.2 w τ k j))).mul contDiff_const` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `zero => exact contDiff_const`. Consider the case `add f f' _ _ h h' => exact h.add h'`. Consider the case `smul a f _ h => exact h.const_smul a`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem IsSmoothRealFam.contDiff {u : P → GAd σ J} (hu : IsSmoothRealFam u) {f : GAd σ J → ℂ} (hf : f ∈ CcAd σ J)
     (g : GAd σ J) : ContDiff ℝ ∞ fun t => f (g * u t) := by
@@ -87,11 +87,11 @@ theorem IsSmoothRealFam.contDiff {u : P → GAd σ J} (hu : IsSmoothRealFam u) {
   | smul a f _ h => exact h.const_smul a
 
 /- English proof (translation)
-Take `⟨hs, Φ, hΦ, e⟩` from `ha`. Use `⟨.intro hs fun x hx => ?_, fun y => fderiv ℝ Φ y fun w τ i j => ∑ k, y w τ i k * deriv (fun t => archMat σ J τ (projArch σ J w (u t)) k j) 0, ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : Tendsto (fun t => x * projInf σ J (u t)) (𝓝 0) (𝓝 x)`. Simplify `(continuous_const.mul ((continuous_projInf σ J).comp hc)).tendsto (f := fun t => x * projInf σ J (u t)) 0` using `[h0]`. Rewrite using `[EventuallyEq.deriv_eq (f := fun _ => (0 : ℂ)) (h1.eventually (notMem_tsupport_iff_eventuallyEq.1 hx)), deriv_const]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `(hΦ.fderiv_right (m := ∞) le_rfl).clm_apply ?_` and prove the remaining obligations. Conclude with `contDiff_pi.2 fun w => contDiff_pi.2 fun τ => contDiff_pi.2 fun i => contDiff_pi.2 fun j => ContDiff.sum fun k _ => (contDiff_pi.1 (contDiff_pi.1 (contDiff_pi.1 (contDiff_pi.1 contDiff_id w) τ) i) k).mul contDiff_const`. Establish `h1 : HasDerivAt (fun t => infCoord σ J (x * projInf σ J (u t))) (fun w τ i j => ∑ k, infCoord σ J x w τ i k * deriv (fun t => archMat σ J τ (projArch σ J w (u t)) k j) 0) 0`. Simplify using `only [infCoord_mul]`. Conclude with `hasDerivAt_pi.2 fun w => hasDerivAt_pi.2 fun τ => hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => HasDerivAt.fun_sum fun k _ => ((hu.2 w τ k j).differentiable (by simp) 0).hasDerivAt.const_mul _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `(hΦ.differentiable (by simp) _).hasFDerivAt.comp_hasDerivAt 0 h1`. Simplify using `only [h0, map_one, mul_one] at h2`. Simplify using `only [e]`. Conclude with `h2.deriv`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsSmoothRealFam.deriv_mem_ccInf {u : ℝ → GAd σ J} (hu : IsSmoothRealFam u) (hc : Continuous u)
     (h0 : u 0 = 1) {a : GInf σ J → ℂ} (ha : a ∈ CcInf σ J) :
@@ -118,13 +118,13 @@ theorem IsSmoothRealFam.deriv_mem_ccInf {u : ℝ → GAd σ J} (hu : IsSmoothRea
     exact h2.deriv
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨a, ha, b, hb, rfl⟩` from `hf`. Use `infFin_mem_ccAd (hu.deriv_mem_ccInf hc h0 ha) hb using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [infFin, map_mul, hu.1, mul_one, deriv_mul_const_field]`. Consider the case `zero`. Simplify using `only [Pi.zero_apply, deriv_const]`. Conclude with `(CcAd σ J).zero_mem`. Consider the case `add f f' hf hf' h h'`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `(CcAd σ J).add_mem h h' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Conclude with `deriv_fun_add ((hu.contDiff hf g).differentiable (by simp) 0) ((hu.contDiff hf' g).differentiable (by simp) 0)`. Consider the case `smul c f _ h`. Use `(CcAd σ J).smul_mem c h using 1` and compare the differences between its conclusion and the goal.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `g`. Simplify using `only [Pi.smul_apply, smul_eq_mul, deriv_const_mul_field]`.
+A detailed English derivation is pending.
 -/
 theorem IsSmoothRealFam.deriv_mem_ccAd {u : ℝ → GAd σ J} (hu : IsSmoothRealFam u) (hc : Continuous u)
     (h0 : u 0 = 1) {f : GAd σ J → ℂ} (hf : f ∈ CcAd σ J) :
@@ -148,9 +148,9 @@ theorem IsSmoothRealFam.deriv_mem_ccAd {u : ℝ → GAd σ J} (hu : IsSmoothReal
     simp only [Pi.smul_apply, smul_eq_mul, deriv_const_mul_field]
 
 /- English proof (translation)
-Use `⟨⟨fun t => projFin_embArch σ J w _, fun w' τ' i j => ?_⟩, (continuous_embArch σ J w).comp ((isEmbedding_archMat J h τ).continuous_iff.2 (continuous_pi fun i => continuous_pi fun j => (hx i j).continuous))⟩` and prove the remaining obligations. Distinguish the cases in `e : w' = w`. Substitute `e` using the available equality. Simplify using `only [projArch_embArch_self]`. Break down `infEmb_eq_or_conj h τ τ' with e | e` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify `hx i j` using `only [archMat_apply, e]`. Simplify using `only [archMat_apply, e]`. Conclude with `Complex.conjCLE.contDiff.comp (hx i j)`. Simplify using `only [projArch_embArch_ne σ J e]`. Conclude with `contDiff_const`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSmoothRealFam_embArch (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) {x : P → GArch σ J w}
     (hx : ∀ i j, ContDiff ℝ ∞ fun t => archMat σ J τ (x t) i j) :
@@ -171,7 +171,7 @@ section
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Establish `: CompleteSpace (Matrix (Fin n) (Fin n) ℂ)` using `FiniteDimensional.complete ℝ _`. Establish `h : ContDiff ℝ ∞ (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → _)` using `contDiff_iff_contDiffAt.2 fun A => (NormedSpace.exp_analytic (𝕂 := ℝ) A).contDiffAt`. Conclude with `(LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)).contDiff.comp (h.comp (contDiff_id.smul contDiff_const))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_exp_smul_entry (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     ContDiff ℝ ∞ fun t : ℝ => (NormedSpace.exp (t • X) : Matrix (Fin n) (Fin n) ℂ) i j := by
@@ -194,11 +194,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} {V : HSp D}
 
 /- English proof (translation)
-Use `choose x hx using fun t : ℝ => exists_archEquiv_eq V (embOverOf D τ) rfl (GlobalTheory.SmoothAutCheck.exp_mem_UH (GlobalTheory.SmoothAutCheck.gramAt_unit V τ) hX t)`. Establish `e : oneP θ V τ X = fun t => embArch _ _ _ (x t)` using `funext fun t => by`. Rewrite using `[oneP, ← hx, atTau_archEquiv hθ V _ rfl]`. Establish `h` using `isSmoothRealFam_embArch (isCMExt_host D) (embOverOf D τ) (x := x) fun i j => by`. Simplify using `only [archMat_eq_archEquiv _ (isCMExt_host D), hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `exact contDiff_exp_smul_entry X i j`. Use `⟨e ▸ h.1, e ▸ h.2, ?_⟩` and prove the remaining obligations. Establish `h1` using `atTau_archEquiv hθ V (embOverOf D τ) rfl 1`. Rewrite `h1` using `[map_one, map_one]`. Rewrite using `[oneP, zero_smul, NormedSpace.exp_zero]`.
-
-Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmoothRealFam_oneP (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) :
@@ -217,7 +215,7 @@ theorem isSmoothRealFam_oneP (hθ : IsInfFam θ) {τ : D.what₂.Tau} {X : Matri
   exact h1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ hX g => (isSmoothRealFam_prod fun i => (isSmoothRealFam_oneP hθ (hX i)).1.comp (contDiff_apply ℝ ℝ i)).contDiff hf g, fun _ _ hX => have h := isSmoothRealFam_oneP hθ hX; h.1.deriv_mem_ccAd h.2.1 h.2.2 hf⟩`.
+Supply the required witnesses or components.
 -/
 theorem ccGA_smooth_and_Rder_mem (D : D7) (V : HSp D)
     (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hθ : IsInfFam θ) (f : GA D V → ℂ)

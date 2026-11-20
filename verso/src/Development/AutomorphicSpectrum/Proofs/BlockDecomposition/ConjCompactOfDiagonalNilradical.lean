@@ -13,13 +13,13 @@ def dg {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ :
   Matrix.diagonal (Matrix.diag M)
 
 /- English proof (translation)
-The claim follows from `continuous_id.matrix_diag.matrix_diagonal`.
+A detailed English derivation is pending.
 -/
 theorem continuous_dg {n : ℕ} : Continuous (dg (n := n)) :=
   continuous_id.matrix_diag.matrix_diagonal
 
 /- English proof (translation)
-Unfold `dg`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.diag_apply, Matrix.mul_diagonal, hZ]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dg_one_add_mul {n : ℕ} (Z : Matrix (Fin n) (Fin n) ℂ) (a : Fin n → ℂ)
     (hZ : ∀ i, Z i i = 0) : dg ((1 + Z) * Matrix.diagonal a) = Matrix.diagonal a := by
@@ -29,7 +29,7 @@ theorem dg_one_add_mul {n : ℕ} (Z : Matrix (Fin n) (Fin n) ℂ) (a : Fin n →
   simp [Matrix.diag_apply, Matrix.mul_diagonal, hZ]
 
 /- English proof (translation)
-Unfold `dg`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.diag_apply, Matrix.diagonal_mul, hZ]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem dg_mul_one_add {n : ℕ} (Z : Matrix (Fin n) (Fin n) ℂ) (a : Fin n → ℂ)
     (hZ : ∀ i, Z i i = 0) : dg (Matrix.diagonal a * (1 + Z)) = Matrix.diagonal a := by
@@ -39,9 +39,9 @@ theorem dg_mul_one_add {n : ℕ} (Z : Matrix (Fin n) (Fin n) ℂ) (a : Fin n →
   simp [Matrix.diag_apply, Matrix.diagonal_mul, hZ]
 
 /- English proof (translation)
-Establish `h` using `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin n) (Fin n) ℂ)).isCompact_preimage (h₁.prod (h₂.image MulOpposite.continuous_op))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, h'⟩`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h, ⟨_, h', rfl⟩⟩`. Introduce and unpack `⟨h, ⟨x, hx, e⟩⟩`. Establish `e' : x = (u⁻¹ : GL (Fin n) ℂ).val` using `MulOpposite.op_injective e`. Conclude with `⟨h, e' ▸ hx⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isCompact_units {n : ℕ} {B₁ B₂ : Set (Matrix (Fin n) (Fin n) ℂ)}
     (h₁ : IsCompact B₁) (h₂ : IsCompact B₂) :
@@ -59,7 +59,7 @@ theorem isCompact_units {n : ℕ} {B₁ B₂ : Set (Matrix (Fin n) (Fin n) ℂ)}
     exact ⟨h, e' ▸ hx⟩
 
 /- English proof (translation)
-Establish `h1 : (P⁻¹ : GL (Fin n) ℂ).val * P.val = 1` using `by rw [← Units.val_mul]; simp`. Simplify using `only [uOf_val, Units.val_mul, mul_add, add_mul, mul_one, h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem conj_uOf_val {n : ℕ} {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (P : GL (Fin n) ℂ)
     (X : nilrad W₁ W₂) :
@@ -68,17 +68,15 @@ theorem conj_uOf_val {n : ℕ} {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (P : 
   simp only [uOf_val, Units.val_mul, mul_add, add_mul, mul_one, h1]
 
 /- English proof (translation)
-Introduce `n _ _ d μd _ W₁ W₂ P hW hdiag hzero C hC g`. Set `D₁ : GL (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ` to `fun c => dg (P⁻¹ * (c * g⁻¹) * P).val`. Set `D₂ : GL (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ` to `fun c => dg (P⁻¹ * (g * c⁻¹) * P).val`. Establish `hD₁ : Continuous D₁` using `continuous_dg.comp (Units.continuous_val.comp ((continuous_const.mul (continuous_id.mul continuous_const)).mul continuous_const))`. Establish `hD₂ : Continuous D₂` using `continuous_dg.comp (Units.continuous_val.comp ((continuous_const.mul (continuous_const.mul continuous_inv)).mul continuous_const))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK` using `isCompact_units (hC.image hD₁) (hC.image hD₂)`. Establish `hK'` using `hK.image (f := fun u : GL (Fin n) ℂ => P * u * P⁻¹) ((continuous_const.mul continuous_id).mul continuous_const)`. Establish `hKT` using `(isClosed_twCent d).isClosedEmbedding_subtypeVal.isCompact_preimage hK'`. Use `ne_of_lt (lt_of_le_of_lt (measure_mono ?_) hKT.measure_lt_top)` and prove the remaining obligations. Introduce and unpack `⟨t, ht⟩ ⟨X, c, hc, hX⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Express the relevant statement in the definitionally equal form `uOf X * c = t * g at hX`. Take `⟨a, ha⟩` from `hdiag t ht`. Take `⟨b, hb⟩` from `hdiag t⁻¹ ((twCent (thC n) d).inv_mem ht)`. Establish `hcX : c = (uOf X)⁻¹ * (t * g)` using `eq_inv_mul_of_mul_eq hX`. Establish `e₁ : P⁻¹ * (c * g⁻¹) * P = (P⁻¹ * uOf (ninv hW X) * P) * (P⁻¹ * t * P)`.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[uOf_ninv, hcX]`. Use `group`. Establish `e₂ : P⁻¹ * (g * c⁻¹) * P = (P⁻¹ * t⁻¹ * P) * (P⁻¹ * uOf X * P)`. Rewrite using `[hcX]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₃ : (P⁻¹ * t * P)⁻¹ = P⁻¹ * t⁻¹ * P` using `by group`. Use `⟨P⁻¹ * t * P, ⟨⟨c, hc, ?_⟩, ⟨c, hc, ?_⟩⟩, by group⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `dg (P⁻¹ * (c * g⁻¹) * P).val = _`. Rewrite using `[e₁, Units.val_mul, conj_uOf_val, ha]`. Conclude with `dg_one_add_mul _ _ (hzero _ (ninv hW X).2)`.
-
-Express the relevant statement in the definitionally equal form `dg (P⁻¹ * (g * c⁻¹) * P).val = _`. Rewrite using `[e₂, e₃, Units.val_mul, conj_uOf_val, hb]`. Conclude with `dg_mul_one_add _ _ (hzero _ X.2)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice_measure_ne_top : ∀ (n : ℕ) [MeasurableSpace (GL (Fin n) ℂ)] [BorelSpace (GL (Fin n) ℂ)] (d : GL (Fin n) ℂ)
   (μd : Measure (twCent (thC n) d)) [μd.IsHaarMeasure] (W₁ W₂ : Submodule ℂ (Fin n → ℂ))

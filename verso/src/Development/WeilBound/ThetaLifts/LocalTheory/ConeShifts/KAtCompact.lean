@@ -18,20 +18,20 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 attribute [local instance] PositivityTheory.ThK.kc_ring PositivityTheory.ThK.adele_t2Space PositivityTheory.ThK.kc_smul
 
 /- English proof (translation)
-Use `PositivityTheory.ThK.Vac.liftV_mul v 1 (idem F v)` as an intermediate fact. Rewrite `this` using `[evFin_idem, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem idem_sq (v : Pl F) : idem F v * idem F v = idem F v := by
   have := PositivityTheory.ThK.Vac.liftV_mul v 1 (idem F v)
   rwa [evFin_idem, mul_one] at this
 
 /- English proof (translation)
-Rewrite using `[wt, norm_mul, Circle.norm_coe, one_mul, norm_pow, Complex.norm_real, Real.norm_of_nonneg NNReal.zero_le_coe]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_wt (ν : Chr F E) (z : ℕ) (l : (AE F E)ˣ) : ‖wt ν z l‖ = (absE F E l : ℝ) ^ z := by
   rw [wt, norm_mul, Circle.norm_coe, one_mul, norm_pow, Complex.norm_real, Real.norm_of_nonneg NNReal.zero_le_coe]
 
 /- English proof (translation)
-The claim follows from `(continuous_subtype_val.comp hν).mul ((Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp GlobalTheory.Doubling.continuous_absE)).pow z)`.
+A detailed English derivation is pending.
 -/
 theorem cont_wt {ν : Chr F E} (hν : Continuous ν) (z : ℕ) : Continuous (wt ν z) :=
   (continuous_subtype_val.comp hν).mul
@@ -52,21 +52,21 @@ def uSub (v : Pl F) : Subgroup (UA σ X.J) where
     rw [e, smul_neg, ← Matrix.mul_smul, ha u hu, Matrix.mul_zero, neg_zero]
 
 /- English proof (translation)
-The claim follows from `congrArg (K ⊓ ·) (Subgroup.closure_eq (uSub σ X v))`.
+A detailed English derivation is pending.
 -/
 theorem kAt_eq (K : Subgroup (UA σ X.J)) (v : Pl F) : kAt K (evFin F v) = K ⊓ uSub σ X v :=
   congrArg (K ⊓ ·) (Subgroup.closure_eq (uSub σ X v))
 
 /- English proof (translation)
-The claim follows from `((kAt_eq K v).le k.2).2`.
+A detailed English derivation is pending.
 -/
 theorem kAt_mem {K : Subgroup (UA σ X.J)} {v : Pl F} (k : kAt K (evFin F v)) : k.1 ∈ UAt σ X (evFin F v) :=
   ((kAt_eq K v).le k.2).2
 
 /- English proof (translation)
-Use `isCompact_iff_compactSpace.1 ?_` and prove the remaining obligations. Rewrite using `[kAt_eq, Subgroup.coe_inf]`. Use `hK.inter_right ?_` and prove the remaining obligations. Establish `: (uSub σ X v : Set (UA σ X.J)) = ⋂ u : AF F, ⋂ _ : evFin F v u = 0, {g | u • (mat g - 1) = 0}`. Use extensionality with `g`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_iInter]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `isClosed_iInter fun u => isClosed_iInter fun _ => isClosed_eq (((PositivityTheory.ThK.kc_cont_mat X.J).sub continuous_const).const_smul u) continuous_const`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kAt_compact {K : Subgroup (UA σ X.J)} (hK : IsCompact (K : Set (UA σ X.J))) (v : Pl F) : CompactSpace (kAt K (evFin F v)) := by
   refine isCompact_iff_compactSpace.1 ?_
@@ -79,29 +79,27 @@ theorem kAt_compact {K : Subgroup (UA σ X.J)} (hK : IsCompact (K : Set (UA σ X
     isClosed_eq (((PositivityTheory.ThK.kc_cont_mat X.J).sub continuous_const).const_smul u) continuous_const
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (idAt E (evFin F v)) := borel _`. Use `haveI : BorelSpace (idAt E (evFin F v)) := ⟨rfl⟩`. Use `haveI := (hm.xf v).1`. Take `⟨V₀, V₁, c, hu, -, -, hinv, hcomp⟩` from `dirs hc`. Take `⟨r, s, hX⟩` from `hc.herm`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r', s', hW⟩` from `hc.skew`. Take `⟨i, j, hH⟩` from `hc.hH`. Take `⟨i', j', hH'⟩` from `hc.hH'`. Take `⟨𝔞, h𝔞, hin⟩` from `hJ F E σ B n d n₁ d₁ X W X₁ W₁ H H' r s r' s' i j i' j' hc.base hX hW hH hH' u (hc.ev.imp And.right And.right)`. Take `⟨-, -, μ, -, -, -, hμ⟩` from `hS F E σ B n X r s hc.base hX`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨πi, π, κ, -, hπ, hF⟩` from `hI F E σ B n X K m μ hc.base hm hμ 𝔞 z h𝔞 hz`. Establish `hint` using `((hF 1 ∅ ∅ continuous_const (Finset.Subset.refl _) (fun w _ x _ => map_one Circle.toUnits) (fun w hw => absurd hw (Finset.notMem_empty _))).1 v (Finset.notMem_empty v)).2`. Take `⟨N, hN, hfix⟩` from `exists_level hc.base hX hW M v hφ`. Take `⟨C, hC, hCΓ⟩` from `lat_compact hX hW M v`. Set `g : (Fin n × Fin d → Fv F v) × (Fin n × Fin d → Fv F v) → Fl F v n₁ d₁` to `fun w => ev v (schr (psiAt B.ψ v) w φ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : IsLocallyConstant g` using `(schr_lc (psi_lc hc.base v) fun w => rv_sb hc.base M v w hφ).comp (ev v)`. Establish `e1 : ∀ l : (AE F E)ˣ, locCo M.co v (idem F v • u l) = locCo M.co v (c l.1 • V₀)` using `fun l => by`. Rewrite using `[locCo_smul, evFin_idem, one_smul, hu]`. Establish `hG : IsLocallyConstant fun l : idAt E (evFin F v) => ev v (rv B M v (idem F v • u l.1) φ)`. Simplify using `only [rv, e1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hg.comp_continuous ((cont_loc M v c V₀).comp (Units.continuous_val.comp continuous_subtype_val))`. Establish `hk : ∀ l : (AE F E)ˣ, ev v (rv B M v (idem F v • u l) φ) ≠ 0 → (N : AF F) • idem F v • u l ∈ latAtV X W v` using `fun l hl => by`. Establish `e2 : idem F v • u l = (idem F v • c l.1) • V₀` using `by rw [hu, smul_assoc]`. Rewrite `hl`, the goal using `[e2]`. Conclude with `key hc h hinv (hcomp v) hφ N (fun t ht => hfix _ ht) _ (e2 ▸ at_idem v _) hl`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hN' : (N : Fv F v) ≠ 0` using `by haveI : CharZero (Fv F v) := algebraRat.charZero _`. Conclude with `Nat.cast_ne_zero.2 hN`. Use `int_fin (m.xf v) (fun l => ev v (rv B M v (idem F v • u l.1) φ)) (fun l => wt ν z l.1) ?_ (fun a => (hG.isOpen_fiber a).measurableSet) {l | ev v (rv B M v (idem F v • u l.1) φ) ≠ 0} (fun a ha => not_not.1 ha) ?_ _ fun l => (h.vac v).2 ▸ Submodule.mem_map_of_mem (rv_sb hc.base M v …` and prove the remaining obligations. Use `haveI := isCompact_iff_compactSpace.1 hC`. Establish `hf` using `(hg.comp_continuous ((continuous_subtype_val (p := (· ∈ C))).const_smul (N : Fv F v)⁻¹)).range_finite`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `(hf.insert 0).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, rfl⟩`. Distinguish the cases in `h0 : ev v (rv B M v (idem F v • u l.1) φ) = 0`. Conclude with `Or.inl h0`. Use `Or.inr ⟨⟨_, hCΓ _ (hk _ h0)⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `g ((N : Fv F v)⁻¹ • locCo M.co v ((N : AF F) • idem F v • u l.1)) = _`. Rewrite using `[locCo_smul M v (N : AF F), map_natCast, inv_smul_smul₀ hN']`. Establish `hNE : (N : E) ≠ 0` using `Nat.cast_ne_zero.2 hN`. Set `lN : (AE F E)ˣ` to `Units.map (inclR (F := F) (AF F)).toMonoidHom (Units.mk0 (N : E) hNE)`. Set `l₀` to `π v lN`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hl₀ : (l₀.1 : AE F E) = idem F v • (N : AE F E) + (1 - idem F v) • (1 : AE F E)`. Use `(hπ lN).2 v` as an intermediate fact. Rewrite `this` using `[IsPart, show (lN : AE F E) = (N : AE F E) from map_natCast (inclR (F := F) (AF F)) N]`. Conclude with `this`. Establish `e3 : ∀ l : idAt E (evFin F v), idem F v • u (l₀ * l).1 = (N : AF F) • idem F v • u l.1` using `fun l => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hu, hu, ← smul_assoc, ← smul_assoc, ← smul_assoc]`. Use `congr 1`. Establish `q : algebraMap (AF F) (AE F E) (idem F v) * algebraMap (AF F) (AE F E) (idem F v) = algebraMap (AF F) (AE F E) (idem F v)` using `by rw [← map_mul, idem_sq]`. Rewrite using `[Subgroup.coe_mul, Units.val_mul, map_mul, hl₀, map_add, map_smul, map_smul, map_natCast, map_one]`. Simplify using `only [Algebra.smul_def, smul_eq_mul, map_mul, map_sub, map_one, map_natCast, Algebra.algebraMap_self, RingHom.id_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take the linear combination `((N : AE F E) * c l.1.1 - c l.1.1) * q`. Establish `h0 : (0 : ℝ) < absE F E l₀.1`. Use `lt_of_le_of_ne NNReal.zero_le_coe fun e => ?_` and prove the remaining obligations. Establish `: absE F E l₀.1 * absE F E l₀.1⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Rewrite `this` using `[show absE F E l₀.1 = 0 from NNReal.coe_eq_zero.1 e.symm, zero_mul]`.
-
-Conclude with `zero_ne_one this`. Use `Integrable.mono' (((hint.comp_mul_left l₀).norm.const_mul (((absE F E l₀.1 : ℝ) ^ z)⁻¹)).integrableOn) ((cont_wt hν z).comp continuous_subtype_val).aestronglyMeasurable (ae_restrict_of_forall_mem (hG.isClosed_fiber 0).measurableSet.compl fun l hl => ?_)` and prove the remaining obligations. Use `(hin v (l₀ * l).1).1 (e3 l ▸ hk _ hl)` as an intermediate fact. Rewrite using `[if_pos this, one_mul, norm_wt, norm_wt, Subgroup.coe_mul, map_mul, NNReal.coe_mul, mul_pow, inv_mul_cancel_left₀ (pow_pos h0 z).ne']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tate (hI : IdeleFub) (hJ : IdealId0) (hS : StabEx) {B : Base F E} {M : Model σ X W} {M₁ : Model σ X₁ W₁}
     {H : Plane E n n₁} {H' : Plane E d d₁} {e u ei ev} (hc : Cfg B M M₁ H H' e u) (h : IsEvLoc M M₁ e ei ev) (v : Pl F)
@@ -179,31 +177,27 @@ theorem tate (hI : IdeleFub) (hJ : IdealId0) (hS : StabEx) {B : Base F E} {M : M
       inv_mul_cancel_left₀ (pow_pos h0 z).ne']
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₁ H H' e u ei ev hc h v`. Take `⟨V₀, V₁, c, hu, h00, h11, hinv, hcomp⟩` from `dirs hc`. Establish `hv` using `(hc.good.vac v).1`. Establish `e2 : ∀ l, idem F v • u l = (idem F v • c l.1) • V₀` using `fun l => by rw [hu, smul_assoc]`. Establish `c2 : ∀ l, idem F v • u l ∈ latAtV X W v → Acts (evFin F v) (M.co.rho B.ψ (idem F v • u l)) (M.vac v) (M.vac v)` using `fun l hl => vac_fix hc.good hl (by rw [e2, hh_smul, h00, mul_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun l => ?_, c2, fun K m hK hm χX χW om r s r' s' hP ν z hν hz => ?_⟩` and prove the remaining obligations. Use `split_ifs with hl`. Rewrite using `[opF_eq hv hv (c2 l hl), (h.vac v).1]`. Rewrite using `[opF_eq hv (rv_sb hc.base M v _ hv) (rv_acts B M (at_idem v _) _)]`. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hne`, `hl` using `[e2]`. Use `key hc h hinv (hcomp v) hv 1 (fun t ht => by` as an intermediate fact. Rewrite using `[one_smul]`. Conclude with `acts_uniq hv (rv_acts B M ((latAtV_at_stable X W v).1 _ ht) _) (vac_fix hc.good ht (by rw [hh_smul, h11, mul_zero]))) _ (e2 l ▸ at_idem v _) hne`. Rewrite `this` using `[one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hl this`. Take `⟨ω, ρ, L⟩` from `PositivityTheory.ThKH.Locrep.locRepEx F E σ n d B X W M om ⟨hP.base, ⟨r, s, hP.herm⟩, ⟨r', s', hP.skew⟩, hP.good, χX, χW, hP.weil⟩ v`. Take `⟨K', -, -, hK', hKc, -⟩` from `hS F E σ B n X r s hP.base hP.herm`. Take `rfl : K = K'` from `Subgroup.ext fun g => (hK g).trans (hK' g).symm`. Use `haveI := kAt_compact hKc v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Use `haveI : IsProbabilityMeasure (m.kf v) := ⟨(hm.kf v).2⟩`. Establish `o1 : (1 : UA σ W.J) ∈ UAt σ W (evFin F v)` using `(uSub σ W v).one_mem`. Establish `sb : ∀ k : kAt K (evFin F v), ∀ φ ∈ SB _, ω (k.1, 1) φ ∈ SB _` using `fun k φ hφ => L.pres _ (kAt_mem k) _ o1 φ hφ`. Establish `op : ∀ (k : kAt K (evFin F v)) (l : (AE F E)ˣ), ∀ φ ∈ SB _, opF v (fun Φ => M.co.rho B.ψ (idem F v • u l) (om (k.1, 1) Φ)) φ = rv B M v (idem F v • u l) (ω (k.1, 1) φ)` using `fun k l φ hφ => opF_eq hφ (rv_sb hc.base M v _ (sb k φ hφ)) (acts_comp ((IsUWeilPair.isUSplitting hP.weil).pres _) ((L.acts _ (kAt_mem k) _ o1 φ hφ _).2 rfl) (rv_acts B M (at_idem v _) _))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `A : Fl F v n d → Fl F v n₁ d₁` to `fun φ y => @integral _ _ _ _ (borel _) (m.xf v) fun l => ev v (rv B M v (idem F v • u l.1) φ) y * wt ν z l.1`. Establish `hA` using `fun φ (hφ : φ ∈ SB _) => tate hI hJ hS hc h v m hm hν hz (φ := φ) hφ`. Establish `lc : ∀ φ ∈ SB _, IsLocallyConstant fun k : kAt K (evFin F v) => ω (k.1, 1) φ` using `fun φ hφ => by`. Use `(IsLocallyConstant.iff_eventually_eq _).2 fun k₀ => ?_` and prove the remaining obligations. Take `⟨U, hU, hU'⟩` from `(PositivityTheory.ThKF0.actsEx F E σ B n d X W M χX χW om r s r' s' hP v).2.2 _ (sb k₀ φ hφ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `t : Tendsto (fun k : kAt K (evFin F v) => (((k * k₀⁻¹).1, 1) : UA σ X.J × UA σ W.J)) (𝓝 k₀) (𝓝 1)`. Establish `: Continuous fun k : kAt K (evFin F v) => (((k * k₀⁻¹).1, 1) : UA σ X.J × UA σ W.J)` using `(continuous_subtype_val.comp (continuous_mul_const k₀⁻¹)).prodMk continuous_const`. Use `this.tendsto k₀` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel]`. Then use the resulting hypothesis. Use `filter_upwards [t.eventually hU] with k hk`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `(L.acts _ (kAt_mem (k * k₀⁻¹)) _ o1 _ (sb k₀ φ hφ) _).1 (hU' _ hk (kAt_mem (k * k₀⁻¹)) o1)`. Rewrite `h1` using `[← L.mul _ (kAt_mem (k * k₀⁻¹)) _ o1 _ (kAt_mem k₀) _ o1 φ hφ, mul_one, ← Subgroup.coe_mul, inv_mul_cancel_right]`. Conclude with `h1.symm`. Establish `hk : ∀ φ ∈ SB _, (∀ y, Integrable (fun k : kAt K (evFin F v) => A (ω (k.1, 1) φ) y * 1) (m.kf v)) ∧ (fun y => ∫ k : kAt K (evFin F v), A (ω (k.1, 1) φ) y * 1 ∂(m.kf v)) ∈ SB _` using `fun φ hφ => int_fin (m.kf v) (fun k => A (ω (k.1, 1) φ)) (fun _ => 1) ((lc φ hφ).comp A).range_finite (fun a => (((lc φ hφ).comp A).isOpen_fiber a).measurableSet) Set.univ (fun a ha => absurd trivial ha) (integrable_const _).integrableOn _ fun k => (hA _ (sb k φ hφ)).2`. Simplify using `only [mul_one] at hk`.
+Equip the data with the indicated structure. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ce : ∀ φ ∈ SB _, coneF B M om m v (ev v) u ν z φ = fun y => ∫ k : kAt K (evFin F v), A (ω (k.1, 1) φ) y ∂(m.kf v)` using `fun φ hφ => funext fun y => by`. Simplify using `only [coneF, op _ _ φ hφ, A, wt, mul_assoc]`. Establish `Al : ∀ φ ∈ SB _, ∀ φ' ∈ SB _, ∀ (a : ℂ) y, A (φ + a • φ') y = A φ y + a * A φ' y` using `fun φ hφ φ' hφ' a y => by`. Use `letI : MeasurableSpace (idAt E (evFin F v)) := borel _`. Simplify using `only [A, rv, schr_lin, map_add, map_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul, add_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[integral_add ((hA φ hφ).1 y) (((hA φ' hφ').1 y).const_mul a), integral_const_mul]`. Establish `cl : ∀ φ ∈ SB _, ∀ φ' ∈ SB _, ∀ a : ℂ, coneF B M om m v (ev v) u ν z (φ + a • φ') = coneF B M om m v (ev v) u ν z φ + a • coneF B M om m v (ev v) u ν z φ'` using `fun φ hφ φ' hφ' a => by`. Rewrite using `[ce _ hφ, ce _ hφ', ce _ (add_mem hφ (Submodule.smul_mem _ a hφ'))]`. Use function extensionality and compare the values at `y`. Simplify using `only [map_add, map_smul, Al _ (sb _ φ hφ) _ (sb _ φ' hφ'), Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[integral_add ((hk φ hφ).1 y) (((hk φ' hφ').1 y).const_mul a), integral_const_mul]`. Establish `c0 : coneF B M om m v (ev v) u ν z 0 = 0`. Use `cl 0 (zero_mem _) 0 (zero_mem _) 1` as an intermediate fact. Rewrite `this` using `[one_smul, one_smul, add_zero]`. Conclude with `left_eq_add.1 this`.
-
-Set `Λ₀ : SB (Fin n × Fin d → Fv F v) →ₗ[ℂ] Fl F v n₁ d₁` to `{ toFun := fun φ => coneF B M om m v (ev v) u ν z φ.1 map_add' := fun φ φ' => by simpa using cl _ φ.2 _ φ'.2 1 map_smul' := fun a φ => by simpa [c0] using cl 0 (zero_mem _) _ φ.2 a }`. Take `⟨Λ, hΛ⟩` from `Λ₀.exists_extend`. Use `⟨Λ, fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `eΛ : Λ φ = coneF B M om m v (ev v) u ν z φ` using `LinearMap.congr_fun hΛ ⟨φ, hφ⟩`. Use `⟨eΛ, by rw [eΛ, ce φ hφ]; exact (hk φ hφ).2, fun y => ⟨fun k => ?_, ?_⟩⟩` and prove the remaining obligations.
-
-Simplify using `only [op _ _ φ hφ]`. Conclude with `(hA _ (sb k φ hφ)).1 y`. Simplify using `only [op _ _ φ hφ]`. Conclude with `(hk φ hφ).1 y`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finCone2_of (hI : IdeleFub) (hJ : IdealId0) (hS : StabEx) : FinCone2 := by
   intro F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₁ H H' e u ei ev hc h v

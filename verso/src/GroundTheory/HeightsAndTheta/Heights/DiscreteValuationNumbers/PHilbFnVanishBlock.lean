@@ -9,9 +9,9 @@ open MvPolynomial
 universe u
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `h0 : Finsupp.weight (blockWeight ι) d k = 0`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply]`. Use `Finset.sum_eq_zero fun v hv => ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hv1 : v.1 ≠ k` using `fun e => (Finsupp.mem_support_iff.mp hv) (hne v e)`. Simplify using `[blockWeight, hv1]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_block_var_of_weight_pos {K : Type} [DecidableEq K] {ι : K → Type}
     (d : (Σ k, ι k) →₀ ℕ) (k : K) (h : 1 ≤ Finsupp.weight (blockWeight ι) d k) :
@@ -26,11 +26,11 @@ theorem exists_block_var_of_weight_pos {K : Type} [DecidableEq K] {ι : K → Ty
   omega
 
 /- English proof (translation)
-Establish `hspan : Ideal.span ((X : (Σ k, ι k) → MRing ι F) '' {v | v.1 = k}) ≤ Q`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨⟨k', i⟩, hv, rfl⟩`. Simplify using `only [Set.mem_ofPred_eq] at hv`. Substitute `hv` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Conclude with `hX i`. Apply `hspan` to reduce the goal to its premises. Rewrite using `[mem_ideal_span_X_image]`. Introduce `d hd`. Rewrite `hf` using `[mem_weightedHomogeneousSubmodule]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hw : Finsupp.weight (blockWeight ι) d = m` using `hf (Finsupp.mem_support_iff.mp hd)`. Take `⟨v, hv, hdv⟩` from `exists_block_var_of_weight_pos d k (by rw [hw]; exact hm)`. Conclude with `⟨v, hv, hdv⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_of_block_vars_mem {F : Type u} [Field F] {K : Type} [DecidableEq K] {ι : K → Type}
     (Q : Ideal (MRing ι F)) (k : K) (hX : ∀ i, (X ⟨k, i⟩ : MRing ι F) ∈ Q) (m : K → ℕ)
@@ -51,11 +51,11 @@ theorem mem_of_block_vars_mem {F : Type u} [Field F] {K : Type} [DecidableEq K] 
   exact ⟨v, hv, hdv⟩
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ Q k hX m hm`. Unfold `hilbFn`. Use `split_ifs with h`. Establish `hbot : gradedPiece Q (fun k => (m k).toNat) = ⊥`. Rewrite using `[Submodule.eq_bot_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.mp hx`. Establish `hfQ : f ∈ Q` using `mem_of_block_vars_mem Q k hX _ (by omega) f hf`. Simplify using `using (Ideal.Quotient.eq_zero_iff_mem).mpr hfQ`. Rewrite using `[hbot, finrank_bot]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem HilbFnVanishBlock.proof : HilbFnVanishBlock.Statement.{u} := by
   intro F _ K _ _ ι _ Q k hX m hm

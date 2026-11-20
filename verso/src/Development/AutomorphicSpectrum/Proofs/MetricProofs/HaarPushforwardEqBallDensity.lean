@@ -37,29 +37,27 @@ def translHomeo {π : G → X} (hs : Function.Surjective π) {T : G → X → X}
   continuous_invFun := hT a⁻¹
 
 /- English proof (translation)
-Establish `key : ∀ W ∈ 𝓝 (1 : G), π '' W ∈ 𝓝 (π 1)`. Introduce `W hW`. Choose the witnesses or unpack the hypotheses as in `⟨W', hW', hWW⟩ : ∃ V ∈ 𝓝 (1 : G), ∀ v ∈ V, ∀ w ∈ V, v⁻¹ * w ∈ W := by`. Establish `hcont : ContinuousAt (fun p : G × G => p.1⁻¹ * p.2) ((1 : G), (1 : G))` using `by fun_prop`. Establish `h1 : (fun p : G × G => p.1⁻¹ * p.2) ⁻¹' W ∈ 𝓝 ((1 : G), (1 : G))` using `hcont (by simpa using hW)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[nhds_prod_eq]`. Take `⟨A, hA, B, hB, hAB⟩` from `Filter.mem_prod_iff.mp h1`. Conclude with `⟨A ∩ B, inter_mem hA hB, fun v hv w hw => hAB (Set.mk_mem_prod hv.1 hw.2)⟩`. Take `⟨V, hV, hVW, hVc⟩` from `local_compact_nhds hW'`. Establish `hnb : ∀ x : G, (fun y => x * y) '' V ∈ 𝓝 x`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x`. Use `(Homeomorph.mulLeft x).isOpenMap.image_mem_nhds hV` as an intermediate fact. Simplify using `using this`. Take `⟨s, hsc, hsu⟩` from `TopologicalSpace.countable_cover_nhds hnb`. Establish `hcl : ∀ g : s, IsClosed (π '' ((fun y => (g : G) * y) '' V))` using `fun g => ((hVc.image (continuous_const.mul continuous_id)).image hc).isClosed`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU : ⋃ g : s, π '' ((fun y => (g : G) * y) '' V) = Set.univ`. Rewrite using `[Set.eq_univ_iff_forall]`. Introduce `x`. Take `⟨b, rfl⟩` from `hs x`. Establish `: b ∈ ⋃ x ∈ s, (fun y => x * y) '' V` using `hsu ▸ Set.mem_univ b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_iUnion] at this ⊢`. Take `⟨g, hg, hb⟩` from `this`. Conclude with `⟨⟨g, hg⟩, b, hb, rfl⟩`. Use `haveI : Countable s := hsc.to_subtype`. Use `haveI : Nonempty X := ⟨π 1⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `nonempty_interior_of_iUnion_of_closed hcl hU`. Take `⟨y, hy⟩` from `hg`. Take `⟨_, ⟨v, hv, rfl⟩, rfl⟩` from `interior_subset hy`. Use `set c : G := (g : G) * v with hcdef`. Establish `hnb2 : π '' ((fun y => (g : G) * y) '' V) ∈ 𝓝 (π c)` using `mem_interior_iff_mem_nhds.mp hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `(translHomeo hs hT hπ c⁻¹).isOpenMap.image_mem_nhds hnb2`. Establish `h4 : (translHomeo hs hT hπ c⁻¹) (π c) = π 1` using `by show T c⁻¹ (π c) = π 1`. Rewrite using `[← hπ, inv_mul_cancel]`. Rewrite `h3` using `[h4]`. Use `Filter.mem_of_superset h3 ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨_, ⟨_, ⟨w, hw, rfl⟩, rfl⟩, rfl⟩`. Use `⟨v⁻¹ * w, hWW v (hVW hv) w (hVW hw), ?_⟩` and prove the remaining obligations. Use `show π (v⁻¹ * w) = T c⁻¹ (π ((g : G) * w))`. Rewrite using `[← hπ]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `[hcdef, mul_assoc]`. Introduce `U hU`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `_ ⟨b, hb, rfl⟩`. Establish `h1 : (fun y => b⁻¹ * y) '' U ∈ 𝓝 (1 : G)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Homeomorph.mulLeft b⁻¹).isOpenMap.image_mem_nhds (hU.mem_nhds hb)` as an intermediate fact. Simplify using `using this`. Establish `h2` using `(translHomeo hs hT hπ b).isOpenMap.image_mem_nhds (key _ h1)`. Establish `h3 : (translHomeo hs hT hπ b) (π 1) = π b` using `by show T b (π 1) = π b`. Rewrite using `[← hπ, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[h3]`. Use `Filter.mem_of_superset h2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨_, ⟨u, hu, rfl⟩, rfl⟩, rfl⟩`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Use `show π u = T b (π (b⁻¹ * u))`.
-
-Rewrite using `[← hπ, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpenMap_orbit {π : G → X} (hc : Continuous π) (hs : Function.Surjective π) {T : G → X → X}
     (hT : ∀ a, Continuous (T a)) (hπ : ∀ a b, π (a * b) = T a (π b)) : IsOpenMap π := by
@@ -125,9 +123,9 @@ theorem isOpenMap_orbit {π : G → X} (hc : Continuous π) (hs : Function.Surje
   rw [← hπ, mul_inv_cancel_left]
 
 /- English proof (translation)
-Establish `hop : IsOpenMap (Prod.map (id : G → G) π)` using `IsOpenMap.id.prodMap (isOpenMap_orbit hc hs hT hπ)`. Establish `hq : Topology.IsQuotientMap (Prod.map (id : G → G) π)` using `hop.isQuotientMap (continuous_id.prodMap hc) (Function.surjective_id.prodMap hs)`. Rewrite using `[hq.continuous_iff]`. Establish `: ((fun p : G × X => T p.1 p.2) ∘ Prod.map (id : G → G) π) = fun p : G × G => π (p.1 * p.2)`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[hπ]`. Rewrite using `[this]`. Conclude with `hc.comp (continuous_fst.mul continuous_snd)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_action {π : G → X} (hc : Continuous π) (hs : Function.Surjective π) {T : G → X → X}
     (hT : ∀ a, Continuous (T a)) (hπ : ∀ a b, π (a * b) = T a (π b)) :
@@ -143,13 +141,13 @@ theorem continuous_action {π : G → X} (hc : Continuous π) (hs : Function.Sur
   exact hc.comp (continuous_fst.mul continuous_snd)
 
 /- English proof (translation)
-Establish `hop` using `isOpenMap_orbit hc hs hT hπ`. Take `⟨V, hVc, hV⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `hnb : ∀ c ∈ C, ∃ g : G, π '' ((fun y => g * y) '' V) ∈ 𝓝 c`. Introduce `c _`. Take `⟨g, rfl⟩` from `hs c`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨g, hop.image_mem_nhds ?_⟩` and prove the remaining obligations. Use `(Homeomorph.mulLeft g).isOpenMap.image_mem_nhds hV` as an intermediate fact. Simplify using `using this`. Use `choose! γ hγ using hnb`. Take `⟨t, htC, htU⟩` from `hC.elim_nhds_subcover _ hγ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcomp : IsCompact (⋃ c ∈ t, ((fun y => γ c * y) '' V) * K)` using `t.isCompact_biUnion fun c _ => (hVc.image (continuous_const.mul continuous_id)).mul hK`. Use `hcomp.of_isClosed_subset (hC.isClosed.preimage hc) ?_` and prove the remaining obligations. Introduce `a ha`. Choose the witnesses or unpack the hypotheses as in `⟨c, hct, b, hb, hba⟩ : ∃ c ∈ t, ∃ b ∈ (fun y => γ c * y) '' V, π b = π a := by`. Use `htU ha` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_iUnion] at this`. Take `⟨c, hc', b, hb, hba⟩` from `this`. Conclude with `⟨c, hc', b, hb, hba⟩`. Simplify using `only [Set.mem_iUnion]`. Conclude with `⟨c, hct, Set.mem_mul.mpr ⟨b, hb, b⁻¹ * a, hf _ _ hba, by group⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCompact_preimage_orbit {π : G → X} (hc : Continuous π) (hs : Function.Surjective π) {T : G → X → X}
     (hT : ∀ a, Continuous (T a)) (hπ : ∀ a b, π (a * b) = T a (π b)) {K : Set G} (hK : IsCompact K)
@@ -186,43 +184,37 @@ variable {G X : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Lo
   [MeasurableSpace X] [BorelSpace X]
 
 /- English proof (translation)
-Establish `hm : Measurable π` using `hc.measurable`. Establish `hTm : ∀ a, Measurable (T a)` using `fun a => (hT a).measurable`. Use `set ν' : Measure X := μ.map π with hν'def`. Use `haveI : IsFiniteMeasureOnCompacts ν' := ⟨fun C hC => by`. Rewrite using `[hν'def, Measure.map_apply hm hC.measurableSet]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(isCompact_preimage_orbit hc hs hT hπ hK hf hC).measure_lt_top⟩`. Use `haveI : SigmaFinite ν' := inferInstance`. Use `haveI : SigmaFinite ν := inferInstance`. Establish `hν' : ∀ a, ν'.map (T a) = ν'`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hν'def, Measure.map_map (hTm a) hm]`. Establish `h1 : T a ∘ π = π ∘ (fun y => a * y)`. Use function extensionality and compare the values at `b`. Simplify using `[hπ]`. Rewrite using `[h1, ← Measure.map_map hm (measurable_const_mul a), map_mul_left_eq_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpres : ∀ a, MeasurePreserving (T a) ν' ν'` using `fun a => ⟨hTm a, hν' a⟩`. Establish `hac : ν ≪ ν'`. Use `Measure.AbsolutelyContinuous.mk fun N hN h0' => ?_` and prove the remaining obligations. Establish `hnull : μ (π ⁻¹' N) = 0` using `by rwa [hν'def, Measure.map_apply hm hN] at h0'`. Establish `hΘ : Measurable (fun p : G × X => T p.1 p.2)` using `(continuous_action hc hs hT hπ).measurable`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP : MeasurableSet ((fun p : G × X => T p.1 p.2) ⁻¹' N)` using `hΘ hN`. Establish `e1 : (μ.prod ν) ((fun p : G × X => T p.1 p.2) ⁻¹' N) = ν N * μ Set.univ`. Rewrite using `[Measure.prod_apply hP]`. Establish `h2 : ∀ a, ν (Prod.mk a ⁻¹' ((fun p : G × X => T p.1 p.2) ⁻¹' N)) = ν N`. Introduce `a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : Prod.mk a ⁻¹' ((fun p : G × X => T p.1 p.2) ⁻¹' N) = T a ⁻¹' N` using `rfl`. Rewrite using `[h3, ← Measure.map_apply (hTm a) hN, hν]`. Simplify using `[h2]`. Establish `e2 : (μ.prod ν) ((fun p : G × X => T p.1 p.2) ⁻¹' N) = 0`. Rewrite using `[Measure.prod_apply_symm hP]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h2 : ∀ x, μ ((fun a => (a, x)) ⁻¹' ((fun p : G × X => T p.1 p.2) ⁻¹' N)) = 0`. Introduce `x`. Take `⟨b, rfl⟩` from `hs x`. Establish `h3 : ((fun a => (a, π b)) ⁻¹' ((fun p : G × X => T p.1 p.2) ⁻¹' N)) = (fun a => a * b) ⁻¹' (π ⁻¹' N)`. Use extensionality with `a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hπ]`. Rewrite using `[h3]`. Conclude with `(quasiMeasurePreserving_mul_right μ b).preimage_null hnull`. Simplify using `[h2]`. Rewrite `e1` using `[e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hu : μ Set.univ ≠ 0` using `(isOpen_univ.measure_pos μ Set.univ_nonempty).ne'`. Conclude with `(mul_eq_zero.mp e1.symm).resolve_right hu`. Use `set f : X → ℝ≥0∞ := ν.rnDeriv ν' with hfdef`. Establish `hfm : Measurable f` using `Measure.measurable_rnDeriv ν ν'`. Establish `hwd : ν'.withDensity f = ν` using `Measure.withDensity_rnDeriv_eq ν ν' hac`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hinv : ∀ b, f ∘ T b =ᵐ[ν'] f`. Introduce `b`. Establish `h1 : ν'.withDensity (f ∘ T b) = ν'.withDensity f`. Use `Measure.ext fun S hS => ?_` and prove the remaining obligations. Rewrite using `[withDensity_apply _ hS, hwd]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hS' : MeasurableSet (T b⁻¹ ⁻¹' S)` using `hTm _ hS`. Establish `e : T b ⁻¹' (T b⁻¹ ⁻¹' S) = S`. Use extensionality with `x`. Take `⟨y, rfl⟩` from `hs x`. Simplify using `[← hπ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `(hpres b).setLIntegral_comp_preimage hS' hfm`. Rewrite `h2` using `[e]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(withDensity_eq_iff_of_sigmaFinite (hfm.comp (hTm b)).aemeasurable hfm.aemeasurable).mp h1`. Use `set lam : Measure G := μ.withDensity (f ∘ π) with hlam`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hlamπ : lam.map π = ν`. Use `Measure.ext fun S hS => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply hm hS, hlam, withDensity_apply _ (hm hS), ← hwd, withDensity_apply _ hS, hν'def, setLIntegral_map hS hfm hm]`. Both sides reduce to the same expression. Use `haveI : IsMulLeftInvariant lam := ⟨fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `Measure.ext fun B hB => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply (measurable_const_mul a) hB, hlam, withDensity_apply _ (measurable_const_mul a hB), withDensity_apply _ hB]`. Establish `hg` using `measurePreserving_mul_left μ a`. Establish `hmeas : Measurable fun y => f (π (a⁻¹ * y))` using `hfm.comp (hm.comp (measurable_const_mul _))`. Establish `h1` using `hg.setLIntegral_comp_preimage hB hmeas`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [inv_mul_cancel_left] at h1`. Establish `hae : (fun y => f (π (a⁻¹ * y))) =ᵐ[μ] f ∘ π`. Establish `h2` using `ae_of_ae_map hm.aemeasurable (hinv a⁻¹)`. Use `filter_upwards [h2] with y hy`. Simplify `hy` using `[hπ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.trans (lintegral_congr_ae (ae_restrict_of_ae hae))⟩`. Use `haveI : IsFiniteMeasureOnCompacts lam := ⟨fun C hC => by`. Establish `hC' : IsCompact (π '' C)` using `hC.image hc`. Combine the equalities or inequalities in the displayed calculation. Establish `hsm` using `isMulLeftInvariant_eq_smul lam μ`.
-
-Use `set c : ℝ≥0 := haarScalarFactor lam μ with hcdef`. Establish `hνc : ν = (c : ℝ≥0∞) • ν'`. Rewrite using `[← hlamπ, hsm, hν'def, Measure.map_smul]`. Both sides reduce to the same expression. Establish `hc0 : (c : ℝ≥0∞) ≠ 0`.
-
-Introduce `h`. Apply `h0` to reduce the goal to its premises. Rewrite using `[hνc, h, zero_smul]`. Use `⟨(c : ℝ≥0∞)⁻¹, ENNReal.inv_ne_zero.mpr ENNReal.coe_ne_top, ENNReal.inv_ne_top.mpr hc0, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [hνc]`.
-
-Rewrite using `[smul_smul, ENNReal.inv_mul_cancel hc0 ENNReal.coe_ne_top, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem map_haar_eq_smul {π : G → X} (hc : Continuous π) (hs : Function.Surjective π) {T : G → X → X}
     (hT : ∀ a, Continuous (T a)) (hπ : ∀ a b, π (a * b) = T a (π b)) {K : Set G} (hK : IsCompact K)
@@ -338,9 +330,9 @@ variable {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} (q : Ψ × Fin j × Fin j' ≃ 
 open scoped ComplexOrder
 
 /- English proof (translation)
-Establish `he : ∀ i k, ContDiff ℝ 2 fun t : Fin n → ℂ => ((1 : Matrix (Fin j') (Fin j') ℂ) - (ballMat q t τ)ᴴ * ballMat q t τ) i k`. Introduce `i k`. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, ballMat, Matrix.of_apply]`. Use `contDiff_const.sub (ContDiff.sum fun l _ => ContDiff.mul ?_ ?_)` and prove the remaining obligations. Conclude with `Complex.conjCLE.contDiff.comp (contDiff_apply ℝ ℂ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `contDiff_apply ℝ ℂ _`. Establish `hd : ContDiff ℝ 2 fun t : Fin n → ℂ => (1 - (ballMat q t τ)ᴴ * ballMat q t τ).det`. Simplify using `only [Matrix.det_apply]`. Use `ContDiff.sum fun σ _ => ContDiff.const_smul _ (contDiff_prod fun i _ => he _ _)` and prove the remaining obligations. Conclude with `Complex.reCLM.contDiff.comp hd`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiff_ballDet (τ : Ψ) :
     ContDiff ℝ 2 fun t : Fin n → ℂ => (1 - (ballMat q t τ)ᴴ * ballMat q t τ).det.re := by
@@ -356,14 +348,14 @@ theorem contDiff_ballDet (τ : Ψ) :
   exact Complex.reCLM.contDiff.comp hd
 
 /- English proof (translation)
-The claim follows from `(Complex.lt_def.mp (ht τ).det_pos).1`.
+A detailed English derivation is pending.
 -/
 theorem ballDet_pos {t : Fin n → ℂ} (ht : t ∈ ballDom q) (τ : Ψ) :
     0 < (1 - (ballMat q t τ)ᴴ * ballMat q t τ).det.re :=
   (Complex.lt_def.mp (ht τ).det_pos).1
 
 /- English proof (translation)
-Unfold `ballPot`. Use `ContDiffAt.neg (ContDiffAt.sum fun τ _ => ?_)` and prove the remaining obligations. Conclude with `(contDiff_ballDet q τ).contDiffAt.log (ballDet_pos q ht τ).ne'`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiffAt_ballPot {t : Fin n → ℂ} (ht : t ∈ ballDom q) : ContDiffAt ℝ 2 (ballPot q) t := by
   unfold ballPot
@@ -371,7 +363,7 @@ theorem contDiffAt_ballPot {t : Fin n → ℂ} (ht : t ∈ ballDom q) : ContDiff
   exact (contDiff_ballDet q τ).contDiffAt.log (ballDet_pos q ht τ).ne'
 
 /- English proof (translation)
-Unfold `ballDens ballPot`. Use `Real.measurable_exp.comp (measurable_const.mul (Measurable.neg (Finset.measurable_sum _ fun τ _ => ?_)))` and prove the remaining obligations. Conclude with `Real.measurable_log.comp (contDiff_ballDet q τ).continuous.measurable`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_ballDens : Measurable (ballDens q) := by
   unfold ballDens ballPot
@@ -379,9 +371,7 @@ theorem measurable_ballDens : Measurable (ballDens q) := by
   exact Real.measurable_log.comp (contDiff_ballDet q τ).continuous.measurable
 
 /- English proof (translation)
-Introduce `t ht`. Establish `h1 : ContinuousAt (ballPot q) t` using `(contDiffAt_ballPot q ht).continuousAt`. Establish `h2 : ContinuousAt (ballDens q) t`. Unfold `ballDens`. Conclude with `Real.continuous_exp.continuousAt.comp (continuousAt_const.mul h1)`.
-
-Conclude with `h2.continuousWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuousOn_ballDens : ContinuousOn (ballDens q) (ballDom q) := by
   intro t ht
@@ -395,18 +385,18 @@ def ballMeas : Measure (Fin n → ℂ) :=
   (volume.restrict (ballDom q)).withDensity fun t => ENNReal.ofReal (ballDens q t)
 
 /- English proof (translation)
-Rewrite using `[ballMeas, withDensity_apply _ hS, Measure.restrict_restrict hS, Set.inter_eq_left.mpr hSD]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ballMeas_apply {S : Set (Fin n → ℂ)} (hS : MeasurableSet S) (hSD : S ⊆ ballDom q) :
     ballMeas q S = ∫⁻ t in S, ENNReal.ofReal (ballDens q t) := by
   rw [ballMeas, withDensity_apply _ hS, Measure.restrict_restrict hS, Set.inter_eq_left.mpr hSD]
 
 /- English proof (translation)
-Establish `hD : IsOpen (ballDom q)` using `BallInverse.isOpen_ballDom q`. Establish `hder : ∀ t ∈ S, HasFDerivWithinAt A ((fderiv ℂ A t).restrictScalars ℝ) S t` using `fun t ht => (((hA.differentiableAt (hD.mem_nhds (hSD ht))).hasFDerivAt).restrictScalars ℝ).hasFDerivWithinAt`. Establish `hinjS : Set.InjOn A S` using `hinj.mono hSD`. Establish `hmeas : MeasurableSet (A '' S)` using `measurable_image_of_fderivWithin hS hder hinjS`. Establish `himg : A '' S ⊆ ballDom q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `hAD t (hSD ht)`. Rewrite using `[ballMeas_apply q hmeas himg, ballMeas_apply q hS hSD, lintegral_image_eq_lintegral_abs_det_fderiv_mul volume hS hder hinjS]`. Use `setLIntegral_congr_fun hS fun t ht => ?_` and prove the remaining obligations. Establish `hdet : |((fderiv ℂ A t).restrictScalars ℝ : (Fin n → ℂ) →L[ℝ] (Fin n → ℂ)).det| = ‖LinearMap.det ((fderiv ℂ A t : (Fin n → ℂ) →L[ℂ] (Fin n → ℂ)) : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ))‖ ^ 2`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((fderiv ℂ A t).restrictScalars ℝ : (Fin n → ℂ) →L[ℝ] (Fin n → ℂ)).det = Algebra.norm ℝ (LinearMap.det ((fderiv ℂ A t : (Fin n → ℂ) →L[ℂ] (Fin n → ℂ)) : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)))` using `LinearMap.det_restrictScalars (f := ((fderiv ℂ A t : (Fin n → ℂ) →L[ℂ] (Fin n → ℂ)) : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)))`. Rewrite using `[h1, Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq, abs_of_nonneg (by positivity)]`. Use `show ENNReal.ofReal _ * ENNReal.ofReal _ = ENNReal.ofReal _`. Rewrite using `[hdet, ← ENNReal.ofReal_mul (by positivity), ← hd t (hSD ht)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ballMeas_image {A : (Fin n → ℂ) → Fin n → ℂ} (hA : DifferentiableOn ℂ A (ballDom q))
     (hAD : ∀ t ∈ ballDom q, A t ∈ ballDom q) (hinj : Set.InjOn A (ballDom q))
@@ -438,11 +428,11 @@ theorem ballMeas_image {A : (Fin n → ℂ) → Fin n → ℂ} (hA : Differentia
   rw [hdet, ← ENNReal.ofReal_mul (by positivity), ← hd t (hSD ht)]
 
 /- English proof (translation)
-Establish `hD : IsOpen (ballDom q)` using `BallInverse.isOpen_ballDom q`. Take `⟨c, hc, hdens⟩` from `GlobalTheory.T.monge_ampere_density_of_ball_potential Ψ j j' n q`. Establish `hAan : AnalyticAt ℂ A t` using `GlobalTheory.SCV.analyticAt_of_differentiableOn hA (hD.mem_nhds ht)`. Establish `hGan : AnalyticAt ℂ (fun t' => -(Gf t') / 2) t` using `(GlobalTheory.SCV.analyticAt_of_differentiableOn hG (hD.mem_nhds ht)).neg.div_const`. Establish `hev : ∀ᶠ t' in 𝓝 t, ballPot q t' / 2 = ballPot q (A t') / 2 + (-(Gf t') / 2).re` using `by filter_upwards [hD.mem_nhds ht] with t' ht'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hp t' ht']`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hφ : ContDiffAt ℝ 2 (fun t' => ballPot q t' / 2) (A t)` using `(contDiffAt_ballPot q (hAD t ht)).div_const 2`. Establish `h` using `GlobalTheory.T.monge_ampere_density_change_of_variables n (fun t' => ballPot q t' / 2) (fun t' => ballPot q t' / 2) A (fun t' => -(Gf t') / 2) t hAan hGan hφ hev`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hdens t ht, hdens _ (hAD t ht)]`. Establish `hc' : c ≠ 0` using `hc.ne'`. Apply `mul_left_cancel₀ hc'` to reduce the goal to its premises. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ballDens_transform {A : (Fin n → ℂ) → Fin n → ℂ} {Gf : (Fin n → ℂ) → ℂ}
     (hA : DifferentiableOn ℂ A (ballDom q)) (hG : DifferentiableOn ℂ Gf (ballDom q))
@@ -473,7 +463,7 @@ theorem ballDens_transform {A : (Fin n → ℂ) → Fin n → ℂ} {Gf : (Fin n 
   ring
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `hC.exists_bound_of_continuousOn ((continuousOn_ballDens q).mono hCD)`. Rewrite using `[ballMeas_apply q hC.measurableSet hCD]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem ballMeas_compact_lt_top {C : Set (Fin n → ℂ)} (hC : IsCompact C) (hCD : C ⊆ ballDom q) :
     ballMeas q C < ⊤ := by
@@ -486,9 +476,9 @@ theorem ballMeas_compact_lt_top {C : Set (Fin n → ℂ)} (hC : IsCompact C) (hC
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hC.measure_lt_top
 
 /- English proof (translation)
-Establish `hD : IsOpen (ballDom q)` using `BallInverse.isOpen_ballDom q`. Rewrite using `[ballMeas_apply q hD.measurableSet subset_rfl]`. Introduce `h'`. Establish `h` using `(lintegral_eq_zero_iff (ENNReal.measurable_ofReal.comp (measurable_ballDens q))).mp h'`. Establish `hF : ∀ᵐ _ ∂(volume.restrict (ballDom q)), False` using `h.mono fun t ht => (ENNReal.ofReal_pos.mpr (Real.exp_pos _)).ne' ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : volume.restrict (ballDom q) = 0`. Rewrite using `[← ae_eq_bot]`. Conclude with `Filter.eventually_false_iff_eq_bot.mp hF`. Conclude with `(hD.measure_pos volume hne).ne' (Measure.restrict_eq_zero.mp h0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ballMeas_ne_zero (hne : (ballDom q).Nonempty) : ballMeas q (ballDom q) ≠ 0 := by
   have hD : IsOpen (ballDom q) := BallInverse.isOpen_ballDom q
@@ -503,7 +493,7 @@ theorem ballMeas_ne_zero (hne : (ballDom q).Nonempty) : ballMeas q (ballDom q) �
   exact (hD.measure_pos volume hne).ne' (Measure.restrict_eq_zero.mp h0)
 
 /- English proof (translation)
-Establish `hD : MeasurableSet (ballDom q)` using `(BallInverse.isOpen_ballDom q).measurableSet`. Rewrite using `[ballMeas, restrict_withDensity hD, Measure.restrict_restrict hD, Set.inter_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ballMeas_restrict : (ballMeas q).restrict (ballDom q) = ballMeas q := by
   have hD : MeasurableSet (ballDom q) := (BallInverse.isOpen_ballDom q).measurableSet
@@ -517,29 +507,27 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Type} [Fintype
   [AddCommGroup Λ] [Module (𝓞 E) Λ]
 
 /- English proof (translation)
-Establish `hD : IsOpen (ballDom F.q)` using `BallInverse.isOpen_ballDom F.q`. Use `haveI : LocallyCompactSpace (ballDom F.q) := hD.locallyCompactSpace`. Establish `hmem : ∀ a, Δ.π a ∈ ballDom F.q` using `fun a => Δ.π_range ▸ Set.mem_range_self a`. Use `choose A Gf hA hG hπA hpot using Δ.act`. Establish `hAD : ∀ a, ∀ t ∈ ballDom F.q, A a t ∈ ballDom F.q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a t ht`. Rewrite `ht` using `[← Δ.π_range]`. Take `⟨b, rfl⟩` from `ht`. Rewrite using `[← hπA]`. Conclude with `hmem _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `π' : archUnitary Δ.h (Pi.basisFun E (Fin (j + j'))) → ballDom F.q` to `fun a => ⟨Δ.π a, hmem a⟩`. Set `T : archUnitary Δ.h (Pi.basisFun E (Fin (j + j'))) → ballDom F.q → ballDom F.q` to `fun a x => ⟨A a x, hAD a x x.2⟩`. Establish `hc : Continuous π'` using `Δ.π_cont.subtype_mk _`. Establish `hs : Function.Surjective π'`. Introduce and unpack `⟨t, ht⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `ht'` using `ht`. Rewrite `ht'` using `[← Δ.π_range]`. Take `⟨b, rfl⟩` from `ht'`. Conclude with `⟨b, rfl⟩`. Establish `hT : ∀ a, Continuous (T a)` using `fun a => ((hA a).continuousOn.restrict).subtype_mk _`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ : ∀ a b, π' (a * b) = T a (π' b)` using `fun a b => Subtype.ext (hπA a b)`. Establish `hK : IsCompact (Δ.M.stab : Set (archUnitary Δ.h (Pi.basisFun E (Fin (j + j')))))` using `MajorantStabCompact.proof Δ.h _ Δ.M`. Establish `hf : ∀ a b, π' a = π' b → a⁻¹ * b ∈ (Δ.M.stab : Set (archUnitary Δ.h (Pi.basisFun E (Fin (j + j')))))` using `fun a b h => (Δ.π_fibre a b).mp (congrArg Subtype.val h)`. Establish `hemb : MeasurableEmbedding (Subtype.val : ballDom F.q → Fin n → ℂ)` using `MeasurableEmbedding.subtype_coe hD.measurableSet`. Set `νX : Measure (ballDom F.q)` to `(ballMeas F.q).comap Subtype.val`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hνX : ∀ S, νX S = ballMeas F.q (Subtype.val '' S)` using `fun S => hemb.comap_apply _ S`. Use `haveI : IsFiniteMeasureOnCompacts νX := ⟨fun C hC => by`. Rewrite using `[hνX]`. Conclude with `ballMeas_compact_lt_top F.q (hC.image continuous_subtype_val) (Subtype.coe_image_subset _ _)⟩`. Establish `hinv : ∀ a, νX.map (T a) = νX`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a`. Use `Measure.ext fun S hS => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply (hT a).measurable hS, hνX, hνX]`. Establish `hS0 : MeasurableSet (Subtype.val '' (T a ⁻¹' S))` using `hemb.measurableSet_image.mpr ((hT a).measurable hS)`. Establish `himg : A a '' (Subtype.val '' (T a ⁻¹' S)) = Subtype.val '' S`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨T a x, hx, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : T a ((translHomeo hs hT hπ a).symm x) = x` using `(translHomeo hs hT hπ a).apply_symm_apply x`. Conclude with `⟨_, ⟨(translHomeo hs hT hπ a).symm x, by rw [Set.mem_preimage, e]; exact hx, rfl⟩, congrArg Subtype.val e⟩`. Establish `hinj : Set.InjOn (A a) (ballDom F.q)`. Introduce `t ht t' ht' e`. Establish `h1 : T a ⟨t, ht⟩ = T a ⟨t', ht'⟩` using `Subtype.ext e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrArg Subtype.val ((translHomeo hs hT hπ a).injective h1)`. Rewrite using `[← himg, ballMeas_image F.q (hA a) (hAD a) hinj (fun t ht => ballDens_transform F.q (hA a) (hG a) (hAD a) (hpot a) ht) hS0 (Subtype.coe_image_subset _ _)]`. Establish `h0 : νX ≠ 0`. Introduce `h`. Establish `h1` using `hνX Set.univ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h1` using `[h, Subtype.coe_image_univ]`. Conclude with `ballMeas_ne_zero F.q ⟨_, hmem 1⟩ h1.symm`. Take `⟨c, hc0, hct, h⟩` from `map_haar_eq_smul hc hs hT hπ hK hf μ νX hinv h0`. Use `⟨c, hc0, hct, ?_⟩` and prove the remaining obligations. Establish `h1 : μ.map Δ.π = (μ.map π').map Subtype.val`.
-
-Rewrite using `[Measure.map_map measurable_subtype_coe hc.measurable]`. Both sides reduce to the same expression. Rewrite using `[h1, h, Measure.map_smul, map_comap_subtype_coe hD.measurableSet, ballMeas_restrict]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem map_haar_eq (F : UnivFam E Ψ j j' n g Λ) (Δ : GroupDict F)
     (μ : Measure (archUnitary Δ.h (Pi.basisFun E (Fin (j + j'))))) [μ.IsHaarMeasure] :
@@ -618,7 +606,7 @@ end Main
 end GlobalTheory.CompanionTheory.Ar.Cusp.DictMeas
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ F Δ μ _` and use `GlobalTheory.CompanionTheory.Ar.Cusp.DictMeas.map_haar_eq F Δ μ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Cusp.DictMeas.haar_projects : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (Δ : GroupDict F) (μ : Measure (archUnitary Δ.h (Pi.basisFun E (Fin (j + j'))))) [μ.IsHaarMeasure], ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ⊤ ∧ μ.map Δ.π = c • (volume.restrict (ballDom F.q)).withDensity fun t => ENNReal.ofReal (ballDens F.q t) :=
   fun _ _ _ _ _ _ _ _ _ _ _ _ _ F Δ μ _ => GlobalTheory.CompanionTheory.Ar.Cusp.DictMeas.map_haar_eq F Δ μ

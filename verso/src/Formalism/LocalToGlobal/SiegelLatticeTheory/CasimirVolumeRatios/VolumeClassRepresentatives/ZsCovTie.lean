@@ -16,29 +16,25 @@ set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨k1, k2, k3, k4, k5⟩` from `Formalism.IndefR.Eqv.ga_facts D V`. Establish `hH` using `ZsCovMeas.isHaar_muV fr hc0 μf`. Establish `hGF : (Formalism.IndefR.Eqv.UI.brg fr) '' (Formalism.IndefR.Eqv.UI.instV fr).GFset = Formalism.L2.SG.AdBridge.ratHA (Formalism.IndefR.Eqv.UI.instV fr)` using `(Formalism.L2.SG.Closed.adelic_isomorphism_statement (Formalism.IndefR.Eqv.UI.instV fr)).2.1 (Formalism.IndefR.Eqv.UI.brg fr) (Formalism.IndefR.Eqv.UI.brg_isBridge fr)`. Establish `hto : ∀ γ : rr_GF (Formalism.IndefR.Eqv.UI.instV fr), Formalism.IndefR.Eqv.UI.brg fr (γ : (Formalism.IndefR.Eqv.UI.instV fr).GA) ∈ HFinIn (AF D.host.F) D.sp.cm.sig V.gram`. Introduce `γ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: Formalism.IndefR.Eqv.UI.brg fr (γ : (Formalism.IndefR.Eqv.UI.instV fr).GA) ∈ Formalism.L2.SG.AdBridge.ratHA (Formalism.IndefR.Eqv.UI.instV fr)` using `hGF ▸ ⟨γ, γ.2, rfl⟩`. Conclude with `this`. Establish `hfrom : ∀ g : HFinIn (AF D.host.F) D.sp.cm.sig V.gram, ∃ γ : rr_GF (Formalism.IndefR.Eqv.UI.instV fr), Formalism.IndefR.Eqv.UI.brg fr (γ : (Formalism.IndefR.Eqv.UI.instV fr).GA) = (g.1 : GA D V)`. Introduce `g`. Establish `h : (g.1 : GA D V) ∈ Formalism.L2.SG.AdBridge.ratHA (Formalism.IndefR.Eqv.UI.instV fr)` using `g.2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← hGF]`. Take `⟨γ, hγ, hγg⟩` from `h`. Conclude with `⟨⟨γ, hγ⟩, hγg⟩`. Establish `hsm1 : ∀ (γ : rr_GF (Formalism.IndefR.Eqv.UI.instV fr)) (y : (Formalism.IndefR.Eqv.UI.instV fr).GA), Formalism.IndefR.Eqv.UI.brg fr (γ • y) = (⟨Formalism.IndefR.Eqv.UI.brg fr γ, hto γ⟩ : HFinIn (AF D.host.F) D.sp.cm.sig V.gram) • Formalism.IndefR.Eqv.UI.brg fr y`. Introduce `γ y`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show Formalism.IndefR.Eqv.UI.brg fr ((γ : (Formalism.IndefR.Eqv.UI.instV fr).GA) * y) = _`. Rewrite using `[map_mul]`. Both sides reduce to the same expression. Establish `hsmul : ∀ (γ : rr_GF (Formalism.IndefR.Eqv.UI.instV fr)) (t : Set (Formalism.IndefR.Eqv.UI.instV fr).GA), Formalism.IndefR.Eqv.UI.brg fr '' (γ • t) = (⟨Formalism.IndefR.Eqv.UI.brg fr γ, hto γ⟩ : HFinIn (AF D.host.F) D.sp.cm.sig V.gram) • (Formalism.IndefR.Eqv.UI.brg fr '' t)`. Introduce `γ t`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `z`. Simplify using `only [Set.mem_image, Set.mem_smul_set]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨Formalism.IndefR.Eqv.UI.brg fr y, ⟨y, hy, rfl⟩, (hsm1 γ y).symm⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨w, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨γ • y, ⟨y, hy, rfl⟩, hsm1 γ y⟩`. Establish `hmuV : ∀ t, ZsCovMeas.muV fr μf (Formalism.IndefR.Eqv.UI.brg fr '' t) = ZsCovMeas.cdProd fr * (Formalism.IndefR.Eqv.UI.instV fr).muA μf t`. Introduce `t`. Rewrite using `[ZsCovMeas.muV, Measure.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `((Formalism.IndefR.Eqv.UI.brg fr).toHomeomorph.toMeasurableEquiv.map_apply _).trans ?_` and prove the remaining obligations. Conclude with `congrArg _ (Set.preimage_image_eq _ (Formalism.IndefR.Eqv.UI.brg fr).injective)`. Use `IsFundamentalDomain.mk'' ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `((Formalism.IndefR.Eqv.UI.brg fr).toHomeomorph.measurableEmbedding.measurableSet_image.2 hsm).nullMeasurableSet`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hc` using `hs.ae_covers`. Establish `h2 : ∀ᵐ z ∂(((Formalism.IndefR.Eqv.UI.instV fr).muA μf).map (Formalism.IndefR.Eqv.UI.brg fr)), ∃ g : HFinIn (AF D.host.F) D.sp.cm.sig V.gram, g • z ∈ Formalism.IndefR.Eqv.UI.brg fr '' s`. Use `((Formalism.IndefR.Eqv.UI.brg fr).toHomeomorph.measurableEmbedding.ae_map_iff).2 ?_` and prove the remaining obligations. Use `filter_upwards [hc] with x hx`. Take `⟨γ, hγ⟩` from `hx`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨Formalism.IndefR.Eqv.UI.brg fr γ, hto γ⟩, γ • x, hγ, hsm1 γ x⟩`. Conclude with `Measure.ae_smul_measure h2 _`. Introduce `g hg`. Take `⟨γ, hγ⟩` from `hfrom g`. Establish `hγ1 : γ ≠ 1`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h1`. Apply `hg` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hγ, h1]`. Apply the tactic sequence `first | rfl | (simp; rfl)`.
-
-Establish `hd : (Formalism.IndefR.Eqv.UI.instV fr).muA μf (γ • s ∩ (1 : rr_GF (Formalism.IndefR.Eqv.UI.instV fr)) • s) = 0` using `hs.aedisjoint hγ1`. Rewrite `hd` using `[one_smul]`. Establish `hg' : g = ⟨Formalism.IndefR.Eqv.UI.brg fr γ, hto γ⟩` using `Subtype.ext hγ.symm`. Rewrite using `[hg', ← hsmul]`. Use `show ZsCovMeas.muV fr μf (Formalism.IndefR.Eqv.UI.brg fr '' (γ • s) ∩ Formalism.IndefR.Eqv.UI.brg fr '' s) = 0`.
-
-Rewrite using `[← Set.image_inter (Formalism.IndefR.Eqv.UI.brg fr).injective, hmuV, hd, mul_zero]`. Introduce `g`. Conclude with `(measurePreserving_mul_left (ZsCovMeas.muV fr μf) (g.1 : GA D V)).quasiMeasurePreserving`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isFund_image (hc0 : ∀ v, D.s.cdScale V.rank (fr.ε v) ≠ 0)
     (μf : Measure (Formalism.IndefR.Eqv.UI.instV fr).Gf) [μf.IsHaarMeasure] [SigmaFinite μf]
@@ -120,33 +116,31 @@ theorem isFund_image (hc0 : ∀ v, D.s.cdScale V.rank (fr.ε v) ≠ 0)
     exact (measurePreserving_mul_left (ZsCovMeas.muV fr μf) (g.1 : GA D V)).quasiMeasurePreserving
 
 /- English proof (translation)
-Establish `key : ∀ (ys : Finset (Formalism.IndefR.Eqv.UI.instV fr).Gf) (Dy : (Formalism.IndefR.Eqv.UI.instV fr).Gf → Set (Formalism.IndefR.Eqv.UI.instV fr).Ginf), Formalism.MainNotions.FundamentalDomainUnfolding.ClassReps (Formalism.IndefR.Eqv.UI.instV fr) ys → (∀ y ∈ ys, Formalism.MainNoti …`. Introduce `ys Dy hys hD`. Take `⟨g1, g2, g3⟩` from `Formalism.IndefR.Eqv.gf_facts fr`. Take `⟨k1, k2, k3, k4, k5⟩` from `Formalism.IndefR.Eqv.ga_facts D V`. Use `set ν : Measure (Formalism.IndefR.Eqv.UI.instV fr).Gf := Measure.haar with hν`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hKc : IsCompact (Formalism.IndefR.Eqv.UI.instV fr).Kset` using `PI.WAU.Cpt.isCompact_Kset (Formalism.IndefR.Eqv.UI.instV fr)`. Establish `hKo : IsOpen (Formalism.IndefR.Eqv.UI.instV fr).Kset` using `PI.WAU.kset_open (Formalism.IndefR.Eqv.UI.instV fr)`. Establish `hk0 : ν (Formalism.IndefR.Eqv.UI.instV fr).Kset ≠ 0` using `(hKo.measure_pos ν ⟨1, UnfoldingVolume.kone (Formalism.IndefR.Eqv.UI.instV fr)⟩).ne'`. Establish `hkt : ν (Formalism.IndefR.Eqv.UI.instV fr).Kset ≠ ⊤` using `hKc.measure_lt_top.ne`. Use `set μf : Measure (Formalism.IndefR.Eqv.UI.instV fr).Gf := (ν (Formalism.IndefR.Eqv.UI.instV fr).Kset)⁻¹ • ν with hμfdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμf : μf.IsHaarMeasure` using `Measure.IsHaarMeasure.smul _ (ENNReal.inv_ne_zero.mpr hkt) (ENNReal.inv_ne_top.mpr hk0)`. Establish `hK1 : μf (Formalism.IndefR.Eqv.UI.instV fr).Kset = 1`. Rewrite using `[hμfdef, Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel hk0 hkt]`. Establish `hg : ∀ v, (D.s.cdScale V.rank (fr.ε v) : ℝ) * Formalism.MainNotions.S.Gauge.gaugeU (fr.ε v) * IwasawaCovolume.volgU V.rank = 1`. Introduce `v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h` using `hCG v`. Unfold `Formalism.MainNotions.S.Gauge.CdGauge at h`. Rewrite `h` using `[hVU, ← ZsCovSum.volgU_eq_Icc]`. Conclude with `h`. Establish `hc0 : ∀ v, D.s.cdScale V.rank (fr.ε v) ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `v h0`. Establish `h` using `hg v`. Rewrite `h` using `[h0]`. Simplify using `at h`. Establish `hw` using `IwasawaCovolume.volgU_pos V.rank`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hgpos : ∀ v, 0 < Formalism.MainNotions.S.Gauge.gaugeU (fr.ε v)`. Introduce `v`. Establish `h : ((D.s.cdScale V.rank (fr.ε v) : ℝ) * IwasawaCovolume.volgU V.rank) * Formalism.MainNotions.S.Gauge.gaugeU (fr.ε v) = 1`. Rewrite using `[← hg v]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `pos_of_mul_pos_right (h ▸ one_pos) (mul_nonneg (D.s.cdScale V.rank (fr.ε v)).2 hw.le)`. Establish `hn : P + Q = V.rank`. Use `Formalism.BasicNotions.sig_sum V hV D.host.φ₀` as an intermediate fact. Rewrite `this` using `[hs]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose e h1 h2 using fun v => ZsCovSum.blockEquiv (fr.ε v) (hε v) hn`. Establish `hvol` using `ZsCovMeas.isVolMeas_muV fr hcd hΛ e h1 h2 hc0 μf hK1`. Establish `hFD` using `UnfoldingVolume.fd_isFund (Formalism.IndefR.Eqv.UI.instV fr) μf ys hys Dy hD`. Establish `hF` using `isFund_image fr hc0 μf (ZsCovSum.FD_meas (Formalism.IndefR.Eqv.UI.instV fr) ys Dy hD) hFD`. Establish `htie : ZsCovMeas.muV fr μf (Formalism.IndefR.Eqv.UI.brg fr '' UnfoldingVolume.FD (Formalism.IndefR.Eqv.UI.instV fr) ys Dy) = ENNReal.ofReal (D.vol V)` using `((hT V P Q hV hs).2 _ hvol).2 _ hF`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hvm` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.vol_eq_mass_of_indep D V.rank hT hI hC V P Q hV hs rfl`. Establish `hmu : ZsCovMeas.muV fr μf (Formalism.IndefR.Eqv.UI.brg fr '' UnfoldingVolume.FD (Formalism.IndefR.Eqv.UI.instV fr) ys Dy) = ZsCovMeas.cdProd fr * ∑ y ∈ ys, Formalism.MainNotions.FundamentalDomainUnfolding.muInf (Formalism.IndefR.Eqv.UI.instV fr) (Dy y)`. Rewrite using `[ZsCovMeas.muV, Measure.smul_apply, smul_eq_mul]`. Use `congr 1`. Use `((Formalism.IndefR.Eqv.UI.brg fr).toHomeomorph.toMeasurableEquiv.map_apply _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg _ (Set.preimage_image_eq _ (Formalism.IndefR.Eqv.UI.brg fr).injective)).trans ?_` and prove the remaining obligations. Rewrite using `[ZsCovSum.muA_FD (Formalism.IndefR.Eqv.UI.instV fr) μf ys hys Dy hD, hK1, one_mul]`. Rewrite `htie` using `[hmu, hvm]`. Establish `hm0 : 0 ≤ massI D V.rank` using `hvm ▸ (D.vol_pos V).le`. Establish `hG : (Formalism.IndefR.Eqv.UI.instV fr).gaugeU * IwasawaCovolume.volgU V.rank ^ Fintype.card (InfinitePlace D.host.F) = ∏ v : InfinitePlace D.host.F, (Formalism.MainNotions.S.Gauge.gaugeU (fr.ε v) * IwasawaCovolume.volgU V.rank)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Both sides reduce to the same expression. Establish `hG0 : ∀ v : InfinitePlace D.host.F, 0 ≤ Formalism.MainNotions.S.Gauge.gaugeU (fr.ε v) * IwasawaCovolume.volgU V.rank` using `fun v => (mul_pos (hgpos v) hw).le`. Establish `hone : ZsCovMeas.cdProd fr * ENNReal.ofReal (∏ v : InfinitePlace D.host.F, (Formalism.MainNotions.S.Gauge.gaugeU (fr.ε v) * IwasawaCovolume.volgU V.rank)) = 1`. Rewrite using `[ENNReal.ofReal_prod_of_nonneg fun v _ => hG0 v, ZsCovMeas.cdProd, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_coe_nnreal, ← ENNReal.ofReal_mul (NNReal.coe_nonneg _), ← mul_assoc, hg v, ENNReal.ofReal_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm (ZsCovMeas.cdProd fr), mul_assoc, hone, mul_one]`. Use `_ = ENNReal.ofReal (massI D V.rank) * ENNReal.ofReal ((Formalism.IndefR.Eqv.UI.instV fr).gaugeU * IwasawaCovolume.volgU V.rank ^ Fintype.card (InfinitePlace D.host.F)) := by`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions.
 
-Rewrite using `[htie, hG]`. Use `_ = ENNReal.ofReal ((Formalism.IndefR.Eqv.UI.instV fr).gaugeU * (IwasawaCovolume.volgU V.rank ^ Fintype.card (InfinitePlace D.host.F) * massI D V.rank)) := by`. Rewrite using `[← ENNReal.ofReal_mul hm0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `gen : ∀ J : AutInst, J = Formalism.IndefR.Eqv.UI.instV fr → ∀ (ys : Finset J.Gf) (Dy : J.Gf → Set J.Ginf), Formalism.MainNotions.FundamentalDomainUnfolding.ClassReps J ys → (∀ y ∈ ys, Formalism.MainNotions.FundamentalDomainUnfolding.IsFundInf J y (Formalism.MainNotions.Fundamenta …`. Introduce and unpack `J rfl ys Dy hys hD`. Conclude with `(key ys Dy hys hD).le`. Unfold `Formalism.MainNotions.FundamentalDomainUnfolding.CovolSum IwasawaCovolume.covolR`. Conclude with `gen X.I hX`.
+A detailed English derivation is pending.
 -/
 theorem covolSum_of_tie (X : Formalism.MainNotions.BridgeLemma.CData) (hX : X.I = Formalism.IndefR.Eqv.UI.instV fr)
     (hΛ : fr.Λ = Formalism.IndefR.Eqv.UI.Lv D V) {P Q : ℕ} (hV : V.SigOK) (hs : ∀ τ, V.sig τ = (P, Q))

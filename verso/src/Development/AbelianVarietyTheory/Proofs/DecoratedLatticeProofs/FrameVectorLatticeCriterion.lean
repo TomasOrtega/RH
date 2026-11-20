@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.Core.Mi.LatMatch
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct, Matrix.map_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.LocMod.PinEx.sec_mul q (q.pr (g i j)) (w j)`. Establish `h2` using `q.sec_pr (g i j)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : q.e * q.sec (w j) = q.sec (w j)`. Use `q.sec_pr (q.sec (w j))` as an intermediate fact. Rewrite `this` using `[q.pr_sec]`. Conclude with `this.symm`. Rewrite using `[← h1, h2, mul_assoc, mul_left_comm, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_sec_split {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (q : GlobalTheory.FinPl.SplitPt D k) {n : ℕ} (g : Matrix (Fin n) (Fin n) (AE D)) (w : Fin n → k) :
@@ -42,25 +42,25 @@ namespace GlobalTheory.Core.Mi.LatMatch
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D u d τ PP G c hc L hβ hmv y`. Take `rfl : c = G.s + 1` from `by omega`. Take `⟨e, -, hM⟩` from `G.frame 0 (G.s + 1) hc`. Take `⟨B, hB1, hB2⟩` from `GlobalTheory.LocMod.PinEx.exists_topFrame G.q G.idem (d.st 0).V (d.st 0).Λ (d.st 0).β hβ`. Establish `hb` using `GlobalTheory.LocMod.liftM_map (d.st 0).β.val`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `hM _ hb`. Establish `h2` using `hB1 _ hb`. Rewrite `h2` using `[GlobalTheory.LocMod.mt_one_gaMat, Matrix.one_mul]`. Rewrite `h1` using `[Matrix.map_mul, h2]`. Set `ε` to `e.symm.trans (GlobalTheory.StepData.stdOrd (Fin D.R.k) (Fin D.R.t) 0 (G.s + 1) hc)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `X` to `(G.FY 0 (G.s + 1) hc).β * ((G.S.T (Fin D.R.t)).bas 0 (G.s + 1) hc).val`. Set `P` to `(mt (d.st 0).V (d.t 0)).map G.q.pr`. Set `Pi` to `(mt (d.st 0).V (d.t 0)⁻¹).map G.q.pr`. Establish `h1' : P * B.val = X.submatrix id ε` using `h1`. Establish `hPPi : P * Pi = 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(mt (d.st 0).V (d.t 0)).map G.q.pr * (mt (d.st 0).V (d.t 0)⁻¹).map G.q.pr = 1`. Rewrite using `[← Matrix.map_mul, ← GlobalTheory.LocMod.mt_mul_gaMat, mul_inv_cancel, GlobalTheory.LocMod.mt_one_gaMat, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hPiP : Pi * P = 1`. Express the relevant statement in the definitionally equal form `(mt (d.st 0).V (d.t 0)⁻¹).map G.q.pr * (mt (d.st 0).V (d.t 0)).map G.q.pr = 1`. Rewrite using `[← Matrix.map_mul, ← GlobalTheory.LocMod.mt_mul_gaMat, inv_mul_cancel, GlobalTheory.LocMod.mt_one_gaMat, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hX : X = (P * B.val).submatrix id ε.symm`. Rewrite using `[h1', submatrix_submatrix, Function.comp_id, Equiv.self_comp_symm, submatrix_id_id]`. Set `z` to `(((G.S.T (Fin D.R.t)).bas 0 (G.s + 1) hc)⁻¹).val *ᵥ y`. Establish `hw : (G.FY 0 (G.s + 1) hc).β *ᵥ y = (P * B.val) *ᵥ (z ∘ ε)`. Establish `e1 : (G.FY 0 (G.s + 1) hc).β *ᵥ y = X *ᵥ z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ = ((G.FY 0 (G.s + 1) hc).β * ((G.S.T (Fin D.R.t)).bas 0 (G.s + 1) hc).val) *ᵥ ((((G.S.T (Fin D.R.t)).bas 0 (G.s + 1) hc)⁻¹).val *ᵥ y)`. Rewrite using `[mulVec_mulVec, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Rewrite using `[e1, hX, submatrix_mulVec_equiv, Equiv.symm_symm, Function.comp_id]`. Establish `key : (fun r => G.q.sec (((G.FY 0 (G.s + 1) hc).β *ᵥ y) r)) = mt (d.st 0).V (d.t 0) *ᵥ (fun r => G.q.sec ((Pi *ᵥ ((G.FY 0 (G.s + 1) hc).β *ᵥ y)) r))`. Rewrite using `[mulVec_sec_split]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = fun r => G.q.sec ((P *ᵥ (Pi *ᵥ _)) r)`. Rewrite using `[mulVec_mulVec, hPPi, one_mulVec]`. Rewrite using `[key, ← hmv _ (fun i => GlobalTheory.FrameGlob.sec_mem_idAt G.q _), hB2, hw, mulVec_mulVec, mulVec_mulVec]`. Establish `hB : (B⁻¹).val * Pi * (P * B.val) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc Pi, hPiP, Matrix.one_mul, Units.inv_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB, one_mulVec]`. Establish `hz : ∀ a, z a = (GlobalTheory.LevZeroUp.scal (Fin D.R.t) G.S.ϖ a)⁻¹ * y a`. Introduce `a`. Express the relevant statement in the definitionally equal form `((((G.S.T (Fin D.R.t)).bas 0 (G.s + 1) (Nat.zero_add _))⁻¹).val *ᵥ y) a = _`. Rewrite using `[GlobalTheory.LevZeroUp.bas_inv_val, mulVec_diagonal]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hall : (∀ i, (z ∘ ε) i ∈ 𝒪[G.k]) ↔ ∀ a, z a ∈ 𝒪[G.k]` using `⟨fun h a => by simpa using h (ε.symm a), fun h i => h _⟩`. Rewrite using `[hall, Sum.forall]`. Use `and_congr (forall_congr' fun a => ?_) (forall_congr' fun i => ?_)` and prove the remaining obligations. Rewrite using `[hz]`. Simplify using `[GlobalTheory.LevZeroUp.scal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hz]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem latV_normalFrame_zero : ∀ (D : D7) (u : D.what₂.Word) (d : GlobalTheory.SeeSaw.Dat D u) (τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E) (PP : Formalism.L2.DIV.Pl D.host.E) (G : GlobalTheory.LocMod.GAt d τ PP) (c : ℕ) (hc : 0 + c = G.s + 1) (L : Lat (d.st 0).V), Formalism.L2.DIV.IsFrame (d.st 0).β (d.st 0).Λ → Moves (d.st 0).V (d.t 0) (d.st 0).Λ L (· = G.q.v) → ∀ y : GlobalTheory.StepData.XIx (Fin D.R.k) (Fin D.R.t) 0 ⊕ Fin c → G.k, (fun r => G.q.sec (((G.FY 0 c hc).β *ᵥ y) r)) ∈ latV (d.st 0).V L (· = G.q.v) ↔ (∀ a, y (Sum.inl a) ∈ 𝒪[G.k]) ∧ ∀ i : Fin c, ((((G.S.ϖ : G.kˣ) : G.k) ^ (i.1 + 1))⁻¹ * y (Sum.inr i)) ∈ 𝒪[G.k] := by
   intro D u d τ PP G c hc L hβ hmv y

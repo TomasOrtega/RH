@@ -17,7 +17,7 @@ open GlobalTheory.Member
 namespace GlobalTheory.Member
 
 /- English proof (translation)
-Take `⟨e, he, hc, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Establish `: (finPart D : AE D → _) = fun z => (e z).2` using `funext fun z => (he z).2.symm`. Rewrite using `[this]`. Conclude with `continuous_snd.comp hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_finPart (D : D7) : Continuous (finPart D) := by
   obtain ⟨e, he, hc, -⟩ := GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E
@@ -26,7 +26,7 @@ theorem continuous_finPart (D : D7) : Continuous (finPart D) := by
   exact continuous_snd.comp hc
 
 /- English proof (translation)
-Take `⟨e, he, hc, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Establish `: (infPart D : AE D → _) = fun z => (e z).1` using `funext fun z => (he z).1.symm`. Rewrite using `[this]`. Conclude with `continuous_fst.comp hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_infPart (D : D7) : Continuous (infPart D) := by
   obtain ⟨e, he, hc, -⟩ := GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E
@@ -35,7 +35,7 @@ theorem continuous_infPart (D : D7) : Continuous (infPart D) := by
   exact continuous_fst.comp hc
 
 /- English proof (translation)
-Establish `h : Continuous (fun k : GA D V => (matHom V k).1)` using `Units.continuous_val.comp continuous_subtype_val`. Conclude with `h.matrix_map (continuous_finPart D)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_finHom_val (D : D7) (V : HSp D) : Continuous (fun k : GA D V => (finHom V k).1) := by
   have h : Continuous (fun k : GA D V => (matHom V k).1) :=
@@ -43,7 +43,7 @@ theorem continuous_finHom_val (D : D7) (V : HSp D) : Continuous (fun k : GA D V 
   exact h.matrix_map (continuous_finPart D)
 
 /- English proof (translation)
-Introduce `D V`. Use `⟨?_, continuous_finHom_val D V, continuous_finPart D, continuous_infPart D⟩` and prove the remaining obligations. Take `⟨h1, -, -, h4, -⟩` from `GlobalTheory.Member.latHat_eq_hat_and_gram D V`. Rewrite using `[h1]`. Conclude with `(GlobalTheory.AdLat.OpenLat.isOpen_nsmul_hat D.host.F D.host.E V.rank (latC V) h4).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latHat_open_and_continuous : ∀ (D : D7) (V : HSp D), (∀ N : ℕ, 0 < N → IsOpen {z : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E | ∃ y ∈ latHat V, z = N • y}) ∧ Continuous (fun k : GA D V => (finHom V k).1) ∧ Continuous (finPart D) ∧ Continuous (infPart D) := by
   intro D V

@@ -16,9 +16,9 @@ namespace GlobalTheory.DetLine.WedgePer
 open GlobalTheory.DetLine.WedgeCoord GlobalTheory.ShFam.HodgeSeq
 
 /- English proof (translation)
-Establish `hu : IsUnit (Γᵀ).det` using `by rw [Matrix.det_transpose]; exact hΓ.isUnit`. Establish `h1 : Matrix.fromCols ((Γᵀ)⁻¹ * C'ᵀ) ((Γᵀ)⁻¹ * Mᵀ) * Matrix.fromRows M' C = 1`. Rewrite using `[Matrix.fromCols_mul_fromRows, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_add]`. Establish `: C'ᵀ * M' + Mᵀ * C = Γᵀ`. Rewrite using `[h, Matrix.transpose_add, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_transpose, add_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Matrix.nonsing_inv_mul _ hu]`. Establish `h2` using `mul_eq_one_comm.1 h1`. Rewrite `h2` using `[Matrix.fromRows_mul_fromCols, ← Matrix.fromBlocks_one, Matrix.fromBlocks_inj]`. Conclude with `h2.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem left_inv_of_decomp {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
     (Γ : Matrix (m ⊕ n) (m ⊕ n) ℂ) (C M : Matrix n (m ⊕ n) ℂ) (C' M' : Matrix m (m ⊕ n) ℂ) (hΓ : Γ.det ≠ 0)
@@ -35,7 +35,7 @@ theorem left_inv_of_decomp {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] 
   exact h2.1
 
 /- English proof (translation)
-Establish `: Matrix.fromRows (a • R) C = Matrix.fromBlocks (a • (1 : Matrix m m ℂ)) 0 0 1 * Matrix.fromRows R C`. Rewrite using `[Matrix.fromBlocks_mul_fromRows]`. Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.det_mul, Matrix.det_fromBlocks_zero₂₁]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_fromRows_smul {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n] (a : ℂ)
     (R : Matrix m (m ⊕ n) ℂ) (C : Matrix n (m ⊕ n) ℂ) :
@@ -46,7 +46,7 @@ theorem det_fromRows_smul {m n : Type} [Fintype m] [Fintype n] [DecidableEq m] [
   simp
 
 /- English proof (translation)
-Simplify using `only [herm, star_sum, star_smul, Matrix.mulVec_sum, Matrix.mulVec_smul, sum_dotProduct, dotProduct_sum, smul_dotProduct, dotProduct_smul, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [starRingEnd_apply]; ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_sum {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) {L L' : Type} [Fintype L] [Fintype L'] (W : L → Fin g → ℂ)
     (W' : L' → Fin g → ℂ) (u : L → ℂ) (v : L' → ℂ) :
@@ -57,7 +57,7 @@ theorem herm_sum {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) {L L' : Type} [Fint
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [starRingEnd_apply]; ring
 
 /- English proof (translation)
-Simplify using `using herm_sum Hm (fun _ : Unit => u) W (fun _ => 1) v`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem herm_sum_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) {L : Type} [Fintype L] (u : Fin g → ℂ)
     (W : L → Fin g → ℂ) (v : L → ℂ) :
@@ -65,7 +65,7 @@ theorem herm_sum_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) {L : Type} [F
   simpa using herm_sum Hm (fun _ : Unit => u) W (fun _ => 1) v
 
 /- English proof (translation)
-Simplify using `using herm_sum Hm W (fun _ : Unit => u) v (fun _ => 1)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem herm_sum_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) {L : Type} [Fintype L] (u : Fin g → ℂ)
     (W : L → Fin g → ℂ) (v : L → ℂ) :
@@ -73,11 +73,11 @@ theorem herm_sum_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) {L : Type} [Fi
   simpa using herm_sum Hm W (fun _ : Unit => u) v (fun _ => 1)
 
 /- English proof (translation)
-Establish `h0 : ∑ m, (a m - b m) • V m = 0`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hpos _ hne`. Establish `h2 : ∀ i, herm Hm (∑ m, (a m - b m) • V m) (V i) = 0` using `fun i => by`. Establish `e : ∑ m, (a m - b m) • V m = (y - ∑ m, b m • V m) - (y - ∑ m, a m • V m)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, ← hl_apply, map_sub, hl_apply, hl_apply, ha, hb, sub_self]`. Rewrite `h1` using `[herm_sum_right]`. Simplify using `[h2] at h1`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hV _ h0 i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem proj_unique {g p : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hpos : ∀ z : Fin g → ℂ, z ≠ 0 → 0 < (herm Hm z z).re)
     {V : Fin p → Fin g → ℂ} (hV : LinearIndependent ℂ V) {y : Fin g → ℂ} {a b : Fin p → ℂ}
@@ -100,13 +100,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E}
   {W : Pad.Letter D → Fin g → ℂ} {Q : Di.La →+ (Pad.Letter D → ℂ)}
 
 /- English proof (translation)
-Introduce `_ _ h` and use `GlobalTheory.DerivEig.eq_of_relab_eq c e fun a => by rw [h]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem relab_inj (c : Coeff l) (e : c.F →+* ℂ) : Function.Injective (Formalism.L2.PjFree.relab (E := E) c e) :=
   fun _ _ h => GlobalTheory.DerivEig.eq_of_relab_eq c e fun a => by rw [h]
 
 /- English proof (translation)
-Use extensionality with `a`. Establish `h1 : Formalism.L2.Pj.embF c (conjEmb φ) a = Formalism.L2.Pj.embF c φ (IsCMField.complexConj E a)` using `Subtype.ext (IsCMField.complexEmbedding_complexConj E φ a).symm`. Use `show e (Formalism.L2.Pj.embF c (conjEmb φ) a) = starRingEnd ℂ (Formalism.L2.PjFree.relab c e φ a)`. Rewrite using `[h1]`. Conclude with `IsCMField.complexEmbedding_complexConj E (Formalism.L2.PjFree.relab c e φ) a`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relab_conj (c : Coeff l) (e : c.F →+* ℂ) (φ : E →+* ℂ) :
     Formalism.L2.PjFree.relab c e (conjEmb φ) = conjEmb (Formalism.L2.PjFree.relab (E := E) c e φ) := by
@@ -118,9 +118,9 @@ theorem relab_conj (c : Coeff l) (e : c.F →+* ℂ) (φ : E →+* ℂ) :
   exact IsCMField.complexEmbedding_complexConj E (Formalism.L2.PjFree.relab c e φ) a
 
 /- English proof (translation)
-Take `⟨-, -, hspan, -, hW, hPQ, -⟩` from `h`. Set `T : (Pad.Letter D → ℂ) →ₗ[ℂ] (Fin g → ℂ)` to `Fintype.linearCombination ℂ W`. Establish `hT : Function.Injective T` using `hW.fintypeLinearCombination_injective`. Establish `hTQ : ∀ v, T (Q v) = P v` using `fun v => (hPQ v).symm`. Use `Submodule.map_injective_of_injective (f := T.restrictScalars ℝ) hT ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (Submodule.span ℝ (Set.range Q)).map (T.restrictScalars ℝ) = ⊤`. Rewrite using `[Submodule.map_span, ← Set.range_comp, ← hspan]`. Conclude with `congrArg (fun f => Submodule.span ℝ (Set.range f)) (funext hTQ)`. Rewrite using `[h1]`. Conclude with `(top_unique (h1 ▸ Submodule.map_mono le_top)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_coord (h : PerData c e Di Hm P W Q) : Submodule.span ℝ (Set.range Q) = ⊤ := by
   obtain ⟨-, -, hspan, -, hW, hPQ, -⟩ := h
@@ -135,7 +135,7 @@ theorem span_coord (h : PerData c e Di Hm P W Q) : Submodule.span ℝ (Set.range
   exact (top_unique (h1 ▸ Submodule.map_mono le_top)).symm
 
 /- English proof (translation)
-Take `⟨-, -, -, hEF, -, hPQ, -⟩` from `h`. Rewrite using `[← hEF, hPQ, hPQ, herm_sum]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem im_form (h : PerData c e Di Hm P W Q) (a b : Di.La) :
     (form (fun z w => herm Hm (W z) (W w)) (Q a) (Q b)).im = Di.EF a b := by
@@ -144,7 +144,7 @@ theorem im_form (h : PerData c e Di Hm P W Q) (a b : Di.La) :
   rfl
 
 /- English proof (translation)
-The claim follows from `block Di (fun z => Formalism.L2.PjFree.relab c e z.1) Q (fun z w => herm Hm (W z) (W w)) h.2.2.2.2.2.2 (span_coord h) (im_form h) (fun h' => hzw (relab_inj c e h'))`.
+A detailed English derivation is pending.
 -/
 theorem orth (h : PerData c e Di Hm P W Q) {z w : Pad.Letter D} (hzw : z.1 ≠ w.1) : herm Hm (W z) (W w) = 0 :=
   block Di (fun z => Formalism.L2.PjFree.relab c e z.1) Q (fun z w => herm Hm (W z) (W w)) h.2.2.2.2.2.2 (span_coord h)
@@ -156,11 +156,11 @@ def dualMat (Hm : Matrix (Fin g) (Fin g) ℂ) (W : Pad.Letter D → Fin g → �
     ∑ i, starRingEnd ℂ (Q (x k) ⟨conjEmb τ, i⟩ * herm Hm (W ⟨conjEmb τ, i⟩) (W ⟨conjEmb τ, j⟩))
 
 /- English proof (translation)
-Establish `hI : (2 * Complex.I) ≠ 0` using `by simp`. Use `left_inv_of_decomp _ (perMat x Q τ) (Matrix.of fun i k => (2 * Complex.I)⁻¹ * ∑ j, herm Hm (W ⟨τ, i⟩) (W ⟨τ, j⟩) * starRingEnd ℂ (Q (x k) ⟨τ, j⟩)) _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero _).2 hx.2.2.2`. Use extensionality with `k k'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `emb_eq (relab_inj c e) (relab_conj c e) Di Q _ h.2.2.2.2.2.2 (span_coord h) (im_form h) (fun a => hx.2.2.1 a k k') τ` as an intermediate fact. Rewrite using `[Matrix.map_apply, (eq_mul_inv_iff_mul_eq₀ hI).2 this, sub_mul, sub_eq_add_neg, Matrix.add_apply]`. Use `congr 1`. Simplify using `only [part, Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply, perMat, Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [part, Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply, perMat, dualMat, Finset.sum_mul, Finset.mul_sum, map_sum, map_mul, Complex.conj_conj, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem dualMat_mul (hx : IsPerBasis Di x hm) (h : PerData c e Di Hm P W Q) :
     dualMat Hm W x Q * kerMat c e τ x hm Q = 1 := by
@@ -188,7 +188,7 @@ def IsCoef (x : Hor.Idx D τ → Di.La) (Q : Di.La →+ (Pad.Letter D → ℂ)) 
     ∀ j, starRingEnd ℂ (s ⟨conjEmb τ, j⟩) = ∑ k, t k * starRingEnd ℂ (Q (x k) ⟨conjEmb τ, j⟩)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => by simp only [Pi.add_apply, h.1, h'.1, add_mul, Finset.sum_add_distrib], fun j => by simp only [Pi.add_apply, map_add, h.2, h'.2, add_mul, Finset.sum_add_distrib]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsCoef.add {t t' : Hor.Idx D τ → ℂ} {s s' : Pad.Letter D → ℂ} (h : IsCoef x Q t s) (h' : IsCoef x Q t' s') :
     IsCoef x Q (t + t') (s + s') :=
@@ -196,7 +196,7 @@ theorem IsCoef.add {t t' : Hor.Idx D τ → ℂ} {s s' : Pad.Letter D → ℂ} (
     fun j => by simp only [Pi.add_apply, map_add, h.2, h'.2, add_mul, Finset.sum_add_distrib]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => by simp only [Pi.smul_apply, Complex.real_smul, h.1, Finset.mul_sum, _root_.mul_assoc], fun j => by simp only [Pi.smul_apply, Complex.real_smul, map_mul, Complex.conj_ofReal, h.2, Finset.mul_sum, _root_.mul_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsCoef.smul {t : Hor.Idx D τ → ℂ} {s : Pad.Letter D → ℂ} (h : IsCoef x Q t s) (r : ℝ) :
     IsCoef x Q (r • t) (r • s) :=
@@ -205,16 +205,16 @@ theorem IsCoef.smul {t : Hor.Idx D τ → ℂ} {s : Pad.Letter D → ℂ} (h : I
       _root_.mul_assoc]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => by simp, fun j => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCoef_zero : IsCoef x Q 0 0 := ⟨fun i => by simp, fun j => by simp⟩
 
 /- English proof (translation)
-Establish `hn' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Establish `key : ∀ z : Pad.Letter D, Q v z = ∑ k, (n : ℂ)⁻¹ * Formalism.L2.PjFree.relab c e z.1 (b k : E) * Q (x k) z` using `fun z => by`. Use `congrFun (congrArg Q hb) z` as an intermediate fact. Rewrite `this` using `[map_sum, map_nsmul, Finset.sum_apply, Pi.smul_apply, nsmul_eq_mul]`. Simplify using `only [h.2.2.2.2.2.2] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [_root_.mul_assoc, ← Finset.mul_sum]`. Rewrite using `[this, inv_mul_cancel_left₀ hn']`. Use `⟨fun i => key _, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[key, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[relab_conj]`. Simplify using `[conjEmb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isCoef_per (h : PerData c e Di Hm P W Q) {v : Di.La} {n : ℕ} (hn : n ≠ 0) {b : Hor.Idx D τ → 𝓞 E}
     (hb : ∑ k, b k • x k = n • v) :
@@ -233,15 +233,15 @@ theorem isCoef_per (h : PerData c e Di Hm P W Q) {v : Di.La} {n : ℕ} (hn : n �
   simp [conjEmb]
 
 /- English proof (translation)
-Establish `hu : u ∈ Submodule.span ℝ (Set.range P)` using `h.2.2.1 ▸ Submodule.mem_top`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨v, rfl⟩` from `hu`. Take `⟨n, hn, hv⟩` from `hx.2.1 v`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hv`. Conclude with `⟨_, Q v, Q' v, h.2.2.2.2.2.1 v, (hφ v).trans (h'.2.2.2.2.2.1 v), isCoef_per h hn hb, isCoef_per h' hn hb⟩`. Consider the case `zero => exact ⟨0, 0, 0, by simp, by simp, isCoef_zero, isCoef_zero⟩`. Consider the case `add u u' _ _ h1 h2`. Take `⟨t, s, s', a1, a2, a3, a4⟩` from `h1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨t₂, s₂, s₂', b1, b2, b3, b4⟩` from `h2`. Use `⟨_, _, _, ?_, ?_, a3.add b3, a4.add b4⟩` and prove the remaining obligations. Simplify using `only [a1, b1, Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Simplify using `only [map_add, a2, b2, Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Consider the case `smul r u _ h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨t, s, s', a1, a2, a3, a4⟩` from `h1`. Use `⟨_, _, _, ?_, ?_, a3.smul r, a4.smul r⟩` and prove the remaining obligations. Rewrite using `[a1, Finset.smul_sum]`. Simplify using `only [Pi.smul_apply, smul_assoc]`. Rewrite using `[map_smul, a2, Finset.smul_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, smul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_coef {g' : ℕ} {Hm' : Matrix (Fin g') (Fin g') ℂ} {P' : Di.La →+ (Fin g' → ℂ)}
     {W' : Pad.Letter D → Fin g' → ℂ} {Q' : Di.La →+ (Pad.Letter D → ℂ)} {φ : (Fin g → ℂ) ≃ₗ[ℝ] (Fin g' → ℂ)}
@@ -271,24 +271,24 @@ theorem exists_coef {g' : ℕ} {Hm' : Matrix (Fin g') (Fin g') ℂ} {P' : Di.La 
       simp only [Pi.smul_apply, smul_assoc]
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_sigma, Finset.sum_eq_single ρ (fun ψ _ hψ => Finset.sum_eq_zero fun j _ => hf _ hψ) (by simp)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_type (ρ : E →+* ℂ) (f : Pad.Letter D → ℂ) (hf : ∀ z, z.1 ≠ ρ → f z = 0) : ∑ z, f z = ∑ i, f ⟨ρ, i⟩ := by
   classical
   rw [Fintype.sum_sigma, Finset.sum_eq_single ρ (fun ψ _ hψ => Finset.sum_eq_zero fun j _ => hf _ hψ) (by simp)]
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hΔ`. Take `⟨-, h0, -, S, hS⟩` from `hG`. Establish `hV : ∀ i, V i = W ⟨τ, finCongr hp i⟩` using `fun i => hM.1 i _ rfl`. Establish `hW : ∀ j, W₀ j = W ⟨conjEmb τ, finCongr hq j⟩` using `fun j => hM.2 j _ rfl`. Establish `hli : LinearIndependent ℂ V`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[funext hV]`. Conclude with `h.2.2.2.2.1.comp (fun i => (⟨τ, finCongr hp i⟩ : Pad.Letter D)) fun i i' hi => (finCongr hp).injective (eq_of_heq (Sigma.mk.inj hi).2)`. Establish `haeq : ∀ k, a k = fun i => s k ⟨τ, finCongr hp i⟩` using `fun k => by`. Use `proj_unique h.2.1 hli (ha k) fun i => ?_` and prove the remaining obligations. Rewrite using `[← hl_apply, map_sub, hl_apply, hl_apply, hy, herm_sum_left, herm_sum_left, hV i, sum_type τ _ (fun z hz => by rw [orth h hz, mul_zero]), sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hV]`. Conclude with `((finCongr hp).sum_comp (fun m => s k ⟨τ, m⟩ * herm Hm (W ⟨τ, m⟩) (W ⟨τ, finCongr hp i⟩))).symm`. Rewrite using `[perVal, horVal_eq h0 (dualMat_mul hx h) hS, ← det_fromRows_smul, ← Matrix.det_transpose (Matrix.fromRows _ _), ← Matrix.det_mul, ← Matrix.det_submatrix_equiv_self (Equiv.sumCongr (finCongr hq) (finCongr hp))]`. Use `congr 1`. Use extensionality with `k m`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.submatrix_apply, Matrix.mul_apply]`. Simplify using `only [Matrix.of_apply, Equiv.symm_apply_apply]`. Break down `m with j | i` into its components or cases. Simplify using `only [Matrix.of_apply, Sum.elim_inl, Matrix.transpose_apply, Equiv.sumCongr_apply, Sum.map_inl, Matrix.fromRows_apply_inl, Matrix.smul_apply, dualMat, smul_eq_mul]`. Rewrite using `[hW, hy, herm_sum_right, sum_type (conjEmb τ) _ (fun z hz => by rw [orth h (Ne.symm hz), zero_mul])]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [(ht k).2, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k' _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[herm_symm Hm h.1, map_mul, ← starRingEnd_apply]`. Establish `hI` using `Complex.I_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Simplify using `only [Matrix.of_apply, Sum.elim_inr, Matrix.transpose_apply, Equiv.sumCongr_apply, Sum.map_inr, Matrix.fromRows_apply_inr, perMat, haeq, (ht k).1]`.
+A detailed English derivation is pending.
 -/
 theorem wedge_eq (hp : D.p = D.mult τ) (hq : D.q = D.mult (conjEmb τ)) (hx : IsPerBasis Di x hm)
     (h : PerData c e Di Hm P W Q) (hG : GoodPer c e τ x hm Q) {V : Fin D.p → Fin g → ℂ} {W₀ : Fin D.q → Fin g → ℂ}
@@ -335,11 +335,11 @@ end GlobalTheory.DetLine.WedgePer
 open GlobalTheory.DetLine.WedgePer in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l c e τ Di x hm g g' Hm Hm' P P' W W' Q Q' φ V W₀ V' W₀' y Δ Δ' hτ hx h h' hG hG' hφ hM hM' hΔ hΔ'`. Establish `hp : D.p = D.mult τ` using `(if_pos hτ).symm`. Establish `hq : D.q = D.mult (conjEmb τ)`. Use `(if_neg fun hc => ?_).symm` and prove the remaining obligations. Establish `h1 : starRingEnd ℂ H.rt0 = H.rt0` using `by rw [← hτ]; exact hc.trans hτ.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `H.sqrt_neg_disc_sq`. Rewrite `h2` using `[← Complex.conj_eq_iff_re.1 h1]`. Establish `h3 : H.rt0.re ^ 2 = -(H.d : ℝ)` using `by exact_mod_cast h2`. Establish `h4 : (0 : ℝ) < H.d` using `Nat.cast_pos.2 H.d_prime.pos`. Use polynomial arithmetic with `[sq_nonneg H.rt0.re]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `choose t s s' hy hy' ht ht' using fun k => exists_coef hx h h' hφ (y k)`. Rewrite using `[wedge_eq hp hq hx h hG hM hΔ hy ht, wedge_eq hp hq hx h' hG' hM' hΔ' hy' ht']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DetLine.perVal_mul_wedgeCoord : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H) (c : Coeff l) (e : c.F →+* ℂ) (τ : E →+* ℂ) (Di : Datum H) (x : Hor.Idx D τ → Di.La) (hm : Matrix (Hor.Idx D τ) (Hor.Idx D τ) E) (g g' : ℕ) (Hm : Matrix (Fin g) (Fin g) ℂ) (Hm' : Matrix (Fin g') (Fin g') ℂ) (P : Di.La →+ (Fin g → ℂ)) (P' : Di.La →+ (Fin g' → ℂ)) (W : Pad.Letter D → Fin g → ℂ) (W' : Pad.Letter D → Fin g' → ℂ) (Q Q' : Di.La →+ (Pad.Letter D → ℂ)) (φ : (Fin g → ℂ) ≃ₗ[ℝ] (Fin g' → ℂ)) (V : Fin D.p → Fin g → ℂ) (W₀ : Fin D.q → Fin g → ℂ) (V' : Fin D.p → Fin g' → ℂ) (W₀' : Fin D.q → Fin g' → ℂ) (y : Fin D.q ⊕ Fin D.p → Fin g → ℂ) (Δ Δ' : ℂ), τ (H.rt : E) = H.rt0 → IsPerBasis Di x hm → PerData c e Di Hm P W Q → PerData c e Di Hm' P' W' Q' → GoodPer c e τ x hm Q → GoodPer c e τ x hm Q' → (∀ a, φ (P a) = P' a) → MatchVec τ W V W₀ → MatchVec τ W' V' W₀' → IsWedgeCoord Hm V W₀ y Δ → IsWedgeCoord Hm' V' W₀' (fun k => φ (y k)) Δ' → perVal c e τ x hm Q * Δ' = perVal c e τ x hm Q' * Δ := by
   intro E _ _ _ H D l c e τ Di x hm g g' Hm Hm' P P' W W' Q Q' φ V W₀ V' W₀' y Δ Δ' hτ hx h h' hG hG' hφ hM hM' hΔ hΔ'

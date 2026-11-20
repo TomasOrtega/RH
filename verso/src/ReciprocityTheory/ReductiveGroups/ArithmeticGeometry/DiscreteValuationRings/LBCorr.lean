@@ -16,7 +16,7 @@ variable {X Y Z : Scheme.{0}} {L : LB X} {K K' K₂ K₂' : Type} [Fintype K] [F
   {φ₂ : K₂ → (Y ⟶ X)} {ε₂ : K₂ → ℤ} {φ₂' : K₂' → (Y ⟶ X)} {ε₂' : K₂' → ℤ}
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Apply the tactic sequence `try rfl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma res_res_lemma {A : Scheme.{0}} {U V W : A.Opens} (h1 : V ≤ U) (h2 : W ≤ V)
     (a : Γ(A, U)ˣ) : res h2 (res h1 a) = res (h2.trans h1) a := by
@@ -26,7 +26,7 @@ private lemma res_res_lemma {A : Scheme.{0}} {U V W : A.Opens} (h1 : V ≤ U) (h
   try rfl
 
 /- English proof (translation)
-Establish `h'` using `congrArg (res hO) h`. Rewrite `h'` using `[res_res_lemma, res_res_lemma]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private lemma res_eq_res_of_le_of_res_eq {A : Scheme.{0}} {U V V0 O : A.Opens} {a : Γ(A, U)ˣ} {b : Γ(A, V)ˣ}
     {p : V0 ≤ U} {q : V0 ≤ V} (h : res p a = res q b) (hO : O ≤ V0) (r : O ≤ U) (s : O ≤ V) :
@@ -35,7 +35,7 @@ private lemma res_eq_res_of_le_of_res_eq {A : Scheme.{0}} {U V V0 O : A.Opens} {
   rwa [res_res_lemma, res_res_lemma] at h'
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [res, pullU, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← RingHom.comp_apply, ← CommRingCat.hom_comp]`. Conclude with `congrArg (fun φ => φ.hom (a : Γ(A, U))) (g.naturality (homOfLE h).op)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma pullU_res_eq_res_pullU' {A B : Scheme.{0}} (g : B ⟶ A) {U V : A.Opens} (h : V ≤ U)
     (a : Γ(A, U)ˣ) :
@@ -46,7 +46,7 @@ private lemma pullU_res_eq_res_pullU' {A B : Scheme.{0}} (g : B ⟶ A) {U V : A.
   exact congrArg (fun φ => φ.hom (a : Γ(A, U))) (g.naturality (homOfLE h).op)
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [res, pullU, Units.coe_map, MonoidHom.coe_coe]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private lemma pullU_comp_lemma {A B C : Scheme.{0}} (g : B ⟶ A) (g' : C ⟶ B) {U : A.Opens}
     {O : C.Opens} (p : O ≤ g' ⁻¹ᵁ (g ⁻¹ᵁ U)) (q : O ≤ (g' ≫ g) ⁻¹ᵁ U) (x : Γ(A, U)ˣ) :
@@ -56,7 +56,7 @@ private lemma pullU_comp_lemma {A B C : Scheme.{0}} (g : B ⟶ A) (g' : C ⟶ B)
   rfl
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [res, pullU, Units.coe_map, MonoidHom.coe_coe]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private lemma res_pullU_id' {A : Scheme.{0}} {U V : A.Opens} (h : V ≤ (𝟙 A) ⁻¹ᵁ U) (h' : V ≤ U)
     (x : Γ(A, U)ˣ) : res h (pullU (𝟙 A) U x) = res h' x := by
@@ -65,7 +65,7 @@ private lemma res_pullU_id' {A : Scheme.{0}} {U V : A.Opens} (h : V ≤ (𝟙 A)
   rfl
 
 /- English proof (translation)
-Establish `h'` using `congrArg (pullU g V0) h`. Rewrite `h'` using `[pullU_res_eq_res_pullU', pullU_res_eq_res_pullU']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private lemma res_pullU_eq_of_res_eq {A B : Scheme.{0}} (g : B ⟶ A) {U V V0 : A.Opens} {a : Γ(A, U)ˣ}
     {b : Γ(A, V)ˣ} {p : V0 ≤ U} {q : V0 ≤ V} (h : res p a = res q b) :
@@ -75,7 +75,7 @@ private lemma res_pullU_eq_of_res_eq {A B : Scheme.{0}} (g : B ⟶ A) {U V V0 : 
   rwa [pullU_res_eq_res_pullU', pullU_res_eq_res_pullU'] at h'
 
 /- English proof (translation)
-Introduce `_ hx` and use `⟨Set.mem_iInter.2 fun k => Set.mem_iInter.1 hx.1 k, Set.mem_iInter.2 fun k => Set.mem_iInter.1 hx.2 k⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 private lemma wchart_comp_inf_le_preimage_wchart_inf (g : Z ⟶ Y) (j : K → L.ι) (j' : K' → L.ι) :
     LB.wchart L (fun k => g ≫ φ k) j ⊓ LB.wchart L (fun k => g ≫ φ' k) j' ≤
@@ -83,7 +83,7 @@ private lemma wchart_comp_inf_le_preimage_wchart_inf (g : Z ⟶ Y) (j : K → L.
   ⟨Set.mem_iInter.2 fun k => Set.mem_iInter.1 hx.1 k, Set.mem_iInter.2 fun k => Set.mem_iInter.1 hx.2 k⟩
 
 /- English proof (translation)
-Introduce `_ hx` and use `⟨Set.mem_iInter.2 fun k => Set.mem_iInter.1 hx.1 (Sum.inl k), Set.mem_iInter.2 fun k => Set.mem_iInter.1 hx.2 (Sum.inl k)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 private lemma wchart_sumElim_inf_le_wchart_inl_inf (j : K ⊕ K₂ → L.ι) (j' : K' ⊕ K₂' → L.ι) :
     LB.wchart L (Sum.elim φ φ₂) j ⊓ LB.wchart L (Sum.elim φ' φ₂') j' ≤
@@ -92,7 +92,7 @@ private lemma wchart_sumElim_inf_le_wchart_inl_inf (j : K ⊕ K₂ → L.ι) (j'
     Set.mem_iInter.2 fun k => Set.mem_iInter.1 hx.2 (Sum.inl k)⟩
 
 /- English proof (translation)
-Introduce `_ hx` and use `⟨Set.mem_iInter.2 fun k => Set.mem_iInter.1 hx.1 (Sum.inr k), Set.mem_iInter.2 fun k => Set.mem_iInter.1 hx.2 (Sum.inr k)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 private lemma wchart_sumElim_inf_le_wchart_inr_inf (j : K ⊕ K₂ → L.ι) (j' : K' ⊕ K₂' → L.ι) :
     LB.wchart L (Sum.elim φ φ₂) j ⊓ LB.wchart L (Sum.elim φ' φ₂') j' ≤
@@ -101,7 +101,7 @@ private lemma wchart_sumElim_inf_le_wchart_inr_inf (j : K ⊕ K₂ → L.ι) (j'
     Set.mem_iInter.2 fun k => Set.mem_iInter.1 hx.2 (Sum.inr k)⟩
 
 /- English proof (translation)
-Introduce `j j' _ _ hk`. Take `rfl : j = j'` from `funext fun k => hk k k rfl`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 private lemma gen_corr_self (t : LB.Gen (LB.LinComb L φ ε)) : LB.Gen.Corr L φ ε φ ε t t := by
   intro j j' _ _ hk
@@ -109,7 +109,7 @@ private lemma gen_corr_self (t : LB.Gen (LB.LinComb L φ ε)) : LB.Gen.Corr L φ
   rfl
 
 /- English proof (translation)
-Conclude with `res_eq_res_of_le_of_res_eq h (le_inf h1 h2) h1 h2`.
+A detailed English derivation is pending.
 -/
 lemma res_eq_of_res_eq {U V W : Y.Opens} (a : Γ(Y, U)ˣ) (b : Γ(Y, V)ˣ) (h1 : W ≤ U) (h2 : W ≤ V)
     (h : res (inf_le_left : U ⊓ V ≤ U) a = res (inf_le_right : U ⊓ V ≤ V) b) :
@@ -117,7 +117,7 @@ lemma res_eq_of_res_eq {U V W : Y.Opens} (a : Γ(Y, U)ˣ) (b : Γ(Y, V)ˣ) (h1 :
   exact res_eq_res_of_le_of_res_eq h (le_inf h1 h2) h1 h2
 
 /- English proof (translation)
-Introduce `j' j hc' hc hk`. Conclude with `(res_eq_of_res_eq _ _ _ _ (h j j' hc hc' fun k k' e => (hk k' k e.symm).symm)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma corr_symm {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ' ε')}
     (h : LB.Gen.Corr L φ ε φ' ε' t t') : LB.Gen.Corr L φ' ε' φ ε t' t := by
@@ -125,7 +125,7 @@ lemma corr_symm {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ'
   exact (res_eq_of_res_eq _ _ _ _ (h j j' hc hc' fun k k' e => (hk k' k e.symm).symm)).symm
 
 /- English proof (translation)
-Introduce `j j' hc hc' hk`. Establish `e0` using `h j j' (fun k₁ k₂ e => hc k₁ k₂ (congrArg (g ≫ ·) e)) (fun k₁ k₂ e => hc' k₁ k₂ (congrArg (g ≫ ·) e)) fun k k' e => hk k k' (congrArg (g ≫ ·) e)`. Conclude with `(res_res_lemma _ _ _).trans ((res_eq_res_of_le_of_res_eq (res_pullU_eq_of_res_eq g e0) (wchart_comp_inf_le_preimage_wchart_inf g j j') _ _).trans (res_res_lemma _ _ _).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma corr_pullGen {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ' ε')}
     (h : LB.Gen.Corr L φ ε φ' ε' t t') (g : Z ⟶ Y) :
@@ -137,9 +137,9 @@ lemma corr_pullGen {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L 
     (res_res_lemma _ _ _).symm)
 
 /- English proof (translation)
-Introduce `j j' hc hc' hk`. Establish `e1` using `h (j ∘ Sum.inl) (j' ∘ Sum.inl) (fun a b e => hc (Sum.inl a) (Sum.inl b) e) (fun a b e => hc' (Sum.inl a) (Sum.inl b) e) fun k k' e => hk (Sum.inl k) (Sum.inl k') e`. Establish `e2` using `h₂ (j ∘ Sum.inr) (j' ∘ Sum.inr) (fun a b e => hc (Sum.inr a) (Sum.inr b) e) (fun a b e => hc' (Sum.inr a) (Sum.inr b) e) fun k k' e => hk (Sum.inr k) (Sum.inr k') e`. Use `(map_mul _ _ _).trans (Eq.trans ?_ (map_mul _ _ _).symm)` and prove the remaining obligations. Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(res_res_lemma _ _ _).trans ((res_eq_res_of_le_of_res_eq e1 (wchart_sumElim_inf_le_wchart_inl_inf j j') _ _).trans (res_res_lemma _ _ _).symm)`. Conclude with `(res_res_lemma _ _ _).trans ((res_eq_res_of_le_of_res_eq e2 (wchart_sumElim_inf_le_wchart_inr_inf j j') _ _).trans (res_res_lemma _ _ _).symm)`.
+A detailed English derivation is pending.
 -/
 lemma corr_mulGen {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ' ε')}
     {t₂ : LB.Gen (LB.LinComb L φ₂ ε₂)} {t₂' : LB.Gen (LB.LinComb L φ₂' ε₂')}
@@ -159,21 +159,17 @@ lemma corr_mulGen {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L �
 
 open scoped Classical in
 /- English proof (translation)
-Introduce `j j' hj hj' hm`. Set `ρ : ((Y ⟶ X) → L.ι) → (Y ⟶ X) → L.ι` to `fun ρ₀ ψ => if h₁ : ∃ k, φ k = ψ then j h₁.choose else if h₃ : ∃ k', φ' k' = ψ then j' h₃.choose else ρ₀ ψ`. Establish `hρ1 : ∀ ρ₀ k, ρ ρ₀ (φ k) = j k` using `fun ρ₀ k => by`. Simplify using `only [ρ, dif_pos (⟨k, rfl⟩ : ∃ k₀, φ k₀ = φ k)]`. Conclude with `hj _ _ (⟨k, rfl⟩ : ∃ k₀, φ k₀ = φ k).choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hρ3 : ∀ ρ₀ k', ρ ρ₀ (φ' k') = j' k'` using `fun ρ₀ k' => by`. Simplify using `only [ρ]`. Use `split_ifs with h₁ h₃`. Conclude with `hm _ _ h₁.choose_spec`. Conclude with `hj' _ _ h₃.choose_spec`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd ⟨k', rfl⟩ h₃`. Use `set O := LB.wchart L φ j ⊓ LB.wchart L φ' j'`. Apply `units_ext_cover O (fun ρ₀ => O ⊓ LB.wchart L φ₂ (ρ ρ₀ ∘ φ₂)) (fun _ => inf_le_left)` to reduce the goal to its premises. Introduce `y hy`. Establish `hex : ∀ ψ : Y ⟶ X, ∃ i, ψ.base y ∈ L.U i` using `fun ψ => by`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: ψ.base y ∈ (⨆ i, L.U i : X.Opens)` using `by rw [hL.cover]; trivial`. Simplify `this` using `[TopologicalSpace.Opens.mem_iSup]`. Use `choose ρ₀ hρ₀ using hex`. Use `TopologicalSpace.Opens.mem_iSup.2 ⟨ρ₀, hy, Set.mem_iInter.2 fun k₂ => ?_⟩` and prove the remaining obligations. Use `show (φ₂ k₂).base y ∈ L.U (ρ ρ₀ (φ₂ k₂))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ρ]`. Use `split_ifs with h₁ h₃`. Use `Set.mem_iInter.1 hy.1 h₁.choose` as an intermediate fact. Rewrite `this` using `[h₁.choose_spec]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Set.mem_iInter.1 hy.2 h₃.choose` as an intermediate fact. Rewrite `this` using `[h₃.choose_spec]`. Conclude with `this`. Conclude with `hρ₀ _`. Introduce `ρ₀`.
-
-Establish `c2 : LB.Coh L φ₂ (ρ ρ₀ ∘ φ₂)` using `fun k₁ k₂ e => by simp only [Function.comp, e]`. Establish `e1` using `h j (ρ ρ₀ ∘ φ₂) hj c2 (fun k k₂ e => by simp only [Function.comp, ← e, hρ1])`. Establish `e2` using `h' (ρ ρ₀ ∘ φ₂) j' c2 hj' (fun k₂ k' e => by simp only [Function.comp, e, hρ3])`. Establish `le1 : O ⊓ LB.wchart L φ₂ (ρ ρ₀ ∘ φ₂) ≤ LB.wchart L φ j` using `fun _ hy => hy.1.1`. Establish `le2 : O ⊓ LB.wchart L φ₂ (ρ ρ₀ ∘ φ₂) ≤ LB.wchart L φ₂ (ρ ρ₀ ∘ φ₂)` using `fun _ hy => hy.2`.
-
-Establish `le3 : O ⊓ LB.wchart L φ₂ (ρ ρ₀ ∘ φ₂) ≤ LB.wchart L φ' j'` using `fun _ hy => hy.1.2`. Establish `f1` using `res_eq_of_res_eq _ _ le1 le2 e1`. Establish `f2` using `res_eq_of_res_eq _ _ le2 le3 e2`. Use `erw [res_res', res_res']`. Conclude with `f1.trans f2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma corr_trans (hL : L.IsLB) {t : LB.Gen (LB.LinComb L φ ε)} {t₂ : LB.Gen (LB.LinComb L φ₂ ε₂)}
     {t' : LB.Gen (LB.LinComb L φ' ε')}
@@ -222,13 +218,13 @@ lemma corr_trans (hL : L.IsLB) {t : LB.Gen (LB.LinComb L φ ε)} {t₂ : LB.Gen 
     exact f1.trans f2
 
 /- English proof (translation)
-Conclude with `gen_corr_self t`.
+A detailed English derivation is pending.
 -/
 lemma corr_refl (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) : LB.Gen.Corr L φ ε φ ε t t := by
   exact gen_corr_self t
 
 /- English proof (translation)
-Simplify using `only [map_mul, pullU_res_eq_res_pullU', res_res_lemma]`. Apply the tactic sequence `congr 1 <;> exact res_res_lemma _ _ _`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma shape_pull_mul (g : Z ⟶ Y) {U₁ U₂ W : Y.Opens} {Wz W₁ W₂ O Ow : Z.Opens}
     (h₁ : W ≤ U₁) (h₂ : W ≤ U₂) (hz : Wz ≤ g ⁻¹ᵁ W) (hO : O ≤ Wz) (k₁ : W₁ ≤ g ⁻¹ᵁ U₁) (k₂ : W₂ ≤ g ⁻¹ᵁ U₂)
@@ -239,7 +235,7 @@ lemma shape_pull_mul (g : Z ⟶ Y) {U₁ U₂ W : Y.Opens} {Wz W₁ W₂ O Ow : 
   congr 1 <;> exact res_res_lemma _ _ _
 
 /- English proof (translation)
-Introduce `j j' _ _ hk`. Apply the tactic sequence `obtain rfl : j = j' := funext fun k => by cases k <;> exact hk _ _ rfl`. Conclude with `shape_pull_mul g _ _ _ _ _ _ _ _ _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma corr_pullGen_mulGen (t : LB.Gen (LB.LinComb L φ ε)) (t₂ : LB.Gen (LB.LinComb L φ₂ ε₂)) (g : Z ⟶ Y) :
     LB.Gen.Corr L _ _ _ _ (LB.pullGen L _ _ (LB.mulGen L _ _ _ _ t t₂) g)
@@ -249,7 +245,7 @@ lemma corr_pullGen_mulGen (t : LB.Gen (LB.LinComb L φ ε)) (t₂ : LB.Gen (LB.L
   exact shape_pull_mul g _ _ _ _ _ _ _ _ _ _ _
 
 /- English proof (translation)
-Simplify using `only [pullU_res_eq_res_pullU', res_res_lemma]`. Use `first`. Consider the case `exact (res_res_lemma _ _ _).trans (pullU_comp_lemma _ _ _ _ _)`. Consider the case `exact (res_res_lemma _ _ _).trans ((res_res_lemma _ _ _).trans (pullU_comp_lemma _ _ _ _ _))`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma shape_pull_comp {W : Scheme.{0}} (g : Z ⟶ Y) (g' : W ⟶ Z) {U : Y.Opens} {U₁ : Z.Opens} {V₁ V₂ O : W.Opens}
     (h₁ : U₁ ≤ g ⁻¹ᵁ U) (k₁ : V₁ ≤ g' ⁻¹ᵁ U₁) (k₂ : V₂ ≤ (g' ≫ g) ⁻¹ᵁ U) (o₁ : O ≤ V₁) (o₂ : O ≤ V₂)
@@ -261,7 +257,7 @@ lemma shape_pull_comp {W : Scheme.{0}} (g : Z ⟶ Y) (g' : W ⟶ Z) {U : Y.Opens
     | exact (res_res_lemma _ _ _).trans ((res_res_lemma _ _ _).trans (pullU_comp_lemma _ _ _ _ _))
 
 /- English proof (translation)
-Introduce `j j' _ _ hk`. Take `rfl : j = j'` from `funext fun k => hk k k (Category.assoc _ _ _).symm`. Conclude with `shape_pull_comp g g' _ _ _ _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma corr_pullGen_comp {W : Scheme.{0}} (t : LB.Gen (LB.LinComb L φ ε)) (g : Z ⟶ Y) (g' : W ⟶ Z) :
     LB.Gen.Corr L _ ε _ ε (LB.pullGen L _ ε (LB.pullGen L φ ε t g) g') (LB.pullGen L φ ε t (g' ≫ g)) := by
@@ -270,7 +266,7 @@ lemma corr_pullGen_comp {W : Scheme.{0}} (t : LB.Gen (LB.LinComb L φ ε)) (g : 
   exact shape_pull_comp g g' _ _ _ _ _ _
 
 /- English proof (translation)
-Introduce `j j' hc _ _`. Conclude with `(congrArg (res _) (h j hc)).trans ((map_one _).trans (map_one _).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma corr_one_of {t : LB.Gen (LB.LinComb L φ ε)} (h : ∀ j, LB.Coh L φ j → t.s j = 1) :
     LB.Gen.Corr L φ ε (K' := PEmpty) PEmpty.elim PEmpty.elim t (LB.oneGen L) := by
@@ -278,14 +274,14 @@ lemma corr_one_of {t : LB.Gen (LB.LinComb L φ ε)} (h : ∀ j, LB.Coh L φ j �
   exact (congrArg (res _) (h j hc)).trans ((map_one _).trans (map_one _).symm)
 
 /- English proof (translation)
-Simplify using `only [map_one, one_mul, res_res_lemma]`.
+Simplify using the standard rewrite rules.
 -/
 lemma shape_one_mul {U₁ O O' : Y.Opens} {V : Y.Opens} (h : O ≤ O') (h₀ : O' ≤ V) (h₁ : O' ≤ U₁) (hO : O ≤ U₁)
     (x : Γ(Y, U₁)ˣ) : res h (res h₀ (1 : Γ(Y, V)ˣ) * res h₁ x) = res hO x := by
   simp only [map_one, one_mul, res_res_lemma]
 
 /- English proof (translation)
-Introduce `j j' _ _ hk`. Take `rfl : j ∘ Sum.inr = j'` from `funext fun k => hk (Sum.inr k) k rfl`. Conclude with `shape_one_mul _ _ _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma corr_mulGen_one (t : LB.Gen (LB.LinComb L φ ε)) :
     LB.Gen.Corr L _ _ φ ε (LB.mulGen L (K := PEmpty) PEmpty.elim PEmpty.elim φ ε (LB.oneGen L) t) t := by
@@ -294,7 +290,7 @@ lemma corr_mulGen_one (t : LB.Gen (LB.LinComb L φ ε)) :
   exact shape_one_mul _ _ _ _ _
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `gen_corr_self _`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 lemma corr_pullGen_of_eq (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (g g' : Z ⟶ Y) (e : g = g') :
     LB.Gen.Corr L _ ε _ ε (LB.pullGen L φ ε t g) (LB.pullGen L φ ε t g') := by
@@ -302,7 +298,7 @@ lemma corr_pullGen_of_eq (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (g g' 
   exact gen_corr_self _
 
 /- English proof (translation)
-Rewrite using `[res_res_lemma]`. Conclude with `res_pullU_id' _ _ x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma shape_pull_id {U : Y.Opens} {V O : Y.Opens} (h : V ≤ (𝟙 Y) ⁻¹ᵁ U) (o : O ≤ V) (o' : O ≤ U) (x : Γ(Y, U)ˣ) :
     res o (res h (pullU (𝟙 Y) U x)) = res o' x := by
@@ -310,7 +306,7 @@ lemma shape_pull_id {U : Y.Opens} {V O : Y.Opens} (h : V ≤ (𝟙 Y) ⁻¹ᵁ U
   exact res_pullU_id' _ _ x
 
 /- English proof (translation)
-Introduce `j j' _ _ hk`. Take `rfl : j = j'` from `funext fun k => hk k k (Category.id_comp _)`. Conclude with `shape_pull_id _ _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma corr_pullGen_id (t : LB.Gen (LB.LinComb L φ ε)) :
     LB.Gen.Corr L _ ε φ ε (LB.pullGen L φ ε t (𝟙 Y)) t := by
@@ -319,9 +315,9 @@ lemma corr_pullGen_id (t : LB.Gen (LB.LinComb L φ ε)) :
   exact shape_pull_id _ _ _ _
 
 /- English proof (translation)
-Introduce `(i : K → L.ι) (j : K → L.ι)`. Establish `e` using `ht i j`. Establish `hg : (LB.LinComb L φ (fun k => (n : ℤ) * ε k)).g i j = ((LB.LinComb L φ ε).g i j) ^ n`. Simplify using `only [LB.LinComb, mul_comm (n : ℤ), zpow_mul, zpow_natCast, Finset.prod_pow]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Conclude with `(map_pow _ _ _).trans ((congrArg (· ^ n) e).trans ((mul_pow _ _ _).trans (congrArg₂ (· * ·) hg.symm (map_pow _ _ _).symm)))`.
+A detailed English derivation is pending.
 -/
 lemma powGen_isGen_of_isGen (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (n : ℕ) :
     (ReciprocityTheory.ChartRestriction.G.Out.GeneratorPullback.powGen L φ ε t n).IsGen := by
@@ -334,9 +330,9 @@ lemma powGen_isGen_of_isGen (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (n 
     (congrArg₂ (· * ·) hg.symm (map_pow _ _ _).symm)))
 
 /- English proof (translation)
-Introduce `(i : K → L.ι) (j : K → L.ι)`. Establish `e` using `ht i j`. Establish `hinv : (LB.LinComb L φ (fun k => -ε k)).g i j = ((LB.LinComb L φ ε).g i j)⁻¹`. Simplify using `only [LB.LinComb, zpow_neg, Finset.prod_inv_distrib]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Conclude with `(map_inv _ _).trans ((congrArg (·⁻¹) e).trans ((mul_inv _ _).trans (congrArg₂ (· * ·) hinv.symm (map_inv _ _).symm)))`.
+A detailed English derivation is pending.
 -/
 lemma invGen_isGen_of_isGen (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) : (LB.invGen L φ ε t).IsGen := by
   intro (i : K → L.ι) (j : K → L.ι)
@@ -348,7 +344,7 @@ lemma invGen_isGen_of_isGen (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) : (
     (congrArg₂ (· * ·) hinv.symm (map_inv _ _).symm)))
 
 /- English proof (translation)
-Introduce `i j`. Use `ext`. Conclude with `(mulSec L φ ε φ₂ ε₂ (genSec t ht) (genSec t₂ ht₂)).compat i j`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 lemma mulGen_isGen_of_isGen (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (t₂ : LB.Gen (LB.LinComb L φ₂ ε₂))
     (ht₂ : t₂.IsGen) : (LB.mulGen L _ _ _ _ t t₂).IsGen := by
@@ -357,14 +353,14 @@ lemma mulGen_isGen_of_isGen (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (t�
   exact (mulSec L φ ε φ₂ ε₂ (genSec t ht) (genSec t₂ ht₂)).compat i j
 
 /- English proof (translation)
-Simplify using `only [map_inv, res_res_lemma]`.
+Simplify using the standard rewrite rules.
 -/
 lemma shape_pull_inv (g : Z ⟶ Y) {U : Y.Opens} {W O O' : Z.Opens} (h : W ≤ g ⁻¹ᵁ U) (o : O ≤ W) (h' : O' ≤ g ⁻¹ᵁ U)
     (o' : O ≤ O') (x : Γ(Y, U)ˣ) : res o (res h (pullU g U x⁻¹)) = res o' (res h' (pullU g U x))⁻¹ := by
   simp only [map_inv, res_res_lemma]
 
 /- English proof (translation)
-Introduce `j j' _ _ hk`. Take `rfl : j = j'` from `funext fun k => hk k k rfl`. Conclude with `shape_pull_inv g _ _ _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma corr_pullGen_invGen (t : LB.Gen (LB.LinComb L φ ε)) (g : Z ⟶ Y) :
     LB.Gen.Corr L _ _ _ _ (LB.pullGen L _ _ (LB.invGen L φ ε t) g) (LB.invGen L _ _ (LB.pullGen L φ ε t g)) := by
@@ -373,7 +369,7 @@ lemma corr_pullGen_invGen (t : LB.Gen (LB.LinComb L φ ε)) (g : Z ⟶ Y) :
   exact shape_pull_inv g _ _ _ _ _
 
 /- English proof (translation)
-Simplify using `only [map_mul, map_inv, res_res_lemma]`. Rewrite using `[res_eq_res_of_le_of_res_eq hxy (le_inf (o.trans h₁) (o.trans h₂)) _ (o.trans h₂), mul_inv_cancel]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma shape_mul_inv_one {U U' O : Y.Opens} {W : Y.Opens} (h₁ : W ≤ U) (h₂ : W ≤ U') (o : O ≤ W) (x : Γ(Y, U)ˣ)
     (y : Γ(Y, U')ˣ) (hxy : res (inf_le_left : U ⊓ U' ≤ U) x = res (inf_le_right : U ⊓ U' ≤ U') y) :
@@ -382,7 +378,7 @@ lemma shape_mul_inv_one {U U' O : Y.Opens} {W : Y.Opens} (h₁ : W ≤ U) (h₂ 
   rw [res_eq_res_of_le_of_res_eq hxy (le_inf (o.trans h₁) (o.trans h₂)) _ (o.trans h₂), mul_inv_cancel]
 
 /- English proof (translation)
-Introduce `j j' hc _ _`. Establish `e` using `h (j ∘ Sum.inl) (j ∘ Sum.inr) (fun a b e => hc (Sum.inl a) (Sum.inl b) e) (fun a b e => hc (Sum.inr a) (Sum.inr b) e) fun k k' e => hc (Sum.inl k) (Sum.inr k') e`. Conclude with `(shape_mul_inv_one _ _ _ _ _ e).trans (map_one _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma corr_ratio_one {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb L φ' ε')}
     (h : LB.Gen.Corr L φ ε φ' ε' t t') :
@@ -394,15 +390,15 @@ lemma corr_ratio_one {t : LB.Gen (LB.LinComb L φ ε)} {t' : LB.Gen (LB.LinComb 
   exact (shape_mul_inv_one _ _ _ _ _ e).trans (map_one _).symm
 
 /- English proof (translation)
-Use `set rT := LB.pullGen L φr εr r p`. Establish `hrT : rT.IsGen` using `pullGen_isGen_of_isGen _ _ r hr p`. Use `set v := LB.mulGen L _ _ _ _ t (LB.invGen L _ _ rT)`. Establish `hv : v.IsGen` using `mulGen_isGen_of_isGen _ ht _ (invGen_isGen_of_isGen _ hrT)`. Establish `h0' : fsum (fun i => z ≫ Sum.elim φ (fun k => p ≫ φr k) i) (Sum.elim ε (fun k => -εr k)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[fsum_comp, fsum_sumElim, Finsupp.mapDomain_add, ← fsum_comp, h0, ← fsum_comp]`. Establish `e : (fun k => z ≫ p ≫ φr k) = φr`. Use function extensionality and compare the values at `k`. Rewrite using `[← Category.assoc, hzp, Category.id_comp]`. Rewrite using `[e, fsum_neg, add_neg_cancel]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v', hv', hv1⟩` from `exists_normalized hL _ _ v hv p z hzp h0'`. Establish `hW` using `mulGen_isGen_of_isGen _ hv' _ hrT`. Establish `hsW : LB.SameSum (Sum.elim (Sum.elim φ (fun k => p ≫ φr k)) (fun k => p ≫ φr k)) (Sum.elim (Sum.elim ε (fun k => -εr k)) εr) φ ε`. Rewrite using `[sameSum_iff_fsum, fsum_sumElim, fsum_sumElim, fsum_neg]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu, hcW⟩` from `gen_transport hL hsW _ hW`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Establish `c1` using `corr_pullGen (corr_symm hcW) z`. Establish `c2` using `corr_pullGen_mulGen v' rT z`. Establish `c4` using `corr_trans hL (corr_pullGen_comp r p z) (corr_trans hL (corr_pullGen_of_eq r hr _ _ hzp) (corr_pullGen_id r))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c3` using `corr_mulGen (corr_one_of (fun j hj => hv1 j hj)) c4`. Establish `c5` using `corr_mulGen_one r`. Conclude with `corr_trans hL c1 (corr_trans hL c2 (corr_trans hL c3 c5))`.
+A detailed English derivation is pending.
 -/
 theorem exists_normalized_to {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K Kr : Type} [Fintype K] [Fintype Kr]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen)

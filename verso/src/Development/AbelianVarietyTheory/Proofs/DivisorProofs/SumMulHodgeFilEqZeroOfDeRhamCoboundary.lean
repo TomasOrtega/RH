@@ -18,17 +18,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Introduce `H R _ B _ g hB hg y hy D _ _ J _ d β hβ hcob`. Take `⟨-, -, hBC⟩` from `GlobalTheory.abelianDeRham_free_hodge_baseChange H`. Take `⟨B', _, π, q, hpb, hB', hg', -, hq1, hq2⟩` from `GlobalTheory.exists_baseChange_spAlg_prod R D B g hB hg`. Establish `w : q ≫ (SpAlg R D ⊗ B).hom = B'.hom ≫ spMap (algebraMap R D)`. Rewrite using `[← Over.w (fst (SpAlg R D) B), ← Category.assoc, hq1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Set `m` to `GlobalTheory.Published.AbelianDeRham.bcMor hpb`. Take `⟨hm, hspan⟩` from `hBC R B g hB hg D B' π hpb`. Take `⟨y', hy'⟩` from `hm.exists y`. Establish `hFil : ∀ c ∈ PrimitiveSubmodule B', y' c = 0`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `c hc`. Rewrite `hc` using `[hspan]`. Use `Submodule.span_induction (p := fun c _ ↦ y' c = 0) ?_ (by simp) (fun a b _ _ ha hb ↦ by simp [ha, hb]) (fun r a _ ha ↦ by simp [ha]) hc` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Rewrite using `[hy' c, (Submodule.mem_dualAnnihilator _).1 hy c hc, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk⟩` from `(GlobalTheory.PtExt.bcPull_keeps R D (algebraMap R D) (SpAlg R D ⊗ B) B' q w _).2 hcob`. Rewrite `hk` using `[GlobalTheory.PtExt.bcPull_sumMul_fv R D B B' q w π hq1 hq2 m.isMor J d β]`. Establish `hF1` using `(mem_hodgeFiltration_iff_pointwiseCoboundary D B' _).2 ⟨k, hk⟩`. Set `c' : primDR B'` to `∑ i, d i • m.pull ⟨_, hβ i⟩`. Establish `hc' : (c' : FirstDeRham (B'.hom ≫ 𝟙 _)) = CatCoh.H1.mk _ (∑ i, d i • m.isMor.coef.pullbackOneCocycle (β i))`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [c', Submodule.coe_sum, Submodule.coe_smul, map_sum, map_smul]`. Both sides reduce to the same expression. Establish `h0 : y' c' = 0` using `hFil c' (Submodule.mem_comap.2 (by rw [Submodule.subtype_apply, hc']; exact hF1))`. Rewrite using `[← h0]`. Simplify using `only [c', map_sum, map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun i _ ↦ by rw [hy' _]`.
+A detailed English derivation is pending.
 -/
 theorem sum_mul_eq_zero_of_isCob : GlobalTheory.Published.AbelianHodgeDeRham → ∀ (R : Type) [CommRing R] (B : Over (Sp R)) [GrpObj B] (g : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → ∀ y ∈ Fil B, ∀ (D : Type) [CommRing D] [Algebra R D] (J : Type) [Fintype J] (d : J → D) (β : J → Z1 (O (dp0 R) (B.hom ≫ 𝟙 _))) (hβ : ∀ i, CatCoh.H1.mk _ (β i) ∈ primDR B), (∃ k, IsCob (whole _) (sumMul d fun i ↦ fv (β i)) k) → ∑ i, d i * algebraMap R D (y ⟨_, hβ i⟩) = 0 := by
   intro H R _ B _ g hB hg y hy D _ _ J _ d β hβ hcob

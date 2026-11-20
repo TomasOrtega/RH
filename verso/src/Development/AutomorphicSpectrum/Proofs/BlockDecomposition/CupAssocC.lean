@@ -10,9 +10,9 @@ section
 variable {R : Type} [CommRing R] {C : Type u} [Category.{v} C]
 
 /- English proof (translation)
-Establish `e : (hg.functor ⋙ s).map (homOfLE (Fin.le_last (g' (Fin.last p)))) ≫ s.map (homOfLE (Fin.le_last (g (Fin.last m)))) = s.map (homOfLE (Fin.le_last (g (g' (Fin.last p)))))`. Express the relevant statement in the definitionally equal form `s.map _ ≫ s.map _ = _`. Rewrite using `[← s.map_comp]`. Both sides reduce to the same expression. Establish `key : ∀ {X Y Z : C} (a : X ⟶ Y) (b : Y ⟶ Z) (x : F.obj X), (F.map b).hom ((F.map a).hom x) = (F.map (a ≫ b)).hom x`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `X Y Z a b x`. Rewrite using `[F.map_comp]`. Both sides reduce to the same expression. Use `(key _ _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun φ => (F.map φ).hom (f ((hg.comp hg').functor ⋙ s))) e`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem term_term (F : C ⥤ ModuleCat.{w} R) {p m n : ℕ} (s : ComposableArrows C n) (f : Cn F p)
     (g : Fin (m + 1) → Fin (n + 1)) (hg : Monotone g) (g' : Fin (p + 1) → Fin (m + 1)) (hg' : Monotone g') :
@@ -31,7 +31,7 @@ theorem term_term (F : C ⥤ ModuleCat.{w} R) {p m n : ℕ} (s : ComposableArrow
   exact congrArg (fun φ => (F.map φ).hom (f ((hg.comp hg').functor ⋙ s))) e
 
 /- English proof (translation)
-Establish `e : s.map (homOfLE (Fin.le_last (id (Fin.last n)))) = 𝟙 _`. Rewrite using `[← s.map_id]`. Both sides reduce to the same expression. Unfold `term`. Rewrite using `[e, F.map_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -44,7 +44,7 @@ theorem term_id (F : C ⥤ ModuleCat.{w} R) {n : ℕ} (s : ComposableArrows C n)
   rfl
 
 /- English proof (translation)
-Rewrite using `[← term_term F₁ s f θ hθ _ (front_mono h), ← term_term F₂ s g θ hθ _ (back_mono h), P.nat]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem term_cupC {F₁ : C ⥤ ModuleCat.{w} R} {F₂ : C ⥤ ModuleCat.{w'} R} {F₃ : C ⥤ ModuleCat.{w''} R}
     (P : Pairing F₁ F₂ F₃) {p q a n : ℕ} (h : p + q = a) (f : Cn F₁ p) (g : Cn F₂ q)
@@ -64,7 +64,7 @@ theorem cupC_at {F₁ : C ⥤ ModuleCat.{w} R} {F₂ : C ⥤ ModuleCat.{w'} R} {
     P.cupC h f g s = P.μ _ (term F₁ s f (front h) (front_mono h)) (term F₂ s g (back h) (back_mono h)) := rfl
 
 /- English proof (translation)
-The claim follows from `map_one (A.map (s.map (homOfLE (Fin.le_last (g (Fin.last 0)))))).hom`.
+A detailed English derivation is pending.
 -/
 theorem term_one (A : C ⥤ CommAlgCat.{w} R) {n : ℕ} (s : ComposableArrows C n)
     (g : Fin (0 + 1) → Fin (n + 1)) (hg : Monotone g) :
@@ -74,11 +74,9 @@ theorem term_one (A : C ⥤ CommAlgCat.{w} R) {n : ℕ} (s : ComposableArrows C 
 end
 
 /- English proof (translation)
-Introduce `R _ C _ A`. Use `⟨fun n x => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Rewrite using `[cupC_at, term_one, term_congr (modF A) s x (back_mono _) monotone_id (funext fun i => Fin.ext (by simp [back])), term_id]`. Conclude with `one_mul (M := A.obj (s.obj (Fin.last n))) _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `s`. Rewrite using `[cupC_at, term_one, term_congr (modF A) s x (front_mono _) monotone_id (funext fun i => Fin.ext (by simp [front])), term_id]`. Conclude with `mul_one (M := A.obj (s.obj (Fin.last n))) _`. Introduce `p q r a b n h₁ h₂ h₃ h₄ x y z`. Use function extensionality and compare the values at `s`.
-
-Rewrite using `[cupC_at, cupC_at, term_cupC, term_cupC, term_congr (modF A) s x ((front_mono h₂).comp (front_mono h₁)) (front_mono h₄) (funext fun i => Fin.ext (by simp [front])), term_congr (modF A) s y ((front_mono h₂).comp (back_mono h₁)) ((back_mono h₄).comp (front_mono h₃)) (funext fun i = …`. Conclude with `mul_assoc (G := A.obj (s.obj (Fin.last n))) _ _ _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cup_assocC : ∀ {R : Type} [CommRing R] {C : Type u} [Category.{v} C] (A : C ⥤ CommAlgCat.{w} R), (∀ n (x : Cn (modF A) n), (mulP A).cupC (Nat.zero_add n) (fun s => (1 : A.obj (s.obj (Fin.last 0)))) x = x ∧ (mulP A).cupC (Nat.add_zero n) x (fun s => (1 : A.obj (s.obj (Fin.last 0)))) = x) ∧ ∀ {p q r a b n : ℕ} (h₁ : p + q = a) (h₂ : a + r = n) (h₃ : q + r = b) (h₄ : p + b = n) x y z, (mulP A).cupC h₂ ((mulP A).cupC h₁ x y) z = (mulP A).cupC h₄ x ((mulP A).cupC h₃ y z) := by
   intro R _ C _ A

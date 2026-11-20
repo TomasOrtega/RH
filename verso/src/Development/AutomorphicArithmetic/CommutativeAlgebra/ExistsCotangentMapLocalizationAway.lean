@@ -3,25 +3,23 @@ import Mathlib
 open KaehlerDifferential
 
 /- English proof (translation)
-Introduce `R S _ _ _ _ _ _ f _ ev d ψ h1 h2`. Use `letI : Module R (Fin d → ℂ) := Module.compHom (Fin d → ℂ) (ev.comp (algebraMap R S))`. Establish `hu : ∀ x : Submonoid.powers f, ev (algebraMap R S x) ≠ 0` using `fun x => ((IsLocalization.map_units S x).map ev).ne_zero`. Establish `hunit : ∀ x : Submonoid.powers f, IsUnit ((algebraMap R (Module.End R (Fin d → ℂ))) x)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Module.End.isUnit_iff]`. Use `⟨fun v w hvw => smul_right_injective (Fin d → ℂ) (hu x) hvw, fun v => ⟨(ev (algebraMap R S x))⁻¹ • v, ?_⟩⟩` and prove the remaining obligations. Use `show ev (algebraMap R S x) • ((ev (algebraMap R S x))⁻¹ • v) = v`. Rewrite using `[smul_smul, mul_inv_cancel₀ (hu x), one_smul]`. Set `g : Ω[R⁄ℂ] →ₗ[R] (Fin d → ℂ)` to `{ toFun := ψ, map_add' := ψ.map_add, map_smul' := fun b ω => h1 b ω }`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `L` to `IsLocalizedModule.lift (Submonoid.powers f) (KaehlerDifferential.map ℂ ℂ R S) g hunit`. Establish `hL : ∀ η, L (KaehlerDifferential.map ℂ ℂ R S η) = ψ η` using `fun η => IsLocalizedModule.lift_apply _ _ _ _ η`. Establish `hLs : ∀ (r : R) (ω : Ω[S⁄ℂ]), L (r • ω) = ev (algebraMap R S r) • L ω` using `fun r ω => L.map_smul r ω`. Establish `hLS : ∀ (b : S) (ω : Ω[S⁄ℂ]), L (b • ω) = ev b • L ω`. Introduce `b ω`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨r, t⟩, ht⟩` from `IsLocalization.surj (Submonoid.powers f) b`. Establish `h` using `hLs (t : R) (b • ω)`. Rewrite `h` using `[← algebraMap_smul S (t : R) (b • ω), smul_smul, mul_comm, ht, algebraMap_smul, hLs]`. Apply `smul_right_injective (Fin d → ℂ) (hu t)` to reduce the goal to its premises. Use `show ev (algebraMap R S t) • L (b • ω) = ev (algebraMap R S t) • ev b • L ω`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h, ← ht, map_mul, mul_comm, mul_smul]`. Establish `hLC : ∀ (c : ℂ) (ω : Ω[S⁄ℂ]), L (c • ω) = c • L ω`. Introduce `c ω`. Take `⟨⟨η, s⟩, hs⟩` from `IsLocalizedModule.surj (Submonoid.powers f) (KaehlerDifferential.map ℂ ℂ R S) ω`. Establish `hs' : (s : R) • ω = KaehlerDifferential.map ℂ ℂ R S η` using `hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ev (algebraMap R S s) • L ω = ψ η` using `by rw [← hLs, hs', hL]`. Establish `e2 : ev (algebraMap ℂ S c) • ψ η = c • ψ η`. Rewrite using `[show c • ψ η = ψ (c • η) from (ψ.map_smul c η).symm, ← algebraMap_smul R c η, h1, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[← algebraMap_smul S c ω, hLS]`. Apply `smul_right_injective (Fin d → ℂ) (hu s)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ev (algebraMap R S s) • ev (algebraMap ℂ S c) • L ω = ev (algebraMap R S s) • c • L ω`. Rewrite using `[smul_comm (ev (algebraMap R S s)) (ev (algebraMap ℂ S c)), e1, e2, smul_comm (ev (algebraMap R S s)) c, e1]`. Use `⟨{ toFun := L, map_add' := L.map_add, map_smul' := hLC }, hLS, hL, ?_⟩` and prove the remaining obligations. Introduce `ω hω`. Express the relevant statement in the definitionally equal form `L ω = 0 at hω`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨η, s⟩, hs⟩` from `IsLocalizedModule.surj (Submonoid.powers f) (KaehlerDifferential.map ℂ ℂ R S) ω`. Establish `hs' : (s : R) • ω = KaehlerDifferential.map ℂ ℂ R S η` using `hs`. Establish `hη : ψ η = 0` using `by rw [← hL, ← hs', hLs, hω, smul_zero]`. Take `⟨m, b, ω', hb, hηeq⟩` from `h2 η hη`. Set `u : S` to `IsLocalization.mk' S (1 : R) s`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `hu1 : u * algebraMap R S s = 1` using `by rw [IsLocalization.mk'_spec, map_one]`. Use `⟨m, fun i => algebraMap R S (b i), fun i => u • KaehlerDifferential.map ℂ ℂ R S (ω' i), hb, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← algebraMap_smul S (s : R) ω, smul_smul, hu1, one_smul]`. Use `_ = u • KaehlerDifferential.map ℂ ℂ R S (∑ i, b i • ω' i) := by rw [hs', hηeq]`.
-
-Use `_ = ∑ i, algebraMap R S (b i) • u • KaehlerDifferential.map ℂ ℂ R S (ω' i) := by`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← algebraMap_smul S (b i), smul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_cotangent_map_localization_away :
     ∀ {R S : Type} [CommRing R] [CommRing S] [Algebra ℂ R] [Algebra ℂ S] [Algebra R S] [IsScalarTower ℂ R S] (f : R) [IsLocalization.Away f S] (ev : S →+* ℂ) {d : ℕ} (ψ : Ω[R⁄ℂ] →ₗ[ℂ] (Fin d → ℂ)), (∀ (b : R) (ω : Ω[R⁄ℂ]), ψ (b • ω) = ev (algebraMap R S b) • ψ ω) → (∀ ω : Ω[R⁄ℂ], ψ ω = 0 → ∃ (m : ℕ) (b : Fin m → R) (ω' : Fin m → Ω[R⁄ℂ]), (∀ i, ev (algebraMap R S (b i)) = 0) ∧ ω = ∑ i, b i • ω' i) → ∃ ψ' : Ω[S⁄ℂ] →ₗ[ℂ] (Fin d → ℂ), (∀ (b : S) (ω : Ω[S⁄ℂ]), ψ' (b • ω) = ev b • ψ' ω) ∧ (∀ ω : Ω[R⁄ℂ], ψ' (KaehlerDifferential.map ℂ ℂ R S ω) = ψ ω) ∧ (∀ ω : Ω[S⁄ℂ], ψ' ω = 0 → ∃ (m : ℕ) (b : Fin m → S) (ω' : Fin m → Ω[S⁄ℂ]), (∀ i, ev (b i) = 0) ∧ ω = ∑ i, b i • ω' i) := by

@@ -26,7 +26,7 @@ def PrimVal (D : DegPre R) (f : D.P.A ⟶ D.P.A) (m : D.X → D.X) : Prop :=
       (LB.mulGen D.P.L _ _ _ _ (D.tau y (m y)) (LB.pullGen D.P.L _ _ u (D.xK y))) (LB.mulGen D.P.L _ _ _ _ (D.psi y) D.rigK)
 
 /- English proof (translation)
-The claim follows from `h.imp fun _ h => ⟨h.1, h.2.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem isPrimitiveValue_of_ringElement_psiRelation {O : Type} [CommRing O] [StarRing O] {D : DegPre R} [Module O D.X] {o : D.OAct O} {w : O}
     (h : TraceFormTwistIso D o w) : PrimVal D (o.onB.act w) (fun y => w • y) :=
@@ -56,14 +56,14 @@ section Points
 variable {S : Scheme.{0}} {T T' G G' : Over S} [GrpObj G] [IsCommMonObj G] {K : Type} [Fintype K]
 
 /- English proof (translation)
-Set `f : (T ⟶ G) →* (T' ⟶ G)` to `MonoidHom.mk' (fun a => p ≫ a) fun a b => MonObj.comp_mul p a b`. Conclude with `(map_prod f _ _).trans (Finset.prod_congr rfl fun i _ => map_zpow f _ _)`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem comp_prod_zpow (p : T' ⟶ T) (y : K → (T ⟶ G)) (n : K → ℤ) : p ≫ ∏ i, y i ^ n i = ∏ i, (p ≫ y i) ^ n i := by
   let f : (T ⟶ G) →* (T' ⟶ G) := MonoidHom.mk' (fun a => p ≫ a) fun a b => MonObj.comp_mul p a b
   exact (map_prod f _ _).trans (Finset.prod_congr rfl fun i _ => map_zpow f _ _)
 
 /- English proof (translation)
-Set `f : (T ⟶ G) →* (T ⟶ G')` to `MonoidHom.mk' (fun a => a ≫ g) fun a b => MonObj.mul_comp a b g`. Conclude with `(map_prod f _ _).trans (Finset.prod_congr rfl fun i _ => map_zpow f _ _)`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem prod_zpow_comp [GrpObj G'] [IsCommMonObj G'] (y : K → (T ⟶ G)) (n : K → ℤ) (g : G ⟶ G') [IsMonHom g] :
     (∏ i, y i ^ n i) ≫ g = ∏ i, (y i ≫ g) ^ n i := by

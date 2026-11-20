@@ -21,7 +21,7 @@ namespace GlobalTheory.JacMono
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hg : ∀ i j, cA D (gA S i j) = gA S j i` using `fun i j => congrFun (congrFun (adj_gA S) j) i`. Simplify using `only [hermAt, map_sum, RingHom.map_mul, cA_cA, hg]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_herm (S : HSp D) (x y : Fin S.rank → AE D) : cA D (hermAt S x y) = hermAt S y x := by
   have hg : ∀ i j, cA D (gA S i j) = gA S j i := fun i j => congrFun (congrFun (adj_gA S) j) i
@@ -30,7 +30,7 @@ theorem conj_herm (S : HSp D) (x y : Fin S.rank → AE D) : cA D (hermAt S x y) 
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Rewrite using `[← conj_herm, hermAt_smul_left, RingHom.map_mul, conj_herm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_smul_right (S : HSp D) (t : AE D) (x y : Fin S.rank → AE D) :
     hermAt S x (t • y) = cA D t * hermAt S x y := by
@@ -39,30 +39,30 @@ theorem herm_smul_right (S : HSp D) (t : AE D) (x y : Fin S.rank → AE D) :
 variable (q : SplitPt D k)
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_add, cA_cA, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_eps : cA D (q.e + cA D q.e) = q.e + cA D q.e := by rw [RingHom.map_add, cA_cA, add_comm]
 
 /- English proof (translation)
-Rewrite using `[idem_iff, ← conj_eps, ← RingHom.map_mul, (idem_iff q a).1 ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_idAt {a : AE D} (ha : a ∈ idAt D (· = q.v)) : cA D a ∈ idAt D (· = q.v) := by
   rw [idem_iff, ← conj_eps, ← RingHom.map_mul, (idem_iff q a).1 ha]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨conj_idAt q ha.1, (cA_int_iff a).2 ha.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem conj_intAt {a : AE D} (ha : a ∈ intAt D (· = q.v)) : cA D a ∈ intAt D (· = q.v) :=
   ⟨conj_idAt q ha.1, (cA_int_iff a).2 ha.2⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Simplify using `only [colMul, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem colMul_smul {m n : ℕ} (M : Mx D m n) (i : Fin n) (a b : AE D) : a • colMul M i b = colMul M i (a * b) := by
   funext r; simp only [colMul, Pi.smul_apply, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Simplify using `only [colMul, Pi.add_apply, add_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem colMul_add {m n : ℕ} (M : Mx D m n) (i : Fin n) (a b : AE D) :
     colMul M i (a + b) = colMul M i a + colMul M i b := by
@@ -71,7 +71,7 @@ theorem colMul_add {m n : ℕ} (M : Mx D m n) (i : Fin n) (a b : AE D) :
 variable {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L : Lat S} {L₀ : Lat S₀}
 
 /- English proof (translation)
-Rewrite using `[colMul_add]`. Use `add_mem h1 ?_` and prove the remaining obligations. Use `((LocSD.isSDAt_latV D S L q.v hL).2.2 (colMul M i (cA D q.e)) fun r => Ideal.mul_mem_right _ _ (conj_idAt q (e_mem_idAt q))).2 fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← conj_herm, hermAt_colMul, cA_cA]`. Conclude with `conj_intAt q (h2 x hx)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_eps (hL : IsSelfDualC S L) (M : Mx D S.rank ρ) (i : Fin ρ) (h1 : colMul M i q.e ∈ latV S L (· = q.v))
     (h2 : ∀ x ∈ latV S L (· = q.v), q.e * ((adj M * gA S) *ᵥ x) i ∈ intAt D (· = q.v)) :
@@ -83,7 +83,7 @@ theorem line_eps (hL : IsSelfDualC S L) (M : Mx D S.rank ρ) (i : Fin ρ) (h1 : 
   exact conj_intAt q (h2 x hx)
 
 /- English proof (translation)
-Establish `hs : ((adj M' * gA S) *ᵥ y) i ∈ idAt D (· = q.v)` using `mulVec_mem_idAt _ (latV_supp hy) i`. Establish `h3` using `((LocSD.isSDAt_latV D S L q.v hL).2.2 y (latV_supp hy)).1 hy _ h2`. Rewrite `h3` using `[hermAt_colMul, conj_eps, (idem_iff q _).1 hs]`. Establish `h4` using `smul_mem hL h1 h3`. Rewrite `h4` using `[colMul_smul, mul_comm, (idem_iff q _).1 hs]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem line_mem (hL : IsSelfDualC S L) (M M' : Mx D S.rank ρ) (i : Fin ρ)
     (h1 : colMul M i (q.e + cA D q.e) ∈ latV S L (· = q.v)) (h2 : colMul M' i (q.e + cA D q.e) ∈ latV S L (· = q.v))
@@ -96,17 +96,15 @@ theorem line_mem (hL : IsSelfDualC S L) (M M' : Mx D S.rank ρ) (i : Fin ρ)
   rwa [colMul_smul, mul_comm, (idem_iff q _).1 hs] at h4
 
 /- English proof (translation)
-Establish `sd` using `(LocSD.isSDAt_latV D S L q.v hL).2.2`. Establish `sd₀` using `(LocSD.isSDAt_latV D S₀ L₀ q.v hL₀).2.2`. Establish `hX' : ∀ i, colMul d.jX i (q.e + cA D q.e) ∈ latV S L (· = q.v)` using `fun i => line_eps q hL d.jX i (hX i) fun x hx => by rw [← d.pY_eq]; exact (hp x hx).2.1 i`. Establish `hY' : ∀ i, colMul d.jY i (q.e + cA D q.e) ∈ latV S L (· = q.v)` using `fun i => line_eps q hL d.jY i (hY i) fun x hx => by rw [← d.pX_eq]; exact (hp x hx).1 i`. Establish `h0' : ∀ w ∈ latV S₀ L₀ (· = q.v), d.j0 *ᵥ w ∈ latV S L (· = q.v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw`. Establish `hs : ∀ r, (d.j0 *ᵥ w) r ∈ idAt D (· = q.v)` using `mulVec_mem_idAt _ (latV_supp hw)`. Establish `e1 : d.j0 *ᵥ w = q.e • (d.j0 *ᵥ w) + cA D q.e • (d.j0 *ᵥ w)`. Use function extensionality and compare the values at `r`. Rewrite using `[← add_smul, Pi.smul_apply, smul_eq_mul, (idem_iff q _).1 (hs r)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Use `add_mem (h0 w hw) ((sd (cA D q.e • (d.j0 *ᵥ w)) fun r => Ideal.mul_mem_left _ _ (hs r)).2 fun x hx => ?_)` and prove the remaining obligations. Rewrite using `[hermAt_smul_left, adelicHermitianForm_wittCoreInclusion_left, ← herm_smul_right]`. Conclude with `(sd₀ w (latV_supp hw)).1 hw _ (hp x hx).2.2`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `⟨fun i => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[d.pX_eq]`. Conclude with `line_mem q hL _ _ i (hX' i) (hY' i) hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[d.pY_eq]`. Conclude with `line_mem q hL _ _ i (hY' i) (hX' i) hy`. Use `(sd₀ _ (mulVec_mem_idAt _ (latV_supp hy))).2 fun w hw => ?_` and prove the remaining obligations. Rewrite using `[← conj_herm, ← adelicHermitianForm_wittCoreInclusion_left, conj_herm]`. Conclude with `(sd y (latV_supp hy)).1 hy _ (h0' w hw)`.
-
-Introduce and unpack `⟨h1, h2, h3⟩`. Rewrite using `[decomp_vec d y, mulVec_eq_sum_colMul d.jX, mulVec_eq_sum_colMul d.jY]`. Conclude with `add_mem (add_mem (sum_mem fun i _ => h1 i) (h0' _ h3)) (sum_mem fun i _ => h2 i)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monoAt_of_half (hL : IsSelfDualC S L) (hL₀ : IsSelfDualC S₀ L₀)
     (hp : ∀ x ∈ latV S L (· = q.v), (∀ i, q.e * (d.pX *ᵥ x) i ∈ intAt D (· = q.v)) ∧
@@ -149,9 +147,9 @@ variable {Y Y₀ : Type} [Fintype Y] [DecidableEq Y] [Fintype Y₀] [DecidableEq
 def colAt {N : ℕ} (F : Frame k N Y) (c : Y) : Fin N → AE D := fun r => q.sec (F.β r c)
 
 /- English proof (translation)
-Establish `h1` using `(h (Pi.single c 1)).1 fun i => by`. Distinguish the cases in `hi : i = c`. Substitute `hi` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `one_mem _`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne hi]`. Conclude with `zero_mem _`. Rewrite `h1` using `[Matrix.mulVec_single_one]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colAt_mem {F : Frame k S.rank Y} (h : IntIn q S F L) (c : Y) : colAt q F c ∈ latV S L (· = q.v) := by
   have h1 := (h (Pi.single c 1)).1 fun i => by
@@ -162,11 +160,11 @@ theorem colAt_mem {F : Frame k S.rank Y} (h : IntIn q S F L) (c : Y) : colAt q F
   exact h1
 
 /- English proof (translation)
-Establish `h1 : F.β *ᵥ (F.γ *ᵥ fun r => q.pr (x r)) = fun r => q.pr (x r)`. Rewrite using `[Matrix.mulVec_mulVec, F.βγ, Matrix.one_mulVec]`. Establish `h2 : (fun r => q.sec ((F.β *ᵥ (F.γ *ᵥ fun r => q.pr (x r))) r)) = q.e • x`. Rewrite using `[h1]`. Use function extensionality and compare the values at `r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `q.sec_pr _`. Establish `h3` using `(h (F.γ *ᵥ fun r => q.pr (x r))).2 (by rw [h2]; exact smul_mem hL hx (e_mem_intAt q))`. Use `⟨fun c => q.sec ((F.γ *ᵥ fun r => q.pr (x r)) c), fun c => sec_mem_intAt q _ (h3 c), ?_⟩` and prove the remaining obligations. Simplify using `only [← Matrix.mulVec_smul]`. Rewrite using `[← Matrix.mulVec_sum, ← h2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Generalize the expression as in `(F.γ *ᵥ fun r => q.pr (x r)) = y`. Use function extensionality and compare the values at `r`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, colAt, sec_mul]`. Conclude with `Finset.sum_congr rfl fun c _ => mul_comm _ _`.
+Replace the chosen expression with an arbitrary variable. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem expand (hL : IsSelfDualC S L) {F : Frame k S.rank Y} (h : IntIn q S F L) {x : Fin S.rank → AE D}
     (hx : x ∈ latV S L (· = q.v)) {m : ℕ} (M : Mx D m S.rank) :
@@ -186,7 +184,7 @@ theorem expand (hL : IsSelfDualC S L) {F : Frame k S.rank Y} (h : IntIn q S F L)
   exact Finset.sum_congr rfl fun c _ => mul_comm _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Simplify using `only [colMul, Matrix.mulVec, dotProduct, Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_colMul {l m n : ℕ} (M : Mx D l m) (N : Mx D m n) (i : Fin n) (a : AE D) :
     M *ᵥ colMul N i a = colMul (M * N) i a := by
@@ -195,13 +193,13 @@ theorem mulVec_colMul {l m n : ℕ} (M : Mx D l m) (N : Mx D m n) (i : Fin n) (a
   exact Finset.sum_congr rfl fun c _ => by ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Simplify using `only [colMul, Matrix.zero_apply, mul_zero, Pi.zero_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem colMul_zero {m n : ℕ} (i : Fin n) (a : AE D) : colMul (0 : Mx D m n) i a = 0 := by
   funext r; simp only [colMul, Matrix.zero_apply, mul_zero, Pi.zero_apply]
 
 /- English proof (translation)
-Simplify using `only [colMul, Matrix.one_apply]`. Use `split_ifs`. Rewrite using `[mul_one]` and apply the resulting hypothesis. Rewrite using `[mul_zero]`. Conclude with `intAt_zero'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colMul_one {n : ℕ} {v : Pl D} (i j : Fin n) {a : AE D} (ha : a ∈ intAt D (· = v)) :
     colMul (1 : Mx D n n) i a j ∈ intAt D (· = v) := by
@@ -211,7 +209,7 @@ theorem colMul_one {n : ℕ} {v : Pl D} (i j : Fin n) {a : AE D} (ha : a ∈ int
   · rw [mul_zero]; exact intAt_zero'
 
 /- English proof (translation)
-Establish `h0 : t ≠ 0` using `fun h => by rw [h, map_zero] at ht; exact zero_ne_one ht`. Establish `h1 : t⁻¹ ∈ 𝒪[k]` using `(Valuation.mem_integer_iff _ _).2 (by rw [map_inv₀, ht, inv_one])`. Establish `h2` using `smul_mem hL h (sec_mem_intAt q _ h1)`. Rewrite `h2` using `[colMul_smul, ← sec_mul, inv_mul_cancel₀ h0, sec_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unit_line (hL : IsSelfDualC S L) (M : Mx D S.rank ρ) (i : Fin ρ) {t : k} (ht : valuation k t = 1)
     (h : colMul M i (q.sec t) ∈ latV S L (· = q.v)) : colMul M i q.e ∈ latV S L (· = q.v) := by
@@ -221,21 +219,19 @@ theorem unit_line (hL : IsSelfDualC S L) (M : Mx D S.rank ρ) (i : Fin ρ) {t : 
   rwa [colMul_smul, ← sec_mul, inv_mul_cancel₀ h0, sec_one] at h2
 
 /- English proof (translation)
-Establish `hu : ∀ t : k, valuation k t = 1 → q.sec t ∈ intAt D (· = q.v)` using `fun t ht => sec_mem_intAt q t ((Valuation.mem_integer_iff _ _).2 ht.le)`. Establish `hc : ∀ c, (∀ i, (d.pX *ᵥ colAt q F c) i ∈ intAt D (· = q.v)) ∧ (∀ i, (d.pY *ᵥ colAt q F c) i ∈ intAt D (· = q.v)) ∧ d.p0 *ᵥ colAt q F c ∈ latV S₀ L₀ (· = q.v)`. Introduce `c`. Apply the tactic sequence `rcases cover c with ⟨a, e⟩ | ⟨i, t, ht, e⟩ | ⟨i, t, ht, e⟩ <;> rw [e]`. Simplify using `only [Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[d.pX_j0, d.pY_j0, d.p0_j0, Matrix.zero_mulVec, Matrix.one_mulVec]`. Conclude with `⟨fun _ => intAt_zero', fun _ => intAt_zero', colAt_mem q h₀ a⟩`. Simplify using `only [mulVec_colMul]`. Rewrite using `[d.pX_jX, d.pY_jX, d.p0_jX, colMul_zero, colMul_zero]`. Conclude with `⟨fun _ => colMul_one _ _ (hu t ht), fun _ => intAt_zero', zero_mem _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Simplify using `only [mulVec_colMul]`. Rewrite using `[d.pX_jY, d.pY_jY, d.p0_jY, colMul_zero, colMul_zero]`. Conclude with `⟨fun _ => intAt_zero', fun _ => colMul_one _ _ (hu t ht), zero_mem _⟩`. Use `monoAt_of_half q d hL hL₀ (fun x hx => ⟨fun i => ?_, fun i => ?_, ?_⟩) (fun i => ?_) (fun i => ?_) fun w hw => ?_` and prove the remaining obligations. Take `⟨a, ha, e⟩` from `expand q hL h hx d.pX`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e'` using `congrFun e i`. Rewrite `e'` using `[Finset.sum_apply]`. Express the relevant statement in the definitionally equal form `q.e * _ = _ at e'`. Rewrite using `[e']`. Conclude with `intAt_sum' _ _ fun c _ => intAt_mul' (ha c) ((hc c).1 i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, e⟩` from `expand q hL h hx d.pY`. Establish `e'` using `congrFun e i`. Rewrite `e'` using `[Finset.sum_apply]`. Express the relevant statement in the definitionally equal form `q.e * _ = _ at e'`. Rewrite using `[e']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `intAt_sum' _ _ fun c _ => intAt_mul' (ha c) ((hc c).2.1 i)`. Take `⟨a, ha, e⟩` from `expand q hL h hx d.p0`. Rewrite using `[e]`. Conclude with `sum_mem fun c _ => smul_mem hL₀ (hc c).2.2 (ha c)`. Take `⟨c, t, ht, e⟩` from `cX i`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `unit_line q hL _ i ht (e ▸ colAt_mem q h c)`. Take `⟨c, t, ht, e⟩` from `cY i`. Conclude with `unit_line q hL _ i ht (e ▸ colAt_mem q h c)`. Take `⟨a, ha, e⟩` from `expand q hL₀ h₀ hw d.j0`. Rewrite using `[e]`.
-
-Use `sum_mem fun c _ => smul_mem hL ?_ (ha c)` and prove the remaining obligations. Take `⟨c', e'⟩` from `c0 c`. Conclude with `e' ▸ colAt_mem q h c'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem monoAt_of_cols (hL : IsSelfDualC S L) (hL₀ : IsSelfDualC S₀ L₀) {F : Frame k S.rank Y} {F₀ : Frame k S₀.rank Y₀}
     (h : IntIn q S F L) (h₀ : IntIn q S₀ F₀ L₀)
@@ -287,7 +283,7 @@ theorem monoAt_of_cols (hL : IsSelfDualC S L) (hL₀ : IsSelfDualC S₀ L₀) {F
     exact e' ▸ colAt_mem q h c'
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Express the relevant statement in the definitionally equal form `q.sec (F.β r c) = q.sec t * incA D (M r i)`. Rewrite using `[h, sec_mul_right]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem colAt_line {N n : ℕ} {F : Frame k N Y} {c : Y} (M : Matrix (Fin N) (Fin n) D.host.E) (i : Fin n) {t : k}
     (h : ∀ r, F.β r c = t * (ofSplit q).pr (M r i)) : colAt q F c = colMul (rat M) i (q.sec t) := by
@@ -296,7 +292,7 @@ theorem colAt_line {N n : ℕ} {F : Frame k N Y} {c : Y} (M : Matrix (Fin N) (Fi
   rw [h, sec_mul_right]; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `r`. Express the relevant statement in the definitionally equal form `q.sec (F.β r c) = ∑ l, incA D (M r l) * q.sec (F₀.β l a)`. Rewrite using `[h, Matrix.mul_apply, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm (incA D _), sec_mul_right, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -309,9 +305,9 @@ theorem colAt_core {N n : ℕ} {F : Frame k N Y} {F₀ : Frame k n Y₀} {c : Y}
   rw [mul_comm (incA D _), sec_mul_right, mul_comm]; rfl
 
 /- English proof (translation)
-Establish `hξ : valuation k (ofSplit q).xi = 1` using `GlobalTheory.SplitWeilChar.valuation_pr_incA_xi0_eq_one_of_unitAA q hU`. Take `⟨rfl, h1, h2, h3⟩` from `hF`. Establish `hX : ∀ (i : Fin ρ) (j : Fin (2 * ρ)), j.val = i.val → ∃ t, valuation k t = 1 ∧ colAt q F (Sum.inr j) = colMul J.d.jX i (q.sec t)` using `fun i j hj => ⟨_, by rw [map_mul, map_pow, hs, hξ, one_pow, one_mul], colAt_line q J.d.e i (h2 i j hj)⟩`. Establish `hY : ∀ (i : Fin ρ) (j : Fin (2 * ρ)), j.val + i.val + 1 = 2 * ρ → ∃ t, valuation k t = 1 ∧ colAt q F (Sum.inr j) = colMul J.d.jY i (q.sec t)` using `fun i j hj => ⟨_, by rw [map_mul, map_mul, map_pow, map_div₀, map_div₀, Valuation.map_neg, map_one, hs, hz, hξ]; simp, colAt_line q J.d.e' i (h3 i j hj)⟩`. Use `monoAt_of_cols q J.d hL hL₀ h h₀ ?_ (fun a => ⟨Sum.inl a, colAt_core q J.d.i₀ a fun r => h1 r a⟩) (fun i => ⟨Sum.inr ⟨i.val, by omega⟩, hX i _ rfl⟩) (fun i => ⟨Sum.inr ⟨2 * ρ - 1 - i.val, by omega⟩, hY i _ (by change 2 * ρ - 1 - i.val + i.val + 1 = _; omega)⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `(a | j)`. Conclude with `Or.inl ⟨a, colAt_core q J.d.i₀ a fun r => h1 r a⟩`. Distinguish the cases in `hj : j.val < ρ`. Conclude with `Or.inr (Or.inl ⟨⟨j.val, hj⟩, hX _ j rfl⟩)`. Conclude with `Or.inr (Or.inr ⟨⟨2 * ρ - 1 - j.val, by omega⟩, hY _ j (by change j.val + (2 * ρ - 1 - j.val) + 1 = _; omega)⟩)`.
+Assume the hypotheses and unpack their components. Prove the first alternative. Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the second alternative.
 -/
 theorem monoAt_of_jacFrame (hU : q.UnitAA) (J : JacLev D ρ) {L : Lat J.W} {L₀ : Lat J.W₀} (hL : IsSelfDualC J.W L)
     (hL₀ : IsSelfDualC J.W₀ L₀) {c : ℕ} {F : Frame k J.W.rank (Y₀ ⊕ Fin c)} {F₀ : Frame k J.W₀.rank Y₀} {s hh : k}
@@ -338,7 +334,7 @@ theorem monoAt_of_jacFrame (hU : q.UnitAA) (J : JacLev D ρ) {L : Lat J.W} {L₀
 end Frames
 
 /- English proof (translation)
-Introduce `D c v k₀ _ _ _ _ ι o k _ _ _ _ q ψk s hs X _ _ Z _ _ FX FT FM FY sc z₀ h1 h2 _ _ h5 _ h7 _ h9 _ _ _ h13 _ _ _ h17 _ j ρ h`. Establish `hd : j + 1 + 2 * ρ = s + 1` using `by omega`. Conclude with `monoAt_of_jacFrame q h2 (c.J j ρ h) (h17 (j + 1) _ hd).1 (h1.x (j + 1) (by omega)).sd (h5 j) (h7 j ρ h) (h9 j ρ h _ hd) (h17 (j + 1) _ hd).2 (h13 (j + 1) (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem monoAt_jacLevel : ∀ (D : D7) (c : Comm D) (v : VCom c) (k₀ : Type) [Field k₀] [ValuativeRel k₀] [TopologicalSpace k₀] [IsNonarchimedeanLocalField k₀] (ι : Type) (o : TDat c k₀ ι) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (ψk : AddChar k Circle) (s : ℕ) (hs : s + 1 + 1 = D.R.m) (X : ℕ → Type) [∀ j, Fintype (X j)] [∀ j, DecidableEq (X j)] (Z : Type) [Fintype Z] [DecidableEq Z] (FX : ∀ j, j ≤ s + 1 → Frame k (c.X j).rank (X j)) (FT : Frame k c.T.rank Z) (FM : Frame k (c.X (s + 1 + 1)).rank (Z ⊕ Unit)) (FY : ∀ j d, j + d = s + 1 → Frame k (c.V j).rank (X j ⊕ Fin d)) (sc : ℕ → k) (z₀ : Fin c.Lz.rank → k), c.Is → q.UnitAA → (ofSplit q).IsChar c.ψ ψk → HasConductor ψk 1 → (∀ j, valuation k (sc j) = 1) → (∀ j, sc (j + 1 + 1) = sc j * (ofSplit q).xi) → (∀ j ρ h, valuation k ((ofSplit q).hz (c.B j ρ h)) = 1) → (∀ j ρ h d (hd : j + d = s + 1), (ofSplit q).IsBesFrame (c.B j ρ h) (sc j) (FX j (by omega)) (FY j d hd)) → (∀ j ρ h d (hd : j + 1 + d = s + 1), (ofSplit q).IsJacFrame (c.J j ρ h) (sc j) ((ofSplit q).hz (c.B j ρ h)) (FX (j + 1) (by omega)) (FY (j + 1) d hd)) → FM.β = fromCols ((c.oT (s + 1 + 1) hs).iA.map (ofSplit q).pr * FT.β) (Matrix.of fun r _ => ((c.oT (s + 1 + 1) hs).iB.map (ofSplit q).pr *ᵥ z₀) r) → (∀ h, (v.τ s h).map (ofSplit q).pr *ᵥ z₀ = (-((ofSplit q).xi * sc s)) • fun i => (ofSplit q).pr ((c.bes s 0 h).ζ i)) → (∀ j h, (v.τ j h)ᴴ * ((c.bes j 0 h).L.gram * v.τ j h) = (-(D.host.xi0 * star D.host.xi0)) • c.Lz.gram) → (∀ j hj, IntIn q (c.X j) (FX j hj) (c.x j).L) → IntIn q (c.X (s + 1 + 1)) FM (c.x (s + 1 + 1)).L → IntIn q c.T FT v.NT → IsSelfDualC c.T v.NT → (∀ j d hd, IsSelfDualC (c.V j) (v.N j) ∧ IntIn q (c.V j) (FY j d hd) (v.N j)) → (∀ j ρ h (hj : j ≤ s + 1), IsSelfDualC (c.bes j ρ h).V₀ (o.M j ρ h) ∧ ∃ F₀, (ofSplit q).IsCoreFrame (c.B j ρ h) (sc j) (FX j hj) F₀ ∧ IntIn q (c.bes j ρ h).V₀ F₀ (o.M j ρ h)) → ∀ j ρ (h : j + 2 * ρ + 2 = D.R.m), GlobalTheory.FinPl.MonoAt (c.J j ρ h).d (v.N (j + 1)) (c.x (j + 1)).L q.v := by
   intro D c v k₀ _ _ _ _ ι o k _ _ _ _ q ψk s hs X _ _ Z _ _ FX FT FM FY sc z₀ h1 h2 _ _ h5 _ h7 _ h9 _ _ _ h13 _ _ _ h17 _ j ρ h

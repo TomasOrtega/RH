@@ -11,7 +11,7 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.flipOneThree Formalism.CountingSumsFrames Formalism.GradedWeylDivisibility MvPolynomial
 
 /- English proof (translation)
-Introduce `d hd`. Rewrite using `[← h hd, Finsupp.weight_apply, Finsupp.weight_apply]`. Simplify using `[Finsupp.sum, map_sum, map_nsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem isWeightedHomogeneous_comp_addMonoidHom {R σ M M' : Type*} [CommSemiring R] [AddCommMonoid M] [AddCommMonoid M'] (ψ : M →+ M') (w : σ → M) {f : MvPolynomial σ R} {m : M} (h : IsWeightedHomogeneous w f m) : IsWeightedHomogeneous (fun v => ψ (w v)) f (ψ m) := by
   intro d hd
@@ -19,19 +19,19 @@ private theorem isWeightedHomogeneous_comp_addMonoidHom {R σ M M' : Type*} [Com
   simp [Finsupp.sum, map_sum, map_nsmul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.adjugate_apply, Matrix.det_apply, ← mem_weightedHomogeneousSubmodule]`. Use `Submodule.sum_mem _ (fun s _ => ?_)` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Use `Submodule.smul_of_tower_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hs : s a = i`. Establish `e : (fun k : Fin r => if k = a then (0:ℕ) else 1) = ∑ p : Fin r, (if p = a then 0 else Pi.single p 1)`. Use function extensionality and compare the values at `k`. Simplify using `only [Finset.sum_apply]`. Rewrite using `[Finset.sum_eq_single k]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases hk : k = a <;> simp [hk]`. Introduce `b _ hb`. Distinguish the cases in `hba : b = a`. Simplify using `[hba]`. Simplify using `[hba, Pi.single_eq_of_ne (Ne.symm hb)]`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[e]`. Apply `IsWeightedHomogeneous.prod` to reduce the goal to its premises. Introduce `p _`. Distinguish the cases in `hp : p = a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hp` using the available equality. Simplify using `[Matrix.updateRow_apply, hs]`. Conclude with `isWeightedHomogeneous_one _ _`. Establish `hsp : s p ≠ i` using `fun h => hp (s.injective (h.trans hs.symm))`. Simplify using `only [Matrix.updateRow_apply, hsp, hp, if_false, genY, Matrix.of_apply]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `isWeightedHomogeneous_X R (colW r r) (s p, p)` as an intermediate fact. Simplify `this` using `[colW]`. Take `⟨p, hp⟩ : ∃ p, s p = i` from `⟨s.symm i, by simp⟩`. Establish `hpa : p ≠ a` using `fun h => hs (h ▸ hp)`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ p)]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `isWeightedHomogeneous_zero _ _ _`. Simplify using `[Matrix.updateRow_apply, hp, Pi.single_apply, hpa]`.
+A detailed English derivation is pending.
 -/
 private theorem isWeightedHomogeneous_colW_adjugate_genY {R : Type} [CommRing R] (r : ℕ) (a i : Fin r) :
     IsWeightedHomogeneous (colW r r) ((genY R r).adjugate a i) (fun k => if k = a then 0 else 1) := by
@@ -67,11 +67,11 @@ private theorem isWeightedHomogeneous_colW_adjugate_genY {R : Type} [CommRing R]
     · simp [Matrix.updateRow_apply, hp, Pi.single_apply, hpa]
 
 /- English proof (translation)
-Rewrite using `[detY_eq, Matrix.det_apply, ← mem_weightedHomogeneousSubmodule]`. Use `Submodule.sum_mem _ (fun s _ => ?_)` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Use `Submodule.smul_of_tower_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun _ : Fin r => (1:ℕ)) = ∑ p : Fin r, Pi.single p 1`. Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[e]`. Apply `IsWeightedHomogeneous.prod` to reduce the goal to its premises.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p _`. Use `isWeightedHomogeneous_X R (colW r r) (s p, p)` as an intermediate fact. Simplify `this` using `[genY, colW]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem isWeightedHomogeneous_colW_detY {R : Type} [CommRing R] (r : ℕ) : IsWeightedHomogeneous (colW r r) (detY R r) (fun _ => 1) := by
   rw [detY_eq, Matrix.det_apply, ← mem_weightedHomogeneousSubmodule]
@@ -89,9 +89,9 @@ private theorem isWeightedHomogeneous_colW_detY {R : Type} [CommRing R] (r : ℕ
   simpa [genY, colW] using this
 
 /- English proof (translation)
-Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, genY, Matrix.of_apply, colAdd, aeval_X, Matrix.transvection, Matrix.mul_add, Matrix.mul_one, Matrix.add_apply]`. Distinguish the cases in `hb : b = j`. Substitute `hb` using the available equality. Simplify using `[Matrix.mul_apply, Matrix.single_apply, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hb' : j ≠ b` using `Ne.symm hb`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, hb, hb']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem colAdd_mapMatrix_genY_eq_mul_transvection {R : Type} [CommRing R] (r : ℕ) (l j : Fin r) (c : R) :
     (colAdd R l j c).mapMatrix (genY R r) = genY R r * Matrix.transvection l j (C c) := by
@@ -104,18 +104,18 @@ private theorem colAdd_mapMatrix_genY_eq_mul_transvection {R : Type} [CommRing R
     simp [Matrix.mul_apply, Matrix.single_apply, hb, hb']
 
 /- English proof (translation)
-Rewrite using `[detY_eq, AlgHom.map_det, colAdd_mapMatrix_genY_eq_mul_transvection, Matrix.det_mul, Matrix.det_transvection_of_ne _ _ hlj, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem colAdd_detY_eq_of_ne {R : Type} [CommRing R] (r : ℕ) (l j : Fin r) (hlj : l ≠ j) (c : R) :
     colAdd R l j c (detY R r) = detY R r := by
   rw [detY_eq, AlgHom.map_det, colAdd_mapMatrix_genY_eq_mul_transvection, Matrix.det_mul, Matrix.det_transvection_of_ne _ _ hlj, mul_one]
 
 /- English proof (translation)
-Establish `h1 : colAdd R l j c ((genY R r).adjugate a i) = ((colAdd R l j c).mapMatrix (genY R r).adjugate) a i` using `rfl`. Establish `hT : (Matrix.transvection l j (C c : MvPolynomial (Fin r × Fin r) R)).adjugate = Matrix.transvection l j (-(C c))`. Establish `hm : Matrix.transvection l j (C c : MvPolynomial (Fin r × Fin r) R) * Matrix.transvection l j (-(C c)) = 1`. Rewrite using `[Matrix.transvection_mul_transvection_same _ _ hlj, add_neg_cancel, Matrix.transvection_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[h1, AlgHom.map_adjugate, colAdd_mapMatrix_genY_eq_mul_transvection, Matrix.adjugate_mul_distrib, hT]`. Simplify using `only [Matrix.transvection, Matrix.add_mul, Matrix.one_mul, Matrix.add_apply]`. Use `congr 1`. Distinguish the cases in `ha : a = l`. Substitute `ha` using the available equality.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Matrix.single_mul_apply_same]`. Establish `ha' : l ≠ a` using `Ne.symm ha`. Simplify using `[ha, ha', Matrix.mul_apply, Matrix.single_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem colAdd_adjugate_genY_eq_of_ne {R : Type} [CommRing R] (r : ℕ) (l j : Fin r) (hlj : l ≠ j) (c : R) (a i : Fin r) :
     colAdd R l j c ((genY R r).adjugate a i) = (genY R r).adjugate a i + (if a = l then -(C c) * (genY R r).adjugate j i else 0) := by
@@ -135,21 +135,21 @@ private theorem colAdd_adjugate_genY_eq_of_ne {R : Type} [CommRing R] (r : ℕ) 
     simp [ha, ha', Matrix.mul_apply, Matrix.single_apply]
 
 /- English proof (translation)
-Take `⟨hw, hinv⟩` from `(dualWeylPoint R r r ν f).mp hf`. Rewrite using `[dualWeylPoint]`. Prove the components needed by the constructor for the conclusion. Set `ψ : (Fin r → ℕ) →+ (Fin r → ℕ)` to `{ toFun := fun x k => ∑ j, if j = k.rev then 0 else x j map_zero' := by funext k; simp map_add' := by`. Introduce `x y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `k`. Simplify using `only [Pi.add_apply, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp }`. Establish `h1` using `isWeightedHomogeneous_comp_addMonoidHom ψ (colW r r) hw`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `isWH_algHom _ (fun v => ψ (colW r r v)) (colW r r) (fun v => ?_) h1` and prove the remaining obligations. Rewrite using `[aeval_X]`. Use `isWeightedHomogeneous_colW_adjugate_genY (R := R) r v.2.rev v.1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Use `show (∑ j, if j = k.rev then 0 else (colW r r v) j) = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [colW]`. Rewrite using `[Finset.sum_eq_single v.2]`. Distinguish the cases in `hk : k = v.2.rev`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: v.2 ≠ k.rev` using `fun e => hk (by rw [e, Fin.rev_rev])`. Simplify using `[hk, this]`. Apply the tactic sequence `intro b _ hb split_ifs <;> simp [Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules. Introduce `l j hlj c`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : (colAdd R l j c).comp (aeval fun v : Fin r × Fin r => (genY R r).adjugate v.2.rev v.1) = (aeval fun v : Fin r × Fin r => (genY R r).adjugate v.2.rev v.1).comp (colAdd R j.rev l.rev (-c))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, aeval_X, colAdd_adjugate_genY_eq_of_ne r l j (ne_of_lt hlj) c]`. Simplify using `only [colAdd, aeval_X]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : v.2 = l.rev`. Establish `h' : v.2.rev = l` using `by rw [h, Fin.rev_rev]`. Simplify using `[h, h', map_add, map_mul, aeval_X, aeval_C, Fin.rev_rev]`. Establish `h' : v.2.rev ≠ l` using `fun e => h (by rw [← e, Fin.rev_rev])`. Simplify using `[h, h']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hl : j.rev < l.rev` using `Fin.rev_lt_rev.mpr hlj`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem adjugate_subst_mem_dualWeyl_of_mem {R : Type} [CommRing R] [IsDomain R] [Infinite R] (r : ℕ) (ν : Fin r → ℕ)
     (f : MvPolynomial (Fin r × Fin r) R) (hf : f ∈ dualWeyl R r r ν) :
@@ -201,18 +201,18 @@ private theorem adjugate_subst_mem_dualWeyl_of_mem {R : Type} [CommRing R] [IsDo
       _ = _ := by rw [hinv _ _ hl]
 
 /- English proof (translation)
-The claim follows from `(dualWeylPoint R r r _ _).mpr ⟨isWeightedHomogeneous_colW_detY r, fun l j hlj c => colAdd_detY_eq_of_ne r l j (ne_of_lt hlj) c⟩`.
+A detailed English derivation is pending.
 -/
 private theorem detY_mem_dualWeyl_const_one {R : Type} [CommRing R] [IsDomain R] [Infinite R] (r : ℕ) :
     detY R r ∈ dualWeyl R r r (fun _ => 1) :=
   (dualWeylPoint R r r _ _).mpr ⟨isWeightedHomogeneous_colW_detY r, fun l j hlj c => colAdd_detY_eq_of_ne r l j (ne_of_lt hlj) c⟩
 
 /- English proof (translation)
-Establish `hg : (map φ).mapMatrix (genY A r) = genY B r`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Simplify using `[genY]`. Establish `hadj : ∀ a i, map φ ((genY A r).adjugate a i) = (genY B r).adjugate a i`. Introduce `a i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `RingHom.map_adjugate (map φ) (genY A r)` as an intermediate fact. Rewrite `this` using `[hg]`. Conclude with `congrFun (congrFun this a) i`. Proceed by induction on `f using MvPolynomial.induction_on`. Use `next a =>`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[aeval_C, map_C]`. Use `next p q hp hq =>`. Simplify using `only [map_add, hp, hq]`. Use `next p v hp =>`. Simplify using `only [map_mul, hp, aeval_X, map_X, hadj]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem map_aeval_adjugate_subst_eq_aeval_map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (r : ℕ)
     (f : MvPolynomial (Fin r × Fin r) A) :
@@ -235,11 +235,11 @@ private theorem map_aeval_adjugate_subst_eq_aeval_map {A B : Type} [CommRing A] 
     simp only [map_mul, hp, aeval_X, map_X, hadj]
 
 /- English proof (translation)
-Use `conv_lhs => rw [f.as_sum]`. Use `conv_rhs => rw [f.as_sum]`. Simplify using `only [map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial, aeval_monomial]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD` using `hf d hd`. Establish `e1 : u ^ D * d.prod (fun i k => Z i ^ k) = d.prod (fun i k => (u * Z i) ^ k)`. Rewrite using `[← hD]`. Simplify using `only [Finsupp.prod, Finsupp.sum, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Establish `e2 : w ^ D * d.prod (fun i k => Z' i ^ k) = d.prod (fun i k => (w * Z' i) ^ k)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hD]`. Simplify using `only [Finsupp.prod, Finsupp.sum, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem pow_mul_aeval_eq_of_homogeneous_of_mul_eq {R σ S : Type} [CommRing R] [CommRing S] [Algebra R S] (Z Z' : σ → S) (u w : S)
     (h : ∀ v, u * Z v = w * Z' v) (D : ℕ) (f : MvPolynomial σ R)
@@ -263,11 +263,11 @@ private theorem pow_mul_aeval_eq_of_homogeneous_of_mul_eq {R σ S : Type} [CommR
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `hw : IsWeightedHomogeneous (colW r n) f ν`. Simplify using `only [dualWeyl, Submodule.mem_inf, mem_weightedHomogeneousSubmodule] at hf`. Conclude with `hf.1`. Set `ψ : (Fin n → ℕ) →+ ℕ` to `{ toFun := fun x => ∑ j, x j map_zero' := by simp map_add' := by intro x y; simp [Finset.sum_add_distrib] }`. Establish `h1` using `isWeightedHomogeneous_comp_addMonoidHom ψ (colW r n) hw`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `d hd`. Use `h1 (mem_support_iff.mp hd)` as an intermediate fact. Rewrite `this` using `[Finsupp.weight_apply]`. Establish `hc : ∀ v : Fin r × Fin n, ψ (colW r n v) = 1`. Introduce `v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[ψ, colW]`. Simplify using `only [hc, smul_eq_mul, mul_one] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem degree_eq_sum_of_mem_dualWeyl {R : Type} [CommRing R] (r n : ℕ) (ν : Fin n → ℕ)
     (f : MvPolynomial (Fin r × Fin n) R) (hf : f ∈ dualWeyl R r n ν) :
@@ -290,15 +290,15 @@ private theorem degree_eq_sum_of_mem_dualWeyl {R : Type} [CommRing R] (r n : ℕ
   exact this
 
 /- English proof (translation)
-Use `set Am : Matrix (Fin r) (Fin r) (MvPolynomial (Fin r × Fin r) R) := A.transpose.map C with hAmdef`. Establish `hAm : (rowAct R A.transpose).mapMatrix (genY R r) = Am * genY R r`. Use `Matrix.ext fun a c => ?_` and prove the remaining obligations. Simplify using `[Am, rowAct, genY, Matrix.mul_apply, aeval_X]`. Establish `hdet : Am.det = C A.det`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hAmdef, show A.transpose.map (C : R → MvPolynomial (Fin r × Fin r) R) = (C : R →+* MvPolynomial (Fin r × Fin r) R).mapMatrix A.transpose from rfl, ← RingHom.map_det, Matrix.det_transpose]`. Establish `hr : ∀ a i, rowAct R A.transpose ((genY R r).adjugate a i) = ((genY R r).adjugate * Am.adjugate) a i`. Introduce `a i`. Establish `h1 : rowAct R A.transpose ((genY R r).adjugate a i) = ((rowAct R A.transpose).mapMatrix (genY R r).adjugate) a i` using `rfl`. Rewrite using `[h1, AlgHom.map_adjugate, hAm, Matrix.adjugate_mul_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Establish `hx : rowAct R A (X v) = ∑ b, C (A v.1 b) * X (b, v.2)` using `by simp [rowAct, aeval_X]`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, hx, map_sum, map_sum, aeval_X]`. Establish `hC : ∀ c : R, rowAct R (n` using `r) A.transpose (C c) = C c := fun c => (rowAct R (n := r) A.transpose).commutes c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, aeval_C, aeval_X, algebraMap_eq, hC, hr]`. Establish `hsum : (∑ b, C (A v.1 b) * ((genY R r).adjugate * Am.adjugate) v.2.rev b) = ((genY R r).adjugate * Am.adjugate * Am) v.2.rev v.1`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `[Am, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum, Matrix.mul_assoc, Matrix.adjugate_mul, hdet]`. Simplify using `[Matrix.mul_smul, Matrix.smul_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem transpose_act_comp_adjugate_subst_comp_act_eq_det {R : Type} [CommRing R] (r : ℕ) (A : Matrix (Fin r) (Fin r) R) :
     (rowAct R A.transpose).comp ((aeval fun v : Fin r × Fin r => (genY R r).adjugate v.2.rev v.1).comp (rowAct R A)) =
@@ -327,7 +327,7 @@ private theorem transpose_act_comp_adjugate_subst_comp_act_eq_det {R : Type} [Co
   simp [Matrix.mul_smul, Matrix.smul_apply]
 
 /- English proof (translation)
-Use `Matrix.ext fun i b => ?_` and prove the remaining obligations. Simplify using `[genY, aeval_X, Matrix.mul_apply, Matrix.transpose_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem adjugate_subst_mapMatrix_genY_eq_transpose_mul_antidiag {R : Type} [CommRing R] (r : ℕ) :
     (aeval fun v : Fin r × Fin r => (genY R r).adjugate v.2.rev v.1).mapMatrix (genY R r) =
@@ -336,7 +336,7 @@ private theorem adjugate_subst_mapMatrix_genY_eq_transpose_mul_antidiag {R : Typ
   simp [genY, aeval_X, Matrix.mul_apply, Matrix.transpose_apply]
 
 /- English proof (translation)
-Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single b.rev]`. Apply the tactic sequence `by_cases h : a = b <;> simp [h, Matrix.one_apply]`. Introduce `k _ hk`. Simplify using `[hk]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -349,7 +349,7 @@ private theorem antidiagonal_mul_self_eq_one {R : Type} [CommRing R] (r : ℕ) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[detY_eq, AlgHom.map_det, adjugate_subst_mapMatrix_genY_eq_transpose_mul_antidiag, Matrix.det_mul, Matrix.det_transpose, Matrix.det_adjugate, Fintype.card_fin, show (Matrix.of fun k b : Fin r => if k = b.rev then (1 : R) else 0).map C = (C : R →+* MvPolynomial (Fin r × Fin r) R). …`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem adjugate_subst_detY_eq_det_antidiag_mul_pow {R : Type} [CommRing R] (r : ℕ) :
     aeval (fun v : Fin r × Fin r => (genY R r).adjugate v.2.rev v.1) (detY R r) =
@@ -360,19 +360,17 @@ private theorem adjugate_subst_detY_eq_det_antidiag_mul_pow {R : Type} [CommRing
     ← RingHom.map_det, mul_comm]
 
 /- English proof (translation)
-Use `set P0 : Matrix (Fin r) (Fin r) R := Matrix.of fun k b : Fin r => if k = b.rev then (1 : R) else 0 with hP0`. Use `set G := genY R r with hG`. Use `set Pm : Matrix (Fin r) (Fin r) (MvPolynomial (Fin r × Fin r) R) := (C : R →+* MvPolynomial (Fin r × Fin r) R).mapMatrix P0 with hPm`. Establish `hPP : Pm * Pm = 1`. Rewrite using `[hPm, ← map_mul, hP0, antidiagonal_mul_self_eq_one, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hdP : Pm.det = C P0.det` using `by rw [hPm, ← RingHom.map_det]`. Establish `hadjP : Pm.adjugate = Pm.det • Pm`. Combine the equalities or inequalities in the displayed calculation. Establish `hAA : G.det • G.adjugate.adjugate = G.det ^ (r - 1) • G`. Establish `h1 : G.adjugate * G.adjugate.adjugate = G.det ^ (r - 1) • (1 : Matrix (Fin r) (Fin r) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_adjugate, Matrix.det_adjugate, Fintype.card_fin]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_adjugate, Matrix.smul_mul, Matrix.one_mul]`. Use `_ = G * (G.adjugate * G.adjugate.adjugate) := Matrix.mul_assoc _ _ _`. Use `_ = G.det ^ (r - 1) • G := by rw [h1, Matrix.mul_smul, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY : (aeval fun v : Fin r × Fin r => G.adjugate v.2.rev v.1).mapMatrix G = G.adjugate.transpose * Pm`. Rewrite using `[hG, hPm, adjugate_subst_mapMatrix_genY_eq_transpose_mul_antidiag]`. Both sides reduce to the same expression. Establish `h1 : aeval (fun v : Fin r × Fin r => G.adjugate v.2.rev v.1) (G.adjugate v.2.rev v.1) = ((aeval fun v : Fin r × Fin r => G.adjugate v.2.rev v.1).mapMatrix G.adjugate) v.2.rev v.1` using `rfl`. Establish `hsel : (Pm * G.adjugate.adjugate.transpose) v.2.rev v.1 = G.adjugate.adjugate v.1 v.2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single v.2]`. Simplify using `[Pm, P0]`. Introduce `k _ hk`. Establish `: v.2.rev ≠ k.rev` using `fun e => hk (Fin.rev_injective e).symm`. Simplify using `[Pm, P0, this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1, AlgHom.map_adjugate, hY, Matrix.adjugate_mul_distrib, hadjP, ← Matrix.adjugate_transpose, Matrix.smul_mul, Matrix.smul_apply, hsel, detY_eq, hdP, smul_eq_mul]`. Establish `h2` using `congrFun (congrFun hAA v.1) v.2`. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at h2`. Rewrite using `[mul_left_comm, h2]`.
-
-Simplify using `[G, genY, mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem detY_mul_adjugate_subst_adjugate_eq_X {R : Type} [CommRing R] (r : ℕ) (v : Fin r × Fin r) :
     detY R r * aeval (fun v : Fin r × Fin r => (genY R r).adjugate v.2.rev v.1) ((genY R r).adjugate v.2.rev v.1) =
@@ -412,7 +410,7 @@ private theorem detY_mul_adjugate_subst_adjugate_eq_X {R : Type} [CommRing R] (r
   simp [G, genY, mul_assoc]
 
 /- English proof (translation)
-Establish `hAm : (rowAct R A).mapMatrix (genY R r) = (C : R →+* MvPolynomial (Fin r × Fin r) R).mapMatrix A * genY R r`. Use `Matrix.ext fun a c => ?_` and prove the remaining obligations. Simplify using `[rowAct, genY, Matrix.mul_apply, aeval_X]`. Rewrite using `[detY_eq, AlgHom.map_det, hAm, Matrix.det_mul, ← RingHom.map_det]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem leftAct_detY_eq_det_mul_detY {R : Type} [CommRing R] (r : ℕ) (A : Matrix (Fin r) (Fin r) R) :
     rowAct R A (detY R r) = C A.det * detY R r := by
@@ -422,71 +420,61 @@ private theorem leftAct_detY_eq_det_mul_detY {R : Type} [CommRing R] (r : ℕ) (
   rw [detY_eq, AlgHom.map_det, hAm, Matrix.det_mul, ← RingHom.map_det]
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ hinj r N e α hr hα hαN heα hex`. Use `haveI : CharZero K := charZero_of_injective_algebraMap hinj`. Use `haveI : Infinite K := Infinite.of_injective (Nat.cast : ℕ → K) Nat.cast_injective`. Use `haveI : Infinite O := Infinite.of_injective (Nat.cast : ℕ → O) Nat.cast_injective`. Take `⟨i0, hi0⟩` from `hex`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hD : N - e ≤ ∑ j : Fin r, (N - α j.rev)`. Use `Finset.single_le_sum (f := fun j : Fin r => N - α j.rev) (fun j _ => Nat.zero_le _) (Finset.mem_univ i0.rev)` as an intermediate fact. Simplify `this` using `[Fin.rev_rev, hi0]`. Use `set D := ∑ j : Fin r, (N - α j.rev) with hDdef`. Use `set Q := D - (N - e) with hQdef`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation.
 
-Establish `hsplit : ∀ (ν : Fin r → ℕ) (a : Fin r), (∑ j, if j = a then 0 else ν j) + ν a = ∑ j, ν j`. Introduce `ν a`. Establish `h1 : ∀ j, ν j = (if j = a then 0 else ν j) + (if j = a then ν j else 0)`. Apply the tactic sequence `intro j; split_ifs <;> simp`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_add_distrib, Finset.sum_ite_eq']`. Simplify using the standard rewrite rules. Use `_ = ∑ j, ν j := Finset.sum_congr rfl (fun j _ => (h1 j).symm)`. Establish `hψ : (fun k => ∑ j, if j = k.rev then 0 else (fun i : Fin r => N - α i.rev) j) = fun k => (α k - e) + Q`. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h1` using `hsplit (fun i : Fin r => N - α i.rev) k.rev`. Simplify using `only [Fin.rev_rev] at h1`. Use `hαN k` as an intermediate fact. Use `heα k` as an intermediate fact. Use `beta_reduce`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Establish `hanti : Antitone fun i : Fin r => α i - e` using `fun a b hab => Nat.sub_le_sub_right (hα hab) e`. Establish `keyA : ∀ (R : Type) [CommRing R] [IsDomain R] [Infinite R] (f : MvPolynomial (Fin r × Fin r) R), f ∈ dualWeyl R r r (fun i => N - α i.rev) → ∃ u ∈ dualWeyl R r r (fun i => α i - e), aeval (fun v : Fin r × Fin r => (genY R r).adjugate v.2.rev v.1) f = detY R r ^ Q * u`. Introduce `R _ _ _ f hf`. Establish `h7` using `dualWeyl_of_eq (adjugate_subst_mem_dualWeyl_of_mem r _ f hf) hψ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `detDivP R r Q (fun i => α i - e) hr hanti _ h7`. Establish `hdK : detY K r ^ Q ≠ 0` using `pow_ne_zero _ (detY_ne_zero K r)`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (LinearMap.mulLeft K (detY K r ^ Q)) (LinearMap.ker_eq_bot.mpr fun a b h => mul_left_cancel₀ hdK (by simpa using h))`. Establish `hgv : ∀ u, g (detY K r ^ Q * u) = u`. Introduce `u`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `LinearMap.congr_fun hg u` as an intermediate fact. Simplify using `using this`. Establish `hmap : ∀ f : MvPolynomial (Fin r × Fin r) O, (mapAlgHom (Algebra.ofId O K)).toLinearMap f = map (algebraMap O K) f` using `fun f => rfl`. Use `⟨g ∘ₗ (aeval fun v : Fin r × Fin r => (genY K r).adjugate v.2.rev v.1).toLinearMap, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `f hf`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, h⟩` from `keyA K f hf`. Rewrite using `[LinearMap.comp_apply, AlgHom.toLinearMap_apply, h, hgv]`. Conclude with `hu`. Introduce `f hf`. Take `⟨f0, hf0, rfl⟩` from `Submodule.mem_map.mp hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Take `⟨u, hu, h⟩` from `keyA O f0 hf0`. Rewrite using `[LinearMap.comp_apply, AlgHom.toLinearMap_apply, hmap, ← map_aeval_adjugate_subst_eq_aeval_map, h, map_mul, map_pow, detY_map, hgv]`. Conclude with `Submodule.mem_map.mpr ⟨u, hu, rfl⟩`. Introduce `gg hgg`. Take `⟨g0, hg0, rfl⟩` from `Submodule.mem_map.mp hgg`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set β : Fin r → ℕ := fun i => α i - e with hβ`. Use `set i00 : Fin r := ⟨0, hr⟩ with hi00`. Use `set Dg := ∑ j, β j with hDg`. Use `set Q' := Dg - β i00 with hQ'`. Establish `hβ0 : β i00 ≤ Dg` using `Finset.single_le_sum (f := β) (fun j _ => Nat.zero_le _) (Finset.mem_univ i00)`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : ∀ k : Fin r, i00 ≤ k` using `fun k => Nat.zero_le _`. Establish `hψ' : (fun k : Fin r => ∑ j, if j = k.rev then 0 else β j) = fun k : Fin r => (β i00 - β k.rev) + Q'`. Use function extensionality and compare the values at `k`. Establish `h1` using `hsplit β k.rev`. Establish `h2 : β k.rev ≤ β i00` using `hanti (hle k.rev)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hγ : Antitone fun k : Fin r => β i00 - β k.rev`. Introduce `a b hab`. Establish `: β a.rev ≤ β b.rev` using `hanti (Fin.rev_le_rev.mpr hab)`. Use `beta_reduce`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨h0, hh0, hSg⟩` from `detDivP O r Q' (fun k => β i00 - β k.rev) hr hγ _ (dualWeyl_of_eq (adjugate_subst_mem_dualWeyl_of_mem r β g0 hg0) hψ')`. Use `set c := N - α i00 with hc`. Use `set ε : O := (Matrix.of fun k b : Fin r => if k = b.rev then (1 : O) else 0).det with hε`. Establish `hε2 : ε * ε = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hε, ← Matrix.det_mul, antidiagonal_mul_self_eq_one, Matrix.det_one]`. Use `set k := c + Dg + Q' with hk`. Use `set f0 := ε ^ k • (detY O r ^ c * h0) with hf0`. Establish `hf0mem : f0 ∈ dualWeyl O r r (fun i => N - α i.rev)`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `dualWeyl_of_eq (dualWeyl_mul O r r _ _ (dualWeyl_pow (detY_mem_dualWeyl_const_one r) c) hh0) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, mul_one, hβ]`. Use `hαN i.rev` as an intermediate fact. Use `heα i.rev` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hα (hle i.rev)` as an intermediate fact. Use `hαN i00` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨map (algebraMap O K) f0, Submodule.mem_map.mpr ⟨f0, hf0mem, rfl⟩, ?_⟩` and prove the remaining obligations. Use `set SO : MvPolynomial (Fin r × Fin r) O →ₐ[O] MvPolynomial (Fin r × Fin r) O := aeval (fun v : Fin r × Fin r => (genY O r).adjugate v.2.rev v.1) with hSO`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set d := detY O r with hd`. Use `set E := C ε * d ^ (r - 1) with hE`. Establish `hdne : d ≠ 0`. Introduce `h0'`. Use `congrArg (map (algebraMap O K)) h0'` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[hd, detY_map, map_zero]`. Conclude with `detY_ne_zero K r this`. Establish `hεne : C ε ≠ (0 : MvPolynomial (Fin r × Fin r) O)`. Introduce `h'`. Establish `: ε = 0` using `C_injective (Fin r × Fin r) O (by rw [h', C_0])`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite `hε2` using `[this, zero_mul]`. Conclude with `zero_ne_one hε2`. Establish `hEne : E ≠ 0` using `mul_ne_zero hεne (pow_ne_zero _ hdne)`. Establish `hSd : SO d = E` using `adjugate_subst_detY_eq_det_antidiag_mul_pow r`. Establish `hSS : SO (SO g0) = aeval (fun v : Fin r × Fin r => SO ((genY O r).adjugate v.2.rev v.1)) g0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[hSO, ← AlgHom.comp_apply, comp_aeval]`. Establish `h10` using `pow_mul_aeval_eq_of_homogeneous_of_mul_eq (R := O) (fun v : Fin r × Fin r => SO ((genY O r).adjugate v.2.rev v.1)) X d E (fun v => detY_mul_adjugate_subst_adjugate_eq_X (R := O) r v) Dg g0 (degree_eq_sum_of_mem_dualWeyl r r β g0 hg0)`. Rewrite `h10` using `[← hSS, aeval_X_left_apply, hSg, map_mul, map_pow, hSd]`. Establish `hSf0 : SO f0 = C (ε ^ k) * (E ^ c * SO h0)`. Rewrite using `[hf0, map_smul, map_mul, map_pow, hSd, smul_eq_C_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hDD : D + Dg = r * (N - e)`. Establish `hrev : D = ∑ j : Fin r, (N - α j)`. Rewrite using `[hDdef]`. Conclude with `Equiv.sum_comp Fin.revPerm (fun j => N - α j)`. Rewrite using `[hrev, hDg, ← Finset.sum_add_distrib]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `: ∀ j, (N - α j) + β j = N - e`. Introduce `j`. Use `hαN j` as an intermediate fact. Use `heα j` as an intermediate fact. Simplify using `only [hβ]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[this]`. Establish `hr1 : r * (N - e) = (r - 1) * (N - e) + (N - e)`. Take `⟨s, rfl⟩ : ∃ s, r = s + 1` from `⟨r - 1, by omega⟩`. Simplify using `[add_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcb : c + β i00 = N - e`. Use `hαN i00` as an intermediate fact. Use `heα i00` as an intermediate fact. Simplify using `only [hc, hβ]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `E1 : (r - 1) * c + (r - 1) * Dg = Dg + (r - 1) * Q' + Q`. Rewrite using `[← mul_add, show c + Dg = (N - e) + Q' by omega, mul_add]`. Generalize the expression as in `(r - 1) * (N - e) = P at *`. Generalize the expression as in `(r - 1) * Q' = P' at *`. Generalize the expression as in `r * (N - e) = T at *`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `key : C (ε ^ k) * E ^ c * E ^ Dg = d ^ Dg * E ^ Q' * d ^ Q`. Establish `hC2 : C ε * C ε = (1 : MvPolynomial (Fin r × Fin r) O)` using `by rw [← map_mul, hε2, map_one]`. Establish `e1 : (C ε) ^ (k + c + Dg) = (C ε : MvPolynomial (Fin r × Fin r) O) ^ Q'`. Rewrite using `[show k + c + Dg = Q' + 2 * (c + Dg) by omega, pow_add, pow_mul, sq, hC2, one_pow, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hE, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (C ε) ^ Q' * d ^ (Dg + (r - 1) * Q' + Q) := by rw [e1, E1]`. Use `_ = d ^ Dg * E ^ Q' * d ^ Q := by rw [hE]; ring`.
-
-Establish `hcore : SO f0 = d ^ Q * g0`. Apply `mul_left_cancel₀ (mul_ne_zero (pow_ne_zero Dg hdne) (pow_ne_zero Q' hEne))` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[LinearMap.comp_apply, AlgHom.toLinearMap_apply, ← map_aeval_adjugate_subst_eq_aeval_map, show (aeval fun v : Fin r × Fin r => (genY O r).adjugate v.2.rev v.1) f0 = d ^ Q * g0 from hcore, map_mul, map_pow, hd, detY_map, hgv]`. Apply the tactic sequence `all_goals rfl`.
-
-Introduce `l hl f hf`. Take `⟨u0, hu0, h0⟩` from `keyA K f hf`. Take `⟨u1, hu1, h1⟩` from `keyA K (rowAct K l f) (dualWeylRowStable K r r _ l f hf)`. Simplify using `only [LinearMap.comp_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[h0, h1, hgv, hgv]`.
-
-Establish `hdl : l.det ≠ 0` using `hl.ne_zero`. Establish `h12` using `congrArg (fun F => F f) (transpose_act_comp_adjugate_subst_comp_act_eq_det r l)`. Simplify using `only [AlgHom.comp_apply] at h12`. Establish `h10` using `pow_mul_aeval_eq_of_homogeneous_of_mul_eq (R := K) (fun v : Fin r × Fin r => C l.det * (genY K r).adjugate v.2.rev v.1) (fun v : Fin r × Fin r => (genY K r).adjugate v.2.rev v.1) 1 (C l.det) (fun v => one_mul _) D f (degree_eq_sum_of_mem_dualWeyl r r _ f hf)`. Rewrite `h10` using `[one_pow, one_mul, ← h12, h1, h0, map_mul, map_pow, leftAct_detY_eq_det_mul_detY, Matrix.det_transpose]`.
-
-Establish `hDQ : D = Q + (N - e)` using `by omega`. Rewrite `h10` using `[hDQ, pow_add]`. Establish `hCne : (C l.det : MvPolynomial (Fin r × Fin r) K) ≠ 0`. Introduce `h'; exact hdl (C_injective (Fin r × Fin r) K (by rw [h', C_0]))`. Establish `h11 : (C l.det ^ Q * detY K r ^ Q) * rowAct K l.transpose u1 = (C l.det ^ Q * detY K r ^ Q) * (C l.det ^ (N - e) * u0)`.
-
-Take the linear combination `h10`. Establish `h13` using `mul_left_cancel₀ (mul_ne_zero (pow_ne_zero Q hCne) hdK) h11`. Rewrite using `[h13, smul_eq_C_mul, map_pow]`.
+A detailed English derivation is pending.
 -/
 theorem tauP : TauP := by
   intro O K _ _ _ _ _ hinj r N e α hr hα hαN heα hex

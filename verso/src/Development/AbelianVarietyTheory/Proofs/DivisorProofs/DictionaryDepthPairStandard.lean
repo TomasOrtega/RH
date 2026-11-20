@@ -19,7 +19,7 @@ namespace GlobalTheory.KerConjMean
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨ρ, hρ, h1⟩` from `(exists_avg _ hfin hne a' n' G' (hArea D δ t0) (hTh D δ t0)).1`. Establish `hA : 0 ≤ hArea D δ t0 ρ` using `by unfold hArea; exact Real.posLog_nonneg`. Establish `hT : 0 ≤ hTh D δ t0 ρ` using `by unfold hTh; exact Real.posLog_nonneg`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem le_of_ext (D : D7) (δ t0 : ℂ) (σ : D.what₂.LL →+* ℂ) (hfin : (ext D δ t0 σ).Finite) (hne : (ext D δ t0 σ).Nonempty)
     (a n G a' n' G' : ℝ) (ha : a ≤ a') (hn : n ≤ n') (hG : G ≤ G') (x B : ℝ) (hB : 0 ≤ B)
@@ -39,7 +39,7 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn 
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (ch : Choice R)
 
 /- English proof (translation)
-Rewrite using `[mapVV_mapF, embLL_comp_star, mapVV_mapVV]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mapVV_conj_embLL {n : ℕ} (lam : D.what₂.Tau → DomWeight n) (x : VV D.what₂.LL lam) :
     GlobalTheory.CoefModel.mapVV (starRingEnd ℂ) lam (GlobalTheory.CoefModel.mapVV D.what₂.embLL lam x) =
@@ -47,15 +47,15 @@ theorem mapVV_conj_embLL {n : ℕ} (lam : D.what₂.Tau → DomWeight n) (x : VV
   rw [mapVV_mapF, embLL_comp_star, mapVV_mapVV]
 
 /- English proof (translation)
-Take `⟨a1, n1, G1, ha1, hn1, hG1, hs1, hb1⟩` from `hCT`. Take `⟨a2, n2, G2, ha2, hn2, hG2, hs2, hb2⟩` from `hCR`. Use `⟨fun p => (a1 + a2) + (n1 + n2) * avg D ch.S.Z.δ ch.S.Z.t0 p.embedding (hArea D ch.S.Z.δ ch.S.Z.t0) + (G1 + G2) * avg D ch.S.Z.δ ch.S.Z.t0 p.embedding (hTh D ch.S.Z.δ ch.S.Z.t0), ?_, ?_⟩` and prove the remaining obligations. Establish `eA : aOne ch.G (C / 2) b + aOne ch.G (C / 2) b = aOne ch.G C b` using `by unfold aOne; ring`. Use `(meanInf_affine _ (a1 + a2) (n1 + n2) (G1 + G2) _ _ (by linarith)).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1` using `mul_le_mul_of_nonneg_left hmA (add_nonneg hn1 hn2)`. Establish `e2` using `mul_le_mul_of_nonneg_left hmT (add_nonneg hG1 hG2)`. Use the polynomial consequences of the given equalities and inequalities. Introduce `p Φ β d hO c`. Take `⟨hf0, hne⟩` from `hfin p.embedding`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨fun j B v hv => ?_, fun i B v hv => ?_⟩` and prove the remaining obligations. Take `⟨f, hf⟩` from `hRT Φ β d hO c j`. Take `⟨u, rfl, hu⟩` from `hv`. Use `⟨f u, (hf u).symm, ?_⟩` and prove the remaining obligations. Conclude with `le_of_ext D _ _ p.embedding hf0 hne a1 n1 G1 _ _ _ (by linarith) (by linarith) (by linarith) _ B ((nrm_one_nonneg _ _).trans hu) (fun ρ hρ => hb1 Φ β d hO c j f hf p.embedding ρ hρ u B hu)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `hRR Φ β d hO c i`. Take `⟨w, rfl, hw⟩` from `hv`. Use `⟨mapF (starRingEnd D.what₂.LL) _ (f (mapF (starRingEnd D.what₂.LL) _ w)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[conjMap, mapVV_conj_embLL, hf, mapVV_conj_embLL]`. Establish `hu : nrm _ (fun _ => 1) (GlobalTheory.CoefModel.mapVV (p.embedding.comp (starRingEnd D.what₂.LL)) _ (mapF (starRingEnd D.what₂.LL) _ w)) ≤ B`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[mapVV_mapF, RingHom.comp_assoc, star_comp_star, RingHom.comp_id]` and apply the resulting hypothesis. Rewrite using `[mapVV_mapF]`. Conclude with `le_of_ext D _ _ p.embedding hf0 hne a2 n2 G2 _ _ _ (by linarith) (by linarith) (by linarith) _ B ((nrm_one_nonneg _ _).trans hw) (fun ρ hρ => hb2 Φ β d hO c i f hf p.embedding ρ hρ _ B hu)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairStdAt_of (C b C1 : ℝ)
     (hmA : Formalism.PairingDivisionLocalBalance.meanInf D.what₂.LL (fun p => avg D ch.S.Z.δ ch.S.Z.t0 p.embedding (hArea D ch.S.Z.δ ch.S.Z.t0)) ≤
@@ -96,15 +96,15 @@ theorem pairStdAt_of (C b C1 : ℝ)
 end Std
 
 /- English proof (translation)
-Introduce `hP hI hD hDp`. Take `⟨C1, hC1, hmean⟩` from `GlobalTheory.T.exists_const_mean_logArea_logThetaNorm_le`. Take `⟨F1, k1⟩` from `GlobalTheory.T.conjugate_top_bound_of_inputs hP hI hD hDp C1 hC1`. Take `⟨F2, k2⟩` from `GlobalTheory.T.rationalEqualSignKernels_largeConstants`. Take `⟨F3, k3⟩` from `GlobalTheory.T.conjugate_row_bound_of_dictionary hP hI hD hDp C1 hC1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨F4, k4⟩` from `GlobalTheory.T.oppositeKernelsRationalRowMap_largeConstants`. Use `⟨max (max F1 F2) (max F3 F4), fun CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C01, l1⟩` from `k1 CF (by simp only [max_le_iff] at hCF; exact hCF.1.1)`. Take `⟨C02, l2⟩` from `k2 CF (by simp only [max_le_iff] at hCF; exact hCF.1.2)`. Take `⟨C03, l3⟩` from `k3 CF (by simp only [max_le_iff] at hCF; exact hCF.2.1)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C04, l4⟩` from `k4 CF (by simp only [max_le_iff] at hCF; exact hCF.2.2)`. Use `⟨2 * max (max C01 C02) (max C03 C04), fun ε C hC => ?_⟩` and prove the remaining obligations. Establish `hC' : max (max C01 C02) (max C03 C04) ≤ C / 2` using `by linarith`. Simplify using `only [max_le_iff] at hC'`. Take `⟨x1, m1⟩` from `l1 ε (C / 2) hC'.1.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨x2, m2⟩` from `l2 ε (C / 2) hC'.1.2`. Take `⟨x3, m3⟩` from `l3 ε (C / 2) hC'.2.1`. Take `⟨x4, m4⟩` from `l4 ε (C / 2) hC'.2.2`. Use `⟨max (max x1 x2) (max x3 x4), fun D large₂ hε hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hIs hAt hF => ?_⟩` and prove the remaining obligations. Simplify using `only [max_le_iff] at hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨hL1, hLrd, hLd⟩` from `sizes D large₂ Γ Pl0 T A Ks R F hS`. Take `⟨hmA, hmT⟩` from `hmean D (hI D) ch.S.Z.δ ch.S.Z.t0 ch.S.Z.crv ch.S.Z.pt0 _ hL1 hLrd hLd`. Conclude with `pairStdAt_of ch C large₂.sc.b C1 hmA hmT (fun σ => GlobalTheory.T.embeddingsCurveFieldAbove_finite_nonempty D (hI D) ch.S.Z.δ ch.S.Z.t0 ch.S.Z.crv ch.S.Z.pt0 σ) (m2 D large₂ hε hx.1.2 Γ Pl0 T A Ks R F hS ch hIs hAt hF) (m1 D large₂ hε hx.1.1 Γ Pl0 T A Ks R F hS ch hIs hAt hF) (m4 …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pairStdK : GlobalTheory.FunPr.Hypotheses₂ → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → PairStdK := by
   intro hP hI hD hDp

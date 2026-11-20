@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SecClass
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.EtC.KumRoots.roots) | (exact GlobalTheory.EtC.KumRoots.roots) | (intros; apply GlobalTheory.EtC.KumRoots.roots <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_etaleLocal_root_of_unit_of_kummer : ∀ (q : ℕ) [NeZero q],
     (∀ (U : Scheme.{0}), IsUnit (q : Γ(U, ⊤)) → ∀ b : Sec Gm U, Loc U fun V g => ∃ c : Sec Gm V, Sec.map ((q : ℤ) • 𝟙 Gm) c = Sec.res g b) →

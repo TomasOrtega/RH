@@ -11,7 +11,7 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootE
 namespace GlobalTheory.SymChain
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν hν s κ S t _ _`. Establish `hpat : S.Pattern t` using `GlobalTheory.T.symmetricLevelChain_pattern_iterated k s κ S t`. Establish `hsupp : S.SupportAt t` using `GlobalTheory.T.symmetricLevelChain_supportAt_of_pattern k s κ S t hpat`. Establish `hclass : S.ClassAt t ν` using `GlobalTheory.T.symmetricLevelChain_classAt_every_position k ν hν s κ S t`. Conclude with `⟨GlobalTheory.T.symmetricLevelChain_oneIndexAt_of_class_support k ν hν s κ S t hclass hsupp, GlobalTheory.T.symmetricLevelChain_unfolded_position_exchange k ν hν s κ S t hpat⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem allPositions_holds : AllPositions := by
   intro k _ _ _ _ _ _ ν hν s κ S t _ _

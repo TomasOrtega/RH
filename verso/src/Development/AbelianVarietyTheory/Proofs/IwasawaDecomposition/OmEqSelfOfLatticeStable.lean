@@ -12,13 +12,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SplitHecke
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om hW e he g h hg hh x y hx hy h1 hL f hf hfix`. Establish `hdual` using `(GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T _ _ hW.std (GlobalTheory.PlaceModel.isSelfDualC_latFrame S) (GlobalTheory.PlaceModel.isSelfDualC_latFrame T)).1`. Rewrite `hdual` using `[GlobalTheory.PlaceModel.coe_latFrame, GlobalTheory.PlaceModel.coe_latFrame]`. Establish `hfin` using `@GlobalTheory.SplitScalar.latO_fin D S T (L0c D S) (L0c D T)`. Establish `key` using `om_eq_sum hW he hf hfix hg hh hx hy (R := {0}) (fun u hu => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.mem_singleton.1 hu]`. Conclude with `⟨hL 0 (zero_mem _), GlobalTheory.SplitScalar.isHalf_zero e⟩)`. Use the proof step `(fun w hw hwe => by`. Use `⟨0, ⟨Finset.mem_singleton_self _, ?_⟩, fun v hv => Finset.mem_singleton.1 hv.1⟩` and prove the remaining obligations. Rewrite using `[sub_zero, hdual w (GlobalTheory.SplitScalar.half_fin he hwe)]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Rewrite using `[← symplO_actO S T g⁻¹ h⁻¹]`. Conclude with `(hdual _ (hfin hw)).1 hw _ (hL u hu))`. Use the proof step `(fun w hw _ => hL w hw)`. Rewrite using `[key, h1, Finset.sum_singleton, Finset.card_singleton, GlobalTheory.SplitScalar.heisO_zero]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem om_eq_self_of_lattice_stable : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → ∀ (e : AE D), IsSplitIdem D e → ∀ (g : GA D S) (h : GA D T), SuppAt e S g → SuppAt e T h → ∀ x y, IsDetAt e S g x → IsDetAt e T h y → splitFacO χS χT x y = 1 → (∀ u ∈ latO S T (L0c D S) (L0c D T) (fun _ => True), actO S T g⁻¹ h⁻¹ u ∈ latO S T (L0c D S) (L0c D T) (fun _ => True)) → ∀ f, IsThetaFunO ψ S T f → (∀ u ∈ latO S T (L0c D S) (L0c D T) (fun _ => True), IsHalf e u ∨ IsHalf (cA D e) u → heisO ψ S T u f = f) → om (g, h) f = f := by
   intro D ψ S T χS χT om hW e he g h hg hh x y hx hy h1 hL f hf hfix

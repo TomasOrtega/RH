@@ -18,17 +18,17 @@ namespace GlobalTheory.CartanFinite
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h1 : ∀ a b, G a b ≠ 0 → conj (z a) * z b = 1` using `fun a b hab => by`. Use `congrFun (congrFun h a) b` as an intermediate fact. Rewrite `this` using `[diagonal_conjTranspose, mul_diagonal, diagonal_mul, Pi.star_apply, Complex.star_def]`. Conclude with `mul_right_cancel₀ hab (by linear_combination this)`. Establish `h2 : ∀ a b, G a b ≠ 0 → ∑ c, G a c = G a b` using `fun a b hab => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_single b (fun c _ hc => ?_) (by simp)` and prove the remaining obligations. Assume the negation of the conclusion as `hac`. Establish `h0 : conj (z a) ≠ 0` using `left_ne_zero_of_mul_eq_one (h1 a b hab)`. Conclude with `hc (hz (mul_left_cancel₀ h0 ((h1 a c hac).trans (h1 a b hab).symm)))`. Establish `h3 : ∀ a, ∃ d : ℂ, d ≠ 0 ∧ (∑ c, G a c ≠ 0 → d ^ 2 * conj (∑ c, G a c) = 1)` using `fun a => by`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Distinguish the cases in `h0 : ∑ c, G a c = 0`. Conclude with `⟨1, one_ne_zero, fun h => absurd h0 h⟩`. Take `⟨d, hd⟩` from `IsAlgClosed.exists_pow_nat_eq (conj (∑ c, G a c))⁻¹ two_pos`. Establish `h0' : conj (∑ c, G a c) ≠ 0` using `(map_ne_zero _).2 h0`. Use `⟨d, fun e => inv_ne_zero h0' (by rw [← hd, e]; simp), fun _ => by rw [hd, inv_mul_cancel₀ h0']⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose d hd0 hd using h3`. Use `⟨d, hd0, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[diagonal_conjTranspose, mul_diagonal, diagonal_mul, Pi.star_apply, Complex.star_def]`. Distinguish the cases in `hab : G a b = 0`. Simplify using `[hab]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hba : G b a = conj (G a b)` using `(congrFun (congrFun hG b) a).symm`. Establish `hba0 : G b a ≠ 0` using `by rw [hba]; exact (map_ne_zero _).2 hab`. Establish `ha` using `hd a (by rwa [h2 a b hab])`. Establish `hb` using `hd b (by rwa [h2 b a hba0])`. Rewrite `ha` using `[h2 a b hab]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb` using `[h2 b a hba0, hba, Complex.conj_conj]`. Establish `ha'` using `congrArg conj ha`. Rewrite `ha'` using `[map_mul, map_pow, Complex.conj_conj, map_one]`. Establish `: (conj (d a) * G a b * d b) ^ 2 = 1` using `by linear_combination (d b ^ 2 * G a b) * ha' + hb`. Apply the tactic sequence `rcases sq_eq_one_iff.1 this with e | e <;> simp [e]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_scale {G : Matrix (Fin n) (Fin n) ℂ} (hG : Gᴴ = G) {z : Fin n → ℂ} (hz : Function.Injective z)
     (h : (diagonal z)ᴴ * G * diagonal z = G) :
@@ -68,11 +68,11 @@ def IsEigenbasis (s : Matrix (Fin n) (Fin n) ℂ) (g : GL (Fin n) ℂ) : Prop :=
   ∃ z : Fin n → ℂ, Function.Injective z ∧ s * g = g * diagonal z
 
 /- English proof (translation)
-Establish `hc : s.charpoly.roots.card = n`. Rewrite using `[← (IsAlgClosed.splits s.charpoly).natDegree_eq_card_roots, charpoly_natDegree_eq_dim, Fintype.card_fin]`. Take `⟨z, hz⟩ : ∃ z : Fin n → ℂ, s.charpoly.roots = Finset.univ.val.map z` from `by induction' hr : s.charpoly.roots using Quotient.inductionOn with l`. Rewrite `hc` using `[hr]`. Take `rfl : l.length = n` from `hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨l.get, by simp⟩`. Establish `he : s.charpoly = (diagonal z).charpoly`. Rewrite using `[charpoly_diagonal, (IsAlgClosed.splits s.charpoly).eq_prod_roots_of_monic s.charpoly_monic, hz, Multiset.map_map]`. Both sides reduce to the same expression. Establish `hd : IsRegSS (diagonal z)` using `by rwa [IsRegSS, ← he]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `hd.exists_conj he`. Use `⟨g, z, ?_, hg⟩` and prove the remaining obligations. Rewrite `hd` using `[IsRegSS, charpoly_diagonal, Polynomial.separable_prod_X_sub_C_iff]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_isEigenbasis {s : Matrix (Fin n) (Fin n) ℂ} (hs : IsRegSS s) : ∃ g, IsEigenbasis s g := by
   have hc : s.charpoly.roots.card = n := by
@@ -92,9 +92,9 @@ theorem exists_isEigenbasis {s : Matrix (Fin n) (Fin n) ℂ} (hs : IsRegSS s) : 
   rwa [IsRegSS, charpoly_diagonal, Polynomial.separable_prod_X_sub_C_iff] at hd
 
 /- English proof (translation)
-Use extensionality with `a b`. Use `congrFun (congrFun h a) b` as an intermediate fact. Rewrite `this`, the goal using `[mul_diagonal, diagonal_mul]`. Distinguish the cases in `hab : a = b`. Rewrite using `[hab, mul_comm]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : u a b = 0`. Assume the negation of the conclusion as `h0`. Conclude with `hab (hz (mul_left_cancel₀ h0 (by linear_combination -this)))`. Simplify using `[h0]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem commute_diagonal {z : Fin n → ℂ} (hz : Function.Injective z) (w : Fin n → ℂ) {u : Matrix (Fin n) (Fin n) ℂ}
     (h : u * diagonal z = diagonal z * u) : u * diagonal w = diagonal w * u := by
@@ -111,11 +111,11 @@ theorem commute_diagonal {z : Fin n → ℂ} (hz : Function.Injective z) (w : Fi
 variable {ε : Fin n → Bool}
 
 /- English proof (translation)
-Take `⟨g, z, hz, hg⟩` from `exists_isEigenbasis hs`. Establish `hU : (ujMat ε s)ᴴ * Jm ε * ujMat ε s = Jm ε` using `s.2`. Take `⟨d, hd0, hd⟩` from `exists_scale (G := g.1ᴴ * Jm ε * g.1) (by simp [conjTranspose_mul, Jm_conjTranspose, Matrix.mul_assoc]) hz (by`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← hg, conjTranspose_mul, Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = _ := by rw [hU])`. Set `D : GL (Fin n) ℂ` to `⟨diagonal d, diagonal fun a => (d a)⁻¹, by simp [hd0], by simp [hd0]⟩`. Use `⟨g * D, ⟨z, hz, ?_⟩, fun a b => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ * (g.1 * diagonal d) = g.1 * diagonal d * _`. Rewrite using `[← Matrix.mul_assoc, hg, Matrix.mul_assoc, Matrix.mul_assoc, commute_diagonal hz d (u := diagonal z) rfl]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (g.1 * diagonal d)ᴴ * Jm ε * (g.1 * diagonal d) = (diagonal d)ᴴ * (g.1ᴴ * Jm ε * g.1) * diagonal d` using `by simp only [conjTranspose_mul, Matrix.mul_assoc]`. Rewrite `hd` using `[← e]`. Conclude with `hd a b`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isEigenbasis_gram {s : UJ ε} (hs : IsRegSS (ujMat ε s)) : ∃ g : GL (Fin n) ℂ,
     IsEigenbasis (ujMat ε s) g ∧ ∀ a b, (g.1ᴴ * Jm ε * g.1) a b ∈ ({0, 1, -1} : Finset ℂ) := by
@@ -137,11 +137,11 @@ theorem exists_isEigenbasis_gram {s : UJ ε} (hs : IsRegSS (ujMat ε s)) : ∃ g
     exact hd a b
 
 /- English proof (translation)
-Take `⟨z, hz, hg⟩` from `h`. Take `⟨w, -, hg'⟩` from `h'`. Establish `h1 : ujMat ε u * ujMat ε s = ujMat ε s * ujMat ε u`. Rewrite using `[← map_mul, ← map_mul, GlobalTheory.Orb.mem_cent.1 hu]`. Establish `e : ∀ {t : Matrix (Fin n) (Fin n) ℂ} {k : GL (Fin n) ℂ} {y}, t * k.1 = k.1 * diagonal y → diagonal y = (k⁻¹).1 * t * k.1` using `fun ht => by rw [Matrix.mul_assoc, ht, Units.inv_mul_cancel_left]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `commute_diagonal hz w (u := (g⁻¹).1 * ujMat ε u * g.1) (by`. Simplify using `only [e hg, Matrix.mul_assoc, Units.mul_inv_cancel_left]`. Rewrite using `[← Matrix.mul_assoc (ujMat ε u), h1, Matrix.mul_assoc])`. Rewrite `h2` using `[e hg', ← hx]`. Establish `h3 : (g⁻¹ * u.1 * g) * ((x.1 * g)⁻¹ * s'.1 * (x.1 * g)) = ((x.1 * g)⁻¹ * s'.1 * (x.1 * g)) * (g⁻¹ * u.1 * g)` using `Units.ext h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `GlobalTheory.Orb.mem_cent.2 (Subtype.ext ?_)` and prove the remaining obligations. Establish `h4` using `congrArg (fun y => (x.1 * g) * y * (x.1 * g)⁻¹) h3`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Simplify `h4` using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conj_mem_cent {s s' x u : UJ ε} {g g' : GL (Fin n) ℂ} (h : IsEigenbasis (ujMat ε s) g)
     (h' : IsEigenbasis (ujMat ε s') g') (hx : x.1 * g = g') (hu : u ∈ cent s) : x * u * x⁻¹ ∈ cent s' := by
@@ -163,9 +163,9 @@ theorem conj_mem_cent {s s' x u : UJ ε} {g g' : GL (Fin n) ℂ} (h : IsEigenbas
   simpa [mul_assoc] using h4
 
 /- English proof (translation)
-Establish `hx : g' * g⁻¹ ∈ UJ ε`. Express the relevant statement in the definitionally equal form `(g'.1 * (g⁻¹).1)ᴴ * Jm ε * (g'.1 * (g⁻¹).1) = Jm ε`. Combine the equalities or inequalities in the displayed calculation. Use `⟨⟨_, hx⟩, le_antisymm ?_ fun u hu => ⟨(⟨_, hx⟩ : UJ ε)⁻¹ * u * (⟨_, hx⟩ : UJ ε)⁻¹⁻¹, conj_mem_cent h' h (by simp) hu, by simp [mul_assoc]⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `conj_mem_cent h h' (by simp) hu`.
+A detailed English derivation is pending.
 -/
 theorem conj_of_gram_eq {s s' : UJ ε} {g g' : GL (Fin n) ℂ} (h : IsEigenbasis (ujMat ε s) g)
     (h' : IsEigenbasis (ujMat ε s') g') (hG : g.1ᴴ * Jm ε * g.1 = g'.1ᴴ * Jm ε * g'.1) :
@@ -181,13 +181,11 @@ theorem conj_of_gram_eq {s s' : UJ ε} {g g' : GL (Fin n) ℂ} (h : IsEigenbasis
   exact conj_mem_cent h h' (by simp) hu
 
 /- English proof (translation)
-Establish `hm : ∀ (T : Subgroup H) x y, (T.map (MulAut.conj x).toMonoidHom).map (MulAut.conj y).toMonoidHom = T.map (MulAut.conj (y * x)).toMonoidHom` using `fun T x y => by`. Rewrite using `[Subgroup.map_map, map_mul]`. Both sides reduce to the same expression. Establish `h0 : ∀ T : Subgroup H, T.map (MulAut.conj (1 : H)).toMonoidHom = T` using `fun T => by`. Rewrite using `[map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `T.map_id`. Set `S : Setoid {T // P T}` to `⟨fun T T' => ∃ x, T.1.map (MulAut.conj x).toMonoidHom = T'.1, fun T => ⟨1, h0 _⟩, fun ⟨x, hx⟩ => ⟨x⁻¹, by rw [← hx, hm, inv_mul_cancel, h0]⟩, fun ⟨x, hx⟩ ⟨y, hy⟩ => ⟨y * x, by rw [← hm, hx, hy]⟩⟩`. Use `choose f hf using h1`. Establish `: Finite (Quotient S)` using `Finite.of_injective (fun q : Quotient S => f q.out.1 q.out.2) fun q q' e => Quotient.out_equiv_out.1 (h2 _ _ _ (hf q.out.1 q.out.2) ((congrArg (R q'.out.1) e).mpr (hf q'.out.1 q'.out.2)))`. Use `Fintype.ofFinite (Quotient S)` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨Finset.univ.image fun q : Quotient S => q.out.1, fun T hT => ?_, fun T hT => ⟨(Quotient.mk S ⟨T, hT⟩).out.1, ⟨Finset.mem_image_of_mem _ (Finset.mem_univ _), S.symm (Quotient.mk_out (s := S) ⟨T, hT⟩)⟩, ?_⟩⟩` and prove the remaining obligations. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hT`. Conclude with `q.out.2`. Introduce and unpack `T' ⟨hT', hx⟩`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hT'`.
-
-Rewrite using `[Quotient.sound (s := S) (a := ⟨T, hT⟩) (b := q.out) hx, q.out_eq]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_system {H ι : Type} [Group H] [Finite ι] {P : Subgroup H → Prop} (R : Subgroup H → ι → Prop)
     (h1 : ∀ T, P T → ∃ i, R T i)
@@ -218,9 +216,9 @@ theorem exists_system {H ι : Type} [Group H] [Finite ι] {P : Subgroup H → Pr
     rw [Quotient.sound (s := S) (a := ⟨T, hT⟩) (b := q.out) hx, q.out_eq]
 
 /- English proof (translation)
-Introduce `n ε`. Use `exists_system (ι := Fin n → Fin n → ({0, 1, -1} : Finset ℂ)) (fun T i => ∃ (s : UJ ε) (g : GL (Fin n) ℂ), T = cent s ∧ IsEigenbasis (ujMat ε s) g ∧ ∀ a b, (g.1ᴴ * Jm ε * g.1) a b = i a b) ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, hs, rfl⟩`. Take `⟨g, hg, hG⟩` from `exists_isEigenbasis_gram hs`. Conclude with `⟨fun a b => ⟨_, hG a b⟩, s, g, rfl, hg, fun _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `_ _ i ⟨s, g, rfl, hg, hG⟩ ⟨s', g', rfl, hg', hG'⟩`. Conclude with `conj_of_gram_eq hg hg' (Matrix.ext fun a b => (hG a b).trans (hG' a b).symm)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_isCartanSystem : ∀ (n : ℕ) (ε : Fin n → Bool), ∃ 𝒯 : Finset (Subgroup (UJ ε)), IsCartanSystem 𝒯 := by
   intro n ε

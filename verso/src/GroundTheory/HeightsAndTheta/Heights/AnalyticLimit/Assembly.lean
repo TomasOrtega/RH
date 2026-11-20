@@ -26,100 +26,100 @@ namespace GroundTheory.Heights₂.Heights.AnalyticLimit
 open GroundTheory.Heights₂.Heights.LowerBoundFree
 
 /- English proof (translation)
-The claim follows from `RegularizedMaxConvergenceC2.proof`.
+A detailed English derivation is pending.
 -/
 theorem RegularizedMaxConvergenceC2.full : RegularizedMaxConvergenceC2.Statement := RegularizedMaxConvergenceC2.proof
 
 /- English proof (translation)
-The claim follows from `GluedLocal.proof`.
+A detailed English derivation is pending.
 -/
 theorem GluedLocal.full : GluedLocal.Statement := GluedLocal.proof
 
 /- English proof (translation)
-The claim follows from `ConvergenceRate.proof`.
+A detailed English derivation is pending.
 -/
 theorem ConvergenceRate.full : ConvergenceRate.Statement := ConvergenceRate.proof
 
 /- English proof (translation)
-The claim follows from `ConvergenceSigned.proof`.
+A detailed English derivation is pending.
 -/
 theorem ConvergenceSigned.full : ConvergenceSigned.Statement := ConvergenceSigned.proof
 
 /- English proof (translation)
-The claim follows from `EnergyStep.proof`.
+A detailed English derivation is pending.
 -/
 theorem EnergyStep.full : EnergyStep.Statement := EnergyStep.proof
 
 /- English proof (translation)
-The claim follows from `EnergySum.proof`.
+A detailed English derivation is pending.
 -/
 theorem EnergySum.full : EnergySum.Statement := EnergySum.proof
 
 /- English proof (translation)
-The claim follows from `RegularisedMonotone.proof`.
+A detailed English derivation is pending.
 -/
 theorem RegularisedMonotone.full : RegularisedMonotone.Statement := RegularisedMonotone.proof
 
 /- English proof (translation)
-The claim follows from `KaehlerBound.proof`.
+A detailed English derivation is pending.
 -/
 theorem KaehlerBound.full : KaehlerBound.Statement := KaehlerBound.proof
 
 /- English proof (translation)
-The claim follows from `BoundingKaehler.proof`.
+A detailed English derivation is pending.
 -/
 theorem BoundingKaehler.full : BoundingKaehler.Statement := BoundingKaehler.proof
 
 /- English proof (translation)
-The claim follows from `LinearWeights.proof KaehlerBound.full`.
+A detailed English derivation is pending.
 -/
 theorem LinearWeights.full : LinearWeights.Statement := LinearWeights.proof KaehlerBound.full
 
 /- English proof (translation)
-The claim follows from `C2ConvergencePullback.proof`.
+A detailed English derivation is pending.
 -/
 theorem C2ConvergencePullback.full : C2ConvergencePullback.Statement := C2ConvergencePullback.proof
 
 /- English proof (translation)
-The claim follows from `SystemPullback.proof C2ConvergencePullback.full`.
+A detailed English derivation is pending.
 -/
 theorem SystemPullback.full : SystemPullback.Statement := SystemPullback.proof C2ConvergencePullback.full
 
 /- English proof (translation)
-The claim follows from `DivisorNull.proof`.
+A detailed English derivation is pending.
 -/
 theorem DivisorNull.full : DivisorNull.Statement := DivisorNull.proof
 
 /- English proof (translation)
-The claim follows from `GreenMassZero.proof`.
+A detailed English derivation is pending.
 -/
 theorem GreenMassZero.full : GreenMassZero.Statement := GreenMassZero.proof
 
 /- English proof (translation)
-The claim follows from `Telescoping.proof`.
+A detailed English derivation is pending.
 -/
 theorem Telescoping.full : Telescoping.Statement := Telescoping.proof
 
 /- English proof (translation)
-The claim follows from `TelescopingFamily.proof`.
+A detailed English derivation is pending.
 -/
 theorem TelescopingFamily.full : TelescopingFamily.Statement := TelescopingFamily.proof
 
 /- English proof (translation)
-The claim follows from `TailBound.proof h BoundingKaehler.full`.
+A detailed English derivation is pending.
 -/
 theorem TailBound.of_listTailLog (h : ListTailLog.Statement) : TailBound.Statement :=
   TailBound.proof h BoundingKaehler.full
 
 /- English proof (translation)
-The claim follows from `SystemIndependence.proof DivisorNull.full h`.
+A detailed English derivation is pending.
 -/
 theorem SystemIndependence.of_productBounds (h : ProductBounds.Statement) :
     SystemIndependence.Statement :=
   SystemIndependence.proof DivisorNull.full h
 
 /- English proof (translation)
-The claim follows from `UniformIntegrability.proof GreenMassZero.full h₁ h₂ h₃`.
+A detailed English derivation is pending.
 -/
 theorem UniformIntegrability.of_greenMass (h₁ : GreenMassStep.Statement)
     (h₂ : GreenMassReplace.Statement) (h₃ : GreenMassError.Statement) :

@@ -19,13 +19,13 @@ open GlobalTheory.ZM
 namespace GlobalTheory.ObjDescent
 
 /- English proof (translation)
-Use `⟨IsPullback.of_horiz_isIso ⟨w⟩, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Set `r` to `pullback.fst T.hom q`. Establish `: Epi r` using `Flat.epi_of_flat_of_surjective _`. Set `T' : Over S₂` to `Over.mk (pullback.snd T.hom q)`. Establish `up : ∀ z : T ⟶ G, ∃ z' : T' ⟶ G₂, r ≫ z.left = z'.left ≫ a` using `fun z => ⟨Over.homMk (h.1.lift (r ≫ z.left) (pullback.snd T.hom q) (by rw [Category.assoc, Over.w z]; exact pullback.condition)) (h.1.lift_snd _ _ _), (h.1.lift_fst _ _ _).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨x', hx'⟩` from `up x`. Take `⟨y', hy'⟩` from `up y`. Set `R : Over.mk (T'.hom ≫ q) ⟶ T` to `Over.homMk r pullback.condition`. Set `R' : Over.mk (T'.hom ≫ q) ⟶ Over.mk (T.hom ≫ 𝟙 S)` to `Over.homMk r ((congrArg (r ≫ ·) (Category.comp_id T.hom)).trans pullback.condition)`. Establish `e₁` using `h.2 T' x' y' (R ≫ x) (R ≫ y) hx' hy'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e₂` using `h'.2 T' x' y' (R' ≫ x₀) (R' ≫ y₀) (by show r ≫ x₀.left = _; rw [hx, ← Category.assoc, hx', Category.assoc, e]) (by show r ≫ y₀.left = _; rw [hy, ← Category.assoc, hy', Category.assoc, e])`. Rewrite `e₁`, `e₂` using `[← MonObj.comp_mul]`. Rewrite using `[← cancel_epi r, ← Category.assoc]`. Use `e₂.trans ?_` and prove the remaining obligations. Rewrite using `[← e, ← Category.assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (· ≫ φ) e₁.symm`.
+A detailed English derivation is pending.
 -/
 theorem isGrpPullback_id {S S₂ : Scheme.{0}} {G G' : Over S} {G₂ : Over S₂} [GrpObj G] [GrpObj G'] [GrpObj G₂]
     {q : S₂ ⟶ S} [Flat q] [Surjective q] {a : G₂.left ⟶ G.left} {c : G₂.left ⟶ G'.left}
@@ -60,7 +60,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {u : Obj D l b s} {ob : Obj D l b' s'} {ob₂ : Obj D l b'' s''} {q : S₂ ⟶ S}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨m, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_congr {q' : S₂ ⟶ S} (e : q = q') (m : ObjMap ob₂ ob q) :
     ∃ m' : ObjMap ob₂ ob q', m'.toSABMap.φ = m.toSABMap.φ := by
@@ -68,15 +68,15 @@ theorem exists_congr {q' : S₂ ⟶ S} (e : q = q') (m : ObjMap ob₂ ob q) :
   exact ⟨m, rfl⟩
 
 /- English proof (translation)
-Establish `hp : (g₁ ≫ ob₂.t.G.hom) ≫ q = (g₂ ≫ ob₂.t.G.hom) ≫ q`. Rewrite using `[Category.assoc, Category.assoc, ← m.cart.1.w, ← Category.assoc, h, Category.assoc]`. Take `⟨o, ⟨m₁⟩⟩` from `obj_pull E H D l B'' B'' b'' b'' (RingHom.id _) S₂ Z s'' ((g₁ ≫ ob₂.t.G.hom) ≫ s'') (g₁ ≫ ob₂.t.G.hom) rfl rfl ((Category.comp_id _).symm.trans (congrArg _ (Spec.map_id _).symm)) ob₂`. Take `⟨k, hk⟩` from `ObjComp.objMap_comp m m₁`. Take `⟨k', hk'⟩` from `exists_congr hp k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m₂, hm₂⟩` from `ObjComp.objMap_cancel m k'`. Take `⟨n₁, hn₁⟩` from `ObjComp.objMap_comp n m₁`. Take `⟨n₁', hn₁'⟩` from `exists_congr hp n₁`. Take `⟨n₂, hn₂⟩` from `ObjComp.objMap_comp n m₂`. Establish `e` using `obj_rigid_of_pol hL obj_isAbelianScheme_dim_rigidified_sym E H D l _ _ _ _ _ _ _ _ u o _ n₁'.toSABMap n₂.toSABMap fun a => ⟨_, n₁'.eta a, n₂.eta a⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e` using `[hn₁', hn₁, hn₂]`. Rewrite `hm₂` using `[hk', hk]`. Set `σ` to `m₁.cart.1.lift g₁ (𝟙 Z) (Category.id_comp _).symm`. Establish `h₁ : σ ≫ m₁.toSABMap.φ = g₁` using `m₁.cart.1.lift_fst _ _ _`. Establish `h₀ : σ ≫ o.t.G.hom = 𝟙 Z` using `m₁.cart.1.lift_snd _ _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂ : σ ≫ m₂.toSABMap.φ = g₂`. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc]`. Use `(congrArg (σ ≫ ·) hm₂.symm).trans ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, h₁, h]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, m₂.cart.1.w, ← Category.assoc, h₀, Category.id_comp]`. Use `(congrArg (· ≫ n.toSABMap.φ) h₁).symm.trans (Eq.trans ?_ (congrArg (· ≫ n.toSABMap.φ) h₂))` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg (σ ≫ ·) e).trans (Category.assoc _ _ _).symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem comp_eq_of_comp_eq (hL : Out.Laws) (m : ObjMap ob₂ ob q) (n : ObjMap ob₂ u q) {Z : Scheme.{0}}
     (g₁ g₂ : Z ⟶ ob₂.t.G.left) (h : g₁ ≫ m.toSABMap.φ = g₂ ≫ m.toSABMap.φ) :
@@ -110,7 +110,7 @@ theorem comp_eq_of_comp_eq (hL : Out.Laws) (m : ObjMap ob₂ ob q) (n : ObjMap o
 variable [Flat q] [Surjective q] [QuasiCompact q]
 
 /- English proof (translation)
-Establish `: Flat m.toSABMap.φ` using `MorphismProperty.of_isPullback m.cart.1.flip inferInstance`. Establish `: Surjective m.toSABMap.φ` using `MorphismProperty.of_isPullback m.cart.1.flip inferInstance`. Establish `: QuasiCompact m.toSABMap.φ` using `MorphismProperty.of_isPullback m.cart.1.flip inferInstance`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem effectiveEpi (m : ObjMap ob₂ ob q) : EffectiveEpi m.toSABMap.φ := by
   have : Flat m.toSABMap.φ := MorphismProperty.of_isPullback m.cart.1.flip inferInstance
@@ -119,7 +119,7 @@ theorem effectiveEpi (m : ObjMap ob₂ ob q) : EffectiveEpi m.toSABMap.φ := by
   infer_instance
 
 /- English proof (translation)
-The claim follows from `have := effectiveEpi m ⟨EffectiveEpi.desc m.toSABMap.φ n.toSABMap.φ (comp_eq_of_comp_eq hL m n), EffectiveEpi.fac _ _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_fac (hL : Out.Laws) (m : ObjMap ob₂ ob q) (n : ObjMap ob₂ u q) :
     ∃ φ : ob.t.G.left ⟶ u.t.G.left, m.toSABMap.φ ≫ φ = n.toSABMap.φ :=
@@ -127,17 +127,17 @@ theorem exists_fac (hL : Out.Laws) (m : ObjMap ob₂ ob q) (n : ObjMap ob₂ u q
   ⟨EffectiveEpi.desc m.toSABMap.φ n.toSABMap.φ (comp_eq_of_comp_eq hL m n), EffectiveEpi.fac _ _ _⟩
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `exists_fac hL m n`. Take `⟨ψ, hψ⟩` from `exists_fac hL n m`. Use `effectiveEpi m` as an intermediate fact. Use `effectiveEpi n` as an intermediate fact. Establish `: Epi q` using `Flat.epi_of_flat_of_surjective _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIso φ` using `⟨ψ, by rw [← cancel_epi m.toSABMap.φ, ← Category.assoc, hφ, hψ, Category.comp_id], by rw [← cancel_epi n.toSABMap.φ, ← Category.assoc, hψ, hφ, Category.comp_id]⟩`. Establish `w : φ ≫ u.t.G.hom = ob.t.G.hom ≫ 𝟙 S`. Rewrite using `[← cancel_epi m.toSABMap.φ, ← Category.assoc, hφ, Category.comp_id, m.cart.1.w, n.cart.1.w]`. Establish `gp : IsGrpPullback ob.t.G u.t.G (𝟙 S) φ` using `isGrpPullback_id m.cart n.cart φ hφ w`. Establish `hact : ∀ a, (ob.t.act.act a).left ≫ φ = φ ≫ (u.t.act.act a).left` using `fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← cancel_epi m.toSABMap.φ, ← Category.assoc, ← m.act, Category.assoc, hφ, n.act, ← Category.assoc, hφ]`. Establish `hiso : LBIso ob.t.PP.L (u.t.PP.L.pull φ)`. Establish `h₁` using `ob.t.PP.isLB`. Establish `h₂` using `pull_isLB u.t.PP.isLB φ`. Establish `hN` using `LB.isLB_div h₂ h₁`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cN : CechPic.cls _ hN = CechPic.pull φ (CechPic.cls _ u.t.PP.isLB) - CechPic.cls _ h₁` using `CechPic.cls_div h₂ h₁ hN`. Establish `cl : ∀ {t : SAB H S} (k : SABMap ob₂.t t q), CechPic.cls _ ob₂.t.PP.isLB = CechPic.pull k.φ (CechPic.cls _ t.PP.isLB)` using `fun {t} k => by`. Take `⟨w, hw, -⟩` from `k.lin`. Conclude with `(CechPic.cls_eq_iff _ (pull_isLB t.PP.isLB _)).2 ⟨w, hw⟩`. Establish `z : ∀ t : SAB H S, CechPic.pull (eSec t.G) (CechPic.cls _ t.PP.isLB) = 0` using `fun t => (CechPic.cls_eq_zero_iff (pull_isLB t.PP.isLB _)).2 ⟨_, t.PP.rigGen⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.exists_gen_of_rigidified_of_flat_baseChange hL.globalFns S S₂ q ob.t.G _ (ObjDim.isAbelianScheme ob) hN inferInstance inferInstance inferInstance ((CechPic.cls_eq_zero_iff (pull_isLB hN _)).1 ?_) ((CechPic.cls_eq_zero_iff (pull_isLB hN _)).1 ?_)` and prove the remaining obligations. Establish `he : eSec ob.t.G ≫ φ = 𝟙 S ≫ eSec u.t.G` using `(cubeMapOf gp).e_comm`. Rewrite using `[CechPic.cls_pull hN, cN, map_sub, ← CechPic.pull_comp, z, he, Category.id_comp, z, sub_zero]`. Rewrite using `[CechPic.cls_pull hN, cN, ← m.cart.1.isoPullback_inv_fst, CechPic.pull_comp, map_sub, ← CechPic.pull_comp, hφ, ← cl, ← cl, sub_self, map_zero]`. Take `⟨k, hk⟩` from `exists_sabMap_of_isProper_of_lbIso hL.globalFns E H S S u.t ob.t (𝟙 S) φ u.proper gp hiso hact`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ (σ₂ : S₂ ⟶ ob₂.t.G.left) (σ : S ⟶ ob.t.G.left) (τ : S ⟶ u.t.G.left), σ₂ ≫ m.toSABMap.φ = q ≫ σ → σ₂ ≫ n.toSABMap.φ = q ≫ τ → σ ≫ k.φ = 𝟙 S ≫ τ` using `fun σ₂ σ τ h₁ h₂ => by`. Rewrite using `[← cancel_epi q, hk, Category.id_comp, ← Category.assoc, ← h₁, ← h₂, Category.assoc, hφ]`. Conclude with `⟨⟨k, fun a => key _ _ _ (m.eta a) (n.eta a), fun a => key _ _ _ (m.etaA a) (n.etaA a)⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_objMap_id (hL : Out.Laws) (m : ObjMap ob₂ ob q) (n : ObjMap ob₂ u q) :
     Nonempty (ObjMap ob u (𝟙 S)) := by
@@ -183,9 +183,9 @@ end GlobalTheory.ObjDescent
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hL _ E _ _ _ H D l B B' B'' _ _ _ b b' b'' X S S₂ s s' s'' u ob ob₂ q f _ _ _ _ ⟨m⟩ ⟨n⟩`. Take `⟨u', ⟨p⟩⟩` from `obj_pull E H D l B B b b (RingHom.id _) X S s (f ≫ s) f rfl rfl ((Category.comp_id _).symm.trans (congrArg _ (Spec.map_id _).symm)) u`. Take `⟨n', -⟩` from `ObjComp.objMap_cancel p n`. Take `⟨k⟩` from `ObjDescent.nonempty_objMap_id hL m n'`. Take `⟨k', -⟩` from `ObjComp.objMap_comp p k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k'', -⟩` from `ObjDescent.exists_congr (Category.id_comp f) k'`. Conclude with `⟨k''⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_objMap_of_finite_etale_cover : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (B B' B'' : Type) [CommRing B] [CommRing B'] [CommRing B''] (b : Base l B) (b' : Base l B') (b'' : Base l B'') (X S S₂ : Scheme.{0}) (s : X ⟶ Sp B) (s' : S ⟶ Sp B') (s'' : S₂ ⟶ Sp B'') (u : Obj D l b s) (ob : Obj D l b' s') (ob₂ : Obj D l b'' s'') (q : S₂ ⟶ S) (f : S ⟶ X), (IsReduced S ∨ IsLocallyNoetherian S) → IsFinite q → Etale q → Surjective q → Nonempty (ObjMap ob₂ ob q) → Nonempty (ObjMap ob₂ u (q ≫ f)) → Nonempty (ObjMap ob u f) := by
   intro hL _ E _ _ _ H D l B B' B'' _ _ _ b b' b'' X S S₂ s s' s'' u ob ob₂ q f _ _ _ _ ⟨m⟩ ⟨n⟩

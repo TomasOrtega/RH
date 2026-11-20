@@ -26,11 +26,11 @@ def Flag (π : Representation ℂ G X) (L N : Set G) (ι : A → G) (χ : A → 
     (∀ u ∈ N, ∀ x, π u x - x ∈ T) ∧ ∀ z, ∀ x ∈ S, π (ι z) x - χ z • x ∈ T
 
 /- English proof (translation)
-Take `⟨S, T, h1, h2, h3, h4, h5⟩` from `h`. Use `⟨S.comap φ, T.comap φ, fun h => h1 fun x hx => ?_, fun g' hg x hx => ?_, fun g' hg x hx => ?_, fun u' hu x => ?_, fun z x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hφ x`. Conclude with `h hx`. Take `⟨g, hg, c, hc⟩` from `hL g' hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_comap, hc]`. Conclude with `S.smul_mem c (h2 g hg _ hx)`. Take `⟨g, hg, c, hc⟩` from `hL g' hg`. Rewrite using `[Submodule.mem_comap, hc]`. Conclude with `T.smul_mem c (h3 g hg _ hx)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu, hc⟩` from `hN u' hu`. Rewrite using `[Submodule.mem_comap, map_sub, hc]`. Conclude with `h4 u hu _`. Rewrite using `[Submodule.mem_comap, map_sub, hι, map_smul, mul_smul, ← smul_sub]`. Conclude with `T.smul_mem _ (h5 z _ hx)`.
+A detailed English derivation is pending.
 -/
 theorem Flag.comap {π : Representation ℂ G X} {π' : Representation ℂ G' X'} {L N : Set G}
     {L' N' : Set G'} {ι : A → G} {ι' : A → G'} {χ : A → ℂ} (h : Flag π L N ι χ) (φ : X' →ₗ[ℂ] X)
@@ -57,17 +57,15 @@ theorem Flag.comap {π : Representation ℂ G X} {π' : Representation ℂ G' X'
     exact T.smul_mem _ (h5 z _ hx)
 
 /- English proof (translation)
-Take `⟨S, T, h1, h2, h3, h4, h5⟩` from `h`. Establish `hT : twKer (π.comp s) H 1 ≤ T` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨u, v, rfl⟩`. Simplify using `using h4 _ ⟨u, u.2, rfl⟩ v)`. Establish `hK : ∀ u ∈ H, ∀ x, π' (s u) x - x ∈ twKer (π'.comp s) H 1` using `fun u hu x => Submodule.subset_span ⟨⟨u, hu⟩, x, by simp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hI : ∀ g x, φ.toLinearMap (π g x) = π' g (φ.toLinearMap x)` using `fun g x => φ.isIntertwining _ _ g x`. Use `⟨S.map φ.toLinearMap, T.map φ.toLinearMap ⊔ twKer (π'.comp s) H 1, fun h => h1 fun x hx => ?_, ?_, fun g hg => ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨_, ⟨y, hy, rfl⟩, w, hw, e⟩` from `Submodule.mem_sup.1 (h ⟨x, hx, rfl⟩)`. Establish `: φ (x - y) ∈ twKer (π'.comp s) H 1`. Establish `e' : φ x = φ y + w` using `e.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_sub, e', add_sub_cancel_left]` and apply the resulting hypothesis. Simplify using `using add_mem (hT (hex _ this)) hy`. Introduce and unpack `g hg _ ⟨x, hx, rfl⟩`. Conclude with `⟨_, h2 g hg x hx, hI g x⟩`. Use `show T.map φ.toLinearMap ⊔ twKer (π'.comp s) H 1 ≤ Submodule.comap (π' g) (T.map φ.toLinearMap ⊔ twKer (π'.comp s) H 1)`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `sup_le ?_ (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `Submodule.mem_sup_left ⟨_, h3 g hg x hx, hI g x⟩`. Introduce and unpack `_ ⟨u, v, rfl⟩`. Take `⟨u', hu', e⟩` from `hL g hg u u.2`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Submodule.mem_sup_right ?_` and prove the remaining obligations. Use `hK u' hu' (π' g v)` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, ← e, map_mul]`. Simplify using `using this`. Introduce and unpack `_ ⟨u, hu, rfl⟩ x`.
-
-Conclude with `Submodule.mem_sup_right (hK u hu x)`. Introduce and unpack `z _ ⟨x, hx, rfl⟩`. Conclude with `Submodule.mem_sup_left ⟨_, h5 z x hx, by rw [map_sub, map_smul, hI]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Flag.map {π : Representation ℂ G X} {π' : Representation ℂ G X'} {L : Set G} {Γ : Type} [Group Γ]
     (s : Γ →* G) (H : Subgroup Γ) {ι : A → G} {χ : A → ℂ} (h : Flag π L (s '' H) ι χ)
@@ -108,25 +106,23 @@ theorem Flag.map {π : Representation ℂ G X} {π' : Representation ℂ G X'} {
     exact Submodule.mem_sup_left ⟨_, h5 z x hx, by rw [map_sub, map_smul, hI]⟩
 
 /- English proof (translation)
-Take `⟨S, T, h1, h2, h3, h4, h5⟩` from `h`. Set `U : Submodule ℂ (Y a) → Submodule ℂ (⨂[ℂ] a, Y a)` to `fun S => Submodule.span ℂ {y | ∃ x : ∀ b, Y b, x a ∈ S ∧ y = PiTensorProduct.tprod ℂ x}`. Establish `hU : ∀ S : Submodule ℂ (Y a), (∀ g ∈ L, ∀ x ∈ S, ρ a g x ∈ S) → ∀ g ∈ {g : ∀ a, Γ a | g a ∈ L}, ∀ y ∈ U S, SmGL.piTensor ρ g y ∈ U S`. Introduce `S hS g hg`. Use `show U S ≤ Submodule.comap (SmGL.piTensor ρ g) (U S)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `Submodule.subset_span ⟨_, hS _ hg _ hx, piTensor_tprod ρ g x⟩`. Establish `key : ∀ (g : Γ a) (c : ℂ) (x : ∀ b, Y b), ρ a g (x a) - c • x a ∈ T → SmGL.piTensor ρ (Pi.mulSingle a g) (PiTensorProduct.tprod ℂ x) - c • PiTensorProduct.tprod ℂ x ∈ U T`. Introduce `g c x hx`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Submodule.subset_span ⟨Function.update x a (ρ a g (x a) - c • x a), by simpa using hx, ?_⟩` and prove the remaining obligations. Establish `h1 : (fun b => ρ b (Pi.mulSingle (M` using `Γ) a g b) (x b)) = Function.update x a (ρ a g (x a)) := by`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.mulSingle_eq_of_ne hb, Function.update_of_ne hb]`. Rewrite using `[piTensor_tprod, h1, MultilinearMap.map_update_sub, MultilinearMap.map_update_smul, Function.update_eq_self]`. Use `⟨U S, U T, fun h => h1 fun x₀ hx₀ => by_contra fun hT => ?_, hU S h2, hU T h3, ?_, fun z => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ a, ∃ (x : Y a) (l : Module.Dual ℂ (Y a)), l x = 1` using `fun a => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `exists_ne (0 : Y a)`. Take `⟨l, hl⟩` from `Module.Projective.exists_dual_eq_one ℂ hx`. Conclude with `⟨x, l, hl⟩`. Use `choose x l hl using h1`. Take `⟨l₀, h0, h0'⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hT inferInstance`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Set `F` to `PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ α ℂ).compLinearMap (Function.update l a l₀))`. Establish `hF : U T ≤ LinearMap.ker F` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `: l₀ (y a) = 0` using `(Submodule.eq_bot_iff _).1 h0' _ ⟨_, hy, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, F, PiTensorProduct.lift.tprod, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ a) (by simpa using this))`. Use `hF (h (Submodule.subset_span ⟨Function.update x a x₀, by simpa using hx₀, rfl⟩))` as an intermediate fact. Simplify using `only [LinearMap.mem_ker, F, PiTensorProduct.lift.tprod, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply] at this`. Take `⟨b, -, hb⟩` from `Finset.prod_eq_zero_iff.1 this`. Distinguish the cases in `hba : b = a`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Substitute `hba` using the available equality. Conclude with `h0 (by simpa using hb)`. Simplify using `[Function.update_of_ne hba, hl] at hb`. Introduce and unpack `_ ⟨u, hu, rfl⟩ y`. Proceed by induction on `y using PiTensorProduct.induction_on with`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `add x y hx hy => rw [map_add, add_sub_add_comm]`. Conclude with `add_mem hx hy`. Consider the case `smul_tprod r x`. Rewrite using `[map_smul, ← smul_sub]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
-
-Simplify `h4 u hu _)` using `using key u 1 x (by simpa`. Use `show U S ≤ Submodule.comap (SmGL.piTensor ρ (Pi.mulSingle a (ι z)) - χ z • LinearMap.id) (U T)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `key _ _ x (h5 z _ hx)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Flag.piTensor {α : Type} [Fintype α] [DecidableEq α] {Γ Y : α → Type} [∀ a, Group (Γ a)]
     [∀ a, AddCommGroup (Y a)] [∀ a, Module ℂ (Y a)] (ρ : ∀ a, Representation ℂ (Γ a) (Y a))
@@ -204,7 +200,7 @@ def blockScalar (e : (Σ a, m a) ≃ n) (a : α) (z : kˣ) : GL n k :=
   leviEmb k e (Pi.mulSingle a (GeneralLinearGroup.scalar (m a) z))
 
 /- English proof (translation)
-Rewrite using `[deltaHalf_apply, Finset.prod_eq_single a, Pi.mulSingle_eq_same]`. Introduce `b _ hb`. Rewrite using `[Pi.mulSingle_eq_of_ne hb, map_one, map_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem deltaHalf_mulSingle (a : α) (g : GL (m a) k) :
     deltaHalf k m (Pi.mulSingle a g) = absPow k ((modExp m a : ℂ) / 2) (GeneralLinearGroup.det g) := by
@@ -216,7 +212,7 @@ theorem deltaHalf_mulSingle (a : α) (g : GL (m a) k) :
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Rewrite using `[det_leviEmb, Finset.prod_eq_single a, Pi.mulSingle_eq_same]`. Introduce `b _ hb`. Rewrite using `[Pi.mulSingle_eq_of_ne hb, map_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_leviEmb_mulSingle (e : (Σ a, m a) ≃ n) (a : α) (g : GL (m a) k) :
     GeneralLinearGroup.det (leviEmb k e (Pi.mulSingle a g)) = GeneralLinearGroup.det g := by
@@ -228,11 +224,11 @@ theorem det_leviEmb_mulSingle (e : (Σ a, m a) ≃ n) (a : α) (g : GL (m a) k) 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨⟨b, y⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b', y'⟩, rfl⟩` from `e.surjective j`. Distinguish the cases in `h : b = b'`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[blockScalar, leviEmb_apply_same]`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using `[GeneralLinearGroup.scalar, diagonal_apply]`. Simplify using `[Pi.mulSingle_eq_of_ne hb, diagonal_apply, hb, one_apply]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[blockScalar, leviEmb_apply_ne k e _ h, diagonal_apply_ne]`. Introduce `h'`. Conclude with `h (congrArg Sigma.fst (e.injective h'))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem val_blockScalar (e : (Σ a, m a) ≃ n) (a : α) (z : kˣ) :
     (blockScalar e a z : Matrix n n k) = diagonal fun i => if blk e i = a then (z : k) else 1 := by
@@ -253,11 +249,11 @@ theorem val_blockScalar (e : (Σ a, m a) ≃ n) (a : α) (z : kˣ) :
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, rfl⟩ i j h`. Take `⟨⟨b, y⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b', y'⟩, rfl⟩` from `e.surjective j`. Conclude with `leviEmb_apply_ne k e _ (by simpa using h) _ _`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `⟨leviProj k e ⟨g, mem_parab.2 fun i j hij => h i j hij.ne'⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Take `⟨⟨b, y⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b', y'⟩, rfl⟩` from `e.surjective j`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hb : b = b'`. Substitute `hb` using the available equality. Rewrite using `[leviEmb_apply_same]`. Both sides reduce to the same expression. Rewrite using `[leviEmb_apply_ne k e _ hb, h _ _ (by simpa using hb)]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_leviEmb {e : (Σ a, m a) ≃ n} {g : GL n k} :
     g ∈ Set.range (leviEmb k e) ↔ ∀ i j, blk e i ≠ blk e j → (g : Matrix n n k) i j = 0 := by
@@ -278,25 +274,23 @@ theorem mem_range_leviEmb {e : (Σ a, m a) ≃ n} {g : GL n k} :
     · rw [leviEmb_apply_ne k e _ hb, h _ _ (by simpa using hb)]
 
 /- English proof (translation)
-Use `exists₄_congr fun s d e a => and_congr_right fun ha => ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨Y, _, _, σ, hσ, ⟨S, φ, hφ⟩, hact⟩`. Establish `h0 : Flag (jac e π) Set.univ {1} (fun z => Pi.mulSingle a (GeneralLinearGroup.scalar (Fin (d a)) z)) fun z => ψ z`. Use `⟨S.toSubmodule, (LinearMap.ker φ.toLinearMap).map S.toSubmodule.subtype, fun h => ?_, fun g _ x hx => S.apply_mem_toSubmodule g hx, ?_, ?_, fun z x hx => ?_⟩` and prove the remaining obligations. Use `Model.nontrivial_of_isIrreducible hσ` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `exists_ne (0 : Y)`. Take `⟨x, rfl⟩` from `hφ y`. Take `⟨x', hx', e'⟩` from `h x.2`. Take `rfl : x' = x` from `Subtype.ext e'`. Conclude with `hy hx'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `g - _ ⟨x, hx, rfl⟩`. Use `⟨S.toRepresentation g x, ?_, rfl⟩` and prove the remaining obligations. Establish `hx' : φ x = 0` using `hx`. Use `show φ _ = 0`. Rewrite using `[φ.isIntertwining, hx', map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ rfl x`. Simplify using the standard rewrite rules. Use `⟨S.toRepresentation _ ⟨x, hx⟩ - (ψ z : ℂ) • ⟨x, hx⟩, ?_, rfl⟩ show φ _ = 0` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, φ.isIntertwining, hact, ProdSupport.det_scalar_one ha, sub_self]`. Use `h0.comap (Submodule.mkQ _) (Submodule.mkQ_surjective _) _ ?_ ?_ fun z x => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨l, rfl⟩`. Use `⟨l, trivial, deltaHalf k _ l, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.mkQ_apply]`. Rewrite using `[jac_mk, smul_smul, Units.mul_inv, one_smul]`. Introduce `u hu`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨1, rfl, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, Module.End.one_apply]`. Conclude with `(Submodule.Quotient.eq _).2 (IwahoriInj.sub_mem_twKer hu x)`. Simplify using `only [Submodule.mkQ_apply]`. Rewrite using `[jac_mk, smul_smul, deltaHalf_mulSingle, ProdSupport.det_scalar_one ha, Units.mul_inv, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨S, T, h1, h2, h3, h4, h5⟩`. Establish `hT : twKer π (unipRad k e) 1 ≤ T` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨u, v, rfl⟩`. Simplify using `using h4 _ u.2 v)`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Set `U : ∀ S : Submodule ℂ V, (∀ g ∈ Set.range (leviEmb k e), ∀ x ∈ S, π g x ∈ S) → Subrepresentation (jac e π)` to `fun S hS => ⟨S.map (Submodule.mkQ _), by`. Introduce and unpack `g _ ⟨x, hx, rfl⟩`. Conclude with `Submodule.smul_mem _ _ ⟨_, hS _ ⟨g, rfl⟩ x hx, rfl⟩⟩`. Establish `hne : Nontrivial ((U S h2).toSubmodule ⧸ (U T h3).toSubmodule.comap (U S h2).toSubmodule.subtype)`. Use `Submodule.Quotient.nontrivial_iff.2 fun h => h1 fun x hx => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, e'⟩ : (⟨_, x, hx, rfl⟩ : (U S h2).toSubmodule) ∈ (U T h3).toSubmodule.comap (U S h2).toSubmodule.subtype` from `by rw [h]; trivial`. Simplify using `using sub_mem hy (hT ((Submodule.Quotient.eq _).1 e'))`. Take `⟨Y, _, _, σ, hσ, hsub⟩` from `IrrSubquot.exists_irreducible_subquotient _ _ (subQuot (U S h2) (U T h3)) hne`. Use `⟨Y, _, _, σ, hσ, hsub.trans ⟨U S h2, ⟨Submodule.mkQ _, fun _ => rfl⟩, Submodule.Quotient.mk_surjective _⟩, fun g => Model.scalar_of_isSubquotient hsub fun y => ?_⟩` and prove the remaining obligations. Take `⟨⟨_, x, hx, rfl⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
-
-Use `(Submodule.Quotient.eq _).2 ⟨_, T.smul_mem ((deltaHalf k _ (Pi.mulSingle (M := fun a => GL (Fin (d a)) k) a g))⁻¹ : ℂˣ) (h5 (GeneralLinearGroup.det g) x hx), ?_⟩` and prove the remaining obligations. Use `show _ = jac e π _ (Submodule.Quotient.mk x) - _ • Submodule.Quotient.mk x`. Rewrite using `[jac_mk, blockScalar, ← ProdSupport.eq_scalar_det ha, smul_sub, smul_smul, deltaHalf_mulSingle, Units.inv_mul_cancel_left, map_sub, map_smul, map_smul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inSupport_iff {π : Representation ℂ (GL n k) V} {ψ : kˣ →* ℂˣ} :
     InSupport π ψ ↔ ∃ (s : ℕ) (d : Fin s → ℕ) (e : (Σ a, Fin (d a)) ≃ n) (a : Fin s), d a = 1 ∧
@@ -368,7 +362,7 @@ end Local
 section Refine
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => Fintype.card {i // w i = a}, (Equiv.sigmaCongrRight fun _ => (Fintype.equivFin _).symm).trans (Equiv.sigmaFiberEquiv w), fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_blk_eq {n : Type} [Fintype n] {S : ℕ} (w : n → Fin S) :
     ∃ (D : Fin S → ℕ) (E : (Σ a, Fin (D a)) ≃ n), ∀ i, blk E i = w i :=
@@ -381,37 +375,35 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [∀ a, DecidableEq (c a)] [Fintype n] [DecidableEq n] [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Take `⟨t, ht0, ht⟩ : ∃ t : ∀ j, c j → Fin s, t j₀ = blk e ∧ ∀ j, j ≠ j₀ → ∀ x, t j x = a` from `⟨Function.update (fun _ _ => a) j₀ (blk e), by simp, fun j hj x => by simp [hj]⟩`. Take `⟨S, o, hlt, heq⟩ : ∃ (S : ℕ) (o : β → Fin s → Fin S), (∀ j b j' b', o j b < o j' b' ↔ j < j' ∨ j = j' ∧ b < b') ∧ ∀ j b j' b', o j b = o j' b' ↔ j = j' ∧ b = b'` from `⟨_, fun j b => (monoEquivOfFin (β ×ₗ Fin s) rfl).symm (toLex (j, b)), fun j b j' b' => (OrderIso.lt_iff_lt _).trans Prod.Lex.toLex_lt_toLex, fun j b j' b' => (EmbeddingLike.apply_eq_iff_eq _).trans (toLex_inj.trans Prod.ext_iff)⟩`. Take `⟨D, E, hE⟩` from `exists_blk_eq fun i => o (f.symm i).1 (t _ (f.symm i).2)`. Use `replace hE : ∀ j x, blk E (f ⟨j, x⟩) = o j (t j x) := fun j x => by`. Rewrite using `[hE, f.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `count : ∀ (P : Fin _ → Prop) [DecidablePred P] (Q : β → Prop) [DecidablePred Q] (R : Fin s → Prop) [DecidablePred R], ¬ Q j₀ → (∀ j b, j ≠ j₀ → (P (o j b) ↔ Q j)) → (∀ b, P (o j₀ b) ↔ R b) → ∑ b with P b, (Fintype.card (Fin (D b)) : ℤ) = ∑ j with Q j, (Fintype.card (c j) : ℤ) + ∑ …`. Introduce `P _ Q _ R _ h0 h1 h2`. Rewrite using `[EmptyBlocks.sum_card_blocks E, EmptyBlocks.sum_card_blocks e, Finset.sum_filter, Finset.sum_filter, Finset.sum_filter, ← f.sum_comp, Fintype.sum_sigma, ← Finset.sum_erase_add _ _ (Finset.mem_univ j₀), ← Finset.sum_erase_add _ _ (Finset.mem_univ j₀), if_neg h0, add_zero]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hE, h1 j _ (Finset.ne_of_mem_erase hj)]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [hE, h2, ht0]`. Establish `hD : D (o j₀ a) = 1`. Use `count (· = o j₀ a) (fun _ => False) (· = a) not_false (fun j b hj => by simp [heq, hj]) (fun b => by simp [heq])` as an intermediate fact.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Finset.filter_eq', if_pos (Finset.mem_univ _)]`. Simplify `this` using `[Finset.filter_eq', ha]`. Establish `hmod : modExp (fun b => Fin (D b)) (o j₀ a) = modExp c j₀ + modExp (fun a => Fin (d a)) a`. Unfold `modExp`. Rewrite using `[count _ (j₀ < ·) (a < ·) (lt_irrefl _) (fun j b hj => by simp [hlt, hj.symm]) (fun b => by simp [hlt]), count _ (· < j₀) (· < a) (lt_irrefl _) (fun j b hj => by simp [hlt, hj]) (fun b => by simp [hlt])]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hjac : ∀ g x, Submodule.mkQ _ (π (leviEmb k f g) x) = (deltaHalf k c g : ℂ) • jac f π g (Submodule.mkQ _ x)` using `fun g x => by`. Simplify using `only [Submodule.mkQ_apply]`. Rewrite using `[jac_mk, smul_smul, Units.mul_inv, one_smul]`. Use `inSupport_iff.2 ⟨_, D, E, o j₀ a, hD, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `h.comap (π' := π) (L' := Set.range (leviEmb k E)) (N' := unipRad k E) (ι' := blockScalar E (o j₀ a)) (Submodule.mkQ _) (Submodule.mkQ_surjective _) (fun z => absPow k ((modExp c j₀ : ℂ) / 2) z) ?_ ?_ ?_`. Use `h1 using 2 with z` and compare the differences between its conclusion and the goal. Rewrite using `[hmod, Int.cast_add, add_div, absPow_add, MonoidHom.mul_apply, Units.val_mul, mul_assoc]`. Introduce `g hg`. Rewrite `hg` using `[mem_range_leviEmb]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨l, rfl⟩ : g ∈ Set.range (leviEmb k f)` from `mem_range_leviEmb.2 fun i j hij => hg i j (by`. Take `⟨⟨b, y⟩, rfl⟩` from `f.surjective i`. Take `⟨⟨b', y'⟩, rfl⟩` from `f.surjective j`. Establish `: b ≠ b'` using `by simpa using hij`. Simplify using `[hE, heq, this])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨l, mem_range_leviEmb.2 fun x y hxy => ?_, _, hjac l⟩` and prove the remaining obligations. Rewrite using `[← leviEmb_apply_same k f]`. Conclude with `hg _ _ (by simp [hE, heq, ht0, hxy])`. Introduce `u hu replace hu := CuspMax.mem_unipRad_iff_entries.1 hu`. Establish `hp : u ∈ parab k f` using `mem_parab_iff.2 fun b b' y y' hb => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hu _ _ (by simp [hE, hlt, hb.le, hb.ne']), one_apply_ne]`. Introduce `h'`. Conclude with `hb.ne' (congrArg Sigma.fst (f.injective h'))`. Take `⟨v, hv, hdec⟩` from `exists_levi_mul_unip k f ⟨u, hp⟩`. Establish `hdec' : u = leviEmb k f (leviProj k f ⟨u, hp⟩) * v` using `hdec`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h0 : leviProj k f ⟨u, hp⟩ j₀ ∈ unipRad k e` using `CuspMax.mem_unipRad_iff_entries.2 fun x y hxy => by`. Rewrite using `[leviProj_apply, hu _ _ (by simpa [hE, hlt, ht0] using hxy)]`. Simplify using `[one_apply]`. Establish `h1 : leviProj k f ⟨u, hp⟩ = Pi.mulSingle j₀ (leviProj k f ⟨u, hp⟩ j₀)`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.mulSingle_eq_of_ne hj]`. Use extensionality with `x y`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[leviProj_apply, hu _ _ (by simp [hE, hlt, ht j hj])]`. Simplify using `[one_apply]`. Use `⟨_, ⟨_, h0, rfl⟩, fun x => ?_⟩` and prove the remaining obligations. Establish `h2 : Submodule.mkQ (twKer π (unipRad k f) 1) (π v x) = Submodule.mkQ _ x` using `(Submodule.Quotient.eq _).2 (IwahoriInj.sub_mem_twKer hv x)`. Use `conv_lhs => rw [hdec', map_mul, Module.End.mul_apply, hjac, h2, h1, deltaHalf_mulSingle, det_eq_one_of_mem_unipRad k h0, map_one, Units.val_one, one_smul]`.
+Establish an intermediate fact. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Introduce `z x`. Establish `h1 : blockScalar E (o j₀ a) z = leviEmb k f (Pi.mulSingle j₀ (blockScalar e a z))`. Use extensionality with `i j`. Take `⟨⟨b, y⟩, rfl⟩` from `f.surjective i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Take `⟨⟨b', y'⟩, rfl⟩` from `f.surjective j`. Rewrite using `[val_blockScalar]`. Distinguish the cases in `hb : b = b'`. Substitute `hb` using the available equality. Rewrite using `[leviEmb_apply_same]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hj : b = j₀`. Substitute `hj` using the available equality. Simplify using `[val_blockScalar, diagonal_apply, hE, heq, ht0]`. Simplify using `[Pi.mulSingle_eq_of_ne hj, diagonal_apply, hE, heq, hj, one_apply]`. Rewrite using `[leviEmb_apply_ne k f _ hb, diagonal_apply_ne]`.
-
-Introduce `h'`. Conclude with `hb (congrArg Sigma.fst (f.injective h'))`. Rewrite using `[h1, hjac, deltaHalf_mulSingle, blockScalar, det_leviEmb_mulSingle, ProdSupport.det_scalar_one ha]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inSupport_of_flag_jac (π : Representation ℂ (GL n k) V) (f : (Σ j, c j) ≃ n) (j₀ : β) {s : ℕ}
     {d : Fin s → ℕ} (e : (Σ a, Fin (d a)) ≃ c j₀) (a : Fin s) (ha : d a = 1) (ψ : kˣ →* ℂˣ)
@@ -526,11 +518,11 @@ theorem inSupport_of_flag_jac (π : Representation ℂ (GL n k) V) (f : (Σ j, c
     rw [h1, hjac, deltaHalf_mulSingle, blockScalar, det_leviEmb_mulSingle, ProdSupport.det_scalar_one ha]
 
 /- English proof (translation)
-Take `⟨s, d, e, a, ha, h⟩` from `inSupport_iff.1 h`. Take `⟨S, φ, hφ⟩` from `hsub`. Establish `h1` using `(h.piTensor σ hY j₀).comap (π' := S.toRepresentation) φ.toLinearMap hφ (fun _ => 1) (fun g hg => ⟨g, hg, 1, fun x => (φ.isIntertwining _ _ g x).trans (one_smul _ _).symm⟩) (fun g hg => ⟨g, hg, fun x => φ.isIntertwining _ _ g x⟩) (fun z x => (φ.isIntertwining _ _ _ x).trans (one_s …`. Simplify using `only [one_mul] at h1`. Set `ι : S.toRepresentation.IntertwiningMap (jac f π)` to `⟨S.toSubmodule.subtype, fun _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `inSupport_of_flag_jac π f j₀ e a ha ψ (h1.map (MonoidHom.mulSingle (fun j => GL (c j) k) j₀) (unipRad k e) ι Subtype.val_injective ?_ ?_)` and prove the remaining obligations. Introduce and unpack `g ⟨l, hl⟩ u hu`. Use `⟨g j₀ * u * (g j₀)⁻¹, hl ▸ (Subgroup.mem_normalizer_iff.1 (leviEmb_mem_normalizer k e l) u).1 hu, funext fun j => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.mulSingle_eq_of_ne hj]`. Introduce `x hx`. Establish `hinj` using `JacInj.jacMap_injective k _ _ _ e _ _ _ _ (compMap ι (MonoidHom.mulSingle (fun j => GL (c j) k) j₀)) (isSmooth_comp (isSmooth_jac f hπ) _ (continuous_mulSingle (A := fun j => GL (c j) k) j₀)) Subtype.val_injective`. Conclude with `(Submodule.Quotient.mk_eq_zero _).1 ((injective_iff_map_eq_zero _).1 hinj (Submodule.Quotient.mk x) ((Submodule.Quotient.mk_eq_zero _).2 hx))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inSupport_of_factor {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π) (f : (Σ j, c j) ≃ n)
     {Y : β → Type} [∀ j, AddCommGroup (Y j)] [∀ j, Module ℂ (Y j)]
@@ -565,7 +557,7 @@ theorem inSupport_of_factor {π : Representation ℂ (GL n k) V} (hπ : IsSmooth
 end Refine
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ f s j₀ _ hρ hsub h` and use `inSupport_of_factor hρ f (fun j => (s j).ρ) (fun j => Model.nontrivial_of_isIrreducible (s j).irr) hsub j₀ h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.GeometricLemma →
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r : ℕ)

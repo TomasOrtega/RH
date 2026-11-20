@@ -20,7 +20,7 @@ def smallVec (h : HermFam K V) (E : Submodule (𝓞 K) V) (R : ℝ) : Set V :=
   {x | x ∈ E ∧ ∀ σ, h.nrm σ x ≤ R}
 
 /- English proof (translation)
-Unfold `HermFam.nrm`. Rewrite using `[hinv σ x x, Complex.conj_re]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem nrm_conj (h : HermFam K V) (hinv : h.IsConjInv) (σ : K →+* ℂ) (x : V) :
     h.nrm (ComplexEmbedding.conjugate σ) x = h.nrm σ x := by
@@ -28,7 +28,7 @@ theorem nrm_conj (h : HermFam K V) (hinv : h.IsConjInv) (σ : K →+* ℂ) (x : 
   rw [hinv σ x x, Complex.conj_re]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases InfinitePlace.embedding_mk_eq σ with h1 | h1 <;> rw [h1]`. Conclude with `(nrm_conj h hinv σ x).symm`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem nrm_eq_nrm_embedding (h : HermFam K V) (hinv : h.IsConjInv) (σ : K →+* ℂ) (x : V) :
     h.nrm σ x = h.nrm (InfinitePlace.mk σ).embedding x := by
@@ -37,27 +37,25 @@ theorem nrm_eq_nrm_embedding (h : HermFam K V) (hinv : h.IsConjInv) (σ : K →+
 
 open scoped Classical in
 /- English proof (translation)
-Take `⟨⟨hyR, hyC⟩, hyL⟩` from `hy`. Establish `hyL' : y ∈ E.toAddSubgroup.map (crdEmb hv.2.1)` using `hyL`. Take `⟨x, hxE, rfl⟩` from `AddSubgroup.mem_map.1 hyL'`. Establish `hxs : x ∈ Submodule.span K (Set.range v)` using `hv.2.2 hxE`. Establish `hexp : ∀ (σ : K →+* ℂ) (c : Fin r → K), h.form σ (∑ i, c i • v i) (∑ j, c j • v j) = ∑ i, ∑ j, starRingEnd ℂ (σ (c i)) * h.form σ (v i) (v j) * σ (c j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `σ c`. Establish `hr : ∀ y, h.form σ y (∑ j, c j • v j) = ∑ j, σ (c j) * h.form σ y (v j)`. Introduce `y`. Establish `e` using `map_sum (AddMonoidHom.mk' (h.form σ y) (h.add_right σ y)) (fun j => c j • v j) Finset.univ`. Simplify using `only [AddMonoidHom.mk'_apply, h.smul_right] at e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `e`. Establish `hl : ∀ y, h.form σ (∑ i, c i • v i) y = ∑ i, starRingEnd ℂ (σ (c i)) * h.form σ (v i) y`. Introduce `y`. Rewrite using `[← h.conj_symm σ y, hr y, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, h.conj_symm]`. Rewrite using `[hl]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hr, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hreal : ∀ w : {w : InfinitePlace K // w.IsReal}, qR (gramR h v w) (fun i => (crdEmb hv.2.1 x i).1 w) = (h.form w.1.embedding x x).re`. Introduce `w`. Establish `hy : ∀ a : K, (((mixedEmbedding K a).1 w : ℝ) : ℂ) = w.1.embedding a` using `fun a => by`. Simplify using `[mixedEmbedding]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use symmetry to reverse the relation.
 
-Use `symm`. Use `conv_lhs => rw [← sum_crd hv.2.1 hxs]`. Rewrite using `[hexp, Complex.re_sum]`. Unfold `qR`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [crdEmb, AddMonoidHom.coe_mk, ZeroHom.coe_mk, gramR, HermFam.gram, Matrix.map_apply, Matrix.of_apply]`. Rewrite using `[← hy, ← hy, Complex.conj_ofReal]`. Simplify using `only [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.mul_im]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hcplx : ∀ w : {w : InfinitePlace K // w.IsComplex}, qC (h.gram w.1.embedding v) (fun i => (crdEmb hv.2.1 x i).2 w) = (h.form w.1.embedding x x).re`. Introduce `w`. Use `symm`. Use `conv_lhs => rw [← sum_crd hv.2.1 hxs]`.
+Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hexp]`. Unfold `qC`. Use `congr 1`. Use `⟨x, ⟨hxE, fun σ => ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[nrm_eq_nrm_embedding h hinv σ x]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions.
 
-Establish `hre : (h.form (InfinitePlace.mk σ).embedding x x).re ≤ R ^ 2`. Break down `(InfinitePlace.mk σ).isReal_or_isComplex with hw | hw` into its components or cases. Conclude with `(hreal ⟨_, hw⟩).symm.trans_le (hyR ⟨_, hw⟩)`. Conclude with `(hcplx ⟨_, hw⟩).symm.trans_le (hyC ⟨_, hw⟩)`. Unfold `HermFam.nrm`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mem_image_of_mem_ellS (h : HermFam K V) (hinv : h.IsConjInv) {E : Submodule (𝓞 K) V}
     {r : ℕ} {v : Fin r → V} (hv : IsFrame K E v) {R : ℝ} (hR : 0 ≤ R) {y}
@@ -126,7 +124,7 @@ theorem mem_image_of_mem_ellS (h : HermFam K V) (hinv : h.IsConjInv) {E : Submod
     _ = R := Real.sqrt_sq hR
 
 /- English proof (translation)
-Establish `hg : h.gram (ComplexEmbedding.conjugate σ) v = (h.gram σ v).map (starRingEnd ℂ)`. Use extensionality with `i j`. Simplify using `only [HermFam.gram, Matrix.map_apply, Matrix.of_apply]`. Conclude with `hinv σ (v i) (v j)`. Rewrite using `[hg, ← RingHom.mapMatrix_apply, ← RingHom.map_det, Complex.conj_re]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_gram_conj_re (h : HermFam K V) (hinv : h.IsConjInv) (σ : K →+* ℂ) {r : ℕ}
     (v : Fin r → V) :

@@ -8,17 +8,17 @@ open scoped ValuativeRel
 namespace GlobalTheory.CompanionTheory.PlanePure
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ φ hφ`. Establish `hφ' : φ ∈ GJMatrix.localSchwartzBruhatPi F (ι` using `Fin 2) := hφ`. Use `clear hφ`. Rewrite `hφ'` using `[GJMatrix.localSchwartzBruhatPi_eq_span]`. Proceed by induction on `hφ' using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨⟨N, a⟩, rfl⟩` from `hx`. Use `⟨1, fun _ => GJMatrix.cosetInd (valBall F N) (a 0), fun _ => GJMatrix.cosetInd (valBall F N) (a 1), fun _ => ⟨GJMatrix.cosetInd_valBall_mem N _, GJMatrix.cosetInd_valBall_mem N _⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Simplify using `[GJMatrix.localTensor, pt, Fin.prod_univ_two]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `zero`. Conclude with `⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, by simp⟩`. Consider the case `add x y _ _ ihx ihy`. Take `⟨n, f, g, hfg, rfl⟩` from `ihx`. Take `⟨m, f', g', hfg', rfl⟩` from `ihy`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n + m, Fin.append f f', Fin.append g g', ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left i => simpa using hfg i`. Consider the case `right i => simpa using hfg' i`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.sum_univ_add]`. Simplify using the standard rewrite rules. Consider the case `smul c x _ ih`. Take `⟨n, f, g, hfg, rfl⟩` from `ih`. Use `⟨n, fun i => c • f i, g, fun i => ⟨Submodule.smul_mem _ c (hfg i).1, (hfg i).2⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Simplify using `[pt, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem schwartzBruhat2_eq_sum_pt : Ad3.SchwartzSpaceL2.SPure := by
   intro F _ _ _ _ _ _ φ hφ

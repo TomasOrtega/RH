@@ -14,39 +14,37 @@ local notation "ι" => algebraMap 𝒪 K
 local notation "ρ" => residue 𝒪
 
 /- English proof (translation)
-Establish `hι` using `IsFractionRing.injective 𝒪 K`. Take `⟨t, htm, ht⟩` from `exists_inv_mem_of_notMem_range K hX`. Establish `hX0 : X₁ ≠ 0` using `fun h => hX ⟨0, by rw [h, map_zero]⟩`. Establish `hT0 : ι t ≠ 0` using `by rw [ht]; exact inv_ne_zero hX0`. Establish `ht0 : t ≠ 0` using `fun h => hT0 (by rw [h, map_zero])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXt : X₁ * ι t = 1` using `by rw [ht]; exact mul_inv_cancel₀ hX0`. Take `⟨u, hu⟩ : ∃ u : 𝒪, u = 1 + W.a₂ * t + W.a₄ * t ^ 2 + W.a₆ * t ^ 3` from `⟨_, rfl⟩`. Establish `huu : IsUnit u` using `isUnit_of_residue_ne_zero (by`. Simplify using `[hu, residue_eq_zero_of_mem htm])`. Establish `hE` using `(WeierstrassCurve.Affine.equation_iff _ _).1 h₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆] at hE`. Establish `keyK : (Y₁ * ι t ^ 2) ^ 2 + ι W.a₁ * ι t * (Y₁ * ι t ^ 2) + ι W.a₃ * ι t ^ 2 * (Y₁ * ι t ^ 2) = ι t * ι u`. Rewrite using `[hu]`. Simplify using `only [map_add, map_mul, map_one, map_pow]`. Take the linear combination `(ι t) ^ 4 * hE - (ι W.a₁ * Y₁ * ι t ^ 3 - ι t * (1 + X₁ * ι t + X₁ ^ 2 * ι t ^ 2) - ι W.a₂ * ι t ^ 2 * (1 + X₁ * ι t) - ι W.a₄ * ι t ^ 3) * hXt`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Choose the witnesses or unpack the hypotheses as in `⟨S, hS⟩ : Y₁ * ι t ^ 2 ∈ Set.range ι := by`. Assume the negation of the conclusion as `hSn`. Take `⟨s', hs'm, hs'⟩` from `exists_inv_mem_of_notMem_range K hSn`. Establish `hS0 : Y₁ * ι t ^ 2 ≠ 0` using `fun h => hSn ⟨0, by rw [h, map_zero]⟩`. Establish `hinv : Y₁ * ι t ^ 2 * ι s' = 1` using `by rw [hs']; exact mul_inv_cancel₀ hS0`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ι (1 + W.a₁ * t * s' + W.a₃ * t ^ 2 * s') = ι (t * u * s' ^ 2)`. Simplify using `only [map_add, map_mul, map_one, map_pow]`. Take the linear combination `(ι s') ^ 2 * keyK - (1 + Y₁ * ι t ^ 2 * ι s' + ι W.a₁ * ι t * ι s' + ι W.a₃ * ι t ^ 2 * ι s') * hinv`. Establish `e'` using `congrArg ρ (hι e)`. Simplify using `only [map_add, map_mul, map_one, map_pow, residue_eq_zero_of_mem htm] at e'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at e'`. Establish `key : S ^ 2 + W.a₁ * t * S + W.a₃ * t ^ 2 * S = t * u`. Apply `hι` to reduce the goal to its premises. Simplify using `only [map_add, map_mul, map_pow, hS]`. Conclude with `keyK`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hSS : S * (S + W.a₁ * t + W.a₃ * t ^ 2) ∈ maximalIdeal 𝒪`. Rewrite using `[show S * (S + W.a₁ * t + W.a₃ * t ^ 2) = t * u by linear_combination key]`. Conclude with `Ideal.mul_mem_right _ _ htm`. Establish `hB : S + W.a₁ * t + W.a₃ * t ^ 2 ∈ maximalIdeal 𝒪`. Establish `hat : W.a₁ * t + W.a₃ * t ^ 2 ∈ maximalIdeal 𝒪` using `Ideal.add_mem _ (Ideal.mul_mem_left _ _ htm) (Ideal.mul_mem_left _ _ (by rw [pow_two]; exact Ideal.mul_mem_left _ _ htm))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `(maximalIdeal.isMaximal 𝒪).isPrime.mem_or_mem hSS with h | h` into its components or cases. Rewrite using `[add_assoc]`. Conclude with `Ideal.add_mem _ h hat`. Conclude with `h`. Take `⟨u', huu'⟩ : ∃ u' : 𝒪, u * u' = 1` from `⟨_, huu.mul_val_inv⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take `⟨z, hz⟩ : ∃ z : 𝒪, z = -(S + W.a₁ * t + W.a₃ * t ^ 2) * u'` from `⟨_, rfl⟩`. Establish `htz : t = -S * z`. Rewrite using `[hz]`. Take the linear combination `(-u') * key - t * huu'`. Establish `hz0 : z ≠ 0` using `by rintro h; rw [h, mul_zero] at htz; exact ht0 htz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hS0 : S ≠ 0` using `by rintro h; rw [h, neg_zero, zero_mul] at htz; exact ht0 htz`. Establish `hzm : z ∈ maximalIdeal 𝒪`. Rewrite using `[hz]`. Conclude with `Ideal.mul_mem_right _ _ ((Ideal.neg_mem_iff _).2 hB)`. Take `⟨w, hw⟩ : ∃ w : 𝒪, w = t * z` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwm : w ∈ maximalIdeal 𝒪` using `hw ▸ Ideal.mul_mem_right _ _ htm`. Establish `hw0 : w ≠ 0` using `hw ▸ mul_ne_zero ht0 hz0`. Take `⟨e, he⟩ : ∃ e : 𝒪, e = 1 - W.a₁ * z - W.a₂ * z ^ 2 - W.a₃ * w - W.a₄ * z * w - W.a₆ * w ^ 2` from `⟨_, rfl⟩`. Establish `hwe : w * e = z ^ 3`. Establish `key'` using `key`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `key'` using `[hu, htz]`. Establish `: S * (w * e - z ^ 3) = 0`. Rewrite using `[he, hw, htz]`. Take the linear combination `(-z ^ 2) * key'`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 this).resolve_left hS0)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hρe : ρ e = 1`. Simplify using `[he, residue_eq_zero_of_mem hzm, residue_eq_zero_of_mem hwm]`. Establish `heu : IsUnit e` using `isUnit_of_residue_ne_zero (by rw [hρe]; exact one_ne_zero)`. Use `⟨z, w, ↑heu.unit⁻¹, hzm, hz0, hwm, hw0, ?_, (heu.unit⁻¹).isUnit, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : e * ↑heu.unit⁻¹ = (1 : 𝒪)` using `heu.mul_val_inv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(↑heu.unit⁻¹ : 𝒪) * hwe - w * h1`. Establish `h1 : e * ↑heu.unit⁻¹ = (1 : 𝒪)` using `heu.mul_val_inv`. Use `congrArg ρ h1` as an intermediate fact. Rewrite `this` using `[map_mul, hρe, one_mul, map_one]`. Then use the resulting hypothesis. Establish `hzK : ι z ≠ 0` using `(map_ne_zero_iff _ hι).2 hz0`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hw, map_mul]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hXt`. Establish `hzK : ι z ≠ 0` using `(map_ne_zero_iff _ hι).2 hz0`. Establish `hSK` using `congrArg ι htz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `hSK` using `[map_mul, map_neg]`. Rewrite using `[hw, map_mul]`. Establish `hY : Y₁ = ι S / ι t ^ 2` using `by rw [hS]; field_simp`. Rewrite using `[hY]`. Clear the denominators using the available nonvanishing facts.
-
-Take the linear combination `(-1 : K) * hSK`.
+A detailed English derivation is pending.
 -/
 theorem exists_zw_of_notMem_range {X₁ Y₁ : K} (h₁ : (curveK K W).Equation X₁ Y₁)
     (hX : X₁ ∉ Set.range ι) :
@@ -142,57 +140,49 @@ theorem exists_zw_of_notMem_range {X₁ Y₁ : K} (h₁ : (curveK K W).Equation 
     linear_combination (-1 : K) * hSK
 
 /- English proof (translation)
-Establish `hι` using `IsFractionRing.injective 𝒪 K`. Take `⟨z', w, v, hzm, hz0, hwm, hw0', hwv, hvu, hρv', hX₁, hY₁⟩` from `exists_zw_of_notMem_range K W h₁.1 hX`. Establish `heu : IsUnit (1 + y₂ * w)` using `isUnit_of_residue_ne_zero (by`. Rewrite using `[map_add, map_one, map_mul, residue_eq_zero_of_mem hwm, mul_zero, add_zero]`. Conclude with `one_ne_zero)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdu : IsUnit (1 - x₂ * z' ^ 2 * v)` using `isUnit_of_residue_ne_zero (by`. Rewrite using `[map_sub, map_one, map_mul, map_mul, map_pow, residue_eq_zero_of_mem hzm]`. Use the proof step `simp)`. Use `set e := 1 + y₂ * w with he`. Use `set d := 1 - x₂ * z' ^ 2 * v with hd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set e' := (↑heu.unit⁻¹ : 𝒪) with he'`. Use `set d' := (↑hdu.unit⁻¹ : 𝒪) with hd'`. Establish `hee : e * e' = 1` using `heu.mul_val_inv`. Establish `hdd : d * d' = 1` using `hdu.mul_val_inv`. Use `set s := -(z' * d) * e' with hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Fy := 2 * y₂ + W.a₁ * x₂ + W.a₃ with hFy`. Use `set Fx := 3 * x₂ ^ 2 + 2 * W.a₂ * x₂ + W.a₄ - W.a₁ * y₂ with hFx`. Use `set u₃ := (Fy - s * Fx) * z' * v * e * d' ^ 2 with hu₃`. Use `set t₃ := -(Fy - s * Fx) * v * e ^ 2 * d' ^ 3 with ht₃`. Establish `hw0 : ι w ≠ 0` using `(map_ne_zero_iff _ hι).2 hw0'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz0K : ι z' ≠ 0` using `(map_ne_zero_iff _ hι).2 hz0`. Establish `hv0 : ι v ≠ 0` using `(map_ne_zero_iff _ hι).2 hvu.ne_zero`. Establish `he0 : ι e ≠ 0` using `(map_ne_zero_iff _ hι).2 heu.ne_zero`. Establish `hd0 : ι d ≠ 0` using `(map_ne_zero_iff _ hι).2 hdu.ne_zero`. Establish `heeK : ι e * ι e' = 1` using `by rw [← map_mul, hee, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hddK : ι d * ι d' = 1` using `by rw [← map_mul, hdd, map_one]`. Establish `hwK : ι w = ι z' ^ 3 * ι v` using `by rw [hwv, map_mul, map_pow]`. Establish `hX₂ : X₁ ≠ ι x₂` using `fun h => hX ⟨x₂, h.symm⟩`. Establish `hs0 : ι s ≠ 0`. Rewrite using `[hs, map_mul, map_neg, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (neg_ne_zero.2 (mul_ne_zero hz0K hd0)) (fun h => by`. Rewrite `heeK` using `[h, mul_zero]`. Conclude with `zero_ne_one heeK)`. Establish `hu₁ : X₁ - ι x₂ = ι (z' * d) / ι w`. Rewrite using `[← hX₁, map_mul, hd, map_sub, map_one, map_mul, map_mul, map_pow, hwK]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `hslope : (curveK K W).slope X₁ (ι x₂) Y₁ (ι y₂) = (ι s)⁻¹`. Rewrite using `[WeierstrassCurve.Affine.slope_of_X_ne hX₂, hu₁, ← hY₁]`. Establish `hnum : -1 / ι w - ι y₂ = -ι e / ι w`. Rewrite using `[he, map_add, map_one, map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hnum]`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Simplify using `only [hs, map_mul, map_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `heeK`. Use `set ℓ := (ι s)⁻¹ with hℓ`. Establish `hline : Y₁ = ι y₂ + ℓ * (X₁ - ι x₂)`. Use `hslope` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[WeierstrassCurve.Affine.slope_of_X_ne hX₂, div_eq_iff (sub_ne_zero.2 hX₂)]`. Take the linear combination `this`. Establish `hE₁` using `h₁.1`. Establish `hE₂` using `h₂.1`. Rewrite `hE₁`, `hE₂` using `[WeierstrassCurve.Affine.equation_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hE₁` using `[hline]`. Use `set B := ℓ ^ 2 + (curveK K W).a₁ * ℓ - 3 * ι x₂ - (curveK K W).a₂ with hB`. Use `set C := ℓ * ι Fy - ι Fx with hC`. Establish `hι2 : ι (2 : 𝒪) = 2` using `map_ofNat _ 2`. Establish `hι3 : ι (3 : 𝒪) = 3` using `map_ofNat _ 3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hFyK : ι Fy = 2 * ι y₂ + (curveK K W).a₁ * ι x₂ + (curveK K W).a₃`. Rewrite using `[hFy]`. Simplify using `only [map_add, map_mul, hι2, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₃]`. Establish `hFxK : ι Fx = 3 * ι x₂ ^ 2 + 2 * (curveK K W).a₂ * ι x₂ + (curveK K W).a₄ - (curveK K W).a₁ * ι y₂`. Rewrite using `[hFx]`.
+Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_sub, map_mul, map_pow, hι2, hι3, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₄]`. Establish `R : (X₁ - ι x₂) * (-(X₁ - ι x₂) ^ 2 + B * (X₁ - ι x₂) + C) = 0`. Rewrite using `[hC, hFyK, hFxK, hB]`. Take the linear combination `hE₁ - hE₂`. Establish `R'` using `(mul_eq_zero.1 R).resolve_left (sub_ne_zero.2 hX₂)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `he'K : ι e' = (ι e)⁻¹` using `eq_inv_of_mul_eq_one_right heeK`. Establish `hd'K : ι d' = (ι d)⁻¹` using `eq_inv_of_mul_eq_one_right hddK`. Establish `hsK : ι s = -(ι z' * ι d) * (ι e)⁻¹` using `by rw [hs, map_mul, map_neg, map_mul, he'K]`. Establish `E : C + (X₁ - ι x₂) * ι u₃ = 0`. Rewrite using `[hC, hℓ, hu₁, hu₃, hwK]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_sub, map_pow, hd'K, hsK]`. Rewrite `hs0` using `[hsK]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hx₃ : (curveK K W).addX X₁ (ι x₂) ℓ = ι (x₂ + u₃)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h3 : (X₁ - ι x₂) * (B - (X₁ - ι x₂) - ι u₃) = 0` using `by linear_combination R' - E`. Establish `h4` using `sub_eq_zero.1 ((mul_eq_zero.1 h3).resolve_left (sub_ne_zero.2 hX₂))`. Rewrite using `[WeierstrassCurve.Affine.addX, map_add]`. Rewrite `h4` using `[hB]`. Take the linear combination `h4`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `ht : ℓ * ι u₃ = ι t₃`. Rewrite using `[hℓ, hu₃, ht₃]`. Simplify using `only [map_mul, map_sub, map_pow, map_neg, hd'K, hsK]`. Rewrite `hs0` using `[hsK]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy₃ : (curveK K W).addY X₁ (ι x₂) Y₁ ℓ = ι (-(y₂ + t₃) - W.a₁ * (x₂ + u₃) - W.a₃)`. Rewrite using `[WeierstrassCurve.Affine.addY, WeierstrassCurve.Affine.negAddY, hx₃, WeierstrassCurve.Affine.negY, hline]`. Simplify using `only [map_sub, map_neg, map_add, map_mul, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₃]`. Rewrite using `[← ht]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h₃` using `WeierstrassCurve.Affine.nonsingular_add h₁ h₂ (fun h => hX₂ h.1)`. Rewrite `h₃` using `[hslope, hx₃, hy₃]`. Use `⟨x₂ + u₃, -(y₂ + t₃) - W.a₁ * (x₂ + u₃) - W.a₃, h₃, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[WeierstrassCurve.Affine.Point.add_of_X_ne hX₂, WeierstrassCurve.Affine.Point.some.injEq, hslope]`. Conclude with `⟨hx₃, hy₃⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hu₃m : u₃ ∈ maximalIdeal 𝒪`. Rewrite using `[hu₃]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ hzm)))`. Rewrite using `[map_add, residue_eq_zero_of_mem hu₃m, add_zero]`. Establish `hu₃m : u₃ ∈ maximalIdeal 𝒪`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu₃]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ hzm)))`. Establish `hsm : s ∈ maximalIdeal 𝒪`. Rewrite using `[hs]`. Conclude with `Ideal.mul_mem_right _ _ ((Ideal.neg_mem_iff _).2 (Ideal.mul_mem_right _ _ hzm))`.
-
-Establish `hρe : ρ e = 1`. Rewrite using `[he, map_add, map_one, map_mul, residue_eq_zero_of_mem hwm, mul_zero, add_zero]`. Establish `hρd : ρ d = 1`. Rewrite using `[hd, map_sub, map_one, map_mul, map_mul, map_pow, residue_eq_zero_of_mem hzm]`. Simplify using the standard rewrite rules.
-
-Establish `hρd' : ρ d' = 1`. Use `congrArg ρ hdd` as an intermediate fact. Rewrite `this` using `[map_mul, hρd, one_mul, map_one]`. Then use the resulting hypothesis. Establish `hρv : ρ v = 1` using `hρv'`. Establish `hρt : ρ t₃ = -ρ Fy`.
-
-Rewrite using `[ht₃]`. Simplify using `only [map_mul, map_neg, map_sub, map_pow, residue_eq_zero_of_mem hsm, hρv, hρe, hρd']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_sub, map_sub, map_neg, map_add, hρt, hFy]`. Establish `h2ρ : ρ (2 : 𝒪) = 2` using `map_ofNat _ 2`.
-
-Simplify using `only [map_add, map_mul, h2ρ, residue_eq_zero_of_mem hu₃m, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem add_of_notMem_range' [DecidableEq K] [(W.map ι).IsElliptic]
     {X₁ Y₁ : K} (h₁ : (curveK K W).Nonsingular X₁ Y₁) (hX : X₁ ∉ Set.range ι) {x₂ y₂ : 𝒪}
@@ -339,14 +329,14 @@ section Good
 variable [W.IsElliptic]
 
 /- English proof (translation)
-The claim follows from `WeierstrassCurve.Affine.equation_iff_nonsingular.mp (equation_residue W (equation_of_map K W h))`.
+A detailed English derivation is pending.
 -/
 theorem nonsingular_residue_of_isElliptic {x y : 𝒪} (h : (curveK K W).Equation (ι x) (ι y)) :
     (curveRed W).Nonsingular (ρ x) (ρ y) :=
   WeierstrassCurve.Affine.equation_iff_nonsingular.mp (equation_residue W (equation_of_map K W h))
 
 /- English proof (translation)
-Introduce `_ _ h _` and use `nonsingular_residue_of_isElliptic K W h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_E0Set_of_isElliptic (P : (curveK K W).Point) : P ∈ E0Set K W :=
   fun _ _ h _ => nonsingular_residue_of_isElliptic K W h.1
@@ -354,27 +344,25 @@ theorem mem_E0Set_of_isElliptic (P : (curveK K W).Point) : P ∈ E0Set K W :=
 variable [DecidableEq K] [DecidableEq (ResidueField 𝒪)]
 
 /- English proof (translation)
-Break down `point_cases K W P with rfl | ⟨X₁, Y₁, h₁, rfl, hX₁⟩ | ⟨x₁, y₁, h₁, rfl⟩` into its components or cases. Rewrite using `[zero_add, reducePoint_zero, zero_add]`. Break down `point_cases K W Q with rfl | ⟨X₂, Y₂, h₂, rfl, hX₂⟩ | ⟨x₂, y₂, h₂, rfl⟩` into its components or cases. Rewrite using `[add_zero, reducePoint_zero, add_zero]`. Rewrite using `[reducePoint_some_notMem K W h₁ hX₁, reducePoint_some_notMem K W h₂ hX₂, add_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `point_cases K W (WeierstrassCurve.Affine.Point.some _ _ h₁ + WeierstrassCurve.Affine.Point.some _ _ h₂) with h0 | ⟨X, Y, h, hS, hX⟩ | ⟨x, y, h, hS⟩` into its components or cases. Rewrite using `[h0, reducePoint_zero]`. Rewrite using `[hS, reducePoint_some_notMem K W h hX]`. It suffices to derive a contradiction. Establish `hn : (curveK K W).Nonsingular X₂ ((curveK K W).negY X₂ Y₂)` using `(WeierstrassCurve.Affine.nonsingular_neg _ _).2 h₂`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Take `⟨x₃, y₃, h₃, e, -, -⟩` from `add_of_notMem_range' K W hn hX₂ h`. Establish `hneg : -(WeierstrassCurve.Affine.Point.some _ _ h₂) = WeierstrassCurve.Affine.Point.some _ _ hn` using `WeierstrassCurve.Affine.Point.neg_some h₂`. Establish `e' : WeierstrassCurve.Affine.Point.some _ _ h₁ = WeierstrassCurve.Affine.Point.some _ _ h₃`. Rewrite using `[← e, ← hS, ← hneg]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite `e'` using `[WeierstrassCurve.Affine.Point.some.injEq]`. Conclude with `hX₁ ⟨x₃, e'.1.symm⟩`. Establish `n₂` using `nonsingular_residue_of_isElliptic K W h₂.1`. Take `⟨x₃, y₃, h₃, e, hx, hy⟩` from `add_of_notMem_range' K W h₁ hX₁ h₂`. Establish `n₃ : (curveRed W).Nonsingular (ρ x₃) (ρ y₃)` using `by rw [hx, hy]; exact n₂`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, reducePoint_some_integral K W h₃ n₃, reducePoint_some_notMem K W h₁ hX₁, zero_add, reducePoint_some_integral K W h₂ n₂, WeierstrassCurve.Affine.Point.some.injEq]`. Conclude with `⟨hx, hy⟩`. Establish `n₁` using `nonsingular_residue_of_isElliptic K W h₁.1`. Break down `point_cases K W Q with rfl | ⟨X₂, Y₂, h₂, rfl, hX₂⟩ | ⟨x₂, y₂, h₂, rfl⟩` into its components or cases. Rewrite using `[add_zero, reducePoint_zero, add_zero]`.
+Supply the required witnesses or components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x₃, y₃, h₃, e, hx, hy⟩` from `add_of_notMem_range' K W h₂ hX₂ h₁`. Rewrite `e` using `[add_comm]`. Establish `n₃ : (curveRed W).Nonsingular (ρ x₃) (ρ y₃)` using `by rw [hx, hy]; exact n₁`. Rewrite using `[e, reducePoint_some_integral K W h₃ n₃, reducePoint_some_notMem K W h₂ hX₂, add_zero, reducePoint_some_integral K W h₁ n₁, WeierstrassCurve.Affine.Point.some.injEq]`. Conclude with `⟨hx, hy⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `n₂` using `nonsingular_residue_of_isElliptic K W h₂.1`. Rewrite using `[reducePoint_some_integral K W h₁ n₁, reducePoint_some_integral K W h₂ n₂]`. Distinguish the cases in `hx : ρ x₁ = ρ x₂`. Distinguish the cases in `hy : ρ y₁ = (curveRed W).negY (ρ x₂) (ρ y₂)`. Rewrite using `[WeierstrassCurve.Affine.Point.add_of_Y_eq hx hy]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `add_of_residue_neg K W h₁ h₂ n₁ n₂ hx hy with h0 | ⟨X, Y, h, hS, hX⟩` into its components or cases. Rewrite using `[h0, reducePoint_zero]`. Rewrite using `[hS, reducePoint_some_notMem K W h hX]`. Establish `hy' : ρ y₁ = ρ y₂`. Break down `WeierstrassCurve.Affine.Y_eq_of_X_eq n₁.1 n₂.1 hx with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `h`. Conclude with `absurd h hy`. Establish `hD : ρ (y₁ + y₂ + W.a₁ * x₁ + W.a₃) ≠ 0`. Introduce `h0`. Apply `hy` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `h0` using `[map_add, map_add, map_add, map_mul]`. Simplify using `only [WeierstrassCurve.Affine.negY, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₃, ← hx]`. Take the linear combination `h0`. Take `⟨x₃, y₃, h₃, n₃, e, e'⟩` from `add_of_residue_eq K W h₁ h₂ n₁ n₂ hx hy' hD`. Rewrite using `[e, e', reducePoint_some_integral K W h₃ n₃]`.
-
-Take `⟨x₃, y₃, h₃, n₃, e, e'⟩` from `add_of_residue_X_ne K W h₁ h₂ n₁ n₂ hx`. Rewrite using `[e, e', reducePoint_some_integral K W h₃ n₃]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reducePoint_add (P Q : (curveK K W).Point) :
     reducePoint K W (P + Q) = reducePoint K W P + reducePoint K W Q := by

@@ -19,7 +19,7 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)} {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `e`. Simplify using `only [P5.act, map_smul, Finset.smul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem act_smul' (M : Wd.SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π'))) (x : Wd.Ix S → RadSp k r z z' π π') (a : ℂ) :
     P5.act M (fun e => a • x e) = fun e => a • P5.act M x e := by
@@ -27,9 +27,9 @@ theorem act_smul' (M : Wd.SlopeTestRemainingChoices S (Pr (RadSp k r z z' π π'
   simp only [P5.act, map_smul, Finset.smul_sum]
 
 /- English proof (translation)
-Unfold `P5.RRform`. Rewrite using `[act_smul']`. Unfold `P5.form`. Rewrite using `[← integral_const_mul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `c'`. Simplify using `only [HerA.pairAt_smul_left, HerA.pairAt_smul_right, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rrform_smul (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (st : Fr.Start (Pr (RadSp k r z z' π π')))
     (μ : Measure (Mt k r)) (i : Fin (r + 1)) (w : List (Wd.Letter ℂ S)) (x y : Wd.Ix S → RadSp k r z z' π π')
@@ -47,9 +47,9 @@ theorem rrform_smul (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (st : Fr.St
 end smul
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hh`. Use `⟨fun b hb => ?_, ?_⟩` and prove the remaining obligations. Break down `List.mem_append.1 hb with hb | hb` into its components or cases. Conclude with `h1 b hb`. Rewrite `hb` using `[List.mem_singleton]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `hb` using the available equality. Conclude with `⟨le_rfl, ht⟩`. Unfold `D.ptSize at h2 ⊢`. Rewrite using `[List.map_append, List.sum_append, h2]`. Simplify using the standard rewrite rules.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLocPt_snoc {h : C.LPt} {j : ℕ} (hh : D.IsLocPt h j) {t : ℂ} (ht : t ≠ 0) :
     D.IsLocPt (h ++ [(1, t)]) (j + 1) := by
@@ -65,9 +65,9 @@ theorem isLocPt_snoc {h : C.LPt} {j : ℕ} (hh : D.IsLocPt h j) {t : ℂ} (ht : 
     simp
 
 /- English proof (translation)
-Establish `hj' : j + 1 ≠ P.r + 1` using `by omega`. Unfold `KB.levW`. Rewrite using `[if_neg hj']`. Establish `ht' : ‖t‖ ≠ 0` using `norm_ne_zero_iff.2 ht`. Rewrite using `[← pow_mul, ← zpow_natCast, ← zpow_add₀ ht']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Unfold `C.Mlev`. Move the coercions through the operations in `[Nat.cast_sub (show j ≤ P.r by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem levW_below (P : M.Par) (j : ℕ) (hj : j + 1 ≤ P.r) {t : ℂ} (ht : t ≠ 0) :
     ‖t‖ ^ (-2 : ℤ) * (‖t‖ ^ (2 * (P.r - j) + P.k)) ^ 2 = KB.levW P (j + 1) t := by
@@ -88,27 +88,27 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P5 Formalism.FourierDecayAlt.P.PBP
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p F j hj w h h' hh hh' X μ L st Φ Φ' hD hZ hF hw hΦ hΦ' t ht`. Set `jF : Fin (P.r + 1)` to `⟨j + 1, by omega⟩`. Establish `hPl` using `Formalism.FourierDecayAlt.P.JCTx5.isPlace_lev P p.T jF p.hP`. Take `⟨Xs⟩` from `Formalism.FourierDecayAlt.P.actual_operators_exist _ _ _ _ _ _ _ hPl`. Take `⟨Ls, sts, h1, h2, h3, h4, h5, h6⟩` from `Formalism.FourierDecayAlt.P.level_start_actual _ _ _ _ _ _ _ hPl Xs p.l0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨μs, hμs⟩` from `hZN P.k (P.r - (j + 1)) Wp Wq (p.T.bs (j + 1))`. Establish `hDs : IsData (JC.parLev P jF) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' Xs μs Ls sts p.l0` using `⟨hPl, hμs.1, h1, h2, h3, h4, h5, h6⟩`. Take `⟨T, hT, hph⟩` from `Formalism.FourierDecayAlt.P.radial_transport_plus Wp Wq P p j hj X μ L st Xs μs Ls sts hD hZ hDs hμs t ht`. Use `(hph (Fin w.length) (D.positionted w) Φ Φ' (fun _ => 1) 0).trans ?_` and prove the remaining obligations. Establish `hl` using `isLocPt_snoc hh ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hl'` using `isLocPt_snoc hh' ht`. Use `set x2 := KB.slv p.T F (j + 1) hj w (h ++ [(1, t)]) hl.2 with hx2def`. Use `set x2' := KB.slv p.T F (j + 1) hj w (h' ++ [(1, t)]) hl'.2 with hx2'def`. Establish `hc2 : ∀ e, KB.CptCoef (p.T.bs (j + 1)) (x2 e)` using `fun e => Formalism.FourierDecayAlt.P.slice_compact_support_coefficient Wp Wq P p F (j + 1) hj w _ hl hF e`. Establish `hc2' : ∀ e, KB.CptCoef (p.T.bs (j + 1)) (x2' e)` using `fun e => Formalism.FourierDecayAlt.P.slice_compact_support_coefficient Wp Wq P p F (j + 1) hj w _ hl' hF e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ε₁, hε₁, hx⟩` from `PBO.nice_common (p.T.bs (j + 1)) hc2`. Take `⟨ε₂, hε₂, hx'⟩` from `PBO.nice_common (p.T.bs (j + 1)) hc2'`. Establish `hε : 0 < min ε₁ ε₂` using `lt_min hε₁ hε₂`. Establish `mono : ∀ {ε' : ℝ} {G : B.Mat P.k (P.r - (j + 1)) → (Wq →L[ℂ] Wp)}, min ε₁ ε₂ ≤ ε' → JC.NiceCoef (p.T.bs (j + 1)) ε' G → JC.NiceCoef (p.T.bs (j + 1)) (min ε₁ ε₂) G` using `fun hle hG => ⟨hG.1, hG.2.1, fun g hg h0 => le_trans hle (hG.2.2 g hg h0)⟩`. Establish `hxn : ∀ e, JC.NiceCoef (p.T.bs (j + 1)) (min ε₁ ε₂) (x2 e)` using `fun e => mono (min_le_left _ _) (hx e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxn' : ∀ e, JC.NiceCoef (p.T.bs (j + 1)) (min ε₁ ε₂) (x2' e)` using `fun e => mono (min_le_right _ _) (hx' e)`. Use `set lam : ℝ := ‖t‖ ^ (2 * (P.r - j) + P.k) with hlam`. Establish `hlam0 : lam ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.2 ht)`. Establish `hlamC : ((lam : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hlam0`. Set `b0 : Fin (JC.parLev P j).r` to `⟨0, by change 0 < P.r - j; omega⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Φ2` to `fun e => (((lam⁻¹ : ℝ)) : ℂ) • T (P5.act (P5.bTl L b0 (D.positionted w)) Φ e)`. Set `Φ2'` to `fun e => (((lam⁻¹ : ℝ)) : ℂ) • T (P5.act (P5.bTl L b0 (D.positionted w)) Φ' e)`. Establish `hpic : ∀ (hh₀ : C.LPt) (hhh : D.IsLocPt hh₀ j) (Ψ : Wd.Ix (Fin w.length) → Q.RadSp (JC.parLev P j).k (JC.parLev P j).r (p.T.bs j).z (p.T.bs j).z' (p.T.bs j).π (p.T.bs j).π'), (∀ e, Top.IsRadOf (JC.parLev P j) (p.T.bs j) (Ψ e) (KB.slv p.T F j (by omega) w hh₀ hhh.2 e)) → ∀ e, ∀ y …`. Introduce `hh₀ hhh Ψ hΨ e y hy`. Establish `e1` using `hT (P5.act (P5.bTl L b0 (D.positionted w)) Ψ e) y.1 y.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `hHP Wp Wq P p F j hj w hh₀ hhh X μ L st Ψ hD hF hw hΨ t (isLocPt_snoc hhh ht) e y hy`. Establish `hcl : ∀ v : Wq →L[ℂ] Wp, ((lam⁻¹ : ℝ) : ℂ) • (((lam : ℝ) : ℂ) • v) = v` using `fun v => by`. Rewrite using `[smul_smul, ← Complex.ofReal_mul, inv_mul_cancel₀ hlam0, Complex.ofReal_one, one_smul]`. Conclude with `(congrArg (fun v => ((lam⁻¹ : ℝ) : ℂ) • v) (e1.trans e2)).trans (hcl _)`. Establish `hΦ2` using `hpic h hh Φ hΦ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hΦ2'` using `hpic h' hh' Φ' hΦ'`. Establish `hOne'` using `hOne Wp Wq P p.T jF Xs μs Ls sts p.l0 hDs hμs w x2 x2' Φ2 Φ2' (min ε₁ ε₂) hε hxn hxn' hΦ2 hΦ2'`. Establish `hTΦ : (fun a => T (P5.act (P5.bTl L b0 (D.positionted w)) Φ a)) = fun a => ((lam : ℝ) : ℂ) • Φ2 a`. Use function extensionality and compare the values at `a`. Simplify using `only [Φ2, smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ hlam0, Complex.ofReal_one, one_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hTΦ' : (fun a => T (P5.act (P5.bTl L b0 (D.positionted w)) Φ' a)) = fun a => ((lam : ℝ) : ℂ) • Φ2' a`. Use function extensionality and compare the values at `a`. Simplify using `only [Φ2', smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ hlam0, Complex.ofReal_one, one_smul]`. Rewrite using `[hTΦ, hTΦ']`. Establish `hRR : p.RR F (j + 1) w (h ++ [(1, t)]) (h' ++ [(1, t)]) = D.formLev p.T (M.sgn P p.l0) jF w x2 x2'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Unfold `KB.Pl.RR D.RRplace`. Rewrite using `[dif_pos ⟨hl, hl'⟩, dif_pos hj]`. Both sides reduce to the same expression. Establish `key : P5.RRform Ls sts μs 0 (D.positionted w) Φ2 Φ2' 0 = D.formLev p.T (M.sgn P p.l0) jF w x2 x2'` using `hOne'.symm`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[key]`. Use `_ = _ := by`. Rewrite using `[hRR, ← levW_below P j hj ht, Complex.conj_ofReal, hlam]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem pb_radHead_of (hOne : PBO.FormOne) (hZN : PBO.ZetaNormExists) (hHP : HeadPic) : KB.RadHead := by
   intro Wp Wq _ _ _ _ _ _ P p F j hj w h h' hh hh' X μ L st Φ Φ' hD hZ hF hw hΦ hΦ' t ht

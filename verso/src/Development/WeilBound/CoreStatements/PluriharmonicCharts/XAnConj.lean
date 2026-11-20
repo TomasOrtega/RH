@@ -17,19 +17,19 @@ noncomputable def cj (e : ℕ) : (Fin e → ℂ) →L[ℝ] (Fin e → ℂ) :=
   ContinuousLinearMap.pi fun i => Complex.conjCLE.toContinuousLinearMap.comp (ContinuousLinearMap.proj i)
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[cj]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cj_apply (z : Fin e → ℂ) : cj e z = star z := by
   ext i; simp [cj]
 
 /- English proof (translation)
-Establish `hev : fderiv ℝ (g ∘ cj e) =ᶠ[𝓝 z] fun y => (fderiv ℝ g (cj e y)).comp (cj e)`. Establish `h1 : ∀ᶠ y in 𝓝 (cj e z), ContDiffAt ℝ 2 g y` using `hg.eventually (by simp)`. Use `filter_upwards [(cj e).continuous.continuousAt.eventually h1] with y hy`. Rewrite using `[fderiv_comp y (hy.differentiableAt (by norm_num)) (cj e).differentiableAt, (cj e).fderiv]`. Establish `hH : HasFDerivAt (fderiv ℝ g) (fderiv ℝ (fderiv ℝ g) (cj e z)) (cj e z)` using `((hg.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)).hasFDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `((hH.comp z (cj e).hasFDerivAt).clm_comp (hasFDerivAt_const (cj e) z)).fderiv`. Establish `h3 : ∀ a b, fderiv ℝ (fderiv ℝ (g ∘ cj e)) z a b = fderiv ℝ (fderiv ℝ g) (cj e z) (cj e a) (cj e b)`. Introduce `a b`. Rewrite using `[hev.fderiv_eq]`. Use `erw [h2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h4 : cj e (Complex.I • w) = -(Complex.I • cj e w)`. Use extensionality with `i`. Simplify using `[cj]`. Unfold `levi`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h3, h3, h4]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem levi_cj {g : (Fin e → ℂ) → ℝ} {z : Fin e → ℂ} (hg : ContDiffAt ℝ 2 g (cj e z)) (w : Fin e → ℂ) :
     levi (g ∘ cj e) z w = levi g (cj e z) (cj e w) := by
@@ -56,7 +56,7 @@ def Anti (A : FinHolAtlas e X) (c : X → X) : Prop :=
     ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (c ⁻¹' (A.chart k).source))
 
 /- English proof (translation)
-Establish `hm : (A.chart j).target ∩ (A.chart j).symm ⁻¹' (c ⁻¹' (A.chart k).source) ∈ 𝓝 t` using `((A.chart j).isOpen_inter_preimage_symm ((A.chart k).open_source.preimage hc)).mem_nhds ⟨ht, hk⟩`. Use `filter_upwards [hm] with t' ht'`. Simplify using `only [Function.comp_apply, cj_apply, star_star, (A.chart k).left_inv ht'.2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ev_eq {A : FinHolAtlas e X} {c : X → X} (hc : Continuous c) (g : X → ℝ) (j k : Fin A.n)
     {t : Fin e → ℂ} (ht : t ∈ (A.chart j).target) (hk : c ((A.chart j).symm t) ∈ (A.chart k).source) :
@@ -68,9 +68,9 @@ theorem ev_eq {A : FinHolAtlas e X} {c : X → X} (hc : Continuous c) (g : X →
   simp only [Function.comp_apply, cj_apply, star_star, (A.chart k).left_inv ht'.2]
 
 /- English proof (translation)
-Introduce `j t ht`. Apply `ContDiffAt.contDiffWithinAt` to reduce the goal to its premises. Take `⟨k, hk⟩` from `A.cover (c ((A.chart j).symm t))`. Establish `h1` using `GlobalTheory.CompanionTheory.Ar.Giv.contDiffAt_of_smoothOn hU hf k ((A.chart k).map_source hk) (by rw [(A.chart k).left_inv hk]; exact ht.2)`. Establish `h2 : ContDiffAt ℝ ∞ (fun z => star (A.chart k (c ((A.chart j).symm z)))) t` using `((ha j k t ⟨ht.1, hk⟩).contDiffAt (n := ∞)).restrict_scalars ℝ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ContDiffAt ℝ ∞ ((f ∘ (A.chart k).symm) ∘ cj e) (star (A.chart k (c ((A.chart j).symm t))))` using `ContDiffAt.comp _ (by rw [cj_apply, star_star]; exact h1) (cj e).contDiff.contDiffAt`. Conclude with `(ContDiffAt.comp t h3 h2).congr_of_eventuallyEq (ev_eq hc f j k ht.1 hk)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smoothOn_pull {A : FinHolAtlas e X} {c : X → X} (hc : Continuous c) (ha : Anti A c)
     {U : Set X} (hU : IsOpen U) {f : X → ℝ} (hf : A.SmoothOn U f) : A.SmoothOn (c ⁻¹' U) (f ∘ c) := by
@@ -86,7 +86,7 @@ theorem smoothOn_pull {A : FinHolAtlas e X} {c : X → X} (hc : Continuous c) (h
   exact (ContDiffAt.comp t h3 h2).congr_of_eventuallyEq (ev_eq hc f j k ht.1 hk)
 
 /- English proof (translation)
-Use `⟨fun x => smoothOn_pull hc ha (P.isOpen_U _) (hP.1 (c x)), fun x x' y hy => ?_⟩` and prove the remaining obligations. Take `⟨W, hW, hyW, G, hG, hGe⟩` from `hP.2 (c x) (c x') (c y) hy`. Use `⟨c ⁻¹' W, hW.preimage hc, hyW, _, Cj.holoOn_conj_comp c hc ha hG, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[Complex.conj_re]`. Conclude with `hGe (c z) hz`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPotential_pull {A : FinHolAtlas e X} {c : X → X} (hc : Continuous c) (ha : Anti A c)
     {P : LocPot X} (hP : IsPotential A P) : IsPotential A (P.pullback c hc) := by
@@ -97,11 +97,9 @@ theorem isPotential_pull {A : FinHolAtlas e X} {c : X → X} (hc : Continuous c)
   exact hGe (c z) hz
 
 /- English proof (translation)
-Introduce `x j t ht w`. Take `⟨k, hk⟩` from `A.cover (c ((A.chart j).symm t))`. Establish `hz` using `(A.chart k).map_source hk`. Establish `hzU : (A.chart k).symm (A.chart k (c ((A.chart j).symm t))) ∈ P.U (c x)`. Rewrite using `[(A.chart k).left_inv hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ht.2`. Establish `h1` using `potential_contDiffAt_chart hP (c x) k hz hzU`. Establish `h1' : ContDiffAt ℝ 2 (P.φ (c x) ∘ (A.chart k).symm) (cj e (star (A.chart k (c ((A.chart j).symm t)))))` using `by rw [cj_apply, star_star]; exact h1`. Establish `h3 : ContDiffAt ℝ 2 ((P.φ (c x) ∘ (A.chart k).symm) ∘ cj e) (star (A.chart k (c ((A.chart j).symm t))))` using `ContDiffAt.comp _ h1' (cj e).contDiff.contDiffAt`. Use `show 0 ≤ levi (P.φ (c x) ∘ c ∘ (A.chart j).symm) t w`.
-
-Rewrite using `[levi_congr (ev_eq hc _ j k ht.1 hk) w, levi_comp w (ha j k t ⟨ht.1, hk⟩) h3, levi_cj h1', cj_apply, star_star]`. Conclude with `hpsh (c x) k _ ⟨hz, hzU⟩ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPsh_pull {A : FinHolAtlas e X} {c : X → X} (hc : Continuous c) (ha : Anti A c)
     {P : LocPot X} (hP : IsPotential A P) (hpsh : IsPsh A P) : IsPsh A (P.pullback c hc) := by
@@ -121,11 +119,9 @@ theorem isPsh_pull {A : FinHolAtlas e X} {c : X → X} (hc : Continuous c) (ha :
   exact hpsh (c x) k _ ⟨hz, hzU⟩ _
 
 /- English proof (translation)
-Use `choose V hV hxV G hG hGe using h`. Set `Q2 : LocPot X` to `⟨fun x => V x ∩ P.U x, fun x => (hV x).inter (P.isOpen_U x), fun x => ⟨hxV x, P.mem_U x⟩, Q.φ⟩`. Use `GlobalTheory.CompanionTheory.Ar.Giv.isPsh_of_phi_eq (P := Q2) hQ rfl ?_` and prove the remaining obligations. Introduce `x j y hy w`. Establish `hGa : AnalyticAt ℂ (G x ∘ (A.chart j).symm) y` using `hG x j y ⟨hy.1, hy.2.1⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : (Q.φ x ∘ (A.chart j).symm) =ᶠ[𝓝 y] fun v => (P.φ x ∘ (A.chart j).symm) v + (-1 / 2) * ((G x ∘ (A.chart j).symm) v).re` using `by filter_upwards [((A.chart j).isOpen_inter_preimage_symm (hV x)).mem_nhds ⟨hy.1, hy.2.1⟩] with v hv`. Conclude with `hGe x _ hv.2`. Establish `hRe : ContDiffAt ℝ 2 (fun v => ((G x ∘ (A.chart j).symm) v).re) y` using `Complex.reCLM.contDiff.contDiffAt.comp y (hGa.restrictScalars (𝕜 := ℝ)).contDiffAt`. Use `show 0 ≤ levi (Q.φ x ∘ (A.chart j).symm) y w`. Rewrite using `[levi_congr hev, levi_add_smul _ (potential_contDiffAt_chart hP x j hy.1 hy.2.2) hRe, levi_re_analytic hGa, mul_zero, add_zero]`.
-
-Conclude with `hp x j y ⟨hy.1, hy.2.2⟩ w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPsh_of_same {A : FinHolAtlas e X} {P Q : LocPot X} (hP : IsPotential A P) (hQ : IsPotential A Q)
     (h : ∀ x, ∃ V : Set X, IsOpen V ∧ x ∈ V ∧ ∃ G : X → ℂ, A.HoloOn V G ∧
@@ -148,9 +144,7 @@ theorem isPsh_of_same {A : FinHolAtlas e X} {P Q : LocPot X} (hP : IsPotential A
   exact hp x j y ⟨hy.1, hy.2.2⟩ w
 
 /- English proof (translation)
-Use `hasFDerivAt_of_tendstoUniformlyOnFilter (l := 𝓝[>] (0 : ℝ)) (f := f) (f' := fun t => fderiv ℝ (f t)) ?_ ?_ ?_` and prove the remaining obligations. Use `tendstoLocallyUniformlyOn_iff_filter.1 h1 z hz` as an intermediate fact. Rewrite `this` using `[hU.nhdsWithin_eq hz]`. Then use the resulting hypothesis. Use `filter_upwards [hf.prod_mk (hU.mem_nhds hz)] with p hp`. Conclude with `(hp.1 p.2 hp.2).hasFDerivAt`.
-
-Use `filter_upwards [hU.mem_nhds hz] with y hy using h0.tendsto_at hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_lim {E F : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F]
     [NormedSpace ℝ F] {U : Set E} (hU : IsOpen U) {f : ℝ → E → F} {g : E → F} {g' : E → E →L[ℝ] F}
@@ -167,11 +161,11 @@ theorem hasFDerivAt_lim {E F : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] 
   · filter_upwards [hU.mem_nhds hz] with y hy using h0.tendsto_at hy
 
 /- English proof (translation)
-Establish `d0 : ∀ y ∈ U, DifferentiableAt ℝ g y` using `fun y hy => (hasFDerivAt_lim hU (hf.mono fun t ht z hz => (ht z hz).differentiableAt (by simp)) h0 h1 hy).differentiableAt`. Establish `d1 : ∀ y ∈ U, DifferentiableAt ℝ (fderiv ℝ g) y` using `fun y hy => (hasFDerivAt_lim hU (hf.mono fun t ht z hz => ((ht z hz).fderiv_right (m := 1) (by norm_cast)).differentiableAt (by simp)) h1 h2 hy).differentiableAt`. Establish `c2 : ContinuousOn (fderiv ℝ (fderiv ℝ g)) U`. Use `h2.continuousOn (hf.mono fun t ht z hz => ?_).frequently` and prove the remaining obligations. Conclude with `((((ht z hz).fderiv_right (m := 1) (by norm_cast)).fderiv_right (m := 0) (by norm_num)).continuousAt).continuousWithinAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : ContDiffOn ℝ 1 (fderiv ℝ g) U`. Rewrite using `[show (1 : WithTop ℕ∞) = 0 + 1 by simp, contDiffOn_succ_iff_fderiv_of_isOpen hU]`. Conclude with `⟨fun y hy => (d1 y hy).differentiableWithinAt, by simp, contDiffOn_zero.2 c2⟩`. Establish `e2 : ContDiffOn ℝ 2 g U`. Rewrite using `[show (2 : WithTop ℕ∞) = 1 + 1 by norm_num, contDiffOn_succ_iff_fderiv_of_isOpen hU]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun y hy => (d0 y hy).differentiableWithinAt, by simp, e1⟩`. Conclude with `e2.contDiffAt (hU.mem_nhds hz)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_lim {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {U : Set E} (hU : IsOpen U)
     {f : ℝ → E → ℝ} {g : E → ℝ} (hf : ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ z ∈ U, ContDiffAt ℝ ∞ (f t) z)
@@ -197,25 +191,23 @@ theorem contDiffAt_lim {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {U 
   exact e2.contDiffAt (hU.mem_nhds hz)
 
 /- English proof (translation)
-Establish `h2 : (2 : WithTop ℕ∞) ≤ ∞` using `by norm_cast`. Establish `hG : ∀ k, ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ z ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' (bdry s)ᶜ, ContDiffAt ℝ ∞ (phT t ∘ (A.chart k).symm) z` using `fun k => hT.mono fun t ht z hz => GlobalTheory.CompanionTheory.Ar.Giv.contDiffAt_of_smoothOn isOpen_univ ht k hz.1 trivial`. Establish `hΦ : ∀ k, ∀ z ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' (bdry s)ᶜ, ContDiffAt ℝ 2 (ph ∘ (A.chart k).symm) z`. Introduce `k z hz`. Establish `hO` using `(A.chart k).isOpen_inter_preimage_symm hV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `contDiffAt_lim hO (hG k) ((tendstoLocallyUniformlyOn_iff_forall_isCompact hO).2 fun K h1 h2 => (hC k K h1 h2).1) ((tendstoLocallyUniformlyOn_iff_forall_isCompact hO).2 fun K h1 h2 => (hC k K h1 h2).2.1) ((tendstoLocallyUniformlyOn_iff_forall_isCompact hO).2 fun K h1 h2 => (hC k K …`. Introduce `j K hKs hK`. Establish `hOo` using `(A.chart j).isOpen_inter_preimage_symm hV`. Establish `hloc : ∀ y0 ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (bdry s)ᶜ, ∃ N ∈ 𝓝 y0, TendstoUniformlyOn (fun t => (phT t ∘ c) ∘ (A.chart j).symm) (ph ∘ (A.chart j).symm) (𝓝[>] 0) N ∧ TendstoUniformlyOn (fun t => fderiv ℝ ((phT t ∘ c) ∘ (A.chart j).symm)) (fderiv ℝ (ph ∘ (A.chart j).sym …`. Introduce `y0 hy0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `A.cover (c ((A.chart j).symm y0))`. Use `set W := (A.chart j).target ∩ (A.chart j).symm ⁻¹' (c ⁻¹' ((A.chart k).source ∩ (bdry s)ᶜ)) with hWdef`. Establish `hWo : IsOpen W` using `(A.chart j).isOpen_inter_preimage_symm (((A.chart k).open_source.inter hV).preimage hc)`. Establish `hy0W : y0 ∈ W` using `⟨hy0.1, hk, fun h => hy0.2 ((hb _).1 h)⟩`. Take `⟨N, hN0, hNW, hN⟩` from `local_compact_nhds (hWo.mem_nhds hy0W)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set τ := A.chart k ∘ c ∘ (A.chart j).symm with hτdef`. Establish `hτ : ∀ y ∈ W, ContDiffAt ℝ 2 τ y`. Introduce `y hy`. Establish `hR : ContDiffAt ℝ 2 (fun z => star (A.chart k (c ((A.chart j).symm z)))) y` using `((ha j k y ⟨hy.1, hy.2.1⟩).contDiffAt (n := 2)).restrict_scalars ℝ`. Use `((cj e).contDiff (n := 2)).contDiffAt.comp y hR` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Simplify using `[hτdef, cj_apply]`. Establish `hWU : Set.MapsTo τ W ((A.chart k).target ∩ (A.chart k).symm ⁻¹' (bdry s)ᶜ)`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨(A.chart k).map_source hy.2.1, ?_⟩` and prove the remaining obligations. Use `show (A.chart k).symm ((A.chart k) (c ((A.chart j).symm y))) ∈ (bdry s)ᶜ`. Rewrite using `[(A.chart k).left_inv hy.2.1]`. Conclude with `hy.2.2`. Establish `hτN : IsCompact (τ '' N)` using `hN.image_of_continuousOn fun y hy => (hτ y (hNW hy)).continuousAt.continuousWithinAt`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c0, c1, c2⟩` from `hC k _ ((hWU.mono_left hNW).image_subset) hτN`. Use `⟨N, hN0, ?_⟩` and prove the remaining obligations. Use `AnalyticLimit.C2ConvergencePullback.local_c2_convergence_pullback (G := fun t => phT t ∘ (A.chart k).symm) (Φ := ph ∘ (A.chart k).symm) hWo hτ hWU ((hG k).mono fun t ht z hz => (ht z hz).of_le h2) (hΦ k) ?_ ?_ hN hNW c0 c1 c2` and prove the remaining obligations. Introduce `t y hy show phT t (c ((A.chart j).symm y)) = phT t ((A.chart k).symm ((A.chart k) (c ((A.chart j).symm y))))`. Rewrite using `[(A.chart k).left_inv hy.2.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `y hy show ph ((A.chart j).symm y) = ph ((A.chart k).symm ((A.chart k) (c ((A.chart j).symm y))))`. Rewrite using `[(A.chart k).left_inv hy.2.1]`. Conclude with `(hph _ fun h => hy.2.2 ((hb _).2 h)).symm`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `(tendstoLocallyUniformlyOn_iff_forall_isCompact hOo).1 (AnalyticLimit.C2ConvergencePullback.tendstoLocallyUniformlyOn_of_nhds fun y hy => ?_) K hKs hK` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨N, hN, h, -, -⟩` from `hloc y hy`. Conclude with `⟨N, hN, h⟩`. Use `(tendstoLocallyUniformlyOn_iff_forall_isCompact hOo).1 (AnalyticLimit.C2ConvergencePullback.tendstoLocallyUniformlyOn_of_nhds fun y hy => ?_) K hKs hK` and prove the remaining obligations. Take `⟨N, hN, -, h, -⟩` from `hloc y hy`. Conclude with `⟨N, hN, h⟩`.
-
-Use `(tendstoLocallyUniformlyOn_iff_forall_isCompact hOo).1 (AnalyticLimit.C2ConvergencePullback.tendstoLocallyUniformlyOn_of_nhds fun y hy => ?_) K hKs hK` and prove the remaining obligations. Take `⟨N, hN, -, -, h⟩` from `hloc y hy`. Conclude with `⟨N, hN, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem regular_family_pullback_involution {A : FinHolAtlas e X} {c : X → X} (hc : Continuous c) (ha : Anti A c) {s : X → X → ℂ}
     (hV : IsOpen (bdry s)ᶜ) (hb : ∀ y, c y ∈ bdry s ↔ y ∈ bdry s) {ph : X → ℝ} {phT : ℝ → X → ℝ}
@@ -293,11 +285,11 @@ theorem regular_family_pullback_involution {A : FinHolAtlas e X} {c : X → X} (
     exact ⟨N, hN, h⟩
 
 /- English proof (translation)
-Rewrite `hf`, `hg`, the goal using `[Metric.tendstoUniformlyOn_iff]`. Introduce `ε hε`. Use `filter_upwards [hf ε hε, hg ε hε, he] with t h1 h2 h3 y hy`. Establish `e1` using `h1 y hy`. Establish `e2` using `h2 y hy`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `e1`, `e2`, the goal using `[dist_eq_norm]`. Establish `: l y - h t y = (1 / 2 : ℝ) • ((l y - f t y) + (l y - g t y))`. Rewrite using `[h3 y hy]`. Use `module`. Rewrite using `[this, norm_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `norm_add_le (l y - f t y) (l y - g t y)` as an intermediate fact. Rewrite using `[Real.norm_eq_abs, abs_of_pos (by norm_num)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tu_avg {α F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] {f g h : ℝ → α → F} {l : α → F} {K : Set α}
     (hf : TendstoUniformlyOn f l (𝓝[>] 0) K) (hg : TendstoUniformlyOn g l (𝓝[>] 0) K)
@@ -317,7 +309,7 @@ theorem tu_avg {α F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] {f g h :
   linarith
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hev : h =ᶠ[𝓝 y] fun z => (1 / 2 : ℝ) • (f z + g z)` using `Filter.mem_of_superset (hU.mem_nhds hy) he`. Rewrite using `[hev.fderiv_eq]`. Conclude with `(((hf y hy).hasFDerivAt.add (hg y hy).hasFDerivAt).const_smul (1 / 2 : ℝ)).fderiv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fderiv_avg {E F : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F]
     {U : Set E} (hU : IsOpen U) {f g h : E → F} (hf : ∀ y ∈ U, DifferentiableAt ℝ f y)
@@ -329,11 +321,11 @@ theorem fderiv_avg {E F : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [Norm
   exact (((hf y hy).hasFDerivAt.add (hg y hy).hasFDerivAt).const_smul (1 / 2 : ℝ)).fderiv
 
 /- English proof (translation)
-Introduce `j K hKs hK`. Take `⟨a0, a1, a2⟩` from `h1 j K hKs hK`. Take `⟨b0, b1, b2⟩` from `h2 j K hKs hK`. Establish `hO` using `(A.chart j).open_target`. Establish `e0 : ∀ t, ∀ y ∈ (A.chart j).target, ((fun y => (f t y + g t y) / 2) ∘ (A.chart j).symm) y = (1 / 2 : ℝ) • ((f t ∘ (A.chart j).symm) y + (g t ∘ (A.chart j).symm) y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t y _`. Simplify using `only [Function.comp_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `sm : ∀ u : X → ℝ, A.Smooth u → ∀ y ∈ (A.chart j).target, ContDiffAt ℝ ∞ (u ∘ (A.chart j).symm) y` using `fun u hu y hy => GlobalTheory.CompanionTheory.Ar.Giv.contDiffAt_of_smoothOn isOpen_univ hu j hy trivial`. Establish `e1` using `fun t (hf : A.Smooth (f t)) (hg : A.Smooth (g t)) => fderiv_avg hO (fun y hy => (sm _ hf y hy).differentiableAt (by simp)) (fun y hy => (sm _ hg y hy).differentiableAt (by simp)) (e0 t)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `fun t (hf : A.Smooth (f t)) (hg : A.Smooth (g t)) => fderiv_avg hO (fun y hy => ((sm _ hf y hy).fderiv_right (m := 1) (by norm_cast)).differentiableAt (by simp)) (fun y hy => ((sm _ hg y hy).fderiv_right (m := 1) (by norm_cast)).differentiableAt (by simp)) (e1 t hf hg)`. Use `⟨tu_avg a0 b0 (Eventually.of_forall fun t y hy => e0 t y (hKs hy).1), tu_avg a1 b1 ?_, tu_avg a2 b2 ?_⟩` and prove the remaining obligations. Use `filter_upwards [hf, hg] with t hf hg y hy using e1 t hf hg y (hKs hy).1`. Use `filter_upwards [hf, hg] with t hf hg y hy using e2 t hf hg y (hKs hy).1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem regular_family_average {A : FinHolAtlas e X} {s : X → X → ℂ} {ph : X → ℝ} {f g : ℝ → X → ℝ}
     (hf : ∀ᶠ t in 𝓝[>] (0 : ℝ), A.Smooth (f t)) (hg : ∀ᶠ t in 𝓝[>] (0 : ℝ), A.Smooth (g t))
@@ -362,33 +354,31 @@ theorem regular_family_average {A : FinHolAtlas e X} {s : X → X → ℂ} {ph :
 end PositivityTheory.Xgp.an_conj
 
 /- English proof (translation)
-Introduce `e X _ _ _ A Θ L s nb m W hL hs hsnc hs0 hΘ hΘp c hc hcc ha hb hr th ph phT C t₀ hth hG hph hF hC2`. Establish `hΘpsh : IsPsh A Θ` using `TailBoundAlt.isPsh_of_isPosPot A Θ hΘp`. Establish `hΘpb : IsPotential A (Θ.pullback c hc)` using `PositivityTheory.Xgp.an_conj.isPotential_pull hc ha hΘ`. Take `⟨K, hK0, -, hKpsh⟩` from `TailBoundAlt.exists_psh_chern_bound A Θ (Θ.pullback c hc) hΘ hΘp hΘpb`. Establish `ht₀ : 0 < t₀` using `hF.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU : IsOpen (bdry s)ᶜ` using `GlobalTheory.CompanionTheory.Ar.Giv.isOpen_compl_bdry hs`. Use `set M : ℝ := max 1 K with hM`. Establish `hM1 : 1 ≤ M` using `le_max_left _ _`. Establish `hMK : K ≤ M` using `le_max_right _ _`. Use `set C' : ℝ := |C| * M with hC'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set t₁ : ℝ := min t₀ (Real.exp (-Real.exp 1)) with ht₁`. Establish `ht₁0 : 0 < t₁` using `lt_min ht₀ (Real.exp_pos _)`. Establish `ht₁t₀ : t₁ ≤ t₀` using `min_le_left _ _`. Establish `ht₁e : t₁ ≤ Real.exp (-Real.exp 1)` using `min_le_right _ _`. Establish `hCC' : |C| ≤ C'` using `le_mul_of_one_le_right (abs_nonneg C) hM1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `F1` using `GlobalTheory.CompanionTheory.Ar.Giv.isRegFamily_mono A Θ L s th ph phT C t₀ |C| t₁ hΘ hΘpsh hth hs0 hF le_rfl ht₁0 ht₁t₀ ht₁e`. Establish `F2` using `GlobalTheory.CompanionTheory.Ar.Giv.isRegFamily_mono A Θ L s th ph phT C t₀ C' t₁ hΘ hΘpsh hth hs0 hF hCC' ht₁0 ht₁t₀ ht₁e`. Establish `hsmc : ∀ u : X → ℝ, A.Smooth u → A.Smooth (u ∘ c)` using `fun u hu => by`. Use `PositivityTheory.Xgp.an_conj.smoothOn_pull hc ha isOpen_univ hu` as an intermediate fact. Rewrite `this` using `[Set.preimage_univ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hnb : ∀ y ∉ bdry s, c y ∉ bdry s` using `fun y hy h => hy ((hb y).1 h)`. Use `⟨C', t₁, ?_, ?_⟩` and prove the remaining obligations. Take `⟨-, -, F1⟩` from `F1`. Take `⟨h1, h2, F2⟩` from `F2`. Use `⟨h1, h2, fun t ht htt => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a1, a2, a3, a4, -, a6, a7, a8⟩` from `F2 t ht htt`. Take `⟨b1, -, -, -, b5, -⟩` from `F1 t ht htt`. Establish `hsm : A.Smooth fun y => (phT t y + phT t (c y)) / 2` using `fun j => ((a1 j).add (hsmc _ a1 j)).div_const 2`. Use `⟨hsm, fun y => ?_, fun y hy => ?_, fun y => ?_, ?_, fun y hy hyr => ?_, fun y hy => ?_, fun t' h1 h2 y => ?_⟩` and prove the remaining obligations. Combine the linear relations using `[a2 y, a2 (c y)]`.
+Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear relations using `[a3 y hy, a3 (c y) (hnb y hy), hph y hy]`. Combine the linear relations using `[a4 y, a4 (c y)]`. Use `set ε : ℝ := epsT |C| t with hε`. Establish `hq` using `GlobalTheory.CompanionTheory.Ar.Giv.loglog_quot_nonneg ht (htt.trans ht₁e)`. Establish `hε0 : 0 ≤ ε`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hε, GlobalTheory.CompanionTheory.Ar.Giv.epsT_eq_mul]`. Conclude with `mul_nonneg (abs_nonneg C) hq`. Establish `hε' : epsT C' t = M * ε`. Rewrite using `[hε, epsT, epsT, hC']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hεK : 0 ≤ M * ε - (K + 1) * ε / 2` using `by nlinarith`. Establish `hP0 : IsPotential A (th + LocPot.ofFun (phT t) + Θ.rsmul ε)` using `isPotentialAdd A _ _ (isPotentialAdd A _ _ hth (isPotential_ofFun A _ b1)) (isPotentialRsmul A ε Θ hΘ)`. Establish `hD : IsPotential A (Θ.rsmul K + (Θ.pullback c hc).rsmul (-1))` using `isPotentialAdd A _ _ (isPotentialRsmul A K Θ hΘ) (isPotentialRsmul A (-1) _ hΘpb)`. Establish `hS0` using `PositivityTheory.Xgp.an_conj.isPotential_pull hc ha hP0`. Establish `hS0p` using `PositivityTheory.Xgp.an_conj.isPsh_pull hc ha hP0 b5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS00` using `isPotentialAdd A _ _ hP0 hS0`. Establish `hS1` using `isPotentialRsmul A (1 / 2) _ hS00`. Establish `hS1p` using `isPshRsmul A (1 / 2) _ (by norm_num) hS00 (isPshAdd A _ _ hP0 hS0 b5 hS0p)`. Establish `hS2` using `isPotentialRsmul A (ε / 2) _ hD`. Establish `hS2p` using `isPshRsmul A (ε / 2) _ (by positivity) hD hKpsh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hS3` using `isPotentialRsmul A (M * ε - (K + 1) * ε / 2) Θ hΘ`. Establish `hS3p` using `isPshRsmul A (M * ε - (K + 1) * ε / 2) Θ hεK hΘ hΘpsh`. Establish `hS` using `isPshAdd A _ _ (isPotentialAdd A _ _ hS1 hS2) hS3 (isPshAdd A _ _ hS1 hS2 hS1p hS2p) hS3p`. Establish `hT : IsPotential A (th + LocPot.ofFun (fun y => (phT t y + phT t (c y)) / 2) + Θ.rsmul (epsT C' t))` using `isPotentialAdd A _ _ (isPotentialAdd A _ _ hth (isPotential_ofFun A _ hsm)) (isPotentialRsmul A _ Θ hΘ)`. Use `PositivityTheory.Xgp.an_conj.isPsh_of_same (isPotentialAdd A _ _ (isPotentialAdd A _ _ hS1 hS2) hS3) hT (fun x => ?_) hS` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Take `⟨V, hV, hxV, G, hGh, hGe⟩` from `hG x`. Use `⟨V, hV, hxV, G, hGh, fun y hy => ?_⟩` and prove the remaining obligations. Use `show th.φ x y + (phT t y + phT t (c y)) / 2 + epsT C' t * Θ.φ x y = 1 / 2 * ((th.φ x y + phT t y + ε * Θ.φ x y) + (th.φ (c x) (c y) + phT t (c y) + ε * Θ.φ (c x) (c y))) + ε / 2 * (K * Θ.φ x y + -1 * Θ.φ (c x) (c y)) + (M * ε - (K + 1) * ε / 2) * Θ.φ x y + -1 / 2 * (G y).re`. Rewrite using `[hε', ← hGe y hy]`. Expand and normalize the polynomial expressions, which then agree.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `a6 (c y) (hnb y hy) (by rw [hr]; exact hyr)` as an intermediate fact. Combine the linear relations using `[a6 y hy hyr, hph y hy]`. Use `a7 (c y) (hnb y hy)` as an intermediate fact. Rewrite `this` using `[hr]`. Combine the linear relations using `[a7 y hy, hph y hy]`.
-
-Combine the linear relations using `[a8 t' h1 h2 y, a8 t' h1 h2 (c y)]`. Establish `hev : ∀ᶠ t in nhdsWithin (0 : ℝ) (Set.Ioi 0), A.Smooth (phT t)` using `Filter.mem_of_superset (Ioc_mem_nhdsGT ht₀) fun t ht => (hF.2.2 t ht.1 ht.2).1`. Conclude with `PositivityTheory.Xgp.an_conj.regular_family_average (g := fun t => phT t ∘ c) hev (hev.mono fun t => hsmc _) hC2 (PositivityTheory.Xgp.an_conj.regular_family_pullback_involution hc ha hU hb hph hev hC2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgp.t_an_conj : ∀ (e : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) (Θ : LocPot X) (L : LocPot X) (s : X → X → ℂ) (nb : ℕ) (m : Fin nb → ℕ) (W : Fin nb → Set X), IsPotential A L → IsSection A L s → IsSNC A L s m W → (∀ y, logNormSec L s y ≤ 0) → IsPotential A Θ → IsPosPot A Θ → ∀ (c : X → X), Continuous c → (∀ x, c (c x) = x) → (∀ j k, AnalyticOnNhd ℂ (fun z => star (A.chart k (c ((A.chart j).symm z)))) ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (c ⁻¹' (A.chart k).source))) → (∀ y, c y ∈ bdry s ↔ y ∈ bdry s) → (∀ y, rW L s (c y) = rW L s y) → ∀ (th : LocPot X) (ph : X → ℝ) (phT : ℝ → X → ℝ) (C t₀ : ℝ), IsPotential A th → (∀ x, ∃ V : Set X, IsOpen V ∧ x ∈ V ∧ ∃ G : X → ℂ, A.HoloOn V G ∧ ∀ y ∈ V, th.φ (c x) (c y) - th.φ x y = (G y).re) → (∀ y ∉ bdry s, ph (c y) = ph y) → IsRegFamily A Θ L s th ph phT C t₀ → IsRegFamilyC2 A s ph phT → ∃ C' t₀' : ℝ, IsRegFamily A Θ L s th ph (fun t y => (phT t y + phT t (c y)) / 2) C' t₀' ∧ IsRegFamilyC2 A s ph fun t y => (phT t y + phT t (c y)) / 2 := by
   intro e X _ _ _ A Θ L s nb m W hL hs hsnc hs0 hΘ hΘp c hc hcc ha hb hr th ph phT C t₀ hth hG hph hF hC2

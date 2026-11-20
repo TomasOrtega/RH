@@ -18,7 +18,7 @@ def RestElse (D : D7) (Dx : DivX D) (T : TwForms D) (sp : ℝ) : Prop :=
       ColGe T u μ w x (-(((SizeData₂.lifts D).card : ℝ) - sp) * vDG D u w)
 
 /- English proof (translation)
-Introduce and unpack `(h | h)`. Conclude with `not_dvd_conductor_of_inert hp h h3`. Conclude with `not_dvd_of_signal hp h h3`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem notInert_of' (p : ℕ) (hp : p.Prime) (h3 : p ∣ D.host.condN) : ¬ (IsResidueClassZero D p ∨ IsSg D p) := by
   rintro (h | h)
@@ -26,31 +26,27 @@ theorem notInert_of' (p : ℕ) (hp : p.Prime) (h3 : p ∣ D.host.condN) : ¬ (Is
   · exact not_dvd_of_signal hp h h3
 
 /- English proof (translation)
-Introduce `hF hE u w hw hg μ hUs hμ x hx`. Establish `hp` using `D.what₂.places.resChar_prime w`. Establish `h0 : D.what₂.places.resChar w ≠ D.host.g 0` using `fun h => hg (by simp [h])`. Establish `h1 : D.what₂.places.resChar w ≠ D.host.g 1` using `fun h => hg (by simp [h])`. Distinguish the cases in `h2 : D.host.cls (D.what₂.places.resChar w) = PrimeClass.ramD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `h` using `hD hF hE u w hw h2 μ hUs hμ x hx`. Establish `e : lowS L Xe K ce sp u w = (∑ j ∈ SizeData₂.lifts D, (L.F j w - EatD D j - vDG D u w)) + sp * vDG D u w`. Unfold `lowS ES Eval vDG`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [if_neg hw, if_neg h0, if_neg h1, if_pos h2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h`. Distinguish the cases in `h3 : (IsResidueClassZero D (D.what₂.places.resChar w) ∨ IsSg D (D.what₂.places.resChar w)) ∧ (D.what₂.places.resChar w : ℝ) ≤ L.sc.X'' D.R.n`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hExc : ¬ Exc D (D.what₂.places.resChar w)`. Introduce `hE'`. Unfold `Exc at hE'`. Break down `(Nat.Prime.dvd_mul hp).1 hE' with h | h` into its components or cases. Break down `(Nat.Prime.dvd_mul hp).1 h with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails.
 
-Conclude with `notInert_of' _ hp h h3.1`. Conclude with `h0 ((Nat.prime_dvd_prime_iff_eq hp (D.host.g_prime 0)).1 h)`. Conclude with `h1 ((Nat.prime_dvd_prime_iff_eq hp (D.host.g_prime 1)).1 h)`. Distinguish the cases in `h4 : IsResidueClassZero D (D.what₂.places.resChar w) ∧ hP D (D.what₂.places.resChar w) = 0`. Establish `h` using `hC hF hE u w hw h4.1 h4.2 hExc h3.2 μ hUs hμ x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : lowS L Xe K ce sp u w = (∑ j ∈ SizeData₂.lifts D, (L.F j w - EatC L ce j (D.what₂.places.resChar w) - vDG D u w)) + sp * vDG D u w`. Unfold `lowS ES Eval vDG`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [if_neg hw, if_neg h0, if_neg h1, if_neg h2, if_pos h3, if_pos h4]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h`. Establish `hcl : (IsResidueClassZero D (D.what₂.places.resChar w) ∧ hP D (D.what₂.places.resChar w) ≠ 0) ∨ IsSg D (D.what₂.places.resChar w)`. Break down `h3.1 with h | h` into its components or cases.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Or.inl ⟨h, fun h' => h4 ⟨h, h'⟩⟩`. Conclude with `Or.inr h`. Establish `h` using `hNo hF hE u w hw hcl hExc h3.2 μ hUs hμ x hx`. Use `ColGe_mono ?_ h` and prove the remaining obligations. Establish `: 0 ≤ ∑ j ∈ SizeData₂.lifts D, g0S X K (D.what₂.places.resChar w) j` using `Finset.sum_nonneg fun _ _ => by`.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Unfold `g0S`. Use `split_ifs`. Conclude with `le_rfl`. Conclude with `Finset.sum_nonneg fun _ _ => le_max_right _ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hd : D.what₂.places.resChar w ≠ D.host.d`. Introduce `hd`. Apply `h2` to reduce the goal to its premises. Rewrite using `[hd]`. Conclude with `primeClass_d D.host.toHostRaw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `hElse hE.dgam u w hw hd hg μ hUs hμ x hx`. Establish `e : lowS L Xe K ce sp u w = -(((SizeData₂.lifts D).card : ℝ) - sp) * vDG D u w`. Unfold `lowS ES Eval vDG`. Establish `: ∀ j ∈ SizeData₂.lifts D, L.F j w = 0`. Introduce `j hj`.
-
-Rewrite using `[hF j hj w]`. Unfold `Fval FvalP SizeData₂.gTypes`. Rewrite using `[if_neg hg, if_neg h2, if_neg h3]`. Rewrite using `[Finset.sum_congr rfl fun j hj => by rw [this j hj]]`. Simplify using `only [if_neg hw, if_neg h0, if_neg h1, if_neg h2, if_neg h3]`.
-
-Simplify using `[Finset.sum_const]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem first_clause_cases
     (hNo : OrbitsWithoutOperator D L X K Dx T lev Xe ce sp) (hC : MediumInertPrimeLengthBound D L K Dx T lev Xe ce sp)
@@ -125,9 +121,7 @@ theorem first_clause_cases
     rw [e]; exact h
 
 /- English proof (translation)
-Introduce `hE'`. Unfold `Exc at hE'`. Break down `(Nat.Prime.dvd_mul hp).1 hE' with h | h` into its components or cases. Break down `(Nat.Prime.dvd_mul hp).1 h with h | h` into its components or cases. Conclude with `notInert_of' _ hp h hin`.
-
-Conclude with `h0 ((Nat.prime_dvd_prime_iff_eq hp (D.host.g_prime 0)).1 h)`. Conclude with `h1 ((Nat.prime_dvd_prime_iff_eq hp (D.host.g_prime 1)).1 h)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem not_exc_of_inert {p : ℕ} (hp : p.Prime) (hin : IsResidueClassZero D p ∨ IsSg D p) (h0 : p ≠ D.host.g 0) (h1 : p ≠ D.host.g 1) :
     ¬ Exc D p := by
@@ -140,28 +134,24 @@ theorem not_exc_of_inert {p : ℕ} (hp : p.Prime) (hin : IsResidueClassZero D p 
   · exact h1 ((Nat.prime_dvd_prime_iff_eq hp (D.host.g_prime 1)).1 h)
 
 /- English proof (translation)
-The claim follows from `not_exc_of_inert hg.1 (Or.inl hg.2.2.1) (fun h => hg.2.2.2.2.1 (h ▸ D.host.g_level 0)) (fun h => hg.2.2.2.2.1 (h ▸ D.host.g_level 1))`.
+A detailed English derivation is pending.
 -/
 theorem not_exc_of_gIdx {Tu p : ℕ} (hg : GIdx D.host Tu p) : ¬ Exc D p :=
   not_exc_of_inert hg.1 (Or.inl hg.2.2.1) (fun h => hg.2.2.2.2.1 (h ▸ D.host.g_level 0))
     (fun h => hg.2.2.2.2.1 (h ▸ D.host.g_level 1))
 
 /- English proof (translation)
-Introduce `hE μ hUs hT hTied u w hg hμ`. Establish `hU1` using `hU hE μ hUs hT hTied u w hg hμ`. Use `set Y' := W.Yt μ with hY'`. Use `set p := D.what₂.places.resChar w with hp`. Use `set G := D.gat u w hg with hG`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hsub` using `TopChoiceBounds.bg_VV_sub X K (aL L) (bL L) p`. Establish `hne : (reps X p).Nonempty`. Unfold `reps`. Conclude with `(Finset.univ_nonempty (α := HH D)).image _`. Take `⟨t1, _⟩` from `hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hfr : IsFractionRing G.O G.Kf` using `(G.P.setting (Y'.vOf u w hg t1)).frac_O`. Establish `hp0 : (p : G.O) ≠ 0`. Introduce `h0`. Conclude with `LatticeSystems.kp_p_ne_zero G (Y'.vOf u w hg t1) (by rw [h0, map_zero])`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible G.O`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `kz : (Y'.Ch u w hg).chainK D.R.m (0 : G.Fn) = 0` using `map_zero ((Y'.Ch u w hg).chainK D.R.m)`. Establish `ka : ∀ A B : G.Fn, (Y'.Ch u w hg).chainK D.R.m (A + B) = (Y'.Ch u w hg).chainK D.R.m A + (Y'.Ch u w hg).chainK D.R.m B` using `fun A B => map_add ((Y'.Ch u w hg).chainK D.R.m) A B`. Establish `ks : ∀ (c : G.O) (A : G.Fn), (Y'.Ch u w hg).chainK D.R.m (c • A) = c • (Y'.Ch u w hg).chainK D.R.m A` using `fun c A => LinearMap.map_smul_of_tower ((Y'.Ch u w hg).chainK D.R.m) c A`. Introduce `F hF`. Establish `hF1` using `hF.1.1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `clear hF`. Unfold `LatInst.vKge`. Rewrite using `[TopChoiceBounds.bg_vGe_iff G hϖ]`. Proceed by induction on `hF1 using Submodule.span_induction with`. Consider the case `mem F' h'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨VV', hV', F0, hF0, rfl⟩` from `h'`. Rewrite using `[← TopChoiceBounds.bg_vGe_iff G hϖ, TopChoiceBounds.bg_yProd_smul, ks]`. Establish `h1` using `hU1 _ VV' hsub hV' F0 hF0`. Establish `h2` using `TopChoiceBounds.bg_vGe_smul G hp0 _ _ _ (∑ t0 ∈ VV X K (aL L) (bL L) p \ VV', ⌈Sv X K (aL L) (bL L) p t0⌉.toNat) h1`. Use `TopChoiceBounds.bg_vGe_mono G _ _ ?_ h2` and prove the remaining obligations.
-
-Use `TopChoiceBounds.bg_gain_le X K (aL L) (bL L) p VV' hV'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `zero => rw [kz]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [ka]`.
-
-Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [ks]`. Conclude with `Submodule.smul_mem _ c ha`.
+Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem first_in_local_models (W : TwLoc D Y) (hU : unitBoundAtTwistedPlaces D L X Y K Dx W lev Xe ce sp) : TupleLatticeValuation D L X Y K Dx W lev Xe ce sp := by
   classical
@@ -206,7 +196,7 @@ theorem first_in_local_models (W : TwLoc D Y) (hU : unitBoundAtTwistedPlaces D L
   | smul c a _ ha => rw [ks]; exact Submodule.smul_mem _ c ha
 
 /- English proof (translation)
-Unfold `totS lowS`. Establish `h : ∀ j ∈ SizeData₂.lifts D, gainS X K (D.what₂.places.resChar w) j + L.F j w - ES L Xe K ce u j w = gainS X K (D.what₂.places.resChar w) j + (L.F j w - ES L Xe K ce u j w)` using `fun j _ => by ring`. Rewrite using `[Finset.sum_congr rfl h, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem totS_eq (u : D.what₂.Word) (w : D.what₂.places.Pl) :
     totS X K Xe ce sp u w =
@@ -218,15 +208,13 @@ theorem totS_eq (u : D.what₂.Word) (w : D.what₂.places.Pl) :
   ring
 
 /- English proof (translation)
-Introduce `ht hE u w hw hg' μ hUs hμ x hin`. Break down `hin with ⟨hg, hx⟩ | ⟨hVV, hx⟩` into its components or cases. Conclude with `kernel_valuation_served W hV hG ht hE u w hg (not_exc_of_gIdx hg) μ hUs hμ x hx`. Establish `hlow` using `hc ht.fdef hE u w hw hg' μ hUs hμ x hx`. Rewrite using `[totS_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h1 : (IsResidueClassZero D (D.what₂.places.resChar w) ∨ IsSg D (D.what₂.places.resChar w)) ∧ ¬ Exc D (D.what₂.places.resChar w)`. Use `swap`. Establish `: ∑ j ∈ SizeData₂.lifts D, gainS X K (D.what₂.places.resChar w) j = 0` using `Finset.sum_eq_zero fun j _ => by rw [gainS, if_neg h1]`. Rewrite using `[this, zero_add]`. Conclude with `hlow`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h2 : (IsResidueClassZero D (D.what₂.places.resChar w) ∧ hP D (D.what₂.places.resChar w) = 0) ∨ L.sc.X'' D.R.n < (D.what₂.places.resChar w : ℝ)`. Establish `: ∑ j ∈ SizeData₂.lifts D, gainS X K (D.what₂.places.resChar w) j = 0` using `Finset.sum_eq_zero fun j _ => by rw [gainS, if_pos h1, gainP, if_pos h2, ite_self]`. Rewrite using `[this, zero_add]`. Conclude with `hlow`. Establish `hcl : (IsResidueClassZero D (D.what₂.places.resChar w) ∧ hP D (D.what₂.places.resChar w) ≠ 0) ∨ IsSg D (D.what₂.places.resChar w)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Break down `h1.1 with h | h` into its components or cases. Conclude with `Or.inl ⟨h, fun h' => h2 (Or.inl ⟨h, h'⟩)⟩`. Conclude with `Or.inr h`. Establish `hX : (D.what₂.places.resChar w : ℝ) ≤ L.sc.X'' D.R.n` using `not_lt.1 fun h => h2 (Or.inr h)`. Establish `h` using `hNo ht.fdef hE u w hw hcl h1.2 hX μ hUs hμ x hx`.
-
-Establish `e : ∑ j ∈ SizeData₂.lifts D, gainS X K (D.what₂.places.resChar w) j = ∑ j ∈ SizeData₂.lifts D, g0S X K (D.what₂.places.resChar w) j` using `Finset.sum_congr rfl fun j _ => by`. Rewrite using `[gainS, if_pos h1, g0S, gainP, if_neg h2, hVV, Finset.sum_empty, zero_add, Finset.sdiff_empty]`. Rewrite using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseChange_preserves_unitary_of (W : TwLoc D Y) (hV : CmpV c Dx T W) (hG : TupleLatticeValuation D L X Y K Dx W lev Xe ce sp)
     (hNo : OrbitsWithoutOperator D L X K Dx T lev Xe ce sp) (hc : ColumnValuationAwayFromTypePrimes D L K Dx T lev Xe ce sp) :
@@ -261,7 +249,7 @@ theorem baseChange_preserves_unitary_of (W : TwLoc D Y) (hV : CmpV c Dx T W) (hG
       rw [e]; exact h
 
 /- English proof (translation)
-Take `⟨hU, _, _, hNo, hC, hD⟩` from `hA`. Establish `hc` using `first_clause_cases hNo hC hD hR`. Establish `hGt` using `first_in_local_models W hU`. Conclude with `⟨baseChange_preserves_unitary_of W hV hGt hNo hc, zero_gain_of_no_served_orbit hc, hc, hGt⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem statements_of_remaining_bound (W : TwLoc D Y) (hV : CmpV c Dx T W) (hA : admitted D L X Y K Dx T W lev Xe ce sp)
     (hR : DGamDef D → RestElse D Dx T sp) : Conclusion₂ D L X Y K c Dx T W lev Xe ce sp := by
@@ -276,7 +264,7 @@ def RestComp : Prop :=
 def RestSz (C : ℝ) : Prop := ∀ (D : D7) (L : SizeData₂ D), ErrorFirstTermSize D L C
 
 /- English proof (translation)
-Introduce `T W lev Xe ce hV sp _ hA`. Conclude with `statements_of_remaining_bound W hV hA (fun hG => hR D Dx T sp hA.2.2.1 hG)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stmt_of_rest (hR : RestComp) (D : D7) (L : SizeData₂ D) (X : Inst D L) (Y : LatInst D) (K : Consts) (c : LatCmp D)
     (Dx : DivX D) : Stmt D L X Y K c Dx := by
@@ -284,20 +272,20 @@ theorem stmt_of_rest (hR : RestComp) (D : D7) (L : SizeData₂ D) (X : Inst D L)
   exact statements_of_remaining_bound W hV hA (fun hG => hR D Dx T sp hA.2.2.1 hG)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨stmt_of_rest hR D L X Y K c Dx, C, hC, hS D L⟩`.
+Supply the required witnesses or components.
 -/
 theorem stmtE_of_rest (hR : RestComp) {C : ℝ} (hC : 0 ≤ C) (hS : RestSz C) (D : D7) (L : SizeData₂ D) (X : Inst D L)
     (Y : LatInst D) (K : Consts) (c : LatCmp D) (Dx : DivX D) : ClosedFormOfAdmitted D L X Y K c Dx :=
   ⟨stmt_of_rest hR D L X Y K c Dx, C, hC, hS D L⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun _ _ _ _ => stmt_of_rest hR _ _ _ _ _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem stmtF_of_rest (hR : RestComp) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : KudlaFamilyStatement Fm :=
   ⟨0, fun _ _ _ _ => stmt_of_rest hR _ _ _ _ _ _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨stmtF_of_rest hR Fm, C, hC, 0, fun _ _ _ _ => hS _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem stmtEF_of_rest (hR : RestComp) {C : ℝ} (hC : 0 ≤ C) (hS : RestSz C) {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) :
     FamilyClosedForm Fm :=

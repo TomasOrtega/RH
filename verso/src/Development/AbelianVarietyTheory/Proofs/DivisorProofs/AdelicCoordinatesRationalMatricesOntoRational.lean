@@ -14,17 +14,17 @@ set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D m n N e hrat y z`. Use `haveI : Nontrivial (AF D.host.F) := (AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F).nontrivial`. Set `I : Matrix (Fin m) (Fin n) D.host.E →ₗ[D.host.F] Matrix (Fin m) (Fin n) (AE D)` to `(Algebra.TensorProduct.includeRight (R := D.host.F) (A := AF D.host.F) (B := D.host.E)).toLinearMap.mapMatrix`. Establish `hI : ∀ x, I x = incM D.host.F x` using `fun x => rfl`. Set `L : Matrix (Fin m) (Fin n) D.host.E →ₗ[D.host.F] VA D.host.F N` to `(e.toLinearMap.restrictScalars D.host.F).comp I`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hL : ∀ x, L x = e (incM D.host.F x)` using `fun x => rfl`. Set `r : (Fin N → D.host.F) →ₗ[D.host.F] (Fin N → AF D.host.F)` to `LinearMap.pi fun i => (Algebra.linearMap D.host.F (AF D.host.F)).comp (LinearMap.proj i)`. Set `R : ((Fin N → D.host.F) × (Fin N → D.host.F)) →ₗ[D.host.F] VA D.host.F N` to `LinearMap.prodMap r r`. Establish `hR : ∀ y z, R (y, z) = (GlobalTheory.SWQ.rat y, GlobalTheory.SWQ.rat z)` using `fun _ _ => rfl`. Establish `hAinj : Function.Injective (algebraMap D.host.F (AF D.host.F))` using `AdeleRing.algebraMap_injective _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrinj : Function.Injective r` using `fun a b h => funext fun i => hAinj (congrFun h i)`. Establish `hRinj : Function.Injective R` using `fun a b h => Prod.ext (hrinj (congrArg Prod.fst h)) (hrinj (congrArg Prod.snd h))`. Establish `hIinj : Function.Injective I` using `fun a b h => Matrix.ext fun i j => Algebra.TensorProduct.includeRight_injective hAinj (congrFun (congrFun h i) j)`. Establish `hLinj : Function.Injective L` using `e.injective.comp hIinj`. Establish `hle : LinearMap.range L ≤ LinearMap.range R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨y', z', h⟩` from `hrat x`. Conclude with `⟨(y', z'), by rw [hR, hL, h]⟩`. Establish `hdim : Fintype.card (Fin m) * Fintype.card (Fin n) * Module.finrank D.host.F D.host.E = N + N`. Establish `h1` using `e.finrank_eq`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Module.finrank_matrix, Module.finrank_baseChange, Module.finrank_prod, Module.finrank_fin_fun]`. Conclude with `h1`. Establish `hfin : Module.finrank D.host.F (LinearMap.range L) = Module.finrank D.host.F (LinearMap.range R)`. Rewrite using `[LinearMap.finrank_range_of_inj hLinj, LinearMap.finrank_range_of_inj hRinj, Module.finrank_matrix, Module.finrank_prod, Module.finrank_fin_fun, hdim]`. Establish `heq` using `Submodule.eq_of_le_of_finrank_eq hle hfin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨x, hx⟩ : (R (y, z)) ∈ LinearMap.range L` from `heq ▸ ⟨(y, z), rfl⟩`. Conclude with `⟨x, by rw [← hL, hx, hR]⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.WeilSchrodinger.rat_onto_of_rat_maps : ∀ (D : D7) (m n N : ℕ) (e : Matrix (Fin m) (Fin n) (AE D) ≃ₗ[AF D.host.F] VA D.host.F N), (∀ x : Matrix (Fin m) (Fin n) D.host.E, ∃ y z : Fin N → D.host.F, e (incM D.host.F x) = (GlobalTheory.SWQ.rat y, GlobalTheory.SWQ.rat z)) → ∀ y z : Fin N → D.host.F, ∃ x : Matrix (Fin m) (Fin n) D.host.E, e (incM D.host.F x) = (GlobalTheory.SWQ.rat y, GlobalTheory.SWQ.rat z) := by
   intro D m n N e hrat y z

@@ -23,7 +23,7 @@ set_option linter.unusedSectionVars false
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Conclude with `Classical.epsilon_spec (p := fun I : ReciprocityTheory.ChartRestriction.G.AI.I1.IFamily F κ => ReciprocityTheory.ChartRestriction.G.AI.I1.IsFieldIntersection I) ⟨_, IntNumIsFieldIntersection.full F K' κ⟩`.
+A detailed English derivation is pending.
 -/
 theorem fieldNum_spec (F : Type) [Field F] {K' : Type} [Fintype K'] (κ : K' → Type) [∀ k, Fintype (κ k)] :
     ReciprocityTheory.ChartRestriction.G.AI.I1.IsFieldIntersection (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.fieldNum F κ) := by
@@ -32,9 +32,9 @@ theorem fieldNum_spec (F : Type) [Field F] {K' : Type} [Fintype K'] (κ : K' →
     ReciprocityTheory.ChartRestriction.G.AI.I1.IsFieldIntersection I) ⟨_, IntNumIsFieldIntersection.full F K' κ⟩
 
 /- English proof (translation)
-Unfold `IndefiniteRowSideFullHecke.NumbersDVR.Bundles.redIdeal`. Express the relevant statement in the definitionally equal form `Ideal.map (MvPolynomial.map (IsLocalRing.residue O)) (Ideal.map (rename (R := O) (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.liftVar (ι := ι) ptIdx)).toRingHom W) = Ideal.map (rename (R := IsLocalRing.ResidueField O) (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.liftVar (ι := …`. Rewrite using `[Ideal.map_map, Ideal.map_map]`. Use `congr 1`. Use `RingHom.ext fun p => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[MvPolynomial.map_rename]`.
+Simplify using the standard rewrite rules.
 -/
 theorem redIdeal_map_liftVar {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (W : Ideal (MRing ι O)) :
@@ -53,7 +53,7 @@ theorem redIdeal_map_liftVar {O : Type} [CommRing O] [IsDomain O] [IsDiscreteVal
   simp [MvPolynomial.map_rename]
 
 /- English proof (translation)
-Simplify using `[IndefiniteRowSideFullHecke.NumbersDVR.Bundles.monoList, List.map_flatMap, List.map_replicate]`.
+Simplify using the standard rewrite rules.
 -/
 theorem monoList_pullDeg {r : ℕ} (deg : Fin r → K → ℤ) (μ : Fin r →₀ ℕ) :
     IndefiniteRowSideFullHecke.NumbersDVR.Bundles.monoList (fun j => IndefiniteRowSideFullHecke.NumbersDVR.Bundles.pullDeg (K' := Unit) (deg j)) μ =
@@ -61,13 +61,13 @@ theorem monoList_pullDeg {r : ℕ} (deg : Fin r → K → ℤ) (μ : Fin r →�
   simp [IndefiniteRowSideFullHecke.NumbersDVR.Bundles.monoList, List.map_flatMap, List.map_replicate]
 
 /- English proof (translation)
-Establish `hV'` using `hV F K ι V d hVd`. Unfold `IndefiniteRowSideFullHecke.NumbersDVR.Bundles.polyNum`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Use `congr 1`. Establish `hl` using `monoList_pullDeg deg μ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Distinguish the cases in `h : (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.monoList deg μ).length = d`. Establish `h' : (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.monoList (fun j => IndefiniteRowSideFullHecke.NumbersDVR.Bundles.pullDeg (K'` using `Unit) (deg j)) μ).length = d := by`. Rewrite using `[hl, List.length_map, h]`. Rewrite using `[dif_pos h', dif_pos h, Numbers.agree_of FieldNumbers.IntNumBase.full FieldNumbers.CutRational.full FieldNumbers.ExistsForm.full FieldNumbers.DivCycleSupport.full _ (fieldNum_spec F _) _ d _ hV']`. Use `beta_reduce`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hN F K ι V d]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [hl, List.get_eq_getElem, List.getElem_map, Fin.val_cast]`. Establish `h' : ¬ (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.monoList (fun j => IndefiniteRowSideFullHecke.NumbersDVR.Bundles.pullDeg (K'` using `Unit) (deg j)) μ).length = d := by`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hl, List.length_map]` and apply the resulting hypothesis. Rewrite using `[dif_neg h', dif_neg h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyNum_join (hV : JoinVariety.Statement) (hN : JoinIntNum.Statement) (F : Type) [Field F]
     (V : Ideal (MRing ι F)) (d : ℕ) (hVd : ReciprocityTheory.ChartRestriction.G.AI.I1.IsProjVarF V d) {r : ℕ}
@@ -98,9 +98,9 @@ theorem polyNum_join (hV : JoinVariety.Statement) (hN : JoinIntNum.Statement) (F
     rw [dif_neg h', dif_neg h]
 
 /- English proof (translation)
-Unfold `IndefiniteRowSideFullHecke.NumbersDVR.Bundles.vEval`. Rewrite using `[Finsupp.sum_mapDomain_index (fun _ => zero_mul _) (fun _ _ _ => add_mul _ _ _)]`. Use `Finsupp.sum_congr fun W hW => ?_` and prove the remaining obligations. Rewrite using `[redIdeal_map_liftVar]`. Use `beta_reduce`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[polyNum_join hV hN _ (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.redIdeal O W) d (hZ W (Finsupp.mem_support_iff.mp hW)) deg H]`.
+A detailed English derivation is pending.
 -/
 theorem vEval_join (hV : JoinVariety.Statement) (hN : JoinIntNum.Statement) {O : Type} [CommRing O]
     [IsDomain O] [IsDiscreteValuationRing O] (d : ℕ) {r : ℕ} (deg : Fin r → K → ℤ)
@@ -121,7 +121,7 @@ theorem vEval_join (hV : JoinVariety.Statement) (hN : JoinIntNum.Statement) {O :
     deg H]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hW`. Apply `h` to reduce the goal to its premises. Simplify using `only [ReciprocityTheory.ChartRestriction.G.Geo.divCycle, Finsupp.ofSupportFinite_coe]`. Rewrite using `[if_neg hW]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_divSupp_of_ne {R : Type} [CommRing R] [IsNoetherianRing R] (P : Ideal (MRing ι R))
     (s : MRing ι R) (W : Ideal (MRing ι R)) (h : ReciprocityTheory.ChartRestriction.G.Geo.divCycle P s W ≠ 0) :
@@ -133,7 +133,7 @@ theorem mem_divSupp_of_ne {R : Type} [CommRing R] [IsNoetherianRing R] (P : Idea
   rw [if_neg hW]
 
 /- English proof (translation)
-Rewrite using `[hD R K ι P s, Finsupp.mapDomain_mapRange _ _ _ _ fun x y => Nat.cast_add x y]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem intCycle_join (hD : JoinDivCycle.Statement) {R : Type} [CommRing R] [IsNoetherianRing R]
     (P : Ideal (MRing ι R)) (s : MRing ι R) :
@@ -145,23 +145,23 @@ theorem intCycle_join (hD : JoinDivCycle.Statement) {R : Type} [CommRing R] [IsN
   rw [hD R K ι P s, Finsupp.mapDomain_mapRange _ _ _ _ fun x y => Nat.cast_add x y]
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hM r deg H`. Rewrite using `[hI O Ω K ι y]`. Use `⟨fun b f g hdiv => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hc : IndefiniteRowSideFullHecke.NumbersDVR.Bundles.ratCyc O ((pointIdeal O y).map (rename (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.liftVar (ι` using `ι) ptIdx))) (rename (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.liftVar ptIdx) f) (rename (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.liftVar ptIdx) g) = Finsupp.mapDomain (Ideal.map (rename (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.liftVar (ι := ι) ptIdx))) (Indefinit …`. Unfold `IndefiniteRowSideFullHecke.NumbersDVR.Bundles.ratCyc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[intCycle_join hD, intCycle_join hD, Finsupp.mapDomain_sub]`. Rewrite using `[hc]`. Use `vEval_join hV hN d deg H _ fun W hW => ?_` and prove the remaining obligations. Establish `hvert : (C ϖ : MRing ι O) ∈ W` using `hdiv.vertical W (by rwa [← BundleExamples.ratCyc_eq])`. Take `⟨bf, bg, hf, hg, -⟩` from `hdiv.degrees`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hor : ReciprocityTheory.ChartRestriction.G.Geo.divCycle (pointIdeal O y) f W ≠ 0 ∨ ReciprocityTheory.ChartRestriction.G.Geo.divCycle (pointIdeal O y) g W ≠ 0`. Assume the negation of the conclusion as `hc`. Simplify using `only [not_or, ne_eq, not_not] at hc`. Apply `hW` to reduce the goal to its premises. Simplify using `[IndefiniteRowSideFullHecke.NumbersDVR.Bundles.ratCyc, hc.1, hc.2]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Break down `hor with h | h` into its components or cases. Establish `hs` using `mem_divSupp_of_ne _ _ _ h`. Take `⟨h1, h2⟩` from `hF O ϖ hϖ K ι (pointIdeal O y) d hM f bf hf hdiv.num_not_mem W hs.1 hs.2 hvert`. Conclude with `⟨(Objects.isMultiProjPrime_iff _).mp h1, h2⟩`. Establish `hs` using `mem_divSupp_of_ne _ _ _ h`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `hF O ϖ hϖ K ι (pointIdeal O y) d hM g bg hg hdiv.den_not_mem W hs.1 hs.2 hvert`. Conclude with `⟨(Objects.isMultiProjPrime_iff _).mp h1, h2⟩`. Establish `hC : (C a : MRing (Sum.elim ι ptIdx) O) = rename (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.liftVar (ι` using `ι) ptIdx) (C a) := (rename_C _ _).symm`. Rewrite using `[hC, intCycle_join hD]`. Use `vEval_join hV hN d deg H _ fun W hW => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : ReciprocityTheory.ChartRestriction.G.Geo.divCycle (pointIdeal O y) (C a) W ≠ 0`. Introduce `h0`. Apply `hW` to reduce the goal to its premises. Simplify using `[h0]`. Establish `hs` using `mem_divSupp_of_ne _ _ _ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hWp : W.IsPrime` using `hs.1.1.1`. Establish `hCa : (C a : MRing ι O) ∈ W` using `hs.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`. Establish `hnP : (C a : MRing ι O) ∉ pointIdeal O y`. Introduce `hmem`. Establish `hmem' : a ∈ (pointIdeal O y).comap (C : O →+* MRing ι O)` using `hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hmem'` using `[hM.noTorsion, Ideal.mem_bot]`. Conclude with `ha hmem'`. Establish `hvert : (C ϖ : MRing ι O) ∈ W`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hϖ`. Rewrite `hCa` using `[hu, C_mul, C_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hWp.mem_or_mem hCa with h1 | h1` into its components or cases. Conclude with `absurd (Ideal.eq_top_of_isUnit_mem _ h1 ((Units.isUnit u).map C)) hWp.ne_top`. Conclude with `hWp.mem_of_pow_mem n h1`. Take `⟨h1, h2⟩` from `hF O ϖ hϖ K ι (pointIdeal O y) d hM (C a) 0 (isWeightedHomogeneous_C _ _) hnP W hs.1 hs.2 hvert`. Conclude with `⟨(Objects.isMultiProjPrime_iff _).mp h1, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem proof (hI : JoinPointIdeal.Statement) (hD : JoinDivCycle.Statement)
     (hV : JoinVariety.Statement) (hN : JoinIntNum.Statement)

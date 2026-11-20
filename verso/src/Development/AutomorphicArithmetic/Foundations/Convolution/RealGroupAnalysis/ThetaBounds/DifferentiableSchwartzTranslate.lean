@@ -10,7 +10,7 @@ section SlopeTestRemainingChoices
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [infPartPi, Pi.add_apply, homeomorphMixedSpace_apply]`. Conclude with `map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem infPart_add (a b : V4 F) : infPartPi (a + b) = infPartPi a + infPartPi b := by
   funext i
@@ -35,11 +35,11 @@ private noncomputable def ell : (Fin 4 → TR.Rinf F) →L[ℝ] (Fin 4 → mixed
       ((TR.continuous_infEq F).comp (continuous_apply i)))
 
 /- English proof (translation)
-Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨f, g, hg, rfl⟩` from `hG`. Establish `e : ∀ x : Fin 4 → TR.Rinf F, schwartzBruhatTensorPi f g (fun i => v i + TR.sInf F (x i)) = f (infPartPi v + ell x) * g (finPartPi v)`. Introduce `x`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : infPartPi (fun i => v i + TR.sInf F (x i)) = infPartPi v + ell x` using `infPart_add v fun i => TR.sInf F (x i)`. Establish `h2 : finPartPi (fun i => v i + TR.sInf F (x i)) = finPartPi v`. Use function extensionality and compare the values at `i`. Conclude with `add_zero (v i).2`. Simplify using `only [schwartzBruhatTensorPi, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[e]`. Conclude with `(f.differentiable.comp ((differentiable_const _).add ell.differentiable)).mul_const _`. Consider the case `zero => exact differentiable_const _`. Consider the case `add G H _ _ hG hH => exact hG.add hH`. Consider the case `smul c G _ hG => exact hG.const_smul c`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem differentiable_schwartz_translate (v : V4 F) {Φ : V4 F → ℂ} (h : Φ ∈ schwartzBruhatPi F (Fin 4)) :
     Differentiable ℝ fun x : Fin 4 → TR.Rinf F => Φ fun i => v i + TR.sInf F (x i) := by
@@ -64,23 +64,21 @@ private theorem differentiable_schwartz_translate (v : V4 F) {Φ : V4 F → ℂ}
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `F _ _ _ O φ v x x' h0 hx`. Use `set G : (Fin 4 → TR.Rinf F) → ℂ := fun y => φ.1 fun i => v i + TR.sInf F (y i) with hG`. Establish `hd : DifferentiableAt ℝ G 0` using `differentiable_schwartz_translate v φ.2 0`. Establish `hF : HasFDerivAt G (fderiv ℝ G 0) (x 0)`. Rewrite using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hd.hasFDerivAt`. Establish `hc : HasDerivAt (fun t => G (x t)) (fderiv ℝ G 0 x') 0` using `hF.comp_hasDerivAt 0 hx`. Establish `hb : ∀ i w, fderiv ℝ G 0 (Pi.single i (Pi.single w 1)) = (O.d w i φ).1 v`. Introduce `i w`. Use `set e : Fin 4 → TR.Rinf F := Pi.single i (Pi.single w 1) with he`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hl : HasDerivAt (fun t : ℝ => t • e) e 0`. Simplify using `using (hasDerivAt_id (0 : ℝ)).smul_const e`. Establish `hF0 : HasFDerivAt G (fderiv ℝ G 0) ((0 : ℝ) • e)`. Rewrite using `[zero_smul]`. Conclude with `hd.hasFDerivAt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `hF0.comp_hasDerivAt (0 : ℝ) hl`. Establish `h2` using `O.d_spec w i φ v`. Establish `hfun : (fun t : ℝ => G (t • e)) = fun t : ℝ => φ.1 (v + Pi.single i (Fo.at1 w t))`. Use function extensionality and compare the values at `t`. Use `congrArg φ.1 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Establish `: (t • e) j = Pi.single w t`. Use function extensionality and compare the values at `u`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hu : u = w`. Substitute `hu` using the available equality. Simplify using `[he]`. Simplify using `[he, hu]`. Simplify using `[this, Fo.at1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: (t • e) j = 0` using `by simp [he, hj]`. Simplify using `[this, hj]`. Conclude with `(HasDerivAt.unique (by simpa [Function.comp_def, hfun] using h1) h2)`. Establish `hs : x' = ∑ i, ∑ w, x' i w • (Pi.single i (Pi.single w 1) : Fin 4 → TR.Rinf F)`. Use function extensionality and compare the values at `i w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : ∀ c, c ≠ i → (∑ u, x' c u • (Pi.single c (Pi.single u 1) : Fin 4 → TR.Rinf F)) i = 0`. Introduce `c hc`. Simplify using `[Finset.sum_apply, Pi.single_eq_of_ne hc.symm]`. Establish `h2 : (∑ u, x' i u • (Pi.single i (Pi.single u 1) : Fin 4 → TR.Rinf F)) i w = x' i w`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
-
-Rewrite using `[Finset.sum_apply, Finset.sum_eq_single i (fun c _ hc => h1 c hc) (by simp), h2]`. Establish `key : fderiv ℝ G 0 x' = ∑ i, ∑ w, ((x' i w : ℝ) : ℂ) * (O.d w i φ).1 v` using `by conv_lhs => rw [hs]`. Simplify using `only [map_sum, map_smul, hb, Complex.real_smul]`. Rewrite using `[← key]`. Conclude with `hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.sDiff :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (O : Fo.Ops F), SDiff O := by

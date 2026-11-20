@@ -10,18 +10,18 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-The claim follows from `locInst_of hT lIl lIlin lIlaw hc lIcont lIrho lIkact lIvac hk`.
+A detailed English derivation is pending.
 -/
 theorem locInst_of_cell_kvac (hc : LIcell) (hk : LIkvac) (hT : TensMem) : LocInst :=
   locInst_of hT lIl lIlin lIlaw hc lIcont lIrho lIkact lIvac hk
 
 /- English proof (translation)
-The claim follows from `locInst_of_cell_kvac hc lIkvac hT`.
+A detailed English derivation is pending.
 -/
 theorem locInst_of_cell (hc : LIcell) (hT : TensMem) : LocInst := locInst_of_cell_kvac hc lIkvac hT
 
 /- English proof (translation)
-The claim follows from `locInst_of_cell (lIcell_of' hA lIcont lIlaw lIvac) hT`.
+A detailed English derivation is pending.
 -/
 theorem locInst_of_away (hA : AwayAct) (hT : TensMem) : LocInst :=
   locInst_of_cell (lIcell_of' hA lIcont lIlaw lIvac) hT

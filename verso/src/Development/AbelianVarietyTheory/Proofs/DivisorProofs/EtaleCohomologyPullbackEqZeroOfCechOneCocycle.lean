@@ -21,7 +21,7 @@ def cechDiag {Y X : Scheme.{0}} (f : Y ⟶ X) : sch.obj Y ⟶ cech f where
       rfl
 
 /- English proof (translation)
-Use extensionality with `n : 1`. Simplify using `only [cechDiag, cechAug]`. Use `erw [NatTrans.comp_app, Arrow.augmentedCechNerve_hom_app, WidePullback.lift_base]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cechDiag_aug {Y X : Scheme.{0}} (f : Y ⟶ X) : cechDiag f ≫ cechAug f = sch.map f := by
   ext n : 1
@@ -30,14 +30,14 @@ theorem cechDiag_aug {Y X : Scheme.{0}} (f : Y ⟶ X) : cechDiag f ≫ cechAug f
   rfl
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨0, ?_, ?_⟩ <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isCls_zero_deg_one (R : Type) [CommRing R] (F : Shv R) (E : Spc) :
     IsCls (0 : (free R).obj (E.obj (op ⦋1⦌)) ⟶ F) (0 : H R E F ((1 : ℕ) : ℤ)) := by
   refine ⟨0, ?_, ?_⟩ <;> simp
 
 /- English proof (translation)
-Rewrite using `[SimplicialObject.δ, ← NatTrans.naturality]`. Simplify using `[sch, disc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cechDiag_δ {Y X : Scheme.{0}} (f : Y ⟶ X) (i : Fin 3) :
     (cechDiag f).app (op ⦋2⦌) ≫ SimplicialObject.δ (cech f) i = (cechDiag f).app (op ⦋1⦌) := by
@@ -45,13 +45,13 @@ theorem cechDiag_δ {Y X : Scheme.{0}} (f : Y ⟶ X) (i : Fin 3) :
   simp [sch, disc]
 
 /- English proof (translation)
-Establish `hc` using `congrArg (fun t => (free R).map ((cechDiag f).app (op ⦋2⦌)) ≫ t) hs`. Simplify using `only [cobd, Preadditive.comp_sum, Preadditive.comp_zsmul, ← Functor.map_comp_assoc, cechDiag_δ, comp_zero] at hc`. Establish `hc' : ((free R).map ((cechDiag f).app (op ⦋1⦌)) ≫ s : (free R).obj ((sch.obj Y).obj (op ⦋2⦌)) ⟶ F) = 0`. Simplify `hc` using `[Fin.sum_univ_succ]`. Establish `hd : (free R).map ((cechDiag f).app (op ⦋1⦌)) ≫ s = 0` using `hc'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `key` using `(isCls_basic R F (cech f) 1).2.2.2.2 (sch.obj Y) (cechDiag f) s _ hx`. Rewrite `key` using `[hd]`. Establish `h0` using `(isCls_basic R F (sch.obj Y) 1).2.2.1 0 _ 0 key (isCls_zero_deg_one R F _)`. Rewrite using `[← cechDiag_aug f]`. Unfold `pull HK.pull HK.pre cpre at h0 ⊢`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `Eq.trans ?_ h0` and prove the remaining obligations. Take `⟨z, rfl⟩` from `CohomologyClass.mk_surjective x`. Simplify using `only [CohomologyClass.descAddMonoidHom_cohomologyClass, AddMonoidHom.mk'_apply]`. Unfold `zcomp`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext1`. Simplify using `[Functor.map_comp, Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pull_sch_eq_zero (R : Type) [CommRing R] (F : Shv R) {Y X : Scheme.{0}} (f : Y ⟶ X)
     (s : (free R).obj ((cech f).obj (op ⦋1⦌)) ⟶ F) (hs : cobd s = 0) (x : H R (sch.obj X) F ((1 : ℕ) : ℤ))

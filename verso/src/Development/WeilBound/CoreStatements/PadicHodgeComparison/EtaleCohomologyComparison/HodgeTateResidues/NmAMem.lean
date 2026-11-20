@@ -26,7 +26,7 @@ def muEta (T : (L'.QB M).FullSubcategory) :
       rw [Category.comp_id, Category.comp_id])
 
 /- English proof (translation)
-The claim follows from `genB (kS L.γB N.q (L.QB N)) ((h.nmW u hu).smor _ _ (h.nmW_mem u hu)) (smS (Model.genMap u hu) (Model.genMap_q u hu)) (kS L'.γB M.q (L'.QB M)) (L.tB ^ (r - a)) (h.cB ^ (r - a)) (L'.tB ^ (r - a)) (fun k => (h.oB k).symm) (by rw [map_pow h.sB, h.t, mul_pow]) ⟨muEta h u hu, fun T T' …`.
+A detailed English derivation is pending.
 -/
 theorem mu_sq (a r j : ℕ) (y : Hdg N.q a j) :
     h.fW u hu r j (L.μ N a r j y) = h.cB ^ (r - a) • L'.μ M a r j (pullH (Model.genMap u hu) (Model.genMap_q u hu) a j y) :=
@@ -45,7 +45,7 @@ def nmA : NMor L.γ N.p (κA (OK l K) L.I) L'.γ M.p (κA (OK l K) L'.I) h.sA wh
     exact Ideal.Quotient.eq.2 h1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨le_bot_iff.1 (le_trans (T.pdPow_anti h.le) hT.1.1.le), hT.1.2⟩, ⊤, rfl, le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem nmA_mem (T : Thick (nlFun L'.γ 0 M.X M.p (κA (OK l K) L'.I))) (hT : L'.QA M T) : L.QA N (((nmA h u hu).mor 0).obj T) :=
   ⟨⟨le_bot_iff.1 (le_trans (T.pdPow_anti h.le) hT.1.1.le), hT.1.2⟩, ⊤, rfl, le_rfl⟩
@@ -60,7 +60,7 @@ def mZn (r n : ℕ) : CH.Mor (sq (stdI (L.QA N) (some (r : ℤ)) ((l : L.A) ^ n)
   (smA h u hu).sq (std_le (nmA h u hu) (nmA_mem h u hu) _) (std_le (nmA h u hu) (nmA_mem h u hu) _)
 
 /- English proof (translation)
-The claim follows from `genC (smA h u hu) _ _ _ _ _ _ _ _ j z`.
+A detailed English derivation is pending.
 -/
 theorem red_sq (r n j : ℕ) (z : HG (L.QA N) r j) :
     redG' (L'.QA M) ((l : L'.A) ^ n) r j ((mZ h u hu r).pull j z) = (mZn h u hu r n).pull j (redG' (L.QA N) ((l : L.A) ^ n) r j z) :=
@@ -75,7 +75,7 @@ def bEta (T : (L'.QB M).FullSubcategory) :
       rw [Category.assoc, Category.assoc, Model.genMap, pullback.lift_fst]))
 
 /- English proof (translation)
-The claim follows from `genA (smA h u hu) ((L'.nmB M).smor _ _ (L'.nmB_mem M)) ((L.nmB N).smor _ _ (L.nmB_mem N)) ((h.nmW u hu).smor _ _ (h.nmW_mem u hu)) h.ι ⟨bEta h u hu, fun T T' f => ObjectProperty.hom_ext _ (hom_ext rfl)⟩ (fun _ _ => rfl) _ _ _ _ _ _ _ _ j z`.
+A detailed English derivation is pending.
 -/
 theorem b_sq (r j : ℕ) (z : HG (L.QA N) r j) :
     L'.bG M r j ((mZ h u hu r).pull j z) = h.fW u hu r j (L.bG N r j z) :=
@@ -86,7 +86,7 @@ variable {n : ℕ} (mm : GlobalTheory.LogCris.Mor (Y.L N n) (Y.L M n) (sn n))
   (hpt : ∀ (B₀ : CommRingCat.{0}) (y : (Y.L M n).Pt.obj B₀), (mm.pt.app B₀ y).1.2 = (show Spec B₀ ⟶ M.X from y.1.2) ≫ u)
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `Y.c_surj n x`. Rewrite `e` using `[L.d_lam]`. Rewrite using `[h.cris, L'.d_lam, ← h.lam]`. Conclude with `congrArg (lnMap h.sA l (le_refl n)) e`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_comm (x : Y.R n) (a : L.A) (e : (L.d n).ρ x = Ideal.Quotient.mk _ a) : (L'.d n).ρ (sn n x) = Ideal.Quotient.mk _ (h.sA a) := by
   obtain ⟨b, rfl⟩ := Y.c_surj n x
@@ -96,7 +96,7 @@ theorem d_comm (x : Y.R n) (a : L.A) (e : (L.d n).ρ x = Ideal.Quotient.mk _ a) 
 
 include hpt in
 /- English proof (translation)
-The claim follows from `genD (nmA h u hu) (nmA_mem h u hu) (L.d n) (L'.d n) (d_comm h) mm hpt (Y.c n) L.lam L'.lam (L.d_lam n) (L'.d_lam n) sΛ (h.cris n) (fun a => (h.lam a).symm) r j x`.
+A detailed English derivation is pending.
 -/
 theorem r_sq (r j : ℕ) (x : CH.H (Y.SS N r n).fn j) :
     (mZn h u hu r n).pull j ((L.rS N r n).pull j x) = (L'.rS M r n).pull j ((pdOm mm sΛ (h.cris n) r).pull j x) :=
@@ -110,12 +110,12 @@ namespace CrystallineSemistableComparison.HT
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Introduce `h _ _ u hu a r j y` and use `HomP.mu_sq h u hu a r j y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem homMu : HomMu l K := fun h _ _ u hu a r j y => HomP.mu_sq h u hu a r j y
 
 /- English proof (translation)
-Rewrite using `[ha, h, LinearMap.map_smulₛₗ, map_pow, map_natCast, hb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem HomP.step {A A' : Type} [CommRing A] [CommRing A'] {s : A →+* A'} {P P' : Type 1} [AddCommGroup P] [Module A P]
     [AddCommGroup P'] [Module A' P'] (f : P →ₛₗ[s] P') (l e : ℕ) {a b : P} {a' b' : P'} (h : a = (l : A) ^ e • b) (ha : a' = f a)
@@ -123,7 +123,7 @@ theorem HomP.step {A A' : Type} [CommRing A] [CommRing A'] {s : A →+* A'} {P P
   rw [ha, h, LinearMap.map_smulₛₗ, map_pow, map_natCast, hb]
 
 /- English proof (translation)
-Introduce `h _ _ u hu mm hpt r j x w hw` and use `hw.elim fun e he => he.elim fun z hz => ⟨e, (HomP.mZ h u hu r).pull j z, fun n => HomP.step ((HomP.mZn h u hu r n).pull j) l e (hz.1 n) (HomP.red_sq h u hu r n j z) (HomP.r_sq h u hu (mm n) (hpt n) r j (x n)), (HomP.step (h.fW u hu r j) l e hz.2.symm (HomP.b_sq h u hu r j z) rfl) …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem homRho : HomRho l K := fun h _ _ u hu mm hpt r j x w hw => hw.elim fun e he => he.elim fun z hz =>
   ⟨e, (HomP.mZ h u hu r).pull j z,

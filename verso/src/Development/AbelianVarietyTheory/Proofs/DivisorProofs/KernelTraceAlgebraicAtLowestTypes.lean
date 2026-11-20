@@ -22,17 +22,17 @@ open Classical
 namespace GlobalTheory.TraceRatPf
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset ι, ∀ v : ∀ j, L j, (∀ j ∉ s, v j = v₀ j) → F v = 0`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `v hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: v = v₀` using `funext fun j => hv j (Finset.notMem_empty j)`. Rewrite using `[this]`. Conclude with `h0`. Consider the case `insert a s ha ih`. Introduce `v hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : F (Function.update v a (v₀ a)) = 0` using `ih _ fun j hj => by`. Distinguish the cases in `hja : j = a`. Substitute `hja` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hja]; exact hv j (by simp [hja, hj])`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : v a ∈ Submodule.span ℂ {u | P a u}` using `by rw [hspan a]; trivial`. Establish `hall : ∀ u ∈ Submodule.span ℂ {u | P a u}, F (Function.update (Function.update v a (v₀ a)) a u) = 0`. Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu => exact hstep _ a u (by simp) hu h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact F.map_update_zero _ _`. Consider the case `add x y _ _ hx hy => rw [F.map_update_add, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [F.map_update_smul, hx, smul_zero]`. Establish `e : Function.update (Function.update v a (v₀ a)) a (v a) = v` using `by simp`. Rewrite using `[← e]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `hall _ hmem`. Conclude with `fun v => key Finset.univ v (fun j hj => absurd (Finset.mem_univ j) hj)`.
+A detailed English derivation is pending.
 -/
 theorem zero_of_span' {ι : Type} [Fintype ι] [DecidableEq ι] {L : ι → Type} [∀ j, AddCommGroup (L j)] [∀ j, Module ℂ (L j)]
     {X : Type} [AddCommGroup X] [Module ℂ X] (F : MultilinearMap ℂ L X) (v₀ : ∀ j, L j) (P : ∀ j, L j → Prop)
@@ -66,21 +66,21 @@ theorem zero_of_span' {ι : Type} [Fintype ι] [DecidableEq ι] {L : ι → Type
   exact fun v => key Finset.univ v (fun j hj => absurd (Finset.mem_univ j) hj)
 
 /- English proof (translation)
-Establish `hmem : adForm R i x ∈ R.Wall i (sg0 D A)`. Rewrite using `[← (hHW i (sg0 D A)).2.1]`. Conclude with `LinearMap.mem_range_self _ _`. Establish `hfr : IsUnit ((R.MW i (sg0 D A)).fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 ((R.MW i (sg0 D A)).fr_unit τ)`. Establish `e1 : (R.MW i (sg0 D A)).fr τ * ((R.MW i (sg0 D A)).fr τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hfr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkJ : kᴴ * Formalism.REAL.Jm ((R.MW i (sg0 D A)).ε τ) * k = Formalism.REAL.Jm ((R.MW i (sg0 D A)).ε τ)`. Establish `hu1 : kᴴ * k = 1` using `(Matrix.mem_unitaryGroup_iff').1 hk.1`. Rewrite using `[Matrix.mul_assoc, ← hk.2, ← Matrix.mul_assoc, hu1, Matrix.one_mul]`. Establish `hg : ((R.MW i (sg0 D A)).fr τ)⁻¹ * k * (R.MW i (sg0 D A)).fr τ ∈ Formalism.QuantumDeterminants.UH (gramAt D (Wc D i) τ)` using `by show _ = _`. Rewrite using `[← (R.MW i (sg0 D A)).fr_gram τ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : (((R.MW i (sg0 D A)).fr τ)⁻¹)ᴴ * ((R.MW i (sg0 D A)).fr τ)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, e1, Matrix.conjTranspose_one]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (((R.MW i (sg0 D A)).fr τ)⁻¹)ᴴ, e3, Matrix.one_mul, ← Matrix.mul_assoc ((R.MW i (sg0 D A)).fr τ) (((R.MW i (sg0 D A)).fr τ)⁻¹), e1, Matrix.one_mul]`. Rewrite using `[← Matrix.mul_assoc kᴴ, ← Matrix.mul_assoc (kᴴ * _), hkJ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrep : (R.MW i (sg0 D A)).rep τ (((R.MW i (sg0 D A)).fr τ)⁻¹ * k * (R.MW i (sg0 D A)).fr τ) = (R.MW i (sg0 D A)).σ τ k`. Unfold `Formalism.IndefR.Mult.DSModel.rep`. Use `congr 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, e1, Matrix.one_mul, Matrix.mul_assoc, e1, Matrix.mul_one]`. Establish `hupd : (fun ρ => (Function.update v τ u ρ : (R.MW i (sg0 D A)).sm ρ)) = Function.update (fun ρ => (v ρ : (R.MW i (sg0 D A)).sm ρ)) τ (u : (R.MW i (sg0 D A)).sm τ)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `ρ`. Distinguish the cases in `hρ : ρ = τ`. Substitute `hρ` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hρ]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hupd]`. It suffices to establish `H : ∀ T ∈ R.Wall i (sg0 D A), T (Function.update (fun ρ => (v ρ : (R.MW i (sg0 D A)).sm ρ)) τ (u : (R.MW i (sg0 D A)).sm τ)) = Formalism.L2.Theta.rTr (Wc D i) (atTau R.θ (Wc D i) τ (((R.MW i (sg0 D A)).fr τ)⁻¹ * k * (R.MW i (sg0 D A)).fr τ)) (T (fun ρ => (v ρ : (R.MW i (sg0 D A)) …`. Introduce `T0 hT0`. Proceed by induction on `hT0 using Submodule.span_induction with`. Consider the case `mem T hT`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `hT.equiv τ _ hg _ _ (by rw [hrep]; exact hu)`. Consider the case `zero => rfl`. Consider the case `add S T _ _ hS hT`. Simplify using `only [MultilinearMap.add_apply, hS, hT]`. Both sides reduce to the same expression.
+Treat this case separately. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `smul a T _ hT`. Simplify using `only [MultilinearMap.smul_apply, hT]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem adForm_lowT_equiv' {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (hHW : R.models_HW) (i : Fin D.R.m) (x : Fin (R.nW i) → D.what₂.LL) (τ : D.what₂.Tau) (k : Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) ℂ) (hk : k ∈ Formalism.REAL.Kset ((R.MW i (sg0 D A)).ε τ)) (v : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) (u : lowT (R.MW i (sg0 D A)) τ) (hu : ((u : (R.MW i (sg0 D A)).sm τ) : (R.MW i (sg0 D A)).H τ) = (R.MW i (sg0 D A)).σ τ k ((v τ : (R.MW i (sg0 D A)).sm τ) : (R.MW i (sg0 D A)).H τ)) : adForm R i x (fun ρ => (Function.update v τ u ρ : (R.MW i (sg0 D A)).sm ρ)) = Formalism.L2.Theta.rTr (Wc D i) (atTau R.θ (Wc D i) τ (((R.MW i (sg0 D A)).fr τ)⁻¹ * k * (R.MW i (sg0 D A)).fr τ)) (adForm R i x (fun ρ => (v ρ : (R.MW i (sg0 D A)).sm ρ))) := by
   have hmem : adForm R i x ∈ R.Wall i (sg0 D A) := by
@@ -132,19 +132,17 @@ end GlobalTheory.TraceRatPf
 namespace GlobalTheory.TraceRatPf
 
 /- English proof (translation)
-Establish `hs0 : sg0 D A = D.what₂.embLL` using `sgAt_mk _ R.hv0`. Establish `hσ : GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.OverK (sg0 D A)` using `fun x _ => congrArg (fun s : D.what₂.LL →+* ℂ => s (D.embE x)) hs0`. Establish `hc : (sg0 D A) (((R.FW i).chi g : D.what₂.LLˣ) : D.what₂.LL) = D.what₂.embLL (((R.FW i).chi g : D.what₂.LLˣ) : D.what₂.LL)` using `congrArg (fun s : D.what₂.LL →+* ℂ => s (((R.FW i).chi g : D.what₂.LLˣ) : D.what₂.LL)) hs0`. Set `Lin : LowT (R.MW i (sg0 D A)) →ₗ[ℂ] (GA D (Wc D i) → ℂ)` to `{ toFun := fun t g' => Datum.thetaKO ω h g' (Datum.pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.BV i) (onb (R.MW i (sg0 D A))) φ (R.ioP i t y)) map_add' := fun a b => by funext g'; simp [Datum.thetaKO, map_add] map_smul' := fun a b => by funext …`. Set `act` to `Formalism.IndefR.Links.actL (Wc D i) (R.βW i) (R.datWp i R.triv) (R.eG g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `c : ℂ` to `D.what₂.embLL (((R.FW i).chi g : D.what₂.LLˣ) : D.what₂.LL)`. Set `Rt : MultilinearMap ℂ (fun ρ => lowT (R.MW i (sg0 D A)) ρ) (GA D (Wc D i) → ℂ)` to `(c • (act ∘ₗ Lin)).compMultilinearMap (PiTensorProduct.tprod ℂ)`. Set `Lf : MultilinearMap ℂ (fun ρ => lowT (R.MW i (sg0 D A)) ρ) (GA D (Wc D i) → ℂ)` to `(adForm R i ((R.FW i).ρ g x)).compLinearMap fun ρ => (lowT (R.MW i (sg0 D A)) ρ).subtype`. Establish `hRt : ∀ w, Rt w = c • act (singleSeries R i ω φ h y w)` using `fun w => rfl`. Establish `hLf : ∀ w, Lf w = adForm R i ((R.FW i).ρ g x) (fun ρ => (w ρ : (R.MW i (sg0 D A)).sm ρ))` using `fun w => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrs : ∀ (g' : GA D (Wc D i)) (a b : GA D (Wc D i) → ℂ) (s : ℂ), Formalism.L2.Theta.rTr (Wc D i) g' a - s • Formalism.L2.Theta.rTr (Wc D i) g' b = Formalism.L2.Theta.rTr (Wc D i) g' (a - s • b)` using `fun _ _ _ _ => rfl`. Establish `hat : Lf u = Rt u`. Rewrite using `[hLf, hRt]`. Establish `e` using `congrArg (fun T => T (fun ρ => (u ρ : (R.MW i (sg0 D A)).sm ρ))) ((hU i (sg0 D A)).2.2 g x)`. Express the relevant statement in the definitionally equal form `adForm R i ((R.FW i).ρ g x) _ = _ at e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e, hc]`. Express the relevant statement in the definitionally equal form `c • act (adForm R i x (fun ρ => (u ρ : (R.MW i (sg0 D A)).sm ρ))) = _`. Rewrite using `[hx]`. Establish `key` using `zero_of_span' (Lf - Rt) u (fun ρ z => ∃ k ∈ Formalism.REAL.Kset ((R.MW i (sg0 D A)).ε ρ), ((z : (R.MW i (sg0 D A)).sm ρ) : (R.MW i (sg0 D A)).H ρ) = (R.MW i (sg0 D A)).σ ρ k ((v₀ ρ : (R.MW i (sg0 D A)).sm ρ) : (R.MW i (sg0 D A)).H ρ)) (fun ρ => GlobalTheory.LowSpan.span_translate …`. Establish `hu2 : ((z : (R.MW i (sg0 D A)).sm ρ) : (R.MW i (sg0 D A)).H ρ) = (R.MW i (sg0 D A)).σ ρ k ((w ρ : (R.MW i (sg0 D A)).sm ρ) : (R.MW i (sg0 D A)).H ρ)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hu', hw, hu]`. Establish `e1` using `adForm_lowT_equiv' R hcore.models.HW i ((R.FW i).ρ g x) ρ k hk w z hu2`. Establish `e2` using `GlobalTheory.SeriesKEquiv.singleSeries_kEquiv R F hcore i _ χ ξR _ ω φ hker _ _ φ hker.vecOf h y g ρ k hk w z hu2`. Rewrite using `[MultilinearMap.sub_apply, hLf, hRt, e1, e2]`. Express the relevant statement in the definitionally equal form `Formalism.L2.Theta.rTr (Wc D i) _ (Lf w) - c • Formalism.L2.Theta.rTr (Wc D i) _ (act _) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hrs, ← hRt, ← MultilinearMap.sub_apply, h0]`. Use the proof step `rfl)`. Use the proof step `(by rw [MultilinearMap.sub_apply, hat, sub_self])`. Introduce `w`. Use `key w` as an intermediate fact.
-
-Rewrite `this` using `[MultilinearMap.sub_apply, sub_eq_zero, hLf, hRt]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem translate_all {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A)
@@ -209,9 +207,9 @@ end GlobalTheory.TraceRatPf
 namespace GlobalTheory.TraceRatPf
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `e` using `GlobalTheory.TraceClassRank.adForm_smul (R := R) (i := i) 0 0`. Rewrite `e` using `[zero_smul, map_zero, zero_smul]`. Simplify using `using e`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, GlobalTheory.TraceClassRank.adForm_add, ih]`.
+Treat this case separately.
 -/
 theorem adForm_sum {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m)
@@ -225,11 +223,11 @@ theorem adForm_sum {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A 
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, GlobalTheory.TraceClassRank.adForm_add, ih]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hcore hU i v₀ hext ξ χ ξR Q ω φ hker U ψ h y u hu x hx`. Set `c' : G → D.what₂.LL` to `fun g => if hg : g ∈ U then (((ψ ⟨g, hg⟩)⁻¹ * ((R.FW i).chi g)⁻¹ : D.what₂.LLˣ) : D.what₂.LL) else 0`. Use `⟨∑ g, c' g • (R.FW i).ρ g x, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[adForm_sum, MultilinearMap.sum_apply]`. Unfold `levelTrace gaL`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.TraceClassRank.adForm_smul, MultilinearMap.smul_apply, translate_all R F hcore hU i v₀ hext hker h y u hu x hx g v, LinearMap.smul_apply, smul_smul, ← map_mul]`. Use `congr 2`. Distinguish the cases in `hg : g ∈ U`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [c', dif_pos hg]`. Rewrite using `[← Units.val_mul, mul_assoc, inv_mul_cancel, mul_one]`. Simplify using `only [c', dif_neg hg, zero_mul, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem traceRat : TraceRat := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hcore hU i v₀ hext ξ χ ξR Q ω φ hker U ψ h y u hu x hx

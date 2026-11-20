@@ -28,11 +28,11 @@ namespace GlobalTheory.Mem.R3.RhoExt
 open Formalism.IndefR.FWT GlobalTheory.Mem.R3.GoodBC
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hx' : x' = cw φ x` using `funext fun k => hx k k rfl`. Substitute `hx'` using the available equality. Establish `key : ∀ y ∈ Submodule.span LL S, ρ' (cw φ y) = cw φ (ρ y)`. Introduce `y hy`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem s hs`. Use function extensionality and compare the values at `k`. Conclude with `h s hs (cw φ s) (fun k k' hk => by rw [Fin.ext hk]; rfl) k k rfl`. Consider the case `zero => rw [cw_zero, map_zero, map_zero, cw_zero]`.
+Proceed by induction. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [cw_add, map_add, ha, hb, map_add, cw_add]`. Consider the case `smul c a _ ha => rw [cw_smul, LinearMap.map_smul, ha, LinearMap.map_smul, cw_smul]`. Introduce `k k' hk`. Rewrite using `[← Fin.ext hk]`. Conclude with `congrFun (key x (hS ▸ Submodule.mem_top)) k`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_of_span {LL LL' : Type} [Field LL] [Field LL'] (φ : LL →+* LL') {n n' : ℕ} (hn : n = n')
     (S : Set (Fin n → LL)) (hS : Submodule.span LL S = ⊤)
@@ -60,25 +60,25 @@ theorem rel_of_span {LL LL' : Type} [Field LL] [Field LL'] (φ : LL →+* LL') {
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _`. Use `StepW.trans (StepW.and GlobalTheory.T.cuspForms_liftRules_correspond_extendedData GlobalTheory.T.levelActions_on_liftRules_extendedData) (StepW.of_all fun K B' f' T' w' _ _ H => ?_)` and prove the remaining obligations. Introduce `B f T w hE hf hP hpx Z hX Wt z hG hGA hFine hHL Z' hX' hG' hGA' hV z' hFine' hx j j' hj φ hφ g g' hg x x' hxx'`. Take `⟨hR, hmem, hsub⟩` from `H.1 B f T w hE hf hP hpx Z hX Wt z hG hGA hFine hHL Z' hX' hG' hGA' hV z' hFine' hx j j' hj`. Establish `hact` using `H.2 B f T w hE hf hP hpx Z hX Wt z hG hGA hFine hHL Z' hX' hG' hGA' hV z' hFine' hx j j' hj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm : (w'.st Z').toD7.R.m = (w.st Z).toD7.R.m` using `congrArg (fun P => P.R.m) hE.1`. Establish `hn : z'.R.nW j' = z.R.nW j` using `nat_heq_app hm z.R.nW z'.R.nW hx.nW j j' hj`. Take `⟨eG, heG⟩` from `gc_iso (w.st Z).B (w'.st Z').B hE.1 w.px w'.px hpx`. Establish `hF : ∀ f f', HEq f' f → ∀ (k : Fin (z.R.nW j)) (k' : Fin (z'.R.nW j')), (k : ℕ) = k' → ((z'.geo.fw.e j' f' : (z'.R.FW j').WK) : Fin (z'.R.nW j') → (w'.st Z').toD7.what₂.LL) k' = φ (((z.geo.fw.e j f : (z.R.FW j).WK) : Fin (z.R.nW j) → (w.st Z).toD7.what₂.LL) k)` using `fun f f' h k k' hk => (w'.st Z').toD7.what₂.embLL.injective ((hx.forms j j' hj f f' h k k' hk).trans (hφ _).symm)`. Establish `hkeep : ActKeeps (κ` using `z'.geo.κ) z'.geo.O j' ↔ ActKeeps (κ := z.geo.κ) z.geo.O j := by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hk g0 f0 hf0`. Establish `hr : HEq (cast hR.symm f0) f0` using `cast_heq _ _`. Establish `h1` using `hk (eG g0) (cast hR.symm f0) ((hmem _ _ hr).2 hf0)`. Conclude with `(hmem _ _ (hact g0 (eG g0) (heG g0) f0 _ hr)).1 h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hk g0' f0' hf0'`. Establish `hr : HEq f0' (cast hR f0')` using `(cast_heq _ _).symm`. Establish `hg0 : HEq g0' (eG.symm g0')`. Use `heG (eG.symm g0')` as an intermediate fact. Rewrite `this` using `[MulEquiv.apply_symm_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h1` using `hk (eG.symm g0') (cast hR f0') ((hmem _ _ hr).1 hf0')`. Conclude with `(hmem _ _ (hact _ _ hg0 _ _ hr)).2 h1`. Distinguish the cases in `hk : ActKeeps (κ := z.geo.κ) z.geo.O j`. Establish `A` using `(z.geo.rhoGeo j).1 hk`. Establish `A'` using `(z'.geo.rhoGeo j').1 (hkeep.2 hk)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hS : Submodule.span (w.st Z).toD7.what₂.LL ((z.R.FW j).WK : Set (Fin (z.R.nW j) → (w.st Z).toD7.what₂.LL)) = ⊤`. Take `⟨m, b, hb, -, -, -, hsp⟩` from `z.geo.fw.ks j`. Conclude with `top_unique (hsp ▸ Submodule.span_mono (Set.range_subset_iff.2 hb))`. Use `rel_of_span φ hn.symm _ hS ((z.R.toRealDat.FW j).ρ g) ((z'.R.toRealDat.FW j').ρ g') ?_ x x' hxx'` and prove the remaining obligations. Introduce `s hs y' hy' k k' hk'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f0, hf0⟩ : ∃ f0, f0 = (z.geo.fw.e j).symm ⟨s, hs⟩` from `⟨_, rfl⟩`. Establish `hs0 : ((z.geo.fw.e j f0 : (z.R.FW j).WK) : Fin (z.R.nW j) → (w.st Z).toD7.what₂.LL) = s`. Rewrite using `[hf0, LinearEquiv.apply_symm_apply]`. Establish `hr : HEq (cast hR.symm (f0 : z.core.R ((j : ℕ) + 1))) (f0 : z.core.R ((j : ℕ) + 1))` using `cast_heq _ _`. Take `⟨f0', hf0'⟩ : ∃ f0' : z'.core.cuspA ((j' : ℕ) + 1) (Formalism.L2.Pj.wtA (z'.geo.κ j')) (z'.geo.κ j').n, (f0' : z'.core.R ((j' : ℕ) + 1)) = cast hR.symm (f0 : z.core.R ((j : ℕ) + 1))` from `⟨⟨_, (hmem _ _ hr).2 f0.2⟩, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hff : HEq f0' f0` using `hsub f0.1 f0'.1 f0.2 f0'.2 (hf0' ▸ hr)`. Establish `hy : ((z'.geo.fw.e j' f0' : (z'.R.FW j').WK) : Fin (z'.R.nW j') → (w'.st Z').toD7.what₂.LL) = y'`. Use function extensionality and compare the values at `k1'`. Establish `e1` using `hF f0 f0' hff (Fin.cast hn k1') k1' rfl`. Rewrite using `[e1, hs0, hy' (Fin.cast hn k1') k1' rfl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h1, e1⟩` from `A g f0`. Take `⟨h1', e1'⟩` from `A' g' f0'`. Establish `hh` using `hsub _ _ h1 h1' (hact g g' hg _ _ (hf0' ▸ hr))`. Rewrite using `[← hy, ← e1', hF _ _ hh k k' hk', e1, hs0]`. Establish `e0 : (z.R.toRealDat.FW j).ρ g = 1` using `(z.geo.rhoGeo j).2 hk g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e0' : (z'.R.toRealDat.FW j').ρ g' = 1` using `(z'.geo.rhoGeo j').2 (fun h => hk (hkeep.1 h)) g'`. Introduce `k k' hk'`. Rewrite using `[e0, e0', Module.End.one_apply, Module.End.one_apply]`. Conclude with `hxx' k k' hk'`.
+A detailed English derivation is pending.
 -/
 theorem rho_ext : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)

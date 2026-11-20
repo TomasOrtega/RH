@@ -5,7 +5,7 @@ open GlobalTheory.AlmostEt
 open scoped NNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.AlmostEt.moves_top_of_coprime_order` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FMovesIntegersAlmostUnitOfCoprimeOrder.lean&line=11#L11)
 -/

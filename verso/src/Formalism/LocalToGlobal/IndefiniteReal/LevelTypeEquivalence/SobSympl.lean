@@ -13,14 +13,14 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-Simplify using `only [symplOH, symplO, hO, Matrix.add_apply, RingHom.map_add, mul_add, add_mul, Finset.sum_add_distrib, LinearMap.map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplOH_add_right (x y y' : WO S T) : symplOH S T x (y + y') = symplOH S T x y + symplOH S T x y' := by
   simp only [symplOH, symplO, hO, Matrix.add_apply, RingHom.map_add, mul_add, add_mul, Finset.sum_add_distrib,
     LinearMap.map_add]
 
 /- English proof (translation)
-Simplify using `only [symplOH, symplO, hO, Matrix.add_apply, mul_add, Finset.sum_add_distrib, LinearMap.map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplOH_add_left (x x' y : WO S T) : symplOH S T (x + x') y = symplOH S T x y + symplOH S T x' y := by
   simp only [symplOH, symplO, hO, Matrix.add_apply, mul_add, Finset.sum_add_distrib, LinearMap.map_add]
@@ -31,20 +31,20 @@ def cAlin (D : D7) : AE D →ₗ[AF D.host.F] AE D where
   map_smul' := fun c z => cA_smul c z
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap (cAlin D)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cA : Continuous (cA D) :=
   IsModuleTopology.continuous_of_linearMap (cAlin D)
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap (Algebra.trace (AF D.host.F) (AE D))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_trace : Continuous (Algebra.trace (AF D.host.F) (AE D)) :=
   IsModuleTopology.continuous_of_linearMap (Algebra.trace (AF D.host.F) (AE D))
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hc` using `continuous_cA (D := D)`. Unfold `hO`. Use `fun_prop`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_hO : Continuous fun p : WO S T × WO S T => hO S T p.1 p.2 := by
   have hc := continuous_cA (D := D)
@@ -52,7 +52,7 @@ theorem continuous_hO : Continuous fun p : WO S T × WO S T => hO S T p.1 p.2 :=
   fun_prop
 
 /- English proof (translation)
-Establish `h1 : Continuous fun p : WO S T × WO S T => symplO S T p.1 p.2` using `continuous_trace.comp (continuous_const.mul continuous_hO)`. Conclude with `continuous_const.mul h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_symplOH : Continuous fun p : WO S T × WO S T => symplOH S T p.1 p.2 := by
   have h1 : Continuous fun p : WO S T × WO S T => symplO S T p.1 p.2 :=
@@ -61,7 +61,7 @@ theorem continuous_symplOH : Continuous fun p : WO S T × WO S T => symplOH S T 
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hc` using `continuous_cA (D := D)`. Unfold `hO`. Use `fun_prop`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_hO_right (x : WO S T) : Continuous fun y : WO S T => hO S T x y := by
   have hc := continuous_cA (D := D)
@@ -69,7 +69,7 @@ theorem continuous_hO_right (x : WO S T) : Continuous fun y : WO S T => hO S T x
   fun_prop
 
 /- English proof (translation)
-Establish `h1 : Continuous fun y : WO S T => symplO S T x y` using `continuous_trace.comp (continuous_const.mul (continuous_hO_right x))`. Conclude with `continuous_const.mul h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_symplOH_right (x : WO S T) : Continuous (symplOH S T x) := by
   have h1 : Continuous fun y : WO S T => symplO S T x y :=
@@ -78,14 +78,14 @@ theorem continuous_symplOH_right (x : WO S T) : Continuous (symplOH S T x) := by
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Unfold `hO`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_hO_left (y : WO S T) : Continuous fun x : WO S T => hO S T x y := by
   unfold hO
   fun_prop
 
 /- English proof (translation)
-Establish `h1 : Continuous fun x : WO S T => symplO S T x y` using `continuous_trace.comp (continuous_const.mul (continuous_hO_left y))`. Conclude with `continuous_const.mul h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_symplOH_left (y : WO S T) : Continuous fun x => symplOH S T x y := by
   have h1 : Continuous fun x : WO S T => symplO S T x y :=

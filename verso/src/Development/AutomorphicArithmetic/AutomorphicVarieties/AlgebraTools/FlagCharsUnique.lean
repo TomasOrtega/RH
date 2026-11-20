@@ -5,17 +5,17 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Imports
 open Polynomial Matrix IsLocalRing TensorProduct
 
 /- English proof (translation)
-Establish `key : ∀ j i : Fin n, j < i → V i j = 0`. Introduce `j`. Proceed by induction on `j using WellFoundedLT.induction with`. Consider the case `ind j ihj`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `i using WellFoundedGT.induction with`. Consider the case `ind i ihi`. Introduce `hji`. Establish `h` using `congrFun (congrFun hE i) j`. Rewrite `h` using `[Matrix.mul_apply, Matrix.mul_apply]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hL : ∑ k, P i k * V k j = P i i * V i j`. Use `Finset.sum_eq_single i ?_ (by simp)` and prove the remaining obligations. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h1 | h1` into its components or cases. Rewrite using `[hP i k h1, zero_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ihi k h1 (hji.trans h1), mul_zero]`. Establish `hR : ∑ k, V i k * P' k j = V i j * P' j j`. Use `Finset.sum_eq_single j ?_ (by simp)` and prove the remaining obligations. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h1 | h1` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[ihj k h1 i (h1.trans hji), zero_mul]`. Rewrite using `[hP' k j h1, mul_zero]`. Rewrite `h` using `[hL, hR]`. Establish `h0 : (P i i - P' j j) * V i j = 0`. Take the linear combination `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `((hu i j hji).mul_right_eq_zero).1 h0`. Introduce `i j h`. Conclude with `key j i h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem exists_invariant_flag_mod_l {R : Type} [CommRing R] {n : ℕ} (P P' V : Matrix (Fin n) (Fin n) R)
     (hP : ∀ i j, j < i → P i j = 0) (hP' : ∀ i j, j < i → P' i j = 0)
@@ -51,7 +51,7 @@ private theorem exists_invariant_flag_mod_l {R : Type} [CommRing R] {n : ℕ} (P
   exact key j i h
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.S8.diag_mul A B hA hB i`.
+A detailed English derivation is pending.
 -/
 private theorem diag_mul {R : Type} [CommRing R] {n : ℕ} (A B : Matrix (Fin n) (Fin n) R)
     (hA : ∀ i j, j < i → A i j = 0) (hB : ∀ i j, j < i → B i j = 0) (i : Fin n) :
@@ -59,25 +59,23 @@ private theorem diag_mul {R : Type} [CommRing R] {n : ℕ} (A B : Matrix (Fin n)
   _root_.UpperTheory.Reformulated.B.S8.diag_mul A B hA hB i
 
 /- English proof (translation)
-Introduce `R Γ _ _ _ n r ψ ψ' g g' hn hinj hres h1 h2`. Take `⟨z, hz⟩` from `UpperTheory.V.AlgebraTools.sep_chars (fun i => (Units.coeHom R).comp (ψ i)) hn hinj`. Establish `hcomm : ∀ s, ((g * r s * g⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) * ((g * g'⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = ((g * g'⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) * ((g' * r s * g'⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)`. Introduce `s`. Rewrite using `[← Units.val_mul, ← Units.val_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `group`. Establish `key : ∀ w : MonoidAlgebra R Γ, ∃ P P' : Matrix (Fin n) (Fin n) R, (∀ i j, j < i → P i j = 0) ∧ (∀ i j, j < i → P' i j = 0) ∧ P * ((g * g'⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = ((g * g'⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) * P' ∧ (∀ i, P i i = MonoidAlgebra.lift …`. Introduce `w`. Proceed by induction on `w using MonoidAlgebra.induction_on with`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `of s`. Use `⟨_, _, (h1 s).1, (h2 s).1, hcomm s, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidAlgebra.lift_of]`. Conclude with `(h1 s).2 i`. Rewrite using `[(h1 s).2 i, (h2 s).2 i, hres]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add a b ha hb`. Take `⟨P, P', a1, a2, a3, a4, a5⟩` from `ha`. Take `⟨Q, Q', b1, b2, b3, b4, b5⟩` from `hb`. Use `⟨P + Q, P' + Q', fun i j h => ?_, fun i j h => ?_, ?_, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, a1 i j h, b1 i j h, add_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.add_apply, a2 i j h, b2 i j h, add_zero]`. Rewrite using `[add_mul, mul_add, a3, b3]`. Rewrite using `[Matrix.add_apply, map_add, a4, b4]`. Rewrite using `[Matrix.add_apply, Matrix.add_apply, map_add, map_add, a5, b5]`. Consider the case `smul c a ha`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨P, P', a1, a2, a3, a4, a5⟩` from `ha`. Use `⟨c • P, c • P', fun i j h => ?_, fun i j h => ?_, ?_, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, a1 i j h, smul_zero]`. Rewrite using `[Matrix.smul_apply, a2 i j h, smul_zero]`. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, a3]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_apply, map_smul, a4]`. Rewrite using `[Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, map_mul, a5]`. Take `⟨P, P', a1, a2, a3, a4, a5⟩` from `key z`. Establish `hV` using `exists_invariant_flag_mod_l P P' _ a1 a2 (fun i j h => by`. Establish `hu` using `hz i j h.ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hu` using `[← a4, ← a4, ← residue_ne_zero_iff_isUnit, map_sub]`. Rewrite using `[← residue_ne_zero_iff_isUnit, map_sub, a5]`. Conclude with `hu) a3`. Use `⟨?_, hV⟩` and prove the remaining obligations. Establish `hdet : IsUnit (((g * g'⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Rewrite `hdet` using `[Matrix.det_of_upperTriangular (fun i j h => hV i j h)]`. Use function extensionality and compare the values at `i`. Use extensionality with `s`. Establish `hu : IsUnit (((g * g'⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) i i)` using `isUnit_of_dvd_unit (Finset.dvd_prod_of_mem (fun k => ((g * g'⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) k k) (Finset.mem_univ i)) hdet`. Establish `h` using `congrFun (congrFun (hcomm s) i) i`.
-
-Rewrite `h` using `[diag_mul _ _ (h1 s).1 hV, diag_mul _ _ hV (h2 s).1, (h1 s).2 i, (h2 s).2 i, mul_comm]`. Conclude with `hu.mul_left_cancel h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.flag_chars_unique :
     ∀ {R Γ : Type} [CommRing R] [IsLocalRing R] [Group Γ] {n : ℕ} (r : Γ →* GL (Fin n) R) (ψ ψ' : Fin n → Γ →* Rˣ) (g g' : GL (Fin n) R), (n : Cardinal) ≤ Cardinal.mk (ResidueField R) → Function.Injective (fun i => (residue R : R →* ResidueField R).comp ((Units.coeHom R).comp (ψ i))) → (∀ i s, residue R (ψ i s) = residue R (ψ' i s)) → (∀ s, (∀ i j, j < i → (g * r s * g⁻¹ : GL (Fin n) R) i j = 0) ∧ ∀ i, (g * r s * g⁻¹ : GL (Fin n) R) i i = (ψ i s : R)) → (∀ s, (∀ i j, j < i → (g' * r s * g'⁻¹ : GL (Fin n) R) i j = 0) ∧ ∀ i, (g' * r s * g'⁻¹ : GL (Fin n) R) i i = (ψ' i s : R)) → ψ = ψ' ∧ ∀ i j, j < i → (g * g'⁻¹ : GL (Fin n) R) i j = 0 := by

@@ -7,7 +7,7 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N
 open UpperTheory.Gal UpperTheory.Gal.Int.Geo
 
 /- English proof (translation)
-Introduce `g v _`. Conclude with `Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem inv_top {Γ k : Type} [Group Γ] [Field k] {d : ℕ} (ρ : Γ →* GL (Fin d) k) :
     IsInv ρ (⊤ : Submodule k (Fin d → k)) := by
@@ -15,7 +15,7 @@ private theorem inv_top {Γ k : Type} [Group Γ] [Field k] {d : ℕ} (ρ : Γ �
   exact Submodule.mem_top
 
 /- English proof (translation)
-Introduce `g v hv`. Rewrite `hv`, the goal using `[Submodule.mem_bot]`. Substitute `hv` using the available equality. Conclude with `Matrix.mulVec_zero _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem inv_bot {Γ k : Type} [Group Γ] [Field k] {d : ℕ} (ρ : Γ →* GL (Fin d) k) :
     IsInv ρ (⊥ : Submodule k (Fin d → k)) := by
@@ -25,11 +25,11 @@ private theorem inv_bot {Γ k : Type} [Group Γ] [Field k] {d : ℕ} (ρ : Γ �
   exact Matrix.mulVec_zero _
 
 /- English proof (translation)
-Distinguish the cases in `h : W = ⊤`. Substitute `h` using the available equality. Conclude with `⟨⊤, hW, le_rfl, fun h => (h rfl).elim, fun U _ h1 h2 => Or.inl (le_antisymm h2 h1)⟩`. Establish `hne : {U : Submodule k (Fin d → k) | IsInv ρ U ∧ W < U}.Nonempty` using `⟨⊤, inv_top ρ, lt_top_iff_ne_top.2 h⟩`. Take `⟨M, ⟨hMi, hMl⟩, hmin⟩` from `(wellFounded_lt (α := Submodule k (Fin d → k))).has_min _ hne`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨M, hMi, hMl.le, fun _ => hMl, fun U hU h1 h2 => ?_⟩` and prove the remaining obligations. Break down `eq_or_lt_of_le h1 with e | l` into its components or cases. Conclude with `Or.inl e.symm`. Break down `eq_or_lt_of_le h2 with e | l2` into its components or cases. Conclude with `Or.inr e`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative.
 
-Conclude with `(hmin U ⟨hU, l⟩ l2).elim`.
+A detailed English derivation is pending.
 -/
 private theorem flag_step {Γ k : Type} [Group Γ] [Field k] {d : ℕ} (ρ : Γ →* GL (Fin d) k)
     (W : Submodule k (Fin d → k)) (hW : IsInv ρ W) :
@@ -50,17 +50,15 @@ private theorem flag_step {Γ k : Type} [Group Γ] [Field k] {d : ℕ} (ρ : Γ 
       · exact (hmin U ⟨hU, l⟩ l2).elim
 
 /- English proof (translation)
-Introduce `Γ k _ _ d ρ`. Use `choose f hf using (fun (W : {W : Submodule k (Fin d → k) // IsInv ρ W}) => flag_step ρ W.1 W.2)`. Set `S : ℕ → {W : Submodule k (Fin d → k) // IsInv ρ W}` to `fun i => Nat.rec ⟨⊥, inv_bot ρ⟩ (fun _ w => ⟨f w, (hf w).1⟩) i`. Establish `key : ∀ i, (S i).1 = ⊤ ∨ i ≤ Module.finrank k (S i).1`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `i with`. Consider the case `zero => exact Or.inr (Nat.zero_le _)`. Consider the case `succ n ih`. Distinguish the cases in `ht : (S n).1 = ⊤`. Use `left`.
+Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (S n).1 ≤ (S (n + 1)).1` using `(hf (S n)).2.1`. Rewrite `h1` using `[ht]`. Conclude with `top_le_iff.1 h1`. Use `right`. Establish `hlt : (S n).1 < (S (n + 1)).1` using `(hf (S n)).2.2.1 ht`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `Submodule.finrank_lt_finrank_of_lt hlt`. Break down `ih with h | h` into its components or cases. Conclude with `absurd h ht`. Use linear arithmetic over natural numbers and integers. Use `⟨fun i => (S i).1, monotone_nat_of_le_succ fun i => (hf (S i)).2.1, rfl, ?_, fun i => (S i).2, fun i U hU h1 h2 => (hf (S i)).2.2.2 U hU h1 h2⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Break down `key d with h | h` into its components or cases. Conclude with `h`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Establish `h3` using `Submodule.finrank_le (S d).1`. Simplify using `only [Module.finrank_fin_fun] at h3 ⊢`.
-
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.flagEx_of :
     FlagEx := by

@@ -12,11 +12,9 @@ namespace UpperTheory.ConvolutionTheory.BW
 variable {E : Type} [Field E] [NumberField E] {r s : ℕ}
 
 /- English proof (translation)
-Use `set e : ℝ := ((r * Module.finrank ℚ E : ℝ))⁻¹ with he`. Establish `hL : 1 ≤ Real.exp |t|` using `Real.one_le_exp (abs_nonneg t)`. Establish `he0 : 0 ≤ e` using `by positivity`. Establish `he1 : e ≤ 1`. Rewrite using `[he, ← Nat.cast_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.cast_inv_le_one _`. Establish `key : ∀ x : ℝ, 0 ≤ x → x ≤ Real.exp |t| → x ^ e ≤ Real.exp |t|` using `fun x hx hxL =>`. Combine the equalities or inequalities in the displayed calculation. Use `CuspidalSpectrum.height_diagUnits_posIdele_le (K := E) (n := r) (ρ := fun _ => Real.exp t ^ e) (fun _ => Real.rpow_pos_of_pos (Real.exp_pos t) e) hL fun _ => ⟨key _ (Real.exp_pos t).le (Real.exp_le_exp.2 (le_abs_self t)), ?_⟩` and prove the remaining obligations. Rewrite using `[← Real.inv_rpow (Real.exp_pos t).le, ← Real.exp_neg]`.
-
-Conclude with `key _ (Real.exp_pos _).le (Real.exp_le_exp.2 (neg_le_abs t))`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ht_zt (t : ℝ) : AutomorphicForm.height (zt E r t) ≤
     Real.exp |t| ^ (2 * Fintype.card (InfinitePlace E)) := by
@@ -37,11 +35,11 @@ private theorem ht_zt (t : ℝ) : AutomorphicForm.height (zt E r t) ≤
   exact key _ (Real.exp_pos _).le (Real.exp_le_exp.2 (neg_le_abs t))
 
 /- English proof (translation)
-Take `⟨D, hD, hsub⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := E) (n := n) (r := r)`. Take `⟨M, hM⟩` from `CuspidalSpectrum.exists_height_le_of_isCompact (hD.image continuous_unipGL)`. Establish `hc0 : 0 ≤ heightConst E n` using `le_trans zero_le_one one_le_heightConst`. Establish `hfin : unipMeasure E n r (unipFundamentalDomain E n r) < ⊤` using `(measure_mono hsub).trans_lt hD.measure_lt_top`. Use `⟨(heightConst E n * |M|) ^ N * (unipMeasure E n r).real (unipFundamentalDomain E n r), by positivity, fun φ B hB hφ g => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg` using `(height_pos g).le`. Establish `hb : ∀ X ∈ unipFundamentalDomain E n r, ‖φ (unipGL X * g)‖ ≤ B * (heightConst E n * |M| * AutomorphicForm.height g) ^ N`. Introduce `X hX`. Establish `h1 : AutomorphicForm.height (unipGL X * g) ≤ heightConst E n * |M| * AutomorphicForm.height g` using `(height_mul_le _ _).trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left ((hM _ ⟨X, hsub hX, rfl⟩).trans (le_abs_self M)) hc0) hg)`. Conclude with `(hφ _).trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (height_pos _).le h1 N) hB)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_setIntegral_le_of_norm_le_const hfin hb).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[mul_pow (heightConst E n * |M|)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem ct_bd (n r N : ℕ) : ∃ C : ℝ, 0 ≤ C ∧ ∀ (φ : AdelicGLn.AdelicGL E n → ℂ) (B : ℝ), 0 ≤ B →
     (∀ g, ‖φ g‖ ≤ B * AutomorphicForm.height g ^ N) →
@@ -66,9 +64,9 @@ private theorem ct_bd (n r N : ℕ) : ∃ C : ℝ, 0 ≤ C ∧ ∀ (φ : AdelicG
   ring
 
 /- English proof (translation)
-Introduce `γ x`. Establish `h` using `Pair.ct_lev_rat hφ γ 1 (zt E r t * x) m`. Rewrite `h` using `[map_one, one_mul]`. Establish `e : zt E r t * (AdelicGLn.diagonal E r γ * x) = AdelicGLn.diagonal E r γ * (zt E r t * x)`. Rewrite using `[← mul_assoc, ← mul_assoc, zt, centralSection_mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[e, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem F_left {φ : AdelicGLn.AdelicGL E (r + s) → ℂ} (hφ : IsLeftInvariant φ) (t : ℝ)
     (m : AdelicGLn.AdelicGL E s) :
@@ -82,9 +80,9 @@ private theorem F_left {φ : AdelicGLn.AdelicGL E (r + s) → ℂ} (hφ : IsLeft
   rw [e, h]
 
 /- English proof (translation)
-Take `⟨C, hC0, hC⟩` from `ct_bd (E := E) (r + s) r N`. Establish `h1 : 0 ≤ heightConst E (r + s)` using `le_trans zero_le_one one_le_heightConst`. Establish `h2 : 0 ≤ heightConst E r` using `le_trans zero_le_one one_le_heightConst`. Use `⟨C * (heightConst E (r + s) * heightConst E r) ^ N, by positivity, fun φ B hB hφ t m x => ?_⟩` and prove the remaining obligations. Establish `h3 : AutomorphicForm.height (K` using `E) (lev (Ad E) r s (zt E r t * x, m)) ≤ heightConst E (r + s) * (heightConst E r * Real.exp |t| ^ (2 * Fintype.card (InfinitePlace E)) * AutomorphicForm.height x) * AutomorphicForm.height m := (Pair.height_lev _ _).trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left ((he …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hC φ B hB hφ _).trans ((mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (height_pos _).le h3 N) (mul_nonneg hC0 hB)).trans_eq ?_)` and prove the remaining obligations. Rewrite using `[Real.exp_nat_mul, pow_mul (Real.exp |t|) _ N]`. Simplify using `only [mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem F_bd (r s N : ℕ) : ∃ C : ℝ, 0 ≤ C ∧ ∀ (φ : AdelicGLn.AdelicGL E (r + s) → ℂ) (B : ℝ), 0 ≤ B →
     (∀ g, ‖φ g‖ ≤ B * AutomorphicForm.height g ^ N) → ∀ (t : ℝ) (m : AdelicGLn.AdelicGL E s)
@@ -109,9 +107,9 @@ private theorem F_bd (r s N : ℕ) : ∃ C : ℝ, 0 ≤ C ∧ ∀ (φ : AdelicGL
 variable [IsTotallyComplex E] {S : Set (Pl E)}
 
 /- English proof (translation)
-Establish `hcφ : Continuous φ.1` using `((umgOps E (r + s)).2 φ hφ).1`. Take `⟨hfU, hfC⟩` from `cuspUmg E r b.f b.cusp`. Establish `hcf : Continuous b.f.1` using `((umgOps E r).2 b.f hfU).1`. Take `⟨N, hN⟩` from `hφ.growth`. Take `⟨B, hB⟩` from `hN 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hB' : ∀ g, ‖φ.1 g‖ ≤ |B| * AutomorphicForm.height g ^ N` using `fun g => (show ‖φ.1 g‖ ≤ B * AutomorphicForm.height g ^ N by simpa using hB g).trans (mul_le_mul_of_nonneg_right (le_abs_self B) (pow_nonneg (height_pos _).le N))`. Take `⟨C, -, hC⟩` from `F_bd (E := E) r s N`. Take `⟨D, hD⟩` from `rapidDecay E r b.f hfU hfC N`. Conclude with `Pair.pair_int (F_left hφ.left t m) hfU.left ((UpperTheory.continuous_constantTerm E (r + s) r φ.1 hcφ).comp (Pair.continuous_lev.comp ((continuous_const.mul continuous_id).prodMk continuous_const))) hcf (fun x => hC φ.1 _ (abs_nonneg B) hB' t m x) hD`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem sl_int (b : Blo S r) (φ : Sm E (r + s)) (hφ : Umg φ) (t : ℝ) (m : AdelicGLn.AdelicGL E s) :
     Integrable (fun y : RightCosetSpace (rationalGLOne E r) =>
@@ -137,13 +135,13 @@ end UpperTheory.ConvolutionTheory.BW
 
 open UpperTheory.ConvolutionTheory.BW in
 /- English proof (translation)
-Introduce `E _ _ _ S r s b`. Use `⟨fun N => ?_, fun φ ψ c hφ hψ t m => ?_⟩` and prove the remaining obligations. Take `⟨hfU, hfC⟩` from `cuspUmg E r b.f b.cusp`. Take `⟨C, hC0, hC⟩` from `F_bd (E := E) r s N`. Take `⟨D, hD⟩` from `rapidDecay E r b.f hfU hfC N`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfin` using `isFiniteMeasure_quotientMeasure (K := E) (n := r) (mu1 E r)`. Use `⟨C * 2 ^ N * D * (quotientMeasure (rationalGLOne E r) (mu1 E r)).real Set.univ, ((2 * Fintype.card (InfinitePlace E) * N : ℕ) : ℝ), fun φ B hφ hB t m => ?_⟩` and prove the remaining obligations. Establish `hB0 : 0 ≤ B` using `nonneg_of_mul_nonneg_left ((norm_nonneg _).trans (hB 1)) (pow_pos (height_pos _) N)`. Establish `hm` using `(height_pos (K := E) m).le`. Use `(norm_integral_le_of_norm_le_const (.of_forall fun y => Pair.pair_le (F_left hφ.left t m) (by positivity) (fun x => hC φ.1 B hB0 hB t m x) hD _)).trans_eq ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hcφ : Continuous φ.1` using `((umgOps E (r + s)).2 φ hφ).1`. Establish `hcψ : Continuous ψ.1` using `((umgOps E (r + s)).2 ψ hψ).1`. Establish `e : ∀ g, constantTerm r (c • φ + ψ).1 g = c * constantTerm r φ.1 g + constantTerm r ψ.1 g` using `fun g => by`. Rewrite using `[← smul_eq_mul, ← constantTerm_smul, ← constantTerm_add (hcφ.const_smul c) hcψ]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [slice, e, add_mul, mul_assoc c]`. Rewrite using `[integral_add ((sl_int b φ hφ t m).const_mul c) (sl_int b ψ hψ t m), integral_const_mul]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.ConvolutionTheory.BW.sliceBound :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], UpperTheory.ConvolutionTheory.BW.SliceBound E := by

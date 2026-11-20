@@ -11,13 +11,11 @@ namespace Formalism.L2.SG.RealObj.SpanPreservation
 open Formalism.L2.SG.HidaSetting
 
 /- English proof (translation)
-Establish `hmono : ∀ a : Fin r, spanLt e a.1 ≤ spanLt e r` using `fun a => Submodule.span_mono (Set.image_mono fun b (hb : b.1 < a.1) => lt_trans hb a.2)`. Establish `hgen : ∀ a : Fin r, g *ᵥ e a ∈ spanLt e r`. Introduce `a`. Establish `e1 : g *ᵥ e a = e a + (g - 1) *ᵥ e a` using `by rw [Matrix.sub_mulVec, Matrix.one_mulVec]; abel`. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ (Submodule.subset_span ⟨a, a.2, rfl⟩) (hmono a (hg a))`. Unfold `spanLt at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem w hw => obtain ⟨b, -, rfl⟩ := hw`. Conclude with `hgen b`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [Matrix.mulVec_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [Matrix.mulVec_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha => rw [Matrix.mulVec_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ ha`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_pres {n r : ℕ} (e : Fin r → Fin n → ℂ) (g : Matrix (Fin n) (Fin n) ℂ)
     (hg : ∀ a : Fin r, (g - 1) *ᵥ e a ∈ spanLt e a.1) {y : Fin n → ℂ} (hy : y ∈ spanLt e r) :
@@ -37,9 +35,9 @@ theorem span_pres {n r : ℕ} (e : Fin r → Fin n → ℂ) (g : Matrix (Fin n) 
   | smul c a _ ha => rw [Matrix.mulVec_smul]; exact Submodule.smul_mem _ _ ha
 
 /- English proof (translation)
-Establish `hS : InS e z gi` using `Formalism.L2.SG.RealObj.InfCut.inS_inv e z g gi h1 hg.1`. Use `⟨hS, fun y hy => ?_⟩` and prove the remaining obligations. Establish `key : (gi - 1) *ᵥ y = -(gi *ᵥ ((g - 1) *ᵥ y))`. Simplify using `[Matrix.sub_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, h1]`. Rewrite using `[key]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.neg_mem _ (span_pres e gi hS.1 (hg.2 y hy))`.
+A detailed English derivation is pending.
 -/
 theorem inN_inv {n r : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (g gi : Matrix (Fin n) (Fin n) ℂ)
     (h1 : gi * g = 1) (hg : InN ε e z g) : InN ε e z gi := by
@@ -53,7 +51,7 @@ theorem inN_inv {n r : ℕ} (ε : Fin n → Bool) (e : Fin r → Fin n → ℂ) 
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
 /- English proof (translation)
-Introduce `v` and use `inN_inv _ _ _ (uMat (s v)) (uMat (s⁻¹ v)) (Formalism.L2.SG.RealObj.InfCut.uMat_inv_mul' (s v)) (hs v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ninfU_inv (u : D.what₂.Word) {s : X.B.I.Ginf} (hs : s ∈ X.NinfU u) : s⁻¹ ∈ X.NinfU u := fun v =>
   inN_inv _ _ _ (uMat (s v)) (uMat (s⁻¹ v)) (Formalism.L2.SG.RealObj.InfCut.uMat_inv_mul' (s v)) (hs v)

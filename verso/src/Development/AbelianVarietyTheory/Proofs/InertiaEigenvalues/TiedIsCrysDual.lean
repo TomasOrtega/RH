@@ -10,13 +10,13 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.Per.TiedDual
 
 /- English proof (translation)
-Introduce `l _ P AI T hreg K LL V _ _ _ _ _ ρ hρ`. Use `LL.2` as an intermediate fact. Establish `: IsDomain P.R.B` using `GlobalTheory.RegularRing.isDomain_of_tied T K`. Establish `e : ∀ (g : ↥(GK K)) z, (P.PD K).actB g z = P.actQ g z` using `fun g z => P.PD_actB K g z`. Establish `hf : GlobalTheory.RegularRing.FracInv (P.PD K)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x y hx h`. Use `GlobalTheory.Per.FracInv.tied_frac_invariant l P AI T K y x hx fun g hg => ?_` and prove the remaining obligations. Establish `h1` using `h ⟨g, hg⟩`. Rewrite `h1` using `[e, e]`. Rewrite using `[mul_comm, h1, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : GlobalTheory.RegularRing.LineUnit (P.PD K)`. Introduce `b hb h`. Use `hreg K b hb fun g hg => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `h ⟨g, hg⟩`. Conclude with `⟨x, by rw [← e ⟨g, hg⟩, hx, Algebra.smul_def]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `GlobalTheory.RegularRing.dualCrys (P.PD K) ↥LL.1 hf hu V ρ hρ`.
+A detailed English derivation is pending.
 -/
 theorem tied_isCrys_dual : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → (∀ (K : FinExt l) (b : P.R.B), b ≠ 0 → (∀ g ∈ GK K, ∃ x : ℚ_[l], P.actQ g b = x • b) → IsUnit b) → ∀ (K LL : FinExt l) (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V), IsCrys (P.PD K) ρ → IsCrys (P.PD K) ρ.dual := by
   intro l _ P AI T hreg K LL V _ _ _ _ _ ρ hρ

@@ -75,26 +75,26 @@ def RallisConv (D : D7) : Prop :=
           ((νV 𝓗).toReal : ℂ) * ∫ g, thetaIP μ 𝓕 (om (1, g) f₂) f₁ * (∫ x in 𝓖, star (φ₁ x) * φ₂ (x * g) ∂νW) ∂νW
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.lev, h.grp, h.fam, h.models, h.thP⟩`.
+Supply the required witnesses or components.
 -/
 theorem Laws.of_char {R : RealDat D A Ks} {F : Face D A} (h : R.Char F) : Laws R F :=
   ⟨h.lev, h.grp, h.fam, h.models, h.thP⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.lev, h.grp, h.fam, h.models, h.thP⟩`.
+Supply the required witnesses or components.
 -/
 theorem Laws.of_charTh {R : RealDat D A Ks} {F : Face D A} (h : GlobalTheory.ThetaClauses.CharTh R F) : Laws R F :=
   ⟨h.lev, h.grp, h.fam, h.models, h.thP⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨D.sp.V_sig _, h.models.vpos i⟩`.
+Supply the required witnesses or components.
 -/
 theorem Laws.posDef {R : RealDat D A Ks} {F : Face D A} (h : Laws R F) (i : Fin D.R.m) :
     (Vc D i).SigOK ∧ (Vc D i).IsPosDef :=
   ⟨D.sp.V_sig _, h.models.vpos i⟩
 
 /- English proof (translation)
-The claim follows from `V.form_pos hs τ hτ (hp τ) x hx`.
+A detailed English derivation is pending.
 -/
 theorem length_pos_of_posDef {V : HSp D} (hs : V.SigOK) (hp : V.IsPosDef) (τ : D.host.E →+* ℂ)
     (hτ : ∀ a, τ (star a) = (starRingEnd ℂ) (τ a)) (x : V.V) (hx : x ≠ 0) :
@@ -102,7 +102,7 @@ theorem length_pos_of_posDef {V : HSp D} (hs : V.SigOK) (hp : V.IsPosDef) (τ : 
   V.form_pos hs τ hτ (hp τ) x hx
 
 /- English proof (translation)
-Establish `hm' : ∀ x, f x ∈ LinearMap.range M.e` using `fun x => H.2.1 ▸ hm x`. Conclude with `⟨(LinearEquiv.ofInjective M.e H.1).symm.toLinearMap ∘ₗ f.codRestrict _ hm', fun x => congrArg Subtype.val ((LinearEquiv.ofInjective M.e H.1).apply_symm_apply (f.codRestrict _ hm' x))⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_lift_model {X Z : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup Z] [Module ℂ Z]
     (M : HMod Z) {U : Submodule ℂ Z} {ip : Z → Z → ℂ} (H : M.Is U ip) (f : X →ₗ[ℂ] Z) (hm : ∀ x, f x ∈ U) :
@@ -114,7 +114,7 @@ theorem exists_lift_model {X Z : Type} [AddCommGroup X] [Module ℂ X] [AddCommG
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-The claim follows from `exists_lift_model (R.HW i (sg0 D A)) (h.models.HW i (sg0 D A)) (R.thF i t) (h.thP.thF_mem i t)`.
+A detailed English derivation is pending.
 -/
 theorem Laws.exists_isRaw {R : RealDat D A Ks} {F : Face D A} (h : Laws R F) (i : Fin D.R.m) (t : T) :
     ∃ th, IsRaw R i t th :=
@@ -123,21 +123,21 @@ theorem Laws.exists_isRaw {R : RealDat D A Ks} {F : Face D A} (h : Laws R F) (i 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => (h.models.HW i (sg0 D A)).1 ((h₁ x).trans (h₂ x).symm)`.
+A detailed English derivation is pending.
 -/
 theorem Laws.isRaw_unique {R : RealDat D A Ks} {F : Face D A} (h : Laws R F) {i : Fin D.R.m} {t : T}
     {th th' : (R.HV i t).H →ₗ[ℂ] (R.HW i (sg0 D A)).H} (h₁ : IsRaw R i t th) (h₂ : IsRaw R i t th') : th = th' :=
   LinearMap.ext fun x => (h.models.HW i (sg0 D A)).1 ((h₁ x).trans (h₂ x).symm)
 
 /- English proof (translation)
-Introduce `th hth c` and use `(h th hth c).elim fun l H => ⟨l, Complex.ofReal_ne_zero.2 H.1.ne', H.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem InnerPos.innerNe {R : RealDat D A Ks} {i : Fin D.R.m} {t : T} {S : Finset (HeightOneSpectrum (𝓞 D.host.F))}
     (h : InnerPos R i t S) : InnerNe R i t S :=
   fun th hth c => (h th hth c).elim fun l H => ⟨l, Complex.ofReal_ne_zero.2 H.1.ne', H.2⟩
 
 /- English proof (translation)
-Unfold `thetaIP`. Rewrite using `[← integral_const_mul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, star_mul', mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem thetaInner_smul_left {S T' : HSp D} (μ : Measure (WO S T')) (𝓕 : Set (WO S T')) (a : ℂ) (f f' : WO S T' → ℂ) :
     thetaIP μ 𝓕 (a • f) f' = star a * thetaIP μ 𝓕 f f' := by
@@ -146,7 +146,7 @@ theorem thetaInner_smul_left {S T' : HSp D} (μ : Measure (WO S T')) (𝓕 : Set
   simp only [Pi.smul_apply, smul_eq_mul, star_mul', mul_assoc]
 
 /- English proof (translation)
-Unfold `thetaIP`. Rewrite using `[← integral_const_mul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_left_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem thetaInner_smul_right {S T' : HSp D} (μ : Measure (WO S T')) (𝓕 : Set (WO S T')) (a : ℂ) (f f' : WO S T' → ℂ) :
     thetaIP μ 𝓕 f (a • f') = a * thetaIP μ 𝓕 f f' := by
@@ -155,7 +155,7 @@ theorem thetaInner_smul_right {S T' : HSp D} (μ : Measure (WO S T')) (𝓕 : Se
   simp only [Pi.smul_apply, smul_eq_mul, mul_left_comm]
 
 /- English proof (translation)
-Unfold `upLift`. Rewrite using `[← integral_const_mul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_left_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem upLift_smul {V W : HSp D} (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ν : Measure (GA D W))
     (𝓖 : Set (GA D W)) (f : WO V W → ℂ) (a : ℂ) (φ : GA D W → ℂ) (h : GA D V) :

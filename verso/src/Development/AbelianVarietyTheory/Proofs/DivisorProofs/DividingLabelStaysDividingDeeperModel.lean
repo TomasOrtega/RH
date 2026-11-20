@@ -17,13 +17,11 @@ noncomputable section
 namespace GlobalTheory.Poinc.Sep.DeepDiv
 
 /- English proof (translation)
-Use `haveI : CharZero V := 𝔪.cn.2.2.2`. Establish `hL : GlobalTheory.UT.LL` using `GlobalTheory.firstFiveLaws`. Take `⟨a, ha⟩` from `GlobalTheory.ThetaGeneric.exists_th_ne_zero hL.1 hL.2.1 _ _ X₁.S X₁.ρ (FractionRing V) 𝔪.yK`. Introduce `h0`. Apply `ha` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `set y := jK V ≫ spMap ev ≫ X₁.M.Z.fromSpecStalk z₁ with hy`. Establish `hs : y (closedPoint (FractionRing V)) ⤳ z₁`. Establish `: y (closedPoint (FractionRing V)) ∈ Set.range (X₁.M.Z.fromSpecStalk z₁)` using `⟨_, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Establish `hw : ∀ w, y w ⤳ y (closedPoint (FractionRing V))` using `fun w => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Subsingleton.elim (α := PrimeSpectrum (FractionRing V)) w (closedPoint _)]`. Establish `e : X₁.S.th a = X₁.S.th a / X₁.S.th x₀ * X₁.S.th x₀` using `(div_mul_cancel₀ _ hd.1).symm`. Rewrite `h0`, the goal using `[𝔪.yK_eq]`. Express the relevant statement in the definitionally equal form `X₁.M.val y (X₁.S.th a) = 0`. Express the relevant statement in the definitionally equal form `X₁.M.val y (X₁.S.th x₀) = 0 at h0`.
-
-Rewrite using `[e, RatModel.val_mul hw ((hd.of_specializes hs).2 a) (𝔪.reg _ (X₁.S.th_mem x₀)), h0, mul_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem yK_th_ne_zero {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z}
     {X₁ : Setup F W i} {z₁ : X₁.M.Z} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} {x₀ : X₁.S.Gam}
@@ -49,11 +47,11 @@ theorem yK_th_ne_zero {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8
   rw [e, RatModel.val_mul hw ((hd.of_specializes hs).2 a) (𝔪.reg _ (X₁.S.th_mem x₀)), h0, mul_zero]
 
 /- English proof (translation)
-Use `set y' := spMap ev ≫ X₁.M.Z.fromSpecStalk z₁ with hy'`. Use `set y := jK V ≫ y' with hy`. Establish `hs : y (closedPoint (FractionRing V)) ⤳ z₁`. Establish `: y (closedPoint (FractionRing V)) ∈ Set.range (X₁.M.Z.fromSpecStalk z₁)` using `⟨_, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : ∀ w, y w ⤳ y (closedPoint (FractionRing V))` using `fun w => by`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum (FractionRing V)) w (closedPoint _)]`. Establish `e : X₁.S.th a = X₁.S.th a / X₁.S.th x₀ * X₁.S.th x₀` using `(div_mul_cancel₀ _ hd.1).symm`. Rewrite using `[𝔪.yK_eq, 𝔪.yK_eq]`. Express the relevant statement in the definitionally equal form `X₁.M.val y (X₁.S.th a) = _ * X₁.M.val y (X₁.S.th x₀)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : X₁.M.val y (X₁.S.th a) = X₁.M.val y (X₁.S.th a / X₁.S.th x₀) * X₁.M.val y (X₁.S.th x₀)` using `by conv_lhs => rw [e]`. Conclude with `RatModel.val_mul hw ((hd.of_specializes hs).2 a) (𝔪.reg _ (X₁.S.th_mem x₀))`. Rewrite using `[h1]`. Use `congr 1`. Conclude with `RatModel.val_spMap_comp (algebraMap V (FractionRing V)) y' _ ⟨_, hd.2 a⟩`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem yK_th_eq {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z}
     {X₁ : Setup F W i} {z₁ : X₁.M.Z} {act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} {x₀ : X₁.S.Gam}
@@ -88,7 +86,7 @@ end GlobalTheory.Poinc.Sep.DeepDiv
 open GlobalTheory.Poinc.Sep
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.dividingLabel_persists_thetaSetupTower`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Poinc.Sep.DeepDiv.div_lam : ∀ g : ℕ, 1 ≤ g → ∀ n : ℕ, 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n)) (i : F.X ⟶ Z) [IsOpenImmersion i], IsProjOver z → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z → i ≫ z = F.s → Dense (Set.range i) → ∀ W : Matrix (Fin 8) (Fin 8) ℤ, IsE8 W → ThetaInt F W i → ∀ (X₁ : Setup F W i) (z₁ : X₁.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), IsAct X₁ act → ∀ (𝔗 : Tower X₁ act) (z₂ : 𝔗.X₂.M.Z), 𝔗.p z₂ = z₁ → ∀ x₀ : X₁.S.Gam, X₁.M.Div X₁.S.th x₀ z₁ → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (m : ℕ) (t : Fin m → V) (δ : Fin m → LinearMap.BilinForm ℤ X) (𝔪 : UMem X₁ z₁ act V ev X t δ), 𝔗.X₂.M.Div 𝔗.X₂.S.th (𝔗.lam x₀) z₂ :=
   GlobalTheory.T.dividingLabel_persists_thetaSetupTower

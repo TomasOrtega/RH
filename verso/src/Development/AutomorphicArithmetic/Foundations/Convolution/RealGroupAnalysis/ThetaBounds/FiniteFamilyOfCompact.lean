@@ -8,25 +8,23 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK`. Set `r : V → Module.Dual ℂ U` to `fun v => (ev v).domRestrict U`. Set `S : Submodule ℂ (Module.Dual ℂ U)` to `Submodule.span ℂ (Set.range r)`. Establish `hS : S = ⊤`. Establish `hco : S.dualCoannihilator = ⊥`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_bot_iff]`. Introduce `u hu`. Rewrite `hu` using `[Submodule.mem_dualCoannihilator]`. Establish `: (u : T) = 0` using `hev _ fun v => hu (r v) (Submodule.subset_span ⟨v, rfl⟩)`. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `Subspace.dualCoannihilator_dualAnnihilator_eq (W := S)` as an intermediate fact. Rewrite `this` using `[hco]`. Rewrite using `[← this]`. Simplify using the standard rewrite rules. Set `g : K → U` to `fun k => ⟨f k.1, hf k.1 k.2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcont : ∀ l : Module.Dual ℂ U, Continuous fun k : K => l (g k)`. Introduce `l`. Establish `hl : l ∈ S` using `hS ▸ Submodule.mem_top`. Proceed by induction on `hl using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨v, rfl⟩` from `hx`. Conclude with `continuousOn_iff_continuous_restrict.mp (hc v)`. Consider the case `zero => simpa using continuous_const`. Consider the case `add x y _ _ hx hy`. Express the relevant statement in the definitionally equal form `Continuous fun k : K => x (g k) + y (g k)`.
+Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hx.add hy`. Consider the case `smul a x _ hx`. Express the relevant statement in the definitionally equal form `Continuous fun k : K => a * x (g k)`. Conclude with `continuous_const.mul hx`. Set `b` to `Module.finBasis ℂ U`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hbd : ∀ i, ∃ R : ℝ, 0 < R ∧ ∀ k : K, ‖b.coord i (g k)‖ ≤ R`. Introduce `i`. Take `⟨R, hR⟩` from `isCompact_univ.exists_bound_of_continuousOn (hcont (b.coord i)).continuousOn`. Conclude with `⟨max R 1, by positivity, fun k => (hR k (Set.mem_univ _)).trans (le_max_left _ _)⟩`. Use `choose R hR0 hR using hbd`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨_, fun i => (R i : ℂ) • ((b i : U) : T), fun k hk => ?_⟩` and prove the remaining obligations. Use `⟨fun i => b.coord i (g ⟨k, hk⟩) / (R i : ℂ), fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, Complex.norm_real, Real.norm_of_nonneg (hR0 i).le]`. Conclude with `(div_le_one (hR0 i)).mpr (hR i _)`. Establish `h : ((∑ i, b.repr (g ⟨k, hk⟩) i • b i : U) : T) = f k` using `by rw [b.sum_repr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[AddSubmonoidClass.coe_finset_sum]`. Establish `h2 : f k = ∑ i, b.coord i (g ⟨k, hk⟩) • ((b i : U) : T)` using `h.symm`. Rewrite using `[h2]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hne : (R i : ℂ) ≠ 0` using `by exact_mod_cast (hR0 i).ne'`.
-
-Rewrite using `[smul_smul, div_mul_cancel₀ _ hne]`.
+A detailed English derivation is pending.
 -/
 private theorem finite_family_of_compact {X T V : Type} [TopologicalSpace X] [AddCommGroup T] [Module ℂ T]
     (ev : V → T →ₗ[ℂ] ℂ) (hev : ∀ t : T, (∀ v, ev v t = 0) → t = 0)
@@ -81,9 +79,9 @@ private theorem finite_family_of_compact {X T V : Type} [TopologicalSpace X] [Ad
     rw [smul_smul, div_mul_cancel₀ _ hne]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W φ hφ`. Take `⟨hKc, -⟩` from `iwa F`. Take `⟨U, -, hfd, hmem⟩` from `(fockSt F E D W).om φ hφ (KK F) hKc fun k hk => hk.1`. Set `ev : V4 F → S4 F →ₗ[ℂ] ℂ` to `fun v => { toFun := fun t => t.1 v, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Use `finite_family_of_compact ev (fun t ht => Subtype.ext (funext ht)) U (KK F) hKc (fun k => W.Om k φ) hmem fun v => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `W.cont φ`. Conclude with `(h.comp (Continuous.prodMk continuous_id continuous_const : Continuous fun k : G1 F => (k, v))).continuousOn`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.omFin :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D), OmFin W := by

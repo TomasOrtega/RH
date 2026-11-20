@@ -10,35 +10,33 @@ open GlobalTheory.Desc
 namespace GlobalTheory.Desc.SpreadGrp
 
 /- English proof (translation)
-Introduce `R _ _ f g hf X q hq hs A _ _ i hA H h hH m n o hm hn ho`. Establish `hinj : Function.Injective (algebraMap R (Localization.Away f))` using `IsLocalization.injective (Localization.Away f) (powers_le_nonZeroDivisors_of_noZeroDivisors hf)`. Establish `: IsSchemeTheoreticallyDominant (awayMap f)` using `ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective (CommRingCat.ofHom (algebraMap R (Localization.Away f))) hinj`. Establish `: Flat (awayMap g)`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.flat_algebraMap_iff.2 (IsLocalization.flat _ (Submonoid.powers g))`. Establish `: Flat H.hom` using `MorphismProperty.of_isPullback hH hq`. Establish `: IsSeparated H.hom` using `MorphismProperty.of_isPullback hH hs`. Use `ExtUnique.flat_tensorUnit (S := Sp (Localization.Away g))` as an intermediate fact. Use `ExtUnique.flat_tensorObj H H` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ExtUnique.flat_tensorObj (𝟙_ _) H` as an intermediate fact. Use `ExtUnique.flat_tensorObj H (𝟙_ _)` as an intermediate fact. Use `ExtUnique.flat_tensorObj (H ⊗ H) H` as an intermediate fact. Set `j` to `pullback.fst (awayMap g) (awayMap f)`. Set `k` to `pullback.snd (awayMap g) (awayMap f)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `w : ∀ T : Over (pullback (awayMap g) (awayMap f)), (T.hom ≫ j) ≫ awayMap g = (T.hom ≫ k) ≫ awayMap f`. Introduce `T`. Simplify using `only [Category.assoc, j, k, pullback.condition]`. Establish `key : ∀ {T : Scheme.{0}} {t₁ : T ⟶ Sp (Localization.Away g)} {t₀ : T ⟶ Sp (Localization.Away f)}, t₁ ≫ awayMap g = t₀ ≫ awayMap f → ∀ a : Over.mk t₁ ⟶ H, ∃ a' : Over.mk t₀ ⟶ A, a.left ≫ h = a'.left ≫ i`. Introduce `T t₁ t₀ e a`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e' : (a.left ≫ h) ≫ q = t₀ ≫ awayMap f`. Rewrite using `[Category.assoc, hH.w, ← Category.assoc, Over.w a]`. Conclude with `e`. Conclude with `⟨Over.homMk (hA.lift (a.left ≫ h) t₀ e') (hA.lift_snd _ _ _), (hA.lift_fst _ _ _).symm⟩`. Establish `inj : ∀ {T : Scheme.{0}} {t₁ : T ⟶ Sp (Localization.Away g)} (a b : Over.mk t₁ ⟶ H), a.left ≫ h = b.left ≫ h → a = b`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `T t₁ a b e`. Conclude with `Over.OverMorphism.ext (hH.hom_ext e (by rw [Over.w a, Over.w b]))`. Establish `hone : ∀ {T : Scheme.{0}} {t₁ : T ⟶ Sp (Localization.Away g)} {t₀ : T ⟶ Sp (Localization.Away f)}, t₁ ≫ awayMap g = t₀ ≫ awayMap f → (toUnit (Over.mk t₁) ≫ o).left ≫ h = (1 : Over.mk t₀ ⟶ A).left ≫ i`. Introduce `T t₁ t₀ e`. Simplify using `using ho T t₁ t₀ e`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `letI : MonObj H := { one := o mul := m one_mul := SpreadAb.hom_ext_of_points j fun T t => by`. Take `⟨x, hx⟩ : ∃ x, t ≫ snd _ _ = x` from `⟨_, rfl⟩`. Establish `ht : t = lift (toUnit _) x` using `CartesianMonoidalCategory.hom_ext _ _ (toUnit_unique _ _) (by rw [lift_snd, hx])`. Substitute `ht` using the available equality. Take `⟨x', hx'⟩` from `key (w T) x`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lift_whiskerRight_assoc, lift_leftUnitor_hom]`. Apply `inj` to reduce the goal to its premises. Rewrite using `[hm _ _ _ _ _ _ _ (hone (w T)) hx', _root_.one_mul, hx']`. Use `mul_one := SpreadAb.hom_ext_of_points j fun T t => by`. Take `⟨x, hx⟩ : ∃ x, t ≫ fst _ _ = x` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : t = lift x (toUnit _)` using `CartesianMonoidalCategory.hom_ext _ _ (by rw [lift_fst, hx]) (toUnit_unique _ _)`. Substitute `ht` using the available equality. Take `⟨x', hx'⟩` from `key (w T) x`. Rewrite using `[lift_whiskerLeft_assoc, lift_rightUnitor_hom]`. Apply `inj` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hm _ _ _ _ _ _ _ hx' (hone (w T)), _root_.mul_one, hx']`. Use `mul_assoc := SpreadAb.hom_ext_of_points j fun T t => by`. Take `⟨x, hx⟩ : ∃ x, t ≫ fst _ _ ≫ fst _ _ = x` from `⟨_, rfl⟩`. Take `⟨y, hy⟩ : ∃ y, t ≫ fst _ _ ≫ snd _ _ = y` from `⟨_, rfl⟩`. Take `⟨z, hz⟩ : ∃ z, t ≫ snd _ _ = z` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ht : t = lift (lift x y) z`. Apply the tactic sequence `ext <;> simp [← hx, ← hy, ← hz]`. Substitute `ht` using the available equality. Take `⟨x', hx'⟩` from `key (w T) x`. Take `⟨y', hy'⟩` from `key (w T) y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Take `⟨z', hz'⟩` from `key (w T) z`. Rewrite using `[lift_whiskerRight_assoc, lift_lift_associator_hom_assoc, lift_whiskerLeft_assoc]`. Apply `inj` to reduce the goal to its premises. Rewrite using `[hm _ _ _ _ _ _ _ (hm _ _ _ _ _ _ _ hx' hy') hz', hm _ _ _ _ _ _ _ hx' (hm _ _ _ _ _ _ _ hy' hz'), _root_.mul_assoc] }`. Use `letI : GrpObj H := { inv := n left_inv := SpreadAb.hom_ext_of_points j fun T t => by`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x', hx'⟩` from `key (w T) t`. Express the relevant statement in the definitionally equal form `_ ≫ lift n (𝟙 H) ≫ m = _ ≫ toUnit H ≫ o`. Rewrite using `[comp_lift_assoc, Category.comp_id, comp_toUnit_assoc]`. Apply `inj` to reduce the goal to its premises. Rewrite using `[hm _ _ _ _ _ _ _ (hn _ _ _ _ _ hx') hx', inv_mul_cancel, hone (w T)]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `right_inv := SpreadAb.hom_ext_of_points j fun T t => by`. Take `⟨x', hx'⟩` from `key (w T) t`. Express the relevant statement in the definitionally equal form `_ ≫ lift (𝟙 H) n ≫ m = _ ≫ toUnit H ≫ o`. Rewrite using `[comp_lift_assoc, Category.comp_id, comp_toUnit_assoc]`. Apply `inj` to reduce the goal to its premises.
-
-Rewrite using `[hm _ _ _ _ _ _ _ hx' (hn _ _ _ _ _ hx'), mul_inv_cancel, hone (w T)] }`. Conclude with `⟨inferInstance, fun T t₁ t₂ a b a' b' ha hb => hm T t₁ t₂ a b a' b' ha hb⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem grpObj_of_agree : ∀ (R : Type) [CommRing R] [IsDomain R] (f g : R), f ≠ 0 → ∀ (X : Scheme.{0}) (q : X ⟶ Sp R), Flat q → IsSeparated q → ∀ (A : Over (Sp (Localization.Away f))) [GrpObj A], IsCommMonObj A → ∀ i : A.left ⟶ X, IsPullback i A.hom q (awayMap f) → ∀ (H : Over (Sp (Localization.Away g))) (h : H.left ⟶ X), IsPullback h H.hom q (awayMap g) → ∀ (m : H ⊗ H ⟶ H) (n : H ⟶ H) (o : 𝟙_ (Over (Sp (Localization.Away g))) ⟶ H), (∀ (T : Scheme.{0}) (t₁ : T ⟶ Sp (Localization.Away g)) (t₀ : T ⟶ Sp (Localization.Away f)) (a b : Over.mk t₁ ⟶ H) (a' b' : Over.mk t₀ ⟶ A), a.left ≫ h = a'.left ≫ i → b.left ≫ h = b'.left ≫ i → (lift a b ≫ m).left ≫ h = (a' * b').left ≫ i) → (∀ (T : Scheme.{0}) (t₁ : T ⟶ Sp (Localization.Away g)) (t₀ : T ⟶ Sp (Localization.Away f)) (a : Over.mk t₁ ⟶ H) (a' : Over.mk t₀ ⟶ A), a.left ≫ h = a'.left ≫ i → (a ≫ n).left ≫ h = (a'⁻¹).left ≫ i) → (∀ (T : Scheme.{0}) (t₁ : T ⟶ Sp (Localization.Away g)) (t₀ : T ⟶ Sp (Localization.Away f)), t₁ ≫ awayMap g = t₀ ≫ awayMap f → t₁ ≫ o.left ≫ h = (1 : Over.mk t₀ ⟶ A).left ≫ i) → ∃ _ : GrpObj H, MulAgree H A h i := by
   intro R _ _ f g hf X q hq hs A _ _ i hA H h hH m n o hm hn ho

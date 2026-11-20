@@ -15,9 +15,9 @@ namespace GlobalTheory.GrpMulSpread
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Establish `p : IsPullback (pullback.snd G.hom G.hom) (pullback.fst G.hom G.hom) G.hom G.hom` using `(IsPullback.of_hasPullback G.hom G.hom).flip`. Establish `p' : IsPullback (pullback.snd G'.hom G'.hom) (pullback.fst G'.hom G'.hom) G'.hom G'.hom` using `(IsPullback.of_hasPullback G'.hom G'.hom).flip`. Establish `c₁ : pullback.map G'.hom G'.hom G.hom G.hom F F f cart.w.symm cart.w.symm ≫ pullback.fst G.hom G.hom = pullback.fst G'.hom G'.hom ≫ F` using `pullback.lift_fst _ _ _`. Establish `c₂ : pullback.map G'.hom G'.hom G.hom G.hom F F f cart.w.symm cart.w.symm ≫ pullback.snd G.hom G.hom = pullback.snd G'.hom G'.hom ≫ F` using `pullback.lift_snd _ _ _`. Establish `q : IsPullback (pullback.map G'.hom G'.hom G.hom G.hom F F f cart.w.symm cart.w.symm ≫ pullback.snd G.hom G.hom) (pullback.fst G'.hom G'.hom) G.hom (F ≫ G.hom)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[c₂, cart.w]`. Conclude with `p'.paste_horiz cart`. Conclude with `(IsPullback.of_right q c₁ p).paste_vert cart`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_pullbackMap {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} {f : S' ⟶ S}
     {F : G'.left ⟶ G.left} (cart : IsPullback F G'.hom G.hom f) :
@@ -38,7 +38,7 @@ theorem isPullback_pullbackMap {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} {
   exact (IsPullback.of_right q c₁ p).paste_vert cart
 
 /- English proof (translation)
-Apply the tactic sequence `apply pullback.hom_ext <;> simp only [Category.assoc, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pullbackMap_comp {S₁ S₀ Y : Scheme.{0}} {A₁ : Over S₁} {D : Over S₀} {U : Over Y} {k : S₁ ⟶ S₀}
     {h₀ : S₀ ⟶ Y} {φ : A₁.left ⟶ D.left} {ψ : D.left ⟶ U.left} (hφ : IsPullback φ A₁.hom D.hom k)
@@ -50,21 +50,17 @@ theorem pullbackMap_comp {S₁ S₀ Y : Scheme.{0}} {A₁ : Over S₁} {D : Over
   apply pullback.hom_ext <;> simp only [Category.assoc, pullback.map, pullback.lift_fst, pullback.lift_snd, pullback.lift_fst_assoc, pullback.lift_snd_assoc]
 
 /- English proof (translation)
-Introduce `g n B _ ζ S _ R₀ s₀ d₀ Y sY u h₀ ψ sE e j cart hj hjψ`. Use `haveI := d₀.ab.proper`. Use `haveI := u.ab.smooth`. Use `haveI hqc : QuasiCompact (pullback.fst d₀.A.hom d₀.A.hom ≫ d₀.A.hom) := inferInstance`. Use `haveI hlft : LocallyOfFiniteType (pullback.snd u.A.hom h₀) := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set f₀ : pullback d₀.A.hom d₀.A.hom ⟶ Sp R₀ := pullback.fst d₀.A.hom d₀.A.hom ≫ d₀.A.hom with hf₀`. Establish `hμd : (μ[d₀.A]).left ≫ d₀.A.hom = f₀` using `Over.w μ[d₀.A]`. Establish `hμu : (μ[u.A]).left ≫ u.A.hom = pullback.fst u.A.hom u.A.hom ≫ u.A.hom` using `Over.w μ[u.A]`. Use `set mψ := pullback.map d₀.A.hom d₀.A.hom u.A.hom u.A.hom ψ ψ h₀ cart.w.symm cart.w.symm with hmψ`. Establish `w₁ : ((μ[d₀.A]).left ≫ ψ) ≫ u.A.hom = f₀ ≫ h₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, cart.w, ← Category.assoc, hμd]`. Establish `w₂ : (mψ ≫ (μ[u.A]).left) ≫ u.A.hom = f₀ ≫ h₀`. Rewrite using `[Category.assoc, hμu, ← Category.assoc, hmψ, pullback.lift_fst, Category.assoc, cart.w, hf₀, Category.assoc]`. Set `a : pullback d₀.A.hom d₀.A.hom ⟶ pullback u.A.hom h₀` to `pullback.lift _ _ w₁`. Set `b : pullback d₀.A.hom d₀.A.hom ⟶ pullback u.A.hom h₀` to `pullback.lift _ _ w₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `key : ∀ {S₁ : Scheme.{0}} {A₁ : Over S₁} [GrpObj A₁] {k : S₁ ⟶ Sp R₀} {φ : A₁.left ⟶ d₀.A.left} (hφ : IsPullback φ A₁.hom d₀.A.hom k), pullback.map A₁.hom A₁.hom d₀.A.hom d₀.A.hom φ φ k hφ.w.symm hφ.w.symm ≫ mψ = pullback.map A₁.hom A₁.hom u.A.hom u.A.hom (φ ≫ ψ) (φ ≫ ψ) (k ≫ h₀) …`. Introduce `S₁ A₁ _ k φ hφ`. Conclude with `pullbackMap_comp hφ cart`. Establish `hab : pullback.map e.A.hom e.A.hom d₀.A.hom d₀.A.hom j j (spMap R₀.subtype) hj.1.w.symm hj.1.w.symm ≫ a = pullback.map e.A.hom e.A.hom d₀.A.hom d₀.A.hom j j (spMap R₀.subtype) hj.1.w.symm hj.1.w.symm ≫ b`. Establish `m₁` using `(GlobalTheory.PullDegCompare.isGrpPullback_iff hj.1).1 hj`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `m₂` using `(GlobalTheory.PullDegCompare.isGrpPullback_iff hjψ.1).1 hjψ`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [a, b, Category.assoc, pullback.lift_fst]`. Rewrite using `[← Category.assoc, ← m₁, Category.assoc, m₂]`. Conclude with `(congrArg (· ≫ (μ[u.A]).left) (key hj.1).symm).trans (Category.assoc _ _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [a, b, Category.assoc, pullback.lift_snd]`. Take `⟨F, hF⟩` from `GlobalTheory.morphisms_eq_spread_to_subring S R₀ (pullback e.A.hom e.A.hom) (pullback d₀.A.hom d₀.A.hom) (pullback u.A.hom h₀) (e.A ⊗ e.A).hom f₀ (pullback.snd u.A.hom h₀) (pullback.map e.A.hom e.A.hom d₀.A.hom d₀.A.hom j j (spMap R₀.subtype) hj.1.w.symm hj.1.w.symm) a b (isPullb …`. Use `⟨F, fun R₁ hle hFs A₁ _ φ₁ hφ ↦ ?_⟩` and prove the remaining obligations. Establish `cart₁` using `hφ.1.paste_horiz cart`. Use `(GlobalTheory.PullDegCompare.isGrpPullback_iff cart₁).2 ?_` and prove the remaining obligations.
-
-Establish `H` using `hF R₁ hle hFs (pullback A₁.hom A₁.hom) (A₁ ⊗ A₁).hom (pullback.map A₁.hom A₁.hom d₀.A.hom d₀.A.hom φ₁ φ₁ _ hφ.1.w.symm hφ.1.w.symm) (isPullback_pullbackMap hφ.1)`. Establish `H'` using `congrArg (· ≫ pullback.fst u.A.hom h₀) H`. Simplify using `only [a, b, Category.assoc, pullback.lift_fst] at H'`. Establish `m` using `(GlobalTheory.PullDegCompare.isGrpPullback_iff hφ.1).1 hφ`. Rewrite using `[← Category.assoc, m, Category.assoc, H']`.
-
-Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ (μ[u.A]).left) (key hφ.1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGrpPullback_comp_spread_to_subring :
     ∀ (g n : ℕ) (B : Type) [CommRing B] (ζ : B) (S : Type) [CommRing S] (R₀ : Subring S) (s₀ : Sp R₀ ⟶ Sp B) (d₀ : SiegPre g n ζ s₀) (Y : Scheme.{0}) (sY : Y ⟶ Sp B) (u : SiegPre g n ζ sY) (h₀ : Sp R₀ ⟶ Y) (ψ : d₀.A.left ⟶ u.A.left) (sE : Sp S ⟶ Sp B) (e : SiegPre g n ζ sE) (j : e.A.left ⟶ d₀.A.left), IsPullback ψ d₀.A.hom u.A.hom h₀ → IsGrpPullback e.A d₀.A (spMap R₀.subtype) j → IsGrpPullback e.A u.A (spMap R₀.subtype ≫ h₀) (j ≫ ψ) → ∃ F : Finset S, ∀ (R₁ : Subring S) (hle : R₀ ≤ R₁), (F : Set S) ⊆ R₁ → ∀ (A₁ : Over (Sp R₁)) [GrpObj A₁] (φ₁ : A₁.left ⟶ d₀.A.left), IsGrpPullback A₁ d₀.A (spMap (Subring.inclusion hle)) φ₁ → IsGrpPullback A₁ u.A (spMap (Subring.inclusion hle) ≫ h₀) (φ₁ ≫ ψ) := by

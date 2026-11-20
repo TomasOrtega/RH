@@ -22,25 +22,25 @@ variable {k r : ℕ}
 def pc (c : Fin r → ℂ) : ℂ := ∏ a : Fin r with a.val < (Fin.last r).val, c a
 
 /- English proof (translation)
-Unfold `pc`. Conclude with `continuous_finset_prod _ fun a _ => continuous_apply a`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pc_continuous : Continuous (pc (r := r)) := by
   unfold pc
   exact continuous_finset_prod _ fun a _ => continuous_apply a
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun a _ => hc a`.
+A detailed English derivation is pending.
 -/
 theorem pc_ne_zero {c : Fin r → ℂ} (hc : c ∈ OmX r) : pc c ≠ 0 := Finset.prod_ne_zero_iff.2 fun a _ => hc a
 
 /- English proof (translation)
-Take `⟨μ, _, rfl⟩` from `(Formalism.FourierDecayAlt.P.TwoByOneBlock.UWb_iff g).1 (Formalism.FourierDecayAlt.P5.Rad.glev_last_uwb hg)`. Establish `e : wCell k r (Fin.last r) c * Formalism.FourierDecayAlt.B2.embWb k r μ = bigCell k r c μ`. Rewrite using `[Formalism.FourierDecayAlt.P5.Rad.wCell_last_eq, ← (Formalism.FourierDecayAlt.P.bruhat_big_cell_factorization k r c μ).1]`. Rewrite using `[e]`. Establish `hmin` using `big_cell_minors_holds k r z z' c μ hz hz'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hζ : herm (Hpk k r) (bigCell k r c μ *ᵥ z') z = zetaL k r z z' (Fin.last r) (Formalism.FourierDecayAlt.B2.embWb k r μ)`. Rewrite using `[Formalism.FourierDecayAlt.P5.Rad.zetaL_last, ← Formalism.FourierDecayAlt.P.TwoByOneBlock.jV_wbPart hz', Formalism.FourierDecayAlt.P.BigCellHermitian.bigCell_mulVec_jV, Formalism.FourierDecayAlt.P.TwoByOneBlock.emb_mulVec_jV]`. Establish `hr : Dmin k r z z' (bigCell k r c μ) ⟨r, by omega⟩ = pc c` using `hmin.1 (Fin.last r)`. Use `⟨hr, ?_⟩` and prove the remaining obligations. Establish `hzeta` using `hmin.2.2 hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hzeta` using `[hζ]`. Unfold `Formalism.QuantumDeterminants.zeta at hzeta`. Rewrite `hzeta` using `[hr]`. Establish `h2` using `div_mul_cancel₀ (Dmin k r z z' (bigCell k r c μ) (Fin.last (r + 1))) (pc_ne_zero hc)`. Rewrite `h2` using `[hzeta]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2.symm`.
+A detailed English derivation is pending.
 -/
 theorem dmin_wCell {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z') {c : Fin r → ℂ}
     (hc : c ∈ OmX r) {g : Mx k r} (hg : g ∈ Glev k r (Fin.last r)) :
@@ -67,43 +67,37 @@ theorem dmin_wCell {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' :
 end Minors
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P z z' π π' D F Φ _hP hz hz' hπ hπ' hF hΦ`. Substitute `hz hz' hπ hπ'` using the available equality. Take `⟨⟨_, ε, hε, hG⟩, hC⟩` from `hF`. Establish `hW` using `Formalism.FourierDecayAlt.P.weyl_subgroup_closed P.k P.r`. Establish `hN` using `Formalism.FourierDecayAlt.P.unipotent_radical_closed P.k P.r`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGV` using `Formalism.FourierDecayAlt.P.unitary_group_closed P.k P.r`. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarW` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarN` as an intermediate fact. Use `Formalism.FourierDecayAlt.P.B5.haar_sigmaFinite D.haarW'` as an intermediate fact. Establish `hcont : Continuous (fun h : Mx P.k P.r => Dmin P.k P.r D.z D.z' h (Fin.last (P.r + 1)))` using `(Formalism.FourierDecayAlt.P.JCx1.contDiff_Dmin D.z D.z' (Fin.last (P.r + 1))).continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨R0, hR0⟩` from `hC.isCompact.exists_bound_of_continuousOn hcont.continuousOn`. Establish `hae : ∀ᵐ (p : (Mt P.k P.r × Mt P.k P.r) × (Mt P.k P.r × Mt P.k P.r)) ∂((D.μW.prod D.μN).prod (D.μW'.prod D.μN)), (Matrix.of p.1.1 ∈ UWset P.k P.r D.z ∧ Matrix.of p.1.2 ∈ Formalism.QuantumDeterminants.Nset P.k P.r) ∧ (Matrix.of p.2.1 ∈ UWset P.k P.r D.z' ∧ Matrix.of p.2.2 ∈ Formal …`. Establish `hw : ∀ᵐ (a : Mt P.k P.r) ∂D.μW, Matrix.of a ∈ UWset P.k P.r D.z` using `(measure_eq_zero_iff_ae_notMem.1 D.haarW.conc).mono fun a ha => not_not.1 ha`. Establish `hn : ∀ᵐ (a : Mt P.k P.r) ∂D.μN, Matrix.of a ∈ Formalism.QuantumDeterminants.Nset P.k P.r` using `(measure_eq_zero_iff_ae_notMem.1 D.haarN.conc).mono fun a ha => not_not.1 ha`. Establish `hw' : ∀ᵐ (a : Mt P.k P.r) ∂D.μW', Matrix.of a ∈ UWset P.k P.r D.z'` using `(measure_eq_zero_iff_ae_notMem.1 D.haarW'.conc).mono fun a ha => not_not.1 ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ᵐ (q : Mt P.k P.r × Mt P.k P.r) ∂(D.μW.prod D.μN), Matrix.of q.1 ∈ UWset P.k P.r D.z ∧ Matrix.of q.2 ∈ Formalism.QuantumDeterminants.Nset P.k P.r` using `(Measure.quasiMeasurePreserving_fst.ae hw).and (Measure.quasiMeasurePreserving_snd.ae hn)`. Establish `h2 : ∀ᵐ (q : Mt P.k P.r × Mt P.k P.r) ∂(D.μW'.prod D.μN), Matrix.of q.1 ∈ UWset P.k P.r D.z' ∧ Matrix.of q.2 ∈ Formalism.QuantumDeterminants.Nset P.k P.r` using `(Measure.quasiMeasurePreserving_fst.ae hw').and (Measure.quasiMeasurePreserving_snd.ae hn)`. Conclude with `(Measure.quasiMeasurePreserving_fst.ae h1).and (Measure.quasiMeasurePreserving_snd.ae h2)`. Introduce `c hc`. Use `set p0 : ℝ := ‖pc c‖ with hp0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0pos : 0 < p0` using `norm_pos_iff.2 (pc_ne_zero hc)`. Use `set U : Set (Fin P.r → ℂ) := {c' | p0 / 2 < ‖pc c'‖ ∧ ‖pc c'‖ < 2 * p0} with hU`. Establish `hUo : IsOpen U` using `(isOpen_lt continuous_const (continuous_norm.comp pc_continuous)).inter (isOpen_lt (continuous_norm.comp pc_continuous) continuous_const)`. Establish `hcU : c ∈ U` using `⟨by linarith, by linarith⟩`. Use `set e' : ℝ := ε / (2 * p0) ^ 2 with he'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `set R' : ℝ := R0 / (p0 / 2) with hR'`. Establish `he'pos : 0 < e'` using `div_pos hε (by positivity)`. Use `⟨U, hUo, hcU, {g | g ∈ Glev P.k P.r (Fin.last P.r) ∧ e' ≤ GGl P.k P.r D.z D.z' g ∧ ‖zetaL P.k P.r D.z D.z' (Fin.last P.r) g‖ ≤ R'}, isCompact_zeta_le D.z D.z' D.z_mem D.z'_mem D.T_pos D.T'_pos e' R', fun g hg => lt_of_lt_of_le he'pos hg.2.1, ?_⟩` and prove the remaining obligations. Introduce `c' hc' g hg hgK`. Distinguish the cases in `hd : (c', g) ∈ DomR P.k P.r D.z D.z'`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `swap`. Conclude with `radSp_zero_off Φ (x := (c', g)) hd`. Rewrite using `[hΦ (c', g) hd]`. Unfold `resG`. Establish `hc'O : c' ∈ OmX P.r` using `hd.1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set x : Mx P.k P.r := wCell P.k P.r (Fin.last P.r) c' * g with hx`. Take `⟨hDr, hDl⟩` from `dmin_wCell D.z_mem D.z'_mem hc'O hg`. Rewrite `hDr`, `hDl` using `[← hx]`. Establish `hxG : x ∈ B.GV P.k P.r` using `hGV.mul_mem _ (Formalism.FourierDecayAlt.P.Qx3.wlist_glev hc'O _).1 _ hg.1`. Establish `hF0 : ∀ y ∈ B.GV P.k P.r, Dmin P.k P.r D.z D.z' y ⟨P.r, by omega⟩ = pc c' → Dmin P.k P.r D.z D.z' y (Fin.last (P.r + 1)) = zetaL P.k P.r D.z D.z' (Fin.last P.r) g * pc c' → F y = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `y hy hyr hyl`. Assume the negation of the conclusion as `hFy`. Apply `hgK` to reduce the goal to its premises. Establish `hsupp : y ∈ tsupport F` using `subset_tsupport F hFy`. Establish `hb` using `hR0 y hsupp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGy` using `hG y hy hFy`. Rewrite `hb` using `[hyl]`. Establish `hGy' : Gf P.k P.r D.z D.z' y = Complex.normSq (pc c') * GGl P.k P.r D.z D.z' g`. Unfold `Formalism.QuantumDeterminants.Gf GGl`. Rewrite using `[hyr, hyl, Complex.normSq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hpc1 : p0 / 2 < ‖pc c'‖` using `hc'.1`. Establish `hpc2 : ‖pc c'‖ < 2 * p0` using `hc'.2`. Establish `hpcpos : 0 < ‖pc c'‖` using `by linarith`. Establish `hns : Complex.normSq (pc c') = ‖pc c'‖ ^ 2` using `by rw [Complex.sq_norm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hg, ?_, ?_⟩` and prove the remaining obligations. Establish `hGG : ε ≤ ‖pc c'‖ ^ 2 * GGl P.k P.r D.z D.z' g` using `by rw [← hns, ← hGy']; exact hGy`. Establish `hGGpos : 0 < GGl P.k P.r D.z D.z' g` using `hd.2.2`. Establish `hsq : ‖pc c'‖ ^ 2 ≤ (2 * p0) ^ 2` using `by nlinarith`. Rewrite using `[he', div_le_iff₀ (by positivity)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite `hb` using `[norm_mul]`. Establish `hz0 : 0 ≤ ‖zetaL P.k P.r D.z D.z' (Fin.last P.r) g‖` using `norm_nonneg _`. Establish `hR0nn : 0 ≤ R0` using `le_trans (by positivity) hb`. Rewrite using `[hR', le_div_iff₀ (by positivity)]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hJ0 : B.JF D F x = 0`. Unfold `B.JF besselJ`. Use `integral_eq_zero_of_ae (hae.mono fun p hp => ?_)` and prove the remaining obligations. Take `⟨⟨ha, hn⟩, ⟨ha', hn'⟩⟩` from `hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set a := Matrix.of p.1.1`. Use `set n := Matrix.of p.1.2`. Use `set a' := Matrix.of p.2.1`. Use `set n' := Matrix.of p.2.2`. Establish `hainv : a⁻¹ ∈ UWset P.k P.r D.z` using `(hW D.z).inv_mem _ ha`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hninv : n⁻¹ ∈ Formalism.QuantumDeterminants.Nset P.k P.r` using `hN.inv_mem _ hn`. Establish `hs1 : a⁻¹ * n⁻¹ ∈ Formalism.QuantumDeterminants.Sset P.k P.r D.z` using `⟨a⁻¹, hainv, n⁻¹, hninv, rfl⟩`. Establish `hs2 : n' ∈ Formalism.QuantumDeterminants.Sset P.k P.r D.z'` using `⟨1, (hW D.z').one_mem, n', hn', (one_mul _).symm⟩`. Establish `hs3 : (1 : Mx P.k P.r) ∈ Formalism.QuantumDeterminants.Sset P.k P.r D.z` using `⟨1, (hW D.z).one_mem, 1, hN.one_mem, (mul_one _).symm⟩`. Establish `hs4 : a' ∈ Formalism.QuantumDeterminants.Sset P.k P.r D.z'` using `⟨a', ha', 1, hN.one_mem, (mul_one _).symm⟩`.
-
-Establish `hinvD : ∀ l, Dmin P.k P.r D.z D.z' (a⁻¹ * n⁻¹ * x * n' * a') l = Dmin P.k P.r D.z D.z' x l`. Introduce `l`. Establish `e1` using `diagonal_inverse_holds P.k P.r D.z D.z' D.z_mem D.z'_mem 1 hs3 a' hs4 (a⁻¹ * n⁻¹ * x * n') l`. Rewrite `e1` using `[one_mul]`. Rewrite using `[e1]`.
-
-Conclude with `diagonal_inverse_holds P.k P.r D.z D.z' D.z_mem D.z'_mem _ hs1 n' hs2 x l`. Establish `hyG : a⁻¹ * n⁻¹ * x * n' * a' ∈ B.GV P.k P.r` using `hGV.mul_mem _ (hGV.mul_mem _ (hGV.mul_mem _ (hGV.mul_mem _ hainv.1 _ hninv.1) _ hxG) _ hn'.1) _ ha'.1`. Establish `hFy : F (a⁻¹ * n⁻¹ * x * n' * a') = 0` using `hF0 _ hyG (by rw [hinvD]; exact hDr) (by rw [hinvD]; exact hDl)`. Establish `hxy : (Matrix.of p.1.1)⁻¹ * (Matrix.of p.1.2)⁻¹ * x * Matrix.of p.2.2 * Matrix.of p.2.1 = a⁻¹ * n⁻¹ * x * n' * a'` using `rfl`. Simplify using `only [hxy, hFy, ContinuousLinearMap.comp_zero, ContinuousLinearMap.zero_comp, smul_zero, Pi.zero_apply]`.
-
-Rewrite using `[hJ0, smul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jfCptLocAll : JFCptLocAll := by
   intro Wp Wq _ _ _ _ _ _ P z z' π π' D F Φ _hP hz hz' hπ hπ' hF hΦ
@@ -220,12 +214,12 @@ theorem jfCptLocAll : JFCptLocAll := by
   rw [hJ0, smul_zero]
 
 /- English proof (translation)
-The claim follows from `herCptTopAll_of_jf jfCptLocAll`.
+A detailed English derivation is pending.
 -/
 theorem herCptTopAll : HerCptTopAll := herCptTopAll_of_jf jfCptLocAll
 
 /- English proof (translation)
-The claim follows from `thmPActualCpt_of_jf jfCptLocAll hSF`.
+A detailed English derivation is pending.
 -/
 theorem thmPActualCpt_of_stepForm (hSF : StepFormCptAll) : ThmPActualCpt := thmPActualCpt_of_jf jfCptLocAll hSF
 

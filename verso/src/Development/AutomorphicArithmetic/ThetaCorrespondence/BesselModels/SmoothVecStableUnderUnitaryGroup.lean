@@ -8,9 +8,9 @@ open Matrix GlobalTheory.RealBessel GlobalTheory.BesselMapOne Formalism.L2.Theta
 namespace UpperTheory.Lit.Bur.SmoothTranslate
 
 /- English proof (translation)
-Establish `hd : IsUnit g.det` using `(Matrix.isUnit_iff_isUnit_det g).1 hu`. Establish `hAB : g⁻¹ * g = 1` using `Matrix.nonsing_inv_mul _ hd`. Establish `hBA : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hd`. Establish `hBA' : (g⁻¹)ᴴ * gᴴ = 1` using `by rw [← conjTranspose_mul, hBA, conjTranspose_one]`. Establish `h : gᴴ * J * g = J` using `hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX' : Xᴴ * J + J * X = 0` using `hX`. Use `show (g⁻¹ * X * g)ᴴ * J + J * (g⁻¹ * X * g) = 0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc, Matrix.mul_add, Matrix.add_mul]`. Use `_ = 0 := by rw [hBA, hBA', Matrix.mul_one, Matrix.mul_one, hX', Matrix.mul_zero, Matrix.zero_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_mem_lieG {n : ℕ} {J g X : Matrix (Fin n) (Fin n) ℂ} (hu : IsUnit g) (hg : g ∈ Formalism.QuantumDeterminants.UH J)
     (hX : X ∈ lieG J) : g⁻¹ * X * g ∈ lieG J := by
@@ -28,9 +28,9 @@ theorem conj_mem_lieG {n : ℕ} {J g X : Matrix (Fin n) (Fin n) ℂ} (hu : IsUni
     _ = 0 := by rw [hBA, hBA', Matrix.mul_one, Matrix.mul_one, hX', Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det g).1 hu`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons x l ih`. Rewrite using `[List.map_cons, List.prod_cons, List.prod_cons, Matrix.mul_assoc x, ← ih]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_prod_conj {n : ℕ} {g : Matrix (Fin n) (Fin n) ℂ} (hu : IsUnit g)
     (l : List (Matrix (Fin n) (Fin n) ℂ)) : g * (l.map fun x => g⁻¹ * x * g).prod = l.prod * g := by
@@ -42,13 +42,13 @@ theorem mul_prod_conj {n : ℕ} {g : Matrix (Fin n) (Fin n) ℂ} (hu : IsUnit g)
     simp only [← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `n H _ _ J hJ σ hσ g hg v hv k Xs hXs`. Establish `hu : IsUnit g` using `isUnit_of_mem_UH hJ hg`. Establish `hY : ∀ i, g⁻¹ * Xs i * g ∈ lieG J` using `fun i => conj_mem_lieG hu hg (hXs i)`. Establish `hc : ∀ (X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ), NormedSpace.exp (t • (g⁻¹ * X * g)) = g⁻¹ * NormedSpace.exp (t • X) * g` using `fun X t => by`. Rewrite using `[← Matrix.exp_conj' _ _ hu, Matrix.mul_smul, Matrix.smul_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `((σ g).restrictScalars ℝ).contDiff.comp (hv k _ hY)`. Use `h1 using 2 with t` and compare the differences between its conclusion and the goal. Use `show σ _ (σ g v) = σ g (σ _ v)`. Establish `hP` using `expProd_mem_UH hJ hXs t`. Establish `hQ` using `expProd_mem_UH hJ hY t`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hσ.1.2 _ hP _ hg`. Establish `e2` using `hσ.1.2 _ hg _ hQ`. Establish `e3 : g * (List.ofFn fun i => NormedSpace.exp (t i • (g⁻¹ * Xs i * g))).prod = (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod * g`. Rewrite using `[← mul_prod_conj hu, List.map_ofFn]`. Simplify using `only [hc, Function.comp_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e4` using `e1.symm.trans ((congrArg σ e3).symm.trans e2)`. Conclude with `congrArg (fun T : H →L[ℂ] H => T v) e4`.
+A detailed English derivation is pending.
 -/
 theorem smoothVec_translate : ∀ {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {J : Matrix (Fin n) (Fin n) ℂ} (hJ : IsUnit J) {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
@@ -79,7 +79,7 @@ end UpperTheory.Lit.Bur.SmoothTranslate
 open Matrix GlobalTheory.RealBessel GlobalTheory.BesselMapOne Formalism.L2.Theta GlobalTheory.SmVec
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @UpperTheory.Lit.Bur.SmoothTranslate.smoothVec_translate | exact UpperTheory.Lit.Bur.SmoothTranslate.smoothVec_translate | (intros; apply UpperTheory.Lit.Bur.SmoothTranslate.smoothVec_translate <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.UpperTheory.Lit.Bur.smoothVec_stable_under_unitaryGroup : ∀ {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {J : Matrix (Fin n) (Fin n) ℂ} (hJ : IsUnit J) {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.QuantumDeterminants.UH J) σ) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH J) {v : H} (hv : SmoothVec (lieG J) σ v), SmoothVec (lieG J) σ (σ g v) := by
   first | exact @UpperTheory.Lit.Bur.SmoothTranslate.smoothVec_translate | exact UpperTheory.Lit.Bur.SmoothTranslate.smoothVec_translate | (intros; apply UpperTheory.Lit.Bur.SmoothTranslate.smoothVec_translate <;> assumption)

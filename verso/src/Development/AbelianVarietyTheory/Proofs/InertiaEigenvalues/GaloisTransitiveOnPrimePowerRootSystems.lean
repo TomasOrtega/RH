@@ -9,11 +9,11 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[← isOpen_compl_iff, isOpen_iff_forall_mem_open]`. Introduce `g hg`. Use `⟨(fun h => g⁻¹ * h) ⁻¹' (MulAction.stabilizer (GQ l) a : Set (GQ l)), ?_, (stabilizer_isOpen_of_isIntegral a).preimage (continuous_const.mul continuous_id), ?_⟩` and prove the remaining obligations. Introduce `h hh`. Establish `hs : (g⁻¹ * h) a = a` using `hh`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_compl_iff, Set.mem_ofPred_eq] at hg ⊢`. Introduce `hb`. Apply `hg` to reduce the goal to its premises. Rewrite `hs` using `[AlgEquiv.mul_apply]`. Establish `hga` using `congrArg g hs`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hga` using `[← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`. Rewrite using `[← hga, hb]`. Use `show (g⁻¹ * g) a = a`. Rewrite using `[inv_mul_cancel, AlgEquiv.one_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_setOf_gal_apply_eq_padic (l : ℕ) [Fact l.Prime] (a b : Om l) :
     IsClosed {g : GQ l | g a = b} := by
@@ -34,19 +34,17 @@ theorem isClosed_setOf_gal_apply_eq_padic (l : ℕ) [Fact l.Prime] (a b : Om l) 
     rw [inv_mul_cancel, AlgEquiv.one_apply]
 
 /- English proof (translation)
-Introduce `l _ K π hπ y z hy hz hy' hz'`. Establish `hGK : IsClosed ((GK K : Subgroup (GQ l)) : Set (GQ l))`. Unfold `GK`. Conclude with `InfiniteGalois.fixingSubgroup_isClosed _`. Establish `hpow : ∀ w : ℕ → Om l, (∀ n, w (n + 1) ^ l = w n) → ∀ m k, w (m + k) ^ (l ^ k) = w m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw m k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, pow_mul', ← add_assoc, hw, ih]`. Set `T : ℕ → Set (GQ l)` to `fun n => (GK K : Set (GQ l)) ∩ ⋂ m, ⋂ (_ : m ≤ n), {g : GQ l | g (y m) = z m}`.
+Proceed by induction. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcl : ∀ n, IsClosed (T n)` using `fun n => hGK.inter (isClosed_iInter fun m => isClosed_iInter fun _ => isClosed_setOf_gal_apply_eq_padic l (y m) (z m))`. Establish `hdec : ∀ n, T (n + 1) ⊆ T n`. Introduce and unpack `n g ⟨h1, h2⟩`. Use `⟨h1, Set.mem_iInter.2 fun m => Set.mem_iInter.2 fun hm => ?_⟩` and prove the remaining obligations. Conclude with `Set.mem_iInter.1 (Set.mem_iInter.1 h2 m) (Nat.le_succ_of_le hm)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : ∀ n, (T n).Nonempty`. Introduce `n`. Establish `hyn : y n ^ (l ^ n) = ((π : ↥K.1) : Om l)`. Establish `h` using `hpow y hy' 0 n`. Rewrite `h` using `[zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h, hy]`. Establish `hzn : z n ^ (l ^ n) = ((π : ↥K.1) : Om l)`. Establish `h` using `hpow z hz' 0 n`. Rewrite `h` using `[zero_add]`. Rewrite using `[h, hz]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg⟩` from `GlobalTheory.T.exists_galois_apply_eq_of_pow_eq_prime l K π hπ (l ^ n) (y n) (z n) hyn hzn (pow_pos (Fact.out : l.Prime).pos n)`. Use `⟨(g : GQ l), g.2, Set.mem_iInter.2 fun m => Set.mem_iInter.2 fun hm => ?_⟩` and prove the remaining obligations. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Use `show (g : GQ l) (y m) = z m`. Rewrite using `[← hpow y hy' m k, ← hpow z hz' m k, map_pow, hg]`.
-
-Take `⟨g, hg⟩` from `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed T hdec hne (hcl 0).isCompact hcl`. Use `⟨⟨g, (Set.mem_iInter.1 hg 0).1⟩, fun n => ?_⟩` and prove the remaining obligations. Conclude with `Set.mem_iInter.1 (Set.mem_iInter.1 (Set.mem_iInter.1 hg n).2 n) le_rfl`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem galois_transitive_on_root_systems_of_prime : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (π : ↥(OL K)), Prime π → ∀ y z : ℕ → Om l, y 0 = ((π : ↥K.1) : Om l) → z 0 = ((π : ↥K.1) : Om l) → (∀ n, y (n + 1) ^ l = y n) → (∀ n, z (n + 1) ^ l = z n) → ∃ g : ↥(GK K), ∀ n, (g : GQ l) (y n) = z n := by
   intro l _ K π hπ y z hy hz hy' hz'

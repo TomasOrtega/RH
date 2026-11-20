@@ -17,21 +17,21 @@ def coarse (a : ℕ) (bl : List ℕ) (i : ℕ) : ℕ := blkIdx (a :: bl) i
 def fine (a : ℕ) (bl : List ℕ) (i : ℕ) : ℕ := if i < a then i else a + blkIdx bl (i - a)
 
 /- English proof (translation)
-Simplify using `[coarse, blkIdx, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coarse_of_lt {a : ℕ} {bl : List ℕ} {i : ℕ} (h : i < a) : coarse a bl i = 0 := by
   simp [coarse, blkIdx, h]
 
 /- English proof (translation)
-Simplify using `[coarse, blkIdx, Nat.not_lt.mpr h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coarse_of_le {a : ℕ} {bl : List ℕ} {i : ℕ} (h : a ≤ i) : coarse a bl i = blkIdx bl (i - a) + 1 := by
   simp [coarse, blkIdx, Nat.not_lt.mpr h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `h'`. Rewrite `h` using `[coarse_of_le (Nat.not_lt.mp h')]`. Use linear arithmetic over natural numbers and integers.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `coarse_of_lt`.
+A detailed English derivation is pending.
 -/
 theorem coarse_eq_zero {a : ℕ} {bl : List ℕ} {i : ℕ} : coarse a bl i = 0 ↔ i < a := by
   constructor
@@ -42,7 +42,7 @@ theorem coarse_eq_zero {a : ℕ} {bl : List ℕ} {i : ℕ} : coarse a bl i = 0 �
   · exact coarse_of_lt
 
 /- English proof (translation)
-Unfold `fine`. Rewrite using `[if_pos hi]`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fine_lt_right {a : ℕ} {bl : List ℕ} {i l : ℕ} (hi : i < a) : fine a bl l < fine a bl i ↔ l < i := by
   unfold fine
@@ -50,7 +50,7 @@ theorem fine_lt_right {a : ℕ} {bl : List ℕ} {i l : ℕ} (hi : i < a) : fine 
   split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `fine`. Rewrite using `[if_pos hj]`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fine_lt_left {a : ℕ} {bl : List ℕ} {j l : ℕ} (hj : j < a) : fine a bl j < fine a bl l ↔ j < l := by
   unfold fine
@@ -58,11 +58,11 @@ theorem fine_lt_left {a : ℕ} {bl : List ℕ} {j l : ℕ} (hj : j < a) : fine a
   split_ifs <;> omega
 
 /- English proof (translation)
-Establish `hi : a ≤ i`. Assume the negation of the conclusion as `h'`. Rewrite `h` using `[coarse_of_lt (Nat.not_le.mp h')]`. Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[coarse_of_le hi]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hj : j < a`. Rewrite using `[fine_lt_left hj]`. Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[coarse_of_le (Nat.not_lt.mp hj)]`. Unfold `fine`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg hj, if_neg (Nat.not_lt.mpr hi)]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem fine_lt_of_coarse_lt {a : ℕ} {bl : List ℕ} {i j : ℕ} (h : coarse a bl j < coarse a bl i) :
     fine a bl j < fine a bl i := by
@@ -79,11 +79,9 @@ theorem fine_lt_of_coarse_lt {a : ℕ} {bl : List ℕ} {i j : ℕ} (h : coarse a
     omega
 
 /- English proof (translation)
-Proceed by induction on `bl with`. Consider the case `nil => intro i j _`. Simplify using `[blkIdx]`. Consider the case `cons b bs ih`. Introduce `i j hij`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [blkIdx]`. Use `split_ifs with h1 h2 h2`. Conclude with `le_rfl`. Conclude with `Nat.zero_le _`. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `Nat.succ_le_succ (ih (by omega))`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem blkIdx_mono (bl : List ℕ) : Monotone (blkIdx bl) := by
   induction bl with
@@ -98,11 +96,9 @@ theorem blkIdx_mono (bl : List ℕ) : Monotone (blkIdx bl) := by
     · exact Nat.succ_le_succ (ih (by omega))
 
 /- English proof (translation)
-Proceed by induction on `j generalizing i with`. Consider the case `zero => simp at h`. Consider the case `succ j ih`. Rewrite using `[List.replicate_succ, blkIdx]`. Use `split_ifs with h1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Nat.div_eq_of_lt h1).symm`. Establish `h2 : i - t < j * t`. Establish `: (j + 1) * t = j * t + t` using `by ring`. Use linear arithmetic over natural numbers and integers. Rewrite using `[ih _ h2]`.
-
-Establish `h3 : i = (i - t) + t` using `by omega`. Use `conv_rhs => rw [h3, Nat.add_div_right _ ht]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem blkIdx_replicate {t : ℕ} (ht : 0 < t) (j i : ℕ) (h : i < j * t) : blkIdx (List.replicate j t) i = i / t := by
   induction j generalizing i with
@@ -139,16 +135,16 @@ def btG (n : ℕ) (κ : Type) [CommRing κ] (β : ℕ → ℕ) : Subgroup (GL (F
     exact Matrix.blockTriangular_inv_of_blockTriangular ha
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h _ _ hij => h hij, fun h i j hij => h i j hij⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_btG {β : ℕ → ℕ} {M : GL (Fin n) κ} :
     M ∈ btG n κ β ↔ ∀ i j : Fin n, β j.val < β i.val → (M : Matrix (Fin n) (Fin n) κ) i j = 0 :=
   ⟨fun h _ _ hij => h hij, fun h i j hij => h i j hij⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.toSquareBlock_def, Matrix.of_apply, Matrix.mul_apply]`. Rewrite using `[← Finset.sum_subtype (Finset.univ.filter (fun l => b l = c)) (by simp) (fun l => A i l * B l j)]`. Use `symm`. Apply `Finset.sum_subset (Finset.filter_subset _ _)` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `l _ hl`. Establish `hl' : b l ≠ c` using `by simpa using hl`. Break down `lt_or_gt_of_ne hl' with h | h` into its components or cases. Rewrite using `[hA (by rw [i.2]; exact h), zero_mul]`. Rewrite using `[hB (by rw [j.2]; exact h), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem toSquareBlock_mul {A B : Matrix (Fin n) (Fin n) κ} {b : Fin n → ℕ} (hA : A.BlockTriangular b)
     (hB : B.BlockTriangular b) (c : ℕ) :
@@ -193,9 +189,9 @@ theorem blkDet_val {β : ℕ → ℕ} (c : ℕ) (M : ↥(btG n κ β)) :
 abbrev blockUT (n : ℕ) (κ : Type) [CommRing κ] (a : ℕ) (bl : List ℕ) : Subgroup (GL (Fin n) κ) := btG n κ (coarse a bl)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Apply `Finset.sum_eq_single i` to reduce the goal to its premises. Introduce `l _ hl`. Establish `hl' : l.val ≠ i.val` using `fun h => hl (Fin.ext h)`. Break down `lt_or_gt_of_ne hl' with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hA ((fine_lt_right hi).mpr h), zero_mul]`. Rewrite using `[hB ((fine_lt_left hi).mpr h), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fine_diag_mul {a : ℕ} {bl : List ℕ} {A B : Matrix (Fin n) (Fin n) κ}
     (hA : A.BlockTriangular (fun i : Fin n => fine a bl i.val)) (hB : B.BlockTriangular (fun i : Fin n => fine a bl i.val))
@@ -220,13 +216,13 @@ def uniUT (n : ℕ) (κ : Type) [CommRing κ] (a : ℕ) (bl : List ℕ) : Subgro
     exact h1.symm⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun i j hij => h1 (fine_lt_of_coarse_lt hij), fun i j hi hji => h1 ((fine_lt_right hi).mpr hji), h2⟩`. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨fun i j hij => ?_, h3⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hi : i.val < a`. Conclude with `h2 i j hi ((fine_lt_right hi).mp hij)`. Apply `h1 show coarse a bl j.val < coarse a bl i.val` to reduce the goal to its premises. Rewrite using `[coarse_of_le (Nat.not_lt.mp hi)]`. Distinguish the cases in `hj : j.val < a`.
+Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coarse_of_lt hj]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[coarse_of_le (Nat.not_lt.mp hj)]`. Establish `: fine a bl j.val < fine a bl i.val` using `hij`. Unfold `fine at this`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[if_neg hi, if_neg hj]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem mem_uniUT {a : ℕ} {bl : List ℕ} {M : GL (Fin n) κ} :
     M ∈ uniUT n κ a bl ↔ M ∈ blockUT n κ a bl ∧
@@ -251,7 +247,7 @@ theorem mem_uniUT {a : ℕ} {bl : List ℕ} {M : GL (Fin n) κ} :
         omega
 
 /- English proof (translation)
-Introduce `_ h` and use `(mem_uniUT.mp h).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem uniUT_le_blockUT (n : ℕ) (κ : Type) [CommRing κ] (a : ℕ) (bl : List ℕ) : uniUT n κ a bl ≤ blockUT n κ a bl :=
   fun _ h => (mem_uniUT.mp h).1
@@ -260,11 +256,11 @@ def supSum (a : ℕ) (S : Finset ℕ) (M : Matrix (Fin n) (Fin n) κ) : κ :=
   ∑ i : Fin n, ∑ j : Fin n, if i.val + 1 = j.val ∧ j.val < a ∧ i.val ∈ S then M i j else 0
 
 /- English proof (translation)
-Establish `hi : i.val < a` using `by omega`. Establish `hne : i ≠ j` using `fun h => by rw [h] at hij; omega`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_add i j hne, hA.2 i hi, hB.2 j hj, one_mul, mul_one, add_comm]`. Introduce and unpack `l _ ⟨h1, h2⟩`. Establish `h1' : l.val ≠ i.val` using `fun h => h1 (Fin.ext h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h2' : l.val ≠ j.val` using `fun h => h2 (Fin.ext h)`. Distinguish the cases in `h : l.val < i.val`. Rewrite using `[hA.1 ((fine_lt_right hi).mpr h), zero_mul]`. Rewrite using `[hB.1 ((fine_lt_left hj).mpr (by omega)), mul_zero]`. Introduce `h`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ i) h`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sup_mul {a : ℕ} {bl : List ℕ} {A B : GL (Fin n) κ} (hA : A ∈ uniUT n κ a bl) (hB : B ∈ uniUT n κ a bl)
     (i j : Fin n) (hij : i.val + 1 = j.val) (hj : j.val < a) :
@@ -321,7 +317,7 @@ def detChar (χ : ℕ → κˣ →* Kˣ) (n a : ℕ) (bl : List ℕ) : ↥(block
   ∏ s ∈ Finset.range bl.length, (χ s).comp (blkDet n κ (coarse a bl) (s + 1))
 
 /- English proof (translation)
-Rewrite using `[detChar, MonoidHom.finsetProd_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem detChar_apply (χ : ℕ → κˣ →* Kˣ) (a : ℕ) (bl : List ℕ) (M : ↥(blockUT n κ a bl)) :
     detChar χ n a bl M = ∏ s ∈ Finset.range bl.length, χ s (blkDet n κ (coarse a bl) (s + 1) M) := by
@@ -336,25 +332,25 @@ def diagMat (r n : ℕ) (g : Matrix (Fin r) (Fin r) κ) : Matrix (Fin n) (Fin n)
   fun i j => if h : i.val < r ∧ j.val < r then g ⟨i.val, h.1⟩ ⟨j.val, h.2⟩ else (1 : Matrix (Fin n) (Fin n) κ) i j
 
 /- English proof (translation)
-The claim follows from `dif_pos ⟨hi, hj⟩`.
+A detailed English derivation is pending.
 -/
 theorem diagMat_of_lt {r : ℕ} (g : Matrix (Fin r) (Fin r) κ) {i j : Fin n} (hi : i.val < r) (hj : j.val < r) :
     diagMat r n g i j = g ⟨i.val, hi⟩ ⟨j.val, hj⟩ := dif_pos ⟨hi, hj⟩
 
 /- English proof (translation)
-The claim follows from `dif_neg fun h => hi h.1`.
+A detailed English derivation is pending.
 -/
 theorem diagMat_of_not_left {r : ℕ} (g : Matrix (Fin r) (Fin r) κ) {i : Fin n} (j : Fin n) (hi : ¬ i.val < r) :
     diagMat r n g i j = (1 : Matrix (Fin n) (Fin n) κ) i j := dif_neg fun h => hi h.1
 
 /- English proof (translation)
-The claim follows from `dif_neg fun h => hj h.2`.
+A detailed English derivation is pending.
 -/
 theorem diagMat_of_not_right {r : ℕ} (g : Matrix (Fin r) (Fin r) κ) (i : Fin n) {j : Fin n} (hj : ¬ j.val < r) :
     diagMat r n g i j = (1 : Matrix (Fin n) (Fin n) κ) i j := dif_neg fun h => hj h.2
 
 /- English proof (translation)
-Use extensionality with `i j`. Unfold `diagMat`. Use `split_ifs with h`. Simplify using `[Matrix.one_apply, Fin.ext_iff]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem diagMat_one (r : ℕ) : diagMat r n (1 : Matrix (Fin r) (Fin r) κ) = 1 := by
   ext i j
@@ -364,13 +360,13 @@ theorem diagMat_one (r : ℕ) : diagMat r n (1 : Matrix (Fin r) (Fin r) κ) = 1 
   · rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `hi : i.val < r`. Distinguish the cases in `hj : j.val < r`. Rewrite using `[diagMat_of_lt _ hi hj, Matrix.mul_apply, Matrix.mul_apply]`. Apply `Finset.sum_of_injOn (Fin.castLE h) (fun a _ b _ hab => Fin.castLE_injective h hab) (by simp [Set.MapsTo])` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `l _ hl`. Establish `hl' : ¬ l.val < r` using `fun hlt => hl ⟨⟨l.val, hlt⟩, by simp, Fin.ext rfl⟩`. Rewrite using `[diagMat_of_not_right _ _ hl', Matrix.one_apply_ne (fun e => hl' (by rw [← e]; exact hi)), zero_mul]`. Introduce `l _`. Rewrite using `[diagMat_of_lt g hi (show (Fin.castLE h l).val < r from l.2), diagMat_of_lt g' (show (Fin.castLE h l).val < r from l.2) hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[diagMat_of_not_right _ _ hj]`. Rewrite using `[Matrix.mul_apply]`. Repeatedly rewrite using `[diagMat_of_not_right g' _ hj]`. Rewrite using `[← Matrix.mul_apply, Matrix.mul_one, diagMat_of_not_right _ _ hj]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[diagMat_of_not_left _ _ hi, Matrix.mul_apply]`. Repeatedly rewrite using `[diagMat_of_not_left g _ hi]`. Rewrite using `[← Matrix.mul_apply, Matrix.one_mul, diagMat_of_not_left _ _ hi]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem diagMat_mul {r : ℕ} (h : r ≤ n) (g g' : Matrix (Fin r) (Fin r) κ) :
     diagMat r n (g * g') = diagMat r n g * diagMat r n g' := by
@@ -405,9 +401,9 @@ theorem diagEmb_val {r : ℕ} (h : r ≤ n) (g : GL (Fin r) κ) :
     (diagEmb κ h g : Matrix (Fin n) (Fin n) κ) = diagMat r n (g : Matrix (Fin r) (Fin r) κ) := rfl
 
 /- English proof (translation)
-Introduce `g g' e`. Apply `Units.ext` to reduce the goal to its premises. Apply `Matrix.ext` to reduce the goal to its premises. Introduce `i j`. Establish `e'` using `congrArg (fun X : GL (Fin n) κ => (X : Matrix (Fin n) (Fin n) κ) (Fin.castLE h i) (Fin.castLE h j)) e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `beta_reduce at e'`. Rewrite `e'` using `[diagEmb_val, diagEmb_val, diagMat_of_lt _ (show (Fin.castLE h i).val < r from i.2) (show (Fin.castLE h j).val < r from j.2), diagMat_of_lt _ (show (Fin.castLE h i).val < r from i.2) (show (Fin.castLE h j).val < r from j.2)]`. Conclude with `e'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagEmb_injective {r : ℕ} (h : r ≤ n) : Function.Injective (diagEmb κ h) := by
   intro g g' e
@@ -422,7 +418,7 @@ theorem diagEmb_injective {r : ℕ} (h : r ≤ n) : Function.Injective (diagEmb 
   exact e'
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `hij' : coarse r bl j.val < coarse r bl i.val` using `hij`. Establish `hi : ¬ i.val < r` using `fun hi => by rw [coarse_of_lt hi] at hij'; omega`. Rewrite using `[diagEmb_val, diagMat_of_not_left _ _ hi]`. Conclude with `Matrix.one_apply_ne fun e => by rw [e] at hij'; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagEmb_mem_blockUT {r : ℕ} (h : r ≤ n) (bl : List ℕ) (g : GL (Fin r) κ) : diagEmb κ h g ∈ blockUT n κ r bl := by
   intro i j hij
@@ -449,11 +445,11 @@ def HK (n : ℕ) (κ : Type) [CommRing κ] (r : ℕ) (bl : List ℕ) : Subgroup 
   (blkHom n κ (coarse r bl) 0).ker.map (blockUT n κ r bl).subtype
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨M, hM⟩, hk, rfl⟩`. Use `⟨hM, fun i j hi hj => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun X : Matrix {i : Fin n // coarse r bl i.val = 0} {i : Fin n // coarse r bl i.val = 0} κ => X ⟨i, coarse_of_lt hi⟩ ⟨j, coarse_of_lt hj⟩) (MonoidHom.mem_ker.mp hk)`. Use `show (M : Matrix (Fin n) (Fin n) κ) i j = _`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1` using `only [blkHom_apply, Matrix.one_apply, Subtype.mk.injEq]`. Introduce and unpack `⟨hM, h⟩`. Use `⟨⟨M, hM⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, MonoidHom.mem_ker]`. Use extensionality with `i j`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h1` using `h i.1 j.1 (coarse_eq_zero.mp i.2) (coarse_eq_zero.mp j.2)`. Rewrite using `[blkHom_apply, h1]`. Simplify using `only [Matrix.one_apply, Subtype.ext_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_HK {r : ℕ} {bl : List ℕ} {M : GL (Fin n) κ} :
     M ∈ HK n κ r bl ↔ M ∈ blockUT n κ r bl ∧
@@ -474,15 +470,15 @@ theorem mem_HK {r : ℕ} {bl : List ℕ} {M : GL (Fin n) κ} :
     simp only [Matrix.one_apply, Subtype.ext_iff]
 
 /- English proof (translation)
-Introduce `_ h` and use `(mem_HK.mp h).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HK_le_blockUT (n : ℕ) (κ : Type) [CommRing κ] (r : ℕ) (bl : List ℕ) : HK n κ r bl ≤ blockUT n κ r bl :=
   fun _ h => (mem_HK.mp h).1
 
 /- English proof (translation)
-Introduce `M h`. Take `⟨h1, h2⟩` from `mem_HK.mp h`. Use `mem_uniUT.mpr ⟨h1, fun i j hi hji => ?_, fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[h2 i j hi (by omega)]`. Conclude with `Matrix.one_apply_ne fun e => by rw [e] at hji; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2 i i hi hi, Matrix.one_apply_eq]`.
+A detailed English derivation is pending.
 -/
 theorem HK_le_uniUT (n : ℕ) (κ : Type) [CommRing κ] (r : ℕ) (bl : List ℕ) : HK n κ r bl ≤ uniUT n κ r bl := by
   intro M h
@@ -499,17 +495,17 @@ def restr {r : ℕ} (h : r ≤ n) (A : Matrix (Fin n) (Fin n) κ) : Matrix (Fin 
   A.submatrix (Fin.castLE h) (Fin.castLE h)
 
 /- English proof (translation)
-The claim follows from `Matrix.submatrix_one _ (Fin.castLE_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem restr_one {r : ℕ} (h : r ≤ n) : restr h (1 : Matrix (Fin n) (Fin n) κ) = 1 :=
   Matrix.submatrix_one _ (Fin.castLE_injective h)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [restr, Matrix.submatrix_apply, Matrix.mul_apply]`. Use `symm`. Apply `Finset.sum_of_injOn (Fin.castLE h) (fun x _ y _ hxy => Fin.castLE_injective h hxy) (by simp [Set.MapsTo])` to reduce the goal to its premises. Introduce `l _ hl`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl' : ¬ l.val < r` using `fun hlt => hl ⟨⟨l.val, hlt⟩, by simp, Fin.ext rfl⟩`. Establish `hc : coarse r bl (Fin.castLE h j).val < coarse r bl l.val`. Rewrite using `[coarse_of_lt (show (Fin.castLE h j).val < r from j.2), coarse_of_le (Nat.not_lt.mp hl')]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hB hc, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Introduce `l _`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem restr_mul {r : ℕ} (h : r ≤ n) (bl : List ℕ) (A : Matrix (Fin n) (Fin n) κ) {B : Matrix (Fin n) (Fin n) κ}
     (hB : B.BlockTriangular (fun i => coarse r bl i.val)) : restr h (A * B) = restr h A * restr h B := by
@@ -551,7 +547,7 @@ def HPar (n : ℕ) (κ : Type) [CommRing κ] {r : ℕ} (h : r ≤ n) (bl : List 
   (H₀.comap (blk0 n κ h bl)).map (blockUT n κ r bl).subtype
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨M', hM', rfl⟩`. Conclude with `⟨M'.2, hM'⟩`. Introduce and unpack `⟨hM, h0⟩`. Conclude with `⟨⟨M, hM⟩, h0, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_HPar {r : ℕ} {h : r ≤ n} {bl : List ℕ} {H₀ : Subgroup (GL (Fin r) κ)} {M : GL (Fin n) κ} :
     M ∈ HPar n κ h bl H₀ ↔ ∃ hM : M ∈ blockUT n κ r bl, blk0 n κ h bl ⟨M, hM⟩ ∈ H₀ := by
@@ -562,7 +558,7 @@ theorem mem_HPar {r : ℕ} {h : r ≤ n} {bl : List ℕ} {H₀ : Subgroup (GL (F
     exact ⟨⟨M, hM⟩, h0, rfl⟩
 
 /- English proof (translation)
-Introduce `_ hM` and use `(mem_HPar.mp hM).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HPar_le {r : ℕ} (h : r ≤ n) (bl : List ℕ) (H₀ : Subgroup (GL (Fin r) κ)) : HPar n κ h bl H₀ ≤ blockUT n κ r bl :=
   fun _ hM => (mem_HPar.mp hM).1
@@ -703,7 +699,7 @@ def HPsym (n k rS : ℕ) : Subgroup (GL (Fin n) κ) where
     · intro h; exact absurd (Finset.mem_univ j) h⟩
 
 /- English proof (translation)
-Introduce `_ h` and use `h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HPsym_le (n k rS : ℕ) : HPsym κ n k rS ≤ uniUT n κ n [] := fun _ h => h.1
 
@@ -713,11 +709,11 @@ def offSum {n : ℕ} (k rS : ℕ) (M : Matrix (Fin n) (Fin n) κ) : κ :=
   ∑ i : Fin n, ∑ j : Fin n, if i.val + 1 = rS ∧ j.val = rS + k then M i j else 0
 
 /- English proof (translation)
-Establish `hne : i ≠ j` using `fun h => by rw [h] at hi; omega`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_add i j hne, hA.1.2 i i.2, hB.1.2 j j.2, one_mul, mul_one, add_comm]`. Introduce and unpack `l _ ⟨h1, h2⟩`. Establish `h1' : l.val ≠ i.val` using `fun h => h1 (Fin.ext h)`. Establish `h2' : l.val ≠ j.val` using `fun h => h2 (Fin.ext h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `c1 : l.val < i.val`. Rewrite using `[hA.1.1 ((fine_lt_right i.2).mpr c1), zero_mul]`. Distinguish the cases in `c2 : l.val < rS + k`. Rewrite using `[hB.2 l j (by omega) c2 hj, mul_zero]`. Rewrite using `[hB.1.1 ((fine_lt_left j.2).mpr (by omega)), mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem off_mul {n k rS : ℕ} {A B : GL (Fin n) κ} (hA : A ∈ HPsym κ n k rS) (hB : B ∈ HPsym κ n k rS)
     (i j : Fin n) (hi : i.val + 1 = rS) (hj : j.val = rS + k) :
@@ -775,7 +771,7 @@ variable {κ}
 def lamQ (ξ : κˣ →* Kˣ) (n a b : ℕ) : ↥(HQ κ n a b) →* Kˣ := detChar (fun _ => ξ) n a [b]
 
 /- English proof (translation)
-Rewrite using `[lamQ, detChar_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lamQ_apply (ξ : κˣ →* Kˣ) (n a b : ℕ) (M : ↥(HQ κ n a b)) :
     lamQ ξ n a b M = ξ (blkDet n κ (coarse a [b]) 1 M) := by

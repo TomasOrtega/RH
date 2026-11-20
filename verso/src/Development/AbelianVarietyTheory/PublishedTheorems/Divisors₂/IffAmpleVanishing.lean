@@ -16,19 +16,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AmpleAcyclicModel
 
 /- English proof (translation)
-Introduce `k _ S _ p A _ hA L hL hamp U hU κ _ _ W hW hWU n`. Use `haveI : IsNoetherianRing Γ(S, U) := IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`. Set `t : Spec (CommRingCat.of Γ(S, U)) ⟶ S` to `hU.fromSpec`. Establish `h : IsPullback (pullback.fst A.hom t) (pullback.snd A.hom t) A.hom t` using `IsPullback.of_hasPullback _ _`. Take `⟨hproj, hsm, -, -⟩` from `AmpleBaseChange.isProjBy_smooth_isProper_geometricallyIntegral S A L hA hL hamp Γ(S, U) t _ _ _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Flat (pullback.snd A.hom t) := inferInstance`. Establish `hrange : (pullback.fst A.hom t).opensRange = A.hom ⁻¹ᵁ U`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `x ∈ Set.range (pullback.fst A.hom t) ↔ A.hom x ∈ (U : Set S)`. Rewrite using `[Scheme.Pullback.range_fst, hU.range_fromSpec]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hle : ∀ i, W i ≤ (pullback.fst A.hom t).opensRange` using `fun i => hrange ▸ (le_iSup W i).trans hWU.le`. Take `⟨e⟩` from `cechLB_pull_iso_of_isOpenImmersion k A.left (A.hom ≫ p) L _ (pullback.fst A.hom t) κ W hL hle`. Use `HomologicalComplex.ExactAt.of_iso ?_ e` and prove the remaining obligations. Use `(cechLB_exactAt_succ_iff (pullback.snd A.hom t) _ _ _ n).1 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `cechLB_exactAt_succ_of_fibres Γ(S, U) _ (pullback.snd A.hom t) hproj _ (LB.isLB_pull hL _) ?_ κ _ (fun i => (hW i).preimage_of_isOpenImmersion _ (hle i)) ?_ n` and prove the remaining obligations. Introduce `P hP`. Use `letI : Field (Γ(S, U) ⧸ P) := Ideal.Quotient.field P`. Set `χ : Γ(S, U) →+* AlgebraicClosure (Γ(S, U) ⧸ P)` to `(algebraMap (Γ(S, U) ⧸ P) (AlgebraicClosure (Γ(S, U) ⧸ P))).comp (Ideal.Quotient.mk P)`. Use `⟨AlgebraicClosure (Γ(S, U) ⧸ P), inferInstance, χ, ?_, ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[RingHom.ker_comp_of_injective _ (algebraMap (Γ(S, U) ⧸ P) _).injective, Ideal.mk_ker]`. Introduce `κ' _ _ D' hD' hc' m`. Use `hA.proper` as an intermediate fact. Set `B` to `(Over.pullback t).obj A`. Establish `hB : IsAbelianScheme B` using `isAbelianScheme_pullback_obj t A hA`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper B.hom` using `hB.proper`. Establish `hLB : (L.pull (pullback.fst A.hom t)).IsLB` using `LB.isLB_pull hL _`. Establish `hampB : Out.RelAmple B (L.pull (pullback.fst A.hom t))` using `AmpleBaseChange.relAmple_of_isPullback hL hamp h`. Set `A₀` to `(Over.pullback (Spec.map (CommRingCat.ofHom χ))).obj B`. Establish `hA₀ : IsAbelianScheme A₀` using `isAbelianScheme_pullback_obj _ B hB`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hamp₀` using `AmpleBaseChange.relAmple_of_isPullback hLB hampB (IsPullback.of_hasPullback B.hom (Spec.map (CommRingCat.ofHom χ)))`. Conclude with `AV _ A₀ hA₀ _ (LB.isLB_pull hLB _) hamp₀ ⊤ (isAffineOpen_top _) κ' D' hD' (by rw [hc', Scheme.Hom.preimage_top]) m`. Rewrite using `[← Scheme.Hom.preimage_iSup, hWU, ← hrange]`. Conclude with `Scheme.Hom.preimage_opensRange _`.
+A detailed English derivation is pending.
 -/
 theorem of_ampleVanishing (AV : GlobalTheory.Published.AmpleVanishing) :
     ∀ (k : Type) [CommRing k] (S : Scheme.{0}) [IsLocallyNoetherian S] (p : S ⟶ Sp k) (A : Over S) [GrpObj A],
@@ -75,7 +75,7 @@ theorem of_ampleVanishing (AV : GlobalTheory.Published.AmpleVanishing) :
     exact Scheme.Hom.preimage_opensRange _
 
 /- English proof (translation)
-Use `⟨fun H K _ _ A _ hA L hL hamp => ?_, fun AV k _ S _ _ p A _ => of_ampleVanishing AV k S p A⟩` and prove the remaining obligations. Establish `: ConnectedSpace (Sp K)` using `inferInstanceAs (ConnectedSpace (PrimeSpectrum K))`. Establish `h` using `H K (Sp K) (𝟙 _) A hA L hL hamp`. Rewrite `h` using `[Category.comp_id]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem iff_ampleVanishing : GlobalTheory.Published.AbelianAmpleAcyclic ↔ GlobalTheory.Published.AmpleVanishing := by
   refine ⟨fun H K _ _ A _ hA L hL hamp => ?_, fun AV k _ S _ _ p A _ => of_ampleVanishing AV k S p A⟩
@@ -84,7 +84,7 @@ theorem iff_ampleVanishing : GlobalTheory.Published.AbelianAmpleAcyclic ↔ Glob
   rwa [Category.comp_id] at h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstanceAs (ConnectedSpace (PrimeSpectrum R)), (WeierstrassCurve.ellPolAV W).isAb, WeierstrassCurve.ellPolAV_g W, (WeierstrassCurve.ellPolAV W).isLB, (WeierstrassCurve.ellPolAV W).ample⟩`.
+Supply the required witnesses or components.
 -/
 theorem hyp_ell {R : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] (W : WeierstrassCurve R) [W.IsElliptic] :
     IsLocallyNoetherian (Sp R) ∧ ConnectedSpace (Sp R) ∧ IsAbelianScheme (WeierstrassCurve.ellPolAV W).A ∧
@@ -94,7 +94,7 @@ theorem hyp_ell {R : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R] (W : W
     WeierstrassCurve.ellPolAV_g W, (WeierstrassCurve.ellPolAV W).isLB, (WeierstrassCurve.ellPolAV W).ample⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [isUnit_iff_ne_zero] norm_num [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]⟩`.
+Supply the required witnesses or components.
 -/
 example : (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℚ).IsElliptic :=
   ⟨by
@@ -102,7 +102,7 @@ example : (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℚ).IsElliptic :=
     norm_num [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]⟩
 
 /- English proof (translation)
-Take `⟨h₁, h₂, h₃, -, h₅, h₆⟩` from `hyp_ell W`. Establish `h` using `H R (Sp R) (𝟙 _) _ h₃ _ h₅ h₆ ⊤ (isAffineOpen_top _) (Fin 2) D hD (by rw [hc]; rfl) 0`. Rewrite `h` using `[Category.comp_id]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ell_exactAt_one (H : GlobalTheory.Published.AbelianAmpleAcyclic) {R : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R]
     (W : WeierstrassCurve R) [W.IsElliptic] (D : Fin 2 → (WeierstrassCurve.ellPolAV W).A.left.Opens)

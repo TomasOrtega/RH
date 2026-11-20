@@ -17,11 +17,11 @@ noncomputable section
 namespace GlobalTheory.UnramifiedChar
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `(isCompact_range (continuous_norm.comp hd)).bddAbove`. Establish `hle : ∀ g, ‖d g‖ ≤ 1`. Introduce `g`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt C hlt`. Establish `: ‖d (g ^ n)‖ ≤ C` using `hC ⟨g ^ n, rfl⟩`. Rewrite `this` using `[map_pow, norm_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ‖d g‖ * ‖d g⁻¹‖ = 1` using `by rw [← norm_mul, ← map_mul, mul_inv_cancel, map_one, norm_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `hle g` as an intermediate fact. Use `hle g⁻¹` as an intermediate fact. Use `norm_nonneg (d g)` as an intermediate fact. Use `norm_nonneg (d g⁻¹)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_eq_one_of_compact {Γ k : Type} [Group Γ] [TopologicalSpace Γ] [CompactSpace Γ] [NormedField k]
     (d : Γ →* k) (hd : Continuous d) (g : Γ) : ‖d g‖ = 1 := by
@@ -41,7 +41,7 @@ theorem norm_eq_one_of_compact {Γ k : Type} [Group Γ] [TopologicalSpace Γ] [C
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.UnramifiedCrys.compactSpace_GK K`. Set `d : ↥(GK K) →* Om l` to `((LL.1.val : ↥LL.1 →ₐ[ℚ_[l]] Om l) : ↥LL.1 →* Om l).comp ((Units.coeHom ↥LL.1).comp μ)`. Establish `hd : Continuous d` using `continuous_subtype_val.comp hμ`. Conclude with `(GlobalTheory.Per.Val.mem_OL_iff LL _).2 (norm_eq_one_of_compact d hd g).le`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_mem_OL (K LL : FinExt l) (μ : ↥(GK K) →* (↥LL.1)ˣ)
     (hμ : Continuous fun g => ((μ g : (↥LL.1)ˣ) : ↥LL.1)) (g : ↥(GK K)) :
@@ -60,15 +60,13 @@ def unitLat (K LL : FinExt l) (μ : ↥(GK K) →* (↥LL.1)ˣ)
   L := GlobalTheory.IndefiniteRowSideFullHecke.SelmerFiniteUnramified.charLat Subtype.val_injective μ fun g => ⟨⟨_, val_mem_OL K LL μ hμ g⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `l _ P AI T K LL μ hμ hI`. Take `⟨hc, hj⟩` from `GlobalTheory.UnramifiedRep.isCrys_and_jump_eq_zero l P AI T K LL (unitLat K LL μ hμ) (fun g hg (x : ↥LL.1) => by`. Express the relevant statement in the definitionally equal form `((μ g : (↥LL.1)ˣ) : ↥LL.1) * x = x`. Rewrite using `[hI g hg, Units.val_one, one_mul])`. Express the relevant statement in the definitionally equal form `IsCrys (P.PD K) (charRep μ) at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `∀ τ a, IsJumpV (P.PD K) (charRep μ) τ a → a = 0 at hj`. Use `⟨hc, fun τ b => ?_⟩` and prove the remaining obligations. Take `⟨hcomp, -⟩` from `GlobalTheory.Per.Components.components_finrank l P AI T K LL ↥LL.1 (charRep μ)`. Take `⟨hfd, -, hdr⟩` from `hcomp τ`. Use `haveI := hfd`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdim : finrank ↥LL.1 ↥(DdRE (P.PD K) (charRep μ) τ) = 1`. Rewrite using `[hdr (GlobalTheory.Per.CrisDR.isDR_of_isCrys l P AI T K LL ↥LL.1 (charRep μ) hc).1, finrank_self]`. Establish `hnj : ∀ a, a ≠ 0 → multV (P.PD K) (charRep μ) τ a = 0` using `fun a ha => Formalism.MainNotions.N.Pv.LocalLengthBound.rk_multV_of_not_jump (P.PD K) (charRep μ) τ a (fun h => ha (hj τ a h))`. Use `split_ifs with hb`. Substitute `hb` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨lo, hlo⟩` from `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_fildR_lo (P.PD K) (charRep μ) τ`. Take `⟨hi, hhi⟩` from `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_fildR_hi (P.PD K) (charRep μ) τ`. Establish `hsum` using `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_sum_multV (P.PD K) (charRep μ) τ (min lo 0) (max hi 1) (by omega)`. Rewrite `hsum` using `[hlo _ (min_le_left _ _), hhi _ (le_max_left _ _), finrank_bot, Nat.cast_zero, sub_zero, hdim, Finset.sum_eq_single (0 : ℤ) (fun a _ ha => hnj a ha) (fun h => absurd (Finset.mem_Ico.2 ⟨min_le_right _ _, by omega⟩) h)]`. Conclude with `hsum` after adjusting the coercions.
-
-Conclude with `hnj b hb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCrys_and_multV_eq : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l) (μ : ↥(GK K) →* (↥LL.1)ˣ), Continuous (fun g => ((μ g : (↥LL.1)ˣ) : ↥LL.1)) → (∀ g ∈ IK K, μ g = 1) → IsCrys (P.PD K) (charRep μ) ∧ ∀ (τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (b : ℤ), multV (P.PD K) (charRep μ) τ b = if b = 0 then 1 else 0 := by
   intro l _ P AI T K LL μ hμ hI

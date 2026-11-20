@@ -8,7 +8,7 @@ noncomputable section
 namespace PI.UnitaryGroupMassFormula.UJClassMass
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ p hp h`. Conclude with `Ring.ne_bot_of_isMaximal_of_not_isField hp (NumberField.RingOfIntegers.not_isField E) (Ideal.eq_bot_of_comap_eq_bot h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem wPlace : WPlace := by
   intro F E _ _ _ _ _ p hp h
@@ -16,9 +16,9 @@ theorem wPlace : WPlace := by
     (Ideal.eq_bot_of_comap_eq_bot h)
 
 /- English proof (translation)
-Introduce `F E _ _ _ σ M J R _ _ g hg`. Establish `key : ∀ A : Matrix (Fin M) (Fin M) E, PI.UnitaryApproxDefs.cT (PI.UnitaryApproxDefs.sigR σ R) (A.map (PI.UnitaryApproxDefs.inclE (F` using `F) R)) = (PI.UnitaryApproxDefs.cT (σ : E →+* E) A).map (PI.UnitaryApproxDefs.inclE (F := F) R) := by`. Introduce `A`. Use extensionality with `i j`. Simplify using `[PI.UnitaryApproxDefs.cT, PI.UnitaryApproxDefs.sigR, PI.UnitaryApproxDefs.inclE]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hg' : PI.UnitaryApproxDefs.cT (σ : E →+* E) (g : Matrix (Fin M) (Fin M) E) * J * (g : Matrix (Fin M) (Fin M) E) = J` using `hg`. Express the relevant statement in the definitionally equal form `PI.UnitaryApproxDefs.cT _ _ * _ * _ = _`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, RingHom.mapMatrix_apply]`. Rewrite using `[key, ← Matrix.map_mul, ← Matrix.map_mul, hg']`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem bcU : BcU := by
   intro F E _ _ _ σ M J R _ _ g hg
@@ -37,17 +37,15 @@ theorem bcU : BcU := by
   rw [key, ← Matrix.map_mul, ← Matrix.map_mul, hg']
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ σ hσ V _ _ _ h M b hsy hnd`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `PI.UnitaryApproxDefs.IsHerm PI.UnitaryApproxDefs.cT`. Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, AlgHom.coe_toRingHom, hσ, gramOf]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← starRingEnd_apply]`. Conclude with `hsy.eq (b j) (b i)`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `hdet`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hc0` to reduce the goal to its premises. Establish `hbw : ∀ i, h (b i) (∑ j, c j • b j) = 0`. Introduce `i`. Establish `hi` using `congrFun hc i`. Simplify using `only [Matrix.mulVec, dotProduct, gramOf, Pi.zero_apply] at hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_smul, smul_eq_mul]`. Rewrite using `[← hi]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Establish `hw : ∀ x, h x (∑ j, c j • b j) = 0`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `hwd : (∑ j, c j • b j) = w at hbw ⊢`. Rewrite using `[← b.sum_repr x]`. Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, hbw, smul_zero, Finset.sum_const_zero]`. Establish `hw0` using `hnd.2 _ hw`. Use function extensionality and compare the values at `j`.
-
-Conclude with `Fintype.linearIndependent_iff.1 b.linearIndependent c hw0 j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem gramOK : GramOK := by
   intro F E _ _ _ _ σ hσ V _ _ _ h M b hsy hnd

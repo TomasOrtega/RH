@@ -15,13 +15,13 @@ noncomputable section
 namespace GlobalTheory.SplitOffS0
 
 /- English proof (translation)
-Introduce `D N X ρ hρ i Q hQ P hsplit hP`. Establish `hinv : ∀ z : D.host.E, D.host.conj (D.host.conj z) = z` using `fun z => Formalism.L2.Host.conj_conj (D := D) D.host z`. Set `c : 𝓞 D.host.E → 𝓞 D.host.E` to `fun x => RingOfIntegers.mapRingHom (D.host.conj : D.host.E →+* D.host.E) x`. Establish `hc : ∀ x : 𝓞 D.host.E, ((c x : 𝓞 D.host.E) : D.host.E) = D.host.conj (x : D.host.E)` using `fun x => rfl`. Establish `key : ∀ x y : 𝓞 D.host.E, (y : D.host.E) = D.host.conj (x : D.host.E) → (x ∈ Formalism.HermitianLatticesTheory.conjIdeal (K` using `D.host.E) P.asIdeal ↔ y ∈ P.asIdeal) := fun x y h => GlobalTheory.Mem.Col2.HAt.mem_conjIdeal_Pv P.asIdeal x y h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hy⟩` from `hsplit`. Introduce `heq`. Establish `h1 : c x ∈ Formalism.HermitianLatticesTheory.conjIdeal (K` using `D.host.E) P.asIdeal := (key (c x) x (by rw [hc, hinv])).2 hx`. Conclude with `hy (c x) (hc x) (heq ▸ h1)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hPQ`. Conclude with `hP (hQ P (by simpa using hPQ))`. Introduce `Q' hQ' heq`. Apply `hP` to reduce the goal to its premises. Use `hρ.goodSetup_badPlaces_conj i Q' (hQ Q' (by simpa using hQ')) P ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y hxy`. Rewrite using `[heq]`. Conclude with `key x y hxy`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ {D : D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N} {ρ : Setup X}, ρ.Good → ∀ (i : X.Tw) (Q : Finset (Pl D.host.E)), (∀ P' ∈ Q, P' ∈ X.S0 i) → ∀ (P : Pl D.host.E), IsSplitPl D.host P → P ∉ X.S0 i → Bridge.SplitOff P (Q : Set (Pl D.host.E)) := by
   intro D N X ρ hρ i Q hQ P hsplit hP

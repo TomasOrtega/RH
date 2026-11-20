@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Rewrite using `[← mem_perfectClosure_iff_pow_mem q, mem_perfectClosure_iff_natSepDegree_eq_one]`. Establish `hint : IsIntegral K x` using `Algebra.IsIntegral.isIntegral x`. Establish `hspl : ((minpoly K x).map (algebraMap K L)).Splits` using `Normal.splits inferInstance x`. Rewrite using `[Polynomial.natSepDegree_eq_of_splits _ hspl, Finset.card_eq_one]`. Use `⟨x, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `y`. Simplify using `only [Multiset.mem_toFinset, Polynomial.mem_aroots, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hy⟩`. Take `⟨σ, hσ⟩` from `minpoly.exists_algEquiv_of_root' hint.isAlgebraic hy`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hσ, hx σ]`. Introduce `h`. Rewrite using `[h]`. Conclude with `⟨minpoly.ne_zero hint, minpoly.aeval K x⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private lemma exists_pow_mem_of_fixed (K L : Type) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L]
     [Normal K L] (q : ℕ) [ExpChar K q] (x : L) (hx : ∀ σ : L ≃ₐ[K] L, σ x = x) :
@@ -30,11 +30,11 @@ private lemma exists_pow_mem_of_fixed (K L : Type) [Field K] [Field L] [Algebra 
     exact ⟨minpoly.ne_zero hint, minpoly.aeval K x⟩
 
 /- English proof (translation)
-Establish `hx : ∀ σ : L ≃ₐ[FractionRing A] L, σ (b : L) = b` using `fun σ => by`. Establish `h` using `algebraMap_galRestrict_apply A (K := FractionRing A) (L := L) (B := integralClosure A L) σ b`. Rewrite `h` using `[hb]`. Conclude with `h.symm`. Take `⟨n, k, hk⟩` from `exists_pow_mem_of_fixed (FractionRing A) L q (b : L) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hint : IsIntegral A (algebraMap (FractionRing A) L k)`. Rewrite using `[hk]`. Conclude with `(b ^ q ^ n).2`. Establish `hk' : IsIntegral A k` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom A (FractionRing A) L) (algebraMap (FractionRing A) L).injective).mp hint`. Take `⟨a, ha⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hk'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨n, a, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[SubmonoidClass.coe_pow, ← hk, ← ha, ← IsScalarTower.algebraMap_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma fixed_pow_mem (A L : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [Field L] [Algebra A L]
     [Algebra (FractionRing A) L] [IsScalarTower A (FractionRing A) L] [FiniteDimensional (FractionRing A) L]
@@ -59,13 +59,11 @@ private lemma fixed_pow_mem (A L : Type) [CommRing A] [IsDomain A] [IsIntegrally
   rfl
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `ExpChar.exists (FractionRing A)`. Take `⟨n, a, ha⟩` from `fixed_pow_mem A L q b hb`. Establish `h1 : φ b ^ q ^ n = φ' b ^ q ^ n`. Rewrite using `[← map_pow, ← map_pow, ha]`. Conclude with `congrArg (fun f : A →+* Ω => f a) h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hq with`. Consider the case `zero => simpa using h1`. Consider the case `prime hp`. Establish `hA : (q : A) = 0`. Apply `IsFractionRing.injective A (FractionRing A)` to reduce the goal to its premises.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_natCast, map_zero, CharP.cast_eq_zero]`. Establish `hΩ : (q : Ω) = 0`. Use `congrArg (fun f : A →+* Ω => f q) h` as an intermediate fact. Simplify using `only [RingHom.comp_apply, map_natCast] at this`. Rewrite using `[← map_natCast (φ.comp (algebraMap A _)) q, hA, map_zero]`.
-
-Use `haveI : CharP Ω q := (CharP.charP_iff_prime_eq_zero hp).mpr hΩ`. Use `haveI : ExpChar Ω q := ExpChar.prime hp`. Conclude with `iterateFrobenius_inj Ω q n h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma eq_of_fixed (A L Ω : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] [Field L] [Algebra A L]
     [Algebra (FractionRing A) L] [IsScalarTower A (FractionRing A) L] [FiniteDimensional (FractionRing A) L]
@@ -92,11 +90,9 @@ private lemma eq_of_fixed (A L Ω : Type) [CommRing A] [IsDomain A] [IsIntegrall
     exact iterateFrobenius_inj Ω q n h1
 
 /- English proof (translation)
-Introduce `hInv A L Ω _ _ _ _ _ _ _ _ _ _ φ φ' h`. Set `G` to `integralClosure A L ≃ₐ[A] integralClosure A L`. Use `haveI : Finite G := Finite.of_equiv _ (galRestrict A (FractionRing A) L (integralClosure A L)).toEquiv`. Set `A'` to `FixedPoints.subring (integralClosure A L) G`. Use `haveI : SMulCommClass G A' (integralClosure A L) := ⟨fun g a b => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `g • ((a : integralClosure A L) * b) = (a : integralClosure A L) * (g • b)`. Rewrite using `[smul_mul', show g • (a : integralClosure A L) = a from a.2 g]⟩`. Use `haveI : Algebra.IsInvariant A' (integralClosure A L) G := ⟨fun b hb => ⟨⟨b, hb⟩, rfl⟩⟩`. Take `⟨g, hg⟩` from `hInv A' (integralClosure A L) G Ω φ φ' (by`. Use extensionality with `a`.
-
-Conclude with `eq_of_fixed A L Ω φ φ' h a fun g => a.2 g)`. Conclude with `⟨g, hg⟩`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.galTrans_of : InvTrans → GalTrans := by
   intro hInv A L Ω _ _ _ _ _ _ _ _ _ _ φ φ' h

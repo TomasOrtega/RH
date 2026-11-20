@@ -14,9 +14,9 @@ open scoped TensorProduct
 open GlobalTheory.IndefiniteRowSideFullHecke
 
 /- English proof (translation)
-Distinguish the cases in `hex : ∃ s', Formalism.ThetaLiftIndependence.IsClassReps h' (Formalism.MainNotions.StandardLattice.tMap e L) s'`. Use `Formalism.MainNotions.StandardLattice.mass_transport e he L hex fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Formalism.HermitianLatticesTheory.massBasic_mass_eq h' _ hex]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[Formalism.HermitianLatticesTheory.massBasic_sum_cast, Formalism.HermitianLatticesTheory.massBasic_sum_cast]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.ThetaLiftIndependence.latLiftIndep K V' h' _ _ _ (fun _ _ _ => rfl) (fun _ _ _ => rfl) _ _ hex.choose_spec hs`. Establish `hex' : ¬ ∃ s, Formalism.ThetaLiftIndependence.IsClassReps h L s` using `fun ⟨s, hs⟩ => hex ⟨_, Formalism.MainNotions.StandardLattice.tMap_reps e he L s hs⟩`. Unfold `Formalism.HermitianLatticesTheory.mass`. Rewrite using `[dif_neg hex, dif_neg hex']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mass_tMap {K V V' : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [AddCommGroup V'] [Module K V'] [Module (𝓞 K) V']
@@ -36,9 +36,9 @@ theorem mass_tMap {K V V' : Type} [Field K] [NumberField K] [StarRing K] [AddCom
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨hσ, hJ⟩` from `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND F E hc`. Use `⟨hc.totReal, fun ι => ?_⟩` and prove the remaining obligations. Use `letI : Algebra F ℂ := ((algebraMap ℝ ℂ).comp ι).toAlgebra`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `τ : E →ₐ[F] ℂ` to `IsAlgClosed.lift`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Formalism.UG.Final.DefSig F E _ hc.sig S.gram ι (τ : E →+* ℂ) (RingHom.ext (hσ.2.2.2 (τ : E →+* ℂ))) (RingHom.ext fun a => τ.commutes a) (fun e he => (hc.fixed e).1 he) (Matrix.ext fun i j => (hJ S).1 i j) (hJ S).2.isUnit).2 (Or.inl ?_)` and prove the remaining obligations. Use `h1 (τ : E →+* ℂ)` as an intermediate fact. Rewrite `this` using `[h2]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isTotDef_gram (hc : CMData F E) (S : HSpace E) (h1 : S.SigOK) (h2 : S.IsPosDef) :
     IsTotDef hc.sig S.gram := by
@@ -55,15 +55,15 @@ theorem isTotDef_gram (hc : CMData F E) (S : HSpace E) (h1 : S.SigOK) (h2 : S.Is
   simpa using this
 
 /- English proof (translation)
-Take `⟨hσ, hJ⟩` from `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND F E hc`. Establish `hd` using `isTotDef_gram hc S h1 h2`. Establish `hτ : ∀ τ : E →+* ℂ, τ.comp (hc.sig : E →+* E) = (starRingEnd ℂ).comp τ` using `fun τ => RingHom.ext (hσ.2.2.2 τ)`. Establish `hH : IsHerm (hc.sig : E →+* E) S.gram` using `Matrix.ext fun i j => (hJ S).1 i j`. Establish `hL : Submodule.IsLattice E (crdLat S N)` using `Formalism.MainNotions.StandardLattice.tMap_lattice (crd S) N hN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : Module.Finite (𝓞 E) (crdLat S N)` using `Module.Finite.iff_fg.2 hL.fg`. Establish `hs : ∀ e, (hc.sig : E →+* E) ((hc.sig : E →+* E) e) = e` using `fun e => star_star e`. Establish `hm` using `GlobalTheory.Mass.classMass_lattice_eq_genus_mass hσ (hJ S) hd hs (crdLat S N) hf hL.span_eq_top`. Establish `ht : Formalism.HermitianLatticesTheory.mass S.hT N = Formalism.HermitianLatticesTheory.mass (formJ (hc.sig : E →+* E) hs S.gram 1 : (Fin S.rank → E) →ₗ⋆[E] (Fin S.rank → E) →ₗ[E] E) (crdLat S N)`. Use `mass_tMap (crd S) (fun x y => ?_) N` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hT_crd hc]`. Express the relevant statement in the definitionally equal form `Matrix.toLinearMapₛₗ₂' E (starRingEnd E) (RingHom.id E) ((1 : E) • S.gram) (crd S x) (crd S y) = _`. Unfold `hform`. Rewrite using `[Matrix.toLinearMapₛₗ₂'_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [one_smul, smul_eq_mul, RingHom.id_apply]`. Express the relevant statement in the definitionally equal form `star _ * _ = star _ * _ * _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[CosetGroupMembership.stabHat_eq]`. Use `⟨Formalism.UG.Final.ClassSetFiniteL F E _ hc.sig S.gram hτ hH (hJ S).2.isUnit hd _ hf hL.span_eq_top, fun y => (CosetGroupEquiv.cosetGrpEquiv _ _ y).finite_iff.2 (Formalism.UG.Final.AdelicStabFiniteL F E _ hc.sig S.gram hτ hH (hJ S).2.isUnit hd _ hf hL.span_eq_top y), fun ι _ y h …` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [CosetGroupEquiv.card_cosetGrp]`. Conclude with `(GlobalTheory.Mass.classMass_eq_sum_of_bijective y hy).symm.trans (hm.trans ht.symm)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cosetSum (hc : CMData F E) (S : HSpace E) (h1 : S.SigOK) (h2 : S.IsPosDef)
     (N : Submodule (𝓞 E) S.V) (hN : Submodule.IsLattice E N) :
@@ -98,13 +98,13 @@ theorem cosetSum (hc : CMData F E) (S : HSpace E) (h1 : S.SigOK) (h2 : S.IsPosDe
   exact (GlobalTheory.Mass.classMass_eq_sum_of_bijective y hy).symm.trans (hm.trans ht.symm)
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ hc S h1 h2 N hN _` and use `cosetSum hc S h1 h2 N hN`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem generalForm : CosetGroupMembership.GeneralForm :=
   fun _ _ _ _ _ _ _ _ hc S h1 h2 N hN _ => cosetSum hc S h1 h2 N hN
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨generalForm, CosetGroupEquiv.column_of_general generalForm⟩`.
+Supply the required witnesses or components.
 -/
 theorem massAsCosetSum : CosetGroupMembership.MassAsCosetSum :=
   ⟨generalForm, CosetGroupEquiv.column_of_general generalForm⟩

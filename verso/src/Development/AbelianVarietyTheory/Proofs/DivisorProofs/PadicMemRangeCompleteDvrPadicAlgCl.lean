@@ -7,11 +7,11 @@ variable {p : ℕ} [Fact p.Prime] {V : Type} [CommRing V] [IsDomain V] [IsDiscre
   {κ : FractionRing V →+* PadicAlgCl p}
 
 /- English proof (translation)
-Establish `hle : ‖κ (algebraMap V (FractionRing V) v)‖ ≤ 1` using `(hV _).2 ⟨v, rfl⟩`. Use `lt_of_le_of_ne hle fun h1 => ?_` and prove the remaining obligations. Establish `hv0 : v ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hι : algebraMap V (FractionRing V) v ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective V (FractionRing V))).2 hv0`. Establish `hinv : ‖κ (algebraMap V (FractionRing V) v)⁻¹‖ ≤ 1`. Rewrite using `[map_inv₀, norm_inv, h1, inv_one]`. Take `⟨w, hw⟩` from `(hV _).1 hinv`. Establish `hvw : v * w = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `IsFractionRing.injective V (FractionRing V)` to reduce the goal to its premises. Rewrite using `[map_mul, hw, map_one, mul_inv_cancel₀ hι]`. Conclude with `(mem_maximalIdeal _).1 hv ⟨⟨v, w, hvw, by rw [mul_comm]; exact hvw⟩, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_lt_one_of_mem_maximalIdeal
     (hV : ∀ x, ‖κ x‖ ≤ 1 ↔ x ∈ Set.range (algebraMap V (FractionRing V)))
@@ -31,7 +31,7 @@ theorem norm_lt_one_of_mem_maximalIdeal
   exact (mem_maximalIdeal _).1 hv ⟨⟨v, w, hvw, by rw [mul_comm]; exact hvw⟩, rfl⟩
 
 /- English proof (translation)
-Establish `: ((p : ℕ) : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) (p : ℚ_[p])`. Rewrite using `[map_natCast]`. Rewrite using `[this, PadicAlgCl.norm_extends, Padic.norm_p]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_natCast_p : ‖((p : ℕ) : PadicAlgCl p)‖ = (p : ℝ)⁻¹ := by
   have : ((p : ℕ) : PadicAlgCl p) = algebraMap ℚ_[p] (PadicAlgCl p) (p : ℚ_[p]) := by
@@ -39,9 +39,9 @@ theorem norm_natCast_p : ‖((p : ℕ) : PadicAlgCl p)‖ = (p : ℝ)⁻¹ := by
   rw [this, PadicAlgCl.norm_extends, Padic.norm_p]
 
 /- English proof (translation)
-Rewrite using `[mem_maximalIdeal, mem_nonunits_iff]`. Introduce and unpack `⟨u, hu⟩`. Establish `h1 : ‖κ (algebraMap V (FractionRing V) (u⁻¹ : Vˣ))‖ ≤ 1` using `(hV _).2 ⟨_, rfl⟩`. Establish `h2 : κ (algebraMap V (FractionRing V) ((p : ℕ) : V)) * κ (algebraMap V (FractionRing V) (u⁻¹ : Vˣ)) = 1`. Rewrite using `[← map_mul, ← map_mul, ← hu, Units.mul_inv, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `congrArg norm h2`. Rewrite `h3` using `[norm_mul, norm_one, map_natCast, map_natCast, norm_natCast_p]`. Establish `hp : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `: (p : ℝ)⁻¹ * ‖κ (algebraMap V (FractionRing V) (u⁻¹ : Vˣ))‖ < 1` using `lt_of_le_of_lt (mul_le_of_le_one_right (by positivity) h1) (inv_lt_one_of_one_lt₀ hp)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem p_mem_maximalIdeal
     (hV : ∀ x, ‖κ x‖ ≤ 1 ↔ x ∈ Set.range (algebraMap V (FractionRing V))) :
@@ -67,9 +67,9 @@ variable {p : ℕ} [Fact p.Prime] {V : Type} [CommRing V] [IsDomain V] [IsDiscre
   {κ : FractionRing V →+* PadicAlgCl p}
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Establish `hmax` using `hϖ.maximalIdeal_eq`. Use `⟨‖κ (algebraMap V (FractionRing V) ϖ)‖, norm_nonneg _, norm_lt_one_of_mem_maximalIdeal hV (by rw [hmax]; exact Ideal.mem_span_singleton_self ϖ), fun n x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[hmax, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨w, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, map_mul, norm_mul, map_pow, map_pow, norm_pow]`. Establish `hw : ‖κ (algebraMap V (FractionRing V) w)‖ ≤ 1` using `(hV _).2 ⟨w, rfl⟩`. Conclude with `mul_le_of_le_one_right (by positivity) hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_norm_le_pow
     (hV : ∀ x, ‖κ x‖ ≤ 1 ↔ x ∈ Set.range (algebraMap V (FractionRing V))) :
@@ -87,31 +87,27 @@ theorem exists_norm_le_pow
   exact mul_le_of_le_one_right (by positivity) hw
 
 /- English proof (translation)
-Rewrite using `[smul_eq_mul, Ideal.mul_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_top_eq (I : Ideal V) : (I • ⊤ : Submodule V V) = I := by
   rw [smul_eq_mul, Ideal.mul_top]
 
 /- English proof (translation)
-Use `set f : ℕ → V := fun n => ((z.appr n : ℕ) : V) with hf`. Establish `hpm` using `p_mem_maximalIdeal hV`. Establish `hcauchy : ∀ {m n : ℕ}, m ≤ n → f m ≡ f n [SMOD (maximalIdeal V) ^ m • (⊤ : Submodule V V)]`. Introduce `m n hmn`. Rewrite using `[SModEq.sub_mem, smul_top_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `PadicInt.dvd_appr_sub_appr z m n hmn`. Establish `hmono : z.appr m ≤ z.appr n` using `PadicInt.appr_mono z hmn`. Establish `heq : z.appr n = z.appr m + p ^ m * c`. Generalize the expression as in `p ^ m * c = k at hc`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `: f m - f n = ((p : ℕ) : V) ^ m * (-(c : V))`. Simplify using `only [hf, heq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hpm m)`. Take `⟨L, hL⟩` from `hc.toIsPrecomplete.prec hcauchy`. Use `⟨L, ?_⟩` and prove the remaining obligations. Take `⟨r, hr0, hr1, hr⟩` from `exists_norm_le_pow hV`. Establish `hp : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hbound : ∀ n : ℕ, ‖κ (algebraMap V (FractionRing V) L) - algebraMap ℚ_[p] (PadicAlgCl p) (z : ℚ_[p])‖ ≤ r ^ n + ((p : ℝ)⁻¹) ^ n`. Introduce `n`. Establish `h1 : f n - L ∈ maximalIdeal V ^ n`. Use `hL n` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, smul_top_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1'` using `hr n _ h1`. Establish `hfn : κ (algebraMap V (FractionRing V) (f n)) = algebraMap ℚ_[p] (PadicAlgCl p) (((z.appr n : ℕ) : ℤ_[p]) : ℚ_[p])`. Simplify using `only [hf, map_natCast, PadicInt.coe_natCast]`. Establish `h2 : ‖z - ((z.appr n : ℕ) : ℤ_[p])‖ ≤ (p : ℝ) ^ (-(n : ℤ))` using `(PadicInt.norm_le_pow_iff_mem_span_pow _ n).2 (PadicInt.appr_spec n z)`. Rewrite `h2` using `[zpow_neg, zpow_natCast, ← inv_pow]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2' : ‖algebraMap ℚ_[p] (PadicAlgCl p) (((z.appr n : ℕ) : ℤ_[p]) : ℚ_[p]) - algebraMap ℚ_[p] (PadicAlgCl p) (z : ℚ_[p])‖ ≤ ((p : ℝ)⁻¹) ^ n`. Rewrite using `[← map_sub, PadicAlgCl.norm_extends, ← PadicInt.coe_sub, PadicInt.norm_def.symm, norm_sub_rev]`. Conclude with `h2`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := norm_add_le _ _`. Use `_ ≤ r ^ n + ((p : ℝ)⁻¹) ^ n := by gcongr`. Rewrite using `[norm_sub_rev, ← map_sub, ← map_sub]`. Conclude with `h1'`.
-
-Rewrite using `[hfn]`. Conclude with `h2'`. Establish `ht : Filter.Tendsto (fun n : ℕ => r ^ n + ((p : ℝ)⁻¹) ^ n) Filter.atTop (nhds 0)`. Use `(tendsto_pow_atTop_nhds_zero_of_lt_one hr0 hr1).add (tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity) (inv_lt_one_of_one_lt₀ hp))` as an intermediate fact. Simplify using `using this`.
-
-Establish `h0` using `ge_of_tendsto' ht hbound`. Conclude with `sub_eq_zero.1 (norm_le_zero_iff.1 h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem padicInt_mem_range
     (hc : IsAdicComplete (maximalIdeal V) V)
@@ -171,11 +167,11 @@ end GlobalTheory.PadicUnitBall
 namespace GlobalTheory.PadicUnitBall
 
 /- English proof (translation)
-Introduce `p _ V _ _ _ _ hc κ hV q`. Establish `hp : (1 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt ‖q‖ hp`. Establish `hz : ‖q * (p : ℚ_[p]) ^ k‖ ≤ 1`. Rewrite using `[norm_mul, norm_pow, Padic.norm_p, inv_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv_le_iff₀ (by positivity), one_mul]`. Conclude with `hk.le`. Take `⟨L, hL⟩` from `padicInt_mem_range hc hV (⟨q * (p : ℚ_[p]) ^ k, hz⟩ : ℤ_[p])`. Establish `hpne : ((p : ℕ) : PadicAlgCl p) ≠ 0`. Conclude with `(Fact.out : p.Prime).ne_zero` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨algebraMap V (FractionRing V) L * (((p : ℕ) : FractionRing V) ^ k)⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hL, map_inv₀, map_pow, map_natCast]`. Use `show algebraMap ℚ_[p] (PadicAlgCl p) (q * (p : ℚ_[p]) ^ k) * _ = _`. Simplify using `only [map_mul, map_pow, map_natCast]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem padic_mem_range : ∀ (p : ℕ) [Fact p.Prime] (V : Type) [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] [CharZero V], IsAdicComplete (maximalIdeal V) V →

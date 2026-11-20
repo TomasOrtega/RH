@@ -5,13 +5,13 @@ namespace Formalism.YangianSpanCharacter.P
 open Matrix
 
 /- English proof (translation)
-Introduce `R A _ _ _ p c ci Y h`. Take `⟨h1, h2, h3⟩` from `h`. Establish `hpci : p * ci = ci * p - ci`. Establish `: ci * (p * c) * ci = ci * (c * p + c) * ci` using `by rw [h3]`. Establish `e1 : ci * (p * c) * ci = ci * p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, mul_assoc, h1, mul_one]`. Establish `e2 : ci * (c * p + c) * ci = p * ci + ci`. Rewrite using `[mul_add, add_mul, ← mul_assoc ci c p, h2, one_mul, one_mul]`. Rewrite `this` using `[e1, e2]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `hc : ∀ x : A, algebraMap R A Y * x = x * algebraMap R A Y` using `fun x => Algebra.commutes Y x`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, Formalism.YangianSpanCharacter.T.Tm, Formalism.YangianSpanCharacter.T.J, map_add, add_mul, mul_add]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `all_goals first`. Consider the case `exact h1`. Consider the case `exact h2`. Consider the case `(rw [hpci, hc ci]; abel)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem transposeSymplecticShift : Formalism.YangianSpanCharacter.T.TJT := by
   intro R A _ _ _ p c ci Y h
@@ -34,11 +34,11 @@ theorem transposeSymplecticShift : Formalism.YangianSpanCharacter.T.TJT := by
     | (rw [hpci, hc ci]; abel)
 
 /- English proof (translation)
-Introduce `R A _ _ _ p c ci f s Y hfc hfci hpf`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;>`. Simplify using `[Formalism.YangianSpanCharacter.T.Um, Formalism.YangianSpanCharacter.T.Uinv, Matrix.mul_apply, Fin.sum_univ_two]`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;>`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[Formalism.YangianSpanCharacter.T.Um, Formalism.YangianSpanCharacter.T.Uinv, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `key : c * f * algebraMap R A s = algebraMap R A s * f * c`. Rewrite using `[← hfc, mul_assoc, ← Algebra.commutes, ← mul_assoc]`. Conclude with `congrArg (· * c) (Algebra.commutes s f).symm`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Formalism.YangianSpanCharacter.T.Tm, Formalism.YangianSpanCharacter.T.Uinv, Matrix.mul_apply, Fin.sum_univ_two, hfc, hfci] <;>`. Apply the tactic sequence `simp only [mul_add, add_mul, mul_neg, neg_mul, hpf, key, Algebra.commutes] <;>`. Apply the tactic sequence `first | noncomm_ring | abel`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem planeWaveIntertwining : Formalism.YangianSpanCharacter.T.PlaneWave := by
   intro R A _ _ _ p c ci f s Y hfc hfci hpf
@@ -59,7 +59,7 @@ theorem planeWaveIntertwining : Formalism.YangianSpanCharacter.T.PlaneWave := by
       first | noncomm_ring | abel
 
 /- English proof (translation)
-Introduce `R A _ _ _ s`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Formalism.YangianSpanCharacter.T.Um, Formalism.YangianSpanCharacter.T.J, Matrix.mul_apply, Fin.sum_univ_two]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem unipotentSymplectic : Formalism.YangianSpanCharacter.T.UJU := by
   intro R A _ _ _ s
@@ -68,9 +68,9 @@ theorem unipotentSymplectic : Formalism.YangianSpanCharacter.T.UJU := by
     simp [Formalism.YangianSpanCharacter.T.Um, Formalism.YangianSpanCharacter.T.J, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun f => funext fun n => ?_` and prove the remaining obligations. Simplify using `[Formalism.YangianSpanCharacter.T.cM, Formalism.YangianSpanCharacter.T.ciM, LinearMap.funLeft_apply]`. Use `LinearMap.ext fun f => funext fun n => ?_` and prove the remaining obligations. Simplify using `[Formalism.YangianSpanCharacter.T.cM, Formalism.YangianSpanCharacter.T.ciM, LinearMap.funLeft_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `LinearMap.ext fun f => funext fun n => ?_` and prove the remaining obligations. Simplify using `[Formalism.YangianSpanCharacter.T.cM, Formalism.YangianSpanCharacter.T.pM, LinearMap.funLeft_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isWeylTripleShiftModel : Formalism.YangianSpanCharacter.T.WeylModel := by
   refine ⟨?_, ?_, ?_⟩

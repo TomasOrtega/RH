@@ -12,42 +12,42 @@ def Q (x y : Fin n → ℂ) : Matrix (Fin n) (Fin n) ℂ := vecMulVec x y + vecM
 def e (i : Fin n) : Fin n → ℂ := Pi.single i 1
 
 /- English proof (translation)
-Unfold `Q`. Rewrite using `[add_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma Q_comm (x y : Fin n → ℂ) : Q x y = Q y x := by unfold Q; rw [add_comm]
 
 /- English proof (translation)
-Unfold `Q IsSymm`. Rewrite using `[transpose_add, transpose_vecMulVec, transpose_vecMulVec, add_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma Q_isSymm (x y : Fin n → ℂ) : (Q x y).IsSymm := by
   unfold Q IsSymm; rw [transpose_add, transpose_vecMulVec, transpose_vecMulVec, add_comm]
 
 /- English proof (translation)
-Unfold `Q`. Rewrite using `[add_vecMulVec, vecMulVec_add]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma Q_add_left (x x' y : Fin n → ℂ) : Q (x + x') y = Q x y + Q x' y := by
   unfold Q; rw [add_vecMulVec, vecMulVec_add]; abel
 
 /- English proof (translation)
-Unfold `Q`. Rewrite using `[smul_vecMulVec, vecMulVec_smul, smul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma Q_smul_left (a : ℂ) (x y : Fin n → ℂ) : Q (a • x) y = a • Q x y := by
   unfold Q; rw [smul_vecMulVec, vecMulVec_smul, smul_add]
 
 /- English proof (translation)
-Rewrite using `[Q_comm, Q_add_left, Q_comm y, Q_comm y']`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma Q_add_right (x y y' : Fin n → ℂ) : Q x (y + y') = Q x y + Q x y' := by
   rw [Q_comm, Q_add_left, Q_comm y, Q_comm y']
 
 /- English proof (translation)
-Rewrite using `[Q_comm, Q_smul_left, Q_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma Q_smul_right (a : ℂ) (x y : Fin n → ℂ) : Q x (a • y) = a • Q x y := by
   rw [Q_comm, Q_smul_left, Q_comm]
 
 /- English proof (translation)
-Unfold `Q`. Rewrite using `[mul_add, add_mul, mul_vecMulVec, mul_vecMulVec, vecMulVec_mul, vecMulVec_mul, vecMul_transpose, vecMul_transpose]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma conj_Q (k : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) :
     k * Q x y * kᵀ = Q (k *ᵥ x) (k *ᵥ y) := by
@@ -63,45 +63,45 @@ def Good (f : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ → ℂ)
 variable {f : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ → ℂ}
 
 /- English proof (translation)
-Simplify using `using hf.1 1 Z Z' W`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma Good.add_left (hf : Good f) (Z Z' W) : f (Z + Z') W = f Z W + f Z' W := by
   simpa using hf.1 1 Z Z' W
 
 /- English proof (translation)
-Use `hf.add_left 0 0 W` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma Good.zero_left (hf : Good f) (W) : f 0 W = 0 := by
   have := hf.add_left 0 0 W
   simpa using this
 
 /- English proof (translation)
-Simplify `hf.1 a Z 0 W` using `[hf.zero_left]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma Good.smul_left (hf : Good f) (a : ℂ) (Z W) : f (a • Z) W = a * f Z W := by
   simpa [hf.zero_left] using hf.1 a Z 0 W
 
 /- English proof (translation)
-Rewrite using `[hf.2.1 (a • W) Z, hf.smul_left, star_mul, ← hf.2.1 W Z, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma Good.smul_right (hf : Good f) (a : ℂ) (Z W) : f Z (a • W) = star a * f Z W := by
   rw [hf.2.1 (a • W) Z, hf.smul_left, star_mul, ← hf.2.1 W Z, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[hf.2.1 (W + W') Z, hf.add_left, star_add, ← hf.2.1, ← hf.2.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma Good.add_right (hf : Good f) (Z W W') : f Z (W + W') = f Z W + f Z W' := by
   rw [hf.2.1 (W + W') Z, hf.add_left, star_add, ← hf.2.1, ← hf.2.1]
 
 /- English proof (translation)
-Rewrite using `[← conj_Q, ← conj_Q]`. Conclude with `hf.2.2 k _ _ (Q_isSymm _ _) (Q_isSymm _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Good.inv_Q (hf : Good f) (k : Matrix.unitaryGroup (Fin n) ℂ) (x y z w : Fin n → ℂ) :
     f (Q (k.1 *ᵥ x) (k.1 *ᵥ y)) (Q (k.1 *ᵥ z) (k.1 *ᵥ w)) = f (Q x y) (Q z w) := by
   rw [← conj_Q, ← conj_Q]; exact hf.2.2 k _ _ (Q_isSymm _ _) (Q_isSymm _ _)
 
 /- English proof (translation)
-Rewrite using `[mem_unitaryGroup_iff', star_eq_conjTranspose, diagonal_conjTranspose, diagonal_mul_diagonal]`. Use `diagonal_one with a` and compare the differences between its conclusion and the goal. Conclude with `hd a`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 lemma diag_mem (d : Fin n → ℂ) (hd : ∀ a, star (d a) * d a = 1) :
     diagonal d ∈ Matrix.unitaryGroup (Fin n) ℂ := by
@@ -110,13 +110,13 @@ lemma diag_mem (d : Fin n → ℂ) (hd : ∀ a, star (d a) * d a = 1) :
   exact hd a
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[e, Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma diag_e (d : Fin n → ℂ) (i : Fin n) : diagonal d *ᵥ e i = d i • e i := by
   ext a; simp [e, Pi.single_apply]
 
 /- English proof (translation)
-Use `hf.inv_Q ⟨diagonal d, diag_mem d hd⟩ (e i) (e j) (e k) (e l)` as an intermediate fact. Simplify using `only [diag_e, Q_smul_left, Q_smul_right, hf.smul_left, hf.smul_right, star_mul] at this`. Rewrite using `[star_mul]`. Conclude with `this.symm.trans (by ring)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Good.diag_factor (hf : Good f) (d : Fin n → ℂ) (hd : ∀ a, star (d a) * d a = 1)
     (i j k l : Fin n) :
@@ -128,11 +128,11 @@ lemma Good.diag_factor (hf : Good f) (d : Fin n → ℂ) (hd : ∀ a, star (d a)
   exact this.symm.trans (by ring)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hF`. Establish `cnt : ∀ m : Fin n, (if i = m then 1 else 0) + (if j = m then 1 else 0) = (if k = m then 1 else 0) + (if l = m then (1 : ℕ) else 0)`. Introduce `m`. Apply the tactic sequence `have h0 := hf.diag_factor (fun a => if a = m then Complex.I else 1) (by intro a; split_ifs <;> simp [Complex.star_def]) i j k l`. Establish `h1 : (fun a => if a = m then Complex.I else 1) i * (fun a => if a = m then Complex.I else 1) j * star ((fun a => if a = m then Complex.I else 1) k * (fun a => if a = m then Complex.I else 1) l) = 1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `h0.symm.trans (one_mul _).symm` as an intermediate fact. Conclude with `mul_right_cancel₀ hF this`. Simplify using `only at h1`. Apply the tactic sequence `split_ifs at h1 ⊢ <;> simp [Complex.ext_iff, Complex.star_def] at h1 ⊢ <;> norm_num at h1`. Establish `hi` using `cnt i`.
+Establish an intermediate fact. Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj` using `cnt j`. Simplify using `only [if_true] at hi hj`. Apply the tactic sequence `split_ifs at hi hj <;> first | omega | (apply h; subst_vars; tauto)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma Good.vanish_off (hf : Good f) (i j k l : Fin n)
     (h : ¬ ((i = k ∧ j = l) ∨ (i = l ∧ j = k))) : f (Q (e i) (e j)) (Q (e k) (e l)) = 0 := by
@@ -155,7 +155,7 @@ lemma Good.vanish_off (hf : Good f) (i j k l : Fin n)
   split_ifs at hi hj <;> first | omega | (apply h; subst_vars; tauto)
 
 /- English proof (translation)
-Establish `hs : star (1 - c • vecMulVec u u) = 1 - c • vecMulVec u u`. Rewrite using `[star_sub, star_one, star_smul, hc, star_eq_conjTranspose, conjTranspose_vecMulVec, hu]`. Rewrite using `[mem_unitaryGroup_iff, hs]`. Simplify using `only [sub_mul, mul_sub, one_mul, mul_one, Matrix.smul_mul, Matrix.mul_smul, vecMulVec_mul_vecMulVec, vecMulVec_smul, smul_smul]`. Rewrite using `[h, two_mul, add_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -171,7 +171,7 @@ lemma refl_mem (u : Fin n → ℂ) (c : ℂ) (hu : star u = u) (hc : star c = c)
   abel
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [sub_mulVec, one_mulVec, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Simplify using `[mulVec, dotProduct, vecMulVec_apply, Finset.mul_sum, mul_comm, mul_left_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma refl_apply (u x : Fin n → ℂ) (c : ℂ) :
     (1 - c • vecMulVec u u) *ᵥ x = x - (c * (u ⬝ᵥ x)) • u := by
@@ -180,13 +180,13 @@ lemma refl_apply (u x : Fin n → ℂ) (c : ℂ) :
   simp [mulVec, dotProduct, vecMulVec_apply, Finset.mul_sum, mul_comm, mul_left_comm]
 
 /- English proof (translation)
-Distinguish the cases in `hab : a = b`. Rewrite using `[hab]`. Use `set u : Fin n → ℂ := e a - e b with hu_def`. Establish `hu : star u = u`. Apply the tactic sequence `ext x; simp only [u, e, Pi.star_apply, Pi.sub_apply, Pi.single_apply]; split_ifs <;> simp`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `huu : u ⬝ᵥ u = 2`. Simplify using `[u, e, hab, Ne.symm hab]`. Evaluate the numerical expressions. Establish `hk` using `refl_mem u 1 hu (by simp) (by rw [huu]; ring)`. Establish `hka : (1 - (1:ℂ) • vecMulVec u u) *ᵥ e a = e b`.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[refl_apply]`. Establish `: u ⬝ᵥ e a = 1` using `by simp [u, e, hab, Ne.symm hab]`. Rewrite using `[this, hu_def]`. Simplify using the standard rewrite rules. Use `hf.inv_Q ⟨_, hk⟩ (e a) (e a) (e a) (e a)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hka] at this`. Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 lemma Good.diag_eq (hf : Good f) (a b : Fin n) :
     f (Q (e a) (e a)) (Q (e a) (e a)) = f (Q (e b) (e b)) (Q (e b) (e b)) := by
@@ -207,15 +207,13 @@ lemma Good.diag_eq (hf : Good f) (a b : Fin n) :
   exact this.symm
 
 /- English proof (translation)
-Use `set u : Fin n → ℂ := e i + (2:ℂ) • e j with hu_def`. Establish `hu : star u = u`. Use extensionality with `x`. Simplify using `only [u, e, Pi.star_apply, Pi.add_apply, Pi.smul_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `huu : u ⬝ᵥ u = 5`. Simplify using `[u, e, hij, Ne.symm hij]`. Evaluate the numerical expressions. Establish `hk` using `refl_mem u (2/5) hu (by simp) (by rw [huu]; ring)`. Establish `hki : (1 - (2/5:ℂ) • vecMulVec u u) *ᵥ e i = (3/5 : ℂ) • e i + (-4/5 : ℂ) • e j`.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[refl_apply]`. Establish `: u ⬝ᵥ e i = 1` using `by simp [u, e, hij, Ne.symm hij]`. Rewrite using `[this, hu_def]`. Use `module`. Establish `hQ : Q ((3/5:ℂ) • e i + (-4/5:ℂ) • e j) ((3/5:ℂ) • e i + (-4/5:ℂ) • e j) = (9/25:ℂ) • Q (e i) (e i) + (-24/25:ℂ) • Q (e i) (e j) + (16/25:ℂ) • Q (e j) (e j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Q_add_left, Q_add_right, Q_add_right, Q_smul_left, Q_smul_left, Q_smul_left, Q_smul_left, Q_smul_right, Q_smul_right, Q_smul_right, Q_smul_right, Q_comm (e j) (e i)]`. Use `module`. Use `hf.inv_Q ⟨_, hk⟩ (e i) (e i) (e i) (e i)` as an intermediate fact. Simplify using `only [hki, hQ, hf.add_left, hf.add_right, hf.smul_left, hf.smul_right, h0, hf.vanish_off i i i j (by simp [hij, Ne.symm hij]), hf.vanish_off i i j j (by simp [hij, Ne.symm hij]), hf.vanish_off i j i i (by simp [hij, Ne.symm hij]), hf.vanish_off i j j j (by simp [hij, Ne.symm hij] …`. Evaluate the numerical expressions using `at this`.
-
-Conclude with `this`.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 lemma Good.off_diag (hf : Good f) (h0 : ∀ a, f (Q (e a) (e a)) (Q (e a) (e a)) = 0)
     (i j : Fin n) (hij : i ≠ j) : f (Q (e i) (e j)) (Q (e i) (e j)) = 0 := by
@@ -245,11 +243,9 @@ lemma Good.off_diag (hf : Good f) (h0 : ∀ a, f (Q (e a) (e a)) (Q (e a) (e a))
   exact this
 
 /- English proof (translation)
-Establish `hd : f (Q (e i) (e j)) (Q (e i) (e j)) = 0`. Distinguish the cases in `hij : i = j`. Rewrite using `[← hij]`. Conclude with `h0 i`. Conclude with `hf.off_diag h0 i j hij`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis.
 
-Distinguish the cases in `h : (i = k ∧ j = l) ∨ (i = l ∧ j = k)`. Break down `h with ⟨hk, hl⟩ | ⟨hk, hl⟩` into its components or cases. Rewrite using `[← hk, ← hl]`. Conclude with `hd`. Rewrite using `[← hk, ← hl, Q_comm (e j) (e i)]`.
-
-Conclude with `hd`. Conclude with `hf.vanish_off i j k l h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Good.vanish_basis (hf : Good f) (h0 : ∀ a, f (Q (e a) (e a)) (Q (e a) (e a)) = 0)
     (i j k l : Fin n) : f (Q (e i) (e j)) (Q (e k) (e l)) = 0 := by
@@ -264,7 +260,7 @@ lemma Good.vanish_basis (hf : Good f) (h0 : ∀ a, f (Q (e a) (e a)) (Q (e a) (e
   · exact hf.vanish_off i j k l h
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `hs : Z b a = Z a b` using `by simpa using congrFun (congrFun hZ a) b`. Simplify using `[Matrix.sum_apply, Q, vecMulVec_apply, e, Pi.single_apply, Finset.sum_add_distrib, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.sum_ite_irrel, hs]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 lemma sym_expand (Z : Matrix (Fin n) (Fin n) ℂ) (hZ : Z.IsSymm) :
     Z = ∑ i, ∑ j, (Z i j / 2) • Q (e i) (e j) := by
@@ -274,7 +270,7 @@ lemma sym_expand (Z : Matrix (Fin n) (Fin n) ℂ) (hZ : Z.IsSymm) :
     Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.sum_ite_irrel, hs]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [hf.zero_left]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hf.add_left, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma Good.sum_left {ι : Type} (hf : Good f) (s : Finset ι) (A : ι → Matrix (Fin n) (Fin n) ℂ) (W) :
     f (∑ x ∈ s, A x) W = ∑ x ∈ s, f (A x) W := by
@@ -284,9 +280,9 @@ lemma Good.sum_left {ι : Type} (hf : Good f) (s : Finset ι) (A : ι → Matrix
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hf.add_left, ih]
 
 /- English proof (translation)
-Establish `key : ∀ i j, f (Q (e i) (e j)) W = 0`. Introduce `i j`. Rewrite using `[hf.2.1 W (Q _ _), sym_expand W hW]`. Simplify using `[hf.sum_left, hf.smul_left, hf.vanish_basis h0]`. Rewrite using `[sym_expand Z hZ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hf.sum_left, hf.smul_left, key]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Good.vanish (hf : Good f) (h0 : ∀ a, f (Q (e a) (e a)) (Q (e a) (e a)) = 0)
     (Z W : Matrix (Fin n) (Fin n) ℂ) (hZ : Z.IsSymm) (hW : W.IsSymm) : f Z W = 0 := by
@@ -298,13 +294,11 @@ lemma Good.vanish (hf : Good f) (h0 : ∀ a, f (Q (e a) (e a)) (Q (e a) (e a)) =
   simp [hf.sum_left, hf.smul_left, key]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a Z Z' W`. Simplify using `[add_mul, Matrix.smul_mul, trace_add, trace_smul]`. Introduce `Z W`. Rewrite using `[← trace_conjTranspose, conjTranspose_mul, conjTranspose_conjTranspose]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k Z W _ _`. Establish `hk : k.1ᴴ * k.1 = 1`. Use `k.2` as an intermediate fact. Rewrite `this` using `[mem_unitaryGroup_iff', star_eq_conjTranspose]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hct : (k.1ᵀ)ᴴ = (k.1ᴴ)ᵀ` using `by ext; simp`. Establish `h1 : k.1ᵀ * (k.1ᵀ)ᴴ = 1`. Rewrite using `[hct, ← transpose_mul, hk, transpose_one]`. Use `show ((k.1 * Z * k.1ᵀ) * (k.1 * W * k.1ᵀ)ᴴ).trace = (Z * Wᴴ).trace`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
-
-Rewrite using `[← Matrix.mul_assoc (k.1ᵀ), h1, Matrix.one_mul, Matrix.trace_mul_comm, Matrix.mul_assoc, Matrix.mul_assoc, hk, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma good_trace : Good (n := n) (fun Z W => (Z * Wᴴ).trace) := by
   refine ⟨?_, ?_, ?_⟩
@@ -328,23 +322,23 @@ end SymSqForm
 open SymSqForm in
 
 /- English proof (translation)
-Introduce `g h H1 H2 H3`. Establish `hf : Good h` using `⟨H1, H2, H3⟩`. Consider the cases of `g with`. Consider the case `zero`. Use `⟨0, fun Z W _ _ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hZ : Z = 0` using `Subsingleton.elim _ _`. Rewrite using `[hZ, hf.zero_left]`. Simplify using the standard rewrite rules. Consider the case `succ m`. Establish `hs` using `good_trace (n := m + 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Use `set S : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ := Q (e 0) (e 0) with hS`. Use `set h0 := h S S with hh0`. Use `set s0 := (S * Sᴴ).trace with hs0`. Establish `h0r : star h0 = h0` using `(H2 S S).symm`. Establish `s0r : star s0 = s0` using `(hs.2.1 S S).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `s0ne : s0 ≠ 0`. Rewrite using `[hs0, hS]`. Simplify using `[Q, e, Matrix.trace, Matrix.mul_apply, vecMulVec_apply, Pi.single_apply, Fin.sum_univ_succ, Fin.succ_ne_zero]`. Establish `hg : Good (fun Z W => h Z W * s0 - (Z * Wᴴ).trace * h0)`. Use `⟨fun a Z Z' W => ?_, fun Z W => ?_, fun k Z W hZ hW => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hs.1 a Z Z' W` as an intermediate fact. Simplify using `only at this ⊢`. Rewrite using `[H1, this]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [star_sub, star_mul', h0r, s0r]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[H2 Z W, show (W * Zᴴ).trace = star ((Z * Wᴴ).trace) from hs.2.1 Z W]`. Use `hs.2.2 k Z W hZ hW` as an intermediate fact. Simplify using `only at this ⊢`. Rewrite using `[H3 k Z W hZ hW, this]`. Establish `hz : ∀ a, (fun Z W => h Z W * s0 - (Z * Wᴴ).trace * h0) (Q (e a) (e a)) (Q (e a) (e a)) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `a`. Use `hg.diag_eq a 0` as an intermediate fact. Simplify using `only at this ⊢`. Rewrite using `[this, ← hS, ← hh0, ← hs0]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hreal : (((h0 / s0).re : ℝ) : ℂ) = h0 / s0`. Apply `Complex.conj_eq_iff_re.mp` to reduce the goal to its premises. Rewrite using `[map_div₀]`. Conclude with `congrArg₂ (· / ·) h0r s0r`. Use `⟨(h0 / s0).re, fun Z W hZ hW => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `hg.vanish hz Z W hZ hW` as an intermediate fact. Rewrite using `[hreal]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `this`.
+A detailed English derivation is pending.
 -/
 theorem unitary_invariant_hermitian_form_symm_eq_smul_trace :
     ∀ (g : ℕ) (h : Matrix (Fin g) (Fin g) ℂ → Matrix (Fin g) (Fin g) ℂ → ℂ),

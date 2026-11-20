@@ -13,7 +13,7 @@ noncomputable section
 namespace CuspCoordinateBound
 
 /- English proof (translation)
-Establish `h1 : β k ^ 2 ≤ ∑ l, β l ^ 2` using `Finset.single_le_sum (f := fun l => β l ^ 2) (fun l _ => sq_nonneg _) (Finset.mem_univ k)`. Use polynomial arithmetic with `[hY β]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem coord_sq_le {g : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ) (c : ℝ) (hc : 0 < c)
     (hY : ∀ x : Fin g → ℝ, c * ∑ l, x l ^ 2 ≤ MCSchur.qf Y x) (β : Fin g → ℝ) (k : Fin g) :
@@ -23,9 +23,9 @@ theorem coord_sq_le {g : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ) (c : ℝ) (hc : 0
   nlinarith [hY β]
 
 /- English proof (translation)
-Establish `hcs` using `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun l => X k l) β`. Establish `hrow : ∑ l, X k l ^ 2 ≤ g * M ^ 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← sq_abs]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) (hX l) 2`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = g * M ^ 2 := by simp`. Establish `hb : 0 ≤ ∑ l, β l ^ 2` using `Finset.sum_nonneg fun l _ => sq_nonneg _`. Establish `he : (X *ᵥ β) k = ∑ l, X k l * β l` using `rfl`. Rewrite using `[he]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mulVec_sq_le {g : ℕ} (X : Matrix (Fin g) (Fin g) ℝ) (M : ℝ) (k : Fin g)
     (hX : ∀ l, |X k l| ≤ M) (β : Fin g → ℝ) :
@@ -45,31 +45,27 @@ theorem mulVec_sq_le {g : ℕ} (X : Matrix (Fin g) (Fin g) ℝ) (M : ℝ) (k : F
 end CuspCoordinateBound
 
 /- English proof (translation)
-Introduce `D T`. Take `⟨M, hM, hMb⟩` from `hLow D T`. Establish `hc : 0 < D.c` using `D.c_pos`. Use `set K : ℝ := 1 / D.c + 2 * M + 2 * D.g * M ^ 2 / D.c with hK`. Establish `hK1 : 0 ≤ 1 / D.c` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK2 : 0 ≤ 2 * (D.g : ℝ) * M ^ 2 / D.c` using `by positivity`. Establish `hKpos : 0 < K` using `by positivity`. Use `⟨1 / K, by positivity, ?_⟩` and prove the remaining obligations. Introduce `p hp hpU ℓ hℓ y i hi`. Take `⟨hYpd, hYc⟩` from `hImPos D p.1 hpU ℓ hℓ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set τ := D.period p.1 ℓ with hτ`. Use `set Y := τ.map Complex.im with hYdef`. Use `set X := τ.map Complex.re with hXdef`. Take `⟨-, hform⟩` from `hPG D.g τ hYpd`. Use `set α : Fin D.g → ℝ := fun k => y (Fin.castAdd D.g k) with hα`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `set β : Fin D.g → ℝ := fun k => y (Fin.natAdd D.g k) with hβ`. Establish `hA : 0 ≤ MCSchur.qf Y⁻¹ (α + X *ᵥ β)` using `MCCusp.qf_nonneg hYpd.inv.posSemidef _`. Establish `hB : 0 ≤ MCSchur.qf Y β` using `MCCusp.qf_nonneg hYpd.posSemidef _`. It suffices to establish `h : y i ^ 2 ≤ K * MCSchur.qf (periodGram τ) y by`. Rewrite using `[div_mul_eq_mul_div, one_mul, div_le_iff₀ hKpos]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hform y]`. Distinguish the cases in `hig : i.val < D.g`. Use `set k : Fin D.g := ⟨i.val, hig⟩ with hkdef`. Establish `hik : i = Fin.castAdd D.g k` using `Fin.ext rfl`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkr : T.r ≤ k.val` using `hi`. Establish `hyk : y i = α k` using `congrArg y hik`. Establish `hYkk : Y k k ≤ M`. Combine the equalities or inequalities in the displayed calculation. Establish `hXk : ∀ l, |X k l| ≤ M` using `fun l => (Complex.abs_re_le_norm _).trans (hMb p hp ℓ k l hkr)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : (α + X *ᵥ β) k ^ 2 ≤ M * MCSchur.qf Y⁻¹ (α + X *ᵥ β)`. Establish `h1` using `MCCusp.sq_le_inv_diag_mul_qf hYpd.inv (α + X *ᵥ β) k`. Rewrite `h1` using `[Matrix.nonsing_inv_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).mp hYpd.isUnit)]`. Conclude with `h1.trans (mul_le_mul_of_nonneg_right hYkk hA)`. Establish `hw` using `CuspCoordinateBound.mulVec_sq_le X M k hXk β`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsplit : α k = (α + X *ᵥ β) k - (X *ᵥ β) k` using `by simp`. Establish `hw2 : (X *ᵥ β) k ^ 2 ≤ D.g * M ^ 2 / D.c * MCSchur.qf Y β`. Use `hw.trans ?_` and prove the remaining obligations. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hc]`. Establish `h0 : 0 ≤ (D.g : ℝ) * M ^ 2` using `by positivity`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left (hYc β) h0]`. Rewrite using `[hyk, hsplit]`. Establish `hab : ((α + X *ᵥ β) k - (X *ᵥ β) k) ^ 2 ≤ 2 * (α + X *ᵥ β) k ^ 2 + 2 * (X *ᵥ β) k ^ 2`. Use polynomial arithmetic with `[sq_nonneg ((α + X *ᵥ β) k + (X *ᵥ β) k)]`. Establish `hid : K * (MCSchur.qf Y⁻¹ (α + X *ᵥ β) + MCSchur.qf Y β) = 2 * M * MCSchur.qf Y⁻¹ (α + X *ᵥ β) + 2 * (D.g * M ^ 2 / D.c) * MCSchur.qf Y β + (1 / D.c * MCSchur.qf Y⁻¹ (α + X *ᵥ β) + 1 / D.c * MCSchur.qf Y β + 2 * D.g * M ^ 2 / D.c * MCSchur.qf Y⁻¹ (α + X *ᵥ β) + 2 * M * MCSchur.qf …`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hK]`. Expand and normalize the polynomial expressions, which then agree. Establish `hM2 : 0 ≤ 2 * M` using `by positivity`. Rewrite using `[hid]`. Use polynomial arithmetic with `[mul_nonneg hK1 hA, mul_nonneg hK1 hB, mul_nonneg hK2 hA, mul_nonneg hM2 hB]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set k : Fin D.g := ⟨i.val - D.g, by omega⟩ with hkdef`. Establish `hik : i = Fin.natAdd D.g k` using `Fin.ext (by simp [hkdef]; omega)`. Establish `hyk : y i = β k` using `congrArg y hik`. Establish `h1` using `CuspCoordinateBound.coord_sq_le Y D.c hc hYc β k`. Establish `h2 : β k ^ 2 ≤ 1 / D.c * MCSchur.qf Y β`.
-
-Rewrite using `[div_mul_eq_mul_div, one_mul, le_div_iff₀ hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hid : K * (MCSchur.qf Y⁻¹ (α + X *ᵥ β) + MCSchur.qf Y β) = 1 / D.c * MCSchur.qf Y β + (K * MCSchur.qf Y⁻¹ (α + X *ᵥ β) + (2 * M + 2 * D.g * M ^ 2 / D.c) * MCSchur.qf Y β)`. Rewrite using `[hK]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hM2 : 0 ≤ 2 * M + 2 * D.g * M ^ 2 / D.c` using `by positivity`. Rewrite using `[hyk, hid]`. Use polynomial arithmetic with `[mul_nonneg hKpos.le hA, mul_nonneg hM2 hB]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem CuspCoordinateBound.proof (hImPos : ChartPeriodImPos.Statement)
     (hLow : ChartLowerBlockBound.Statement) (hPG : PeriodGramPosDef.Statement) :

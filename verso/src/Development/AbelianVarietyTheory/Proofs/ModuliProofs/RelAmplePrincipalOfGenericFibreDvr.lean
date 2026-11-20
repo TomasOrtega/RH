@@ -27,9 +27,9 @@ open GlobalTheory.Models GlobalTheory.ZM
 namespace GlobalTheory.PolDvr
 
 /- English proof (translation)
-Establish `hab : IsAbelianScheme t.G` using `⟨t.comm, t.semi.smooth, hp, t.semi.geomConnected⟩`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim R t.G hab`. Set `P : Out.PolAV (Sp R)` to `{ A := t.G isAb := hab g := g smoothDim := hg L := t.PP.L isLB := t.PP.isLB rigid := ⟨t.PP.rig, t.PP.rigGen⟩ sym := GlobalTheory.CechPic.sym_of_isSymmetric t.PP t.sym ample := hA ktriv := hK }`. Use `⟨P, Iso.refl _, ?_⟩` and prove the remaining obligations. Introduce `S B _ f φ M h₁ h₂`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Iso.refl_hom, Over.id_left, Category.id_comp]`. Conclude with `⟨h₁, h₂⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem exists_polAV {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {R : Type} [CommRing R]
     [IsLocalRing R] (t : SAB H (Sp R)) (hp : IsProper t.G.hom) (hA : Out.RelAmple t.G t.PP.L)
@@ -56,15 +56,15 @@ theorem exists_polAV {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Hos
   exact ⟨h₁, h₂⟩
 
 /- English proof (translation)
-Introduce `hH hL hL2 E _ _ _ H V K _ _ _ _ _ _ t tK m hp hA hK`. Establish `hab : IsAbelianScheme t.G` using `⟨t.comm, t.semi.smooth, hp, t.semi.geomConnected⟩`. Establish `hiso : LBIso tK.PP.L (t.PP.L.pull m.cm.F)`. Take `⟨w, hw, -⟩` from `m.lin`. Conclude with `⟨w, hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨t', -, e, -, -, hA', hK'⟩` from `GlobalTheory.T.exists_principallyPolarizedCM_extension_dvr hH hL hL2 E H V K t.G tK m.cm.F hab m.cart hA hK`. Establish `hp' : IsProper t'.G.hom`. Use `hp` as an intermediate fact. Establish `: IsIso e.hom.left` using `((Over.forget _).mapIso e).isIso_hom`. Rewrite using `[← Over.w e.hom]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Take `⟨P, e', -⟩` from `exists_polAV t' hp' hA' hK'`. Establish `: IsIso (e'.hom ≫ e.hom).left` using `((Over.forget _).mapIso (e' ≪≫ e)).isIso_hom`. Establish `hAmp : Out.RelAmple t.G t.PP.L` using `GlobalTheory.T.relAmple_of_generic_isogenous_dedekind hL hL2 V K P t.G (e'.hom ≫ e.hom) t.PP.L tK.G m.cm.F tK.PP.L hab t.PP.isLB tK.PP.isLB inferInstance inferInstance inferInstance m.cart hiso hA`. Use `⟨hAmp, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hpK : IsProper tK.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) m.cart.1 hp`. Take `⟨P₀, e₀, hu⟩` from `exists_polAV tK hpK hA hK`. Take `⟨hpb, hlb⟩` from `hu t.G (spMap (algebraMap V K)) m.cm.F t.PP.L m.cart hiso`. Establish `hsym : ∃ s : LB.Gen (LB.LinComb t.PP.L (K` using `Fin 2) ![(ι[t.G]).left, 𝟙 t.G.left] ![1, -1]), s.IsGen := by`. Take `⟨s, hs, -⟩` from `GlobalTheory.SymmetricBundle.gen_of_isSymmetric t.PP t.sym`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨s, hs⟩`. Take `⟨M, hM⟩` from `(GlobalTheory.T.abelianScheme_cubical_bundle_exists_and_maps hL.globalFns (Sp V) t.G hab).1 t.PP ⟨t.cub.t, t.cub.isGen⟩ hsym`. Establish `key` using `GlobalTheory.T.thetaGroupK_trivial_of_principal_genericFibre_dvr hL V K P₀ t.G M (e₀.hom.left ≫ m.cm.F) hab hpb (by rw [hM]; exact hlb) (by rw [hM]; exact hAmp)`. Rewrite `key` using `[hM]`. Conclude with `key`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relAmple_kTriv_of_generic_fibre : GlobalTheory.LN.HomExtSt → Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] (t : SAB H (Sp V)) (tK : SAB H (Sp K)) (_ : SABMap tK t (spMap (algebraMap V K))), IsProper t.G.hom → Out.RelAmple tK.G tK.PP.L → Out.KTriv tK.G tK.PP.L → Out.RelAmple t.G t.PP.L ∧ Out.KTriv t.G t.PP.L := by
   intro hH hL hL2 E _ _ _ H V K _ _ _ _ _ _ t tK m hp hA hK

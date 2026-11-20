@@ -26,7 +26,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Compa
 section Shapiro
 
 /- English proof (translation)
-Rewrite using `[tateCoindIso_hom, tateCoindIso_hom]`. Express the relevant statement in the definitionally equal form `(mackeyCompactCohomologyIso U φ N₃ (b + 1)).hom.hom ((tateForget φ ψ _ _ (fun _ => 𝟙 _) _ (fun _ => 𝟙 _) (b + 1)).hom (tateCompactCupRes φ ψ (coindPairing (U : Subgroup G) μ) h y x)) = compactCupRes (mackeyFamily U φ) μ h ((mackeyCompactCohomologyIso U φ N₁ (a + 1)).hom.hom ((tat …`. Rewrite using `[tateForget_tateCompactCupRes]`. Conclude with `mackeyCompactCohomologyIso_compactCupRes U φ μ h _ x`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tateCoindIso_tateCompactCupRes {N₁ N₂ N₃ : Rep (ULift.{0} ℤ) (U : Subgroup G)} [IsDiscreteRep N₁]
     [IsDiscreteRep N₂] [IsDiscreteRep N₃] (μ : N₁ ⊗ N₂ ⟶ N₃) {a r b : ℕ} (h : (a + 1) + r = b + 1)
@@ -45,7 +45,7 @@ theorem tateCoindIso_tateCompactCupRes {N₁ N₂ N₃ : Rep (ULift.{0} ℤ) (U 
   exact mackeyCompactCohomologyIso_compactCupRes U φ μ h _ x
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(tateCompactCohomologyResMap φ ψ (coindTrace (U : Subgroup G) A) (b + 1)).hom ((tateCoindIso φ ψ U (Rep.res (U : Subgroup G).subtype A) hU b).inv.hom ((tateCoindIso φ ψ U (Rep.res (U : Subgroup G).subtype A) hU b).hom.hom W)) = _`. Rewrite using `[hom_apply_hom_apply_of_comp_eq (tateCoindIso φ ψ U (Rep.res (U : Subgroup G).subtype A) hU b).hom_inv_id W]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tateCompactCores_tateCoindIso_hom (A : Rep (ULift.{0} ℤ) G) [IsDiscreteRep A] (b : ℕ)
     (W : tateCompactCohomologyRes φ ψ
@@ -92,7 +92,7 @@ theorem tateCoindDualCompactMap_apply (s : ℕ)
   rfl
 
 /- English proof (translation)
-Establish `h1` using `bijective_compactCohomologyResMap_of_comp_eq_id (mackeyFamily U φ) (zmodDualIso n (Rep.res (U : Subgroup G).subtype D) hD).hom (zmodDualIso n (Rep.res (U : Subgroup G).subtype D) hD).inv (Iso.hom_inv_id _) (Iso.inv_hom_id _) (s + 1)`. Establish `h2 : Function.Bijective (tateCoindIso φ ψ U (dualRep (Rep.res (U : Subgroup G).subtype D) (zmodRep.{0} (U : Subgroup G) n)) hU s).hom.hom` using `Function.bijective_iff_has_inverse.2 ⟨(tateCoindIso φ ψ U _ hU s).inv.hom, fun w => hom_apply_hom_apply_of_comp_eq (tateCoindIso φ ψ U _ hU s).hom_inv_id w, fun w => hom_apply_hom_apply_of_comp_eq (tateCoindIso φ ψ U _ hU s).inv_hom_id w⟩`. Establish `h3` using `bijective_tateCompactCohomologyResMap_of_comp_eq_id φ ψ (coindDualInv (U : Subgroup G) (ULift.{0} (ZMod n)) D) (coindDualHom (U : Subgroup G) (ULift.{0} (ZMod n)) D) (coindDualInv_comp_coindDualHom _ _ _) (coindDualHom_comp_coindDualInv _ _ _) (s + 1)`. Conclude with `h1.comp (h2.comp h3)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bijective_tateCoindDualCompactMap (s : ℕ) :
     Function.Bijective (tateCoindDualCompactMap φ ψ U hU hD s) := by
@@ -116,11 +116,11 @@ abbrev tateCoresTrace (t : tateCompactCohomologyRes φ ψ D 3 →+ ZMod n) :
   t.comp (tateCompactCores φ ψ U hU D 2).hom.toAddMonoidHom
 
 /- English proof (translation)
-Establish `hy : (tateCompactCohomologyResMap φ ψ (coindDualHom (U : Subgroup G) (ULift.{0} (ZMod n)) D) (s + 1)).hom ((tateCompactCohomologyResMap φ ψ (coindDualInv (U : Subgroup G) (ULift.{0} (ZMod n)) D) (s + 1)).hom y) = y`. Rewrite using `[← ConcreteCategory.comp_apply, ← tateCompactCohomologyResMap_comp, coindDualInv_comp_coindDualHom, tateCompactCohomologyResMap_id]`. Both sides reduce to the same expression. Establish `e1` using `compactCupRes_compactCohomologyResMap (mackeyFamily U φ) (zmodMulPairingRight n (Rep.res (U : Subgroup G).subtype D) hD) (dualEvalPairing (Rep.res (U : Subgroup G).subtype D) (zmodRep.{0} (U : Subgroup G) n)) (zmodDualIso n (Rep.res (U : Subgroup G).subtype D) hD).hom (𝟙 _) (by r …`. Rewrite `e1` using `[cohomologyMap_id, ModuleCat.hom_id, LinearMap.id_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `tateCoindIso_tateCompactCupRes φ ψ U hU (dualEvalPairing (Rep.res (U : Subgroup G).subtype D) (zmodRep.{0} (U : Subgroup G) n)) (b := 2) ((Nat.add_comm (s + 1) r).trans h) ((tateCompactCohomologyResMap φ ψ (coindDualInv (U : Subgroup G) (ULift.{0} (ZMod n)) D) (s + 1)).hom y) x`. Establish `e3` using `tateCompactCores_tateCoindIso_hom φ ψ U hU D 2 (tateCompactCupRes φ ψ (coindPairing (U : Subgroup G) (dualEvalPairing (Rep.res (U : Subgroup G).subtype D) (zmodRep.{0} (U : Subgroup G) n))) ((Nat.add_comm (s + 1) r).trans h) ((tateCompactCohomologyResMap φ ψ (coindDualInv (U : Su …`. Rewrite using `[tateCompactDualityMap_apply, compactZmodDualityMap_apply, tateCoindDualCompactMap_apply, e1, ← e2]`. Use `Eq.trans (congrArg t ?_) (congrArg t e3).symm` and prove the remaining obligations. Use `conv_lhs => rw [← hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tateCompactCupRes_tateCompactCohomologyResMap φ ψ _ ((coindDualHom (U : Subgroup G) (ULift.{0} (ZMod n)) D ⊗ₘ 𝟙 (Rep.coind (U : Subgroup G).subtype (zmodRep.{0} (U : Subgroup G) n))) ≫ dualEvalPairing D (Rep.coind (U : Subgroup G).subtype (zmodRep.{0} (U : Subgroup G) n))) _ (𝟙 …`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tateCompactDualityMap_coind (t : tateCompactCohomologyRes φ ψ D 3 →+ ZMod n) {r s : ℕ}
     (h : r + (s + 1) = 3)
@@ -173,7 +173,7 @@ theorem tateCompactDualityMap_coind (t : tateCompactCohomologyRes φ ψ D 3 →+
   rfl
 
 /- English proof (translation)
-Establish `hsh : Function.Bijective (shapiroMap U (zmodRep.{0} (U : Subgroup G) n) r)` using `Function.bijective_iff_has_inverse.2 ⟨inv (shapiroMap U _ r), inv_shapiroMap_apply U r, shapiroMap_inv_apply U r⟩`. Conclude with `bijective_of_bijective_comp hb hsh (bijective_tateCoindDualCompactMap φ ψ U hU hD s) (tateCompactDualityMap_coind φ ψ U hU hD t h)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bijective_tateCompactDualityMap_coind (t : tateCompactCohomologyRes φ ψ D 3 →+ ZMod n) {r s : ℕ}
     (h : r + (s + 1) = 3)
@@ -192,11 +192,11 @@ end Coind
 section Cores
 
 /- English proof (translation)
-Establish `hS` using `coindTraceShortComplex_shortExact (U : Subgroup G) D`. Establish `: IsDiscreteRep (coindTraceShortComplex (U : Subgroup G) D).X₂` using `inferInstanceAs (IsDiscreteRep (Rep.coind (U : Subgroup G).subtype (Rep.res (U : Subgroup G).subtype D)))`. Establish `: IsDiscreteRep (coindTraceShortComplex (U : Subgroup G) D).X₁` using `isDiscreteRep_subrepresentation _ _ _`. Establish `: IsDiscreteRep (coindTraceShortComplex (U : Subgroup G) D).X₃` using `inferInstanceAs (IsDiscreteRep D)`. Establish `: Finite (Rep.res (U : Subgroup G).subtype D)` using `inferInstanceAs (Finite D)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (Rep.coind (U : Subgroup G).subtype (Rep.res (U : Subgroup G).subtype D))` using `finite_coind U _`. Establish `: Finite (coindTraceShortComplex (U : Subgroup G) D).X₁` using `inferInstanceAs (Finite (coindTraceKer (U : Subgroup G) D))`. Establish `hN : ∀ m : (coindTraceShortComplex (U : Subgroup G) D).X₁, n • m = 0` using `fun m => Subtype.ext (Subtype.ext (funext fun x => hD _))`. Establish `h4` using `hV _ hN`. Establish `hg : Function.Surjective (tateCompactCohomologyResMap φ ψ (coindTrace (U : Subgroup G) D) 3).hom` using `fun y => (ShortComplex.moduleCat_exact_iff_ker_sub_range _).1 (tateCompactRes_exact₃ φ ψ hS 3) (@Subsingleton.elim _ h4 _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Use `(hg y).elim fun x hx => ⟨(tateCoindIso φ ψ U (Rep.res (U : Subgroup G).subtype D) hU 2).hom.hom x, ?_⟩` and prove the remaining obligations. Conclude with `(tateCompactCores_tateCoindIso_hom φ ψ U hU D 2 x).trans hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem surjective_tateCompactCores_three (D : Rep (ULift.{0} ℤ) G) [IsDiscreteRep D] [Finite D] {n : ℕ}
     (hD : ∀ d : D, n • d = 0)

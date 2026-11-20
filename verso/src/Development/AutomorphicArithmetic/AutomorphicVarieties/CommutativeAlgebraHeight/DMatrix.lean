@@ -17,13 +17,13 @@ variable {n : ℕ} {k : Type} [Field k] {ι : Type} [Fintype ι] [DecidableEq ι
 
 include nat in
 /- English proof (translation)
-Establish `hm : ∀ (S : Type) [CommRing S] [Algebra k S] (s : S), F S (Matrix.transvection i j s) = aeval s (F k[X] (Matrix.transvection i j X))`. Introduce `S _ _ s`. Rewrite using `[← nat]`. Use `congr 1`. Use extensionality with `a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.transvection, Matrix.map_apply, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, map_add]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hu : IsUnit (F k[X] (Matrix.transvection i j X))`. Use `IsUnit.of_mul_eq_one (F k[X] (Matrix.transvection i j (-X))) ?_` and prove the remaining obligations. Rewrite using `[← map_mul, Matrix.transvection_mul_transvection_same i j hij, add_neg_cancel, Matrix.transvection_zero, map_one]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, -, hc⟩` from `Polynomial.isUnit_iff.1 hu`. Establish `h0` using `hm k 0`. Rewrite `h0` using `[Matrix.transvection_zero, map_one, ← hc]`. Rewrite using `[hm, ← hc]`. Simplify using `at h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[← h0]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dm_transv (S : Type) [CommRing S] [Algebra k S] {i j : ι} (hij : i ≠ j) (s : S) :
     F S (Matrix.transvection i j s) = 1 := by
@@ -46,7 +46,7 @@ private theorem dm_transv (S : Type) [CommRing S] [Algebra k S] {i j : ι} (hij 
   simp [← h0]
 
 /- English proof (translation)
-Use `map_prod ((F S).comp (Matrix.diagonalRingHom ι S).toMonoidHom) (fun i => Pi.mulSingle i (d i)) Finset.univ` as an intermediate fact. Rewrite `this` using `[Finset.univ_prod_mulSingle]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dm_diag_prod (S : Type) [CommRing S] [Algebra k S] (d : ι → S) :
     F S (Matrix.diagonal d) = ∏ i, F S (Matrix.diagonal (Pi.mulSingle i (d i))) := by
@@ -56,7 +56,7 @@ private theorem dm_diag_prod (S : Type) [CommRing S] [Algebra k S] (d : ι → S
 
 include nat in
 /- English proof (translation)
-Rewrite using `[← nat]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.diagonal_apply, Pi.mulSingle_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dm_single (S : Type) [CommRing S] [Algebra k S] (i : ι) (s : S) :
     F S (Matrix.diagonal (Pi.mulSingle i s)) = aeval s (F k[X] (Matrix.diagonal (Pi.mulSingle i X))) := by
@@ -67,7 +67,7 @@ private theorem dm_single (S : Type) [CommRing S] [Algebra k S] (i : ι) (s : S)
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h : Matrix.swap S i j * Matrix.diagonal (Pi.mulSingle i s) * Matrix.swap S i j = Matrix.diagonal (Pi.mulSingle j s)`. Simplify using `only [Matrix.swap, Equiv.Perm.permMatrix, PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`. Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, Matrix.diagonal_apply, Pi.mulSingle_apply, id, Equiv.symm_swap, EmbeddingLike.apply_eq_iff_eq, Equiv.swap_apply_eq_iff, Equiv.swap_apply_left]`. Rewrite using `[← h, map_mul, map_mul, mul_right_comm, ← map_mul, Matrix.swap_mul_self, map_one, one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem dm_swap (S : Type) [CommRing S] [Algebra k S] (i j : ι) (s : S) :
     F S (Matrix.diagonal (Pi.mulSingle i s)) = F S (Matrix.diagonal (Pi.mulSingle j s)) := by
@@ -81,7 +81,7 @@ private theorem dm_swap (S : Type) [CommRing S] [Algebra k S] (i j : ι) (s : S)
 
 include hom in
 /- English proof (translation)
-Use `hom k[X] X 1` as an intermediate fact. Rewrite `this` using `[map_one, mul_one, Matrix.smul_one_eq_diagonal, dm_diag_prod]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dm_X : ∏ i : ι, F k[X] (Matrix.diagonal (Pi.mulSingle i X)) = X ^ n := by
   have := hom k[X] X 1
@@ -90,13 +90,13 @@ private theorem dm_X : ∏ i : ι, F k[X] (Matrix.diagonal (Pi.mulSingle i X)) =
 
 include nat hom in
 /- English proof (translation)
-Take `⟨i₀⟩` from `‹Nonempty ι›`. Establish `h` using `dm_X F hom`. Establish `hd : F k[X] (Matrix.diagonal (Pi.mulSingle i₀ X)) ∣ X ^ n` using `h ▸ Finset.dvd_prod_of_mem _ (Finset.mem_univ i₀)`. Take `⟨m, -, u, hu⟩` from `(dvd_prime_pow Polynomial.prime_X n).1 hd`. Take `⟨c, -, hc⟩` from `Polynomial.isUnit_iff.1 u.isUnit`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `dm_single F nat k i₀ 1`. Rewrite `h1` using `[Pi.mulSingle_one, show (1 : ι → k) = fun _ => 1 from rfl, Matrix.diagonal_one, map_one]`. Establish `h2` using `congrArg (aeval (1 : k)) hu`. Rewrite `h2` using `[map_mul, ← h1, ← hc]`. Establish `hc1 : c = 1` using `by simpa using h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hu` using `[← hc, hc1, map_one, mul_one]`. Establish `hall : ∀ i : ι, F k[X] (Matrix.diagonal (Pi.mulSingle i X)) = X ^ m` using `fun i => (dm_swap F _ i i₀ _).trans hu`. Use `⟨m, ?_, fun S _ _ d => ?_⟩` and prove the remaining obligations. Simplify using `only [hall, Finset.prod_const, Finset.card_univ, ← pow_mul] at h`. Use `congrArg natDegree h` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `using this.symm`. Rewrite using `[dm_diag_prod, Matrix.det_diagonal, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[dm_single F nat, hall]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem dm_diag [Nonempty ι] : ∃ m, n = m * Fintype.card ι ∧
     ∀ (S : Type) [CommRing S] [Algebra k S] (d : ι → S), F S (Matrix.diagonal d) = (Matrix.diagonal d).det ^ m := by
@@ -123,15 +123,15 @@ private theorem dm_diag [Nonempty ι] : ∃ m, n = m * Fintype.card ι ∧
 
 include nat hom in
 /- English proof (translation)
-Take `⟨m, hm, hd⟩` from `dm_diag F nat hom`. Use `⟨m, hm, fun S _ _ M => ?_⟩` and prove the remaining obligations. Establish `hK : ∀ (K : Type) [Field K] [Algebra k K] (M : Matrix ι ι K), F K M = M.det ^ m`. Introduce `K _ _ M`. Use `Matrix.diagonal_transvection_induction (fun M => F K M = M.det ^ m) M (fun d _ => hd K d) (fun t => ?_) (fun A B hA hB => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[t.det, one_pow]`. Conclude with `dm_transv F nat K t.hij t.c`. Rewrite using `[map_mul, hA, hB, Matrix.det_mul, mul_pow]`. Set `R` to `MvPolynomial (ι × ι) k`. Set `G : Matrix ι ι R` to `Matrix.of fun i j => MvPolynomial.X (i, j)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hG : F R G = G.det ^ m`. Apply `IsFractionRing.injective R (FractionRing R)` to reduce the goal to its premises. Use `nat R (FractionRing R) (IsScalarTower.toAlgHom k R (FractionRing R)) G` as an intermediate fact. Rewrite `this` using `[hK]`. Rewrite using `[map_pow, RingHom.map_det]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.symm`. Establish `h` using `nat R S (MvPolynomial.aeval fun p => M p.1 p.2) G`. Rewrite `h` using `[hG, map_pow, AlgHom.map_det]`. Establish `hM : G.map (MvPolynomial.aeval fun p : ι × ι => M p.1 p.2 : R →ₐ[k] S) = M`. Use extensionality with `a b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[G, R]`. Rewrite `h` using `[AlgHom.mapMatrix_apply, hM]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 private theorem dm_main [Nonempty ι] : ∃ m, n = m * Fintype.card ι ∧
     ∀ (S : Type) [CommRing S] [Algebra k S] (M : Matrix ι ι S), F S M = M.det ^ m := by
@@ -161,9 +161,9 @@ private theorem dm_main [Nonempty ι] : ∃ m, n = m * Fintype.card ι ∧
   exact h
 
 /- English proof (translation)
-Rewrite using `[← AlgEquiv.eq_symm_apply]`. Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul s x`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Det.repS_tmul, matrixEquivTensor_apply_symm]`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem dm_rep (S : Type) [CommRing S] [Algebra k S] (y : S ⊗[k] Matrix ι ι k) :
     matrixEquivTensor ι k S (Det.repS (AlgHom.id k _) S y) = y := by
@@ -179,11 +179,11 @@ private theorem dm_rep (S : Type) [CommRing S] [Algebra k S] (y : S ⊗[k] Matri
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `n d k _ D`. Take `⟨m, hm, h⟩` from `dm_main (n := n) (k := k) (ι := Fin (d + 1)) (fun S _ _ => (D.D S).comp (matrixEquivTensor (Fin (d + 1)) k S).toAlgHom.toMonoidHom) (fun S T _ _ _ _ f M => by`. Express the relevant statement in the definitionally equal form `D.D T (matrixEquivTensor _ k T (M.map f)) = f (D.D S (matrixEquivTensor _ k S M))`. Rewrite using `[← D.nat]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[matrixEquivTensor_apply, map_sum])`. Use the proof step `(fun S _ _ b M => by`. Express the relevant statement in the definitionally equal form `D.D S (matrixEquivTensor _ k S (b • M)) = b ^ n * D.D S (matrixEquivTensor _ k S M)`. Rewrite using `[← D.homog]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[matrixEquivTensor_apply, Finset.smul_sum, smul_tmul'])`. Use `⟨m, by simpa using hm, fun S _ _ y => ?_⟩` and prove the remaining obligations. Rewrite using `[← h]`. Conclude with `congrArg (D.D S) (dm_rep S y).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.d_matrix :
     ∀ {n d : ℕ} {k : Type} [Field k] (D : Det n k (Matrix (Fin (d + 1)) (Fin (d + 1)) k)), ∃ m, n = m * (d + 1) ∧ ∀ (S : Type) [CommRing S] [Algebra k S] (y : S ⊗[k] Matrix (Fin (d + 1)) (Fin (d + 1)) k), D.D S y = (Det.repS (AlgHom.id k _) S y).det ^ m := by

@@ -20,7 +20,7 @@ noncomputable section
 namespace ReciprocityTheory.ChartRestriction.DS.Lap.Base
 
 /- English proof (translation)
-The claim follows from `assembly b1 (matrixCoeffBounds_imply_bound b2 b3a b3b b3c smInfUnitary) b4 b5 b6 b7a b7b lamT_facts psiFor link`.
+A detailed English derivation is pending.
 -/
 theorem stepIBase : StepIBaseStatement :=
   assembly b1 (matrixCoeffBounds_imply_bound b2 b3a b3b b3c smInfUnitary) b4 b5 b6 b7a b7b lamT_facts psiFor link

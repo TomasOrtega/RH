@@ -17,7 +17,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ZH
 
 /- English proof (translation)
-Use `IsZariskiLocalAtTarget.of_iSup_eq_top (P := @IsProper) (fun U : T.affineOpens => U.1) (iSup_affineOpens_eq_top T) fun U => ?_` and prove the remaining obligations. Establish `h₁` using `projProper _ _ _ (GlobalTheory.ProjSpace.isProjOver_morphismRestrict_of_relAmple h U.2)`. Conclude with `(MorphismProperty.cancel_right_of_respectsIso (P := @IsProper) _ U.2.isoSpec.hom).1 h₁`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isProper_hom_of_relAmple {T : Scheme.{0}} {A : Over T} [GrpObj A] {B : LB A.left} (h : RelAmple A B) :
     IsProper A.hom := by
@@ -27,9 +27,9 @@ theorem isProper_hom_of_relAmple {T : Scheme.{0}} {A : Over T} [GrpObj A] {B : L
   exact (MorphismProperty.cancel_right_of_respectsIso (P := @IsProper) _ U.2.isoSpec.hom).1 h₁
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ S ρ M U₀ EE Z _ hO`. Use `letI := Z.grp`. Set `W : M.Z.Opens` to `⟨abLocus Z.G, hO⟩`. Use `⟨W, rfl, ?_⟩` and prove the remaining obligations. Establish `h : IsProper (pullback.snd Z.G.hom W.ι)` using `isProper_hom_of_relAmple (Z.pol W le_rfl).1`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `morphismRestrict`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem abOpen_of_isOpen_abLocus : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (Z : ZHOut ρ M U₀ EE), S.Over₀ M U₀ → IsOpen (abLocus Z.G) → GlobalTheory.Models.AbOpen Z.G := by
   intro o Ω _ _ _ _ S ρ M U₀ EE Z _ hO

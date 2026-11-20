@@ -8,9 +8,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.Me
 open scoped Formalism.Per
 
 /- English proof (translation)
-Establish `hM` using `GlobalTheory.ClosedBallValuationSubring.openBallIdeal_isMaximal (PadicAlgCl l)`. Establish `: (GlobalTheory.ClosedBallValuationSubring.openBallIdeal (PadicAlgCl l)).IsPrime` using `hM.isPrime`. Use `(CharP.charP_iff_prime_eq_zero hl.out).2 ?_` and prove the remaining obligations. Rewrite using `[← map_natCast (Ideal.Quotient.mk _), Ideal.Quotient.eq_zero_iff_mem, GlobalTheory.ClosedBallValuationSubring.mem_openBallIdeal]`. Establish `e : ((l : PadicAlgCl l)) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])` using `(map_natCast _ l).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[e, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem charP_closedBallSubring_quotient_openBallIdeal {l : ℕ} [hl : Fact l.Prime] :
     CharP (GlobalTheory.ClosedBallValuationSubring.closedBallSubring (PadicAlgCl l) ⧸ GlobalTheory.ClosedBallValuationSubring.openBallIdeal (PadicAlgCl l)) l := by
@@ -24,39 +24,33 @@ private theorem charP_closedBallSubring_quotient_openBallIdeal {l : ℕ} [hl : F
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-Establish `: NeZero l` using `⟨hl.out.ne_zero⟩`. Use `set O := GlobalTheory.ClosedBallValuationSubring.closedBallSubring (PadicAlgCl l) with hO`. Use `set M := GlobalTheory.ClosedBallValuationSubring.openBallIdeal (PadicAlgCl l) with hM`. Establish `: M.IsMaximal` using `GlobalTheory.ClosedBallValuationSubring.openBallIdeal_isMaximal _`. Set `: Field (O ⧸ M)` to `Ideal.Quotient.field M`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: CharP (O ⧸ M) l` using `charP_closedBallSubring_quotient_openBallIdeal`. Set `: Algebra (ZMod l) (O ⧸ M)` to `ZMod.algebra _ l`. Establish `hcoef : ∀ c : ℚ_[l], ‖c‖ ≤ 1 → ∀ h : algebraMap ℚ_[l] (PadicAlgCl l) c ∈ O, Ideal.Quotient.mk M ⟨_, h⟩ ∈ Set.range (algebraMap (ZMod l) (O ⧸ M))`. Introduce `c hc h`. Establish `key : ∀ x : ℤ_[l], ∃ n : ℕ, ‖(x : ℚ_[l]) - n‖ < 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Take `⟨n, -, hn⟩` from `PadicInt.exists_mem_range (x := x)`. Rewrite `hn` using `[IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits, PadicInt.norm_def, PadicInt.coe_sub, PadicInt.coe_natCast]`. Conclude with `⟨n, hn⟩`. Take `⟨n, hn'⟩` from `key ⟨c, hc⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(n : ZMod l), ?_⟩` and prove the remaining obligations. Rewrite using `[map_natCast, ← map_natCast (Ideal.Quotient.mk M), Ideal.Quotient.eq, GlobalTheory.ClosedBallValuationSubring.mem_openBallIdeal]`. Establish `e : ((n : PadicAlgCl l)) = algebraMap ℚ_[l] (PadicAlgCl l) (n : ℚ_[l])` using `(map_natCast _ n).symm`. Use `push_cast`. Rewrite using `[e, ← map_sub, PadicAlgCl.norm_extends, norm_sub_rev]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hn'`. Establish `hint : IsIntegral ℚ_[l] a` using `Algebra.IsIntegral.isIntegral a`. Use `set P := minpoly ℚ_[l] a with hP`. Establish `hPm : P.Monic` using `minpoly.monic hint`. Establish `hPc : ∀ n, ‖P.coeff n‖ ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : spectralValue P ≤ 1`. Rewrite `ha` using `[← PadicAlgCl.spectralNorm_eq]`. Conclude with `ha`. Conclude with `(spectralValue_le_one_iff hPm).1 h1`. Use `set Pm := P.map (algebraMap ℚ_[l] (PadicAlgCl l)) with hPm'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hPmO : ∀ n, Pm.coeff n ∈ O`. Introduce `n`. Rewrite using `[Polynomial.coeff_map, GlobalTheory.ClosedBallValuationSubring.mem_closedBallSubring, PadicAlgCl.norm_extends]`. Conclude with `hPc n`. Establish `hsub : (↑Pm.coeffs : Set (PadicAlgCl l)) ⊆ O`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Take `⟨n, -, hn⟩` from `Polynomial.mem_coeffs_iff.1 hx`. Rewrite using `[hn]`. Conclude with `hPmO n`. Use `set Q := Pm.toSubring O hsub with hQ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set Qb := Q.map (Ideal.Quotient.mk M) with hQb`. Establish `hQm : Qb.Monic` using `((Polynomial.monic_toSubring _ _ _).2 (hPm.map _)).map _`. Establish `hlift : Qb ∈ Polynomial.lifts (algebraMap (ZMod l) (O ⧸ M))`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hQb, Polynomial.coeff_map]`. Establish `e : Q.coeff n = ⟨algebraMap ℚ_[l] (PadicAlgCl l) (P.coeff n), by`. Rewrite using `[← Polynomial.coeff_map]; exact hPmO n⟩ := by`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hQ, Polynomial.coeff_toSubring]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Polynomial.coeff_map _ _`. Rewrite using `[e]`. Conclude with `hcoef _ (hPc n) _`. Use `set a' : O := ⟨a, GlobalTheory.ClosedBallValuationSubring.mem_closedBallSubring.2 ha⟩ with ha'`. Establish `hQa : Q.eval a' = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show O.subtype (Q.eval a') = 0`. Rewrite using `[← Polynomial.eval₂_at_apply, ← Polynomial.eval_map, hQ, Polynomial.map_toSubring]`. Use `show Pm.eval a = 0`. Rewrite using `[hPm', Polynomial.eval_map, ← Polynomial.aeval_def, hP, minpoly.aeval]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hroot : Qb.eval (Ideal.Quotient.mk M a') = 0`. Rewrite using `[hQb, Polynomial.eval_map, Polynomial.eval₂_at_apply, hQa, map_zero]`. Take `⟨R, hRmap, -, hRmon⟩` from `Polynomial.lifts_and_degree_eq_and_monic hlift hQm`. Establish `hab : IsIntegral (ZMod l) (Ideal.Quotient.mk M a')` using `⟨R, hRmon, by rw [← Polynomial.eval_map, hRmap]; exact hroot⟩`. Use `IntermediateField.adjoin.finiteDimensional hab` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: Finite (IntermediateField.adjoin (ZMod l) {Ideal.Quotient.mk M a'})` using `Module.finite_of_finite (ZMod l)`. Set `: Fintype (IntermediateField.adjoin (ZMod l) {Ideal.Quotient.mk M a'})` to `Fintype.ofFinite _`. Establish `hcard : Fintype.card (IntermediateField.adjoin (ZMod l) {Ideal.Quotient.mk M a'}) = l ^ Module.finrank (ZMod l) (IntermediateField.adjoin (ZMod l) {Ideal.Quotient.mk M a'})`. Rewrite using `[Module.card_eq_pow_finrank (K := ZMod l), ZMod.card]`. Establish `hx` using `FiniteField.pow_card (⟨Ideal.Quotient.mk M a', IntermediateField.mem_adjoin_simple_self _ _⟩ : IntermediateField.adjoin (ZMod l) {Ideal.Quotient.mk M a'})`.
-
-Rewrite `hx` using `[hcard]`. Establish `hx'` using `congrArg Subtype.val hx`. Simplify using `only [SubmonoidClass.coe_pow] at hx'`. Use `⟨Module.finrank (ZMod l) (IntermediateField.adjoin (ZMod l) {Ideal.Quotient.mk M a'}), ?_, ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos (Module.finrank (ZMod l) (IntermediateField.adjoin (ZMod l) {Ideal.Quotient.mk M a'})) with h0 | h0` into its components or cases.
-
-Establish `h1` using `Fintype.one_lt_card (α := IntermediateField.adjoin (ZMod l) {Ideal.Quotient.mk M a'})`. Rewrite `h1` using `[hcard, h0, pow_zero]`. Conclude with `absurd h1 (lt_irrefl 1)`. Conclude with `h0`. Establish `h2 : Ideal.Quotient.mk M (a' ^ (l ^ Module.finrank (ZMod l) (IntermediateField.adjoin (ZMod l) {Ideal.Quotient.mk M a'})) - a') = 0`.
-
-Rewrite using `[map_sub, map_pow, hx', sub_self]`. Rewrite `h2` using `[Ideal.Quotient.eq_zero_iff_mem, GlobalTheory.ClosedBallValuationSubring.mem_openBallIdeal]`. Simplify `h2` using `[ha']`.
+A detailed English derivation is pending.
 -/
 private theorem exists_norm_pow_prime_pow_sub_lt_one {l : ℕ} [hl : Fact l.Prime] (a : PadicAlgCl l) (ha : ‖a‖ ≤ 1) :
     ∃ f : ℕ, 0 < f ∧ ‖a ^ (l ^ f) - a‖ < 1 := by
@@ -157,23 +151,19 @@ private theorem exists_norm_pow_prime_pow_sub_lt_one {l : ℕ} [hl : Fact l.Prim
     simpa [ha'] using h2
 
 /- English proof (translation)
-Take `⟨f, hf, hlt⟩` from `exists_norm_pow_prime_pow_sub_lt_one a ha`. Establish `hl1 : 1 < l` using `hl.out.one_lt`. Establish `hq1 : 1 < l ^ f` using `Nat.one_lt_pow hf.ne' hl1`. Use `set q := l ^ f with hq`. Use `set P : Polynomial (PadicAlgCl l) := Polynomial.X ^ q - Polynomial.X with hP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPm : P.Monic` using `Polynomial.monic_X_pow_sub (by rw [Polynomial.degree_X]; exact_mod_cast hq1)`. Establish `hprod` using `Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq hPm IsAlgClosed.card_roots_eq_natDegree`. Establish `heval : a ^ q - a = (P.roots.map fun r => a - r).prod`. Establish `h` using `congrArg (Polynomial.eval a) hprod`. Rewrite `h` using `[Polynomial.eval_multiset_prod, Multiset.map_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify `h.symm` using `[hP, Function.comp_def]`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hge : ∀ r ∈ P.roots, 1 ≤ ‖a - r‖`. Introduce `r hr`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hr' : r ^ q = r`. Establish `h` using `Polynomial.isRoot_of_mem_roots hr`. Simplify using `only [Polynomial.IsRoot, hP, Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X] at h`. Conclude with `sub_eq_zero.1 h`. Distinguish the cases in `h0 : r = 0`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hcon r (Or.inl h0)`. Use `hcon r (Or.inr ⟨q - 1, by omega, ?_, ?_⟩)` and prove the remaining obligations. Introduce `hd`. Establish `h2 : l ∣ q - 1 + 1` using `by rw [Nat.sub_add_cancel hq1.le, hq]; exact dvd_pow_self l hf.ne'`. Establish `h3 : l ∣ 1` using `(Nat.dvd_add_right hd).1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `hl1.ne' (Nat.dvd_one.1 h3)`. Establish `h4 : r ^ (q - 1) * r = 1 * r`. Rewrite using `[← pow_succ, Nat.sub_add_cancel hq1.le, one_mul, hr']`. Conclude with `mul_right_cancel₀ h0 h4`. Establish `key : ∀ s : Multiset (PadicAlgCl l), (∀ r ∈ s, 1 ≤ ‖a - r‖) → 1 ≤ ‖(s.map fun r => a - r).prod‖`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `s`. Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => intro _`. Simplify using the standard rewrite rules. Consider the case `cons r s ih`.
-
-Introduce `h`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, norm_mul]`. Conclude with `one_le_mul_of_one_le_of_one_le (h r (Multiset.mem_cons.2 (Or.inl rfl))) (ih fun x hx => h x (Multiset.mem_cons.2 (Or.inr hx)))`. Establish `h5` using `key _ hge`. Rewrite `h5` using `[← heval]`.
-
-Conclude with `absurd hlt (not_lt.2 h5)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_teichmuller_root_norm_sub_lt_one {l : ℕ} [hl : Fact l.Prime] (a : PadicAlgCl l) (ha : ‖a‖ ≤ 1) :
     ∃ ζ : PadicAlgCl l, (ζ = 0 ∨ ∃ m, 0 < m ∧ ¬ l ∣ m ∧ ζ ^ m = 1) ∧ ‖a - ζ‖ < 1 := by
@@ -223,11 +213,9 @@ private theorem exists_teichmuller_root_norm_sub_lt_one {l : ℕ} [hl : Fact l.P
   exact absurd hlt (not_lt.2 h5)
 
 /- English proof (translation)
-Take `⟨ζ, hζ, hlt⟩` from `exists_teichmuller_root_norm_sub_lt_one a ha`. Establish `hfix : γ ζ = ζ`. Break down `hζ with h0 | h1` into its components or cases. Rewrite using `[h0, map_zero]`. Conclude with `hγ ζ h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : γ a - a = γ (a - ζ) + -(a - ζ)` using `by rw [map_sub, hfix]; ring`. Establish `hn : ‖γ (a - ζ)‖ = ‖a - ζ‖` using `(spectralNorm_eq_of_equiv γ (a - ζ)).symm`. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt ?_` and prove the remaining obligations. Rewrite using `[hn, norm_neg, max_self]`.
-
-Conclude with `hlt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_apply_sub_lt_one_of_fixes_prime_to_l_roots {l : ℕ} [hl : Fact l.Prime] (γ : PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l)
     (hγ : ∀ ζ : PadicAlgCl l, (∃ m, 0 < m ∧ ¬ l ∣ m ∧ ζ ^ m = 1) → γ ζ = ζ)
@@ -245,7 +233,7 @@ private theorem norm_apply_sub_lt_one_of_fixes_prime_to_l_roots {l : ℕ} [hl : 
   exact hlt
 
 /- English proof (translation)
-Introduce `ζ hζ`. Establish `hmem : ζ ∈ MaximalUnramifiedExtension l`. Unfold `MaximalUnramifiedExtension`. Conclude with `IntermediateField.subset_adjoin _ _ hζ`. Conclude with `hγ ⟨ζ, hmem⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem apply_root_eq_of_mem_fixingSubgroup_Kur {l : ℕ} [hl : Fact l.Prime] (γ : GQ l) (hγ : γ ∈ (MaximalUnramifiedExtension l).fixingSubgroup) :
     ∀ ζ : PadicAlgCl l, (∃ m, 0 < m ∧ ¬ l ∣ m ∧ ζ ^ m = 1) → γ ζ = ζ := by
@@ -256,23 +244,21 @@ private theorem apply_root_eq_of_mem_fixingSubgroup_Kur {l : ℕ} [hl : Fact l.P
   exact hγ ⟨ζ, hmem⟩
 
 /- English proof (translation)
-Establish `hn : ∀ (g : PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l) (y : PadicAlgCl l), ‖g y‖ = ‖y‖` using `fun g y => (spectralNorm_eq_of_equiv g y).symm`. Establish `hfix` using `apply_root_eq_of_mem_fixingSubgroup_Kur γ hγ`. Establish `hx0 : ‖x‖ ≠ 0` using `norm_ne_zero_iff.2 hx`. Establish `hγx : γ x ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hx` to reduce the goal to its premises. Rewrite using `[← norm_eq_zero, ← hn γ x, h0, norm_zero]`. Use `set u : Om l := γ x / x with hu'`. Establish `hu : ‖u‖ = 1` using `by rw [hu', norm_div, hn, div_self hx0]`. Establish `hind : ∀ k : ℕ, ‖(γ ^ k) x / x - u ^ k‖ < 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp [div_self hx]`. Consider the case `succ k ih`. Establish `hvk : ‖(γ ^ k) x / x‖ = 1` using `by rw [norm_div, hn, div_self hx0]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (γ ^ (k + 1)) x / x - u ^ (k + 1) = ((γ ((γ ^ k) x / x) - (γ ^ k) x / x) + ((γ ^ k) x / x - u ^ k)) * u`. Rewrite using `[show γ ^ (k + 1) = γ * γ ^ k from pow_succ' γ k, AlgEquiv.mul_apply, pow_succ u k, map_div₀, hu']`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul, hu, mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt (norm_apply_sub_lt_one_of_fixes_prime_to_l_roots γ hfix _ hvk.le) ih)`. Establish `hq : ‖u ^ (l ^ n) - 1‖ < 1`. Establish `h1` using `hind (l ^ n)`. Rewrite `h1` using `[h, div_self hx, norm_sub_rev]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hM : (GlobalTheory.ClosedBallValuationSubring.openBallIdeal (PadicAlgCl l)).IsMaximal` using `GlobalTheory.ClosedBallValuationSubring.openBallIdeal_isMaximal _`. Set `: Field (GlobalTheory.ClosedBallValuationSubring.closedBallSubring (PadicAlgCl l) ⧸ GlobalTheory.ClosedBallValuationSubring.openBallIdeal (PadicAlgCl l))` to `Ideal.Quotient.field _`. Establish `: CharP (GlobalTheory.ClosedBallValuationSubring.closedBallSubring (PadicAlgCl l) ⧸ GlobalTheory.ClosedBallValuationSubring.openBallIdeal (PadicAlgCl l)) l` using `charP_closedBallSubring_quotient_openBallIdeal`. Use `set u' : GlobalTheory.ClosedBallValuationSubring.closedBallSubring (PadicAlgCl l) := ⟨u, GlobalTheory.ClosedBallValuationSubring.mem_closedBallSubring.2 hu.le⟩ with hu''`. Establish `h1 : (Ideal.Quotient.mk (GlobalTheory.ClosedBallValuationSubring.openBallIdeal (PadicAlgCl l)) u') ^ (l ^ n) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, ← map_one (Ideal.Quotient.mk (GlobalTheory.ClosedBallValuationSubring.openBallIdeal (PadicAlgCl l))), Ideal.Quotient.eq, GlobalTheory.ClosedBallValuationSubring.mem_openBallIdeal]`. Simplify `hq` using `[hu'']`. Establish `h2 : (Ideal.Quotient.mk (GlobalTheory.ClosedBallValuationSubring.openBallIdeal (PadicAlgCl l)) u' - 1) ^ (l ^ n) = 0`. Rewrite using `[sub_pow_char_pow, h1, one_pow, sub_self]`. Establish `h3` using `pow_eq_zero_iff (pow_ne_zero n hl.out.ne_zero) |>.1 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[sub_eq_zero, ← map_one (Ideal.Quotient.mk (GlobalTheory.ClosedBallValuationSubring.openBallIdeal (PadicAlgCl l))), Ideal.Quotient.eq, GlobalTheory.ClosedBallValuationSubring.mem_openBallIdeal]`. Establish `h4 : ‖u - 1‖ < 1` using `by simpa [hu''] using h3`. Establish `e : γ x - x = x * (u - 1)`. Rewrite using `[mul_sub, mul_one, hu', mul_div_assoc', mul_comm x (γ x), mul_div_assoc, div_self hx, mul_one]`. Rewrite using `[e, norm_mul]`.
-
-Conclude with `mul_lt_of_lt_one_right (norm_pos_iff.2 hx) h4`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sub_lt (l : ℕ) [hl : Fact l.Prime] (γ : GQ l) (hγ : γ ∈ (MaximalUnramifiedExtension l).fixingSubgroup)
     (n : ℕ) (x : Om l) (hx : x ≠ 0) (h : (γ ^ l ^ n) x = x) : ‖γ x - x‖ < ‖x‖ := by

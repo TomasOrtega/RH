@@ -8,23 +8,21 @@ open MeasureTheory Set Filter
 namespace GlobalTheory.CompanionTheory.TwoByTwoMajorant
 
 /- English proof (translation)
-Use `set f : ℝ → ℝ := fun w => |w| ^ a / (1 + |w|) ^ 2 with hf`. Establish `hfm : Measurable f`. Rewrite using `[hf]`. Use `fun_prop`. Establish `hA : IntegrableOn f (Ioc 0 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : IntegrableOn (fun x : ℝ => x ^ a) (Ioc 0 1)`. Use `intervalIntegral.intervalIntegrable_rpow' (a := 0) (b := 1) h1` as an intermediate fact. Conclude with `(intervalIntegrable_iff_integrableOn_Ioc_of_le zero_le_one).1 this`. Use `Integrable.mono' h0 hfm.aestronglyMeasurable ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem measurableSet_Ioc] with x hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hx0 : 0 < x` using `hx.1`. Establish `hnn : 0 ≤ x ^ a` using `by positivity`. Simplify using `only [hf]`. Rewrite using `[abs_of_pos hx0, Real.norm_of_nonneg (by positivity)]`. Conclude with `div_le_self hnn (one_le_pow₀ (by linarith))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : IntegrableOn f (Ioi 1)`. Establish `h0` using `integrableOn_Ioi_rpow_of_lt (a := a - 2) (by linarith) (zero_lt_one)`. Use `Integrable.mono' h0 hfm.aestronglyMeasurable ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem measurableSet_Ioi] with x hx`. Establish `hx0 : 0 < x` using `lt_trans zero_lt_one hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hnn : 0 ≤ x ^ a` using `by positivity`. Simplify using `only [hf]`. Rewrite using `[abs_of_pos hx0, Real.norm_of_nonneg (by positivity), Real.rpow_sub hx0, Real.rpow_two]`. Use `div_le_div_of_nonneg_left hnn (by positivity) ?_` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : IntegrableOn f (Ioi 0)`. Establish `: Ioi (0 : ℝ) = Ioc 0 1 ∪ Ioi 1` using `(Ioc_union_Ioi_eq_Ioi zero_le_one).symm`. Rewrite using `[this]`. Conclude with `hA.union hB`. Establish `hD : IntegrableOn f (Iio 0)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hp` using `Measure.measurePreserving_neg (volume : Measure ℝ)`. Establish `he` using `(MeasurableEquiv.neg ℝ).measurableEmbedding`. Establish `: IntegrableOn (f ∘ (Neg.neg : ℝ → ℝ)) ((Neg.neg : ℝ → ℝ) ⁻¹' Ioi 0)` using `(hp.integrableOn_comp_preimage he).2 hC`. Establish `hpre : (Neg.neg : ℝ → ℝ) ⁻¹' Ioi 0 = Iio 0`. Use extensionality with `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hcomp : f ∘ (Neg.neg : ℝ → ℝ) = f`. Use function extensionality and compare the values at `x`. Simplify using `[hf]`. Rewrite `this` using `[hpre, hcomp]`. Then use the resulting hypothesis.
-
-Establish `hE : IntegrableOn f (Iic 0)`. Rewrite using `[integrableOn_Iic_iff_integrableOn_Iio]`. Conclude with `hD`. Use `hE.union hC` as an intermediate fact. Rewrite `this` using `[Iic_union_Ioi, integrableOn_univ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem integrable_abs_rpow_div {a : ℝ} (h1 : -1 < a) (h2 : a < 1) :
     Integrable (fun w : ℝ => |w| ^ a / (1 + |w|) ^ 2) := by
@@ -81,25 +79,25 @@ def bb (p : ℝ) : ℝ := 1 / (1 + |p|) ^ 2
 def G0 (σ x p y u : ℝ) : ℝ := aa σ x * bb p * phi σ (u - y * p / x)
 
 /- English proof (translation)
-Unfold `phi`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem phi_nonneg (σ w : ℝ) : 0 ≤ phi σ w := by unfold phi; positivity
 /- English proof (translation)
-Unfold `aa`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem aa_nonneg (σ x : ℝ) : 0 ≤ aa σ x := by unfold aa; positivity
 /- English proof (translation)
-Unfold `bb`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem bb_nonneg (p : ℝ) : 0 ≤ bb p := by unfold bb; positivity
 /- English proof (translation)
-The claim follows from `mul_nonneg (mul_nonneg (aa_nonneg _ _) (bb_nonneg _)) (phi_nonneg _ _)`.
+A detailed English derivation is pending.
 -/
 theorem majorant_integrand_nonneg (σ x p y u : ℝ) : 0 ≤ G0 σ x p y u :=
   mul_nonneg (mul_nonneg (aa_nonneg _ _) (bb_nonneg _)) (phi_nonneg _ _)
 
 /- English proof (translation)
-The claim follows from `|x * u - p * y| ^ (-1 - σ) * (x ^ 2 + y ^ 2) ^ ((2 * σ - 1) / 2) / ((1 + n) ^ N * (1 + (x ^ 2 + y ^ 2) ^ ((1 : ℝ) / 2) / |x * u - p * y|) ^ N) ≤ 2 * G0 σ x p y u := by have hG := majorant_integrand_nonneg σ x p y u by_cases hD : x * u - p * y = 0 · rw [hD, abs_zero, Real.zero_rpo …`.
+A detailed English derivation is pending.
 -/
 theorem core {σ : ℝ} (h0 : 0 < σ) (h1 : σ < 1) {N : ℕ} (hN : 4 ≤ N) {x p y u n : ℝ}
     (hx : x ≠ 0) (hyx : |y| ≤ |x|) (hxn : |x| ≤ n) (hpn : |p| ≤ n) :
@@ -202,7 +200,7 @@ def Gi (σ : ℝ) (q : (ℝ × ℝ) × (ℝ × ℝ)) : ℝ :=
   if |q.2.1| ≤ |q.1.1| then G0 σ q.1.1 q.1.2 q.2.1 q.2.2 else 0
 
 /- English proof (translation)
-Unfold `Gi`. Use `split_ifs`. Conclude with `majorant_integrand_nonneg _ _ _ _ _`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Gi_nonneg (σ : ℝ) (q : (ℝ × ℝ) × (ℝ × ℝ)) : 0 ≤ Gi σ q := by
   unfold Gi
@@ -211,7 +209,7 @@ theorem Gi_nonneg (σ : ℝ) (q : (ℝ × ℝ) × (ℝ × ℝ)) : 0 ≤ Gi σ q 
   · exact le_rfl
 
 /- English proof (translation)
-Unfold `Gi`. Use `Measurable.ite (measurableSet_le (by fun_prop) (by fun_prop)) ?_ measurable_const` and prove the remaining obligations. Unfold `G0 aa bb phi`. Use `fun_prop`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_Gi (σ : ℝ) : Measurable (Gi σ) := by
   unfold Gi
@@ -220,29 +218,27 @@ theorem measurable_Gi (σ : ℝ) : Measurable (Gi σ) := by
   fun_prop
 
 /- English proof (translation)
-Establish `hmG : Measurable fun q => ENNReal.ofReal (Gi σ q)` using `ENNReal.measurable_ofReal.comp (measurable_Gi σ)`. Use `set K : ENNReal := ∫⁻ w : ℝ, ENNReal.ofReal (phi σ w) with hK`. Establish `hphi : Integrable (phi σ)` using `integrable_abs_rpow_div (a := 1 - σ) (by linarith) (by linarith)`. Establish `hKt : K < ⊤` using `(hasFiniteIntegral_iff_ofReal (ae_of_all _ fun w => phi_nonneg σ w)).1 hphi.2`. Establish `inner : ∀ xp : ℝ × ℝ, ∫⁻ z : ℝ × ℝ, ENNReal.ofReal (Gi σ (xp, z)) = ENNReal.ofReal (aa σ xp.1 * bb xp.2 * (2 * |xp.1|)) * K`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `xp`. Take `⟨x, p⟩` from `xp`. Establish `hm : Measurable fun z : ℝ × ℝ => ENNReal.ofReal (Gi σ ((x, p), z))` using `hmG.comp (by fun_prop)`. Rewrite using `[Measure.volume_eq_prod, lintegral_prod _ hm.aemeasurable]`. Establish `hy : ∀ y : ℝ, ∫⁻ u : ℝ, ENNReal.ofReal (Gi σ ((x, p), (y, u))) = (Icc (-|x|) |x|).indicator (fun _ => ENNReal.ofReal (aa σ x * bb p) * K) y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Distinguish the cases in `hyx : |y| ≤ |x|`. Rewrite using `[indicator_of_mem (show y ∈ Icc (-|x|) |x| from abs_le.1 hyx)]`. Simplify using `only [Gi, hyx, if_true, G0]`. Establish `hc : 0 ≤ aa σ x * bb p` using `mul_nonneg (aa_nonneg _ _) (bb_nonneg _)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[ENNReal.ofReal_mul hc]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_sub_right_eq_self (fun w => ENNReal.ofReal (phi σ w))]`. Rewrite using `[indicator_of_notMem (show y ∉ Icc (-|x|) |x| from fun h => hyx (abs_le.2 h))]`. Simplify using `[Gi, hyx]`. Repeatedly rewrite using `[hy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_indicator_const measurableSet_Icc, Real.volume_Icc]`. Establish `hc : 0 ≤ aa σ x * bb p` using `mul_nonneg (aa_nonneg _ _) (bb_nonneg _)`. Rewrite using `[show |x| - -|x| = 2 * |x| by ring, ENNReal.ofReal_mul hc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hE : Integrable (fun w : ℝ => |w| ^ (σ - 1) / (1 + |w|) ^ 2)` using `integrable_abs_rpow_div (by linarith) (by linarith)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : Integrable bb`. Establish `hb : bb = fun w : ℝ => |w| ^ (0 : ℝ) / (1 + |w|) ^ 2`. Use function extensionality and compare the values at `w`. Simplify using `[bb]`. Rewrite using `[hb]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `integrable_abs_rpow_div (by norm_num) (by norm_num)`. Establish `hprod` using `(hE.mul_prod hB).const_mul 2`. Establish `hEq : ∀ x : ℝ, aa σ x * (2 * |x|) = 2 * (|x| ^ (σ - 1) / (1 + |x|) ^ 2)`. Introduce `x`. Distinguish the cases in `hx : x = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hx` using the available equality. Simplify using `[aa, Real.zero_rpow (show σ - 1 ≠ 0 by linarith)]`. Establish `hA : 0 < |x|` using `abs_pos.2 hx`. Establish `: |x| ^ (σ - 1) = |x| ^ (σ - 2) * |x|`. Rewrite using `[← Real.rpow_add_one hA.ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, aa]`. Expand and normalize the polynomial expressions, which then agree. Establish `hfin : ∫⁻ xp : ℝ × ℝ, ENNReal.ofReal (aa σ xp.1 * bb xp.2 * (2 * |xp.1|)) < ⊤`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnn : (0 : (ℝ × ℝ) → ℝ) ≤ᵐ[volume.prod volume] (fun z : ℝ × ℝ => 2 * ((|z.1| ^ (σ - 1) / (1 + |z.1|) ^ 2) * bb z.2))` using `ae_of_all _ fun z => mul_nonneg zero_le_two (mul_nonneg (by positivity) (bb_nonneg _))`. Use `(hasFiniteIntegral_iff_ofReal hnn).1 hprod.2` as an intermediate fact. Rewrite using `[Measure.volume_eq_prod]`. Use `lt_of_le_of_lt (le_of_eq ?_) this` and prove the remaining obligations. Use `lintegral_congr fun z => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Use `hEq z.1` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Measure.volume_eq_prod, lintegral_prod _ hmG.aemeasurable]`. Repeatedly rewrite using `[inner]`.
-
-Rewrite using `[lintegral_mul_const' _ _ hKt.ne]`. Conclude with `ENNReal.mul_lt_top hfin hKt`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_Gi_lt_top {σ : ℝ} (h0 : 0 < σ) (h1 : σ < 1) :
     ∫⁻ q, ENNReal.ofReal (Gi σ q) < ⊤ := by
@@ -315,7 +311,7 @@ theorem lintegral_Gi_lt_top {σ : ℝ} (h0 : 0 < σ) (h1 : σ < 1) :
   exact ENNReal.mul_lt_top hfin hKt
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(measurable_Gi σ).aestronglyMeasurable, (hasFiniteIntegral_iff_ofReal (ae_of_all _ fun q => Gi_nonneg σ q)).2 (lintegral_Gi_lt_top h0 h1)⟩`.
+Supply the required witnesses or components.
 -/
 theorem integrable_Gi {σ : ℝ} (h0 : 0 < σ) (h1 : σ < 1) : Integrable (Gi σ) :=
   ⟨(measurable_Gi σ).aestronglyMeasurable,
@@ -327,7 +323,7 @@ def coord : (Fin 2 → Fin 2 → ℝ) ≃ᵐ (ℝ × ℝ) × (ℝ × ℝ) :=
     (MeasurableEquiv.prodCongr MeasurableEquiv.finTwoArrow MeasurableEquiv.finTwoArrow)
 
 /- English proof (translation)
-The claim follows from `(volume_preserving_finTwoArrow (Fin 2 → ℝ)).trans ((volume_preserving_finTwoArrow ℝ).prod (volume_preserving_finTwoArrow ℝ))`.
+A detailed English derivation is pending.
 -/
 theorem coord_mp : MeasurePreserving coord volume volume :=
   (volume_preserving_finTwoArrow (Fin 2 → ℝ)).trans
@@ -340,29 +336,27 @@ theorem coord_apply (h : Fin 2 → Fin 2 → ℝ) :
     coord h = ((h 0 0, h 0 1), (h 1 0, h 1 1)) := rfl
 
 /- English proof (translation)
-Introduce `σ h0 h1`. Use `⟨6, fun N hN => ?_⟩` and prove the remaining obligations. Establish `hN4 : 4 ≤ N` using `by omega`. Establish `hGi` using `integrable_Gi h0 h1`. Establish `hsw : Integrable (fun q : (ℝ × ℝ) × (ℝ × ℝ) => Gi σ q.swap)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmp : MeasurePreserving (Prod.swap : (ℝ × ℝ) × (ℝ × ℝ) → (ℝ × ℝ) × (ℝ × ℝ)) volume volume` using `Measure.measurePreserving_swap`. Conclude with `(hmp.integrable_comp hGi.aestronglyMeasurable).2 hGi`. Establish `hsum` using `(hGi.add hsw).const_mul 2`. Establish `hM : Integrable (fun h : Fin 2 → Fin 2 → ℝ => 2 * (Gi σ (coord h) + Gi σ (coord h).swap))` using `(coord_mp.integrable_comp hsum.aestronglyMeasurable).2 hsum`. Use `hM.mono' ?_ (ae_of_all _ fun h => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Measurable.aestronglyMeasurable ?_` and prove the remaining obligations. Simplify using `only [Matrix.det_fin_two, Matrix.of_apply]`. Use `fun_prop`. Establish `hxn : |h 0 0| ≤ ‖h‖` using `(norm_le_pi_norm (h 0) 0).trans (norm_le_pi_norm h 0)`. Establish `hpn : |h 0 1| ≤ ‖h‖` using `(norm_le_pi_norm (h 0) 1).trans (norm_le_pi_norm h 0)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyn : |h 1 0| ≤ ‖h‖` using `(norm_le_pi_norm (h 1) 0).trans (norm_le_pi_norm h 1)`. Establish `hun : |h 1 1| ≤ ‖h‖` using `(norm_le_pi_norm (h 1) 1).trans (norm_le_pi_norm h 1)`. Establish `hdet : (Matrix.of h).det = h 0 0 * h 1 1 - h 0 1 * h 1 0`. Simplify using `[Matrix.det_fin_two]`. Rewrite using `[hdet]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn0 : 0 ≤ ‖h‖` using `norm_nonneg _`. Establish `hg1` using `Gi_nonneg σ (coord h)`. Establish `hg2` using `Gi_nonneg σ (coord h).swap`. Rewrite using `[Real.norm_of_nonneg (by positivity)]`. Distinguish the cases in `hD : h 0 0 * h 1 1 - h 0 1 * h 1 0 = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hD, abs_zero, Real.zero_rpow (by linarith)]`. Simplify using `only [zero_mul, zero_div]`. Check the signs of the components of the expression. Distinguish the cases in `hyx : |h 1 0| ≤ |h 0 0|`. Establish `hx : h 0 0 ≠ 0`.
+Check the signs of the components of the expression. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hx`. Establish `hy : h 1 0 = 0`. Rewrite `hyx` using `[hx, abs_zero]`. Conclude with `abs_eq_zero.1 (le_antisymm hyx (abs_nonneg _))`. Apply `hD` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hx, hy]`. Expand and normalize the polynomial expressions, which then agree. Use `core h0 h1 hN4 (u := h 1 1) hx hyx hxn hpn` as an intermediate fact. Establish `hG : Gi σ (coord h) = G0 σ (h 0 0) (h 0 1) (h 1 0) (h 1 1)`. Simplify using `[Gi, coord_apply, hyx]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `hg1`, the goal using `[hG]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hyx' : |h 0 0| ≤ |h 1 0|` using `(not_le.1 hyx).le`. Establish `hy : h 1 0 ≠ 0`. Introduce `hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hyx` using `[hy, abs_zero]`. Conclude with `hyx (abs_nonneg _)`. Use `core h0 h1 hN4 (p := h 1 1) (u := h 0 1) hy hyx' hyn hun` as an intermediate fact. Establish `hG : Gi σ (coord h).swap = G0 σ (h 1 0) (h 1 1) (h 0 0) (h 0 1)`. Simplify using `[Gi, coord_apply, hyx']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1 : |h 1 0 * h 0 1 - h 1 1 * h 0 0| = |h 0 0 * h 1 1 - h 0 1 * h 1 0|`. Rewrite using `[abs_sub_comm]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : h 1 0 ^ 2 + h 0 0 ^ 2 = h 0 0 ^ 2 + h 1 0 ^ 2` using `add_comm _ _`.
-
-Rewrite `this` using `[e1, e2]`. Rewrite `hg2`, the goal using `[hG]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem complexMatrixMajorantIntegrable : Ad3.LR.C.ComplexMatrixMajorantIntegrable := by
   intro σ h0 h1

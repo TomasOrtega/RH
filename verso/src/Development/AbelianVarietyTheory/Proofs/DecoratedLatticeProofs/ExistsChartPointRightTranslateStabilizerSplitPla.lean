@@ -21,9 +21,9 @@ noncomputable section
 namespace GlobalTheory.AdForm.DiaChart
 
 /- English proof (translation)
-Distinguish the cases in `h : (∀ (P₁ : Q) (x : Formalism.L2.Col.Sp X.E n), p.1.1.1.2 P₁ x ∈ (Formalism.L2.Col.DecoSet.dia1 P c p.1.1.deco).1.at P₁.1 ↔ x ∈ Formalism.L2.Col.stdAt X.E n P₁.1) ∧ p.1.2 ∈ y.ys (Formalism.L2.Col.DecoSet.dia1 P c p.1.1.deco).1.N`. Establish `e : p.mv (Formalism.L2.Col.DecoSet.dia1 P c p.1.1.deco) = ⟨(⟨(Formalism.L2.Col.DecoSet.dia1 P c p.1.1.deco, p.1.1.1.2), h.1⟩, p.1.2), h.2⟩` using `dif_pos h`. Rewrite using `[e]`. Unfold `ptFr`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Establish `e : p.mv (Formalism.L2.Col.DecoSet.dia1 P c p.1.1.deco) = p` using `dif_neg h`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem decoratedLattice_unitScale_functional_keeps_frames {X : Formalism.L2.Col.Fields} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 X.E))} {y}
     (p : PtY (X := X) (n := n) ST SG Q y) (P : ST) (c : (𝓞 X.E ⧸ P.1.asIdeal)ˣ) (P' : HeightOneSpectrum (𝓞 X.E)) :
@@ -39,7 +39,7 @@ theorem decoratedLattice_unitScale_functional_keeps_frames {X : Formalism.L2.Col
     rw [e]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Conclude with `GlobalTheory.AdForm.RdLaw.finM_mul V g h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem finM_mul' {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) (g h : GA D V) :
     finM V hn (g * h) = finM V hn g * finM V hn h := by
@@ -47,15 +47,13 @@ theorem finM_mul' {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) (g h : GA D V
   exact GlobalTheory.AdForm.RdLaw.finM_mul V g h
 
 /- English proof (translation)
-Introduce `B X I hOk hPins l Z u a Ch A hA k _ _ _ _ ι p β Q L hStd j hj i v hv g hg b c`. Take `⟨c, rfl⟩` from `c`. Take `⟨-, ρ, hρ⟩` from `GlobalTheory.FinPl.SplitPt.resField_equiv (I.rec7 l Z) k (p i) v.1 hv`. Use `⟨(Units.mapEquiv ρ.toMulEquiv).toEquiv, fun s => ?_⟩` and prove the remaining obligations. Take `⟨δ, hδ, huni, hint, hint'⟩` from `GlobalTheory.AdForm.frameGl_int I hOk hPins l Z u a k ι p β Q L hStd j hj i v hv (g s) s (hg s)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `htriv` using `GlobalTheory.T.frameImage_trivial_off_levelPrime I hOk hPins l Z u a k ι p β Q L hStd j hj i v hv (g s) δ hδ`. Establish `hrow` using `GlobalTheory.AdForm.lastRow_inv_frame I hOk hPins l Z u a k ι p β Q L hStd j hj i v hv ρ hρ (g s) s (hg s) δ hδ hint'`. Establish `hR` using `hA.reads j hj`. Set `y : TC.GA B (B.R.N j)` to `((A.K j hj (A.chOf j c)).y ⟨c, rfl⟩).1`. Use `⟨y * δ, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.val_mul, hδ, finM_mul', (hA.h j hj _ ⟨c, rfl⟩).2]`. Both sides reduce to the same expression. Take `⟨p0, hk0, hN0⟩` from `hR.k_std (A.chOf j c)`. Establish `hkc` using `hk0.lat`. Rewrite `hkc` using `[hN0]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `GlobalTheory.Mem.Col2.DilPt.isPointOf_last_coordinate_dilation_one_prime_alt _ _ _ _ _ _ _ y δ (A.kb j (A.chOf j c)) (extTo I.SQ ((I.stp u a j).rep c).1.1) _ ⟨v.1, v.2⟩ ((Units.mapEquiv ρ.toMulEquiv) s) _ (hR.pt c) hk0.uni huni hkc hint hint' htriv (fun r r' hr => hR.k_T (A.chOf …` and prove the remaining obligations. Rewrite using `[extTo_deco, extTo_deco]`. Conclude with `GlobalTheory.Mem.Col2.TwAtStd.diaPt_deco B X I u a j ⟨v.1, v.2⟩ _ c`. Use function extensionality and compare the values at `P'`. Rewrite using `[extTo_fr, extTo_fr]`.
-
-Conclude with `decoratedLattice_unitScale_functional_keeps_frames ((I.stp u a j).rep c) ⟨v.1, v.2⟩ _ P'.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptOf_gl_dia : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
     (p : ι → SplitPt (I.rec7 l Z) k) (β : ∀ j i, Frame (p i) ((I.rec7 l Z).sp.X j) (Fin ((I.rec7 l Z).sp.X j).rank))

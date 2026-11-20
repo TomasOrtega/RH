@@ -26,7 +26,7 @@ inductive GeoCl (Γ : GeoP) : ∀ D : D7, Formalism.L2.Pj.Core D → DivX D → 
 def geoCl (Γ : GeoP) : GeoP := GeoCl Γ
 
 /- English proof (translation)
-The claim follows from `GeoCl.base h`.
+A detailed English derivation is pending.
 -/
 theorem geoCl_of {Γ : GeoP} {D : D7} {J : Formalism.L2.Pj.Core D} {X : DivX D} (h : Γ D J X) : geoCl Γ D J X := GeoCl.base h
 

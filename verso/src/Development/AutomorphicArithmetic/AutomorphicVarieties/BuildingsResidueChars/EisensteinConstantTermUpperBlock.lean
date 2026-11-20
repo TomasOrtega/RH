@@ -5,7 +5,7 @@ open UpperTheory.V.Sd.Eis
 
 open NumberField IsDedekindDomain GlobalTheory.CuspRep in
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [nilM, Matrix.of_apply]`. Use `split_ifs`. Conclude with `continuous_apply _`. Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cont_nilM (F : Type) [Field F] [NumberField F] :
     Continuous (fun x : NA F => (nilM x : Matrix (Fin 2) (Fin 2) (Ad F))) := by
@@ -17,13 +17,11 @@ private theorem cont_nilM (F : Type) [Field F] [NumberField F] :
 
 open NumberField IsDedekindDomain GlobalTheory.CuspRep in
 /- English proof (translation)
-Introduce `F _ _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `⟨inferInstance, inferInstance, inferInstance, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Countable F := (Module.finBasis ℚ F).equivFun.injective.countable`. Conclude with `(Set.countable_range _).to_subtype`. Take `⟨C, hC, hx⟩` from `GroundTheory.Global.exists_isCompact_forall_exists_sub_mem F`. Establish `hD : IsCompact (C ×ˢ (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (FiniteAdeleRing (𝓞 F) F)) : Set (Ad F))` using `hC.prod (GroundTheory.Global.isCompact_integralFiniteAdeles F)`. Use `⟨_, isCompact_univ_pi fun _ : BlockIx 2 1 => hD, fun x => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components.
 
-Use `choose k hk using hx`. Conclude with `⟨fun p => algebraMap F (Ad F) (k (x p)), ⟨fun p => k (x p), rfl⟩, fun p _ => hk (x p)⟩`. Conclude with `Units.continuous_iff.2 ⟨continuous_const.add (cont_nilM F), continuous_const.sub (cont_nilM F)⟩`. Introduce `x`. Use `Units.ext ?_` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `1 + nilM x = !![((1 : (Ad F)ˣ) : Ad F), x ⟨(0, 1), by decide⟩; 0, 1]`. Use extensionality with `i j : 1`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [nilM]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.eisenstein_constantTerm_upperBlock :
     UpperTheory.V.Sd.Eis.BlockTop := by

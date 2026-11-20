@@ -9,7 +9,7 @@ attribute [local instance] GlobalTheory.TypeRec.factG Formalism.BasicNotions.Hos
 namespace GlobalTheory.SplitSec
 
 /- English proof (translation)
-Introduce `L _ _ _ n s u`. Conclude with `GlobalTheory.SplitLift.exists_trivOutside_loc_eq n s u`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_trivOutside_loc : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (s : SplitPlace L) (u : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))), ∃ x : GAf L n, TrivOutside {s.v} (x : GA L n) ∧ s.loc n x = u := by
   intro L _ _ _ n s u

@@ -15,35 +15,35 @@ open MeasureTheory Matrix Ad3.LR Ad3.LR.DTr Topology
 namespace GlobalTheory.CompanionTheory.DInt2
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_fin_two, Matrix.of_apply]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_det : Continuous (fun h : M22 => (Matrix.of h).det) := by
   simp only [Matrix.det_fin_two, Matrix.of_apply]
   fun_prop
 
 /- English proof (translation)
-The claim follows from `isOpen_lt continuous_const continuous_det`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_pos : IsOpen {h : M22 | 0 < (Matrix.of h).det} :=
   isOpen_lt continuous_const continuous_det
 
 /- English proof (translation)
-The claim follows from `isOpen_lt continuous_det continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_neg : IsOpen {h : M22 | (Matrix.of h).det < 0} :=
   isOpen_lt continuous_det continuous_const
 
 /- English proof (translation)
-Simplify using `[inn, Ad3.LR.B.innB, Ad3.LR.B.rt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inn_eq (Φ : Sw) (g : GL (Fin 3) ℝ) (h : M22) :
     inn Φ g (Matrix.of h) = Ad3.LR.B.innB (Ad3.LR.B.rt g Φ) h 1 := by
   simp [inn, Ad3.LR.B.innB, Ad3.LR.B.rt]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `Ad3.LR.B.ibpBound N`. Take `⟨B, hB⟩` from `GlobalTheory.CompanionTheory.PerUAssembled.schwartz_bounds (GlobalTheory.CompanionTheory.PerUAssembled.rtS g Φ) (N + 8)`. Rewrite `hB` using `[GlobalTheory.CompanionTheory.PerUAssembled.rtS_coe]`. Establish `hsm : ContDiff ℝ (⊤ : ℕ∞) (Ad3.LR.B.rt g Φ)`. Use `(GlobalTheory.CompanionTheory.PerUAssembled.rtS g Φ).smooth ⊤` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[GlobalTheory.CompanionTheory.PerUAssembled.rtS_coe]`. Then use the resulting hypothesis. Use `⟨C * B, fun h hdet => ?_⟩` and prove the remaining obligations. Rewrite using `[inn_eq]`. Use `hC (Ad3.LR.B.rt g Φ) B hsm (fun n hn X => hB n (by omega) X) h 1 hdet` as an intermediate fact. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inn_bound (N : ℕ) (Φ : Sw) (g : GL (Fin 3) ℝ) : ∃ C : ℝ, ∀ h : M22, (Matrix.of h).det ≠ 0 →
     ‖inn Φ g (Matrix.of h)‖ ≤ C * |(Matrix.of h).det|⁻¹ / ((1 + ‖h‖) ^ N * (1 + ‖Ad3.LR.B.eta h‖) ^ N) := by
@@ -59,11 +59,9 @@ theorem inn_bound (N : ℕ) (Φ : Sw) (g : GL (Fin 3) ℝ) : ∃ C : ℝ, ∀ h 
   simpa using this
 
 /- English proof (translation)
-Establish `hb : Continuous (fun x : Fin 2 → ℝ => blk x)`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [blk] <;> fun_prop`. Establish `ho : Continuous (fun h : M22 => Matrix.of h)` using `continuous_id`. Establish `hM : Continuous (fun p : M22 × (Fin 2 → ℝ) => Matrix.of p.1 * blk p.2 * (g : Matrix (Fin 3) (Fin 3) ℝ))` using `((ho.comp continuous_fst).matrix_mul (hb.comp continuous_snd)).matrix_mul continuous_const`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Continuous (fun p : M22 × (Fin 2 → ℝ) => (Matrix.of.symm (Matrix.of p.1 * blk p.2 * (g : Matrix (Fin 3) (Fin 3) ℝ)) : M23))` using `hM`. Establish `hp : Continuous (fun p : M22 × (Fin 2 → ℝ) => Ad3.psiR (-(p.2 1)))`. Unfold `Ad3.psiR`. Use `fun_prop`. Establish `hc : Continuous (fun p : M22 × (Fin 2 → ℝ) => Φ (Matrix.of.symm (Matrix.of p.1 * blk p.2 * (g : Matrix (Fin 3) (Fin 3) ℝ))) * Ad3.psiR (-(p.2 1)))` using `(Φ.continuous.comp hs).mul hp`.
-
-Conclude with `(hc.stronglyMeasurable.integral_prod_right' (ν := volume)).aestronglyMeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inn_meas (Φ : Sw) (g : GL (Fin 3) ℝ) :
     AEStronglyMeasurable (fun h : M22 => inn Φ g (Matrix.of h)) volume := by
@@ -85,21 +83,21 @@ theorem inn_meas (Φ : Sw) (g : GL (Fin 3) ℝ) :
   exact (hc.stronglyMeasurable.integral_prod_right' (ν := volume)).aestronglyMeasurable
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases b <;> simp [al, rpol, mul_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem al_rpol (a b : Fin 2) (h : M22) :
     al (rpol a b h) = (if b = 0 then 1 else Complex.I) * (h a 0 : ℂ) := by
   fin_cases b <;> simp [al, rpol, mul_comm]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases b <;> simp [be, rpol, mul_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem be_rpol (a b : Fin 2) (h : M22) :
     be (rpol a b h) = (if b = 0 then 1 else Complex.I) * (h a 1 : ℂ) := by
   fin_cases b <;> simp [be, rpol, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_fin_two]`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [dd, rpol] <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dd_rpol (a b : Fin 2) (h : M22) :
     dd h (rpol a b h) = if a = b then (Matrix.of h).det else 0 := by
@@ -107,7 +105,7 @@ theorem dd_rpol (a b : Fin 2) (h : M22) :
   fin_cases a <;> fin_cases b <;> simp [dd, rpol] <;> ring
 
 /- English proof (translation)
-Rewrite using `[al_rpol, be_rpol, Matrix.det_fin_two]`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [al, be, kap] <;> ring_nf <;> simp <;> ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cross_rpol (a b : Fin 2) (h : M22) :
     be (rpol a b h) * al h - be h * al (rpol a b h) = kap a b * (((Matrix.of h).det : ℝ) : ℂ) := by
@@ -115,15 +113,15 @@ theorem cross_rpol (a b : Fin 2) (h : M22) :
   fin_cases a <;> fin_cases b <;> simp [al, be, kap] <;> ring_nf <;> simp <;> ring
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.WeightClosed.alpha_ne_zero h hd`.
+A detailed English derivation is pending.
 -/
 theorem al_ne (h : M22) (hd : 0 < (Matrix.of h).det) : al h ≠ 0 :=
   GlobalTheory.CompanionTheory.WeightClosed.alpha_ne_zero h hd
 
 /- English proof (translation)
-Establish `hA` using `al_ne h hd`. Establish `hD : (((Matrix.of h).det : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`. Unfold `ell rho tt`. Rewrite using `[cross_rpol, dd_rpol]`. Use `split_ifs`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Simplify using `only [Complex.ofReal_zero]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ell_rpol (k : ℕ) (a b : Fin 2) (h : M22) (hd : 0 < (Matrix.of h).det) :
     ell k h (rpol a b h) = (if a = b then (k : ℂ) - 1 else 0) + (1 - 2 * (k : ℂ)) * rho a b h +
@@ -139,9 +137,9 @@ theorem ell_rpol (k : ℕ) (a b : Fin 2) (h : M22) (hd : 0 < (Matrix.of h).det) 
     ring
 
 /- English proof (translation)
-Rewrite using `[al_rpol, norm_mul]`. Apply the tactic sequence `have h1 : ‖(if b = 0 then (1 : ℂ) else Complex.I)‖ = 1 := by split_ifs <;> simp`. Rewrite using `[h1, one_mul, Complex.norm_real, Real.norm_eq_abs]`. Use `fin_cases a`. Simplify `Complex.abs_re_le_norm (al h)` using `[al]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `Complex.abs_im_le_norm (al h)` using `[al]`.
+A detailed English derivation is pending.
 -/
 theorem norm_al_rpol_le (a b : Fin 2) (h : M22) : ‖al (rpol a b h)‖ ≤ ‖al h‖ := by
   rw [al_rpol, norm_mul]
@@ -152,7 +150,7 @@ theorem norm_al_rpol_le (a b : Fin 2) (h : M22) : ‖al (rpol a b h)‖ ≤ ‖a
   · simpa [al] using Complex.abs_im_le_norm (al h)
 
 /- English proof (translation)
-Establish `hA` using `al_ne h hd`. Unfold `rho`. Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ (norm_al_rpol_le c d h) (norm_nonneg _)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_rho_le (c d : Fin 2) (h : M22) (hd : 0 < (Matrix.of h).det) : ‖rho c d h‖ ≤ 1 := by
   have hA := al_ne h hd
@@ -161,14 +159,14 @@ theorem norm_rho_le (c d : Fin 2) (h : M22) (hd : 0 < (Matrix.of h).det) : ‖rh
   exact div_le_one_of_le₀ (norm_al_rpol_le c d h) (norm_nonneg _)
 
 /- English proof (translation)
-Unfold `tt uu`. Rewrite using `[norm_div, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hd]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_tt (h : M22) (hd : 0 < (Matrix.of h).det) : ‖tt h‖ = uu h := by
   unfold tt uu
   rw [norm_div, norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hd]
 
 /- English proof (translation)
-Establish `hA` using `al_ne h hd`. Unfold `uu`. Establish `: 0 < ‖al h‖` using `norm_pos_iff.2 hA`. Check the signs of the components of the expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem uu_pos (h : M22) (hd : 0 < (Matrix.of h).det) : 0 < uu h := by
   have hA := al_ne h hd
@@ -177,14 +175,14 @@ theorem uu_pos (h : M22) (hd : 0 < (Matrix.of h).det) : 0 < uu h := by
   positivity
 
 /- English proof (translation)
-Unfold `kap`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_kap (a b : Fin 2) : ‖kap a b‖ = 1 := by
   unfold kap
   fin_cases a <;> fin_cases b <;> simp
 
 /- English proof (translation)
-Establish `: ¬ 0 < ((Matrix.of h)⁻¹ : Matrix (Fin 2) (Fin 2) ℝ).det`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Simplify using `using hd`. Unfold `w0 Wm`. Rewrite using `[if_neg this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -197,32 +195,30 @@ theorem weight_zero_not_pos_det (k : ℕ) (h : M22) (hd : ¬ 0 < (Matrix.of h).d
   simp
 
 /- English proof (translation)
-Use `filter_upwards [isOpen_neg.mem_nhds hd] with x hx`. Conclude with `weight_zero_not_pos_det k x (not_lt.2 (le_of_lt hx))`.
+A detailed English derivation is pending.
 -/
 theorem weight_eventually_zero_neg_det (k : ℕ) (h : M22) (hd : (Matrix.of h).det < 0) : w0 k =ᶠ[𝓝 h] 0 := by
   filter_upwards [isOpen_neg.mem_nhds hd] with x hx
   exact weight_zero_not_pos_det k x (not_lt.2 (le_of_lt hx))
 
 /- English proof (translation)
-Unfold `al`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_al : Measurable al := by
   unfold al
   fun_prop
 
 /- English proof (translation)
-Unfold `be`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_be : Measurable be := by
   unfold be
   fun_prop
 
 /- English proof (translation)
-Establish `hdet : Measurable (fun h : M22 => (Matrix.of h).det)` using `continuous_det.measurable`. Establish `hF : Measurable (fun h : M22 => (((Matrix.of h).det : ℝ) : ℂ) ^ (k - 1) * (al h) ^ (-(2 * (k : ℤ) - 1)) * Complex.exp (2 * Real.pi * Complex.I * (be h / al h)))`. Establish `h1` using `Complex.measurable_ofReal.comp hdet`. Establish `h2` using `measurable_al`. Establish `h3` using `measurable_be`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((h1.pow_const _).mul (h2.pow_const _)).mul (Complex.measurable_exp.comp (measurable_const.mul (h3.div h2)))`. Establish `hs : MeasurableSet {h : M22 | 0 < (Matrix.of h).det}` using `isOpen_pos.measurableSet`. Establish `: w0 k = fun h : M22 => if 0 < (Matrix.of h).det then ((((Matrix.of h).det : ℝ) : ℂ) ^ (k - 1) * (al h) ^ (-(2 * (k : ℤ) - 1)) * Complex.exp (2 * Real.pi * Complex.I * (be h / al h))) else 0`. Use function extensionality and compare the values at `h`. Use `split_ifs with hd`.
-
-Conclude with `GlobalTheory.CompanionTheory.WeightClosed.main k hk h hd`. Conclude with `weight_zero_not_pos_det k h hd`. Rewrite using `[this]`. Conclude with `Measurable.ite hs hF measurable_const`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_w0_of_three_le (k : ℕ) (hk : 3 ≤ k) : Measurable (w0 k) := by
   have hdet : Measurable (fun h : M22 => (Matrix.of h).det) := continuous_det.measurable
@@ -244,13 +240,13 @@ theorem measurable_w0_of_three_le (k : ℕ) (hk : 3 ≤ k) : Measurable (w0 k) :
   exact Measurable.ite hs hF measurable_const
 
 /- English proof (translation)
-Establish `hr : ∀ h : M22, rpol a b h = h a 0 • (rpol 0 b (fun i j => if i = 0 ∧ j = 0 then 1 else 0)) + h a 1 • (rpol 0 b (fun i j => if i = 0 ∧ j = 1 then 1 else 0))`. Introduce `h`. Use function extensionality and compare the values at `r c`. Apply the tactic sequence `fin_cases c <;> by_cases hb : r = b <;> simp [rpol, hb]`. Establish `hd : Measurable (fun h : M22 => fderiv ℝ w h (rpol a b h))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `: (fun h : M22 => fderiv ℝ w h (rpol a b h)) = fun h => h a 0 • fderiv ℝ w h (rpol 0 b (fun i j => if i = 0 ∧ j = 0 then 1 else 0)) + h a 1 • fderiv ℝ w h (rpol 0 b (fun i j => if i = 0 ∧ j = 1 then 1 else 0))`. Use function extensionality and compare the values at `h`. Rewrite using `[hr h, map_add, map_smul, map_smul]`. Rewrite using `[this]`. Establish `m0` using `measurable_fderiv_apply_const ℝ w (rpol 0 b (fun i j => if i = 0 ∧ j = 0 then (1 : ℝ) else 0))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `m1` using `measurable_fderiv_apply_const ℝ w (rpol 0 b (fun i j => if i = 0 ∧ j = 1 then (1 : ℝ) else 0))`. Establish `c0 : Measurable (fun h : M22 => h a 0)` using `by fun_prop`. Establish `c1 : Measurable (fun h : M22 => h a 1)` using `by fun_prop`. Conclude with `(c0.smul m0).add (c1.smul m1)`. Unfold `Lt Lop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `only [if_true]`. Use `fun_prop`. Simplify using `only [hab, if_false] fun_prop`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurable_Lt (v : ℂ) (a b : Fin 2) {w : M22 → ℂ} (hw : Measurable w) :
     Measurable (Lt v a b w) := by
@@ -280,9 +276,9 @@ theorem measurable_Lt (v : ℂ) (a b : Fin 2) {w : M22 → ℂ} (hw : Measurable
     fun_prop
 
 /- English proof (translation)
-Take `⟨h1, h2, -, -⟩` from `GlobalTheory.T.polarization_coordinate_derivative_bounds a b c d h hd`. Establish `hq` using `((h1.hasFDerivAt.const_mul (2 * (k : ℂ) - 1)).const_add (if c = d then v - 2 - ((k : ℂ) - 1) else 0)).sub (h2.hasFDerivAt.const_mul (2 * Real.pi * Complex.I * kap c d))`. Establish `e : (fun y => (if c = d then v - 2 - ((k : ℂ) - 1) else 0) + (2 * (k : ℂ) - 1) * rho c d y - 2 * Real.pi * Complex.I * kap c d * tt y) = Qf k v c d` using `rfl`. Establish `hq' : HasFDerivAt (Qf k v c d) ((2 * (k : ℂ) - 1) • fderiv ℝ (rho c d) h - (2 * Real.pi * Complex.I * kap c d) • fderiv ℝ tt h) h` using `hq`. Use `⟨hq'.differentiableAt, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hq'.fderiv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Qf_deriv (k : ℕ) (v : ℂ) (a b c d : Fin 2) (h : M22) (hd : 0 < (Matrix.of h).det) :
     DifferentiableAt ℝ (Qf k v c d) h ∧ fderiv ℝ (Qf k v c d) h (rpol a b h) =
@@ -301,9 +297,9 @@ theorem Qf_deriv (k : ℕ) (v : ℂ) (a b c d : Fin 2) (h : M22) (hd : 0 < (Matr
   simp
 
 /- English proof (translation)
-Unfold `Lt Lop`. Rewrite using `[(GlobalTheory.T.weight_differentiable_logarithmic k hk h hd).2, ell_rpol k c d h hd]`. Unfold `Qf`. Use `split_ifs`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem first_derivative_weight_formula (k : ℕ) (hk : 3 ≤ k) (v : ℂ) (c d : Fin 2) (h : M22) (hd : 0 < (Matrix.of h).det) :
     Lt v c d (w0 k) h = w0 k h * Qf k v c d h := by
@@ -315,11 +311,11 @@ theorem first_derivative_weight_formula (k : ℕ) (hk : 3 ≤ k) (v : ℂ) (c d 
   · ring
 
 /- English proof (translation)
-Take `⟨hw, hw'⟩` from `GlobalTheory.T.weight_differentiable_logarithmic k hk h hd`. Take `⟨hq, -⟩` from `Qf_deriv k v' a b c d h hd`. Establish `he : Lt v' c d (w0 k) =ᶠ[𝓝 h] fun x => w0 k x * Qf k v' c d x` using `by filter_upwards [isOpen_pos.mem_nhds hd] with x hx`. Conclude with `first_derivative_weight_formula k hk v' c d x hx`. Establish `hf : fderiv ℝ (fun x => w0 k x * Qf k v' c d x) h = w0 k h • fderiv ℝ (Qf k v' c d) h + Qf k v' c d h • fderiv ℝ (w0 k) h` using `(hw.hasFDerivAt.mul hq.hasFDerivAt).fderiv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : fderiv ℝ (Lt v' c d (w0 k)) h (rpol a b h) = w0 k h * fderiv ℝ (Qf k v' c d) h (rpol a b h) + Qf k v' c d h * (w0 k h * ell k h (rpol a b h))`. Rewrite using `[he.fderiv_eq, hf]`. Simplify using `[hw']`. Establish `e0` using `first_derivative_weight_formula k hk v' c d h hd`. Use `show (if a = b then v * Lt v' c d (w0 k) h else 0) + (-(fderiv ℝ (Lt v' c d (w0 k)) h (rpol a b h)) - 2 * (if a = b then Lt v' c d (w0 k) h else 0)) = _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, e0]`. Use `split_ifs`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem second_derivative_weight_formula (k : ℕ) (hk : 3 ≤ k) (v v' : ℂ) (a b c d : Fin 2) (h : M22)
     (hd : 0 < (Matrix.of h).det) :
@@ -345,20 +341,20 @@ theorem second_derivative_weight_formula (k : ℕ) (hk : 3 ≤ k) (v v' : ℂ) (
   · ring
 
 /- English proof (translation)
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_ite_le (p : Prop) [Decidable p] (x : ℂ) : ‖(if p then x else 0)‖ ≤ ‖x‖ := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Combine the linear relations using `[Real.pi_lt_four]`.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem two_pi_le : 2 * Real.pi ≤ 8 := by linarith [Real.pi_lt_four]
 
 def Pc (k : ℕ) (v : ℂ) : ℝ := ‖v‖ + 3 * k + 10
 
 /- English proof (translation)
-Establish `e : ‖2 * Real.pi * Complex.I * kap c d * y‖ = 2 * Real.pi * ‖y‖`. Rewrite using `[norm_mul, norm_mul, norm_mul, norm_mul, norm_kap, Complex.norm_I, Complex.norm_real, Real.norm_eq_abs, abs_of_pos Real.pi_pos]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_right two_pi_le (norm_nonneg _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_const (c d : Fin 2) (y : ℂ) : ‖2 * Real.pi * Complex.I * kap c d * y‖ ≤ 8 * ‖y‖ := by
   have e : ‖2 * Real.pi * Complex.I * kap c d * y‖ = 2 * Real.pi * ‖y‖ := by
@@ -369,7 +365,7 @@ theorem norm_const (c d : Fin 2) (y : ℂ) : ‖2 * Real.pi * Complex.I * kap c 
   exact mul_le_mul_of_nonneg_right two_pi_le (norm_nonneg _)
 
 /- English proof (translation)
-Establish `: (2 * (k : ℂ) - 1) = ((2 * (k : ℝ) - 1 : ℝ) : ℂ)` using `by push_cast; ring`. Establish `hk' : (3 : ℝ) ≤ k` using `by exact_mod_cast hk`. Rewrite using `[this, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem norm_two_k (k : ℕ) (hk : 3 ≤ k) : ‖(2 * (k : ℂ) - 1)‖ ≤ 2 * k := by
   have : (2 * (k : ℂ) - 1) = ((2 * (k : ℝ) - 1 : ℝ) : ℂ) := by push_cast; ring
@@ -378,7 +374,7 @@ theorem norm_two_k (k : ℕ) (hk : 3 ≤ k) : ‖(2 * (k : ℂ) - 1)‖ ≤ 2 * 
   linarith
 
 /- English proof (translation)
-Establish `: ((k : ℂ) - 1) = (((k : ℝ) - 1 : ℝ) : ℂ)` using `by push_cast; ring`. Establish `hk' : (3 : ℝ) ≤ k` using `by exact_mod_cast hk`. Rewrite using `[this, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem norm_weight_exponent_le (k : ℕ) (hk : 3 ≤ k) : ‖((k : ℂ) - 1)‖ ≤ k := by
   have : ((k : ℂ) - 1) = (((k : ℝ) - 1 : ℝ) : ℂ) := by push_cast; ring
@@ -387,13 +383,13 @@ theorem norm_weight_exponent_le (k : ℕ) (hk : 3 ≤ k) : ‖((k : ℂ) - 1)‖
   linarith
 
 /- English proof (translation)
-Establish `hu` using `(uu_pos h hd).le`. Establish `h1 : ‖(if c = d then v - 2 - ((k : ℂ) - 1) else 0)‖ ≤ ‖v‖ + 2 + k`. Use `(norm_ite_le _ _).trans ?_` and prove the remaining obligations. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Use `norm_sub_le v 2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : ‖(2 : ℂ)‖ = 2` using `by simp`. Combine the linear relations using `[norm_weight_exponent_le k hk]`. Establish `h2 : ‖(2 * (k : ℂ) - 1) * rho c d h‖ ≤ 2 * k`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h3` using `norm_const c d (tt h)`. Rewrite `h3` using `[norm_tt h hd]`. Unfold `Qf`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Use `norm_add_le (if c = d then v - 2 - ((k : ℂ) - 1) else 0) ((2 * (k : ℂ) - 1) * rho c d h)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `Pc`. Establish `hv` using `norm_nonneg v`. Establish `hkk : (0 : ℝ) ≤ k` using `by positivity`. Use polynomial arithmetic with `[mul_nonneg hv hu, mul_nonneg hkk hu]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_Qf_le (k : ℕ) (hk : 3 ≤ k) (v : ℂ) (c d : Fin 2) (h : M22) (hd : 0 < (Matrix.of h).det) :
     ‖Qf k v c d h‖ ≤ Pc k v * (1 + uu h) := by
@@ -419,11 +415,11 @@ theorem norm_Qf_le (k : ℕ) (hk : 3 ≤ k) (v : ℂ) (c d : Fin 2) (h : M22) (h
   nlinarith [mul_nonneg hv hu, mul_nonneg hkk hu]
 
 /- English proof (translation)
-Establish `hu` using `(uu_pos h hd).le`. Rewrite using `[ell_rpol k a b h hd]`. Establish `h1 : ‖(if a = b then (k : ℂ) - 1 else 0)‖ ≤ k` using `(norm_ite_le _ _).trans (norm_weight_exponent_le k hk)`. Establish `h2 : ‖(1 - 2 * (k : ℂ)) * rho a b h‖ ≤ 2 * k`. Rewrite using `[norm_mul, show (1 - 2 * (k : ℂ)) = -(2 * (k : ℂ) - 1) by ring, norm_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `norm_const a b (tt h)`. Rewrite `h3` using `[norm_tt h hd]`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Use `norm_add_le (if a = b then (k : ℂ) - 1 else 0) ((1 - 2 * (k : ℂ)) * rho a b h)` as an intermediate fact.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `Pc`. Establish `hv` using `norm_nonneg v`. Establish `hkk : (0 : ℝ) ≤ k` using `by positivity`. Use polynomial arithmetic with `[mul_nonneg hv hu, mul_nonneg hkk hu]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_ell_le (k : ℕ) (hk : 3 ≤ k) (v : ℂ) (a b : Fin 2) (h : M22) (hd : 0 < (Matrix.of h).det) :
     ‖ell k h (rpol a b h)‖ ≤ Pc k v * (1 + uu h) := by
@@ -444,11 +440,11 @@ theorem norm_ell_le (k : ℕ) (hk : 3 ≤ k) (v : ℂ) (a b : Fin 2) (h : M22) (
   nlinarith [mul_nonneg hv hu, mul_nonneg hkk hu]
 
 /- English proof (translation)
-Establish `hu` using `(uu_pos h hd).le`. Take `⟨-, -, h1, h2⟩` from `GlobalTheory.T.polarization_coordinate_derivative_bounds a b c d h hd`. Rewrite using `[(Qf_deriv k v a b c d h hd).2]`. Establish `h3` using `norm_const c d (fderiv ℝ tt h (rpol a b h))`. Establish `h4 : ‖(2 * (k : ℂ) - 1) * fderiv ℝ (rho c d) h (rpol a b h)‖ ≤ 2 * k * 2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (norm_two_k k hk) h1 (norm_nonneg _) (by positivity)`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Unfold `Pc`. Establish `hv` using `norm_nonneg v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkk : (0 : ℝ) ≤ k` using `by positivity`. Use polynomial arithmetic with `[mul_nonneg hv hu, mul_nonneg hkk hu]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_dQf_le (k : ℕ) (hk : 3 ≤ k) (v : ℂ) (a b c d : Fin 2) (h : M22) (hd : 0 < (Matrix.of h).det) :
     ‖fderiv ℝ (Qf k v c d) h (rpol a b h)‖ ≤ 3 * Pc k v * (1 + uu h) := by
@@ -466,15 +462,15 @@ theorem norm_dQf_le (k : ℕ) (hk : 3 ≤ k) (v : ℂ) (a b c d : Fin 2) (h : M2
   nlinarith [mul_nonneg hv hu, mul_nonneg hkk hu]
 
 /- English proof (translation)
-Establish `hP : 0 ≤ Pc k v'` using `by unfold Pc; positivity`. Use `⟨(‖v‖ + 2) * Pc k v' + 3 * Pc k v' + Pc k v' ^ 2, by positivity, fun h hd => ?_⟩` and prove the remaining obligations. Establish `hu` using `(uu_pos h hd).le`. Rewrite using `[second_derivative_weight_formula k hk v v' a b c d h hd, norm_mul, mul_comm ‖w0 k h‖, ← mul_assoc]`. Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hQ` using `norm_Qf_le k hk v' c d h hd`. Establish `hE` using `norm_ell_le k hk v' a b h hd`. Establish `hD` using `norm_dQf_le k hk v' a b c d h hd`. Establish `h1 : ‖(if a = b then (v - 2) * Qf k v' c d h else 0)‖ ≤ (‖v‖ + 2) * (Pc k v' * (1 + uu h))`. Use `(norm_ite_le _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul]`. Establish `: ‖v - 2‖ ≤ ‖v‖ + 2` using `by simpa using norm_sub_le v 2`. Conclude with `mul_le_mul this hQ (norm_nonneg _) (by positivity)`. Establish `h2 : ‖Qf k v' c d h * ell k h (rpol a b h)‖ ≤ (Pc k v' * (1 + uu h)) * (Pc k v' * (1 + uu h))`. Rewrite using `[norm_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_le_mul hQ hE (norm_nonneg _) (by positivity)`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Establish `h3` using `norm_sub_le (if a = b then (v - 2) * Qf k v' c d h else 0) (fderiv ℝ (Qf k v' c d) h (rpol a b h))`. Establish `hv` using `norm_nonneg v`. Establish `hone : 1 + uu h ≤ (1 + uu h) ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `t1 : (‖v‖ + 2) * (Pc k v' * (1 + uu h)) ≤ (‖v‖ + 2) * Pc k v' * (1 + uu h) ^ 2`. Rewrite using `[mul_assoc]`. Use `gcongr`. Establish `t2 : 3 * Pc k v' * (1 + uu h) ≤ 3 * Pc k v' * (1 + uu h) ^ 2` using `by gcongr`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem bound2 (k : ℕ) (hk : 3 ≤ k) (v v' : ℂ) (a b c d : Fin 2) : ∃ C : ℝ, 0 ≤ C ∧ ∀ h : M22,
     0 < (Matrix.of h).det → ‖Lt v a b (Lt v' c d (w0 k)) h‖ ≤ C * ((1 + uu h) ^ 2 * ‖w0 k h‖) := by
@@ -505,11 +501,11 @@ theorem bound2 (k : ℕ) (hk : 3 ≤ k) (v v' : ℂ) (a b c d : Fin 2) : ∃ C :
   nlinarith
 
 /- English proof (translation)
-Establish `hz : ∀ x : M22, (Matrix.of x).det < 0 → Lt v' c d (w0 k) x = 0`. Introduce `x hx`. Establish `e : fderiv ℝ (w0 k) x = fderiv ℝ 0 x` using `(weight_eventually_zero_neg_det k x hx).fderiv_eq`. Establish `e0` using `weight_zero_not_pos_det k x (not_lt.2 hx.le)`. Unfold `Lt Lop`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[e, e0]`. Simplify using the standard rewrite rules. Establish `he : Lt v' c d (w0 k) =ᶠ[𝓝 h] 0` using `by filter_upwards [isOpen_neg.mem_nhds hd] with x hx`. Conclude with `hz x hx`. Establish `e : fderiv ℝ (Lt v' c d (w0 k)) h = fderiv ℝ 0 h` using `he.fderiv_eq`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (if a = b then v * Lt v' c d (w0 k) h else 0) + (-(fderiv ℝ (Lt v' c d (w0 k)) h (rpol a b h)) - 2 * (if a = b then Lt v' c d (w0 k) h else 0)) = 0`. Rewrite using `[e, hz h hd]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vanish2 (k : ℕ) (v v' : ℂ) (a b c d : Fin 2) (h : M22) (hd : (Matrix.of h).det < 0) :
     Lt v a b (Lt v' c d (w0 k)) h = 0 := by
@@ -530,26 +526,22 @@ theorem vanish2 (k : ℕ) (v v' : ℂ) (a b c d : Fin 2) (h : M22) (hd : (Matrix
   simp
 
 /- English proof (translation)
-Unfold `Ad3.LR.B.maj`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem maj_nonneg (k N : ℕ) (a b : ℝ) (h : M22) : 0 ≤ Ad3.LR.B.maj k N a b h := by
   unfold Ad3.LR.B.maj
   positivity
 
 /- English proof (translation)
-Introduce `hMS k hk v v' a b c d Φ g`. Take `⟨N, hN⟩` from `hMS k hk 1 one_pos`. Take `⟨C3, hC3⟩` from `hN N le_rfl`. Establish `hint` using `(hC3 (1 / 2) 1 (by norm_num) one_ne_zero).1`. Take `⟨C1, hC1, hb⟩` from `bound2 k hk v v' a b c d`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C2, hm⟩` from `GlobalTheory.T.weight_majorant_bound k hk`. Take `⟨C4, hi⟩` from `inn_bound N Φ g`. Establish `hmeas : AEStronglyMeasurable (fun h : M22 => Lt v a b (Lt v' c d (w0 k)) h * inn Φ g (Matrix.of h)) volume` using `((measurable_Lt v a b (measurable_Lt v' c d (measurable_w0_of_three_le k hk))).aestronglyMeasurable).mul (inn_meas Φ g)`. Use `Integrable.mono' (hint.const_mul (C1 * |C4| * |C2|)) hmeas ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.CompanionTheory.PerUAssembled.ae_det_ne_zero] with h hdet`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmn` using `maj_nonneg k N (1 / 2) 1 h`. Break down `lt_or_gt_of_ne hdet with hneg | hpos` into its components or cases. Rewrite using `[vanish2 k v v' a b c d h hneg, zero_mul, norm_zero]`. Check the signs of the components of the expression. Rewrite using `[norm_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hden : 0 < (1 + ‖h‖) ^ N * (1 + ‖Ad3.LR.B.eta h‖) ^ N` using `by positivity`. Establish `hI` using `hi h hdet`. Establish `hB` using `hb h hpos`. Establish `hM` using `hm N h hpos`. Use `set Den := (1 + ‖h‖) ^ N * (1 + ‖Ad3.LR.B.eta h‖) ^ N with hDen`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set J := |(Matrix.of h).det|⁻¹ with hJ`. Use `set P := (1 + uu h) ^ 2 * ‖w0 k h‖ with hPdef`. Establish `hP : 0 ≤ P` using `by positivity`. Establish `hJ0 : 0 ≤ J` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `mul_le_mul hB (hI.trans ?_) (norm_nonneg _) (by positivity)` and prove the remaining obligations. Use `gcongr`. Conclude with `le_abs_self _`. Use `_ = C1 * |C4| * (P * J / Den) := by ring`. Use `_ ≤ C1 * |C4| * (|C2| * Ad3.LR.B.maj k N (1 / 2) 1 h) := by`.
-
-Use `mul_le_mul_of_nonneg_left (hM.trans ?_) (by positivity)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self _) hmn`. Use `_ = C1 * |C4| * |C2| * Ad3.LR.B.maj k N (1 / 2) 1 h := by ring`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : Ad3.LR.B.MajScaled → Ad3.LR.DInt2 := by
   intro hMS k hk v v' a b c d Φ g

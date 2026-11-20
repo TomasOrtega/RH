@@ -13,15 +13,15 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WeightJoin
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n a b μ e π lam n₁ n₂ hn hμ hπ hw h₁ h₂ hinf τ lam' hτ`. Take `⟨-, he, hc⟩` from `GlobalTheory.BCT.MuProps.main E hU μ e hμ`. Set `U : GlobalTheory.DefU.AutSub E n` to `⟨π, hπ⟩`. Rewrite using `[GlobalTheory.BCT.TwistDisc.expo_pow, GlobalTheory.BCT.TwistDisc.expo_pow]`. Break down `NumberField.InfinitePlace.embedding_mk_eq τ with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hv` using `hw (InfinitePlace.mk τ)`. Establish `hinfv` using `hinf (InfinitePlace.mk τ)`. Establish `hev` using `he (InfinitePlace.mk τ)`. Rewrite `hv`, `hinfv`, `hev` using `[h]`. Rewrite using `[GlobalTheory.DefU.hasWeightAt_unique U τ hτ hv, hev, ← hinfv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `congr 1 <;> exact Multiset.map_congr rfl fun x _ => by ring`. Establish `hv` using `GlobalTheory.DefiniteBC.hasWeightAt_conjugate hn (hw (InfinitePlace.mk τ))`. Establish `hinfv` using `hinf (InfinitePlace.mk τ)`. Establish `hev` using `hc (InfinitePlace.mk τ)`. Establish `hs₁` using `(h₁ (InfinitePlace.mk τ).embedding).2`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs₂` using `(h₂ (InfinitePlace.mk τ).embedding).2`. Establish `hcc : ComplexEmbedding.conjugate (InfinitePlace.mk τ).embedding = τ`. Rewrite using `[h]`. Conclude with `star_star τ`. Establish `hcc' : (starRingEnd ℂ).comp (InfinitePlace.mk τ).embedding = τ` using `hcc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs₁`, `hs₂` using `[hcc']`. Rewrite `hv`, `hev` using `[hcc]`. Rewrite using `[GlobalTheory.DefU.hasWeightAt_unique U τ hτ hv, GlobalTheory.DefiniteBC.infOfWeight_dual, ← hinfv, hev, hs₁, hs₂, Multiset.map_add, Multiset.map_map, Multiset.map_map, Multiset.map_map, Multiset.map_map]`. Apply the tactic sequence `congr 1 <;> exact Multiset.map_congr rfl fun x _ => by simp only [Function.comp_apply]; ring`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem main : PositivityTheory.Rg.BcB.F.RS.WeightJoin := by
   intro E _ _ _ hU n a b μ e π lam n₁ n₂ hn hμ hπ hw h₁ h₂ hinf τ lam' hτ

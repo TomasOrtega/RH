@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.NormEulerPolySub
 namespace GlobalTheory.DoubleCosetIndicatorSum
 
 /- English proof (translation)
-Take `⟨h, hh, k', hk', rfl⟩` from `DoubleCoset.mem_doubleCoset.1 hg`. Conclude with `DoubleCoset.mem_doubleCoset.2 ⟨h, hh, k' * k, K.mul_mem hk' hk, mul_assoc _ _ _⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mul_mem_doubleCoset {G : Type} [Group G] {K : Subgroup G} {a g k : G}
     (hg : g ∈ DoubleCoset.doubleCoset a (K : Set G) (K : Set G)) (hk : k ∈ K) :
@@ -15,15 +15,15 @@ theorem mul_mem_doubleCoset {G : Type} [Group G] {K : Subgroup G} {a g k : G}
   exact DoubleCoset.mem_doubleCoset.2 ⟨h, hh, k' * k, K.mul_mem hk' hk, mul_assoc _ _ _⟩
 
 /- English proof (translation)
-Establish `hfix : ∀ k ∈ K, ρ k x = x` using `GlobalTheory.LGrp.mem_fixed.1 hx`. Establish `hmk : ∀ γ : G, ((γ : G ⧸ K) = c ↔ γ⁻¹ * Quotient.out c ∈ K)`. Introduce `γ`. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`. Distinguish the cases in `hc : Quotient.out c ∈ DoubleCoset.doubleCoset a (K : Set G) (K : Set G)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Formalism.UG.P.dosetInd_of_mem ℂ K a _ hc, one_smul]`. Take `⟨γ₀, ⟨hγ₀R, hγ₀K⟩, huniq⟩` from `hU _ hc`. Establish `hfil : R.filter (fun γ : G => (γ : G ⧸ K) = c) = {γ₀}`. Use extensionality with `γ`. Simplify using `only [Finset.mem_filter, Finset.mem_singleton, hmk]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hγR, hγK⟩`. Conclude with `huniq γ ⟨hγR, hγK⟩`. Introduce and unpack `rfl`. Conclude with `⟨hγ₀R, hγ₀K⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfil, Finset.sum_singleton]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Formalism.UG.P.dosetInd_of_not_mem ℂ K a _ hc, zero_smul]`. Use `(Finset.sum_eq_zero fun γ hγ => ?_).symm` and prove the remaining obligations. Rewrite `hγ` using `[Finset.mem_filter, hmk]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `absurd ?_ hc` and prove the remaining obligations. Establish `h` using `mul_mem_doubleCoset (hR γ hγ.1) hγ.2`. Rewrite `h` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem dosetInd_smul_eq_sum_filter {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ G V} {K : Subgroup G} {x : V} (hx : x ∈ GlobalTheory.PRep.fixed ρ K) {a : G} {R : Finset G}
@@ -62,9 +62,9 @@ private theorem dosetInd_smul_eq_sum_filter {G V : Type} [Group G] [AddCommGroup
     rwa [mul_inv_cancel_left] at h
 
 /- English proof (translation)
-Introduce `d1 G V _ _ _ ρ K x hx a R hR hU`. Use `show ∑ᶠ c : G ⧸ K, Formalism.UG.dosetInd ℂ K a (Quotient.out c) • ρ (Quotient.out c) x = ∑ γ ∈ R, ρ γ x`. Rewrite using `[finsum_congr (dosetInd_smul_eq_sum_filter hx hR hU)]`. Rewrite using `[finsum_eq_sum_of_support_subset (s := R.image fun γ : G => (γ : G ⧸ K))]`. Conclude with `Finset.sum_fiberwise_of_maps_to (fun γ hγ => Finset.mem_image_of_mem _ hγ) _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `c hc`. Take `⟨γ, hγ, -⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (Function.mem_support.1 hc)`. Rewrite `hγ` using `[Finset.mem_filter]`. Conclude with `Finset.mem_image.2 ⟨γ, hγ.1, hγ.2⟩`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : (let d1 : {G V : Type} → [inst : Group G] → [inst_1 : AddCommGroup V] → [inst_2 : Module ℂ V] → Representation ℂ G V → Subgroup G → (G → ℂ) → V → V := @(fun {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (K : Subgroup G) (h : G → ℂ) (x : V) ↦ ∑ᶠ (c : G ⧸ K), h (Quotient.out c) • ((ρ : G → V →ₗ[ℂ] V) (Quotient.out c) : V → V) x); ∀ {G V : Type} [inst : Group G] [inst_1 : AddCommGroup V] [inst_2 : Module ℂ V] {ρ : Representation ℂ G V} {K : Subgroup G} {x : V}, x ∈ GlobalTheory.PRep.fixed ρ K → ∀ {a : G} {R : Finset G}, (∀ γ ∈ R, γ ∈ DoubleCoset.doubleCoset a (↑K : Set G) (↑K : Set G)) → (∀ g ∈ DoubleCoset.doubleCoset a (↑K : Set G) (↑K : Set G), ∃! γ : G, γ ∈ R ∧ γ⁻¹ * g ∈ K) → d1 ρ K (Formalism.UG.dosetInd ℂ K a) x = ∑ γ ∈ R, ((ρ : G → V →ₗ[ℂ] V) γ : V → V) x) := by
   intro d1 G V _ _ _ ρ K x hx a R hR hU

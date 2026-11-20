@@ -47,24 +47,22 @@ def BlockBound : Prop :=
     OpNormSqLe lam lam' (jetOp lam lam' (jetC cD G) fun τ => lastEntry (ν τ)) (tmax b ν Om S)
 
 /- English proof (translation)
-Simplify using `[Formalism.LatticeIndexTer.ph]`.
+Simplify using the standard rewrite rules.
 -/
 example : Formalism.LatticeIndexTer.ph 0 = 0 := by simp [Formalism.LatticeIndexTer.ph]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Establish `hb : 0 < b` using `lt_of_le_of_lt (Nat.zero_le _) i.2`. Establish `hpad : ∀ j, 0 ≤ padZero b ν j`. Introduce `j`. Unfold `padZero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `split_ifs`. Conclude with `h2 _`. Conclude with `le_rfl`. Set `j0 : Fin b` to `⟨b - 1, by omega⟩`. Establish `hlast : padZero b ν j0 = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Unfold `padZero`. Use `split_ifs with hlt`. Establish `hlt' : b - 1 < a` using `hlt`. Break down `hg with hg | hg` into its components or cases. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ha : 0 < a` using `by omega`. Establish `hz : ν.w ⟨a - 1, by omega⟩ ≤ 0`. Apply the tactic sequence `unfold lastEntry DomWeight.detShift at hg`. Rewrite `hg` using `[dif_pos ha]`. Conclude with `Int.toNat_eq_zero.mp hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hidx : (⟨j0.1, hlt⟩ : Fin a) = ⟨a - 1, by omega⟩` using `Fin.ext (by simp [j0]; omega)`. Rewrite using `[hidx]`. Conclude with `le_antisymm hz (h2 _)`. Both sides reduce to the same expression. Establish `hshift : lam'.detShift = -s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions.
 
-Unfold `DomWeight.detShift`. Rewrite using `[dif_pos hb]`. Use `show lam'.w j0 = -s`. Establish `h30` using `h3 j0`. Rewrite `h30` using `[hlast]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Unfold `DomWeight.natW`. Rewrite using `[hshift]`. Establish `hw : lam'.w i - -s = padZero b ν i` using `by linarith [h3 i]`. Rewrite using `[hw, Int.toNat_of_nonneg (hpad i)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natW_eq_padZero {a b : ℕ} (hab : a ≤ b) {lam ν : DomWeight a} {lam' : DomWeight b} {s' s : ℤ}
     (h : IsStepWeight lam ν lam' s' s) (hg : a < b ∨ lastEntry ν = 0) (i : Fin b) :
@@ -106,7 +104,7 @@ theorem natW_eq_padZero {a b : ℕ} (hab : a ≤ b) {lam ν : DomWeight a} {lam'
   rw [hw, Int.toNat_of_nonneg (hpad i)]
 
 /- English proof (translation)
-Use `⟨⟨fun _ => 0, fun _ _ _ => le_rfl⟩, ⟨fun _ => 3, fun _ _ _ => le_rfl⟩, ⟨![2, -1], by decide⟩, 3, 1, ⟨fun _ => rfl, fun _ => by simp, ?_⟩, rfl, rfl⟩` and prove the remaining obligations. Introduce `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : ∃ (lam ν : DomWeight 1) (lam' : DomWeight 2) (s' s : ℤ),
     IsStepWeight lam ν lam' s' s ∧ lastEntry ν = 3 ∧ wtSize ν = 3 := by
@@ -116,9 +114,9 @@ example : ∃ (lam ν : DomWeight 1) (lam' : DomWeight 2) (s' s : ℤ),
   fin_cases i <;> rfl
 
 /- English proof (translation)
-Establish `h1 : ‖z () 0 0‖ ^ 2 ≤ unitNormSq (fun _ => 1) z`. Simplify using `only [unitNormSq, Finset.univ_unique, Finset.sum_singleton, Fin.sum_univ_two, Complex.ofReal_one, one_mul]`. Use `sq_nonneg ‖z () 1 0‖` as an intermediate fact. Simplify using `using this`. Establish `h2` using `Real.add_one_le_exp (unitNormSq (fun _ => (1 : ℝ)) z / 2)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[sq_nonneg (‖z () 0 0‖ - 1)]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 example (z : VCx Unit 1 2) : ‖z () 0 0‖ ≤ 1 * Real.exp (unitNormSq (fun _ => 1) z / 2) := by
   have h1 : ‖z () 0 0‖ ^ 2 ≤ unitNormSq (fun _ => 1) z := by

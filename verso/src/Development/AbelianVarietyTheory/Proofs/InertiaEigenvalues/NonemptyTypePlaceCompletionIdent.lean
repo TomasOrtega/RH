@@ -14,21 +14,19 @@ namespace GlobalTheory.TypeIdent
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField GlobalTheory.TypeRec.factG
 
 /- English proof (translation)
-Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Establish `he` using `isEquiv (valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Establish `hle : ∀ y : 𝒪[w.adicCompletion E], Valued.v (y : w.adicCompletion E) ≤ 1` using `fun y => he.le_one_iff_le_one.1 ((Valuation.mem_integer_iff _ _).1 y.2)`. Establish `hunit : ∀ y : 𝒪[w.adicCompletion E], IsUnit y ↔ Valued.v (y : w.adicCompletion E) = 1` using `fun y => by`. Rewrite using `[← he.eq_one_iff_eq_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Valuation.integer.integers (valuation (w.adicCompletion E))).isUnit_iff_valuation_eq_one`. Establish `hv : Valued.v ((g : ℕ) : w.adicCompletion E) = w.intValuation ((g : ℕ) : 𝓞 E)`. Rewrite using `[← HeightOneSpectrum.valuation_of_algebraMap (K := E), ← HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Use `congr 1`. Conclude with `((map_natCast (algebraMap E (w.adicCompletion E)) g).symm).trans (congrArg (algebraMap E (w.adicCompletion E)) (map_natCast (algebraMap (𝓞 E) E) g).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : w.intValuation ((g : ℕ) : 𝓞 E) ≤ WithZero.exp (-1 : ℤ)`. Simplify using `using (w.intValuation_le_pow_iff_mem ((g : ℕ) : 𝓞 E) 1).mpr (by rwa [pow_one])`. Establish `h2 : WithZero.exp (-2 : ℤ) < w.intValuation ((g : ℕ) : 𝓞 E)`. Assume the negation of the conclusion as `hc`. Conclude with `hnot ((w.intValuation_le_pow_iff_mem _ 2).mp (by simpa using not_lt.1 hc))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (((g : ℕ) : 𝒪[w.adicCompletion E]) : w.adicCompletion E) = (g : w.adicCompletion E)` using `by simp`. Use `⟨?_, fun a b hab => ?_⟩` and prove the remaining obligations. Rewrite using `[hunit, hc, hv]`. Introduce `e`. Rewrite `h1` using `[e, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `h3 : Valued.v (a : w.adicCompletion E) * Valued.v (b : w.adicCompletion E) = w.intValuation ((g : ℕ) : 𝓞 E)`. Rewrite using `[← hv, ← map_mul, ← hc, hab]`. Both sides reduce to the same expression. Rewrite `h1`, `h2` using `[← h3]`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `(zero_le.trans_lt h2).ne'`. Establish `ha` using `left_ne_zero_of_mul h0`. Establish `hb` using `right_ne_zero_of_mul h0`. Establish `ha1` using `hle a`. Establish `hb1` using `hle b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hunit, hunit]`. Rewrite `h2`, `ha1`, the goal using `[← WithZero.exp_log ha]`. Rewrite `h2`, `hb1`, the goal using `[← WithZero.exp_log hb]`. Rewrite `h2` using `[← WithZero.exp_add, WithZero.exp_lt_exp]`. Rewrite `ha1`, `hb1` using `[← WithZero.exp_zero, WithZero.exp_le_exp]`.
-
-Rewrite using `[← WithZero.exp_zero, WithZero.exp_inj, WithZero.exp_inj]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem irreducible_natCast_compl {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) {g : ℕ}
     (hin : ((g : ℕ) : 𝓞 E) ∈ w.asIdeal) (hnot : ((g : ℕ) : 𝓞 E) ∉ w.asIdeal ^ 2) :
@@ -76,9 +74,9 @@ theorem irreducible_natCast_compl {E : Type} [Field E] [NumberField E] (w : Heig
     omega
 
 /- English proof (translation)
-Introduce `D`. Use `haveI : IsGalois ℚ D.host.E := D.host.hostE_isGalois`. Establish `key : ∀ k v, ∃ φ : ℚ_[D.host.g k] ≃+* (D.naut.plGw k v).adicCompletion D.host.E, Continuous φ`. Introduce `k v`. Take `⟨h1, h2, -⟩` from `GlobalTheory.Mem.Chr.splitsC_place (D.host.g_prime k) (D.nd.g_split k) _ (D.naut.plGw_over k v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : CharZero ((D.naut.plGw k v).adicCompletion D.host.E) := charZero_of_injective_ringHom (algebraMap D.host.E _).injective`. Take `⟨φ, h, -⟩` from `GlobalTheory.QpChar.exists_ringEquiv_padic ((D.naut.plGw k v).adicCompletion D.host.E) (D.host.g k) ((GlobalTheory.LocLanglands.resCard_eq_normV _).trans h1) (irreducible_natCast_compl _ (D.naut.plGw_over k v) h2)`. Conclude with `⟨φ, h⟩`. Conclude with `⟨⟨fun k v => (key k v).choose, fun k v => (key k v).choose_spec⟩⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_ident : ∀ D : D7, Nonempty (GlobalTheory.TypeRec.Ident D) := by
   intro D

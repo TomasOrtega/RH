@@ -12,9 +12,9 @@ namespace GlobalTheory.Square
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `zero`. Establish `h` using `Formalism.DivisionValues.ValuationRepresentative.vw_mul w (1 : K) 1 one_ne_zero one_ne_zero`. Rewrite `h` using `[mul_one]`. Rewrite using `[pow_zero]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use linear arithmetic over natural numbers and integers. Consider the case `succ c ih`. Rewrite using `[pow_succ, Formalism.DivisionValues.ValuationRepresentative.vw_mul w _ _ (pow_ne_zero c hx) hx, ih]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -32,11 +32,11 @@ theorem stepRatio_vw_pow (w : Pl K) {x : K} (hx : x ≠ 0) (c : ℕ) : vw w (x ^
     ring
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `hg`. Establish `hq0 : (q : K) ≠ 0` using `Nat.cast_ne_zero.2 hq.ne'`. Establish `h : (q : K) ^ c = (g : K) * (b : K)`. Use `congrArg (fun x : 𝓞 K => (x : K)) hb` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hne : (g : K) * (b : K) ≠ 0` using `h ▸ pow_ne_zero c hq0`. Establish `hg0` using `left_ne_zero_of_mul hne`. Establish `hb0` using `right_ne_zero_of_mul hne`. Use `⟨hg0, Formalism.DivisionValues.ValuationRepresentative.vw_int_nonneg w g, ?_⟩` and prove the remaining obligations. Rewrite using `[← stepRatio_vw_pow w hq0, h, Formalism.DivisionValues.ValuationRepresentative.vw_mul w _ _ hg0 hb0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Formalism.DivisionValues.ValuationRepresentative.vw_int_nonneg w b` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem stepRatio_vw_of_dvd (w : Pl K) {q c : ℕ} (hq : 0 < q) {g : 𝓞 K} (hg : g ∣ (q : 𝓞 K) ^ c) :
     (g : K) ≠ 0 ∧ 0 ≤ vw w (g : K) ∧ vw w (g : K) ≤ c * vw w (q : K) := by
@@ -54,7 +54,7 @@ theorem stepRatio_vw_of_dvd (w : Pl K) {q c : ℕ} (hq : 0 < q) {g : 𝓞 K} (hg
   omega
 
 /- English proof (translation)
-The claim follows from `|(vw w (∏ v ∈ S, f v) : ℝ)| ≤ ∑ v ∈ S, r v := by classical induction S using Finset.induction_on with | empty => have := stepRatio_vw_pow w (one_ne_zero : (1 : K) ≠ 0) 0 rw [pow_zero, Nat.cast_zero, zero_mul] at this rw [Finset.prod_empty, Finset.sum_empty, this] simp | insert a …`.
+A detailed English derivation is pending.
 -/
 theorem stepRatio_abs_vw_prod (w : Pl K) {T : Type} (S : Finset T) (f : T → K) (r : T → ℝ)
     (h : ∀ v ∈ S, f v ≠ 0 ∧ |(vw w (f v) : ℝ)| ≤ r v) :
@@ -75,7 +75,7 @@ theorem stepRatio_abs_vw_prod (w : Pl K) {T : Type} (S : Finset T) (f : T → K)
     exact (abs_add_le _ _).trans (add_le_add h1.2 (ih h2))
 
 /- English proof (translation)
-The claim follows from `|(vw w t : ℝ)| ≤ 2 * ∑ v ∈ S0, (cc v : ℝ) * (vw w (qq v : K) : ℝ) := by intro K _ _ _ σ₀ w Qn hQ T S0 cc qq hq u1 u0 h obtain ⟨b, g, g', hb, hg, hu⟩ := h obtain ⟨hb0, hbv⟩ := hb.ne_zero_and_vw w hQ have key : ∀ v ∈ S0, (g v : K) / (g' v : K) ≠ 0 ∧ |(vw w ((g v : K) / (g' v : K)) …`.
+A detailed English derivation is pending.
 -/
 theorem stepRatio_vw_bound : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (σ₀ : K →+* ℂ) (w : Pl K) (Qn : ℕ),
     (Qn : 𝓞 K) ∉ w.asIdeal → ∀ (T : Type) (S0 : Finset T) (cc qq : T → ℕ), (∀ v ∈ S0, 0 < qq v) → ∀ u1 u0 : ℂ,

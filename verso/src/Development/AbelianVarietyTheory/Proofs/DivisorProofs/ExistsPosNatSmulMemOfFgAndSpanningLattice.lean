@@ -6,9 +6,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.DenominatorExistence.main`. Consider the case `exact _root_.GlobalTheory.DenominatorExistence.main`. Consider the case `(apply _root_.GlobalTheory.DenominatorExistence.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.DenominatorExistence.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.DenominatorExistence.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.DenominatorExistence.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_pos_nat_smul_mem_of_fg_of_span_eq_top :
     ∀ {E : Type} [Field E] [NumberField E] {r : ℕ} (Λ Λ' : Submodule (𝓞 E) (Fin r → E)),

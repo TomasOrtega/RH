@@ -23,11 +23,11 @@ namespace GlobalTheory.LevProd.OffTwist
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `h1 : GlobalTheory.AdelicU.proj (Formalism.L2.Forms.sigD D) S.gram w κ = 1` using `((GlobalTheory.FinPl.KOpen.mem_grpAt_iff S _ κ).1 hκ).2 w hw`. Establish `hp` using `GlobalTheory.AdelicU.matHom_proj (Formalism.L2.Forms.sigD D) S.gram w κ`. Establish `hE : Formalism.UG.bc (Formalism.UG.prV (E` using `D.host.E) w) g = GlobalTheory.StabConjIndex.toGL (Formalism.L2.Forms.sigD D) S.gram w (GlobalTheory.AdelicU.proj _ S.gram w κ) := by`. Use extensionality with `i j`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hij` using `congrFun (congrFun hg i) j`. Establish `e1 : (GlobalTheory.StabConjIndex.toGL (Formalism.L2.Forms.sigD D) S.gram w (GlobalTheory.AdelicU.proj _ S.gram w κ)).val i j = GlobalTheory.StabConjIndex.swap w ((GlobalTheory.AdelicU.matHom (Fv D.host.F w) (Formalism.L2.Forms.sigD D) S.gram (GlobalTheory.AdelicU.proj (Formalism. …` using `rfl`. Rewrite using `[e1, hp]`. Use `show Formalism.UG.prV w (g.1 i j) = GlobalTheory.StabConjIndex.swap w (GlobalTheory.AdelicU.compFin _ _ w _)`. Rewrite using `[← hij]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.FamTrace.prV_toEAf_eq_swap D w _`. Rewrite using `[hE, h1, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem bc_prV_eq_one (D : D7) (S : HSp D) (n : ℕ) (hn : S.rank = n) (κ : GA D S)
     (g : GL (Fin n) (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F))
@@ -53,13 +53,13 @@ theorem bc_prV_eq_one (D : D7) (S : HSp D) (n : ℕ) (hn : S.rank = n) (κ : GA 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨g, hgU, hg⟩ : ∃ g ∈ Formalism.UG.UPts (sigD D) (S.gram.reindex (finCongr hn) (finCongr hn)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F), GlobalTheory.AdForm.finM S hn κ = g.1 := by`. Take `⟨e, he⟩` from `GlobalTheory.FinPartIso.exists_finIso D S n hn`. Establish `hf` using `GlobalTheory.FinPl.SetCut.grpAt_le_GfC S _ hκ`. Conclude with `⟨(e ⟨κ, hf⟩).1, (e ⟨κ, hf⟩).2, (he ⟨κ, hf⟩).symm⟩`. Use `⟨⟨g, (K.U_eq _).2 ⟨hgU, fun w => ?_⟩⟩, hg.symm⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Substitute `hn` using the available equality. Establish `key : ∀ j i : Fin S.rank, ∃ r : 𝓞 D.host.E, (Pi.single j (T : D.host.E) : Fin S.rank → D.host.E) i = (r : D.host.E) ∧ t ∣ r` using `fun j i => by`. Rewrite using `[Pi.single_apply]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `⟨T, (map_natCast (algebraMap (𝓞 D.host.E) D.host.E) T).symm, ht⟩`. Conclude with `⟨0, rfl, dvd_zero _⟩`. Establish `e` using `GlobalTheory.FamTrace.levelVL_eq_of_std (sigD D) (S.gram.reindex (finCongr rfl) (finCongr rfl)) (Lb := K.Lb) (Λ := L) hT (fun x hx j => let ⟨r, hr, _⟩ := (hLb x).1 hx j; ⟨r, hr⟩) (fun j => (hLb _).2 fun i => let ⟨r, hr, hd⟩ := key j i; ⟨r, hr, fun _ => hd⟩) (fun x hx => (hL x).1 …`. Rewrite using `[K.Uloc_hyp w hb hT, e]`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.FamTrace.bc_prV_mem_levelVL_of_moves D S _ rfl L L hfg (fun _ => Iff.rfl) κ g hg w hm`. Rewrite using `[bc_prV_eq_one D S n hn κ g hg v w hw hκ]`. Conclude with `one_mem _`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_level (D : D7) (S : HSp D) (n : ℕ) (hn : S.rank = n) {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 D.host.F))}
     (K : StepLevel D.host.F D.host.E (sigD D) (S.gram.reindex (finCongr hn) (finCongr hn)) T f bad)
@@ -96,15 +96,13 @@ theorem exists_mem_level (D : D7) (S : HSp D) (n : ℕ) (hn : S.rank = n) {T f :
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat j hj t J hJ α t₂ J₂ hJ₂ i hv gl hgl y hy`. Establish `hjm : j ≤ B.R.m` using `by omega`. Establish `hok : I.Ok` using `hW.tr.ok`. Establish `hsup : gl y ∈ GlobalTheory.FinPl.grpAt _ (· = (J₂.G i).q.v)` using `GlobalTheory.SuppGrp.mem_grpAt_of_suppAt _ _ (J₂.G i).q _ _ (hgl y).1 _ rfl`. Establish `hsd : IsSelfDualC ((I.rec7 l Z).sp.X j) (a.g.x j).L` using `(ha.x j hjm).sd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKO : GlobalTheory.LevIdx.locHom (J₂.G i).q _ ((J₂.G i).FX j (Nat.le_succ_of_le (GlobalTheory.LevProd.step_index_le_s J₂ i hj))) (gl y) ∈ KO _ _` using `(GlobalTheory.LevIdx.eq_locHom_iff _ _ _ _ _).1 (hgl y).2 ▸ hy`. Establish `hm` using `GlobalTheory.LevProd.SamePlace.moves_of_mem_KO (J₂.G i).q _ hsd ((J₂.G i).latX j _) hKO`. Use `haveI : Submodule.IsLattice (I.rec7 l Z).host.E (a.g.x j).L := hsd.1`. Establish `hfg : (a.g.x j).L.FG` using `Submodule.IsLattice.fg (A := (I.rec7 l Z).host.E)`. Establish `hu₂ : I.UnderQ (W.P.I.tup t₂) (J₂.G i).q.v` using `⟨J₂.pl i, (hW.tq.Q t₂ (J₂.pl i)).1 (J₂.mem i), ((GlobalTheory.Fam.QJPlaces.places_under W hW u a ha hat t₂ J₂ hJ₂).2 i).symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hTv, hgv⟩` from `GlobalTheory.Mem.Col2.TC.underQ_notMem I hok l u _ _ hu₂`. Establish `hbad : (J₂.G i).q.v ∉ J.A.bad j` using `fun h => by`. Break down `hJ.is.bad_le j hjm _ h with (h0 | h0) | ⟨P, hP, e⟩` into its components or cases. Conclude with `hgv 0 h0`. Conclude with `hgv 1 h0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i', hi'⟩` from `hJ.surj P ((hW.tq.Q t P).2 hP)`. Use `hv ⟨i', ?_⟩` and prove the remaining obligations. Rewrite using `[(GlobalTheory.Fam.QJPlaces.places_under W hW u a ha hat t J hJ).2 i', hi']`. Conclude with `e`. Establish `hlb` using `(hJ.is.reads j hjm).lb (J.ι j α)`.
-
-Use `(hJ.is.U j hjm _ _).2 ⟨GlobalTheory.FinPl.SetCut.grpAt_le_GfC _ _ hsup, ?_⟩` and prove the remaining obligations. Take `⟨-, hPr, -⟩` from `GlobalTheory.Mem.Col2.base_fields_primes_ok B X`. Establish `hd : X.piT u ∣ ((B.T u : ℕ) : 𝓞 B.host.E)` using `⟨_, (hPr.piT_norm u).symm⟩`. Conclude with `exists_mem_level (I.rec7 l Z) _ _ _ (J.A.K j hjm (J.ι j α)).lev (X.piT u) hd hlb (a.g.x j).L hfg (fun x => ((hat.pinX.xs j hjm).2.2 x).trans (forall_congr' fun r => ⟨fun h => ⟨⟨x r, h⟩, rfl⟩, fun ⟨s, hs⟩ => hs ▸ s.2⟩)) _ hbad hTv _ hsup hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gl_mem_level : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ j (hj : j + 2 ≤ B.R.m) t (J : QJ a t), J.Reads → ∀ (α : J.Ch j) t₂ (J₂ : QJ a t₂), J₂.Reads → ∀ i : Fin J₂.r, ¬ GlobalTheory.LevProd.twAt J (J₂.G i).q.v → ∀ (gl : GL (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j) (J₂.G i).k →* GA (I.rec7 l Z) ((I.rec7 l Z).sp.X j)), (∀ y, SuppAt (J₂.G i).q.e _ (gl y) ∧ (mt _ (gl y)).map (J₂.G i).q.pr = ((J₂.G i).FX j (Nat.le_succ_of_le (GlobalTheory.LevProd.step_index_le_s J₂ i hj))).β * y.val * ((J₂.G i).FX j (Nat.le_succ_of_le (GlobalTheory.LevProd.step_index_le_s J₂ i hj))).γ) → ∀ y ∈ KO (J₂.G i).k (XIx (Fin (I.rec7 l Z).R.k) (Fin (I.rec7 l Z).R.t) j), gl y ∈ J.A.U j (J.ι j α) := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha hat j hj t J hJ α t₂ J₂ hJ₂ i hv gl hgl y hy

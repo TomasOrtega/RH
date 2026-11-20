@@ -31,15 +31,15 @@ open MonoidalCategory
 namespace GlobalTheory.ConjSeq
 
 /- English proof (translation)
-Establish `hAD` using `hP2.p5`. Establish `hH : GlobalTheory.VB.IsVB H (2 * g)` using `GlobalTheory.DeRhamSheaf.VB.isVB_of_isDeRhamSheaf hAD T A g hA hg H ⟨e, he⟩`. Take `⟨iF⟩` from `GlobalTheory.T.de_rham_filtration_iso hP2 A g hA hg H e he F hF`. Establish `: SmoothOfRelativeDimension g A.hom` using `hg`. Establish `hFv : GlobalTheory.VB.IsVB F.toMod g` using `(GlobalTheory.IndefiniteRowSideFullHecke.ZeroSectionBase.isVB_hodge A hA g).of_iso iF.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨b, hb, hperf, hrel⟩` from `GlobalTheory.T.principal_polarization_de_rham_pairing hDual hCube hP2 hPD A g hA hg hpol H e he`. Establish `hAV : ∀ (V : T.Opens) (hV : IsAffineOpen V), IsAbelianScheme (onAff A hV)` using `fun V hV => GlobalTheory.DeRhamSheaf.VB.isAbelianScheme_onAff A hA hV`. Establish `hgV : ∀ (V : T.Opens) (hV : IsAffineOpen V), SmoothOfRelativeDimension g (onAff A hV).hom` using `fun V hV => GlobalTheory.DeRhamSheaf.VB.smooth_onAff A hg hV`. Establish `isoF : ∀ (V : T.Opens) (hV : IsAffineOpen V) (x y : Γ(F.toMod, V)), b V hV (F.incl.app V x) (F.incl.app V y) = 0`. Introduce `V hV x y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨-, hcomp, -, -, hrk⟩` from `hAD.2.1 Γ(T, V) (onAff A hV) g (hAV V hV) (hgV V hV)`. Take `⟨hfin, hproj, hrank⟩` from `GlobalTheory.Published.AbelianDeRham.Free.prim hAD.1 (hAV V hV) (hgV V hV)`. Take `⟨P, hP, φ, hφ, hr⟩` from `hrel V hV`. Use `GlobalTheory.T.perfect_pairing_dual_symplectic Γ(T, V) Γ(H, V) (primDR (onAff A hV)) (e V hV) g hfin hproj hrank (b V hV) (hperf V hV) φ hr (PrimitiveSubmodule (onAff A hV)) hcomp hrk ?_ _ _ ((hF V hV _).1 (F.incl_app_mem x)) ((hF V hV _).1 (F.incl_app_mem y))` and prove the remaining obligations. Introduce `x' y' hx hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hPD Γ(T, V) (onAff A hV) (onAff A hV) g (hAV V hV) (hAV V hV) (hgV V hV) (hgV V hV) P hP φ hφ).2 x' (show x' ∈ (PrimitiveSubmodule _).dualAnnihilator from (Submodule.mem_dualAnnihilator _).2 hx) y' (show y' ∈ (PrimitiveSubmodule _).dualAnnihilator from (Submodule.mem_dualAnnihil …`. Set `β` to `GlobalTheory.AffinePairingGlue.toDual b hb`. Use `haveI : IsIso β := GlobalTheory.AffinePairingGlue.isIso_toDual b hb hH hperf`. Establish `wF` using `GlobalTheory.AffinePairingGlue.comp_toDual_comp_dualMap b hb F.incl isoF`. Establish `sF` using `GlobalTheory.VB.lagrangian_shortExact T g F.toMod H hFv hH F.incl β inferInstance (fun V hV => GlobalTheory.ConjQuot.compl_of_iff F (e V hV) _ (hF V hV) (hAD.2.1 Γ(T, V) (onAff A hV) g (hAV V hV) (hgV V hV)).2.1) wF`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Set `kF : cokernel F.incl ≅ GlobalTheory.VB.dual F.toMod` to `(colimit.isColimit _).coconePointUniqueUpToIso sF.gIsCokernel`. Conclude with `⟨kF ≪≫ GlobalTheory.VB.dualIso iF.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem hodge_quot_iso (hDual : GlobalTheory.Published.DualAbelianScheme) (hCube : GlobalTheory.Published.CubeTheorem)
     (hP2 : GlobalTheory.CovTop.Hypotheses2) (hPD : GlobalTheory.Published.PoincareDeRhamDuality) {T : Scheme.{0}} (A : Over T)
@@ -84,11 +84,9 @@ theorem hodge_quot_iso (hDual : GlobalTheory.Published.DualAbelianScheme) (hCube
   exact ⟨kF ≪≫ GlobalTheory.VB.dualIso iF.symm⟩
 
 /- English proof (translation)
-Introduce `hDual hCube hC h2 hD p _ T _ A _ g hA hg hpol H hH`. Take `⟨e, he⟩` from `(isDeRhamSheaf_iff A H).1 hH`. Take `⟨F, hF⟩` from `GlobalTheory.HodgeSubsheaf.exists_hodgeSub h2 A g hA hg H e he`. Take `⟨C, hCs⟩` from `GlobalTheory.T.de_rham_hodge_subbundle_exists h2 p A g hA hg H e he`. Take `⟨i₁⟩` from `GlobalTheory.T.de_rham_subbundle_affine_section_criterion hC h2 p A g hA hg H e he F hF C hCs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i₃⟩` from `GlobalTheory.ConjQuot.main hDual hCube hC h2 hD p A g hA hg hpol H e he F hF C hCs`. Take `⟨j₂⟩` from `GlobalTheory.T.de_rham_filtration_iso h2 A g hA hg H e he F hF`. Take `⟨j₃⟩` from `hodge_quot_iso hDual hCube h2 hD A g hA hg hpol H e he F hF`. Use `haveI := C.mono_incl`. Use `⟨ShortComplex.mk C.incl (cokernel.π C.incl) (cokernel.condition _), ?_, ⟨Iso.refl _⟩, ⟨i₁ ≪≫ (GlobalTheory.VB.frobPull p (GlobalTheory.VB.natCast_eq_zero T p (ZMod p))).mapIso j₃⟩, ⟨i₃ ≪≫ (GlobalTheory.VB.frobPull p (GlobalTheory.VB.natCast_eq_zero T p (ZMod p))).mapIso j₂⟩⟩` and prove the remaining obligations.
-
-Conclude with `{ exact := ShortComplex.exact_of_g_is_cokernel _ (cokernelIsCokernel _) }`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conjugate_sequence : GlobalTheory.Published.DualAbelianScheme → GlobalTheory.Published.CubeTheorem → GlobalTheory.Published.ConjugateFiltration →
     GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.PoincareDeRhamDuality → ∀ (p : ℕ) [Fact p.Prime] (T : Scheme.{0})

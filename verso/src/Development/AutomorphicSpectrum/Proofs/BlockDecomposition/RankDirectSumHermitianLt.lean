@@ -8,11 +8,11 @@ open GlobalTheory.StdUnn GlobalTheory.StdUnn.Model PositivityTheory.GramSchwartz
 namespace GlobalTheory.CompanionTheory.PcFc
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, c i j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hc (Matrix.ext h)`. Establish `hsub : (Matrix.fromBlocks a 0 0 c).submatrix (Sum.map id fun _ : Unit => i) (Sum.map id fun _ : Unit => j) = Matrix.fromBlocks a 0 0 (Matrix.of fun _ _ : Unit => c i j)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `x y`. Apply the tactic sequence `rcases x with x | x <;> rcases y with y | y <;> rfl`. Establish `hdet : (Matrix.fromBlocks a 0 0 (Matrix.of fun _ _ : Unit => c i j)).det ≠ 0`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁]`. Simplify using `using ⟨ha, hij⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrank` using `Matrix.rank_of_isUnit _ ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hdet))`. Establish `hle` using `Matrix.rank_submatrix_le (Matrix.fromBlocks a 0 0 c) (Sum.map id fun _ : Unit => i) (Sum.map id fun _ : Unit => j)`. Rewrite `hle` using `[hsub, hrank]`. Simplify using `using hle`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem rank_fromBlocks_ge {K : Type*} [Field K] {ρ p : ℕ} (a : Matrix (Fin ρ) (Fin ρ) K)
     (ha : a.det ≠ 0) (c : Matrix (Fin p) (Fin p) K) (hc : c ≠ 0) :
@@ -39,7 +39,7 @@ theorem rank_fromBlocks_ge {K : Type*} [Field K] {ρ p : ℕ} (a : Matrix (Fin �
   simpa using hle
 
 /- English proof (translation)
-Introduce `D n ρ p hn b₀ hb β' hβ`. Establish `h` using `rank_fromBlocks_ge b₀.1 hb β'.1 hβ`. Establish `e : (dsum hn b₀ β').1.rank = (Matrix.fromBlocks b₀.1 0 0 β'.1).rank` using `Matrix.rank_submatrix _ (finSumFinEquiv.trans (finCongr hn)).symm (finSumFinEquiv.trans (finCongr hn)).symm`. Rewrite using `[e]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_dsum_ge : ∀ {D : D7} {n ρ p : ℕ} (hn : ρ + p = n) (b₀ : HermE D ρ), b₀.1.det ≠ 0 → ∀ β' : HermE D p, β'.1 ≠ 0 → ρ + 1 ≤ (dsum hn b₀ β').1.rank := by
   intro D n ρ p hn b₀ hb β' hβ

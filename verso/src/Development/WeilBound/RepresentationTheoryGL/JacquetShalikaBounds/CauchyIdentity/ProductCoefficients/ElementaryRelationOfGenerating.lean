@@ -11,9 +11,9 @@ namespace ElementarySymmetricRelation
 variable {m : ℕ}
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[mul_sub, mul_one, ← mul_assoc, map_sub]`. Break down `n with _ | n` into its components or cases. Rewrite using `[coeff_zero_mul_X, coeff_mk, coeff_one]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[coeff_succ_mul_X, coeff_mul_C, coeff_mk, coeff_mk, coeff_one]`. Simplify using `[pow_succ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem geom_mul (a : ℂ) : (PowerSeries.mk fun n => a ^ n : PowerSeries ℂ) * (1 - C a * X) = 1 := by
   ext n
@@ -25,13 +25,13 @@ theorem geom_mul (a : ℂ) : (PowerSeries.mk fun n => a ^ n : PowerSeries ℂ) *
     simp [pow_succ]
 
 /- English proof (translation)
-Rewrite using `[coeff_prod, hN]`. Use `Finset.sum_nbij' (fun l => ⇑l) (fun f => Finsupp.equivFunOnFinite.symm f) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `l hl`. Rewrite `hl` using `[mem_finsuppAntidiag]`. Rewrite using `[Finset.Nat.mem_antidiagonalTuple]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hl.1`. Introduce `f hf`. Rewrite `hf` using `[Finset.Nat.mem_antidiagonalTuple]`. Rewrite using `[mem_finsuppAntidiag]`. Use `⟨by simpa using hf, by simp⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l _`. Simplify using the standard rewrite rules. Introduce `f _`. Simplify using the standard rewrite rules. Introduce `l _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[coeff_mk]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_prod_geom (α : Fin m → ℂ) (p : ℕ) :
     coeff p (∏ i, (PowerSeries.mk fun n => α i ^ n : PowerSeries ℂ)) = hN p α := by
@@ -54,7 +54,7 @@ theorem coeff_prod_geom (α : Fin m → ℂ) (p : ℕ) :
     simp [coeff_mk]
 
 /- English proof (translation)
-Establish `h1 : (PowerSeries.mk fun p => hN p α : PowerSeries ℂ) = ∏ i, (PowerSeries.mk fun n => α i ^ n : PowerSeries ℂ)`. Use extensionality with `p`. Rewrite using `[coeff_mk, coeff_prod_geom]`. Rewrite using `[h1, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun i _ => geom_mul (α i)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key (α : Fin m → ℂ) :
     (PowerSeries.mk fun p => hN p α : PowerSeries ℂ) * ∏ i, (1 - C (α i) * X) = 1 := by
@@ -65,13 +65,13 @@ theorem key (α : Fin m → ℂ) :
   exact Finset.prod_eq_one fun i _ => geom_mul (α i)
 
 /- English proof (translation)
-Establish `e : ∏ l ∈ s, (1 - C (α l) * X : PowerSeries ℂ) = ∑ t ∈ s.powerset, C (∏ l ∈ t, -α l) * X ^ t.card`. Rewrite using `[show (∏ l ∈ s, (1 - C (α l) * X : PowerSeries ℂ)) = ∏ l ∈ s, (C (-α l) * X + 1) from prod_congr rfl (fun l _ => by rw [map_neg]; ring)]`. Rewrite using `[prod_add]`. Use `sum_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Rewrite using `[prod_const_one, mul_one, prod_mul_distrib, prod_const, ← map_prod]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_sum, mul_sum]`. Repeatedly rewrite using `[coeff_C_mul_X_pow]`. Rewrite using `[← sum_filter]`. Apply `sum_congr` to reduce the goal to its premises. Use extensionality with `t`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Simplify using `only [mem_filter, mem_powerset, mem_powersetCard]`. Apply the tactic sequence `constructor <;> rintro ⟨h1, h2⟩ <;> exact ⟨h1, h2.symm⟩`. Introduce `t ht`. Rewrite `ht` using `[mem_powersetCard]`. Rewrite using `[← ht.2, ← prod_const (-1 : ℂ), ← prod_mul_distrib]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `prod_congr rfl (fun _ _ => by ring)`.
+A detailed English derivation is pending.
 -/
 theorem coeff_prod_one_sub (s : Finset (Fin m)) (α : Fin m → ℂ) (b : ℕ) :
     coeff b (∏ l ∈ s, (1 - C (α l) * X : PowerSeries ℂ)) =
@@ -96,7 +96,7 @@ theorem coeff_prod_one_sub (s : Finset (Fin m)) (α : Fin m → ℂ) (b : ℕ) :
     exact prod_congr rfl (fun _ _ => by ring)
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Unfold `eEx`. Rewrite using `[powersetCard_eq_empty.mpr, sum_empty]`. Rewrite using `[card_erase_of_mem (mem_univ _), card_univ, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eEx_eq_zero (α : Fin m → ℂ) (i : Fin m) {r : ℕ} (hr : m ≤ r) : eEx α i r = 0 := by
   have hi := i.2
@@ -106,7 +106,7 @@ theorem eEx_eq_zero (α : Fin m → ℂ) (i : Fin m) {r : ℕ} (hr : m ≤ r) : 
   omega
 
 /- English proof (translation)
-Rewrite using `[hZ, if_neg (by omega)]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem hZ_of_le (α : Fin m → ℂ) {p r : ℕ} (h : r ≤ p) : hZ ((p : ℤ) - r) α = hN (p - r) α := by
   rw [hZ, if_neg (by omega)]
@@ -114,16 +114,16 @@ theorem hZ_of_le (α : Fin m → ℂ) {p r : ℕ} (h : r ≤ p) : hZ ((p : ℤ) 
   omega
 
 /- English proof (translation)
-Simplify using `only [hZ]`. Rewrite using `[if_pos (by omega)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hZ_of_lt (α : Fin m → ℂ) {p r : ℕ} (h : p < r) : hZ ((p : ℤ) - r) α = 0 := by
   simp only [hZ]
   rw [if_pos (by omega)]
 
 /- English proof (translation)
-Establish `hsplit : (∏ l, (1 - C (α l) * X : PowerSeries ℂ)) = (1 - C (α i) * X) * ∏ l ∈ univ.erase i, (1 - C (α l) * X)` using `(Finset.mul_prod_erase univ _ (mem_univ i)).symm`. Establish `hg : (PowerSeries.mk fun n => α i ^ n : PowerSeries ℂ) = (PowerSeries.mk fun p => hN p α) * ∏ l ∈ univ.erase i, (1 - C (α l) * X)`. Combine the equalities or inequalities in the displayed calculation. Establish `hc` using `congrArg (coeff p) hg`. Rewrite `hc` using `[coeff_mk, coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hc]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_mk, coeff_prod_one_sub]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coeff_eq (α : Fin m → ℂ) (i : Fin m) (p : ℕ) :
     α i ^ p = ∑ k ∈ range (p + 1), hN k α * ((-1) ^ (p - k) * eEx α i (p - k)) := by
@@ -149,11 +149,11 @@ end ElementarySymmetricRelation
 
 open ElementarySymmetricRelation in
 /- English proof (translation)
-Introduce `_ m α i p`. Establish `hF1 : ∑ r ∈ range (p + 1), (-1 : ℂ) ^ r * eEx α i r * hZ ((p : ℤ) - r) α = ∑ r ∈ range (p + 1 + m), (-1 : ℂ) ^ r * eEx α i r * hZ ((p : ℤ) - r) α` using `sum_subset (fun x hx => by simp only [mem_range] at hx ⊢; omega) (fun r hr hr' => by`. Simplify using `only [mem_range] at hr hr'`. Rewrite using `[hZ_of_lt α (show p < r by omega), mul_zero])`. Establish `hF2 : ∑ r ∈ range m, (-1 : ℂ) ^ r * eEx α i r * hZ ((p : ℤ) - r) α = ∑ r ∈ range (p + 1 + m), (-1 : ℂ) ^ r * eEx α i r * hZ ((p : ℤ) - r) α` using `sum_subset (fun x hx => by simp only [mem_range] at hx ⊢; omega) (fun r hr hr' => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [mem_range] at hr hr'`. Rewrite using `[eEx_eq_zero α i (show m ≤ r by omega), mul_zero, zero_mul])`. Rewrite using `[hF2, ← hF1, coeff_eq α i p]`. Use `conv_lhs => rw [← sum_range_reflect]`. Use `sum_congr rfl (fun j hj => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[mem_range]`. Rewrite using `[hZ_of_le α (show j ≤ p by omega), show p + 1 - 1 - j = p - j by omega, show p - (p - j) = j by omega]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem elementary_relation_of_generating : HGen → ERel := by
   intro _ m α i p

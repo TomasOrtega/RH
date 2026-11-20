@@ -15,14 +15,14 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
 variable {p : ℕ} [Fact p.Prime] (X : Sys p)
 
 /- English proof (translation)
-Unfold `evX gX`. Rewrite using `[coe_eval₂Hom, eval₂_X]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem evX_gX {K : Type} [CommRing K] {n : ℕ} (x : ℕ × Fin n → K) (a : Fin n) (i : ℕ) : evX x (gX K n a i) = C (x (i, a)) := by
   unfold evX gX
   rw [coe_eval₂Hom, eval₂_X]
 
 /- English proof (translation)
-Use extensionality with `a t`. Rewrite using `[Matrix.map_apply]`. Unfold `evX gY yV`. Rewrite using `[coe_eval₂Hom, eval₂_C]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evX_gY {K : Type} [CommRing K] {n : ℕ} (x : ℕ × Fin n → K) : (gY K n).map (evX x) = yV K n := by
   ext a t
@@ -32,9 +32,9 @@ theorem evX_gY {K : Type} [CommRing K] {n : ℕ} (x : ℕ × Fin n → K) : (gY 
   rfl
 
 /- English proof (translation)
-Unfold `HgX srcN`. Use `split_ifs with ho`. Rewrite using `[map_hvO, evX_gY]`. Simplify using `only [evX_gX]`. Rewrite using `[map_mul, map_pow, RingHom.map_det, map_hvE, evX_gY, map_pow, RingHom.map_det]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [evX_gX]`. Use `congr 3`. Use extensionality with `a i`. Simplify using `[evX_gX]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evX_HgX (j : ℕ) (b : BX X) (x : ℕ × Fin (NJ X j) → X.G.Kf) :
     evX x (HgX X X.G.Kf j b) = srcN X j b fun a i => x (i, a) := by
@@ -49,13 +49,13 @@ theorem evX_HgX (j : ℕ) (b : BX X) (x : ℕ × Fin (NJ X j) → X.G.Kf) :
     simp [evX_gX]
 
 /- English proof (translation)
-Establish `hx : ∀ a i, (map (map f) : GenR O (NJ X j) →+* GenR K (NJ X j)) (gX O (NJ X j) a i) = gX K (NJ X j) a i`. Introduce `a i`. Unfold `gX`. Rewrite using `[map_X]`. Establish `hy : (gY O (NJ X j)).map (map (map f) : GenR O (NJ X j) →+* GenR K (NJ X j)) = gY K (NJ X j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `a t`. Rewrite using `[Matrix.map_apply]`. Unfold `gY`. Rewrite using `[map_C, map_X]`. Unfold `HgX`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `split_ifs with ho`. Rewrite using `[map_hvO, hy]`. Simplify using `only [hx]`. Rewrite using `[map_mul, map_pow, RingHom.map_det, map_hvE, hy]`. Simplify using `only [hx]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 3`. Use extensionality with `a i`. Simplify using `[hx]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem HgX_map (O K : Type) [CommRing O] [CommRing K] (f : O →+* K) (j : ℕ) (b : BX X) :
     map (map f) (HgX X O j b) = HgX X K j b := by
@@ -79,15 +79,15 @@ theorem HgX_map (O K : Type) [CommRing O] [CommRing K] (f : O →+* K) (j : ℕ)
     simp [hx]
 
 /- English proof (translation)
-Take `⟨h1, -, hanti, hle, -, -, -, -, -, -⟩` from `hS p X j b`. Rewrite using `[h1]`. Establish `key : weyl X.G.O (NJ X j) (NJ X j) le_rfl (nuS X j b) ≤ Submodule.span X.G.O (Set.range fun m => coeff m (HgX X X.G.O j b))`. Distinguish the cases in `ho : IsOddPos b.2`. Establish `hn : nuS X j b = fun t => cX X j b - muX X j (NJ X j) b t.rev` using `if_pos ho`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Unfold `HgX`. Rewrite using `[if_pos ho, hn]`. Conclude with `weyl_complement_det_coeff_span X.G.O (NJ X j) _ (hanti _) _ (hle _)`. Establish `hn : nuS X j b = fun t => muX X j (NJ X j) b t - eX X j b` using `if_neg ho`. Unfold `HgX`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg ho]`. Use `weyl_lattice_det_coeff_span X.G.O (NJ X j) (nuS X j b) ?_ _ _ ?_` and prove the remaining obligations. Rewrite using `[hn]`. Conclude with `fun a c hac => Nat.sub_le_sub_right (hanti _ hac) _`. Rewrite using `[hn]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun t => (Nat.sub_le _ _).trans (hle _ t)`. Use `(Submodule.map_mono key).trans ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m, ?_⟩` and prove the remaining obligations. Use `show _ = map (algebraMap X.G.O X.G.Kf) (coeff m (HgX X X.G.O j b))`. Rewrite using `[← HgX_map X X.G.O X.G.Kf (algebraMap X.G.O X.G.Kf) j b]`. Conclude with `coeff_map _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hQX (hS : XShape) (j : ℕ) (b : BX X) :
     (weyl X.G.O (NJ X j) (NJ X j) le_rfl (nuM X j b)).map (toK X.G.O X.G.Kf) ≤

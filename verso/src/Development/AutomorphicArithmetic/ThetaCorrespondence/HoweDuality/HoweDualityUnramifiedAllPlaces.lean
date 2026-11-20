@@ -24,15 +24,13 @@ namespace UpperTheory.Lit.HoweDuality
 open GlobalTheory.HoweGlobalPair
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.Sph.sphTri_of PositivityTheory.Sph.sphSplit_geo (PositivityTheory.Sph.vacInert PositivityTheory.Sph.howeInert)`.
+A detailed English derivation is pending.
 -/
 theorem sphTri : PositivityTheory.Sph.SphTri :=
   PositivityTheory.Sph.sphTri_of PositivityTheory.Sph.sphSplit_geo (PositivityTheory.Sph.vacInert PositivityTheory.Sph.howeInert)
 
 /- English proof (translation)
-Take `⟨ω, ρ, L⟩` from `(PositivityTheory.Sph.locRep_tri hM.triple v).1`. Establish `hk` using `kerV hM v`. Use `⟨relStable L, ?_⟩` and prove the remaining obligations. Break down `(sphTri F E σ Bs a a' G Xc om om' hM.triple v).1 with h | h` into its components or cases. Conclude with `radSph L h _ hk.1 hk.2.1 hk.2.2.1`.
-
-Conclude with `radIrr L h _ hk.1 hk.2.1 hk.2.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem locV {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {Bs : Base F E} {a a' : ℕ}
     {G : Geo σ a a'} {Xc : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} {R : RealMaps F a a'} {Rf : FinMaps F a a'}
@@ -47,9 +45,7 @@ theorem locV {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [A
   · exact radIrr L h _ hk.1 hk.2.1 hk.2.2.1
 
 /- English proof (translation)
-Take `⟨ω, ρ, L⟩` from `(PositivityTheory.Sph.locRep_tri hM.triple v).2`. Establish `hk` using `kerVp hM v`. Use `⟨relStable L, ?_⟩` and prove the remaining obligations. Break down `(sphTri F E σ Bs a a' G Xc om om' hM.triple v).2 with h | h` into its components or cases. Conclude with `radSph L h _ hk.1 hk.2.1 hk.2.2.1`.
-
-Conclude with `radIrr L h _ hk.1 hk.2.1 hk.2.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem locVp {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {Bs : Base F E} {a a' : ℕ}
     {G : Geo σ a a'} {Xc : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} {R : RealMaps F a a'} {Rf : FinMaps F a a'}
@@ -64,23 +60,21 @@ theorem locVp {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [
   · exact radIrr L h _ hk.1 hk.2.1 hk.2.2.1
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM hreal N hN T hT`. Establish `hTr` using `hM.triple`. Establish `hg` using `hTr.geo`. Establish `hc` using `hTr.chars`. Take `⟨w₀⟩` from `(inferInstance : Nonempty (InfinitePlace F))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `dV' : G.V'.J.det ≠ 0` using `det_ne_sig_map (Bs.emb w₀).1 1 (by rw [one_smul]; exact hg.hV'.sig w₀)`. Establish `dW : G.W.J.det ≠ 0` using `det_ne_sig_map (Bs.emb w₀).1 Complex.I (hg.hW.sig w₀)`. Establish `hres` using `resEta_div hc.resα hc.resβ (Nat.add_comm a a')`. Establish `hhk` using `hecke_div hc.heckeα hc.heckeβ`. Establish `hlie` using `GlobalTheory.T.firstMember_lieAlgebra_preserves_polynomialFock F E σ hTr.base.cm a' (a + a') G.V' G.W G.M' Bs.ψ Xc.α (Xc.α / Xc.β) om' hTr.base.std hg.hV'.herm dV' hg.hW.skew dW hc.resα hres hc.heckeα hhk hTr.weil' Bs.emb hg.hV'.cartan hg.hW.cartan`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcpt` using `GlobalTheory.T.firstMember_maximalCompact_preserves_polynomialFock F E σ hTr.base.cm a' (a + a') G.V' G.W G.M' Bs.ψ Xc.α (Xc.α / Xc.β) om' hTr.base.std hg.hV'.herm dV' hg.hW.skew dW hc.resα hres hc.heckeα hhk hTr.weil' Bs.emb hg.hV'.cartan hg.hW.cartan`. Take `⟨L, hL, hrange⟩` from `GlobalTheory.T.exists_linear_tensor_polyVacuum_pureTensors G.M' Bs.ψ Bs.emb hg.hM'.std T`. Establish `hloc` using `GlobalTheory.T.howeDuality_realPlaces_polynomialVectors_smallPair F E σ Bs a a' G Xc om om' R Rf hM hreal hlie hcpt`. Establish `hfl` using `fun v => locVp hM v`. Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.T.unitaryDualPair_global_to_local_tensor_transfer G.M' Bs.ψ Bs.emb om' (fun v => (hg.hM'.vac v).1) hg.hM'.std N hN T L hL`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key` using `tens (ι := T) (M₀ := ↥(G.M'.Pol Bs.ψ Bs.emb)) (M := fun v : T => ↥(SB (Fin a' × Fin (a + a') → Fv F v.1))) (opInf G.M' Bs.ψ Bs.emb om') (fun v => opFin om' v.1) (relInf G.M' Bs.ψ Bs.emb om') (fun v => relFin om' v.1) (R.p' ∘ₗ (G.M'.Pol Bs.ψ Bs.emb).subtype) (fun v => Rf.p' v.1 ∘ₗ …`. Break down `key with htop | hker` into its components or cases. Use `left`. Introduce `Φ hΦ`. Take `⟨t, rfl⟩` from `hrange hΦ`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht : t ∈ N.comap L` using `by rw [htop]; exact Submodule.mem_top`. Conclude with `ht`. Use `right`. Introduce `Φ hΦN hΦT`. Take `⟨t, rfl⟩` from `hrange hΦT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht0` using `hker (show t ∈ N.comap L from hΦN)`. Take `⟨m, f, φ, rfl⟩` from `GlobalTheory.HoweGlobalPair.decomp t`. Use `⟨T, hT, 0, m, Fin.elim0, Fin.elim0, fun j => ((f j : ↥(G.M'.Pol Bs.ψ Bs.emb)) : SInf F (Fin a' × Fin (a + a'))), fun j v => if h : v ∈ T then ((φ j ⟨v, h⟩ : ↥(SB _)) : (Fin a' × Fin (a + a') → Fv F v) → ℂ) else G.M'.vac v, fun j => Fin.elim0 j, fun j => ⟨(f j).2, fun v => ?_, fun …` and prove the remaining obligations. Distinguish the cases in `h : v ∈ T`. Simplify using `only [dif_pos h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(φ j ⟨v, h⟩).2`. Simplify using `only [dif_neg h]`. Conclude with `(hg.hM'.vac v).1`. Simplify using the standard rewrite rules. Rewrite using `[map_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun j _ => hL _ _ _ (fun v h => by simp only [dif_pos h]) (fun v h => by simp only [dif_neg h])`. Rewrite `ht0` using `[LinearMap.mem_ker, map_sum]`. Rewrite using `[Fin.sum_univ_zero, ← ht0]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.map_tmul, PiTensorProduct.map_tprod]`.
-
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem stageVp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)
@@ -148,9 +142,9 @@ theorem stageVp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberFi
       simp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM hreal N hN hne Φ hΦ`. Assume the negation of the conclusion as `hcon`. Take `⟨T, hT, hΦT⟩` from `GlobalTheory.HoweGlobal.exists_algAt G.M' Bs.ψ Bs.emb (hN.le hΦ) Xc.T`. Apply `hne` to reduce the goal to its premises. Use `le_antisymm hN.le fun Ψ hΨ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T', hT', hΨT'⟩` from `GlobalTheory.HoweGlobal.exists_algAt G.M' Bs.ψ Bs.emb hΨ T`. Break down `stageVp F E σ Bs a a' G Xc om om' R Rf hM hreal N hN T' (hT.trans hT') with h | h` into its components or cases. Conclude with `h hΨT'`. Conclude with `absurd (h Φ hΦ (GlobalTheory.HoweGlobal.algAt_mono G.M' Bs.ψ Bs.emb hT' hΦT)) hcon`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem allVp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xc : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E)

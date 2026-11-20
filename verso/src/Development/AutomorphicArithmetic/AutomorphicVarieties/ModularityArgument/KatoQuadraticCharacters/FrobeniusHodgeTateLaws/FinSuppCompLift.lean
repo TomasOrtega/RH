@@ -9,15 +9,15 @@ open Formalism.ConjugateSelfDual GlobalTheory.KZ GlobalTheory.KummerEisensteinGa
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `h`. Consider the cases of `T with`. Consider the case `T q`. Use `⟨S.image (q * ·) ∪ S.image (· / q), fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply]`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `hS` to reduce the goal to its premises. Introduce `n hn`. Use `show GlobalTheory.EisM.To k (χ q) q f n = 0`. Establish `h1 : f (q * n) = 0` using `hf _ (Finset.mem_union_left _ (Finset.mem_image.mpr ⟨n, hn, rfl⟩))`. Establish `h2 : f (n / q) = 0` using `hf _ (Finset.mem_union_right _ (Finset.mem_image.mpr ⟨n, hn, rfl⟩))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[GlobalTheory.EisM.To, GlobalTheory.EisM.Vo, h1, h2]`. Consider the case `U`. Use `⟨S.image (l * ·), fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply]`. Apply `hS` to reduce the goal to its premises.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n hn`. Use `show GlobalTheory.EisM.Uo l f n = 0`. Conclude with `hf _ (Finset.mem_image.mpr ⟨n, hn, rfl⟩)`. Consider the case `D d`. Use `⟨S, fun f hf => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.comp_apply]`. Apply `hS` to reduce the goal to its premises. Introduce `n hn`. Use `show (χ d • f) n = 0`. Simplify using `[hf n hn]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem finSupp_comp_fop (k : ℕ) (χ : ℕ → Qbar l) (T : Letter)
     (lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l) (h : FinSupp lam) : FinSupp (lam ∘ₗ fop k l χ T) := by
@@ -48,15 +48,13 @@ private theorem finSupp_comp_fop (k : ℕ) (χ : ℕ → Qbar l) (T : Letter)
     simp [hf n hn]
 
 /- English proof (translation)
-Proceed by induction on `P using FreeAlgebra.induction with`. Consider the case `grade0 r`. Introduce `lam h`. Rewrite using `[AlgHom.commutes]`. Establish `hr : lam ∘ₗ algebraMap (Qbar l) (Module.End (Qbar l) (ℕ → Qbar l)) r = r • lam`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `f`. Simplify using `[Module.algebraMap_end_apply]`. Rewrite using `[hr]`. Conclude with `FinSupp.smul h r`. Consider the case `grade1 x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `lam h`. Rewrite using `[FreeAlgebra.lift_ι_apply]`. Conclude with `finSupp_comp_fop k χ x lam h`. Consider the case `mul a b ha hb`. Introduce `lam h`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_mul, Module.End.mul_eq_comp, ← LinearMap.comp_assoc]`. Conclude with `hb _ (ha lam h)`. Consider the case `add a b ha hb`. Introduce `lam h`. Rewrite using `[map_add, LinearMap.comp_add]`.
-
-Conclude with `FinSupp.add (ha lam h) (hb lam h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finSupp_comp_lift (k : ℕ) (χ : ℕ → Qbar l) (P : FreeAlgebra (Qbar l) Letter) :
     ∀ lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l, FinSupp lam →
@@ -84,7 +82,7 @@ private theorem finSupp_comp_lift (k : ℕ) (χ : ℕ → Qbar l) (P : FreeAlgeb
     exact FinSupp.add (ha lam h) (hb lam h)
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `exists_le_l_pow l ‖x‖`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_l_pow]`. Establish `hl : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem exists_pow_mul_le (x : Qbar l) : ∃ k : ℕ, ‖((l : ℕ) : Qbar l) ^ k * x‖ ≤ 1 := by
   obtain ⟨k, hk⟩ := exists_le_l_pow l ‖x‖
@@ -98,19 +96,17 @@ end
 
 open Formalism.ConjugateSelfDual GlobalTheory.KZ GlobalTheory.KummerEisensteinGalois GlobalTheory.LambdaValuationPowers UpperTheory.V.HV in
 /- English proof (translation)
-Introduce `hub l _ ι k N B cc χE c₀ P _`. Set `lam₀ : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l` to `∑ n ∈ Finset.range B, ι.symm (cc n) • LinearMap.proj n`. Establish `hlam₀ : ∀ a : ℕ → Qbar l, lam₀ a = ι.symm (GlobalTheory.EisM.lam B cc fun i => ι (a i))`. Introduce `a`. Simplify using `[lam₀, GlobalTheory.EisM.lam, map_sum, map_mul, LinearMap.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hfs₀ : FinSupp lam₀`. Use `⟨Finset.range B, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[hlam₀, GlobalTheory.EisM.lam, Finset.sum_eq_zero, map_zero]`. Introduce `n hn`. Simplify using `[hf n hn]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `lam : (ℕ → Qbar l) →ₗ[Qbar l] Qbar l` to `lam₀ ∘ₗ FreeAlgebra.lift (Qbar l) (fop k l χE) P`. Establish `hfs : FinSupp lam` using `finSupp_comp_lift k χE P lam₀ hfs₀`. Take `⟨S, hS⟩` from `hfs`. Use `choose e he using exists_pow_mul_le (l := l)`. Set `g : ℕ → Qbar l` to `fun i => ((l : ℕ) : Qbar l) ^ e (lam (Pi.single i 1)) * lam (Pi.single i 1)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc₀, -, hcF⟩` from `hub l c₀ c₀ (S.image g) (by`. Introduce `x hx`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.mp hx`. Conclude with `he _)`. Establish `hl : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨lam₀, lam, c, hc₀, hfs₀, ⟨S, hS⟩, ?_, hlam₀, fun a => rfl⟩` and prove the remaining obligations. Introduce `i σ hσ _`. Distinguish the cases in `hi : i ∈ S`. Establish `hy` using `hσ _ (hcF _ (Finset.mem_image_of_mem g hi))`. Establish `hne : ((l : ℕ) : Qbar l) ^ e (lam (Pi.single i 1)) ≠ 0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h1` using `congrArg norm h0`. Rewrite `h1` using `[norm_l_pow, norm_zero]`. Conclude with `pow_ne_zero _ (inv_ne_zero hl.ne') h1`. Simplify using `only [g, map_mul, map_pow, map_natCast] at hy`.
-
-Conclude with `mul_left_cancel₀ hne hy`. Establish `h0 : lam (Pi.single i 1) = 0` using `hS _ (fun s hs => Pi.single_eq_of_ne (by rintro rfl; exact hi hs) 1)`. Rewrite using `[h0, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Joint.finP :
     UpperTheory.V.Z.Kato.Joint.FinP := by

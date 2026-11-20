@@ -22,7 +22,7 @@ def cls (F : GFam K) (p : F.Pt) : F.Cl := ⟨p.1, (F.mem p.1).cls p.2⟩
 def repPt (F : GFam K) (c : F.Cl) : F.Pt := ⟨c.1, F.rep c⟩
 
 /- English proof (translation)
-Take `⟨b, c⟩` from `c`. Conclude with `congrArg (Sigma.mk b) ((F.mem b).outSec.spec c)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cls_repPt (F : GFam K) (c : F.Cl) : F.cls (F.repPt c) = c := by
   obtain ⟨b, c⟩ := c
@@ -135,14 +135,14 @@ Both sides reduce to the same expression.
 theorem atPt_mem (b : F.β) (d : F.D b) (Φ : F.Cl → E.Y → ℂ) : E.atPt ⟨b, d⟩ Φ = (E.mem b).atPt d (E.part b Φ) := rfl
 
 /- English proof (translation)
-The claim follows from `(E.mem p.1).atPt_emb (φ p.1) p.2`.
+A detailed English derivation is pending.
 -/
 theorem atPt_emb (φ : F.Forms) (p : F.Pt) :
     E.atPt p (E.emb φ) = E.ev (((φ p.1 : (F.mem p.1).EqFun) : F.D p.1 → F.V) p.2) :=
   (E.mem p.1).atPt_emb (φ p.1) p.2
 
 /- English proof (translation)
-The claim follows from `(E.mem b).atPt_eq (hf b) (E.part b Φ) d c g h`.
+A detailed English derivation is pending.
 -/
 theorem atPt_eq (hf : F.Free) (Φ : F.Cl → E.Y → ℂ) (b : F.β) (d : F.D b) (c : (F.mem b).Cl) (g : F.G b)
     (h : g • (F.mem b).outSec.rep c = d) : E.atPt ⟨b, d⟩ Φ = E.tr b g (Φ ⟨b, c⟩) :=
@@ -160,7 +160,7 @@ theorem opOn_apply (δ : F.Pt → F.Pt) (Φ : F.Cl → E.Y → ℂ) (c : F.Cl) :
     E.opOn δ Φ c = E.trPt (δ (F.repPt c)) (Φ (F.cls (δ (F.repPt c)))) := rfl
 
 /- English proof (translation)
-The claim follows from `E.atPt_emb φ _`.
+A detailed English derivation is pending.
 -/
 theorem opOn_emb (δ : F.Pt → F.Pt) (φ : F.Forms) (c : F.Cl) :
     E.opOn δ (E.emb φ) c =
@@ -168,7 +168,7 @@ theorem opOn_emb (δ : F.Pt → F.Pt) (φ : F.Forms) (c : F.Cl) :
   E.atPt_emb φ _
 
 /- English proof (translation)
-Use extensionality with `Φ c : 2`. Take `⟨b, c⟩` from `c`. Use `show E.atPt ⟨b, (F.mem b).outSec.rep c⟩ Φ = Φ ⟨b, c⟩`. Rewrite using `[E.atPt_eq hf Φ b _ c 1 (one_smul _ _), map_one]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem opOn_id (hf : F.Free) : E.opOn (fun p => p) = LinearMap.id := by
   ext Φ c : 2
@@ -178,11 +178,11 @@ theorem opOn_id (hf : F.Free) : E.opOn (fun p => p) = LinearMap.id := by
   rfl
 
 /- English proof (translation)
-Use extensionality with `Φ c : 2`. Use `show E.trPt (δ (F.repPt c)) (E.atPt (δ' (F.repPt (F.cls (δ (F.repPt c))))) Φ) = E.atPt (δ' (δ (F.repPt c))) Φ`. Generalize the expression as in `δ (F.repPt c) = p`. Take `⟨b, d⟩` from `p`. Take `⟨g', h1, h2⟩` from `hδ' b ((F.mem b).outSec.mv d) ((F.mem b).outSec.rep ((F.mem b).cls d))`.
+By extensionality, compare the relevant components. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[(F.mem b).outSec.mv_smul d]`. Rewrite using `[h1]`. Use `show E.tr b ((F.mem b).outSec.mv d) (E.atPt (δ' ⟨b, (F.mem b).outSec.rep ((F.mem b).cls d)⟩) Φ) = _`. Generalize the expression as in `δ' ⟨b, (F.mem b).outSec.rep ((F.mem b).cls d)⟩ = q at g' h2`. Take `⟨b', d'⟩` from `q`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[E.atPt_eq hf Φ b' (g' • d') ((F.mem b').cls d') (g' * (F.mem b').outSec.mv d') (by rw [mul_smul, (F.mem b').outSec.mv_smul]), map_mul, h2]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem opOn_comp (hf : F.Free) (δ δ' : F.Pt → F.Pt)
     (hδ' : ∀ (b : F.β) (g : F.G b) (d : F.D b), ∃ g' : F.G (δ' ⟨b, d⟩).1,
@@ -223,19 +223,19 @@ theorem opOnC_apply (δ : ∀ b, F.D b → F.D b) (Φ : F.Cl → E.Y → ℂ) (c
     E.opOnC δ Φ c = E.trPt ⟨c.1, δ c.1 (F.rep c)⟩ (Φ ⟨c.1, (F.mem c.1).cls (δ c.1 (F.rep c))⟩) := rfl
 
 /- English proof (translation)
-The claim follows from `E.atPt_emb φ ⟨c.1, δ c.1 (F.rep c)⟩`.
+A detailed English derivation is pending.
 -/
 theorem opOnC_emb (δ : ∀ b, F.D b → F.D b) (φ : F.Forms) (c : F.Cl) :
     E.opOnC δ (E.emb φ) c = E.ev (((φ c.1 : (F.mem c.1).EqFun) : F.D c.1 → F.V) (δ c.1 (F.rep c))) :=
   E.atPt_emb φ ⟨c.1, δ c.1 (F.rep c)⟩
 
 /- English proof (translation)
-The claim follows from `E.opOn_id hf`.
+A detailed English derivation is pending.
 -/
 theorem opOnC_id (hf : F.Free) : E.opOnC (fun _ d => d) = LinearMap.id := E.opOn_id hf
 
 /- English proof (translation)
-The claim follows from `E.opOn_comp hf _ _ fun b g d => ⟨g, by rw [hδ'], rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem opOnC_comp (hf : F.Free) (δ δ' : ∀ b, F.D b → F.D b)
     (hδ' : ∀ (b : F.β) (g : F.G b) (d : F.D b), δ' b (g • d) = g • δ' b d) :
@@ -245,7 +245,7 @@ theorem opOnC_comp (hf : F.Free) (δ δ' : ∀ b, F.D b → F.D b)
 def lin : (F.ιV → ℂ) →ₗ[ℂ] (E.Y → ℂ) := Fintype.linearCombination ℂ fun i => E.ev (F.bV i)
 
 /- English proof (translation)
-Use `conv_lhs => rw [← F.bV.sum_repr x]`. Rewrite using `[map_sum, lin, Fintype.linearCombination_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => LinearMap.map_smulₛₗ E.ev _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_eq_lin (x : F.V) : E.ev x = E.lin fun i => σ (F.bV.repr x i) := by
   conv_lhs => rw [← F.bV.sum_repr x]
@@ -253,7 +253,7 @@ theorem ev_eq_lin (x : F.V) : E.ev x = E.lin fun i => σ (F.bV.repr x i) := by
   exact Finset.sum_congr rfl fun i _ => LinearMap.map_smulₛₗ E.ev _ _
 
 /- English proof (translation)
-Rewrite using `[LinearMap.ker_eq_bot]`. Conclude with `E.li.fintypeLinearCombination_injective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_ker : LinearMap.ker E.lin = ⊥ := by
   rw [LinearMap.ker_eq_bot]
@@ -302,7 +302,7 @@ Both sides reduce to the same expression.
 theorem sharp_mem (b : F.β) (ℓ : F.V →ₛₗ[σ] ℂ) : (E.mem b).sharp ℓ = E.sharp ℓ := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [ipB, LinearMap.pi_apply, lin, Fintype.linearCombination_apply, map_sum, LinearMap.map_smul, smul_eq_mul, Matrix.mulVec, dotProduct, gram, Matrix.of_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ipB_lin (z : F.ιV → ℂ) : E.ipB (E.lin z) = E.gram *ᵥ z := by
   funext j
@@ -311,7 +311,7 @@ theorem ipB_lin (z : F.ιV → ℂ) : E.ipB (E.lin z) = E.gram *ᵥ z := by
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /- English proof (translation)
-Unfold `co`. Use `split_ifs with hG`. Rewrite using `[LinearMap.comp_apply, ipB_lin, Matrix.toLin'_apply, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hG, Matrix.one_mulVec]`. Conclude with `LinearMap.congr_fun (E.lin.exists_leftInverse_of_injective E.lin_ker).choose_spec z`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem co_lin (z : F.ιV → ℂ) : E.co (E.lin z) = z := by
   unfold co
@@ -321,9 +321,9 @@ theorem co_lin (z : F.ιV → ℂ) : E.co (E.lin z) = z := by
   · exact LinearMap.congr_fun (E.lin.exists_leftInverse_of_injective E.lin_ker).choose_spec z
 
 /- English proof (translation)
-Unfold `extend co sharp`. Rewrite using `[if_pos hG]`. Simplify using `only [LinearMap.comp_apply, Fintype.linearCombination_apply, Matrix.toLin'_apply, Matrix.mulVec, dotProduct, ipB, LinearMap.pi_apply, smul_eq_mul, map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, RingHomCompTriple.comp_apply, RingHom.id_apply]`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem extend_eq_ip (hG : IsUnit E.gram.det) (ℓ : F.V →ₛₗ[σ] ℂ) (f : E.Y → ℂ) : E.extend ℓ f = E.ip (E.sharp ℓ) f := by
   unfold extend co sharp
@@ -337,7 +337,7 @@ theorem extend_eq_ip (hG : IsUnit E.gram.det) (ℓ : F.V →ₛₗ[σ] ℂ) (f :
   ring
 
 /- English proof (translation)
-Rewrite using `[extend, LinearMap.comp_apply, ev_eq_lin, co_lin, Fintype.linearCombination_apply]`. Use `conv_rhs => rw [← F.bV.sum_repr x]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (LinearMap.map_smulₛₗ ℓ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extend_ev {M : Type} [AddCommGroup M] [Module ℂ M] (ℓ : F.V →ₛₗ[σ] M) (x : F.V) : E.extend ℓ (E.ev x) = ℓ x := by
   rw [extend, LinearMap.comp_apply, ev_eq_lin, co_lin, Fintype.linearCombination_apply]
@@ -351,7 +351,7 @@ def ipCl (h : F.Ok) : (F.Cl → E.Y → ℂ) →ₗ⋆[ℂ] (F.Cl → E.Y → �
     ((E.ip.comp (LinearMap.proj c)).compl₂ (LinearMap.proj c))
 
 /- English proof (translation)
-Unfold `ipCl`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.compl₂_apply, LinearMap.comp_apply, LinearMap.proj_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem ipCl_apply (h : F.Ok) (Φ Ψ : F.Cl → E.Y → ℂ) :
     E.ipCl h Φ Ψ = (letI := h.fintypeCl
@@ -361,7 +361,7 @@ theorem ipCl_apply (h : F.Ok) (Φ Ψ : F.Cl → E.Y → ℂ) :
     smul_eq_mul]
 
 /- English proof (translation)
-Set `_ : ∀ b, Fintype (F.mem b).Cl` to `fun b => (h b).fintypeCl`. Rewrite using `[ipCl_apply, Fintype.sum_sigma]`. Conclude with `Finset.sum_congr rfl fun b _ => ((E.mem b).ipCl_apply (h b) _ _).symm`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipCl_eq_sum (h : F.Ok) (Φ Ψ : F.Cl → E.Y → ℂ) :
     E.ipCl h Φ Ψ = ∑ b, (E.mem b).ipCl (h b) (E.part b Φ) (E.part b Ψ) := by
@@ -372,11 +372,11 @@ theorem ipCl_eq_sum (h : F.Ok) (Φ Ψ : F.Cl → E.Y → ℂ) :
 def Fi : Submodule ℂ (F.Cl → E.Y → ℂ) := Submodule.span ℂ (Set.range E.emb)
 
 /- English proof (translation)
-Set `_ : Fintype F.Cl` to `h.fintypeCl`. Set `Bb : Basis (Σ _ : F.Cl, F.ιV) K (F.Cl → F.V)` to `Pi.basis fun _ => F.bV`. Establish `h1 : LinearIndependent ℂ fun i => E.evCl (Bb i)`. Establish `e : (fun i => E.evCl (Bb i)) = fun ji : (Σ _ : F.Cl, F.ιV) => Pi.single ji.1 (E.ev (F.bV ji.2))`. Use function extensionality and compare the values at `⟨c, i⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `c'`. Simplify using `only [Bb, Pi.basis_apply, evCl, LinearMap.coe_mk, AddHom.coe_mk]`. Distinguish the cases in `hc : c' = c`. Substitute `hc` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne hc]`. Rewrite using `[e]`. Conclude with `Pi.linearIndependent_single (fun _ i => E.ev (F.bV i)) fun _ => E.li`. Conclude with `rec_li_semilin σ E.evCl Bb h1 (fun a => F.evRep h (v a)) (hv.map' (F.evRep h) (LinearMap.ker_eq_bot.2 (F.evRep_injective h)))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_li (h : F.Ok) {κ : Type} (v : κ → F.Forms) (hv : LinearIndependent K v) :
     LinearIndependent ℂ fun a => E.emb (v a) := by
@@ -397,9 +397,9 @@ theorem emb_li (h : F.Ok) {κ : Type} (v : κ → F.Forms) (hv : LinearIndepende
     (hv.map' (F.evRep h) (LinearMap.ker_eq_bot.2 (F.evRep_injective h)))
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_mono ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨b a, rfl⟩`. Unfold `Fi`. Rewrite using `[Submodule.span_le]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨φ, rfl⟩`. Rewrite using `[← b.sum_repr φ, map_sum]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_basis {ι : Type} [Fintype ι] (b : Basis ι K F.Forms) :
     Submodule.span ℂ (Set.range fun a => E.emb (b a)) = E.Fi := by
@@ -415,7 +415,7 @@ theorem span_basis {ι : Type} [Fintype ι] (b : Basis ι K F.Forms) :
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[← E.span_basis (F.hB h), finrank_span_eq_card (E.emb_li h _ (F.hB h).linearIndependent), Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_Fi (h : F.Ok) : finrank ℂ E.Fi = F.hDim h := by
   rw [← E.span_basis (F.hB h), finrank_span_eq_card (E.emb_li h _ (F.hB h).linearIndependent), Fintype.card_fin]
@@ -453,7 +453,7 @@ theorem perCl_apply (h : F.Ok) {ι : Type} [Fintype ι] (ℓ : F.Cl → ι → (
         ∑ a, z a * E.extend (ℓ c a) (Φ c)) := rfl
 
 /- English proof (translation)
-Unfold `perCl`. Simplify using `only [LinearMap.mk₂_apply, emb_valAt, extend_ev]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem perCl_emb (h : F.Ok) {ι : Type} [Fintype ι] (ℓ : F.Cl → ι → (F.V →ₛₗ[σ] ℂ)) (φ : F.Forms) (z : ι → ℂ) :
     E.perCl h ℓ (E.emb φ) z = (letI := h.fintypeCl
@@ -463,7 +463,7 @@ theorem perCl_emb (h : F.Ok) {ι : Type} [Fintype ι] (ℓ : F.Cl → ι → (F.
   simp only [LinearMap.mk₂_apply, emb_valAt, extend_ev]
 
 /- English proof (translation)
-Set `_ : ∀ b, Fintype (F.mem b).Cl` to `fun b => (h b).fintypeCl`. Rewrite using `[perCl_apply, Fintype.sum_sigma]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem perCl_eq_sum (h : F.Ok) {ι : Type} [Fintype ι] (ℓ : F.Cl → ι → (F.V →ₛₗ[σ] ℂ)) (Φ : F.Cl → E.Y → ℂ) (z : ι → ℂ) :
     E.perCl h ℓ Φ z = ∑ b, (E.mem b).perCl (h b) (fun c => ℓ ⟨b, c⟩) (E.part b Φ) z := by
@@ -472,7 +472,7 @@ theorem perCl_eq_sum (h : F.Ok) {ι : Type} [Fintype ι] (ℓ : F.Cl → ι → 
   rfl
 
 /- English proof (translation)
-Set `_ : ∀ b, Fintype (F.mem b).Cl` to `fun b => (h b).fintypeCl`. Rewrite using `[R.maj_eq_sum h, Fintype.sum_sigma, Complex.re_sum, Complex.re_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => (E.mem b).norm_eq (h b) (R.mem b) hσ (φ b)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_eq (h : F.Ok) (R : F.Rat) (hσ : ∀ x : K, σ (star x) = starRingEnd ℂ (σ x)) (φ : F.Forms) :
     (majAt (F.hB h) (stdFrame (F.hGram h)) (InfinitePlace.mk σ) φ φ).re =
@@ -484,7 +484,7 @@ theorem norm_eq (h : F.Ok) (R : F.Rat) (hσ : ∀ x : K, σ (star x) = starRingE
   exact Finset.sum_congr rfl fun b _ => (E.mem b).norm_eq (h b) (R.mem b) hσ (φ b)
 
 /- English proof (translation)
-Rewrite using `[ipCl_apply]`. Conclude with `E.norm_eq h R hσ φ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_ipCl (h : F.Ok) (R : F.Rat) (hσ : ∀ x : K, σ (star x) = starRingEnd ℂ (σ x)) (φ : F.Forms) :
     (majAt (F.hB h) (stdFrame (F.hGram h)) (InfinitePlace.mk σ) φ φ).re = (E.ipCl h (E.emb φ) (E.emb φ)).re := by
@@ -525,7 +525,7 @@ theorem toFam_atPt (d : S.D) (Φ : S.toFam.Cl → E.Y → ℂ) :
     E.toFam.atPt ⟨(), d⟩ Φ = E.atPt d fun c => Φ ⟨(), c⟩ := rfl
 
 /- English proof (translation)
-Rewrite using `[GFam.Ev.ipCl_eq_sum, Fintype.sum_unique]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toFam_ipCl (h : S.Ok) (Φ Ψ : S.toFam.Cl → E.Y → ℂ) :
     E.toFam.ipCl (S.toFam_ok h) Φ Ψ = E.ipCl h (fun c => Φ ⟨(), c⟩) (fun c => Ψ ⟨(), c⟩) := by

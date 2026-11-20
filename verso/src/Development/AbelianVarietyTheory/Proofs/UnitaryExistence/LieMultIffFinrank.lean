@@ -30,23 +30,21 @@ variable {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G'] 
 include hc hg hab hact' in
 
 /- English proof (translation)
-Set `B` to `Module.finBasisOfFinrankEq k _ hN`. Establish `hT : ∀ (w : viaT tk (sp (R₀` using `k) (DualNumber k)) ⟶ G') v, Rel (F := F) tk g w v → (Geo.Tor.IsLieEigen act tk τ w ↔ IsTan v ∧ ∀ a, v ≫ act' a = spMap (scaleD (τ a)) ≫ v) := by`. Introduce `w v h`. Use `and_congr (tan_iff hc hg h) (forall_congr' fun a => ?_)` and prove the remaining obligations. Rewrite using `[hact']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eig_iff hc (act.act a) (b a) (hab a) (τ a) h`. Establish `hmem : ∀ c, c ∈ eigLat hx act' (fun a => τ a) ↔ ∀ a, tvec (x` using `x) c ≫ act' a = spMap (scaleD (τ a)) ≫ tvec (x := x) c := by`. Introduce `c`. Rewrite using `[mem_eigLat_iff]`. Conclude with `forall_congr' fun a => (tvec_eig_iff hx (act' a) c (τ a)).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `choose vB hv using fun i => rel_exists_w hc hg (tvec (x := x) (B i : Fin n → k))`. Set `P : (Fin N → k) → (sp (R₀` to `k) (DualNumber k) ⟶ (Over.pullback g).obj G) := fun d => (List.ofFn fun i => spMap (scaleD (d i)) ≫ tvec (x := x) (B i : Fin n → k)).prod`. Set `Wd : (Fin N → k) → (viaT tk (sp (R₀` to `k) (DualNumber k)) ⟶ G') := fun d => (List.ofFn fun i => liftT tk (spMap (scaleD (d i))) ≫ vB i).prod`. Establish `hPW : ∀ d, Rel (F` using `F) tk g (Wd d) (P d) := fun d => rel_prod hc hg _ _ fun i => rel_pre _ (hv i)`. Establish `hPeq : ∀ d, P d = tvec (x` using `x) (∑ i, d i • (B i : Fin n → k)) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `d`. Take `⟨h, e⟩` from `list_prod_tan' hx (fun i => spMap (scaleD (d i)) ≫ tvec (x := x) (B i : Fin n → k)) (fun i => isTan_scale (d i) (isTan_tvec hx _))`. Use `(tcoord_spec hx (P d) h).trans ?_` and prove the remaining obligations. Use `show tvec (x := x) (tcoord hx (P d) h) = _`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => (tcoord_scale hx (d i) (isTan_tvec hx _)).trans (by rw [tcoord_tvec])`. Use `⟨vB, fun i => (hT _ _ (hv i)).2 ⟨isTan_tvec hx _, (hmem _).1 (B i).2⟩, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨v, hwv⟩` from `rel_exists_v hc hg (X := sp (R₀ := k) (DualNumber k)) w`. Take `⟨ht, he⟩` from `(hT _ _ hwv).1 hw`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, rfl⟩ : ∃ c, tvec (x` from `x) c = v := ⟨_, (tcoord_spec hx v ht).symm⟩`. Set `c' : eigLat hx act' (fun a => τ a)` to `⟨c, (hmem c).2 he⟩`. Establish `key : ∀ d : Fin N → k, (∃ u : Fin N → (Geo.Tor.epsPt tk ⟶ G'), (∀ i, (u i).left = Geo.Tor.spMap (Geo.Tor.epsScale (d i)) ≫ (vB i).left) ∧ w = (List.ofFn u).prod) ↔ B.equivFun c' = d` using `fun d => by`. Establish `e₁ : B.equivFun c' = d ↔ c = ∑ i, d i • (B i : Fin n → k)`. Rewrite using `[← LinearEquiv.eq_symm_apply, Module.Basis.equivFun_symm_apply, Subtype.ext_iff]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Simplify using `[c']`. Establish `e₂ : w = Wd d ↔ c = ∑ i, d i • (B i : Fin n → k)`. Use `(rel_eq_iff hc hwv (hPW d)).trans ?_` and prove the remaining obligations. Rewrite using `[hPeq]`. Conclude with `⟨fun h => tvec_inj hx h, fun h => by rw [← h]⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e₁, ← e₂]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hwu⟩`. Establish `hu' : u = fun i => liftT tk (spMap (scaleD (d i))) ≫ vB i`. Use function extensionality and compare the values at `fun i => Over.OverMorphism.ext (hu i)`.
-
-Rewrite using `[hwu, hu']`. Introduce `h`. Conclude with `⟨fun i => liftT tk (spMap (scaleD (d i))) ≫ vB i, fun i => rfl, h⟩`. Conclude with `(existsUnique_congr key).2 existsUnique_eq'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lieMult_of_finrank {N : ℕ} (hN : Module.finrank k (eigLat hx act' (fun a => τ a)) = N) :
     Geo.Tor.LieMult act tk τ N := by
@@ -106,11 +104,11 @@ theorem lieMult_of_finrank {N : ℕ} (hN : Module.finrank k (eigLat hx act' (fun
 end Count
 
 /- English proof (translation)
-Take `⟨x', hx', hcomp⟩` from `tanBC_alg (R := k) (R' := K) G n xc hx`. Establish `hpt : ∀ c : Fin n → k, pushR G (tvec (x` using `x') (algebraMap k K ∘ c)) = spMap (dualMapA k K) ≫ tvec (x := xc) c := fun c => Over.OverMorphism.ext (by rw [pushR_left, hcomp c]; rfl)`. Establish `hLk : ∀ a (c : Fin n → k), tmap hx' ((Over.pullback (fB k K)).map (act.act a)) (algebraMap k K ∘ c) = algebraMap k K ∘ tmap hx (act.act a) c`. Introduce `a c`. Apply `tvec_inj hx'` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `pushR_inj G` to reduce the goal to its premises. Rewrite using `[tvec_tmap hx', pushR_map, hpt, hpt, tvec_tmap hx, Category.assoc]`. Establish `e0 : Module.finrank k (eigLat hx act.act χ) = Module.finrank K (eigLat hx' (fun a => (Over.pullback (fB k K)).map (act.act a)) (fun a => (algebraMap k K).comp χ a))` using `finrank_eig_bc (fun a => tmap hx (act.act a)) (fun a => tmap hx' ((Over.pullback (fB k K)).map (act.act a))) hLk χ`. Establish `: IsMonHom (Iso.refl G).hom` using `inferInstanceAs (IsMonHom (𝟙 G))`. Rewrite using `[e0]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨finrank_of_lieMult (Geo.Tor.isGrpPullback_of_iso (Iso.refl G)) (Category.comp_id _) hx' act act.act (fun a => by simp) _ (fun a => rfl) _, lieMult_of_finrank (Geo.Tor.isGrpPullback_of_iso (Iso.refl G)) (Category.comp_id _) hx' act act.act (fun a => by simp) _ (fun a => rfl) _⟩`.
+Supply the required witnesses or components.
 -/
 theorem lieMult_iff_finrank {k K : Type} [Field k] [Field K] [Algebra k K] (G : Over (Spec (CommRingCat.of k)))
     [GrpObj G] {n : ℕ} {xc : ∀ m : ℕ, sp (R₀ := k) (JetR k (Fin n) m) ⟶ G} (hx : IsUnivChart G n xc)
@@ -140,9 +138,9 @@ theorem lieMult_iff_finrank {k K : Type} [Field k] [Field K] [Algebra k K] (G : 
       (fun a => by simp) _ (fun a => rfl) _⟩
 
 /- English proof (translation)
-Set `_` to `φ.toAlgebra`. Use `act.hom` as an intermediate fact. Take `⟨n, x, hx⟩` from `univChartLoc G`. Establish `h` using `lieMult_iff_finrank (K := k) G hx act χ N`. Establish `e : fB k k = 𝟙 _` using `by show Spec.map (CommRingCat.ofHom (algebraMap k k)) = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Algebra.algebraMap_self, CommRingCat.ofHom_id, Spec.map_id]`. Rewrite `h` using `[e, Algebra.algebraMap_self, RingHom.id_comp]`. Conclude with `(lieMult_iff_finrank (K := K) G hx act χ N).trans h.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieMult_extend_iff {k K : Type} [Field k] [Field K] (φ : k →+* K) (G : Over (Spec (CommRingCat.of k)))
     [GrpObj G] [Smooth G.hom] {O : Type} [CommRing O] (act : Geo.Tor.OAct O G) (χ : O →+* k) (N : ℕ) :
@@ -158,9 +156,9 @@ theorem lieMult_extend_iff {k K : Type} [Field k] [Field K] (φ : k →+* K) (G 
   exact (lieMult_iff_finrank (K := K) G hx act χ N).trans h.symm
 
 /- English proof (translation)
-Set `_` to `φ.toAlgebra`. Establish `h : ∀ a, ∃ z : k, φ z = τ a` using `fun a => by`. Establish `hi : IsIntegral k (τ a)` using `((Algebra.IsIntegral.isIntegral (R := ℤ) a).map τ.toIntAlgHom).tower_top`. Conclude with `minpoly.mem_range_of_degree_eq_one k _ (IsAlgClosed.degree_eq_one_of_irreducible k (minpoly.irreducible hi))`. Use `choose f hf using h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `inj` using `φ.injective`. Conclude with `⟨⟨⟨⟨f, inj (by simp [hf])⟩, fun a b => inj (by simp [hf])⟩, inj (by simp [hf]), fun a b => inj (by simp [hf])⟩, RingHom.ext hf⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_comp_eq {k K O : Type} [Field k] [IsAlgClosed k] [Field K] [CommRing O] [Algebra.IsIntegral ℤ O]
     (φ : k →+* K) (τ : O →+* K) : ∃ χ : O →+* k, φ.comp χ = τ := by
@@ -175,7 +173,7 @@ theorem exists_comp_eq {k K O : Type} [Field k] [IsAlgClosed k] [Field K] [CommR
     fun a b => inj (by simp [hf])⟩, RingHom.ext hf⟩
 
 /- English proof (translation)
-Introduce `τ`. Take `⟨χ, rfl⟩` from `exists_comp_eq φ τ`. Rewrite using `[lieMult_extend_iff, lieMult_extend_iff]`. Conclude with `⟨fun e => (h χ).1 (φ.injective e), fun e => (h χ).2 fun e' => e (congrArg φ e')⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem detCond_extend {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} (D : Geo.Tor.Datum H)
     {k K : Type} [Field k] [IsAlgClosed k] [Field K] (φ : k →+* K) (G : Over (Spec (CommRingCat.of k)))

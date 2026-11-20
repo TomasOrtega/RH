@@ -10,9 +10,9 @@ open scoped InnerProductSpace
 namespace GlobalTheory.Mem.PureSep
 
 /- English proof (translation)
-Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r m`. Use `⟨fun i => ℂ ∙ m i, fun i => inferInstance, r • PiTensorProduct.tprod ℂ (fun i => (⟨m i, Submodule.mem_span_singleton_self _⟩ : ℂ ∙ m i)), ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, PiTensorProduct.map_tprod]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `add a b ha hb`. Take `⟨W₁, h₁, y₁, rfl⟩` from `ha`. Take `⟨W₂, h₂, y₂, rfl⟩` from `hb`. Use `⟨fun i => W₁ i ⊔ W₂ i, fun i => by have := h₁ i; have := h₂ i; infer_instance, PiTensorProduct.map (fun i => Submodule.inclusion (le_sup_left : W₁ i ≤ W₁ i ⊔ W₂ i)) y₁ + PiTensorProduct.map (fun i => Submodule.inclusion (le_sup_right : W₂ i ≤ W₁ i ⊔ W₂ i)) y₂, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ← LinearMap.comp_apply, ← LinearMap.comp_apply, ← PiTensorProduct.map_comp, ← PiTensorProduct.map_comp]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -37,17 +37,17 @@ theorem exists_finite_subspaces {ι : Type} {E : ι → Type} [∀ i, AddCommGro
     rfl
 
 /- English proof (translation)
-Introduce `D V S M x hx`. Take `⟨W, hW, y, rfl⟩` from `exists_finite_subspaces x`. Establish `hy : y ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx (map_zero _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Set `ob : ∀ τ, OrthonormalBasis (Fin (Module.finrank ℂ (W τ))) ℂ (W τ)` to `fun τ => haveI := hW τ`. Use `stdOrthonormalBasis ℂ (W τ)`. Set `B` to `Basis.piTensorProduct (fun τ => (ob τ).toBasis)`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, B.repr y k ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_neg at h`. Apply `hy` to reduce the goal to its premises. Apply `B.repr.injective` to reduce the goal to its premises. Use extensionality with `k`. Simplify using `[h k]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun τ => ((ob τ (k τ) : W τ) : M.sm τ), ?_⟩` and prove the remaining obligations. Establish `key : ∀ y' : ⨂[ℂ] τ, W τ, ellT M (fun τ => (((ob τ (k τ) : W τ) : M.sm τ) : M.H τ)) (inclT M (PiTensorProduct.map (fun τ => (W τ).subtype) y')) = B.repr y' k`. Introduce `y'`. Proceed by induction on `y' using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r z`.
+Proceed by induction. Treat this case separately. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `ellT inclT`. Simplify using `only [map_smul, PiTensorProduct.map_tprod, PiTensorProduct.lift.tprod, Finsupp.smul_apply, B, Basis.piTensorProduct_repr_tprod_apply, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply, innerₛₗ_apply_apply, smul_eq_mul]`. Use `congr 1`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[OrthonormalBasis.coe_toBasis_repr_apply, OrthonormalBasis.repr_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Consider the case `add a b ha hb`. Simplify using `only [map_add, Finsupp.add_apply] at ha hb ⊢`. Rewrite using `[ha, hb]`. Conclude with `fun h => hk ((key y).symm.trans h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem exists_ellT_ne_zero : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (x : SmT M), x ≠ 0 → ∃ w : M.Vec, ellT M (fun τ => (w τ : M.H τ)) (inclT M x) ≠ 0 := by
   classical

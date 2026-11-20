@@ -13,15 +13,15 @@ section Lin
 variable {k : Type*} [Field k]
 
 /- English proof (translation)
-Establish `hinj' : Function.Injective Φ.flip`. Introduce `a b hab`. Use `sub_eq_zero.1 (hR (a - b) fun z => ?_)` and prove the remaining obligations. Establish `e` using `LinearMap.congr_fun hab z`. Simplify using `only [LinearMap.flip_apply] at e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_sub, e, sub_self]`. Establish `hYX : finrank k Y ≤ finrank k X`. Use `LinearMap.finrank_le_finrank_of_injective (f := (Φ.flip : Y →ₗ[k] Module.Dual k X)) hinj'` as an intermediate fact. Rewrite `this` using `[Subspace.dual_finrank_eq]`. Then use the resulting hypothesis. Establish `hinj : Function.Injective (Φ : X →ₗ[k] Module.Dual k Y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `a b hab`. Use `sub_eq_zero.1 (hL (a - b) fun z => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, LinearMap.sub_apply, hab, sub_self]`. Establish `hW : finrank k Sy + finrank k Sy.dualAnnihilator = finrank k Y` using `Subspace.finrank_add_finrank_dualAnnihilator_eq Sy`. Establish `hT : finrank k (Sy.dualAnnihilator.comap (Φ : X →ₗ[k] Module.Dual k Y)) ≤ finrank k Sy.dualAnnihilator`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearEquiv.finrank_eq (Submodule.equivMapOfInjective _ hinj _)]`. Conclude with `Submodule.finrank_mono (Submodule.map_comap_le _ _)`. Establish `hle : Sx ≤ Sy.dualAnnihilator.comap (Φ : X →ₗ[k] Module.Dual k Y)`. Introduce `s hs`. Rewrite using `[Submodule.mem_comap, Submodule.mem_dualAnnihilator]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun y hy => horth s hs y hy`. Establish `heq` using `Submodule.eq_of_le_of_finrank_le hle (by omega)`. Rewrite using `[heq, Submodule.mem_comap, Submodule.mem_dualAnnihilator]`. Conclude with `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_orth {X Y : Type*} [AddCommGroup X] [Module k X] [AddCommGroup Y] [Module k Y]
     [FiniteDimensional k X] [FiniteDimensional k Y] (Φ : X →ₗ[k] Y →ₗ[k] k)
@@ -71,9 +71,9 @@ private theorem qIncl_quotient_mk_eq_mk_inclusion (B : Submodule k E) {S Z : Sub
   rfl
 
 /- English proof (translation)
-Introduce `a b hab`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`. Simplify using `only [qIncl_quotient_mk_eq_mk_inclusion] at hab`. Rewrite `hab`, the goal using `[Submodule.Quotient.eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hab`, the goal using `[Submodule.mem_comap]`. Simplify using `using hab`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem qIncl_injective (B : Submodule k E) {S Z : Submodule k E} (h : S ≤ Z) :
     Function.Injective (qIncl B h) := by
@@ -86,9 +86,9 @@ theorem qIncl_injective (B : Submodule k E) {S Z : Submodule k E} (h : S ≤ Z) 
   simpa using hab
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `LinearMap.mem_range.1 ha`. Take `⟨s, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Simplify using `only [qIncl_quotient_mk_eq_mk_inclusion] at hq`. Rewrite `hq` using `[Submodule.Quotient.eq, Submodule.mem_comap]`. Establish `h1 : ((s : E) - a) ∈ S` using `hBS (by simpa using hq)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `sub_mem s.2 h1`. Simplify using `using h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_of_mk_mem_range {B S Z : Submodule k E} (hBS : B ≤ S) (h : S ≤ Z) (a : ↥Z)
     (ha : (Submodule.Quotient.mk a : ↥Z ⧸ B.comap Z.subtype) ∈ LinearMap.range (qIncl B h)) :
@@ -104,29 +104,27 @@ theorem mem_of_mk_mem_range {B S Z : Submodule k E} (hBS : B ≤ S) (h : S ≤ Z
 variable {E' : Type*} [AddCommGroup E'] [Module k E']
 
 /- English proof (translation)
-Set `Ψ1 : (↥Z' ⧸ B'.comap Z'.subtype) →ₗ[k] ↥Z →ₗ[k] k` to `(B'.comap Z'.subtype).liftQ Φ.flip (fun b hb => by`. Rewrite using `[LinearMap.mem_ker]`. Use extensionality with `a`. Simplify using `using hBr b hb a)`. Set `Φb : (↥Z ⧸ B.comap Z.subtype) →ₗ[k] (↥Z' ⧸ B'.comap Z'.subtype) →ₗ[k] k` to `(B.comap Z.subtype).liftQ Ψ1.flip (fun a ha => by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Rewrite using `[LinearMap.mem_ker]`. Use extensionality with `b`. Simplify `hBl a ha b)` using `[Ψ1]`. Establish `hΦb : ∀ a b, Φb (Submodule.Quotient.mk a) (Submodule.Quotient.mk b) = Φ a b`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Φb, Ψ1]`. Establish `hLb : ∀ x, (∀ y, Φb x y = 0) → x = 0`. Introduce `x hx`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hL a fun b => by simpa [hΦb] using hx (Submodule.Quotient.mk b)`. Establish `hRb : ∀ y, (∀ x, Φb x y = 0) → y = 0`. Introduce `y hy`. Take `⟨b, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hR b fun a => by simpa [hΦb] using hy (Submodule.Quotient.mk a)`. Establish `hSx : finrank k (LinearMap.range (qIncl B hSZ)) = finrank k (↥S ⧸ B.comap S.subtype)` using `LinearMap.finrank_range_of_inj (qIncl_injective B hSZ)`. Establish `hSy : finrank k (LinearMap.range (qIncl B' hSZ')) = finrank k (↥S' ⧸ B'.comap S'.subtype)` using `LinearMap.finrank_range_of_inj (qIncl_injective B' hSZ')`. Establish `horthb : ∀ x ∈ LinearMap.range (qIncl B hSZ), ∀ y ∈ LinearMap.range (qIncl B' hSZ'), Φb x y = 0`. Introduce `x hx y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, rfl⟩` from `LinearMap.mem_range.1 hx`. Take `⟨q, rfl⟩` from `LinearMap.mem_range.1 hy`. Take `⟨s, rfl⟩` from `Submodule.Quotient.mk_surjective _ p`. Take `⟨s', rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Simplify using `only [qIncl_quotient_mk_eq_mk_inclusion, hΦb]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `horth _ _ s.2 s'.2`. Establish `hdimb : finrank k (↥Z ⧸ B.comap Z.subtype) ≤ finrank k (LinearMap.range (qIncl B hSZ)) + finrank k (LinearMap.range (qIncl B' hSZ'))`. Rewrite using `[hSx, hSy]`. Conclude with `hdim`. Establish `hYX : finrank k (↥Z' ⧸ B'.comap Z'.subtype) ≤ finrank k (↥Z ⧸ B.comap Z.subtype)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (Φb.flip : (↥Z' ⧸ B'.comap Z'.subtype) →ₗ[k] Module.Dual k (↥Z ⧸ B.comap Z.subtype))`. Introduce `a b hab`. Use `sub_eq_zero.1 (hRb (a - b) fun z => ?_)` and prove the remaining obligations. Establish `e` using `LinearMap.congr_fun hab z`. Simplify using `only [LinearMap.flip_apply] at e`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub, e, sub_self]`. Use `LinearMap.finrank_le_finrank_of_injective hinj` as an intermediate fact. Rewrite `this` using `[Subspace.dual_finrank_eq]`. Then use the resulting hypothesis. Use `⟨fun a ha => ?_, fun b hb => ?_⟩` and prove the remaining obligations. Establish `hmem` using `mem_of_orth Φb hLb hRb _ _ horthb hdimb (Submodule.Quotient.mk a) (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Introduce `y hy`. Take `⟨q, rfl⟩` from `LinearMap.mem_range.1 hy`. Take `⟨s', rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Simplify using `only [qIncl_quotient_mk_eq_mk_inclusion, hΦb]`. Conclude with `ha _ s'.2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `mem_of_mk_mem_range hBS hSZ a hmem`. Establish `hmem` using `mem_of_orth Φb.flip (fun y h => hRb y fun x => by simpa using h x) (fun x h => hLb x fun y => by simpa using h y) _ _ (fun y hy x hx => by rw [LinearMap.flip_apply]; exact horthb x hx y hy) (by rw [add_comm]; exact hYX.trans hdimb) (Submodule.Quotient.mk b) (by`. Introduce `x hx`. Take `⟨p, rfl⟩` from `LinearMap.mem_range.1 hx`. Take `⟨s, rfl⟩` from `Submodule.Quotient.mk_surjective _ p`.
-
-Simplify using `only [qIncl_quotient_mk_eq_mk_inclusion, LinearMap.flip_apply, hΦb]`. Conclude with `hb _ s.2)`. Conclude with `mem_of_mk_mem_range hBS' hSZ' b hmem`.
+A detailed English derivation is pending.
 -/
 theorem ann_of_pairing (Z B S : Submodule k E) (Z' B' S' : Submodule k E')
     (Φ : ↥Z →ₗ[k] ↥Z' →ₗ[k] k)
@@ -218,27 +216,25 @@ variable {k : Type*} [Field k] {E E' F : Type*} [AddCommGroup E] [Module k E] [A
   [Module k E'] [AddCommGroup F] [Module k F]
 
 /- English proof (translation)
-Establish `huniq : ∀ z : F, ∀ a a' : k, z - a • z0 ∈ C → z - a' • z0 ∈ C → a = a'`. Introduce `z a a' h h'`. Assume the negation of the conclusion as `hne`. Establish `hd : (a' - a) • z0 ∈ C`. Use `C.sub_mem h h'` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[show z - a • z0 - (z - a' • z0) = (a' - a) • z0 by rw [sub_smul]; abel]`. Then use the resulting hypothesis. Establish `hne' : a' - a ≠ 0` using `sub_ne_zero.2 (Ne.symm hne)`. Apply `hz0C` to reduce the goal to its premises. Use `C.smul_mem (a' - a)⁻¹ hd` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hne', one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Set `g : ↥M → k` to `fun z => (hline z z.2).choose`. Establish `hg : ∀ z : ↥M, (z : F) - g z • z0 ∈ C` using `fun z => (hline z z.2).choose_spec`. Set `f : ↥M →ₗ[k] k` to `{ toFun := g map_add' := fun z w => huniq _ _ _ (hg (z + w)) (by`. Use `C.add_mem (hg z) (hg w) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Submodule.coe_add, add_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `abel)`. Use the proof step `map_smul' := fun c z => by`. Simplify using `only [RingHom.id_apply, smul_eq_mul]`. Use `huniq _ _ _ (hg (c • z)) ?_` and prove the remaining obligations. Use `C.smul_mem c (hg z) using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.coe_smul, smul_sub, mul_smul] }`. Use `⟨LinearMap.mk₂ k (fun a b => f ⟨cup a b, hM a a.2 b b.2⟩) ?_ ?_ ?_ ?_, ?_⟩` and prove the remaining obligations. Introduce `a a' b`. Rewrite using `[← map_add]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `ext`. Simplify using the standard rewrite rules. Introduce `c a b`. Rewrite using `[← map_smul]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `ext`. Simplify using the standard rewrite rules. Introduce `a b b'`. Rewrite using `[← map_add]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `ext`. Simplify using the standard rewrite rules. Introduce `c a b`. Rewrite using `[← map_smul]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `ext`. Simplify using the standard rewrite rules. Introduce `a b`. Rewrite using `[LinearMap.mk₂_apply]`. Express the relevant statement in the definitionally equal form `g ⟨cup a b, hM a a.2 b b.2⟩ = 0 ↔ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Use `hg ⟨cup a b, hM a a.2 b b.2⟩` as an intermediate fact. Rewrite `this` using `[h0, zero_smul, sub_zero]`. Then use the resulting hypothesis. Introduce `hC`.
-
-Conclude with `huniq _ _ _ (hg ⟨cup a b, hM a a.2 b b.2⟩) (by rwa [zero_smul, sub_zero])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_pairing (Z : Submodule k E) (Z' : Submodule k E') (M C : Submodule k F)
     (cup : E →ₗ[k] E' →ₗ[k] F) (hM : ∀ a ∈ Z, ∀ b ∈ Z', cup a b ∈ M) (z0 : F)

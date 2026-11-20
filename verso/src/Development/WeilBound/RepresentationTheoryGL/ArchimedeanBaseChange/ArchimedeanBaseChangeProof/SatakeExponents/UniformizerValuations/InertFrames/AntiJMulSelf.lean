@@ -16,9 +16,9 @@ namespace PositivityTheory.Rg.BcB.F.Inert.WittBasisGramMatrix
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `key : ((i : ℕ) + j + 1 = n) ↔ i = Fin.rev j`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Rewrite using `[Fin.ext_iff, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `show (if (i : ℕ) + j + 1 = n then (1 : L) else 0) = _`. Conclude with `if_congr key rfl rfl`.
+A detailed English derivation is pending.
 -/
 theorem antiJ_eq_rev {L : Type} [Field L] {n : ℕ} (i j : Fin n) :
     antiJ L n i j = if i = Fin.rev j then 1 else 0 := by
@@ -31,9 +31,9 @@ theorem antiJ_eq_rev {L : Type} [Field L] {n : ℕ} (i j : Fin n) :
   exact if_congr key rfl rfl
 
 /- English proof (translation)
-Use extensionality with `i k`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [antiJ_eq_rev]`. Rewrite using `[Finset.sum_eq_single (Fin.rev k)]`. Simplify using `[Fin.rev_rev]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem antiJ_mul_self {L : Type} [Field L] (n : ℕ) : antiJ L n * antiJ L n = 1 := by
   ext i k
@@ -50,7 +50,7 @@ def bM {n : ℕ} (d₁ d₂ : Fin n → R) : Matrix (Fin n) (Fin n) R :=
   fun i j => (if i = j then d₁ i else 0) + (if i = Fin.rev j then d₂ i else 0)
 
 /- English proof (translation)
-Simplify using `only [bM]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bM_map {n : ℕ} (σ : R →+* R) (d₁ d₂ : Fin n → R) (i j : Fin n) :
     σ (bM d₁ d₂ i j) = (if i = j then σ (d₁ i) else 0) + (if i = Fin.rev j then σ (d₂ i) else 0) := by
@@ -58,15 +58,15 @@ theorem bM_map {n : ℕ} (σ : R →+* R) (d₁ d₂ : Fin n → R) (i j : Fin n
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, bM_map]`. Simplify using `only [bM, add_mul, mul_add, Finset.sum_add_distrib, ite_mul, mul_ite, zero_mul, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hs : j = Fin.rev j`. Take `⟨h0, h1⟩` from `P3 j hs`. Rewrite using `[← hs]`. Simplify using `[h0, h1]`. Simplify using `only [if_neg hs, if_neg (Ne.symm hs), eq_self_iff_true, if_true, add_zero, zero_add]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `P1 j hs`. Distinguish the cases in `hr : j = Fin.rev k`. Establish `hk : k = Fin.rev j` using `by rw [hr, Fin.rev_rev]`. Substitute `hk` using the available equality. Establish `hs : j ≠ Fin.rev j` using `hjk`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.rev_rev, if_neg (Ne.symm hs), if_neg hs, eq_self_iff_true, if_true, zero_add, add_zero]`. Rewrite using `[add_comm]`. Conclude with `P2 j hs`. Establish `h1 : k ≠ j` using `Ne.symm hjk`. Establish `h2 : k ≠ Fin.rev j` using `fun h => hr (by rw [h, Fin.rev_rev])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : Fin.rev k ≠ j` using `fun h => hr h.symm`. Establish `h4 : Fin.rev k ≠ Fin.rev j` using `fun h => hjk (Fin.rev_injective h).symm`. Simplify using `only [if_neg h1, if_neg h2, if_neg h3, if_neg h4, if_neg hr, add_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_bM {n : ℕ} (σ : R →+* R) (d₁ d₂ : Fin n → R)
     (P1 : ∀ j, j ≠ Fin.rev j → σ (d₁ j) * d₁ j + σ (d₂ (Fin.rev j)) * d₂ (Fin.rev j) = 0)
@@ -104,51 +104,45 @@ end PositivityTheory.Rg.BcB.F.Inert.WittBasisGramMatrix
 namespace PositivityTheory.Rg.BcB.F.Inert
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n w hw`. Take `⟨_, hinv, hval, hsplit, _⟩` from `GlobalTheory.T.placeConjugation_properties_cmField E hU w`. Take `⟨_, ⟨ϖ, q, hUI, _⟩, _, _⟩` from `hsplit hw`. Take `⟨_, _, _, _, ⟨x₀, hx₀, hδ⟩, _, _⟩` from `hUI`. Establish `hx0 : Valued.v x₀ ≤ 1` using `(Valuation.mem_integer_iff _ _).1 hx₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht1, htn⟩` from `GlobalTheory.CompanionTheory.UnitNormLocal.exists_unit_norm_eq E hU w hw (-1) (by simp) (by simp)`. Take `⟨δ, hδdef⟩ : ∃ δ, δ = GlobalTheory.BCT.cj w x₀ - x₀` from `⟨_, rfl⟩`. Establish `hδv : Valued.v δ = 1` using `by rw [hδdef]; exact hδ`. Establish `hδ0 : δ ≠ 0`. Introduce `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hδv` using `[h, Valuation.map_zero]`. Conclude with `zero_ne_one hδv`. Establish `hσδ : GlobalTheory.BCT.cj w δ = -δ` using `by rw [hδdef, map_sub, hinv]; ring`. Take `⟨wv, hwvdef⟩ : ∃ u, u = GlobalTheory.BCT.cj w x₀ * δ⁻¹` from `⟨_, rfl⟩`. Establish `htr : GlobalTheory.BCT.cj w wv + wv = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hwvdef, map_mul, map_inv₀, hinv, hσδ, inv_neg]`. Establish `e : x₀ * -δ⁻¹ + GlobalTheory.BCT.cj w x₀ * δ⁻¹ = (GlobalTheory.BCT.cj w x₀ - x₀) * δ⁻¹` using `by ring`. Rewrite using `[e, ← hδdef, mul_inv_cancel₀ hδ0]`. Establish `hwv1 : Valued.v wv ≤ 1`. Rewrite using `[hwvdef, map_mul, map_inv₀, hval, hδv, inv_one, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hx0`. Take `⟨d₁, hd₁⟩ : ∃ f : Fin n → IsDedekindDomain.HeightOneSpectrum.adicCompletion E w, ∀ j, f j = if (j : ℕ) < (Fin.rev j : ℕ) then 1 else if j = Fin.rev j then 1 else -(t * wv)` from `⟨_, fun _ => rfl⟩`. Take `⟨d₂, hd₂⟩ : ∃ f : Fin n → IsDedekindDomain.HeightOneSpectrum.adicCompletion E w, ∀ j, f j = if (j : ℕ) < (Fin.rev j : ℕ) then 1 - wv else if j = Fin.rev j then 0 else t` from `⟨_, fun _ => rfl⟩`. Establish `hfirst : ∀ j : Fin n, (j : ℕ) < (Fin.rev j : ℕ) → d₁ j = 1 ∧ d₂ j = 1 - wv`. Introduce `j h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hd₁, hd₂, if_pos h, if_pos h]`. Conclude with `⟨rfl, rfl⟩`. Establish `hsecond : ∀ j : Fin n, (Fin.rev j : ℕ) < (j : ℕ) → d₁ j = -(t * wv) ∧ d₂ j = t`. Introduce `j h`. Establish `h1 : ¬ ((j : ℕ) < (Fin.rev j : ℕ))` using `by omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : j ≠ Fin.rev j` using `fun e => by rw [← e] at h; exact lt_irrefl _ h`. Rewrite using `[hd₁, hd₂, if_neg h1, if_neg h1, if_neg h2, if_neg h2]`. Conclude with `⟨rfl, rfl⟩`. Establish `hmid : ∀ j : Fin n, j = Fin.rev j → d₁ j = 1 ∧ d₂ j = 0`. Introduce `j e`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ¬ ((j : ℕ) < (Fin.rev j : ℕ))` using `by rw [← e]; exact lt_irrefl _`. Rewrite using `[hd₁, hd₂, if_neg h1, if_neg h1, if_pos e, if_pos e]`. Conclude with `⟨rfl, rfl⟩`. Establish `hside : ∀ j : Fin n, j ≠ Fin.rev j → (j : ℕ) < (Fin.rev j : ℕ) ∨ (Fin.rev j : ℕ) < (j : ℕ)` using `fun j hj => lt_or_gt_of_ne (fun e => hj (Fin.ext e))`. Establish `P1 : ∀ j, j ≠ Fin.rev j → GlobalTheory.BCT.cj w (d₁ j) * d₁ j + GlobalTheory.BCT.cj w (d₂ (Fin.rev j)) * d₂ (Fin.rev j) = 0`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `j hj`. Break down `hside j hj with h | h` into its components or cases. Take `⟨a1, -⟩` from `hfirst j h`. Take `⟨-, b2⟩` from `hsecond (Fin.rev j) (by rw [Fin.rev_rev]; exact h)`. Rewrite using `[a1, b2, map_one, htn]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨a1, -⟩` from `hsecond j h`. Take `⟨-, b2⟩` from `hfirst (Fin.rev j) (by rw [Fin.rev_rev]; exact h)`. Rewrite using `[a1, b2, map_neg, map_mul, map_sub, map_one]`. Take the linear combination `(GlobalTheory.BCT.cj w wv * wv) * htn - htr`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `P2 : ∀ j, j ≠ Fin.rev j → GlobalTheory.BCT.cj w (d₁ j) * d₂ j + GlobalTheory.BCT.cj w (d₂ (Fin.rev j)) * d₁ (Fin.rev j) = 1`. Introduce `j hj`. Break down `hside j hj with h | h` into its components or cases. Take `⟨a1, a2⟩` from `hfirst j h`. Take `⟨b1, b2⟩` from `hsecond (Fin.rev j) (by rw [Fin.rev_rev]; exact h)`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[a1, a2, b1, b2, map_one]`. Take the linear combination `(-wv) * htn`. Take `⟨a1, a2⟩` from `hsecond j h`. Take `⟨b1, b2⟩` from `hfirst (Fin.rev j) (by rw [Fin.rev_rev]; exact h)`. Rewrite using `[a1, a2, b1, b2, map_neg, map_mul, map_sub, map_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(-GlobalTheory.BCT.cj w wv) * htn`. Establish `P3 : ∀ j, j = Fin.rev j → d₂ j = 0 ∧ GlobalTheory.BCT.cj w (d₁ j) * d₁ j = 1`. Introduce `j hj`. Take `⟨a1, a2⟩` from `hmid j hj`. Conclude with `⟨a2, by rw [a1, map_one, one_mul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hG : ((WittBasisGramMatrix.bM d₁ d₂).map (GlobalTheory.BCT.cj w))ᵀ * WittBasisGramMatrix.bM d₁ d₂ = antiJ (IsDedekindDomain.HeightOneSpectrum.adicCompletion E w) n`. Use extensionality with `j k`. Rewrite using `[WittBasisGramMatrix.gram_bM (GlobalTheory.BCT.cj w) d₁ d₂ P1 P2 P3 j k, WittBasisGramMatrix.antiJ_eq_rev]`. Establish `hCB : (antiJ (IsDedekindDomain.HeightOneSpectrum.adicCompletion E w) n * ((WittBasisGramMatrix.bM d₁ d₂).map (GlobalTheory.BCT.cj w))ᵀ) * WittBasisGramMatrix.bM d₁ d₂ = 1`. Rewrite using `[Matrix.mul_assoc, hG, WittBasisGramMatrix.antiJ_mul_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBC : WittBasisGramMatrix.bM d₁ d₂ * (antiJ (IsDedekindDomain.HeightOneSpectrum.adicCompletion E w) n * ((WittBasisGramMatrix.bM d₁ d₂).map (GlobalTheory.BCT.cj w))ᵀ) = 1` using `(Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).mp hCB`. Establish `hd1int : ∀ j, Valued.v (d₁ j) ≤ 1`. Introduce `j`. Rewrite using `[hd₁]`. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite using `[Valuation.map_neg, map_mul, ht1, one_mul]`. Conclude with `hwv1`. Establish `hd2int : ∀ j, Valued.v (d₂ j) ≤ 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[hd₂]`. Use `split_ifs`. Conclude with `(Valuation.map_sub _ _ _).trans (max_le (by simp) hwv1)`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[ht1]`. Establish `hBint : ∀ a c, WittBasisGramMatrix.bM d₁ d₂ a c ∈ IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers E w`. Introduce `a c`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]`. Use `show Valued.v ((if a = c then d₁ a else 0) + (if a = Fin.rev c then d₂ a else 0)) ≤ 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(Valuation.map_add _ _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `hd1int a`. Simplify using the standard rewrite rules. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hd2int a`. Simplify using the standard rewrite rules. Establish `hAint : ∀ a c, antiJ (IsDedekindDomain.HeightOneSpectrum.adicCompletion E w) n a c ∈ IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers E w`. Introduce `a c`. Rewrite using `[WittBasisGramMatrix.antiJ_eq_rev]`.
-
-Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Establish `hTint : ∀ a c, ((WittBasisGramMatrix.bM d₁ d₂).map (GlobalTheory.BCT.cj w))ᵀ a c ∈ IsDedekindDomain.HeightOneSpectrum.adicCompletionIntegers E w`. Introduce `a c`.
-
-Establish `h` using `hBint c a`. Rewrite `h`, the goal using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers]`. Rewrite using `[Matrix.transpose_apply, Matrix.map_apply, hval]`. Conclude with `h`. Use `⟨(⟨WittBasisGramMatrix.bM d₁ d₂, antiJ (IsDedekindDomain.HeightOneSpectrum.adicCompletion E w) n * ((WittBasisGramMatrix.bM d₁ d₂).map (GlobalTheory.BCT.cj w))ᵀ, hBC, hCB⟩ : GL (Fin n) (IsDedekindDomain.HeightOneSpectrum.adicCompletion E w)), ?_⟩` and prove the remaining obligations.
-
-Use `(show _ ∧ _ from ⟨?_, hG⟩)` and prove the remaining obligations. Conclude with `GlobalTheory.ExInertUnit.mem_KGL_of_entries w _ hBint (GlobalTheory.ExInertUnit.mul_entries hAint hTint)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem wittEx : WittEx := by
   intro E _ _ _ hU n w hw

@@ -10,37 +10,33 @@ instance FieldCopy.instIsAlgClosed (k : Type) [Field k] [h : IsAlgClosed k] :
     IsAlgClosed (FieldCopy k) := h
 
 /- English proof (translation)
-Introduce `k _ _ hroot R J α β hker`. Set `eα : MvPolynomial J R →ₐ[R] k` to `MvPolynomial.aeval α`. Set `eβ : MvPolynomial J R →ₐ[R] k` to `MvPolynomial.aeval β`. Set `S : Subalgebra R k` to `eα.range`. Establish `hle : ∀ p ∈ RingHom.ker eα.rangeRestrict, eβ p = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `p hp`. Rewrite `hp` using `[RingHom.mem_ker]`. Apply `hker` to reduce the goal to its premises. Use `congrArg Subtype.val hp` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Set `ψ0 : S →ₐ[R] k` to `(Ideal.Quotient.liftₐ (RingHom.ker eα.rangeRestrict) eβ hle).comp (Ideal.quotientKerAlgEquivOfSurjective (AlgHom.rangeRestrict_surjective eα)).symm.toAlgHom`. Establish `hψ0 : ∀ p, ψ0 (eα.rangeRestrict p) = eβ p`. Introduce `p`. Establish `h1 : (Ideal.quotientKerAlgEquivOfSurjective (AlgHom.rangeRestrict_surjective eα)).symm (eα.rangeRestrict p) = Ideal.Quotient.mk _ p`. Rewrite using `[AlgEquiv.symm_apply_eq]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [ψ0, AlgHom.comp_apply]`. Use `erw [h1]`. Both sides reduce to the same expression. Set `ψ : S →+* FieldCopy k` to `ψ0.toRingHom`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψinj : Function.Injective ψ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `s hs`. Assume the negation of the conclusion as `hne`. Establish `hne' : (s : k) ≠ 0` using `fun h => hne (Subtype.ext h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, hsn⟩` from `hroot _ hne'`. Establish `hsn' : s ^ n = 1` using `Subtype.ext (by simpa using hsn)`. Establish `: ψ s ^ n = 1` using `by rw [← map_pow, hsn', map_one]`. Rewrite `this` using `[hs, zero_pow (by omega)]`. Conclude with `zero_ne_one this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI : Algebra S (FieldCopy k) := ψ.toAlgebra`. Use `haveI : Module.IsTorsionFree S (FieldCopy k) := by`. Use `Module.IsTorsionFree.of_smul_eq_zero fun r m h => ?_` and prove the remaining obligations. Rewrite `h` using `[Algebra.smul_def, mul_eq_zero]`. Break down `h with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `left`. Conclude with `hψinj (h.trans (map_zero ψ).symm)`. Conclude with `Or.inr h`. Use `haveI : Algebra.IsIntegral S k := by`. Prove the components needed by the constructor for the conclusion.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `x`. Distinguish the cases in `hx : x = 0`. Rewrite using `[hx]`. Conclude with `isIntegral_zero`. Take `⟨n, hn, hxn⟩` from `hroot x hx`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨Polynomial.X ^ n - Polynomial.C 1, Polynomial.monic_X_pow_sub_C 1 (by omega), ?_⟩` and prove the remaining obligations. Simplify using `[hxn]`. Set `θ' : k →ₐ[S] FieldCopy k` to `IsAlgClosed.lift`. Set `θ : k →+* k` to `θ'.toRingHom`. Establish `hθS : ∀ s : S, θ (s : k) = ψ0 s`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Introduce `s`. Use `θ'.commutes s` as an intermediate fact. Conclude with `this`. Establish `hθinj : Function.Injective θ` using `θ.injective`. Establish `hθsurj : Function.Surjective θ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `y`. Distinguish the cases in `hy : y = 0`. Conclude with `⟨0, by rw [hy, map_zero]⟩`. Take `⟨n, hn, hyn⟩` from `hroot y hy`. Set `T` to `Polynomial.nthRootsFinset n (1 : k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : ∀ x : k, x ∈ T ↔ x ^ n = 1` using `fun x => Polynomial.mem_nthRootsFinset (by omega) 1`. Set `f : T → T` to `fun t => ⟨θ t, (hmem _).2 (by rw [← map_pow, (hmem _).1 t.2, map_one])⟩`. Establish `hf : Function.Injective f`. Introduce `a b hab`. Conclude with `Subtype.ext (hθinj (congrArg Subtype.val hab))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t, ht⟩` from `Finite.injective_iff_surjective.1 hf ⟨y, (hmem y).2 hyn⟩`. Conclude with `⟨t, congrArg Subtype.val ht⟩`. Use `⟨RingEquiv.ofBijective θ ⟨hθinj, hθsurj⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `r hr`. Establish `hrS : (r : k) ∈ S` using `⟨MvPolynomial.C ⟨r, hr⟩, by simp [eα]; rfl⟩`.
-
-Use `show θ r = r`. Establish `h2 : (⟨r, hrS⟩ : S) = eα.rangeRestrict (MvPolynomial.C ⟨r, hr⟩)` using `Subtype.ext (by simp [eα]; rfl)`. Rewrite using `[show r = ((⟨r, hrS⟩ : S) : k) from rfl, hθS, h2, hψ0]`. Simplify using `[eβ]`. Introduce `j show θ (α j) = β j`.
-
-Establish `h2 : (⟨α j, ⟨MvPolynomial.X j, by simp [eα]⟩⟩ : S) = eα.rangeRestrict (MvPolynomial.X j)` using `Subtype.ext (by simp [eα])`. Rewrite using `[show α j = ((⟨α j, ⟨MvPolynomial.X j, by simp [eα]⟩⟩ : S) : k) from rfl, hθS, h2, hψ0]`. Simplify using `[eβ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ringEquiv_extending_of_ker_le :
     ∀ (k : Type) [Field k] [IsAlgClosed k], (∀ x : k, x ≠ 0 → ∃ n : ℕ, 1 ≤ n ∧ x ^ n = 1) →

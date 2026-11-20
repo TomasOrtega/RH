@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.Poinc.Sep.Labels
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp only [pow_zero, MonObj.comp_one]`. Consider the case `succ n ih => rw [pow_succ, MonObj.comp_mul, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_pow_overScheme_grpObj {S : Scheme.{0}} {A T T' : Over S} [GrpObj A] (ρ : T' ⟶ T) (x : T ⟶ A) (n : ℕ) :
     ρ ≫ x ^ n = (ρ ≫ x) ^ n := by
@@ -31,31 +31,29 @@ open GlobalTheory.TorusExt in
 attribute [local instance] gtGroup in
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ z₁ act V _ _ _ ev X _ m t δ 𝔪`. Use `haveI : CharZero V := 𝔪.cn.2.2.2`. Establish `hL : GlobalTheory.UT.LL` using `GlobalTheory.firstFiveLaws`. Establish `hA : AdmBase V (maximalIdeal V)` using `⟨𝔪.cn.1, inferInstance, 𝔪.cn.2.1, 𝔪.cn.2.2.1⟩`. Establish `hB` using `𝔪.D.tau_bimult`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : 1 ≤ X₁.S.r * X₁.S.N`. Use `X₁.S.r_pos` as an intermediate fact. Use `X₁.S.N_ge` as an intermediate fact. Conclude with `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega))`. Take `⟨x, hx, xadd, -, xonto⟩` from `GlobalTheory.ThetaDvr.torsion_points 𝔪.yK 𝔪.cart`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨rig, e, -, he, -⟩` from `GlobalTheory.ThetaDvr.frames 𝔪.yK 𝔪.cart ⟨𝔪.wl, 𝔪.wl_gen⟩ x hx`. Take `⟨f, f₁, f₂, f₃, f₄, -⟩` from `GlobalTheory.TorsionIso.torsion_eq hL V (maximalIdeal V) hA 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U (AlgebraicClosure (FractionRing V)) (X₁.S.r * X₁.S.N) hk`. Establish `tor : ∀ p y, QkToAkU 𝔪.U.toUnifPre (AlgebraicClosure (FractionRing V)) (X₁.S.r * X₁.S.N) p y → y ^ (X₁.S.r * X₁.S.N) = 1` using `fun p y h => by`. Take `⟨w, hw⟩` from `𝔪.U.ext`. Conclude with `(h w hw).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `uniq : ∀ a (y : TFK (R` using `V) (AlgebraicClosure (FractionRing V)) ⟶ 𝔪.A.A), y ^ (X₁.S.r * X₁.S.N) = 1 → y.left ≫ 𝔪.φ = spMap ((algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).comp 𝔪.yK) ≫ (X₁.ρ.pt a).left → y = x a := by`. Introduce `a y hy hya`. Take `⟨b, rfl⟩` from `xonto y hy`. Take `⟨c, -, hc⟩` from `X₁.ρ.pt_bij (AlgebraicClosure (FractionRing V)) (spMap ((algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).comp 𝔪.yK)) ((Over.homMk (spMap ((algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).comp 𝔪.yK)) (by simp) : Over.mk (spMap ((algebraMap (Fracti …`. Establish `h1` using `hc a rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hc b (by ext1`. Simplify using `only [Over.comp_left, Over.homMk_left]`. Rewrite using `[← hx b, hya])`. Rewrite using `[h1.trans h2.symm]`. Establish `ex : ∀ a, ∃ p, QkToAkU 𝔪.U.toUnifPre (AlgebraicClosure (FractionRing V)) (X₁.S.r * X₁.S.N) p (x a)` using `fun a => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨p, hp⟩` from `f₂ (x a) (he a).1`. Conclude with `⟨p, (f₁ _ _).2 hp.symm⟩`. Establish `yyI : ∀ a mu, 𝔪.YY a mu ↔ ∃ p : QkPt 𝔪.D.toPre (AlgebraicClosure (FractionRing V)) (X₁.S.r * X₁.S.N), p.y = 𝔪.e₈ mu ∧ QkToAkU 𝔪.U.toUnifPre (AlgebraicClosure (FractionRing V)) (X₁.S.r * X₁.S.N) p (x a)`. Introduce `a mu`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨p, y, hpy, hq, hov⟩`. Take `rfl` from `uniq a y (tor p y hq) hov`. Conclude with `⟨p, hpy, hq⟩`. Introduce and unpack `⟨p, hpy, hq⟩`. Conclude with `⟨p, x a, hpy, hq, hx a⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨fun a => ?_, fun mu => ?_, fun a mu mu' h => ?_, fun a a' mu mu' h h' => ?_⟩` and prove the remaining obligations. Take `⟨p, hp⟩` from `ex a`. Conclude with `⟨𝔪.e₈.symm p.y, (yyI a _).2 ⟨p, by simp, hp⟩⟩`. Take `⟨p, hp⟩` from `exists_qkPt (F := AlgebraicClosure (FractionRing V)) hL.1.mulN (Or.inr hL.1.polBaseChange) hB (n := X₁.S.r * X₁.S.N) (by omega) (𝔪.e₈ mu)`. Take `⟨a, ha⟩` from `xonto (f p) (tor p _ ((f₁ _ _).2 rfl))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨a, (yyI a mu).2 ⟨p, hp, (f₁ _ _).2 ha.symm⟩⟩`. Take `⟨p, hpy, hq⟩` from `(yyI a mu).1 h`. Rewrite using `[yyI]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p', hpy', hq'⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpp : QkPt.Equiv _ _ p p'` using `(f₃ p p').1 (((f₁ _ _).1 hq).symm.trans ((f₁ _ _).1 hq'))`. Take `⟨z, hz, -⟩` from `(equiv_iff hB _ _).1 hpp`. Establish `e' : mu' = mu + (X₁.S.r * X₁.S.N) • 𝔪.e₈.symm z` using `𝔪.e₈.injective (by`. Rewrite using `[map_add, map_nsmul, AddEquiv.apply_symm_apply, ← hpy, ← hpy', hz])`. Introduce `v`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨𝔪.e₈.symm z v, by rw [e']; rfl⟩`. Introduce `hc choose w hw using hc`. Use `⟨qkShift hB p (𝔪.e₈ w), ?_, (f₁ _ _).2 (((f₁ _ _).1 hq).trans ((f₃ _ _).2 (equiv_qkShift hB p _)))⟩` and prove the remaining obligations. Use `show p.y + (X₁.S.r * X₁.S.N) • 𝔪.e₈ w = 𝔪.e₈ mu'`. Rewrite using `[hpy, ← map_nsmul, ← map_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Use function extensionality and compare the values at `v`. Conclude with `(hw v).symm`. Take `⟨p, hpy, hq⟩` from `(yyI a mu).1 h`. Take `⟨p', hpy', hq'⟩` from `(yyI a' mu').1 h'`.
-
-Use `(yyI _ _).2 ⟨qkAdd hB p p', ?_, ?_⟩` and prove the remaining obligations. Use `show p.y + p'.y = 𝔪.e₈ (mu + mu')`. Rewrite using `[map_add, hpy, hpy']`. Rewrite using `[f₁, f₄ _ _ _ (qkAdd_qkAdd hB p p'), ← (f₁ _ _).1 hq, ← (f₁ _ _).1 hq', xadd]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem yy_hom : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (z₁ : X₁.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (m : ℕ) (t : Fin m → V) (δ : Fin m → LinearMap.BilinForm ℤ X) (𝔪 : UMem X₁ z₁ act V ev X t δ), (∀ a, ∃ mu, 𝔪.YY a mu) ∧ (∀ mu, ∃ a, 𝔪.YY a mu) ∧ (∀ a mu mu', 𝔪.YY a mu → (𝔪.YY a mu' ↔ ∀ v, CongMod (X₁.S.r * X₁.S.N) (mu' v) (mu v))) ∧ (∀ a a' mu mu', 𝔪.YY a mu → 𝔪.YY a' mu' → 𝔪.YY (a + a') (mu + mu')) := by
   intro g n F W Z i X₁ z₁ act V _ _ _ ev X _ m t δ 𝔪

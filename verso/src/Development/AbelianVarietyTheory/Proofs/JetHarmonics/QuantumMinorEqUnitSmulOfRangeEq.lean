@@ -11,7 +11,7 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `⟨(Equiv.ofInjective a ha).trans ((Equiv.setCongr h).trans (Equiv.ofInjective a₂ ha₂).symm), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[Equiv.apply_ofInjective_symm]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem exists_perm_of_range_eq {t : ℕ} {β : Type} (a a₂ : Fin t → β)
     (ha : Function.Injective a) (ha₂ : Function.Injective a₂) (h : Set.range a = Set.range a₂) :
@@ -21,9 +21,9 @@ theorem exists_perm_of_range_eq {t : ℕ} {β : Type} (a a₂ : Fin t → β)
   simp [Equiv.apply_ofInjective_symm]
 
 /- English proof (translation)
-Introduce `A _ _ n t E a a₂ b b₂ hE ha ha₂ hb hb₂ hra hrb`. Take `⟨σ, rfl⟩` from `exists_perm_of_range_eq a a₂ ha ha₂ hra`. Take `⟨τ, rfl⟩` from `exists_perm_of_range_eq b b₂ hb hb₂ hrb`. Use `⟨(((Equiv.Perm.sign σ : ℤ) * (Equiv.Perm.sign τ : ℤ) : ℤ) : ℂ), ?_, fun u => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;>`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h' | h' <;> simp [h, h']`. Rewrite using `[Formalism.REAL.quantumMinorRowSkew_holds A n t E a₂ (b₂ ∘ τ) σ u, Formalism.REAL.quantumMinorColSkew_holds A n t E hE a₂ b₂ τ u, Int.cast_smul_eq_zsmul, zsmul_eq_mul, ← mul_assoc, Int.cast_mul]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem qminor_eq_smul_of_range_eq : ∀ (A : Type) [Ring A] [Algebra ℂ A] (n t : ℕ) (E : Fin n → Fin n → A) (a a₂ b b₂ : Fin t → Fin n), Formalism.REAL.GlRel E → Function.Injective a → Function.Injective a₂ → Function.Injective b → Function.Injective b₂ → Set.range a = Set.range a₂ → Set.range b = Set.range b₂ → ∃ e : ℂ, ‖e‖ = 1 ∧ ∀ u, Formalism.REAL.qminor E a b u = e • Formalism.REAL.qminor E a₂ b₂ u := by
   intro A _ _ n t E a a₂ b b₂ hE ha ha₂ hb hb₂ hra hrb

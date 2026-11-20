@@ -12,13 +12,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 namespace GlobalTheory.CosCount
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 /- English proof (translation)
-Introduce `_`. Use `⟨0, fun CF _ => ⟨0, fun ε C hC => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ _ => ?_⟩⟩⟩` and prove the remaining obligations. Introduce `Φ`. Establish `hL` using `s.core.lev`. Establish `hde` using `GlobalTheory.RowClaim.Test.pde_ne_q s`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ` using `GlobalTheory.LiftLower.Q_base hL`. Establish `hsub : (ch.S.supp A.μ0 Φ).Subsingleton` using `supp_subsingleton hL ch.S.toGridChoice A.μ0 Φ hde hQ`. Establish `h1 : ((ch.S.supp A.μ0 Φ).ncard : ℝ) ≤ 1` using `by haveI : Finite (ch.S.supp A.μ0 Φ) := hsub.finite.to_subtype`. Conclude with `Set.ncard_le_one_iff_subsingleton.mpr hsub` after adjusting the coercions. Establish `hb : 1 ≤ large₂.sc.b` using `Real.one_le_exp (Real.rpow_nonneg (by linarith [large₂.sc.one_lt_alt]) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX` using `ResidueCardinalityNilpotence.GlobalTheory.CompanionTheory.VolVal.sig_nonneg ch.G`. Establish `hlog : 0 ≤ Real.log large₂.sc.b` using `Real.log_nonneg hb`. Establish `ha : 0 ≤ (D.R.m : ℝ) * aOne ch.G C large₂.sc.b`. Unfold `aOne`. Establish `: (0 : ℝ) ≤ C` using `hC`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Conclude with `h1.trans (Real.one_le_exp ha)`.
+A detailed English derivation is pending.
 -/
 theorem card_kCosets_theta : _root_.GlobalTheory.FunPr.ThetaLocalInputs → CosK := by
   intro _
@@ -47,7 +47,7 @@ section
 open GlobalTheory.SumCount GlobalTheory.SumSize
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CosCount.card_kCosets_theta | exact _root_.GlobalTheory.CosCount.card_kCosets_theta | (intros; apply _root_.GlobalTheory.CosCount.card_kCosets_theta <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.theta_kCoset_count_formula : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.SumCount.CosK := by
   first | exact @_root_.GlobalTheory.CosCount.card_kCosets_theta | exact _root_.GlobalTheory.CosCount.card_kCosets_theta | (intros; apply _root_.GlobalTheory.CosCount.card_kCosets_theta <;> assumption)

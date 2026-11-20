@@ -12,7 +12,7 @@ namespace MainStatements.WeightKernel.Dec
 namespace DDecay
 
 /- English proof (translation)
-Establish `hS : ((NF D.sp.cm.sig V.gram (pre X j) : Subgroup (GA D V)) : Set (GA D V)) = rat V '' (((frameFlag (isIsoFrame_firstCols hW j)).unipRat D.sp.cm : Subgroup (GF V)) : Set (GF V))`. Rewrite using `[← Subgroup.coe_map, map_unipRat, hB]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation.
 -/
 theorem tsum_eq (D : D7) (V : HSp D) (r : ℕ) (X Y : Matrix (Fin V.rank) (Fin r) D.host.E)
     (hW : IsWittFrame D.sp.cm.sig V.gram X Y) (j : Fin r)
@@ -33,13 +33,13 @@ theorem tsum_eq (D : D7) (V : HSp D) (r : ℕ) (X Y : Matrix (Fin V.rank) (Fin r
 end DDecay
 
 /- English proof (translation)
-Introduce `hCore hBridge D V r X Y hW c hc j f hf hU C W hC hW'`. Take `⟨A, hA⟩` from `hCore D V r X Y hW c hc j`. Establish `hB` using `hBridge D V r X Y hW j`. Establish `hV : Van (unipRad D.sp.cm.sig V.gram (pre X j)) f`. Establish `h0 : Van (NA (frameFlag (isIsoFrame_firstCols hW j))) f` using `fun ν _ x y => (hU ν x y).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[hB]`. Conclude with `h0`. Use `⟨A, fun m => ?_⟩` and prove the remaining obligations. Take `⟨B, hBd⟩` from `hA m f hf hV C W hC hW'`. Use `⟨B, fun t ht a ha x hx y hy => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hBd t ht a ha x hx y hy`. Establish `h2 : ∑' ν : (frameFlag (isIsoFrame_firstCols hW j)).unipRat D.sp.cm, f (x * (a⁻¹ * rat V ν * a) * y) = nsum (NF D.sp.cm.sig V.gram (pre X j)) f (x * a⁻¹) (a * y)`. Rewrite using `[nsum, ← DDecay.tsum_eq D V r X Y hW j hB (fun g => f (x * a⁻¹ * g * (a * y)))]`. Use `congr 1`. Use function extensionality and compare the values at `ν`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `group`. Rewrite using `[h2]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decay : Core → Bridge → Decay := by
   intro hCore hBridge D V r X Y hW c hc j f hf hU C W hC hW'

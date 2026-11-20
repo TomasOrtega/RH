@@ -9,31 +9,29 @@ open CategoryTheory Opposite Matrix GlobalTheory GlobalTheory.PDivGroup GlobalTh
 namespace GlobalTheory.LieHodgeTate
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε G hG`. Take `⟨D, e, fil, lie, hal, -⟩` from `hG`. Establish `hprim : IsPrimitiveRoot (root ε).untilt p`. Use `hε 1` as an intermediate fact. Simplify `this` using `[zeta]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨-, hle, -, hfil, -, -⟩` from `HodgeTateBound.bound p C v O hv ε hprim ℤ_[p] G.height D`. Take `⟨-, -, -, hsurj, hν, -, -⟩` from `GlobalTheory.T.fontaineAinf_localDomain_xiAdic_order p C v O hv ε hprim`. Establish `hsingle : ∀ i, toO e (e.symm (Pi.single i 1)) = Pi.single i 1`. Introduce `i`. Use function extensionality and compare the values at `j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [toO, LinearEquiv.apply_symm_apply]`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hj]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨fun x hx => ?_, fun x => ?_⟩` and prove the remaining obligations. Set `φ : (Fin G.height → O) →ₗ[O] O` to `x ∘ₗ fil.symm.toLinearMap ∘ₗ (LinearMap.codRestrict D.Fil D.al fun u => hle ⟨u, rfl⟩)`. Establish `hφ : φ = 0`. Apply `(Pi.basisFun O (Fin G.height)).ext` to reduce the goal to its premises. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.basisFun_apply, LinearMap.zero_apply, ← hsingle i]`. Establish `h1 : (⟨D.al (toO e (e.symm (Pi.single i 1))), hle ⟨_, rfl⟩⟩ : D.Fil) = fil (hodgeTate G (e.symm (Pi.single i 1)))` using `Subtype.ext (hal _)`. Express the relevant statement in the definitionally equal form `x (fil.symm ⟨D.al _, _⟩) = 0`. Rewrite using `[h1, LinearEquiv.symm_apply_apply]`. Conclude with `hx _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `w`. Take `⟨u, hu⟩` from `hfil _ (fil w).2`. Establish `h1 : WittVector.fontaineTheta O p (nu ε) • fil w = ⟨D.al u, hle ⟨u, rfl⟩⟩` using `Subtype.ext hu.symm`. Establish `h2 : WittVector.fontaineTheta O p (nu ε) * x w = 0`. Rewrite using `[← smul_eq_mul, ← map_smul, ← fil.symm_apply_apply (WittVector.fontaineTheta O p (nu ε) • w), map_smul fil, h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `LinearMap.congr_fun hφ u`. Break down `mul_eq_zero.1 h2 with h | h` into its components or cases. Conclude with `absurd h hν`. Simplify using `using h`. Use `haveI : ValuationRing O := ValuationRing.of_integers v hv haveI : Module.Free O ((Fin G.height → O) ⧸ LinearMap.ker D.bb) := by haveI : Module.Free O (LinearMap.range D.bb) := GlobalTheory.free_of_finite_of_isTorsionFree_of_valuationRing O _`.
+Simplify to obtain the desired conclusion from the available facts. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `Module.Free.of_equiv (D.bb.quotKerEquivRange).symm`. Use `haveI : Module.Free O ((Fin G.height → O) ⧸ D.Fil) := by`. Express the relevant statement in the definitionally equal form `Module.Free O ((Fin G.height → O) ⧸ LinearMap.ker D.bb)`. Use `infer_instance`. Take `⟨N', hN'⟩` from `GlobalTheory.exists_isCompl_of_projective_quotient D.Fil`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `ρ : (Fin G.height → O) →ₗ[O] O` to `x ∘ₗ fil.symm.toLinearMap ∘ₗ D.Fil.projectionOnto N' hN'`. Use `choose r hr using fun i => hsurj (ρ (Pi.single i 1))`. Take `⟨L, hL⟩` from `GlobalTheory.T.hodgeTate_lattice_eq_rowSpace_of_sandwich_datum p C v O hv ε hε G G.height D e fil hal`. Use `⟨L r, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[hL]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hρ : ∀ w, ρ w = ∑ i, WittVector.fontaineTheta O p (r i) * w i`. Introduce `w`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ ρ w]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hr, smul_eq_mul, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `congr 2`. Use function extensionality and compare the values at `j`. Simplify using `[Pi.single_apply, eq_comm]`. Establish `hθ : WittVector.fontaineTheta O p (r ⬝ᵥ (D.F *ᵥ fun i => ofPadic p O (e t i))) = ρ (D.al (toO e t))`. Rewrite using `[hρ, dotProduct, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, RingHom.map_mulVec]`. Both sides reduce to the same expression. Rewrite using `[hθ]`. Establish `h3 : D.Fil.projectionOnto N' hN' (D.al (toO e t)) = fil (hodgeTate G t)`.
-
-Rewrite using `[show D.al (toO e t) = ((fil (hodgeTate G t) : D.Fil) : Fin _ → O) from hal t, Submodule.projectionOnto_apply_left]`. Express the relevant statement in the definitionally equal form `x (fil.symm (D.Fil.projectionOnto N' hN' (D.al (toO e t)))) = _`. Rewrite using `[h3, LinearEquiv.symm_apply_apply]`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ G : PDivGroup p O, HasDatum hε G → (∀ x : G.dual.Lie, (∀ t, x (hodgeTate G t) = 0) → x = 0) ∧ (∀ x : G.dual.Lie, ∃ y : latt G, ∀ t, WittVector.fontaineTheta O p (y.1 t) = x (hodgeTate G t)) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε G hG

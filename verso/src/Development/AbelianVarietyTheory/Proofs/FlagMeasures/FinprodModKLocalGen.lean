@@ -15,7 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.DiffModProd
 
 /- English proof (translation)
-Introduce `h`. Use `absNorm_differentIdeal F (𝓞 F)` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `discr_ne_zero F (Int.natAbs_eq_zero.1 this.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem different_ne_zero (F : Type) [Field F] [NumberField F] : differentIdeal ℤ (𝓞 F) ≠ 0 := by
   intro h
@@ -24,7 +24,7 @@ theorem different_ne_zero (F : Type) [Field F] [NumberField F] : differentIdeal 
   exact discr_ne_zero F (Int.natAbs_eq_zero.1 this.symm)
 
 /- English proof (translation)
-Rewrite using `[← D.what₂.card_Tau]`. Conclude with `(Fintype.card_of_bijective ((Function.bijective_iff_existsUnique _).2 (GlobalTheory.RealPlaces.existsUnique_place D))).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_infinitePlace (D : D7) : Fintype.card (InfinitePlace D.host.E) = D.R.f := by
   rw [← D.what₂.card_Tau]
@@ -32,9 +32,9 @@ theorem card_infinitePlace (D : D7) : Fintype.card (InfinitePlace D.host.E) = D.
     ((Function.bijective_iff_existsUnique _).2 (GlobalTheory.RealPlaces.existsUnique_place D))).symm
 
 /- English proof (translation)
-Take `⟨h1, -⟩` from `GlobalTheory.cm_discr_sq D.host.F D.host.E D.sp.cm`. Establish `hpos : Module.finrank ℚ D.host.E ≠ 0` using `Module.finrank_pos.ne'`. Rewrite using `[card_infinitePlace, ← GlobalTheory.RealPlaces.finrank_E D]`. Unfold `Host.rdE`. Rewrite using `[one_div, Real.rpow_inv_natCast_pow (abs_nonneg _) hpos]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : |(discr D.host.E : ℝ)| = (discr D.host.F : ℝ) ^ 2` using `by exact_mod_cast h1`. Rewrite using `[h3, sq_abs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rdE_pow (D : D7) :
     D.host.rdE ^ (2 * Fintype.card (InfinitePlace D.host.E)) = |(NumberField.discr D.host.F : ℝ)| ^ 2 := by
@@ -47,17 +47,17 @@ theorem rdE_pow (D : D7) :
   rw [h3, sq_abs]
 
 /- English proof (translation)
-Introduce `D Z`. Set `A : GlobalTheory.HL.Places D.host.F D.host.E D.conjF` to `{ quad := D.sp.cm.deg2, loc := D.s.atP, L := fun p => (Z.M p).L, L_cj := fun p => Z.hcj p }`. Establish `hex : ∀ p : PlF D, ∃ ϖ : 𝒪[(D.s.atP p).Fp], Irreducible ϖ` using `fun p => by haveI := (D.s.atP p).lf`. Conclude with `IsDiscreteValuationRing.exists_irreducible _`. Use `choose ϖ hϖ using hex`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ : ∀ p, Z.δ p ≠ 0` using `fun p => (Z.agree p).2.1`. Establish `hI` using `different_ne_zero D.host.F`. Use `set g : PlF D → ℝ := fun p => (GlobalTheory.HL.resQ (ϖ p) : ℝ) ^ GlobalTheory.HL.vE (Z.M p).L (ϖ p) (algebraMap _ _ (Z.δ p)) with hg`. Establish `hmod : ∀ p, (Z.M p).modK (algebraMap _ _ (Z.δ p)) = (g p ^ 2)⁻¹`. Introduce `p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(GlobalTheory.BaseModule.modK_algebraMap (Z.M p) (Z.agree p).1 (ϖ p) (hϖ p)).2 _ (hδ p), hg]`. Simplify using `only`. Rewrite using `[← zpow_natCast, ← zpow_mul, ← zpow_neg]`. Use `congr 1`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hcount : ∀ p, GlobalTheory.HL.vE (Z.M p).L (ϖ p) (algebraMap _ _ (Z.δ p)) = ((Associates.mk p.asIdeal).count (Associates.mk (differentIdeal ℤ (𝓞 D.host.F))).factors : ℕ)` using `fun p => GlobalTheory.IdealResProd.vE_eq_count (D.s.atP p) (Z.M p).L (hϖ p) _ hI (hδ p) (GlobalTheory.T.span_different_eq_localGenerator D Z p)`. Establish `hfin : (Function.mulSupport g).Finite`. Use `(Ideal.finite_factors hI).subset fun p hp => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Apply `hp` to reduce the goal to its premises. Establish `h0 : (Associates.mk p.asIdeal).count (Associates.mk (differentIdeal ℤ (𝓞 D.host.F))).factors = 0`. Assume the negation of the conclusion as `hne`. Conclude with `h ((Associates.count_ne_zero_iff_dvd hI p.irreducible).1 hne)`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[g, hcount p, h0]`. Establish `hprod : ∏ᶠ p, g p = |(NumberField.discr D.host.F : ℝ)|` using `(GlobalTheory.IdealResProd.discr_and_level A ϖ hϖ).1 (fun p => Units.mk0 (Z.δ p) (hδ p)) (fun p => GlobalTheory.T.span_different_eq_localGenerator D Z p)`. Establish `hsupp : (Function.mulSupport fun p : PlF D => (Z.M p).modK (algebraMap _ _ (Z.δ p))) ⊆ Function.mulSupport g` using `fun p hp h => hp (by show (Z.M p).modK _ = 1; rw [hmod, h]; simp)`. Use `⟨hfin.subset hsupp, ?_⟩` and prove the remaining obligations. Rewrite using `[finprod_congr hmod, finprod_inv_distrib, ← finprod_pow hfin, hprod, rdE_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finprod_modK_localGen : ∀ (D : D7) (Z : LocDat D),
     (Function.mulSupport fun p : PlF D => (Z.M p).modK (algebraMap _ _ (Z.δ p))).Finite ∧

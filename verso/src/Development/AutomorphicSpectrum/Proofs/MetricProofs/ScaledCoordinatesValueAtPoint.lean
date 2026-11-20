@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.CovGraph.Spec
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C n => simpa using GroundTheory.Heights₂.Heights.LowerBoundFree.isValueAt_intCast y' z n`. Consider the case `add p q hp hq => simpa using GroundTheory.Heights₂.Heights.LowerBoundFree.isValueAt_add hp hq`. Consider the case `mul_X p i hp => simpa using GroundTheory.Heights₂.Heights.LowerBoundFree.isValueAt_mul hp (hv i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem isValueAt_aeval {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fintype (ι' k)] {Ω : Type} [Field Ω]
     {y' : (Σ k, ι' k) → Ω} {z : (Σ k, ι' k) → ℂ} {σ : Type} {s : σ → Ω} {w : σ → ℂ}
@@ -25,15 +25,15 @@ theorem isValueAt_aeval {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ k, Fin
   | mul_X p i hp => simpa using GroundTheory.Heights₂.Heights.LowerBoundFree.isValueAt_mul hp (hv i)
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ Ω _ a y' z zt e s t hz hzt he ht has hv`. Use `⟨hzt, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨T, hT, hE⟩` from `GroundTheory.Heights₂.Heights.CoordinateConeArithVar.isMultiHomogIdeal a`. Rewrite `hf` using `[hE]`. Proceed by induction on `hf using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Consider the case `mem g hg`. Take `⟨d, hd⟩` from `hT g hg`. Establish `h0 : aeval a g = 0` using `(GlobalTheory.CompanionTheory.Ar.PB.form_mem_mCoordIdeal_iff a hd).1 (by rw [hE]; exact Ideal.subset_span hg)`. Establish `ha : a = fun p => e p.1 * s p` using `funext has`. Establish `h1 : aeval s g = 0`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `GroundTheory.Heights₂.Heights.Inter.ChartNormPts.aeval_smul_homog g d hd e s`. Rewrite `h` using `[← ha, h0]`. Establish `hne : (∏ k, e k ^ d k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (he k)`. Conclude with `(mul_eq_zero.1 h.symm).resolve_left hne`. Establish `hval` using `isValueAt_aeval (w := fun q => t q.1 * zt q) hv g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hval` using `[h1]`. Establish `h2` using `GroundTheory.Heights₂.Heights.LowerBoundFree.isValueAt_zero hz hval`. Rewrite `h2` using `[ReciprocityTheory.ChartRestriction.G.Geo.eval_smul_homog g d hd t zt]`. Establish `hne : (∏ k, t k ^ d k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (ht k)`. Conclude with `(mul_eq_zero.1 h2).resolve_left hne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [map_add, hx, hy]`. Consider the case `smul r x _ hx => simp [smul_eq_mul, map_mul, hx]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_mcPts_of_specialise : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Ω : Type) [Field Ω] (a : (Σ k, ι k) → Ω) (y' : (Σ k, ι' k) → Ω) (z : (Σ k, ι' k) → ℂ) (zt : (Σ k, ι k) → ℂ) (e : K → Ω) (s : (Σ k, ι k) → Ω) (t : K → ℂ), z ∈ mcPts (mCoordIdeal y') → (∀ k, ∃ i, zt ⟨k, i⟩ ≠ 0) → (∀ k, e k ≠ 0) → (∀ k, t k ≠ 0) → (∀ q, a q = e q.1 * s q) → (∀ q, IsValueAt y' (s q) z (t q.1 * zt q)) → zt ∈ mcPts (mCoordIdeal a) := by
   intro K _ ι _ K' _ ι' _ Ω _ a y' z zt e s t hz hzt he ht has hv

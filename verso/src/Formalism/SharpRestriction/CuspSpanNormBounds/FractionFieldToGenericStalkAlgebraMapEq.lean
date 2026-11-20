@@ -100,11 +100,11 @@ def lamRaw (M : Model F E) {m : ℕ} (ZZ : M.Mat (m + 1)) :
     (LinearMap.compLeft (Algebra.linearMap M.R E) (Fin (m + 1)))
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[LinearMap.mem_ker]`. Establish `hmap : (fun i => Algebra.linearMap M.R E (ZZ.Z.mulVecLin w i)) = Matrix.mulVec (ZZ.Z.map M.R.subtype) (fun i => Algebra.linearMap M.R E (w i))`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct, Matrix.map_apply, Algebra.linearMap_apply]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hinv : ∀ v : Fin (m + 1) → E, Matrix.mulVec (ZZ.Z.map M.R.subtype)⁻¹ (Matrix.mulVec (ZZ.Z.map M.R.subtype) v) = v`. Introduce `v`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ ZZ.unit, Matrix.one_mulVec]`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show M.Rsub.mkQ ((Matrix.mulVec (ZZ.Z.map M.R.subtype)⁻¹ (fun i => Algebra.linearMap M.R E (ZZ.Z.mulVecLin w i))) (Fin.last m)) = 0`. Rewrite using `[hmap, hinv, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨w (Fin.last m), rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma lamRaw_range (M : Model F E) {m : ℕ} (ZZ : M.Mat (m + 1)) :
     LinearMap.range ZZ.Z.mulVecLin ≤ LinearMap.ker (M.lamRaw ZZ) := by
@@ -278,7 +278,7 @@ Both sides reduce to the same expression.
 end Pt
 
 /- English proof (translation)
-Rewrite using `[add_assoc, PNat.natPred_add_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem add_natPred_succ (m : ℕ) (s : ℕ+) : m + (s : ℕ) = (m + s.natPred) + 1 := by
   rw [add_assoc, PNat.natPred_add_one]

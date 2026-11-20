@@ -3,27 +3,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 open UpperTheory.V.FW
 
 /- English proof (translation)
-Introduce `k D A _ _ _ _ _ _ ρ x hD h`. Use `letI := Fintype.ofFinite D`. Establish `hexp : ((Monoid.exponent D : ℕ) : k) ≠ 0`. Introduce `h0`. Take `⟨c, hc⟩` from `Group.exponent_dvd_nat_card (G := D)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `hD` to reduce the goal to its premises. Rewrite using `[hc]`. Use `push_cast`. Rewrite using `[h0, zero_mul]`. Use `haveI : NeZero ((Monoid.exponent D : ℕ) : k) := ⟨hexp⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : NeZero (Monoid.exponent D) := ⟨fun h0 => hexp (by rw [h0]; simp)⟩`. Use `haveI : HasEnoughRootsOfUnity k (Monoid.exponent D) := inferInstance`. Establish `hcard : Nat.card (D →* kˣ) = Nat.card D` using `CommGroup.card_monoidHom_of_hasEnoughRootsOfUnity D k`. Use `haveI : Finite (D →* kˣ) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact Nat.card_pos.ne')`. Use `letI := Fintype.ofFinite (D →* kˣ)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∀ ψ : D →* kˣ, x * (∑ d : D, ((ψ d⁻¹ : kˣ) : k) • ρ d) = 0`. Introduce `ψ`. Apply `h ψ` to reduce the goal to its premises. Introduce `g`. Rewrite using `[Finset.mul_sum, Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `Fintype.sum_equiv (Equiv.mulLeft g) _ _ ?_` and prove the remaining obligations. Introduce `d`. Simplify using `only [Equiv.coe_mulLeft, mul_smul_comm, smul_smul, ← map_mul, ← Units.val_mul]`. Use `congr 3`. Rewrite using `[mul_inv, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : ∀ d : D, d ≠ 1 → ∑ ψ : D →* kˣ, ((ψ d⁻¹ : kˣ) : k) = 0`. Introduce `d hd`. Take `⟨φ, hφ⟩` from `CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity D k (a := d⁻¹) (inv_ne_one.mpr hd)`. Establish `e : ∑ ψ : D →* kˣ, ((ψ d⁻¹ : kˣ) : k) = (φ d⁻¹ : k) * ∑ ψ : D →* kˣ, ((ψ d⁻¹ : kˣ) : k)`. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(Fintype.sum_equiv (Equiv.mulLeft φ) _ _ ?_).symm` and prove the remaining obligations. Introduce `ψ`. Simplify using `only [Equiv.coe_mulLeft, MonoidHom.mul_apply, Units.val_mul]`. Establish `hne : ((φ d⁻¹ : kˣ) : k) ≠ 1` using `fun h' => hφ (Units.val_eq_one.mp h')`. Establish `: (1 - ((φ d⁻¹ : kˣ) : k)) * ∑ ψ : D →* kˣ, ((ψ d⁻¹ : kˣ) : k) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[sub_mul, one_mul, ← e, sub_self]`. Conclude with `(mul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr hne.symm)`. Establish `h3 : ∑ ψ : D →* kˣ, ∑ d : D, ((ψ d⁻¹ : kˣ) : k) • ρ d = (Nat.card D : k) • (1 : A)`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single (1 : D)]`. Rewrite using `[← hcard, Nat.card_eq_fintype_card]`. Simplify using the standard rewrite rules. Introduce `d _ hd`. Rewrite using `[h2 d hd, zero_smul]`.
-
-Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`. Establish `h4 : x * ((Nat.card D : k) • (1 : A)) = 0`. Rewrite using `[← h3, Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero fun ψ _ => h1 ψ`.
-
-Rewrite `h4` using `[mul_smul_comm, mul_one]`. Conclude with `(smul_eq_zero.mp h4).resolve_left hD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.sepChar :
     ∀ (k D A : Type) [Field k] [IsAlgClosed k] [CommGroup D] [Finite D] [CommRing A] [Algebra k A] (ρ : D →* A) (x : A), (Nat.card D : k) ≠ 0 → (∀ (ψ : D →* kˣ) (e : A), (∀ d, ρ d * e = (ψ d : k) • e) → x * e = 0) → x = 0 := by

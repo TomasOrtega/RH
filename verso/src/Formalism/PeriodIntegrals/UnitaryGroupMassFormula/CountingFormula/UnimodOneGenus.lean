@@ -32,7 +32,7 @@ def vPr (f : Fin D.R.rS → (VS D).V) (v : (VS D).V) : (VS D).V :=
   v - ∑ a, (VS D).hT (F0.e a) v • f a
 
 /- English proof (translation)
-Simplify using `only [vPr, map_add, add_smul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem vPr_add (f : Fin D.R.rS → (VS D).V) (v w : (VS D).V) :
     vPr D F0 f (v + w) = vPr D F0 f v + vPr D F0 f w := by
@@ -40,20 +40,20 @@ theorem vPr_add (f : Fin D.R.rS → (VS D).V) (v w : (VS D).V) :
   abel
 
 /- English proof (translation)
-Simplify using `only [vPr, map_smul, smul_eq_mul, mul_smul, smul_sub, Finset.smul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vPr_smul (f : Fin D.R.rS → (VS D).V) (c : D.host.E) (v : (VS D).V) :
     vPr D F0 f (c • v) = c • vPr D F0 f v := by
   simp only [vPr, map_smul, smul_eq_mul, mul_smul, smul_sub, Finset.smul_sum]
 
 /- English proof (translation)
-Simplify using `[vPr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vPr_zero (f : Fin D.R.rS → (VS D).V) : vPr D F0 f 0 = 0 := by
   simp [vPr]
 
 /- English proof (translation)
-Establish `h` using `Submodule.add_mem (I : Submodule (𝓞 D.host.E) D.host.E) (FractionalIdeal.mem_coe.mpr hx) (FractionalIdeal.mem_coe.mpr hy)`. Conclude with `FractionalIdeal.mem_coe.mp h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fi_add {I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E} {x y : D.host.E}
     (hx : x ∈ I) (hy : y ∈ I) : x + y ∈ I := by
@@ -62,13 +62,13 @@ theorem fi_add {I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E} 
   exact FractionalIdeal.mem_coe.mp h
 
 /- English proof (translation)
-Conclude with `FractionalIdeal.mem_coe.mp (Submodule.zero_mem (I : Submodule (𝓞 D.host.E) D.host.E))`.
+A detailed English derivation is pending.
 -/
 theorem fi_zero (I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : (0 : D.host.E) ∈ I := by
   exact FractionalIdeal.mem_coe.mp (Submodule.zero_mem (I : Submodule (𝓞 D.host.E) D.host.E))
 
 /- English proof (translation)
-Establish `h` using `Submodule.smul_mem (I : Submodule (𝓞 D.host.E) D.host.E) o (FractionalIdeal.mem_coe.mpr hx)`. Rewrite `h` using `[Algebra.smul_def]`. Conclude with `FractionalIdeal.mem_coe.mp h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fi_mul {I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E} (o : 𝓞 D.host.E) {x : D.host.E}
     (hx : x ∈ I) : (o : D.host.E) * x ∈ I := by
@@ -77,7 +77,7 @@ theorem fi_mul {I : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E} 
   exact FractionalIdeal.mem_coe.mp h
 
 /- English proof (translation)
-Conclude with `⟨NumberField.RingOfIntegers.mapRingHom (starRingEnd D.host.E) o, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem star_int (o : 𝓞 D.host.E) : ∃ o' : 𝓞 D.host.E, (o' : D.host.E) = star (o : D.host.E) := by
   exact ⟨NumberField.RingOfIntegers.mapRingHom (starRingEnd D.host.E) o, rfl⟩
@@ -143,11 +143,11 @@ def LocGenXS : Prop :=
         Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Submodule.span (𝓞 D.host.E) (Set.range fun a => c a • F0.e a)))
 
 /- English proof (translation)
-Introduce `D u F0 M hM`. Take `⟨f, hf⟩` from `hP D u F0`. Take `⟨hz, hX, hprim, hMof⟩` from `hF D u F0 f M hf hM`. Establish `hLat` using `hL D u F0 f M hf hM`. Establish `hUn` using `hU D u F0 f M hf hM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨lamC D F0 f M, ?_, hMof⟩` and prove the remaining obligations. Use `⟨?_, ⟨hLat, hUn, ⟨hz, rfl⟩, ?_, hprim⟩, hX⟩` and prove the remaining obligations. Conclude with `⟨hLat, hJ D.host.E (VS D).V (VS D).hT D.sp.cm.cmUnram (VS D).herm (VS D).nondeg (VS D).L0 (lamC D F0 f M) (VS D).standardTuple_isLattice hLat (VS D).baseLattice_isUnimodular hUn⟩`. Introduce `P`. Rewrite using `[hX]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hG D u F0 P`.
+A detailed English derivation is pending.
 -/
 theorem rowSurj_of (hJ : UnimodOneGenus) (hP : PartnerEx) (hL : LamLattice) (hU : LamUnimod)
     (hF : LamFlag) (hG : LocGenXS) : RowSurj := by

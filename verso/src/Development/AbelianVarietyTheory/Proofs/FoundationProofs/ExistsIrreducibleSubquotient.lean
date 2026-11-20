@@ -22,15 +22,13 @@ def stab (π : Representation ℂ G V) (v : V) : Subgroup G where
     rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Use `zorn_le_nonempty₀ {U : Subrepresentation π | v ∉ U.toSubmodule} ?_ ⊥ (by` as an intermediate fact. Introduce `h`. Conclude with `hv h)`. Take `⟨T, -, hT⟩` from `this`. Conclude with `⟨T, hT⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc hch y hy`. Use `haveI : Nonempty c := ⟨⟨y, hy⟩⟩`. Establish `hdir : Directed (· ≤ ·) (fun U : c => U.1.toSubmodule)`. Introduce `a b`. Break down `hch.total a.2 b.2 with h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨b, h, le_rfl⟩`. Conclude with `⟨a, le_rfl, h⟩`. Use `⟨⟨⨆ U : c, U.1.toSubmodule, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `g x hx`. Rewrite `hx`, the goal using `[Submodule.mem_iSup_of_directed _ hdir]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨U, hU⟩` from `hx`. Conclude with `⟨U, U.1.apply_mem_toSubmodule g hU⟩`. Introduce `hx`. Take `⟨U, hU⟩` from `(Submodule.mem_iSup_of_directed _ hdir).1 hx`. Conclude with `hc U.2 hU`.
-
-Introduce `U hU x hx`. Conclude with `(Submodule.mem_iSup_of_directed _ hdir).2 ⟨⟨U, hU⟩, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_maximal (π : Representation ℂ G V) {v : V} (hv : v ≠ 0) :
     ∃ T : Subrepresentation π, Maximal (fun U : Subrepresentation π => v ∉ U.toSubmodule) T := by
@@ -78,9 +76,9 @@ def lift {π : Representation ℂ G V} {σ : Representation ℂ G W} (S : Subrep
     exact R.apply_mem_toSubmodule g hx'
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hxy⟩`. Take `rfl : y = x` from `Subtype.ext hxy`. Conclude with `hy`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨x, h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_lift {π : Representation ℂ G V} {σ : Representation ℂ G W} (S : Subrepresentation π)
     (f : S.toRepresentation.IntertwiningMap σ) (R : Subrepresentation σ) (x : S.toSubmodule) :

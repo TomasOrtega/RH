@@ -18,9 +18,9 @@ variable {F : Type} [Field F] [NumberField F]
 end Trace
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB`. Use `haveI : IsTotallyReal F := hB.cm.1`. Use `⟨isCharAF hB.std, ⟨?_, fun θ hθ x => ?_⟩⟩` and prove the remaining obligations. Use `choose θ hθ using fun w : InfinitePlace F => GlobalTheory.DualPairCompare.gen_inf_exists (B.emb w).1 w (B.emb w).2.symm`. Conclude with `⟨θ, hθ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `show B.ψ (pairA F x 0) = _`. Rewrite using `[psi_pairA hB.std, sum_infFam B θ hθ x]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isStdCharF_of_isGood_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E),

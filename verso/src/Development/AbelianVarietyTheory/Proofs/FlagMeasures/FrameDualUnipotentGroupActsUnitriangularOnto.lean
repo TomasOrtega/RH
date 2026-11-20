@@ -17,46 +17,46 @@ def lf (w : V) : V →ₗ[E] E where
   map_smul' a x := by simp [H.h_smul_left]
 
 /- English proof (translation)
-The claim follows from `H.h_herm y x`.
+A detailed English derivation is pending.
 -/
 lemma h_right (x y : V) : H.h x y = M.L.cj (H.h y x) := H.h_herm y x
 
 /- English proof (translation)
-The claim follows from `(lf H y).map_sub x x'`.
+A detailed English derivation is pending.
 -/
 lemma h_sub_left (x x' y : V) : H.h (x - x') y = H.h x y - H.h x' y := (lf H y).map_sub x x'
 
 /- English proof (translation)
-The claim follows from `(lf H y).map_neg x`.
+A detailed English derivation is pending.
 -/
 lemma h_neg_left (x y : V) : H.h (-x) y = -H.h x y := (lf H y).map_neg x
 
 /- English proof (translation)
-Rewrite using `[h_right H x, H.h_add_left, map_add, ← h_right, ← h_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma h_add_right (x y y' : V) : H.h x (y + y') = H.h x y + H.h x y' := by
   rw [h_right H x, H.h_add_left, map_add, ← h_right, ← h_right]
 
 /- English proof (translation)
-Rewrite using `[h_right H x, h_sub_left, map_sub, ← h_right, ← h_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma h_sub_right (x y y' : V) : H.h x (y - y') = H.h x y - H.h x y' := by
   rw [h_right H x, h_sub_left, map_sub, ← h_right, ← h_right]
 
 /- English proof (translation)
-Rewrite using `[h_right H x, h_neg_left, map_neg, ← h_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma h_neg_right (x y : V) : H.h x (-y) = -H.h x y := by
   rw [h_right H x, h_neg_left, map_neg, ← h_right]
 
 /- English proof (translation)
-Rewrite using `[h_right H x, H.h_smul_left, map_mul, ← h_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma h_smul_right (a : E) (x y : V) : H.h x (a • y) = M.L.cj a * H.h x y := by
   rw [h_right H x, H.h_smul_left, map_mul, ← h_right]
 
 /- English proof (translation)
-Rewrite using `[h_right, H.h_zero_left, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma h_zero_right (x : V) : H.h x 0 = 0 := by
   rw [h_right, H.h_zero_left, map_zero]
@@ -72,14 +72,14 @@ def eichL (x v : V) (c : F) : V →ₗ[E] V where
     simp only [eichF, H.h_smul_left, RingHom.id_apply]; module
 
 /- English proof (translation)
-Simplify using `only [eichF, H.h_add_left, h_sub_left, H.h_smul_left]`.
+Simplify using the standard rewrite rules.
 -/
 lemma eich_hL (x v : V) (c : F) (y w : V) : H.h (eichF H x v c y) w =
     H.h y w + H.h y v * H.h x w - H.h y x * H.h v w + algebraMap F E c * H.h y x * H.h x w := by
   simp only [eichF, H.h_add_left, h_sub_left, H.h_smul_left]
 
 /- English proof (translation)
-Simplify using `only [eichF, h_add_right, h_sub_right, h_smul_right, map_mul, AlgEquiv.commutes]`.
+Simplify using the standard rewrite rules.
 -/
 lemma eich_hR (x v : V) (c : F) (w y : V) : H.h w (eichF H x v c y) =
     H.h w y + M.L.cj (H.h y v) * H.h w x - M.L.cj (H.h y x) * H.h w v +
@@ -87,7 +87,7 @@ lemma eich_hR (x v : V) (c : F) (w y : V) : H.h w (eichF H x v c y) =
   simp only [eichF, h_add_right, h_sub_right, h_smul_right, map_mul, AlgEquiv.commutes]
 
 /- English proof (translation)
-Simplify using `[eichF, h1, h2]`.
+Simplify using the standard rewrite rules.
 -/
 lemma eich_fix (x v : V) (c : F) (y : V) (h1 : H.h y v = 0) (h2 : H.h y x = 0) : eichF H x v c y = y := by
   simp [eichF, h1, h2]
@@ -96,9 +96,9 @@ section Eich
 variable {x v : V} {c : F}
 
 /- English proof (translation)
-Establish `hvx : H.h v x = 0` using `by rw [h_right, hxv, map_zero]`. Establish `e1 : H.h x y' = M.L.cj (H.h y' x)` using `h_right H x y'`. Establish `e2 : H.h v y' = M.L.cj (H.h y' v)` using `h_right H v y'`. Simplify using `only [eich_hL, eich_hR]`. Rewrite using `[hxx, hxv, hvx, e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(H.h y x * M.L.cj (H.h y' x)) * hc`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma eich_isom (hxx : H.h x x = 0) (hxv : H.h x v = 0)
     (hc : 2 * algebraMap F E c + H.h v v = 0) (y y' : V) :
@@ -111,11 +111,11 @@ lemma eich_isom (hxx : H.h x x = 0) (hxv : H.h x v = 0)
   linear_combination (H.h y x * M.L.cj (H.h y' x)) * hc
 
 /- English proof (translation)
-Establish `hvx : H.h v x = 0` using `by rw [h_right, hxv, map_zero]`. Establish `e1 : H.h (eichF H (-x) v c y) v = H.h y v + H.h y x * H.h v v`. Rewrite using `[eich_hL, h_neg_left, h_neg_right, hxv]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : H.h (eichF H (-x) v c y) x = H.h y x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[eich_hL, h_neg_left, h_neg_right, hxx, hvx]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : eichF H x v c (eichF H (-x) v c y) - y = ((2 * algebraMap F E c + H.h v v) * H.h y x) • x`. Unfold `eichF at e1 e2 ⊢`. Rewrite using `[e1, e2, h_neg_right]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `module`. Rewrite `key` using `[hc, zero_mul, zero_smul, sub_eq_zero]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma eich_inv (hxx : H.h x x = 0) (hxv : H.h x v = 0)
     (hc : 2 * algebraMap F E c + H.h v v = 0) (y : V) :
@@ -153,17 +153,17 @@ lemma eichE_apply (hxx : H.h x x = 0) (hxv : H.h x v = 0) (hc : 2 * algebraMap F
 end Eich
 
 /- English proof (translation)
-Establish `hs : ∀ j, j ≤ r → ∀ w ∈ A j, ∃ v ∈ A j, g v = w`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_ w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hw`, the goal using `[h0]`. Conclude with `⟨0, by simp, by simpa using hw.symm⟩`. Consider the case `succ j ih`. Introduce `hj w hw`. Take `⟨u, hu, hgu⟩` from `ih (by omega) _ (hg j (by omega) w hw)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨w - u, (A (j + 1)).sub_mem hw (hm j hu), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, hgu]`. Normalize the expressions using the abelian group laws. Introduce `j hj v`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Take `⟨u, hu, hgu⟩` from `hs j hj _ h`. Rewrite using `[← g.injective hgu]` and apply the resulting hypothesis. Introduce `h`. Consider the cases of `j with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Rewrite `h`, the goal using `[h0]`. Simplify using `using h`. Consider the case `succ j`. Establish `h1` using `(A (j + 1)).add_mem (hm j (hg j (by omega) v h)) h`.
+Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `using h1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma flag_iff {R W : Type} [CommRing R] [AddCommGroup W] [Module R W] (A : ℕ → Submodule R W)
     (h0 : A 0 = ⊥) (hm : ∀ j, A j ≤ A (j + 1)) (r : ℕ) (g : W ≃ₗ[R] W)
@@ -199,18 +199,18 @@ section Frame
 variable {H} {r : ℕ} (Fr : FrameD H r)
 
 /- English proof (translation)
-Simplify using `[FrameD.Fj]`.
+Simplify using the standard rewrite rules.
 -/
 lemma Fj_zero : Fr.Fj 0 = ⊥ := by simp [FrameD.Fj]
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono fun i (hi : (i : ℕ) < j) => (show (i : ℕ) < j' by omega))`.
+A detailed English derivation is pending.
 -/
 lemma Fj_mono {j j' : ℕ} (h : j ≤ j') : Fr.Fj j ≤ Fr.Fj j' :=
   Submodule.span_mono (Set.image_mono fun i (hi : (i : ℕ) < j) => (show (i : ℕ) < j' by omega))
 
 /- English proof (translation)
-Unfold `FrameD.Fj HermSp.X`. Use `congr 1`. Use extensionality with `x`. Simplify using `[FrameD.e]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma Fj_r : Fr.Fj r = H.X Fr.f := by
   unfold FrameD.Fj HermSp.X
@@ -219,14 +219,14 @@ lemma Fj_r : Fr.Fj r = H.X Fr.f := by
   simp [FrameD.e]
 
 /- English proof (translation)
-Unfold `FrameD.Fj HermSp.X`. Conclude with `Submodule.span_mono (by rintro _ ⟨a, _, rfl⟩; exact ⟨a, rfl⟩)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma Fj_le_X (j : ℕ) : Fr.Fj j ≤ H.X Fr.f := by
   unfold FrameD.Fj HermSp.X
   exact Submodule.span_mono (by rintro _ ⟨a, _, rfl⟩; exact ⟨a, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨a, by simp, rfl⟩`.
+A detailed English derivation is pending.
 -/
 lemma e_mem (a : Fin r) : Fr.f a.castSucc ∈ Fr.Fj (a.val + 1) :=
   Submodule.subset_span ⟨a, by simp, rfl⟩
@@ -238,7 +238,7 @@ lemma span_fin_eq (a : Fin r) :
     Submodule.span E ((fun b : Fin r => Fr.f b.castSucc) '' {b | b < a}) = Fr.Fj a.val := rfl
 
 /- English proof (translation)
-Establish `: H.X Fr.f ≤ LinearMap.ker (lf H y)` using `Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact h a)`. Conclude with `fun w hw => this hw`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma perp_gen (y : V) (h : ∀ a : Fin r, H.h (Fr.f a.castSucc) y = 0) :
     ∀ w ∈ H.X Fr.f, H.h w y = 0 := by
@@ -247,7 +247,7 @@ lemma perp_gen (y : V) (h : ∀ a : Fin r, H.h (Fr.f a.castSucc) y = 0) :
   exact fun w hw => this hw
 
 /- English proof (translation)
-Introduce `w hw w' hw'`. Use `perp_gen Fr w' (fun a => ?_) w hw` and prove the remaining obligations. Rewrite using `[h_right, perp_gen Fr _ (fun b => Fr.h_iso _ _ (Or.inl (Fin.castSucc_ne_last b))) w' hw', map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma X_iso : ∀ w ∈ H.X Fr.f, ∀ w' ∈ H.X Fr.f, H.h w w' = 0 := by
   intro w hw w' hw'
@@ -255,31 +255,31 @@ lemma X_iso : ∀ w ∈ H.X Fr.f, ∀ w' ∈ H.X Fr.f, H.h w w' = 0 := by
   rw [h_right, perp_gen Fr _ (fun b => Fr.h_iso _ _ (Or.inl (Fin.castSucc_ne_last b))) w' hw', map_zero]
 
 /- English proof (translation)
-The claim follows from `perp_gen Fr _ (fun b => Fr.h_iso _ _ (Or.inl (Fin.castSucc_ne_last b)))`.
+A detailed English derivation is pending.
 -/
 lemma pairing_isotropicSpan_lastVector : ∀ w ∈ H.X Fr.f, H.h w (Fr.f (Fin.last r)) = 0 :=
   perp_gen Fr _ (fun b => Fr.h_iso _ _ (Or.inl (Fin.castSucc_ne_last b)))
 
 /- English proof (translation)
-Introduce `w hw`. Rewrite using `[h_right, pairing_isotropicSpan_lastVector Fr w hw, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 lemma z_X : ∀ w ∈ H.X Fr.f, H.h (Fr.f (Fin.last r)) w = 0 := by
   intro w hw; rw [h_right, pairing_isotropicSpan_lastVector Fr w hw, map_zero]
 
 /- English proof (translation)
-Introduce `w hw` and use `z_X Fr w hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma z_perp : Fr.f (Fin.last r) ∈ H.perp (H.X Fr.f) := fun w hw => z_X Fr w hw
 
 /- English proof (translation)
-Introduce `w hw w' hw'` and use `X_iso Fr w hw w' hw'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma X_le_perp : H.X Fr.f ≤ H.perp (H.X Fr.f) := fun w hw w' hw' => X_iso Fr w hw w' hw'
 
 /- English proof (translation)
-Establish `: Fr.Fj j ≤ LinearMap.ker (lf H (Fr.es b))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Establish `hab : a ≠ b`. Introduce `h; subst h; exact absurd (show a.val < j from ha) (by omega)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show H.h (Fr.f a.castSucc) (Fr.es b) = 0`. Rewrite using `[Fr.h_es, if_neg hab]`. Conclude with `fun w hw => this hw`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 lemma Fj_es (j : ℕ) (b : Fin r) (hb : j ≤ b.val) : ∀ w ∈ Fr.Fj j, H.h w (Fr.es b) = 0 := by
   have : Fr.Fj j ≤ LinearMap.ker (lf H (Fr.es b)) := by
@@ -292,7 +292,7 @@ lemma Fj_es (j : ℕ) (b : Fin r) (hb : j ≤ b.val) : ∀ w ∈ Fr.Fj j, H.h w 
   exact fun w hw => this hw
 
 /- English proof (translation)
-Rewrite using `[h_right, Fr.h_sz, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma z_es (b : Fin r) : H.h (Fr.f (Fin.last r)) (Fr.es b) = 0 := by
   rw [h_right, Fr.h_sz, map_zero]
@@ -303,11 +303,9 @@ section NUgrp
 variable {H} {r : ℕ} (Fr : FrameD H r)
 
 /- English proof (translation)
-Introduce `j hj`. Establish `: Fr.Fj (j + 1) ≤ (Fr.Fj j).comap ((g : V →ₗ[E] V) - LinearMap.id)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Establish `h2` using `hg.2.1 a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h2` using `[span_fin_eq]`. Establish `ha' : a.val < j + 1` using `ha`. Use `show g (Fr.f a.castSucc) - Fr.f a.castSucc ∈ Fr.Fj j`. Conclude with `Fj_mono Fr (by omega) h2`. Introduce `v hv`.
-
-Conclude with `this hv`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma NU_step {g : V ≃ₗ[E] V} (hg : g ∈ NU H Fr.f) :
     ∀ j, j < r → ∀ v ∈ Fr.Fj (j + 1), g v - v ∈ Fr.Fj j := by
@@ -324,7 +322,7 @@ lemma NU_step {g : V ≃ₗ[E] V} (hg : g ∈ NU H Fr.f) :
   exact this hv
 
 /- English proof (translation)
-The claim follows from `flag_iff Fr.Fj (Fj_zero Fr) (fun j => Fj_mono Fr (Nat.le_succ j)) r g (NU_step Fr hg)`.
+A detailed English derivation is pending.
 -/
 lemma NU_flag {g : V ≃ₗ[E] V} (hg : g ∈ NU H Fr.f) : ∀ j, j ≤ r → ∀ v, g v ∈ Fr.Fj j ↔ v ∈ Fr.Fj j :=
   flag_iff Fr.Fj (Fj_zero Fr) (fun j => Fj_mono Fr (Nat.le_succ j)) r g (NU_step Fr hg)
@@ -369,11 +367,11 @@ def NUg : Subgroup (V ≃ₗ[E] V) where
       rw [this]; exact neg_mem hg3
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Use `⟨h1, fun a => ?_, h3⟩` and prove the remaining obligations. Rewrite using `[span_fin_eq]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `h2 (a.val + 1) a.isLt (Fr.f a.castSucc) (e_mem Fr a)` as an intermediate fact. Simplify using `using this`. Introduce `hg`. Use `⟨hg.1, fun j hj v hv => ?_, hg.2.2⟩` and prove the remaining obligations. Consider the cases of `j with`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Rewrite `hv` using `[Fj_zero]`. Rewrite using `[(Submodule.mem_bot E).1 hv]`. Simplify using the standard rewrite rules. Consider the case `succ j => simpa using NU_step Fr hg j hj v hv`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 lemma NSet_eq : Fr.NSet = (NUg Fr : Set (V ≃ₗ[E] V)) := by
   ext g
@@ -392,7 +390,7 @@ lemma NSet_eq : Fr.NSet = (NUg Fr : Set (V ≃ₗ[E] V)) := by
     | succ j => simpa using NU_step Fr hg j hj v hv
 
 /- English proof (translation)
-Unfold `FrameD.N`. Rewrite using `[NSet_eq, Subgroup.closure_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma N_eq : Fr.N = NUg Fr := by
   unfold FrameD.N
@@ -403,11 +401,11 @@ end NUgrp
 section Tri
 
 /- English proof (translation)
-Establish `h' : ∀ b, ∃ l ∈ Finsupp.supported E E {a : Fin n | a.val < b.val}, Finsupp.linearCombination E f l = g b - f b` using `fun b => (Finsupp.mem_span_image_iff_linearCombination E).1 (h b)`. Use `choose L hL hLeq using h'`. Establish `hz : ∀ a b : Fin n, ¬ a.val < b.val → L b a = 0`. Introduce `a b hab`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hab (hL b (Finsupp.mem_support_iff.2 hne))`. Use `⟨fun a b => (if a = b then 1 else 0) + L b a, ⟨fun a b hba => ?_, fun a => ?_⟩, fun b => ?_⟩` and prove the remaining obligations. Establish `hne : a ≠ b` using `fun h => by subst h; exact lt_irrefl _ hba`. Simplify using `only [if_neg hne, zero_add]`. Conclude with `hz a b (by have : b.val < a.val := hba; omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[hz a a (lt_irrefl _)]`. Establish `e1` using `hLeq b`. Rewrite `e1` using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `only [add_smul, Finset.sum_add_distrib, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true, e1]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 lemma tri_of_mem {n : ℕ} (f g : Fin n → V)
     (h : ∀ b, g b - f b ∈ Submodule.span E (f '' {a | a.val < b.val})) : Tri E f g := by
@@ -431,13 +429,11 @@ lemma tri_of_mem {n : ℕ} (f g : Fin n → V)
     abel
 
 /- English proof (translation)
-Take `⟨A, ⟨hlow, hdiag⟩, hchg⟩` from `hg`. Introduce `b`. Establish `: g b - f b = ∑ a, (A a b - if a = b then 1 else 0) • f a`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true, hchg b]`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `hab : a.val < b.val`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, hab, rfl⟩)`. Distinguish the cases in `he : a = b`. Substitute `he` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hdiag]`. Establish `: b < a`. Establish `: a.val ≠ b.val` using `fun h => he (Fin.ext h)`. Use `show b.val < a.val`. Use linear arithmetic over natural numbers and integers.
-
-Simplify using `[hlow a b this, he]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma mem_of_tri {n : ℕ} (f g : Fin n → V) (hg : Tri E f g) :
     ∀ b, g b - f b ∈ Submodule.span E (f '' {a | a.val < b.val}) := by
@@ -460,9 +456,9 @@ lemma mem_of_tri {n : ℕ} (f g : Fin n → V) (hg : Tri E f g) :
 variable {H} {r : ℕ} (Fr : FrameD H r)
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Establish `ha' : a.val < j` using `ha`. Establish `: a = (⟨a.val, by omega⟩ : Fin r).castSucc` using `Fin.ext rfl`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨⟨a.val, by omega⟩, ha', rfl⟩`.
+A detailed English derivation is pending.
 -/
 lemma spanf_le (j : ℕ) (hj : j ≤ r) : Submodule.span E (Fr.f '' {a | a.val < j}) ≤ Fr.Fj j := by
   refine Submodule.span_le.2 ?_
@@ -473,7 +469,7 @@ lemma spanf_le (j : ℕ) (hj : j ≤ r) : Submodule.span E (Fr.f '' {a | a.val <
   exact Submodule.subset_span ⟨⟨a.val, by omega⟩, ha', rfl⟩
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `Submodule.subset_span ⟨a.castSucc, ha, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma Fj_le_spanf (j : ℕ) : Fr.Fj j ≤ Submodule.span E (Fr.f '' {a | a.val < j}) := by
   refine Submodule.span_le.2 ?_
@@ -481,9 +477,9 @@ lemma Fj_le_spanf (j : ℕ) : Fr.Fj j ≤ Submodule.span E (Fr.f '' {a | a.val <
   exact Submodule.subset_span ⟨a.castSucc, ha, rfl⟩
 
 /- English proof (translation)
-Introduce `b`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Use `hn.2.2 _ (z_perp Fr)` as an intermediate fact. Rewrite `this` using `[← Fj_r]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Fj_le_spanf Fr r (by simpa using this)`. Consider the case `cast c`. Use `hn.2.1 c` as an intermediate fact. Rewrite `this` using `[span_fin_eq]`. Conclude with `Fj_le_spanf Fr c.val (by simpa using this)`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma NU_mem {n : V ≃ₗ[E] V} (hn : n ∈ NU H Fr.f) :
     ∀ b, n (Fr.f b) - Fr.f b ∈ Submodule.span E (Fr.f '' {a | a.val < b.val}) := by
@@ -504,11 +500,11 @@ section Onto
 variable {H} {r : ℕ} (Fr : FrameD H r)
 
 /- English proof (translation)
-Use `⟨fun y y' => eich_isom H (X_iso Fr x hx x hx) hxv hc y y', fun a => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[span_fin_eq, eichE_apply]`. Establish `h0 : H.h (Fr.f a.castSucc) x = 0` using `X_iso Fr _ (Fj_le_X Fr (a.val + 1) (e_mem Fr a)) x hx`. Establish `: eichF H x v c (Fr.f a.castSucc) - Fr.f a.castSucc = H.h (Fr.f a.castSucc) v • x`. Simplify using `[eichF, h0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `h2 a`. Rewrite using `[eichE_apply]`. Establish `h0 : H.h y x = 0` using `hy x hx`. Establish `: eichF H x v c y - y = H.h y v • x` using `by simp [eichF, h0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`.
+A detailed English derivation is pending.
 -/
 lemma eich_mem {x v : V} {c : F} (hx : x ∈ H.X Fr.f) (hxv : H.h x v = 0)
     (hc : 2 * algebraMap F E c + H.h v v = 0)
@@ -527,23 +523,21 @@ lemma eich_mem {x v : V} {c : F} (hx : x ∈ H.X Fr.f) (hxv : H.h x v = 0)
     rw [this]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro _; exact ⟨1, (NUg Fr).one_mem, fun c => by simp, by simp⟩`. Consider the case `succ k ih`. Introduce `hk`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨n, hn, hne, hnz⟩` from `ih (by omega)`. Use `set kk : Fin r := ⟨k, by omega⟩ with hkk`. Establish `hx : u kk ∈ H.X Fr.f` using `Fj_le_X Fr _ (hu kk)`. Establish `hxv : H.h (u kk) (Fr.es kk) = 0` using `Fj_es Fr kk.val kk le_rfl _ (hu kk)`. Establish `hc : 2 * algebraMap F E (0 : F) + H.h (Fr.es kk) (Fr.es kk) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fr.h_ss, map_zero]`. Expand and normalize the polynomial expressions, which then agree. Establish `hM` using `eich_mem Fr hx hxv hc (fun a => by`. Rewrite using `[Fr.h_es]`. Distinguish the cases in `hak : a = kk`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hak` using the available equality. Simplify using `using hu _`. Simplify using `[hak])`. Use `⟨_ * n, mul_mem hM hn, fun c => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.mul_apply, hne c, eichE_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcx : H.h (Fr.f c.castSucc) (u kk) = 0` using `X_iso Fr _ (Fj_le_X Fr (c.val + 1) (e_mem Fr c)) _ hx`. Distinguish the cases in `hck : c.val < k`. Establish `hfix : eichF H (u kk) (Fr.es kk) 0 (u c) = u c` using `eich_fix H _ _ _ _ (Fj_es Fr c.val kk (by simp [hkk]; omega) _ (hu c)) (X_iso Fr _ (Fj_le_X Fr _ (hu c)) _ hx)`. Establish `hne' : c ≠ kk` using `fun h => by subst h; simp [hkk] at hck`. Establish `hadd : eichF H (u kk) (Fr.es kk) 0 (Fr.f c.castSucc + u c) = eichF H (u kk) (Fr.es kk) 0 (Fr.f c.castSucc) + eichF H (u kk) (Fr.es kk) 0 (u c)` using `(eichL H (u kk) (Fr.es kk) 0).map_add _ _`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hes : H.h (Fr.f c.castSucc) (Fr.es kk) = 0` using `by rw [Fr.h_es, if_neg hne']`. Rewrite using `[if_pos hck, if_pos (by omega), hadd, hfix]`. Simplify using `[eichF, hcx, hes]`. Rewrite using `[if_neg hck]`. Distinguish the cases in `hce : c = kk`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hce` using the available equality. Establish `h1 : H.h (Fr.f kk.castSucc) (Fr.es kk) = 1` using `by rw [Fr.h_es, if_pos rfl]`. Establish `: kk.val < k + 1` using `by simp [hkk]`. Rewrite using `[if_pos this]`. Simplify using `[eichF, hcx, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: ¬ c.val < k + 1` using `fun h => hce (Fin.ext (by simp [hkk]; omega))`. Establish `hes : H.h (Fr.f c.castSucc) (Fr.es kk) = 0` using `by rw [Fr.h_es, if_neg hce]`. Rewrite using `[if_neg this]`. Simplify using `[eichF, hcx, hes]`. Rewrite using `[LinearEquiv.mul_apply, hnz, eichE_apply]`.
-
-Conclude with `eich_fix H _ _ _ _ (z_es Fr kk) (z_X Fr _ hx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma levi (u : Fin r → V) (hu : ∀ c, u c ∈ Fr.Fj c.val) :
     ∀ k, k ≤ r → ∃ n ∈ NUg Fr, (∀ c : Fin r, n (Fr.f c.castSucc) =
@@ -599,21 +593,19 @@ section Final
 variable {H} {r : ℕ} (Fr : FrameD H r)
 
 /- English proof (translation)
-Establish `hm` using `mem_of_tri Fr.f g hg`. Establish `hu : ∀ c : Fin r, g c.castSucc - Fr.f c.castSucc ∈ Fr.Fj c.val` using `fun c => spanf_le Fr c.val c.isLt.le (by simpa using hm c.castSucc)`. Take `⟨n0, hn0, hne, hnz⟩` from `levi Fr (fun c => g c.castSucc - Fr.f c.castSucc) hu r le_rfl`. Establish `hx0 : g (Fin.last r) - Fr.f (Fin.last r) ∈ H.X Fr.f`. Rewrite using `[← Fj_r]; exact spanf_le Fr r le_rfl (by simpa using hm (Fin.last r))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set x0 := g (Fin.last r) - Fr.f (Fin.last r) with hx0d`. Use `set v0 : V := algebraMap F E (-Fr.T⁻¹) • Fr.f (Fin.last r) with hv0d`. Establish `hvz : ∀ y ∈ H.X Fr.f, H.h y v0 = 0` using `fun y hy => by`. Rewrite using `[hv0d, h_smul_right, pairing_isotropicSpan_lastVector Fr y hy, mul_zero]`. Establish `hxv : H.h x0 v0 = 0` using `hvz x0 hx0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : 2 * algebraMap F E ((2 * Fr.T)⁻¹) + H.h v0 v0 = 0`. Establish `key : (2 : F) * (2 * Fr.T)⁻¹ + (-Fr.T⁻¹) * ((-Fr.T⁻¹) * -Fr.T) = 0` using `by field_simp; ring`. Establish `key'` using `congrArg (algebraMap F E) key`. Simplify using `only [map_add, map_mul, map_neg, map_ofNat, map_zero] at key'`. Rewrite using `[hv0d, H.h_smul_left, h_smul_right, AlgEquiv.commutes, Fr.h_zz]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [map_neg]`. Take the linear combination `key'`. Establish `hE0` using `eich_mem Fr hx0 hxv hc (fun a => by`. Rewrite using `[hvz _ (Fj_le_X Fr _ (e_mem Fr a)), zero_smul]`. Conclude with `Submodule.zero_mem _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Use `⟨_ * n0, mul_mem hE0 hn0, funext fun b => ?_⟩` and prove the remaining obligations. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Rewrite using `[LinearEquiv.mul_apply, hnz, eichE_apply]`. Establish `hzv : H.h (Fr.f (Fin.last r)) v0 = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hv0d, h_smul_right, AlgEquiv.commutes, Fr.h_zz, ← map_neg, ← map_mul, neg_mul_neg, inv_mul_cancel₀ hT, map_one]`. Establish `hz0 : H.h (Fr.f (Fin.last r)) x0 = 0` using `z_X Fr _ hx0`. Simplify using `only [eichF, hzv, hz0, one_smul, zero_smul, mul_zero, sub_zero, add_zero]`. Rewrite using `[hx0d]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `cast c`. Rewrite using `[LinearEquiv.mul_apply, hne c, if_pos c.isLt, add_sub_cancel, eichE_apply]`. Establish `hgX : g c.castSucc ∈ H.X Fr.f`. Establish `: g c.castSucc = Fr.f c.castSucc + (g c.castSucc - Fr.f c.castSucc)` using `by abel`. Rewrite using `[this]`.
-
-Conclude with `add_mem (Fj_le_X Fr _ (e_mem Fr c)) (Fj_le_X Fr _ (hu c))`. Conclude with `(eich_fix H _ _ _ _ (hvz _ hgX) (X_iso Fr _ hgX _ hx0)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma onto [CharZero F] (hT : Fr.T ≠ 0) (g : Fin (r + 1) → V) (hg : Tri E Fr.f g) :
     ∃ n ∈ NUg Fr, g = fun b => n (Fr.f b) := by
@@ -664,9 +656,9 @@ end GlobalTheory.LocOver.UnipOnto
 namespace GlobalTheory.LocOver.UnipOnto
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M hOK V _ _ H r Fr hT`. Use `haveI := hOK.char0`. Use `⟨fun n => by rw [N_eq]; exact Iff.rfl, fun n hn => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite `hn` using `[N_eq]`. Conclude with `tri_of_mem _ _ (NU_mem Fr hn)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨n, hn, h⟩` from `onto Fr hT g hg`. Conclude with `⟨n, by rw [N_eq]; exact hn, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem unipotent_onto : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E]
     [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Model F E), M.OK → ∀ {V : Type}

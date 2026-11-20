@@ -11,15 +11,15 @@ namespace GlobalTheory.Mem.Col2.BddG
 open GlobalTheory.LastSteps GlobalTheory.ColPeriod
 
 /- English proof (translation)
-Establish `hq : (qOf P : E) ≠ 0` using `GlobalTheory.TopStep.qOf_ne_zero`. Use `⟨fun x hx => (intHom_iff _).2 fun s l => ?_, fun x y hy => ?_⟩` and prove the remaining obligations. Establish `h1` using `mem_homS_sclLat.1 (h.1 x hx) l s`. Establish `hs` using `s.2`. Establish `e : 0 ≤ (m : ℤ) - (LocE.scE n' (fun i => i + 1) s.1 - LocE.scE n (fun i => i + 1) l.1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `LocE.scE`. Simplify using `only`. Apply the tactic sequence `split_ifs <;> omega`. Use `h1.mul (intAt_zpow e) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[mul_assoc, ← zpow_add₀ hq, add_sub_cancel, zpow_natCast, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ((qOf P : E) ^ ((m : ℤ) - 1)) • y ∈ homS (LocE.lamY P (qOf P) n' c' fun i => i + 1) (LocE.lamY P (qOf P) n c fun i => i + 1)`. Use `mem_homS_sclLat.2 fun l s => ?_` and prove the remaining obligations. Establish `hl` using `l.2`. Establish `e : 0 ≤ (m : ℤ) - 1 + (LocE.scE n' (fun i => i + 1) s.1 - LocE.scE n (fun i => i + 1) l.1)`. Unfold `LocE.scE`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only`. Apply the tactic sequence `split_ifs <;> omega`. Use `((intHom_iff _).1 hy s l).mul (intAt_zpow e) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[zpow_add₀ hq, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2` using `h.2.1 x _ h1`. Rewrite `h2` using `[smul_smul, zpow_sub_one₀ hq, mul_comm _ (qOf P : E)⁻¹, mul_inv_cancel_left₀ hq, zpow_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem homBdd_of_good {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {P : HeightOneSpectrum (𝓞 E)}
     {n' c' n c m : ℕ} (hc' : c' ≤ m) (hc : c + 1 ≤ m) {Φ : HomE E (n' + c') (n + c) → K}
@@ -50,13 +50,13 @@ theorem homBdd_of_good {E K : Type} [Field E] [NumberField E] [StarRing E] [Fiel
     rwa [smul_smul, zpow_sub_one₀ hq, mul_comm _ (qOf P : E)⁻¹, mul_inv_cancel_left₀ hq, zpow_natCast] at h2
 
 /- English proof (translation)
-Establish `h1 : R.k ≤ R.N i` using `Nat.le_add_right _ _`. Establish `h2 : R.k ≤ R.N (i + 1)` using `Nat.le_add_right _ _`. Establish `h3 : R.r + (i + 1 - 1) * R.t = R.N i + cOf R i`. Unfold `Ranks.r Ranks.N cOf`. Rewrite using `[Nat.add_sub_cancel, mul_add i]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `h4 : R.N i + cOf R i ≤ R.N (i + 1) + cOf R (i + 1)`. Unfold `Ranks.N cOf`. Rewrite using `[add_mul i]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Unfold `lamYat at ha hb`. Rewrite `ha`, `hb` using `[if_pos hP]`. Use `good_om_two ?_ _ _ _ ha hb` and prove the remaining obligations. Unfold `PhiAt`. Rewrite using `[if_pos hP]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `good_PhiGS _ _ h1 h2 h3 h4`. Conclude with `good_PhiG _ _ h1 h2 h3 h4`.
+A detailed English derivation is pending.
 -/
 theorem good_omPhi_two {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)
@@ -85,7 +85,7 @@ theorem good_omPhi_two {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr
   · exact good_PhiG _ _ h1 h2 h3 h4
 
 /- English proof (translation)
-Establish `hg` using `good_omPhi_two Ch sel mu cst i P hi hP ha hb`. Use `⟨homBdd_of_good (by unfold cOf; omega) (by unfold cOf; omega) hg, fun x hx => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.IndefiniteRowSideFullHecke.SourceLatticeInvariance.intAt_neg (chArg_int (hg.1 x hx))` as an intermediate fact. Rewrite `this` using `[mul_neg, neg_neg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem omPhi_bdd_type {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
     (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ} (mu : Tup X.F X.E X.K S)

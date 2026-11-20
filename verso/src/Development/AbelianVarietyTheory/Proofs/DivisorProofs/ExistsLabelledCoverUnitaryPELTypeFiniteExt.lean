@@ -24,9 +24,9 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Establish `h : IsUnit ((2 : R) * (3 : ℕ) + (-1) * (5 : ℕ))`. Establish `: (2 : R) * (3 : ℕ) + (-1) * (5 : ℕ) = 1` using `by push_cast; ring`. Rewrite using `[this]`. Conclude with `isUnit_one`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add h with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨3, Nat.prime_three, by decide, isUnit_of_mul_isUnit_right h⟩`. Conclude with `⟨5, Nat.prime_five, by decide, isUnit_of_mul_isUnit_right h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_odd_prime_isUnit_in_localRing (R : Type) [CommRing R] [IsLocalRing R] :
     ∃ n : ℕ, n.Prime ∧ Odd n ∧ IsUnit (n : R) := by
@@ -38,15 +38,15 @@ theorem exists_odd_prime_isUnit_in_localRing (R : Type) [CommRing R] [IsLocalRin
   · exact ⟨5, Nat.prime_five, by decide, isUnit_of_mul_isUnit_right h⟩
 
 /- English proof (translation)
-Introduce `R _ _ _ hR E _ _ _ H Dm D _ o hX hP`. Use `hR.1.1` as an intermediate fact. Use `hR.2` as an intermediate fact. Take `⟨n, hn, ho, hu⟩` from `exists_odd_prime_isUnit_in_localRing R`. Take `⟨V, _, _, _, φ, hV, hφ, hc⟩` from `GlobalTheory.PrimeUnif.exists_cdvr R (maximalIdeal R)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hloc : IsLocalHom φ` using `⟨fun a ha => by`. Assume the negation of the conclusion as `hna`. Establish `h1 : a ∈ (maximalIdeal V).comap φ` using `by rw [hc]; exact hna`. Conclude with `h1 ha⟩`. Take `⟨DV, ⟨hDV⟩⟩` from `GlobalTheory.MumPull.exists_pull R V φ hφ hloc D`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, oV, hPV⟩` from `GlobalTheory.Mum.pelOK_of_isPullDeg R hR E H Dm D o hP V φ hφ DV ⟨hDV⟩`. Establish `hXV : Nontrivial DV.toPre.X` using `hDV.xe.toEquiv.nontrivial`. Take `⟨V', _, _, _, io, D', G', _, _, A', hV', hio, hfin, hD', hG', hU', hS'⟩` from `GlobalTheory.T.exists_mumfordUniformisation_unitaryTypeTrait V hV E H Dm DV oV hXV hPV`. Establish `hioloc : IsLocalHom io` using `hfin.to_isIntegral.isLocalHom hio`. Take `⟨R₁, _, _, _, ρ₁, D₁, A, lab, hf₁, hD₁, hS, h1, h2⟩` from `GlobalTheory.T.exists_labelledSemiAbelianCover_finite_extension R hR D n hn ho hu V' hV' (io.comp φ) (hio.comp hφ) inferInstance D' G' A' (GlobalTheory.Mum.nonempty_isPullDeg_comp_of_injective R V V' φ io _ _ _ hio ⟨hDV⟩ hD') hG' hU' hS'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hR₁ : Base R₁` using `⟨hf₁.1, charZero_of_injective_ringHom hf₁.2.1⟩`. Use `hR₁.2` as an intermediate fact. Take `⟨R₂, _, _, _, ρ₂, C, a, hf₂, hfib⟩` from `GlobalTheory.T.exists_uniformised_cover_finite_ext_of_symmetric R₁ hR₁ A hS`. Establish `hR₂ : Base R₂` using `⟨hf₂.1, charZero_of_injective_ringHom hf₂.2.1⟩`. Take `⟨D₂, hD₂⟩` from `GlobalTheory.MumPull.exists_pull R₁ R₂ ρ₂ hf₂.2.1 (hf₂.2.2.to_isIntegral.isLocalHom hf₂.2.1) D₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨lab₂, k1, k2⟩` from `GlobalTheory.T.exists_torsionLabels_finiteExtension_galoisEquivariant R₁ hR₁ D₁ A lab n h1 h2 R₂ ρ₂ hf₂ D₂ hD₂ C.A a hfib hn.pos`. Establish `hu₂ : IsUnit (n : R₂)` using `by simpa using hu.map (ρ₂.comp ρ₁)`. Conclude with `⟨R₂, _, _, _, ρ₂.comp ρ₁, D₂, ⟨hf₂.1, hf₂.2.1.comp hf₁.2.1, hf₂.2.2.comp hf₁.2.2⟩, GlobalTheory.Mum.nonempty_isPullDeg_comp_of_injective R R₁ R₂ ρ₁ ρ₂ _ _ _ hf₂.2.1 hD₁ hD₂, GlobalTheory.T.nonempty_labelled_cover_of_odd_prime R₂ hR₂ D₂ C lab₂ n hn ho hu₂ k1 k2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_labCover_of_pelOK : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dm : Datum H) (D : DegData R (maximalIdeal R)) [Module (𝓞 E) D.toPre.X] (o : letI := H.starRing; D.toPre.OAct (𝓞 E)), Nontrivial D.toPre.X → PelOK Dm D.toPre o → ∃ (R' : Type) (_ : CommRing R') (_ : IsDomain R') (_ : IsLocalRing R') (ρ : R →+* R') (D' : DegData R' (maximalIdeal R')), FinExt ρ ∧ Nonempty (IsPullDeg ρ D.toPre D'.toPre) ∧ Nonempty (LabCover D') := by
   intro R _ _ _ hR E _ _ _ H Dm D _ o hX hP

@@ -5,33 +5,29 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set f := RingOfIntegers.mapRingHom φ with hf`. Use `set g := RingOfIntegers.mapRingHom ψ with hg`. Establish `hpQ : ((p : ℕ) : 𝓞 E) ∈ Q.asIdeal` using `hN ▸ Ideal.absNorm_mem Q.asIdeal`. Establish `hQp` using `Q.isPrime`. Establish `h1 : ∀ x : 𝓞 E, ∃ a : ℤ, x - (a : 𝓞 E) ∈ Q.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Establish `hc : Nat.card (𝓞 E ⧸ Q.asIdeal) = p`. Rewrite using `[← hN, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `h` using `mem_zmultiples_of_prime_card (g := (1 : 𝓞 E ⧸ Q.asIdeal)) (g' := Ideal.Quotient.mk Q.asIdeal x) hc one_ne_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩` from `AddSubgroup.mem_zmultiples_iff.1 h`. Use `⟨a, Ideal.Quotient.eq.1 ?_⟩` and prove the remaining obligations. Rewrite using `[← ha, map_intCast, zsmul_one]`. Establish `h2 : Ideal.span {((p : ℕ) : 𝓞 E)} ⊔ Q.asIdeal ^ 2 = Q.asIdeal`. Establish `h` using `Ideal.eq_prime_pow_of_succ_lt_of_le (P := Q.asIdeal) (i := 1) (I := Ideal.span {((p : ℕ) : 𝓞 E)} ⊔ Q.asIdeal ^ 2) Q.ne_bot ?_ ?_`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using h`. Use `lt_of_le_of_ne le_sup_right fun h => hsq ?_` and prove the remaining obligations. Establish `h' : ((p : ℕ) : 𝓞 E) ∈ Ideal.span {((p : ℕ) : 𝓞 E)} ⊔ Q.asIdeal ^ 2` using `Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)`. Rewrite `h'` using `[← h]`. Conclude with `h'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[pow_one]`. Conclude with `sup_le ((Ideal.span_singleton_le_iff_mem _).2 hpQ) (Ideal.pow_le_self two_ne_zero)`. Establish `h3 : ∀ n : ℕ, Q.asIdeal ≤ Ideal.span {((p : ℕ) : 𝓞 E)} ⊔ Q.asIdeal ^ n`. Introduce `n`. Proceed by induction on `n with`.
+Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `zero => simp`. Consider the case `succ n ih`. Break down `n with _ | n` into its components or cases. Simplify using the standard rewrite rules. Use `h2.ge.trans (sup_le le_sup_left ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[sq]`. Use `(Ideal.mul_mono_right ih).trans ?_` and prove the remaining obligations. Rewrite using `[Ideal.mul_sup, ← pow_succ']`. Conclude with `sup_le_sup_right Ideal.mul_le_right _`. Establish `hmap : ∀ (k : 𝓞 E →+* 𝓞 K), (∀ r : 𝓞 E, r ∈ Q.asIdeal ↔ k r ∈ w.asIdeal) → ∀ (n : ℕ) (z : 𝓞 E), z ∈ Q.asIdeal ^ n → k z ∈ w.asIdeal ^ n`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `k hk n z hz`. Establish `h` using `Ideal.mem_map_of_mem k hz`. Rewrite `h` using `[Ideal.map_pow]`. Use `Ideal.pow_right_mono ?_ n h` and prove the remaining obligations. Conclude with `Ideal.map_le_iff_le_comap.2 fun r hr => (hk r).1 hr`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hpw : ((p : ℕ) : 𝓞 K) ∈ w.asIdeal`. Simplify using `using (hφ _).1 hpQ`. Establish `h4 : ∀ (n : ℕ) (x : 𝓞 E), f x - g x ∈ w.asIdeal ^ n`. Introduce `n`. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `succ n ih`. Introduce `x`. Take `⟨a, ha⟩` from `h1 x`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 (h3 (n + 1) ha)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Establish `hx : x = c * p + z + a` using `by rw [hyz]; ring`. Establish `he : f x - g x = (f c - g c) * p + (f z - g z)`. Rewrite using `[hx]`. Simplify using `only [map_add, map_mul, map_natCast, map_intCast]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`. Use `add_mem ?_ (sub_mem (hmap f hφ _ _ hz) (hmap g hψ _ _ hz))` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_mul (ih c) hpw`.
-
-Establish `h5 : ∀ x : 𝓞 E, f x = g x`. Introduce `x`. Establish `hb` using `Ideal.iInf_pow_eq_bot_of_isDomain w.asIdeal w.isPrime.ne_top`. Establish `: f x - g x ∈ (⊥ : Ideal (𝓞 K))`. Rewrite using `[← hb]`.
-
-Conclude with `Ideal.mem_iInf.2 fun n => h4 n x`. Conclude with `sub_eq_zero.1 (Ideal.mem_bot.1 this)`. Use `IsFractionRing.ringHom_ext (A := 𝓞 E) fun x => ?_` and prove the remaining obligations. Conclude with `congrArg (algebraMap (𝓞 K) K) (h5 x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ringHom_eq_of_comap_eq_unramified_degree_one
     (E K : Type) [Field E] [NumberField E] [Field K] [NumberField K] (φ ψ : E →+* K)

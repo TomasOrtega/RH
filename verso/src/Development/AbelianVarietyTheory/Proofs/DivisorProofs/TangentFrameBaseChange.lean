@@ -19,7 +19,7 @@ open GlobalTheory.FlatModel
 namespace GlobalTheory.FlatModel.LiftBC
 
 /- English proof (translation)
-Take `⟨u₁, hu₁, hw₁⟩` from `h₁`. Take `⟨u₂, hu₂, hw₂⟩` from `h₂`. Establish `hu : u₁ = u₂` using `funext fun i => Over.OverMorphism.ext ((hu₁ i).trans (hu₂ i).symm)`. Rewrite using `[← hw₁, ← hw₂, hu]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCombAtG_unique {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Scheme.{0}}
     (t : SAB H X) {S : Type} [CommRing S] {x : Sp S ⟶ X} {m : ℕ} {v : Fin m → (Sp (DualNumber S) ⟶ t.G.left)}
@@ -31,11 +31,11 @@ theorem isCombAtG_unique {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   rw [← hw₁, ← hw₂, hu]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l' Xo' c' W Y L k _ _ φ yL g e cf w w' h₁ h₂`. Establish `h₁'` using `GlobalTheory.LocM.Cht.FlagBase.isCombAtG_bc Y.t φ h₁`. Establish `hφ : w' ≫ Y.m.φ = (spMap (dualMap φ) ≫ w) ≫ Y.m.φ`. Rewrite using `[Category.assoc]`. Conclude with `isCombAtG_unique Y.t h₂ h₁'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : IsOpenImmersion Y.j := GlobalTheory.TriplesAlong.isOpenImmersion_j W Y`. Establish `hc` using `Y.m.cart.1`. Establish `hb : w' ≫ Y.oF.t.G.hom = (spMap (dualMap φ) ≫ w) ≫ Y.oF.t.G.hom`. Rewrite using `[← cancel_mono Y.j]`. Simplify using `only [Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hw` using `hc.w`. Express the relevant statement in the definitionally equal form `Y.m.φ ≫ Y.t.G.hom = Y.oF.t.G.hom ≫ Y.j at hw`. Rewrite using `[← hw, ← Category.assoc, hφ, Category.assoc, Category.assoc]`. Conclude with `hc.hom_ext hφ hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_bc_of_isCombAtG : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l' : Level H}
     {Xo' : Moduli Dw l'} {c' : Coeff l'} {W : ValuationSubring ℂ} (Y : Model Xo' c' (c'.V W).subtype) {L k : Type}

@@ -5,9 +5,9 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.GaugeConstructionHo
 namespace Formalism.FourierDecayAlt.P.NormalFormRelations
 
 /- English proof (translation)
-Introduce `Cb`. Take `⟨Cc, H⟩` from `nfTieGen_of Formalism.FourierDecayAlt.P.CutMP.Gauge.GC.gauge_construction_holds Cb`. Use `⟨Cc, fun Wp Wq _ _ _ _ _ _ P p hInD => ?_⟩` and prove the remaining obligations. Take `⟨e, L, h1, h2, h3, h4⟩` from `H Wp Wq P p hInD`. Use `⟨e, L, h1, h2, h3, fun Y w hw ee Q Lq hS => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, b, u, C, h5, h6, h7⟩` from `h4 Y w hw ee Q Lq hS`. Conclude with `⟨m, b, u, C, h5, h6, fun F A hF hcc hA hc => h7 F A hF hcc hA (Or.inr hc)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem normal_form_hat_compact : CompanionTheory.NFCpt.NFTieHatC := by
   intro Cb

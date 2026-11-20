@@ -22,11 +22,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {C : UCompact Xo c} {X₁ : USetup C} {p : ℕ} [Fact p.Prime] {z₁ : X₁.M.Z}
 
 /- English proof (translation)
-Establish `hϖ0 : algebraMap t.T.V (FractionRing t.T.V) t.T.ϖ ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 t.T.irr.ne_zero`. Establish `h0 : t.ι (algebraMap t.T.V (FractionRing t.T.V) t.T.ϖ) ≠ 0` using `(map_ne_zero _).2 hϖ0`. Establish `hlt : ‖t.ι (algebraMap t.T.V (FractionRing t.T.V) t.T.ϖ)‖ < 1`. Assume the negation of the conclusion as `hge`. Use `push_neg at hge`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hinv : ‖t.ι (algebraMap t.T.V (FractionRing t.T.V) t.T.ϖ)⁻¹‖ ≤ 1`. Rewrite using `[map_inv₀, norm_inv]`. Conclude with `inv_le_one_of_one_le₀ hge`. Take `⟨w, hw⟩` from `(t.int _).1 hinv`. Apply `t.T.irr.not_isUnit` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `isUnit_iff_exists_inv.2 ⟨w, IsFractionRing.injective t.T.V (FractionRing t.T.V) ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hw, map_one, mul_inv_cancel₀ hϖ0]`. Unfold `UCTrait.sc`. Use `Real.log_neg (norm_pos_iff.2 h0) hlt` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sc_pos (t : UCTrait X₁ p z₁) : 0 < t.sc := by
   have hϖ0 : algebraMap t.T.V (FractionRing t.T.V) t.T.ϖ ≠ 0 :=
@@ -47,7 +47,7 @@ theorem sc_pos (t : UCTrait X₁ p z₁) : 0 < t.sc := by
   linarith
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `IsMonomial.exists_pos (IsLocalRing.maximalIdeal.isMaximal T.V).ne_top T.mono hx`. Use `fin_cases j`. Simplify using `using hj`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem be_pos (T : UTrait Xo c) (x : T.P.D.toPre.X) (hx : x ≠ 0) : 0 < T.be x x := by
   obtain ⟨j, hj⟩ := IsMonomial.exists_pos (IsLocalRing.maximalIdeal.isMaximal T.V).ne_top T.mono hx
@@ -55,9 +55,9 @@ theorem be_pos (T : UTrait Xo c) (x : T.P.D.toPre.X) (hx : x ≠ 0) : 0 < T.be x
   simpa using hj
 
 /- English proof (translation)
-Establish `hr` using `UTrait.finrank_le_min E H Dw l Xo c T`. Establish `h0 : Module.finrank (𝓞 E) T.P.D.toPre.X = 0` using `by omega`. Establish `: Module.Finite (𝓞 E) T.P.D.toPre.X` using `Module.Finite.of_restrictScalars_finite ℤ _ _`. Take `⟨a, ha, hax⟩` from `Module.finrank_eq_zero_iff.1 h0 x`. Take `⟨n, hn, b, hb⟩` from `(Algebra.IsAlgebraic.isAlgebraic (R := ℤ) a).exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero ha)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h : n • x = 0`. Rewrite using `[← algebraMap_smul (𝓞 E) n x, hb, mul_comm, mul_smul, hax, smul_zero]`. Conclude with `(smul_eq_zero.1 h).resolve_left hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sum_eq_zero (hpq : ¬ 1 ≤ Dw.p + Dw.q) (T : UTrait Xo c) (x : T.P.D.toPre.X) : x = 0 := by
   have hr := UTrait.finrank_le_min E H Dw l Xo c T
@@ -75,21 +75,19 @@ end GlobalTheory.UPoinc.PerBound
 open GlobalTheory.UPoinc.PerBound in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c C X₁ p _ z₁ hz`. Distinguish the cases in `hpq : 1 ≤ Dw.p + Dw.q`. Use `swap`. Conclude with `⟨0, fun t x hx => absurd (eq_zero_of_sum_eq_zero hpq t.T x) hx⟩`. Take `⟨m, X', U, hU, hcov⟩` from `GlobalTheory.T.exists_finite_regular_thetaSetup_cover E H Dw l Xo c C (GlobalTheory.T.exists_thetaSetup_regular_over_moduliPoint E H Dw hpq l Xo c C)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose K hK using fun k => GlobalTheory.T.unitary_classical_trait_periods_bounded_below E H Dw l Xo c C (X' k) p`. Use `choose e he1 he using fun k => GlobalTheory.T.exists_pow_norm_val_le_unitaryTheta_finite_models E H Dw l Xo c C X₁ (X' k) z₁`. Use `⟨∑ k, (e k : ℝ) * |K k|, fun t x hx => ?_⟩` and prove the remaining obligations. Establish `hzc : IsClosed ({X₁.π z₁} : Set C.Z)` using `by haveI := X₁.fin`. Use `X₁.π.isClosedMap _ hz` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[Set.image_singleton]`. Then use the resulting hypothesis. Take `⟨k, w, hwU, hw⟩` from `hcov ((spMap t.ι ≫ t.T.y) (IsLocalRing.closedPoint (PadicAlgCl p)))`. Establish `hgen : (X' k).π w = (gPt p ≫ (t.y ≫ X₁.π)) (IsLocalRing.closedPoint (PadicAlgCl p))`. Rewrite using `[hw, t.comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y', hy'π, hy'w⟩` from `GlobalTheory.T.exists_padicTrait_lift_finite_through_point _ _ (X' k).π (X' k).fin p (t.y ≫ X₁.π) w hgen`. Establish `hz'π : (X' k).π (y' (cPt p)) = X₁.π z₁`. Use `congrArg (fun f => f (cPt p)) hy'π` as an intermediate fact. Simplify using `only [Scheme.Hom.comp_apply] at this`. Rewrite using `[this, t.cen]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hz'c` using `GlobalTheory.T.isClosed_singleton_of_isFinite_of_isClosed_image _ _ _ (X' k).fin (y' (cPt p)) (hz'π ▸ hzc)`. Set `t' : UCTrait (X' k) p (y' (cPt p))` to `{ y := y', cen := rfl, T := t.T, ι := t.ι, int := t.int, comm := by rw [hy'π]; exact t.comm }`. Establish `hreg : (X' k).S.R ≤ (X' k).M.O ((gPt p ≫ t'.y) (IsLocalRing.closedPoint (PadicAlgCl p)))` using `by show (X' k).S.R ≤ (X' k).M.O ((gPt p ≫ y') (IsLocalRing.closedPoint (PadicAlgCl p)))`. Rewrite using `[hy'w]`. Conclude with `(hU k).trans (RatModel.ringOn_le_O hwU)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨h', hh'm, hh'⟩` from `hK k (y' (cPt p)) hz'c t' hreg x hx`. Take `⟨h, hhm, hh⟩` from `he k p t (y' (cPt p)) t' hy'π.symm h' hh'm`. Use `⟨h, hhm, le_trans ?_ hh⟩` and prove the remaining obligations. Establish `hs : 0 ≤ t.sc * t.T.be x x` using `mul_nonneg (sc_pos t).le (by exact_mod_cast (be_pos _ x hx).le)`. Establish `hsum : (e k : ℝ) * |K k| ≤ ∑ k, (e k : ℝ) * |K k|` using `Finset.single_le_sum (f := fun k => (e k : ℝ) * |K k|) (fun k _ => by positivity) (Finset.mem_univ k)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hKk : (e k : ℝ) * K k ≤ (e k : ℝ) * |K k|` using `mul_le_mul_of_nonneg_left (le_abs_self _) (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_nat_mul]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities.
-
-Use `_ ≤ ‖t'.val h'‖ ^ e k := pow_le_pow_left₀ (Real.exp_pos _).le hh' _`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UPoinc.lam_of_closed : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C) (p : ℕ) [Fact p.Prime] (z₁ : X₁.M.Z), IsClosed ({z₁} : Set X₁.M.Z) → ∃ K : ℝ, ∀ (t : UCTrait X₁ p z₁) (x : t.T.P.D.toPre.X), x ≠ 0 → ∃ h ∈ maximalIdeal (X₁.M.Z.presheaf.stalk z₁), Real.exp (-(K * (t.sc * t.T.be x x))) ≤ ‖t.val h‖ := by
   intro E _ _ _ H Dw l Xo c C X₁ p _ z₁ hz

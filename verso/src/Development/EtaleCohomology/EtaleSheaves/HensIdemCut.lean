@@ -22,11 +22,11 @@ def LIdem : Prop := ∀ (A : Type) [CommRing A] (I : Ideal A) (B : Type) [CommRi
   g.eval₂ φ b * h.eval₂ φ b = 0 → ∃ x : B, IsIdempotentElem x ∧ x - b ∈ I.map φ
 
 /- English proof (translation)
-Introduce `A _ I _ B _ φ hφ`. Use `⟨hJ A I B φ hφ, ?_⟩` and prove the remaining obligations. Introduce `e he`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective e`. Establish `hb : b * b - b ∈ I.map φ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq]`. Simplify `he` using `[IsIdempotentElem]`. Take `⟨N, f, hfm, hf0, hfI⟩` from `hM A I B φ hφ b hb`. Establish `hcop : IsCoprime ((X : (A ⧸ I)[X]) ^ N) ((X - C 1) ^ N)` using `(show IsCoprime (X : (A ⧸ I)[X]) (X - C 1) from ⟨1, -1, by rw [C_1]; ring⟩).pow`. Take `⟨g, h, -, -, rfl, hg, hh⟩` from `hF A I f _ _ hfm ((monic_X).pow N) ((monic_X_sub_C 1).pow N) hcop hfI`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hxb⟩` from `hI A I B φ (hJ A I B φ hφ) b hb N g h hg hh (by rw [← eval₂_mul]; exact hf0)`. Conclude with `⟨x, hx, Ideal.Quotient.eq.mpr hxb⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem goal_of (hJ : LJac) (hM : LMonic) (hF : LFactor) (hI : LIdem) : LateralTheory.E.t_E1Cut.HensIdem := by
   intro A _ I _ B _ φ hφ

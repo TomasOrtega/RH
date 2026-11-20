@@ -54,7 +54,7 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace StrictPullbackBlowupSeq
 
 /- English proof (translation)
-Establish `hsq : IsPullback (D.comp i hi) (t.projectionToBase i) (s.projectionToBase i) g` using `isPullback_projectionToBase_of_isPullback_blowupMorphism g t s t.length D.comp D.comp_zero D.pullback i hi`. Establish `hbc : MorphismProperty.IsStableUnderBaseChange (@AlgebraicGeometry.Smooth : MorphismProperty Scheme.{u})` using `inferInstance`. Conclude with `hbc.of_isPullback hsq.flip ‹AlgebraicGeometry.Smooth g›`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_map {X' X : Scheme.{u}} {g : X' ⟶ X} [AlgebraicGeometry.Smooth g]
     {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (D : StrictPullbackBlowupSeq g t s)
@@ -74,7 +74,7 @@ variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of
   {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem ideal_congr_index (u : MarkedBlowupSequenceData p I m E) {i j : ℕ} (h : i = j) :
     u.ideal i = (u.ideal j).comap (eqToHom (congrArg (fun n => u.obj n) h)) := by
@@ -82,7 +82,7 @@ theorem ideal_congr_index (u : MarkedBlowupSequenceData p I m E) {i j : ℕ} (h 
   simp
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem boundary_congr_index (u : MarkedBlowupSequenceData p I m E) {i j : ℕ} (h : i = j) :
     u.boundary i =
@@ -93,7 +93,7 @@ theorem boundary_congr_index (u : MarkedBlowupSequenceData p I m E) {i j : ℕ} 
 end MarkedBlowupSequenceData
 
 /- English proof (translation)
-Substitute `h₁` using the available equality. Substitute `h₂` using the available equality. Conclude with `hh`.
+Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem IsStrictPullbackBlowupSeq.of_eq {X' X : Scheme.{u}} {φ : X' ⟶ X} {B₁ B₂ : SequenceOfBlowups X'}
     {C₁ C₂ : SequenceOfBlowups X} (h₁ : B₁ = B₂) (h₂ : C₁ = C₂)
@@ -127,7 +127,7 @@ theorem pullbackMapAtLength_eq_lastMap : pullbackMapAtLength S g s t D = D.lastM
   L.map (fun A => A.comap (pullbackMapAtLength S g s t D))
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 private theorem eqToHom_comp_projectionToBase {X : Scheme.{u}} (s : SequenceOfBlowups X) {a b : ℕ}
     (h : a = b) :
@@ -136,7 +136,7 @@ private theorem eqToHom_comp_projectionToBase {X : Scheme.{u}} (s : SequenceOfBl
   simp
 
 /- English proof (translation)
-Establish `key` using `isPullback_projectionToBase_of_isPullback_blowupMorphism g t s t.length D.comp D.comp_zero D.pullback t.length le_rfl`. Rewrite using `[StrictPullbackBlowupSeq.lastMap_eq, Category.assoc, eqToHom_comp_projectionToBase s D.length_eq]`. Conclude with `key.w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lastMap_comp_projectionToBase {X' X : Scheme.{u}} {g : X' ⟶ X}
     {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X} (D : StrictPullbackBlowupSeq g t s) :
@@ -147,7 +147,7 @@ private theorem lastMap_comp_projectionToBase {X' X : Scheme.{u}} {g : X' ⟶ X}
   exact key.w
 
 /- English proof (translation)
-Establish `h2 : pullbackMapAtLength S g s t D ≫ s.proj s.length = t.proj t.length ≫ g`. Rewrite using `[MarkedBlowupSequenceData.projectionToBase_eq_toSequenceOfBlowups s s.length, MarkedBlowupSequenceData.projectionToBase_eq_toSequenceOfBlowups t t.length]`. Conclude with `lastMap_comp_projectionToBase D`. Establish `h3 : (pullbackMapAtLength S g s t D ≫ s.proj s.length) ≫ S.structMap = (t.proj t.length ≫ g) ≫ S.structMap` using `congrArg (fun φ : t.obj t.length ⟶ S.scheme => φ ≫ S.structMap) h2`. Conclude with `(Category.assoc _ _ _).symm.trans (h3.trans (Category.assoc _ _ _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pullbackMapAtLength_comp_eq_comp_structureMorphism :
     pullbackMapAtLength S g s t D ≫ (s.proj s.length ≫ S.structMap) =
@@ -162,7 +162,7 @@ theorem pullbackMapAtLength_comp_eq_comp_structureMorphism :
   exact (Category.assoc _ _ _).symm.trans (h3.trans (Category.assoc _ _ _))
 
 /- English proof (translation)
-Establish `h : g ≫ S.structMap = (pullbackTriple S g).structMap` using `(MarkedIdealWithBoundary.pullbackAlong_structureMorphism S Y (g ≫ S.structMap) g).symm`. Use `(pullbackMapAtLength_comp_eq_comp_structureMorphism S g s t D).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun f => t.proj t.length ≫ f) h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pullbackMapAtLength_comp_eq_pullbackTriple_structureMorphism :
     pullbackMapAtLength S g s t D ≫ (s.proj s.length ≫ S.structMap) =
@@ -173,7 +173,7 @@ theorem pullbackMapAtLength_comp_eq_pullbackTriple_structureMorphism :
   exact congrArg (fun f => t.proj t.length ≫ f) h
 
 /- English proof (translation)
-Substitute `hab` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 private theorem comap_eq_comap_comp_eqToHom
     (F : ℕ → Scheme.{u}) (J : ∀ n : ℕ, (F n).IdealSheafData) {a b : ℕ} (hab : a = b)
@@ -183,7 +183,7 @@ private theorem comap_eq_comap_comp_eqToHom
   simp
 
 /- English proof (translation)
-Establish `hL : t.length = s.length` using `D.length_eq`. Establish `key` using `MarkedBlowupSequenceData.ideal_eq_comap_controlledTransform (I := S.ideal) (m := S.mult) (E := S.boundary) (d := s.toBlowupSequenceData) t D s.isMarked.divisible t.length le_rfl`. Use `key.trans ?_` and prove the remaining obligations. Rewrite using `[s.controlledTransform_eq_ideal t.length hL.le]`. Conclude with `comap_eq_comap_comp_eqToHom s.obj s.ideal hL _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideal_eq_comap_pullbackMapAtLength :
     t.ideal t.length = (s.ideal s.length).comap (pullbackMapAtLength S g s t D) := by
@@ -195,7 +195,7 @@ theorem ideal_eq_comap_pullbackMapAtLength :
   exact comap_eq_comap_comp_eqToHom s.obj s.ideal hL _
 
 /- English proof (translation)
-Substitute `hij` using the available equality. Simplify using `only [eqToHom_refl, Category.comp_id]`. Conclude with `tt.boundary_eq_comap_strictPullbackComparisonMap DD hNd hNt i hi`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem boundary_eq_map_comap_strictPullbackComparisonMap {K : Type u} [Field K] {XX' XX : Scheme.{u}}
     {qq : XX' ⟶ Spec (CommRingCat.of K)} {gg : XX' ⟶ XX} [AlgebraicGeometry.Flat gg]
@@ -213,7 +213,7 @@ private theorem boundary_eq_map_comap_strictPullbackComparisonMap {K : Type u} [
   exact tt.boundary_eq_comap_strictPullbackComparisonMap DD hNd hNt i hi
 
 /- English proof (translation)
-Establish `hlen : t.length = s.length` using `D.length_eq`. Establish `key` using `boundary_eq_map_comap_strictPullbackComparisonMap (dd := s.toBlowupSequenceData) (II := S.ideal) (mm := S.mult) (EE := S.boundary) (gg := g) t D hNs hNt t.length s.length le_rfl hlen`. Rewrite `key` using `[MarkedBlowupSequenceData.toBlowupSequenceData_boundary_eq s s.length le_rfl]`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem boundary_eq_map_comap_pullbackMapAtLength [AlgebraicGeometry.Flat g]
     (hNs : ∀ i ≤ s.length, AlgebraicGeometry.IsLocallyNoetherian (s.obj i))
@@ -227,7 +227,7 @@ theorem boundary_eq_map_comap_pullbackMapAtLength [AlgebraicGeometry.Flat g]
   exact key
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `only [eqToHom_refl, Category.comp_id]`. Conclude with `hf`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem smooth_comp_eqToHom {X Y Y' : Scheme.{u}} (f : X ⟶ Y) (h : Y = Y')
     (hf : AlgebraicGeometry.Smooth f) : AlgebraicGeometry.Smooth (f ≫ eqToHom h) := by
@@ -236,7 +236,7 @@ private theorem smooth_comp_eqToHom {X Y Y' : Scheme.{u}} (f : X ⟶ Y) (h : Y =
   exact hf
 
 /- English proof (translation)
-Rewrite using `[StrictPullbackBlowupSeq.lastMap_eq]`. Conclude with `smooth_comp_eqToHom _ _ (StrictPullbackBlowupSeq.smooth_map D t.length le_rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smooth_lastMap {X' X : Scheme.{u}} {g : X' ⟶ X}
     [AlgebraicGeometry.Smooth g] {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
@@ -245,7 +245,7 @@ private theorem smooth_lastMap {X' X : Scheme.{u}} {g : X' ⟶ X}
   exact smooth_comp_eqToHom _ _ (StrictPullbackBlowupSeq.smooth_map D t.length le_rfl)
 
 /- English proof (translation)
-Rewrite using `[pullbackMapAtLength_eq_lastMap]`. Conclude with `smooth_lastMap D`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_pullbackMapAtLength [AlgebraicGeometry.Smooth g] :
     AlgebraicGeometry.Smooth (pullbackMapAtLength S g s t D) := by
@@ -253,7 +253,7 @@ theorem smooth_pullbackMapAtLength [AlgebraicGeometry.Smooth g] :
   exact smooth_lastMap D
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[eqToHom_refl, Category.comp_id]`. Conclude with `hf`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem surjective_comp_eqToHom {X Y Z : Scheme.{u}} (f : X ⟶ Y)
     (hf : AlgebraicGeometry.Surjective f) (h : Y = Z) :
@@ -263,7 +263,7 @@ private theorem surjective_comp_eqToHom {X Y Z : Scheme.{u}} (f : X ⟶ Y)
   exact hf
 
 /- English proof (translation)
-Rewrite using `[StrictPullbackBlowupSeq.lastMap_eq]`. Conclude with `surjective_comp_eqToHom _ (surjective_of_isPullback_blowupMorphism g t s t.length D.comp D.comp_zero D.pullback t.length le_rfl) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem surjective_lastMap {X' X : Scheme.{u}} {g : X' ⟶ X}
     [AlgebraicGeometry.Surjective g] {t : SequenceOfBlowups X'} {s : SequenceOfBlowups X}
@@ -274,7 +274,7 @@ private theorem surjective_lastMap {X' X : Scheme.{u}} {g : X' ⟶ X}
       t.length le_rfl) _
 
 /- English proof (translation)
-Rewrite using `[pullbackMapAtLength_eq_lastMap]`. Conclude with `surjective_lastMap D`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_pullbackMapAtLength [AlgebraicGeometry.Surjective g] :
     AlgebraicGeometry.Surjective (pullbackMapAtLength S g s t D) := by
@@ -282,7 +282,7 @@ theorem surjective_pullbackMapAtLength [AlgebraicGeometry.Surjective g] :
   exact surjective_lastMap D
 
 /- English proof (translation)
-Substitute `hpq` using the available equality. Substitute `hIJ` using the available equality. Substitute `hmn` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem balancedTunedSheaf_congr (k : Type u) [CommRing k] [IsNoetherianRing k]
     {X : Scheme.{u}} {p q : X ⟶ Spec (CommRingCat.of k)} (hpq : p = q)
@@ -296,11 +296,11 @@ private theorem balancedTunedSheaf_congr (k : Type u) [CommRing k] [IsNoetherian
   rfl
 
 /- English proof (translation)
-Establish `hmor : pullbackMapAtLength S g s t D ≫ (s.proj s.length ≫ S.structMap) = t.proj t.length ≫ (pullbackTriple S g).structMap` using `pullbackMapAtLength_comp_eq_pullbackTriple_structureMorphism S g s t D`. Establish `hid : t.ideal t.length = (s.ideal s.length).comap (pullbackMapAtLength S g s t D)` using `ideal_eq_comap_pullbackMapAtLength S g s t D`. Establish `hsm : AlgebraicGeometry.Smooth (s.proj s.length ≫ S.structMap)`. Establish `h0` using `hVc.smooth`. Rewrite `h0` using `[structureMorphism_derivedTriple S s hftS extra keep]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hftS` as an intermediate fact. Use `hftT` as an intermediate fact. Use `smooth_pullbackMapAtLength S g s t D` as an intermediate fact. Establish `: AlgebraicGeometry.LocallyOfFiniteType (pullbackMapAtLength S g s t D ≫ (s.proj s.length ≫ S.structMap))`. Rewrite using `[hmor]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hftT`. Rewrite using `[tunedIdealAtLength_eq_balancedTunedSheaf, tunedIdealAtLength_eq_balancedTunedSheaf, ← balancedTunedSheaf_comap S.base (s.proj s.length ≫ S.structMap) (pullbackMapAtLength S g s t D) (s.ideal s.length) S.mult]`. Conclude with `balancedTunedSheaf_congr S.base hmor _ _ hid.symm (MarkedIdealWithBoundary.pullbackAlong_mult S Y (g ≫ S.structMap) g).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tunedIdealAtLength_comap_pullbackMapAtLength [AlgebraicGeometry.Smooth g]
     (hftS : AlgebraicGeometry.LocallyOfFiniteType (s.proj s.length ≫ S.structMap))
@@ -329,7 +329,7 @@ theorem tunedIdealAtLength_comap_pullbackMapAtLength [AlgebraicGeometry.Smooth g
     (MarkedIdealWithBoundary.pullbackAlong_mult S Y (g ≫ S.structMap) g).symm
 
 /- English proof (translation)
-Establish `hstruct : pullbackMapAtLength S g s t D ≫ (s.proj s.length ≫ S.structMap) = t.proj t.length ≫ (pullbackTriple S g).structMap` using `pullbackMapAtLength_comp_eq_pullbackTriple_structureMorphism S g s t D`. Establish `hideal : (tunedIdealAtLength S s hftS).comap (pullbackMapAtLength S g s t D) = tunedIdealAtLength (pullbackTriple S g) t hftT` using `tunedIdealAtLength_comap_pullbackMapAtLength S g s t D hftS hftT extra keep hVc`. Simplify using `only [MaxContactCoverData.derivedTriple, MarkedIdealWithBoundary.pullbackAlong, MarkedIdealWithBoundary.withBoundary]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem pullbackAlong_derivedTriple_eq [AlgebraicGeometry.Smooth g]
     (hftS : AlgebraicGeometry.LocallyOfFiniteType (s.proj s.length ≫ S.structMap))
@@ -350,7 +350,7 @@ theorem pullbackAlong_derivedTriple_eq [AlgebraicGeometry.Smooth g]
   congr 1
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[List.map_append, List.map_drop]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_comap_append_drop {X₁ X₂ : Scheme.{u}} (f : X₁ ⟶ X₂)
     (E Bd : List X₂.IdealSheafData) (Bd' : List X₁.IdealSheafData) (n : ℕ)
@@ -361,7 +361,7 @@ private theorem map_comap_append_drop {X₁ X₂ : Scheme.{u}} (f : X₁ ⟶ X�
   rw [List.map_append, List.map_drop]
 
 /- English proof (translation)
-Use `hsm` as an intermediate fact. Use `hsu` as an intermediate fact. Conclude with `hspec.smooth_pullback_strict T hV hP hO hD hjb Yv q h hq E' hbe htake hV2 hP2 hO2 hD2 hjb2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isStrictPullbackBlowupSeq_of_isBoundaryDivisorReduction {P : ℕ → Prop} {jj : ℕ} {A B : PrincipalizationAssignment.{u}}
     (hspec : IsBoundaryDivisorReduction P jj A B) (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (hP : P T.krullDimSucc)
@@ -387,19 +387,17 @@ private theorem isStrictPullbackBlowupSeq_of_isBoundaryDivisorReduction {P : ℕ
   exact hspec.smooth_pullback_strict T hV hP hO hD hjb Yv q h hq E' hbe htake hV2 hP2 hO2 hD2 hjb2
 
 /- English proof (translation)
-Establish `hsm : AlgebraicGeometry.Smooth (pullbackMapAtLength S g s t D)` using `smooth_pullbackMapAtLength S g s t D`. Establish `hsu : AlgebraicGeometry.Surjective (pullbackMapAtLength S g s t D)` using `surjective_pullbackMapAtLength S g s t D`. Establish `hmult : (pullbackTriple S g).mult = S.mult` using `MarkedIdealWithBoundary.pullbackAlong_mult S Y (g ≫ S.structMap) g`. Establish `hm' : 1 ≤ (pullbackTriple S g).mult` using `le_of_le_of_eq hm hmult.symm`. Establish `hb1 : (MaxContactCoverData.derivedTriple S s hftS extra keep).boundary = extra ++ (s.boundary s.length).drop keep` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbd : ((MaxContactCoverData.derivedTriple S s hftS extra keep).pullbackAlong (t.obj t.length) (pullbackMapAtLength S g s t D ≫ (MaxContactCoverData.derivedTriple S s hftS extra keep).structMap) (pullbackMapAtLength S g s t D)).boundary = comapBoundaryPullback S g s t D extra ++ ( …`. Use `(MarkedIdealWithBoundary.pullbackAlong_boundary (MaxContactCoverData.derivedTriple S s hftS extra keep) (t.obj t.length) (pullbackMapAtLength S g s t D ≫ (MaxContactCoverData.derivedTriple S s hftS extra keep).structMap) (pullbackMapAtLength S g s t D)).trans ?_` and prove the remaining obligations. Conclude with `map_comap_append_drop (pullbackMapAtLength S g s t D) extra (s.boundary s.length) (t.boundary t.length) keep (boundary_eq_map_comap_pullbackMapAtLength S g s t D hNs hNt)`. Establish `hbe : MarkedIdealWithBoundary.SameNontrivialBoundary ((MaxContactCoverData.derivedTriple S s hftS extra keep).pullbackAlong (t.obj t.length) (pullbackMapAtLength S g s t D ≫ (MaxContactCoverData.derivedTriple S s hftS extra keep).structMap) (pullbackMapAtLength S g s t D)).bounda …`. Establish `hrefl : ∀ L L' : List (t.obj t.length).IdealSheafData, L = L' → MarkedIdealWithBoundary.SameNontrivialBoundary L L'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `L L' rfl`. Conclude with `MarkedIdealWithBoundary.SameNontrivialBoundary.refl L`. Conclude with `hrefl _ _ hbd`. Establish `htake : List.take (j + 1) (comapBoundaryPullback S g s t D extra ++ (t.boundary t.length).drop keep) = List.take (j + 1) (((MaxContactCoverData.derivedTriple S s hftS extra keep).pullbackAlong (t.obj t.length) (pullbackMapAtLength S g s t D ≫ (MaxContactCoverData.derivedTriple S …` using `congrArg (fun l => List.take (j + 1) l) hbd.symm`. Establish `hkey : ((MaxContactCoverData.derivedTriple S s hftS extra keep).pullbackAlong (t.obj t.length) (pullbackMapAtLength S g s t D ≫ (MaxContactCoverData.derivedTriple S s hftS extra keep).structMap) (pullbackMapAtLength S g s t D)).withBoundary (comapBoundaryPullback S g s t D extra …` using `pullbackAlong_derivedTriple_eq S g s t D hftS hftT extra keep hVc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hO1 : (MaxContactCoverData.derivedTriple S s hftS extra keep).IsOrderBoundedByMult` using `isOrderBoundedByMult_derivedTriple hstar S hV hm hO s hftS extra keep hVc`. Establish `hD1` using `isBalanced_derivedTriple hstar S hV hm hO s hftS extra keep hVc`. Establish `hjb1 : j < (MaxContactCoverData.derivedTriple S s hftS extra keep).boundary.length`. Rewrite using `[hb1]`. Conclude with `hj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hO2'` using `isOrderBoundedByMult_derivedTriple hstar (pullbackTriple S g) hV' hm' hO' t hftT (extra.map fun E : (s.obj s.length).IdealSheafData => E.comap D.lastMap) keep hVc'`. Establish `hD2'` using `isBalanced_derivedTriple hstar (pullbackTriple S g) hV' hm' hO' t hftT (extra.map fun E : (s.obj s.length).IdealSheafData => E.comap D.lastMap) keep hVc'`. Establish `hfacts : ∀ T' : MarkedIdealWithBoundary.{u}, T' = MaxContactCoverData.derivedTriple (pullbackTriple S g) t hftT (extra.map fun E : (s.obj s.length).IdealSheafData => E.comap D.lastMap) keep → T'.IsAdmissible ∧ P T'.krullDimSucc ∧ T'.IsOrderBoundedByMult ∧ j < T'.boundary.length ∧ …`. Introduce and unpack `T' rfl`. Conclude with `⟨hVc', hP', hO2', hj', fun _ => hD2'⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hV2, hP2, hO2, hjb2, hD2⟩` from `hfacts _ hkey`. Establish `h0` using `isStrictPullbackBlowupSeq_of_isBoundaryDivisorReduction hspec (MaxContactCoverData.derivedTriple S s hftS extra keep) hVc hP hO1 _ hD1 hjb1 (t.obj t.length) (pullbackMapAtLength S g s t D ≫ (MaxContactCoverData.derivedTriple S s hftS extra keep).structMap) (pullbackMapAtLength S …`. Establish `hspb : IsStrictPullbackBlowupSeq (pullbackMapAtLength S g s t D) (A j (MaxContactCoverData.derivedTriple (pullbackTriple S g) t hftT (extra.map fun E : (s.obj s.length).IdealSheafData => E.comap D.lastMap) keep)).toSequenceOfBlowups (A j (MaxContactCoverData.derivedTriple S s hft …` using `IsStrictPullbackBlowupSeq.of_eq (eq_of_heq ((A j).toSequenceOfBlowups_heq_of_eq hkey)) rfl h0`. Take `⟨hmkS, hSeq, -⟩` from `appendLowerDimReduction_eq_append hstar hinv T P A B j hspec rc hrc S hV hm hO s extra keep hftS hdim hP hVc hj hsep`. Take `⟨hmkT, hTeq, -⟩` from `appendLowerDimReduction_eq_append hstar hinv T P A B j hspec rc hrc (pullbackTriple S g) hV' hm' hO' t (extra.map fun E : (s.obj s.length).IdealSheafData => E.comap D.lastMap) keep hftT hdim' hP' hVc' hj' hsep'`.
-
-Rewrite using `[hSeq, hTeq]`. Use `⟨(MarkedBlowupSequenceData.isStrictPullbackBlowupSeq_append g s _ t _ hinv D ?_).toStrictPullbackBlowupSeq⟩` and prove the remaining obligations. Conclude with `(IsStrictPullbackBlowupSeq.of_eq (BlowupSequenceData.toMarkedBlowupSequenceData_toSequenceOfBlowups _ _ _ _ _ hmkT).symm (BlowupSequenceData.toMarkedBlowupSequenceData_toSequenceOfBlowups _ _ _ _ _ hmkS).symm ((hspb.of_isomorphic_pullback (BlowupSequenceData.ofSequenceOfBlowups_t …`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nonempty_strictPullback_appendLowerDimReduction [AlgebraicGeometry.Smooth g] [AlgebraicGeometry.Flat g]
     [AlgebraicGeometry.Surjective g]

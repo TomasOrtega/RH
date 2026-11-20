@@ -26,7 +26,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] (H : HLat K) (σ : K 
 
 include hc in
 /- English proof (translation)
-Establish `h : j x = ∑ k, σ (H.b.repr x k) • c k` using `by conv_lhs => rw [← H.b.sum_repr x, map_sum]`. Simplify using `only [LinearMap.map_smulₛₗ, hc]`. Rewrite using `[h, c.repr_sum_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem repr_j (x : H.V) (i : H.ι) : c.repr (j x) i = σ (H.b.repr x i) := by
   have h : j x = ∑ k, σ (H.b.repr x k) • c k := by
@@ -37,15 +37,15 @@ theorem repr_j (x : H.V) (i : H.ι) : c.repr (j x) i = σ (H.b.repr x i) := by
 include hc in
 
 /- English proof (translation)
-Establish `key : ∀ Y : Matrix H.ι H.ι ℂ, IsUnit Y.det → ∃ e : M ≃ₗ[ℂ] EuclideanSpace ℂ H.ι, ∀ x, ‖e (j x)‖ = Formalism.HermitianLatticesTheory.cnorm (Y.mulVec fun i => σ (H.b.repr x i))` using `fun Y hY => by`. Use `⟨(c.equivFun.trans (Matrix.toLinearEquiv' Y (Matrix.invertibleOfIsUnitDet Y hY))).trans (WithLp.linearEquiv 2 ℂ (H.ι → ℂ)).symm, fun x => ?_⟩` and prove the remaining obligations. Establish `: c.equivFun (j x) = fun i => σ (H.b.repr x i)` using `funext fun i => repr_j H σ j c hc x i`. Rewrite using `[EuclideanSpace.norm_eq, LinearEquiv.trans_apply, LinearEquiv.trans_apply, this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hU` using `Matrix.isUnit_nonsing_inv_det _ (hX (InfinitePlace.mk σ))`. Break down `InfinitePlace.embedding_mk_eq σ with h | h` into its components or cases. Take `⟨e, he⟩` from `key _ hU`. Use `⟨e, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[he]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.fcoord Formalism.HermitianLatticesTheory.vecAt`. Rewrite using `[h]`. Take `⟨e, he⟩` from `key (((H.X (InfinitePlace.mk σ))⁻¹).map (starRingEnd ℂ)) (by`. Use `hU.map (starRingEnd ℂ)` as an intermediate fact. Rewrite using `[RingHom.map_det] at this)` and apply the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨e, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Unfold `Formalism.HermitianLatticesTheory.normAt Formalism.HermitianLatticesTheory.fcoord Formalism.HermitianLatticesTheory.vecAt Formalism.HermitianLatticesTheory.cnorm`. Rewrite using `[h]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.norm_conj]`. Use `congr 2`. Simplify using `[Matrix.mulVec, dotProduct, ComplexEmbedding.conjugate_coe_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem exists_coord (hX : ∀ v, IsUnit (H.X v).det) : ∃ e : M ≃ₗ[ℂ] EuclideanSpace ℂ H.ι,
     ∀ x, Formalism.HermitianLatticesTheory.normAt H.b H.X (InfinitePlace.mk σ) x = ‖e (j x)‖ := by
@@ -79,29 +79,25 @@ theorem exists_coord (hX : ∀ v, IsUnit (H.X v).det) : ∃ e : M ≃ₗ[ℂ] Eu
 include hc in
 
 /- English proof (translation)
-Establish `h1 : (H.L.restrictScalars ℤ).FG`. Establish `: Module.Finite (𝓞 K) H.L` using `Module.Finite.iff_fg.2 hG.2.1`. Establish `: Module.Finite ℤ H.L` using `Module.Finite.trans (𝓞 K) H.L`. Conclude with `Module.Finite.iff_fg.1 (inferInstanceAs (Module.Finite ℤ H.L))`. Take `⟨s, hs⟩` from `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsL : ∀ x ∈ s, x ∈ H.L` using `fun x hx => by`. Establish `: x ∈ H.L.restrictScalars ℤ` using `hs ▸ Submodule.subset_span hx`. Conclude with `this`. Establish `hgen : ∀ (T : Finset N) (y : N), y ∈ T → ∃ c : N → O, y = ∑ v ∈ T, (σ.comp ι) (c v) • v` using `fun T y hy => ⟨fun v => if v = y then 1 else 0, by`. Rewrite using `[Finset.sum_eq_single y (fun v _ h => by simp [h]) (fun h => absurd hy h)]; simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz : ∀ x ∈ H.L, ∃ c : N → O, e (j x) = ∑ v ∈ s.image (fun x => e (j x)), (σ.comp ι) (c v) • v`. Introduce `x hx`. Establish `hx' : x ∈ Submodule.span ℤ (s : Set H.V)` using `hs ▸ hx`. Use `clear hx`. Proceed by induction on `hx' using Submodule.span_induction with`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mem x hx => exact hgen _ _ (Finset.mem_image_of_mem _ hx)`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a + b, by rw [map_add, map_add, ha, hb, ← Finset.sum_add_distrib]; simp [add_smul]⟩`. Consider the case `smul n x _ hx`. Take `⟨a, ha⟩` from `hx`. Use `⟨fun v => n * a v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, map_zsmul, ha, Finset.smul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_intCast, mul_smul, Int.cast_smul_eq_zsmul]`. Use `⟨⟨s.image fun x => e (j x), ?_⟩, fun y => ⟨?_, ?_⟩, fun y hy => hgen _ _ hy⟩` and prove the remaining obligations. Establish `h2 : ∀ x : H.V, e (j x) ∈ Submodule.span ℂ ((s.image fun x => e (j x) : Finset N) : Set N)`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `hx : x ∈ Submodule.span K (H.L : Set H.V)` using `hG.2.2 ▸ trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha⟩` from `hz x hx`. Rewrite using `[ha]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.sum_mem _ fun v hv => Submodule.smul_mem _ _ (Submodule.subset_span hv)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [LinearMap.map_smulₛₗ, map_smul]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.smul_mem _ _ hx`. Rewrite using `[eq_top_iff, ← (c.map e).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[Module.Basis.map_apply, hc]`. Conclude with `h2 _`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Introduce and unpack `⟨a, rfl⟩`. Use `Finset.sum_induction _ (fun y => ∃ x ∈ H.L, e (j x) = y) ?_ ⟨0, zero_mem _, by simp⟩ ?_` and prove the remaining obligations. Introduce and unpack `_ _ ⟨x, hx, rfl⟩ ⟨y, hy, rfl⟩`. Conclude with `⟨x + y, add_mem hx hy, by simp⟩`. Introduce `v hv`.
-
-Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 hv`. Set `t : 𝓞 K` to `⟨ι (a (e (j x))), hι _⟩`. Use `⟨t • x, H.L.smul_mem t (hsL x hx), ?_⟩` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_smul K, LinearMap.map_smulₛₗ, map_smul]`. Both sides reduce to the same expression.
-
-Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `hz x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_olat (hG : H.Good) {O : Type} [CommRing O] (ι : O →+* K) (hι : ∀ y, IsIntegral ℤ (ι y))
     {N : Type} [AddCommGroup N] [Module ℂ N] (e : M ≃ₗ[ℂ] N) :
@@ -173,9 +169,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (P : LevFam X.E X.K R.r Pr.vGs) (σ : X.K →+* ℂ)
 
 /- English proof (translation)
-Establish `hG` using `MtildeH_good W Ch hX sel mu P`. Set `c : Module.Basis (MtildeH W Ch hX sel mu P).ι ℂ (MtP W Ch sel mu P σ)` to `basisCForm σ W.sgTrue _ _ hX (MtildeH W Ch hX sel mu P).b`. Establish `hc : ∀ i, c i = toMtP W Ch sel mu P σ ((MtildeH W Ch hX sel mu P).b i)` using `fun i => basisCForm_apply _ _ _ _ _ _ _`. Take `⟨e, he⟩` from `exists_coord (MtildeH W Ch hX sel mu P) σ (toMtP W Ch sel mu P σ) c hc hG.1`. Take `⟨L, h1, h2⟩` from `exists_olat (MtildeH W Ch hX sel mu P) σ (toMtP W Ch sel mu P σ) c hc hG ι hι e`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, e, L, he, h1, h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem pack {O : Type} [CommRing O] (ι : O →+* X.K) (hι : ∀ y, IsIntegral ℤ (ι y)) :
     ∃ (n : ℕ) (e : MtP W Ch sel mu P σ ≃ₗ[ℂ] Eu n) (L : Rows.OLat O (σ.comp ι) (Eu n)),
@@ -191,7 +187,7 @@ theorem pack {O : Type} [CommRing O] (ι : O →+* X.K) (hι : ∀ y, IsIntegral
   exact ⟨_, e, L, he, h1, h2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨toMtilde_linearIndependent W Ch sel mu P σ (MtildeH W Ch hX sel mu P).b.linearIndependent, toCForm_span_of_span σ W.sgTrue _ _ hX (MtildeH W Ch hX sel mu P).b.span_eq⟩`.
+Supply the required witnesses or components.
 -/
 theorem basis_cx : LinearIndependent ℂ (fun i => toMtP W Ch sel mu P σ ((MtildeH W Ch hX sel mu P).b i)) ∧
     Submodule.span ℂ (Set.range fun i => toMtP W Ch sel mu P σ ((MtildeH W Ch hX sel mu P).b i)) = ⊤ :=
@@ -200,9 +196,9 @@ theorem basis_cx : LinearIndependent ℂ (fun i => toMtP W Ch sel mu P σ ((Mtil
 
 omit W Ch hX sel mu P σ in
 /- English proof (translation)
-Use `⟨ρ t⁻¹ F, fun h0 => hF ?_, fun a => ?_⟩` and prove the remaining obligations. Establish `h4` using `congrArg (ρ t) h0`. Rewrite `h4` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, map_zero]`. Then use the resulting hypothesis. Take `⟨a', e1, e2⟩` from `h a`. Establish `e3 : a.1 * t⁻¹ = t⁻¹ * a'.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[mul_inv_eq_iff_eq_mul, mul_assoc, eq_inv_mul_iff_mul_eq, e1]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e3, map_mul, Module.End.mul_apply, he a', map_smul, e2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_eig {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (H H' : Subgroup G) (χ : H → ℂ)
     (χ' : H' → ℂ) (t : G) (h : ∀ a : H', ∃ a' : H, a'.1 * t = t * a.1 ∧ χ' a = χ a') (F : V) (hF : F ≠ 0)
@@ -217,11 +213,11 @@ theorem conj_eig {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Re
 
 omit W Ch hX sel mu P σ in
 /- English proof (translation)
-Set `s` to `symPerm n k rS`. Use `⟨⟨(1 : Matrix _ _ κ).submatrix s.symm id, (1 : Matrix _ _ κ).submatrix id s.symm, ?_, ?_⟩, fun M => ?_⟩` and prove the remaining obligations. Use `(Matrix.submatrix_mul_equiv _ _ _ (Equiv.refl _) _).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[Matrix.submatrix_mul_equiv _ _ _ s.symm]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `only [Units.val_mul, Matrix.mul_apply, toSymOrd_val, Matrix.submatrix_apply, id, Matrix.one_apply]`. Rewrite using `[← Equiv.sum_comp s]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[s]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_perm (n k rS : ℕ) (κ : Type) [CommRing κ] : ∃ p : GL (Fin n) κ, ∀ M, toSymOrd κ n k rS M * p = p * M := by
   let s := symPerm n k rS
@@ -238,9 +234,9 @@ theorem exists_perm (n k rS : ℕ) (κ : Type) [CommRing κ] : ∃ p : GL (Fin n
 
 omit W hX sel mu P σ in
 /- English proof (translation)
-Use `choose p hp using fun w : {w // w ∈ Pr.vGs} => exists_perm R.r R.k R.rS (𝓞 X.E ⧸ w.1.asIdeal)`. Use `⟨p, fun a => ⟨⟨fun w => toSymOrd _ R.r R.k R.rS (a.1 w), fun w hw => a.2 w hw⟩, funext fun w => hp w (a.1 w), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[LevFam.chr_ev, LevFam.chr_ev]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `h1 : a.1 w ∈ (rPsymF (R` using `R) Ch w).H := a.2 w trivial`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : toSymOrd _ R.r R.k R.rS (a.1 w) ∈ (rPsym (R` using `R) Ch w).H := a.2 w trivial`. Establish `h3 : (rPsym (R` using `R) Ch w).ev (toSymOrd _ R.r R.k R.rS (a.1 w)) = (rPsym (R := R) Ch w).lam ⟨_, h2⟩ := dif_pos h2`. Conclude with `(dif_pos h1).trans h3.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_conj : ∃ t : G0 X.E Pr.vGs R.r, ∀ a : (rPsymF (R := R) Ch).grp, ∃ a' : (rPsym (R := R) Ch).grp,
     a'.1 * t = t * a.1 ∧ (rPsymF (R := R) Ch).chr a = (rPsym (R := R) Ch).chr a' := by
@@ -256,9 +252,9 @@ theorem exists_conj : ∃ t : G0 X.E Pr.vGs R.r, ∀ a : (rPsymF (R := R) Ch).gr
 omit hX P in
 
 /- English proof (translation)
-Take `⟨F, hF, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (Submodule.nontrivial_iff_ne_bot.1 h)`. Take `⟨h1, h2⟩` from `(mem_MtP_iff W Ch sel mu _ σ F).1 hF`. Take `⟨t, ht⟩` from `exists_conj (R := R) Ch`. Take `⟨F', h3, h4⟩` from `conj_eig (rightTranslationAction W Ch sel mu σ) (rPsym (R := R) Ch).grp (rPsymF (R := R) Ch).grp (fun a => σ ((rPsym (R := R) Ch).chr a : X.Kˣ)) (fun a => σ ((rPsymF (R := R) Ch).chr a : X.Kˣ)) t (fun a => (ht a).imp fun a' h => ⟨h.1, by rw [h.2]⟩) ⟨F, h1⟩ (fun e => h0 (Submodule …`. Use `Submodule.nontrivial_iff_ne_bot.2 ((Submodule.ne_bot_iff _).2 ⟨F'.1, (mem_MtP_iff W Ch sel mu _ σ _).2 ⟨F'.2, h4⟩, ?_⟩)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `fun e => h3 (Subtype.ext e)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nontrivial_symF (h : Nontrivial (MtP W Ch sel mu (rPsym (R := R) Ch) σ)) :
     Nontrivial (MtP W Ch sel mu (rPsymF (R := R) Ch) σ) := by
@@ -277,7 +273,7 @@ variable {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (hX : B.fields.
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `h` using `pack (X := B.fields) (Pr := B.primes X) B.wts I.Ch hX I.sel (I.tup a) I.Ps B.embLL B.OtoLL B.O_int`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem packI (a : I.ι) : ∃ (n : ℕ) (e : MtCx I a ≃ₗ[ℂ] Eu n) (L : Rows.OLat B.O (B.embLL.comp B.OtoLL) (Eu n)),
     (∀ x, Formalism.HermitianLatticesTheory.normAt (MtHL I hX a).b (MtHL I hX a).X (InfinitePlace.mk B.embLL) x = ‖e (toCx I hX a x)‖) ∧
@@ -288,7 +284,7 @@ theorem packI (a : I.ι) : ∃ (n : ℕ) (e : MtCx I a ≃ₗ[ℂ] Eu n) (L : Ro
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hd : Disjoint (B.primes X).vGs (I.Q a)` using `(LevTwist.levOk_twists B X I h).2.1.mono_right (I.Q_subset_SQ a)`. Establish `g` using `mtEquiv_apply (X := B.fields) (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) I.Ps u (fun _ _ _ => 0) (fun _ _ _ => 0) (fun _ => 0) (fun _ _ _ _ _ _ => 0) B.embLL hd`. Conclude with `⟨_, g⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_same (h : I.Ok) (u : B.Word) (a : I.ι) :
     ∃ g : MtCx I a ≃ₗ[ℂ] (I.perIn u a).Mt B.fields.emb B.embLL, ∀ F p, (g F).1 () p = F.1 (toRow I.sel (I.tup a) p.1.1) := by
@@ -300,11 +296,9 @@ theorem exists_same (h : I.Ok) (u : B.Word) (a : I.ι) :
 def md (m e j : ℕ) : ℕ := if j = m then e else 0
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ (C : Cols B) (W : RowsRest B C) (_ : DivStage B C W) (_ : SStage B C W) (_ : NStage B C W), Nonempty (GJStage B C)`. Take `⟨C, W, V, S, N, ⟨G⟩⟩` from `h`. Take `⟨kb, ks, hk⟩` from `DV.exists_blocks (assemble B C W V S N G)`. Use `⟨kb, ks, fun C' W' h1 h2 V' S' N' G' j _ _ τ => ⟨fun i => ?_, fun c => ?_⟩⟩` and prove the remaining obligations. Use `show ((W'.kaBig j τ i : ℤ) : ℚ) = _`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `(hk j τ).1 i`. Use `show ((W'.kaSmall j τ c : ℤ) : ℚ) = _`. Rewrite using `[h2]`. Conclude with `(hk j τ).2 c`.
-
-Conclude with `⟨0, 0, fun C W _ _ V S N G => absurd ⟨C, W, V, S, N, ⟨G⟩⟩ h⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ka (B : Base) : ∃ (kb : ∀ j, Tau B.R → Fin (B.R.sigW j).1 → ℤ) (ks : ∀ j, Tau B.R → Fin (B.R.sigW j).2 → ℤ),
     ∀ (C : Cols B) (W : RowsRest B C), W.kaBig = kb → W.kaSmall = ks → ∀ V S N G, DV.KapDef (assemble B C W V S N G) := by
@@ -328,7 +322,7 @@ variable {C : Cols B} {d₀ : C.Tup → ℕ} (hf : Fits C d₀) (d : C.Tup → �
   (kb : ∀ j, Tau B.R → Fin (B.R.sigW j).1 → ℤ) (ks : ∀ j, Tau B.R → Fin (B.R.sigW j).2 → ℤ)
 
 /- English proof (translation)
-The claim follows from `if_neg (by have := R.two_le_m; omega)`.
+A detailed English derivation is pending.
 -/
 theorem md_zero (R : Ranks) (e : ℕ) : md R.m e 0 = 0 := if_neg (by have := R.two_le_m; omega)
 
@@ -382,14 +376,14 @@ def what₂ : RowsRest B C :=
       rw [dif_neg hμ]; rfl }
 
 /- English proof (translation)
-Rewrite using `[md, if_neg h]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_md (m e j : ℕ) (h : j ≠ m) : Subsingleton (Eu (md m e j)) := by
   rw [md, if_neg h]
   infer_instance
 
 /- English proof (translation)
-The claim follows from `rfl d0 := rfl dall := rfl delp := rfl ft := ⟨fun x => Empty.elim x⟩ mult := fun _ _ h => sub_md _ _ _ h io := fun _ _ => rfl mj := fun _ => inferInstanceAs (Subsingleton (Eu 0)) mt := fun _ _ => inferInstanceAs (Subsingleton (Eu 0)) eMt := fun _ _ => rfl bu := fun _ _ _ => rfl ij …`.
+A detailed English derivation is pending.
 -/
 theorem rows_standIn (hk : ∀ V S N G, DV.KapDef (assemble B C (what₂ hf d L e0 eT kb ks) V S N G)) :
     StandIn (what₂ hf d L e0 eT kb ks) where
@@ -414,11 +408,11 @@ end Build
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `choose d e L h1 h2 h3 using packI I hX`. Use `choose g hg using exists_same I h`. Take `⟨kb, ks, hk⟩` from `exists_ka B`. Set `g' : ∀ u (a : (I.cols l).Tup), MtCx I a ≃ₗ[ℂ] ((I.cols l).PTw u a).Mt` to `g`. Set `g0 : ∀ u, MtCx I I.mu0 ≃ₗ[ℂ] ((I.cols l).mem u).P.Mt` to `fun u => g u I.mu0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `W : RowsRest B (I.cols l)` to `what₂ (TrueColsTest.fits l) d L (fun u => (g0 u).symm.trans (e I.mu0)) (fun u a => (g' u a).symm.trans (e a)) kb ks`. Use `⟨⟨W, e, ⟨fun _ => rfl, fun _ => rfl, fun u F => ?_, fun u a F => ?_, h1, h2, h3, fun _ => rfl, fun _ _ => rfl⟩, rows_standIn _ _ _ _ _ _ _ (hk _ _ rfl rfl)⟩⟩` and prove the remaining obligations. Establish `: (W.eMt0 u).symm (e I.mu0 F) = g0 u F` using `by show g0 u ((e I.mu0).symm (e I.mu0 F)) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Introduce `p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (fun G : (I.perIn u I.mu0).Mt B.fields.emb B.embLL => G.1 () p) this).trans (hg u I.mu0 F p)`. Establish `: (W.eMtTw u a).symm (e a F) = g' u a F` using `by show g' u a ((e a).symm (e a F)) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Introduce `p`. Conclude with `(congrArg (fun G : (I.perIn u a).Mt B.fields.emb B.embLL => G.1 () p) this).trans (hg u a F p)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nonempty_rowsDef (h : I.Ok) : Nonempty (RowsDef I l hX) := by
   choose d e L h1 h2 h3 using packI I hX
@@ -442,11 +436,11 @@ theorem nonempty_rowsDef (h : I.Ok) : Nonempty (RowsDef I l hX) := by
     exact (congrArg (fun G : (I.perIn u a).Mt B.fields.emb B.embLL => G.1 () p) this).trans (hg u a F p)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨c, hc⟩` from `(h1 _).2 ⟨x, hx, rfl⟩`. Conclude with `⟨fun v => ⟨ι (c v), hι _⟩, hc⟩`. Introduce and unpack `⟨c, hc⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `: ∃ y ∈ H.L, j y = ∑ v ∈ L.gen, σ ((c v : 𝓞 K) : K) • v`. Use `Finset.sum_induction _ (fun z => ∃ y ∈ H.L, j y = z) ?_ ⟨0, zero_mem _, map_zero _⟩ ?_` and prove the remaining obligations. Introduce and unpack `_ _ ⟨x, hx, rfl⟩ ⟨y, hy, rfl⟩`. Conclude with `⟨x + y, add_mem hx hy, map_add _ _ _⟩`. Introduce `v hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy, rfl⟩` from `(h1 v).1 (h2 v hv)`. Use `⟨c (j y) • y, H.L.smul_mem _ hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_smul K, LinearMap.map_smulₛₗ]`. Take `⟨y, hy, e⟩` from `this`. Rewrite using `[hj (hc.trans e.symm)]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem lat_iff {K : Type} [Field K] [NumberField K] [StarRing K] (H : HLat K) (σ : K →+* ℂ) {N : Type} [AddCommGroup N] [Module ℂ N]
     (j : H.V →ₛₗ[σ] N) (hj : Function.Injective j) {O : Type} [CommRing O] (ι : O →+* K) (hι : ∀ y, IsIntegral ℤ (ι y))
@@ -470,7 +464,7 @@ theorem lat_iff {K : Type} [Field K] [NumberField K] [StarRing K] (H : HLat K) (
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `h1` using `basis_cx (X := B.fields) (Pr := B.primes X) B.wts I.Ch hX I.sel (I.tup a) I.Ps B.embLL`. Establish `h2` using `toMtilde_injective (X := B.fields) (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps B.embLL`. Establish `h3` using `MtildeH_good (X := B.fields) (Pr := B.primes X) B.wts I.Ch hX I.sel (I.tup a) I.Ps`. Conclude with `⟨toMtP (X := B.fields) (Pr := B.primes X) B.wts I.Ch I.sel (I.tup a) I.Ps B.embLL, fun _ => rfl, h2, h3, h1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem cx_facts (a : I.ι) : ∃ j : (MtHL I hX a).V →ₛₗ[B.embLL] MtCx I a, (∀ x, j x = toCx I hX a x) ∧ Function.Injective j ∧
     (MtHL I hX a).Good ∧ LinearIndependent ℂ (fun i => j ((MtHL I hX a).b i)) ∧
@@ -483,13 +477,11 @@ theorem cx_facts (a : I.ι) : ∃ j : (MtHL I hX a).V →ₛₗ[B.embLL] MtCx I 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `choose j hj hinj hG hli hsp using cx_facts I hX`. Set `J : ∀ a : (I.cols l).Tup, (MtHL I hX a).V →ₛₗ[B.embLL] Z.W.Amb a` to `fun a => (e a).toLinearMap.comp (j a)`. Establish `hJ : ∀ a x, J a x = e a (toCx I hX a x)` using `fun a x => congrArg (e a) (hj a x)`. Establish `hl : ∀ a y, y ∈ (Z.W.Mtilde a).carrier ↔ ∃ x ∈ (MtHL I hX a).L, J a x = y` using `fun a y => by`. Simplify using `only [hJ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h.lat a y`. Establish `q1 : ∀ a : (I.cols l).Tup, LinearIndependent ℂ (fun i => J a ((MtHL I hX a).b i)) ∧ Submodule.span ℂ (Set.range fun i => J a ((MtHL I hX a).b i)) = ⊤` using `fun a => ⟨(hli a).map' (e a).toLinearMap (e a).ker, by`. Use `congrArg (Submodule.map (e a).toLinearMap) (hsp a)` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, Submodule.map_top, LinearEquiv.range, ← Set.range_comp]`. Conclude with `this⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `q2` using `fun a : (I.cols l).Tup => lat_iff (MtHL I hX a) B.embLL (J a) ((e a).injective.comp (hinj a)) B.OtoLL B.O_int _ (hl a) (h.gen a)`. Establish `q3 : ∀ a : (I.cols l).Tup, ∀ v ∈ (Z.W.Mtilde a).gen, v ∈ Set.range (J a)` using `fun a v hv => by`. Take `⟨x, -, hx⟩` from `(hl a v).1 (h.gen a v hv)`. Conclude with `⟨x, hx⟩`. Establish `q4` using `fun (a : (I.cols l).Tup) x => (h.norm a x).trans (congrArg norm (hJ a x).symm)`.
-
-Use `⟨{ MtH := fun a => MtHL I hX a jAmb := J MtH_good := fun a _ => hG a jAmb_basis := fun a _ => q1 a jAmb_lat := fun a _ => q2 a jAmb_gen := fun a _ => q3 a jAmb_norm := fun a _ => q4 a }, ⟨fun a => ?_⟩⟩` and prove the remaining obligations. Conclude with `congrArg (fun f => (⟨MtHL I hX a, f⟩ : Σ H : HLat B.LL, (H.V → Z.W.Amb a))) (funext (hJ a))`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_ambTrue (Z : TC.Later B (I.cols l)) (e : ∀ a : (I.cols l).Tup, MtCx I a ≃ₗ[ℂ] Z.W.Amb a) (h : DefTrue I l hX Z.W e) :
     ∃ A, AmbTrue I l hX Z e A := by
@@ -519,9 +511,9 @@ theorem exists_ambTrue (Z : TC.Later B (I.cols l)) (e : ∀ a : (I.cols l).Tup, 
   exact congrArg (fun f => (⟨MtHL I hX a, f⟩ : Σ H : HLat B.LL, (H.V → Z.W.Amb a))) (funext (hJ a))
 
 /- English proof (translation)
-Take `⟨Del, letter, hD, hinj, gap, hu⟩` from `hB`. Take `⟨N⟩` from `GlobalTheory.MemN.nonempty_nStage_provisional B _ Rw.W (fun _ _ _ => 1) Rw.std.sha (fun j w _ _ => Rw.std.eta j w) (Or.inl (GlobalTheory.MemN.goodChi _ _))`. Take `⟨V, -⟩` from `DivInhab.exists_divStage B _ Rw.W`. Take `⟨S⟩` from `SStageInhab.nonempty_sStage B _ Rw.W Del hD gap letter hinj hu (fun u x _ y _ => TrueColsTest.ipC_herm l u x y) (fun u x hx h => TrueColsTest.ipC_pos l u x hx h) (by rw [Rw.std.drows]; exact Nat.zero_le _)`. Take `⟨G⟩` from `GJInhab.nonempty_stage B (I.cols l)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨Rw.W, V, S, N, G⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_later (hB : StagesInhab.HasLetters B.toPre) (Rw : RowsDef I l hX) : ∃ Z : TC.Later B (I.cols l), Z.W = Rw.W := by
   obtain ⟨Del, letter, hD, hinj, gap, hu⟩ := hB
@@ -538,9 +530,9 @@ set_option maxHeartbeats 1000000 in
 include hX in
 
 /- English proof (translation)
-Establish `hD` using `GlobalTheory.T.definiteBaseData_admissible B X I.Ch h.ch_ok h.fromHecke`. Establish `hs : XiSign (B.primes X) I.sel (I.tup I.mu0 : Chr B.fields.F B.fields.E B.fields.K)`. Rewrite using `[I.trueColumn_tuple_trivial_eq_one]`. Conclude with `signCondition_trivialTuple I.sel I.S`. Establish `h1` using `(hD.rowsNonzero I.sel (I.tup I.mu0) hs (rPsym I.Ch) (rPsym_le I.Ch)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `finrank_MtP (X := B.fields) (Pr := B.primes X) B.wts I.Ch I.sel (I.tup I.mu0) (rPsym I.Ch) B.embLL hX`. Conclude with `nontrivial_symF (X := B.fields) (Pr := B.primes X) B.wts I.Ch I.sel (I.tup I.mu0) B.embLL (Module.nontrivial_of_finrank_pos (R := ℂ) (h2.symm ▸ h1))`.
+A detailed English derivation is pending.
 -/
 theorem nontrivial_reference_forms (h : I.Ok) : Nontrivial (MtCx I I.mu0) := by
   have hD := GlobalTheory.T.definiteBaseData_admissible B X I.Ch h.ch_ok h.fromHecke
@@ -553,9 +545,7 @@ theorem nontrivial_reference_forms (h : I.Ok) : Nontrivial (MtCx I I.mu0) := by
     (Module.nontrivial_of_finrank_pos (R := ℂ) (h2.symm ▸ h1))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h u φ F`. Establish `hF : F ∈ Rw.W.what₂.V0 (I.cols l).mu0` using `⟨F, LinearMap.congr_fun (Rw.tru.eOp _) F⟩`. Conclude with `(h u φ F hF).trans (Rw.std.bu _ _ _)`. Introduce `h u φ F _`.
-
-Conclude with `(h u φ F).trans (Rw.std.bu _ _ _).symm`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem buDef_iff (Rw : RowsDef I l hX) : Rows.BuDef Rw.W.what₂ ↔ ∀ u φ F, Rw.W.perCol u (I.cols l).mu0 φ F = 0 := by
   constructor
@@ -566,9 +556,9 @@ theorem buDef_iff (Rw : RowsDef I l hX) : Rows.BuDef Rw.W.what₂ ↔ ∀ u φ F
     exact (h u φ F).trans (Rw.std.bu _ _ _).symm
 
 /- English proof (translation)
-Take `⟨B, X, I, hL, h, hP, hs⟩` from `TrueColsTest.exists_ok_pins`. Establish `hX` using `(base_fields_primes_ok B X).1`. Establish `l` using `TrueColsTest.laws h`. Take `⟨Rw⟩` from `nonempty_rowsDef I l hX h`. Take `⟨⟨W, V, S, N, G⟩, hZ⟩` from `exists_later I l hX hL Rw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : W = Rw.W` from `hZ`. Take `⟨A, hA⟩` from `exists_ambTrue I l hX ⟨Rw.W, V, S, N, G⟩ Rw.e Rw.tru`. Establish `: Nontrivial (MtCx I (I.cols l).mu0)` using `nontrivial_reference_forms I hX h`. Conclude with `⟨B, X, I, l, hX, ⟨Rw.W, V, S, N, G⟩, Rw.e, A, h, hP, hs, Rw.tru, Rw.std, hA, (Rw.e (I.cols l).mu0).symm.toEquiv.nontrivial⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_all : ∃ (B : Base) (X : PreX B.toPre) (I : TC B X) (l : I.Laws) (hX : B.fields.Ok) (Z : TC.Later B (I.cols l))
     (e : ∀ a : (I.cols l).Tup, MtCx I a ≃ₗ[ℂ] Z.W.Amb a) (A : AmbForm (I.rec7 l Z) (RowSide.sharp (I.rec7 l Z))),

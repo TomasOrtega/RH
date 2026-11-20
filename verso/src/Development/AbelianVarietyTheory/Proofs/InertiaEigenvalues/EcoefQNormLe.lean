@@ -32,15 +32,13 @@ def kap (C : Core l) {K : FinExt l} (bk : BK K) {d : ℕ} (k₀ k : ℕ) (Mn : M
       (Mn.map (((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev).comp PowerSeries.C)) ^ i
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `Nat.factorial_dvd_factorial hi.le`. Take `⟨r, rfl⟩ : ∃ r, d = i + r` from `⟨d - i, by omega⟩`. Establish `hl0 : (l : ℚ_[l]) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `hm0 : (m : ℚ_[l]) ≠ 0`. Introduce and unpack `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hm (by rw [Nat.cast_eq_zero.1 h]; exact dvd_zero _)`. Establish `hf0 : (i.factorial : ℚ_[l]) ≠ 0` using `by exact_mod_cast (Nat.factorial_ne_zero i)`. Establish `h : (l : ℚ_[l]) ^ e * m = i.factorial * q`. Conclude with `(hd.symm.trans hq)` after adjusting the coercions. Establish `e1 : ecoefQ l (e + k * (i + r)) k i = (l : ℚ_[l]) ^ (k * r) * q * (m : ℚ_[l])⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Unfold `ecoefQ`. Rewrite using `[show e + k * (i + r) = e + k * i + k * r by ring]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[pow_add, pow_add]`. Take the linear combination `((l : ℚ_[l]) ^ (k * i) * (l : ℚ_[l]) ^ (k * r)) * h`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, norm_mul, norm_mul, norm_inv, (Padic.norm_natCast_eq_one_iff (p := l)).2 ((Nat.Prime.coprime_iff_not_dvd (Fact.out : l.Prime)).2 hm), inv_one, mul_one]`. Establish `h1 : ‖(l : ℚ_[l]) ^ (k * r)‖ ≤ 1`. Rewrite using `[norm_pow, Padic.norm_p]`. Conclude with `pow_le_one₀ (by positivity) (inv_le_one_of_one_le₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt.le))`. Establish `h2 : ‖(q : ℚ_[l])‖ ≤ 1` using `by exact_mod_cast Padic.norm_int_le_one (q : ℤ)`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ecoefQ_norm_le {d e m : ℕ} (k : ℕ) (hm : ¬ l ∣ m) (hd : d.factorial = l ^ e * m) {i : ℕ} (hi : i < d) :
     ‖ecoefQ l (e + k * d) k i‖ ≤ 1 := by
@@ -68,7 +66,7 @@ theorem ecoefQ_norm_le {d e m : ℕ} (k : ℕ) (hm : ¬ l ∣ m) (hd : d.factori
     _ = 1 := one_mul 1
 
 /- English proof (translation)
-Use `show (if ‖ecoefQ l k₀ k i‖ ≤ 1 then ecoefQ l k₀ k i else 0) = _`. Rewrite using `[if_pos h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ecoef_val {k₀ k i : ℕ} (h : ‖ecoefQ l k₀ k i‖ ≤ 1) :
     ((ecoef l k₀ k i : ℤ_[l]) : ℚ_[l]) = ecoefQ l k₀ k i := by
@@ -76,13 +74,11 @@ theorem ecoef_val {k₀ k i : ℕ} (h : ‖ecoefQ l k₀ k i‖ ≤ 1) :
   rw [if_pos h]
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos d with rfl | hd` into its components or cases. Conclude with `Subsingleton.elim _ _`. Unfold `kap`. Rewrite using `[Finset.sum_eq_single 0]`. Establish `h0 : ecoef l k₀ k 0 = (l : ℤ_[l]) ^ k₀`.
+Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ‖ecoefQ l k₀ k 0‖ ≤ 1`. Simplify using `only [ecoefQ, Nat.factorial_zero, Nat.cast_one, mul_zero, pow_zero, mul_one, inv_one]`. Rewrite using `[norm_pow, Padic.norm_p]`. Conclude with `pow_le_one₀ (by positivity) (inv_le_one_of_one_le₀ (by exact_mod_cast (Fact.out : l.Prime).one_lt.le))`. Apply `Subtype.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ecoef_val hn]`. Simplify using `[ecoefQ]`. Simplify using `[h0]`. Introduce `i _ hi`. Simplify using `[zero_pow hi]`.
-
-Introduce `h`. Conclude with `absurd (Finset.mem_range.2 hd) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kap_zero (C : Core l) {K : FinExt l} (bk : BK K) {d : ℕ} (k₀ k : ℕ) (Mn : Matrix (Fin d) (Fin d) (Wq l bk.a)) :
     kap C bk k₀ k Mn 0 = (l : Per.Acris l) ^ k₀ • (1 : Matrix (Fin d) (Fin d) (Per.Acris l)) := by

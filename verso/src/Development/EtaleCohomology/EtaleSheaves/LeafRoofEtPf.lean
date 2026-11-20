@@ -13,9 +13,9 @@ def LeafRoofEtP : Prop := ∀ (d : ℕ) {C B : Type} [CommRing C] [CommRing B] (
     ∀ x, m x = 0 → x ∈ Ideal.span (Set.range fun j => b (MvPolynomial.X j)) ⊔ Ideal.span {e}
 
 /- English proof (translation)
-Introduce `d C B _ _ φ hφ`. Take `⟨P, _, a, b, m, e, ha, hb, hab, hma, hmb, hme, he, hk⟩` from `h d φ hφ`. Use `⟨P, inferInstance, a, b, m, 1 - e, ha, hb, hab, hma, hmb, by simp [hme], fun x hx => ⟨1, ?_⟩⟩` and prove the remaining obligations. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.mp (hk x hx)`. Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.mp hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: (1 - e) ^ 1 * (y + r * e) = (1 - e) * y - r * (e * e - e)` using `by ring`. Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ (Ideal.mul_mem_left _ _ hy) (Ideal.mul_mem_left _ _ he)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafRoofEt_of (h : LeafRoofEtP) : LateralTheory.E.LeafRoofPf.LeafRoofEt := by
   intro d C B _ _ φ hφ

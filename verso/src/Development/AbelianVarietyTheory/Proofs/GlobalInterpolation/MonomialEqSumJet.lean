@@ -13,7 +13,7 @@ open GlobalTheory.Proof.DirectionalDerivative GlobalTheory.IndefiniteRowSideFull
 variable (D : D7) {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) {N N' : ℕ}
 
 /- English proof (translation)
-Introduce `τ τ' h`. Apply `D.eTau.injective` to reduce the goal to its premises. Apply `(GlobalTheory.InducedType.galK_bijective D.host).1` to reduce the goal to its premises. Use `AlgEquiv.ext fun x => D.host.φ₀.injective ?_` and prove the remaining obligations. Conclude with `congrArg (fun f : D.host.E →+* ℂ => f x) h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem embT_injective : Function.Injective (TaylorLogMetric.embT D) := by
   intro τ τ' h
@@ -23,20 +23,20 @@ theorem embT_injective : Function.Injective (TaylorLogMetric.embT D) := by
   exact congrArg (fun f : D.host.E →+* ℂ => f x) h
 
 /- English proof (translation)
-Rewrite `h` using `[TaylorLogMetric.lamC, TaylorLogMetric.lamC, dif_pos hx, dif_pos hy]`. Conclude with `congrArg Subtype.val (lam.injective h)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamC_injOn {x y : ℂ} (hx : x ∈ TaylorLogMetric.Qbar) (hy : y ∈ TaylorLogMetric.Qbar) (h : TaylorLogMetric.lamC lam x = TaylorLogMetric.lamC lam y) : x = y := by
   rw [TaylorLogMetric.lamC, TaylorLogMetric.lamC, dif_pos hx, dif_pos hy] at h
   exact congrArg Subtype.val (lam.injective h)
 
 /- English proof (translation)
-The claim follows from `mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom f.toRatAlgHom)`.
+A detailed English derivation is pending.
 -/
 theorem emb_mem {A : Type} [Field A] [NumberField A] (f : A →+* ℂ) (x : A) : f x ∈ TaylorLogMetric.Qbar :=
   mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom f.toRatAlgHom)
 
 /- English proof (translation)
-Rewrite using `[TaylorLogMetric.lamC, TaylorLogMetric.lamC, TaylorLogMetric.lamC, dif_pos hx, dif_pos hy, dif_pos (add_mem hx hy), ← map_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lamC_add {x y : ℂ} (hx : x ∈ TaylorLogMetric.Qbar) (hy : y ∈ TaylorLogMetric.Qbar) :
     TaylorLogMetric.lamC lam (x + y) = TaylorLogMetric.lamC lam x + TaylorLogMetric.lamC lam y := by
@@ -44,9 +44,9 @@ theorem lamC_add {x y : ℂ} (hx : x ∈ TaylorLogMetric.Qbar) (hy : y ∈ Taylo
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty, TaylorLogMetric.lamC, dif_pos (zero_mem _)]`. Conclude with `map_zero lam`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, lamC_add lam (hf a) (sum_mem fun i _ => hf i), ih]`.
+A detailed English derivation is pending.
 -/
 theorem lamC_sum {ι : Type} (s : Finset ι) (f : ι → ℂ) (hf : ∀ i, f i ∈ TaylorLogMetric.Qbar) :
     TaylorLogMetric.lamC lam (∑ i ∈ s, f i) = ∑ i ∈ s, TaylorLogMetric.lamC lam (f i) := by
@@ -59,13 +59,13 @@ theorem lamC_sum {ι : Type} (s : Finset ι) (f : ι → ℂ) (hf : ∀ i, f i �
     rw [Finset.sum_insert ha, Finset.sum_insert ha, lamC_add lam (hf a) (sum_mem fun i _ => hf i), ih]
 
 /- English proof (translation)
-Use `choose g hg using fun τ => exists_lamHom lam (TaylorLogMetric.embT D τ)`. Establish `hinj : Function.Injective fun τ => (g τ : D.host.E →* ℂ_[p])`. Introduce `a b h`. Apply `embT_injective D` to reduce the goal to its premises. Use `RingHom.ext fun x => lamC_injOn lam (emb_mem _ _) (emb_mem _ _) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, hg]`. Conclude with `congrArg (fun f : D.host.E →* ℂ_[p] => f x) h`. Establish `hli : LinearIndependent ℂ_[p] fun τ => (g τ : D.host.E → ℂ_[p])` using `(linearIndependent_monoidHom D.host.E ℂ_[p]).comp _ hinj`. Establish `hsp` using `span_flip_eq_top_iff_linearIndependent.2 hli`. Establish `hm : (Pi.single τ 1 : D.what₂.Tau → ℂ_[p]) ∈ Submodule.span ℂ_[p] (Set.range (flip fun τ => (g τ : D.host.E → ℂ_[p])))` using `hsp ▸ Submodule.mem_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, γ, v, hv⟩` from `Submodule.mem_span_set'.1 hm`. Use `choose x hx using fun l => (v l).2`. Establish `key : ∀ τ', ∑ l, γ l * TaylorLogMetric.tauEmb D lam τ' (x l) = (Pi.single τ 1 : D.what₂.Tau → ℂ_[p]) τ'`. Introduce `τ'`. Rewrite using `[← hv, Finset.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, ← hx l, TaylorLogMetric.tauEmb, hg]`. Both sides reduce to the same expression. Conclude with `⟨k, γ, x, by rw [key, Pi.single_eq_same], fun τ' h => by rw [key, Pi.single_eq_of_ne h]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_single (τ : D.what₂.Tau) : ∃ (k : ℕ) (γ : Fin k → ℂ_[p]) (x : Fin k → D.host.E),
     (∑ l, γ l * TaylorLogMetric.tauEmb D lam τ (x l) = 1) ∧ ∀ τ', τ' ≠ τ → ∑ l, γ l * TaylorLogMetric.tauEmb D lam τ' (x l) = 0 := by
@@ -95,13 +95,13 @@ theorem exists_single (τ : D.what₂.Tau) : ∃ (k : ℕ) (γ : Fin k → ℂ_[
 open Classical in
 
 /- English proof (translation)
-Take `⟨τ, i, j⟩` from `v`. Take `⟨k, γ, x, h1, h2⟩` from `exists_single D lam τ`. Use `⟨k, γ, fun l => Matrix.single i j (x l), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨τ', i', j'⟩`. Take `⟨g, hg⟩` from `exists_lamHom lam (TaylorLogMetric.embT D τ')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, vecY]`. Distinguish the cases in `hij : i = i' ∧ j = j'`. Take `⟨rfl, rfl⟩` from `hij`. Simplify using `only [Matrix.single_apply_same]`. Distinguish the cases in `hτ : τ' = τ`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hτ` using the available equality. Rewrite using `[h1, Pi.single_eq_same]`. Rewrite using `[h2 τ' hτ, Pi.single_eq_of_ne (fun h => hτ (congrArg Prod.fst h))]`. Rewrite using `[Pi.single_eq_of_ne (fun h => hij (by simp only [Prod.mk.injEq] at h; exact ⟨h.2.1.symm, h.2.2.symm⟩))]`. Simplify using `only [TaylorLogMetric.tauEmb, hg]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.single_apply_of_ne _ _ _ _ _ hij]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_vecY (v : D.what₂.Tau × Fin N' × Fin N) : ∃ (k : ℕ) (γ : Fin k → ℂ_[p])
     (z : Fin k → Matrix (Fin N') (Fin N) D.host.E), ∑ l, γ l • vecY D lam (z l) = Pi.single v 1 := by
@@ -123,7 +123,7 @@ theorem exists_vecY (v : D.what₂.Tau × Fin N' × Fin N) : ∃ (k : ℕ) (γ :
     simp [Matrix.single_apply_of_ne _ _ _ _ _ hij]
 
 /- English proof (translation)
-Rewrite using `[TaylorLogMetric.hYY, ← GlobalTheory.InducedType.sum_eq_trace D, lamC_sum lam _ _ fun τ => emb_mem _ _, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Take `⟨g, hg⟩` from `exists_lamHom lam (TaylorLogMetric.embT D τ)`. Rewrite using `[hg]`. Simplify using `only [vecY, TaylorLogMetric.tauEmb, hg, map_sum, map_mul, Fintype.sum_prod_type]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lam_hYY (y Y : Matrix (Fin N') (Fin N) D.host.E) :
     TaylorLogMetric.lamC lam (D.host.φ₀ ((TaylorLogMetric.hYY D y Y : D.host.K) : D.host.E)) =
@@ -135,7 +135,7 @@ theorem lam_hYY (y Y : Matrix (Fin N') (Fin N) D.host.E) :
   simp only [vecY, TaylorLogMetric.tauEmb, hg, map_sum, map_mul, Fintype.sum_prod_type]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [dirDer_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, dirDer_add, dirDer_smul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem dirDer_sum {σ ι : Type} [Fintype σ] (s : Finset ι) (c : ι → ℂ_[p]) (w : ι → σ → ℂ_[p]) :
     dirDer (∑ l ∈ s, c l • w l) = ∑ l ∈ s, c l • dirDer (w l) := by
@@ -145,7 +145,7 @@ theorem dirDer_sum {σ ι : Type} [Fintype σ] (s : Finset ι) (c : ι → ℂ_[
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, dirDer_add, dirDer_smul, ih]
 
 /- English proof (translation)
-Rewrite using `[dirDer_apply, Finset.sum_eq_single v]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem dirDer_single {σ : Type} [Fintype σ] [DecidableEq σ] (v : σ) (F : MvPowerSeries σ ℂ_[p]) :
     dirDer (Pi.single v 1) F = pderiv ℂ_[p] v F := by
@@ -156,7 +156,7 @@ theorem dirDer_single {σ : Type} [Fintype σ] [DecidableEq σ] (v : σ) (F : Mv
   · simp
 
 /- English proof (translation)
-Rewrite using `[TaylorLogMetric.jet, foldr_der]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jet_eq {n : ℕ} (y : Fin n → Matrix (Fin N') (Fin N) D.host.E)
     (F : MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]) :
@@ -164,7 +164,7 @@ theorem jet_eq {n : ℕ} (y : Fin n → Matrix (Fin N') (Fin N) D.host.E)
   rw [TaylorLogMetric.jet, foldr_der]
 
 /- English proof (translation)
-Rewrite using `[jet_eq, List.ofFn_succ_last]`. Simplify using `[derList]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jet_snoc {n : ℕ} (y : Fin n → Matrix (Fin N') (Fin N) D.host.E) (z : Matrix (Fin N') (Fin N) D.host.E)
     (F : MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]) :
@@ -174,23 +174,23 @@ theorem jet_snoc {n : ℕ} (y : Fin n → Matrix (Fin N') (Fin N) D.host.E) (z :
   simp [derList]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `α hn`. Rewrite using `[(Finsupp.degree_eq_zero_iff α).1 hn]`. Use `⟨Unit, inferInstance, fun _ => 1, fun _ => Fin.elim0, fun F => ?_, fun Y => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[jetAt_zero, TaylorLogMetric.jet]`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `α hn`. Establish `hα : α ≠ 0` using `by rintro rfl; simp at hn`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `Finsupp.support_nonempty_iff.2 hα`. Establish `hle : Finsupp.single x 1 ≤ α`. Rewrite using `[Finsupp.single_le_iff]`. Conclude with `Nat.one_le_iff_ne_zero.2 (Finsupp.mem_support_iff.1 hx)`. Take `⟨β, rfl⟩ : ∃ β, α = β + Finsupp.single x 1` from `⟨α - Finsupp.single x 1, (tsub_add_cancel_of_le hle).symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hβ : β.degree = n`. Rewrite `hn` using `[map_add, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers. Take `⟨ι, _, γ, y, h1, h2⟩` from `ih β hβ`. Take `⟨k, δ, z, hz⟩` from `exists_vecY D lam x`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ι × Fin k, inferInstance, fun l => γ l.1 * δ l.2, fun l => Fin.snoc (y l.1) (z l.2), fun F => ?_, fun Y => ?_⟩` and prove the remaining obligations. Rewrite using `[jetAt_add_single, h1, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← dirDer_single, ← hz, dirDer_sum, jet_eq]`. Simplify using `only [jet_snoc, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, constantCoeff_smul, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.prod_add_index' (by simp) (fun _ _ _ => pow_add _ _ _), h2, Finsupp.prod_single_index (by simp), pow_one, Fintype.sum_prod_type, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `e : TaylorLogMetric.lamC lam (TaylorLogMetric.embT D x.1 (D.host.conj (Y x.2.1 x.2.2))) = ∑ m, δ m * TaylorLogMetric.lamC lam (D.host.φ₀ ((TaylorLogMetric.hYY D (z m) Y : D.host.K) : D.host.E))`. Simplify using `only [lam_hYY, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← mul_assoc, ← Finset.sum_mul]`. Establish `: ∀ v, ∑ m, δ m * vecY D lam (z m) v = (Pi.single x 1 : _ → ℂ_[p]) v` using `fun v => by`. Rewrite using `[← hz, Finset.sum_apply]`. Both sides reduce to the same expression. Simplify using `only [this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single x]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_castSucc]`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_comb (n : ℕ) : ∀ α : TaylorLogMetric.Mono D N N', α.degree = n →
     ∃ (ι : Type) (_ : Fintype ι) (γ : ι → ℂ_[p]) (y : ι → Fin n → Matrix (Fin N') (Fin N) D.host.E),
@@ -248,9 +248,7 @@ theorem exists_comb (n : ℕ) : ∀ α : TaylorLogMetric.Mono D N N', α.degree 
       ring
 
 /- English proof (translation)
-Introduce `D p N N' _ lam α`. Take `⟨ι, _, γ, y, h1, h2⟩` from `exists_comb D lam _ α rfl`. Set `e` to `(Fintype.equivFin ι).symm`. Use `⟨_, γ ∘ e, y ∘ e, fun F => ?_, fun Y => ?_⟩` and prove the remaining obligations. Conclude with `(h1 F).trans (e.sum_comp _).symm`.
-
-Conclude with `(h2 Y).trans (e.sum_comp _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem monomial_eq_sum_jet : ∀ (D : D7) (p N N' : ℕ) [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) (α : TaylorLogMetric.Mono D N N'), ∃ (k : ℕ) (γ : Fin k → ℂ_[p]) (y : Fin k → Fin α.degree → Matrix (Fin N') (Fin N) D.host.E), (∀ F : MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p], (α.prod fun _ n => (n.factorial : ℂ_[p])) * MvPowerSeries.coeff α F = ∑ l, γ l * TaylorLogMetric.jet D lam (y l) F) ∧ ∀ Y : Matrix (Fin N') (Fin N) D.host.E, (α.prod fun v n => TaylorLogMetric.lamC lam (TaylorLogMetric.embT D v.1 (D.host.conj (Y v.2.1 v.2.2))) ^ n) = ∑ l, γ l * ∏ j, TaylorLogMetric.lamC lam (D.host.φ₀ ((TaylorLogMetric.hYY D (y l j) Y : D.host.K) : D.host.E)) := by
   intro D p N N' _ lam α

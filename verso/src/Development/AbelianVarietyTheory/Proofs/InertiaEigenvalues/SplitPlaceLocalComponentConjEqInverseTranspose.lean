@@ -13,7 +13,7 @@ namespace GlobalTheory.ConjLocComp
 open GlobalTheory.TypeTame
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[invTranspose_val, ← map_inv]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_invTranspose {A B : Type} [CommRing A] [CommRing B] (n : ℕ) (f : A →+* B) (g : GL (Fin n) A) :
     Matrix.GeneralLinearGroup.map f (invTranspose n g) = invTranspose n (Matrix.GeneralLinearGroup.map f g) := by
@@ -22,17 +22,15 @@ theorem map_invTranspose {A B : Type} [CommRing A] [CommRing B] (n : ℕ) (f : A
   rfl
 
 /- English proof (translation)
-Take `⟨i, T, hi, hiL, hTi, hTm, hTe⟩` from `hσ`. Take `⟨i₀, hi₀, hi₀', hi₀L⟩` from `GlobalTheory.SplitComplHomeo.exists_complEquiv L s`. Take `rfl` from `GlobalTheory.splitPlace_completion_equiv_unique L s i₀ i hi₀ hi hi₀L hiL`. Take `⟨i', hi', hi'', hi'L⟩` from `GlobalTheory.SplitComplHomeo.exists_complEquiv L (conjSP s)`. Set `j : s.v.adicCompletion (maximalRealSubfield L) ≃+* (conjSP s).w.adicCompletion L` to `i'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `κ : s.w.adicCompletion L ≃+* (conjSP s).w.adicCompletion L` to `i₀.symm.trans j`. Establish `hκ : Continuous κ` using `hi'.comp hi₀'`. Establish `hκ' : Continuous κ.symm` using `hi₀.comp hi''`. Set `ψ : GL (Fin n) ((conjSP s).w.adicCompletion L) →* GL (Fin n) (s.w.adicCompletion L)` to `(invTranspose n).comp (Matrix.GeneralLinearGroup.map κ.symm.toRingHom)`. Establish `hψc : Continuous ψ` using `(continuous_invTranspose n).comp (Continuous.units_map _ (continuous_id.matrix_map hκ'))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψκ : ∀ g, ψ (Matrix.GeneralLinearGroup.map κ.toRingHom g) = invTranspose n g` using `fun g => congrArg (invTranspose n) (GlobalTheory.LocCompSplit.gl_map_symm_map κ g)`. Establish `hψs : Function.Surjective ψ` using `fun g => ⟨Matrix.GeneralLinearGroup.map κ.toRingHom (invTranspose n g), by rw [hψκ, invTranspose_invTranspose]⟩`. Establish `hj : ∀ g : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L)), Matrix.GeneralLinearGroup.map j.toRingHom g = Matrix.GeneralLinearGroup.map κ.toRingHom (Matrix.GeneralLinearGroup.map i₀.toRingHom g)` using `fun g => by`. Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Use `show j (g.val a b) = j (i₀.symm (i₀ (g.val a b)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingEquiv.symm_apply_apply]`. Set `σ' : GlobalTheory.SmGL.IrrRep (GL (Fin n) ((conjSP s).w.adicCompletion L))` to `⟨σ.V, σ.ρ.comp ψ, fun v => (σ.smooth v).preimage hψc, GlobalTheory.LocCompSplit.isIrreducible_comp_of_surjective σ.ρ ψ hψs σ.irr⟩`. Use `⟨κ, σ', LinearEquiv.refl ℂ σ.V, hκ, fun x => ?_, ⟨i', T, hi', hi'L, hTi, hTm, fun x hx a => ?_⟩, fun g a => ?_⟩` and prove the remaining obligations. Rewrite using `[← hi'L, conjSP_i, IsCMField.complexConj_apply_apply, ← hiL] show j (i₀.symm (i₀ (s.i x))) = j (s.i x)`. Rewrite using `[RingEquiv.symm_apply_apply]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ψ (Matrix.GeneralLinearGroup.map j.toRingHom (invTranspose n (s.loc n x))) = Matrix.GeneralLinearGroup.map i₀.toRingHom (s.loc n x)`. Rewrite using `[hj, hψκ, map_invTranspose, invTranspose_invTranspose]`. Establish `h2` using `hTe x hx a`. Rewrite `h2` using `[← h1, ← conjSP_loc]`. Conclude with `h2`.
-
-Use `show σ.ρ (invTranspose n g) a = σ.ρ (ψ (Matrix.GeneralLinearGroup.map κ.toRingHom g)) a`. Rewrite using `[hψκ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conj {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {W : Type} [AddCommGroup W] [Module ℂ W]
     (S : Submodule ℂ (GAf L n → W)) (s : SplitPlace L) (σ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (s.w.adicCompletion L)))
@@ -81,7 +79,7 @@ theorem exists_conj {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
     rw [hψκ]
 
 /- English proof (translation)
-Introduce `D n π s σ hσ`. Take `⟨κ, σ', e, h1, h2, h3, h4⟩` from `exists_conj π.S s σ hσ`. Conclude with `⟨κ, σ', e, h1, fun x => by rw [h2, GlobalTheory.SplitPlaceOver.host_conj_eq'], h3, h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isLocS_conjSP : ∀ (D : D7) (n : ℕ) (π : NG.AutRep D.host.E n) (s : SplitPlace D.host.E)
     (σ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (s.w.adicCompletion D.host.E))), IsLocS π.S s σ →

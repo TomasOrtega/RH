@@ -52,11 +52,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Amp
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT C0`. Establish `hH : GlobalTheory.GapIn.Hyp` using `GlobalTheory.GapIn.hyp_of_uniqGap GlobalTheory.uniqGap_and_besselOfW.1`. Take `⟨C₀, hC⟩` from `GlobalTheory.T.amplitudeSchurBound_uniform_constants Cg cb Cu cT CT 1`. Take `⟨m₀, hm⟩` from `hC C₀ le_rfl`. Take `⟨m₁, hL⟩` from `GlobalTheory.T.amplitudeMultOneDecay_of_largeGapHypotheses hH Cg cb Cu cT CT C0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨thr, hthr⟩` from `GlobalTheory.T.size_bounds_of_standingHypotheses (max (max m₀ m₁) 1)`. Use `⟨C₀, thr, fun D large₂ C' Cl h1 h2 hT => ?_⟩` and prove the remaining obligations. Introduce `hZ`. Take `⟨h1000, -, hmM, -, hrd, -⟩` from `hthr D large₂ C' Cl Cg cb Cu cT CT h1 h2 hZ.1`. Establish `hm1 : (1 : ℝ) ≤ (D.R.m : ℝ)` using `le_trans (le_max_right _ _) hmM`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hCm : 1 ≤ Cl * (D.R.m : ℝ)` using `by nlinarith`. Establish `hBig : ∀ m' : ℝ, m' ≤ max (max m₀ m₁) 1 → Big D large₂ Cl m'` using `fun m' hm' => ⟨hrd, hCm, le_trans hm' hmM⟩`. Conclude with `hm D large₂ C' Cl C0 (hBig m₀ (le_trans (le_max_left _ _) (le_max_left _ _))) hT.cdScale_tie (GlobalTheory.GapAmp.bessel_schur_gap hH D large₂ C' Cl Cg cb Cu cT CT C0 h1000) (hL D large₂ C' Cl (hBig m₁ (le_trans (le_max_right _ _) (le_max_left _ _)))) hZ`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem schur_at_record_gap : ∀ Cg cb Cu cT CT C0 : ℝ, ∃ C thr : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl : ℝ), thr ≤ C' → thr ≤ Cl → Ties D → VanishingOnXAndXPlusBranching.adm11 D large₂ C' Cl Cg cb Cu cT CT C0 1 C := by
   intro Cg cb Cu cT CT C0

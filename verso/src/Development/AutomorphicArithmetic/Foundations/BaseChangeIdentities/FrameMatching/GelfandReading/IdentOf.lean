@@ -19,15 +19,15 @@ namespace UpperTheory.BaseChangeIdentities.GelfandReading
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Introduce `hR E _ _ _ n π S T F₀ F i χ hχ O`. Establish `e0 : (F.t₀ i).val O.χa O.χb = 1` using `(O.eigArch (.inl ()) (F.t₀ i) rfl rfl).symm.trans (hχ.2.1 (.inl ()))`. Establish `e1 : ∀ v s m side, (F.tD i v s m side).val O.χa O.χb = F.dval (i, v, s, m, side)` using `fun v s m side => (O.eigArch (.inr (.inl (i, v, s, m, side))) (F.tD i v s m side) (if_pos rfl) rfl).symm.trans (hχ.2.1 (.inr (.inl (i, v, s, m, side))))`. Establish `key` using `fun v s m => hD E _ _ _ _ _ _ _ _ (F₀.A i) F.κ (F.ψ i (F.d.eL _)) (F.ψ i (F.d.eL _)) (PositivityTheory.Rg.BcB.F.sizeOf (F.ψ i (F.d.eL _))) (PositivityTheory.Rg.BcB.F.sizeOf (F.ψ i (F.d.eL _))) v s m O.χa O.χb`. Use `⟨fun τ => congrFun (hI E _ O.χa (F₀.A i).χa fun v s m _ _ => ?_) τ, fun τ => congrFun (hI E _ O.χb (F₀.A i).χb fun v s m _ _ => ?_) τ⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `e1 v s m false`. Establish `h2` using `(key v s m).1`. Establish `h3 : F.tD i v s m false = (F₀.A i).pt (fun v' => if v' = v then [(s, m)] else []) (fun _ => []) (F.ψ i (F.d.eL _)) (PositivityTheory.Rg.BcB.F.sizeOf (F.ψ i (F.d.eL _)))`. Unfold `RunFrame.tD`. Apply the tactic sequence `congr 1 <;> funext v' <;> simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `h1` using `[h3]`. Establish `h4` using `h2.symm.trans h1`. Use `erw [e0] at h4`. Simplify `h4` using `[RunFrame.dval, zVal]`. Establish `h1` using `e1 v s m true`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(key v s m).2`. Establish `h3 : F.tD i v s m true = (F₀.A i).pt (fun _ => []) (fun v' => if v' = v then [(s, m)] else []) (F.ψ i (F.d.eL _)) (PositivityTheory.Rg.BcB.F.sizeOf (F.ψ i (F.d.eL _)))`. Unfold `RunFrame.tD`. Apply the tactic sequence `congr 1 <;> funext v' <;> simp`. Rewrite `h1` using `[h3]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4` using `h2.symm.trans h1`. Use `erw [e0] at h4`. Simplify `h4` using `[RunFrame.dval, zVal]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ident_of (hD : DerVal) (hI : InfMatch) : BC.Ident := by
   intro hR E _ _ _ n π S T F₀ F i χ hχ O

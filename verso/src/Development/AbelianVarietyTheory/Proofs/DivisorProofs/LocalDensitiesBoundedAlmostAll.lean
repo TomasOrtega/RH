@@ -3,11 +3,9 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hI : Ideal.span {f} ≠ (0 : Ideal B)`. Rewrite using `[Ideal.zero_eq_bot, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hf`. Establish `hfin` using `Ideal.finite_factors hI`. Apply `(hfin.image (fun v : IsDedekindDomain.HeightOneSpectrum B => v.asIdeal)).subset` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `P ⟨hmax, hfP⟩`. Establish `hne : P ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `hf ((Submodule.mem_bot B).mp hfP)`. Use `⟨⟨P, hmax.isPrime, hne⟩, ?_, rfl⟩` and prove the remaining obligations.
-
-Use `show P ∣ Ideal.span {f}`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hfP`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_maximal_ideals_containing (B : Type) [CommRing B] [IsDedekindDomain B] (f : B)
     (hf : f ≠ 0) : {P : Ideal B | P.IsMaximal ∧ f ∈ P}.Finite := by
@@ -25,7 +23,7 @@ theorem finite_maximal_ideals_containing (B : Type) [CommRing B] [IsDedekindDoma
   exact hfP
 
 /- English proof (translation)
-Introduce `B _ _ f hf` and use `finite_maximal_ideals_containing B f hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_maximal_ideals_containing' : ∀ (B : Type) [CommRing B] [IsDedekindDomain B] (f : B),
     f ≠ 0 → {P : Ideal B | P.IsMaximal ∧ f ∈ P}.Finite :=

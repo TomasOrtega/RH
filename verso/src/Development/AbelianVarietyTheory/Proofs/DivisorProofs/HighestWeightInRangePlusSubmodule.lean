@@ -6,37 +6,33 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 namespace GlobalTheory.SteepMult
 
 /- English proof (translation)
-Introduce `R S W _ _ _ actW B V _ _ act φ F Λ w hU hF hφ hw hhw hwF`. Take `⟨_hherm, hpos, hadj⟩` from `hU`. Use `set K := F.comap φ with hK`. Establish `hKst : ∀ Z, IsKC Z → ∀ x ∈ K, actW Z x ∈ K`. Introduce `Z hZ x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hK, Submodule.mem_comap] at hx ⊢`. Rewrite using `[hφ Z hZ]`. Conclude with `hF Z hZ _ hx`. Establish `hperp : ∀ y, y ∈ K.orthogonalBilin B ↔ ∀ v ∈ K, B v y = 0` using `fun y => Iff.rfl`. Establish `hsame_symm : ∀ a b : Ix R S, sameBlock a b → sameBlock b a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `intro a b; cases a <;> cases b <;> simp [sameBlock]`. Establish `hsame_refl : ∀ a : Ix R S, sameBlock a a`. Apply the tactic sequence `intro a; cases a <;> simp [sameBlock]`. Establish `hpos_same : ∀ a b : Ix R S, posC a b → sameBlock a b`. Apply the tactic sequence `intro a b; cases a <;> cases b <;> simp [posC, sameBlock]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hKC_E : ∀ a b : Ix R S, sameBlock a b → IsKC (Eab a b)`. Introduce `a b hab c d hcd`. Simplify using `only [Eab, Matrix.single_apply]`. Use `split_ifs with h`. Take `⟨rfl, rfl⟩` from `h`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd hab hcd`. Both sides reduce to the same expression. Establish `hperpE : ∀ a b, sameBlock a b → ∀ y ∈ K.orthogonalBilin B, actW (Eab a b) y ∈ K.orthogonalBilin B`. Introduce `a b hab y hy`. Rewrite `hy`, the goal using `[hperp]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Rewrite using `[← hadj b a (hsame_symm a b hab) v y]`. Conclude with `hy _ (hKst _ (hKC_E b a (hsame_symm a b hab)) v hv)`. Establish `hdisj : ∀ y ∈ K, y ∈ K.orthogonalBilin B → y = 0`. Introduce `y h1 h2`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Use `hpos y hne` as an intermediate fact. Rewrite `this` using `[(hperp y).1 h2 y h1]`. Simplify using `at this`. Establish `hdec : ∀ x, ∃ κ ∈ K, x - κ ∈ K.orthogonalBilin B`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Set `b` to `Module.finBasis ℂ K`. Set `G : W →ₗ[ℂ] (Fin (Module.finrank ℂ K) → ℂ)` to `LinearMap.pi fun i => B (b i : W)`. Establish `key : ∀ y, G y = 0 → ∀ v ∈ K, B v y = 0`. Introduce `y hy v hv`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (B.flip y) ∘ₛₗ K.subtype = 0` using `b.ext fun i => by simpa [G] using congrFun hy i`. Simplify using `using LinearMap.congr_fun h1 ⟨v, hv⟩`. Establish `hinj : Function.Injective (G ∘ₗ K.subtype)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Subtype.ext (hdisj z z.2 ((hperp z).2 (key z hz)))`. Establish `hsurj : Function.Surjective (G ∘ₗ K.subtype)` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp)).1 hinj`. Take `⟨z, hz⟩` from `hsurj (G x)`. Use `⟨z, z.2, (hperp _).2 (key _ ?_)⟩` and prove the remaining obligations. Rewrite using `[map_sub, ← hz]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Take `⟨y, hy, f, hf, rfl⟩` from `Submodule.mem_sup.1 hw`. Take `⟨x, rfl⟩` from `hy`. Take `⟨κ, hκ, hΨ⟩` from `hdec x`. Establish `hκF : φ κ ∈ F` using `hκ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hfκ : f + φ κ ∈ F` using `F.add_mem hf hκF`. Establish `hφΨ : φ (x - κ) = (φ x + f) - (f + φ κ)` using `by rw [map_sub]; abel`. Establish `gen : ∀ (Z : Mat R S) (c : ℂ), IsKC Z → act Z (φ x + f) = c • (φ x + f) → actW Z (x - κ) - c • (x - κ) ∈ K.orthogonalBilin B → actW Z (x - κ) - c • (x - κ) = 0`. Introduce `Z c hZ hw' hperpZ`. Use `hdisj _ ?_ hperpZ` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show φ (actW Z (x - κ) - c • (x - κ)) ∈ F`. Rewrite using `[map_sub, map_smul, hφ Z hZ, hφΨ, map_sub, hw', smul_sub]`. Establish `: c • (φ x + f) - act Z (f + φ κ) - (c • (φ x + f) - c • (f + φ κ)) = c • (f + φ κ) - act Z (f + φ κ)` using `by abel`. Rewrite using `[this]`. Conclude with `F.sub_mem (F.smul_mem _ hfκ) (hF Z hZ _ hfκ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨x - κ, hΨ, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hwF` to reduce the goal to its premises. Rewrite using `[sub_eq_zero.1 h0]`. Conclude with `F.add_mem hκF hf`.
-
-Simplify using `only [hwSub, wtSub, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at hhw ⊢`. Take `⟨hwt, hkill⟩` from `hhw`. Use `⟨fun a => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Establish `e` using `gen (Eab a a) ((Λ a : ℚ) : ℂ) (hKC_E a a (hsame_refl a)) (hwt a) (Submodule.sub_mem _ (hperpE a a (hsame_refl a) _ hΨ) (Submodule.smul_mem _ _ hΨ))`. Conclude with `sub_eq_zero.1 e`.
-
-Establish `e` using `gen (Eab a b) 0 (hKC_E a b (hpos_same a b hab)) (by rw [hkill a b hab, zero_smul]) (Submodule.sub_mem _ (hperpE a b (hpos_same a b hab) _ hΨ) (Submodule.smul_mem _ _ hΨ))`. Simplify using `using e`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hw_lift_orth : ∀ (R S : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (actW : Mat R S →ₗ[ℂ] Module.End ℂ W) (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ) (V : Type) [AddCommGroup V] [Module ℂ V]

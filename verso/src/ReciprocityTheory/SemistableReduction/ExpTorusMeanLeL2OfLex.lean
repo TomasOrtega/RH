@@ -5,17 +5,17 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open Finset
 
 /- English proof (translation)
-Use `set P := MvPolynomial.monomial s (1 : ℂ) - Q with hPdef`. Establish `hsQ : s ∉ Q.support` using `fun h => lt_irrefl _ (hQ s h)`. Establish `hQs : Q.coeff s = 0` using `MvPolynomial.notMem_support_iff.mp hsQ`. Establish `hPs : P.coeff s = 1`. Rewrite using `[hPdef, MvPolynomial.coeff_sub, MvPolynomial.coeff_monomial, if_pos rfl, hQs, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP0 : P ≠ 0` using `fun h => by rw [h, MvPolynomial.coeff_zero] at hPs; exact zero_ne_one hPs`. Establish `hsupp : s ∈ P.support` using `by rw [MvPolynomial.mem_support_iff, hPs]; exact one_ne_zero`. Establish `hlex : Real.log ‖P.coeff s‖ ≤ torusMean P`. Apply `hLex ι P s hsupp` to reduce the goal to its premises. Introduce `t ht hts`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `htQ : t ∈ Q.support`. Assume the negation of the conclusion as `h`. Establish `h0 : P.coeff t = 0`. Rewrite using `[hPdef, MvPolynomial.coeff_sub, MvPolynomial.coeff_monomial, if_neg (Ne.symm hts), MvPolynomial.notMem_support_iff.mp h, sub_zero]`. Conclude with `(MvPolynomial.mem_support_iff.mp ht) h0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨i, h1, h2⟩` from `hQ t htQ`. Conclude with `⟨i, h1, h2⟩`. Rewrite `hlex` using `[hPs, norm_one, Real.log_one]`. Establish `hFP : F * P ≠ 0` using `mul_ne_zero hF hP0`. Establish `hmul` using `(hBasic ι).2.1 F P hF hP0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `(hL2 ι (F * P)).1 hFP`. Establish `hpos : 0 < polyL2 (F * P)`. Unfold `polyL2`. Apply `Real.sqrt_pos.mpr` to reduce the goal to its premises. Take `⟨t, hne⟩` from `MvPolynomial.ne_zero_iff.mp hFP`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `ht : t ∈ (F * P).support` using `MvPolynomial.mem_support_iff.mpr hne`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_log hpos]`. Conclude with `Real.exp_le_exp.mpr hL`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_torus_mean_le_l2_of_lex {ι : Type} [Fintype ι] [LinearOrder ι]
     (hBasic : TorusMeanBasicStatement) (hLex : TorusLexStatement)
@@ -69,9 +69,9 @@ theorem coeffVec_apply {ι : Type*} (T : Finset (ι →₀ ℕ)) (P : MvPolynomi
     coeffVec T P t = P.coeff t := rfl
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_eq, polyL2]`. Use `congr 1`. Simplify using `only [coeffVec_apply]`. Rewrite using `[Finset.sum_coe_sort T (fun t => ‖P.coeff t‖ ^ 2)]`. Conclude with `(Finset.sum_subset hP (fun t _ ht => by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.notMem_support_iff.mp ht, norm_zero]`. Use the proof step `ring)).symm`.
+A detailed English derivation is pending.
 -/
 theorem norm_coeffVec {ι : Type*} (T : Finset (ι →₀ ℕ)) (P : MvPolynomial ι ℂ)
     (hP : P.support ⊆ T) : ‖coeffVec T P‖ = polyL2 P := by
@@ -84,7 +84,7 @@ theorem norm_coeffVec {ι : Type*} (T : Finset (ι →₀ ℕ)) (P : MvPolynomia
     rw [MvPolynomial.notMem_support_iff.mp ht, norm_zero]; ring)).symm
 
 /- English proof (translation)
-Rewrite using `[PiLp.inner_apply]`. Simplify using `only [coeffVec_apply, RCLike.inner_apply, polyInner]`. Rewrite using `[Finset.sum_coe_sort T (fun t => P.coeff t * (starRingEnd ℂ) (Q.coeff t))]`. Conclude with `Finset.sum_subset hP (fun t _ ht => by rw [MvPolynomial.notMem_support_iff.mp ht, zero_mul])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyInner_eq_inner {ι : Type*} (T : Finset (ι →₀ ℕ)) (P Q : MvPolynomial ι ℂ)
     (hP : P.support ⊆ T) : polyInner P Q = inner ℂ (coeffVec T Q) (coeffVec T P) := by
@@ -95,11 +95,11 @@ theorem polyInner_eq_inner {ι : Type*} (T : Finset (ι →₀ ℕ)) (P Q : MvPo
   exact Finset.sum_subset hP (fun t _ ht => by rw [MvPolynomial.notMem_support_iff.mp ht, zero_mul])
 
 /- English proof (translation)
-Set `S' : Finset (Lex (ι →₀ ℕ))` to `S.map toLex.toEmbedding`. Establish `hc : S'.card = S.card` using `Finset.card_map _`. Set `f` to `S'.orderEmbOfFin hc`. Use `⟨fun k => ofLex (f (Fin.rev k)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha, he⟩` from `Finset.mem_map.mp (S'.orderEmbOfFin_mem hc (Fin.rev k))`. Establish `: ofLex (f (Fin.rev k)) = a` using `by rw [← he]; rfl`. Use `show ofLex (f (Fin.rev k)) ∈ S`. Rewrite using `[this]`. Conclude with `ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b h`. Conclude with `Fin.rev_injective (f.injective h)`. Introduce `j k hjk show f (Fin.rev k) < f (Fin.rev j)`. Conclude with `f.strictMono (Fin.rev_lt_rev.mpr hjk)`.
+A detailed English derivation is pending.
 -/
 theorem exists_lex_enum {ι : Type*} [LinearOrder ι] (S : Finset (ι →₀ ℕ)) :
     ∃ m : Fin S.card → (ι →₀ ℕ), (∀ k, m k ∈ S) ∧ Function.Injective m ∧
@@ -121,15 +121,13 @@ theorem exists_lex_enum {ι : Type*} [LinearOrder ι] (S : Finset (ι →₀ ℕ
     exact f.strictMono (Fin.rev_lt_rev.mpr hjk)
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, hj, rfl⟩` from `hx`. Use `⟨MvPolynomial.monomial (m j) 1, rfl, ?_⟩` and prove the remaining obligations. Introduce `t ht`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `MvPolynomial.support_monomial_subset (Finset.mem_coe.mp ht)`. Rewrite `h1` using `[Finset.mem_singleton]`. Conclude with `⟨j, hj, h1.symm⟩`. Consider the case `zero => exact ⟨0, by simp, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Take `⟨Q1, rfl, h1⟩` from `hx`. Take `⟨Q2, rfl, h2⟩` from `hy`. Use `⟨Q1 + Q2, by ring, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Break down `Finset.mem_union.mp (MvPolynomial.support_add (Finset.mem_coe.mp ht)) with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `exacts [h1 h, h2 h]`. Consider the case `smul a x _ hx`. Take `⟨Q, rfl, h⟩` from `hx`. Use `⟨a • Q, by rw [mul_smul_comm], ?_⟩` and prove the remaining obligations. Introduce `t ht`.
-
-Conclude with `h (MvPolynomial.support_smul (Finset.mem_coe.mp ht))`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_of_mem_span {ι κ : Type*} (F : MvPolynomial ι ℂ) (m : κ → (ι →₀ ℕ)) (A : Set κ)
     (y : MvPolynomial ι ℂ)

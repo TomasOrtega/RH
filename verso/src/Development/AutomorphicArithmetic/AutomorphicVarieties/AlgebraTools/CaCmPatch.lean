@@ -7,13 +7,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaEqu
 open IsLocalRing UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Introduce `L B _ _ _ _ _ _ _ M _ _ _ _ _ _ r e y hL hy hq hfree hfin`. Use `⟨exists_isRegular_of_free_quotient L B M r e y hL hy hq hfree, ?_⟩` and prove the remaining obligations. Take `⟨xs, hlen, hxs, hreg⟩` from `exists_isRegular_of_free_quotient L B M r e y hL hy hq hfree`. Establish `hys : ∀ z ∈ List.ofFn y, z ∈ maximalIdeal B`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, rfl⟩` from `List.mem_ofFn.mp hz`. Conclude with `hy i`. Establish `h1` using `GlobalTheory.supportDim_le_supportDim_quotient_add_length (M := M) hys`. Rewrite `h1` using `[GlobalTheory.ofList_ofFn_eq_span_range, List.length_ofFn]`. Establish `h2` using `supportDim_le_of_finite L B (M ⧸ Ideal.span (Set.range y) • (⊤ : Submodule B M))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hL]`. Establish `hdim : Module.supportDim B M ≤ ((xs.length : ℕ) : WithBot ℕ∞)`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[hlen]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_comm]`. Use `norm_cast`. Introduce `Z hZ`. Use `dim_minimalPrime_eq B M xs hxs hreg.toIsWeaklyRegular hdim Z hZ` as an intermediate fact. Rewrite using `[this, hlen]`.
+Put the expressions in a common number system so they can be compared. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.patched_depth_dim :
     ∀ (L B : Type) [CommRing L] [IsRegularLocalRing L] [CommRing B] [IsLocalRing B] [IsNoetherianRing B]

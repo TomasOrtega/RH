@@ -37,18 +37,18 @@ private theorem polarization_val (A B : Matrix (Fin a) (Fin a) (Cinf E)) (v : HV
     Matrix.of (pol0 A B v).1 = A * Matrix.of v.1 * star B + B * Matrix.of v.1 * star A := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 private theorem hv_ext {v w : HV E a} (h : Matrix.of v.1 = Matrix.of w.1) : v = w := Subtype.ext h
 
 /- English proof (translation)
-The claim follows from `ContinuousLinearMap.ext fun v => hv_ext (by rw [polarization_val, polarization_val, add_comm])`.
+A detailed English derivation is pending.
 -/
 private theorem polarization_comm (A B : Matrix (Fin a) (Fin a) (Cinf E)) : pol0 A B = pol0 B A :=
   ContinuousLinearMap.ext fun v => hv_ext (by rw [polarization_val, polarization_val, add_comm])
 
 /- English proof (translation)
-The claim follows from `ContinuousLinearMap.ext fun v => hv_ext (by change _ = Matrix.of (pol0 A B v).1 + Matrix.of (pol0 A' B v).1 simp only [polarization_val, star_add, mul_add, add_mul]; abel)`.
+A detailed English derivation is pending.
 -/
 private theorem polarization_add (A A' B : Matrix (Fin a) (Fin a) (Cinf E)) : pol0 (A + A') B = pol0 A B + pol0 A' B :=
   ContinuousLinearMap.ext fun v => hv_ext (by
@@ -56,7 +56,7 @@ private theorem polarization_add (A A' B : Matrix (Fin a) (Fin a) (Cinf E)) : po
     simp only [polarization_val, star_add, mul_add, add_mul]; abel)
 
 /- English proof (translation)
-The claim follows from `ContinuousLinearMap.ext fun v => hv_ext (by change _ = c • Matrix.of (pol0 A B v).1 simp only [polarization_val, star_smul, star_trivial c, mul_smul_comm, smul_mul_assoc, smul_add])`.
+A detailed English derivation is pending.
 -/
 private theorem polarization_smul (c : ℝ) (A B : Matrix (Fin a) (Fin a) (Cinf E)) : pol0 (c • A) B = c • pol0 A B :=
   ContinuousLinearMap.ext fun v => hv_ext (by
@@ -78,7 +78,7 @@ Both sides reduce to the same expression.
 private theorem pol_apply (A B : Lie E a) : pol E a A B = pol0 (Matrix.of A) (Matrix.of B) := rfl
 
 /- English proof (translation)
-The claim follows from `ContinuousLinearMap.ext fun v => hv_ext (by change g.val * Matrix.of v.1 * star g.val = (2⁻¹ : ℝ) • (g.val * Matrix.of v.1 * star g.val + g.val * Matrix.of v.1 * star g.val) rw [← two_smul ℝ, smul_smul]; norm_num)`.
+A detailed English derivation is pending.
 -/
 private theorem pol_sand (g : GL (Fin a) (Cinf E)) :
     sand g = (2⁻¹ : ℝ) • pol E a (toL g.val) (toL g.val) :=
@@ -88,7 +88,7 @@ private theorem pol_sand (g : GL (Fin a) (Cinf E)) :
     rw [← two_smul ℝ, smul_smul]; norm_num)
 
 /- English proof (translation)
-Establish `h1` using `(((pol E a).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hX).clm_apply hX).const_smul (2⁻¹ : ℝ)`. Simplify using `only [Function.comp, h0, Units.val_one] at h1`. Establish `e : pol E a (toL 1) X = pol E a X (toL 1)` using `polarization_comm _ _`. Rewrite `h1` using `[e, ← two_smul ℝ, smul_smul, show (2⁻¹ : ℝ) * 2 = 1 by norm_num, one_smul]`. Conclude with `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => pol_sand _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sand_der (c : ℝ → GL (Fin a) (Cinf E)) (X : Lie E a) (h0 : c 0 = 1)
     (hX : HasDerivAt (fun t => toL (c t).val) X 0) :
@@ -100,7 +100,7 @@ private theorem sand_der (c : ℝ → GL (Fin a) (Cinf E)) (X : Lie E a) (h0 : c
   exact h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => pol_sand _)
 
 /- English proof (translation)
-Rewrite using `[map_smul]`. Use `hv_ext ?_` and prove the remaining obligations. Establish `hv : star (Matrix.of v.1) = Matrix.of v.1` using `v.2`. Express the relevant statement in the definitionally equal form `(2⁻¹ : ℝ) • (Matrix.of v.1 * 1 * star 1 + 1 * 1 * star (Matrix.of v.1)) = _`. Rewrite using `[hv, star_one, mul_one, mul_one, one_mul, one_mul, ← two_smul ℝ, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Evaluate the numerical expressions.
 -/
@@ -112,7 +112,7 @@ private theorem pol_one (v : HV E a) : pol E a ((2⁻¹ : ℝ) • v.1) (toL 1) 
   rw [hv, star_one, mul_one, mul_one, one_mul, one_mul, ← two_smul ℝ, smul_smul]; norm_num
 
 /- English proof (translation)
-Establish `h4 : HasFDerivAt (flow W t) (ContinuousLinearMap.id ℝ V + t • fderiv ℝ W p) p` using `(hasFDerivAt_id p).add (h.hasFDerivAt.const_smul t)`. Rewrite using `[h4.fderiv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem flow_der {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {W : V → V} {p : V}
     (h : DifferentiableAt ℝ W p) (t : ℝ) (v : V) : fderiv ℝ (flow W t) p v = v + t • fderiv ℝ W p v := by
@@ -122,23 +122,19 @@ private theorem flow_der {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ a U Y C hY W hW`. Take `⟨B, hB, hD⟩` from `fieldDer E a U Y C hY`. Establish `ho : IsOpen (cone E a)` using `isOpen_iff_mem_nhds.2 fun p hp => by`. Take `⟨τ, -, hτ⟩` from `locSec E a p hp`. Conclude with `hτ.mono fun x hx => ⟨τ x, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set K : ℝ := ‖(pol E a).flip (toL 1)‖ with hK`. Establish `hK0 : 0 ≤ K` using `norm_nonneg _`. Use `⟨1 + (K * B + B), by positivity, fun g x t ht v => ?_⟩` and prove the remaining obligations. Take `⟨c, h0, -, -, hX, -⟩` from `oneParam E a ((2⁻¹ : ℝ) • v.1)`. Take `⟨hb, hz⟩` from `hD (infGL E a g * finGL E a x)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Z, hZ, hd⟩` from `hz c _ h0 hX`. Establish `hn : ‖(2⁻¹ : ℝ) • v.1‖ ≤ ‖v‖`. Rewrite using `[norm_smul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (by norm_num)`. Establish `hs` using `sand_der c _ h0 hX`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set P := pol E a ((2⁻¹ : ℝ) • v.1) (toL 1) with hP`. Use `set y := hv (Y (infGL E a g * finGL E a x)) with hy`. Establish `hPn : ‖P‖ ≤ K * ‖v‖` using `(((pol E a).flip (toL 1)).le_opNorm _).trans (mul_le_mul_of_nonneg_left hn hK0)`. Establish `hWd : DifferentiableAt ℝ (W (x : GL (Fin a) (Af E) ⧸ U)) (sand g (hOne E a))` using `((fieldSm E a U Y C hY W hW x).contDiffAt (ho.mem_nhds ⟨g, rfl⟩)).differentiableAt (by simp)`. Establish `h1 : HasDerivAt (fun r => sand g (sand (c r) (hOne E a))) (sand g v) 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `(sand g).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hs.clm_apply (hasDerivAt_const (0 : ℝ) (hOne E a)))`. Rewrite `h` using `[map_zero, add_zero, hP, pol_one]`. Then use the resulting hypothesis. Establish `h2 : HasDerivAt (fun r => W (x : GL (Fin a) (Af E) ⧸ U) (sand g (sand (c r) (hOne E a)))) (sand g (P y + Z)) 0`. Establish `h` using `(sand g).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hs.clm_apply hd)`. Simplify using `only [h0, map_one, mul_one, ContinuousLinearMap.one_apply] at h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h.congr_of_eventuallyEq (Filter.Eventually.of_forall fun r => ?_)` and prove the remaining obligations. Establish `e : infGL E a (g * c r) * finGL E a x = infGL E a g * finGL E a x * infGL E a (c r)`. Rewrite using `[map_mul, mul_assoc, mul_assoc, infGL_comm]`. Establish `e2` using `hW (g * c r) x`. Rewrite `e2` using `[e, map_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e2`. Establish `h3 : fderiv ℝ (W (x : GL (Fin a) (Af E) ⧸ U)) (sand g (hOne E a)) (sand g v) = sand g (P y + Z)` using `(hWd.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) h1 (by rw [h0, map_one]; rfl)).unique h2`. Use `⟨v + t • (P y + Z), ?_, ?_⟩` and prove the remaining obligations. Establish `h4 : ‖P y‖ ≤ K * ‖v‖ * B` using `(P.le_opNorm y).trans (mul_le_mul hPn hb (norm_nonneg _) (by positivity))`. Establish `h5 : ‖Z‖ ≤ B * ‖v‖` using `hZ.trans (mul_le_mul_of_nonneg_left hn hB)`.
-
-Establish `h6 : ‖t • (P y + Z)‖ ≤ ‖P y‖ + ‖Z‖`. Rewrite using `[norm_smul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) ht).trans (norm_add_le _ _)`. Establish `h7` using `norm_add_le v (t • (P y + Z))`. Use the polynomial consequences of the given equalities and inequalities.
-
-Rewrite using `[flow_der hWd, h3, map_add (sand g) v, map_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fieldBd : FieldBd := by
   intro E _ _ _ a U Y C hY W hW

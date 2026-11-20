@@ -7,32 +7,32 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasure
 namespace PI.AprimeInfW
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem aprimeInf_iff : Formalism.L2.SG.Pf.NcReal.AprimeInf ↔ AprimeInfS := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `aprimeInf_iff.2 (aprimeInfS_of hV hG)`.
+A detailed English derivation is pending.
 -/
 theorem aprimeInf_of (hV : AinfValue) (hG : GinfTest) : Formalism.L2.SG.Pf.NcReal.AprimeInf :=
   aprimeInf_iff.2 (aprimeInfS_of hV hG)
 
 /- English proof (translation)
-The claim follows from `aprimeInf_of (ainfValue_of hE hP hW hH) hG`.
+A detailed English derivation is pending.
 -/
 theorem aprimeInf_of_steps (hE : ExInf) (hP : PushInf) (hW : WeilInf) (hH : HtotInf) (hG : GinfTest) :
     Formalism.L2.SG.Pf.NcReal.AprimeInf :=
   aprimeInf_of (ainfValue_of hE hP hW hH) hG
 
 /- English proof (translation)
-The claim follows from `aprimeInf_of_steps hE hP hW (htotInf_of hF) ginfTest_holds`.
+A detailed English derivation is pending.
 -/
 theorem aprimeInf_of_open (hE : ExInf) (hP : PushInf) (hW : WeilInf) (hF : HinfFin) :
     Formalism.L2.SG.Pf.NcReal.AprimeInf :=
   aprimeInf_of_steps hE hP hW (htotInf_of hF) ginfTest_holds
 
 /- English proof (translation)
-The claim follows from `aprimeInf_of_open hE hP hW (hinfFin_of hC)`.
+A detailed English derivation is pending.
 -/
 theorem aprimeInf_of_leaves (hE : ExInf) (hP : PushInf) (hW : WeilInf) (hC : MassDataMassesW.HinfCompact) :
     Formalism.L2.SG.Pf.NcReal.AprimeInf :=

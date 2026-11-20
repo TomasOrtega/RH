@@ -17,13 +17,13 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] {B : Type} [Norme
   {om : V → V → ℝ} {ρ : V → B →L[ℂ] B}
 
 /- English proof (translation)
-Establish `hd` using `(ContDiff.differentiable hf (by simp) 0).hasFDerivAt.isBigO_sub`. Take `⟨C, hC0, hC⟩` from `hd.exists_pos`. Take `⟨δ, hδ, hC⟩` from `Metric.eventually_nhds_iff.1 hC.bound`. Use `⟨C + 2 * ‖f‖ / δ, fun z => ?_⟩` and prove the remaining obligations. Establish `h0 : 0 ≤ 2 * ‖f‖ / δ * ‖z‖` using `by positivity`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : 0 ≤ C * ‖z‖` using `by positivity`. Rewrite using `[add_mul]`. Distinguish the cases in `hz : ‖z‖ < δ`. Use `hC (y := z) (by simpa using hz)` as an intermediate fact. Simplify using `only [h.1, sub_zero] at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ‖ρ z f - f‖ ≤ 2 * ‖f‖`. Use `norm_sub_le (ρ z f) f` as an intermediate fact. Rewrite `this` using `[h.2.2.1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h3 : 2 * ‖f‖ ≤ 2 * ‖f‖ / δ * ‖z‖`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem orbit_lip (h : IsHeis om ρ) {f : B} (hf : Sm ρ f) : ∃ C : ℝ, ∀ z, ‖ρ z f - f‖ ≤ C * ‖z‖ := by
   have hd := (ContDiff.differentiable hf (by simp) 0).hasFDerivAt.isBigO_sub
@@ -47,15 +47,15 @@ theorem orbit_lip (h : IsHeis om ρ) {f : B} (hf : Sm ρ f) : ∃ C : ℝ, ∀ z
     linarith
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `banach_steinhaus (g := fun z : V => ((‖z‖ : ℂ)⁻¹) • ((ρ z).comp T - T)) (fun x => by`. Take `⟨C, hC⟩` from `orbit_lip h (hT x)`. Use `⟨max C 0, fun z => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hz : z = 0`. Simplify using `[hz]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hz' : 0 < ‖z‖` using `norm_pos_iff.2 hz`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply, ContinuousLinearMap.comp_apply, norm_smul, norm_inv, Complex.norm_real, norm_norm]`. Rewrite using `[inv_mul_le_iff₀ hz', mul_comm]`. Conclude with `(hC z).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hz'.le))`. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC 0)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C, fun z x => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖fderiv ℝ (fun u => ρ u (T x)) 0‖ ≤ C * ‖x‖`. Use `(ContDiff.differentiable (hT x) (by simp) 0).hasFDerivAt.le_of_lip' (by positivity) (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Distinguish the cases in `hz : w = 0`. Simplify using `[hz]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hz' : 0 < ‖w‖` using `norm_pos_iff.2 hz`. Use `ContinuousLinearMap.le_of_opNorm_le _ (hC w) x` as an intermediate fact. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.sub_apply, ContinuousLinearMap.comp_apply, norm_smul, norm_inv, Complex.norm_real, norm_norm] at this`. Rewrite `this` using `[inv_mul_le_iff₀ hz', mul_comm]`. Simplify `this` using `only [h.1, sub_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `ContinuousLinearMap.le_of_opNorm_le _ h1 z` as an intermediate fact. Unfold `dH`. Combine the linear relations using `[mul_right_comm C ‖x‖ ‖z‖]`.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem dH_bound [CompleteSpace B] (h : IsHeis om ρ) (T : B →L[ℂ] B) (hT : ∀ x, Sm ρ (T x)) :
     ∃ C : ℝ, ∀ z x, ‖dH ρ z (T x)‖ ≤ C * ‖z‖ * ‖x‖ := by
@@ -95,13 +95,13 @@ variable {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDime
 set_option linter.unusedSectionVars false
 
 /- English proof (translation)
-Establish `h1` using `((ρ w).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_dH v hf)`. Establish `h2 : HasDerivAt (fun t : ℝ => w + t • v) v 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const v).const_add w`. Establish `h3 : HasDerivAt (fun t : ℝ => ρ (w + t • v) f) (fderiv ℝ (fun u => ρ u f) w v) 0` using `(ContDiff.differentiable hf (by simp) w).hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) h2 (by simp)`. Establish `h4 : HasDerivAt (fun t : ℝ => cexp ((π * I * (omJ J w v : ℂ)) * (t : ℂ))) (π * I * (omJ J w v : ℂ)) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using ((Complex.ofRealCLM.hasDerivAt (x := 0)).const_mul (π * I * (omJ J w v : ℂ))).cexp`. Establish `h5` using `h4.smul h3`. Establish `e : ((ρ w).restrictScalars ℝ) ∘ (fun t : ℝ => ρ (t • v) f) = (fun t : ℝ => cexp ((π * I * (omJ J w v : ℂ)) * (t : ℂ))) • fun t : ℝ => ρ (w + t • v) f`. Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp, ContinuousLinearMap.coe_restrictScalars', h.2.1, Pi.smul_apply', omJ, map_smul, real_inner_smul_right]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[e]`. Use `h1.unique h5` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `[add_comm]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem heis_dH (h : IsHeis (omJ J) ρ) {f : B} (hf : Sm ρ f) (v w : V) :
     ρ w (dH ρ v f) = (π * I * (omJ J w v : ℂ)) • ρ w f + fderiv ℝ (fun u => ρ u f) w v := by
@@ -126,14 +126,14 @@ theorem heis_dH (h : IsHeis (omJ J) ρ) {f : B} (hf : Sm ρ f) (v w : V) :
   simpa [add_comm] using this
 
 /- English proof (translation)
-Unfold `omJ`. Conclude with `contDiff_const.mul (Complex.ofRealCLM.contDiff.comp (contDiff_id.inner ℝ contDiff_const))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem contDiff_omJ (v : V) : ContDiff ℝ ∞ fun w : V => (π * I * (omJ J w v : ℂ)) := by
   unfold omJ
   exact contDiff_const.mul (Complex.ofRealCLM.contDiff.comp (contDiff_id.inner ℝ contDiff_const))
 
 /- English proof (translation)
-Unfold `Sm`. Simplify using `only [heis_dH h hf]`. Conclude with `((contDiff_omJ v).smul hf).add ((ContDiff.fderiv_right (m := ∞) hf (by simp)).clm_apply contDiff_const)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sm_dH (h : IsHeis (omJ J) ρ) {f : B} (hf : Sm ρ f) (v : V) : Sm ρ (dH ρ v f) := by
   unfold Sm
@@ -142,7 +142,7 @@ theorem sm_dH (h : IsHeis (omJ J) ρ) {f : B} (hf : Sm ρ f) (v : V) : Sm ρ (dH
     ((ContDiff.fderiv_right (m := ∞) hf (by simp)).clm_apply contDiff_const)
 
 /- English proof (translation)
-Establish `h1` using `(P.restrictScalars ℝ).hasFDerivAt.comp w (ContDiff.differentiable hg (by simp) w).hasFDerivAt`. Establish `h2` using `(hφ.differentiable (by simp) w).hasFDerivAt.smul_const y`. Establish `e' : (P.restrictScalars ℝ) ∘ (fun u => ρ u g) = fun u => φ u • y` using `funext e`. Rewrite `h1` using `[e']`. Simplify using `using DFunLike.congr_fun (h1.unique h2) v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fderiv_compress (P : B →L[ℂ] B) {g y : B} (hg : Sm ρ g) {φ : V → ℂ} (hφ : ContDiff ℝ ∞ φ)
     (e : ∀ w, P (ρ w g) = φ w • y) (w v : V) : P (fderiv ℝ (fun u => ρ u g) w v) = fderiv ℝ φ w v • y := by
@@ -153,11 +153,11 @@ theorem fderiv_compress (P : B →L[ℂ] B) {g y : B} (hg : Sm ρ g) {φ : V →
   simpa using DFunLike.congr_fun (h1.unique h2) v
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ B _ _ _ J ρ hJ h`. Establish `hs : ∀ x, Sm ρ (proj h x)` using `fun x => (Osc.good_proj hJ h x).sm hJ`. Take `⟨C, hC⟩` from `dH_bound h (proj h) hs`. Use `⟨⟨C, hC⟩, fun u v => ?_, fun u v => ?_⟩` and prove the remaining obligations. Set `T : B →L[ℂ] B` to `LinearMap.mkContinuous { toFun := fun x => dH ρ v (proj h x) map_add' := fun x y => by rw [map_add, dH_add v (hs x) (hs y)] map_smul' := fun a x => by rw [map_smul, dH_smul v a (hs x), RingHom.id_apply] } (C * ‖v‖) (hC v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Take `⟨D, hD⟩` from `dH_bound h T fun x => sm_dH h (hs x) v`. Conclude with `⟨D * ‖u‖, hD u⟩`. Establish `hg : ContDiff ℝ ∞ (gau : V → ℂ)` using `contDiff_gau`. Establish `hφ : ContDiff ℝ ∞ fun w : V => (π * I * (omJ J w v : ℂ)) * gau w + fderiv ℝ gau w v` using `((contDiff_omJ v).mul hg).add ((ContDiff.fderiv_right (m := ∞) hg (by simp)).clm_apply contDiff_const)`. Use `⟨_, fun x => fderiv_compress (proj h) (sm_dH h (hs x) v) hφ (fun w => ?_) 0 u⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[heis_dH h (hs x), map_add, map_smul, proj_heis_proj hJ h, fderiv_compress (proj h) (hs x) hg (fun w => proj_heis_proj hJ h w x), add_smul, mul_smul _ (gau w)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vacuum_bound : ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (B : Type) [NormedAddCommGroup B] [NormedSpace ℂ B] [CompleteSpace B] (J : V ≃ₗᵢ[ℝ] V) (ρ : V → B →L[ℂ] B), (∀ x, J (J x) = -x) → ∀ h : IsHeis (omJ J) ρ, (∃ C : ℝ, ∀ z x, ‖dH ρ z (proj h x)‖ ≤ C * ‖z‖ * ‖x‖) ∧ (∀ u v, ∃ C : ℝ, ∀ x, ‖dH ρ u (dH ρ v (proj h x))‖ ≤ C * ‖x‖) ∧ ∀ u v, ∃ lam : ℂ, ∀ x, proj h (dH ρ u (dH ρ v (proj h x))) = lam • proj h x := by
   intro V _ _ _ _ _ B _ _ _ J ρ hJ h

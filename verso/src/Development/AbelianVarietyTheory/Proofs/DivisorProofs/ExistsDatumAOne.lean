@@ -10,9 +10,9 @@ open GlobalTheory.Published.LandherrModel GlobalTheory.UPel.HT.Gauss
 namespace GlobalTheory.UPel.HT.GaussOne
 
 /- English proof (translation)
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `h` using `congrArg (algebraMap (𝓞 Qi) Qi) hst`. Simplify using `at h`. Rewrite `h` using `[show algebraMap (𝓞 Qi) Qi ζO = ii from coe_ζO]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `coord_zero (a := s) (b := t) (by push_cast; exact h)`. Conclude with `⟨by exact_mod_cast h2.1, by exact_mod_cast h2.2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem liO : LinearIndependent ℤ ![(1 : 𝓞 Qi), ζO] := by
   rw [LinearIndependent.pair_iff]
@@ -24,7 +24,7 @@ theorem liO : LinearIndependent ℤ ![(1 : 𝓞 Qi), ζO] := by
   exact ⟨by exact_mod_cast h2.1, by exact_mod_cast h2.2⟩
 
 /- English proof (translation)
-Introduce `x _`. Take `⟨a, b, rfl⟩` from `coordO x`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Conclude with `⟨![a, b], by simp [Fin.sum_univ_two, zsmul_eq_mul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem spanO : ⊤ ≤ Submodule.span ℤ (Set.range ![(1 : 𝓞 Qi), ζO]) := by
   intro x _
@@ -35,16 +35,16 @@ theorem spanO : ⊤ ≤ Submodule.span ℤ (Set.range ![(1 : 𝓞 Qi), ζO]) := 
 def bO : Module.Basis (Fin 2) ℤ (𝓞 Qi) := Module.Basis.mk liO spanO
 
 /- English proof (translation)
-Simplify using `[bO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bO_zero : bO 0 = 1 := by simp [bO]
 /- English proof (translation)
-Simplify using `[bO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bO_one : bO 1 = ζO := by simp [bO]
 
 /- English proof (translation)
-Establish `: ((a : 𝓞 Qi) + b * ζO) = a • bO 0 + b • bO 1` using `by simp [bO_zero, bO_one, zsmul_eq_mul]`. Rewrite using `[this, map_add, map_zsmul, map_zsmul, bO.repr_self, bO.repr_self]`. Apply the tactic sequence `ext i; fin_cases i <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem repr_coord (a b : ℤ) : bO.repr ((a : 𝓞 Qi) + b * ζO) = Finsupp.equivFunOnFinite.symm ![a, b] := by
   have : ((a : 𝓞 Qi) + b * ζO) = a • bO 0 + b • bO 1 := by simp [bO_zero, bO_one, zsmul_eq_mul]
@@ -52,11 +52,11 @@ theorem repr_coord (a b : ℤ) : bO.repr ((a : 𝓞 Qi) + b * ζO) = Finsupp.equ
   ext i; fin_cases i <;> simp
 
 /- English proof (translation)
-Simplify using `[repr_coord]`.
+Simplify using the standard rewrite rules.
 -/
 theorem repr0 (a b : ℤ) : bO.repr ((a : 𝓞 Qi) + b * ζO) 0 = a := by simp [repr_coord]
 /- English proof (translation)
-Simplify using `[repr_coord]`.
+Simplify using the standard rewrite rules.
 -/
 theorem repr1 (a b : ℤ) : bO.repr ((a : 𝓞 Qi) + b * ζO) 1 = b := by simp [repr_coord]
 
@@ -68,19 +68,19 @@ Both sides reduce to the same expression.
 theorem barO_apply (x : 𝓞 Qi) : barO x = IsCMField.ringOfIntegersComplexConj Qi x := rfl
 
 /- English proof (translation)
-Rewrite using `[barO_apply, IsCMField.coe_ringOfIntegersComplexConj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem barO_eq (x : 𝓞 Qi) : ((barO x : 𝓞 Qi) : Qi) = IsCMField.complexConj Qi (x : Qi) := by
   rw [barO_apply, IsCMField.coe_ringOfIntegersComplexConj]
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[barO_eq, barO_eq, IsCMField.complexConj_apply_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem barO_barO (x : 𝓞 Qi) : barO (barO x) = x := by
   ext; rw [barO_eq, barO_eq, IsCMField.complexConj_apply_apply]
 
 /- English proof (translation)
-The claim follows from `cO_ζO`.
+A detailed English derivation is pending.
 -/
 theorem barO_ζO : barO ζO = -ζO := cO_ζO
 
@@ -96,33 +96,33 @@ def EF : LinearMap.BilinForm ℤ (𝓞 Qi) :=
     (fun r x y => by simp only [map_smul, Finsupp.smul_apply, smul_eq_mul]; ring)
 
 /- English proof (translation)
-Simplify using `only [EF, LinearMap.mk₂_apply, repr0, repr1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem EF_coord (a b c d : ℤ) : EF ((a : 𝓞 Qi) + b * ζO) ((c : 𝓞 Qi) + d * ζO) = b * c - a * d := by
   simp only [EF, LinearMap.mk₂_apply, repr0, repr1]
 
 /- English proof (translation)
-Use `push_cast`. Take the linear combination `(b * d : 𝓞 Qi) * ζO_sq`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mul_coord (a b c d : ℤ) : ((a : 𝓞 Qi) + b * ζO) * ((c : 𝓞 Qi) + d * ζO) =
     ((a * c - b * d : ℤ) : 𝓞 Qi) + ((a * d + b * c : ℤ) : 𝓞 Qi) * ζO := by
   push_cast; linear_combination (b * d : 𝓞 Qi) * ζO_sq
 
 /- English proof (translation)
-Simplify using `[barO_ζO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bar_coord (a b : ℤ) : barO ((a : 𝓞 Qi) + b * ζO) = ((a : ℤ) : 𝓞 Qi) + ((-b : ℤ) : 𝓞 Qi) * ζO := by
   simp [barO_ζO]
 
 /- English proof (translation)
-Take `⟨a, b, rfl⟩` from `coordO x`. Rewrite using `[EF_coord]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem EF_alt (x : 𝓞 Qi) : EF x x = 0 := by
   obtain ⟨a, b, rfl⟩ := coordO x
   rw [EF_coord]; ring
 
 /- English proof (translation)
-Take `⟨a, a', rfl⟩` from `coordO b`. Take `⟨c, c', rfl⟩` from `coordO x`. Take `⟨d, d', rfl⟩` from `coordO y`. Rewrite using `[bar_coord, mul_coord, mul_coord, EF_coord, EF_coord]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem EF_adj (b x y : 𝓞 Qi) : EF (b * x) y = EF x (barO b * y) := by
   obtain ⟨a, a', rfl⟩ := coordO b
@@ -131,14 +131,14 @@ theorem EF_adj (b x y : 𝓞 Qi) : EF (b * x) y = EF x (barO b * y) := by
   rw [bar_coord, mul_coord, mul_coord, EF_coord, EF_coord]; ring
 
 /- English proof (translation)
-Simplify using `only [EF, LinearMap.mk₂_apply]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Module.Basis.repr_self, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem EF_bO (i j : Fin 2) : EF (bO i) (bO j) = ![![0, -1], ![1, 0]] i j := by
   simp only [EF, LinearMap.mk₂_apply]
   fin_cases i <;> fin_cases j <;> simp [Module.Basis.repr_self, Finsupp.single_apply]
 
 /- English proof (translation)
-The claim follows from `bijective_of_gram bO EF (by rw [EF_bO]; rfl) (by rw [EF_bO]; rfl) (by rw [EF_bO]; rfl) (by rw [EF_bO]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem EF_bij : Function.Bijective EF :=
   bijective_of_gram bO EF (by rw [EF_bO]; rfl) (by rw [EF_bO]; rfl) (by rw [EF_bO]; rfl) (by rw [EF_bO]; rfl)
@@ -148,35 +148,35 @@ end GlobalTheory.UPel.HT.GaussOne
 namespace GlobalTheory.UPel.HT.GaussOne
 
 /- English proof (translation)
-Use `push_cast`. Take the linear combination `(d : 𝓞 Qi) * ζO_sq`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ζ_mul_coord (c d : ℤ) : ζO * ((c : 𝓞 Qi) + d * ζO) = ((-d : ℤ) : 𝓞 Qi) + ((c : ℤ) : 𝓞 Qi) * ζO := by
   push_cast; linear_combination (d : 𝓞 Qi) * ζO_sq
 
 /- English proof (translation)
-Simplify using `[bO_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bO_zero' : bO 0 = ((1 : ℤ) : 𝓞 Qi) + ((0 : ℤ) : 𝓞 Qi) * ζO := by simp [bO_zero]
 /- English proof (translation)
-Simplify using `[bO_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bO_one' : bO 1 = ((0 : ℤ) : 𝓞 Qi) + ((1 : ℤ) : 𝓞 Qi) * ζO := by simp [bO_one]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp only [Fin.zero_eta, Fin.mk_one, Fin.isValue, bO_zero', bO_one', ζ_mul_coord, EF_coord] <;> norm_num`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem EF_ζ_bO (i j : Fin 2) : EF (ζO * bO i) (bO j) = if i = j then 1 else 0 := by
   fin_cases i <;> fin_cases j <;>
     simp only [Fin.zero_eta, Fin.mk_one, Fin.isValue, bO_zero', bO_one', ζ_mul_coord, EF_coord] <;> norm_num
 
 /- English proof (translation)
-Rewrite using `[EF_adj, ← mul_assoc, barO_ζO, neg_mul, ζO_sq, neg_neg, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem EF_ζ (x y : 𝓞 Qi) : EF (ζO * x) (ζO * y) = EF x y := by
   rw [EF_adj, ← mul_assoc, barO_ζO, neg_mul, ζO_sq, neg_neg, one_mul]
 
 /- English proof (translation)
-Rewrite using `[LinearMap.trace_eq_matrix_trace ℤ bO, Matrix.trace_fin_two, LinearMap.toMatrix_apply, LinearMap.toMatrix_apply, LinearMap.mulLeft_apply, LinearMap.mulLeft_apply, bO_zero', bO_one', mul_coord, mul_coord, repr0, repr1]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trace_mulLeft (a b : ℤ) :
     LinearMap.trace ℤ (𝓞 Qi) (LinearMap.mulLeft ℤ ((a : 𝓞 Qi) + b * ζO)) = 2 * a := by
@@ -188,21 +188,21 @@ theorem trace_mulLeft (a b : ℤ) :
 def bR : Module.Basis (Fin 2) ℝ (ℝ ⊗[ℤ] 𝓞 Qi) := Algebra.TensorProduct.basis ℝ bO
 
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.basis_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem bR_apply (i : Fin 2) : bR i = 1 ⊗ₜ bO i := Algebra.TensorProduct.basis_apply _ _
 
 def J : ℝ ⊗[ℤ] 𝓞 Qi →ₗ[ℝ] ℝ ⊗[ℤ] 𝓞 Qi := (LinearMap.mulLeft ℤ ζO).baseChange ℝ
 
 /- English proof (translation)
-The claim follows from `bR.ext fun i => by rw [bR_apply, h, LinearMap.baseChange_tmul, LinearMap.mulLeft_apply, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem A_eq (b : 𝓞 Qi) (A : ℝ ⊗[ℤ] 𝓞 Qi →ₗ[ℝ] ℝ ⊗[ℤ] 𝓞 Qi) (h : ∀ x : 𝓞 Qi, A (1 ⊗ₜ x) = 1 ⊗ₜ (b • x)) :
     A = (LinearMap.mulLeft ℤ b).baseChange ℝ :=
   bR.ext fun i => by rw [bR_apply, h, LinearMap.baseChange_tmul, LinearMap.mulLeft_apply, smul_eq_mul]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r y => simp [J, ← mul_assoc, ζO_sq, TensorProduct.tmul_neg]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, neg_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem J_J (x : ℝ ⊗[ℤ] 𝓞 Qi) : J (J x) = -x := by
   induction x using TensorProduct.induction_on with
@@ -211,7 +211,7 @@ theorem J_J (x : ℝ ⊗[ℤ] 𝓞 Qi) : J (J x) = -x := by
   | add x y hx hy => rw [map_add, map_add, hx, hy, neg_add]
 
 /- English proof (translation)
-Establish `key : (EF.baseChange ℝ).compl₁₂ J J = EF.baseChange ℝ` using `LinearMap.BilinForm.ext_basis bR fun i j => by`. Rewrite using `[LinearMap.compl₁₂_apply, bR_apply, bR_apply, J, LinearMap.baseChange_tmul, LinearMap.baseChange_tmul, LinearMap.mulLeft_apply, LinearMap.mulLeft_apply, LinearMap.BilinForm.baseChange_tmul, LinearMap.BilinForm.baseChange_tmul, EF_ζ]`. Conclude with `LinearMap.congr_fun₂ key x y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem J_EF (x y : ℝ ⊗[ℤ] 𝓞 Qi) : EF.baseChange ℝ (J x) (J y) = EF.baseChange ℝ x y := by
   have key : (EF.baseChange ℝ).compl₁₂ J J = EF.baseChange ℝ :=
@@ -222,13 +222,13 @@ theorem J_EF (x y : ℝ ⊗[ℤ] 𝓞 Qi) : EF.baseChange ℝ (J x) (J y) = EF.b
   exact LinearMap.congr_fun₂ key x y
 
 /- English proof (translation)
-Establish `hG : ∀ i j, EF.baseChange ℝ (J (bR i)) (bR j) = if i = j then 1 else 0`. Introduce `i j`. Rewrite using `[bR_apply, bR_apply, J, LinearMap.baseChange_tmul, LinearMap.mulLeft_apply, LinearMap.BilinForm.baseChange_tmul, EF_ζ_bO]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hx'` using `bR.sum_repr x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `hx'` using `[Fin.sum_univ_two]`. Establish `hne : ¬ (bR.repr x 0 = 0 ∧ bR.repr x 1 = 0)`. Introduce and unpack `⟨h0, h1⟩`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← hx', h0, h1, zero_smul, zero_smul, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hx']`. Simplify using `only [map_add, map_smul, LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul, hG]`. Simplify using `only [Fin.isValue, ite_true, show ((0 : Fin 2) = 1) = False by decide, show ((1 : Fin 2) = 0) = False by decide, ite_false, mul_one, mul_zero, add_zero, zero_add]`. Distinguish the cases in `h0 : bR.repr x 0 = 0`. Establish `h1 : bR.repr x 1 ≠ 0` using `fun h1 => hne ⟨h0, h1⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_self_pos.2 h1, h0]`. Use polynomial arithmetic with `[mul_self_pos.2 h0, mul_self_nonneg (bR.repr x 1)]`.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem J_pos (x : ℝ ⊗[ℤ] 𝓞 Qi) (hx : x ≠ 0) : 0 < EF.baseChange ℝ (J x) x := by
   have hG : ∀ i j, EF.baseChange ℝ (J (bR i)) (bR j) = if i = j then 1 else 0 := by
@@ -256,7 +256,7 @@ end GlobalTheory.UPel.HT.GaussOne
 namespace GlobalTheory.UPel.HT.GaussOne
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => by obtain ⟨a, b, rfl⟩ := exists_coord x simp only [map_add, map_mul, map_ratCast, h]`.
+A detailed English derivation is pending.
 -/
 theorem emb_ext (τ σ : Qi →+* ℂ) (h : τ ii = σ ii) : τ = σ :=
   RingHom.ext fun x => by
@@ -264,9 +264,9 @@ theorem emb_ext (τ σ : Qi →+* ℂ) (h : τ ii = σ ii) : τ = σ :=
     simp only [map_add, map_mul, map_ratCast, h]
 
 /- English proof (translation)
-Use extensionality with `τ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `emb_ext` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← coe_ζO, h, RingHom.comp_apply, coe_ζO, τ₀_ii]`. Introduce and unpack `rfl show (starRingEnd ℂ) (τ₀ (ζO : Qi)) = _`. Rewrite using `[coe_ζO, τ₀_ii]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem filt : Finset.univ.filter (fun τ : Qi →+* ℂ => τ ((ζO : 𝓞 Qi) : Qi) = (starRingEnd ℂ) Complex.I) =
     {(starRingEnd ℂ).comp τ₀} := by
@@ -281,9 +281,9 @@ theorem filt : Finset.univ.filter (fun τ : Qi →+* ℂ => τ ((ζO : 𝓞 Qi) 
     rw [coe_ζO, τ₀_ii]
 
 /- English proof (translation)
-Establish `: (((a : 𝓞 Qi) + b * ζO : 𝓞 Qi) : Qi) = (a : Qi) + b * ii`. Rewrite using `[← coe_ζO]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[τ₀_ii]`.
+Simplify using the standard rewrite rules.
 -/
 theorem τ₀_int (a b : ℤ) : τ₀ (((a : 𝓞 Qi) + b * ζO : 𝓞 Qi) : Qi) = (a : ℂ) + b * Complex.I := by
   have : (((a : 𝓞 Qi) + b * ζO : 𝓞 Qi) : Qi) = (a : Qi) + b * ii := by
@@ -363,7 +363,7 @@ def gaussOneDatum : Datum 5 where
       simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fact5', gaussOneDatum, rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_datum_a_one : ∃ (_ : Fact (Nat.Prime 5)) (D : Datum 5), D.a = 1 ∧ D.n = 1 ∧ D.m = 1 :=
   ⟨fact5', gaussOneDatum, rfl, rfl, rfl⟩

@@ -19,7 +19,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {t : SAB H S} {K : Type} [Field K] {x : Sp K ⟶ S} {u : SAB H (Sp K)}
 
 /- English proof (translation)
-Establish `hM` using `pull_isLB t.PP.isLB (pullback.fst t.G.hom x)`. Take `⟨φ, hφ, e, -⟩` from `GlobalTheory.Ex.UnifModel.exists_cancel (g := 𝟙 _) (f := x) (m.cart.congr (Category.id_comp _).symm rfl) (isGrpPullback_pullback t.G x) t.PP.isLB hM u.PP.isLB (GlobalTheory.Ex.UnifModel.iso_of_map m) ⟨Out.CubePf.idIsoL _, Out.CubePf.idIsoL_isGen hM⟩`. Conclude with `⟨φ, hφ, e⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_to_fibre (m : SABMap u t x) :
     ∃ φ : u.G.left ⟶ ((Over.pullback x).obj t.G).left, IsGrpPullback u.G ((Over.pullback x).obj t.G) (𝟙 _) φ ∧
@@ -31,7 +31,7 @@ theorem exists_to_fibre (m : SABMap u t x) :
   exact ⟨φ, hφ, e⟩
 
 /- English proof (translation)
-Establish `hM` using `pull_isLB t.PP.isLB (pullback.fst t.G.hom x)`. Take `⟨φ, hφ, e, -⟩` from `GlobalTheory.Ex.UnifModel.exists_cancel (g := 𝟙 _) (f := x) ((isGrpPullback_pullback t.G x).congr (Category.id_comp _).symm rfl) m.cart t.PP.isLB u.PP.isLB hM ⟨Out.CubePf.idIsoL _, Out.CubePf.idIsoL_isGen hM⟩ (GlobalTheory.Ex.UnifModel.iso_of_map m)`. Conclude with `⟨φ, hφ, e⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of_fibre (m : SABMap u t x) :
     ∃ φ : ((Over.pullback x).obj t.G).left ⟶ u.G.left, IsGrpPullback ((Over.pullback x).obj t.G) u.G (𝟙 _) φ ∧
@@ -43,7 +43,7 @@ theorem exists_of_fibre (m : SABMap u t x) :
   exact ⟨φ, hφ, e⟩
 
 /- English proof (translation)
-Take `⟨φ, hφ, e⟩` from `exists_to_fibre m`. Conclude with `amplePt _ _ (𝟙 _) _ _ φ hφ _ _ (pull_isLB t.PP.isLB _) u.PP.isLB e hp.2.1 hp.2.2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ample_kTriv_of_polAt (m : SABMap u t x) (hp : GlobalTheory.LN.PolAt t x) :
     RelAmple u.G u.PP.L ∧ KTriv u.G u.PP.L := by
@@ -51,7 +51,7 @@ theorem ample_kTriv_of_polAt (m : SABMap u t x) (hp : GlobalTheory.LN.PolAt t x)
   exact amplePt _ _ (𝟙 _) _ _ φ hφ _ _ (pull_isLB t.PP.isLB _) u.PP.isLB e hp.2.1 hp.2.2
 
 /- English proof (translation)
-Take `⟨φ, hφ, e⟩` from `exists_of_fibre m`. Establish `h` using `amplePt _ _ (𝟙 _) _ _ φ hφ _ _ u.PP.isLB (pull_isLB t.PP.isLB _) e hA hK`. Conclude with `⟨hp, h.1, h.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem polAt_of_map (m : SABMap u t x) (hp : IsProper (pullback.snd t.G.hom x)) (hA : RelAmple u.G u.PP.L)
     (hK : KTriv u.G u.PP.L) : GlobalTheory.LN.PolAt t x := by

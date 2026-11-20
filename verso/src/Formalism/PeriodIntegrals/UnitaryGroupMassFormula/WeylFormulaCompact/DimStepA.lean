@@ -56,16 +56,16 @@ def slice (ρ : ι → H →L[ℂ] H) (x₀ : H) : Submodule ℂ H where
 variable {ρ : ι → H →L[ℂ] H} {ρ' : κ → H →L[ℂ] H}
 
 /- English proof (translation)
-Set `L : H →ₗᵢ[ℂ] H` to `⟨(ρ i : H →ₗ[ℂ] H), hρ.isom i⟩`. Conclude with `L.inner_map_map x y`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 lemma Good.inner (hρ : Good ρ) (i : ι) (x y : H) : ⟪ρ i x, ρ i y⟫_ℂ = ⟪x, y⟫_ℂ := by
   let L : H →ₗᵢ[ℂ] H := ⟨(ρ i : H →ₗ[ℂ] H), hρ.isom i⟩
   exact L.inner_map_map x y
 
 /- English proof (translation)
-Introduce `i v hv`. Rewrite `hv`, the goal using `[Submodule.mem_orthogonal]`. Introduce `w hw`. Take `⟨j, hj⟩` from `hρ.inv i`. Rewrite using `[← hj w, hρ.inner i]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv _ (hW j w hw)`.
+A detailed English derivation is pending.
 -/
 lemma stab_orth (hρ : Good ρ) {W : Submodule ℂ H} (hW : Stab ρ W) : Stab ρ Wᗮ := by
   intro i v hv
@@ -76,16 +76,16 @@ lemma stab_orth (hρ : Good ρ) {W : Submodule ℂ H} (hW : Stab ρ W) : Stab ρ
   exact hv _ (hW j w hw)
 
 /- English proof (translation)
-Introduce `i v hv`. Conclude with `⟨h i v hv.1, h' i v hv.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 lemma stab_inf {W W' : Submodule ℂ H} (h : Stab ρ W) (h' : Stab ρ W') : Stab ρ (W ⊓ W') := by
   intro i v hv
   exact ⟨h i v hv.1, h' i v hv.2⟩
 
 /- English proof (translation)
-Introduce `i v`. Establish `hWo` using `stab_orth hρ hW`. Use `show W.starProjection (ρ i v) = ρ i (W.starProjection v)`. Apply `Submodule.eq_starProjection_of_mem_of_inner_eq_zero` to reduce the goal to its premises. Conclude with `hW i _ (W.orthogonalProjection v).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw`. Rewrite using `[← map_sub]`. Conclude with `(Submodule.mem_orthogonal' W _).1 (hWo i _ (W.sub_starProjection_mem_orthogonal v)) w hw`.
+A detailed English derivation is pending.
 -/
 lemma proj_comm (hρ : Good ρ) {W : Submodule ℂ H} [FiniteDimensional ℂ W] (hW : Stab ρ W) :
     Comm ρ (W.starProjection : H →ₗ[ℂ] H) := by
@@ -99,7 +99,7 @@ lemma proj_comm (hρ : Good ρ) {W : Submodule ℂ H} [FiniteDimensional ℂ W] 
     exact (Submodule.mem_orthogonal' W _).1 (hWo i _ (W.sub_starProjection_mem_orthogonal v)) w hw
 
 /- English proof (translation)
-Introduce `i v`. Use `show c (d (ρ i v)) = ρ i (c (d v))`. Rewrite using `[hd i v, hc i (d v)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma comm_comp {c d : H →ₗ[ℂ] H} (hc : Comm ρ c) (hd : Comm ρ d) : Comm ρ (c ∘ₗ d) := by
   intro i v
@@ -107,11 +107,11 @@ lemma comm_comp {c d : H →ₗ[ℂ] H} (hc : Comm ρ c) (hd : Comm ρ d) : Comm
   rw [hd i v, hc i (d v)]
 
 /- English proof (translation)
-Establish `hst : Stab ρ (LinearMap.ker c ⊓ X)`. Introduce `i v hv`. Use `⟨?_, hXs i v hv.2⟩` and prove the remaining obligations. Use `show c (ρ i v) = 0`. Rewrite using `[hc i v, LinearMap.mem_ker.1 hv.1, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hXi _ inf_le_right hst with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hm : x₁ ∈ LinearMap.ker c ⊓ X` using `⟨LinearMap.mem_ker.2 hk, hx₁⟩`. Rewrite `hm` using `[h]`. Conclude with `h0 ((Submodule.mem_bot ℂ).1 hm)`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx`. Rewrite `hx` using `[← h]`. Conclude with `LinearMap.mem_ker.1 hx.1`.
+A detailed English derivation is pending.
 -/
 lemma kill {c : H →ₗ[ℂ] H} (hc : Comm ρ c) {X : Submodule ℂ H} (hXs : Stab ρ X) (hXi : Irr ρ X)
     {x₁ : H} (hx₁ : x₁ ∈ X) (h0 : x₁ ≠ 0) (hk : c x₁ = 0) : ∀ x ∈ X, c x = 0 := by
@@ -130,9 +130,9 @@ lemma kill {c : H →ₗ[ℂ] H} (hc : Comm ρ c) {X : Submodule ℂ H} (hXs : S
     exact LinearMap.mem_ker.1 hx.1
 
 /- English proof (translation)
-Use `set P : H →ₗ[ℂ] H := (W.starProjection : H →ₗ[ℂ] H) with hP`. Establish `hd : Comm ρ (c - P ∘ₗ c)` using `(commSub ρ).sub_mem hc (comm_comp (proj_comm hρ hW) hc)`. Establish `h1 : (c - P ∘ₗ c) x₁ = 0`. Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply, hP, ContinuousLinearMap.coe_coe, Submodule.starProjection_eq_self_iff.2 hin, sub_self]`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `kill hd hXs hXi hx₁ h0 h1 x hx`. Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply, hP, ContinuousLinearMap.coe_coe, sub_eq_zero] at h2`. Rewrite using `[h2]`. Conclude with `(W.orthogonalProjection (c x)).2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma into (hρ : Good ρ) {c : H →ₗ[ℂ] H} (hc : Comm ρ c) {X W : Submodule ℂ H} [FiniteDimensional ℂ W]
     (hW : Stab ρ W) (hXs : Stab ρ X) (hXi : Irr ρ X) {x₁ : H} (hx₁ : x₁ ∈ X) (h0 : x₁ ≠ 0)
@@ -151,7 +151,7 @@ lemma into (hρ : Good ρ) {c : H →ₗ[ℂ] H} (hc : Comm ρ c) {X W : Submodu
   exact (W.orthogonalProjection (c x)).2
 
 /- English proof (translation)
-Introduce and unpack `i _ ⟨x, hx, rfl⟩`. Conclude with `⟨ρ i x, hX i x hx, hc i x⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 lemma stab_map {c : H →ₗ[ℂ] H} (hc : Comm ρ c) {X : Submodule ℂ H} (hX : Stab ρ X) :
     Stab ρ (X.map c) := by
@@ -159,7 +159,7 @@ lemma stab_map {c : H →ₗ[ℂ] H} (hc : Comm ρ c) {X : Submodule ℂ H} (hX 
   exact ⟨ρ i x, hX i x hx, hc i x⟩
 
 /- English proof (translation)
-Introduce `i v hv`. Establish `hle : (⨆ k, F k) ≤ (⨆ k, F k).comap (ρ i : H →ₗ[ℂ] H)` using `iSup_le fun k x hx => Submodule.mem_iSup_of_mem k (hF k i x hx)`. Conclude with `hle hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma stab_iSup {ν : Sort*} {F : ν → Submodule ℂ H} (hF : ∀ k, Stab ρ (F k)) :
     Stab ρ (⨆ k, F k) := by
@@ -169,27 +169,21 @@ lemma stab_iSup {ν : Sort*} {F : ν → Submodule ℂ H} (hF : ∀ k, Stab ρ (
   exact hle hv
 
 /- English proof (translation)
-Use `set P : H →ₗ[ℂ] H := (W.starProjection : H →ₗ[ℂ] H) with hP`. Establish `hPc : Comm ρ P` using `proj_comm hρ hWs`. Establish `hρ'c : ∀ j, Comm ρ (ρ' j : H →ₗ[ℂ] H)` using `fun j i v => (hcomm i j v).symm`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hzero : ∀ j, ∀ x ∈ X, P (ρ' j x) = 0`. Introduce `j`. Establish `hcj : Comm ρ (P ∘ₗ (ρ' j : H →ₗ[ℂ] H))` using `comm_comp hPc (hρ'c j)`. Establish `hk : (P ∘ₗ (ρ' j : H →ₗ[ℂ] H)) x₀ = 0`. Use `hne _ hcj ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, hP, ContinuousLinearMap.coe_coe]`. Conclude with `(W.orthogonalProjection _).2`. Conclude with `kill hcj hXs hXi hx₀ h0 hk`. Use `set T : Submodule ℂ H := ⨆ j, X.map (ρ' j : H →ₗ[ℂ] H) with hT`. Establish `hTρ : Stab ρ T` using `stab_iSup fun j => stab_map (hρ'c j) hXs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hTρ' : Stab ρ' T`. Introduce `j' v hv`. Establish `hle : T ≤ T.comap (ρ' j' : H →ₗ[ℂ] H)`. Use `iSup_le fun j => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨k, hk⟩` from `hρ'.mul j' j`. Use `show ρ' j' (ρ' j x) ∈ T`. Rewrite using `[hk x]`. Conclude with `Submodule.mem_iSup_of_mem k ⟨x, hx, rfl⟩`. Conclude with `hle hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hTS : T ≤ S`. Use `iSup_le fun j => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hSρ' j x (hXS hx)`. Establish `hx₀T : x₀ ∈ T`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨o, ho⟩` from `hρ'.one`. Establish `hm : ρ' o x₀ ∈ T` using `Submodule.mem_iSup_of_mem o ⟨x₀, hx₀, rfl⟩`. Rewrite `hm` using `[ho]`. Then use the resulting hypothesis. Break down `hSirr T hTS hTρ hTρ' with h | h` into its components or cases. Rewrite `hx₀T` using `[h]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h0 ((Submodule.mem_bot ℂ).1 hx₀T)`. Establish `hle : T ≤ LinearMap.ker P`. Use `iSup_le fun j => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `LinearMap.mem_ker.2 (hzero j x hx)`.
-
-Apply `hW0` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `w hw`. Establish `hwT : w ∈ T`. Rewrite using `[h]`.
-
-Conclude with `hWS hw`. Establish `h1 : P w = 0` using `LinearMap.mem_ker.1 (hle hwT)`. Establish `h2 : P w = w`. Simplify using `only [hP, ContinuousLinearMap.coe_coe]`. Conclude with `Submodule.starProjection_eq_self_iff.2 hw`.
-
-Use `(Submodule.mem_bot ℂ).2 ?_` and prove the remaining obligations. Rewrite using `[← h2]`. Conclude with `h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hit (hρ : Good ρ) (hρ' : Good ρ') (hcomm : ∀ i j v, ρ i (ρ' j v) = ρ' j (ρ i v))
     {S X W : Submodule ℂ H} (hSρ' : Stab ρ' S)
@@ -252,21 +246,21 @@ theorem exists_hit (hρ : Good ρ) (hρ' : Good ρ') (hcomm : ∀ i j v, ρ i (�
     exact h1
 
 /- English proof (translation)
-Establish `hAW : ∀ x : X, c x ∈ W` using `fun x => into hρ hc hWs hXs hXi hx₀ h0 hcW x x.2`. Establish `hBW : ∀ x : X, c' x ∈ W` using `fun x => into hρ hc' hWs hXs hXi hx₀ h0 hc'W x x.2`. Establish `hinj : Function.Injective (c.domRestrict X)`. Introduce `a b hab`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hab` using `[LinearMap.domRestrict_apply, LinearMap.domRestrict_apply]`. Establish `hab' : c ((a : H) - b) = 0` using `by rw [map_sub, hab, sub_self]`. Establish `hne' : (a : H) - b ≠ 0` using `fun h => hne (Subtype.ext (sub_eq_zero.1 h))`. Conclude with `hc0 (kill hc hXs hXi (X.sub_mem a.2 b.2) hne' hab' x₀ hx₀)`. Establish `hmapW : X.map c = W`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hWi _ (by rintro _ ⟨x, hx, rfl⟩; exact hAW ⟨x, hx⟩) (stab_map hc hXs) with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hm : c x₀ ∈ X.map c` using `⟨x₀, hx₀, rfl⟩`. Rewrite `hm` using `[h]`. Conclude with `hc0 ((Submodule.mem_bot ℂ).1 hm)`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hrank : finrank ℂ X = finrank ℂ W`. Rewrite using `[← hmapW, ← LinearMap.range_domRestrict, LinearMap.finrank_range_of_inj hinj]`. Use `⟨hrank, ?_⟩` and prove the remaining obligations. Set `A : X →ₗ[ℂ] W` to `(c.domRestrict X).codRestrict W hAW`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `B : X →ₗ[ℂ] W` to `(c'.domRestrict X).codRestrict W hBW`. Establish `hAinj : Function.Injective A` using `fun a b hab => hinj (congrArg Subtype.val hab)`. Establish `hAsurj : Function.Surjective A` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hrank).1 hAinj`. Set `e : X ≃ₗ[ℂ] W` to `LinearEquiv.ofBijective A ⟨hAinj, hAsurj⟩`. Set `T : Module.End ℂ X` to `e.symm.toLinearMap ∘ₗ B`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Nontrivial X := ⟨⟨⟨x₀, hx₀⟩, 0, fun h => h0 (congrArg Subtype.val h)⟩⟩`. Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue T`. Take `⟨v, hv⟩` from `hμ.exists_hasEigenvector`. Establish `hTv : T v = μ • v` using `hv.apply_eq_smul`. Establish `hBv : B v = μ • A v`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hcv : c' v = μ • c v` using `congrArg Subtype.val hBv`. Establish `hd : Comm ρ (c' - μ • c)` using `(commSub ρ).sub_mem hc' ((commSub ρ).smul_mem μ hc)`. Establish `hdv : (c' - μ • c) v = 0`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, hcv, sub_self]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `hv0 : (v : H) ≠ 0` using `fun h => hv.2 (Subtype.ext h)`. Establish `hfin` using `kill hd hXs hXi v.2 hv0 hdv x₀ hx₀`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, sub_eq_zero] at hfin`. Conclude with `⟨μ, hfin⟩`.
+A detailed English derivation is pending.
 -/
 theorem schur2 (hρ : Good ρ) {X W : Submodule ℂ H} [FiniteDimensional ℂ X] [FiniteDimensional ℂ W]
     (hXs : Stab ρ X) (hXi : Irr ρ X) (hWs : Stab ρ W) (hWi : Irr ρ W) {x₀ : H} (hx₀ : x₀ ∈ X)

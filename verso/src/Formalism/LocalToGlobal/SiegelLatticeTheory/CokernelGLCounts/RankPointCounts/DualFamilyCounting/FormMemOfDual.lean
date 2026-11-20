@@ -16,20 +16,20 @@ variable {h : V →ₗ⋆[K] V →ₗ[K] K} {U : Submodule K V} {hc : IsCompl U 
   {M T Λ Λ₀ : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)}
 
 /- English proof (translation)
-Simplify using `only [orthK, Submodule.mem_iInf, LinearMap.mem_ker] at hy`. Conclude with `hy x hx`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem h_UW {x y : V} (hx : x ∈ U) (hy : y ∈ orthK h U) : h x y = 0 := by
   simp only [orthK, Submodule.mem_iInf, LinearMap.mem_ker] at hy
   exact hy x hx
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.isSymm_def.1 hs y x, h_UW hy hx, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h_WU (hs : h.IsSymm) {x y : V} (hx : x ∈ orthK h U) (hy : y ∈ U) : h x y = 0 := by
   rw [← LinearMap.isSymm_def.1 hs y x, h_UW hy hx, map_zero]
 
 /- English proof (translation)
-Establish `e` using `prO_add hc' x`. Rewrite `e` using `[prO_symm_of_mem_U (hc' := hc') hx, add_zero]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prO_of_mem_U {hc' : IsCompl U (orthK h U)} {x : V} (hx : x ∈ U) : prO hc' x = x := by
   have e := prO_add hc' x
@@ -37,7 +37,7 @@ theorem prO_of_mem_U {hc' : IsCompl U (orthK h U)} {x : V} (hx : x ∈ U) : prO 
   exact e
 
 /- English proof (translation)
-Use `conv_lhs => rw [← prO_add hc' x, ← prO_add hc' y]`. Simplify using `only [map_add, LinearMap.add_apply]`. Rewrite using `[h_UW (prO_mem hc' x) (prO_symm_mem hc' y), h_WU hs (prO_symm_mem hc' x) (prO_mem hc' y)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem split (hs : h.IsSymm) (hc' : IsCompl U (orthK h U)) (x y : V) :
     h x y = h (prO hc' x) (prO hc' y) + h (prO hc'.symm x) (prO hc'.symm y) := by
@@ -47,7 +47,7 @@ theorem split (hs : h.IsSymm) (hc' : IsCompl U (orthK h U)) (x y : V) :
   ring
 
 /- English proof (translation)
-Establish `hb' : b ∈ dualF h 𝔭 Λ` using `by rw [hd]; exact hb`. Conclude with `hb' a ha`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem form_mem_of_dual (hd : dualF h 𝔭 Λ = Λ) {a b : V} (ha : a ∈ Λ) (hb : b ∈ Λ) :
     h a b ∈ locF 𝔭 (1 : Submodule (𝓞 K) K) := by
@@ -55,9 +55,9 @@ theorem form_mem_of_dual (hd : dualF h 𝔭 Λ = Λ) {a b : V} (ha : a ∈ Λ) (
   exact hb' a ha
 
 /- English proof (translation)
-Establish `hbΛ : b ∈ Λ`. Rewrite using `[← hd]`. Introduce `y hy`. Rewrite using `[← prO_add hc y, map_add, LinearMap.add_apply, h_UW (prO_mem hc y) hb, zero_add]`. Conclude with `H _ (hG.iW y hy)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hG.cW]`. Conclude with `Submodule.mem_inf.2 ⟨hbΛ, hb⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_T_of (hG : Good hc M T 𝔭 Λ) (hd : dualF h 𝔭 Λ = Λ) {b : V} (hb : b ∈ orthK h U)
     (H : ∀ b' ∈ locF 𝔭 (dualIn h (orthK h U) T), h b' b ∈ locF 𝔭 (1 : Submodule (𝓞 K) K)) :
@@ -77,11 +77,11 @@ def FP (P : Module.End (𝓞 K) (DiscMod h (orthK h U) T 𝔭)) : Prop :=
     h (x' : V) (y' : V) - h (x : V) (y : V) ∈ locF 𝔭 (1 : Submodule (𝓞 K) K)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `q hq`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨z, -, hz⟩` from `hG.oW (x : V) x.2`. Establish `hxW : (x : V) ∈ orthK h U` using `hz ▸ prO_symm_mem hc z`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `H : ∀ b' ∈ locF 𝔭 (dualIn h (orthK h U) T), h b' x ∈ locF 𝔭 (1 : Submodule (𝓞 K) K)`. Introduce `b' hb'`. Take `⟨b'', hb''⟩` from `Submodule.Quotient.mk_surjective _ (P (Submodule.Quotient.mk ⟨b', hb'⟩))`. Establish `e` using `hP ⟨b', hb'⟩ x b'' 0 hb'' (by rw [hq, Submodule.Quotient.mk_zero])`. Simplify using `using e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hxT` using `mem_T_of hG hd hxW H`. Rewrite using `[← Submodule.Quotient.mk_zero, mk_eq_iff]`. Simplify using `using hxT`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem FP.injective (hG : Good hc M T 𝔭 Λ) (hd : dualF h 𝔭 Λ = Λ)
     {P : Module.End (𝓞 K) (DiscMod h (orthK h U) T 𝔭)} (hP : FP P) : Function.Injective P := by
@@ -100,11 +100,11 @@ theorem FP.injective (hG : Good hc M T 𝔭 Λ) (hd : dualF h 𝔭 Λ = Λ)
   simpa using hxT
 
 /- English proof (translation)
-Introduce `x y x' y' hx hy`. Take `⟨z₁, hz₁, w₁, hw₁, hq₁, hq₁', hp₁⟩` from `H x x' hx`. Take `⟨z₂, hz₂, w₂, hw₂, hq₂, hq₂', hp₂⟩` from `H y y' hy`. Establish `e₁` using `split hs hc w₁ w₂`. Establish `e₂` using `split hs hc z₁ z₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e₁` using `[hq₁', hq₂', ← hp₁, ← hp₂]`. Rewrite `e₂` using `[hq₁, hq₂]`. Establish `e : h (x' : V) (y' : V) - h (x : V) (y : V) = h w₁ w₂ - h z₁ z₂`. Rewrite using `[e₁, e₂]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Conclude with `sub_mem (form_mem_of_dual hd hw₁ hw₂) (form_mem_of_dual hd₀ hz₁ hz₂)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fp_of (hs : h.IsSymm) (hd₀ : dualF h 𝔭 Λ₀ = Λ₀) (hd : dualF h 𝔭 Λ = Λ)
     (P : Module.End (𝓞 K) (DiscMod h (orthK h U) T 𝔭))

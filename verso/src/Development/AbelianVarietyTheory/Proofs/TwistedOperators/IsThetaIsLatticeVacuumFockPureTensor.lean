@@ -28,11 +28,11 @@ noncomputable section
 namespace GlobalTheory.FockLatVac
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.zero_apply]`. Unfold `latO at hu`. Use `AddSubgroup.closure_induction (p := fun u _ => infPart D (u i j) = 0) ?_ ?_ ?_ ?_ hu` and prove the remaining obligations. Introduce and unpack `w ⟨α, -, -, a, -, s, -, t, -, rfl⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Matrix.of_apply]`. Conclude with `(show infPart D (pairA D.host.F 0 α ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j)) = (0 : Ainf D.host.F) ⊗ₜ[D.host.F] (a * t i * ∑ k, star (s k) * S.gram k j) from rfl).trans (TensorProduct.zero_tmul _ _)`. Simplify using the standard rewrite rules. Introduce `x y _ _ hx hy`. Rewrite using `[Matrix.add_apply, RingHom.map_add, hx, hy, add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _ hx`. Rewrite using `[Matrix.neg_apply, RingHom.map_neg, hx, neg_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infPart_latO_any {D : D7} {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {P : HeightOneSpectrum (𝓞 D.host.F) → Prop} {u : WO S T} (hu : u ∈ latO S T LS LT P) : u.map (infPart D) = 0 := by
@@ -49,7 +49,7 @@ theorem infPart_latO_any {D : D7} {S T : HSp D} {LS : Set (Fin S.rank → D.host
   · intro x _ hx; rw [Matrix.neg_apply, RingHom.map_neg, hx, neg_zero]
 
 /- English proof (translation)
-Introduce `D ψ θ S T hψ hθ LS LT P g hg hvac sS BS sT BT φ`. Establish `hth : ∀ φ, IsThetaFunO ψ S T (pureTensorO ψ θ S T sS sT BS BT g φ)` using `fun φ => GlobalTheory.GalLift.Vec.theta_pureTensorO hψ hθ sS BS sT BT hg φ`. Use `⟨hth φ, fun u hu => ?_, fun e he u hu hh => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.Hk3.FiniteHeis.heisO_pureTensorO_of_finite ψ θ S T hθ sS sT BS BT g hth (2 • u) (infPart_latO_any (AddSubgroup.nsmul_mem _ hu 2)) (hvac.1 u hu) φ`. Conclude with `GlobalTheory.Hk3.FiniteHeis.heisO_pureTensorO_of_finite ψ θ S T hθ sS sT BS BT g hth u (infPart_latO_any hu) (hvac.2 e he u hu hh) φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem theta_isLatVac_pureTensorO : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D), IsStdChar D ψ (-1) → IsInfFam θ → ∀ (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank → D.host.E)) (P : HeightOneSpectrum (𝓞 D.host.F) → Prop) (g : WO S T → ℂ), IsThetaFunO ψ S T g → IsLatVac (heisO ψ S T) (latO S T LS LT P) g → ∀ (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (φ : MvPolynomial (FVar D T.rank S.rank) ℂ), IsThetaFunO ψ S T (pureTensorO ψ θ S T sS sT BS BT g φ) ∧ IsLatVac (heisO ψ S T) (latO S T LS LT P) (pureTensorO ψ θ S T sS sT BS BT g φ) := by
   intro D ψ θ S T hψ hθ LS LT P g hg hvac sS BS sT BT φ

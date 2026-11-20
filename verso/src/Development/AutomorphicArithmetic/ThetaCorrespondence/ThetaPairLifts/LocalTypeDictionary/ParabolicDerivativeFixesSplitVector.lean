@@ -12,17 +12,17 @@ open scoped TensorProduct Matrix
 noncomputable section
 namespace GlobalTheory.SplitDblPar
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hTr v hsp hT hψ h2 hvac dd omd hdc hws R hR0 hRv p hp`. Use `set Ψ := tens (evFin F v) (G.M'.vac v) R with hΨdef`. Establish `hΨ : Ψ ∈ schA F _` using `hRv.2`. Establish `hΦ : GlobalTheory.InertDbl.dblFun Ψ ∈ schA F _` using `GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ Ψ hΨ _ (GlobalTheory.SchAConj.star_mem_schA F _ Ψ hΨ)`. Establish `hV` using `hTr.geo.hM'.vac v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, G.M'.vac v y ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hV.2.1 (funext h)`. Establish `hΨne : Ψ ≠ 0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `h0`. Set `x : Fin a' × Fin (a + a') → AF F` to `fun i => GlobalTheory.LatVac.liftV v (y i)`. Establish `hRx : R x = R 0`. Use `hRv.1 0 x (fun u hu => by funext i; exact GlobalTheory.LatVac.at_liftV v _ u hu)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `congrFun h0 x`. Simplify using `only [hΨdef, tens, x, GlobalTheory.LatVac.evFin_liftV, hRx, Pi.zero_apply] at h1`. Conclude with `mul_ne_zero hy hR0 h1`. Take `⟨c, hc⟩` from `_root_.GlobalTheory.T.doubleLine_eigenspace_decomposition_split hP F E σ B a a' G X om om' hTr v hsp hT hψ h2 hvac dd omd hdc hws R hRv p hp.1`. Take `⟨l, hl, hinv, hl0⟩` from `GlobalTheory.T.exists_translationInvariant_doubledForm_conjProduct_ne_zero F _ Ψ hΨ hΨne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `hp.2`. Establish `hS` using `hws.2.2 l hl (fun z φ hφ => hinv φ hφ _ _ (GlobalTheory.WeilM.SiegelModel.rho_diag B.ψ hdc z φ)) p t ht _ hΦ`. Establish `htp` using `GlobalTheory.T.doubledSiegelParabolic_diagonal_action_integral F E σ G.W v p hp t ht`. Establish `ha` using `_root_.GlobalTheory.T.split_det_character_trivial hP F E σ B a a' G X om om' hTr v hsp hT hψ h2 hvac t htp`. Establish `hb` using `_root_.GlobalTheory.T.split_det_modulus_norm_formula hP F E σ B a a' G X om om' hTr v hsp hT hψ h2 hvac t htp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hS` using `[ha, hb]`. Rewrite `hS` using `[hc, map_smul, smul_eq_mul]`. Simplify using `only [Circle.coe_one, NNReal.coe_one, Real.one_rpow, Complex.ofReal_one, one_mul] at hS`. Establish `h1 : c = 1` using `(mul_eq_right₀ hl0).mp hS`. Rewrite using `[hc, h1, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parabolic_derivative_fixes_split_vector : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
@@ -75,7 +75,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SplitDblPar.parabolic_derivative_fixes_split_vector | exact _root_.GlobalTheory.SplitDblPar.parabolic_derivative_fixes_split_vector | (intros; apply _root_.GlobalTheory.SplitDblPar.parabolic_derivative_fixes_split_vector <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.split_double_parabolic_derivative_fixed : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

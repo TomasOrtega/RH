@@ -14,17 +14,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.UnrDescent
 
 /- English proof (translation)
-Introduce `hI hG E Ω _ _ _ _ _ _ l _ ι a ha π χ hsc r hr w _ B hB hl A h`. Establish `hAF` using `GlobalTheory.automorphicFormsFiniteGL`. Take `⟨Q, hQdec, hQsplit, hQram, hQgood⟩` from `(GlobalTheory.GalCut.infinite_qcm_split_good hAF E Ω l a π w).nonempty`. Take `⟨P, hP⟩` from `GlobalTheory.QuadLiftBridge.quadLift hI.ac hI.js E Q.K Q.two a ha π hQram`. Take `⟨⟨χ', hsc'⟩, -⟩` from `GlobalTheory.LiftPolar.main hAF hI.js hI.gk E Q.K l a ha π χ P hP hsc.all`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hscG : InScope .good l P χ'` using `⟨hsc'.1, hsc'.2.1, hQgood P hP⟩`. Establish `hrP : Weak P ι (r.comp (UpperTheory.V.Af.Bc.res E Ω Q.K))` using `GlobalTheory.GalCut.weak_comp_res E Q.K Ω l ι a π P hP r hr`. Take `⟨w', hunder, h', hN⟩` from `GlobalTheory.PlaceNormDec.exists_place_normV_eq E Ω Q w A h (hQdec A h)`. Establish `hB' : (CG.mk P).HasSat w' B`. Establish `e` using `hP.sat w' 1 B (by rw [pow_one, hunder, hN]) (hunder ▸ hB)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using e`. Establish `hlw : ((l : ℕ) : 𝓞 Q.K) ∉ w'.asIdeal`. Introduce `hw`. Apply `hl` to reduce the goal to its premises. Establish `e1` using `(h ((l : ℕ) : 𝓞 E))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e2` using `(h' ((l : ℕ) : 𝓞 Q.K))`. Simplify using `only [map_natCast] at e1 e2`. Conclude with `e1.1 (e2.2 hw)`. Establish `hcl` using `hG Q.K Ω l ι a ha P χ' hscG (r.comp (UpperTheory.V.Af.Bc.res E Ω Q.K)) hrP w' (hQsplit w' hunder) B hB' hlw A h'`. Rewrite `hcl` using `[hN]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun s hs => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Take `⟨s', rfl⟩` from `hQdec A h (Ine_le_Dec A hs)`. Conclude with `hcl.1 s' hs`. Take `⟨σ', rfl⟩` from `hQdec A h hσ.1`. Establish `e` using `hcl.2 σ' hσ`.
-
-Rewrite using `[← map_inv]`. Conclude with `e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : Inputs → SphericalLevelCondition .good .unr → SphericalLevelCondition .all .unr := by
   intro hI hG E Ω _ _ _ _ _ _ l _ ι a ha π χ hsc r hr w _ B hB hl A h

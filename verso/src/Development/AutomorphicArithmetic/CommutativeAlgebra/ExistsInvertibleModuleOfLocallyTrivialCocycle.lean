@@ -7,7 +7,7 @@ section
 variable {A C : Type} [CommRing A] [CommRing C] [Algebra A C]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [smul_add, mul_add, hx, hy]`. Consider the case `tmul p q => simp [smul_tmul']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem smul_eq_left_inclusion (b : C) (x : C ⊗[A] C) : b • x = i1 A C b * x := by
   induction x using TensorProduct.induction_on with
@@ -16,7 +16,7 @@ private theorem smul_eq_left_inclusion (b : C) (x : C ⊗[A] C) : b • x = i1 A
   | tmul p q => simp [smul_tmul']
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul p q => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem act_eq (x : C ⊗[A] C) :
     GlobalTheory.FlatDescent.act A C C x = Algebra.TensorProduct.lmul' A x := by
@@ -26,7 +26,7 @@ private theorem act_eq (x : C ⊗[A] C) :
   | tmul p q => simp
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, add_mul, hx, hy]`. Consider the case `tmul p q`. Simplify using `[smul_eq_left_inclusion, Algebra.TensorProduct.tmul_mul_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 private theorem lTensor_theta (g x : C ⊗[A] C) :
     ((theta g).restrictScalars A).lTensor C x = c12 A C x * c23 A C g := by
@@ -37,7 +37,7 @@ private theorem lTensor_theta (g x : C ⊗[A] C) :
     simp [smul_eq_left_inclusion, Algebra.TensorProduct.tmul_mul_tmul]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul p q => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem lTensor_mk (x : C ⊗[A] C) :
     (TensorProduct.mk A C C 1).lTensor C x = c13 A C x := by
@@ -47,9 +47,9 @@ private theorem lTensor_mk (x : C ⊗[A] C) :
   | tmul p q => simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `b`. Rewrite using `[theta_apply, map_smul, act_eq, hu]`. Simplify using the standard rewrite rules. Introduce `b`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[theta_apply, lTensor_theta, lTensor_mk, smul_eq_left_inclusion, map_mul, map_mul, mul_assoc, hc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 private theorem isDescentDatum_theta (g : C ⊗[A] C)
     (hc : c12 A C g * c23 A C g = c13 A C g) (hu : Algebra.TensorProduct.lmul' A g = (1 : C)) :
@@ -67,19 +67,19 @@ end
 end UpperTheory.PicD
 
 /- English proof (translation)
-Introduce `P A _ z hz`. Take `⟨C, _, _, hff, het, w, hw⟩` from `hz`. Establish `hdx : P.dd _ (P.r0 (i2 A C).toRingHom w - P.r0 (i1 A C).toRingHom w) = 0`. Establish `hcomp : (i2 A C).toRingHom.comp (algebraMap A C) = (i1 A C).toRingHom.comp (algebraMap A C)` using `RingHom.ext fun a => ((i2 A C).commutes a).trans ((i1 A C).commutes a).symm`. Rewrite using `[map_sub, P.diff_mapDegZero, P.diff_mapDegZero, hw, P.mapDegOne_comp, P.mapDegOne_comp, hcomp, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg⟩` from `(P.dd_eq_zero _).1 hdx`. Establish `q1 : (c12 A C).toRingHom.comp (i1 A C).toRingHom = (c13 A C).toRingHom.comp (i1 A C).toRingHom`. Apply the tactic sequence `ext b <;> simp`. Establish `q2 : (c12 A C).toRingHom.comp (i2 A C).toRingHom = (c23 A C).toRingHom.comp (i1 A C).toRingHom`. Apply the tactic sequence `ext b <;> simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `q3 : (c13 A C).toRingHom.comp (i2 A C).toRingHom = (c23 A C).toRingHom.comp (i2 A C).toRingHom`. Apply the tactic sequence `ext b <;> simp`. Establish `hcoc : Units.map (c12 A C).toRingHom.toMonoidHom g * Units.map (c23 A C).toRingHom.toMonoidHom g = Units.map (c13 A C).toRingHom.toMonoidHom g`. Apply `P.un_injective` to reduce the goal to its premises. Rewrite using `[P.un_mul, ← P.mapDegZero_ofUnit, ← P.mapDegZero_ofUnit, ← P.mapDegZero_ofUnit, hg]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sub, P.mapDegZero_comp]`. Rewrite using `[q1, q2, q3]`. Normalize the expressions using the abelian group laws. Establish `hcount : Units.map (Algebra.TensorProduct.lmul' A (S` using `C)).toRingHom.toMonoidHom g = 1 := by`. Apply `P.un_injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcomp : (Algebra.TensorProduct.lmul' A (S` using `C)).toRingHom.comp (i2 A C).toRingHom = (Algebra.TensorProduct.lmul' A (S := C)).toRingHom.comp (i1 A C).toRingHom := by`. Apply the tactic sequence `ext b <;> simp`. Rewrite using `[← P.mapDegZero_ofUnit, hg, P.un_one]`. Simplify using `only [map_sub, P.mapDegZero_comp]`. Rewrite using `[hcomp, sub_self]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hdd : GlobalTheory.FlatDescent.IsDescentDatum (theta (g : C ⊗[A] C))`. Use `isDescentDatum_theta _ ?_ ?_` and prove the remaining obligations. Simplify using `using congrArg Units.val hcoc`. Simplify using `using congrArg Units.val hcount`. Use `⟨↥(Mg (g : C ⊗[A] C)), inferInstance, inferInstance, hdd.invertible_invariants, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨C, _, _, hff, het, w, g, (Mg (g : C ⊗[A] C)).subtype, ⟨hw, hg, fun m => GlobalTheory.FlatDescent.mem_invariants.1 m.2, hdd.bijective_extend⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem UpperTheory.exists_invertibleModule_of_locallyTrivial_cocycle :
     ∀ (P : Data) (A : Type) [CommRing A] (z : P.S1.obj (CommRingCat.of A)), P.LocEx z →

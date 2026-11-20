@@ -5,21 +5,19 @@ noncomputable section
 namespace Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic
 
 /- English proof (translation)
-Introduce `ℓ hℓ s H0 h d U a b hh hH hU ha hab hb hd`. Use `Fact.mk hℓ` as an intermediate fact. Establish `hn0 : n0 ℓ H0 ≤ Nat.log ℓ (2 * h) + 1`. Apply `Nat.sInf_le` to reduce the goal to its premises. Use `show H0 ≤ ℓ ^ (Nat.log ℓ (2 * h) + 1) * (ℓ - 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1 : 2 * h < ℓ ^ (Nat.log ℓ (2 * h) + 1)` using `Nat.lt_pow_succ_log_self hℓ.one_lt _`. Establish `h2 : 1 ≤ ℓ - 1` using `by have := hℓ.two_le; omega`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨by unfold mOf; omega, ?_⟩` and prove the remaining obligations. Generalize the expression as in `mOf ℓ s H0 = m at hd ⊢`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hr : ∀ i ∈ Finset.Ico a b, rI ℓ m U i ≤ U.card * (m + Nat.log ℓ (2 * h))`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_Ico]`. Unfold `rI`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_le_card_nsmul` to reduce the goal to its premises. Introduce `u hu`. Establish `hu'` using `hU u (Finset.mem_of_mem_erase hu)`. Establish `h1 : padicValInt ℓ (u - i) ≤ Nat.log ℓ (2 * h)`. Unfold `padicValInt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans (padicValNat_le_nat_log _) (Nat.log_mono_right ?_)` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use `_ ≤ U.card * (m + Nat.log ℓ (2 * h)) := by`. Rewrite using `[smul_eq_mul]`.
+Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Nat.mul_le_mul_right _ (Finset.card_erase_le)`. Establish `hc : cM ℓ m U a b ≤ (b - a).toNat * (3 + U.card * (m + Nat.log ℓ (2 * h)))`. Unfold `cM`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_card_nsmul` to reduce the goal to its premises.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Introduce `i hi`. Use `hr i hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `_ = _ := by rw [Int.card_Ico, smul_eq_mul]`. Unfold `cLL`.
-
-Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem ll3 : StatLL3 := by
   intro ℓ hℓ s H0 h d U a b hh hH hU ha hab hb hd
@@ -62,23 +60,23 @@ theorem ll3 : StatLL3 := by
   omega
 
 /- English proof (translation)
-Introduce `ℓ hℓ N _ F γ hF0 hanti hstep b hb x`. Use `set M := ℓ ^ (b - 1) with hM`. Set `P : AddSubgroup N` to `(nsmulAddMonoidHom (α := N) (ℓ ^ 2)).range ⊔ F M`. Establish `hP : ∀ v ∈ P, ∃ y : N, ∃ z ∈ F M, v = (ℓ ^ 2) • y + z`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨p, ⟨y, rfl⟩, z, hz, rfl⟩` from `AddSubgroup.mem_sup.1 hv`. Conclude with `⟨y, z, hz, rfl⟩`. Apply `hP` to reduce the goal to its premises. Set `G : Module.End ℤ N` to `γ.toIntLinearMap`. Set `Y : Module.End ℤ N` to `G - 1`.
+Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hY : ∀ v, Y v = γ v - v` using `fun v => by simp [Y, G]`. Establish `hYk : ∀ k, (Y ^ k) x ∈ F k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rw [hF0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Check the elementary cases of the proposition.
 
-Discharge the goal by the elementary cases of `trivial`. Consider the case `succ k ih`. Rewrite using `[pow_succ', Module.End.mul_apply, hY]`. Conclude with `hstep k _ ih`. Establish `hmono : ∀ k, M ≤ k → F k ≤ F M`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `k hk`. Proceed by induction on `k, hk using Nat.le_induction with`. Consider the case `base => exact le_refl _`. Consider the case `succ k _ ih => exact le_trans (hanti k) ih`. Establish `hγ : G = Y + 1` using `by simp [Y]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpow : (⇑γ)^[ℓ ^ b] x = ((Y + 1) ^ (ℓ ^ b)) x`. Rewrite using `[← hγ, Module.End.pow_apply]`. Both sides reduce to the same expression. Rewrite using `[hpow, (Commute.one_right Y).add_pow, Finset.sum_range_succ']`. Simplify using `only [one_pow, mul_one, pow_zero, Nat.choose_zero_right, Nat.cast_one]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[LinearMap.add_apply, Module.End.one_apply, add_sub_cancel_right, LinearMap.sum_apply]`. Apply `AddSubgroup.sum_mem` to reduce the goal to its premises. Introduce `k _`. Establish `hterm : (Y ^ (k + 1) * ((ℓ ^ b).choose (k + 1) : Module.End ℤ N)) x = ((ℓ ^ b).choose (k + 1)) • (Y ^ (k + 1)) x`. Rewrite using `[Module.End.mul_apply, Module.End.natCast_apply, map_nsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hterm]`. Distinguish the cases in `hk : k + 1 < M`. Take `⟨t, ht⟩` from `binom ℓ hℓ b (k + 1) hb (Nat.succ_pos k) hk`. Apply `AddSubgroup.mem_sup_left` to reduce the goal to its premises. Use `⟨t • (Y ^ (k + 1)) x, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[ht, mul_smul]`. Both sides reduce to the same expression. Apply `AddSubgroup.mem_sup_right` to reduce the goal to its premises. Conclude with `(F M).nsmul_mem (hmono _ (by omega) (hYk _)) _`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem filtPow : StatFiltPow := by
   intro ℓ hℓ N _ F γ hF0 hanti hstep b hb x

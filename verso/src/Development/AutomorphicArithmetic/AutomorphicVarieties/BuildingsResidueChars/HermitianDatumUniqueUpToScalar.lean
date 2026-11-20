@@ -3,21 +3,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob Matrix
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem star_alg {K : Type} [Field K] {Δ : K} (x : K) :
     star (algebraMap K (Lsq K Δ) x) = algebraMap K (Lsq K Δ) x := by
   ext <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [sigL, star_alg] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sigL_mul' {K : Type} [Field K] {Δ τ : K} (a b : EL Δ τ) :
     sigL (a * b) = sigL a * sigL b := by
   ext <;> simp [sigL, star_alg] <;> ring
 
 /- English proof (translation)
-Apply `QuadraticAlgebra.ext` to reduce the goal to its premises. Conclude with `star_one (Lsq K Δ)`. Conclude with `star_zero (Lsq K Δ)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem sigL_one' {K : Type} [Field K] {Δ τ : K} : sigL (1 : EL Δ τ) = 1 := by
   apply QuadraticAlgebra.ext
@@ -25,11 +25,11 @@ private theorem sigL_one' {K : Type} [Field K] {Δ τ : K} : sigL (1 : EL Δ τ)
   · exact star_zero (Lsq K Δ)
 
 /- English proof (translation)
-Establish `z : ∀ y : K, -y = y → y = 0` using `fun y h => by`. Establish `h' : (2 : K) * y = 0` using `by linear_combination -h`. Simplify using `using h'`. Establish `e1` using `congrArg (fun w : EL Δ τ => w.re.im) h1`. Establish `e2` using `congrArg (fun w : EL Δ τ => w.im.re) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `congrArg (fun w : EL Δ τ => w.im.im) h2`. Simplify using `[sigL] at e1 e2 e3`. Establish `hr : algebraMap K (EL Δ τ) r.re.re = r`. Rewrite using `[show algebraMap K (EL Δ τ) r.re.re = ⟨⟨r.re.re, 0⟩, 0⟩ from rfl]`. Apply the tactic sequence `ext <;> simp [z _ e1, z _ e2, z _ e3]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨r.re.re, fun x => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 private theorem fixed_scalar {K : Type} [Field K] [CharZero K] {Δ τ : K} (r : EL Δ τ)
     (h1 : sigL r = r) (h2 : star r = r) : ∃ p : K, ∀ x : EL Δ τ, r * x = p • x := by
@@ -48,17 +48,15 @@ private theorem fixed_scalar {K : Type} [Field K] [CharZero K] {Δ τ : K} (r : 
     _ = r.re.re • x := (Algebra.smul_def _ _).symm
 
 /- English proof (translation)
-Introduce `K _ _ Δ τ c c' d m m' hm hm'`. Take `⟨u, hu⟩` from `hm.m_unit`. Use `set r : EL Δ τ := m' * ↑u⁻¹ with hrdef`. Establish `hrm : r * m = m'`. Rewrite using `[hrdef, ← hu, mul_assoc, Units.inv_mul, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsu : IsUnit (sigL m)`. Use `IsUnit.of_mul_eq_one (sigL (↑u⁻¹ : EL Δ τ)) ?_` and prove the remaining obligations. Rewrite using `[← sigL_mul', ← hu, Units.mul_inv, sigL_one']`. Establish `hs : sigL r = r`. Establish `e : sigL r * sigL m = r * sigL m`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sigL_mul', hrm, hm'.m_sig, hm.m_sig, ← mul_assoc, ← mul_assoc, hrm]`. Conclude with `hsu.mul_left_injective e`. Establish `hsm : star m = sigL m` using `by conv_lhs => rw [← hm.m_star]`. Conclude with `star_star _`. Establish `hsm' : star m' = sigL m'` using `by conv_lhs => rw [← hm'.m_star]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `star_star _`. Establish `hst : star r = r`. Establish `e : star r * sigL m = r * sigL m`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hsu.mul_left_injective e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨p, hp⟩` from `fixed_scalar r hs hst`. Establish `hm'p : m' = p • m` using `by rw [← hp, hrm]`. Establish `hp0 : p ≠ 0`. Introduce and unpack `rfl`. Rewrite `hm'p` using `[zero_smul]`.
-
-Conclude with `hm'.m_unit.ne_zero hm'p`. Conclude with `⟨Units.mk0 p hp0, hm'p⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.hermitian_datum_unique_up_to_scalar :
     ∀ (K : Type) [Field K] [CharZero K] (Δ τ c c' : K) (d m m' : EL Δ τ), IsDat c d m → IsDat c' d m' → ∃ t : Kˣ, m' = (t : K) • m := by

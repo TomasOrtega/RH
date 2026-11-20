@@ -29,9 +29,9 @@ Both sides reduce to the same expression.
 @[simp] theorem dotPairing_apply (x y : Fin n → R) : dotPairing R n x y = x ⬝ᵥ y := rfl
 
 /- English proof (translation)
-Establish `hm : f.mapMatrix (hMat h e e') = hMat h' ε ε'`. Use extensionality with `a' a`. Conclude with `hM a' a`. Establish `hadj (a a') : f ((hMat h e e').adjugate a a') = (hMat h' ε ε').adjugate a a'`. Rewrite using `[← hm, ← RingHom.map_adjugate]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only [perpVec, Pi.sub_apply, Pi.smul_apply, Finset.sum_apply, smul_eq_mul, map_sub, map_mul, map_sum, RingHom.map_det, hm, hadj, hg, hge, he']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_perpVec_apply (f : R →+* S) (h : (Fin n → R) →ₗ[R] ((Fin n → R) → R))
     (h' : (Fin n → S) →ₗ[S] ((Fin n → S) → S)) (e e' : Fin p → Fin n → R) (g : Fin n → R)
@@ -47,7 +47,7 @@ theorem map_perpVec_apply (f : R →+* S) (h : (Fin n → R) →ₗ[R] ((Fin n �
     map_sum, RingHom.map_det, hm, hadj, hg, hge, he']
 
 /- English proof (translation)
-The claim follows from `funext fun k => map_perpVec_apply f _ _ _ _ _ _ _ _ (fun _ _ => rfl) (fun _ => rfl) (fun _ _ => by simp [dotProduct]) (fun _ => by simp [dotProduct]) k`.
+A detailed English derivation is pending.
 -/
 theorem map_perpVec_dotPairing (f : R →+* S) (ε ε' : Fin p → Fin n → R) (γ : Fin n → R) :
     f ∘ perpVec (dotPairing R n) ε ε' γ =
@@ -56,11 +56,9 @@ theorem map_perpVec_dotPairing (f : R →+* S) (ε ε' : Fin p → Fin n → R) 
     (fun _ _ => by simp [dotProduct]) (fun _ => by simp [dotProduct]) k
 
 /- English proof (translation)
-Rewrite using `[adjugate_apply]`. Use `det_isWeightedHomogeneous (1 : σ → ℕ) (M.updateRow b (Pi.single a 1)) (fun i => if i = b then 0 else d) (fun i j => by` as an intermediate fact. Distinguish the cases in `hi : i = b`. Substitute `hi` using the available equality. Rewrite using `[updateRow_self, if_pos rfl, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `isWeightedHomogeneous_one _ _`. Conclude with `isWeightedHomogeneous_zero _ _ _`. Rewrite using `[updateRow_ne hi, if_neg hi]`. Conclude with `hM i j)`.
-
-Express the relevant statement in the definitionally equal form `IsWeightedHomogeneous 1 _ _`. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, zero_add, Finset.sum_const, Finset.filter_ne', Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjugate_isHomogeneous {σ : Type*} (M : Matrix (Fin p) (Fin p) (MvPolynomial σ R)) (d : ℕ)
     (hM : ∀ a b, (M a b).IsHomogeneous d) (a b : Fin p) :
@@ -81,9 +79,9 @@ theorem adjugate_isHomogeneous {σ : Type*} (M : Matrix (Fin p) (Fin p) (MvPolyn
     Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hM (a' a) : (hMat (dotPairing _ n) ε ε' a' a).IsHomogeneous 2` using `show (∑ k, ε' a' k * ε a k).IsHomogeneous 2 from IsHomogeneous.sum _ _ _ fun k _ => (hε' a' k).mul (hε a k)`. Establish `hge (a) : (dotPairing _ n γ (ε a)).IsHomogeneous 2` using `IsHomogeneous.sum _ _ _ fun k _ => (hγ k).mul (hε a k)`. Establish `hdet : (hMat (dotPairing _ n) ε ε').det.IsHomogeneous (2 * p)`. Use `det_isWeightedHomogeneous (1 : σ → ℕ) _ (fun _ => 2) hM` as an intermediate fact. Simplify `this` using `[mul_comm, IsHomogeneous]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [perpVec, Pi.sub_apply, Pi.smul_apply, Finset.sum_apply, smul_eq_mul]`. Use `(hdet.mul (hγ k)).sub (IsHomogeneous.sum _ _ _ fun a _ => IsHomogeneous.sum _ _ _ fun a' _ => ?_)` and prove the remaining obligations. Use `((adjugate_isHomogeneous _ 2 hM a a').mul (hge a)).mul (hε' a' k)` as an intermediate fact. Establish `hp` using `a.pos`. Rewrite `this` using `[show (p - 1) * 2 + 2 + 1 = 2 * p + 1 by omega]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem perpVec_dotPairing_isHomogeneous {σ : Type} (ε ε' : Fin p → Fin n → MvPolynomial σ R)
     (γ : Fin n → MvPolynomial σ R) (hε : ∀ a k, (ε a k).IsHomogeneous 1)
@@ -114,9 +112,7 @@ noncomputable def swapVars : MvPolynomial ω (MvPolynomial σ K) →+* MvPolynom
   eval₂Hom (MvPolynomial.map C) fun v => C (X v)
 
 /- English proof (translation)
-Establish `: (eval fun i => (C (x i) : MvPolynomial ω K)).comp swapVars = MvPolynomial.map (eval x)` using `by ext1`. Use `ext1`. Use `ext1 r`. Simplify using `[swapVars]`. Simplify using `[swapVars]`.
-
-Simplify using `[swapVars]`. Conclude with `DFunLike.congr_fun this F`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_swapVars (x : σ → K) (F : MvPolynomial ω (MvPolynomial σ K)) :
     eval (fun i => C (x i)) (swapVars F) = MvPolynomial.map (eval x) F := by
@@ -131,7 +127,7 @@ theorem eval_swapVars (x : σ → K) (F : MvPolynomial ω (MvPolynomial σ K)) :
 variable [Fintype κ]
 
 /- English proof (translation)
-Rewrite using `[rowForm_apply, map_sum]`. Use `IsHomogeneous.sum _ _ _ fun k _ => ?_` and prove the remaining obligations. Simplify using `only [swapVars, map_mul, eval₂Hom_C, eval₂Hom_X']`. Simplify using `using ((hu k).map C).mul (isHomogeneous_C σ (X (t, r, k) : Poly K T p q κ))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem swapVars_rowForm_isHomogeneous (t : T) (r : Fin p ⊕ Fin q) (u : κ → MvPolynomial σ K)
     {d : ℕ} (hu : ∀ k, (u k).IsHomogeneous d) : (swapVars (rowForm t r u)).IsHomogeneous d := by
@@ -141,13 +137,13 @@ theorem swapVars_rowForm_isHomogeneous (t : T) (r : Fin p ⊕ Fin q) (u : κ →
   simpa using ((hu k).map C).mul (isHomogeneous_C σ (X (t, r, k) : Poly K T p q κ))
 
 /- English proof (translation)
-Simplify using `only [minorProd, map_prod, map_mul, map_pow]`. Use `IsHomogeneous.prod _ _ _ fun t _ => IsHomogeneous.mul ?_ ?_` and prove the remaining obligations. Rewrite using `[partSize, Finset.mul_sum]`. Use `IsHomogeneous.prod _ _ _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `IsHomogeneous.pow ?_ _` and prove the remaining obligations. Rewrite using `[xMinor, RingHom.map_det]`. Use `det_isWeightedHomogeneous (1 : σ → ℕ) (swapVars.mapMatrix (Matrix.of fun a b : Fin (i.val + 1) => (xForm t (lead i a) (ε t (lead i b)) : Poly _ T p q κ))) (fun _ => d) fun a b => swapVars_rowForm_isHomogeneous t _ _ (hε t _)` as an intermediate fact. Simplify `this` using `[mul_comm, IsHomogeneous]`. Rewrite using `[partSize, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `IsHomogeneous.prod _ _ _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc]`. Use `IsHomogeneous.pow ?_ _` and prove the remaining obligations. Rewrite using `[yMinor, RingHom.map_det]`. Use `det_isWeightedHomogeneous (1 : σ → ℕ) (swapVars.mapMatrix (Matrix.of fun a b : Fin (i.val + 1) => (yForm t (lead i a) (φ t (lead i b)) : Poly _ T p q κ))) (fun _ => d') fun a b => swapVars_rowForm_isHomogeneous t _ _ (hφ t _)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `[mul_comm, IsHomogeneous]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem swapVars_minorProd_isHomogeneous [Fintype T] (c : T → Fin p → ℕ) (c' : T → Fin q → ℕ)
     (ε : T → Fin p → κ → MvPolynomial σ K) (φ : T → Fin q → κ → MvPolynomial σ K) {d d' : ℕ}
@@ -190,7 +186,7 @@ noncomputable def coordProd (c : T → Fin p → ℕ) (c' : T → Fin q → ℕ)
       fun k => ∑ i, x (Sum.inr (Sum.inr b), i) * w t i k
 
 /- English proof (translation)
-Simplify using `only [coordProd, map_minorProd, map_perpVec_dotPairing]`. Simplify using `only [Function.comp_def, map_sum, map_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_coordProd (f : R →+* S) (c : T → Fin p → ℕ) (c' : T → Fin q → ℕ)
     (w w' : T → ι → Fin n → R) (x : (Fin p ⊕ Fin p ⊕ Fin q) × ι → R) :
@@ -202,7 +198,7 @@ theorem map_coordProd (f : R →+* S) (c : T → Fin p → ℕ) (c' : T → Fin 
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-The claim follows from `minorProd_mem_orbitSpan hpq c c' fun _ a _ => by rw [dotProduct_comm]; exact perpendicular_vector_exists K _ p (dotPairing K n) _ _ _ a`.
+A detailed English derivation is pending.
 -/
 theorem coordProd_mem_orbitSpan (hpq : p + q ≤ n) (c : T → Fin p → ℕ) (c' : T → Fin q → ℕ)
     (w w' : T → ι → Fin n → K) (x : (Fin p ⊕ Fin p ⊕ Fin q) × ι → K) :
@@ -211,15 +207,13 @@ theorem coordProd_mem_orbitSpan (hpq : p + q ≤ n) (c : T → Fin p → ℕ) (c
     rw [dotProduct_comm]; exact perpendicular_vector_exists K _ p (dotPairing K n) _ _ _ a
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `coordProd_mem_orbitSpan hpq c c' w w' x`. Rewrite using `[orbitSpan_eq_span_linearIndependent]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨ε, φ, hε, -, hperp, rfl⟩`. Use `choose ε' hε' using fun t a => surjective_mulVecLin_of (hε t) (Pi.single a 1)`. Use `choose x₁ _ hx₁ using fun a => hw 0 fun t => ε t a`. Use `choose x₂ hx₂ _ using fun a => hw (fun t => ε' t a) 0`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `choose x₃ hx₃ _ using fun b => hw (fun t => φ t b) 0`. Use `⟨fun j => Sum.elim x₁ (Sum.elim x₂ x₃) j.1 j.2, ?_⟩` and prove the remaining obligations. Simplify using `only [coordProd, Sum.elim_inl, Sum.elim_inr, hx₁, hx₂, hx₃]`. Use `congr 1`. Use function extensionality and compare the values at `t b`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hM : hMat (dotPairing K n) (ε t) (ε' t) = 1`. Use extensionality with `a' a`. Use `congrFun (hε' t a') a` as an intermediate fact. Rewrite using `[one_eq_pi_single, ← this]`. Conclude with `dotProduct_comm (ε' t a') (ε t a)`.
-
-Use `perpendicular_vector_perp K _ p (dotPairing K n) (ε t) (ε' t) (φ t b) fun a => by` as an intermediate fact. Rewrite using `[dotPairing_apply, dotProduct_comm]`. Conclude with `hperp t a b`. Rewrite `this` using `[hM, det_one, one_smul]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_range_coordProd (hpq : p + q ≤ n) (c : T → Fin p → ℕ) (c' : T → Fin q → ℕ)
     (w w' : T → ι → Fin n → K)
@@ -252,13 +246,13 @@ theorem span_range_coordProd (hpq : p + q ≤ n) (c : T → Fin p → ℕ) (c' :
   exact this
 
 /- English proof (translation)
-Set `F : MvPolynomial ((Fin p ⊕ Fin p ⊕ Fin q) × ι) (Poly K T p q (Fin n))` to `swapVars (coordProd c c' (fun t i k => C (w t i k)) (fun t i k => C (w' t i k)) X)`. Establish `hlin (r : Fin p ⊕ Fin p ⊕ Fin q) (u : ι → K) : (∑ i, X (r, i) * C (u i) : MvPolynomial _ K).IsHomogeneous 1` using `IsHomogeneous.sum _ _ _ fun i _ => (isHomogeneous_X K (r, i)).mul (isHomogeneous_C _ (u i))`. Establish `hF : F.IsHomogeneous _` using `swapVars_minorProd_isHomogeneous c c' _ _ (d := 1) (d' := 2 * p + 1) (fun t a k => hlin _ _) fun t b k => perpVec_dotPairing_isHomogeneous _ _ _ (fun a k => hlin _ _) (fun a k => hlin _ _) (fun k => hlin _ _) k`. Establish `hdeg : F.totalDegree ≤ dg`. Use `hF.totalDegree_le.trans (le_trans ?_ hdg)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[typeDegree, Finset.mul_sum]`. Use `Finset.sum_le_sum fun t _ => ?_` and prove the remaining obligations. Rewrite using `[mul_add]`. Conclude with `Nat.add_le_add_right (Nat.mul_le_mul_right _ (by omega)) _`. Establish `hev (x : (Fin p ⊕ Fin p ⊕ Fin q) × ι → K) : eval (fun j => C (x j)) F = coordProd c c' w w' x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eval_swapVars, map_coordProd]`. Simplify using `only [eval_C, eval_X]`. Use `span_grid_eval_eq_span_range (A := K) (K := K) dg F fun j => (degreeOf_le_totalDegree F j).trans hdeg` as an intermediate fact. Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply, algebraMap_eq, hev] at this`. Rewrite using `[← this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use function extensionality and compare the values at `x`. Rewrite using `[← hev]`. Simplify using `only [map_natCast]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem span_grid_coordProd [CharZero K] (c : T → Fin p → ℕ) (c' : T → Fin q → ℕ)
     (w w' : T → ι → Fin n → K) {dg : ℕ} (hdg : (2 * p + 1) * typeDegree c c' ≤ dg) :
@@ -296,21 +290,21 @@ end Field
 section Embeddings
 
 /- English proof (translation)
-Use `Fintype.ofFinite J` as an intermediate fact. Use `Fintype.ofFinite κ` as an intermediate fact. Set `u : (κ → E) → J × κ → K` to `fun z s => σ s.1 (z s.2)`. Set `U : Submodule K (J × κ → K)` to `Submodule.span K (Set.range fun i => u (v i))`. Establish `hU (z : κ → E) : u z ∈ U`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hz : z ∈ Submodule.span ℚ (Set.range v)` using `hv ▸ Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz => obtain ⟨i, rfl⟩ := hz`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Consider the case `zero => convert U.zero_mem`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components.
 
-Use extensionality with `s`. Simplify using `[u]`. Consider the case `add z z' _ _ h h' => convert U.add_mem h h'`. Use extensionality with `s`. Simplify using `[u]`.
+Simplify using the standard rewrite rules. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `smul r z _ h => convert U.smul_mem (r : K) h`. Use extensionality with `s`. Simplify using `[u, Rat.smul_def]`. Establish `hind : LinearIndependent K fun j => (σ j : E → K)` using `(linearIndependent_monoidHom E K).comp (fun j => (σ j : E →* K)) fun j j' e => hσ (RingHom.ext fun a => DFunLike.congr_fun e a)`. Establish `hy : (fun s : J × κ => y s.1 s.2) ∈ U`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Subspace.forall_mem_dualAnnihilator_apply_eq_zero_iff U]`. Introduce `l hl`. Establish `h0 (j k) : l (Pi.single (j, k) 1) = 0`. Use `Fintype.linearIndependent_iff.1 hind (fun j => l (Pi.single (j, k) 1)) ?_ j` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h1` using `(Submodule.mem_dualAnnihilator l).1 hl _ (hU (Pi.single k a))`. Establish `h2 : u (Pi.single k a) = ∑ j, σ j a • Pi.single (j, k) 1`. Use extensionality with `⟨j', k'⟩`. Apply the tactic sequence `by_cases hk : k' = k <;> simp [u, Finset.sum_apply, Pi.single_apply, hk]`. Rewrite `h1` using `[h2, map_sum]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1` using `[mul_comm]`. Rewrite using `[← Finset.univ_sum_single (fun s : J × κ => y s.1 s.2), map_sum]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_one (y s.1 s.2), ← smul_eq_mul, Pi.single_smul', map_smul, h0, smul_zero]`. Take `⟨x, hx⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, fun j k => by simpa [u] using congrFun hx (j, k)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_sum_mul_embedding_eq {E K J κ ι : Type*} [Field E] [CharZero E] [Field K]
     [Finite J] [Finite κ] [Fintype ι] (σ : J → E →+* K) (hσ : Function.Injective σ)
@@ -357,19 +351,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {K : Type} [Field K]
   {T : Type*} [Fintype T] {ι : Type} [Fintype ι] {p q n : ℕ}
 
 /- English proof (translation)
-Set `γ : E →+* E` to `(IsCMField.complexConj E : E ≃ₐ[_] E)`. Establish `hγ (x) : cc x = γ x` using `rfl`. Set `σ : T × Bool → E →+* K` to `fun s => if s.2 then (τ s.1).comp γ else τ s.1`. Establish `hσ : Function.Injective σ` using `fun s s' e => hτ (funext fun x => by`. Use `DFunLike.congr_fun e x` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `obtain ⟨t, _ | _⟩ := s <;> obtain ⟨t', _ | _⟩ := s' <;> exact this)`. Rewrite using `[← span_range_coordProd hpq c c' (fun t i k => τ t (v i k)) (fun t i k => τ t (γ (v i k))) fun y y' => by`. Take `⟨x, hx⟩` from `exists_sum_mul_embedding_eq σ hσ v hv fun s => if s.2 then y' s.1 else y s.1`. Conclude with `⟨x, fun t => hx (t, false), fun t => hx (t, true)⟩,`. Use the proof step `← span_grid_coordProd c c' _ _ hdg]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `key (A A' : Fin p → ι → ℕ) (B : Fin q → ι → ℕ) : minorProd c c' (fun t a k => τ t (cc ((∑ i, (A a i : E) • v i) k))) (fun t b k => τ t (perpVec h (fun a => ∑ i, (A a i : E) • v i) (fun a => ∑ i, (A' a i : E) • v i) (∑ i, (B b i : E) • v i) k)) = coordProd c c' (fun t i k => τ t ( …`. Rewrite using `[coordProd]`. Use `congr 1`. Use function extensionality and compare the values at `t a k`. Simplify using `[hγ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t b k`. Use `map_perpVec_apply _ _ _ _ _ _ _ _ _ ?_ ?_ ?_ ?_ k` and prove the remaining obligations. Apply the tactic sequence `all_goals intros`. Simplify using `[hγ, hh, dotProduct]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `P`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨A, A', B, hA, hA', hB, rfl⟩`. Use `⟨fun j => Sum.elim A (Sum.elim A' B) j.1 j.2, ?_, (key A A' B).symm⟩` and prove the remaining obligations. Introduce and unpack `⟨a | a | b, i⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `exacts [hA a i, hA' a i, hB b i]`. Introduce and unpack `⟨x, hx, rfl⟩`. Use `⟨fun a i => x (Sum.inl a, i), fun a i => x (Sum.inr (Sum.inl a), i), fun b i => x (Sum.inr (Sum.inr b), i), fun _ _ => hx _, fun _ _ => hx _, fun _ _ => hx _, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `obtain ⟨a | a | b, i⟩ := j <;> rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem span_grid_perpVec_eq_orbitSpan_of_le (τ : T → E →+* K)
     (hτ : Function.Injective fun s : T × Bool => fun x : E => τ s.1 (if s.2 then cc x else x))
@@ -423,7 +415,7 @@ theorem span_grid_perpVec_eq_orbitSpan_of_le (τ : T → E →+* K)
     obtain ⟨a | a | b, i⟩ := j <;> rfl
 
 /- English proof (translation)
-The claim follows from `span_grid_perpVec_eq_orbitSpan_of_le τ hτ hpq h hh v hv c c' ((Nat.mul_le_mul_right _ (by omega)).trans hdg)`.
+A detailed English derivation is pending.
 -/
 theorem span_grid_perpVec_eq_orbitSpan (τ : T → E →+* K)
     (hτ : Function.Injective fun s : T × Bool => fun x : E => τ s.1 (if s.2 then cc x else x))

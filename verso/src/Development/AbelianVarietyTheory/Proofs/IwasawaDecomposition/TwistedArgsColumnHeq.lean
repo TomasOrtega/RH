@@ -8,13 +8,13 @@ open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Me
 namespace GlobalTheory.Mem.R3
 
 /- English proof (translation)
-Introduce `K B f T w Z Wt L hT Gi Gl Kc Yd cX ex t a`. Consider the cases of `a with`. Consider the case `mk Dc Sp Zsc lam err lam_eq x pack intersectionNumber_baseChange hκ hv hfw htup htupT hjA hjA0 heMt hPY hPW heFT hIL heE heW hjW heRR`. Consider the cases of `x with`. Consider the case `mk G Pl0 I0 T' A3 core R F cG geo pins err' Y Z' C' sEE div JA amb0 JM mjH`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the cases of `pack`. Establish `hT' : Y.tupT = t.r.Y.tupT` using `eq_of_heq htupT`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `heq_of_eq (t.r.z.lev.C.trans (congrArg _ w.C_eq))`. Conclude with `heq_of_eq t.r.z.lev.Pg`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `μ hμ`. Establish `hix : ixOf w.I (usedOf w.I T Wt) (t.r.Y.tupT μ) = μ` using `(t.r.tup_ix _).symm.trans (t.r.Y.tupTie μ hμ)`. Establish `e1 : t.r.z.R.Q (Y.tupT μ) = w.I.Q μ` using `(congrArg (fun g => t.r.z.R.Q (g μ)) hT').trans ((t.r.z.lev.Q _).trans (congrArg _ hix))`. Establish `e2 : t.r.z.R.xiH (Y.tupT μ) = w.I.xi μ` using `(congrArg (fun g => t.r.z.R.xiH (g μ)) hT').trans ((t.r.z.lev.xiH _).trans (congrArg _ hix))`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(by with_unfolding_all exact (heq_of_eq e1 :))`. Conclude with `(by with_unfolding_all exact (heq_of_eq e2 :))`. Introduce `i p v s hp`. Use `⟨p, s, HEq.rfl, HEq.rfl, ?_⟩` and prove the remaining obligations. Use `kexactB lam_eq i s p v (by kexactB hp)`.
+A detailed English derivation is pending.
 -/
 theorem twArgs_lev : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (Wt : Set B.places.Pl) (L : SizeData₂ (w.st Z).toD7) (hT : GatTies (w.st Z).toD7) (Gi : Formalism.MainNotions.G.Inst (w.st Z).toD7 L) (Gl : Formalism.MainNotions.G.LatInst (w.st Z).toD7) (Kc : Formalism.MainNotions.G.Consts) (Yd : DivX (w.st Z).toD7) (cX : ExtraC) (ex : Extra (w.st Z).toD7 L hT Gi Gl Kc Yd cX) (t : RowsT K w Z Wt ex.p0) (a : TwArgs ex t), HEq a.x.R.C (Top.Fr.at (w.st Z) f) ∧ HEq a.x.R.Pg (B.primes w.px).vGs ∧ (∀ μ, Formalism.IndefR.RecTie.Used0 (w.st Z).toD7 μ → HEq (a.x.R.Q (a.x.Y.tupT μ)) (w.I.Q μ) ∧ HEq (a.x.R.toLevCh.xiH (a.x.Y.tupT μ)) (w.I.xi μ)) ∧ (∀ i p v s, a.x.R.EEp3 p ≠ ⊥ → ∃ p' s', HEq p' p ∧ HEq s' s ∧ a.x.R.lam3 i s p v = t.r.z.R.lam3 i s' p' v) := by
   intro K B f T w Z Wt L hT Gi Gl Kc Yd cX ex t a

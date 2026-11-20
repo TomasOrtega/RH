@@ -9,17 +9,17 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.TwoPlaces
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A A' P hA hA' hne c hc hc0`. Establish `hQ : (primeBelow (F` using `E) A).under (𝓞 E) = P.asIdeal := under_primeBelow hA`. Establish `hQ' : (primeBelow (F` using `E) A').under (𝓞 E) = P.asIdeal := under_primeBelow hA'`. Use `haveI : (primeBelow (F := E) A).IsMaximal := Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := 𝓞 E) _ (by change (Ideal.under (𝓞 E) (primeBelow (F := E) A)).IsMaximal; rw [hQ]; exact P.isMaximal)`. Use `haveI : (primeBelow (F := E) A').IsMaximal := Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := 𝓞 E) _ (by change (Ideal.under (𝓞 E) (primeBelow (F := E) A')).IsMaximal; rw [hQ']; exact P.isMaximal)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQne : primeBelow (F` using `E) A ≠ primeBelow (F := E) A' := by`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Use `eq_of_valuation_lt_one_iff E fun b hb => ?_` and prove the remaining obligations. Establish `hb' : IsIntegral (𝓞 E) b` using `hb.tower_top`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun I : Ideal (IntCl E Ω) => (⟨b, hb'⟩ : IntCl E Ω) ∈ I) h` as an intermediate fact. Simplify `this` using `[mem_primeBelow]`. Establish `hnle : ¬ primeBelow (F` using `E) A ≤ primeBelow (F := E) A' := fun h => hQne (Ideal.IsMaximal.eq_of_le inferInstance (Ideal.IsPrime.ne_top inferInstance) h)`. Take `⟨x, hxQ, hxQ'⟩` from `SetLike.not_le_iff_exists.mp hnle`. Rewrite `hxQ` using `[mem_primeBelow]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `GlobalTheory.T.exists_pow_valuation_lt_of_integral_algClosure_place E Ω A P hA (x : Ω) c (isIntegral_int_of_isIntegral x.2) hc hc0 hxQ`. Establish `hxk : x ^ k ∉ primeBelow (F` using `E) A' := fun h => hxQ' (Ideal.IsPrime.mem_of_pow_mem inferInstance k h)`. Take `⟨y, i, hi, hyi⟩` from `Ideal.IsMaximal.exists_inv inferInstance hxk`. Use `⟨((y * x ^ k : IntCl E Ω) : Ω), isIntegral_int_of_isIntegral (y * x ^ k).2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MulMemClass.coe_mul, Valuation.map_mul, SubmonoidClass.coe_pow, Valuation.map_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e1 : (1 : Ω) - ((y * x ^ k : IntCl E Ω) : Ω) = (i : Ω)`. Use `congrArg (fun z : IntCl E Ω => (z : Ω)) hyi` as an intermediate fact. Simplify using `only [AddMemClass.coe_add, OneMemClass.coe_one] at this`. Rewrite using `[← this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Conclude with `hi`.
+A detailed English derivation is pending.
 -/
 theorem exists_deep_one_sub :
     ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A A' : ValuationSubring Ω)

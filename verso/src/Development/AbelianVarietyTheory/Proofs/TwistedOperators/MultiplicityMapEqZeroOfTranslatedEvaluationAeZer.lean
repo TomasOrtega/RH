@@ -23,11 +23,9 @@ section Count
 open Formalism.MainNotions.S
 
 /- English proof (translation)
-Use `haveI : Countable I.E := (Module.finBasis ℚ I.E).equivFun.injective.countable`. Use `haveI : Countable (Matrix (Fin I.n) (Fin I.n) I.E) := inferInstanceAs (Countable (Fin I.n → Fin I.n → I.E))`. Use `haveI : Countable (GL (Fin I.n) I.E) := Function.Injective.countable (f := (Units.val : GL (Fin I.n) I.E → Matrix (Fin I.n) (Fin I.n) I.E)) fun _ _ h => Units.ext h`. Set `W : GL (Fin I.n) I.E → Set I.GA` to `fun γ => {x | (∀ v, uMat (x.1 v) = (I.P v)⁻¹ * (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) * I.P v) ∧ I.fmat x.2 = (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (Formalism.UG.inclE (F := I.F) (Af I.F))}`. Establish `hsub : I.GFset ⊆ ⋃ γ, W γ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x ⟨γ, -, h1, h2⟩`. Conclude with `Set.mem_iUnion.2 ⟨γ, h1, h2⟩`. Use `Set.Countable.mono hsub (Set.countable_iUnion fun γ => Set.Subsingleton.countable ?_)` and prove the remaining obligations. Introduce and unpack `x ⟨hx1, hx2⟩ y ⟨hy1, hy2⟩`. Use `Prod.ext (funext fun v => ?_) ?_` and prove the remaining obligations.
-
-Conclude with `Subtype.ext (Units.ext ((hx1 v).trans (hy1 v).symm))`. Conclude with `Subtype.ext (Units.ext (hx2.trans hy2.symm))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gfset_countable (I : AutInst) : I.GFset.Countable := by
   classical
@@ -50,17 +48,17 @@ theorem gfset_countable (I : AutInst) : I.GFset.Countable := by
   · exact Subtype.ext (Units.ext (hx2.trans hy2.symm))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hy`. Take `⟨hl, -, -, -, hpos⟩` from `GlobalTheory.AdelicUnimod.adelic_unimodular I μf`. Establish `hpre : ∀ γ : I.GA, ∀ A : Set I.GA, I.muA μf A = 0 → I.muA μf ((fun z => γ * z) ⁻¹' A) = 0`. Introduce `γ A hA`. Take `⟨t, hAt, ht, ht0⟩` from `exists_measurable_superset_of_null hA`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `measure_mono_null (Set.preimage_mono hAt) ?_` and prove the remaining obligations. Distinguish the cases in `hf : AEMeasurable (fun z => γ * z) (I.muA μf)`. Rewrite using `[← Measure.map_apply_of_aemeasurable hf ht, hl γ]`. Conclude with `ht0`. Establish `hz : I.muA μf = 0` using `by rw [← hl γ, Measure.map_of_not_aemeasurable hf]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Simplify using the standard rewrite rules. Establish `hopen : IsOpen {z | φ z ≠ 0}` using `isOpen_ne_fun hc continuous_const`. Establish `hnull : I.muA μf ({z | φ z ≠ 0} ∩ fund) = 0`. Establish `h1 : ∀ᵐ z ∂(I.muA μf), z ∈ fund → φ z = 0` using `(ae_restrict_iff' hfund.1).1 h0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[ae_iff]`. Use `measure_mono_null ?_ h1` and prove the remaining obligations. Introduce `z hz`. Conclude with `fun h => hz.1 (h hz.2)`. Establish `hcov : {z | φ z ≠ 0} ⊆ ⋃ γ ∈ I.GFset, (fun z => γ * z) ⁻¹' ({z | φ z ≠ 0} ∩ fund)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Take `⟨γ, hγ, hγz⟩` from `hfund.2.1 z`. Use `Set.mem_biUnion hγ ⟨?_, hγz⟩` and prove the remaining obligations. Use `show φ (γ * z) ≠ 0`. Rewrite using `[hinv γ hγ z]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hz`. Establish `hall : I.muA μf {z | φ z ≠ 0} = 0`. Use `measure_mono_null hcov ((measure_biUnion_null_iff (gfset_countable I)).2 fun γ _ => ?_)` and prove the remaining obligations. Conclude with `hpre γ _ hnull`. Conclude with `(hpos _ hopen ⟨y, hy⟩).ne' hall`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_ae_fund (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] [SigmaFinite μf] {fund : Set I.GA}
     (hfund : I.IsFundDom (I.muA μf) fund) {φ : I.GA → ℂ} (hc : Continuous φ)
@@ -100,7 +98,7 @@ theorem eq_zero_of_ae_fund (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure
   exact (hpos _ hopen ⟨y, hy⟩).ne' hall
 
 /- English proof (translation)
-Substitute `p` using the available equality. Conclude with `hγ`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem castGA_symm_mem {I I' : AutInst} (p : I = I') (γ : I'.GA) (hγ : γ ∈ I'.GFset) :
     (castGA p).symm γ ∈ I.GFset := by
@@ -115,19 +113,17 @@ variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {θ : Formalism.Indef
   {χ : GA D V → ℂ}
 
 /- English proof (translation)
-Establish `step : ∀ (u : M.Vec) (τ : D.what₂.Tau), T u = 0 → (u τ : M.H τ) ≠ 0 → ∀ w : M.sm τ, T (Function.update u τ w) = 0`. Introduce `u τ hu hne w`. Use function extensionality and compare the values at `x`. Take `⟨ℓ, hℓ, hval⟩` from `hT.cont τ u x`. Establish `horb : ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ℓ (M.rep τ g (u τ)) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `g hg`. Establish `hmem : M.rep τ g (u τ) ∈ M.sm τ` using `GlobalTheory.ConjMult.rep_mem_sm M τ hg (u τ).2`. Establish `h1` using `hval ⟨_, hmem⟩`. Rewrite `h1` using `[hT.equiv τ g hg u ⟨_, hmem⟩ rfl, hu]`. Simplify `h1` using `[rTr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `GlobalTheory.SmoothCyclic.eq_zero_of_orbit D V S M τ ℓ hℓ (u τ) (u τ).2 hne horb w w.2`. Rewrite `h2` using `[hval w]`. Conclude with `h2`. Establish `key : ∀ s : Finset D.what₂.Tau, ∀ w : M.Vec, T (fun τ => if τ ∈ s then w τ else v₀ τ) = 0`. Introduce `s`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `w`. Simplify using `using h0`. Introduce `a s ha ih w`. Establish `hne : ((if a ∈ s then w a else v₀ a : M.sm a) : M.H a) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ha, if_false]`. Conclude with `hv₀ a`. Establish `h3` using `step _ a (ih w) hne (w a)`. Use `h3 using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `τ`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Break down `eq_or_ne τ a with rfl | hτ` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[hτ]`. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `w`.
-
-Simplify using `using key Finset.univ w`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_value {T : MMap M} (hT : IsMultMap θ M J χ T) (v₀ : M.Vec) (hv₀ : ∀ τ, (v₀ τ : M.H τ) ≠ 0)
     (h0 : T v₀ = 0) : T = 0 := by
@@ -172,27 +168,23 @@ end Cyclic
 end GlobalTheory.TranslatedEvalInj
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F X h _ _ hmod t v₀ hv₀ S hS S' hS' hae`. Establish `hsub : ∀ k ∈ (levG (Yc D 0) (R.βY 0) (flag1L (R.dat0 R.triv)) : Set (GA D (Yc D 0))), k ∈ levS (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true)) ∧ levChi (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true)) k = levChi (Yc D 0) (R.βY 0) (flag1L (R.dat0 R.triv)) k`. Introduce `k hk`. Establish `h1 : Formalism.L2.DIV.rTup (R.βY 0) (R.dat0 R.triv) (finE (Yc D 0) k) = 1` using `Subgroup.mem_bot.1 hk.2.2`. Use `⟨⟨hk.1, hk.2.1, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `Formalism.L2.DIV.rTup (R.βY 0) (R.dat0 R.triv) (finE (Yc D 0) k) ∈ (R.levR F true).H`. Rewrite using `[h1]`. Conclude with `Subgroup.one_mem _`. Rewrite using `[GlobalTheory.FlagAction.levChi_flag1]`. Establish `e1` using `Formalism.IndefR.Lev.levFn_withP (V := Yc D 0) (β := R.βY 0) (L := R.dat0 R.triv) (R.levR F true) (finE (Yc D 0) k)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : Formalism.L2.DIV.ext1 (R.levR F true).H (R.levR F true).chi (Formalism.L2.DIV.rTup (R.βY 0) (R.dat0 R.triv) (finE (Yc D 0) k)) = 1`. Rewrite using `[h1]`. Conclude with `Formalism.L2.DIV.blockDiagonalExtendByOnePrimeField_one _ _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e2, one_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSp : S ∈ Mult R.θ (R.MY 0) (levG (Yc D 0) (R.βY 0) (flag1L (R.dat0 R.triv)) : Set (GA D (Yc D 0))) (levChi (Yc D 0) (R.βY 0) (flag1L (R.dat0 R.triv)))` using `GlobalTheory.ProjectedLift.mult_mono hsub hS`. Establish `hS'm : S' ∈ Mult R.θ (R.MY 0) (levG (Yc D 0) (R.βY 0) (flag1L (R.dat0 R.triv)) : Set (GA D (Yc D 0))) (levChi (Yc D 0) (R.βY 0) (flag1L (R.dat0 R.triv)))`. Rewrite using `[hS']`. Conclude with `Submodule.sub_mem _ (GlobalTheory.ProjectedLift.postOn_gaL_mem (β := R.βY 0) (L := R.dat0 R.triv) hmod.inf R.eG (RealDat.eC (A := A) D.what₂.embLL) hSp) hSp`. Establish `hT` using `(GlobalTheory.MultMem.mem_mult_iff _ _ _ _ _ _ _ _).1 hS'm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hQ : ∀ γ ∈ X.B.I.GFset, (iotaX X h).symm γ ∈ GQ (D.sp.Y 0)`. Introduce `γ hγ`. Establish `h1` using `GlobalTheory.TranslatedEvalInj.castGA_symm_mem h.symm γ hγ`. Rewrite using `[Formalism.IndefR.RationalEmbedding.iota_rat]`. Express the relevant statement in the definitionally equal form `Formalism.IndefR.RationalEmbedding.iota D ((Formalism.IndefR.RationalEmbedding.iota D).symm ((castGA h.symm).symm γ)) ∈ _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Conclude with `h1`. Establish `hfun : ∀ y : X.B.I.GA, S' v₀ ((iotaX X h).symm (y * iotaX X h t)) = ev (MP R) v₀ S' (@HMul.hMul (GA D (Yc D 0)) (GA D (Yc D 0)) (GA D (Yc D 0)) _ ((iotaX X h).symm y) t)`. Introduce `y`. Rewrite using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrArg (fun z : GA D (D.sp.Y 0) => S' v₀ ((iotaX X h).symm y * z)) ((iotaX X h).symm_apply_apply t)`. Establish `hv : ∀ y : X.B.I.GA, S' v₀ ((iotaX X h).symm (y * iotaX X h t)) = 0`. Establish `hc : Continuous fun y : X.B.I.GA => S' v₀ ((iotaX X h).symm (y * iotaX X h t))` using `(hT.aut v₀).cont.comp ((iotaX X h).symm.continuous.comp (continuous_mul_right _))`. Establish `hinv : ∀ γ ∈ X.B.I.GFset, ∀ y, S' v₀ ((iotaX X h).symm (γ * y * iotaX X h t)) = S' v₀ ((iotaX X h).symm (y * iotaX X h t))`. Introduce `γ hγ y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, map_mul]`. Conclude with `(hT.aut v₀).left _ (hQ γ hγ) _`. Establish `hae' : (fun y : X.B.I.GA => S' v₀ ((iotaX X h).symm (y * iotaX X h t))) =ᵐ[(X.B.I.muA X.B.μf).restrict X.B.fund] 0`. Establish `e : (fun y : X.B.I.GA => S' v₀ ((iotaX X h).symm (y * iotaX X h t))) = fun x => ev (MP R) v₀ S' (@HMul.hMul (GA D (Yc D 0)) (GA D (Yc D 0)) (GA D (Yc D 0)) _ ((iotaX X h).symm x) t)`. Use function extensionality and compare the values at `hfun`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `hae`. Conclude with `GlobalTheory.TranslatedEvalInj.eq_zero_of_ae_fund X.B.I X.B.μf X.B.fund_spec hc hinv hae'`. Establish `h0 : S' v₀ = 0`. Use function extensionality and compare the values at `g`.
-
-Establish `h2` using `hv (iotaX X h (g * t⁻¹))`. Establish `e : (iotaX X h).symm (iotaX X h (g * t⁻¹) * iotaX X h t) = g`. Use `((congrArg (iotaX X h).symm (map_mul (iotaX X h) (g * t⁻¹) t).symm).trans ((iotaX X h).symm_apply_apply _)).trans ?_` and prove the remaining obligations. Use `first`. Consider the case `exact inv_mul_cancel_right g t`.
-
-Consider the case `simp`. Rewrite `h2` using `[e]`. Conclude with `h2`. Conclude with `GlobalTheory.TranslatedEvalInj.eq_zero_of_value hT v₀ hv₀ h0`.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TranslatedEvalInj.eq_zero : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), R.toLevCh.Is A.μ0 → R.IsGrp F → R.IsModels → ∀ (t : GA D (Yc D 0)) (v₀ : (MP R).Vec), (∀ τ, (v₀ τ : (MP R).H τ) ≠ 0) → ∀ S ∈ Mult R.θ (R.MY 0) (levS (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true))) (levChi (Yc D 0) (R.βY 0) (R.dat0 (R.levR F true))), ∀ S' : MMap (R.MY 0), S' = postOn (R.MY 0) R.e0 S - S → ((fun x => ev (MP R) v₀ S' (@HMul.hMul (GA D (Yc D 0)) (GA D (Yc D 0)) (GA D (Yc D 0)) _ ((iotaX X h).symm x) t)) =ᵐ[muX X] 0) → S' = 0 := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F X h _ _ hmod t v₀ hv₀ S hS S' hS' hae

@@ -11,11 +11,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.ThetaBound
 
 /- English proof (translation)
-Establish `hanti : AntitoneOn (fun t : ℝ => Real.exp (-a * t ^ 2)) (Set.Icc (0 : ℝ) ((0 : ℝ) + ((N : ℕ) : ℝ)))`. Introduce `s hs t ht hst`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `h0 : 0 ≤ s` using `hs.1`. Establish `h2 : s ^ 2 ≤ t ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h1` using `hanti.sum_le_integral`. Establish `h2 : ∫ x in (0 : ℝ)..(0 : ℝ) + (N : ℝ), Real.exp (-a * x ^ 2) ≤ ∫ x in Set.Ioi (0 : ℝ), Real.exp (-a * x ^ 2)`. Rewrite using `[intervalIntegral.integral_of_le (by simp)]`. Use `setIntegral_mono_set (integrable_exp_neg_mul_sq ha).integrableOn ?_ Set.Ioc_subset_Ioi_self.eventuallyLE` and prove the remaining obligations.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Eventually.of_forall fun x => (Real.exp_pos _).le`. Rewrite `h2` using `[integral_gaussian_Ioi]`. Use `le_trans (le_of_eq ?_) (h1.trans h2)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma sum_range_gauss_le {a : ℝ} (ha : 0 < a) (N : ℕ) :
     ∑ i ∈ Finset.range N, Real.exp (-a * ((i : ℝ) + 1) ^ 2) ≤ √(π / a) / 2 := by
@@ -39,14 +39,14 @@ lemma sum_range_gauss_le {a : ℝ} (ha : 0 < a) (N : ℕ) :
   simp
 
 /- English proof (translation)
-The claim follows from `summable_of_sum_range_le (fun _ => (Real.exp_pos _).le) (sum_range_gauss_le ha)`.
+A detailed English derivation is pending.
 -/
 lemma summable_gauss {a : ℝ} (ha : 0 < a) :
     Summable fun i : ℕ => Real.exp (-a * ((i : ℝ) + 1) ^ 2) :=
   summable_of_sum_range_le (fun _ => (Real.exp_pos _).le) (sum_range_gauss_le ha)
 
 /- English proof (translation)
-The claim follows from `Real.tsum_le_of_sum_range_le (fun _ => (Real.exp_pos _).le) (sum_range_gauss_le ha)`.
+A detailed English derivation is pending.
 -/
 lemma tsum_gauss_le {a : ℝ} (ha : 0 < a) :
     ∑' i : ℕ, Real.exp (-a * ((i : ℝ) + 1) ^ 2) ≤ √(π / a) / 2 :=
@@ -56,7 +56,7 @@ def dom (ν : ℕ) (y : ℝ) (n : ℤ) : ℝ :=
   if n = 0 then 0 else y ^ (-(ν : ℝ) / 2) * Real.exp (-(π * y) * (n : ℝ) ^ 2)
 
 /- English proof (translation)
-Establish `h : ((i : ℤ) + 1) ≠ 0` using `by omega`. Simplify using `[dom, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 lemma dom_add_one (ν : ℕ) (y : ℝ) (i : ℕ) :
     dom ν y ((i : ℤ) + 1) = y ^ (-(ν : ℝ) / 2) * Real.exp (-(π * y) * ((i : ℝ) + 1) ^ 2) := by
@@ -64,7 +64,7 @@ lemma dom_add_one (ν : ℕ) (y : ℝ) (i : ℕ) :
   simp [dom, h]
 
 /- English proof (translation)
-Establish `h : -((i : ℤ) + 1) ≠ 0` using `by omega`. Rewrite using `[dom, if_neg h]`. Use `push_cast`. Rewrite using `[neg_sq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 lemma dom_neg_add_one (ν : ℕ) (y : ℝ) (i : ℕ) :
     dom ν y (-((i : ℤ) + 1)) = y ^ (-(ν : ℝ) / 2) * Real.exp (-(π * y) * ((i : ℝ) + 1) ^ 2) := by
@@ -74,17 +74,17 @@ lemma dom_neg_add_one (ν : ℕ) (y : ℝ) (i : ℕ) :
   rw [neg_sq]
 
 /- English proof (translation)
-Establish `ha : 0 < π * y` using `mul_pos Real.pi_pos hy`. Establish `hc0 : 0 ≤ y ^ (-(ν : ℝ) / 2)` using `Real.rpow_nonneg hy.le _`. Establish `HS` using `((summable_gauss ha).hasSum).mul_left (y ^ (-(ν : ℝ) / 2))`. Establish `h1 : HasSum (fun i : ℕ => dom ν y ((i : ℤ) + 1)) (y ^ (-(ν : ℝ) / 2) * ∑' i : ℕ, Real.exp (-(π * y) * ((i : ℝ) + 1) ^ 2))`. Simplify using `only [dom_add_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `HS`. Establish `h2 : HasSum (fun i : ℕ => dom ν y (-((i : ℤ) + 1))) (y ^ (-(ν : ℝ) / 2) * ∑' i : ℕ, Real.exp (-(π * y) * ((i : ℝ) + 1) ^ 2))`. Simplify using `only [dom_neg_add_one]`. Conclude with `HS`. Establish `H` using `HasSum.of_add_one_of_neg_add_one h1 h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨H.summable, ?_⟩` and prove the remaining obligations. Rewrite using `[H.tsum_eq]`. Establish `h0 : dom ν y 0 = 0` using `by simp [dom]`. Rewrite using `[h0, add_zero]`. Establish `hT` using `tsum_gauss_le ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : √(π / (π * y)) = y ^ (-(1 : ℝ) / 2)`. Establish `: π / (π * y) = y⁻¹`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, Real.sqrt_eq_rpow, Real.inv_rpow hy.le, ← Real.rpow_neg hy.le]`. Evaluate the numerical expressions.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hT` using `[hq]`. Establish `hsplit : y ^ (-((ν : ℝ) + 1) / 2) = y ^ (-(ν : ℝ) / 2) * y ^ (-(1 : ℝ) / 2)`. Rewrite using `[← Real.rpow_add hy]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[hsplit]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hT hc0]`.
+A detailed English derivation is pending.
 -/
 lemma summable_dom_and_tsum_le (ν : ℕ) {y : ℝ} (hy : 0 < y) :
     Summable (dom ν y) ∧ ∑' n, dom ν y n ≤ y ^ (-((ν : ℝ) + 1) / 2) := by
@@ -115,7 +115,7 @@ lemma summable_dom_and_tsum_le (ν : ℕ) {y : ℝ} (hy : 0 < y) :
   nlinarith [mul_le_mul_of_nonneg_left hT hc0]
 
 /- English proof (translation)
-Take `⟨r, hr⟩ : ∃ r : ℝ, r = (n : ℝ) ^ 2` from `⟨_, rfl⟩`. Establish `h : ((n : ℂ) ^ 2) = (r : ℂ)` using `by rw [hr]; push_cast; rfl`. Rewrite using `[ee, Complex.norm_exp, h, ← hr]`. Use `congr 1`. Simplify using `[Complex.mul_re, Complex.mul_im]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -129,17 +129,17 @@ lemma norm_ee_sq (n : ℤ) (z : ℂ) :
   ring
 
 /- English proof (translation)
-Establish `hpi` using `Real.pi_pos`. Establish `hA : 0 ≤ π * y * m ^ 2` using `by positivity`. Establish `hsplit : Real.exp (-(2 * π * m ^ 2 * y)) = Real.exp (-(π * y) * m ^ 2) * Real.exp (-(π * y) * m ^ 2)`. Rewrite using `[← Real.exp_add]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit, ← mul_assoc]`. Use `mul_le_mul_of_nonneg_right ?_ (Real.exp_pos _).le` and prove the remaining obligations. Use `interval_cases ν`. Simplify using `only [pow_zero, Nat.cast_zero, neg_zero, zero_div, Real.rpow_zero, one_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.exp_le_one_iff]`. Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [pow_one, Nat.cast_one] set s := √y with hs`. Establish `hs0 : 0 < s` using `Real.sqrt_pos.mpr hy`. Establish `hs2 : s ^ 2 = y` using `Real.sq_sqrt hy.le`.
+Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : y ^ (-(1 : ℝ) / 2) = s⁻¹`. Rewrite using `[hs, Real.sqrt_eq_rpow, ← Real.rpow_neg hy.le]`. Evaluate the numerical expressions. Establish `hE` using `Real.add_one_le_exp (π * y * m ^ 2)`. Establish `hEpos` using `Real.exp_pos (π * y * m ^ 2)`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : m * s ≤ Real.exp (π * y * m ^ 2)`. Establish `h3 : (m * s) ^ 2 = y * m ^ 2` using `by rw [mul_pow, hs2]; ring`. Establish `h4 : 1 ≤ π` using `by linarith [Real.pi_gt_three]`. Establish `h5 : 0 ≤ y * m ^ 2` using `by positivity`. Use polynomial arithmetic with `[sq_nonneg (m * s - 1), mul_le_mul_of_nonneg_right h4 h5]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr, neg_mul, Real.exp_neg, ← div_eq_mul_inv, div_le_iff₀ hEpos, inv_mul_eq_div, le_div_iff₀ hs0]`. Conclude with `hu`.
+A detailed English derivation is pending.
 -/
 lemma pow_mul_exp_le {ν : ℕ} (hν : ν ≤ 1) {y : ℝ} (hy : 0 < y) {m : ℝ} (hm : 0 ≤ m) (hm2 : 1 ≤ m ^ 2) :
     m ^ ν * Real.exp (-(2 * π * m ^ 2 * y)) ≤
@@ -173,15 +173,13 @@ lemma pow_mul_exp_le {ν : ℕ} (hν : ν ≤ 1) {y : ℝ} (hy : 0 < y) {m : ℝ
     exact hu
 
 /- English proof (translation)
-Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality. Simplify using `[hP0, dom]`. Rewrite using `[dom, if_neg hn, norm_mul, norm_mul, norm_pow, norm_ee_sq]`. Establish `hm : ‖(n : ℂ)‖ = |(n : ℝ)|` using `by simp`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsq : |(n : ℝ)| ^ 2 = (n : ℝ) ^ 2` using `sq_abs _`. Establish `hn1 : 1 ≤ (n : ℝ) ^ 2`. Establish `: (1 : ℤ) ≤ n ^ 2`. Use `Int.one_le_abs hn` as an intermediate fact. Use polynomial arithmetic with `[sq_abs n, abs_nonneg n]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `this` after adjusting the coercions. Establish `key` using `pow_mul_exp_le hν hy (abs_nonneg (n : ℝ)) (by rw [hsq]; exact hn1)`. Rewrite `key` using `[hsq]`. Rewrite using `[hm]`. Establish `hmono : Real.exp (-(2 * π * (n : ℝ) ^ 2 * z.im)) ≤ Real.exp (-(2 * π * (n : ℝ) ^ 2 * y))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `: 0 ≤ 2 * π * (n : ℝ) ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Conclude with `hP1 n`.
-
-Use `_ ≤ _ := by rw [one_mul]; exact key`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma term_le {P : ℤ → ℂ} {ν : ℕ} (hν : ν ≤ 1) (hP0 : P 0 = 0) (hP1 : ∀ n, ‖P n‖ ≤ 1) {y : ℝ}
     (hy : 0 < y) {z : ℂ} (hz : y ≤ z.im) (n : ℤ) :
@@ -211,23 +209,21 @@ lemma term_le {P : ℤ → ℂ} {ν : ℕ} (hν : ν ≤ 1) (hP0 : P 0 = 0) (hP1
     _ ≤ _ := by rw [one_mul]; exact key
 
 /- English proof (translation)
-Introduce `P ν hν hP0 hP1`. Use `⟨?_, ?_, ?_, 1, ?_⟩` and prove the remaining obligations. Rewrite using `[continuous_iff_continuousAt]`. Introduce `z0`. Establish `hε : 0 < z0.im / 2` using `half_pos z0.im_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hU : IsOpen {z : ℍ | z0.im / 2 < z.im}` using `isOpen_lt continuous_const (Complex.continuous_im.comp UpperHalfPlane.continuous_coe)`. Establish `hc : ContinuousOn (fun z : ℍ => th P ν z) {z : ℍ | z0.im / 2 < z.im}`. Unfold `th`. Use `continuousOn_tsum (u := dom ν (z0.im / 2)) (fun n => ?_) (summable_dom_and_tsum_le ν hε).1 (fun n z hz => term_le hν hP0 hP1 hε (le_of_lt hz) n)` and prove the remaining obligations. Apply `Continuous.continuousOn` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Unfold `ee`. Use `UpperHalfPlane.continuous_coe` as an intermediate fact. Use `fun_prop`. Conclude with `hc.continuousAt (hU.mem_nhds (by show z0.im / 2 < z0.im`. Combine the linear relations using `[z0.im_pos]))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `z`. Unfold `th`. Use `tsum_congr fun n => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[UpperHalfPlane.coe_vadd]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hint : ee ((n : ℂ) ^ 2 * (((1 : ℝ) : ℂ) + (z : ℂ))) = ee ((n : ℂ) ^ 2 * z) * ee ((n : ℂ) ^ 2)`. Unfold `ee`. Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ee ((n : ℂ) ^ 2) = 1`. Unfold `ee`. Use `Complex.exp_int_mul_two_pi_mul_I (n ^ 2)` as an intermediate fact. Rewrite using `[← this]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hint, h1, mul_one]`. Introduce `z`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (term_le hν hP0 hP1 z.im_pos le_rfl) (summable_dom_and_tsum_le ν z.im_pos).1`. Introduce `z`. Establish `hs` using `summable_dom_and_tsum_le ν z.im_pos`. Establish `hsum : Summable fun n : ℤ => ‖P n * (n : ℂ) ^ ν * ee ((n : ℂ) ^ 2 * z)‖` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (term_le hν hP0 hP1 z.im_pos le_rfl) hs.1`. Rewrite using `[one_mul]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem b2 : B2 := by
   intro P ν hν hP0 hP1

@@ -9,7 +9,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 namespace GlobalTheory.Chain.LiftReg
 
 /- English proof (translation)
-Introduce `hP D` and use `liftProps_of_rapidDecay hP D (GlobalTheory.T.thetaKernel_moderateGrowth_with_seminorms D)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem liftProps_obj : GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.RapidDecayLift.LiftProps D :=
   fun hP D => liftProps_of_rapidDecay hP D (GlobalTheory.T.thetaKernel_moderateGrowth_with_seminorms D)

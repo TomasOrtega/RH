@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CuspLie
 
 /- English proof (translation)
-Use `hc.isProbabilityMeasure` as an intermediate fact. Take `⟨K, hK, hs⟩` from `id hc`. Take `⟨C, hC⟩` from `(hK.prod (isCompact_closedBall (0 : ℝ) 1)).exists_bound_of_continuousOn (f := fun p : N × ℝ => ψ (p.1 * (x * u p.2))) (by fun_prop)`. Use `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := probMeasure Γ N) (bound := fun _ => C) (F := fun s q => φ ((q.out : N) * (x * u s))) (F' := fun s q => ψ ((q.out : N) * (x * u s))) (Metric.ball_mem_nhds (0 : ℝ) one_pos) (.of_forall fun s => (hc.integrable hφ hφc _).1) (hc. …` and prove the remaining obligations. Take `⟨γ, hγ, hk⟩` from `hs q.out`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(congrArg norm (leftInv_integrand hψ (x * u s) γ hγ q.out)).ge.trans (hC (_, s) ⟨hk, Metric.ball_subset_closedBall hs'⟩)`. Simplify `hd ((q.out : N) * x) s` using `only [mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_constTermOn {G : Type} [Group G] [TopologicalSpace G] {Γ N : Subgroup G} [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [DiscreteTopology Γ] [LocallyCompactSpace N]
@@ -37,11 +37,11 @@ theorem hasDerivAt_constTermOn {G : Type} [Group G] [TopologicalSpace G] {Γ N :
 variable {D : D7} {θ : InfF D} {V : HSp D} {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} {φ : GA D V → ℂ}
 
 /- English proof (translation)
-Establish `R` using `(GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V`. Take `⟨c, hc, hg⟩` from `GlobalTheory.SmoothForms.exists_gelf R τ'`. Set `ψ : GlobalTheory.SmoothForms.SmF θ V` to `⟨φ, (GlobalTheory.SmoothForms.smooth_iff R φ).1 hφ⟩`. Set `X' : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.LieAt V τ` to `⟨X, hX⟩`. Establish `e : ∀ f : GlobalTheory.SmoothForms.SmF θ V, Rder θ V τ X f.1 = (GlobalTheory.SmoothForms.opInf R (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.atPlace V τ X') f).1` using `fun f => GlobalTheory.SmoothForms.Rder_eq R τ X' f.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcomm : Commute (GlobalTheory.SmoothForms.envRep R τ' (c k)) (GlobalTheory.SmoothForms.opInf R (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.atPlace V τ X'))`. Rewrite using `[← GlobalTheory.SmoothForms.envRep_ι]`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Establish `hm : c k ∈ Subalgebra.center ℂ _` using `hc ▸ Algebra.subset_adjoin ⟨k, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `Commute.map (Subalgebra.mem_center_iff.1 hm _).symm _`. Conclude with `GlobalTheory.SmoothForms.envRep_comm R h _ _`. Express the relevant statement in the definitionally equal form `gelf θ V τ' k (Rder θ V τ X ψ.1) = Rder θ V τ X (gelf θ V τ' k ψ.1)`. Rewrite using `[e ψ, hg, hg, e]`. Conclude with `congrArg (fun S : Module.End ℂ (GlobalTheory.SmoothForms.SmF θ V) => (S ψ).1) hcomm.eq`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gelf_Rder (hθ : IsInfFam θ) (hX : X ∈ lieAt V τ) (hφ : φ ∈ SmFun θ V) (τ' : D.what₂.Tau) (k : ℕ) :
     gelf θ V τ' k (Rder θ V τ X φ) = Rder θ V τ X (gelf θ V τ' k φ) := by
@@ -64,7 +64,7 @@ theorem gelf_Rder (hθ : IsInfFam θ) (hX : X ∈ lieAt V τ) (hφ : φ ∈ SmFu
   exact congrArg (fun S : Module.End ℂ (GlobalTheory.SmoothForms.SmF θ V) => (S ψ).1) hcomm.eq
 
 /- English proof (translation)
-The claim follows from `Module.Finite.iff_fg.1 (FiniteDimensional.of_injective ((SmFun θ V).subtype.restrict (q := W) fun _ hx => hx) fun _ _ h => Subtype.ext (Subtype.ext (congrArg (fun z : W => z.1) h)))`.
+A detailed English derivation is pending.
 -/
 theorem fg_comap {W : Submodule ℂ (GA D V → ℂ)} (hW : FiniteDimensional ℂ W) :
     (W.comap (SmFun θ V).subtype).FG :=
@@ -72,17 +72,17 @@ theorem fg_comap {W : Submodule ℂ (GA D V → ℂ)} (hW : FiniteDimensional �
     fun _ _ h => Subtype.ext (Subtype.ext (congrArg (fun z : W => z.1) h)))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SmoothAutCheck.RderC_eq θ V τ hX f.1`.
+A detailed English derivation is pending.
 -/
 theorem derEnd_coe (hθ : IsInfFam θ) (hX : X ∈ lieAt V τ) (f : SmFun θ V) : (derEnd hθ τ X f).1 = Rder θ V τ X f.1 :=
   GlobalTheory.SmoothAutCheck.RderC_eq θ V τ hX f.1
 
 /- English proof (translation)
-Use `{ left := fun γ hγ => GlobalTheory.Mem.Lift.Rder_left (h.left γ hγ) τ X, level := ?_, cont := ?_, smooth := Rder_mem h.smooth hX, zfin := ?_, growth := ?_ }` and prove the remaining obligations. Take `⟨U, hU, e⟩` from `h.level`. Use `⟨U, hU, fun k hk hf g => ?_⟩` and prove the remaining obligations. Use `congrFun (GlobalTheory.Mem.FinTranslate.Rder_rTr (θ := θ) hf τ X φ) g` as an intermediate fact. Rewrite `this` using `[show rTr V k φ = φ from funext (e k hk hf)]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Conclude with `GlobalTheory.Size.continuous_rWord hθ h.smooth h.cont (GlobalTheory.Grow.unifModGrowth_of_isAutFunSm hθ h) (l := [(τ, X)]) fun p hp => by rw [List.mem_singleton.1 hp]; exact hX`. Take `⟨W, hW, m, s⟩` from `h.zfin`. Use `⟨((W.comap (SmFun θ V).subtype).map (derEnd hθ τ X)).map (SmFun θ V).subtype, Module.Finite.iff_fg.2 (((fg_comap hW).map _).map _), ⟨_, ⟨⟨φ, h.smooth⟩, m, rfl⟩, derEnd_coe hθ hX _⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `τ' k _ ⟨_, ⟨f, hf, rfl⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, ⟨⟨_, (linOnSm_gelf τ' k).mem _ f.2⟩, s τ' k _ hf, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.subtype_apply, Submodule.subtype_apply, derEnd_coe hθ hX, derEnd_coe hθ hX, gelf_Rder hθ hX f.2]`. Take `⟨N, hN⟩` from `h.growth`. Use `⟨N, fun l hl x => ?_⟩` and prove the remaining obligations. Simplify `hN (l ++ [(τ, X)]) (GlobalTheory.Mem.Lift.append_mem_lie hl hX) x` using `only [List.foldr_append, List.foldr_cons, List.foldr_nil]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isAutFunSm_Rder (hθ : IsInfFam θ) (hX : X ∈ lieAt V τ) (h : IsAutFunSm θ V φ) :
     IsAutFunSm θ V (Rder θ V τ X φ) := by
@@ -108,9 +108,9 @@ theorem isAutFunSm_Rder (hθ : IsInfFam θ) (hX : X ∈ lieAt V τ) (h : IsAutFu
       hN (l ++ [(τ, X)]) (GlobalTheory.Mem.Lift.append_mem_lie hl hX) x
 
 /- English proof (translation)
-Take `⟨W, hW, m⟩` from `GlobalTheory.Doubling.isKFinite_iff.1 h`. Use `GlobalTheory.Doubling.isKFinite_iff.2 ⟨(Submodule.map₂ (derEnd hθ τ) ⊤ (W.comap (SmFun θ V).subtype)).map (SmFun θ V).subtype, Module.Finite.iff_fg.2 ((Submodule.FG.map₂ _ Module.Finite.fg_top (fg_comap hW)).map _), fun k hk => ?_⟩` and prove the remaining obligations. Establish `hr : ∀ k ∈ K, IsRealPt θ k` using `fun k hk => ⟨hK hk, FockCompare.RealAction.infMat_mem_UH hθ V k⟩`. Establish `hi` using `hr _ (inv_mem hk)`. Use `⟨_, Submodule.apply_mem_map₂ _ (Submodule.mem_top (x := adAt θ k⁻¹ τ X)) (n := ⟨rTr V k φ, rTr_mem hθ (hr k hk) hs⟩) (m k hk), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.subtype_apply, derEnd_coe hθ (adAt_mem hi hX)]`. Use function extensionality and compare the values at `g`. Use `congrFun (Rder_rTr hθ hi hX (rTr V k φ)) (g * k)` as an intermediate fact. Rewrite `this` using `[show rTr V k⁻¹ (rTr V k φ) = φ from funext fun y => by simp [rTr]]`. Rewrite using `[this, rTr, mul_inv_cancel_right]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isKFinite_Rder (hθ : IsInfFam θ) (hX : X ∈ lieAt V τ) {K : Subgroup (GA D V)} (hK : K ≤ GinfC V)
     (hs : φ ∈ SmFun θ V) (h : GlobalTheory.Doubling.IsKFinite K φ) : GlobalTheory.Doubling.IsKFinite K (Rder θ V τ X φ) := by
@@ -129,9 +129,9 @@ theorem isKFinite_Rder (hθ : IsInfFam θ) (hX : X ∈ lieAt V τ) {K : Subgroup
   rw [this, rTr, mul_inv_cancel_right]
 
 /- English proof (translation)
-Establish `h'` using `isAutFunSm_Rder hθ hX h`. Use `(isCuspFun_iff h'.left).2 fun W hW => funext fun x => ?_` and prove the remaining obligations. Establish `h0 : constTermOn (GQ V) (NA (.single hW)) φ = 0` using `(isCuspFun_iff h.left).1 hc W hW`. Use `hasDerivAt_constTermOn (cocompact_single hW) h.left h.cont h'.left h'.cont (GlobalTheory.Mem.Lift.continuous_oneP hθ hX) (GlobalTheory.Mem.Lift.hasDerivAt_oneP hθ hX (GlobalTheory.Mem.Lift.hasDerivAt_Rder h.smooth hX)) x` as an intermediate fact. Rewrite `this` using `[h0, GlobalTheory.Mem.Lift.oneP_zero hθ, mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ))`.
+A detailed English derivation is pending.
 -/
 theorem isCuspFun_Rder (hθ : IsInfFam θ) (hX : X ∈ lieAt V τ) (h : IsAutFunSm θ V φ) (hc : IsCuspFun V φ) :
     IsCuspFun V (Rder θ V τ X φ) := by
@@ -144,7 +144,7 @@ theorem isCuspFun_Rder (hθ : IsInfFam θ) (hX : X ∈ lieAt V τ) (h : IsAutFun
   exact this.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ))
 
 /- English proof (translation)
-Introduce `D θ hθ V K hK τ X hX`. Use `⟨fun φ h => ⟨isAutFunSm_Rder hθ hX h.1, isKFinite_Rder hθ hX hK h.1.smooth h.2⟩, fun φ h => ?_⟩` and prove the remaining obligations. Take `⟨⟨h1, h2⟩, h3⟩` from `mem_cuspForms.1 h`. Conclude with `mem_cuspForms.2 ⟨⟨isAutFunSm_Rder hθ hX h1, isCuspFun_Rder hθ hX h1 h2⟩, isKFinite_Rder hθ hX hK h1.smooth h3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rder_mem_autForms_cuspForms : ∀ (D : D7) (θ : InfF D), IsInfFam θ → ∀ (V : HSp D) (K : Subgroup (GA D V)), K ≤ GinfC V → ∀ τ, ∀ X ∈ lieAt V τ, (∀ φ ∈ autForms θ V K, Rder θ V τ X φ ∈ autForms θ V K) ∧ ∀ φ ∈ cuspForms θ V K, Rder θ V τ X φ ∈ cuspForms θ V K := by
   intro D θ hθ V K hK τ X hX

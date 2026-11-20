@@ -24,32 +24,32 @@ def archPt (a : κ → mixedEmbedding.mixedSpace F) : κ → AF F :=
   fun i => ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (a i), 0)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(evalV F w) (0 : Af F) = 0`. Conclude with `map_zero _`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem evFin_archPt (a : κ → mixedEmbedding.mixedSpace F) (w : Pl F) (i : κ) : evFin F w (archPt a i) = 0 := by
   change (evalV F w) (0 : Af F) = 0
   exact map_zero _
 
 /- English proof (translation)
-Simplify using `[evI, archPt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evI_archPt (a : κ → mixedEmbedding.mixedSpace F) (i : κ) : evI F (archPt a i) = a i := by
   simp [evI, archPt]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, g a ≠ 0 := by`. Take `⟨a, ha⟩` from `DFunLike.ne_iff.mp hg`. Conclude with `⟨a, by simpa using ha⟩`. Establish `hx0 : r (archPt a) = g a`. Establish `e` using `congrFun (hrt (fun _ => 1)) (archPt a)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [tens, one_mul] at e`. Rewrite using `[e]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure`. Establish `hI : (fun i => evI F (archPt a i)) = a` using `funext fun i => evI_archPt a i`. Establish `hP : (∏ᶠ w, Function.update (ind (κ` using `κ)) v (fun _ => 1) w fun i => evFin F w (archPt a i)) = 1 := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `finprod_eq_one_of_forall_eq_one fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`. Rewrite using `[Function.update_of_ne hw]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [evFin_archPt, ind]`. Rewrite using `[Set.indicator_of_mem (by intro i; exact zero_mem _)]`. Both sides reduce to the same expression. Rewrite using `[hI, hP, mul_one]`. Use function extensionality and compare the values at `y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `z : κ → AF F` to `fun i => GlobalTheory.LatVac.liftV v (y i)`. Establish `hz : At (evFin F v) z`. Introduce `u hu`. Use function extensionality and compare the values at `i`. Conclude with `GlobalTheory.LatVac.at_liftV v (y i) u hu`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hrz : r (archPt a + z) = g a` using `by rw [hr _ z hz, hx0]`. Establish `hev : (fun i => evFin F v ((archPt a + z) i)) = y`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, map_add, evFin_archPt, zero_add]`. Conclude with `GlobalTheory.LatVac.evFin_liftV v (y i)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e` using `congrFun h (archPt a + z)`. Simplify using `only [tens, hev, hrz] at e`. Conclude with `mul_right_cancel₀ ha e`.
+A detailed English derivation is pending.
 -/
 theorem cancel (v : Pl F) (g : SInf F κ) (hg : g ≠ 0) (r : (κ → AF F) → ℂ)
     (hr : ∀ x z, At (evFin F v) z → r (x + z) = r x)
@@ -93,39 +93,33 @@ end GlobalTheory.ThK.EvUniq.LocFin
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M M₁ hB hX hW hM hH hM₁ e he ei ev hei hvm hloc v`. Establish `hpre : ∀ w, ∃ ψ ∈ SB (Fin n × Fin d → Fv F w), ev w ψ = GlobalTheory.ThK.EvUniq.LocFin.ind w` using `fun w => by`. Establish `h` using `GlobalTheory.StdVacuum.indicator_mem_SB (κ := Fin n × Fin d₁) w`. Rewrite `h` using `[← (hvm w).2]`. Take `⟨ψ, hψ, e⟩` from `Submodule.mem_map.mp h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ψ, hψ, e⟩`. Set `ψs : ∀ w : Pl F, (Fin n × Fin d → Fv F w) → ℂ` to `fun w => if M₁.vac w = GlobalTheory.ThK.EvUniq.LocFin.ind w then M.vac w else (hpre w).choose`. Establish `hψSB : ∀ w, ψs w ∈ SB _` using `fun w => by`. Distinguish the cases in `h : M₁.vac w = GlobalTheory.ThK.EvUniq.LocFin.ind w`. Simplify using `only [ψs, if_pos h]`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `(hM.vac w).1`. Simplify using `only [ψs, if_neg h]`. Conclude with `(hpre w).choose_spec.1`. Establish `hψev : ∀ w, ev w (ψs w) = GlobalTheory.ThK.EvUniq.LocFin.ind w` using `fun w => by`. Distinguish the cases in `h : M₁.vac w = GlobalTheory.ThK.EvUniq.LocFin.ind w`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ψs, if_pos h]`. Rewrite using `[(hvm w).1, h]`. Simplify using `only [ψs, if_neg h]`. Conclude with `(hpre w).choose_spec.2`. Establish `hψM : ∀ᶠ w in cofinite, ψs w = M.vac w` using `by filter_upwards [hM₁.std] with w hw`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ψs, if_pos hw]`. Establish `hψind : ∀ᶠ w in cofinite, ψs w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1` using `by filter_upwards [hψM, hM.std] with w h1 h2`. Rewrite using `[h1, h2]`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f, ei f ≠ 0 := by`. Take `⟨f, hf⟩` from `DFunLike.ne_iff.mp hei`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨f, by simpa using hf⟩`. Establish `hind : ∀ᶠ w in cofinite, (GlobalTheory.ThK.EvUniq.LocFin.ind (κ` using `Fin n × Fin d₁) w) = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1 := Eventually.of_forall fun _ => rfl`. Take `⟨ρ, hρ, hρt⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f ψs hψind`. Take `⟨ρ₁, hρ₁, hρt₁⟩` from `GlobalTheory.PureFactor.exists_rest_factor v (ei f) _ hind`. Establish `hRest : ∀ φ ∈ SB (Fin n × Fin d → Fv F v), Rest (evFin F v) φ ρ` using `fun φ hφ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hρ, ?_⟩` and prove the remaining obligations. Rewrite using `[hρt φ]`. Use `GlobalTheory.TensUniq.pure_mem_schA f _ (fun w => ?_) (GlobalTheory.PureFactor.update_eventually ψs v φ hψind)` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Function.update_self]`. Conclude with `hφ`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `hψSB w`. Establish `hRest₁ : ∀ φ ∈ SB (Fin n × Fin d₁ → Fv F v), Rest (evFin F v) φ ρ₁` using `fun φ hφ => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `⟨hρ₁, ?_⟩` and prove the remaining obligations. Rewrite using `[hρt₁ φ]`. Use `GlobalTheory.TensUniq.pure_mem_schA (ei f) _ (fun w => ?_) (GlobalTheory.PureFactor.update_eventually _ v φ hind)` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Function.update_self]`. Conclude with `hφ`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `GlobalTheory.StdVacuum.indicator_mem_SB w`. Establish `key : ∀ φ ∈ SB (Fin n × Fin d → Fv F v), e (tens (evFin F v) φ ρ) = tens (evFin F v) (ev v φ) ρ₁` using `fun φ hφ => by`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hρt φ, hρt₁ (ev v φ)]`. Establish `hSB : ∀ w, Function.update ψs v φ w ∈ SB _` using `fun w => by`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Conclude with `hφ`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `hψSB w`. Establish `hcof : ∀ᶠ w in cofinite, Function.update ψs v φ w = M.vac w` using `by filter_upwards [hψM, eventually_cofinite_ne v] with w h1 h2`. Rewrite using `[Function.update_of_ne h2, h1]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hloc f _ hSB hcof]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_self, Function.update_self]`. Rewrite using `[Function.update_of_ne hw, Function.update_of_ne hw, hψev w]`. Establish `canc` using `GlobalTheory.ThK.EvUniq.LocFin.cancel v (ei f) hf ρ₁ hρ₁ hρt₁`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `z hz φ hφ φ₁ hφ₁ hA χ₁ hχ₁ hA₁`.
-
-Establish `h1` using `he.Heisenberg₂ z _ (hRest φ hφ).2`. Rewrite `h1` using `[hA ρ (hRest φ hφ), key φ₁ hφ₁, key φ hφ]`. Establish `hevφ : ev v φ ∈ SB _`. Rewrite using `[← (hvm v).2]`. Conclude with `Submodule.mem_map_of_mem hφ`.
-
-Rewrite `h1` using `[hA₁ ρ₁ (hRest₁ _ hevφ)]`. Conclude with `canc _ _ h1`. Introduce `u hu hz φ hφ φ₁ hφ₁ hA`. Establish `h1` using `he.inv u hu _ (hRest φ hφ).2`. Rewrite `h1` using `[hA ρ (hRest φ hφ), key φ₁ hφ₁, key φ hφ]`.
-
-Conclude with `canc _ _ h1`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThK.EvUniq.finRel_of_ev : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ r s r' s' i₀ i₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (M : Model σ X W)

@@ -14,9 +14,9 @@ variable {O Kf V₁ V₂ V : Type*} [CommRing O] [Field Kf] [Algebra O Kf] [AddC
   [Module Kf V] [Module O V] [IsScalarTower O Kf V]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ show c⁻¹ • (c • y) ∈ M`. Rewrite using `[smul_smul, inv_mul_cancel₀ hc, one_smul]` and apply the resulting hypothesis. Introduce `h`. Use `⟨c⁻¹ • x, h, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show c • (c⁻¹ • x) = x`. Rewrite using `[smul_smul, mul_inv_cancel₀ hc, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_mem_scale {c : Kf} (hc : c ≠ 0) {M : Submodule O V} {x : V} : x ∈ scale c M ↔ c⁻¹ • x ∈ M := by
   constructor
@@ -29,12 +29,12 @@ theorem cc_mem_scale {c : Kf} (hc : c ≠ 0) {M : Submodule O V} {x : V} : x ∈
     rw [smul_smul, mul_inv_cancel₀ hc, one_smul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x, h, one_smul Kf x⟩`.
+Supply the required witnesses or components.
 -/
 theorem cc_one {M : Submodule O V} {x : V} (h : x ∈ M) : x ∈ scale (1 : Kf) M := ⟨x, h, one_smul Kf x⟩
 
 /- English proof (translation)
-Take `⟨F₀, hF₀, rfl⟩` from `hF`. Take `⟨z₀, hz₀, rfl⟩` from `hz`. Use `⟨μ F₀ z₀, hμ F₀ hF₀ z₀ hz₀, ?_⟩` and prove the remaining obligations. Use `show (a * b) • μ F₀ z₀ = μ (a • F₀) (b • z₀)`. Rewrite using `[map_smul, map_smul, LinearMap.smul_apply, smul_smul, mul_comm b a]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_bil (μ : V₁ →ₗ[Kf] V₂ →ₗ[Kf] V) {M₁ : Submodule O V₁} {M₂ : Submodule O V₂} {M : Submodule O V}
     (hμ : ∀ F ∈ M₁, ∀ z ∈ M₂, μ F z ∈ M) {a b : Kf} {F : V₁} {z : V₂} (hF : F ∈ scale a M₁)
@@ -46,11 +46,11 @@ theorem cc_bil (μ : V₁ →ₗ[Kf] V₂ →ₗ[Kf] V) {M₁ : Submodule O V₁
   rw [map_smul, map_smul, LinearMap.smul_apply, smul_smul, mul_comm b a]
 
 /- English proof (translation)
-Take `⟨φ₀, hφ₀, rfl⟩` from `hφ`. Use `⟨b⁻¹ • (φ₀ ∘ₗ T), ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Take `⟨u, hu, hu'⟩` from `hT v hv`. Take `⟨r, hr⟩` from `hφ₀ u hu`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `h1 : T v = b • u` using `hu'.symm`. Rewrite using `[hr, LinearMap.smul_apply, LinearMap.comp_apply, h1, map_smul, smul_eq_mul, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hb, one_mul]`. Use `show (c * a * b) • (b⁻¹ • (φ₀ ∘ₗ T)) = c • ((a • φ₀) ∘ₗ T)`. Use extensionality with `v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.smul_apply, LinearMap.comp_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem cc_dual (T : V₁ →ₗ[Kf] V) {M₁ : Submodule O V₁} {M : Submodule O V} {a b c : Kf} (hb : b ≠ 0)
     (hT : ∀ v ∈ M₁, T v ∈ scale b M) {φ : Module.Dual Kf V} (hφ : φ ∈ scale a (dualLat O Kf M)) :
@@ -72,9 +72,9 @@ theorem cc_dual (T : V₁ →ₗ[Kf] V) {M₁ : Submodule O V₁} {M : Submodule
 end Formal2
 
 /- English proof (translation)
-Unfold `Ar`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `lamAt`. Use `split_ifs`. Both sides reduce to the same expression. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cc_Ar_add {n' m : ℕ} (X Y : Fin n' → Fin (m + 1) → ℤ) : Ar 1 (X + Y) = Ar 1 X + Ar 1 Y := by
   unfold Ar
@@ -89,15 +89,15 @@ theorem cc_Ar_add {n' m : ℕ} (X Y : Fin n' → Fin (m + 1) → ℤ) : Ar 1 (X 
     ring
 
 /- English proof (translation)
-Establish `key : ∀ s, lamAt X s 0 = (if s ∈ TT then c else 0) ∧ lamAt X s (Fin.last m) = if s ∈ TT then -c else 0`. Introduce `s`. Unfold `lamAt`. Distinguish the cases in `hs : s ∈ TT`. Take `⟨h1, h2⟩` from `h s hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hs, if_true]`. Use `split_ifs`. Conclude with `⟨h1, h2⟩`. Simplify using `only [Fin.rev_zero, Fin.rev_last]`. Rewrite using `[h1, h2]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `h0 s hs` as an intermediate fact. Simplify using `only [hs, if_false]`. Apply the tactic sequence `split_ifs <;> simp [this]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions.
 
-Unfold `Ar`. Repeatedly rewrite using `[filter_lt_one, Finset.sum_singleton, (key _).1]`. Rewrite using `[Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, nsmul_eq_mul]`. Unfold `Elast`. Repeatedly rewrite using `[(key _).2]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_ite_mem, Finset.univ_inter, Finset.sum_const, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cc_Ar_of {n' m : ℕ} (TT : Finset (Fin n')) (X : Fin n' → Fin (m + 1) → ℤ) (c : ℤ)
     (h : ∀ s ∈ TT, X s 0 = c ∧ X s (Fin.last m) = -c) (h0 : ∀ s, s ∉ TT → X s = 0) :
@@ -127,21 +127,21 @@ theorem cc_Ar_of {n' m : ℕ} (TT : Finset (Fin n')) (X : Fin n' → Fin (m + 1)
     ring
 
 /- English proof (translation)
-Simplify using `[flatW, hs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cc_flat_zero {n' : ℕ} (m : ℕ) {TT : Finset (Fin n')} (al be : TT → ℕ) (s : Fin n') (hs : s ∈ TT) :
     flatW m al be s 0 = al ⟨s, hs⟩ := by
   simp [flatW, hs]
 
 /- English proof (translation)
-Simplify using `[flatW, hs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cc_flat_last {n' : ℕ} (m : ℕ) {TT : Finset (Fin n')} (al be : TT → ℕ) (s : Fin n') (hs : s ∈ TT) :
     flatW (m + 1) al be s (Fin.last (m + 1)) = -(be ⟨s, hs⟩ : ℤ) := by
   simp [flatW, hs]
 
 /- English proof (translation)
-Unfold `flatW`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cc_flat_mid {n' : ℕ} (m : ℕ) {TT : Finset (Fin n')} (al be : TT → ℕ) (s : Fin n') (i : Fin (m + 1))
     (h0 : i ≠ 0) (h1 : i ≠ Fin.last m) : flatW m al be s i = 0 := by
@@ -149,7 +149,7 @@ theorem cc_flat_mid {n' : ℕ} (m : ℕ) {TT : Finset (Fin n')} (al be : TT → 
   split_ifs <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[flatW, hs]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem cc_flat_off {n' : ℕ} (m : ℕ) {TT : Finset (Fin n')} (al be : TT → ℕ) (s : Fin n') (hs : s ∉ TT) :
     flatW m al be s = 0 := by
@@ -157,9 +157,9 @@ theorem cc_flat_off {n' : ℕ} (m : ℕ) {TT : Finset (Fin n')} (al be : TT → 
   simp [flatW, hs]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s i`. Simplify using `only [Pi.add_apply]`. Unfold `flatW`. Use `split_ifs`. Use `push_cast`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cc_flat_add {n' : ℕ} (m : ℕ) {TT : Finset (Fin n')} (al be al' be' : TT → ℕ) :
     flatW m (fun s => al s + al' s) (fun s => be s + be' s) = flatW m al be + flatW m al' be' := by
@@ -173,7 +173,7 @@ theorem cc_flat_add {n' : ℕ} (m : ℕ) {TT : Finset (Fin n')} (al be al' be' :
   · simp
 
 /- English proof (translation)
-Introduce `i j hij`. Unfold `dualWt`. Establish `: j.rev ≤ i.rev` using `Fin.rev_le_rev.2 hij`. Use `h this` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem cc_dualWt_anti {m : ℕ} (mu : Fin (m + 1) → ℤ) (h : Antitone mu) : Antitone (dualWt mu) := by
   intro i j hij
@@ -183,9 +183,9 @@ theorem cc_dualWt_anti {m : ℕ} (mu : Fin (m + 1) → ℤ) (h : Antitone mu) : 
   linarith
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `s hs`. Take `⟨h1, h2, -⟩` from `(hBase s).1 hs`. Take `⟨h3, h4⟩` from `hAB ⟨s, hs⟩`. Simplify using `only [Pi.sub_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[cc_flat_zero _ _ _ s hs, cc_flat_last _ _ _ s hs, h1, h2, h3, h4]`. Apply the tactic sequence `constructor <;> ring`. Introduce `s hs show lam0 s - flatW (mm + 1) A B s = 0`. Rewrite using `[hzero s hs, cc_flat_off _ _ _ s hs, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_lo {n' mm : ℕ} (TT : Finset (Fin n')) (ccl : ℕ) (aw bw : Fin n' → ℤ)
     (lam0 : Fin n' → Fin (mm + 1 + 1) → ℤ) (A B : TT → ℕ) (hBase : IsBaseWeight TT aw bw ccl lam0)
@@ -204,21 +204,19 @@ theorem cc_lo {n' mm : ℕ} (TT : Finset (Fin n')) (ccl : ℕ) (aw bw : Fin n' �
     rw [hzero s hs, cc_flat_off _ _ _ s hs, sub_zero]
 
 /- English proof (translation)
-Take `⟨hl1, hl2⟩` from `cc_lo TT ccl aw bw lam0 A B hBase hzero hAB`. Introduce `s`. Distinguish the cases in `hs : s ∈ TT`. Take `⟨h0, h1⟩` from `hl1 s hs`. Establish `hmid : ∀ i : Fin (mm + 1 + 1), i ≠ 0 → i ≠ Fin.last (mm + 1) → (lam0 - flatW (mm + 1) A B) s i = lam0 s i ∧ |lam0 s i| ≤ ccl`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i hi0 hi1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply]`. Rewrite using `[cc_flat_mid _ _ _ s i hi0 hi1, sub_zero]`. Use `((hBase s).1 hs).2.2 i (Nat.pos_of_ne_zero fun h => hi0 (Fin.ext h)) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : i.val ≠ mm + 1` using `fun h => hi1 (Fin.ext h)`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hbd : ∀ i, -(ccl : ℤ) ≤ (lam0 - flatW (mm + 1) A B) s i ∧ (lam0 - flatW (mm + 1) A B) s i ≤ ccl`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hi0 : i = 0`. Apply the tactic sequence `rw [hi0, h0]; constructor <;> omega`. Distinguish the cases in `hi1 : i = Fin.last (mm + 1)`. Apply the tactic sequence `rw [hi1, h1]; constructor <;> omega`. Take `⟨e1, e2⟩` from `hmid i hi0 hi1`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e1]`. Conclude with `abs_le.1 e2`. Introduce `i j hij`. Distinguish the cases in `hi0 : i = 0`. Rewrite using `[hi0, h0]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `(hbd j).2`. Distinguish the cases in `hj1 : j = Fin.last (mm + 1)`. Rewrite using `[hj1, h1]`. Conclude with `(hbd i).1`. Establish `hj0 : j ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `hi0 (Fin.le_zero_iff.1 hij)`. Establish `hi1 : i ≠ Fin.last (mm + 1)`. Introduce and unpack `rfl`. Conclude with `hj1 (le_antisymm (Fin.le_last j) hij)`.
-
-Rewrite using `[(hmid i hi0 hi1).1, (hmid j hj0 hj1).1]`. Conclude with `hDom s hij`. Rewrite using `[hl2 s hs]`. Conclude with `fun _ _ _ => le_rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem cc_lo_dom {n' mm : ℕ} (TT : Finset (Fin n')) (ccl : ℕ) (aw bw : Fin n' → ℤ)
     (lam0 : Fin n' → Fin (mm + 1 + 1) → ℤ) (A B : TT → ℕ) (hBase : IsBaseWeight TT aw bw ccl lam0)
@@ -265,9 +263,9 @@ theorem cc_lo_dom {n' mm : ℕ} (TT : Finset (Fin n')) (ccl : ℕ) (aw bw : Fin 
     exact fun _ _ _ => le_rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `s hs`. Take `⟨h1, h2⟩` from `h s hs`. Unfold `dualW dualWt`. Rewrite using `[Fin.rev_zero, Fin.rev_last, h1, h2]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `s hs`. Use function extensionality and compare the values at `i`. Unfold `dualW dualWt`. Rewrite using `[h0 s hs]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -287,7 +285,7 @@ theorem cc_dualW {n' m : ℕ} (TT : Finset (Fin n')) (X : Fin n' → Fin (m + 1)
     simp
 
 /- English proof (translation)
-Unfold `lb_D`. Establish `: (fun a : Fin k => if a.val < 1 then ((1 : K))⁻¹ else 1) = fun _ => 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[this, Matrix.diagonal_one]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_D_one {K : Type*} [Field K] (k : ℕ) : lb_D k 1 (1 : K) = 1 := by
   unfold lb_D
@@ -297,9 +295,9 @@ theorem cc_D_one {K : Type*} [Field K] (k : ℕ) : lb_D k 1 (1 : K) = 1 := by
   rw [this, Matrix.diagonal_one]
 
 /- English proof (translation)
-Unfold `lb_D`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Use `split_ifs`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv]`. Rewrite using `[mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_D_mul {K : Type*} [Field K] (k : ℕ) (c : K) : lb_D k 1 c * lb_D k 1 c = lb_D k 1 (c * c) := by
   unfold lb_D
@@ -315,11 +313,11 @@ section RSC
 variable {p n' : ℕ} (R : RS p n') {m : ℕ}
 
 /- English proof (translation)
-Take `⟨gs, hg, h1, h2, h3⟩` from `edgeLat_RS R e he`. Use `⟨fun s => gs s.val, fun s => hg _, ?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`. Unfold `famD`. Rewrite using `[cc_D_one, mul_one, h1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `s`. Unfold `famD`. Rewrite using `[h2]`. Use function extensionality and compare the values at `s`. Unfold `famD`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Rewrite using `[h3, Matrix.mul_assoc, cc_D_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_edge (e : Edge R.W R.Qq (m + 1)) (he : IsEdge p n' 1 e) :
     ∃ G : Fin n' → Matrix (Fin (m + 1)) (Fin (m + 1)) R.Kf, (∀ s, IsUnit (G s).det) ∧
@@ -340,7 +338,7 @@ theorem cc_edge (e : Edge R.W R.Qq (m + 1)) (he : IsEdge p n' 1 e) :
     rw [h3, Matrix.mul_assoc, cc_D_mul]
 
 /- English proof (translation)
-Use `⟨_, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`. Conclude with `(hG s).mul (lb_D_det _ _ _ hc)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_famD_lat (G : Fin n' → Matrix (Fin (m + 1)) (Fin (m + 1)) R.Kf) (hG : ∀ s, IsUnit (G s).det) (c : R.Kf)
     (hc : c ≠ 0) (s : Fin n') : IsLattice R.O (famD R.O G c s) := by
@@ -349,11 +347,9 @@ theorem cc_famD_lat (G : Fin n' → Matrix (Fin (m + 1)) (Fin (m + 1)) R.Kf) (hG
   exact (hG s).mul (lb_D_det _ _ _ hc)
 
 /- English proof (translation)
-Take `⟨G, hG, h1, h2, h3⟩` from `cc_edge R e he`. Establish `hw` using `R.w_ne`. Use `⟨fun s => ?_, fun s => ?_, fun s => ?_⟩` and prove the remaining obligations. Use `congrFun h1 s beta_reduce at this` as an intermediate fact. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `cc_famD_lat R G hG 1 one_ne_zero s`. Use `congrFun h2 s beta_reduce at this` as an intermediate fact. Rewrite using `[this]`. Conclude with `cc_famD_lat R G hG _ hw s`. Use `congrFun h3 s beta_reduce at this` as an intermediate fact.
-
-Rewrite using `[this]`. Conclude with `cc_famD_lat R G hG _ (mul_ne_zero hw hw) s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_latE (e : Edge R.W R.Qq (m + 1)) (he : IsEdge p n' 1 e) :
     (∀ s : Fin n', IsLattice R.O (extO R.O R.ι R.σ s.val e.src)) ∧
@@ -384,7 +380,7 @@ def IntB (μ : Vsp R.Kf X₁ →ₗ[R.Kf] Vsp R.Kf X₂ →ₗ[R.Kf] Vsp R.Kf X)
 variable {R}
 
 /- English proof (translation)
-Introduce `F hF z hz`. Establish `h` using `cc_bil μ (hμ _ (cc_latE R e he).2.1) hF hz`. Rewrite `h` using `[← zpow_add₀ R.w_ne, show -Ar 1 X₁ + -Ar 1 X₂ = -Ar 1 X by rw [hA]; ring]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_Re {μ : Vsp R.Kf X₁ →ₗ[R.Kf] Vsp R.Kf X₂ →ₗ[R.Kf] Vsp R.Kf X} (hμ : IntB R μ)
     (hA : Ar 1 X = Ar 1 X₁ + Ar 1 X₂) (e : Edge R.W R.Qq (m + 1)) (he : IsEdge p n' 1 e) :
@@ -395,13 +391,11 @@ theorem cc_Re {μ : Vsp R.Kf X₁ →ₗ[R.Kf] Vsp R.Kf X₂ →ₗ[R.Kf] Vsp R.
   exact h
 
 /- English proof (translation)
-Introduce `F hF`. Take `⟨⟨h1, h2⟩, h3⟩` from `hF`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `cc_bil μ (hμ _ (cc_latE R e he).1) h1 (cc_one hx1)`. Rewrite `h` using `[mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Conclude with `cc_Re hμ hA e he F h2 x hx2`. Use `SetLike.mem_coe.2 ((Submodule.mem_iInf _).2 fun e' => (Submodule.mem_iInf _).2 fun hc => ?_)` and prove the remaining obligations. Establish `h4` using `(Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 (SetLike.mem_coe.1 h3) e') hc`. Establish `hx3 : x ∈ Re p R.ι R.σ R.w 1 X₂ e'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(hIncl p n' R.W R.Qq R.O R.Kf R.ι R.σ R.jO R.w R.std.1 m 1 X₂ hdom e' hc.1).1 ?_` and prove the remaining obligations. Rewrite using `[hc.2.1]`. Conclude with `hx1`. Establish `h` using `cc_bil μ (cc_Re hμ hA e' hc.1) h4 (cc_one hx3)`. Rewrite `h` using `[mul_one]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_CCL (hIncl : DualHeightInclusion) {μ : Vsp R.Kf X₁ →ₗ[R.Kf] Vsp R.Kf X₂ →ₗ[R.Kf] Vsp R.Kf X} (hμ : IntB R μ)
     (hA : Ar 1 X = Ar 1 X₁ + Ar 1 X₂) (hdom : IsDominant X₂) (e : Edge R.W R.Qq (m + 1)) (he : IsEdge p n' 1 e)
@@ -425,9 +419,9 @@ theorem cc_CCL (hIncl : DualHeightInclusion) {μ : Vsp R.Kf X₁ →ₗ[R.Kf] Vs
     exact h
 
 /- English proof (translation)
-Introduce `y hy`. Establish `h` using `(steps_rev R X₂ hdom e he).2 _ hy`. Rewrite `h` using `[hE, neg_neg]`. Use `(cc_mem_scale (zpow_ne_zero _ R.w_ne)).2 ?_` and prove the remaining obligations. Rewrite using `[zpow_neg, inv_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem cc_tgt_le (hdom : IsDominant X₂) (hE : Elast X₂ = -Ar 1 X₂) (e : Edge R.W R.Qq (m + 1))
     (he : IsEdge p n' 1 e) : HL (O := R.O) R.ι R.σ X₂ e.tgt ≤ Re p R.ι R.σ R.w 1 X₂ e := by
@@ -439,23 +433,21 @@ theorem cc_tgt_le (hdom : IsDominant X₂) (hE : Elast X₂ = -Ar 1 X₂) (e : E
   exact h
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨⟨h1, h2⟩, h3⟩` from `hg`. Use `set ω : R.Kf := algebraMap R.O R.Kf R.w with hω`. Establish `hw : ω ≠ 0` using `R.w_ne`. Establish `hsub : Ar 1 X - Ar 1 X₁ = d` using `by rw [hA, hd]; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsub, R.p_zpow, ← hω]`. Establish `hww : (ω * ω) ^ Ar 1 X₂ = ω ^ (2 * (d : ℤ))`. Rewrite using `[hd, ← pow_two, ← zpow_natCast ω 2, ← zpow_mul]`. Evaluate the numerical expressions. Rewrite `hy1` using `[hww]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hy1' : y ∈ scale (ω ^ (-(2 * (d : ℤ)))) (HL (O` using `R.O) R.ι R.σ X₂ e.tgt) := by`. Use `(cc_mem_scale (zpow_ne_zero _ hw)).2 ?_` and prove the remaining obligations. Rewrite using `[zpow_neg, inv_inv]`. Conclude with `hy1`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : ∀ v ∈ HL (O` using `R.O) R.ι R.σ X₁ e.tgt, abelian₂.flip y v ∈ scale (1 * ω ^ (-(2 * (d : ℤ)))) (HL (O := R.O) R.ι R.σ X e.tgt) := fun v hv => cc_bil abelian₂ (hμ _ (cc_latE R e he).2.2) (cc_one hv) hy1'`. Establish `h` using `cc_dual (c := ω ^ (2 * (d : ℤ))) (abelian₂.flip y) (mul_ne_zero one_ne_zero (zpow_ne_zero _ hw)) hT h1`. Rewrite `h` using `[one_mul, ← zpow_add₀ hw, ← zpow_add₀ hw, show 2 * (d : ℤ) + -(t : ℤ) + -(2 * (d : ℤ)) = -(t : ℤ) by ring]`. Conclude with `h`. Establish `hT : ∀ v ∈ HLe p R.ι R.σ R.w X₁ e, abelian₂.flip y v ∈ scale (1 * ω ^ (-Ar 1 X₂)) (HLe p R.ι R.σ R.w X e)` using `fun v hv => cc_bil abelian₂ (hμ _ (cc_latE R e he).2.1) (cc_one hv) hy2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `cc_dual (c := ω ^ (2 * (d : ℤ))) (abelian₂.flip y) (mul_ne_zero one_ne_zero (zpow_ne_zero _ hw)) hT h2`. Rewrite `h` using `[one_mul, ← zpow_add₀ hw, ← zpow_add₀ hw, show 2 * (d : ℤ) + -Ar 1 X + -Ar 1 X₂ = -Ar 1 X₁ by rw [hA, hd]; ring]`. Conclude with `h`. Use `SetLike.mem_coe.2 ((Submodule.mem_iInf _).2 fun e' => (Submodule.mem_iInf _).2 fun hc' => ?_)` and prove the remaining obligations. Establish `h4` using `(Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 (SetLike.mem_coe.1 h3) e') hc'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h5` using `scale_scale_mem h4`. Establish `hy3 : y ∈ scale (ω ^ (-(2 * (d : ℤ))) * ω ^ (-Ar 1 X₂)) (HLe p R.ι R.σ R.w X₂ e')`. Apply `scale_scale_mem` to reduce the goal to its premises. Use `scale_mono _ (cc_tgt_le hdom hE e' hc'.1) ?_` and prove the remaining obligations. Rewrite using `[hc'.2.1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hy1'`. Establish `hT : ∀ v ∈ HLe p R.ι R.σ R.w X₁ e', abelian₂.flip y v ∈ scale (1 * (ω ^ (-(2 * (d : ℤ))) * ω ^ (-Ar 1 X₂))) (HLe p R.ι R.σ R.w X e')` using `fun v hv => cc_bil abelian₂ (hμ _ (cc_latE R e' hc'.1).2.1) (cc_one hv) hy3`. Establish `h` using `cc_dual (c := ω ^ (2 * (d : ℤ))) (abelian₂.flip y) (mul_ne_zero one_ne_zero (mul_ne_zero (zpow_ne_zero _ hw) (zpow_ne_zero _ hw))) hT h5`. Apply `mem_scale_scale` to reduce the goal to its premises. Rewrite `h` using `[one_mul, ← zpow_add₀ hw, ← zpow_add₀ hw, ← zpow_add₀ hw, ← zpow_add₀ hw]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← zpow_add₀ hw]`. Establish `e1 : 2 * (d : ℤ) + ((c₂ : ℤ) + -Ar 1 X) + (-(2 * (d : ℤ)) + -Ar 1 X₂) = ((c₂ - 2 * d : ℕ) : ℤ) + -Ar 1 X₁`. Rewrite using `[hA, hd, Nat.cast_sub hc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite `h` using `[e1]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_CCL' {abelian₂ : Vsp R.Kf X₁ →ₗ[R.Kf] Vsp R.Kf X₂ →ₗ[R.Kf] Vsp R.Kf X} (hμ : IntB R abelian₂)
     (hA : Ar 1 X = Ar 1 X₁ + Ar 1 X₂) (hdom : IsDominant X₂) (hE : Elast X₂ = -Ar 1 X₂) (d : ℕ)

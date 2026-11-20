@@ -23,7 +23,7 @@ abbrev PP {X Y : Scheme.{0}} (L : LB X) (p : Y ⟶ X) (a : ℤ) : LB Y :=
   LB.LinComb L (K := Fin 1) (fun _ => p) (fun _ => a)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Set.mem_iInter.1 h 0, fun h => Set.mem_iInter.2 fun k => by obtain rfl : k = 0 := Subsingleton.elim _ _ exact h⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_one {X Y : Scheme.{0}} {L : LB X} {p : Y ⟶ X} {j : Fin 1 → L.ι} {y : Y} :
     y ∈ LB.wchart L (fun _ : Fin 1 => p) j ↔ p y ∈ L.U (j 0) :=
@@ -32,7 +32,7 @@ theorem mem_one {X Y : Scheme.{0}} {L : LB X} {p : Y ⟶ X} {j : Fin 1 → L.ι}
     exact h⟩
 
 /- English proof (translation)
-Take `⟨E, hE⟩` from `PowSections.exists_equiv L p N n`. Use `⟨E, fun a j Z r z hz => ?_⟩` and prove the remaining obligations. Establish `le : LB.wchart L (fun _ : Fin 1 => p) j ≤ LB.wchart (PP L p N) (fun _ : Fin 1 => 𝟙 Y) (fun _ => j)` using `fun y hy => Set.mem_iInter.2 fun _ => hy`. Establish `e : (E a).f j = (Y.presheaf.map (homOfLE le).op).hom (a.f (fun _ => j))` using `fn_ext fun y hy => (hE a j y (mem_one.1 hy)).trans (gs_res (𝟙 Y) y le hy _).symm`. Conclude with `(congrArg (gs r z _) e).trans (gs_res r z le hz _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_equiv {X Y : Scheme.{0}} (L : LB X) (p : Y ⟶ X) (N n : ℕ) :
     ∃ E : H0 (PP L p N) n ≃ LB.Sec (PP L p ((N * n : ℕ) : ℤ)),
@@ -48,13 +48,13 @@ theorem exists_equiv {X Y : Scheme.{0}} (L : LB X) (p : Y ⟶ X) (N n : ℕ) :
   exact (congrArg (gs r z _) e).trans (gs_res r z le hz _)
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Establish `hF : ∀ y, F (ψ y) = y` using `fun y => by`. Rewrite using `[← Scheme.Hom.comp_apply, hψ]`. Both sides reduce to the same expression. Establish `h0 : ∀ (j : Fin 2 → L.ι) (y : Y), y ∈ LB.wchart L ![p, ψ ≫ p] j → F (ψ y) ∈ (PP L p N).U (fun _ => j 0)` using `fun j y hy => by`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hF]`. Conclude with `mem_one.2 (Set.mem_iInter.1 hy 0)`. Establish `h1 : ∀ (j : Fin 2 → L.ι) (y : Y), y ∈ LB.wchart L ![p, ψ ≫ p] j → ψ y ∈ (PP L p N).U (fun _ => j 1)` using `fun j y hy => mem_one.2 (Set.mem_iInter.1 hy 1)`. Establish `le : ∀ j : Fin 2 → L.ι, LB.wchart L ![p, ψ ≫ p] j ≤ ψ ⁻¹ᵁ (((PP L p N).pull F).U (fun _ _ => j 0) ⊓ (PP L p N).U (fun _ => j 1))` using `fun j y hy => ⟨mem_pull.2 (h0 j y hy), h1 j y hy⟩`. Set `α : LB.Gen (LB.LinComb L (K` to `Fin 2) ![p, ψ ≫ p] ![((N * n : ℕ) : ℤ), -((N * n : ℕ) : ℤ)]) := ⟨fun j => res (le j) (pullU ψ _ (w.s (fun _ _ => j 0, fun _ => j 1))) ^ (n : ℤ)⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hα : ∀ (j : Fin 2 → L.ι) (y : Y), y ∈ LB.wchart L ![p, ψ ≫ p] j → gm (𝟙 Y) y (LB.wchart L ![p, ψ ≫ p] j) (α.s j) = Geo.Tor.gw w ψ y (fun _ => j 0) (fun _ => j 1) ^ (n : ℤ)` using `fun j y hy => (map_zpow _ _ _).trans (congrArg (· ^ (n : ℤ)) ((gm_res (𝟙 Y) y (le j) hy _).trans (gm_pull (𝟙 Y) ψ y (((PP L p N).pull F).U (fun _ _ => j 0) ⊓ (PP L p N).U (fun _ => j 1)) (le j hy) _)))`. Use `⟨α, isGen_of_gm α fun y j j' hj hj' => ?_, hα⟩` and prove the remaining obligations. Establish `e` using `(isGen_iff w).1 hw Y ψ y _ _ _ _ (h0 j y hj) (h0 j' y hj') (h1 j y hj) (h1 j' y hj')`. Establish `e0` using `gm_linComb L (fun _ : Fin 1 => p) (fun _ => (N : ℤ)) (ψ ≫ F) y (fun _ => j 0) (fun _ => j' 0) (h0 j y hj) (h0 j' y hj')`. Establish `e1` using `gm_linComb L (fun _ : Fin 1 => p) (fun _ => (N : ℤ)) ψ y (fun _ => j 1) (fun _ => j' 1) (h1 j y hj) (h1 j' y hj')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e0`, `e1` using `[Fin.prod_univ_one]`. Establish `e'` using `e.trans (congrArg₂ (fun a b => a * b⁻¹ * _) e0 e1)`. Rewrite using `[hα j y hj, hα j' y hj', e', trF, Fin.prod_univ_two, hψ]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Category.id_comp, mul_zpow, inv_zpow, ← zpow_mul, Nat.cast_mul, zpow_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_gen_of_iso {X Y : Scheme.{0}} (L : LB X) (p : Y ⟶ X) (N n : ℕ) (F ψ : Y ⟶ Y) (hψ : ψ ≫ F = 𝟙 Y)
     (m : Y ⟶ X) (hm : ψ ≫ p = m) (w : LB.Iso (PP L p N) ((PP L p N).pull F)) (hw : w.IsGen) :
@@ -92,7 +92,7 @@ theorem exists_gen_of_iso {X Y : Scheme.{0}} (L : LB X) (p : Y ⟶ X) (N n : ℕ
     Nat.cast_mul, zpow_neg]
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun _ => hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chart_le {X Y : Scheme.{0}} (L : LB X) (p : Y ⟶ X) (N : ℤ) (j : Fin 1 → L.ι) :
     LB.wchart L (fun _ : Fin 1 => p) j ≤ LB.wchart (PP L p N) (fun _ : Fin 1 => 𝟙 Y) (fun _ => j) :=
@@ -103,7 +103,7 @@ def rho {X Y : Scheme.{0}} (L : LB X) (p : Y ⟶ X) (N : ℤ) (j : Fin 1 → L.�
   (Y.presheaf.map (homOfLE (chart_le L p N j)).op).hom
 
 /- English proof (translation)
-Introduce `a b h` and use `fn_ext fun y hy => by have hy' : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart L (fun _ : Fin 1 => p) j := Set.mem_iInter.1 hy 0 exact (gs_res (𝟙 Y) y (chart_le L p N j) hy' a).symm.trans ((congrArg (gs (𝟙 Y) y _) h).trans (gs_res (𝟙 Y) y (chart_le L p N j) hy' b))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rho_injective {X Y : Scheme.{0}} (L : LB X) (p : Y ⟶ X) (N : ℤ) (j : Fin 1 → L.ι) :
     Function.Injective (rho L p N j) := fun a b h => fn_ext fun y hy => by
@@ -112,7 +112,7 @@ theorem rho_injective {X Y : Scheme.{0}} (L : LB X) (p : Y ⟶ X) (N : ℤ) (j :
     (gs_res (𝟙 Y) y (chart_le L p N j) hy' b))
 
 /- English proof (translation)
-The claim follows from `fn_ext fun y hy => (gs_res (𝟙 Y) y (chart_le L p N j) hy _).trans ((gs_res (𝟙 Y) y le_top (chart_le L p N j hy) c).trans (gs_res (𝟙 Y) y le_top hy c).symm)`.
+A detailed English derivation is pending.
 -/
 theorem rho_resTop {X Y : Scheme.{0}} (L : LB X) (p : Y ⟶ X) (N : ℤ) (j : Fin 1 → L.ι) (c : Γ(Y, ⊤)) :
     rho L p N j (resTop _ c) = resTop _ c := fn_ext fun y hy =>
@@ -120,19 +120,17 @@ theorem rho_resTop {X Y : Scheme.{0}} (L : LB X) (p : Y ⟶ X) (N : ℤ) (j : Fi
     (gs_res (𝟙 Y) y le_top hy c).symm)
 
 /- English proof (translation)
-Use `choose E hE using fun n => exists_equiv L p N n`. Establish `hE' : ∀ n a j, @id Γ(Y.left, LB.wchart L (fun _ : Fin 1 => p) j) ((E n a).f j) = rho L p N j (a.f (fun _ => j))` using `fun n a j => fn_ext fun y hy => (hE n a j _ (𝟙 _) y hy).trans (gs_res (𝟙 _) y (chart_le L p N j) hy _).symm`. Set `θ : ∀ n : ℕ, 1 ≤ n → (H0 (PP L p N) n ≃ H0 (PP L p N) n)` to `fun n hn => (E n).trans ((Φ n hn).trans (E n).symm)`. Establish `hθE : ∀ n hn a, E n (θ n hn a) = Φ n hn (E n a)` using `fun n hn a => (E n).apply_symm_apply _`. Establish `hθ : ∀ n hn a j, rho L p N j ((θ n hn a).f (fun _ => j)) = @id Γ(Y.left, LB.wchart L (fun _ : Fin 1 => p) j) ((Φ n hn (E n a)).f j)` using `fun n hn a j => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hE', hθE]`. Establish `one : ∀ j : Fin 1 → (PP L p N).ι, ∃ i, j = fun _ => i` using `fun j => ⟨j 0, funext fun k => by rw [Subsingleton.elim k 0]⟩`. Take `⟨Φ₀, w, hw, H⟩` from `exists_iso_of_sectionRing_aut_of_relAmple K Y (PP L p N) (LB.isLB_linComb hL _ _) hA θ (fun n hn c a b d h j => by`. Take `⟨i, rfl⟩` from `one j`. Apply `rho_injective L p N i` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e` using `hlin n hn c (E n b) (E n a) (E n d) (fun j => (hE' n d j).trans ((congrArg (rho L p N j) (h _)).trans ((map_add _ _ _).trans ((add_comm _ _).trans (congrArg₂ (· + ·) ((map_mul _ _ _).trans (congrArg₂ (· * ·) (rho_resTop L p N j _) (hE' n b j).symm)) (hE' n a j).symm))))) i`. Conclude with `(hθ n hn d i).trans (e.trans ((map_add _ _ _).trans ((add_comm _ _).trans (congrArg₂ (· + ·) ((map_mul _ _ _).trans (congrArg₂ (· * ·) (rho_resTop L p N i _) (hθ n hn b i))) (hθ n hn a i)))).symm))`. Use the proof step `(fun n m hn hm a b d h j => by`. Take `⟨i, rfl⟩` from `one j`. Apply `rho_injective L p N i` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `hmul n m hn hm (hn.trans (Nat.le_add_right n m)) (E n a) (E m b) (E (n + m) d) (fun j => (hE' _ d j).trans ((congrArg (rho L p N j) (h _)).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (hE' n a j).symm (hE' m b j).symm)))) i`. Conclude with `(hθ _ _ d i).trans (e.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) (hθ n hn a i) (hθ m hm b i))).symm))`. Establish `hψ : Φ₀.inv.left ≫ Φ₀.hom.left = 𝟙 _` using `by rw [← Over.comp_left, Φ₀.inv_hom_id, Over.id_left]`. Use `⟨Φ₀.symm, fun m hm n hn => ?_⟩` and prove the remaining obligations. Take `⟨α, hα, hv⟩` from `exists_gen_of_iso L p N n Φ₀.hom.left Φ₀.inv.left hψ m hm w hw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨α, hα, fun s j y hy => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(E n).surjective s`. Establish `hF : Φ₀.hom.left (Φ₀.inv.left y) = y`. Rewrite using `[← Scheme.Hom.comp_apply, hψ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h0 : y ∈ LB.wchart L (fun _ : Fin 1 => p) (fun _ => j 0)` using `mem_one.2 (Set.mem_iInter.1 hy 0)`. Establish `h1 : Φ₀.inv.left y ∈ LB.wchart L (fun _ : Fin 1 => p) (fun _ => j 1)`. Substitute `hm` using the available equality. Conclude with `mem_one.2 (Set.mem_iInter.1 hy 1)`. Establish `e` using `H n hn a _ Φ₀.inv.left y (fun _ _ => j 0) (fun _ _ => j 1) (fun _ => (congrArg (· ∈ LB.wchart L (fun _ : Fin 1 => p) (fun _ => j 0)) hF).mpr h0) (fun _ => h1)`.
-
-Rewrite `e` using `[hψ, Fin.prod_univ_one, Category.comp_id]`. Rewrite using `[← hθE, hE n _ _ _ (𝟙 _) y h0, hv j y hy]`. Conclude with `e.trans (congrArg _ (hE n a _ _ Φ₀.inv.left y h1).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_iso {K : Type} [CommRing K] {X : Scheme.{0}} (L : LB X) (hL : L.IsLB)
     (Y : Over (Spec (CommRingCat.of K))) [IsProper Y.hom] (p : Y.left ⟶ X) (N : ℕ) (hA : RelAmple Y (PP L p N))
@@ -200,15 +198,13 @@ theorem exists_iso {K : Type} [CommRing K] {X : Scheme.{0}} (L : LB X) (hL : L.I
 end SectionAut
 
 /- English proof (translation)
-Introduce `F _ S P t N hN Φ hlin hmul`. Take `⟨hp, hA⟩` from `isProper_and_relAmple_lPow F S P t N hN`. Establish `hp' : IsProper (Over.mk (X` using `Spec (CommRingCat.of F)) (fst (Over.mk t) P.A).left).hom := hp`. Establish `hmul' : ∀ k l m (_ : m = k + l + 1) (s : LB.Sec (LPow P.A P.L ((N * (k + 1) : ℕ) : ℤ) (Over.mk t))) (s' : LB.Sec (LPow P.A P.L ((N * (l + 1) : ℕ) : ℤ) (Over.mk t))) (s'' : LB.Sec (LPow P.A P.L ((N * (m + 1) : ℕ) : ℤ) (Over.mk t))), (∀ j, @id Γ((Over.mk t ⊗ P.A).left, LB.wchart P. …`. Introduce and unpack `k l _ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hmul k l`. Take `⟨ψ₀, H⟩` from `SectionAut.exists_iso P.L P.isLB (Over.mk (X := Spec (CommRingCat.of F)) (fst (Over.mk t) P.A).left) (snd (Over.mk t) P.A).left N hA (fun n hn => match n, hn with | k + 1, _ => Φ k) (fun n hn c => match n, hn with`. Consider the case `k + 1, _ => fun s s' s'' => hlin k s s' s'' ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom c))`. Use the proof step `(fun n m hn hm _ => match n, m, hn, hm with`. Consider the case `k + 1, l + 1, _, _ => hmul' k l (k + 1 + l) (by omega))`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `w₀ : ψ₀.hom.left ≫ (fst (Over.mk t) P.A).left = (fst (Over.mk t) P.A).left` using `Over.w ψ₀.hom`. Set `ψ : Over.mk t ⊗ P.A ≅ Over.mk t ⊗ P.A` to `Over.isoMk ((Over.forget _).mapIso ψ₀) (by`. Establish `e : (fst (Over.mk t) P.A).left ≫ t = (Over.mk t ⊗ P.A).hom` using `Over.w (fst (Over.mk t) P.A)`. Use `show ψ₀.hom.left ≫ (Over.mk t ⊗ P.A).hom = (Over.mk t ⊗ P.A).hom`. Rewrite using `[← e, ← Category.assoc, w₀])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ψ, Over.OverMorphism.ext w₀, fun k => ?_⟩` and prove the remaining obligations. Take `⟨α, hα, hv⟩` from `H (ψ.hom ≫ snd _ _).left rfl (k + 1) (Nat.succ_pos k)`. Use `⟨α, hα, fun s j => fn_ext fun y hy => ?_⟩` and prove the remaining obligations. Establish `l₀` using `chart_le_zero P.A P.L (ψ.hom ≫ snd _ _) j`. Establish `l₁` using `chart_le_pull P.A P.L ψ.hom (ψ.hom ≫ snd _ _) rfl j`.
-
-Conclude with `(gs_res (𝟙 _) y l₀ hy _).trans ((hv s j y hy).trans ((gs_mul (𝟙 _) y _ hy _ _).trans (congrArg₂ (· * ·) (gs_unit (𝟙 _) y _ hy _) ((gs_res (𝟙 _) y l₁ hy _).trans (gs_pull (𝟙 _) ψ.hom.left y (LB.wchart P.L (fun _ : Fin 1 => (snd (Over.mk t) P.A).left) (fun _ => j 1)) (l₁ hy) _)))). …`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_iso_of_multiplicative_section_family : ∀ (F : Type) [Field F] (S : Scheme.{0}) (P : PolAV S) (t : Spec (CommRingCat.of F) ⟶ S) (N : ℕ), 1 ≤ N → ∀ Φ : ∀ k : ℕ, LB.Sec (LPow P.A P.L ((N * (k + 1) : ℕ) : ℤ) (Over.mk t)) ≃ LB.Sec (LPow P.A P.L ((N * (k + 1) : ℕ) : ℤ) (Over.mk t)), (∀ k (s s' s'' : LB.Sec (LPow P.A P.L ((N * (k + 1) : ℕ) : ℤ) (Over.mk t))) (c : Γ((Over.mk t).left, ⊤)), (∀ j, s''.f j = liftFun P.A _ c * s.f j + s'.f j) → ∀ j, (Φ k s'').f j = liftFun P.A _ c * (Φ k s).f j + (Φ k s').f j) → (∀ k l (s : LB.Sec (LPow P.A P.L ((N * (k + 1) : ℕ) : ℤ) (Over.mk t))) (s' : LB.Sec (LPow P.A P.L ((N * (l + 1) : ℕ) : ℤ) (Over.mk t))) (s'' : LB.Sec (LPow P.A P.L ((N * (k + l + 1 + 1) : ℕ) : ℤ) (Over.mk t))), (∀ j, @id Γ((Over.mk t ⊗ P.A).left, LB.wchart P.L (fun _ : Fin 1 => (snd (Over.mk t) P.A).left) j) (s''.f j) = @id Γ((Over.mk t ⊗ P.A).left, LB.wchart P.L (fun _ : Fin 1 => (snd (Over.mk t) P.A).left) j) (s.f j) * @id Γ((Over.mk t ⊗ P.A).left, LB.wchart P.L (fun _ : Fin 1 => (snd (Over.mk t) P.A).left) j) (s'.f j)) → ∀ j, @id Γ((Over.mk t ⊗ P.A).left, LB.wchart P.L (fun _ : Fin 1 => (snd (Over.mk t) P.A).left) j) ((Φ (k + l + 1) s'').f j) = @id Γ((Over.mk t ⊗ P.A).left, LB.wchart P.L (fun _ : Fin 1 => (snd (Over.mk t) P.A).left) j) ((Φ k s).f j) * @id Γ((Over.mk t ⊗ P.A).left, LB.wchart P.L (fun _ : Fin 1 => (snd (Over.mk t) P.A).left) j) ((Φ l s').f j)) → ∃ (ψ : Over.mk t ⊗ P.A ≅ Over.mk t ⊗ P.A) (_ : ψ.hom ≫ fst _ _ = fst _ _), ∀ k, ∃ α : LB.Gen (LB.LinComb P.L (K := Fin 2) ![(snd (Over.mk t) P.A).left, (ψ.hom ≫ snd _ _).left] ![((N * (k + 1) : ℕ) : ℤ), -((N * (k + 1) : ℕ) : ℤ)]), α.IsGen ∧ ∀ s, IsTwistPull P.A P.L ψ.hom (ψ.hom ≫ snd _ _) rfl _ _ α s (Φ k s) := by
   intro F _ S P t N hN Φ hlin hmul

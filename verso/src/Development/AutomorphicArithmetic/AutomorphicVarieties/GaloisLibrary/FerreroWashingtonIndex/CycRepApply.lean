@@ -19,7 +19,7 @@ def cycRep : Representation ℤ (ZMod M)ˣ (Additive (Cl L)) :=
   (clRep L).comp (((sg M L).toMonoidHom).comp invMonoidHom)
 
 /- English proof (translation)
-Rewrite using `[cycRep, MonoidHom.comp_apply, MonoidHom.comp_apply, invMonoidHom_apply, MulEquiv.coe_toMonoidHom, map_inv, clRep_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cycRep_apply (t : (ZMod M)ˣ) (x : Cl L) :
     cycRep M L t (Additive.ofMul x) = Additive.ofMul (clA M L t x) := by

@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SW.EulerMove
 
 /- English proof (translation)
-Take `⟨⟨-, scA, -⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Establish `scA' : SecondCountableTopology (Ainf F × Af F)` using `scA`. Use `haveI : SecondCountableTopology (Ainf F) := (isEmbedding_prodMkLeft (0 : Af F)).secondCountableTopology`. Use `haveI : T2Space (Ainf F) := GlobalTheory.CompanionTheory.AdeleTop.t2Space_infiniteAdeleRing_of_numberField_field F`. Conclude with `(GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Ainf F)).2.2.2.2.2.2.2.1 n M`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem borel_ainf (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (n M : ℕ) :
@@ -26,7 +26,7 @@ theorem borel_ainf (F E : Type) [Field F] [NumberField F] [Field E] [NumberField
   exact (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Ainf F)).2.2.2.2.2.2.2.1 n M
 
 /- English proof (translation)
-Take `⟨⟨lcA, scA, t2A⟩, -⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Use `haveI := lcA`. Use `haveI := scA`. Use `haveI := t2A`. Conclude with `(GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (AF F)).2.2.2.2.2.2.2.1 n M`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem borel_af (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (n M : ℕ) :
@@ -38,7 +38,7 @@ theorem borel_af (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E
   exact (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (AF F)).2.2.2.2.2.2.2.1 n M
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F v`. Use `haveI : LocallyCompactSpace (Fv F v) := inferInstance`. Use `haveI : SecondCountableTopology (Fv F v) := inferInstance`. Use `haveI : T2Space (Fv F v) := inferInstance`. Conclude with `(GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)).2.2.2.2.2.2.2.1 n M`.
+A detailed English derivation is pending.
 -/
 theorem borel_fv (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (n M : ℕ) (v : HeightOneSpectrum (𝓞 F)) :
@@ -50,33 +50,29 @@ theorem borel_fv (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E
   exact (GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ (Fv F v)).2.2.2.2.2.2.2.1 n M
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ d b n M I minf minf' m m' e einf ev he heinf hev hcomm hgood cinf c hU hinf hloc hfin hE`. Take `⟨-, hsum, S₀, hS₀⟩` from `hE`. Take `⟨hpi, hpf, hpv, hlat, hint, -⟩` from `GlobalTheory.CompanionTheory.SW.MeasProj.proj_props F E σ hσ d b n M`. Use `haveI := borel_af F E σ hσ n M`. Use `haveI := borel_ainf F E σ hσ n M`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : ∀ v, BorelSpace (Fin n → Fin M → Fv F v ⊗[F] E) := fun v => borel_fv F E σ hσ n M v`. Take `⟨S₁, hS₁⟩` from `(GlobalTheory.CompanionTheory.SW.UnitProdAlg.main F cinf cinf c c hU hU).2.2.2.2.2.2.2`. Set `S₂ : Finset (HeightOneSpectrum (𝓞 F))` to `(Filter.eventually_cofinite.1 hgood).toFinset`. Establish `hS₂ : ∀ v, v ∉ S₂ → ∀ X, ev v X ∈ latV b v ↔ X ∈ latV b v`. Introduce `v hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hv (by simpa [S₂] using h)`. Establish `hlatM : ∀ v, MeasurableSet (latV b v : Set (Fin n → Fin M → Fv F v ⊗[F] E))` using `fun v => (hlat v).2.measurableSet`. Establish `hcv : ∀ v, v ∉ S₁ ∪ S₂ → c v = 1` using `fun v hv => ((hS₁ (S₁ ∪ S₂) Finset.subset_union_left).1 v hv)`. Establish `hmm : ∀ v, v ∉ S₁ ∪ S₂ → m' v (latV b v) = m v (latV b v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `v hv`. Establish `hv₂ : v ∉ S₂` using `fun h => hv (Finset.mem_union_right _ h)`. Establish `h1` using `congrArg (fun μ => μ (latV b v)) (hloc v)`. Simplify using `only [Measure.map_apply (hev v) (hlatM v), hcv v hv, one_smul] at h1`. Rewrite using `[← h1]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use extensionality with `X`. Conclude with `hS₂ v hv₂ X`. Use `⟨hfin, ?_, S₀ ∪ (S₁ ∪ S₂), ?_⟩` and prove the remaining obligations. Use `hsum.congr_cofinite ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfinite : (↑(S₁ ∪ S₂) : Set (HeightOneSpectrum (𝓞 F))).Finite` using `Finset.finite_toSet (S₁ ∪ S₂)`. Use `filter_upwards [hfinite.compl_mem_cofinite] with v hv`. Rewrite using `[hmm v (by simpa using hv)]`. Introduce `S hS φinf φ hφinf hφ`. Establish `hSS₀ : S₀ ⊆ S` using `Finset.union_subset_left hS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hSS₃ : S₁ ∪ S₂ ⊆ S` using `Finset.union_subset_right hS`. Establish `hSS₁ : S₁ ⊆ S` using `Finset.union_subset_left hSS₃`. Establish `hnot : ∀ v, v ∉ S → v ∉ S₁ ∪ S₂` using `fun v hv h => hv (hSS₃ h)`. Establish `hpm : Measurable (pureL b S φinf φ)`. Use `Measurable.indicator ?_ (hint S).measurableSet` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hφinf.comp hpi.measurable).mul ?_` and prove the remaining obligations. Use `Finset.measurable_prod _ fun v _ => ?_` and prove the remaining obligations. Conclude with `(hφ v).comp ((hpv v).comp hpf).measurable`. Establish `hmem : ∀ X, e X ∈ intOff b S ↔ X ∈ intOff b S`. Introduce `X`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Use `forall_congr' fun v => ?_` and prove the remaining obligations. Use `imp_congr_right fun hv => ?_` and prove the remaining obligations. Rewrite using `[(hcomm X).2 v]`. Conclude with `hS₂ v (fun h => hnot v hv (Finset.mem_union_right _ h)) _`. Establish `hfun : (fun X => pureL b S φinf φ (e X)) = pureL b S (fun Y => φinf (einf Y)) (fun v Y => φ v (ev v Y))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `X`. Unfold `pureL`. Distinguish the cases in `hX : X ∈ intOff b S`. Rewrite using `[Set.indicator_of_mem ((hmem X).2 hX), Set.indicator_of_mem hX, (hcomm X).1]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.prod_congr rfl fun v _ => by rw [(hcomm X).2 v]`. Rewrite using `[Set.indicator_of_notMem (fun h => hX ((hmem X).1 h)), Set.indicator_of_notMem hX]`. Establish `hinfI : ∫⁻ Y, φinf (einf Y) ∂minf = (cinf : ℝ≥0∞) * ∫⁻ Y, φinf Y ∂minf'`. Rewrite using `[← lintegral_map hφinf heinf, hinf, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`. Establish `hvI : ∀ v, ∫⁻ Y, φ v (ev v Y) ∂(m v) = (c v : ℝ≥0∞) * ∫⁻ Y, φ v Y ∂(m' v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `v`. Rewrite using `[← lintegral_map (hφ v) (hev v), hloc v, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul]`. Establish `hone : (cinf : ℝ≥0∞) * ∏ v ∈ S, (c v : ℝ≥0∞) = 1`. Use `(hS₁ S hSS₁).2` as an intermediate fact. Conclude with `this` after adjusting the coercions.
-
-Establish `htail : (∏' v : {v // v ∉ S}, (m v.1 (latV b v.1)).toReal) = ∏' v : {v // v ∉ S}, (m' v.1 (latV b v.1)).toReal` using `tprod_congr fun v => by rw [hmm v.1 (hnot v.1 v.2)]`. Rewrite using `[lintegral_map hpm he, hfun, hS₀ S hSS₀ (fun Y => φinf (einf Y)) (fun v Y => φ v (ev v Y)) (hφinf.comp heinf) (fun v => (hφ v).comp (hev v)), hinfI, htail]`. Simplify using `only [hvI]`. Rewrite using `[Finset.prod_mul_distrib]`. Use `congr 2`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem euler_move : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (n M : ℕ) (I : Measure (Fin n → Fin M → AF F ⊗[F] E)) (minf minf' : Measure (Fin n → Fin M → Ainf F ⊗[F] E)) (m m' : ∀ v : HeightOneSpectrum (𝓞 F), Measure (Fin n → Fin M → Fv F v ⊗[F] E)) (e : (Fin n → Fin M → AF F ⊗[F] E) → (Fin n → Fin M → AF F ⊗[F] E)) (einf : (Fin n → Fin M → Ainf F ⊗[F] E) → (Fin n → Fin M → Ainf F ⊗[F] E)) (ev : ∀ v : HeightOneSpectrum (𝓞 F), (Fin n → Fin M → Fv F v ⊗[F] E) → (Fin n → Fin M → Fv F v ⊗[F] E)), Measurable e → Measurable einf → (∀ v, Measurable (ev v)) → (∀ X, projInf (e X) = einf (projInf X) ∧ ∀ v, projV v (projFin (e X)) = ev v (projV v (projFin X))) → (∀ᶠ v in Filter.cofinite, ∀ X, ev v X ∈ latV b v ↔ X ∈ latV b v) → ∀ (cinf : ℝ≥0) (c : HeightOneSpectrum (𝓞 F) → ℝ≥0), IsUnitProd cinf c → minf.map einf = cinf • minf' → (∀ v, (m v).map (ev v) = c v • m' v) → (∀ v, m' v (latV b v) < ⊤) → IsEulerProd b I 1 minf m → IsEulerProd b (I.map e) 1 minf' m' := by
   intro F E _ _ _ _ _ σ hσ d b n M I minf minf' m m' e einf ev he heinf hev hcomm hgood cinf c hU

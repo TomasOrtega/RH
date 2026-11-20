@@ -14,9 +14,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.KSing
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Take `⟨K, hK, hKβ⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KSing.nCocompact_k d`. Take `⟨M, hM⟩` from `(hK.prod hC).exists_bound_of_continuousOn hU.continuousOn`. Use `⟨M, fun β y hy => ?_⟩` and prove the remaining obligations. Take `⟨l, hl, hβl⟩` from `hKβ β`. Establish `e` using `hper (β - l) l hl y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e` using `[sub_add_cancel]`. Rewrite using `[e]`. Conclude with `hM _ ⟨hβl, hy⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bdd_of_per_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {U : nA σ d.Y d.b × d.G → ℂ} (hU : Continuous U)
     (hper : ∀ β, ∀ l ∈ nF σ d.Y d.b, ∀ y, U (β + l, y) = U (β, y)) {C : Set d.G} (hC : IsCompact C) :
@@ -31,25 +31,23 @@ theorem bdd_of_per_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {U 
   exact hM _ ⟨hβl, hy⟩
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Use `hG` as an intermediate fact. Use `set χ : nA σ d.Y d.b → ℂ := fun β₀ => d.B.ψ (-(Algebra.trace (AF F) (AE F E) (Matrix.trace (T.1.1 * β₀.1)))) with hχ`. Use `set U : nA σ d.Y d.b × d.G → ℂ := fun p => f (nb p.1 * p.2) * χ p.1 with hUdef`. Establish `hnbc` using `_root_.PositivityTheory.SiegelWeilFormula.KSing.continuous_nb_k d hCD.1`. Establish `hnrc` using `cont_nr nr hnr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hιr : Continuous fun x => R.ι w (nr x) * z` using `((R.cont w).comp hnrc).mul continuous_const`. Establish `hUc : Continuous U` using `(hf.comp ((hnbc.comp continuous_fst).mul continuous_snd)).mul ((_root_.PositivityTheory.SiegelWeilFormula.KSing.chi_cont_k d T).comp continuous_fst)`. Establish `hUper : ∀ β₀, ∀ l ∈ nF σ d.Y d.b, ∀ y, U (β₀ + l, y) = U (β₀, y)`. Introduce `β₀ l hl y`. Simplify using `only [hUdef, hχ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KSing.chi_add_k d T β₀ l, _root_.PositivityTheory.SiegelWeilFormula.KSing.chi_per_k d T hl, mul_one, add_comm, _root_.PositivityTheory.SiegelWeilFormula.KSing.nb_add_k d hCD.1, mul_assoc, hinv _ (_root_.PositivityTheory.SiegelWeilFormula …`. Take `⟨M, hM⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KSing.bdd_of_per_k d hUc hUper ((hψs.isCompact).image hιr)`. Use `haveI : IsFiniteMeasure (lam.restrict 𝓖) := ⟨by rw [Measure.restrict_apply_univ, hCD.2.2.2]; exact ENNReal.one_lt_top⟩`. Establish `e1 : ∀ β₀ x, f (R.ι w (nr x) * (nb β₀ * z)) * ψ₀ x * χ β₀ = U (β₀, R.ι w (nr x) * z) * ψ₀ x`. Introduce `β₀ x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hUdef]`. Rewrite using `[hβ x, ← mul_assoc, ← _root_.PositivityTheory.SiegelWeilFormula.KSing.nb_add_k d hCD.1, add_comm, _root_.PositivityTheory.SiegelWeilFormula.KSing.nb_add_k d hCD.1, show nb β₀ * nb (β x) * z = nb β₀ * (nb (β x) * z) from mul_assoc _ _ _]`. Expand and normalize the polynomial expressions, which then agree. Establish `eL : fc d.B.ψ d.b nb lam 𝓖 (fun y => ∫ x, f (R.ι w (nr x) * y) * ψ₀ x) T z = ∫ β₀, ∫ x, U (β₀, R.ι w (nr x) * z) * ψ₀ x ∂volume ∂(lam.restrict 𝓖)`. Unfold `fc`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `β₀`. Rewrite using `[← integral_mul_const]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `e1 β₀ x`. Establish `hcont : Continuous (Function.uncurry fun (β₀ : nA σ d.Y d.b) (x : Fin d.n → Fin d.n → ℝ) => U (β₀, R.ι w (nr x) * z) * ψ₀ x)` using `(hUc.comp (continuous_fst.prodMk (hιr.comp continuous_snd))).mul (hψc.comp continuous_snd)`. Establish `hint : Integrable (Function.uncurry fun (β₀ : nA σ d.Y d.b) (x : Fin d.n → Fin d.n → ℝ) => U (β₀, R.ι w (nr x) * z) * ψ₀ x) ((lam.restrict 𝓖).prod volume)`. Use `Integrable.mono' ((integrable_const M).mul_prod (hψc.norm.integrable_of_hasCompactSupport hψs.norm)) (_root_.PositivityTheory.SiegelWeilFormula.KSing.aesm_of_continuous_k d hCD hcont) (Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Use `show ‖U (p.1, R.ι w (nr p.2) * z) * ψ₀ p.2‖ ≤ M * ‖ψ₀ p.2‖`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul]`. Distinguish the cases in `hx : p.2 ∈ tsupport ψ₀`. Conclude with `mul_le_mul_of_nonneg_right (hM p.1 _ ⟨p.2, hx, rfl⟩) (norm_nonneg _)`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eL, integral_integral_swap hint]`. Establish `e2 : ∀ x, ∫ β₀, U (β₀, R.ι w (nr x) * z) * ψ₀ x ∂(lam.restrict 𝓖) = fc d.B.ψ d.b nb lam 𝓖 f T z * (ψ₀ x * d.B.ψ (d.tt (T.1.1 * (β x).1)))`. Introduce `x`. Rewrite using `[integral_mul_const]`. Establish `: ∫ β₀, U (β₀, R.ι w (nr x) * z) ∂(lam.restrict 𝓖) = fc d.B.ψ d.b nb lam 𝓖 f T (nb (β x) * z)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hβ x]`. Both sides reduce to the same expression. Rewrite using `[this, _root_.PositivityTheory.SiegelWeilFormula.KSing.fc_shift_k d hCD f hinv T (β x) z]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e2]`.
-
-Rewrite using `[integral_const_mul]`.
+A detailed English derivation is pending.
 -/
 theorem fc_avg_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) (hG : IsTopologicalGroup d.G)
     {nb : nA σ d.Y d.b → d.G} {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}

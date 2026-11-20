@@ -12,7 +12,7 @@ open GlobalTheory.LiftLevel
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.GenChoice.exists_global_scalar_prime_to_conj_polarisationLattice` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FExistsGlobalScalarPrimeToConjPolarisationLattice.lean&line=87#L87)
 -/

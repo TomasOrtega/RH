@@ -10,7 +10,7 @@ variable {R : Type} [CommRing R] {n : ℕ}
 private abbrev UU (n : ℕ) : Type := {p : Fin n × Fin n // p.1 < p.2}
 
 /- English proof (translation)
-Establish `h` using `Finset.card_product_filter_lt (s := (Finset.univ : Finset (Fin n)))`. Rewrite `h` using `[Finset.card_univ, Fintype.card_fin, Finset.univ_product_univ]`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype, ← h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem card_UU : Nat.card (UU n) = n.choose 2 := by
   have h := Finset.card_product_filter_lt (s := (Finset.univ : Finset (Fin n)))
@@ -21,9 +21,9 @@ private def upM (f : UU n → R) : Matrix (Fin n) (Fin n) R :=
   Matrix.of fun i j => if h : i < j then f ⟨(i, j), h⟩ else 0
 
 /- English proof (translation)
-Introduce `f f' e`. Use function extensionality and compare the values at `⟨⟨i, j⟩, h⟩`. Establish `h : i < j` using `h`. Establish `h' : ¬ j < i` using `not_lt.2 h.le`. Use `congrFun (congrFun e i) j` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[upM, h, h']`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem upM_inj (u : R) : Function.Injective fun f : UU n → R => upM f - u • (upM f)ᵀ := by
   intro f f' e
@@ -34,19 +34,19 @@ private theorem upM_inj (u : R) : Function.Injective fun f : UU n → R => upM f
   simpa [upM, h, h'] using this
 
 /- English proof (translation)
-Establish `h2 : B * A = 1` using `mul_eq_one_comm.1 h1`. Establish `k : ∀ Z, A * Bᵀ * Z * (Aᵀ * B) = Z` using `fun Z => by`. Use `hTT Z` as an intermediate fact. Rewrite `this` using `[hT, hT]`. Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `k1 : A * Bᵀ * (Aᵀ * B) = 1` using `by simpa using k 1`. Establish `k2 : Aᵀ * B * (A * Bᵀ) = 1` using `mul_eq_one_comm.1 k1`. Establish `k3 : ∀ Z, Z * (Aᵀ * B) = Aᵀ * B * Z` using `fun Z => by conv_rhs => rw [← k Z]`. Rewrite using `[← Matrix.mul_assoc (Aᵀ * B), ← Matrix.mul_assoc (Aᵀ * B), k2, Matrix.one_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : Aᵀ * B ∈ Set.range (Matrix.scalar (Fin n)) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Matrix.center_eq_range]`. Conclude with `Semigroup.mem_center_iff.2 k3`. Establish `hu' : Aᵀ * B = u • (1 : Matrix (Fin n) (Fin n) R)`. Rewrite using `[← hu, Matrix.scalar_apply, Matrix.smul_one_eq_diagonal]`. Establish `a1 : Aᵀ = u • A`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `a2 : u • u • A = A`. Use `congrArg Matrix.transpose a1` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_transpose, Matrix.transpose_smul, a1]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `a3 : ∀ X : Matrix (Fin n) (Fin n) R, u • u • X = X` using `fun X => by`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.smul_mul, Matrix.smul_mul, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Use `_ = X := by rw [a2, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Set `F : (UU n → R) → {Z // T Z = Z}` to `fun f => ⟨A * (upM f - u • (upM f)ᵀ), by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hT, Matrix.transpose_mul, Matrix.mul_assoc, Matrix.mul_assoc, hu', Matrix.mul_smul, Matrix.mul_one, ← Matrix.mul_neg, Matrix.transpose_sub, Matrix.transpose_smul, Matrix.transpose_transpose, smul_sub, a3, neg_sub]⟩`. Establish `hF : Function.Injective F`. Introduce `f f' e`. Establish `e' : A * (upM f - u • (upM f)ᵀ) = A * (upM f' - u • (upM f')ᵀ)` using `congrArg Subtype.val e`. Establish `e''` using `congrArg (B * ·) e'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [← Matrix.mul_assoc, h2, Matrix.one_mul] at e''`. Conclude with `upM_inj u e''`. Use `Nat.card_le_card_of_injective F hF` as an intermediate fact. Rewrite `this` using `[Nat.card_fun, card_UU]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private theorem count_fix [Finite R] {A B : Matrix (Fin n) (Fin n) R} (h1 : A * B = 1)
     (T : Matrix (Fin n) (Fin n) R → Matrix (Fin n) (Fin n) R) (hT : ∀ Z, T Z = -(A * Zᵀ * B))
@@ -94,34 +94,34 @@ private theorem count_fix [Finite R] {A B : Matrix (Fin n) (Fin n) R} (h1 : A * 
 end Count
 
 /- English proof (translation)
-The claim follows from `(Matrix.map_mul (f := Ideal.Quotient.mk (maximalIdeal O ^ m))).symm`.
+A detailed English derivation is pending.
 -/
 private theorem red_mul {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (m : ℕ) (X Y : Matrix (Fin n) (Fin n) O) :
     red m X * red m Y = red m (X * Y) := (Matrix.map_mul (f := Ideal.Quotient.mk (maximalIdeal O ^ m))).symm
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 private theorem red_one {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (m : ℕ) :
     red m (1 : Matrix (Fin n) (Fin n) O) = 1 := Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Rewrite using `[red_mul, Units.mul_inv, red_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem red_inv {O : Type} [CommRing O] [IsLocalRing O] {n : ℕ} (m : ℕ) (X : GL (Fin n) O) :
     red m (X : Matrix (Fin n) (Fin n) O) * red m ((X⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) = 1 := by
   rw [red_mul, Units.mul_inv, red_one]
 
 /- English proof (translation)
-Introduce `l _ L G G0 h O _ _ _ _ _ n y m rep c' _ hA hc hη`. Take `⟨f1, f2, -⟩` from `(UpperTheory.V.Th.omFacts l O).2 m`. Use `haveI := f1`. Set `g : G.G₀` to `⟨c' * G.c⁻¹, by rw [MonoidHom.mem_ker, map_mul, map_inv, hη, G.η_c, mul_inv_cancel]⟩`. Establish `hg : c' = (g : G.Γ) * G.c` using `by simp [g]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p1` using `red_inv m y.P`. Establish `p2` using `mul_eq_one_comm.1 p1`. Establish `r1 : y.ρm h m g * y.ρm h m g⁻¹ = 1`. Use `red_inv m (y.ρ (h.p₀ g))` as an intermediate fact. Rewrite `this` using `[← map_inv, ← map_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Rewrite using `[pow_mul, ← f2]`. Use `count_fix (A := y.ρm h m g * red m ((y.P⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O)) (B := red m y.P * y.ρm h m g⁻¹) ?_ (rep c') (fun Z => ?_) fun Z => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc _ _ (y.ρm h m g⁻¹), p2, Matrix.one_mul, r1]`. Establish `a1` using `hA.1 g (rep G.c Z)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a2` using `hA.2 Z`. Rewrite `a1`, `a2` using `[one_smul]`. Establish `a3 : rep G.c Z = -(red m ((y.P⁻¹ : GL (Fin n) O) : Matrix (Fin n) (Fin n) O) * (Zᵀ * red m y.P))`. Rewrite using `[← Matrix.mul_neg, ← a2, ← Matrix.mul_assoc, p2, Matrix.one_mul]`. Use `conv_lhs => rw [hg, map_mul, Module.End.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `a1.trans ?_` and prove the remaining obligations. Rewrite using `[a3]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hc, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.pow_choose_two_le_card_fixed_ad0_of_odd_involution :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (y : Pt G0.frame O n) (m : ℕ) (rep : Representation O G.Γ (Mm O n m)) (c' : G.Γ), l ≠ 2 → IsAd0 h y m rep → c' * c' = 1 → G.η c' = -1 → Nat.card (ResidueField O) ^ (m * n.choose 2) ≤ Nat.card {Z : Mm O n m // rep c' Z = Z} := by

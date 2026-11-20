@@ -14,13 +14,13 @@ def gMap (g : GL (Fin k) Qq) (A : Submodule W (Fin k → Qq)) : Submodule W (Fin
   A.map ((Matrix.mulVecLin (g : Matrix (Fin k) (Fin k) Qq)).restrictScalars W)
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_map`.
+A detailed English derivation is pending.
 -/
 theorem mem_gMap (g : GL (Fin k) Qq) (A : Submodule W (Fin k → Qq)) (x : Fin k → Qq) :
     x ∈ gMap W g A ↔ ∃ y ∈ A, (g : Matrix (Fin k) (Fin k) Qq) *ᵥ y = x := Submodule.mem_map
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_gMap]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gMap_one (A : Submodule W (Fin k → Qq)) : gMap W 1 A = A := by
   ext x
@@ -28,9 +28,9 @@ theorem gMap_one (A : Submodule W (Fin k → Qq)) : gMap W 1 A = A := by
   simp
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [mem_gMap, Units.val_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨(h : Matrix (Fin k) (Fin k) Qq) *ᵥ y, ⟨y, hy, rfl⟩, by rw [Matrix.mulVec_mulVec]⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨y, hy, by rw [Matrix.mulVec_mulVec]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem gMap_mul (g h : GL (Fin k) Qq) (A : Submodule W (Fin k → Qq)) : gMap W (g * h) A = gMap W g (gMap W h A) := by
   ext x
@@ -42,7 +42,7 @@ theorem gMap_mul (g h : GL (Fin k) Qq) (A : Submodule W (Fin k → Qq)) : gMap W
     exact ⟨y, hy, by rw [Matrix.mulVec_mulVec]⟩
 
 /- English proof (translation)
-Establish `e` using `congrArg (gMap W g⁻¹) h`. Rewrite `e` using `[← gMap_mul, ← gMap_mul, inv_mul_cancel, gMap_one, gMap_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem gMap_inj (g : GL (Fin k) Qq) {A B : Submodule W (Fin k → Qq)} (h : gMap W g A = gMap W g B) : A = B := by
   have e := congrArg (gMap W g⁻¹) h
@@ -51,7 +51,7 @@ theorem gMap_inj (g : GL (Fin k) Qq) {A B : Submodule W (Fin k → Qq)} (h : gMa
 def stdL : Submodule W (Fin k → Qq) := colSpan W (1 : Matrix (Fin k) (Fin k) Qq)
 
 /- English proof (translation)
-Unfold `gMap stdL colSpan`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 1`. Use `congrArg Set.range (funext fun c => funext fun i => ?_)` and prove the remaining obligations. Simplify using `[Matrix.mulVec, dotProduct, Matrix.one_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem colSpan_eq (g : GL (Fin k) Qq) : colSpan W (g : Matrix (Fin k) (Fin k) Qq) = gMap W g (stdL W) := by
   unfold gMap stdL colSpan
@@ -61,9 +61,9 @@ theorem colSpan_eq (g : GL (Fin k) Qq) : colSpan W (g : Matrix (Fin k) (Fin k) Q
   simp [Matrix.mulVec, dotProduct, Matrix.one_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, hL⟩`. Set `G : GL (Fin k) Qq` to `Units.mk g g⁻¹ (Matrix.mul_nonsing_inv g hg) (Matrix.nonsing_inv_mul g hg)`. Establish `hG : (G : Matrix (Fin k) (Fin k) Qq) = g` using `rfl`. Use `⟨G, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hL, ← colSpan_eq, hG]`. Introduce and unpack `⟨g, hL⟩`. Use `⟨(g : Matrix (Fin k) (Fin k) Qq), (Matrix.isUnit_iff_isUnit_det _).mp g.isUnit, ?_⟩` and prove the remaining obligations. Rewrite using `[hL, colSpan_eq]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLattice_iff (L : Submodule W (Fin k → Qq)) : IsLattice W L ↔ ∃ g : GL (Fin k) Qq, L = gMap W g (stdL W) := by
   constructor
@@ -77,17 +77,17 @@ theorem isLattice_iff (L : Submodule W (Fin k → Qq)) : IsLattice W L ↔ ∃ g
     rw [hL, colSpan_eq]
 
 /- English proof (translation)
-Use `show x ∈ Submodule.span W (Set.range fun c : Fin k => fun i => (1 : Matrix (Fin k) (Fin k) Qq) i c) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `hy`. Introduce `a`. Distinguish the cases in `h : a = c`. Substitute `h; exact ⟨1, by simp⟩` using the available equality. Conclude with `⟨0, by simp [Matrix.one_apply_ne h]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `zero => intro a; exact ⟨0, by simp⟩`. Consider the case `add y z _ _ hy hz`. Introduce `a`. Take `⟨u, hu⟩` from `hy a`. Take `⟨v, hv⟩` from `hz a`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨u + v, by simp [hu, hv]⟩`. Consider the case `smul w y _ hy`. Introduce `a`. Take `⟨u, hu⟩` from `hy a`. Conclude with `⟨w * u, by simp [hu, Algebra.smul_def]⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Simplify using `only [RingHom.mem_range] at h`. Use `choose w hw using h`. Establish `e : x = ∑ c, w c • (fun i => (1 : Matrix (Fin k) (Fin k) Qq) i c)`. Use extensionality with `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finset.sum_apply, Matrix.one_apply, Algebra.smul_def, hw]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem mem_stdL (x : Fin k → Qq) : x ∈ stdL (k := k) (Qq := Qq) W ↔ ∀ a, x a ∈ (algebraMap W Qq).range := by
   show x ∈ Submodule.span W (Set.range fun c : Fin k => fun i => (1 : Matrix (Fin k) (Fin k) Qq) i c) ↔ _
@@ -120,9 +120,9 @@ theorem mem_stdL (x : Fin k → Qq) : x ∈ stdL (k := k) (Qq := Qq) W ↔ ∀ a
     exact Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[← colSpan_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h a b`. Conclude with `(mem_stdL W _).1 (h (Submodule.subset_span ⟨b, rfl⟩)) a`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[colSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `(mem_stdL W _).2 fun a => h a c`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem gMap_std_le (g : GL (Fin k) Qq) :
     gMap W g (stdL W) ≤ stdL W ↔ ∀ a b, (g : Matrix (Fin k) (Fin k) Qq) a b ∈ (algebraMap W Qq).range := by
@@ -151,16 +151,16 @@ def stabStd : Subgroup (GL (Fin k) Qq) where
     exact (show gMap W a (stdL W) = stdL W from ha).symm
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_stabStd (g : GL (Fin k) Qq) : g ∈ stabStd (k := k) (Qq := Qq) W ↔ gMap W g (stdL W) = stdL W := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_stabStd]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : g⁻¹ ∈ stabStd (k` using `k) (Qq := Qq) W := inv_mem ((mem_stabStd W g).2 h)`. Rewrite `h'` using `[mem_stabStd]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨(gMap_std_le W g).1 h.le, (gMap_std_le W g⁻¹).1 h'.le⟩`. Introduce and unpack `⟨h1, h2⟩`. Use `le_antisymm ((gMap_std_le W g).2 h1) ?_` and prove the remaining obligations. Establish `mono : ∀ {A B : Submodule W (Fin k → Qq)}, A ≤ B → gMap W g A ≤ gMap W g B` using `fun hAB => Submodule.map_mono hAB`. Establish `h3` using `mono ((gMap_std_le W g⁻¹).2 h2)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[← gMap_mul, mul_inv_cancel, gMap_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem stabStd_iff (g : GL (Fin k) Qq) : g ∈ stabStd (k := k) (Qq := Qq) W ↔
     (∀ a b, (g : Matrix (Fin k) (Fin k) Qq) a b ∈ (algebraMap W Qq).range) ∧
@@ -179,9 +179,9 @@ theorem stabStd_iff (g : GL (Fin k) Qq) : g ∈ stabStd (k := k) (Qq := Qq) W �
     rwa [← gMap_mul, mul_inv_cancel, gMap_one] at h3
 
 /- English proof (translation)
-Rewrite using `[mem_stabStd, gMap_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Rewrite using `[e, ← gMap_mul, inv_mul_cancel, gMap_one]`. Introduce `e`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `gMap_inj W h⁻¹` to reduce the goal to its premises. Rewrite using `[e, ← gMap_mul, inv_mul_cancel, gMap_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem gMap_std_eq_iff (g h : GL (Fin k) Qq) :
     gMap W g (stdL W) = gMap W h (stdL W) ↔ h⁻¹ * g ∈ stabStd (k := k) (Qq := Qq) W := by
@@ -204,16 +204,16 @@ def tupOf (g : Fin nV → GL (Fin k) Qq) : Fin nV → Submodule W (Fin k → Qq)
 def stabTup : Subgroup (Fin nV → GL (Fin k) Qq) := Subgroup.pi Set.univ fun _ => stabStd W
 
 /- English proof (translation)
-Use `show g ∈ Subgroup.pi Set.univ _ ↔ _`. Simplify using `[Subgroup.mem_pi]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_stabTup (g : Fin nV → GL (Fin k) Qq) : g ∈ stabTup (nV := nV) (k := k) (Qq := Qq) W ↔ ∀ v, g v ∈ stabStd W := by
   show g ∈ Subgroup.pi Set.univ _ ↔ _
   simp [Subgroup.mem_pi]
 
 /- English proof (translation)
-Rewrite using `[mem_stabTup]`. Prove the components needed by the constructor for the conclusion. Introduce `H v`. Conclude with `(gMap_std_eq_iff W (g v) (h v)).1 (congrFun H v)`. Introduce `H`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `v`. Conclude with `(gMap_std_eq_iff W (g v) (h v)).2 (H v)`.
+A detailed English derivation is pending.
 -/
 theorem tupOf_eq_iff (g h : Fin nV → GL (Fin k) Qq) :
     tupOf W g = tupOf W h ↔ h⁻¹ * g ∈ stabTup (nV := nV) (k := k) (Qq := Qq) W := by
@@ -226,14 +226,14 @@ theorem tupOf_eq_iff (g h : Fin nV → GL (Fin k) Qq) :
     exact (gMap_std_eq_iff W (g v) (h v)).2 (H v)
 
 /- English proof (translation)
-Use `choose g hg using fun v => (isLattice_iff W (L v)).1 (hL v)`. Conclude with `⟨g, funext hg⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_tupOf (L : Fin nV → Submodule W (Fin k → Qq)) (hL : ∀ v, IsLattice W (L v)) : ∃ g, L = tupOf W g := by
   choose g hg using fun v => (isLattice_iff W (L v)).1 (hL v)
   exact ⟨g, funext hg⟩
 
 /- English proof (translation)
-The claim follows from `(isLattice_iff W _).2 ⟨g v, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem tupOf_lat (g : Fin nV → GL (Fin k) Qq) (v : Fin nV) : IsLattice W (tupOf W g v) := (isLattice_iff W _).2 ⟨g v, rfl⟩
 

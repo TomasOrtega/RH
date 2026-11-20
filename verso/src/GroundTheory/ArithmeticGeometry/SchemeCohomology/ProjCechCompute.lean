@@ -29,14 +29,14 @@ def filterL (S : (Fin (n + 1) → ℤ) → Prop) : Laurent A n →+ Laurent A n 
     simp only [AddMonoidAlgebra.coeff_add, Finsupp.filter_add]
 
 /- English proof (translation)
-The claim follows from `Finsupp.filter_apply _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma coeff_filterL (S : (Fin (n + 1) → ℤ) → Prop) (ℓ : Laurent A n) (m : Fin (n + 1) → ℤ) :
     (filterL S ℓ).coeff m = if S m then ℓ.coeff m else 0 :=
   Finsupp.filter_apply _ _ _
 
 /- English proof (translation)
-Use `map_zsmul (AddMonoidAlgebra.coeffAddEquiv (R := A) (M := Fin (n + 1) → ℤ)) z ℓ` as an intermediate fact. Conclude with `congrArg (fun f : (Fin (n + 1) → ℤ) →₀ A => f m) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma coeff_zsmul' (z : ℤ) (ℓ : Laurent A n) (m : Fin (n + 1) → ℤ) :
     (z • ℓ).coeff m = z • ℓ.coeff m := by
@@ -44,7 +44,7 @@ lemma coeff_zsmul' (z : ℤ) (ℓ : Laurent A n) (m : Fin (n + 1) → ℤ) :
   exact congrArg (fun f : (Fin (n + 1) → ℤ) →₀ A => f m) this
 
 /- English proof (translation)
-Rewrite using `[AddMonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma coeff_sum' {α : Type*} (s : Finset α) (f : α → Laurent A n) (m : Fin (n + 1) → ℤ) :
     (∑ a ∈ s, f a).coeff m = ∑ a ∈ s, (f a).coeff m := by
@@ -53,9 +53,9 @@ lemma coeff_sum' {α : Type*} (s : Finset α) (f : α → Laurent A n) (m : Fin 
 def IsSel (j : Fin (n + 1)) (m : Fin (n + 1) → ℤ) : Prop := 0 ≤ m j ∧ ∀ j' < j, m j' < 0
 
 /- English proof (translation)
-Use `push Not at h`. Set `S` to `Finset.univ.filter fun j => 0 ≤ m j`. Establish `hS : S.Nonempty`. Take `⟨j, hj⟩` from `h`. Conclude with `⟨j, by simp [S, hj]⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨S.min' hS, (Finset.mem_filter.mp (S.min'_mem hS)).2, fun j' hj' => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `absurd (S.min'_le j' (by simp [S, hc])) (not_le.mpr hj')`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 lemma exists_isSel {m : Fin (n + 1) → ℤ} (h : ¬ ∀ j, m j < 0) : ∃ j, IsSel j m := by
   push Not at h
@@ -69,7 +69,7 @@ lemma exists_isSel {m : Fin (n + 1) → ℤ} (h : ¬ ∀ j, m j < 0) : ∃ j, Is
   exact absurd (S.min'_le j' (by simp [S, hc])) (not_le.mpr hj')
 
 /- English proof (translation)
-Break down `lt_trichotomy j j' with hlt | heq | hgt` into its components or cases. Conclude with `absurd h.1 (not_le.mpr (h'.2 j hlt))`. Conclude with `heq`. Conclude with `absurd h'.1 (not_le.mpr (h.2 j' hgt))`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma isSel_unique {m : Fin (n + 1) → ℤ} {j j' : Fin (n + 1)} (h : IsSel j m) (h' : IsSel j' m) :
     j = j' := by
@@ -79,13 +79,13 @@ lemma isSel_unique {m : Fin (n + 1) → ℤ} {j j' : Fin (n + 1)} (h : IsSel j m
   · exact absurd h'.1 (not_le.mpr (h.2 j' hgt))
 
 /- English proof (translation)
-Introduce `h'` and use `absurd h.1 (not_le.mpr (h' j))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma not_allNeg_of_isSel {m : Fin (n + 1) → ℤ} {j : Fin (n + 1)} (h : IsSel j m) :
     ¬ ∀ j, m j < 0 := fun h' => absurd h.1 (not_le.mpr (h' j))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `(lval_mem σ i) m h` as an intermediate fact. Take `⟨j, hj⟩ : ∃ j, j ∉ Set.range i` from `by by_contra! hc`. Conclude with `hi fun j => hc j`. Conclude with `absurd (this.2 j hj) (not_le.mpr (hm j))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma coeff_lval_eq_zero {k : ℤ} {p : ℕ} (σ : Cochain (twistAb A n k) (cover A n) p)
     {i : Fin (p + 1) → Fin (n + 1)} (hi : ¬ Function.Surjective i) {m : Fin (n + 1) → ℤ}
@@ -98,21 +98,21 @@ lemma coeff_lval_eq_zero {k : ℤ} {p : ℕ} (σ : Cochain (twistAb A n k) (cove
   exact absurd (this.2 j hj) (not_le.mpr (hm j))
 
 /- English proof (translation)
-Establish `hmem : ∀ i : Fin (p + 1) → Fin (n + 1), ∑ j, filterL (IsSel j) (lval σ (Fin.cons j i)) ∈ LDeg A (Set.range i) k`. Introduce `i`. Use `AddSubgroup.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Introduce `m hm`. Rewrite `hm` using `[coeff_filterL]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hs : IsSel j m`. Use `swap`. Rewrite `hm` using `[if_neg hs]`. Conclude with `absurd rfl hm`. Rewrite `hm` using `[if_pos hs]`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hsum, hnn⟩` from `lval_mem σ (Fin.cons j i) m hm`. Use `⟨hsum, fun j' hj' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hjj : j' = j`. Conclude with `hjj ▸ hs.1`. Use `hnn j' fun ⟨a, ha⟩ => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the cases of `a using Fin.cases with`. Consider the case `zero => exact hjj (by simpa using ha.symm)`. Consider the case `succ a => exact hj' ⟨a, by simpa using ha⟩`. Use `⟨ofL fun i => ⟨_, hmem i⟩, cochain_ext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[lval_d]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Simplify using `only [lval_ofL]`. Apply `AddMonoidAlgebra.coeff_injective` to reduce the goal to its premises. Use extensionality with `m`. Simplify using `only [coeff_sum', coeff_zsmul', coeff_filterL]`. Distinguish the cases in `hm : ∀ j, m j < 0`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hneg i m hm]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_zero fun j _ => ?_, smul_zero]`. Rewrite using `[if_neg fun hs => not_allNeg_of_isSel hs hm]`. Take `⟨j₀, hj₀⟩` from `exists_isSel hm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hsel : ∀ (f : Fin (n + 1) → A), (∑ j, if IsSel j m then f j else 0) = f j₀` using `fun f => by`. Rewrite using `[Finset.sum_eq_single j₀ (fun j _ hj => if_neg fun hs => hj (isSel_unique hs hj₀)) (fun h => absurd (Finset.mem_univ _) h), if_pos hj₀]`. Repeatedly rewrite using `[hsel]`. Establish `hc` using `congrArg (fun ℓ => (ℓ : Laurent A n).coeff m) (lval_d σ (Fin.cons j₀ i))`. Simplify using `only [hσ, lval_zero, coeff_sum', coeff_zsmul'] at hc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `(0 : Laurent A n).coeff m = _ at hc`. Rewrite `hc` using `[Fin.sum_univ_succ, cons_comp_succAbove_zero]`. Simplify using `only [cons_comp_succAbove_succ, Fin.val_zero, pow_zero, one_smul, Fin.val_succ, pow_succ, mul_neg, mul_one, neg_smul, Finset.sum_neg_distrib] at hc`. Rewrite `hc` using `[AddMonoidAlgebra.coeff_zero, Finsupp.coe_zero, Pi.zero_apply]`. Take the linear combination `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_d_eq_of_coeff_allNeg {k : ℤ} {p : ℕ}
     (σ : Cochain (twistAb A n k) (cover A n) (p + 1)) (hσ : d _ _ (p + 1) σ = 0)
@@ -164,9 +164,9 @@ theorem exists_d_eq_of_coeff_allNeg {k : ℤ} {p : ℕ}
     linear_combination hc
 
 /- English proof (translation)
-Take `⟨p, rfl⟩ : ∃ p, q = p + 1` from `⟨q - 1, by omega⟩`. Use `subsingleton_of_forall_eq 0 fun c => ?_` and prove the remaining obligations. Take `⟨σ, hσ, rfl⟩` from `exists_cls c`. Rewrite using `[cls_eq_zero_iff, coboundaries_succ]`. Use `exists_d_eq_of_coeff_allNeg σ hσ fun i m hm => coeff_lval_eq_zero σ (fun hi => ?_) hm` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fintype.card_le_of_surjective i hi` as an intermediate fact. Simplify using `only [Fintype.card_fin] at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem subsingleton_cechH_of_lt {k : ℤ} {q : ℕ} (hq0 : 0 < q) (hqn : q < n) :
     Subsingleton (cechH (twistAb A n k) (cover A n) q) := by
@@ -180,7 +180,7 @@ theorem subsingleton_cechH_of_lt {k : ℤ} {q : ℕ} (hq0 : 0 < q) (hqn : q < n)
   omega
 
 /- English proof (translation)
-The claim follows from `CechOrdered.subsingleton_cechH (by simp; omega) (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_cechH_of_gt {k : ℤ} {q : ℕ} (hq : n < q) :
     Subsingleton (cechH (twistAb A n k) (cover A n) q) :=
@@ -202,9 +202,9 @@ lemma topCoeff_apply {k : ℤ} (σ : Cochain (twistAb A n k) (cover A n) n) (e :
     topCoeff σ e = (lval σ id).coeff e.1 := rfl
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite `hm` using `[coeff_filterL]`. Distinguish the cases in `hS : S m`. Rewrite `hm` using `[if_pos hS]`. Conclude with `h m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[if_neg hS]`. Conclude with `absurd rfl hm`.
+A detailed English derivation is pending.
 -/
 lemma filterL_mem_LDeg {s : Set (Fin (n + 1))} {k : ℤ} (S : (Fin (n + 1) → ℤ) → Prop)
     {ℓ : Laurent A n} (h : ℓ ∈ LDeg A s k) : filterL S ℓ ∈ LDeg A s k := by
@@ -221,14 +221,14 @@ def posPart {k : ℤ} {q : ℕ} (σ : Cochain (twistAb A n k) (cover A n) q) :
   ofL fun i => ⟨filterL (fun e => ¬ ∀ j, e j < 0) (lval σ i), filterL_mem_LDeg _ (lval_mem σ i)⟩
 
 /- English proof (translation)
-Simplify using `[posPart]`.
+Simplify using the standard rewrite rules.
 -/
 lemma lval_posPart {k : ℤ} {q : ℕ} (σ : Cochain (twistAb A n k) (cover A n) q) (i) :
     lval (posPart σ) i = filterL (fun e => ¬ ∀ j, e j < 0) (lval σ i) := by
   simp [posPart]
 
 /- English proof (translation)
-Use `cochain_ext fun i => ?_` and prove the remaining obligations. Rewrite using `[lval_d, lval_posPart, lval_d, map_sum]`. Simplify using `only [lval_posPart, map_zsmul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma d_posPart {k : ℤ} {q : ℕ} (σ : Cochain (twistAb A n k) (cover A n) q) :
     d _ _ q (posPart σ) = posPart (d _ _ q σ) := by
@@ -237,9 +237,9 @@ lemma d_posPart {k : ℤ} {q : ℕ} (σ : Cochain (twistAb A n k) (cover A n) q)
   simp only [lval_posPart, map_zsmul]
 
 /- English proof (translation)
-Substitute `hq` using the available equality. Use extensionality with `e`. Rewrite using `[topCoeff_apply, lval_d, coeff_sum', Finsupp.coe_zero, Pi.zero_apply]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_zsmul', coeff_lval_eq_zero τ ?_ e.2.1, smul_zero]`.
+Substitute using the available equality. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `hs`. Take `⟨b, hb⟩` from `hs a`. Conclude with `Fin.succAbove_ne a b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma topCoeff_d {k : ℤ} {q : ℕ} (hq : q + 1 = n) (τ : Cochain (twistAb A n k) (cover A n) q) :
     topCoeff (hq ▸ d _ _ q τ) = 0 := by
@@ -253,7 +253,7 @@ lemma topCoeff_d {k : ℤ} {q : ℕ} (hq : q + 1 = n) (τ : Cochain (twistAb A n
   exact Fin.succAbove_ne a b hb
 
 /- English proof (translation)
-The claim follows from `cochain_ext fun i => by rw [lval_posPart, lval_zero, map_zero]`.
+A detailed English derivation is pending.
 -/
 lemma posPart_zero {k : ℤ} {q : ℕ} : posPart (0 : Cochain (twistAb A n k) (cover A n) q) = 0 :=
   cochain_ext fun i => by rw [lval_posPart, lval_zero, map_zero]
@@ -275,27 +275,25 @@ lemma topMap_cls {k : ℤ} {m : ℕ} (σ : Cochain (twistAb A (m + 1) k) (cover 
     (hσ : d _ _ (m + 1) σ = 0) : topMap (cls σ hσ) = topCoeff σ := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Take `⟨σ, hσ, rfl⟩` from `exists_cls c`. Rewrite `hc` using `[topMap_cls]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hneg0 : ∀ e, (∀ j, e j < 0) → (lval σ id).coeff e = 0` using `fun e he => by`. Distinguish the cases in `hs : ∑ j, e j = k`. Conclude with `DFunLike.congr_fun hc ⟨e, he, hs⟩`. Assume the negation of the conclusion as `h`. Conclude with `hs (lval_mem σ id e h).1`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsame : ∀ t, StrictMono t → σ t = posPart σ t` using `fun t ht => by`. Take `rfl` from `ht.eq_id`. Rewrite using `[← theta_lval σ id, ← theta_lval (posPart σ) id]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `lval σ id = lval (posPart σ) id`. Rewrite using `[lval_posPart]`. Apply `AddMonoidAlgebra.coeff_injective` to reduce the goal to its premises. Use extensionality with `e`. Rewrite using `[coeff_filterL]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `split_ifs with he`. Conclude with `hneg0 e he`. Both sides reduce to the same expression. Establish `hcong` using `CechOrdered.altProj_congr (m + 1) hsame`. Establish `hσp : d _ _ (m + 1) (posPart σ) = 0` using `by rw [d_posPart, hσ, posPart_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨τ, hτ⟩` from `exists_d_eq_of_coeff_allNeg (posPart σ) hσp fun i e he => by`. Rewrite using `[lval_posPart, coeff_filterL, if_neg (not_not_intro he)]`. Rewrite using `[← CechOrdered.cls_altProj m σ hσ, cls_eq_zero_iff, coboundaries_succ, hcong, ← hτ, ← CechOrdered.d_altProj]`. Conclude with `⟨_, rfl⟩`. Introduce `ν`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ℓ : Laurent A (m + 1)` to `∑ e ∈ ν.support, AddMonoidAlgebra.single e.1 (ν e)`. Establish `hℓ : ∀ i : Fin (m + 2) → Fin (m + 2), Set.range i = Set.univ → ℓ ∈ LDeg A (Set.range i) k` using `fun i h => AddSubgroup.sum_mem _ fun e _ => single_mem_LDeg ⟨e.2.2, fun j hj => (hj (h ▸ Set.mem_univ j)).elim⟩ _`. Set `σ₀ : Cochain (twistAb A (m + 1) k) (cover A (m + 1)) (m + 1)` to `ofL fun i => if h : Set.range i = Set.univ then ⟨ℓ, hℓ i h⟩ else 0`. Establish `hσ : d _ _ (m + 1) (CechOrdered.altProj _ _ (m + 1) σ₀) = 0`. Rewrite using `[CechOrdered.d_altProj, CechOrdered.altProj_eq_zero (by simp)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨cls _ hσ, ?_⟩` and prove the remaining obligations. Rewrite using `[topMap_cls]`. Use extensionality with `e`. Rewrite using `[topCoeff_apply]`. Establish `h1 : lval (CechOrdered.altProj _ _ (m + 1) σ₀) id = lval σ₀ id`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Unfold `lval`. Rewrite using `[CechOrdered.altProj_apply_of_strictMono _ _ strictMono_id]`. Rewrite using `[h1, lval_ofL, dif_pos Set.range_id]`. Express the relevant statement in the definitionally equal form `(∑ e ∈ ν.support, AddMonoidAlgebra.single e.1 (ν e)).coeff e.1 = ν e`. Rewrite using `[coeff_sum']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`. Rewrite using `[Finset.sum_eq_single e]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[if_neg fun h => hb (Subtype.ext h)]`.
-
-Introduce `he`. Rewrite using `[if_pos rfl]`. Conclude with `Finsupp.notMem_support_iff.mp he`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topMap_bijective {k : ℤ} {m : ℕ} :
     Function.Bijective (topMap (A := A) (k := k) (m := m)) := by
@@ -362,9 +360,9 @@ def cechHTopEquiv (k : ℤ) (m : ℕ) :
   AddEquiv.ofBijective topMap topMap_bijective
 
 /- English proof (translation)
-Use `⟨(h 0).1, fun j' _ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hn : ∃ j, j ≠ j'`. Take `⟨j, hj⟩` from `hn`. Conclude with `(h j).2 j' fun h' => hj (Set.mem_singleton_iff.mp h').symm`. Use `push Not at hn`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsum` using `(h 0).1`. Rewrite `hsum` using `[Finset.sum_eq_single j' (fun b _ hb => absurd (hn b) hb) (by simp)]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma allowed_empty_of_forall {k : ℤ} (hk : 0 ≤ k) {m : Fin (n + 1) → ℤ}
     (h : ∀ j, Allowed {j} k m) : Allowed ∅ k m := by
@@ -378,9 +376,9 @@ lemma allowed_empty_of_forall {k : ℤ} (hk : 0 ≤ k) {m : Fin (n + 1) → ℤ}
     omega
 
 /- English proof (translation)
-Use `⟨(h 0).1, fun j' _ => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j : Fin (n + 1), j ≠ j' := by`. Distinguish the cases in `h0 : j' = 0`. Conclude with `⟨1, by rw [h0]; exact Fin.ne_of_gt (Fin.pos_iff_ne_zero.mpr (by`. Simplify using `[Fin.ext_iff]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Use the proof step `omega))⟩`. Conclude with `⟨0, fun h' => h0 h'.symm⟩`. Conclude with `(h j).2 j' fun h' => hj (Set.mem_singleton_iff.mp h').symm`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma allowed_empty_of_forall' (hn : 0 < n) {k : ℤ} {m : Fin (n + 1) → ℤ}
     (h : ∀ j, Allowed {j} k m) : Allowed ∅ k m := by
@@ -393,11 +391,11 @@ lemma allowed_empty_of_forall' (hn : 0 < n) {k : ℤ} {m : Fin (n + 1) → ℤ}
   exact (h j).2 j' fun h' => hj (Set.mem_singleton_iff.mp h').symm
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun τ => lval τ (Fin.cons (j 0) j' : Fin 2 → Fin (n + 1))) hσ`. Simplify using `only [lval_d, lval_zero] at h`. Rewrite `h` using `[Fin.sum_univ_succ, Fin.sum_univ_succ, Fin.sum_univ_zero, add_zero]`. Establish `e0 : (Fin.cons (j 0) j' : Fin 2 → Fin (n + 1)) ∘ (0 : Fin 2).succAbove = j'`. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `fin_cases a`. Both sides reduce to the same expression. Establish `e1 : (Fin.cons (j 0) j' : Fin 2 → Fin (n + 1)) ∘ (Fin.succ (0 : Fin 1)).succAbove = j`. Use function extensionality and compare the values at `a`. Use `fin_cases a`.
+Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `h` using `[e0, e1]`. Simplify using `only [Fin.val_zero, pow_zero, one_smul, Fin.val_succ, zero_add, pow_one, neg_smul] at h`. Conclude with `(sub_eq_zero.mp ((sub_eq_add_neg _ _).trans h)).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma lval_eq_of_cocycle {k : ℤ} (σ : Cochain (twistAb A n k) (cover A n) 0)
     (hσ : d _ _ 0 σ = 0) (j j' : Fin 1 → Fin (n + 1)) : lval σ j = lval σ j' := by
@@ -413,7 +411,7 @@ lemma lval_eq_of_cocycle {k : ℤ} (σ : Cochain (twistAb A n k) (cover A n) 0)
   exact (sub_eq_zero.mp ((sub_eq_add_neg _ _).trans h)).symm
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Set.mem_range, Set.mem_singleton_iff]`. Conclude with `⟨fun ⟨a, ha⟩ => by rw [← ha, Fin.fin_one_eq_zero a], fun h => ⟨0, h.symm⟩⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 lemma range_const_fin_one (j : Fin 1 → Fin (n + 1)) : Set.range j = {j 0} := by
   ext x
@@ -434,11 +432,11 @@ def zeroVal {k : ℤ} (hk : 0 ≤ k ∨ 0 < n) :
   map_add' σ τ := Subtype.ext (lval_add σ.1 τ.1 _)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `σ hσ`. Establish `h0 : lval σ.1 (fun _ => 0) = 0` using `congrArg Subtype.val hσ`. Apply `Subtype.ext` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `cochain_ext fun j => ?_` and prove the remaining obligations. Rewrite using `[lval_eq_of_cocycle σ.1 ((mem_cocycles _).1 σ.2) j (fun _ => 0), h0]`. Conclude with `(lval_zero j).symm`. Introduce `ℓ`. Set `σ : Cochain (twistAb A n k) (cover A n) 0` to `ofL fun i => ⟨ℓ.1, LDeg_mono (Set.empty_subset _) k ℓ.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hσ : d _ _ 0 σ = 0`. Use `cochain_ext fun i => ?_` and prove the remaining obligations. Rewrite using `[lval_d, lval_zero, Fin.sum_univ_succ, Fin.sum_univ_succ, Fin.sum_univ_zero]`. Simplify using `[σ]`. Conclude with `⟨⟨σ, (mem_cocycles _).2 hσ⟩, Subtype.ext (by simp [zeroVal, σ])⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma zeroVal_bijective {k : ℤ} (hk : 0 ≤ k ∨ 0 < n) :
     Function.Bijective (zeroVal (A := A) hk) := by
@@ -466,9 +464,9 @@ def cechHZeroLEquiv {k : ℤ} (hk : 0 ≤ k ∨ 0 < n) :
     (AddEquiv.ofBijective _ (zeroVal_bijective hk))
 
 /- English proof (translation)
-Introduce `m hm`. Distinguish the cases in `hr : m ∈ Set.range (expHom n)`. Take `⟨e, rfl⟩` from `hr`. Rewrite `hm` using `[coeff_toLaurent_expHom]`. Establish `h` using `hp hm`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨?_, fun j _ => by simp [expHom]⟩` and prove the remaining obligations. Rewrite using `[sum_expHom, Finsupp.degree_eq_weight_one]`. Conclude with `h` after adjusting the coercions. Conclude with `absurd (coeff_toLaurent_eq_zero hr) hm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma toLaurent_mem_LDeg_empty {k : ℕ} {p : MvPolynomial (Fin (n + 1)) A}
     (hp : p ∈ homogeneousSubmodule (Fin (n + 1)) A k) :

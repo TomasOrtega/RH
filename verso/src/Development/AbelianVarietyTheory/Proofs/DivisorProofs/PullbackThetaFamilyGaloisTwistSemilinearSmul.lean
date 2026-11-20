@@ -9,9 +9,9 @@ open GlobalTheory.Mum GlobalTheory.Mum.Conj
 namespace GlobalTheory.Mum.Conj
 
 /- English proof (translation)
-Introduce `R _ _ D N σ c s s' h`. Rewrite `h` using `[ReciprocityTheory.ChartRestriction.G.DVR.isSmul_iff]`. Substitute `h` using the available equality. Introduce `α j`. Establish `e` using `map_smulₛₗ (GlobalTheory.FieldBaseChange.famPull D (Kb R) (TwF σ) GlobalTheory.allSixLaws.1.globalFns N) c s`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `congrArg (fun q : Fam D (TwF σ) N => (q.s α).f j) e`.
+A detailed English derivation is pending.
 -/
 theorem famTw_isSmul : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (N : ℕ)
     (σ : Kb R →ₐ[FractionRing R] Kb R) (c : Kb R) (s s' : Fam D (Kb R) N),

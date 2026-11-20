@@ -5,7 +5,7 @@ import CompanionTheory.HarishChandraModules.LowKTypeMultiplicity.DiscreteSeriesC
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `CompanionTheory.D.DSIC.discrete_series_infinitesimal_character`.
+A detailed English derivation is pending.
 -/
 theorem capelliDiscreteSeriesInfChar : PI.DSInfCharCap.DSInfCharCap :=
   CompanionTheory.D.DSIC.discrete_series_infinitesimal_character

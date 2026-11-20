@@ -14,28 +14,28 @@ local notation "ι" => AdeleBaseChange.adeleMap F E
 local notation "BB" => AdeleBaseChange.adeleBasis (K := F) (L := E) (Dat.b D)
 
 /- English proof (translation)
-Rewrite using `[AdeleBaseChange.adeleBasis_apply, D.b0, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem basis0 : BB 0 = 1 := by
   rw [AdeleBaseChange.adeleBasis_apply, D.b0, map_one]
 
 /- English proof (translation)
-Rewrite using `[AdeleBaseChange.adeleBasis_apply, D.b1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem basis1 : BB 1 = rt D.θ := by
   rw [AdeleBaseChange.adeleBasis_apply, D.b1]
 
 /- English proof (translation)
-Rewrite using `[basis0, basis1, Algebra.smul_def, Algebra.smul_def, AdeleBaseChange.algebraMap_adeleRing, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem mkE_eq (u t : A F) : D.mkE u t = u • BB 0 + t • BB 1 := by
   rw [basis0, basis1, Algebra.smul_def, Algebra.smul_def, AdeleBaseChange.algebraMap_adeleRing, mul_one]
   rfl
 
 /- English proof (translation)
-Establish `h : D.mkE u t = ∑ j, (![u, t] : Fin 2 → A F) j • BB j`. Simplify using `[Fin.sum_univ_two, mkE_eq]`. Use function extensionality and compare the values at `i`. Rewrite using `[h]`. Express the relevant statement in the definitionally equal form `(BB).repr _ i = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Module.Basis.repr_sum_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem co_mkE (u t : A F) : D.co (D.mkE u t) = ![u, t] := by
   have h : D.mkE u t = ∑ j, (![u, t] : Fin 2 → A F) j • BB j := by
@@ -46,16 +46,16 @@ private theorem co_mkE (u t : A F) : D.co (D.mkE u t) = ![u, t] := by
   rw [Module.Basis.repr_sum_self]
 
 /- English proof (translation)
-Simplify using `[co_mkE]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem coordinate_embedNorm_zero (u t : A F) : D.co (D.mkE u t) 0 = u := by simp [co_mkE]
 /- English proof (translation)
-Simplify using `[co_mkE]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem coordinate_embedNorm_one (u t : A F) : D.co (D.mkE u t) 1 = t := by simp [co_mkE]
 
 /- English proof (translation)
-Rewrite using `[mkE_eq]`. Use `(BB).sum_repr z` as an intermediate fact. Rewrite `this` using `[Fin.sum_univ_two]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mkE_co (z : A E) : D.mkE (D.co z 0) (D.co z 1) = z := by
   rw [mkE_eq]
@@ -64,15 +64,15 @@ private theorem mkE_co (z : A E) : D.mkE (D.co z 0) (D.co z 1) = z := by
   exact this
 
 /- English proof (translation)
-Rewrite using `[← map_mul, ← sq, D.sq, AdeleBaseChange.adeleMap_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem θ_mul : rt D.θ * rt D.θ = ι (rt D.δ) := by
   rw [← map_mul, ← sq, D.sq, AdeleBaseChange.adeleMap_algebraMap]
 
 /- English proof (translation)
-Establish `hm : D.mkE u t * rt D.θ = D.mkE (rt D.δ * t) u`. Establish `h` using `θ_mul D`. Simplify using `only [Dat.mkE, map_mul]`. Take the linear combination `(ι t) * h`. Rewrite using `[Algebra.norm_eq_matrix_det (BB), Matrix.det_fin_two]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Algebra.leftMulMatrix_eq_repr_mul, basis0, basis1, mul_one, hm]`. Express the relevant statement in the definitionally equal form `D.co _ 0 * D.co _ 1 - D.co _ 0 * D.co _ 1 = _`. Simplify using `only [coordinate_embedNorm_zero, coordinate_embedNorm_one]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem norm_mkE (u t : A F) :
     Algebra.norm (A F) (D.mkE u t) = u ^ 2 - rt D.δ * t ^ 2 := by
@@ -89,7 +89,7 @@ private theorem norm_mkE (u t : A F) :
 variable [IsTotallyReal F]
 
 /- English proof (translation)
-Establish `h` using `D.neg (InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v))`. Establish `e : TR.pInf F (rt D.δ) v = InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) D.δ` using `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe (IsTotallyReal.isReal v) (WithAbs.toAbs _ D.δ)`. Rewrite using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pInf_δ (v : InfinitePlace F) : TR.pInf F (rt D.δ) v < 0 := by
   have h := D.neg (InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v))
@@ -100,11 +100,11 @@ private theorem pInf_δ (v : InfinitePlace F) : TR.pInf F (rt D.δ) v < 0 := by
 
 include D in
 /- English proof (translation)
-Establish `hn : ((nu F h : (A F)ˣ) : A F) = Algebra.norm (A F) h.val.det` using `rfl`. Establish `hv : TR.pInf F (nu F h : A F) v = (TR.pInf F (D.co h.val.det 0) v) ^ 2 - TR.pInf F (rt D.δ) v * (TR.pInf F (D.co h.val.det 1) v) ^ 2`. Rewrite using `[hn, ← mkE_co D h.val.det, norm_mkE, coordinate_embedNorm_zero, coordinate_embedNorm_one]`. Simplify using `[map_sub, map_mul, map_pow]`. Establish `hne : TR.pInf F (nu F h : A F) v ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h1 : TR.pInf F (nu F h : A F) * TR.pInf F (((nu F h)⁻¹ : (A F)ˣ) : A F) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `h2` using `congrFun h1 v`. Simplify using `[h0] at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hd` using `pInf_δ D v`. Establish `hge : 0 ≤ TR.pInf F (nu F h : A F) v`. Rewrite using `[hv]`. Use polynomial arithmetic with `[sq_nonneg (TR.pInf F (D.co h.val.det 0) v), sq_nonneg (TR.pInf F (D.co h.val.det 1) v)]`. Conclude with `lt_of_le_of_ne hge (Ne.symm hne)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem nu_pos (h : GL (Fin 2) (A E)) (v : InfinitePlace F) :
     0 < TR.pInf F (nu F h : A F) v := by
@@ -126,7 +126,7 @@ private theorem nu_pos (h : GL (Fin 2) (A E)) (v : InfinitePlace F) :
   exact lt_of_le_of_ne hge (Ne.symm hne)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `TR.pInf F (1 - TR.sInf F 1 + TR.sInf F _) = _`. Establish `h : ∀ x, TR.pInf F (TR.sInf F x) = x` using `fun x => (TR.infEq F).symm_apply_apply x`. Simplify using `[h]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem pInf_id (u : (TR.Rinf F)ˣ) : TR.pInf F (TR.infId F u).val = u.val := by
   change TR.pInf F (1 - TR.sInf F 1 + TR.sInf F _) = _
@@ -137,13 +137,13 @@ end UpperTheory.ConvolutionTheory.R2.G.similitudePositivity
 
 open UpperTheory.ConvolutionTheory.R2.G.similitudePositivity in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D h`. Establish `hpos` using `nu_pos D h`. Set `r : TR.Rinf F` to `TR.pInf F (nu F h : A F)`. Establish `hroot : ∀ w, 0 < Real.sqrt (Real.sqrt (r w))` using `fun w => Real.sqrt_pos.2 (Real.sqrt_pos.2 (hpos w))`. Set `d : (TR.Rinf F)ˣ` to `⟨fun w => Real.sqrt (Real.sqrt (r w)), fun w => (Real.sqrt (Real.sqrt (r w)))⁻¹,`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use function extensionality and compare the values at `fun w => mul_inv_cancel₀ (hroot w).ne', funext fun w => inv_mul_cancel₀ (hroot w).ne'⟩`. Use `⟨TR.infId F d, ?_⟩` and prove the remaining obligations. Establish `e : TR.pInf F (nu F h : A F) = TR.pInf F (((TR.infId F d) ^ 4 : (A F)ˣ) : A F)`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, pInf_id]`. Use function extensionality and compare the values at `w`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1 : Real.sqrt (Real.sqrt (r w)) ^ 2 = Real.sqrt (r w)` using `Real.sq_sqrt (Real.sqrt_nonneg _)`. Establish `h2 : Real.sqrt (r w) ^ 2 = r w` using `Real.sq_sqrt (hpos w).le`. Express the relevant statement in the definitionally equal form `r w = Real.sqrt (Real.sqrt (r w)) ^ 4`. Combine the equalities or inequalities in the displayed calculation. Establish `hp : TR.pInf F ((nu F h * ((TR.infId F d) ^ 4)⁻¹ : (A F)ˣ) : A F) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, map_mul, e, ← map_mul, Units.mul_inv, map_one]`. Conclude with `(TR.infEq F).symm.injective (by rw [map_one]; exact hp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.nuPos :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (h : GL (Fin 2) (A E)), ∃ s : (A F)ˣ, ((nu F h * (s ^ 4)⁻¹ : (A F)ˣ) : A F).1 = 1 := by

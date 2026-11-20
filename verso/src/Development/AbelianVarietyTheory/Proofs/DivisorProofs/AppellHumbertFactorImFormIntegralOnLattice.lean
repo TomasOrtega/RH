@@ -17,9 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TorusRM
 
 /- English proof (translation)
-Set `p0 : Sp ℂ` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ)`. Establish `hmem : y p0 ∈ (⨆ i, L.U i : X.Opens)` using `by rw [hL.cover]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.mp hmem`. Use `⟨j, fun q _ => ?_⟩` and prove the remaining obligations. Establish `: q = p0` using `by haveI := q.isPrime haveI := p0.isPrime`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `PrimeSpectrum.ext ((Ideal.eq_bot_of_prime q.asIdeal).trans (Ideal.eq_bot_of_prime p0.asIdeal).symm)`. Rewrite using `[this]`. Conclude with `hj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ahFactor_im_int_chart {X : Scheme.{0}} (L : LB X) (hL : L.IsLB) (y : Sp ℂ ⟶ X) :
     ∃ j, ⊤ ≤ y ⁻¹ᵁ L.U j := by
@@ -35,7 +35,7 @@ theorem ahFactor_im_int_chart {X : Scheme.{0}} (L : LB X) (hL : L.IsLB) (y : Sp 
   exact hj
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Matrix.mulVec, star_sum, star_mul', star_star, Finset.mul_sum, Pi.star_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← hH.apply a b, star_star]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ahFactor_herm_swap {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian)
     (v w : Fin g → ℂ) : w ⬝ᵥ Hm.mulVec (star v) = star (v ⬝ᵥ Hm.mulVec (star w)) := by
@@ -46,23 +46,19 @@ theorem ahFactor_herm_swap {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.
   ring
 
 /- English proof (translation)
-Introduce `g A _ L u Hm χ hL hF l hl l' hl'`. Take `⟨hH, hχ, hfac⟩` from `hF`. Take `⟨i, hi⟩` from `ahFactor_im_int_chart L hL (u.ex 0).left`. Establish `hex : ∀ z ∈ u.Λ, u.ex z = u.ex 0` using `fun z hz => by`. Rewrite using `[(u.ker z).mpr hz, (u.ker 0).mpr (zero_mem _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∀ z ∈ u.Λ, ⊤ ≤ (u.ex z).left ⁻¹ᵁ L.U i` using `fun z hz => by rw [hex z hz]; exact hi`. Establish `e1` using `hfac ⟨l, hl⟩ i 0 (hc 0 (zero_mem _))`. Establish `e2` using `hfac ⟨l', hl'⟩ i l (hc l hl)`. Establish `e3` using `hfac ⟨l', hl'⟩ i 0 (hc 0 (zero_mem _))`. Establish `e4` using `hfac ⟨l, hl⟩ i l' (hc l' hl')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne` using `u.fr_ne i (l + l') (hc _ (add_mem hl hl'))`. Establish `hχ1 : χ ⟨l, hl⟩ ≠ 0` using `fun h => by simpa [h] using hχ ⟨l, hl⟩`. Establish `hχ2 : χ ⟨l', hl'⟩ ≠ 0` using `fun h => by simpa [h] using hχ ⟨l', hl'⟩`. Establish `hsw` using `ahFactor_herm_swap hH l l'`. Simplify using `only [zero_add, zero_dotProduct, mul_zero] at e1 e3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e1` using `[e2]`. Rewrite `e3` using `[e4, add_comm l' l]`. Establish `key` using `e1.symm.trans e3`. Use `set F := u.fr i (l + l')`. Use `set H := l ⬝ᵥ Hm.mulVec (star l')`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set H' := l' ⬝ᵥ Hm.mulVec (star l')`. Use `set H0 := l ⬝ᵥ Hm.mulVec (star l)`. Use `set Hs := l' ⬝ᵥ Hm.mulVec (star l)`. Use `set c1 := χ ⟨l, hl⟩`. Use `set c2 := χ ⟨l', hl'⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key2 : (c1 * c2 * F) * Complex.exp (Real.pi / 2 * H0 + (Real.pi * H + Real.pi / 2 * H')) = (c1 * c2 * F) * Complex.exp (Real.pi / 2 * H' + (Real.pi * Hs + Real.pi / 2 * H0))`. Simplify using `only [Complex.exp_add] at key ⊢`. Take the linear combination `key`. Establish `hnz : c1 * c2 * F ≠ 0` using `mul_ne_zero (mul_ne_zero hχ1 hχ2) hne`. Establish `key3` using `mul_left_cancel₀ hnz key2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key4 : Complex.exp ((Real.pi / 2 * H0 + (Real.pi * H + Real.pi / 2 * H')) - (Real.pi / 2 * H' + (Real.pi * Hs + Real.pi / 2 * H0))) = 1`. Rewrite using `[Complex.exp_sub, key3, div_self (Complex.exp_ne_zero _)]`. Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.mp key4`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hsc : H - Hs = 2 * (H.im : ℂ) * Complex.I`.
-
-Rewrite using `[hsw]`. Establish `h7` using `Complex.sub_conj H`. Move the coercions through the operations in `at h7`. Conclude with `h7`. Establish `h5 : ((H.im : ℂ) - n) * (2 * Real.pi * Complex.I) = 0`.
-
-Take the linear combination `hn - (Real.pi : ℂ) * hsc`. Establish `h6` using `sub_eq_zero.mp ((mul_eq_zero.mp h5).resolve_right Complex.two_pi_I_ne_zero)`. Conclude with `h6` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ahFactor_im_int : ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A] (L : LB A.left) (u : HolUnif A L g)
     (Hm : Matrix (Fin g) (Fin g) ℂ) (χ : u.Λ → ℂ), L.IsLB → IsFactorAH u Hm χ →

@@ -5,7 +5,7 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `key : ∀ z w : Fin n → E, star z ⬝ᵥ ((γᴴ * J * γ) *ᵥ w) = star z ⬝ᵥ (J *ᵥ w)`. Introduce `z w`. Rewrite using `[← h z w, star_mulVec, ← dotProduct_mulVec, ← mulVec_mulVec, ← mulVec_mulVec]`. Use extensionality with `i j`. Simplify `key (star (Pi.single i 1)) (Pi.single j 1)` using `[single_dotProduct, mulVec_single_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conjTranspose_mul_mul_eq_of_form_eq {E : Type} [Field E] [StarRing E] {n : ℕ}
     (J γ : Matrix (Fin n) (Fin n) E)
@@ -18,7 +18,7 @@ theorem conjTranspose_mul_mul_eq_of_form_eq {E : Type} [Field E] [StarRing E] {n
   simpa [single_dotProduct, mulVec_single_one] using key (star (Pi.single i 1)) (Pi.single j 1)
 
 /- English proof (translation)
-Rewrite using `[star_dotProduct z (J *ᵥ w), star_star, star_mulVec, ← dotProduct_mulVec, hJ]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem star_form_eq_of_hermitian {E : Type} [Field E] [StarRing E] {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (hJ : Jᴴ = J) (z w : Fin n → E) :
@@ -26,7 +26,7 @@ theorem star_form_eq_of_hermitian {E : Type} [Field E] [StarRing E] {n : ℕ}
   rw [star_dotProduct z (J *ᵥ w), star_star, star_mulVec, ← dotProduct_mulVec, hJ]
 
 /- English proof (translation)
-Rewrite using `[star_sub, star_smul, sub_dotProduct, smul_dotProduct, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma form_sub_smul_left {E : Type} [Field E] [StarRing E] {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (z u w : Fin n → E) (s : E) :
@@ -34,7 +34,7 @@ private lemma form_sub_smul_left {E : Type} [Field E] [StarRing E] {n : ℕ}
   rw [star_sub, star_smul, sub_dotProduct, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[mulVec_sub, mulVec_smul, dotProduct_sub, dotProduct_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma form_sub_smul_right {E : Type} [Field E] [StarRing E] {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (z u w : Fin n → E) (t : E) :
@@ -42,7 +42,7 @@ private lemma form_sub_smul_right {E : Type} [Field E] [StarRing E] {n : ℕ}
   rw [mulVec_sub, mulVec_smul, dotProduct_sub, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hzu` using `star_form_eq_of_hermitian J hJ u z`. Rewrite using `[hγ z, hγ w, form_sub_smul_left, form_sub_smul_right J z u w, form_sub_smul_right J u u w, star_mul']`. Take the linear combination `(c * (star u ⬝ᵥ (J *ᵥ w))) * hzu + (-(star (star u ⬝ᵥ (J *ᵥ z))) * (star u ⬝ᵥ (J *ᵥ w))) * hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private lemma form_mulVec_eq_of_transvection {E : Type} [Field E] [StarRing E] {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (hJ : Jᴴ = J) (γ : Matrix (Fin n) (Fin n) E)
@@ -57,13 +57,13 @@ private lemma form_mulVec_eq_of_transvection {E : Type} [Field E] [StarRing E] {
     (-(star (star u ⬝ᵥ (J *ᵥ z))) * (star u ⬝ᵥ (J *ᵥ w))) * hc
 
 /- English proof (translation)
-Establish `hγ : ∀ v, (1 - (star (x - y) ⬝ᵥ (J *ᵥ x))⁻¹ • vecMulVec (x - y) (star (x - y) ᵥ* J)) *ᵥ v = v - ((star (x - y) ⬝ᵥ (J *ᵥ x))⁻¹ * (star (x - y) ⬝ᵥ (J *ᵥ v))) • (x - y)`. Introduce `v`. Rewrite using `[sub_mulVec, one_mulVec, smul_mulVec, vecMulVec_mulVec, ← dotProduct_mulVec]`. Use `congr 1`. Use extensionality with `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsa : star (star (x - y) ⬝ᵥ (J *ᵥ x)) = star x ⬝ᵥ (J *ᵥ (x - y))` using `star_form_eq_of_hermitian J hJ (x - y) x`. Establish `hsum : star (x - y) ⬝ᵥ (J *ᵥ x) + star (star (x - y) ⬝ᵥ (J *ᵥ x)) = star (x - y) ⬝ᵥ (J *ᵥ (x - y))`. Rewrite using `[hsa]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [star_sub, sub_dotProduct, mulVec_sub, dotProduct_sub]`. Take the linear combination `hxy`. Establish `hs0 : star (star (x - y) ⬝ᵥ (J *ᵥ x)) ≠ 0` using `(star_ne_zero).mpr h0`. Establish `hc : (star (x - y) ⬝ᵥ (J *ᵥ x))⁻¹ + star (star (x - y) ⬝ᵥ (J *ᵥ x))⁻¹ = star (star (x - y) ⬝ᵥ (J *ᵥ x))⁻¹ * (star (x - y) ⬝ᵥ (J *ᵥ x))⁻¹ * (star (x - y) ⬝ᵥ (J *ᵥ (x - y)))`. Rewrite using `[star_inv₀, ← hsum]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `⟨_, conjTranspose_mul_mul_eq_of_form_eq J _ (form_mulVec_eq_of_transvection J hJ _ (x - y) _ hγ hc), ?_⟩` and prove the remaining obligations. Rewrite using `[hγ, inv_mul_cancel₀ h0, one_smul, sub_sub_cancel]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_quasiReflection_mulVec_eq {E : Type} [Field E] [StarRing E] {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (hJ : Jᴴ = J) (x y : Fin n → E)
@@ -97,11 +97,11 @@ theorem exists_quasiReflection_mulVec_eq {E : Type} [Field E] [StarRing E] {n : 
   rw [hγ, inv_mul_cancel₀ h0, one_smul, sub_sub_cancel]
 
 /- English proof (translation)
-Introduce `E _ _ _ n J hJ _ x y hxy hx`. Distinguish the cases in `h0 : star (x - y) ⬝ᵥ (J *ᵥ x) = 0`. Establish `hneg : star (-y) ⬝ᵥ (J *ᵥ (-y)) = star y ⬝ᵥ (J *ᵥ y)`. Rewrite using `[star_neg, mulVec_neg, neg_dotProduct, dotProduct_neg, neg_neg]`. Establish `hyx : star y ⬝ᵥ (J *ᵥ x) = star x ⬝ᵥ (J *ᵥ x)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[star_sub, sub_dotProduct, sub_eq_zero]`. Conclude with `h0.symm`. Establish `h1 : star (x - -y) ⬝ᵥ (J *ᵥ x) ≠ 0`. Rewrite using `[sub_neg_eq_add, star_add, add_dotProduct, hyx, ← two_mul]`. Conclude with `mul_ne_zero two_ne_zero hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ, hγ, hγx⟩` from `exists_quasiReflection_mulVec_eq J hJ x (-y) (hxy.trans hneg.symm) h1`. Use `⟨-γ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[conjTranspose_neg, neg_mul, mul_neg, neg_mul, neg_neg, hγ]`. Rewrite using `[neg_mulVec, hγx, neg_neg]`. Conclude with `exists_quasiReflection_mulVec_eq J hJ x y hxy h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary_mulVec_eq_of_form_eq :
     ∀ (E : Type) [Field E] [CharZero E] [StarRing E] (n : ℕ) (J : Matrix (Fin n) (Fin n) E),

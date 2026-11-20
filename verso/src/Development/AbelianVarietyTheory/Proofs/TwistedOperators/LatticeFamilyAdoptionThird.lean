@@ -21,16 +21,16 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem theta_cast (j : ℕ) (μ ν : D.what₂.Tup) (h : μ = ν) (x : D.what₂.MtL μ j) :
     D.what₂.thetaP ν j (D.what₂.jMt ν j (h ▸ x)) = D.what₂.thetaP μ j (D.what₂.jMt μ j x) := by
   subst h; rfl
 
 /- English proof (translation)
-Establish `hz` using `Q.zs`. Establish `hs` using `Q.s0`. Establish `key : ∀ (Z : DefSub P.A3.fam3.amb3) (S' : IndefData (P.A3.side3 P.P0 P.ψ0 Z)), Z = P.Zs → HEq S' P.S0 → P.S0.dW i = S'.dW i`. Introduce `Z S' h1 h2`. Substitute `h1` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Rewrite using `[eq_of_heq h2]`. Conclude with `key _ _ hz hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_eq (Q : RealT Rc P Dcf Spf Zscf S Ks) (i : Fin D.R.m) :
     (P.A3.indefDown P.S0).dW i = Module.finrank D.what₂.LL (Q.Rl.toRealDat.WL Q.F.lv2 false i) := by
@@ -44,24 +44,22 @@ theorem dim_eq (Q : RealT Rc P Dcf Spf Zscf S Ks) (i : Fin D.R.m) :
   exact key _ _ hz hs
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨z, HEq.rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_heq_fin {K : Type} {a b : ℕ} (h : a = b) (z : Fin a → K) : ∃ y : Fin b → K, HEq z y := by
   subst h; exact ⟨z, HEq.rfl⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨x, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_cast (j : ℕ) (μ ν : D.what₂.Tup) (h : μ = ν) (x : D.what₂.MtL ν j) :
     ∃ x' : D.what₂.MtL μ j, x = h ▸ x' := by
   subst h; exact ⟨x, rfl⟩
 
 /- English proof (translation)
-Take `⟨n, b, hb, -, -, -, hs⟩` from `hk`. Establish `hv : v ∈ Submodule.span D.what₂.LL (Set.range b)` using `by rw [hs]; trivial`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hv`. Use `⟨n, a, fun k => (⟨(Q.nexp.fi i).e.symm (b k), ((Q.nexp.fi i).wk _).2 (by` and prove the remaining obligations. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb k)⟩ : ↥(Q.Sx.A ((i : ℕ) + 1)).WK), ?_⟩`. Rewrite using `[map_sum, ← ha]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `congr 1`.
-
-Conclude with `(Q.nexp.fi i).e.apply_symm_apply _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_sum (Q : RealT Rc P Dcf Spf Zscf S Ks) (i : Fin D.R.m) (hk : (Q.Rl.FW i).IsKsForm)
     (v : Fin (Q.Rl.nW i) → D.what₂.LL) :
@@ -81,13 +79,11 @@ theorem exists_sum (Q : RealT Rc P Dcf Spf Zscf S Ks) (i : Fin D.R.m) (hk : (Q.R
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `ht : P.I.tup (Qr.tupT (D.what₂.muAt w)) = D.what₂.muTw w` using `(Qr.tupTie _ (Or.inr ⟨w, rfl⟩)).trans ((D.what₂.muAt_or w).resolve_left hw)`. Take `⟨x', e1⟩` from `exists_cast ((i : ℕ) + 1) _ _ ht x`. Take `⟨c, rfl⟩` from `(P.I.eMt i _).surjective x'`. Take `⟨y, e2⟩` from `exists_heq_fin (dim_eq B.Q i) (((P.A3.indefDown P.S0).θ i _).mulVec ((lPrj D P.A3.A P.P0 P.ψ0 (P.A3.fam3.toSub2 P.Zs) i _).mulVec c))`. Take `⟨n, a, f, e3⟩` from `exists_sum B.Q i (B.fw.ks i) (jDL B.Q.Rl B.Q.F.lv2 i y)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hP w i h1 h2 _ ht hw c x e1 hx y e2 n a f e3]`. Apply `hsum` to reduce the goal to its premises. Apply `(B.Q.nexp.fi i).e.injective` to reduce the goal to its premises. Rewrite using `[e3]`. Apply `hjD` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: z = P.JM.eW i (((P.A3.indefDown P.S0).θ i (Qr.tupT (D.what₂.muAt w))).mulVec ((lPrj D P.A3.A P.P0 P.ψ0 (P.A3.fam3.toSub2 P.Zs) i (Qr.tupT (D.what₂.muAt w))).mulVec c))`. Apply `Idx.jM_inj Y` to reduce the goal to its premises. Rewrite using `[hz, P.tied.mjH.j_eq, ← hD.thTheta, e1]`. Conclude with `theta_cast _ _ _ ht _`. Rewrite using `[this, LinearEquiv.symm_apply_apply]`.
-
-Conclude with `e2`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_index (B : RealTB Rc P Dcf Spf Zscf S) (Qr : RealRec B.Q) (hP : GlobalTheory.ExportPin.ClassSumPinT B.Q)
     (hD : DivRows3 D P.A3 P.P0 P.ψ0 P.Ps P.ψs P.Zs P.S0 P.S1 ex.p0 P.C P.NuC P.I)
@@ -133,7 +129,7 @@ end GlobalTheory.ClassSumLift
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex Rc P Dcf Spf Zscf S B _ Qr jD eM hD hP hread hsum w j hw h1 h2 x hx y hy`. Take `⟨i, rfl⟩ : ∃ i : Fin D.R.m, (i : ℕ) + 1 = j` from `⟨⟨j - 1, by omega⟩, by simp only; omega⟩`. Conclude with `GlobalTheory.ClassSumLift.at_index B Qr hP hD w i h1 h2 hw (jD ((i : ℕ) + 1)) (fun x y h => hread i x y h) (eM w ((i : ℕ) + 1)) (fun x n a f h => hsum w ((i : ℕ) + 1) h1 h2 x n a f h) x hx y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ClassSumLift.eM_eq_thPe : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Y cX) (Rc : Formalism.L2.RecT ex) (P : RowSideFamily ex) (Dcf : ∀ Zs : DefSub P.A3.fam3.amb3, DefCols (P.A3.side3 P.Ps P.ψs Zs)) (Spf : ∀ Zs : DefSub P.A3.fam3.amb3, SPer (Dcf Zs)) (Zscf : DefSub P.A3.fam3.amb3 → IndefScale P.A3.fam3.base3) (S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc) (B : RealTB Rc P Dcf Spf Zscf S) (_ : RealPins B.Q) (_ : RealRec B.Q) (jD : ∀ j, (Y.MjH j).V →ₗ[D.what₂.LL] B.Q.Sx.WL j) (eM : ∀ w j, (Y.MjH j).V →ₛₗ[ex.nch.embW w] FractionRing (ex.nch.Oe w) ⊗[D.ntw.O (ex.nch.twI w)] D.nexp.Fm (ex.nch.twI w) j (ex.nch.sd w)), DivRows3 D P.A3 P.P0 P.ψ0 P.Ps P.ψs P.Zs P.S0 P.S1 ex.p0 P.C P.NuC P.I → GlobalTheory.ExportPin.ClassSumPinT B.Q → (∀ (i : Fin D.R.m) (x : (Y.MjH ((i : ℕ) + 1)).V) (y : Fin (Module.finrank D.what₂.LL (B.Q.Rl.toRealDat.WL B.Q.F.lv2 false i)) → D.what₂.LL), HEq ((P.JM.eW i).symm x) y → (B.Q.nexp.fi i).e (jD ((i : ℕ) + 1) x) = jDL B.Q.Rl B.Q.F.lv2 i y) → (∀ w j (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (x : (Y.MjH j).V) (n : ℕ) (a : Fin n → D.what₂.LL) (f : Fin n → FmK B.Q.Sx j), jD j x = ∑ k, a k • (show ↥(B.Q.Sx.A j).WK from f k).1 → eM w j x = ∑ k, ex.nch.embW w (a k) ⊗ₜ[D.ntw.O (ex.nch.twI w)] (B.Q.nexp.eF (ex.nch.twI w) j (ex.nch.sd w) h1 h2).symm ((1 : KB B.Q.Sx (ex.nch.twI w) (ex.nch.sd w)) ⊗ₜ[B.Q.Sx.Ks] f k)) → ∀ w j, D.what₂.muAt w ≠ D.what₂.mu0 → 1 ≤ j → j ≤ D.R.m → ∀ x ∈ Idx.TjV D (D.what₂.muTw w) j, ∀ y : (Y.MjH j).V, Y.jM j y = D.what₂.thetaP (D.what₂.muTw w) j (D.what₂.jMt (D.what₂.muTw w) j x) → eM w j y = NChoice.thPe D ex.nch w j (ex.nch.eMt w j x) := by
   intro D L hT Gi Gl Kc Y cX ex Rc P Dcf Spf Zscf S B _ Qr jD eM hD hP hread hsum w j hw h1 h2 x hx y hy

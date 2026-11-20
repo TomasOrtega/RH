@@ -22,14 +22,14 @@ Both sides reduce to the same expression.
 lemma Hb_eq : Hb k = diagonal (dd k) := rfl
 
 /- English proof (translation)
-Unfold `dd`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma dd_sq (j : Fin (k + 1)) : dd k j * dd k j = 1 := by
   unfold dd
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Unfold `dd`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma dd_star (j : Fin (k + 1)) : star (dd k j) = dd k j := by
   unfold dd

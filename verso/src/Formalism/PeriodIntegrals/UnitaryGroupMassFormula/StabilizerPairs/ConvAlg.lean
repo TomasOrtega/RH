@@ -11,7 +11,7 @@ def rhoOf (H : Matrix n n ℂ) (F : Matrix n m ℂ) (W : Matrix m m ℂ) : Matri
   1 + F * ((W - 1) * ((Fᴴ * H * F)⁻¹ * (Fᴴ * H)))
 
 /- English proof (translation)
-Establish `hinv : (Fᴴ * H * F)⁻¹ * (Fᴴ * H * F) = 1` using `Matrix.nonsing_inv_mul _ hG`. Rewrite using `[rhoOf, Matrix.add_mul, Matrix.one_mul, Matrix.mul_assoc F, Matrix.mul_assoc (W - 1), Matrix.mul_assoc (Fᴴ * H * F)⁻¹, hinv, Matrix.mul_one, Matrix.mul_sub, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem rhoOf_mul (H : Matrix n n ℂ) (F : Matrix n m ℂ) (W : Matrix m m ℂ)
     (hG : IsUnit (Fᴴ * H * F).det) : rhoOf H F W * F = F * W := by
@@ -21,7 +21,7 @@ theorem rhoOf_mul (H : Matrix n n ℂ) (F : Matrix n m ℂ) (W : Matrix m m ℂ)
   abel
 
 /- English proof (translation)
-Rewrite using `[rhoOf, Matrix.add_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rhoOf_mulVec_of_ker (H : Matrix n n ℂ) (F : Matrix n m ℂ) (W : Matrix m m ℂ)
     (v : n → ℂ) (hv : (Fᴴ * H) *ᵥ v = 0) : rhoOf H F W *ᵥ v = v := by
@@ -30,19 +30,19 @@ theorem rhoOf_mulVec_of_ker (H : Matrix n n ℂ) (F : Matrix n m ℂ) (W : Matri
   simp
 
 /- English proof (translation)
-Establish `hGh : (Fᴴ * H * F)ᴴ = Fᴴ * H * F`. Simplify using `[Matrix.conjTranspose_mul, hH, Matrix.mul_assoc]`. Establish `hinvh : ((Fᴴ * H * F)⁻¹)ᴴ = (Fᴴ * H * F)⁻¹`. Rewrite using `[Matrix.conjTranspose_nonsing_inv, hGh]`. Establish `hFHh : (Fᴴ * H)ᴴ = H * F` using `by simp [Matrix.conjTranspose_mul, hH]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hGi : (Fᴴ * H * F) * (Fᴴ * H * F)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hG`. Establish `hiG : (Fᴴ * H * F)⁻¹ * (Fᴴ * H * F) = 1` using `Matrix.nonsing_inv_mul _ hG`. Establish `hKh : ((Fᴴ * H * F)⁻¹ * (Fᴴ * H))ᴴ = H * F * (Fᴴ * H * F)⁻¹`. Rewrite using `[Matrix.conjTranspose_mul, hinvh, hFHh]`. Establish `e1 : H * F = ((Fᴴ * H * F)⁻¹ * (Fᴴ * H))ᴴ * (Fᴴ * H * F)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hKh, Matrix.mul_assoc, hiG, Matrix.mul_one]`. Establish `e2 : Fᴴ * H = (Fᴴ * H * F) * ((Fᴴ * H * F)⁻¹ * (Fᴴ * H))`. Rewrite using `[← Matrix.mul_assoc, hGi, Matrix.one_mul]`. Unfold `rhoOf`. Generalize the expression as in `hKd : (Fᴴ * H * F)⁻¹ * (Fᴴ * H) = K at e1 e2 ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `hGd : Fᴴ * H * F = G at e1 e2 hW`. Establish `t3 : Kᴴ * (W - 1)ᴴ * Fᴴ * H * F * (W - 1) * K = Kᴴ * (W - 1)ᴴ * G * (W - 1) * K`. Rewrite using `[← hGd]`. Simplify using `only [Matrix.mul_assoc]`. Establish `t1 : H * F * (W - 1) * K = Kᴴ * G * (W - 1) * K` using `by rw [e1]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `t2 : Kᴴ * (W - 1)ᴴ * Fᴴ * H = Kᴴ * (W - 1)ᴴ * G * K`. Rewrite using `[Matrix.mul_assoc (Kᴴ * (W - 1)ᴴ) Fᴴ H, e2, ← Matrix.mul_assoc]`. Establish `inner : G * (W - 1) + (W - 1)ᴴ * G + (W - 1)ᴴ * G * (W - 1) = 0`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_one, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Use `_ = H + Kᴴ * (G * (W - 1) + (W - 1)ᴴ * G + (W - 1)ᴴ * G * (W - 1)) * K := by`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[t3, t1, t2]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Use `_ = H := by rw [inner]; simp`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem rhoOf_unitary (H : Matrix n n ℂ) (F : Matrix n m ℂ) (W : Matrix m m ℂ)
     (hH : Hᴴ = H) (hG : IsUnit (Fᴴ * H * F).det) (hW : Wᴴ * (Fᴴ * H * F) * W = Fᴴ * H * F) :

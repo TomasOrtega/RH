@@ -38,9 +38,9 @@ Both sides reduce to the same expression.
 theorem reimVE_apply (M : V → Matrix (Fin n) (Fin m) ℂ) : reimVE M = reimV M := rfl
 
 /- English proof (translation)
-Rewrite using `[PiLp.inner_apply, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool]`. Simplify using `[reimV, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inner_reimV (M N : V → Matrix (Fin n) (Fin m) ℂ) :
     ⟪reimV M, reimV N⟫ = ∑ v, ∑ i, ∑ j, ((M v i j).re * (N v i j).re + (M v i j).im * (N v i j).im) := by
@@ -54,7 +54,7 @@ theorem inner_reimV (M N : V → Matrix (Fin n) (Fin m) ℂ) :
   simp [reimV, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← real_inner_self_eq_norm_sq, inner_reimV]`. Use `Finset.sum_congr rfl fun v _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_reimV_sq (M : V → Matrix (Fin n) (Fin m) ℂ) :
     ‖reimV M‖ ^ 2 = ∑ v, ∑ i, ∑ j, ‖M v i j‖ ^ 2 := by
@@ -77,7 +77,7 @@ def hermFam : Submodule ℝ (V → Matrix (Fin m) (Fin m) ℂ) where
 end Gen
 
 /- English proof (translation)
-The claim follows from `(Algebra.TensorProduct.map (AlgHom.id X.B.I.F (Ainf X.B.I.F)) X.B.I.cm.sig).commutes q`.
+A detailed English derivation is pending.
 -/
 theorem sigR_alg {D : D7} (X : HidaSetting D) (q : X.B.I.F) :
     sigR (Ainf X.B.I.F) X.B.I.cm.sig (algebraMap X.B.I.F (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) q) =
@@ -85,77 +85,71 @@ theorem sigR_alg {D : D7} (X : HidaSetting D) (q : X.B.I.F) :
   (Algebra.TensorProduct.map (AlgHom.id X.B.I.F (Ainf X.B.I.F)) X.B.I.cm.sig).commutes q
 
 /- English proof (translation)
-Rewrite using `[Complex.add_conj]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem half_re (w : ℂ) : ((1 / 2 : ℂ) * (w + conj w)).re = w.re := by
   rw [Complex.add_conj]
   simp
 
 /- English proof (translation)
-Rewrite using `[map_div₀, map_one, map_ofNat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem half_emb {D : D7} (X : HidaSetting D) (v : InfinitePlace X.B.I.F) : v.embedding (1 / 2) = (1 / 2 : ℂ) := by
   rw [map_div₀, map_one, map_ofNat]
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hP`. Use `haveI : FiniteDimensional X.B.I.F X.B.I.E := fd_of X`. Use `haveI : BorelSpace (HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS)) := ⟨rfl⟩`. Set `Kr : Submodule ℝ (EuclideanSpace ℝ (InfinitePlace X.B.I.F × Fin (D.R.rS + 1 + D.R.rS) × Fin (D.R.rS + 1 + D.R.rS) × Bool))` to `(hermFam (InfinitePlace X.B.I.F) (D.R.rS + 1 + D.R.rS)).map (reimVE : _ ≃ₗ[ℝ] _).toLinearMap`. Set `bK` to `stdOrthonormalBasis ℝ Kr`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Hh : EuclideanSpace ℝ (Fin (Module.finrank ℝ Kr)) →ₗ[ℝ] (InfinitePlace X.B.I.F → Matrix (Fin (D.R.rS + 1 + D.R.rS)) (Fin (D.R.rS + 1 + D.R.rS)) ℂ)` to `(reimVE : _ ≃ₗ[ℝ] _).symm.toLinearMap ∘ₗ Kr.subtype ∘ₗ bK.repr.symm.toLinearEquiv.toLinearMap`. Establish `hHh : ∀ s, Hh s = (reimVE : _ ≃ₗ[ℝ] _).symm (bK.repr.symm s : _)` using `fun s => rfl`. Set `thH : HmI X → InfinitePlace X.B.I.F → Matrix (Fin (D.R.rS + 1 + D.R.rS)) (Fin (D.R.rS + 1 + D.R.rS)) ℂ` to `fun S v => S.1.map (PI.AprimeInfU.thetaInf X v)`. Establish `thH_herm : ∀ S, thH S ∈ hermFam (InfinitePlace X.B.I.F) (D.R.rS + 1 + D.R.rS)`. Introduce `S v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hS : ∀ a b, sigR (Ainf X.B.I.F) X.B.I.cm.sig (S.1 b a) = S.1 a b` using `S.2`. Use extensionality with `i j`. Simplify using `only [thH, Matrix.conjTranspose_apply, Matrix.map_apply]`. Rewrite using `[show star (PI.AprimeInfU.thetaInf X v (S.1 j i)) = conj (PI.AprimeInfU.thetaInf X v (S.1 j i)) from rfl, ← NuB.theta_sigR X v, hS i j]`. Establish `memK : ∀ S, (reimVE : _ ≃ₗ[ℝ] _) (thH S) ∈ Kr` using `fun S => Submodule.mem_map_of_mem (thH_herm S)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `TcF : HmI X → EuclideanSpace ℝ (Fin (Module.finrank ℝ Kr))` to `fun S => bK.repr ⟨_, memK S⟩`. Establish `hHT : ∀ S, Hh (TcF S) = thH S`. Introduce `S`. Rewrite using `[hHh, LinearIsometryEquiv.symm_apply_apply]`. Conclude with `(reimVE : _ ≃ₗ[ℝ] _).symm_apply_apply (thH S)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `thH_add : ∀ S T, thH (S + T) = thH S + thH T`. Introduce `S T`. Use function extensionality and compare the values at `v i j`. Simplify using `[thH, Matrix.map_apply, map_add]`. Establish `TcF_add : ∀ S T, TcF (S + T) = TcF S + TcF T`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `S T`. Establish `e : (⟨_, memK (S + T)⟩ : Kr) = ⟨_, memK S⟩ + ⟨_, memK T⟩` using `Subtype.ext (by show (reimVE : _ ≃ₗ[ℝ] _) (thH (S + T)) = (reimVE : _ ≃ₗ[ℝ] _) (thH S) + (reimVE : _ ≃ₗ[ℝ] _) (thH T)`. Rewrite using `[thH_add, map_add])`. Conclude with `(congrArg bK.repr e).trans (map_add bK.repr _ _)`. Establish `hθc : ∀ v i j, Continuous fun S : HmI X => PI.AprimeInfU.thetaInf X v (S.1 i j)` using `fun v i j => (continuous_thetaInf X v).comp (continuous_subtype_val.matrix_elem i j)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hcont : Continuous TcF`. Use `bK.repr.continuous.comp (Continuous.subtype_mk ?_ _)` and prove the remaining obligations. Use `show Continuous fun S => (EuclideanSpace.equiv _ ℝ).symm (fun p : InfinitePlace X.B.I.F × Fin (D.R.rS + 1 + D.R.rS) × Fin (D.R.rS + 1 + D.R.rS) × Bool => if p.2.2.2 then (thH S p.1 p.2.1 p.2.2.1).re else (thH S p.1 p.2.1 p.2.2.1).im)`. Use `(EuclideanSpace.equiv _ ℝ).symm.continuous.comp (continuous_pi fun p => ?_)` and prove the remaining obligations. Break down `p with ⟨v, i, j, s⟩` into its components or cases.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the cases of `s`. Conclude with `Complex.continuous_im.comp (hθc v i j)`. Conclude with `Complex.continuous_re.comp (hθc v i j)`. Establish `hinj : Function.Injective TcF`. Introduce `S T h`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : thH S = thH T` using `by rw [← hHT S, ← hHT T, h]`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `a b`. Apply `sub_eq_zero.1` to reduce the goal to its premises. Apply `thetaInf_inj X` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `v`. Use `congrFun (congrFun (congrFun h1 v) a) b` as an intermediate fact. Simplify using `only [thH, Matrix.map_apply] at this`. Rewrite using `[map_sub, this, sub_self]`. Establish `hsurj : Function.Surjective TcF`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `s`. Take `⟨M, hM, hMs⟩` from `Submodule.mem_map.1 (bK.repr.symm s).2`. Use `choose y hy using fun a b : Fin (D.R.rS + 1 + D.R.rS) => NuB.theta_surj X (fun v => M v a b)`. Set `h2` to `algebraMap X.B.I.F (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E) (1 / 2)`. Set `Sm : Matrix (Fin (D.R.rS + 1 + D.R.rS)) (Fin (D.R.rS + 1 + D.R.rS)) (Ainf X.B.I.F ⊗[X.B.I.F] X.B.I.E)` to `fun a b => h2 * (y a b + sigR (Ainf X.B.I.F) X.B.I.cm.sig (y b a))`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hSm : Sm ∈ HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS)` using `by show ∀ a b, sigR (Ainf X.B.I.F) X.B.I.cm.sig (Sm b a) = Sm a b`. Introduce `a b`. Simplify using `only [Sm, h2, map_mul, map_add, sigR_invP _ _ (sig_invI X), sigR_alg]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨Sm, hSm⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `e : thH ⟨Sm, hSm⟩ = M`. Use function extensionality and compare the values at `v a b`. Establish `hMh : conj (M v b a) = M v a b`. Use `congrFun (congrFun (hM v) a) b` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_apply]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Simplify using `only [thH, Matrix.map_apply, Sm, h2, map_mul, map_add, NuB.theta_alg, NuB.theta_sigR, hy, hMh, half_emb]`. Expand and normalize the polynomial expressions, which then agree. Use `show bK.repr _ = s`. Rewrite using `[← bK.repr.apply_symm_apply s]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (reimVE : _ ≃ₗ[ℝ] _) (thH ⟨Sm, hSm⟩) = _`. Rewrite using `[e]`. Conclude with `hMs`. Set `Ψa : Wh X →+ EuclideanSpace ℝ (Fin (Module.finrank ℝ Kr))` to `AddMonoidHom.mk' (fun x => TcF ((hermCoord X).symm x)) (fun x y => by rw [hermCoord_symm_add, TcF_add])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `Ψc : Wh X →L[ℝ] EuclideanSpace ℝ (Fin (Module.finrank ℝ Kr))` to `AddMonoidHom.toRealLinearMap Ψa (hcont.comp (hermCoord X).symm.continuous)`. Establish `hΨ : ∀ x, Ψc x = TcF ((hermCoord X).symm x)` using `fun x => rfl`. Establish `hΨb : Function.Bijective Ψc`. Use `⟨fun x y h => (hermCoord X).symm.injective (hinj (by rw [← hΨ, ← hΨ, h])), fun s => ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `hsurj s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Conclude with `⟨hermCoord X S, by rw [hΨ, Homeomorph.symm_apply_apply, hS]⟩`. Set `Ψe : Wh X ≃L[ℝ] EuclideanSpace ℝ (Fin (Module.finrank ℝ Kr))` to `(LinearEquiv.ofBijective (Ψc : Wh X →ₗ[ℝ] _) hΨb).toContinuousLinearEquiv`. Set `Tc : HmI X ≃ₜ EuclideanSpace ℝ (Fin (Module.finrank ℝ Kr))` to `(hermCoord X).trans Ψe.toHomeomorph`. Establish `hTc : ∀ S, Tc S = TcF S`. Introduce `S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show Ψc (hermCoord X S) = TcF S`. Rewrite using `[hΨ, Homeomorph.symm_apply_apply]`. Establish `key : ∀ S T : HmI X, sumReI X (pairHerm (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS) S T) = ⟪TcF S, TcF T⟫`. Introduce `S T`. Establish `e1 : ⟪TcF S, TcF T⟫ = ⟪reimV (thH S), reimV (thH T)⟫`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [TcF, LinearIsometryEquiv.inner_map_map]`. Both sides reduce to the same expression. Establish `hTh : ∀ v a b, PI.AprimeInfU.thetaInf X v (T.1 b a) = conj (PI.AprimeInfU.thetaInf X v (T.1 a b))`. Introduce `v a b`. Establish `hT' : ∀ a b, sigR (Ainf X.B.I.F) X.B.I.cm.sig (T.1 b a) = T.1 a b` using `T.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← NuB.theta_sigR X v, hT' b a]`. Rewrite using `[e1, inner_reimV]`. Simplify using `only [sumReI]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Use `show (PI.AprimeInfU.evInf X v (pairHerm (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS) S T)).re = _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[pairHerm, map_mul, NuB.evInf_alg, NuB.evInf_trace, half_emb, half_re, map_sum, Complex.re_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, Complex.re_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hTh v a b]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [thH, Matrix.map_apply, Complex.mul_re, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree. Establish `hS` using `hP.2.2.1`. Establish `hν : SelfDual νinf (fun S T : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS) => psiInf X.B.I.F ψ (pairHerm (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS) S T))` using `hP.2.2.2.2.2.1`. Establish `h1 : ∀ x y : EuclideanSpace ℝ (Fin (Module.finrank ℝ Kr)), (fun S T : HermR (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS) => psiInf X.B.I.F ψ (pairHerm (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS) S T)) (Tc.symm x) (Tc.symm y) = ((𝐞 (⟪x, y⟫) : Circle) : ℂ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Establish an intermediate fact.
 
-Introduce `x y`. Take `⟨S, rfl⟩` from `Tc.surjective x`. Take `⟨T, rfl⟩` from `Tc.surjective y`. Establish `e1 : Tc.symm (Tc S) = S` using `Tc.symm_apply_apply S`. Establish `e2 : Tc.symm (Tc T) = T` using `Tc.symm_apply_apply T`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e3 : ⟪Tc S, Tc T⟫ = sumReI X (pairHerm (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS) S T)`. Rewrite using `[hTc S, hTc T, key]`. Use `show psiInf X.B.I.F ψ (pairHerm (Ainf X.B.I.F) X.B.I.cm.sig (D.R.rS + 1 + D.R.rS) (Tc.symm (Tc S)) (Tc.symm (Tc T))) = _`. Rewrite using `[e1, e2, e3]`. Simplify using `only [sumReI]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[psiInf_eq ψ hS, Real.fourierChar_apply]`. Use `push_cast`. Put the polynomial expressions in normal form. Establish `hd` using `PI.AprimeInfW.GenericDensity.dens_generic νinf _ hν Tc (fun S T => by rw [hTc, hTc, hTc, TcF_add]) (fun x y => ⟪x, y⟫) h1 (fun x x' y => inner_add_left x x' y) (fun x y y' => inner_add_right x y y') (fun y => continuous_id.inner continuous_const) (fun x => continuous_const.inner …`. Establish `hI : (Matrix.of fun i j => ⟪EuclideanSpace.basisFun (Fin (Module.finrank ℝ Kr)) ℝ i, EuclideanSpace.basisFun (Fin (Module.finrank ℝ Kr)) ℝ j⟫) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, orthonormal_iff_ite.1 (EuclideanSpace.basisFun _ ℝ).orthonormal i j, Matrix.one_apply]`. Rewrite `hd` using `[hI, Matrix.det_one, abs_one, Real.sqrt_one, ENNReal.ofReal_one, one_smul]`. Use `⟨Fin (Module.finrank ℝ Kr), inferInstance, Hh, Tc, ?_, ?_, ?_, fun S T => by rw [hTc, hTc, hTc, TcF_add], fun S v => by rw [hTc, hHT], hd⟩` and prove the remaining obligations. Introduce `s v`.
-
-Take `⟨M, hM, hMs⟩` from `Submodule.mem_map.1 (bK.repr.symm s).2`. Establish `: Hh s = M`. Rewrite using `[hHh, ← hMs]`. Conclude with `(reimVE : _ ≃ₗ[ℝ] _).symm_apply_apply M`. Rewrite using `[this]`.
-
-Conclude with `hM v`. Introduce `s`. Rewrite using `[← norm_reimV_sq, ← reimVE_apply, hHh, LinearEquiv.apply_symm_apply]`. Conclude with `congrArg (· ^ 2) (bK.repr.symm.norm_map s)`. Introduce `M hM`.
-
-Use `⟨bK.repr ⟨(reimVE : _ ≃ₗ[ℝ] _) M, Submodule.mem_map_of_mem (show M ∈ hermFam _ _ from hM)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hHh, LinearIsometryEquiv.symm_apply_apply]`. Conclude with `(reimVE : _ ≃ₗ[ℝ] _).symm_apply_apply M`.
+A detailed English derivation is pending.
 -/
 theorem nuBridge : NuBridge := by
   classical

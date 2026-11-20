@@ -16,7 +16,7 @@ namespace GlobalTheory.HermLB
 variable {k : Type} [CommRing k] {X Y Z : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k} {t : Z ⟶ Sp k}
 
 /- English proof (translation)
-The claim follows from `mem_iInter.2 fun a => mem_iInter.1 (mem_iInter.1 hy PUnit.unit) a g W r z c c' hc hc' := by have h₁ := mem_iInter.1 hc PUnit.unit have h₂ := mem_iInter.1 hc' PUnit.unit refine (gm_pull_g _ g r z c c' hc hc').trans ((gm_pull_g _ f (r ≫ g) z _ _ h₁ h₂).trans ?_) refine Eq.trans ?_ …`.
+A detailed English derivation is pending.
 -/
 theorem refines_pull_pull (L : HermLB p) (f : Y ⟶ X) (hf : f ≫ p = q) (g : Z ⟶ Y) (hg : g ≫ q = t)
     (h : (g ≫ f) ≫ p = t) :
@@ -35,7 +35,7 @@ theorem refines_pull_pull (L : HermLB p) (f : Y ⟶ X) (hf : f ≫ p = q) (g : Z
     exact congrArg _ (Subtype.ext (Category.assoc _ _ _))
 
 /- English proof (translation)
-The claim follows from `mem_iInter.2 fun _ => mem_iInter.2 fun a => mem_iInter.1 hy a g W r z c c' hc hc' := by have h₁ : (r ≫ g) z ∈ (L.B.pull f).U c := mem_iInter.2 fun a => mem_iInter.1 hc a have h₂ : (r ≫ g) z ∈ (L.B.pull f).U c' := mem_iInter.2 fun a => mem_iInter.1 hc' a have h₃ : r z ∈ ((L.B.pull …`.
+A detailed English derivation is pending.
 -/
 theorem refines_pull_comp (L : HermLB p) (f : Y ⟶ X) (hf : f ≫ p = q) (g : Z ⟶ Y) (hg : g ≫ q = t)
     (h : (g ≫ f) ≫ p = t) :
@@ -59,7 +59,7 @@ theorem refines_pull_comp (L : HermLB p) (f : Y ⟶ X) (hf : f ≫ p = q) (g : Z
 variable {L : HermLB p} {h : X → ℝ} {D : ℕ}
 
 /- English proof (translation)
-The claim follows from `(H.vertical Z (j ≫ i) κ d hd).trans (congrArg (fun n : ℤ => (n : ℝ) * _) (topSelf_congr κ (L.restr (j ≫ i)).isLB ((L.pull i hi).restr j).isLB (L.refines_pull_comp i hi j rfl (by rw [Category.assoc, hi])).lbIso d)) point Z j _ _ _ hc hd r hr := by have key (t : Z ⟶ Sp k) (ht : (j …`.
+A detailed English derivation is pending.
 -/
 theorem IsArithHeight.restrict (hX : IsArithVar p D) (H : L.IsArithHeight h) (i : Y ⟶ X) [IsClosedImmersion i]
     (hi : i ≫ p = q) : (L.pull i hi).IsArithHeight fun y => h (i y) where
@@ -101,7 +101,7 @@ theorem IsArithHeight.restrict (hX : IsArithVar p D) (H : L.IsArithHeight h) (i 
     exact Weight.chernInt_congr (isOpen_offSupp _).measurableSet fun y hy => h''.logNorm hr hy
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, H.restrict hX i hi, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsArithHeight.isSelfInter_restrict (hX : IsArithVar p D) (H : L.IsArithHeight h) [IsIntegral Y] (i : Y ⟶ X)
     [IsClosedImmersion i] (hi : i ≫ p = q) : (L.pull i hi).IsSelfInter (h (i (genericPoint Y))) :=
@@ -121,9 +121,9 @@ def HeightProjection : Prop :=
 def CycleHeights : Prop := ArExists ∧ ArMix ∧ HeightProjection
 
 /- English proof (translation)
-Set `` to `(f.residueFieldMap x).hom.toAlgebra`. Establish `h : Function.Bijective (algebraMap (Y.residueField (f x)) (X.residueField x))` using `⟨RingHom.injective _, fun a => by`. Take `⟨b, rfl⟩` from `X.residue_surjective x a`. Take `⟨c, rfl⟩` from `f.stalkMap_surjective x b`. Conclude with `⟨Y.residue _ c, congr($(Scheme.residue_residueFieldMap f x).hom c)⟩⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `(LinearEquiv.ofBijective (Algebra.linearMap _ _) h).finrank_eq.symm.trans (CommSemiring.finrank_self _)`.
+A detailed English derivation is pending.
 -/
 theorem residueDegree_of_isClosedImmersion {X Y : Scheme.{0}} (f : X ⟶ Y) [IsClosedImmersion f] (x : X) :
     f.residueDegree x = 1 := by
@@ -136,15 +136,13 @@ theorem residueDegree_of_isClosedImmersion {X Y : Scheme.{0}} (f : X ⟶ Y) [IsC
   exact (LinearEquiv.ofBijective (Algebra.linearMap _ _) h).finrank_eq.symm.trans (CommSemiring.finrank_self _)
 
 /- English proof (translation)
-Introduce `k _ X Y _ p q D e hX hY π hπ hd hm L h hh`. Take `⟨Z, i, _, _, hi⟩` from `exists_isClosedImmersion_genericPoint (π (genericPoint Y))`. Establish `hr : range i = closure {π (genericPoint Y)}`. Establish `h₁` using `(genericPoint_spec Z).image i.continuous`. Rewrite `h₁` using `[image_univ, i.isClosedEmbedding.isClosed_range.closure_eq, hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h₁.def.symm`. Establish `: Surjective (Limits.pullback.snd i π)` using `⟨by`. Rewrite using `[← Set.range_eq_univ, Scheme.Pullback.range_snd, hr]`. Conclude with `eq_univ_of_forall fun y => ((genericPoint_specializes y).map π.continuous).mem_closure⟩`. Use `isIso_of_isClosedImmersion_of_surjective (Limits.pullback.snd i π)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, rfl⟩ : ∃ g : Y ⟶ Z, g ≫ i = π` from `⟨inv (Limits.pullback.snd i π) ≫ Limits.pullback.fst i π, by`. Rewrite using `[Category.assoc, Limits.pullback.condition, IsIso.inv_hom_id_assoc]⟩`. Establish `hg : g (genericPoint Y) = genericPoint Z` using `i.isClosedEmbedding.injective hi.symm`. Establish `hdeg : (g ≫ i).residueDegree (genericPoint Y) = g.residueDegree (genericPoint Y)`. Rewrite using `[GlobalTheory.CurveDegreesCompare.residueDegree_comp, residueDegree_of_isClosedImmersion i, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : CharZero Γ(Z, ⊤)` using `have := hY.charZero`. Use the proof step `g.appTop.hom.charZero`. Establish `hZ : IsArithVar (i ≫ p) e` using `hX.of_isClosedImmersion i hc ((topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding hr).symm.trans hd)`. Establish `hq : g ≫ i ≫ p = q` using `(Category.assoc _ _ _).symm.trans hπ`. Take `⟨f, hf, e₁⟩` from `(H k Z Y (i ≫ p) q e hZ hY g hq hg (hdeg ▸ hm)).1 _ _ (hh.isSelfInter_restrict hX i rfl)`.
-
-Conclude with `⟨f, (L.refines_pull_pull i rfl g hq hπ).isArithHeight hY hf, by rw [e₁, hdeg, hi]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem heightProjection_of_arProj (H : ArProj) : HeightProjection := by
   intro k _ X Y _ p q D e hX hY π hπ hd hm L h hh
@@ -170,7 +168,7 @@ theorem heightProjection_of_arProj (H : ArProj) : HeightProjection := by
   exact ⟨f, (L.refines_pull_pull i rfl g hq hπ).isArithHeight hY hf, by rw [e₁, hdeg, hi]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨H.arExists, H.arMix, heightProjection_of_arProj H.arProj⟩`.
+Supply the required witnesses or components.
 -/
 theorem cycleHeights_of_arCalc (H : ArCalc) : CycleHeights :=
   ⟨H.arExists, H.arMix, heightProjection_of_arProj H.arProj⟩
@@ -178,29 +176,29 @@ theorem cycleHeights_of_arCalc (H : ArCalc) : CycleHeights :=
 namespace CycleHeights
 
 /- English proof (translation)
-The claim follows from `H.1`.
+A detailed English derivation is pending.
 -/
 theorem arExists (H : CycleHeights) : ArExists := H.1
 
 /- English proof (translation)
-The claim follows from `H.2.1`.
+A detailed English derivation is pending.
 -/
 theorem arMix (H : CycleHeights) : ArMix := H.2.1
 
 /- English proof (translation)
-The claim follows from `H.2.2`.
+A detailed English derivation is pending.
 -/
 theorem heightProjection (H : CycleHeights) : HeightProjection := H.2.2
 
 /- English proof (translation)
-The claim follows from `arChange_of_arMix H.1 H.2.1`.
+A detailed English derivation is pending.
 -/
 theorem arChange (H : CycleHeights) : ArChange := arChange_of_arMix H.1 H.2.1
 
 variable {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k} {D e : ℕ}
 
 /- English proof (translation)
-The claim follows from `have := hX.isIntegral have ⟨h, hh⟩ := (H.1 k X p D hX).1 L ⟨h, hh, fun _ h' => h'.unique hX hh⟩`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique (H : CycleHeights) (hX : IsArithVar p D) (L : HermLB p) : ∃! h, L.IsArithHeight h :=
   have := hX.isIntegral
@@ -208,9 +206,9 @@ theorem existsUnique (H : CycleHeights) (hX : IsArithVar p D) (L : HermLB p) : �
   ⟨h, hh, fun _ h' => h'.unique hX hh⟩
 
 /- English proof (translation)
-Establish `hW` using `hY.of_isClosedImmersion j hc hd`. Establish `e₁ : (j ≫ π) ≫ p = j ≫ q` using `by rw [Category.assoc, hπ]`. Establish `hdeg : (j ≫ π).residueDegree (genericPoint W) = π.residueDegree (j (genericPoint W))`. Rewrite using `[GlobalTheory.CurveDegreesCompare.residueDegree_comp, residueDegree_of_isClosedImmersion j, mul_one]`. Take `⟨f, hf, e₂⟩` from `H.2.2 k X W p _ D d hX hW (j ≫ π) e₁ hd' (hdeg ▸ hm) L h hh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `e₂` using `[hdeg]`. Conclude with `(hh'.isSelfInter_restrict hY j rfl).unique hW ⟨f, (L.refines_pull_comp π hπ j rfl e₁).isArithHeight hW hf, e₂⟩`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_pull (H : CycleHeights) (hX : IsArithVar p D) (hY : IsArithVar q e) (π : Y ⟶ X) (hπ : π ≫ p = q)
     {L : HermLB p} {h : X → ℝ} {h' : Y → ℝ} (hh : L.IsArithHeight h) (hh' : (L.pull π hπ).IsArithHeight h')
@@ -229,9 +227,9 @@ theorem height_pull (H : CycleHeights) (hX : IsArithVar p D) (hY : IsArithVar q 
     ⟨f, (L.refines_pull_comp π hπ j rfl e₁).isArithHeight hW hf, e₂⟩
 
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `generic_of_isIso_restrict π U hU`. Take `⟨h, hh, rfl⟩` from `ha`. Use `H.2.2 k X Y p q D D hX hY π hπ (by` as an intermediate fact. Rewrite using `[h₁, (genericPoint_spec X).def]`. Conclude with `(IsHomeomorph.topologicalKrullDim_eq _ (Homeomorph.Set.univ X).isHomeomorph).trans hX.dim_eq)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use the proof step `(by rw [h₂]; exact one_ne_zero) L h hh`. Rewrite `this` using `[h₂, h₁, Nat.cast_one, one_mul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem isSelfInter_pull_of_isIso_restrict (H : CycleHeights) [IsIntegral X] [IsIntegral Y] (hX : IsArithVar p D)
     (hY : IsArithVar q D) (π : Y ⟶ X) (hπ : π ≫ p = q) (U : X.Opens) (hU : (U : Set X).Nonempty) [IsIso (π ∣_ U)]
@@ -245,7 +243,7 @@ theorem isSelfInter_pull_of_isIso_restrict (H : CycleHeights) [IsIntegral X] [Is
   rwa [h₂, h₁, Nat.cast_one, one_mul] at this
 
 /- English proof (translation)
-The claim follows from `TwistTop.isSelfInter_shift H.1 H.arChange k X p D hX L a t ht ha`.
+A detailed English derivation is pending.
 -/
 theorem isSelfInter_shift (H : CycleHeights) [IsIntegral X] (hX : IsArithVar p D) {L : HermLB p} {a : ℝ}
     (t : (k →+* ℂ) → ℝ) (ht : ∀ σ, t ((starRingEnd ℂ).comp σ) = t σ) (ha : L.IsSelfInter a) :
@@ -255,7 +253,7 @@ theorem isSelfInter_shift (H : CycleHeights) [IsIntegral X] (hX : IsArithVar p D
 end CycleHeights
 
 /- English proof (translation)
-Take `⟨h, hh, e⟩` from `ArithBase.isSelfInter_trivShift t`. Use `⟨ArithBase.isArithVar_int, ?_, Scheme.Hom.residueDegree_id _, e ▸ hh.isSelfInter_restrict ArithBase.isArithVar_int (𝟙 _) (Category.id_comp _)⟩` and prove the remaining obligations. Rewrite using `[(genericPoint_spec (Sp ℤ)).def]`. Conclude with `(IsHomeomorph.topologicalKrullDim_eq _ (Homeomorph.Set.univ _).isHomeomorph).trans ArithBase.isArithVar_int.dim_eq`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (t : ℝ) : IsArithVar (𝟙 (Sp ℤ)) 0 ∧
     topologicalKrullDim (closure ({genericPoint (Sp ℤ)} : Set (Sp ℤ))) = (0 + 1 : ℕ) ∧

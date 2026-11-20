@@ -14,13 +14,11 @@ namespace GlobalTheory.HighestPolynomial
 open MvPolynomial ReciprocityTheory.PGsh
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on generalizing ψ with`. Consider the case `C c => simp only [rowSubst_C]`. Conclude with `differentiable_const _`. Consider the case `add p q hp hq => simp only [map_add]`. Conclude with `(hp ψ).add (hq ψ)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `mul_X p s hp`. Establish `h : (fun g : Fin k → Fin k → ℂ => ψ (rowSubst (Matrix.of g) (p * X s))) = fun g : Fin k → Fin k → ℂ => ∑ l, g l s.1 • (ψ ∘ₗ LinearMap.mulRight ℂ (X (l, s.2))) (rowSubst (Matrix.of g) p)`. Use function extensionality and compare the values at `g`. Rewrite using `[map_mul, rowSubst_X, Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[LinearMap.comp_apply, LinearMap.mulRight_apply, ← map_smul, MvPolynomial.smul_eq_C_mul, Matrix.of_apply]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Use `Differentiable.fun_sum fun l _ => Differentiable.smul ?_ (hp _)` and prove the remaining obligations.
-
-Use `fun_prop`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem differentiable_rowSubst {k : ℕ} {κ : Type} {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F]
     (P : MvPolynomial (Fin k × κ) ℂ) (ψ : MvPolynomial (Fin k × κ) ℂ →ₗ[ℂ] F) :
@@ -43,7 +41,7 @@ theorem differentiable_rowSubst {k : ℕ} {κ : Type} {F : Type} [NormedAddCommG
     fun_prop
 
 /- English proof (translation)
-The claim follows from `totalDegree_aeval_le _ (fun _ => totalDegree_finsetSum_le fun _ _ => (totalDegree_mul _ _).trans (by rw [totalDegree_C, totalDegree_X])) P`.
+A detailed English derivation is pending.
 -/
 theorem totalDegree_rowSubst_le {k : ℕ} {κ : Type} (g : Matrix (Fin k) (Fin k) ℂ)
     (P : MvPolynomial (Fin k × κ) ℂ) : (rowSubst g P).totalDegree ≤ P.totalDegree :=
@@ -51,7 +49,7 @@ theorem totalDegree_rowSubst_le {k : ℕ} {κ : Type} (g : Matrix (Fin k) (Fin k
     (totalDegree_mul _ _).trans (by rw [totalDegree_C, totalDegree_X])) P
 
 /- English proof (translation)
-Rewrite using `[fischer_eq_sum P Q (P.support ∪ Q.support) Finset.subset_union_left, fischer_eq_sum Q P (P.support ∪ Q.support) Finset.subset_union_right, map_sum]`. Use `Finset.sum_congr rfl fun A _ => ?_` and prove the remaining obligations. Simplify using `only [fw, map_mul, Complex.conj_conj, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fischer_conj {k : ℕ} {κ : Type} (P Q : MvPolynomial (Fin k × κ) ℂ) :
     starRingEnd ℂ (fischer P Q) = fischer Q P := by
@@ -63,7 +61,7 @@ theorem fischer_conj {k : ℕ} {κ : Type} (P Q : MvPolynomial (Fin k × κ) ℂ
   ring
 
 /- English proof (translation)
-Rewrite using `[fischer_eq_sum P P P.support subset_rfl, Complex.re_sum]`. Use `Finset.sum_nonneg fun A _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.mul_conj, fw, ← Complex.ofReal_natCast, ← Complex.ofReal_mul, Complex.ofReal_re]`. Conclude with `mul_nonneg (Complex.normSq_nonneg _) (Nat.cast_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fischer_self_re_nonneg {k : ℕ} {κ : Type} (P : MvPolynomial (Fin k × κ) ℂ) : 0 ≤ (fischer P P).re := by
   rw [fischer_eq_sum P P P.support subset_rfl, Complex.re_sum]
@@ -83,7 +81,7 @@ theorem fischer_self_re_nonneg {k : ℕ} {κ : Type} (P : MvPolynomial (Fin k ×
     exact fischer_self_ne_zero x.1 (fun h' => h (Subtype.ext h')) hx
 
 /- English proof (translation)
-Establish `hJ : Formalism.REAL.Jm (allPos k) = 1` using `by simp [Formalism.REAL.Jm, allPos]`. Establish `h : gᴴ * Formalism.REAL.Jm (allPos k) * g = Formalism.REAL.Jm (allPos k)` using `hg`. Rewrite `h` using `[hJ, Matrix.mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_UJset_allPos {k : ℕ} {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ UJset (allPos k)) : gᴴ * g = 1 := by
   have hJ : Formalism.REAL.Jm (allPos k) = 1 := by simp [Formalism.REAL.Jm, allPos]
@@ -91,25 +89,23 @@ theorem mem_UJset_allPos {k : ℕ} {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ 
   rwa [hJ, Matrix.mul_one] at h
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `j.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.mpr hj)`. Establish `hrj : ∀ x, r (j x) = x` using `fun x => LinearMap.congr_fun hr x`. Set `π : Matrix (Fin k) (Fin k) ℂ → (E →L[ℂ] E)` to `fun g => LinearMap.toContinuousLinearMap (r ∘ₗ (rowSubst g).toLinearMap ∘ₗ j)`. Establish `hπ : ∀ g x, π g x = r (rowSubst g (j x))` using `fun g x => rfl`. Establish `hjπ : ∀ g x, j (π g x) = rowSubst g (j x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g x`. Take `⟨y, hy⟩` from `hst g x`. Rewrite using `[hπ, ← hy, hrj]`. Establish `hdiff : ∀ w : E, Differentiable ℂ fun g : Fin k → Fin k → ℂ => π (Matrix.of g) w` using `fun w => differentiable_rowSubst (j w) r`. Establish `hrep : IsURepOn (UJset (allPos k)) π`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Apply `hj` to reduce the goal to its premises. Rewrite using `[hjπ, rowSubst_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `a _ b _`. Use extensionality with `x`. Apply `hj` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ = j (π a (π b x))`. Rewrite using `[hjπ, hjπ, hjπ, rowSubst_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg v`. Rewrite using `[@norm_eq_sqrt_re_inner ℂ, @norm_eq_sqrt_re_inner ℂ _ _ _ _ v, hin, hin, hjπ, fischer_rowSubst, rowSubst_mul, mem_UJset_allPos hg, rowSubst_one]`. Introduce `v`. Conclude with `(hdiff v).continuous.continuousOn`. Take `⟨L, hL, v, hv⟩` from `GlobalTheory.T.exists_intertwiner_with_highestWeight_vector_in_range k (fun a => (ν a : ℝ)) H τ E π D hτ hK hrep (fun w => hdiff w _) (fun h => hD (by rw [h, map_zero])) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab s`. Apply `hj` to reduce the goal to its premises. Rewrite using `[hjπ]`. Use `hu _ ⟨fun i => ?_, fun i l hl => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, Matrix.one_apply_eq, Matrix.single_apply_of_ne, add_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `hab.ne (h1.trans h2.symm)`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne hl.ne', Matrix.single_apply_of_ne, add_zero]`. Introduce and unpack `⟨h1, h2⟩`. Substitute `h1 h2` using the available equality.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `lt_asymm hab hl)`. Use the proof step `(by`. Introduce `θ _`. Apply `hj` to reduce the goal to its premises. Rewrite using `[hjπ, hd, map_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `push_cast`. Rewrite using `[Finset.sum_mul, Complex.exp_sum]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.exp_nat_mul, mul_assoc])`.
-
-Conclude with `⟨j ∘ₗ L, fun g hg u => by rw [LinearMap.comp_apply, hL g hg, hjπ]; rfl, v, by rw [LinearMap.comp_apply, hv]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_intertwiner_of_embedding (k : ℕ) (κ : Type) (ν : Fin k → ℕ) (H : Type) [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [FiniteDimensional ℂ H] (τ : Matrix (Fin k) (Fin k) ℂ → (H →L[ℂ] H))
@@ -175,9 +171,9 @@ theorem exists_intertwiner_of_embedding (k : ℕ) (κ : Type) (ν : Fin k → �
   exact ⟨j ∘ₗ L, fun g hg u => by rw [LinearMap.comp_apply, hL g hg, hjπ]; rfl, v, by rw [LinearMap.comp_apply, hv]⟩
 
 /- English proof (translation)
-Introduce `k κ _ ν H _ _ _ τ Δ hτ hK hΔ hu hd`. Set `S : Submodule ℂ (MvPolynomial (Fin k × κ) ℂ)` to `restrictTotalDegree (Fin k × κ) ℂ Δ.totalDegree`. Establish `hfin : FiniteDimensional ℂ S` using `inferInstanceAs (Module.Finite ℂ (restrictTotalDegree (Fin k × κ) ℂ Δ.totalDegree))`. Use `letI : InnerProductSpace.Core ℂ S := fischerCore S`. Use `letI : NormedAddCommGroup S := InnerProductSpace.Core.toNormedAddCommGroup (𝕜 := ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : InnerProductSpace ℂ S := InnerProductSpace.ofCore _`. Conclude with `exists_intertwiner_of_embedding k κ ν H τ S S.subtype S.injective_subtype (fun _ _ => rfl) (fun g x => ⟨⟨rowSubst g x.1, (mem_restrictTotalDegree _ _ _).mpr ((totalDegree_rowSubst_le g x.1).trans ((mem_restrictTotalDegree _ _ _).mp x.2))⟩, rfl⟩) ⟨Δ, (mem_restrictTotalDegree _ _ _ …`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem exists_intertwiner : ∀ (k : ℕ) (κ : Type) [Fintype κ] (ν : Fin k → ℕ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H] (τ : Matrix (Fin k) (Fin k) ℂ → (H →L[ℂ] H)) (Δ : MvPolynomial (Fin k × κ) ℂ), IsURepOn (UJset (allPos k)) τ → IsKTypeOf (allPos k) τ (fun a => (ν a : ℝ)) ⊤ → Δ ≠ 0 → (∀ g, ReciprocityTheory.PGsh.IsUpperUnitri g → ReciprocityTheory.PGsh.rowSubst g Δ = Δ) → (∀ d : Fin k → ℂ, ReciprocityTheory.PGsh.rowSubst (Matrix.diagonal d) Δ = (∏ a, d a ^ ν a) • Δ) → ∃ L : H →ₗ[ℂ] MvPolynomial (Fin k × κ) ℂ, (∀ g ∈ UJset (allPos k), ∀ u, L (τ g u) = ReciprocityTheory.PGsh.rowSubst g (L u)) ∧ ∃ v, L v = Δ := by
   intro k κ _ ν H _ _ _ τ Δ hτ hK hΔ hu hd

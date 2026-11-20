@@ -17,15 +17,15 @@ namespace UpperTheory.V.Z.Kato.Nb.NormOneTrace
 private def rw0 (M : ℕ) (v : Fin 2 → ℤ) : Row M := fun i => (v i : ZMod M)
 
 /- English proof (translation)
-Rewrite using `[ZMod.natCast_val, ZMod.cast_intCast h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem val_cast {M D : ℕ} [NeZero M] (h : D ∣ M) (a : ℤ) : (((a : ZMod M).val : ℕ) : ZMod D) = (a : ZMod D) := by
   rw [ZMod.natCast_val, ZMod.cast_intCast h]
 
 /- English proof (translation)
-Use `⟨v i / (M : ℤ), ?_⟩` and prove the remaining obligations. Establish `hM : (M : ℚ) ≠ 0` using `by exact_mod_cast NeZero.ne M`. Establish `h1 : (((v i : ZMod M).val : ℕ) : ℤ) = v i % (M : ℤ)` using `ZMod.val_intCast _`. Establish `h3 : (((v i : ZMod M).val : ℕ) : ℚ) = ((v i % (M : ℤ) : ℤ) : ℚ)` using `by exact_mod_cast h1`. Establish `h2 : v i % (M : ℤ) + (M : ℤ) * (v i / (M : ℤ)) = v i` using `by rw [Int.emod_def]; ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (v i : ℚ) = ((v i % (M : ℤ) + (M : ℤ) * (v i / (M : ℤ)) : ℤ) : ℚ)` using `by rw [h2]`. Simplify using `only [toQ, rw0]`. Rewrite using `[h3, h4]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 private theorem exists_int_div_eq_toQ_rw0_add (M : ℕ) [NeZero M] (v : Fin 2 → ℤ) (i : Fin 2) : ∃ j : ℤ, (v i : ℚ) / (M : ℚ) = toQ M (rw0 M v) i + j := by
   refine ⟨v i / (M : ℤ), ?_⟩
@@ -40,18 +40,18 @@ private theorem exists_int_div_eq_toQ_rw0_add (M : ℕ) [NeZero M] (v : Fin 2 �
   field_simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [dn, rw0, map_intCast]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem dn_rw0_mul_eq_rw0 (k M : ℕ) (v : Fin 2 → ℤ) : dn k M (rw0 (k * M) v) = rw0 M v := by
   funext i
   simp only [dn, rw0, map_intCast]
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `congrFun h0 i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, rw0, Pi.zero_apply] at h1`. Establish `h2` using `congrArg (ZMod.castHom h (ZMod l)) h1`. Simplify using `only [map_mul, map_ofNat, map_intCast, map_zero] at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hp : l.Prime` using `Fact.out`. Establish `h3 : (2 : ZMod l) ≠ 0`. Introduce `h4`. Establish `h5 : ((2 : ℕ) : ZMod l) = 0` using `by exact_mod_cast h4`. Establish `h6 : l ∣ 2` using `(CharP.cast_eq_zero_iff (ZMod l) l 2).1 h5`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hl ((Nat.prime_dvd_prime_iff_eq hp Nat.prime_two).1 h6)`. Conclude with `hv ((mul_eq_zero.1 h2).resolve_left h3)`.
+A detailed English derivation is pending.
 -/
 private theorem two_ne {l M : ℕ} [Fact l.Prime] (hl : l ≠ 2) (h : l ∣ M) (v : Fin 2 → ℤ) (i : Fin 2) (hv : (v i : ZMod l) ≠ 0) :
     (2 : ZMod M) • rw0 M v ≠ 0 := by
@@ -75,22 +75,22 @@ private def rV (l L N p : ℕ) : Fin 2 → ℤ :=
   ![bar l L N p * (topT l L N : ℤ) * (l : ℤ) ^ L * p, bar l L N p * N * p + N * (l : ℤ) ^ L]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ixUT_eq (l L N p : ℕ) (x : ZMod N) (i : Fin 2) :
     ixUT l L N p x i = (rU l L N p x i : ℚ) / ((N * l ^ L * p : ℕ) : ℚ) := by
   fin_cases i <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ixVT_eq (l L N p : ℕ) (i : Fin 2) : ixVT l L N p i = (rV l L N p i : ℚ) / ((N * l ^ L * p : ℕ) : ℚ) := by
   fin_cases i <;> rfl
 
 /- English proof (translation)
-Establish `h1 : ((p : ZMod (N * l ^ L)) * (p : ZMod (N * l ^ L))⁻¹) = 1` using `ZMod.coe_mul_inv_eq_one p hp`. Establish `h2` using `congrArg (ZMod.castHom h (ZMod D)) h1`. Simplify using `only [map_mul, map_natCast, map_one, ZMod.castHom_apply] at h2`. Simplify using `only [bar]`. Rewrite using `[Int.cast_natCast, ZMod.natCast_val, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 private theorem bar_mul {l L N p D : ℕ} [NeZero (N * l ^ L)] (hp : Nat.Coprime p (N * l ^ L)) (h : D ∣ N * l ^ L) :
     (bar l L N p : ZMod D) * p = 1 := by
@@ -102,11 +102,11 @@ private theorem bar_mul {l L N p D : ℕ} [NeZero (N * l ^ L)] (hp : Nat.Coprime
   exact h2
 
 /- English proof (translation)
-Use `haveI : NeZero (N * l ^ L) := ⟨Nat.mul_ne_zero (NeZero.ne N) (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)⟩`. Establish `hb : (bar l L N p : ZMod l) * p = 1` using `bar_mul hp (Dvd.dvd.mul_left (dvd_pow_self l (by omega)) N)`. Establish `h0 : (l : ZMod l) ^ L = 0` using `by rw [ZMod.natCast_self, zero_pow (by omega)]`. Use `⟨?_, ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [rU, Matrix.cons_val_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[h0]`. Take the linear combination `(N : ZMod l) * hb`. Simplify using `only [rV, Matrix.cons_val_one, Matrix.cons_val_zero]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Take the linear combination `(N : ZMod l) * hb`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem rows_l {l L N p : ℕ} [Fact l.Prime] [NeZero N] (x : ZMod N) (hL : 1 ≤ L) (hp : Nat.Coprime p (N * l ^ L)) :
     (rU l L N p x 0 : ZMod l) = N ∧ (rV l L N p 1 : ZMod l) = N ∧ rU l L N p x 1 = 0 := by
@@ -124,7 +124,7 @@ private theorem rows_l {l L N p : ℕ} [Fact l.Prime] [NeZero N] (x : ZMod N) (h
     linear_combination (N : ZMod l) * hb
 
 /- English proof (translation)
-Rewrite `h1`, `h2`, the goal using `[ZMod.intCast_eq_intCast_iff_dvd_sub]`. Use `push_cast`. Conclude with `(Nat.isCoprime_iff_coprime.2 h).mul_dvd h1 h2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 private theorem crt {m n : ℕ} (h : Nat.Coprime m n) {a b : ℤ} (h1 : (a : ZMod m) = b) (h2 : (a : ZMod n) = b) :
     (a : ZMod (m * n)) = b := by
@@ -133,11 +133,11 @@ private theorem crt {m n : ℕ} (h : Nat.Coprime m n) {a b : ℤ} (h1 : (a : ZMo
   exact (Nat.isCoprime_iff_coprime.2 h).mul_dvd h1 h2
 
 /- English proof (translation)
-Establish `hc : Nat.Coprime N (l ^ L)` using `Nat.Coprime.pow_right L h.symm`. Establish `hu : IsUnit (l : ZMod N)` using `(ZMod.unitOfCoprime l h).isUnit`. Establish `key : (((topT l (L + 1) N * l ^ (L + 1) : ℕ) : ℤ) : ZMod (N * l ^ L)) = (((topT l L N * l ^ L : ℕ) : ℤ) : ZMod (N * l ^ L))`. Apply `crt hc` to reduce the goal to its premises. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [topT, ZMod.natCast_val, ZMod.cast_id', id]`. Rewrite using `[ZMod.inv_mul_of_unit _ (hu.pow _), ZMod.inv_mul_of_unit _ (hu.pow _)]`. Use `push_cast`. Establish `h0 : ((l : ZMod (l ^ L))) ^ L = 0` using `by rw [← Nat.cast_pow, ZMod.natCast_self]`. Rewrite using `[pow_succ, h0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Move the coercions through the operations in `at key`. Conclude with `key`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 private theorem topT_succ {l L N : ℕ} [NeZero N] (h : Nat.Coprime l N) :
     (topT l (L + 1) N : ZMod (N * l ^ L)) * (l : ZMod (N * l ^ L)) ^ (L + 1) = (topT l L N : ZMod (N * l ^ L)) * (l : ZMod (N * l ^ L)) ^ L := by
@@ -157,25 +157,23 @@ private theorem topT_succ {l L N : ℕ} [NeZero N] (h : Nat.Coprime l N) :
   exact key
 
 /- English proof (translation)
-Establish `hpr : l.Prime` using `Fact.out`. Establish `hdv : N * l ^ L ∣ N * l ^ (L + 1)` using `Nat.mul_dvd_mul_left N (pow_dvd_pow l (Nat.le_succ L))`. Establish `hp' : Nat.Coprime p (N * l ^ L)` using `Nat.Coprime.coprime_dvd_right hdv hp`. Establish `hc : Nat.Coprime (N * l ^ L) p` using `hp'.symm`. Use `haveI : NeZero (N * l ^ L) := ⟨mul_ne_zero (NeZero.ne N) (pow_ne_zero _ hpr.ne_zero)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : NeZero (N * l ^ (L + 1)) := ⟨mul_ne_zero (NeZero.ne N) (pow_ne_zero _ hpr.ne_zero)⟩`. Establish `e1` using `bar_mul (l := l) (L := L + 1) (N := N) (p := p) (D := N * l ^ L) hp hdv`. Establish `e2` using `bar_mul (l := l) (L := L) (N := N) (p := p) (D := N * l ^ L) hp' dvd_rfl`. Establish `e3` using `topT_succ (l := l) (L := L) (N := N) h`. Establish `e4 : (N : ZMod (N * l ^ L)) * (l : ZMod (N * l ^ L)) ^ L = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Nat.cast_pow, ← Nat.cast_mul, ZMod.natCast_self]`. Establish `f0 : (p : ZMod p) = 0` using `ZMod.natCast_self p`. Establish `lift : ∀ a b : ℤ, (a : ZMod (N * l ^ L)) = (k : ZMod (N * l ^ L)) * b → (a : ZMod p) = (k : ZMod p) * b → (a : ZMod (N * l ^ L * p)) = (k : ZMod (N * l ^ L * p)) * b`. Introduce `a b h1 h2`. Establish `h3` using `crt hc (a := a) (b := (k : ℤ) * b) (by push_cast; exact h1) (by push_cast; exact h2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Move the coercions through the operations in `at h3`. Conclude with `h3`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i fin_cases i`. Simplify using `only [rw0, Pi.smul_apply, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Apply `lift` to reduce the goal to its premises. Simplify using `only [rU, Matrix.cons_val_zero, Fin.zero_eta]`. Use `push_cast`. Take the linear combination `((N : ZMod (N * l ^ L)) + x.val * topT l (L + 1) N * l ^ (L + 1)) * e1 - (k * (N + x.val * topT l L N * l ^ L) : ZMod (N * l ^ L)) * e2 + (x.val : ZMod (N * l ^ L)) * e3 + ((l : ZMod (N * l ^ L)) - k) * e4 - ((N : ZMod (N * l ^ L)) + x.val * topT l L N * l ^ L) * k1`. Simplify using `only [rU, Matrix.cons_val_zero, Fin.zero_eta]`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Take the linear combination `((bar l (L + 1) N p : ZMod p) * (N + x.val * topT l (L + 1) N * l ^ (L + 1)) - k * bar l L N p * (N + x.val * topT l L N * l ^ L)) * f0 - ((N : ZMod p) * l ^ L) * k2`. Simplify using `only [rw0, Pi.smul_apply, smul_eq_mul, rU, Matrix.cons_val_one, Matrix.head_cons, Fin.mk_one]`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `i fin_cases i`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [rw0, Pi.smul_apply, smul_eq_mul]`. Apply `lift` to reduce the goal to its premises. Simplify using `only [rV, Matrix.cons_val_zero, Fin.zero_eta]`. Use `push_cast`. Take the linear combination `((topT l (L + 1) N : ZMod (N * l ^ L)) * l ^ (L + 1)) * e1 + e3 - ((k : ZMod (N * l ^ L)) * topT l L N * l ^ L) * e2 - ((topT l L N : ZMod (N * l ^ L)) * l ^ L) * k1`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [rV, Matrix.cons_val_zero, Fin.zero_eta]`. Use `push_cast`. Take the linear combination `((bar l (L + 1) N p : ZMod p) * topT l (L + 1) N * l ^ (L + 1) - k * bar l L N p * topT l L N * l ^ L) * f0`. Simplify using `only [rw0, Pi.smul_apply, smul_eq_mul]`. Apply `lift` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [rV, Matrix.cons_val_one, Matrix.head_cons, Fin.mk_one]`. Use `push_cast`. Take the linear combination `(N : ZMod (N * l ^ L)) * e1 - ((k : ZMod (N * l ^ L)) * N) * e2 + ((l : ZMod (N * l ^ L)) - k) * e4 - (N : ZMod (N * l ^ L)) * k1`. Simplify using `only [rV, Matrix.cons_val_one, Matrix.head_cons, Fin.mk_one]`. Use `push_cast`.
-
-Take the linear combination `((bar l (L + 1) N p : ZMod p) * N - k * bar l L N p * N) * f0 - ((N : ZMod p) * l ^ L) * k2`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem rows_succ {l L N p k : ℕ} [Fact l.Prime] [NeZero N] (x : ZMod N) (h : Nat.Coprime l N)
     (hp : Nat.Coprime p (N * l ^ (L + 1))) (k1 : (k : ZMod (N * l ^ L)) = 1) (k2 : (k : ZMod p) = l) :
@@ -240,23 +238,21 @@ private theorem rows_succ {l L N p k : ℕ} [Fact l.Prime] [NeZero N] (x : ZMod 
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Establish `hpr : l.Prime` using `Fact.out`. Use `haveI : NeZero l := ⟨hpr.ne_zero⟩`. Establish `EF` using `(hA Ω ε X l n).1`. Establish `hC'` using `hC Ω ε X l N w n (Nat.pos_of_ne_zero (NeZero.ne N)) A (fun s => (π (cycM M s))⁻¹)`. Establish `EC` using `hC'.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sc : ∀ (k : ℤ_[l]) (a : X.Fn l), (l : ℤ_[l]) ^ n ∣ k - 1 → CgF X l n (k • a) a`. Introduce `k a hk u`. Use `(hA Ω ε X l n).2.2.2.2.1 k 1 (a u) hk` as an intermediate fact. Simplify using `using this`. Establish `d1 : ((l ^ n : ℕ) : ℤ) ∣ (((ν : ZMod M).val : ℕ) : ℤ) - 1` using `(ZMod.intCast_eq_intCast_iff_dvd_sub 1 _ (l ^ n)).1 (by push_cast; exact n2.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d2 : (l : ℤ_[l]) ^ n ∣ (((ν : ZMod M).val : ℕ) : ℤ_[l]) - 1`. Simplify using `using map_dvd (Int.castRingHom ℤ_[l]) d1`. Establish `dpow : ∀ m : ℕ, (l : ℤ_[l]) ^ n ∣ (((ν : ZMod M).val : ℕ) : ℤ_[l]) ^ m - 1` using `fun m => d2.trans (by simpa using sub_dvd_pow_sub_pow (((ν : ZMod M).val : ℕ) : ℤ_[l]) 1 m)`. Establish `hdvd : M₀ ∣ M` using `⟨N, by rw [lev.eq, mul_comm]⟩`. Establish `cu : IsUnit (((ν : ZMod M).val : ZMod M₀))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ZMod.natCast_val]`. Conclude with `ν.isUnit.map (ZMod.castHom hdvd (ZMod M₀))`. Establish `okd : Ok (dn l M₀ x') (dn l M₀ y')`. Rewrite using `[ex, ey]`. Establish `ok' : (2 : ZMod M₀) • x ≠ 0 ∧ (2 : ZMod M₀) • y ≠ 0` using `ok`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨fun h0 => ok'.1 ?_, fun h0 => ok'.2 ?_⟩` and prove the remaining obligations. Rewrite `h0` using `[smul_comm]`. Conclude with `cu.smul_left_cancel.1 (h0.trans (smul_zero _).symm)`. Rewrite `h0` using `[smul_comm]`. Conclude with `cu.smul_left_cancel.1 (h0.trans (smul_zero _).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `EC.trans (y := fun s t => Xi X l n N M₀ M w g (dn l M₀ x') (dn l M₀ y') (fun z => π z = t) (pushD X l M₀ (ws n (l * M₀) s))) ?_ ?_` and prove the remaining obligations. Apply `hC'.2.1` to reduce the goal to its premises. Introduce `s t`. Conclude with `hD Ω ε X l n N M₀ M w g lev M' h e x' y' bas (fun z => π z = t) (ws n (l * M₀) s)`. Use `EC.trans (hX Ω ε X l n N M₀ M w g lev hL (dn l M₀ x') (dn l M₀ y') okd A π _ _ (law.dist n l M₀ lv)) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[ex, ey]`. Apply `hC'.2.1` to reduce the goal to its premises. Introduce `s t`. Establish `key : (fun z => π (z * ν⁻¹ ^ 2) = t) = (fun z => π z = t * π ν ^ 2)`. Use function extensionality and compare the values at `z`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `propext` to reduce the goal to its premises. Rewrite using `[map_mul, map_pow, map_inv, inv_pow, mul_inv_eq_iff_eq_mul]`. Rewrite using `[← key]`. Establish `hs` using `hS Ω ε X l n N M₀ M w g lev x y (fun z => π z = t) (ws n M₀ s) ν n1`. Establish `e1` using `sc _ (Xi X l n N M₀ M w g (((ν : ZMod M).val : ZMod M₀) • x) (((ν : ZMod M).val : ZMod M₀) • y) (fun z => π z = t) (ws n M₀ s)) (dpow w)`.
-
-Establish `e2` using `sc _ (Xi X l n N M₀ M w g x y (fun z => π (z * ν⁻¹ ^ 2) = t) (ws n M₀ s)) (dpow 2)`. Conclude with `EF.trans (EF.symm e1) (EF.trans hs e2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem down (hA : SApi) (hC : SCohApi) (hX : SXiCoh) (hD : SXiDist) (hS : SXiScal)
     (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n N M₀ M M' w c d : ℕ) [NeZero N] [NeZero M₀] [NeZero M] [NeZero M'] [NeZero (l * M₀)]
@@ -317,9 +313,9 @@ private theorem down (hA : SApi) (hC : SCohApi) (hX : SXiCoh) (hD : SXiDist) (hS
   exact EF.trans (EF.symm e1) (EF.trans hs e2)
 
 /- English proof (translation)
-Establish `hx' : ∀ i, ∃ j : ℤ, x' i = toQ M₀ (rw0 M₀ U) i + j` using `fun i => by`. Rewrite using `[hx i]`. Conclude with `exists_int_div_eq_toQ_rw0_add M₀ U i`. Establish `hy' : ∀ i, ∃ j : ℤ, y' i = toQ M₀ (rw0 M₀ V) i + j` using `fun i => by`. Rewrite using `[hy i]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `exists_int_div_eq_toQ_rw0_add M₀ V i`. Take `⟨β, hβ, hc⟩` from `hT Ω ε X l n N M₀ M w g lev hL c d ws law lv (rw0 M₀ U) (rw0 M₀ V) ok x' y' hx' hy'`. Conclude with `hB Ω ε X l n N M₀ M w g lev hL (rw0 M₀ U) (rw0 M₀ V) ok (ws n M₀) (law.coc n M₀ lv) _ β hβ hc A π`.
+A detailed English derivation is pending.
 -/
 private theorem topXi (hT : STopRel) (hB : SBridge)
     (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n N M₀ M w c d : ℕ) [NeZero N] [NeZero M₀] [NeZero M]
@@ -344,9 +340,9 @@ private def rdH (l n r N p : ℕ) : (ZMod (lvT l n r N p))ˣ →* (ZMod p)ˣ × 
      (ZMod (l ^ r))).toMonoidHom)
 
 /- English proof (translation)
-Establish `c1 : ∀ (a b c : ℕ) (h1 : b ∣ a) (h2 : c ∣ b) (u : ZMod a), ZMod.castHom h2 (ZMod c) (ZMod.castHom h1 (ZMod b) u) = ZMod.castHom (h2.trans h1) (ZMod c) u`. Introduce `a b c h1 h2 u`. Conclude with `RingHom.congr_fun (ZMod.castHom_comp h2 h1) u`. Apply `Prod.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(c1 _ _ _ _ _ _).symm`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `(c1 _ _ _ _ _ _).trans (c1 _ _ _ _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 private theorem rdH_comp (l n r N p : ℕ) (h : lvT l n r N p ∣ lvT l n (r + 1) N p) (z : (ZMod (lvT l n (r + 1) N p))ˣ) :
     Prod.map id (redL l r) (rdT l n (r + 1) N p z) =
@@ -362,17 +358,17 @@ private theorem rdH_comp (l n r N p : ℕ) (h : lvT l n r N p ∣ lvT l n (r + 1
     exact (c1 _ _ _ _ _ _).trans (c1 _ _ _ _ _ _).symm
 
 /- English proof (translation)
-Establish `hmaps : ∀ z ∈ Finset.univ.filter (fun z => π' z = (y.1 * u, y.2)), (fun z => ((π z).1 * u⁻¹, (π z).2)) z ∈ Finset.univ.filter (fun y' : A × B' => Prod.map id f y' = y)`. Introduce `z hz`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hz ⊢`. Rewrite `hz` using `[← h z]`. Take `⟨h1, h2⟩` from `Prod.ext_iff.1 hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Prod.map_fst, Prod.map_snd, id] at h1 h2`. Apply `Prod.ext` to reduce the goal to its premises. Simplify using `[h1]`. Simplify using `using h2`. Simplify using `only [GlobalTheory.KA.push]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Use `Eq.trans ?_ (Finset.sum_fiberwise_of_maps_to hmaps _)` and prove the remaining obligations. Apply `Finset.sum_congr` to reduce the goal to its premises. Use extensionality with `y'`. Simplify using the standard rewrite rules. Introduce `y' hy'`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hy'`. Apply `Finset.sum_congr _ (fun _ _ => rfl)` to reduce the goal to its premises. Use extensionality with `z`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hz`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h z, hz, ← hy']`. Simplify using the standard rewrite rules. Rewrite using `[hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce and unpack `⟨-, hz⟩`. Rewrite using `[← hz]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem push_push {Γ Z A B B' M : Type} [Fintype Z] [Group A] [Fintype (A × B')] [DecidableEq (A × B')] [DecidableEq (A × B)]
     [AddCommMonoid M] (π : Z → A × B') (f : B' → B) (π' : Z → A × B) (h : ∀ z, Prod.map id f (π z) = π' z) (u : A)
@@ -411,7 +407,7 @@ private theorem push_push {Γ Z A B B' M : Type} [Fintype Z] [Group A] [Fintype 
     simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Establish `h` using `((hG Ω ε X N (Nat.pos_of_ne_zero (NeZero.ne N))).2.2.2.2.2.2.2 (lvT l n r N p) s).2.2.2.2`. Unfold `kT`. Rewrite using `[(hZ Ω l r s).1]`. Conclude with `Prod.ext (congrArg Inv.inv (h p _)) (congrArg Inv.inv (h (l ^ r) _))`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rdH_cyc (hG : SSlD) (hZ : SCycZ) (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n r N p : ℕ) [NeZero N] [NeZero p] :
     (fun s : Ω ≃ₐ[ℚ] Ω => (rdH l n r N p (cycM (lvT l n r N p) s))⁻¹) = kT l r p := by
@@ -422,59 +418,51 @@ private theorem rdH_cyc (hG : SSlD) (hZ : SCycZ) (X : Tower Ω ε) (l : ℕ) [Fa
   exact Prod.ext (congrArg Inv.inv (h p _)) (congrArg Inv.inv (h (l ^ r) _))
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X l _ N p _ _ x c d w g hyp hp hcop hws hL n r`. Take `⟨ws, law⟩` from `hws`. Establish `hpr : l.Prime` using `Fact.out`. Establish `hN : 0 < N` using `Nat.pos_of_ne_zero (NeZero.ne N)`. Establish `C` using `hC Ω ε X l N w n hN ((ZMod p)ˣ × (ZMod (l ^ r))ˣ) (kT l r p)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Conclude with `C.2.2.2.2.2.1 _ _`. Use `haveI : NeZero l := ⟨hpr.ne_zero⟩`. Establish `hl2 : l ≠ 2` using `hyp.odd`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlN : l.Coprime N` using `hyp.cop`. Establish `hpl : Nat.Coprime p l` using `Nat.Coprime.coprime_dvd_right ⟨N * c * d, by ring⟩ hcop`. Establish `hpN : Nat.Coprime p N` using `Nat.Coprime.coprime_dvd_right ⟨l * c * d, by ring⟩ hcop`. Establish `hpc : Nat.Coprime p c` using `Nat.Coprime.coprime_dvd_right ⟨l * N * d, by ring⟩ hcop`. Establish `hpd : Nat.Coprime p d` using `Nat.Coprime.coprime_dvd_right ⟨l * N * c, by ring⟩ hcop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpNL : ∀ L, Nat.Coprime p (N * l ^ L)` using `fun L => Nat.Coprime.mul_right hpN (Nat.Coprime.pow_right L hpl)`. Establish `hNl : (N : ZMod l) ≠ 0`. Introduce `h0`. Establish `h1 : l ∣ N` using `(CharP.cast_eq_zero_iff (ZMod l) l N).1 h0`. Conclude with `hpr.one_lt.ne' (Nat.Coprime.eq_one_of_dvd hlN h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `haveI i1 : NeZero (N * l ^ (r + n) * p) := ⟨mul_ne_zero (mul_ne_zero (NeZero.ne N) (pow_ne_zero _ hpr.ne_zero)) (NeZero.ne p)⟩`. Use `haveI i2 : NeZero (l * (N * l ^ (r + n) * p)) := ⟨mul_ne_zero hpr.ne_zero i1.out⟩`. Use `haveI i3 : NeZero (lvT l n r N p) := ⟨by`. Simplify using `only [lvT]`. Conclude with `mul_ne_zero (mul_ne_zero (pow_ne_zero _ hpr.ne_zero) (mul_ne_zero (NeZero.ne N) (NeZero.ne N))) (NeZero.ne p)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI i4 : NeZero (lvT l n (r + 1) N p) := ⟨by`. Simplify using `only [lvT]`. Conclude with `mul_ne_zero (mul_ne_zero (pow_ne_zero _ hpr.ne_zero) (mul_ne_zero (NeZero.ne N) (NeZero.ne N))) (NeZero.ne p)⟩`. Establish `eMr : lvT l n r N p = N * (N * l ^ (r + n) * p)` using `by simp only [lvT]; ring`. Establish `eM1 : lvT l n (r + 1) N p = N * (l * (N * l ^ (r + n) * p))` using `by simp only [lvT]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMM : lvT l n r N p ∣ lvT l n (r + 1) N p` using `⟨l, by rw [eMr, eM1]; ring⟩`. Establish `lev0 : Lev l n N (N * l ^ (r + n) * p) (lvT l n r N p) g` using `⟨eMr, ⟨l ^ (r + n) * p, by ring⟩, ⟨N * l ^ r * p, by ring⟩, hn, hlN, hyp.g0⟩`. Establish `lev1 : Lev l n N (l * (N * l ^ (r + n) * p)) (lvT l n (r + 1) N p) g` using `⟨eM1, ⟨l * l ^ (r + n) * p, by ring⟩, ⟨l * N * l ^ r * p, by ring⟩, hn, hlN, hyp.g0⟩`. Establish `cl : Nat.Coprime c l` using `Nat.Coprime.coprime_dvd_right ⟨6 * N, by ring⟩ hyp.cc`. Establish `cN : Nat.Coprime c N` using `Nat.Coprime.coprime_dvd_right ⟨6 * l, by ring⟩ hyp.cc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dl : Nat.Coprime d l` using `Nat.Coprime.coprime_dvd_right ⟨6 * N, by ring⟩ hyp.cd`. Establish `dN : Nat.Coprime d N` using `Nat.Coprime.coprime_dvd_right ⟨6 * l, by ring⟩ hyp.cd`. Establish `cop3 : ∀ {e : ℕ}, Nat.Coprime e l → Nat.Coprime e N → Nat.Coprime e p → Nat.Coprime e (N * l ^ (r + n) * p) ∧ Nat.Coprime e (l * (N * l ^ (r + n) * p))` using `fun a b q => ⟨Nat.Coprime.mul_right (Nat.Coprime.mul_right b (Nat.Coprime.pow_right _ a)) q, Nat.Coprime.mul_right a (Nat.Coprime.mul_right (Nat.Coprime.mul_right b (Nat.Coprime.pow_right _ a)) q)⟩`. Establish `lv0 : Lv c d (N * l ^ (r + n) * p)` using `⟨Nat.pos_of_ne_zero i1.out, (cop3 cl cN hpc.symm).1, (cop3 dl dN hpd.symm).1⟩`. Establish `lv1 : Lv c d (l * (N * l ^ (r + n) * p))` using `⟨Nat.pos_of_ne_zero i2.out, (cop3 cl cN hpc.symm).2, (cop3 dl dN hpd.symm).2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `rl0` using `rows_l (l := l) (L := r + n) (N := N) (p := p) x (by omega) (hpNL _)`. Establish `rl1` using `rows_l (l := l) (L := r + 1 + n) (N := N) (p := p) x (by omega) (hpNL _)`. Establish `hlQ : l ∣ N * l ^ (r + n) * p` using `Dvd.dvd.mul_right (Dvd.dvd.mul_left (dvd_pow_self l (by omega)) N) p`. Establish `ok0 : Ok (rw0 (N * l ^ (r + n) * p) (rU l (r + n) N p x)) (rw0 (N * l ^ (r + n) * p) (rV l (r + n) N p))` using `And.intro (two_ne hl2 hlQ _ 0 (by rw [rl0.1]; exact hNl)) (two_ne hl2 hlQ _ 1 (by rw [rl0.2.1]; exact hNl))`. Establish `ok1 : Ok (rw0 (l * (N * l ^ (r + n) * p)) (rU l (r + 1 + n) N p x)) (rw0 (l * (N * l ^ (r + n) * p)) (rV l (r + 1 + n) N p))` using `And.intro (two_ne hl2 (dvd_mul_right _ _) _ 0 (by rw [rl1.1]; exact hNl)) (two_ne hl2 (dvd_mul_right _ _) _ 1 (by rw [rl1.2.1]; exact hNl))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e1n : N * l ^ (r + 1 + n) * p = l * (N * l ^ (r + n) * p)` using `by ring`. Establish `hx1 : ∀ i, ixUT l (r + 1 + n) N p x i = (rU l (r + 1 + n) N p x i : ℚ) / ((l * (N * l ^ (r + n) * p) : ℕ) : ℚ)` using `fun i => by rw [ixUT_eq, e1n]`. Establish `hy1 : ∀ i, ixVT l (r + 1 + n) N p i = (rV l (r + 1 + n) N p i : ℚ) / ((l * (N * l ^ (r + n) * p) : ℕ) : ℚ)` using `fun i => by rw [ixVT_eq, e1n]`. Establish `hcp : Nat.Coprime (l ^ (r + n) * (N * N)) p` using `(Nat.Coprime.mul_right (Nat.Coprime.pow_right _ hpl) (Nat.Coprime.mul_right hpN hpN)).symm`. Take `⟨k, hk1, hk2⟩` from `Nat.chineseRemainder hcp 1 l`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hkD : ∀ D, D ∣ l ^ (r + n) * (N * N) → (k : ZMod D) = 1` using `fun D hD => by`. Establish `h1` using `(ZMod.natCast_eq_natCast_iff k 1 D).2 (Nat.ModEq.of_dvd hD hk1)`. Simplify using `using h1`. Establish `hkp : (k : ZMod p) = l` using `(ZMod.natCast_eq_natCast_iff k l p).2 hk2`. Establish `kcop : Nat.Coprime k (lvT l n r N p)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [lvT]`. Apply `Nat.Coprime.mul_right` to reduce the goal to its premises. Establish `h1` using `Nat.ModEq.gcd_eq hk1`. Simplify `h1` using `[Nat.Coprime]`. Establish `h1` using `Nat.ModEq.gcd_eq hk2`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Nat.Coprime, h1]`. Conclude with `hpl.symm`. Take `⟨ν, hνk⟩ : ∃ ν : (ZMod (lvT l n r N p))ˣ, (ν : ZMod (lvT l n r N p)) = k` from `⟨ZMod.unitOfCoprime k kcop, ZMod.coe_unitOfCoprime k kcop⟩`. Establish `hν : ∀ D, D ∣ lvT l n r N p → (((ν : ZMod (lvT l n r N p)).val : ℕ) : ZMod D) = k` using `fun D hD => by`. Rewrite using `[ZMod.natCast_val, hνk, ZMod.cast_natCast hD]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `n1 : (((ν : ZMod (lvT l n r N p)).val : ℕ) : ZMod N) = 1`. Rewrite using `[hν N ⟨N * l ^ (r + n) * p, eMr⟩]`. Conclude with `hkD N ⟨l ^ (r + n) * N, by ring⟩`. Establish `n2 : (((ν : ZMod (lvT l n r N p)).val : ℕ) : ZMod (l ^ n)) = 1`. Rewrite using `[hν _ ⟨l ^ r * (N * N) * p, by simp only [lvT]; ring⟩]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hkD _ ⟨l ^ r * (N * N), by ring⟩`. Establish `hkQ : (k : ZMod (N * l ^ (r + n))) = 1` using `hkD _ ⟨N, by ring⟩`. Establish `rs` using `rows_succ (l := l) (L := r + n) (N := N) (p := p) (k := k) x hlN (hpNL _) hkQ hkp`. Rewrite `rs` using `[show r + n + 1 = r + 1 + n by omega]`. Establish `hQM : N * l ^ (r + n) * p ∣ lvT l n r N p` using `⟨N, by rw [eMr, mul_comm]⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `ex : dn l (N * l ^ (r + n) * p) (rw0 (l * (N * l ^ (r + n) * p)) (rU l (r + 1 + n) N p x)) = (((ν : ZMod (lvT l n r N p)).val : ℕ) : ZMod (N * l ^ (r + n) * p)) • rw0 (N * l ^ (r + n) * p) (rU l (r + n) N p x)`. Rewrite using `[dn_rw0_mul_eq_rw0, hν _ hQM, rs.1]`. Establish `ey : dn l (N * l ^ (r + n) * p) (rw0 (l * (N * l ^ (r + n) * p)) (rV l (r + 1 + n) N p)) = (((ν : ZMod (lvT l n r N p)).val : ℕ) : ZMod (N * l ^ (r + n) * p)) • rw0 (N * l ^ (r + n) * p) (rV l (r + n) N p)`. Rewrite using `[dn_rw0_mul_eq_rw0, hν _ hQM, rs.2]`. Establish `bas : Bas l N (rw0 (l * (N * l ^ (r + n) * p)) (rU l (r + 1 + n) N p x)) (rw0 (l * (N * l ^ (r + n) * p)) (rV l (r + 1 + n) N p))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `And.intro hlN ?_` and prove the remaining obligations. Establish `b1 : rw0 (l * (N * l ^ (r + n) * p)) (rU l (r + 1 + n) N p x) 1 = 0`. Simplify using `only [rw0]`. Rewrite using `[rl1.2.2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[b1, ZMod.val_zero]`. Simplify using `only [Nat.cast_zero, zero_mul, sub_zero, rw0]`. Rewrite using `[val_cast (dvd_mul_right l _), val_cast (dvd_mul_right l _), rl1.1, rl1.2.1]`. Conclude with `mul_ne_zero hNl hNl`. Establish `hcyc` using `(hG Ω ε X 1 one_pos).2.2.2.2.2.2.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `Cr` using `topXi hT hB X l n N (N * l ^ (r + n) * p) (lvT l n r N p) w c d g lev0 hL ws law lv0 (rU l (r + n) N p x) (rV l (r + n) N p) ok0 (ixUT l (r + n) N p x) (ixVT l (r + n) N p) (ixUT_eq l (r + n) N p x) (ixVT_eq l (r + n) N p) _ (rdH l n r N p)`. Rewrite `Cr` using `[rdH_cyc hG hZ X l n r N p]`. Establish `C1` using `topXi hT hB X l n N (l * (N * l ^ (r + n) * p)) (lvT l n (r + 1) N p) w c d g lev1 hL ws law lv1 (rU l (r + 1 + n) N p x) (rV l (r + 1 + n) N p) ok1 (ixUT l (r + 1 + n) N p x) (ixVT l (r + 1 + n) N p) hx1 hy1 _ ((rdH l n r N p).comp (Units.map (ZMod.castHom hMM (ZMod (lvT l n r N …`. Establish `hκ' : (fun s : Ω ≃ₐ[ℚ] Ω => (((rdH l n r N p).comp (Units.map (ZMod.castHom hMM (ZMod (lvT l n r N p))).toMonoidHom)) (cycM (lvT l n (r + 1) N p) s))⁻¹) = kT l r p`. Rewrite using `[← rdH_cyc hG hZ X l n r N p]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `s`. Conclude with `congrArg (fun u => (rdH l n r N p u)⁻¹) ((hcyc (lvT l n (r + 1) N p) s).2.2.2.2 (lvT l n r N p) hMM)`. Rewrite `C1` using `[hκ']`. Establish `Dn` using `down hA hC hX hD hS X l n N (N * l ^ (r + n) * p) (lvT l n r N p) (lvT l n (r + 1) N p) w c d g lev0 hL hMM eM1 ws law lv1 _ _ _ _ ok0 bas ν n1 n2 ex ey _ (rdH l n r N p)`. Rewrite `Dn` using `[rdH_cyc hG hZ X l n r N p]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `chain1` using `C.1.trans C1 Dn`. Establish `hνp : (((rdH l n r N p ν).1 : (ZMod p)ˣ) : ZMod p) = l` using `by show (ZMod.castHom _ (ZMod p)) (ν : ZMod (lvT l n r N p)) = l`. Rewrite using `[hνk, map_natCast, hkp]`. Establish `hνl : (rdH l n r N p ν).2 = 1` using `Units.ext (by show (ZMod.castHom _ (ZMod (l ^ r))) (ν : ZMod (lvT l n r N p)) = 1`. Rewrite using `[hνk, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hkD _ ⟨l ^ n * (N * N), by ring⟩)`. Establish `hinv : inv1 p l = ((rdH l n r N p ν).1)⁻¹`. Establish `hu : IsUnit (l : ZMod p)`. Rewrite using `[← hνp]`. Conclude with `Units.isUnit _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv1, dif_pos hu, inv_inj]`. Conclude with `Units.ext (by rw [IsUnit.unit_spec, hνp])`. Establish `htt : ((inv1 p l ^ (2 * (r + 1 + n)), (1 : (ZMod (l ^ r))ˣ)) : (ZMod p)ˣ × (ZMod (l ^ r))ˣ) * (rdH l n r N p ν) ^ 2 = (inv1 p l ^ (2 * (r + n)), 1)`. Apply `Prod.ext` to reduce the goal to its premises. Use `show inv1 p l ^ (2 * (r + 1 + n)) * ((rdH l n r N p ν).1) ^ 2 = inv1 p l ^ (2 * (r + n))`.
-
-Rewrite using `[hinv, show 2 * (r + 1 + n) = 2 * (r + n) + 2 by ring, pow_add, mul_assoc, ← mul_pow, inv_mul_cancel, one_pow, mul_one]`. Use `show 1 * ((rdH l n r N p ν).2) ^ 2 = 1`. Rewrite using `[hνl]`. Simplify using the standard rewrite rules. Establish `S1` using `C.2.2.2.1 1 (inv1 p l ^ (2 * (r + 1 + n)), 1) _ _ chain1`.
-
-Establish `S0` using `C.2.2.2.1 1 (inv1 p l ^ (2 * (r + n)), 1) _ _ Cr`. Simplify using `only [mul_assoc, htt] at S1`. Establish `fin` using `C.1.trans S1 (C.1.symm S0)`. Establish `eqL : GlobalTheory.KA.push (Prod.map id (redL l r)) (YT X l n (r + 1) N p x c d w g) = fun s y => (1 : ℤ_[l]) • GlobalTheory.KA.push (⇑((rdH l n r N p).comp (Units.map (ZMod.castHom hMM (ZMod (lvT l n r N p))).toMonoidHom))) (shB X l (lvT l n (r + 1) N p) (clsT X l n (r + 1) N p …`. Use function extensionality and compare the values at `s y`.
-
-Rewrite using `[one_smul]`. Conclude with `(push_push (rdT l n (r + 1) N p) (redL l r) (⇑((rdH l n r N p).comp (Units.map (ZMod.castHom hMM (ZMod (lvT l n r N p))).toMonoidHom))) (fun z => rdH_comp l n r N p hMM z) (inv1 p l ^ (2 * (r + 1 + n))) (shB X l (lvT l n (r + 1) N p) (clsT X l n (r + 1) N p x c d w g)) s y).trans …`. Establish `eqR : YT X l n r N p x c d w g = fun s y => (1 : ℤ_[l]) • GlobalTheory.KA.push (⇑(rdH l n r N p)) (shB X l (lvT l n r N p) (clsT X l n r N p x c d w g)) s (y * (inv1 p l ^ (2 * (r + n)), 1))`. Use function extensionality and compare the values at `s y`. Rewrite using `[one_smul]`.
-
-Conclude with `congrArg (GlobalTheory.KA.push (rdT l n r N p) (shB X l (lvT l n r N p) (clsT X l n r N p x c d w g)) s) (Prod.ext rfl (mul_one y.2).symm : ((y.1 * inv1 p l ^ (2 * (r + n)), y.2) : (ZMod p)ˣ × (ZMod (l ^ r))ˣ) = y * (inv1 p l ^ (2 * (r + n)), 1))`. Rewrite using `[eqL, eqR]`. Conclude with `fin`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem main (hA : SApi) (hC : SCohApi) (hX : SXiCoh) (hD : SXiDist) (hS : SXiScal) (hG : SSlD)
     (hT : STopRel) (hB : SBridge) (hZ : SCycZ) : KatoTwistedClassNormCompatibleCyclotomic := by
@@ -657,7 +645,7 @@ private theorem main (hA : SApi) (hC : SCohApi) (hX : SXiCoh) (hD : SXiDist) (hS
 end UpperTheory.V.Z.Kato.Nb.NormOneTrace
 
 /- English proof (translation)
-The claim follows from `UpperTheory.V.Z.Kato.Nb.NormOneTrace.main sApi sCohApi sXiCoh sXiDist sXiScal sSlD sTopRel sBridge sCycZ`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Nb.kato_normRelation_twistTower :
     UpperTheory.V.Z.Kato.Nb.KatoTwistedClassNormCompatibleCyclotomic :=

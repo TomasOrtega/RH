@@ -12,23 +12,23 @@ open MvPolynomial Matrix ComplexSets
 namespace ComponentsGenericCount
 
 /- English proof (translation)
-Introduce `n d F A hF hinc`. Establish `hfib : ∀ y, {x | (∃ J ∈ F, x ∈ zeroSet J) ∧ A *ᵥ x = y} = ⋃ J ∈ F, fibre J A y`. Introduce `y`. Use extensionality with `x`. Simplify using `only [fibre, Set.mem_ofPred_eq, Set.mem_iUnion, exists_prop]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-The claim follows by propositional logic. Establish `hcard : ∀ J ∈ F, ∀ y, (fibre J A y).encard ≤ (projDegree J A : ℕ∞)`. Introduce `J hJ y`. Take `⟨-, hfin, hle⟩` from `ComplexSets.FibreBound.full n d J A (hF J hJ).1 (hF J hJ).2.1 (hF J hJ).2.2 y`. Rewrite using `[← hfin.cast_ncard_eq]`.
+The claim follows by propositional logic. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hle` after adjusting the coercions. Use `⟨fun y => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfib, Nat.cast_sum]`. Conclude with `(encard_biUnion_le F _).trans (Finset.sum_le_sum fun J hJ => hcard J hJ y)`. Take `⟨Δ₁, hΔ₁, hΔ₁y⟩` from `exists_prod_ne_zero F (fun J P => ∀ y, eval y P ≠ 0 → (fibre J A y).Finite ∧ (fibre J A y).ncard = projDegree J A ∧ ∀ x ∈ fibre J A y, ∃ (U : Set (Fin d → ℂ)) (g : (Fin d → ℂ) → Fin n → ℂ), IsOpen U ∧ y ∈ U ∧ DifferentiableOn ℂ g U ∧ g y = x ∧ ∀ y' ∈ U, A *ᵥ g y' = y' ∧ g y' ∈ ze …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨P, hP, hPy⟩` from `ComplexSets.DiscriminantCover.full n d J A (hF J hJ).1 (hF J hJ).2.1 (hF J hJ).2.2`. Use `⟨P, hP, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨hfin, hc, hsec⟩` from `hPy y hy`. Use `⟨hfin, hc, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨U, V, g, hU, hyU, -, -, hg, hgx, hAg, hZ⟩` from `hsec x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨U, g, hU, hyU, hg, hgx, fun y' hy' => ⟨hAg y' hy', ?_⟩⟩` and prove the remaining obligations. Establish `hmem : g y' ∈ zeroSet J ∩ V` using `hZ ▸ Set.mem_image_of_mem g hy'`. Conclude with `hmem.1)`. Take `⟨Δ₂, hΔ₂, hΔ₂y⟩` from `exists_prod_ne_zero ((F ×ˢ F).filter fun p => p.1 ≠ p.2) (fun p c => ∀ x ∈ zeroSet p.1, x ∈ zeroSet p.2 → eval (A *ᵥ x) c = 0) (fun p hp => by`. Simplify using `only [Finset.mem_filter, Finset.mem_product] at hp`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `exists_pair_poly p.1 p.2 A (hF _ hp.1.1).1 (hF _ hp.1.1).2.2 fun h => hp.2 (hinc _ hp.1.2 _ hp.1.1 h).symm)`. Use `⟨Δ₁ * Δ₂, mul_ne_zero hΔ₁ hΔ₂, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite `hy` using `[map_mul]`. Establish `h1` using `hΔ₁y y (left_ne_zero_of_mul hy)`. Establish `h2` using `hΔ₂y y (right_ne_zero_of_mul hy)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfib, Nat.cast_sum, encard_biUnion_eq]`. Use `Finset.sum_congr rfl fun J hJ => ?_` and prove the remaining obligations. Take `⟨P, hP, hPy⟩` from `h1 J hJ`. Take `⟨hfin, hc, -⟩` from `hP y hPy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hfin.cast_ncard_eq, hc]`. Introduce `J hJ J' hJ' hne`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `x ⟨hxJ, hxy⟩ ⟨hxJ', -⟩`. Take `⟨c, hc, hcy⟩` from `h2 (J, J') (by simp [hJ, hJ', hne])`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `hcy (by rw [← hxy]; exact hc x hxJ hxJ')`. Introduce and unpack `x ⟨J, hJ, hxJ⟩ hxy`. Take `⟨P, hP, hPy⟩` from `h1 J hJ`. Take `⟨U, g, hU, hyU, hg, hgx, hsec⟩` from `(hP y hPy).2.2 x ⟨hxJ, hxy⟩`. Conclude with `⟨U, g, hU, hyU, hg, hgx, fun y' hy' => ⟨(hsec y' hy').1, J, hJ, (hsec y' hy').2⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem proof : ComponentsGenericCount.Statement := by
   classical

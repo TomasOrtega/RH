@@ -7,9 +7,9 @@ namespace UpperTheory.V.Z.Sym.Glob
 open Matrix Loc
 
 /- English proof (translation)
-Use `⟨⟨ι, U, 1, W, ⊥, bot_le, ?_, ?_, ?_⟩, rfl, rfl, rfl, rfl, rfl⟩` and prove the remaining obligations. Introduce `z hz`. Rewrite using `[Subgroup.mem_bot.1 hz, map_one]`. Conclude with `one_mem _`. Introduce `z hz`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mem_bot.1 hz, map_one]`. Conclude with `one_mem _`. Introduce `z hz v`. Take `rfl` from `Subgroup.mem_bot.1 hz`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem base_bot {Γ G V : Type} [Group Γ] [Group G] [AddCommGroup V] [Module ℂ V] (ι : Γ →* G) (U : Subgroup G)
     (W : Representation ℂ Γ V) : ∃ B : Base Γ G V, B.ι = ι ∧ B.U = U ∧ B.ω = 1 ∧ B.Γ₀ = ⊥ ∧ B.W = W := by
@@ -25,7 +25,7 @@ private theorem base_bot {Γ G V : Type} [Group Γ] [Group G] [AddCommGroup V] [
     simp
 
 /- English proof (translation)
-Take `⟨B, h1, h2, h3⟩` from `base_bot ((ι.comp S.subtype).codRestrict T fun γ => h γ γ.2) ((U.comap (MulAut.conj x⁻¹).toMonoidHom).subgroupOf T) W`. Use `⟨B, fun γ => by rw [h1]; rfl, fun g => ?_, h3⟩` and prove the remaining obligations. Rewrite using `[h2, Subgroup.mem_subgroupOf, Subgroup.mem_comap]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem base_sub {Γ G V : Type} [Group Γ] [Group G] [AddCommGroup V] [Module ℂ V] (ι : Γ →* G) (S : Subgroup Γ)
     (T U : Subgroup G) (h : ∀ γ ∈ S, ι γ ∈ T) (x : G) (W : Representation ℂ S V) :
@@ -37,7 +37,7 @@ private theorem base_sub {Γ G V : Type} [Group Γ] [Group G] [AddCommGroup V] [
   simp
 
 /- English proof (translation)
-Rewrite using `[SU, MonoidHom.mem_ker, ← Units.val_eq_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem mem_SU {K : Type} [Field K] {Δ : K} (g : DX Δ) : g ∈ SU Δ ↔ (mt g).det = 1 := by
   rw [SU, MonoidHom.mem_ker, ← Units.val_eq_one]
@@ -47,11 +47,11 @@ end UpperTheory.V.Z.Sym.Glob
 
 open UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Glob in
 /- English proof (translation)
-Introduce `F _ _ Δ D _ V _ _ W ch htr x`. Take `⟨-, ⟨ι, hι⟩, -⟩` from `iotaEx F Δ`. Establish `hmem : ∀ γ ∈ SU Δ, ι γ ∈ SA Δ`. Introduce `γ hγ`. Use `Subgroup.mem_iInf.2 fun v => Subgroup.mem_comap.2 ((mem_SU _).2 ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (mt ((ι γ).1 v)).det = 1`. Rewrite using `[hι γ v, ← RingHom.mapMatrix_apply, ← RingHom.map_det, (mem_SU γ).1 hγ, map_one]`. Conclude with `h1`. Take `⟨B, h1, h2, h3, h4, h5⟩` from `base_sub ι (SU Δ) (SA Δ) D.U2 hmem x W`. Use `⟨B, ⟨fun γ v => ?_, h2, h3, h4, fun γ τ h => ?_⟩, h5⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `hι _ v`. Rewrite using `[h5]`. Conclude with `htr γ τ h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Glob.baseS :
     UpperTheory.V.Z.Sym.Glob.BaseS := by

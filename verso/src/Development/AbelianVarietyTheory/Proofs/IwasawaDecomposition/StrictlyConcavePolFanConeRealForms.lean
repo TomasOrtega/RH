@@ -8,21 +8,19 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolCell
 
 /- English proof (translation)
-Introduce `X _ _ φ N m u w hF hu hS`. Take `⟨h1, h2, h3⟩` from `hS`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `B ⟨t, ht, rfl⟩`. Rewrite using `[(linearOn_iff φ u).1 hu.linear t ht, evalW_sum, Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[h1 i]`. Expand and normalize the polynomial expressions, which then agree. Introduce `B hB`. Take `⟨m', γ, c, hγ, hc, rfl⟩` from `hF.cover B hB`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hle : ∀ i, (N : ℝ) * φ.evalZ (γ i) ≤ linW w (γ i)` using `fun i => h2 _ (hγ.mem i) (hγ.nonneg i)`. Rewrite using `[(linearOn_iff φ γ).1 hγ.linear c hc, evalW_sum, Finset.mul_sum]`. Establish `hterm : ∀ i, (N : ℝ) * (c i * φ.evalZ (γ i)) ≤ c i * linW w (γ i)` using `fun i => by`. Rewrite using `[mul_left_comm]`. Conclude with `mul_le_mul_of_nonneg_left (hle i) (hc i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Finset.sum_le_sum fun i _ => hterm i, fun he => ?_⟩` and prove the remaining obligations. Establish `heq : ∀ i, (N : ℝ) * (c i * φ.evalZ (γ i)) = c i * linW w (γ i)` using `fun i => (Finset.sum_eq_sum_iff_of_le fun i _ => hterm i).1 he i (Finset.mem_univ i)`. Establish `hd : ∀ i, ∃ d : Fin m → ℝ, (∀ j, 0 ≤ d j) ∧ c i • toReal (γ i) = ∑ j, d j • toReal (u j)`. Introduce `i`. Break down `(hc i).eq_or_lt with h0 | h0` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun _ => le_rfl, by simp [← h0]⟩`. Establish `hi : (N : ℝ) * φ.evalZ (γ i) = linW w (γ i)`. Use `heq i` as an intermediate fact. Rewrite `this` using `[mul_left_comm]`. Conclude with `mul_left_cancel₀ h0.ne' this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, e, hk, hke⟩` from `h3 _ (hγ.mem i) (hγ.nonneg i) hi`. Use `⟨fun j => c i * e j / k, fun j => by positivity, LinearMap.ext₂ fun a b => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun₂ hke a b` as an intermediate fact. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, nsmul_eq_mul, smul_eq_mul] at this`. Establish `hk' : (k : ℝ) ≠ 0` using `by positivity`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `this' : (k : ℝ) * (γ i a b : ℝ) = ∑ j, (e j : ℝ) * (u j a b : ℝ)` using `by exact_mod_cast this`. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, toReal_apply, smul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this', Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`. Use `choose d hd0 hd1 using hd`.
-
-Use `⟨fun j => ∑ i, d i j, fun j => Finset.sum_nonneg fun i _ => hd0 i j, ?_⟩` and prove the remaining obligations. Simplify using `only [hd1, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem strictWith_real : ∀ (X : Type) [AddCommGroup X] [Module.Finite ℤ X] (φ : InvFun ℤ) (N m : ℕ)
     (u : Fin m → LinearMap.BilinForm ℤ X) (w : (X × X) →₀ ℤ), IsPolFanOn (id : ℤ → ℤ) φ X → IsCone (id : ℤ → ℤ) φ u →

@@ -16,13 +16,13 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.CountBox
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h w`. Take `⟨τ⟩ : Nonempty (EmbOver E w)` from `inferInstance`. Use `⟨τ.1, fun x => ?_⟩` and prove the remaining obligations. Establish `hext : ∀ y : w.Completion ⊗[F] E, InfinitePlace.Completion.extensionEmbedding w (Algebra.norm w.Completion y) = ((‖infEmb τ y‖ ^ 2 : ℝ) : ℂ)`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrArg (infEmb τ) (GlobalTheory.Doubling.algebraMap_norm_eq h y)`. Rewrite `h1` using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, infEmb_tmul, map_one, mul_one, map_mul, ← infEmb_sigR h τ, Complex.mul_conj']`. Rewrite using `[h1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1 : infEmb τ (inclR (F` using `F) w.Completion x) = τ.1 x := by simp [inclR, infEmb_tmul]`. Establish `e2 : InfinitePlace.Completion.extensionEmbedding w (algebraMap F w.Completion (Algebra.norm F x)) = w.embedding (Algebra.norm F x)` using `InfinitePlace.Completion.extensionEmbedding_coe w ((WithAbs.equiv w.1).symm _)`. Establish `h1` using `hext (inclR (F := F) w.Completion x)`. Rewrite `h1` using `[GlobalTheory.Doubling.norm_inclR, e2, e1]`. Establish `h2` using `congrArg norm h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[InfinitePlace.norm_embedding_eq, Complex.norm_of_nonneg (by positivity)]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_emb_place_norm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ w : InfinitePlace F, ∃ τ : E →+* ℂ, ∀ c : E,
@@ -47,9 +47,9 @@ theorem exists_emb_place_norm : ∀ (F E : Type) [Field F] [NumberField F] [Fiel
   rwa [InfinitePlace.norm_embedding_eq, Complex.norm_of_nonneg (by positivity)] at h2
 
 /- English proof (translation)
-Break down `le_total ⌊u⌋₊ (m - 1) with h | h` into its components or cases. Rewrite using `[min_eq_left h]`. Conclude with `⟨Nat.floor_le h0, (Nat.lt_floor_add_one u).le⟩`. Rewrite using `[min_eq_right h]`. Establish `e : ((m - 1 : ℕ) : ℝ) = m - 1` using `by rw [Nat.cast_sub hm]; simp`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨?_, by rw [e]; linarith⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem cell_bound (m : ℕ) (hm : 1 ≤ m) (u : ℝ) (h0 : 0 ≤ u) (h1 : u ≤ m) :
     ((min ⌊u⌋₊ (m - 1) : ℕ) : ℝ) ≤ u ∧ u ≤ ((min ⌊u⌋₊ (m - 1) : ℕ) : ℝ) + 1 := by
@@ -64,21 +64,21 @@ theorem cell_bound (m : ℕ) (hm : 1 ≤ m) (u : ℝ) (h0 : 0 ≤ u) (h1 : u ≤
 noncomputable def cellIdx (m : ℕ) (s x : ℝ) : ℕ := min ⌊(x + s) / (2 * s) * m⌋₊ (m - 1)
 
 /- English proof (translation)
-The claim follows from `lt_of_le_of_lt (min_le_right _ _) (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem cellIdx_lt (m : ℕ) (hm : 1 ≤ m) (s x : ℝ) : cellIdx m s x < m :=
   lt_of_le_of_lt (min_le_right _ _) (by omega)
 
 /- English proof (translation)
-Break down `hs.eq_or_lt with rfl | hs` into its components or cases. Establish `hx0 : x = 0` using `abs_nonpos_iff.mp hx`. Establish `hy0 : y = 0` using `abs_nonpos_iff.mp hy`. Simplify using `[hx0, hy0]`. Establish `hm' : (0 : ℝ) < m` using `by exact_mod_cast hm`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨hx1, hx2⟩` from `abs_le.mp hx`. Take `⟨hy1, hy2⟩` from `abs_le.mp hy`. Establish `key : ∀ t : ℝ, -s ≤ t → t ≤ s → 0 ≤ (t + s) / (2 * s) * m ∧ (t + s) / (2 * s) * m ≤ m`. Introduce `t h1 h2`. Use `⟨mul_nonneg (div_nonneg (by linarith) (by positivity)) (Nat.cast_nonneg _), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (t + s) / (2 * s) ≤ 1` using `by rw [div_le_one (by positivity)]; linarith`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨a0, a1⟩` from `key x hx1 hx2`. Take `⟨b0, b1⟩` from `key y hy1 hy2`. Take `⟨u1, u2⟩` from `cell_bound m hm _ a0 a1`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v1, v2⟩` from `cell_bound m hm _ b0 b1`. Unfold `cellIdx at he`. Rewrite `u1`, `u2` using `[he]`. Establish `huv : |(x + s) / (2 * s) * m - (y + s) / (2 * s) * m| ≤ 1` using `abs_sub_le_iff.2 ⟨by linarith, by linarith⟩`. Establish `e : (x + s) / (2 * s) * m - (y + s) / (2 * s) * m = (x - y) * (m / (2 * s))` using `by field_simp; ring`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `huv` using `[e, abs_mul, abs_of_pos (by positivity : (0:ℝ) < m / (2 * s))]`. Rewrite using `[le_div_iff₀ hm']`. Establish `: |x - y| * m ≤ 2 * s`. Establish `h` using `mul_le_mul_of_nonneg_right huv (by positivity : (0:ℝ) ≤ 2 * s)`. Establish `e2 : |x - y| * (m / (2 * s)) * (2 * s) = |x - y| * m` using `by field_simp`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -114,11 +114,11 @@ theorem cellIdx_close (m : ℕ) (hm : 1 ≤ m) (s x y : ℝ) (hs : 0 ≤ s) (hx 
   linarith
 
 /- English proof (translation)
-Establish `hz' : ‖z‖ ≤ Real.sqrt T` using `by simpa using Real.abs_le_sqrt hz`. Establish `hw' : ‖w‖ ≤ Real.sqrt T` using `by simpa using Real.abs_le_sqrt hw`. Establish `s0` using `Real.sqrt_nonneg T`. Establish `h1` using `cellIdx_close m hm _ _ _ s0 ((Complex.abs_re_le_norm z).trans hz') ((Complex.abs_re_le_norm w).trans hw') hre`. Establish `h2` using `cellIdx_close m hm _ _ _ s0 ((Complex.abs_im_le_norm z).trans hz') ((Complex.abs_im_le_norm w).trans hw') him`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q1` using `pow_le_pow_left₀ (abs_nonneg _) h1 2`. Establish `q2` using `pow_le_pow_left₀ (abs_nonneg _) h2 2`. Rewrite `q1`, `q2` using `[sq_abs]`. Establish `hm' : (0 : ℝ) < m` using `by exact_mod_cast hm`. Rewrite using `[Complex.sq_norm, Complex.normSq_apply, Complex.sub_re, Complex.sub_im]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (2 * Real.sqrt T / m) ^ 2 = 4 * T / (m : ℝ) ^ 2`. Rewrite using `[div_pow, mul_pow, Real.sq_sqrt hT]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `q1`, `q2` using `[e]`. Establish `: 8 * T / (m : ℝ) ^ 2 = 4 * T / (m : ℝ) ^ 2 + 4 * T / (m : ℝ) ^ 2` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -143,35 +143,33 @@ theorem cell_close_sq (m : ℕ) (hm : 1 ≤ m) (T : ℝ) (hT : 0 ≤ T) (z w : �
   nlinarith
 
 /- English proof (translation)
-Introduce `X ι _ _ S z T N hN hT hS hsep`. Use `set d := Fintype.card ι with hd`. Establish `hd1 : 1 ≤ d` using `Fintype.card_pos`. Use `set P := ∏ i, T i with hP`. Establish `hP0 : 0 ≤ P` using `Finset.prod_nonneg fun i _ => hT i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hex : ∃ m : ℕ, 1 ≤ m ∧ 8 ^ d * P < (m : ℝ) ^ (2 * d) * N`. Use `⟨⌈8 ^ d * P / N⌉₊ + 1, by omega, ?_⟩` and prove the remaining obligations. Use `set m := ⌈8 ^ d * P / N⌉₊ + 1`. Establish `h1 : 8 ^ d * P / N < m`. Use `Nat.le_ceil (8 ^ d * P / N)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [m]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (m : ℝ) ≤ (m : ℝ) ^ (2 * d)` using `le_self_pow₀ (by simp [m]) (by omega)`. Rewrite `h1` using `[div_lt_iff₀ hN]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `set m := Nat.find hex with hmdef`. Establish `hm1 : 1 ≤ m` using `(Nat.find_spec hex).1`. Establish `hmN : 8 ^ d * P < (m : ℝ) ^ (2 * d) * N` using `(Nat.find_spec hex).2`. Set `cell : X → ι → Fin m × Fin m` to `fun x i => (⟨cellIdx m (Real.sqrt (T i)) (z x i).re, cellIdx_lt m hm1 _ _⟩, ⟨cellIdx m (Real.sqrt (T i)) (z x i).im, cellIdx_lt m hm1 _ _⟩)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hinj : Set.InjOn cell S`. Introduce `x hx y hy hxy`. Assume the negation of the conclusion as `hne`. Establish `hle` using `hsep x hx y hy hne`. Establish `hb : ∀ i, ‖z x i - z y i‖ ^ 2 ≤ 8 * T i / (m : ℝ) ^ 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i`. Establish `hc` using `congrFun hxy i`. Simplify using `only [cell, Prod.mk.injEq, Fin.mk.injEq] at hc`. Conclude with `cell_close_sq m hm1 (T i) (hT i) _ _ (hS x hx i) (hS y hy i) hc.1 hc.2`. Establish `hprod : ∏ i, ‖z x i - z y i‖ ^ 2 ≤ ∏ i, (8 * T i / (m : ℝ) ^ 2)` using `Finset.prod_le_prod (fun i _ => by positivity) (fun i _ => hb i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∏ i, (8 * T i / (m : ℝ) ^ 2) = 8 ^ d * P / (m : ℝ) ^ (2 * d)`. Rewrite using `[Finset.prod_div_distrib, Finset.prod_mul_distrib, Finset.prod_const, Finset.prod_const, Finset.card_univ, ← hd, ← hP]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmpos : (0 : ℝ) < (m : ℝ) ^ (2 * d)`. Establish `: (1 : ℝ) ≤ m` using `by exact_mod_cast hm1`.
+Check the signs of the components of the expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Rewrite `hprod` using `[e]`. Establish `hlt : 8 ^ d * P / (m : ℝ) ^ (2 * d) < N` using `by rw [div_lt_iff₀ hmpos]; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfin : S.Finite` using `Set.Finite.of_finite_image (Set.toFinite _) hinj`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hfin, ?_⟩` and prove the remaining obligations. Establish `hcard : S.ncard ≤ (m * m) ^ d`. Use `Set.ncard_le_ncard_of_injOn cell (fun _ _ => Set.mem_univ _) hinj Set.finite_univ` as an intermediate fact. Rewrite `this` using `[Set.ncard_univ, Nat.card_eq_fintype_card, Fintype.card_fun, Fintype.card_prod, Fintype.card_fin]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hcardR : (S.ncard : ℝ) ≤ (m : ℝ) ^ (2 * d)`. Establish `: (((m * m) ^ d : ℕ) : ℝ) = (m : ℝ) ^ (2 * d)` using `by push_cast; rw [pow_mul, sq]`. Rewrite using `[← this]`. Conclude with `hcard` after adjusting the coercions. Establish `hC0 : 0 ≤ 32 ^ d * P / N` using `by positivity`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Nat.lt_or_ge m 2 with hm2 | hm2` into its components or cases. Establish `: m = 1` using `by omega`. Rewrite `hcardR` using `[this, Nat.cast_one, one_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmin` using `Nat.find_min hex (show m - 1 < m by omega)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk1 : 1 ≤ m - 1` using `by omega`. Establish `hk : ((m - 1 : ℕ) : ℝ) ^ (2 * d) * N ≤ 8 ^ d * P`. Assume the negation of the conclusion as `hc`. Conclude with `hmin ⟨hk1, lt_of_not_ge hc⟩`. Establish `ek : ((m - 1 : ℕ) : ℝ) = m - 1` using `by rw [Nat.cast_sub (by omega)]; simp`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite `hk` using `[ek]`. Establish `hm2' : (m : ℝ) ≤ 2 * ((m : ℝ) - 1)`. Establish `: (2 : ℝ) ≤ m` using `by exact_mod_cast hm2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpow : (m : ℝ) ^ (2 * d) ≤ 4 ^ d * ((m : ℝ) - 1) ^ (2 * d)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, pow_mul]`. Evaluate the numerical expressions. Establish `h32 : (4 : ℝ) ^ d * 8 ^ d = 32 ^ d` using `by rw [← mul_pow]; norm_num`. Establish `: (m : ℝ) ^ (2 * d) ≤ 32 ^ d * P / N`.
-
-Rewrite using `[le_div_iff₀ hN, ← h32]`. Establish `h4 : (0 : ℝ) ≤ 4 ^ d` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem count_sep : ∀ (X ι : Type) [Fintype ι] [Nonempty ι] (S : Set X) (z : X → ι → ℂ) (T : ι → ℝ) (N : ℝ),
     0 < N → (∀ i, 0 ≤ T i) → (∀ x ∈ S, ∀ i, ‖z x i‖ ^ 2 ≤ T i) →
@@ -260,7 +258,7 @@ theorem count_sep : ∀ (X ι : Type) [Fintype ι] [Nonempty ι] (S : Set X) (z 
     linarith
 
 /- English proof (translation)
-Establish `h` using `InfinitePlace.prod_eq_abs_norm (Algebra.norm F c)`. Rewrite `h` using `[Algebra.norm_norm]`. Rewrite using `[← h]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[InfinitePlace.mult, if_pos (hF.isReal w), pow_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_norm_rel (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (hF : NumberField.IsTotallyReal F) (c : E) :
@@ -272,15 +270,15 @@ theorem prod_norm_rel (F E : Type) [Field F] [NumberField F] [Field E] [NumberFi
   rw [InfinitePlace.mult, if_pos (hF.isReal w), pow_one]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm`. Use `⟨32 ^ Fintype.card (InfinitePlace F), ?_⟩` and prove the remaining obligations. Introduce `𝔞 h𝔞 T hT`. Use `choose τ hτ using exists_emb_place_norm F E σ hcm`. Establish `hNw : ∀ w c, ‖Algebra.norm w.Completion (inclR (F` using `F) w.Completion c)‖ = ‖τ w c‖ ^ 2 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w c`. Rewrite using `[GlobalTheory.Doubling.norm_inclR, GlobalTheory.FrobDense.norm_inf, hτ]`. Establish `hN0 : (0 : ℝ) < FractionalIdeal.absNorm 𝔞`. Establish `: FractionalIdeal.absNorm 𝔞 ≠ 0`. Rewrite using `[Ne, FractionalIdeal.absNorm_eq_zero_iff]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h0 : (0 : ℚ) ≤ FractionalIdeal.absNorm 𝔞` using `FractionalIdeal.absNorm_nonneg 𝔞`. Conclude with `lt_of_le_of_ne h0 (Ne.symm this)` after adjusting the coercions. Repeatedly rewrite using `[hNw]`. Use `count_sep E (InfinitePlace F) _ (fun c w => τ w c) T _ hN0 hT (fun x hx i => hx.2 i) ?_` and prove the remaining obligations. Introduce `x hx y hy hxy`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : x - y ∈ 𝔞` using `Submodule.sub_mem (𝔞 : Submodule (𝓞 E) E) hx.1 hy.1`. Establish `hne : x - y ≠ 0` using `sub_ne_zero.mpr hxy`. Establish `e : ∏ i, ‖τ i x - τ i y‖ ^ 2 = ((|Algebra.norm ℚ (x - y)| : ℚ) : ℝ)`. Rewrite using `[← prod_norm_rel F E hcm.1 (x - y)]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hτ, map_sub]`. Rewrite using `[e]`. Conclude with `GlobalTheory.absNorm_le_abs_norm_of_mem hsub hne` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem count_ideal_points : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∃ C : ℝ, ∀ 𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E, 𝔞 ≠ 0 →

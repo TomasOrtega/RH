@@ -7,7 +7,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheory.UPel.HT.EtLev
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.exists_compatible_primitive_prime_pow_roots) | (exact GlobalTheory.exists_compatible_primitive_prime_pow_roots) | (intros; apply GlobalTheory.exists_compatible_primitive_prime_pow_roots <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_compatible_prime_power_roots : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [IsAlgClosed k] [CharZero k], ∃ ζ : ℕ → kˣ, (∀ r, IsPrimitiveRoot (ζ r) (p ^ r)) ∧ ∀ r, ζ (r + 1) ^ p = ζ r := by
   first | (exact @GlobalTheory.exists_compatible_primitive_prime_pow_roots) | (exact GlobalTheory.exists_compatible_primitive_prime_pow_roots) | (intros; apply GlobalTheory.exists_compatible_primitive_prime_pow_roots  <;> assumption)

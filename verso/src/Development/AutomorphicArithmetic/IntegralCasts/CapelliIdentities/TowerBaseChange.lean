@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.SumPermOfNotInje
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.AbsoluteValueAlt
 
 /- English proof (translation)
-Introduce `K _ _ n U hU F hF x hx`. Conclude with `UpperTheory.Reformulated.B.ContDiffOnLocalExtension.abs hU hF hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.LocalSmoothExtension.exists_smooth_eq : ∀ {K : Type} [Field K] [NumberField K] {n : ℕ}
     {U : Set (GlobalTheory.CuspRep.Lie K n)}, IsOpen U →

@@ -16,7 +16,7 @@ variable {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] {r 
 def Jm : Matrix (Fin 2) (Fin 2) A := !![0, 1; -1, 0]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[R.LevelData.Tl, R.LevelData.Tvl, Matrix.conjTranspose_apply, (hS l).1, (hS l).2.1, (hS l).2.2.1, (hS l).2.2.2.1, (hS l).2.2.2.2.1, (hS l).2.2.2.2.2, ← algebraMap_star_comm, hY]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem tvl_conjT (L : R.LevelData A r) (hS : StarCoords L) (Y : ℂ) (hY : star Y = Y) (l : Fin r) :
     (L.Tvl Y l)ᴴ = (L.Tl Y l)ᵀ := by
@@ -26,9 +26,9 @@ theorem tvl_conjT (L : R.LevelData A r) (hS : StarCoords L) (Y : ℂ) (hY : star
       (hS l).2.2.1, (hS l).2.2.2.1, (hS l).2.2.2.2.1, (hS l).2.2.2.2.2, ← algebraMap_star_comm, hY]
 
 /- English proof (translation)
-Establish `e1 : L.p l * L.ci l = L.ci l * L.p l - L.ci l` using `by simpa using L.p_ci l l`. Establish `e2 : algebraMap ℂ A Y * L.ci l = L.ci l * algebraMap ℂ A Y` using `Algebra.commutes Y (L.ci l)`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[R.LevelData.Tl, Jm, Matrix.mul_apply, Fin.sum_univ_two]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only [add_mul, mul_add, e1, e2, one_mul]`. Normalize the expressions using the abelian group laws. Conclude with `L.ci_c l`. Conclude with `L.c_ci l`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem tJt (L : R.LevelData A r) (Y : ℂ) (l : Fin r) : (L.Tl (Y + 1) l)ᵀ * Jm * L.Tl Y l = Jm := by
   have e1 : L.p l * L.ci l = L.ci l * L.p l - L.ci l := by simpa using L.p_ci l l
@@ -42,7 +42,7 @@ theorem tJt (L : R.LevelData A r) (Y : ℂ) (l : Fin r) : (L.Tl (Y + 1) l)ᵀ * 
   · exact L.c_ci l
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.diagonal_mul, Matrix.mul_diagonal, (h i j).eq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem diag_mul_comm (f : A) (X : Matrix (Fin 2) (Fin 2) A) (h : ∀ i j, Commute f (X i j)) :
     Matrix.diagonal (fun _ => f) * X = X * Matrix.diagonal (fun _ => f) := by
@@ -50,9 +50,9 @@ theorem diag_mul_comm (f : A) (X : Matrix (Fin 2) (Fin 2) A) (h : ∀ i j, Commu
   simp [Matrix.diagonal_mul, Matrix.mul_diagonal, (h i j).eq]
 
 /- English proof (translation)
-Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [R.LevelData.Tl]`. Apply the tactic sequence `all_goals first`. Consider the case `exact (Algebra.commute_algebraMap_right Y f).add_right hp`. Consider the case `exact hc`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact hc.neg_right`. Consider the case `exact hci`. Consider the case `exact Commute.zero_right f`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tl_comm (L : R.LevelData A r) (f : A) (l : Fin r) (Y : ℂ) (hp : Commute f (L.p l)) (hc : Commute f (L.c l))
     (hci : Commute f (L.ci l)) : ∀ i j, Commute f ((L.Tl Y l) i j) := by
@@ -66,11 +66,11 @@ theorem tl_comm (L : R.LevelData A r) (f : A) (l : Fin r) (Y : ℂ) (hp : Commut
     | exact Commute.zero_right f
 
 /- English proof (translation)
-Proceed by induction on `ls with`. Consider the case `nil => simp`. Consider the case `cons l t ih`. Establish `hl` using `hls l (by simp)`. Establish `ht : ∀ m ∈ t, Commute f (L.p m) ∧ Commute f (L.c m) ∧ Commute f (L.ci m)` using `fun m hm => hls m (List.mem_cons_of_mem _ hm)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [List.map_cons, List.prod_cons, List.reverse_cons, List.prod_append, List.prod_nil, Matrix.mul_one]`. Rewrite using `[show ∀ (X P Q T M : Matrix (Fin 2) (Fin 2) A), X * P * M * (Q * T) = X * (P * M * Q) * T from fun X P Q T M => by simp only [Matrix.mul_assoc], ih ht]`. Establish `hcomm : ∀ i j, Commute f ((L.Tl (Y + 1) l)ᵀ i j)` using `fun i j => tl_comm L f l (Y + 1) hl.1 hl.2.1 hl.2.2 j i`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, ← diag_mul_comm f _ hcomm]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Matrix.diagonal (fun _ => f) * Jm := by rw [tJt]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tele (L : R.LevelData A r) (Y : ℂ) (f : A) (ls : List (Fin r))
     (hls : ∀ l ∈ ls, Commute f (L.p l) ∧ Commute f (L.c l) ∧ Commute f (L.ci l)) :
@@ -95,11 +95,11 @@ theorem tele (L : R.LevelData A r) (Y : ℂ) (f : A) (ls : List (Fin r))
       _ = Matrix.diagonal (fun _ => f) * Jm := by rw [tJt]
 
 /- English proof (translation)
-Establish `e1 : L.p l * L.ci l = L.ci l * L.p l - L.ci l` using `by simpa using L.p_ci l l`. Establish `k2 : f * L.ci l = L.ci l * f` using `hci.eq`. Establish `k1 : algebraMap ℂ A Y * (f * L.ci l) = L.ci l * (f * algebraMap ℂ A Y)`. Rewrite using `[Algebra.commutes, k2, mul_assoc]`. Establish `k3 : L.p l * (f * L.ci l) = L.ci l * (f * L.p l) - L.ci l * f + algebraMap ℂ A s * f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hp]`. Simplify using `only [add_mul, mul_assoc]`. Use `_ = f * (L.ci l * L.p l - L.ci l) + algebraMap ℂ A s * f := by rw [e1, L.c_ci, mul_one]`. Use `_ = L.ci l * (f * L.p l) - L.ci l * f + algebraMap ℂ A s * f := by`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_sub, ← mul_assoc, k2, mul_assoc]`. Simplify using `[R.LevelData.Tl, Jm, Matrix.mul_apply, Fin.sum_univ_two]`. Simplify using `only [add_mul, mul_add, mul_assoc, one_mul]`. Rewrite using `[k1, k3, k2]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem site_zero_matrix_entry (L : R.LevelData A r) (l : Fin r) (s Y : ℂ) (f : A) (hci : Commute f (L.ci l))
     (hp : L.p l * f = f * L.p l + algebraMap ℂ A s * f * L.c l) :
@@ -125,15 +125,13 @@ theorem site_zero_matrix_entry (L : R.LevelData A r) (l : Fin r) (s Y : ℂ) (f 
 end Col
 
 /- English proof (translation)
-Introduce `A _ _ _ _ r hr L st s Y f fi hS hW hY`. Take `⟨k, rfl⟩ : ∃ k, r = k + 1` from `⟨r - 1, by omega⟩`. Establish `hY1 : star (Y + 1) = Y + 1` using `by simp [hY]`. Establish `hM : (L.Tvprod (Y + 1))ᴴ = ((List.finRange (k + 1)).map (fun l => (L.Tl (Y + 1) l)ᵀ)).prod`. Rewrite using `[R.LevelData.Tvprod, Matrix.conjTranspose_list_prod, List.map_reverse, List.reverse_reverse, List.map_ofFn, List.ofFn_eq_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `l _`. Conclude with `tvl_conjT L hS (Y + 1) hY1 l`. Establish `hN : L.Tprod Y = ((List.finRange (k + 1)).map (L.Tl Y)).reverse.prod`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[R.LevelData.Tprod, List.ofFn_eq_map]`. Establish `key : star (L.Avr (Y + 1)) * f * L.Br Y - star (L.Bvr (Y + 1)) * f * L.Ar Y = ((L.Tvprod (Y + 1))ᴴ * (Matrix.diagonal (fun _ => f) * Jm) * L.Tprod Y : Matrix (Fin 2) (Fin 2) A) 0 0`. Simplify using `[R.LevelData.Avr, R.LevelData.Bvr, R.LevelData.Ar, R.LevelData.Br, Matrix.mul_apply, Fin.sum_univ_two, Jm, Matrix.conjTranspose_apply]`. Use `noncomm_ring`. Establish `hls : ∀ l ∈ (List.finRange k).map Fin.succ, Commute f (L.p l) ∧ Commute f (L.c l) ∧ Commute f (L.ci l)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `l hl`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hl`. Establish `hne : i.succ ≠ ⟨0, hr⟩` using `Fin.succ_ne_zero i`. Establish `h8` using `hW.2.2.2.2.2.2.2.1 i.succ hne`. Conclude with `⟨h8 _ (by simp [coordOps]), h8 _ (by simp [coordOps]), h8 _ (by simp [coordOps])⟩`.
-
-Rewrite using `[key, hM, hN, List.finRange_succ, List.map_cons, List.map_cons, List.prod_cons, List.reverse_cons, List.prod_append, List.prod_singleton, show ∀ (X P Q T M : Matrix (Fin 2) (Fin 2) A), X * P * M * (Q * T) = X * (P * M * Q) * T from fun X P Q T M => by simp only [Matrix.mul_assoc] …`. Apply the tactic sequence `exact site_zero_matrix_entry L 0 s Y f hW.2.2.1 hW.2.2.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem radial_collapse : RDCollapse := by
   intro A _ _ _ _ r hr L st s Y f fi hS hW hY
@@ -168,7 +166,7 @@ theorem radial_collapse : RDCollapse := by
   exact site_zero_matrix_entry L 0 s Y f hW.2.2.1 hW.2.2.2.2.2.1
 
 /- English proof (translation)
-Establish `hsb : star bi * b = 1`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 private theorem star_eq_self_of_right_inv_of_star_eq_self {A : Type} [Ring A] [StarRing A] {b bi : A} (hb : star b = b)
     (h1 : b * bi = 1) : star bi = bi := by
@@ -180,15 +178,15 @@ private theorem star_eq_self_of_right_inv_of_star_eq_self {A : Type} [Ring A] [S
     _ = bi := by rw [← mul_assoc, hsb, one_mul]
 
 /- English proof (translation)
-Introduce `A _ _ _ _ r L st Y hSL hS hLS hY hYi hY1i`. Take `⟨hxx, hxx'⟩` from `hLS.x_xi Y hYi`. Take `⟨hxx1, hxx1'⟩` from `hLS.x_xi (Y + 1) hY1i`. Establish `h11` using `congrFun (congrFun (hLS.start.det Y).1 1) 1`. Simplify using `[YangianSpanCharacter.T.J, Matrix.mul_apply, Fin.sum_univ_two, hLS.tau] at h11`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hrel : st.QQ (Y + 1) 0 1 * (L.GG * st.x Y) = L.GG * st.x (Y + 1) * st.QQ Y 0 1`. Rewrite using `[← sub_eq_zero]`. Rewrite using `[← h11]`. Use `noncomm_ring`. Establish `hzb : star L.ζb = L.ζ` using `by rw [← hSL.1, star_star]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGGs : star L.GG = L.GG`. Rewrite using `[L.GG_def, star_sub, star_mul, hzb, hSL.1, ← algebraMap_star_comm, hSL.2.2]`. Establish `hGGis : star L.GGi = L.GGi` using `star_eq_self_of_right_inv_of_star_eq_self hGGs L.GG_GGi`. Establish `hxis : star (st.xi Y) = st.xi Y` using `star_eq_self_of_right_inv_of_star_eq_self (hLS.x_star Y hY) hxx`. Establish `hQs : star (st.QQ Y 1 0) = st.QQ Y 0 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun (congrFun (hLS.start.herm Y hY) 0) 1` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_apply]`. Establish `hxG : Commute (st.x Y) L.GGi` using `hLS.x_fn Y _ (by simp [Fr.zfns])`. Establish `hQ01 : st.QQ Y 0 1 = st.xi (Y + 1) * L.GGi * st.QQ (Y + 1) 0 1 * (L.GG * st.x Y)`. Rewrite using `[mul_assoc (st.xi (Y + 1) * L.GGi), hrel, show st.xi (Y + 1) * L.GGi * (L.GG * st.x (Y + 1) * st.QQ Y 0 1) = st.xi (Y + 1) * (L.GGi * L.GG) * st.x (Y + 1) * st.QQ Y 0 1 by simp only [mul_assoc], L.GGi_GG, mul_one, hxx1', one_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : L.GG * st.x Y * (L.GGi * st.xi Y) = 1`. Rewrite using `[mul_assoc, ← mul_assoc (st.x Y), hxG.eq, mul_assoc, ← mul_assoc L.GG, L.GG_GGi, one_mul, hxx]`. Rewrite using `[star_mul, star_mul, hQs, hGGis, hxis, hQ01, mul_assoc (st.xi (Y + 1) * L.GGi * st.QQ (Y + 1) 0 1), h1, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem radial_gauge_identity : RadialGaugeAdjointRelation := by
   intro A _ _ _ _ r L st Y hSL hS hLS hY hYi hY1i
@@ -224,7 +222,7 @@ section Rearr
 variable {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A]
 
 /- English proof (translation)
-Use `show a * bi = bi * a`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem comm_inv' {a b bi : A} (h : Commute a b) (h1 : b * bi = 1) (h2 : bi * b = 1) : Commute a bi := by
   show a * bi = bi * a
@@ -235,7 +233,7 @@ theorem comm_inv' {a b bi : A} (h : Commute a b) (h1 : b * bi = 1) (h2 : bi * b 
     _ = bi * a := by rw [h1, mul_one]
 
 /- English proof (translation)
-Establish `hsb : star bi * b = 1`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem star_inv' {b bi : A} (hb : star b = b) (h1 : b * bi = 1) (h2 : bi * b = 1) : star bi = bi := by
   have hsb : star bi * b = 1 := by
@@ -246,14 +244,14 @@ theorem star_inv' {b bi : A} (hb : star b = b) (h1 : b * bi = 1) (h2 : bi * b = 
     _ = bi := by rw [← mul_assoc, hsb, one_mul]
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, h, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem canc {a b : A} (h : a * b = 1) (z : A) : a * (b * z) = z := by rw [← mul_assoc, h, one_mul]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a t ih`. Rewrite using `[List.prod_cons, star_mul, List.map_cons, List.prod_cons, ih (fun x hx y hy => h x (List.mem_cons_of_mem _ hx) y (List.mem_cons_of_mem _ hy))]`. Use `(Commute.list_prod_right _ _ ?_).eq.symm` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `b hb`. Take `⟨x, hx, rfl⟩` from `List.mem_map.1 hb`. Conclude with `h a (by simp) x (List.mem_cons_of_mem _ hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem star_list_prod_comm (l : List A) (h : ∀ a ∈ l, ∀ b ∈ l, Commute (star a) (star b)) :
     star l.prod = (l.map star).prod := by
@@ -268,9 +266,9 @@ theorem star_list_prod_comm (l : List A) (h : ∀ a ∈ l, ∀ b ∈ l, Commute 
     exact h a (by simp) x (List.mem_cons_of_mem _ hx)
 
 /- English proof (translation)
-Rewrite using `[star_list_prod_comm _ ?_, List.map_ofFn, show star ∘ g = h from funext hs]`. Introduce `a ha b hb`. Simplify using `only [List.mem_ofFn] at ha hb`. Take `⟨i, rfl⟩` from `ha`. Take `⟨j, rfl⟩` from `hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hs, hs]`. Conclude with `hc i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_ofFn_prod {r : ℕ} (g h : Fin r → A) (hs : ∀ i, star (g i) = h i) (hc : ∀ i j, Commute (h i) (h j)) :
     star (List.ofFn g).prod = (List.ofFn h).prod := by
@@ -285,7 +283,7 @@ theorem star_ofFn_prod {r : ℕ} (g h : Fin r → A) (hs : ∀ i, star (g i) = h
 end Rearr
 
 /- English proof (translation)
-Use `Commute.list_prod_right _ _ ?_` and prove the remaining obligations. Introduce `b hb`. Simplify using `only [List.mem_ofFn] at hb`. Take `⟨i, rfl⟩` from `hb`. Conclude with `h i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem commute_list_ofFn_prod_of_commute {A : Type} [Ring A] {r : ℕ} (a : A) (g : Fin r → A)
     (h : ∀ i, Commute a (g i)) : Commute a (List.ofFn g).prod := by
@@ -296,16 +294,16 @@ private theorem commute_list_ofFn_prod_of_commute {A : Type} [Ring A] {r : ℕ} 
   exact h i
 
 /- English proof (translation)
-The claim follows from `commute_list_ofFn_prod_of_commute _ _ (fun j => (commute_list_ofFn_prod_of_commute _ _ (fun i => (hc i j).symm)).symm)`.
+A detailed English derivation is pending.
 -/
 private theorem commute_list_ofFn_prod_ofFn_prod {A : Type} [Ring A] {r : ℕ} (g h : Fin r → A)
     (hc : ∀ i j, Commute (g i) (h j)) : Commute (List.ofFn g).prod (List.ofFn h).prod :=
   commute_list_ofFn_prod_of_commute _ _ (fun j => (commute_list_ofFn_prod_of_commute _ _ (fun i => (hc i j).symm)).symm)
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons]`. Establish `hP : Commute (List.ofFn fun i : Fin n => g i.succ).prod (h 0)` using `(commute_list_ofFn_prod_of_commute (h 0) _ (fun i => (hc i.succ 0).symm)).symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, ← mul_assoc _ (h 0), hP.eq, mul_assoc, ← mul_assoc (g 0), hgh 0, one_mul, ih (fun i => g i.succ) (fun i => h i.succ) (fun i => hgh _) (fun i j => hc _ _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem list_ofFn_prod_mul_ofFn_prod_eq_one {A : Type} [Ring A] {r : ℕ} (g h : Fin r → A)
     (hgh : ∀ i, g i * h i = 1) (hc : ∀ i j, Commute (g i) (h j)) :
@@ -320,7 +318,7 @@ private theorem list_ofFn_prod_mul_ofFn_prod_eq_one {A : Type} [Ring A] {r : ℕ
       ih (fun i => g i.succ) (fun i => h i.succ) (fun i => hgh _) (fun i j => hc _ _)]
 
 /- English proof (translation)
-Use `show x * y = y * x`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem commute_of_commute_mul_of_left_inv {A : Type} [Ring A] {G Gi x y : A} (h1 : Gi * G = 1)
     (hGx : Commute (G * x) y) (hG : Commute G y) : Commute x y := by
@@ -333,39 +331,37 @@ private theorem commute_of_commute_mul_of_left_inv {A : Type} [Ring A] {G Gi x y
     _ = y * x := by rw [mul_assoc G, ← mul_assoc Gi, h1, one_mul]
 
 /- English proof (translation)
-Introduce `A _ _ _ _ r hr L st s Y f fi hS hSL hLS hSC hW hY hYi hY1i hGa`. Establish `hfc : ∀ a ∈ Set.range L.c ∪ Set.range L.ci ∪ Set.range L.cb ∪ Set.range L.cbi ∪ {L.ζ, L.ζi, L.ζb, L.ζbi, L.GG, L.GGi}, ∀ b ∈ Set.range L.c ∪ Set.range L.ci ∪ Set.range L.cb ∪ Set.range L.cbi ∪ {L.ζ, L.ζi, L.ζb, L.ζbi, L.GG, L.GGi}, Commute a b` using `L.fns_comm`. Establish `hY1 : star (Y + 1) = Y + 1` using `by simp [hY]`. Take `⟨hx0, hx0'⟩` from `hLS.x_xi Y hYi`. Take `⟨hx1, hx1'⟩` from `hLS.x_xi (Y + 1) hY1i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hWz` using `hW.2.2.2.2.2.2.2.2.1`. Establish `hWQ` using `hW.2.2.2.2.2.2.2.2.2`. Establish `hfG : Commute f L.GG` using `hWz _ (by simp [Fr.zfns])`. Establish `hfGi : Commute f L.GGi` using `hWz _ (by simp [Fr.zfns])`. Establish `hfl : ∀ l, Commute f (L.c l) ∧ Commute f (L.ci l) ∧ Commute f (L.cb l) ∧ Commute f (L.cbi l)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `l`. Distinguish the cases in `hl : l = ⟨0, hr⟩`. Substitute `hl` using the available equality. Conclude with `⟨hW.2.1, hW.2.2.1, hW.2.2.2.1, hW.2.2.2.2.1⟩`. Establish `h8` using `hW.2.2.2.2.2.2.2.1 l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨h8 _ (by simp [coordOps]), h8 _ (by simp [coordOps]), h8 _ (by simp [coordOps]), h8 _ (by simp [coordOps])⟩`. Establish `hfD : Commute f L.Dr` using `commute_list_ofFn_prod_of_commute _ _ (fun i => (hfl i).1)`. Establish `hfDi : Commute f L.Dri` using `commute_list_ofFn_prod_of_commute _ _ (fun i => (hfl i).2.1)`. Establish `hxg : ∀ Z l y, y ∈ coordOps L l → Commute L.GG y → Commute (st.x Z) y` using `fun Z l y hy hG => commute_of_commute_mul_of_left_inv L.GGi_GG (by rw [← hLS.tau]; exact hSC Z 1 1 l y hy) hG`. Establish `hxDb : ∀ Z, Commute (st.x Z) L.Drb` using `fun Z => commute_list_ofFn_prod_of_commute _ _ (fun i => hxg Z i _ (by simp [coordOps]) (hfc _ (by simp) _ (by simp)))`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxG : ∀ Z, Commute (st.x Z) L.GG` using `fun Z => hLS.x_fn Z _ (by simp [Fr.zfns])`. Establish `hxGi : ∀ Z, Commute (st.x Z) L.GGi` using `fun Z => hLS.x_fn Z _ (by simp [Fr.zfns])`. Establish `hxiDb0 : Commute (st.xi Y) L.Drb` using `(comm_inv' (hxDb Y).symm hx0 hx0').symm`. Establish `hxiDb1 : Commute (st.xi (Y + 1)) L.Drb` using `(comm_inv' (hxDb (Y + 1)).symm hx1 hx1').symm`. Establish `hxiG0 : Commute (st.xi Y) L.GG` using `(comm_inv' (hxG Y).symm hx0 hx0').symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxiG1 : Commute (st.xi (Y + 1)) L.GG` using `(comm_inv' (hxG (Y + 1)).symm hx1 hx1').symm`. Establish `hxiGi0 : Commute (st.xi Y) L.GGi` using `(comm_inv' (hxGi Y).symm hx0 hx0').symm`. Establish `hxiGi1 : Commute (st.xi (Y + 1)) L.GGi` using `(comm_inv' (hxGi (Y + 1)).symm hx1 hx1').symm`. Establish `hfx1 : Commute f (st.x (Y + 1))` using `(commute_of_commute_mul_of_left_inv L.GGi_GG (by rw [← hLS.tau]; exact (hWQ (Y + 1) 1 1).symm) hfG.symm).symm`. Establish `hfxi1 : Commute f (st.xi (Y + 1))` using `comm_inv' hfx1 hx1 hx1'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGiDb : Commute L.GGi L.Drb` using `commute_list_ofFn_prod_of_commute _ _ (fun i => hfc _ (by simp) _ (by simp))`. Establish `hDbDi : Commute L.Drb L.Dri` using `commute_list_ofFn_prod_ofFn_prod _ _ (fun i j => hfc _ (by simp) _ (by simp))`. Establish `hDDi : L.Dr * L.Dri = 1` using `list_ofFn_prod_mul_ofFn_prod_eq_one _ _ L.c_ci (fun i j => hfc _ (by simp) _ (by simp))`. Establish `hDiD : L.Dri * L.Dr = 1` using `list_ofFn_prod_mul_ofFn_prod_eq_one _ _ L.ci_c (fun i j => hfc _ (by simp) _ (by simp))`. Establish `hDbDbi : L.Drb * L.Drbi = 1` using `list_ofFn_prod_mul_ofFn_prod_eq_one _ _ L.cb_cbi (fun i j => hfc _ (by simp) _ (by simp))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDbiDb : L.Drbi * L.Drb = 1` using `list_ofFn_prod_mul_ofFn_prod_eq_one _ _ L.cbi_cb (fun i j => hfc _ (by simp) _ (by simp))`. Establish `hsD : star L.Dr = L.Drb` using `star_ofFn_prod _ _ (fun i => (hS i).2.2.1) (fun i j => hfc _ (by simp) _ (by simp))`. Establish `hsDb : star L.Drb = L.Dr` using `star_ofFn_prod _ _ (fun i => (hS i).2.2.2.1) (fun i j => hfc _ (by simp) _ (by simp))`. Establish `hsDi : star L.Dri = L.Drbi` using `star_ofFn_prod _ _ (fun i => (hS i).2.2.2.2.1) (fun i j => hfc _ (by simp) _ (by simp))`. Establish `hsDbi : star L.Drbi = L.Dri` using `star_ofFn_prod _ _ (fun i => (hS i).2.2.2.2.2) (fun i j => hfc _ (by simp) _ (by simp))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzb : star L.ζb = L.ζ` using `by rw [← hSL.1, star_star]`. Establish `hGs : star L.GG = L.GG`. Rewrite using `[L.GG_def, star_sub, star_mul, hzb, hSL.1, ← algebraMap_star_comm, hSL.2.2]`. Establish `hGis : star L.GGi = L.GGi` using `star_inv' hGs L.GG_GGi L.GGi_GG`. Establish `hx1s : star (st.x (Y + 1)) = st.x (Y + 1)` using `hLS.x_star (Y + 1) hY1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxi1s : star (st.xi (Y + 1)) = st.xi (Y + 1)` using `star_inv' hx1s hx1 hx1'`. Establish `hQ1s : star (st.QQ (Y + 1) 0 1) = st.QQ (Y + 1) 1 0`. Use `congrFun (congrFun (hLS.start.herm (Y + 1) hY1) 1) 0` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_apply]`. Establish `B1 : L.Dr * (f * (L.Dri * (L.Drbi * (L.GGi * (st.xi Y * (L.Drb * st.QQ Y 1 0)))))) = f * (L.GGi * (st.xi Y * st.QQ Y 1 0))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hfD.symm.left_comm, canc hDDi, hxiDb0.left_comm, hGiDb.left_comm, canc hDbiDb]`. Establish `B2 : L.Dr * (f * (L.Dri * (L.Drbi * (L.GGi * (st.xi Y * (L.Drb * (L.GG * st.x Y))))))) = f`. Rewrite using `[hfD.symm.left_comm, canc hDDi, hxiDb0.left_comm, hGiDb.left_comm, canc hDbiDb, hxiG0.left_comm, canc L.GGi_GG, hx0', mul_one]`. Establish `B3 : L.Drb * (st.xi (Y + 1) * (L.GGi * (L.Dri * (L.Drbi * (f * L.Dr))))) = st.xi (Y + 1) * (L.GGi * f)`. Rewrite using `[hxiDb1.symm.left_comm, hGiDb.symm.left_comm, hDbDi.left_comm, canc hDbDbi, hfDi.symm.left_comm, hDiD, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `B4 : st.x (Y + 1) * (L.GG * (L.Drb * (st.xi (Y + 1) * (L.GGi * (L.Dri * (L.Drbi * (f * L.Dr))))))) = f`. Rewrite using `[B3, hxiG1.symm.left_comm, canc L.GG_GGi, canc hx1]`. Establish `hfQ : Commute f (star (st.QQ (Y + 1) 0 1))`. Rewrite using `[hQ1s]`. Conclude with `hWQ (Y + 1) 1 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hG' : st.xi Y * L.GGi * st.QQ Y 1 0 = star (st.QQ (Y + 1) 0 1) * (L.GGi * st.xi (Y + 1))`. Use `congrArg star hGa` as an intermediate fact. Rewrite `this` using `[star_star, star_mul, star_mul, hGis, hxi1s]`. Then use the resulting hypothesis. Establish `E3 : f * (L.GGi * (st.xi Y * st.QQ Y 1 0)) = star (st.QQ (Y + 1) 0 1) * (st.xi (Y + 1) * (L.GGi * f))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc L.GGi, hxiGi0.symm.eq]`. Use `_ = f * (star (st.QQ (Y + 1) 0 1) * (L.GGi * st.xi (Y + 1))) := by rw [hG']`. Use `_ = star (st.QQ (Y + 1) 0 1) * (f * (L.GGi * st.xi (Y + 1))) := by`. Rewrite using `[← mul_assoc, hfQ.eq, mul_assoc]`. Use `_ = star (st.QQ (Y + 1) 0 1) * (st.xi (Y + 1) * (L.GGi * f)) := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hfGi.left_comm, hfxi1.eq, hxiGi1.symm.left_comm]`. Establish `E1 : star (thR L st Y 0) * f * thR L st Y 1 = star (L.Avr (Y + 1)) * (L.Dr * (f * (L.Dri * (L.Drbi * (L.GGi * (st.xi Y * (L.Drb * (L.GG * st.x Y)))))))) * L.Br Y + star (L.Avr (Y + 1)) * (L.Dr * (f * (L.Dri * (L.Drbi * (L.GGi * (st.xi Y * (L.Drb * st.QQ Y 1 0))))))) * L.Ar Y`. Rewrite using `[show thR L st Y 0 = L.Drb * L.Avr (Y + 1) from rfl, show thR L st Y 1 = L.Dri * L.Drbi * L.GGi * st.xi Y * (L.Drb * (st.QQ Y 1 0 * L.Ar Y + st.QQ Y 1 1 * L.Br Y)) from rfl, hLS.tau, star_mul, hsDb]`. Simplify using `only [mul_add, add_mul, mul_assoc]`. Apply the tactic sequence `all_goals abel`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `E2 : star (thR L st Y 2) * f * thR L st Y 3 = star (L.Bvr (Y + 1)) * (st.x (Y + 1) * (L.GG * (L.Drb * (st.xi (Y + 1) * (L.GGi * (L.Dri * (L.Drbi * (f * L.Dr)))))))) * L.Ar Y + star (L.Avr (Y + 1)) * (star (st.QQ (Y + 1) 0 1) * (L.Drb * (st.xi (Y + 1) * (L.GGi * (L.Dri * (L.Drbi * …`. Rewrite using `[show thR L st Y 2 = L.Dri * L.Drbi * L.GGi * st.xi (Y + 1) * (L.Dr * (st.QQ (Y + 1) 0 1 * L.Avr (Y + 1) + st.QQ (Y + 1) 1 1 * L.Bvr (Y + 1))) from rfl, show thR L st Y 3 = L.Dr * L.Ar Y from rfl, hLS.tau]`. Simplify using `only [star_mul, star_add, hsD, hsDi, hsDbi, hGis, hxi1s, hx1s, hGs, mul_add, add_mul, mul_assoc]`. Apply the tactic sequence `all_goals abel`. Rewrite using `[E1, E2, B2, B1, B4, B3, E3]`.
-
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem radial_rearrangement : RDRearr := by
   intro A _ _ _ _ r hr L st s Y f fi hS hSL hLS hSC hW hY hYi hY1i hGa

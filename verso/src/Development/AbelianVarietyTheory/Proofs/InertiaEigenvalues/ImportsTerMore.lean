@@ -9,9 +9,9 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory.EtaPassage
 
 /- English proof (translation)
-Introduce `D h i hi hl`. Take `⟨α, hc, h1, h0⟩` from `h i hi hl`. Establish `hA : ((D.what₂.restRowsFiniteGroupCard : ℕ) : ℤ) ≠ 0` using `by exact_mod_cast D.what₂.restRowsFiniteGroupCard_pos.ne'`. Establish `hP` using `Formalism.MainNotions.TruncatedSeriesCountingIdentities.second_statement D i (D.nd.Zgood i) (Formalism.L2.zgoodSub D i) α _ hA hc h1 h0`. Rewrite `hP` using `[← Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.etaLoc_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [padicValInt.of_nat] at hP`. Establish `hR` using `(Rat.cast_le (K := ℝ)).2 hP`. Move the coercions through the operations in `at hR`. Conclude with `hR`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem main : ∀ D : D7, KillingConditions.CommutingEndomorphismCondition D → TwistedPlaces.adm1 D := by
   intro D h i hi hl

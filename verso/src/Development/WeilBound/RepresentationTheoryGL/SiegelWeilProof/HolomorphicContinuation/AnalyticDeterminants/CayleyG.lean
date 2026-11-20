@@ -10,7 +10,7 @@ namespace PositivityTheory.Rg.Sw.LVs
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Establish `he : ∀ a b : ι, AnalyticAt ℂ (fun T : Matrix ι ι ℂ => T a b) X` using `fun a b => ((ContinuousLinearMap.proj b).comp (ContinuousLinearMap.proj a : (ι → ι → ℂ) →L[ℂ] (ι → ℂ))).analyticAt X`. Simplify using `only [Matrix.det_apply, Units.smul_def, zsmul_eq_mul]`. Use `Finset.analyticAt_fun_sum _ fun σ _ => ?_` and prove the remaining obligations. Conclude with `analyticAt_const.mul (Finset.analyticAt_fun_prod _ fun i _ => he (σ i) i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem analyticAt_det {ι : Type} [Fintype ι] [DecidableEq ι] (X : Matrix ι ι ℂ) :
     AnalyticAt ℂ (fun T : Matrix ι ι ℂ => T.det) X := by
@@ -22,7 +22,7 @@ theorem analyticAt_det {ι : Type} [Fintype ι] [DecidableEq ι] (X : Matrix ι 
   exact analyticAt_const.mul (Finset.analyticAt_fun_prod _ fun i _ => he (σ i) i)
 
 /- English proof (translation)
-Establish `h1 : AnalyticAt ℂ (fun T : Matrix ι ι ℂ => (1 + T).det) 0` using `(analyticAt_det (1 + 0)).comp (analyticAt_const.add analyticAt_id)`. Conclude with `h1.zpow (by simp)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem analyticAt_det_one_add_zpow {ι : Type} [Fintype ι] [DecidableEq ι] (t : ℤ) :
     AnalyticAt ℂ (fun T : Matrix ι ι ℂ => (1 + T).det ^ t) 0 := by
@@ -31,11 +31,11 @@ theorem analyticAt_det_one_add_zpow {ι : Type} [Fintype ι] [DecidableEq ι] (t
   exact h1.zpow (by simp)
 
 /- English proof (translation)
-Introduce `ι _ _ A t`. Use `set e := Fintype.equivFin ι`. Establish `h1` using `hE ι (fun T : Matrix ι ι ℂ => (1 + T).det ^ t) A (analyticAt_det_one_add_zpow t)`. Establish `h2` using `hR ι (Fin (Fintype.card ι)) e (fun S : Matrix (Fin (Fintype.card ι)) (Fin (Fintype.card ι)) ℂ => (1 + S).det ^ t) (analyticAt_det_one_add_zpow t)`. Establish `h3 : (fun T : Matrix ι ι ℂ => (1 + Matrix.reindex e e T).det ^ t) = fun T => (1 + T).det ^ t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `T`. Establish `h4 : 1 + Matrix.reindex e e T = Matrix.reindex e e (1 + T)`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply]`. Rewrite using `[h4, Matrix.det_reindex_self]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h3, hK]`. Rewrite using `[h1, h2, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cayley_of (hE : Equivar) (hR : Reindex) (hK : KappaFin) : Cayley := by
   intro ι _ _ A t

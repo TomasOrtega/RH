@@ -20,7 +20,7 @@ include hM
 omit [TopologicalSpace G] [IsTopologicalGroup G] [IsDiscreteRep T] [IsDiscreteRep M] in
 
 /- English proof (translation)
-Rewrite using `[hM]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_invariant_of_forall_eq (f : M →ₗ[k] k) (g : G) (m : M) : f (M.ρ g m) = f m := by
   rw [hM]
@@ -28,7 +28,7 @@ theorem form_invariant_of_forall_eq (f : M →ₗ[k] k) (g : G) (m : M) : f (M.�
 omit [TopologicalSpace G] [IsTopologicalGroup G] [IsDiscreteRep T] [IsDiscreteRep M] in
 
 /- English proof (translation)
-Use extensionality with `t`. Express the relevant statement in the definitionally equal form `f m • t = f m • t`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Both sides reduce to the same expression.
 -/
 theorem tensorRightMor_comp_tensorFormMor (m : M) (f : M →ₗ[k] k) :
     tensorRightMor T m (fun g => hM g m) ≫
@@ -40,9 +40,9 @@ theorem tensorRightMor_comp_tensorFormMor (m : M) (f : M →ₗ[k] k) :
 omit [TopologicalSpace G] [IsTopologicalGroup G] [IsDiscreteRep T] [IsDiscreteRep M] in
 
 /- English proof (translation)
-Apply `Rep.hom_ext` to reduce the goal to its premises. Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `t m`. Rewrite using `[Rep.sum_hom, Representation.IntertwiningMap.toLinearMap_sum, LinearMap.sum_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `∑ i, (b.coord i m • t) ⊗ₜ[k] b i = t ⊗ₜ[k] m`. Repeatedly rewrite using `[Module.Basis.coord_apply, TensorProduct.smul_tmul]`. Rewrite using `[← TensorProduct.tmul_sum, b.sum_repr]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_tensorFormMor_comp_tensorRightMor {ι : Type*} [Fintype ι] (b : Module.Basis ι k M) :
     ∑ i, tensorFormMor T (b.coord i) (form_invariant_of_forall_eq hM _) ≫
@@ -62,7 +62,7 @@ noncomputable def twistInv {ι : Type*} [Fintype ι] (b : Module.Basis ι k M) (
     (cohomologyMap (tensorFormMor T (b.coord i) (form_invariant_of_forall_eq hM _)) n).hom
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [twistInv, LinearMap.comp_apply, LinearMap.sum_apply, map_sum, LinearMap.flip_apply, TensorProduct.mk_apply, twistMap_tmul, LinearMap.id_apply]`. Repeatedly rewrite using `[← ModuleCat.comp_apply, ← cohomologyMap_comp]`. Rewrite using `[← LinearMap.sum_apply, ← ModuleCat.hom_sum, ← cohomologyMap_sum, sum_tensorFormMor_comp_tensorRightMor, cohomologyMap_id]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem twistMap_comp_twistInv {ι : Type*} [Fintype ι] (b : Module.Basis ι k M) (n : ℕ) :
     twistMap T hM n ∘ₗ twistInv T hM b n = LinearMap.id := by
@@ -75,7 +75,7 @@ theorem twistMap_comp_twistInv {ι : Type*} [Fintype ι] (b : Module.Basis ι k 
   rfl
 
 /- English proof (translation)
-Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `x m`. Simplify using `only [twistInv, LinearMap.comp_apply, LinearMap.sum_apply, LinearMap.flip_apply, TensorProduct.mk_apply, twistMap_tmul, LinearMap.id_apply]`. Repeatedly rewrite using `[← ModuleCat.comp_apply, ← cohomologyMap_comp, tensorRightMor_comp_tensorFormMor, cohomologyMap_smul, cohomologyMap_id, ModuleCat.hom_smul, LinearMap.smul_apply, Module.Basis.coord_apply, TensorProduct.smul_tmul]`. Rewrite using `[← TensorProduct.tmul_sum, b.sum_repr]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -97,7 +97,7 @@ noncomputable def twistEquiv [Module.Free k M] [Module.Finite k M] (n : ℕ) :
     (twistMap_comp_twistInv T hM _ n) (twistInv_comp_twistMap T hM _ n)
 
 /- English proof (translation)
-The claim follows from `(twistEquiv T hM n).bijective`.
+A detailed English derivation is pending.
 -/
 theorem twistMap_bijective [Module.Free k M] [Module.Finite k M] (n : ℕ) :
     Function.Bijective (twistMap T hM n) :=
@@ -111,7 +111,7 @@ variable (N : Subgroup G) (T M : Rep.{u} k G) [IsDiscreteRep T] [IsDiscreteRep M
   (hM : ∀ (g : N) (m : M), M.ρ g m = m)
 
 /- English proof (translation)
-Use `Function.bijective_iff_has_inverse.2 ⟨(cohomologyMap (resTensorIso N.subtype T M).hom n).hom, fun x => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← ModuleCat.comp_apply, ← cohomologyMap_comp, Iso.inv_hom_id, cohomologyMap_id]`. Both sides reduce to the same expression. Rewrite using `[← ModuleCat.comp_apply, ← cohomologyMap_comp, Iso.hom_inv_id, cohomologyMap_id]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cohomologyMap_resTensorIso_inv_bijective (n : ℕ) :
     Function.Bijective (cohomologyMap (resTensorIso N.subtype T M).inv n).hom := by
@@ -140,7 +140,7 @@ theorem twistResEquiv_apply [Module.Free k M] [Module.Finite k M] (n : ℕ)
 variable [N.Normal]
 
 /- English proof (translation)
-Rewrite using `[← cohomologyMapAlong_id_eq_cohomologyMap, ← cohomologyMapAlong_id_eq_cohomologyMap, cohomologyConj, cohomologyConj, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp]`. Use `cohomologyMapAlong_congr _ _ _ _ (by ext s; simp) (fun a => ?_) n` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(T ⊗ M).ρ g (a ⊗ₜ[k] m) = T.ρ g a ⊗ₜ[k] M.ρ g m`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Both sides reduce to the same expression.
 -/
 theorem cohomologyMap_tensorRightMor_comp_cohomologyConj (n : ℕ) (g : G) (m : M) :
     cohomologyMap (tensorRightMor (M := Rep.res N.subtype M) (Rep.res N.subtype T) m
@@ -155,7 +155,7 @@ theorem cohomologyMap_tensorRightMor_comp_cohomologyConj (n : ℕ) (g : G) (m : 
   rfl
 
 /- English proof (translation)
-Rewrite using `[twistResMap_tmul, twistResMap_tmul, ← ModuleCat.comp_apply, ← ModuleCat.comp_apply, cohomologyMap_tensorRightMor_comp_cohomologyConj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cohomologyConj_twistResMap_tmul (n : ℕ) (g : G)
     (x : cohomology (Rep.res N.subtype T) n) (m : M) :
@@ -165,7 +165,7 @@ theorem cohomologyConj_twistResMap_tmul (n : ℕ) (g : G)
     cohomologyMap_tensorRightMor_comp_cohomologyConj]
 
 /- English proof (translation)
-Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `x m`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, TensorProduct.map_tmul]`. Conclude with `cohomologyConj_twistResMap_tmul N T M hM n g x m`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyConj_comp_twistResMap (n : ℕ) (g : G) :
     (cohomologyConj (T ⊗ M) N n g).hom ∘ₗ twistResMap N T M hM n =
@@ -176,7 +176,7 @@ theorem cohomologyConj_comp_twistResMap (n : ℕ) (g : G) :
   exact cohomologyConj_twistResMap_tmul N T M hM n g x m
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun (cohomologyConj_comp_twistResMap N T M hM n g) z`.
+A detailed English derivation is pending.
 -/
 theorem cohomologyConj_twistResEquiv [Module.Free k M] [Module.Finite k M] (n : ℕ) (g : G)
     (z : TensorProduct k (cohomology (Rep.res N.subtype T) n) M) :
@@ -200,9 +200,9 @@ theorem quotientRep_mk (g : G) (m : M) : quotientRep N M hM (g : G ⧸ N) m = M.
 variable [CompactSpace N]
 
 /- English proof (translation)
-Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g`. Rewrite using `[cohomologyConjRep_mk, cohomologyConj_twistResEquiv, Representation.tprod_apply]`. Use `congr 2`. Apply `TensorProduct.ext'` to reduce the goal to its premises.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x m`. Rewrite using `[TensorProduct.map_tmul, TensorProduct.map_tmul, cohomologyConjRep_mk, quotientRep_mk]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem twistResEquiv_cohomologyConjRep [Module.Free k M] [Module.Finite k M] (n : ℕ)
     (q : G ⧸ N) (z : TensorProduct k (cohomology (Rep.res N.subtype T) n) M) :

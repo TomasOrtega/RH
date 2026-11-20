@@ -6,17 +6,17 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan
 namespace GlobalTheory.PolFan
 
 /- English proof (translation)
-Take `⟨ψ, hψ⟩` from `h.exists_dual`. Take `⟨n', b, -⟩` from `h`. Set `π : L →ₗ[ℤ] (Fin m → ℤ)` to `LinearMap.pi fun i => ψ i ∘ₗ f`. Set `s : (Fin m → ℤ) →ₗ[ℤ] L` to `∑ i, (LinearMap.proj i : (Fin m → ℤ) →ₗ[ℤ] ℤ).smulRight (v i)`. Establish `hs : ∀ c, s c = ∑ i, c i • v i` using `fun c => by simp [s, LinearMap.sum_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hπ : ∀ c, π (s c) = c` using `fun c => by`. Use extensionality with `j`. Simplify using `[π, hs, map_sum, hψ]`. Set `K` to `LinearMap.ker π`. Take `⟨n, bK'⟩` from `Submodule.basisOfPid b (K.map f)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `bK` to `bK'.map (Submodule.equivMapOfInjective f hf K).symm`. Establish `hinj : Function.Injective (s.coprod K.subtype)`. Use `(injective_iff_map_eq_zero _).2 ?_` and prove the remaining obligations. Introduce and unpack `⟨c, k⟩ h0`. Establish `h1 : s c + (k : L) = 0` using `by simpa using h0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h2 : π (k : L) = 0` using `k.2`. Establish `h3 : c = 0` using `by simpa [h2, hπ] using congrArg π h1`. Substitute `h3` using the available equality. Establish `h4 : (k : L) = 0` using `by simpa using h1`. Conclude with `Prod.ext rfl (Subtype.ext h4)`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective (s.coprod K.subtype)` using `fun x => ⟨(π x, ⟨x - s (π x), by simp [K, LinearMap.mem_ker, hπ]⟩), by simp⟩`. Set `E : ((Fin m → ℤ) × K) ≃ₗ[ℤ] L` to `LinearEquiv.ofBijective _ ⟨hinj, hsurj⟩`. Use `⟨n, ((Pi.basisFun ℤ (Fin m)).prod bK).map E, fun i => ?_⟩` and prove the remaining obligations. Establish `h1 : E (Pi.single i 1, 0) = v i`. Express the relevant statement in the definitionally equal form `(s.coprod K.subtype) (Pi.single i 1, 0) = v i`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `[hs, Pi.single_apply]`. Simplify using `using h1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isPartOfBasis_of_injective {L L' : Type} [AddCommGroup L] [AddCommGroup L'] {m : ℕ} (f : L →ₗ[ℤ] L')
     (hf : Function.Injective f) {v : Fin m → L} (h : IsPartOfBasis fun i => f (v i)) : IsPartOfBasis v := by
@@ -51,13 +51,11 @@ theorem isPartOfBasis_of_injective {L L' : Type} [AddCommGroup L] [AddCommGroup 
   simpa using h1
 
 /- English proof (translation)
-Introduce `O _ bar φ X X₁ _ _ _ _ _ _ r m γ hr h`. Establish `hmem : ∀ i, γ i ∈ balForms bar X₁` using `fun i => by`. Use `⟨fun y z => ?_, fun a y z => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hr y`. Take `⟨z, rfl⟩` from `hr z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(h.mem i).1 y z`. Take `⟨y, rfl⟩` from `hr y`. Take `⟨z, rfl⟩` from `hr z`. Simplify `(h.mem i).2 a y z` using `only [pull_apply, map_smul]`. Establish `hinj : Function.Injective (pullBal bar r)` using `fun β β' e => Subtype.ext (LinearMap.ext₂ fun a b => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hr a`. Take `⟨b, rfl⟩` from `hr b`. Conclude with `LinearMap.congr_fun₂ (congrArg Subtype.val e) a b)`. Use `⟨hmem, fun i y => ?_, isPartOfBasis_of_injective (pullBal bar r) hinj h.basis, (linearOn_pull_iff hr).1 h.linear, IsStrict.of_pull hr h.strict⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hr y`.
-
-Conclude with `h.nonneg i y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isCone_of_pull : ∀ (O : Type) [CommRing O] (bar : O → O) (φ : InvFun O) (X X₁ : Type) [AddCommGroup X] [Module O X]
     [Module.Finite O X] [AddCommGroup X₁] [Module O X₁] [Module.Finite O X₁] (r : X →ₗ[O] X₁) (m : ℕ)

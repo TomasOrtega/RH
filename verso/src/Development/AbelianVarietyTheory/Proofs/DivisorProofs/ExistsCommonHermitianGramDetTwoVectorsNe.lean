@@ -13,7 +13,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {M 
   {J : Matrix (Fin M) (Fin M) E}
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, Finset.mul_sum, ← Finset.sum_add_distrib, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hE_add_smul_right (z u v : Fin M → E) (c : E) :
     hE σ J z (u + c • v) = hE σ J z u + c * hE σ J z v := by
@@ -23,7 +23,7 @@ theorem hE_add_smul_right (z u v : Fin M → E) (c : E) :
   ring
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, Finset.mul_sum, ← Finset.sum_add_distrib, Pi.add_apply, Pi.smul_apply, smul_eq_mul, map_add, map_mul, RingHom.coe_coe]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hE_add_smul_left (z u v : Fin M → E) (c : E) :
     hE σ J (u + c • v) z = hE σ J u z + σ c * hE σ J v z := by
@@ -33,7 +33,7 @@ theorem hE_add_smul_left (z u v : Fin M → E) (c : E) :
   ring
 
 /- English proof (translation)
-Rewrite using `[hE, GlobalTheory.HermLineZeros.hform_expand]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hE_add_smul_self (u v : Fin M → E) (c : E) :
     hE σ J (u + c • v) (u + c • v) =
@@ -42,13 +42,13 @@ theorem hE_add_smul_self (u v : Fin M → E) (c : E) :
   rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.HermLineZeros.hform_single _ J i j`.
+A detailed English derivation is pending.
 -/
 theorem hE_single (i j : Fin M) : hE σ J (Pi.single i 1) (Pi.single j 1) = J i j :=
   GlobalTheory.HermLineZeros.hform_single _ J i j
 
 /- English proof (translation)
-Unfold `gram2E`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermitianGramDetTwoVectors_comm (x z : Fin M → E) : gram2E σ J x z = gram2E σ J z x := by
   unfold gram2E; ring
@@ -60,7 +60,7 @@ noncomputable def gramPoly (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E) (
       * (Polynomial.C (hE σ J a z) + Polynomial.X * Polynomial.C (hE σ J b z))
 
 /- English proof (translation)
-Unfold `gram2E gramPoly`. Rewrite using `[hE_add_smul_self, hE_add_smul_right, hE_add_smul_left, ht]`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_add, Polynomial.eval_C, Polynomial.eval_X, Polynomial.eval_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermitianGramDetTwoVectors_eval_line (z a b : Fin M → E) (t : E) (ht : σ t = t) :
     gram2E σ J z (a + t • b) = (gramPoly σ J z a b).eval t := by
@@ -75,19 +75,17 @@ section CM
 variable [NumberField F] [NumberField E]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨d, hd⟩` from `GlobalTheory.HermLineZeros.exists_conj_ne h`. Use `set a : Fin M → E := fun i => hE σ J (Pi.single i 1) z`. Use `set b : Fin M → E := fun j => hE σ J z (Pi.single j 1)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hdiag : ∀ i, hE σ J z z * J i i - b i * a i = 0` using `fun i => by`. Use `hc (Pi.single i 1)` as an intermediate fact. Simplify `this` using `[gram2E, hE_single]`. Establish `key : hE σ J z z • J = Matrix.vecMulVec a b`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1` using `hc (Pi.single i 1 + (1 : E) • Pi.single j 1)`. Establish `e2` using `hc (Pi.single i 1 + d • Pi.single j 1)`. Simplify using `only [gram2E, hE_add_smul_self, hE_add_smul_right, hE_add_smul_left, hE_single, map_one] at e1 e2`. Establish `e0i` using `hdiag i`. Establish `e0j` using `hdiag j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `: (d - σ d) * (hE σ J z z * J i j - a i * b j) = 0`. Simplify using `only [a, b] at e0i e0j ⊢`. Take the linear combination `e2 - e0i - σ d * d * e0j - σ d * (e1 - e0i - e0j)`. Break down `mul_eq_zero.1 this with h0 | h0` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h0).symm hd`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.vecMulVec_apply]`. Conclude with `sub_eq_zero.1 h0`. Establish `hdet : (hE σ J z z • J).det ≠ 0`. Rewrite using `[Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ hz) hJ.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hunit : IsUnit (hE σ J z z • J)` using `(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hdet)`. Establish `hr` using `Matrix.rank_of_isUnit _ hunit`. Establish `hle : (Matrix.vecMulVec a b).rank ≤ 1`. Rewrite using `[Matrix.vecMulVec_eq Unit]`. Conclude with `(Matrix.rank_mul_le_left _ _).trans ((Matrix.rank_le_card_width _).trans (by simp))`.
-
-Rewrite `hr` using `[key, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem exists_gram2E_ne (h : IsCMExt F E σ) (hM : 2 ≤ M) (hJ : IsHermND σ J)
     (z : Fin M → E) (hz : hE σ J z z ≠ 0) : ∃ w, gram2E σ J z w ≠ 0 := by
@@ -132,19 +130,17 @@ end GlobalTheory.GramVec
 
 open GlobalTheory.GramVec in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h M J hM hJ x y hx hy`. Take `⟨w0, h0⟩` from `exists_gram2E_ne h hM hJ x hx`. Take `⟨w1, h1⟩` from `exists_gram2E_ne h hM hJ y hy`. Use `set Px := gramPoly σ J x w0 (w1 - w0)`. Use `set Py := gramPoly σ J y w0 (w1 - w0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPx : Px ≠ 0`. Introduce `h0'`. Apply `h0` to reduce the goal to its premises. Use `hermitianGramDetTwoVectors_eval_line (σ := σ) (J := J) x w0 (w1 - w0) 0 (map_zero σ)` as an intermediate fact. Rewrite `this` using `[zero_smul, add_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `Polynomial.eval 0 Px = 0`. Rewrite using `[h0', Polynomial.eval_zero]`. Establish `hPy : Py ≠ 0`. Introduce `h1'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `h1` to reduce the goal to its premises. Use `hermitianGramDetTwoVectors_eval_line (σ := σ) (J := J) y w0 (w1 - w0) 1 (map_one σ)` as an intermediate fact. Rewrite `this` using `[one_smul, add_sub_cancel]`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `Polynomial.eval 1 Py = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1', Polynomial.eval_zero]`. Establish `hfin : {f : F | Px.IsRoot (algebraMap F E f) ∨ Py.IsRoot (algebraMap F E f)}.Finite`. Use `((Polynomial.finite_setOf_isRoot hPx).union (Polynomial.finite_setOf_isRoot hPy)).preimage (FaithfulSMul.algebraMap_injective F E).injOn` as an intermediate fact. Conclude with `this`. Use `haveI : Infinite F := Infinite.of_injective (Nat.cast : ℕ → F) Nat.cast_injective`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨f, hf⟩` from `hfin.infinite_compl.nonempty`. Simplify using `only [Set.mem_compl_iff, Set.mem_setOf_eq, not_or, Polynomial.IsRoot.def] at hf`. Establish `hfix : σ (algebraMap F E f) = algebraMap F E f` using `σ.commutes f`. Use `⟨w0 + algebraMap F E f • (w1 - w0), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hermitianGramDetTwoVectors_eval_line _ _ _ _ hfix]`.
-
-Conclude with `hf.1`. Rewrite using `[hermitianGramDetTwoVectors_comm, hermitianGramDetTwoVectors_eval_line _ _ _ _ hfix]`. Conclude with `hf.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_common_hermitianGramDetTwoVectors_ne' : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), 2 ≤ M → IsHermND σ J → ∀ x y : Fin M → E, hE σ J x x ≠ 0 → hE σ J y y ≠ 0 → ∃ w : Fin M → E, gram2E σ J x w ≠ 0 ∧ gram2E σ J w y ≠ 0 := by
   intro F E _ _ _ _ _ σ h M J hM hJ x y hx hy

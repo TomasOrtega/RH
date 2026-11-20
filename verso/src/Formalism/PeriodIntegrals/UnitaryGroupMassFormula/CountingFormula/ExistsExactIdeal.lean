@@ -12,9 +12,9 @@ section Dedekind
 variable {R K : Type*} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
 
 /- English proof (translation)
-Establish `hs0 : s ≠ 0` using `fun h => hs (h ▸ v.asIdeal.zero_mem)`. Establish `hsp : Ideal.span {s} ≠ ⊥` using `by simpa using hs0`. Rewrite using `[← FractionalIdeal.coeIdeal_span_singleton, count_coe_eq_multiplicity v hsp]`. Establish `: multiplicity v.asIdeal (Ideal.span {s}) = 0`. Rewrite using `[multiplicity_eq_zero, Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem count_span_unit (v : HeightOneSpectrum R) (s : R) (hs : s ∉ v.asIdeal) :
     FractionalIdeal.count K v (FractionalIdeal.spanSingleton (nonZeroDivisors R) (algebraMap R K s)) = 0 := by
@@ -27,7 +27,7 @@ theorem count_span_unit (v : HeightOneSpectrum R) (s : R) (hs : s ∉ v.asIdeal)
   simp [this]
 
 /- English proof (translation)
-The claim follows from `FractionalIdeal.count_mono K v (FractionalIdeal.spanSingleton_ne_zero_iff.mpr hy0) (FractionalIdeal.spanSingleton_le_iff_mem.mpr hy)`.
+A detailed English derivation is pending.
 -/
 theorem count_le_of_mem (v : HeightOneSpectrum R) {I : FractionalIdeal (nonZeroDivisors R) K} {y : K}
     (hy : y ∈ I) (hy0 : y ≠ 0) :
@@ -36,13 +36,13 @@ theorem count_le_of_mem (v : HeightOneSpectrum R) {I : FractionalIdeal (nonZeroD
     (FractionalIdeal.spanSingleton_le_iff_mem.mpr hy)
 
 /- English proof (translation)
-Proceed by induction on `hT using Finset.Nonempty.cons_induction with`. Consider the case `singleton a => exact ⟨a, Finset.mem_singleton_self a, by simp⟩`. Consider the case `cons a T ha hT ih`. Establish `hT0 : ∀ g ∈ T, g ≠ 0` using `fun g hg => h0 g (Finset.mem_cons_of_mem hg)`. Take `⟨g, hg, hgm⟩` from `ih hT0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ha0 : Ideal.span {a} ≠ ⊥` using `by simpa using h0 a (Finset.mem_cons_self a T)`. Establish `hT' : Ideal.span (T : Set R) ≠ ⊥`. Introduce `hb`. Establish `: g ∈ Ideal.span (T : Set R)` using `Ideal.subset_span hg`. Rewrite `this` using `[hb, Ideal.mem_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hT0 g hg this`. Establish `hspan : Ideal.span ((Finset.cons a T ha : Finset R) : Set R) = Ideal.span {a} ⊔ Ideal.span (T : Set R)`. Rewrite using `[Finset.coe_cons, Ideal.span_insert]`. Rewrite using `[hspan, HeightOneSpectrum.multiplicity_sup v ha0 hT']`. Break down `le_total (multiplicity v.asIdeal (Ideal.span {a})) (multiplicity v.asIdeal (Ideal.span (T : Set R))) with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨a, Finset.mem_cons_self a T, (min_eq_left h).symm⟩`. Conclude with `⟨g, Finset.mem_cons_of_mem hg, by rw [min_eq_right h, hgm]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_exact_ideal (v : HeightOneSpectrum R) (T : Finset R) (hT : T.Nonempty) (h0 : ∀ g ∈ T, g ≠ 0) :
     ∃ g ∈ T, multiplicity v.asIdeal (Ideal.span {g}) = multiplicity v.asIdeal (Ideal.span (T : Set R)) := by
@@ -66,21 +66,19 @@ theorem exists_exact_ideal (v : HeightOneSpectrum R) (T : Finset R) (hT : T.None
     · exact ⟨g, Finset.mem_cons_of_mem hg, by rw [min_eq_right h, hgm]⟩
 
 /- English proof (translation)
-Take `⟨a, J, ha, hIJ⟩` from `FractionalIdeal.exists_eq_spanSingleton_mul I`. Establish `hJ0 : J ≠ ⊥`. Introduce and unpack `rfl`. Apply `hI` to reduce the goal to its premises. Rewrite using `[hIJ, FractionalIdeal.coeIdeal_bot, mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨T, hT⟩` from `(IsNoetherian.noetherian J : J.FG)`. Use `set T' := T.filter (· ≠ 0)`. Establish `hT' : Ideal.span (T' : Set R) = J`. Rewrite using `[← hT]`. Apply `le_antisymm` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.span_mono (by intro z hz; exact (Finset.mem_filter.mp hz).1)`. Rewrite using `[Ideal.span_le]`. Introduce `z hz`. Distinguish the cases in `hz0 : z = 0`. Rewrite using `[hz0]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `Ideal.zero_mem _`. Conclude with `Ideal.subset_span (Finset.mem_filter.mpr ⟨hz, hz0⟩)`. Establish `hne : T'.Nonempty`. Assume the negation of the conclusion as `hemp`. Rewrite `hemp` using `[Finset.not_nonempty_iff_eq_empty]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hJ0` to reduce the goal to its premises. Rewrite using `[← hT', hemp, Finset.coe_empty, Ideal.span_empty]`. Take `⟨g, hgT, hgm⟩` from `exists_exact_ideal v T' hne (fun g hg => (Finset.mem_filter.mp hg).2)`. Establish `hg0 : g ≠ 0` using `(Finset.mem_filter.mp hgT).2`. Establish `hgJ : g ∈ J` using `hT' ▸ Ideal.subset_span hgT`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha' : algebraMap R K a ≠ 0` using `(IsFractionRing.injective R K).ne_iff.mpr ha |>.trans_eq (map_zero _) |> fun h => by`. Simplify using `using (map_ne_zero_iff (algebraMap R K) (IsFractionRing.injective R K)).mpr ha`. Establish `hg' : algebraMap R K g ≠ 0` using `(map_ne_zero_iff (algebraMap R K) (IsFractionRing.injective R K)).mpr hg0`. Use `⟨(algebraMap R K a)⁻¹ * algebraMap R K g, ?_, mul_ne_zero (inv_ne_zero ha') hg', ?_⟩` and prove the remaining obligations. Rewrite using `[hIJ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Conclude with `FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_spanSingleton_self _ _) (FractionalIdeal.mem_coeIdeal_of_mem _ hgJ)`. Establish `hsa : FractionalIdeal.spanSingleton (nonZeroDivisors R) (algebraMap R K a)⁻¹ ≠ 0` using `FractionalIdeal.spanSingleton_ne_zero_iff.mpr (inv_ne_zero ha')`. Establish `hsg : FractionalIdeal.spanSingleton (nonZeroDivisors R) (algebraMap R K g) ≠ 0` using `FractionalIdeal.spanSingleton_ne_zero_iff.mpr hg'`. Establish `hJc : (J : FractionalIdeal (nonZeroDivisors R) K) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]` and apply the resulting hypothesis.
-
-Establish `hsp : Ideal.span {g} ≠ ⊥` using `by simpa using hg0`. Rewrite using `[← FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.count_mul K v hsa hsg, hIJ, FractionalIdeal.count_mul K v hsa hJc, ← FractionalIdeal.coeIdeal_span_singleton, count_coe_eq_multiplicity v hsp, count_coe_eq_multiplicity v hJ0, hgm, hT']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_exact (v : HeightOneSpectrum R) {I : FractionalIdeal (nonZeroDivisors R) K} (hI : I ≠ 0) :
     ∃ y ∈ I, y ≠ 0 ∧
@@ -129,9 +127,9 @@ theorem exists_exact (v : HeightOneSpectrum R) {I : FractionalIdeal (nonZeroDivi
       count_coe_eq_multiplicity v hsp, count_coe_eq_multiplicity v hJ0, hgm, hT']
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty]`. Conclude with `(FractionalIdeal.mem_one_iff _).mpr ⟨1, map_one _⟩`. Consider the case `insert j s hj ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert hj, Finset.prod_insert hj]`. Conclude with `FractionalIdeal.mul_mem_mul (hm j) ih`.
+A detailed English derivation is pending.
 -/
 theorem prod_mem_prod' {ι : Type*} (s : Finset ι) (𝔞 : ι → FractionalIdeal (nonZeroDivisors R) K)
     (m : ι → K) (hm : ∀ i, m i ∈ 𝔞 i) : ∏ i ∈ s, m i ∈ ∏ i ∈ s, 𝔞 i := by
@@ -145,11 +143,11 @@ theorem prod_mem_prod' {ι : Type*} (s : Finset ι) (𝔞 : ι → FractionalIde
     exact FractionalIdeal.mul_mem_mul (hm j) ih
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `Submodule.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Establish `hp : ∏ i, M (σ i) i ∈ ∏ i, 𝔞 i`. Establish `: ∏ i, M (σ i) i = ∏ j, M j (σ.symm j)`. Rewrite using `[← Equiv.prod_comp σ (fun j => M j (σ.symm j))]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `prod_mem_prod' _ 𝔞 _ fun j => hM j _`. Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h` into its components or cases. Rewrite using `[h, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp`. Rewrite using `[h, Units.neg_smul, one_smul]`. Conclude with `Submodule.neg_mem _ hp`.
+A detailed English derivation is pending.
 -/
 theorem det_mem_prod {ι : Type*} [Fintype ι] [DecidableEq ι] (𝔞 : ι → FractionalIdeal (nonZeroDivisors R) K)
     (M : Matrix ι ι K) (hM : ∀ i k, M i k ∈ 𝔞 i) : M.det ∈ ∏ i, 𝔞 i := by

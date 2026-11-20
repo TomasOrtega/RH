@@ -7,11 +7,11 @@ namespace GlobalTheory.CechBC
 universe v u
 
 /- English proof (translation)
-Use `IsPullback.of_isLimit' ⟨WidePullback.lift_base _ _ _ _⟩ (PullbackCone.IsLimit.mk _ (fun s => WidePullback.lift s.snd (fun i => hP.lift (s.fst ≫ WidePullback.π _ i) s.snd (by rw [Category.assoc, WidePullback.π_arrow, s.condition])) (fun i => hP.lift_snd _ _ _)) ?_ ?_ ?_)` and prove the remaining obligations. Introduce `s`. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j`. Rewrite using `[Category.assoc, WidePullback.lift_π, ← Category.assoc, WidePullback.lift_π, IsPullback.lift_fst]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, WidePullback.lift_base, ← Category.assoc, WidePullback.lift_base, s.condition]`. Introduce `s`. Conclude with `WidePullback.lift_base _ _ _ _`. Introduce `s m h1 h2`. Apply `WidePullback.hom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Apply `hP.hom_ext` to reduce the goal to its premises. Rewrite using `[WidePullback.lift_π, IsPullback.lift_fst, ← h1, Category.assoc, Category.assoc, WidePullback.lift_π]`. Rewrite using `[WidePullback.lift_π, IsPullback.lift_snd, Category.assoc, WidePullback.π_arrow, h2]`. Rewrite using `[WidePullback.lift_base, h2]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem widePullback_isPullback {C : Type u} [Category.{v} C] {Y X Y' X' : C}
     {a : Y' ⟶ Y} {f' : Y' ⟶ X'} {f : Y ⟶ X} {b : X' ⟶ X} (hP : IsPullback a f' f b) (n : ℕ)
@@ -43,7 +43,7 @@ theorem widePullback_isPullback {C : Type u} [Category.{v} C] {Y X Y' X' : C}
     · rw [WidePullback.lift_base, h2]
 
 /- English proof (translation)
-Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j`. Rewrite using `[Category.assoc, WidePullback.lift_π, ← Category.assoc, WidePullback.lift_π, WidePullback.lift_π, hh]`. Rewrite using `[Category.assoc, WidePullback.lift_base, ← Category.assoc, WidePullback.lift_base, WidePullback.lift_base, hg]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_comp_lift {C : Type u} [Category.{v} C] {Y X Y' X' : C}
     {a : Y' ⟶ Y} {f' : Y' ⟶ X'} {f : Y ⟶ X} {b : X' ⟶ X} (w : a ≫ f = f' ≫ b) (n : ℕ)
@@ -67,11 +67,11 @@ end GlobalTheory.CechBC
 open GlobalTheory.CechBC in
 
 /- English proof (translation)
-Introduce `Y X Y' X' a f' f b hP`. Establish `hw : yoneda.map a ≫ yoneda.map f = yoneda.map f' ≫ yoneda.map b`. Rewrite using `[← yoneda.map_comp, ← yoneda.map_comp, hP.w]`. Establish `hY : IsPullback (yoneda.map a) (yoneda.map f') (yoneda.map f) (yoneda.map b)` using `hP.map yoneda`. Use `⟨Arrow.mapCechNerve (Arrow.homMk' (f := yoneda.map f') (g := yoneda.map f) (yoneda.map a) (yoneda.map b) hw), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsPullback.of_forall_isPullback_app (fun n => ?_)` and prove the remaining obligations. Conclude with `widePullback_isPullback hY n.unop.len`. Introduce `k U x y h`. Establish `h' : ∀ i, (y i ≫ a) ≫ f = x ≫ b` using `fun i => by rw [Category.assoc, hP.w, ← Category.assoc, h i]`. Use `⟨h', ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : WidePullback.lift (arrows` using `fun _ : Fin (k + 1) => yoneda.map f') (yoneda.map x) (fun i => yoneda.map (y i)) (fun i => by rw [← yoneda.map_comp, h i]) ≫ (Arrow.mapCechNerve (Arrow.homMk' (f := yoneda.map f') (g := yoneda.map f) (yoneda.map a) (yoneda.map b) hw)).app (op (SimplexCategory.mk k)) = WidePullbac …`. Conclude with `lift_comp_lift hw k _ _ _ _ _ _ (yoneda.map_comp x b).symm (fun i => (yoneda.map_comp (y i) a).symm)`. Unfold `cechPt`. Use `erw [← FunctorToTypes.comp]`. Conclude with `congrArg (fun φ : yoneda.obj U ⟶ (cech f).obj (op (SimplexCategory.mk k)) => φ.app (op U) (𝟙 U)) key`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.cech_baseChange : ∀ (Y X Y' X' : Scheme.{0}) (a : Y' ⟶ Y) (f' : Y' ⟶ X') (f : Y ⟶ X) (b : X' ⟶ X), IsPullback a f' f b → ∃ m : cech f' ⟶ cech f, IsPullback m (cechAug f') (cechAug f) (sch.map b) ∧ ∀ (k : ℕ) (U : Scheme.{0}) (x : U ⟶ X') (y : Fin (k + 1) → (U ⟶ Y')) (h : ∀ i, y i ≫ f' = x), ∃ h', (m.app (op (SimplexCategory.mk (k)))).app (op U) (cechPt f' k x y h) = cechPt f k (x ≫ b) (fun i => y i ≫ a) h' := by
   intro Y X Y' X' a f' f b hP

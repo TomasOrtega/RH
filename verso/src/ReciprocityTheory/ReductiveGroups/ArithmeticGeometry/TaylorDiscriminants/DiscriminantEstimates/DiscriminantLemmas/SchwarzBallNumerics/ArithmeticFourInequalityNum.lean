@@ -6,11 +6,11 @@ namespace PI.UnitaryGroupMassFormula.TBNum
 open ComplexConjugate
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.G.TB.ScaledBoundInequality`. Introduce `P lNc D L G2 G1 hP hl hD hL hG2 hG1`. Establish `hD0 : D ≠ 0` using `by linarith`. Establish `hcan : 2 * lNc / D * D = 2 * lNc` using `div_mul_cancel₀ _ hD0`. Establish `hexp : (5 * P + 2 * lNc / D) * D * L = 5 * P * D * L + 2 * lNc * L`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hexp]`. Establish `h1 : P * G2 ≤ P * ((D + 4) * L)` using `mul_le_mul_of_nonneg_left hG2 hP`. Establish `h2 : P * G1 ≤ P * (2 * L)` using `mul_le_mul_of_nonneg_left hG1 hP`. Establish `h3 : 0 ≤ P * L` using `mul_nonneg hP (by linarith)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : P * L ≤ P * D * L` using `by nlinarith [mul_nonneg h3 (sub_nonneg.mpr hD)]`. Establish `h5 : lNc ≤ lNc * L` using `by nlinarith [mul_nonneg hl (sub_nonneg.mpr hL)]`. Apply the tactic sequence `constructor <;> nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem arithmetic_four_inequality_num : ReciprocityTheory.ChartRestriction.G.TB.ScaledBoundInequality := by
   unfold ReciprocityTheory.ChartRestriction.G.TB.ScaledBoundInequality

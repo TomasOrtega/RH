@@ -9,13 +9,13 @@ open Formalism.IndefR.DatumF
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ m n u`. Rewrite using `[Matrix.matrix_eq_sum_single u]`. Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Generalize the expression as in `u i j = a`. Proceed by induction on `a using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Consider the case `zero => rw [Matrix.single_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y hx hy => rw [Matrix.single_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `tmul a e`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h : Matrix.single i j (a ⊗ₜ[F] e) = a • incM F (Matrix.single i j e)`. Use extensionality with `k l`. Simplify using `only [incM, Matrix.smul_apply, Matrix.map_apply, Matrix.single, Matrix.of_apply]`. Use `split_ifs`. Express the relevant statement in the definitionally equal form `_ = a • ((1 : AF F) ⊗ₜ[F] e)`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Simplify using the standard rewrite rules. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem matrix_mem_span_incM : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (m n : ℕ)
     (u : Matrix (Fin m) (Fin n) (AF F ⊗[F] E)),

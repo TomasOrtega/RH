@@ -9,7 +9,7 @@ noncomputable section
 namespace PI.UnitaryGroupMassFormula.UsCost
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc nᴴ, hu, Formalism.QuantumDeterminants.GBasic.Hpk_sq]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 lemma inv_eq_hpk {k r : ℕ} (n : B.Mat k r) (hu : nᴴ * Hpk k r * n = Hpk k r) :
     n⁻¹ = Hpk k r * nᴴ * Hpk k r := by
@@ -17,7 +17,7 @@ lemma inv_eq_hpk {k r : ℕ} (n : B.Mat k r) (hu : nᴴ * Hpk k r * n = Hpk k r)
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc nᴴ, hu, Formalism.QuantumDeterminants.GBasic.Hpk_sq]
 
 /- English proof (translation)
-Rewrite using `[inv_eq_hpk n hu]`. Establish `h1 : EB nᴴ (B.gN n)` using `EB_conjTranspose fun i j => entry_le_gN n i j`. Establish `h2` using `EB_mulF (EB_mulF (EB_Hpk k r) h1) (EB_Hpk k r)`. Use `h2.mono (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma EB_inv_hpk {k r : ℕ} (n : B.Mat k r) (hu : nᴴ * Hpk k r * n = Hpk k r) :
     EB n⁻¹ (((2 * r + k + 1 : ℕ) : ℝ) ^ 2 * B.gN n) := by
@@ -28,9 +28,9 @@ lemma EB_inv_hpk {k r : ℕ} (n : B.Mat k r) (hu : nᴴ * Hpk k r * n = Hpk k r)
   ring
 
 /- English proof (translation)
-Establish `hinv : n⁻¹ * n = 1`. Rewrite using `[inv_eq_hpk n hu, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc nᴴ, hu, Formalism.QuantumDeterminants.GBasic.Hpk_sq]`. Establish `h` using `EB_mulF (EB_inv_hpk n hu) (fun i j => entry_le_gN n i j)`. Establish `i0 : Fin (2 * r + k + 1)` using `⟨0, by omega⟩`. Use `h i0 i0` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hinv, Matrix.one_apply_eq, norm_one]`. Use `this.trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma one_le_gN_sq {k r : ℕ} (n : B.Mat k r) (hu : nᴴ * Hpk k r * n = Hpk k r) :
     1 ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ 3 * B.gN n ^ 2 := by
@@ -44,11 +44,11 @@ lemma one_le_gN_sq {k r : ℕ} (n : B.Mat k r) (hu : nᴴ * Hpk k r * n = Hpk k 
   ring
 
 /- English proof (translation)
-Use `set N : ℝ := ((2 * r + k + 1 : ℕ) : ℝ)`. Establish `hN : 1 ≤ N` using `Nat.one_le_cast.mpr (by omega)`. Establish `hg : 0 ≤ B.gN n` using `Real.sqrt_nonneg _`. Establish `h` using `EB_mulF (EB_mulF (EB_inv_hpk n hu) hM) (fun i j => entry_le_gN n i j)`. Establish `hmx : mx (n⁻¹ * M * n) ≤ N ^ 4 * c * B.gN n ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mx_le (h.mono (le_of_eq (by simp only [N]; ring))) (by positivity)` and prove the remaining obligations. Establish `h1 : 1 ≤ N ^ 3 * B.gN n ^ 2` using `one_le_gN_sq n hu`. Establish `h3 : N ^ 3 ≤ N ^ 4` using `pow_le_pow_right₀ hN (by norm_num)`. Establish `h4 : 0 ≤ B.gN n ^ 2` using `sq_nonneg _`. Establish `h5 : N ^ 3 * B.gN n ^ 2 ≤ N ^ 4 * B.gN n ^ 2` using `mul_le_mul_of_nonneg_right h3 h4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : 0 ≤ N ^ 4 * B.gN n ^ 2 * c` using `by positivity`. Unfold `lsz`. Use `max_le ?_ ?_` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma lsz_conj_le {k r : ℕ} (n M : B.Mat k r) (hu : nᴴ * Hpk k r * n = Hpk k r) {c : ℝ} (hM : EB M c)
     (hc : 0 ≤ c) :
@@ -70,7 +70,7 @@ lemma lsz_conj_le {k r : ℕ} (n M : B.Mat k r) (hu : nᴴ * Hpk k r * n = Hpk k
   · nlinarith
 
 /- English proof (translation)
-Unfold `EB blk3 at *`. Introduce `a b`. Use `show ‖fromBlocks (fromBlocks 0 0 0 Y) (fromRows 0 0) (fromCols 0 0) 0 ((eB k j ρ).symm a) ((eB k j ρ).symm b)‖ ≤ c`. Apply the tactic sequence `rcases (eB k j ρ).symm a with (a' | a') | a' <;> rcases (eB k j ρ).symm b with (b' | b') | b' <;>`. Simplify using `[hc, hY]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma EB_hat {k j ρ : ℕ} (Y : B.Mat k ρ) {c : ℝ} (hY : EB Y c) (hc : 0 ≤ c) :
     EB (blk3 (0 : Matrix (Fin j) (Fin j) ℂ) 0 0 0 Y 0 0 0 0 : B.Mat k (j + ρ)) c := by
@@ -82,7 +82,7 @@ lemma EB_hat {k j ρ : ℕ} (Y : B.Mat k ρ) {c : ℝ} (hY : EB Y c) (hc : 0 ≤
     simp [hc, hY]
 
 /- English proof (translation)
-Introduce `k j ρ`. Use `⟨((2 * (j + ρ) + k + 1 : ℕ) : ℝ) ^ 4 * (1 + 1), fun x Y hY => ?_⟩` and prove the remaining obligations. Establish `hb : EB (blk3 (0 : Matrix (Fin j) (Fin j) ℂ) 0 0 0 Y 0 0 0 0 : B.Mat k (j + ρ)) 1` using `EB_hat Y hY zero_le_one`. Conclude with `lsz_conj_le (Rn k j ρ x) _ (Formalism.FourierDecayAlt.P.Ux4.Rn_unitary x) hb zero_le_one`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem letterSize : LetterSize := by
   intro k j ρ
@@ -91,9 +91,7 @@ theorem letterSize : LetterSize := by
   exact lsz_conj_le (Rn k j ρ x) _ (Formalism.FourierDecayAlt.P.Ux4.Rn_unitary x) hb zero_le_one
 
 /- English proof (translation)
-Introduce `i j`. Use `show ‖fromBlocks A B' C' D (finSumFinEquiv.symm i) (finSumFinEquiv.symm j)‖ ≤ c`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with a | a <;> rcases finSumFinEquiv.symm j with b | b`. Conclude with `hA a b`. Conclude with `hB a b`.
-
-Conclude with `hC a b`. Conclude with `hD a b`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma entry_bound_block_matrix_two {p s : ℕ} {A : Matrix (Fin p) (Fin p) ℂ} {B' : Matrix (Fin p) (Fin s) ℂ}
     {C' : Matrix (Fin s) (Fin p) ℂ} {D : Matrix (Fin s) (Fin s) ℂ} {c : ℝ}
@@ -107,7 +105,7 @@ lemma entry_bound_block_matrix_two {p s : ℕ} {A : Matrix (Fin p) (Fin p) ℂ} 
   · exact hD a b
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Simplify using `only [blk2, Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma block_matrix_two_unipotent_inv {p s : ℕ} (b : Matrix (Fin p) (Fin s) ℂ) :
     (blk2 (1 : Matrix (Fin p) (Fin p) ℂ) b 0 (1 : Matrix (Fin s) (Fin s) ℂ))⁻¹ = blk2 1 (-b) 0 1 := by
@@ -116,7 +114,7 @@ lemma block_matrix_two_unipotent_inv {p s : ℕ} (b : Matrix (Fin p) (Fin s) ℂ
   simp
 
 /- English proof (translation)
-Unfold `EB eMat`. Introduce `i j`. Simplify using `only [Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma EB_eMat {s : ℕ} (a b : Fin s) (ε : Bool) : EB (eMat a b ε) 1 := by
   unfold EB eMat
@@ -125,7 +123,7 @@ lemma EB_eMat {s : ℕ} (a b : Fin s) (ε : Bool) : EB (eMat a b ε) 1 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Matrix.of_apply]`. Conclude with `((norm_le_pi_norm (b i) j).trans (norm_le_pi_norm b i)).trans (le_add_of_nonneg_left zero_le_one)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma EB_of_pi {p s : ℕ} (b : Fin p → Fin s → ℂ) : EB (Matrix.of b) (1 + ‖b‖) := by
   intro i j
@@ -134,21 +132,19 @@ lemma EB_of_pi {p s : ℕ} (b : Fin p → Fin s → ℂ) : EB (Matrix.of b) (1 +
     (le_add_of_nonneg_left zero_le_one)
 
 /- English proof (translation)
-Introduce `hD k p s ρ σ`. Use `⟨((2 * (p + s + ρ) + k + 1 : ℕ) : ℝ) ^ 4 * (1 + (((p + s : ℕ) : ℝ) ^ 2 + 1) * ((p + s : ℕ) : ℝ) ^ 2), fun ξ i => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Unfold `dirZ dmuP`. Conclude with `(hD k (p + s) ρ ξ.1.2).2 _`. Establish `ht : 1 ≤ 1 + ‖ξ.2.1.2‖` using `by linarith [norm_nonneg ξ.2.1.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (0 : ℝ) ≤ 1 + ‖ξ.2.1.2‖` using `by linarith`. Establish `hb` using `EB_of_pi ξ.2.1.2`. Establish `hU : EB (blk2 (1 : Matrix (Fin p) (Fin p) ℂ) (Matrix.of ξ.2.1.2) 0 (1 : Matrix (Fin s) (Fin s) ℂ)) (1 + ‖ξ.2.1.2‖)` using `entry_bound_block_matrix_two (EB_one.mono ht) hb (EB_zero.mono h0) (EB_one.mono ht)`. Establish `hUi : EB (blk2 (1 : Matrix (Fin p) (Fin p) ℂ) (Matrix.of ξ.2.1.2) 0 (1 : Matrix (Fin s) (Fin s) ℂ))⁻¹ (1 + ‖ξ.2.1.2‖)`. Rewrite using `[block_matrix_two_unipotent_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `entry_bound_block_matrix_two (EB_one.mono ht) (EB_neg hb) (EB_zero.mono h0) (EB_one.mono ht)`. Establish `hE : EB (blk2 (0 : Matrix (Fin p) (Fin p) ℂ) 0 0 (eMat i.1 i.2.1 i.2.2)) 1` using `entry_bound_block_matrix_two (EB_zero.mono zero_le_one) (EB_zero.mono zero_le_one) (EB_zero.mono zero_le_one) (EB_eMat _ _ _)`. Establish `hQ` using `EB_mulF (EB_mulF hUi hE) hU`. Establish `hW` using `EB_mulF (EB_mulF (EB_wMat (p + s)) (EB_conjTranspose hQ)) (EB_wMat (p + s))`. Establish `hJ : (0 : ℝ) ≤ ((p + s : ℕ) : ℝ)` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `hcQ : (0 : ℝ) ≤ ((p + s : ℕ) : ℝ) * (((p + s : ℕ) : ℝ) * ((1 + ‖ξ.2.1.2‖) * 1) * (1 + ‖ξ.2.1.2‖))`. Check the signs of the components of the expression. Establish `hc1 : ((p + s : ℕ) : ℝ) * (((p + s : ℕ) : ℝ) * ((1 + ‖ξ.2.1.2‖) * 1) * (1 + ‖ξ.2.1.2‖)) ≤ (((p + s : ℕ) : ℝ) ^ 2 + 1) * (((p + s : ℕ) : ℝ) ^ 2 * (1 + ‖ξ.2.1.2‖) ^ 2)`. Establish `: (0 : ℝ) ≤ ((p + s : ℕ) : ℝ) ^ 2 * (1 + ‖ξ.2.1.2‖) ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc2 : ((p + s : ℕ) : ℝ) * (((p + s : ℕ) : ℝ) * (1 * (((p + s : ℕ) : ℝ) * (((p + s : ℕ) : ℝ) * ((1 + ‖ξ.2.1.2‖) * 1) * (1 + ‖ξ.2.1.2‖)))) * 1) ≤ (((p + s : ℕ) : ℝ) ^ 2 + 1) * (((p + s : ℕ) : ℝ) ^ 2 * (1 + ‖ξ.2.1.2‖) ^ 2)`. Establish `: (0 : ℝ) ≤ ((p + s : ℕ) : ℝ) ^ 2 * (1 + ‖ξ.2.1.2‖) ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hc : (0 : ℝ) ≤ (((p + s : ℕ) : ℝ) ^ 2 + 1) * (((p + s : ℕ) : ℝ) ^ 2 * (1 + ‖ξ.2.1.2‖) ^ 2)`. Check the signs of the components of the expression.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM` using `entry_bound_block3 (k := k) (ρ := ρ) (hQ.mono hc1) (EB_zero.mono hc) (EB_zero.mono hc) (EB_zero.mono hc) (EB_zero.mono hc) (EB_zero.mono hc) (EB_zero.mono hc) (EB_zero.mono hc) (EB_neg (hW.mono hc2))`. Establish `key` using `lsz_conj_le (Rn k (p + s) ρ ξ.1.2) _ (Formalism.FourierDecayAlt.P.Ux4.Rn_unitary ξ.1.2) hM hc`. Unfold `dirZ dmuP`. Use `key.trans ?_` and prove the remaining obligations. Establish `hg : (0 : ℝ) ≤ ((2 * (p + s + ρ) + k + 1 : ℕ) : ℝ) ^ 4 * B.gN (Rn k (p + s) ρ ξ.1.2) ^ 2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `ht2 : 1 ≤ (1 + ‖ξ.2.1.2‖) ^ 2` using `one_le_pow₀ ht`. Establish `hJ2 : (0 : ℝ) ≤ (((p + s : ℕ) : ℝ) ^ 2 + 1) * ((p + s : ℕ) : ℝ) ^ 2` using `by positivity`. Establish `hin : 1 + (((p + s : ℕ) : ℝ) ^ 2 + 1) * (((p + s : ℕ) : ℝ) ^ 2 * (1 + ‖ξ.2.1.2‖) ^ 2) ≤ (1 + (((p + s : ℕ) : ℝ) ^ 2 + 1) * ((p + s : ℕ) : ℝ) ^ 2) * (1 + ‖ξ.2.1.2‖) ^ 2`. Use the polynomial consequences of the given equalities and inequalities.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem dirSize : DirSize := by
   intro hD k p s ρ σ

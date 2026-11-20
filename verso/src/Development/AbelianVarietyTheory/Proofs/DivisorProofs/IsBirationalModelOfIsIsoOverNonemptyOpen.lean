@@ -10,7 +10,7 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSNef
 
 /- English proof (translation)
-Introduce `X Y _ _ π U hU hiso`. Take `⟨h₁, h₂⟩` from `GlobalTheory.Published.generic_of_isIso_restrict π U hU`. Establish `e : closure ({genericPoint X} : Set X) = Set.univ` using `(genericPoint_spec X).def`. Establish `hd : IsDominant π` using `⟨dense_iff_closure_eq.mpr (Set.eq_univ_of_univ_subset (e ▸ closure_mono (Set.singleton_subset_iff.mpr ⟨_, h₁⟩)))⟩`. Conclude with `⟨functionFieldMap π, h₁, h₂, fun y a => functionFieldMap_algebraMap π y a⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isModel_of_isIso_restrict : ∀ (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (π : Y ⟶ X) (U : X.Opens),
     (U : Set X).Nonempty → IsIso (π ∣_ U) → ∃ φ : X.functionField →+* Y.functionField, IsModel π φ := by

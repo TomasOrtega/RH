@@ -23,7 +23,7 @@ def weilPair (μ η : Fˣ →* ℂˣ) (nrm : AbsoluteValue F ℝ) (g : GL (Fin r
         (g : Matrix (Fin r) (Fin r) F))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[weilPair, omegaS]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem weilPair_one_right (μ η : Fˣ →* ℂˣ) (nrm : AbsoluteValue F ℝ) (g : GL (Fin r) F)
     (Φ : Matrix (Fin r ⊕ Fin t) (Fin r) F → ℂ) :

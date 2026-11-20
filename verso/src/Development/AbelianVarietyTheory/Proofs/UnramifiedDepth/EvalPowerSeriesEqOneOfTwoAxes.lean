@@ -19,7 +19,7 @@ section TwoAxes
 variable {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {d : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq]`. Simplify using `only [map_prod, map_pow, Ideal.Quotient.eq_zero_iff_mem.2 (ha _), map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem axes_monomial_sub_mem (I : Ideal A) (a : Fin d → A) (ha : ∀ j, a j ∈ I) (m : Fin d → ℕ) :
     (∏ j, a j ^ m j) - ∏ j, (0 : A) ^ m j ∈ I := by
@@ -27,7 +27,7 @@ theorem axes_monomial_sub_mem (I : Ideal A) (a : Fin d → A) (ha : ∀ j, a j �
   simp only [map_prod, map_pow, Ideal.Quotient.eq_zero_iff_mem.2 (ha _), map_zero]
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Take `⟨v, rfl⟩` from `Ideal.mem_span_singleton'.1 hy`. Take the linear combination `(u * v) * he`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem axes_mul_eq_zero {e x y : A} (he : e ^ 2 = 0) (hx : x ∈ Ideal.span {e}) (hy : y ∈ Ideal.span {e}) :
     x * y = 0 := by
@@ -36,15 +36,13 @@ theorem axes_mul_eq_zero {e x y : A} (he : e ^ 2 = 0) (hx : x ∈ Ideal.span {e}
   linear_combination (u * v) * he
 
 /- English proof (translation)
-Take `⟨N, hN0, hN⟩` from `evBasic_exists_pow b hb`. Establish `sq : ∀ x ∈ Ideal.span {e}, x ^ (N + 2) = 0` using `fun x hx => by`. Rewrite using `[pow_add, sq, axes_mul_eq_zero he hx hx, mul_zero]`. Establish `key : ∀ c c' : Fin d → A, (∀ j, c j ∈ Ideal.span {e}) → (∀ j, c' j ∈ Ideal.span {e}) → evP ![c, c', b] f = ReciprocityTheory.PGsh.Be2.tEval (N + 2) f (fun q : Fin 3 × Fin d => ![c, c', b] q.1 q.2)` using `fun c c' hc hc' => by`. Use `evBasic_nEval_eq_tEval f _ (N + 2) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨i, j⟩`. Use `fin_cases i`. Conclude with `sq _ (hc j)`. Conclude with `sq _ (hc' j)`. Use `show b j ^ (N + 2) = 0`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[pow_add, hN, zero_mul]`. Establish `h0 : ∀ j, (0 : Fin d → A) j ∈ Ideal.span {e}` using `fun _ => Ideal.zero_mem _`. Rewrite using `[key a a' ha ha', key 0 0 h0 h0, key 0 a' h0 ha', key a 0 ha h0]`. Unfold `ReciprocityTheory.PGsh.Be2.tEval`. Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [Fintype.prod_prod_type, Fin.prod_univ_three, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, Pi.zero_apply]`. Establish `h` using `axes_mul_eq_zero he (axes_monomial_sub_mem _ a ha fun j => m (0, j)) (axes_monomial_sub_mem _ a' ha' fun j => m (1, j))`. Rewrite using `[← mul_add, ← mul_add]`. Use `congr 1`.
-
-Take the linear combination `(∏ j, b j ^ (m (2, j) : ℕ)) * h`.
+Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem evalPoints_second_difference (f : PS R 3 d) {e : A} (he : e ^ 2 = 0) (a a' b : Fin d → A)
     (ha : ∀ j, a j ∈ Ideal.span {e}) (ha' : ∀ j, a' j ∈ Ideal.span {e}) (hb : ∀ j, IsNilpotent (b j)) :
@@ -76,13 +74,11 @@ theorem evalPoints_second_difference (f : PS R 3 d) {e : A} (he : e ^ 2 = 0) (a 
   linear_combination (∏ j, b j ^ (m (2, j) : ℕ)) * h
 
 /- English proof (translation)
-Establish `hn : ∀ q : Fin 2 × Fin d, IsNilpotent (![c, b] q.1 q.2)`. Introduce and unpack `⟨i, j⟩`. Use `fin_cases i`. Conclude with `hc j`. Conclude with `hb j`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `congrArg (evP ![c, b]) h`. Unfold `evP ev at h1`. Rewrite `h1` using `[nEval_one hn, ChartCompare.nEval_subst _ _ _ _ hn]`. Rewrite using `[← h1]`. Unfold `evP`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Assume the hypotheses and unpack their components.
 
-Use `congr 1`. Use function extensionality and compare the values at `⟨i, j⟩`. Use `fin_cases i`. Conclude with `(hx j).symm`. Conclude with `(hy j).symm`.
-
-Conclude with `(ChartCompare.nEval_X (R₀ := R) _ hn ((1 : Fin 2), j)).symm`. Introduce and unpack `⟨i, j⟩ fin_cases i`. Conclude with `hu j`. Conclude with `hv j`. Conclude with `MvPowerSeries.constantCoeff_X _`.
+A detailed English derivation is pending.
 -/
 theorem evalPoints_eval_axis {u v : Fin d → PS R 2 d} {f : PS R 3 d}
     (hu : ∀ j, MvPowerSeries.constantCoeff (u j) = 0) (hv : ∀ j, MvPowerSeries.constantCoeff (v j) = 0)
@@ -115,11 +111,9 @@ theorem evalPoints_eval_axis {u v : Fin d → PS R 2 d} {f : PS R 3 d}
 end TwoAxes
 
 /- English proof (translation)
-Introduce `R _ d ph h₁ h₂ A _ _ e he a a' b ha ha' hb`. Establish `nil : ∀ c : Fin d → A, (∀ j, c j ∈ Ideal.span {e}) → ∀ j, IsNilpotent (c j)` using `fun c hc j => ⟨2, by rw [sq, axes_mul_eq_zero he (hc j) (hc j)]⟩`. Establish `hn : ∀ c : Fin d → A, (∀ j, c j ∈ Ideal.span {e}) → ∀ q : Fin 2 × Fin d, IsNilpotent (![c, b] q.1 q.2)`. Introduce and unpack `c hc ⟨i, j⟩`. Use `fin_cases i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `nil c hc j`. Conclude with `hb j`. Establish `e₁ : ∀ c : Fin d → A, (∀ j, c j ∈ Ideal.span {e}) → evP ![0, c, b] ph = 1` using `fun c hc => evalPoints_eval_axis (fun _ => map_zero _) (fun _ => MvPowerSeries.constantCoeff_X _) h₁ c b (nil c hc) hb 0 c (fun _ => ChartCompare.nEval_zero _ (hn c hc)) (fun j => ChartCompare.nEval_X (R₀ := R) _ (hn c hc) ((0 : Fin 2), j))`. Establish `e₂ : evP ![a, 0, b] ph = 1` using `evalPoints_eval_axis (fun _ => MvPowerSeries.constantCoeff_X _) (fun _ => map_zero _) h₂ a b (nil a ha) hb a 0 (fun j => ChartCompare.nEval_X (R₀ := R) _ (hn a ha) ((0 : Fin 2), j)) (fun _ => ChartCompare.nEval_zero _ (hn a ha))`. Establish `h` using `evalPoints_second_difference ph he a a' b ha ha' hb`.
-
-Rewrite `h` using `[e₁ a' ha', e₂, e₁ 0 fun _ => Ideal.zero_mem _]`. Conclude with `add_right_cancel h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalPoints_eq_one_of_two_axes : ∀ (R : Type) [CommRing R] (d : ℕ) (ph : PS R 3 d), ev (n := 2) ![0, pt R d 0, pt R d 1] ph = 1 → ev (n := 2) ![pt R d 0, 0, pt R d 1] ph = 1 → ∀ (A : Type) [CommRing A] [Algebra R A] (e : A), e ^ 2 = 0 → ∀ a a' b : Fin d → A, (∀ j, a j ∈ Ideal.span {e}) → (∀ j, a' j ∈ Ideal.span {e}) → (∀ j, IsNilpotent (b j)) → evP ![a, a', b] ph = 1 := by
   intro R _ d ph h₁ h₂ A _ _ e he a a' b ha ha' hb

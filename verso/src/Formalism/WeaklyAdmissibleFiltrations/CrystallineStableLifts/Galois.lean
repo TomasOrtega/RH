@@ -27,7 +27,7 @@ variable [TopologicalSpace G] [TopologicalSpace V] [IsTopologicalAddGroup V]
     [ContinuousConstSMul LL V]
 
 /- English proof (translation)
-Use `⟨⟨?_, fun g h => ?_⟩, x ⊗ₜ[Qp] (1 : B), fun g => ?_⟩` and prove the remaining obligations. Conclude with `(hcont x).sub continuous_const`. Simplify using `only [cob_apply_galois, map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws. Simplify using `[cob_apply_galois, actVB, sub_tmul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coboundaryMap_mem_finiteCocycles (hcont : ∀ x, Continuous fun g => ρ g x) (x : V) :
     cob ρ x ∈ finiteCocycles PD ρ := by
@@ -38,7 +38,7 @@ theorem coboundaryMap_mem_finiteCocycles (hcont : ∀ x, Continuous fun g => ρ 
   · simp [cob_apply_galois, actVB, sub_tmul]
 
 /- English proof (translation)
-Introduce and unpack `c ⟨x, rfl⟩`. Conclude with `coboundaryMap_mem_finiteCocycles hcont x`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem coboundaries_le_finiteCocycles (hcont : ∀ x, Continuous fun g => ρ g x) : B1 ρ ≤ finiteCocycles PD ρ := by
   rintro c ⟨x, rfl⟩
@@ -47,7 +47,7 @@ theorem coboundaries_le_finiteCocycles (hcont : ∀ x, Continuous fun g => ρ g 
 end CobGalois
 
 /- English proof (translation)
-Unfold `CobF`. Use `intros`. Conclude with `⟨coboundaries_le_finiteCocycles ‹_›, fun c hc => hc.1⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem cobF : CobF := by
   unfold CobF
@@ -55,9 +55,9 @@ theorem cobF : CobF := by
   exact ⟨coboundaries_le_finiteCocycles ‹_›, fun c hc => hc.1⟩
 
 /- English proof (translation)
-Introduce `G _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ O _ _ V _ _ _ _ _ _ ρ _ _ _ _ L c a hc ha h`. Use `⟨hc, ?_⟩` and prove the remaining obligations. Establish `h2 : (algebraMap O LL a) • c ∈ finiteCocycles PD ρ`. Rewrite using `[algebraMap_smul]`. Conclude with `h.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `(finiteCocycles PD ρ).smul_mem (algebraMap O LL a)⁻¹ h2`. Rewrite `h3` using `[inv_smul_smul₀ ha]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsFreeT : TorsFreeT := by
   intro G _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ O _ _ V _ _ _ _ _ _ ρ
@@ -71,13 +71,13 @@ theorem torsFreeT : TorsFreeT := by
   exact h3
 
 /- English proof (translation)
-Introduce `G _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ V V' _ _ _ _ _ _ _ _ ρ ρ' _ _ _ _ _ _ _ f hf hequiv c`. Establish `hZ : c ∈ continuousCocycles ρ → ⇑f ∘ c ∈ continuousCocycles ρ'`. Introduce and unpack `⟨hc1, hc2⟩`. Use `⟨hf.comp hc1, fun g h => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (c (g * h)) = f (c g) + ρ' g (f (c h))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hc2, map_add, hequiv]`. Use `⟨hZ, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨hc, x, hx⟩`. Set `m` to `AlgebraTensorModule.map f (LinearMap.id : B →ₗ[Qp] B)`. Establish `hm : ∀ g y, m (actVB PD ρ g y) = actVB PD ρ' g (m y)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `g y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [m, actVB, hequiv]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `⟨hZ hc, m x, fun g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (c g) ⊗ₜ[Qp] (1 : B) = _`. Use `congrArg m (hx g)` as an intermediate fact. Simplify using `only [m, AlgebraTensorModule.map_tmul, LinearMap.id_apply, map_sub] at this`. Rewrite using `[this, ← hm]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cocyclesFunctorial_holds : CocyclesFunctorial := by
   intro G _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ V V' _ _ _ _ _ _ _ _ ρ ρ'
@@ -119,7 +119,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     [TopologicalSpace G]
 
 /- English proof (translation)
-Unfold `LatHom.col LatHom.LiftF`. Rewrite using `[Module.length_eq_zero_iff, Submodule.Quotient.subsingleton_iff, Submodule.comap_subtype_eq_top]`. Simplify using `only [pow_zero, one_smul]`. Conclude with `⟨fun h c hc => h hc, fun h c hc => h c hc⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem colZero_iff_galois [TopologicalSpace V] [ContinuousAdd V] [ContinuousConstSMul LL V]
     [TopologicalSpace V'] [ContinuousAdd V'] [ContinuousConstSMul LL V']
@@ -132,9 +132,9 @@ theorem colZero_iff_galois [TopologicalSpace V] [ContinuousAdd V] [ContinuousCon
   exact ⟨fun h c hc => h hc, fun h c hc => h c hc⟩
 
 /- English proof (translation)
-Use `sup_le (Submodule.map_le_iff_le_comap.mpr fun c hc => F.post_Z1fT PD c hc) ?_` and prove the remaining obligations. Introduce and unpack `c ⟨x, hx, rfl⟩`. Establish `hf : cob ρ' x ∈ finiteCocycles PD ρ'` using `coboundaryMap_mem_finiteCocycles hcont x`. Use `⟨⟨hf.1, ?_⟩, hf⟩` and prove the remaining obligations. Introduce `g _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `L'.T.sub_mem (L'.stable g x hx) hx`.
+A detailed English derivation is pending.
 -/
 theorem imF_le_galois [TopologicalSpace V] [IsTopologicalAddGroup V] [ContinuousConstSMul LL V]
     [TopologicalSpace V'] [IsTopologicalAddGroup V'] [ContinuousConstSMul LL V']
@@ -150,7 +150,7 @@ theorem imF_le_galois [TopologicalSpace V] [IsTopologicalAddGroup V] [Continuous
 end ImGalois
 
 /- English proof (translation)
-Unfold `ImFLe`. Use `intros`. Conclude with `⟨imF_le_galois _ ‹_›, colZero_iff_galois _⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs and assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem imFLe : ImFLe := by
   unfold ImFLe
@@ -158,7 +158,7 @@ theorem imFLe : ImFLe := by
   exact ⟨imF_le_galois _ ‹_›, colZero_iff_galois _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨cobF, torsFreeT, cocyclesFunctorial_holds, imFLe⟩`.
+Supply the required witnesses or components.
 -/
 theorem finiteCocycles_properties : CobF ∧ TorsFreeT ∧ CocyclesFunctorial ∧ ImFLe :=
   ⟨cobF, torsFreeT, cocyclesFunctorial_holds, imFLe⟩

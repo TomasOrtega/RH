@@ -11,7 +11,7 @@ variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDim
   [MeasurableSpace V] [BorelSpace V]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `Submodule.mem_one.1 ((LinearMap.BilinForm.mem_dualSubmodule _).1 hμ l l.2)`. Establish `hk' : ⟪μ, (l : V)⟫ = (k : ℝ)` using `by simpa using hk.symm`. Rewrite using `[inner_add_right, hk']`. Use `push_cast`. Rewrite using `[show -(2 * (Real.pi : ℂ) * Complex.I * ((k : ℂ) + (⟪μ, y⟫ : ℂ))) = -(2 * (Real.pi : ℂ) * Complex.I * (⟪μ, y⟫ : ℂ)) + -(k : ℂ) * (2 * (Real.pi : ℂ) * Complex.I) by ring, Complex.exp_add, ← Int.cast_neg, Complex.exp_int_mul_two_pi_mul_I, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 lemma unfoldCoeff_char_periodic (Λ : Submodule ℤ V) {μ : V} (hμ : μ ∈ dual Λ) (l : Λ) (y : V) :
     Complex.exp (-(2 * Real.pi * Complex.I * (⟪μ, (l : V) + y⟫ : ℝ))) =
@@ -25,17 +25,15 @@ lemma unfoldCoeff_char_periodic (Λ : Submodule ℤ V) {μ : V} (hμ : μ ∈ du
     Complex.exp_add, ← Int.cast_neg, Complex.exp_int_mul_two_pi_mul_I, mul_one]
 
 /- English proof (translation)
-Use `haveI : VAddInvariantMeasure Λ V volume := ⟨fun l s _ => measure_preimage_add volume (l : V) s⟩`. Use `set e : V → ℂ := fun x => Complex.exp (-(2 * Real.pi * Complex.I * (⟪μ, x⟫ : ℝ))) with he`. Establish `hper : ∀ (l : Λ) (y : V), e ((l : V) + y) = e y` using `fun l y => unfoldCoeff_char_periodic Λ hμ l y`. Establish `hcont : Continuous e` using `by fun_prop`. Establish `hnorm : ∀ x, ‖e x‖ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x`. Simplify using `only [he, Complex.norm_exp]`. Simplify using the standard rewrite rules. Use `set g : V → ℂ := fun x => f x * e x with hg`. Establish `hgi : Integrable g` using `Integrable.mono' hf.norm (hf.aestronglyMeasurable.mul hcont.aestronglyMeasurable) (Filter.Eventually.of_forall fun x => by simp only [hg, norm_mul, hnorm, mul_one, le_refl])`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : ∀ y, (∑' l : Λ, f ((l : V) + y)) * e y = ∑' l : Λ, g ((l : V) + y)`. Introduce `y`. Rewrite using `[← tsum_mul_right]`. Use `tsum_congr fun l => ?_` and prove the remaining obligations. Simplify using `only [hg, hper]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ∫ y in D, (∑' l : Λ, f ((l : V) + y)) * e y = (𝓕 f : V → ℂ) μ`. Repeatedly rewrite using `[hL]`. Establish `h1 : (∑' l : Λ, ∫⁻ y in D, ‖g ((l : V) + y)‖ₑ) = ∫⁻ x, ‖g x‖ₑ` using `(hD.lintegral_eq_tsum'' (fun x => ‖g x‖ₑ)).symm`. Establish `hfin : (∑' l : Λ, ∫⁻ y in D, ‖g ((l : V) + y)‖ₑ) ≠ ⊤`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hgi.2.ne`. Establish `h2 : (∑' l : Λ, ∫ y in D, g ((l : V) + y)) = ∫ x, g x` using `(hD.integral_eq_tsum'' g hgi).symm`. Rewrite using `[integral_tsum (fun l : Λ => (hgi.comp_add_left (l : V)).aestronglyMeasurable.restrict) hfin, h2, Real.fourier_eq']`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [hg, he, smul_eq_mul]`.
-
-Rewrite using `[mul_comm (f x), real_inner_comm μ x]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem unfoldCoeff_main (Λ : Submodule ℤ V) [DiscreteTopology Λ] [IsZLattice ℝ Λ] (f : V → ℂ)
     (hf : Integrable f) (D : Set V) (hD : IsAddFundamentalDomain Λ D volume) (μ : V)
@@ -79,7 +77,7 @@ theorem unfoldCoeff_main (Λ : Submodule ℤ V) [DiscreteTopology Λ] [IsZLattic
   ring
 
 /- English proof (translation)
-Introduce `Λ _ _ f hf D hD μ hμ`. Conclude with `unfoldCoeff_main Λ f hf D hD μ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unfolding_fourier_coefficient (V : Type*) [NormedAddCommGroup V] [InnerProductSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] : UnfoldCoeff V := by

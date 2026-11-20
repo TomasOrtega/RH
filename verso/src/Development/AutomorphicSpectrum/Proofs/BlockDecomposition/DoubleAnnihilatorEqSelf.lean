@@ -4,9 +4,9 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ContinuousCompOfIsOpe
 namespace GlobalTheory.CompanionTheory.FiniteDuality
 
 /- English proof (translation)
-Use `Fintype.ofFinite M` as an intermediate fact. Set `φ : (M →ₗ[ZMod n] ZMod n) → AddChar M ℂ` to `fun f => Circle.coeHom.compAddChar ((ZMod.toCircle (N := n)).compAddMonoidHom f.toAddMonoidHom)`. Establish `hφ : Function.Injective φ`. Introduce `f g h`. Use extensionality with `x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hx` using `congrArg (fun ψ : AddChar M ℂ => ψ x) h`. Establish `hx' : Circle.coeHom (ZMod.toCircle (f x)) = Circle.coeHom (ZMod.toCircle (g x))` using `hx`. Conclude with `ZMod.injective_toCircle (Circle.ext hx')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, AddChar.card_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem card_dual_zmod_le_card' (n : ℕ) [NeZero n] (M : Type) [AddCommGroup M]
     [Module (ZMod n) M] [Finite M] :
@@ -27,7 +27,7 @@ private theorem card_dual_zmod_le_card' (n : ℕ) [NeZero n] (M : Type) [AddComm
         rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, AddChar.card_eq]
 
 /- English proof (translation)
-Establish `: Finite (W →ₗ[ZMod n] ZMod n)` using `Finite.of_injective (fun f : W →ₗ[ZMod n] ZMod n => (f : W → ZMod n)) DFunLike.coe_injective`. Conclude with `(Nat.card_le_card_of_injective g hg).trans (card_dual_zmod_le_card' n W)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem card_le_of_injective_pairing_zmod (n : ℕ) [NeZero n] (Z W : Type) [AddCommGroup Z]
     [Module (ZMod n) Z] [AddCommGroup W] [Module (ZMod n) W] [Finite W]
@@ -38,25 +38,23 @@ private theorem card_le_of_injective_pairing_zmod (n : ℕ) [NeZero n] (Z W : Ty
   exact (Nat.card_le_card_of_injective g hg).trans (card_dual_zmod_le_card' n W)
 
 /- English proof (translation)
-Use `set A : Submodule (ZMod n) Y := ⨅ x ∈ U, LinearMap.ker (B.flip x) with hAdef`. Use `set W : Submodule (ZMod n) X := ⨅ y ∈ A, LinearMap.ker (B y) with hWdef`. Establish `memA : ∀ y, y ∈ A ↔ ∀ x ∈ U, B y x = 0`. Introduce `y`. Simplify using `[hAdef, Submodule.mem_iInf]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `memW : ∀ x, x ∈ W ↔ ∀ y ∈ A, B y x = 0`. Introduce `x`. Simplify using `only [hWdef, Submodule.mem_iInf, LinearMap.mem_ker]`. Establish `hUW : U ≤ W`. Introduce `x hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[memW]`. Introduce `y hy`. Conclude with `(memA y).1 hy x hx`. Set `f1 : Y →ₗ[ZMod n] U →ₗ[ZMod n] ZMod n` to `B.compl₂ U.subtype`. Establish `hA1 : A ≤ LinearMap.ker f1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Introduce `y hy`. Rewrite using `[LinearMap.mem_ker]`. Use extensionality with `u`. Simplify using `[f1, (memA y).1 hy u u.2]`. Establish `hA1' : LinearMap.ker f1 ≤ A`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Rewrite `hy` using `[LinearMap.mem_ker]`. Rewrite using `[memA]`. Introduce `x hx`. Use `LinearMap.congr_fun hy ⟨x, hx⟩` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify `this` using `[f1]`. Set `P1 : (Y ⧸ A) →ₗ[ZMod n] U →ₗ[ZMod n] ZMod n` to `A.liftQ f1 hA1`. Establish `hP1 : Function.Injective P1` using `LinearMap.ker_eq_bot.mp (Submodule.ker_liftQ_eq_bot A f1 hA1 hA1')`. Set `f2 : Y →ₗ[ZMod n] W →ₗ[ZMod n] ZMod n` to `B.compl₂ W.subtype`. Establish `hA2 : A ≤ LinearMap.ker f2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Introduce `y hy`. Rewrite using `[LinearMap.mem_ker]`. Use extensionality with `w`. Simplify using `[f2, (memW w).1 w.2 y hy]`. Set `P2 : (Y ⧸ A) →ₗ[ZMod n] W →ₗ[ZMod n] ZMod n` to `A.liftQ f2 hA2`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP2 : Function.Injective P2.flip`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `w hw`. Establish `hz : B.flip (w : X) = 0`. Use extensionality with `y`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun hw (Submodule.Quotient.mk y)` as an intermediate fact. Simplify `this` using `[P2, f2]`. Establish `: (w : X) = 0` using `hB' (by rw [hz, map_zero])`. Conclude with `Subtype.ext this`. Establish `: Finite (Y ⧸ A)` using `Finite.of_surjective _ (Submodule.mkQ_surjective A)`.
-
-Establish `c1 : Nat.card (Y ⧸ A) ≤ Nat.card U` using `card_le_of_injective_pairing_zmod n _ _ P1 hP1`. Establish `c2 : Nat.card W ≤ Nat.card (Y ⧸ A)` using `card_le_of_injective_pairing_zmod n _ _ P2.flip hP2`. Establish `hle : Nat.card (W.toAddSubgroup) ≤ Nat.card (U.toAddSubgroup)` using `c2.trans c1`. Conclude with `(Submodule.toAddSubgroup_injective (AddSubgroup.eq_of_le_of_card_ge (show U.toAddSubgroup ≤ W.toAddSubgroup from hUW) hle)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem double_annihilator (n : ℕ) [NeZero n] (X Y : Type) [AddCommGroup X] [Module (ZMod n) X]
     [Finite X] [AddCommGroup Y] [Module (ZMod n) Y] [Finite Y]

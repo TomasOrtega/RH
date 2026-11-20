@@ -4,13 +4,11 @@ open IsDedekindDomain NumberField Matrix
 namespace GlobalTheory.LatticeBetweenMultiples
 
 /- English proof (translation)
-Establish `h1 : (1 + N) * (1 - N) = 1`. Rewrite using `[add_mul, one_mul, mul_sub, mul_one, hN, sub_zero, sub_add_cancel]`. Establish `h2 : (1 - N) * (1 + N) = 1`. Rewrite using `[sub_mul, one_mul, mul_add, mul_one, hN, add_zero, add_sub_cancel_right]`. Establish `h1m : ∀ i j, (1 : Matrix (Fin n) (Fin n) (v.adicCompletion F)) i j ∈ v.adicCompletionIntegers F`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i j`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : ∀ i j, (1 + N) i j ∈ v.adicCompletionIntegers F`. Introduce `i j`. Rewrite using `[Matrix.add_apply]`. Conclude with `add_mem (h1m i j) (hNi i j)`. Establish `hm : ∀ i j, (1 - N) i j ∈ v.adicCompletionIntegers F`.
-
-Introduce `i j`. Rewrite using `[Matrix.sub_apply]`. Conclude with `sub_mem (h1m i j) (hNi i j)`. Conclude with `hGL ⟨1 + N, 1 - N, h1, h2⟩ hp hm w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma one_add_mulVec_mem {F : Type} [Field F] [NumberField F]
     (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) {n : ℕ}
@@ -38,49 +36,43 @@ lemma one_add_mulVec_mem {F : Type} [Field F] [NumberField F]
   exact hGL ⟨1 + N, 1 - N, h1, h2⟩ hp hm w hw
 
 /- English proof (translation)
-Introduce `F _ _ v n S hO ⟨tl, htl0, htl⟩ ⟨tu, htu0, htu⟩ hGL`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `⟨1, one_ne_zero, fun w => ?_⟩` and prove the remaining obligations. Establish `hw : w = 0` using `Subsingleton.elim _ _`. Substitute `hw` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `⟨fun _ i => i.elim0, fun _ => S.zero_mem⟩`. Establish `memO : ∀ x : v.adicCompletion F, x ∈ v.adicCompletionIntegers F ↔ Valued.v x ≤ 1` using `fun x => Iff.rfl`. Establish `hbd : ∀ w ∈ S, ∀ i, Valued.v (w i) ≤ (Valued.v tu)⁻¹`. Introduce `w hw i`. Establish `h` using `(memO _).1 (htu w hw i)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[map_mul]`. Establish `hu : Valued.v tu ≠ 0` using `(Valuation.ne_zero_iff _).2 htu0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, inv_mul_cancel₀ hu, one_mul]`. Use `_ ≤ (Valued.v tu)⁻¹ * 1 := by gcongr`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `_ = (Valued.v tu)⁻¹ := mul_one _`. Set `P : ℤ → Prop` to `fun k => ∃ w ∈ S, ∃ i, Valued.v (w i) = ((Multiplicative.ofAdd k : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`. Take `⟨mB, hmB⟩ : ∃ m : Multiplicative ℤ, (m : WithZero (Multiplicative ℤ)) = (Valued.v tu)⁻¹` from `WithZero.ne_zero_iff_exists.1 (inv_ne_zero ((Valuation.ne_zero_iff _).2 htu0))`. Establish `hPb : ∃ b : ℤ, ∀ z, P z → z ≤ b`. Use `⟨Multiplicative.toAdd mB, fun z ⟨w, hw, i, hz⟩ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hbd w hw i`. Rewrite `h` using `[hz, ← hmB, WithZero.coe_le_coe]`. Conclude with `Multiplicative.ofAdd_le.1 (by simpa using h)`. Set `i₀' : Fin n` to `⟨0, hn⟩`. Establish `hPn : ∃ z, P z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : tl • (fun _ => (1 : v.adicCompletion F)) ∈ S` using `htl _ (fun _ => one_mem _)`. Take `⟨m, hm⟩ : ∃ m : Multiplicative ℤ, (m : WithZero (Multiplicative ℤ)) = Valued.v tl` from `WithZero.ne_zero_iff_exists.1 ((Valuation.ne_zero_iff _).2 htl0)`. Use `⟨Multiplicative.toAdd m, _, hmem, i₀', ?_⟩` and prove the remaining obligations. Simplify using `[← hm]`. Take `⟨lb, ⟨w₀, hw₀, i₀, hc⟩, hlb⟩` from `Int.exists_greatest_of_bdd hPb hPn`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c := w₀ i₀ with hcdef`. Establish `hvc : Valued.v c ≠ 0` using `by rw [hc]; exact WithZero.coe_ne_zero`. Establish `hc0 : c ≠ 0` using `fun h => hvc (by rw [h, map_zero])`. Establish `hmax : ∀ w ∈ S, ∀ i, Valued.v (w i) ≤ Valued.v c`. Introduce `w hw i`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : w i = 0`. Rewrite using `[h0, map_zero]`. Conclude with `zero_le'`. Take `⟨m, hm⟩ : ∃ m : Multiplicative ℤ, (m : WithZero (Multiplicative ℤ)) = Valued.v (w i)` from `WithZero.ne_zero_iff_exists.1 ((Valuation.ne_zero_iff _).2 h0)`. Establish `hk` using `hlb (Multiplicative.toAdd m) ⟨w, hw, i, by simp [← hm]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← hm, hc, WithZero.coe_le_coe]`. Conclude with `Multiplicative.toAdd_le.1 (by simpa using hk)`. Establish `hint : ∀ w ∈ S, ∀ i, c⁻¹ * w i ∈ v.adicCompletionIntegers F`. Introduce `w hw i`. Rewrite using `[memO, map_mul, map_inv₀]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hsingle0 : Pi.single i₀ c ∈ S`. Set `N : Matrix (Fin n) (Fin n) (v.adicCompletion F)` to `fun a b => if b = i₀ ∧ a ≠ i₀ then -(c⁻¹ * w₀ a) else 0`. Establish `hN : N * N = 0`. Use function extensionality and compare the values at `a b`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero (fun m _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases hm : m = i₀ <;> simp [N, hm]`. Establish `hNi : ∀ i j, N i j ∈ v.adicCompletionIntegers F`. Introduce `i j`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [N]`. Use `split_ifs`. Conclude with `neg_mem (hint w₀ hw₀ i)`. Conclude with `zero_mem _`. Establish `h` using `one_add_mulVec_mem v S hGL N hN hNi hw₀`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`. Rewrite using `[Matrix.add_mulVec, Matrix.one_mulVec, Pi.add_apply]`. Distinguish the cases in `ha : a = i₀`. Substitute `ha` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Introduce a local definition for the expression.
 
-Simplify using `[N, Matrix.mulVec, dotProduct, hcdef]`. Simplify using `[N, Matrix.mulVec, dotProduct, ha, Pi.single_apply, ← hcdef]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hsingle : ∀ j, Pi.single j c ∈ S`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Introduce `j`. Distinguish the cases in `hj : j = i₀`. Substitute `hj` using the available equality. Conclude with `hsingle0`. Set `N : Matrix (Fin n) (Fin n) (v.adicCompletion F)` to `fun a b => if a = j ∧ b = i₀ then 1 else 0`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hN : N * N = 0`. Use function extensionality and compare the values at `a b`. Simplify using `only [Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero (fun m _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hm : m = i₀`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Substitute `hm` using the available equality. Simplify using `[N, Ne.symm hj]`. Simplify using `[N, hm]`. Establish `hNi : ∀ i k, N i k ∈ v.adicCompletionIntegers F`. Introduce `i k`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [N]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`. Establish `h` using `one_add_mulVec_mem v S hGL N hN hNi hsingle0`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `heq : (1 + N).mulVec (Pi.single i₀ c) = Pi.single i₀ c + Pi.single j c`. Use function extensionality and compare the values at `a`. Rewrite using `[Matrix.add_mulVec, Matrix.one_mulVec]`. Simplify using `[N, Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite `h` using `[heq]`.
-
-Simplify using `using S.sub_mem h hsingle0`. Use `⟨c⁻¹, inv_ne_zero hc0, fun w => ⟨fun hw i => hint w hw i, fun hw => ?_⟩⟩` and prove the remaining obligations. Establish `hsum : w = ∑ j, (c⁻¹ * w j) • Pi.single j c`. Use function extensionality and compare the values at `a`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single a]`.
-
-Simplify using `only [Pi.smul_apply, Pi.single_eq_same, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Introduce `b _ hb`. Simplify using `[Pi.single_apply, Ne.symm hb]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[hsum]`. Conclude with `S.sum_mem (fun j _ => hO _ (hw j) _ (hsingle j))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_multiple_of_standard_lattice : ∀ {F : Type} [Field F] [NumberField F]
     (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) {n : ℕ}

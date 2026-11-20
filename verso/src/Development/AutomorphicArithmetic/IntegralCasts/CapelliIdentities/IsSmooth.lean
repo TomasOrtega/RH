@@ -10,37 +10,33 @@ noncomputable def UpperTheory.Reformulated.B.DYka2.IsSmooth :
       ∀ (v : V), IsOpen {g : G | ((ρ : G → V →ₗ[k] V) g : V → V) v = v}
 
 /- English proof (translation)
-Introduce `Γ V W _ _ _ _ _ _ _ ρ σ hρ f L hL χ u hu hχ`. Use `haveI : CompactSpace L := isCompact_iff_compactSpace.mp hL`. Establish `hint : ∀ (g : Γ) (v : V), f (ρ g v) = σ g (f v)` using `fun g v => Representation.IntertwiningMap.isIntertwining ρ σ f g v`. Establish `hmul : ∀ g ∈ L, ∀ h ∈ L, χ (g * h) = χ g * χ h`. Introduce `g hg h hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : χ (g * h) • f u = (χ g * χ h) • f u`. Rewrite using `[← hχ (g * h) (L.mul_mem hg hh), map_mul, Module.End.mul_apply, hχ h hh, map_smul, hχ g hg, smul_smul, mul_comm]`. Conclude with `smul_left_injective ℂ hu key`. Establish `h1 : χ 1 = 1`. Establish `key : χ 1 • f u = (1 : ℂ) • f u`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hχ 1 L.one_mem, map_one, one_smul]`. Both sides reduce to the same expression. Conclude with `smul_left_injective ℂ hu key`. Establish `hne : ∀ g ∈ L, χ g ≠ 0`. Introduce `g hg h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Use `hmul g hg g⁻¹ (L.inv_mem hg)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, h1, h0, zero_mul]`. Conclude with `one_ne_zero this`. Set `H : Subgroup L` to `{ carrier := {g | ρ (g : Γ) u = u} mul_mem' := by`. Introduce `a b ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`. Rewrite using `[Subgroup.coe_mul, map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := by`. Introduce `a ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Establish `: ρ ((a : Γ)⁻¹) (ρ (a : Γ) u) = u`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression. Rewrite `this` using `[ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this }`. Establish `hHopen : IsOpen (H : Set L)` using `(hρ u).preimage continuous_subtype_val`. Use `haveI : Finite (L ⧸ H) := Subgroup.quotient_finite_of_isOpen H hHopen`. Use `haveI : Fintype (L ⧸ H) := Fintype.ofFinite _`. Establish `hχH : ∀ h : L, h ∈ H → χ (h : Γ) = 1`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h hh`. Establish `e : ρ (h : Γ) u = u` using `hh`. Establish `key : χ (h : Γ) • f u = (1 : ℂ) • f u`. Rewrite using `[← hχ h h.2, ← hint, e, one_smul]`. Conclude with `smul_left_injective ℂ hu key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Set `φ : L → V` to `fun g => (χ (g : Γ))⁻¹ • ρ (g : Γ) u`. Establish `hφ : ∀ a b : L, QuotientGroup.leftRel H a b → φ a = φ b`. Introduce `a b hab`. Rewrite `hab` using `[QuotientGroup.leftRel_apply]`. Establish `hb : (b : Γ) = a * ((a⁻¹ * b : L) : Γ)` using `by simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `e : ρ ((a⁻¹ * b : L) : Γ) u = u` using `hab`. Establish `c` using `hχH _ hab`. Simplify using `only [φ]`. Rewrite using `[hb, hmul _ a.2 _ (a⁻¹ * b).2, c, mul_one, map_mul, Module.End.mul_apply, e]`. Set `ψ : L ⧸ H → V` to `Quotient.lift φ hφ`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hψ : ∀ g : L, ψ (g : L ⧸ H) = φ g` using `fun g => rfl`. Establish `hfψ : ∀ q : L ⧸ H, f (ψ q) = f u`. Introduce `q`. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψ]`. Simplify using `only [φ]`. Rewrite using `[map_smul, hint, hχ g g.2, smul_smul, inv_mul_cancel₀ (hne g g.2), one_smul]`. Establish `hact : ∀ (l : L) (q : L ⧸ H), ρ (l : Γ) (ψ q) = χ (l : Γ) • ψ (l • q)`. Introduce `l q`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g`. Establish `: l • (g : L ⧸ H) = ((l * g : L) : L ⧸ H)` using `rfl`. Rewrite using `[this, hψ, hψ]`. Simplify using `only [φ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_smul, Subgroup.coe_mul, hmul _ l.2 _ g.2, map_mul, Module.End.mul_apply, smul_smul, mul_inv, ← mul_assoc, mul_inv_cancel₀ (hne l l.2), one_mul]`. Use `⟨∑ q : L ⧸ H, ψ q, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `e : f (∑ q : L ⧸ H, ψ q) = (Fintype.card (L ⧸ H) : ℂ) • f u`. Rewrite using `[map_sum]`.
-
-Simplify using `only [hfψ]`. Rewrite using `[Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul]`. Rewrite `e` using `[h0, map_zero]`. Establish `hc : (Fintype.card (L ⧸ H) : ℂ) ≠ 0`. Conclude with `Fintype.card_ne_zero` after adjusting the coercions.
-
-Conclude with `(smul_ne_zero hc hu) e.symm`. Introduce `g hg`. Rewrite using `[map_sum, Finset.smul_sum]`. Simplify using `only [hact ⟨g, hg⟩]`. Conclude with `(Equiv.sum_comp (MulAction.toPerm (⟨g, hg⟩ : L)) (fun q => χ g • ψ q))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.DYka2.main :
     ∀ {Γ V W : Type} [inst : Group Γ] [inst_1 : TopologicalSpace Γ] [IsTopologicalGroup Γ] [inst_3 : AddCommGroup V]

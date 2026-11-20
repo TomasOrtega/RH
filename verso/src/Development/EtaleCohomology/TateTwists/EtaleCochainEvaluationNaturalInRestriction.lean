@@ -26,9 +26,9 @@ def DegreeZeroCocyclePullback : Prop :=
         ev β.1 0 0 (by simp) U x = ev α.1 0 0 (by simp) U ((f.app (op (SimplexCategory.mk 0))).app (op U) x)
 
 /- English proof (translation)
-Unfold `freeGen`. Establish `h` using `congrArg (fun f => f.hom (ModuleCat.freeMk (R := ULift.{1} R) (ULift.up x))) ((toSheafify Scheme.etaleTopology ((freeP R).obj P)).naturality g.op)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.coe_comp, Function.comp_apply] at h`. Establish `hm : (((freeP R).obj P).map g.op).hom (ModuleCat.freeMk (R` using `ULift.{1} R) (ULift.up x)) = ModuleCat.freeMk (R := ULift.{1} R) (ULift.up (P.map g.op x)) := by`. Simplify using `only [freeP, Functor.whiskeringRight_obj_obj, Functor.comp_map]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `erw [ModuleCat.free_map_apply]`. Both sides reduce to the same expression. Conclude with `h.symm.trans (congrArg (toSheafify Scheme.etaleTopology ((freeP R).obj P) |>.app (op V)).hom hm)`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem freeGen_nat {R : Type} [CommRing R] (P : PSh) {V U : Scheme.{0}} (g : V ⟶ U) (x : P.obj (op U)) :
     (((free R).obj P).obj.map g.op).hom (freeGen R P U x) = freeGen R P V (P.map g.op x) := by
@@ -42,9 +42,9 @@ theorem freeGen_nat {R : Type} [CommRing R] (P : PSh) {V U : Scheme.{0}} (g : V 
   exact h.symm.trans (congrArg (toSheafify Scheme.etaleTopology ((freeP R).obj P) |>.app (op V)).hom hm)
 
 /- English proof (translation)
-Introduce `R _ E I n α p s h V U g x`. Unfold `ev`. Rewrite using `[← freeGen_nat]`. Establish `key` using `congrArg (fun f => f.hom (freeGen R _ U x)) ((((chainsXIso R E p).inv ≫ α.v _ _ h).hom).naturality g.op)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.coe_comp, Function.comp_apply] at key`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem ev_nat_pf : EtaleCochainEvaluationNaturalInRestriction := by
   intro R _ E I n α p s h V U g x

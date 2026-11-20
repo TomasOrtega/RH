@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HolDict
 
 /- English proof (translation)
-Introduce `hP D θ V S M w v hθ hM hw hv J χ T hT`. Establish `h` using `(GlobalTheory.MultMem.mem_mult_iff D θ V S M J χ T).1 hT`. Establish `hd` using `GlobalTheory.CuspDecay.isRapidDecay_of_cuspForm hP hθ (h.aut v) (h.cusp v)`. Establish `hh` using `GlobalTheory.T.multiplicityMap_extremalVector_holomorphicType D θ V S M w v hθ hM hw hv J χ T h`. Conclude with `⟨⟨(h.aut v).toIsAutFun, hd.bounded, h.lev v, hh⟩, GlobalTheory.T.transvectionCuspidal_of_rapidDecay_holomorphicType D θ V S M w hθ hM _ (h.aut v).toIsAutFun hh hd⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem holForm_zCusp_of_mem_mult : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (w : D.what₂.Tau → Fin V.rank → ℤ) (v : M.Vec), IsInfFam θ → HolShape M → WtIs M w → IsExtVec M v → ∀ (J : Set (GA D V)) (χ : GA D V → ℂ), ∀ T ∈ Mult θ M J χ, HolForm θ M w J χ (T v) ∧ ZCusp V (T v) := by
   intro hP D θ V S M w v hθ hM hw hv J χ T hT

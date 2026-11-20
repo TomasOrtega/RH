@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.S
 open NumberField Matrix GlobalTheory.CuspRep GroundTheory.Automorphic GroundTheory.Automorphic.AutomorphicForm UpperTheory.V UpperTheory.V.Fb
 
 /- English proof (translation)
-Unfold `Reduction.posIdele`. Use `Finset.prod_induction _ (fun x : GroundTheory.Global.IdeleGroup K => ((x : AdeleRing (𝓞 K) K)).2 = 1) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a b ha hb`. Combine the equalities or inequalities in the displayed calculation. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Both sides reduce to the same expression.
 
-Introduce `w _`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 private theorem posIdele_finite_part_eq {K : Type} [Field K] [NumberField K] (ρ : ℝ) (hρ : 0 < ρ) :
     ((Reduction.posIdele (K := K) ρ hρ : GroundTheory.Global.IdeleGroup K) : AdeleRing (𝓞 K) K).2 = 1 := by
@@ -20,9 +20,9 @@ private theorem posIdele_finite_part_eq {K : Type} [Field K] [NumberField K] (ρ
     rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Express the relevant statement in the definitionally equal form `(((Reduction.diagUnits n d : AdelicGLn.AdelicGL K n) : Matrix (Fin n) (Fin n) (AdeleRing (𝓞 K) K)) i j).2 = (1 : Matrix (Fin n) (Fin n) (IsDedekindDomain.FiniteAdeleRing (𝓞 K) K)) i j`. Simplify using `only [Reduction.diagUnits, MonoidHom.coe_mk, OneHom.coe_mk, Matrix.one_apply, Matrix.diagonal_apply]`. Use `split_ifs with h`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `h` using the available equality. Conclude with `hd i`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem finPart_diag_of_infinite_part_eq_one {K : Type} [Field K] [NumberField K] (n : ℕ)
     (d : Fin n → GroundTheory.Global.IdeleGroup K) (hd : ∀ i, ((d i : AdeleRing (𝓞 K) K)).2 = 1) :
@@ -37,7 +37,7 @@ private theorem finPart_diag_of_infinite_part_eq_one {K : Type} [Field K] [Numbe
   · rfl
 
 /- English proof (translation)
-Use `show ((AdelicGLn.prodEquiv K n) (x * y)).2 = _`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem finPart_mul' {K : Type} [Field K] [NumberField K] {n : ℕ} (x y : AdelicGLn.AdelicGL K n) :
     finPart (x * y) = finPart x * finPart y := by
@@ -46,9 +46,9 @@ private theorem finPart_mul' {K : Type} [Field K] [NumberField K] {n : ℕ} (x y
   rfl
 
 /- English proof (translation)
-Introduce `K _ _ n ω hω t`. Establish `hc : Continuous (fun g : AdelicGLn.AdelicGL K n => finPart g)` using `continuous_snd.comp (AdelicGLn.prodEquiv K n).continuous`. Use `⟨(fun p : AdelicGLn.FiniteAdelicGL K n × AdelicGLn.FiniteAdelicGL K n => p.1 * p.2) '' ((finPart '' ω) ×ˢ (finPart '' ((Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) : Set (AdelicGLn.AdelicGL K n)))), ((hω.image hc).prod (Reduction.isCompact_maxCompact.image hc)).imag …` and prove the remaining obligations. Introduce and unpack `g ⟨b, hb, a, ⟨r, hr, -, rfl⟩, k, hk, rfl⟩`. Establish `ha` using `finPart_diag_of_infinite_part_eq_one n _ (fun i => posIdele_finite_part_eq (K := K) (r i) (hr i))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨(finPart b, finPart k), ⟨⟨b, hb, rfl⟩, ⟨k, hk, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Use `show finPart b * finPart k = _`. Rewrite using `[finPart_mul', finPart_mul', ha, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.siegelSet_inter_translate_finite :
     UpperTheory.V.Fb.SiegelFin := by

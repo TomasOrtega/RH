@@ -15,11 +15,11 @@ section Basic
 variable (G : Type*) [Group G] (A : Type*) [CommRing A] [MulSemiringAction G A]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h P hP`. Rewrite using `[Subgroup.eq_bot_iff_forall]`. Introduce `g hg`. Assume the negation of the conclusion as `hg1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hP.ne_top (top_le_iff.mp ?_)` and prove the remaining obligations. Rewrite using `[← h g hg1, Ideal.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `AddSubgroup.mem_inertia.mp hg a`. Introduce `h g hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `: g ∈ P.inertia G` using `AddSubgroup.mem_inertia.mpr fun a ↦ hle (Ideal.subset_span ⟨a, rfl⟩)`. Rewrite `this` using `[h P hP]`. Conclude with `hg this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFreeRingAction_iff_inertia_eq_bot :
     IsFreeRingAction G A ↔ ∀ P : Ideal A, P.IsMaximal → P.inertia G = ⊥ := by
@@ -41,7 +41,7 @@ theorem isFreeRingAction_iff_inertia_eq_bot :
     exact hg this
 
 /- English proof (translation)
-Use `⟨fun h P hP ↦ ?_, fun h ↦ (isFreeRingAction_iff_inertia_eq_bot G A).mpr fun P hP ↦ h P hP.isPrime⟩` and prove the remaining obligations. Take `⟨Q, hQ, hle⟩` from `Ideal.exists_le_maximal _ hP.ne_top`. Rewrite using `[eq_bot_iff, ← (isFreeRingAction_iff_inertia_eq_bot G A).mp h Q hQ]`. Conclude with `fun g hg ↦ AddSubgroup.mem_inertia.mpr fun a ↦ hle (AddSubgroup.mem_inertia.mp hg a)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isFreeRingAction_iff_inertia_eq_bot_of_isPrime :
     IsFreeRingAction G A ↔ ∀ P : Ideal A, P.IsPrime → P.inertia G = ⊥ := by
@@ -52,9 +52,9 @@ theorem isFreeRingAction_iff_inertia_eq_bot_of_isPrime :
   exact fun g hg ↦ AddSubgroup.mem_inertia.mpr fun a ↦ hle (AddSubgroup.mem_inertia.mp hg a)
 
 /- English proof (translation)
-Introduce `g hg`. Break down `Ideal.eq_bot_or_top (Ideal.span (Set.range fun a : K ↦ g • a - a)) with h | h` into its components or cases. Use `absurd (eq_of_smul_eq_smul (α := K) fun a ↦ ?_) hg` and prove the remaining obligations. Establish `: g • a - a ∈ Ideal.span (Set.range fun a : K ↦ g • a - a)` using `Ideal.subset_span ⟨a, rfl⟩`. Rewrite `this` using `[h, Ideal.mem_bot, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this, one_smul]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFreeRingAction_of_field (K : Type*) [Field K] [MulSemiringAction G K]
     [FaithfulSMul G K] : IsFreeRingAction G K := by
@@ -81,25 +81,23 @@ Both sides reduce to the same expression.
 variable {G A} in
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype G`. Establish `key : ∀ g : G, ∀ c ∈ Ideal.span (Set.range fun a : A ↦ g • a - a), ∃ e : A ⊗[B] A, galoisMap G A B e g = 0 ∧ ∀ h ∈ H, galoisMap G A B e h - c ∈ P`. Introduce `g c hc`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem x hx`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨a, rfl⟩` from `hx`. Use `⟨(g • a) ⊗ₜ 1 - 1 ⊗ₜ a, by simp, fun h hh ↦ ?_⟩` and prove the remaining obligations. Use `P.neg_mem (hH h hh a)` as an intermediate fact. Simplify using `only [map_sub, Pi.sub_apply, galoisMap_tmul, smul_one, mul_one, one_mul]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => exact ⟨0, by simp, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨e, he, he'⟩` from `hx`. Take `⟨f, hf, hf'⟩` from `hy`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨e + f, by simp [he, hf], fun h hh ↦ ?_⟩` and prove the remaining obligations. Use `P.add_mem (he' h hh) (hf' h hh)` as an intermediate fact. Simplify using `only [map_add, Pi.add_apply]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `smul r x _ hx`. Take `⟨e, he, he'⟩` from `hx`. Use `⟨r • e, by simp [he], fun h hh ↦ ?_⟩` and prove the remaining obligations. Use `P.mul_mem_left r (he' h hh)` as an intermediate fact. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `key2 : ∀ g ∉ H, ∃ e : A ⊗[B] A, galoisMap G A B e g = 0 ∧ ∀ h ∈ H, galoisMap G A B e h - 1 ∈ P`. Introduce `g hg`. Establish `h1 : (1 : A) ∈ P ⊔ Ideal.span (Set.range fun a : A ↦ g • a - a)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hH' g hg]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨p, hp, c, hc, hpc⟩` from `Submodule.mem_sup.mp h1`. Take `⟨e, he, he'⟩` from `key g c hc`. Use `⟨e, he, fun h hh ↦ ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `P.sub_mem (he' h hh) hp` as an intermediate fact. Rewrite using `[← hpc]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `choose! e he he' using key2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∏ g ∈ Finset.univ.filter (· ∉ H), e g, fun g hg ↦ ?_, fun h hh ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod, Finset.prod_apply]`. Conclude with `Finset.prod_eq_zero (i := g) (by simpa using hg) (he g hg)`. Rewrite using `[map_prod, Finset.prod_apply, ← Ideal.Quotient.eq, map_prod, map_one]`. Use `Finset.prod_eq_one fun g hg ↦ ?_` and prove the remaining obligations.
-
-Rewrite using `[← map_one (Ideal.Quotient.mk P), Ideal.Quotient.eq]`. Conclude with `he' g (by simpa using hg) h hh`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_galoisMap_separating [Finite G] (P : Ideal A) (H : Set G)
     (hH : ∀ h ∈ H, ∀ a : A, h • a - a ∈ P)
@@ -159,7 +157,7 @@ theorem exists_galoisMap_separating [Finite G] (P : Ideal A) (H : Set G)
 variable {G A} in
 
 /- English proof (translation)
-Take `⟨e, he, he'⟩` from `exists_galoisMap_separating ℤ P H hH hH'`. Take `⟨s, rfl⟩` from `e.exists_finset`. Use `⟨s, fun g hg ↦ ?_, fun h hh ↦ ?_⟩` and prove the remaining obligations. Simplify `he g hg` using `[Finset.sum_apply]`. Simplify `he' h hh` using `[Finset.sum_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_finset_separating [Finite G] (P : Ideal A) (H : Set G)
     (hH : ∀ h ∈ H, ∀ a : A, h • a - a ∈ P)
@@ -175,7 +173,7 @@ theorem exists_finset_separating [Finite G] (P : Ideal A) (H : Set G)
 variable {G A} in
 
 /- English proof (translation)
-Take `⟨s, hs, hs'⟩` from `exists_finset_separating (G := G) (⊥ : Ideal A) {1} (by rintro _ rfl a; simp) (fun g hg ↦ by rw [h g hg, sup_top_eq])`. Conclude with `⟨s, hs, by simpa [sub_eq_zero] using hs' 1 rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_galois_coordinates [Finite G] (h : IsFreeRingAction G A) :
     ∃ s : Finset (A × A), (∀ g : G, g ≠ 1 → ∑ p ∈ s, p.1 * g • p.2 = 0) ∧
@@ -187,9 +185,9 @@ theorem exists_galois_coordinates [Finite G] (h : IsFreeRingAction G A) :
 variable {G A} in
 
 /- English proof (translation)
-Use `exists_finset_separating P (P.inertia G : Set G) (fun h hh ↦ AddSubgroup.mem_inertia.mp hh) fun g hg ↦ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `hg (AddSubgroup.mem_inertia.mpr fun a ↦ ?_)` and prove the remaining obligations. Use `hP.eq_of_le hne le_sup_left` as an intermediate fact. Express the relevant statement in the definitionally equal form `g • a - a ∈ P`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[this]`. Conclude with `Ideal.mem_sup_right (Ideal.subset_span ⟨a, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_inertia [Finite G] (P : Ideal A) [hP : P.IsMaximal] :
     ∃ s : Finset (A × A), (∀ g ∉ P.inertia G, ∑ p ∈ s, p.1 * g • p.2 = 0) ∧
@@ -210,7 +208,7 @@ instance smulDistribClass_self (G : Type*) [Group G] (A : Type*) [CommRing A]
   ⟨fun g a b ↦ smul_mul' g a b⟩
 
 /- English proof (translation)
-Simplify using `only [Finset.smul_sum, smul_smul]`. Conclude with `Equiv.sum_comp (Equiv.mulLeft g) fun h ↦ h • m`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smul_sum_smul {G : Type*} [Group G] [Fintype G] {M : Type*} [AddCommMonoid M]
     [DistribMulAction G M] (m : M) (g : G) : g • ∑ h : G, h • m = ∑ h : G, h • m := by
@@ -246,7 +244,7 @@ noncomputable def invariantsRingEquiv :
 
 omit [Fintype G] in
 /- English proof (translation)
-The claim follows from `congrArg Subtype.val ((invariantsRingEquiv G B A).apply_symm_apply x)`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_invariantsRingEquiv_symm
     (x : (Representation.ofDistribMulAction B G A).invariants) :
@@ -257,7 +255,7 @@ noncomputable def ringTrace : A →ₗ[B] B :=
   (invariantsRingEquiv G B A).symm.toLinearMap ∘ₗ moduleTrace G B A
 
 /- English proof (translation)
-The claim follows from `algebraMap_invariantsRingEquiv_symm G B A _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem algebraMap_ringTrace (a : A) :
     algebraMap B A (ringTrace G B A a) = ∑ g : G, g • a :=
@@ -271,7 +269,7 @@ variable {G : Type*} [Group G] [Fintype G] {A : Type*} [CommRing A] [MulSemiring
   {M : Type*} [AddCommGroup M] [Module A M] [DistribMulAction G M] [SMulDistribClass G A M]
 
 /- English proof (translation)
-Simplify using `only [Finset.smul_sum, Finset.sum_smul, smul_distrib_smul, mul_smul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_smul_sum_smul (s : Finset (A × A)) (m : M) :
     ∑ p ∈ s, p.1 • ∑ g : G, g • (p.2 • m) = ∑ g : G, (∑ p ∈ s, p.1 * g • p.2) • g • m := by
@@ -279,11 +277,11 @@ theorem sum_smul_sum_smul (s : Finset (A × A)) (m : M) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Take `⟨s, hs, hs'⟩` from `exists_finset_inertia (G := G) P`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[sum_smul_sum_smul, ← Finset.sum_subset (Finset.filter_subset (· ∈ P.inertia G) _) (fun g _ hg ↦ by rw [hs g (by simpa using hg), zero_smul])]`. Establish `: (Nat.card (P.inertia G) : A) • m = ∑ _g ∈ Finset.univ.filter (· ∈ P.inertia G), m`. Rewrite using `[Finset.sum_const, Nat.cast_smul_eq_nsmul, Nat.card_eq_fintype_card, Fintype.card_subtype]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun g hg ↦ ?_` and prove the remaining obligations. Establish `hg' : g ∈ P.inertia G` using `by simpa using hg`. Use `add_mem (Submodule.smul_mem_smul (hs' g hg') (Submodule.mem_top (x := g • m))) (hm g hg')` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem exists_sum_sub_card_smul_mem (P : Ideal A) [P.IsMaximal] (m : M)
     (hm : ∀ g ∈ P.inertia G, g • m - m ∈ P • (⊤ : Submodule A M)) :
@@ -309,11 +307,11 @@ theorem exists_sum_sub_card_smul_mem (P : Ideal A) [P.IsMaximal] (m : M)
 variable (G A) in
 
 /- English proof (translation)
-Set `B` to `FixedPoints.subring A G`. Use `haveI := isIntegral_fixedSubring A G`. Establish `: LinearMap.range (ringTrace G B A) = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨Q, hQ, hle⟩` from `Ideal.exists_le_maximal _ hne`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, rfl⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := A) Q (by rw [(RingHom.injective_iff_ker_eq_bot _).mp (FaithfulSMul.algebraMap_injective B A)]`. Conclude with `bot_le)`. Take `⟨s, hs⟩` from `exists_sum_sub_card_smul_mem (G := G) P (1 : A) (by simp)`. Rewrite `hs` using `[smul_eq_mul, Ideal.mul_top, smul_eq_mul, mul_one]`. Use `h P hP ((Submodule.sub_mem_iff_right _ (Ideal.sum_mem _ fun p _ ↦ ?_)).mp hs)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `P.mul_mem_left _ ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_ringTrace G B A]`. Conclude with `hle ⟨_, rfl⟩`. Take `⟨c, hc⟩` from `LinearMap.range_eq_top.mp this 1`. Conclude with `⟨c, by rw [← algebraMap_ringTrace G B A, hc, map_one]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sum_smul_eq_one
     (h : ∀ P : Ideal A, P.IsMaximal → (Nat.card (P.inertia G) : A) ∉ P) :
@@ -336,15 +334,13 @@ theorem exists_sum_smul_eq_one
   exact ⟨c, by rw [← algebraMap_ringTrace G B A, hc, map_one]⟩
 
 /- English proof (translation)
-Use `set N := Submodule.span A {m : M | ∀ g : G, g • m = m} with hN`. Establish `: N.colon Set.univ = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `htop : (⊤ : Submodule A M) ≤ N ⊔ P • ⊤`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m _`. Take `⟨s, hs⟩` from `exists_sum_sub_card_smul_mem (G := G) P m fun g hg ↦ hM P hP g hg m`. Take `⟨u, p, hp, hup⟩` from `hP.exists_inv (h P hP)`. Establish `h1 : ∑ p ∈ s, p.1 • ∑ g : G, g • (p.2 • m) ∈ N` using `Submodule.sum_mem _ fun p _ ↦ N.smul_mem _ (Submodule.subset_span fun g ↦ smul_sum_smul _ g)`. Establish `h2 : (Nat.card (P.inertia G) : A) • m ∈ N ⊔ P • ⊤`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `sub_mem (Submodule.mem_sup_left (T := P • ⊤) h1) (Submodule.mem_sup_right hs)` as an intermediate fact. Simplify using `using this`. Use `add_mem (Submodule.smul_mem _ u h2) (Submodule.mem_sup_right (Submodule.smul_mem_smul hp (Submodule.mem_top (x := m))))` as an intermediate fact. Rewrite `this` using `[smul_smul, ← add_smul, hup, one_smul]`. Then use the resulting hypothesis. Take `⟨r, hr, hr'⟩` from `Submodule.exists_sub_one_mem_and_smul_le_of_fg_of_le_sup Module.Finite.fg_top le_rfl htop`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: r ∈ P` using `hle (Submodule.mem_colon.mpr fun m _ ↦ hr' (Submodule.smul_mem_pointwise_smul m r ⊤ trivial))`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one _).mpr (by simpa using P.sub_mem this hr))`. Rewrite using `[eq_top_iff]`. Introduce `m _`. Establish `h1 : (1 : A) ∈ N.colon Set.univ` using `by rw [this]; trivial`.
-
-Simplify using `using Submodule.mem_colon.mp h1 m trivial`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem span_fixed_eq_top [Module.Finite A M]
     (h : ∀ P : Ideal A, P.IsMaximal → (Nat.card (P.inertia G) : A) ∉ P)
@@ -400,7 +396,7 @@ theorem averageMap_apply (f : M →ₗ[A] N) (m : M) :
     averageMap G f m = ∑ g : G, g • f (g⁻¹ • m) := rfl
 
 /- English proof (translation)
-Simplify using `only [averageMap_apply, Finset.smul_sum, smul_smul]`. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft h)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem averageMap_smul (f : M →ₗ[A] N) (h : G) (m : M) :
     averageMap G f (h • m) = h • averageMap G f m := by
@@ -409,13 +405,13 @@ theorem averageMap_smul (f : M →ₗ[A] N) (h : G) (m : M) :
   simp
 
 /- English proof (translation)
-Take `⟨t, ht, ht'⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset (R := A) {m : M | ∀ g : G, g • m = m}).mp (hM ▸ Module.Finite.fg_top)`. Set `v : Fin t.card → M` to `fun i ↦ t.equivFin.symm i`. Establish `hv : ∀ i (g : G), g • v i = v i` using `fun i ↦ ht (t.equivFin.symm i).2`. Establish `hsurj : Function.Surjective (Fintype.linearCombination A v)`. Rewrite using `[← LinearMap.range_eq_top, Fintype.range_linearCombination, eq_top_iff, ← hM, ht']`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.span_mono fun x hx ↦ ⟨t.equivFin ⟨x, hx⟩, by simp [v]⟩`. Take `⟨s, hs⟩` from `Module.projective_lifting_property _ LinearMap.id hsurj`. Establish `hs' : ∀ m, ∑ i, s m i • v i = m` using `fun m ↦ by`. Simplify `LinearMap.congr_fun hs m` using `[Fintype.linearCombination_apply]`. Use `⟨t.card, v, fun i ↦ averageMap G (c • (LinearMap.proj i ∘ₗ s)), hv, fun i g m ↦ averageMap_smul _ g m, fun m ↦ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [averageMap_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Establish `: ∀ g : G, ∑ i, (g • (c • (LinearMap.proj i ∘ₗ s : M →ₗ[A] A)) (g⁻¹ • m)) • v i = (g • c) • m` using `fun g ↦ by conv_rhs => rw [← smul_inv_smul g m, ← smul_distrib_smul, ← hs' (g⁻¹ • m)]`. Simplify using `only [Finset.smul_sum, smul_distrib_smul, hv]`. Simplify using `[mul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [this]`. Rewrite using `[← Finset.sum_smul, hc, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_invariant_dual_basis [Module.Finite A M] [Module.Projective A M]
     {c : A} (hc : ∑ g : G, g • c = 1)
@@ -452,15 +448,15 @@ variable (B : Type*) [CommRing B] [Algebra B A] [SMulCommClass G B A]
 omit [Fintype G] [SMulDistribClass G A M] in
 
 /- English proof (translation)
-Use `set I := (Representation.ofDistribMulAction B G M).invariants`. Set `v' : Fin n → I` to `fun i ↦ ⟨v i, hv i⟩`. Set `f' : Fin n → I →ₗ[B] B` to `fun i ↦ (invariantsRingEquiv G B A).symm.toLinearMap ∘ₗ invariantsMap _ _ ((f i).restrictScalars B) (hf i)`. Establish `hf' : ∀ i x, algebraMap B A (f' i x) = f i x` using `fun i x ↦ algebraMap_invariantsRingEquiv_symm G B A _`. Establish `hfv' : ∀ x, ∑ i, f' i x • v' i = x` using `fun x ↦ Subtype.ext <| by conv_rhs => rw [← hfv x]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, v', ← hf', algebraMap_smul]`. Establish `hcomp : Fintype.linearCombination B v' ∘ₗ LinearMap.pi f' = LinearMap.id`. Use `LinearMap.ext fun x ↦ ?_` and prove the remaining obligations. Simplify `hfv' x` using `[Fintype.linearCombination_apply]`. Use `⟨?_, ?_, .of_split _ _ hcomp⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `ψ : M →ₗ[A] A ⊗[B] I` to `∑ i, (f i).smulRight (1 ⊗ₜ v' i)`. Establish `hψ : ∀ m, ψ m = ∑ i, f i m • (1 : A) ⊗ₜ[B] v' i` using `fun m ↦ by`. Simplify using `[ψ, LinearMap.sum_apply]`. Use `.of_equiv (LinearEquiv.ofLinear (I.subtype.liftBaseChange A) ψ ?_ ?_) fun x ↦ (LinearMap.liftBaseChange_tmul A I.subtype 1 x).trans (one_smul _ _)` and prove the remaining obligations. Use `LinearMap.ext fun m ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hfv m` using `[hψ, v']`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `ψ (I.subtype.liftBaseChange A (1 ⊗ₜ x)) = 1 ⊗ₜ x`. Rewrite using `[LinearMap.liftBaseChange_tmul, one_smul, Submodule.subtype_apply, hψ]`. Use `conv_rhs => rw [← hfv' x]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[TensorProduct.tmul_sum, ← hf']`. Use `.of_surjective (Fintype.linearCombination B v') fun x ↦ ⟨_, LinearMap.congr_fun hcomp x⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem descent_of_invariant_dual_basis {n : ℕ} (v : Fin n → M) (f : Fin n → M →ₗ[A] A)
     (hv : ∀ i (g : G), g • v i = v i) (hf : ∀ i (g : G) m, f i (g • m) = g • f i m)
@@ -506,7 +502,7 @@ variable {G : Type*} [Group G] [Finite G] {A : Type*} [CommRing A] [MulSemiringA
   [Module B M] [IsScalarTower B A M] [SMulCommClass G B M]
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype G`. Take `⟨c, hc⟩` from `exists_sum_smul_eq_one G A h`. Take `⟨n, v, f, hv, hf, hfv⟩` from `exists_invariant_dual_basis hc (span_fixed_eq_top h hM)`. Conclude with `descent_of_invariant_dual_basis B v f hv hf hfv`.
+Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tame_descent [Module.Finite A M] [Module.Projective A M]
     (h : ∀ P : Ideal A, P.IsMaximal → (Nat.card (P.inertia G) : A) ∉ P)
@@ -523,7 +519,7 @@ theorem tame_descent [Module.Finite A M] [Module.Projective A M]
 open scoped Pointwise in
 
 /- English proof (translation)
-Use `tame_descent B M (fun P hP hmem ↦ h P hP ?_) fun P hP g hg ↦ hM P hP g (Ideal.inertia_le_stabilizer P hg)` and prove the remaining obligations. Take `⟨k, hk⟩` from `Subgroup.card_dvd_of_le (Ideal.inertia_le_stabilizer (M := G) P)`. Rewrite using `[hk, Nat.cast_mul]`. Conclude with `P.mul_mem_right _ hmem`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tame_descent_of_stabilizer [Module.Finite A M] [Module.Projective A M]
     (h : ∀ P : Ideal A, P.IsMaximal → (Nat.card (MulAction.stabilizer G P) : A) ∉ P)
@@ -542,7 +538,7 @@ omit [Finite G] [MulSemiringAction G A] [SMulCommClass G B A] [FaithfulSMul B A]
   [Algebra.IsInvariant B A G] [SMulDistribClass G A M] in
 
 /- English proof (translation)
-Establish `: (Representation.ofDistribMulAction B G M).invariants.subtype.liftBaseChange A = h.equiv.toLinearMap`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `h.equiv.bijective`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_liftBaseChange_of_isBaseChange
     (h : IsBaseChange A (Representation.ofDistribMulAction B G M).invariants.subtype) :
@@ -562,7 +558,7 @@ section Free
 variable {G : Type*} [Group G] {A : Type*} [CommRing A] [MulSemiringAction G A]
 
 /- English proof (translation)
-Rewrite using `[sum_smul_sum_smul, Finset.sum_eq_single 1 (fun g _ hg ↦ by rw [hs g hg, zero_smul]) (by simp)]`. Simplify using `[hs']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_smul_sum_smul_eq [Fintype G] {M : Type*} [AddCommGroup M] [Module A M]
     [DistribMulAction G M] [SMulDistribClass G A M] {s : Finset (A × A)}
@@ -573,7 +569,7 @@ theorem sum_smul_sum_smul_eq [Fintype G] {M : Type*} [AddCommGroup M] [Module A 
   simp [hs']
 
 /- English proof (translation)
-The claim follows from `exists_sum_smul_eq_one G A fun P hP ↦ by rw [(isFreeRingAction_iff_inertia_eq_bot G A).mp h P hP] simpa using (Ideal.ne_top_iff_one P).mp hP.ne_top`.
+A detailed English derivation is pending.
 -/
 theorem exists_sum_smul_eq_one_of_free [Fintype G] (h : IsFreeRingAction G A) :
     ∃ c : A, ∑ g : G, g • c = 1 :=
@@ -585,9 +581,9 @@ variable [Finite G] (B : Type*) [CommRing B] [Algebra B A] [SMulCommClass G B A]
   [FaithfulSMul B A] [Algebra.IsInvariant B A G]
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype G`. Take `⟨s, hs, hs'⟩` from `exists_galois_coordinates h`. Establish `hcomp : Fintype.linearCombination B (fun p : s ↦ p.1.1) ∘ₗ LinearMap.pi (fun p : s ↦ ringTrace G B A ∘ₗ LinearMap.mulLeft B p.1.2) = LinearMap.id`. Use `LinearMap.ext fun a ↦ ?_` and prove the remaining obligations. Use `sum_smul_sum_smul_eq hs hs' a` as an intermediate fact.
+Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[← Finset.sum_coe_sort]`. Simplify `this` using `[Fintype.linearCombination_apply, Algebra.smul_def, mul_comm]`. Conclude with `⟨.of_surjective (Fintype.linearCombination B (fun p : s ↦ p.1.1)) fun x ↦ ⟨_, LinearMap.congr_fun hcomp x⟩, .of_split _ _ hcomp⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem finite_and_projective (h : IsFreeRingAction G A) :
     Module.Finite B A ∧ Module.Projective B A := by
@@ -602,7 +598,7 @@ theorem finite_and_projective (h : IsFreeRingAction G A) :
   exact ⟨.of_surjective (Fintype.linearCombination B (fun p : s ↦ p.1.1)) fun x ↦ ⟨_, LinearMap.congr_fun hcomp x⟩, .of_split _ _ hcomp⟩
 
 /- English proof (translation)
-The claim follows from `haveI := (finite_and_projective B h).1 haveI := (finite_and_projective B h).2 .of_comap_surjective (Algebra.IsIntegral.comap_surjective B A)`.
+A detailed English derivation is pending.
 -/
 theorem faithfullyFlat (h : IsFreeRingAction G A) : Module.FaithfullyFlat B A :=
   haveI := (finite_and_projective B h).1
@@ -610,15 +606,15 @@ theorem faithfullyFlat (h : IsFreeRingAction G A) : Module.FaithfullyFlat B A :=
   .of_comap_surjective (Algebra.IsIntegral.comap_surjective B A)
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype G`. Take `⟨s, hs, hs'⟩` from `exists_galois_coordinates h`. Prove the components needed by the constructor for the conclusion. Establish `key : ∀ z : A ⊗[B] A, ∑ p ∈ s, (∑ g : G, g • p.2 * galoisMap G A B z g) ⊗ₜ[B] p.1 = z`. Introduce `z`.
+Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Simplify using `only [map_add, Pi.add_apply, mul_add, Finset.sum_add_distrib, TensorProduct.add_tmul, hx, hy]`. Consider the case `tmul a b => conv_rhs => rw [← sum_smul_sum_smul_eq hs hs' b, TensorProduct.tmul_sum]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `Finset.sum_congr rfl fun p _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_ringTrace G B A, smul_eq_mul, mul_comm, ← Algebra.smul_def, ← TensorProduct.smul_tmul, Algebra.smul_def, algebraMap_ringTrace, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun g _ ↦ ?_` and prove the remaining obligations. Simplify using `only [galoisMap_tmul, smul_eq_mul, smul_mul']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `x y hxy`. Rewrite using `[← key x, ← key y, hxy]`. Introduce `f`. Use `⟨∑ k : G, f k • ∑ p ∈ s, p.1 ⊗ₜ (k⁻¹ • p.2), funext fun g ↦ ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, galoisMap_tmul, smul_smul, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single g (fun k _ hk ↦ by`. Rewrite using `[hs _ (fun h ↦ hk (mul_inv_eq_one.mp h).symm), mul_zero]) (by simp)]`. Simplify using `[hs']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bijective_galoisMap (h : IsFreeRingAction G A) :
     Function.Bijective (galoisMap G A B) := by
@@ -663,7 +659,7 @@ Both sides reduce to the same expression.
     galoisEquiv B h (a ⊗ₜ b) g = a * g • b := rfl
 
 /- English proof (translation)
-The claim follows from `haveI := faithfullyFlat B h haveI : Algebra.Etale A (A ⊗[B] A) := .of_equiv (galoisEquiv B h).symm Algebra.Etale.of_etale_tensorProduct_of_faithfullyFlat A`.
+A detailed English derivation is pending.
 -/
 theorem etale (h : IsFreeRingAction G A) : Algebra.Etale B A :=
   haveI := faithfullyFlat B h
@@ -671,9 +667,7 @@ theorem etale (h : IsFreeRingAction G A) : Algebra.Etale B A :=
   Algebra.Etale.of_etale_tensorProduct_of_faithfullyFlat A
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype G`. Use `haveI := (finite_and_projective B h).1`. Use `haveI := (finite_and_projective B h).2`. Take `⟨q, rfl⟩` from `Algebra.IsIntegral.comap_surjective B A p`. Use `haveI : Nontrivial A := q.nontrivial`.
-
-Rewrite using `[← Module.rankAtStalk_baseChange, Module.rankAtStalk_eq_of_equiv (galoisEquiv B h).toLinearEquiv, Module.rankAtStalk_eq_finrank_of_free]`. Simplify using the standard rewrite rules.
+Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rankAtStalk_eq_card (h : IsFreeRingAction G A) (p : PrimeSpectrum B) :
     Module.rankAtStalk A p = Nat.card G := by
@@ -691,13 +685,13 @@ variable (M : Type*) [AddCommGroup M] [Module A M] [DistribMulAction G M] [SMulD
   [Module B M] [IsScalarTower B A M] [SMulCommClass G B M]
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype G`. Take `⟨s, hs, hs'⟩` from `exists_galois_coordinates h`. Use `set I := (Representation.ofDistribMulAction B G M).invariants`. Establish `hb : Function.Bijective (I.subtype.liftBaseChange A)`. Use `Function.bijective_iff_has_inverse.mpr ⟨fun m ↦ ∑ p ∈ s, p.1 ⊗ₜ[B] moduleTrace G B M (p.2 • m), fun z ↦ ?_, fun m ↦ ?_⟩` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Simplify using `only [map_add, smul_add, TensorProduct.tmul_add, Finset.sum_add_distrib] at hx hy ⊢`. Rewrite using `[hx, hy]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `tmul a x => conv_rhs => rw [← sum_smul_sum_smul_eq hs hs' a, TensorProduct.sum_tmul]`. Use `Finset.sum_congr rfl fun p _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_ringTrace G B A, smul_eq_mul, mul_comm, ← Algebra.smul_def, TensorProduct.smul_tmul]`. Use `congr 1`. Use `Subtype.ext ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx : ∀ g : G, g • (x : M) = x` using `x.2`. Rewrite using `[Submodule.coe_smul, ← algebraMap_smul A (ringTrace G B A _), algebraMap_ringTrace, Finset.sum_smul]`. Simplify using `[smul_distrib_smul, hx, mul_smul]`. Simplify using `using sum_smul_sum_smul_eq hs hs' m`. Conclude with `.of_equiv (LinearEquiv.ofBijective _ hb) fun x ↦ (LinearMap.liftBaseChange_tmul A I.subtype 1 x).trans (one_smul _ _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isBaseChange_invariants (h : IsFreeRingAction G A) :
     IsBaseChange A (Representation.ofDistribMulAction B G M).invariants.subtype := by
@@ -728,7 +722,7 @@ theorem isBaseChange_invariants (h : IsFreeRingAction G A) :
     (LinearMap.liftBaseChange_tmul A I.subtype 1 x).trans (one_smul _ _)
 
 /- English proof (translation)
-Establish `hb` using `isBaseChange_invariants B M h`. Use `haveI := faithfullyFlat B h`. Use `⟨fun _ ↦ .equiv hb.equiv, fun _ ↦ ?_⟩` and prove the remaining obligations. Use `haveI := Module.Finite.equiv hb.equiv.symm`. Conclude with `Module.Finite.of_finite_tensorProduct_of_faithfullyFlat A`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_invariants_iff (h : IsFreeRingAction G A) :
     Module.Finite B (Representation.ofDistribMulAction B G M).invariants ↔ Module.Finite A M := by
@@ -739,9 +733,9 @@ theorem finite_invariants_iff (h : IsFreeRingAction G A) :
   exact Module.Finite.of_finite_tensorProduct_of_faithfullyFlat A
 
 /- English proof (translation)
-Establish `hb` using `isBaseChange_invariants B M h`. Use `⟨fun ⟨_, _⟩ ↦ ⟨.equiv hb.equiv, .of_equiv' hb.equiv⟩, fun ⟨_, _⟩ ↦ ?_⟩` and prove the remaining obligations. Establish `hi` using `(isFreeRingAction_iff_inertia_eq_bot G A).mp h`. Use `(tame_descent (A := A) B M (fun P hP ↦ ?_) fun P hP g hg m ↦ ?_).2` and prove the remaining obligations. Rewrite using `[hi P hP]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using (Ideal.ne_top_iff_one P).mp hP.ne_top`. Rewrite `hg` using `[hi P hP, Subgroup.mem_bot]`. Simplify using `[hg]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finite_projective_invariants_iff (h : IsFreeRingAction G A) :
     (Module.Finite B (Representation.ofDistribMulAction B G M).invariants ∧
@@ -768,9 +762,9 @@ variable {G : Type*} [Group G] {A : Type*} [CommRing A] [MulSemiringAction G A]
   [Module B N] [IsScalarTower B A N] [SMulCommClass G B N]
 
 /- English proof (translation)
-Establish `hf` using `hb.lift_eq ((Representation.ofDistribMulAction B G N).invariants.subtype ∘ₗ φ)`. Use `⟨hb.lift (Submodule.subtype _ ∘ₗ φ), ⟨fun g m ↦ ?_, hf⟩, fun f' hf' ↦ hb.algHom_ext _ _ fun x ↦ (hf'.2 x).trans (hf x).symm⟩` and prove the remaining obligations. Proceed by induction on `m using hb.inductionOn with`. Consider the case `zero => simp`. Consider the case `tmul x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hx : g • (Submodule.subtype _ x : M) = Submodule.subtype _ x` using `x.2 g`. Rewrite using `[hx, hf]`. Conclude with `((φ x).2 g).symm`. Consider the case `smul a m hm => simp only [smul_distrib_smul g a, LinearMap.map_smul, hm]`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, smul_add, hx, hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem existsUnique_equivariant_extension
     (hb : IsBaseChange A (Representation.ofDistribMulAction B G M).invariants.subtype)
@@ -825,13 +819,13 @@ variable [FaithfulSMul B A] [Algebra.IsInvariant B A G]
 variable {G A} in
 
 /- English proof (translation)
-Set `τ : A ⊗[B] N →ₗ[B] N` to `(TensorProduct.lid B N).toLinearMap ∘ₗ (ringTrace G B A).rTensor N`. Establish `hτ : ∀ z : A ⊗[B] N, (1 : A) ⊗ₜ[B] τ z = ∑ g : G, g • z`. Introduce `z`. Proceed by induction on `z with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, TensorProduct.tmul_add, hx, hy, smul_add, Finset.sum_add_distrib]`. Consider the case `tmul a n`. Simplify using `only [τ, LinearMap.comp_apply, LinearMap.rTensor_tmul, LinearEquiv.coe_coe, TensorProduct.lid_tmul, TensorProduct.smul_tmul']`. Rewrite using `[← TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one, algebraMap_ringTrace, TensorProduct.sum_tmul]`. Establish `h1 : ringTrace G B A c = 1` using `FaithfulSMul.algebraMap_injective B A (by rw [algebraMap_ringTrace, hc, map_one])`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Function.bijective_iff_has_inverse.mpr ⟨fun z ↦ τ (c • z.1), fun n ↦ ?_, fun z ↦ ?_⟩` and prove the remaining obligations. Simplify using `[τ, TensorProduct.smul_tmul', h1]`. Use `Subtype.ext ?_` and prove the remaining obligations. Establish `hz : ∀ g : G, g • z.1 = z.1` using `z.2`. Rewrite using `[coe_toInvariantsTensor, hτ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_distrib_smul, hz]`. Rewrite using `[← Finset.sum_smul, hc, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem bijective_toInvariantsTensor_of_sum_eq_one [Fintype G] {c : A}
     (hc : ∑ g : G, g • c = 1) : Function.Bijective (toInvariantsTensor G A B N) := by
@@ -860,7 +854,7 @@ theorem bijective_toInvariantsTensor_of_sum_eq_one [Fintype G] {c : A}
 variable {G A} in
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype G`. Take `⟨c, hc⟩` from `exists_sum_smul_eq_one_of_free h`. Conclude with `bijective_toInvariantsTensor_of_sum_eq_one B N hc`.
+Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bijective_toInvariantsTensor [Finite G] (h : IsFreeRingAction G A) :
     Function.Bijective (toInvariantsTensor G A B N) := by
@@ -915,7 +909,7 @@ noncomputable def invariantsFunctor :
 variable {G A}
 
 /- English proof (translation)
-The claim follows from `Subtype.ext <| (FreeQuotient.isBaseChange_invariants (FixedPoints.subring A G) M.carrier h).algHom_ext _ _ fun x ↦ congrArg Subtype.val (LinearMap.congr_fun (congrArg ModuleCat.Hom.hom hff') x)`.
+A detailed English derivation is pending.
 -/
 theorem invariantsFunctor_faithful [Finite G] (h : IsFreeRingAction G A) :
     (invariantsFunctor.{w} G A).Faithful where
@@ -924,7 +918,7 @@ theorem invariantsFunctor_faithful [Finite G] (h : IsFreeRingAction G A) :
       fun x ↦ congrArg Subtype.val (LinearMap.congr_fun (congrArg ModuleCat.Hom.hom hff') x)
 
 /- English proof (translation)
-Take `⟨f, ⟨hf, hf'⟩, -⟩` from `FreeQuotient.existsUnique_equivariant_extension (FreeQuotient.isBaseChange_invariants (FixedPoints.subring A G) M.carrier h) φ.hom`. Conclude with `⟨⟨f, hf⟩, ModuleCat.hom_ext (LinearMap.ext fun x ↦ Subtype.ext (hf' x))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem invariantsFunctor_full [Finite G] (h : IsFreeRingAction G A) :
     (invariantsFunctor.{w} G A).Full where
@@ -934,7 +928,7 @@ theorem invariantsFunctor_full [Finite G] (h : IsFreeRingAction G A) :
     exact ⟨⟨f, hf⟩, ModuleCat.hom_ext (LinearMap.ext fun x ↦ Subtype.ext (hf' x))⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨baseChange.{max w u} G A N, ⟨(LinearEquiv.ofBijective _ (FreeQuotient.bijective_toInvariantsTensor (FixedPoints.subring A G) N h)).symm.toModuleIso⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem invariantsFunctor_essSurj [Finite G] (h : IsFreeRingAction G A) :
     (invariantsFunctor.{max w u} G A).EssSurj where
@@ -942,7 +936,7 @@ theorem invariantsFunctor_essSurj [Finite G] (h : IsFreeRingAction G A) :
     (FreeQuotient.bijective_toInvariantsTensor (FixedPoints.subring A G) N h)).symm.toModuleIso⟩⟩
 
 /- English proof (translation)
-The claim follows from `invariantsFunctor_faithful h full := invariantsFunctor_full h essSurj := invariantsFunctor_essSurj.{w} h`.
+A detailed English derivation is pending.
 -/
 theorem invariantsFunctor_isEquivalence [Finite G] (h : IsFreeRingAction G A) :
     (invariantsFunctor.{max w u} G A).IsEquivalence where
@@ -953,11 +947,11 @@ theorem invariantsFunctor_isEquivalence [Finite G] (h : IsFreeRingAction G A) :
 end SemilinearModule
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype G`. Introduce `g hg`. Rewrite using `[Ideal.eq_top_iff_one, ← Finset.univ_sum_single (1 : G → R)]`. Use `Ideal.sum_mem _ fun x _ ↦ ?_` and prove the remaining obligations. Establish `: (Pi.single x ((1 : G → R) x) : G → R) = Pi.single x 1 * (g • (Pi.single (g⁻¹ * x) 1 : G → R) - Pi.single (g⁻¹ * x) 1)`.
+Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y = x`. Substitute `hy` using the available equality. Establish `: y ≠ g⁻¹ * y` using `fun h ↦ hg (by simpa using h)`. Simplify using `[hact, this]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hy]`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨_, rfl⟩)`. Use the proof step `@[instance_reducible]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFreeRingAction_arrow (G R : Type*) [Group G] [Finite G] [CommRing R]
     [MulSemiringAction G (G → R)] (hact : ∀ (g : G) (f : G → R) (x : G), (g • f) x = f (g⁻¹ * x)) :
@@ -993,7 +987,7 @@ def translationAction (G R : Type*) [Group G] [CommRing R] : MulSemiringAction G
   smul_mul _ _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `letI := translationAction G R isFreeRingAction_arrow G R fun _ _ _ ↦ rfl`.
+A detailed English derivation is pending.
 -/
 theorem isFreeRingAction_translationAction (G R : Type*) [Group G] [Finite G] [CommRing R] :
     letI := translationAction G R
@@ -1002,7 +996,7 @@ theorem isFreeRingAction_translationAction (G R : Type*) [Group G] [Finite G] [C
   isFreeRingAction_arrow G R fun _ _ _ ↦ rfl
 
 /- English proof (translation)
-Use `⟨fun h ↦ ⟨(FreeQuotient.finite_and_projective _ h).1, FreeQuotient.etale _ h, (FreeQuotient.finite_and_projective _ h).2, FreeQuotient.faithfullyFlat _ h, FreeQuotient.rankAtStalk_eq_card _ h, ⟨FreeQuotient.galoisEquiv _ h, FreeQuotient.galoisEquiv_tmul _ h⟩, SemilinearModule.inv …` and prove the remaining obligations. Take `⟨h1, h2⟩` from `FreeQuotient.tame_descent (FixedPoints.subring A G) M h hM`. Conclude with `⟨FreeQuotient.bijective_liftBaseChange_of_isBaseChange _ M h1, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem free_action_etale_and_descent (G : Type v) [Group G] [Finite G]
     (A : Type u) [CommRing A] [MulSemiringAction G A] :

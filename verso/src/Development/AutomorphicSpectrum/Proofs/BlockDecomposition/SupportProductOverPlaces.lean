@@ -15,7 +15,7 @@ def place (u : Pl F) (x : Q d β (Kp u)) : Q d β (AF F) :=
   ⟨inc u x.re, inc u x.imI, inc u x.imJ, inc u x.imK⟩
 
 /- English proof (translation)
-Use `QuaternionAlgebra.ext (adele_ext fun u => ?_) (adele_ext fun u => ?_) (adele_ext fun u => ?_) (adele_ext fun u => ?_)` and prove the remaining obligations. Conclude with `congrArg QuaternionAlgebra.re (h u)`. Conclude with `congrArg QuaternionAlgebra.imI (h u)`. Conclude with `congrArg QuaternionAlgebra.imJ (h u)`. Conclude with `congrArg QuaternionAlgebra.imK (h u)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem q_ext_places {x y : Q d β (AF F)} (h : ∀ u : Pl F, qmap (proj u) x = qmap (proj u) y) :
     x = y := by
@@ -27,20 +27,20 @@ theorem q_ext_places {x y : Q d β (AF F)} (h : ∀ u : Pl F, qmap (proj u) x = 
   · exact congrArg QuaternionAlgebra.imK (h u)
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [qmap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem qmap_star {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R']
     (f : R →ₐ[F] R') (x : Q d β R) : qmap f (star x) = star (qmap f x) := by
   ext <;> simp [qmap]
 
 /- English proof (translation)
-Apply the tactic sequence `refine QuaternionAlgebra.ext ?_ ?_ ?_ ?_ <;> exact proj_inc_same u _`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem qmap_place_same (u : Pl F) (x : Q d β (Kp u)) : qmap (proj u) (place u x) = x := by
   refine QuaternionAlgebra.ext ?_ ?_ ?_ ?_ <;> exact proj_inc_same u _
 
 /- English proof (translation)
-Apply the tactic sequence `refine QuaternionAlgebra.ext ?_ ?_ ?_ ?_ <;> exact proj_inc_ne h _`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem qmap_place_ne {u u' : Pl F} (h : u' ≠ u) (x : Q d β (Kp u)) :
     qmap (proj u') (place u x) = 0 := by
@@ -49,23 +49,23 @@ theorem qmap_place_ne {u u' : Pl F} (h : u' ≠ u) (x : Q d β (Kp u)) :
 def atPlace (u : Pl F) (y : Q d β (Kp u)) : Q d β (AF F) := 1 + place u (y - 1)
 
 /- English proof (translation)
-Rewrite using `[atPlace, map_add, map_one, qmap_place_same]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem qmap_atPlace_same (u : Pl F) (y : Q d β (Kp u)) : qmap (proj u) (atPlace u y) = y := by
   rw [atPlace, map_add, map_one, qmap_place_same]
   abel
 
 /- English proof (translation)
-Rewrite using `[atPlace, map_add, map_one, qmap_place_ne h, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qmap_atPlace_ne {u u' : Pl F} (h : u' ≠ u) (y : Q d β (Kp u)) :
     qmap (proj u') (atPlace u y) = 1 := by
   rw [atPlace, map_add, map_one, qmap_place_ne h, add_zero]
 
 /- English proof (translation)
-Use `⟨adele_ext fun u' => ?_, fun u' hu' => qmap_atPlace_ne hu' y⟩` and prove the remaining obligations. Rewrite using `[← qn_qmap, map_one]`. Distinguish the cases in `h : u' = u`. Substitute `h` using the available equality. Rewrite using `[qmap_atPlace_same, hy]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[qmap_atPlace_ne h, qn_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem atPlace_mem_suppAt (u : Pl F) {y : Q d β (Kp u)} (hy : qn y = 1) :
     atPlace u y ∈ SuppAt d β {u} := by
@@ -77,17 +77,17 @@ theorem atPlace_mem_suppAt (u : Pl F) {y : Q d β (Kp u)} (hy : qn y = 1) :
   · rw [qmap_atPlace_ne h, qn_one]
 
 /- English proof (translation)
-The claim follows from `q_ext_places fun u => by rw [hg.2 u (Set.notMem_empty u), map_one]`.
+A detailed English derivation is pending.
 -/
 theorem suppAt_empty_eq_one {g : Q d β (AF F)} (hg : g ∈ SuppAt d β (∅ : Set (Pl F))) : g = 1 :=
   q_ext_places fun u => by rw [hg.2 u (Set.notMem_empty u), map_one]
 
 /- English proof (translation)
-Establish `hy : qn (qmap (proj u) g) = 1` using `by rw [qn_qmap, hg.1, map_one]`. Establish `hh` using `atPlace_mem_suppAt u hy`. Use `set h := atPlace u (qmap (proj u) g) with hdef`. Use `⟨g * star h, ⟨?_, fun u' hu' => ?_⟩, h, hh, ?_⟩` and prove the remaining obligations. Rewrite using `[qn_mul, qn_star, hg.1, hh.1, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, qmap_star]`. Distinguish the cases in `e : u' = u`. Substitute `e` using the available equality. Rewrite using `[hdef, qmap_atPlace_same, mul_star_eq, hy, map_one]`. Rewrite using `[hdef, qmap_atPlace_ne e, hg.2 u' (by simp [e, hu']), star_one, one_mul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, star_mul_eq, hh.1, map_one, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_of_mem_insert {u : Pl F} {T : Set (Pl F)} {g : Q d β (AF F)}
     (hg : g ∈ SuppAt d β (insert u T)) :
@@ -105,11 +105,11 @@ theorem exists_mul_of_mem_insert {u : Pl F} {T : Set (Pl F)} {g : Q d β (AF F)}
   · rw [mul_assoc, star_mul_eq, hh.1, map_one, mul_one]
 
 /- English proof (translation)
-Introduce `F _ _ d β N h1 hmul hu T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Introduce `g hg`. Rewrite `hg` using `[Finset.coe_empty]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[suppAt_empty_eq_one hg]`. Conclude with `h1`. Consider the case `insert u T _ ih`. Introduce `g hg`. Rewrite `hg` using `[Finset.coe_insert]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g', hg', h, hh, rfl⟩` from `exists_mul_of_mem_insert hg`. Conclude with `hmul _ (ih hg') _ (hu u hh)`.
+A detailed English derivation is pending.
 -/
 theorem suppAt_subset_of_places :
     ∀ {F : Type} [Field F] [NumberField F] (d β : F) (N : Set (Q d β (AF F))), (1 : Q d β (AF F)) ∈ N →

@@ -15,11 +15,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.MixedSeriesGrowth
 
 /- English proof (translation)
-Introduce `D V V' W r C C' B hs h1 h2 h3 ψ χS χT ω hω μ 𝓨 hμ`. Take `⟨⟨θ, hθ⟩, -, -⟩` from `GlobalTheory.Ker.exists_infFam_and_stdChar D`. Take `⟨A₁, d, hF⟩` from `GlobalTheory.T.mixedModelThetaTerms_summable_heightBound D V V' W r C C' B hs h1 h2 h3 ψ hω.std θ hθ μ 𝓨 hμ`. Take `⟨A₂, hS⟩` from `GlobalTheory.T.heisenbergWords_weilOperator_supNorm_polynomialGrowth D ψ V W χS χT ω hω θ hθ d`. Use `⟨A₁ + A₂, fun f hf => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨U, hU, hl⟩` from `hf.level`. Take `⟨K, hK⟩` from `hF U hU`. Take `⟨c, hc⟩` from `hS f hf`. Use `⟨max K 0 * max c 0, fun g h => ⟨fun y => GlobalTheory.T.continuous_restrictedHeisenbergWeilTranslate_at_zero D V V' W r C B hs ψ χS χT ω hω μ 𝓨 hμ f hf _, ?_⟩⟩` and prove the remaining obligations. Establish `hH : 0 ≤ GlobalTheory.Grow.height V g * GlobalTheory.Grow.height W h` using `mul_nonneg (GlobalTheory.Grow.height_pos V g).le (GlobalTheory.Grow.height_pos W h).le`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hK g h (ω (g, h) f) (hω.om_pres _ f hf) (fun u hu h0 => ?_)).trans ?_` and prove the remaining obligations. Rewrite using `[← hω.om_heis g h u f hf, hl u hu h0]`. Use `(mul_le_mul' (ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right (le_max_left K 0) (pow_nonneg hH _))) ((hc g h).trans (ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right (le_max_left c 0) (pow_nonneg hH _))))).trans_eq ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (mul_nonneg (le_max_right K 0) (pow_nonneg hH _)), pow_add]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

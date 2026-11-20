@@ -19,19 +19,15 @@ namespace GlobalTheory.SquareAgree
 open Topology
 
 /- English proof (translation)
-Use `haveI : BorelSpace (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB J) := ⟨rfl⟩`. Use `haveI : BorelSpace (GA D S) := ⟨rfl⟩`. Set `κ : GL (Fin S.rank) (AE D) → GL (Fin S.rank) (AE D)` to `fun g => GeneralLinearGroup.map (cA D) g`. Establish `hκc : Continuous κ`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `Units.continuous_val.matrix_map (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.continuous_conj D)`. Conclude with `Units.continuous_coe_inv.matrix_map (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.continuous_conj D)`. Establish `hκκ : Function.LeftInverse κ κ` using `fun g => by`. Use extensionality with `i j`. Conclude with `Formalism.L2.Theta.cA_cA _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hκe : IsEmbedding κ` using `hκκ.isEmbedding hκc hκc`. Establish `hmat : IsEmbedding (matHom S)` using `IsEmbedding.subtypeVal`. Establish `hcomp : (Subtype.val : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB J → GL (Fin S.rank) (AE D)) ∘ GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU S c hJ = κ ∘ matHom S` using `rfl`. Establish `hemb : IsEmbedding (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU S c hJ)`. Use `⟨IsInducing.of_comp (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.continuous_conjU S c hJ) continuous_subtype_val ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hcomp]`. Conclude with `(hκe.comp hmat).isInducing`. Introduce `a b hab`. Apply `(hκe.comp hmat).injective` to reduce the goal to its premises. Rewrite using `[← hcomp]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Subtype.val hab`. Use `hemb.measurableEmbedding ?_` and prove the remaining obligations. Establish `hrange : Set.range (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU S c hJ) = (κ ∘ Subtype.val) ⁻¹' (HR (AF D.host.F) D.sp.cm.sig S.gram : Set (GL (Fin S.rank) (AE D)))`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨g, rfl⟩ show κ (κ (matHom S g)) ∈ (HR (AF D.host.F) D.sp.cm.sig S.gram : Set (GL (Fin S.rank) (AE D)))`. Rewrite using `[hκκ]`. Conclude with `g.2`. Introduce `hy`. Use `⟨(⟨κ y.1, hy⟩ : HR (AF D.host.F) D.sp.cm.sig S.gram), Subtype.ext ?_⟩` and prove the remaining obligations.
-
-Conclude with `hκκ y.1`. Rewrite using `[hrange]`. Conclude with `((PI.AdicCompletionValuation.isClosed_HR _ _ _).preimage (hκc.comp continuous_subtype_val)).measurableSet`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjU_measurableEmbedding {D : D7} (S : HSp D) {J : Matrix (Fin S.rank) (Fin S.rank) D.host.E}
     (c : D.host.E) (hJ : J = c • S.gram) : MeasurableEmbedding (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU S c hJ) := by
@@ -72,7 +68,7 @@ theorem conjU_measurableEmbedding {D : D7} (S : HSp D) {J : Matrix (Fin S.rank) 
   exact ((PI.AdicCompletionValuation.isClosed_HR _ _ _).preimage (hκc.comp continuous_subtype_val)).measurableSet
 
 /- English proof (translation)
-Introduce `D S X d Y Wd M c hJ ν 𝓕 ω om κ Φ f hμ hdom hθ h`. Establish `he` using `conjU_measurableEmbedding S c hJ`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model.I, hμ, hdom, he.restrict_map, Set.preimage_image_eq _ he.injective, he.integral_map]`. Simplify using `only [hθ]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem thetaInt_eq_modelI : ∀ (D : D7) (S X : HSp D) (d : ℕ) (Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E S.rank)
     (Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E d) (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model D.sp.cm.sig Y Wd) (c : D.host.E)

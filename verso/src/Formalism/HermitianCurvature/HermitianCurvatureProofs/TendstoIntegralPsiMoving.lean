@@ -11,7 +11,7 @@ noncomputable section
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E]
 
 /- English proof (translation)
-Unfold `G.psi`. Rewrite using `[mul_comm]`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_psi (β w : ℂ) : ‖G.psi β w‖ = 1 := by
   unfold G.psi
@@ -19,7 +19,7 @@ theorem norm_psi (β w : ℂ) : ‖G.psi β w‖ = 1 := by
   exact Complex.norm_exp_ofReal_mul_I _
 
 /- English proof (translation)
-Unfold `G.psi`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_psi (β : ℂ) : Continuous (G.psi β) := by
   unfold G.psi
@@ -28,9 +28,9 @@ theorem continuous_psi (β : ℂ) : Continuous (G.psi β) := by
 def freq (β w : ℂ) : ℂ := ((2 * Real.pi)⁻¹ : ℝ) • (-(conj (β * w)))
 
 /- English proof (translation)
-Rewrite using `[Real.fourierChar_apply, G.psi, freq, real_inner_smul_right, Complex.inner]`. Use `congr 1`. Establish `hre : (-conj (β * w) * conj z).re = -(β * (w * z)).re`. Simplify using `only [Complex.neg_re, Complex.neg_im, Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hre]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem psi_eq_fourierChar (β w z : ℂ) :
     G.psi β (w * z) = ((Real.fourierChar (-⟪z, freq β w⟫_ℝ) : Circle) : ℂ) := by
@@ -44,9 +44,9 @@ theorem psi_eq_fourierChar (β w z : ℂ) :
   field_simp
 
 /- English proof (translation)
-Rewrite using `[← Metric.cobounded_eq_cocompact, ← tendsto_norm_atTop_iff_cobounded, Metric.cobounded_eq_cocompact]`. Establish `hn : ∀ w, ‖freq β w‖ = ((2 * Real.pi)⁻¹ * ‖β‖) * ‖w‖`. Introduce `w`. Rewrite using `[freq, norm_smul, norm_neg, Complex.norm_conj, norm_mul, Real.norm_eq_abs, abs_of_pos (by positivity)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Repeatedly rewrite using `[hn]`. Conclude with `(tendsto_norm_cocompact_atTop).const_mul_atTop (by positivity)`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_freq (β : ℂ) (hβ : β ≠ 0) : Tendsto (freq β) (cocompact ℂ) (cocompact ℂ) := by
   rw [← Metric.cobounded_eq_cocompact, ← tendsto_norm_atTop_iff_cobounded, Metric.cobounded_eq_cocompact]
@@ -59,7 +59,7 @@ theorem tendsto_freq (β : ℂ) (hβ : β ≠ 0) : Tendsto (freq β) (cocompact 
   exact (tendsto_norm_cocompact_atTop).const_mul_atTop (by positivity)
 
 /- English proof (translation)
-Establish `RL` using `(tendsto_integral_exp_inner_smul_cocompact f).comp (tendsto_freq β hβ)`. Use `RL.congr fun w => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Use `integral_congr_ae (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [psi_eq_fourierChar, Circle.smul_def]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tendsto_integral_psi (β : ℂ) (hβ : β ≠ 0) (f : ℂ → E) :
     Tendsto (fun w => ∫ z, G.psi β (w * z) • f z) (cocompact ℂ) (𝓝 0) := by
@@ -70,7 +70,7 @@ theorem tendsto_integral_psi (β : ℂ) (hβ : β ≠ 0) (f : ℂ → E) :
   simp only [psi_eq_fourierChar, Circle.smul_def]
 
 /- English proof (translation)
-Establish `hfi : Integrable (fun z => G.psi β (w * z) • f z)` using `hf.bdd_smul 1 ((continuous_psi β).comp (continuous_const.mul continuous_id)).aestronglyMeasurable (Eventually.of_forall fun z => (norm_psi β _).le)`. Establish `hgi : Integrable (fun z => G.psi β (w * z) • g z)` using `hg.bdd_smul 1 ((continuous_psi β).comp (continuous_const.mul continuous_id)).aestronglyMeasurable (Eventually.of_forall fun z => (norm_psi β _).le)`. Rewrite using `[← integral_sub hfi hgi]`. Use `(norm_integral_le_integral_norm _).trans (integral_mono_of_nonneg (Eventually.of_forall fun _ => norm_nonneg _) (hf.sub hg).norm (Eventually.of_forall fun z => ?_))` and prove the remaining obligations. Simplify using `only [← smul_sub, norm_smul, norm_psi, one_mul, le_refl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem norm_integral_psi_sub_le (β w : ℂ) (f g : ℂ → E) (hf : Integrable f) (hg : Integrable g) :
     ‖(∫ z, G.psi β (w * z) • f z) - ∫ z, G.psi β (w * z) • g z‖ ≤ ∫ z, ‖f z - g z‖ := by
@@ -86,9 +86,9 @@ theorem norm_integral_psi_sub_le (β w : ℂ) (f g : ℂ → E) (hf : Integrable
   simp only [← smul_sub, norm_smul, norm_psi, one_mul, le_refl]
 
 /- English proof (translation)
-Establish `h0` using `(tendsto_integral_psi β hβ f0).comp hw`. Rewrite using `[← add_zero (0 : E)]`. Establish `hsplit : ∀ᶠ x in l, ∫ z, G.psi β (w x * z) • f x z = ((∫ z, G.psi β (w x * z) • f x z) - ∫ z, G.psi β (w x * z) • f0 z) + ∫ z, G.psi β (w x * z) • f0 z` using `by filter_upwards with x`. Normalize the expressions using the abelian group laws. Use `Tendsto.congr' (EventuallyEq.symm hsplit) (Tendsto.add ?_ h0)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Use `squeeze_zero' (Eventually.of_forall fun _ => norm_nonneg _) ?_ hf` and prove the remaining obligations. Use `filter_upwards [hfi] with x hx`. Conclude with `norm_integral_psi_sub_le β (w x) (f x) f0 hx hf0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tendsto_integral_psi_moving {α : Type} {l : Filter α} (β : ℂ) (hβ : β ≠ 0) (f : α → ℂ → E)
     (f0 : ℂ → E) (hf0 : Integrable f0) (hfi : ∀ᶠ x in l, Integrable (f x))
@@ -108,7 +108,7 @@ theorem tendsto_integral_psi_moving {α : Type} {l : Filter α} (β : ℂ) (hβ 
   exact norm_integral_psi_sub_le β (w x) (f x) f0 hx hf0
 
 /- English proof (translation)
-Use `continuous_of_dominated (bound := fun z => ‖f z‖) (fun w => ?_) (fun w => ?_) hf.norm ?_` and prove the remaining obligations. Conclude with `(((continuous_psi β).comp (continuous_const.mul continuous_id)).aestronglyMeasurable).smul hf.1`. Conclude with `Eventually.of_forall fun z => by rw [norm_smul, norm_psi, one_mul]`. Conclude with `Eventually.of_forall fun z => ((continuous_psi β).comp (continuous_id.mul continuous_const)).smul continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_integral_psi (β : ℂ) (f : ℂ → E) (hf : Integrable f) :
     Continuous (fun w => ∫ z, G.psi β (w * z) • f z) := by
@@ -119,9 +119,9 @@ theorem continuous_integral_psi (β : ℂ) (f : ℂ → E) (hf : Integrable f) :
       ((continuous_psi β).comp (continuous_id.mul continuous_const)).smul continuous_const
 
 /- English proof (translation)
-Establish `h0` using `((continuous_integral_psi β f0 hf0).tendsto σ).comp hw`. Rewrite using `[← zero_add (∫ z, G.psi β (σ * z) • f0 z)]`. Establish `hsplit : ∀ᶠ x in l, ∫ z, G.psi β (w x * z) • f x z = ((∫ z, G.psi β (w x * z) • f x z) - ∫ z, G.psi β (w x * z) • f0 z) + ∫ z, G.psi β (w x * z) • f0 z` using `by filter_upwards with x`. Normalize the expressions using the abelian group laws. Use `Tendsto.congr' (EventuallyEq.symm hsplit) (Tendsto.add ?_ h0)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Use `squeeze_zero' (Eventually.of_forall fun _ => norm_nonneg _) ?_ hf` and prove the remaining obligations. Use `filter_upwards [hfi] with x hx`. Conclude with `norm_integral_psi_sub_le β (w x) (f x) f0 hx hf0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tendsto_integral_psi_conv {α : Type} {l : Filter α} (β : ℂ) (f : α → ℂ → E)
     (f0 : ℂ → E) (hf0 : Integrable f0) (hfi : ∀ᶠ x in l, Integrable (f x))

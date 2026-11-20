@@ -20,7 +20,7 @@ variable {M : Type} [TopologicalSpace M] {n : ℕ} (A : HolAtlas M n)
 def reDens (α : A.Fld) (i : A.ι) (v : V n) : ℝ := (dens (A.loc α i v)).re
 
 /- English proof (translation)
-Unfold `loc`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `(sub_zero 0).symm`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem loc_sub (α β : A.Fld) (i : A.ι) (v : V n) : A.loc (α - β) i v = A.loc α i v - A.loc β i v := by
   unfold loc; split_ifs
@@ -28,21 +28,21 @@ theorem loc_sub (α β : A.Fld) (i : A.ι) (v : V n) : A.loc (α - β) i v = A.l
   · exact (sub_zero 0).symm
 
 /- English proof (translation)
-Simplify using `only [dens, map_sub, Finsupp.sub_apply, sub_div]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dens_sub' (x y : Alt n) : dens (x - y) = dens x - dens y := by
   simp only [dens, map_sub, Finsupp.sub_apply, sub_div]
 
 /- English proof (translation)
-Simplify using `only [reDens, loc_sub, dens_sub', Complex.sub_re]`.
+Simplify using the standard rewrite rules.
 -/
 theorem reDens_sub (α β : A.Fld) (i : A.ι) (v : V n) : A.reDens (α - β) i v = A.reDens α i v - A.reDens β i v := by
   simp only [reDens, loc_sub, dens_sub', Complex.sub_re]
 
 /- English proof (translation)
-Establish `h1` using `A.loc_crd α (⟨(i, y), hi⟩ : A.Pt)`. Establish `h2` using `A.loc_crd α (⟨(j, y), hj⟩ : A.Pt)`. Establish `h3` using `hα.compat (⟨(i, y), hi⟩ : A.Pt) ⟨(j, y), hj⟩ rfl`. Simplify using `only [reDens]`. Use `erw [h1, h2, h3, GlobalTheory.T.topDegreeDensity_pullback_eq_normSq_det_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.re_ofReal_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem reDens_compat {α : A.Fld} (hα : A.IsForm α) (i j : A.ι) (y : M) (hi : y ∈ (A.e i).source)
     (hj : y ∈ (A.e j).source) :
@@ -56,7 +56,7 @@ theorem reDens_compat {α : A.Fld} (hα : A.IsForm α) (i j : A.ι) (y : M) (hi 
   rfl
 
 /- English proof (translation)
-Use `(hα.smooth i Finset.univ).continuousOn` as an intermediate fact. Conclude with `Complex.continuous_re.comp_continuousOn (this.div_const _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousOn_reDens {α : A.Fld} (hα : A.IsForm α) (i : A.ι) :
     ContinuousOn (A.reDens α i) (A.e i).target := by
@@ -64,7 +64,7 @@ theorem continuousOn_reDens {α : A.Fld} (hα : A.IsForm α) (i : A.ι) :
   exact Complex.continuous_re.comp_continuousOn (this.div_const _)
 
 /- English proof (translation)
-Rewrite using `[preimage_univ, inter_univ]`. Establish `h` using `(ENNReal.continuous_ofReal.comp_continuousOn hr).aemeasurable (μ := volume) e.open_target.measurableSet`. Use `h.congr ((ae_restrict_iff' e.open_target.measurableSet).2 (Filter.Eventually.of_forall fun v hv => ?_))` and prove the remaining obligations. Simplify using `[e.right_inv hv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem aemeasurable_ofReal_chart [MeasurableSpace M] (e : OpenPartialHomeomorph M (V n)) (r : V n → ℝ)
     (hr : ContinuousOn r e.target) :
@@ -75,7 +75,7 @@ theorem aemeasurable_ofReal_chart [MeasurableSpace M] (e : OpenPartialHomeomorph
   simp [e.right_inv hv]
 
 /- English proof (translation)
-Rewrite using `[hc i j y hi hj, ENNReal.ofReal_mul (by positivity)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ofReal_compat (r : A.ι → V n → ℝ)
     (hc : ∀ i j y, y ∈ (A.e i).source → y ∈ (A.e j).source →
@@ -86,7 +86,7 @@ theorem ofReal_compat (r : A.ι → V n → ℝ)
   rw [hc i j y hi hj, ENNReal.ofReal_mul (by positivity)]
 
 /- English proof (translation)
-Establish `c₁` using `A.ofReal_compat r₁ hc₁`. Establish `c₂` using `A.ofReal_compat r₂ hc₂`. Establish `c₃` using `A.ofReal_compat r₃ hc₃`. Rewrite using `[ChartGlue.glueMeas_add_of_compat_on A.e A.holo A.cover MeasurableSet.univ (fun i y => ENNReal.ofReal (r₁ i (A.e i y)) + ENNReal.ofReal (r₂ i (A.e i y))) (fun i y => ENNReal.ofReal (r₃ i (A.e i y))) (fun i j y _ hi hj => by rw [c₁ i j y hi hj, c₂ i j y hi hj, mul_add]) (fun i j y …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem glueMeas_add_three [MeasurableSpace M] [BorelSpace M] [SecondCountableTopology M] (r₁ r₂ r₃ : A.ι → V n → ℝ)
     (hr₁ : ∀ i, ContinuousOn (r₁ i) (A.e i).target) (hr₂ : ∀ i, ContinuousOn (r₂ i) (A.e i).target)
@@ -116,9 +116,9 @@ theorem glueMeas_add_three [MeasurableSpace M] [BorelSpace M] [SecondCountableTo
       (fun i => aemeasurable_ofReal_chart (A.e i) _ (hr₁ i))]
 
 /- English proof (translation)
-Establish `m : ∀ t : ℝ, ENNReal.ofReal t = ENNReal.ofReal (max t 0)` using `fun t => by`. Break down `le_total t 0 with h | h` into its components or cases. Simplify using `[h, ENNReal.ofReal_of_nonpos h]`. Simplify using `[h]`. Establish `k : max (x - y) 0 + max (-x) 0 + max y 0 = max (-(x - y)) 0 + max x 0 + max (-y) 0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `simp only [max_def]; split_ifs <;> linarith`. Rewrite using `[m (x - y), m (-x), m y, m (-(x - y)), m x, m (-y), ← ENNReal.ofReal_add (le_max_right _ _) (le_max_right _ _), ← ENNReal.ofReal_add (by positivity) (le_max_right _ _), ← ENNReal.ofReal_add (le_max_right _ _) (le_max_right _ _), ← ENNReal.ofReal_add (by positivity) (le_max_right …`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofReal_posNeg (x y : ℝ) :
     ENNReal.ofReal (x - y) + ENNReal.ofReal (-x) + ENNReal.ofReal y =
@@ -136,19 +136,19 @@ theorem ofReal_posNeg (x y : ℝ) :
     ← ENNReal.ofReal_add (by positivity) (le_max_right _ _), k]
 
 /- English proof (translation)
-Establish `hF` using `A.reDens_compat hα`. Establish `hG` using `A.reDens_compat hβ`. Establish `cF` using `A.continuousOn_reDens hα`. Establish `cG` using `A.continuousOn_reDens hβ`. Set `lin (c d : ℝ) : A.ι → V n → ℝ` to `fun i v => c * A.reDens α i v + d * A.reDens β i v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hlin (c d : ℝ) : ∀ i j y, y ∈ (A.e i).source → y ∈ (A.e j).source → lin c d i (A.e i y) = ‖ChartGlue.transDet (A.e i) (A.e j) y‖ ^ 2 * lin c d j (A.e j y)`. Introduce `i j y hi hj`. Simplify using `only [lin, hF i j y hi hj, hG i j y hi hj]`. Expand and normalize the polynomial expressions, which then agree. Establish `clin (c d : ℝ) (i : A.ι) : ContinuousOn (lin c d i) (A.e i).target` using `(continuousOn_const.mul (cF i)).add (continuousOn_const.mul (cG i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Set `P (c d : ℝ) : ℝ≥0∞` to `ChartGlue.glueMeas A.e (fun i y => ENNReal.ofReal (lin c d i (A.e i y))) univ`. Establish `fin (c d : ℝ) : P c d ≠ ∞` using `GlobalTheory.T.glueMeas_univ_ne_infty_of_continuousOn A.e A.cover A.holo (lin c d) (clin c d) (hlin c d)`. Establish `part_eq (γ : A.Fld) (ε : ℤˣ) (c d : ℝ) (h : ∀ i v, ((ε : ℤ) : ℝ) * A.reDens γ i v = lin c d i v) : A.part γ ε univ = P c d`. Simplify using `only [part, P]`. Use `congr 2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i y`. Rewrite using `[← h]`. Both sides reduce to the same expression. Establish `e1` using `part_eq (α - β) 1 1 (-1) fun i v => by simp [lin, reDens_sub]; ring`. Establish `e2` using `part_eq (α - β) (-1) (-1) 1 fun i v => by simp [lin, reDens_sub]; ring`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `part_eq α 1 1 0 fun i v => by simp [lin]`. Establish `e4` using `part_eq α (-1) (-1) 0 fun i v => by simp [lin]`. Establish `e5` using `part_eq β 1 0 1 fun i v => by simp [lin]`. Establish `e6` using `part_eq β (-1) 0 (-1) fun i v => by simp [lin]`. Establish `key : P 1 (-1) + P (-1) 0 + P 0 1 = P (-1) 1 + P 1 0 + P 0 (-1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [P]`. Rewrite using `[← A.glueMeas_add_three _ _ _ (clin _ _) (clin _ _) (hlin _ _) (hlin _ _) (hlin _ _), ← A.glueMeas_add_three _ _ _ (clin _ _) (clin _ _) (hlin _ _) (hlin _ _) (hlin _ _)]`. Use `congr 2`. Use function extensionality and compare the values at `i y`. Use `ofReal_posNeg (A.reDens α i (A.e i y)) (A.reDens β i (A.e i y))` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [lin]`. Apply the tactic sequence `convert this using 3 <;> ring_nf`. Establish `key'` using `congrArg ENNReal.toReal key`. Rewrite `key'` using `[ENNReal.toReal_add (ENNReal.add_ne_top.2 ⟨fin _ _, fin _ _⟩) (fin _ _), ENNReal.toReal_add (fin _ _) (fin _ _), ENNReal.toReal_add (ENNReal.add_ne_top.2 ⟨fin _ _, fin _ _⟩) (fin _ _), ENNReal.toReal_add (fin _ _) (fin _ _)]`. Simplify using `only [integral, Measure.real, e1, e2, e3, e4, e5, e6]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -206,7 +206,7 @@ end GlobalTheory.CxForm.HolAtlas
 namespace GlobalTheory.CxForm.HolAtlas
 
 /- English proof (translation)
-Introduce `A α β hα hβ` and use `A.integral_sub α β hα hβ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem integral_sub_of_isForm : ∀ {M : Type} [TopologicalSpace M] [CompactSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] {n : ℕ} (A : GlobalTheory.CxForm.HolAtlas M n) (α β : A.Fld),

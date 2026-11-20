@@ -17,23 +17,21 @@ namespace GlobalTheory.QLog
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `p _ O _ G d c b z hbz`. Set `I : Ideal O` to `Ideal.span {(p : O)}`. Establish `hpI : (p : O) ^ 1 ∈ I` using `by rw [pow_one]; exact Ideal.subset_span rfl`. Take `⟨c', hlaw, hev, -⟩` from `GlobalTheory.T.exists_formalChart_quotient_by_ideal_with_primePow p O G d c I 1 hpI`. Establish `hmkp : (algebraMap O (O ⧸ I)) (p : O) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span rfl`. Establish `hb' : cobOne (O ⧸ I) ((G.baseChange (O ⧸ I)).A 1) ((G.toBase (O ⧸ I)).app 1 b) = 0`. Rewrite using `[← SemiBialgHom.two_cobOne, hbz, map_smulₛₗ, hmkp, zero_smul]`. Take `⟨κ', B', hcoc, hκ0, hcob, hev1⟩` from `GlobalTheory.T.exists_series_of_additive_function_first_level p (O ⧸ I) d _ c' _ hlaw _ hb'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hl2, hz2, -⟩` from `GlobalTheory.mvPowerSeries_lift_quotient O (Fin d ⊕ Fin d) I`. Take `⟨hl1, hz1, -⟩` from `GlobalTheory.mvPowerSeries_lift_quotient O (Fin d ⊕ (Fin d ⊕ Fin d)) I`. Take `⟨hl0, -, -⟩` from `GlobalTheory.mvPowerSeries_lift_quotient O (Fin d) I`. Take `⟨κ, hκ, hκc⟩` from `hl2 κ'`. Take `⟨B, hB, -⟩` from `hl0 B'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdiv : ∀ x : O, x ∈ I ↔ (p : O) ∣ x` using `fun x => Ideal.mem_span_singleton`. Establish `hμ` using `c.isLaw.const`. Take `⟨hm1, hm2, hsw, -, hpull⟩` from `GlobalTheory.T.map_coboundary_swap_pullback_commute O d c.μ hμ (O ⧸ I) (Ideal.Quotient.mk I)`. Take `⟨-, hn⟩` from `GlobalTheory.T.isCommFormalGroupLaw_map_natMultiple O d c.μ c.isLaw (O ⧸ I) (Ideal.Quotient.mk I)`. Establish `hnm : (fun i => map (Ideal.Quotient.mk I) (nmul c.μ p i)) = nmul (fun i => map (Ideal.Quotient.mk I) (c.μ i)) p` using `funext fun i => (hn p i).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hpl, -⟩` from `hpull (nmul c.μ p) fun i => (hn p i).1`. Establish `hy : ∃ y : G.A 1, c.ev 1 B = b + (p : O) • y`. Establish `h1 : (G.toBase (O ⧸ I)).app 1 (c.ev 1 B) = (G.toBase (O ⧸ I)).app 1 b`. Rewrite using `[← hev, hB, hev1]`. Rewrite `h1` using `[toBase_app, toBase_app]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (1 : O ⧸ I) ⊗ₜ[O] (c.ev 1 B - b) = 0` using `by rw [tmul_sub, h1, sub_self]`. Take `⟨-, hq, hs⟩` from `GlobalTheory.PDiv.one_tmul_quot_reduction O (G.A 1) I`. Take `⟨y, hy⟩` from `(hs (p : O) _).1 ((hq _).1 h2)`. Conclude with `⟨y, by rw [← hy]; abel⟩`. Take `⟨y, hy⟩` from `hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨κ, B, y, hκc hκ0, ?_, ?_, ?_, hy⟩` and prove the remaining obligations. Introduce `α`. Use `(hdiv _).1 ((hz1 _).1 ?_ α)` and prove the remaining obligations. Rewrite using `[hm2, hκ]`. Conclude with `hcoc.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `α`. Use `(hdiv _).1 ((hz2 _).1 ?_ α)` and prove the remaining obligations. Rewrite using `[map_sub, hsw, hκ, hcoc.2, sub_self]`. Introduce `α`. Use `(hdiv _).1 ((hz2 _).1 ?_ α)` and prove the remaining obligations.
-
-Rewrite using `[map_sub, hm1, hpl, hκ, hB, hnm, hcob, sub_self]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_series_of_cobOne_dvd : ∀ (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d), ∀ (b : G.A 1) (z : G.A 1 ⊗[O] G.A 1), cobOne O (G.A 1) b = (p : O) • z → ∃ (κ : MvPowerSeries (Fin d ⊕ Fin d) O) (B : MvPowerSeries (Fin d) O) (y : G.A 1), constantCoeff κ = 0 ∧ (∀ α, (p : O) ∣ coeff α (cob2 c.μ κ)) ∧ (∀ α, (p : O) ∣ coeff α (Katz.swap κ - κ)) ∧ (∀ α, (p : O) ∣ coeff α (cob1 c.μ B - pull2 (nmul c.μ p) κ)) ∧ c.ev 1 B = b + (p : O) • y := by
   intro p _ O _ G d c b z hbz

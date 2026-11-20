@@ -30,13 +30,11 @@ def BlockRational (h : P.m + 1 = n) (pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ T
 variable {P}
 
 /- English proof (translation)
-Use `choose F hF hev using fun v s => hb v s (f (pos ⟨v, s⟩)) (hf _)`. Use `⟨r • ∏ v, rename (fun x => (⟨v, x⟩ : Var P)) (∏ s, blockEmb LL s (F v s)), Submodule.smul_mem _ _ (Submodule.subset_span ⟨fun v => ∏ s, blockEmb LL s (F v s), fun v => Submodule.subset_span ⟨F v, hF v, rfl⟩, rfl⟩), fun z => ?_⟩` and prove the remaining obligations. Establish `hmap : MvPolynomial.map embLL (r • ∏ v, rename (fun x => (⟨v, x⟩ : Var P)) (∏ s, blockEmb LL s (F v s))) = embLL r • ∏ v, rename (fun x => (⟨v, x⟩ : Var P)) (∏ s, blockEmb ℂ s (MvPolynomial.map embLL (F v s)))`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul, map_prod]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_rename, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Conclude with `MvPolynomial.map_rename _ _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hmap, map_smul, map_smul, Pi.smul_apply, Pi.smul_apply, evC_prod]`. Use `congr 1`. Establish `h1 : (∏ v, ∏ s : Fin (P.n' v), ((zAt P h pos M z.1 v s).det ^ (eAt P v s) * eval (fun x => zAt P h pos M z.1 v s x.1 x.2) (MvPolynomial.map embLL (F v s)))) = ∏ τ, ((z.1 τ).det ^ (lam τ).detShift * eval (fun x => z.1 τ x.1 x.2) (MvPolynomial.map (Int.castRingHom ℂ) (f τ)))`. Rewrite using `[← pos.prod_comp, Fintype.prod_sigma]`. Conclude with `Finset.prod_congr rfl fun v _ => Finset.prod_congr rfl fun s _ => hev v s z`.
-
-Rewrite using `[h1, Finset.prod_mul_distrib]`. Use `show _ = (∏ τ, ((1 : Tau → Matrix (Fin n) (Fin n) ℂ) τ * z.1 τ).det ^ shiftOf lam τ) * eval (fun x : Tau × Fin n × Fin n => ((1 : Tau → Matrix (Fin n) (Fin n) ℂ) x.1 * z.1 x.1) x.2.1 x.2.2) (ten (fun τ => MvPolynomial.map (Int.castRingHom ℂ) (f τ)))`. Simplify using `only [Pi.one_apply, Matrix.one_mul, ten, map_prod, eval_rename, Function.comp_def, shiftOf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evRat_gen {h : P.m + 1 = n} {pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ Tau} {G M : Tau → Matrix (Fin n) (Fin n) ℂ}
     {embLL : LL →+* ℂ} {lam : Tau → DomWeight n} (hb : BlockRational P h pos G M embLL lam) (r : LL)
@@ -71,11 +69,11 @@ theorem evRat_gen {h : P.m + 1 = n} {pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ T
   simp only [Pi.one_apply, Matrix.one_mul, ten, map_prod, eval_rename, Function.comp_def, shiftOf]
 
 /- English proof (translation)
-Proceed by induction on `hP using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨r, f, hf, rfl⟩` from `hx`. Conclude with `evRat_gen hb r f hf`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, fun z => by simp⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨Q, hQ, e⟩` from `hx`. Take `⟨Q', hQ', e'⟩` from `hy`. Conclude with `⟨Q + Q', Submodule.add_mem _ hQ hQ', fun z => by`. Rewrite using `[map_add, map_add, map_add, Pi.add_apply, Pi.add_apply, e z, e' z]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `neg x _ hx`. Take `⟨Q, hQ, e⟩` from `hx`. Conclude with `⟨-Q, Submodule.neg_mem _ hQ, fun z => by`. Rewrite using `[map_neg, map_neg, map_neg, Pi.neg_apply, Pi.neg_apply, e z]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evRat_of_blocks {h : P.m + 1 = n} {pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ Tau}
     {G M : Tau → Matrix (Fin n) (Fin n) ℂ} {embLL : LL →+* ℂ} {lam : Tau → DomWeight n}
@@ -113,9 +111,9 @@ def BlockRationalityAtPlace (X : Formalism.L2.Herm.Herm0 D) (Gt : GatTies D) (u 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `x c`. Take `⟨Pp, hPp, e⟩` from `((((T u).val0).rat _).1 ⟨x, rfl⟩).2 c`. Take `⟨Q, hQ, hev⟩` from `evRat_of_blocks hb Pp hPp`. Use `⟨Q, hQ, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[hev z]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = (D.fm u).emb 0 x c (((T u).val0).eY.symm z)`. Rewrite using `[e, Equiv.apply_symm_apply, lamT_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evRatRep_rec (T : ∀ u : D.what₂.Word, Forms0 D u) (Gt : GatTies D) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (B : GL (Fin D.R.k) D.host.E)

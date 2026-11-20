@@ -13,9 +13,9 @@ namespace GlobalTheory.ExpImage
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc
 
 /- English proof (translation)
-Take `⟨a, ha, hga⟩` from `P.χQ_cyc g m ζ hζ`. Rewrite `ha` using `[hg]`. Establish `h2 : ‖((((u : ℤ) - (a : ℤ) : ℤ)) : ℚ_[l])‖ ≤ (l : ℝ) ^ (-(m : ℤ))` using `by push_cast; exact ha`. Establish `h3 : ((l : ℤ) ^ m) ∣ ((u : ℤ) - (a : ℤ))` using `(Padic.norm_int_le_pow_iff_dvd _ _).mp h2`. Establish `h4 : a ≡ u [MOD l ^ m]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.modEq_iff_dvd]`. Use `push_cast`. Conclude with `h3`. Rewrite using `[hga, pow_eq_pow_mod a hζ, pow_eq_pow_mod u hζ, h4]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_root_eq_pow_of_chi_nat {l : ℕ} [Fact l.Prime] (P : LocPrime l) (g : GQ l) (u : ℕ)
     (hg : (P.χQ g : ℚ_[l]) = (u : ℚ_[l])) (m : ℕ) (ζ : Om l) (hζ : ζ ^ (l ^ m) = 1) :
@@ -32,13 +32,13 @@ theorem act_root_eq_pow_of_chi_nat {l : ℕ} [Fact l.Prime] (P : LocPrime l) (g 
   rw [hga, pow_eq_pow_mod a hζ, pow_eq_pow_mod u hζ, h4]
 
 /- English proof (translation)
-Introduce `l _ P AI g u hg j`. Establish `hz : ∀ m, P.ζQ m ^ l ^ m = 1`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simpa using P.ζQ_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ m ih => rw [pow_succ', pow_mul, P.ζQ_succ, ih]`. Use `Perfection.ext fun n => ?_` and prove the remaining obligations. Establish `hc : PreTilt.coeff n (AI.εroot j) = Ideal.Quotient.mk (Ideal.span {((l : ℕ) : OC l)}) (AI.ζ (n + j))`. Rewrite using `[← AI.ε_coeff, LocAinf.εroot, PreTilt.coeff_iterate_frobeniusEquiv_symm]`. Take `⟨y', h1, h2⟩` from `AI.actT_coeff g _ n _ hc`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h3 : y' = AI.ζ (n + j) ^ u`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[h1, SubmonoidClass.coe_pow, AI.ζ_eq, AI.actC_ext, act_root_eq_pow_of_chi_nat P g u hg (n + j) _ (hz _)]`. Conclude with `map_pow (algebraMap (Om l) (PadicComplex l)) _ _`. Express the relevant statement in the definitionally equal form `PreTilt.coeff n _ = PreTilt.coeff n _`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, map_pow, hc, h3]`. Conclude with `map_pow _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem actT_εroot_eq_pow : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (g : GQ l)
     (u : ℕ), (P.χQ g : ℚ_[l]) = (u : ℚ_[l]) →

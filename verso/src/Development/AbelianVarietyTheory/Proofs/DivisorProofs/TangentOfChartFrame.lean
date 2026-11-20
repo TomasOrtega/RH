@@ -9,7 +9,7 @@ open Formalism.MainNotions.DIV.Cons (intO)
 namespace GlobalTheory.ChainPts.FrameTan
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ Z a k _ φ y hy x`. Substitute `hy` using the available equality. Establish `h` using `(Z.isFrame_chart_bc a φ).1 x.1 x.2`. Rewrite using `[Category.assoc]`. Conclude with `h.1`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTanAtG_frame_bc : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p} (Z : LocM.Mdl Y i₀) (a : Fin Z.m) (k : Type) [CommRing k] (φ : Γ(Z.X, (Z.U a).1) →+* k) (y : Sp k ⟶ Z.X), spMap φ ≫ Z.chart a = y → ∀ x : Letter Dw, IsTanAtG (Y Z.i).t (y ≫ Z.π) ((Z.fr a).bc φ x.1 x.2) := by
   intro E _ _ _ H Dw Xo p W Y i₀ Z a k _ φ y hy x

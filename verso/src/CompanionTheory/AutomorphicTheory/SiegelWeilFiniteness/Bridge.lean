@@ -8,7 +8,7 @@ open NumberField GroundTheory.Automorphic Module MeasureTheory HeckeCharacterZer
 open scoped TensorProduct NumberField.AdeleRing
 
 /- English proof (translation)
-Use `⟨⟨Measure.haar, inferInstance⟩, fun μ hμ => ?_⟩` and prove the remaining obligations. Take `⟨D, hD, hfin⟩` from `h μ`. Conclude with `⟨⟨D, hD⟩, fun D' hD' => (hD'.measure_eq hD).trans_lt hfin⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem allSome_of {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [MeasurableSpace G] [BorelSpace G] (Γ : Subgroup G) [Countable Γ]
@@ -23,9 +23,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   [Algebra.IsQuadraticExtension F E]
 
 /- English proof (translation)
-Establish `: sigR R (conj F E).toAlgHom = conjBase F E R`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Use extensionality with `g`. Use `show cT (sigR R (conj F E).toAlgHom) _ * _ * _ = _ ↔ _`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Treat this case separately. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem HR_eq {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (R : Type) [CommRing R] [Algebra F R] :
     HR R (conj F E).toAlgHom J = unitaryPoints F E J R := by
@@ -41,15 +41,13 @@ theorem HR_eq {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (R : Type) [CommRing R] [
   rfl
 
 /- English proof (translation)
-Establish `key : ∀ x : unitaryPoints F E J F, ((unitaryDiagonal F J x : unitaryPoints F E J 𝔸[F]) : GL (Fin M) (𝔸[F] ⊗[F] E)) = bc (inclR 𝔸[F]) (unitaryPointsRationalEquiv F E J x : GL (Fin M) E)`. Introduce `x`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Use `show tensorMap E (Algebra.ofId F 𝔸[F]) ((x : GL (Fin M) (F ⊗[F] E)) i j) = inclR 𝔸[F] (Algebra.TensorProduct.lid F E ((x : GL (Fin M) (F ⊗[F] E)) i j))`. Generalize the expression as in `(x : GL (Fin M) (F ⊗[F] E)) i j = z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e`. Rewrite using `[tensorMap_tmul, Algebra.TensorProduct.lid_tmul]`. Use `show algebraMap F 𝔸[F] r ⊗ₜ[F] e = (1 : 𝔸[F]) ⊗ₜ[F] (r • e)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Use extensionality with `g`. Rewrite using `[Subgroup.mem_subgroupOf]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨γ, hγ, e⟩`. Use `⟨(unitaryPointsRationalEquiv F E J).symm ⟨γ, hγ⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[key, MulEquiv.apply_symm_apply]`. Conclude with `e`. Introduce and unpack `⟨x, rfl⟩`.
-
-Conclude with `⟨_, (unitaryPointsRationalEquiv F E J x).2, (key x).symm⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem HFin_eq {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
     (HFin 𝔸[F] (conj F E).toAlgHom J).subgroupOf (unitaryPoints F E J 𝔸[F]) = (unitaryDiagonal F J).range := by
@@ -79,9 +77,9 @@ theorem HFin_eq {M : ℕ} (J : Matrix (Fin M) (Fin M) E) :
     exact ⟨_, (unitaryPointsRationalEquiv F E J x).2, (key x).symm⟩
 
 /- English proof (translation)
-Substitute `hS` using the available equality. Rewrite using `[HFin_eq]`. Use `locallyCompactSpace_unitaryPoints_adele (K := F) J hJ` as an intermediate fact. Establish `: Countable E` using `(Module.finBasis ℚ E).equivFun.toEquiv.countable_iff.2 inferInstance`. Establish `: Countable (Matrix (Fin M) (Fin M) E)` using `inferInstanceAs (Countable (Fin M → Fin M → E))`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Countable (GL (Fin M) E)` using `(Units.val_injective.countable : Countable (Matrix (Fin M) (Fin M) E)ˣ)`. Establish `: Countable (unitaryPoints F E J F)` using `(unitaryPointsRationalEquiv F E J).toEquiv.countable_iff.2 inferInstance`. Establish `: Countable (unitaryDiagonal F J).range` using `(MonoidHom.rangeRestrict_surjective _).countable`. Conclude with `allSome_of _ h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_volume_unitary_adelic {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (hJ : IsUnit J.det)
     (h : ∀ (μ : Measure (unitaryPoints F E J 𝔸[F])) [μ.IsHaarMeasure],
@@ -103,13 +101,13 @@ theorem finite_volume_unitary_adelic {M : ℕ} (J : Matrix (Fin M) (Fin M) E) (h
   exact allSome_of _ h
 
 /- English proof (translation)
-Take `⟨hF, hE, h2, hc⟩` from `hσ`. Establish `: Algebra.IsQuadraticExtension F E` using `⟨h2⟩`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Take `rfl : σ = (conj F E).toAlgHom` from `AlgHom.ext fun x => τ.injective ((hc τ x).trans (embedding_conj τ x).symm)`. Establish `hu : IsUnit J.det` using `isUnit_iff_ne_zero.2 hJ.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hH : IsHermitianFor (conjHom F E) J` using `Matrix.ext fun i j => hJ.1 i j`. Establish `h` using `hC F E M (HermitianForm.ofGram J hH hu)`. Establish `hr : ∀ (h : HermitianForm F E (Fin M → E)) (v : Basis (Fin M) E (Fin M → E)), (hermitianDiagonal h v).range = (unitaryDiagonal F (gram h.toSesq v)).range`. Introduce `h v`. Rewrite using `[hermitianDiagonal, MonoidHom.range_comp, MonoidHom.range_eq_top.2 (unitaryPointsRationalEquivHermitian F E h v).symm.surjective, ← MonoidHom.range_eq_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Unfold `AdelicCovolumeFinite.Statement at h`. Rewrite `h` using `[hr]`. Establish `hg` using `gram_ofGram J hH hu`. Generalize the expression as in `gram (HermitianForm.ofGram J hH hu).toSesq (Pi.basisFun E (Fin M)) = J' at h hg`. Substitute `hg` using the available equality.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Substitute using the available equality.
 
-Conclude with `finite_volume_unitary_adelic J' hu h _ (HR_eq J' _)`.
+A detailed English derivation is pending.
 -/
 theorem finVol_of (hC : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
       [Algebra.IsQuadraticExtension F E] [IsTotallyReal F] [IsTotallyComplex E] (M : ℕ)

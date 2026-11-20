@@ -8,7 +8,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S
 open scoped nonZeroDivisors NumberField
 
 /- English proof (translation)
-Rewrite using `[D.host.der.finrank_E]`. Simplify using `only [Formalism.BasicNotions.Ranks.f, Formalism.BasicNotions.Ranks.n]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem szf_finrankE (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
   rw [D.host.der.finrank_E]
@@ -16,16 +16,16 @@ theorem szf_finrankE (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
   omega
 
 /- English proof (translation)
-Rewrite using `[D.host.der.finrank_F]`. Simplify using `only [Formalism.BasicNotions.Ranks.f, Formalism.BasicNotions.Ranks.n]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem szf_finrankF (D : D7) : Module.finrank ℚ D.host.F = D.R.f := by
   rw [D.host.der.finrank_F]
   simp only [Formalism.BasicNotions.Ranks.f, Formalism.BasicNotions.Ranks.n]
 
 /- English proof (translation)
-Unfold `SzfNormG`. Rewrite using `[FractionalIdeal.absNorm_span_singleton]`. Establish `hE` using `szf_finrankE D`. Establish `hg : Formalism.MainNotions.S.gE D = algebraMap ℚ D.host.E ((D.host.g 0 * D.host.g 1 : ℕ) : ℚ)`. Simplify using `[Formalism.MainNotions.S.gE]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hg, Algebra.norm_algebraMap, hE]`. Simplify using `only [Formalism.MainNotions.S.gg]`. Use `push_cast`. Rewrite using `[abs_of_nonneg (by positivity), ← pow_mul, mul_comm D.R.f 2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem szf_normG (D : D7) : SzfNormG D := by
   unfold SzfNormG
@@ -39,9 +39,9 @@ theorem szf_normG (D : D7) : SzfNormG D := by
   rw [abs_of_nonneg (by positivity), ← pow_mul, mul_comm D.R.f 2]
 
 /- English proof (translation)
-Establish `h1` using `D.host.der.finrank_E`. Establish `h2` using `D.host.der.finrank_F`. Establish `h3 : Module.finrank ℚ D.host.F * Module.finrank D.host.F D.host.E = Module.finrank ℚ D.host.E` using `Module.finrank_mul_finrank ℚ D.host.F D.host.E`. Establish `hpos : 0 < Module.finrank ℚ D.host.E` using `Module.finrank_pos`. Rewrite `h3` using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hpos` using `[h1]`. Establish `h4 : 2 * D.R.ord * Module.finrank D.host.F D.host.E = 2 * D.R.ord * 2` using `by rw [h3]; ring`. Conclude with `Nat.eq_of_mul_eq_mul_left (by omega) h4`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem szf_finrankFE (D : D7) : Module.finrank D.host.F D.host.E = 2 := by
   have h1 := D.host.der.finrank_E
@@ -55,9 +55,9 @@ theorem szf_finrankFE (D : D7) : Module.finrank D.host.F D.host.E = 2 := by
   exact Nat.eq_of_mul_eq_mul_left (by omega) h4
 
 /- English proof (translation)
-Establish `hE` using `szf_finrankE D`. Establish `hpos : 0 < Module.finrank ℚ D.host.E` using `Module.finrank_pos`. Establish `hf : 0 < D.R.f` using `by omega`. Establish `hx0 : (0 : ℝ) ≤ |(NumberField.discr D.host.E : ℝ)|` using `abs_nonneg _`. Unfold `Formalism.BasicNotions.Host.rdE`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hE, ← pow_mul, ← Real.rpow_natCast, ← Real.rpow_mul hx0]`. Establish `hc : (1 : ℝ) / ((2 * D.R.f : ℕ) : ℝ) * ((D.R.f * 2 : ℕ) : ℝ) = 1`. Rewrite using `[mul_comm D.R.f 2]`. Conclude with `one_div_mul_cancel (Nat.cast_ne_zero.mpr (by omega))`. Rewrite using `[hc, Real.rpow_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem szf_rd_pow (D : D7) : (D.host.rdE ^ D.R.f) ^ 2 = |(NumberField.discr D.host.E : ℝ)| := by
   have hE := szf_finrankE D
@@ -72,19 +72,19 @@ theorem szf_rd_pow (D : D7) : (D.host.rdE ^ D.R.f) ^ 2 = |(NumberField.discr D.h
   rw [hc, Real.rpow_one]
 
 /- English proof (translation)
-Unfold `SzfNormDD`. Rewrite using `[szf_rd_pow D, hd]`. Establish `hFE` using `szf_finrankFE D`. Establish `gen : ∀ I : Ideal (𝓞 D.host.F), Ideal.absNorm (Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) I) = Ideal.absNorm I ^ Module.finrank (𝓞 D.host.F) (𝓞 D.host.E)`. Introduce `I`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Ideal.absNorm_relNorm (𝓞 D.host.F), Ideal.relNorm_algebraMap, map_pow]`. Establish `n2 : ∀ (K : Type) [Field K] [NumberField K], (Algebra.norm ℤ (2 : 𝓞 K)).natAbs = 2 ^ Module.finrank ℚ K`. Introduce `K _ _`. Rewrite using `[show (2 : 𝓞 K) = algebraMap ℤ (𝓞 K) 2 from (map_ofNat _ 2).symm, Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank, Int.natAbs_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hR : Module.finrank (𝓞 D.host.F) (𝓞 D.host.E) = 2`. Establish `h2` using `gen (Ideal.span {(2 : 𝓞 D.host.F)})`. Rewrite `h2` using `[Ideal.map_span, Set.image_singleton, map_ofNat, Ideal.absNorm_span_singleton, Ideal.absNorm_span_singleton, n2, n2, szf_finrankE D, szf_finrankF D, ← pow_mul]`. Establish `h3` using `Nat.pow_right_injective (le_refl 2) h2`. Establish `hpos : 0 < Module.finrank ℚ D.host.E` using `Module.finrank_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hpos` using `[szf_finrankE D]`. Establish `h4 : D.R.f * Module.finrank (𝓞 D.host.F) (𝓞 D.host.E) = D.R.f * 2`. Rewrite using `[← h3]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Nat.eq_of_mul_eq_mul_left (by omega) h4`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `key : Ideal.absNorm (Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (differentIdeal ℤ (𝓞 D.host.F))) = Ideal.absNorm (differentIdeal ℤ (𝓞 D.host.F)) ^ 2`. Rewrite using `[gen, hR]`. Establish `hc : FractionalIdeal.absNorm (Formalism.MainNotions.S.ddE D) = (Ideal.absNorm (Ideal.map (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)) (differentIdeal ℤ (𝓞 D.host.F))) : ℚ)` using `by first`. Consider the case `exact FractionalIdeal.coeIdeal_absNorm _`. Consider the case `exact FractionalIdeal.absNorm_coeIdeal _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact FractionalIdeal.coe_absNorm _`. Establish `hd2 : Ideal.absNorm (differentIdeal ℤ (𝓞 D.host.F)) = (NumberField.discr D.host.F).natAbs`. Conclude with `NumberField.absNorm_differentIdeal D.host.F (𝓞 D.host.F)`. Rewrite using `[hc, key, hd2]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `simp [abs_pow, Nat.cast_natAbs]`. Consider the case `rw [Nat.cast_natAbs, Int.cast_abs, abs_pow]`.
+A detailed English derivation is pending.
 -/
 theorem szf_normDD (D : D7) (hd : NumberField.discr D.host.E = NumberField.discr D.host.F ^ 2) : SzfNormDD D := by
   unfold SzfNormDD
@@ -129,9 +129,9 @@ theorem szf_normDD (D : D7) (hd : NumberField.discr D.host.E = NumberField.discr
   | rw [Nat.cast_natAbs, Int.cast_abs, abs_pow]
 
 /- English proof (translation)
-Take `⟨K0, Cl0, h⟩` from `separation_bound_of_norms CA c5 C4 C0 cT hCA hcT`. Use `⟨K0, Cl0, fun D large₂ C' Cl Cg cb Cu CT hK hCl => ?_⟩` and prove the remaining obligations. Introduce `hh`. Establish `hd : NumberField.discr D.host.E = NumberField.discr D.host.F ^ 2`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, hd, -⟩` from `hh.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hd`. Conclude with `h D large₂ C' Cl Cg cb Cu CT (szf_normDD D hd) (szf_normG D) hK hCl hh`.
+A detailed English derivation is pending.
 -/
 theorem separation_bound (CA c5 C4 C0 cT : ℝ) (hCA : 1 ≤ CA) (hcT : 0 < cT) :
     ∃ K0 Cl0 : ℝ, ∀ (D : D7) (large₂ : SizeData₂ D) (C' Cl Cg cb Cu CT : ℝ),
@@ -145,13 +145,13 @@ theorem separation_bound (CA c5 C4 C0 cT : ℝ) (hCA : 1 ≤ CA) (hcT : 0 < cT) 
   exact h D large₂ C' Cl Cg cb Cu CT (szf_normDD D hd) (szf_normG D) hK hCl hh
 
 /- English proof (translation)
-Take `⟨K0, Cl0, h⟩` from `separation_bound CA c5 C4 C0 cT hCA hcT`. Use `⟨max Cl0 (max 1 K0), fun {eps} Fm Cg cb Cu CT hCl hA hE => ?_⟩` and prove the remaining obligations. Simplify using `only [LocalBesselAndTopKernel.FamilyLocalBesselBoundWithCharacter, LocalBesselAndTopKernel.FamilyBesselBoundFirstPart, LocalBesselAndTopKernel.SchurOrthogonalityRealPlace, LocalBesselAndTopKernel.UnderF, OwnEv] at hA hE ⊢`. Take `⟨xa, hxa⟩` from `hA`. Take `⟨xe, hxe⟩` from `hE`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max xa xe, fun x hx i hh => ?_⟩` and prove the remaining obligations. Establish `hCl0 : Cl0 ≤ sCl Fm` using `le_trans (le_max_left _ _) hCl`. Establish `h1 : (1 : ℝ) ≤ sCl Fm` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCl`. Establish `hK0 : K0 ≤ sCl Fm` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hCl`. Establish `hK : K0 ≤ ((Fm.D x i).R.k : ℝ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, hS, -⟩` from `hh`. Take `⟨-, -, h3, h4, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hClm, -⟩` from `hS`. Establish `hk4 : ((Fm.D x i).R.m : ℝ) ^ 4 ≤ ((Fm.D x i).R.k : ℝ)` using `by exact_mod_cast h3.trans h4`. Establish `hm1 : (1 : ℝ) ≤ (Fm.D x i).R.m` using `le_trans h1 hClm`. Establish `hm4 : ((Fm.D x i).R.m : ℝ) ≤ ((Fm.D x i).R.m : ℝ) ^ 4` using `le_self_pow₀ hm1 (by norm_num)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h (Fm.D x i) (Fm.L x i) (sC' Fm) (sCl Fm) Cg cb Cu CT hK hCl0 hh (hxa x (le_trans (le_max_left _ _) hx) i hh) (hxe x (le_trans (le_max_right _ _) hx) i hh)`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem family_separation_bound (CA c5 C4 C0 cT : ℝ) (hCA : 1 ≤ CA) (hcT : 0 < cT) :
     ∃ Cl0 : ℝ, ∀ {eps : ℝ} (Fm : FamP eps) (Cg cb Cu CT : ℝ), Cl0 ≤ sCl Fm →

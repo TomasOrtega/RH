@@ -5,43 +5,39 @@ namespace ReciprocityTheory.L2DbarEstimates
 open Filter Topology
 
 /- English proof (translation)
-Unfold `CVXStatement`. Introduce `K hanti hne hcl hmid hb`. Take `⟨R, hR⟩` from `isBounded_iff_forall_norm_le.1 hb`. Establish `hbdd : ∀ n, BddBelow ((fun w : H => ‖w‖) '' K n)` using `fun n => ⟨0, by rintro _ ⟨w, _, rfl⟩; exact norm_nonneg w⟩`. Establish `hSne : ∀ n, ((fun w : H => ‖w‖) '' K n).Nonempty` using `fun n => (hne n).image _`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨d, hd⟩ : ∃ d : ℕ → ℝ, d = fun n => sInf ((fun w : H => ‖w‖) '' K n)` from `⟨_, rfl⟩`. Establish `hdle : ∀ n, ∀ w ∈ K n, d n ≤ ‖w‖`. Introduce `n w hw`. Rewrite using `[hd]`. Conclude with `csInf_le (hbdd n) ⟨w, hw, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd0 : ∀ n, 0 ≤ d n`. Introduce `n`. Rewrite using `[hd]`. Conclude with `le_csInf (hSne n) (by rintro _ ⟨w, _, rfl⟩; exact norm_nonneg w)`. Establish `hdmono : Monotone d`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `n m hnm`. Rewrite using `[hd]`. Conclude with `csInf_le_csInf (hbdd n) (hSne m) (Set.image_mono (hanti hnm))`. Establish `hdR : ∀ n, d n ≤ R`. Introduce `n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w, hw⟩` from `hne n`. Conclude with `(hdle n w hw).trans (hR w (hanti (Nat.zero_le n) hw))`. Establish `happrox : ∀ n, ∃ w ∈ K n, ‖w‖ < d n + 1 / ((n : ℝ) + 1)`. Introduce `n`. Establish `hpos : (0 : ℝ) < 1 / ((n : ℝ) + 1)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hlt : sInf ((fun w : H => ‖w‖) '' K n) < d n + 1 / ((n : ℝ) + 1)`. Rewrite using `[hd]`. Conclude with `lt_add_of_pos_right _ hpos`. Take `⟨_, ⟨w, hw, rfl⟩, hw2⟩` from `exists_lt_of_csInf_lt (hSne n) hlt`. Conclude with `⟨w, hw, hw2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose x hxK hxn using happrox`. Establish `hbddA : BddAbove (Set.range d)` using `⟨R, by rintro _ ⟨n, rfl⟩; exact hdR n⟩`. Take `⟨L, hL⟩ : ∃ L, L = ⨆ n, d n` from `⟨_, rfl⟩`. Establish `hdL : ∀ n, d n ≤ L` using `fun n => by rw [hL]; exact le_ciSup hbddA n`. Establish `hL0 : 0 ≤ L` using `(hd0 0).trans (hdL 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Establish `hkey : ∀ n m, n ≤ m → ‖x m - x n‖ ^ 2 ≤ 2 * ‖x m‖ ^ 2 + 2 * ‖x n‖ ^ 2 - 4 * d n ^ 2`. Introduce `n m hnm`. Establish `hmK : x m ∈ K n` using `hanti hnm (hxK m)`. Establish `h1` using `hdle n _ (hmid n (x m) hmK (x n) (hxK n))`. Establish `h2 : ‖x m + x n‖ = 2 * ‖(2 : ℂ)⁻¹ • (x m + x n)‖` using `by first`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Consider the case `(rw [norm_smul, norm_inv, Complex.norm_two]; ring)`. Consider the case `(rw [norm_smul]; norm_num)`. Consider the case `(simp [norm_smul]; ring)`. Establish `h3 : 4 * d n ^ 2 ≤ ‖x m + x n‖ ^ 2`. Rewrite using `[h2]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use polynomial arithmetic with `[h1, hd0 n]`. Establish `hpar` using `parallelogram_law_with_norm ℂ (x m) (x n)`. Use polynomial arithmetic with `[hpar, h3]`. Establish `hcauchy : CauchySeq x`. Rewrite using `[Metric.cauchySeq_iff']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `ε hε`. Take `⟨η, hηdef⟩ : ∃ η, η = min 1 (ε ^ 2 / (16 * (L + 1)))` from `⟨_, rfl⟩`. Establish `hη0 : 0 < η` using `by rw [hηdef]; exact lt_min one_pos (by positivity)`. Establish `hη1 : η ≤ 1` using `by rw [hηdef]; exact min_le_left _ _`. Establish `hηε : η ≤ ε ^ 2 / (16 * (L + 1))` using `by rw [hηdef]; exact min_le_right _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨N₁, hN₁⟩` from `exists_lt_of_lt_ciSup (f := d) (by rw [← hL]; linarith : L - η < ⨆ n, d n)`. Take `⟨N₂, hN₂⟩` from `exists_nat_one_div_lt hη0`. Use `⟨max N₁ N₂, fun m hm => ?_⟩` and prove the remaining obligations. Establish `hdN : L - η < d (max N₁ N₂)` using `hN₁.trans_le (hdmono (le_max_left _ _))`. Establish `heN : 1 / (((max N₁ N₂ : ℕ) : ℝ) + 1) < η`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `lt_of_le_of_lt (one_div_le_one_div_of_le (by positivity) ?_) hN₂` and prove the remaining obligations. Establish `: (N₂ : ℝ) ≤ ((max N₁ N₂ : ℕ) : ℝ)` using `by exact_mod_cast le_max_right N₁ N₂`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hem : 1 / ((m : ℝ) + 1) < η`. Use `lt_of_le_of_lt (one_div_le_one_div_of_le (by positivity) ?_) hN₂` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (N₂ : ℝ) ≤ (m : ℝ)` using `by exact_mod_cast (le_max_right N₁ N₂).trans hm`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk` using `hkey (max N₁ N₂) m hm`. Establish `hxm` using `hxn m`. Establish `hxN` using `hxn (max N₁ N₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdm` using `hdL m`. Establish `hdNL` using `hdL (max N₁ N₂)`. Establish `hd0N` using `hd0 (max N₁ N₂)`. Establish `a1 : ‖x m‖ < L + η` using `by linarith`. Establish `a2 : ‖x (max N₁ N₂)‖ < d (max N₁ N₂) + η` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b1 : ‖x m‖ ^ 2 ≤ (L + η) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) a1.le 2`. Establish `b2 : ‖x (max N₁ N₂)‖ ^ 2 ≤ (d (max N₁ N₂) + η) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) a2.le 2`. Establish `c0 : 0 ≤ (d (max N₁ N₂) - L + η) * (d (max N₁ N₂) + L)` using `mul_nonneg (by linarith) (by linarith)`. Establish `c1 : d (max N₁ N₂) * η ≤ L * η` using `mul_le_mul_of_nonneg_right hdNL hη0.le`. Establish `c2 : η * η ≤ η * 1` using `mul_le_mul_of_nonneg_left hη1 hη0.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `c3 : 0 ≤ L * η` using `mul_nonneg hL0 hη0.le`. Establish `b3 : L ^ 2 - 2 * L * η ≤ d (max N₁ N₂) ^ 2` using `by nlinarith`. Establish `b4 : η * (16 * (L + 1)) ≤ ε ^ 2` using `(le_div_iff₀ (by positivity)).1 hηε`. Establish `hsq : ‖x m - x (max N₁ N₂)‖ ^ 2 < ε ^ 2` using `by nlinarith`. Rewrite using `[dist_eq_norm]`.
-
-Use polynomial arithmetic with `[norm_nonneg (x m - x (max N₁ N₂))]`. Take `⟨y, hy⟩` from `cauchySeq_tendsto_of_complete hcauchy`. Use `⟨y, fun n => ?_⟩` and prove the remaining obligations. Apply `(hcl n).mem_of_tendsto hy` to reduce the goal to its premises. Use `filter_upwards [Filter.eventually_ge_atTop n] with m hm`.
-
-Conclude with `hanti hm (hxK m)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem cvx (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] :
     CVXStatement H := by

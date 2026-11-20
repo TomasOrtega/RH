@@ -22,7 +22,7 @@ section Reciprocity
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
 
 /- English proof (translation)
-Apply `(GroundTheory.LocalField.topologicalAbelianizationEquiv k (AlgebraicClosure k)).injective` to reduce the goal to its premises. Rewrite using `[GroundTheory.LocalField.topologicalAbelianizationEquiv_mk, ← GroundTheory.LocalField.localArtinMap_apply]`. Use `AlgEquiv.ext fun y ↦ Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[AlgEquiv.restrictNormalHom_apply]`. Conclude with `hg y y.2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_eq_localReciprocityLimit_of_forall {x : kˣ} {g : AlgebraicClosure k ≃ₐ[k] AlgebraicClosure k}
     (hg : ∀ (y : AlgebraicClosure k)
@@ -46,7 +46,7 @@ section Finite
 variable {v : HeightOneSpectrum (𝓞 K.1)} (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure (v.adicCompletion K.1))
 
 /- English proof (translation)
-The claim follows from `normResidueSymbol_spec _ (mk_eq_localReciprocityLimit_of_forall hg) y`.
+A detailed English derivation is pending.
 -/
 theorem completionEmbedding_normResidueSymbol {b : (v.adicCompletion K.1)ˣ}
     {g : Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1)}
@@ -61,7 +61,7 @@ theorem completionEmbedding_normResidueSymbol {b : (v.adicCompletion K.1)ˣ}
   normResidueSymbol_spec _ (mk_eq_localReciprocityLimit_of_forall hg) y
 
 /- English proof (translation)
-Use `AlgEquiv.ext fun l ↦ Subtype.val_injective (ι.injective ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ι _ = ι _`. Rewrite using `[coe_restrictHom_apply, globalDecomp_apply, ← completionEmbedding_algebraMap ι E (localSymbol E.1 v b l), algebraMap_localSymbol_apply E.1 v (placeOfEmbedding ι E), completionEmbedding_normResidueSymbol E ι hg, completionEmbedding_algebraMap]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictHom_globalDecomp_of_finite {b : (v.adicCompletion K.1)ˣ}
     {g : Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1)}
@@ -86,25 +86,21 @@ variable {v : InfinitePlace K.1} (ι : ℚ̄ →ₐ[K.1] AlgebraicClosure v.Comp
 omit [(E.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup).Normal] [IsMulCommutative (E.1 ≃ₐ[K.1] E.1)] in
 
 /- English proof (translation)
-Use `set w : InfinitePlace E.1 := (infPlaceOfEmbedding ι E : InfinitePlace E.1) with hw_def`. Use `set j := infCompletionEmbedding ι E with hj_def`. Use `set d := decompHom v.Completion j g with hd_def`. It suffices to establish `h : InfinitePlace.localSymbol v w b = d by`. Rewrite using `[h, hd_def]`.
+Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `decompHom_apply j g _`. Distinguish the cases in `h2 : v.IsReal ∧ w.IsComplex`. Take `⟨hv, hw⟩` from `h2`. Establish `hfin : Module.finrank v.Completion w.Completion = 2` using `(InfinitePlace.finrank_completion_eq_two_iff w).2 ⟨hv, hw⟩`. Establish `hinj : Function.Injective j.toLinearMap` using `j.injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hsurj : Function.Surjective j`. Establish `hle` using `LinearMap.finrank_le_finrank_of_injective hinj`. Establish `heq : Module.finrank v.Completion w.Completion = Module.finrank v.Completion (AlgebraicClosure v.Completion)` using `le_antisymm hle (hfin ▸ infAlgClosure_finrank_le_two v)`. Conclude with `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank heq).1 hinj`. Set `e : w.Completion ≃ₐ[v.Completion] AlgebraicClosure v.Completion` to `AlgEquiv.ofBijective j ⟨j.injective, hsurj⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : ∀ y, e y = j y` using `fun _ ↦ rfl`. Establish `hd : d = 1 ↔ g = 1`. Prove the components needed by the constructor for the conclusion. Introduce `hd1`. Use `AlgEquiv.ext fun z ↦ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨y, rfl⟩` from `hsurj z`. Rewrite using `[← decompHom_apply, ← hd_def, hd1]`. Both sides reduce to the same expression. Introduce and unpack `rfl`. Conclude with `map_one _`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : InfinitePlace.localSymbol v w b = 1 ↔ d = 1`. Rewrite using `[hd, hg, ← MonoidHom.mem_ker, InfinitePlace.ker_localSymbol, InfinitePlace.normSubgroup, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Use `⟨e y, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.norm_eq_of_algEquiv]`. Conclude with `congrArg Units.val hy`. Introduce and unpack `⟨z, hz⟩`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hz` using `[Algebra.norm_zero]`. Conclude with `b.ne_zero hz.symm`. Use `⟨Units.mk0 (e.symm z) ((map_ne_zero _).2 hz0), Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Units.coe_map, Units.val_mk0, ← Algebra.norm_eq_of_algEquiv e, e.apply_symm_apply, hz]`. Establish `hc` using `InfinitePlace.completionConj_ne_one (w := w) hv hw`.
-
-Apply the tactic sequence `rcases InfinitePlace.eq_one_or_eq_completionConj hv hw (InfinitePlace.localSymbol v w b) with h1 | h1 <;>`. Break down `InfinitePlace.eq_one_or_eq_completionConj hv hw d with h3 | h3` into its components or cases. Rewrite using `[h1, h3]`. Conclude with `absurd (h3 ▸ hs.1 h1) hc`. Conclude with `absurd (h1 ▸ hs.2 h3) hc`.
-
-Rewrite using `[h1, h3]`. Use `InfinitePlace.subsingleton_gal w h2` as an intermediate fact. Conclude with `Subsingleton.elim _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem infCompletionEmbedding_localSymbol {b : v.Completionˣ}
     {g : Gal(AlgebraicClosure v.Completion/v.Completion)}
@@ -169,7 +165,7 @@ theorem infCompletionEmbedding_localSymbol {b : v.Completionˣ}
     exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Use `AlgEquiv.ext fun l ↦ Subtype.val_injective (ι.injective ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ι _ = ι _`. Rewrite using `[coe_restrictHom_apply, globalDecomp_apply, ← infCompletionEmbedding_algebraMap ι E (infiniteLocalSymbol E.1 v b l), algebraMap_infiniteLocalSymbol_apply E.1 v (infPlaceOfEmbedding ι E), infCompletionEmbedding_localSymbol E ι hg, infCompletionEmbedding_algebraMap]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictHom_globalDecomp_of_infinite {b : v.Completionˣ}
     {g : Gal(AlgebraicClosure v.Completion/v.Completion)}

@@ -15,9 +15,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC.AcycRes
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by ring⟩`. Take `⟨-, -, h3⟩` from `GlobalTheory.T.hypercohomology_mappingCone_second_variable_exact R K f m`. Take `⟨h1, -, -⟩` from `GlobalTheory.T.hypercohomology_mappingCone_second_variable_exact R K f (m + 1)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Take `⟨y, rfl⟩` from `(h3 x).1 hx`. Rewrite using `[(h m).elim y 0, map_zero]`. Introduce `y`. Conclude with `(h1 y).1 ((h (m + 1)).elim _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coneBij {R : Type} [CommRing R] (K : Cx R) {I J : Cx R} (f : I ⟶ J)
     (h : ∀ m, Subsingleton (CohomologyClass K (mappingCone f) m)) (n : ℤ) : Function.Bijective (cpush K f n) := by
@@ -33,9 +33,9 @@ theorem coneBij {R : Type} [CommRing R] (K : Cx R) {I J : Cx R} (f : I ⟶ J)
     exact (h1 y).1 ((h (m + 1)).elim _ _)
 
 /- English proof (translation)
-Take `⟨hid, hcomp, -, -, -⟩` from `GlobalTheory.T.hypercohomologyPullbackPushforward_functorial R`. Establish `key : ∀ z, cpull ((CochainComplex.singleFunctor (Shv R) 0).map e.hom) M n (cpull ((CochainComplex.singleFunctor (Shv R) 0).map e.inv) M n z) = z`. Introduce `z`. Rewrite using `[← hcomp, ← Functor.map_comp, e.hom_inv_id, CategoryTheory.Functor.map_id]`. Conclude with `(hid _ _ _ z).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[← key x, ← key y, h.elim (cpull ((CochainComplex.singleFunctor (Shv R) 0).map e.inv) M n x)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subOfIso {R : Type} [CommRing R] {A B : Shv R} (e : A ≅ B) (M : Cx R) (n : ℤ)
     (h : Subsingleton (CohomologyClass (sgl B) M n)) : Subsingleton (CohomologyClass (sgl A) M n) := by
@@ -49,9 +49,9 @@ theorem subOfIso {R : Type} [CommRing R] {A B : Shv R} (e : A ≅ B) (M : Cx R) 
   rw [← key x, ← key y, h.elim (cpull ((CochainComplex.singleFunctor (Shv R) 0).map e.inv) M n x)]
 
 /- English proof (translation)
-Take `⟨e, -, -⟩` from `GlobalTheory.T.exists_natural_homotopyEquiv_chains_constant_presheaf R`. Take `⟨hid, hcomp, -, -, hhtpy⟩` from `GlobalTheory.T.hypercohomologyPullbackPushforward_functorial R`. Establish `key : ∀ z, cpull (e P).hom (res R X) i (cpull (e P).inv (res R X) i z) = z`. Introduce `z`. Rewrite using `[← hcomp, (hhtpy _ _ ⟨(e P).homotopyHomInvId⟩ (res R X) i).1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hid _ _ _ z).1`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[← key x, ← key y, h.elim (cpull (e P).inv (res R X) i x)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discFree {R : Type} [CommRing R] (P : PSh) (X : Shv R) (i : ℤ) (h : Subsingleton (H R (disc.obj P) X i)) :
     Subsingleton (CohomologyClass (sgl ((free R).obj P)) (res R X) i) := by
@@ -69,13 +69,13 @@ end GlobalTheory.EtC.AcycRes
 open GlobalTheory.EtC.AcycRes in
 
 /- English proof (translation)
-Introduce `R _ F C _ ε _ u hu hC E n`. Take `⟨-, hinj, hge, hqa, -⟩` from `GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties R F`. Establish `: QuasiIso (ε ≫ u)` using `by rw [hu]; exact hqa`. Establish `: QuasiIso u` using `quasiIso_of_comp_left ε u`. Establish `: ((chains R).obj E).IsStrictlyLE 0` using `(GlobalTheory.T.chains_map_and_d_eq_sum_neg_one_pow_smul_delta R).1 E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (mappingCone u).IsStrictlyGE (-1)` using `isStrictlyGE_mappingCone u 0 0 (-1)`. Apply `coneBij` to reduce the goal to its premises. Introduce `m`. Apply `GlobalTheory.T.hypercohomology_trivial_of_terms_degreeZero R _ _ _ m` to reduce the goal to its premises. Introduce `p k hp`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨q, rfl⟩ : ∃ q : ℕ, p = -(q : ℤ)` from `⟨(-p).toNat, by omega⟩`. Apply `subOfIso (chainsXIso R E q)` to reduce the goal to its premises. Apply `GlobalTheory.T.sheafCohomologyClass_subsingleton_of_acyclic_boundedBelow R _ _ (-1) (GlobalTheory.T.etaleSheafComplex_mappingCone_acyclic_of_quasiIso R u)` to reduce the goal to its premises. Introduce `t i hi`. Apply `GlobalTheory.T.mappingCone_terms_sheafExt_subsingleton R _ u hinj _ t i hi` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `t' i' hi'`. Conclude with `discFree _ _ _ (hC t' _ i' hi')`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.acycRes_computes : ∀ (R : Type) [CommRing R] (F : Shv R) (C : Cx R) [C.IsStrictlyGE 0] (ε : sgl F ⟶ C) [QuasiIso ε] (u : C ⟶ res R F), ε ≫ u = resAug F → (∀ (t : ℤ) (P : PSh) (n : ℤ), 0 < n → Subsingleton (H R (disc.obj P) (C.X t) n)) → ∀ (E : Spc) (n : ℤ), Function.Bijective (cpush ((chains R).obj E) u n) := by
   intro R _ F C _ ε _ u hu hC E n

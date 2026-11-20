@@ -13,7 +13,7 @@ namespace GlobalTheory.SliceOpCont
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => ?_` and prove the remaining obligations. Consider the cases of `i with`. Consider the case `inl i => simpa [padL] using norm_le_pi_norm h i`. Consider the case `inr j => simp [padL]`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem norm_padL_le {κ κ' : Type} [Fintype κ] [Fintype κ'] (h : κ → V) :
     ‖(padL (κ' := κ') h : κ ⊕ κ' → V)‖ ≤ ‖h‖ := by
@@ -23,9 +23,9 @@ theorem norm_padL_le {κ κ' : Type} [Fintype κ] [Fintype κ'] (h : κ → V) :
   | inr j => simp [padL]
 
 /- English proof (translation)
-Use extensionality with `y`. Establish `he : (Sum.elim x₀ y : κ ⊕ κ' → V) + padL (x - x₀) = Sum.elim x y`. Use function extensionality and compare the values at `i`. Consider the cases of `i with`. Consider the case `inl i => simp [padL]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `inr j => simp [padL]`. Simplify using `[SchwartzMap.compSubConstCLM_apply, he]`.
+Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem sliceR_sub_eq {κ κ' : Type} [Fintype κ] [Fintype κ'] (f : SchwartzMap (κ ⊕ κ' → V) ℂ)
     (x x₀ : κ → V) :
@@ -40,7 +40,7 @@ theorem sliceR_sub_eq {κ κ' : Type} [Fintype κ] [Fintype κ'] (f : SchwartzMa
   simp [SchwartzMap.compSubConstCLM_apply, he]
 
 /- English proof (translation)
-Use `GlobalTheory.SliceWeight.pow_norm_mul_seminorm_sliceR_le V κ κ' g 0 k n x` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem seminorm_sliceR_le (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     {κ κ' : Type} [Fintype κ] [Fintype κ'] (g : SchwartzMap (κ ⊕ κ' → V) ℂ) (x : κ → V) (k n : ℕ) :
@@ -49,13 +49,13 @@ theorem seminorm_sliceR_le (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V]
   simpa using this
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun x₀ => ?_` and prove the remaining obligations. Use `((schwartz_withSeminorms ℂ (κ' → V) ℂ).tendsto_nhds _ _).2 fun i ε hε => ?_` and prove the remaining obligations. Take `⟨k, n⟩` from `i`. Use `set C : ℝ := 2 ^ k * ((Finset.Iic (k, n + 1)).sup fun m ↦ SchwartzMap.seminorm ℂ m.1 m.2) f`. Establish `hcont : Continuous (fun x : κ → V => ‖x - x₀‖ * (1 + ‖x - x₀‖) ^ k * C)` using `by fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ‖x₀ - x₀‖ * (1 + ‖x₀ - x₀‖) ^ k * C = 0` using `by simp`. Establish `hev : ∀ᶠ x in nhds x₀, ‖x - x₀‖ * (1 + ‖x - x₀‖) ^ k * C < ε`. Use `hcont.continuousAt (x := x₀)` as an intermediate fact. Rewrite `this` using `[ContinuousAt, h0]`. Conclude with `this (Iio_mem_nhds hε)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `filter_upwards [hev] with x hx`. Use `lt_of_le_of_lt ?_ hx` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `SchwartzMap.seminorm ℂ k n (sliceR f x - sliceR f x₀) ≤ _`. Rewrite using `[sliceR_sub_eq]`. Use `(seminorm_sliceR_le V _ x₀ k n).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(GlobalTheory.SchwartzTranslateLip.seminorm_translate_sub_le k n k n le_rfl le_rfl _ f).trans ?_` and prove the remaining obligations. Establish `hC : 0 ≤ C` using `by positivity`. Establish `hp` using `norm_padL_le (κ' := κ') (x - x₀)`. Use `gcongr`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sliceR (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     {κ κ' : Type} [Fintype κ] [Fintype κ'] (f : SchwartzMap (κ ⊕ κ' → V) ℂ) :
@@ -84,9 +84,9 @@ end GlobalTheory.SliceOpCont
 
 open GlobalTheory.SliceOpCont in
 /- English proof (translation)
-Establish `hinl : Continuous (fun s : κ ⊕ κ₁' → V => s ∘ Sum.inl)` using `by fun_prop`. Establish `hinr : Continuous (fun s : κ ⊕ κ₁' → V => s ∘ Sum.inr)` using `by fun_prop`. Establish `hG : Continuous (fun s : κ ⊕ κ₁' → V => SchwartzMap.toBoundedContinuousFunctionCLM ℂ (κ₁' → V) ℂ (P (sliceR f (s ∘ Sum.inl))))` using `(SchwartzMap.toBoundedContinuousFunctionCLM ℂ (κ₁' → V) ℂ).continuous.comp (P.continuous.comp ((continuous_sliceR V f).comp hinl))`. Establish `hq : qOp P f = fun s => (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (κ₁' → V) ℂ (P (sliceR f (s ∘ Sum.inl)))) (s ∘ Sum.inr)`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Rewrite using `[hq]`. Conclude with `continuous_eval.comp (hG.prodMk hinr)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SliceOp.continuous_qOp (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (κ κ' κ₁' : Type) [Fintype κ] [Fintype κ'] [Fintype κ₁']

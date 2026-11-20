@@ -19,13 +19,13 @@ def toNC (p : {a // ε a = true} × {b // ε b = false}) : cBNC ε :=
       by rw [p.1.2, p.2.2]; decide⟩
 
 /- English proof (translation)
-Apply the tactic sequence `cases hy : ε y <;> cases hx' : ε x <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem other_true {x y : Fin N} (hne : ε x ≠ ε y) (hx : ¬ ε x = true) : ε y = true := by
   cases hy : ε y <;> cases hx' : ε x <;> simp_all
 
 /- English proof (translation)
-Apply the tactic sequence `cases hy : ε y <;> cases hx' : ε x <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem other_false {x y : Fin N} (hne : ε x ≠ ε y) (hx : ε x = true) : ε y = false := by
   cases hy : ε y <;> cases hx' : ε x <;> simp_all
@@ -53,7 +53,7 @@ def equivNC : ({a // ε a = true} × {b // ε b = false}) ≃ cBNC ε where
       simp [toNC, ofNC, hx, hnlt]
 
 /- English proof (translation)
-Introduce `N ε`. Rewrite using `[← Fintype.card_congr (equivNC ε), Fintype.card_prod, Fintype.card_subtype, Fintype.card_subtype]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem main : cBCardNC := by
   intro N ε

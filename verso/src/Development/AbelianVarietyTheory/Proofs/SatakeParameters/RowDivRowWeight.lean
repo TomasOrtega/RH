@@ -12,15 +12,15 @@ namespace GlobalTheory.ValCmp
 open MvPolynomial Formalism.GradedWeylDivisibility GlobalTheory.LvT.KerLat
 
 /- English proof (translation)
-Proceed by induction on `d using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg`. Establish `e : (monomial (f + g) (1 : R) : MvPolynomial (Fin r × Fin n) R) = monomial f 1 * monomial g 1`. Rewrite using `[monomial_mul, one_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_mul, hf, hg, map_add, Pi.add_apply, pow_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `single v c`. Take `⟨b, s⟩` from `v`. Rewrite using `[← X_pow_eq_monomial, map_pow, map_pow]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Unfold `rowGen`. Rewrite using `[aeval_X]`. Distinguish the cases in `h : b = a`. Substitute `h` using the available equality. Establish `e : Finsupp.weight (rowW r n) (Finsupp.single (b, s) c) b = c`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Simplify using `[Finsupp.weight_apply, rowW, Finsupp.sum_single_index]`. Rewrite using `[e, ← mul_pow]`. Simplify using `only [if_true]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : Finsupp.weight (rowW r n) (Finsupp.single (b, s) c) a = 0`. Simplify using `[Finsupp.weight_apply, rowW, Finsupp.sum_single_index, Ne.symm h]`. Rewrite using `[e]`. Simplify using `[h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rowGen_diag_monomial_one (R : Type) [CommRing R] {r n : ℕ} (a : Fin r) (d : Fin r × Fin n →₀ ℕ) :
     rowGen R a a (monomial d 1) =
@@ -52,9 +52,9 @@ theorem rowGen_diag_monomial_one (R : Type) [CommRing R] {r n : ℕ} (a : Fin r)
       simp [h]
 
 /- English proof (translation)
-Use `conv_lhs => rw [f.as_sum]`. Use `conv_rhs => rw [f.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `e : (monomial d (coeff d f) : MvPolynomial (Fin r × Fin n) R) = coeff d f • monomial d 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[e, map_smul, rowGen_diag_monomial_one, hf (mem_support_iff.mp hd), ← mul_smul_comm, Polynomial.smul_C]`.
+A detailed English derivation is pending.
 -/
 theorem rowGen_diag_homog (R : Type) [CommRing R] {r n : ℕ} (μ : Fin r → ℕ) (a : Fin r)
     (f : MvPolynomial (Fin r × Fin n) R) (hf : IsWeightedHomogeneous (rowW r n) f μ) :
@@ -69,11 +69,11 @@ theorem rowGen_diag_homog (R : Type) [CommRing R] {r n : ℕ} (μ : Fin r → �
     Polynomial.smul_C]
 
 /- English proof (translation)
-Introduce `R _ r n μ f hf`. Use `⟨fun a b k => ?_, fun a k => ?_⟩` and prove the remaining obligations. Establish `hZ : IsWeightedHomogeneous (rowZ r n) f (fun i => (μ i : ℤ))`. Introduce `d hd`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[weight_rowZ, hf hd]`. Establish `h` using `rowDiv_shift R _ a b k f hZ`. Use `⟨fun i => ((((fun i => (μ i : ℤ)) + k • (Pi.single a 1 - Pi.single b 1) : Fin r → ℤ)) i).toNat, fun d hd => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[← h hd, weight_rowZ, Int.toNat_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Unfold `rowDiv`. Rewrite using `[rowGen_diag_homog R μ a f hf, Polynomial.coeff_mul_C, Polynomial.coeff_one_add_X_pow, nsmul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowDiv_rowWeight : ∀ (R : Type) [CommRing R] (r n : ℕ) (μ : Fin r → ℕ)
     (f : MvPolynomial (Fin r × Fin n) R), IsWeightedHomogeneous (rowW r n) f μ →

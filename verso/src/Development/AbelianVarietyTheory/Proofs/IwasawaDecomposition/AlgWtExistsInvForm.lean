@@ -6,7 +6,7 @@ open NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `L _ _ _ n a`. Conclude with `GlobalTheory.T.exists_invariant_hermitian_weight_form L n a`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem algWt_exists_invForm : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
     (a : Formalism.L2.NG.AlgWt L n), ∃ β : a.W →ₗ⋆[ℂ] a.W →ₗ[ℂ] ℂ, GlobalTheory.CoefDuty.IsInvForm a β := by

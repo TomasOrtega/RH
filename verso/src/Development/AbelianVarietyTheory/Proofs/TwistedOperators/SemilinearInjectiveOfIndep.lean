@@ -10,11 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ConjScalar
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero c).2 fun v hv => ?_` and prove the remaining obligations. Establish `hexp : c v = ∑ i ∈ (b.repr v).support, φ (b.repr v i) • c (b i)` using `by conv_lhs => rw [← b.linearCombination_repr v]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => map_smulₛₗ c _ _`. Establish `hz` using `linearIndependent_iff'.1 h (b.repr v).support (fun i => φ (b.repr v i)) (by rw [← hv, hexp])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrepr : b.repr v = 0`. Use extensionality with `i`. Rewrite using `[Finsupp.coe_zero, Pi.zero_apply]`. Assume the negation of the conclusion as `hne`. Conclude with `hne (φ.injective ((hz i (Finsupp.mem_support_iff.2 hne)).trans (map_zero φ).symm))`.
-
-Conclude with `b.repr.injective (hrepr.trans (map_zero _).symm)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem semilinear_injective_of_indep {K L V W ι : Type} [Field K] [Field L] [AddCommGroup V] [Module K V]
     [AddCommGroup W] [Module L W] {φ : K →+* L} (b : Module.Basis ι K V) (c : V →ₛₗ[φ] W)
@@ -33,7 +31,7 @@ theorem semilinear_injective_of_indep {K L V W ι : Type} [Field K] [Field L] [A
   exact b.repr.injective (hrepr.trans (map_zero _).symm)
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.Hk3.hkF]`. Rewrite using `[Finsupp.sum_single_index, one_smul]`. Conclude with `zero_smul ℂ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hkF_single_one {D : D7} (V : HSp D) {W : Type} [AddCommGroup W] [Module ℂ W] (P : Pl D.host.E) (d : List ℤ)
     (F : Bridge.Gf V → W) (h : Bridge.Gf V) :
@@ -43,11 +41,11 @@ theorem hkF_single_one {D : D7} (V : HSp D) {W : Type} [AddCommGroup W] [Module 
   exact zero_smul ℂ _
 
 /- English proof (translation)
-Use `choose v hv using hb`. Use function extensionality and compare the values at `h`. Establish `e'` using `congrFun e h`. Rewrite `e'` using `[hkF_single_one, Pi.smul_apply]`. Rewrite using `[hkF_single_one, Pi.smul_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∑ γ ∈ GlobalTheory.Hk3.rep V P d, v (h * (finHom V).rangeRestrict γ) = a • v h`. Apply `inj` to reduce the goal to its premises. Rewrite using `[map_sum, map_smulₛₗ]`. Simplify using `only [← fun x => (hv x).1]`. Conclude with `e'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [fun x => (hv x).2]`. Rewrite using `[← map_smulₛₗ, ← key, map_sum]`.
+A detailed English derivation is pending.
 -/
 theorem hkF_transfer {D : D7} (V : HSp D) {K U W W' : Type} [Field K] [AddCommGroup U] [Module K U] [AddCommGroup W] [Module ℂ W]
     [AddCommGroup W'] [Module ℂ W'] {φ σ : K →+* ℂ} (c₀ : U →ₛₗ[φ] W) (c₁ : U →ₛₗ[σ] W') (inj : Function.Injective c₀)
@@ -68,9 +66,9 @@ theorem hkF_transfer {D : D7} (V : HSp D) {K U W W' : Type} [Field K] [AddCommGr
   rw [← map_smulₛₗ, ← key, map_sum]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R _ gramR c0R c0L hT i σ c c₁ H j hc a x hx`. Establish `hind : LinearIndependent ℂ fun k => c0L i (bVV D.what₂.LL (lamV D i) k)` using `(Formalism.IndefR.Bridge.FamTie.mapL hT i).2.1`. Establish `inj : Function.Injective (c0L i)` using `semilinear_injective_of_indep (bVV D.what₂.LL (lamV D i)) (c0L i) hind`. Introduce `P d hG hL`. Establish `e` using `hx P d hG hL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hkF_transfer (Vc D i) (c0L i) c₁ inj _ _ (hc.base x) P d (a P d) e`.
+A detailed English derivation is pending.
 -/
 theorem eigF_conj : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks), R.models_jV → ∀ gramR c0R c0L, GlobalTheory.GalLift.Comparison₂ R gramR c0R c0L → ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (c : CoefA (Vc D i)) (c₁ : VsV D i D.what₂.LL →ₛₗ[σ] c.W) (H : HMod (Bridge.Gf (Vc D i) → c.W)) (j : A.fam.amb.FL i A.μ0 →ₛₗ[σ] H.H), GlobalTheory.IndefiniteRowSideFullHecke.WeilGramSignature.IsConjForms R i σ (c0L i) c c₁ H j → ∀ a x, GlobalTheory.ConjScalar.EigK R i a x → GlobalTheory.ConjScalar.EigF R i (fun P d => σ (a P d)) (H.e (j x)) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R _ gramR c0R c0L hT i σ c c₁ H j hc a x hx

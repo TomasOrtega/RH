@@ -9,7 +9,7 @@ namespace Formalism.InvariantFactorPaths.ColumnFamilies
 open Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Use `Finset.orderEmbOfFin_unique (s := (canT mu c).1) (canT mu c).2 (f := fun a : Fin (colH mu c) => Fin.castLE (colH_le mu c) a) (by intro x; simp [canT]) (Fin.strictMono_castLE _)` as an intermediate fact. Conclude with `(congrFun this a).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma qa_can_emb {n : ℕ} [NeZero n] (mu : Fin n → ℤ) (c : ↥(TCols mu)) (a : Fin (colH mu c)) :
     (canT mu c).1.orderEmbOfFin (canT mu c).2 a = Fin.castLE (colH_le mu c) a := by
@@ -19,7 +19,7 @@ lemma qa_can_emb {n : ℕ} [NeZero n] (mu : Fin n → ℤ) (c : ↥(TCols mu)) (
   exact (congrFun this a).symm
 
 /- English proof (translation)
-Use `conv_rhs => rw [initMinor, AlgHom.map_det, ← Matrix.det_transpose]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[Matrix.transpose_apply, genMat, qa_row, qa_can_emb]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma qa_minor (R : Type*) [CommRing R] {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (I : TIdx mu) (c : ↥(TCols mu)) :
     Matrix.det (Matrix.of fun a b : Fin (colH mu c) =>
@@ -31,7 +31,7 @@ lemma qa_minor (R : Type*) [CommRing R] {n : ℕ} [NeZero n] {mu : Fin n → ℤ
   simp [Matrix.transpose_apply, genMat, qa_row, qa_can_emb]
 
 /- English proof (translation)
-Unfold `qa_P`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_congr rfl fun c _ => qa_minor R I c`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma qa_prod_minor (R : Type*) [CommRing R] {n : ℕ} [NeZero n] {mu : Fin n → ℤ} (I : TIdx mu) :
     ∏ c : ↥(TCols mu), Matrix.det (Matrix.of fun a b : Fin (colH mu c) =>
@@ -42,7 +42,7 @@ lemma qa_prod_minor (R : Type*) [CommRing R] {n : ℕ} [NeZero n] {mu : Fin n �
   exact Finset.prod_congr rfl fun c _ => qa_minor R I c
 
 /- English proof (translation)
-Unfold `brk TMat minorC`. Rewrite using `[← qa_prod_minor, map_prod]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem qa_brk_eq {n : ℕ} [NeZero n] (mu : Fin n → ℤ) (I : TIdx mu) :
     brk mu I = ((detU n ^ mu (lastIdx n) : (GLCoord ℤ n)ˣ) : GLCoord ℤ n) *
@@ -51,7 +51,7 @@ theorem qa_brk_eq {n : ℕ} [NeZero n] (mu : Fin n → ℤ) (I : TIdx mu) :
   rw [← qa_prod_minor, map_prod]
 
 /- English proof (translation)
-Unfold `brkPol`. Rewrite using `[qa_prod_minor]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem qa_brkPol_eq {n : ℕ} [NeZero n] (mu : Fin n → ℤ) (I : TIdx mu) :
     brkPol mu I = (genMat ℤ n).det ^ (mu (lastIdx n)).toNat * rename Prod.swap (qa_P ℤ I) := by
@@ -59,13 +59,13 @@ theorem qa_brkPol_eq {n : ℕ} [NeZero n] (mu : Fin n → ℤ) (I : TIdx mu) :
   rw [qa_prod_minor]
 
 /- English proof (translation)
-The claim follows from `Matrix.det_mvPolynomialX_ne_zero (Fin n) R`.
+A detailed English derivation is pending.
 -/
 lemma qa_det_ne (R : Type*) [CommRing R] [Nontrivial R] (n : ℕ) : (genMat R n).det ≠ 0 :=
   Matrix.det_mvPolynomialX_ne_zero (Fin n) R
 
 /- English proof (translation)
-The claim follows from `IsLocalization.injective (GLCoord R n) (powers_le_nonZeroDivisors_of_noZeroDivisors (qa_det_ne R n))`.
+A detailed English derivation is pending.
 -/
 lemma qa_algebraMap_inj (R : Type*) [CommRing R] [IsDomain R] (n : ℕ) :
     Function.Injective (algebraMap (MvPolynomial (Fin n × Fin n) R) (GLCoord R n)) :=
@@ -84,7 +84,7 @@ lemma qa_Phi_apply (R : Type*) [CommRing R] (n : ℕ) (u : GLCoord R n) (f : MvP
     qa_Phi R n u f = u * algebraMap (MvPolynomial (Fin n × Fin n) R) (GLCoord R n) (rename Prod.swap f) := rfl
 
 /- English proof (translation)
-Introduce `f g h`. Rewrite `h` using `[qa_Phi_apply, qa_Phi_apply]`. Conclude with `rename_injective _ Prod.swap_injective (qa_algebraMap_inj R n (hu.mul_left_cancel h))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma qa_Phi_inj (R : Type*) [CommRing R] [IsDomain R] (n : ℕ) (u : GLCoord R n) (hu : IsUnit u) :
     Function.Injective (qa_Phi R n u) := by
@@ -107,13 +107,13 @@ lemma qa_PhiZ_apply (n : ℕ) (u : GLCoord ℤ n) (f : MvPolynomial (Fin n × Fi
     qa_PhiZ n u f = u * algebraMap (MvPolynomial (Fin n × Fin n) ℤ) (GLCoord ℤ n) (rename Prod.swap f) := rfl
 
 /- English proof (translation)
-The claim follows from `qa_Phi_inj ℤ n u hu`.
+A detailed English derivation is pending.
 -/
 lemma qa_PhiZ_inj (n : ℕ) (u : GLCoord ℤ n) (hu : IsUnit u) : Function.Injective (qa_PhiZ n u) :=
   qa_Phi_inj ℤ n u hu
 
 /- English proof (translation)
-Unfold `mapCoord`. Rewrite using `[IsLocalization.Away.lift_eq]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma qa_mapCoord_algebraMap {n : ℕ} (F : Type) [CommRing F] (f : MvPolynomial (Fin n × Fin n) ℤ) :
     mapCoord (n := n) F (algebraMap _ (GLCoord ℤ n) f) =
@@ -123,7 +123,7 @@ lemma qa_mapCoord_algebraMap {n : ℕ} (F : Type) [CommRing F] (f : MvPolynomial
   rfl
 
 /- English proof (translation)
-Rewrite using `[qa_brk_eq, map_mul, qa_mapCoord_algebraMap, qa_Phi_apply, MvPolynomial.map_rename, map_tableauBideterminant]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qa_mapCoord_brk {n : ℕ} [NeZero n] (mu : Fin n → ℤ) (F : Type) [CommRing F] (I : TIdx mu) :
     mapCoord (n := n) F (brk mu I) =

@@ -8,7 +8,7 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.E
 namespace GlobalTheory.Fc.Ind
 
 /- English proof (translation)
-Introduce `h 𝒜 σ hD hR hM` and use `GlobalTheory.T.eventual_points_of_row_ties (fun Fm => DIVinN Fm) (fun _ _ _ p => GlobalTheory.BigOn.More p) (fun C CH _ _ _ p => (p.S false).ON (p.N C CH)) h 𝒜 σ hD hR hM`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem onto_at_chosen : GlobalTheory.BigOn.OntoX → ∀ (𝒜 : FamClass) (σ : RawSel Part 𝒜),
     (∀ (eps : ℝ) (Fm : FamP eps), 𝒜 Fm → GlobalTheory.EX.DQ.Duty7 Fm) → EvW PRows 𝒜 σ →

@@ -13,9 +13,9 @@ def laurentUnit (B : Type*) [CommRing B] : (LaurentPolynomial B)ˣ :=
     by rw [← LaurentPolynomial.T_add]; simp⟩
 
 /- English proof (translation)
-Establish `hinv : (((laurentUnit B)⁻¹ : (LaurentPolynomial B)ˣ) : LaurentPolynomial B) = LaurentPolynomial.T (-1)` using `rfl`. Establish `hval : (((laurentUnit B) : (LaurentPolynomial B)ˣ) : LaurentPolynomial B) = LaurentPolynomial.T 1` using `rfl`. Proceed by induction on `w using Int.induction_on with`. Consider the case `zero => simp [LaurentPolynomial.T_zero]`. Consider the case `succ i ih => rw [zpow_add_one, Units.val_mul, ih, hval, ← LaurentPolynomial.T_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `pred i ih => rw [zpow_sub_one, Units.val_mul, ih, hinv, ← LaurentPolynomial.T_add]`. Both sides reduce to the same expression.
+Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem laurentUnit_zpow (B : Type*) [CommRing B] (w : ℤ) :
     (((laurentUnit B) ^ w : (LaurentPolynomial B)ˣ) : LaurentPolynomial B) = LaurentPolynomial.T w := by
@@ -27,7 +27,7 @@ theorem laurentUnit_zpow (B : Type*) [CommRing B] (w : ℤ) :
   | pred i ih => rw [zpow_sub_one, Units.val_mul, ih, hinv, ← LaurentPolynomial.T_add]; rfl
 
 /- English proof (translation)
-Establish `hm : (monomial m c : MvPolynomial (ι × Fin n) R) = c • (MvPolynomial.basisMonomials (ι × Fin n) R) m`. Rewrite using `[MvPolynomial.coe_basisMonomials, MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[hm, LinearMap.map_smul]`. Simplify using `only [binomPol]`. Rewrite using `[Module.Basis.constr_basis, MvPolynomial.smul_monomial, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem binomialOperator_monomial {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] {n : ℕ} (LL : Letters ι) (S : Set ι)
     (a : Fin n) (k : ℕ) (m : ι × Fin n →₀ ℕ) (c : R) :
@@ -62,15 +62,15 @@ def weightEntryPropertySubmodule : Submodule R (MvPolynomial (ι × Fin n) R) wh
     exact hy k1 φ g0 g0inv h m (MvPolynomial.support_smul hm)
 
 /- English proof (translation)
-Introduce `k hk k1 _ φ g0 g0inv hg m hm`. Take `⟨h, h', hh1, hE⟩` from `hh k1 φ`. Use `set ψ : k1 →+* LaurentPolynomial k1 := LaurentPolynomial.C with hψ`. Establish `h2 : g0.map ψ * g0inv.map ψ = 1`. Rewrite using `[← Matrix.map_mul, hg, Matrix.map_one ψ (map_zero ψ) (map_one ψ)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : (h' * g0.map ψ) * (g0inv.map ψ * h) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (g0.map ψ), h2, Matrix.one_mul, hh1]`. Apply `hy (LaurentPolynomial k1) (ψ.comp φ) (h' * g0.map ψ) (g0inv.map ψ * h) hinv m` to reduce the goal to its premises. Rewrite using `[← matrixSubst_comp, hE, map_sum]`. Establish `hA : ∀ k', matrixSubst LL S (RingHom.id _) (g0inv.map ψ) (g0.map ψ) (C (LaurentPolynomial.T k') * MvPolynomial.map (ψ.comp φ) (yk k')) = C (LaurentPolynomial.T k') * MvPolynomial.map ψ (matrixSubst LL S φ g0inv g0 (yk k'))`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k'`. Rewrite using `[map_mul, matrixSubst_C, RingHom.id_apply, matrixSubst_map, map_matrixSubst]`. Repeatedly rewrite using `[hA]`. Rewrite `hm`, the goal using `[MvPolynomial.mem_support_iff]`. Introduce `hz`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hm` to reduce the goal to its premises. Rewrite `hz` using `[MvPolynomial.coeff_sum]`. Rewrite `hz` using `[MvPolynomial.coeff_C_mul, MvPolynomial.coeff_map]`. Establish `hz2` using `congrArg (fun p : LaurentPolynomial k1 => p.coeff k) hz`. Rewrite `hz2` using `[AddMonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hT : ∀ k' (c : k1), (LaurentPolynomial.T k' * ψ c).coeff k = if k' = k then c else 0`. Introduce `k' c`. Rewrite using `[hψ, mul_comm, ← LaurentPolynomial.single_eq_C_mul_T, AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`. Rewrite `hz2` using `[hT, Finset.sum_ite_eq' K k]`. Simplify `hz2` using `[hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem laurent_coefficients_mem_property (y : MvPolynomial (ι × Fin n) R) (K : Finset ℤ) (yk : ℤ → MvPolynomial (ι × Fin n) R)
     (hh : ∀ (k1 : Type) [CommRing k1] (φ : R →+* k1), ∃ h h' : Matrix (Fin n) (Fin n) (LaurentPolynomial k1),

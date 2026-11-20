@@ -24,15 +24,15 @@ def pointsHomeo {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
   continuous_invFun := Continuous.subtype_mk continuous_subtype_val _
 
 /- English proof (translation)
-Introduce `hM F E _ _ _ _ _ σ hσ n J hJ t ht`. Take `⟨hF, hE', h2, hc⟩` from `hσ`. Use `haveI : Algebra.IsQuadraticExtension F E := ⟨h2⟩`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Take `rfl : σ = (conj F E).toAlgHom` from `AlgHom.ext fun x => τ.injective ((hc τ x).trans (GroundTheory.Heights₂.Heights.FiniteCovolume.embedding_conj τ x).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu : IsUnit J.det` using `isUnit_iff_ne_zero.2 hJ.2`. Set `e` to `pointsHomeo (F := F) (E := E) J`. Take `⟨Ω, hΩ, hcov⟩` from `hM F E n J hu (e '' {g | ∀ v : Fin n → E, v ≠ 0 → t ≤ hgt _ J g v}) t ht (by`. Introduce and unpack `_ ⟨g, hg, rfl⟩ x hx`. Take `⟨v, rfl⟩` from `cvec_surjective (F := F) (E := E) (n := n) x`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv : v ≠ 0`. Introduce and unpack `rfl`. Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `p`. Simplify using `[cvec]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hg v hv` as an intermediate fact. Rewrite `this` using `[hgt_eq]`. Conclude with `this)`. Use `⟨e ⁻¹' Ω, e.isCompact_preimage.2 hΩ, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨θ, hθ, hθΩ⟩` from `hcov (e g) ⟨g, hg, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hθ` using `[← CompanionTheory.SWFin.HFin_eq, Subgroup.mem_subgroupOf]`. Use `⟨e.symm θ, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_subgroupOf.2 hθ`. Conclude with `hθΩ`.
+A detailed English derivation is pending.
 -/
 theorem exists_isCompact_of_le_hgt : (∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [Algebra.IsQuadraticExtension F E] (n : ℕ) (H : Matrix (Fin n) (Fin n) E), IsUnit H.det → ∀ (Y : Set (unitaryPoints F E H 𝔸[F])) (ε : ℝ), 0 < ε → (∀ u ∈ Y, ∀ x : Fin (Fintype.card (Fin n × Fin (Module.finrank F E))) → F, x ≠ 0 → ε ≤ Reduction.height (trHom (ι := Fin n) (Module.finBasis F E) 𝔸[F] (u : GL (Fin n) (𝔸[F] ⊗[F] E))) x) → ∃ Ω : Set (unitaryPoints F E H 𝔸[F]), IsCompact Ω ∧ ∀ u ∈ Y, ∃ θ ∈ (unitaryDiagonal F H).range, θ⁻¹ * u ∈ Ω) → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ t : ℝ, 0 < t → ∃ C₀ : Set (GAd σ J), IsCompact C₀ ∧ ∀ g : GAd σ J, (∀ v : Fin n → E, v ≠ 0 → t ≤ hgt σ J g v) → ∃ γ ∈ ratPts σ J, γ⁻¹ * g ∈ C₀ := by
   intro hM F E _ _ _ _ _ σ hσ n J hJ t ht

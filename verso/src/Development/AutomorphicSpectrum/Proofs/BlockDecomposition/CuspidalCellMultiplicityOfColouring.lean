@@ -17,7 +17,7 @@ namespace GlobalTheory.CompanionTheory.FineProdCell
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨t.2, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_class_of_degree (n : ℕ) (t : IrrGL k) (h : t.1 = n) :
     ∃ u : IrrCl (GL (Fin n) k), (⟨n, u⟩ : IrrGL k) = t := by
@@ -25,14 +25,14 @@ theorem exists_class_of_degree (n : ℕ) (t : IrrGL k) (h : t.1 = n) :
   exact ⟨t.2, rfl⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `GlobalTheory.SmGL.SegModel.subsingleton_irrCl_zero`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem subsingleton_irrCl_of_eq_zero (n : ℕ) (h : n = 0) : Subsingleton (IrrCl (GL (Fin n) k)) := by
   subst h
   exact GlobalTheory.SmGL.SegModel.subsingleton_irrCl_zero
 
 /- English proof (translation)
-The claim follows from `eq_of_heq (Sigma.ext_iff.1 h).2`.
+A detailed English derivation is pending.
 -/
 theorem class_eq_of_sigma_eq (t : IrrGL k) (z : IrrCl (GL (Fin t.1) k))
     (h : (⟨t.1, z⟩ : IrrGL k) = t) : z = t.2 :=
@@ -41,25 +41,21 @@ theorem class_eq_of_sigma_eq (t : IrrGL k) (z : IrrCl (GL (Fin t.1) k))
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ h x W b hrow hcol c hb`. Establish `hBZ` using `GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness`. Establish `hC : CellSemisimplification k` using `(GlobalTheory.CompanionTheory.GeoLink.geometricLemma k).2`. Take `⟨T, hT0, hT⟩` from `hC (Fin h) (Fin W.length) (fun i => Fin (x i).1) (fun j => Fin (W.get j).1) (fun i j => Fin (b i j)) (fun i => stdBlocks (b i) (hrow i)) (fun j => stdBlocks (fun i => b i j) (hcol j)) (fun i => (x i).2.rep.V) (fun i => (x i).rep) (fun i => (x i).2.rep.smooth) (fun i => (x i).2.re …`. Establish `hirr : (piTensor fun j => (W.get j).rep).IsIrreducible` using `GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible hBZ k _ _ fun j => (W.get j).2.rep`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `τ : IrrRep (Levi k fun j => Fin (W.get j).1)` to `⟨_, piTensor fun j => (W.get j).rep, isSmooth_piTensor fun j => (W.get j).2.rep.smooth, hirr⟩`. Use `(hT τ).trans ?_` and prove the remaining obligations. Establish `hzero : ∀ i j, c j ≠ i → b i j = 0` using `fun i j hij => by rw [hb, if_neg hij]`. Establish `hcolumn : ∀ (s : ∀ i j, IrrCl (GL (Fin (b i j)) k)) (j : Fin W.length), ∃ z : IrrCl (GL (Fin (W.get j).1) k), (⟨_, z⟩ : IrrGL k) = ⟨b (c j) j, s (c j) j⟩ ∧ Nonempty ((multiProd (stdBlocks (fun i => b i j) (hcol j)) fun i => (s i j).rep.ρ).Equiv z.rep.ρ)` using `fun s j => GlobalTheory.T.product_single_nonzero_factor_equiv (fun i => (⟨b i j, s i j⟩ : IrrGL k)) (hcol j) (c j) fun i hi => hzero i j (Ne.symm hi)`. Establish `hex : ∀ i j, ∃ u : IrrCl (GL (Fin (b i j)) k), c j = i → (⟨b i j, u⟩ : IrrGL k) = W.get j`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j`. Distinguish the cases in `hij : c j = i`. Take `⟨u, hu⟩` from `exists_class_of_degree (b i j) (W.get j) (by rw [hb, if_pos hij])`. Conclude with `⟨u, fun _ => hu⟩`. Conclude with `⟨(IrrRep.det (Fin (b i j)) 1 isSmoothChar_one).cl, fun h' => absurd h' hij⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose s₀ hs₀ using hex`. Establish `hfirst : ∀ i, jhMult (piTensor fun j => (s₀ i j).rep.ρ) (jac (stdBlocks (b i) (hrow i)) (x i).rep) = jmL (sub W c i) (x i).rep` using `fun i => GlobalTheory.T.jacquet_multiplicity_sublist_padding W c i (fun j => (⟨b i j, s₀ i j⟩ : IrrGL k)) (fun j hj => hs₀ i j hj) (fun j hj => hzero i j hj) (hrow i) (x i).rep`. Rewrite using `[Finset.sum_eq_single s₀]`. Use `choose z hz e using hcolumn s₀`. Establish `hzW : ∀ j, z j = (W.get j).2` using `fun j => class_eq_of_sigma_eq _ _ ((hz j).trans (hs₀ (c j) j rfl))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsecond : jhMult τ.ρ (piTensor fun j => multiProd (stdBlocks (fun i => b i j) (hcol j)) fun i => (s₀ i j).rep.ρ) = 1`. Establish `a : (piTensor fun j => multiProd (stdBlocks (fun i => b i j) (hcol j)) fun i => (s₀ i j).rep.ρ).Equiv (piTensor fun j => (W.get j).rep)` using `LocGL.piTensorEquiv fun j => (e j).some.trans (by rw [hzW j]; exact .refl _)`. Conclude with `(jhMult_congr_right _ a).trans (jhMult_self hirr)`. Rewrite using `[hsecond, mul_one]`. Conclude with `Finset.prod_congr rfl fun i _ => hfirst i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s _ hs`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Use `choose z hz e using hcolumn s`. Establish `a : (piTensor fun j => multiProd (stdBlocks (fun i => b i j) (hcol j)) fun i => (s i j).rep.ρ).Equiv (piTensor fun j => (z j).rep.ρ)` using `LocGL.piTensorEquiv fun j => (e j).some`. Use `(jhMult_congr_right _ a).trans ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Assume the negation of the conclusion as `hne`. Take `⟨φ⟩` from `(jhMult_ne_zero_iff.1 hne).nonempty_equiv hirr (GlobalTheory.T.piExteriorTensor_smoothIrreducible_isIrreducible hBZ k _ _ fun j => (z j).rep)`. Establish `hcl : ∀ j, (W.get j).2 = z j` using `fun j => by`. Use `GlobalTheory.T.tensor_product_determines_factor_classes _ (fun j => GL (Fin (W.get j).1) k) (fun j => (W.get j).2.rep) (fun j => (z j).rep) ⟨φ.symm⟩ j` as an intermediate fact. Rewrite `this` using `[IrrCl.cl_rep, IrrCl.cl_rep]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hs (funext fun i => funext fun j => ?_)` and prove the remaining obligations. Distinguish the cases in `hij : c j = i`. Substitute `hij` using the available equality. Establish `h1 : (⟨b (c j) j, s (c j) j⟩ : IrrGL k) = ⟨b (c j) j, s₀ (c j) j⟩`. Rewrite using `[hs₀ (c j) j rfl, ← hz j, ← hcl j]`.
-
-Conclude with `eq_of_heq (Sigma.mk.inj_iff.1 h1).2`. Use `haveI := subsingleton_irrCl_of_eq_zero (k := k) (b i j) (hzero i j hij)`. Conclude with `Subsingleton.elim _ _`. Introduce `hs`. Take `⟨i, hi⟩` from `hT0 s₀ hs`.
-
-Conclude with `mul_eq_zero_of_left (Finset.prod_eq_zero (Finset.mem_univ i) hi) _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem jhMult_cell_colour : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {h : ℕ} (x : Fin h → IrrGL k) (W : List (IrrGL k)) (b : Fin h → Fin W.length → ℕ) (hrow : ∀ i, ∑ j, b i j = (x i).1) (hcol : ∀ j, ∑ i, b i j = (W.get j).1) (c : Fin W.length → Fin h), (∀ i j, b i j = if c j = i then (W.get j).1 else 0) → jhMult (piTensor fun j => (W.get j).rep) (cellFunctor (c := fun i j => Fin (b i j)) (fun i => stdBlocks (b i) (hrow i)) (fun j => stdBlocks (fun i => b i j) (hcol j)) (piTensor fun i => (x i).rep)) = ∏ i, jmL (sub W c i) (x i).rep := by
   intro k _ _ _ _ h x W b hrow hcol c hb

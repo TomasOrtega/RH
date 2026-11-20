@@ -13,15 +13,15 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-Establish `hB` using `LeviFormBoundaryTopology.isClosed_bdry hS`. Establish `hAn : A.IsAnalyticSubset (bdry s)`. Introduce `x`. Use `⟨L.U x, L.isOpen_U x, L.mem_U x, 1, fun _ => s x, fun _ => hS.1 x, ?_⟩` and prove the remaining obligations. Use extensionality with `z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hzU⟩`. Conclude with `⟨hzU, fun _ => (LeviFormBoundaryTopology.bdry_iff hS hzU).1 hz⟩`. Introduce and unpack `⟨hzU, hz⟩`. Conclude with `⟨(LeviFormBoundaryTopology.bdry_iff hS hzU).2 (hz 0), hzU⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hInt : interior (bdry s) = ∅` using `LeviFormBoundaryTopology.interior_bdry_eq_empty hS hSNC`. Unfold `maMeasure`. Use `split_ifs with h`. Simplify using `only [Measure.coe_finsetSum, Finset.sum_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hT` using `(A.chart j).open_target.measurableSet`. Rewrite using `[Measure.map_apply_of_aemeasurable (((A.chart j).continuousOn_symm.aemeasurable hT).mono_ac (withDensity_absolutelyContinuous _ _)) hB.measurableSet]`. Use `withDensity_absolutelyContinuous _ _ ?_` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply' hT]`. Use `analyticNull A (bdry s) hAn hInt j` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Set.inter_comm, (A.chart j).image_source_inter_eq']`. Rewrite using `[Set.inter_comm]` and apply the resulting hypothesis. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem maMeasure_bdry_null_any {e : ℕ} {X : Type} [TopologicalSpace X] [MeasurableSpace X]
     [BorelSpace X] (A : FinHolAtlas e X) (L : LocPot X) (s : X → X → ℂ) {n : ℕ} (m : Fin n → ℕ)
@@ -53,29 +53,27 @@ theorem maMeasure_bdry_null_any {e : ℕ} {X : Type} [TopologicalSpace X] [Measu
   · simp
 
 /- English proof (translation)
-Introduce `e X _ _ _ _ _ A Θ L s n m W hΘ hΘpos hL hs hsnc hsle L' v Dg hL' hv hvsnc hsvsnc hvle th ph phT C₅ C t₀ hsing hreg hC2`. Simplify using `only`. Establish `hconv` using `GlobalTheory.T.convergence_statement_holds A Θ L s m W hΘ hΘpos hL hs hsnc hsle th ph phT C₅ C t₀ hsing hreg hC2`. Establish `hlog1 : ∀ y, 1 ≤ Real.log (rW L s y)`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `rW_ge L s hsle y`. Combine the equalities or inequalities in the displayed calculation. Establish `hunif : ∀ g : X → ℝ, TendstoLocallyUniformlyOn (fun (_ : ℝ) => g) g (𝓝[>] (0 : ℝ)) (bdry s)ᶜ`. Introduce `g u hu x _`. Conclude with `⟨Set.univ, Filter.univ_mem, Filter.Eventually.of_forall fun _ y _ => refl_mem_uniformity hu⟩`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Establish `hweak : ∀ (g : X → ℝ) (B : ℝ), Continuous g → (∀ y, |g y| ≤ B) → Tendsto (fun t => ∫ y, g y ∂maMeasure A (fun i => th i + LocPot.ofFun (phT i t) + Θ)) (𝓝[>] 0) (𝓝 (∫ y, g y ∂maMeasure A (fun i => th i + LocPot.ofFun (ph i) + Θ)))`. Introduce `g B hg hB`. Establish `hb : ∀ (t : ℝ) (y : X), y ∉ bdry s → |(fun (_ : ℝ) => g) t y| ≤ B * Real.log (rW L s y)`. Introduce `t y _`. Establish `hB0 : 0 ≤ B` using `(abs_nonneg _).trans (hB y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h` using `hconv g (fun _ => g) B (fun _ => hg.continuousOn) hb (hunif g)`. Simplify using `only at h`. Conclude with `h.2.2.2.2`. Establish `hone : ∀ (t : ℝ) (y : X), y ∉ bdry s → |(fun (_ : ℝ) (_ : X) => (1 : ℝ)) t y| ≤ 1 * Real.log (rW L s y)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify by unfolding definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t y _`. Simplify using `using hlog1 y`. Establish `h1` using `hconv (fun _ => 1) (fun _ _ => 1) 1 (fun _ => continuousOn_const) hone (hunif _)`. Simplify using `only at h1`. Establish `hμfin : IsFiniteMeasure (maMeasure A (fun i => th i + LocPot.ofFun (ph i) + Θ))` using `h1.1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμTfin : ∀ᶠ t in 𝓝[>] (0 : ℝ), IsFiniteMeasure (maMeasure A (fun i => th i + LocPot.ofFun (phT i t) + Θ))` using `by filter_upwards [h1.2.2.2.1] with t ht`. Conclude with `(integrable_const_iff.1 ht).resolve_left one_ne_zero`. Establish `hzero : {y | GroundTheory.Heights₂.Heights.AnalyticLimit.secNorm L' v y = 0} = bdry v`. Use extensionality with `y`. Simplify using `[GroundTheory.Heights₂.Heights.AnalyticLimit.secNorm, bdry, Real.exp_ne_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnull : ∀ Φ : Fin e → LocPot X, maMeasure A Φ {y | GroundTheory.Heights₂.Heights.AnalyticLimit.secNorm L' v y = 0} = 0`. Introduce `Φ`. Rewrite using `[hzero]`. Conclude with `maMeasure_bdry_null_any A L' v ![1] ![Dg] hv hvsnc Φ`. Establish `hbd : ∀ y, 0 ≤ GroundTheory.Heights₂.Heights.AnalyticLimit.secNorm L' v y ∧ GroundTheory.Heights₂.Heights.AnalyticLimit.secNorm L' v y ≤ 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y`. Establish `h0 : 0 ≤ GroundTheory.Heights₂.Heights.AnalyticLimit.secNorm L' v y` using `mul_nonneg (norm_nonneg _) (Real.exp_pos _).le`. Use `⟨h0, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Establish `hpos` using `Real.log_pos (not_le.1 hlt)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Split into cases according to the possible forms of the given data.
 
-Establish `h2 : logNormSec L' v y = Real.log (GroundTheory.Heights₂.Heights.AnalyticLimit.secNorm L' v y)` using `rfl`. Combine the linear relations using `[hvle y]`. Consider the cases of `e with`. Consider the case `zero`. Establish `hfin : Finite X`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ∀ j, (A.chart j).source.Subsingleton` using `fun j x hx y hy => (A.chart j).injOn hx hy (Subsingleton.elim _ _)`. Establish `hU : (⋃ j, (A.chart j).source).Finite` using `Set.finite_iUnion fun j => (hsub j).finite`. Establish `hcov : (Set.univ : Set X) ⊆ ⋃ j, (A.chart j).source` using `fun x _ => Set.mem_iUnion.2 (A.cover x)`. Conclude with `Set.finite_univ_iff.1 (hU.subset hcov)`. Establish `hμeq : ∀ t, maMeasure A (fun i => th i + LocPot.ofFun (phT i t) + Θ) = maMeasure A (fun i => th i + LocPot.ofFun (ph i) + Θ)` using `fun t => congrArg _ (Subsingleton.elim _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately.
 
-Establish `hint : Integrable (fun y => -logNormSec L' v y) (maMeasure A (fun i => th i + LocPot.ofFun (ph i) + Θ))` using `Integrable.of_finite`. Simplify using `only [hμeq]`. Conclude with `⟨hint, Filter.Eventually.of_forall fun _ => hint, tendsto_const_nhds⟩`. Consider the case `succ e`. Establish `hsmall` using `GlobalTheory.T.mixed_measure_convergence_snc GroundTheory.Heights₂.Heights.AnalyticLimit.UniformIntegrability.full GlobalTheory.CompanionTheory.Ar.Giv.tailBound_holds A Θ L s m W hΘ hΘpos hL hs hsnc hsle L' v Dg hL' hv hvsnc hsvsnc th ph phT C₅ C t₀ hsing hreg`.
-
-Conclude with `GlobalTheory.T.weak_convergence_off_zero_set (maMeasure A (fun i => th i + LocPot.ofFun (ph i) + Θ)) (fun t => maMeasure A (fun i => th i + LocPot.ofFun (phT i t) + Θ)) (GroundTheory.Heights₂.Heights.AnalyticLimit.secNorm L' v) hμfin hμTfin (GroundTheory.Heights₂.Heights.Analytic …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unifInt_holds : UnifIntStatement := by
   intro e X _ _ _ _ _ A Θ L s n m W hΘ hΘpos hL hs hsnc hsle L' v Dg hL' hv hvsnc hsvsnc hvle

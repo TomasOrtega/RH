@@ -10,9 +10,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 open scoped Classical
 
 /- English proof (translation)
-Use `haveI : NeZero (l ^ 1) := ⟨pow_ne_zero _ hl.out.ne_zero⟩`. Establish `e1 : ((cycMod F Ω l 1).ker : Set (G F Ω)) = (fun g => ((cycZ F Ω l g : ℤ_[l]ˣ) : ℤ_[l]) - 1) ⁻¹' Metric.closedBall 0 ((l : ℝ) ^ (-(1 : ℕ) : ℤ))`. Use extensionality with `g`. Rewrite using `[Set.mem_preimage, mem_closedBall_zero_iff, PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_one, sub_eq_zero, SetLike.mem_coe, MonoidHom.mem_ker, Units.ext_iff]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Use `(IsUltrametricDist.isOpen_closedBall _ (zpow_ne_zero _ (Nat.cast_ne_zero.2 hl.out.ne_zero))).preimage ?_` and prove the remaining obligations. Conclude with `(Units.continuous_val.comp (continuous_cycZ F Ω l)).sub continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem cyc_open (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ)
     [hl : Fact l.Prime] : IsOpen ((cycMod F Ω l 1).ker : Set (G F Ω)) := by
@@ -28,9 +28,9 @@ private theorem cyc_open (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Alg
   exact (Units.continuous_val.comp (continuous_cycZ F Ω l)).sub continuous_const
 
 /- English proof (translation)
-Use `haveI : NeZero (l ^ 1) := ⟨pow_ne_zero _ hl.out.ne_zero⟩`. Introduce `h`. Rewrite `h` using `[Subgroup.index_ker]`. Establish `h1 : l ∣ Nat.card (ZMod (l ^ 1))ˣ` using `h.trans (Subgroup.card_subgroup_dvd_card _)`. Rewrite `h1` using `[Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, pow_one, Nat.totient_prime hl.out]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hl.out.two_le`. Use `Nat.le_of_dvd (by omega) h1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem not_dvd_ker {H : Type} [Group H] (l : ℕ) [hl : Fact l.Prime] (φ : H →* (ZMod (l ^ 1))ˣ) :
     ¬ l ∣ φ.ker.index := by
@@ -44,9 +44,9 @@ private theorem not_dvd_ker {H : Type} [Group H] (l : ℕ) [hl : Fact l.Prime] (
   omega
 
 /- English proof (translation)
-Establish `hr : D.rbar g = Matrix.diagonal fun i => residue c.O (D.ps i g : c.O)`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Raw.rbar, Raw.r0, diagRep]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Raw.rbar, Raw.r0, diagRep, h]`. Rewrite using `[hr, ← Matrix.diagonal_one, Matrix.diagonal_eq_diagonal_iff]`. Conclude with `forall_congr' fun i => by rw [Units.ext_iff]; rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem rbar_iff {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
     (D : Raw Ω c) (g : G ℚ Ω) :
@@ -61,21 +61,19 @@ private theorem rbar_iff {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ 
   exact forall_congr' fun i => by rw [Units.ext_iff]; rfl
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl c D hD T`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, fo, -, fu⟩` from `UpperTheory.V.GradeZeroInterpolatingElement.facts D hD`. Take `⟨hN, hI, -⟩` from `UpperTheory.V.X.spKer D`. Take `⟨hE, -, -⟩` from `galEmbTop ℚ T.F Ω`. Take `⟨hDI, -, -, -⟩` from `galEmbFam ℚ T.F Ω l`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfix : ∀ g : G T.F Ω, resQ T.F g ∈ T.F.fixingSubgroup` using `fun g => by`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Conclude with `fun x hx => g.commutes ⟨x, hx⟩`. Establish `hK : T.Kr = D.rbar.ker.comap (resQ T.F) ⊓ (cycMod T.F Ω l 1).ker`. Use extensionality with `g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `⟨fun h => ⟨h.1.2, h.2⟩, fun h => ⟨⟨hfix g, h.1⟩, h.2⟩⟩`. Use `⟨?_, ?_, ?_, hK ▸ inf_le_right, fun g hg => hg.1.2, fun w g hg => ?_, ⟨Finset.prod_ne_zero_iff.2 fun p hp => (hD.S_prime p hp).ne_zero, Finset.dvd_prod_of_mem _ hD.l_mem⟩, ?_, fun r hr => ?_⟩` and prove the remaining obligations. Rewrite using `[hK] infer_instance`. Rewrite using `[hK]`. Conclude with `(fo.preimage hE.continuous).inter (cyc_open T.F Ω l)`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hK, ← Subgroup.relIndex_mul_index inf_le_left, Subgroup.inf_relIndex_left]`. Introduce `h`. Break down `(Nat.Prime.dvd_mul hl.out).1 h with h2 | h2` into its components or cases. Conclude with `not_dvd_ker l _ (h2.trans (Subgroup.relIndex_dvd_index_of_normal _ _))`. Rewrite `h2` using `[Subgroup.index_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hI (h2.trans (Subgroup.relIndex_dvd_index_of_normal _ _))`. Establish `h` using `fun i => (rbar_iff D _).1 hg (lab T.pr i) show Units.map (residue c.O).toMonoidHom ((D.ps (lab T.pr 0) (resQ T.F g) * (D.ps (lab T.pr 1) (resQ T.F g))⁻¹) ^ w.1 * (D.ps (lab T.pr 0) (resQ T.F g) * (D.ps (lab T.pr 2) (resQ T.F g))⁻¹) ^ w.2) = 1`. Simplify using `only [map_mul, map_zpow, map_inv, h, inv_one, mul_one, one_zpow]`. Introduce and unpack `g ⟨A, hA, hg⟩`. Establish `hS : Raw.Away D.S A` using `fun p hp hv => hA (by`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨m, hm⟩ : p ∣ prodS D` from `Finset.dvd_prod_of_mem _ hp`. Rewrite using `[hm, Nat.cast_mul, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' ((A.valuation_le_one_iff _).2 (natCast_mem A m))) hv)`. Establish `hg' : resQ T.F g ∈ Ine (F` using `ℚ) A := by`. Rewrite `hg` using `[← (hDI A).2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hg`. Establish `h1 : D.rbar (resQ T.F g) = 1` using `(rbar_iff D _).2 fun i => by`. Rewrite using `[MonoidHom.mem_ker.1 (fu i A hS hg'), map_one]`. Use `⟨⟨A, fun p hp => ?_, hg, h1⟩, h1⟩` and prove the remaining obligations. Establish `: p = l` using `by simpa using hp`.
-
-Conclude with `hS p (this ▸ hD.l_mem)`. Establish `hle : kerQ D T.F ≤ galOf ℚ T.F Ω` using `fun g hg x => (IntermediateField.mem_fixingSubgroup_iff _ _).1 hg.1.1 x.1 x.2`. Take `⟨⟨ε, -, hε, -⟩, -⟩` from `UpperTheory.V.Kum.xdualBase ℚ Ω T.F 1 (kerQ D T.F) (ZMod l) (ZMod l) hle`. Establish `e` using `(ε.ofSubmodules _ _ hε).toEquiv`. Conclude with `CardLe.of_injective hr e.symm e.symm.injective`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.residualKernel_properties :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ T : Tower D, T.Kr.Normal ∧ IsOpen (T.Kr : Set (G T.F Ω)) ∧ ¬ l ∣ T.Kr.index ∧ T.Kr ≤ (cycMod T.F Ω l 1).ker ∧ (∀ g ∈ T.Kr, D.rbar (resQ T.F g) = 1) ∧ (∀ w g, D.rbar (resQ T.F g) = 1 → T.rbU w g = 1) ∧ (prodS D ≠ 0 ∧ l ∣ prodS D) ∧ (∀ g ∈ ineOff T.F Ω (prodS D), g ∈ (T.fr ∅).N ∧ D.rbar (resQ T.F g) = 1) ∧ ∀ r, XRk l 1 (kerQ D T.F) r → XRk l 1 T.Kr r := by

@@ -16,7 +16,7 @@ namespace Formalism.MainNotions.TestSideWords
 open Formalism.MainNotions.TestSideCounting
 
 /- English proof (translation)
-The claim follows from `stmtE_of_TenNS hT D fun CLa Ck Crk Cdeg => restNS_of D CLa Ck Crk Cdeg 26 2 24 60 (hM _ _ _ _) (hP _ _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem stmtE_of_TenMP (hT : TenOp) (D : Formalism.BasicNotions.D7)
     (hM : ∀ CLa Ck Crk Cdeg : ℝ, RestMEM D CLa Ck Crk Cdeg)
@@ -24,7 +24,7 @@ theorem stmtE_of_TenMP (hT : TenOp) (D : Formalism.BasicNotions.D7)
   stmtE_of_TenNS hT D fun CLa Ck Crk Cdeg => restNS_of D CLa Ck Crk Cdeg 26 2 24 60 (hM _ _ _ _) (hP _ _ _ _)
 
 /- English proof (translation)
-The claim follows from `stmtE_of_TenMP tensor_operators_holds D hM hP`.
+A detailed English derivation is pending.
 -/
 theorem stmtE_of_MP (D : Formalism.BasicNotions.D7)
     (hM : ∀ CLa Ck Crk Cdeg : ℝ, RestMEM D CLa Ck Crk Cdeg)

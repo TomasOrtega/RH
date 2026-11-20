@@ -13,9 +13,9 @@ open MvPolynomial
 open ReciprocityTheory.ChartRestriction.G.Geo (MRing PBlk IsArithVar IsHorizontal divSupp Xc)
 
 /- English proof (translation)
-Introduce `m hm k`. Take `⟨i, -, hi⟩` from `Finset.mem_biUnion.mp (MvPolynomial.support_sum hm)`. Rewrite `hi` using `[C_mul_X_eq_monomial]`. Establish `hmi` using `Finset.mem_singleton.mp (MvPolynomial.support_monomial_subset hi)`. Substitute `hmi` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Consider the cases of `k`. Simplify using `[Finsupp.single_apply]`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_linForm {n : ℕ} (u : Fin n → ℤ) :
     ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog (IndefiniteRowSideFullHecke.ArithBezout.linForm u) (fun _ => 1) := by
@@ -29,9 +29,9 @@ theorem isMultiHomog_linForm {n : ℕ} (u : Fin n → ℤ) :
   simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Introduce `n d P u H hP hu hH hHor`. Take `⟨hK, ⟨hPp, hPh, -⟩, -, hPdim⟩` from `hP`. Take `⟨hHmin, hHrel⟩` from `hH`. Use `hPp` as an intermediate fact. Establish `h1` using `ReciprocityTheory.ChartRestriction.G.Geo.dim_quot_minimal_add_one P H _ hu hHmin`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hPdim]`. Use `⟨hK, ⟨hHmin.1.1, ReciprocityTheory.ChartRestriction.G.Geo.isMultiHomogIdeal_of_mem_minimalPrimes hPh (isMultiHomog_linForm u) hHmin, hHrel⟩, hHor, ReciprocityTheory.ChartRestriction.G.Geo.withBot_eq_of_add_one ?_⟩` and prove the remaining obligations. Rewrite using `[h1, show d + 1 + Fintype.card Unit = d + Fintype.card Unit + 1 by omega]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem DivSuppHorizontalArithVar.proof : DivSuppHorizontalArithVar.Statement := by
   intro n d P u H hP hu hH hHor

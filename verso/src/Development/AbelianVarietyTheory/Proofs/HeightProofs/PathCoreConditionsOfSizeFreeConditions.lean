@@ -7,7 +7,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.PlugPt
 
 /- English proof (translation)
-Introduce `D O c b h hF`. Take `⟨hT, -⟩` from `h`. Use `⟨GlobalTheory.Plug.coreTies_of_tied D _ _ _ _ O.L O.ex.errX b.T b.R.toRealDat _ hT.tied b.charW.base.lev hF, hT.tied.core.pb, hT.types.eSerTie, hT.level, hT.data⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem ties_core_of_tiesB : ∀ (D : D7) (O : GlobalTheory.EX.OB.Obj D) (c : ℝ) (b : BdPt D O c), TiesB D O c b → FieldSmall D O.L →
     CoreTies O.L O.ex.errX b.T b.R.toRealDat ∧ b.T.pb = b.R.C.P.pb ∧ GlobalTheory.GLq.ESerTie D ∧ b.LevelTie ∧ b.DataTie := by

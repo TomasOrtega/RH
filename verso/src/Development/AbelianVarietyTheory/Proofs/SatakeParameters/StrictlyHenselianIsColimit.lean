@@ -31,7 +31,7 @@ structure SHD (R : Type) [CommRing R] [IsLocalRing R] (Ω : Type) [Field Ω] [Al
 attribute [instance] SHD.ring SHD.alg SHD.hens SHD.loc
 
 /- English proof (translation)
-Take `⟨S, _, _, _, _, hsep, -, -, ⟨e⟩, hp⟩` from `GlobalTheory.exists_strictHenselisation R Ω`. Conclude with `⟨{ S := S, sep := hsep, e := e, pieces := hp }⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SHD.nonempty (R : Type) [CommRing R] [IsLocalRing R] (Ω : Type) [Field Ω]
     [Algebra (ResidueField R) Ω] [IsSepClosure (ResidueField R) Ω] : Nonempty (SHD R Ω) := by
@@ -46,7 +46,7 @@ abbrev pB (B : Subalgebra ℤ A) : Ideal B := (maximalIdeal A).comap (algebraMap
 abbrev RB (B : Subalgebra ℤ A) : Type := Localization.AtPrime (pB A B)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `y.2 ((mem_maximalIdeal _).2 h)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem isUnit_of_notMem (B : Subalgebra ℤ A) (y : (pB A B).primeCompl) : IsUnit (algebraMap B A y) := by
   by_contra h
@@ -56,17 +56,17 @@ def toA (B : Subalgebra ℤ A) : RB A B →+* A :=
   IsLocalization.lift (M := (pB A B).primeCompl) (isUnit_of_notMem A B)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem toA_algebraMap (B : Subalgebra ℤ A) (b : B) : toA A B (algebraMap B (RB A B) b) = b :=
   IsLocalization.lift_eq _ _
 
 /- English proof (translation)
-Rewrite using `[toA, IsLocalization.lift_injective_iff]`. Introduce `x y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h` using `[IsLocalization.eq_iff_exists (pB A B).primeCompl]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc⟩` from `h`. Use `congrArg (algebraMap B A) hc` as an intermediate fact. Simplify using `only [map_mul] at this`. Conclude with `(isUnit_of_notMem A B c).mul_left_cancel this`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: x = y` using `Subtype.ext h`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toA_injective (B : Subalgebra ℤ A) : Function.Injective (toA A B) := by
   rw [toA, IsLocalization.lift_injective_iff]
@@ -121,7 +121,7 @@ Both sides reduce to the same expression.
 theorem σ_apply (B : Subalgebra ℤ A) (x : ResidueField (O A B)) : σ A B x = ((sh A B).e x : ResidueField A) := rfl
 
 /- English proof (translation)
-Simplify using `only [ρ, RingHom.comp_apply, σ_apply]`. Rewrite using `[← ResidueField.algebraMap_residue, AlgEquiv.commutes]`. Express the relevant statement in the definitionally equal form `algebraMap (ResidueField (RB A B)) (ResidueField A) (residue _ r) = _`. Conclude with `ResidueField.map_residue (toA A B) r`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem rho_alg (B : Subalgebra ℤ A) (r : RB A B) : ρ A B (algebraMap _ _ r) = residue A (toA A B r) := by
   simp only [ρ, RingHom.comp_apply, σ_apply]
@@ -130,9 +130,9 @@ theorem rho_alg (B : Subalgebra ℤ A) (r : RB A B) : ρ A B (algebraMap _ _ r) 
   exact ResidueField.map_residue (toA A B) r
 
 /- English proof (translation)
-Use `letI : Algebra (RB A B) T := f.toAlgebra`. Set `G₁ : O A B →ₐ[RB A B] T` to `{ g₁ with commutes' := fun r => DFunLike.congr_fun h₁ r }`. Set `G₂ : O A B →ₐ[RB A B] T` to `{ g₂ with commutes' := fun r => DFunLike.congr_fun h₂ r }`. Establish `hres : ∀ x, residue T (g₁ x) = residue T (g₂ x)` using `fun x => τ.injective (DFunLike.congr_fun hr x)`. Use `(GlobalTheory.IndEtaleHensel.bijective_residue_comp (RB A B) (O A B) T (sh A B).pieces).1 (a₁ := G₁) (a₂ := G₂) (by ext x; exact hres x)` as an intermediate fact.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Conclude with `DFunLike.congr_fun this x`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem uniq (B : Subalgebra ℤ A) {T : Type} [CommRing T] [HenselianLocalRing T]
     (τ : ResidueField T →+* ResidueField A) (f : RB A B →+* T) (g₁ g₂ : O A B →+* T)
@@ -147,7 +147,7 @@ theorem uniq (B : Subalgebra ℤ A) {T : Type} [CommRing T] [HenselianLocalRing 
   ext x; exact DFunLike.congr_fun this x
 
 /- English proof (translation)
-Use `letI : Algebra (RB A B) T := f.toAlgebra`. Set `Ψ : O A B →ₐ[RB A B] ResidueField T` to `{ ψ with commutes' := fun r => DFunLike.congr_fun hψ r }`. Take `⟨G, hG⟩` from `(GlobalTheory.IndEtaleHensel.bijective_residue_comp (RB A B) (O A B) T (sh A B).pieces).2 Ψ`. Conclude with `⟨G.toRingHom, RingHom.ext fun r => G.commutes r, RingHom.ext fun x => DFunLike.congr_fun hG x⟩`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exist (B : Subalgebra ℤ A) {T : Type} [CommRing T] [HenselianLocalRing T]
     (f : RB A B →+* T) (ψ : O A B →+* ResidueField T) (hψ : ψ.comp (algebraMap _ _) = (residue T).comp f) :
@@ -158,7 +158,7 @@ theorem exist (B : Subalgebra ℤ A) {T : Type} [CommRing T] [HenselianLocalRing
   exact ⟨G.toRingHom, RingHom.ext fun r => G.commutes r, RingHom.ext fun x => DFunLike.congr_fun hG x⟩
 
 /- English proof (translation)
-The claim follows from `exist A B (toA A B) (ρ A B) (RingHom.ext fun r => rho_alg A B r)`.
+A detailed English derivation is pending.
 -/
 theorem exists_g (B : Subalgebra ℤ A) :
     ∃ g : O A B →+* A, g.comp (algebraMap _ _) = toA A B ∧ (residue A).comp g = ρ A B :=
@@ -167,13 +167,13 @@ theorem exists_g (B : Subalgebra ℤ A) :
 def g (B : Subalgebra ℤ A) : O A B →+* A := (exists_g A B).choose
 
 /- English proof (translation)
-The claim follows from `DFunLike.congr_fun (exists_g A B).choose_spec.1 r`.
+A detailed English derivation is pending.
 -/
 theorem g_alg (B : Subalgebra ℤ A) (r : RB A B) : g A B (algebraMap _ _ r) = toA A B r :=
   DFunLike.congr_fun (exists_g A B).choose_spec.1 r
 
 /- English proof (translation)
-The claim follows from `DFunLike.congr_fun (exists_g A B).choose_spec.2 x`.
+A detailed English derivation is pending.
 -/
 theorem g_res (B : Subalgebra ℤ A) (x : O A B) : residue A (g A B x) = ρ A B x :=
   DFunLike.congr_fun (exists_g A B).choose_spec.2 x
@@ -185,7 +185,7 @@ variable (A : Type) [CommRing A] [HenselianLocalRing A] [IsSepClosed (ResidueFie
 variable {A}
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `Iff.rfl`.
+By extensionality, compare the relevant components. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem pB_comap {B B' : Subalgebra ℤ A} (h : B ≤ B') :
     pB A B = (pB A B').comap (Subalgebra.inclusion h).toRingHom := by
@@ -198,14 +198,14 @@ instance {B B' : Subalgebra ℤ A} (h : B ≤ B') : IsLocalHom (loc h) := by
   unfold loc; infer_instance
 
 /- English proof (translation)
-The claim follows from `Localization.localRingHom_to_map _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem loc_algebraMap {B B' : Subalgebra ℤ A} (h : B ≤ B') (b : B) :
     loc h (algebraMap B (RB A B) b) = algebraMap B' (RB A B') (Subalgebra.inclusion h b) :=
   Localization.localRingHom_to_map _ _ _ _ _
 
 /- English proof (translation)
-Apply `IsLocalization.ringHom_ext (pB A B).primeCompl` to reduce the goal to its premises. Use extensionality with `b`. Simplify using `only [RingHom.comp_apply, loc_algebraMap, RingHom.id_apply]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem loc_refl (B : Subalgebra ℤ A) : loc (le_refl B) = RingHom.id _ := by
   apply IsLocalization.ringHom_ext (pB A B).primeCompl
@@ -214,7 +214,7 @@ theorem loc_refl (B : Subalgebra ℤ A) : loc (le_refl B) = RingHom.id _ := by
   rfl
 
 /- English proof (translation)
-Apply `IsLocalization.ringHom_ext (pB A B).primeCompl` to reduce the goal to its premises. Use extensionality with `b`. Simplify using `only [RingHom.comp_apply, loc_algebraMap]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem loc_trans {B B' B'' : Subalgebra ℤ A} (h : B ≤ B') (h' : B' ≤ B'') :
     loc (h.trans h') = (loc h').comp (loc h) := by
@@ -224,9 +224,9 @@ theorem loc_trans {B B' B'' : Subalgebra ℤ A} (h : B ≤ B') (h' : B' ≤ B'')
   rfl
 
 /- English proof (translation)
-Establish `: (toA A B').comp (loc h) = toA A B`. Apply `IsLocalization.ringHom_ext (pB A B).primeCompl` to reduce the goal to its premises. Use extensionality with `b`. Simplify using `only [RingHom.comp_apply, loc_algebraMap, toA_algebraMap]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Conclude with `DFunLike.congr_fun this r`.
+A detailed English derivation is pending.
 -/
 theorem toA_loc {B B' : Subalgebra ℤ A} (h : B ≤ B') (r : RB A B) : toA A B' (loc h r) = toA A B r := by
   have : (toA A B').comp (loc h) = toA A B := by
@@ -237,9 +237,9 @@ theorem toA_loc {B B' : Subalgebra ℤ A} (h : B ≤ B') (r : RB A B) : toA A B'
   exact DFunLike.congr_fun this r
 
 /- English proof (translation)
-Use `letI : Algebra (ResidueField (RB A B)) (ResidueField (RB A B')) := (ResidueField.map (loc h)).toAlgebra`. Use `haveI : IsScalarTower (ResidueField (RB A B)) (ResidueField (RB A B')) (ResidueField A) := by`. Use `IsScalarTower.of_algebraMap_eq fun y => ?_` and prove the remaining obligations. Take `⟨r, rfl⟩` from `residue_surjective y`. Express the relevant statement in the definitionally equal form `ResidueField.map (toA A B) (residue _ r) = ResidueField.map (toA A B') (ResidueField.map (loc h) (residue _ r))`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ResidueField.map_residue, ResidueField.map_residue, ResidueField.map_residue, toA_loc]`. Rewrite `hx`, the goal using `[mem_separableClosure_iff]`. Conclude with `IsSeparable.tower_top _ hx`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Om_le {B B' : Subalgebra ℤ A} (h : B ≤ B') (x : ResidueField A) (hx : x ∈ Om A B) : x ∈ Om A B' := by
   letI : Algebra (ResidueField (RB A B)) (ResidueField (RB A B')) := (ResidueField.map (loc h)).toAlgebra
@@ -259,14 +259,14 @@ def ψ {B B' : Subalgebra ℤ A} (h : B ≤ B') : O A B →+* ResidueField (O A 
   (sh A B').e.symm.toAlgHom.toRingHom.comp ((incΩ h).comp ((sh A B).e.toAlgHom.toRingHom.comp (residue _)))
 
 /- English proof (translation)
-Simplify using `only [σ_apply, ψ, ρ, RingHom.comp_apply]`. Simplify using `[incΩ]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem σ_ψ {B B' : Subalgebra ℤ A} (h : B ≤ B') (x : O A B) : σ A B' (ψ h x) = ρ A B x := by
   simp only [σ_apply, ψ, ρ, RingHom.comp_apply]
   simp [incΩ]
 
 /- English proof (translation)
-Use `exist A B _ (ψ h) (RingHom.ext fun r => (σ A B').injective ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, σ_ψ, rho_alg]`. Express the relevant statement in the definitionally equal form `_ = ρ A B' _`. Rewrite using `[rho_alg, toA_loc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_trans {B B' : Subalgebra ℤ A} (h : B ≤ B') :
     ∃ t : O A B →+* O A B', t.comp (algebraMap _ _) = (algebraMap _ _).comp (loc h) ∧
@@ -279,19 +279,19 @@ theorem exists_trans {B B' : Subalgebra ℤ A} (h : B ≤ B') :
 def trans {B B' : Subalgebra ℤ A} (h : B ≤ B') : O A B →+* O A B' := (exists_trans h).choose
 
 /- English proof (translation)
-The claim follows from `(exists_trans h).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem trans_alg {B B' : Subalgebra ℤ A} (h : B ≤ B') :
     (trans h).comp (algebraMap _ _) = (algebraMap _ _).comp (loc h) := (exists_trans h).choose_spec.1
 
 /- English proof (translation)
-Rewrite using `[← σ_ψ h, ← (exists_trans h).choose_spec.2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem trans_rho {B B' : Subalgebra ℤ A} (h : B ≤ B') (x : O A B) : ρ A B' (trans h x) = ρ A B x := by
   rw [← σ_ψ h, ← (exists_trans h).choose_spec.2]; rfl
 
 /- English proof (translation)
-The claim follows from `uniq A B (σ A B') _ u (trans h) hu (trans_alg h) (RingHom.ext fun x => by change ρ A B' (u x) = ρ A B' (trans h x); rw [hr, trans_rho])`.
+A detailed English derivation is pending.
 -/
 theorem trans_unique {B B' : Subalgebra ℤ A} (h : B ≤ B') (u : O A B →+* O A B')
     (hu : u.comp (algebraMap _ _) = (algebraMap _ _).comp (loc h)) (hr : ∀ x, ρ A B' (u x) = ρ A B x) :
@@ -300,7 +300,7 @@ theorem trans_unique {B B' : Subalgebra ℤ A} (h : B ≤ B') (u : O A B →+* O
     change ρ A B' (u x) = ρ A B' (trans h x); rw [hr, trans_rho])
 
 /- English proof (translation)
-The claim follows from `uniq A B (RingHom.id _) (toA A B) u (g A B) hu (RingHom.ext fun r => g_alg A B r) (RingHom.ext fun x => by simp only [RingHom.comp_apply, RingHom.id_apply, hr, g_res])`.
+A detailed English derivation is pending.
 -/
 theorem g_unique (B : Subalgebra ℤ A) (u : O A B →+* A) (hu : u.comp (algebraMap _ _) = toA A B)
     (hr : ∀ x, residue A (u x) = ρ A B x) : u = g A B :=
@@ -308,13 +308,13 @@ theorem g_unique (B : Subalgebra ℤ A) (u : O A B →+* A) (hu : u.comp (algebr
     (RingHom.ext fun x => by simp only [RingHom.comp_apply, RingHom.id_apply, hr, g_res])
 
 /- English proof (translation)
-The claim follows from `(trans_unique _ _ (by rw [loc_refl]; rfl) (fun _ => rfl)).symm`.
+A detailed English derivation is pending.
 -/
 theorem trans_refl (B : Subalgebra ℤ A) : trans (le_refl B) = RingHom.id _ :=
   (trans_unique _ _ (by rw [loc_refl]; rfl) (fun _ => rfl)).symm
 
 /- English proof (translation)
-Use `(trans_unique _ _ ?_ ?_).symm` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, trans_alg, ← RingHom.comp_assoc, trans_alg, RingHom.comp_assoc, ← loc_trans h h']`. Introduce `x`. Simplify using `only [RingHom.comp_apply, trans_rho]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem trans_trans {B B' B'' : Subalgebra ℤ A} (h : B ≤ B') (h' : B' ≤ B'') :
     trans (h.trans h') = (trans h').comp (trans h) := by
@@ -323,9 +323,7 @@ theorem trans_trans {B B' B'' : Subalgebra ℤ A} (h : B ≤ B') (h' : B' ≤ B'
   · intro x; simp only [RingHom.comp_apply, trans_rho]
 
 /- English proof (translation)
-Use `g_unique B ((g A B').comp (trans h)) (by` as an intermediate fact. Rewrite using `[RingHom.comp_assoc, trans_alg]`. Use extensionality with `r`. Simplify using `[g_alg, toA_loc])`. Use the proof step `(fun x => by simp [g_res, trans_rho])`.
-
-Conclude with `DFunLike.congr_fun this x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem g_trans {B B' : Subalgebra ℤ A} (h : B ≤ B') (x : O A B) : g A B' (trans h x) = g A B x := by
   have := g_unique B ((g A B').comp (trans h)) (by
@@ -339,19 +337,17 @@ section
 variable {A : Type} [CommRing A] [HenselianLocalRing A] [IsSepClosed (ResidueField A)]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Algebra.FiniteType.out (R := RB A B) (A := E)`. Set `γ : E →+* A` to `(g A B).comp ε.toRingHom`. Use `⟨s.image γ, fun B' h hF => ?_⟩` and prove the remaining obligations. Establish `hγ : ∀ r : RB A B, γ (algebraMap _ E r) = toA A B r` using `fun r => by`. Simplify using `only [γ, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes, g_alg]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hrange : ∀ y : E, γ y ∈ (toA A B').range`. Establish `: ∀ y ∈ Algebra.adjoin (RB A B) (s : Set E), γ y ∈ (toA A B').range`. Introduce `y hy`. Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `⟨algebraMap B' (RB A B') ⟨γ x, hF (Finset.mem_image_of_mem γ hx)⟩, toA_algebraMap A B' _⟩`. Consider the case `algebraMap r => exact ⟨loc h r, by rw [toA_loc, hγ]⟩`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Subring.add_mem _ hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subring.mul_mem _ hx hy`. Introduce `y`. Conclude with `this y (hs ▸ Algebra.mem_top)`. Set `e' : RB A B' ≃+* (toA A B').range` to `RingEquiv.ofBijective (toA A B').rangeRestrict ⟨fun x y hxy => toA_injective A B' (congrArg Subtype.val hxy), RingHom.rangeRestrict_surjective _⟩`. Set `φ₀ : E →+* RB A B'` to `e'.symm.toRingHom.comp (γ.codRestrict _ hrange)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ₀ : ∀ y, toA A B' (φ₀ y) = γ y` using `fun y => congrArg Subtype.val (e'.apply_symm_apply (γ.codRestrict _ hrange y))`. Establish `hφ₀r : ∀ r : RB A B, φ₀ (algebraMap _ E r) = loc h r` using `fun r => toA_injective A B' (by rw [hφ₀, hγ, toA_loc])`. Establish `key` using `GlobalTheory.NCyc.StrictLocLift.lift_unique (algebraMap (RB A B) E) (RingHom.etale_algebraMap.2 inferInstance) ((algebraMap (RB A B') (O A B')).comp (loc h)) ((algebraMap (RB A B') (O A B')).comp φ₀) ((trans h).comp ε.toRingHom) (RingHom.ext fun r => by simp only [RingHom.comp_ap …`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes]`. Conclude with `DFunLike.congr_fun (trans_alg h) r)`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `(RingHom.ext fun y => (σ A B').injective (by`. Express the relevant statement in the definitionally equal form `ρ A B' _ = ρ A B' _`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rho_alg, hφ₀, trans_rho]`. Rewrite using `[← g_res]`. Use the proof step `rfl))`.
-
-Establish `h1 : trans h (ε a) = algebraMap (RB A B') (O A B') (φ₀ a)` using `(DFunLike.congr_fun key a).symm`. Establish `h2 : φ₀ a = 0` using `toA_injective A B' (by rw [hφ₀, map_zero]; exact ha)`. Rewrite using `[h1, h2, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key {B : Subalgebra ℤ A} (E : Type) [CommRing E] [Algebra (RB A B) E] [Algebra.Etale (RB A B) E]
     (ε : E →ₐ[RB A B] O A B) (a : E) (ha : g A B (ε a) = 0) :
@@ -395,13 +391,13 @@ theorem key {B : Subalgebra ℤ A} (E : Type) [CommRing E] [Algebra (RB A B) E] 
   rw [h1, h2, map_zero]
 
 /- English proof (translation)
-Take `⟨ι, _, _, _, Si, -, hcov, hloc⟩` from `(sh A B).pieces`. Take `⟨i, hi⟩` from `hcov x`. Take `⟨E, _, _, _, q, _, ⟨eqv⟩⟩` from `hloc i`. Take `⟨⟨a, s⟩, hy⟩` from `IsLocalization.mk'_surjective q.primeCompl (eqv.symm ⟨x, hi⟩)`. Set `ε : E →ₐ[RB A B] O A B` to `(Si i).val.comp (eqv.toAlgHom.comp (IsScalarTower.toAlgHom (RB A B) E (Localization.AtPrime q)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hxs : x * ε s = ε a`. Establish `h1 : eqv.symm ⟨x, hi⟩ * algebraMap E (Localization.AtPrime q) s = algebraMap E _ a`. Rewrite using `[← hy]`. Conclude with `IsLocalization.mk'_spec _ a s`. Establish `h2` using `congrArg (fun z => ((eqv z : Si i) : O A B)) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, AlgEquiv.apply_symm_apply, Subalgebra.coe_mul] at h2`. Conclude with `h2`. Establish `hunit : IsUnit (ε s)` using `(IsLocalization.map_units (Localization.AtPrime q) s).map ((Si i).val.comp eqv.toAlgHom)`. Establish `ga : g A B (ε a) = 0` using `by rw [← hxs, map_mul, hx, zero_mul]`. Take `⟨F, hF⟩` from `key E ε a ga`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨F, fun B' h hFB => ?_⟩` and prove the remaining obligations. Establish `h3 : trans h x * trans h (ε s) = 0` using `by rw [← map_mul, hxs, hF B' h hFB]`. Conclude with `(hunit.map (trans h)).mul_left_eq_zero.mp h3`.
+A detailed English derivation is pending.
 -/
 theorem ker {B : Subalgebra ℤ A} (x : O A B) (hx : g A B x = 0) :
     ∃ F : Finset A, ∀ (B' : Subalgebra ℤ A) (h : B ≤ B'), (F : Set A) ⊆ B' → trans h x = 0 := by
@@ -432,7 +428,7 @@ section
 variable {A : Type} [CommRing A] [HenselianLocalRing A] [IsSepClosed (ResidueField A)]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a ha => by by_contra hna exact ((mem_maximalIdeal _).1 (h a ((mem_maximalIdeal _).2 hna))) ha⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLocalHom_of_le {X Y : Type} [CommRing X] [IsLocalRing X] [CommRing Y] [IsLocalRing Y] (f : X →+* Y)
     (h : ∀ x ∈ maximalIdeal X, f x ∈ maximalIdeal Y) : IsLocalHom f :=
@@ -441,13 +437,13 @@ theorem isLocalHom_of_le {X Y : Type} [CommRing X] [IsLocalRing X] [CommRing Y] 
     exact ((mem_maximalIdeal _).1 (h a ((mem_maximalIdeal _).2 hna))) ha⟩
 
 /- English proof (translation)
-Simplify using `only [ρ, RingHom.comp_apply, (residue_eq_zero_iff x).2 hx, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rho_eq_zero {B : Subalgebra ℤ A} (x : O A B) (hx : x ∈ maximalIdeal (O A B)) : ρ A B x = 0 := by
   simp only [ρ, RingHom.comp_apply, (residue_eq_zero_iff x).2 hx, map_zero]
 
 /- English proof (translation)
-The claim follows from `isLocalHom_of_le _ fun x hx => by rw [← residue_eq_zero_iff] apply (σ A B').injective rw [map_zero] change ρ A B' (trans h x) = 0 rw [trans_rho, rho_eq_zero x hx]`.
+A detailed English derivation is pending.
 -/
 theorem isLocalHom_trans {B B' : Subalgebra ℤ A} (h : B ≤ B') : IsLocalHom (trans h) :=
   isLocalHom_of_le _ fun x hx => by
@@ -458,7 +454,7 @@ theorem isLocalHom_trans {B B' : Subalgebra ℤ A} (h : B ≤ B') : IsLocalHom (
     rw [trans_rho, rho_eq_zero x hx]
 
 /- English proof (translation)
-The claim follows from `isLocalHom_of_le _ fun x hx => by rw [← residue_eq_zero_iff, g_res, rho_eq_zero x hx]`.
+A detailed English derivation is pending.
 -/
 theorem isLocalHom_g (B : Subalgebra ℤ A) : IsLocalHom (g A B) :=
   isLocalHom_of_le _ fun x hx => by
@@ -467,9 +463,7 @@ theorem isLocalHom_g (B : Subalgebra ℤ A) : IsLocalHom (g A B) :=
 def fromB (B : Subalgebra ℤ A) : B →+* O A B := (algebraMap (RB A B) (O A B)).comp (algebraMap B (RB A B))
 
 /- English proof (translation)
-Use `letI : Algebra B (O A B) := (fromB B).toAlgebra`. Use `haveI : IsScalarTower B (RB A B) (O A B) := IsScalarTower.of_algebraMap_eq' rfl`. Establish `h1 : Pieces B (RB A B)` using `⟨Unit, inferInstance, inferInstance, inferInstance, fun _ => ⊤, fun _ _ _ => le_rfl, fun _ => ⟨(), Algebra.mem_top⟩, fun _ => ⟨B, inferInstance, inferInstance, inferInstance, pB A B, inferInstance, ⟨Subalgebra.topEquiv.symm⟩⟩⟩`. Take `⟨ι, _, _, _, Si, hm, hc, hl⟩` from `GlobalTheory.indEtale_localPieces_trans B (RB A B) (O A B) h1 (sh A B).pieces`. Conclude with `GlobalTheory.StrictHensUnion.indEtale_of_directed_union B (O A B) ι Si hm hc (fun i => by`.
-
-Take `⟨E, _, _, _, q, _, ⟨e⟩⟩` from `hl i`. Conclude with `GlobalTheory.StrictHensUnion.indEtale_of_algEquiv e (GlobalTheory.StrictHensUnion.indEtale_localization_of_etale B E q.primeCompl))`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem indEt_fromB (B : Subalgebra ℤ A) : GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (fromB B) := by
   letI : Algebra B (O A B) := (fromB B).toAlgebra
@@ -484,7 +478,7 @@ theorem indEt_fromB (B : Subalgebra ℤ A) : GlobalTheory.IndefiniteRowSideFullH
       (GlobalTheory.StrictHensUnion.indEtale_localization_of_etale B E q.primeCompl))
 
 /- English proof (translation)
-Use `letI : Algebra B (O A B) := (fromB B).toAlgebra`. Conclude with `⟨⟨inferInstance, (sh A B).sep⟩, B, inferInstance, inferInstance, 𝟙 _, inferInstance, indEt_fromB B, (Category.comp_id _).symm⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components.
 -/
 theorem isStalk_O (B : Subalgebra ℤ A) :
     IsStalk (O A B) (Spec.map (CommRingCat.ofHom (fromB B))) := by
@@ -505,7 +499,7 @@ def gen (u : A) (F : Finset A) : Idx A u := by
     Algebra.subset_adjoin (by simp)⟩
 
 /- English proof (translation)
-Introduce `x hx`. Conclude with `Algebra.subset_adjoin (by simp [hx])`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem subset_gen (u : A) (F : Finset A) : (F : Set A) ⊆ (gen u F).1 := by
   classical
@@ -565,9 +559,9 @@ def isColimit (u : A) : IsColimit (Cocone.mk _ (ιcoc u)) := by
 end
 
 /- English proof (translation)
-Introduce `q A _ _ hSH hq`. Take `⟨hH, hsep⟩` from `hSH`. Set `u : A` to `↑hq.unit⁻¹`. Use `⟨Idx A u, inferInstance, inferInstance, Dfun u, ιcoc u, isColimit u, fun j => (inferInstance : IsLocalRing (O A j.1)), fun j => ?_, fun j => ?_, fun f => isLocalHom_trans (leOfHom f), fun j => isLocalHom_g j.1⟩` and prove the remaining obligations. Conclude with `⟨j.1, inferInstance, (Subalgebra.fg_iff_finiteType _).1 j.2.1, _, isStalk_O j.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Establish `hqB : IsUnit ((q : ℕ) : j.1)` using `isUnit_iff_exists_inv.2 ⟨⟨u, j.2.2⟩, Subtype.ext (by simp [u])⟩ show IsUnit ((q : ℕ) : O A j.1)`. Rewrite using `[← map_natCast (fromB j.1) q]`. Conclude with `hqB.map _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem strictlyHenselian_isColimit : ∀ (q : ℕ) (A : Type) [CommRing A] [IsLocalRing A], SH A → IsUnit (q : A) →
   ∃ (J : Type) (_ : SmallCategory J) (_ : IsFiltered J) (D : J ⥤ CommRingCat.{0})

@@ -12,7 +12,7 @@ namespace HostOk
 variable {R : Ranks} {H : _root_.Formalism.BasicNotions.Host R} (T : Frame H)
 
 /- English proof (translation)
-Apply `H.φ₀.injective` to reduce the goal to its premises. Establish `h1` using `H.conjE_apply (H.φ₀.comp (σ : H.E →+* H.E)) x`. Establish `h2` using `H.conjE_apply H.φ₀ (σ x)`. Conclude with `h1.trans h2.symm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sigma_conj (σ : H.E ≃ₐ[ℚ] H.E) (x : H.E) : σ (H.conj x) = H.conj (σ x) := by
   apply H.φ₀.injective
@@ -21,9 +21,9 @@ theorem sigma_conj (σ : H.E ≃ₐ[ℚ] H.E) (x : H.E) : σ (H.conj x) = H.conj
   exact h1.trans h2.symm
 
 /- English proof (translation)
-Apply `H.φ₀.injective` to reduce the goal to its premises. Establish `h1` using `H.conjE_apply H.φ₀ (H.conj x)`. Establish `h2` using `H.conjE_apply H.φ₀ x`. Use `h1.trans ?_` and prove the remaining obligations. Use `show starRingEnd ℂ (H.φ₀ (H.conj x)) = _`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, Complex.conj_conj]`.
+A detailed English derivation is pending.
 -/
 theorem conj_conj (x : H.E) : H.conj (H.conj x) = x := by
   apply H.φ₀.injective
@@ -34,30 +34,30 @@ theorem conj_conj (x : H.E) : H.conj (H.conj x) = x := by
   rw [h2, Complex.conj_conj]
 
 /- English proof (translation)
-The claim follows from `(H.gal).apply_symm_apply g`.
+A detailed English derivation is pending.
 -/
 theorem galE_sigmaOf (g : R.GG) : H.galE (H.sigmaOf g) = g :=
   (H.gal).apply_symm_apply g
 
 /- English proof (translation)
-The claim follows from `(H.galE_mem_Psi_iff _).1 (by rw [galE_sigmaOf]; exact g.2)`.
+A detailed English derivation is pending.
 -/
 theorem sigmaOf_b (g : R.Psi) : H.sigmaOf g H.sqrtMinusD = H.sqrtMinusD :=
   (H.galE_mem_Psi_iff _).1 (by rw [galE_sigmaOf]; exact g.2)
 
 /- English proof (translation)
-The claim follows from `H.hyp.2.1.pos`.
+A detailed English derivation is pending.
 -/
 theorem d_pos (H : _root_.Formalism.BasicNotions.Host R) : 0 < H.d := H.hyp.2.1.pos
 
 /- English proof (translation)
-Conclude with `H.sqd_sq`.
+A detailed English derivation is pending.
 -/
 theorem b_sq (H : _root_.Formalism.BasicNotions.Host R) : H.sqrtMinusD ^ 2 = -(H.d : H.E) := by
   exact H.sqd_sq
 
 /- English proof (translation)
-Apply `H.φ₀.injective` to reduce the goal to its premises. Establish `h2` using `H.conjE_apply H.φ₀ H.sqrtMinusD`. Use `h2.trans ?_` and prove the remaining obligations. Establish `h3 : H.φ₀ H.sqrtMinusD = Complex.I * (Real.sqrt H.d : ℂ)` using `H.φ₀_mem`. Rewrite using `[map_neg, h3]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -70,9 +70,9 @@ theorem conj_b (H : _root_.Formalism.BasicNotions.Host R) : H.conj H.sqrtMinusD 
   simp
 
 /- English proof (translation)
-Introduce `h`. Establish `h0 : H.sqrtMinusD = 0`. Establish `: (2 : H.E) * H.sqrtMinusD = 0` using `by linear_combination h`. Conclude with `(mul_eq_zero.1 this).resolve_left two_ne_zero`. Establish `h1` using `b_sq H`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h0]`. Establish `h2 : (H.d : H.E) = 0` using `by linear_combination h1`. Establish `h3 : H.d = 0` using `by exact_mod_cast h2`. Conclude with `(d_pos H).ne' h3`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem b_ne (H : _root_.Formalism.BasicNotions.Host R) : H.sqrtMinusD ≠ -H.sqrtMinusD := by
   intro h
@@ -88,7 +88,7 @@ theorem b_ne (H : _root_.Formalism.BasicNotions.Host R) : H.sqrtMinusD ≠ -H.sq
 variable (ι : Qb →+* ℂ) (LL : Fld) [FiniteDimensional ℚ LL] [Normal ℚ LL] (hE : H.EQ ≤ LL)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨sig0 ι LL, fun x => (congrArg ι (CoF.val_star ι LL x)).trans (conjQb_spec ι _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem conjK : ∃ σ₀ : (hostFields H.toHostRaw ι LL hE).K →+* ℂ, ∀ x : (hostFields H.toHostRaw ι LL hE).K,
     σ₀ (star x) = starRingEnd ℂ (σ₀ x) :=

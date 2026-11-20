@@ -9,11 +9,9 @@ section
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem.Top GlobalTheory.Fc
 namespace GlobalTheory.Fc.FourBoundsAtBundles
 /- English proof (translation)
-Introduce `t`. Break down `b.pt.charW.tup.mu_used t with h | ⟨w, hw⟩` into its components or cases. Use `left`. Substitute `h` using the available equality. Conclude with `b.P.tied.div.tup.mu0`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `right`. Use `⟨D.plEq.symm w, ?_⟩` and prove the remaining obligations. Establish `e1` using `b.pt.tupAt (D.plEq.symm w)`. Rewrite `e1` using `[Equiv.apply_symm_apply]`. Establish `e2` using `b.pt.tupTie (D.what₂.muAt (D.plEq.symm w)) (Or.inr ⟨_, rfl⟩)`.
-
-Rewrite `e2` using `[e1, hw]`. Conclude with `e2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tupAllUsed_part_alt {D : D7} {O : Obj D} {c : ℝ} (b : _root_.GlobalTheory.Fc.Ind.PointSummands D O c) : Formalism.L2.DIV.TupAllUsed b.P := by
   intro t
@@ -29,7 +27,7 @@ theorem tupAllUsed_part_alt {D : D7} {O : Obj D} {c : ℝ} (b : _root_.GlobalThe
     rw [e1, hw] at e2
     exact e2
 /- English proof (translation)
-The claim follows from `Formalism.L2.DIV.DivRows3G.toRows (_root_.GlobalTheory.Fc.FourBoundsAtBundles.tupAllUsed_part_alt b) ⟨h.sharpRR, h.baseRR, h.divisionRows_rationalLift, h.thTheta, ⟨h.num.Ij, h.num.jw, h.num.etaJ⟩, h.colsBk⟩`.
+A detailed English derivation is pending.
 -/
 theorem p_div_of_div3g {D : D7} {O : Obj D} {c : ℝ} (b : _root_.GlobalTheory.Fc.Ind.PointSummands D O c) (h : GlobalTheory.Cp.DivRows3G b.P) : _root_.GlobalTheory.Fc.Ind.DivisorPointSummands D O c b :=
   Formalism.L2.DIV.DivRows3G.toRows (_root_.GlobalTheory.Fc.FourBoundsAtBundles.tupAllUsed_part_alt b)

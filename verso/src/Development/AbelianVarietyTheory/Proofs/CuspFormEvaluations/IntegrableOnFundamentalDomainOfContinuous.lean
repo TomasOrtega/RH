@@ -11,15 +11,13 @@ variable {V κ : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensi
   [MeasurableSpace V] [BorelSpace V] [Fintype κ]
 
 /- English proof (translation)
-Establish `hA` using `ZSpan.isAddFundamentalDomain' b μ`. Establish `hT : IsAddFundamentalDomain (Submodule.span ℤ (Set.range b)).toAddSubgroup ((fun x => x - a) ⁻¹' ZSpan.fundamentalDomain b) μ`. Use `IsAddFundamentalDomain.mk' ?_ fun x => ?_` and prove the remaining obligations. Conclude with `((ZSpan.fundamentalDomain_measurableSet b).preimage (measurable_sub_const a)).nullMeasurableSet`. Take `⟨g, hg, hu⟩` from `ZSpan.exist_unique_vadd_mem_fundamentalDomain b (x - a)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨g, g.2⟩, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(g : V) + x - a ∈ ZSpan.fundamentalDomain b`. Rewrite using `[add_sub_assoc]`. Conclude with `hg`. Introduce and unpack `⟨y, hy⟩ h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `y + x - a ∈ ZSpan.fundamentalDomain b at h`. Rewrite `h` using `[add_sub_assoc]`. Conclude with `Subtype.ext (congrArg Subtype.val (hu ⟨y, hy⟩ h))`. Establish `hper : ∀ (g : (Submodule.span ℤ (Set.range b)).toAddSubgroup) (x : V), f (g +ᵥ x) = f x`. Introduce `g x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `f ((g : V) + x) = f x`. Rewrite using `[add_comm]`. Conclude with `hb g g.2 x`. Rewrite using `[hA.setIntegral_eq hT hper]`. Establish `e` using `(measurePreserving_sub_right μ a).setIntegral_preimage_emb (measurableEmbedding_subRight a) (fun y => f (y + a)) (ZSpan.fundamentalDomain b)`.
-
-Simplify using `only [sub_add_cancel] at e`. Conclude with `e.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem setIntegral_fundamentalDomain_add_right {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] (μ : Measure V) [μ.IsAddHaarMeasure] (b : Module.Basis κ ℝ V)
@@ -52,7 +50,7 @@ theorem setIntegral_fundamentalDomain_add_right {E : Type} [NormedAddCommGroup E
   exact e.symm
 
 /- English proof (translation)
-The claim follows from `(hf.continuousOn.integrableOn_compact (ZSpan.fundamentalDomain_isBounded b).isCompact_closure).mono_set subset_closure`.
+A detailed English derivation is pending.
 -/
 theorem integrableOn_fundamentalDomain_of_continuous {E : Type} [NormedAddCommGroup E]
     (μ : Measure V) [μ.IsAddHaarMeasure] (b : Module.Basis κ ℝ V)
@@ -63,7 +61,7 @@ theorem integrableOn_fundamentalDomain_of_continuous {E : Type} [NormedAddCommGr
 end
 
 /- English proof (translation)
-Establish `h1 : ⨍ v in ZSpan.fundamentalDomain b', f (v + a) ∂μ = ⨍ v in ZSpan.fundamentalDomain b', f v ∂μ`. Rewrite using `[setAverage_eq, setAverage_eq, setIntegral_fundamentalDomain_add_right μ b' f (fun γ hγ => hb γ (hle hγ)) a]`. Rewrite using `[h1, ← ZSpan.fundamentalDomain_reindex b' (b'.indexEquiv b)]`. Use `ReciprocityTheory.ChartRestriction.G.I2.TiledBoundaries.tile_average μ _ b ?_ f hf hb` and prove the remaining obligations. Rewrite using `[Module.Basis.range_reindex]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem average_fundamentalDomain_eq_real {V κ κ' : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V]

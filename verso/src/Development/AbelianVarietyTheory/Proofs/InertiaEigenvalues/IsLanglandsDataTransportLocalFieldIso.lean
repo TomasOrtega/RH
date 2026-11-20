@@ -20,29 +20,27 @@ open NumberField IsDedekindDomain ValuativeRel Matrix Polynomial Formalism.Conju
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `k k' _ _ _ _ _ _ _ _ _ _ i hi l l' x x' hl hx hL`. Take `⟨T, hT, hTd⟩` from `GlobalTheory.T.transportIrrGL_bijective_degree_charZero k k' i hi`. Establish `hC` using `(GlobalTheory.T.transport_keeps_cuspidal_twists_characters k k' i hi).1`. Establish `hprod` using `GlobalTheory.T.transport_keeps_products_cosocles k k' i hi`. Establish `hcusp : ∀ y, y.IsCusp → (T y).IsCusp` using `fun y hy => (hC y (T y) ((hT _ _).2 rfl)).1.1 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnu : ∀ (y : IrrGL k) (s : ℂ), T (y.nu s) = (T y).nu s` using `fun y s => (hT _ _).1 ((hC y (T y) ((hT _ _).2 rfl)).2 s)`. Establish `hcls : ∀ {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] (y : IrrGL K), GlobalTheory.LocLanglands.cls y.2.rep = y`. Introduce `K _ _ _ _ y`. Take `⟨n, c⟩` from `y`. Unfold `GlobalTheory.LocLanglands.cls`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Conclude with `congrArg (Sigma.mk n) c.cl_rep`. Establish `H : ∀ (y : IrrGL k) (y' : IrrGL k'), RepRel i y y' → ∀ (r r' : ℕ) (e : r = r') (xs : Fin r → IrrGL k) (xs' : Fin r' → IrrGL k') (hd : ∑ a, (xs a).1 = y.1) (hd' : ∑ a, (xs' a).1 = y'.1), (∀ a, RepRel i (xs a) (xs' (Fin.cast e a))) → IsCosocle y.rep (prodIrr xs hd) → IsCosocle y'.r …`. Introduce `y y' hy r r' e xs xs' hd hd' hxs hc`. Substitute `e` using the available equality. Take `⟨n, c⟩` from `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n', c'⟩` from `y'`. Establish `e : n' = n`. Use `hTd ⟨n, c⟩` as an intermediate fact. Rewrite `this` using `[(hT _ _).1 hy]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Substitute `e` using the available equality. Conclude with `hprod r n' xs xs' hd hd' c.rep c'.rep (fun a => hxs a) (by rw [hcls ⟨n', c⟩, hcls ⟨n', c'⟩]; exact hy) hc`. Take `⟨S, hS1, hS2⟩ : ∃ S : Segment k → Segment k', (∀ Δ, (S Δ).first = T Δ.first) ∧ ∀ Δ, (S Δ).len = Δ.len` from `⟨fun Δ => Segment.ofFirst (T Δ.first) (hcusp _ Δ.isCusp_first) Δ.len Δ.len_pos, fun Δ => Segment.first_ofFirst _ _ _ _, fun Δ => Segment.len_ofFirst _ _ _ _⟩`. Establish `key : ∀ (m : List (Segment k)) (m' : List (Segment k')), List.Forall₂ (fun (Δ : Segment k) (Δ' : Segment k') => RepRel i Δ.first Δ'.first ∧ Δ.len = Δ'.len) m m' → m' = m.map S`. Introduce `m m' hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hm with`. Consider the case `nil => rfl`. Consider the case `@cons Δ Δ' _ _ h _ ih`. Rewrite using `[List.map_cons, ih]`. Conclude with `congrArg (· :: _) (Segment.ext_first (by rw [hS1]; exact ((hT _ _).1 h.1).symm) (by rw [hS2]; exact h.2.symm))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl'` using `key l l' hl`. Establish `hprec : ∀ Δ Δ' : Segment k, (S Δ).Precedes (S Δ') → Δ.Precedes Δ'`. Introduce `Δ Δ' h`. Rewrite `h` using `[Segment.precedes_iff, hS2, hS2, hS1, hS1]`. Rewrite using `[Segment.precedes_iff]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨j, h1, h2, h3, e⟩` from `h`. Conclude with `⟨j, h1, h2, h3, T.injective (by rw [hnu]; exact e)⟩`. Establish `hseg : ∀ (Δ : Segment k) (y : IrrGL k), IsLSeg Δ y.rep → IsLSeg (S Δ) (T y).rep`. Introduce `Δ y hy`. Unfold `IsLSeg at hy ⊢`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨hd, hc⟩` from `hy`. Establish `ht : ∀ a, T (Δ.term a) = (S Δ).term (Fin.cast (hS2 Δ).symm a)` using `fun a => by`. Simplify using `only [Segment.term, Fin.val_cast, hS1, hnu]`. Establish `hd' : ∑ a, ((S Δ).term a).1 = (T y).1`. Rewrite using `[hTd, ← hd]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components.
 
-Use `Fintype.sum_equiv (finCongr (hS2 Δ)) _ _ fun a => ?_` and prove the remaining obligations. Rewrite using `[← hTd (Δ.term _), ht]`. Both sides reduce to the same expression. Conclude with `⟨hd', H y (T y) ((hT _ _).2 rfl) Δ.len (S Δ).len (hS2 Δ).symm Δ.term (S Δ).term hd hd' (fun a => (hT _ _).2 (ht a)) hc⟩`. Take `⟨r, xs, hd, ⟨Δ, hord, hΔ⟩, hc⟩` from `hL`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx' : T x = x'` using `(hT _ _).1 hx`. Establish `hd' : ∑ a, (T (xs a)).1 = x'.1`. Rewrite using `[← hx', hTd, ← hd]`. Conclude with `Finset.sum_congr rfl fun a _ => hTd _`. Use `⟨r, fun a => T (xs a), hd', ⟨fun a => S (Δ a), ⟨?_, fun a b hab hp => hord.2 a b hab (hprec _ _ hp)⟩, fun a => hseg _ _ (hΔ a)⟩, H x x' hx r r rfl xs _ hd hd' (fun a => (hT _ _).2 rfl) hc⟩` and prove the remaining obligations.
-
-Rewrite using `[hl', ← Multiset.map_coe, ← hord.1, Multiset.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LocLanglands.isL_transport : ∀ (k k' : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] [CharZero k'] (i : k ≃+* k'), Continuous i → ∀ (l : List (Segment k)) (l' : List (Segment k')) (x : IrrGL k) (x' : IrrGL k'), List.Forall₂ (fun (Δ : Segment k) (Δ' : Segment k') => RepRel i Δ.first Δ'.first ∧ Δ.len = Δ'.len) l l' → RepRel i x x' → IsL (l : Multiset (Segment k)) x.rep → IsL (l' : Multiset (Segment k')) x'.rep := by
   intro k k' _ _ _ _ _ _ _ _ _ _ i hi l l' x x' hl hx hL

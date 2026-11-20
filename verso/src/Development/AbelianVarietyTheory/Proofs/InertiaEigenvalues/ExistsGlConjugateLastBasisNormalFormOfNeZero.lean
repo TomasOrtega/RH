@@ -4,7 +4,7 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.JR.Step
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `induction i using Fin.lastCases <;> induction j using Fin.lastCases <;>`. Simplify using `[full, blocks, Matrix.reindex_apply, Matrix.submatrix_apply, finSumFinEquiv_symm_apply_castSucc, finSumFinEquiv_symm_last]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem full_blocks {r : ℕ} {k : Type} [CommRing k] (A : Matrix (Fin (r + 1)) (Fin (r + 1)) k) :
     full (blocks A) = A := by
@@ -17,11 +17,11 @@ def nfMat {r : ℕ} {k : Type} [CommRing k] (c : Fin (r + 1) → k) : Matrix (Fi
   Matrix.of fun i j => if i = Fin.last r then c j else if (j : ℕ) = (i : ℕ) + 1 then 1 else 0
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct, nfMat, Matrix.of_apply, Fin.castSucc_ne_last, if_false]`. Rewrite using `[Finset.sum_eq_single i.succ]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[if_neg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `· simp`. Introduce `h`. Apply `hj` to reduce the goal to its premises. Use `ext`. Simplify using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem nfMat_mulVec_castSucc {r : ℕ} {k : Type} [CommRing k] (c : Fin (r + 1) → k) (v : Fin (r + 1) → k)
     (i : Fin r) : (nfMat c *ᵥ v) (Fin.castSucc i) = v i.succ := by
@@ -34,20 +34,18 @@ theorem nfMat_mulVec_castSucc {r : ℕ} {k : Type} [CommRing k] (c : Fin (r + 1)
   · simp
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, nfMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nfMat_mulVec_last {r : ℕ} {k : Type} [CommRing k] (c : Fin (r + 1) → k) (v : Fin (r + 1) → k) :
     (nfMat c *ᵥ v) (Fin.last r) = c ⬝ᵥ v := by
   simp [Matrix.mulVec, dotProduct, nfMat]
 
 /- English proof (translation)
-Introduce `x y hxy`. Use `set v := x - y with hv`. Establish `key : nfMat c *ᵥ v = 0` using `by rw [hv, Matrix.mulVec_sub, hxy, sub_self]`. Establish `hs : ∀ i : Fin r, v i.succ = 0` using `fun i => by`. Rewrite using `[← nfMat_mulVec_castSucc c v i, key]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hl : c ⬝ᵥ v = 0` using `by rw [← nfMat_mulVec_last c v, key]; rfl`. Establish `h0v : v 0 = 0`. Rewrite `hl` using `[dotProduct, Fin.sum_univ_succ]`. Simplify using `only [hs, mul_zero, Finset.sum_const_zero, add_zero] at hl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.mp hl).resolve_left h0`. Establish `: v = 0`. Use function extensionality and compare the values at `j`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => exact h0v`.
-
-Consider the case `succ i => exact hs i`. Conclude with `sub_eq_zero.mp this`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem nfMat_injective {r : ℕ} {k : Type} [Field k] (c : Fin (r + 1) → k) (h0 : c 0 ≠ 0) :
     Function.Injective (nfMat c).mulVec := by
@@ -69,7 +67,7 @@ theorem nfMat_injective {r : ℕ} {k : Type} [Field k] (c : Fin (r + 1) → k) (
   exact sub_eq_zero.mp this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[eL, Matrix.vecMul, dotProduct, nfMat, Pi.single_apply, Fin.sum_univ_castSucc, Fin.castSucc_ne_last]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem eL_vecMul_nfMat {r : ℕ} {k : Type} [CommRing k] (c : Fin (r + 1) → k) :
     eL r k ᵥ* nfMat c = c := by
@@ -77,9 +75,9 @@ theorem eL_vecMul_nfMat {r : ℕ} {k : Type} [CommRing k] (c : Fin (r + 1) → k
   simp [eL, Matrix.vecMul, dotProduct, nfMat, Pi.single_apply, Fin.sum_univ_castSucc, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp [nfMat, Matrix.mulVec, dotProduct, eL]`. Consider the case `cast i`. Rewrite using `[nfMat_mulVec_castSucc]`.
+Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[eL, Pi.single_apply, Fin.castSucc_ne_last]`.
+Simplify using the standard rewrite rules.
 -/
 theorem shiftCompanionLastRowMatrix_mulVec_firstBasis {r : ℕ} {k : Type} [CommRing k] (c : Fin (r + 1) → k) :
     nfMat c *ᵥ (fun i : Fin (r + 1) => if (i : ℕ) = 0 then (1 : k) else 0) = c 0 • eL r k := by
@@ -91,13 +89,11 @@ theorem shiftCompanionLastRowMatrix_mulVec_firstBasis {r : ℕ} {k : Type} [Comm
     simp [eL, Pi.single_apply, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Introduce `k _ r a h0`. Establish `hu : IsUnit (GlobalTheory.JR.Step.nfMat a.2.1)` using `Matrix.mulVec_injective_iff_isUnit.mp (GlobalTheory.JR.Step.nfMat_injective a.2.1 h0)`. Use `⟨hu.unit, GlobalTheory.JR.Step.blocks ((hu.unit : Matrix _ _ k) * companion a.1 * ((hu.unit⁻¹ : GL (Fin (r + 1)) k) : Matrix _ _ k)), ?_⟩` and prove the remaining obligations. Establish `hg : ((hu.unit : GL (Fin (r + 1)) k) : Matrix _ _ k) = GlobalTheory.JR.Step.nfMat a.2.1` using `rfl`. Establish `hinv : GlobalTheory.JR.Step.eL r k ᵥ* (GlobalTheory.JR.Step.nfMat a.2.1) = a.2.1` using `GlobalTheory.JR.Step.eL_vecMul_nfMat a.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `act sec GlobalTheory.JR.Step.lift`. Use `Prod.ext ?_ (Prod.ext ?_ (Prod.ext ?_ rfl))` and prove the remaining obligations. Conclude with `(GlobalTheory.JR.Step.full_blocks _).symm`. Simplify using `only [hg]`. Conclude with `GlobalTheory.JR.Step.shiftCompanionLastRowMatrix_mulVec_firstBasis a.2.1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show a.2.1 ᵥ* _ = _`. Establish `hgi : GlobalTheory.JR.Step.nfMat a.2.1 * ((hu.unit⁻¹ : GL (Fin (r + 1)) k) : Matrix (Fin (r + 1)) (Fin (r + 1)) k) = 1`. Conclude with `hu.unit.mul_inv`. Establish `e : (GlobalTheory.JR.Step.eL r k ᵥ* GlobalTheory.JR.Step.nfMat a.2.1) ᵥ* ((hu.unit⁻¹ : GL (Fin (r + 1)) k) : Matrix (Fin (r + 1)) (Fin (r + 1)) k) = GlobalTheory.JR.Step.eL r k`. Rewrite using `[Matrix.vecMul_vecMul, hgi, Matrix.vecMul_one]`.
-
-Rewrite `e` using `[hinv]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glNormal_of_ne_zero : ∀ (k : Type) [Field k] (r : ℕ) (a : Inv (r + 1) k), a.2.1 0 ≠ 0 →
     ∃ (g : GL (Fin (r + 1)) k) (Z : Gl r k), act g (sec a) = GlobalTheory.JR.Step.lift Z (a.2.1 0) a.2.2 := by

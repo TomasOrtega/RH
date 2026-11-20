@@ -11,7 +11,7 @@ section Eval
 variable {C0 CE1 CE2 mu : ℝ} {X : Loc} [NeZero X.m] {β : GlobalTheory X}
 
 /- English proof (translation)
-Introduce `h`. Establish `e : segPos X.TT j i = segNext X.TT j'` using `congrArg Subtype.val h`. Conclude with `(pos_mem X.TT j i).2 (e ▸ (next_mem X.TT j').2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tg_odd_ne_end (X : Loc) (j j' : Fin (numSeg X.TT)) (i : Fin (segS X.TT j)) : topOdd X j i ≠ topEnd X j' := by
   intro h
@@ -19,21 +19,19 @@ theorem tg_odd_ne_end (X : Loc) (j j' : Fin (numSeg X.TT)) (i : Fin (segS X.TT j
   exact (pos_mem X.TT j i).2 (e ▸ (next_mem X.TT j').2)
 
 /- English proof (translation)
-Establish `hoth : ∀ j', j' ≠ j → ∀ (i' : Fin (segS X.TT j')) (b : Bool) (c : Fin (X.m + 1)), wLet X (topOdd X j i0, b0) ((topOdd X j' i', b), c) = 0`. Introduce `j' hne i' b c`. Unfold `wLet`. Rewrite using `[if_neg]`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : topOdd X j' i' = topOdd X j i0` using `congrArg Prod.fst h`. Establish `h2` using `tgTop_inj X (a₁ := ⟨j', some i'⟩) (a₂ := ⟨j, some i0⟩) h1`. Conclude with `hne (congrArg Sigma.fst h2)`. Establish `hend : ∀ j' (b : Bool) (c : Fin (X.m + 1)), wLet X (topOdd X j i0, b0) ((topEnd X j', b), c) = 0`. Introduce `j' b c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `wLet`. Rewrite using `[if_neg]`. Introduce `h`. Conclude with `tg_odd_ne_end X j j' i0 (congrArg Prod.fst h).symm`. Establish `hsame : ∀ (i : Fin (segS X.TT j)) (b : Bool) (c : Fin (X.m + 1)), wLet X (topOdd X j i0, b0) ((topOdd X j i, b), c) = if i = i0 ∧ b = b0 then 1 else 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `i b c`. Unfold `wLet`. Simplify using `only [Prod.mk.injEq, (topOdd_inj X j).eq_iff]`. Rewrite using `[Finset.sum_eq_single j]`. Unfold `tgHD tgWM`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hend, hsame, mul_zero, add_zero, Finset.sum_const_zero]`. Rewrite using `[Finset.sum_eq_single i0, Finset.sum_eq_single i0]`. Apply the tactic sequence `cases b0 <;> simp`. Introduce `i _ hi`. Simplify using `[hi]`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `i _ hi`. Simplify using `[hi]`. Introduce `h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Introduce `j' _ hj'`. Unfold `tgHD tgWM`. Simplify using `only [hoth j' hj', hend, mul_zero, add_zero, Finset.sum_const_zero]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tg_eval_odd (L : LvDat C0 CE1 CE2 mu X β) (ju : ∀ j, Fin (X.seg C0 CE1 CE2 j).t → ℕ)
     (du : ∀ j, Fin (2 * segS X.TT j + 1) → ℕ) (A : MonH X) (j : Fin (numSeg X.TT)) (i0 : Fin (segS X.TT j)) (b0 : Bool) :
@@ -76,15 +74,15 @@ theorem tg_eval_odd (L : LvDat C0 CE1 CE2 mu X β) (ju : ∀ j, Fin (X.seg C0 CE
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `hodd : ∀ j' (i' : Fin (segS X.TT j')) (b : Bool) (c : Fin (X.m + 1)), wLet X (topEnd X j, true) ((topOdd X j' i', b), c) = 0`. Introduce `j' i' b c`. Unfold `wLet`. Rewrite using `[if_neg]`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `tg_odd_ne_end X j' j i' (congrArg Prod.fst h)`. Establish `hend : ∀ j' (b : Bool) (c : Fin (X.m + 1)), wLet X (topEnd X j, true) ((topEnd X j', b), c) = if j' = j ∧ b = true then 1 else 0`. Introduce `j' b c`. Unfold `wLet`. Establish `e : topEnd X j' = topEnd X j ↔ j' = j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `congrArg Sigma.fst (tgTop_inj X (a₁ := ⟨j', none⟩) (a₂ := ⟨j, none⟩) h)`. Introduce `h`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Prod.mk.injEq, e]`. Rewrite using `[Finset.sum_eq_single j]`. Unfold `tgHD tgWM`. Simplify using `[hodd, hend]`. Introduce `j' _ hj'`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `tgHD tgWM`. Simplify using `[hodd, hend, hj']`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tg_eval_end (L : LvDat C0 CE1 CE2 mu X β) (ju : ∀ j, Fin (X.seg C0 CE1 CE2 j).t → ℕ)
     (du : ∀ j, Fin (2 * segS X.TT j + 1) → ℕ) (A : MonH X) (j : Fin (numSeg X.TT)) :
@@ -119,47 +117,43 @@ theorem tg_eval_end (L : LvDat C0 CE1 CE2 mu X β) (ju : ∀ j, Fin (X.seg C0 CE
 end Eval
 
 /- English proof (translation)
-Introduce `X _ _ O _ _ _ _ S hSq hD hH hc mm hmm n hn1 hnc β hβ L Std hStd e he1 hen ju hju Gu du hGI hGP hdu hY A hA1 hA2 hA3 hPol hnd`. Establish `h2 : 2 ≤ numSeg X.TT` using `hH.1.2.2.2.1`. Distinguish the cases in `hT0 : (∏ j, L.head O j (ju j) (Gu j)) * monomial A 1 = 0`. Rewrite using `[hT0]`. Conclude with `Submodule.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hS` using `tg_std_eq O h2 L Std hStd`. Establish `sv : ∀ (pl : TgPlace X) (b : Bool) (c : Fin (X.m + 1)), Std ((tgTop X pl, b), c) = tgStdE L pl b c`. Introduce `pl b c`. Rewrite using `[hS]`. Conclude with `tgStdX_at h2 L pl b c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsplit : (∏ j, L.head O j (ju j) (Gu j)) * monomial A 1 = ∏ j, (L.head O j (ju j) (Gu j) * segMon O X j A)`. Rewrite using `[tg_mono_split O X h2, Finset.prod_mul_distrib]`. Establish `hwh : ∀ ω : (X.TT × Bool) × Fin (X.m + 1) → ℕ, (∀ x (c c' : Fin X.m), ω (x, c.succ) = ω (x, c'.succ)) → (∀ j (i : Fin (segS X.TT j)), ω ((topOdd X j i, true), 0) + ω ((topOdd X j i, false), 0) = ω ((topOdd X j i, true), Fin.succ 0) + ω ((topOdd X j i, false), Fin.succ 0)) → (∀ j, …`. Introduce `ω a1 a2 a3`. Rewrite using `[hsplit]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `IsWeightedHomogeneous.prod _ _ _ fun j _ => (tg_head_wh O L j (ju j) (Gu j) (du j) (hGP j) ω a1 (a2 j) (a3 j)).mul (tg_segMon_wh O j A ω)`. Take `⟨m0, hm0⟩` from `MvPolynomial.ne_zero_iff.1 hT0`. Establish `hdeg : ∀ x : X.TT × Bool, ∑ j, (tgHD L j (ju j) (du j) (wLet X x) + tgWM X j A (wLet X x)) = hhDegs X.TT X.aT X.bT x`. Introduce `x`. Establish `a1` using `hwh (wLet X x) (fun _ _ _ => rfl) (fun _ _ => rfl) (fun _ => rfl) hm0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a2 : multideg m0 x = hhDegs X.TT X.aT X.bT x` using `((mem_restrictSupport_iff _).1 hPol) (Finset.mem_coe.2 (mem_support_iff.2 hm0)) x`. Rewrite using `[← a1, weight_wLet, a2]`. Establish `hA0 : ∀ j, A ((topEnd X j, false), 0) = 0`. Introduce `j`. Rewrite using `[hA3 j 0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Conclude with `sv ⟨j, none⟩ false 0`. Establish `hnu : ∑ j, nuSeg C0 CE1 CE2 X j (ju j) (L.jp j) (du j) A ≤ ordFam C0 CE1 CE2 X β + e`. Apply the tactic sequence `have a1 := hwh (tgWN X) (fun x c c' => by obtain ⟨t, b⟩ := x; cases b <;> simp [tgWN_ts, tgWN_fs]) (fun j i => by rw [tgWN_true_zero_eq_zero, top_weight_false_zero_eq_one, tgWN_ts, tgWN_fs]) (fun j => by rw [tgWN_true_zero_eq_zero, top_weight_false_zero_eq_one, tgWN_ts, tgWN_fs]) …`. Establish `a2` using `hnd m0 (mem_support_iff.2 hm0)`. Rewrite `a2` using `[← weight_tgWN, a1]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `le_trans (le_of_eq ?_) a2` and prove the remaining obligations. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `t` using `tg_nd_eval L j (ju j) (du j) A`. Rewrite `t` using `[hA0 j, add_zero]`. Conclude with `t.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ j, ∃ b' : SegBlock (segS X.TT j) X.m, BLk C0 Cde CE1 CE2 X (((X.c - (n - e) : ℕ) : ℝ) * ka1 X) j b' ∧ blockOrd X.p (X.seg C0 CE1 CE2 j) b' = nuSeg C0 CE1 CE2 X j (ju j) (L.jp j) (du j) A ∧ ∃ u ∈ (blockData X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT …` using `X.m), L.head O j (ju j) (Gu j) * segMon O X j A = ioBlock (KK O) X.p C0 CE1 CE2 X j b' u := by`. Introduce `j`. Use `h X O S hSq hD hH hc mm hmm n hn1 hnc β hβ L e he1 hen j (ju j) (hju j) (Gu j) (du j) (hGI j) (hGP j) (hdu j) (hY j) A ?_ ?_ ?_ ?_ (hA0 j) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i`. Establish `a` using `hA1 (topOdd X j i, true)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Use linear arithmetic over natural numbers and integers.
 
-Establish `b : Std ((topOdd X j i, true), 0) - A ((topOdd X j i, true), 0) ≤ ∑ c, (Std ((topOdd X j i, true), c) - A ((topOdd X j i, true), c))` using `Finset.single_le_sum (f := fun c => Std ((topOdd X j i, true), c) - A ((topOdd X j i, true), c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ 0)`. Establish `v : Std ((topOdd X j i, true), 0) = (β j).rz i 0 + (X.seg C0 CE1 CE2 j).P X.p i * (coarseA X.p (X.seg C0 CE1 CE2 j) (β j) i - (if (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma then (β j).w i else (β j).o i))`. Use `sv ⟨j, some i⟩ true 0` as an intermediate fact. Simplify `this` using `[tgStdE, tgTop]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `a` using `hA2 (topOdd X j i, true)`. Rewrite `a` using `[Fin.sum_univ_succ]`. Establish `v : ∀ c : Fin X.m, Std ((topOdd X j i, true), c.succ) = (β j).rz i c.succ`. Introduce `c`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `sv ⟨j, some i⟩ true c.succ` as an intermediate fact. Simplify `this` using `[tgStdE, tgTop, Fin.succ_ne_zero]`. Simplify using `only [v] at a`. Use linear arithmetic over natural numbers and integers. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `a` using `hA2 (topOdd X j i, false)`. Establish `b : A ((topOdd X j i, false), 0) - Std ((topOdd X j i, false), 0) ≤ ∑ c, (A ((topOdd X j i, false), c) - Std ((topOdd X j i, false), c))` using `Finset.single_le_sum (f := fun c => A ((topOdd X j i, false), c) - Std ((topOdd X j i, false), c)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ 0)`. Establish `v : Std ((topOdd X j i, false), 0) = (β j).ry i 0 + (X.seg C0 CE1 CE2 j).P X.p i * (if (i : ℕ) < (X.seg C0 CE1 CE2 j).sigma then (β j).sg i else 0)`. Use `sv ⟨j, some i⟩ false 0` as an intermediate fact. Simplify `this` using `[tgStdE, tgTop]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Establish `a` using `hA2 (topEnd X j, true)`. Rewrite `a` using `[Fin.sum_univ_succ]`. Establish `v : ∀ c : Fin X.m, Std ((topEnd X j, true), c.succ) = 0`. Introduce `c`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `sv ⟨j, none⟩ true c.succ` as an intermediate fact. Simplify `this` using `[tgStdE, tgTop, Fin.succ_ne_zero]`. Simplify using `only [v, Nat.sub_zero] at a`. Use linear arithmetic over natural numbers and integers. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hA3 j c.succ]`. Conclude with `sv ⟨j, none⟩ false c.succ`. Introduce `i`. Establish `a` using `hdeg (topOdd X j i, true)`. Rewrite `a` using `[tg_eval_odd L ju du A j i true]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb : hhDegs X.TT X.aT X.bT (topOdd X j i, true) = (X.seg C0 CE1 CE2 j).bTop i` using `by show hhDeg X.aT X.bT (segPos X.TT j i) true = X.bT (segPos X.TT j i)`. Unfold `hhDeg`. Rewrite using `[if_pos rfl, if_neg (pos_mem X.TT j i).2]`. Rewrite `a` using `[hb]`. Conclude with `a`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `i`. Establish `a` using `hdeg (topOdd X j i, false)`. Rewrite `a` using `[tg_eval_odd L ju du A j i false]`. Establish `hb : hhDegs X.TT X.aT X.bT (topOdd X j i, false) = segATop X.TT X.aT j i` using `by show hhDeg X.aT X.bT (segPos X.TT j i) false = X.aT (segPos X.TT j i)`. Unfold `hhDeg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (by simp), if_neg (pos_mem X.TT j i).2]`. Rewrite `a` using `[hb]`. Conclude with `a`. Establish `a` using `hdeg (topEnd X j, true)`. Rewrite `a` using `[tg_eval_end L ju du A j]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb : hhDegs X.TT X.aT X.bT (topEnd X j, true) = segAPlus X.TT X.aT j` using `by show hhDeg X.aT X.bT (segNext X.TT j) true = X.aT (segNext X.TT j)`. Unfold `hhDeg`. Rewrite using `[if_pos rfl, if_pos (next_mem X.TT j).2]`. Rewrite `a` using `[hb]`. Conclude with `a`.
-
-Use `choose β' hBL hord u hu hEq using key`. Rewrite using `[hsplit, Finset.prod_congr rfl fun j _ => hEq j]`. Use `show symFam (KK O) X.p C0 CE1 CE2 X β' u ∈ _`. Use `symFam_span β' (fun j => genSet O (r := X.m) (blockData X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) (mm + ((n - e : ℕ) : ℝ) * ka1 X) (β' j))) _ ?_ u (fun j => hu j)` and prove the remaining obligations. Introduce `s hs`.
-
-Use `Submodule.subset_span ⟨β', hBL, ?_, s, hs, rfl⟩` and prove the remaining obligations. Unfold `ordFam`. Rewrite using `[Finset.sum_congr rfl fun j _ => hord j]`. Conclude with `hnu`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tcoreAt_of_seg {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (h : SegCoreAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) :
     TCoreAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
@@ -302,7 +296,7 @@ theorem tcoreAt_of_seg {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (h : SegCoreAt C0 
   exact hnu
 
 /- English proof (translation)
-The claim follows from `TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => tcoreAt_of_seg h) h`.
+A detailed English derivation is pending.
 -/
 theorem restTCore_of_seg (h : RestSegCore) : RestTCore :=
   TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => tcoreAt_of_seg h) h

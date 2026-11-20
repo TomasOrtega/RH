@@ -11,19 +11,17 @@ open MeasureTheory
 open scoped Pointwise
 
 /- English proof (translation)
-Set `e : G' ≃ᵐ G` to `(ι.symm.toHomeomorph.trans (Homeomorph.mulRight t)).toMeasurableEquiv`. Establish `he : ∀ x, e x = ι.symm x * t` using `fun _ => rfl`. Establish `hes : ∀ g, e.symm g = ι (g * t⁻¹)` using `fun g => by`. Rewrite using `[MeasurableEquiv.symm_apply_eq, he]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hH : (μ'.map e).IsHaarMeasure`. Establish `h1 : (μ'.map ι.symm).IsHaarMeasure` using `ι.symm.isHaarMeasure_map μ'`. Establish `h2 : μ'.map e = (μ'.map ι.symm).map (· * t)`. Conclude with `(Measure.map_map (measurable_mul_const t) (map_continuous ι.symm).measurable).symm`. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `infer_instance`. Use `⟨μ'.map e, e.symm ⁻¹' F', hH, ?_, fun f => ?_⟩` and prove the remaining obligations. Use `IsFundamentalDomain.mk'' (e.symm.measurable hm).nullMeasurableSet (ae_of_all _ fun g => ?_) (fun γ hγ => ?_) (fun γ => (measurePreserving_mul_left (μ'.map e) (γ : G)).quasiMeasurePreserving)` and prove the remaining obligations. Take `⟨γ, hγ, h⟩` from `hc (e.symm g)`. Use `⟨⟨ι.symm γ, (hΓ _).2 (by simpa using hγ)⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `show e.symm (ι.symm γ * g) ∈ F'`. Rewrite `h`, the goal using `[hes]`. Simplify `h` using `[mul_assoc]`. Establish `h0` using `hd (ι γ) ((hΓ _).1 γ.2) (fun h => hγ (Subtype.ext (ι.injective (by simpa using h))))`. Rewrite using `[AEDisjoint, MeasurableEquiv.map_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `measure_mono_null ?_ h0` and prove the remaining obligations. Introduce and unpack `x ⟨⟨g, hg, hx⟩, h2⟩`. Use `⟨⟨e.symm g, hg, ?_⟩, by simpa using h2⟩` and prove the remaining obligations. Establish `hx' : (γ : G) * g = ι.symm x * t` using `hx`. Use `show ι γ * e.symm g = x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hes, ← map_mul, ← mul_assoc, hx']`. Simplify using the standard rewrite rules. Rewrite using `[setIntegral_map_equiv]`. Simplify using `only [he]`. Use `congr 2`.
-
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_haar_fund {G G' : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] [Group G'] [TopologicalSpace G'] [IsTopologicalGroup G'] [MeasurableSpace G'] [BorelSpace G']
@@ -68,9 +66,9 @@ open scoped InnerProductSpace TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V.gram` as an intermediate fact. Establish `: (I.muA μf).IsHaarMeasure`. Unfold `AutInst.muA Formalism.REAL.muG`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨μ, F, hμ, hF, hint⟩` from `exists_haar_fund (I.muA μf) ι (GQ V) I.GFset hι fund hf.1 hf.2.1 hf.2.2 t`. Take `⟨c, hc⟩` from `hS μ F hθ hμ hF T hT T' hT'`. Conclude with `⟨c, fun v v' => (hint fun g => star (T v g) * T' v' g).symm.trans (hc v v').2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem schur_of_bridge {D : D7} {V : HSp D} {S : D.what₂.Tau → Formalism.BasicNotions.TH.SPar} (M : DSModel V S)
     (θ : D.what₂.Tau → (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (J : Set (GA D V))

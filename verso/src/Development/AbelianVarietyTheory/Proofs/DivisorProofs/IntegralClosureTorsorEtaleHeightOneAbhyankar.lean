@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.KeyOriginBC
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [Ideal.mem_comap, Ideal.mem_map_C_iff, Polynomial.coe_mapRingHom, Polynomial.coeff_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem comap_map_C_mapRingHom {A A₁ : Type} [CommRing A] [CommRing A₁] (f : A →+* A₁) (p₁ : Ideal A₁) :
     (p₁.map (Polynomial.C : A₁ →+* A₁[X])).comap (Polynomial.mapRingHom f) =
@@ -22,9 +22,9 @@ theorem comap_map_C_mapRingHom {A A₁ : Type} [CommRing A] [CommRing A₁] (f :
   simp only [Ideal.mem_comap, Ideal.mem_map_C_iff, Polynomial.coe_mapRingHom, Polynomial.coeff_map]
 
 /- English proof (translation)
-Take `⟨hd, -⟩` from `GlobalTheory.isDomain_and_isIntegrallyClosed_atPrime_of_etale (Polynomial A) QA (Localization.AtPrime QA)`. Use `⟨hd, ?_⟩` and prove the remaining obligations. Use `haveI := hd`. Use `haveI : Module.Flat (Polynomial A) (Localization.AtPrime QA) := Module.Flat.trans (Polynomial A) EA (Localization.AtPrime QA)`. Establish `h1 : Function.Injective (algebraMap (Polynomial A) (Localization.AtPrime QA))` using `FaithfulSMul.algebraMap_injective (Polynomial A) (Localization.AtPrime QA)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : algebraMap A (Localization.AtPrime QA) = (algebraMap (Polynomial A) (Localization.AtPrime QA)).comp (algebraMap A (Polynomial A))` using `IsScalarTower.algebraMap_eq _ _ _`. Rewrite using `[h2]`. Conclude with `h1.comp Polynomial.C_injective`.
+A detailed English derivation is pending.
 -/
 theorem atPrime_isDomain_injective (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A]
     [IsIntegrallyClosed A]
@@ -48,17 +48,15 @@ theorem atPrime_isDomain_injective (A : Type) [CommRing A] [IsDomain A] [IsNoeth
   exact h1.comp Polynomial.C_injective
 
 /- English proof (translation)
-Introduce `T O _ _ _ _ _ _ A A₁ _ _ _ _ _ _ _ _ _ _ _ _ f i i₁ hf EA _ _ _ _ _ QA _ jA hcomp hj DA _ _ q actA hq hqu htor a ha hhyp P₁ _ hP₁ hfa`. Take `⟨hRd, hRi⟩` from `atPrime_isDomain_injective A EA QA`. Take `⟨hR₁d, hR₁i⟩` from `atPrime_isDomain_injective A₁ (Ext f EA) (ideal₁ f i i₁ EA QA jA hcomp hj)`. Establish `hfa0 : f a ≠ 0` using `fun h => ha (hf (by rw [h, map_zero]))`. Take `⟨hp₁h, hX₁⟩` from `GlobalTheory.T.height_one_contraction_of_etale_prime A₁ (Ext f EA) (ideal₁ f i i₁ EA QA jA hcomp hj) P₁ (f a) hfa0 hfa hP₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hph, π, hπ, y, hy⟩` from `hhyp _ hp₁h (by rw [Ideal.mem_comap]; exact hfa)`. Take `⟨⟨_, hdvr₁⟩, -⟩` from `GlobalTheory.T.height_one_prime_over_constant_ideal A₁ (Ext f EA) (ideal₁ f i i₁ EA QA jA hcomp hj) P₁ _ hp₁h hX₁`. Establish `hsq : (locBC f i i₁ EA QA jA hcomp hj).comp (algebraMap A[X] (Localization.AtPrime QA)) = (algebraMap A₁[X] (Loc₁ f i i₁ EA QA jA hcomp hj)).comp (Polynomial.mapRingHom f)`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[RingHom.comp_apply, IsScalarTower.algebraMap_apply A[X] EA (Localization.AtPrime QA), locBC_algebraMap, RingHom.comp_apply, IsScalarTower.algebraMap_apply A₁[X] (Ext f EA)]`. Use `congr 1`. Rewrite using `[inclE_apply, Algebra.TensorProduct.algebraMap_apply]`. Rewrite using `[← Algebra.TensorProduct.tmul_one_eq_one_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hPX : (P₁.comap (locBC f i i₁ EA QA jA hcomp hj)).comap (algebraMap A[X] (Localization.AtPrime QA)) = ((P₁.comap (algebraMap A₁ (Loc₁ f i i₁ EA QA jA hcomp hj))).comap f).map (Polynomial.C : A →+* A[X])`. Rewrite using `[Ideal.comap_comap, hsq, ← Ideal.comap_comap, hX₁, comap_map_C_mapRingHom]`. Take `⟨⟨_, hdvr⟩, hirr⟩` from `GlobalTheory.T.height_one_prime_over_constant_ideal A EA QA (P₁.comap (locBC f i i₁ EA QA jA hcomp hj)) _ hph hPX`. Establish `hsqA : (locBC f i i₁ EA QA jA hcomp hj).comp (algebraMap A (Localization.AtPrime QA)) = (algebraMap A₁ (Loc₁ f i i₁ EA QA jA hcomp hj)).comp f`. Apply `RingHom.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Conclude with `locBC_algebraMap_base f i i₁ EA QA jA hcomp hj x`. Establish `hsqF : (fibBC f i i₁ EA QA jA hcomp hj hf).comp (algebraMap (Localization.AtPrime QA) (GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA))) = (algebraMap (Loc₁ f i i₁ EA QA jA hcomp hj) (GlobalTheory.LocAcyc.GenFib A₁ (Loc₁ f i i₁ EA QA jA hcomp hj))).comp (locBC f i i₁ EA Q …`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `x`.
-
-Conclude with `fibBC_algebraMap f i i₁ EA QA jA hcomp hj hf x`. Conclude with `GlobalTheory.T.generic_fibre_base_change_injective A (Localization.AtPrime QA) hRi A₁ (Loc₁ f i i₁ EA QA jA hcomp hj) hR₁i f hf _ hsqA _ hsqF DA q actA hq hqu htor P₁ hdvr₁ hdvr π (hirr π hπ) (algebraMap A₁ _ y) (by rw [← map_pow, hy, ← RingHom.comp_apply, ← hsqA, RingHom.comp_ap …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem closureEtaleAt_of_mem_height_le_one : ∀ (T O : Type) [CommRing T] [CommRing O] [IsLocalRing O] [Algebra T O] [Algebra T[X] O]
     [IsScalarTower T T[X] O]

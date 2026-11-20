@@ -14,7 +14,7 @@ section
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] {O : Type} [CommRing O]
 
 /- English proof (translation)
-Establish `h` using `act.add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (a := act.act 0) (by rw [← h, _root_.mul_one])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_zero (act : OAct O G) : act.act 0 = 1 := by
   have h := act.add 0 0
@@ -22,7 +22,7 @@ theorem act_zero (act : OAct O G) : act.act 0 = 1 := by
   exact mul_left_cancel (a := act.act 0) (by rw [← h, _root_.mul_one])
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, act_zero, pow_zero]`. Consider the case `succ n ih => rw [Nat.cast_succ, act.add, ih, act.one, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem act_natCast (act : OAct O G) (n : ℕ) : act.act (n : O) = 𝟙 G ^ n := by
   induction n with
@@ -30,13 +30,13 @@ theorem act_natCast (act : OAct O G) (n : ℕ) : act.act (n : O) = 𝟙 G ^ n :=
   | succ n ih => rw [Nat.cast_succ, act.add, ih, act.one, pow_succ]
 
 /- English proof (translation)
-Rewrite using `[act.mul, hc, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_mul_eq_one (act : OAct O G) {c : O} (hc : act.act c = 1) (d : O) : act.act (d * c) = 1 := by
   rw [act.mul, hc, MonObj.comp_one]
 
 /- English proof (translation)
-Establish `h : x ≫ (𝟙 G ^ n) = x ^ n` using `by rw [MonObj.comp_pow, Category.comp_id]`. Rewrite using `[← h, ← act_natCast act, hn, MonObj.comp_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_eq_one_of_act (act : OAct O G) {n : ℕ} (hn : act.act (n : O) = 1) {T : Over S} (x : T ⟶ G) :
     x ^ n = 1 := by
@@ -46,17 +46,15 @@ theorem pow_eq_one_of_act (act : OAct O G) {n : ℕ} (hn : act.act (n : O) = 1) 
 end
 
 /- English proof (translation)
-Introduce `hL E _ _ K _ _ P act hg a b hab`. Assume the negation of the conclusion as `hne`. Establish `hc0 : a - b ≠ 0` using `sub_ne_zero.mpr hne`. Establish `hc : act.act (a - b) = 1`. Establish `h` using `act.add (a - b) b`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[sub_add_cancel, hab]`. Conclude with `mul_right_cancel (b := act.act b) (by rw [← h, _root_.one_mul])`. Use `set n : ℕ := Ideal.absNorm (Ideal.span {a - b}) with hn`. Establish `hn0 : n ≠ 0`. Rewrite using `[hn, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hc0`. Take `⟨d, hd⟩` from `Ideal.mem_span_singleton'.mp (Ideal.absNorm_mem (Ideal.span {a - b}))`. Establish `h1 : act.act (n : 𝓞 E) = 1`. Rewrite using `[hn, ← hd]`. Conclude with `act_mul_eq_one act hc d`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `k` to `AlgebraicClosure K`. Set `t : Spec (CommRingCat.of k) ⟶ Sp (𝓞 K)` to `Spec.map (CommRingCat.ofHom ((algebraMap K k).comp (algebraMap (𝓞 K) K)))`. Use `haveI : CharZero k := charZero_of_injective_algebraMap (algebraMap K k).injective`. Establish `key : ∀ m : ℕ, 1 ≤ m → Nat.card (Over.mk t ⟶ P.A) = (n * m) ^ (2 * P.g)`. Introduce `m hm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hnm : n * m ≠ 0` using `Nat.mul_ne_zero hn0 (by omega)`. Take `⟨-, -, -, -, h⟩` from `hL.mulN _ P (n * m) (Nat.one_le_iff_ne_zero.mpr hnm)`. Rewrite using `[← h k t (Nat.cast_ne_zero.mpr hnm)]`. Use `(Nat.card_congr (Equiv.subtypeUnivEquiv fun x => ?_)).symm` and prove the remaining obligations. Rewrite using `[pow_mul, pow_eq_one_of_act act h1, one_pow]`.
-
-Establish `e` using `(key 1 le_rfl).symm.trans (key 2 (by norm_num))`. Use `Nat.pow_left_injective (by omega : 2 * P.g ≠ 0) e` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem act_injective : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] (K : Type) [Field K] [NumberField K] (P : Out.PolAV (Sp (𝓞 K))) (act : OAct (𝓞 E) P.A), 1 ≤ P.g → Function.Injective act.act := by
   intro hL E _ _ K _ _ P act hg a b hab

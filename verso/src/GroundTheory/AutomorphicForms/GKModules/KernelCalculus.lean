@@ -19,7 +19,7 @@ variable (h : IsExpLieAlgebra G 𝔤)
 variable {h} in
 
 /- English proof (translation)
-Use `⟨?_, hasCompactSupport_convDeriv hγ.2 X⟩` and prove the remaining obligations. Set `_` to `h.chartedSpace`. Use `h.lieGroup ∞` as an intermediate fact. Establish `h1 : h.IsSmoothFun (h.rightDeriv X fun z : G => γ z⁻¹)` using `h.isSmoothFun_rightDeriv (isSmoothFun_comp_inv hγ.1) X`. Conclude with `ContMDiff.comp (I' := 𝓘(ℝ, 𝔤)) h1 (contMDiff_inv 𝓘(ℝ, 𝔤) ∞)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsTestFunction.convDeriv {γ : G → ℂ} (hγ : h.IsTestFunction γ) (X : 𝔤) :
     h.IsTestFunction (h.convDeriv X γ) := by
@@ -33,9 +33,7 @@ theorem IsTestFunction.convDeriv {γ : G → ℂ} (hγ : h.IsTestFunction γ) (X
 variable {h} in
 
 /- English proof (translation)
-Use `⟨?_, hγ.2.mul_left⟩` and prove the remaining obligations. Set `_` to `h.chartedSpace`. Use `set L : ℂ →L[ℝ] ℂ := (c • ContinuousLinearMap.id ℂ ℂ).restrictScalars ℝ`. Establish `e : (fun y => c * γ y) = L ∘ γ` using `by funext y; simp [L]`. Rewrite using `[e]`.
-
-Conclude with `L.contDiff.comp_contMDiff hγ.1`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsTestFunction.const_mul {γ : G → ℂ} (hγ : h.IsTestFunction γ) (c : ℂ) :
     h.IsTestFunction (fun y => c * γ y) := by
@@ -49,7 +47,7 @@ theorem IsTestFunction.const_mul {γ : G → ℂ} (hγ : h.IsTestFunction γ) (c
 variable {h} in
 
 /- English proof (translation)
-Use `⟨?_, h₁.2.add h₂.2⟩` and prove the remaining obligations. Set `_` to `h.chartedSpace`. Conclude with `h₁.1.add h₂.1`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem IsTestFunction.add {γ₁ γ₂ : G → ℂ} (h₁ : h.IsTestFunction γ₁) (h₂ : h.IsTestFunction γ₂) :
     h.IsTestFunction (fun y => γ₁ y + γ₂ y) := by
@@ -60,7 +58,7 @@ theorem IsTestFunction.add {γ₁ γ₂ : G → ℂ} (h₁ : h.IsTestFunction γ
 variable [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Use `_ = ∫ y, Ψ y * γ (a⁻¹ * y) ∂μ := integral_mul_left_eq_self (μ := μ) (fun y => Ψ y * γ (a⁻¹ * y)) a`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_mul_left_kernel (Ψ γ : G → ℂ) (a : G) :
     ∫ y, Ψ (a * y) * γ y ∂μ = ∫ y, Ψ y * γ (a⁻¹ * y) ∂μ := by
@@ -69,7 +67,7 @@ theorem integral_mul_left_kernel (Ψ γ : G → ℂ) (a : G) :
     _ = ∫ y, Ψ y * γ (a⁻¹ * y) ∂μ := integral_mul_left_eq_self (μ := μ) (fun y => Ψ y * γ (a⁻¹ * y)) a
 
 /- English proof (translation)
-The claim follows from `((hΨ.comp (continuous_const.mul continuous_id)).mul (hγ.continuous h)).integrable_of_hasCompactSupport hγ.2.mul_left`.
+A detailed English derivation is pending.
 -/
 theorem integrable_mul_test {Ψ : G → ℂ} (hΨ : Continuous Ψ) {γ : G → ℂ}
     (hγ : h.IsTestFunction γ) (g : G) : Integrable (fun y => Ψ (g * y) * γ y) μ :=
@@ -77,25 +75,23 @@ theorem integrable_mul_test {Ψ : G → ℂ} (hΨ : Continuous Ψ) {γ : G → �
     hγ.2.mul_left
 
 /- English proof (translation)
-Use `secondCountableTopology_subgroup_units G` as an intermediate fact. Rewrite using `[isSmoothFun_iff]`. Introduce `g₀`. Use `set F : 𝔤 → G → ℂ := fun Y y => γ (h.expG (-Y) * (g₀⁻¹ * y)) * Ψ y with hFdef`. Establish `hexp : (fun Y : 𝔤 => ∫ y, Ψ (g₀ * h.expG Y * y) * γ y ∂μ) = fun Y => ∫ y, F Y y ∂μ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `Y`. Rewrite using `[integral_mul_left_kernel]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `only [hFdef, h.expG_neg, mul_inv_rev, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `show ContDiff ℝ ∞ (fun Y : 𝔤 => ∫ y, Ψ (g₀ * h.expG Y * y) * γ y ∂μ)`. Rewrite using `[hexp]`. Use `set ψ : 𝔤 → G → ℂ := fun Y y => γ (h.expG (-Y) * (g₀⁻¹ * y)) with hψdef`. Establish `hψ : ∀ g₁ : G, ContDiff ℝ ∞ (fun q : 𝔤 × 𝔤 => ψ q.1 (g₁ * h.expG q.2))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `g₁`. Use `h.contDiff_comp_expG_mul_expG hγ.1 (contDiff_fst.neg) (g₀⁻¹ * g₁) contDiff_snd` as an intermediate fact. Simplify `this` using `[hψdef, mul_assoc]`. Establish `hψY : ∀ y : G, ContDiff ℝ ∞ (fun Y => ψ Y y)`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `h.contDiff_comp_expG_mul_expG hγ.1 (contDiff_id.neg) (g₀⁻¹ * y) (contDiff_const (c := (0 : 𝔤)))` as an intermediate fact. Simplify `this` using `[hψdef]`. Use `set Lw : G → ℂ →L[ℝ] ℂ := fun y => (ContinuousLinearMap.lsmul ℝ ℂ).flip (Ψ y) with hLw`. Establish `hLwc : Continuous Lw` using `(ContinuousLinearMap.continuous _).comp hΨ`. Establish `hFL : ∀ y, (fun Y => F Y y) = Lw y ∘ fun Y => ψ Y y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `y`. Use function extensionality and compare the values at `Y`. Simplify using `[hFdef, hLw, hψdef]`. Establish `hiter : ∀ (k : ℕ) (Y : 𝔤) (y : G), ParamIntegral.iter F k Y y = (Lw y).compContinuousMultilinearMap (iteratedFDeriv ℝ k (fun Y => ψ Y y) Y)`. Introduce `k Y y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[ParamIntegral.iter, hFL y]`. Conclude with `(Lw y).iteratedFDeriv_comp_left (hψY y).contDiffAt (by exact_mod_cast le_top)`. Use `contDiff_integral_of_iteratedFDeriv F (fun y => ?_) (fun k => ?_) (fun Y₀ => ?_)` and prove the remaining obligations. Rewrite using `[hFL y]`. Conclude with `(Lw y).contDiff.comp (hψY y)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[hiter]`. Establish `hc` using `h.continuous_iteratedFDeriv_param ψ hψ k`. Establish `hB` using `ContinuousLinearMap.continuous₂ (𝕜 := ℝ) (E := ℂ →L[ℝ] ℂ) (F := ContinuousMultilinearMap ℝ (fun _ : Fin k => 𝔤) ℂ) (G := ContinuousMultilinearMap ℝ (fun _ : Fin k => 𝔤) ℂ) (ContinuousLinearMap.compContinuousMultilinearMapL ℝ (fun _ : Fin k => 𝔤) ℂ ℂ)`. Conclude with `hB.comp ((hLwc.comp continuous_snd).prodMk hc)`. Use `⟨closedBall Y₀ 1, closedBall_mem_nhds Y₀ one_pos, (fun p : 𝔤 × G => g₀ * (h.expG p.1 * p.2)) '' (closedBall Y₀ 1 ×ˢ tsupport γ), ?_, ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `((isCompact_closedBall Y₀ 1).prod hγ.2).image (continuous_const.mul ((h.continuous_expG.comp continuous_fst).mul continuous_snd))`. Introduce `Y hY y hy`. Simplify using `only [hFdef]`. Assume the negation of the conclusion as `hne`. Apply `hy` to reduce the goal to its premises.
-
-Use `⟨(Y, h.expG (-Y) * (g₀⁻¹ * y)), ⟨hY, subset_tsupport γ ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Simplify using `[h0]`. Simplify using `[h.expG_neg]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSmoothFun_integral_mul {Ψ : G → ℂ} (hΨ : Continuous Ψ) {γ : G → ℂ}
     (hγ : h.IsTestFunction γ) : h.IsSmoothFun (fun g => ∫ y, Ψ (g * y) * γ y ∂μ) := by
@@ -152,25 +148,23 @@ theorem isSmoothFun_integral_mul {Ψ : G → ℂ} (hΨ : Continuous Ψ) {γ : G 
       · simp [h.expG_neg]
 
 /- English proof (translation)
-Establish `hec : Continuous fun t : ℝ => h.expG (t • X)` using `h.continuous_expG.comp (continuous_id.smul continuous_const)`. Establish `hfg : Continuous fun y : G => Ψ (g * y)` using `hΨ.comp (continuous_const.mul continuous_id)`. Establish `hκ'c : Continuous fun z : G => γ z⁻¹` using `continuous_of_isSmoothFun (isSmoothFun_comp_inv hγ.1)`. Establish `hDc` using `continuous_rightDeriv_comp_inv hγ.1 X`. Establish `hshift : ∀ t : ℝ, (fun g => ∫ y, Ψ (g * y) * γ y ∂μ) (g * h.expG (t • X)) = ∫ y, Ψ (g * y) * γ (y⁻¹ * h.expG (t • X))⁻¹ ∂μ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t`. Use `show ∫ y, Ψ (g * h.expG (t • X) * y) * γ y ∂μ = _`. Use `integral_mul_left_eq_self (μ := μ) (fun y => Ψ (g * y) * γ (y⁻¹ * h.expG (t • X))⁻¹) (h.expG (t • X))` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Simplify using `only [mul_inv_rev, mul_assoc, inv_mul_cancel_left, inv_inv]`. Establish `hderiv : ∀ (y : G) (t : ℝ), HasDerivAt (fun s : ℝ => γ (y⁻¹ * h.expG (s • X))⁻¹) (h.rightDeriv X (fun w : G => γ w⁻¹) (y⁻¹ * h.expG (t • X))) t`. Introduce `y t`. Establish `h1` using `h.hasDerivAt_rightDeriv (isSmoothFun_comp_inv hγ.1) X (y⁻¹ * h.expG (t • X))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1' : HasDerivAt (fun s : ℝ => γ (y⁻¹ * h.expG (t • X) * h.expG (s • X))⁻¹) (h.rightDeriv X (fun w : G => γ w⁻¹) (y⁻¹ * h.expG (t • X))) (t - t)`. Rewrite using `[sub_self]`. Conclude with `h1`. Use `(h1'.comp_sub_const t t).congr_of_eventuallyEq (Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only [mul_assoc, ← h.expG_add_smul, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S : Set G := (fun p : ℝ × G => h.expG (p.1 • X) * p.2) '' (Metric.closedBall (0 : ℝ) 1 ×ˢ tsupport γ) with hSdef`. Establish `hS : IsCompact S` using `((isCompact_closedBall 0 1).prod hγ.2).image ((hec.comp continuous_fst).mul continuous_snd)`. Establish `hvanish : ∀ (y : G) (t : ℝ), t ∈ Metric.closedBall (0 : ℝ) 1 → y ∉ S → h.rightDeriv X (fun w : G => γ w⁻¹) (y⁻¹ * h.expG (t • X)) = 0`. Introduce `y t ht hy`. Use `rightDeriv_comp_inv_eq_zero (fun hk => hy ⟨(t, (h.expG (t • X))⁻¹ * y), ⟨ht, ?_⟩, ?_⟩) X` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify `hk` using `[mul_inv_rev]`. Simplify using the standard rewrite rules. Take `⟨M, hM⟩` from `exists_bound_rightDeriv_comp_inv hγ.1 hγ.2 X`. Establish `hbound : Integrable (S.indicator fun y => ‖Ψ (g * y)‖ * M) μ`. Use `IntegrableOn.integrable_indicator ?_ hS.measurableSet` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(hfg.norm.mul continuous_const).continuousOn.integrableOn_compact hS`. Establish `hint0 : Integrable (fun y => Ψ (g * y) * γ (y⁻¹ * h.expG ((0 : ℝ) • X))⁻¹) μ`. Establish `: (fun y => Ψ (g * y) * γ (y⁻¹ * h.expG ((0 : ℝ) • X))⁻¹) = fun y => Ψ (g * y) * γ y`. Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `h.integrable_mul_test μ hΨ hγ g`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (F := fun (t : ℝ) (y : G) => Ψ (g * y) * γ (y⁻¹ * h.expG (t • X))⁻¹) (F' := fun (t : ℝ) (y : G) => Ψ (g * y) * h.rightDeriv X (fun w : G => γ w⁻¹) (y⁻¹ * h.expG (t • X))) (x₀ := (0 : ℝ)) (s := Metric.ball (0 : ℝ) 1) (bound …`. Distinguish the cases in `hy : y ∈ S`. Rewrite using `[indicator_of_mem hy, norm_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `mul_le_mul_of_nonneg_left (hM _) (norm_nonneg _)`. Rewrite using `[indicator_of_notMem hy, hvanish y t (Metric.ball_subset_closedBall ht) hy, mul_zero, norm_zero])`. Use `hbound`. Use the proof step `(Eventually.of_forall fun y t _ => (hderiv y t).const_mul (Ψ (g * y)))`. Establish `hd1` using `h.hasDerivAt_rightDeriv (h.isSmoothFun_integral_mul μ hΨ hγ) X g`.
-
-Establish `hd2` using `key.2.congr_of_eventuallyEq (Eventually.of_forall hshift)`. Rewrite using `[hd1.unique hd2]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `[convDeriv]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rightDeriv_integral_mul {Ψ : G → ℂ} (hΨ : Continuous Ψ) {γ : G → ℂ}
     (hγ : h.IsTestFunction γ) (X : 𝔤) (g : G) :
@@ -248,7 +242,7 @@ theorem rightDeriv_integral_mul {Ψ : G → ℂ} (hΨ : Continuous Ψ) {γ : G �
   simp [convDeriv]
 
 /- English proof (translation)
-Repeatedly rewrite using `[mul_add]`. Conclude with `integral_add (h.integrable_mul_test μ hΨ h₁ g) (h.integrable_mul_test μ hΨ h₂ g)`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_mul_add {Ψ : G → ℂ} (hΨ : Continuous Ψ) {γ₁ γ₂ : G → ℂ}
     (h₁ : h.IsTestFunction γ₁) (h₂ : h.IsTestFunction γ₂) (g : G) :
@@ -257,7 +251,7 @@ theorem integral_mul_add {Ψ : G → ℂ} (hΨ : Continuous Ψ) {γ₁ γ₂ : G
   exact integral_add (h.integrable_mul_test μ hΨ h₁ g) (h.integrable_mul_test μ hΨ h₂ g)
 
 /- English proof (translation)
-Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem integral_mul_const_mul (Ψ γ : G → ℂ) (c : ℂ) (g : G) :
     ∫ y, Ψ (g * y) * (c * γ y) ∂μ = c * ∫ y, Ψ (g * y) * γ y ∂μ := by
@@ -267,7 +261,7 @@ theorem integral_mul_const_mul (Ψ γ : G → ℂ) (c : ℂ) (g : G) :
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E] (π : BanachRep G E)
 
 /- English proof (translation)
-Unfold `BanachRep.integrated`. Repeatedly rewrite using `[add_smul]`. Conclude with `integral_add (h.integrable_smul_orbit π μ h₁ w) (h.integrable_smul_orbit π μ h₂ w)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrated_add_kernel {γ₁ γ₂ : G → ℂ} (h₁ : h.IsTestFunction γ₁) (h₂ : h.IsTestFunction γ₂)
     (w : E) : π.integrated μ (fun y => γ₁ y + γ₂ y) w = π.integrated μ γ₁ w + π.integrated μ γ₂ w := by
@@ -276,7 +270,7 @@ theorem integrated_add_kernel {γ₁ γ₂ : G → ℂ} (h₁ : h.IsTestFunction
   exact integral_add (h.integrable_smul_orbit π μ h₁ w) (h.integrable_smul_orbit π μ h₂ w)
 
 /- English proof (translation)
-Unfold `BanachRep.integrated`. Rewrite using `[← integral_smul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[mul_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem integrated_const_mul_kernel (γ : G → ℂ) (c : ℂ) (w : E) :
     π.integrated μ (fun y => c * γ y) w = c • π.integrated μ γ w := by
@@ -285,27 +279,25 @@ theorem integrated_const_mul_kernel (γ : G → ℂ) (c : ℂ) (w : E) :
   congr 1; funext y; rw [mul_smul]
 
 /- English proof (translation)
-Use `secondCountableTopology_subgroup_units G` as an intermediate fact. Establish `hec : Continuous fun t : ℝ => h.expG (t • X)` using `h.continuous_expG.comp (continuous_id.smul continuous_const)`. Establish `hw : Continuous fun y : G => π y w` using `π.continuous_orbit w`. Establish `hκ'c : Continuous fun z : G => γ z⁻¹` using `continuous_of_isSmoothFun (isSmoothFun_comp_inv hγ.1)`. Establish `hDc` using `continuous_rightDeriv_comp_inv hγ.1 X`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hshift : ∀ t : ℝ, π (h.expG (t • X)) (π.integrated μ γ w) = ∫ y, γ (y⁻¹ * h.expG (t • X))⁻¹ • π y w ∂μ`. Introduce `t`. Rewrite using `[BanachRep.integrated, ← (π (h.expG (t • X))).integral_comp_comm (h.integrable_smul_orbit π μ hγ w)]`. Use `integral_mul_left_eq_self (μ := μ) (fun y => γ (y⁻¹ * h.expG (t • X))⁻¹ • π y w) (h.expG (t • X))` as an intermediate fact. Rewrite using `[← this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Simplify using `only [map_smul, ← BanachRep.map_mul_apply, mul_inv_rev, mul_assoc, inv_mul_cancel_left, inv_inv]`. Establish `hderiv : ∀ (y : G) (t : ℝ), HasDerivAt (fun s : ℝ => γ (y⁻¹ * h.expG (s • X))⁻¹) (h.rightDeriv X (fun w : G => γ w⁻¹) (y⁻¹ * h.expG (t • X))) t`. Introduce `y t`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `h.hasDerivAt_rightDeriv (isSmoothFun_comp_inv hγ.1) X (y⁻¹ * h.expG (t • X))`. Establish `h1' : HasDerivAt (fun s : ℝ => γ (y⁻¹ * h.expG (t • X) * h.expG (s • X))⁻¹) (h.rightDeriv X (fun w : G => γ w⁻¹) (y⁻¹ * h.expG (t • X))) (t - t)`. Rewrite using `[sub_self]`. Conclude with `h1`. Use `(h1'.comp_sub_const t t).congr_of_eventuallyEq (Eventually.of_forall fun s => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc, ← h.expG_add_smul, add_sub_cancel]`. Use `set S : Set G := (fun p : ℝ × G => h.expG (p.1 • X) * p.2) '' (Metric.closedBall (0 : ℝ) 1 ×ˢ tsupport γ) with hSdef`. Establish `hS : IsCompact S` using `((isCompact_closedBall 0 1).prod hγ.2).image ((hec.comp continuous_fst).mul continuous_snd)`. Establish `hvanish : ∀ (y : G) (t : ℝ), t ∈ Metric.closedBall (0 : ℝ) 1 → y ∉ S → h.rightDeriv X (fun w : G => γ w⁻¹) (y⁻¹ * h.expG (t • X)) = 0`. Introduce `y t ht hy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `rightDeriv_comp_inv_eq_zero (fun hk => hy ⟨(t, (h.expG (t • X))⁻¹ * y), ⟨ht, ?_⟩, ?_⟩) X` and prove the remaining obligations. Simplify `hk` using `[mul_inv_rev]`. Simplify using the standard rewrite rules. Take `⟨M, hM⟩` from `exists_bound_rightDeriv_comp_inv hγ.1 hγ.2 X`. Establish `hbound : Integrable (S.indicator fun y => M * ‖π y w‖) μ`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `IntegrableOn.integrable_indicator ?_ hS.measurableSet` and prove the remaining obligations. Conclude with `(continuous_const.mul hw.norm).continuousOn.integrableOn_compact hS`. Establish `hint0 : Integrable (fun y => γ (y⁻¹ * h.expG ((0 : ℝ) • X))⁻¹ • π y w) μ`. Establish `: (fun y => γ (y⁻¹ * h.expG ((0 : ℝ) • X))⁻¹ • π y w) = fun y => γ y • π y w`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `h.integrable_smul_orbit π μ hγ w`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (F := fun (t : ℝ) (y : G) => γ (y⁻¹ * h.expG (t • X))⁻¹ • π y w) (F' := fun (t : ℝ) (y : G) => h.rightDeriv X (fun w : G => γ w⁻¹) (y⁻¹ * h.expG (t • X)) • π y w) (x₀ := (0 : ℝ)) (s := Metric.ball (0 : ℝ) 1) (bound := S.in …`. Distinguish the cases in `hy : y ∈ S`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[indicator_of_mem hy, norm_smul]`. Conclude with `mul_le_mul_of_nonneg_right (hM _) (norm_nonneg _)`. Rewrite using `[indicator_of_notMem hy, hvanish y t (Metric.ball_subset_closedBall ht) hy, zero_smul, norm_zero])`. Use `hbound`. Use the proof step `(Eventually.of_forall fun y t _ => (hderiv y t).smul_const (π y w))`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hd1` using `h.hasDerivAt_derivOp π (h.isSmoothVector_integrated π μ hγ w) X`. Establish `hd2` using `key.2.congr_of_eventuallyEq (Eventually.of_forall hshift)`. Rewrite using `[hd1.unique hd2]`. Unfold `BanachRep.integrated`. Use `congr 1`.
-
-Use function extensionality and compare the values at `y`. Simplify using `[convDeriv]`.
+A detailed English derivation is pending.
 -/
 theorem derivOp_integrated_convDeriv {γ : G → ℂ} (hγ : h.IsTestFunction γ) (w : E) (X : 𝔤) :
     h.derivOp π X (π.integrated μ γ w) = π.integrated μ (h.convDeriv X γ) w := by
@@ -384,21 +376,19 @@ theorem derivOp_integrated_convDeriv {γ : G → ℂ} (hγ : h.IsTestFunction γ
   simp [convDeriv]
 
 /- English proof (translation)
-Take `⟨t, rfl⟩ : ∃ t, UniversalEnvelopingAlgebra.mkAlgHom ℝ h.lieSubalgebra t = u` from `RingCon.mkₐ_surjective (α := ℝ) (UniversalEnvelopingAlgebra.ringCon ℝ h.lieSubalgebra) u`. Proceed by induction on `t using TensorAlgebra.induction generalizing γ with`. Consider the case `algebraMap r`. Use `⟨fun y => (r : ℂ) * γ y, hγ.const_mul _, fun w => ?_, fun Ψ hΨ => ?_⟩` and prove the remaining obligations. Rewrite using `[AlgHom.commutes, AlgHom.commutes, Module.algebraMap_end_apply, integrated_const_mul_kernel] show r • π.integrated μ γ w = (r : ℂ) • π.integrated μ γ w`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Complex.coe_smul r _).symm`. Rewrite using `[AlgHom.commutes, AlgHom.commutes, Module.algebraMap_end_apply]`. Use function extensionality and compare the values at `g`. Use `show r • (∫ y, Ψ (g * y) * γ y ∂μ) = ∫ y, Ψ (g * y) * ((r : ℂ) * γ y) ∂μ`. Rewrite using `[integral_mul_const_mul, Complex.real_smul]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `ι x`. Use `⟨h.convDeriv (h.ofLie x) γ, hγ.convDeriv _, fun w => ?_, fun Ψ hΨ => ?_⟩` and prove the remaining obligations. Use `show (h.uAction π (UniversalEnvelopingAlgebra.ι ℝ x) ⟨π.integrated μ γ w, h.isSmoothVector_integrated π μ hγ w⟩ : E) = _`. Rewrite using `[uAction_ι, coe_derivEnd, h.derivOp_integrated_convDeriv μ π hγ]`. Use `show (h.rightUAction (F := ℂ) (UniversalEnvelopingAlgebra.ι ℝ x) ⟨fun g => ∫ y, Ψ (g * y) * γ y ∂μ, h.isSmoothFun_integral_mul μ hΨ hγ⟩ : G → ℂ) = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[rightUAction_ι, coe_rightDerivEnd]`. Use function extensionality and compare the values at `g`. Conclude with `h.rightDeriv_integral_mul μ hΨ hγ _ g`. Consider the case `mul a b ha hb`. Take `⟨γb, hγb, hb1, hb2⟩` from `hb hγ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨γab, hγab, ha1, ha2⟩` from `ha hγb`. Use `⟨γab, hγab, fun w => ?_, fun Ψ hΨ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, Module.End.mul_apply]`. Establish `e : h.uAction π (UniversalEnvelopingAlgebra.mkAlgHom ℝ h.lieSubalgebra b) ⟨π.integrated μ γ w, h.isSmoothVector_integrated π μ hγ w⟩ = ⟨π.integrated μ γb w, h.isSmoothVector_integrated π μ hγb w⟩` using `Subtype.ext (hb1 w)`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `ha1 w`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply]`. Establish `e : h.rightUAction (F` using `ℂ) (UniversalEnvelopingAlgebra.mkAlgHom ℝ h.lieSubalgebra b) ⟨fun g => ∫ y, Ψ (g * y) * γ y ∂μ, h.isSmoothFun_integral_mul μ hΨ hγ⟩ = ⟨fun g => ∫ y, Ψ (g * y) * γb y ∂μ, h.isSmoothFun_integral_mul μ hΨ hγb⟩ := Subtype.ext (hb2 Ψ hΨ)`. Rewrite using `[e]`. Conclude with `ha2 Ψ hΨ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Consider the case `add a b ha hb`. Take `⟨γa, hγa, ha1, ha2⟩` from `ha hγ`. Take `⟨γb, hγb, hb1, hb2⟩` from `hb hγ`. Use `⟨fun y => γa y + γb y, hγa.add hγb, fun w => ?_, fun Ψ hΨ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, LinearMap.add_apply, Submodule.coe_add, ha1 w, hb1 w, integrated_add_kernel h μ π hγa hγb]`.
-
-Rewrite using `[map_add, map_add, LinearMap.add_apply, Submodule.coe_add, ha2 Ψ hΨ, hb2 Ψ hΨ]`. Use function extensionality and compare the values at `g`. Conclude with `(h.integral_mul_add μ hΨ hγa hγb g).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_uAction_integrated (u : UniversalEnvelopingAlgebra ℝ h.lieSubalgebra) {γ : G → ℂ}
     (hγ : h.IsTestFunction γ) :

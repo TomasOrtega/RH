@@ -7,7 +7,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory.CompanionTheory.DiscreteSeries
 
 /- English proof (translation)
-Introduce `h` and use `h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isDS_sk_imp_upqRep (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (H : Type)
     [NormedAddCommGroup H] [InnerProductSpace ℂ H]

@@ -7,9 +7,9 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 namespace GlobalTheory.CasimirHighest
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Establish `h : ∀ a b, e a b * e b a * e k l - e k l * (e a b * e b a) = ((if a = k then e a b * e b l else 0) - (if l = b then e a b * e k a else 0)) + ((if b = k then e a l * e b a else 0) - (if l = a then e k b * e b a else 0))`. Introduce `a b`. Establish `: e a b * e b a * e k l - e k l * (e a b * e b a) = e a b * (e b a * e k l - e k l * e b a) + (e a b * e k l - e k l * e a b) * e b a` using `by noncomm_ring`. Rewrite using `[this, he, he]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_sub, sub_mul, mul_ite, ite_mul, mul_zero, zero_mul]`. Simplify using `only [Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib, h]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Rewrite using `[Finset.sum_comm (f := fun a b => if a = k then e a b * e b l else 0), Finset.sum_comm (f := fun a b => if l = a then e k b * e b a else 0)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem casimir_comm_gen {R I : Type*} [Ring R] [Fintype I] [DecidableEq I] (e : I → I → R)
     (he : ∀ i j k l, e i j * e k l - e k l * e i j =
@@ -32,17 +32,17 @@ theorem casimir_comm_gen {R I : Type*} [Ring R] [Fintype I] [DecidableEq I] (e :
   simp
 
 /- English proof (translation)
-Establish `key : ∀ i j, e i j (e j i v) = (((if i = j then κ i * κ i else 0) + (if i < j then κ i else 0) - (if i < j then κ j else 0) : ℚ) : ℂ) • v`. Introduce `i j`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Establish `h1` using `congrArg (fun f : Module.End ℂ V => f v) (he i j)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hv i j h, map_zero, sub_zero, hκ] at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Simplify using `[h, h.ne, sub_smul]`. Substitute `h` using the available equality. Simplify using `[hκ, mul_smul]`. Simplify using `[hv j i h, h.ne', not_lt.mpr h.le]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hz : ∑ i : Fin m, ∑ j : Fin m, ((if i = j then κ i * κ i else 0) + (if i < j then κ i else 0) - (if i < j then κ j else 0) : ℚ) = ∑ i, κ i ^ 2 + ∑ i : Fin m, κ i * ((m : ℚ) - 1 - 2 * (i : ℕ))`. Simplify using `only [Finset.sum_sub_distrib, Finset.sum_add_distrib]`. Rewrite using `[Finset.sum_comm (f := fun i j => if i < j then κ j else 0), ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `a1 : ∑ j : Fin m, (if i < j then κ i else 0) = ((m : ℚ) - 1 - (i : ℕ)) * κ i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_filter, Finset.sum_const, Finset.filter_lt_eq_Ioi, Fin.card_Ioi, nsmul_eq_mul]`. Use `i.2` as an intermediate fact. Use `congr 1`. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `a2 : ∑ j : Fin m, (if j < i then κ i else 0) = ((i : ℕ) : ℚ) * κ i`. Rewrite using `[← Finset.sum_filter, Finset.sum_const, Finset.filter_gt_eq_Iio, Fin.card_Iio, nsmul_eq_mul]`. Rewrite using `[a1, a2]`. Simplify using `only [Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [key]`. Rewrite using `[← hz]`. Simplify using `only [Rat.cast_sum, Finset.sum_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem casimir_on_highest_rat {V : Type*} [AddCommGroup V] [Module ℂ V] {m : ℕ}
     (e : Fin m → Fin m → Module.End ℂ V)
@@ -90,9 +90,9 @@ theorem casimir_on_highest_rat {V : Type*} [AddCommGroup V] [Module ℂ V] {m : 
   simp only [Rat.cast_sum, Finset.sum_smul]
 
 /- English proof (translation)
-Establish `m : ∀ i j k l : Ix p q, Eab i j * Eab k l = if j = k then Eab i l else 0`. Introduce `i j k l`. Use `split_ifs with hh`. Substitute `hh` using the available equality. Simplify using `[Eab, Matrix.single_mul_single_same]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Eab, Matrix.single_mul_single_of_ne, hh]`. Rewrite using `[← h, m, m, map_sub]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem act_Eab_comm {p q : ℕ} {V : Type*} [AddCommGroup V] [Module ℂ V]
     {act : Mat p q →ₗ[ℂ] Module.End ℂ V} (h : IsLieAct act) (i j k l : Ix p q) :
@@ -107,13 +107,13 @@ theorem act_Eab_comm {p q : ℕ} {V : Type*} [AddCommGroup V] [Module ℂ V]
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `p q V _ _ act h`. Use `⟨fun Z => ?_, fun μ v hv => ?_⟩` and prove the remaining obligations. Establish `hZ : Z = ∑ k, ∑ l, Z k l • Eab k l` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single Z]`. Simplify using `[Eab, Matrix.smul_single]`. Establish `hc : ∀ k l, casimir act * act (Eab k l) = act (Eab k l) * casimir act` using `fun k l => casimir_comm_gen (fun a b => act (Eab a b)) (act_Eab_comm h) k l`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hZ]`. Simplify using `only [map_sum, map_smul, Finset.mul_sum, Finset.sum_mul, mul_smul_comm, smul_mul_assoc, hc]`. Simplify using `only [hwSub, wtSub, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero] at hv`. Take `⟨hw, hr⟩` from `hv`. Establish `h1` using `casimir_on_highest_rat (fun i j : Fin p => act (Eab (.inl i) (.inl j))) (fun i j => by simpa using act_Eab_comm h (.inl i) (.inl j) (.inl j) (.inl i)) v (fun i => μ (.inl i)) (fun i j hij => hr _ _ hij) (fun i => hw _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `casimir_on_highest_rat (fun i j : Fin q => act (Eab (.inr i) (.inr j))) (fun i j => by simpa using act_Eab_comm h (.inr i) (.inr j) (.inr j) (.inr i)) v (fun i => μ (.inr i)) (fun i j hij => hr _ _ hij) (fun i => hw _)`. Establish `s1 : ∀ i j, sameBlock (p` using `p) (q := q) (.inl i) (.inl j) := fun _ _ => trivial`. Establish `s2 : ∀ i j, sameBlock (p` using `p) (q := q) (.inr i) (.inr j) := fun _ _ => trivial`. Establish `s3 : ∀ i j, ¬ sameBlock (p` using `p) (q := q) (.inl i) (.inr j) := fun _ _ => id`. Establish `s4 : ∀ i j, ¬ sameBlock (p` using `p) (q := q) (.inr i) (.inl j) := fun _ _ => id`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Fintype.sum_sum_type, if_pos (s1 _ _), if_pos (s2 _ _), if_neg (s3 _ _), if_neg (s4 _ _), Finset.sum_const_zero, add_zero, zero_add]`. Rewrite using `[h1, h2, ← add_smul, ← Rat.cast_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem casimir_central_and_highest : ∀ (p q : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (act : Mat p q →ₗ[ℂ] Module.End ℂ V), IsLieAct act → (∀ Z, casimir act * act Z = act Z * casimir act) ∧ ∀ (μ : Ix p q → ℚ) (v : V), v ∈ hwSub act μ → (∑ a, ∑ b, if sameBlock a b then act (Eab a b) (act (Eab b a) v) else 0) = ((∑ a, μ a ^ 2 + (∑ i : Fin p, μ (.inl i) * ((p : ℚ) - 1 - 2 * (i : ℕ))) + (∑ j : Fin q, μ (.inr j) * ((q : ℚ) - 1 - 2 * (j : ℕ))) : ℚ) : ℂ) • v := by
   intro p q V _ _ act h

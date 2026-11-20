@@ -5,7 +5,7 @@ open Formalism.BasicNotions Formalism.L2.Forms Formalism.UG Formalism.L2.GlobalT
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LevelHecke.pc_act_down` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FDownwardLevelMoveReachesKernelLattice.lean&line=38#L38)
 -/

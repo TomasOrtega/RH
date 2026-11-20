@@ -15,14 +15,14 @@ def cT (σ : A →+* A) {m p : Type} (M : Matrix m p A) : Matrix p m A := (M.map
 def hform (σ : A →+* A) (J : Matrix n n A) (x y : n → A) : A := ∑ i, ∑ j, σ (x i) * J i j * y j
 
 /- English proof (translation)
-Simplify using `[cT, Matrix.map_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_mul (σ : A →+* A) {m p q : Type} [Fintype p] (M : Matrix m p A) (N : Matrix p q A) :
     cT σ (M * N) = cT σ N * cT σ M := by
   simp [cT, Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Unfold `cT`. Rewrite using `[Matrix.map_one σ (map_zero σ) (map_one σ), Matrix.transpose_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_one (σ : A →+* A) : cT σ (1 : Matrix n n A) = 1 := by
   unfold cT
@@ -273,7 +273,7 @@ section More
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Introduce `a b`. Simplify using `[sigR, inclR, Matrix.map_apply, hT a b]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem map_mem_HermR (σ : E →ₐ[F] E) {n : ℕ} (T : Matrix (Fin n) (Fin n) E)
     (hT : ∀ a b, σ (T b a) = T a b) : T.map (inclR R) ∈ HermR R σ n := by

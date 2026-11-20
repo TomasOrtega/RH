@@ -8,7 +8,7 @@ open GlobalTheory.LKTrip
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.TorCls.Borel.classes_finite) | (exact GlobalTheory.TorCls.Borel.classes_finite) | (intros; apply GlobalTheory.TorCls.Borel.classes_finite <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.borel_finite_classNumber_centraliserTorus : (∀ (D : Type) [Ring D] [Algebra ℚ D] [FiniteDimensional ℚ D] (σ : D →+* Dᵐᵒᵖ) (β y : D),
   ∃ (N : ℕ) (S : Set (MvPolynomial (Fin N × Fin N) ℚ)) (hS : HeckeCharacterZeroLocus.IsGroupLocus S)

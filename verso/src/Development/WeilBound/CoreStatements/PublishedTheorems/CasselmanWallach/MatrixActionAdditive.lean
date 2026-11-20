@@ -9,9 +9,9 @@ variable {n : ℕ} {ε : Fin n → Bool} {V : Type} [NormedAddCommGroup V] [Inne
   {E : Fin n → Fin n → Module.End ℂ V}
 
 /- English proof (translation)
-Unfold `casimirK`. Simplify using `only [LinearMap.sum_apply, Module.End.mul_apply, sum_inner, inner_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Establish `hab : ε b = ε a` using `(Finset.mem_filter.1 hb).2`. Establish `hs : adjSign ε a b = 1` using `by simp [adjSign, hab]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hU a b, hs, one_mul, ← inner_conj_symm x, hU a b, hs, one_mul, inner_conj_symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem casK_symm (hU : IsInfUnitary ε E) (x y : V) :
     ⟪casimirK ε E x, y⟫_ℂ = ⟪x, casimirK ε E y⟫_ℂ := by
@@ -28,15 +28,15 @@ namespace PositivityTheory.CW
 
 open CasimirNonnegative in
 /- English proof (translation)
-Introduce `n ε V _ _ E hGl hU hLF`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Take `⟨S, hfin, hvS, hstab⟩` from `hLF v`. Establish `hK : ∀ w ∈ S, casimirK ε E w ∈ S`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w hw`. Unfold `casimirK`. Simplify using `only [LinearMap.sum_apply, Module.End.mul_apply]`. Use `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b hb => ?_` and prove the remaining obligations. Establish `hab : ε b = ε a` using `(Finset.mem_filter.1 hb).2`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hstab a b hab.symm _ (hstab b a hab _ hw)`. Set `T : S →ₗ[ℂ] S` to `(casimirK ε E).restrict hK`. Establish `hT : T.IsSymmetric`. Introduce `x y`. Conclude with `casK_symm hU x y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : Module.finrank ℂ S = Module.finrank ℂ S` using `rfl`. Establish `hsum` using `(hT.eigenvectorBasis hn).sum_repr ⟨v, hvS⟩`. Establish `hv : v = ∑ i, ((hT.eigenvectorBasis hn).repr ⟨v, hvS⟩ i) • ((hT.eigenvectorBasis hn i : S) : V)`. Establish `h0` using `congrArg Subtype.val hsum`. Simplify using `using h0.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hv]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨hT.eigenvalues hn i, ?_⟩)` and prove the remaining obligations. Use `show casimirK ε E (hT.eigenvectorBasis hn i : V) = ((hT.eigenvalues hn i : ℝ) : ℂ) • (hT.eigenvectorBasis hn i : V)`. Conclude with `congrArg Subtype.val (hT.apply_eigenvectorBasis hn i)`.
+A detailed English derivation is pending.
 -/
 theorem c2b : CardSubmodulesAndLinearEquivBounds := by
   intro n ε V _ _ E hGl hU hLF

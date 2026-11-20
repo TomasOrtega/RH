@@ -7,11 +7,9 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `Z _ p _ _ hN J U n h a₀ _ hn ⟨r, hr⟩`. Establish `hg : genericPoint Z ∈ U a₀` using `((genericPoint_spec Z).mem_open_set_iff (U a₀).isOpen).mpr (by`. Take `⟨⟨z, hz⟩⟩` from `‹Nonempty (U a₀)›`. Conclude with `⟨z, trivial, hz⟩)`. Use `haveI : Nonempty (⊤ : Z.Opens) := ⟨⟨genericPoint Z, trivial⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hp : (p : Γ(Z, ⊤)) = 0`. Apply `Z.germToFunctionField_injective ⊤` to reduce the goal to its premises. Rewrite using `[map_natCast, map_zero]`. Conclude with `CharP.cast_eq_zero _ p`. Take `⟨s, hs⟩` from `GlobalTheory.CechRoot.exists_root Z (fun b => (hN b).2) p hp J U h n (fun a b => (hn a b).symm) a₀ (genericPoint Z) hg (algebraMap Z.functionField _ r) (by rw [← map_pow, hr])`.
-
-Conclude with `⟨s, fun a b => (hs a b).symm⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.CechP.coboundary_of_pow_coboundary : ∀ (Z : Scheme.{0}) [IsIntegral Z] (p : ℕ) [Fact p.Prime] [CharP Z.functionField p], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z → ∀ (J : Type) (U : J → Z.Opens) (n : ∀ a b, Γ(Z, U a ⊓ U b)) (h : ∀ a, Γ(Z, U a)) (a₀ : J) [Nonempty (U a₀)], (∀ a b, n a b ^ p = (Z.presheaf.map (homOfLE (inf_le_left : U a ⊓ U b ≤ U a)).op).hom (h a) - (Z.presheaf.map (homOfLE (inf_le_right : U a ⊓ U b ≤ U b)).op).hom (h b)) → (∃ r : Z.functionField, r ^ p = (Z.germToFunctionField (U a₀)).hom (h a₀)) → ∃ s : ∀ a, Γ(Z, U a), ∀ a b, n a b = (Z.presheaf.map (homOfLE (inf_le_left : U a ⊓ U b ≤ U a)).op).hom (s a) - (Z.presheaf.map (homOfLE (inf_le_right : U a ⊓ U b ≤ U b)).op).hom (s b) := by
   intro Z _ p _ _ hN J U n h a₀ _ hn ⟨r, hr⟩

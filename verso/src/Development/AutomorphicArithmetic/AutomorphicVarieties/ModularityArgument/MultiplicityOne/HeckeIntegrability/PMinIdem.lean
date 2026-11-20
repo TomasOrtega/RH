@@ -5,15 +5,15 @@ import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.TraceUnique
 namespace UpperTheory.V.Z.Mult.Pi
 
 /- English proof (translation)
-Introduce `J M Y _ _ _ _ _ _ α a hs hk`. Establish `surj : Function.Surjective (FreeAlgebra.lift ℂ α)` using `DiscreteGroups.T1.Desc.Swap3.burnside (FreeAlgebra.lift ℂ α) fun W hW => hs W fun f x hx => by`. Simplify using `using hW (FreeAlgebra.ι ℂ f) x hx`. Take `⟨v, hv⟩` from `exists_ne (0 : M)`. Take `⟨l, hl⟩` from `Module.Projective.exists_dual_eq_one ℂ hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩` from `surj (LinearMap.smulRight l v)`. Establish `same : ∀ r r', FreeAlgebra.lift ℂ α r = FreeAlgebra.lift ℂ α r' → FreeAlgebra.lift ℂ a r = FreeAlgebra.lift ℂ a r'`. Introduce `r r' h`. Establish `h0 : FreeAlgebra.lift ℂ a (r - r') = 0` using `hk _ (by rw [map_sub, h, sub_self])`. Rewrite `h0` using `[map_sub]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.1 h0`. Establish `idem : LinearMap.smulRight l v * LinearMap.smulRight l v = LinearMap.smulRight l v`. Use extensionality with `x`. Simplify using `[hl]`. Use `⟨p, ?_, ?_, fun q => ⟨l (FreeAlgebra.lift ℂ α q v), ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp, idem, LinearMap.trace_smulRight, hl]`. Rewrite using `[← map_mul]`. Conclude with `same _ _ (by rw [map_mul, hp, idem])`. Rewrite using `[← map_mul, ← map_mul, ← map_smul]`. Use `same _ _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[map_mul, map_mul, map_smul, hp]`. Use extensionality with `x`. Simplify using `[smul_smul, mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem minIdem_pf : MinIdem := by
   intro J M Y _ _ _ _ _ _ α a hs hk

@@ -16,14 +16,14 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono fun _ hk => lt_of_lt_of_le hk h)`.
+A detailed English derivation is pending.
 -/
 theorem flagStep_mono' {Ω E' : Type} [Field Ω] [AddCommGroup E'] [Module Ω E'] {r : ℕ} (b : Fin r → E') {i i' : ℕ} (h : i ≤ i') :
     flagStep Ω b i ≤ flagStep Ω b i' :=
   Submodule.span_mono (Set.image_mono fun _ hk => lt_of_lt_of_le hk h)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ F := fun i => subFib M (flagStep Ω b i.val) z MB mono := fun _ _ hi => subFib_mono M (flagStep_mono' b (Fin.le_def.1 hi)) z MB sat := fun _ => subFib_saturated M _ z B MB rank := fun i => hr i.val (Nat.lt_succ_iff.1 i.2) }, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_satFlag {X : Scheme.{0}} {Ω : Type} [Field Ω] {G : Over X} [GrpObj G] {ξ : Sp Ω ⟶ X}
     {Li : Type} [AddCommGroup Li] [Module Ω Li] {L : Type} [Field L] [NumberField L] (M : LieModel G ξ Li)
@@ -36,25 +36,25 @@ theorem exists_satFlag {X : Scheme.{0}} {Ω : Type} [Field Ω] {G : Over X} [Grp
      rank := fun i => hr i.val (Nat.lt_succ_iff.1 i.2) }, fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S Ω _ K _ J y 𝔐 _ Fl L _ _ z B MB`. Establish `hgen : IsCptGen 𝔐.ξ` using `𝔐.tie.gen`. Use `haveI hsm : Smooth 𝔐.t.G.hom := 𝔐.t.semi.smooth`. Establish `hs : genPt 𝔐.ξ ⤳ centre (spMap (algebraMap (𝓞 L) L) ≫ z)` using `𝔐.all _`. Establish `hu` using `fun n hn => isUnit_natCast_stalk 𝔐.X L (spMap (algebraMap (𝓞 L) L) ≫ z) n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb1, hb2, hb3, hb4, hb5, hb6⟩` from `GlobalTheory.T.exists_flag_basis_at_stalk E H D l Xo c Y S Ω K J y 𝔐 Fl ⟨_, hs⟩ hu`. Take `⟨T, _, _, _, _, TL, j, hj, hbc⟩` from `GlobalTheory.T.exists_lie_model_base_change 𝔐.X 𝔐.t.G (𝓞 L) L z B.carrier MB`. Take `⟨w, hw1, hw2, hw3, hw4⟩` from `GlobalTheory.T.lie_model_frame_spans_generic 𝔐.X 𝔐.t.G Ω 𝔐.ξ 𝔐.Li 𝔐.M L _ T TL hs (Σ s, Fin (labelRk D s)) _ hgen hb3 hb4 hb5`. Establish `hbr` using `fun U => GlobalTheory.T.lie_model_projective_generic_fibre 𝔐.X 𝔐.t.G Ω 𝔐.ξ 𝔐.Li 𝔐.M L z B.carrier MB T TL j U hgen hj hbc`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hbr ⊥).1]`. Establish `e1` using `finrank_span_eq_card hw2`. Rewrite `e1` using `[hw3, finrank_top]`. Rewrite using `[e1, Fintype.card_sigma, Fintype.sum_sum_type]`. Establish `a1 : ∀ τ : CMType H, Fintype.card (Fin (labelRk D (Sum.inl τ))) = D.p` using `fun _ => Fintype.card_fin _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : ∀ τ : CMType H, Fintype.card (Fin (labelRk D (Sum.inr τ))) = D.q` using `fun _ => Fintype.card_fin _`. Simplify using `only [a1, a2, Finset.sum_const, Finset.card_univ, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `s i hi`. Rewrite using `[(hbr _).2]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `g : Fin i → Σ s, Fin (labelRk D s)` to `fun k => ⟨s, ⟨k.1, lt_of_lt_of_le k.2 hi⟩⟩`. Establish `hg : Function.Injective g`. Introduce `a b' hab`. Simplify using `only [g, Sigma.mk.injEq, heq_eq_eq, true_and, Fin.mk.injEq] at hab`. Conclude with `Fin.ext hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `himg : (fun q : Σ s, Fin (labelRk D s) => b q.1 q.2) '' Set.range g = b s '' {k | (k : ℕ) < i}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨k, rfl⟩, rfl⟩`. Conclude with `⟨⟨k.1, lt_of_lt_of_le k.2 hi⟩, k.2, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨k, hk, rfl⟩`. Conclude with `⟨_, ⟨⟨k.1, hk⟩, rfl⟩, rfl⟩`. Establish `hspan : Submodule.span L {w' | ∃ e ∈ flagStep Ω (Fl.b s) i, 𝔐.M.ValAt (spMap (algebraMap (𝓞 L) L) ≫ z) e (TL.pt w')} = Submodule.span L (Set.range (w ∘ g))`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `w' ⟨e, he, hv⟩`. Take `⟨h', hl⟩` from `(LieModel.exists_valAt_iff 𝔐.M _ e).1 ⟨_, hv⟩`. Establish `h2` using `hb2 s i e (by rw [hb1]; exact he) hl`. Rewrite `h2` using `[← himg]`. Use `hw4 (Set.range g) e w' h2 hv` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[← Set.range_comp]`. Then use the resulting hypothesis. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `Submodule.subset_span ⟨b s ⟨k.1, lt_of_lt_of_le k.2 hi⟩, ?_, hw1 (g k)⟩` and prove the remaining obligations. Rewrite using `[← hb1]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.subset_span ⟨_, k.2, rfl⟩`. Rewrite using `[hspan, finrank_span_eq_card (hw2.comp g hg), Fintype.card_fin]`. Introduce `s i`. Rewrite using `[← hb1, ← hb6]`. Conclude with `Submodule.span_mono (Set.image_subset_range _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_fib : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) [Fintype (CMType H)] (Fl : 𝔐.Flag) (L : Type) [Field L] [NumberField L] (z : Sp (𝓞 L) ⟶ 𝔐.X) (B : GroundTheory.Heights₂.Heights.HermitianBundle.{0} L) (MB : LieModel 𝔐.t.G z B.carrier),
     Fintype.card (CMType H) * (D.p + D.q) = Module.finrank (𝓞 L) B.carrier ∧
@@ -115,15 +115,13 @@ theorem rank_fib : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : H
     exact Submodule.span_mono (Set.image_subset_range _ _)
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 _ Fl h hO L _ _ z B MB hF`. Take `⟨h1, h2, h3⟩` from `rank_fib E H D l Xo c Y S Ω K J y 𝔐 Fl L z B MB`. Establish `ho` using `GlobalTheory.T.orthogonal_metric_hermitian_bundle E H D l Xo c Y S Ω K J y 𝔐 h hO L z B MB hF`. Establish `hex : ∀ s, ∃ A : SatFlag B (labelRk D s), ∀ i, A.F i = subFib 𝔐.M (flagStep Ω (Fl.b s) i.val) z MB`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `exists_satFlag 𝔐.M z B MB (Fl.b s) (h2 s)`. Use `choose A hA using hex`. Establish `hW : ∀ (τ : CMType H) (i : Fin (D.p + 1)), IsSubFibre 𝔐.M (flagStep Ω (Fl.b (.inl τ)) i.val) z MB ((A (.inl τ)).F i)`. Introduce `τ i`. Rewrite using `[hA (.inl τ) i]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `isSubFibre_subFib _ _ _ _`. Establish `hS : ∀ (τ : CMType H) (i : Fin (D.q + 1)), IsSubFibre 𝔐.M (flagStep Ω (Fl.b (.inr τ)) i.val) z MB ((A (.inr τ)).F i)`. Introduce `τ i`. Rewrite using `[hA (.inr τ) i]`. Conclude with `isSubFibre_subFib _ _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpart : ∀ s, FlagPair.part (⟨fun τ => A (.inl τ), fun τ => A (.inr τ)⟩ : FlagPair B (CMType H) D.p D.q) s = subFib 𝔐.M (flagStep Ω (Fl.b s) (labelRk D s)) z MB`. Introduce and unpack `(τ | τ)`. Conclude with `hA (.inl τ) (Fin.last _)`. Conclude with `hA (.inr τ) (Fin.last _)`. Use `⟨⟨fun τ => A (.inl τ), fun τ => A (.inr τ)⟩, ⟨?_, h1⟩, hW, hS⟩` and prove the remaining obligations.
-
-Introduce `a b hab`. Rewrite using `[hpart, hpart]`. Conclude with `ho a b hab _ _ (h3 a _) (h3 b _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flag_fibre : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) [Fintype (CMType H)] (Fl : 𝔐.Flag) (h : LieMetric 𝔐.M y), h.Orth 𝔐.t.act → ∀ (L : Type) [Field L] [NumberField L] (z : Sp (𝓞 L) ⟶ 𝔐.X) (B : GroundTheory.Heights₂.Heights.HermitianBundle.{0} L) (MB : LieModel 𝔐.t.G z B.carrier), IsFibre (fun z v w c => c = h.ip z v w) z B MB → ∃ (A : FlagPair B (CMType H) D.p D.q), A.IsOrthFull ∧ (∀ τ i, IsSubFibre 𝔐.M (flagStep Ω (Fl.b (.inl τ)) i.val) z MB ((A.W τ).F i)) ∧ ∀ τ i, IsSubFibre 𝔐.M (flagStep Ω (Fl.b (.inr τ)) i.val) z MB ((A.S τ).F i) := by
   intro E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 _ Fl h hO L _ _ z B MB hF

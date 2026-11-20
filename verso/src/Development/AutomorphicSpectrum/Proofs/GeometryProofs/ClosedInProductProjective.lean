@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.SncBase.Segre
 
 /- English proof (translation)
-Introduce `K _ M r X' j hj`. Use `hj` as an intermediate fact. Conclude with `GlobalTheory.ProjSpace.isProjOver_comp_of_isClosedImmersion j (GlobalTheory.ProjSpace.isProjOver_pullback_str K M r)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isProjOver_of_closed_product : ∀ (K : Type) [Field K] (M r : ℕ) (X' : Scheme.{0}) (j : X' ⟶ pullback (PSpace.str K M) (PSpace.str K r)), IsClosedImmersion j → IsProjOver (j ≫ pullback.fst _ _ ≫ PSpace.str K M) := by
   intro K _ M r X' j hj

@@ -8,7 +8,7 @@ open scoped TensorProduct
 namespace PI.UnitaryGroupMassFormula.InHHClassFin
 
 /- English proof (translation)
-Use `⟨?_, fun y _ => ⟨0, Submodule.zero_mem _, ?_⟩⟩` and prove the remaining obligations. Use `show ((1 : I.Gf) : GL (Fin I.n) _) ∈ Formalism.UG.stabGL I.Lf`. Simplify using `using (Formalism.UG.stabGL I.Lf).one_mem`. Simplify using `[Formalism.MainNotions.S.AutInst.fmat]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_mem_Kg (I : Formalism.MainNotions.S.AutInst) (g : ℕ) : (1 : I.Gf) ∈ I.Kg g := by
   refine ⟨?_, fun y _ => ⟨0, Submodule.zero_mem _, ?_⟩⟩
@@ -17,9 +17,9 @@ theorem one_mem_Kg (I : Formalism.MainNotions.S.AutInst) (g : ℕ) : (1 : I.Gf) 
   · simp [Formalism.MainNotions.S.AutInst.fmat]
 
 /- English proof (translation)
-Introduce `I g x hg`. Use `letI := I.topf`. Use `haveI := I.topf_group`. Establish `hK : I.Kg g ∈ nhds (1 : I.Gf)` using `(I.topf_open g hg).mem_nhds (one_mem_Kg I g)`. Establish `hc : Continuous fun h : I.Gf => x⁻¹ * h * x` using `by fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : {h : I.Gf | x⁻¹ * h * x ∈ I.Kg g} ∈ nhds (1 : I.Gf)`. Establish `hK' : I.Kg g ∈ nhds (x⁻¹ * 1 * x)` using `by simpa using hK`. Conclude with `hc.continuousAt hK'`. Take `⟨g', hg', hsub⟩` from `I.topf_basis _ hT`. Conclude with `⟨g', hg', fun h hh => hsub hh⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kgNhd : KgNhd := by
   intro I g x hg

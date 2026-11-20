@@ -8,7 +8,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MirabolicBound.CardNonz
 namespace PI.GGMirBoundW
 
 /- English proof (translation)
-The claim follows from `mirabolicBound_of_steps baseProp stepOf blkFacts colFacts conjCol rowExists charOrth sepLemma`.
+A detailed English derivation is pending.
 -/
 theorem mirabolicBound : Formalism.L2.SG.GGMirabolic.MirabolicBound :=
   mirabolicBound_of_steps baseProp stepOf blkFacts colFacts conjCol rowExists charOrth sepLemma

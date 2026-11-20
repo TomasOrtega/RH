@@ -4,15 +4,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 open Matrix UpperTheory.V.Weyl
 
 /- English proof (translation)
-Introduce `n Ξ S hS`. Take `⟨d', A, B, ρ', hd, hBA, hA, hρ, hcomm⟩` from `UpperTheory.V.Weyl.subMat (Matrix (Fin n) (Fin n) ℂ) Ξ.d Ξ.mat S hS`. Establish `hpoly : ∀ i j, ∃ p : MvPolynomial (Fin n × Fin n) ℂ, ∀ g, ρ' g i j = MvPolynomial.eval (fun ab => g ab.1 ab.2) p` using `by choose p hp using Ξ.poly`. Introduce `i j`. Use `⟨∑ l, (∑ k, MvPolynomial.C (B i k) * p k l) * MvPolynomial.C (A l j), fun g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hρ]`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul, MvPolynomial.eval_C, hp]`. Set `Ξ' : Pre n` to `⟨d', ρ', hpoly⟩`. Use `⟨Ξ', A, B, hd, hBA, hA, fun X => ?_⟩` and prove the remaining obligations. Establish `h0 : (fun t : ℂ => (1 : Matrix (Fin n) (Fin n) ℂ) + t • X) 0 = 1` using `by simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc : ∀ a b, HasDerivAt (fun t : ℂ => ((1 : Matrix (Fin n) (Fin n) ℂ) + t • X) a b) (X a b) 0`. Introduce `a b`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).mul_const (X a b)).const_add ((1 : Matrix (Fin n) (Fin n) ℂ) a b)`. Establish `h1` using `UpperTheory.V.Weyl.curve n Ξ _ X h0 hc`. Establish `h2` using `UpperTheory.V.Weyl.curve n Ξ' _ X h0 hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i j`. Establish `e1 : HasDerivAt (fun t : ℂ => (Ξ.mat (1 + t • X) * A) i j) ((Ξ.D X * A) i j) 0`. Simplify using `only [Matrix.mul_apply]`. Conclude with `HasDerivAt.fun_sum fun k _ => (h1 i k).mul_const (A k j)`. Establish `e2 : HasDerivAt (fun t : ℂ => (A * ρ' (1 + t • X)) i j) ((A * Ξ'.D X) i j) 0`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply]`. Conclude with `HasDerivAt.fun_sum fun k _ => (h2 k j).const_mul (A i k)`. Simplify using `only [hcomm] at e1`. Conclude with `e1.unique e2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Weyl.preSub :
     ∀ (n : ℕ) (Ξ : Pre n) (S : Submodule ℂ (Fin Ξ.d → ℂ)), (∀ y, ∀ v ∈ S, Ξ.mat y *ᵥ v ∈ S) →

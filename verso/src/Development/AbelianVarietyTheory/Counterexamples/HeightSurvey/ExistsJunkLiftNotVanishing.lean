@@ -14,21 +14,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `hHom`. Apply the tactic sequence `split_ifs <;> simp [Matrix.add_apply, add_mul, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hHom_add_left (V W : HSp D) (x x' y : WA V W) : hHom V W (x + x') y = hHom V W x y + hHom V W x' y := by
   unfold hHom
   split_ifs <;> simp [Matrix.add_apply, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `hHom`. Apply the tactic sequence `split_ifs <;> simp [Matrix.add_apply, mul_add, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hHom_add_right (V W : HSp D) (x y y' : WA V W) : hHom V W x (y + y') = hHom V W x y + hHom V W x y' := by
   unfold hHom
   split_ifs <;> simp [Matrix.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `symplH sympl`. Rewrite using `[hHom_add_right, mul_add, map_add, mul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplH_add_left (V W : HSp D) (x x' y : WA V W) :
     symplH V W (x + x') y = symplH V W x y + symplH V W x' y := by
@@ -36,7 +36,7 @@ theorem symplH_add_left (V W : HSp D) (x x' y : WA V W) :
   rw [hHom_add_right, mul_add, map_add, mul_add]
 
 /- English proof (translation)
-Unfold `symplH sympl`. Rewrite using `[hHom_add_left, mul_add, map_add, mul_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplH_add_right (V W : HSp D) (x y y' : WA V W) :
     symplH V W x (y + y') = symplH V W x y + symplH V W x y' := by
@@ -44,7 +44,7 @@ theorem symplH_add_right (V W : HSp D) (x y y' : WA V W) :
   rw [hHom_add_left, mul_add, map_add, mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Heisenberg₂, Pi.smul_apply, smul_eq_mul, symplH_add_left, symplH_add_right, AddChar.map_add_eq_mul, add_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heis_heis (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (w w' : WA V W) (f : WA V W → ℂ) :
     Heisenberg₂ ψ V W w (Heisenberg₂ ψ V W w' f) = ψ (symplH V W w w') • Heisenberg₂ ψ V W (w + w') f := by
@@ -53,7 +53,7 @@ theorem heis_heis (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (w w' : WA V W)
   ring
 
 /- English proof (translation)
-Simplify using `only [Heisenberg₂]`. Rewrite using `[add_assoc, hf, ← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, symplH_add_left, symplH_add_right]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heis_quasi (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (w₀ : WA V W) (f : WA V W → ℂ)
     (hf : ∀ γ w, f (ratW V W γ + w) = ψ (-(symplH V W (ratW V W γ) w)) * f w) (γ) (w : WA V W) :
@@ -65,7 +65,7 @@ theorem heis_quasi (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (w₀ : WA V W
   ring
 
 /- English proof (translation)
-Unfold `symplH sympl`. Rewrite using `[hHom_transpose V W hne]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplH_transpose (V W : HSp D) (hne : V.rank ≠ W.rank) (x y : WA V W) :
     symplH W V x.transpose y.transpose = symplH V W x y := by
@@ -73,15 +73,13 @@ theorem symplH_transpose (V W : HSp D) (hne : V.rank ≠ W.rank) (x y : WA V W) 
   rw [hHom_transpose V W hne]
 
 /- English proof (translation)
-Establish `ct : Continuous fun y : WA W V => (y.transpose : WA V W)` using `continuous_id.matrix_transpose`. Use `⟨fun γ w => ?_, ?_, hf.cont.comp ct, fun k L hL h0 w => ?_⟩` and prove the remaining obligations. Establish `e : (ratW W V γ).transpose = ratW V W γ.transpose` using `rfl`. Use `hf.quasi γ.transpose w.transpose` as an intermediate fact. Rewrite `this` using `[← e, symplH_transpose W V hne.symm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this` using `[Matrix.transpose_add]`. Take `⟨U, hU, hfix⟩` from `hf.level`. Set `τ : WA W V →+ WA V W` to `(Matrix.transposeAddEquiv _ _ _).toAddMonoidHom`. Use `⟨U.comap τ, hU.preimage ct, fun u hu h0 => ?_⟩` and prove the remaining obligations. Establish `h1 : (u.transpose : WA V W).map (infPart D) = 0`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `i j`. Conclude with `congrFun (congrFun h0 j) i`. Use function extensionality and compare the values at `y`. Use `congrFun (hfix u.transpose hu h1) y.transpose` as an intermediate fact. Simplify using `only [Heisenberg₂] at this ⊢`.
+By extensionality, compare the relevant components. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[symplH_transpose W V hne.symm]`. Simplify `this` using `[Matrix.transpose_add]`. Set `τ : WA W V →+ WA V W` to `(Matrix.transposeAddEquiv _ _ _).toAddMonoidHom`. Use `hf.smooth k (τ.comp L) (ct.comp hL) (fun t => by` as an intermediate fact. Use extensionality with `i j`.
-
-Conclude with `congrFun (congrFun (h0 t) j) i) w.transpose`. Conclude with `this`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem isThetaFun_transpose (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) (hne : V.rank ≠ W.rank) (f : WA V W → ℂ)
     (hf : IsThetaFun ψ V W f) : IsThetaFun ψ W V (fun y : WA W V => f y.transpose) := by

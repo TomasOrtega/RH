@@ -25,7 +25,7 @@ structure IsDiscreteU (V : Submodule ℂ (Sm E a)) : Prop where
   irred : ∀ W ≤ V, IsStable W → W = ⊥ ∨ W = V
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.aut, ⟨0, fun φ hφ t g => by simpa using (h.sqInt φ hφ).1 t g⟩, fun φ hφ => (h.sqInt φ hφ).2, h.stable, h.ne_bot, h.irred⟩`.
+Supply the required witnesses or components.
 -/
 theorem isDiscreteU_of_isDiscrete {V : Submodule ℂ (Sm E a)} (h : IsDiscrete V) : IsDiscreteU V :=
   ⟨h.aut, ⟨0, fun φ hφ t g => by simpa using (h.sqInt φ hφ).1 t g⟩, fun φ hφ => (h.sqInt φ hφ).2, h.stable, h.ne_bot,
@@ -47,7 +47,7 @@ def InInd (h : ∑ i, n i = N) (V : ∀ i, Submodule ℂ (Sm E (n i))) (φ : Sm 
       (fun m => φ.1 (leviEmb (Ad E) (stdBlocks n h) m * (infGL E N (Unitary.toUnits k) * finGL E N g))) ∈ tensorSp V
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem inInd_iff (h : ∑ i, n i = N) (π : ∀ i, CuspSub E (n i)) (φ : Sm E N) :
     InInd h (fun i => (π i).V) φ ↔ φ ∈ indForms h π := Iff.rfl

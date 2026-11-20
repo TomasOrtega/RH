@@ -7,9 +7,9 @@ namespace Formalism.L2.G.Model
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNotions.G.LatticeSystems MvPolynomial Formalism.G0
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [AlgHom.comp_apply, blockAct, aeval_X, map_sum, map_mul, aeval_C, MvPolynomial.algebraMap_eq, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_assoc, ← map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lo_blockAct_comp (K : Type) [CommRing K] {S : Type} {k n : ℕ} (M N : S → Matrix (Fin k) (Fin k) K) :
     (blockAct K (n := n) M).comp (blockAct K N) = blockAct K (fun s => N s * M s) := by
@@ -22,7 +22,7 @@ theorem lo_blockAct_comp (K : Type) [CommRing K] {S : Type} {k n : ℕ} (M N : S
   rw [← mul_assoc, ← map_mul]
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[blockAct, aeval_X, Matrix.one_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem lo_blockAct_one (K : Type) [CommRing K] {S : Type} {k n : ℕ} :
     blockAct K (S := S) (k := k) (n := n) (fun _ => 1) = AlgHom.id K _ := by
@@ -33,11 +33,11 @@ theorem lo_blockAct_one (K : Type) [CommRing K] {S : Type} {k n : ℕ} :
 variable {p : ℕ}
 
 /- English proof (translation)
-Establish `hinv : ∀ s, je_g G v A⁻¹ s = (je_g G v A s)⁻¹` using `fun s => je_gPos_inv G v A s`. Rewrite using `[je_loc_apply, je_loc_apply, map_smul, smul_smul]`. Establish `hc : ∀ s, (je_g G v A s)⁻¹⁻¹ = je_g G v A s` using `fun s => Matrix.nonsing_inv_nonsing_inv _ (je_g_det G v A s)`. Simplify using `only [hinv, hc]`. Establish `hcomp` using `congrArg (fun f => f z) (lo_blockAct_comp G.Kf (n := G.P.m + 1) (fun s => je_g G v A s) (fun s => (je_g G v A s)⁻¹))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.comp_apply] at hcomp`. Rewrite using `[hcomp]`. Establish `h1 : (fun s => (je_g G v A s)⁻¹ * je_g G v A s) = fun _ => 1`. Use function extensionality and compare the values at `s`. Conclude with `Matrix.nonsing_inv_mul _ (je_g_det G v A s)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, lo_blockAct_one, AlgHom.id_apply]`. Rewrite using `[← Finset.prod_mul_distrib]`. Rewrite using `[Finset.prod_eq_one (fun s _ => ?_), one_smul]`. Establish `hd : (je_g G v A s).det ≠ 0` using `(je_g_det G v A s).ne_zero`. Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv', ← mul_zpow, inv_mul_cancel₀ hd, one_zpow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lo_loc_inv (G : GAtP p) (v : Fin G.P.nV) (A : GL (Fin (G.P.m + 1)) (G.P.Qq v)) (z : Pol G v) :
     je_loc G v A⁻¹ (je_loc G v A z) = z := by
@@ -59,7 +59,7 @@ theorem lo_loc_inv (G : GAtP p) (v : Fin G.P.nV) (A : GL (Fin (G.P.m + 1)) (G.P.
   rw [Matrix.det_nonsing_inv, Ring.inverse_eq_inv', ← mul_zpow, inv_mul_cancel₀ hd, one_zpow]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (lo_loc_inv G v A (x : Pol G v))`.
+A detailed English derivation is pending.
 -/
 theorem lo_locV_inv (G : GAtP p) (v : Fin G.P.nV) (A : GL (Fin (G.P.m + 1)) (G.P.Qq v))
     (x : Vsp G.Kf (G.P.lam0 v)) : je_locV G v A⁻¹ (je_locV G v A x) = x := Subtype.ext (lo_loc_inv G v A (x : Pol G v))
@@ -69,11 +69,11 @@ def lo_edge (G : GAtP p) (v : Fin G.P.nV) (A : GL (Fin (G.P.m + 1)) (G.P.Qq v))
   ⟨e.src.map (nt_phi (G.P.W v) A), e.tgt.map (nt_phi (G.P.W v) A)⟩
 
 /- English proof (translation)
-Establish `hm : ∀ S : Submodule (G.P.W v) (Fin (G.P.m + 1) → G.P.Qq v), (S.map (nt_phi (G.P.W v) A⁻¹)).map (nt_phi (G.P.W v) A) = S`. Introduce `S`. Rewrite using `[← Submodule.map_comp]`. Establish `: (nt_phi (G.P.W v) A).comp (nt_phi (G.P.W v) A⁻¹) = LinearMap.id`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.comp_apply, nt_phi, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, LinearMap.id_apply]`. Rewrite using `[Units.mul_inv, Matrix.one_mulVec]`. Rewrite using `[this, Submodule.map_id]`. Consider the cases of `e with`. Consider the case `mk src tgt`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Simplify using `only [lo_edge, hm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lo_edge_inv' (G : GAtP p) (v : Fin G.P.nV) (A : GL (Fin (G.P.m + 1)) (G.P.Qq v))
     (e : Edge (G.P.W v) (G.P.Qq v) (G.P.m + 1)) : lo_edge G v A (lo_edge G v A⁻¹ e) = e := by
@@ -92,21 +92,21 @@ theorem lo_edge_inv' (G : GAtP p) (v : Fin G.P.nV) (A : GL (Fin (G.P.m + 1)) (G.
     simp only [lo_edge, hm]
 
 /- English proof (translation)
-Establish `hid1 : (nt_phi (G.P.W v) A).comp (nt_phi (G.P.W v) A⁻¹) = LinearMap.id`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, nt_phi, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, LinearMap.id_apply]`. Rewrite using `[Units.mul_inv, Matrix.one_mulVec]`. Establish `hid2 : (nt_phi (G.P.W v) A⁻¹).comp (nt_phi (G.P.W v) A) = LinearMap.id`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, nt_phi, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, LinearMap.id_apply]`. Rewrite using `[Units.inv_mul, Matrix.one_mulVec]`. Establish `hmm : ∀ S : Submodule (G.P.W v) (Fin (G.P.m + 1) → G.P.Qq v), (S.map (nt_phi (G.P.W v) A)).map (nt_phi (G.P.W v) A⁻¹) = S`. Introduce `S`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Submodule.map_comp, hid2, Submodule.map_id]`. Take `⟨hs, ht, hle, hpp, hcard⟩` from `he`. Establish `hlat : ∀ S : Submodule (G.P.W v) (Fin (G.P.m + 1) → G.P.Qq v), IsLattice (G.P.W v) S → IsLattice (G.P.W v) (S.map (nt_phi (G.P.W v) A))`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Use `⟨(A : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v)) * g, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.det_mul]`. Conclude with `(Matrix.isUnits_det_units A).mul hg`. Unfold `colSpan`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression.
 
-Set `φe : (Fin (G.P.m + 1) → G.P.Qq v) ≃ₗ[(G.P.W v)] (Fin (G.P.m + 1) → G.P.Qq v)` to `LinearEquiv.ofLinear (nt_phi (G.P.W v) A) (nt_phi (G.P.W v) A⁻¹) hid1 hid2`. Use `⟨hlat _ hs, hlat _ ht, Submodule.map_mono hle, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨(p : (G.P.W v)) • x, hpp x hx, map_smul _ _ _⟩`. Rewrite using `[← hcard] show Nat.card (↥(e.tgt.map (φe : (Fin (G.P.m + 1) → G.P.Qq v) →ₗ[(G.P.W v)] (Fin (G.P.m + 1) → G.P.Qq v))) ⧸ _) = _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hPQ : (Submodule.comap e.tgt.subtype e.src).map (φe.submoduleMap e.tgt : ↥e.tgt →ₗ[(G.P.W v)] _) = Submodule.comap (e.tgt.map (φe : (Fin (G.P.m + 1) → G.P.Qq v) →ₗ[(G.P.W v)] (Fin (G.P.m + 1) → G.P.Qq v))).subtype (e.src.map (φe : (Fin (G.P.m + 1) → G.P.Qq v) →ₗ[(G.P.W v)] (Fin ( …`. Use extensionality with `y`. Simplify using `only [Submodule.mem_map, Submodule.mem_comap, Submodule.subtype_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨x, hx, by simp⟩`. Introduce and unpack `⟨z, hz, hzy⟩`. Take `⟨x, hx, hxy⟩` from `y.2`. Use `⟨⟨x, hx⟩, ?_, Subtype.ext (by simpa using hxy)⟩` and prove the remaining obligations. Establish `hzx : z = x` using `φe.injective (hzy.trans hxy.symm)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxs : x ∈ e.src` using `hzx ▸ hz`. Conclude with `hxs`. Conclude with `(Nat.card_congr (Submodule.Quotient.equiv _ _ (φe.submoduleMap e.tgt) hPQ).toEquiv).symm`.
+A detailed English derivation is pending.
 -/
 theorem lo_isEdge (G : GAtP p) (v : Fin G.P.nV) (A : GL (Fin (G.P.m + 1)) (G.P.Qq v))
     (e : Edge (G.P.W v) (G.P.Qq v) (G.P.m + 1)) (he : IsEdge p (G.P.n' v) G.P.r e) :
@@ -154,9 +154,9 @@ theorem lo_isEdge (G : GAtP p) (v : Fin G.P.nV) (A : GL (Fin (G.P.m + 1)) (G.P.Q
     exact (Nat.card_congr (Submodule.Quotient.equiv _ _ (φe.submoduleMap e.tgt) hPQ).toEquiv).symm
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `hx`. Use `⟨je_locV G v A y, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [HLe, toV, SetLike.mem_coe, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.subtype_apply]`. Rewrite using `[je_locV_coe]`. Consider the cases of `e with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the case `mk S T => exact je_H_Le G v A S T he _ hy`. Simplify using `[LinearMap.lsmul_apply, map_smul]`.
+Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem lo_Re (G : GAtP p) (v : Fin G.P.nV) (A : GL (Fin (G.P.m + 1)) (G.P.Qq v))
     (e : Edge (G.P.W v) (G.P.Qq v) (G.P.m + 1)) (he : IsEdge p (G.P.n' v) G.P.r e) (x : Vsp G.Kf (G.P.lam0 v))
@@ -172,17 +172,17 @@ theorem lo_Re (G : GAtP p) (v : Fin G.P.nV) (A : GL (Fin (G.P.m + 1)) (G.P.Qq v)
   · simp [LinearMap.lsmul_apply, map_smul]
 
 /- English proof (translation)
-Establish `hid1 : (nt_phi (G.P.W v) A).comp (nt_phi (G.P.W v) A⁻¹) = LinearMap.id`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, nt_phi, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, LinearMap.id_apply]`. Rewrite using `[Units.mul_inv, Matrix.one_mulVec]`. Establish `hid2 : (nt_phi (G.P.W v) A⁻¹).comp (nt_phi (G.P.W v) A) = LinearMap.id`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, nt_phi, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, LinearMap.id_apply]`. Rewrite using `[Units.inv_mul, Matrix.one_mulVec]`. Establish `hmm : ∀ S : Submodule (G.P.W v) (Fin (G.P.m + 1) → G.P.Qq v), (S.map (nt_phi (G.P.W v) A)).map (nt_phi (G.P.W v) A⁻¹) = S`. Introduce `S`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Submodule.map_comp, hid2, Submodule.map_id]`. Take `⟨hx1, hx2⟩` from `Submodule.mem_inf.1 hx`. Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `hx1`. Use `⟨je_locV G v A y, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [HL, toV, SetLike.mem_coe, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.subtype_apply]`. Rewrite using `[je_locV_coe]`. Conclude with `je_H_ext G v A Lv hLv _ hy`. Simplify using `[LinearMap.lsmul_apply, map_smul]`. Rewrite `hx2`, the goal using `[Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e'`. Rewrite using `[Submodule.mem_iInf]`. Introduce and unpack `⟨he', hsrc⟩`. Establish `hE` using `lo_isEdge G v A⁻¹ e' he'`. Establish `hsrc'' : (lo_edge G v A⁻¹ e').src = Lv` using `by show e'.src.map (nt_phi (G.P.W v) A⁻¹) = Lv`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsrc, hmm]`. Establish `hx3` using `(Submodule.mem_iInf _).1 (hx2 (lo_edge G v A⁻¹ e')) ⟨hE, hsrc''⟩`. Use `lo_Re G v A (lo_edge G v A⁻¹ e') hE x hx3` as an intermediate fact. Rewrite `this` using `[lo_edge_inv']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lo_Nsrc (G : GAtP p) (v : Fin G.P.nV) (tv : ℕ) (A : GL (Fin (G.P.m + 1)) (G.P.Qq v)) (Lv : Lat G v)
     (hLv : IsLattice (G.P.W v) Lv) (x : Vsp G.Kf (G.P.lam0 v))
@@ -223,21 +223,21 @@ theorem lo_Nsrc (G : GAtP p) (v : Fin G.P.nV) (tv : ℕ) (A : GL (Fin (G.P.m + 1
     rwa [lo_edge_inv'] at this
 
 /- English proof (translation)
-Establish `hid1 : (nt_phi (G.P.W v) A).comp (nt_phi (G.P.W v) A⁻¹) = LinearMap.id`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, nt_phi, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, LinearMap.id_apply]`. Rewrite using `[Units.mul_inv, Matrix.one_mulVec]`. Establish `hid2 : (nt_phi (G.P.W v) A⁻¹).comp (nt_phi (G.P.W v) A) = LinearMap.id`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, nt_phi, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, LinearMap.id_apply]`. Rewrite using `[Units.inv_mul, Matrix.one_mulVec]`. Establish `hmm : ∀ S : Submodule (G.P.W v) (Fin (G.P.m + 1) → G.P.Qq v), (S.map (nt_phi (G.P.W v) A)).map (nt_phi (G.P.W v) A⁻¹) = S`. Introduce `S`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Submodule.map_comp, hid2, Submodule.map_id]`. Take `⟨hφ1, hφ2⟩` from `Submodule.mem_inf.1 hφ`. Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ, rfl⟩` from `hφ1`. Use `⟨(je_locV G v A).dualMap ψ, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Use `hψ (je_locV G v A x) ?_` and prove the remaining obligations. Simplify using `only [HL, toV, SetLike.mem_coe, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.subtype_apply]`. Rewrite using `[je_locV_coe]`. Conclude with `je_H_ext G v A Lv hLv _ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `[LinearMap.lsmul_apply, LinearMap.dualMap_apply]`. Rewrite `hφ2`, the goal using `[Submodule.mem_iInf]`. Introduce `e`. Rewrite using `[Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨he, htgt⟩`. Establish `hE` using `lo_isEdge G v A e he`. Establish `htgt' : (lo_edge G v A e).tgt = Lv.map (nt_phi (G.P.W v) A)` using `by show e.tgt.map (nt_phi (G.P.W v) A) = _`. Rewrite using `[htgt]`. Take `⟨ψ, hψ, hψφ⟩` from `(Submodule.mem_iInf _).1 (hφ2 (lo_edge G v A e)) ⟨hE, htgt'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hψφ]`. Use `⟨(je_locV G v A).dualMap ψ, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Use `hψ (je_locV G v A x) ?_` and prove the remaining obligations. Simplify using `only [HLe, toV, SetLike.mem_coe, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.subtype_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[je_locV_coe]`. Consider the cases of `e with`. Consider the case `mk S T => exact je_H_Le G v A S T he _ hx`. Use extensionality with `x`. Simplify using `[LinearMap.lsmul_apply, LinearMap.dualMap_apply]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lo_Ntgt (G : GAtP p) (v : Fin G.P.nV) (tv : ℕ) (A : GL (Fin (G.P.m + 1)) (G.P.Qq v)) (Lv : Lat G v)
     (hLv : IsLattice (G.P.W v) Lv) (φ : Module.Dual G.Kf (Vsp G.Kf (G.P.lam0 v)))
@@ -291,25 +291,23 @@ theorem lo_Ntgt (G : GAtP p) (v : Fin G.P.nV) (tv : ℕ) (A : GL (Fin (G.P.m + 1
       simp [LinearMap.lsmul_apply, LinearMap.dualMap_apply]
 
 /- English proof (translation)
-Establish `hid1 : (nt_phi (G.P.W v) A).comp (nt_phi (G.P.W v) A⁻¹) = LinearMap.id`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, nt_phi, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, LinearMap.id_apply]`. Rewrite using `[Units.mul_inv, Matrix.one_mulVec]`. Establish `hid2 : (nt_phi (G.P.W v) A⁻¹).comp (nt_phi (G.P.W v) A) = LinearMap.id`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, nt_phi, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, LinearMap.id_apply]`. Rewrite using `[Units.inv_mul, Matrix.one_mulVec]`. Establish `hmm : ∀ S : Submodule (G.P.W v) (Fin (G.P.m + 1) → G.P.Qq v), (S.map (nt_phi (G.P.W v) A)).map (nt_phi (G.P.W v) A⁻¹) = S`. Introduce `S`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Submodule.map_comp, hid2, Submodule.map_id]`. Establish `hlat : ∀ S : Submodule (G.P.W v) (Fin (G.P.m + 1) → G.P.Qq v), IsLattice (G.P.W v) S → IsLattice (G.P.W v) (S.map (nt_phi (G.P.W v) A))`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Use `⟨(A : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v)) * g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Matrix.isUnits_det_units A).mul hg`. Unfold `colSpan`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 2`. Take `⟨M, e, F, h1, h2, h3, n, hn, u, Mm, hu⟩` from `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨M, fun i => lo_edge G v A (e i), fun i => je_locV G v A (F i), fun i => ⟨lo_isEdge G v A (e i) (h1 i).1, ?_⟩, fun i => ?_, fun i e' he' hsrc hne => ?_, n, hn, ?_⟩` and prove the remaining obligations. Use `show (e i).tgt.map (nt_phi (G.P.W v) A) = _`. Rewrite using `[(h1 i).2]`. Conclude with `lo_Nsrc G v t A (e i).src (h1 i).1.1 (F i) (h2 i)`. Establish `hE` using `lo_isEdge G v A⁻¹ e' he'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsrc'' : (lo_edge G v A⁻¹ e').src = (e i).src` using `by show e'.src.map (nt_phi (G.P.W v) A⁻¹) = _`. Rewrite using `[hsrc]`. Conclude with `hmm _`. Establish `hne'' : lo_edge G v A⁻¹ e' ≠ e i`. Introduce `heq`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hne` to reduce the goal to its premises. Use `show e' = lo_edge G v A (e i)`. Rewrite using `[← heq, lo_edge_inv']`. Take `⟨y, hy, hyF⟩` from `h3 i _ hE hsrc'' hne''`. Establish `hR` using `lo_Re G v A _ hE y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hR` using `[lo_edge_inv']`. Use `⟨je_locV G v A y, hR, ?_⟩` and prove the remaining obligations. Use `show _ = je_locV G v A (F i)`. Rewrite using `[← hyF]`. Simplify using `[LinearMap.lsmul_apply, map_smul]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hAL : (L.map (nt_phi (G.P.W v) A)).map (nt_phi (G.P.W v) A⁻¹) = L` using `hmm L`. Establish `hLA` using `hlat L hL`. Set `T` to `LinearMap.codRestrict (Ntgt (O := G.O) p (G.P.n' v) (G.P.ι v) (G.P.σ v) G.P.w G.P.r (G.P.lam0 v) t (L.map (nt_phi (G.P.W v) A))) ((((je_locV G v A⁻¹).dualMap).restrictScalars G.O).comp (Ntgt (O := G.O) p (G.P.n' v) (G.P.ι v) (G.P.σ v) G.P.w G.P.r (G.P.lam0 v) t L).subtype) (fun ψ …`. Use `⟨T.comp u, Mm, fun x j => ?_⟩` and prove the remaining obligations. Rewrite using `[← hu x j]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `show ((je_locV G v A⁻¹).dualMap (u x : Module.Dual G.Kf (Vsp G.Kf (G.P.lam0 v)))) (((p : G.Kf) ^ Ar G.P.r (G.P.lam0 v)) • je_locV G v A (F i)) = (u x : Module.Dual G.Kf (Vsp G.Kf (G.P.lam0 v))) (((p : G.Kf) ^ Ar G.P.r (G.P.lam0 v)) • F i)`. Rewrite using `[LinearMap.dualMap_apply, map_smul, lo_locV_inv]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lo_at (G : GAtP p) (v : Fin G.P.nV) (t D : ℕ) (κ : ℝ) (cStar : ℕ)
     (A : GL (Fin (G.P.m + 1)) (G.P.Qq v)) (L : Lat G v) (hL : IsLattice (G.P.W v) L)
@@ -375,11 +373,11 @@ theorem lo_at (G : GAtP p) (v : Fin G.P.nV) (t D : ℕ) (κ : ℝ) (cStar : ℕ)
     rw [LinearMap.dualMap_apply, map_smul, lo_locV_inv]
 
 /- English proof (translation)
-Take `⟨g, hg, rfl⟩` from `hL`. Take `⟨g1, hg1, rfl⟩` from `hL1`. Use `⟨⟨g1 * g⁻¹, g * g1⁻¹, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc g⁻¹, Matrix.nonsing_inv_mul _ hg, Matrix.one_mul, Matrix.mul_nonsing_inv _ hg1]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc g1⁻¹, Matrix.nonsing_inv_mul _ hg1, Matrix.one_mul, Matrix.mul_nonsing_inv _ hg]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `colSpan`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `c`. Use function extensionality and compare the values at `i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply, nt_phi, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, Units.val_mk]`. Rewrite using `[Matrix.mulVec, dotProduct, ← Matrix.mul_apply, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hg, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lo_trans {W Qq : Type} [CommRing W] [Field Qq] [Algebra W Qq] {k : ℕ}
     (L L1 : Submodule W (Fin k → Qq)) (hL : IsLattice W L) (hL1 : IsLattice W L1) :
@@ -402,7 +400,7 @@ theorem lo_trans {W Qq : Type} [CommRing W] [Field Qq] [Algebra W Qq] {k : ℕ}
       Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w hS m r lam0 t D κ cStar hd h`. Take `⟨hc, L, hL, hat⟩` from `h`. Use `⟨hc, fun L1 hL1 => ?_⟩` and prove the remaining obligations. Take `⟨A, rfl⟩` from `lo_trans L L1 hL hL1`. Conclude with `lo_at (mkG hS m r lam0 hd) (0 : Fin 1) t D κ cStar A L hL hat`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lPOneEvery : LPOneEvery := by
   intro p n' W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w hS m r lam0 t D κ cStar hd h

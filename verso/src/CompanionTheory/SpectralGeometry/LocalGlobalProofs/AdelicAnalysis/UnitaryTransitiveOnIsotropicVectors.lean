@@ -21,26 +21,26 @@ theorem hE_eq_sum (x y : Fin M → E) :
     hE σ J x y = ∑ i, ∑ j, σ (x i) * J i j * y j := rfl
 
 /- English proof (translation)
-Simplify using `only [hE_eq_sum, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hE_add_right (x y z : Fin M → E) : hE σ J x (y + z) = hE σ J x y + hE σ J x z := by
   simp only [hE_eq_sum, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hE_eq_sum, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hE_smul_right (c : E) (x y : Fin M → E) : hE σ J x (c • y) = c * hE σ J x y := by
   simp only [hE_eq_sum, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hE_eq_sum, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hE_add_left (x y z : Fin M → E) : hE σ J (x + y) z = hE σ J x z + hE σ J y z := by
   simp only [hE_eq_sum, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hE_eq_sum, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hE_smul_left (c : E) (x y : Fin M → E) : hE σ J (c • x) y = σ c * hE σ J x y := by
   simp only [hE_eq_sum, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
@@ -49,7 +49,7 @@ theorem hE_smul_left (c : E) (x y : Fin M → E) : hE σ J (c • x) y = σ c * 
 variable {σ J}
 
 /- English proof (translation)
-Simplify using `only [hE_eq_sum, map_sum, map_mul, hσ]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hJ i j]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hE_conj (hσ : ∀ a, σ (σ a) = a) (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin M → E) :
     σ (hE σ J x y) = hE σ J y x := by
@@ -60,11 +60,11 @@ theorem hE_conj (hσ : ∀ a, σ (σ a) = a) (hJ : ∀ i j, σ (J j i) = J i j) 
   ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hu : (fun i => σ (x i)) ᵥ* J = 0`. Use function extensionality and compare the values at `j`. Establish `h` using `hcon (Pi.single j 1)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hE_eq_sum, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true] at h`. Simplify `h` using `[Matrix.vecMul, dotProduct]`. Establish `h0` using `Matrix.eq_zero_of_vecMul_eq_zero hdet hu`. Apply `hx` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congrFun h0 i` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_hE_ne_zero (hdet : J.det ≠ 0) {x : Fin M → E} (hx : x ≠ 0) :
     ∃ w, hE σ J x w ≠ 0 := by
@@ -83,15 +83,15 @@ theorem exists_hE_ne_zero (hdet : J.det ≠ 0) {x : Fin M → E} (hx : x ≠ 0) 
   simpa using this
 
 /- English proof (translation)
-Take `⟨w₀, hw₀⟩` from `exists_hE_ne_zero (σ := σ) hdet hx`. Take `⟨w, hxw⟩ : ∃ w, hE σ J x w = 1` from `⟨(hE σ J x w₀)⁻¹ • w₀, by rw [hE_smul_right, inv_mul_cancel₀ hw₀]⟩`. Establish `hwx : hE σ J w x = 1`. Rewrite using `[← hE_conj hσ hJ x w, hxw, map_one]`. Take `⟨t, ht⟩ : ∃ t, t = hE σ J w w` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hσt : σ t = t`. Rewrite using `[ht]`. Conclude with `hE_conj hσ hJ w w`. Take `⟨c, hc⟩ : ∃ c : E, c = -t / 2` from `⟨_, rfl⟩`. Establish `hσc : σ c = c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : σ (2 : E) = 2` using `map_ofNat σ 2`. Rewrite using `[hc, map_div₀, map_neg, hσt, h2]`. Establish `h1 : hE σ J x (w + c • x) = 1`. Rewrite using `[hE_add_right, hE_smul_right, hxx, hxw]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h2 : hE σ J (w + c • x) x = 1`. Rewrite using `[hE_add_left, hE_smul_left, hxx, hwx]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨w + c • x, h1, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[hE_add_left, hE_smul_left, h1, hE_add_right, hE_smul_right, hwx, ← ht, hσc, hc]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_hyperbolic_partner [CharZero E] (hσ : ∀ a, σ (σ a) = a)
     (hJ : ∀ i j, σ (J j i) = J i j) (hdet : J.det ≠ 0) {x : Fin M → E} (hx : x ≠ 0)
@@ -120,13 +120,13 @@ theorem exists_hyperbolic_partner [CharZero E] (hσ : ∀ a, σ (σ a) = a)
 end Alg
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ x y hx hy hxx hyy`. Establish `hσ : ∀ a, σ (σ a) = a`. Introduce `a`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hCM.2.2.2 τ, hCM.2.2.2 τ, star_star]`. Take `⟨x', h1, h2, h3⟩` from `exists_hyperbolic_partner hσ hJ.1 hJ.2 hx hxx`. Take `⟨y', k1, k2, k3⟩` from `exists_hyperbolic_partner hσ hJ.1 hJ.2 hy hyy`. Establish `hgram : gramE σ J ![x, x'] = gramE σ J ![y, y']`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [gramE, hxx, hyy, h1, h2, h3, k1, k2, k3]`. Establish `hdet : (gramE σ J ![x, x']).det ≠ 0`. Rewrite using `[Matrix.det_fin_two]`. Simplify using `[gramE, hxx, h1, h2, h3]`. Take `⟨g, hg, hgX⟩` from `GlobalTheory.T.witt_extension_global F E σ hCM M J hJ 2 ![x, x'] ![y, y'] hgram hdet`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨g, hg, by simpa using hgX 0⟩`.
+Supply the required witnesses or components.
 -/
 theorem transitive_isotropic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E),

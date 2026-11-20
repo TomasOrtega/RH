@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
 /- English proof (translation)
-Use `Ideal.homogeneous_span 𝒜 _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨d, ht i⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem homRange {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (𝒜 : ℤ → Submodule O A)
     [GradedAlgebra 𝒜] {ι : Type} (t : ι → A) (d : ℤ) (ht : ∀ i, t i ∈ 𝒜 d) :
@@ -14,7 +14,7 @@ private theorem homRange {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (�
   exact ⟨d, ht i⟩
 
 /- English proof (translation)
-Rewrite using `[pow_two]`. Conclude with `SetLike.mul_mem_graded ht ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sqMem {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (𝒜 : ℤ → Submodule O A)
     [GradedAlgebra 𝒜] {t : A} {d : ℤ} (ht : t ∈ 𝒜 d) : t ^ 2 ∈ 𝒜 (d + d) := by
@@ -22,7 +22,7 @@ private theorem sqMem {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (𝒜
   exact SetLike.mul_mem_graded ht ht
 
 /- English proof (translation)
-Rewrite using `[Fin.range_fin_succ, Ideal.span_insert]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem spanSucc {A : Type} [CommRing A] {n : ℕ} (t : Fin (n + 1) → A) :
     Ideal.span (Set.range t) = Ideal.span {t 0} ⊔ Ideal.span (Set.range fun i : Fin n => t i.succ) := by
@@ -30,19 +30,19 @@ private theorem spanSucc {A : Type} [CommRing A] {n : ℕ} (t : Fin (n + 1) → 
   rfl
 
 /- English proof (translation)
-Proceed by induction on `n generalizing c with`. Consider the case `zero`. Introduce `t _ J _ h w`. Establish `e1 : Set.range (fun i : Fin 0 => t i ^ 2) = Set.range t`. Simplify using `[Set.range_eq_empty]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, pow_zero, one_mul]`. Conclude with `h w`. Consider the case `succ n ih`. Introduce `t ht J hJ h w`. Establish `hJ1 : (J ⊔ Ideal.span (Set.range fun i : Fin n => t i.succ)).IsHomogeneous 𝒜` using `hJ.sup (homRange 𝒜 _ d fun i => ht i.succ)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ w', locLen σ (aPiece 𝒜 ((J ⊔ Ideal.span (Set.range fun i : Fin n => t i.succ)) ⊔ Ideal.span {t 0 ^ 2}) w') ≤ 2 * c`. Introduce `w'`. Establish `e : (J ⊔ Ideal.span (Set.range fun i : Fin n => t i.succ)) ⊔ Ideal.span {t 0} = J ⊔ Ideal.span (Set.range t)`. Rewrite using `[spanSucc t, sup_assoc, sup_comm (Ideal.span (Set.range fun i : Fin n => t i.succ))]`. Use `(locLen_aPiece_sup_span_sq_le_add O K A 𝒜 σ _ hJ1 d (t 0) (ht 0) w').trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, two_mul]`. Conclude with `add_le_add (h _) (h _)`. Establish `hsq : (Ideal.span ({t 0 ^ 2} : Set A)).IsHomogeneous 𝒜`. Apply `Ideal.homogeneous_span` to reduce the goal to its premises. Introduce `y hy`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Set.mem_singleton_iff.mp hy]`. Conclude with `⟨d + d, sqMem 𝒜 (ht 0)⟩`. Establish `hJ2 : (J ⊔ Ideal.span {t 0 ^ 2}).IsHomogeneous 𝒜` using `hJ.sup hsq`. Establish `h2` using `ih (2 * c) (fun i => t i.succ) (fun i => ht i.succ) (J ⊔ Ideal.span {t 0 ^ 2}) hJ2 (by`. Introduce `w'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : J ⊔ Ideal.span {t 0 ^ 2} ⊔ Ideal.span (Set.range fun i : Fin n => t i.succ) = (J ⊔ Ideal.span (Set.range fun i : Fin n => t i.succ)) ⊔ Ideal.span {t 0 ^ 2}`. Rewrite using `[sup_assoc, sup_assoc, sup_comm (Ideal.span {t 0 ^ 2})]`. Rewrite using `[e]`. Conclude with `h1 w') w`. Establish `e : J ⊔ Ideal.span {t 0 ^ 2} ⊔ Ideal.span (Set.range fun i : Fin n => t i.succ ^ 2) = J ⊔ Ideal.span (Set.range fun i => t i ^ 2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[spanSucc (fun i => t i ^ 2), sup_assoc]`. Rewrite `h2` using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private theorem gen {O K A : Type} [CommRing O] [Field K] [Algebra O K] [CommRing A] [Algebra O A]
     (𝒜 : ℤ → Submodule O A) [GradedAlgebra 𝒜] (σ : 𝒜 0 →ₐ[O] K) (d : ℤ) (c : ℕ∞) (n : ℕ) :
@@ -91,17 +91,17 @@ private theorem gen {O K A : Type} [CommRing O] [Field K] [Algebra O K] [CommRin
       _ = 2 ^ (n + 1) * c := by rw [pow_succ, mul_assoc]
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ K _ _ _ _ A _ _ 𝒜 _ _ x _ r s r' s' m Q σ h1`. Establish `hJ0 : (Ideal.span (Set.range Q.G ∪ Set.range Q.E' ∪ Set.range Q.Z)).IsHomogeneous 𝒜`. Apply `Ideal.homogeneous_span` to reduce the goal to its premises. Introduce and unpack `y ((⟨i, rfl⟩ | ⟨i, rfl⟩) | ⟨i, rfl⟩)`. Conclude with `⟨-2, Q.hG i⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨2, Q.hE' i⟩`. Conclude with `⟨0, (Q.hZ i).1⟩`. Establish `hE` using `homRange 𝒜 Q.E 1 Q.hE`. Establish `hF2` using `homRange 𝒜 (fun i => Q.F i ^ 2) (-1 + -1) fun i => sqMem 𝒜 (Q.hF i)`. Establish `step1` using `gen 𝒜 σ (-1) 1 (r + 1) Q.F Q.hF (Ideal.span (Set.range Q.G ∪ Set.range Q.E' ∪ Set.range Q.Z) ⊔ Ideal.span (Set.range Q.E)) (hJ0.sup hE) (by`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w'`. Establish `e : Ideal.span (Set.range Q.G ∪ Set.range Q.E' ∪ Set.range Q.Z) ⊔ Ideal.span (Set.range Q.E) ⊔ Ideal.span (Set.range Q.F) = Q.ideal`. Simplify using `only [Eqns.ideal, Ideal.span_union]`. The two sides agree by associativity and commutativity. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. The two sides agree by associativity and commutativity. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 w')`. Establish `step2` using `gen 𝒜 σ 1 (2 ^ (r + 1) * 1) r' Q.E Q.hE (Ideal.span (Set.range Q.G ∪ Set.range Q.E' ∪ Set.range Q.Z) ⊔ Ideal.span (Set.range fun i => Q.F i ^ 2)) (hJ0.sup hF2) (by`. Introduce `w'`. Establish `e : Ideal.span (Set.range Q.G ∪ Set.range Q.E' ∪ Set.range Q.Z) ⊔ Ideal.span (Set.range fun i => Q.F i ^ 2) ⊔ Ideal.span (Set.range Q.E) = Ideal.span (Set.range Q.G ∪ Set.range Q.E' ∪ Set.range Q.Z) ⊔ Ideal.span (Set.range Q.E) ⊔ Ideal.span (Set.range fun i => Q.F i ^ 2)`. The two sides agree by associativity and commutativity.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. The two sides agree by associativity and commutativity. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `step1 w')`. Introduce `w`. Establish `e : Ideal.span (Set.range Q.G ∪ Set.range Q.E' ∪ Set.range Q.Z) ⊔ Ideal.span (Set.range fun i => Q.F i ^ 2) ⊔ Ideal.span (Set.range fun i => Q.E i ^ 2) = ideal2 Q`. Simplify using `only [ideal2, Ideal.span_union]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. The two sides agree by associativity and commutativity. Establish an intermediate fact.
 
-The two sides agree by associativity and commutativity. Establish `h` using `step2 w`. Rewrite `h` using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.locLen_aPiece_ideal2_le_two_pow :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]

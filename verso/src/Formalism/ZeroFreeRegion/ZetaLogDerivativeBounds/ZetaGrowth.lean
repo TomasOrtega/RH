@@ -9,29 +9,27 @@ namespace Formalism.ZF
 
 open ComplexPowerDifferenceIntegral in
 /- English proof (translation)
-Use `set σ := s.re with hσ`. Establish `hkey : ∀ x : ℝ, 1 ≤ x → σ * (x + 1) ^ (-σ - 1) ≤ x ^ (-σ) - (x + 1) ^ (-σ)`. Introduce `x hx`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hy0 : 0 < x + 1` using `by linarith`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : 0 < (x + 1) ^ σ` using `Real.rpow_pos_of_pos hy0 σ`. Establish `hB : 0 < x ^ σ` using `Real.rpow_pos_of_pos hx0 σ`. Establish `hq : 0 < (x + 1) / x` using `div_pos hy0 hx0`. Establish `hr : ((x + 1) / x) ^ σ = (x + 1) ^ σ / x ^ σ` using `Real.div_rpow hy0.le hx0.le σ`. Establish `hlog : 1 / (x + 1) ≤ Real.log ((x + 1) / x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.one_sub_inv_le_log_of_pos hq` as an intermediate fact. Establish `e : 1 - ((x + 1) / x)⁻¹ = 1 / (x + 1)` using `by field_simp; ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hexp : 1 + σ / (x + 1) ≤ (x + 1) ^ σ / x ^ σ`. Rewrite using `[← hr, Real.rpow_def_of_pos hq]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `Real.add_one_le_exp (Real.log ((x + 1) / x) * σ)`. Establish `h2 : σ / (x + 1) ≤ Real.log ((x + 1) / x) * σ`. Rewrite using `[div_eq_mul_one_div, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_right hlog hs.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Real.rpow_sub_one hy0.ne', Real.rpow_neg hy0.le, Real.rpow_neg hx0.le]`. Establish `e1 : σ * ((x + 1) ^ σ)⁻¹ / (x + 1) = σ / (x + 1) * ((x + 1) ^ σ)⁻¹` using `by ring`. Establish `e2 : (x ^ σ)⁻¹ - ((x + 1) ^ σ)⁻¹ = ((x + 1) ^ σ / x ^ σ - 1) * ((x + 1) ^ σ)⁻¹`. Clear the denominators using the available nonvanishing facts. Rewrite using `[mul_div_assoc', e1, e2]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_le_mul_of_nonneg_right (by linarith) (inv_nonneg.2 hA.le)`. Establish `hS : ∀ N : ℕ, ∑ i ∈ Finset.range (N + 1), ((i : ℝ) + 1) ^ (-σ - 1) ≤ 1 + (1 - ((N : ℝ) + 1) ^ (-σ)) / σ`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `succ N ih`. Rewrite using `[Finset.sum_range_succ]`. Establish `hk` using `hkey ((N : ℝ) + 1) (by linarith [N.cast_nonneg (α := ℝ)])`. Establish `hk' : ((N : ℝ) + 1 + 1) ^ (-σ - 1) ≤ (((N : ℝ) + 1) ^ (-σ) - ((N : ℝ) + 1 + 1) ^ (-σ)) / σ`. Rewrite using `[le_div_iff₀ hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `push_cast`. Establish `e : (1 - ((N : ℝ) + 1) ^ (-σ)) / σ + (((N : ℝ) + 1) ^ (-σ) - ((N : ℝ) + 1 + 1) ^ (-σ)) / σ = (1 - ((N : ℝ) + 1 + 1) ^ (-σ)) / σ`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hT : ∀ n : ℕ, ∑ i ∈ Finset.range n, ((i : ℝ) + 1) ^ (-σ - 1) ≤ 1 + 1 / σ`. Introduce `n`. Break down `n with _ | N` into its components or cases. Simplify using `only [Finset.range_zero, Finset.sum_empty]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Use `(hS N).trans ?_` and prove the remaining obligations. Establish `h0 : 0 ≤ ((N : ℝ) + 1) ^ (-σ)` using `Real.rpow_nonneg (by positivity) _`. Establish `: (1 - ((N : ℝ) + 1) ^ (-σ)) / σ ≤ 1 / σ` using `div_le_div_of_nonneg_right (by linarith) hs.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hC : 0 ≤ ‖s - 1‖ * ‖s‖` using `by positivity`. Use `show ‖∑' n, dz s n‖ ≤ _`. Combine the equalities or inequalities in the displayed calculation. Use `Real.tsum_le_of_sum_range_le (fun n => norm_nonneg _) fun n => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Finset.mul_sum]`. Use `_ ≤ ‖s - 1‖ * ‖s‖ * (1 + 1 / σ) := mul_le_mul_of_nonneg_left (hT n) hC`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_Dz_le {s : ℂ} (hs : 0 < s.re) :
     ‖Dz s‖ ≤ ‖s - 1‖ * ‖s‖ * (1 + 1 / s.re) := by
@@ -101,11 +99,11 @@ lemma norm_Dz_le {s : ℂ} (hs : 0 < s.re) :
         _ ≤ ‖s - 1‖ * ‖s‖ * (1 + 1 / σ) := mul_le_mul_of_nonneg_left (hT n) hC
 
 /- English proof (translation)
-Introduce `s hs hs1`. Establish `h1 : riemannZeta₁ s = (s - 1) * riemannZeta s`. Unfold `riemannZeta₁ riemannZeta₀`. Rewrite using `[if_neg hs1, mul_sub, mul_inv_cancel₀ (sub_ne_zero.2 hs1)]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hD` using `norm_Dz_le hs`. Establish `hne : s - 1 ≠ 0` using `sub_ne_zero.2 hs1`. Establish `hpos : 0 < ‖s - 1‖` using `norm_pos_iff.2 hne`. Establish `hz : riemannZeta s = (s - ComplexPowerDifferenceIntegral.Dz s) / (s - 1)`. Rewrite using `[← ComplexPowerDifferenceIntegral.riemannZetaOne_eq_one_sub_of_re_pos hs, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hz, norm_div, div_le_iff₀ hpos]`. Establish `hs' : ‖s‖ ≤ ‖s - 1‖ + 1` using `by simpa using norm_add_le (s - 1) 1`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts.
 -/
 theorem growthBound : ZetaGrowth := by
   intro s hs hs1

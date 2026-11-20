@@ -12,7 +12,7 @@ def lccompW {r n : ℕ} (l j : Fin n) : Option (Fin r × Fin n) → (Fin r × Fi
     | some v => pairW l j v
 
 /- English proof (translation)
-Unfold `pairW`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lccomp_pairW_col {r n : ℕ} (l j : Fin n) (b : Fin r) :
     pairW (r := r) l j (b, l) = Finsupp.single (b, l) 1 := by
@@ -20,9 +20,9 @@ theorem lccomp_pairW_col {r n : ℕ} (l j : Fin n) (b : Fin r) :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Use `split_ifs with h`. Use `IsWeightedHomogeneous.add (isWeightedHomogeneous_X B (lccompW l j) (some v)) ?_` and prove the remaining obligations. Establish `hm` using `(isWeightedHomogeneous_X B (lccompW l j) none).mul (isWeightedHomogeneous_X B (lccompW l j) (some (v.1, l)))`. Use `hm using 1` and compare the differences between its conclusion and the goal. Use `show pairW l j v = 0 + pairW l j (v.1, l)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[lccomp_pairW_col, zero_add]`. Simplify using `only [pairW, if_pos h]`. Conclude with `isWeightedHomogeneous_X B (lccompW l j) (some v)`.
+A detailed English derivation is pending.
 -/
 theorem lccomp_image_var_homog {B : Type*} [CommRing B] {r n : ℕ} (l j : Fin n) (v : Fin r × Fin n) :
     IsWeightedHomogeneous (lccompW l j)
@@ -39,9 +39,9 @@ theorem lccomp_image_var_homog {B : Type*} [CommRing B] {r n : ℕ} (l j : Fin n
   · exact isWeightedHomogeneous_X B (lccompW l j) (some v)
 
 /- English proof (translation)
-Establish `hp : IsWeightedHomogeneous (lccompW l j) (∏ v ∈ d.support, ((if v.2 = j then X (some v) + X none * X (some (v.1, l)) else X (some v) : MvPolynomial (Option (Fin r × Fin n)) B)) ^ d v) (∑ v ∈ d.support, d v • pairW l j v)` using `IsWeightedHomogeneous.prod _ _ _ fun v _ => (lccomp_image_var_homog l j v).pow _`. Establish `hc : IsWeightedHomogeneous (lccompW l j) (C a : MvPolynomial (Option (Fin r × Fin n)) B) 0` using `isWeightedHomogeneous_C _ a`. Establish `h` using `hc.mul hp`. Rewrite `h` using `[zero_add]`. Rewrite using `[colAddGen, aeval_monomial, MvPolynomial.algebraMap_eq, Finsupp.weight_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem lccomp_colAddGen_monomial_homog {B : Type*} [CommRing B] {r n : ℕ} (l j : Fin n)
     (d : Fin r × Fin n →₀ ℕ) (a : B) :
@@ -61,7 +61,7 @@ theorem lccomp_colAddGen_monomial_homog {B : Type*} [CommRing B] {r n : ℕ} (l 
   exact h
 
 /- English proof (translation)
-Rewrite using `[f.as_sum, map_sum]`. Use `IsWeightedHomogeneous.sum _ _ _ fun d hd => ?_` and prove the remaining obligations. Establish `h` using `lccomp_colAddGen_monomial_homog (B := B) l j d (coeff d f)`. Rewrite `h` using `[hf (mem_support_iff.mp hd)]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem lccomp_colAddGen_homog {B : Type*} [CommRing B] {r n : ℕ} (l j : Fin n)
     (ω : Fin r × Fin n →₀ ℕ) (f : MvPolynomial (Fin r × Fin n) B)
@@ -74,9 +74,9 @@ theorem lccomp_colAddGen_homog {B : Type*} [CommRing B] {r n : ℕ} (l j : Fin n
   rwa [hf (mem_support_iff.mp hd)] at h
 
 /- English proof (translation)
-Use extensionality with `d`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_weightedHomogeneousComponent]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`. Conclude with `h (hT d (mem_support_iff.mpr hne))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem lccomp_sum_components {R : Type*} [CommRing R] {σ M : Type*} [AddCommMonoid M] [DecidableEq M]
     (w : σ → M) (f : MvPolynomial σ R) (T : Finset M)
@@ -93,9 +93,7 @@ theorem lccomp_sum_components {R : Type*} [CommRing R] {σ M : Type*} [AddCommMo
     exact h (hT d (mem_support_iff.mpr hne))
 
 /- English proof (translation)
-Use extensionality with `d`. Rewrite using `[coeff_weightedHomogeneousComponent]`. Use `split_ifs with hd`. Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`.
-
-Conclude with `hd (h (Ne.symm hne))`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private lemma weightedHomogeneousComponent_self_of_isWH_ring {σ M R : Type*} [CommRing R] [AddCommMonoid M] {w : σ → M} {m : M}
     {p : MvPolynomial σ R} (h : IsWeightedHomogeneous w p m) :
@@ -109,9 +107,7 @@ private lemma weightedHomogeneousComponent_self_of_isWH_ring {σ M R : Type*} [C
     exact hd (h (Ne.symm hne))
 
 /- English proof (translation)
-Use extensionality with `d`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_zero]`. Use `split_ifs with hd`. Assume the negation of the conclusion as `hne`. Conclude with `hn (hd.symm.trans (h hne))`.
-
-Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma weightedHomogeneousComponent_eq_zero_of_ne_isWH {σ M R : Type*} [CommRing R] [AddCommMonoid M] {w : σ → M} {m n : M}
     {p : MvPolynomial σ R} (h : IsWeightedHomogeneous w p m) (hn : n ≠ m) :
@@ -125,15 +121,13 @@ private lemma weightedHomogeneousComponent_eq_zero_of_ne_isWH {σ M R : Type*} [
   · rfl
 
 /- English proof (translation)
-Establish `hf` using `lccomp_sum_components (pairW l j) f (f.support.image (Finsupp.weight (pairW l j))) (fun d hd => Finset.mem_image_of_mem _ hd)`. Use `conv_lhs => rw [hf]`. Rewrite using `[map_sum, map_sum]`. Distinguish the cases in `hω : ω ∈ f.support.image (Finsupp.weight (pairW l j))`. Rewrite using `[Finset.sum_eq_single ω]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `weightedHomogeneousComponent_self_of_isWH_ring (lccomp_colAddGen_homog l j ω _ (weightedHomogeneousComponent_isWeightedHomogeneous ω f))`. Introduce `b _ hb`. Conclude with `weightedHomogeneousComponent_eq_zero_of_ne_isWH (lccomp_colAddGen_homog l j b _ (weightedHomogeneousComponent_isWeightedHomogeneous b f)) (Ne.symm hb)`. Introduce `h`. Conclude with `absurd hω h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_zero]`. Establish `h0 : weightedHomogeneousComponent (pairW l j) ω f = 0`. Use extensionality with `d`. Rewrite using `[coeff_weightedHomogeneousComponent, coeff_zero]`. Use `split_ifs with h`.
+Assume the negation of the conclusion and derive a contradiction. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hω (h ▸ Finset.mem_image_of_mem _ (mem_support_iff.mpr hne))`. Both sides reduce to the same expression. Rewrite using `[h0, map_zero]`. Introduce `b hb`.
-
-Use `weightedHomogeneousComponent_eq_zero_of_ne_isWH (lccomp_colAddGen_homog l j b _ (weightedHomogeneousComponent_isWeightedHomogeneous b f)) ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hω hb`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem lccomp_component_colAddGen {B : Type*} [CommRing B] {r n : ℕ} (l j : Fin n)
     (ω : Fin r × Fin n →₀ ℕ) (f : MvPolynomial (Fin r × Fin n) B) :
@@ -170,9 +164,7 @@ theorem lccomp_component_colAddGen {B : Type*} [CommRing B] {r n : ℕ} (l j : F
       exact hω hb
 
 /- English proof (translation)
-Rewrite using `[degreeOf_le_iff]`. Introduce `m hm`. Apply `monomial_le_degreeOf i` to reduce the goal to its premises. Rewrite `hm` using `[mem_support_iff, coeff_weightedHomogeneousComponent]`. Use `split_ifs at hm`.
-
-Conclude with `mem_support_iff.mpr hm`. Conclude with `absurd rfl hm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lccomp_degreeOf_component_le {R : Type*} [CommRing R] {σ M : Type*} [AddCommMonoid M]
     (w : σ → M) (ω : M) (p : MvPolynomial σ R) (i : σ) :

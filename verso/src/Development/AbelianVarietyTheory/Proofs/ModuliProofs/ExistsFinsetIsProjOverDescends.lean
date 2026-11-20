@@ -15,11 +15,11 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 namespace GlobalTheory.ProjSpace
 
 /- English proof (translation)
-Establish `h : ((baseChange N φ).appLE (chart R N i) (chart R' N i) (baseChange_preimage_chart N φ i).ge).hom.comp (RingHomClass.toRingHom (chartAlgEquiv R N i)) = (RingHomClass.toRingHom (chartAlgEquiv R' N i)).comp (MvPolynomial.map φ)`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun j => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, MvPolynomial.map_C]`. Establish `h1 : chartAlgEquiv R N i (MvPolynomial.C r) = _` using `(chartAlgEquiv R N i).commutes r`. Establish `h2 : chartAlgEquiv R' N i (MvPolynomial.C (φ r)) = _` using `(chartAlgEquiv R' N i).commutes (φ r)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, ← formOn_C (i := i) (hi := le_rfl), ← formOn_C (i := i) (hi := le_rfl)]`. Establish `h3` using `baseChange_app_formOn φ (le_refl (chart R N i)) (MvPolynomial.isHomogeneous_C _ r)`. Use `(congrArg (resG _ (baseChange_preimage_chart N φ i).ge) h3).trans ?_` and prove the remaining obligations. Rewrite using `[resG_formOn]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `MvPolynomial.map_C _ _`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, MvPolynomial.map_X, chartAlgEquiv_X]`. Establish `h3` using `baseChange_app_ratioOn φ (le_refl (chart R N i)) j.1`. Conclude with `congrArg (resG _ (baseChange_preimage_chart N φ i).ge) h3`. Conclude with `congrArg (fun ψ => ψ q) h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem baseChange_appLE_chartAlgEquiv {R R' : Type} [CommRing R] [CommRing R'] (N : ℕ) (φ : R →+* R')
     (i : Fin (N + 1)) (q : MvPolynomial {j // j ≠ i} R) :
@@ -46,13 +46,11 @@ theorem baseChange_appLE_chartAlgEquiv {R R' : Type} [CommRing R] [CommRing R'] 
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Establish `: IsAffineHom (baseChange N φ)` using `MorphismProperty.of_isPullback (P := @IsAffineHom) (isPullback_baseChange N φ).flip inferInstance`. Use `le_antisymm (Scheme.IdealSheafData.comap_map_le _ _) ?_` and prove the remaining obligations. Use `Scheme.IdealSheafData.le_of_iSup_eq_top (fun i => ⟨_, isAffineOpen_chart R' N i⟩) (iSup_chart R' N) fun i => ?_` and prove the remaining obligations. Rewrite using `[← hT, Ideal.span_le]`. Introduce and unpack `_ ⟨t, ht, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨q, rfl⟩` from `hφ i ht`. Establish `h0 : chartAlgEquiv R' N i (MvPolynomial.map φ q) ∈ I.ideal ⟨_, isAffineOpen_chart R' N i⟩`. Rewrite using `[← hT]`. Conclude with `Ideal.subset_span ⟨_, ht, rfl⟩`. Rewrite `h0`, the goal using `[← baseChange_appLE_chartAlgEquiv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.GaloisDescent.ideal_le_comap_appLE (baseChange N φ) le_rfl ⟨_, isAffineOpen_chart R N i⟩ ⟨_, isAffineOpen_chart R' N i⟩ (baseChange_preimage_chart N φ i).ge ?_` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.ideal_map_of_isAffineHom, Ideal.mem_comap]`. Establish `h1` using `I.ideal_le_comap_ideal (U := ⟨_, (isAffineOpen_chart R N i).preimage (baseChange N φ)⟩) (V := ⟨_, isAffineOpen_chart R' N i⟩) (baseChange_preimage_chart N φ i).le h0`. Rewrite `h1` using `[Ideal.mem_comap, ← CommRingCat.comp_apply, Scheme.Hom.appLE_map]`. Rewrite using `[Scheme.Hom.app_eq_appLE]`.
-
-Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_map_baseChange {R R' : Type} [CommRing R] [CommRing R'] (N : ℕ) (φ : R →+* R')
     (I : (PSpace R' N).IdealSheafData) (T : ∀ i : Fin (N + 1), Set (MvPolynomial {j // j ≠ i} R'))
@@ -88,13 +86,13 @@ namespace GlobalTheory
 open ProjSpace in
 
 /- English proof (translation)
-Introduce and unpack `K _ K₀ X p ⟨N, e, he, rfl⟩`. Establish `hT : ∀ i : Fin (N + 1), ∃ T : Finset (MvPolynomial {j // j ≠ i} K), Ideal.span (chartAlgEquiv K N i '' T) = e.ker.ideal ⟨_, isAffineOpen_chart K N i⟩` using `fun i => by`. Take `⟨T, hT⟩` from `(IsNoetherian.noetherian ((e.ker.ideal ⟨_, isAffineOpen_chart K N i⟩).comap (chartAlgEquiv K N i)))`. Use `⟨T, ?_⟩` and prove the remaining obligations. Use `congrArg (Ideal.map (chartAlgEquiv K N i)) hT` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Ideal.map_comap_of_surjective _ (chartAlgEquiv K N i).surjective]`. Rewrite using `[← this]`. Conclude with `(Ideal.map_span _ _).symm`. Use `choose T hT using hT`. Use `⟨Finset.univ.biUnion fun i => (T i).biUnion MvPolynomial.coeffs, fun K₁ _ hs => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `key` using `comap_map_baseChange N K₁.subtype e.ker (fun i => T i) hT fun i t ht => by`. Apply `MvPolynomial.mem_range_map_iff_coeffs_subset.2` to reduce the goal to its premises. Introduce `c hc`. Use `⟨⟨c, hs ?_⟩, rfl⟩` and prove the remaining obligations. Simplify using `only [Finset.coe_biUnion, Set.mem_iUnion]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨i, Finset.mem_univ i, t, ht, hc⟩`. Rewrite `key` using `[Scheme.IdealSheafData.map_ker]`. Use `⟨(e ≫ baseChange N K₁.subtype).image, (e ≫ baseChange N K₁.subtype).imageι ≫ PSpace.str K₁ N, (e ≫ baseChange N K₁.subtype).toImage, ⟨N, _, inferInstance, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `isPullback_of_isClosedImmersion e (e ≫ baseChange N K₁.subtype).imageι (e ≫ baseChange N K₁.subtype).toImage (baseChange N K₁.subtype) (by simp) (by rw [← key]; congr 1; exact Scheme.IdealSheafData.ker_subschemeι _)`. Conclude with `h.flip.paste_vert (isPullback_baseChange N K₁.subtype)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_finset_isProjOver_descends : ∀ (K : Type) [Field K] (K₀ : Subfield K) (X : Scheme.{0}) (p : X ⟶ Sp K), IsProjOver p → ∃ s : Finset K, ∀ K₁ : Subfield K, K₀ ≤ K₁ → (s : Set K) ⊆ K₁ → ∃ (X₁ : Scheme.{0}) (p₁ : X₁ ⟶ Sp K₁) (φ : X ⟶ X₁), IsProjOver p₁ ∧ IsPullback φ p p₁ (spMap K₁.subtype) := by
   classical

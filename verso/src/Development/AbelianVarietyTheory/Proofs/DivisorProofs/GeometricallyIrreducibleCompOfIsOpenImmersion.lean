@@ -10,11 +10,11 @@ set_option autoImplicit false
 namespace GlobalTheory.OpenGeomIrr
 
 /- English proof (translation)
-Introduce `T W X j hj f hf hs`. Use `⟨geometrically_iff_of_isClosedUnderIsomorphisms.mpr fun K _ x => ?_⟩` and prove the remaining obligations. Establish `h₁ : IrreducibleSpace ↥(Limits.pullback f x)` using `GeometricallyIrreducible.geometrically_irreducibleSpace _ _ _ (.of_hasPullback _ _)`. Establish `hne : Nonempty ↥(Limits.pullback (j ≫ f) x)`. Take `⟨p⟩ : Nonempty ↥(Spec (.of K))` from `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, -⟩` from `(Limits.pullback.snd (j ≫ f) x).surjective p`. Conclude with `⟨z⟩`. Set `e` to `pullbackRightPullbackFstIso f x j`. Establish `hne' : Nonempty ↥(Limits.pullback j (Limits.pullback.fst f x))` using `⟨e.inv hne.some⟩`. Establish `h₂ : IrreducibleSpace ↥(Limits.pullback j (Limits.pullback.fst f x))` using `(Limits.pullback.snd j (Limits.pullback.fst f x)).isOpenEmbedding.irreducibleSpace`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e.hom.homeomorph.irreducibleSpace_iff.1 h₂`.
+A detailed English derivation is pending.
 -/
 theorem geometricallyIrreducible_comp_of_isOpenImmersion : ∀ (T W X : Scheme.{0}) (j : W ⟶ X), IsOpenImmersion j →
     ∀ (f : X ⟶ T), GeometricallyIrreducible f → Surjective (j ≫ f) → GeometricallyIrreducible (j ≫ f) := by

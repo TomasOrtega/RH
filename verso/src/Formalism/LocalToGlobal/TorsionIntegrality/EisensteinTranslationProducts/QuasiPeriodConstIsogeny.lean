@@ -5,11 +5,11 @@ import Formalism.LocalToGlobal.TorsionIntegrality.EisensteinTranslationProducts.
 namespace Formalism.L2.Th1.F
 
 /- English proof (translation)
-The claim follows from `quasiPeriodConstIsogeny_thm`.
+A detailed English derivation is pending.
 -/
 theorem quasiPeriodConstIsogeny : QuasiPeriodConstIsogeny := quasiPeriodConstIsogeny_thm
 /- English proof (translation)
-The claim follows from `cm_even_theta`.
+A detailed English derivation is pending.
 -/
 theorem cmTheta0 : CmTheta0 := cm_even_theta
 

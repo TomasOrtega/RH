@@ -14,19 +14,19 @@ def src (R : ℝ) (u g : ℝ → ℂ) (t : ℝ) : ℝ :=
   2 * Real.exp (2 * R * t) * (g t * (starRingEnd ℂ) (u t)).re
 
 /- English proof (translation)
-Unfold `wt`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 lemma wt_nonneg (R : ℝ) (u : ℝ → ℂ) (t : ℝ) : 0 ≤ wt R u t := by
   unfold wt; positivity
 
 /- English proof (translation)
-Unfold `wt`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma wt_cont {u : ℝ → ℂ} (R : ℝ) (hu : Continuous u) : Continuous (wt R u) := by
   unfold wt; fun_prop
 
 /- English proof (translation)
-Unfold `src`. Establish `: Continuous fun t => (g t * (starRingEnd ℂ) (u t)).re` using `Complex.continuous_re.comp (hg.mul (Complex.continuous_conj.comp hu))`. Conclude with `(by fun_prop : Continuous fun t : ℝ => 2 * Real.exp (2 * R * t)).mul this`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma src_cont {u g : ℝ → ℂ} (R : ℝ) (hu : Continuous u) (hg : Continuous g) :
     Continuous (src R u g) := by
@@ -36,13 +36,13 @@ lemma src_cont {u g : ℝ → ℂ} (R : ℝ) (hu : Continuous u) (hg : Continuou
   exact (by fun_prop : Continuous fun t : ℝ => 2 * Real.exp (2 * R * t)).mul this
 
 /- English proof (translation)
-Establish `h1` using `h.norm_sq`. Establish `h2 : HasDerivAt (fun s : ℝ => Real.exp (2 * R * s)) (Real.exp (2 * R * t) * (2 * R)) t`. Establish `: HasDerivAt (fun s : ℝ => 2 * R * s) (2 * R) t`. Simplify using `using (hasDerivAt_id t).const_mul (2 * R)`. Conclude with `this.exp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h3` using `h1.mul h2`. Establish `hin : inner ℝ (u t) (z * u t + g t) = z.re * ‖u t‖ ^ 2 + (g t * (starRingEnd ℂ) (u t)).re`. Rewrite using `[Complex.inner]`. Establish `e : (z * u t + g t) * (starRingEnd ℂ) (u t) = z * ((‖u t‖ ^ 2 : ℝ) : ℂ) + g t * (starRingEnd ℂ) (u t)`. Use `Complex.conj_mul' (u t)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.add_re, Complex.re_mul_ofReal]`. Use `HasDerivAt.congr_deriv (f := wt R u) h3 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hin]`. Unfold `wt src`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma hasDerivAt_wt {u g : ℝ → ℂ} {z : ℂ} {t : ℝ} (R : ℝ)
     (h : HasDerivAt u (z * u t + g t) t) :
@@ -66,7 +66,7 @@ lemma hasDerivAt_wt {u g : ℝ → ℂ} {z : ℂ} {t : ℝ} (R : ℝ)
   rw [hin]; unfold wt src; ring
 
 /- English proof (translation)
-The claim follows from `|src R u g t| ≤ c * wt R u t + wt R g t / c := by unfold src wt have hE : 0 < Real.exp (2 * R * t) := Real.exp_pos _ generalize Real.exp (2 * R * t) = E at hE have h1 : |(g t * (starRingEnd ℂ) (u t)).re| ≤ ‖u t‖ * ‖g t‖ := by refine (Complex.abs_re_le_norm _).trans ?_ simp [mul_c …`.
+A detailed English derivation is pending.
 -/
 lemma abs_src_le (R : ℝ) (u g : ℝ → ℂ) (t : ℝ) {c : ℝ} (hc : 0 < c) :
     |src R u g t| ≤ c * wt R u t + wt R g t / c := by
@@ -92,9 +92,7 @@ section Energy
 variable {u g : ℝ → ℂ} {z : ℂ} {R a : ℝ}
 
 /- English proof (translation)
-Use `symm`. Apply `intervalIntegral.integral_eq_sub_of_hasDerivAt` to reduce the goal to its premises. Introduce `t ht`. Rewrite `ht` using `[uIcc_of_le hT]`. Conclude with `hasDerivAt_wt R (hd t ht.1)`.
-
-Conclude with `((continuous_const.mul (wt_cont R hu)).add (src_cont R hu hg)).intervalIntegrable _ _`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma energy (hu : Continuous u) (hg : Continuous g)
     (hd : ∀ t, 0 ≤ t → HasDerivAt u (z * u t + g t) t) {T : ℝ} (hT : 0 ≤ T) :
@@ -107,11 +105,11 @@ lemma energy (hu : Continuous u) (hg : Continuous g)
   · exact ((continuous_const.mul (wt_cont R hu)).add (src_cont R hu hg)).intervalIntegrable _ _
 
 /- English proof (translation)
-Establish `cu` using `wt_cont R hu`. Establish `cg` using `wt_cont R hg`. Rewrite using `[energy hu hg hd hT, hae]`. Establish `e : (2 * a + c) * (∫ t in (0 : ℝ)..T, wt R u t) + (∫ t in (0 : ℝ)..T, wt R g t) / c = ∫ t in (0 : ℝ)..T, ((2 * a + c) * wt R u t + wt R g t / c)`. Establish `i1 : IntervalIntegrable (fun t => (2 * a + c) * wt R u t) volume 0 T` using `(continuous_const.mul cu).intervalIntegrable _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i2 : IntervalIntegrable (fun t => wt R g t / c) volume 0 T` using `(cg.div_const c).intervalIntegrable _ _`. Rewrite using `[intervalIntegral.integral_add i1 i2, intervalIntegral.integral_const_mul, intervalIntegral.integral_div]`. Rewrite using `[e]`. Use `intervalIntegral.integral_mono_on hT (((continuous_const.mul cu).add (src_cont R hu hg)).intervalIntegrable _ _) (((continuous_const.mul cu).add (cg.div_const c)).intervalIntegrable _ _) fun t _ => ?_` and prove the remaining obligations. Establish `h1` using `abs_src_le R u g t hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `le_abs_self (src R u g t)`. Establish `e2 : (2 * a + c) * wt R u t = 2 * a * wt R u t + c * wt R u t` using `by ring`. Rewrite using `[e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma energy_le (hae : z.re + R = a) (hu : Continuous u) (hg : Continuous g)
     (hd : ∀ t, 0 ≤ t → HasDerivAt u (z * u t + g t) t) {T : ℝ} (hT : 0 ≤ T) {c : ℝ} (hc : 0 < c) :
@@ -138,11 +136,11 @@ lemma energy_le (hae : z.re + R = a) (hu : Continuous u) (hg : Continuous g)
   rw [e2]; linarith
 
 /- English proof (translation)
-Establish `cu` using `wt_cont R hu`. Establish `cg` using `wt_cont R hg`. Rewrite using `[energy hu hg hd hT, hae]`. Establish `e : (2 * a - c) * (∫ t in (0 : ℝ)..T, wt R u t) - (∫ t in (0 : ℝ)..T, wt R g t) / c = ∫ t in (0 : ℝ)..T, ((2 * a - c) * wt R u t - wt R g t / c)`. Establish `i1 : IntervalIntegrable (fun t => (2 * a - c) * wt R u t) volume 0 T` using `(continuous_const.mul cu).intervalIntegrable _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i2 : IntervalIntegrable (fun t => wt R g t / c) volume 0 T` using `(cg.div_const c).intervalIntegrable _ _`. Rewrite using `[intervalIntegral.integral_sub i1 i2, intervalIntegral.integral_const_mul, intervalIntegral.integral_div]`. Rewrite using `[e]`. Use `intervalIntegral.integral_mono_on hT (((continuous_const.mul cu).sub (cg.div_const c)).intervalIntegrable _ _) (((continuous_const.mul cu).add (src_cont R hu hg)).intervalIntegrable _ _) fun t _ => ?_` and prove the remaining obligations. Establish `h1` using `abs_src_le R u g t hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `neg_abs_le (src R u g t)`. Establish `e2 : (2 * a - c) * wt R u t = 2 * a * wt R u t - c * wt R u t` using `by ring`. Rewrite using `[e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma energy_ge (hae : z.re + R = a) (hu : Continuous u) (hg : Continuous g)
     (hd : ∀ t, 0 ≤ t → HasDerivAt u (z * u t + g t) t) {T : ℝ} (hT : 0 ≤ T) {c : ℝ} (hc : 0 < c) :
@@ -169,7 +167,7 @@ lemma energy_ge (hae : z.re + R = a) (hu : Continuous u) (hg : Continuous g)
   rw [e2]; linarith
 
 /- English proof (translation)
-Rewrite using `[intervalIntegral.integral_of_le hT]`. Conclude with `setIntegral_mono_set hf (ae_of_all _ h0) Ioc_subset_Ioi_self.eventuallyLE`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma iint_le {f : ℝ → ℝ} (hf : IntegrableOn f (Ioi 0)) (h0 : ∀ t, 0 ≤ f t) {T : ℝ} (hT : 0 ≤ T) :
     ∫ t in (0 : ℝ)..T, f t ≤ ∫ t in Ioi (0 : ℝ), f t := by
@@ -177,7 +175,7 @@ lemma iint_le {f : ℝ → ℝ} (hf : IntegrableOn f (Ioi 0)) (h0 : ∀ t, 0 ≤
   exact setIntegral_mono_set hf (ae_of_all _ h0) Ioc_subset_Ioi_self.eventuallyLE
 
 /- English proof (translation)
-The claim follows from `intervalIntegral.integral_mono_interval le_rfl hS hST (ae_of_all _ h0) (hf.intervalIntegrable _ _)`.
+A detailed English derivation is pending.
 -/
 lemma iint_mono {f : ℝ → ℝ} (hf : Continuous f) (h0 : ∀ t, 0 ≤ f t) {S T : ℝ} (hS : 0 ≤ S)
     (hST : S ≤ T) : ∫ t in (0 : ℝ)..S, f t ≤ ∫ t in (0 : ℝ)..T, f t :=
@@ -185,17 +183,17 @@ lemma iint_mono {f : ℝ → ℝ} (hf : Continuous f) (h0 : ∀ t, 0 ≤ f t) {S
     (hf.intervalIntegrable _ _)
 
 /- English proof (translation)
-Establish `cu` using `wt_cont R hu`. Establish `base : ∀ T, 0 ≤ T → a * ∫ t in (0 : ℝ)..T, wt R u t ≤ wt R u T + P / a`. Introduce `T hT`. Establish `h1` using `energy_ge hae hu hg hd hT ha`. Establish `h3` using `wt_nonneg R u 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (∫ t in (0 : ℝ)..T, wt R g t) / a ≤ P / a`. Use `hP T hT` as an intermediate fact. Use `gcongr`. Establish `e : 2 * a - a = a` using `by ring`. Rewrite `h1` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `nth : ∀ n : ℕ, a * ∫ t in (0 : ℝ)..n, wt R u t ≤ ((∫ t in (0 : ℝ)..((n : ℝ) + 1), wt R u t) - ∫ t in (0 : ℝ)..n, wt R u t) + P / a`. Introduce `n`. Establish `hn : (0 : ℝ) ≤ n` using `n.cast_nonneg`. Establish `h1 : ∫ _t in (n : ℝ)..((n : ℝ) + 1), (a * ∫ s in (0 : ℝ)..n, wt R u s) ≤ ∫ t in (n : ℝ)..((n : ℝ) + 1), (wt R u t + P / a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `intervalIntegral.integral_mono_on (by linarith) (continuous_const.intervalIntegrable _ _) ((cu.add continuous_const).intervalIntegrable _ _) fun t ht => ?_` and prove the remaining obligations. Establish `h2` using `iint_mono cu (wt_nonneg R u) hn ht.1`. Establish `h3` using `base t (hn.trans ht.1)`. Establish `h4 : a * ∫ s in (0 : ℝ)..n, wt R u s ≤ a * ∫ s in (0 : ℝ)..t, wt R u s` using `by gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[intervalIntegral.integral_add (cu.intervalIntegrable _ _) (continuous_const.intervalIntegrable _ _), intervalIntegral.integral_const, intervalIntegral.integral_const]`. Establish `h2 : (∫ t in (0 : ℝ)..((n : ℝ) + 1), wt R u t) - ∫ t in (0 : ℝ)..n, wt R u t = ∫ t in (n : ℝ)..((n : ℝ) + 1), wt R u t` using `intervalIntegral.integral_interval_sub_left (cu.intervalIntegrable _ _) (cu.intervalIntegrable _ _)`. Rewrite using `[h2]`. Simplify using `using h1`. Establish `t1` using `intervalIntegral_tendsto_integral_Ioi 0 iu tendsto_natCast_atTop_atTop`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t2` using `intervalIntegral_tendsto_integral_Ioi (b := fun n : ℕ => (n : ℝ) + 1) 0 iu (tendsto_atTop_add_const_right _ _ tendsto_natCast_atTop_atTop)`. Use `le_of_tendsto_of_tendsto' (t1.const_mul a) ((t2.sub t1).add_const (P / a)) nth` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem step_pos (hae : z.re + R = a) (ha : 0 < a) (hu : Continuous u) (hg : Continuous g)
     (hd : ∀ t, 0 ≤ t → HasDerivAt u (z * u t + g t) t)
@@ -242,11 +240,11 @@ theorem step_pos (hae : z.re + R = a) (ha : 0 < a) (hu : Continuous u) (hg : Con
   simpa using this
 
 /- English proof (translation)
-Establish `base : ∀ n : ℕ, b * ∫ t in (0 : ℝ)..n, wt R u t ≤ wt R u 0 + P / b`. Introduce `n`. Establish `hn : (0 : ℝ) ≤ n` using `n.cast_nonneg`. Establish `h1` using `energy_le hae hu hg hd hn hb`. Establish `h3` using `wt_nonneg R u n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (∫ t in (0 : ℝ)..n, wt R g t) / b ≤ P / b`. Use `hP n hn` as an intermediate fact. Use `gcongr`. Establish `e : 2 * -b + b = -b` using `by ring`. Rewrite `h1` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `t1` using `intervalIntegral_tendsto_integral_Ioi 0 iu tendsto_natCast_atTop_atTop`. Conclude with `le_of_tendsto' (t1.const_mul b) base`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem step_neg {b : ℝ} (hae : z.re + R = -b) (hb : 0 < b) (hu : Continuous u) (hg : Continuous g)
     (hd : ∀ t, 0 ≤ t → HasDerivAt u (z * u t + g t) t)
@@ -268,11 +266,11 @@ theorem step_neg {b : ℝ} (hae : z.re + R = -b) (hb : 0 < b) (hu : Continuous u
   exact le_of_tendsto' (t1.const_mul b) base
 
 /- English proof (translation)
-Establish `cu` using `wt_cont R hu`. Establish `key : ∀ t ∈ Icc (0 : ℝ) 1, wt R u 0 ≤ wt R u t + ((1 + 2 * b) * (∫ s in (0 : ℝ)..1, wt R u s) + P)`. Introduce `t ht`. Establish `h1` using `energy_ge hae hu hg hd ht.1 one_pos`. Establish `h2` using `iint_mono cu (wt_nonneg R u) ht.1 ht.2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hP t ht.1`. Establish `h4 : (1 + 2 * b) * (∫ s in (0 : ℝ)..t, wt R u s) ≤ (1 + 2 * b) * ∫ s in (0 : ℝ)..1, wt R u s` using `by gcongr`. Rewrite `h1` using `[div_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h : ∫ _t in (0 : ℝ)..1, wt R u 0 ≤ ∫ t in (0 : ℝ)..1, (wt R u t + ((1 + 2 * b) * (∫ s in (0 : ℝ)..1, wt R u s) + P))` using `intervalIntegral.integral_mono_on zero_le_one (continuous_const.intervalIntegrable _ _) ((cu.add continuous_const).intervalIntegrable _ _) key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `h` using `[intervalIntegral.integral_add (cu.intervalIntegrable _ _) (continuous_const.intervalIntegrable _ _), intervalIntegral.integral_const, intervalIntegral.integral_const]`. Simplify using `only [sub_zero, one_smul] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem init_bound {b : ℝ} (hae : z.re + R = -b) (hb : 0 < b) (hu : Continuous u) (hg : Continuous g)
     (hd : ∀ t, 0 ≤ t → HasDerivAt u (z * u t + g t) t) {P : ℝ}
@@ -300,13 +298,11 @@ theorem init_bound {b : ℝ} (hae : z.re + R = -b) (hb : 0 < b) (hu : Continuous
   linarith
 
 /- English proof (translation)
-Rewrite using `[intervalIntegral.integral_of_le zero_le_one, ← integral_const_mul]`. Establish `i1 : IntegrableOn (wt R u) (Ioc 0 1)` using `(wt_cont R hu).integrableOn_Ioc`. Establish `i2 : IntegrableOn (fun t => Real.exp (2 * |R|) * ‖u t‖ ^ 2) (Ioc 0 1)` using `Continuous.integrableOn_Ioc (by fun_prop)`. Use `setIntegral_mono_on i1 i2 measurableSet_Ioc fun t ht => ?_` and prove the remaining obligations. Unfold `wt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[mul_comm]`. Establish `: 2 * R * t ≤ 2 * |R|`. Establish `h1 : R * t ≤ |R| * t`. Use `le_abs_self R` as an intermediate fact. Use `ht.1.le` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `gcongr`. Establish `h2 : |R| * t ≤ |R| * 1`. Use `ht.2` as an intermediate fact. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma unit_le (hu : Continuous u) :
     ∫ t in (0 : ℝ)..1, wt R u t ≤ Real.exp (2 * |R|) * ∫ t in Ioc (0 : ℝ) 1, ‖u t‖ ^ 2 := by
@@ -331,21 +327,21 @@ lemma unit_le (hu : Continuous u) :
 end Energy
 
 /- English proof (translation)
-Break down `lt_or_gt_of_ne ha with h | h` into its components or cases. Take `⟨b, hae⟩ : ∃ b, z.re + R = -b` from `⟨-(z.re + R), by ring⟩`. Establish `hb : 0 < b` using `by linarith`. Establish `hE : 0 < Real.exp (2 * |R|)` using `Real.exp_pos _`. Use `⟨((2 + 2 * b) * Real.exp (2 * |R|) + (1 + 1 / b)) / b, by positivity, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u g hu hg hd iu ig`. Establish `hP` using `fun T hT => iint_le ig (wt_nonneg R g) (T := T) hT`. Establish `h1` using `step_neg hae hb hu hg hd iu hP`. Establish `h2` using `init_bound hae hb hu hg hd hP`. Establish `h3` using `unit_le (R := R) hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : 0 ≤ ∫ t in Ioc (0 : ℝ) 1, ‖u t‖ ^ 2` using `integral_nonneg fun t => by positivity`. Establish `hW : 0 ≤ ∫ t in Ioi (0 : ℝ), wt R g t` using `integral_nonneg (wt_nonneg R g)`. Generalize the expression as in `(∫ t in Ioc (0 : ℝ) 1, ‖u t‖ ^ 2) = X at *`. Generalize the expression as in `(∫ t in Ioi (0 : ℝ), wt R g t) = P at *`. Generalize the expression as in `(∫ t in Ioi (0 : ℝ), wt R u t) = W at *`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Real.exp (2 * |R|) = E at *`. Establish `h4 : (2 + 2 * b) * (∫ t in (0 : ℝ)..1, wt R u t) ≤ (2 + 2 * b) * (E * X)` using `by gcongr`. Establish `hD : 0 ≤ (2 + 2 * b) * E` using `by positivity`. Establish `hQ : 0 ≤ 1 + 1 / b` using `by positivity`. Establish `e : b * (((2 + 2 * b) * E + (1 + 1 / b)) / b * (X + P)) = ((2 + 2 * b) * E + (1 + 1 / b)) * (X + P)`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `e2 : P / b = 1 / b * P` using `by ring`. Use `le_of_mul_le_mul_left ?_ hb` and prove the remaining obligations. Rewrite using `[e]`. Use polynomial arithmetic with `[mul_nonneg hD hW, mul_nonneg hQ hX]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Take `⟨a, hae⟩ : ∃ a, z.re + R = a` from `⟨_, rfl⟩`. Establish `ha' : 0 < a` using `by linarith`. Use `⟨1 / (a * a), by positivity, ?_⟩` and prove the remaining obligations. Introduce `u g hu hg hd iu ig`. Establish `hP` using `fun T hT => iint_le ig (wt_nonneg R g) (T := T) hT`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `step_pos hae ha' hu hg hd iu hP`. Establish `hX : 0 ≤ ∫ t in Ioc (0 : ℝ) 1, ‖u t‖ ^ 2` using `integral_nonneg fun t => by positivity`. Generalize the expression as in `(∫ t in Ioc (0 : ℝ) 1, ‖u t‖ ^ 2) = X at *`. Generalize the expression as in `(∫ t in Ioi (0 : ℝ), wt R g t) = P at *`. Generalize the expression as in `(∫ t in Ioi (0 : ℝ), wt R u t) = W at *`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `e : a * (1 / (a * a) * (X + P)) = X / a + P / a`. Clear the denominators using the available nonvanishing facts. Use `le_of_mul_le_mul_left ?_ ha'` and prove the remaining obligations. Rewrite using `[e]`. Establish `: 0 ≤ X / a` using `by positivity`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -399,19 +395,19 @@ theorem step {z : ℂ} {R : ℝ} (ha : z.re + R ≠ 0) : ∃ K : ℝ, 0 < K ∧
     linarith
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Use `⟨1, one_pos, fun F _ _ _ => ?_⟩` and prove the remaining obligations. Establish `hX : 0 ≤ ∑ k, ∫ t in Ioc (0 : ℝ) 1, ‖F k t‖ ^ 2` using `Finset.sum_nonneg fun k _ => integral_nonneg fun t => by positivity`. Establish `e : Fin.last 0 = (0 : Fin 1)` using `rfl`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ m ih`. Take `⟨C, hC, H⟩` from `ih (fun k => z k.castSucc) (fun k => hz k.castSucc)`. Take `⟨K, hK, S⟩` from `step (hz (Fin.last m))`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨K * (1 + C), by positivity, fun F hd hc hi => ?_⟩` and prove the remaining obligations. Establish `h1` using `H (fun k => F k.castSucc) (fun k t ht => by`. Use `hd k.castSucc t ht` as an intermediate fact. Rewrite `this` using `[Fin.succ_castSucc]`. Conclude with `this)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `(fun k => hc _) (fun k => hi _)`. Establish `h2` using `S (F (Fin.last (m + 1))) (F (Fin.last m).castSucc) (hc _) (hc _) (fun t ht => by`. Use `hd (Fin.last m) t ht` as an intermediate fact. Rewrite `this` using `[Fin.succ_last]`. Conclude with `this)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `(hi _) (hi _)`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [Fin.castSucc_zero] at h1`. Establish `hS : 0 ≤ ∑ k : Fin (m + 1), ∫ t in Ioc (0 : ℝ) 1, ‖F k.castSucc t‖ ^ 2` using `Finset.sum_nonneg fun k _ => integral_nonneg fun t => by positivity`. Establish `hX : 0 ≤ ∫ t in Ioc (0 : ℝ) 1, ‖F (Fin.last (m + 1)) t‖ ^ 2` using `integral_nonneg fun t => by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hW : 0 ≤ ∫ t in Ioi (0 : ℝ), wt R (F 0) t` using `integral_nonneg (wt_nonneg R _)`. Generalize the expression as in `(∑ k : Fin (m + 1), ∫ t in Ioc (0 : ℝ) 1, ‖F k.castSucc t‖ ^ 2) = A at *`. Generalize the expression as in `(∫ t in Ioc (0 : ℝ) 1, ‖F (Fin.last (m + 1)) t‖ ^ 2) = X at *`. Generalize the expression as in `(∫ t in Ioi (0 : ℝ), wt R (F 0) t) = W0 at *`. Generalize the expression as in `(∫ t in Ioi (0 : ℝ), wt R (F (Fin.last m).castSucc) t) = Wm at *`.
+Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `h2.trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ hK.le` and prove the remaining obligations. Use polynomial arithmetic with `[mul_nonneg hC.le hX]`.
+A detailed English derivation is pending.
 -/
 theorem chain (m : ℕ) (z : Fin m → ℂ) (R : ℝ) (hz : ∀ k, (z k).re + R ≠ 0) : ∃ C : ℝ, 0 < C ∧
     ∀ F : Fin (m + 1) → ℝ → ℂ,
@@ -462,7 +458,7 @@ theorem chain (m : ℕ) (z : Fin m → ℂ) (R : ℝ) (hz : ∀ k, (z k).re + R 
     nlinarith [mul_nonneg hC.le hX]
 
 /- English proof (translation)
-Unfold `wt`. Rewrite using `[ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma enn_wt (S : ℝ) (u : ℝ → ℂ) (t : ℝ) :
     ‖u t‖ₑ ^ 2 * ENNReal.ofReal (Real.exp (2 * S * t)) = ENNReal.ofReal (wt S u t) := by
@@ -470,7 +466,7 @@ lemma enn_wt (S : ℝ) (u : ℝ → ℂ) (t : ℝ) :
   rw [ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]
 
 /- English proof (translation)
-Rewrite `h` using `[enn_wt]`. Use `⟨(wt_cont S hu).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (ae_of_all _ (wt_nonneg S u))]`. Conclude with `h`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma integrable_of_lt_top {S : ℝ} {u : ℝ → ℂ} (hu : Continuous u)
     (h : ∫⁻ t in Ioi (0 : ℝ), ‖u t‖ₑ ^ 2 * ENNReal.ofReal (Real.exp (2 * S * t)) < ⊤) :
@@ -481,7 +477,7 @@ lemma integrable_of_lt_top {S : ℝ} {u : ℝ → ℂ} (hu : Continuous u)
   exact h
 
 /- English proof (translation)
-Repeatedly rewrite using `[enn_wt]`. Conclude with `(ofReal_integral_eq_lintegral_ofReal hi (ae_of_all _ (wt_nonneg S u))).symm`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lint_wt {S : ℝ} {u : ℝ → ℂ} (hi : IntegrableOn (wt S u) (Ioi 0)) :
     ∫⁻ t in Ioi (0 : ℝ), ‖u t‖ₑ ^ 2 * ENNReal.ofReal (Real.exp (2 * S * t)) =
@@ -490,7 +486,7 @@ lemma lint_wt {S : ℝ} {u : ℝ → ℂ} (hi : IntegrableOn (wt S u) (Ioi 0)) :
   exact (ofReal_integral_eq_lintegral_ofReal hi (ae_of_all _ (wt_nonneg S u))).symm
 
 /- English proof (translation)
-Establish `i : IntegrableOn (fun t => ‖u t‖ ^ 2) (Ioc (0 : ℝ) 1)` using `Continuous.integrableOn_Ioc (by fun_prop)`. Rewrite using `[ofReal_integral_eq_lintegral_ofReal i (ae_of_all _ fun t => by positivity)]`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma lint_unit {u : ℝ → ℂ} (hu : Continuous u) :
     ENNReal.ofReal (∫ t in Ioc (0 : ℝ) 1, ‖u t‖ ^ 2) = ∫⁻ t in Ioc (0 : ℝ) 1, ‖u t‖ₑ ^ 2 := by
@@ -501,17 +497,15 @@ lemma lint_unit {u : ℝ → ℂ} (hu : Continuous u) :
   rw [ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]
 
 /- English proof (translation)
-Introduce `m z R R' hRR hz`. Take `⟨C, hC, H⟩` from `chain m z R (fun k h => hz k (by linarith))`. Use `⟨C, hC, fun F hd hc hfin => ?_⟩` and prove the remaining obligations. Establish `hint : ∀ k, IntegrableOn (wt R (F k)) (Ioi 0)`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Integrable.mono' (integrable_of_lt_top (hc k) (hfin k)) (wt_cont R (hc k)).aestronglyMeasurable ?_` and prove the remaining obligations. Use `(ae_restrict_iff' measurableSet_Ioi).2 (ae_of_all _ fun t ht => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (wt_nonneg R _ t)]`. Unfold `wt`. Establish `: 2 * R * t ≤ 2 * R' * t`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `mem_Ioi.1 ht` as an intermediate fact. Use `gcongr`. Use `gcongr`. Establish `key` using `H F hd hc hint`. Rewrite using `[lint_wt (hint (Fin.last m)), lint_wt (hint 0)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : ∀ k, 0 ≤ ∫ t in Ioc (0 : ℝ) 1, ‖F k t‖ ^ 2` using `fun k => integral_nonneg fun t => by positivity`. Establish `hW : 0 ≤ ∫ t in Ioi (0 : ℝ), wt R (F 0) t` using `integral_nonneg (wt_nonneg R _)`. Generalize the expression as in `hI : ENNReal.ofReal (∫ t in Ioi (0 : ℝ), wt R (F 0) t) = I`. Establish `e : ∀ k, ∫⁻ t in Ioc (0 : ℝ) 1, (‖F k t‖ₑ ^ 2 + I) = ENNReal.ofReal (∫ t in Ioc (0 : ℝ) 1, ‖F k t‖ ^ 2) + I`. Introduce `k`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[lintegral_add_right _ measurable_const, lintegral_const, ← lint_unit (hc k)]`. Simplify using the standard rewrite rules. Repeatedly rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul hC.le, ENNReal.ofReal_add (Finset.sum_nonneg fun k _ => hX k) hW, ENNReal.ofReal_sum_of_nonneg fun k _ => hX k, hI]`.
-
-Use `_ ≤ ENNReal.ofReal C * ∑ k, (ENNReal.ofReal (∫ t in Ioc (0 : ℝ) 1, ‖F k t‖ ^ 2) + I) := by`. Rewrite using `[Finset.sum_add_distrib]`. Use `gcongr`. Conclude with `Finset.single_le_sum (f := fun _ : Fin (m + 1) => I) (fun _ _ => zero_le) (Finset.mem_univ 0)`.
+Rewrite the conclusion repeatedly using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineChain : CompanionTheory.RgExh.Dec.L.LineChain := by
   intro m z R R' hRR hz

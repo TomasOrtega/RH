@@ -19,11 +19,9 @@ open GlobalTheory.CompanionTheory.CenTheta
 namespace GlobalTheory.CompanionTheory.CenTheta
 
 /- English proof (translation)
-Introduce `K _ _ h2 c n t M hM z`. Take `⟨hok, S0, hS0⟩` from `hM`. Take `⟨S, hS⟩` from `GlobalTheory.T.adelic_realPart_properties.2.2.2 z`. Establish `hsupp : (Function.mulSupport fun v : Pl => omW (M v) (Ad3.R.lc v z)) ⊆ ((S0 ∪ S : Finset Pl) : Set Pl)`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hn`. Simplify using `only [Finset.coe_union, Set.mem_union, Finset.mem_coe, not_or] at hn`. Conclude with `hv (GlobalTheory.T.unramified_central_scalars_trivial K h2 c v (M v) (hS0 v hn.1).1 (hok v) _ (hS v hn.2)).1`. Unfold `uW`. Rewrite using `[norm_mul, GlobalTheory.T.norm_real_central_character_eq_one, one_mul, finprod_eq_prod_of_mulSupport_subset _ hsupp, norm_prod]`.
-
-Conclude with `Finset.prod_eq_one fun v _ => (GlobalTheory.T.norm_local_central_scalars_eq_one K h2 c v (M v) (hok v) _).1`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_uW_eq_one : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ (c : HeckeCharacter K) (n : ℤ) (t : ℝ) (M : ∀ v : Pl, LM c v), AdmM M → ∀ (z : Jd), ‖uW n t M z‖ = 1 := by
   classical

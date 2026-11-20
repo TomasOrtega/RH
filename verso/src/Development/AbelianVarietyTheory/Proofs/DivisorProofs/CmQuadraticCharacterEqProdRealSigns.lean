@@ -17,7 +17,7 @@ open GlobalTheory.QuadSymbol GlobalTheory.IdeleNormChar GlobalTheory.AdelicU
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨-, h1, h3, h4⟩` from `hη`. Use `eq_signToCircle_comp _ η (fun a ha => ?_) h4` and prove the remaining obligations. Take `⟨t, x, hx⟩` from `(normSign_eq_one_iff E a).1 ha`. Rewrite using `[← div_mul_cancel a (toUnits F (AdeleRing (𝓞 F) F) t), map_mul, ← hx, h3 x, one_mul]`. Conclude with `h1 t`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_signToCircle [Algebra.IsQuadraticExtension F E] (η : (AF F)ˣ →* Circle) (hη : IsEtaF E η) :
     η = signToCircle.comp (normSign E) := by
@@ -28,11 +28,11 @@ theorem eq_signToCircle [Algebra.IsQuadraticExtension F E] (η : (AF F)ˣ →* C
   exact h1 t
 
 /- English proof (translation)
-Establish `h` using `ha ((0 : Ainf F), (1 : Af F)) (by show InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0`. Conclude with `map_zero _)`. Establish `h2 : ((a : AF F) - 1).2 = 0`. Use `congrArg Prod.snd h` as an intermediate fact. Express the relevant statement in the definitionally equal form `(1 : Af F) * ((a : AF F) - 1).2 = 0 at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Establish `h3 : (a : AF F).2 = 1` using `sub_eq_zero.1 (h2 : (a : AF F).2 - 1 = 0)`. Use function extensionality and compare the values at `v`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(a : AF F).2 v = 1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finComp_eq_one {a : (AF F)ˣ} (ha : At (evI F) ((a : AF F) - 1)) : finComp a = 1 := by
   have h := ha ((0 : Ainf F), (1 : Af F)) (by
@@ -50,7 +50,7 @@ theorem finComp_eq_one {a : (AF F)ˣ} (ha : At (evI F) ((a : AF F) - 1)) : finCo
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `etaProd F E (finComp a) (infComp a) = _`. Rewrite using `[etaProd, ha]`. Establish `: ∀ v : HeightOneSpectrum (𝓞 F), eta F E (v.adicCompletion F) ((1 : FinFam F) v) = 1` using `fun v => eta_eq_one_iff.2 (one_mem _)`. Simplify using `only [this, finprod_one, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem normSign_eq_prod [Algebra.IsQuadraticExtension F E] {a : (AF F)ˣ} (ha : finComp a = 1) :
     normSign E a = ∏ w : InfinitePlace F, eta F E w.Completion (infComp a w) := by
@@ -61,13 +61,13 @@ theorem normSign_eq_prod [Algebra.IsQuadraticExtension F E] {a : (AF F)ˣ} (ha :
   simp only [this, finprod_one, one_mul]
 
 /- English proof (translation)
-Use `set e := InfinitePlace.Completion.ringEquivRealOfIsReal hw`. Use `set z := τ.1 θ`. Establish `hz : star z = -z` using `by rw [← hcm.2.2.2 τ.1 θ, hθ, map_neg]`. Establish `hre : z.re = 0`. Use `congrArg Complex.re hz` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc : ((e (algebraMap F w.Completion δ) : ℝ) : ℂ) = z * z`. Rewrite using `[InfinitePlace.Completion.ringEquivRealOfIsReal_apply, InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply]`. Establish `h5 : InfinitePlace.Completion.extensionEmbedding w (algebraMap F w.Completion δ) = w.embedding δ` using `InfinitePlace.Completion.extensionEmbedding_coe w ((WithAbs.equiv w.1).symm δ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h5, ← τ.2, RingHom.comp_apply, ← h1, map_mul]`. Establish `hr` using `congrArg Complex.re hc`. Simplify using `only [Complex.ofReal_re, Complex.mul_re, hre, zero_mul, zero_sub] at hr`. Establish `hne : e (algebraMap F w.Completion δ) ≠ 0` using `(map_ne_zero e).2 ((map_ne_zero _).2 hδ)`. Use `lt_of_le_of_ne ?_ hne` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[hr]`. Use polynomial arithmetic with `[mul_self_nonneg z.im]`.
+A detailed English derivation is pending.
 -/
 theorem ringEquivReal_neg {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {w : InfinitePlace F} (hw : w.IsReal)
     (τ : EmbOver E w) {δ : F} (hδ : δ ≠ 0) {θ : E} (hθ : σ θ = -θ) (h1 : θ * θ = algebraMap F E δ) :
@@ -93,15 +93,15 @@ theorem ringEquivReal_neg {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {w : Infin
   nlinarith [mul_self_nonneg z.im]
 
 /- English proof (translation)
-Establish `hinv : ∀ x, σ (σ x) = x` using `fun x => τ.1.injective (by rw [hcm.2.2.2, hcm.2.2.2, star_star])`. Establish `hne : ∃ x, σ x ≠ x`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `haveI := hcm.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `(InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (InfinitePlace.mk τ.1))) (InfinitePlace.isReal_mk_iff.2 (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun x => ?_)))` and prove the remaining obligations. Conclude with `(hcm.2.2.2 τ.1 x).symm.trans (by rw [h x])`. Take `⟨δ, b, hδ, h0, hσb, h1⟩` from `GlobalTheory.QuadNormBase.exists_basis F E σ hcm.2.2.1 hinv hne`. Establish `hδ0 : δ ≠ 0` using `fun h => hδ (h ▸ IsSquare.zero)`. Establish `hneg` using `ringEquivReal_neg hcm hw τ hδ0 hσb h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `set e := InfinitePlace.Completion.ringEquivRealOfIsReal hw`. Rewrite using `[mem_normGroup_iff_form b h0 h1]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, q, h⟩`. Establish `hx0 : e (x : w.Completion) ≠ 0` using `(map_ne_zero e).2 x.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : e (x : w.Completion) = e p ^ 2 - e (algebraMap F w.Completion δ) * e q ^ 2`. Rewrite using `[h, map_sub, map_mul, map_pow, map_pow]`. Use `lt_of_le_of_ne ?_ hx0.symm` and prove the remaining obligations. Rewrite using `[h2]`. Use polynomial arithmetic with `[sq_nonneg (e p), sq_nonneg (e q)]`.
+Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Introduce `hpos`. Use `⟨e.symm (Real.sqrt (e x)), 0, ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Simplify using `[Real.sq_sqrt hpos.le]`.
+A detailed English derivation is pending.
 -/
 theorem mem_normGroup_iff_pos {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {w : InfinitePlace F} (hw : w.IsReal)
     (τ : EmbOver E w) (x : (w.Completion)ˣ) :
@@ -134,7 +134,7 @@ theorem mem_normGroup_iff_pos {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {w : I
     simp [Real.sq_sqrt hpos.le]
 
 /- English proof (translation)
-Rewrite using `[InfinitePlace.Completion.ringEquivRealOfIsReal_apply, InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply]`. Express the relevant statement in the definitionally equal form `infEmb τ (compInf F E w (algebraMap (AF F) (AF F ⊗[F] E) a)) = _`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self_apply]`. Express the relevant statement in the definitionally equal form `infEmb τ (evInf F w a ⊗ₜ[F] (1 : E)) = _`. Rewrite using `[infEmb_tmul, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -150,15 +150,13 @@ theorem piInf_idFF {w : InfinitePlace F} (hw : w.IsReal) (τ : EmbOver E w) (a :
   rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB η hη a ha`. Establish `hcm` using `hB.cm`. Use `haveI : Algebra.IsQuadraticExtension F E := ⟨hcm.2.2.1⟩`. Use `haveI := hcm.1`. Rewrite using `[eq_signToCircle η hη, MonoidHom.comp_apply, normSign_eq_prod (finComp_eq_one ha), map_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show ((∏ w : InfinitePlace F, signToCircle (eta F E w.Completion (infComp a w)) : Circle) : ℂ) = ∏ w : InfinitePlace F, ((signToCircle (eta F E w.Completion (infComp a w)) : Circle) : ℂ) from map_prod Circle.coeHom _ _]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hw : w.IsReal` using `IsTotallyReal.isReal w`. Rewrite using `[piInf_idFF hw]`. Use `set r := InfinitePlace.Completion.ringEquivRealOfIsReal hw ((infComp a w : (w.Completion)ˣ) : w.Completion)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx` using `mem_normGroup_iff_pos hcm hw (B.emb w) (infComp a w)`. Establish `hr0 : r ≠ 0` using `(map_ne_zero _).2 (infComp a w).ne_zero`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs]`. Distinguish the cases in `hpos : 0 < r`. Rewrite using `[eta_eq_one_iff.2 (hx.2 hpos), map_one, abs_of_pos hpos, div_self (by exact_mod_cast hr0)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hneg : r < 0` using `lt_of_le_of_ne (not_lt.1 hpos) hr0`. Rewrite using `[eta_eq_neg_one_iff.2 (fun h => hpos (hx.1 h)), abs_of_neg hneg]`. Express the relevant statement in the definitionally equal form `((if (-1 : ℤˣ) = 1 then (1 : Circle) else -1 : Circle) : ℂ) = _`. Rewrite using `[if_neg (by decide)]`.
-
-Use `push_cast`. Rewrite using `[div_neg, div_self (by exact_mod_cast hr0)]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eta_eq_prod_sign : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E),

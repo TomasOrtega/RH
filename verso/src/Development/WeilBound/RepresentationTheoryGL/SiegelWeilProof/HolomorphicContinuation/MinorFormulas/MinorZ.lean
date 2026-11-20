@@ -8,7 +8,7 @@ namespace PositivityTheory.Rg.Sw.SP
 open Polynomial
 
 /- English proof (translation)
-Introduce `e`. Rewrite using `[MvPolynomial.coeff_C_mul]`. Conclude with `Dvd.dvd.mul_right h _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divZ_C_mul {n : ℕ} (i : ℕ) (p : Polynomial ℂ) (R : Fm n) (h : (X : Polynomial ℂ) ^ i ∣ p) :
     DivZ i (MvPolynomial.C p * R) := by
@@ -17,9 +17,9 @@ theorem divZ_C_mul {n : ℕ} (i : ℕ) (p : Polynomial ℂ) (R : Fm n) (h : (X :
   exact Dvd.dvd.mul_right h _
 
 /- English proof (translation)
-Establish `h1 : (X : Polynomial ℂ) ^ i = ∏ _l ∈ Finset.range i, (X : Polynomial ℂ)`. Rewrite using `[Finset.prod_const, Finset.card_range]`. Rewrite using `[h1]`. Use `dvd_trans (Finset.prod_dvd_prod_of_dvd _ _ fun l hl => ?_) (Finset.prod_dvd_prod_of_subset _ _ _ (Finset.range_mono hi))` and prove the remaining obligations. Take `⟨i', hi', he⟩` from `hf l (Finset.mem_range.1 hl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h2 : f l i' ∣ ∏ i' ∈ Finset.range ρ, f l i'` using `Finset.dvd_prod_of_mem _ (Finset.mem_range.2 hi')`. Rewrite `h2` using `[he]`. Conclude with `dvd_trans (dvd_neg.2 dvd_rfl) h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_dvd_prod (N ρ i : ℕ) (f : ℕ → ℕ → Polynomial ℂ) (hi : i ≤ N)
     (hf : ∀ l < i, ∃ i' < ρ, f l i' = -X) :
@@ -35,9 +35,9 @@ theorem pow_dvd_prod (N ρ i : ℕ) (f : ℕ → ℕ → Polynomial ℂ) (hi : i
   exact dvd_trans (dvd_neg.2 dvd_rfl) h2
 
 /- English proof (translation)
-Introduce `n s hs m i N hiN I J`. Rewrite using `[hF n s hs m false (m + i) N I J]`. Apply `divZ_C_mul` to reduce the goal to its premises. Apply `Dvd.dvd.mul_left` to reduce the goal to its premises. Apply `pow_dvd_prod N (m + i) i _ hiN` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `l hl`. Use `⟨m + l, by omega, ?_⟩` and prove the remaining obligations. Simplify using `only [Bool.false_eq_true, ↓reduceIte, Nat.cast_add, map_sub, map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem minorZ_of (hF : MinorFormula) : MinorZ := by
   intro n s hs m i N hiN I J
@@ -51,9 +51,9 @@ theorem minorZ_of (hF : MinorFormula) : MinorZ := by
   ring
 
 /- English proof (translation)
-Introduce `n s hs m j N hjN I J`. Rewrite using `[hF n s hs m true j N I J]`. Apply `divZ_C_mul` to reduce the goal to its premises. Apply `Dvd.dvd.mul_left` to reduce the goal to its premises. Apply `pow_dvd_prod N j j _ hjN` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `l hl`. Use `⟨l, hl, ?_⟩` and prove the remaining obligations. Simplify using `only [↓reduceIte, sub_self, map_zero, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem minorZ'_of (hF : MinorFormula) : MinorZ' := by
   intro n s hs m j N hjN I J

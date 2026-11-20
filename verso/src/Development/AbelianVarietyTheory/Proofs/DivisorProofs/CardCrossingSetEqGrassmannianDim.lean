@@ -6,9 +6,9 @@ open MvPolynomial GlobalTheory.FlagPoly GlobalTheory.FlagForm GlobalTheory.FlagC
 namespace GlobalTheory.FlagCurve
 
 /- English proof (translation)
-Rewrite using `[← Finset.card_map Fin.valEmbedding]`. Rewrite using `[show (Finset.univ.filter fun a : Fin N => (a : ℕ) < j).map Fin.valEmbedding = Finset.range j by`. Use extensionality with `x`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Fin.valEmbedding_apply, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `ha`. Introduce `hx; exact ⟨⟨x, by omega⟩, hx, rfl⟩]`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_filter_fin_val_lt (N j : ℕ) (h : j ≤ N) :
     (Finset.univ.filter fun a : Fin N => (a : ℕ) < j).card = j := by
@@ -23,9 +23,9 @@ theorem card_filter_fin_val_lt (N j : ℕ) (h : j ≤ N) :
   simp
 
 /- English proof (translation)
-Rewrite using `[← Finset.card_map Fin.valEmbedding]`. Rewrite using `[show (Finset.univ.filter fun b : Fin N => j ≤ (b : ℕ)).map Fin.valEmbedding = Finset.Ico j N by`. Use extensionality with `x`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Fin.valEmbedding_apply, Finset.mem_Ico]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨ha, a.2⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨x, h2⟩, h1, rfl⟩]`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 theorem card_filter_fin_le_val (N j : ℕ) :
     (Finset.univ.filter fun b : Fin N => j ≤ (b : ℕ)).card = N - j := by
@@ -40,9 +40,9 @@ theorem card_filter_fin_le_val (N j : ℕ) :
   simp
 
 /- English proof (translation)
-Use extensionality with `⟨τ, a, b⟩`. Simplify using `only [crSet, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_product]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h1, h2⟩`. Conclude with `⟨h1, h2⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨Fin.lt_def.2 (lt_of_lt_of_le h1 h2), h1, h2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem crSet_eq_product (ι : Type) [Fintype ι] [DecidableEq ι] (N j : ℕ) :
     crSet ι N j = Finset.univ ×ˢ ((Finset.univ.filter fun a : Fin N => (a : ℕ) < j) ×ˢ
@@ -54,7 +54,7 @@ theorem crSet_eq_product (ι : Type) [Fintype ι] [DecidableEq ι] (N j : ℕ) :
   · rintro ⟨h1, h2⟩; exact ⟨Fin.lt_def.2 (lt_of_lt_of_le h1 h2), h1, h2⟩
 
 /- English proof (translation)
-Introduce `ι _ _ N j h`. Rewrite using `[crSet_eq_product, Finset.card_product, Finset.card_product, Finset.card_univ, card_filter_fin_val_lt N j h, card_filter_fin_le_val N j]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem card_crSet_eq_dimGr : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N j : ℕ), j ≤ N →
     (crSet ι N j).card = dimGr ι N j := by

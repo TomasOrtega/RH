@@ -22,13 +22,13 @@ section Abstract
 variable {R F G : Type} [CommRing R] [IsDomain R] [Field F]
 
 /- English proof (translation)
-Establish `key : ∀ m : ℕ, t ^ (m + 1) ∣ z`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simpa using hker z hz`. Consider the case `succ m ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨w, hw⟩` from `ih`. Establish `h1 : ∀ g, σ g w * c g ^ (m + 1) = w`. Introduce `g`. Establish `h` using `hinv g`. Rewrite `h` using `[hw, map_mul, map_pow, hσt]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `mul_left_cancel₀ (pow_ne_zero (m + 1) ht)` to reduce the goal to its premises. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : θ w = 0`. Use `tate ((m + 1 : ℕ) : ℤ) _ (by omega) fun g => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[zpow_natCast, ← hθ, ← map_pow, ← map_mul, h1]`. Take `⟨v, hv⟩` from `hker w h2`. Conclude with `⟨v, by rw [hw, hv]; ring⟩`. Conclude with `hsep z fun n => (pow_dvd_pow t (Nat.le_succ n)).trans (key n)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inv_ker_eq_zero (θ : R →+* F) (σ : G → R →+* R) (τ : G → F →+* F) (c : G → R) (t : R) (ht : t ≠ 0)
     (hker : ∀ y, θ y = 0 → t ∣ y) (hsep : ∀ y, (∀ n : ℕ, t ^ n ∣ y) → y = 0)
@@ -56,13 +56,13 @@ theorem inv_ker_eq_zero (θ : R →+* F) (σ : G → R →+* R) (τ : G → F �
   exact hsep z fun n => (pow_dvd_pow t (Nat.le_succ n)).trans (key n)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro y hy; exact ⟨y, by simp, fun g => by simpa using hy g⟩`. Consider the case `succ n ih`. Introduce `y hy`. Establish `h2 : θ y = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `tate (-((n + 1 : ℕ) : ℤ)) _ (by omega) fun g => ?_` and prove the remaining obligations. Rewrite using `[zpow_neg, zpow_natCast, ← hθ, hy, map_mul, map_pow]`. Use `pow_ne_zero (n + 1) (hc g)` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Take `⟨v, hv⟩` from `hker y h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, hw'⟩` from `ih v fun g => by`. Establish `h` using `hy g`. Rewrite `h` using `[hv, map_mul, hσt]`. Establish `hc0 : c g ≠ 0` using `fun h0 => hc g (by rw [h0, map_zero])`. Apply `mul_left_cancel₀ (mul_ne_zero hc0 ht)` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨w, by rw [hv, hw]; ring, hw'⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components.
 -/
 theorem eigen_eq (θ : R →+* F) (σ : G → R →+* R) (τ : G → F →+* F) (c : G → R) (t : R) (ht : t ≠ 0)
     (hker : ∀ y, θ y = 0 → t ∣ y) (hc : ∀ g, θ (c g) ≠ 0)
@@ -93,7 +93,7 @@ end Abstract
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.RingIface.tower, C.j_cris.on0, aDp, RingHom.comp_apply, SubalgebraClass.coe_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem j_alg (C : Core l) (a : Per.Ainf l) :
     C.j (algebraMap (Per.Ainf l) (Per.Acris l) a) = aDp l a := by
@@ -103,29 +103,29 @@ set_option allowUnsafeReducibility true in
 attribute [local irreducible] Per.Acris Per.Bcris
 
 /- English proof (translation)
-Establish `he` using `GlobalTheory.MemLoc.core_isEps l C`. Take `⟨hdom, hinj, -, hfrac⟩` from `GlobalTheory.T.bdRPlus_isDomain_bdR_isField l`. Take `⟨hfil, hreg, hcompl, -⟩` from `GlobalTheory.T.bdRPlus_filtration_eq_fontaineXi_pow l C.ε he`. Take `⟨-, hker, hunit, -, hθ⟩` from `GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l`. Take `⟨-, ht1, ht2, -⟩` from `GlobalTheory.T.fontaine_t_isUnit_bcris_and_uniformizer_bdRPlus l C`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, hoσ⟩` from `GlobalTheory.T.bdRPlus_simple_roots_section_unique_equivariant l C.o C.o_sec`. Take `⟨-, hjσ, -⟩` from `GlobalTheory.T.canonicalAcrisToBdRPlus_unique_equivariant_approx l C.j C.j_cris`. Establish `hσD` using `(GlobalTheory.MemLoc.ActLaws.act_laws l).2.2.2.2.2.2.2.2.2.1`. Establish `hact` using `GlobalTheory.T.acrisGaloisAction_fontaine_t_eq_cyclotomic l C`. Establish `htate` using `GlobalTheory.T.eq_zero_of_tateTwist_invariant_finiteExtension l C K`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hast` using `GlobalTheory.T.cLTate_invariants_finiteExtension_mem l K`. Generalize the expression as in `hx : aDp l (xi C.ε) = x at *`. Take `⟨n, y0, hy0⟩` from `hfrac C.ε he b`. Rewrite `hy0` using `[hx]`. Generalize the expression as in `htt : C.j C.t = t at *`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨u, hu⟩` from `(hfil 1 t).1 ht1`. Rewrite `hu` using `[pow_one]`. Establish `huu : IsUnit u`. Use `hunit u fun h0 => ht2 ?_` and prove the remaining obligations. Take `⟨v, hv⟩` from `(hfil 1 u).1 ((hker u).1 h0)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(hfil 2 t).2 ⟨v, by rw [hu, hv]; ring⟩`. Establish `ht0 : t ≠ 0` using `fun h0 => ht2 (h0 ▸ zero_mem _)`. Establish `htx : t ∣ x` using `by rw [hu]; exact huu.mul_right_dvd.2 dvd_rfl`. Establish `hxt : x ∣ t` using `⟨u, hu⟩`. Set `c : ↥(GK K) → Per.BdRp l` to `fun g => C.o (algebraMap ℚ_[l] (Om l) ((C.χ g.1 : ℤ_[l]) : ℚ_[l]))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hθc : ∀ g, Per.θD l (c g) = algebraMap ℚ_[l] ℂ_[l] ((C.χ g.1 : ℤ_[l]) : ℚ_[l])` using `fun g => (C.o_sec.th _).trans rfl`. Establish `hc : ∀ g, Per.θD l (c g) ≠ 0` using `fun g => by`. Rewrite using `[hθc, map_ne_zero]`. Conclude with `fun h => (C.χ g.1).ne_zero (PadicInt.coe_eq_zero.1 h)`. Establish `hσt : ∀ g : ↥(GK K), Per.σDp g.1 t = c g * t` using `fun g => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← htt, ← hjσ, hact, map_mul, j_alg, ← C.o_sec.z]`. Establish `hker' : ∀ y, Per.θD l y = 0 → t ∣ y` using `fun y hy => htx.trans (by simpa using (hfil 1 y).1 ((hker y).1 hy))`. Establish `hsep : ∀ y : Per.BdRp l, (∀ n : ℕ, t ^ n ∣ y) → y = 0` using `fun y hy => by`. Use `hcompl.toIsHausdorff.haus y fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(pow_dvd_pow_of_dvd hxt n).trans (hy n)`. Establish `tate : ∀ (i : ℤ) (x : ℂ_[l]), i ≠ 0 → (∀ g : ↥(GK K), Per.σC g.1 x * Per.θD l (c g) ^ i = x) → x = 0` using `fun i x hi h => htate i x hi fun g hg => by simpa only [hθc] using h ⟨g, hg⟩`. Establish `hy : b * algebraMap (Per.BdRp l) (Per.BdR l) t ^ n = algebraMap (Per.BdRp l) (Per.BdR l) (y0 * u ^ n)`. Rewrite using `[hu, map_mul, map_mul, map_pow, ← hy0]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `y0 * u ^ n = y at hy`. Establish `hyσ : ∀ g : ↥(GK K), Per.σDp g.1 y = c g ^ n * y` using `fun g => by`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← hσD, ← hy, map_mul, map_pow, hσD, hσt, hb g.1 g.2, map_mul, map_mul, map_pow, ← hy]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, hw'⟩` from `eigen_eq (Per.θD l) (fun g : ↥(GK K) => Per.σDp g.1) (fun g => Per.σC g.1) c t ht0 hker' hc (fun g y => hθ g.1 y) hσt tate n y hyσ`. Take `⟨k, hk, hkθ⟩` from `hast (Per.θD l w) fun g hg => by rw [← hθ, hw' ⟨g, hg⟩]`. Establish `hz : w - C.o k = 0`. Use `inv_ker_eq_zero (Per.θD l) (fun g : ↥(GK K) => Per.σDp g.1) (fun g => Per.σC g.1) c t ht0 hker' hsep (fun g y => hθ g.1 y) hσt tate _ ?_ fun g => ?_` and prove the remaining obligations. Rewrite using `[map_sub, C.o_sec.th, hkθ, sub_self]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : g.1 k = k` using `g.2 ⟨k, hk⟩`. Rewrite using `[map_sub, hw' g, hoσ, hg]`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero.1 hz]`. Use `haveI : IsDomain (Per.BdR l) := (GlobalTheory.T.bdRPlus_isDomain_bdR_isField l).2.2.1.isDomain`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `ht' : algebraMap (Per.BdRp l) (Per.BdR l) t ^ n ≠ 0` using `pow_ne_zero n ((map_ne_zero_iff _ hinj).2 ht0)`. Apply `mul_right_cancel₀ ht'` to reduce the goal to its premises. Rewrite using `[hy, hw, map_mul, map_pow, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem invariants_BdR (l : ℕ) [Fact l.Prime] (C : Core l) (K : FinExt l) (b : Per.BdR l)
     (hb : ∀ g ∈ GK K, Per.σD g b = b) :

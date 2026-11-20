@@ -18,9 +18,7 @@ noncomputable section
 namespace GlobalTheory.FlagCls.Lift
 
 /- English proof (translation)
-Consider the cases of `dual`. Conclude with `hd`. Use `show IsUnit ((Matrix.transpose d⁻¹).submatrix Fin.revPerm id).det`. Rewrite using `[Matrix.det_permute, Matrix.det_transpose]`. Use `IsUnit.mul ?_ (Matrix.isUnit_nonsing_inv_det d hd)` and prove the remaining obligations.
-
-Conclude with `(Units.isUnit (Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin r)))).map (Int.castRingHom K)`.
+Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isUnit_det_lieMat (dual : Bool) {r : ℕ} {K : Type} [CommRing K] {d : Matrix (Fin r) (Fin r) K}
     (hd : IsUnit d.det) : IsUnit (lieMat dual d).det := by
@@ -32,9 +30,9 @@ theorem isUnit_det_lieMat (dual : Bool) {r : ℕ} {K : Type} [CommRing K] {d : M
     exact (Units.isUnit (Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin r)))).map (Int.castRingHom K)
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Use `choose d hd using fun i => (hu.2 (g.v τ i) ⟨g.tan τ i, g.eig τ i⟩).exists`. Use `choose d' hd' using fun i => (g.basis τ (u i) (hu.1 i).1 (hu.1 i).2).exists`. Use `⟨Matrix.of d, ?_, hd⟩` and prove the remaining obligations. Use `Matrix.isUnit_det_of_left_inverse (B := Matrix.of d') (Matrix.ext fun i j => ?_)` and prove the remaining obligations.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `isCombAtG_mul Z.t x (fun a => (hu.1 a).1) (g.tan τ) (hu.1 i).1 (Matrix.of fun a k => d k a) (d' i) hd (hd' i)`. Establish `h2` using `congrFun ((hu.2 _ (hu.1 i)).unique h1 (isCombAtG_single Z.t x (fun a => (hu.1 a).1) i)) j`. Rewrite `*` using `[Matrix.mul_apply, Matrix.one_apply, Pi.single_apply]`. Simplify using `only [Matrix.of_apply] at h2 ⊢`. Simplify using `only [mul_comm (d' i _), h2, eq_comm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coord {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
@@ -55,13 +53,11 @@ theorem exists_coord {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Rec
   simp only [mul_comm (d' i _), h2, eq_comm]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ e ι rk emb dual hr Bs Bg Y M hM jB πB u π fl hL hfl K _ xb χ x g hx hχ`. Substitute `hx` using the available equality. Use `choose V f hV hf using fun a => hM a ((xb ≫ jB) default)`. Establish `hxV : ∀ a, ⊤ ≤ (xb ≫ jB) ⁻¹ᵁ V a` using `fun a p _ => by`. Rewrite using `[Subsingleton.elim p default]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hV a`. Establish `hψ : xb ≫ πB ≫ genStr Z ≫ spMap e.toRingHom = spMap (χ.comp e.toRingHom)`. Rewrite using `[← Category.assoc πB, ← Category.assoc xb, hχ, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hχ' : (χ.comp e.toRingHom).comp e.symm.toRingHom = χ` using `RingHom.ext fun a => by simp`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb` using `fun a => (hL a).1 (V a) (f a) (hf a) K xb (hxV a) _ hψ`. Rewrite `hb` using `[hχ']`. Use `choose d hd hc using fun a => exists_coord Z g (hr a) (hb a)`. Use `choose fl' hfl' using fun a => GlobalTheory.T.exists_flag_of_invertible_matrix Bs (M a) (rk a) (hM a) (V a) (f a) (hf a) K (xb ≫ jB) (hxV a) _ (isUnit_det_lieMat (dual a) (hd a))`. Take `⟨y, ⟨w, hy⟩, huq⟩` from `hfl (Sp K) (xb ≫ jB) fl'`.
-
-Use `⟨y, ⟨w, rfl, hχ, fun a => ?_⟩, fun y' hy' => huq y' ⟨hy'.1, fun a => ?_⟩⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.toroidal_flag_bundle_rank_dual E H Dw l Xo c Oz β Z F e (rk a) (emb a) (dual a) Bs Bg Y (M a) (hM a) jB πB (u a) π (fl a) (hL a) K y xb χ w hχ _ (V a) (f a) (hf a) (hxV a) (d a) (hd a) (hc a) (GlobalTheory.T.flag_matrix_step_isomorphism Bs Y (M a) (rk a) (hM a) π ( …`. Conclude with `GlobalTheory.T.flag_matrix_transport_fibre Bs Y (M a) (rk a) (hM a) π (fl a) (V a) (f a) (hf a) K (xb ≫ jB) (hxV a) (fl' a) _ (hfl' a) y' hy'.1 (hy'.2.2.2 a (V a) (f a) (hf a) (hxV a) (d a) (hc a))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem existsUnique_bears : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (Oz : Type) [CommRing Oz] (β : Oz →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (ι : Type) (rk : ι → ℕ) (emb : ι → (E →+* ℂ)) (dual : ι → Bool) (hr : ∀ a, rk a = Dw.mult (emb a)) (Bs Bg Y : Scheme.{0}) (M : ι → Bs.Modules) (hM : ∀ a, IsVB (M a) (rk a)) (jB : Bg ⟶ Bs) (πB : Bg ⟶ gen Z) (u : ∀ a, FrAssign Z (M a) (rk a) jB) (π : Y ⟶ Bs) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (M a)) (rk a)), (∀ a, IsLieFrames Z e jB πB (M a) (rk a) (emb a) (dual a) (u a)) → IsFlagBundle π M rk fl → ∀ (K : Type) [Field K] (xb : Sp K ⟶ Bg) (χ : c.F →+* K) (x : Sp K ⟶ Z.X) (g : EigFrame Z χ x), x = xb ≫ πB ≫ genι Z → xb ≫ πB ≫ genStr Z = spMap χ → ∃! y : Sp K ⟶ Y, Bears Z emb dual hr hM jB πB u π fl y xb g := by
   intro E _ _ _ H Dw l Xo c Oz _ β Z F _ e ι rk emb dual hr Bs Bg Y M hM jB πB u π fl hL hfl K _ xb χ x g hx hχ

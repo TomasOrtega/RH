@@ -38,9 +38,7 @@ theorem posPart_evalZ (β : LinearMap.BilinForm ℤ X) : (posPart φ).evalZ β =
 variable {φ}
 
 /- English proof (translation)
-Take `⟨N, ℓ, hN, h1, h2, h3⟩` from `h`. Use `⟨N, ℓ, hN, fun i => by rw [← he _ (hm i) (hn i)]; exact h1 i, fun β hβ hp => ?_, fun β hβ hp hq => ?_⟩` and prove the remaining obligations. Rewrite using `[← he β hβ hp]`. Conclude with `h2 β hβ hp`. Rewrite `hq` using `[← he β hβ hp]`.
-
-Conclude with `h3 β hβ hp hq`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isStrict_congr (bar : O → O) {φ₁ φ₂ : InvFun O} {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X}
     (he : ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → φ₁.evalZ β = φ₂.evalZ β)
@@ -58,21 +56,21 @@ variable {O : Type} [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finit
   {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X]
 
 /- English proof (translation)
-Rewrite using `[posPart_evalZ, max_eq_left (hF.evalZ_nonneg hβ hp)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evalZ_posPart_eq (hF : IsPolFanOn bar φ X) {β : LinearMap.BilinForm ℤ X} (hβ : β ∈ balForms bar X)
     (hp : ∀ y, 0 ≤ β y y) : (posPart φ).evalZ β = φ.evalZ β := by
   rw [posPart_evalZ, max_eq_left (hF.evalZ_nonneg hβ hp)]
 
 /- English proof (translation)
-Rewrite using `[posPart_evalR, max_eq_left (hF.evalR_nonneg hB)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evalR_posPart_eq (hF : IsPolFanOn bar φ X) {B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ} (hB : B ∈ psdCone bar X) :
     evalR (posPart φ) B = evalR φ B := by
   rw [posPart_evalR, max_eq_left (hF.evalR_nonneg hB)]
 
 /- English proof (translation)
-Rewrite using `[linearOn_iff, linearOn_iff]`. Use `forall₂_congr fun c hc => ?_` and prove the remaining obligations. Rewrite using `[evalR_posPart_eq hF (ConeSub.sum_smul_toReal_mem_psdCone O bar X m γ c hm hn hc)]`. Simplify using `only [evalZ_posPart_eq hF (hm _) (hn _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem linearOn_posPart_iff (hF : IsPolFanOn bar φ X) {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X}
     (hm : ∀ i, γ i ∈ balForms bar X) (hn : ∀ i y, 0 ≤ γ i y y) : (posPart φ).LinearOn γ ↔ φ.LinearOn γ := by
@@ -82,9 +80,9 @@ theorem linearOn_posPart_iff (hF : IsPolFanOn bar φ X) {m : ℕ} {γ : Fin m �
   simp only [evalZ_posPart_eq hF (hm _) (hn _)]
 
 /- English proof (translation)
-Establish `he : ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → (posPart φ).evalZ β = φ.evalZ β` using `fun β hβ hp => evalZ_posPart_eq hF hβ hp`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨h.mem, h.nonneg, h.basis, (linearOn_posPart_iff hF h.mem h.nonneg).1 h.linear, isStrict_congr bar he h.mem h.nonneg h.strict⟩`. Introduce `h`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨h.mem, h.nonneg, h.basis, (linearOn_posPart_iff hF h.mem h.nonneg).2 h.linear, isStrict_congr bar (fun β hβ hp => (he β hβ hp).symm) h.mem h.nonneg h.strict⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCone_posPart_iff (hF : IsPolFanOn bar φ X) {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X} :
     IsCone bar (posPart φ) γ ↔ IsCone bar φ γ := by
@@ -99,11 +97,9 @@ theorem isCone_posPart_iff (hF : IsPolFanOn bar φ X) {m : ℕ} {γ : Fin m → 
       isStrict_congr bar (fun β hβ hp => (he β hβ hp).symm) h.mem h.nonneg h.strict⟩
 
 /- English proof (translation)
-Rewrite using `[evalR_posPart_eq hF hB, evalR_posPart_eq hF (smul_mem_psdCone hB ht)]`. Conclude with `hF.homog B hB t ht`. Use `superadd B hB B' hB' := by`. Rewrite using `[evalR_posPart_eq hF hB, evalR_posPart_eq hF hB', posPart_evalR]`. Conclude with `(hF.superadd B hB B' hB').trans (le_max_left _ _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `integral β hβ hp := by rw [evalZ_posPart_eq hF hβ hp]; exact hF.integral β hβ hp`. Use `pos β hβ hp h0 := by rw [evalZ_posPart_eq hF hβ hp]; exact hF.pos β hβ hp h0`. Use `face m m' γ s hγ := (isCone_posPart_iff hF).2 (hF.face m m' γ s ((isCone_posPart_iff hF).1 hγ))`. Use `cover B hB := by`. Take `⟨m, γ, c, hγ, hc, e⟩` from `hF.cover B hB`.
-
-Conclude with `⟨m, γ, c, (isCone_posPart_iff hF).2 hγ, hc, e⟩`. Use `finite := by`. Take `⟨S, hS, h⟩` from `hF.finite`. Conclude with `⟨S, hS, fun m γ hγ => h m γ ((isCone_posPart_iff hF).1 hγ)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isPolFanOn_posPart (hF : IsPolFanOn bar φ X) : IsPolFanOn bar (posPart φ) X where
   homog B hB t ht := by
@@ -125,9 +121,9 @@ theorem isPolFanOn_posPart (hF : IsPolFanOn bar φ X) : IsPolFanOn bar (posPart 
 end Fan
 
 /- English proof (translation)
-Introduce `E _ _ _ H q g φs 𝒩 hg hφs h𝒩`. Take `⟨φ', k1, k2, k3, k4, k5, k6⟩` from `exists_fine_invariant_fan H hφs hg 𝒩 fun N hN => h𝒩 N hN`. Use `⟨posPart φ', fun X _ _ _ _ hX => isPolFanOn_posPart (k1 X hX), fun X _ _ _ _ hX m γ hγ => k2 X hX m γ ((isCone_posPart_iff (k1 X hX)).1 hγ), fun σ hσ n B => ?_, fun X _ _ _ _ be hbe hp => ?_, ⟨fun n k B => ?_, fun n B => le_max_right _ _⟩, fun X _ _ _ _ hX m γ hγ => ?_⟩` and prove the remaining obligations. Use `show max _ 0 = max _ 0`. Rewrite using `[k3 σ hσ n B]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[posPart_evalZ]`. Conclude with `lt_max_of_lt_left (k4 X be hbe hp)`. Use `show max _ 0 = (k : ℝ) * max _ 0`. Rewrite using `[k5 n k B, mul_max_of_nonneg _ _ (Nat.cast_nonneg k), mul_zero]`. Conclude with `k6 X hX m γ ((isCone_posPart_iff (k1 X hX)).1 hγ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem refineSt : RefineSt := by
   intro E _ _ _ H q g φs 𝒩 hg hφs h𝒩

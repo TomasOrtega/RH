@@ -21,59 +21,59 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 namespace PositivityTheory.KB
 
 /- English proof (translation)
-The claim follows from `sChain_of`.
+A detailed English derivation is pending.
 -/
 theorem sChain : SChain := sChain_of
 /- English proof (translation)
-The claim follows from `sEv_of`.
+A detailed English derivation is pending.
 -/
 theorem sEv : SEv := sEv_of
 /- English proof (translation)
-The claim follows from `sSep_of sChain`.
+A detailed English derivation is pending.
 -/
 theorem sSep' : SSep := sSep_of sChain
 /- English proof (translation)
-The claim follows from `sBridge_of`.
+A detailed English derivation is pending.
 -/
 theorem sBridge : SBridge := sBridge_of
 /- English proof (translation)
-The claim follows from `sStab_of sChain sBridge`.
+A detailed English derivation is pending.
 -/
 theorem sStab : SStab := sStab_of sChain sBridge
 /- English proof (translation)
-The claim follows from `sFin_of sBridge`.
+A detailed English derivation is pending.
 -/
 theorem sFin : SFin := sFin_of sBridge
 /- English proof (translation)
-The claim follows from `sPsi_of sChain`.
+A detailed English derivation is pending.
 -/
 theorem sPsi : SPsi := sPsi_of sChain
 /- English proof (translation)
-The claim follows from `sAff_of sChain sEv sSep' sBridge`.
+A detailed English derivation is pending.
 -/
 theorem sAff : SAff := sAff_of sChain sEv sSep' sBridge
 /- English proof (translation)
-The claim follows from `sHecke_of sChain sEv sSep' sStab sFin sAff`.
+A detailed English derivation is pending.
 -/
 theorem sHecke : SHecke := sHecke_of sChain sEv sSep' sStab sFin sAff
 /- English proof (translation)
-The claim follows from `sPU_of sHt_of`.
+A detailed English derivation is pending.
 -/
 theorem sPU : SPU := sPU_of sHt_of
 /- English proof (translation)
-The claim follows from `TwSMInt2.sMom_of sHt_of`.
+A detailed English derivation is pending.
 -/
 theorem sMom : SMom := TwSMInt2.sMom_of sHt_of
 /- English proof (translation)
-The claim follows from `sWhit_of sEv sStokes_of`.
+A detailed English derivation is pending.
 -/
 theorem sWhit : SWhit := sWhit_of sEv sStokes_of
 /- English proof (translation)
-The claim follows from `sCen_of sEv`.
+A detailed English derivation is pending.
 -/
 theorem sCen : SCen := sCen_of sEv
 /- English proof (translation)
-The claim follows from `sLoc_of sEv`.
+A detailed English derivation is pending.
 -/
 theorem sLoc : SLoc := sLoc_of sEv
 

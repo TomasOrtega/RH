@@ -4,11 +4,11 @@ import Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.PairedSqu
 namespace Formalism.L2.Th1.G
 
 /- English proof (translation)
-The claim follows from `integral_unramified_holds`.
+A detailed English derivation is pending.
 -/
 theorem intUnram : IntUnram := integral_unramified_holds
 /- English proof (translation)
-The claim follows from `curve_jets_unramified_holds`.
+A detailed English derivation is pending.
 -/
 theorem curveJetsUnramThm : CurveJetsUnram := curve_jets_unramified_holds
 

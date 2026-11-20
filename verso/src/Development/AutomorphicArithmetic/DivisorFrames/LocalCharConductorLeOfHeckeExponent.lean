@@ -11,13 +11,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Spc Model Ch
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `D ν νH h v τ c hc`. Use `⟨fun x hx => ?_, fun hn => ?_⟩` and prove the remaining obligations. Establish `h1 : Valued.v (x : Fv D.host.F v) = 1` using `(GlobalTheory.FlipMatch.isEquiv_Fv v).eq_one_iff_eq_one.1 hx.1`. Establish `h2 : Valued.v ((x : Fv D.host.F v) - 1) ≤ WithZero.exp (-(c : ℤ))`. Use `((GlobalTheory.FlipMatch.isEquiv_Fv v _ _).1 hx.2).trans_eq ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.val_pow_eq_pow_val, map_pow, GlobalTheory.ChrWUnif.valued_unifAt, ← WithZero.exp_nsmul]`. Simplify using the standard rewrite rules. Establish `h3` using `(hc c).2 le_rfl (Units.map (complMap (splitPrime_under τ)).toMonoidHom x) ((SplitTie.valued_complMap τ (splitPrime_under τ) _).trans h1) (by`. Use `le_of_eq_of_le ?_ h2` and prove the remaining obligations. Rewrite using `[← SplitTie.valued_complMap τ (splitPrime_under τ), RingHom.map_sub, RingHom.map_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl)`. Rewrite `h3` using `[← locChar_eq_of_chrEq h]`. Conclude with `h3`. Assume the negation of the conclusion as `h0`. Apply `hn` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[unrAt_iff_of_chrEq h]`. Introduce `x hx`. Use `(hc 0).2 (by omega) x hx ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_zero, neg_zero, WithZero.exp_zero]`. Conclude with `Valuation.map_sub_le _ (le_of_eq hx) (le_of_eq (map_one _))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.localChar_conductor_le_of_heckeExponent :
     ∀ (D : D7) (ν : (AE D)ˣ →* Circle) (νH : Formalism.L2.Host.HChar D.host.E), ChrEq ν νH →

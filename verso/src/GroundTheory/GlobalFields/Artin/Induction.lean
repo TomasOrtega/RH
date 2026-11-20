@@ -15,7 +15,7 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
 omit [NumberField K] [NumberField L] [IsGalois K L] in
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.ext_iff, Ideal.liesOver_iff, HeightOneSpectrum.under_asIdeal, eq_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem under_eq_iff_liesOver (v : HeightOneSpectrum (𝓞 K))
     (u : HeightOneSpectrum (𝓞 (fixedField H))) :
@@ -25,9 +25,9 @@ theorem under_eq_iff_liesOver (v : HeightOneSpectrum (𝓞 K))
 open Classical in
 
 /- English proof (translation)
-Use `set w := placeAbove (L := L) v`. Set `E` to `(subfieldPlaceEquiv H v w).trans (Equiv.subtypeEquivRight (under_eq_iff_liesOver H v)).symm`. Rewrite using `[← E.tsum_eq, tsum_fintype]`. Use `Finset.sum_congr rfl fun q _ ↦ ?_` and prove the remaining obligations. Use `congr 1`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((subfieldPlaceEquiv H v w q : HeightOneSpectrum (𝓞 (fixedField H)))) = _`. Establish `h` using `subfieldPlaceEquiv_mk H v w q.out`. Rewrite `h` using `[DoubleCoset.out_eq']`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_under_eq_sum (v : HeightOneSpectrum (𝓞 K))
     (g : HeightOneSpectrum (𝓞 (fixedField H)) → ℂ) :
@@ -49,9 +49,9 @@ theorem tsum_under_eq_sum (v : HeightOneSpectrum (𝓞 K))
 open Classical in
 
 /- English proof (translation)
-Establish `hg : Summable (artinLocalLog (fixedField H) L (fixedFieldFun H f) s)` using `(hasSum_artinLocalLog_artinLogL (fixedFieldFun H f) hs).summable`. Set `e` to `Equiv.sigmaFiberEquiv fun u : HeightOneSpectrum (𝓞 (fixedField H)) ↦ u.under (𝓞 K)`. Establish `hge : Summable fun p ↦ artinLocalLog (fixedField H) L (fixedFieldFun H f) s (e p)` using `(e.summable_iff).2 hg`. Rewrite using `[artinLogL, artinLogL, ← e.tsum_eq, hge.tsum_sigma]`. Use `tsum_congr fun v ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[artinLocalLog_indFun H hf hs v]`. Conclude with `(tsum_under_eq_sum H v (artinLocalLog (fixedField H) L (fixedFieldFun H f) s)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem artinLogL_indFun [Fintype Gal(L/K)] [Fintype H] {f : H → ℂ} (hf : IsClassFun f) {s : ℂ}
     (hs : 1 < s.re) :
@@ -67,7 +67,7 @@ theorem artinLogL_indFun [Fintype Gal(L/K)] [Fintype H] {f : H → ℂ} (hf : Is
   exact (tsum_under_eq_sum H v (artinLocalLog (fixedField H) L (fixedFieldFun H f) s)).symm
 
 /- English proof (translation)
-Rewrite using `[artinL, artinL, artinLogL_indFun H hf hs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem artinL_indFun [Fintype Gal(L/K)] [Fintype H] {f : H → ℂ} (hf : IsClassFun f) {s : ℂ}
     (hs : 1 < s.re) :

@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.CovNFormulaPf
 
 /- English proof (translation)
-Use `Measure.pi_eq fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Measure.coe_nnreal_smul_apply, Measure.pi_pi]`. Simplify using `only [Measure.coe_nnreal_smul_apply, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, ENNReal.coe_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pi_const_smul' {ι : Type} [Fintype ι] {α : Type} [MeasurableSpace α] (μ : Measure α) [SigmaFinite μ]
     (c : NNReal) :
@@ -22,15 +22,15 @@ theorem pi_const_smul' {ι : Type} [Fintype ι] {α : Type} [MeasurableSpace α]
     ENNReal.coe_pow]
 
 /- English proof (translation)
-Introduce `D X Y θ C u hθ`. Use `haveI : SigmaFinite (haarLie (Formalism.QuantumDeterminants.Nset D.R.k D.R.rS) 1) := (GlobalTheory.haarLie_isHaarOn_Nset D.R.k D.R.rS 1 one_pos ENNReal.one_lt_top).1`. Establish `hI` using `GlobalTheory.T.transportedFundDomain_volume_classical D X Y θ C u`. Use `set v2 : ℝ := 2 * D.host.v with hv2`. Establish `hv : 0 < v2` using `lt_of_lt_of_le one_pos (Formalism.L2.SG.Pf.LoopBCovN.rdE_ge_one D)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set t : ℝ := v2 ^ (-((D.R.rS : ℝ) * D.R.k)) * θ with ht`. Establish `ht0 : 0 ≤ t` using `by positivity`. Establish `hk : kapN D θ = ((Real.toNNReal t : NNReal) : ℝ≥0∞)` using `rfl`. Establish `hmu : muNB D θ = (Real.toNNReal t) • haarLie (Formalism.QuantumDeterminants.Nset D.R.k D.R.rS) 1`. Establish `e : ∀ κ : ℝ≥0∞, haarLie (Formalism.QuantumDeterminants.Nset D.R.k D.R.rS) κ = κ • haarLie (Formalism.QuantumDeterminants.Nset D.R.k D.R.rS) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Introduce `κ`. Simplify using `[haarLie]`. Unfold `muNB`. Rewrite using `[hk, e]`. Use extensionality with `s _`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.coe_nnreal_smul_apply, Measure.smul_apply, smul_eq_mul]`. Unfold `Formalism.L2.SG.LoopTerm.covN Formalism.L2.SG.LoopTerm.dnB`. Rewrite using `[hmu, pi_const_smul', Measure.coe_nnreal_smul_apply, ENNReal.toReal_mul, ENNReal.coe_toReal, NNReal.coe_pow, Real.coe_toNNReal _ ht0]`. Unfold `Formalism.L2.SG.LoopTerm.trInf`. Rewrite using `[hI, Real.rpow_mul_natCast hv.le, ← mul_pow, ht]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Unfold `Formalism.L2.SG.Pf.LoopBCovN.eN`. Rewrite using `[mul_comm _ θ, mul_assoc, ← Real.rpow_add hv]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main : Formalism.L2.SG.Pf.LoopBCovN.CovNFormula := by
   intro D X Y θ C u hθ

@@ -24,7 +24,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {n : ℕ}
 include hs
 
 /- English proof (translation)
-Establish `e` using `((TorusModel.isAdd_iff _ _ _).1 (hs.2.1 T 1 1)).2 χ y J hJ`. Establish `C : IsCub (th D (T` using `T) y J) := isCub_cubV D.cub hJ`. Rewrite `e` using `[_root_.mul_one, hs.1, one_pow, C.face₃, _root_.mul_one]`. Conclude with `(mul_eq_left.1 e.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cv_one (T : Over (Sp R)) (χ : D.X) {y : T.left} {J} (hJ : Good D.P.L y J) : cv (s T 1) χ y J = 1 := by
   have e := ((TorusModel.isAdd_iff _ _ _).1 (hs.2.1 T 1 1)).2 χ y J hJ
@@ -33,7 +33,7 @@ theorem cv_one (T : Over (Sp R)) (χ : D.X) {y : T.left} {J} (hJ : Good D.P.L y 
   exact (mul_eq_left.1 e.symm)
 
 /- English proof (translation)
-Establish `e` using `hs.2.2 D.P.A T b (𝟙 _)`. Rewrite `e` using `[Category.comp_id]`. Conclude with `(val_corr hJ (e.2 χ) r).trans (val_pull hJ _ _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_univ {T : Over (Sp R)} (b : T ⟶ D.P.A) (χ : D.X) {Z : Scheme.{0}} (r : Z ⟶ T.left) {z : Z} {J}
     (hJ : Good D.P.L z J) : val ((s T b).s χ) r z J = val ((s D.P.A (𝟙 _)).s χ) (r ≫ b.left) z J := by
@@ -42,7 +42,7 @@ theorem val_univ {T : Over (Sp R)} (b : T ⟶ D.P.A) (χ : D.X) {Z : Scheme.{0}}
   exact (val_corr hJ (e.2 χ) r).trans (val_pull hJ _ _ _)
 
 /- English proof (translation)
-Establish `e` using `val_univ hs (1 : T ⟶ D.P.A) χ (𝟙 _) hJ`. Rewrite `e` using `[Category.id_comp]`. Conclude with `e.symm.trans (cv_one hs T χ hJ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_univ_one (T : Over (Sp R)) (χ : D.X) {y : T.left} {J} (hJ : Good D.P.L y J) :
     val ((s D.P.A (𝟙 _)).s χ) (1 : T ⟶ D.P.A).left y J = 1 := by
@@ -51,9 +51,9 @@ theorem val_univ_one (T : Over (Sp R)) (χ : D.X) {y : T.left} {J} (hJ : Good D.
   exact e.symm.trans (cv_one hs T χ hJ)
 
 /- English proof (translation)
-Set `o : Over.mk (𝟙 (Sp R)) ⟶ epsR R` to `Over.homMk (spMap (TrivSqZeroExt.fstHom R R R).toRingHom) ((spMap_comp _ _).symm.trans ((congrArg spMap (RingHom.ext fun _ => rfl)).trans (Spec.map_id (CommRingCat.of R))))`. Establish `ho : o ≫ v = 1` using `Over.OverMorphism.ext (hv.trans (Category.id_comp _).symm)`. Establish `e` using `hs.2.2 _ _ o v`. Rewrite `e` using `[ho]`. Use `⟨s _ 1, ⟨(hs.1 _ _).trans (one_pow n), fun χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩, e⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(cv_one hs _ χ hJ).trans (val_one _).symm`.
+A detailed English derivation is pending.
 -/
 theorem gtTanR_split {v : epsR R ⟶ D.P.A} (hv : IsTangent v) : GtTanR (s (epsR R) v) := by
   let o : Over.mk (𝟙 (Sp R)) ⟶ epsR R := Over.homMk (spMap (TrivSqZeroExt.fstHom R R R).toRingHom)
@@ -75,13 +75,13 @@ variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {f 
   {s₁ : ∀ T : Over (Sp R'), (T ⟶ D₁.P.A) → GtPt D₁ T}
 
 /- English proof (translation)
-Establish `gp` using `pull_grp p`. Take `⟨g, hg⟩` from `ConstPoint.exists_gtPt_through hG gp p.w_gen p.xe.toAddMonoidHom p.c_pr (T := D₀.P.A) (T' := D₁.P.A) (prj p) gp.1.w (s₀ D₀.P.A (𝟙 _))`. Set `ρ : Over.mk (D₁.P.A.hom ≫ spMap f) ⟶ D₀.P.A` to `Over.homMk (prj p) gp.1.w`. Establish `hρ : pushHom gp D₁.P.A (𝟙 _) = ρ` using `Over.OverMorphism.ext (Category.id_comp _)`. Establish `r₁ : pushHom gp D₁.P.A g.b = ρ ≫ (s₀ D₀.P.A (𝟙 _)).b` using `Over.OverMorphism.ext ((hg 0).1 2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : g.b = (s₁ D₁.P.A (𝟙 _)).b` using `ConstGrp.push_injective gp _ (by`. Rewrite using `[r₁, h₀.1, h₁.1, map_pow, hρ, MonObj.comp_pow, Category.comp_id])`. Establish `he : (1 : 𝟙_ (Over (Sp R')) ⟶ D₁.P.A).left ≫ D₁.P.A.hom = 𝟙 _` using `Over.w _`. Establish `key` using `gen_unique' D₁.P.isLB (u := g.s χ) (u' := (s₁ D₁.P.A (𝟙 _)).s χ) (fun U _ k => by rw [hb]) D₁.P.A.hom _ he (hG _ _ D₁.P.isAb).2 (g.isGen χ) ((s₁ D₁.P.A (𝟙 _)).isGen χ) (fun y J' hJ' => by`. Take `⟨J, hJ⟩` from `TorusCoord.exists_good' D₀.P.isLB y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `v` using `(hg χ).2 _ (1 : 𝟙_ (Over (Sp R')) ⟶ D₁.P.A).left y J J' hJ hJ'`. Establish `o : (1 : 𝟙_ (Over (Sp R')) ⟶ D₁.P.A).left ≫ prj p = (1 : Over.mk ((𝟙_ (Over (Sp R'))).hom ≫ spMap f) ⟶ D₀.P.A).left` using `congrArg (fun q => q.left) (map_one (pushHom gp (𝟙_ (Over (Sp R')))))`. Establish `q` using `FormalPoint.prod_gtφT (1 : 𝟙_ (Over (Sp R')) ⟶ D₁.P.A) g.b χ (ConstFam.wVal p.w y J J')`. Rewrite `q` using `[hb, h₁.1, MonObj.comp_pow, Category.comp_id, one_pow, _root_.mul_one, inv_mul_cancel, _root_.one_mul, mul_inv_cancel, ← h₁.1, ← hb]`. Rewrite `v` using `[o, q, _root_.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `v.symm.trans ((val_univ_one h₀ (Over.mk ((𝟙_ (Over (Sp R'))).hom ≫ spMap f)) _ hJ).trans (val_univ_one h₁ _ χ hJ').symm))`. Use `⟨fun k => hb ▸ (hg χ).1 k, fun Z r z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Rewrite using `[← key Z r z J' hJ', ← hb]`. Conclude with `(hg χ).2 Z r z J J' hJ hJ'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem univ_corr (hG : GlobalFnsSt) (h₀ : IsSplit D₀ n s₀) (h₁ : IsSplit D₁ n s₁) (χ : D₁.X) :
     (∀ k, DegPre.gtφT D₁ D₁.P.A (s₁ D₁.P.A (𝟙 _)).b χ k ≫ prj p =
@@ -117,13 +117,13 @@ theorem univ_corr (hG : GlobalFnsSt) (h₀ : IsSplit D₀ n s₀) (h₁ : IsSpli
   exact (hg χ).2 Z r z J J' hJ hJ'
 
 /- English proof (translation)
-Establish `a₀ : ∀ x k, DegPre.gtφT D₀ _ (s₀ (epsR R) v).b x k = v.left ≫ DegPre.gtφT D₀ _ (s₀ D₀.P.A (𝟙 _)).b x k`. Introduce `x k`. Establish `e` using `(h₀.2.2 _ _ v (𝟙 _)).1`. Rewrite `e` using `[Category.comp_id]`. Rewrite using `[(TorusCoord.comp_eq_of_left _ (s₀ (epsR R) v).b v.left (𝟙 _) (e.symm.trans (Category.id_comp _).symm)).1 x k, Category.id_comp, TorusCoord.gtφT_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `a₁ : ∀ x k, DegPre.gtφT D₁ _ (s₁ (epsR R') v₁).b x k = v₁.left ≫ DegPre.gtφT D₁ _ (s₁ D₁.P.A (𝟙 _)).b x k`. Introduce `x k`. Establish `e` using `(h₁.2.2 _ _ v₁ (𝟙 _)).1`. Rewrite `e` using `[Category.comp_id]`. Rewrite using `[(TorusCoord.comp_eq_of_left _ (s₁ (epsR R') v₁).b v₁.left (𝟙 _) (e.symm.trans (Category.id_comp _).symm)).1 x k, Category.id_comp, TorusCoord.gtφT_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hψ : ∀ χ k, DegPre.gtφT D₁ _ (s₁ (epsR R') v₁).b χ k ≫ prj p = spMap (dualMap f) ≫ DegPre.gtφT D₀ _ (s₀ (epsR R) v).b (p.xe χ) k` using `fun χ k => by`. Rewrite using `[a₀, a₁, Category.assoc, (univ_corr p hG h₀ h₁ χ).1, ← Category.assoc, hv, Category.assoc]`. Use `(ArcQBC.letBC_iff p _ _).2 ⟨hψ 0 2, fun χ => ⟨hψ χ, ArcQBC.pmaps_of_val p.w_gen D₀.P.isLB D₁.P.isLB (hψ χ) ((s₁ _ v₁).isGen χ) ((s₀ _ v).isGen _) fun y J J' hJ hJ' => ?_⟩⟩` and prove the remaining obligations. Establish `e` using `(univ_corr p hG h₀ h₁ χ).2 _ v₁.left y J J' hJ hJ'`. Rewrite `e` using `[hv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(val_univ h₀ v _ _ hJ).trans ?_` and prove the remaining obligations. Rewrite using `[val_univ h₁ v₁ χ _ hJ']`. Simplify using `only [Category.id_comp, a₁]`. Conclude with `e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem letBC_split (hG : GlobalFnsSt) (h₀ : IsSplit D₀ n s₀) (h₁ : IsSplit D₁ n s₁) {v : epsR R ⟶ D₀.P.A}
     {v₁ : epsR R' ⟶ D₁.P.A} (hv : v₁.left ≫ prj p = spMap (dualMap f) ≫ v.left) :
@@ -155,7 +155,7 @@ theorem letBC_split (hG : GlobalFnsSt) (h₀ : IsSplit D₀ n s₀) (h₁ : IsSp
 end Two
 
 /- English proof (translation)
-Introduce `hK _ _ _ _ _ _ _ _ _ _ _ p _ _ _ _ h₀ h₁ _ _ hv` and use `⟨fun ht => gtTanR_split h₀ ht, letBC_split p hK.laws.globalFns h₀ h₁ hv⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem split_baseChange : Known → ∀ (R R' : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [CommRing R'] [IsDomain R'] [IsNoetherianRing R'] (f : R →+* R') (D₀ : Out.DegPre R) (D₁ : Out.DegPre R') (p : Out.IsPullDeg f D₀ D₁) (n : ℕ) (s₀ : ∀ T : Over (Sp R), (T ⟶ D₀.P.A) → Out.GtPt D₀ T) (s₁ : ∀ T : Over (Sp R'), (T ⟶ D₁.P.A) → Out.GtPt D₁ T), Function.Injective f → IsSplit D₀ n s₀ → IsSplit D₁ n s₁ → ∀ (v : epsR R ⟶ D₀.P.A) (v₁ : epsR R' ⟶ D₁.P.A), v₁.left ≫ prj p = spMap (dualMap f) ≫ v.left → (IsTangent v → GtTanR (s₀ (epsR R) v)) ∧ LetBC p (s₀ (epsR R) v) (s₁ (epsR R') v₁) :=
   fun hK _ _ _ _ _ _ _ _ _ _ _ p _ _ _ _ h₀ h₁ _ _ hv =>

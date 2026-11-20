@@ -16,7 +16,7 @@ def GenEtaleAtBot : Prop := ∀ {X P : Scheme.{0}} [IsIntegral X] [IsIntegral P]
     (letI := (π.app U).hom.toAlgebra; Algebra.IsEtaleAt Γ(P, U) (⊥ : Ideal Γ(X, π ⁻¹ᵁ U)))
 
 /- English proof (translation)
-Introduce `k _ _ X P _ _ p r π hπ hr hfin hsurj hun`. Take `⟨U, hU, hne, hU', hN, hf, hi⟩` from `h1 k p r π hπ hr hfin hsurj`. Conclude with `⟨U, hU, hne, hU', hN, hf, hi, h2 π U hU hne hU' hf hi hun⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GenAffineSetup_of (h1 : GenAffineData) (h2 : GenEtaleAtBot) : GenAffineSetup := by
   intro k _ _ X P _ _ p r π hπ hr hfin hsurj hun
@@ -24,7 +24,7 @@ theorem GenAffineSetup_of (h1 : GenAffineData) (h2 : GenEtaleAtBot) : GenAffineS
   exact ⟨U, hU, hne, hU', hN, hf, hi, h2 π U hU hne hU' hf hi hun⟩
 
 /- English proof (translation)
-The claim follows from `GenEtale_of (GenAffineSetup_of h1 h2) etaleOverBasic`.
+A detailed English derivation is pending.
 -/
 theorem GenEtale_of' (h1 : GenAffineData) (h2 : GenEtaleAtBot) : GenEtale :=
   GenEtale_of (GenAffineSetup_of h1 h2) etaleOverBasic

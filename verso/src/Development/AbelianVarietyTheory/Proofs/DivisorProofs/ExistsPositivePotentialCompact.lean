@@ -18,7 +18,7 @@ open scoped ContDiff ComplexOrder ENNReal Classical
 namespace GlobalTheory.KaehlerPot
 
 /- English proof (translation)
-Introduce `D A N j S κ s x σ _`. Establish `hP : IsProjOver (genStr s.T.Z)` using `ProjSpace.isProjOver_pullback_snd _ s.T.Z.proj`. Conclude with `GlobalTheory.FubiniStudyPot.exists_posPot _ _ _ (GlobalTheory.T.compact_projective_analytic _ _ _ _ _ (manifold s.T.Z σ) hP)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_posPot_finAtlas : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (x : ToroidalCompactificationData s) (σ : κ.c.F →+* ℂ) [CompactSpace (CxPts (genStr s.T.Z) σ)], ∃ α : LocPot (CxPts (genStr s.T.Z) σ), IsPotential (manifold s.T.Z σ).finAtlas α ∧ ReciprocityTheory.AnForm.M.IsPosPot (manifold s.T.Z σ).finAtlas α := by
   intro D A N j S κ s x σ _

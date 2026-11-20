@@ -11,11 +11,11 @@ open scoped CategoryTheory.Obj RatFunc
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Take `⟨hcomp, -, -, hloc, hext, -, -⟩` from `GlobalTheory.T.evalSectionAtRingPoint_spMap_comp_restrict_stalk`. Establish `hc : (spMap φ) (IsLocalRing.closedPoint R') = IsLocalRing.closedPoint R` using `IsLocalRing.comap_closedPoint φ`. Establish `hy : a (IsLocalRing.closedPoint R) = a' (IsLocalRing.closedPoint R)`. Use `congrArg (fun f : Sp R' ⟶ Y => f (IsLocalRing.closedPoint R')) h` as an intermediate fact. Conclude with `(congrArg a hc).symm.trans ((Scheme.Hom.comp_apply _ _ _).symm.trans (this.trans ((Scheme.Hom.comp_apply _ _ _).trans (congrArg a' hc))))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hyU, -⟩` from `exists_isAffineOpen_mem_and_subset (X := Y) (x := a (IsLocalRing.closedPoint R)) (U := ⊤) trivial`. Establish `h1 : ⊤ ≤ a ⁻¹ᵁ U` using `(hloc R Y a U).2 hyU`. Establish `h2 : ⊤ ≤ a' ⁻¹ᵁ U` using `(hloc R Y a' U).2 (hy ▸ hyU)`. Establish `h1' : ⊤ ≤ (spMap φ ≫ a) ⁻¹ᵁ U` using `(hloc R' Y _ U).2 (((Scheme.Hom.comp_apply _ _ _).trans (congrArg a hc)) ▸ hyU)`. Establish `h2' : ⊤ ≤ (spMap φ ≫ a') ⁻¹ᵁ U` using `h ▸ h1'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (b b' : Sp R' ⟶ Y) (_ : b = b') (hb : ⊤ ≤ b ⁻¹ᵁ U) (hb' : ⊤ ≤ b' ⁻¹ᵁ U), evAt b hb = evAt b' hb'`. Introduce and unpack `b _ rfl _ _`. Both sides reduce to the same expression. Use `hext R Y a a' U hU h1 h2 (RingHom.ext fun f => hφ ?_)` and prove the remaining obligations. Rewrite using `[← hcomp R R' Y φ a U h1 h1' f, ← hcomp R R' Y φ a' U h2 h2' f, key _ _ h h1' h2']`.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spec_localInjective_cancel_left (R R' : Type) [CommRing R] [CommRing R'] [IsLocalRing R] [IsLocalRing R']
     (φ : R →+* R') [IsLocalHom φ] (hφ : Function.Injective φ) (Y : Scheme.{0}) (a a' : Sp R ⟶ Y)
@@ -40,15 +40,15 @@ theorem spec_localInjective_cancel_left (R R' : Type) [CommRing R] [CommRing R']
   rw [← hcomp R R' Y φ a U h1 h1' f, ← hcomp R R' Y φ a' U h2 h2' f, key _ _ h h1' h2']
 
 /- English proof (translation)
-Set `d : Sp R ⟶ pullback p p` to `pullback.lift a a' hp`. Establish `e1 : a = d ≫ pullback.fst p p` using `(pullback.lift_fst _ _ _).symm`. Establish `e2 : a' = d ≫ pullback.snd p p` using `(pullback.lift_snd _ _ _).symm`. Set `i : pullback d (pullback.diagonal p) ⟶ Sp R` to `pullback.fst _ _`. Establish `hfac : spMap φ ≫ d = (spMap φ ≫ a) ≫ pullback.diagonal p`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, ← e1, Category.assoc, pullback.diagonal_fst, Category.comp_id]`. Rewrite using `[Category.assoc, ← e2, Category.assoc, pullback.diagonal_snd, Category.comp_id, h]`. Set `g : Sp R' ⟶ pullback d (pullback.diagonal p)` to `pullback.lift (spMap φ) (spMap φ ≫ a) hfac`. Establish `hg : g ≫ i = spMap φ` using `pullback.lift_fst _ _ _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : (spMap φ).appTop = (Scheme.ΓSpecIso _).hom ≫ CommRingCat.ofHom φ ≫ (Scheme.ΓSpecIso _).inv`. Rewrite using `[Scheme.ΓSpecIso_inv_naturality]`. Simplify using the standard rewrite rules. Establish `h2 : Function.Injective (spMap φ).appTop`. Rewrite using `[key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((Scheme.ΓSpecIso _).commRingCatIsoToRingEquiv.symm.injective.comp hφ).comp (Scheme.ΓSpecIso _).commRingCatIsoToRingEquiv.injective`. Establish `hinj : Function.Injective i.appTop`. Rewrite `h2` using `[← hg, Scheme.Hom.comp_appTop]`. Conclude with `Function.Injective.of_comp h2`. Establish `: IsIso i` using `IsClosedImmersion.isIso_of_injective_of_isAffine hinj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : d = inv i ≫ pullback.snd _ _ ≫ pullback.diagonal p`. Rewrite using `[← pullback.condition]`. Simplify using `[i]`. Rewrite using `[e1, e2, hd]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem spec_injective_cancel_left_of_separated (R R' : Type) [CommRing R] [CommRing R'] (φ : R →+* R') (hφ : Function.Injective φ)
     (S Y : Scheme.{0}) (p : Y ⟶ S) [IsSeparated p] (a a' : Sp R ⟶ Y) (hp : a ≫ p = a' ≫ p)
@@ -78,7 +78,7 @@ theorem spec_injective_cancel_left_of_separated (R R' : Type) [CommRing R] [Comm
   rw [e1, e2, hd]; simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun R R' _ _ _ _ φ _ hφ Y a a' h => spec_localInjective_cancel_left R R' φ hφ Y a a' h, fun R R' _ _ φ hφ S Y p _ a a' hp h => spec_injective_cancel_left_of_separated R R' φ hφ S Y p a a' hp h⟩`.
+Supply the required witnesses or components.
 -/
 theorem spMap_injective_cancel : (∀ (R R' : Type) [CommRing R] [CommRing R'] [IsLocalRing R] [IsLocalRing R'] (φ : R →+* R') [IsLocalHom φ], Function.Injective φ → ∀ (Y : Scheme.{0}) (a a' : Sp R ⟶ Y), spMap φ ≫ a = spMap φ ≫ a' → a = a') ∧ (∀ (R R' : Type) [CommRing R] [CommRing R'] (φ : R →+* R'), Function.Injective φ → ∀ (S Y : Scheme.{0}) (p : Y ⟶ S) [IsSeparated p] (a a' : Sp R ⟶ Y), a ≫ p = a' ≫ p → spMap φ ≫ a = spMap φ ≫ a' → a = a') :=
   ⟨fun R R' _ _ _ _ φ _ hφ Y a a' h => spec_localInjective_cancel_left R R' φ hφ Y a a' h,

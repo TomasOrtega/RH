@@ -2,17 +2,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open ValuativeRel Matrix GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.Z.Desc.V0
 
 /- English proof (translation)
-Establish `hne : (a : A ⧸ H) ≠ 0` using `fun h => ha ((QuotientAddGroup.eq_zero_iff _).1 h)`. Take `⟨χ, hχ⟩` from `CharacterModule.exists_character_apply_ne_zero_of_ne_zero hne`. Set `e : AddCircle (1 : ℚ) →+ AddCircle (1 : ℝ)` to `QuotientAddGroup.map _ _ (Rat.castHom ℝ).toAddMonoidHom (by`. Introduce and unpack `_ ⟨m, rfl⟩`. Conclude with `⟨m, by simp⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `he : ∀ b, e b = 0 → b = 0`. Introduce `b`. Proceed by induction on `b using QuotientAddGroup.induction_on with`. Consider the case `H q`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (((q : ℝ)) : AddCircle (1 : ℝ)) = 0` using `h`. Rewrite `h1`, the goal using `[AddCircle.coe_eq_zero_iff]`. Take `⟨m, hm⟩` from `h1`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `h2 : ((m : ℚ) : ℝ) = q` using `by simpa using hm`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : (m : ℚ) = q` using `by exact_mod_cast h2`. Simplify using `using h3`. Set `f : A →+ AddCircle (1 : ℝ)` to `e.comp (AddMonoidHom.comp (χ : A ⧸ H →+ AddCircle (1 : ℚ)) (QuotientAddGroup.mk' H))`. Set `ψ : AddChar A Circle` to `{ toFun := fun x => AddCircle.toCircle (f x) map_zero_eq_one' := by rw [map_zero, AddCircle.toCircle_zero] map_add_eq_mul' := fun x y => by rw [map_add, AddCircle.toCircle_add] }`. Use `⟨ψ, fun u hu => ?_, fun h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : f u = 0`. Establish `: QuotientAddGroup.mk' H u = 0` using `(QuotientAddGroup.eq_zero_iff _).2 hu`. Use `show e (χ (QuotientAddGroup.mk' H u)) = 0`. Rewrite using `[this, map_zero, map_zero]`. Use `show AddCircle.toCircle (f u) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h0, AddCircle.toCircle_zero]`. Establish `h2 : AddCircle.toCircle (f a) = AddCircle.toCircle (0 : AddCircle (1 : ℝ))`. Rewrite using `[AddCircle.toCircle_zero]`. Conclude with `h`. Conclude with `hχ (he _ (AddCircle.injective_toCircle (T := (1 : ℝ)) one_ne_zero h2))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sep_char {A : Type} [AddCommGroup A] (H : AddSubgroup A) {a : A} (ha : a ∉ H) :
     ∃ ψ : AddChar A Circle, (∀ u ∈ H, ψ u = 1) ∧ ψ a ≠ 1 := by
@@ -51,9 +51,9 @@ private theorem sep_char {A : Type} [AddCommGroup A] (H : AddSubgroup A) {a : A}
     exact hχ (he _ (AddCircle.injective_toCircle (T := (1 : ℝ)) one_ne_zero h2))
 
 /- English proof (translation)
-Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_exists_open _).2 fun x => ?_)` and prove the remaining obligations. Use `⟨(fun y => y - x) ⁻¹' (H : Set A), hH.preimage (continuous_id.sub continuous_const), ?_, ?_⟩` and prove the remaining obligations. Simplify using `[H.zero_mem]`. Introduce `y hy`. Establish `h1 : ψ (y - x) = 1` using `h _ hy`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : y = (y - x) + x` using `by abel`. Rewrite using `[h2, AddChar.map_add_eq_mul, h1, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cont_char {A : Type} [AddCommGroup A] [TopologicalSpace A] [IsTopologicalAddGroup A]
     (H : AddSubgroup A) (hH : IsOpen (H : Set A)) (ψ : AddChar A Circle) (h : ∀ u ∈ H, ψ u = 1) :
@@ -67,21 +67,19 @@ private theorem cont_char {A : Type} [AddCommGroup A] [TopologicalSpace A] [IsTo
     rw [h2, AddChar.map_add_eq_mul, h1, one_mul]
 
 /- English proof (translation)
-Introduce `k _ _ _ _`. Set `M : AddSubgroup k` to `{ carrier := {x | valuation k x < 1} zero_mem' := by simp add_mem' := fun {a b} ha hb => lt_of_le_of_lt ((valuation k).map_add a b) (max_lt ha hb) neg_mem' := fun {a} ha => by show valuation k (-a) < 1`. Rewrite using `[Valuation.map_neg]`. Conclude with `ha }`. Establish `hMo : IsOpen (M : Set k)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `IsValuativeTopology.isOpen_ball (R := k) (v := valuation k) 1`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Conclude with `((valuation k).restrict_lt_one_iff (x := x)).symm`. Establish `h1M : (1 : k) ∉ M`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h' : valuation k (1 : k) < 1` using `h`. Simplify using `at h'`. Take `⟨ψ, hψM, hψ1⟩` from `sep_char M h1M`. Establish `hres : ∀ y z : 𝒪[k], IsLocalRing.residue 𝒪[k] y = IsLocalRing.residue 𝒪[k] z → ψ (y : k) = ψ (z : k)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y z h`. Establish `h0 : IsLocalRing.residue 𝒪[k] (y - z) = 0` using `by rw [map_sub, h, sub_self]`. Establish `h1 : ψ ((y - z : 𝒪[k]) : k) = 1` using `hψM _ ((GlobalTheory.StepData.residue_eq_zero_iff_lt _).1 h0)`. Establish `h2 : (y : k) = ((y - z : 𝒪[k]) : k) + (z : k)` using `by push_cast; abel`. Rewrite using `[h2, AddChar.map_add_eq_mul, h1, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hsurj` using `IsLocalRing.residue_surjective (R := 𝒪[k])`. Set `σ : 𝓀[k] → 𝒪[k]` to `Function.surjInv hsurj`. Establish `hσ : ∀ c, IsLocalRing.residue 𝒪[k] (σ c) = c` using `Function.surjInv_eq hsurj`. Set `φ : AddChar 𝓀[k] Circle` to `{ toFun := fun c => ψ (σ c : k) map_zero_eq_one' := by`. Establish `: ψ (σ 0 : k) = ψ ((0 : 𝒪[k]) : k)` using `hres _ _ (by rw [hσ, map_zero])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Use the proof step `map_add_eq_mul' := fun c d => by`. Establish `: ψ (σ (c + d) : k) = ψ ((σ c + σ d : 𝒪[k]) : k)` using `hres _ _ (by rw [hσ, map_add, hσ, hσ])`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[AddChar.map_add_eq_mul] }`. Establish `hφ : ∀ y : 𝒪[k], ψ (y : k) = φ (IsLocalRing.residue 𝒪[k] y)` using `fun y => hres _ _ (hσ _).symm`. Use `⟨ψ, φ, ⟨cont_char M hMo ψ hψM, hψM, 1, by simp, hψ1⟩, fun h => hψ1 ?_, hφ⟩` and prove the remaining obligations. Establish `h2` using `hφ 1`.
-
-Rewrite `h2` using `[h]`. Simplify using `using h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_level_one_addChar_lifting_residue :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],

@@ -27,13 +27,13 @@ def chiM (M : Matrix ι ι F) (hM : IsUnit M.det) : ℝ≥0 :=
   addEquivAddHaarChar (phiM M hM)
 
 /- English proof (translation)
-Take `rfl : mF = borel (ι → F)` from `hB.measurable_eq`. Set `_ : MeasurableSpace (ι → F)` to `borel _`. Establish `_ : BorelSpace (ι → F)` using `⟨rfl⟩`. Establish `e : chiM M hM = addEquivAddHaarChar (phiM M hM)` using `rfl`. Establish `himg : (fun x => M *ᵥ x) '' S = (phiM M hM).symm ⁻¹' S`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `y`. Simplify using `only [Set.mem_image, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Establish `: (phiM M hM).symm ((phiM M hM) x) = x` using `(phiM M hM).symm_apply_apply x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[show M *ᵥ x = (phiM M hM) x from rfl, this]`. Conclude with `hx`. Introduce `hy`. Conclude with `⟨(phiM M hM).symm y, hy, (phiM M hM).apply_symm_apply y⟩`. Establish `key` using `addEquivAddHaarChar_smul_preimage ν (X := S) (phiM M hM).symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[addEquivAddHaarChar_symm, ENNReal.smul_def, smul_eq_mul]`. Rewrite using `[himg, e, ← key, ← mul_assoc, ← ENNReal.coe_mul, mul_inv_cancel₀ (addEquivAddHaarChar_pos (phiM M hM)).ne', ENNReal.coe_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiM_spec [mF : MeasurableSpace (ι → F)] [hB : BorelSpace (ι → F)] (M : Matrix ι ι F)
     (hM : IsUnit M.det) (ν : Measure (ι → F)) [ν.IsAddHaarMeasure] (S : Set (ι → F)) :
@@ -58,7 +58,7 @@ theorem chiM_spec [mF : MeasurableSpace (ι → F)] [hB : BorelSpace (ι → F)]
     mul_inv_cancel₀ (addEquivAddHaarChar_pos (phiM M hM)).ne', ENNReal.coe_one, one_mul]
 
 /- English proof (translation)
-Set `_ : MeasurableSpace (ι → F)` to `borel _`. Establish `_ : BorelSpace (ι → F)` using `⟨rfl⟩`. Establish `e : ∀ (N : Matrix ι ι F) (hN : IsUnit N.det), chiM N hN = addEquivAddHaarChar (phiM N hN)` using `fun _ _ => rfl`. Rewrite using `[e, e, e, show phiM (A * B) hAB = (phiM B hB).trans (phiM A hA) from ContinuousAddEquiv.ext fun x => (Matrix.mulVec_mulVec x A B).symm, addEquivAddHaarChar_trans, mul_comm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem chiM_mul (A B : Matrix ι ι F) (hA : IsUnit A.det) (hB : IsUnit B.det)
     (hAB : IsUnit (A * B).det) : chiM (A * B) hAB = chiM A hA * chiM B hB := by
@@ -70,7 +70,7 @@ theorem chiM_mul (A B : Matrix ι ι F) (hA : IsUnit A.det) (hB : IsUnit B.det)
     ContinuousAddEquiv.ext fun x => (Matrix.mulVec_mulVec x A B).symm, addEquivAddHaarChar_trans, mul_comm]
 
 /- English proof (translation)
-Set `_ : MeasurableSpace (ι → F)` to `borel _`. Establish `_ : BorelSpace (ι → F)` using `⟨rfl⟩`. Establish `e : chiM (1 : Matrix ι ι F) h = addEquivAddHaarChar (phiM 1 h)` using `rfl`. Rewrite using `[e, show phiM 1 h = ContinuousAddEquiv.refl _ from ContinuousAddEquiv.ext fun x => Matrix.one_mulVec x, addEquivAddHaarChar_refl]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiM_one (h : IsUnit (1 : Matrix ι ι F).det) : chiM (1 : Matrix ι ι F) h = 1 := by
   let _ : MeasurableSpace (ι → F) := borel _
@@ -80,7 +80,7 @@ theorem chiM_one (h : IsUnit (1 : Matrix ι ι F).det) : chiM (1 : Matrix ι ι 
     ContinuousAddEquiv.ext fun x => Matrix.one_mulVec x, addEquivAddHaarChar_refl]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem chiM_congr {A B : Matrix ι ι F} (e : A = B) (hA : IsUnit A.det) (hB : IsUnit B.det) :
     chiM A hA = chiM B hB := by
@@ -88,7 +88,7 @@ theorem chiM_congr {A B : Matrix ι ι F} (e : A = B) (hA : IsUnit A.det) (hB : 
   rfl
 
 /- English proof (translation)
-Set `_ : MeasurableSpace (ι → F)` to `borel _`. Establish `_ : BorelSpace (ι → F)` using `⟨rfl⟩`. Conclude with `addEquivAddHaarChar_pos (phiM M hM)`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chiM_pos (M : Matrix ι ι F) (hM : IsUnit M.det) : 0 < chiM M hM := by
   let _ : MeasurableSpace (ι → F) := borel _
@@ -96,7 +96,7 @@ theorem chiM_pos (M : Matrix ι ι F) (hM : IsUnit M.det) : 0 < chiM M hM := by
   exact addEquivAddHaarChar_pos (phiM M hM)
 
 /- English proof (translation)
-Take `⟨K, hKc, hK0⟩` from `exists_compact_mem_nhds (0 : ι → F)`. Conclude with `⟨K, hKc.isClosed.measurableSet, (MeasureTheory.Measure.measure_pos_of_mem_nhds (μ := ν) hK0).ne', hKc.measure_lt_top.ne⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_test_set [MeasurableSpace (ι → F)] [BorelSpace (ι → F)] (ν : Measure (ι → F))
     [ν.IsAddHaarMeasure] : ∃ K : Set (ι → F), MeasurableSet K ∧ ν K ≠ 0 ∧ ν K ≠ ∞ := by
@@ -104,11 +104,11 @@ theorem exists_test_set [MeasurableSpace (ι → F)] [BorelSpace (ι → F)] (ν
   exact ⟨K, hKc.isClosed.measurableSet, (MeasureTheory.Measure.measure_pos_of_mem_nhds (μ := ν) hK0).ne', hKc.measure_lt_top.ne⟩
 
 /- English proof (translation)
-Set `_ : MeasurableSpace (ι → F)` to `borel _`. Establish `_ : BorelSpace (ι → F)` using `⟨rfl⟩`. Take `⟨K, hKm, hK0, hKt⟩` from `exists_test_set (Measure.addHaar : Measure (ι → F))`. Establish `h1` using `chiM_spec _ h (Measure.addHaar : Measure (ι → F)) K`. Establish `h2` using `hD F ι i a ha (Measure.addHaar : Measure (ι → F)) inferInstance K hKm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfun : (fun x => diagonal (Function.update (1 : ι → F) i a) *ᵥ x) = fun x => Function.update x i (a * x i)`. Use function extensionality and compare the values at `x j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[Matrix.mulVec_diagonal]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mulVec_diagonal, Function.update_of_ne hj]`. Rewrite `h1` using `[hfun]`. Rewrite `h2` using `[h1]`. Conclude with `(ENNReal.mul_left_inj hK0 hKt).mp h2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiM_diagOne (hD : DiagOne) (i : ι) (a : F) (ha : a ≠ 0)
     (h : IsUnit (diagonal (Function.update (1 : ι → F) i a)).det) :
@@ -132,7 +132,7 @@ def Good (M : Matrix ι ι F) : Prop :=
   ∀ h : IsUnit M.det, (chiM M h : ℝ≥0∞) = modF F M.det
 
 /- English proof (translation)
-Introduce `h`. Rewrite using `[chiM_mul A B (isUnit_iff_ne_zero.mpr hA0) (isUnit_iff_ne_zero.mpr hB0) h, ENNReal.coe_mul, hA, hB, det_mul, modF_mul hA0 hB0]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem good_mul {A B : Matrix ι ι F} (hA0 : A.det ≠ 0) (hB0 : B.det ≠ 0)
     (hA : Good A) (hB : Good B) : Good (A * B) := by
@@ -141,7 +141,7 @@ theorem good_mul {A B : Matrix ι ι F} (hA0 : A.det ≠ 0) (hB0 : B.det ≠ 0)
     hA, hB, det_mul, modF_mul hA0 hB0]
 
 /- English proof (translation)
-Introduce `h`. Rewrite using `[chiM_one, det_one, modF_of_ne (one_ne_zero : (1 : F) ≠ 0)]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem good_one : Good (1 : Matrix ι ι F) := by
   intro h
@@ -149,21 +149,19 @@ theorem good_one : Good (1 : Matrix ι ι F) := by
   simp
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset ι, ∀ D : ι → F, (∀ i, D i ≠ 0) → (∀ i ∉ s, D i = 1) → Good (diagonal D)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `D _ h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: D = 1` using `funext fun i => h1 i (Finset.notMem_empty i)`. Rewrite using `[this, show diagonal (1 : ι → F) = 1 from diagonal_one]`. Conclude with `good_one`. Consider the case `@insert i s hi ih`. Introduce `D hD0 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsplit : diagonal D = diagonal (Function.update D i 1) * diagonal (Function.update (1 : ι → F) i (D i))`. Rewrite using `[diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hj]`. Establish `hdet1 : (diagonal (Function.update (1 : ι → F) i (D i))).det = D i`. Rewrite using `[det_diagonal, Finset.prod_update_of_mem (Finset.mem_univ i)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hne : ∀ j, Function.update D i 1 j ≠ 0` using `fun j => by`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne hj]`. Conclude with `hD0 j`. Rewrite using `[hsplit]`. Use `good_mul ?_ (by rw [hdet1]; exact hD0 i) (ih _ hne fun j hj => ?_) fun h => ?_` and prove the remaining obligations. Rewrite using `[det_diagonal]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `Finset.prod_ne_zero_iff.mpr fun j _ => hne j`. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hji]`.
-
-Conclude with `h1 j (by simp [hji, hj])`. Rewrite using `[chiM_diagOne hD i (D i) (hD0 i) h, hdet1]`. Conclude with `key Finset.univ D hD0 fun i hi => absurd (Finset.mem_univ i) hi`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_diagonal (hD : DiagOne) (D : ι → F) (hD0 : ∀ i, D i ≠ 0) : Good (diagonal D) := by
   classical
@@ -207,7 +205,7 @@ theorem good_diagonal (hD : DiagOne) (D : ι → F) (hD0 : ∀ i, D i ≠ 0) : G
   exact key Finset.univ D hD0 fun i hi => absurd (Finset.mem_univ i) hi
 
 /- English proof (translation)
-Use extensionality with `k l`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]`. Apply the tactic sequence `by_cases hk : k = i <;> by_cases hl : l = i <;> simp_all <;> split_ifs <;> simp_all [eq_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem transvection_conj {i j : ι} (hij : i ≠ j) {c : F} (hc : c ≠ 0) :
     transvection i j c = diagonal (Function.update (1 : ι → F) i c) * transvection i j 1 *
@@ -219,27 +217,25 @@ theorem transvection_conj {i j : ι} (hij : i ≠ j) {c : F} (hc : c ≠ 0) :
     split_ifs <;> simp_all [eq_comm]
 
 /- English proof (translation)
-Establish `hT : ∀ c : F, IsUnit (transvection i j c).det` using `fun c => by`. Rewrite using `[Matrix.det_transvection_of_ne (i := i) (j := j) hij c]`. Conclude with `isUnit_one`. Establish `h1u : IsUnit (1 : Matrix ι ι F).det`. Rewrite using `[det_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isUnit_one`. Establish `hdd : ∀ c : F, (diagonal (Function.update (1 : ι → F) i c)).det = c` using `fun c => by`. Rewrite using `[det_diagonal, Finset.prod_update_of_mem (Finset.mem_univ i)]`. Simplify using the standard rewrite rules. Establish `hDu : ∀ c : F, c ≠ 0 → IsUnit (diagonal (Function.update (1 : ι → F) i c)).det` using `fun c hc => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hdd]`. Conclude with `isUnit_iff_ne_zero.mpr hc`. Establish `hmod1 : modF F 1 = 1`. Use `good_one h1u` as an intermediate fact. Rewrite `this` using `[chiM_one, det_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using this.symm`. Establish `hconst : ∀ c : F, c ≠ 0 → chiM (transvection i j c) (hT c) = chiM (transvection i j 1) (hT 1)`. Introduce `c hc`. Establish `hDD : diagonal (Function.update (1 : ι → F) i c) * diagonal (Function.update (1 : ι → F) i c⁻¹) = 1`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[hc]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Function.update_of_ne hk]`. Establish `hprod : chiM (diagonal (Function.update (1 : ι → F) i c)) (hDu c hc) * chiM (diagonal (Function.update (1 : ι → F) i c⁻¹)) (hDu _ (inv_ne_zero hc)) = 1`. Rewrite using `[← chiM_mul _ _ _ _ (by rw [hDD]; exact h1u), chiM_congr hDD _ h1u, chiM_one]`. Establish `hu1 : IsUnit (diagonal (Function.update (1 : ι → F) i c) * transvection i j 1).det`. Rewrite using `[det_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hDu c hc).mul (hT 1)`. Establish `hu2 : IsUnit (diagonal (Function.update (1 : ι → F) i c) * transvection i j 1 * diagonal (Function.update (1 : ι → F) i c⁻¹)).det`. Rewrite using `[← transvection_conj hij hc]`. Conclude with `hT c`. Rewrite using `[chiM_congr (transvection_conj hij hc) (hT c) hu2, chiM_mul _ _ hu1 (hDu _ (inv_ne_zero hc)) hu2, chiM_mul _ _ (hDu c hc) (hT 1) hu1]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hc1 : chiM (transvection i j c) (hT c) = 1`. Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Rewrite using `[chiM_congr (Matrix.transvection_zero (i := i) (j := j)) (hT 0) h1u, chiM_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hsq : chiM (transvection i j c) (hT c) * chiM (transvection i j c) (hT c) = chiM (transvection i j (c + c)) (hT (c + c))`. Rewrite using `[← chiM_mul _ _ (hT c) (hT c) (by rw [Matrix.transvection_mul_transvection_same (i := i) (j := j) hij]; exact hT _)]`. Conclude with `chiM_congr (Matrix.transvection_mul_transvection_same (i := i) (j := j) hij c c) _ _`. Establish `hx0` using `(chiM_pos _ (hT c)).ne'`. Distinguish the cases in `h2 : c + c = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : chiM (transvection i j (c + c)) (hT (c + c)) = 1`. Rewrite using `[chiM_congr (show transvection i j (c + c) = 1 by rw [h2, Matrix.transvection_zero]) (hT (c + c)) h1u, chiM_one]`. Rewrite `hsq` using `[h0]`. Conclude with `(pow_left_inj₀ (chiM_pos _ (hT c)).le zero_le_one two_ne_zero).mp (by rw [sq, hsq, one_pow])`. Rewrite `hsq` using `[hconst (c + c) h2, ← hconst c hc]`.
-
-Conclude with `mul_left_cancel₀ hx0 (hsq.trans (mul_one _).symm)`. Introduce `h`. Rewrite using `[chiM_congr rfl h (hT c), hc1, Matrix.det_transvection_of_ne (i := i) (j := j) hij c, hmod1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_transvection (i j : ι) (hij : i ≠ j) (c : F) : Good (transvection i j c) := by
   have hT : ∀ c : F, IsUnit (transvection i j c).det := fun c => by
@@ -307,9 +303,7 @@ theorem good_transvection (i j : ι) (hij : i ≠ j) (c : F) : Good (transvectio
   simp
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ι _ _ _ _ M hM ν hν S _`. Establish `hG : Good M` using `Matrix.diagonal_transvection_induction_of_det_ne_zero Good M hM (fun D hD0 => good_diagonal hD D fun i => by`. Rewrite `hD0` using `[det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.mp hD0 i (Finset.mem_univ i))`. Use the proof step `(fun t => good_transvection t.i t.j t.hij t.c)`.
-
-Use the proof step `(fun A B hA hB gA gB => good_mul hA hB gA gB)`. Rewrite using `[chiM_spec M (isUnit_iff_ne_zero.mpr hM) ν S, hG]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linModulus_of (hD : DiagOne) : LinModulus := by
   intro F _ _ _ _ _ _ ι _ _ _ _ M hM ν hν S _

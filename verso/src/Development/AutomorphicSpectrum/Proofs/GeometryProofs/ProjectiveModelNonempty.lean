@@ -9,9 +9,9 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberFiel
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Introduce `o _ Ω _ _ κ _ x ⟨c, hc, h⟩`. Establish `h' : ∀ a : Ω, ∃ g ∈ Algebra.adjoin o (Set.range fun j => x j / x c), ∃ k ∈ Algebra.adjoin o (Set.range fun j => x j / x c), k ≠ 0 ∧ a = g / k`. Introduce `a`. Take `⟨u, hu, v, hv, rfl⟩` from `h a`. Distinguish the cases in `hv0 : v = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨0, zero_mem _, 1, one_mem _, one_ne_zero, by simp [hv0]⟩`. Conclude with `⟨u, hu, v, hv, hv0, rfl⟩`. Take `⟨X, ξ, s, tie, all, -, -, hover⟩` from `GlobalTheory.T.exists_proper_integral_model Ω o κ x c hc h'`. Conclude with `⟨{ X := X, ξ := ξ, s := s, hover := hover, all := all, tie := tie }⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_pModel_of_chart : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ]
     (x : κ → Ω), (∃ c, x c ≠ 0 ∧ ∀ a : Ω, ∃ u ∈ chRing o x c, ∃ v ∈ chRing o x c, a = u / v) →

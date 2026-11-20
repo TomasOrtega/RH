@@ -25,7 +25,7 @@ instance : FiniteDimensional ℝ (MajV X x) := inferInstanceAs (FiniteDimensiona
 def majIp (u w : MajV X x) : ℝ := ∑ τ, (X.Hf x τ (u τ) (w τ)).re
 
 /- English proof (translation)
-Simplify using `only [Data.Hf_eq_two_ppos, Data.ppos_add, hermC_add_left]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Hf_add_left (τ : X.Ψ) (u u' w : Fin r → ℂ) :
     X.Hf x τ (u + u') w = X.Hf x τ u w + X.Hf x τ u' w := by
@@ -33,7 +33,7 @@ theorem Hf_add_left (τ : X.Ψ) (u u' w : Fin r → ℂ) :
   ring
 
 /- English proof (translation)
-Simplify using `only [Data.Hf_eq_two_ppos, Data.ppos_smul, hermC_smul_left]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Hf_smul_left (τ : X.Ψ) (c : ℂ) (u w : Fin r → ℂ) :
     X.Hf x τ (c • u) w = c * X.Hf x τ u w := by
@@ -41,14 +41,14 @@ theorem Hf_smul_left (τ : X.Ψ) (c : ℂ) (u w : Fin r → ℂ) :
   ring
 
 /- English proof (translation)
-Use `Hf_smul_left X x τ 0 0 w` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Hf_zero_left (τ : X.Ψ) (w : Fin r → ℂ) : X.Hf x τ 0 w = 0 := by
   have := Hf_smul_left X x τ 0 0 w
   rwa [zero_smul, zero_mul] at this
 
 /- English proof (translation)
-Establish `h1` using `X.hermC_ppos_left hx τ u w`. Establish `h2` using `X.hermC_ppos_left hx τ w u`. Rewrite using `[Data.Hf_eq_two_ppos, Data.Hf_eq_two_ppos, h1, h2, map_sub, map_mul, hermC_conj τ.1 X.Gm_herm, hermC_conj τ.1 X.Gm_herm, map_ofNat]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Hf_conj {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u w : Fin r → ℂ) :
     starRingEnd ℂ (X.Hf x τ u w) = X.Hf x τ w u := by
@@ -58,7 +58,7 @@ theorem Hf_conj {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (u w : Fin r �
     hermC_conj τ.1 X.Gm_herm, hermC_conj τ.1 X.Gm_herm, map_ofNat]
 
 /- English proof (translation)
-Distinguish the cases in `h : v = 0`. Rewrite using `[h, Hf_zero_left, Complex.zero_re]`. Rewrite using `[Data.Hf_self X hx, Complex.ofReal_re]`. Conclude with `(X.maj_pos hx τ h).le`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem re_Hf_self_nonneg {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (v : Fin r → ℂ) :
     0 ≤ (X.Hf x τ v v).re := by
@@ -97,13 +97,13 @@ def majCore {x : Frame X.Ψ r} (hx : x ∈ X.dom) : InnerProductSpace.Core ℝ (
 open NumberField.ComplexEmbedding in
 
 /- English proof (translation)
-Establish `hc : ∀ τ : E →+* ℂ, τ ∈ X.Ψ ↔ conjugate τ ∉ X.Ψ` using `X.cmType`. Establish `hcc : ∀ σ : E →+* ℂ, conjugate (conjugate σ) = σ` using `fun σ => star_star σ`. Establish `himg : X.Ψ.image conjugate = Finset.univ.filter (· ∉ X.Ψ)`. Use extensionality with `σ`. Simplify using `only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨τ, hτ, rfl⟩`. Conclude with `(hc τ).1 hτ`. Introduce `hσ`. Conclude with `⟨conjugate σ, by rw [hc, hcc]; exact hσ, hcc σ⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hinj : (X.Ψ.image conjugate).card = X.Ψ.card` using `Finset.card_image_of_injective _ (fun a b h => by simpa [hcc] using congrArg conjugate h)`. Establish `hsplit` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (E →+* ℂ))) (p := (· ∈ X.Ψ))`. Establish `hf : Finset.univ.filter (· ∈ X.Ψ) = X.Ψ`. Use extensionality with `σ`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsplit` using `[hf, ← himg, hinj, Finset.card_univ, Embeddings.card]`. Unfold `fdeg`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_cmType : X.Ψ.card = fdeg E := by
   classical
@@ -128,7 +128,7 @@ theorem card_cmType : X.Ψ.card = fdeg E := by
   omega
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Module.finrank ℝ (↥X.Ψ → Fin r → ℂ) = _`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[Module.finrank_pi_fintype, Complex.finrank_real_complex, card_cmType]`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finrank_majV : Module.finrank ℝ (MajV X x) = 2 * fdeg E * r := by
   change Module.finrank ℝ (↥X.Ψ → Fin r → ℂ) = _
@@ -143,23 +143,21 @@ namespace GlobalTheory.LatCount
 open scoped ENNReal
 
 /- English proof (translation)
-Use `set Q : (Fin r → E) → ℝ := fun v => ∑ τ, X.maj x τ (Data.emb τ.1 v) with hQ`. Use `set S : Set (Fin r → E) := {v | v ∈ X.L' ∧ Q v ≤ R} with hS`. Use `set B : ℝ := (1 + 2 * Real.sqrt (R / ε)) ^ (2 * fdeg E * r) with hB`. Use `letI core : InnerProductSpace.Core ℝ (MajV X.toData x) := majCore X.toData hx`. Use `letI : NormedAddCommGroup (MajV X.toData x) := InnerProductSpace.Core.toNormedAddCommGroup (𝕜 := ℝ)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `letI : InnerProductSpace ℝ (MajV X.toData x) := InnerProductSpace.ofCore core.toCore`. Set `g : (Fin r → E) → MajV X.toData x` to `fun v τ => Data.emb τ.1 v`. Establish `hg : ∀ v, ‖g v‖ = Real.sqrt (Q v)`. Introduce `v`. Establish `h2 : ‖g v‖ ^ 2 = Q v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[← real_inner_self_eq_norm_sq]`. Express the relevant statement in the definitionally equal form `∑ τ, (X.Hf x τ (g v τ) (g v τ)).re = _`. Simplify using `only [Data.Hf_self X.toData hx, Complex.ofReal_re, hQ, g]`. Rewrite using `[← h2, Real.sqrt_sq (norm_nonneg _)]`. Establish `hsub : ∀ v w, g v - g w = g (v - w)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `v w`. Use function extensionality and compare the values at `τ a`. Simplify using `[g, Data.emb, map_sub]`. Both sides reduce to the same expression. Establish `hfin : ∀ T : Finset (Fin r → E), (↑T : Set (Fin r → E)) ⊆ S → (T.card : ℝ) ≤ B`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `T hT`. Establish `h` using `Formalism.SA.P.card_le_of_separated T g (Real.sqrt ε) (Real.sqrt R) (Real.sqrt_pos.2 hε) (Real.sqrt_nonneg _) ?_ ?_`. Rewrite `h` using `[finrank_majV, mul_div_assoc, ← Real.sqrt_div' R hε.le]`. Rewrite using `[hB]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv w hw hvw`. Rewrite using `[hsub, hg]`. Use `Real.sqrt_le_sqrt (hsep _ (X.L'.sub_mem (hT hv).1 (hT hw).1) (sub_ne_zero.2 hvw))` and prove the remaining obligations. Introduce `v hv`. Rewrite using `[hg]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.sqrt_le_sqrt (hT hv).2`. Distinguish the cases in `hSf : S.Finite`. Rewrite using `[hSf.encard_eq_coe_toFinset_card]`. Establish `h` using `hfin hSf.toFinset (by simp)`. Rewrite using `[ENat.toENNReal_coe, ← ENNReal.ofReal_natCast]`.
+It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `ENNReal.ofReal_le_ofReal h`. It suffices to derive a contradiction. Take `⟨T, hT, hcard⟩` from `Set.Infinite.exists_subset_card_eq hSf (⌈B⌉₊ + 1)`. Establish `h` using `hfin T hT`. Rewrite `h` using `[hcard]`.
-
-Move the coercions through the operations in `at h`. Combine the linear relations using `[Nat.le_ceil B]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem encard_le (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : DataX E r)
     (x : Frame X.Ψ r) (ε R : ℝ) (hx : x ∈ X.dom) (hε : 0 < ε) (hR : 0 ≤ R)

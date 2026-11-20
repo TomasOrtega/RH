@@ -23,23 +23,21 @@ section Gen
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 end Gen
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W u f hP hR v hv hVT n G pl hGP hGR`. Take `⟨s, hs, hGm, hGt⟩` from `_root_.GlobalTheory.T.exists_ne_zero_scalars_gVec D L hT Gi Gl Kc Yd cX ex W u f hP hR v hv hVT n G pl hGP hGR`. Take `⟨hSm, hSt⟩` from `_root_.GlobalTheory.T.exists_descent_data_chain_alt D L hT Gi Gl Kc Yd cX ex W u f hP hR`. Use `⟨s, hs, fun t => ?_⟩` and prove the remaining obligations. Take `⟨ζ, hζ, hZm, hZt, -⟩` from `_root_.GlobalTheory.TupRoot.weil_tuple_root_alt D L hT Gi Gl Kc Yd cX ex W u f hP hR t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨ζ, hζ, fun w hwQ heQ hQ => ?_⟩` and prove the remaining obligations. Establish `hc` using `W.Q.charW.base`. Establish `eP : (fun p => ∃ PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Pg, p = PP.under (𝓞 D.host.F)) = (· ∈ v.gP)`. Use function extensionality and compare the values at `fun p => propext (hVT.gP p).symm`. Establish `eQ : (fun p => ∃ PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Q t, p = PP.under (𝓞 D.host.F)) = (· ∈ w.Q)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun p => propext (hwQ p).symm`. Establish `hd : ∀ p, p ∈ v.gP → ¬ p ∈ w.Q` using `fun p h h' => by`. Take `⟨PP, h1, e1⟩` from `(hVT.gP p).1 h`. Take `⟨PP', h2, e2⟩` from `(hwQ p).1 h'`. Conclude with `under_ne _ hc.lev t h1 h2 (e1.symm.trans e2)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : ∀ j, f.g.b j ∈ GfC _` using `fun j => hVT.b j ▸ hv.b j`. Establish `hbT : f.g.bT ∈ GfC _` using `hVT.bT.1 ▸ hv.bT`. Use `⟨fun j hj P a ha a' ha' => ?_, fun j h P => ?_⟩` and prove the remaining obligations. Take `⟨dG, hdG, hall⟩` from `hSm j hj`. Take `⟨dQ, hdQ, hvP⟩` from `hall t`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hvac` using `hdG.2.1.2`. Rewrite using `[hVT.b, hVT.b]`. Establish `key` using `step (c := s j * ζ j) (Ψ := v.Ψ j P a a') hvac.inf (hc.chain.ωY t j hj) (cart ((_root_.GlobalTheory.Fam.pk_z W).MY j)) (cart ((_root_.GlobalTheory.Fam.pk_z W).MY (j + 1))) (onb ((_root_.GlobalTheory.Fam.pk_z W).MY j)) (onb ((_root_.GlobalTheory.Fam.pk_z W).MY (j + 1))) hd ⟨hvac.t …`. Establish `e1` using `hZm j hj (hb j) (hb (j + 1)) a ha a' ha' _ hth`. Establish `e2` using `hGm j hj dG hdG P a ha a' ha'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `e1.trans ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `congrArg _ e2`. Rewrite `key` using `[← hvP]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨dG, hdG, hall⟩` from `hSt j h`. Take `⟨dQ, hdQ, hvT⟩` from `hall t`. Establish `hvac` using `hdG.2.1.2`. Rewrite using `[hVT.b, hVT.bT.1]`. Establish `hWt` using `GlobalTheory.TupRoot.isWeil_rec (idx_top h) _ (hc.chain.ωX t)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `step (c := s (j + 1) * ζ (j + 1)) (Ψ := v.ΨT j h P) hvac.inf hWt (cart ((_root_.GlobalTheory.Fam.pk_z W).MY (j + 1))) (cart (_root_.GlobalTheory.Fam.pk_z W).MX) (onb ((_root_.GlobalTheory.Fam.pk_z W).MY (j + 1))) (onb (_root_.GlobalTheory.Fam.pk_z W).MX) hd ⟨hvac.theta, hvac.lat⟩ …`. Establish `e1` using `hZt j h _ hth`. Establish `e2` using `hGt j h dG hdG P`. Rewrite using `[one_mul, one_mul]`. Use `e1.trans ?_` and prove the remaining obligations.
-
-Rewrite using `[mul_comm, mul_smul]`. Conclude with `congrArg _ e2`. Rewrite `key` using `[← hvT, one_mul, one_mul]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main_alt_alt : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Yd : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Yd cX) (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (u : D.what₂.Word) (f : _root_.GlobalTheory.Fam.FamilyCharacter W u), _root_.GlobalTheory.Fam.PackageHypotheses W → f.RowOK → ∀ v : VCom f.c, v.Is → _root_.GlobalTheory.Fam.CommutingVectorTie f v → ∀ (n : ℕ) (G : Fin n → GLoc v) (pl : Fin n ≃ (_root_.GlobalTheory.Fam.pk_z W).Pg), GPin G → _root_.GlobalTheory.Fam.LocalGroupReading f G pl → ∃ s : ℕ → ℂ, (∀ j, s j ≠ 0) ∧ ∀ t, ∃ ζ : ℕ → ℂ, (∀ j, ∃ n : ℕ, 0 < n ∧ ζ j ^ n = 1) ∧ ∀ w : VTup (f.t t), (∀ p, p ∈ w.Q ↔ ∃ PP ∈ (_root_.GlobalTheory.Fam.pk_z W).Q t, p = PP.under (𝓞 D.host.F)) → (∀ j, GlobalTheory.FinPl.CombAt (· ∈ w.Q) (w.eQ j) ∧ ∀ h, GlobalTheory.FinPl.CombAt (· ∈ w.Q) (w.eQT j h)) → _root_.GlobalTheory.Fam.RationalVectorCondition f w → _root_.GlobalTheory.Fam.VectorFunctionCondition f v w fun j => s j * ζ j := by
   intro D L hT Gi Gl Kc Yd cX ex W u f hP hR v hv hVT n G pl hGP hGR

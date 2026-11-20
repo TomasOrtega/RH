@@ -10,7 +10,7 @@ open CategoryTheory Limits AlgebraicGeometry TensorProduct GroundTheory.PAdicHod
 namespace GlobalTheory.CompanionTheory.BaseChangeFrob
 
 /- English proof (translation)
-Use `haveI i₁ : RingHomCompTriple τa τb (τb.comp τa) := ⟨rfl⟩`. Use `haveI i₂ : RingHomCompTriple τc τd (τb.comp τa) := ⟨(RingHom.ext hτ).symm⟩`. Rewrite using `[pull_pull (τb.comp τa), pull_pull (τb.comp τa)]`. Conclude with `cr_pull_eq _ _ (fun T => crHom (T := ma.obj (mb.obj T)) (T' := mc.obj (md.obj T)) (RingHom.id T.B) (fun r => congrArg T.i (hσ r)) (DPMorphism.id T.δ).isDPMorphism fun h => (pt_id _ h _).trans (hpt _ _)) (fun _ _ => rfl) (fun _ _ => rfl) j x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cr_square_gen {O : Type} [CommRing O] {F₁ F₂ F₃ F₄ : B.Fn O} {b₁ b₂ b₃ b₄ : Base} {h₁ : b₁.t = 1} {h₂ : b₂.t = 1}
     {h₃ : b₃.t = 1} {h₄ : b₄.t = 1} {κ₁ : O →+* b₁.R ⧸ b₁.I} {κ₂ : O →+* b₂.R ⧸ b₂.I} {κ₃ : O →+* b₃.R ⧸ b₃.I}
@@ -37,9 +37,9 @@ theorem cr_square_gen {O : Type} [CommRing O] {F₁ F₂ F₃ F₄ : B.Fn O} {b�
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `ACris.phi ℂ_[l] l (algebraMap (Ainf l) (Acris l) (WittVector.map r.s w)) = algebraMap (Ainf l) (Acris l) (WittVector.map r.s (WittVector.frobenius w))`. Rewrite using `[ACris.phi_algebraMap]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `WittVector.frobenius (WittVector.map r.s w) = _`. Rewrite using `[WittVector.frobenius_eq_map_frobenius, WittVector.frobenius_eq_map_frobenius]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `n`. Simplify using `only [WittVector.map_coeff, frobenius_def, map_pow]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem w_frobenius (r : CrystallineSemistableComparison.Res l K) (w : WittVector l r.k) :
     ACris.phi ℂ_[l] l (r.w w) = r.w (WittVector.frobenius w) := by
@@ -53,7 +53,7 @@ theorem w_frobenius (r : CrystallineSemistableComparison.Res l K) (w : WittVecto
   simp only [WittVector.map_coeff, frobenius_def, map_pow]
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[Wc.frob_mk', Mid.wn_mk, Mid.wn_mk, (base l).phi_cris, w_frobenius]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem wn_frob (r : CrystallineSemistableComparison.Res l K) (n : ℕ) (x : Wc.Wm l r.k n) :
     (base l).phi n (Mid.wn r n x) = Mid.wn r n (Wc.frob l r.k n x) := by
@@ -61,7 +61,7 @@ theorem wn_frob (r : CrystallineSemistableComparison.Res l K) (n : ℕ) (x : Wc.
   rw [Wc.frob_mk', Mid.wn_mk, Mid.wn_mk, (base l).phi_cris, w_frobenius]
 
 /- English proof (translation)
-Use `cr_square_gen (F₁ := B.schFn M.p) (F₂ := B.schFn M.p) (F₃ := B.schFn M.p) (F₄ := B.schFn M.p) (B.crMor (F := B.schFn M.p) (F' := B.schFn M.p) (b := Wc.bs l r.k n) (b' := B.bs l true n) (ht := rfl) (ht' := rfl) (Mid.wn r n) rfl (dp_wn r n) (B.basePt _ (Ideal.quotientMap _ (Mid.wn …` and prove the remaining obligations. Introduce `B₀ y`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem phiM_bW {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : CrystallineSemistableComparison.Res l K) (M : Model l K) (n j : ℕ)
     (y : (HSW r M j).M n) : phiM r M n j (bW r M n j y) = bW r M n j ((Wc.phiS l (B.schFn M.p) r.ρ j).f n y) := by

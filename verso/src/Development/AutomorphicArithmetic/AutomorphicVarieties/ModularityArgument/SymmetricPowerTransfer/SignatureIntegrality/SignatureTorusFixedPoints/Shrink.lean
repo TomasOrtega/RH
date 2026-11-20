@@ -5,7 +5,7 @@ noncomputable section
 open ValuativeRel Matrix Polynomial GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Sig UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob
 
 /- English proof (translation)
-Establish `h1` using `GlAx.val_div_ord x`. Establish `h2` using `GlAx.val_zpow (k := k) (ord k x)`. Establish `e : (x : k) = ((x / unif k ^ ord k x : kˣ) : k) * ((unif k ^ ord k x : kˣ) : k)`. Rewrite using `[← Units.val_mul, div_mul_cancel]`. Rewrite using `[e, map_mul, h1, h2, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem vo {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (x : kˣ) :
     valuation k (x : k) = uniformizer k ^ ord k x := by
@@ -16,25 +16,23 @@ private theorem vo {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [I
   rw [e, map_mul, h1, h2, one_mul]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n d hd m`. Use `set a : Fin n → ℤ := fun i => ord k (d i) with ha`. Establish `hv : ∀ i, valuation k (d i : k) = uniformizer k ^ a i` using `fun i => vo (d i)`. Establish `hlt : ∀ i j : Fin n, i < j → a j < a i`. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hd i j hij`. Rewrite `h` using `[hv, hv]`. Conclude with `(zpow_right_strictAnti₀ GlAx.unif_pos ValuativeRel.uniformizer_lt_one).lt_iff_gt.1 h`. Establish `hanti : Antitone a`. Introduce `i j hij`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `hij.lt_or_eq with h | h` into its components or cases. Conclude with `(hlt i j h).le`. Rewrite using `[h]`. Establish `hv' : ∀ i, valuation k ((d⁻¹) i : k) = uniformizer k ^ (-a i)`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Pi.inv_apply, Units.val_inv_eq_inv_val, map_inv₀, hv, _root_.zpow_neg]`. Use `⟨fun x hx hxm => ?_, fun c y hy hym => ?_⟩` and prove the remaining obligations. Establish `hx' : x ∈ unipB k (Fin n) ⊓ KO k (Fin n)` using `hx`. Use `Subgroup.mem_inf.2 ⟨GlAx.conj_N hv hanti hx, ?_⟩` and prove the remaining obligations. Rewrite `hxm`, the goal using `[GlAx.mem_Kc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `GlAx.conj_Kc (c' := ((m + 1 : ℕ) : ℤ)) (Subgroup.mem_inf.1 hx').1 hxm d a hv ?_` and prove the remaining obligations. Introduce `i j`. Break down `le_or_gt j i with h | h` into its components or cases. Conclude with `Or.inl fun z hz => GlAx.up_sub_one hz h`. Use `right`.
+Prove the first alternative. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `hlt i j h` as an intermediate fact. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Establish `hy' : y ∈ Subgroup.comap (GlobalTheory.CuspRep.invT n k) (unipB k (Fin n)) ⊓ Kc k n (c + 1)` using `hy`. Establish `e1 : (dg d)⁻¹ = diagT k (Fin n) d⁻¹` using `(map_inv _ _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : dg d = (diagT k (Fin n) d⁻¹)⁻¹`. Rewrite using `[← map_inv, inv_inv]`. Rewrite using `[e1, e2]`. Use `Subgroup.mem_inf.2 ⟨GlAx.conj_Nm (a := fun i => -a i) hv' (c := c) (c' := c) ?_ hy, ?_⟩` and prove the remaining obligations. Introduce `i j h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hlt j i h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `hym`, the goal using `[GlAx.mem_Kc]`. Use `GlAx.conj_Kc (c' := ((m + 1 : ℕ) : ℤ)) (Subgroup.mem_inf.1 hy').1 hym d⁻¹ (fun i => -a i) hv' ?_` and prove the remaining obligations. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Break down `le_or_gt i j with h | h` into its components or cases. Conclude with `Or.inl fun z hz => GlAx.low_sub_one hz h`. Use `right`. Use `hlt j i h` as an intermediate fact. Use `push_cast`.
-
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Sig.shrink : UpperTheory.V.Z.Sym.Sig.Shrink := by
   intro k _ _ _ _ n d hd m

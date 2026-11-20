@@ -25,7 +25,7 @@ open GlobalTheory.ZV
 namespace GlobalTheory.TorsionCut
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE, Scheme.Hom.appLE_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_resG {X X' : Scheme.{0}} (φ : X' ⟶ X) {U V : X.Opens} {U' V' : X'.Opens} (h : V ≤ U) (h' : V' ≤ U')
     (a : U' ≤ φ ⁻¹ᵁ U) (b : V' ≤ φ ⁻¹ᵁ V) (f : Γ(X, U)) :
@@ -33,7 +33,7 @@ theorem appLE_resG {X X' : Scheme.{0}} (φ : X' ⟶ X) {U V : X.Opens} {U' V' : 
   rw [← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE, Scheme.Hom.appLE_map]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[Scheme.Hom.appLE_eq_app]`. Conclude with `(ConcreteCategory.bijective_of_isIso (φ.app U)).2`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_surjective {X X' : Scheme.{0}} (φ : X' ⟶ X) [IsIso φ] {U : X.Opens} {U' : X'.Opens}
     (h : U' = φ ⁻¹ᵁ U) : Function.Surjective (φ.appLE U U' h.le).hom := by
@@ -42,13 +42,13 @@ theorem appLE_surjective {X X' : Scheme.{0}} (φ : X' ⟶ X) [IsIso φ] {U : X.O
   exact (ConcreteCategory.bijective_of_isIso (φ.app U)).2
 
 /- English proof (translation)
-Use `⟨?_, fun i => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [nonzeroLocus_secPull]`. Rewrite using `[← Scheme.Hom.preimage_iSup, h.1]`. Both sides reduce to the same expression. Rewrite using `[nonzeroLocus_secPull]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h.2 i).1.preimage φ`. Take `⟨r, hr, hs⟩` from `(h.2 i).2`. Establish `hD` using `nonzeroLocus_secPull (th i) φ`. Use `⟨fun j => (φ.appLE _ _ hD.le).hom (r j), fun j k => ?_, fun f => ?_⟩` and prove the remaining obligations. Establish `hk : (M.pull φ).U k ≤ φ ⁻¹ᵁ M.U (k PUnit.unit)` using `LB.wchart_le M (fun _ : PUnit => φ) k PUnit.unit`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg (φ.appLE (Out.nonzeroLocus (th i) ⊓ M.U (k PUnit.unit)) (Out.nonzeroLocus (secPull (th i) φ) ⊓ (M.pull φ).U k) (inf_le_inf hD.le hk)).hom (hr j (k PUnit.unit))`. Rewrite `e` using `[map_mul]`. Conclude with `(appLE_resG φ _ inf_le_right hk _ _).symm.trans (e.trans (congrArg₂ (· * ·) (appLE_resG φ _ inf_le_left hD.le _ _) (appLE_resG φ _ inf_le_right hk _ _)))`. Take `⟨f, rfl⟩` from `appLE_surjective φ hD f`. Take `⟨F, rfl⟩` from `hs f`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨F, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval₂_comp_left, ← RingHom.comp_assoc, ← CommRingCat.hom_comp]`. Use `erw [Scheme.Hom.appLE_comp_appLE]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem vamp_pull {K σ : Type} [Field K] {X X' : Scheme.{0}} (φ : X' ⟶ X) [IsIso φ] (p : X ⟶ Sp K) (M : LB X)
     (th : σ → M.Sec) (h : VAmp p M th) : VAmp (φ ≫ p) (M.pull φ) fun i => secPull (th i) φ := by
@@ -74,15 +74,15 @@ theorem vamp_pull {K σ : Type} [Field K] {X X' : Scheme.{0}} (φ : X' ⟶ X) [I
       rfl
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hr.hasRightInverse`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← h.1]`. Conclude with `(hr.iSup_comp fun i => Out.nonzeroLocus (th i)).symm`. Take `⟨i, rfl⟩` from `hr i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ha, ρ, h₁, h₂⟩` from `h.2 i`. Use `⟨ha, ρ ∘ s, fun j k => ?_, fun f => ?_⟩` and prove the remaining obligations. Use `h₁ (s j) k` as an intermediate fact. Simplify using `only [Function.comp_apply, hs j] at this`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨F, rfl⟩` from `h₂ f`. Use `⟨MvPolynomial.rename r F, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval₂_rename]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart_of_mem_nonzeroLocus hy`. Establish `hy' : y ∈ Out.nonzeroLocus (th (r i)) ⊓ M.U k` using `⟨hy, hk⟩`. Establish `e₁` using `congrArg (gs (𝟙 X) y _) (h₁ a k)`. Establish `e₂` using `congrArg (gs (𝟙 X) y _) (h₁ (s (r a)) k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Function.comp_apply, hs (r a)] at e₁ e₂ ⊢`. Rewrite `e₁`, `e₂` using `[gs_mul _ y _ hy', gs_res _ y _ hy', gs_res _ y _ hy', gs_res _ y _ hy']`. Conclude with `((mem_nonzeroLocus_iff_isUnit _ hk).1 hy).mul_right_cancel (e₁.symm.trans e₂)`.
+A detailed English derivation is pending.
 -/
 theorem vamp_of_comp {K σ σ₀ : Type} [Field K] {X : Scheme.{0}} (p : X ⟶ Sp K) (M : LB X) (th : σ₀ → M.Sec)
     (r : σ → σ₀) (hr : Function.Surjective r) (h : VAmp p M (th ∘ r)) : VAmp p M th := by
@@ -110,11 +110,11 @@ theorem vamp_of_comp {K σ σ₀ : Type} [Field K] {X : Scheme.{0}} (p : X ⟶ S
       exact ((mem_nonzeroLocus_iff_isUnit _ hk).1 hy).mul_right_cancel (e₁.symm.trans e₂)
 
 /- English proof (translation)
-Take `⟨τ, hτ, h⟩` from `h`. Use `⟨⟨τ, hτ, fun i j hj => ?_⟩, funext fun a => ?_⟩` and prove the remaining obligations. Use `h (s i) j hj` as an intermediate fact. Simplify using `only [Function.comp_apply, hs i] at this`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv).1` to reduce the goal to its premises. Use `(Sp R).IsSheaf.section_ext fun y _ => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_chart hM (x y)`. Establish `hj` using `LB.wchart_le M (fun _ : PUnit => x) (fun _ => k) PUnit.unit`. Use `⟨(M.pull x).U fun _ => k, le_top, mem_pull.2 hk, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h₁` using `h a (fun _ => k) hj`. Establish `h₂` using `h (s (r a)) (fun _ => k) hj`. Simplify using `only [Function.comp_apply, hs] at h₁ h₂`. Conclude with `(Units.mul_left_inj (τ.s fun _ => k)).1 (h₂.symm.trans h₁)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem secCoord_comp {σ σ₀ : Type} {X : Scheme.{0}} {M : LB X} (hM : M.IsLB) (th : σ₀ → M.Sec)
     (r : σ → σ₀) (s : σ₀ → σ) (hs : ∀ a, r (s a) = a) {R : Type} [CommRing R] (x : Sp R ⟶ X) (v : σ → R)
@@ -135,9 +135,9 @@ theorem secCoord_comp {σ σ₀ : Type} {X : Scheme.{0}} {M : LB X} (hM : M.IsLB
     exact (Units.mul_left_inj (τ.s fun _ => k)).1 (h₂.symm.trans h₁)
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hr.hasRightInverse`. Use extensionality with `F`. Simplify using `only [idealOf, Ideal.mem_comap, Ideal.mem_iInf, RingHom.mem_ker, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_rename]`. Use `⟨fun H R _ β y v hv => H R _ β y _ ⟨hv.1, ?_⟩, fun H R _ β y v hv => ?_⟩` and prove the remaining obligations. Take `⟨τ, hτ, h⟩` from `hv.2`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨τ, hτ, fun i => h (r i)⟩`. Take `⟨h₁, h₂⟩` from `secCoord_comp hM th r s hs _ v hv.2`. Use `H R _ β y _ ⟨hv.1, h₁⟩` as an intermediate fact. Rewrite `this` using `[Function.comp_assoc, h₂]`. Then use the resulting hypothesis.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem idealOf_comp {K σ σ₀ : Type} [CommRing K] {X : Scheme.{0}} (p : X ⟶ Sp K) {M : LB X} (hM : M.IsLB)
     (th : σ₀ → M.Sec) (r : σ → σ₀) (hr : Function.Surjective r) :
@@ -154,7 +154,7 @@ theorem idealOf_comp {K σ σ₀ : Type} [CommRing K] {X : Scheme.{0}} (p : X �
     rwa [Function.comp_assoc, h₂] at this
 
 /- English proof (translation)
-Use `polAV_isIntegral_of_isAlgClosed K P` as an intermediate fact. Establish `: Etale P.A.hom` using `(Etale.iff_smoothOfRelativeDimension_zero _).2 (hg ▸ P.smoothDim)`. Set `e : Sp K ⟶ P.A.left` to `(1 : Out.baseOver (Sp K) ⟶ P.A).left`. Use `isOpenImmersion_of_section_of_etale P.A.hom e (Over.w _)` as an intermediate fact. Conclude with `⟨e.isOpenEmbedding.isOpen_range.dense ⟨_, (default : PrimeSpectrum K), rfl⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isDominant_one {K : Type} [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (hg : P.g = 0) :
     IsDominant (1 : Out.baseOver (Sp K) ⟶ P.A).left := by
@@ -165,19 +165,19 @@ theorem isDominant_one {K : Type} [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K
   exact ⟨e.isOpenEmbedding.isOpen_range.dense ⟨_, (default : PrimeSpectrum K), rfl⟩⟩
 
 /- English proof (translation)
-Use `polAV_isIntegral_of_isAlgClosed K P` as an intermediate fact. Establish `: IsReduced Y` using `isReduced_of_isOpenImmersion e.hom`. Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z : P.A.left, z ∈ e.inv ⁻¹ᵁ Out.nonzeroLocus τ := by`. Establish `hb : (Y.basicOpen (τ.f j) : Set Y).Nonempty`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Set.nonempty_iff_ne_empty]`. Conclude with `fun h => hne ((basicOpen_eq_bot_iff _).1 (TopologicalSpace.Opens.ext h))`. Take `⟨y, hy⟩` from `hb`. Take `⟨z, rfl⟩` from `e.inv.homeomorph.surjective y`. Conclude with `⟨z, basicOpen_le_nonzeroLocus τ j hy⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Break down `Nat.eq_zero_or_pos P.g with hg | hg` into its components or cases. Take `⟨y, hy⟩` from `(isDominant_one P hg).denseRange.exists_mem_open (TopologicalSpace.Opens.isOpen _) ⟨z, hz⟩`. Use `hτ 1 (one_pow _) fun y' _ => ?_` and prove the remaining obligations. Establish `: y' = y` using `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Substitute `this` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `hy`. Establish `hk1 : 1 ≤ k` using `by omega`. Establish `hcard : Nat.card {b : Out.baseOver (Sp K) ⟶ P.A // b ^ k = 1} = k ^ (2 * P.g)` using `(h.mulN (Sp K) P k hk1).2.2.2.2 K (𝟙 _) hK`. Establish `hM' : (M.pull e.inv).IsLB` using `LB.isLB_linComb hM _ _`. Establish `hv'` using `vamp_pull e.inv _ M th hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv'` using `[e.inv_hom_id_assoc]`. Establish `H` using `GlobalTheory.card_zeros_on_torsion_le_of_symmetric_veryAmple h h₂ K P (M.pull e.inv) σ _ C d k hM' hs hv' (fun n hn => ⟨δ * n ^ P.g, by rw [mul_pow]; exact Nat.mul_le_mul_right _ hδ, by`. Establish `hn' : (lbPow M n).IsLB` using `LB.isLB_linComb hM _ _`. Establish `a` using `((GlobalTheory.SecDim.lbPow_mul_and_pull_and_sectionsFiniteDim_iso_invariant K Y _ _ hn').2.2.2.2.2 _ e.symm _).1 (h0 n hn)`. Rewrite `a` using `[Iso.symm_hom, e.inv_hom_id_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((GlobalTheory.SecDim.lbPow_mul_and_pull_and_sectionsFiniteDim_iso_invariant K _ P.A.hom _ (LB.isLB_linComb hn' _ _)).2.1 _ (LB.isLB_linComb hM' _ _) ((GlobalTheory.SecDim.lbPow_mul_and_pull_and_sectionsFiniteDim_iso_invariant K Y (e.hom ≫ P.A.hom) M hM).2.2.2.2.1 _ e.inv n).symm …`. Rewrite `hz` using `[← nonzeroLocus_secPowPull]`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz`. Conclude with `⟨i, fun e => by rw [e, Scheme.basicOpen_zero] at hi; exact hi⟩)`. Rewrite `H` using `[nonzeroLocus_secPowPull, Nat.card_congr (Equiv.subtypeEquivRight (q := fun b => b ^ k = 1) fun x => ⟨fun a => a.1, fun a => ⟨a, hτ x a⟩⟩), hcard, show k ^ (2 * P.g) = k ^ 2 * k ^ (2 * P.g - 2) by rw [← pow_add]; congr 1; omega]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `Nat.le_of_mul_le_mul_right H (by positivity)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem sec_eq_zero (h : Out.Laws) (h₂ : Out.Laws2) {K : Type} [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K))
     {Y : Scheme.{0}} (e : Y ≅ P.A.left) (M : LB Y) {σ : Type} [Finite σ] (th : σ → M.Sec) {C d k δ : ℕ}
@@ -231,23 +231,23 @@ namespace GlobalTheory
 open TorsionCut in
 
 /- English proof (translation)
-Introduce `h h₂ g C σ₀ _ _`. Take `⟨Q₀, hQ₀⟩` from `GlobalTheory.exists_polynomial_finrank_homogeneousSubmodule σ₀`. Use `choose d₀ hd₀ using fun δ : ℕ => exists_uniform_regularity_bound σ₀ (Q₀ - Polynomial.C (δ : ℚ) * Polynomial.X ^ g)`. Set `d` to `(Finset.range (C ^ g + 1)).sup d₀ + 1`. Use `⟨d, C ^ g * g.factorial * d + 1, fun δ hδ σ _ r hr => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd : d₀ δ ≤ d` using `(Finset.le_sup (f := d₀) (Finset.mem_range.2 (Nat.lt_succ_of_le hδ))).trans (Nat.le_succ _)`. Take `⟨Q, hQ⟩` from `regularity_comap_rename_of_surjective σ σ₀ r (Q₀ - Polynomial.C (δ : ℚ) * Polynomial.X ^ g) hr`. Use `⟨Q, fun K _ _ P hg Y e M th k Hh y p hM hs hv hth h0 hk hK hy hp => ?_⟩` and prove the remaining obligations. Substitute `hg` using the available equality. Choose the witnesses or unpack the hypotheses as in `⟨th₀, rfl⟩ : ∃ th₀ : σ₀ → M.Sec, th = th₀ ∘ r := by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `hr.hasRightInverse`. Use `⟨th ∘ s, funext fun a => ?_⟩` and prove the remaining obligations. Use `funext (hth a (s (r a)) (hs _).symm)` as an intermediate fact. Express the relevant statement in the definitionally equal form `th a = th (s (r a))`. Generalize the expression as in `th a = u at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `th (s (r a)) = v at this`. Consider the cases of `u`. Consider the cases of `v`. Consider the cases of `this`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hv₀` using `vamp_of_comp _ M th₀ r hr hv`. Take `⟨a₁, a₂, -⟩` from `GlobalTheory.ZV.FormSec.ideal_of_veryAmple K σ₀ Y _ M th₀ hM hv₀`. Take `⟨_, a₃⟩` from `GlobalTheory.ZV.HilbFn.hilbertFunction_idealOf K σ₀ Y _ M th₀ hM hv₀`. Establish `hreg` using `hd₀ δ K _ a₁ a₂ (by filter_upwards [a₃, Filter.eventually_ge_atTop 1] with n ⟨m, hm, _, hm'⟩ hn`. Take `rfl` from `(GlobalTheory.SecDim.lbPow_mul_and_pull_and_sectionsFiniteDim_iso_invariant K Y _ _ (LB.isLB_linComb hM _ _)).1 _ _ hm (h0 n hn)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg (Nat.cast : ℕ → ℚ) hm'` as an intermediate fact. Rewrite `this` using `[hQ₀]`. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X]`. Move the coercions through the operations in `at this`. Rewrite using `[← this, dimDeg]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `ring)`. Establish `hyp : ∀ i, ((y i).left ≫ e.inv) ≫ e.hom ≫ P.A.hom = 𝟙 _` using `fun i => by`. Rewrite using `[Category.assoc, e.inv_hom_id_assoc]`. Conclude with `Over.w _`. Use `cutBy_of_regular_of_zeroEstimate K σ Hh _ Q d d p le_rfl (fun n hn => ?_) (fun F hF i => ?_) fun F hF hz => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨b₁, b₂⟩` from `hQ K _ _ d (idealOf_comp (e.hom ≫ P.A.hom) hM th₀ r hr) (Nat.le_add_left _ _) n hn`. Use `⟨b₁ (hreg n (hd.trans hn)).1, b₂ fun F hF hFn => ?_⟩` and prove the remaining obligations. Establish `h` using `homogeneousComponent_mul_mem_span_degree _ hd hn ((hreg n (hd.trans hn)).2 F hF hFn) 1`. Rewrite `h` using `[_root_.one_mul, MvPolynomial.homogeneousComponent_of_mem hFn, if_pos rfl]`. Then use the resulting hypothesis. Simplify using `only [idealOf, Ideal.mem_iInf, RingHom.mem_ker, MvPolynomial.coe_eval₂Hom] at hF`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hF K _ (RingHom.id K) ((y i).left ≫ e.inv) (p i) ⟨(hyp i).trans (Spec.map_id _).symm, by rw [Category.comp_id]; exact hp i⟩`. Take `⟨τ, -, c₁, c₂⟩` from `(GlobalTheory.ZV.FormSec.ideal_of_veryAmple K σ Y _ M _ hM hv).2.2 d F hF`. Use `c₁.1 (sec_eq_zero h h₂ P e M _ hM hs hv hδ h0 hk hK τ fun x hx => ?_)` and prove the remaining obligations. Take `⟨i, rfl⟩` from `hy x hx`. Conclude with `(c₂ _ _ (hyp i) (hp i)).1 (hz i)`.
+A detailed English derivation is pending.
 -/
 theorem cutBy_idealOf_torsion : Out.Laws → Out.Laws2 → ∀ (g C : ℕ) (σ₀ : Type) [Finite σ₀] [Nonempty σ₀], ∃ d k₀ : ℕ, ∀ δ ≤ C ^ g, ∀ (σ : Type) [Finite σ] (r : σ → σ₀), Function.Surjective r → ∃ Q : Polynomial ℚ, ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)), P.g = g → ∀ (Y : Scheme.{0}) (e : Y ≅ P.A.left) (M : LB Y) (th : σ → M.Sec) (k : ℕ) (Hh : Type) (y : Hh → (Out.baseOver (Sp K) ⟶ P.A)) (p : Hh → σ → K), M.IsLB → SymB (A := P.A) (M.pull e.inv) → VAmp (e.hom ≫ P.A.hom) M th → (∀ a a', r a = r a' → ∀ j, (th a).f j = (th a').f j) → (∀ n ≥ 1, SectionsHaveFiniteDimension (e.hom ≫ P.A.hom) (lbPow M n) (δ * n ^ g)) → k₀ ≤ k → (k : K) ≠ 0 → (∀ x : Out.baseOver (Sp K) ⟶ P.A, x ^ k = 1 → ∃ h, y h = x) → (∀ h, SecCoord M th ((y h).left ≫ e.inv) (p h)) → CutBy (idealOf (e.hom ≫ P.A.hom) M th (𝟙 Y)) Q d p := by
   intro h h₂ g C σ₀ _ _

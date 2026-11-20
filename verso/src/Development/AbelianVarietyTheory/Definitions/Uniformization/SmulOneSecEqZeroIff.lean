@@ -77,14 +77,14 @@ Both sides reduce to the same expression.
     (c • s).sec.f j = resTop (N.U j) (scal p c) * s.sec.f j := rfl
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, coord_add, coord_neg, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem coord_sub (s t : SecMod p N) (j : N.ι) :
     (s - t).sec.f j = s.sec.f j - t.sec.f j := by
   rw [sub_eq_add_neg, coord_add, coord_neg, ← sub_eq_add_neg]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty, coord_zero]`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, coord_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem coord_sum {I : Type*} (S : Finset I) (s : I → SecMod p N) (j : N.ι) :
     (∑ i ∈ S, s i).sec.f j = ∑ i ∈ S, (s i).sec.f j := by
@@ -99,13 +99,13 @@ Both sides reduce to the same expression.
 @[simp] theorem coord_mk (s : LB.Sec N) (j : N.ι) : (mk p s).sec.f j = s.f j := rfl
 
 /- English proof (translation)
-Conclude with `DVR.SecOps.sec_ext (s := s.sec) (t := t.sec) h`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem ext_coord {s t : SecMod p N} (h : ∀ j, s.sec.f j = t.sec.f j) : s = t := by
   exact DVR.SecOps.sec_ext (s := s.sec) (t := t.sec) h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl j`. Conclude with `coord_zero j`. Introduce `h`. Conclude with `ext_coord fun j => (h j).trans (coord_zero j).symm`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eq_zero_iff_coord (s : SecMod p N) : s = 0 ↔ ∀ j, s.sec.f j = 0 := by
   constructor
@@ -120,7 +120,7 @@ variable {X Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶
 include hJ
 
 /- English proof (translation)
-Use `(congrArg (gs r z (LB.wchart L φ fun k => J (r ≫ φ k))) (coord_zero (p := p) (N := LB.LinComb L φ ε) (fun k => J (r ≫ φ k)))).trans ?_` and prove the remaining obligations. Conclude with `(gs_eq r z _ (hJ.mem φ r) 0).trans (by rw [map_zero, map_zero])`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem value_zero : sval (0 : SecMod p (LB.LinComb L φ ε)).sec r z J = 0 := by
   refine (congrArg (gs r z (LB.wchart L φ fun k => J (r ≫ φ k)))
@@ -128,7 +128,7 @@ theorem value_zero : sval (0 : SecMod p (LB.LinComb L φ ε)).sec r z J = 0 := b
   exact (gs_eq r z _ (hJ.mem φ r) 0).trans (by rw [map_zero, map_zero])
 
 /- English proof (translation)
-Conclude with `(congrArg (gs r z (LB.wchart L φ fun k => J (r ≫ φ k))) (coord_add s t _)).trans (gs_add _ _ _ (hJ.mem φ r) _ _)`.
+A detailed English derivation is pending.
 -/
 theorem value_add (s t : SecMod p (LB.LinComb L φ ε)) :
     sval (s + t).sec r z J = sval s.sec r z J + sval t.sec r z J := by
@@ -136,7 +136,7 @@ theorem value_add (s t : SecMod p (LB.LinComb L φ ε)) :
     (gs_add _ _ _ (hJ.mem φ r) _ _)
 
 /- English proof (translation)
-Use `(congrArg (gs r z (LB.wchart L φ fun k => J (r ≫ φ k))) (coord_smul c s _)).trans ?_` and prove the remaining obligations. Conclude with `(gs_mul r z _ (hJ.mem φ r) _ _).trans (congrArg (· * _) (gs_res r z le_top (hJ.mem φ r) _))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem value_smul (c : F) (s : SecMod p (LB.LinComb L φ ε)) :
     sval (c • s).sec r z J = gs r z ⊤ (scal p c) * sval s.sec r z J := by
@@ -145,7 +145,7 @@ theorem value_smul (c : F) (s : SecMod p (LB.LinComb L φ ε)) :
     (congrArg (· * _) (gs_res r z le_top (hJ.mem φ r) _))
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty]`. Conclude with `value_zero hJ r`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, value_add hJ r, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem value_sum {I : Type*} (S : Finset I) (s : I → SecMod p (LB.LinComb L φ ε)) :
     sval (∑ i ∈ S, s i).sec r z J = ∑ i ∈ S, sval (s i).sec r z J := by
@@ -161,9 +161,9 @@ def oneSec (F : Type) [CommRing F] :
   mk _ ⟨fun _ => 1, fun _ _ => by simp⟩
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : ((1 : Γ(Spec (CommRingCat.of F), ⊤)) : Γ(Spec (CommRingCat.of F), ⊤)) = 0`. Use `congrArg (fun s => (SecMod.sec s).f PUnit.unit) h` as an intermediate fact. Simplify `this` using `[oneSec]`. Establish `h2` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_one, map_zero]`. Conclude with `one_ne_zero h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneSec_ne_zero (F : Type) [CommRing F] [Nontrivial F] : oneSec F ≠ 0 := by
   intro h
@@ -175,9 +175,9 @@ theorem oneSec_ne_zero (F : Type) [CommRing F] [Nontrivial F] : oneSec F ≠ 0 :
   exact one_ne_zero h2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `congrArg (fun s => (SecMod.sec s).f PUnit.unit) h`. Simplify using `only [coord_smul, coord_zero, oneSec, coord_mk, _root_.mul_one] at h1`. Simplify using `[resTop, scal] at h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom h1`. Simplify using `using h2`. Introduce and unpack `rfl`. Conclude with `zero_smul F _`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem smul_oneSec_eq_zero_iff (F : Type) [CommRing F] (c : F) : c • oneSec F = 0 ↔ c = 0 := by
   constructor
@@ -191,18 +191,18 @@ theorem smul_oneSec_eq_zero_iff (F : Type) [CommRing F] (c : F) : c • oneSec F
     exact zero_smul F _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨_, _, oneSec_ne_zero ℚ⟩⟩`.
+Supply the required witnesses or components.
 -/
 example : Nontrivial (SecMod (𝟙 (Spec (CommRingCat.of ℚ)))
     (⟨PUnit, fun _ => ⊤, fun _ _ => 1⟩ : LB (Spec (CommRingCat.of ℚ)))) :=
   ⟨⟨_, _, oneSec_ne_zero ℚ⟩⟩
 /- English proof (translation)
-Rewrite using `[two_smul, two_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example : (2 : ℤ) • oneSec ℚ = (2 : ℚ) • oneSec ℚ := by
   rw [two_smul, two_smul]
 /- English proof (translation)
-Rewrite using `[← two_smul ℚ, Ne, smul_oneSec_eq_zero_iff]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 example : oneSec ℚ + oneSec ℚ ≠ 0 := by
   rw [← two_smul ℚ, Ne, smul_oneSec_eq_zero_iff]; norm_num

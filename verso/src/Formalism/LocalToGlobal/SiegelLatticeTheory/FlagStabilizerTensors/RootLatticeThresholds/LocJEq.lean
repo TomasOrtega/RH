@@ -15,11 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {X : HidaSetting D} {θ : ℝ} (C : Choice X θ)
 
 /- English proof (translation)
-Take `⟨-, h2, h3, -⟩` from `C.isT τ`. Establish `hm' : mᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * m = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS` using `hm`. Use `show (C.Q τ * m * C.Qi τ)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * (C.Q τ * m * C.Qi τ) = Formalism.REAL.Jm (X.B.I.ε (vOf X τ))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (C.Qi τ)ᴴ * ((C.Q τ)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * C.Q τ) * C.Qi τ := by`. Rewrite using `[h3, hm']`. Use `_ = (C.Q τ * C.Qi τ)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * (C.Q τ * C.Qi τ) := by`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) := by`.
-
-Rewrite using `[h2, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transp_mem (τ : D.what₂.Tau) {m : MatKR D.R.k D.R.rS} (hm : m ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)) :
     C.Q τ * m * C.Qi τ ∈ UJset (X.B.I.ε (vOf X τ)) := by
@@ -40,7 +38,7 @@ def Smap (τ : D.what₂.Tau) (γ z : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) :
   Matrix.of.symm (C.Qi τ * umat (γ⁻¹ * z) * C.Q τ * (C.y τ)⁻¹)
 
 /- English proof (translation)
-Establish `hc : Continuous fun z : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)) => umat (γ⁻¹ * z)` using `(Units.continuous_val.comp continuous_subtype_val).comp (continuous_const.mul continuous_id)`. Establish `h2 : Continuous fun z : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)) => C.Qi τ * umat (γ⁻¹ * z) * C.Q τ * (C.y τ)⁻¹` using `((continuous_const.matrix_mul hc).matrix_mul continuous_const).matrix_mul continuous_const`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smap_cont (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) : Continuous (Smap C τ γ) := by
   have hc : Continuous fun z : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)) => umat (γ⁻¹ * z) :=
@@ -51,7 +49,7 @@ theorem smap_cont (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X 
   exact h2
 
 /- English proof (translation)
-Rewrite using `[(X.ds (vOf X τ)).2.2.1.1.2 a ha b hb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sig_mul (τ : D.what₂.Tau) {a b : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ} (ha : a ∈ UJset (X.B.I.ε (vOf X τ)))
     (hb : b ∈ UJset (X.B.I.ε (vOf X τ))) (x : X.B.H (vOf X τ)) :
@@ -60,19 +58,19 @@ theorem sig_mul (τ : D.what₂.Tau) {a b : Matrix (Fin X.B.I.n) (Fin X.B.I.n) �
   rfl
 
 /- English proof (translation)
-Rewrite using `[(X.ds (vOf X τ)).2.2.1.1.1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sig_one (τ : D.what₂.Tau) (x : X.B.H (vOf X τ)) : X.B.σ (vOf X τ) 1 x = x := by
   rw [(X.ds (vOf X τ)).2.2.1.1.1]
   rfl
 
 /- English proof (translation)
-The claim follows from `z.2`.
+A detailed English derivation is pending.
 -/
 theorem umat_mem (τ : D.what₂.Tau) (z : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) : umat z ∈ UJset (X.B.I.ε (vOf X τ)) := z.2
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, (C.isT τ).2.1, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem QQi_left (τ : D.what₂.Tau) (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ) : C.Q τ * (C.Qi τ * M) = M := by
   rw [← Matrix.mul_assoc, (C.isT τ).2.1, Matrix.one_mul]
@@ -80,18 +78,18 @@ theorem QQi_left (τ : D.what₂.Tau) (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) �
 variable (hB : WuBessel C)
 
 /- English proof (translation)
-The claim follows from `(hB u τ).choose_spec.2 z`.
+A detailed English derivation is pending.
 -/
 theorem wloc_eq (u : D.what₂.Word) (τ : D.what₂.Tau) (z : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) :
     X.Wloc u (vOf X τ) z = bOf hB u τ (X.B.σ (vOf X τ) (umat z) (X.B.w (vOf X τ))) :=
   (hB u τ).choose_spec.2 z
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, -⟩` from `C.isT τ`. Use `set J := Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) with hJdef`. Establish `hy : (C.y τ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * C.y τ = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS` using `C.y_mem τ`. Establish `hJ : J * J = 1` using `by rw [hJdef, Formalism.REAL.Jm_mul_self]`. Establish `hK : (C.Qi τ * J * (C.Qi τ)ᴴ) * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h3]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = 1 := by`. Rewrite using `[h2, Matrix.conjTranspose_one, Matrix.one_mul, ← Matrix.mul_assoc J J, hJ, Matrix.one_mul, h1]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `Matrix.isUnit_det_of_left_inverse (B := C.Qi τ * J * (C.Qi τ)ᴴ * (C.y τ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hy, hK]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isUnit_det_y (τ : D.what₂.Tau) : IsUnit (C.y τ).det := by
   obtain ⟨h1, h2, h3, -⟩ := C.isT τ
@@ -112,13 +110,11 @@ private theorem isUnit_det_y (τ : D.what₂.Tau) : IsUnit (C.y τ).det := by
     _ = 1 := by rw [hy, hK]
 
 /- English proof (translation)
-Establish `hu` using `isUnit_det_y C τ`. Establish `hyi : (C.y τ)⁻¹ ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)`. Establish `hy : (C.y τ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * C.y τ = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS` using `C.y_mem τ`. Establish `e1 : C.y τ * (C.y τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Use `show ((C.y τ)⁻¹)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * (C.y τ)⁻¹ = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS := by`. Rewrite using `[e1, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`. Use `⟨transp_mem C τ hyi, transp_mem C τ (C.y_mem τ), ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h1, h2, -, -⟩` from `C.isT τ`. Establish `e2 : (C.y τ)⁻¹ * C.y τ = 1` using `Matrix.nonsing_inv_mul _ hu`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by`.
-
-Rewrite using `[h1, Matrix.one_mul, ← Matrix.mul_assoc (C.y τ)⁻¹ (C.y τ), e2, Matrix.one_mul, h2]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem y_facts (τ : D.what₂.Tau) :
     C.Q τ * (C.y τ)⁻¹ * C.Qi τ ∈ UJset (X.B.I.ε (vOf X τ)) ∧ C.Q τ * C.y τ * C.Qi τ ∈ UJset (X.B.I.ε (vOf X τ)) ∧
@@ -158,9 +154,9 @@ theorem phi'_def (u u' : D.what₂.Word) (τ : D.what₂.Tau) (m : MatKR D.R.k D
       (X.B.σ (vOf X τ) (C.Q τ * C.y τ * C.Qi τ) (X.B.w (vOf X τ)))) := rfl
 
 /- English proof (translation)
-Take `⟨hy1, hy2, hy3⟩` from `y_facts C τ`. Establish `hg : uMat γ * umat γ⁻¹ = 1` using `Units.mul_inv (γ : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ)`. Establish `hg' : ∀ M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ, uMat γ * (umat γ⁻¹ * M) = M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, hg, Matrix.one_mul]`. Establish `hM : C.Q τ * (trG (C.Q τ) (C.Qi τ) γ * Matrix.of (Smap C τ γ z)) * C.Qi τ = umat z * (C.Q τ * (C.y τ)⁻¹ * C.Qi τ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show Matrix.of (Smap C τ γ z) = C.Qi τ * (umat γ⁻¹ * umat z) * C.Q τ * (C.y τ)⁻¹ from rfl]`. Simplify using `only [trG, Matrix.mul_assoc, QQi_left C τ, hg']`. Establish `key : X.B.σ (vOf X τ) (C.Q τ * (trG (C.Q τ) (C.Qi τ) γ * Matrix.of (Smap C τ γ z)) * C.Qi τ) (X.B.σ (vOf X τ) (C.Q τ * C.y τ * C.Qi τ) (X.B.w (vOf X τ))) = X.B.σ (vOf X τ) (umat z) (X.B.w (vOf X τ))`. Rewrite using `[hM, sig_mul τ (umat_mem τ z) hy1, ← sig_mul τ hy1 hy2, hy3, sig_one τ]`. Rewrite using `[phi_def C hB u u' τ, wloc_eq C hB u τ z, key]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_S (u u' : D.what₂.Word) (τ : D.what₂.Tau) (γ z : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) :
     (locS hB u u' τ).Φ (trG (C.Q τ) (C.Qi τ) γ * Matrix.of (Smap C τ γ z)) = X.Wloc u (vOf X τ) z := by
@@ -179,9 +175,9 @@ theorem phi_S (u u' : D.what₂.Word) (τ : D.what₂.Tau) (γ z : Formalism.REA
   rw [phi_def C hB u u' τ, wloc_eq C hB u τ z, key]
 
 /- English proof (translation)
-Take `⟨hy1, hy2, hy3⟩` from `y_facts C τ`. Establish `hM : C.Q τ * Matrix.of (Smap C τ γ z) * C.Qi τ = umat (γ⁻¹ * z) * (C.Q τ * (C.y τ)⁻¹ * C.Qi τ)`. Rewrite using `[show Matrix.of (Smap C τ γ z) = C.Qi τ * (umat γ⁻¹ * umat z) * C.Q τ * (C.y τ)⁻¹ from rfl]`. Use `show _ = (umat γ⁻¹ * umat z) * _`. Simplify using `only [Matrix.mul_assoc, QQi_left C τ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : X.B.σ (vOf X τ) (C.Q τ * Matrix.of (Smap C τ γ z) * C.Qi τ) (X.B.σ (vOf X τ) (C.Q τ * C.y τ * C.Qi τ) (X.B.w (vOf X τ))) = X.B.σ (vOf X τ) (umat (γ⁻¹ * z)) (X.B.w (vOf X τ))`. Rewrite using `[hM, sig_mul τ (umat_mem τ (γ⁻¹ * z)) hy1, ← sig_mul τ hy1 hy2, hy3, sig_one τ]`. Rewrite using `[phi'_def C hB u u' τ, wloc_eq C hB u' τ (γ⁻¹ * z), key]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi'_S (u u' : D.what₂.Word) (τ : D.what₂.Tau) (γ z : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) :
     (locS hB u u' τ).Φ' (Matrix.of (Smap C τ γ z)) = sclOf hB u u' τ • X.Wloc u' (vOf X τ) (γ⁻¹ * z) := by
@@ -197,7 +193,7 @@ theorem phi'_S (u u' : D.what₂.Word) (τ : D.what₂.Tau) (γ z : Formalism.RE
   rw [phi'_def C hB u u' τ, wloc_eq C hB u' τ (γ⁻¹ * z), key]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[Formalism.L2.SG.TermOp.rk1, inner_smul_left, hc, smul_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem smulRight_smul {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup V']
     [InnerProductSpace ℂ V'] (a : V) (b : V') (c : ℂ) (hc : (starRingEnd ℂ) c = c) :
@@ -206,11 +202,9 @@ theorem smulRight_smul {V V' : Type*} [NormedAddCommGroup V] [InnerProductSpace 
   simp [Formalism.L2.SG.TermOp.rk1, inner_smul_left, hc, smul_smul]
 
 /- English proof (translation)
-Establish `hc : (starRingEnd ℂ) (sclOf hB u u' τ) = sclOf hB u u' τ`. Unfold `sclOf`. Conclude with `Complex.conj_ofReal _`. Establish `hpt : ∀ z, (innerSL ℂ ((locS hB u u' τ).Φ' (Matrix.of (Smap C τ γ z)))).smulRight ((locS hB u u' τ).Φ (trG (C.Q τ) (C.Qi τ) γ * Matrix.of (Smap C τ γ z))) = sclOf hB u u' τ • Formalism.L2.SG.TermOp.rk1 (X.Wloc u (vOf X τ) z) (X.Wloc u' (vOf X τ) (γ⁻¹ * z))`. Introduce `z`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[phi_S C hB, phi'_S C hB]`. Conclude with `smulRight_smul _ _ _ hc`. Unfold `LocS.J ampJ Jv Formalism.L2.SG.TermOp.OO`. Rewrite using `[Measure.restrict_univ, integral_map (smap_cont C τ γ).measurable.aemeasurable hG, integral_congr_ae (ae_of_all _ hpt)]`. Use `erw [integral_smul, smul_smul]`.
-
-Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem locJ_map_eq (u u' : D.what₂.Word) (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ)))
     (ν : Measure (Formalism.REAL.UJ (X.B.I.ε (vOf X τ))))
@@ -251,14 +245,14 @@ theorem umat_ujOf' {n : ℕ} {ε : Fin n → Bool} (M : Matrix (Fin n) (Fin n) �
     umat (ujOf' M hM) = M := rfl
 
 /- English proof (translation)
-The claim follows from `isUnit_det_y C τ`.
+A detailed English derivation is pending.
 -/
 theorem unit_det_y (τ : D.what₂.Tau) : IsUnit (C.y τ).det := isUnit_det_y C τ
 
 /- English proof (translation)
-Establish `hy : (C.y τ)⁻¹ * C.y τ = 1` using `Matrix.nonsing_inv_mul _ (unit_det_y C τ)`. Take `⟨-, h2, -, -⟩` from `C.isT τ`. Establish `hg : umat γ * umat γ⁻¹ = 1` using `Units.mul_inv (γ : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = A := by`. Rewrite using `[h2, hy, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc (umat γ⁻¹ * A) (C.Q τ) (C.Qi τ), h2, Matrix.mul_one, ← Matrix.mul_assoc, hg, Matrix.one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem back_smap (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) (A : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ) :
     umat γ * (C.Q τ * (C.Qi τ * (umat γ⁻¹ * A) * C.Q τ * (C.y τ)⁻¹) * C.y τ * C.Qi τ) = A := by
@@ -280,13 +274,13 @@ theorem smap_val (τ : D.what₂.Tau) (γ z : Formalism.REAL.UJ (X.B.I.ε (vOf X
   rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩ show umat γ * (C.Q τ * Matrix.of (Smap C τ γ z) * C.y τ * C.Qi τ) ∈ UJset (X.B.I.ε (vOf X τ))`. Rewrite using `[smap_val C τ γ z, back_smap C τ γ (umat z)]`. Conclude with `umat_mem τ z`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Establish `hx' : umat γ * (C.Q τ * Matrix.of x * C.y τ * C.Qi τ) ∈ UJset (X.B.I.ε (vOf X τ))` using `hx`. Use `⟨ujOf' _ hx', ?_⟩` and prove the remaining obligations. Apply `Matrix.of.injective` to reduce the goal to its premises. Rewrite using `[smap_val C τ γ (ujOf' _ hx'), umat_ujOf' _ hx']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg : umat γ⁻¹ * umat γ = 1` using `Units.inv_mul (γ : (Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ)ˣ)`. Take `⟨h1, -, -, -⟩` from `C.isT τ`. Establish `hy : C.y τ * (C.y τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (unit_det_y C τ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc (umat γ⁻¹) (umat γ), hg, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Matrix.of x := by`. Rewrite using `[h1, Matrix.one_mul, Matrix.one_mul, hy, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_smap (τ : D.what₂.Tau) (γ : Formalism.REAL.UJ (X.B.I.ε (vOf X τ))) :
     Set.range (Smap C τ γ) =

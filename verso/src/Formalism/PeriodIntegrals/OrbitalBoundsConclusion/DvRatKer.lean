@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RationalKernels.AsAlgAp
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RationalKernels.OfMulEps
 
 /- English proof (translation)
-Introduce `K _ σ G _ _ T P0 hM1 EE _ _ ρE M hR`. Establish `hF` using `PI.Dv.RK.eG_mem T P0 (PI.Dv.RK.tau_eps_ne T P0 hM1)`. Conclude with `⟨PI.Dv.RK.rat_ker M P0 hF hR, PI.Dv.RK.form_eq M P0 hF⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem rational_kernel_division : PI.Dv.Conclusion8 := by
   intro K _ σ G _ _ T P0 hM1 EE _ _ ρE M hR

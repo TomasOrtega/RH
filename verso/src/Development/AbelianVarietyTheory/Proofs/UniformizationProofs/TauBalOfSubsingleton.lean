@@ -26,12 +26,12 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-The claim follows from `D.c_add a b`.
+A detailed English derivation is pending.
 -/
 theorem c_add' (D : DegPre R) (a b : D.X) : D.c (a + b) = D.c a * D.c b := D.c_add a b
 
 /- English proof (translation)
-Establish `h` using `c_add' D 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c_zero' (D : DegPre R) : D.c 0 = 1 := by
   have h := c_add' D 0 0
@@ -39,7 +39,7 @@ theorem c_zero' (D : DegPre R) : D.c 0 = 1 := by
   exact left_eq_mul.1 h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using c_zero' D`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, c_add', ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem c_sum (D : DegPre R) {J : Type} (s : Finset J) (x : J → D.X) :
     D.c (∑ l ∈ s, x l) = ∏ l ∈ s, D.c (x l) := by
@@ -49,7 +49,7 @@ theorem c_sum (D : DegPre R) {J : Type} (s : Finset J) (x : J → D.X) :
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, c_add', ih]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, MonObj.comp_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_prod {S : Scheme.{0}} {T T' A : Over S} [GrpObj A] [IsCommMonObj A] (f : T' ⟶ T)
     {J : Type} (s : Finset J) (x : J → (T ⟶ A)) :
@@ -60,13 +60,13 @@ theorem comp_prod {S : Scheme.{0}} {T T' A : Over S} [GrpObj A] [IsCommMonObj A]
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, MonObj.comp_mul, ih]
 
 /- English proof (translation)
-The claim follows from `ρ.map_add a b`.
+A detailed English derivation is pending.
 -/
 theorem act_add {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {O : Type} [Ring O]
     (ρ : RingAct A O) (a b : O) : ρ.act (a + b) = ρ.act a * ρ.act b := ρ.map_add a b
 
 /- English proof (translation)
-Establish `h` using `act_add ρ 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_zero {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {O : Type} [Ring O]
     (ρ : RingAct A O) : ρ.act 0 = 1 := by
@@ -75,9 +75,9 @@ theorem act_zero {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {O : 
   exact left_eq_mul.1 h
 
 /- English proof (translation)
-Introduce `u hu h₀ y y'`. Rewrite using `[Subsingleton.elim (a y) 0, Subsingleton.elim (b y') 0, Subsingleton.elim y 0, Subsingleton.elim y' 0]`. Use `corr_of_val D.P.isLB fun z J hJ => ?_` and prove the remaining obligations. Establish `e : D.pt2 0 0 = (toUnit (TK R)).left ≫ zero2 D.P.A`. Rewrite using `[DegPre.pt2, c_zero', zero2, ← Over.comp_left, comp_lift]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Hom.one_def]`. Use `val_corr hJ h₀ (toUnit (TK R)).left` as an intermediate fact. Rewrite `this` using `[val_pull hJ, val_one]`. Rewrite using `[val_mul hJ, val_pull hJ, Category.id_comp, e, this, _root_.mul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tauBal_of_subsingleton (D : DegPre R) [Subsingleton D.X] (f g : D.P.A ⟶ D.P.A)
     (a b : D.X → D.X) : D.TauBal f g a b := by
@@ -93,27 +93,23 @@ theorem tauBal_of_subsingleton (D : DegPre R) [Subsingleton D.X] (f g : D.P.A �
   rw [val_mul hJ, val_pull hJ, Category.id_comp, e, this, _root_.mul_one]
 
 /- English proof (translation)
-Introduce `hG R _ _ j D D' pD hB hB' O _ _ _ ιD`. Take `⟨ρ, hρ⟩` from `GlobalTheory.T.exists_matrix_order_action_on_power _ D.P D'.P j pD.pw pD.w pD.w_gen ⟨D'.P.L, D'.rig, D'.P.isLB, D'.rig_gen⟩ rfl ⟨D'.cub⟩ O ιD.onB`. Use `letI : Module (Matrix (Fin j) (Fin j) O) (Fin j → D.X) := Matrix.Module.matrixModule`. Use `letI mD : Module (Matrix (Fin j) (Fin j) O) D'.X := pD.xe.module _`. Establish `hx : ∀ (m : Matrix (Fin j) (Fin j) O) (x : D'.X) (i : Fin j), pD.xe (m • x) i = ∑ l, m i l • pD.xe x l` using `fun m x i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `: m • x = pD.xe.symm (m • pD.xe x)` using `rfl`. Rewrite using `[this, AddEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Establish `hc : ∀ (m : Matrix (Fin j) (Fin j) O) (x : D'.X), D'.c (m • x) = D'.c x ≫ ρ.act m` using `fun m x => by`. Apply `pD.pw.lim.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨i⟩`. Use `show D'.c (m • x) ≫ pD.pw.pr i = (D'.c x ≫ ρ.act m) ≫ pD.pw.pr i`. Rewrite using `[pD.c_pr, hx, c_sum, Category.assoc, hρ, comp_prod]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[ιD.c_lin, ← Category.assoc, pD.c_pr]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : ∀ (i l : Fin j) (a : O) (y : D'.X), Matrix.single i l a • y = pD.xe.symm (Pi.single i (a • pD.xe y l))` using `fun i l a y => by`. Apply `pD.xe.injective` to reduce the goal to its premises. Rewrite using `[AddEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `s`. Rewrite using `[hx, Finset.sum_eq_single l (fun b _ hb => by rw [Matrix.single_apply_of_col_ne _ _ hb.symm, zero_smul]) (fun h => absurd (Finset.mem_univ _) h)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : s = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.single_apply_of_row_ne (Ne.symm h), zero_smul, Pi.single_eq_of_ne h]`. Establish `hp : ∀ (i l : Fin j) (a : O) (s : Fin j), ρ.act (Matrix.single i l a) ≫ pD.pw.pr s = if s = i then pD.pw.pr l ≫ ιD.onB.act a else 1` using `fun i l a s => by`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hρ, Finset.prod_eq_single l (fun b _ hb => by`. Rewrite using `[Matrix.single_apply_of_col_ne _ _ hb.symm, act_zero, MonObj.comp_one])`. Use the proof step `(fun h => absurd (Finset.mem_univ _) h)]`. Distinguish the cases in `h : s = i`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Matrix.single_apply_of_row_ne (Ne.symm h), act_zero, MonObj.comp_one, if_neg h]`. Establish `hel : ∀ (i l : Fin j) (a : O), D'.TauBal (ρ.act (Matrix.single i l a)) (ρ.act (star (Matrix.single i l a))) (fun y => Matrix.single i l a • y) (fun y => star (Matrix.single i l a) • y)` using `fun i l a => by`. Establish `e : star (Matrix.single i l a) = Matrix.single l i (star a)`. Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.conjTranspose_single]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := ιD.onB.hom a`. Use `haveI := ιD.onB.hom (star a)`. Rewrite using `[e, funext (hs i l a), funext (hs l i (star a))]`. Conclude with `GlobalTheory.T.rosati_adjoint_balanced_power_lift hG R j D D' pD hB (ιD.onB.act a) (ιD.onB.act (star a)) (fun y => a • y) (fun y => star a • y) (ιD.c_lin a) (ιD.c_lin (star a)) (ιD.onB.rosati a) (ιD.tau_bal a) _ _ i l (hp i l a) (hp l i (star a))`. Use `⟨mD, ⟨ρ, hc, fun m => ?_⟩, hx, hρ⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Proceed by induction on `m using Matrix.induction_on' with`. Consider the case `h_zero`. Break down `Nat.eq_zero_or_pos j with rfl | hj` into its components or cases. Use `haveI : Subsingleton D'.X := pD.xe.toEquiv.subsingleton`. Conclude with `tauBal_of_subsingleton D' _ _ _ _`.
-
-Use `hel ⟨0, hj⟩ ⟨0, hj⟩ 0` as an intermediate fact. Rewrite `this` using `[Matrix.single_zero]`. Then use the resulting hypothesis. Consider the case `h_add p q hp hq => haveI := ρ.hom p haveI := ρ.hom q haveI := ρ.hom (star p) haveI := ρ.hom (star q)`. Use `GlobalTheory.TauBalAdd.tauBal_add hG R D' hB' _ _ _ _ _ _ _ _ (hc p) (hc (star p)) (hc q) (hc (star q)) (ρ.rosati p) (ρ.rosati q) hp hq` as an intermediate fact. Rewrite using `[star_add, act_add, act_add, funext (add_smul p q), funext (add_smul (star p) (star q))]`.
-
-Conclude with `this`. Consider the case `h_std_basis i l a => exact hel i l a`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_matrix_act : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] (j : ℕ) (D D' : DegPre R) (pD : IsPowDeg D' D j), D.TauBimult → D'.TauBimult → ∀ (O : Type) [Ring O] [StarRing O] [Module O D.X] (ιD : D.OAct O), ∃ (_ : Module (Matrix (Fin j) (Fin j) O) D'.X) (ι' : D'.OAct (Matrix (Fin j) (Fin j) O)), (∀ (m : (Matrix (Fin j) (Fin j) O)) (x : D'.X) (i : Fin j), pD.xe (m • x) i = ∑ l, m i l • pD.xe x l) ∧ (∀ (m : (Matrix (Fin j) (Fin j) O)) (i : Fin j), ι'.onB.act m ≫ pD.pw.pr i = ∏ l, pD.pw.pr l ≫ ιD.onB.act (m i l)) := by
   intro hG R _ _ j D D' pD hB hB' O _ _ _ ιD

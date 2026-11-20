@@ -19,14 +19,14 @@ noncomputable section
 namespace GlobalTheory.HondaCM3
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [Formalism.L2.Th1.A.shortW, map_div₀, map_neg, map_ofNat]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem shortW_map {K L : Type} [Field K] [Field L] (φ : K →+* L) (g2 g3 : K) :
     (Formalism.L2.Th1.A.shortW g2 g3).map φ = Formalism.L2.Th1.A.shortW (φ g2) (φ g3) := by
   ext <;> simp [Formalism.L2.Th1.A.shortW, map_div₀, map_neg, map_ofNat]
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [coeff_map, ltLog, coeff_mk]`. Apply the tactic sequence `split_ifs <;> simp [map_inv₀, map_pow, map_natCast]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ltLog_map {K L : Type} [Field K] [Field L] (φ : K →+* L) (l : ℕ) :
     PowerSeries.map φ (ltLog K l) = ltLog L l := by
@@ -35,7 +35,7 @@ theorem ltLog_map {K L : Type} [Field K] [Field L] (φ : K →+* L) (l : ℕ) :
   split_ifs <;> simp [map_inv₀, map_pow, map_natCast]
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, ltLog, coeff_mk, dif_neg]`. Introduce and unpack `⟨j, hj⟩`. Establish `: 0 < (l ^ 2) ^ j` using `pow_pos (pow_pos (by omega) 2) j`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem constantCoeff_ltLog {K : Type} [Field K] (l : ℕ) (hl : 2 ≤ l) :
     constantCoeff (ltLog K l) = 0 := by
@@ -45,7 +45,7 @@ theorem constantCoeff_ltLog {K : Type} [Field K] (l : ℕ) (hl : 2 ≤ l) :
   omega
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.Th1.A.More.map_subst' φ (HasSubst.of_constantCoeff_zero hs) f`.
+A detailed English derivation is pending.
 -/
 theorem map_subst_of {K L : Type} [CommRing K] [CommRing L] (φ : K →+* L) (f s : K⟦X⟧)
     (hs : constantCoeff s = 0) :
@@ -53,15 +53,13 @@ theorem map_subst_of {K L : Type} [CommRing K] [CommRing L] (φ : K →+* L) (f 
   Formalism.L2.Th1.A.More.map_subst' φ (HasSubst.of_constantCoeff_zero hs) f
 
 /- English proof (translation)
-Establish `hb` using `Nat.gcd_eq_gcd_ab n l`. Rewrite `hb` using `[hcop]`. Establish `h1 : (1 : K) = (n : K) * (n.gcdA l : K) + (l : K) * (n.gcdB l : K)`. Use `congrArg (fun z : ℤ => (z : K)) hb` as an intermediate fact. Move the coercions through the operations in `at this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `this`. Establish `hle : ‖(n : K)‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one K n`. Use `le_antisymm hle ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : ‖(n.gcdA l : K)‖ ≤ 1` using `IsUltrametricDist.norm_intCast_le_one K _`. Establish `hb' : ‖(n.gcdB l : K)‖ ≤ 1` using `IsUltrametricDist.norm_intCast_le_one K _`. Establish `e1 : ‖(n : K) * (n.gcdA l : K)‖ < 1`. Rewrite using `[norm_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) ha) hlt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ‖(l : K) * (n.gcdB l : K)‖ < 1`. Rewrite using `[norm_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) hb') hl`. Use `IsUltrametricDist.norm_add_le_max ((n : K) * (n.gcdA l : K)) ((l : K) * (n.gcdB l : K))` as an intermediate fact. Rewrite `this` using `[← h1, norm_one]`.
-
-Conclude with `absurd this (not_le.2 (max_lt e1 e2))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_natCast_eq_one {K : Type} [NormedField K] [IsUltrametricDist K] (l n : ℕ)
     (hl : ‖(l : K)‖ < 1) (hcop : Nat.Coprime n l) : ‖(n : K)‖ = 1 := by
@@ -90,9 +88,9 @@ end GlobalTheory.HondaCM3
 namespace GlobalTheory.HondaCM3
 
 /- English proof (translation)
-Establish `h : ((Real.sqrt d : ℝ) : ℂ) ^ 2 = (d : ℂ)`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[omegaK]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `: (1 : ℂ) - 2 * ((1 + Complex.I * ((Real.sqrt d : ℝ) : ℂ)) / 2) = -(Complex.I * ((Real.sqrt d : ℝ) : ℂ))`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, neg_sq, mul_pow, Complex.I_sq, h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem one_sub_two_omega_sq (d : ℕ) : (1 - 2 * omegaK d) ^ 2 = -(d : ℂ) := by
   have h : ((Real.sqrt d : ℝ) : ℂ) ^ 2 = (d : ℂ) := by
@@ -103,35 +101,31 @@ theorem one_sub_two_omega_sq (d : ℕ) : (1 - 2 * omegaK d) ^ 2 = -(d : ℂ) := 
   rw [this, neg_sq, mul_pow, Complex.I_sq, h]; ring
 
 /- English proof (translation)
-Introduce `d L hsq hd hCM l _ hl5 hld hinert ι g2 g3 hG`. Establish `hG'` using `hG`. Take `⟨hg2K, hg3K, hg2n, hg3n, hdisc, lam, hlam0, hg2, hg3⟩` from `hG`. Use `haveI : CompleteSpace (MaximalUnramifiedExtension l) := Formalism.L2.Th1.D.kurComplete l`. Establish `hl2 : 2 < l` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ, -⟩` from `Formalism.L2.Th1.D.kurFrob l hl2`. Take `⟨hRes, hUnr⟩` from `GlobalTheory.T.maxUnramified_residueAlgClosed_and_frobeniusLift l hl2`. Establish `hU` using `hUnr σ hσ`. Use `set φ : MaximalUnramifiedExtension l →+* ℂ_[l] := (MaximalUnramifiedExtension l).subtype with hφ`. Establish `hnφ : ∀ x : MaximalUnramifiedExtension l, ‖φ x‖ = ‖x‖` using `fun x => rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a2 : MaximalUnramifiedExtension l := ⟨g2, hg2K⟩ with ha2`. Use `set a3 : MaximalUnramifiedExtension l := ⟨g3, hg3K⟩ with ha3`. Establish `hφa2 : φ a2 = g2` using `rfl`. Establish `hφa3 : φ a3 = g3` using `rfl`. Use `set f := Formalism.L2.Th1.A.logSer (Formalism.L2.Th1.A.shortW a2 a3) with hf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set e := Formalism.L2.Th1.A.expSer (Formalism.L2.Th1.A.shortW a2 a3) with he`. Establish `hZ` using `Formalism.L2.Th1.A.zMap (MaximalUnramifiedExtension l) ℂ_[l] φ (Formalism.L2.Th1.A.shortW a2 a3)`. Rewrite `hZ` using `[shortW_map, hφa2, hφa3]`. Establish `hmf : PowerSeries.map φ f = Formalism.L2.Th1.A.logSer (Formalism.L2.Th1.A.shortW g2 g3)` using `hZ.1`. Establish `hme : PowerSeries.map φ e = uSer g2 g3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hZ.2.1, Formalism.L2.Th1.A.uSerEq ℂ_[l] g2 g3]`. Establish `hf0 : constantCoeff f = 0` using `(Formalism.L2.Th1.A.logSpec (MaximalUnramifiedExtension l) _).1`. Establish `hlK : ‖(l : MaximalUnramifiedExtension l)‖ < 1` using `hU.2.2.1`. Establish `h2 : ‖(2 : MaximalUnramifiedExtension l)‖ = 1`. Use `norm_natCast_eq_one (K := MaximalUnramifiedExtension l) l 2 hlK ((Nat.coprime_primes Nat.prime_two (Fact.out)).2 (by omega))` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hInt : IntLog f e` using `GlobalTheory.T.isIntegralHondaLogarithmPair_shortWeierstrass (MaximalUnramifiedExtension l) a2 a3 h2 hg2n hg3n`. Take `⟨hωK, hσω⟩` from `Formalism.L2.Th1.D.sqrtKur d hsq hd l hl5 hinert ι`. Use `set w : MaximalUnramifiedExtension l := ⟨ι (omegaK d), hωK⟩ with hw`. Establish `hσw : σ w = 1 - w` using `hσω σ hσ w rfl`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hσσ : σ (σ w) = w` using `by rw [hσw, map_sub, map_one, hσw]; ring`. Establish `hsq' : (1 - 2 * w) ^ 2 = -((d : ℕ) : MaximalUnramifiedExtension l)`. Apply `(MaximalUnramifiedExtension l).subtype_injective` to reduce the goal to its premises. Use `congrArg ι (one_sub_two_omega_sq d)` as an intermediate fact. Simplify using `only [map_pow, map_sub, map_one, map_mul, map_ofNat, map_neg, map_natCast] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[map_pow, map_sub, map_one, map_mul, map_ofNat, map_neg, map_natCast]`. Conclude with `this`. Establish `hd1 : ‖((d : ℕ) : MaximalUnramifiedExtension l)‖ = 1` using `norm_natCast_eq_one (K := MaximalUnramifiedExtension l) l d hlK ((Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd Fact.out).2 hld)))`. Establish `hnorm : ‖σ w - w‖ = 1`. Establish `e1 : σ w - w = 1 - 2 * w` using `by rw [hσw]; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Establish `: ‖1 - 2 * w‖ ^ 2 = 1` using `by rw [← norm_pow, hsq', norm_neg, hd1]`. Use polynomial arithmetic with `[norm_nonneg (1 - 2 * w), sq_nonneg (‖1 - 2 * w‖ - 1)]`. Establish `hCf : ∀ a : MaximalUnramifiedExtension l, constantCoeff (C a * f) = 0` using `fun a => by`. Rewrite using `[map_mul, hf0, mul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmapMul : ∀ a : MaximalUnramifiedExtension l, PowerSeries.map φ (Formalism.L2.Th1.C.mulBy f e a) = Formalism.L2.Th1.C.mulBy (Formalism.L2.Th1.A.logSer (Formalism.L2.Th1.A.shortW g2 g3)) (uSer g2 g3) (φ a)`. Introduce `a`. Rewrite using `[Formalism.L2.Th1.C.mulBy, Formalism.L2.Th1.C.mulBy, map_subst_of φ e _ (hCf a), hme, map_mul, map_C, hmf]`. Establish `hCoef : CoefLe 1 (Formalism.L2.Th1.C.mulBy f e w)`. Introduce `n`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.T.cmMultiplierIntegralSeriesAtInertPrime_proof d L hd hCM l hl5 hld hinert ι g2 g3 hG' n` as an intermediate fact. Rewrite using `[← hnφ, ← coeff_map, hmapMul]`. Conclude with `this`. Establish `hht : ∃ n, n ≤ l ^ 2 ∧ ‖coeff n (Formalism.L2.Th1.C.mulBy f e (l : MaximalUnramifiedExtension l))‖ = 1`. Establish `hc : ι.symm lam ≠ 0` using `by simpa using hlam0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨L', -, hL2, hL3, -, -⟩` from `GlobalTheory.T.exists_homothetic_periodPair_lattice L (ι.symm lam) hc`. Establish `e2 : ι L'.g₂ = g2` using `by rw [hL2, map_mul, map_pow, RingEquiv.apply_symm_apply, hg2]`. Establish `e3 : ι L'.g₃ = g3` using `by rw [hL3, map_mul, map_pow, RingEquiv.apply_symm_apply, hg3]`. Take `⟨n, hn, h1⟩` from `GlobalTheory.T.formalGroup_height_le_two_good_reduction L' l hl5 ι (by rw [e2]; exact hg2n) (by rw [e3]; exact hg3n) (by rw [e2, e3]; exact hdisc)`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hnφ, ← coeff_map, hmapMul, map_natCast]`. Rewrite `h1` using `[e2, e3, ← Formalism.L2.Th1.A.uSerEq ℂ_[l] g2 g3]`. Conclude with `h1`. Take `⟨ε, hε1, hεC⟩` from `GlobalTheory.T.heightTwo_formalGroup_unramified_multiplier (MaximalUnramifiedExtension l) l σ hU hRes f e hInt w hCoef hσσ hnorm hht`. Use `⟨φ ε, ε.2, hε1, fun n => ?_⟩` and prove the remaining obligations.
-
-Establish `hs0 : constantCoeff (C ε * ltLog (MaximalUnramifiedExtension l) l) = 0`. Rewrite using `[map_mul, constantCoeff_ltLog l (by omega), mul_zero]`. Establish `hEq : (uSer g2 g3).subst (C (φ ε) * ltLog ℂ_[l] l) = PowerSeries.map φ (e.subst (C ε * ltLog (MaximalUnramifiedExtension l) l))`. Rewrite using `[map_subst_of φ e _ hs0, hme, map_mul, map_C, ltLog_map]`. Rewrite using `[hEq, coeff_map]`.
-
-Conclude with `⟨(coeff n (e.subst (C ε * ltLog (MaximalUnramifiedExtension l) l))).2, by rw [hnφ]; exact hεC n⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cm3 : CM3 := by
   intro d L hsq hd hCM l _ hl5 hld hinert ι g2 g3 hG

@@ -19,13 +19,13 @@ variable {D : D7} {S T : HSp D}
   {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)} {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)}
 
 /- English proof (translation)
-Take `⟨M, hM, hMu⟩` from `GlobalTheory.PlaceDatum.exists_den_latO (S := S) (T := T) hS.fg hT.fg`. Take `⟨K, hK, hKt⟩` from `GlobalTheory.PlaceDatum.exists_nsmul_mem_latO (S := S) (T := T) hS hT`. Take `⟨N, hN, hNm⟩` from `GlobalTheory.PlaceDatum.exists_den_mul (Formalism.L2.Herm.intAf D.host.F D.host.E) (fun z => GlobalTheory.PlaceDatum.exists_den_adele z) ((Formalism.L2.Theta.mt T h).map (toEAf D)) ((Formalism.L2.Theta.mt S g⁻¹).map (toEAf D))`. Use `⟨K * (N * M), Nat.mul_pos hK (Nat.mul_pos hN hM), fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[← smul_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `hKt` to reduce the goal to its premises. Establish `h0` using `GlobalTheory.SplitScalar.latO_fin hu`. Establish `hz : (actO S T g h u).map (infPart D) = 0`. Simplify using `only [actO, Matrix.map_mul, h0, Matrix.mul_zero, Matrix.zero_mul]`. Use extensionality with `i j`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Establish `hij` using `congrFun (congrFun hz i) j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, map_nsmul, Matrix.zero_apply] at hij ⊢`. Rewrite using `[hij, smul_zero]`. Introduce `i j`. Establish `hX` using `hNm M (u.map (toEAf D)) (fun i j => hMu u hu i j) i j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : toEAf D (((N * M) • actO S T g h u) i j) = ((N * M : ℕ) : EAf D) * ((Formalism.L2.Theta.mt T h).map (toEAf D) * u.map (toEAf D) * (Formalism.L2.Theta.mt S g⁻¹).map (toEAf D)) i j`. Simplify using `only [actO]`. Rewrite using `[Matrix.smul_apply, map_nsmul, nsmul_eq_mul, ← Matrix.map_mul, ← Matrix.map_mul, Matrix.map_apply]`. Rewrite using `[e1]`. Conclude with `hX`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nsmul_actO (hS : Submodule.IsLattice D.host.E ΛS) (hT : Submodule.IsLattice D.host.E ΛT)
     (g : GA D S) (h : GA D T) : ∃ N : ℕ, 0 < N ∧ ∀ u ∈ latO S T ΛS ΛT fun _ => True,
@@ -55,15 +55,15 @@ theorem exists_nsmul_actO (hS : Submodule.IsLattice D.host.E ΛS) (hT : Submodul
     exact hX
 
 /- English proof (translation)
-Simplify using `only [IsSBHalf] at hΦ ⊢`. Take `⟨h1, k, hk, h2, h3⟩` from `hΦ`. Take `⟨N, hN, hNu⟩` from `exists_nsmul_actO hS hT g h`. Take `⟨M, hM, hMu⟩` from `exists_nsmul_actO hS hT g⁻¹ h⁻¹`. Use `⟨fun t ht => isHalf_of_act g h (h1 _ ht), k * (N * M), Nat.mul_pos hk (Nat.mul_pos hN hM), ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u hu hua t`. Rewrite using `[act_add, act_nsmul]`. Establish `hw` using `hNu u hu`. Establish `hwa : IsHalf a (N • actO S T g h u)` using `GlobalTheory.SplitScalar.isHalf_nsmul (GlobalTheory.SplitHecke.isHalf_actO g h hua) N`. Establish `e : (k * (N * M)) • actO S T g h u = k • (M • (N • actO S T g h u))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `h2 _ (AddSubgroup.nsmul_mem _ hw M) (GlobalTheory.SplitScalar.isHalf_nsmul hwa M) _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Establish `hm` using `hMu _ (h3 _ ht)`. Rewrite `hm` using `[act_nsmul, GlobalTheory.SplitHecke.actO_inv_actO]`. Establish `e : (k * (N * M)) • t = N • (M • (k • t))`. Rewrite using `[smul_smul, smul_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `AddSubgroup.nsmul_mem _ hm N`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSBHalf_actO (hS : Submodule.IsLattice D.host.E ΛS) (hT : Submodule.IsLattice D.host.E ΛT) {a : AE D}
     (g : GA D S) (h : GA D T) {Φ : WO S T → ℂ} (hΦ : IsSBHalf a (latO S T ΛS ΛT fun _ => True) Φ) :
@@ -95,7 +95,7 @@ theorem isSBHalf_actO (hS : Submodule.IsLattice D.host.E ΛS) (hT : Submodule.Is
     exact AddSubgroup.nsmul_mem _ hm N
 
 /- English proof (translation)
-Unfold `absV`. Establish `hq : ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ≠ 0`. Conclude with `(Ideal.absNorm_eq_zero_iff.not.mpr v.ne_bot)` after adjusting the coercions. Rewrite using `[Units.val_mul, map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).mpr x.ne_zero) ((Valuation.ne_zero_iff _).mpr y.ne_zero), zpow_add₀ hq]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem absV_mul {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (x y : (Fv F v)ˣ) :
     absV F v (x * y) = absV F v x * absV F v y := by
@@ -106,7 +106,7 @@ theorem absV_mul {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (�
     ((Valuation.ne_zero_iff _).mpr y.ne_zero), zpow_add₀ hq]
 
 /- English proof (translation)
-Unfold `absFin`. Repeatedly rewrite using `[map_mul, absV_mul]`. Conclude with `finprod_mul_distrib (absFin_finite D x) (absFin_finite D y)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absFin_mul (x y : (AE D)ˣ) : absFin D (x * y) = absFin D x * absFin D y := by
   unfold absFin
@@ -114,9 +114,9 @@ theorem absFin_mul (x y : (AE D)ˣ) : absFin D (x * y) = absFin D x * absFin D y
   exact finprod_mul_distrib (absFin_finite D x) (absFin_finite D y)
 
 /- English proof (translation)
-Establish `h` using `absFin_mul (D := D) 1 1`. Rewrite `h` using `[mul_one]`. Establish `hp` using `absFin_pos D 1`. Establish `h2 : absFin D 1 * (absFin D 1 - 1) = 0` using `by rw [mul_sub, mul_one, ← h, sub_self]`. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h3 hp.ne'`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem absFin_one : absFin D 1 = 1 := by
   have h := absFin_mul (D := D) 1 1
@@ -128,7 +128,7 @@ theorem absFin_one : absFin D 1 = 1 := by
   · linarith
 
 /- English proof (translation)
-Unfold `modFac`. Rewrite using `[absFin_mul, absFin_mul, Real.mul_rpow (absFin_pos D x).le (absFin_pos D x').le, Real.mul_rpow (absFin_pos D y).le (absFin_pos D y').le]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem modFac_mul (x x' y y' : (AE D)ˣ) : modFac S T (x * x') (y * y') = modFac S T x y * modFac S T x' y' := by
   unfold modFac
@@ -137,7 +137,7 @@ theorem modFac_mul (x x' y y' : (AE D)ˣ) : modFac S T (x * x') (y * y') = modFa
   ring
 
 /- English proof (translation)
-Unfold `modFac`. Rewrite using `[absFin_one, Real.one_rpow, Real.one_rpow, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem modFac_one : modFac S T 1 1 = 1 := by
   unfold modFac

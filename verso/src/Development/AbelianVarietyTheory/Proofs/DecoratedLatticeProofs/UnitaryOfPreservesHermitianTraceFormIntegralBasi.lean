@@ -33,7 +33,7 @@ theorem trBil_apply (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (x y : Fin n
 
 omit [NumberField E] in
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem hform_smul_right (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) (a : E) :
     Formalism.UG.hform σ J x (a • y) = a * Formalism.UG.hform σ J x y := by
@@ -41,9 +41,9 @@ theorem hform_smul_right (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (x y : 
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `u _`. Take `⟨d, hd, hint⟩` from `exists_integral_multiples ℤ ℚ (Finset.univ.image u)`. Take `⟨z, hz⟩` from `h (d • u) (fun i => hint (u i) (Finset.mem_image_of_mem u (Finset.mem_univ i)))`. Establish `h1 : (d : ℚ) • u ∈ Submodule.span ℚ (Set.range e)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Int.cast_smul_eq_zsmul, hz]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Conclude with `Submodule.smul_of_tower_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hd' : (d : ℚ) ≠ 0` using `by exact_mod_cast hd`. Conclude with `(Submodule.smul_mem_iff _ hd').1 h1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem span_eq_top {N : ℕ} (e : Fin N → Fin n → E)
     (h : ∀ u : Fin n → E, (∀ i, IsIntegral ℤ (u i)) → ∃ z : Fin N → ℤ, u = ∑ i, z i • e i) :
@@ -61,13 +61,13 @@ theorem span_eq_top {N : ℕ} (e : Fin N → Fin n → E)
   exact (Submodule.smul_mem_iff _ hd').1 h1
 
 /- English proof (translation)
-Set `f : (Fin n → E) →ₗ[ℚ] (Fin n → E)` to `(Matrix.mulVecLin M).restrictScalars ℚ`. Establish `hB : (trBil σ J).compl₁₂ f f = trBil σ J`. Use `LinearMap.ext_on_range hs fun i => LinearMap.ext_on_range hs fun j => ?_` and prove the remaining obligations. Simplify `h i j` using `[f]`. Establish `hB' : ∀ x y, trBil σ J (M *ᵥ x) (M *ᵥ y) = trBil σ J x y` using `fun x y => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun₂ hB x y` as an intermediate fact. Simplify `this` using `[f]`. Establish `hh : ∀ x y, Formalism.UG.hform σ J (M *ᵥ x) (M *ᵥ y) = Formalism.UG.hform σ J x y` using `fun x y => by`. Assume the negation of the conclusion as `hne`. Establish `hD : Formalism.UG.hform σ J (M *ᵥ x) (M *ᵥ y) - Formalism.UG.hform σ J x y ≠ 0` using `sub_ne_zero.2 hne`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1` using `hB' x ((Formalism.UG.hform σ J (M *ᵥ x) (M *ᵥ y) - Formalism.UG.hform σ J x y)⁻¹ • y)`. Rewrite `h1` using `[Matrix.mulVec_smul, trBil_apply, trBil_apply, hform_smul_right, hform_smul_right, ← sub_eq_zero, ← map_sub, ← mul_sub, inv_mul_cancel₀ hD, ← (algebraMap ℚ E).map_one, Algebra.trace_algebraMap]`. Establish `: Module.finrank ℚ E ≠ 0` using `Module.finrank_pos.ne'`. Simplify using `[this] at h1`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use `hh (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Simplify using `only [Formalism.UG.hform, Matrix.mulVec_single_one, Matrix.col_apply, Pi.single_apply] at this`. Simplify using `only [Formalism.UG.cT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm, this]`. Simplify using `[apply_ite σ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unitary_of_trace (σ : E →+* E) (J M : Matrix (Fin n) (Fin n) E) {N : ℕ} (e : Fin N → Fin n → E)
     (hs : Submodule.span ℚ (Set.range e) = ⊤)
@@ -101,7 +101,7 @@ end GlobalTheory.CuspGeo.TraceUnitary
 namespace GlobalTheory.CuspGeo
 
 /- English proof (translation)
-The claim follows from `TraceUnitary.unitary_of_trace _ _ _ e (TraceUnitary.span_eq_top e fun u hu => (he.2 u).1 hu) h`.
+A detailed English derivation is pending.
 -/
 theorem unitary_of_trForm_zBasis (I : AutInst) {N : ℕ} (e : Fin N → Fin I.n → I.E)
     (M : Matrix (Fin I.n) (Fin I.n) I.E) (he : IsZBasis I e)

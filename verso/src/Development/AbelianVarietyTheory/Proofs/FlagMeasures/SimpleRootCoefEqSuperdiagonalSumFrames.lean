@@ -13,17 +13,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SlocCoef
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.HL.PlacesInt.nontrivial_Ep (A.loc p)`. Use `set α : ℕ → (A.loc p).Ep := fun n => algebraMap (A.loc p).Fp (A.loc p).Ep ((c : (A.loc p).Fp) ^ (r - n)) with hα`. Establish `hu : ∀ n, IsUnit (α n)` using `fun n => ((c.isUnit.pow _)).map _`. Establish `key` using `(GlobalTheory.HL.RatExt.rational_extend A (k + 2 * r + 1) p).2.2.2.2.1 Hm (fv b) (ev a)`. Establish `h1 : hf (A.L p) S.Hm (A.bc p (fv b)) (Se a) = α b * (if b = a.castSucc then 1 else 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hfe b, ← hd b a]`. Simplify using `only [hf, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : hf (A.L p) S.Hm (A.bc p (fv b)) (Se a) = (A.loc p).ιE (∑ i, ∑ j, fv b i * Hm i j * sig (ev a j)) * α a`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hee a, ← key, hHm]`. Simplify using `only [hf, Pi.smul_apply, smul_eq_mul, map_mul, AlgEquiv.commutes, Finset.sum_mul, hα]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Use `split_ifs at h2 ⊢ with hb`. Substitute `hb` using the available equality. Establish `ha : ((a.castSucc : Fin (r + 1)) : ℕ) = (a : ℕ)` using `Fin.coe_castSucc a`. Rewrite `h2` using `[ha, mul_one]`. Establish `h3 : (A.loc p).ιE (∑ i, ∑ j, fv a.castSucc i * Hm i j * sig (ev a j)) = (A.loc p).ιE 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_one]`. Conclude with `(hu (a : ℕ)).mul_right_cancel (by rw [one_mul]; exact h2.symm)`. Conclude with `(A.loc p).ιE.injective h3`. Rewrite `h2` using `[mul_zero]`. Establish `h3` using `((hu (a : ℕ)).mul_left_eq_zero).mp h2.symm`.
-
-Conclude with `(A.loc p).ιE.injective (by rw [h3, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem rationalDualPairing_eq_scaledLocalPairing {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {sig : E →ₐ[F] E} (A : Places F E sig) {r k : ℕ} (p : IsDedekindDomain.HeightOneSpectrum (𝓞 F))
@@ -68,7 +66,7 @@ end GlobalTheory.SlocCoef
 namespace GlobalTheory.SlocCoef
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 F)`. Set `p : IsDedekindDomain.HeightOneSpectrum (𝓞 F)` to `⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField F)⟩`. Conclude with `rationalDualPairing_eq_scaledLocalPairing A p (G.S p) G.Hm (G.c p) (G.Hm_eq p) G.f G.es (G.S p).f (G.S p).es (G.f_eq p) (G.es_eq p) (G.S p).dual b a`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem pair_f_es {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {sig : E →ₐ[F] E} {A : Places F E sig} {r k : ℕ} (G : GFrames A r k) (b : Fin (r + 1)) (a : Fin r) :
@@ -80,7 +78,7 @@ theorem pair_f_es {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
     (G.f_eq p) (G.es_eq p) (G.S p).dual b a
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 F)`. Set `p : IsDedekindDomain.HeightOneSpectrum (𝓞 F)` to `⟨P, hP.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField F)⟩`. Conclude with `rationalDualPairing_eq_scaledLocalPairing A p (G.S p) G.Hm (G.c p) (G.Hm_eq p) G.f' G.es' (G.S p).f' (G.S p).es' (G.f'_eq p) (G.es'_eq p) (G.S p).dual' b a`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem pair_f'_es' {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {sig : E →ₐ[F] E} {A : Places F E sig} {r k : ℕ} (G : GFrames A r k) (b : Fin (r + 1)) (a : Fin r) :
@@ -92,13 +90,13 @@ theorem pair_f'_es' {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
     (G.f'_eq p) (G.es'_eq p) (G.S p).dual' b a
 
 /- English proof (translation)
-Establish `h1 : ∀ a : Fin r, ∑ i, ∑ j, N (fv a.succ) i * Hm i j * sig (ev a j) = B a.castSucc a.succ`. Introduce `a`. Rewrite using `[hN]`. Establish `e : ∀ i j, (∑ c, B c a.succ • fv c) i * Hm i j * sig (ev a j) = ∑ c, B c a.succ * (fv c i * Hm i j * sig (ev a j))`. Introduce `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e]`. Rewrite using `[Finset.sum_congr rfl fun i _ => Finset.sum_comm, Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[← Finset.mul_sum, hd]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl fun a _ => h1 a]`. Unfold `Formalism.L2.SG.PairVal.sgUp`. Rewrite using `[Fin.sum_univ_castSucc]`.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.coe_castSucc, Fin.val_last, lt_self_iff_false, dif_neg, not_false_eq_true, add_zero, add_lt_add_iff_right, Fin.is_lt, dif_pos]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem coef_sum {E : Type} [Field E] [NumberField E] (sig : E → E) {r n : ℕ}
     (Hm : Matrix (Fin n) (Fin n) E) (fv : Fin (r + 1) → Fin n → E) (ev : Fin r → Fin n → E)
@@ -130,7 +128,7 @@ theorem coef_sum {E : Type} [Field E] [NumberField E] (sig : E → E) {r n : ℕ
 end GlobalTheory.SlocCoef
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ sig A r k G B N`. Conclude with `⟨GlobalTheory.SlocCoef.coef_sum sig G.Hm G.f G.es (GlobalTheory.SlocCoef.pair_f_es G) N B, GlobalTheory.SlocCoef.coef_sum sig G.Hm G.f' G.es' (GlobalTheory.SlocCoef.pair_f'_es' G) N B⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.SlocCoef.main : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig) (r k : ℕ) (G : GFrames A r k) (B : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (N : G.GLV), ((∀ b, N (G.f b) = ∑ a, B a b • G.f a) → (∑ a : Fin r, ∑ i, ∑ j, N (G.f a.succ) i * G.Hm i j * sig (G.es a j)) = Formalism.L2.SG.PairVal.sgUp B) ∧ ((∀ b, N (G.f' b) = ∑ a, B a b • G.f' a) → (∑ a : Fin r, ∑ i, ∑ j, N (G.f' a.succ) i * G.Hm i j * sig (G.es' a j)) = Formalism.L2.SG.PairVal.sgUp B) := by
   intro F E _ _ _ _ _ sig A r k G B N

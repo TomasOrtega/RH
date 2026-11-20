@@ -27,14 +27,14 @@ variable (D : D7)
 local notation "FI" => FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E
 
 /- English proof (translation)
-Use `show D.host.gal (D.host.gal.symm _) = _`. Conclude with `MulEquiv.apply_symm_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem galE_conj : D.host.galE D.host.conj = D.R.cc := by
   show D.host.gal (D.host.gal.symm _) = _
   exact MulEquiv.apply_symm_apply _ _
 
 /- English proof (translation)
-Use `show D.host.conj D.host.sqd = - D.host.sqd`. Rewrite using `[D.host.gal_sqd, show D.host.gal D.host.conj = D.R.cc from galE_conj D]`. Simplify using `[Formalism.HC.Frame.cc, Formalism.FrobeniusOrbits.c0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_b : D.host.conj D.host.sqrtMinusD = - D.host.sqrtMinusD := by
   show D.host.conj D.host.sqd = - D.host.sqd
@@ -42,9 +42,9 @@ theorem conj_b : D.host.conj D.host.sqrtMinusD = - D.host.sqrtMinusD := by
   simp [Formalism.HC.Frame.cc, Formalism.FrobeniusOrbits.c0]
 
 /- English proof (translation)
-Introduce `h`. Apply `hI` to reduce the goal to its premises. Establish `k : σ⁻¹ • σ • I = I` using `inv_smul_smul σ I`. Rewrite using `[← k, h]`. Use `first`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `simp`. Consider the case `(rw [Ideal.pointwise_smul_def]; exact Ideal.map_bot)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem smul_ne_bot' (σ : D.host.E ≃ₐ[ℚ] D.host.E) (I : Ideal (𝓞 D.host.E)) (hI : I ≠ ⊥) :
     σ • I ≠ ⊥ := by
@@ -57,15 +57,15 @@ private theorem smul_ne_bot' (σ : D.host.E ≃ₐ[ℚ] D.host.E) (I : Ideal (�
     | (rw [Ideal.pointwise_smul_def]; exact Ideal.map_bot)
 
 /- English proof (translation)
-Conclude with `Real.sqrt_pos.mpr (by exact_mod_cast D.host.hyp.2.1.pos)`.
+A detailed English derivation is pending.
 -/
 theorem sqrt_d_pos : 0 < Real.sqrt D.host.d := by
   exact Real.sqrt_pos.mpr (by exact_mod_cast D.host.hyp.2.1.pos)
 
 /- English proof (translation)
-Introduce `h`. Establish `k` using `D.host.sqd_sq`. Establish `hd : (D.host.d : D.host.E) ≠ 0` using `by exact_mod_cast D.host.hyp.2.1.ne_zero`. Rewrite `k` using `[show D.host.sqd = D.host.sqrtMinusD from rfl, h]`. Apply `hd` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Take the linear combination `k`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem b_ne_zero : D.host.sqrtMinusD ≠ 0 := by
   intro h
@@ -76,9 +76,9 @@ theorem b_ne_zero : D.host.sqrtMinusD ≠ 0 := by
   linear_combination k
 
 /- English proof (translation)
-Simplify using `only [FractionalIdeal.mem_coeIdeal]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, hz⟩`. Use `⟨σ⁻¹ • a, (Ideal.mem_pointwise_smul_iff_inv_smul_mem).1 ha, ?_⟩` and prove the remaining obligations. Establish `e1 : algebraMap (𝓞 D.host.E) D.host.E (σ⁻¹ • a) = σ⁻¹ (algebraMap (𝓞 D.host.E) D.host.E a)` using `rfl`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e1, hz]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨σ • a, Ideal.smul_mem_pointwise_smul σ a A ha, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_coe_smul (σ : D.host.E ≃ₐ[ℚ] D.host.E) (A : Ideal (𝓞 D.host.E)) (z : D.host.E) :
     σ z ∈ ((σ • A : Ideal (𝓞 D.host.E)) : FI) ↔ z ∈ (A : FI) := by
@@ -94,13 +94,11 @@ theorem mem_coe_smul (σ : D.host.E ≃ₐ[ℚ] D.host.E) (A : Ideal (𝓞 D.hos
     exact ⟨σ • a, Ideal.smul_mem_pointwise_smul σ a A ha, rfl⟩
 
 /- English proof (translation)
-Establish `hB0 : ((Bd : Ideal (𝓞 D.host.E)) : FI) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr hB`. Establish `hB1 : ((σ • Bd : Ideal (𝓞 D.host.E)) : FI) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr (smul_ne_bot' D σ Bd hB)`. Rewrite using `[← div_eq_mul_inv, ← div_eq_mul_inv]`. Use `first`. Consider the case `rw [FractionalIdeal.mem_div_iff_of_ne_zero hB0, FractionalIdeal.mem_div_iff_of_ne_zero hB1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `rw [FractionalIdeal.mem_div_iff_of_nonzero hB0, FractionalIdeal.mem_div_iff_of_nonzero hB1]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Establish `k` using `h (σ y) ((mem_coe_smul D σ Bd y).2 hy)`. Rewrite `k` using `[← map_mul]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(mem_coe_smul D σ A (x * y)).1 k`. Introduce `h y hy`. Establish `hy' : σ (σ.symm y) ∈ ((σ • Bd : Ideal (𝓞 D.host.E)) : FI)`. Rewrite using `[AlgEquiv.apply_symm_apply]`. Conclude with `hy`.
-
-Establish `k` using `(mem_coe_smul D σ A _).2 (h _ ((mem_coe_smul D σ Bd _).1 hy'))`. Rewrite `k` using `[map_mul, AlgEquiv.apply_symm_apply]`. Conclude with `k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_quot_smul (σ : D.host.E ≃ₐ[ℚ] D.host.E) (A Bd : Ideal (𝓞 D.host.E)) (hB : Bd ≠ ⊥)
     (x : D.host.E) :
@@ -126,9 +124,9 @@ theorem mem_quot_smul (σ : D.host.E ≃ₐ[ℚ] D.host.E) (A Bd : Ideal (𝓞 D
     exact k
 
 /- English proof (translation)
-Use extensionality with `z`. Rewrite using `[FractionalIdeal.mem_spanSingleton, FractionalIdeal.mem_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨-a, by simp [Algebra.smul_def]⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨-a, by simp [Algebra.smul_def]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem spanSingleton_neg_one :
     FractionalIdeal.spanSingleton (nonZeroDivisors (𝓞 D.host.E)) (-1 : D.host.E) = 1 := by
@@ -141,7 +139,7 @@ theorem spanSingleton_neg_one :
     exact ⟨-a, by simp [Algebra.smul_def]⟩
 
 /- English proof (translation)
-Conclude with `D.host.𝔟_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem diffEK : differentIdeal (𝓞 D.host.K) (𝓞 D.host.E) =
     D.host.𝔟 * (D.host.conj • D.host.𝔟) := by
@@ -149,18 +147,18 @@ theorem diffEK : differentIdeal (𝓞 D.host.K) (𝓞 D.host.E) =
 
 attribute [local instance] FractionRing.liftAlgebra in
 /- English proof (translation)
-Conclude with `differentIdeal_eq_differentIdeal_mul_differentIdeal ℤ _ _`.
+A detailed English derivation is pending.
 -/
 theorem diffE : differentIdeal ℤ (𝓞 D.host.E) = differentIdeal (𝓞 D.host.K) (𝓞 D.host.E) *
     (differentIdeal ℤ (𝓞 D.host.K)).map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) := by
   exact differentIdeal_eq_differentIdeal_mul_differentIdeal ℤ _ _
 
 /- English proof (translation)
-Establish `hs : φ D.host.sqrtMinusD = Complex.I * (Real.sqrt D.host.d : ℂ)` using `(SlopeTestRemainingChoices.mem_PhiEmb_iff D φ).1 hφ`. Establish `hpos` using `sqrt_d_pos D`. Rewrite using `[map_div₀, map_neg, map_one, map_mul, map_natCast, hs]`. Establish `hN' : (N : ℂ) ≠ 0` using `by exact_mod_cast hN`. Establish `hs0 : ((Real.sqrt D.host.d : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hpos.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : (-1 : ℂ) / ((N : ℂ) * (Complex.I * ((Real.sqrt D.host.d : ℝ) : ℂ))) = Complex.I * ((((N : ℝ) * Real.sqrt D.host.d)⁻¹ : ℝ) : ℂ)`. Rewrite using `[div_eq_iff (mul_ne_zero hN' (mul_ne_zero Complex.I_ne_zero hs0))]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form.
 
-Rewrite using `[Complex.I_sq]`. Rewrite using `[key]`. Simplify using `only [Complex.mul_im, Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, one_mul, add_zero, mul_zero, zero_add]`. Conclude with `inv_pos.mpr (mul_pos (by exact_mod_cast Nat.pos_of_ne_zero hN) hpos)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem im_pos (N : ℕ) (hN : N ≠ 0) (φ : D.host.E →+* ℂ) (hφ : φ ∈ PhiEmb D) :
     0 < (φ (-1 / ((N : D.host.E) * D.host.sqrtMinusD))).im := by
@@ -183,31 +181,27 @@ theorem im_pos (N : ℕ) (hN : N ≠ 0) (φ : D.host.E →+* ℂ) (hφ : φ ∈ 
   exact inv_pos.mpr (mul_pos (by exact_mod_cast Nat.pos_of_ne_zero hN) hpos)
 
 /- English proof (translation)
-Introduce `cc hcc`. Take `⟨β, hβ, hβspan⟩` from `hA`. Establish `hN0 : Ideal.absNorm cc ≠ 0` using `fun h => hcc (Ideal.absNorm_eq_zero_iff.mp h)`. Establish `hNE : ((Ideal.absNorm cc : ℕ) : D.host.E) ≠ 0` using `by exact_mod_cast hN0`. Establish `hb0` using `b_ne_zero D`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNcc` using `hB cc hcc`. Establish `hb𝔟 : D.host.𝔟 ≠ ⊥`. Introduce `h`. Establish `k` using `D.host.𝔟_spec.2`. Rewrite `k` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at k`. Establish `hAbot : Ideal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) cc ≠ ⊥`. Introduce `h`. Rewrite `hNcc` using `[h, bot_mul, eq_comm, Ideal.span_singleton_eq_bot]`. Conclude with `hN0 (by exact_mod_cast hNcc)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨-1 / (((Ideal.absNorm cc : ℕ) : D.host.E) * D.host.sqrtMinusD), ?_, ?_, fun φ hφ => im_pos D (Ideal.absNorm cc) hN0 φ hφ, ?_⟩` and prove the remaining obligations. Establish `hs : D.host.sqrtMinusD ∈ D.host.K` using `IntermediateField.mem_adjoin_simple_self ℚ D.host.sqd`. Conclude with `div_mem (neg_mem (one_mem _)) (mul_mem (natCast_mem _ _) hs)`. Rewrite using `[map_div₀, map_neg, map_one, map_mul, map_natCast, conj_b, mul_neg, div_neg]`. Introduce `y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : ((differentIdeal ℤ (𝓞 D.host.E) : Ideal (𝓞 D.host.E)) : FI) * (FractionalIdeal.spanSingleton _ (-1 / (((Ideal.absNorm cc : ℕ) : D.host.E) * D.host.sqrtMinusD)) * (((D.host.conj • Ideal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) cc : Ideal (𝓞 D.host.E)) : FI) * ((D.host.co …`. Establish `h1 : (D.host.𝔟 : FI) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr hb𝔟`. Establish `h2 : ((D.host.conj • D.host.𝔟 : Ideal (𝓞 D.host.E)) : FI) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.mpr (smul_ne_bot' D _ _ hb𝔟)`. Establish `hN2 : ((Ideal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) cc : Ideal (𝓞 D.host.E)) : FI) * ((D.host.conj • Ideal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) cc : Ideal (𝓞 D.host.E)) : FI) = FractionalIdeal.spanSingleton _ ((Ideal.absNorm cc : ℕ) : D.host.E)`. Rewrite using `[← FractionalIdeal.coeIdeal_mul, hNcc, FractionalIdeal.coeIdeal_span_singleton, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsp : ((Ideal.span {β} : Ideal (𝓞 D.host.E)) : FI) = FractionalIdeal.spanSingleton _ D.host.sqrtMinusD`. Rewrite using `[FractionalIdeal.coeIdeal_span_singleton]`. Use `congr 1`. Rewrite using `[diffE, diffEK, hβspan, FractionalIdeal.coeIdeal_mul, FractionalIdeal.coeIdeal_mul, hsp]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_inv_cancel₀ h1, mul_inv_cancel₀ h2, hN2, FractionalIdeal.spanSingleton_mul_spanSingleton, FractionalIdeal.spanSingleton_mul_spanSingleton, one_mul, one_mul]`. Establish `e : ((Ideal.absNorm cc : ℕ) : D.host.E) * (D.host.sqrtMinusD * (-1 / (((Ideal.absNorm cc : ℕ) : D.host.E) * D.host.sqrtMinusD))) = -1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, spanSingleton_neg_one]`. Establish `hM0 : FractionalIdeal.spanSingleton _ (-1 / (((Ideal.absNorm cc : ℕ) : D.host.E) * D.host.sqrtMinusD)) * (((D.host.conj • Ideal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) cc : Ideal (𝓞 D.host.E)) : FI) * ((D.host.conj • D.host.𝔟 : Ideal (𝓞 D.host.E)) : FI)⁻¹) ≠ 0`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Rewrite `hprod` using `[h, mul_zero, zero_mul]`. Conclude with `zero_ne_one hprod`. Establish `hdual : FractionalIdeal.dual ℤ ℚ (FractionalIdeal.spanSingleton _ (-1 / (((Ideal.absNorm cc : ℕ) : D.host.E) * D.host.sqrtMinusD)) * (((D.host.conj • Ideal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) cc : Ideal (𝓞 D.host.E)) : FI) * ((D.host.conj • D.host.𝔟 : Ideal (𝓞 D.host.E)) : …`. Rewrite using `[FractionalIdeal.dual_eq_mul_inv ℤ ℚ, ← inv_inv (FractionalIdeal.dual ℤ ℚ (1 : FI)), ← coeIdeal_differentIdeal ℤ ℚ D.host.E (𝓞 D.host.E), ← mul_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `inv_eq_of_mul_eq_one_right hprod`. Use `show y ∈ ((Ideal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) cc : Ideal (𝓞 D.host.E)) : FI) * (D.host.𝔟 : FI)⁻¹ ↔ ∀ x ∈ ((Ideal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) cc : Ideal (𝓞 D.host.E)) : FI) * (D.host.𝔟 : FI)⁻¹, _`. Use `conv_lhs => rw [← hdual]`. Rewrite using `[FractionalIdeal.mem_dual hM0]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h x hx`. Establish `hw` using `(mem_quot_smul D D.host.conj _ _ hb𝔟 x).2 hx`. Establish `k` using `h _ (FractionalIdeal.mem_singleton_mul.2 ⟨_, hw, rfl⟩)`. Rewrite `k` using `[Algebra.traceForm_apply]`. Rewrite using `[show -1 / (((Ideal.absNorm cc : ℕ) : D.host.E) * D.host.sqrtMinusD) * D.host.conj x * y = y * (-1 / (((Ideal.absNorm cc : ℕ) : D.host.E) * D.host.sqrtMinusD) * D.host.conj x) by ring]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `k`. Introduce `h u hu`. Take `⟨w, hw, hweq⟩` from `FractionalIdeal.mem_singleton_mul.1 hu`. Establish `hw' : D.host.conj (D.host.conj.symm w) ∈ ((D.host.conj • Ideal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) cc : Ideal (𝓞 D.host.E)) : FI) * ((D.host.conj • D.host.𝔟 : Ideal (𝓞 D.host.E)) : FI)⁻¹`. Rewrite using `[AlgEquiv.apply_symm_apply]`.
-
-Conclude with `hw`. Establish `k` using `h _ ((mem_quot_smul D D.host.conj _ _ hb𝔟 _).1 hw')`. Rewrite `k` using `[AlgEquiv.apply_symm_apply]`. Rewrite using `[Algebra.traceForm_apply]`. Use `first`.
-
-Consider the case `(rw [← hweq]; rw [show y * (-1 / (((Ideal.absNorm cc : ℕ) : D.host.E) * D.host.sqrtMinusD) * w) = -1 / (((Ideal.absNorm cc : ℕ) : D.host.E) * D.host.sqrtMinusD) * w * y by ring]; exact k)`. Consider the case `(rw [hweq]; rw [show y * (-1 / (((Ideal.absNorm cc : ℕ) : D.host.E) * D.host.sqrtMinusD) * w) = -1 / (((Ideal.absNorm cc : ℕ) : D.host.E) * D.host.sqrtMinusD) * w * y by ring]; exact k)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pol (hA : DiffK D) (hB : NormK D) : PolPart D := by
   intro cc hcc
@@ -313,7 +307,7 @@ theorem pol (hA : DiffK D) (hB : NormK D) : PolPart D := by
 end PolarisationData
 
 /- English proof (translation)
-Conclude with `lemma_one_eight_of_polarisation D (PolarisationData.pol D hA hB)`.
+A detailed English derivation is pending.
 -/
 theorem lemma_one_eight_of_different (D : D7) (hA : DiffK D) (hB : NormK D) : Conclusion8 D := by
   exact lemma_one_eight_of_polarisation D (PolarisationData.pol D hA hB)

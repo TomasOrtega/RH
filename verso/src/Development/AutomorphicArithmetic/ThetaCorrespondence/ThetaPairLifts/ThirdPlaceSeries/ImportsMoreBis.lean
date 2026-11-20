@@ -13,9 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 open Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev
 namespace GlobalTheory.ResThree
 /- English proof (translation)
-Introduce `hL`. Use `GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun K B f T _ w Z Wt p0 t nch n xd c hE hR hP => ?_` and prove the remaining obligations. Introduce `PP hPP`. Take `⟨plg, iso, -, -, -, -⟩` from `t.r.z.pins.keep.grp`. Take `⟨h0, h1⟩` from `two_ne_zero_one _ (GlobalTheory.IndefiniteRowSideFullHecke.HalfLevelCoefficients.three_le_g (w.st Z).toD7 (plg.symm ⟨PP, hPP⟩).1)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e` using `iso (plg.symm ⟨PP, hPP⟩)`. Rewrite `e` using `[Equiv.apply_symm_apply]`. Conclude with `⟨e 2, fun h => h0 (e.injective (by rw [h, map_zero])), fun h => h1 (e.injective (by rw [h, map_one]))⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem main_alt_alt : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t _ _ c =>
     ∀ PP ∈ t.r.z.R.Pg, ∃ x : Formalism.L2.DIV.kP PP, x ≠ 0 ∧ x ≠ 1 := by

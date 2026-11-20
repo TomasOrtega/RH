@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SumLieCoord
 open NumberField MeasureTheory Matrix GlobalTheory.CuspRep GlobalTheory.JSW
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.JSW.kerOp_integrable_continuous` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FKernelOperatorIntegrableContinuousSmooth.lean&line=28#L28)
 -/

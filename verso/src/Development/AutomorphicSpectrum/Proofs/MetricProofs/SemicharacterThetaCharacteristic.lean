@@ -19,41 +19,41 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Sl
 namespace GlobalTheory.CompanionTheory.Ar.Nform
 
 /- English proof (translation)
-Introduce `g Λ bs χ hχ hsq`. Establish `hpm : ∀ l, χ l = 1 ∨ χ l = -1` using `fun l => mul_self_eq_one_iff.mp (by rw [← sq]; exact hsq l)`. Establish `hexp : ∀ k : ℤ, Complex.exp (↑Real.pi * Complex.I * ((k : ℝ) : ℂ)) = (-1) ^ k`. Introduce `k`. Rewrite using `[Complex.ofReal_intCast, mul_comm, Complex.exp_int_mul, Complex.exp_pi_mul_I]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hhalf : Complex.exp (2 * ↑Real.pi * Complex.I * ((1 / 2 : ℝ) : ℂ)) = -1`. Rewrite using `[show (2 : ℂ) * ↑Real.pi * Complex.I * ((1 / 2 : ℝ) : ℂ) = ↑Real.pi * Complex.I by push_cast; ring, Complex.exp_pi_mul_I]`. Establish `hhalf' : Complex.exp (-(2 * ↑Real.pi * Complex.I * ((1 / 2 : ℝ) : ℂ))) = -1`. Rewrite using `[Complex.exp_neg, hhalf]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hsame : ∀ j k : Fin g ⊕ Fin g, bs.repr (bs j) k = if j = k then 1 else 0`. Introduce `j k`. Rewrite using `[Module.Basis.repr_self, Finsupp.single_apply]`. Establish `hsingle : ∀ i : Fin g, (fun k => bs.repr (bs (Sum.inl i)) (Sum.inl k)) = Pi.single i 1 ∧ (fun k => bs.repr (bs (Sum.inl i)) (Sum.inr k)) = 0 ∧ (fun k => bs.repr (bs (Sum.inr i)) (Sum.inl k)) = 0 ∧ (fun k => bs.repr (bs (Sum.inr i)) (Sum.inr k)) = Pi.single i 1`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `refine ⟨funext fun k => ?_, funext fun k => ?_, funext fun k => ?_, funext fun k => ?_⟩ <;>`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[hsame]`. Simplify using `[hsame, Pi.single_apply, hk, Ne.symm hk]`.
+Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hsame]`. Simplify using `[hsame]`. Simplify using `[hsame]`. Simplify using `[hsame]`. Substitute `hk` using the available equality.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `[hsame]`. Simplify using `[hsame, Pi.single_apply, hk, Ne.symm hk]`. Establish `hdot : ∀ (a : Fin g → ℝ) (i : Fin g), (a ⬝ᵥ fun k => (((Pi.single i 1 : Fin g → ℤ) k : ℤ) : ℝ)) = a i`. Introduce `a i`. Simplify using `[dotProduct, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hdot0 : ∀ a : Fin g → ℝ, (a ⬝ᵥ fun k => (((0 : Fin g → ℤ) k : ℤ) : ℝ)) = 0`. Introduce `a`. Simplify using `[dotProduct]`. Establish `hC_inl : ∀ (a c : Fin g → ℝ) (i : Fin g), GlobalTheory.CanTh.canMult a c (fun k => bs.repr (bs (Sum.inl i)) (Sum.inl k)) (fun k => bs.repr (bs (Sum.inl i)) (Sum.inr k)) = Complex.exp (2 * ↑Real.pi * Complex.I * ((a i : ℝ) : ℂ))`. Introduce `a c i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2, -, -⟩` from `hsingle i`. Rewrite using `[h1, h2]`. Simplify using `only [GlobalTheory.CanTh.canMult, dotProduct_zero, hdot, hdot0]`. Use `congr 1`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hC_inr : ∀ (a c : Fin g → ℝ) (i : Fin g), GlobalTheory.CanTh.canMult a c (fun k => bs.repr (bs (Sum.inr i)) (Sum.inl k)) (fun k => bs.repr (bs (Sum.inr i)) (Sum.inr k)) = Complex.exp (-(2 * ↑Real.pi * Complex.I * ((c i : ℝ) : ℂ)))`. Introduce `a c i`. Take `⟨-, -, h3, h4⟩` from `hsingle i`. Rewrite using `[h3, h4]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.CanTh.canMult, zero_dotProduct, hdot, hdot0]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨a, ha⟩ : ∃ a : Fin g → ℝ, a = fun i => if χ (bs (Sum.inl i)) = 1 then 0 else 1 / 2` from `⟨_, rfl⟩`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩ : ∃ c : Fin g → ℝ, c = fun i => if χ (bs (Sum.inr i)) = 1 then 0 else 1 / 2` from `⟨_, rfl⟩`. Use `⟨a, c, fun i => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `simp only [ha] split_ifs <;> norm_num`. Apply the tactic sequence `simp only [hc] split_ifs <;> norm_num`. Establish `hχ0 : ∀ l, χ l ≠ 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `l h`. Establish `h'` using `hsq l`. Rewrite `h'` using `[h]`. Evaluate the numerical expressions using `at h'`. Establish `hψ0 : ∀ l : Λ, GlobalTheory.CanTh.canMult a c (fun i => bs.repr l (Sum.inl i)) (fun i => bs.repr l (Sum.inr i)) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Introduce `l`. Simplify using `only [GlobalTheory.CanTh.canMult]`. Conclude with `Complex.exp_ne_zero _`. Establish `hψ : ∀ l l' : Λ, GlobalTheory.CanTh.canMult a c (fun i => bs.repr (l + l') (Sum.inl i)) (fun i => bs.repr (l + l') (Sum.inr i)) = GlobalTheory.CanTh.canMult a c (fun i => bs.repr l (Sum.inl i)) (fun i => bs.repr l (Sum.inr i)) * GlobalTheory.CanTh.canMult a c (fun i => bs.repr l' …`. Introduce `l l'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : (fun i => bs.repr (l + l') (Sum.inl i)) = (fun i => bs.repr l (Sum.inl i)) + (fun i => bs.repr l' (Sum.inl i))`. Use function extensionality and compare the values at `i`. Simplify using `[map_add]`. Establish `hn : (fun i => bs.repr (l + l') (Sum.inr i)) = (fun i => bs.repr l (Sum.inr i)) + (fun i => bs.repr l' (Sum.inr i))`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[map_add]`. Rewrite using `[hm, hn, GlobalTheory.HolTheta.canMult_add, hexp, Finset.sum_sub_distrib]`. Both sides reduce to the same expression. Establish `hbasis : ∀ j : Fin g ⊕ Fin g, χ (bs j) = GlobalTheory.CanTh.canMult a c (fun i => bs.repr (bs j) (Sum.inl i)) (fun i => bs.repr (bs j) (Sum.inr i))`. Introduce and unpack `(i | i)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hC_inl]`. Break down `hpm (bs (Sum.inl i)) with h | h` into its components or cases. Simplify using `[ha, h]`. Establish `h' : χ (bs (Sum.inl i)) ≠ 1` using `by rw [h]; norm_num`. Simplify using `only [ha, h', if_false]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, hhalf]`. Rewrite using `[hC_inr]`. Break down `hpm (bs (Sum.inr i)) with h | h` into its components or cases. Simplify using `[hc, h]`. Establish `h' : χ (bs (Sum.inr i)) ≠ 1` using `by rw [h]; norm_num`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hc, h', if_false]`. Rewrite using `[h, hhalf']`. Conclude with `GlobalTheory.HolTheta.eq_of_cocycle bs (fun l l' => Complex.exp (Real.pi * Complex.I * (((∑ i, (bs.repr l (Sum.inr i) * bs.repr l' (Sum.inl i) - bs.repr l (Sum.inl i) * bs.repr l' (Sum.inr i)) : ℤ) : ℝ) : ℂ))) (ψ := fun l => GlobalTheory.CanTh.canMult a c (fun i => bs.repr l (Sum …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_half_canMult : ∀ (g : ℕ) (Λ : Submodule ℤ (Fin g → ℂ)) (bs : Module.Basis (Fin g ⊕ Fin g) ℤ Λ) (χ : Λ → ℂ),
     (∀ l l' : Λ, χ (l + l') = χ l * χ l' * Complex.exp (Real.pi * Complex.I *

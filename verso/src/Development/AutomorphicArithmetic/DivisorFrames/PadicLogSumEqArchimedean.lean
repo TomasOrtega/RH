@@ -3,9 +3,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PAdicProductFormula
 open NumberField
 
 /- English proof (translation)
-Establish `h` using `congr_arg (‖·‖) (Algebra.norm_eq_prod_embeddings ℚ ℂ N)`. Simplify using `only [norm_prod] at h`. Rewrite using `[← Real.log_prod (fun σ _ => by simpa using hN)]`. Use `congr 1`. Rewrite using `[Fintype.prod_equiv (RingHom.equivRatAlgHom F ℂ) (fun σ : F →+* ℂ => ‖σ N‖) (fun σ : F →ₐ[ℚ] ℂ => ‖σ N‖) (fun _ => by simp [RingHom.equivRatAlgHom_apply]), ← h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `[← Complex.norm_ratCast]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sum_log_emb (F : Type) [Field F] [NumberField F] (N : F) (hN : N ≠ 0) :
     ∑ σ : F →+* ℂ, Real.log ‖σ N‖ = Real.log ((|Algebra.norm ℚ N| : ℚ) : ℝ) := by
@@ -18,7 +18,7 @@ private theorem sum_log_emb (F : Type) [Field F] [NumberField F] (N : F) (hN : N
   simp [← Complex.norm_ratCast]
 
 /- English proof (translation)
-Rewrite using `[Real.log_nat_eq_sum_factorization, Finsupp.sum]`. Use `symm`. Apply `Finset.sum_subset hS` to reduce the goal to its premises. Introduce `p _ hp`. Rewrite using `[Finsupp.notMem_support_iff.1 hp]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -32,11 +32,11 @@ private theorem log_nat_sum (n : ℕ) (S : Finset ℕ) (hS : n.primeFactors ⊆ 
   simp
 
 /- English proof (translation)
-Rewrite using `[finsum_eq_sum_of_support_subset (s := q.num.natAbs.primeFactors ∪ q.den.primeFactors)]`. Rewrite using `[← Finset.mul_sum]`. Use `congr 1`. Simplify using `only [sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[log_nat_sum _ _ Finset.subset_union_left, log_nat_sum _ _ Finset.subset_union_right, ← Real.log_div (by simpa using hq) (by simp)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Rat.cast_abs, Rat.cast_def q, abs_div, Nat.abs_cast, Nat.cast_natAbs, Int.cast_abs]`. Introduce `p hp`. Assume the negation of the conclusion as `h`. Apply `hp` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Finset.coe_union, Set.mem_union, Finset.mem_coe, not_or] at h`. Establish `h1 : q.num.natAbs.factorization p = 0` using `Finsupp.notMem_support_iff.1 h.1`. Establish `h2 : q.den.factorization p = 0` using `Finsupp.notMem_support_iff.1 h.2`. Simplify using `[h1, h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem finsum_rat (q : ℚ) (hq : q ≠ 0) (t : ℝ) :
     ∑ᶠ p : ℕ, t * (((q.num.natAbs.factorization p : ℝ) - (q.den.factorization p : ℝ)) * Real.log p)
@@ -58,11 +58,11 @@ private theorem finsum_rat (q : ℚ) (hq : q ≠ 0) (t : ℝ) :
     simp [h1, h2]
 
 /- English proof (translation)
-Introduce `K _ _ b t hb`. Establish `hN : Algebra.norm ℚ b ≠ 0` using `Algebra.norm_ne_zero_iff.2 hb`. Rewrite using `[sum_log_emb K b hb, ← finsum_rat _ hN t]`. Use `congr 1`. Use function extensionality and compare the values at `p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hp : p.Prime`. Rewrite using `[dif_pos hp] haveI : Fact p.Prime := ⟨hp⟩`. Establish `h` using `GlobalTheory.T.p_adic_product_formula K p b hb`. Rewrite `h` using `[finsum_eq_sum_of_fintype]`. Use `show ∑ᶠ j : K →+* ℂ_[p], -(t * Real.log ‖j b‖) = _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_eq_sum_of_fintype, Finset.sum_neg_distrib, ← Finset.mul_sum, h, Nat.factorization_def _ hp, Nat.factorization_def _ hp, padicValRat_def, padicValInt]`. Rewrite using `[Int.cast_sub, Int.cast_natCast, Int.cast_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dif_neg hp]`. Simplify using `[Nat.factorization_eq_zero_of_not_prime _ hp]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.padic_log_sum_eq_archimedean :
     ∀ (K : Type) [Field K] [NumberField K] (b : K) (t : ℝ), b ≠ 0 → (∑ᶠ p : ℕ, @dite ℝ p.Prime (Classical.propDecidable _) (fun hp => (haveI : Fact p.Prime := ⟨hp⟩; ∑ᶠ j : K →+* ℂ_[p], -(t * Real.log ‖j b‖))) fun _ => 0) = t * ∑ τ : K →+* ℂ, Real.log ‖τ b‖ := by

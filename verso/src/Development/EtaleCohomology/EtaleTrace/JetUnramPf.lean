@@ -4,19 +4,17 @@ namespace LateralTheory.EtaleTrace.Cov
 
 open KaehlerDifferential in
 /- English proof (translation)
-Introduce `k K O _ _ _ _ φ n w i hwi hspan hk hw`. Set `_ : Algebra O K` to `φ.toAlgebra`. Use `show Algebra.FormallyUnramified O K`. Prove the components needed by the constructor for the conclusion. Establish `hD0 : ∀ z ∈ φ.range, D O K z = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨o, rfl⟩`. Conclude with `(D O K).map_algebraMap o`. Set `D' : Derivation k K Ω[K⁄O]` to `Derivation.mk' { toFun := fun x => D O K x map_add' := fun x y => (D O K).map_add x y map_smul' := fun c x => by`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[Algebra.smul_def, (D O K).leibniz, hD0 _ (hk c), smul_zero, add_zero, algebraMap_smul] }`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use the proof step `(fun a b => (D O K).leibniz a b)`. Establish `hD' : ∀ x, D'.liftKaehlerDifferential (D k K x) = D O K x` using `fun x => D'.liftKaehlerDifferential_comp_D x`. Set `G : (K × Ω[K⁄k]) →ₗ[K] Ω[K⁄O]` to `D'.liftKaehlerDifferential.comp (LinearMap.snd K K Ω[K⁄k]) - (LinearMap.fst K K Ω[K⁄k]).smulRight ((w i)⁻¹ • D O K (w i))`. Establish `hG : ∀ j, G (jet k w j) = 0`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu⟩` from `hw j`. Establish `hwj : w j = φ u * w i` using `by rw [hu]; field_simp`. Use `show D'.liftKaehlerDifferential (D k K (w j)) - w j • ((w i)⁻¹ • D O K (w i)) = 0`. Rewrite using `[hD', hwj, (D O K).leibniz, hD0 _ ⟨u, rfl⟩, smul_zero, add_zero, smul_smul, mul_assoc, mul_inv_cancel₀ hwi, mul_one, sub_self]`. Establish `hG0 : G = 0` using `LinearMap.ext_on_range hspan (fun j => by rw [hG j]; rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDz : ∀ x : K, D O K x = 0`. Introduce `x`. Establish `h` using `LinearMap.congr_fun hG0 (0, D k K x)`. Establish `h2 : G (0, D k K x) = D O K x` using `by show D'.liftKaehlerDifferential (D k K x) - (0 : K) • ((w i)⁻¹ • D O K (w i)) = D O K x`. Rewrite using `[hD', zero_smul, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2, h]`. Both sides reduce to the same expression. It suffices to establish `(⊤ : Submodule K Ω[K⁄O]) ≤ ⊥ from (subsingleton_iff_forall_eq 0).mpr fun y => this trivial`. Rewrite using `[← span_range_derivation, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`.
-
-Conclude with `hDz x`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem JetUnram_of : JetUnram := by
   intro k K O _ _ _ _ φ n w i hwi hspan hk hw

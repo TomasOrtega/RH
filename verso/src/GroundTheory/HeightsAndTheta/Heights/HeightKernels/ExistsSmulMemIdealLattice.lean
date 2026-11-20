@@ -13,13 +13,11 @@ noncomputable section
 namespace S6.QuotExtension
 
 /- English proof (translation)
-Use `set A := G.toBlocks₁₁`. Use `set B := G.toBlocks₁₂`. Use `set C := G.toBlocks₂₁`. Use `set D := G.toBlocks₂₂`. Establish `hG : G = fromBlocks A B C D` using `(fromBlocks_toBlocks G).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hv : G *ᵥ Sum.elim β' γ' = Sum.elim (A *ᵥ β' + B *ᵥ γ') (C *ᵥ β' + D *ᵥ γ')`. Rewrite using `[hG, fromBlocks_mulVec]`. Both sides reduce to the same expression. Establish `h0 : A *ᵥ β' + B *ᵥ γ' = 0` using `funext fun i => by simpa [hv] using h i`. Establish `hβ : β' = -((A⁻¹ * B) *ᵥ γ')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : A⁻¹ *ᵥ (A *ᵥ β') = β'` using `by rw [mulVec_mulVec, nonsing_inv_mul A hA, one_mulVec]`. Rewrite using `[← hinv, eq_neg_iff_add_eq_zero, ← mulVec_mulVec, ← mulVec_add, h0, mulVec_zero]`. Establish `hw : C *ᵥ β' + D *ᵥ γ' = (D - C * A⁻¹ * B) *ᵥ γ'`. Rewrite using `[hβ, mulVec_neg, mulVec_mulVec, sub_mulVec, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
-
-Rewrite using `[hv, h0, hw]`. Simplify using `[dotProduct, Fintype.sum_sum_type]`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem schur_inner {m k : Type*} [Fintype m] [Fintype k] [DecidableEq m] [DecidableEq k]
     (G : Matrix (m ⊕ k) (m ⊕ k) ℂ) (hA : IsUnit G.toBlocks₁₁.det) (β β' : m → ℂ) (γ γ' : k → ℂ)
@@ -52,7 +50,7 @@ def embMat (σ : K →+* ℂ) {n : ℕ} {ι : Type*} (u : ι → Fin n → K) : 
 omit [NumberField K] in
 
 /- English proof (translation)
-Use extensionality with `s t`. Simplify using `only [gramAt, embVec, embMat, dotProduct, mulVec, Matrix.mul_apply, conjTranspose_apply, of_apply, Pi.star_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun r' _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gramAt_eq {n : ℕ} (h : Matrix (Fin n) (Fin n) ℂ) (σ : K →+* ℂ) {ι : Type*} [Fintype ι]
     (u : ι → Fin n → K) : gramAt h σ u = (embMat σ u)ᴴ * h * embMat σ u := by
@@ -66,7 +64,7 @@ theorem gramAt_eq {n : ℕ} (h : Matrix (Fin n) (Fin n) ℂ) (σ : K →+* ℂ) 
 omit [NumberField K] in
 
 /- English proof (translation)
-Rewrite using `[star_mulVec, ← dotProduct_mulVec, gramAt_eq, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_embMat {n : ℕ} (h : Matrix (Fin n) (Fin n) ℂ) (σ : K →+* ℂ) {ι : Type*} [Fintype ι]
     (u : ι → Fin n → K) (w w' : ι → ℂ) :
@@ -76,7 +74,7 @@ theorem inner_embMat {n : ℕ} (h : Matrix (Fin n) (Fin n) ℂ) (σ : K →+* �
 omit [NumberField K] in
 
 /- English proof (translation)
-Rewrite using `[gramAt_eq, ← mulVec_mulVec, ← mulVec_mulVec]`. Simplify using `only [mulVec, dotProduct, conjTranspose_apply, embMat, embVec, of_apply, Pi.star_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gramAt_mulVec_apply {n : ℕ} (h : Matrix (Fin n) (Fin n) ℂ) (σ : K →+* ℂ) {ι : Type*}
     [Fintype ι] (u : ι → Fin n → K) (w : ι → ℂ) (s : ι) :
@@ -85,11 +83,11 @@ theorem gramAt_mulVec_apply {n : ℕ} (h : Matrix (Fin n) (Fin n) ℂ) (σ : K �
   simp only [mulVec, dotProduct, conjTranspose_apply, embMat, embVec, of_apply, Pi.star_apply]
 
 /- English proof (translation)
-Use `choose e he0 hea using fun x => FractionalIdeal.exists_ne_zero_mem_isInteger (ha x)`. Take `⟨c, hc0, hc⟩` from `exists_common_denominator (M := Submodule.span (𝓞 K) {v}) (Submodule.fg_span_singleton v)`. Use `⟨c * ∏ x, e x, mul_ne_zero hc0 (Finset.prod_ne_zero_iff.mpr fun x _ => he0 x), ?_⟩` and prove the remaining obligations. Rewrite using `[idealLattice, Submodule.mem_pi]`. Introduce `x _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hc v (Submodule.mem_span_singleton_self v) x`. Rewrite using `[← Finset.mul_prod_erase Finset.univ e (Finset.mem_univ x)]`. Establish `hx : ((c * (e x * ∏ y ∈ Finset.univ.erase x, e y)) • v) x = (w * ∏ y ∈ Finset.univ.erase x, e y) • algebraMap (𝓞 K) K (e x)`. Rewrite using `[Pi.smul_apply, Algebra.smul_def, Algebra.smul_def, map_mul, map_mul, map_mul, hw]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx]`. Conclude with `Submodule.smul_mem _ _ (hea x)`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_idealLattice {n : ℕ} {a : Fin n → FractionalIdeal (𝓞 K)⁰ K}
     (ha : ∀ x, a x ≠ 0) (v : Fin n → K) : ∃ t : 𝓞 K, t ≠ 0 ∧ t • v ∈ idealLattice a := by
@@ -110,15 +108,15 @@ theorem exists_smul_mem_idealLattice {n : ℕ} {a : Fin n → FractionalIdeal (�
   exact Submodule.smul_mem _ _ (hea x)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul z v`. Use `⟨fun i => σ ((sumBasis b c hli hmk).repr v (Sum.inl i)) * (ofComplex σ).symm z, ?_⟩` and prove the remaining obligations. Establish `hu : Sum.elim (fun i => σ ((sumBasis b c hli hmk).repr v (Sum.inl i)) * (ofComplex σ).symm z) (latticeCoord σ (quotLattice a b c hli hmk) ((quotProj a b c hli hmk).lTensor (ComplexAt σ) (z ⊗ₜ v))) = fun s => σ ((sumBasis b c hli hmk).repr v s) * (ofComplex σ).symm z`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `s`. Break down `s with i | j` into its components or cases. Both sides reduce to the same expression. Rewrite using `[Sum.elim_inr, LinearMap.lTensor_tmul, latticeCoord_tmul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hu]`. Use function extensionality and compare the values at `r`. Rewrite using `[latticeCoord_tmul]`. Establish `hv` using `congrFun ((sumBasis b c hli hmk).sum_repr (v : Fin n → K)) r`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, sumBasis_apply] at hv`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [mulVec, dotProduct, embMat, of_apply]`. Rewrite using `[← hv, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `add x y hx hy`. Take `⟨β, hβ⟩` from `hx`. Take `⟨β', hβ'⟩` from `hy`. Use `⟨β + β', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, map_add, hβ, hβ', ← mulVec_add, Sum.elim_add_add]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_decomp {n m k : ℕ} (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) (b : Fin m → Fin n → K)
     (c : Fin k → Fin n → K) (hli : LinearIndependent K (Sum.elim b c)) (hmk : m + k = n)
@@ -156,11 +154,11 @@ theorem coord_decomp {n m k : ℕ} (a : Fin n → FractionalIdeal (𝓞 K)⁰ K)
     rw [map_add, map_add, map_add, hβ, hβ', ← mulVec_add, Sum.elim_add_add]
 
 /- English proof (translation)
-Take `⟨t, ht, htv⟩` from `exists_smul_mem_idealLattice ha (b i)`. Establish `hW : (⟨t • b i, htv⟩ : idealLattice a) ∈ subLattice a b` using `Submodule.smul_of_tower_mem (Submodule.span K (Set.range b)) t (Submodule.subset_span ⟨i, rfl⟩)`. Establish `h` using `hy ((1 : ComplexAt σ) ⊗ₜ ⟨_, hW⟩)`. Rewrite `h` using `[LinearMap.lTensor_tmul]`. Establish `h' : star (latticeCoord σ (idealLattice a) ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] (⟨t • b i, htv⟩ : idealLattice a))) ⬝ᵥ (diagMetric d σ *ᵥ latticeCoord σ (idealLattice a) y) = 0` using `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hl : latticeCoord σ (idealLattice a) ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] (⟨t • b i, htv⟩ : idealLattice a)) = σ (t : K) • embVec σ (b i)`. Use function extensionality and compare the values at `r`. Rewrite using `[latticeCoord_tmul]`. Simplify using `[embVec, Algebra.smul_def]`. Establish `hσt : σ (t : K) ≠ 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_ne_zero]`. Conclude with `ht` after adjusting the coercions. Rewrite `h'` using `[hl, star_smul, smul_dotProduct, smul_eq_mul]`. Conclude with `(mul_eq_zero.mp h').resolve_left (by simpa using hσt)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orth_sub {n m : ℕ} {a : Fin n → FractionalIdeal (𝓞 K)⁰ K} (ha : ∀ x, a x ≠ 0)
     {d : (K →+* ℂ) → Fin n → ℝ} (hd : ∀ σ x, 0 < d σ x) (hc : ∀ σ x, d (conjugate σ) x = d σ x)
@@ -193,17 +191,15 @@ end S6.QuotExtension
 open S6.QuotExtension in
 
 /- English proof (translation)
-Introduce `K _ _ n a d hd hc ha m k b c hli hmk`. Use `⟨{ incl := (subLattice a b).subtype proj := quotProj a b c hli hmk incl_injective := (subLattice a b).injective_subtype proj_surjective := LinearMap.submoduleMap_surjective _ _` and prove the remaining obligations. Conclude with `:= ?_`. Use `incl_isometric := fun σ x y => rfl`. Use `proj_coisometric := ?_ }, rfl, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show ∀ y : idealLattice a, quotProj a b c hli hmk y = 0 ↔ y ∈ Set.range (subLattice a b).subtype`. Introduce `y`. Establish `hker` using `KLinesQuotIndex.ker_coordProj (sumBasis b c hli hmk)`. Establish `hr : (fun i => sumBasis b c hli hmk (Sum.inl i)) = b`. Use function extensionality and compare the values at `fun i => by rw [sumBasis_apply]; rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 
-Rewrite `hker` using `[hr]`. Establish `h1 : quotProj a b c hli hmk y = 0 ↔ coordProj (sumBasis b c hli hmk) (y : Fin n → K) = 0`. Rewrite using `[← Submodule.coe_eq_zero]`. Conclude with `Iff.rfl`. Rewrite using `[h1, ← LinearMap.mem_ker, hker]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨⟨y, h⟩, rfl⟩`. Introduce and unpack `⟨w, rfl⟩`. Conclude with `w.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `σ x y _ hy`. Take `⟨β, hx⟩` from `coord_decomp a b c hli hmk σ x`. Take `⟨β', hy'⟩` from `coord_decomp a b c hli hmk σ y`. Establish `hG` using `LinesGramPosDef.full K n _ σ _ _ (diagMetric_posDef hd σ) hli`. Establish `hA : IsUnit (gramAt (diagMetric d σ) σ (Sum.elim b c)).toBlocks₁₁.det` using `(Matrix.isUnit_iff_isUnit_det _).mp (hG.submatrix Sum.inl_injective).isUnit`.
-
-Express the relevant statement in the definitionally equal form `star (latticeCoord σ (quotLattice a b c hli hmk) _) ⬝ᵥ (schurMetric d b c σ *ᵥ latticeCoord σ (quotLattice a b c hli hmk) _) = star (latticeCoord σ (idealLattice a) x) ⬝ᵥ (diagMetric d σ *ᵥ latticeCoord σ (idealLattice a) y)`. Rewrite using `[hx, hy', inner_embMat]`. Use `(schur_inner _ hA _ _ _ _ fun i => ?_).symm` and prove the remaining obligations. Rewrite using `[gramAt_mulVec_apply]`. Conclude with `(congrArg (fun v => star (embVec σ (b i)) ⬝ᵥ (diagMetric d σ *ᵥ v)) hy').symm.trans (orth_sub ha hd hc b σ y hy i)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem S6.QuotExtension.proof : S6.QuotExtension.Statement := by
   intro K _ _ n a d hd hc ha m k b c hli hmk

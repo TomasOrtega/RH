@@ -7,15 +7,15 @@ open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ U hU hs`. Establish `hsup` using `sup_orthRel_centralCuspForms μ U hU hs.ρ hs.τ`. Establish `hin : ∀ a b : cuspForms K n, inner ℂ (clsL μ a) (clsL μ b) = inner ℂ (cuspToL2 μ a) (cuspToL2 μ b)` using `fun _ _ => rfl`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `φ ⟨hφc, hφV⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Establish `hφc'` using `hφc`. Rewrite `hφc'` using `[← hsup]`. Take `⟨u, hu, c, hc, rfl⟩` from `Submodule.mem_sup.1 hφc'`. Establish `huV : clsL μ u ∈ (U.map (clsL μ)).topologicalClosure` using `Submodule.le_topologicalClosure _ ⟨u, hu, rfl⟩`. Establish `hcV : clsL μ c ∈ (U.map (clsL μ)).topologicalClosure`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : clsL μ (u + c) ∈ (U.map (clsL μ)).topologicalClosure` using `hφV`. Rewrite `h` using `[map_add]`. Simplify using `using Submodule.sub_mem _ h huV`. Establish `hle : U.map (clsL μ) ≤ (ℂ ∙ clsL μ c)ᗮ`. Introduce and unpack `_ ⟨v, hv, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.mem_orthogonal_singleton_iff_inner_left, hin]`. Conclude with `hc.2 v hv`. Establish `h2` using `Submodule.topologicalClosure_minimal _ hle (Submodule.isClosed_orthogonal _) hcV`. Rewrite `h2` using `[Submodule.mem_orthogonal_singleton_iff_inner_right, hin, inner_self_eq_zero]`. Establish `h0 : c = 0` using `injOn_cuspToL2 μ (hc.1 : _) (fun _ _ => rfl) (h2.trans (map_zero (cuspToL2 μ)).symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, add_zero]`. Conclude with `hu`. Introduce `φ hφ`. Conclude with `⟨hU hφ, Submodule.le_topologicalClosure _ ⟨φ, hφ, rfl⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Dp.formsClosure :
     UpperTheory.ConvolutionTheory.Dp.FormsClosure := by

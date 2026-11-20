@@ -18,7 +18,7 @@ namespace PDivGroup
 open PDiv
 
 /- English proof (translation)
-Establish `e1` using `g.finrank_range_add_finrank_ker`. Establish `e2` using `f.finrank_range_add_finrank_ker`. Rewrite `e1` using `[h1]`. Conclude with `(Submodule.eq_of_le_of_finrank_eq (LinearMap.range_le_ker_iff.2 h0) (by omega)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_eq_range_of_range_eq_ker {K V W : Type} [Field K] [AddCommGroup V] [Module K V]
     [AddCommGroup W] [Module K W] (_ : Module.Finite K V) (_ : Module.Finite K W) (f : V →ₗ[K] W)
@@ -30,9 +30,9 @@ theorem ker_eq_range_of_range_eq_ker {K V W : Type} [Field K] [AddCommGroup V] [
   exact (Submodule.eq_of_le_of_finrank_eq (LinearMap.range_le_ker_iff.2 h0) (by omega)).symm
 
 /- English proof (translation)
-Take `⟨-, f1, d1, d2⟩` from `GlobalTheory.T.finrank_rigidExtensions_eq_height_and_dim_add_dual p K h G`. Take `⟨-, f2, d3, -⟩` from `GlobalTheory.T.finrank_rigidExtensions_eq_height_and_dim_add_dual p K h (frobTwist h G)`. Establish `h4` using `le_antisymm (range_rigExtMap_verschiebung_le h G) (GlobalTheory.T.range_rigOfOmega_le_range_rigExtMap_verschiebung' p K h G)`. Establish `h5` using `le_antisymm (GlobalTheory.T.ker_rigExtMap_relFrob_le_range_rigOfOmega' p K h G) (LinearMap.range_le_ker_iff.2 (rigExtMap_relFrob_comp_rigOfOmega h G))`. Establish `h6 : rigExtMap (verschiebung h G) ∘ₗ rigExtMap (relFrob h G) = 0` using `(rigExtMap_comp (verschiebung h G) (relFrob h G)).symm.trans ((congrArg rigExtMap (verschiebung_comp_relFrob h G)).trans (GlobalTheory.T.rigidifiedExtensionPullback_add_and_prime_smul_id p K h (frobTwist h G) (frobTwist h G)).2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨f1, d1, d2, h4, h5, ker_eq_range_of_range_eq_ker f2 f1 _ _ (d3.trans ((frobTwist_height h G).trans d1.symm)) h6 (h4.trans h5.symm), range_rigExtMap_relFrob h G⟩`.
+Supply the required witnesses or components.
 -/
 theorem rigExt_field_of_charP (p : ℕ) [Fact p.Prime] (K : Type)
     [Field K] (h : (p : K) = 0) (G : PDivGroup p K) :

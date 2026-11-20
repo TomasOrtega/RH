@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.CMVal.NormConj
 
 /- English proof (translation)
-Rewrite using `[← IsCMField.complexEmbedding_complexConj, map_div₀]`. Establish `e2 : σ (φ (IsCMField.complexConj E (α : E))) = starRingEnd ℂ (((σ : ℂ →+* ℂ).comp φ) (α : E))`. Rewrite using `[← IsCMField.complexEmbedding_complexConj]`. Both sides reduce to the same expression. Establish `e1 : σ (φ (α : E)) = ((σ : ℂ →+* ℂ).comp φ) (α : E)` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h0 : ((σ : ℂ →+* ℂ).comp φ) (α : E) ≠ 0` using `by simp`. Rewrite using `[e2, e1, norm_div, Complex.norm_conj, div_self (norm_ne_zero_iff.2 h0)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_sigma_ratio {E : Type} [Field E] [NumberField E] [IsCMField E] (σ : ℂ ≃+* ℂ) (φ : E →+* ℂ) (α : Eˣ) :
     ‖σ (φ (α : E) / starRingEnd ℂ (φ (α : E)))‖ = 1 := by
@@ -29,11 +29,11 @@ end GlobalTheory.CMVal.NormConj
 open GlobalTheory.CMVal.NormConj in
 
 /- English proof (translation)
-Introduce `E _ _ _ I _ φ _ s κ c hc χ hinf hχ σ y`. Establish `hfin` using `GlobalTheory.CMVal.PicFin.finite_picO E c hc`. Establish `hpos : 0 < Nat.card (PicO c)` using `Nat.card_pos`. Establish `hmem : y ^ Nat.card (PicO c) ∈ (princ ⊔ hatOUnits c : Subgroup (Af E)ˣ)`. Rewrite using `[← QuotientGroup.eq_one_iff, QuotientGroup.mk_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_card_eq_one'`. Take `⟨p, ⟨α, rfl⟩, u, hu, hpu⟩` from `Subgroup.mem_sup.1 hmem`. Use `set h := Nat.card (PicO c)`. Establish `hf : ((finPart χ y : ℂ)) ^ h = ((χ.inf α : ℂˣ) : ℂ)⁻¹`. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, ← hpu, map_mul, hχ u hu, mul_one, eq_inv_of_mul_eq_one_left (finPart_mul_inf χ α), Units.val_inv_eq_inv_val]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : ‖σ (finPart χ y : ℂ)‖ ^ h = 1`. Rewrite using `[← norm_pow, ← map_pow, hf, (hasInfRatio_iff χ φ _).1 hinf α, map_inv₀, norm_inv, map_prod, norm_prod]`. Simplify using `only [map_zpow₀, norm_zpow, norm_sigma_ratio, one_zpow, Finset.prod_const_one, inv_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hpos.ne').1 hn`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CMVal.norm_conj_finPart : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {I : Type} [Fintype I]
     (φ : I → E →+* ℂ) (hφ : IsCMType φ) (s : ℕ) (κ : I → ℕ) (c : Ideal (OF E)) (hc : c ≠ ⊥) (χ : HChar E)

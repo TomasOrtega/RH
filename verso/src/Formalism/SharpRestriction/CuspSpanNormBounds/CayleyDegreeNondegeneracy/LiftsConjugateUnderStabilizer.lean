@@ -18,7 +18,7 @@ section Cl
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `FlagG.Xa FlagG.X`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem partial_isotropic_top {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) : F0.Xa D.R.rS = F0.X := by
   unfold FlagG.Xa FlagG.X
@@ -27,13 +27,13 @@ theorem partial_isotropic_top {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) : F0.X
   simp
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_subset_range _ _)`.
+A detailed English derivation is pending.
 -/
 theorem partial_isotropic_le {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (j : ℕ) : F0.Xa j ≤ F0.X :=
   Submodule.span_mono (Set.image_subset_range _ _)
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite using `[Formalism.MainNotions.mem_orth_iff]`. Introduce `x hx`. Conclude with `Formalism.MainNotions.hT_swap_zero (Formalism.MainNotions.hT_zero_of_mem_X F0 (fun a => Formalism.MainNotions.hT_swap_zero (Formalism.MainNotions.hT_zero_of_mem_X F0 (fun b => F0.e_iso b a) x hx)) y hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isotropic_le_orth_isotropic {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) : F0.X ≤ orth (hS D) F0.X := by
   intro y hy
@@ -43,24 +43,24 @@ theorem isotropic_le_orth_isotropic {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) 
     (fun a => Formalism.MainNotions.hT_swap_zero (Formalism.MainNotions.hT_zero_of_mem_X F0 (fun b => F0.e_iso b a) x hx)) y hy)
 
 /- English proof (translation)
-The claim follows from `le_inf le_sup_right (fun _ hx => isotropic_le_orth_isotropic F0 hx)`.
+A detailed English derivation is pending.
 -/
 theorem isotropic_le_Lsub {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (Λ : LatV D) :
     toO (hS D) F0.X ≤ Lsub Λ (lf D F0) :=
   le_inf le_sup_right (fun _ hx => isotropic_le_orth_isotropic F0 hx)
 
 /- English proof (translation)
-Establish `hσ' : ∀ x y, (VS D).hT (σ x) (σ y) = (VS D).hT x y` using `hσ`. Establish `hmem : ∀ x, σ.symm x ∈ F0.X ↔ x ∈ F0.X`. Introduce `x`. Use `conv_rhs => rw [← hX]`. Rewrite using `[Submodule.mem_map_equiv]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgX : gmap σ (toO (hS D) F0.X) = toO (hS D) F0.X`. Use extensionality with `x`. Rewrite using `[isomAct_mem_gmap]`. Conclude with `hmem x`. Establish `hgO : gmap σ (toO (hS D) (orth (hS D) F0.X)) = toO (hS D) (orth (hS D) F0.X)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `y`. Rewrite using `[isomAct_mem_gmap]`. Express the relevant statement in the definitionally equal form `σ.symm y ∈ orth (hS D) F0.X ↔ y ∈ orth (hS D) F0.X`. Rewrite using `[Formalism.MainNotions.mem_orth_iff, Formalism.MainNotions.mem_orth_iff]`. Prove the components needed by the constructor for the conclusion.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h x hx`. Use `h (σ.symm x) ((hmem x).2 hx)` as an intermediate fact. Rewrite `this` using `[← hσ' (σ.symm x) (σ.symm y), LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `h x hx`. Establish `hx' : σ x ∈ F0.X`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hmem, LinearEquiv.symm_apply_apply]`. Conclude with `hx`. Use `h (σ x) hx'` as an intermediate fact. Rewrite using `[← hσ' x (σ.symm y), LinearEquiv.apply_symm_apply]` and apply the resulting hypothesis. Unfold `Lsub Lrep`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gmap_inf_cayley_degree_nondegeneracy, gmap_sup_cayley_degree_nondegeneracy, gmap_inf_cayley_degree_nondegeneracy]`. Express the relevant statement in the definitionally equal form `(gmap σ Λ ⊓ toO (hS D) (orth (hS D) F0.X) ⊔ toO (hS D) F0.X) ⊓ toO (hS D) (orth (hS D) F0.X) = (gmap σ Λ ⊓ gmap σ (toO (hS D) (orth (hS D) F0.X)) ⊔ gmap σ (toO (hS D) F0.X)) ⊓ gmap σ (toO (hS D) (orth (hS D) F0.X))`. Rewrite using `[hgX, hgO]`.
+A detailed English derivation is pending.
 -/
 theorem Lsub_gmap_of_isometry {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (σ : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (hσ : σ ∈ isom (VS D).hT) (hX : F0.X.map (σ : (VS D).V →ₗ[D.host.E] (VS D).V) = F0.X) (Λ : LatV D) :
@@ -97,7 +97,7 @@ theorem Lsub_gmap_of_isometry {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) (σ : 
   rw [hgX, hgO]
 
 /- English proof (translation)
-Use `⟨(isom (VS D).hT).mul_mem ha.1 hb.1, fun j => ?_, ?_⟩` and prove the remaining obligations. Establish `e : ((a * b : (VS D).V ≃ₗ[D.host.E] (VS D).V) : (VS D).V →ₗ[D.host.E] (VS D).V) = (a : (VS D).V →ₗ[D.host.E] (VS D).V) ∘ₗ (b : (VS D).V →ₗ[D.host.E] (VS D).V)` using `rfl`. Rewrite using `[e, Submodule.map_comp, hb.2.1 j, ha.2.1 j]`. Express the relevant statement in the definitionally equal form `a (b F0.z) = F0.z`. Rewrite using `[hb.2.2, ha.2.2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_mem_flag_stabilizer {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T) {a b : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (ha : a ∈ stabF D F0) (hb : b ∈ stabF D F0) : a * b ∈ stabF D F0 := by

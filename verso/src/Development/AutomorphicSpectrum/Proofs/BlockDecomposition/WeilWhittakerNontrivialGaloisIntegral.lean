@@ -18,15 +18,15 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WcB.RwFormula
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ σ _ μ _ lam Φ a b cc d hc t`. Establish `hD : Algebra.norm F (t : E) ≠ 0` using `Algebra.norm_ne_zero_iff.2 t.ne_zero`. Establish `hcE : algebraMap F E cc ≠ 0` using `(map_ne_zero _).2 hc`. Use `set κ : F := d / (cc * Algebra.norm F (t : E)) with hκ`. Use `set ξ : E := (algebraMap F E cc)⁻¹ * (t : E)⁻¹ with hξ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set f : E → ℂ := fun u => (χ (κ * Algebra.norm F u - Algebra.trace F E (ξ * u)) : ℂ) * Φ u with hf`. Establish `key : ∀ u : E, (χ ((a * Algebra.norm F (1 : E) + d * Algebra.norm F u - Algebra.trace F E (σ 1 * u)) / cc) : ℂ) * Φ (u * (t : E)) = (χ (a / cc) : ℂ) * f ((t : E) * u)`. Introduce `u`. Establish `hy : ξ * ((t : E) * u) = algebraMap F E cc⁻¹ * u`. Rewrite using `[hξ, map_inv₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `harg : (a * Algebra.norm F (1 : E) + d * Algebra.norm F u - Algebra.trace F E (σ 1 * u)) / cc = a / cc + (κ * Algebra.norm F ((t : E) * u) - Algebra.trace F E (ξ * ((t : E) * u)))`. Establish `hN1 : Algebra.norm F (1 : E) = 1` using `map_one _`. Establish `hNtu : Algebra.norm F ((t : E) * u) = Algebra.norm F (t : E) * Algebra.norm F u` using `map_mul _ _ _`. Establish `hs1 : σ (1 : E) = 1` using `map_one σ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hy, ← Algebra.smul_def, map_smul, smul_eq_mul, hNtu, hN1, hs1, one_mul, hκ]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hf]`. Rewrite using `[harg, AddChar.map_add_eq_mul, Circle.coe_mul, mul_comm u, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `GL2LocalData.rW gaussI`. Rewrite using `[if_neg hc]`. Simplify using `only []`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall key), integral_const_mul, integral_comp_mul_left μ t.ne_zero f, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rW_one_eq_gaussI : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (χ : AddChar F Circle) (σ : E ≃ₐ[F] E), σ ≠ AlgEquiv.refl → ∀ (μ : Measure E) [μ.IsAddHaarMeasure] (lam : ℂ) (Φ : E → ℂ) (a b cc d : F), cc ≠ 0 → ∀ t : Eˣ, GL2LocalData.rW χ σ μ lam a b cc d (fun x => Φ (x * (t : E))) 1 = lam * GL2LocalData.nsg E (-cc) * (((modulus cc : ℝ)⁻¹ : ℝ) : ℂ) * (((modulus (t : E) : ℝ)⁻¹ : ℝ) : ℂ) * (χ (a / cc) : ℂ) * gaussI χ μ Φ (d / (cc * Algebra.norm F (t : E))) ((algebraMap F E cc)⁻¹ * (t : E)⁻¹) := by
   intro F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ σ _ μ _ lam Φ a b cc d hc t

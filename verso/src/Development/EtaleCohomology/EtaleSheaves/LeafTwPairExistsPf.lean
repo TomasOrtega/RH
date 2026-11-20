@@ -9,7 +9,7 @@ namespace LateralTheory.E.LeafTwPairExistsPf
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `h` using `LinearMap.congr_fun (congrArg ModuleCat.Hom.hom (φ.hom.naturality g.op)) x`. Simplify using `using h.symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem res_map {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.res g (Sec.map φ x) = Sec.map φ (Sec.res g x) := by
@@ -17,7 +17,7 @@ theorem res_map {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x
   simpa using h.symm
 
 /- English proof (translation)
-Simplify using `[Sec.map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_map {F G H : Shv R} (φ : F ⟶ G) (ψ : G ⟶ H) {U : Scheme.{0}} (x : Sec F U) :
     Sec.map ψ (Sec.map φ x) = Sec.map (φ ≫ ψ) x := by
@@ -51,7 +51,7 @@ def LeafTwResExt : Prop := ∀ (q : ℕ) [NeZero q] (k : ℤ) (T : Cx (ZMod q)) 
   IsTwRes q k T e → ∃ u : T ⟶ res _ (tw q k), ∀ U ζ, Sec.map (u.f 0) (e U ζ) = resGen k ζ
 
 /- English proof (translation)
-Introduce `q _ i j`. Take `⟨T, τ, hτ⟩` from `h1 q i j`. Take `⟨u, hu⟩` from `h3 q (i + j) T _ (h2 q i j T τ hτ)`. Conclude with `⟨post τ u, fun U ζ => by rw [post_mul]; exact hu U ζ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LeafTwPairExists_of (h1 : LeafTwTensEx) (h2 : LeafTwTensRes) (h3 : LeafTwResExt) :
     LateralTheory.E.CupProductRingLaws.LeafTwPairExists := by

@@ -25,14 +25,14 @@ theorem evalHom_apply {F : Type*} [CommRing F] (z : Cone n F) (f : MvPolynomial 
 omit [Fintype ι] in
 
 /- English proof (translation)
-The claim follows from `fun h ↦ hc k ((P.mkF_eq_zero_iff _).mp h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mkF_X_ne_zero (P : ArithVariety n) {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c) (k : ι) :
     P.mkF (X ⟨k, c k⟩) ≠ 0 :=
   fun h ↦ hc k ((P.mkF_eq_zero_iff _).mp h)
 
 /- English proof (translation)
-Simplify using `only [ArithVariety.IsLive, not_forall, not_not] at hc`. Take `⟨k, hk⟩` from `hc`. Rewrite using `[chartMonomial, ← Finset.mul_prod_erase _ _ (Finset.mem_univ k)]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_of_mem _ hk _ (hd k))`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartMonomial_mem_of_not_live (P : ArithVariety n) {c : (k : ι) → Fin (n k + 1)}
     (hc : ¬ P.IsLive c) {d : ι → ℕ} (hd : ∀ k, 1 ≤ d k) : chartMonomial c d ∈ P.ideal := by
@@ -42,17 +42,17 @@ theorem chartMonomial_mem_of_not_live (P : ArithVariety n) {c : (k : ι) → Fin
   exact Ideal.mul_mem_right _ _ (Ideal.pow_mem_of_mem _ hk _ (hd k))
 
 /- English proof (translation)
-Proceed by induction on `hu using Subring.closure_induction with`. Consider the case `mem x hx`. Take `⟨v, rfl⟩` from `hx`. Use `⟨1, X v * ∏ k ∈ Finset.univ.erase v.1, X ⟨k, c k⟩, ?_⟩` and prove the remaining obligations. Establish `hne` using `mkF_X_ne_zero P hc v.1`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [ArithVariety.chartCoord, chartMonomial, Pi.one_apply, pow_one, map_prod, map_mul]`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ v.1)]`. Clear the denominators using the available nonvanishing facts. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `one => exact ⟨0, 1, by simp⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨e, f, hf⟩` from `hx`. Take `⟨e', f', hf'⟩` from `hy`. Use `⟨e + e', f * chartMonomial c 1 ^ e' + f' * chartMonomial c 1 ^ e, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_pow, ← hf, ← hf']`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `neg x _ hx`. Take `⟨e, f, hf⟩` from `hx`. Use `⟨e, -f, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, ← hf]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x y _ _ hx hy`. Take `⟨e, f, hf⟩` from `hx`. Take `⟨e', f', hf'⟩` from `hy`. Use `⟨e + e', f * f', ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, ← hf, ← hf']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_clear_denom (P : ArithVariety n) {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c)
     {u : P.FunField} (hu : u ∈ P.chartRing c) :
@@ -86,7 +86,7 @@ theorem exists_clear_denom (P : ArithVariety n) {c : (k : ι) → Fin (n k + 1)}
     ring
 
 /- English proof (translation)
-Use `choose e f hf using fun j ↦ exists_clear_denom P hc (hu j)`. Use `⟨∑ j, e j, fun j ↦ f j * chartMonomial c 1 ^ (∑ i, e i - e j), fun j ↦ ?_⟩` and prove the remaining obligations. Establish `hle : e j ≤ ∑ i, e i` using `Finset.single_le_sum (fun i _ ↦ Nat.zero_le (e i)) (Finset.mem_univ j)`. Rewrite using `[map_mul, map_pow, ← hf j, ← Nat.add_sub_cancel' hle, pow_add, Nat.add_sub_cancel_left]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_common_denom (P : ArithVariety n) {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c)
     {m : ℕ} {u : Fin m → P.FunField} (hu : ∀ j, u j ∈ P.chartRing c) :
@@ -99,7 +99,7 @@ theorem exists_common_denom (P : ArithVariety n) {c : (k : ι) → Fin (n k + 1)
   ring
 
 /- English proof (translation)
-Rewrite using `[← P.mkF_eq_zero_iff, map_sub, map_mul, map_mul, hg.value c hc, hg.value c' hc']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cross_mem_of_live {P : ArithVariety n} {D : AddBlockData P} {d : ι → ℕ}
     {g : ((k : ι) → Fin (n k + 1)) → Fin (D.size + 1) → MvPolynomial (Coord n) ℤ}
@@ -110,7 +110,7 @@ theorem cross_mem_of_live {P : ArithVariety n} {D : AddBlockData P} {d : ι → 
   ring
 
 /- English proof (translation)
-Simplify using `only [chartMonomial, ArithVariety.chartPow, map_prod, map_pow]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (mkF_X_ne_zero P hc k), Int.toNat_of_nonneg (hd k)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mkF_chartMonomial_mul_chartPow {P : ArithVariety n} (D : AddBlockData P) {d : ι → ℕ}
     (hd : ∀ k, 0 ≤ (d k : ℤ) + D.deg k) {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c) :
@@ -125,7 +125,7 @@ theorem mkF_chartMonomial_mul_chartPow {P : ArithVariety n} (D : AddBlockData P)
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Rewrite using `[evalCone_chartMonomial]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hz k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalCone_chartMonomial_ne_zero {z : Cone n ℂ} {c : (k : ι) → Fin (n k + 1)}
     (hz : ∀ k, z k (c k) ≠ 0) (e : ι → ℕ) : evalCone z (chartMonomial c e) ≠ 0 := by
@@ -133,15 +133,15 @@ theorem evalCone_chartMonomial_ne_zero {z : Cone n ℂ} {c : (k : ι) → Fin (n
   exact Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hz k)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h0`. Simplify using `only [not_exists, not_not] at h0`. Establish `hzc : ∀ k, z k (c k) ≠ 0`. Rewrite `hm` using `[evalCone_chartMonomial]`. Introduce `k`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk` using `Finset.prod_ne_zero_iff.mp hm k (Finset.mem_univ k)`. Conclude with `(pow_ne_zero_iff (by have := hg.pos k; omega)).mp hk`. Take `⟨u, hu, hsum⟩` from `D.generating c hc`. Take `⟨E, f, hf⟩` from `exists_common_denom P hc hu`. Establish `hcp : P.chartPow c D.deg ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ ↦ zpow_ne_zero _ (mkF_X_ne_zero P hc k)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum' : ∑ j, u j * D.elt j = P.chartPow c D.deg`. Rewrite using `[← one_mul (P.chartPow c D.deg), ← hsum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Use `set Q := chartMonomial c fun k ↦ (d k + D.deg k).toNat`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ∑ j, f j * g c j - chartMonomial c 1 ^ E * Q ∈ P.ideal`. Rewrite using `[← P.mkF_eq_zero_iff, map_sub, map_sum, map_mul, map_pow, ← mkF_chartMonomial_mul_chartPow D hg.nonneg hc, ← hsum', sub_eq_zero, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← hf j, hg.value c hc j]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv` using `hz.2 _ hmem`. Rewrite `hv` using `[← evalHom_apply, map_sub, map_sum, map_mul, map_pow]`. Simplify using `only [map_mul, evalHom_apply, h0, mul_zero, Finset.sum_const_zero, zero_sub, neg_eq_zero] at hv`. Conclude with `mul_ne_zero (pow_ne_zero _ (evalCone_chartMonomial_ne_zero hzc 1)) (evalCone_chartMonomial_ne_zero hzc _) hv`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_of_live {P : ArithVariety n} {D : AddBlockData P} {d : ι → ℕ}
     {g : ((k : ι) → Fin (n k + 1)) → Fin (D.size + 1) → MvPolynomial (Coord n) ℤ}
@@ -177,9 +177,9 @@ theorem exists_ne_zero_of_live {P : ArithVariety n} {D : AddBlockData P} {d : ι
     (evalCone_chartMonomial_ne_zero hzc _) hv
 
 /- English proof (translation)
-Establish `hex : ∀ k, ∃ i, z k i ≠ 0` using `fun k ↦ Function.ne_iff.mp (hz.1 k)`. Use `choose c' hc'z using hex`. Establish `hlive : P.IsLive c'` using `fun k hk ↦ hc'z k (by`. Use `hz.2 _ hk` as an intermediate fact. Simplify `this)` using `[evalCone]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hv` using `hz.2 _ (cross_mem_of_live hg hc hlive j)`. Rewrite `hv` using `[← evalHom_apply, map_sub, map_mul, map_mul, evalHom_apply, evalHom_apply, evalHom_apply, evalHom_apply, hm, zero_mul, sub_zero]`. Conclude with `(mul_eq_zero.mp hv).resolve_left (evalCone_chartMonomial_ne_zero hc'z d)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_live {P : ArithVariety n} {D : AddBlockData P} {d : ι → ℕ}
     {g : ((k : ι) → Fin (n k + 1)) → Fin (D.size + 1) → MvPolynomial (Coord n) ℤ}
@@ -197,9 +197,9 @@ theorem eq_zero_of_live {P : ArithVariety n} {D : AddBlockData P} {d : ι → �
   exact (mul_eq_zero.mp hv).resolve_left (evalCone_chartMonomial_ne_zero hc'z d)
 
 /- English proof (translation)
-Introduce `ι _ _ n P D d g hg z hz c`. Distinguish the cases in `hc : P.IsLive c`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Assume the negation of the conclusion as `hm`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨j, hj⟩` from `exists_ne_zero_of_live hg hz hc hm`. Conclude with `hj (h0 j)`. Conclude with `eq_zero_of_live hg hz hc`. Use `⟨fun _ ↦ hz.2 _ (chartMonomial_mem_of_not_live P hc hg.pos), fun _ j ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[hg.dead c hc j, ← evalHom_apply, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof : ChartVanishing.Statement := by
   intro ι _ _ n P D d g hg z hz c

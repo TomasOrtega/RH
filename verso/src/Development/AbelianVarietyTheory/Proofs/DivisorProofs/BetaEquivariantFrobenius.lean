@@ -9,19 +9,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.UPel.HT.EtLev
 
 /- English proof (translation)
-Introduce `p _ D R _ b N w0 r S _ s o H i hfin hflat hkill hrep htan`. Use `haveI := hfin`. Use `haveI := hflat`. Use `haveI : LocallyOfFinitePresentation H.hom := inferInstance`. Establish `hinv : ∀ {T : Over S} (a : T ⟶ o.A) (f : o.A ⟶ o.A) [IsMonHom f], a⁻¹ ≫ f = (a ≫ f)⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `T a f _`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← mul_comp, inv_mul_cancel, one_comp]`. Use `haveI : FormallyUnramified H.hom := by`. Use `TangentCrit.formallyUnramified_of_tangent H.hom fun k _ _ w hw => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `x : Sp k ⟶ S` to `TangentCrit.dualPt k ≫ w ≫ H.hom`. Set `W : epsPtR x ⟶ H` to `Over.homMk w hw`. Set `U : epsPtR x ⟶ H` to `Over.homMk (TangentCrit.dualBase k ≫ TangentCrit.dualPt k ≫ w) (by simp only [Category.assoc]; rfl)`. Set `e : Over.mk x ⟶ epsPtR x` to `Over.homMk (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) (TangentCrit.dualPt_dualBase_assoc k _)`. Establish `heU : e ≫ W = e ≫ U` using `by ext1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(TangentCrit.dualPt_dualBase_assoc k (TangentCrit.dualPt k ≫ w)).symm`. Establish `hv : (W ≫ i) * (U ≫ i)⁻¹ = 1`. Use `htan k x _ ?_ ?_` and prove the remaining obligations. Establish `h1 : e ≫ ((W ≫ i) * (U ≫ i)⁻¹) = 1`. Rewrite using `[comp_mul, GrpObj.comp_inv, ← Category.assoc, ← Category.assoc, heU, mul_inv_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrArg (fun q => q.left) h1`. Introduce `c hc haveI := o.act.hom (algebraMap (𝓞 D.F) D.O c)`. Rewrite using `[mul_comp, hinv, Category.assoc, Category.assoc, hkill c hc, comp_one, comp_one, inv_one, _root_.mul_one]`. Establish `hWU : W ≫ i = U ≫ i` using `mul_inv_eq_one.1 hv`. Establish `hk : ∀ c ∈ w0 ^ r, (W ≫ i) ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1`.
-
-Introduce `c hc`. Rewrite using `[Category.assoc, hkill c hc, comp_one]`. Take `⟨y, -, hy⟩` from `hrep _ (W ≫ i) hk`. Establish `hW` using `hy W rfl`. Establish `hU` using `hy U hWU.symm`.
-
-Conclude with `congrArg (fun q => q.left) (hW.trans hU.symm)`. Conclude with `Etale.of_formallyUnramified_of_flat H.hom`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etale_of_killed_tangent_trivial : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (w0 : Ideal (𝓞 D.F)) (r : ℕ) (S : Scheme.{0}) [IsLocallyNoetherian S] (s : S ⟶ Sp R) (o : Obj b N s) (H : Over S) (i : H ⟶ o.A), IsFinite H.hom → Flat H.hom → (∀ c ∈ w0 ^ r, i ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1) → (∀ (T : Over S) (x : T ⟶ o.A), (∀ c ∈ w0 ^ r, x ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1) → ∃! y : T ⟶ H, y ≫ i = x) → (∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ S) (v : epsPtR x ⟶ o.A), spMap (TrivSqZeroExt.fstHom k k k).toRingHom ≫ v.left = (1 : Over.mk x ⟶ o.A).left → (∀ c ∈ w0 ^ r, v ≫ o.act.act (algebraMap (𝓞 D.F) D.O c) = 1) → v = 1) → Etale H.hom := by
   intro p _ D R _ b N w0 r S _ s o H i hfin hflat hkill hrep htan

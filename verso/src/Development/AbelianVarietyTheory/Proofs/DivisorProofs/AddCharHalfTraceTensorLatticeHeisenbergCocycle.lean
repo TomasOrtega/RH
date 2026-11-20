@@ -37,11 +37,9 @@ attribute [local instance] _root_.Formalism.BasicNotions.Host.cmStar _root_.Glob
 variable {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A)
   {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.WeilM.hTens`. Simplify using `only [map_sum, map_mul, hc, hA, hB]`. Simplify using `only [← Finset.sum_neg_distrib]`. Use `conv_lhs => enter [2, i]`. Rewrite using `[Finset.sum_comm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [Finset.sum_comm]`. Use `conv_lhs => enter [2, k, 2, i]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => enter [2, k]`. Rewrite using `[Finset.sum_comm]`.
-
-Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.VacCocycle.conj_hTens (hc : ∀ z, c (c z) = z) {JA : Matrix α α A}
     {JB : Matrix β β A} (hA : ∀ i j, c (JA j i) = JA i j) (hB : ∀ i j, c (JB j i) = -JB i j)
@@ -68,7 +66,7 @@ attribute [local instance] _root_.Formalism.BasicNotions.Host.cmStar _root_.Glob
 variable {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A)
   {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] in
 /- English proof (translation)
-The claim follows from `Algebra.trace_eq_of_algEquiv (AlgEquiv.ofAlgHom c c (AlgHom.ext hc) (AlgHom.ext hc)) z`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.VacCocycle.trace_conj (hc : ∀ z, c (c z) = z) (z : A) :
     Algebra.trace R A (c z) = Algebra.trace R A z :=
@@ -87,7 +85,7 @@ variable {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A
   {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] in
 omit [DecidableEq α] [DecidableEq β] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.WeilM.hTens`. Simplify using `only [Matrix.add_apply, map_add, add_mul, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma hTens_add_add (JA : Matrix α α A) (JB : Matrix β β A)
     (x y : Matrix α β A) :
@@ -108,11 +106,11 @@ attribute [local instance] _root_.Formalism.BasicNotions.Host.cmStar _root_.Glob
 variable {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A)
   {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.WeilM.symp at *`. Establish `hswap : _root_.GlobalTheory.WeilM.hTens c JA JB y x = -c (_root_.GlobalTheory.WeilM.hTens c JA JB x y)`. Rewrite using `[_root_.GlobalTheory.VacCocycle.conj_hTens c hc hA hB y x, neg_neg]`. Establish `hconj : Algebra.trace R A (ξ * c (_root_.GlobalTheory.WeilM.hTens c JA JB x y)) = Algebra.trace R A (_root_.GlobalTheory.WeilM.hTens c JA JB x y) - Algebra.trace R A (ξ * _root_.GlobalTheory.WeilM.hTens c JA JB x y)`. Rewrite using `[← _root_.GlobalTheory.VacCocycle.trace_conj c hc, map_mul, hc, hξ, sub_mul, one_mul, map_sub]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm1 : Algebra.trace R A (-1 * _root_.GlobalTheory.WeilM.hTens c JA JB x y) = -Algebra.trace R A (_root_.GlobalTheory.WeilM.hTens c JA JB x y)`. Rewrite using `[neg_one_mul, map_neg]`. Establish `key : h * Algebra.trace R A (ξ * _root_.GlobalTheory.WeilM.hTens c JA JB (x + y) (x + y)) = h * Algebra.trace R A (ξ * _root_.GlobalTheory.WeilM.hTens c JA JB x x) + h * Algebra.trace R A (ξ * _root_.GlobalTheory.WeilM.hTens c JA JB y y) + -(h * Algebra.trace R A (-1 * _root_.Glo …`. Rewrite using `[hTens_add_add, hswap]`. Simplify using `only [mul_add, map_add, mul_neg, map_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hconj]`. Take the linear combination `(Algebra.trace R A (ξ * _root_.GlobalTheory.WeilM.hTens c JA JB x y) - Algebra.trace R A (_root_.GlobalTheory.WeilM.hTens c JA JB x y)) * hh + (h - 1) * hm1`. Rewrite using `[key]`. Simplify using `only [AddChar.map_add_eq_mul]`. Rewrite using `[h1, h2, mul_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma addChar_symp_add_add (hc : ∀ z, c (c z) = z) {JA : Matrix α α A}
     {JB : Matrix β β A} (hA : ∀ i j, c (JA j i) = JA i j) (hB : ∀ i j, c (JB j i) = -JB i j)
@@ -158,23 +156,21 @@ attribute [local instance] _root_.Formalism.BasicNotions.Host.cmStar _root_.Glob
   _root_.GlobalTheory.FunObj.borelSpaceKw in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB n d X Y r s r' s' hX hY θ hθ v γ hγ γ' hγ'`. Establish `hσ : ∀ z, σ (σ z) = z`. Establish `hcm` using `hB.cm`. Unfold `_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt at hcm`. Take `⟨-, -, -, hτ⟩` from `hcm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Introduce `z`. Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (R := ℚ) (S := E) (M := ℂ)).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hτ, hτ, star_star]`. Establish `hcc : ∀ z, _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ z) = z`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomp : (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ).comp (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) = AlgHom.id _ _`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA`. Rewrite using `[← Algebra.TensorProduct.map_comp]`. Establish `hσσ : σ.comp σ = AlgHom.id F E` using `AlgHom.ext hσ`. Rewrite using `[hσσ, AlgHom.comp_id]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Algebra.TensorProduct.map_id`. Introduce `z`. Conclude with `DFunLike.congr_fun hcomp z`. Establish `hinc : ∀ x : E, _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F` using `F) (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) x) = _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) (σ x) := by`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR`. Simplify using the standard rewrite rules. Establish `hA : ∀ i j, _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F X.J j i) = _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F X.J i j`. Introduce `i j`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_apply, Matrix.map_apply, hinc, hX.herm]`. Establish `hB' : ∀ i j, _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F Y.J j i) = -_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F Y.J i j`. Introduce `i j`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM`. Rewrite using `[Matrix.map_apply, Matrix.map_apply, hinc, hY.skew, map_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hξ : _root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F` using `F) (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) (θ : E)) = 1 - _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) (θ : E) := by`. Rewrite using `[hinc, eq_sub_of_add_eq' hθ, map_sub, map_one]`. Establish `hone : (_root_.GlobalTheory.AdelicU.evFin F v) 1 ∈ HeightOneSpectrum.adicCompletionIntegers F v`. Rewrite using `[map_one]`. Conclude with `one_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `_root_.GlobalTheory.LatVacArith.psi_symp_latAtV σ B X Y r s r' s' hB hX hY v θ 1 hone γ hγ γ' hγ'`. Establish `h2` using `_root_.GlobalTheory.LatVacArith.psi_symp_latAtV σ B X Y r s r' s' hB hX hY v (-1) 1 hone γ hγ γ' hγ'`. Rewrite `h1`, `h2` using `[one_mul]`. Establish `hm : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F` using `F) (_root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) (((-1 : 𝓞 E) : E)) = -1 := by`. Simplify using the standard rewrite rules.
-
-Rewrite `h2` using `[hm]`. Conclude with `addChar_symp_add_add (_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) hcc hA hB' B.ψ (invOf_mul_self (2 : _root_.Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F)) hξ γ γ' h1 h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.VacCocycle.psi_half_symp_add : ∀ {F E : Type} [Field F]
     [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}

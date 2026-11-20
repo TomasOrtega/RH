@@ -3,15 +3,13 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `W _ _ _ O T hc I _ ψ hψ hpos`. Use `set V : I → Submodule ℂ W := fun i => ⨅ a, Module.End.eigenspace (T a) (ψ i a) with hVdef`. Establish `hind` using `Module.End.independent_iInf_maxGenEigenspace_of_forall_mapsTo T (fun i j φ => Module.End.mapsTo_maxGenEigenspace_of_comm (hc j i) φ)`. Establish `hV : iSupIndep V`. Use `(hind.comp hψ).mono ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Conclude with `iInf_mono fun a => Module.End.eigenspace_le_maxGenEigenspace`. Establish `hne : ∀ i, ∃ v ∈ V i, v ≠ 0`. Introduce `i`. Establish `: V i ≠ ⊥`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h2` using `hpos i`. Express the relevant statement in the definitionally equal form `1 ≤ Module.finrank ℂ (V i) at h2`. Rewrite `h2` using `[h, finrank_bot]`. Use linear arithmetic over natural numbers and integers.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.exists_mem_ne_zero_of_ne_bot this`. Use `choose v hvV hv0 using hne`. Use `set S : Submodule ℂ W := ⨆ i, V i`. Establish `hvS : ∀ i, v i ∈ S` using `fun i => Submodule.mem_iSup_of_mem i (hvV i)`. Establish `hli : LinearIndependent ℂ v` using `iSupIndep.linearIndependent V hV hvV hv0`.
-
-Set `w : I → S` to `fun i => ⟨v i, hvS i⟩`. Establish `hw : LinearIndependent ℂ w`. Apply `LinearIndependent.of_comp S.subtype` to reduce the goal to its premises. Conclude with `hli`. Conclude with `hw.fintype_card_le_finrank`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem finrank_iSup_iInf_eigenspace_ge_card : ∀ (W : Type 1) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (O : Type) (T : O → Module.End ℂ W),
     (∀ a b, Commute (T a) (T b)) → ∀ (I : Type) [Fintype I] (ψ : I → O → ℂ), Function.Injective ψ →

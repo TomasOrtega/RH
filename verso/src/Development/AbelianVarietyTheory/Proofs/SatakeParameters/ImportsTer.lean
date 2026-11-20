@@ -5,15 +5,15 @@ namespace GlobalTheory.FiniteIndexSubgroup
 open NumberField
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact L.zero_mem⟩`. Consider the case `add x z _ _ hx hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨a, ha, hax⟩` from `hx`. Take `⟨b, hb, hbz⟩` from `hz`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Establish `h1 : (a * b) • x = b • (a • x)` using `by rw [mul_comm, mul_smul]`. Establish `h2 : (a * b) • z = a • (b • z)` using `by rw [mul_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_add, h1, h2]`. Conclude with `L.add_mem (L.smul_mem b hax) (L.smul_mem a hbz)`. Consider the case `smul c x _ hx`. Take `⟨ν, hν, hνx⟩` from `hx`. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := RingOfIntegers E) c`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hb' : algebraMap (RingOfIntegers E) E b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Establish `hsc : algebraMap (RingOfIntegers E) E (b * ν) * c = algebraMap (RingOfIntegers E) E (a * ν)`. Rewrite using `[← hab, map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b * ν, mul_ne_zero hb0 hν, ?_⟩` and prove the remaining obligations. Establish `: (b * ν) • (c • x) = a • (ν • x)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Conclude with `L.smul_mem a hνx`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_ne_zero_smul_mem_of_mem_span' {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (RingOfIntegers E) (Fin n → E)) :
@@ -51,7 +51,7 @@ private theorem exists_ne_zero_smul_mem_of_mem_span' {E : Type} [Field E] [Numbe
     exact L.smul_mem a hνx
 
 /- English proof (translation)
-The claim follows from `exists_ne_zero_smul_mem_of_mem_span' L y (by rw [hL]; exact Submodule.mem_top)`.
+A detailed English derivation is pending.
 -/
 theorem main {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (RingOfIntegers E) (Fin n → E))
@@ -59,7 +59,7 @@ theorem main {E : Type} [Field E] [NumberField E] {n : ℕ}
     ∃ ν : RingOfIntegers E, ν ≠ 0 ∧ ν • y ∈ L := exists_ne_zero_smul_mem_of_mem_span' L y (by rw [hL]; exact Submodule.mem_top)
 
 /- English proof (translation)
-Introduce `E _ _ n L hL y`. Conclude with `exists_ne_zero_smul_mem_of_mem_span' L y (by rw [hL]; exact Submodule.mem_top)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem target : ∀ {E : Type} [inst : Field E] [NumberField E] {n : ℕ} (L : Submodule (NumberField.RingOfIntegers E) (Fin n → E)), Submodule.span E (↑L : Set (Fin n → E)) = ⊤ → ∀ (y : Fin n → E), ∃ (ν : NumberField.RingOfIntegers E), ν ≠ (0 : NumberField.RingOfIntegers E) ∧ ν • y ∈ L := by
   intro E _ _ n L hL y

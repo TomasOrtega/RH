@@ -17,7 +17,7 @@ def lineLat (L : HSp D) (ζ : Fin L.rank → D.host.E) (𝔠 : FI D) : Lat L :=
     ((LinearMap.toSpanSingleton D.host.E (Fin L.rank → D.host.E) ζ).restrictScalars (𝓞 D.host.E))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(α ⊗ₜ[D.host.F] x : AE D) * (1 ⊗ₜ[D.host.F] z) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem tmul_mul_incA (α : AF D.host.F) (x z : D.host.E) :
     (α ⊗ₜ[D.host.F] x : AE D) * incA D z = α ⊗ₜ[D.host.F] (x * z) := by
@@ -25,11 +25,11 @@ theorem tmul_mul_incA (α : AF D.host.F) (x z : D.host.E) :
   rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one]
 
 /- English proof (translation)
-Unfold `GlobalTheory.FinPl.latV GlobalTheory.FinPl.latMul idV`. Rewrite using `[AddMonoidHom.map_closure]`. Use `congr 1`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨α, h1, h2, a, rfl, x, ⟨c, hc, rfl⟩, rfl⟩`. Use `⟨_, ⟨α, h1, h2, c, hc, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[ratV, tmul_mul_incA]`. Introduce and unpack `⟨_, ⟨α, h1, h2, c, hc, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `⟨α, h1, h2, 1, rfl, _, ⟨c, hc, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[ratV, tmul_mul_incA]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem latV_lineLat (L : HSp D) (ζ : Fin L.rank → D.host.E) (𝔠 : FI D) (v : Pl D) :
     latV L (lineLat L ζ 𝔠) (· = v) =
@@ -49,9 +49,9 @@ theorem latV_lineLat (L : HSp D) (ζ : Fin L.rank → D.host.E) (𝔠 : FI D) (v
     simp [ratV, tmul_mul_incA]
 
 /- English proof (translation)
-Introduce `a _`. Rewrite using `[latV_lineLat]`. Use `⟨?_, fun h => ⟨a, h, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨a', h, e⟩`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hζ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `e1 : a' * incA D (ζ i) = a * incA D (ζ i)` using `congrFun e i`. Establish `hu : IsUnit (incA D (ζ i))` using `(IsUnit.mk0 _ hi).map _`. Rewrite using `[← hu.mul_right_cancel e1]` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem lineLatAt_lineLat (L : HSp D) {ζ : Fin L.rank → D.host.E} (hζ : ζ ≠ 0) (𝔠 : FI D) (v : Pl D) :
     LineLatAt L ζ 𝔠 (lineLat L ζ 𝔠) v := by
@@ -65,9 +65,9 @@ theorem lineLatAt_lineLat (L : HSp D) {ζ : Fin L.rank → D.host.E} (hζ : ζ �
   rwa [← hu.mul_right_cancel e1]
 
 /- English proof (translation)
-Introduce `a ha`. Use `(AddSubgroup.closure_le (idAt D (· = v)).toAddSubgroup).2 ?_ ha` and prove the remaining obligations. Introduce and unpack `_ ⟨α, -, h2, x, -, rfl⟩`. Use `Ideal.mem_inf.2 ⟨?_, Ideal.mem_iInf.2 fun w => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(0 : Ainf D.host.F) ⊗ₜ[D.host.F] x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `TensorProduct.zero_tmul _ _`. Express the relevant statement in the definitionally equal form `(evalV D.host.F w.1 α) ⊗ₜ[D.host.F] x = 0`. Rewrite using `[h2 _ w.2, TensorProduct.zero_tmul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idV_le_idAt (𝔞 : FI D) (v : Pl D) : ∀ a ∈ idV 𝔞 v, a ∈ idAt D (· = v) := by
   intro a ha
@@ -80,21 +80,19 @@ theorem idV_le_idAt (𝔞 : FI D) (v : Pl D) : ∀ a ∈ idV 𝔞 v, a ∈ idAt 
     rw [h2 _ w.2, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-The claim follows from `one_ne_zero (α := A ⊗[F] E)`.
+A detailed English derivation is pending.
 -/
 theorem one_tmul_one_ne (F A E : Type) [Field F] [Field A] [Field E] [Algebra F A] [Algebra F E] :
     (1 : A) ⊗ₜ[F] (1 : E) ≠ 0 := one_ne_zero (α := A ⊗[F] E)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx, hx0⟩ : ∃ x ∈ 𝔞, x ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `h (FractionalIdeal.eq_zero_iff.2 hc)`. Establish `ev : evalV D.host.F v (singleV D.host.F v 1) = 1`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `RestrictedProduct.single_eq_same (fun w : Pl D => w.adicCompletionIntegers D.host.F) v 1`. Establish `ew : ∀ w, w ≠ v → evalV D.host.F w (singleV D.host.F v 1) = 0` using `fun w hw => by`. Conclude with `RestrictedProduct.single_eq_of_ne (fun w : Pl D => w.adicCompletionIntegers D.host.F) 1 hw`. Introduce `hb`. Establish `hm : (pairA D.host.F 0 (singleV D.host.F v 1)) ⊗ₜ[D.host.F] x ∈ idV 𝔞 v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `AddSubgroup.subset_closure ⟨_, fun w => ?_, ew, x, hx, rfl⟩` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[ev]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ew w hw]`. Conclude with `zero_mem _`. Rewrite `hm` using `[hb, AddSubgroup.mem_bot]`. Establish `h2` using `congrArg (fun y => compAt D v (y * incA D x⁻¹)) hm`. Simplify using `only [tmul_mul_incA, mul_inv_cancel₀ hx0, zero_mul, map_zero] at h2`.
-
-Express the relevant statement in the definitionally equal form `(evalV D.host.F v (singleV D.host.F v 1)) ⊗ₜ[D.host.F] (1 : D.host.E) = 0 at h2`. Rewrite `h2` using `[ev]`. Conclude with `one_tmul_one_ne _ _ _ h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idV_ne_bot {𝔞 : FI D} (h : 𝔞 ≠ 0) (v : Pl D) : idV 𝔞 v ≠ ⊥ := by
   classical
@@ -120,7 +118,7 @@ theorem idV_ne_bot {𝔞 : FI D} (h : 𝔞 ≠ 0) (v : Pl D) : idV 𝔞 v ≠ �
   exact one_tmul_one_ne _ _ _ h2
 
 /- English proof (translation)
-Introduce `hl`. Use `idV_ne_bot h v ((AddSubgroup.eq_bot_iff_forall _).2 fun a ha => ?_)` and prove the remaining obligations. Establish `h1` using `idV_le_idAt _ _ a ha`. Use `(lineLatAt_lineLat L hζ 0 v a h1).1 ((hl a h1).2 ha)` as an intermediate fact. Rewrite `this` using `[idV_zero, AddSubgroup.mem_bot]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem not_lineLatAt_zero (L : HSp D) {ζ : Fin L.rank → D.host.E} (hζ : ζ ≠ 0) {𝔠 : FI D} (h : 𝔠 ≠ 0) (v : Pl D) :
     ¬ LineLatAt L ζ 𝔠 (lineLat L ζ 0) v := by
@@ -131,18 +129,18 @@ theorem not_lineLatAt_zero (L : HSp D) {ζ : Fin L.rank → D.host.E} (hζ : ζ 
   rwa [idV_zero, AddSubgroup.mem_bot] at this
 
 /- English proof (translation)
-Establish `h1` using `hP D.R D.host`. Apply the tactic sequence `refine ⟨fun h => ?_, fun h => ?_, fun h => ?_⟩ <;> simp [h] at h1`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem AA_ne (hP : FactPrincipalDatum) : D.host.AA ≠ 0 ∧ D.host.AAbar ≠ 0 ∧ D.host.xi0 ≠ 0 := by
   have h1 := hP D.R D.host
   refine ⟨fun h => ?_, fun h => ?_, fun h => ?_⟩ <;> simp [h] at h1
 
 /- English proof (translation)
-Take `⟨hA, hB, -⟩` from `AA_ne (D := D) hP`. Establish `key : D.host.AA⁻¹ * (dI D * cI D j) = D.host.AA * cI D (j + 1 + 1)`. Establish `e` using `cI_step D (j := j) (by omega)`. Establish `: dI D * cI D j = D.host.AA * D.host.AAbar * (FractionalIdeal.spanSingleton _ D.host.xi0 * cI D j)`. Rewrite using `[dI]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, e]`. Clear the denominators using the available nonvanishing facts. Use `⟨fun i hi => ?_, ?_⟩` and prove the remaining obligations. Establish `: σ + 1 - i = σ - i + 1` using `by omega`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[bI, bI, this, pow_succ, mul_assoc, mul_left_comm, key, mul_left_comm]`. Rewrite using `[bI, Nat.add_sub_cancel_left, pow_one, key]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cols_odd_even (hP : FactPrincipalDatum) {j σ : ℕ} (h : j + 2 * (σ + 1) + 2 = D.R.m) :
     (∀ i, i < σ → D.host.AA⁻¹ * bI D j (σ + 1) i = D.host.AA * bI D (j + 1 + 1) σ i) ∧
@@ -162,7 +160,7 @@ theorem cols_odd_even (hP : FactPrincipalDatum) {j σ : ℕ} (h : j + 2 * (σ + 
 variable {a : XPart D u} {b : YPart a}
 
 /- English proof (translation)
-Establish `: (j + 1 + 1) / 2 = j / 2 + 1` using `by omega`. Rewrite using `[this, ← hx, hl]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_link (x y : D.host.E) (j : ℕ) (T : D.host.E) (hl : x = D.host.xi0 * star D.host.xi0 * y)
     (hx : x * (D.host.xi0 * star D.host.xi0) ^ (j / 2) = -T) :
@@ -171,7 +169,7 @@ theorem norm_link (x y : D.host.E) (j : ℕ) (T : D.host.E) (hl : x = D.host.xi0
   rw [this, ← hx, hl]; ring
 
 /- English proof (translation)
-Establish `e : D.R.m / 2 = j / 2 + 1` using `by omega`. Establish `n` using `h.norm j 0 hj`. Rewrite using `[h.tau j hj, star_smul, mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul, smul_eq_mul, star_pow, e]`. Take the linear combination `(D.host.xi0 * star D.host.xi0) * n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem tau_norm {ζ₀ : Fin a.Lz.rank → D.host.E} {τ} (h : b.Sk ζ₀ τ) (j : ℕ) (hj : j + 2 * 0 + 2 = D.R.m) :
     star (τ j hj *ᵥ ζ₀) ⬝ᵥ (b.bes j 0 hj).L.gram *ᵥ (τ j hj *ᵥ ζ₀) =
@@ -182,9 +180,9 @@ theorem tau_norm {ζ₀ : Fin a.Lz.rank → D.host.E} {τ} (h : b.Sk ζ₀ τ) (
   linear_combination (D.host.xi0 * star D.host.xi0) * n
 
 /- English proof (translation)
-Use `⟨fun j => -(c * ξ ^ (j / 2)), fun j => by simp [hξ, hc], fun j => ?_, ?_⟩` and prove the remaining obligations. Establish `: (j + 1 + 1) / 2 = j / 2 + 1` using `by omega`. Simplify using `only [this]`. Expand and normalize the polynomial expressions, which then agree. Establish `: (s + 1 + 1) / 2 = s / 2 + 1` using `by omega`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [this]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_sc {k : Type} [Field k] [ValuativeRel k] {ξ c : k} (hξ : valuation k ξ = 1) (hc : valuation k c = 1) (s : ℕ) :
     ∃ sc : ℕ → k, (∀ j, valuation k (sc j) = 1) ∧ (∀ j, sc (j + 1 + 1) = sc j * ξ) ∧ -(ξ * sc s) = c * ξ ^ ((s + 1 + 1) / 2) := by
@@ -195,9 +193,9 @@ theorem exists_sc {k : Type} [Field k] [ValuativeRel k] {ξ c : k} (hξ : valuat
     simp only [this]; ring
 
 /- English proof (translation)
-Introduce `a ha`. Establish `e : ratV (vecB o ζ) = o.jB *ᵥ ratV ζ`. Use function extensionality and compare the values at `i`. Simplify using `[ratV, vecB, OrthDec.jB, rat, mulVec, dotProduct]`. Rewrite using `[ho, e, mulVec_smul, mulVec_smul, mulVec_mulVec, mulVec_mulVec, ← h a ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[o.pA_jB, o.pB_jB, zero_mulVec, smul_zero, one_mulVec]`. Conclude with `and_iff_right (zero_mem _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineId_of_split {S A L : HSp D} (o : OrthDec S A L) (ζ : Fin L.rank → D.host.E) (M : Lat S) (LA : Lat A) (LL : Lat L)
     (𝔠 : FI D) (v : Pl D) (h : LineLatAt L ζ 𝔠 LL v) (ho : OrthAt o M LA LL v) : LineId o ζ M 𝔠 v := by

@@ -16,7 +16,7 @@ open NumberField Matrix Formalism.MainNotions.S Formalism.REAL GlobalTheory.Dec
 open scoped ContDiff
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons p w ih`. Use function extensionality and compare the values at `y`. Simplify using `only [Eword, Eab, Ec, Rd, ih, Matrix.mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem Eword_mul_left {n : ℕ} (ε : Fin n → Bool) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) (k : Matrix (Fin n) (Fin n) ℂ)
     (w : List (Fin n × Fin n)) : Eword ε w (fun y => f (k * y)) = fun y => Eword ε w f (k * y) := by
@@ -30,13 +30,13 @@ variable {I : AutInst}
 
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 /- English proof (translation)
-Introduce `g₀ _`. Take `⟨A, hA, hAa⟩` from `GlobalTheory.SmoothConv.exists_contDiff_extension I (hf x.2)`. Use `⟨Set.univ, fun y => A (fun w i j => if w = v then ∑ k, uMat (x.1 v) i k * y k j else uMat (x.1 w) i j), isOpen_univ, trivial, ContDiff.contDiffOn (hA.comp ?_), fun y _ hy => ?_⟩` and prove the remaining obligations. Use `contDiff_pi.2 fun w => contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_ split_ifs` and prove the remaining obligations. Use `ContDiff.sum fun k _ => contDiff_const.mul ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(contDiff_apply_apply ℝ ℂ k j : ContDiff ℝ ∞ fun y : Fin I.n → Fin I.n → ℂ => y k j)`. Conclude with `contDiff_const`. Establish `hu : Jm (I.ε v) * yᴴ * Jm (I.ε v) * y = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc yᴴ, hy, Jm_mul_self]`. Set `u : UJ (I.ε v)` to `⟨⟨y, _, mul_eq_one_comm.1 hu, hu⟩, hy⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `(slice_apply I f x v u).trans ?_` and prove the remaining obligations. Apply the tactic sequence `have e : x * (Pi.mulSingle v u, 1) = (x.1 * Pi.mulSingle v u, x.2) := by ext1 <;> simp`. Rewrite using `[e, ← hAa]`. Use `congrArg A ?_` and prove the remaining obligations. Use function extensionality and compare the values at `w i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify using `only [GlobalTheory.SmoothConv.emb, Pi.mul_apply, Pi.mulSingle_eq_same, if_true]`. Both sides reduce to the same expression. Simplify using `[GlobalTheory.SmoothConv.emb, hw]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem smoothOnG_slice {f : I.GA → ℂ} (hf : ∀ xf, SmoothInf I fun y => f (y, xf)) (v : InfinitePlace I.F)
     (x : I.GA) : SmoothOnG (I.ε v) (slice I f x v) := by
@@ -65,15 +65,15 @@ private theorem smoothOnG_slice {f : I.GA → ℂ} (hf : ∀ xf, SmoothInf I fun
     · simp [GlobalTheory.SmoothConv.emb, hw]
 
 /- English proof (translation)
-Use `set x' : I.GA := x * b * (Pi.mulSingle v (b.1 v)⁻¹, 1) with hx'`. Establish `h1 : zOp I v m (fun y => f (y * b)) x = gelf (I.ε v) m (fun y => slice I f x' v (y * uMat (b.1 v))) 1`. Use `zOp_eq_gelf I v m _ x _ fun g => ?_` and prove the remaining obligations. Use `(slice_apply I f x' v (g * b.1 v)).trans (congrArg f ?_)` and prove the remaining obligations. Rewrite using `[hx', mul_assoc, mul_assoc, mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `Prod.ext (funext fun w => ?_) (by simp)` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.mulSingle_eq_of_ne hw]`. Establish `h2 : zOp I v m f (x * b) = gelf (I.ε v) m (fun y => slice I f x' v (uMat (b.1 v) * y)) 1`. Use `zOp_eq_gelf I v m _ _ _ fun g => ?_` and prove the remaining obligations. Use `(slice_apply I f x' v (b.1 v * g)).trans (congrArg f ?_)` and prove the remaining obligations. Rewrite using `[hx', mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `Prod.ext (funext fun w => ?_) (by simp)` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.mulSingle_eq_of_ne hw]`. Rewrite using `[h1, h2, GlobalTheory.T.gelfandInvariant_comm_rightTranslation _ _ m _ _ 1 (smoothOnG_slice hf v x') (b.1 v).2 (show inUJ _ _ by simp [inUJ])]`. Simplify using `only [gelf, Eword_mul_left, Matrix.mul_one, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zOp_mul_right {f : I.GA → ℂ} (hf : ∀ xf, SmoothInf I fun y => f (y, xf)) (v : InfinitePlace I.F) (m : ℕ)
     (x b : I.GA) : zOp I v m (fun y => f (y * b)) x = zOp I v m f (x * b) := by
@@ -110,7 +110,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {B : Base F E} {W : Spc F E d} {L : Subgroup (UA σ W.J)} {I : AutInst} {g : ℕ} {e : I.GA →* UA σ W.J}
 
 /- English proof (translation)
-Use `smoothInf_of_lines fun k γ hγ x => ?_` and prove the remaining obligations. Establish `h1` using `hf k _ (fun i => isRealLine_transp hcm hσ hc he (hγ i)) (toGAd hσ W.J hc (e (x, xf)))`. Use `h1 using 3 with t` and compare the differences between its conclusion and the goal. Establish `h2 : ((x * (List.ofFn fun i => γ i (t i)).prod, xf) : I.GA) = (x, xf) * MonoidHom.inl _ _ (List.ofFn fun i => γ i (t i)).prod` using `by simp`. Simplify using `only [h2, map_mul, map_list_prod, List.map_ofFn, Function.comp_def, MonoidHom.inl_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem smoothInf_transp (hcm : IsCMExt F E σ) (hσ : ∀ x, σ (σ x) = x) {c : E} (hc : c ≠ 0)
     (he : IsTransp B W L I g e) {f : GAd σ (c • W.J.map σ) → ℂ} (hf : IsSm σ (c • W.J.map σ) f) (xf : I.Gf) :
@@ -125,9 +125,9 @@ private theorem smoothInf_transp (hcm : IsCMExt F E σ) (hσ : ∀ x, σ (σ x) 
 open Classical in
 
 /- English proof (translation)
-Set `p : ℝ → Formalism.REAL.UJ (I.ε v)` to `fun t => ⟨(Matrix.isUnit_exp ((t : ℂ) • Z)).unit, Formalism.REAL.exp_indefinite_unitary_holds I.n (I.ε v) Z hZ t⟩`. Establish `hp : ∀ t, uMat (p t) = NormedSpace.exp ((t : ℂ) • Z)` using `fun _ => rfl`. Use `⟨fun t => toGAd hσ W.J hc (e (Pi.mulSingle v (p t), 1)), isRealLine_transp hcm hσ hc he (γ := fun t => Pi.mulSingle v (p t)) ⟨v, Z, fun t => ⟨by beta_reduce; rw [Pi.mulSingle_eq_same, hp]; exact congrArg _ (by ext; simp), fun u hu => Pi.mulSingle_eq_of_ne hu _⟩⟩, fun S ψ x h u => …` and prove the remaining obligations. Unfold `Formalism.REAL.Rd lineDer`. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `t`. Establish `e1 : ((Pi.mulSingle v u, 1) : I.GA) * (Pi.mulSingle v (p t), 1) = (Pi.mulSingle v (u * p t), 1)`. Rewrite using `[Prod.mk_mul_mk, ← Pi.mulSingle_mul, mul_one]`. Rewrite using `[← hp, ← map_mul, ← map_mul, mul_assoc, e1]`. Conclude with `h (u * p t)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_line (hcm : IsCMExt F E σ) (hσ : ∀ x, σ (σ x) = x) {c : E} (hc : c ≠ 0)
     (he : IsTransp B W L I g e) (v : InfinitePlace I.F) {Z : Matrix (Fin I.n) (Fin I.n) ℂ} (hZ : Formalism.REAL.inG (I.ε v) Z) :
@@ -152,15 +152,15 @@ private theorem exists_line (hcm : IsCMExt F E σ) (hσ : ∀ x, σ (σ x) = x) 
 open Classical in
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil`. Use `⟨Finsupp.single [] 1, by simp, fun f _ x u => ?_⟩` and prove the remaining obligations. Rewrite using `[dop_single]`. Simplify using `only [Formalism.REAL.Eword, id, List.foldr_nil, one_mul]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `slice_apply I _ x v u`. Consider the case `cons p w ih`. Take `⟨z, hz, ez⟩` from `ih`. Establish `hp` using `Formalism.REAL.complex_parts_mem_lie_algebra_holds I.n (I.ε v) (Matrix.single p.1 p.2 1)`. Take `⟨γ, hγ, eγ⟩` from `exists_line hcm hσ hc he v hp.1`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ, eδ⟩` from `exists_line hcm hσ hc he v hp.2.1`. Establish `hy : ∀ l ∈ (Finsupp.single [γ] (1 : ℂ) + Finsupp.single [δ] Complex.I).support, ∀ ε ∈ l, IsRealLine σ (c • W.J.map σ) ε` using `fun l hl ε hε => by`. Apply the tactic sequence `rcases Finset.mem_union.1 (Finsupp.support_add hl) with hl | hl <;>`. Apply the tactic sequence `obtain rfl := Finset.mem_singleton.1 (Finsupp.support_single_subset hl) <;>`. Take `rfl` from `List.mem_singleton.1 hε`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `exacts [hγ, hδ]`. Use `⟨wordMul (Finsupp.single [γ] 1 + Finsupp.single [δ] Complex.I) z, fun m hm ε hε => ?_, fun f hf x u => ?_⟩` and prove the remaining obligations. Take `⟨l, hl, l', hl', rfl⟩` from `mem_support_wordMul hm`. Break down `List.mem_append.1 hε with h | h` into its components or cases. Use `exacts [hy l hl ε h, hz l' hl' ε h]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (GlobalTheory.UAut.DopComp.dop_dop σ _ f hf _ z hy hz).2, dop_add_comb, dop_single, dop_single]`. Simplify using `only [Formalism.REAL.Eword, Formalism.REAL.Eab, Formalism.REAL.Ec]`. Rewrite using `[eγ _ _ x (ez f hf x) u, eδ _ _ x (ez f hf x) u]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_word (hcm : IsCMExt F E σ) (hσ : ∀ x, σ (σ x) = x) {c : E} (hc : c ≠ 0)
     (he : IsTransp B W L I g e) (v : InfinitePlace I.F) (w : List (Fin I.n × Fin I.n)) :
@@ -195,15 +195,15 @@ private theorem exists_word (hcm : IsCMExt F E σ) (hσ : ∀ x, σ (σ x) = x) 
       simp
 
 /- English proof (translation)
-Use `choose z hz ez using exists_word hcm hσ hc he v`. Establish `hs : ∀ l ∈ (∑ a : Fin (m + 1) → Fin I.n, z (cycWord a)).support, ∀ γ ∈ l, IsRealLine σ (c • W.J.map σ) γ` using `fun l hl => by`. Take `⟨a, -, ha⟩` from `Finset.mem_biUnion.1 (Finsupp.support_finsetSum hl)`. Conclude with `hz _ l ha`. Establish `h1 : ∀ f, IsSm σ (c • W.J.map σ) f → zOp I v m (fun y => f (toGAd hσ W.J hc (e y))) = fun y => dop (∑ a : Fin (m + 1) → Fin I.n, z (cycWord a)) f (toGAd hσ W.J hc (e y))` using `fun f hf => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[dop_sum_comb, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `h` using `ez (cycWord a) f hf x 1`. Rewrite `h` using `[Pi.mulSingle_one, Prod.mk_one_one, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `h`. Use `⟨_, ⟨hs, fun f hf a _ y => ?_⟩, fun N => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `((toGAd hσ W.J hc).surjective.comp he.surj) y`. Take `⟨b, rfl⟩` from `((toGAd hσ W.J hc).surjective.comp he.surj) a`. Establish `e1` using `congrFun (h1 _ (GlobalTheory.EisCont.CentreFinite.isSm_mul_right hcm hf (toGAd hσ W.J hc (e b)))) x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2` using `congrFun (h1 f hf) (x * b)`. Establish `e3` using `zOp_mul_right (f := fun y => f (toGAd hσ W.J hc (e y))) (smoothInf_transp hcm hσ hc he hf) v m x b`. Simplify using `only [map_mul] at e2 e3`. Conclude with `e1.symm.trans (e3.trans e2)`. Proceed by induction on `N with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => exact fun f _ => rfl`. Consider the case `succ N ih`. Introduce `f hf`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply, h1 f hf]`. Conclude with `ih _ (GlobalTheory.UAut.DopComp.dop_dop σ _ f hf _ _ hs hs).1`.
+A detailed English derivation is pending.
 -/
 theorem exists_central (hcm : IsCMExt F E σ) (hσ : ∀ x, σ (σ x) = x) {c : E} (hc : c ≠ 0)
     (he : IsTransp B W L I g e) (v : InfinitePlace I.F) (m : ℕ) :

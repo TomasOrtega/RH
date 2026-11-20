@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.RealNormChar
 
 /- English proof (translation)
-Take `⟨j⟩ : Nonempty (M →+* ℂ)` from `inferInstance`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj M j]`. Conclude with `(IsCMField.complexEmbedding_complexConj E (j.comp (algebraMap E M)) x).symm`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_algebraMap {E M : Type} [Field E] [NumberField E] [IsCMField E] [Field M] [NumberField M] [IsCMField M]
     [Algebra E M] (x : E) :
@@ -25,7 +25,7 @@ theorem conj_algebraMap {E M : Type} [Field E] [NumberField E] [IsCMField E] [Fi
   exact (IsCMField.complexEmbedding_complexConj E (j.comp (algebraMap E M)) x).symm
 
 /- English proof (translation)
-Use `(IsCMField.complexConj_eq_self_iff M _).1 ?_` and prove the remaining obligations. Rewrite using `[conj_algebraMap, (IsCMField.complexConj_eq_self_iff E _).2 x.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_mem_real {E M : Type} [Field E] [NumberField E] [IsCMField E] [Field M] [NumberField M] [IsCMField M]
     [Algebra E M] (x : maximalRealSubfield E) : algebraMap E M x ∈ maximalRealSubfield M := by
@@ -42,7 +42,7 @@ def normChar {K : Type} (L : Type) [Field K] [NumberField K] [Field L] [NumberFi
     (congrArg χ.1 (GroundTheory.Global.ideleNorm_diagonal (K := K) k)).trans (χ.2.2 _)⟩
 
 /- English proof (translation)
-Use `Units.ext (Prod.ext (funext fun u => ?_) rfl)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Pi.mulSingle w (x : w.Completion) u = GroundTheory.Global.IdeleGroup.infiniteAdeleSingle w (x : w.Completion) u`. Rewrite using `[GroundTheory.Global.IdeleGroup.infiniteAdeleSingle_apply]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem infIdele_eq {K : Type} [Field K] [NumberField K] (w : InfinitePlace K) (x : (w.Completion)ˣ) :
     ReciprocityTheory.Neutral.Bridge.HCFR.infIdele K w x = GroundTheory.Global.IdeleGroup.infiniteEmbedding w x := by
@@ -52,9 +52,9 @@ theorem infIdele_eq {K : Type} [Field K] [NumberField K] (w : InfinitePlace K) (
   rw [GroundTheory.Global.IdeleGroup.infiniteAdeleSingle_apply]
 
 /- English proof (translation)
-Establish `hv` using `hu.comap (algebraMap K L)`. Use `show χ.1 (GroundTheory.Global.ideleNorm K L (ReciprocityTheory.Neutral.Bridge.HCFR.infIdele L u (-1))) = χ.1 (ReciprocityTheory.Neutral.Bridge.HCFR.infIdele K (u.comap (algebraMap K L)) (-1))`. Rewrite using `[infIdele_eq, infIdele_eq, GroundTheory.Global.ideleNorm_infiniteEmbedding]`. Use `congr 2`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(InfinitePlace.Completion.extensionEmbeddingOfIsReal hv).injective` to reduce the goal to its premises. Use `GroundTheory.Global.extensionEmbeddingOfIsReal_normUnits (K := K) u hu (-1)` as an intermediate fact. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normChar_locInf {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
     (χ : HChar K) (u : InfinitePlace L) (hu : u.IsReal) :
@@ -74,13 +74,11 @@ open scoped GroundTheory.Global.AdeleBaseChange in
 open GlobalTheory.UnitaryHeckeBaseChange in
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Take `⟨z, hz⟩` from `(adeleEquiv (isCMExt_real E)).surjective (x : AdeleRing (𝓞 E) E)`. Establish `h : adeleNorm E (adeleEquiv (isCMExt_real E) z) = Algebra.norm _ z` using `congrArg (Algebra.norm _) ((adeleEquiv (isCMExt_real E)).symm_apply_apply z)`. Establish `h2 : ∀ z, toAdele (maximalRealSubfield E) E z = GroundTheory.Global.AdeleBaseChange.adeleTensorAlgEquivLeft (maximalRealSubfield E) E z`. Introduce `z`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul a l`. Rewrite using `[toAdele_tmul, GroundTheory.Global.AdeleBaseChange.adeleTensorAlgEquivLeft_tmul]`. Conclude with `mul_comm _ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`. Express the relevant statement in the definitionally equal form `adeleNorm E (x : AdeleRing (𝓞 E) E) = _`. Rewrite using `[GroundTheory.Global.coe_ideleNorm, ← hz, h]`. Establish `h3 : adeleEquiv (isCMExt_real E) z = _` using `h2 z`. Rewrite using `[h3]`.
-
-Conclude with `(Algebra.norm_eq_of_algEquiv _ _).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideleNorm_eq (E : Type) [Field E] [NumberField E] [IsCMField E] (x : (AdeleRing (𝓞 E) E)ˣ) :
     GlobalTheory.GalOfCusp.ideleNorm E x = GroundTheory.Global.ideleNorm (maximalRealSubfield E) E x := by
@@ -104,9 +102,7 @@ theorem ideleNorm_eq (E : Type) [Field E] [NumberField E] [IsCMField E] (x : (Ad
   exact (Algebra.norm_eq_of_algEquiv _ _).symm
 
 /- English proof (translation)
-Introduce `K M _ _ _ _ _ _ _ a χ hsign`. Use `letI : Algebra (maximalRealSubfield K) (maximalRealSubfield M) := (realHom K M).toAlgebra`. Use `haveI : IsScalarTower (maximalRealSubfield K) (maximalRealSubfield M) M := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower (maximalRealSubfield K) K M := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `⟨normChar (maximalRealSubfield M) χ, fun u => (normChar_locInf χ u (IsTotallyReal.isReal u)).trans (hsign _), fun x => ?_⟩` and prove the remaining obligations.
-
-Use `show χ.1 (GroundTheory.Global.ideleNorm _ _ (GlobalTheory.GalOfCusp.ideleNorm M x)) = χ.1 (GlobalTheory.GalOfCusp.ideleNorm K (GroundTheory.Global.ideleNorm K M x))`. Rewrite using `[ideleNorm_eq, ideleNorm_eq, GroundTheory.Global.ideleNorm_ideleNorm, GroundTheory.Global.ideleNorm_ideleNorm]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K M : Type) [Field K] [NumberField K] [IsCMField K] [Field M] [NumberField M] [IsCMField M] [Algebra K M] (a : ℕ) (χ : HChar (maximalRealSubfield K)), (∀ v : InfinitePlace (maximalRealSubfield K), χ.locInf v (-1) = (-1) ^ a) → ∃ χ' : HChar (maximalRealSubfield M), (∀ u : InfinitePlace (maximalRealSubfield M), χ'.locInf u (-1) = (-1) ^ a) ∧ ∀ x : Ideles M, (compNorm M χ').1 x = (compNorm K χ).1 (GroundTheory.Global.ideleNorm K M x) := by
   intro K M _ _ _ _ _ _ _ a χ hsign

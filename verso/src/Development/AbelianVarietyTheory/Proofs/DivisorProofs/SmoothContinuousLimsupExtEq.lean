@@ -10,9 +10,9 @@ open Filter Topology
 namespace GlobalTheory.Div.SmoothLimsup
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `A.cover y`. Use `set c := A.chart j`. Establish `hT : IsOpen (c.target ∩ c.symm ⁻¹' S)` using `c.isOpen_inter_preimage_symm hS`. Establish `hmem : c y ∈ c.target ∩ c.symm ⁻¹' S` using `⟨c.map_source hj, by simpa [c.left_inv hj] using hy⟩`. Establish `h1 : ContinuousAt (u ∘ c.symm) (c y)` using `((hu j).continuousOn).continuousAt (hT.mem_nhds hmem)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ContinuousAt c y` using `c.continuousAt hj`. Establish `h3 : ContinuousAt ((u ∘ c.symm) ∘ c) y` using `h1.comp h2`. Use `h3.congr ?_` and prove the remaining obligations. Use `filter_upwards [c.open_source.mem_nhds hj] with x hx`. Simplify using `[c.left_inv hx]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuousAt_of_smoothOn {D : ℕ} {Y : Type} [TopologicalSpace Y]
     (A : ReciprocityTheory.AnForm.M.FinHolAtlas D Y) (S : Set Y) (u : Y → ℝ) (hS : IsOpen S)
@@ -30,9 +30,9 @@ theorem continuousAt_of_smoothOn {D : ℕ} {Y : Type} [TopologicalSpace Y]
   simp [c.left_inv hx]
 
 /- English proof (translation)
-Introduce `D Y _ A S u hS hu`. Use `⟨fun y hy => (continuousAt_of_smoothOn A S u hS hu hy).continuousWithinAt, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.limsupExt`. Rewrite using `[nhdsWithin_eq_nhds.mpr (hS.mem_nhds hy)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((continuous_coe_real_ereal.tendsto (u y)).comp (continuousAt_of_smoothOn A S u hS hu hy)).limsup_eq`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : ℕ) (Y : Type) [TopologicalSpace Y] (A : ReciprocityTheory.AnForm.M.FinHolAtlas D Y) (S : Set Y) (u : Y → ℝ), IsOpen S → A.SmoothOn S u → ContinuousOn u S ∧ ∀ y ∈ S, GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.limsupExt S u y = u y := by
   intro D Y _ A S u hS hu

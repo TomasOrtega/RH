@@ -29,9 +29,9 @@ open Polynomial Formalism.L2.Col
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Establish `: Infinite K` using `Infinite.of_injective (Nat.cast : ℕ → K) Nat.cast_injective`. Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `x`. Take `⟨y, rfl⟩ : ∃ y, x = c * y` from `⟨c⁻¹ * x, by rw [← mul_assoc, mul_inv_cancel₀ hc, one_mul]⟩`. Rewrite using `[scaleRoots_eval_mul, Matrix.charpoly_natDegree_eq_dim, Matrix.eval_charpoly, Matrix.eval_charpoly, ← Matrix.det_smul, smul_sub]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use extensionality with `a b`. Simplify using `only [Matrix.smul_apply, Matrix.scalar_apply, Matrix.diagonal_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem charpoly_smul [CharZero K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) {c : K} (hc : c ≠ 0) :
     (c • M).charpoly = M.charpoly.scaleRoots c := by
@@ -47,7 +47,7 @@ theorem charpoly_smul [CharZero K] {n : ℕ} (M : Matrix (Fin n) (Fin n) K) {c :
   split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `M using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih`. Rewrite using `[Multiset.map_cons, Multiset.map_cons, Multiset.prod_cons, Multiset.prod_cons, mul_scaleRoots_of_noZeroDivisors, ih, sub_eq_add_neg, ← C_neg, X_add_C_scaleRoots, neg_mul, C_neg, ← sub_eq_add_neg]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem scaleRoots_prod (M : Multiset K) (c : K) :
     (M.map fun m => X - C m).prod.scaleRoots c = (M.map fun m => X - C (m * c)).prod := by
@@ -58,14 +58,14 @@ theorem scaleRoots_prod (M : Multiset K) (c : K) :
       sub_eq_add_neg, ← C_neg, X_add_C_scaleRoots, neg_mul, C_neg, ← sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, ← C_neg, reverse_add_C, natDegree_X, ← one_mul (X : K[X]), reverse_mul_X, ← C_1, reverse_C]`. Simplify using `[sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem reverse_X_sub (m : K) : (X - C m : K[X]).reverse = 1 - C m * X := by
   rw [sub_eq_add_neg, ← C_neg, reverse_add_C, natDegree_X, ← one_mul (X : K[X]), reverse_mul_X, ← C_1, reverse_C]
   simp [sub_eq_add_neg]
 
 /- English proof (translation)
-Proceed by induction on `M using Multiset.induction_on with`. Consider the case `empty => simpa using reverse_C (1 : K)`. Consider the case `cons a s ih => rw [Multiset.map_cons, Multiset.map_cons, Multiset.prod_cons, Multiset.prod_cons, reverse_mul_of_domain, ih, reverse_X_sub]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem reverse_prod (M : Multiset K) : (M.map fun m => X - C m).prod.reverse = (M.map fun m => 1 - C m * X).prod := by
   induction M using Multiset.induction_on with
@@ -73,9 +73,9 @@ theorem reverse_prod (M : Multiset K) : (M.map fun m => X - C m).prod.reverse = 
   | cons a s ih => rw [Multiset.map_cons, Multiset.map_cons, Multiset.prod_cons, Multiset.prod_cons, reverse_mul_of_domain, ih, reverse_X_sub]
 
 /- English proof (translation)
-Use extensionality with `i`. Establish `hd : (M.map fun m => X - C m).prod.natDegree = n` using `by rw [natDegree_multiset_prod_X_sub_C_eq_card, hM]`. Rewrite using `[coeff_reverse, hd, heckePolyOf, finset_sum_coeff]`. Simplify using `only [coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_ite_eq]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hi : i ≤ n`. Rewrite using `[if_pos (Finset.mem_range.2 (by omega)), revAt_le hi, Multiset.prod_X_sub_C_coeff _ (by omega), hM, show n - (n - i) = i by omega, mul_assoc, ha i hi]`. Rewrite using `[if_neg (by rw [Finset.mem_range]; omega), revAt_eq_self_of_lt (by omega), coeff_eq_zero_of_natDegree_lt (by omega)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem reverse_prod_eq_hecke {n q : ℕ} (M : Multiset K) (hM : M.card = n) (a : ℕ → K)
     (ha : ∀ k ≤ n, (q : K) ^ (k * (k - 1) / 2) * a k = M.esymm k) :
@@ -91,11 +91,11 @@ theorem reverse_prod_eq_hecke {n q : ℕ} (M : Multiset K) (hM : M.card = n) (a 
   · rw [if_neg (by rw [Finset.mem_range]; omega), revAt_eq_self_of_lt (by omega), coeff_eq_zero_of_natDegree_lt (by omega)]
 
 /- English proof (translation)
-Establish `key : ∀ N : Multiset K, (∀ m ∈ N, m ≠ 0) → (N.map fun m => 1 - C m * X).prod = C (N.map fun m => -m).prod * ((N.map (·⁻¹)).map fun m => X - C m).prod`. Introduce `N hN`. Rewrite using `[map_multiset_prod, Multiset.map_map, Multiset.map_map, ← Multiset.prod_map_mul]`. Use `congrArg _ (Multiset.map_congr rfl fun m hm => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_sub, ← C_mul, neg_mul, mul_inv_cancel₀ (hN m hm)]`. Simplify using `[sub_eq_add_neg, add_comm]`. Rewrite `hd` using `[key _ h₀, key _ h]`. Establish `hu : (M.map fun m => -m).prod ≠ 0` using `Multiset.prod_ne_zero fun h0 => by`. Take `⟨m, hm, e⟩` from `Multiset.mem_map.1 h0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h m hm (neg_eq_zero.1 e)`. Establish `h1` using `(dvd_mul_left _ _).trans hd`. Rewrite `h1` using `[(isUnit_C.2 hu.isUnit).dvd_mul_left, Multiset.prod_X_sub_C_dvd_iff_le_roots (monic_multiset_prod_of_monic _ _ fun _ _ => monic_X_sub_C _).ne_zero, roots_multiset_prod_X_sub_C]`. Conclude with `(Multiset.map_le_map_iff inv_injective).1 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_of_dvd {M₀ M : Multiset K} (h₀ : ∀ m ∈ M₀, m ≠ 0) (h : ∀ m ∈ M, m ≠ 0)
     (hd : (M₀.map fun m => 1 - C m * X).prod ∣ (M.map fun m => 1 - C m * X).prod) : M₀ ≤ M := by
@@ -118,7 +118,7 @@ theorem le_of_dvd {M₀ M : Multiset K} (h₀ : ∀ m ∈ M₀, m ≠ 0) (h : �
   exact (Multiset.map_le_map_iff inv_injective).1 h1
 
 /- English proof (translation)
-Unfold `Multiset.esymm`. Rewrite using `[Multiset.powersetCard_map, Multiset.map_map, ← Multiset.sum_map_mul_left]`. Use `congrArg Multiset.sum (Multiset.map_congr rfl fun s hs => ?_)` and prove the remaining obligations. Establish `hc` using `(Multiset.mem_powersetCard.1 hs).2`. Simplify using `only [Function.comp, Multiset.prod_map_mul, Multiset.map_id', Multiset.map_const', Multiset.prod_replicate, hc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -131,7 +131,7 @@ theorem esymm_map_mul (t : K) (M : Multiset K) (j : ℕ) : (M.map fun b => b * t
   ring
 
 /- English proof (translation)
-Unfold `Multiset.esymm`. Rewrite using `[Multiset.powersetCard_map, Multiset.map_map, map_multiset_sum, Multiset.map_map]`. Use `congrArg Multiset.sum (Multiset.map_congr rfl fun s _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp, map_multiset_prod]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem esymm_map_hom {K' : Type} [Field K'] (f : K →+* K') (M : Multiset K) (j : ℕ) : (M.map f).esymm j = f (M.esymm j) := by
   unfold Multiset.esymm
@@ -140,11 +140,11 @@ theorem esymm_map_hom {K' : Type} [Field K'] (f : K →+* K') (M : Multiset K) (
   simp only [Function.comp, map_multiset_prod]
 
 /- English proof (translation)
-Establish `hq' : (q : ℂ) ≠ 0` using `by exact_mod_cast hq`. Establish `e : (((j * (j - 1) / 2 : ℕ)) : ℂ) = (j : ℂ) * ((j : ℂ) - 1) / 2`. Take `⟨k, hk⟩` from `Nat.even_mul_pred_self j`. Establish `e1 : j * (j - 1) / 2 = k` using `by omega`. Establish `e2 : ((j * (j - 1) : ℕ) : ℂ) = (j : ℂ) * ((j : ℂ) - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `j with _ | m` into its components or cases. Simplify using the standard rewrite rules. Use `push_cast`. Simplify using the standard rewrite rules. Rewrite using `[e1, ← e2, hk]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Complex.cpow_natCast, e, ← Complex.cpow_add _ _ hq', ← Complex.cpow_nat_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pow_key {q : ℕ} (hq : q ≠ 0) (n j : ℕ) :
     (q : ℂ) ^ (j * (j - 1) / 2) * (q : ℂ) ^ (((j : ℂ) * ((n : ℂ) - j)) / 2) = ((q : ℂ) ^ (((n : ℂ) - 1) / 2)) ^ j := by
@@ -161,9 +161,9 @@ theorem pow_key {q : ℕ} (hq : q ≠ 0) (n j : ℕ) :
   congr 1; ring
 
 /- English proof (translation)
-Establish `e : (S.map fun z : ℂˣ => ι.symm ((z : ℂ) * (q : ℂ) ^ (((n : ℂ) - 1) / 2))) = ((S.map fun z : ℂˣ => (z : ℂ)).map fun b => b * (q : ℂ) ^ (((n : ℂ) - 1) / 2)).map ι.symm.toRingHom`. Rewrite using `[Multiset.map_map, Multiset.map_map]`. Both sides reduce to the same expression. Rewrite using `[e, esymm_map_hom, esymm_map_mul, ← pow_key hq]`. Apply `ι.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_mul, ha, GlobalTheory.LFun.satEig]`. Simplify using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem satEig_esymm (ι : K ≃+* ℂ) {q n : ℕ} (hq : q ≠ 0) (S : Multiset ℂˣ) (k : ℕ) {a : K} (ha : ι a = GlobalTheory.LFun.satEig q n S k) :
     (q : K) ^ (k * (k - 1) / 2) * a = (S.map fun z : ℂˣ => ι.symm ((z : ℂ) * (q : ℂ) ^ (((n : ℂ) - 1) / 2))).esymm k := by
@@ -176,7 +176,7 @@ theorem satEig_esymm (ι : K ≃+* ℂ) {q n : ℕ} (hq : q ≠ 0) (S : Multiset
   simp [mul_assoc]
 
 /- English proof (translation)
-Establish `e` using `scaleRoots_prod (S.map fun z : ℂˣ => ι.symm ((z : ℂ) * (q : ℂ) ^ (((n : ℂ) - 1) / 2))) c`. Rewrite `e` using `[Multiset.map_map]`. Establish `e'` using `reverse_prod_eq_hecke (q := q) ((S.map fun z : ℂˣ => ι.symm ((z : ℂ) * (q : ℂ) ^ (((n : ℂ) - 1) / 2))).map fun b => b * c) (by simpa using hS) (fun k => a k * c ^ k) fun k hk => by rw [esymm_map_mul, ← satEig_esymm ι hq S k (ha k hk)]; ring`. Rewrite `e'` using `[Multiset.map_map]`. Conclude with `(congrArg reverse e).trans e'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reverse_scale_eq_hecke (ι : K ≃+* ℂ) {q n : ℕ} (hq : q ≠ 0) (S : Multiset ℂˣ) (hS : S.card = n) (a : ℕ → K)
     (ha : ∀ k ≤ n, ι (a k) = GlobalTheory.LFun.satEig q n S k) (c : K) :
@@ -191,17 +191,17 @@ theorem reverse_scale_eq_hecke (ι : K ≃+* ℂ) {q n : ℕ} (hq : q ≠ 0) (S 
   exact (congrArg reverse e).trans e'
 
 /- English proof (translation)
-Establish `hq' : (q : ℂ) ≠ 0` using `by exact_mod_cast hq`. Establish `hqr : (0 : ℝ) < q` using `by exact_mod_cast Nat.pos_of_ne_zero hq`. Establish `hc : ∀ x : ℂ, (q : ℂ) ^ x ≠ 0` using `fun x h => hq' ((Complex.cpow_eq_zero_iff _ _).1 h).1`. Establish `hν0 : ι ν ≠ 0` using `fun h => by`. Rewrite `hν` using `[h, norm_zero, zero_pow two_ne_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(pow_pos hqr _).ne hν`. Establish `h1` using `Polynomial.map_dvd ι.toRingHom hd`. Rewrite `h1` using `[map_blockPoly, map_heckePolyOf, ← reverse_prod_eq_hecke (S.map fun z : ℂˣ => (RingEquiv.refl ℂ).symm ((z : ℂ) * (q : ℂ) ^ (((n : ℂ) - 1) / 2))) (by simpa using hS) (fun i => ι.toRingHom (a i)) (fun k hk => satEig_esymm (RingEquiv.refl ℂ) hq S k (ha k hk)), reverse_prod, blockPol …`. Establish `h2` using `le_of_dvd (M₀ := (Multiset.range t).map fun c : ℕ => ι ν * (q : ℂ) ^ (t - 1 - c)) (M := S.map fun z : ℂˣ => (RingEquiv.refl ℂ).symm ((z : ℂ) * (q : ℂ) ^ (((n : ℂ) - 1) / 2))) (fun m hm => by`. Take `⟨c, -, rfl⟩` from `Multiset.mem_map.1 hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_ne_zero hν0 (pow_ne_zero _ hq')) (fun m hm => by`. Take `⟨c, -, rfl⟩` from `Multiset.mem_map.1 hm`. Conclude with `mul_ne_zero c.ne_zero (hc _)) (by rw [Multiset.map_map]; exact h1)`. Establish `h3` using `Multiset.map_le_map (f := fun x : ℂ => x * (q : ℂ) ^ (-(((n : ℂ) - 1) / 2))) h2`. Rewrite `h3` using `[Multiset.map_map, Multiset.map_map]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ι ν * (q : ℂ) ^ (((t : ℂ) - n) / 2), ?_, ?_⟩` and prove the remaining obligations. Establish `e : (((t : ℂ) - n) / 2) = ((((t : ℝ) - n) / 2 : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[← pow_left_inj₀ (norm_nonneg _) zero_le_one two_ne_zero, norm_mul, mul_pow, hν, e, Complex.norm_natCast_cpow_of_pos (Nat.pos_of_ne_zero hq), Complex.ofReal_re, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul hqr.le, ← Real.rpow_add hqr, Nat.cast_sub ht]`. Evaluate the numerical expressions. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+Evaluate the numerical expressions. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Multiset.map_congr rfl fun c hc => ?_` and prove the remaining obligations. Establish `hct : c < t` using `Multiset.mem_range.1 hc`. Simplify using `only [Function.comp_apply]`. Rewrite using `[mul_assoc, mul_assoc, ← Complex.cpow_natCast, ← Complex.cpow_add _ _ hq', ← Complex.cpow_add _ _ hq', Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, RingEquiv.symm_refl, RingEquiv.refl_apply]`. Rewrite using `[mul_assoc, ← Complex.cpow_add _ _ hq', add_neg_cancel, Complex.cpow_zero, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem string_of_dvd (ι : K ≃+* ℂ) {q n t : ℕ} (hq : q ≠ 0) (ht : t ≤ n) (S : Multiset ℂˣ) (hS : S.card = n) (a : ℕ → K)
     (ha : ∀ k ≤ n, ι (a k) = GlobalTheory.LFun.satEig q n S k) (ν : K) (hν : ‖ι ν‖ ^ 2 = (q : ℝ) ^ (n - t))
@@ -250,29 +250,29 @@ section Runs
 open Formalism.BasicNotions Formalism.CohomologicalDescent.LogSmallConstantBounds Formalism.CohomologicalDescent.ShortWeightBounds GlobalTheory.GalDef
 
 /- English proof (translation)
-Establish `hrows` using `hW.what₂ τ`. Establish `ht` using `hP.t_ge`. Establish `hm` using `hP.m_pos`. Establish `hk` using `hP.m_le`. Establish `htr : (6 : ℝ) ≤ P.t` using `by exact_mod_cast (by omega : 6 ≤ P.t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkr : (1 : ℝ) ≤ P.k` using `by exact_mod_cast (by omega : 1 ≤ P.k)`. Establish `hl : 0 ≤ 2 * P.b / P.lstar`. Use `hL.L_ge` as an intermediate fact. Use `hP.S_nonneg` as an intermediate fact. Establish `hL0 : 0 ≤ P.L` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Par.lstar Par.N Par.b`. Check the signs of the components of the expression. Establish `hb : W.bot P τ = (W.lam τ (kc P + W.j τ) : ℤ) + P.Nr - (kc P + W.j τ + P.t : ℕ)`. Unfold `Wts.bot Wts.U Formalism.CohomologicalDescent.UnitNormBounds.UN`. Rewrite using `[hW.block τ _ (by omega) (by omega)]`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hc` using `hW.centre τ`. Establish `he : (P.t : ℝ) < W.e τ`. Establish `hw : 2 * (P.t : ℝ) < P.w''` using `by have := hL.w_gt; linarith`. Establish `hb'` using `hP.b'_pos`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx` using `hP.x_ge`. Establish `hn : (1 : ℝ) ≤ P.n` using `by exact_mod_cast hP.n_pos`. Establish `hw' : P.w'' ≤ P.b'` using `div_le_self hb'.le (one_le_mul_of_one_le_of_one_le hx hn)`. Distinguish the cases in `h2 : τ ∈ W.T2`. Establish `h3` using `(hW.thick τ h2).1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h4` using `hL.b_gt`. Establish `h5 : (1 : ℝ) ≤ (P.k : ℝ) ^ 2` using `one_le_pow₀ hkr`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h5 (sq_nonneg (P.t : ℝ))]`. Break down `hW.other τ h2 with ⟨⟨bt, h3, -, h4, -⟩, -⟩ | ⟨⟨h3, -⟩, -⟩` into its components or cases. Establish `: 0 ≤ P.b' / P.x` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨fun h1 => ?_, fun h1 => ?_⟩` and prove the remaining obligations. Use `lt_of_le_of_ne (hW.anti τ _ _ (by omega) (by omega)) fun e => ?_` and prove the remaining obligations. Establish `hU : W.U P τ (kc P + W.j τ - 1) = W.bot P τ + P.t`.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hb]`. Unfold `Wts.U Formalism.CohomologicalDescent.UnitNormBounds.UN`. Rewrite using `[← e]`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hj : W.j τ = 0`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails.
 
-Establish `h2` using `(hW.cloud τ (kc P + W.j τ - 1) (by omega)).1`. Establish `h3` using `(hW.window τ).1`. Rewrite `h2` using `[hU]`. Establish `h4 : (W.xm τ : ℝ) ≤ (W.bot P τ : ℝ) + P.t` using `by exact_mod_cast h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2` using `(hW.low τ (kc P + W.j τ - 1) (by omega) (Or.inl (by omega))).1`. Rewrite `h2` using `[hU, show ((W.bot P τ + P.t : ℤ) : ℝ) - W.c τ + W.e τ = ((P.t : ℝ) + 1) / 2 by push_cast; linarith, abs_of_nonneg (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `lt_of_le_of_ne (hW.anti τ _ _ (by omega) h1) fun e => ?_` and prove the remaining obligations. Establish `hU : W.U P τ (kc P + W.j τ + P.t) = W.bot P τ - 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hb]`. Unfold `Wts.U Formalism.CohomologicalDescent.UnitNormBounds.UN`. Rewrite using `[e]`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `(hW.low τ (kc P + W.j τ + P.t) h1 (Or.inr le_rfl)).1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `h2` using `[hU, show ((W.bot P τ - 1 : ℤ) : ℝ) - W.c τ + W.e τ = -(((P.t : ℝ) + 1) / 2) by push_cast; linarith, abs_neg, abs_of_nonneg (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem drops {T : Type} {P : Par} {W : Wts T} (hP : P.Hyp) (hL : P.Large) (hW : W.Ok P) (τ : T) :
     (1 ≤ kc P + W.j τ → W.lam τ (kc P + W.j τ) < W.lam τ (kc P + W.j τ - 1)) ∧
@@ -338,12 +338,12 @@ theorem drops {T : Type} {P : Par} {W : Wts T} (hP : P.Hyp) (hL : P.Large) (hW :
     linarith
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem wAt_of_lt {n : ℕ} (lam : DomWeight n) {k : ℕ} (h : k < n) : wAt lam k = lam.w ⟨k, h⟩ := dif_pos h
 
 /- English proof (translation)
-Rewrite using `[wAt_of_lt _ h, wAt_of_lt _ (show n - 1 - k < n by omega)]`. Use `show -lam.w _ = -lam.w _`. Use `congr 2`. Conclude with `Fin.ext (by simp only [Fin.val_rev]; omega)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem wAt_dual {n : ℕ} (lam : DomWeight n) {k : ℕ} (h : k < n) : wAt lam.dual k = -wAt lam (n - 1 - k) := by
   rw [wAt_of_lt _ h, wAt_of_lt _ (show n - 1 - k < n by omega)]
@@ -352,9 +352,9 @@ theorem wAt_dual {n : ℕ} (lam : DomWeight n) {k : ℕ} (h : k < n) : wAt lam.d
   exact Fin.ext (by simp only [Fin.val_rev]; omega)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Establish `e : wAt lam.dual (n - p - t) = -wAt lam p` using `by rw [wAt_dual _ (by omega), h2 _ (by omega) (by omega)]`. Use `⟨⟨by omega, fun k a b => ?_, fun a => ?_, fun a => ?_⟩, e⟩` and prove the remaining obligations. Rewrite using `[e, wAt_dual _ (by omega), h2 _ (by omega) (by omega)]`. Rewrite using `[e, wAt_dual _ (by omega), show n - 1 - (n - p - t - 1) = p + t by omega]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `h4 (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[e, wAt_dual _ (by omega), show n - 1 - (n - p - t + t) = p - 1 by omega]`. Use `h3 (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem isRunAt_dual {n p t : ℕ} {lam : DomWeight n} (ht : 1 ≤ t) (h : IsRunAt lam p t) :
     IsRunAt lam.dual (n - p - t) t ∧ wAt lam.dual (n - p - t) = -wAt lam p := by
@@ -370,11 +370,11 @@ theorem isRunAt_dual {n p t : ℕ} {lam : DomWeight n} (ht : 1 ≤ t) (h : IsRun
     omega
 
 /- English proof (translation)
-Establish `hrows` using `hW.what₂ τ`. Establish `ht` using `hP.t_ge`. Establish `hw : ∀ k, k < P.Nr → wAt lam k = (W.lam τ k : ℤ) + s` using `fun k hk => by rw [wAt_of_lt _ hk, h]`. Take `⟨d1, d2⟩` from `drops hP hL hW τ`. Use `⟨⟨by omega, fun k a b => ?_, fun a => ?_, fun a => ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hw _ (by omega), hw _ (by omega), hW.block τ k a b]`. Rewrite using `[hw _ (by omega), hw _ (by omega)]`. Use `d1 a` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hw _ (by omega), hw _ (by omega)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `d2 a` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hw _ (by omega)]`. Unfold `Wts.bot Wts.U Formalism.CohomologicalDescent.UnitNormBounds.UN`. Rewrite using `[hW.block τ (kc P + W.j τ + P.t - 1) (by omega) (by omega)]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -407,9 +407,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hv : Continuous fun g => (r' g).val`. Simplify using `only [h]`. Conclude with `(Units.continuous_val.comp hμ).smul (Units.continuous_val.comp hr)`. Use `Units.continuous_iff.2 ⟨hv, ?_⟩` and prove the remaining obligations. Simplify using `only [← map_inv]`.
-
-Conclude with `hv.comp continuous_inv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_twist {n : ℕ} {r r' : G E Ω →* GL (Fin n) (Qbar l)} {μ : G E Ω →* (Qbar l)ˣ}
     (h : ∀ g, (r' g).val = ((μ g : (Qbar l)ˣ) : Qbar l) • (r g).val) (hr : Continuous r) (hμ : Continuous μ) : Continuous r' := by
@@ -421,7 +419,7 @@ theorem continuous_twist {n : ℕ} {r r' : G E Ω →* GL (Fin n) (Qbar l)} {μ 
   exact hv.comp continuous_inv
 
 /- English proof (translation)
-Use `⟨continuous_twist h hr.1 hc, fun P AI hT w A hA O _ _ _ Bw hB => ?_⟩` and prove the remaining obligations. Establish `h1` using `hr.2 P AI hT w A hA O Bw hB`. Establish `h2` using `hμ.2 P AI hT w A hA O Bw hB`. Establish `H` using `GlobalTheory.TwistAbove.twist_above l P AI hT E Ω _ O Bw n (r.comp (Dec (F := E) A).subtype) (r'.comp (Dec (F := E) A).subtype) (μ.comp (Dec (F := E) A).subtype) fun g => h g`. Conclude with `⟨H.2.1 h1.1 h2.1, fun τ LL' τ' hτ => H.2.2.2 τ _ _ (h1.2 τ LL' τ' hτ) (h2.2 τ LL' τ' hτ)⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem crysWith_twist {n : ℕ} {r r' : G E Ω →* GL (Fin n) (Qbar l)} {μ : G E Ω →* (Qbar l)ˣ}
     (h : ∀ g, (r' g).val = ((μ g : (Qbar l)ˣ) : Qbar l) • (r g).val) {J : (E →+* Qbar l) → Multiset ℤ} {c : (E →+* Qbar l) → ℤ}
@@ -436,7 +434,7 @@ theorem crysWith_twist {n : ℕ} {r r' : G E Ω →* GL (Fin n) (Qbar l)} {μ : 
 variable [IsCMField E]
 
 /- English proof (translation)
-Use extensionality with `x`. Use `show τ (IsCMField.complexConj E (IsCMField.complexConj E x)) = τ x`. Rewrite using `[IsCMField.complexConj_apply_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cj_cj (τ : E →+* Qbar l) : cj (cj τ) = τ := by
   ext x
@@ -444,11 +442,9 @@ theorem cj_cj (τ : E →+* Qbar l) : cj (cj τ) = τ := by
   rw [IsCMField.complexConj_apply_apply]
 
 /- English proof (translation)
-Set `e : T ⊕ T → (E →+* Qbar l)` to `Sum.elim inc fun τ => cj (inc τ)`. Establish `hi : Function.Injective e`. Introduce and unpack `(a | a) (b | b) hab`. Conclude with `congrArg _ (h.1 hab)`. Conclude with `absurd hab.symm (h.2.1 b a)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd hab (h.2.1 a b)`. Conclude with `congrArg _ (h.1 ((cj_cj _).symm.trans ((congrArg cj hab).trans (cj_cj _))))`. Establish `hs : Function.Surjective e` using `fun i => by`. Take `⟨τ, a | a⟩` from `h.2.2 i`. Use `exacts [⟨.inl τ, a.symm⟩, ⟨.inr τ, a.symm⟩]`.
-
-Set `e'` to `Equiv.ofBijective e ⟨hi, hs⟩`. Conclude with `⟨fun i => Sum.elim f f' (e'.symm i), fun τ => congrArg (Sum.elim f f') (e'.symm_apply_apply (.inl τ)), fun τ => congrArg (Sum.elim f f') (e'.symm_apply_apply (.inr τ))⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_of_half {T A : Type} {inc : T → (E →+* Qbar l)} (h : IsHalf inc) (f f' : T → A) :
     ∃ F : (E →+* Qbar l) → A, (∀ τ, F (inc τ) = f τ) ∧ ∀ τ, F (cj (inc τ)) = f' τ := by
@@ -469,13 +465,13 @@ theorem exists_of_half {T A : Type} {inc : T → (E →+* Qbar l)} (h : IsHalf i
 variable (Ω) in
 
 /- English proof (translation)
-Take `⟨χ, hχ, hu⟩` from `GlobalTheory.AlgCharUnr.exists_algChar_unr E l Fact.out (fun φ => -c (ι.symm.toRingHom.comp φ)) (-w0) fun φ => by`. Establish `e : ι.symm.toRingHom.comp (ComplexEmbedding.conjugate φ) = cj (ι.symm.toRingHom.comp φ)`. Use extensionality with `x`. Use `show ι.symm (starRingEnd ℂ (φ x)) = ι.symm (φ (IsCMField.complexConj E x))`. Rewrite using `[IsCMField.complexEmbedding_complexConj]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← hc (ι.symm.toRingHom.comp φ)]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨art, ha, H⟩` from `h1 E Ω`. Take `⟨μ, ⟨hμ, hL⟩, -⟩` from `H l ι χ _ hχ`. Use `⟨μ, hμ, continuous_twist (r := 1) (μ := μ) (fun g => ?_) continuous_const hμ, fun P AI hT w A hA O _ _ _ Bw hB => ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Simplify using `[rk1, Matrix.diagonal_apply, Matrix.one_apply]`. Establish `H2` using `h2 E Ω l P AI hT ι art ha χ _ μ hχ hμ hL w A hA O Bw hB`. Use `⟨H2.2.2.1 (hu w (hB.mem_placesOver hA)), fun τ LL' τ' hτ => ?_⟩` and prove the remaining obligations. Establish `e : ι.symm.toRingHom.comp (ι.toRingHom.comp τ) = τ` using `by ext x; simp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `H2.2.2.2 τ LL' τ' hτ` as an intermediate fact. Rewrite `this` using `[e, neg_neg]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_crys_char (h1 : GlobalTheory.Published.HeckeLAdicCharacter) (h2 : GlobalTheory.Published.HeckeLAdicCharacterAbove) (ι : Qbar l ≃+* ℂ)
     (c : (E →+* Qbar l) → ℤ) (w0 : ℤ) (hc : ∀ τ, c τ + c (cj τ) = w0) :
@@ -519,7 +515,7 @@ def SystemOf (ι : Qbar l ≃+* ℂ) {T : Type} (inc : T → (E →+* Qbar l)) (
 
 omit [IsCMField E] in
 /- English proof (translation)
-Take `⟨x, hx, h0⟩` from `(Submodule.ne_bot_iff _).1 h.1`. Conclude with `(h.2 x hx h0).2.2.1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem card_of_hasSat {n : ℕ} {w : HeightOneSpectrum (𝓞 E)} {V : Type} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V} {S : Multiset ℂˣ} (h : GlobalTheory.LFun.HasSatGL w ρ S) : S.card = n := by
@@ -528,17 +524,17 @@ theorem card_of_hasSat {n : ℕ} {w : HeightOneSpectrum (𝓞 E)} {V : Type} [Ad
 
 omit [IsCMField E] in
 /- English proof (translation)
-Introduce `h0` and use `w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem absNorm_ne_zero (w : HeightOneSpectrum (𝓞 E)) : (Ideal.absNorm w.asIdeal : ℕ) ≠ 0 := fun h0 =>
   w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)
 
 /- English proof (translation)
-Use `choose lam h1 h2 h3 using h.2.1`. Take `⟨F, hF, hF'⟩` from `exists_of_half half lam fun τ => (lam τ).dual`. Establish `e : ∀ τ : E →+* Qbar l, ι.symm.toRingHom.comp (ι.toRingHom.comp τ) = τ` using `fun τ => by ext x; simp`. Establish `hφ : ∀ φ : E →+* ℂ, ∃ τ, φ = ι.toRingHom.comp (inc τ) ∨ φ = ι.toRingHom.comp (cj (inc τ))` using `fun φ => by`. Take `⟨τ, a⟩` from `half.2.2 (ι.symm.toRingHom.comp φ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `refine ⟨τ, a.imp (fun a => ?_) fun a => ?_⟩ <;> · rw [← a]; ext x; simp`. Use `⟨fun φ => F (ι.symm.toRingHom.comp φ), fun φ => ?_, fun τ a => ?_, fun τ => ?_, hφ⟩` and prove the remaining obligations. Take `⟨τ, rfl | rfl⟩` from `hφ φ`. Simplify `h2 τ` using `only [e, hF]`. Simplify `h3 τ` using `only [e, hF']`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `only [e, hF, h1]`. Simplify using `only [e, hF, hF']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem SystemOf.weights {ι : Qbar l ≃+* ℂ} {T : Type} {inc : T → (E →+* Qbar l)} (half : IsHalf inc) {s : T → ℤ} {Pl : Type}
     {lab : Pl → HeightOneSpectrum (𝓞 E)} {n : ℕ} {mu : T → ℕ → ℕ} {θ : Pl → ℕ → Qbar l} {π : Submodule ℂ (UA E n → ℂ)}
@@ -561,7 +557,7 @@ theorem SystemOf.weights {ι : Qbar l ≃+* ℂ} {T : Type} {inc : T → (E →+
   · simp only [e, hF, hF']
 
 /- English proof (translation)
-Introduce `Q B g hB hg`. Take `⟨hu, σ, S, h1, h2, h3⟩` from `h.2.2.2 Q`. Rewrite using `[hcp', hcp _ (hlab Q).1 (hlab Q).2 hu σ S h1 h2 B g hB hg]`. Conclude with `reverse_scale_eq_hecke ι (absNorm_ne_zero _) S (card_of_hasSat h2) _ h3 _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SystemOf.reads {ι : Qbar l ≃+* ℂ} {T : Type} {inc : T → (E →+* Qbar l)} {s : T → ℤ} {Pl : Type} (Fn : FrobNorm E Ω l Pl)
     (hlab : ∀ Q, IsSplitAt (Fn.lab Q) ∧ ((l : ℕ) : 𝓞 E) ∉ (Fn.lab Q).asIdeal)
@@ -576,31 +572,29 @@ theorem SystemOf.reads {ι : Qbar l ≃+* ℂ} {T : Type} {inc : T → (E →+* 
 variable (Ω) in
 
 /- English proof (translation)
-Establish `hN` using `hP.Nr_eq`. Establish `ht` using `hP.t_ge`. Establish `hm` using `hP.m_pos`. Establish `hk` using `hP.m_le`. Take `⟨c, hc, hc'⟩` from `exists_of_half half (fun τ => (h0 P : ℤ) - P.Nr + 1 + s τ) fun τ => -s τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨tw, htw, hcr⟩` from `exists_crys_char Ω p3 p9 ι c ((h0 P : ℤ) - P.Nr + 1) fun i => by`. Take `⟨τ, rfl | rfl⟩` from `half.2.2 i`. Rewrite using `[hc, hc']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[cj_cj, hc, hc']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Set `Fn : FrobNorm E Ω l Pl` to `⟨lab, -1, tw, htw, cofin⟩`. Establish `main` using `GlobalTheory.GalAut.galoisRep_definiteUnitary p7 p5 p6 p1 p2 p3 p9 p4 p8 p10 E Ω hE P.Nr (by omega)`. Use `⟨Pl, pt, Fn, cj, Or.inr rfl, fun mu θ ha hθ => ?_, fun θ hθ hB => ?_⟩` and prove the remaining obligations. Take `⟨π, hπ⟩` from `haut mu θ ha hθ`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨lam, hl, hl1, hl2, -⟩` from `hπ.weights half`. Take `⟨⟨r, hr, hf⟩, -⟩` from `main π hπ.1 lam hl l ι hπ.2.2.1`. Use `⟨GlobalTheory.TwistAbove.twGL tw r, fun τ a => ((Fin.rev a : ℕ) : ℤ) - (lam (ι.toRingHom.comp τ)).w (Fin.rev a) + c τ, fun τ a => ⟨?_, ?_⟩, ?_, SystemOf.reads Fn hlab hπ hf fun g => charpoly_smul _ (Units.ne_zero _)⟩` and prove the remaining obligations. Use `a.2` as an intermediate fact. Simplify using `only [hl2, hc', DomWeight.dual, Fin.rev_rev, hl1, Formalism.CohomologicalDescent.UnitNormBounds.UN]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Use `a.2` as an intermediate fact. Simplify using `only [cj_cj, hc, hl1, Formalism.CohomologicalDescent.UnitNormBounds.UN, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `crysWith_twist (r' := GlobalTheory.TwistAbove.twGL tw r) (fun _ => rfl) hr htw hcr using 2 with τ` and compare the differences between its conclusion and the goal. Rewrite using `[jumpsOf, Multiset.map_map]`. Use `conv_rhs => rw [← Multiset.map_univ_val_equiv Fin.revPerm, Multiset.map_map]`. Both sides reduce to the same expression. Establish `ha : ∀ τ, Antitone (res P.Nr (W.lam τ))` using `fun τ a b h => hW.anti τ a b h b.2`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨π, hπ⟩` from `haut W.lam θ ha hθ`. Take `⟨lam, hl, hl1, hl2, hl3⟩` from `hπ.weights half`. Establish `r1` using `fun τ => isRunAt_block hP hL hW τ _ _ (hl1 τ)`. Establish `r2` using `fun τ => isRunAt_dual (by omega) (r1 τ).1`. Take `⟨-, v, hv, hd, -⟩` from `(p4.dense (Ω := Ω) cofin).nonempty`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨Q, -⟩ : v ∈ Set.range lab := by`. Assume the negation of the conclusion as `h`. Conclude with `hv ⟨((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified E).1 v).2 hd, h⟩`. Establish `hstr : HasString l π P.t`. Take `⟨hu, σ, S, h1, h2, h3⟩` from `hπ.2.2.2 Q`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ν, hν, hdv⟩` from `hblk θ hB Q`. Take `⟨u, hu1, hu2⟩` from `string_of_dvd ι (absNorm_ne_zero _) (by omega) S (card_of_hasSat h2) _ h3 ν hν hdv`. Conclude with `⟨lab Q, (hlab Q).1, (hlab Q).2, hu, σ, S, u, h1, h2, hu1, hu2⟩`. Take `⟨a, ρ, χ, bot, h1, h2, h3, h4, h5⟩` from `(main π hπ.1 lam hl l ι hπ.2.2.1).2 P.t (by omega) (fun φ => by`. Take `⟨τ, rfl | rfl⟩` from `hl3 φ`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨_, (r1 τ).1⟩`. Conclude with `⟨_, hl2 τ ▸ (r2 τ).1⟩) hstr`. Use `⟨a, GlobalTheory.TwistAbove.twGL tw ρ, fun j => χ j * tw, fun τ => bot τ + c τ, h1, continuous_twist (fun _ => rfl) h2 htw, fun j => ?_, fun τ => ⟨?_, ?_⟩, SystemOf.reads Fn hlab hπ h5 fun g => ?_⟩` and prove the remaining obligations. Use `crysWith_twist (r' := rk1 (χ j * tw)) (fun g => ?_) (h3 j) htw hcr using 2 with τ` and compare the differences between its conclusion and the goal. Rewrite using `[Multiset.map_singleton, add_right_comm]`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x y`. Simplify using `[rk1, Matrix.diagonal_apply, mul_comm]`. Use `hW.what₂ τ beta_reduce` as an intermediate fact. Rewrite using `[h4 _ _ (hl2 τ ▸ (r2 τ).1), hl2, (r2 τ).2, (r1 τ).2, hc']`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `beta_reduce`. Rewrite using `[cj_cj, h4 _ _ (r1 τ).1, (r1 τ).2, hc]`. Use linear arithmetic over natural numbers and integers. Establish `e` using `scaleRoots_prod (Finset.univ.val.map fun j => ((χ j g : (Qbar l)ˣ) : Qbar l)) ((tw g : (Qbar l)ˣ) : Qbar l)`. Rewrite `e` using `[Multiset.map_map, Multiset.map_map]`.
-
-Rewrite using `[mul_scaleRoots_of_noZeroDivisors, ← charpoly_smul _ (Units.ne_zero _)]`. Conclude with `congrArg₂ (· * ·) rfl e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galSide_of_systems (p1 : GlobalTheory.Published.ClozelCohomological) (p2 : GlobalTheory.Published.CohomologicalCsdTempered)
     (p3 : GlobalTheory.Published.HeckeLAdicCharacter) (p4 : GlobalTheory.Published.ChebotarevDegreeOne) (p5 : GlobalTheory.Published.DiscreteSpectrumGL)
@@ -691,7 +685,7 @@ open Formalism.CohomologicalDescent.LogSmallConstantBounds Formalism.Cohomologic
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `h1` using `Reads.HasBlock.dvd h pt P Q hQ`. Conclude with `dvd_trans (List.dvd_prod (List.mem_map_of_mem (f := fun ν : B.Pl → K => blockPoly (R.e0 (ν Q)) (B.q Q) B.t) hν)) h1`.
+Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem block_dvd {l : ℕ} [Fact l.Prime] {ι : Type} [DecidableEq ι] {N : ℕ} {F : Frame l ι N} {lam : ι → ℕ → ℕ}
     {K : Type} [Field K] [NumberField K] [StarRing K] {G0 : Type} [Group G0] [Fintype G0] {Pl0 : Type} {B : BlockDat K G0 Pl0}
@@ -706,9 +700,9 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz)
 
 /- English proof (translation)
-Take `⟨_, _, _, H⟩` from `p.charW.base.fam.tie`. Establish `h1 : (blk p j t).n = D.R.k + D.R.m - 1 + D.R.t` using `by show p.P.A3.A.r + p.P.A3.A.t = _`. Rewrite using `[H.ranks.2.1, H.ranks.2.2]`. Both sides reduce to the same expression. Use `hP.Nr_eq` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `hP.m_pos` as an intermediate fact. Use `hD.k` as an intermediate fact. Use `hD.m` as an intermediate fact. Use `hD.t` as an intermediate fact. Conclude with `⟨by omega, H.ranks.2.2.trans hD.t.symm, List.exists_mem_of_ne_nil _ (List.cons_ne_nil _ _)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem blk_numbers {j : Fin D.R.m} {P : Par} {W : Wts D.what₂.Tau} (hD : Dict L j P W) (hP : P.Hyp) (t : p.P.T) :
     (blk p j t).n = P.Nr ∧ (blk p j t).t = P.t ∧ ∃ ν, ν ∈ (blk p j t).bl := by
@@ -727,15 +721,13 @@ theorem blk_numbers {j : Fin D.R.m} {P : Par} {W : Wts D.what₂.Tau} (hD : Dict
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `_ F R inc _ T`. Take `⟨⟨hpl, hcof, hbl⟩, haut⟩` from `h`. Take `⟨hn, ht, ν, hν⟩` from `blk_numbers p hD hN.1 (p.R.mu w)`. Set `Pl` to `{Q : (blk p j (p.R.mu w)).Pl // ((Formalism.EigenvalueLevelCeiling.plc w : ℕ) : 𝓞 D.host.E) ∉ (plOf p j (p.R.mu w) Q).asIdeal}`. Establish `hpt : ∀ (Q : Pl) (k : Fin P.Nr), ∃ i, R.ix i = (Q.1, (k : ℕ) + 1)` using `fun Q k => (T.ix_range (Q.1, (k : ℕ) + 1)).2 ⟨Nat.le_add_left _ _, k.2, Q.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose pt hpt using hpt`. Use `galSide_of_systems _ p1 p2 p3 p4 p5 p6 p7 p8 p9 p10 (GlobalTheory.DefiniteBC.host_unramified D.host) T.io T.half T.sh hN.1 hN.2.1 hN.2.2.1 F _ pt (fun Q => labOf p j (p.R.mu w) Q.1) (hcof.subset fun v hv => ⟨hv.1, fun ⟨Q, h1, h2⟩ => hv.2 ⟨⟨Q, h1⟩, h2⟩⟩) (fun Q => ⟨(hpl Q.1).1, fu …` and prove the remaining obligations. Take `⟨π, h1, h2, h3, h4⟩` from `haut F R inc T mu θ ha hθ`. Use `⟨π, h1, h2, h3, fun Q => ?_⟩` and prove the remaining obligations. Take `⟨hu, σ, S, a, b, c⟩` from `h4 Q.1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hu, σ, S, a, b, fun k hk => ?_⟩` and prove the remaining obligations. Break down `k with _ | k` into its components or cases. Rewrite using `[sysOf_zero, map_one, GlobalTheory.LFun.satEig]`. Simplify using `[Multiset.esymm]`. Establish `e` using `c (pt Q ⟨k, hk⟩) (by rw [hpt])`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hpt]`. Conclude with `(congrArg T.io (sysOf_succ P.Nr pt θ Q ⟨k, hk⟩)).trans e`. Use `⟨R.e0 (ν Q.1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[T.liftFrame_embedding_base, hbl ν hν, (hpl Q.1).2.2.1, hn, ht]`. Rewrite using `[(hpl Q.1).2.2.1, ← ht]`.
-
-Conclude with `block_dvd hθ hn pt Q Q.1 (hpt Q) hν`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galAt_of_autAt (p1 : GlobalTheory.Published.ClozelCohomological) (p2 : GlobalTheory.Published.CohomologicalCsdTempered)
     (p3 : GlobalTheory.Published.HeckeLAdicCharacter) (p4 : GlobalTheory.Published.ChebotarevDegreeOne) (p5 : GlobalTheory.Published.DiscreteSpectrumGL)
@@ -776,7 +768,7 @@ end GlobalTheory.FrameGal
 open Formalism.MainNotions GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.ExpTie in
 
 /- English proof (translation)
-Introduce `p1 p2 p3 p4 p5 p6 p7 p8 p9 p10 hS`. Use `Closed.imp (GlobalTheory.T.small_estimate_implies_frame_automorphy hS) fun Fm _ _ H => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `H`. Conclude with `⟨a, fun x hx hle i p hp hm j P W hD hN w hw hR => GlobalTheory.FrameGal.galAt_of_autAt p p1 p2 p3 p4 p5 p6 p7 p8 p9 p10 hD hN (ha x hx hle i p hp hm j P W hD hN w hw hR)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.FrameGal.galSt : GlobalTheory.Published.ClozelCohomological → GlobalTheory.Published.CohomologicalCsdTempered → GlobalTheory.Published.HeckeLAdicCharacter →
     GlobalTheory.Published.ChebotarevDegreeOne → GlobalTheory.Published.DiscreteSpectrumGL → GlobalTheory.Published.GaloisRepOfPolarizedCuspidal →

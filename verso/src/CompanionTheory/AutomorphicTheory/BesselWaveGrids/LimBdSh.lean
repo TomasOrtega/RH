@@ -14,17 +14,15 @@ variable {P : M.Par} {Wp Wq Wq' : Type} [NormedAddCommGroup Wp] [InnerProductSpa
   [FiniteDimensional ℂ Wq] [FiniteDimensional ℂ Wq'] {u u' : ℕ → ℝ}
 
 /- English proof (translation)
-Take `⟨H, i1, i2, i3, σ, Pm, Qm, hlam, hσ, hQ, hP, hfG⟩` from `hf`. Take `⟨n, cf, L, hcf, hAe⟩` from `hAop`. Use `set d : ℕ := (2 * P.r + 2) * p₀ + e₀ with hd`. Use `set q : B.Mat P.k P.r → ℂ := fun g => ((Formalism.QuantumDeterminants.Gf P.k P.r p.T.base.z p.T.base.z' g ^ p₀ : ℝ) : ℂ) with hq`. Set `ea` to `stdOrthonormalBasis ℂ Wp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `eb` to `stdOrthonormalBasis ℂ Wq`. Set `φ : Fin (Module.finrank ℂ Wp) → Fin (Module.finrank ℂ Wq) → B.Mat P.k P.r → ℂ` to `fun a b g => ⟪ContinuousLinearMap.adjoint Pm (ea a), σ g (Qm (eb b))⟫_ℂ`. Establish `hφ : ∀ a b, IsCoef P.k P.r ε lam (φ a b)` using `fun a b => ⟨H, i1, i2, i3, σ, Qm (eb b), ContinuousLinearMap.adjoint Pm (ea a), hlam, hσ, hQ _, hP _, fun _ _ => rfl⟩`. Set `F₁ : B.Mat P.k P.r → (Wq' →L[ℂ] Wp)` to `∑ i, ∑ a, ∑ b, fun g => (q * cf i * φ a b) g • ((innerSL ℂ (eb b)).smulRight (ea a)).comp (L i)`. Establish `hF₁ : F₁ ∈ ⨆ ν : Box lam (d : ℝ), Wsp P.k P.r Wp Wq' ε ν` using `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => smul_mem_iSup (h2 t hZ hZd P.k P.r ε lam h d (q * cf i) (φ a b) (mul_mem_letters_pow (h1 P.k P.r _ _ p₀) (polyDeg_mem (hcf i))) (hφ a b) hgap ht) _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hFF : ∀ g ∈ B.GV P.k P.r, fpmSh p f Aop p₀ g = F₁ g`. Introduce `g hg`. Use `show q g • (f g).comp (Aop g) = F₁ g`. Rewrite using `[hAe g, ContinuousLinearMap.comp_finsetSum, Finset.smul_sum]`. Simplify using `only [F₁, Finset.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_smul, op_expand (f g), hfG g hg]`. Simplify using `only [ContinuousLinearMap.finsetSum_comp, ContinuousLinearMap.smul_comp, Finset.smul_sum, Pi.mul_apply, smul_smul, φ, ContinuousLinearMap.adjoint_inner_left, ContinuousLinearMap.comp_apply, ea, eb, mul_assoc]`. Take `⟨c, hc, hsum⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ F₁).1 hF₁`. Set `e` to `c.support.equivFin.symm`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgν : ∀ ν : Box lam (d : ℝ), PI.ZuckTensor.GapAtLeast ε ν.1 h₀` using `fun ν => gap_of_box ν.2 hgap hh`. Establish `hFs : ∀ g ∈ B.GV P.k P.r, fpmSh p f Aop p₀ g = ∑ i, c (e i) g`. Introduce `g hg`. Rewrite using `[hFF g hg, ← hsum, Finsupp.sum, Finset.sum_apply, ← Finset.sum_coe_sort]`. Conclude with `(Equiv.sum_comp e fun ν : c.support => c ν g).symm`.
-
-Conclude with `⟨A, c.support.card, fun i => c (e i), fun i y => Formalism.QuantumDeterminants.capP (fun s => ((e i).1.1 s : ℂ)) (y : ℂ), hA, fun i => wsp_ckOn hK h3 (hc _), fun i => wsp_inCC hK h4 hD (hgν _) (hc _), hFs, fun i y _ => wsp_eig hK h3 h5 _ (hc _), fun i y hy => (norm_capP_le (e i). …`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eigStr_fpmSh [CompleteSpace Wp] (h1 : GfPoly) (h2 : SpanPow) (h3 : CoefSmooth) (h4 : CoefCC)
     (h5 : CoefEig) (h6 : PhZero) (h7 : BetaInfZero) (hK : PI.KFinSmooth)

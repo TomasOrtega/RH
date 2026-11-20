@@ -13,9 +13,9 @@ open scoped Formalism.Per
 namespace GlobalTheory.RegularRing
 
 /- English proof (translation)
-Use `first`. Consider the case `(rename_i h_5 h_6 h_7 h_8 h_9 h_10 h_11 h_12 h_13; revert K B W G ι h_5 h_6 h_7 h_8 h_9 h_10 h_11 h_12 h_13 a σ hσ hreg v hv s h; exact @_root_.GlobalTheory.LinearIndependentFixed.linearIndepOn_of_fixed)`. Consider the case `exact @_root_.GlobalTheory.LinearIndependentFixed.linearIndepOn_of_fixed`. Consider the case `exact _root_.GlobalTheory.LinearIndependentFixed.linearIndepOn_of_fixed`. Consider the case `(apply _root_.GlobalTheory.LinearIndependentFixed.linearIndepOn_of_fixed <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply _root_.GlobalTheory.LinearIndependentFixed.linearIndepOn_of_fixed <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.LinearIndependentFixed.linearIndepOn_of_fixed <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LinearIndependentFixed.linearIndepOn_of_fixed ..)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem linearIndepOn_of_invariant {K B W G ι : Type} [Field K] [CommRing B] [IsDomain B] [Algebra K B]
     [AddCommGroup W] [Module B W] [Module K W] [IsScalarTower K B W] [Module.IsTorsionFree B W]
@@ -61,7 +61,7 @@ theorem sig_tmul (ρ : Representation LL G V) (g : G) (b : B) (v : V) :
     sig PD ρ g (b ⊗ₜ[Qp] v) = PD.actB g b ⊗ₜ[Qp] ρ g v := rfl
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c v => simp [sig_tmul, TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sig_smul (ρ : Representation LL G V) (g : G) (b : B) (w : B ⊗[Qp] V) :
     sig PD ρ g (b • w) = PD.actB g b • sig PD ρ g w := by
@@ -71,7 +71,7 @@ theorem sig_smul (ρ : Representation LL G V) (g : G) (b : B) (w : B ⊗[Qp] V) 
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c v => simp [sig_tmul, actVB]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem comm_sig (ρ : Representation LL G V) (g : G) (w : B ⊗[Qp] V) :
     TensorProduct.comm Qp B V (sig PD ρ g w) = actVB PD ρ g (TensorProduct.comm Qp B V w) := by
@@ -81,7 +81,7 @@ theorem comm_sig (ρ : Representation LL G V) (g : G) (w : B ⊗[Qp] V) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `TensorProduct.comm Qp B V w ∈ Dcris PD ρ ↔ _`. Rewrite using `[mem_Dcris]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations. Rewrite using `[← comm_sig, (TensorProduct.comm Qp B V).injective.eq_iff]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_DcrisK₀ (ρ : Representation LL G V) (w : B ⊗[Qp] V) :
     w ∈ DcrisK₀ PD ρ ↔ ∀ g, sig PD ρ g w = w := by
@@ -101,18 +101,18 @@ def swapD (ρ : Representation LL G V) : ↥(DcrisK₀ PD ρ) ≃ₗ[Qp] ↥(Dcr
   right_inv y := Subtype.ext ((TensorProduct.comm Qp B V).apply_symm_apply _)
 
 /- English proof (translation)
-Rewrite using `[Module.finrank_mul_finrank, Module.finrank_mul_finrank, (swapD PD ρ).finrank_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_swap (ρ : Representation LL G V) :
     finrank Qp K₀ * finrank K₀ ↥(DcrisK₀ PD ρ) = finrank Qp LL * finrank LL ↥(Dcris PD ρ) := by
   rw [Module.finrank_mul_finrank, Module.finrank_mul_finrank, (swapD PD ρ).finrank_eq]
 
 /- English proof (translation)
-Use `haveI := PD.finK₀`. Establish `h1` using `finrank_swap PD ρ`. Establish `h2` using `Module.finrank_mul_finrank Qp LL V`. Establish `h3 : 0 < finrank Qp LL` using `finrank_pos`. Establish `h4 : 0 < finrank Qp K₀` using `finrank_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `IsCrys`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h1` using `[h, mul_left_comm, h2]`. Conclude with `Nat.eq_of_mul_eq_mul_left h4 h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Rewrite `h1` using `[h, ← h2, mul_left_comm]`. Conclude with `(Nat.eq_of_mul_eq_mul_left h3 h1).symm`.
+A detailed English derivation is pending.
 -/
 theorem isCrys_iff_finrank [FiniteDimensional Qp LL] (ρ : Representation LL G V) :
     IsCrys PD ρ ↔ finrank K₀ ↥(DcrisK₀ PD ρ) = finrank Qp V := by
@@ -133,7 +133,7 @@ theorem isCrys_iff_finrank [FiniteDimensional Qp LL] (ρ : Representation LL G V
 variable [IsDomain B]
 
 /- English proof (translation)
-Establish `h1 : LinearIndependent K₀ fun i => (d i : B ⊗[Qp] V)` using `hd.map' (DcrisK₀ PD ρ).subtype (DcrisK₀ PD ρ).ker_subtype`. Rewrite using `[linearIndependent_iff_finset_linearIndependent]`. Introduce `s`. Conclude with `linearIndepOn_of_invariant (fun g b => PD.actB g b) (fun g => (sig PD ρ g).toAddMonoidHom) (sig_smul PD ρ) hf _ (fun g i => (mem_DcrisK₀ PD ρ _).1 (d i).2 g) s (h1.linearIndepOn _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem indepB (hf : FracInv PD) (ρ : Representation LL G V) {ι : Type} (d : ι → ↥(DcrisK₀ PD ρ))
     (hd : LinearIndependent K₀ d) : LinearIndependent B fun i => (d i : B ⊗[Qp] V) := by
@@ -145,9 +145,9 @@ theorem indepB (hf : FracInv PD) (ρ : Representation LL G V) {ι : Type} (d : �
     (sig_smul PD ρ) hf _ (fun g i => (mem_DcrisK₀ PD ρ _).1 (d i).2 g) s (h1.linearIndepOn _)
 
 /- English proof (translation)
-Establish `hr : Module.rank K₀ ↥(DcrisK₀ PD ρ) ≤ finrank Qp V`. Use `rank_le fun s hs => ?_` and prove the remaining obligations. Simplify using `using LinearIndependent.fintype_card_le_finrank (indepB PD hf ρ _ hs)`. Use `haveI : Module.Finite K₀ ↥(DcrisK₀ PD ρ) := by`. Rewrite using `[← Module.rank_lt_aleph0_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `lt_of_le_of_lt hr Cardinal.natCast_lt_aleph0`. Conclude with `⟨inferInstance, finrank_le_of_rank_le hr⟩`.
+A detailed English derivation is pending.
 -/
 theorem finite_le₀ (hf : FracInv PD) [FiniteDimensional Qp V] (ρ : Representation LL G V) :
     Module.Finite K₀ ↥(DcrisK₀ PD ρ) ∧ finrank K₀ ↥(DcrisK₀ PD ρ) ≤ finrank Qp V := by
@@ -160,9 +160,7 @@ theorem finite_le₀ (hf : FracInv PD) [FiniteDimensional Qp V] (ρ : Representa
   exact ⟨inferInstance, finrank_le_of_rank_le hr⟩
 
 /- English proof (translation)
-Use `haveI := PD.finK₀`. Use `haveI : FiniteDimensional Qp V := Module.Finite.trans LL V`. Take `⟨h1, h2⟩` from `finite_le₀ PD hf ρ`. Use `haveI : Module.Finite Qp ↥(DcrisK₀ PD ρ) := Module.Finite.trans K₀ _`. Use `haveI : Module.Finite Qp ↥(Dcris PD ρ) := Module.Finite.equiv (swapD PD ρ)`.
-
-Use `⟨Module.Finite.of_restrictScalars_finite Qp LL _, ?_⟩` and prove the remaining obligations. Establish `h3` using `Nat.mul_le_mul_left (finrank Qp K₀) h2`. Rewrite `h3` using `[finrank_swap, ← Module.finrank_mul_finrank Qp LL V, mul_left_comm]`. Conclude with `Nat.le_of_mul_le_mul_left h3 finrank_pos`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_le (hf : FracInv PD) [FiniteDimensional Qp LL] [FiniteDimensional LL V]
     (ρ : Representation LL G V) :
@@ -178,9 +176,9 @@ theorem finite_le (hf : FracInv PD) [FiniteDimensional Qp LL] [FiniteDimensional
   exact Nat.le_of_mul_le_mul_left h3 finrank_pos
 
 /- English proof (translation)
-Set `e` to `Module.Free.chooseBasis K₀ ↥(DcrisK₀ PD ρ)`. Establish `h` using `indepB PD hf ρ e e.linearIndependent`. Establish `h2 : (fun i => (e i : B ⊗[Qp] V)) = comparison PD ρ ∘ (Algebra.TensorProduct.basis B e)`. Use function extensionality and compare the values at `i`. Simplify using `[comparison_tmul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[h2]`. Conclude with `LinearMap.injective_of_linearIndependent (Algebra.TensorProduct.basis B e).span_eq h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comparison_injective (hf : FracInv PD) (ρ : Representation LL G V) :
     Function.Injective (comparison PD ρ) := by
@@ -193,23 +191,21 @@ theorem comparison_injective (hf : FracInv PD) (ρ : Representation LL G V) :
   exact LinearMap.injective_of_linearIndependent (Algebra.TensorProduct.basis B e).span_eq h
 
 /- English proof (translation)
-Set `v` to `Module.finBasis Qp V`. Set `e` to `Algebra.TensorProduct.basis B v`. Set `A` to `e.toMatrix d`. Establish `hA : A.det ≠ 0`. Introduce `h0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc, hc0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h0`. Apply `hc` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `Fintype.linearIndependent_iff.1 hi c ?_ i` and prove the remaining obligations. Apply `e.repr.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `j`. Use `congrFun hc0 j` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, A, Basis.toMatrix_apply, Pi.zero_apply] at this`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.zero_apply]`. Rewrite using `[← this]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Establish `hrep : ∀ g (w : B ⊗[Qp] V) k, e.repr (sig PD ρ g w) k = ∑ j, algebraMap Qp B (v.repr (ρ g (v j)) k) * PD.actB g (e.repr w j)`. Introduce `g w k`. Use `conv_lhs => rw [← e.sum_repr w]`. Simplify using `only [map_sum, sig_smul, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `congr 1`. Simplify using `[e, sig_tmul, Algebra.algebraMap_eq_smul_one]`. Establish `hdet : IsUnit A.det`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `hu _ hA fun g => ?_` and prove the remaining obligations. Set `M : Matrix (Fin (finrank Qp V)) (Fin (finrank Qp V)) Qp` to `fun k j => v.repr (ρ g (v j)) k`. Establish `h1 : A = (algebraMap Qp B).mapMatrix M * (PD.actB g : B →+* B).mapMatrix A`. Use extensionality with `k i`. Rewrite using `[Matrix.mul_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `e.repr (d i) k = _`. Use `conv_lhs => rw [← hd g i, hrep]`. Both sides reduce to the same expression. Establish `h2` using `congrArg Matrix.det h1`. Rewrite `h2` using `[Matrix.det_mul, ← RingHom.map_det, ← RingHom.map_det]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : M.det ≠ 0` using `fun h => hA (by rw [h2, h, map_zero, zero_mul])`. Use `⟨M.det⁻¹, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [h2]`. Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ h3, map_one, one_mul]`. Both sides reduce to the same expression.
-
-Conclude with `((Basis.is_basis_iff_det e).2 hdet).2`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem span_eq_top_of_invariant (hu : LineUnit PD) [FiniteDimensional Qp V] (ρ : Representation LL G V)
     (d : Fin (finrank Qp V) → B ⊗[Qp] V) (hd : ∀ g i, sig PD ρ g (d i) = d i)
@@ -261,11 +257,11 @@ theorem span_eq_top_of_invariant (hu : LineUnit PD) [FiniteDimensional Qp V] (ρ
   exact ((Basis.is_basis_iff_det e).2 hdet).2
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional Qp V := Module.Finite.trans LL V`. Take `⟨h1, h2⟩` from `finite_le₀ PD hf ρ`. Rewrite using `[isCrys_iff_finrank]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `e` to `Module.finBasisOfFinrankEq K₀ _ h`. Rewrite using `[eq_top_iff, ← span_eq_top_of_invariant PD hu ρ (fun i => e i) (fun g i => (mem_DcrisK₀ PD ρ _).1 (e i).2 g) (indepB PD hf ρ e e.linearIndependent)]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(e i).2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Use `le_antisymm h2 ?_` and prove the remaining obligations. Establish `hs : Function.Surjective (comparison PD ρ)`. Rewrite using `[← LinearMap.range_eq_top, comparison, LinearMap.range_liftBaseChange, Submodule.range_subtype, h]`. Simplify using `using LinearMap.finrank_le_finrank_of_surjective hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isCrys_iff_span (hf : FracInv PD) (hu : LineUnit PD) [FiniteDimensional Qp LL] [FiniteDimensional LL V]
     (ρ : Representation LL G V) :
@@ -288,7 +284,7 @@ theorem isCrys_iff_span (hf : FracInv PD) (hu : LineUnit PD) [FiniteDimensional 
     simpa using LinearMap.finrank_le_finrank_of_surjective hs
 
 /- English proof (translation)
-Use `⟨comparison_injective PD hf ρ, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.range_eq_top, comparison, LinearMap.range_liftBaseChange, Submodule.range_subtype, (isCrys_iff_span PD hf hu ρ).1 h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem comparison_bijective (hf : FracInv PD) (hu : LineUnit PD) [FiniteDimensional Qp LL]
     [FiniteDimensional LL V] (ρ : Representation LL G V) (h : IsCrys PD ρ) :
@@ -300,9 +296,9 @@ theorem comparison_bijective (hf : FracInv PD) (hu : LineUnit PD) [FiniteDimensi
 omit [IsDomain B] in
 
 /- English proof (translation)
-Establish `hm : ∀ g y, (f.restrictScalars Qp).baseChange B (sig PD ρ g y) = sig PD ρ' g ((f.restrictScalars Qp).baseChange B y)`. Introduce `g y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [sig_tmul, hf g]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Rewrite `hx`, the goal using `[mem_DcrisK₀]`. Introduce `g`. Rewrite using `[← hm, hx]`.
+Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem baseChange_mem {ρ : Representation LL G V} {ρ' : Representation LL G V'} {f : V →ₗ[LL] V'}
     (hf : IsEquivariant ρ ρ' f) (x : B ⊗[Qp] V) (hx : x ∈ DcrisK₀ PD ρ) :
@@ -320,7 +316,7 @@ theorem baseChange_mem {ρ : Representation LL G V} {ρ' : Representation LL G V
 
 omit [IsDomain B] in
 /- English proof (translation)
-Establish `h1 : Submodule.span B (DcrisK₀ PD ρ : Set (B ⊗[Qp] V)) ≤ (Submodule.span B (DcrisK₀ PD ρ' : Set (B ⊗[Qp] V'))).comap ((f.restrictScalars Qp).baseChange B)` using `Submodule.span_le.2 fun x hx => Submodule.subset_span (baseChange_mem PD hf x hx)`. Conclude with `h1 (h ▸ Submodule.mem_top : b ⊗ₜ[Qp] v ∈ _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tmul_mem_span {ρ : Representation LL G V} {ρ' : Representation LL G V'} {f : V →ₗ[LL] V'}
     (hf : IsEquivariant ρ ρ' f) (h : Submodule.span B (DcrisK₀ PD ρ : Set (B ⊗[Qp] V)) = ⊤) (b : B) (v : V) :
@@ -332,9 +328,9 @@ theorem tmul_mem_span {ρ : Representation LL G V} {ρ' : Representation LL G V'
 
 omit [IsDomain B] in
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact S.zero_mem`. Consider the case `tmul b v => exact h b v`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => exact S.add_mem ha hb`.
+Treat this case separately.
 -/
 theorem eq_top_of_tmul (S : Submodule B (B ⊗[Qp] V)) (h : ∀ b v, b ⊗ₜ[Qp] v ∈ S) : S = ⊤ := by
   rw [eq_top_iff]
@@ -347,7 +343,7 @@ theorem eq_top_of_tmul (S : Submodule B (B ⊗[Qp] V)) (h : ∀ b v, b ⊗ₜ[Qp
 variable (LL) [FiniteDimensional Qp LL]
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ ρ V' _ _ _ _ _ ρ' f he hs h`. Rewrite `h`, the goal using `[isCrys_iff_span PD hf hu]`. Use `eq_top_of_tmul _ fun b v => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `hs v`. Conclude with `tmul_mem_span PD he h b v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem quotCrys (hf : FracInv PD) (hu : LineUnit PD) : QuotCrys PD LL := by
   intro V _ _ _ _ _ ρ V' _ _ _ _ _ ρ' f he hs h
@@ -357,9 +353,9 @@ theorem quotCrys (hf : FracInv PD) (hu : LineUnit PD) : QuotCrys PD LL := by
   exact tmul_mem_span PD he h b v
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ ρ V' _ _ _ _ _ ρ' h h'`. Rewrite `h`, `h'`, the goal using `[isCrys_iff_span PD hf hu]`. Use `eq_top_of_tmul _ fun b v => ?_` and prove the remaining obligations. Establish `h1 : IsEquivariant ρ (ρ.prod ρ') (LinearMap.inl LL V V')` using `fun g x => by`. Simplify using `[Representation.prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : IsEquivariant ρ' (ρ.prod ρ') (LinearMap.inr LL V V')` using `fun g x => by`. Simplify using `[Representation.prod]`. Establish `h3 : v = LinearMap.inl LL V V' v.1 + LinearMap.inr LL V V' v.2` using `by simp`. Rewrite using `[h3, tmul_add]`. Conclude with `Submodule.add_mem _ (tmul_mem_span PD h1 h b _) (tmul_mem_span PD h2 h' b _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumCrys (hf : FracInv PD) (hu : LineUnit PD) : SumCrys PD LL := by
   intro V _ _ _ _ _ ρ V' _ _ _ _ _ ρ' h h'
@@ -374,21 +370,19 @@ theorem sumCrys (hf : FracInv PD) (hu : LineUnit PD) : SumCrys PD LL := by
   exact Submodule.add_mem _ (tmul_mem_span PD h1 h b _) (tmul_mem_span PD h2 h' b _)
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ ρ V' _ _ _ _ _ ρ' h h'`. Establish `hc` using `comparison_bijective PD hf hu ρ h`. Establish `hc'` using `comparison_bijective PD hf hu ρ' h'`. Rewrite using `[isCrys_iff_span PD hf hu]`. Use `set S := Submodule.span B (DcrisK₀ PD (ρ.tprod ρ') : Set (B ⊗[Qp] (V ⊗[LL] V')))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `c` to `(TensorProduct.comm Qp B (V ⊗[LL] V')).symm`. Establish `hcm : ∀ (b : B) z, c (mB LL b z) = b • c z` using `fun b z => by`. Apply `(TensorProduct.comm Qp B (V ⊗[LL] V')).injective` to reduce the goal to its premises. Rewrite using `[comm_smulB (LL := LL), LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Establish `key : ∀ (x : V ⊗[Qp] B) (y : V' ⊗[Qp] B), c (prodB (LL` using `LL) (x ⊗ₜ[LL] y)) ∈ S := by`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Proceed by induction on `x using cmp_ind PD hc with`. Consider the case `h0 => simp`. Consider the case `hadd x x' hx hx' => rw [add_tmul, map_add, map_add]`. Conclude with `S.add_mem hx hx'`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `hb b d`. Rewrite using `[prod_mB_left, hcm]`. Use `S.smul_mem _ ?_` and prove the remaining obligations. Proceed by induction on `y using cmp_ind PD hc' with`. Consider the case `h0 => simp`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `hadd x x' hx hx' => rw [tmul_add, map_add, map_add]`. Conclude with `S.add_mem hx hx'`. Consider the case `hb b' d'`. Rewrite using `[prod_mB_right, hcm]`. Use `S.smul_mem _ (Submodule.subset_span ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `TensorProduct.comm Qp B _ _ ∈ Dcris PD _`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `prod_mem PD d d'`. Use `eq_top_of_tmul _ fun b w => ?_` and prove the remaining obligations. Proceed by induction on `w using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `add a a' ha ha' => rw [tmul_add]`. Conclude with `S.add_mem ha ha'`. Consider the case `tmul v v'`. Use `key (v ⊗ₜ b) (v' ⊗ₜ 1)` as an intermediate fact.
-
-Rewrite `this` using `[prodB_tmul, mul_one]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensorCrys (hf : FracInv PD) (hu : LineUnit PD) : TensorCrys PD LL := by
   intro V _ _ _ _ _ ρ V' _ _ _ _ _ ρ' h h'
@@ -429,11 +423,11 @@ theorem tensorCrys (hf : FracInv PD) (hu : LineUnit PD) : TensorCrys PD LL := by
 omit [IsDomain B] in
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional Qp V := Module.Finite.trans LL V`. Use `haveI : FiniteDimensional Qp (Dual LL V) := Module.Finite.trans LL _`. Take `⟨lam, hlam⟩` from `exists_ne (0 : Dual Qp LL)`. Set `φ : Dual LL V →ₗ[Qp] Dual Qp V` to `{ toFun := fun f => lam ∘ₗ f.restrictScalars Qp map_add' := fun f f' => by ext; simp map_smul' := fun c f => by ext; simp }`. Establish `hφ : Function.Injective φ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `f h0`. Assume the negation of the conclusion as `hne`. Apply `hlam` to reduce the goal to its premises. Use extensionality with `a`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨v, rfl⟩` from `LinearMap.surjective_of_ne_zero hne a`. Conclude with `LinearMap.congr_fun h0 v`. Use `⟨lam, LinearMap.linearEquivOfInjective φ hφ ?_, fun f v => rfl⟩` and prove the remaining obligations. Rewrite using `[← Module.finrank_mul_finrank Qp LL (Dual LL V), Subspace.dual_finrank_eq, Subspace.dual_finrank_eq, Module.finrank_mul_finrank]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dual_equiv (V : Type) [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
     [FiniteDimensional LL V] : ∃ (lam : LL →ₗ[Qp] Qp) (e : Dual LL V ≃ₗ[Qp] Dual Qp V),
@@ -458,21 +452,21 @@ theorem exists_dual_equiv (V : Type) [AddCommGroup V] [Module LL V] [Module Qp V
     Module.finrank_mul_finrank]
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ ρ h`. Use `haveI : FiniteDimensional Qp V := Module.Finite.trans LL V`. Take `⟨lam, e, he⟩` from `exists_dual_equiv (Qp := Qp) LL V`. Set `ibc` to `TensorProduct.isBaseChange Qp V B`. Set `Φ : B ⊗[Qp] Dual LL V ≃ₗ[B] Dual B (B ⊗[Qp] V)` to `(e.baseChange Qp B _ _).trans ibc.toDualBaseChange`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hΦ : ∀ (b c : B) (f : Dual LL V) (v : V), Φ (b ⊗ₜ f) (c ⊗ₜ v) = c * (b * algebraMap Qp B (lam (f v)))`. Introduce `b c f v`. Establish `h1 : c ⊗ₜ[Qp] v = c • (TensorProduct.mk Qp B V 1 v)` using `by simp [smul_tmul']`. Rewrite using `[h1, map_smul, ← he, ← ibc.toDualBaseChange_tmul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hG : ∀ g x y, Φ (sig PD ρ.dual g x) (sig PD ρ g y) = PD.actB g (Φ x y)`. Introduce `g x y`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a a' ha ha' => simp only [map_add, LinearMap.add_apply, ha, ha']`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul b f`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a a' ha ha' => simp only [map_add, ha, ha']`. Consider the case `tmul c v`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sig_tmul, sig_tmul, hΦ, hΦ, map_mul, map_mul, IsScalarTower.algebraMap_apply Qp K₀ B (lam (f v)), AlgEquiv.commutes, ← IsScalarTower.algebraMap_apply]`. Simplify using `[Representation.dual_apply, Module.Dual.transpose_apply]`. Take `⟨h1, -⟩` from `finite_le₀ PD hf ρ`. Set `d₀` to `Module.finBasis K₀ ↥(DcrisK₀ PD ρ)`. Set `d` to `(Algebra.TensorProduct.basis B d₀).map (LinearEquiv.ofBijective _ (comparison_bijective PD hf hu ρ h))`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hd : ∀ g i, sig PD ρ g (d i) = d i`. Introduce `g i`. Establish `: d i = (d₀ i : B ⊗[Qp] V)` using `by simp [d, comparison_tmul]`. Rewrite using `[this]`. Conclude with `(mem_DcrisK₀ PD ρ _).1 (d₀ i).2 g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[isCrys_iff_span PD hf hu, eq_top_iff, ← (d.dualBasis.map Φ.symm).span_eq]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, mem_DcrisK₀]`. Introduce `g`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Φ.injective` to reduce the goal to its premises. Use `d.ext fun j => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← hd g j, hG]`. Rewrite using `[Basis.map_apply, LinearEquiv.apply_symm_apply, Basis.dualBasis_apply_self]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem dualCrys (hf : FracInv PD) (hu : LineUnit PD) : DualCrys PD LL := by
   classical
@@ -523,7 +517,7 @@ theorem dualCrys (hf : FracInv PD) (hu : LineUnit PD) : DualCrys PD LL := by
 omit [IsDomain B] [FiniteDimensional Qp LL] in
 variable {LL} in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [tensorB]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensorB_eq (f : V →ₗ[LL] V') (x : V ⊗[Qp] B) :
     tensorB (Qp := Qp) (B := B) f x = (f.restrictScalars Qp).rTensor B x := by
@@ -536,13 +530,13 @@ omit [IsDomain B] [FiniteDimensional Qp LL] in
 variable {LL} in
 
 /- English proof (translation)
-Establish `hex : Function.Exact ((i.restrictScalars Qp).rTensor B) ((p.restrictScalars Qp).rTensor B)` using `rTensor_exact B (f := i.restrictScalars Qp) (g := p.restrictScalars Qp) h2 h3`. Establish `hinj : Function.Injective ((i.restrictScalars Qp).rTensor B)` using `Module.Flat.rTensor_preserves_injective_linearMap _ h1`. Establish `hci : ∀ x, (DcrisMap PD hi x : V ⊗[Qp] B) = (i.restrictScalars Qp).rTensor B x` using `fun x => tensorB_eq i x.1`. Establish `hcp : ∀ x, (DcrisMap PD hp x : V' ⊗[Qp] B) = (p.restrictScalars Qp).rTensor B x` using `fun x => tensorB_eq p x.1`. Establish `hm : ∀ g y, (i.restrictScalars Qp).rTensor B (actVB PD ρ₀ g y) = actVB PD ρ g ((i.restrictScalars Qp).rTensor B y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB, hi g]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `⟨fun x y h => Subtype.ext (hinj ?_), fun x => ⟨fun h => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hci, ← hci, h]`. Take `⟨y, hy⟩` from `(hex x).1 (by rw [← hcp, h]; rfl)`. Use `⟨⟨y, (mem_Dcris PD ρ₀ y).2 fun g => hinj ?_⟩, Subtype.ext ((hci _).trans hy)⟩` and prove the remaining obligations. Rewrite using `[hm, hy]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mem_Dcris PD ρ _).1 x.2 g`. Introduce and unpack `⟨y, rfl⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hcp, hci]`. Conclude with `(hex _).2 ⟨_, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem left_exact {V₀ : Type} [AddCommGroup V₀] [Module LL V₀] [Module Qp V₀] [IsScalarTower Qp LL V₀]
     {ρ₀ : Representation LL G V₀} {ρ : Representation LL G V} {ρ' : Representation LL G V'}
@@ -576,13 +570,13 @@ theorem left_exact {V₀ : Type} [AddCommGroup V₀] [Module LL V₀] [Module Qp
     exact (hex _).2 ⟨_, rfl⟩
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ ρ V' _ _ _ _ _ ρ' f he hi h`. Establish `hst : ∀ g, LinearMap.range f ≤ (LinearMap.range f).comap (ρ g)`. Introduce and unpack `g _ ⟨v, rfl⟩`. Conclude with `⟨ρ' g v, he g v⟩`. Establish `hq : IsEquivariant ρ (ρ.quotient (LinearMap.range f) hst) (LinearMap.range f).mkQ` using `fun g v => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `left_exact PD he hq hi (LinearMap.exact_map_mkQ_range f) (LinearMap.range f).mkQ_surjective`. Take `⟨a1, a2⟩` from `finite_le PD hf ρ'`. Take `⟨b1, b2⟩` from `finite_le PD hf ρ`. Take `⟨c1, c2⟩` from `finite_le PD hf (ρ.quotient (LinearMap.range f) hst)`. Establish `h3` using `(DcrisMap PD hq).finrank_range_add_finrank_ker`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h3` using `[h2.linearMap_ker_eq, LinearMap.finrank_range_of_inj h1]`. Establish `h4` using `(LinearMap.range (DcrisMap PD hq)).finrank_le`. Establish `h5` using `(LinearMap.range f).finrank_quotient_add_finrank`. Rewrite `h5` using `[LinearMap.finrank_range_of_inj hi]`. Unfold `IsCrys at h ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `h` using `[← h5, mul_add]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem subCrys (hf : FracInv PD) : SubCrys PD LL := by
   intro V _ _ _ _ _ ρ V' _ _ _ _ _ ρ' f he hi h
@@ -605,11 +599,11 @@ theorem subCrys (hf : FracInv PD) : SubCrys PD LL := by
   omega
 
 /- English proof (translation)
-Introduce `V₀ _ _ _ _ _ ρ₀ V₁ _ _ _ _ _ ρ₁ V₂ _ _ _ _ _ ρ₂ i p hi hp h1 h2 h3 c₀ c₁ c₂`. Take `⟨e1, e2⟩` from `left_exact PD hi hp h1 h2 h3`. Use `⟨e1, e2, ?_⟩` and prove the remaining obligations. Take `⟨a1, -⟩` from `finite_le PD hf ρ₁`. Take `⟨b1, -⟩` from `finite_le PD hf ρ₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h4` using `(DcrisMap PD hp).finrank_range_add_finrank_ker`. Rewrite `h4` using `[e2.linearMap_ker_eq, LinearMap.finrank_range_of_inj e1]`. Establish `h5` using `p.finrank_range_add_finrank_ker`. Rewrite `h5` using `[h2.linearMap_ker_eq, LinearMap.finrank_range_of_inj h1, LinearMap.range_eq_top.2 h3, finrank_top]`. Rewrite using `[← LinearMap.range_eq_top]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Unfold `IsCrys at c₀ c₁ c₂`. Rewrite `c₁` using `[← h5, mul_add]`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dcrisExact (hf : FracInv PD) : DcrisExact PD LL := by
   intro V₀ _ _ _ _ _ ρ₀ V₁ _ _ _ _ _ ρ₁ V₂ _ _ _ _ _ ρ₂ i p hi hp h1 h2 h3 c₀ c₁ c₂
@@ -630,15 +624,13 @@ theorem dcrisExact (hf : FracInv PD) : DcrisExact PD LL := by
 omit [FiniteDimensional Qp LL] in
 
 /- English proof (translation)
-Use `haveI := PD.finK₀`. Set `s : K₀ ≃ₐ[Qp] K₀` to `AlgEquiv.ofBijective PD.σ PD.σ_bij`. Establish `hfix : IntermediateField.fixedField (Subgroup.zpowers s) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `c hc`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : PD.σ c = c` using `(IntermediateField.mem_fixedField_iff _ _).1 hc s (Subgroup.mem_zpowers s)`. Take `⟨x, hx⟩` from `PD.fund (algebraMap K₀ B c) (by rw [PD.φ_K₀, h1]) (by`. Rewrite using `[AlgHom.commutes, IsScalarTower.algebraMap_apply K₀ K BdR, Algebra.algebraMap_eq_smul_one]`. Conclude with `(PD.Fil 0).smul_mem _ PD.one_mem)`. Rewrite `hx` using `[IsScalarTower.algebraMap_apply Qp K₀ B]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨x, (algebraMap K₀ B).injective hx⟩`. Establish `hcard : Nat.card (Subgroup.zpowers s) = finrank Qp K₀`. Rewrite using `[← IntermediateField.finrank_fixedField_eq_card, hfix, IntermediateField.finrank_bot']`. Set `F : Subgroup.zpowers s → (K₀ →ₐ[Qp] LL)` to `fun γ => τ.comp (γ.1 : K₀ →ₐ[Qp] K₀)`. Establish `hF : Function.Injective F` using `fun a b h => Subtype.ext (AlgEquiv.ext fun c => τ.toRingHom.injective (AlgHom.congr_fun h c))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨γ, hγ⟩, rfl⟩` from `(hF.bijective_of_nat_card_le (hc.trans hcard.symm).le).2 τ'`. Take `⟨n, rfl⟩` from `mem_powers_iff_mem_zpowers.2 hγ`. Use `⟨n, fun c => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `τ ((s ^ n) c) = _`. Rewrite using `[AlgEquiv.coe_pow]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_pow_sigma (hc : Nat.card (K₀ →ₐ[Qp] LL) = finrank Qp K₀) (τ τ' : K₀ →ₐ[Qp] LL) :
     ∃ n : ℕ, ∀ c, τ' c = τ (PD.σ^[n] c) := by
@@ -669,15 +661,13 @@ omit [IsDomain B] [FiniteDimensional Qp LL] in
 variable {LL} in
 
 /- English proof (translation)
-Use `haveI : Module.Finite LL ↥(DcrisL PD ρ τ) := Submodule.finiteDimensional_of_le inf_le_left`. Establish `h1 : ∀ g x, φVB PD (LL` using `LL) (actVB PD ρ g x) = actVB PD ρ g (φVB PD (LL := LL) x) := by`. Introduce `g x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul v b => simp [actVB, φVB, PD.φ_comm]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Establish `h2 : ∀ (c : K₀) (x : V ⊗[Qp] B), φVB PD (LL` using `LL) (mB LL (algebraMap K₀ B c) x) = mB LL (algebraMap K₀ B (PD.σ c)) (φVB PD (LL := LL) x) := by`. Introduce `c x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul v b => simp [mB, φVB, PD.φ_K₀]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Establish `h3 : ∀ x ∈ DcrisL PD ρ τ', φVB PD (LL` using `LL) x ∈ DcrisL PD ρ τ := by`. Introduce `x hx`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[mem_DcrisL, mem_Dcris]`. Use `⟨fun g => by rw [← h1, hx.1], fun c => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `PD.σ_bij.2 c`. Rewrite using `[← h2, hx.2, map_smul, h]`. Establish `h4 : Function.Injective (φVB PD (LL` using `LL) (V := V)) := Module.Flat.lTensor_preserves_injective_linearMap (M := V) PD.φ.toLinearMap PD.φ_inj`.
-
-Conclude with `LinearMap.finrank_le_finrank_of_injective (f := (φVB PD (LL := LL)).restrict h3) fun x y hxy => Subtype.ext (h4 (congrArg Subtype.val hxy))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem letter_le (ρ : Representation LL G V) [Module.Finite LL ↥(Dcris PD ρ)] (τ τ' : K₀ →ₐ[Qp] LL)
     (h : ∀ c, τ' c = τ (PD.σ c)) : finrank LL ↥(DcrisL PD ρ τ') ≤ finrank LL ↥(DcrisL PD ρ τ) := by
@@ -710,39 +700,37 @@ omit [IsDomain B] [FiniteDimensional Qp LL] in
 variable {LL} in
 
 /- English proof (translation)
-Set `v` to `Module.finBasis Qp K₀`. Set `A : Matrix (K₀ →ₐ[Qp] LL) (Fin (finrank Qp K₀)) LL` to `fun τ i => τ (v i)`. Establish `hA : LinearIndependent LL A.row`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Fintype.linearIndependent_iff.1 (linearIndependent_algHom_toLinearMap Qp K₀ LL) c ?_` and prove the remaining obligations. Use `v.ext fun i => ?_` and prove the remaining obligations. Simplify `congrFun hc0 i` using `[A, Matrix.row]`. Establish `hsurj : Function.Surjective A.mulVecLin`. Rewrite using `[← LinearMap.range_eq_top]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Use `hA.rank_matrix` as an intermediate fact. Rewrite `this` using `[Matrix.rank]`. Rewrite using `[this, finrank_fintype_fun_eq_card]`. Establish `hinj : Function.Injective A.mulVecLin` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (by simp [hc])).2 hsurj`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `μ : (Fin (finrank Qp K₀) → LL) →ₗ[LL] (M →ₗ[LL] M)` to `Fintype.linearCombination LL fun i => m (v i)`. Establish `hμ : ∀ a x, μ a x = ∑ i, a i • m (v i) x` using `fun a x => by`. Simplify using `[μ, Fintype.linearCombination_apply]`. Establish `hsum : ∀ (c : K₀) x, m c x = μ (fun i => algebraMap Qp LL (v.repr c i)) x`. Introduce `c x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `f : K₀ →+ M` to `AddMonoidHom.mk' (fun a => m a x) fun a b => hadd a b x`. Express the relevant statement in the definitionally equal form `f c = _`. Use `conv_lhs => rw [← v.sum_repr c, map_sum]`. Rewrite using `[hμ]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `m _ x = _`. Rewrite using `[Algebra.smul_def, hmul, hq]`. Establish `hev : ∀ (c : K₀) τ, A.mulVecLin (fun i => algebraMap Qp LL (v.repr c i)) τ = τ c`. Introduce `c τ`. Use `conv_rhs => rw [← v.sum_repr c, map_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `∑ i, τ (v i) * algebraMap Qp LL (v.repr c i) = _`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul, Algebra.smul_def, mul_comm]`. Use `choose e he using fun τ : K₀ →ₐ[Qp] LL => hsurj (Pi.single τ 1)`. Establish `hone : ∀ x, ∑ τ, μ (e τ) x = x`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∑ τ, e τ = fun i => algebraMap Qp LL (v.repr 1 i)`. Apply `hinj` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`. Rewrite using `[hev, map_sum]`. Simplify using `[he, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← LinearMap.sum_apply, ← map_sum, h1, ← hsum]`. Simplify using `using hq 1 x`. Establish `heig : ∀ τ c x, m c (μ (e τ) x) = τ c • μ (e τ) x`. Introduce `τ c x`. Establish `h1 : (∑ i, e τ i • fun j => algebraMap Qp LL (v.repr (c * v i) j)) = τ c • e τ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hinj` to reduce the goal to its premises. Use function extensionality and compare the values at `τ'`. Establish `h2 : ∑ i, τ' (v i) * e τ i = (Pi.single τ 1 : _ → LL) τ'` using `congrFun (he τ) τ'`. Rewrite using `[map_sum, map_smul, he]`. Simplify using `only [map_smul, Finset.sum_apply, Pi.smul_apply, hev, map_mul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h3 : ∑ i, e τ i * (τ' c * τ' (v i)) = τ' c * ∑ i, τ' (v i) * e τ i`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[h3, h2]`. Distinguish the cases in `h : τ' = τ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Simplify using `[h]`. Rewrite using `[← LinearMap.smul_apply, ← map_smul, ← h1, map_sum, LinearMap.sum_apply, hμ, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, LinearMap.smul_apply, ← hsum, hmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hon : ∀ τ τ', ∀ x ∈ L τ', μ (e τ) x = (Pi.single τ 1 : _ → LL) τ' • x`. Introduce `τ τ' x hx`. Establish `h2 : ∑ i, τ' (v i) * e τ i = (Pi.single τ 1 : _ → LL) τ'` using `congrFun (he τ) τ'`. Rewrite using `[hμ, ← h2, Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [((hL τ' x).1 hx).2, smul_smul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hmem : ∀ τ, ∀ x ∈ D, μ (e τ) x ∈ L τ` using `fun τ x hx => (hL τ _).2 ⟨by`. Rewrite using `[hμ]`. Conclude with `D.sum_mem fun i _ => D.smul_mem _ (hD _ _ hx), fun c => heig τ c x⟩`. Set `F : D →ₗ[LL] ∀ τ, L τ` to `LinearMap.pi fun τ => (μ (e τ)).restrict (hmem τ)`. Establish `hF : ∀ x τ, (F x τ : M) = μ (e τ) x` using `fun _ _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb : Function.Bijective F`. Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hone x, ← hone y]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun τ _ => by rw [← hF, ← hF, h]`. Introduce `y`. Use `⟨⟨∑ τ, (y τ : M), D.sum_mem fun τ _ => ((hL τ _).1 (y τ).2).1⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Rewrite using `[hF, map_sum, Finset.sum_congr rfl fun τ' _ => hon τ τ' _ (y τ').2]`. Simplify using `[Pi.single_apply]`. Use `haveI : ∀ τ, Module.Finite LL (L τ) := fun τ => Submodule.finiteDimensional_of_le (S₂ := D) fun x hx => ((hL τ x).1 hx).1`. Rewrite using `[(LinearEquiv.ofBijective F hb).finrank_eq, Module.finrank_pi_fintype]`.
+A detailed English derivation is pending.
 -/
 theorem finrank_eq_sum_letters [FiniteDimensional Qp K₀] [Fintype (K₀ →ₐ[Qp] LL)]
     (hc : Fintype.card (K₀ →ₐ[Qp] LL) = finrank Qp K₀) {M : Type} [AddCommGroup M] [Module LL M]
@@ -841,17 +829,15 @@ theorem finrank_eq_sum_letters [FiniteDimensional Qp K₀] [Fintype (K₀ →ₐ
   rw [(LinearEquiv.ofBijective F hb).finrank_eq, Module.finrank_pi_fintype]
 
 /- English proof (translation)
-Introduce `hc V _ _ _ _ _ ρ h τ`. Use `haveI := PD.finK₀`. Take `⟨h1, -⟩` from `finite_le PD hf ρ`. Use `⟨Submodule.finiteDimensional_of_le (S₂ := Dcris PD ρ) inf_le_left, ?_⟩` and prove the remaining obligations. Establish `hle : ∀ (n : ℕ) (τ τ' : K₀ →ₐ[Qp] LL), (∀ c, τ' c = τ (PD.σ^[n] c)) → finrank LL ↥(DcrisL PD ρ τ') ≤ finrank LL ↥(DcrisL PD ρ τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `τ τ' h`. Rewrite using `[show τ' = τ from AlgHom.ext h]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `τ τ' h`. Conclude with `(ih (τ.comp PD.σ) τ' fun c => by rw [h, Function.iterate_succ_apply']; rfl).trans (letter_le PD ρ τ _ fun _ => rfl)`. Establish `heq : ∀ τ', finrank LL ↥(DcrisL PD ρ τ') = finrank LL ↥(DcrisL PD ρ τ)` using `fun τ' => by`. Take `⟨n, hn⟩` from `exists_pow_sigma PD LL hc τ τ'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨n', hn'⟩` from `exists_pow_sigma PD LL hc τ' τ`. Conclude with `le_antisymm (hle n _ _ hn) (hle n' _ _ hn')`. Rewrite `hc` using `[Nat.card_eq_fintype_card]`. Establish `hs` using `finrank_eq_sum_letters hc (fun c => mB LL (algebraMap K₀ B c)) (fun a b x => by rw [map_add, mB_add]) (fun a b x => by rw [map_mul, mB_mul]) (fun q (x : V ⊗[Qp] B) => by`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp`. Consider the case `tmul v b`. Rewrite using `[← IsScalarTower.algebraMap_apply, algebraMap_smul, ← tmul_smul, Algebra.smul_def]`. Both sides reduce to the same expression. Consider the case `add a b ha hb => simp only [map_add, smul_add, ha, hb])`.
-
-Use the proof step `(Dcris PD ρ) (fun a x hx => (mK PD ρ a ⟨x, hx⟩).2) (DcrisL PD ρ) (mem_DcrisL PD ρ)`. Simplify using `only [heq, Finset.sum_const, Finset.card_univ, smul_eq_mul, hc] at hs`. Unfold `IsCrys at h`. Conclude with `Nat.eq_of_mul_eq_mul_left finrank_pos (hs.symm.trans h)`.
+Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem letterDim (hf : FracInv PD) : LetterDim PD LL := by
   intro hc V _ _ _ _ _ ρ h τ
@@ -889,7 +875,7 @@ theorem letterDim (hf : FracInv PD) : LetterDim PD LL := by
   exact Nat.eq_of_mul_eq_mul_left finrank_pos (hs.symm.trans h)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨invariantsEq PD, ⟨fun _ _ _ _ _ _ ρ => (finite_le PD hf ρ).2, fun _ _ _ _ _ _ ρ => (finite_le PD hf ρ).1⟩, fun _ _ _ _ _ _ ρ h => comparison_bijective PD hf hu ρ h, subCrys PD LL hf, quotCrys PD LL hf hu, sumCrys PD LL hf hu, tensorCrys PD LL hf hu, dualCrys PD LL hf hu, dcrisEx …`.
+Supply the required witnesses or components.
 -/
 theorem formalismFor (hf : FracInv PD) (hu : LineUnit PD) : FormalismFor PD LL :=
   ⟨invariantsEq PD,
@@ -905,32 +891,32 @@ section Tied
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P} {T : LocTied l P AI} {C : GlobalTheory.Per.Core l}
 
 /- English proof (translation)
-The claim follows from `T.eD.toMulEquiv.isField (GlobalTheory.MemLoc.BdRField.bdR_isField l).2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem isField_of_tied (T : LocTied l P AI) : IsField P.R.BdR :=
   T.eD.toMulEquiv.isField (GlobalTheory.MemLoc.BdRField.bdR_isField l).2.2.1
 
 /- English proof (translation)
-The claim follows from `letI : Field P.R.BdR := (isField_of_tied T).toField (P.PD K).ι_inj.isDomain (P.PD K).ι.toRingHom`.
+A detailed English derivation is pending.
 -/
 theorem isDomain_of_tied (T : LocTied l P AI) (K : FinExt l) : IsDomain P.R.B :=
   letI : Field P.R.BdR := (isField_of_tied T).toField
   (P.PD K).ι_inj.isDomain (P.PD K).ι.toRingHom
 
 /- English proof (translation)
-Introduce `b b' hb h`. Establish `hb' : (P.PD K).ι b ≠ 0` using `fun h0 => hb ((P.PD K).ι_inj (h0.trans (map_zero _).symm))`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : ↥K.1, (P.PD K).ι b' = algebraMap ↥K.1 P.R.BdR c * (P.PD K).ι b := by`. Take `⟨u, hu⟩` from `(isField_of_tied T).mul_inv_cancel hb'`. Take `⟨c, hc⟩` from `(P.PD K).invdR ((P.PD K).ι b' * u) fun g => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `congrArg (P.PD K).ι (h g)`. Rewrite `h1` using `[map_mul, map_mul, (P.PD K).ι_comm, (P.PD K).ι_comm]`. Establish `h2` using `congrArg ((P.PD K).actdR g) hu`. Rewrite `h2` using `[map_mul, map_one]`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(u * (P.PD K).actdR g u) * h1 + ((P.PD K).ι b' * u) * h2 - ((P.PD K).actdR g ((P.PD K).ι b') * (P.PD K).actdR g u) * hu`. Conclude with `⟨c, by rw [hc, mul_assoc, mul_comm u, hu, mul_one]⟩`. Establish `hcU : (c : Om l) ∈ MaximalUnramifiedExtension l`. Assume the negation of the conclusion as `hn`. Establish `hli : LinearIndependent ↥(MaximalUnramifiedExtension l) ![(1 : Om l), (c : Om l)]`.
+Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[LinearIndependent.pair_iff' one_ne_zero]`. Introduce `a ha`. Apply `hn` to reduce the goal to its premises. Rewrite using `[← ha, Algebra.smul_def, mul_one]`. Conclude with `a.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `hinj 2 _ hli ![T.eB b', - T.eB b] (by`. Establish `h1` using `congrArg T.eD hc`. Rewrite `h1` using `[map_mul, P.PD_ι, P.PD_ι, hfit.ι, hfit.ι]`. Establish `h2 : T.eD (algebraMap ↥K.1 P.R.BdR c) = C.oD (c : Om l)` using `hfit.o _`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Fin.sum_univ_two, h1]) 1`. Apply `hb` to reduce the goal to its premises. Apply `T.eB.injective` to reduce the goal to its premises. Simplify using `using h0`. Use `⟨⟨c, c.2, hcU⟩, (P.PD K).ι_inj ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, AlgHom.commutes, hc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fracInv (hfit : GlobalTheory.MemLoc.Fits T C) (hinj : C.TensorInj) (K : FinExt l) : FracInv (P.PD K) := by
   intro b b' hb h
@@ -968,9 +954,9 @@ theorem fracInv (hfit : GlobalTheory.MemLoc.Fits T C) (hinj : C.TensorInj) (K : 
   rfl
 
 /- English proof (translation)
-Introduce `b hb h`. Establish `h1` using `hreg K (T.eB b) (fun h0 => hb (T.eB.injective (h0.trans (map_zero _).symm))) fun g hg => by`. Take `⟨x, hx⟩` from `h ⟨g, hg⟩`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[P.PD_actB]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← T.actB, hx, map_mul, IsScalarTower.algebraMap_apply ℚ_[l] ↥(MaximalUnramifiedExtension l) P.R.B, hfit.u]`. Both sides reduce to the same expression. Simplify using `using h1.map T.eB.symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lineUnit (hfit : GlobalTheory.MemLoc.Fits T C) (hreg : C.Regular) (K : FinExt l) : LineUnit (P.PD K) := by
   intro b hb h
@@ -985,9 +971,7 @@ theorem lineUnit (hfit : GlobalTheory.MemLoc.Fits T C) (hreg : C.Regular) (K : F
 end Tied
 
 /- English proof (translation)
-Take `⟨T⟩` from `hs`. Take `⟨C, hfit⟩` from `GlobalTheory.MemLoc.FitsEx.exists_fits l P AI T`. Rewrite using `[fontaineFormalism_iff]`. Introduce `K LL`. Use `haveI := LL.2`.
-
-Use `haveI := isDomain_of_tied T K`. Conclude with `formalismFor (P.PD K) ↥LL.1 (fracInv hfit (h C).1 K) (lineUnit hfit (h C).2 K)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fontaineFormalism_of_regular (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P)
     (h : ∀ C : GlobalTheory.Per.Core l, C.TensorInj ∧ C.Regular) (hs : GlobalTheory.Per.IsStd P AI) :
@@ -1001,14 +985,14 @@ theorem fontaineFormalism_of_regular (l : ℕ) [Fact l.Prime] (P : LocPrime l) (
   exact formalismFor (P.PD K) ↥LL.1 (fracInv hfit (h C).1 K) (lineUnit hfit (h C).2 K)
 
 /- English proof (translation)
-The claim follows from `fontaineFormalism_of_regular l P AI (fun C => ⟨hF.tensorInj C, hF.regular C⟩) hs`.
+A detailed English derivation is pending.
 -/
 theorem fontaineFormalism (hF : GlobalTheory.Published.FontaineBcris) (l : ℕ) [Fact l.Prime] (P : LocPrime l)
     (AI : LocAinf l P) (hs : GlobalTheory.Per.IsStd P AI) : FontaineFormalism l P :=
   fontaineFormalism_of_regular l P AI (fun C => ⟨hF.tensorInj C, hF.regular C⟩) hs
 
 /- English proof (translation)
-The claim follows from `(fontaineFormalismTensor_equiv l P).2 ((fontaineFormalism_equiv l P).1 (fontaineFormalism hF l P AI hs))`.
+A detailed English derivation is pending.
 -/
 theorem fontaineFormalismTensor (hF : GlobalTheory.Published.FontaineBcris) (l : ℕ) [Fact l.Prime] (P : LocPrime l)
     (AI : LocAinf l P) (hs : GlobalTheory.Per.IsStd P AI) : FontaineFormalismTensor l P :=

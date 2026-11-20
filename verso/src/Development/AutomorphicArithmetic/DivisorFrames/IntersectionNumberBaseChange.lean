@@ -9,11 +9,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.ConsGeo
 
 /- English proof (translation)
-Introduce `k K _ _ ψ X s hdeg hs`. Use `letI := ψ.toAlgebra`. Establish `hfin : Module.Finite k K` using `Module.finite_of_finrank_pos hdeg`. Use `⟨?_, fun d L _ ↦ ?_⟩` and prove the remaining obligations. Take `⟨hp, hL⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB s).1 hs`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hf : IsFinite (spMap ψ)` using `(IsFinite.SpecMap_iff _).2 hfin`. Conclude with `(isProjOver_iff_isProper_and_exists_isAmpleLB _).2 ⟨inferInstance, hL⟩`. Use `letI := algebraΓOfHom (s ≫ spMap ψ)`. Use `letI := algebraΓOfHom s`. Use `haveI : IsScalarTower k K Γ(X, ⊤) := by`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `IsScalarTower.of_algebraMap_eq fun r ↦ ?_` and prove the remaining obligations. Establish `h` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom ψ)`. Establish `h2` using `congrArg (fun g ↦ s.appTop.hom (g.hom r)) h`. Conclude with `h2.symm`. Conclude with `GroundFieldChange.interNum_fieldChange k K X (GlobalTheory.structureModule X) L`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.intersection_number_base_change :
     ∀ (k K : Type) [Field k] [Field K] (ψ : k →+* K) (X : Scheme.{0}) (s : X ⟶ Sp K), 0 < embDeg ψ → IsProjOver s → IsProjOver (s ≫ spMap ψ) ∧ ∀ (d : ℕ) (L : Fin d → LB X), (∀ i, (L i).IsLB) → (letI := algebraΓOfHom (s ≫ spMap ψ); interNum k (GlobalTheory.structureModule X) L) = (embDeg ψ : ℤ) * (letI := algebraΓOfHom s; interNum K (GlobalTheory.structureModule X) L) := by

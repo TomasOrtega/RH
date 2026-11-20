@@ -17,25 +17,23 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ hR R' _ _ _ ρ hfin hflat Z Y Z' Y' p p' y y' k k' hk hk' hp hY hbij L hL hloc x`. Use `haveI : IsNoetherianRing R := hR.1`. Take `⟨hkf, hqc, hqs, hsurj, hcl, hclp, hO, d, b, hb⟩` from `GlobalTheory.T.finite_flat_local_baseChange_of_proper_properties R R' ρ hfin.2.1 hfin.2.2 hflat Z Y Z' Y' p p' y y' k k' hk hk' hp`. Take `⟨V, hV, y₀, hy₀, hxy, hE⟩` from `GlobalTheory.T.exists_specialization_closed_in_affine_neighbourhood Y x`. Take `⟨hclV, -⟩` from `hE V le_rfl hV hy₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hL' : (L.pull k').IsLB` using `LB.isLB_pull hL _`. Take `⟨s, hs⟩` from `GlobalTheory.T.exists_section_nonvanishing_over_closed_point_fibre Y Y' Z' k hkf p' hqc hqs V hV y₀ hy₀ hclV (L.pull k') hL' (fun x' _ => hloc x')`. Take `⟨V₁, hy₁, hV₁V, hV₁⟩` from `GlobalTheory.T.exists_nhds_subset_nonzeroLocus_of_isClosedMap Z' Y (p' ≫ k) hcl (L.pull k') V s y₀ hy₀ hs`. Take `⟨f, hf1, hf2⟩` from `hV.exists_basicOpen_le ⟨y₀, hy₁⟩ hy₀`. Establish `hV₂V : Y.basicOpen f ≤ V` using `Y.basicOpen_le f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV₂ : IsAffineOpen (Y.basicOpen f)` using `hV.basicOpen f`. Take `⟨-, M, hM, hMiff⟩` from `hE (Y.basicOpen f) hV₂V hV₂ hf2`. Establish `hcomm : ∀ z : Z', p (k' z) = k (p' z)` using `fun z => by`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hk'.w]`. Establish `hle : k' ⁻¹ᵁ (p ⁻¹ᵁ Y.basicOpen f) ≤ p' ⁻¹ᵁ (k ⁻¹ᵁ V)` using `fun z hz => by show k (p' z) ∈ V`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcomm]`. Conclude with `hV₂V hz`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.exists_generator_on_smaller_open_of_nonvanishing_section Z' (L.pull k') hL' _ _ hle s (fun z₀ hz₀ => hV₁ z₀ (by`. Rewrite using `[Scheme.Hom.comp_apply, ← hcomm]`. Conclude with `hf1 hz₀))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hsurjp : Function.Surjective (p.app (Y.basicOpen f)).hom` using `(hbij _).2`. Set `e` to `RingEquiv.ofBijective (p.app (Y.basicOpen f)).hom (hbij _)`. Use `haveI hm : (Ideal.comap e.symm.toRingHom M).IsMaximal := Ideal.comap_isMaximal_of_surjective _ e.symm.surjective`. Take `⟨hOc, hOq⟩` from `hO _ hV₂`. Take `⟨u, hu⟩` from `GlobalTheory.T.exists_nonzero_section_of_finite_free_baseChange R R' ρ d b hb Z Z' k' (p ≫ y) (p' ≫ y') (hk'.paste_vert hk) (p ⁻¹ᵁ Y.basicOpen f) hOc hOq L hL σ hσ _ hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfib : ∀ z₀ : (p ⁻¹ᵁ Y.basicOpen f).toScheme, p ((p ⁻¹ᵁ Y.basicOpen f).ι z₀) = y₀ → z₀ ∈ nonzeroLocus u`. Introduce `z₀ hz₀`. Take `⟨z', hz'⟩` from `hsurj ((p ⁻¹ᵁ Y.basicOpen f).ι z₀)`. Establish `hz'O : z' ∈ k' ⁻¹ᵁ (p ⁻¹ᵁ Y.basicOpen f)` using `by show k' z' ∈ p ⁻¹ᵁ Y.basicOpen f`. Rewrite using `[hz']`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply the tactic sequence `first | exact z₀.2 | simpa using z₀.2 | exact (Scheme.Opens.range_ι _).subset ⟨z₀, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : z' ∈ Set.range (k' ⁻¹ᵁ (p ⁻¹ᵁ Y.basicOpen f)).ι.base := by`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hz'O`. Use `hu w (fun a ha => ?_) z₀ (by rw [← hz']; exact congrArg k'.base hw |>.symm)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha₀ : e.symm a ∈ M` using `ha`. Establish `ea : a = p.app (Y.basicOpen f) (e.symm a)` using `(e.apply_symm_apply a).symm`. Introduce `hmem`. Rewrite `hmem` using `[ea, ← Scheme.preimage_basicOpen]`. Establish `: k' ((k' ⁻¹ᵁ (p ⁻¹ᵁ Y.basicOpen f)).ι w) = (p ⁻¹ᵁ Y.basicOpen f).ι z₀`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hz']`. Conclude with `congrArg k'.base hw`. Rewrite `hmem` using `[this]`. Establish `hmem' : p ((p ⁻¹ᵁ Y.basicOpen f).ι z₀) ∈ Y.basicOpen (e.symm a)` using `hmem`. Rewrite `hmem'` using `[hz₀]`.
-
-Conclude with `(hMiff _).1 ha₀ hmem'`. Take `⟨V₃, hy₃, hV₃, hV₃u⟩` from `GlobalTheory.T.exists_nhds_subset_nonzeroLocus_of_isClosedMap Z Y p hclp L _ u y₀ hf2 hfib`. Take `⟨t, ht⟩` from `GlobalTheory.T.exists_generator_on_smaller_open_of_nonvanishing_section Z L hL (p ⁻¹ᵁ V₃) (p ⁻¹ᵁ Y.basicOpen f) (fun z hz => hV₃ hz) u (fun z hz => hV₃u z hz)`. Conclude with `⟨V₃, hxy.mem_open V₃.isOpen hy₃, t, ht⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gen_near_of_finFlat : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), FinExt ρ → ρ.Flat → ∀ (Z Y Z' Y' : Scheme.{0}) (p : Z ⟶ Y) (p' : Z' ⟶ Y') (y : Y ⟶ Sp R) (y' : Y' ⟶ Sp R') (k : Y' ⟶ Y) (k' : Z' ⟶ Z), IsPullback k y' y (spMap ρ) → IsPullback k' p' p k → IsProper p → IsLocallyNoetherian Y → (∀ V : Y.Opens, Function.Bijective (p.app V).hom) → ∀ L' : LB Z, L'.IsLB → (∀ x : Y', ∃ V : Y'.Opens, x ∈ V ∧ ∃ t : LB.Gen ((L'.pull k').pull (p' ⁻¹ᵁ V).ι), t.IsGen) → ∀ x : Y, ∃ V : Y.Opens, x ∈ V ∧ ∃ t : LB.Gen (L'.pull (p ⁻¹ᵁ V).ι), t.IsGen := by
   intro R _ _ _ hR R' _ _ _ ρ hfin hflat Z Y Z' Y' p p' y y' k k' hk hk' hp hY hbij L hL hloc x

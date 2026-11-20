@@ -10,7 +10,7 @@ open CategoryTheory AlgebraicGeometry
 namespace GlobalTheory.PullbackGenericTensor
 
 /- English proof (translation)
-Use `⟨exists_pair_ne B, mul_comm, fun {a} ha => ?_⟩` and prove the remaining obligations. Take `⟨b, rfl⟩` from `hφ a`. Establish `hb : b ≠ 0` using `fun h => ha (by rw [h, map_zero])`. Take `⟨c, hc⟩` from `hA.mul_inv_cancel hb`. Conclude with `⟨φ c, by rw [← map_mul, hc, map_one]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isField_of_surjective {A B : Type*} [CommRing A] [CommRing B] [Nontrivial B]
     (φ : A →+* B) (hφ : Function.Surjective φ) (hA : IsField A) : IsField B := by
@@ -21,15 +21,13 @@ theorem isField_of_surjective {A B : Type*} [CommRing A] [CommRing B] [Nontrivia
   exact ⟨φ c, by rw [← map_mul, hc, map_one]⟩
 
 /- English proof (translation)
-Introduce `H X Y S f g _ hpre hdeg`. Use `set η : ↥(Limits.pullback f g) := genericPoint (Limits.pullback f g : Scheme.{0}) with hη`. Use `set T : Scheme.Pullback.Triplet f g := Scheme.Pullback.Triplet.ofPoint η with hT`. Establish `hg : ((S.residueFieldCongr T.hy).inv ≫ g.residueFieldMap T.y).hom.Finite` using `((PullbackFinitePoint.residueDegree_ne_zero_iff_finite g _).1 hdeg).comp (RingHom.Finite.of_surjective _ (ConcreteCategory.bijective_of_isIso (S.residueFieldCongr T.hy).inv).2)`. Establish `hl : T.tensorInl.hom.Finite` using `RingHom.finite_isStableUnderBaseChange.pushout_inl RingHom.finite_respectsIso _ _ hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmax : ∀ p : PrimeSpectrum T.tensor, p.asIdeal.IsMaximal`. Introduce `p`. Use `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap' T.tensorInl.hom hl.to_isIntegral p.asIdeal ?_` and prove the remaining obligations. Establish `hp : (p.asIdeal.comap T.tensorInl.hom).IsPrime` using `inferInstance`. Rewrite using `[Ideal.eq_bot_of_prime (p.asIdeal.comap T.tensorInl.hom)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Ideal.bot_isMaximal`. Set `q : Spec T.tensor` to `Scheme.Pullback.SpecOfPoint η`. Establish `hs : T.SpecTensorTo q = η` using `Scheme.Pullback.SpecTensorTo_SpecOfPoint η`. Establish `hq : ∀ q' : Spec T.tensor, q' = q`. Introduce `q'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : T.SpecTensorTo q ⤳ T.SpecTensorTo q'` using `hs ▸ genericPoint_specializes _`. Establish `h2 : q ⤳ q'` using `(T.SpecTensorTo.isEmbedding.isInducing.specializes_iff).1 h1`. Establish `h3 : (q : PrimeSpectrum T.tensor).asIdeal ≤ (q' : PrimeSpectrum T.tensor).asIdeal` using `(PrimeSpectrum.le_iff_specializes (q : PrimeSpectrum T.tensor) q').2 h2`. Conclude with `(PrimeSpectrum.ext ((hmax q).eq_of_le (q' : PrimeSpectrum T.tensor).isPrime.ne_top h3)).symm`. Establish `hη' : IsField ((Limits.pullback f g : Scheme.{0}).presheaf.stalk (T.SpecTensorTo q))`.
-
-Rewrite using `[hs]`. Conclude with `Field.toIsField (Limits.pullback f g : Scheme.{0}).functionField`. Conclude with `H T.tensor q hq (isField_of_surjective _ (T.SpecTensorTo.stalkMap_surjective q) hη')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isField_tensor :
     (∀ (R : CommRingCat.{0}) (q : Spec R), (∀ q' : Spec R, q' = q) → IsField ((Spec R).presheaf.stalk q) → IsField R) →

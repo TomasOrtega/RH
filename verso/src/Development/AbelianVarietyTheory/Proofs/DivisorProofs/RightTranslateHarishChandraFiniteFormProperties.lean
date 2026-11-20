@@ -7,7 +7,7 @@ open NumberField MeasureTheory GlobalTheory.CuspRep
 namespace GlobalTheory.HCF
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[List.replicate_succ, List.foldr_cons, ih, pow_succ', Module.End.mul_apply, LinearMap.sub_apply, Module.algebraMap_end_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem fold_replicate_cap {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
     (c : Module.End ℂ (Sm E a)) (χ : Module.End ℂ (Sm E a) → ℂ) (φ : Sm E a) (n : ℕ) :
@@ -19,21 +19,19 @@ theorem fold_replicate_cap {E : Type} [Field E] [NumberField E] [IsTotallyComple
       Module.algebraMap_end_apply]
 
 /- English proof (translation)
-Introduce `E _ _ _ a L W X S hXS N φ hφ t κ`. Take `⟨hA, -, -, χ₀, hχ₀, hnil⟩` from `hφ`. Use `set h := finGL E a t * infGL E a (Unitary.toUnits κ) with hh`. Use `⟨fun γ g => ?_, ?_, fun τ u => ?_⟩` and prove the remaining obligations. Rewrite using `[rt_apply, rt_apply, mul_assoc, hA.left]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `isOpen_stab_of_mem_nhds (finRep E a) _ ?_` and prove the remaining obligations. Establish `hc : Continuous fun k : GL (Fin a) (Af E) => t⁻¹ * k * t` using `by fun_prop`. Establish `ho` using `hA.level.preimage hc`. Use `Filter.mem_of_superset (ho.mem_nhds (by simp)) fun k hk => ?_` and prove the remaining obligations. Establish `hk' : rt E a (finGL E a (t⁻¹ * k * t)) φ = φ` using `hk`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `rt E a (finGL E a k) (rt E a h φ) = rt E a h φ`. Establish `e : finGL E a k * h = h * finGL E a (t⁻¹ * k * t)`. Rewrite using `[hh, mul_assoc (finGL E a t), infGL_comm, ← mul_assoc (finGL E a t), ← map_mul, show t * (t⁻¹ * k * t) = k * t by group, map_mul]`. Simplify using `only [mul_assoc]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply, hk']`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcap : cap τ u ∈ Zalg E a` using `Algebra.subset_adjoin ⟨τ, u, rfl⟩`. Establish `hc : Commute (cap (a` using `a) τ u) (rt E a h) := by`. Establish `h1 : Commute (cap τ u) (rt E a (finGL E a t))` using `commute_cap_finRep (a := a) τ u t`. Establish `h2` using `GlobalTheory.CapAdInv.cap_commute_rt_infGL E a τ u (Unitary.toUnits κ)`. Rewrite using `[hh, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1.mul_right h2`. Establish `hP : ∀ p : Polynomial ℂ, Commute (Polynomial.aeval (cap (a` using `a) τ u) p) (rt E a h) := by`. Introduce `p`. Establish `hle : Algebra.adjoin ℂ {cap (a` using `a) τ u} ≤ Subalgebra.centralizer ℂ {rt E a h} := by`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ rfl`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_centralizer_iff]`. Introduce and unpack `g rfl`. Conclude with `hc.eq.symm`. Conclude with `((Subalgebra.mem_centralizer_iff ℂ).1 (hle (Polynomial.aeval_mem_adjoin_singleton ℂ _)) _ rfl).symm`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, (hP _).eq, Module.End.mul_apply]`. Establish `h0 : Polynomial.aeval (cap (a` using `a) τ u) ((Polynomial.X - Polynomial.C (χ₀ (cap τ u))) ^ N) φ = 0 := by`. Use `hnil (List.replicate N (cap τ u)) (List.length_replicate ..) fun z hz => by` as an intermediate fact. Rewrite using `[List.eq_of_mem_replicate hz]`. Conclude with `hcap`.
-
-Rewrite `this` using `[fold_replicate_cap]`. Simplify `this` using `[map_pow, map_sub, Polynomial.aeval_X, Polynomial.aeval_C]`. Rewrite using `[← Finset.prod_erase_mul S _ (hXS hχ₀), Polynomial.aeval_mul, Module.End.mul_apply, h0]`. Simplify using `only [map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rt_translate_kill : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (L : Subgroup (GL (Fin a) (Af E))) (W : Submodule ℂ (Kinf E a → ℂ)) (X : Set (Module.End ℂ (Sm E a) → ℂ)) (S : Finset (Module.End ℂ (Sm E a) → ℂ)), X ⊆ ↑S → ∀ (N : ℕ), ∀ φ ∈ GlobalTheory.HCF.formsGL E a L W X N, ∀ (t : GL (Fin a) (Af E)) (κ : Kinf E a), (∀ γ g, (rt E a (finGL E a t * infGL E a (Unitary.toUnits κ)) φ).1 (ratGL E a γ * g) = (rt E a (finGL E a t * infGL E a (Unitary.toUnits κ)) φ).1 g) ∧ IsOpen {k | finRep E a k (rt E a (finGL E a t * infGL E a (Unitary.toUnits κ)) φ) = rt E a (finGL E a t * infGL E a (Unitary.toUnits κ)) φ} ∧ ∀ (τ : E →+* ℂ) (u : ℂ), Polynomial.aeval (cap τ u) (∏ χ ∈ S, (Polynomial.X - Polynomial.C (χ (cap τ u))) ^ N) (rt E a (finGL E a t * infGL E a (Unitary.toUnits κ)) φ) = 0 := by
   intro E _ _ _ a L W X S hXS N φ hφ t κ

@@ -28,13 +28,13 @@ def AdmOf2 : Prop := AdmTop → NewformPartOfTowerModule → AdmRho → JEx → 
   ChiQuad → AqBd → AdmFR
 
 /- English proof (translation)
-Introduce `hLin hOp hStab hP l _ Ω _ _ _ ε X A N w j χ ev hS hev P hPm hEig lam₀ lam hfin hlam`. Take `⟨k', hev⟩` from `hev`. Take `⟨c, hc⟩` from `hP hOp hStab l Ω ε X A N w j χ hS P hPm`. Take `⟨k, hk⟩` from `hfin.exists_loss`. Use `⟨c + k' + k, fun n hn T b hT hb => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Θ, hΘ⟩` from `hLin l Ω ε X A N w j hS n`. Establish `hTb` using `hStab l Ω ε X N w χ hS.2.1 hS.2.2.1 hS.2.2.2.1 hS.2.2.2.2.1 T b hT hb`. Establish `h1` using `hc n (by omega) Θ hΘ _ hTb`. Establish `h2` using `hc n (by omega) Θ hΘ _ hb`. Rewrite `h1` using `[hEig T hT b hb.1, map_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hlam, hlam, ← smul_eq_mul, ← map_smul, ← Nat.sub_sub, ← Nat.sub_sub]`. Use `hk (n - c - k') (by omega) _ _ fun i => ?_` and prove the remaining obligations. Establish `h3` using `cg_mul_left (k := k') (by omega) (hev T hT) (h2 i)`. Establish `h4` using `cg_mono (Nat.sub_le (n - c) k') (h1 i)`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at h4 ⊢`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Unfold `Cg at h3 h4 ⊢`. Rewrite `h3` using `[← norm_neg, neg_sub]`. Rewrite using `[← sub_add_sub_cancel _ (ev T * Θ (FreeAlgebra.lift (Qbar l) (X.opV N l (Qbar l)) P ((1 : Qbar l) ⊗ₜ[ℤ_[l]] b)) i)]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h4 h3)`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamEig2 : LamEig2 := by
   intro hLin hOp hStab hP l _ Ω _ _ _ ε X A N w j χ ev hS hev P hPm hEig lam₀ lam hfin hlam

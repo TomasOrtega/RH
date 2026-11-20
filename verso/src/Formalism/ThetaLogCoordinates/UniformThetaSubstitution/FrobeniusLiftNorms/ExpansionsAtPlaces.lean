@@ -33,7 +33,7 @@ variable {K Pl : Type} [Field K] {ι κ : Pl → Type}
 end Places
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction _ (fun y => Integral y) (fun _ _ h₁ h₂ => integral_mul h₁ h₂) integral_one fun i _ => hx i`.
+A detailed English derivation is pending.
 -/
 theorem integral_prod {K ι α : Type} [NormedField K] [IsUltrametricDist K] (s : Finset α)
     (x : α → MvPowerSeries ι K) (hx : ∀ i, Integral (x i)) : Integral (∏ i ∈ s, x i) :=

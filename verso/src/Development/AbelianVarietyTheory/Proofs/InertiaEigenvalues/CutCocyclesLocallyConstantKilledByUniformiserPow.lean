@@ -10,11 +10,11 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1000000
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pass GlobalTheory.Cut GlobalTheory.UseLoc Module TensorProduct GlobalTheory.UseLoc.Cases
 /- English proof (translation)
-Introduce `D i r w hw C lam hlam hGood _ k M z hz`. Establish `hG` using `GlobalTheory.Pass.goodO_ringOfIntegers (D.nd.l i) C.LL`. Establish `hdom : IsDomain ↥(OL C.LL)` using `hG.1.1`. Establish `hdvr : @IsDiscreteValuationRing ↥(OL C.LL) _ hdom` using `hG.1.2.1`. Establish `hfr : IsFractionRing ↥(OL C.LL) ↥C.LL.1` using `hG.1.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htop : IsTopologicalRing ↥C.LL.1` using `hG.2.2.2.1`. Establish `hopen` using `hG.2.2.2.2`. Establish `h1` using `UpperTheory.KN.continuous_localCoefficientRep_twist D i r w hw C hGood`. Establish `h2` using `UpperTheory.KN.hasPres_cutCocycle_localCoefficient D i r w hw C M z hz`. Establish `h3` using `@UpperTheory.KN.exists_cocycle_torsion_of_hasPres (Br.G D.nbr i w hw) ↥(OL C.LL) ↥C.LL.1 _ _ _ hdom hdvr _ _ htop _ hfr Subtype.val_injective lam _ _ _ (fun x => locOC C (rTwO D.nd i r x)) (locOC C M) (fun g => liftQ C.le k (z g)) hlam hopen h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h3 h2`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.cutCocycles_locallyConstant_killed_by_uniformiserPow : ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))
     (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw)

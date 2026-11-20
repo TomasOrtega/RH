@@ -23,27 +23,23 @@ namespace GlobalTheory.HL.Cov0
 open Formalism.L2.SG.RealObj Formalism.L2.S.Pv.Chart Formalism.MainNotions.S.ThB Formalism.L2.SG.LocWSOf in
 
 /- English proof (translation)
-Establish `: Nonempty D.what₂.Word` using `⟨u⟩`. Take `⟨C⟩` from `Formalism.L2.SG.Pf.choiceExists X 1 one_pos`. Establish `hτ : ∀ v : InfinitePlace X.B.I.F, ∃ τ, vOf X τ = v` using `fun v => ⟨X.pl v, X.pl.symm_apply_apply v⟩`. Establish `hpl : ∀ z ∈ StInf X u u' γw, ∀ v, z v ∈ Formalism.L2.SG.NGPin.StV X u u' γw v`. Introduce `z hz v`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hz` using `[Formalism.L2.SG.NGPin.stInf_eq_pi]`. Conclude with `hz v (Set.mem_univ _)`. Use `⟨BX, fun p => BX_measurable p, fun p x x' y y' h => BX_lower p x x' y y' h, fun p x => BX_zero p x, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.NGPin.stCoord_eq]`. Use `measurable_pi_lambda _ fun v => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, rfl⟩` from `hτ v`. Conclude with `(stCoordV_meas C u' w γw τ).comp (measurable_pi_apply _)`. Rewrite using `[Formalism.L2.SG.NGPin.stInf_eq_pi]`. Conclude with `MeasurableSet.univ_pi fun v => (isClosed_stV X u u' γw v).measurableSet`. Introduce `z₁ h₁ z₂ h₂ heq`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Rewrite `heq` using `[Formalism.L2.SG.NGPin.stCoord_eq]`. Use function extensionality and compare the values at `v`. Take `⟨τ, rfl⟩` from `hτ v`. Conclude with `stCoordV_inj C u u' w γw τ hrep (hpl z₁ h₁ _) (hpl z₂ h₂ _) (congrFun heq (vOf X τ))`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hex : ∀ v, ∃ y ∈ Formalism.L2.SG.NGPin.StV X u u' γw v, Formalism.L2.SG.NGPin.stCoordV X u' w γw v y = x v`. Introduce `v`. Take `⟨τ, rfl⟩` from `hτ v`. Conclude with `stCoordV_surj C u u' w γw τ hrep (x (vOf X τ))`. Use `choose y hy hyx using hex`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.NGPin.stInf_eq_pi]`. Conclude with `fun v _ => hy v`. Rewrite using `[Formalism.L2.SG.NGPin.stCoord_eq]`. Use function extensionality and compare the values at `v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hyx v`. Introduce `z₁ h₁ z₂ h₂`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hN` using `Formalism.L2.SG.Pf.psiInfChar_holds D X u`. Establish `hN'` using `Formalism.L2.SG.Pf.psiInfChar_holds D X u'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨(hN.2.1 _ h₁.1 _ h₂.1).1, ?_⟩` and prove the remaining obligations. Establish `e : γw⁻¹ * (z₁ * z₂) * γw = (γw⁻¹ * z₁ * γw) * (γw⁻¹ * z₂ * γw)` using `by group`. Rewrite using `[e]`. Conclude with `(hN'.2.1 _ h₁.2 _ h₂.2).1`. Rewrite using `[Formalism.L2.SG.NGPin.stCoord_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `v p`. Conclude with `stCoordV_mul X v (hpl z₁ h₁ v) (hpl z₂ h₂ v) p`. Introduce `r hr`. Take `⟨hr1, hr2⟩` from `hr`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Use `Formalism.L2.SG.Pf.FormTranspose.sinf_conj X u (Formalism.L2.SG.Pf.Sinf.sinf_inv' X u hs) hr1` as an intermediate fact. Simplify `this` using `only [inv_inv]`. Establish `hγ : γw = s⁻¹ * t.pt.1 * s'` using `by rw [hpt]; group`. Use `Formalism.L2.SG.Pf.FormTranspose.sinf_conj X u' (Formalism.L2.SG.Pf.Sinf.sinf_inv' X u' hs') hr2` as an intermediate fact. Rewrite using `[hγ]`.
-
-Use `this using 1` and compare the differences between its conclusion and the goal. Use `group`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem chart_of {D : D7} (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word) (t : TauC Y u u')
     (w : Point D.host.E (D.R.rS + 1)) (γw s s' : X.B.I.Ginf) (hrep : IsPtRep X u u' w γw) (hs : s ∈ X.SinfU u)
@@ -122,11 +118,11 @@ noncomputable section
 namespace GlobalTheory.HL.Cov0
 
 /- English proof (translation)
-Introduce `D X h`. Establish `hrd : 0 < D.host.rdE` using `Formalism.MainNotions.LocalModelPeriodLattices.rdE_pos D`. Establish `hN` using `GlobalTheory.RealPlaces.absNorm_ddS D`. Establish `hdd : ddS D ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hN` using `[h0, map_zero, Rat.cast_zero]`. Conclude with `(pow_pos hrd _).ne' hN.symm`. Use `⟨hdd, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.LatBAsm.factor_eq X _ h, map_zpow₀, Rat.cast_zpow, hN]`. Establish `hg : (0 : ℝ) < X.B.g`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[X.g_eq]`. Conclude with `Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos` after adjusting the coercions. Rewrite using `[zpow_neg, zpow_natCast, ← pow_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem const_entry : ∀ (D : D7) (X : HidaSetting D) (h : ℕ), ddS D ≠ 0 ∧ (D.host.ka / (X.B.g : ℝ) / Real.pi) ^ Fintype.card (InfinitePlace X.B.I.F) * ((FractionalIdeal.absNorm (ddS D ^ (-(h : ℤ))) : ℚ) : ℝ) * 2⁻¹ ^ Fintype.card (InfinitePlace X.B.I.F) * √|(discr D.host.E : ℝ)| * ((D.host.rdE : ℝ) ^ h) ^ (2 * Fintype.card (InfinitePlace X.B.I.F)) = ((X.B.g : ℝ) ^ D.R.f)⁻¹ := by
   intro D X h
@@ -151,7 +147,7 @@ noncomputable section
 namespace GlobalTheory.HL.Cov0
 
 /- English proof (translation)
-The claim follows from `LinearEquiv.ext fun x => by simp only [GCoord.grp, LinearEquiv.trans_apply, LinearEquiv.mul_apply, LinearEquiv.symm_trans_apply] show c.e (ρ (t (t.symm (n (t (t.symm (ρ.symm (c.e.symm x)))))))) = _ simp`.
+A detailed English derivation is pending.
 -/
 theorem grp_conj {D : D7} {Z : LocDat D} {T T' : D.host.E} {F0 : LFlag (VS D) D.R.rS T} {F0' : LFlag (VS D) D.R.rS T'}
     {FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS} {G : GFrames (placesOf Z) D.R.rS D.R.k}
@@ -162,13 +158,13 @@ theorem grp_conj {D : D7} {Z : LocDat D} {T T' : D.host.E} {F0 : LFlag (VS D) D.
   simp
 
 /- English proof (translation)
-Introduce `D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c t₀ ρ U U' hMv hrel n hn`. Establish `hgrp` using `GlobalTheory.HL.GrpCoord.grp_coords D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c t₀ ρ U U' hMv`. Establish `hL` using `GlobalTheory.RatIsomPoint.ratLink_points D X`. Establish `hN : c.grp ρ n ∈ G.N` using `fun p => by`. Take `⟨g', hg', hext⟩` from `hn p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨g', hg'.1.1.1, hext⟩`. Establish `hN' : c.grp ρ n ∈ G.N'` using `fun p => by`. Take `⟨g', hg', hext⟩` from `hn p`. Conclude with `⟨g', hg'.1.1.2, hext⟩`. Establish `hnR : n ∈ NRat (lf D (X.Fu u))` using `(hgrp.1 n).2 hN`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hmR : t₀.lin⁻¹ * n * t₀.lin ∈ NRat (lf D (X.Fu u'))` using `(hgrp.2.1 _).2 (by rw [grp_conj]; exact hN')`. Take `⟨x0, hx0, -⟩` from `hL.1 n hnR.1`. Use `⟨⟨x0, hx0⟩, fun x hx => ⟨(hL.2.2 u x n hx).1.1 hnR, ?_⟩⟩` and prove the remaining obligations. Establish `htl : RatLink X t₀.pt t₀.lin` using `t₀.rep.2.1`. Establish `h1` using `(hL.2.1 _ _ _ _ ((hL.2.1 _ _ _ _ htl htl).2.1) hx).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(hL.2.1 _ _ _ _ h1 htl).1`. Conclude with `(hL.2.2 u' _ _ h2).1.1 hmR`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem realPoints_integralIsometries_subset_stabilizer : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → 4 * D.R.rS + 7 ≤ D.R.k → ∀ (w : Point D.host.E (D.R.rS + 1)) (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (FP : ∀ p : PlF D, LocNG.FPair (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS), ZhatOM (ZhatL F00 F'0) = ptMat w → Gval F00 F'0 ≠ 0 → (∀ p, AtBase (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p F00 F'0 (Tu D u) (Tu D u') (FP p) ∧ (FP p).RelG (LocNG.theta (Y.M p))) → ∀ (G : GFrames (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) D.R.rS D.R.k) (c : GCoord (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) F00 F'0 FP G), ∀ (t₀ : TauC Y u u') (ρ : ((VS D).V ≃ₗ[D.host.E] (VS D).V)) (U U' : Formalism.L2.SG.PairVal.MatR D), MovesTo F00 F'0 (lf D (X.Fu u)) t₀.frame ρ U U' → t₀.relevant → ∀ n : (VS D).V ≃ₗ[D.host.E] (VS D).V, c.grp ρ n ∈ G.K0 → (∃ x, RatLink X x n) ∧ ∀ x, RatLink X x n → x.1 ∈ Formalism.L2.SG.TermOp.Vanish.Rset t₀ := by
   intro D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c t₀ ρ U U' hMv hrel n hn
@@ -199,81 +195,69 @@ namespace GlobalTheory.HL.Cov0
 open Formalism.L2.SG.NGCut.SplitEmbedding Formalism.L2.SG.NGCut.StabilizerCovolume Formalism.L2.SG.RealObj in
 
 /- English proof (translation)
-Introduce `D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c t₀ ρ U U' hMv hrel μR hPin`. Take `⟨γw, s, s', μw, hIs, hs, hs', hpt, hHaar, hmap, rfl⟩` from `hPin`. Take `⟨BX, hBm, hBd, hB0, hstm, hStm, hinj, hsurj, hmul, hconj⟩` from `chart_of X Y u u' t₀ w γw s s' hIs hs hs' hpt`. Establish `hTC` using `Formalism.MainNotions.InterlacingSignCuts.host_totallyComplex D`. Establish `: IsEmpty {w : InfinitePlace D.host.E // w.IsReal}` using `⟨fun w => (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w.1)) w.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨σι, hφ⟩` from `Formalism.L2.SG.LatBAsm.exists_sigma X`. Use `set St := StInf X u u' γw with hStdef`. Use `set sc := stCoord X u' w γw with hscdef`. Use `set φ := Formalism.L2.SG.Pf.VolPinAsm.phiV X with hφdef`. Use `set Γ := realPts X {σ | c.grp ρ σ ∈ G.K0} with hΓdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hT1` using `realPoints_integralIsometries_subset_stabilizer D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c t₀ ρ U U' hMv hrel`. Establish `hΓR : ∀ y ∈ Γ, y ∈ Formalism.L2.SG.TermOp.Vanish.Rset t₀`. Introduce and unpack `y ⟨x, n, hx, rfl, hn⟩`. Conclude with `(hT1 n hn).2 x hx`. Establish `hgrp_inv : ∀ n, c.grp ρ n⁻¹ = (c.grp ρ n)⁻¹` using `fun n => LinearEquiv.ext fun x => rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hΓinv : ∀ y ∈ Γ, y⁻¹ ∈ Γ`. Introduce and unpack `y ⟨x, n, hx, rfl, hn⟩`. Use `⟨x⁻¹, n⁻¹, ((GlobalTheory.RatIsomPoint.ratLink_points D X).2.1 x x n n hx hx).2.1, rfl, ?_⟩` and prove the remaining obligations. Use `show c.grp ρ n⁻¹ ∈ G.K0`. Rewrite using `[hgrp_inv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `G.K0.inv_mem hn`. Establish `hgSt : ∀ y ∈ Γ, s⁻¹ * y * s ∈ St` using `fun y hy => hconj _ (hΓR y hy)`. Take `⟨σ, hσn, A, hA, hcoord⟩` from `GlobalTheory.HL.CovDict.dict_coords D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c t₀ ρ U U' hMv hrel γw s s' hIs hs hs' hpt`. Establish `hT4` using `GlobalTheory.HL.StIntLat.stMat_int_iff D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c`. Establish `hrd : 0 < (D.host.rdE : ℝ)` using `Formalism.L2.SG.NGCut.LeadingMinorIntegrality.rd_pos (D := D)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hσ0 : ∀ p, σ p ≠ 0` using `fun p h => by`. Use `hσn p` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `(pow_pos hrd _).ne' this.symm`. Establish `hAu : ∀ v, Formalism.L2.SG.NGCut.StabilizerCovolume.IsUni ht (A v)` using `fun v x x' p hxx => hA v x x' p hxx`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `choose B hAB hBA hBu using fun v => uni_inv ht (hAu v)`. Apply the tactic sequence `have hdd : ddS D ≠ 0 := (const_entry D X 0).1`. Set `I : FreeE w → (FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)ˣ` to `fun p => Units.mk0 (ddS D ^ (-((ht p : ℕ) : ℤ))) (zpow_ne_zero _ hdd)`. Set `Λ : FreeE w → AddSubgroup D.host.E` to `fun p => ((I p : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) : Submodule (𝓞 D.host.E) D.host.E).toAddSubgroup`. Set `τ : FreeE w → (InfinitePlace X.B.I.F → FreeE w → ℂ) → (InfinitePlace X.B.I.F → ℂ)` to `fun p x v => x v p - B v (x v) p`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `Aset : FreeE w → AddSubgroup (InfinitePlace X.B.I.F → ℂ)` to `fun p => (Λ p).map (embS φ (σ p))`. Establish `hτ : ∀ p (x x' : InfinitePlace X.B.I.F → FreeE w → ℂ), (∀ q, ht q < ht p → ∀ v, x v q = x' v q) → τ p x = τ p x'`. Introduce `p x x' hxx`. Use function extensionality and compare the values at `v`. Establish `h1` using `hBu v (x v) (x' v) p fun r hr => hxx r hr v`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use `show x v p - B v (x v) p = x' v p - B v (x' v) p`. Take the linear combination `-h1`. Establish `hdiff : ∀ p x, (fun v => x v p) - τ p x = fun v => B v (x v) p`. Introduce `p x`. Use function extensionality and compare the values at `v`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show x v p - (x v p - B v (x v) p) = B v (x v) p`. Expand and normalize the polynomial expressions, which then agree. Establish `hmemiff : ∀ p (z : InfinitePlace X.B.I.F → ℂ), (fun v => σ p * z v) ∈ Aset p ↔ z ∈ (Λ p).map (embS φ 1)`. Introduce `p z`. Simplify using `only [Aset, AddSubgroup.mem_map]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, hae⟩`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Use `congrFun hae v` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Formalism.L2.SG.NGCut.SplitEmbedding.embS, AddMonoidHom.coe_mk, ZeroHom.coe_mk, one_mul] at this ⊢`. Conclude with `mul_left_cancel₀ (hσ0 p) this`. Introduce and unpack `⟨a, ha, hae⟩`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrFun hae v` as an intermediate fact. Simplify using `only [Formalism.L2.SG.NGCut.SplitEmbedding.embS, AddMonoidHom.coe_mk, ZeroHom.coe_mk, one_mul] at this ⊢`. Rewrite using `[this]`. Establish `hset : ∀ x, (∀ p, (fun v => x v p) - τ p x ∈ Aset p) ↔ ∃ y ∈ Γ, x = sc (s⁻¹ * y * s)`. Introduce `x`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx set y0 : InfinitePlace X.B.I.F → FreeE w → ℂ := fun v p => (σ p)⁻¹ * B v (x v) p with hy0`. Establish `hy0m : ∀ p, (fun v => y0 v p) ∈ (Λ p).map (embS φ 1)`. Introduce `p`. Rewrite using `[← hmemiff]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hx p` as an intermediate fact. Rewrite `this` using `[hdiff]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`. Use `show σ p * ((σ p)⁻¹ * B v (x v) p) = B v (x v) p`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Clear denominators, using `[hσ0 p]` for the nonvanishing conditions. Take `⟨g, hg, hgy⟩` from `(hT4 y0).2 hy0m`. Use `set e := ρ.trans c.e with he`. Use `set n : (VS D).V ≃ₗ[D.host.E] (VS D).V := (e.trans g).trans e.symm with hn`. Establish `hgn : c.grp ρ n = g`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Apply `LinearEquiv.ext` to reduce the goal to its premises. Introduce `z`. Use `show e (e.symm (g (e (e.symm z)))) = g z`. Simplify using the standard rewrite rules. Take `⟨x0, hx0⟩` from `(hT1 n (by rw [hgn]; exact hg)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨x0.1, ⟨x0, n, hx0, rfl, by show c.grp ρ n ∈ G.K0; rw [hgn]; exact hg⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Rewrite using `[show sc (s⁻¹ * x0.1 * s) v = _ from hcoord x0 n hx0 (by rw [hgn]; exact hg) v, hgn]`. Establish `: (fun p => σ p * φ v (GlobalTheory.HL.TraceConjugationCover.stMat G g p.1.1 p.1.2)) = B v (x v)`. Use function extensionality and compare the values at `p`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrFun (congrFun hgy v) p` as an intermediate fact. Simplify using `only [hy0] at this`. Rewrite using `[← this]`. Clear denominators, using `[hσ0 p]` for the nonvanishing conditions. Rewrite using `[this, hAB v]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨y, ⟨x0, n, hx0, rfl, hn⟩, rfl⟩`. Introduce `p`. Rewrite using `[hdiff]`. Establish `hxv : ∀ v, sc (s⁻¹ * x0.1 * s) v = A v (fun p => σ p * φ v (GlobalTheory.HL.TraceConjugationCover.stMat G (c.grp ρ n) p.1.1 p.1.2))` using `fun v => hcoord x0 n hx0 hn v`. Establish `e1 : (fun v => B v (sc (s⁻¹ * x0.1 * s) v) p) = fun v => σ p * φ v (GlobalTheory.HL.TraceConjugationCover.stMat G (c.grp ρ n) p.1.1 p.1.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `v`. Rewrite using `[hxv v, hBA v]`. Rewrite using `[e1, hmemiff]`. Conclude with `(hT4 _).1 ⟨c.grp ρ n, hn, rfl⟩ p`. Establish `hBd' : ∀ p (x x' y y' : FreeE w → ℂ), (∀ q, ht q < ht p → x q = x' q ∧ y q = y' q) → BX p x y = BX p x' y'` using `hBd`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hinv : ∀ γ, (∀ p, (fun v => γ v p) - τ p γ ∈ Aset p) → ∃ γ', (∀ p, (fun v => γ' v p) - τ p γ' ∈ Aset p) ∧ ∀ x, lawX BX γ' (lawX BX γ x) = x ∧ lawX BX γ (lawX BX γ' x) = x`. Introduce `γ hγ`. Take `⟨y, hy, rfl⟩` from `(hset γ).1 hγ`. Use `⟨sc (s⁻¹ * y⁻¹ * s), (hset _).2 ⟨y⁻¹, hΓinv y hy, rfl⟩, fun x => ?_⟩` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `hsurj x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg1` using `hgSt y hy`. Establish `hg2` using `hgSt y⁻¹ (hΓinv y hy)`. Establish `h1` using `hmul _ hg1 z hz`. Establish `h1'` using `hmul _ hg2 z hz`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hmul _ hg2 _ h1.1`. Rewrite using `[← h1.2, ← h2.2]`. Use `congr 1`. Use `group`. Establish `h2` using `hmul _ hg1 _ h1'.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h1'.2, ← h2.2]`. Use `congr 1`. Use `group`. Establish `hfd : ∀ p, ∃ F : Set (InfinitePlace X.B.I.F → ℂ), MeasurableSet F ∧ ∀ v, ∃! b : Aset p, (b : InfinitePlace X.B.I.F → ℂ) + v ∈ F`. Introduce `p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨F, hF, hFd⟩` from `exists_fd D.host.E (InfinitePlace X.B.I.F) φ σι hφ (I p) (Λ p) (fun a ha => ha) (by simp [Λ]) (σ p) (hσ0 p)`. Use `⟨F, hF, fun v => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hau⟩` from `hFd v`. Use `⟨⟨embS φ (σ p) a, AddSubgroup.mem_map_of_mem _ a.2⟩, ha, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩ hyF`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a', ha', rfl⟩` from `AddSubgroup.mem_map.1 hy`. Use `hau ⟨a', ha'⟩ hyF` as an intermediate fact. Apply `Subtype.ext` to reduce the goal to its premises. Use `show embS φ (σ p) a' = embS φ (σ p) a`. Rewrite using `[show a' = (a : D.host.E) from congrArg Subtype.val this]`.
+Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose F hF hFd using hfd`. Use `set K' : Set (InfinitePlace X.B.I.F → FreeE w → ℂ) := {y | ∀ p, (fun v => y v p) ∈ F p} with hK'def`. Establish `hK'm : MeasurableSet K'`. Rewrite using `[hK'def, Set.ofPred_forall]`. Conclude with `MeasurableSet.iInter fun p => (measurable_pi_lambda _ fun v => (measurable_pi_apply p).comp (measurable_pi_apply v)) (hF p)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKd` using `box_fundX ht BX hBd' τ hτ Aset F hFd`. Establish `hcov` using `pi_measure_eq_prod_absNorm_mul_sqrt_discr D.host.E (InfinitePlace X.B.I.F) φ σι hφ (FreeE w) ht BX hBm hBd' hB0 (D.host.ka / (X.B.g : ℝ) / Real.pi) (by`. Establish `e : D.host.ka = Real.pi / (D.host.rdE / 2)` using `rfl`. Rewrite using `[e]`. Conclude with `div_nonneg (div_nonneg (div_nonneg Real.pi_pos.le (div_nonneg hrd.le zero_le_two)) (Nat.cast_nonneg _)) Real.pi_pos.le) I Λ (fun p a ha => ha) (fun _ => 1) (by intro p; simp [Λ])`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `(fun _ => one_ne_zero) σ hσ0 τ hτ hinv K' hK'm hKd`. Establish `hQm : Measurable (fun y : X.B.I.Ginf => s⁻¹ * y * s)` using `((continuous_const.mul continuous_id).mul continuous_const).measurable`. Use `set KA := (fun y : X.B.I.Ginf => s⁻¹ * y * s) ⁻¹' (St ∩ sc ⁻¹' K') with hKAdef`. Establish `hKAm : MeasurableSet KA` using `hQm (hStm.inter (hstm hK'm))`. Use `⟨KA, ⟨hKAm, fun y hy => ?_⟩, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set z := s⁻¹ * y * s with hzdef`. Establish `hz : z ∈ St` using `hconj _ hy`. Take `⟨γ, ⟨hγΓ, hγK⟩, hγu⟩` from `hKd (sc z)`. Take `⟨y0, hy0, rfl⟩` from `(hset γ).1 hγΓ`. Use `⟨y0, ⟨hy0, ?_⟩, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments.
 
-Use `show s⁻¹ * (y0 * y) * s ∈ St ∩ sc ⁻¹' K'`. Establish `e : s⁻¹ * (y0 * y) * s = (s⁻¹ * y0 * s) * z` using `by rw [hzdef]; group`. Rewrite using `[e]`. Establish `h1` using `hmul _ (hgSt y0 hy0) z hz`. Conclude with `⟨h1.1, by show sc _ ∈ K'; rw [h1.2]; exact hγK⟩`.
-
-Introduce and unpack `y1 ⟨hy1, hy1K⟩`. Establish `hK2 : s⁻¹ * (y1 * y) * s ∈ St ∩ sc ⁻¹' K'` using `hy1K`. Establish `e : s⁻¹ * (y1 * y) * s = (s⁻¹ * y1 * s) * z` using `by rw [hzdef]; group`. Rewrite `hK2` using `[e]`. Establish `h1` using `hmul _ (hgSt y1 hy1) z hz`.
-
-Establish `hin : lawX BX (sc (s⁻¹ * y1 * s)) (sc z) ∈ K'` using `by rw [← h1.2]; exact hK2.2`. Establish `heq` using `hγu (sc (s⁻¹ * y1 * s)) ⟨(hset _).2 ⟨y1, hy1, rfl⟩, hin⟩`. Establish `hgg : s⁻¹ * y1 * s = s⁻¹ * y0 * s` using `hinj (hgSt y1 hy1) (hgSt y0 hy0) heq`. Use `congrArg (fun g => s * g * s⁻¹) hgg` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
-
-Establish `hs1m : Measurable (fun y : X.B.I.Ginf => s * y * s⁻¹)` using `((continuous_const.mul continuous_id).mul continuous_const).measurable`. Rewrite using `[Measure.map_apply hs1m hKAm]`. Establish `hset' : (fun y : X.B.I.Ginf => s * y * s⁻¹) ⁻¹' KA = St ∩ sc ⁻¹' K'`. Use extensionality with `y`. Simplify using `only [Set.mem_preimage, hKAdef]`.
-
-Establish `e : s⁻¹ * (s * y * s⁻¹) * s = y` using `by group`. Rewrite using `[e]`. Rewrite using `[hset', Set.inter_comm, measure_inter_conull hHaar.2.2.1, ← Measure.map_apply hstm hK'm, hmap]`. Unfold `Formalism.L2.SG.RealObj.muStab`. Rewrite using `[hcov]`.
-
-Establish `hterm : ∀ p : FreeE w, ENNReal.ofReal ((D.host.ka / (X.B.g : ℝ) / Real.pi) ^ Fintype.card (InfinitePlace X.B.I.F) * (((fun _ => 1 : FreeE w → ℕ) p : ℕ) : ℝ) * ((FractionalIdeal.absNorm ((I p : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)) : ℚ) : ℝ) * 2⁻¹ ^ Fintype.car …`. Introduce `p`. Use `congr 1`. Apply the tactic sequence `have h5 := (const_entry D X (ht p)).2`. Rewrite using `[hσn p]`.
-
-Simplify using `only [I, Units.val_mk0, Nat.cast_one, mul_one]`. Conclude with `h5`. Rewrite using `[Finset.prod_congr rfl fun p _ => hterm p, Finset.prod_const, Finset.card_univ, ← ENNReal.ofReal_pow (by positivity), inv_pow, ← pow_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covolume_integralStabiliser_normalisedHaar_alt : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → 4 * D.R.rS + 7 ≤ D.R.k → ∀ (w : Point D.host.E (D.R.rS + 1)) (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (FP : ∀ p : PlF D, LocNG.FPair (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS), ZhatOM (ZhatL F00 F'0) = ptMat w → Gval F00 F'0 ≠ 0 → (∀ p, AtBase (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p F00 F'0 (Tu D u) (Tu D u') (FP p) ∧ (FP p).RelG (LocNG.theta (Y.M p))) → ∀ (G : GFrames (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) D.R.rS D.R.k) (c : GCoord (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) F00 F'0 FP G), ∀ (t₀ : TauC Y u u') (ρ : ((VS D).V ≃ₗ[D.host.E] (VS D).V)) (U U' : Formalism.L2.SG.PairVal.MatR D), MovesTo F00 F'0 (lf D (X.Fu u)) t₀.frame ρ U U' → t₀.relevant → ∀ μR, Formalism.L2.SG.VolPin.IsPinnedR t₀ w μR → ∃ K : Set X.B.I.Ginf, (MeasurableSet K ∧ ∀ y ∈ Formalism.L2.SG.TermOp.Vanish.Rset t₀, ∃! s, s ∈ realPts X {σ | c.grp ρ σ ∈ G.K0} ∧ s * y ∈ K) ∧ μR K = ENNReal.ofReal (((X.B.g : ℝ) ^ (D.R.f * Fintype.card (Formalism.L2.SG.RealObj.FreeE w)))⁻¹) := by
   intro D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c t₀ ρ U U' hMv hrel μR hPin

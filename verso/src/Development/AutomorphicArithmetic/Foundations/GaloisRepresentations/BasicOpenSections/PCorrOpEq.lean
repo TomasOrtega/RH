@@ -8,9 +8,9 @@ open UpperTheory.Gal.crystallineComparison (PtId fn)
 open UpperTheory.Gal UpperTheory.Gal.Mod
 
 /- English proof (translation)
-Establish `heq : (Sigma.desc (fun i => f (e i)) : ∐ (fun _ : Fin m => W) ⟶ P) = (Sigma.reindex e (fun _ : J => W)).hom ≫ Sigma.desc f`. Use extensionality with `i`. Establish `h2 : Sigma.ι (fun _ : Fin m => W) i ≫ (Sigma.reindex e (fun _ : J => W)).hom = Sigma.ι (fun _ : J => W) (e i)` using `Sigma.ι_reindex_hom e (fun _ : J => W) i`. Rewrite using `[← Category.assoc, h2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[heq]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isIso_reindex {W P : Scheme.{0}} {J : Type} {m : ℕ} (e : Fin m ≃ J) (f : J → (W ⟶ P))
     (h : IsIso (Sigma.desc f : ∐ (fun _ : J => W) ⟶ P)) :
@@ -26,15 +26,15 @@ private theorem isIso_reindex {W P : Scheme.{0}} {J : Type} {m : ℕ} (e : Fin m
   infer_instance
 
 /- English proof (translation)
-Use `set D : ∐ (fun _ : Fin m => U) ⟶ P := Sigma.desc s' with hD`. Establish `hι : ∀ j, Sigma.ι (fun _ : Fin m => U) j ≫ D = s' j` using `fun j => Sigma.ι_desc _ _`. Establish `huniq : ∀ j₁ j₂, x0 ≫ s' j₁ = x0 ≫ s' j₂ → j₁ = j₂`. Introduce `j₁ j₂ h`. Rewrite `h` using `[← hι j₁, ← hι j₂, ← Category.assoc, ← Category.assoc, cancel_mono]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun f : gp Ω ⟶ ∐ (fun _ : Fin m => U) => f (IsLocalRing.closedPoint Ω)) h`. Simplify using `only [Scheme.Hom.comp_apply] at h2`. Establish `h3` using `(sigmaι_eq_iff (fun _ : Fin m => U) j₁ j₂ _ _).mp h2`. Conclude with `(Sigma.mk.inj_iff.mp h3).1`. Take `⟨⟨j, u⟩, hju⟩` from `(sigmaMk (fun _ : Fin m => U)).surjective ((y ≫ inv D) (IsLocalRing.closedPoint Ω))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hju` using `[sigmaMk_mk]`. Establish `hrange : Set.range (y ≫ inv D).base ⊆ Set.range (Sigma.ι (fun _ : Fin m => U) j).base`. Introduce and unpack `_ ⟨z, rfl⟩`. Use `⟨u, ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim z (IsLocalRing.closedPoint Ω)]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hju`. Take `⟨t, ht⟩ : ∃ t, t ≫ Sigma.ι (fun _ : Fin m => U) j = y ≫ inv D` from `⟨_, IsOpenImmersion.lift_fac _ _ hrange⟩`. Establish `hy2 : t ≫ s' j = y`. Rewrite using `[← hι j, ← Category.assoc, ht, Category.assoc, IsIso.inv_hom_id, Category.comp_id]`. Establish `htx : t = x0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy, ← hy2, Category.assoc, hs, Category.comp_id]`. Establish `hy3 : x0 ≫ s' j = y`. Rewrite using `[← htx]`. Conclude with `hy2`. Conclude with `⟨j, hy3, fun j₁ hj₁ => huniq _ _ (hj₁.trans hy3.symm)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem existsUnique_sec {U P : Scheme.{0}} (p' : P ⟶ U) {m : ℕ} (s' : Fin m → (U ⟶ P))
     (hs : ∀ j, s' j ≫ p' = 𝟙 U) (hiso : IsIso (Sigma.desc s' : ∐ (fun _ : Fin m => U) ⟶ P))
@@ -70,23 +70,21 @@ private theorem existsUnique_sec {U P : Scheme.{0}} (p' : P ⟶ U) {m : ℕ} (s'
   exact ⟨j, hy3, fun j₁ hj₁ => huniq _ _ (hj₁.trans hy3.symm)⟩
 
 /- English proof (translation)
-Take `⟨hac, hiso⟩` from `hs`. Take `⟨m, ⟨e⟩⟩ : ∃ m, Nonempty (Fin m ≃ G)` from `⟨Nat.card G, ⟨(Finite.equivFin G).symm⟩⟩`. Establish `hiso'` using `isIso_reindex e _ hiso`. Use function extensionality and compare the values at `Ω _ _ x`. Use `show ∑ᶠ (z : gp Ω ⟶ W) (_ : z ∈ fib c x), (1 : ℤ) = (Nat.card G : ℤ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `c.surjective (pt x)`. Take `⟨z0, hz0, -⟩` from `TranscendenceTraces.ptLift_holds c Ω x v hv`. Establish `key` using `fun (y : gp Ω ⟶ pullback c c) (hy : y ≫ pullback.snd c c = z0) => existsUnique_sec (pullback.snd c c) (fun j => pullback.lift (a (e j)) (𝟙 W) (by rw [hac, Category.id_comp])) (fun j => pullback.lift_snd _ _ _) hiso' z0 y hy`. Establish `hlift : ∀ g : G, z0 ≫ pullback.lift (a g) (𝟙 W) (by rw [hac, Category.id_comp]) = pullback.lift (z0 ≫ a g) z0 (by rw [Category.assoc, hac])`. Introduce `g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, pullback.lift_fst]`. Rewrite using `[Category.assoc, pullback.lift_snd, pullback.lift_snd, Category.comp_id]`. Establish `hfib : fib c x = Set.range (fun g : G => z0 ≫ a g)`. Use extensionality with `z`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `hzc : z ≫ c = z0 ≫ c`. Rewrite using `[hz0]`. Conclude with `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨j, hj, -⟩` from `key (pullback.lift z z0 hzc) (pullback.lift_snd _ _ _)`. Use `⟨e j, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (· ≫ pullback.fst c c) hj`. Simplify using `only [Category.assoc] at h1`. Rewrite `h1` using `[pullback.lift_fst, pullback.lift_fst]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Introduce and unpack `⟨g, rfl⟩ show (z0 ≫ a g) ≫ c = x`. Rewrite using `[Category.assoc, hac, hz0]`. Establish `hinj : Function.Injective (fun g : G => z0 ≫ a g)`. Introduce `g₁ g₂ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h' : z0 ≫ a g₁ = z0 ≫ a g₂` using `h`. Take `⟨j, -, huniq⟩` from `key (pullback.lift (z0 ≫ a g₁) z0 (by rw [Category.assoc, hac])) (pullback.lift_snd _ _ _)`. Establish `e1` using `huniq (e.symm g₁) (by`. Simplify using `only [Equiv.apply_symm_apply]`. Conclude with `hlift g₁)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e2` using `huniq (e.symm g₂) (by`. Simplify using `only [Equiv.apply_symm_apply]`. Rewrite using `[hlift g₂]`. Use `congr 1`. Conclude with `h'.symm)`.
-
-Conclude with `e.symm.injective (e1.trans e2.symm)`. Rewrite using `[hfib, finsum_mem_range hinj]`. Use `haveI := Fintype.ofFinite G`. Rewrite using `[finsum_eq_sum_of_fintype, Finset.sum_const, Finset.card_univ, Nat.card_eq_fintype_card]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem push_one {W S : Scheme.{0}} (c : W ⟶ S) [IsFinite c] [Surjective c] {G : Type} [Finite G]
     (a : G → (W ⟶ W)) (hs : Splits c c a) : (Wt.const W 1).push c = Wt.const S (Nat.card G : ℤ) := by
@@ -144,11 +142,11 @@ private theorem push_one {W S : Scheme.{0}} (c : W ⟶ S) [IsFinite c] [Surjecti
   simp
 
 /- English proof (translation)
-Establish `wt : IsWt c (Wt.const W 1)`. Rewrite using `[← UpperTheory.Gal.TranscendenceTraces.multBasic_holds.2.2 c]`. Conclude with `UpperTheory.Gal.TranscendenceTraces.wtFlat_holds c`. Establish `hd` using `UpperTheory.Gal.TranscendenceTraces.adic.2.2.2.2.1 l k 0 c (Wt.const W 1) (Nat.card G : ℤ) wt hl (push_one c a hs)`. Establish `hne : (((Nat.card G : ℤ) : ℤ) : ℚ_[l]) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (Nat.card G : ℤ) ≠ 0`. Conclude with `Nat.card_pos.ne'` after adjusting the coercions. Conclude with `this` after adjusting the coercions. Introduce `x y hxy`. Establish `h1` using `LinearMap.congr_fun hd x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `LinearMap.congr_fun hd y`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.id_apply] at h1 h2`. Rewrite `h1` using `[hxy, h2]`. Conclude with `(smul_right_injective _ hne h1).symm`.
+A detailed English derivation is pending.
 -/
 private theorem pull_inj (l : ℕ) [Fact l.Prime] {W S : Scheme.{0}} (c : W ⟶ S) [IsFinite c] [Etale c] [Surjective c]
     {G : Type} [Finite G] [Nonempty G] (a : G → (W ⟶ W)) (hs : Splits c c a) (hl : IsUnit (l : Γ(S, ⊤))) (k : ℤ) :
@@ -169,17 +167,15 @@ private theorem pull_inj (l : ℕ) [Fact l.Prime] {W S : Scheme.{0}} (c : W ⟶ 
   exact (smul_right_injective _ hne h1).symm
 
 /- English proof (translation)
-Introduce `l _ S c _ hw hl T hT`. Take `⟨W, c', G, _, _, a, J, _, σ, hgal, hsplit, hTx⟩` from `hT`. Take `⟨hfin, het, hsurj, -, -, hsc⟩` from `hgal`. Use `haveI := hfin`. Use `haveI := het`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hsurj`. Use `haveI : IsFinite c.p := c.fin`. Use `haveI : Nonempty G := ⟨1⟩`. Take `⟨hσ, hiso⟩` from `hsplit`. Take `⟨m, ⟨e⟩⟩ : ∃ m, Nonempty (Fin m ≃ J)` from `⟨Fintype.card J, ⟨(Fintype.equivFin J).symm⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hiso'` using `isIso_reindex e _ hiso`. Establish `hsplitQ : ∀ k : ℤ, pullHQ l (sch.map c') k 0 ∘ₗ TranscendenceTraces.trHQ l c.p (Wt.const c.Z 1) k 0 = ∑ j : Fin m, pullHQ l (sch.map (σ (e j))) k 0` using `fun k => TranscendenceTraces.adic.2.2.2.2.2.2.2.2.2 l k 0 c.p hl W c' m (fun j => σ (e j)) (fun j => hσ (e j)) hiso'`. Establish `hinj : Function.Injective (pullTot l (sch.map c'))`. Introduce `x y hxy`. Use `DFinsupp.ext fun k => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h` using `congrArg (fun z => z k) hxy`. Simplify using `only [pullTot, DirectSum.lmap_apply] at h`. Conclude with `pull_inj l c' a hsc hl k h`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[hTx x]`. Use `DFinsupp.ext fun k => ?_` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun (hsplitQ k) (pullHQ l (sch.map c.f) k 0 (x k))`. Simplify using `only [LinearMap.comp_apply, LinearMap.sum_apply] at h1`.
-
-Use `erw [DFinsupp.finset_sum_apply]`. Simplify using `only [pullTot, DirectSum.lmap_apply, TranscendenceTraces.Corr.opQ, hw, LinearMap.comp_apply, h1, TranscendenceTraces.pullHQ_comp]`. Conclude with `(e.sum_comp (fun j => pullHQ l (sch.map (σ j)) k 0 (pullHQ l (sch.map c.f) k 0 (x k)))).symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Mod.corrOpEq :
     CorrOpEq := by

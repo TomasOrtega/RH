@@ -4,11 +4,11 @@ import Development.AbelianVarietyTheory.Definitions.GaloisGeometry.UnderTie
 namespace GlobalTheory.RepresentativesImage
 
 /- English proof (translation)
-Unfold `Formalism.L2.Th1.H.IsReps at hS ⊢`. Take `⟨hmem, hdist, hcov⟩` from `hS`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 hw`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(h₂ v).2 (hmem v hv)`. Introduce `a ha b hb hab`. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 ha`. Take `⟨u, hu, rfl⟩` from `Finset.mem_image.1 hb`. Rewrite `hab` using `[← map_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdist v hv u hu ((h₁ _).1 hab)]`. Introduce `w hw`. Take `⟨v, rfl⟩` from `T.surjective w`. Take `⟨u, hu, hvu⟩` from `hcov v ((h₂ v).1 hw)`. Conclude with `⟨T u, Finset.mem_image_of_mem _ hu, by rw [← map_sub]; exact (h₁ _).2 hvu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isReps_image {V W : Type} [AddCommGroup V] [AddCommGroup W] [DecidableEq W] (T : V ≃+ W)
     {Λ₁ Λ₂ : AddSubgroup V} {M₁ M₂ : AddSubgroup W} {S : Finset V}

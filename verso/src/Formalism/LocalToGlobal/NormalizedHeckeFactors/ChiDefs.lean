@@ -59,7 +59,7 @@ def HC.At (χ : HC E) (P : HeightOneSpectrum (𝓞 E)) (α : ℂ) : Prop :=
       ((χ.χ (Units.map (locM P) ϖ) : ℂˣ) : ℂ) = α
 
 /- English proof (translation)
-Use `⟨fun u hu => ?_, fun ϖ hϖ => ?_⟩` and prove the remaining obligations. Simplify using `[h.1 u hu, h'.1 u hu]`. Simplify using `[← h.2 ϖ hϖ, ← h'.2 ϖ hϖ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem HC.At.mul {χ ψ : HC E} {P : HeightOneSpectrum (𝓞 E)} {a b : ℂ} (h : χ.At P a) (h' : ψ.At P b) :
     (χ * ψ).At P (a * b) := by
@@ -68,7 +68,7 @@ theorem HC.At.mul {χ ψ : HC E} {P : HeightOneSpectrum (𝓞 E)} {a b : ℂ} (h
   · simp [← h.2 ϖ hϖ, ← h'.2 ϖ hϖ]
 
 /- English proof (translation)
-Use `⟨fun u hu => ?_, fun ϖ hϖ => ?_⟩` and prove the remaining obligations. Simplify using `[h.1 u hu]`. Simplify using `[← h.2 ϖ hϖ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem HC.At.inv {χ : HC E} {P : HeightOneSpectrum (𝓞 E)} {a : ℂ} (h : χ.At P a) : (χ⁻¹).At P a⁻¹ := by
   refine ⟨fun u hu => ?_, fun ϖ hϖ => ?_⟩
@@ -76,9 +76,9 @@ theorem HC.At.inv {χ : HC E} {P : HeightOneSpectrum (𝓞 E)} {a : ℂ} (h : χ
   · simp [← h.2 ϖ hϖ]
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `P.valuation_exists_uniformizer E`. Establish `hv : Valued.v (π : P.adicCompletion E) = WithZero.exp (-1 : ℤ)`. Rewrite using `[P.valuedAdicCompletion_eq_valuation' π, hπ]`. Establish `h0 : (π : P.adicCompletion E) ≠ 0`. Introduce `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hv` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hv.symm`. Conclude with `⟨Units.mk0 _ h0, hv⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unif (P : HeightOneSpectrum (𝓞 E)) :
     ∃ ϖ : (P.adicCompletion E)ˣ, Valued.v (ϖ : P.adicCompletion E) = WithZero.exp (-1 : ℤ) := by
@@ -92,7 +92,7 @@ theorem exists_unif (P : HeightOneSpectrum (𝓞 E)) :
   exact ⟨Units.mk0 _ h0, hv⟩
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `exists_unif P`. Rewrite using `[← ha.2 ϖ hϖ, ← hb.2 ϖ hϖ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem HC.At.unique {χ : HC E} {P : HeightOneSpectrum (𝓞 E)} {a b : ℂ} (ha : χ.At P a) (hb : χ.At P b) : a = b := by
   obtain ⟨ϖ, hϖ⟩ := exists_unif P
@@ -148,7 +148,7 @@ def CycFrob (pl : HeightOneSpectrum (𝓞 E) → ValuationSubring Ω) (l : ℕ) 
     ((cycZ E Ω l σ : ℤ_[l]ˣ) : ℤ_[l]) = (normV P : ℤ_[l])
 
 /- English proof (translation)
-Establish `h : normV P = Ideal.absNorm P.asIdeal`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression. Rewrite using `[h]`. Conclude with `fun h0 => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem normV_ne_zero (P : HeightOneSpectrum (𝓞 E)) : normV P ≠ 0 := by
   have h : normV P = Ideal.absNorm P.asIdeal := by
@@ -158,7 +158,7 @@ theorem normV_ne_zero (P : HeightOneSpectrum (𝓞 E)) : normV P ≠ 0 := by
   exact fun h0 => P.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)
 
 /- English proof (translation)
-Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions. Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_placesOver (l : ℕ) [Fact l.Prime] :
     {v : HeightOneSpectrum (𝓞 E) | ((l : ℕ) : 𝓞 E) ∈ v.asIdeal}.Finite := by
@@ -169,9 +169,9 @@ theorem finite_placesOver (l : ℕ) [Fact l.Prime] :
   exact Ideal.dvd_span_singleton.2 hv
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `h`. Take `⟨B', hB'⟩` from `h'`. Use `⟨B ∪ B', fun P hP σ hσ => ?_⟩` and prove the remaining obligations. Take `⟨α, hα, x, hx, hs⟩` from `hB P (fun h => hP (Finset.mem_union_left _ h))`. Take `⟨α', hα', x', hx', hs'⟩` from `hB' P (fun h => hP (Finset.mem_union_right _ h))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : α = α'` using `hα.unique hα'`. Establish `ex : x = x'` using `hC (by rw [hx, hx', e])`. Rewrite using `[hs σ hσ, hs' σ hσ, ex]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Read.frob_eq {A K L : Type} [CommRing A] [CommRing K] [CommRing L]
     {pl : HeightOneSpectrum (𝓞 E) → ValuationSubring Ω} {φ φ' : G E Ω →* Aˣ} {rd : A →+* K} {eL : L →+* K}
@@ -190,9 +190,7 @@ theorem Read.frob_eq {A K L : Type} [CommRing A] [CommRing K] [CommRing L]
   rw [hs σ hσ, hs' σ hσ, ex]
 
 /- English proof (translation)
-Establish `h` using `congrArg A.valuation hx`. Rewrite `h` using `[map_pow, map_one]`. Break down `lt_trichotomy (A.valuation x) 1 with h1 | h1 | h1` into its components or cases. Conclude with `absurd h (pow_lt_one₀ zero_le h1 hN).ne`. Conclude with `h1`.
-
-Conclude with `absurd h (one_lt_pow₀ h1 hN).ne'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem val_root_one (A : ValuationSubring Ω) {x : Ω} {N : ℕ} (hN : N ≠ 0) (hx : x ^ N = 1) : A.valuation x = 1 := by
   have h := congrArg A.valuation hx
@@ -203,31 +201,27 @@ theorem val_root_one (A : ValuationSubring Ω) {x : Ω} {N : ℕ} (hN : N ≠ 0)
   · exact absurd h (one_lt_pow₀ h1 hN).ne'
 
 /- English proof (translation)
-Introduce `P hl σ hσ`. Establish `hlp : 0 < l` using `(Fact.out : l.Prime).pos`. Establish `hvl : (pl P).valuation (l : Ω) = 1`. Establish `h1 : (pl P).valuation (l : Ω) ≤ 1`. Use `(pl P).valuation_le_one (l : pl P)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `h2 : ¬ (pl P).valuation (l : Ω) < 1`. Introduce `h`. Apply `hl` to reduce the goal to its premises. Use `(hpl P (l : 𝓞 E)).1 ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using h`. Conclude with `le_antisymm h1 (not_lt.1 h2)`. Rewrite using `[← PadicInt.ext_of_toZModPow]`. Introduce `n`. Rewrite using `[map_natCast]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN : l ^ n ≠ 0` using `pow_ne_zero _ hlp.ne'`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ n)`. Establish `hspec : σ ζ = ζ ^ (((cycZ E Ω l σ : ℤ_[l]ˣ) : ℤ_[l]).toZModPow n).val` using `cyclotomicCharacter.spec l (MulSemiringAction.toRingAut (G E Ω) Ω σ) ζ hζ.pow_eq_one`. Use `set a := (((cycZ E Ω l σ : ℤ_[l]ˣ) : ℤ_[l]).toZModPow n).val with ha`. Use `set q := normV P`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz1 : (pl P).valuation ζ = 1` using `val_root_one (pl P) hN hζ.pow_eq_one`. Establish `hfrob` using `hσ.2 ζ hz1.le`. Rewrite `hfrob` using `[hspec]`. Establish `hζ0 : ζ ≠ 0` using `hζ.ne_zero hN`. Establish `hζq : ζ ^ q ≠ 0` using `pow_ne_zero _ hζ0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `key : ζ ^ a = ζ ^ q`. Assume the negation of the conclusion as `hne`. Use `set η := ζ ^ a * (ζ ^ q)⁻¹ with hη`. Establish `hη1 : η ≠ 1` using `fun h => hne ((mul_inv_eq_one₀ hζq).1 h)`. Establish `hηN : η ^ (l ^ n) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hη, mul_pow, inv_pow, ← pow_mul, ← pow_mul, mul_comm a, mul_comm q, pow_mul, pow_mul, hζ.pow_eq_one, one_pow, one_pow, inv_one, mul_one]`. Establish `hvη1 : (pl P).valuation η = 1` using `val_root_one (pl P) hN hηN`. Establish `hvη : (pl P).valuation (η - 1) < 1`. Establish `e : η - 1 = (ζ ^ a - ζ ^ q) * (ζ ^ q)⁻¹`. Rewrite using `[hη, sub_mul, mul_inv_cancel₀ hζq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq1 : (pl P).valuation (ζ ^ q) = 1` using `by rw [map_pow, hz1, one_pow]`. Rewrite using `[e, map_mul, map_inv₀, hq1, inv_one, mul_one]`. Conclude with `hfrob`. Establish `hsum : ∑ i ∈ Finset.range (l ^ n), η ^ i = 0`. Rewrite using `[geom_sum_eq hη1, hηN, sub_self, zero_div]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hNsum : ((l ^ n : ℕ) : Ω) = ∑ i ∈ Finset.range (l ^ n), (1 - η ^ i)`. Rewrite using `[Finset.sum_sub_distrib, hsum, sub_zero]`. Simplify using the standard rewrite rules. Establish `hlt : (pl P).valuation ((l ^ n : ℕ) : Ω) < 1`. Rewrite using `[hNsum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `Valuation.map_sum_lt _ one_ne_zero fun i _ => ?_` and prove the remaining obligations. Establish `e : 1 - η ^ i = -((∑ j ∈ Finset.range i, η ^ j) * (η - 1))`. Rewrite using `[geom_sum_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : (pl P).valuation (∑ j ∈ Finset.range i, η ^ j) ≤ 1` using `Valuation.map_sum_le _ fun j _ => by rw [map_pow, hvη1, one_pow]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, Valuation.map_neg, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hlt` using `[Nat.cast_pow, map_pow, hvl, one_pow]`. Conclude with `lt_irrefl _ hlt`. Establish `hdvd : ((l ^ n : ℕ) : ℤ) ∣ (q : ℤ) - (a : ℤ)`.
-
-Establish `h1 : ζ ^ ((q : ℤ) - (a : ℤ)) = 1`. Rewrite using `[zpow_sub₀ hζ0, zpow_natCast, zpow_natCast, ← key, div_self (pow_ne_zero _ hζ0)]`. Conclude with `(hζ.zpow_eq_one_iff_dvd _).1 h1`. Rewrite using `[← ZMod.natCast_zmod_val (((cycZ E Ω l σ : ℤ_[l]ˣ) : ℤ_[l]).toZModPow n), ← ha]`. Establish `h2` using `(ZMod.intCast_eq_intCast_iff_dvd_sub (a : ℤ) (q : ℤ) (l ^ n)).2 hdvd`.
-
-Conclude with `h2` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cycFrob_holds [IsAlgClosed Ω] [CharZero Ω] (pl : HeightOneSpectrum (𝓞 E) → ValuationSubring Ω)
     (hpl : ∀ P, IsPlaceOver (pl P) P) (l : ℕ) [Fact l.Prime] : CycFrob pl l := by
@@ -318,7 +312,7 @@ def rcgKer (c : Ω ≃+* Ω) (l : ℕ) (Q : Set (HeightOneSpectrum (𝓞 E))) : 
   inv_mem' := fun {a} ha A _ φ h => by rw [map_inv, ha A φ h, inv_one]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_rcgKer {c : Ω ≃+* Ω} {l : ℕ} {Q : Set (HeightOneSpectrum (𝓞 E))} {g : G E Ω} :
     g ∈ rcgKer c l Q ↔ ∀ (A : Type) [CommGroup A] (φ : G E Ω →* A), IsRcgChar c l Q φ → φ g = 1 := Iff.rfl
@@ -347,19 +341,19 @@ instance rcgGal_comm (c : Ω ≃+* Ω) (l : ℕ) (Q : Set (HeightOneSpectrum (�
       rw [map_mul, map_inv, map_mul, map_mul, mul_comm (φ b) (φ a), inv_mul_cancel] }
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.mk'_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem artGal_surj (c : Ω ≃+* Ω) (l : ℕ) (Q : Set (HeightOneSpectrum (𝓞 E))) :
     Function.Surjective (artGal c l Q) := QuotientGroup.mk'_surjective _
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.ker_mk' _`.
+A detailed English derivation is pending.
 -/
 theorem artGal_ker (c : Ω ≃+* Ω) (l : ℕ) (Q : Set (HeightOneSpectrum (𝓞 E))) :
     (artGal c l Q).ker = rcgKer c l Q := QuotientGroup.ker_mk' _
 
 /- English proof (translation)
-Introduce `g g' h`. Use `show (QuotientGroup.mk g' : RCGGal c l Q) = (QuotientGroup.mk g)⁻¹`. Rewrite using `[← QuotientGroup.mk_inv, QuotientGroup.eq]`. Use `mem_rcgKer.2 fun A _ φ hφ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, map_inv, hφ.2.2.2.1 g g' h, inv_inv, mul_inv_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem artGal_anti (c : Ω ≃+* Ω) (l : ℕ) (Q : Set (HeightOneSpectrum (𝓞 E))) : AntiHom c (artGal c l Q) := by
   intro g g' h
@@ -369,7 +363,7 @@ theorem artGal_anti (c : Ω ≃+* Ω) (l : ℕ) (Q : Set (HeightOneSpectrum (�
   rw [map_mul, map_inv, map_inv, hφ.2.2.2.1 g g' h, inv_inv, mul_inv_cancel]
 
 /- English proof (translation)
-Introduce `v hv A hA σ hσ`. Use `show (QuotientGroup.mk σ : RCGGal c l Q) = 1`. Rewrite using `[QuotientGroup.eq_one_iff]`. Conclude with `mem_rcgKer.2 fun _ _ φ hφ => hφ.2.2.2.2 v hv A hA σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem artGal_unr (c : Ω ≃+* Ω) (l : ℕ) (Q : Set (HeightOneSpectrum (𝓞 E))) : UnrOut (artGal c l Q) Q := by
   intro v hv A hA σ hσ
@@ -378,14 +372,14 @@ theorem artGal_unr (c : Ω ≃+* Ω) (l : ℕ) (Q : Set (HeightOneSpectrum (𝓞
   exact mem_rcgKer.2 fun _ _ φ hφ => hφ.2.2.2.2 v hv A hA σ hσ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨QuotientGroup.lift _ φ fun g hg => (mem_rcgKer.1 hg) A φ hφ, by ext g; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem artGal_univ (c : Ω ≃+* Ω) (l : ℕ) (Q : Set (HeightOneSpectrum (𝓞 E))) {A : Type} [CommGroup A]
     (φ : G E Ω →* A) (hφ : IsRcgChar c l Q φ) : ∃ f : RCGGal c l Q →* A, f.comp (artGal c l Q) = φ :=
   ⟨QuotientGroup.lift _ φ fun g hg => (mem_rcgKer.1 hg) A φ hφ, by ext g; rfl⟩
 
 /- English proof (translation)
-Introduce `_ hg` and use `mem_rcgKer.2 fun A _ φ hφ => (mem_rcgKer.1 hg) A φ ⟨hφ.1, hφ.2.1, hφ.2.2.1, hφ.2.2.2.1, fun v hv => hφ.2.2.2.2 v (fun h' => hv (h h'))⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rcgKer_mono (c : Ω ≃+* Ω) (l : ℕ) {Q Q' : Set (HeightOneSpectrum (𝓞 E))} (h : Q' ⊆ Q) :
     rcgKer c l Q ≤ rcgKer c l Q' := fun _ hg =>
@@ -397,7 +391,7 @@ def resGal (c : Ω ≃+* Ω) (l : ℕ) {Q Q' : Set (HeightOneSpectrum (𝓞 E))}
   QuotientGroup.map _ _ (MonoidHom.id _) (fun _ hg => rcgKer_mono c l h hg)
 
 /- English proof (translation)
-Use extensionality with `g`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem resGal_art (c : Ω ≃+* Ω) (l : ℕ) {Q Q' : Set (HeightOneSpectrum (𝓞 E))} (h : Q' ⊆ Q) :
     (resGal c l h).comp (artGal c l Q) = artGal c l Q' := by
@@ -405,26 +399,24 @@ theorem resGal_art (c : Ω ≃+* Ω) (l : ℕ) {Q Q' : Set (HeightOneSpectrum (�
   rfl
 
 /- English proof (translation)
-The claim follows from `Subgroup.quotient_finite_of_isOpen _ hO`.
+A detailed English derivation is pending.
 -/
 theorem rcgGal_finite [IsTopologicalGroup (G E Ω)] [CompactSpace (G E Ω)] (c : Ω ≃+* Ω) (l : ℕ)
     (Q : Set (HeightOneSpectrum (𝓞 E))) (hO : IsOpen ((rcgKer c l Q : Subgroup (G E Ω)) : Set (G E Ω))) : Finite (RCGGal c l Q) :=
   Subgroup.quotient_finite_of_isOpen _ hO
 
 /- English proof (translation)
-Proceed by induction on `x using QuotientGroup.induction_on with | H g => ?_`. Set `ι` to `Σ (A : Type) (_ : CommGroup A), {φ : G E Ω →* A // IsRcgChar c l Q φ}`. Set `U : ι → Set (G E Ω)` to `fun p => by`. Set `_` to `p.2.1`. Conclude with `{h | p.2.2.1 h ≠ 1}`.
+Proceed by induction. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hUo : ∀ p, IsOpen (U p)`. Introduce `p`. Set `_` to `p.2.1`. Establish `hk : IsClosed ((p.2.2.1.ker : Subgroup (G E Ω)) : Set (G E Ω))` using `Subgroup.isClosed_of_isOpen _ p.2.2.2.2.2.1`. Conclude with `hk.isOpen_compl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : IsCompact ((rcgKer c l Q : Set (G E Ω))ᶜ)` using `hO.isClosed_compl.isCompact`. Establish `hcov : (rcgKer c l Q : Set (G E Ω))ᶜ ⊆ ⋃ p, U p`. Introduce `h hh`. Establish `hn : ¬ ∀ (A : Type) [CommGroup A] (φ : G E Ω →* A), IsRcgChar c l Q φ → φ h = 1` using `hh`. Use `push Not at hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨A, inst, φ, hφ, hne⟩` from `hn`. Conclude with `Set.mem_iUnion.2 ⟨⟨A, inst, φ, hφ⟩, hne⟩`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover U hUo hcov`. Establish `hord : ∀ p : ι, ∃ n : ℕ, (by letI` using `p.2.1; exact p.2.2.1 g ^ (l ^ n) = 1) := by`. Introduce `p`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Set `_` to `p.2.1`. Conclude with `p.2.2.2.2.1 (p.2.2.1 g)`. Use `choose nf hnf using hord`. Use `⟨∑ p ∈ t, nf p, ?_⟩` and prove the remaining obligations. Rewrite using `[← QuotientGroup.mk_pow, QuotientGroup.eq_one_iff]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hnot`. Take `⟨p, hp, hmem⟩` from `Set.mem_iUnion₂.1 (ht hnot)`. Set `_` to `p.2.1`. Apply `hmem` to reduce the goal to its premises. Use `show p.2.2.1 (g ^ (l ^ (∑ p ∈ t, nf p))) = 1`.
-
-Take `⟨k, hk⟩` from `pow_dvd_pow l (Finset.single_le_sum (fun _ _ => Nat.zero_le _) hp : nf p ≤ ∑ p ∈ t, nf p)`. Rewrite using `[map_pow, hk, pow_mul, hnf p, one_pow]`.
+A detailed English derivation is pending.
 -/
 theorem rcgGal_lpow [IsTopologicalGroup (G E Ω)] [CompactSpace (G E Ω)] (c : Ω ≃+* Ω) (l : ℕ)
     (Q : Set (HeightOneSpectrum (𝓞 E))) (hO : IsOpen ((rcgKer c l Q : Subgroup (G E Ω)) : Set (G E Ω))) (x : RCGGal c l Q) : ∃ n : ℕ, x ^ (l ^ n) = 1 := by

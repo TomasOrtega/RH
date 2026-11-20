@@ -19,7 +19,7 @@ def wc (y : Fin n → ℂ) : Fin k → ℂ := fun i => hJ ε (F.wb i) y
 def mW (H : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin k) (Fin k) ℂ := fun a b => hJ ε (F.wb a) (H *ᵥ F.wb b)
 
 /- English proof (translation)
-Simplify using `only [PtRepPf.hJ_apply, Finset.sum_apply, star_sum, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma hJ_sum_left' {ι : Type*} (s : Finset ι) (v : ι → Fin n → ℂ) (y : Fin n → ℂ) :
     hJ ε (∑ i ∈ s, v i) y = ∑ i ∈ s, hJ ε (v i) y := by
@@ -27,7 +27,7 @@ private lemma hJ_sum_left' {ι : Type*} (s : Finset ι) (v : ι → Fin n → �
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [PtRepPf.hJ_apply, Finset.sum_apply, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma hJ_sum_right_root_lattice_thresholds {ι : Type*} (s : Finset ι) (x : Fin n → ℂ) (v : ι → Fin n → ℂ) :
     hJ ε x (∑ i ∈ s, v i) = ∑ i ∈ s, hJ ε x (v i) := by
@@ -35,17 +35,17 @@ private lemma hJ_sum_right_root_lattice_thresholds {ι : Type*} (s : Finset ι) 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [PtRepPf.hJ_apply, Pi.sub_apply, star_sub, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma hJ_sub_left_root_lattice_thresholds (x x' y : Fin n → ℂ) : hJ ε (x - x') y = hJ ε x y - hJ ε x' y := by
   simp only [PtRepPf.hJ_apply, Pi.sub_apply, star_sub, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Apply `PtRepPf.eq_zero_of_hJ (ε := ε)` to reduce the goal to its premises. Introduce `x`. Establish `hx'e : ∀ b, hJ ε (G.e b) (x - ∑ a, hJ ε (G.fd a) x • G.e a - ∑ a, hJ ε (G.e a) x • G.fd a) = 0`. Introduce `b`. Rewrite using `[PtRepPf.hJ_sub_right, PtRepPf.hJ_sub_right, hJ_sum_right_root_lattice_thresholds, hJ_sum_right_root_lattice_thresholds]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [PtRepPf.hJ_smul_right, G.ee, G.ef, mul_zero, Finset.sum_const_zero, sub_zero, mul_ite, mul_one, Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]`. Establish `h1` using `G.pair _ d hx'e he`. Simplify using `only [hz, hw, mul_zero, zero_mul, Finset.sum_const_zero, add_zero] at h1`. Establish `h2 : hJ ε x d = hJ ε (x - ∑ a, hJ ε (G.fd a) x • G.e a - ∑ a, hJ ε (G.e a) x • G.fd a) d`. Rewrite using `[hJ_sub_left_root_lattice_thresholds, hJ_sub_left_root_lattice_thresholds, hJ_sum_left', hJ_sum_left']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [PtRepPf.hJ_smul_left, he, hf, mul_zero, Finset.sum_const_zero, sub_zero]`. Rewrite using `[h2, h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma eq_zero_of_hJ_frame_eq_zero (G : PtRepPf.Fr ε r k) (d : Fin n → ℂ) (he : ∀ a, hJ ε (G.e a) d = 0)
     (hf : ∀ a, hJ ε (G.fd a) d = 0) (hz : hJ ε G.z d = 0) (hw : ∀ i, hJ ε (G.wb i) d = 0) : d = 0 := by
@@ -64,7 +64,7 @@ private lemma eq_zero_of_hJ_frame_eq_zero (G : PtRepPf.Fr ε r k) (d : Fin n →
   rw [h2, h1]
 
 /- English proof (translation)
-Simplify using `only [hJ, Matrix.star_mulVec, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul]`. Rewrite using `[← Matrix.mul_assoc, hH]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isom {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ * Formalism.REAL.Jm ε * H = Formalism.REAL.Jm ε) (x y : Fin n → ℂ) :
     hJ ε (H *ᵥ x) (H *ᵥ y) = hJ ε x y := by
@@ -72,7 +72,7 @@ theorem isom {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ * Formalism.REAL.Jm ε 
   rw [← Matrix.mul_assoc, hH]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem fixed_left {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ * Formalism.REAL.Jm ε * H = Formalism.REAL.Jm ε) {x : Fin n → ℂ}
     (hx : H *ᵥ x = x) (w : Fin n → ℂ) : hJ ε x (H *ᵥ w) = hJ ε x w := by
@@ -80,20 +80,20 @@ theorem fixed_left {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ * Formalism.REAL.
     _ = hJ ε x w := isom hH x w
 
 /- English proof (translation)
-Use `show H *ᵥ ((-(F.T : ℂ)⁻¹) • F.z) = (-(F.T : ℂ)⁻¹) • F.z`. Rewrite using `[Matrix.mulVec_smul, hz]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_zd {H : Matrix (Fin n) (Fin n) ℂ} (hz : H *ᵥ F.z = F.z) : H *ᵥ F.zd = F.zd := by
   show H *ᵥ ((-(F.T : ℂ)⁻¹) • F.z) = (-(F.T : ℂ)⁻¹) • F.z
   rw [Matrix.mulVec_smul, hz]
 
 /- English proof (translation)
-Establish `key : ∀ x, hJ ε x (H *ᵥ F.wb i - ∑ j, mW F H j i • F.wb j) = hJ ε x (H *ᵥ F.wb i) - ∑ j, mW F H j i * hJ ε x (F.wb j)`. Introduce `x`. Rewrite using `[PtRepPf.hJ_sub_right, hJ_sum_right_root_lattice_thresholds]`. Simplify using `only [PtRepPf.hJ_smul_right]`. Rewrite using `[← sub_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `eq_zero_of_hJ_frame_eq_zero F` to reduce the goal to its premises. Introduce `a`. Rewrite using `[key, fixed_left hH (he a)]`. Simplify using `[F.ew]`. Introduce `a`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[key, fixed_left hH (hf a)]`. Simplify using `[F.fw]`. Rewrite using `[key, fixed_left hH hz]`. Simplify using `[F.zw]`. Introduce `l`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[key]`. Simplify using `[F.ww, mW]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem H_wb {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ * Formalism.REAL.Jm ε * H = Formalism.REAL.Jm ε)
     (he : ∀ a, H *ᵥ F.e a = F.e a) (hf : ∀ a, H *ᵥ F.fd a = F.fd a) (hz : H *ᵥ F.z = F.z) (i : Fin k) :
@@ -118,7 +118,7 @@ theorem H_wb {H : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ * Formalism.REAL.Jm ε 
     simp [F.ww, mW]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show hJ ε (F.wb i) (Hi *ᵥ w) = ((mW F H)ᴴ *ᵥ wc F w) i`. Rewrite using `[← isom hH (F.wb i) (Hi *ᵥ w), Matrix.mulVec_mulVec, hHi, Matrix.one_mulVec, H_wb F hH he hf hz i, hJ_sum_left']`. Simplify using `only [PtRepPf.hJ_smul_left, Matrix.mulVec, dotProduct, Matrix.conjTranspose_apply]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem wc_inv {H Hi : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ * Formalism.REAL.Jm ε * H = Formalism.REAL.Jm ε)
     (hHi : H * Hi = 1)
@@ -132,7 +132,7 @@ theorem wc_inv {H Hi : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ * Formalism.REAL.J
   rfl
 
 /- English proof (translation)
-Establish `h1` using `wc_inv F hH hHi he hf hz (H *ᵥ y)`. Rewrite `h1` using `[Matrix.mulVec_mulVec, hiH, Matrix.one_mulVec]`. Establish `hU : mW F H * (mW F H)ᴴ = 1` using `Matrix.mem_unitaryGroup_iff.mp hM`. Rewrite using `[h1, Matrix.mulVec_mulVec, hU, Matrix.one_mulVec]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem wc_fwd {H Hi : Matrix (Fin n) (Fin n) ℂ} (hH : Hᴴ * Formalism.REAL.Jm ε * H = Formalism.REAL.Jm ε)
     (hHi : H * Hi = 1) (hiH : Hi * H = 1)
@@ -155,7 +155,7 @@ def trunc (v : Fin (2 * r + k + 1) → ℂ) : Fin (2 * r + k + 1) → ℂ :=
   fun i => if r ≤ i.val ∧ i.val ≤ r + k then v i else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [trunc, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem trunc_add (v w : Fin (2 * r + k + 1) → ℂ) : trunc (v + w) = trunc v + trunc w := by
   funext i
@@ -163,7 +163,7 @@ theorem trunc_add (v w : Fin (2 * r + k + 1) → ℂ) : trunc (v + w) = trunc v 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [trunc, Pi.smul_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem trunc_smul (c : ℂ) (v : Fin (2 * r + k + 1) → ℂ) : trunc (c • v) = c • trunc v := by
   funext i
@@ -171,7 +171,7 @@ theorem trunc_smul (c : ℂ) (v : Fin (2 * r + k + 1) → ℂ) : trunc (c • v)
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [trunc, Finset.sum_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem trunc_sum {ι : Type*} (s : Finset ι) (v : ι → Fin (2 * r + k + 1) → ℂ) :
     trunc (∑ i ∈ s, v i) = ∑ i ∈ s, trunc (v i) := by
@@ -180,7 +180,7 @@ theorem trunc_sum {ι : Type*} (s : Finset ι) (v : ι → Fin (2 * r + k + 1) �
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [trunc]`. Use `split_ifs with hi`. Both sides reduce to the same expression. Conclude with `(h i (by omega)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem trunc_inWb {v : Fin (2 * r + k + 1) → ℂ} (h : Formalism.QuantumDeterminants.inWb k r v) : trunc v = v := by
   funext i
@@ -190,9 +190,9 @@ theorem trunc_inWb {v : Fin (2 * r + k + 1) → ℂ} (h : Formalism.QuantumDeter
   · exact (h i (by omega)).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [trunc, Formalism.QuantumDeterminants.bvec, Pi.zero_apply]`. Use `split_ifs with hi`. Rewrite using `[Pi.single_apply, if_neg]`. Introduce `h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : i.val = a.val` using `congrArg Fin.val h`. Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem trunc_eI (a : Fin r) : trunc (Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r a)) = 0 := by
   funext i
@@ -206,9 +206,9 @@ theorem trunc_eI (a : Fin r) : trunc (Formalism.QuantumDeterminants.bvec (Formal
   · rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [trunc, Formalism.QuantumDeterminants.bvec, Pi.zero_apply]`. Use `split_ifs with hi`. Rewrite using `[Pi.single_apply, if_neg]`. Introduce `h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : i.val = 2 * r + k - a.val` using `congrArg Fin.val h`. Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem trunc_esI (a : Fin r) : trunc (Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.esI k r a)) = 0 := by
   funext i
@@ -232,7 +232,7 @@ structure TrHyp (Qm : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ) (Qim : Matrix (F
 variable {F} {c : Fin r → ℂ}
 
 /- English proof (translation)
-Rewrite using `[← hT.hH]`. Simplify using `only [Formalism.QuantumDeterminants.herm, hJ, Matrix.star_mulVec, Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem herm_Q (hT : TrHyp F Qm Qim c) (p q : Fin (2 * r + k + 1) → ℂ) :
     Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk k r) p q = hJ ε (Qm *ᵥ q) (Qm *ᵥ p) := by
@@ -241,9 +241,9 @@ theorem herm_Q (hT : TrHyp F Qm Qim c) (p q : Fin (2 * r + k + 1) → ℂ) :
     Matrix.vecMul_vecMul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `h0`. Establish `h` using `hT.he a`. Rewrite `h` using `[h0, zero_smul]`. Establish `h3 : Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r a) = 0`. Establish `h4` using `congrArg (Qim *ᵥ ·) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h4` using `[Matrix.mulVec_mulVec, hT.h1]`. Establish `h5` using `congrFun h3 (Formalism.QuantumDeterminants.eI k r a)`. Simplify using `[Formalism.QuantumDeterminants.bvec] at h5`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem c_ne (hT : TrHyp F Qm Qim c) (a : Fin r) : c a ≠ 0 := by
   intro h0
@@ -256,7 +256,7 @@ theorem c_ne (hT : TrHyp F Qm Qim c) (a : Fin r) : c a ≠ 0 := by
   simp [Formalism.QuantumDeterminants.bvec] at h5
 
 /- English proof (translation)
-Establish `hc` using `c_ne hT a`. Establish `h1 : F.e a = (c a)⁻¹ • (Qm *ᵥ Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r a))`. Rewrite using `[hT.he a, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Rewrite using `[h1, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hT.h1, Matrix.one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Qi_e (hT : TrHyp F Qm Qim c) (a : Fin r) : Qim *ᵥ F.e a = (c a)⁻¹ • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r a) := by
   have hc := c_ne hT a
@@ -265,7 +265,7 @@ theorem Qi_e (hT : TrHyp F Qm Qim c) (a : Fin r) : Qim *ᵥ F.e a = (c a)⁻¹ �
   rw [h1, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hT.h1, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `hc : star (c a) ≠ 0` using `star_ne_zero.mpr (c_ne hT a)`. Establish `h1 : F.fd a = star (c a) • (Qm *ᵥ Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.esI k r a))`. Rewrite using `[hT.hf a, smul_smul, mul_inv_cancel₀ hc, one_smul]`. Rewrite using `[h1, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hT.h1, Matrix.one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Qi_f (hT : TrHyp F Qm Qim c) (a : Fin r) : Qim *ᵥ F.fd a = star (c a) • Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.esI k r a) := by
   have hc : star (c a) ≠ 0 := star_ne_zero.mpr (c_ne hT a)
@@ -274,15 +274,15 @@ theorem Qi_f (hT : TrHyp F Qm Qim c) (a : Fin r) : Qim *ᵥ F.fd a = star (c a) 
   rw [h1, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hT.h1, Matrix.one_mulVec]
 
 /- English proof (translation)
-Simplify using `only [Formalism.QuantumDeterminants.herm, Formalism.QuantumDeterminants.bvec]`. Establish `hs : star (Pi.single p (1 : ℂ) : Fin (2 * r + k + 1) → ℂ) = Pi.single p 1`. Use function extensionality and compare the values at `m`. Simplify using `[Pi.single_apply]`. Establish `hd : Pi.single p (1 : ℂ) ⬝ᵥ (Formalism.QuantumDeterminants.Hpk k r *ᵥ v) = (Formalism.QuantumDeterminants.Hpk k r *ᵥ v) p`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[dotProduct, Pi.single_apply]`. Rewrite using `[hs, hd]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single q]`. Establish `hq : Formalism.QuantumDeterminants.Hpk k r p q = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Formalism.QuantumDeterminants.Hpk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; (try simp only [Fin.ext_iff] at *); omega)`. Rewrite using `[hq, one_mul]`. Introduce `m _ hmq`. Establish `hmq' : m.val ≠ q.val` using `fun h => hmq (Fin.ext h)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : Formalism.QuantumDeterminants.Hpk k r p m = 0`. Simplify using `only [Formalism.QuantumDeterminants.Hpk]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; (try simp only [Fin.ext_iff] at *); omega)`. Rewrite using `[hm, zero_mul]`. Introduce `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ q) h`.
+A detailed English derivation is pending.
 -/
 private lemma herm_Hpk_bvec_eq_apply_of_antidiagonal (v : Fin (2 * r + k + 1) → ℂ) (p q : Fin (2 * r + k + 1))
     (hpq : p.val + q.val = 2 * r + k) (hpr : p.val < r ∨ q.val < r) :
@@ -310,9 +310,9 @@ private lemma herm_Hpk_bvec_eq_apply_of_antidiagonal (v : Fin (2 * r + k + 1) �
     exact absurd (Finset.mem_univ q) h
 
 /- English proof (translation)
-Introduce `i hi`. Establish `hil` using `i.isLt`. Break down `hi with hi | hi` into its components or cases. Establish `h1` using `herm_Hpk_bvec_eq_apply_of_antidiagonal (Qim *ᵥ w) (Formalism.QuantumDeterminants.esI k r ⟨i.val, hi⟩) i (by show (2 * r + k - i.val) + i.val = 2 * r + k; omega) (Or.inr hi)`. Rewrite `h1` using `[herm_Q hT, hT.hf, Matrix.mulVec_mulVec, hT.h2, Matrix.one_mulVec, PtRepPf.hJ_smul_left, hwf, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.symm`. Establish `h1` using `herm_Hpk_bvec_eq_apply_of_antidiagonal (Qim *ᵥ w) (Formalism.QuantumDeterminants.eI k r ⟨2 * r + k - i.val, by omega⟩) i (by show (2 * r + k - i.val) + i.val = 2 * r + k; omega) (Or.inl (by show 2 * r + k - i.val < r; omega))`. Rewrite `h1` using `[herm_Q hT, hT.he, Matrix.mulVec_mulVec, hT.h2, Matrix.one_mulVec, PtRepPf.hJ_smul_left, hwe, mul_zero]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inWb_Qi' (hT : TrHyp F Qm Qim c) (w : Fin n → ℂ) (hwe : ∀ a, hJ ε (F.e a) w = 0)
     (hwf : ∀ a, hJ ε (F.fd a) w = 0) : Formalism.QuantumDeterminants.inWb k r (Qim *ᵥ w) := by
@@ -332,17 +332,17 @@ theorem inWb_Qi' (hT : TrHyp F Qm Qim c) (w : Fin n → ℂ) (hwe : ∀ a, hJ ε
     exact h1.symm
 
 /- English proof (translation)
-Establish `hT0 : (G.T : ℂ) ≠ 0` using `by exact_mod_cast G.T_pos.ne'`. Establish `fe : ∀ a b, hJ ε (G.fd b) (G.e a) = if a = b then 1 else 0`. Introduce `a b`. Rewrite using `[← PtRepPf.hJ_conj, G.ef]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `ze : ∀ a, hJ ε G.z (G.e a) = 0`. Introduce `a`. Rewrite using `[← PtRepPf.hJ_conj, G.ez, star_zero]`. Establish `zf : ∀ a, hJ ε G.z (G.fd a) = 0`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← PtRepPf.hJ_conj, G.fz, star_zero]`. Establish `we : ∀ i a, hJ ε (G.wb i) (G.e a) = 0`. Introduce `i a`. Rewrite using `[← PtRepPf.hJ_conj, G.ew, star_zero]`. Establish `wf : ∀ i a, hJ ε (G.wb i) (G.fd a) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i a`. Rewrite using `[← PtRepPf.hJ_conj, G.fw, star_zero]`. Establish `wz : ∀ i, hJ ε (G.wb i) G.z = 0`. Introduce `i`. Rewrite using `[← PtRepPf.hJ_conj, G.zw, star_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero]`. Apply `eq_zero_of_hJ_frame_eq_zero G` to reduce the goal to its premises. Introduce `b`. Simplify using `only [PtRepPf.hJ_sub_right, PtRepPf.hJ_add_right, hJ_sum_right_root_lattice_thresholds, PtRepPf.hJ_smul_right, G.ee, G.ef, G.ez, G.ew, mul_zero, Finset.sum_const_zero, zero_add, add_zero, mul_ite, mul_one, Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]`. Introduce `b`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [PtRepPf.hJ_sub_right, PtRepPf.hJ_add_right, hJ_sum_right_root_lattice_thresholds, PtRepPf.hJ_smul_right, fe, G.ff, G.fz, G.fw, mul_zero, Finset.sum_const_zero, zero_add, add_zero, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, sub_self]`. Simplify using `only [PtRepPf.hJ_sub_right, PtRepPf.hJ_add_right, hJ_sum_right_root_lattice_thresholds, PtRepPf.hJ_smul_right, ze, zf, G.zz, G.zw, mul_zero, Finset.sum_const_zero, zero_add, add_zero]`. Take the linear combination `(-(hJ ε G.z v)) * inv_mul_cancel₀ hT0`. Introduce `l`. Simplify using `only [PtRepPf.hJ_sub_right, PtRepPf.hJ_add_right, hJ_sum_right_root_lattice_thresholds, PtRepPf.hJ_smul_right, we, wf, wz, G.ww, mul_zero, Finset.sum_const_zero, zero_add, add_zero, mul_ite, mul_one, Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private lemma eq_frame_expansion_hJ (G : PtRepPf.Fr ε r k) (v : Fin n → ℂ) :
     v = ∑ a, hJ ε (G.fd a) v • G.e a + ∑ a, hJ ε (G.e a) v • G.fd a + (-(G.T : ℂ)⁻¹ * hJ ε G.z v) • G.z +
@@ -386,11 +386,11 @@ private lemma eq_frame_expansion_hJ (G : PtRepPf.Fr ε r k) (v : Fin n → ℂ) 
       Finset.mem_univ, if_true, sub_self]
 
 /- English proof (translation)
-Establish `hz0 : trunc (Qim *ᵥ F.z) = Qim *ᵥ F.z` using `trunc_inWb (inWb_Qi' hT _ F.ez F.fz)`. Establish `hwi : ∀ i, trunc (Qim *ᵥ F.wb i) = Qim *ᵥ F.wb i` using `fun i => trunc_inWb (inWb_Qi' hT _ (fun a => F.ew a i) (fun a => F.fw a i))`. Establish `hvb : trunc (Qim *ᵥ w) = (-(F.T : ℂ)⁻¹ * hJ ε F.z w) • (Qim *ᵥ F.z) + Qim *ᵥ ∑ i, wc F w i • F.wb i` using `by conv_lhs => rw [eq_frame_expansion_hJ F w]`. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_sum, Matrix.mulVec_smul, trunc_add, trunc_sum, trunc_smul, Qi_e hT, Qi_f hT, trunc_eI, trunc_esI, smul_zero, Finset.sum_const_zero, zero_add, hz0, hwi, wc]`. Use `show trunc (Qim *ᵥ w) - (Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk k r) (trunc (Qim *ᵥ w)) (Qim *ᵥ F.z) / Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk k r) (Qim *ᵥ F.z) (Qim *ᵥ F.z)) • (Qim *ᵥ F.z) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hvb, herm_Q hT, herm_Q hT]`. Establish `hQQ : Qm *ᵥ (Qim *ᵥ F.z) = F.z` using `by rw [Matrix.mulVec_mulVec, hT.h2, Matrix.one_mulVec]`. Establish `hQW : Qm *ᵥ (Qim *ᵥ ∑ i, wc F w i • F.wb i) = ∑ i, wc F w i • F.wb i`. Rewrite using `[Matrix.mulVec_mulVec, hT.h2, Matrix.one_mulVec]`. Establish `hzW : hJ ε F.z (∑ i, wc F w i • F.wb i) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJ_sum_right_root_lattice_thresholds]`. Simplify using `[PtRepPf.hJ_smul_right, F.zw]`. Establish `hT0 : (F.T : ℂ) ≠ 0` using `by exact_mod_cast F.T_pos.ne'`. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul, hQQ, hQW, PtRepPf.hJ_add_right, PtRepPf.hJ_smul_right, hzW, F.zz, add_zero, mul_div_assoc, div_self (neg_ne_zero.mpr hT0), mul_one, add_sub_cancel_left]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prW_Qi (hT : TrHyp F Qm Qim c) (w : Fin n → ℂ) :
     Formalism.FourierDecayAlt.D.prW k r (Qim *ᵥ F.z) (Qim *ᵥ w) = Qim *ᵥ ∑ i, wc F w i • F.wb i := by
@@ -425,13 +425,13 @@ def lam (c : Fin r → ℂ) (sc : ℝ) : Fin (r + 1) → ℂ := fun a =>
   if h : a.val < r then c ⟨a.val, h⟩ * (sc : ℂ) ^ (r - a.val) else 1
 
 /- English proof (translation)
-Simplify using `[lam]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lam_last (c : Fin r → ℂ) (sc : ℝ) : lam c sc (Fin.last r) = 1 := by
   simp [lam]
 
 /- English proof (translation)
-Unfold `lam`. Use `split_ifs with h`. Conclude with `mul_ne_zero (c_ne hT _) (pow_ne_zero _ (by exact_mod_cast hsc))`. Conclude with `one_ne_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lam_ne (hT : TrHyp F Qm Qim c) {sc : ℝ} (hsc : sc ≠ 0) (a : Fin (r + 1)) : lam c sc a ≠ 0 := by
   unfold lam
@@ -440,11 +440,11 @@ theorem lam_ne (hT : TrHyp F Qm Qim c) {sc : ℝ} (hsc : sc ≠ 0) (a : Fin (r +
   · exact one_ne_zero
 
 /- English proof (translation)
-Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Establish `h1 : Formalism.QuantumDeterminants.fvec k r (Qim *ᵥ F.z) (Fin.last r) = Qim *ᵥ F.z`. Simplify using `[Formalism.QuantumDeterminants.fvec]`. Rewrite using `[h1, Matrix.mulVec_mulVec, hT.h2, Matrix.one_mulVec, lam_last, one_smul]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[famSc, fam]`. Consider the case `cast i`. Establish `h1 : Formalism.QuantumDeterminants.fvec k r (Qim *ᵥ F.z) (Fin.castSucc i) = Formalism.QuantumDeterminants.bvec (Formalism.QuantumDeterminants.eI k r i)`. Simplify using `[Formalism.QuantumDeterminants.fvec]`. Establish `h2 : lam c sc (Fin.castSucc i) = c i * (sc : ℂ) ^ (r - i.val)`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[lam]`. Rewrite using `[h1, hT.he, h2]`. Simplify using `only [famSc, fam, Fin.snoc_castSucc, Fin.coe_castSucc, smul_smul]`. Use `congr 1`. Establish `: (sc : ℂ) ^ (r - i.val) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hsc)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -468,16 +468,16 @@ theorem Q_fvec (hT : TrHyp F Qm Qim c) {sc : ℝ} (hsc : sc ≠ 0) (a : Fin (r +
     field_simp
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hT.h2, Matrix.one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Q_delta (hT : TrHyp F Qm Qim c) (A : Matrix (Fin n) (Fin n) ℂ) (x : Fin (2 * r + k + 1) → ℂ) :
     Qm *ᵥ ((Qim * A * Qm) *ᵥ x) = A *ᵥ (Qm *ᵥ x) := by
   simp only [Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hT.h2, Matrix.one_mul]
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Use `show Formalism.QuantumDeterminants.herm (Formalism.QuantumDeterminants.Hpk k r) ((Qim * A * Qm) *ᵥ Formalism.QuantumDeterminants.fvec k r (Qim *ᵥ F'.z) b) (Formalism.QuantumDeterminants.fvec k r (Qim *ᵥ F.z) a) = _`. Rewrite using `[herm_Q hT, Q_delta hT, Q_fvec hT hsc, Q_fvec hT' hsc, Matrix.mulVec_smul, PtRepPf.hJ_smul_left, PtRepPf.hJ_smul_right]`. Simplify using `only [Formalism.L2.SG.RealObj.Zhat]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem zhat_cs (hT : TrHyp F Qm Qim c) (hT' : TrHyp F' Qm Qim c) {sc : ℝ} (hsc : sc ≠ 0)
     (A : Matrix (Fin n) (Fin n) ℂ) :
@@ -494,11 +494,11 @@ theorem zhat_cs (hT : TrHyp F Qm Qim c) (hT' : TrHyp F' Qm Qim c) {sc : ℝ} (hs
   ring
 
 /- English proof (translation)
-Establish `hdet : (Matrix.diagonal d).det = ∏ j, d j` using `Matrix.det_diagonal`. Establish `hP : (∏ j, d j) ≠ 0` using `Finset.prod_ne_zero_iff.mpr (fun j _ => hd j)`. Establish `hU : IsUnit (Matrix.diagonal d).det` using `by rw [hdet]; exact hP.isUnit`. Establish `h1 : Matrix.diagonal d * Matrix.diagonal (fun i => (∏ j, d j) / d i) = (Matrix.diagonal d).det • (1 : Matrix (Fin m) (Fin m) ℂ)`. Rewrite using `[Matrix.diagonal_mul_diagonal, hdet, Matrix.smul_one_eq_diagonal]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Clear denominators, using `[hd i]` for the nonvanishing conditions. Establish `h2` using `Matrix.mul_adjugate (Matrix.diagonal d)`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hU, Matrix.one_mul]`. Use `_ = (Matrix.diagonal d)⁻¹ * (Matrix.diagonal d * Matrix.diagonal (fun i => (∏ j, d j) / d i)) := by`. Rewrite using `[h2, h1]`. Use `_ = Matrix.diagonal (fun i => (∏ j, d j) / d i) := by`. Rewrite using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hU, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_diag {m : ℕ} (d : Fin m → ℂ) (hd : ∀ i, d i ≠ 0) :
     (Matrix.diagonal d).adjugate = Matrix.diagonal (fun i => (∏ j, d j) / d i) := by
@@ -521,7 +521,7 @@ theorem adj_diag {m : ℕ} (d : Fin m → ℂ) (hd : ∀ i, d i ≠ 0) :
         rw [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hU, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.adjugate_mul_distrib, Matrix.adjugate_mul_distrib, adj_diag s hs, adj_diag l hl, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_M {m : ℕ} (s l : Fin m → ℂ) (hs : ∀ i, s i ≠ 0) (hl : ∀ i, l i ≠ 0) (Z : Matrix (Fin m) (Fin m) ℂ) :
     (Matrix.diagonal s * Z * Matrix.diagonal l).adjugate =
@@ -536,7 +536,7 @@ variable {n : ℕ} {ε : Fin n → Bool} {r k : ℕ} {F F' : PtRepPf.Fr ε r k}
   {Qm : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ} {Qim : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ} {c : Fin r → ℂ}
 
 /- English proof (translation)
-Simplify using `only [famSc, Matrix.mulVec_smul]`. Use `congr 1`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => simp only [fam, Fin.snoc_last, hz]`. Consider the case `cast i => simp only [fam, Fin.snoc_castSucc, he]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem fix_famSc {H : Matrix (Fin n) (Fin n) ℂ} (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ)
     (he : ∀ a, H *ᵥ e a = e a) (hz : H *ᵥ z = z) (sc : ℝ) (a : Fin (r + 1)) :
@@ -548,17 +548,17 @@ theorem fix_famSc {H : Matrix (Fin n) (Fin n) ℂ} (e : Fin r → Fin n → ℂ)
   | cast i => simp only [fam, Fin.snoc_castSucc, he]
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.SG.RealObj.Dl, Fin.castLE_rfl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dl_top' (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ) : Formalism.L2.SG.RealObj.Dl Z (r + 1) = Z.det := by
   simp [Formalism.L2.SG.RealObj.Dl, Fin.castLE_rfl]
 
 /- English proof (translation)
-Establish `hne : eN nn ≠ 0`. Introduce `h0`. Simplify using `only [h0, Complex.ofReal_zero, _root_.inv_zero, zero_smul] at h`. Establish `h1 : (star M * M) *ᵥ Pi.single i0 (1 : ℂ) = 0`. Rewrite using `[← Matrix.mulVec_mulVec, h, Matrix.mulVec_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[Matrix.mem_unitaryGroup_iff'.mp hM, Matrix.one_mulVec]`. Establish `h2` using `congrFun h1 i0`. Simplify using `at h2`. Use `⟨hne, ?_⟩` and prove the remaining obligations. Establish `hc : (eN nn : ℂ) ≠ 0` using `by exact_mod_cast hne`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h, smul_smul, mul_inv_cancel₀ hc, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eN_ne_zero_and_eq_smul_of_unitary_column {k : ℕ} {M : Matrix (Fin k) (Fin k) ℂ} (hM : M ∈ Matrix.unitaryGroup (Fin k) ℂ) {i0 : Fin k}
     {nn : Fin k → ℂ} (h : M *ᵥ Pi.single i0 1 = ((eN nn)⁻¹ : ℂ) • nn) :
@@ -576,7 +576,7 @@ theorem eN_ne_zero_and_eq_smul_of_unitary_column {k : ℕ} {M : Matrix (Fin k) (
   rw [h, smul_smul, mul_inv_cancel₀ hc, one_smul]
 
 /- English proof (translation)
-Simplify using `[Pi.single_apply, ite_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_single_smul {k : ℕ} (i0 : Fin k) (d : ℂ) (w : Fin k → Fin n → ℂ) :
     ∑ i, (d • (Pi.single i0 (1 : ℂ) : Fin k → ℂ)) i • w i = d • w i0 := by
@@ -590,7 +590,7 @@ variable {n : ℕ} {ε : Fin n → Bool} {r k : ℕ} {F F' : PtRepPf.Fr ε r k}
   {Qm : Matrix (Fin n) (Fin (2 * r + k + 1)) ℂ} {Qim : Matrix (Fin (2 * r + k + 1)) (Fin n) ℂ} {c : Fin r → ℂ}
 
 /- English proof (translation)
-Rewrite using `[← hm i]`. Simplify using `only [Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hT.h1, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem transport_matrix_maps_basis (hT : TrHyp F Qm Qim c) {m₀ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hm : ∀ i, (Qm * m₀ * Qim) *ᵥ F'.wb i = F.wb i) (i : Fin k) :
@@ -599,20 +599,20 @@ theorem transport_matrix_maps_basis (hT : TrHyp F Qm Qim c) {m₀ : Matrix (Fin 
   simp only [Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hT.h1, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, hT.h1, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Qi_Q (hT : TrHyp F Qm Qim c) (x : Fin (2 * r + k + 1) → ℂ) : Qim *ᵥ (Qm *ᵥ x) = x := by
   rw [Matrix.mulVec_mulVec, hT.h1, Matrix.one_mulVec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [wc, PtRepPf.hJ_smul_right, Pi.smul_apply, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem wc_smul (G : PtRepPf.Fr ε r k) (d : ℂ) (w : Fin n → ℂ) : wc G (d • w) = d • wc G w := by
   funext i
   simp only [wc, PtRepPf.hJ_smul_right, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_Qi (G : PtRepPf.Fr ε r k) (d : Fin k → ℂ) :
     Qim *ᵥ ∑ i, d i • G.wb i = ∑ i, d i • (Qim *ᵥ G.wb i) := by
@@ -620,61 +620,55 @@ theorem sum_Qi (G : PtRepPf.Fr ε r k) (d : Fin k → ℂ) :
   simp only [Matrix.mulVec_smul]
 
 /- English proof (translation)
-Take `⟨hMu, hM'u, h1, h2, h3⟩` from `hD`. Use `set f := famSc sc F.e F.z with hf`. Use `set f' := famSc sc F'.e F'.z with hf'`. Use `set Z := Formalism.L2.SG.RealObj.Zhat ε f f' g with hZdef`. Use `set M := mW F H with hMdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set M' := mW F' H' with hM'def`. Use `set L := lam c sc with hLdef`. Establish `hL0 : ∀ a, L a ≠ 0` using `lam_ne hT hsc`. Establish `hs0 : ∀ a, star (L a) ≠ 0` using `fun a => star_ne_zero.mpr (hL0 a)`. Establish `hLl : L (Fin.last r) = 1` using `lam_last c sc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hHf_ : ∀ a, H *ᵥ f a = f a` using `fix_famSc F.e F.z hHe hHz sc`. Establish `hH'f_ : ∀ b, H' *ᵥ f' b = f' b` using `fix_famSc F'.e F'.z hH'e hH'z sc`. Establish `hAf' : ∀ b, (Hi * g * H') *ᵥ f' b = Hi *ᵥ (g *ᵥ f' b)` using `fun b => by`. Rewrite using `[← Matrix.mulVec_mulVec, hH'f_ b, Matrix.mulVec_mulVec]`. Establish `hZA : Formalism.L2.SG.RealObj.Zhat ε f f' (Hi * g * H') = Z`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `a b`. Use `show hJ ε (f a) ((Hi * g * H') *ᵥ f' b) = hJ ε (f a) (g *ᵥ f' b)`. Rewrite using `[hAf', ← fixed_left hH (hHf_ a) (Hi *ᵥ (g *ᵥ f' b)), Matrix.mulVec_mulVec, hHi, Matrix.one_mulVec]`. Establish `hZC : Formalism.QuantumDeterminants.Zhat k r Bs.z Bs.z' (Qim * (Hi * g * H') * Qm) = Matrix.diagonal (fun a => star (L a)) * Z * Matrix.diagonal L`. Rewrite using `[hz, hz', zhat_cs hT hT' hsc, hZA]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hadj` using `adj_M (fun a => star (L a)) L hs0 hL0 Z`. Use `set pL : ℂ := ∏ j, L j with hpL`. Use `set pS : ℂ := ∏ j, star (L j) with hpS`. Establish `hpLs : star pL = pS` using `by rw [hpL, hpS, star_prod]`. Establish `hpSs : star pS = pL` using `by rw [hpL, hpS, star_prod]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hdet : (Formalism.QuantumDeterminants.Zhat k r Bs.z Bs.z' (Qim * (Hi * g * H') * Qm)).det = pL * pS * Z.det`. Rewrite using `[hZC, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal]`. Expand and normalize the polynomial expressions, which then agree. Establish `hDl : Formalism.L2.SG.RealObj.Dl Z (r + 1) = Z.det` using `dl_top' Z`. Establish `hMM : star M * M = 1` using `Matrix.mem_unitaryGroup_iff'.mp hMu`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hMM' : star M' * M' = 1` using `Matrix.mem_unitaryGroup_iff'.mp hM'u`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `set x' := Formalism.L2.SG.RealObj.xPr Z g f' with hx'`. Establish `hcof : Qm *ᵥ Formalism.FourierDecayAlt.D.cofR Bs (Qim * (Hi * g * H') * Qm) = (pL * pS) • (Hi *ᵥ x')`. Unfold `Formalism.FourierDecayAlt.D.cofR`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hZC, hadj, hz', Matrix.mulVec_sum, hx']`. Unfold `Formalism.L2.SG.RealObj.xPr`. Rewrite using `[Matrix.mulVec_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, Q_delta hT, Q_fvec hT' hsc, Matrix.mulVec_smul, hAf', Matrix.mulVec_smul, smul_smul, smul_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, hLl, star_one, div_one]`. Clear denominators, using `[hL0 b]` for the nonvanishing conditions. Expand and normalize the polynomial expressions, which then agree. Take `⟨hne, hnn⟩` from `eN_ne_zero_and_eq_smul_of_unitary_column hMu h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set nn := (Formalism.L2.SG.RealObj.Dl Z (r + 1))⁻¹ • wCoord ε F.wb x' with hnndef`. Establish `hD0 : Z.det ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hnndef, hDl, h0, _root_.inv_zero, zero_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[eN]`. Establish `hwc : wc F x' = Z.det • nn`. Rewrite using `[hnndef, hDl, smul_smul, mul_inv_cancel₀ hD0, one_smul]`. Both sides reduce to the same expression. Establish `hMnn : star M *ᵥ nn = (eN nn : ℂ) • (Pi.single i0 1 : Fin k → ℂ)` using `by conv_lhs => rw [hnn]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, hMM, Matrix.one_mulVec]`. Establish `hcoord : wc F (Hi *ᵥ x') = (Z.det * (eN nn : ℂ)) • (Pi.single i0 1 : Fin k → ℂ)`. Rewrite using `[wc_inv F hH hHi hHe hHf hHz, hwc, Matrix.mulVec_smul, ← Matrix.star_eq_conjTranspose, hMnn, smul_smul]`. Use `⟨eN nn, lt_of_le_of_ne (Real.sqrt_nonneg _) (Ne.symm hne), ?_⟩` and prove the remaining obligations. Rewrite using `[hdet, ← Qi_Q hT (Formalism.FourierDecayAlt.D.cofR Bs _), hcof, hz, prW_Qi hT, wc_smul, hcoord, smul_smul, sum_single_smul, transport_matrix_maps_basis hT hm, Matrix.mulVec_smul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `set xu := Formalism.L2.SG.RealObj.xUn Z f with hxu`. Establish `hAAi : (Hi * g * H') * (H'i * gi * H) = 1`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hinv : (Qim * (Hi * g * H') * Qm)⁻¹ = Qim * (H'i * gi * H) * Qm`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hT.h2, Matrix.one_mul, ← Matrix.mul_assoc (Hi * g * H') (H'i * gi * H) Qm, hAAi, Matrix.one_mul, hT.h1]`. Establish `hcofL : Qm *ᵥ Formalism.FourierDecayAlt.D.cofL Bs (Qim * (Hi * g * H') * Qm) = (pL * pS) • xu`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.FourierDecayAlt.D.cofL`. Rewrite using `[hZC, hadj, hz, Matrix.mulVec_sum, hxu]`. Unfold `Formalism.L2.SG.RealObj.xUn`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_smul, Q_fvec hT hsc, smul_smul, smul_smul]`. Use `congr 1`. Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, hLl, div_one, map_mul, map_div₀, starRingEnd_apply, star_star, hpLs, hpSs]`. Clear denominators, using `[hL0 a]` for the nonvanishing conditions. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hHxu : H *ᵥ xu = xu`. Rewrite using `[hxu]`. Unfold `Formalism.L2.SG.RealObj.xUn`. Rewrite using `[Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul, hHf_]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hQdi : Qm *ᵥ ((Qim * (H'i * gi * H) * Qm) *ᵥ Formalism.FourierDecayAlt.D.cofL Bs (Qim * (Hi * g * H') * Qm)) = (pL * pS) • (H'i *ᵥ (gi *ᵥ xu))`. Rewrite using `[Q_delta hT, hcofL, Matrix.mulVec_smul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hHxu]`. Take `⟨hne', hnn'⟩` from `eN_ne_zero_and_eq_smul_of_unitary_column hM'u h2`. Use `set nn' := (star (Formalism.L2.SG.RealObj.Dl Z (r + 1)))⁻¹ • wCoord ε F'.wb (gi *ᵥ xu) with hnndef'`. Establish `hD0 : Z.det ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h0`. Apply `hne'` to reduce the goal to its premises. Rewrite using `[hnndef', hDl, h0, star_zero, _root_.inv_zero, zero_smul]`. Simplify using `[eN]`. Establish `hsD0 : star Z.det ≠ 0` using `star_ne_zero.mpr hD0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hwc' : wc F' (gi *ᵥ xu) = star Z.det • nn'`. Rewrite using `[hnndef', hDl, smul_smul, mul_inv_cancel₀ hsD0, one_smul]`. Both sides reduce to the same expression. Establish `hMnn' : star M' *ᵥ nn' = (eN nn' : ℂ) • (Pi.single i0 1 : Fin k → ℂ)` using `by conv_lhs => rw [hnn']`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_mulVec, hMM', Matrix.one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hcoord' : wc F' (H'i *ᵥ (gi *ᵥ xu)) = (star Z.det * (eN nn' : ℂ)) • (Pi.single i0 1 : Fin k → ℂ)`. Rewrite using `[wc_inv F' hH' hH'i hH'e hH'f hH'z, hwc', Matrix.mulVec_smul, ← Matrix.star_eq_conjTranspose, hMnn', smul_smul]`. Use `⟨eN nn', lt_of_le_of_ne (Real.sqrt_nonneg _) (Ne.symm hne'), ?_⟩` and prove the remaining obligations. Rewrite using `[hdet, hinv, ← Qi_Q hT ((Qim * (H'i * gi * H) * Qm) *ᵥ Formalism.FourierDecayAlt.D.cofL Bs (Qim * (Hi * g * H') * Qm)), hQdi, hz', prW_Qi hT', wc_smul, hcoord', smul_smul, sum_single_smul, Matrix.mulVec_smul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [map_mul, starRingEnd_apply, hpLs, hpSs]`. Expand and normalize the polynomial expressions, which then agree. Introduce `u hu`. Use `set y := Qm *ᵥ u with hy`. Establish `hu' : u = Qim *ᵥ y` using `(Qi_Q hT u).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfy : ∀ a, hJ ε (f a) y = 0` using `fun a => by`. Use `(hu a).1` as an intermediate fact. Rewrite `this` using `[herm_Q hT, hz, Q_fvec hT hsc, PtRepPf.hJ_smul_left]`. Conclude with `(mul_eq_zero.mp this).resolve_left (hs0 a)`. Establish `hgy : ∀ b, hJ ε (g *ᵥ f' b) (H *ᵥ y) = 0` using `fun b => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `(hu b).2` as an intermediate fact. Rewrite `this` using `[herm_Q hT, hz', Q_delta hT, Q_fvec hT' hsc, Matrix.mulVec_smul, PtRepPf.hJ_smul_left, hAf']`. Establish `h0` using `(mul_eq_zero.mp this).resolve_left (hs0 b)`. Rewrite `h0` using `[← isom hH, Matrix.mulVec_mulVec, hHi, Matrix.one_mulVec]`. Conclude with `h0`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hfHy : ∀ a, hJ ε (f a) (H *ᵥ y) = 0` using `fun a => by rw [fixed_left hH (hHf_ a), hfy a]`. Establish `hR` using `h3 (H *ᵥ y) hfHy hgy`. Establish `hWy : wc F (H *ᵥ y) = M *ᵥ wc F y` using `wc_fwd F hH hHi hiH hHe hHf hHz hMu y`. Establish `e1 : M *ᵥ (star M' *ᵥ wc F' (gi *ᵥ (H *ᵥ y))) = M *ᵥ wc F y` using `by rw [← hWy]; exact hR`. Establish `e2 : (star M * M) *ᵥ (star M' *ᵥ wc F' (gi *ᵥ (H *ᵥ y))) = (star M * M) *ᵥ wc F y`.
-
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, e1]`. Rewrite `e2` using `[hMM, Matrix.one_mulVec, Matrix.one_mulVec]`. Establish `hAi : (Qim * (Hi * g * H') * Qm)⁻¹ = Qim * (H'i * gi * H) * Qm`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Establish `hAAi : (Hi * g * H') * (H'i * gi * H) = 1`.
-
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hT.h2, Matrix.one_mul, ← Matrix.mul_assoc (Hi * g * H') (H'i * gi * H) Qm, hAAi, Matrix.one_mul, hT.h1]`. Establish `hδy : (Qim * (H'i * gi * H) * Qm) *ᵥ (Qim *ᵥ y) = Qim *ᵥ (H'i *ᵥ (gi *ᵥ (H *ᵥ y)))`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_assoc (Qim * (H'i * gi * H)) Qm Qim, hT.h2, Matrix.mul_one, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`.
-
-Rewrite using `[hAi, hu', hδy, hz, hz', prW_Qi hT, prW_Qi hT', wc_inv F' hH' hH'i hH'e hH'f hH'z, ← Matrix.star_eq_conjTranspose, e2, sum_Qi F', Matrix.mulVec_sum, Matrix.mulVec_sum]`. Simplify using `only [Matrix.mulVec_smul, transport_matrix_maps_basis hT hm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bridge_place (hT : TrHyp F Qm Qim c) (hT' : TrHyp F' Qm Qim c) {sc : ℝ} (hsc : sc ≠ 0)
     {g gi H Hi H' H'i : Matrix (Fin n) (Fin n) ℂ} (hgi : g * gi = 1)

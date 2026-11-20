@@ -14,15 +14,13 @@ noncomputable section
 namespace GlobalTheory.MumCmp.Transl
 
 /- English proof (translation)
-Introduce `R _ _ I D D₂ A A₂ G _ _ U U₂ g a β hβm e hβ hab h h₁ h₂`. Set `ae : 𝟙_ (Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) ⟶ thickObj R I e G` to `Over.homMk (pullback.lift (thick R I e ≫ a.left) (𝟙 _) (by`. Rewrite using `[Category.assoc, Over.w a]`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm))`. Use the proof step `(pullback.lift_snd _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : ae.left ≫ (fstG I e G).left = thick R I e ≫ a.left` using `pullback.lift_fst _ _ _`. Establish `hh : h = (tr ae).left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `h₂.trans (tr_fst hae).symm`. Conclude with `h₁.trans (Over.w (tr ae)).symm`.
+Reduce the claim to the hypotheses of an applicable result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Substitute `hh` using the available equality. Establish `k₁` using `TorusCoord.im_mul (U.gt e) (toUnit _ ≫ ae) (𝟙 (thickObj R I e G))`. Establish `k₂ : TorusCoord.im (U.gt e) (toUnit (thickObj R I e G) ≫ ae) = toUnit _ ≫ g.b`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show ((thickObj R I e G).hom ≫ ae.left) ≫ (U.gt e).pG.left = ((thickObj R I e G).hom ≫ thick R I e) ≫ g.b.left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc]`. Conclude with `congrArg ((thickObj R I e G).hom ≫ ·) (hab _ (Over.w ae) hae)`. Establish `k₃ : TorusCoord.im (U.gt e) (𝟙 (thickObj R I e G)) = (U₂.gt e).pG ≫ β.hom` using `Over.OverMorphism.ext ((Category.id_comp _).trans hβ.symm)`. Establish `k₄ : (U₂.gt e).pG ≫ (β.hom * (toUnit _ ≫ g.b)) = ((U₂.gt e).pG ≫ β.hom) * (toUnit _ ≫ g.b)`. Rewrite using `[MonObj.comp_mul, ← Category.assoc _ (toUnit _), comp_toUnit]`.
-
-Rewrite `k₁` using `[k₂, k₃, _root_.mul_comm (toUnit _ ≫ g.b), ← k₄]`. Conclude with `congrArg (fun q => q.left) k₁`.
+A detailed English derivation is pending.
 -/
 theorem pG_comp_lift_translate : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D D₂ : DegData R I) (A A₂ : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (U₂ : UnifPre I D₂ A₂ G) (g : GtPt D.toPre (𝟙_ (Over (Sp R)))) (a : 𝟙_ (Over (Sp R)) ⟶ G) (β : D₂.toPre.P.A ≅ D.toPre.P.A), IsMonHom β.hom → ∀ e : ℕ, (U₂.gt e).pG.left ≫ β.hom.left = (U.gt e).pG.left → (∀ ae : Spec (CommRingCat.of (R ⧸ I ^ (e + 1))) ⟶ (thickObj R I e G).left, ae ≫ (thickObj R I e G).hom = 𝟙 _ → ae ≫ (fstG I e G).left = thick R I e ≫ a.left → ae ≫ (U.gt e).pG.left = thick R I e ≫ g.b.left) → ∀ h : (thickObj R I e G).left ⟶ (thickObj R I e G).left, h ≫ (thickObj R I e G).hom = (thickObj R I e G).hom → h ≫ (fstG I e G).left = (fstG I e G).left ≫ ((toUnit G ≫ a) * 𝟙 G).left → h ≫ (U.gt e).pG.left = (U₂.gt e).pG.left ≫ GlobalTheory.MumCmp.twφ D₂.toPre D.toPre β.hom g.b 0 := by
   intro R _ _ I D D₂ A A₂ G _ _ U U₂ g a β hβm e hβ hab h h₁ h₂

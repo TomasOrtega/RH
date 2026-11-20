@@ -11,7 +11,7 @@ namespace PI.StrongApproxE
 open Formalism.MainNotions.S.Loc
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ sig p L V hV α`. Use `L.lf` as an intermediate fact. Establish `ho : IsOpen {x : L.Fp | x - α ∈ V}` using `hV.preimage (continuous_sub_right α)`. Take `⟨a, ha⟩` from `L.dense.exists_mem_open ho ⟨α, by simp⟩`. Conclude with `⟨a, ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem local_dense_embedding : LocDense := by
   intro F E _ _ _ _ _ sig p L V hV α
@@ -21,17 +21,15 @@ theorem local_dense_embedding : LocDense := by
   exact ⟨a, ha⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ sig p L V hV`. Use `L.lf` as an intermediate fact. Establish `hV0 : (V : Set L.Fp) ∈ nhds (0 : L.Fp)` using `hV.mem_nhds V.zero_mem`. Take `⟨γ, hγ⟩` from `(IsValuativeTopology.mem_nhds_zero_iff _).mp hV0`. Take `⟨r, hr⟩` from `ValuativeRel.valuation_surjective (γ : ValueGroupWithZero L.Fp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r', hr'0, hr'1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation L.Fp)`. Use `set x₀ : L.Fp := r * r' with hx₀`. Establish `hx₀v : valuation L.Fp x₀ < γ`. Rewrite using `[hx₀, map_mul, hr]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Conclude with `mul_lt_mul_of_pos_left hr'1 (by simp [pos_iff_ne_zero])`. Use `_ = γ := mul_one _`. Establish `hx₀0 : valuation L.Fp x₀ ≠ 0`. Rewrite using `[hx₀, map_mul, hr]`. Conclude with `mul_ne_zero (Units.ne_zero γ) (by simpa using hr'0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : {y : L.Fp | valuation L.Fp (y - x₀) < valuation L.Fp x₀} ∈ nhds x₀` using `IsValuativeTopology.mem_nhds_iff'.mpr ⟨Units.mk0 _ hx₀0, fun y hy => by simpa using hy⟩`. Take `⟨_, hy, ⟨c, rfl⟩⟩` from `mem_closure_iff_nhds.mp (L.dense x₀) _ hs`. Establish `hyv : valuation L.Fp (L.ιF c) = valuation L.Fp x₀` using `Valuation.map_eq_of_sub_lt _ hy`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at hyv`. Conclude with `hx₀0 hyv.symm`. Use `⟨c, hc0, fun z hz => ?_⟩` and prove the remaining obligations. Establish `h1 : L.ιF z ≤ᵥ L.ιF c` using `(L.val z c).mpr hz`. Establish `h2 : valuation L.Fp (L.ιF z) ≤ valuation L.Fp (L.ιF c)` using `(Valuation.Compatible.vle_iff_le (v := valuation L.Fp) _ _).mp h1`.
-
-Conclude with `hγ (show valuation L.Fp (L.ιF z) < γ from lt_of_le_of_lt (h2.trans_eq hyv) hx₀v)`.
+A detailed English derivation is pending.
 -/
 theorem local_neighbourhood_small : LocSmall := by
   intro F E _ _ _ _ _ sig p L V hV
@@ -65,11 +63,11 @@ theorem local_neighbourhood_small : LocSmall := by
   exact hγ (show valuation L.Fp (L.ιF z) < γ from lt_of_le_of_lt (h2.trans_eq hyv) hx₀v)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ sig p L z e hz he`. Use `L.lf` as an intermediate fact. Establish `h1 : L.ιF z ≤ᵥ L.ιF 1` using `(L.val z 1).mpr (by simpa using hz)`. Establish `hzO : L.ιF z ∈ 𝒪[L.Fp]`. Rewrite using `[Valuation.mem_integer_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(Valuation.Compatible.vle_iff_le (v := valuation L.Fp) _ _).mp h1` as an intermediate fact. Simplify using `using this`. Establish `hE : IsIntegral 𝒪[L.Fp] (L.ιE e)` using `(map_isIntegral_int L.ιE he).tower_top`. Establish `hA : IsIntegral 𝒪[L.Fp] (algebraMap L.Fp L.Ep (L.ιF z))`. Use `isIntegral_algebraMap (R := 𝒪[L.Fp]) (A := L.Ep) (x := ⟨L.ιF z, hzO⟩)` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Rewrite using `[Algebra.smul_def]`. Conclude with `L.O.mul_mem ((L.O_def _).mpr hA) ((L.O_def _).mpr hE)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_integral_of_substitution : LocInt := by
   intro F E _ _ _ _ _ sig p L z e hz he

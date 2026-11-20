@@ -10,7 +10,7 @@ namespace GlobalTheory.AdelicU.SplitFrame
 variable {D : D7} {e : AE D} {v : HeightOneSpectrum (𝓞 D.host.F)} {π : AE D →+* Fv D.host.F v}
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_map_sndA {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (u : HeightOneSpectrum (𝓞 F))
     (z : AF F ⊗[F] E) :
@@ -22,7 +22,7 @@ theorem map_map_sndA {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F
   | tmul a x => rfl
 
 /- English proof (translation)
-The claim follows from `funext fun i => (map_map_sndA u (e * y i)).trans ((compFin D.host.F D.host.E u).map_mul e (y i))`.
+A detailed English derivation is pending.
 -/
 theorem vecLoc_finPart {n : ℕ} (u : HeightOneSpectrum (𝓞 D.host.F)) (e : AE D) (y : Fin n → AE D) :
     vecLoc u (fun i => finPart D (e * y i)) =
@@ -30,15 +30,13 @@ theorem vecLoc_finPart {n : ℕ} (u : HeightOneSpectrum (𝓞 D.host.F)) (e : AE
   funext fun i => (map_map_sndA u (e * y i)).trans ((compFin D.host.F D.host.E u).map_mul e (y i))
 
 /- English proof (translation)
-Take `⟨h1, h2, v', ε, ⟨α, rfl, -, ha⟩, hε⟩` from `he`. Establish `p1 : π e = 1`. Use `(hπ.2.1 (1 - e)).2 (by rw [mul_sub, mul_one, h1, sub_self])` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `this.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `p2 : π (cA D e) = 0` using `(hπ.2.1 _).2 h2`. Establish `p3 : evalV D.host.F v α = 1`. Use `hπ.2.2.1 (pairA D.host.F 0 α)` as an intermediate fact. Rewrite `this` using `[← hε, map_add, p1, p2, add_zero]`. Conclude with `this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hv : v = v'`. Assume the negation of the conclusion as `hne`. Rewrite `p3` using `[ha v hne]`. Conclude with `zero_ne_one p3`. Substitute `hv` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `p4 : compFin D.host.F D.host.E u (e + cA D e) = 0`. Rewrite using `[hε]`. Express the relevant statement in the definitionally equal form `(evalV D.host.F u α) ⊗ₜ[D.host.F] (1 : D.host.E) = 0`. Rewrite using `[ha u hu, TensorProduct.zero_tmul]`. Establish `p5 : e = e * (e + cA D e)` using `by rw [mul_add, h1, h2, add_zero]`.
-
-Rewrite using `[p5, map_mul, p4, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compFin_eq_zero (he : IsSplitIdem D e) (hπ : Chart e v π) {u : HeightOneSpectrum (𝓞 D.host.F)}
     (hu : u ≠ v) : compFin D.host.F D.host.E u e = 0 := by
@@ -65,9 +63,9 @@ theorem compFin_eq_zero (he : IsSplitIdem D e) (hπ : Chart e v π) {u : HeightO
   rw [p5, map_mul, p4, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[mem_latHat_iff hL, ← splitIncl_mem_latLoc_iff h, ← hv]`. Use `⟨fun h => h v, fun h u => ?_⟩` and prove the remaining obligations. Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu u huv]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem mem_latHat_iff_of_support {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {n : ℕ} {v : HeightOneSpectrum (𝓞 F)} (τ : E →ₐ[F] Fv F v)
@@ -81,7 +79,7 @@ theorem mem_latHat_iff_of_support {F E : Type} [Field F] [NumberField F] [Field 
   · rw [hu u huv]; exact zero_mem _
 
 /- English proof (translation)
-Establish `: (fun k => π (y k)) = splitVec (chartEmb hπ) (fun k => compFin D.host.F D.host.E v (y k))`. Use function extensionality and compare the values at `fun k => chart_eq_splitProj hπ _`. Rewrite using `[this, splitIncl_splitVec, vecLoc_finPart, compFin_eq_splitIdem he hπ]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem vecLoc_self (he : IsSplitIdem D e) (hπ : Chart e v π) {n : ℕ} (y : Fin n → AE D) :
     vecLoc v (fun i => finPart D (e * y i)) = splitIncl (isCMExt_host D) (chartEmb hπ) (fun k => π (y k)) := by
@@ -90,7 +88,7 @@ theorem vecLoc_self (he : IsSplitIdem D e) (hπ : Chart e v π) {n : ℕ} (y : F
   rw [this, splitIncl_splitVec, vecLoc_finPart, compFin_eq_splitIdem he hπ]
 
 /- English proof (translation)
-Rewrite using `[vecLoc_finPart, compFin_eq_zero he hπ hu]`. Conclude with `funext fun i => zero_mul _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vecLoc_ne (he : IsSplitIdem D e) (hπ : Chart e v π) {n : ℕ} (y : Fin n → AE D)
     (u : HeightOneSpectrum (𝓞 D.host.F)) (hu : u ≠ v) : vecLoc u (fun i => finPart D (e * y i)) = 0 := by
@@ -98,14 +96,14 @@ theorem vecLoc_ne (he : IsSplitIdem D e) (hπ : Chart e v π) {n : ℕ} (y : Fin
   exact funext fun i => zero_mul _
 
 /- English proof (translation)
-The claim follows from `congrArg (Formalism.MainNotions.StandardLattice.latHat D.host.F D.host.E) (hermitianSpaceBaseLattice_eq_frameLattice V)`.
+A detailed English derivation is pending.
 -/
 theorem lamHat_eq (V : HSp D) :
     LamHat V = Formalism.MainNotions.StandardLattice.latHat D.host.F D.host.E (frameLat V : Set (Fin V.rank → D.host.E)) :=
   congrArg (Formalism.MainNotions.StandardLattice.latHat D.host.F D.host.E) (hermitianSpaceBaseLattice_eq_frameLattice V)
 
 /- English proof (translation)
-Rewrite using `[lamHat_eq]`. Conclude with `mem_latHat_iff_of_support (isCMExt_host D) _ (frameLat_fg V) (vecLoc_self he hπ y) (vecLoc_ne he hπ y)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_lamHat_iff (he : IsSplitIdem D e) (hπ : Chart e v π) (V : HSp D) (y : Fin V.rank → AE D) :
     (fun i => finPart D (e * y i)) ∈ LamHat V ↔ (fun k => π (y k)) ∈ splitLat (chartEmb hπ) (frameLat V) := by
@@ -113,9 +111,9 @@ theorem mem_lamHat_iff (he : IsSplitIdem D e) (hπ : Chart e v π) (V : HSp D) (
   exact mem_latHat_iff_of_support (isCMExt_host D) _ (frameLat_fg V) (vecLoc_self he hπ y) (vecLoc_ne he hπ y)
 
 /- English proof (translation)
-Introduce `D e v π he hπ V β`. Use `⟨fun h u => ?_, fun h y => ?_⟩` and prove the remaining obligations. Use `choose y hy using fun k => hπ.1 ((β.1 *ᵥ u) k)`. Establish `h1` using `h y`. Rewrite `h1` using `[mem_lamHat_iff he hπ, show (fun k => π (y k)) = β.1 *ᵥ u from funext hy, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1.symm` using `only [isInt_Ov]`. Rewrite using `[mem_lamHat_iff he hπ, h.mem_iff]`. Simplify using `only [isInt_Ov]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_iff_isSplitBasis : ∀ {D : D7} {e : AE D} {v : HeightOneSpectrum (𝓞 D.host.F)}
     {π : AE D →+* Fv D.host.F v}, IsSplitIdem D e → ∀ (hπ : Chart e v π) (V : HSp D)

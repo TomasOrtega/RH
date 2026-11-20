@@ -25,11 +25,9 @@ namespace GlobalTheory.CompanionTheory.WSupport
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Consider the cases of `m with`. Consider the case `sp w₁ w₂ Φ`. Take `⟨hne, -, -⟩` from `hok`. Establish `hΦ : Φ = _` using `hstd`. Substitute `hΦ` using the available equality.
+Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `(hS h2 c v hU _ (Or.inl ⟨w₁, w₂, inferInstance, inferInstance, hne, rfl⟩)).1`. Consider the case `ns w σ η Φ`. Take `⟨hu, hσ, hη, -⟩` from `hok`. Establish `hΦ : Φ = _` using `hstd`. Substitute `hΦ` using the available equality.
-
-Conclude with `(hS h2 c v hU _ (Or.inr ⟨w, inferInstance, hu, σ, η, hσ, hη, rfl⟩)).1`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem sphN_of_std (hS : Ad3.K.QuadraticBaseChangeGL3.Th.STDSPH K) (h2 : Module.finrank ℚ K = 2) {c : HeckeCharacter K} {v : Pl}
     (m : LM c v) (hok : m.ok) (hU : Unr c v) (hstd : m.std) : SphN m.W := by
@@ -46,9 +44,9 @@ theorem sphN_of_std (hS : Ad3.K.QuadraticBaseChangeGL3.Th.STDSPH K) (h2 : Module
     exact (hS h2 c v hU _ (Or.inr ⟨w, inferInstance, hu, σ, η, hσ, hη, rfl⟩)).1
 
 /- English proof (translation)
-Consider the cases of `m with`. Consider the case `sp w₁ w₂ Φ => exact absurd trivial h`. Consider the case `ns w σ η Φ`. Simplify using `only [LM.W]`. Unfold `GL2LocalData.Wc`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Conclude with `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem W_eq_zero_of_not_plus {c : HeckeCharacter K} {v : Pl} (m : LM c v) (g : GL (Fin 2) (Qv v))
     (h : ¬ m.plus g) : m.W g = 0 := by
@@ -60,17 +58,15 @@ theorem W_eq_zero_of_not_plus {c : HeckeCharacter K} {v : Pl} (m : LM c v) (g : 
     exact dif_neg h
 
 /- English proof (translation)
-Introduce `h2 c n t M hM g hg`. Take `⟨hok, S0, hS0⟩` from `hM`. Unfold `WM pw2`. Distinguish the cases in `hdet : 0 < ((GL2Classical.realPart g).val).det`. Establish `hv : ∃ v, ¬ (M v).plus (finAt v g)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hg ⟨hcon, hdet⟩`. Take `⟨v₀, hv₀⟩` from `hv`. Take `⟨S, hSi⟩` from `GlobalTheory.CompanionTheory.AdelicIntegral.exists_finset_finAt_mem_integralGL g`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : ∏ᶠ v, (M v).W (finAt v g) = 0`. Use `finprod_eq_zero _ v₀ (W_eq_zero_of_not_plus _ _ hv₀) ?_` and prove the remaining obligations. Use `(S0 ∪ S).finite_toSet.subset ?_` and prove the remaining obligations. Introduce `v hv`. Assume the negation of the conclusion as `hn`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Finset.coe_union, Set.mem_union, Finset.mem_coe, not_or] at hn`. Take `⟨h1, h3⟩` from `hn`. Apply `hv` to reduce the goal to its premises. Establish `hsph` using `sphN_of_std hS h2 (M v) (hok v) (hS0 v h1).1 (hS0 v h1).2`. Use `show (M v).W (finAt v g) = 1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hk` using `hsph.1 _ (hSi v h3) 1`. Rewrite `hk` using `[one_mul]`. Rewrite using `[hk]`. Conclude with `hsph.2`. Rewrite using `[hz, mul_zero]`.
-
-Establish `: WcR (chC n (Complex.I * t)) (PhiInf n) (GL2Classical.realPart g) = 0`. Unfold `WcR`. Conclude with `dif_neg hdet`. Rewrite using `[this, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wsup_of_stdsph (hS : Ad3.K.QuadraticBaseChangeGL3.Th.STDSPH K) : Ad3.K.QuadraticBaseChangeGL3.Th.WSUP K := by
   classical
@@ -105,7 +101,7 @@ theorem wsup_of_stdsph (hS : Ad3.K.QuadraticBaseChangeGL3.Th.STDSPH K) : Ad3.K.Q
     rw [this, zero_mul]
 
 /- English proof (translation)
-Introduce `K _ _`. Establish `hN` using `GlobalTheory.CompanionTheory.UnitNormUnr.normU`. Establish `hF : Ad3.K.QuadraticBaseChangeGL3.Th.SPHF` using `GlobalTheory.CompanionTheory.SphFUnr.sphf GlobalTheory.T.weil_induced_representation_hypothesis (GlobalTheory.CompanionTheory.PiKFUnr.pikf GlobalTheory.CompanionTheory.RwKF.rwkf GlobalTheory.CompanionTheory.NormModulus.wMod hN) hN`. Conclude with `wsup_of_stdsph (GlobalTheory.CompanionTheory.StdSphOf.stdsph K hF GlobalTheory.CompanionTheory.SphTheta.SplitSph.sphs_direct (GlobalTheory.CompanionTheory.LamUnr.lamU hN) hN)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wsup : ∀ (K : Type) [Field K] [NumberField K], Ad3.K.QuadraticBaseChangeGL3.Th.WSUP K := by
   intro K _ _

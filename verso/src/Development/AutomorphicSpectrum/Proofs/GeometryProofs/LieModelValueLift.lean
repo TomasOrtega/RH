@@ -14,7 +14,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.CompanionTheory.Ar.RootHt GroundTheory.Heights₂.Heights GlobalTheory.CompanionTheory.Ar.LieTangent
 
 /- English proof (translation)
-Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     dualMap (g.comp f) = (dualMap g).comp (dualMap f) := by
@@ -22,7 +22,7 @@ theorem dualMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : 
   ext <;> simp
 
 /- English proof (translation)
-Establish `: Spec.map (CommRingCat.ofHom φ) (IsLocalRing.closedPoint K') = IsLocalRing.closedPoint K` using `Subsingleton.elim _ _`. Express the relevant statement in the definitionally equal form `(Spec.map (CommRingCat.ofHom φ) ≫ z) _ = z _`. Rewrite using `[Scheme.Hom.comp_apply, this]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem centre_field_base {K K' : Type} [Field K] [Field K'] {X : Scheme.{0}} (φ : K →+* K')
     (z : Sp K ⟶ X) : centre (Spec.map (CommRingCat.ofHom φ) ≫ z) = centre z := by
@@ -36,9 +36,9 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {G : Over X} [GrpObj G] {ξ : S
   {E : Type} [AddCommGroup E] [Module Ω E]
 
 /- English proof (translation)
-Rewrite `*` using `[LieModel.extends_iff]`. Use `⟨isTanAt_base _ _ h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[h.2, ← Category.assoc]`. Use `congr 1`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[spec_comp, ← dualMap_comp]`. Use `congr 3`. Conclude with `RingHom.ext fun s => (genMap_specializes p hy c s).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem extends_generise (M : LieModel G ξ E) (p : Cpt ξ) {y : X} (hy : genPt ξ ⤳ y) (c : y ⤳ p.1) {e : E}
     {v : epsAt (R := X.presheaf.stalk p.1) (X.fromSpecStalk p.1) ⟶ G} (h : M.Extends p e v) :
@@ -55,11 +55,11 @@ theorem extends_generise (M : LieModel G ξ E) (p : Cpt ξ) {y : X} (hy : genPt 
   exact RingHom.ext fun s => (genMap_specializes p hy c s).symm
 
 /- English proof (translation)
-Substitute `hz` using the available equality. Rewrite `*` using `[LieModel.valAt_iff]`. Take `⟨h1, v, hv, rfl⟩` from `h`. Use `⟨hg, _, extends_generise M ⟨centre z, h1⟩ hg (centre_specializes φ z) hv, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Category.assoc]`.
+Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[spec_comp, spec_comp, ← dualMap_comp, ← dualMap_comp]`. Use `congr 3`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `congrArg (fun g => g.hom) (stalk_base φ z).symm`.
+A detailed English derivation is pending.
 -/
 theorem valAt_lie_base {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] [IsLocalRing R'] (φ : R →+* R')
     (M : LieModel G ξ E) {z : Sp R ⟶ X} {z' : Sp R' ⟶ X} (hz : Spec.map (CommRingCat.ofHom φ) ≫ z = z')
@@ -80,11 +80,11 @@ theorem valAt_lie_base {R R' : Type} [CommRing R] [IsLocalRing R] [CommRing R'] 
 end
 
 /- English proof (translation)
-Introduce `X Ω _ ξ G _ Li _ _ M L _ _ z σ Bc _ _ MB x e v hv hl`. Establish `hz : Spec.map (CommRingCat.ofHom σ) ≫ (spMap (algebraMap (𝓞 L) L) ≫ z) = spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ z`. Rewrite using `[← Category.assoc, spec_comp]`. Establish `hg : genPt ξ ⤳ centre (spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ z)`. Take `⟨h1, -⟩` from `hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hz, centre_field_base]`. Conclude with `h1`. Use `⟨epsBase σ hz ≫ v, valAt_lie_base σ M hz hg hv, ?_⟩` and prove the remaining obligations. Unfold `LieModel.Lifts at *`. Express the relevant statement in the definitionally equal form `(Spec.map _ ≫ v.left) ≫ 𝟙 _ = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.comp_id]`. Rewrite `hl` using `[Category.comp_id]`. Rewrite using `[hl, ← Category.assoc, spec_comp, ← dualMap_comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_lie_value : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (G : Over X) [GrpObj G]
     (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li) (L : Type) [Field L] [NumberField L]

@@ -9,9 +9,9 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on`. Use `next c =>`. Simplify using `[rowGen]`. Use `next p q hp hq =>`. Rewrite using `[_root_.map_add, _root_.map_add, _root_.map_add, hp, hq, Polynomial.map_add]`.
+Proceed by induction. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `next p v hp =>`. Rewrite using `[_root_.map_mul, map_X, _root_.map_mul, _root_.map_mul, Polynomial.map_mul, hp]`. Use `congr 1`. Simplify using `only [rowGen, aeval_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem rowGen_map_intCast {r n : ℕ} (a b : Fin r) (f : MvPolynomial (Fin r × Fin n) ℤ) :
     rowGen ℚ a b (map (Int.castRingHom ℚ) f) =
@@ -28,7 +28,7 @@ private theorem rowGen_map_intCast {r n : ℕ} (a b : Fin r) (f : MvPolynomial (
     split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `rowDiv`. Rewrite using `[rowGen_map_intCast, Polynomial.coeff_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem rowDiv_map_intCast {r n : ℕ} (a b : Fin r) (k : ℕ) (f : MvPolynomial (Fin r × Fin n) ℤ) :
     rowDiv ℚ a b k (map (Int.castRingHom ℚ) f) = map (Int.castRingHom ℚ) (rowDiv ℤ a b k f) := by
@@ -36,7 +36,7 @@ private theorem rowDiv_map_intCast {r n : ℕ} (a b : Fin r) (k : ℕ) (f : MvPo
   rw [rowGen_map_intCast, Polynomial.coeff_map]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons x w ih => show map (Int.castRingHom ℚ) (rowDiv ℤ x.1 x.2.1 x.2.2 (applyWord ℤ w f)) = rowDiv ℚ x.1 x.2.1 x.2.2 (applyWord ℚ w (map (Int.castRingHom ℚ) f))`. Rewrite using `[← rowDiv_map_intCast, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_intCast_applyWord {r n : ℕ} (w : List (Fin r × Fin r × ℕ))
     (f : MvPolynomial (Fin r × Fin n) ℤ) :
@@ -49,9 +49,9 @@ private theorem map_intCast_applyWord {r n : ℕ} (w : List (Fin r × Fin r × �
     rw [← rowDiv_map_intCast, ih]
 
 /- English proof (translation)
-Unfold `hw`. Rewrite using `[_root_.map_prod]`. Use `Finset.prod_congr rfl (fun s _ => ?_)` and prove the remaining obligations. Rewrite using `[_root_.map_pow]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `lpMinor`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `p q`. Simplify using `[RingHom.mapMatrix_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem map_intCast_hw {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) :
     map (Int.castRingHom ℚ) (hw ℤ hn ν) = hw ℚ hn ν := by
@@ -67,15 +67,15 @@ private theorem map_intCast_hw {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ) :
   simp [RingHom.mapMatrix_apply]
 
 /- English proof (translation)
-Unfold `weyl at hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, rfl⟩` from `hx`. Use `⟨1, one_ne_zero, applyWord ℤ w (hw ℤ hn ν), Submodule.subset_span ⟨w, rfl⟩, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_intCast_applyWord, map_intCast_hw]`. Simplify using the standard rewrite rules. Consider the case `zero => exact ⟨1, one_ne_zero, 0, Submodule.zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨c, hc, u, hu, hu'⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, v, hv, hv'⟩` from `hy`. Use `⟨c * d, mul_ne_zero hc hd, d • u + c • v, Submodule.add_mem _ (Submodule.smul_mem _ _ hu) (Submodule.smul_mem _ _ hv), ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.map_add, MvPolynomial.smul_eq_C_mul u d, MvPolynomial.smul_eq_C_mul v c, _root_.map_mul, _root_.map_mul, map_C, map_C, hu', hv']`. Simplify using `only [MvPolynomial.smul_eq_C_mul, eq_intCast, Int.cast_mul, MvPolynomial.C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `smul q x _ hx`. Take `⟨c, hc, u, hu, hu'⟩` from `hx`. Use `⟨(q.den : ℤ) * c, mul_ne_zero (by exact_mod_cast q.den_nz) hc, q.num • u, Submodule.smul_mem _ _ hu, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.smul_eq_C_mul u q.num, _root_.map_mul, map_C, hu']`. Establish `hq : q * (q.den : ℚ) = (q.num : ℚ)` using `Rat.mul_den_eq_num q`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [MvPolynomial.smul_eq_C_mul, eq_intCast, Int.cast_mul, Int.cast_natCast, MvPolynomial.C_mul, ← hq]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lclosedeq_weyl_denom {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ)
     (F : MvPolynomial (Fin r × Fin n) ℚ) (hF : F ∈ weyl ℚ r n hn ν) :
@@ -108,9 +108,9 @@ theorem lclosedeq_weyl_denom {r n : ℕ} (hn : n ≤ r) (ν : Fin n → ℕ)
     ring
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on`. Use `next c =>`. Simplify using `[colAddGen]`. Use `next p q hp hq =>`. Rewrite using `[_root_.map_add, _root_.map_add, _root_.map_add, hp, hq, _root_.map_add]`.
+Proceed by induction. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `next p v hp =>`. Rewrite using `[_root_.map_mul, map_X, _root_.map_mul, _root_.map_mul, _root_.map_mul, hp]`. Use `congr 1`. Simplify using `only [colAddGen, aeval_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem colAddGen_map_intCast {r n : ℕ} (l j : Fin n) (f : MvPolynomial (Fin r × Fin n) ℤ) :
     colAddGen ℚ (r := r) l j (map (Int.castRingHom ℚ) f) =
@@ -127,9 +127,9 @@ private theorem colAddGen_map_intCast {r n : ℕ} (l j : Fin n) (f : MvPolynomia
     split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `only [dualWeyl, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, AlgHom.toLinearMap_apply, sub_eq_zero, mem_weightedHomogeneousSubmodule] at hf ⊢`. Take `⟨h1, h2⟩` from `hf`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `d hd`. Apply `h1` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Apply `hd` to reduce the goal to its premises. Rewrite using `[coeff_map, h0, _root_.map_zero]`. Introduce `l j hlj`. Rewrite using `[colAddGen_map_intCast, h2 l j hlj, map_rename]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_intCast_mem_dualWeyl {r n : ℕ} (ν : Fin n → ℕ) (f : MvPolynomial (Fin r × Fin n) ℤ)
     (hf : f ∈ dualWeyl ℤ r n ν) : map (Int.castRingHom ℚ) f ∈ dualWeyl ℚ r n ν := by
@@ -147,11 +147,11 @@ private theorem map_intCast_mem_dualWeyl {r n : ℕ} (ν : Fin n → ℕ) (f : M
     rw [colAddGen_map_intCast, h2 l j hlj, map_rename]
 
 /- English proof (translation)
-Unfold `WeylRationalOf WeylRational`. Introduce `h r n hn ν hν f hf`. Establish `hfQ : map (Int.castRingHom ℚ) f ∈ weyl ℚ r n hn ν`. Rewrite using `[h r n hn ν hν]`. Conclude with `map_intCast_mem_dualWeyl ν f hf`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, u, hu, hmap⟩` from `lclosedeq_weyl_denom hn ν _ hfQ`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `huf : u = c • f`. Apply `MvPolynomial.map_injective _ (RingHom.injective_int (Int.castRingHom ℚ))` to reduce the goal to its premises. Rewrite using `[hmap, _root_.map_zsmul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Int.cast_smul_eq_zsmul ℚ c _`. Rewrite using `[← huf]`. Conclude with `hu`.
+A detailed English derivation is pending.
 -/
 theorem weyl_module_rational : WeylRationalOf := by
   unfold WeylRationalOf WeylRational

@@ -13,23 +13,17 @@ noncomputable section
 open Classical
 
 /- English proof (translation)
-Use `le_of_forall_gt_imp_ge_of_dense fun b hb => ?_` and prove the remaining obligations. Distinguish the cases in `hbt : b = ⊤`. Rewrite using `[hbt]`. Conclude with `le_top`. Establish `hev` using `Filter.eventually_lt_of_limsup_lt hb`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set B : ℝ := b.toReal with hB`. Take `⟨Bg, hBg⟩` from `hg`. Use `set g₁ : Λ → ℂ := fun x => if ‖g x‖ ≤ B then g x else 0 with hg₁`. Use `set g₂ : Λ → ℂ := fun x => g x - g₁ x with hg₂`. Establish `hb1 : Bdd g₁` using `⟨max B 0, fun x => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hg₁]`. Use `split_ifs with h`. Conclude with `h.trans (le_max_left _ _)`. Use the proof step `simp⟩`. Establish `hb2 : Bdd g₂` using `⟨Bg + max B 0, fun x => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hg₂]`. Use `(norm_sub_le _ _).trans (add_le_add (hBg x) ?_)` and prove the remaining obligations. Simplify using `only [hg₁]`. Use `split_ifs with h`. Conclude with `h.trans (le_max_left _ _)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `simp⟩`. Establish `hz : Tendsto g₂ (Filter.comap (fun x : Λ => (x : V f)) (atInfAll f)) (𝓝 0)`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [hev] with x hx`. Establish `hx' : ‖g x‖ ≤ B` using `(ENNReal.ofReal_le_iff_le_toReal hbt).1 (by rw [← ENNReal.ofReal_coe_nnreal, coe_nnnorm] at hx; exact hx.le)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hg₂, hg₁, hx']`. Establish `hsplit : g = g₁ + g₂`. Use function extensionality and compare the values at `x`. Simplify using `[hg₂]`. Establish `h0 : LIM g₂ = 0` using `hL.2 g₂ hb2 hz`.
-
-Establish `hLg : LIM g = LIM g₁`. Rewrite using `[hsplit, hL.1.1 g₁ g₂ hb1 hb2, h0, add_zero]`. Establish `hle : ‖LIM g₁‖ ≤ max B 0` using `Formalism.FourierDecayAlt.P.mean_bound_estimate Λ LIM g₁ (max B 0) hL.1 fun x => by`. Simplify using `only [hg₁]`. Use `split_ifs with h`.
-
-Conclude with `h.trans (le_max_left _ _)`. Simplify using the standard rewrite rules. Rewrite using `[hLg]`. Establish `hB0 : max B 0 = B` using `max_eq_left ENNReal.toReal_nonneg`. Rewrite `hle` using `[hB0]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem meanInf_le_limsup {f : ℕ} (Λ : AddSubgroup (V f)) (LIM : (Λ → ℂ) → ℂ) (hL : IsMeanInf Λ LIM)
     (g : Λ → ℂ) (hg : Bdd g) :
@@ -80,9 +74,9 @@ def bD {f : ℕ} (La : Submodule ℤ (V f)) [DiscreteTopology La] [IsZLattice �
   (Pi.basisFun ℝ (Fin (Module.finrank ℤ La))).map (PairingConjugationLemmas.Le La).symm
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `PairingConjugationLemmas.ψd_surj La σ hσ`. Establish `hrep : ∀ j, (bD La).repr (PairingConjugationLemmas.ψd La m) j = (m j : ℝ)`. Introduce `j`. Simplify using `[bD, PairingConjugationLemmas.ψd]`. Rewrite using `[← (bD La).sum_repr (PairingConjugationLemmas.ψd La m)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hrep j, Int.cast_smul_eq_zsmul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_sub_span {f : ℕ} (La : Submodule ℤ (V f)) [DiscreteTopology La] [IsZLattice ℝ La] (σ : V f)
     (hσ : σ ∈ dualSet La) : σ ∈ Submodule.span ℤ (Set.range (bD La)) := by
@@ -96,7 +90,7 @@ theorem dual_sub_span {f : ℕ} (La : Submodule ℤ (V f)) [DiscreteTopology La]
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.invariantMeanExists f _`.
+A detailed English derivation is pending.
 -/
 example {f : ℕ} (La : Submodule ℤ (V f)) [DiscreteTopology La] [IsZLattice ℝ La] :
     ∃ LIM : ((Submodule.span ℤ (Set.range (bD La))).toAddSubgroup → ℂ) → ℂ,
@@ -104,9 +98,9 @@ example {f : ℕ} (La : Submodule ℤ (V f)) [DiscreteTopology La] [IsZLattice �
   Formalism.FourierDecayAlt.P.invariantMeanExists f _
 
 /- English proof (translation)
-Introduce `a b`. Establish `h1` using `h (-a) (-b)`. Establish `e : P5.fsv (-σ) ((a : ℂ) * ω₁ + (b : ℂ) * ω₂) = P5.fsv σ (((-a : ℤ) : ℂ) * ω₁ + ((-b : ℤ) : ℂ) * ω₂)`. Simplify using `only [P5.fsv, map_neg, map_add, map_mul, Int.cast_neg]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, h1]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem inDual_neg {ω₁ ω₂ σ : ℂ} (h : TBB.InDual ω₁ ω₂ σ) : TBB.InDual ω₁ ω₂ (-σ) := by
   intro a b
@@ -119,13 +113,11 @@ theorem inDual_neg {ω₁ ω₂ σ : ℂ} (h : TBB.InDual ω₁ ω₂ σ) : TBB.
   rw [e, h1]
 
 /- English proof (translation)
-Introduce `S c hS`. Establish `hinv : ∀ σ, Function.invFun φ (φ σ) = σ` using `Function.leftInverse_invFun hφ`. Establish `h0` using `hA0 (S.image φ) (fun τ => c (Function.invFun φ τ)) (by`. Introduce `τ hτ`. Take `⟨σ, hσ, rfl⟩` from `Finset.mem_image.mp hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hmem σ (hS σ hσ))`. Simplify using `only [Finset.sum_image hφ.injOn] at h0`. Establish `e : (∑ σ ∈ S, ∑ σ' ∈ S, (c0 : ℂ) * A0 (φ (σ - σ')) * c σ * conj (c σ')) = (c0 : ℂ) * ∑ σ ∈ S, ∑ σ' ∈ S, A0 (φ σ - φ σ') * c (Function.invFun φ (φ σ)) * conj (c (Function.invFun φ (φ σ')))`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ' _ => ?_` and prove the remaining obligations. Rewrite using `[hinv, hinv, hlin]`. Expand and normalize the polynomial expressions, which then agree. Use `show 0 ≤ (∑ σ ∈ S, ∑ σ' ∈ S, (c0 : ℂ) * A0 (φ (σ - σ')) * c σ * conj (c σ')).re`.
-
-Rewrite using `[e, Complex.re_ofReal_mul]`. Conclude with `mul_nonneg hc0 h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pdDual_of_pdOn (ω₁ ω₂ : ℂ) (T : Set (V 1)) (A0 : V 1 → ℂ) (hA0 : PDOn T A0) (φ : ℂ → V 1)
     (hφ : Function.Injective φ) (hlin : ∀ a b, φ (a - b) = φ a - φ b)
@@ -173,9 +165,9 @@ def aL (hG : PBK.GermD s β ε' ({()} : Finset Unit) (fun _ => ut) (fun _ => bt)
 variable (hG : PBK.GermD s β ε' ({()} : Finset Unit) (fun _ => ut) (fun _ => bt) SS)
 
 /- English proof (translation)
-Simplify using `only [uL, aL, dif_pos hx, dif_pos hx']`. Rewrite using `[MeasureTheory.L2.inner_def, PBK.gramL]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [((PBK.memLp_cvec s ut x hx).1 (hG.memU () (Finset.mem_singleton_self _) x hx)).coeFn_toLp, ((PBK.memLp_cvec s ut x' hx').1 (hG.memU () (Finset.mem_singleton_self _) x' hx')).coeFn_toLp] with D h1 h2`. Rewrite using `[h1, h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem inner_uL_uL {x x' : ℂ} (hx : x ≠ 0) (hx' : x' ≠ 0) :
     ⟪uL hG x, uL hG x'⟫_ℂ =
@@ -188,9 +180,9 @@ theorem inner_uL_uL {x x' : ℂ} (hx : x ≠ 0) (hx' : x' ≠ 0) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [uL, aL, dif_pos hx, dif_pos hx']`. Rewrite using `[MeasureTheory.L2.inner_def, PBK.gramL]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [((PBK.memLp_cvec s ut x hx).1 (hG.memU () (Finset.mem_singleton_self _) x hx)).coeFn_toLp, ((PBK.memLp_cvec s (fun x D => PBK.mainD s β ε' bt x D) x' hx').1 (hG.memLp_mainD (Finset.mem_singleton_self ()) x')).coeFn_toLp] with D h1 h2`. Rewrite using `[h1, h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem inner_uL_aL {x x' : ℂ} (hx : x ≠ 0) (hx' : x' ≠ 0) :
     ⟪uL hG x, aL hG x'⟫_ℂ =
@@ -204,9 +196,9 @@ theorem inner_uL_aL {x x' : ℂ} (hx : x ≠ 0) (hx' : x' ≠ 0) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [uL, aL, dif_pos hx, dif_pos hx']`. Rewrite using `[MeasureTheory.L2.inner_def, PBK.gramL]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [((PBK.memLp_cvec s (fun x D => PBK.mainD s β ε' bt x D) x hx).1 (hG.memLp_mainD (Finset.mem_singleton_self ()) x)).coeFn_toLp, ((PBK.memLp_cvec s (fun x D => PBK.mainD s β ε' bt x D) x' hx').1 (hG.memLp_mainD (Finset.mem_singleton_self ()) x')).coeFn_toLp] with D …`. Rewrite using `[h1, h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem inner_aL_aL {x x' : ℂ} (hx : x ≠ 0) (hx' : x' ≠ 0) :
     ⟪aL hG x, aL hG x'⟫_ℂ =
@@ -221,9 +213,9 @@ theorem inner_aL_aL {x x' : ℂ} (hx : x ≠ 0) (hx' : x' ≠ 0) :
   rfl
 
 /- English proof (translation)
-Establish `h2 : ‖v‖ ^ 2 ≤ C`. Establish `e : ‖⟪v, v⟫_ℂ‖ = ‖v‖ ^ 2`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_sq_of_inner {v : Lp H 2 (volume : Measure ℂ)} {C : ℝ} (h : ‖⟪v, v⟫_ℂ‖ ≤ C) : ‖v‖ ≤ √C := by
   have h2 : ‖v‖ ^ 2 ≤ C := by
@@ -235,11 +227,11 @@ theorem norm_sq_of_inner {v : Lp H 2 (volume : Measure ℂ)} {C : ℝ} (h : ‖�
     _ ≤ √C := Real.sqrt_le_sqrt h2
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Simplify using `[uL, hx]`. Use `norm_sq_of_inner ?_` and prove the remaining obligations. Rewrite using `[inner_uL_uL hG hx hx, PBK.gramL]`. Use `(norm_integral_le_integral_norm _).trans ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ∀ D, ‖⟪PBK.Uc s (fun _ => ut) ((), x) D, PBK.Uc s (fun _ => ut) ((), x) D⟫_ℂ‖ = ‖PBK.cvec s ut x D‖ ^ 2`. Introduce `D`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Simplify using `[PBK.Uc]`. Repeatedly rewrite using `[e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[PBK.integral_norm_cvec_sq s ut x hx]`. Conclude with `hG.sup () (Finset.mem_singleton_self _) x hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_uL_le (x : ℂ) : ‖uL hG x‖ ≤ √SS := by
   by_cases hx : x = 0
@@ -257,7 +249,7 @@ theorem norm_uL_le (x : ℂ) : ‖uL hG x‖ ≤ √SS := by
     exact hG.sup () (Finset.mem_singleton_self _) x hx
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Simplify using `[aL, hx]`. Conclude with `norm_sq_of_inner (by rw [inner_aL_aL hG hx hx]; exact hB x hx)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_aL_le {B' : ℝ} (hB : ∀ x : ℂ, x ≠ 0 →
     ‖PBK.gramL volume (PBK.Ac s β ε' fun _ => bt) (PBK.Ac s β ε' fun _ => bt) ((), x) ((), x)‖ ≤ B') (x : ℂ) :
@@ -269,7 +261,7 @@ theorem norm_aL_le {B' : ℝ} (hB : ∀ x : ℂ, x ≠ 0 →
 end vec
 
 /- English proof (translation)
-Rewrite using `[ENNReal.ofReal]`. Use `congr 1`. Use `ext`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem enn_nnnorm (z : ℂ) : (‖z‖₊ : ℝ≥0∞) = ENNReal.ofReal ‖z‖ := by
   rw [ENNReal.ofReal]
@@ -278,7 +270,7 @@ theorem enn_nnnorm (z : ℂ) : (‖z‖₊ : ℝ≥0∞) = ENNReal.ofReal ‖z�
   simp
 
 /- English proof (translation)
-Establish `heq : (fun x => (‖Nk (m x) ((m x)⁻¹ + σ)⁻¹‖₊ : ℝ≥0∞)) =ᶠ[F] fun x => ENNReal.ofReal κ₁ * (‖g x‖₊ : ℝ≥0∞)` using `by filter_upwards [he] with x hx`. Rewrite using `[enn_nnnorm, enn_nnnorm, hx, ENNReal.ofReal_mul hκ₁]`. Rewrite using `[← ENNReal.limsup_const_mul_of_ne_top ENNReal.ofReal_ne_top, ← limsup_congr heq]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem limsup_link {α : Type} {F : Filter α} (g : α → ℂ) (m : α → ℂ) (Nk : ℂ → ℂ → ℂ) (σ : ℂ) (κ₁ : ℝ)
     (hκ₁ : 0 ≤ κ₁) (hm : Tendsto m F (𝓝[≠] 0))
@@ -296,11 +288,11 @@ theorem limsup_link {α : Type} {F : Filter α} (g : α → ℂ) (m : α → ℂ
     _ ≤ _ := limsup_le_limsup_of_le hm
 
 /- English proof (translation)
-Establish `hn : Tendsto (fun x => ‖X x‖) F atTop` using `tendsto_norm_cocompact_atTop.comp hX`. Establish `hY : Tendsto (fun x => ‖X x + δ‖) F atTop`. Use `tendsto_atTop_mono (fun x => ?_) (tendsto_atTop_add_const_right _ (-‖δ‖) hn)` and prove the remaining obligations. Use `norm_sub_norm_le (X x) (-δ)` as an intermediate fact. Rewrite `this` using `[norm_neg, sub_neg_eq_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[tendsto_nhdsWithin_iff]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Simplify using `only [norm_inv]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hY.inv_tendsto_atTop`. Use `filter_upwards [hY.eventually_gt_atTop 0] with x hx`. Simplify using `using norm_pos_iff.mp hx`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tendsto_inv_shift {α : Type} {F : Filter α} (X : α → ℂ) (δ : ℂ) (hX : Tendsto X F (cocompact ℂ)) :
     Tendsto (fun x => (X x + δ)⁻¹) F (𝓝[≠] 0) := by
@@ -319,69 +311,59 @@ theorem tendsto_inv_shift {α : Type} {F : Filter α} (X : α → ℂ) (δ : ℂ
     simpa using norm_pos_iff.mp hx
 
 /- English proof (translation)
-Introduce `H _ _ _ s β ε' η ut bt SS κ₁ κ₂ E Nk hs hκ₂ hκ hη hGD hpsi hNk hE`. Establish `hmem : () ∈ ({()} : Finset Unit)` using `Finset.mem_singleton_self _`. Take `⟨hb, -, ⟨B', hB'⟩, hlim⟩` from `PBK.GermD.propG hGD`. Establish `hbz : MemLp (PBK.bz s bt) 2 volume` using `(hb () hmem).1`. Establish `hsq : Integrable (fun z => ‖PBK.bz s bt z‖ ^ 2)` using `(memLp_two_iff_integrable_sq_norm hbz.1).1 hbz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ z : ℂ, z ≠ 0`. Rewrite using `[ae_iff]`. Simplify using `[measure_singleton]`. Establish `hEae : (fun z => κ₂ * ‖PBK.bz s bt z‖ ^ 2) =ᵐ[volume] E` using `by filter_upwards [hae] with z hz`. Conclude with `(hE z hz).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEint : Integrable E` using `(hsq.const_mul κ₂).congr hEae`. Use `⟨hEint, fun ω₁ ω₂ hω => ?_⟩` and prove the remaining obligations. Establish `hpi : 0 < Real.pi` using `Real.pi_pos`. Use `set Nh : ℂ → ℂ := fun σ => PBK.Nhat s β (fun _ => bt) σ () () with hNh`. Establish `hT : ∀ σ : ℂ, (Real.pi⁻¹ : ℂ) * (∫ z, P5.fsv σ z * (E z : ℂ)) = ((κ₂ / Real.pi : ℝ) : ℂ) * Nh (η * σ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `σ`. Establish `e0 : Nh (η * σ) = ∫ z, G.psi β (η * σ * z) • ⟪PBK.bz s bt z, PBK.bz s bt z⟫_ℂ` using `rfl`. Establish `e1 : (∫ z, P5.fsv σ z * (E z : ℂ)) = (κ₂ : ℂ) * ∫ z, G.psi β (η * σ * z) • ⟪PBK.bz s bt z, PBK.bz s bt z⟫_ℂ`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hae] with z hz`. Establish `hin : ⟪PBK.bz s bt z, PBK.bz s bt z⟫_ℂ = ((‖PBK.bz s bt z‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Use `norm_cast`. Rewrite using `[hE z hz, hpsi, hin, smul_eq_mul]`.
+Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e0]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set La := Submodule.span ℤ (Set.range (TBBx5.lp_b ω₁ ω₂ hω)) with hLa`. Use `set Λs := Submodule.span ℤ (Set.range (bD La)) with hΛs`. Take `⟨LIM, hLIM⟩` from `Formalism.FourierDecayAlt.P.invariantMeanExists 1 Λs`. Use `set X : V 1 → ℂ := fun y => 2 * Real.pi * Complex.I * y 0 with hX`. Establish `hXadd : ∀ y y' : V 1, X (y + y') = X y + X y'`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce `y y'`. Simplify using `only [hX, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hXt : Tendsto X (atInfAll 1) (cocompact ℂ)`. Establish `hn0 : Tendsto (fun y : V 1 => ‖y 0‖) (atInfAll 1) atTop`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `atInfAll`. Conclude with `tendsto_iInf' 0 tendsto_comap`. Establish `hn : Tendsto (fun y : V 1 => ‖X y‖) (atInfAll 1) atTop`. Establish `e : (fun y : V 1 => ‖X y‖) = fun y => (2 * Real.pi) * ‖y 0‖`. Use function extensionality and compare the values at `y`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [hX, norm_mul, Complex.norm_I, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hpi, Complex.norm_ofNat, mul_one]`. Rewrite using `[e]`. Conclude with `hn0.const_mul_atTop (by positivity)`. Use `(Filter.hasBasis_cocompact.tendsto_right_iff).2 fun K hK => ?_` and prove the remaining obligations. Take `⟨R, hR⟩` from `hK.isBounded.subset_closedBall 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `filter_upwards [hn.eventually_gt_atTop R] with x hx hxK`. Use `hR hxK` as an intermediate fact. Rewrite `this` using `[Metric.mem_closedBall, dist_zero_right]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hne : ∀ c : ℂ, ∀ᶠ y in atInfAll 1, X y + c ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Use `filter_upwards [hXt (isCompact_singleton (x := -c)).compl_mem_cocompact] with y hy`. Conclude with `fun e => hy (Set.mem_singleton_iff.2 (eq_neg_of_add_eq_zero_left e))`. Establish `hne0 : ∀ᶠ y in atInfAll 1, X y ≠ 0` using `by filter_upwards [hne 0] with y hy`. Simplify using `using hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `set a : V 1 → Lp H 2 (volume : Measure ℂ) := fun y => aL hGD (X y) with ha`. Use `set u : V 1 → Lp H 2 (volume : Measure ℂ) := fun y => uL hGD (X y) with hu`. Use `set r : V 1 → Lp H 2 (volume : Measure ℂ) := fun y => u y - a y with hr`. Establish `hau : ∀ y, a y + r y = u y` using `fun y => by simp only [hr]; abel`. Establish `hBa : ∀ y, ‖a y‖ ≤ √B'` using `fun y => norm_aL_le hGD (fun x hx => hB' () hmem x hx) (X y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hBu : ∀ y, ‖u y‖ ≤ √SS` using `fun y => norm_uL_le hGD (X y)`. Establish `hbnd : ∀ y, ‖a y‖ ≤ √SS + √B' ∧ ‖r y‖ ≤ √SS + √B'`. Introduce `y`. Use `⟨(hBa y).trans (le_add_of_nonneg_left (Real.sqrt_nonneg _)), ?_⟩` and prove the remaining obligations. Conclude with `(norm_sub_le _ _).trans (add_le_add (hBu y) (hBa y))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set Nh' : V 1 → ℂ := fun σ => Nh (X σ) with hNh'`. Establish `hAA : ∀ σ ∈ Λs.toAddSubgroup, Tendsto (fun x => ⟪a x, a (x + σ)⟫_ℂ) (atInfAll 1) (𝓝 (Nh' σ))`. Introduce `σ _`. Use `((hlim () hmem () hmem (X σ)).1.comp hXt).congr' ?_` and prove the remaining obligations. Use `filter_upwards [hne0, hne (X σ)] with y h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, ha, hXadd]`. Conclude with `(inner_aL_aL hGD h1 h2).symm`. Establish `hAR : ∀ σ ∈ Λs.toAddSubgroup, Tendsto (fun x => ⟪a x, r (x + σ)⟫_ℂ) (atInfAll 1) (𝓝 0)`. Introduce `σ _`. Establish `h3` using `((hlim () hmem () hmem (X σ)).2.2.comp hXt)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h1` using `((hlim () hmem () hmem (X σ)).1.comp hXt)`. Rewrite using `[← sub_self (Nh' σ)]`. Use `(h3.sub h1).congr' ?_` and prove the remaining obligations. Use `filter_upwards [hne0, hne (X σ)] with y hy1 hy2`. Simplify using `only [Function.comp_apply, hr, ha, hu, hXadd, inner_sub_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← inner_aL_aL hGD hy1 hy2, ← inner_uL_aL hGD hy2 hy1, inner_conj_symm]`. Establish `hRA : ∀ σ ∈ Λs.toAddSubgroup, Tendsto (fun x => ⟪r x, a (x + σ)⟫_ℂ) (atInfAll 1) (𝓝 0)`. Introduce `σ _`. Establish `h2` using `((hlim () hmem () hmem (X σ)).2.1.comp hXt)`. Establish `h1` using `((hlim () hmem () hmem (X σ)).1.comp hXt)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← sub_self (Nh' σ)]`. Use `(h2.sub h1).congr' ?_` and prove the remaining obligations. Use `filter_upwards [hne0, hne (X σ)] with y hy1 hy2`. Simplify using `only [Function.comp_apply, hr, ha, hu, hXadd, inner_sub_left]`. Rewrite using `[← inner_aL_aL hGD hy1 hy2, ← inner_uL_aL hGD hy1 hy2]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨hsplit, hpd⟩` from `Formalism.FourierDecayAlt.P.mean_split_identity 1 Λs.toAddSubgroup LIM (Lp H 2 (volume : Measure ℂ)) a r Nh' (√SS + √B') hLIM hbnd hAA hAR hRA`. Use `set A0 : V 1 → ℂ := fun σ => LIM (fun x : Λs.toAddSubgroup => ⟪r x, r ((x : V 1) + σ)⟫_ℂ) with hA0`. Establish `h2pi : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `TBBx5.lp_ne`. Apply the tactic sequence `have hη0 : η ≠ 0 := by rcases hη with h | h <;> simp [h]`. Use `set φ : ℂ → V 1 := fun σ => fun _ => η * σ / (2 * Real.pi * Complex.I) with hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hXφ : ∀ σ, X (φ σ) = η * σ`. Introduce `σ`. Simplify using `only [hX, hφ]`. Clear the denominators using the available nonvanishing facts. Establish `hφmem : ∀ σ, TBB.InDual ω₁ ω₂ σ → φ σ ∈ Λs`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `σ hσ`. Use `dual_sub_span La (φ σ) ((TBBx5.lp_dual ω₁ ω₂ hω (φ σ)).2 ?_)` and prove the remaining obligations. Establish `e : 2 * Real.pi * Complex.I * φ σ 0 = η * σ` using `hXφ σ`. Rewrite using `[e]`. Break down `hη with h | h` into its components or cases.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `hσ` using `[h]`. Simplify `inDual_neg hσ` using `[h]`. Establish `hφinj : Function.Injective φ`. Introduce `x y hxy`. Use `congrFun hxy 0` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hφ] at this`. Use `(div_left_inj' h2pi).1 this` as an intermediate fact. Conclude with `mul_left_cancel₀ hη0 this`. Establish `hφlin : ∀ x y, φ (x - y) = φ x - φ y`. Introduce `x y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [hφ, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc0 : 0 ≤ κ₂ / Real.pi` using `div_nonneg hκ₂ hpi.le`. Use `⟨fun σ => ((κ₂ / Real.pi : ℝ) : ℂ) * A0 (φ σ), pdDual_of_pdOn ω₁ ω₂ (Λs.toAddSubgroup : Set (V 1)) A0 hpd φ hφinj hφlin hφmem _ hc0, fun σ hσ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hΛφ : φ σ ∈ Λs.toAddSubgroup` using `hφmem σ hσ`. Establish `hLg` using `hsplit (φ σ) hΛφ`. Rewrite `hLg` using `[hau]`. Use `set g : Λs.toAddSubgroup → ℂ := fun x => ⟪u x, u ((x : V 1) + φ σ)⟫_ℂ with hg`. Establish `hgB : Bdd g` using `⟨√SS * √SS, fun x => (norm_inner_le_norm _ _).trans (mul_le_mul (hBu _) (hBu _) (norm_nonneg _) (Real.sqrt_nonneg _))⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmean` using `meanInf_le_limsup Λs.toAddSubgroup LIM hLIM g hgB`. Establish `hsum : (Real.pi⁻¹ : ℂ) * (∫ z, P5.fsv σ z * (E z : ℂ)) + ((κ₂ / Real.pi : ℝ) : ℂ) * A0 (φ σ) = ((κ₂ / Real.pi : ℝ) : ℂ) * LIM g`. Rewrite using `[hT σ, hLg, ← hXφ σ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum, enn_nnnorm, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hc0, ENNReal.ofReal_mul hc0, ← enn_nnnorm]`.
-
-Establish `hκ₁ : 0 ≤ κ₁`. Use `hκ₂.trans hκ` as an intermediate fact. Conclude with `nonneg_of_mul_nonneg_right (by linarith) hpi`. Establish `hcle : ENNReal.ofReal (κ₂ / Real.pi) ≤ ENNReal.ofReal κ₁` using `ENNReal.ofReal_le_ofReal ((div_le_iff₀ hpi).2 (by linarith))`. Use `set F : Filter Λs.toAddSubgroup := Filter.comap (fun x : Λs.toAddSubgroup => (x : V 1)) (atInfAll 1) with hF`.
-
-Establish `hXtF : Tendsto (fun x : Λs.toAddSubgroup => X x) F (cocompact ℂ)` using `hXt.comp tendsto_comap`. Establish `hneF : ∀ c : ℂ, ∀ᶠ x : Λs.toAddSubgroup in F, X x + c ≠ 0` using `fun c => tendsto_comap.eventually (hne c)`. Use `set δ : ℂ := if η = 1 then 0 else -σ with hδ`. Establish `hlink : ∀ᶠ x : Λs.toAddSubgroup in F, ‖Nk ((X x + δ)⁻¹) (((X x + δ)⁻¹)⁻¹ + σ)⁻¹‖ = κ₁ * ‖g x‖` using `by filter_upwards [hneF δ, hneF (δ + σ), hneF 0, hneF (η * σ)] with x h1 h2 h3 h4`. Rewrite using `[inv_inv]`.
-
-Establish `h3' : X x ≠ 0` using `by simpa using h3`. Rewrite using `[hNk _ _ (inv_ne_zero h1) (inv_ne_zero (by rwa [add_assoc])), inv_inv, inv_inv]`. Use `congr 1`. Simplify using `only [hg, hu]`. Rewrite using `[hXadd, hXφ σ]`.
-
-Break down `hη with h | h` into its components or cases. Establish `hd : δ = 0` using `by simp [hδ, h]`. Simplify using `only [hd, add_zero, h, one_mul]`. Rewrite using `[inner_uL_uL hGD h3' (by simpa [h] using h4)]`. Establish `hd : δ = -σ` using `by rw [hδ, if_neg (by rw [h]; norm_num)]`.
-
-Simplify using `only [hd, h, neg_one_mul, neg_add_cancel_right]`. Establish `h4' : X x + -σ ≠ 0` using `by simpa [h] using h4`. Rewrite using `[← sub_eq_add_neg, ← inner_uL_uL hGD (by rwa [sub_eq_add_neg]) h3', sub_eq_add_neg, norm_inner_symm]`. Establish `hfin` using `limsup_link g (fun x => (X x + δ)⁻¹) Nk σ κ₁ hκ₁ (tendsto_inv_shift _ δ hXtF) hlink`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem germ_mean_property : PropGMean := by
   intro H _ _ _ s β ε' η ut bt SS κ₁ κ₂ E Nk hs hκ₂ hκ hη hGD hpsi hNk hE

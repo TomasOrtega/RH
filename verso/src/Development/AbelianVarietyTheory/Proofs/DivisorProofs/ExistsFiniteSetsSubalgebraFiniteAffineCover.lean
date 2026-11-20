@@ -6,9 +6,9 @@ open AlgebraicGeometry CategoryTheory Limits Opposite GlobalTheory.QcSub
 namespace GlobalTheory.SubChoose
 
 /- English proof (translation)
-Use `letI := (F.map (homOfLE (X.basicOpen_le h)).op).hom.toAlgebra`. Use `haveI := isLocalizationAway F α hα hU h`. Take `⟨n, a, e⟩` from `IsLocalization.Away.surj ((α.app (op U)).hom h) z`. Use `⟨a, n, ?_⟩` and prove the remaining obligations. Establish `nat` using `congr($(α.naturality (homOfLE (X.basicOpen_le h)).op).hom h)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [CommRingCat.comp_apply] at nat`. Rewrite using `[nat]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_num {X : Scheme.{0}} (F : X.Opensᵒᵖ ⥤ CommRingCat) (α : X.presheaf ⟶ F)
     (hα : ((Scheme.AffineZariskiSite.toOpensFunctor X).op.whiskerLeft α).Coequifibered)
@@ -26,9 +26,9 @@ theorem exists_num {X : Scheme.{0}} (F : X.Opensᵒᵖ ⥤ CommRingCat) (α : X.
   exact e
 
 /- English proof (translation)
-Establish `hu0 : IsUnit (X.presheaf.map (homOfLE (X.basicOpen_le h)).op h)` using `X.toRingedSpace.isUnit_res_basicOpen h`. Take `⟨u, hu⟩` from `hu0`. Establish `key : (α.app (op (X.basicOpen h))).hom (X.presheaf.map (homOfLE (X.basicOpen_le h)).op h) * (α.app (op (X.basicOpen h))).hom ↑u⁻¹ = 1`. Rewrite using `[← map_mul, ← hu, Units.mul_inv, map_one]`. Establish `hz : z = (F.map (homOfLE (X.basicOpen_le h)).op).hom a * ((α.app (op (X.basicOpen h))).hom ↑u⁻¹) ^ n`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← e, mul_assoc, ← mul_pow, key, one_pow, mul_one]`. Rewrite using `[hz]`. Conclude with `mul_mem (res_mem_gen F α _ T ha) (pow_mem (algebraMap_mem_gen F α _ T _) n)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_gen_of_eq {X : Scheme.{0}} (F : X.Opensᵒᵖ ⥤ CommRingCat) (α : X.presheaf ⟶ F)
     {U : X.Opens} (h : Γ(X, U)) (T : Set (F.obj (op U))) {a : F.obj (op U)} (ha : a ∈ T)
@@ -52,15 +52,13 @@ theorem mem_gen_of_eq {X : Scheme.{0}} (F : X.Opensᵒᵖ ⥤ CommRingCat) (α :
 end GlobalTheory.SubChoose
 
 /- English proof (translation)
-Introduce `X hX F α hα ι _ V hV S hS`. Use `choose s hs1 hs2 using fun i j => GlobalTheory.T.exists_finset_basicOpen_cover_inf_of_isAffineOpen X hX (V j) (V i) (hV j) (hV i)`. Establish `hDi : ∀ i j, ∀ h ∈ s i j, X.basicOpen h ≤ V i`. Introduce `i j h hh`. Take `⟨r, hr⟩` from `hs1 i j h hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr]`. Conclude with `X.basicOpen_le r`. Use `haveI : ∀ i, Finite (S i) := fun i => (hS i).to_subtype`. Use `choose a n ha using fun (j : ι) (p : Σ i, (S i) × (s i j)) => GlobalTheory.SubChoose.exists_num F α hα (hV j) p.2.2.1 ((F.map (homOfLE (hDi p.1 j p.2.2.1 p.2.2.2)).op).hom p.2.1.1)`. Use `⟨fun j => Set.range (a j), fun j => Set.finite_range _, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i x hx`. Rewrite using `[SetLike.mem_coe, mem_sub]`. Introduce `j W' hW' hWi hWj`. Apply `GlobalTheory.T.mem_adjoin_restricted_sections_of_local X F α hα (V j) (V i) (Set.range (a j)) x _ W' hW' hWi hWj` to reduce the goal to its premises. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hy' : y ∈ ((V j ⊓ V i : X.Opens) : Set X)` using `⟨hy.2, hy.1⟩`. Use `hs2 i j hy'` as an intermediate fact. Simplify using `only [Set.mem_iUnion] at this`. Take `⟨h, hh, hyh⟩` from `this`. Use `⟨X.basicOpen h, (hV j).basicOpen h, hyh, hDi i j h hh, X.basicOpen_le h, ?_⟩` and prove the remaining obligations.
-
-Conclude with `GlobalTheory.SubChoose.mem_gen_of_eq F α h _ (Set.mem_range_self (⟨i, ⟨x, hx⟩, ⟨h, hh⟩⟩ : Σ i, (S i) × (s i j))) _ _ (ha j ⟨i, ⟨x, hx⟩, ⟨h, hh⟩⟩)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.sub_choose_finite : ∀ (X : Scheme.{0}), IsNoetherian X → ∀ (F : X.Opensᵒᵖ ⥤ CommRingCat) (α : X.presheaf ⟶ F), ((Scheme.AffineZariskiSite.toOpensFunctor X).op.whiskerLeft α).Coequifibered → ∀ {ι : Type} [Finite ι] (V : ι → X.Opens), (∀ j, IsAffineOpen (V j)) → ∀ (S : ∀ j, Set (F.obj (op (V j)))), (∀ j, (S j).Finite) → ∃ T : ∀ j, Set (F.obj (op (V j))), (∀ j, (T j).Finite) ∧ ∀ i, S i ⊆ sub F α V T (V i) := by
   intro X hX F α hα ι _ V hV S hS

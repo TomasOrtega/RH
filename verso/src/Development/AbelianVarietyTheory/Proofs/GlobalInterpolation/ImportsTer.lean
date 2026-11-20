@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory.IterationConvergence
 
 /- English proof (translation)
-Establish `e : w ^ 2 - 1 = (w - 1) * (w + 1)` using `by ring`. Establish `e2 : w + 1 = 2 - (1 - w)` using `by ring`. Establish `h2 : (3 / 2 : ℝ) ≤ ‖w + 1‖`. Use `norm_sub_norm_le (2 : ℂ) (1 - w)` as an intermediate fact. Rewrite `this` using `[← e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ‖(1 : ℂ) - w‖ = ‖w - 1‖` using `norm_sub_rev _ _`. Establish `h3 : ‖(2 : ℂ)‖ = 2` using `by simp`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[e, norm_mul]`. Rewrite using `[mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left h2 (norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem step (w : ℂ) (h : ‖w - 1‖ < 1 / 2) : (3 / 2 : ℝ) * ‖w - 1‖ ≤ ‖w ^ 2 - 1‖ := by
   have e : w ^ 2 - 1 = (w - 1) * (w + 1) := by ring
@@ -23,9 +23,9 @@ theorem step (w : ℂ) (h : ‖w - 1‖ < 1 / 2) : (3 / 2 : ℝ) * ‖w - 1‖ �
   exact mul_le_mul_of_nonneg_left h2 (norm_nonneg _)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `hs` using `step (z ^ (2 ^ k)) (hz _)`. Establish `e : z ^ (2 ^ (k + 1)) = (z ^ (2 ^ k)) ^ 2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← pow_mul, pow_succ]`. Rewrite using `[e, pow_succ]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem iter {z : ℂ} (hz : ∀ n : ℕ, ‖z ^ n - (1 : ℂ)‖ < (1 / 2 : ℝ)) (k : ℕ) :
     (3 / 2 : ℝ) ^ k * ‖z - 1‖ ≤ ‖z ^ (2 ^ k) - 1‖ := by
@@ -41,9 +41,9 @@ theorem iter {z : ℂ} (hz : ∀ n : ℕ, ‖z ^ n - (1 : ℂ)‖ < (1 / 2 : ℝ
       _ ≤ _ := hs
 
 /- English proof (translation)
-Introduce `z hz`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖z - 1‖` using `norm_pos_iff.mpr (sub_ne_zero.mpr hne)`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (1 / 2 / ‖z - 1‖) (by norm_num : (1 : ℝ) < 3 / 2)`. Establish `h1` using `iter hz k`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `hz (2 ^ k)`. Rewrite `hk` using `[div_lt_iff₀ hpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem main : ∀ {z : ℂ}, (∀ (n : ℕ), ‖z ^ n - (1 : ℂ)‖ < (1 / 2 : ℝ)) → z = (1 : ℂ) := by
   intro z hz

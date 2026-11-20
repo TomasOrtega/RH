@@ -24,9 +24,9 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ X`. Take `⟨a, ha⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) (fun i => δ (b i))`. Use `choose g hg using ha`. Use `⟨a, (b.constr ℤ g).toAddMonoidHom, nonZeroDivisors.coe_ne_zero a, ?_⟩` and prove the remaining obligations. Apply `AddMonoidHom.toIntLinearMap_injective` to reduce the goal to its premises.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `b.ext fun i => ?_` and prove the remaining obligations. Use `hg i` as an intermediate fact. Simplify using `only [Algebra.smul_def] at this`. Simplify using `[this, Algebra.smul_def]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_denominator {O K : Type} [CommRing O] [IsDomain O] [Field K] [Algebra O K] [IsFractionRing O K]
     {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (δ : X →+ K) :
@@ -42,17 +42,15 @@ theorem exists_denominator {O K : Type} [CommRing O] [IsDomain O] [Field K] [Alg
   simp [this, Algebra.smul_def]
 
 /- English proof (translation)
-Establish `: IsLocalizedModule (nonZeroDivisors O) j` using `(isLocalizedModule_iff_isBaseChange (nonZeroDivisors O) K j).2 hj`. Establish `: IsLocalizedModule (nonZeroDivisors O) j'` using `(isLocalizedModule_iff_isBaseChange (nonZeroDivisors O) K j').2 hj'`. Establish `hinj : Function.Injective j'`. Introduce `x y hxy`. Take `⟨c, hc⟩` from `IsLocalizedModule.exists_of_eq (S := nonZeroDivisors O) (f := j') hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `smul_right_injective E' (nonZeroDivisors.coe_ne_zero c) hc`. Use `⟨le_antisymm ?_ ?_, fun e' => ?_⟩` and prove the remaining obligations. Introduce `e he`. Establish `h0 : A (j e) = 0` using `by rw [← hf, show f e = 0 from he, map_zero]`. Take `⟨δ, hδ⟩` from `(hex _).1 h0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, δ', ha, hδ'⟩` from `exists_denominator (O := O) δ`. Establish `h1 : j (a • e) = j (io δ')`. Rewrite using `[hio, hδ', map_smul, map_smul, hδ, algebraMap_smul]`. Take `⟨c, hc⟩` from `IsLocalizedModule.exists_of_eq (S := nonZeroDivisors O) (f := j) h1`. Use `hsat a e ha (hsat c _ (nonZeroDivisors.coe_ne_zero c) ⟨(c : O) • δ', ?_⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul]`. Conclude with `hc.symm`. Introduce and unpack `_ ⟨δ, rfl⟩`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hf, hio, map_zero]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(hex _).2 ⟨_, rfl⟩`. Take `⟨t, ht⟩` from `hA (j' e')`. Take `⟨⟨e, s⟩, hs⟩` from `IsLocalizedModule.surj (nonZeroDivisors O) j t`. Use `⟨s, e, nonZeroDivisors.coe_ne_zero s, hinj ?_⟩` and prove the remaining obligations. Establish `hs' : (s : O) • t = j e` using `hs`.
-
-Rewrite using `[hf, ← hs', map_smul j', ← ht, ← algebraMap_smul K (s : O) t, map_smul, algebraMap_smul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice_step {O K : Type} [CommRing O] [IsDomain O] [Field K] [Algebra O K] [IsFractionRing O K]
     {X : Type} [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X]
@@ -95,7 +93,7 @@ theorem lattice_step {O K : Type} [CommRing O] [IsDomain O] [Field K] [Algebra O
     rw [hf, ← hs', map_smul j', ← ht, ← algebraMap_smul K (s : O) t, map_smul, algebraMap_smul]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨M, fun _ => rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_model_of_eq {S : Scheme.{0}} {G : Over S} [GrpObj G] {R : Type} [CommRing R] {x y : Sp R ⟶ S}
     (h : x = y) {E : Type} [AddCommGroup E] [Module R E] (M : LieModel G x E) :
@@ -104,13 +102,13 @@ theorem exists_model_of_eq {S : Scheme.{0}} {G : Over S} [GrpObj G] {R : Type} [
   exact ⟨M, fun _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨T, iT, mT, ⟨M'⟩⟩` from `lieModel_exists _ G R' (spMap (algebraMap R R') ≫ 𝟙 _)`. Use `letI mR : Module R T := Module.compHom T (algebraMap R R')`. Establish `hsm : ∀ (a : R) (t : T), a • t = algebraMap R R' a • t` using `fun _ _ => rfl`. Establish `tower : IsScalarTower R R' T` using `⟨fun a b t => by rw [Algebra.smul_def, hsm, mul_smul]⟩`. Establish `hφ : Spec.map (CommRingCat.ofHom (algebraMap R R')) ≫ 𝟙 (Sp R) = spMap (algebraMap R R') ≫ 𝟙 _` using `rfl`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ex : ∀ e, ∃ t, M'.pt t = LieTangent.epsBase (algebraMap R R') hφ ≫ M.pt e` using `fun e => M'.onto _ (LieTangent.isTanAt_base _ hφ (M.tan e))`. Use `choose f hf using ex`. Set `j : V →ₗ[R] T` to `{ toFun := f map_add' := fun a b => M'.inj (by rw [M'.add, hf, hf, hf, M.add, comp_mul]) map_smul' := fun c e => M'.inj (by`. Rewrite using `[RingHom.id_apply, hsm, LieModel.pt_smul, hf, hf, LieModel.pt_smul, ← Category.assoc, LieTangent.base_scale, Category.assoc]) }`. Establish `hl : ∀ e, M.Lifts (algebraMap R R') (𝟙 G.left) e (M'.pt (j e))` using `fun e => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(M'.pt (f e)).left ≫ 𝟙 G.left = _`. Rewrite using `[hf]`. Conclude with `Category.comp_id _`. Take `⟨M'', h''⟩` from `exists_model_of_eq (y := 𝟙 (Sp R') ≫ spMap (algebraMap R R')) (by rw [Category.comp_id, Category.id_comp]) M'`. Take `⟨M₁, h₁⟩` from `(LiePull.lieModel_pullback _ _ G G₁ _ φ h R' (𝟙 _) T).1 M''`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨T, iT, mT, mR, tower, M₁, j, fun e => ?_, GlobalTheory.T.lie_model_isBaseChange _ G R R' _ V T M M' j hl⟩` and prove the remaining obligations. Use `hl e` as an intermediate fact. Unfold `LieModel.Lifts at this ⊢`. Rewrite using `[h₁, h'', ← this]`. Conclude with `(Category.comp_id _).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fibre_model {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] (G : Over (Sp R)) [GrpObj G]
     [IsCommMonObj G] [Smooth G.hom] (G₁ : Over (Sp R')) [GrpObj G₁] (φ : G₁.left ⟶ G.left)
@@ -148,7 +146,7 @@ theorem exists_fibre_model {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R
   exact (Category.comp_id _).symm
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `h.1.hom_ext (hv.trans hw.symm) ?_` and prove the remaining obligations. Rewrite using `[Over.w v, Over.w w]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lifts_unique {R R' : Type} [CommRing R] [CommRing R'] {c : R →+* R'} {G : Over (Sp R)} [GrpObj G]
     {G₁ : Over (Sp R')} [GrpObj G₁] {φ : G₁.left ⟶ G.left} (h : IsGrpPullback G₁ G (spMap c) φ)
@@ -159,23 +157,23 @@ theorem lifts_unique {R R' : Type} [CommRing R] [CommRing R'] {c : R →+* R'} {
   rw [Over.w v, Over.w w]
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ G G' _ _ GK _ τ φ φ'`. Use `letI := τ.addCommGroup`. Use `letI := τ.grpB`. Introduce `hG hG' hφ hφ' MT hMT E _ _ E' _ _ M M'`. Use `τ.free` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `τ.finite` as an intermediate fact. Use `τ.q_hom` as an intermediate fact. Use `τ.i_hom` as an intermediate fact. Use `hG.comm` as an intermediate fact. Use `hG.smooth` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hG'.comm` as an intermediate fact. Use `hG'.smooth` as an intermediate fact. Establish `: Mono τ.i` using `⟨fun a b hab => τ.isKernel.hom_ext hab (toUnit_unique _ _)⟩`. Take `⟨io, hio, hinj, hsat⟩` from `GlobalTheory.T.semiabelian_torus_lie_sub O K G GK φ hG hφ τ.X τ.i MT hMT E M`. Take `⟨f, hf⟩` from `GlobalTheory.T.semiabelian_hom_lie_extends O K G G' GK τ.B φ φ' hG hG' hφ hφ' τ.q E E' M M'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `(GlobalTheory.T.lie_model_finite_projective _ G' O _ E' M').2` as an intermediate fact. Take `⟨T, _, _, _, _, MK, j, hj, hbc⟩` from `exists_fibre_model G GK φ hφ M`. Take `⟨T', _, _, _, _, MK', j', hj', hbc'⟩` from `exists_fibre_model G' τ.B φ' hφ' M'`. Take `⟨I, hI, -⟩` from `lieModel_exists_unique_diff _ _ GK K _ _ T MT MK τ.i`. Take `⟨A, hA, -⟩` from `lieModel_exists_unique_diff _ GK τ.B K _ T T' MK MK' τ.q`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hex` using `GlobalTheory.T.torus_extension_tangent_exact K GK τ K (RingHom.id K)`. Establish `hid : spMap (RingHom.id K) = 𝟙 (Sp K)` using `Spec.map_id _`. Rewrite `hex` using `[hid]`. Use `⟨io, f, hio, hf, hinj, lattice_step j j' hbc hbc' I A (fun t => ?_) (fun t' => ?_) io f (fun δ => ?_) (fun e => ?_) hsat⟩` and prove the remaining obligations. Establish `h1 : A t = 0 ↔ MK.pt t ≫ τ.q = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hA, ← MK'.pt_zero]`. Conclude with `MK'.inj.eq_iff.symm`. Rewrite using `[h1, hex.1 _ (MK.tan t)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, e⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, rfl⟩` from `MT.onto w hw`. Conclude with `⟨δ, MK.inj (by rw [hI, e])⟩`. Introduce and unpack `⟨δ, rfl⟩`. Conclude with `⟨_, MT.tan δ, (hI δ).symm⟩`. Take `⟨v, hv, e⟩` from `hex.2 _ (MK'.tan t')`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, rfl⟩` from `MK.onto v hv`. Conclude with `⟨t, MK'.inj (by rw [hA, e])⟩`. Apply `MK.inj` to reduce the goal to its premises. Rewrite using `[hI]`. Conclude with `lifts_unique hφ (hj _) (hio δ)`.
+Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `MK'.inj` to reduce the goal to its premises. Rewrite using `[hA]`. Conclude with `lifts_unique hφ' (hj' _) (hf e _ (hj e))`.
+A detailed English derivation is pending.
 -/
 theorem lie_quot_full : ∀ (O K : Type) [CommRing O] [IsDedekindDomain O] [Field K] [Algebra O K] [IsFractionRing O K] (G G' : Over (Sp O)) [GrpObj G] [GrpObj G'] (GK : Over (Sp K)) [GrpObj GK] (τ : TorusExtension GK) (φ : GK.left ⟶ G.left) (φ' : τ.B.left ⟶ G'.left), letI := τ.addCommGroup; letI := τ.grpB; IsSemiAbelian G → IsSemiAbelian G' → IsGrpPullback GK G (spMap (algebraMap O K)) φ → IsGrpPullback τ.B G' (spMap (algebraMap O K)) φ' → ∀ (MT : LieModel (splitTorus (Sp K) τ.X) (𝟙 _) (τ.X →+ K)), IsCocharLie MT → ∀ (E : Type) [AddCommGroup E] [Module O E] (E' : Type) [AddCommGroup E'] [Module O E'] (M : LieModel G (𝟙 _) E) (M' : LieModel G' (𝟙 _) E'), ∃ (io : (τ.X →+ O) →ₗ[O] E) (f : E →ₗ[O] E'), (∀ δ, M.Lifts (algebraMap O K) φ (io δ) (MT.pt ((algebraMap O K).toAddMonoidHom.comp δ) ≫ τ.i)) ∧ (∀ (e : E) (v : epsAt (𝟙 (Sp K)) ⟶ GK), M.Lifts (algebraMap O K) φ e v → M'.Lifts (algebraMap O K) φ' (f e) (v ≫ τ.q)) ∧ Function.Injective io ∧ LinearMap.ker f = LinearMap.range io ∧ ∀ e' : E', ∃ (a : O) (e : E), a ≠ 0 ∧ f e = a • e' := by
   intro O K _ _ _ _ _ G G' _ _ GK _ τ φ φ'

@@ -12,7 +12,7 @@ open GlobalTheory GlobalTheory.Ex
 namespace GlobalTheory.FullExtend
 
 /- English proof (translation)
-Introduce `hV _ _ _ _ _ _ E _ _ _ H D K K' _ _ _ _ _ f o`. Take `⟨o', h₁, h₂, h₃⟩` from `exists_fullExt hV.1.1 D f o`. Conclude with `⟨o', h₁, h₂, fun m j z v _ => h₃ m j z v⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem main : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory.LN.HomExtSt → ThetaPtDeterminesSt → EndDeterminedOnTorsionSt → ThetaUnifAV → AllD fun D => ∀ (K K' : Type) [Field K] [IsAlgClosed K] [CharZero K] [Field K'] [IsAlgClosed K'] (f : K →+* K') (o : Full D K), ∃ o' : Full D K', FullExt f o o' ∧ (∀ m v, o.Theta m v → o'.Theta m fun x => f (v x)) ∧ ∀ m j z v, 0 < j → o.Coord m (o.I.ev j z) v → o'.Coord m (o'.I.ev j z) fun x => f (v x) := by
   intro hV _ _ _ _ _ _ E _ _ _ H D K K' _ _ _ _ _ f o

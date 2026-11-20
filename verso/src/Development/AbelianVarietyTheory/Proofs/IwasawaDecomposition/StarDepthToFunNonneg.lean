@@ -24,17 +24,17 @@ def depthSet (n : ℕ) (B : (Fin n → O) → (Fin n → O) → ℝ) : Set ℝ :
 variable {bar ψ w}
 
 /- English proof (translation)
-Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X₁, i1, i2, i3, ρ, B₁, hρ, hrad, hB, hd⟩`. Establish `hker : LinearMap.ker r ≤ LinearMap.ker ρ`. Introduce `x hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Use `hrad _ fun y => ?_` and prove the remaining obligations. Take `⟨y', rfl⟩` from `hρ y`. Establish `h1` using `hB x y'`. Establish `h2` using `hB 0 y'`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hx, map_zero, LinearMap.zero_apply] at h1 h2`. Rewrite using `[← h1, h2]`. Set `ρ' : (Fin m → O) →ₗ[O] X₁` to `(LinearMap.ker r).liftQ ρ hker ∘ₗ (r.quotKerEquivOfSurjective hr).symm.toLinearMap`. Establish `hρ' : ∀ a, ρ' (r a) = ρ a` using `fun a => by`. Establish `: (r.quotKerEquivOfSurjective hr).symm (r a) = Submodule.Quotient.mk a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [ρ', LinearMap.comp_apply, LinearEquiv.coe_coe, this, Submodule.liftQ_apply]`. Use `⟨X₁, i1, i2, i3, ρ', B₁, fun x => ?_, hrad, fun a b => ?_, hd⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hρ x`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨r a, hρ' a⟩`. Take `⟨a, rfl⟩` from `hr a`. Take `⟨b, rfl⟩` from `hr b`. Rewrite using `[hρ', hρ']`. Conclude with `hB a b`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨X₁, i1, i2, i3, ρ, B₁, hρ, hrad, hB, hd⟩`. Conclude with `⟨X₁, i1, i2, i3, ρ ∘ₗ r, B₁, hρ.comp hr, hrad, fun a b => hB (r a) (r b), hd⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem depthSet_comp {n m : ℕ} {r : (Fin n → O) →ₗ[O] (Fin m → O)} (hr : Function.Surjective r)
     (B : (Fin m → O) → (Fin m → O) → ℝ) : depthSet bar ψ w n (fun a b => B (r a) (r b)) = depthSet bar ψ w m B := by
@@ -67,9 +67,9 @@ theorem depthSet_comp {n m : ℕ} {r : (Fin n → O) →ₗ[O] (Fin m → O)} (h
     exact ⟨X₁, i1, i2, i3, ρ ∘ₗ r, B₁, hρ.comp hr, hrad, fun a b => hB (r a) (r b), hd⟩
 
 /- English proof (translation)
-Use `Set.eq_empty_of_forall_notMem fun t ⟨X₁, i1, i2, i3, ρ, B₁, hρ, _, _, _, _, _, v, _, _, _, hv, _⟩ => ?_` and prove the remaining obligations. Use `haveI : Subsingleton X₁ := ⟨fun x y => by`. Take `⟨a, rfl⟩` from `hρ x`. Take `⟨b, rfl⟩` from `hρ y`. Rewrite using `[Subsingleton.elim a b]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[InvFun.evalZ, w.eval_of_subsingleton]`. Conclude with `zero_ne_one hv`.
+A detailed English derivation is pending.
 -/
 theorem depthSet_zero (B : (Fin 0 → O) → (Fin 0 → O) → ℝ) : depthSet bar ψ w 0 B = ∅ := by
   refine Set.eq_empty_of_forall_notMem fun t ⟨X₁, i1, i2, i3, ρ, B₁, hρ, _, _, _, _, _, v, _, _, _, hv, _⟩ => ?_
@@ -95,13 +95,13 @@ def starFun (K D : ℕ) : InvFun O where
 variable {bar ψ w}
 
 /- English proof (translation)
-The claim follows from `Real.sSup_nonneg fun _ h => h.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem starDepth_toFun_nonneg (n : ℕ) (B : (Fin n → O) → (Fin n → O) → ℝ) : 0 ≤ (starDepth bar ψ w).toFun n B :=
   Real.sSup_nonneg fun _ h => h.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.choose_spec.2.2.2.1
 
 /- English proof (translation)
-Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' O X`. Rewrite using `[InvFun.eval_eq _ hr]`. Conclude with `starDepth_toFun_nonneg n _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem starDepth_eval_nonneg {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X] (B : X → X → ℝ) :
     0 ≤ (starDepth bar ψ w).eval X B := by
@@ -110,7 +110,7 @@ theorem starDepth_eval_nonneg {X : Type} [AddCommGroup X] [Module O X] [Module.F
   exact starDepth_toFun_nonneg n _
 
 /- English proof (translation)
-Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' O X`. Rewrite using `[InvFun.eval_eq _ hr, InvFun.eval_eq _ hr, InvFun.eval_eq _ hr]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem starFun_eval {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X] (K D : ℕ) (B : X → X → ℝ) :
     (starFun bar ψ w K D).eval X B = D * (K * ψ.eval X B + (starDepth bar ψ w).eval X B) := by
@@ -119,7 +119,7 @@ theorem starFun_eval {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X
   rfl
 
 /- English proof (translation)
-The claim follows from `starFun_eval K D _`.
+A detailed English derivation is pending.
 -/
 theorem starFun_evalZ {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X] (K D : ℕ)
     (β : LinearMap.BilinForm ℤ X) :
@@ -127,7 +127,7 @@ theorem starFun_evalZ {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O 
   starFun_eval K D _
 
 /- English proof (translation)
-The claim follows from `starFun_eval K D _`.
+A detailed English derivation is pending.
 -/
 theorem starFun_evalR {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X] (K D : ℕ)
     (B : X →ₗ[ℤ] X →ₗ[ℤ] ℝ) :
@@ -135,7 +135,7 @@ theorem starFun_evalR {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O 
   starFun_eval K D _
 
 /- English proof (translation)
-Establish `: depthSet bar ψ (zeroFun O) n B = ∅` using `Set.eq_empty_of_forall_notMem fun t ⟨X₁, i1, i2, i3, ρ, B₁, _, _, _, _, _, _, v, _, _, _, hv, _⟩ => by`. Rewrite `hv` using `[zeroFun_evalZ]`. Conclude with `zero_ne_one hv`. Use `show sSup _ = 0`. Rewrite using `[this, Real.sSup_empty]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem starDepth_zeroFun (n : ℕ) (B : (Fin n → O) → (Fin n → O) → ℝ) : (starDepth bar ψ (zeroFun O)).toFun n B = 0 := by
   have : depthSet bar ψ (zeroFun O) n B = ∅ :=
@@ -152,7 +152,7 @@ section Twist
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E)
 
 /- English proof (translation)
-Introduce `σ hσ n B` and use `by show _ * (_ * _ + _) = _ * (_ * _ + _) rw [hψ σ hσ n B, hd σ hσ n B]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isTwInv_starFun {ψ w : InvFun (𝓞 E)} (hψ : IsTwInv H ψ) (hd : IsTwInv H (starDepth H.bar ψ w)) (K D : ℕ) :
     IsTwInv H (starFun H.bar ψ w K D) := fun σ hσ n B => by

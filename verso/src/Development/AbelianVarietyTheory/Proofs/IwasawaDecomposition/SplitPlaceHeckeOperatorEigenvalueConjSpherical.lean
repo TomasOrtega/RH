@@ -13,19 +13,19 @@ namespace GlobalTheory.HeckeEigConj
 open GlobalTheory.HeckeEigConj
 
 /- English proof (translation)
-Introduce `L _ _ _ n s ϖ hϖ J hJ σ α hα i hi hiL W _ _ T hT e he k hk1 hkn`. Establish `hK : ∀ a, i a ∈ Formalism.UG.Ov L (GlobalTheory.HeckeFrob.conjSplit s).w ↔ a ∈ (s.v.adicCompletionIntegers (maximalRealSubfield L)).toSubring` using `fun a => GlobalTheory.IsoInteg.valued_le_one_iff_of_continuous (maximalRealSubfield L) L s.v _ i hi a`. Establish `heK : e ∈ GlobalTheory.PRep.fixed σ.ρ (GlobalTheory.LFun.KGL (GlobalTheory.HeckeFrob.conjSplit s).w n)`. Rewrite using `[← GlobalTheory.HeckeEigConj.KO_eq_KGL L (GlobalTheory.HeckeFrob.conjSplit s).w n]`. Conclude with `he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφK : ∀ κ ∈ Umax L n, TrivOutside {s.v} κ → Matrix.GeneralLinearGroup.map i.toRingHom ((GlobalTheory.HeckeFrob.conjSplit s).loc n κ) ∈ GlobalTheory.LFun.KGL (GlobalTheory.HeckeFrob.conjSplit s).w n` using `fun κ hκ ht => by`. Rewrite using `[GlobalTheory.HeckeEigConj.map_loc_conjSplit L n s i κ]`. Conclude with `(GlobalTheory.LFun.ConjPlace.mem_iff_invT i hK _).1 ((GlobalTheory.HeckeScalarSph.loc_mem_GLint_iff s ht).2 hκ)`. Take `⟨α0, -, hT0⟩` from `GlobalTheory.HeckeScalarSph.exists_tSet_eq (n := n) s ϖ k hϖ`. Take `⟨R, hR1, hR2⟩` from `GlobalTheory.HeckeScalarSph.exists_repsU (n := n) s.v α0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR1' : ∀ γ ∈ R, γ ∈ tSet L n s ϖ k` using `fun γ hγ => (hT0 γ).2 (hR1 γ hγ)`. Establish `hR2' : ∀ x ∈ tSet L n s ϖ k, ∃! γ, γ ∈ R ∧ γ⁻¹ * x ∈ Umax L n` using `fun x hx => hR2 x ((hT0 x).1 hx)`. Establish `hD : ∀ x ∈ tSet L n s ϖ k, TrivOutside {s.v} x` using `fun x hx => hx.1`. Establish `hrt : ∀ x, TrivOutside {s.v} x → NG.rt L n x (T e) = T (σ.ρ (Matrix.GeneralLinearGroup.map i.toRingHom ((GlobalTheory.HeckeFrob.conjSplit s).loc n x)) e)` using `fun x hx => (hT x hx e).symm`. Establish `hfix : ∀ κ ∈ Umax L n, TrivOutside {s.v} κ → NG.rt L n κ (T e) = T e` using `fun κ hκ ht => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hrt κ ht, GlobalTheory.LGrp.mem_fixed.1 heK _ (hφK κ hκ ht)]`. Establish `hsum` using `heckeD_eq_sum_of_agree J hJ hD hR1' hR2' hfix`. Establish `hloc` using `GlobalTheory.T.splitHeckeOperator_inverse_conjugatePlace_cosetSum L n s ϖ hϖ k hkn i hi σ.ρ R hR1' hR2' e heK`. Establish `key : NG.heckeD J (tSet L n s ϖ k) (T e) = T (GlobalTheory.LFun.heckeVec σ.ρ (GlobalTheory.LFun.KGL (GlobalTheory.HeckeFrob.conjSplit s).w n) (fun g => Formalism.UG.Tj ℂ n (Formalism.UG.Ov L (GlobalTheory.HeckeFrob.conjSplit s).w) (i ϖ) k g⁻¹) e)`. Rewrite using `[hsum, hloc, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Conclude with `Finset.sum_congr rfl fun γ hγ => hrt γ (hD γ (hR1' γ hγ))`. Take `⟨hq1, hq2⟩` from `norms_eq s`. Distinguish the cases in `he0 : e = 0`. Substitute `he0` using the available equality. Simplify using `only [map_zero, smul_zero]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Simplify using `[NG.tN, NG.heckeD]`. Establish `hSat` using `(GlobalTheory.LFun.SatBridge.hasSatGL_of_hasSatake L (GlobalTheory.HeckeFrob.conjSplit s).w n σ.V σ.ρ α hα).2 e heK he0`. Establish `hU : Formalism.UG.IsUnifV L (GlobalTheory.HeckeFrob.conjSplit s).w (i ϖ)` using `GlobalTheory.T.continuous_adicCompletion_equiv_uniformiser (maximalRealSubfield L) L s.v _ i hi ϖ hϖ`. Establish `hinv` using `(GlobalTheory.ChainOnto.SatInv.satVec_iff_inv L (GlobalTheory.HeckeFrob.conjSplit s).w n σ.V σ.ρ e _ he0 heK (by simp)).1 hSat (i ϖ) hU k hkn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[NG.tN, key, hinv, map_smul, smul_smul, smul_smul, hq1, hq2]`. Use `congr 1`. Rewrite using `[mul_assoc]`. Conclude with `GlobalTheory.T.satakeEigenvalue_inv_normalised_eq_esymm (normV (GlobalTheory.HeckeFrob.conjSplit s).w) n k (Nat.pos_of_ne_zero (hq1 ▸ GlobalTheory.LFun.qV_ne_zero (GlobalTheory.HeckeFrob.conjSplit s).w)) hkn α`.
+A detailed English derivation is pending.
 -/
 theorem tN_eig : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (s : SplitPlace L)
     (ϖ : s.v.adicCompletion (maximalRealSubfield L)), IsUnif L s.v ϖ → ∀ J : Subgroup (GAf L n),

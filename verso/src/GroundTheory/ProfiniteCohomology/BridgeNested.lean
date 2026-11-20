@@ -57,9 +57,9 @@ theorem nestedHomeomorph_succ_apply (m : ℕ) (f : resolutionX X (m + 1))
   rfl
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => ext x`. Both sides reduce to the same expression. Consider the case `succ m ih`. Use extensionality with `x`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `nestedHomeomorph X m (((a + b : resolutionX X (m + 1)) : C(G, resolutionX X m)) (x 0)) (Fin.tail x) = nestedHomeomorph X m ((a : C(G, resolutionX X m)) (x 0)) (Fin.tail x) + nestedHomeomorph X m ((b : C(G, resolutionX X m)) (x 0)) (Fin.tail x)`. Rewrite using `[ContinuousMap.add_apply, ih]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem nestedHomeomorph_add (m : ℕ) (a b : resolutionX X m) :
     nestedHomeomorph X m (a + b) = nestedHomeomorph X m a + nestedHomeomorph X m b := by
@@ -74,9 +74,9 @@ theorem nestedHomeomorph_add (m : ℕ) (a b : resolutionX X m) :
     rfl
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => ext x`. Both sides reduce to the same expression. Consider the case `succ m ih`. Use extensionality with `x`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `nestedHomeomorph X m (((r • a : resolutionX X (m + 1)) : C(G, resolutionX X m)) (x 0)) (Fin.tail x) = r • nestedHomeomorph X m ((a : C(G, resolutionX X m)) (x 0)) (Fin.tail x)`. Rewrite using `[ContinuousMap.smul_apply, ih]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem nestedHomeomorph_smul (m : ℕ) (r : k) (a : resolutionX X m) :
     nestedHomeomorph X m (r • a) = r • nestedHomeomorph X m a := by
@@ -106,7 +106,7 @@ theorem nestedLinearEquiv_apply (m : ℕ) (a : resolutionX X m) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rfl`. Consider the case `succ m ih`. Rewrite using `[nestedHomeomorph_succ_apply, nestedHomeomorph_succ_apply]`. Conclude with `ih _ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nestedHomeomorph_ρ_apply (m : ℕ) (g : G) (a : resolutionX X m) (x : Fin m → G) :
     nestedHomeomorph X m ((resolutionX X m).ρ g a) x =
@@ -118,13 +118,13 @@ theorem nestedHomeomorph_ρ_apply (m : ℕ) (g : G) (a : resolutionX X m) (x : F
     exact ih _ _
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_zero, add_zero]`. Simplify using `only [Fin.val_zero, pow_zero, one_smul]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Consider the case `succ m ih`. Establish `h1 : ((d X (m + 1)).hom a : C(G, resolutionX X (m + 1))) (x 0) = a - (d X m).hom ((a : C(G, resolutionX X m)) (x 0))`. Rewrite using `[hom_d_succ]`. Both sides reduce to the same expression. Rewrite using `[nestedHomeomorph_succ_apply, h1, show nestedHomeomorph X (m + 1) (a - (d X m).hom ((a : C(G, resolutionX X m)) (x 0))) = nestedHomeomorph X (m + 1) a - nestedHomeomorph X (m + 1) ((d X m).hom ((a : C(G, resolutionX X m)) (x 0))) from map_sub (nestedLinearEquiv X (m + 1)) _ _, Co …`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.val_zero, pow_zero, one_smul, Fin.succAbove_zero, Fin.val_succ, pow_succ, mul_neg_one, neg_smul, Finset.sum_neg_distrib, sub_eq_add_neg]`. Use `congr 1`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[nestedHomeomorph_succ_apply X m a, Fin.succ_succAbove_zero]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [Fin.tail, Fin.succ_succAbove_succ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem nestedHomeomorph_d_apply (m : ℕ) (a : resolutionX X m) (x : Fin (m + 1) → G) :
     nestedHomeomorph X (m + 1) ((d X m).hom a) x =

@@ -12,17 +12,17 @@ section ThQ
 variable {C : Type} [NormedField C] [IsUltrametricDist C]
 
 /- English proof (translation)
-The claim follows from `(IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)`.
+A detailed English derivation is pending.
 -/
 theorem thq_add_le {x y : C} {r : ℝ} (hx : ‖x‖ ≤ r) (hy : ‖y‖ ≤ r) : ‖x + y‖ ≤ r :=
   (IsUltrametricDist.norm_add_le_max x y).trans (max_le hx hy)
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact ⟨0, by simp, by simp⟩`. Consider the case `succ m ih`. Take `⟨e, he, h⟩` from `ih`. Use `⟨d * ((m + 1 : ℕ) : C) * b ^ m + (b + d) * e, ?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `thq_add_le` to reduce the goal to its premises. Rewrite using `[norm_mul, norm_mul, norm_pow]`. Establish `h1 : ‖((m + 1 : ℕ) : C)‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one C (m + 1)`. Establish `h2 : ‖b‖ ^ m ≤ 1` using `pow_le_one₀ (norm_nonneg _) hb`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : (b + d) ^ (m + 1 + 1) - b ^ (m + 1 + 1) = (b + d) * ((b + d) ^ (m + 1) - b ^ (m + 1)) + d * b ^ (m + 1)` using `by ring`. Rewrite using `[h3, h]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -49,13 +49,13 @@ theorem thq_pow_sub (b d : C) (hb : ‖b‖ ≤ 1) (hbd : ‖b + d‖ ≤ 1) (m 
       ring
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, q = m + 1` from `⟨q - 1, by omega⟩`. Establish `hr0 : 0 ≤ r` using `(norm_nonneg _).trans hab`. Take `⟨e, he, h⟩` from `thq_pow_sub b (a - b) hb (by simpa using ha) m`. Rewrite `h` using `[add_sub_cancel]`. Establish `h1 : (P * a + a ^ (m + 1)) - (P * b + b ^ (m + 1)) = P * (a - b) + (a - b) * (((m + 1 : ℕ) : C) * b ^ m + e)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`. Apply `thq_add_le` to reduce the goal to its premises. Rewrite using `[norm_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Establish `h2 : ‖((m + 1 : ℕ) : C) * b ^ m + e‖ ≤ ‖P‖`. Apply `thq_add_le` to reduce the goal to its premises. Rewrite using `[norm_mul, norm_pow]`. Establish `h3 : ‖b‖ ^ m ≤ 1` using `pow_le_one₀ (norm_nonneg _) hb`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `he.trans (hab.trans hr)`. Rewrite using `[norm_mul, mul_comm]`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thq_step {P : C} {q : ℕ} (hq : 2 ≤ q) (hqP : ‖(q : C)‖ ≤ ‖P‖) {a b : C}
     (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) {r : ℝ} (hab : ‖a - b‖ ≤ r) (hr : r ≤ ‖P‖) :
@@ -81,7 +81,7 @@ theorem thq_step {P : C} {q : ℕ} (hq : 2 ≤ q) (hqP : ‖(q : C)‖ ≤ ‖P�
     gcongr
 
 /- English proof (translation)
-Apply `thq_add_le` to reduce the goal to its premises. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) ha`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thq_ball {P : C} {q : ℕ} (hP : ‖P‖ ≤ 1) {a : C} (ha : ‖a‖ ≤ 1) : ‖P * a + a ^ q‖ ≤ 1 := by
   apply thq_add_le
@@ -91,11 +91,11 @@ theorem thq_ball {P : C} {q : ℕ} (hP : ‖P‖ ≤ 1) {a : C} (ha : ‖a‖ �
   · rw [norm_pow]; exact pow_le_one₀ (norm_nonneg _) ha
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro a b r _ _ hab _`. Simplify `hab` using `[ltIter]`. Consider the case `succ n ih`. Introduce `a b r ha hb hab hr`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hr0 : 0 ≤ r` using `(norm_nonneg _).trans hab`. Establish `h1` using `thq_step hq hqP ha hb hab hr`. Establish `h2 : ‖P‖ * r ≤ ‖P‖`. Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `ih _ _ _ (thq_ball hP ha) (thq_ball hP hb) h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `e1 : ∀ x : C, ltIter P q (n + 1) x = ltIter P q n (P * x + x ^ q)` using `fun x => by`. Simplify using `only [ltIter, Function.iterate_succ_apply]`. Rewrite using `[e1, e1]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem thq_iter {P : C} {q : ℕ} (hq : 2 ≤ q) (hqP : ‖(q : C)‖ ≤ ‖P‖) (hP : ‖P‖ ≤ 1) (n : ℕ) :
     ∀ (a b : C) (r : ℝ), ‖a‖ ≤ 1 → ‖b‖ ≤ 1 → ‖a - b‖ ≤ r → r ≤ ‖P‖ →
@@ -118,9 +118,9 @@ theorem thq_iter {P : C} {q : ℕ} (hq : 2 ≤ q) (hqP : ‖(q : C)‖ ≤ ‖P�
       _ = ‖P‖ ^ (n + 1) * r := by ring
 
 /- English proof (translation)
-Proceed by induction on `n generalizing x with`. Consider the case `zero => simp [ltIter]`. Consider the case `succ n ih`. Establish `e1 : ltIter ϖ q (n + 1) x = ltIter ϖ q n (ϖ * x + x ^ q)`. Simplify using `only [ltIter, Function.iterate_succ_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2 : ltIter (θ ϖ) q (n + 1) (θ x) = ltIter (θ ϖ) q n (θ ϖ * θ x + θ x ^ q)`. Simplify using `only [ltIter, Function.iterate_succ_apply]`. Rewrite using `[e1, e2, ih]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem thq_map {B : Type} [CommRing B] (θ : B →+* C) (ϖ : B) (q n : ℕ) (x : B) :
     θ (ltIter ϖ q n x) = ltIter (θ ϖ) q n (θ x) := by
@@ -135,9 +135,9 @@ theorem thq_map {B : Type} [CommRing B] (θ : B →+* C) (ϖ : B) (q n : ℕ) (x
     simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa [ltIter] using h0`. Consider the case `succ n ih`. Establish `e1 : ltIter P q (n + 1) (w (n + 1)) = ltIter P q n (P * w (n + 1) + w (n + 1) ^ q)`. Simplify using `only [ltIter, Function.iterate_succ_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, add_comm, hw, ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem thq_tower {P : C} {q : ℕ} {w : ℕ → C} (h0 : w 0 = 0)
     (hw : ∀ n, w (n + 1) ^ q + P * w (n + 1) = w n) (n : ℕ) : ltIter P q n (w n) = 0 := by
@@ -151,15 +151,15 @@ theorem thq_tower {P : C} {q : ℕ} {w : ℕ → C} (h0 : w 0 = 0)
 end ThQ
 
 /- English proof (translation)
-Introduce `B _ S F ϖ C _ _ _ θ hS _ hlt q hq hqP v hv w h0 hw hvw Q hQ hQn`. Establish `hP : ‖θ ϖ‖ ≤ 1` using `hlt.le`. Establish `hwb : ∀ n, ‖w n‖ ≤ 1` using `fun n => by`. Establish `h1 : w n = θ (v n) + -(θ (v n) - w n)` using `by ring`. Rewrite using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `thq_add_le (hS _ (hv n)) (by rw [norm_neg]; exact (hvw n).trans hP)`. Establish `hb : ∀ n, ‖θ Q‖ ≤ ‖θ ϖ‖ ^ (n + 1)` using `fun n => by`. Take `⟨a, ha, hQa⟩` from `hQn n`. Establish `h1 : θ Q = ltIter (θ ϖ) q n (θ (v n)) + θ ϖ ^ (n + 1) * θ a`. Establish `h2 : θ (Q - ltIter ϖ q n (v n)) = θ (ϖ ^ (n + 1) * a)` using `congrArg θ hQa`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[map_sub, thq_map, map_mul, map_pow]`. Rewrite using `[← h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `thq_iter hq hqP hP n (θ (v n)) (w n) _ (hS _ (hv n)) (hwb n) (hvw n) le_rfl`. Rewrite `h3` using `[thq_tower h0 hw n, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Apply `thq_add_le` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Conclude with `hS _ ha`. Use `_ = ‖θ ϖ‖ ^ (n + 1) := mul_one _`. Establish `hlim : Filter.Tendsto (fun n : ℕ => ‖θ ϖ‖ ^ (n + 1)) Filter.atTop (nhds 0)` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) hlt).comp (Filter.tendsto_add_atTop_nat 1)`. Establish `h0' : ‖θ Q‖ ≤ 0` using `ge_of_tendsto' hlim hb`. Conclude with `norm_le_zero_iff.mp h0'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem theta_eq_zero_of_congr_torsion : ∀ {B : Type} [CommRing B] {S : Subring B} {F : ℕ → Ideal B} {ϖ : B} {C : Type} [NormedField C] [IsUltrametricDist C], PerEnv S F ϖ →
     ∀ (θ : B →+* C), (∀ s ∈ S, ‖θ s‖ ≤ 1) → θ ϖ ≠ 0 → ‖θ ϖ‖ < 1 → ∀ (q : ℕ), 2 ≤ q → ‖(q : C)‖ ≤ ‖θ ϖ‖ →

@@ -10,21 +10,19 @@ open Matrix Topology
 open scoped ComplexOrder
 
 /- English proof (translation)
-Use `set K : Set (n → ℂ) := Metric.sphere 0 1 with hKdef`. Establish `hK : IsCompact K` using `isCompact_sphere 0 1`. Establish `hQ : Continuous fun z : X × (n → ℂ) => (star z.2 ⬝ᵥ (A z.1 *ᵥ z.2)).re`. Simplify using `only [dotProduct, mulVec]`. Use `Complex.continuous_re.comp (continuous_finsetSum _ fun i _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(continuous_star.comp ((continuous_apply i).comp continuous_snd)).mul (continuous_finsetSum _ fun j _ => ((hc i j).comp continuous_fst).mul ((continuous_apply j).comp continuous_snd))`. Establish `hP : ∀ y ∈ K, ∀ᶠ z : X × (n → ℂ) in 𝓝 (x0, y), 0 < (star z.2 ⬝ᵥ (A z.1 *ᵥ z.2)).re`. Introduce `y hy`. Establish `hy0 : y ≠ 0` using `by rintro rfl; simp [hKdef] at hy`. Establish `h` using `h0.dotProduct_mulVec_pos hy0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[Complex.lt_def]`. Conclude with `(hQ.tendsto (x0, y)).eventually_const_lt (by simpa using h.1)`. Use `filter_upwards [hK.eventually_forall_of_forall_eventually (P := fun x y => 0 < (star y ⬝ᵥ (A x *ᵥ y)).re) hP] with x hx`. Use `PosDef.of_dotProduct_mulVec_pos (hH x) fun y hy => ?_` and prove the remaining obligations. Establish `hn : 0 < ‖y‖` using `norm_pos_iff.2 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyK : ((‖y‖⁻¹ : ℝ) : ℂ) • y ∈ K`. Simplify using `[hKdef, norm_smul, hn.ne']`. Establish `h1` using `hx _ hyK`. Establish `e : star (((‖y‖⁻¹ : ℝ) : ℂ) • y) ⬝ᵥ (A x *ᵥ (((‖y‖⁻¹ : ℝ) : ℂ) • y)) = ((‖y‖⁻¹ ^ 2 : ℝ) : ℂ) * (star y ⬝ᵥ (A x *ᵥ y))`. Rewrite using `[star_smul, mulVec_smul, smul_dotProduct, dotProduct_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [smul_eq_mul, Complex.star_def, Complex.conj_ofReal]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[e, Complex.re_ofReal_mul]`. Establish `him : (star y ⬝ᵥ (A x *ᵥ y)).im = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Complex.conj_eq_iff_im]`. Simplify using `only [dotProduct, mulVec, map_sum, map_mul, Pi.star_apply, Complex.star_def, Complex.conj_conj, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h` using `(hH x).apply i j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[Complex.star_def]`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Complex.lt_def]`. Use `⟨?_, by simpa using him.symm⟩` and prove the remaining obligations.
-
-Use `pos_of_mul_pos_right h1 (by positivity)` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem posDef_eventually_of_continuous {X n : Type*} [TopologicalSpace X] [Fintype n] [DecidableEq n]
     (A : X → Matrix n n ℂ) (hc : ∀ i j, Continuous fun x => A x i j)
@@ -73,9 +71,9 @@ theorem posDef_eventually_of_continuous {X n : Type*} [TopologicalSpace X] [Fint
   simpa using this
 
 /- English proof (translation)
-Unfold `gramOf`. Use `isHermitian_conjTranspose_mul_mul g ?_` and prove the remaining obligations. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[diagonal_apply, h, Ne.symm h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem gramOf_isHermitian {N : ℕ} (hd : Fin N → ℝ) (g : Matrix (Fin N) (Fin N) ℂ) :
     (gramOf hd g).IsHermitian := by
@@ -87,7 +85,7 @@ theorem gramOf_isHermitian {N : ℕ} (hd : Fin N → ℝ) (g : Matrix (Fin N) (F
   · simp [diagonal_apply, h, Ne.symm h]
 
 /- English proof (translation)
-Unfold `gramHead gramOf`. Conclude with `(((continuous_id.matrix_conjTranspose).matrix_mul continuous_const).matrix_mul continuous_id).matrix_submatrix _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_gramHead {N : ℕ} (hd : Fin N → ℝ) (k : ℕ) :
     Continuous fun g : Matrix (Fin N) (Fin N) ℂ => gramHead hd k g := by
@@ -96,9 +94,9 @@ theorem continuous_gramHead {N : ℕ} (hd : Fin N → ℝ) (k : ℕ) :
     continuous_id).matrix_submatrix _ _
 
 /- English proof (translation)
-Establish `h1 : IsOpen {g : Matrix (Fin N) (Fin N) ℂ | IsUnit g.det}`. Simplify using `only [isUnit_iff_ne_zero]`. Conclude with `isOpen_ne_fun (continuous_id.matrix_det) continuous_const`. Establish `h2 : IsOpen {g : Matrix (Fin N) (Fin N) ℂ | (-gramHead (sigForm N j) (N - j) g).PosDef}`. Use `isOpen_iff_mem_nhds.2 fun g0 hg0 => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `posDef_eventually_of_continuous (fun g => -gramHead (sigForm N j) (N - j) g) (fun a b => ?_) (fun g => ?_) g0 hg0` and prove the remaining obligations. Conclude with `((continuous_gramHead _ _).neg).matrix_elem a b`. Conclude with `((gramOf_isHermitian _ g).submatrix _).neg`. Conclude with `h1.inter h2`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_inFlagDomain (N j : ℕ) :
     IsOpen {g : Matrix (Fin N) (Fin N) ℂ | InFlagDomain N j g} := by
@@ -114,7 +112,7 @@ theorem isOpen_inFlagDomain (N j : ℕ) :
   exact h1.inter h2
 
 /- English proof (translation)
-Unfold `gramOf at hu ⊢`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hu]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gramOf_mul_of_preserves {N : ℕ} (hd : Fin N → ℝ) (u g : Matrix (Fin N) (Fin N) ℂ)
     (hu : gramOf hd u = diagonal (fun i => ((hd i : ℝ) : ℂ))) :
@@ -127,11 +125,11 @@ theorem gramOf_mul_of_preserves {N : ℕ} (hd : Fin N → ℝ) (u g : Matrix (Fi
     _ = _ := by rw [hu]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [gramHead, gramOf, submatrix_apply]`. Rewrite using `[mul_apply, mul_apply]`. Simplify using `only [mul_diagonal, conjTranspose_apply, submatrix_apply]`. Rewrite using `[← Finset.sum_subtype (Finset.univ.filter fun a : Fin N => (a : ℕ) < k) (by simp) (fun l => star (b l i.1) * ((hd l : ℝ) : ℂ) * b l j.1)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_filter_of_ne]`. Introduce `l _ hl`. Assume the negation of the conclusion as `hlk`. Apply `hl` to reduce the goal to its premises. Establish `: b l i.1 = 0` using `hb (by show i.1 < l`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `i.2` as an intermediate fact. Conclude with `Fin.lt_def.2 (by omega))`. Simplify using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gramHead_of_triangular {N : ℕ} (hd : Fin N → ℝ) (k : ℕ) (b : Matrix (Fin N) (Fin N) ℂ)
     (hb : b.BlockTriangular id) :
@@ -155,17 +153,15 @@ theorem gramHead_of_triangular {N : ℕ} (hd : Fin N → ℝ) (k : ℕ) (b : Mat
   simp [this]
 
 /- English proof (translation)
-Apply the tactic sequence `unfold sigForm; split_ifs <;> norm_num`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sigForm_apply_ne_zero (N j : ℕ) (a : Fin N) : sigForm N j a ≠ 0 := by
   unfold sigForm; split_ifs <;> norm_num
 
 /- English proof (translation)
-Establish `hbd : ∀ i, b i i ≠ 0`. Establish `h` using `(isUnit_iff_ne_zero.1 hu)`. Rewrite `h` using `[det_of_upperTriangular hb]`. Conclude with `fun i => (Finset.prod_ne_zero_iff.1 h) i (Finset.mem_univ i)`. Establish `hs : (b.submatrix (Subtype.val : {a : Fin N // (a : ℕ) < k} → Fin N) Subtype.val).det ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `ht : (b.submatrix (Subtype.val : {a : Fin N // (a : ℕ) < k} → Fin N) Subtype.val).BlockTriangular id` using `fun i j hij => hb hij`. Rewrite using `[det_of_upperTriangular ht]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => hbd i.1`. Rewrite using `[gramHead_of_triangular hd k b hb, det_mul, det_mul, det_conjTranspose, det_diagonal]`. Use `mul_ne_zero (mul_ne_zero (star_ne_zero.2 hs) ?_) hs` and prove the remaining obligations.
-
-Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => Complex.ofReal_ne_zero.2 (hd0 a)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gramHead_det_ne_zero_of_triangular {N : ℕ} (hd : Fin N → ℝ) (hd0 : ∀ a, hd a ≠ 0) (k : ℕ)
     (b : Matrix (Fin N) (Fin N) ℂ) (hb : b.BlockTriangular id) (hu : IsUnit b.det) :
@@ -184,9 +180,9 @@ theorem gramHead_det_ne_zero_of_triangular {N : ℕ} (hd : Fin N → ℝ) (hd0 :
   exact Finset.prod_ne_zero_iff.2 fun a _ => Complex.ofReal_ne_zero.2 (hd0 a)
 
 /- English proof (translation)
-Take `⟨u, b, hu, hb, hbu, hug⟩` from `GlobalTheory.T.flag_domain_unitary_triangular N j hj g hg`. Establish `e : gramHead (sigForm N j) k g = gramHead (sigForm N j) k b`. Unfold `gramHead`. Rewrite using `[← hug, gramOf_mul_of_preserves _ _ _ hu]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `gramHead_det_ne_zero_of_triangular _ (sigForm_apply_ne_zero N j) k b hb hbu`.
+A detailed English derivation is pending.
 -/
 theorem gramHead_det_ne_zero (N j : ℕ) (hj : j ≤ N) (g : Matrix (Fin N) (Fin N) ℂ)
     (hg : InFlagDomain N j g) (k : ℕ) : (gramHead (sigForm N j) k g).det ≠ 0 := by
@@ -198,7 +194,7 @@ theorem gramHead_det_ne_zero (N j : ℕ) (hj : j ≤ N) (g : Matrix (Fin N) (Fin
   exact gramHead_det_ne_zero_of_triangular _ (sigForm_apply_ne_zero N j) k b hb hbu
 
 /- English proof (translation)
-Introduce `N j hj` and use `⟨isOpen_inFlagDomain N j, fun g hg k => gramHead_det_ne_zero N j hj g hg k⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem flagDomain_open_and_minors : ∀ (N j : ℕ), j ≤ N →
     IsOpen {g : Matrix (Fin N) (Fin N) ℂ | InFlagDomain N j g} ∧

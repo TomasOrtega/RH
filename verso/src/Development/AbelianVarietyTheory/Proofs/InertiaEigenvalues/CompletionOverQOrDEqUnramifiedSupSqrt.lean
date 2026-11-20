@@ -22,15 +22,13 @@ section Gen
 variable {l : ℕ} [Fact l.Prime] {R : Ranks} (H : Host R) (J : H.E →+* Om l)
 
 /- English proof (translation)
-Use `set M := IntermediateField.adjoin ℚ_[l] ({J g₁, J g₂} : Set (Om l)) with hM`. Use `set N := M ⊔ IntermediateField.adjoin ℚ_[l] {J g₃} with hN`. Establish `hfM : FiniteDimensional ℚ_[l] ↥M` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral (R := ℚ_[l]) x`. Establish `hfy : FiniteDimensional ℚ_[l] ↥(IntermediateField.adjoin ℚ_[l] {J g₃})` using `IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral (R := ℚ_[l]) _)`. Establish `hfN : FiniteDimensional ℚ_[l] ↥N` using `IntermediateField.finiteDimensional_sup _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : IsClosed ((N : IntermediateField ℚ_[l] (Om l)) : Set (Om l))` using `Submodule.closed_of_finiteDimensional N.toSubalgebra.toSubmodule`. Establish `h1 : J g₁ ∈ N` using `le_sup_left (a := M) (IntermediateField.subset_adjoin _ _ (by simp))`. Establish `h2 : J g₂ ∈ N` using `le_sup_left (a := M) (IntermediateField.subset_adjoin _ _ (by simp))`. Establish `h3 : J g₃ ∈ N` using `le_sup_right (a := M) (IntermediateField.mem_adjoin_simple_self _ _)`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Use `closure_minimal ?_ hcl (hdense hx)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `hgen N h1 h2 h3 z`. Use `sup_le ?_ ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM, IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ (rfl | rfl)`. Use `exacts [hE g₁, hE g₂]`. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ rfl`.
-
-Conclude with `hE g₃`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem kw_eq_sup_of_gens (Kw : FinExt l) (hE : ∀ x : H.E, J x ∈ Kw.1)
     (hdense : (Kw.1 : Set (Om l)) ⊆ closure (Set.range J)) (g₁ g₂ g₃ : H.E)
@@ -63,25 +61,23 @@ theorem kw_eq_sup_of_gens (Kw : FinExt l) (hE : ∀ x : H.E, J x ∈ Kw.1)
       exact hE g₃
 
 /- English proof (translation)
-Rewrite using `[← map_pow, H.sqq_sq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sq_aE_image : (J (H.sqq)) ^ 2 = -(H.q : Om l) := by
   rw [← map_pow, H.sqq_sq]; simp
 
 /- English proof (translation)
-Rewrite using `[← map_pow, H.sqd_sq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sq_bE_image : (J (H.sqd)) ^ 2 = -(H.d : Om l) := by
   rw [← map_pow, H.sqd_sq]; simp
 
 /- English proof (translation)
-Establish `hh` using `H.hyp`. Establish `hq2 : H.q % 4 = 3` using `by have := hh.2.2.1; omega`. Establish `hd2 : H.d % 4 = 3` using `by have := hh.2.2.2.1; omega`. Establish `hqd : H.q ≠ H.d` using `by have := hh.2.2.1; have := hh.2.2.2.1; omega`. Establish `hlS : ¬ l ∣ H.QS` using `UpperTheory.Small.not_dvd_QS H Fact.out (UpperTheory.Small.not_mem_of_qd H hl)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ` using `theta_mem_Kur H J`. Break down `hl with rfl | rfl` into its components or cases. Use `⟨_, ?_, _, sq_aE_image H J, kw_eq_sup_of_gens H J Kw hE hdense (thL H H.q) (H.sqd) (H.sqq) fun M m1 m2 m3 x => image_le H J hlS M m1 m3 m2 x⟩` and prove the remaining obligations. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ (rfl | rfl)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hθ`. Conclude with `sqrtKur_holds _ H.d hh.2.1 hd2 hqd.symm _ (sq_bE_image H J)`. Use `⟨_, ?_, _, sq_bE_image H J, kw_eq_sup_of_gens H J Kw hE hdense (thL H H.d) (H.sqq) (H.sqd) fun M m1 m2 m3 x => image_le H J hlS M m1 m2 m3 x⟩` and prove the remaining obligations. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ (rfl | rfl)`.
-
-Conclude with `hθ`. Conclude with `sqrtKur_holds _ H.q hh.1 hq2 hqd _ (sq_aE_image H J)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem kw_eq_sup_sqrt (Kw : FinExt l) (hE : ∀ x : H.E, J x ∈ Kw.1)
     (hdense : (Kw.1 : Set (Om l)) ⊆ closure (Set.range J)) (hl : l = H.q ∨ l = H.d) :
@@ -110,7 +106,7 @@ theorem kw_eq_sup_sqrt (Kw : FinExt l) (hE : ∀ x : H.E, J x ∈ Kw.1)
 end Gen
 
 /- English proof (translation)
-Introduce `D i hl w hw`. Conclude with `kw_eq_sup_sqrt D.host ((D.nbr i w hw).j.comp (algebraMap D.host.E D.nd.Om)) (D.nbr i w hw).Kw (D.nbr i w hw).j_E (D.nbr i w hw).j_dense hl`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kw_eq_unram_sup_sqrt : ∀ (D : D7) (i : D.nd.Loc), (D.nd.l i = D.host.q ∨ D.nd.l i = D.host.d) →
     ∀ (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)),

@@ -11,45 +11,39 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.ChartRestriction.G.Geo
 
 /- English proof (translation)
-Introduce `K _ ι _ P e Ψ L A s hP hΨ hL hA hs`. Establish `hfin` using `fibreFinite K ι P e Ψ hP hΨ`. Take `⟨B, γ, hBo, hlift, hcov⟩` from `PtsSumMeasurable.exists_lift_family (P := P) (Ψ := Ψ) hfin`. Establish `hind` using `sheetIndep K ι P e Ψ L A s hP hΨ hL hA hs`. Establish `hsheet : ∀ m, ∀ y ∈ B m, IsSheet P Ψ y (segre (γ m y)) (γ m)` using `fun m y hy => ⟨rfl, Filter.eventually_of_mem ((hBo m).mem_nhds hy) fun y' hy' => hlift m y' hy'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγc : ∀ m, ContinuousOn (γ m) (B m)` using `fun m y hy => (hlift m y hy).1.continuousAt.continuousWithinAt`. Establish `hO : ∀ m, Set.MapsTo (γ m) (B m) {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}` using `fun m y hy => (hlift m y hy).2.1.1`. Establish `hseg : Continuous (segre : ((Σ k, ι k) → ℂ) → ((k : K) → ι k) → ℂ)` using `continuous_pi fun i => continuous_finsetProd _ fun k _ => continuous_apply _`. Use `set σ : ℕ → (Fin e → ℂ) → ((k : K) → ι k) → ℂ := fun m => (B m).piecewise (fun y => segre (γ m y)) 0 with hσdef`. Establish `hσB : ∀ m, ∀ y ∈ B m, σ m y = segre (γ m y)` using `fun m y hy => Set.piecewise_eq_of_mem _ _ _ hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσm : ∀ m, Measurable (σ m)` using `fun m => (hseg.comp_continuousOn (hγc m)).measurable_piecewise continuousOn_const (hBo m).measurableSet`. Use `set a : ℕ → (Fin e → ℂ) → ℝ := fun m => (B m).piecewise (fun y => ‖eval (γ m y) (map (Int.castRingHom ℂ) s)‖) 0 with hadef`. Use `set b : ℕ → (Fin e → ℂ) → ℝ := fun m => (B m).piecewise (fun y => A.h (γ m y)) 1 with hbdef`. Establish `ham : ∀ m, Measurable (a m)` using `fun m => ((continuous_norm.comp (MvPolynomial.continuous_eval _)).comp_continuousOn (hγc m)).measurable_piecewise continuousOn_const (hBo m).measurableSet`. Establish `hbm : ∀ m, Measurable (b m)` using `fun m => ((ContDiffOn.continuousOn hA).comp (hγc m) (hO m)).measurable_piecewise continuousOn_const (hBo m).measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set dens : ℕ → (Fin e → ℂ) → ℝ := fun m y => Real.log (a m y / b m y) * maDensity (fun j y' => pot L j (γ m y')) y with hddef`. Establish `hdm : ∀ m, Measurable (dens m)` using `fun m => (Real.measurable_log.comp ((ham m).div (hbm m))).mul (PtsSumMeasurable.measurable_maDensity _)`. Establish `hdens : ∀ m, ∀ y ∈ B m, dens m y = logNorm A s (γ m y) * maDensity (fun j y' => pot L j (γ m y')) y`. Introduce `m y hy`. Simplify using `only [hddef, hadef, hbdef, Set.piecewise_eq_of_mem _ _ _ hy, logNorm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `set S : ℕ → Set (Fin e → ℂ) := fun m => {y | y ∈ B m ∧ ∀ m' < m, ¬ (y ∈ B m' ∧ σ m' y = σ m y)} with hSdef`. Establish `hSm : ∀ m, MeasurableSet (S m)`. Introduce `m`. Establish `: S m = B m ∩ ⋂ m' ∈ Finset.range m, (B m' ∩ {y | σ m' y = σ m y})ᶜ`. Use extensionality with `y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[hSdef]`. Rewrite using `[this]`. Conclude with `(hBo m).measurableSet.inter (Finset.measurableSet_biInter _ fun m' _ => ((hBo m').measurableSet.inter (measurableSet_eq_fun (hσm m') (hσm m))).compl)`. Use `set f : ℕ → (Fin e → ℂ) → ℝ := fun m => (S m).indicator (dens m) with hfdef`. Establish `hfm : ∀ m, Measurable (f m)` using `fun m => (hdm m).indicator (hSm m)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `aestronglyMeasurable_of_tendsto_ae atTop (f := fun N y => ∑ m ∈ Finset.range N, f m y) (fun N => (Finset.measurable_sum _ fun m _ => hfm m).aestronglyMeasurable) ?_` and prove the remaining obligations. Use `filter_upwards [hind] with y hy`. Establish `hterm : ∀ m, y ∈ S m → f m y = sheetDensity P Ψ (pot L) (logNorm A s) y (σ m y)`. Introduce `m hm`. Establish `hsh` using `hsheet m y hm.1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hsh` using `[← hσB m y hm.1]`. Establish `hex : ∃ γ', IsSheet P Ψ y (σ m y) γ'` using `⟨_, hsh⟩`. Rewrite using `[hfdef]`. Simplify using `only`. Rewrite using `[Set.indicator_of_mem hm, hdens m y hm.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `sheetDensity`. Rewrite using `[dif_pos hex]`. Conclude with `(hy _ _ _ hex.choose_spec hsh).symm`. Establish `hmemF : ∀ m, y ∈ S m → σ m y ∈ (hfin y).toFinset`. Introduce `m hm`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.Finite.mem_toFinset, hσB m y hm.1]`. Conclude with `⟨γ m y, (hlift m y hm.1).2.1, rfl, (hlift m y hm.1).2.2⟩`. Establish `hfy : ∀ m, (∑ w ∈ (hfin y).toFinset, if σ m y = w then f m y else 0) = f m y`. Introduce `m`. Rewrite using `[Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hm : y ∈ S m`. Rewrite using `[if_pos (hmemF m hm)]`. Use `split_ifs`. Both sides reduce to the same expression. Rewrite using `[hfdef]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Simplify using `only`. Rewrite using `[Set.indicator_of_notMem hm]`. Establish `hev : ∀ w ∈ (hfin y).toFinset, ∀ᶠ N in atTop, sheetDensity P Ψ (pot L) (logNorm A s) y w = ∑ m ∈ Finset.range N, if σ m y = w then f m y else 0`. Introduce `w _`. Distinguish the cases in `hex : ∃ γ', IsSheet P Ψ y w γ'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction.
 
-Take `⟨γ', hγ'⟩` from `hex`. Establish `hP' : ∃ m, y ∈ B m ∧ σ m y = w`. Take `⟨m, hm, hmw⟩` from `hcov y w γ' hγ'`. Conclude with `⟨m, hm, (hσB m y hm).trans hmw⟩`. Take `⟨hm1B, hm1w⟩` from `Nat.find_spec hP'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hm1S : y ∈ S (Nat.find hP')` using `⟨hm1B, fun m' hm' h => Nat.find_min hP' hm' ⟨h.1, h.2.trans hm1w⟩⟩`. Use `filter_upwards [eventually_gt_atTop (Nat.find hP')] with N hN`. Rewrite using `[Finset.sum_eq_single_of_mem (Nat.find hP') (Finset.mem_range.2 hN), if_pos hm1w, hterm _ hm1S, hm1w]`. Introduce `m _ hne`. Use `split_ifs with hmw`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hmS : y ∈ S m`. It suffices to derive a contradiction. Establish `hle : Nat.find hP' ≤ m` using `Nat.find_min' hP' ⟨hmS.1, hmw⟩`. Conclude with `hmS.2 _ (lt_of_le_of_ne hle (Ne.symm hne)) ⟨hm1B, hm1w.trans hmw.symm⟩`. Rewrite using `[hfdef]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[Set.indicator_of_notMem hmS]`. Both sides reduce to the same expression. Establish `h0 : sheetDensity P Ψ (pot L) (logNorm A s) y w = 0`. Unfold `sheetDensity`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dif_neg hex]`. Use `Eventually.of_forall fun N => ?_` and prove the remaining obligations. Rewrite using `[h0]`. Use `(Finset.sum_eq_zero fun m _ => ?_).symm` and prove the remaining obligations. Use `split_ifs with hmw`.
-
-Distinguish the cases in `hmS : y ∈ S m`. Establish `hsh` using `hsheet m y hmS.1`. Rewrite `hsh` using `[← hσB m y hmS.1, hmw]`. Conclude with `absurd ⟨_, hsh⟩ hex`. Rewrite using `[hfdef]`.
-
-Simplify using `only`. Rewrite using `[Set.indicator_of_notMem hmS]`. Both sides reduce to the same expression. Establish `hsum : ∑ᶠ w ∈ fibre P Ψ y, sheetDensity P Ψ (pot L) (logNorm A s) y w = ∑ w ∈ (hfin y).toFinset, sheetDensity P Ψ (pot L) (logNorm A s) y w` using `finsum_mem_eq_finite_toFinset_sum _ (hfin y)`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations.
-
-Use `filter_upwards [(eventually_all_finset _).2 hev] with N hN`. Rewrite using `[hsum, Finset.sum_congr rfl hN, Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun m _ => hfy m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PtsSumMeasurable.proof : PtsSumMeasurable.Statement := by
   intro K _ ι _ P e Ψ L A s hP hΨ hL hA hs

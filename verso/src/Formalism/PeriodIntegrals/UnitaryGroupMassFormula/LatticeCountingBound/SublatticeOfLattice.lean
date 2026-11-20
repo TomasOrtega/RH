@@ -8,9 +8,9 @@ open NumberField Matrix
 namespace PI.UnitaryGroupMassFormula.LCG
 
 /- English proof (translation)
-Introduce `I x u u' hu hu'`. Simplify using `only [PI.LatCountG.latSet, Set.mem_setOf_eq] at hu hu' ⊢`. Establish `h : (fun i => Formalism.UG.inclE (F` using `I.F) (Formalism.MainNotions.S.Af I.F) ((u - u') i)) = (fun i => Formalism.UG.inclE (F := I.F) (Formalism.MainNotions.S.Af I.F) (u i)) - (fun i => Formalism.UG.inclE (F := I.F) (Formalism.MainNotions.S.Af I.F) (u' i)) := by`. Use function extensionality and compare the values at `i`. Simplify using `[map_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, Matrix.mulVec_sub]`. Conclude with `Submodule.sub_mem _ hu hu'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sublattice_of_lattice : LatSub := by
   intro I x u u' hu hu'
@@ -24,13 +24,13 @@ theorem sublattice_of_lattice : LatSub := by
   exact Submodule.sub_mem _ hu hu'
 
 /- English proof (translation)
-Introduce `I x y γ g hγ hK u hu`. Simplify using `only [PI.LatCountG.latSet, Set.mem_setOf_eq] at hu ⊢`. Establish `h1 : (fun i => Formalism.UG.inclE (F` using `I.F) (Formalism.MainNotions.S.Af I.F) (((g : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ u) i)) = I.fmat γ.2 *ᵥ (fun i => Formalism.UG.inclE (F := I.F) (Formalism.MainNotions.S.Af I.F) (u i)) := by`. Use function extensionality and compare the values at `i`. Rewrite using `[hγ]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.map_mulVec _ _ _ i`. Establish `hK' : ∀ v, v ∈ I.Lf ↔ I.fmat (x⁻¹ * γ * y).2 *ᵥ v ∈ I.Lf` using `hK`. Establish `hk` using `(hK' (I.fmat y.2⁻¹ *ᵥ fun i => Formalism.UG.inclE (F := I.F) (Formalism.MainNotions.S.Af I.F) (u i))).1 hu`. Rewrite using `[h1]`. Use `hk using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Use `congr 1`. Simplify using `only [Formalism.MainNotions.S.AutInst.fmat, Prod.snd_mul, Prod.snd_inv]`. Use `push_cast`. Simplify using `only [Units.val_mul, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).mp (Units.isUnit _)), Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem lattice_map_image : LatMap := by
   intro I x y γ g hγ hK u hu
@@ -54,11 +54,11 @@ theorem lattice_map_image : LatMap := by
     Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `I x h`. Assume the negation of the conclusion as `hn`. Establish `hn0 : I.n = 0` using `by omega`. Establish `hE : IsEmpty (PI.LatCountG.Sub I x)`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `s`. Establish `hj` using `s.j_pos`. Apply `s.b_ind.ne_zero ⟨0, by omega⟩` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Conclude with `absurd i.2 (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h0 : PI.LatCountG.tau1 I x = 0`. Unfold `PI.LatCountG.tau1`. Rewrite using `[Real.iInf_of_isEmpty]`. Conclude with `min_eq_right (by norm_num)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_positive : NPos := by
   intro I x h
@@ -78,9 +78,9 @@ theorem norm_positive : NPos := by
   linarith
 
 /- English proof (translation)
-Introduce `I`. Use `haveI : NumberField.IsTotallyReal I.F := I.cm.totReal`. Establish `h1` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank I.F`. Establish `h2` using `NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces (K := I.F)`. Establish `h3` using `NumberField.IsTotallyReal.nrComplexPlaces_eq_zero (K := I.F)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `show _ = Module.finrank ℚ I.F`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem card_places_bound : CardPl := by
   intro I

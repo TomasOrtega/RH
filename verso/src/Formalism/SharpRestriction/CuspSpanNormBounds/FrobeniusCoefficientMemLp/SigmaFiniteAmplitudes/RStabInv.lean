@@ -13,7 +13,7 @@ namespace Formalism.MainNotions.S.Pv.AmpDDPf
 open Formalism.QuantumDeterminants
 
 /- English proof (translation)
-Take `⟨D, h1, h2, -, -, -⟩` from `Formalism.FourierDecayAlt.P.setting_with_prescribed_data_exists k r ℂ ℂ z z' (fun _ => ContinuousLinearMap.id ℂ ℂ) (fun _ => ContinuousLinearMap.id ℂ ℂ) hk hz.1 hz'.1 hz.2 hz'.2 ⟨rfl, fun _ _ _ _ => rfl⟩ ⟨rfl, fun _ _ _ _ => rfl⟩ (fun _ _ _ => rfl) (fun _ _ _ => rfl) continuousOn …`. Conclude with `⟨D, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bsetting_of (k r : ℕ) (hk : 1 ≤ k) (z z' : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z ∧ 0 < Tz k r z)
     (hz' : inWb k r z' ∧ 0 < Tz k r z') :
@@ -25,9 +25,9 @@ theorem bsetting_of (k r : ℕ) (hk : 1 ≤ k) (z z' : Fin (2 * r + k + 1) → �
   exact ⟨D, h1, h2⟩
 
 /- English proof (translation)
-Take `⟨w, d, hd, hZ⟩` from `hmono`. Take `⟨D, hDz, hDz'⟩` from `bsetting_of k r hk L.z L.z' L.hz L.hz'`. Establish `hγG : γ ∈ Formalism.FourierDecayAlt.B.GV k r` using `hγ`. Establish `hunit : IsUnit γ.det` using `(Formalism.FourierDecayAlt.P.unitary_group_closed k r).unit γ hγG`. Establish `hcl` using `Formalism.FourierDecayAlt.P.Dx2.OrbJ.closedR (k := k) (r := r) hunit`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν` using `Formalism.FourierDecayAlt.P.radial_measure_is_haar k r ℂ ℂ D γ w d hγG hd (by rw [hDz, hDz']; exact hZ)`. Conclude with `Formalism.MainNotions.BridgeLemma₃.hu_general hcl hν hμ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem haarR_bi (k r : ℕ) (hk : 1 ≤ k) (L : Formalism.MainNotions.S.LocBessel k r)
     (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (μR : Measure (Mt k r))
@@ -42,9 +42,9 @@ theorem haarR_bi (k r : ℕ) (hk : 1 ≤ k) (L : Formalism.MainNotions.S.LocBess
   exact Formalism.MainNotions.BridgeLemma₃.hu_general hcl hν hμ
 
 /- English proof (translation)
-Take `⟨w, d, hd, hZ⟩` from `hmono`. Take `⟨D, hDz, hDz'⟩` from `bsetting_of k r hk L.z L.z' L.hz L.hz'`. Establish `hγG : γ ∈ Formalism.FourierDecayAlt.B.GV k r` using `hγ`. Establish `hunit : IsUnit γ.det` using `(Formalism.FourierDecayAlt.P.unitary_group_closed k r).unit γ hγG`. Establish `hcl` using `Formalism.FourierDecayAlt.P.Dx2.OrbJ.closedR (k := k) (r := r) hunit`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hν` using `Formalism.FourierDecayAlt.P.radial_measure_is_haar k r ℂ ℂ D γ w d hγG hd (by rw [hDz, hDz']; exact hZ)`. Establish `hμ' : Formalism.FourierDecayAlt.B.IsHaarOn (Formalism.FourierDecayAlt.C6.Rset γ) μR` using `Formalism.MainNotions.BridgeLemma₃.hu_general hcl hν hμ`. Conclude with `Formalism.FourierDecayAlt.P.haar_measure_inversion k r _ μR hcl hμ'`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rStabInv_of_k (k r : ℕ) (hk : 1 ≤ k) (L : Formalism.MainNotions.S.LocBessel k r)
     (γ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (μR : Measure (Mt k r))
@@ -61,7 +61,7 @@ theorem rStabInv_of_k (k r : ℕ) (hk : 1 ≤ k) (L : Formalism.MainNotions.S.Lo
   exact Formalism.FourierDecayAlt.P.haar_measure_inversion k r _ μR hcl hμ'
 
 /- English proof (translation)
-Introduce `k r L γ μR hk hγ _ _ hmono hμ`. Conclude with `rStabInv_of_k k r hk L γ μR hγ hmono hμ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem right_stabilizer_invariance : Formalism.MainNotions.S.Pv.AmpDD.RStabInv := by
   intro k r L γ μR hk hγ _ _ hmono hμ

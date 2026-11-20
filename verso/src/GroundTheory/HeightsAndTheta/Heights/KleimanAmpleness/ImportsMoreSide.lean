@@ -16,7 +16,7 @@ def ModelGenericPoint.Statement : Prop :=
       mIdealOver O y = P ∧ ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0
 
 /- English proof (translation)
-The claim follows from `h exO Unit (fun _ => Fin 2) ⊥ 1 NefFibresSegre.hyps`.
+A detailed English derivation is pending.
 -/
 example (h : ModelGenericPoint.Statement) :=
   h exO Unit (fun _ => Fin 2) ⊥ 1 NefFibresSegre.hyps

@@ -2,14 +2,14 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open Formalism.ConjugateSelfDual UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ
 
 /- English proof (translation)
-Rewrite using `[← pow_mul, ZMod.val_mul, ← pow_eq_pow_mod _ hz]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.pow_val_mul_zmod {K : Type*} [Monoid K] {m : ℕ} (z : K) (hz : z ^ m = 1) (a b : ZMod m) :
     (z ^ a.val) ^ b.val = z ^ (a * b).val := by
   rw [← pow_mul, ZMod.val_mul, ← pow_eq_pow_mod _ hz]
 
 /- English proof (translation)
-Establish `h1 : (ψ b) ^ (Fintype.card (ZMod m)ˣ) = 1`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, pow_card_eq_one, Units.val_one, map_one]`. Establish `h2 : ‖ψ b‖ ^ (Fintype.card (ZMod m)ˣ) = 1` using `by rw [← norm_pow, h1, norm_one]`. Conclude with `((pow_eq_one_iff_of_nonneg (norm_nonneg _) Fintype.card_ne_zero).1 h2).le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.norm_dirichlet_character_le_one {l : ℕ} [Fact l.Prime] {m : ℕ} [NeZero m] (ψ : DirichletCharacter (Qbar l) m)
     (b : (ZMod m)ˣ) : ‖ψ b‖ ≤ 1 := by
@@ -19,13 +19,13 @@ private theorem UpperTheory.norm_dirichlet_character_le_one {l : ℕ} [Fact l.Pr
   exact ((pow_eq_one_iff_of_nonneg (norm_nonneg _) Fintype.card_ne_zero).1 h2).le
 
 /- English proof (translation)
-Introduce `l _ r N L hN hL ψ' z hz`. Establish `key : (∑ b : (ZMod (l ^ r))ˣ, ψ' b * z ^ (b : ZMod (l ^ r)).val) * N (fun x => ψ'⁻¹ x) = ∑ b : (ZMod (l ^ r))ˣ, ψ' b * N (fun x => (z ^ (b : ZMod (l ^ r)).val) ^ x.val)`. Simplify using `only [← smul_eq_mul (α := Qbar l) _ (N _), ← map_smul, ← map_sum]`. Apply `hN` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_mul, ← Equiv.sum_comp (Equiv.mulRight x)]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `hx : ψ' x * ψ'⁻¹ x = 1`. Rewrite using `[← MulChar.mul_apply, mul_inv_cancel, MulChar.one_apply_coe]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[UpperTheory.pow_val_mul_zmod z hz]`. Simplify using `only [Equiv.coe_mulRight, Units.val_mul, map_mul]`. Take the linear combination `(ψ' b * z ^ ((b : ZMod (l ^ r)) * x).val) * hx`. Rewrite using `[key]`. Unfold `Cg at hL ⊢`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Finset.sum_sub_distrib]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_sub, norm_mul]`. Establish `h1` using `hL (z ^ (b : ZMod (l ^ r)).val) (by rw [← pow_mul, mul_comm, pow_mul, hz, one_pow])`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem UpperTheory.gaussSum_twist_congr_of_measure :
     ∀ (l : ℕ) [Fact l.Prime] (r : ℕ) (N : (ZMod (l ^ r) → Qbar l) →ₗ[Qbar l] Qbar l) (L : PowerSeries (Qbar l)),

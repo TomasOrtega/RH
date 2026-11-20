@@ -6,11 +6,11 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.CuspGL
 
 /- English proof (translation)
-Introduce `F _ _ d k ζ _ hord hdeg i hi hid hmod`. Establish `h1 : ζ ^ (Nat.card F ^ d - 1) = 1`. Rewrite using `[← hord]`. Conclude with `pow_orderOf_eq_one ζ`. Establish `h2 : (ζ ^ k) ^ (Nat.card F ^ i) = ζ ^ k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_mul]`. Conclude with `pow_eq_pow_of_modEq hmod h1`. Establish `hint : IsIntegral F (ζ ^ k)` using `Algebra.IsIntegral.isIntegral _`. Establish `hdvd : minpoly F (ζ ^ k) ∣ (X ^ (Nat.card F ^ i) - X : F[X])`. Apply `minpoly.dvd` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_sub, map_pow, aeval_X, h2, sub_self]`. Establish `h3` using `(minpoly.irreducible hint).natDegree_dvd_of_dvd_X_pow_card_pow_sub_X hdvd`. Rewrite `h3` using `[hdeg]`. Conclude with `absurd (Nat.le_of_dvd hi h3) (not_le.mpr hid)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exponent_regular_of_natDegree_minpoly_pow : ∀ (F : Type) [Field F] [Finite F] (d k : ℕ) (ζ : AlgebraicClosure F), 0 < d → orderOf ζ = Nat.card F ^ d - 1 → (minpoly F (ζ ^ k)).natDegree = d → ∀ i : ℕ, 0 < i → i < d → ¬ k * Nat.card F ^ i ≡ k [MOD Nat.card F ^ d - 1] := by
   intro F _ _ d k ζ _ hord hdeg i hi hid hmod

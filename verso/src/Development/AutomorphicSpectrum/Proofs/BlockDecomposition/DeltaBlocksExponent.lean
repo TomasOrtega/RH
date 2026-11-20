@@ -12,11 +12,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.CompanionTheory.DlBridgeAt
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `valuation_surjective (uniformizer k)`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy` using `[map_zero]`. Conclude with `uniformizer_ne_zero hy.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : valuation k ((Units.mk0 y hy0 : kˣ) : k) = uniformizer k` using `hy`. Establish `h1 : ord k (Units.mk0 y hy0) = 1` using `ord_eq_one hu`. Establish `h2 : ord k (ϖ * (Units.mk0 y hy0)⁻¹) = 0`. Establish `h3` using `ord_mul k (ϖ * (Units.mk0 y hy0)⁻¹) (Units.mk0 y hy0)`. Rewrite `h3` using `[inv_mul_cancel_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `h4` using `ord_eq_zero_iff.1 h2`. Rewrite `h4` using `[Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀, hu]`. Establish `hne : uniformizer k ≠ 0` using `uniformizer_ne_zero`. Conclude with `(mul_inv_eq_one₀ hne).1 h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_eq_uniformizer_of_ord {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ϖ : kˣ) (h : ord k ϖ = 1) :
@@ -42,13 +42,13 @@ end GlobalTheory.CompanionTheory.DlBridgeAt
 open GlobalTheory.CompanionTheory.DlBridgeAt in
 
 /- English proof (translation)
-Introduce `E _ _ _ w ϖ hϖ`. Establish `hord : ord (w.adicCompletion E) ϖ = 1` using `(GlobalTheory.CompanionTheory.CtS.NuVal.ord_eq_ordL_unit w ϖ).trans hϖ`. Use `⟨val_eq_uniformizer_of_ord ϖ hord, fun N x => ?_⟩` and prove the remaining obligations. Establish `hinv` using `GlobalTheory.CompanionTheory.JacEigAt.deltaHalf_inv N w ϖ hord x`. Establish `hv` using `val_deltaHalf (w.adicCompletion E) (leviTorus (w.adicCompletion E) (Fin N) fun i => ϖ ^ x i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `deltaB_eq_modulus (fun i : Fin N => ϖ ^ x i)`. Establish `hpos` using `modulus_pos (w.adicCompletion E) (leviTorus (w.adicCompletion E) (Fin N) fun i => ϖ ^ x i)`. Rewrite `hinv` using `[Units.val_inv_eq_inv_val, hv]`. Rewrite using `[hv, hm]`. Express the relevant statement in the definitionally equal form `_ = GlobalTheory.BCT.qh w ^ _ at hinv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← hinv]`. Use `set m := modulus (w.adicCompletion E) (fun _ : Fin N => Unit) (leviTorus (w.adicCompletion E) (Fin N) fun i => ϖ ^ x i) with hmdef`. Establish `hs : √m * √m = m` using `Real.mul_self_sqrt hpos.le`. Establish `hs0 : √m ≠ 0` using `(Real.sqrt_pos.2 hpos).ne'`. Establish `key : ∀ s : ℝ, s ≠ 0 → (s * s)⁻¹ * s = s⁻¹` using `fun s h => by field_simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `key _ hs0`. Rewrite `h5` using `[hs]`. Rewrite using `[← Complex.ofReal_inv, ← Complex.ofReal_mul, h5]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.DlBridgeAt.dlBridge : PositivityTheory.Rg.BcB.F.Tail.PExp.DlBridge := by
   intro E _ _ _ w ϖ hϖ

@@ -9,17 +9,15 @@ namespace LocIndEtale
 open Polynomial
 
 /- English proof (translation)
-Rewrite using `[isIntegrallyClosed_iff (FractionRing T)]`. Introduce and unpack `x ⟨p, hpm, hp⟩`. Proceed by induction on `hn : p.natDegree using Nat.strong_induction_on generalizing p with`. Consider the case `_ n ih`. Break down `Nat.eq_zero_or_pos n with h0 | hpos` into its components or cases.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `h0` using the available equality. Establish `: p = 1` using `hpm.natDegree_eq_zero.mp hn`. Substitute `this` using the available equality. Simplify using `at hp`. Take `⟨r, hr⟩` from `h p hpm (hn ▸ hpos)`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hroot : IsRoot p r` using `hr`. Establish `hfac` using `(Polynomial.mul_divByMonic_eq_iff_isRoot).mpr hroot`. Use `set q := p /ₘ (X - C r) with hq`. Establish `hqm : q.Monic`. Use `Polynomial.Monic.of_mul_monic_left (monic_X_sub_C r) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfac]`. Conclude with `hpm`. Establish `hqdeg : q.natDegree < n`. Rewrite using `[hq, Polynomial.natDegree_divByMonic _ (monic_X_sub_C r), natDegree_X_sub_C, hn]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hp` using `[← hfac, eval₂_mul]`. Break down `mul_eq_zero.mp hp with h1 | h1` into its components or cases. Use `⟨r, ?_⟩` and prove the remaining obligations. Simplify using `only [eval₂_sub, eval₂_X, eval₂_C] at h1`. Conclude with `(sub_eq_zero.mp h1).symm`.
-
-Conclude with `ih _ hqdeg q hqm h1 rfl`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma isIntegrallyClosed_of_forall_monic_root (T : Type) [CommRing T] [IsDomain T]
     (h : ∀ f : Polynomial T, f.Monic → 0 < f.natDegree → ∃ x : T, f.eval x = 0) :
@@ -53,17 +51,15 @@ lemma isIntegrallyClosed_of_forall_monic_root (T : Type) [CommRing T] [IsDomain 
 end LocIndEtale
 
 /- English proof (translation)
-Introduce `T O _ _ _ _ _ _ _ _ _ n hT _ _ hind`. Use `haveI : IsIntegrallyClosed T := LocIndEtale.isIntegrallyClosed_of_forall_monic_root T hT.2`. Take `⟨hdom, hic⟩` from `indEtale_isDomain_isIntegrallyClosed (Polynomial T) O hind`. Establish `hinj : Function.Injective (algebraMap T O)`. Take `⟨ι, _, _, _, Si, -, -, hloc⟩` from `hind`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨A, _, _, _, P, _, ⟨e⟩⟩` from `hloc (Classical.arbitrary ι)`. Use `haveI : Module.Flat (Polynomial T) (Localization.AtPrime P) := inferInstance`. Establish `hL : Function.Injective (algebraMap (Polynomial T) (Localization.AtPrime P))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `f hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hreg` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := Localization.AtPrime P) (mem_nonZeroDivisors_of_ne_zero hne)`. Establish `h1 : f • (1 : Localization.AtPrime P) = f • 0`. Rewrite using `[Algebra.smul_def, hf, zero_mul, smul_zero]`. Conclude with `one_ne_zero (hreg h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hS : Function.Injective (algebraMap (Polynomial T) O)`. Establish `: (algebraMap (Polynomial T) O) = (Si (Classical.arbitrary ι)).val.toRingHom.comp (e.toRingEquiv.toRingHom.comp (algebraMap (Polynomial T) (Localization.AtPrime P)))`. Use extensionality with `f`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Subtype.val_injective.comp (e.injective.comp hL)`. Rewrite using `[IsScalarTower.algebraMap_eq T (Polynomial T) O]`. Conclude with `hS.comp Polynomial.C_injective`. Establish `hle : Algebra.algebraMapSubmonoid O (nonZeroDivisors T) ≤ nonZeroDivisors O`.
-
-Introduce and unpack `_ ⟨t, ht, rfl⟩`. Use `mem_nonZeroDivisors_of_ne_zero fun h => nonZeroDivisors.ne_zero ht (hinj ?_)` and prove the remaining obligations. Rewrite using `[h, map_zero]`. Conclude with `⟨IsLocalization.isDomain_localization hle, isIntegrallyClosed_of_isLocalization _ _ hle⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locIndEtale_isDomain_isIntegrallyClosed :
     ∀ (T O : Type) [CommRing T] [IsDomain T] [IsLocalRing T] [CommRing O] [Algebra T O] [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O] [HenselianLocalRing O] [IsSepClosed (ResidueField O)] (q : ℕ), (IsDomain T ∧ ∀ f : Polynomial T, f.Monic → 0 < f.natDegree → ∃ x : T, f.eval x = 0) → IsUnit (q : T) → 0 < q → (∃ (ι : Type) (_ : Preorder ι) (_ : IsDirected ι (· ≤ ·)) (_ : Nonempty ι) (Si : ι → Subalgebra (Polynomial T) O), Monotone Si ∧ (∀ s : O, ∃ i, s ∈ Si i) ∧ ∀ i, ∃ (A : Type) (_ : CommRing A) (_ : Algebra (Polynomial T) A) (_ : Algebra.Etale (Polynomial T) A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[(Polynomial T)] Si i)) → IsDomain (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) ∧ IsIntegrallyClosed (Localization (Algebra.algebraMapSubmonoid O (nonZeroDivisors T))) := by

@@ -11,45 +11,39 @@ open Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLattice
 noncomputable section
 namespace GlobalTheory.KerConjMean
 /- English proof (translation)
-Introduce `tA tB tC tD hPr hInp hDict hDepth C1 hC1`. Take `⟨K, hK0, hFock⟩` from `tC`. Take `⟨CF0, h⟩` from `BigC.and (tA hPr hInp hDict hDepth) tD`. Use `⟨CF0, fun CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, h⟩` from `h CF hCF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨max C0 (2 * (6 + 126 * K) + 9 * C1), fun ε C hC => ?_⟩` and prove the remaining obligations. Take `⟨x0, h⟩` from `h ε C ((le_max_left _ _).trans hC)`. Use `⟨x0, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch h1 h2 h3 => ?_⟩` and prove the remaining obligations. Take `⟨hA, hb3, hN1, hNb, hf1, hfb, hcard, hrd0, hrd, hj⟩` from `h D large₂ he hx Γ Pl0 T A Ks R F hS ch h1 h2 h3`. Establish `hCb : 2 * (6 + 126 * K) + 9 * C1 ≤ C` using `(le_max_right _ _).trans hC`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlogb : 1 ≤ Real.log large₂.sc.b`. Establish `: Real.exp 1 ≤ large₂.sc.b` using `by linarith [Real.exp_one_lt_d9]`. Simplify using `using Real.log_le_log (Real.exp_pos 1) this`. Establish `hN1' : (1 : ℝ) ≤ (bigN D : ℝ)` using `by exact_mod_cast hN1`. Establish `hf1' : (1 : ℝ) ≤ (D.R.f : ℝ)` using `by exact_mod_cast hf1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfNb : 1 ≤ (D.R.f : ℝ) * (bigN D : ℝ) * large₂.sc.b`. Establish `: 1 ≤ (D.R.f : ℝ) * (bigN D : ℝ)` using `one_le_mul_of_one_le_of_one_le hf1' hN1'`. Use the polynomial consequences of the given equalities and inequalities. Establish `hX : 0 ≤ (D.R.f : ℝ) * (bigN D : ℝ) * large₂.sc.b * Real.log large₂.sc.b` using `by positivity`. Use `⟨(6 + 126 * K) * D.R.f * bigN D * large₂.sc.b * Real.log large₂.sc.b, 8 * D.R.f * bigN D * large₂.sc.b, D.R.f * bigN D * large₂.sc.b, by positivity, by positivity, by positivity, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsig : 0 ≤ sig ch.G` using `Finset.sum_nonneg fun v _ => mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _)`. Establish `hC0 : 0 ≤ C` using `by linarith`. Establish `h2 : 0 ≤ C * D.R.m * (bigN D : ℝ) ^ 2 * sig ch.G` using `by positivity`. Establish `h3` using `mul_le_mul_of_nonneg_right hCb hX`. Unfold `aOne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use the polynomial consequences of the given equalities and inequalities. Introduce `Φ β d hocc c j fm hfm σ ρ hρ u B hu`. Take `⟨ρ', e0, Ls, Lt, κ, k, n, r, s, hev, he0, hLs, hLt, hκ, hk, hs, hr, hlam, ⟨t, ht⟩, hJ, hfeq⟩` from `hA Φ β d hocc c j fm hfm σ ρ hρ`. Establish `htc : GL3Theta.IsTwoTorsionPointUnkilled D (lamConj Qbar ρ' (lamOf D D.host.ccK ch.S.Z.δ)) (tc D ch.S.Z.δ ch.S.Z.t0 ρ)`. Rewrite using `[hlam]`.
+Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `tc`. Rewrite using `[dif_pos ⟨t, ht⟩]`. Conclude with `Exists.choose_spec _`. Take `⟨harea, -, hdiff, hgr⟩` from `tB D (hInp D) D.host.ccK ch.S.Z.δ ch.S.Z.t0 ch.S.Z.crv ch.S.Z.pt0 _ _ e0 hev he0 Ls Lt hLs hLt κ hκ k n r s hk hs hr ρ' _ htc`. Take `⟨hpos, Kx, hKx, hlogKx, hop⟩` from `hFock D _ _ (wt ch.G (.top j)) (wt ch.G (.top (j + 1))) _ hJ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `eA : hArea D ch.S.Z.δ ch.S.Z.t0 ρ = Real.posLog (area (lamConj Qbar ρ' (lamOf D D.host.ccK ch.S.Z.δ)))⁻¹`. Unfold `hArea`. Rewrite using `[hlam]`. Establish `eT : hTh D ch.S.Z.δ ch.S.Z.t0 ρ = Real.posLog (nrm1Sq (lamConj Qbar ρ' (lamOf D D.host.ccK ch.S.Z.δ)) (GL3Theta.th0 (lamConj Qbar ρ' (lamOf D D.host.ccK ch.S.Z.δ)) (tc D ch.S.Z.δ ch.S.Z.t0 ρ)))`. Unfold `hTh`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlam]`. Use `set L := lamConj Qbar ρ' (lamOf D D.host.ccK ch.S.Z.δ) with hL`. Use `set X := nrm1Sq L (GL3Theta.th0 L (tc D ch.S.Z.δ ch.S.Z.t0 ρ)) with hXdef`. Use `set a := (ch.G.V (.top j)).rank with ha`. Use `set bb := (ch.G.V (.top ((j : ℕ) + 1))).rank with hbb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set g := fF D * a * bb with hg`. Use `set P := 3 * (2 * ((g : ℕ) : ℝ) * D.host.rdE + 1) ^ g with hP`. Use `set deg := ∑ τ, ∑ i, (wt ch.G (.top ((j : ℕ) + 1)) τ).natW i with hdeg`. Establish `hS : 0 ≤ P * X ^ g`. Establish `h0` using `hgr 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: (∑ τ, ∑ i, ∑ j, ‖(0 : VC D a bb) τ i j‖ ^ 2) = 0` using `by simp`. Rewrite `h0` using `[this, mul_zero, zero_div, Real.exp_zero, mul_one]`. Conclude with `le_trans (sq_nonneg _) h0`. Establish `hop'` using `hop _ (P * X ^ g) _ harea hS hdiff hgr (GlobalTheory.CoefModel.mapVV σ _ u)`. Establish `hM0 : 0 ≤ P * X ^ g * Kx * max 1 (area L)⁻¹ ^ deg` using `mul_nonneg (mul_nonneg hS hKx.le) (pow_nonneg (le_trans zero_le_one (le_max_left _ _)) _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hrdpos : 0 < 2 * ((g : ℕ) : ℝ) * D.host.rdE + 1`. Use `mul_nonneg (mul_nonneg zero_le_two (Nat.cast_nonneg g)) hrd0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hPpos : 0 < P` using `by rw [hP]; exact mul_pos (by norm_num) (pow_pos hrdpos g)`. Establish `hW : ∀ jj : ℕ, jj ≤ D.R.m → (∑ τ, ∑ i, ((wt ch.G (.top jj) τ).natW i : ℝ)) ≤ (D.R.f : ℝ) * (bigN D : ℝ) * (8 * large₂.sc.b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `jj hjj`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Use `_ ≤ (D.R.f : ℝ) * ((bigN D : ℝ) * (8 * large₂.sc.b)) := by`. Establish `h1 : (Fintype.card D.what₂.Tau : ℝ) ≤ D.R.f` using `by exact_mod_cast hcard`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((ch.G.V (.top jj)).rank : ℝ) ≤ bigN D` using `by exact_mod_cast (hj jj hjj).1`. Conclude with `mul_le_mul h1 (mul_le_mul_of_nonneg_right h2 (by positivity)) (by positivity) (by positivity)`. Use `_ = _ := by ring`. Establish `hW0 : ∀ jj : ℕ, 0 ≤ (∑ τ, ∑ i, ((wt ch.G (.top jj) τ).natW i : ℝ))` using `fun jj => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Nat.cast_nonneg _`. Establish `haN : (a : ℝ) ≤ bigN D` using `by exact_mod_cast (hj j j.2.le).1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbN : (bb : ℝ) ≤ bigN D` using `by exact_mod_cast (hj ((j : ℕ) + 1) (Nat.succ_le_of_lt j.2)).1`. Establish `hgc : (g : ℝ) = (D.R.f : ℝ) * a * bb` using `by rw [hg]; push_cast; rfl`. Take `⟨hc0, hgG⟩` from `size_bound K D.R.f (bigN D) large₂.sc.b D.host.rdE Kx _ _ a bb (Fintype.card D.what₂.Tau) g hK0 (Nat.cast_nonneg _) (by exact_mod_cast hcard) hb3 hN1' hNb hf1' hfb hrd0 hrd (Nat.cast_nonneg _) haN (Nat.cast_nonneg _) hbN (hW j j.2.le) (hW _ (Nat.succ_le_of_lt j.2)) (hW0 _) (hW0 _ …`. Establish `hc : Real.log (P * Kx) ≤ (6 + 126 * K) * D.R.f * bigN D * large₂.sc.b * Real.log large₂.sc.b`. Rewrite using `[hP]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hc0`. Establish `hdN : (deg : ℝ) ≤ 8 * D.R.f * bigN D * large₂.sc.b`. Establish `e : (deg : ℝ) = ∑ τ, ∑ i, ((wt ch.G (.top ((j : ℕ) + 1)) τ).natW i : ℝ)` using `by rw [hdeg]; push_cast; rfl`. Rewrite using `[e]`. Use `(hW _ (Nat.succ_le_of_lt j.2)).trans (le_of_eq ?_)` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hpA : 0 ≤ Real.posLog (area L)⁻¹` using `by unfold Real.posLog; exact le_max_left _ _`. Establish `hpX : 0 ≤ Real.posLog X` using `by unfold Real.posLog; exact le_max_left _ _`. Establish `hMexp : P * X ^ g * Kx * max 1 (area L)⁻¹ ^ deg ≤ Real.exp ((6 + 126 * K) * D.R.f * bigN D * large₂.sc.b * Real.log large₂.sc.b + 8 * D.R.f * bigN D * large₂.sc.b * hArea D ch.S.Z.δ ch.S.Z.t0 ρ + D.R.f * bigN D * large₂.sc.b * hTh D ch.S.Z.δ ch.S.Z.t0 ρ)`. Establish `hXg` using `pow_le_exp_posLog X g`.
-
-Establish `hMd` using `max_pow_le_exp_posLog (area L) harea deg`. Establish `step1 : P * X ^ g * Kx * max 1 (area L)⁻¹ ^ deg ≤ (P * Kx) * (Real.exp (g * Real.posLog X) * Real.exp (deg * Real.posLog (area L)⁻¹))`. Use `mul_le_mul hXg hMd (pow_nonneg (le_trans zero_le_one (le_max_left _ _)) _) (Real.exp_pos _).le` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Use `step1.trans ?_` and prove the remaining obligations.
-
-Establish `eq : (P * Kx) * (Real.exp (g * Real.posLog X) * Real.exp (deg * Real.posLog (area L)⁻¹)) = Real.exp (Real.log (P * Kx) + g * Real.posLog X + deg * Real.posLog (area L)⁻¹)`. Rewrite using `[Real.exp_add, Real.exp_add, Real.exp_log (mul_pos hPpos hKx)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eq, Real.exp_le_exp, eA, eT]`. Combine the linear relations using `[mul_le_mul_of_nonneg_right hgG hpX, mul_le_mul_of_nonneg_right hdN hpA]`.
-
-Rewrite using `[hfeq u]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem conjTopAt_of_rank_le_of_weight_le : (_root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → BigC fun {D} _ _ _ _ _ A _ _ _ _ _ _ ch _ b =>
   ∀ Φ β d, Occurs ch.S.toGridChoice A.μ0 Φ β d → ∀ (c : ch.S.Classes A.μ0 Φ β) (j : Fin D.R.m)
@@ -206,7 +200,7 @@ theorem conjTopAt_of_rank_le_of_weight_le : (_root_.GlobalTheory.FunPr.ThetaLoca
       _ ≤ P * X ^ g * Kx * max 1 (area L)⁻¹ ^ deg * B := mul_le_mul_of_nonneg_left hu hM0
       _ ≤ _ := mul_le_mul_of_nonneg_right hMexp (le_trans (hpos _) hu)
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.KerConjMean.conjTopAt_of_rank_le_of_weight_le _root_.GlobalTheory.T.kernel_conjugate_transport GlobalTheory.T.gaussianGrowth_conj_torsionTranslates_vacuum GlobalTheory.T.exists_const_jetOperatorNorm_cauchyBound GlobalTheory.T.eventually_parameterSizes_testChoi …`.
+A detailed English derivation is pending.
 -/
 theorem conj_top_degree_in_kernel_mean : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → ∀ C1 : ℝ, 0 < C1 → BigC fun _ ch C b => ConjTopAt ch C b C1 :=
   _root_.GlobalTheory.KerConjMean.conjTopAt_of_rank_le_of_weight_le _root_.GlobalTheory.T.kernel_conjugate_transport GlobalTheory.T.gaussianGrowth_conj_torsionTranslates_vacuum GlobalTheory.T.exists_const_jetOperatorNorm_cauchyBound GlobalTheory.T.eventually_parameterSizes_testChoices
@@ -220,7 +214,7 @@ open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunOb
 open Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.SumSize GlobalTheory.KerConjMean
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.KerConjMean.conj_top_degree_in_kernel_mean | exact _root_.GlobalTheory.KerConjMean.conj_top_degree_in_kernel_mean | (intros; apply _root_.GlobalTheory.KerConjMean.conj_top_degree_in_kernel_mean <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.kernel_conjugation_average : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → ∀ C1 : ℝ, 0 < C1 → BigC fun _ ch C b => ConjTopAt ch C b C1 := by
   first | exact @_root_.GlobalTheory.KerConjMean.conj_top_degree_in_kernel_mean | exact _root_.GlobalTheory.KerConjMean.conj_top_degree_in_kernel_mean | (intros; apply _root_.GlobalTheory.KerConjMean.conj_top_degree_in_kernel_mean <;> assumption)

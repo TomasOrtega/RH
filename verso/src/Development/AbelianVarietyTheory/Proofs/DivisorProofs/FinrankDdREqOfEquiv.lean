@@ -25,9 +25,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {ρ : Representation LL G V} {ρ' : Representation LL G V'}
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at hx ⊢`. Introduce `g`. Use `hx g` as an intermediate fact. Unfold `actVdR at this ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[GlobalTheory.HTW.SumJumps.ext1_comm f (ρ g) (ρ' g) (hf g), this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ddR_map (f : V →ₗ[LL] V') (hf : ∀ g v, f (ρ g v) = ρ' g (f v)) :
     ∀ x ∈ DdR PD ρ, GlobalTheory.HTW.SumJumps.ext1 Qp BdR f x ∈ DdR PD ρ' := by
@@ -40,7 +40,7 @@ theorem ddR_map (f : V →ₗ[LL] V') (hf : ∀ g v, f (ρ g v) = ρ' g (f v)) :
   rw [GlobalTheory.HTW.SumJumps.ext1_comm f (ρ g) (ρ' g) (hf g), this]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.HTW.Rec.finrank_eq_of_equiv_tensor e _ _ (ddR_map PD e.toLinearMap he) (ddR_map PD e.symm.toLinearMap (GlobalTheory.HTW.Rec.symm_equivariant e he))`.
+A detailed English derivation is pending.
 -/
 theorem finrank_ddR_eq_of_equiv (e : V ≃ₗ[LL] V') (he : ∀ g v, e (ρ g v) = ρ' g (e v)) :
     finrank LL (DdR PD ρ) = finrank LL (DdR PD ρ') :=
@@ -52,7 +52,7 @@ end DdR
 section Matrix
 
 /- English proof (translation)
-Use extensionality with `g : 1`. Simplify using `[mapRep, MulAut.conj_apply, map_mul, map_inv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapRep_conj {Γ : Type} [Group Γ] {R S : Type} [CommRing R] [CommRing S] {a : ℕ} (f : R →+* S)
     (M : GL (Fin a) R) (ρ : Γ →* GL (Fin a) R) :
@@ -81,7 +81,7 @@ def glOf {n : ℕ} (L : FinExt l) (A : GL (Fin n) (Om l))
     exact A.inv_mul
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem map_glOf {n : ℕ} (L : FinExt l) (A : GL (Fin n) (Om l))
     (hA : ∀ i j, (A : Matrix (Fin n) (Fin n) (Om l)) i j ∈ L.1 ∧
@@ -106,7 +106,7 @@ def linOf {L : Type} [Field L] (M : GL (Fin m) L) : (Fin m → L) ≃ₗ[L] (Fin
     (by rw [← Matrix.toLin'_mul, M.inv_mul, Matrix.toLin'_one])
 
 /- English proof (translation)
-Simplify using `only [linOf, LocBridge.repE, LinearEquiv.ofLinear_apply, MonoidHom.coe_comp, Function.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, Units.coeHom_apply, Matrix.toLin'_apply, inv_inv, Units.val_mul]`. Use `erw [Matrix.toLinAlgEquiv'_apply, Matrix.toLinAlgEquiv'_apply]`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, M.mul_inv, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linOf_repE (L : FinExt l) (M : GL (Fin m) ↥L.1) (r : ↥Gw →* GL (Fin m) ↥L.1) (g) (v : Fin m → ↥L.1) :
     linOf M (Bw.repE L ((MulAut.conj M⁻¹).toMonoidHom.comp r) g v) = Bw.repE L r g (linOf M v) := by
@@ -116,7 +116,7 @@ theorem linOf_repE (L : FinExt l) (M : GL (Fin m) ↥L.1) (r : ↥Gw →* GL (Fi
   rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, M.mul_inv, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `he` using `linOf_repE Bw L M r`. Use `⟨fun h => GlobalTheory.HTW.Rec.isCrys_of_equiv _ (linOf M) he h, fun h => ?_, fun τ a => GlobalTheory.HTW.Rec.multV_eq_of_equiv _ (linOf M) he τ a⟩` and prove the remaining obligations. Unfold `LocBridge.IsdRE at h ⊢`. Rewrite using `[finrank_ddR_eq_of_equiv _ (linOf M) he, h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem local_conj (L : FinExt l) (M : GL (Fin m) ↥L.1) (r : ↥Gw →* GL (Fin m) ↥L.1) :
     (Bw.IsCrysE P L r → Bw.IsCrysE P L ((MulAut.conj M⁻¹).toMonoidHom.comp r)) ∧
@@ -131,9 +131,9 @@ theorem local_conj (L : FinExt l) (M : GL (Fin m) ↥L.1) (r : ↥Gw →* GL (Fi
 variable {P Bw}
 
 /- English proof (translation)
-Establish `h1 : LL'.1 ≤ (GlobalTheory.Pst.supExt LL' K).1` using `le_sup_left`. Establish `h2 : K.1 ≤ (GlobalTheory.Pst.supExt LL' K).1` using `le_sup_right`. Establish `hA' : ∀ i j, (A : Matrix (Fin m) (Fin m) (Om l)) i j ∈ (GlobalTheory.Pst.supExt LL' K).1 ∧ ((A⁻¹ : GL (Fin m) (Om l)) : Matrix (Fin m) (Fin m) (Om l)) i j ∈ (GlobalTheory.Pst.supExt LL' K).1` using `fun i j => ⟨h2 (hA i j).1, h2 (hA i j).2⟩`. Establish `hm2` using `hm.enlarge h1`. Use `⟨h1, glOf _ A hA', hm2.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mapRep_conj, hm2.2, map_inv, map_glOf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_conj_model {r : ↥Gw →* GL (Fin m) (Om l)} (A : GL (Fin m) (Om l)) (K : FinExt l)
     (hA : ∀ i j, (A : Matrix (Fin m) (Fin m) (Om l)) i j ∈ K.1 ∧
@@ -152,7 +152,7 @@ theorem exists_conj_model {r : ↥Gw →* GL (Fin m) (Om l)} (A : GL (Fin m) (Om
   rw [mapRep_conj, hm2.2, map_inv, map_glOf]
 
 /- English proof (translation)
-Take `⟨LL', r', hm, hc⟩` from `hr`. Take `⟨h, M, hM⟩` from `exists_conj_model A K hA hm`. Conclude with `⟨_, _, hM, (local_conj P Bw _ M _).1 ((GlobalTheory.Pst.local_ext P Bw h r').1.2 hc)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isCrysAt_conj {r : ↥Gw →* GL (Fin m) (Om l)} (A : GL (Fin m) (Om l)) (K : FinExt l)
     (hA : ∀ i j, (A : Matrix (Fin m) (Fin m) (Om l)) i j ∈ K.1 ∧
@@ -163,9 +163,9 @@ theorem isCrysAt_conj {r : ↥Gw →* GL (Fin m) (Om l)} (A : GL (Fin m) (Om l))
   exact ⟨_, _, hM, (local_conj P Bw _ M _).1 ((GlobalTheory.Pst.local_ext P Bw h r').1.2 hc)⟩
 
 /- English proof (translation)
-Take `⟨LL', r', hm, hdR, τ', hI, hc⟩` from `hr`. Take `⟨h, M, hM⟩` from `exists_conj_model A K hA hm`. Take `⟨-, hdR2, -, hmult⟩` from `GlobalTheory.Pst.local_ext P Bw h r'`. Take `⟨-, hdR3, hmult3⟩` from `local_conj P Bw _ M (mapRep (IntermediateField.inclusion h).toRingHom r')`. Use `⟨_, _, hM, hdR3 (hdR2.2 hdR), (IntermediateField.inclusion h).comp τ', fun x => hI x, fun n => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc n, hmult3, hmult]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isJumpsAt_conj {r : ↥Gw →* GL (Fin m) (Om l)} (A : GL (Fin m) (Om l)) (K : FinExt l)
     (hA : ∀ i j, (A : Matrix (Fin m) (Fin m) (Om l)) i j ∈ K.1 ∧
@@ -186,9 +186,9 @@ end GlobalTheory.ConjCrys
 open GlobalTheory.ConjCrys in
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ n r A K Jm hA hr`. Take `⟨hcont, hloc⟩` from `hr`. Use `⟨?_, fun P AI hT w B hB O _ _ _ Bw hInd => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun g => A⁻¹ * r g * A⁻¹⁻¹`. Conclude with `(continuous_const.mul hcont).mul continuous_const`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `hloc P AI hT w B hB O Bw hInd`. Establish `e : ((MulAut.conj A⁻¹).toMonoidHom.comp r).comp (Dec (F` using `E) B).subtype = (MulAut.conj A⁻¹).toMonoidHom.comp (r.comp (Dec (F := E) B).subtype) := MonoidHom.comp_assoc _ _ _`. Rewrite using `[e]`. Use `⟨isCrysAt_conj (r := r.comp (Dec (F := E) B).subtype) A K hA h1, fun τ LL' τ' hI => ?_⟩` and prove the remaining obligations. Conclude with `isJumpsAt_conj (r := r.comp (Dec (F := E) B).subtype) A K hA (h2 τ LL' τ' hI)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.crysWith_conj : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (n : ℕ) (r : G E Ω →* GL (Fin n) (PadicAlgCl l)) (A : GL (Fin n) (PadicAlgCl l)) (K : FinExt l) (Jm : (E →+* PadicAlgCl l) → Multiset ℤ), (∀ i j, (A : Matrix (Fin n) (Fin n) (PadicAlgCl l)) i j ∈ K.1 ∧ ((A⁻¹ : GL (Fin n) (PadicAlgCl l)) : Matrix (Fin n) (Fin n) (PadicAlgCl l)) i j ∈ K.1) → CrysWith r Jm → CrysWith ((MulAut.conj A⁻¹).toMonoidHom.comp r) Jm := by
   intro E Ω _ _ _ _ _ l _ n r A K Jm hA hr

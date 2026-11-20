@@ -15,7 +15,7 @@ def nC (v : X.Pl) (i l : ℕ) : ℕ :=
   (p ^ X.G.P.n' v) ^ ((i - l) * (X.t + 1 - l)) * Formalism.G0.gaussBinom (p ^ X.G.P.n' v) (X.t + 1) l
 
 /- English proof (translation)
-The claim follows from `Function.update_self (β := fun u => Submodule ((X.Pj (j + 1)).W u) (Fin ((X.Pj (j + 1)).m + 1) → (X.Pj (j + 1)).Qq u)) (X.vJ (j + 1) v) L1 L'`.
+A detailed English derivation is pending.
 -/
 theorem latAt_succ_upd (v : X.Pl) (j : ℕ) (L' : (X.Pj (j + 1)).Tup)
     (L1 : Submodule ((X.Pj (j + 1)).W (X.vJ (j + 1) v)) (Fin ((X.Pj (j + 1)).m + 1) → (X.Pj (j + 1)).Qq (X.vJ (j + 1) v))) :
@@ -24,7 +24,7 @@ theorem latAt_succ_upd (v : X.Pl) (j : ℕ) (L' : (X.Pj (j + 1)).Tup)
     (X.vJ (j + 1) v) L1 L'
 
 /- English proof (translation)
-The claim follows from `Function.update_self (β := fun u => Submodule ((X.Pj 0).W u) (Fin ((X.Pj 0).m + 1) → (X.Pj 0).Qq u)) (X.vJ 0 v) L1 L'`.
+A detailed English derivation is pending.
 -/
 theorem latAt_zero_upd (v : X.Pl) (L' : (X.Pj 0).Tup)
     (L1 : Submodule ((X.Pj 0).W (X.vJ 0 v)) (Fin ((X.Pj 0).m + 1) → (X.Pj 0).Qq (X.vJ 0 v))) :
@@ -33,17 +33,17 @@ theorem latAt_zero_upd (v : X.Pl) (L' : (X.Pj 0).Tup)
     (X.vJ 0 v) L1 L'
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Finset.sum_apply, Pi.smul_apply]`. Consider the cases of `j with`. Consider the case `zero`. Establish `key` using `count_fun hC p (X.G.P.n' v) (X.G.P.setting v).frac_alt (X.G.P.setting v).p_unif (X.G.P.setting v).res_card (X.G.P.m + 1) (X.G.P.m + (0 + 1) * (X.Fl.t + 1) + 1) (X.Fl.t + 1) i (by ring) (L v) (L' v) (hL v) (hL' v) (EE (X.Pj (0 + 1)) (X.vJ (0 + 1) v) i (L' v)) (fun B1 => mem_EE _) …`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
 
-Use `Eq.trans ?_ (key.trans ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun L1 _ => ?_` and prove the remaining obligations. Unfold `Sys.ind`. Rewrite using `[latAt_succ_upd]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `symm`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul]`. Use `congrArg₂ _ rfl (Finset.sum_congr rfl fun A1 _ => ?_)` and prove the remaining obligations. Unfold `Sys.ind`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[latAt_zero_upd]`. Both sides reduce to the same expression. Consider the case `succ j`. Establish `key` using `count_fun hC p (X.G.P.n' v) (X.G.P.setting v).frac_alt (X.G.P.setting v).p_unif (X.G.P.setting v).res_card (X.G.P.m + (j + 1) * (X.Fl.t + 1) + 1) (X.G.P.m + ((j + 1) + 1) * (X.Fl.t + 1) + 1) (X.Fl.t + 1) i (by ring) (L v) (L' v) (hL v) (hL' v) (EE (X.Pj ((j + 1) + 1)) (X.vJ ((j + …`. Use `Eq.trans ?_ (key.trans ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun L1 _ => ?_` and prove the remaining obligations. Unfold `Sys.ind`. Rewrite using `[latAt_succ_upd]`. Both sides reduce to the same expression. Use `symm`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Use symmetry to reverse the relation.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[nsmul_eq_mul]`. Use `congrArg₂ _ rfl (Finset.sum_congr rfl fun A1 _ => ?_)` and prove the remaining obligations. Unfold `Sys.ind`. Rewrite using `[latAt_succ_upd]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

@@ -10,23 +10,21 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.WordProd.OneBlockProd
 
 /- English proof (translation)
-Establish `hx' : ∀ i, ∃ (x : X i) (c : Module.Dual ℂ (X i)), i ≠ i₀ → c x = 1 ∧ ∀ w, c w • x = w`. Introduce `i`. Distinguish the cases in `hi : i = i₀`. Conclude with `⟨0, 0, fun h => absurd hi h⟩`. Take `⟨v, hv, hs⟩` from `hx i hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Module.Dual ℂ (X i), f v ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hv ((Module.forall_dual_apply_eq_zero_iff ℂ v).1 h)`. Use `⟨v, (f v)⁻¹ • f, fun _ => ⟨by simp [hf], fun w => ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨a, rfl⟩` from `hs w`. Simplify using `[hf, mul_comm]`. Use `choose x c hc using hx'`. Set `T : X i₀ →ₗ[ℂ] ⨂[ℂ] i, X i` to `(PiTensorProduct.tprod ℂ).toLinearMap x i₀`. Establish `hT : ∀ v, T v = PiTensorProduct.tprod ℂ (Function.update x i₀ v)` using `fun v => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinj : Function.Injective T`. Use `(injective_iff_map_eq_zero T).2 fun v hv => ?_` and prove the remaining obligations. Use `(Module.forall_dual_apply_eq_zero_iff ℂ v).1 fun l => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ α ℂ).compLinearMap (Function.update c i₀ l))) hv`. Rewrite `h1` using `[hT, PiTensorProduct.lift.tprod, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply] at h1`. Rewrite using `[Finset.prod_eq_single_of_mem i₀ (Finset.mem_univ _) (fun i _ hi => by`. Rewrite using `[Function.update_of_ne hi, Function.update_of_ne hi]`. Conclude with `(hc i hi).1)] at h1`. Simplify using `using h1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hsurj : Function.Surjective T`. Introduce `y`. Use `PiTensorProduct.induction_on y (fun r f => ?_) (fun y z hy hz => ?_)` and prove the remaining obligations. Set `d : α → ℂ` to `fun i => if h : i = i₀ then 1 else c i (f i)`. Establish `e1 : f = fun i => d i • Function.update x i₀ (f i₀) i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i₀ = i`. Substitute `h` using the available equality. Simplify using `[d]`. Establish `h' : i ≠ i₀` using `fun e => h e.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Simplify using `only [d, dif_neg h', Function.update_of_ne h']`. Conclude with `((hc i h').2 (f i)).symm`. Establish `e2 : PiTensorProduct.tprod ℂ f = (∏ i, d i) • PiTensorProduct.tprod ℂ (Function.update x i₀ (f i₀))`. Rewrite using `[← MultilinearMap.map_smul_univ]`. Conclude with `congrArg _ e1`.
-
-Conclude with `⟨r • (∏ i, d i) • f i₀, by rw [map_smul, map_smul, hT, e2]⟩`. Take `⟨u, rfl⟩` from `hy`. Take `⟨v, rfl⟩` from `hz`. Conclude with `⟨u + v, map_add _ _ _⟩`. Conclude with `⟨x, LinearEquiv.ofBijective T ⟨hinj, hsurj⟩, hT⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_equiv_tensor {α : Type} [Fintype α] [DecidableEq α] (X : α → Type) [∀ i, AddCommGroup (X i)]
     [∀ i, Module ℂ (X i)] (i₀ : α) (hx : ∀ i, i ≠ i₀ → ∃ v : X i, v ≠ 0 ∧ ∀ w, ∃ a : ℂ, a • v = w) :
@@ -81,13 +79,11 @@ theorem exists_equiv_tensor {α : Type} [Fintype α] [DecidableEq α] (X : α �
   exact ⟨x, LinearEquiv.ofBijective T ⟨hinj, hsurj⟩, hT⟩
 
 /- English proof (translation)
-Establish `hg : ∀ g : G, g = 1` using `fun g => Subsingleton.elim _ _`. Establish `hnt : ∃ v : V, v ≠ 0`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `: (⊥ : Subrepresentation π) = ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Rewrite using `[h v]`. Conclude with `⟨fun _ => Submodule.zero_mem _, fun _ => Submodule.zero_mem _⟩`. Conclude with `bot_ne_top this`. Take `⟨v, hv⟩` from `hnt`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `S : Subrepresentation π` to `⟨Submodule.span ℂ {v}, fun g w hw => by simpa [hg g] using hw⟩`. Establish `hS : S = ⊤` using `(eq_bot_or_eq_top S).resolve_left fun h => hv (by`. Establish `: v ∈ S` using `Submodule.mem_span_singleton_self v`. Rewrite `this` using `[h]`. Conclude with `this)`.
-
-Use `⟨v, hv, fun w => ?_⟩` and prove the remaining obligations. Establish `: w ∈ S` using `by rw [hS]; trivial`. Conclude with `Submodule.mem_span_singleton.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_line {G V : Type} [Group G] [Subsingleton G] [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ G V) (hirr : π.IsIrreducible) : ∃ v : V, v ≠ 0 ∧ ∀ w, ∃ a : ℂ, a • v = w := by
@@ -108,13 +104,13 @@ theorem exists_line {G V : Type} [Group G] [Subsingleton G] [AddCommGroup V] [Mo
   exact Submodule.mem_span_singleton.1 this
 
 /- English proof (translation)
-Set `P : Matrix n n R` to `(1 : Matrix n n R).submatrix e (Equiv.refl n)`. Set `Q : Matrix n n R` to `(1 : Matrix n n R).submatrix (Equiv.refl n) e`. Establish `hP : ∀ y : Matrix n n R, P * y = y.submatrix e (Equiv.refl n)` using `fun y => by`. Use extensionality with `s t`. Simplify using `[P, Matrix.mul_apply, Matrix.one_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hQ : ∀ y : Matrix n n R, y * Q = y.submatrix (Equiv.refl n) e` using `fun y => by`. Use extensionality with `s t`. Simplify using `[Q, Matrix.mul_apply, Matrix.one_apply]`. Establish `h1 : P * Q = 1`. Rewrite using `[hQ]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `s t`. Simplify using `[P, Matrix.one_apply]`. Establish `h2 : Q * P = 1` using `mul_eq_one_comm.1 h1`. Use `⟨⟨P, Q, h1, h2⟩, fun y => ?_⟩` and prove the remaining obligations. Use `show P * (y : Matrix n n R) * Q = _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQ, hP]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_conj_perm {n R : Type} [Fintype n] [DecidableEq n] [CommRing R] (e : n ≃ n) :
     ∃ w : GL n R, ∀ y : GL n R,
@@ -140,15 +136,11 @@ theorem exists_conj_perm {n R : Type} [Fintype n] [DecidableEq n] [CommRing R] (
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `law : ∀ (p : parab k e) v, twist ρ (deltaHalf k m) (leviProj k e p) (L v) = L (π p v)` using `fun p v => by`. Simplify using `only [twist_apply, hd, Units.val_one, one_smul, law0]`. Set `f : π.IntertwiningMap (parInd e ρ)` to `{ toFun := fun v => ⟨⟨fun x => L (π x v), fun p x => by`. Use `Eq.trans ?_ (law p _).symm` and prove the remaining obligations. Use the proof step `simp⟩,`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mem_smoothPart_of_nhds (Filter.mem_of_superset ((hπ v).mem_nhds (by simp)) fun g hg => by`. Establish `hg' : π g v = v` using `hg`. Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Use `show L (π (x * g) v) = L (π x v)`. Simplify using `[hg'])⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use the proof step `map_add' := fun v w => Subtype.ext (Subtype.ext (funext fun x => by simp))`. Use the proof step `map_smul' := fun c v => Subtype.ext (Subtype.ext (funext fun x => by simp))`. Use the proof step `isIntertwining' := fun g => LinearMap.ext fun v => Subtype.ext (Subtype.ext (funext fun x => by show L (π x (π g v)) = L (π (x * g) v) simp)) }`. Use `⟨equivOfBijective f ⟨fun v w h => ?_, fun φ => ⟨L.symm (φ.1.1 1), Subtype.ext (Subtype.ext (funext fun x => ?_))⟩⟩⟩` and prove the remaining obligations. Establish `h1 : L (π 1 v) = L (π 1 w)` using `congrArg (fun φ => φ.1.1 1) h`.
-
-Simplify using `using h1`. Establish `h1` using `φ.1.2 ⟨x, hP x⟩ 1`. Rewrite `h1` using `[mul_one]`. Use `(law ⟨x, hP x⟩ _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[L.apply_symm_apply]`.
-
-Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_parInd {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)]
     [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] {V W : Type} [AddCommGroup V] [Module ℂ V]
@@ -183,15 +175,15 @@ theorem nonempty_equiv_parInd {α n : Type} {m : α → Type} [Fintype α] [Line
     exact h1.symm
 
 /- English proof (translation)
-Establish `hP : ∀ x : GL (Fin (b i₀)) k, x ∈ parab k g` using `fun x => OneBlockCell.mem_parab_of_single g i₀ h0 x`. Establish `hsub : ∀ i, i ≠ i₀ → Subsingleton (GL (Fin (b i)) k)`. Introduce `i hi`. Use `haveI : IsEmpty (Fin (b i)) := by rw [h0 i hi]; infer_instance`. Conclude with `⟨fun x y => Units.ext (Subsingleton.elim _ _)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨x, ι, hι⟩` from `exists_equiv_tensor (fun i => (σ i).V) i₀ (fun i hi => haveI := hsub i hi exists_line (σ i).ρ (σ i).irr)`. Set `E : Fin (b i₀) ≃ Fin (b i₀)` to `(OneBlockCell.valEquiv i₀ rfl h0).symm.trans g`. Take `⟨w, hw⟩` from `exists_conj_perm (R := k) E`. Establish `hwp : ∀ p : parab k g, leviProj k g p i₀ = w * (p : GL (Fin (b i₀)) k) * w⁻¹` using `fun p => Units.ext (Matrix.ext fun s t => by`. Rewrite using `[hw]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use the proof step `rfl)`. Set `A : (σ i₀).V ≃ₗ[ℂ] (σ i₀).V` to `LinearEquiv.ofLinear ((σ i₀).ρ w) ((σ i₀).ρ w⁻¹) (by rw [← Module.End.mul_eq_comp, ← map_mul, mul_inv_cancel, map_one]; rfl) (by rw [← Module.End.mul_eq_comp, ← map_mul, inv_mul_cancel, map_one]; rfl)`. Take `⟨φ⟩` from `nonempty_equiv_parInd (ρ := piTensor fun i => (σ i).ρ) (π := (σ i₀).ρ) g (σ i₀).smooth hP (OneBlockCell.deltaHalf_eq_one_of_single i₀ h0) (A.trans ι) (fun p v => by show (piTensor fun i => (σ i).ρ) (leviProj k g p) (ι ((σ i₀).ρ w v)) = ι ((σ i₀).ρ w ((σ i₀).ρ p v))`. Rewrite using `[hι, hι, piTensor_tprod]`. Use `congrArg _ (funext fun i => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Function.apply_update (fun i u => (σ i).ρ (leviProj k g p i) u)]`. Distinguish the cases in `h : i₀ = i`. Substitute `h` using the available equality. Rewrite using `[Function.update_self, Function.update_self, hwp, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right, map_mul, Module.End.mul_apply]`. Establish `h' : i ≠ i₀` using `fun e => h e.symm haveI := hsub i h'`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Function.update_of_ne h', Function.update_of_ne h', Subsingleton.elim (leviProj k g p i) 1, map_one]`. Use the proof step `rfl)`. Conclude with `⟨φ.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem multiProd_single {α : Type} [Fintype α] [LinearOrder α] (b : α → ℕ) (i₀ : α)
     (h0 : ∀ i, i ≠ i₀ → b i = 0) (σ : ∀ i, IrrRep (GL (Fin (b i)) k))
@@ -233,9 +225,9 @@ theorem multiProd_single {α : Type} [Fintype α] [LinearOrder α] (b : α → �
   exact ⟨φ.symm⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ a α _ _ b i₀ hb h0 g`. Take `⟨N, c⟩` from `a`. Simplify using `only at hb g ⊢`. Substitute `hb` using the available equality. Take `⟨φ⟩` from `multiProd_single b i₀ h0 (fun i => (clOf ⟨b i₀, c⟩ (b i)).rep) g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ d : IrrCl (GL (Fin (b i₀)) k), d = c → Nonempty (d.rep.ρ.Equiv c.rep.ρ)`. Introduce and unpack `_ rfl`. Conclude with `⟨.refl _⟩`. Take `⟨ψ⟩` from `key _ (clOf_self ⟨b i₀, c⟩)`. Conclude with `⟨φ.trans ψ⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem multiProd_clOf_single : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a : IrrGL k) {α : Type} [Fintype α] [LinearOrder α] (b : α → ℕ) (i₀ : α), b i₀ = a.1 → (∀ i, i ≠ i₀ → b i = 0) → ∀ (g : (Σ i, Fin (b i)) ≃ Fin a.1), Nonempty ((multiProd g fun i => (clOf a (b i)).rep.ρ).Equiv a.rep) := by
   intro k _ _ _ _ a α _ _ b i₀ hb h0 g

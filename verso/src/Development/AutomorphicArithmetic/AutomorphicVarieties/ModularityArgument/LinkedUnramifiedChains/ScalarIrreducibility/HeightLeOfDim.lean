@@ -5,17 +5,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp IsLocalRing UpperTheory.V UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Af UpperTheory.V.Pr UpperTheory.V.Alg UpperTheory.V.J
 
 /- English proof (translation)
-Establish `e : Q.height = Order.height (⟨Q, hQ⟩ : PrimeSpectrum R)` using `PrimeSpectrum.height_eq_orderHeight (⟨Q, hQ⟩ : PrimeSpectrum R)`. Rewrite using `[e, Order.height_le_iff]`. Introduce `p hp`. Establish `hQm : Q < maximalIdeal R`. Use `lt_of_le_of_ne (IsLocalRing.le_maximalIdeal hQ.ne_top) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hEq`. Use `haveI : Q.IsMaximal := hEq ▸ IsLocalRing.maximalIdeal.isMaximal R`. Use `letI := Ideal.Quotient.field Q`. Rewrite `h1` using `[ringKrullDim_eq_zero_of_field]`. Conclude with `absurd h1 (by decide)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hlt : p.last < (⟨maximalIdeal R, inferInstance⟩ : PrimeSpectrum R)` using `lt_of_le_of_lt hp hQm`. Set `s : LTSeries (PrimeSpectrum R)` to `p.snoc _ hlt`. Use `set P := p.head.asIdeal with hPdef`. Establish `hPp : P.IsPrime` using `p.head.isPrime`. Establish `hPQ : P ≤ Q` using `(LTSeries.monotone p (Fin.zero_le (Fin.last _))).trans hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : ∀ i, s i ∈ PrimeSpectrum.zeroLocus (P : Set R)`. Introduce `i`. Establish `h0` using `LTSeries.monotone s (Fin.zero_le i)`. Rewrite `h0` using `[show s 0 = p.head from RelSeries.head_snoc _ _ _]`. Rewrite using `[PrimeSpectrum.mem_zeroLocus]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `fun a ha => h0 ha`. Set `t : LTSeries (PrimeSpectrum.zeroLocus (P : Set R))` to `⟨s.length, fun i => ⟨s i, hmem i⟩, fun i => s.step i⟩`. Establish `ht : ((s.length : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (R ⧸ P)`. Rewrite using `[ringKrullDim_quotient]`. Conclude with `Order.le_krullDim_iff.2 ⟨t, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb` using `ht.trans (h P hPp hPQ)`. Establish `hsl : s.length = p.length + 1` using `RelSeries.snoc_length _ _ _`. Rewrite `hb` using `[hsl]`. Establish `hb' : p.length + 1 ≤ N + 1` using `by exact_mod_cast hb`. Conclude with `(by omega : p.length ≤ N)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 private theorem height_le_of_dim {R : Type} [CommRing R] [IsLocalRing R] (Q : Ideal R) [hQ : Q.IsPrime]
     (h1 : ringKrullDim (R ⧸ Q) = 1) (N : ℕ)
@@ -56,13 +56,13 @@ private theorem height_le_of_dim {R : Type} [CommRing R] [IsLocalRing R] (Q : Id
   exact_mod_cast (by omega : p.length ≤ N)
 
 /- English proof (translation)
-Introduce `l _ c _ F C₀ n hF hn S M hM hZ q x L Q hO hT`. Take `⟨hQp, him, -, hdim⟩` from `hO`. Use `height_le_of_dim Q hdim (n * F.d + 1) ?_` and prove the remaining obligations. Introduce `P hP hPQ`. Establish `hPq : L.im P ≤ q` using `him ▸ Ideal.comap_mono hPQ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hTP : S.u.TI (L.im P)` using `⟨⟨fun h => hT.1.1 (h.trans hPq), fun h => hT.1.2 (h.trans hPq)⟩, fun h3 h => hT.2 h3 (h.trans hPq)⟩`. Establish `hprime : (L.im P).IsPrime` using `Ideal.comap_isPrime _ _`. Establish `htd : S.td (L.im P) ≤ ((1 : ℕ) : Cardinal)`. Rewrite using `[Nat.cast_one]`. Conclude with `Fr.fibre hF hn S _ hprime hTP.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `(Fr.loc_dim hF hn S x L).1 P hP 1 htd`. Establish `hπ : (L.π P).IsPrime` using `Ideal.comap_isPrime _ _`. Establish `h2` using `hZ (L.π P) hπ (hM _ hprime hTP)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Nat.cast_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.J.htUp :
     ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) [Fr.IsCoef l c.O] (F : Fr.Frame l (ResidueField c.O)) (C₀ n : ℕ), F.Ok C₀ → (n = 2 ∨ n = 3) →

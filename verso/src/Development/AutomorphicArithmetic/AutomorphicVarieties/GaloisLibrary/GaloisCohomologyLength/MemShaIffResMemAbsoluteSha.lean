@@ -12,9 +12,9 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAl
   {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite using `[← map_Sha D e]`. Conclude with `Submodule.mem_map_of_mem hx`. Introduce `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[← map_Sha D e]`. Take `⟨y, hy, hyx⟩` from `hx`. Rewrite using `[← injective_infl D e hyx]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem mem_sha_iff_res_mem_absolute_sha (D : LData F Ω l) (e : ℤ) (x : H1 (qzTw D e)) :
     x ∈ Sha D e ↔ resH1 (qzTw D e) (toGS Ω _) (continuous_toGS Ω _) x ∈
@@ -29,17 +29,17 @@ private theorem mem_sha_iff_res_mem_absolute_sha (D : LData F Ω l) (e : ℤ) (x
     rwa [← injective_infl D e hyx]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx`, the goal using `[mem_sha_iff_res_mem_absolute_sha]`. Simplify using `only [resH1, pairH1DecompositionMap, Submodule.mapQ_apply] at hx ⊢`. Rewrite `hx`, the goal using `[mk_mem_ShaAbs]`. Take `⟨hxa, hxb⟩` from `hx`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `v' hv' A' hA'`. Take `⟨v, A, hA, hab, -, hdec, hine⟩` from `placeTransport F Ω F' Ω' f σ hσ φ hφ v' A' hA'`. Take `⟨m, hm⟩` from `hxa v ((hab l).2 hv') A hA`. Use `⟨m, fun g hg => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hm (φ g) ((hdec g).2 hg)`. Establish `h2` using `hq (toGS Ω' (↑D'.S : Set (HeightOneSpectrum (𝓞 F'))) g) m`. Simplify using `only [LinearMap.id_apply] at h2`. Express the relevant statement in the definitionally equal form `(z : GS Ω (↑D.S : Set (HeightOneSpectrum (𝓞 F))) → QZ l) (toGS Ω (↑D.S : Set (HeightOneSpectrum (𝓞 F))) (φ g)) = qzTw D e (toGS Ω (↑D.S : Set (HeightOneSpectrum (𝓞 F))) (φ g)) m - m at h1`. Express the relevant statement in the definitionally equal form `LinearMap.id ((z : GS Ω (↑D.S : Set (HeightOneSpectrum (𝓞 F))) → QZ l) (ψ (toGS Ω' (↑D'.S : Set (HeightOneSpectrum (𝓞 F'))) g))) = qzTw D' e (toGS Ω' (↑D'.S : Set (HeightOneSpectrum (𝓞 F'))) g) m - m`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[LinearMap.id_apply, hc, h1, ← hc, h2]`. Introduce `v' hv' A' hA'`. Take `⟨v, A, hA, hab, -, hdec, hine⟩` from `placeTransport F Ω F' Ω' f σ hσ φ hφ v' A' hA'`. Take `⟨m, hm⟩` from `hxb v (fun h => hv' ((hab l).1 h)) A hA`. Use `⟨m, fun g hg => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hm (φ g) ((hine g).2 hg)`. Establish `h2` using `hq (toGS Ω' (↑D'.S : Set (HeightOneSpectrum (𝓞 F'))) g) m`. Simplify using `only [LinearMap.id_apply] at h2`. Express the relevant statement in the definitionally equal form `(z : GS Ω (↑D.S : Set (HeightOneSpectrum (𝓞 F))) → QZ l) (toGS Ω (↑D.S : Set (HeightOneSpectrum (𝓞 F))) (φ g)) = qzTw D e (toGS Ω (↑D.S : Set (HeightOneSpectrum (𝓞 F))) (φ g)) m - m at h1`. Express the relevant statement in the definitionally equal form `LinearMap.id ((z : GS Ω (↑D.S : Set (HeightOneSpectrum (𝓞 F))) → QZ l) (ψ (toGS Ω' (↑D'.S : Set (HeightOneSpectrum (𝓞 F'))) g))) = qzTw D' e (toGS Ω' (↑D'.S : Set (HeightOneSpectrum (𝓞 F'))) g) m - m`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[LinearMap.id_apply, hc, h1, ← hc, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem pairH1DecompositionMap_qzTw_mem_sha (D : LData F Ω l) (D' : LData F' Ω' l) (e : ℤ) (f : F →+* F') (σ : Ω ≃+* Ω')
     (hσ : ∀ x, σ (algebraMap F Ω x) = algebraMap F' Ω' (f x)) (φ : G F' Ω' →* G F Ω)
@@ -79,37 +79,35 @@ private theorem pairH1DecompositionMap_qzTw_mem_sha (D : LData F Ω l) (D' : LDa
 end
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ F' Ω' _ _ _ _ _ l _ D D' f e`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI : IsAlgClosed Ω' := IsAlgClosure.isAlgClosed F'`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Use `haveI : CharZero Ω' := charZero_of_injective_algebraMap (algebraMap F' Ω').injective`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `σ : Ω ≃+* Ω'` to `IsAlgClosure.equivOfEquiv Ω Ω' f`. Establish `hσ : ∀ x, σ (algebraMap F Ω x) = algebraMap F' Ω' (f x)` using `fun x => IsAlgClosure.equivOfEquiv_algebraMap Ω Ω' f x`. Take `⟨φ, ψ, -, -, hψ, hψs, hφ, hc, hchi⟩` from `gsTransport F Ω F' Ω' l D D' f σ hσ`. Establish `hq : ∀ g m, (LinearMap.id : QZ l →ₗ[ℤ_[l]] QZ l) (qzTw D e ((ψ : GS Ω' (D'.S : Set (HeightOneSpectrum (𝓞 F'))) →* GS Ω (D.S : Set (HeightOneSpectrum (𝓞 F)))) g) m) = qzTw D' e g (LinearMap.id (R` using `ℤ_[l]) m) := by`. Introduce `g m`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.id_apply, UpperTheory.V.qzTw_apply, MonoidHom.coe_coe, hchi]`. Establish `hq' : ∀ g m, (LinearMap.id : QZ l →ₗ[ℤ_[l]] QZ l) (qzTw D' e ((ψ.symm : GS Ω (D.S : Set (HeightOneSpectrum (𝓞 F))) →* GS Ω' (D'.S : Set (HeightOneSpectrum (𝓞 F')))) g) m) = qzTw D e g (LinearMap.id (R` using `ℤ_[l]) m) := by`. Introduce `g m`. Simplify using `only [LinearMap.id_apply, UpperTheory.V.qzTw_apply, MonoidHom.coe_coe, ← hchi, MulEquiv.apply_symm_apply]`. Set `Φ` to `pairH1DecompositionMap (qzTw D e) (qzTw D' e) (ψ : GS Ω' (D'.S : Set (HeightOneSpectrum (𝓞 F'))) →* GS Ω (D.S : Set (HeightOneSpectrum (𝓞 F)))) hψ LinearMap.id continuous_id hq`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Set `Ψ` to `pairH1DecompositionMap (qzTw D' e) (qzTw D e) (ψ.symm : GS Ω (D.S : Set (HeightOneSpectrum (𝓞 F))) →* GS Ω' (D'.S : Set (HeightOneSpectrum (𝓞 F')))) hψs LinearMap.id continuous_id hq'`. Establish `hΦΨ : Φ.comp Ψ = LinearMap.id`. Apply `Submodule.linearMap_qext` to reduce the goal to its premises. Use extensionality with `z g`. Simplify using `[Φ, Ψ, pairH1DecompositionMap, compatiblePairCocycles1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hΨΦ : Ψ.comp Φ = LinearMap.id`. Apply `Submodule.linearMap_qext` to reduce the goal to its premises. Use extensionality with `z g`. Simplify using `[Φ, Ψ, pairH1DecompositionMap, compatiblePairCocycles1]`. Establish `hσ' : ∀ x, σ.symm (algebraMap F' Ω' x) = algebraMap F Ω (f.symm x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[RingEquiv.symm_apply_eq, hσ, RingEquiv.apply_symm_apply]`. Establish `hφ' : ∀ g x, σ.symm (φ.symm g x) = g (σ.symm x)`. Introduce `g x`. Establish `h` using `hφ (φ.symm g) (σ.symm x)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[MulEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`. Rewrite using `[← h, RingEquiv.symm_apply_apply]`. Establish `hc' : ∀ g, ψ.symm (toGS Ω (↑D.S : Set (HeightOneSpectrum (𝓞 F))) g) = toGS Ω' (↑D'.S : Set (HeightOneSpectrum (𝓞 F'))) (φ.symm g)`. Introduce `g`. Rewrite using `[MulEquiv.symm_apply_eq, hc, MulEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨LinearEquiv.ofLinear Φ Ψ hΦΨ hΨΦ, ?_, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `pairH1DecompositionMap_qzTw_mem_sha D D' e f.toRingHom σ hσ φ.toMonoidHom hφ _ hψ (fun g => hc g) hq x hx`. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨Ψ y, ?_, ?_⟩` and prove the remaining obligations. Conclude with `pairH1DecompositionMap_qzTw_mem_sha D' D e f.symm.toRingHom σ.symm hσ' φ.symm.toMonoidHom hφ' _ hψs (fun g => hc' g) hq' y hy`. Conclude with `LinearMap.congr_fun hΦΨ y`. Introduce `τ τ' hτ x`. Take `⟨σ1, h1⟩` from `UpperTheory.V.exists_isLift (Ω := Ω) τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `σ1' : Ω' ≃+* Ω'` to `σ.symm.trans (σ1.trans σ)`. Establish `h1' : UpperTheory.V.IsLift τ' σ1'`. Introduce `y`. Take `⟨y0, rfl⟩` from `f.surjective y`. Use `show σ (σ1 (σ.symm (algebraMap F' Ω' (f y0)))) = algebraMap F' Ω' (τ' (f y0))`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hσ, RingEquiv.symm_apply_apply, h1, hσ, hτ]`. Rewrite using `[UpperTheory.V.galois_action_cohomology_eq_conj D e h1, UpperTheory.V.galois_action_cohomology_eq_conj D' e h1']`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨z1, hz1, hz1v⟩` from `UpperTheory.V.exists_cocycle_h1TwistConjByLift_mk_eq_mk D e h1 z`. Simplify using `only [LinearEquiv.ofLinear_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hz1]`. Establish `hΦmk : ∀ w, Φ (Submodule.Quotient.mk w) = Submodule.Quotient.mk (compatiblePairCocycles1 (qzTw D e) (qzTw D' e) _ hψ LinearMap.id continuous_id hq w)` using `fun w => rfl`. Rewrite using `[hΦmk, hΦmk]`. Take `⟨z2, hz2, hz2v⟩` from `UpperTheory.V.exists_cocycle_h1TwistConjByLift_mk_eq_mk D' e h1' (compatiblePairCocycles1 (qzTw D e) (qzTw D' e) _ hψ LinearMap.id continuous_id hq z)`. Rewrite using `[hz2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g'`. Rewrite using `[hz2v]`. Use `show LinearMap.id ((z1 : GS Ω (↑D.S : Set (HeightOneSpectrum (𝓞 F))) → QZ l) (ψ g')) = UpperTheory.V.twScal l σ1' e • LinearMap.id ((z : GS Ω (↑D.S : Set (HeightOneSpectrum (𝓞 F))) → QZ l) (ψ (UpperTheory.V.conjGS D' h1' g')))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[LinearMap.id_apply, LinearMap.id_apply, hz1v]`. Establish `htw : UpperTheory.V.twScal l σ1' e = UpperTheory.V.twScal l σ1 e`. Unfold `UpperTheory.V.twScal`. Rewrite using `[KStar.TotallyRealRoots.cyclotomicCharacter_conj (l := l) σ σ1 σ1' (fun x => by simp [σ1'])]`. Establish `hsurj : Function.Surjective (toGS Ω' (↑D'.S : Set (HeightOneSpectrum (𝓞 F'))))` using `QuotientGroup.mk'_surjective _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hconj : UpperTheory.V.conjGS D h1 (ψ g') = ψ (UpperTheory.V.conjGS D' h1' g')`. Take `⟨g0, rfl⟩` from `hsurj g'`. Rewrite using `[hc, UpperTheory.V.conjGS_toGS, UpperTheory.V.conjGS_toGS, hc]`. Use `congr 1`. Establish `key : ∀ y, φ g0 y = σ.symm (g0 (σ y))` using `fun y => by rw [RingEquiv.eq_symm_apply, hφ]`.
-
-Use extensionality with `x`. Apply `σ.injective` to reduce the goal to its premises. Rewrite using `[hφ, UpperTheory.V.conjGal_apply, UpperTheory.V.conjGal_apply, key]`. Simplify using `[σ1']`. Rewrite using `[htw, hconj]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.LDataCardLeFinrank.H1_transport_field_iso :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (F' Ω' : Type) [Field F'] [NumberField F'] [Field Ω'] [Algebra F' Ω'] [IsAlgClosure F' Ω'] (l : ℕ) [Fact l.Prime] (D : LData F Ω l) (D' : LData F' Ω' l) (f : F ≃+* F') (e : ℤ), ∃ Φ : H1 (qzTw D e) ≃ₗ[ℤ_[l]] H1 (qzTw D' e),

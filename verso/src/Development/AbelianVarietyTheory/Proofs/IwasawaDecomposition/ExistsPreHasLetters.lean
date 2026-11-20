@@ -24,7 +24,7 @@ def HasLetters (P : Pre) : Prop :=
       (P.hcW w τ).v ⟨l, by omega⟩ - 1 / 2 - (if letter w ⟨l, h⟩ then Del else 0)
 
 /- English proof (translation)
-Rewrite using `[RowsModel.ipC_cols, RowsModel.ipC_cols, map_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => by simp [mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipC_conj (B : Base) (u : B.Word)
     (φ ψ : ((ColsModel.cols B).mem u).C.cls 0 → ((ColsModel.cols B).mem u).C.Y 0 → ℂ) :
@@ -33,9 +33,9 @@ theorem ipC_conj (B : Base) (u : B.Word)
   exact Finset.sum_congr rfl fun c _ => by simp [mul_comm]
 
 /- English proof (translation)
-Rewrite using `[RowsModel.ipC_cols, Complex.re_sum]`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, φ c () ≠ 0 := by`. Assume the negation of the conclusion as `h`. Conclude with `hφ (funext fun c => funext fun _ => not_not.mp fun hc => h ⟨c, hc⟩)`. Use `Finset.sum_pos' (fun c _ => ?_) ⟨c, Finset.mem_univ _, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]`. Check the signs of the components of the expression. Rewrite using `[Complex.conj_mul', ← Complex.ofReal_pow, Complex.ofReal_re]`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem ipC_pos (B : Base) (u : B.Word)
     (φ : ((ColsModel.cols B).mem u).C.cls 0 → ((ColsModel.cols B).mem u).C.Y 0 → ℂ) (hφ : φ ≠ 0) :
@@ -51,9 +51,9 @@ theorem ipC_pos (B : Base) (u : B.Word)
     positivity
 
 /- English proof (translation)
-Establish `hf : ∀ u, ∃ e : RowsModel.Euc ((ColsModel.cols B).mem u).A.du ≃ₗ[ℂ] ((ColsModel.cols B).mem u).A.Mram, ∀ φ ψ, inner ℂ φ ψ = ((ColsModel.cols B).fm u).ipC 0 (e φ).1 (e ψ).1` using `fun u => haveI := RowsModel.mram_fd (ColsModel.cols B) u RowsModel.exists_frame (RowsModel.ramCore (ColsModel.cols B) u (fun φ _ ψ _ => ipC_conj B u φ ψ) (fun φ _ h => ipC_pos B u φ h))`. Use `choose eM heM using hf`. Set `e : ℂ ≃ₗ[ℂ] RowsModel.Euc 1` to `(LinearEquiv.funUnique (Fin 1) ℂ ℂ).symm.trans (WithLp.linearEquiv 2 ℂ _).symm`. Use `⟨RowsModel.model (ColsModel.cols B) (fun _ => 1) D (fun _ => e) (fun _ _ => e) eM heM, rfl, rfl, fun u => ?_⟩` and prove the remaining obligations. Establish `: Fact (B.T u).Prime` using `⟨B.T_prime u⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ((ColsModel.cols B).mem u).A.Mram ≠ ⊥` using `MemberTorsor.mram_ne_bot B.R (Tau B.R) (B.hcW u) (B.T u) (card_Tau B.host) (ColsModel.two_lt_alt B.toPre u)`. Use `Submodule.nontrivial_iff_ne_bot.mpr hne` as an intermediate fact. Conclude with `(eM u).toEquiv.nontrivial`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_rows (B : Base) (D : ℕ) :
     ∃ W : RowsRest B (ColsModel.cols B), W.Drows = D ∧ W.Dall = D ∧ ∀ u, Nontrivial (W.Mu u) := by
@@ -75,9 +75,9 @@ theorem exists_rows (B : Base) (D : ℕ) :
   exact (eM u).toEquiv.nontrivial
 
 /- English proof (translation)
-Take `⟨Del, letter, hD, hinj, gap, hu⟩` from `hB`. Take `⟨W, h1, h2, h3⟩` from `exists_rows B D`. Establish `hc : ∀ u i, Nonempty (((ColsModel.cols B).mem u).C.cls i)` using `fun u _ => ⟨(1 : Tau B.R → (ZMod (B.T u))ˣ)⟩`. Take `⟨L⟩` from `locStage_inhabited`. Take `⟨N, -⟩` from `GaloisStage.exists_nStage_adapt B _ W L`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V, -⟩` from `DivInhab.exists_divStage B _ (GaloisStage.adapt W)`. Take `⟨S⟩` from `SStageInhab.nonempty_sStage B _ (GaloisStage.adapt W) Del hD gap letter hinj hu (fun u x _ y _ => (ipC_conj B u y x).symm) (fun u x _ h => ipC_pos B u x h) (show W.Drows ≤ W.Dall by omega)`. Take `⟨G, -, hG⟩` from `(GJInhab.inhabited_stage B (ColsModel.cols B)).2.2 (hc _ _) (hc _ _)`. Conclude with `⟨⟨B, _, GaloisStage.adapt W, V, S, N, G⟩, rfl, h1, h2, h3, hc, hG⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_stages_over (B : Base) (hB : HasLetters B.toPre) (D : ℕ) :
     ∃ X : Stages, X.B = B ∧ X.W.Drows = D ∧ X.W.Dall = D ∧ (∀ u, Nontrivial (X.W.Mu u)) ∧
@@ -96,14 +96,14 @@ theorem exists_stages_over (B : Base) (hB : HasLetters B.toPre) (D : ℕ) :
   exact ⟨⟨B, _, GaloisStage.adapt W, V, S, N, G⟩, rfl, h1, h2, h3, hc, hG⟩
 
 /- English proof (translation)
-Take `⟨P, h1, h2, -, -, h3⟩` from `exists_pre_two_words`. Conclude with `⟨P, h3, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pre_hasLetters : ∃ P : Pre, HasLetters P ∧ Nonempty (PreX P) ∧ 2 ≤ Fintype.card P.Word := by
   obtain ⟨P, h1, h2, -, -, h3⟩ := exists_pre_two_words
   exact ⟨P, h3, h1, h2⟩
 
 /- English proof (translation)
-Take `⟨B, rfl, a, b, c⟩` from `BaseExt.exists_base P S₀ S₁ S₂ h₀ h₁ h₂`. Take `⟨X, rfl, h⟩` from `exists_stages_over B hP D`. Conclude with `⟨X, rfl, a, b, c, h⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_stages_large (P : Pre) (hP : HasLetters P) (D : ℕ) (S₀ S₁ S₂ : Finset ℂ)
     (h₀ : ∀ z ∈ S₀, IsAlgebraic ℚ z) (h₁ : ∀ z ∈ S₁, IsAlgebraic ℚ z) (h₂ : ∀ z ∈ S₂, IsAlgebraic ℚ z) :
@@ -118,7 +118,7 @@ theorem exists_stages_large (P : Pre) (hP : HasLetters P) (D : ℕ) (S₀ S₁ S
 end StagesInhab
 
 /- English proof (translation)
-Take `⟨P, hP, -⟩` from `StagesInhab.exists_pre_hasLetters`. Take `⟨X, -, -, -, -, h1, -, h2, h3, -⟩` from `StagesInhab.exists_stages_large P hP 1 ∅ ∅ ∅ (by simp) (by simp) (by simp)`. Conclude with `⟨X, by omega, h2, h3⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_stages : ∃ X : GlobalTheory.Mem.Stages, 0 < X.W.Drows ∧ (∀ u, Nontrivial (X.W.Mu u)) ∧
     ∀ u i, Nonempty ((X.C.mem u).C.cls i) := by
@@ -128,12 +128,12 @@ theorem exists_stages : ∃ X : GlobalTheory.Mem.Stages, 0 < X.W.Drows ∧ (∀ 
   exact ⟨X, by omega, h2, h3⟩
 
 /- English proof (translation)
-The claim follows from `exists_stages.elim fun X _ => ⟨X⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_stages : Nonempty Stages := exists_stages.elim fun X _ => ⟨X⟩
 
 /- English proof (translation)
-The claim follows from `nonempty_stages.map Stages.toD7`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_record : Nonempty Formalism.BasicNotions.D7 := nonempty_stages.map Stages.toD7
 

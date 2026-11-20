@@ -27,7 +27,7 @@ open GlobalTheory.FinChart
 namespace GlobalTheory.CompanionTheory.ArchDom
 
 /- English proof (translation)
-Establish `hm : Measurable (s.restrict f)` using `(continuousOn_iff_continuous_restrict.1 hf).measurable`. Use `hs.subtype_image (hm ht)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `v`. Conclude with `⟨fun hv => ⟨⟨v, hv.1⟩, hv.2, rfl⟩, by rintro ⟨w, hw, rfl⟩; exact ⟨w.2, hw⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem measurableSet_inter_preimage {α β : Type*} [TopologicalSpace α] [MeasurableSpace α]
     [BorelSpace α] [TopologicalSpace β] [MeasurableSpace β] [BorelSpace β] {f : α → β} {s : Set α}
@@ -40,19 +40,17 @@ theorem measurableSet_inter_preimage {α β : Type*} [TopologicalSpace α] [Meas
   exact ⟨fun hv => ⟨⟨v, hv.1⟩, hv.2, rfl⟩, by rintro ⟨w, hw, rfl⟩; exact ⟨w.2, hw⟩⟩
 
 /- English proof (translation)
-Use `Measure.le_iff.2 fun S hS => ?_` and prove the remaining obligations. Establish `hsrc` using `e.open_source.measurableSet`. Set `T : Fin n → Set (Fin D → ℂ)` to `fun j => K j ∩ P j ⁻¹' ((e.source ∩ S) \ Z)`. Set `G : Fin n → (Fin D → ℂ) → (Fin D → ℂ)` to `fun j => (toV D).symm ∘ e ∘ P j`. Establish `hT : ∀ j, MeasurableSet (T j)` using `fun j => measurableSet_inter_preimage (hP j) (hK j) ((hsrc.inter hS).diff hZ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hM : ∀ j, MeasurableSet (K j \ P j ⁻¹' Z)` using `fun j => measurableSet_inter_preimage (hP j) (hK j) hZ.compl`. Establish `hcover : e '' (e.source ∩ S) ⊆ (e.target ∩ e.symm ⁻¹' Z) ∪ ⋃ j, toV D '' (G j '' T j)`. Introduce and unpack `_ ⟨y, ⟨hy, hyS⟩, rfl⟩`. Distinguish the cases in `hyZ : y ∈ Z`. Conclude with `Or.inl (GlobalTheory.ChartGlue.mem_over e hy hyZ)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Take `⟨j, u, hu, rfl⟩` from `hcov y hy hyZ`. Use `Or.inr (mem_iUnion.2 ⟨j, _, ⟨u, ⟨hu, ⟨⟨hy, hyS⟩, hyZ⟩⟩, rfl⟩, ?_⟩)` and prove the remaining obligations. Simplify using `[G]`. Establish `hterm : ∀ j, ∫⁻ v in toV D '' (G j '' T j), ρ (e.symm v) ≤ Measure.map (P j) ((volume.restrict (K j \ P j ⁻¹' Z)).withDensity (w j)) S`. Introduce `j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinjG : InjOn (G j) (T j)`. Introduce and unpack `u ⟨hu, hR⟩ u' ⟨hu', hR'⟩ h`. Establish `h1 : e (P j u) = e (P j u')` using `(toV D).symm.injective h`. Conclude with `hinj j u hu u' hu' hR.2 (e.injOn hR.1.1 hR'.1.1 h1)`. Establish `hder : ∀ u ∈ T j, HasFDerivWithinAt (G j) (fderiv ℝ (G j) u) (T j) u` using `fun u hu => (hdet j u hu.1 hu.2.1.1 hu.2.2).1.hasFDerivAt.hasFDerivWithinAt`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : AEMeasurable (P j) ((volume.restrict (K j \ P j ⁻¹' Z)).withDensity (w j))` using `(((hP j).mono diff_subset).aemeasurable (hM j)).mono_ac (withDensity_absolutelyContinuous _ _)`. Rewrite using `[← measurePreserving_toV.setLIntegral_comp_emb (toV D).toHomeomorph.measurableEmbedding, lintegral_image_eq_lintegral_abs_det_fderiv_mul volume (hT j) hder hinjG, Measure.map_apply_of_aemeasurable hae hS, withDensity_apply', Measure.restrict_restrict' (hM j)]`. Use `(setLIntegral_mono' (hT j) fun u hu => ?_).trans (lintegral_mono_set ?_)` and prove the remaining obligations. Establish `hv : toV D (G j u) = e (P j u)` using `(toV D).apply_symm_apply _`. Use `(hdet j u hu.1 hu.2.1.1 hu.2.2).2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv, e.left_inv hu.2.1.1]`. Conclude with `this`. Introduce and unpack `u ⟨hu, hR⟩`. Conclude with `⟨hR.1.2, hu, hR.2⟩`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[setLIntegral_measure_zero _ _ hnull, zero_add]`. Use `_ ≤ ∑' j, ∫⁻ v in toV D '' (G j '' T j), ρ (e.symm v) := lintegral_iUnion_le _ _`. Use `_ = ∑ j, ∫⁻ v in toV D '' (G j '' T j), ρ (e.symm v) := tsum_fintype _`. Use `_ ≤ ∑ j, Measure.map (P j) ((volume.restrict (K j \ P j ⁻¹' Z)).withDensity (w j)) S := Finset.sum_le_sum fun j _ => hterm j`. Use `_ = _ := by rw [Measure.finset_sum_apply]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartMeas_le_sum {D n : ℕ} {Y : Type*} [TopologicalSpace Y] [MeasurableSpace Y]
     [BorelSpace Y] (e : OpenPartialHomeomorph Y (V D)) (ρ : Y → ℝ≥0∞) {Z : Set Y}
@@ -120,7 +118,7 @@ theorem chartMeas_le_sum {D n : ℕ} {Y : Type*} [TopologicalSpace Y] [Measurabl
     _ = _ := by rw [Measure.finset_sum_apply]
 
 /- English proof (translation)
-Rewrite using `[← ENNReal.ofReal_mul (abs_nonneg _), Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq, abs_of_nonneg (by positivity), abs_mul, abs_of_nonneg (by positivity : (0 : ℝ) ≤ ‖d‖ ^ 2)]`. Use `ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_left ?_ (by positivity))` and prove the remaining obligations. Break down `Int.units_eq_one_or ε with rfl | rfl` into its components or cases. Simplify using `using le_abs_self x`. Simplify using `using neg_le_abs x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ofReal_abs_norm_mul_le (d : ℂ) (x : ℝ) (ε : ℤˣ) :
     ENNReal.ofReal |Algebra.norm ℝ d| * ENNReal.ofReal ((ε : ℤ) * x) ≤
@@ -138,13 +136,13 @@ end Abstract
 open GlobalTheory.FinChart in
 
 /- English proof (translation)
-Introduce `k _ X q σ D T _ A F hF hol Z hZ hnull hsurj hinj B φ hφ ε K hK hKt hKc`. Use `iSup_le fun c => ?_` and prove the remaining obligations. Use `GlobalTheory.CompanionTheory.ArchDom.chartMeas_le_sum c.e _ hZ (hnull c) (fun j => F ∘ (A.chart j).symm) K (fun j => (hK j).measurableSet) (fun j => hF.comp_continuousOn ((A.chart j).continuousOn_symm.mono (hKt j))) _ ?_ ?_ ?_` and prove the remaining obligations. Introduce `y _ hyZ`. Take `⟨x, rfl⟩` from `hsurj y hyZ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨j, u, hu, rfl⟩` from `hKc x`. Conclude with `⟨j, u, hu, rfl⟩`. Introduce `j u hu u' hu' hZu h`. Conclude with `(A.chart j).symm.injOn (hKt j hu) (hKt j hu') (hinj _ _ hZu h)`. Introduce `j u hu hsrc _`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨han, hd⟩` from `GlobalTheory.T.smooth_weight_pullback_chart_formula A F hF hol φ hφ c j u (hKt j hu) hsrc`. Establish `hG : (toV D).symm ∘ c.e ∘ (F ∘ (A.chart j).symm) = c.finChart ∘ F ∘ (A.chart j).symm` using `rfl`. Rewrite using `[hG]`. Establish `hdiff` using `han.differentiableAt`. Use `⟨hdiff.restrictScalars ℝ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hdet : (fderiv ℝ (c.finChart ∘ F ∘ (A.chart j).symm) u).det = Algebra.norm ℝ (LinearMap.det (fderiv ℂ (c.finChart ∘ F ∘ (A.chart j).symm) u : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ)))`. Rewrite using `[hdiff.fderiv_restrictScalars ℝ]`. Conclude with `LinearMap.det_restrictScalars (f := (fderiv ℂ (c.finChart ∘ F ∘ (A.chart j).symm) u : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ)))`. Rewrite using `[hdet, hd]`. Conclude with `GlobalTheory.CompanionTheory.ArchDom.ofReal_abs_norm_mul_le _ _ ε`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.ArchDom.chernPart_le_sum_map : ∀ {k : Type} [CommRing k] {X : Scheme.{0}} {q : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ} {T : Type}
     [TopologicalSpace T] (A : FinHolAtlas D T) (F : T → GlobalTheory.CxPts q σ) (hF : Continuous F),

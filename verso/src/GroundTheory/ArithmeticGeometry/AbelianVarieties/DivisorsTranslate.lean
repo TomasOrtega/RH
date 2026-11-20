@@ -18,7 +18,7 @@ noncomputable def constPoint :
   Point.map (W' := W) (Algebra.ofId F W.toAffine.FunctionField)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem constPoint_some {x y : F} (h : W.toAffine.Nonsingular x y) :
     ∃ h' : (W.baseChange W.toAffine.FunctionField).toAffine.Nonsingular
@@ -27,7 +27,7 @@ theorem constPoint_some {x y : F} (h : W.toAffine.Nonsingular x y) :
   ⟨_, rfl⟩
 
 /- English proof (translation)
-Establish `h` using `Point.map_map (W' := W) (Algebra.ofId F W.toAffine.FunctionField) ψ R`. Establish `e : ψ.comp (Algebra.ofId F W.toAffine.FunctionField) = Algebra.ofId F _` using `Subsingleton.elim _ _`. Rewrite `h` using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_constPoint (ψ : W.toAffine.FunctionField →ₐ[F] W.toAffine.FunctionField)
     (R : W.toAffine.Point) : Point.map ψ (constPoint W R) = constPoint W R := by
@@ -39,7 +39,7 @@ theorem map_constPoint (ψ : W.toAffine.FunctionField →ₐ[F] W.toAffine.Funct
 
 omit [DecidableEq F] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem map_genericPoint_eq (ψ : W.toAffine.FunctionField →ₐ[F] W.toAffine.FunctionField)
     [W.IsElliptic] :
@@ -49,9 +49,7 @@ theorem map_genericPoint_eq (ψ : W.toAffine.FunctionField →ₐ[F] W.toAffine.
 omit [DecidableEq F] in
 
 /- English proof (translation)
-Establish `key` using `IntermediateField.algHom_ext_of_eq_adjoin F (S := (⊤ : IntermediateField F W.toAffine.FunctionField)) (adjoin_genX_genY W).symm (φ₁ := ψ₁.comp (IntermediateField.val ⊤)) (φ₂ := ψ₂.comp (IntermediateField.val ⊤)) (by`. Introduce and unpack `z (rfl | rfl)`. Conclude with `hx`. Conclude with `hy)`. Use `AlgHom.ext fun z => ?_` and prove the remaining obligations.
-
-Conclude with `DFunLike.congr_fun key ⟨z, IntermediateField.mem_top⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem algHom_ext_gen {L : Type*} [Field L] [Algebra F L]
     {ψ₁ ψ₂ : W.toAffine.FunctionField →ₐ[F] L} (hx : ψ₁ (genX W) = ψ₂ (genX W))
@@ -70,7 +68,7 @@ variable [W.IsElliptic]
 omit [DecidableEq F] in
 
 /- English proof (translation)
-Take `⟨h₁, e₁⟩` from `map_genericPoint_eq W ψ₁`. Take `⟨h₂, e₂⟩` from `map_genericPoint_eq W ψ₂`. Rewrite `h` using `[e₁, e₂, Point.some.injEq]`. Conclude with `algHom_ext_gen W h.1 h.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algHom_eq_of_map_genericPoint
     {ψ₁ ψ₂ : W.toAffine.FunctionField →ₐ[F] W.toAffine.FunctionField}
@@ -90,7 +88,7 @@ theorem map_id_genericPoint :
 omit [DecidableEq F] [W.IsElliptic] in
 
 /- English proof (translation)
-Establish `hint` using `hu.isIntegral`. Establish `hdeg` using `IsAlgClosed.degree_eq_one_of_irreducible F (minpoly.irreducible hint)`. Take `⟨c, hc⟩` from `minpoly.natDegree_eq_one_iff.mp (natDegree_eq_of_degree_eq_some hdeg)`. Conclude with `⟨c, hc⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_algebraMap_eq_of_isAlgebraic [IsAlgClosed F] {u : W.toAffine.FunctionField}
     (hu : IsAlgebraic F u) : ∃ c : F, algebraMap F W.toAffine.FunctionField c = u := by
@@ -100,9 +98,9 @@ theorem exists_algebraMap_eq_of_isAlgebraic [IsAlgClosed F] {u : W.toAffine.Func
   exact ⟨c, hc⟩
 
 /- English proof (translation)
-Consider the cases of `R with`. Consider the case `zero => exact fun h => Point.some_ne_zero _ (h.symm.trans (map_zero _))`. Consider the case `some x y h`. Take `⟨h', e⟩` from `constPoint_some W h`. Rewrite using `[e, genericPoint, Ne, Point.some.injEq]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `hxy`. Conclude with `transcendental_genX W (hxy.1 ▸ isAlgebraic_algebraMap x)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem constPoint_ne_genericPoint (R : W.toAffine.Point) : constPoint W R ≠ genericPoint W := by
   cases R with
@@ -114,7 +112,7 @@ theorem constPoint_ne_genericPoint (R : W.toAffine.Point) : constPoint W R ≠ g
     exact transcendental_genX W (hxy.1 ▸ isAlgebraic_algebraMap x)
 
 /- English proof (translation)
-Introduce `h`. Apply `constPoint_ne_genericPoint W (-R)` to reduce the goal to its premises. Rewrite using `[map_neg, eq_comm, ← add_eq_zero_iff_eq_neg]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genericPoint_add_constPoint_ne_zero (R : W.toAffine.Point) :
     genericPoint W + constPoint W R ≠ 0 := by
@@ -124,7 +122,7 @@ theorem genericPoint_add_constPoint_ne_zero (R : W.toAffine.Point) :
   exact h
 
 /- English proof (translation)
-The claim follows from `eq_some_xOf_yOf _ (genericPoint_add_constPoint_ne_zero W R)`.
+A detailed English derivation is pending.
 -/
 theorem exists_translate_eq (R : W.toAffine.Point) :
     ∃ h : (W.baseChange W.toAffine.FunctionField).toAffine.Nonsingular
@@ -133,17 +131,17 @@ theorem exists_translate_eq (R : W.toAffine.Point) :
   eq_some_xOf_yOf _ (genericPoint_add_constPoint_ne_zero W R)
 
 /- English proof (translation)
-Introduce `halg`. Take `⟨h, e⟩` from `exists_translate_eq W R`. Take `⟨c, hc⟩` from `exists_algebraMap_eq_of_isAlgebraic W halg`. Use `set u := xOf _ (genericPoint W + constPoint W R)`. Use `set v := yOf _ (genericPoint W + constPoint W R)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `heq` using `(equation_iff _ _).mp h.1`. Simplify using `only [WeierstrassCurve.baseChange, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆] at heq`. Establish `hvalg : IsAlgebraic F v`. Use `⟨X ^ 2 + C (W.a₁ * c + W.a₃) * X - C (c ^ 3 + W.a₂ * c ^ 2 + W.a₄ * c + W.a₆), ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg natDegree h0` as an intermediate fact. Rewrite `this` using `[natDegree_zero]`. Establish `h2 : (X ^ 2 + C (W.a₁ * c + W.a₃) * X - C (c ^ 3 + W.a₂ * c ^ 2 + W.a₄ * c + W.a₆) : F[X]).natDegree = 2` using `by compute_degree!`. Use linear arithmetic over natural numbers and integers. Simplify using `only [map_sub, map_add, map_mul, map_pow, aeval_X, aeval_C, hc]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take the linear combination `heq`. Take `⟨d, hd⟩` from `exists_algebraMap_eq_of_isAlgebraic W hvalg`. Establish `hcd : W.toAffine.Nonsingular c d`. Establish `h'` using `h`. Rewrite `h'` using `[← hc, ← hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(W.toAffine.baseChange_nonsingular (f := Algebra.ofId F W.toAffine.FunctionField) (algebraMap F _).injective c d).mp h'`. Establish `hS : genericPoint W + constPoint W R = constPoint W (.some c d hcd)`. Rewrite using `[e]`. Take `⟨h'', e''⟩` from `constPoint_some W hcd`. Rewrite using `[e'']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Point.some.injEq]`. Conclude with `⟨hc.symm, hd.symm⟩`. Apply `constPoint_ne_genericPoint W (.some c d hcd - R)` to reduce the goal to its premises. Rewrite using `[map_sub, ← hS, add_sub_cancel_right]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transcendental_xOf_translate [IsAlgClosed F] (R : W.toAffine.Point) :
     Transcendental F (xOf _ (genericPoint W + constPoint W R)) := by
@@ -188,7 +186,7 @@ noncomputable def translate [IsAlgClosed F] (R : W.toAffine.Point) :
 variable [IsAlgClosed F]
 
 /- English proof (translation)
-Rewrite using `[translate, map_liftPoint_genericPoint]`. Conclude with `(exists_translate_eq W R).choose_spec.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_translate_genericPoint (R : W.toAffine.Point) :
     Point.map (translate W R) (genericPoint W) = genericPoint W + constPoint W R := by
@@ -196,14 +194,14 @@ theorem map_translate_genericPoint (R : W.toAffine.Point) :
   exact (exists_translate_eq W R).choose_spec.symm
 
 /- English proof (translation)
-Apply `algHom_eq_of_map_genericPoint` to reduce the goal to its premises. Rewrite using `[map_translate_genericPoint, map_zero, add_zero, map_id_genericPoint]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem translate_zero : translate W 0 = AlgHom.id F W.toAffine.FunctionField := by
   apply algHom_eq_of_map_genericPoint
   rw [map_translate_genericPoint, map_zero, add_zero, map_id_genericPoint]
 
 /- English proof (translation)
-Apply `algHom_eq_of_map_genericPoint` to reduce the goal to its premises. Rewrite using `[← Point.map_map, map_translate_genericPoint, map_add, map_translate_genericPoint, map_constPoint, add_assoc, ← map_add, add_neg_cancel, map_zero, add_zero, map_id_genericPoint]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem translate_comp_translate_neg (R : W.toAffine.Point) :
     (translate W R).comp (translate W (-R)) = AlgHom.id F W.toAffine.FunctionField := by
@@ -212,7 +210,7 @@ theorem translate_comp_translate_neg (R : W.toAffine.Point) :
     map_constPoint, add_assoc, ← map_add, add_neg_cancel, map_zero, add_zero, map_id_genericPoint]
 
 /- English proof (translation)
-The claim follows from `DFunLike.congr_fun (translate_comp_translate_neg W R) f`.
+A detailed English derivation is pending.
 -/
 theorem translate_translate_neg (R : W.toAffine.Point) (f : W.toAffine.FunctionField) :
     translate W R (translate W (-R) f) = f :=
@@ -223,9 +221,9 @@ local notation "ι" => algebraMap F (WeierstrassCurve.Affine.FunctionField
 
 omit [DecidableEq F] [IsAlgClosed F] [W.IsElliptic] in
 /- English proof (translation)
-Establish `h` using `ordInfty_X W`. Establish `h0 : genX W ≠ 0`. Introduce `h0`. Express the relevant statement in the definitionally equal form `ordInfty W (genX W) = -2 at h`. Rewrite `h` using `[h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[ordInfty] at h`. Rewrite using `[valuationInfty_eq_exp W h0]`. Express the relevant statement in the definitionally equal form `exp (-ordInfty W (genX W)) = _`. Rewrite using `[show ordInfty W (genX W) = -2 from h]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valuationInfty_genX : valuationInfty W (genX W) = exp 2 := by
   have h := ordInfty_X W
@@ -241,7 +239,7 @@ theorem valuationInfty_genX : valuationInfty W (genX W) = exp 2 := by
 
 omit [DecidableEq F] [IsAlgClosed F] [W.IsElliptic] in
 /- English proof (translation)
-Establish `h` using `ordInfty_Y W`. Rewrite using `[valuationInfty_eq_exp W (genY_ne_zero W)]`. Express the relevant statement in the definitionally equal form `exp (-ordInfty W (genY W)) = _`. Rewrite using `[show ordInfty W (genY W) = -3 from h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valuationInfty_genY : valuationInfty W (genY W) = exp 3 := by
   have h := ordInfty_Y W
@@ -252,7 +250,7 @@ theorem valuationInfty_genY : valuationInfty W (genY W) = exp 3 := by
 
 omit [DecidableEq F] [IsAlgClosed F] [W.IsElliptic] in
 /- English proof (translation)
-Break down `eq_or_ne c 0 with rfl | hc` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[valuationInfty_eq_exp W ((map_ne_zero_iff _ (algebraMap F _).injective).mpr hc), ordInfty_algebraMap_const W hc, neg_zero, exp_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem valuationInfty_const_le (c : F) : valuationInfty W (ι c) ≤ 1 := by
   rcases eq_or_ne c 0 with rfl | hc
@@ -262,7 +260,7 @@ theorem valuationInfty_const_le (c : F) : valuationInfty W (ι c) ≤ 1 := by
 
 omit [DecidableEq F] [IsAlgClosed F] [W.IsElliptic] in
 /- English proof (translation)
-Rewrite using `[Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem valuationInfty_const_mul_le (c : F) {t : W.toAffine.FunctionField} {g : ℤᵐ⁰}
     (ht : valuationInfty W t ≤ g) : valuationInfty W (ι c * t) ≤ g := by
@@ -272,7 +270,7 @@ theorem valuationInfty_const_mul_le (c : F) {t : W.toAffine.FunctionField} {g : 
 
 omit [DecidableEq F] [IsAlgClosed F] [W.IsElliptic] in
 /- English proof (translation)
-Rewrite using `[Valuation.map_sub_eq_of_lt_left _ ?_, valuationInfty_genX]`. Rewrite using `[valuationInfty_genX]`. Conclude with `lt_of_le_of_lt (valuationInfty_const_le W c) (by rw [← exp_zero, exp_lt_exp]; norm_num)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuationInfty_genX_sub_const (c : F) :
     valuationInfty W (genX W - ι c) = exp 2 := by
@@ -282,7 +280,7 @@ theorem valuationInfty_genX_sub_const (c : F) :
 
 omit [DecidableEq F] [IsAlgClosed F] [W.IsElliptic] in
 /- English proof (translation)
-Introduce `h`. Use `valuationInfty_genX_sub_const W c` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `exp_ne_zero this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genX_sub_const_ne_zero (c : F) : genX W - ι c ≠ 0 := by
   intro h
@@ -291,11 +289,11 @@ theorem genX_sub_const_ne_zero (c : F) : genX W - ι c ≠ 0 := by
   exact exp_ne_zero this.symm
 
 /- English proof (translation)
-Establish `hne : genX W ≠ ι xR` using `fun h => genX_sub_const_ne_zero W xR (sub_eq_zero.mpr h)`. Take `⟨hR', eR⟩` from `constPoint_some W hR`. Establish `hx : translate W (.some xR yR hR) (genX W) = xOf _ (genericPoint W + constPoint W (.some xR yR hR))` using `liftPoint_genX _ _ _`. Establish `hy : translate W (.some xR yR hR) (genY W) = yOf _ (genericPoint W + constPoint W (.some xR yR hR))` using `liftPoint_genY _ _ _`. Rewrite `hx`, `hy` using `[eR, genericPoint, Point.add_of_X_ne hne]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [xOf, yOf] at hx hy`. Rewrite `hx`, `hy` using `[slope_of_X_ne hne]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Simplify using `[addX, WeierstrassCurve.baseChange]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hy, hx]`. Simplify using `[addY, negY, negAddY, addX, WeierstrassCurve.baseChange]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem translate_coords {xR yR : F} (hR : W.toAffine.Nonsingular xR yR) :
     translate W (.some xR yR hR) (genX W) =
@@ -320,17 +318,15 @@ theorem translate_coords {xR yR : F} (hR : W.toAffine.Nonsingular xR yR) :
     simp [addY, negY, negAddY, addX, WeierstrassCurve.baseChange]
 
 /- English proof (translation)
-Take `⟨hu, -⟩` from `translate_coords W hR`. Use `set u := translate W (.some xR yR hR) (genX W)`. Use `set D := genX W - ι xR with hDdef`. Establish `hD : D ≠ 0` using `genX_sub_const_ne_zero W xR`. Use `set ℓ := (genY W - ι yR) / D`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hℓ : ℓ * D = genY W - ι yR` using `div_mul_cancel₀ _ hD`. Establish `hid : D ^ 2 * (u - ι xR) = ι (-(W.a₁ * xR + W.a₃ + 2 * yR)) * genY W + ι (3 * xR ^ 2 + 2 * W.a₂ * xR + W.a₄ - W.a₁ * yR) * genX W + ι (W.a₁ * xR * yR - W.a₂ * xR ^ 2 + W.a₆ - 2 * xR ^ 3 + yR ^ 2)`. Rewrite using `[hu]`. Simplify using `only [map_add, map_sub, map_mul, map_neg, map_pow, map_ofNat]`. Take the linear combination `(ℓ * D + (genY W - ι yR)) * hℓ + ι W.a₁ * D * hℓ + genY_sq_add W`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hN : valuationInfty W (ι (-(W.a₁ * xR + W.a₃ + 2 * yR)) * genY W + ι (3 * xR ^ 2 + 2 * W.a₂ * xR + W.a₄ - W.a₁ * yR) * genX W + ι (W.a₁ * xR * yR - W.a₂ * xR ^ 2 + W.a₆ - 2 * xR ^ 3 + yR ^ 2)) ≤ exp 3`. Use `Valuation.map_add_le _ (Valuation.map_add_le _ ?_ ?_) ?_` and prove the remaining obligations. Conclude with `valuationInfty_const_mul_le W _ (valuationInfty_genY W).le`. Conclude with `valuationInfty_const_mul_le W _ (by rw [valuationInfty_genX, exp_le_exp]; norm_num)`. Conclude with `(valuationInfty_const_le W _).trans (by rw [← exp_zero, exp_le_exp]; norm_num)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hv` using `congrArg (valuationInfty W) hid`. Rewrite `hv` using `[Valuation.map_mul, Valuation.map_pow, valuationInfty_genX_sub_const]`. Rewrite `hN` using `[← hv]`. Assume the negation of the conclusion as `hge`. Rewrite `hge` using `[not_lt]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Establish `: exp 2 ^ 2 ≤ exp 2 ^ 2 * valuationInfty W (u - ι xR)` using `le_mul_of_one_le_right' hge`. Establish `h4 : (exp 2 : ℤᵐ⁰) ^ 2 = exp 4` using `by rw [← exp_nsmul]; norm_num`. Rewrite `this` using `[h4]`. Use `this.trans hN` as an intermediate fact. Rewrite `this` using `[exp_le_exp]`.
-
-Evaluate the numerical expressions using `at this`.
+A detailed English derivation is pending.
 -/
 theorem valuationInfty_translate_genX_sub_lt {xR yR : F} (hR : W.toAffine.Nonsingular xR yR) :
     valuationInfty W (translate W (.some xR yR hR) (genX W) - ι xR) < 1 := by
@@ -366,21 +362,19 @@ theorem valuationInfty_translate_genX_sub_lt {xR yR : F} (hR : W.toAffine.Nonsin
   norm_num at this
 
 /- English proof (translation)
-Take `⟨hu, hvv⟩` from `translate_coords W hR`. Use `set u := translate W (.some xR yR hR) (genX W)`. Use `set vv := translate W (.some xR yR hR) (genY W)`. Use `set D := genX W - ι xR with hDdef`. Establish `hD : D ≠ 0` using `genX_sub_const_ne_zero W xR`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set ℓ := (genY W - ι yR) / D`. Establish `hℓ : ℓ * D = genY W - ι yR` using `div_mul_cancel₀ _ hD`. Establish `hid : D ^ 2 * (u - ι xR) = ι (-(W.a₁ * xR + W.a₃ + 2 * yR)) * genY W + ι (3 * xR ^ 2 + 2 * W.a₂ * xR + W.a₄ - W.a₁ * yR) * genX W + ι (W.a₁ * xR * yR - W.a₂ * xR ^ 2 + W.a₆ - 2 * xR ^ 3 + yR ^ 2)`. Rewrite using `[hu]`. Simplify using `only [map_add, map_sub, map_mul, map_neg, map_pow, map_ofNat]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `(ℓ * D + (genY W - ι yR)) * hℓ + ι W.a₁ * D * hℓ + genY_sq_add W`. Establish `hid2 : D ^ 3 * (vv - ι yR) = (ι (W.a₁ * yR - 2 * W.a₂ * xR - W.a₄ - 3 * xR ^ 2) * genX W + ι (-W.a₁ ^ 2 * xR ^ 2 - 2 * W.a₁ * W.a₃ * xR - 4 * W.a₁ * xR * yR + W.a₂ * xR ^ 2 - W.a₃ ^ 2 - 3 * W.a₃ * yR - W.a₆ + 2 * xR ^ 3 - 3 * yR ^ 2)) * genY W + ι (W.a₁ ^ 2 * yR - W.a₁ * W.a₂ * x …`. Rewrite using `[hvv]`. Simplify using `only [map_add, map_sub, map_mul, map_neg, map_pow, map_ofNat] at hid ⊢`. Take the linear combination `(-(D ^ 2 * u) + D ^ 2 * genX W) * hℓ + (-(genY W - ι yR) - ι W.a₁ * D) * hid + (ι W.a₁ * ι xR + ι W.a₃ + 2 * ι yR) * genY_sq_add W`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hx2 : valuationInfty W (genX W) ≤ exp 5`. Rewrite using `[valuationInfty_genX, exp_le_exp]`. Evaluate the numerical expressions. Establish `hM : valuationInfty W ((ι (W.a₁ * yR - 2 * W.a₂ * xR - W.a₄ - 3 * xR ^ 2) * genX W + ι (-W.a₁ ^ 2 * xR ^ 2 - 2 * W.a₁ * W.a₃ * xR - 4 * W.a₁ * xR * yR + W.a₂ * xR ^ 2 - W.a₃ ^ 2 - 3 * W.a₃ * yR - W.a₆ + 2 * xR ^ 3 - 3 * yR ^ 2)) * genY W + ι (W.a₁ ^ 2 * yR - W.a₁ * W.a₂ * xR - W. …`. Use `Valuation.map_add_le _ (Valuation.map_add_le _ (Valuation.map_add_le _ ?_ ?_) ?_) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Valuation.map_mul, valuationInfty_genY]`. Establish `h1 : valuationInfty W (ι (W.a₁ * yR - 2 * W.a₂ * xR - W.a₄ - 3 * xR ^ 2) * genX W + ι (-W.a₁ ^ 2 * xR ^ 2 - 2 * W.a₁ * W.a₃ * xR - 4 * W.a₁ * xR * yR + W.a₂ * xR ^ 2 - W.a₃ ^ 2 - 3 * W.a₃ * yR - W.a₆ + 2 * xR ^ 3 - 3 * yR ^ 2)) ≤ exp 2` using `Valuation.map_add_le _ (valuationInfty_const_mul_le W _ (valuationInfty_genX W).le) ((valuationInfty_const_le W _).trans (by rw [← exp_zero, exp_le_exp]; norm_num))`. Combine the equalities or inequalities in the displayed calculation. Use `valuationInfty_const_mul_le W _ ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_pow, valuationInfty_genX, ← exp_nsmul, exp_le_exp]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions. Conclude with `valuationInfty_const_mul_le W _ hx2`. Conclude with `(valuationInfty_const_le W _).trans (by rw [← exp_zero, exp_le_exp]; norm_num)`. Establish `hv` using `congrArg (valuationInfty W) hid2`. Rewrite `hv` using `[Valuation.map_mul, Valuation.map_pow, valuationInfty_genX_sub_const]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hM` using `[← hv]`. Assume the negation of the conclusion as `hge`. Rewrite `hge` using `[not_lt]`. Establish `: exp 2 ^ 3 ≤ exp 2 ^ 3 * valuationInfty W (vv - ι yR)` using `le_mul_of_one_le_right' hge`. Establish `h6 : (exp 2 : ℤᵐ⁰) ^ 3 = exp 6` using `by rw [← exp_nsmul]; norm_num`.
-
-Rewrite `this` using `[h6]`. Use `this.trans hM` as an intermediate fact. Rewrite `this` using `[exp_le_exp]`. Evaluate the numerical expressions using `at this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem valuationInfty_translate_genY_sub_lt {xR yR : F} (hR : W.toAffine.Nonsingular xR yR) :
     valuationInfty W (translate W (.some xR yR hR) (genY W) - ι yR) < 1 := by
@@ -454,7 +448,7 @@ theorem valuationInfty_translate_genY_sub_lt {xR yR : F} (hR : W.toAffine.Nonsin
 
 omit [DecidableEq F] [IsAlgClosed F] [W.IsElliptic] in
 /- English proof (translation)
-Rewrite using `[← algebraMap_X_sub_C, ← IsScalarTower.algebraMap_apply, map_sub, algebraMap_C_functionField, ← genX_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_XClass (x : F) :
     algebraMap W.toAffine.CoordinateRing W.toAffine.FunctionField (XClass W.toAffine x) =
@@ -464,7 +458,7 @@ theorem algebraMap_XClass (x : F) :
 
 omit [DecidableEq F] [IsAlgClosed F] [W.IsElliptic] in
 /- English proof (translation)
-Rewrite using `[YClass, map_sub, map_sub]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algebraMap_YClass (y : F) :
     algebraMap W.toAffine.CoordinateRing W.toAffine.FunctionField (YClass W.toAffine (C y)) =
@@ -473,25 +467,23 @@ theorem algebraMap_YClass (y : F) :
   rfl
 
 /- English proof (translation)
-Consider the cases of `R with`. Consider the case `zero`. Rewrite using `[show (Point.zero : W.toAffine.Point) = 0 from rfl, translate_zero]`. Both sides reduce to the same expression. Consider the case `some xR yR hR`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Set `w` to `(valuationInfty W).comap (translate W (.some xR yR hR)).toRingHom`. Establish `hwapp : ∀ g, w g = valuationInfty W (translate W (.some xR yR hR) g)` using `fun g => rfl`. Establish `hF : ∀ c : F, c ≠ 0 → w (ι c) = 1` using `fun c hc => by`. Rewrite using `[hwapp, AlgHom.commutes, valuationInfty_eq_exp W ((map_ne_zero_iff _ (algebraMap F _).injective).mpr hc), ordInfty_algebraMap_const W hc, neg_zero, exp_zero]`. Establish `hx : w (genX W) ≤ 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hwapp, ← sub_add_cancel (translate W (.some xR yR hR) (genX W)) (ι xR)]`. Conclude with `Valuation.map_add_le _ (valuationInfty_translate_genX_sub_lt W hR).le (valuationInfty_const_le W xR)`. Take `⟨t, ht⟩` from `exists_valuationPoint_eq_exp_neg_one W 0`. Express the relevant statement in the definitionally equal form `valuationInfty W t = exp (-1) at ht`. Establish `hinv` using `translate_translate_neg W (.some xR yR hR) t`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : translate W (-(.some xR yR hR)) t ≠ 0`. Introduce `h0`. Rewrite `hinv` using `[h0, map_zero]`. Rewrite `ht` using `[← hinv, map_zero]`. Conclude with `exp_ne_zero ht.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwt : w (translate W (-(.some xR yR hR)) t) = exp (-1)` using `by rw [hwapp, hinv, ht]`. Establish `hnt : ∃ g, g ≠ 0 ∧ w g ≠ 1` using `⟨_, ht0, by`. Rewrite using `[hwt, Ne, ← exp_zero, exp_inj]`. Use the proof step `norm_num⟩`. Take `⟨v, hv, e, he, hwe⟩` from `exists_eq_pow_valuation_of_le_one w hF hx hnt`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvR : v = heightOneOfNonsingular hR`. Establish `hle : XYIdeal W.toAffine xR (C yR) ≤ v.asIdeal`. Rewrite using `[XYIdeal, Ideal.span_le]`. Introduce and unpack `_ (rfl | rfl)`. Rewrite using `[SetLike.mem_coe, hv, algebraMap_XClass, hwapp, map_sub, AlgHom.commutes]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `valuationInfty_translate_genX_sub_lt W hR`. Rewrite using `[SetLike.mem_coe, hv, algebraMap_YClass, hwapp, map_sub, AlgHom.commutes]`. Conclude with `valuationInfty_translate_genY_sub_lt W hR`. Conclude with `HeightOneSpectrum.ext ((isMaximal_XYIdeal hR.1).eq_of_le v.isPrime.ne_top hle).symm`. Substitute `hvR` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `he1 : e = 1`. Establish `h1` using `hwe (translate W (-(.some xR yR hR)) t)`. Rewrite `h1` using `[hwt]`. Establish `hγ : (heightOneOfNonsingular hR).valuation W.toAffine.FunctionField (translate W (-(.some xR yR hR)) t) ≠ 0` using `(Valuation.ne_zero_iff _).mpr ht0`. Take `⟨g, hg⟩ : ∃ g : ℤ, (heightOneOfNonsingular hR).valuation W.toAffine.FunctionField (translate W (-(.some xR yR hR)) t) = exp g` from `⟨_, (exp_log hγ).symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h1` using `[hg, ← exp_nsmul, exp_inj, nsmul_eq_mul]`. Establish `hdvd : (e : ℤ) ∣ 1` using `⟨-g, by linarith⟩`. Use `Int.eq_one_of_dvd_one (by positivity) hdvd` as an intermediate fact. Conclude with `this` after adjusting the coercions. Substitute `he1` using the available equality.
-
-Rewrite using `[← hwapp, hwe, pow_one]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem valuationInfty_translate (R : W.toAffine.Point) (f : W.toAffine.FunctionField) :
     valuationInfty W (translate W R f) = valuationPoint W R f := by

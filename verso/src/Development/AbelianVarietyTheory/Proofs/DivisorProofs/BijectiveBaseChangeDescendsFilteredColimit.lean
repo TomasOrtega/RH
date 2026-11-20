@@ -6,31 +6,31 @@ open CategoryTheory Limits TensorProduct
 namespace GlobalTheory.BijDescent
 
 /- English proof (translation)
-Set `gs : ∀ k, EA.obj k ⟶ EB.obj k` to `fun k => (hpoA k).desc (g ≫ vB.app k) (uB.app k) (by rw [reassoc_of% hg, (hpoB k).w])`. Establish `gv : ∀ k, vA.app k ≫ gs k = g ≫ vB.app k` using `fun k => (hpoA k).inl_desc _ _ _`. Establish `gu : ∀ k, uA.app k ≫ gs k = uB.app k` using `fun k => (hpoA k).inr_desc _ _ _`. Establish `vAn : ∀ {k l} (f : k ⟶ l), vA.app k ≫ EA.map f = vA.app l` using `fun f => (vA.naturality f).symm.trans (Category.id_comp _)`. Establish `vBn : ∀ {k l} (f : k ⟶ l), vB.app k ≫ EB.map f = vB.app l` using `fun f => (vB.naturality f).symm.trans (Category.id_comp _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gnat : ∀ {k l} (f : k ⟶ l), EA.map f ≫ gs l = gs k ≫ EB.map f`. Introduce `k l f`. Apply `(hpoA k).hom_ext` to reduce the goal to its premises. Rewrite using `[reassoc_of% (vAn f), gv, reassoc_of% (gv k), vBn]`. Rewrite using `[← uA.naturality_assoc, gu, reassoc_of% (gu k), uB.naturality]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k₀⟩` from `IsFiltered.nonempty (C := K)`. Establish `hAG : iA ≫ G = g ≫ iB`. Rewrite using `[← hiA k₀, Category.assoc, ← hG, reassoc_of% (gv k₀), hiB]`. Set `αA : (Functor.const K).obj R₀ ⟶ EA` to `(Functor.const K).map fA ≫ vA`. Set `αB : (Functor.const K).obj R₀ ⟶ EB` to `(Functor.const K).map fB ≫ vB`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨m, s, hs⟩` from `GlobalTheory.TorsorColim.exists_stage_factor (I := Unit) EA αA fB cA hcA hB (fun _ => iB ≫ inv G) (fun _ k => by`. Express the relevant statement in the definitionally equal form `fB ≫ iB ≫ inv G = (fA ≫ vA.app k) ≫ cA.ι.app k`. Rewrite using `[Category.assoc, hiA, ← hg, Category.assoc, ← reassoc_of% hAG, IsIso.hom_inv_id, Category.comp_id])`. Establish `hs1 : fB ≫ s () = fA ≫ vA.app m` using `(hs ()).1`. Establish `hs2 : s () ≫ cA.ι.app m = iB ≫ inv G` using `(hs ()).2`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m₁, p₁, hp₁⟩` from `GlobalTheory.TorsorColim.exists_stage_eq (I := Unit) EA αA fA cA hcA (RingHom.FiniteType.essFiniteType (RingHom.FiniteType.of_finitePresentation hA)) (k := m) (fun _ => g ≫ s ()) (fun _ => vA.app m) (fun _ => by rw [reassoc_of% hg, hs1]; rfl) (fun _ => rfl) (fun _ => by`. Rewrite using `[Category.assoc, hs2, hiA, ← reassoc_of% hAG, IsIso.hom_inv_id, Category.comp_id])`. Take `⟨m₂, p₂, hp₂⟩` from `GlobalTheory.TorsorColim.exists_stage_eq (I := Unit) EB αB fB cB hcB (RingHom.FiniteType.essFiniteType (RingHom.FiniteType.of_finitePresentation hB)) (k := m) (fun _ => s () ≫ gs m) (fun _ => vB.app m) (fun _ => by`. Express the relevant statement in the definitionally equal form `fB ≫ s () ≫ gs m = fB ≫ vB.app m`. Rewrite using `[reassoc_of% hs1, gv, reassoc_of% hg])`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun _ => rfl) (fun _ => by`. Rewrite using `[Category.assoc, hG, reassoc_of% hs2, IsIso.inv_hom_id, Category.comp_id, hiB])`. Set `a` to `IsFiltered.leftToMax m₁ m₂`. Set `b` to `IsFiltered.rightToMax m₁ m₂`. Set `e` to `IsFiltered.coeqHom (p₁ ≫ a) (p₂ ≫ b)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he : (p₁ ≫ a) ≫ e = (p₂ ≫ b) ≫ e` using `IsFiltered.coeq_condition _ _`. Use `⟨IsFiltered.coeq (p₁ ≫ a) (p₂ ≫ b), fun l f => ?_⟩` and prove the remaining obligations. Take `⟨F', hF'⟩ : ∃ F' : m ⟶ l, F' = (p₁ ≫ a) ≫ e ≫ f` from `⟨_, rfl⟩`. Establish `h₁ : g ≫ s () ≫ EA.map F' = vA.app l`. Substitute `hF'` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Use `hp₁ ()` as an intermediate fact. Simplify using `only [Category.assoc] at this`. Rewrite using `[← vAn ((p₁ ≫ a) ≫ e ≫ f)]`. Simplify using `only [EA.map_comp, Category.assoc]`. Rewrite using `[reassoc_of% this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h₂ : s () ≫ gs m ≫ EB.map F' = vB.app l`. Substitute `hF'` using the available equality. Use `hp₂ ()` as an intermediate fact. Simplify using `only [Category.assoc] at this`. Rewrite using `[← Category.assoc (p₁ ≫ a), he, ← vBn ((p₂ ≫ b) ≫ e ≫ f)]`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [EB.map_comp, Category.assoc]`. Rewrite using `[reassoc_of% this]`. Set `σ : EB.obj l ⟶ EA.obj l` to `(hpoB l).desc (s () ≫ EA.map F') (uA.app l) (by rw [reassoc_of% hs1, vAn, (hpoA l).w])`. Establish `σv : vB.app l ≫ σ = s () ≫ EA.map F'` using `(hpoB l).inl_desc _ _ _`. Establish `σu : uB.app l ≫ σ = uA.app l` using `(hpoB l).inr_desc _ _ _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨σ, ?_, ?_⟩` and prove the remaining obligations. Apply `(hpoA l).hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `vA.app l ≫ gs l ≫ σ = _`. Rewrite using `[reassoc_of% (gv l), σv, h₁, Category.comp_id]`. Express the relevant statement in the definitionally equal form `uA.app l ≫ gs l ≫ σ = _`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[reassoc_of% (gu l), σu, Category.comp_id]`. Apply `(hpoB l).hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `vB.app l ≫ σ ≫ gs l = _`. Rewrite using `[reassoc_of% σv, gnat, h₂, Category.comp_id]`. Express the relevant statement in the definitionally equal form `uB.app l ≫ σ ≫ gs l = _`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[reassoc_of% σu, gu, Category.comp_id]`.
+A detailed English derivation is pending.
 -/
 theorem exists_stage_isIso {K : Type} [SmallCategory K] [IsFiltered K]
     {R₀ A B : CommRingCat.{0}} (P EA EB : K ⥤ CommRingCat.{0}) (β : ∀ k, R₀ ⟶ P.obj k)
@@ -126,23 +126,21 @@ end GlobalTheory.BijDescent
 namespace GlobalTheory.BijDescent
 
 /- English proof (translation)
-Introduce `J _ _ F c hc j R S _ _ _ _ _ _ φ _ hbij`. Use `letI : Algebra (F.obj j) c.pt := (c.ι.app j).hom.toAlgebra`. Set `fR : F.obj j ⟶ CommRingCat.of R` to `CommRingCat.ofHom (algebraMap (F.obj j) R)`. Set `fS : F.obj j ⟶ CommRingCat.of S` to `CommRingCat.ofHom (algebraMap (F.obj j) S)`. Establish `hfR : fR.hom.FinitePresentation` using `RingHom.finitePresentation_algebraMap.2 inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfS : fS.hom.FinitePresentation` using `RingHom.finitePresentation_algebraMap.2 inferInstance`. Set `g : CommRingCat.of R ⟶ CommRingCat.of S` to `CommRingCat.ofHom φ.toRingHom`. Establish `hg : fR ≫ g = fS` using `by ext x; exact φ.commutes x`. Establish `sqR` using `(CommRingCat.isPushout_tensorProduct (F.obj j) c.pt R).flip`. Establish `sqS` using `(CommRingCat.isPushout_tensorProduct (F.obj j) c.pt S).flip`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ER, ιR, uR, vR, ⟨hER⟩, hkR⟩` from `GlobalTheory.BaseChangeColim.exists_isColimit_pushout_under J F c hc j _ _ fR _ _ sqR`. Take `⟨ES, ιS, uS, vS, ⟨hES⟩, hkS⟩` from `GlobalTheory.BaseChangeColim.exists_isColimit_pushout_under J F c hc j _ _ fS _ _ sqS`. Set `G : CommRingCat.of (c.pt ⊗[F.obj j] R) ⟶ CommRingCat.of (c.pt ⊗[F.obj j] S)` to `CommRingCat.ofHom (Algebra.TensorProduct.map (AlgHom.id c.pt c.pt) φ).toRingHom`. Use `haveI : IsIso G := (ConcreteCategory.isIso_iff_bijective G).2 hbij`. Establish `hGr : g ≫ CommRingCat.ofHom (Algebra.TensorProduct.includeRight (R` using `F.obj j) (A := c.pt) (B := S)).toRingHom = CommRingCat.ofHom (Algebra.TensorProduct.includeRight (R := F.obj j) (A := c.pt) (B := R)).toRingHom ≫ G := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `[g, G]`. Take `⟨m, hm⟩` from `exists_stage_isIso (K := Under j) (Under.forget j ⋙ F) ER ES (fun k => F.map k.hom) fR fS hfR hfS g hg uR vR uS vS (fun k => (hkR k).1) (fun k => (hkS k).1) (Cocone.mk _ ιR) hER (Cocone.mk _ ιS) hES _ _ (fun k => (hkR k).2.1) (fun k => (hkS k).2.1) G (fun k => by`. Establish `key : ∀ d : ER.obj k ⟶ ES.obj k, vR.app k ≫ d = g ≫ vS.app k → uR.app k ≫ d = uS.app k → d ≫ ιS.app k = ιR.app k ≫ G`. Introduce `d hd1 hd2`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(hkR k).1.hom_ext` to reduce the goal to its premises. Rewrite using `[reassoc_of% hd1, (hkS k).2.1, reassoc_of% (hkR k).2.1, hGr]`. Express the relevant statement in the definitionally equal form `uR.app k ≫ d ≫ ιS.app k = uR.app k ≫ ιR.app k ≫ G erw [reassoc_of% hd2, (hkS k).2.2, reassoc_of% (hkR k).2.2]`. Use extensionality with `x`. Simplify using `[G]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `key _ ((hkR k).1.inl_desc _ _ _) ((hkR k).1.inr_desc _ _ _))`. Use `⟨m.right, m.hom, fun k f => ?_⟩` and prove the remaining obligations. Set `l : Under j` to `Under.mk (m.hom ≫ f)`. Take `⟨d, hd1, hd2, hdiso⟩ : ∃ d : ER.obj l ⟶ ES.obj l, vR.app l ≫ d = g ≫ vS.app l ∧ uR.app l ≫ d = uS.app l ∧ IsIso d` from `⟨_, (hkR l).1.inl_desc _ _ _, (hkR l).1.inr_desc _ _ _, hm l (Under.homMk f rfl)⟩`. Use `letI : Algebra (F.obj j) (F.obj k) := (F.map (m.hom ≫ f)).hom.toAlgebra`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tR` using `(CommRingCat.isPushout_tensorProduct (F.obj j) (F.obj k) R).flip`. Establish `tS` using `(CommRingCat.isPushout_tensorProduct (F.obj j) (F.obj k) S).flip`. Set `M : CommRingCat.of (F.obj k ⊗[F.obj j] R) ⟶ CommRingCat.of (F.obj k ⊗[F.obj j] S)` to `CommRingCat.ofHom (Algebra.TensorProduct.map (AlgHom.id (F.obj k) (F.obj k)) φ).toRingHom`. Establish `hM : M = ((hkR l).1.isoIsPushout _ _ tR).inv ≫ d ≫ ((hkS l).1.isoIsPushout _ _ tS).hom`. Apply `tR.hom_ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `erw [IsPushout.inl_isoIsPushout_inv_assoc _ _ (hkR l).1 tR, reassoc_of% hd1, IsPushout.inl_isoIsPushout_hom _ _ (hkS l).1 tS]`. Use extensionality with `x`. Simplify using `[M, g]`. Use `erw [IsPushout.inr_isoIsPushout_inv_assoc _ _ (hkR l).1 tR, reassoc_of% hd2, IsPushout.inr_isoIsPushout_hom _ _ (hkS l).1 tS]`. Use extensionality with `x`.
-
-Simplify using `[M]`. Use `haveI : IsIso M := by rw [hM]; infer_instance`. Conclude with `(ConcreteCategory.isIso_iff_bijective M).1 this`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bijective_of_isColimit : ∀ (J : Type) [SmallCategory J] [IsFiltered J] (F : J ⥤ CommRingCat.{0}) (c : Cocone F),
     IsColimit c → ∀ (j : J) (R S : Type) [CommRing R] [CommRing S]

@@ -29,35 +29,29 @@ open GlobalTheory.NormRatio
 namespace GlobalTheory.VacNormMean
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.countable_of_discrete_addSubgroup Λ`. Take `⟨F0, hF0m, hF0u, hF0⟩` from `GlobalTheory.exists_isAddFundamentalDomain_addSubgroup Λ`. Establish `hS` using `Classical.epsilon_spec (⟨F0, hF0 μ⟩ : ∃ Fd, IsAddFundamentalDomain Λ Fd μ)`. Use `set S := Classical.epsilon (fun Fd => IsAddFundamentalDomain Λ Fd μ)`. Use `haveI : MeasurableConstVAdd Γ G := ⟨fun c => (continuous_const.add continuous_id).measurable⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI : VAddInvariantMeasure Γ G ν := ⟨fun c s _ => measure_preimage_add ν (c : G) s⟩`. Use `haveI : MeasurableConstVAdd Λ V := ⟨fun c => (continuous_const.add continuous_id).measurable⟩`. Use `haveI : VAddInvariantMeasure Λ V μ := ⟨fun c s _ => measure_preimage_add μ (c : V) s⟩`. Establish `hper : ∀ l ∈ Λ, ∀ v, h (l + v) = h v`. Introduce `l hl v`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ, hγ, hγP, rfl⟩` from `h2 l hl`. Take `⟨p, hp, rfl⟩` from `hsurj v`. Rewrite using `[← map_add, ← hgh _ (P.add_mem hγP hp), hg γ hγ, hgh p hp]`. Establish `hm' : MeasurableSet (Y ⁻¹' F0 ∩ (P : Set G))` using `(hY.measurable hF0m).inter hP.measurableSet`. Establish `hfd : IsAddFundamentalDomain Γ (Y ⁻¹' F0 ∩ (P : Set G)) ν`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `IsAddFundamentalDomain.mk' hm'.nullMeasurableSet fun w => ?_` and prove the remaining obligations. Take `⟨γ, hγ, hγw⟩` from `happ w`. Take `⟨l, hl, hlu⟩` from `hF0u (Y (γ + w))`. Take `⟨γ', hγ', hγ'P, e⟩` from `h2 l l.2`. Use `⟨⟨γ' + γ, Γ.add_mem hγ' hγ⟩, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Y (γ' + γ + w) ∈ F0`. Rewrite using `[add_assoc, map_add, e]`. Conclude with `hl`. Express the relevant statement in the definitionally equal form `γ' + γ + w ∈ P`. Rewrite using `[add_assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `P.add_mem hγ'P hγw`. Introduce and unpack `⟨β, hβ⟩ ⟨hb1, hb2⟩`. Express the relevant statement in the definitionally equal form `Y (β + w) ∈ F0 at hb1`. Express the relevant statement in the definitionally equal form `β + w ∈ P at hb2`. Establish `a1 : β - γ ∈ P` using `by simpa using P.sub_mem hb2 hγw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `a2 : β - γ ∈ Γ` using `Γ.sub_mem hβ hγ`. Establish `a3` using `hlu ⟨Y (β - γ), h1 _ a2 a1⟩ (by`. Express the relevant statement in the definitionally equal form `Y (β - γ) + Y (γ + w) ∈ F0`. Rewrite using `[← map_add, ← add_assoc, sub_add_cancel]`. Conclude with `hb1)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a4 : Y (β - γ) = l` using `congrArg Subtype.val a3`. Establish `a5` using `hinj _ (Γ.sub_mem a2 hγ') (P.sub_mem a1 hγ'P) (by rw [map_sub, a4, e, sub_self])`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `β = γ' + γ`. Rewrite `a5` using `[sub_sub, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[a5, add_comm]`. Use `set m : Measure V := (ν.restrict (P : Set G)).map Y with hm`. Establish `hmA : ∀ A, MeasurableSet A → m A = ν (Y ⁻¹' A ∩ (P : Set G))` using `fun A hA => by`. Rewrite using `[hm, Measure.map_apply hY.measurable hA, Measure.restrict_apply (hY.measurable hA)]`. Establish `hinv : ∀ (v : V) A, MeasurableSet A → m ((fun x => v + x) ⁻¹' A) = m A`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce `v A hA`. Take `⟨p, hp, rfl⟩` from `hsurj v`. Rewrite using `[hmA _ (measurable_const_add _ hA), hmA _ hA, ← measure_preimage_add ν p (Y ⁻¹' A ∩ _)]`. Use `congr 1`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, map_add, SetLike.mem_coe, Pi.add_apply, id]`. Conclude with `and_congr_right fun _ => (P.add_mem_cancel_left hp).symm`. Use `haveI : m.IsAddLeftInvariant := (forall_measure_preimage_add_iff m).1 hinv`. Establish `hm1 : m F0 = 1` using `by rw [hmA _ hF0m, ← hone]; exact hfd.measure_eq h𝓕`. Use `haveI : SigmaFinite m := by`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Measure.sigmaFinite_of_countable (S := Set.range fun l : Λ => (fun x => (l : V) + x) ⁻¹' F0) (Set.countable_range _) ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, rfl⟩`. Rewrite using `[hinv _ _ hF0m, hm1]`. Conclude with `ENNReal.one_lt_top`. Rewrite using `[Set.sUnion_range, Set.eq_univ_iff_forall]`.
-
-Introduce `x`. Take `⟨l, hl, -⟩` from `hF0u x`. Conclude with `Set.mem_iUnion.2 ⟨l, hl⟩`. Take `⟨K⟩ : Nonempty (TopologicalSpace.PositiveCompacts V)` from `inferInstance`. Establish `hK0 : μ K ≠ 0` using `(Measure.measure_pos_of_nonempty_interior μ K.interior_nonempty).ne'`.
-
-Establish `hc : m = (m K / μ K) • μ` using `measure_eq_sub_vadd m μ hK0 K.isCompact.measure_lt_top.ne`. Generalize the expression as in `m K / μ K = c at hc`. Establish `hcF : c * μ S = 1`. Rewrite using `[hS.measure_eq (hF0 μ), ← hm1, hc, Measure.smul_apply, smul_eq_mul]`. Establish `hcr : c.toReal = (μ S).toReal⁻¹`.
-
-Use `congrArg ENNReal.toReal hcF` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_one]`. Conclude with `eq_inv_of_mul_eq_one_left this`. Rewrite using `[h𝓕.setIntegral_eq hfd (fun γ w => hg γ γ.2 w), setAverage_eq, hS.setIntegral_eq (hF0 μ) (fun l v => hper l l.2 v), setIntegral_congr_fun hm' (fun w hw => hgh w hw.2), ← Measure.restrict_restrict (hY.measurable hF0m), ← setIntegral_map hF0m hh.aestronglyMeasurable hY.measurable.a …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_eq_mean {G V : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [MeasurableSpace G]
     [BorelSpace G] [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V] [SecondCountableTopology V]
@@ -149,9 +143,9 @@ open Formalism.MainNotions.StandardLatticesGL3 (stdL La0)
 variable {D : D7}
 
 /- English proof (translation)
-Establish `e : stdLat V = GlobalTheory.SW.stdL D.host.E V.rank`. Use extensionality with `x`. Rewrite using `[GlobalTheory.SW.Base.mem_stdL]`. Simplify using `only [stdLat, Formalism.MainNotions.StandardLatticesGL3.stdL, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨fun ⟨y, hy⟩ => hy ▸ y.2, fun h => ⟨⟨x i, h⟩, rfl⟩⟩`. Rewrite using `[e]`. Conclude with `GlobalTheory.Ker.Base.selfDualC_stdL hG`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfDual_std (V : HSp D) (hG : V.gram = 1) : IsSelfDualC V (stdLat V) := by
   have e : stdLat V = GlobalTheory.SW.stdL D.host.E V.rank := by
@@ -163,9 +157,7 @@ theorem selfDual_std (V : HSp D) (hG : V.gram = 1) : IsSelfDualC V (stdLat V) :=
   rw [e]; exact GlobalTheory.Ker.Base.selfDualC_stdL hG
 
 /- English proof (translation)
-Establish `hSD0 : ∀ N : ℕ, Formalism.MainNotions.StandardLatticesGL3.SD D (stdL D N)`. Introduce `N`. Take `⟨Lt, h1, h2, -⟩` from `GlobalTheory.NormSum.exists_lattice_of_adelic_point D N`. Rewrite using `[← h2]`. Conclude with `(h1 1).2`.
-
-Conclude with `GlobalTheory.ConjJet.discrete_of_int D (tor0 D ⊤ δ) _ (area_pos hc) D.host.hyp.2.1.pos (GlobalTheory.ThetaLine.theta_line D (GlobalTheory.InducedType.induced_type D).1 ⊤ δ hc a d _ (Or.inr ⟨_, _, hSD0 _, hSD0 _, rfl⟩)).2.2.2.2.2.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discreteTopology_unitCurvePeriodLattice (δ : ℂ) (a d : ℕ) (hc : Formalism.MainNotions.StandardLatticesGL3.Crv D ⊤ δ) : DiscreteTopology (La0 D (tor0 D ⊤ δ) a d) := by
   have hSD0 : ∀ N : ℕ, Formalism.MainNotions.StandardLatticesGL3.SD D (stdL D N) := by
@@ -177,15 +169,15 @@ theorem discreteTopology_unitCurvePeriodLattice (δ : ℂ) (a d : ℕ) (hc : For
       (Or.inr ⟨_, _, hSD0 _, hSD0 _, rfl⟩)).2.2.2.2.2.2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `AddSubgroup.closure_induction (p := fun x _ => ∃ z ∈ YYl D (stdL D a) (stdL D d), x = fun τ i j => δ * embT D τ (z i j)) ?_ ⟨0, zero_mem _, by funext τ i j; simp⟩ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, A, hA, rfl⟩`. Use `AddSubgroup.closure_induction (p := fun w _ => ∃ z ∈ YYl D (stdL D a) (stdL D d), w • embV D (tor0 D ⊤ δ) A = fun τ i j => δ * embT D τ (z i j)) ?_ ⟨0, zero_mem _, by funext τ i j; simp⟩ ?_ ?_ hw` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨c, -, rfl⟩`. Establish `hc : IsIntegral ℤ ((c : D.host.K) : D.host.E)` using `c.2.map_of_comp_eq (RingHom.id ℤ) D.host.K.subtype (RingHom.ext_int _ _)`. Use `⟨(⟨_, hc⟩ : 𝓞 D.host.E) • A, Submodule.smul_mem _ _ hA, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ i j`. Express the relevant statement in the definitionally equal form `δ * D.host.φ₀ _ * embT D τ (A i j) = δ * embT D τ (((c : D.host.K) : D.host.E) * A i j)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_mul, (GlobalTheory.InducedType.induced_type D).1.1 τ, mul_assoc]`. Introduce and unpack `u v _ _ ⟨z, hz, e⟩ ⟨z', hz', e'⟩`. Conclude with `⟨z + z', add_mem hz hz', by rw [add_smul, e, e']; funext τ i j; simp [mul_add]⟩`. Introduce and unpack `u _ ⟨z, hz, e⟩`. Conclude with `⟨-z, neg_mem hz, by rw [neg_smul, e]; funext τ i j; simp⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `u v _ _ ⟨z, hz, e⟩ ⟨z', hz', e'⟩`. Conclude with `⟨z + z', add_mem hz hz', by rw [e, e']; funext τ i j; simp [mul_add]⟩`. Introduce and unpack `u _ ⟨z, hz, e⟩`. Conclude with `⟨-z, neg_mem hz, by rw [e]; funext τ i j; simp⟩`. Introduce and unpack `⟨z, hz, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `AddSubgroup.subset_closure ⟨δ, AddSubgroup.subset_closure ⟨1, Submodule.mem_top, by simp⟩, z, hz, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_unitCurvePeriodLattice_iff (δ : ℂ) (a d : ℕ) (x : VC D a d) :
     x ∈ La0 D (tor0 D ⊤ δ) a d ↔ ∃ z ∈ YYl D (stdL D a) (stdL D d), x = fun τ i j => δ * embT D τ (z i j) := by
@@ -227,7 +219,7 @@ noncomputable def coordHom (θ : InfFam D) (S T : HSp D) (δ : ℂ) (r : D.host.
     rw [RingHom.map_add, RingHom.map_add, mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Express the relevant statement in the definitionally equal form `δ * embT D τ r * θ τ (infPart D (incA D (M i j))) = _`. Rewrite using `[GlobalTheory.FockCompare.comp_incA hθ, map_mul, mul_assoc]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coordHom_ratW {θ : InfFam D} (hθ : IsInfFam θ) (S T : HSp D) (δ : ℂ) (r : D.host.E)
     (M : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
@@ -238,7 +230,7 @@ theorem coordHom_ratW {θ : InfFam D} (hθ : IsInfFam θ) (S T : HSp D) (δ : �
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Establish `: infPart D (u i j) = 0` using `congrFun (congrFun hu i) j`. Express the relevant statement in the definitionally equal form `δ * embT D τ r * θ τ (infPart D (u i j)) = 0`. Rewrite using `[this, RingHom.map_zero, mul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coordHom_of_inf (θ : InfFam D) (S T : HSp D) (δ : ℂ) (r : D.host.E) {u : WO S T} (hu : u.map (infPart D) = 0) :
     coordHom θ S T δ r u = 0 := by
@@ -248,9 +240,9 @@ theorem coordHom_of_inf (θ : InfFam D) (S T : HSp D) (δ : ℂ) (r : D.host.E) 
   rw [this, RingHom.map_zero, mul_zero]
 
 /- English proof (translation)
-Establish `hz : ∀ {u : WO S T}, u.map (infPart D) = 0 → ∀ τ, compAt θ τ u = 0` using `fun {u} hu τ => by`. Use function extensionality and compare the values at `i j`. Establish `: infPart D (u i j) = 0` using `congrFun (congrFun hu i) j`. Express the relevant statement in the definitionally equal form `θ τ (infPart D (u i j)) = 0`. Rewrite using `[this, RingHom.map_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.StdUnn.exists_unique_of_comp_finPart D θ hθ _ _ (fun _ => 0) v).unique ⟨hz hu, h⟩ ⟨hz hv, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_inf_fin {θ : InfFam D} (hθ : IsInfFam θ) {S T : HSp D} {u v : WO S T} (hu : u.map (infPart D) = 0)
     (hv : v.map (infPart D) = 0) (h : u.map (finPart D) = v.map (finPart D)) : u = v := by
@@ -264,43 +256,41 @@ theorem eq_of_inf_fin {θ : InfFam D} (hθ : IsInfFam θ) {S T : HSp D} {u v : W
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D ψ θ S T a d hS hT δ r hset LT hLT hiff e0 he0 f₀ hread hsph ν 𝓕 hcov`. Substitute `hS hT` using the available equality. Establish `hψ : ∀ x, ‖ψ x‖ = 1` using `hset.std.1.2.1`. Establish `hSD` using `selfDual_std S hset.gS`. Establish `hr : r ≠ 0` using `hset.scale.ne_zero hset.crv.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ : δ ≠ 0` using `delta_ne_zero hset.crv`. Establish `hrτ : ∀ τ, embT D τ r ≠ 0` using `fun τ => (map_ne_zero _).2 hr`. Establish `hvac : IsLatVac (heisO ψ S T) (latO S T (stdLat S) LT fun _ => True) f₀`. Use `hsph` as an intermediate fact. Simplify using `only [IsSphOff, Finset.notMem_empty, not_false_eq_true] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Establish `hL : ∀ u ∈ latO S T (stdLat S) LT (fun _ => True), ∀ w, ‖f₀ (w + u)‖ = ‖f₀ w‖`. Introduce `u hu w`. Take `⟨ε, hε, h⟩` from `(GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T _ _ hset.std hSD hLT).2.2 f₀ hvac u hu`. Establish `h1` using `congrArg (fun f => ‖f w‖) (h f₀ hvac)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [heisO, norm_mul, hψ, one_mul, Pi.smul_apply, smul_eq_mul] at h1`. Apply the tactic sequence `rcases hε with rfl | rfl <;> simpa using h1`. Establish `hLinf` using `fun u (hu : u ∈ latO S T (stdLat S) LT fun _ => True) => GlobalTheory.VacUnique.latO_inf S T _ _ _ hu`. Establish `hopen` using `GlobalTheory.LatOpen.isOpen_nsmul_latO D S T _ _ hSD hLT 1 one_pos`. Establish `happ` using `GlobalTheory.LatVac.approx hSD hLT`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `latO S T (stdLat S) LT (fun _ => True) = L at hiff hL hLinf hopen happ`. Set `φ : WO S T →+ Matrix (Fin T.rank) (Fin S.rank) _` to `(finPart D).toAddMonoidHom.mapMatrix`. Establish `hφ : ∀ w, φ w = w.map (finPart D)` using `fun _ => rfl`. Set `P : AddSubgroup (WO S T)` to `(L.map φ).comap φ`. Establish `hP : ∀ w, w ∈ P ↔ ∃ l ∈ L, φ l = φ w` using `fun _ => Iff.rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPo : IsOpen (P : Set (WO S T))`. Use `hopen using 1` and compare the differences between its conclusion and the goal. Use extensionality with `w`. Use `(hP w).trans (exists_congr fun l => and_congr_right fun _ => ?_)` and prove the remaining obligations. Rewrite using `[one_nsmul, ← hφ, φ.map_sub, sub_eq_zero]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `eq_comm`. Use `haveI := hcov.1`. Use `haveI : Countable (ratL T S) := Formalism.IndefR.Eqv.countable_ratMx (D := D) T.rank S.rank`. Use `haveI := discreteTopology_unitCurvePeriodLattice δ S.rank T.rank hset.crv`. Establish `hcont : Continuous fun z : VC D S.rank T.rank => ‖e0 z‖ ^ 2 * Real.exp (-Real.pi * (Hf D (tor0 D ⊤ δ) z z).re)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `he0.1.continuous` as an intermediate fact. Unfold `Hf`. Use `fun_prop`. Establish `key` using `integral_eq_mean (volume : Measure (VC D S.rank T.rank)) ν (coordHom θ S T δ r) ?_ P (ratL T S) hPo (La0 D (tor0 D ⊤ δ) S.rank T.rank) ?_ ?_ ?_ ?_ ?_ 𝓕 hcov.2.1 hcov.2.2 (fun w => ‖f₀ w‖ ^ 2) ?_ _ hcont ?_`. Rewrite using `[ip, Formalism.MainNotions.TaylorLogMetric.normSq, ← key, ← integral_complex_ofReal]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Complex.mul_conj', Complex.ofReal_pow]`. Use `continuous_pi fun τ => continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `continuous_const.mul ((GlobalTheory.RealWeil.continuous_compAt hset.inf τ _ _).matrix_elem i j)`. Introduce `v`. Take `⟨x, h1, h2⟩` from `(GlobalTheory.StdUnn.exists_unique_of_comp_finPart D θ hset.inf _ _ (fun τ => Matrix.of fun i j => (δ * embT D τ r)⁻¹ * v τ i j) 0).exists`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x, (hP x).2 ⟨0, zero_mem _, h2.symm⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ i j`. Express the relevant statement in the definitionally equal form `δ * embT D τ r * compAt θ τ x i j = _`. Rewrite using `[h1, Matrix.of_apply, mul_inv_cancel_left₀ (mul_ne_zero hδ (hrτ τ))]`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨M, u, hu, h⟩` from `happ w`. Use `⟨-ratW T S M, neg_mem ⟨M, rfl⟩, (hP _).2 ⟨u, hu, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_add, map_neg, eq_neg_add_iff_add_eq]`. Use function extensionality and compare the values at `i j`. Conclude with `(h i j).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨M, rfl⟩ hM`. Take `⟨l, hl, e⟩` from `(hP _).1 hM`. Establish `e1 : l = GlobalTheory.VacUnique.finRat S T M` using `eq_of_inf_fin hset.inf (hLinf l hl) (GlobalTheory.VacUnique.finRat_inf S T M) e`. Establish `e2 : finPt rfl rfl r (-(r • M)) = l`. Rewrite using `[e1, finPt]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `i j`. Simplify using `[hr]`. Use `(mem_unitCurvePeriodLattice_iff δ _ _ _).2 ⟨r • M, ?_, coordHom_ratW hset.inf S T δ r M⟩` and prove the remaining obligations. Conclude with `neg_mem_iff.1 ((hiff _).2 (e2 ▸ hl))`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `l hl`. Take `⟨z, hz, rfl⟩` from `(mem_unitCurvePeriodLattice_iff δ _ _ _).1 hl`. Use `⟨ratW T S (Matrix.of fun i j => -(r⁻¹ * (-z) i j)), ⟨_, rfl⟩, (hP _).2 ⟨_, (hiff _).1 (neg_mem hz), rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[coordHom_ratW hset.inf]`. Use function extensionality and compare the values at `τ i j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `[hr]`. Introduce and unpack `_ ⟨M, rfl⟩ - h0`. Establish `h1` using `(coordHom_ratW hset.inf S T δ r M).symm.trans h0`. Establish `: M = 0`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrFun (congrFun (congrFun h1 (D.eTau.symm (Classical.arbitrary _))) i) j` as an intermediate fact. Simplify `this` using `[hδ, hr]`. Rewrite using `[this, map_zero]`. Introduce and unpack `_ ⟨M, rfl⟩ w`. Establish `h1` using `congrArg norm (hread.1.quasi M w)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[norm_mul, hψ, one_mul]`. Conclude with `congrArg (· ^ 2) h1`. Introduce `p hp`. Take `⟨l, hl, e⟩` from `(hP _).1 hp`. Establish `h1 : (p - l).map (finPart D) = 0` using `by rw [← hφ, map_sub, e, sub_self]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : coordY θ rfl rfl δ r (p - l) = coordHom θ S T δ r p`. Express the relevant statement in the definitionally equal form `coordHom θ S T δ r (p - l) = _`. Rewrite using `[map_sub, coordHom_of_inf θ S T δ r (hLinf l hl), sub_zero]`. Establish `h3` using `hL l hl (p - l)`. Rewrite `h3` using `[sub_add_cancel, hread.2 _ h1, h2]`.
-
-Express the relevant statement in the definitionally equal form `‖f₀ p‖ ^ 2 = _`. Rewrite using `[h3, norm_mul, mul_pow, mul_comm, Complex.norm_exp, ← Real.exp_nat_mul]`. Use `congr 2`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem ip_eq_normSq : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d)
   (δ : ℂ) (r : D.host.E), Setup ψ θ S T ⊤ δ r →

@@ -11,7 +11,7 @@ namespace GlobalTheory.CompanionTheory.MirFourier
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `x hx i` and use `show valuation k (x.toAdd i) ≤ valuation k (s₂ : k) from le_trans (show valuation k (x.toAdd i) ≤ valuation k (s₁ : k) from hx i) h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem polyBall_mono (n : ℕ) {s₁ s₂ : kˣ} (h : valuation k (s₁ : k) ≤ valuation k (s₂ : k)) :
     polyBall n s₁ ≤ polyBall n s₂ :=
@@ -19,9 +19,9 @@ theorem polyBall_mono (n : ℕ) {s₁ s₂ : kˣ} (h : valuation k (s₁ : k) �
     le_trans (show valuation k (x.toAdd i) ≤ valuation k (s₁ : k) from hx i) h
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `Finite.exists_le (fun i : Fin n => valuation k (x.toAdd i))`. Take `⟨y, hy⟩` from `valuation_surjective (max M 1)`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Rewrite `hy` using `[map_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd (hy.symm ▸ le_max_right M 1 : (1 : ValueGroupWithZero k) ≤ 0) (by simp)`. Use `⟨Units.mk0 y hy0, fun i => ?_⟩` and prove the remaining obligations. Use `show valuation k (x.toAdd i) ≤ valuation k y`. Rewrite using `[hy]`. Conclude with `le_trans (hM i) (le_max_left _ _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_polyBall {n : ℕ} (x : Multiplicative (Fin n → k)) :
     ∃ s : kˣ, x ∈ polyBall n s := by
@@ -37,7 +37,7 @@ theorem exists_mem_polyBall {n : ℕ} (x : Multiplicative (Fin n → k)) :
   exact le_trans (hM i) (le_max_left _ _)
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨⟨x, hx⟩, v, rfl⟩`. Conclude with `Submodule.subset_span ⟨⟨x, polyBall_mono n h hx⟩, v, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem twKer_polyBall_mono (ψ : AddChar k Circle) {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (Multiplicative (Fin n → k)) V) (a : Fin n → k) {s₁ s₂ : kˣ}
@@ -49,13 +49,13 @@ theorem twKer_polyBall_mono (ψ : AddChar k Circle) {n : ℕ} {V : Type} [AddCom
   exact Submodule.subset_span ⟨⟨x, polyBall_mono n h hx⟩, v, rfl⟩
 
 /- English proof (translation)
-Unfold `twKer at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨⟨x, -⟩, u, rfl⟩` from `hw`. Take `⟨s, hs⟩` from `exists_mem_polyBall x`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s, Submodule.subset_span ⟨⟨x, hs⟩, u, rfl⟩⟩`. Consider the case `zero => exact ⟨1, Submodule.zero_mem _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨s₁, h₁⟩` from `hx`. Take `⟨s₂, h₂⟩` from `hy`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Break down `le_total (valuation k (s₁ : k)) (valuation k (s₂ : k)) with h | h` into its components or cases. Conclude with `⟨s₂, Submodule.add_mem _ (twKer_polyBall_mono ψ ρ a h h₁) h₂⟩`. Conclude with `⟨s₁, Submodule.add_mem _ h₁ (twKer_polyBall_mono ψ ρ a h h₂)⟩`. Consider the case `smul c x _ hx`. Take `⟨s, hs⟩` from `hx`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s, Submodule.smul_mem _ c hs⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_mem_twKer_polyBall (ψ : AddChar k Circle) {n : ℕ} {V : Type} [AddCommGroup V]
     [Module ℂ V] (ρ : Representation ℂ (Multiplicative (Fin n → k)) V) (a : Fin n → k) (v : V)

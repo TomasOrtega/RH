@@ -10,14 +10,14 @@ open scoped Classical
 variable {F : Type} [Field F] [NumberField F] {N : ℕ}
 
 /- English proof (translation)
-Use `show (InfinitePlace.Completion.extensionEmbedding w (x w + y w)).re = _`. Rewrite using `[map_add, Complex.add_re]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem re_add (x y : Ainf F) (w : InfinitePlace F) : re (x + y) w = re x w + re y w := by
   show (InfinitePlace.Completion.extensionEmbedding w (x w + y w)).re = _
   rw [map_add, Complex.add_re]; rfl
 
 /- English proof (translation)
-The claim follows from `|re (algebraMap F (Ainf F) x) w| = w x := by unfold re have hw : w.IsReal := hF.isReal w rw [InfiniteAdeleRing.algebraMap_apply] rw [InfinitePlace.Completion.extensionEmbedding_coe] rw [← InfinitePlace.embedding_of_isReal_apply hw, Complex.ofReal_re] first | (rw [← Real.norm_eq_a …`.
+A detailed English derivation is pending.
 -/
 theorem abs_re_algebraMap (hF : IsTotallyReal F) (x : F) (w : InfinitePlace F) :
     |re (algebraMap F (Ainf F) x) w| = w x := by
@@ -31,17 +31,17 @@ theorem abs_re_algebraMap (hF : IsTotallyReal F) (x : F) (w : InfinitePlace F) :
   | simpa [Real.norm_eq_abs] using InfinitePlace.norm_embedding_of_isReal hw x
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem sz_nonneg (u : Fin N → AF F) : 0 ≤ sz u :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _
 
 /- English proof (translation)
-Unfold `sz`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_le_sum fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_le_sum fun w _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : re (inf (u + y) l) w = re (inf u l) w + re (inf y l) w`. Rewrite using `[← re_add]`. Use `congr 1`. Rewrite using `[h]`. Use `abs_sub_abs_le_abs_sub (re (inf u l) w) (-(re (inf y l) w))` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `[abs_neg, sub_neg_eq_add]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sz_sub_le (u y : Fin N → AF F) : sz u - sz y ≤ sz (u + y) := by
   unfold sz
@@ -56,9 +56,7 @@ theorem sz_sub_le (u y : Fin N → AF F) : sz u - sz y ≤ sz (u + y) := by
   simpa [abs_neg, sub_neg_eq_add] using this
 
 /- English proof (translation)
-Unfold `sz`. Use `continuous_finset_sum _ fun l _ => continuous_finset_sum _ fun w _ => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun u : Fin N → AF F => inf u l` using `by show Continuous fun u : Fin N → AF F => (u l).1`. Conclude with `continuous_fst.comp (continuous_apply l)`. Establish `h2 : Continuous fun x : Ainf F => re x w` using `Complex.continuous_re.comp ((InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp (continuous_apply w))`.
-
-Conclude with `continuous_abs.comp (h2.comp h1)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_sz : Continuous (sz : (Fin N → AF F) → ℝ) := by
   unfold sz
@@ -72,7 +70,7 @@ theorem continuous_sz : Continuous (sz : (Fin N → AF F) → ℝ) := by
   exact continuous_abs.comp (h2.comp h1)
 
 /- English proof (translation)
-Use `continuous_pi fun l => ?_` and prove the remaining obligations. Use `show Continuous fun u : Fin N → AF F => (u l).2`. Conclude with `continuous_snd.comp (continuous_apply l)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_fin : Continuous (fin : (Fin N → AF F) → Fin N → Af F) := by
   refine continuous_pi fun l => ?_
@@ -80,27 +78,27 @@ theorem continuous_fin : Continuous (fin : (Fin N → AF F) → Fin N → Af F) 
   exact continuous_snd.comp (continuous_apply l)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Simplify using `[fin, map_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem fin_add (u y : Fin N → AF F) : fin (u + y) = fin u + fin y := by
   funext l; simp [fin, map_add]
 
 /- English proof (translation)
-Simplify using `[inf, rat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inf_rat (ξ : Fin N → F) (l : Fin N) : inf (rat ξ) l = algebraMap F (Ainf F) (ξ l) := by
   simp [inf, rat]
 
 /- English proof (translation)
-Simplify using `[fin, rat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fin_rat (ξ : Fin N → F) (l : Fin N) : fin (rat ξ) l = algebraMap F (Af F) (ξ l) := by
   simp [fin, rat]
 
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg (sz_nonneg _)).2 fun l => ?_` and prove the remaining obligations. Rewrite using `[mixedEmbedding.norm_eq_sup'_normAtPlace]`. Use `Finset.sup'_le _ _ fun w _ => ?_` and prove the remaining obligations. Rewrite using `[mixedEmbedding.normAtPlace_apply]`. Unfold `sz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_le_sz (hF : IsTotallyReal F) (ξ : Fin N → F) :
     ‖(fun l => mixedEmbedding F (ξ l))‖ ≤ sz (rat ξ) := by
@@ -118,9 +116,7 @@ theorem norm_le_sz (hF : IsTotallyReal F) (ξ : Fin N → F) :
           (fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _) (Finset.mem_univ l)
 
 /- English proof (translation)
-Set `E'` to `Submodule.span ℝ (L : Set E)`. Set `L' : Submodule ℤ E'` to `ZLattice.comap ℝ L E'.subtype`. Use `haveI : DiscreteTopology L' := ZLattice.comap_discreteTopology _ _ (by fun_prop) Subtype.val_injective`. Use `haveI : IsZLattice ℝ L' := ⟨Submodule.map_injective_of_injective E'.subtype_injective (by simp [E', L'])⟩`. Set `e : L' ≃ₗ[ℤ] L` to `Submodule.comapSubtypeEquivOfLe (p := L) (q := E'.restrictScalars ℤ) Submodule.subset_span`.
-
-Rewrite using `[← e.finrank_eq, ZLattice.rank ℝ L']`. Conclude with `Submodule.finrank_le E'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_le_of_discrete {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     (L : Submodule ℤ E) [DiscreteTopology L] : Module.finrank ℤ L ≤ Module.finrank ℝ E := by
@@ -141,29 +137,25 @@ namespace GlobalTheory.SumMaj
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F _ _ N hF K hK`. Use `⟨Module.finrank ℝ (Fin N → mixedEmbedding.mixedSpace F) + 1, fun ω hω => ?_⟩` and prove the remaining obligations. Use `set k := Module.finrank ℝ (Fin N → mixedEmbedding.mixedSpace F) + 1 with hk`. Take `⟨B, hB⟩` from `hω.bddAbove_image (continuous_sz (F := F) (N := N)).continuousOn`. Use `set B0 := max B 0 with hB0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB0n : 0 ≤ B0` using `le_max_right _ _`. Establish `hszB : ∀ y ∈ ω, sz y ≤ B0` using `fun y hy => (hB ⟨y, hy, rfl⟩).trans (le_max_left _ _)`. Use `set K' : Set (Fin N → Af F) := (fun p : (Fin N → Af F) × (Fin N → Af F) => p.1 - p.2) '' (K ×ˢ (fin '' ω)) with hK'`. Establish `hK'c : IsCompact K'` using `(hK.prod (hω.image continuous_fin)).image (continuous_fst.sub continuous_snd)`. Take `⟨M, hM0, hM⟩` from `GlobalTheory.WeilM.exists_nat_mul_integral_of_isCompact F hK'c`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set S : Set (Fin N → F) := {ξ | fin (rat ξ) ∈ K'} with hS`. Use `set c : (Fin N → F) → ℝ := S.indicator fun ξ => (1 + B0) ^ k / (1 + sz (rat ξ)) ^ k with hc`. Establish `hc0 : ∀ ξ, 0 ≤ c ξ` using `fun ξ => Set.indicator_nonneg (fun ξ _ => div_nonneg (pow_nonneg (by linarith) _) (pow_nonneg (by linarith [sz_nonneg (rat ξ)]) _)) ξ`. Use `⟨c, ?_, hc0, fun ξ y hy hξ => ?_⟩` and prove the remaining obligations. Use `haveI := GlobalTheory.WeilM.discreteTopology_denomLattice F (Fin N) hM0 set L := GlobalTheory.WeilM.denomLattice F (Fin N) M with hL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `memL : ∀ ξ ∈ S, (fun i => mixedEmbedding F (ξ i)) ∈ L`. Introduce `ξ hξ i`. Take `⟨y, hy⟩` from `(GlobalTheory.IntegralFinAdele.integral_finiteAdele_properties F).2.2.2.1 ((M : F) * ξ i) fun v => by`. Rewrite using `[map_mul, map_natCast]`. Use `hM _ hξ i v` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `this` using `[fin_rat]`. Then use the resulting hypothesis. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (mixedEmbedding F) hy`. Rewrite `h2` using `[← nsmul_eq_mul, map_nsmul, ← Nat.cast_smul_eq_nsmul ℝ]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Set `j : S → L` to `fun ξ => ⟨_, memL ξ.1 ξ.2⟩`. Establish `hj : Function.Injective j` using `fun a b h => Subtype.ext (funext fun i => mixedEmbedding_injective F (congrFun (congrArg Subtype.val h) i))`. Establish `hkL : Module.finrank ℤ L < k` using `Nat.lt_succ_of_le (finrank_le_of_discrete L)`. Establish `hg : Summable fun z : L => ((1 + ‖z‖) ^ k)⁻¹`. Use `Summable.of_norm_bounded_eventually (ZLattice.summable_norm_pow_inv L k hkL) ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Set.finite_singleton (0 : L)).subset fun z hz => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Apply `hz` to reduce the goal to its premises. Use `show ‖((1 + ‖z‖) ^ k)⁻¹‖ ≤ ‖z‖⁻¹ ^ k`. Establish `hz0 : 0 < ‖z‖` using `norm_pos_iff.2 h0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Real.norm_of_nonneg (inv_nonneg.2 (pow_nonneg (by positivity) _)), inv_pow]`. Conclude with `inv_anti₀ (pow_pos hz0 _) (pow_le_pow_left₀ hz0.le (by linarith) _)`. Use `((Subtype.val_injective (p := fun ξ => ξ ∈ S)).summable_iff ?_).1 ?_` and prove the remaining obligations. Introduce `ξ hξ`. Establish `: ξ ∉ S` using `fun h => hξ ⟨⟨ξ, h⟩, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Set.indicator_of_notMem this _`. Use `Summable.of_nonneg_of_le (fun ξ => hc0 _) (fun ξ => ?_) ((hg.comp_injective hj).mul_left ((1 + B0) ^ k)) show c ξ.1 ≤ (1 + B0) ^ k * ((1 + ‖j ξ‖) ^ k)⁻¹` and prove the remaining obligations. Rewrite using `[hc, Set.indicator_of_mem ξ.2, div_eq_mul_inv]`. Use `mul_le_mul_of_nonneg_left ?_ (pow_nonneg (by linarith) _)` and prove the remaining obligations. Establish `hn : ‖j ξ‖ ≤ sz (rat ξ.1)` using `norm_le_sz hF ξ.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_anti₀ (pow_pos (by positivity) _) (pow_le_pow_left₀ (by positivity) (by linarith) _)`. Establish `hS' : ξ ∈ S`. Use `⟨(fin (rat ξ + y), fin y), ⟨hξ, y, hy, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[fin_add]`. Rewrite using `[hc, Set.indicator_of_mem hS']`.
-
-Establish `hs0` using `sz_nonneg (rat ξ)`. Establish `ht0` using `sz_nonneg (rat ξ + y)`. Establish `hst` using `sz_sub_le (rat ξ) y`. Establish `hy0` using `hszB y hy`. Establish `key : 1 + sz (rat ξ) ≤ (1 + B0) * (1 + sz (rat ξ + y))` using `by nlinarith`.
-
-Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ (pow_pos (by linarith) _), one_mul, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (by linarith) key _`.
+A detailed English derivation is pending.
 -/
 theorem summable_majorant : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ), IsTotallyReal F →
     ∀ K : Set (Fin N → Af F), IsCompact K → ∃ k : ℕ, ∀ ω : Set (Fin N → AF F), IsCompact ω →

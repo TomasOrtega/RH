@@ -11,11 +11,11 @@ universe u
 variable {W V : Type} {I : V → Type}
 
 /- English proof (translation)
-Establish `h : ∀ w, ∃ x : X w, ∀ v i (h : ι v i = w), h ▸ T v i = x`. Introduce `w`. Take `⟨v, i, rfl⟩` from `hs w`. Use `⟨T v i, fun v' i' h => ?_⟩` and prove the remaining obligations. Establish `hv : v' = v` using `by rw [← hb v' i', h, hb]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Substitute `hv` using the available equality. Establish `hi : i' = i` using `hinj v' h`. Substitute `hi` using the available equality. Both sides reduce to the same expression. Use `choose f hf using h`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. Supply the required witnesses or components.
 
-Conclude with `⟨f, fun v i => (hf _ v i rfl).symm⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_fam (ι : ∀ v, I v → W) (b : W → V) (hb : ∀ v i, b (ι v i) = v)
     (hinj : ∀ v, Function.Injective (ι v)) (hs : ∀ w, ∃ v i, ι v i = w)
@@ -34,7 +34,7 @@ private theorem exists_fam (ι : ∀ v, I v → W) (b : W → V) (hb : ∀ v i, 
   exact ⟨f, fun v i => (hf _ v i rfl).symm⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[eventually_cofinite]`. Use `(h.image b).subset fun v hv => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_forall] at hv`. Take `⟨i, hi⟩` from `hv`. Conclude with `⟨ι v i, hi, hb v i⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem ev_up [∀ v, Finite (I v)] (ι : ∀ v, I v → W) (b : W → V) (hb : ∀ v i, b (ι v i) = v)
     {P : W → Prop} (h : ∀ᶠ w in cofinite, P w) : ∀ᶠ v in cofinite, ∀ i, P (ι v i) := by
@@ -45,7 +45,7 @@ private theorem ev_up [∀ v, Finite (I v)] (ι : ∀ v, I v → W) (b : W → V
   exact ⟨ι v i, hi, hb v i⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[eventually_cofinite]`. Use `(h.biUnion fun v _ => Set.finite_range (ι v)).subset fun w hw => ?_` and prove the remaining obligations. Take `⟨v, i, rfl⟩` from `hs w`. Simplify using `only [Set.mem_setOf_eq, hb] at hw`. Conclude with `Set.mem_biUnion hw ⟨i, rfl⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ev_down [∀ v, Finite (I v)] (ι : ∀ v, I v → W) (b : W → V) (hb : ∀ v i, b (ι v i) = v)
     (hs : ∀ w, ∃ v i, ι v i = w) {P : V → Prop} (h : ∀ᶠ v in cofinite, P v) :
@@ -61,47 +61,41 @@ variable {G Gi : Type} {H : W → Type} {Gv : V → Type} [Group G] [Group Gi] [
   [∀ v, TopologicalSpace (Gv v)] [T2Space Gi] [∀ v, T2Space (Gv v)]
 
 /- English proof (translation)
-Establish `hcp : ∀ v, Continuous (p' v)`. Introduce `v`. Establish `h : ⇑(p' v) = fun g => (e v).symm (fun i => p (ι v i) g)`. Use function extensionality and compare the values at `g`. Apply `(e v).injective` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Conclude with `funext fun i => hp v i g`. Rewrite using `[h]`. Conclude with `(e v).symm.continuous.comp (continuous_pi fun i => hRP.cp _)`. Establish `hKset : ∀ v, (K' v : Set (Gv v)) = e v ⁻¹' Set.pi Set.univ fun i => (K (ι v i) : Set _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `v`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, hK, Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_imp_iff]`. Use `⟨hRP.cq, hcp, fun v => ?_, fun v => ?_, fun g => ?_, fun S => ?_, fun g g' hq h => ?_, fun gi gv hgv => ?_, fun Ci C hCi hC hev => ?_⟩` and prove the remaining obligations. Rewrite using `[hKset]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isOpen_set_pi Set.finite_univ fun i _ => hRP.opn _).preimage (e v).continuous`. Establish `h : (K' v : Set (Gv v)) = (e v).symm '' Set.pi Set.univ fun i => (K (ι v i) : Set _)`. Rewrite using `[hKset]`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce `hx`. Conclude with `⟨e v x, hx, (e v).symm_apply_apply x⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify `hy` using `[Set.mem_preimage]`. Rewrite using `[h]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(isCompact_univ_pi fun i => hRP.cpt _).image (e v).symm.continuous`. Use `(ev_up ι b hb (hRP.ae g)).mono fun v h => ?_` and prove the remaining obligations. Rewrite using `[hK]`. Introduce `i`. Rewrite using `[hp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h i`. Establish `hfin : (⋃ v ∈ (S : Set V), Set.range (ι v)).Finite` using `S.finite_toSet.biUnion fun v _ => Set.finite_range (ι v)`. Establish `hmem : ∀ w, w ∈ hfin.toFinset ↔ b w ∈ S`. Introduce `w`. Rewrite using `[Set.Finite.mem_toFinset]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨v, hv, i, rfl⟩` from `Set.mem_iUnion₂.1 h`. Rewrite using `[hb]`. Conclude with `hv`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `h`. Take `⟨v, i, rfl⟩` from `hs w`. Rewrite `h` using `[hb]`. Conclude with `Set.mem_biUnion h ⟨i, rfl⟩`. Establish `h : (US p' K' S : Set G) = US p K hfin.toFinset`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, mem_US]`. Prove the components needed by the constructor for the conclusion. Introduce `h w hw`. Take `⟨v, i, rfl⟩` from `hs w`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv : v ∉ S`. Rewrite `hw` using `[hmem, hb]`. Conclude with `hw`. Use `(hK v _).1 (h v hv) i` as an intermediate fact. Rewrite `this` using `[hp]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h v hv`. Rewrite using `[hK]`. Introduce `i`. Rewrite using `[hp]`. Conclude with `h _ (by rw [hmem, hb]; exact hv)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `hRP.opnU _`. Use `hRP.ext g g' hq fun w => ?_` and prove the remaining obligations. Take `⟨v, i, rfl⟩` from `hs w`. Rewrite using `[← hp, ← hp, h]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨gw, hgw⟩` from `exists_fam ι b hb hinj hs (X := H) fun v i => e v (gv v) i`. Establish `hae : ∀ᶠ w in cofinite, gw w ∈ K w`. Use `(ev_down ι b hb hs hgv).mono fun w h => ?_` and prove the remaining obligations. Take `⟨v, i, rfl⟩` from `hs w`. Rewrite `h` using `[hb]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hgw]`. Conclude with `(hK v _).1 h i`. Take `⟨g, hq, hpg⟩` from `hRP.surj gi gw hae`. Use `⟨g, hq, fun v => (e v).injective (funext fun i => ?_)⟩` and prove the remaining obligations. Rewrite using `[hp, hpg, hgw]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨D, hD⟩` from `exists_fam ι b hb hinj hs (X := fun w => Set (H w)) fun v i => (fun x => e v x i) '' C v`. Establish `hDc : ∀ w, IsCompact (D w)`. Introduce `w`. Take `⟨v, i, rfl⟩` from `hs w`. Rewrite using `[hD]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `(hC v).image ((continuous_apply i).comp (e v).continuous)`. Establish `hDe : ∀ᶠ w in cofinite, D w ⊆ K w`. Use `(ev_down ι b hb hs hev).mono fun w h => ?_` and prove the remaining obligations. Take `⟨v, i, rfl⟩` from `hs w`. Rewrite `h` using `[hb]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hD]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(hK v x).1 (h hx) i`. Establish `hA` using `hRP.prop Ci D hCi hDc hDe`. Establish `hcl : IsClosed {g | q g ∈ Ci ∧ ∀ v, p' v g ∈ C v}`.
-
-Establish `h : {g | q g ∈ Ci ∧ ∀ v, p' v g ∈ C v} = q ⁻¹' Ci ∩ ⋂ v, p' v ⁻¹' C v`. Use extensionality with `g`. Simplify using the standard rewrite rules. Rewrite using `[h]`. Conclude with `(hCi.isClosed.preimage hRP.cq).inter (isClosed_iInter fun v => (hC v).isClosed.preimage (hcp v))`.
-
-Use `hA.of_isClosed_subset hcl ?_` and prove the remaining obligations. Introduce and unpack `g ⟨h1, h2⟩`. Use `⟨h1, fun w => ?_⟩` and prove the remaining obligations. Take `⟨v, i, rfl⟩` from `hs w`. Rewrite using `[hD, ← hp]`.
-
-Conclude with `⟨_, h2 v, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem rp_group [∀ v, Finite (I v)] {q : G →* Gi} {p : ∀ w, G →* H w} {K : ∀ w, Subgroup (H w)}
     (hRP : RP q p K) (ι : ∀ v, I v → W) (b : W → V) (hb : ∀ v i, b (ι v i) = v)
@@ -221,11 +215,11 @@ end UpperTheory.ConvolutionTheory.T4.RPGroup
 
 open GroundTheory.Global GroundTheory.Global.SemiLocal GroundTheory.Global.AdeleBaseChange GroundTheory.Automorphic in
 /- English proof (translation)
-Introduce `hF F E _ _ _ _ _ n`. Use `UpperTheory.ConvolutionTheory.T4.RPGroup.rp_group (I := fun v : Pl F => PlacesOver E v) (hF E n) (fun v i => i.1) (below F) (fun v i => (below_eq_iff i.1 v).2 i.2) (fun v => Subtype.val_injective) (fun w => ⟨below F w, ⟨w, (below_eq_iff w _).1 rfl⟩, rfl⟩) (fun v => glPiEquiv (Fin …` and prove the remaining obligations. Introduce `v i g`. Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Introduce `v x`. Establish `h : ∀ w : PlacesOver E v, mapGL n (Pi.evalRingHom (fun w : PlacesOver E v => w.1.adicCompletion E) w) x = glPiEquiv (Fin n) (fun w : PlacesOver E v => w.1.adicCompletion E) x w`. Introduce `w`. Use `Units.ext ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `a b`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(∀ w : PlacesOver E v, _ ∈ _) ↔ _`. Conclude with `forall_congr' fun w => by rw [h w]`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem UpperTheory.restrictedProduct_extension_of_base_regroup :
     RPF → RPE := by

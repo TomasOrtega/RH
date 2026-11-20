@@ -6,21 +6,19 @@ open MeasureTheory Matrix NumberField Formalism.BasicNotions Formalism.MainNotio
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `K V V' _ _ _ _ _ _ _ _ _ _ _ h h' e he L I hI hQ`. Establish `hL : GlobalTheory.Mass.IsIntLat h L`. Use `GlobalTheory.Mass.Transp.intLat_img e.symm (GlobalTheory.Mass.Transp.symm_isom e he) _ hI` as an intermediate fact. Rewrite `this` using `[GlobalTheory.Mass.Transp.img_symm_img]`. Then use the resulting hypothesis. Use `⟨hL, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨q⟩` from `hQ`. Use `set D := Formalism.HermitianLatticesTheory.dual h L with hDdef`. Use `set D' := Formalism.HermitianLatticesTheory.dual h' (GlobalTheory.Mass.Transp.img e L) with hD'def`. Establish `hD : D' = GlobalTheory.Mass.Transp.img e D` using `GlobalTheory.Mass.Transp.dual_img e he L`. Establish `hmem : ∀ x : V, x ∈ D → e x ∈ D'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite using `[hD, GlobalTheory.Mass.Transp.mem_img]`. Simplify using `using hx`. Establish `hmem' : ∀ y : V', y ∈ D' → e.symm y ∈ D`. Introduce `y hy`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `hy` using `[hD, GlobalTheory.Mass.Transp.mem_img]`. Conclude with `hy`. Set `f : D ≃ₗ[𝓞 K] D'` to `{ toFun := fun x => ⟨e x, hmem x x.2⟩ invFun := fun y => ⟨e.symm y, hmem' y y.2⟩ map_add' := fun x y => by ext; simp map_smul' := fun r x => by`. Use `ext`. Simplify using `only [SetLike.val_smul, RingHom.id_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `(e.toLinearMap.restrictScalars (𝓞 K)).map_smul r x`. Use `left_inv := fun x => by ext; simp`. Use `right_inv := fun y => by ext; simp }`. Establish `hf : (L.comap D.subtype).map (f : D →ₗ[𝓞 K] D') = (GlobalTheory.Mass.Transp.img e L).comap D'.subtype`. Use extensionality with `⟨y, hy⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.mem_map, Submodule.mem_comap, Submodule.subtype_apply]`. Rewrite using `[GlobalTheory.Mass.Transp.mem_img]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, hx⟩, hxL, hxy⟩`. Establish `: (f ⟨x, hx⟩ : V') = y` using `congrArg Subtype.val hxy`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [f, LinearEquiv.coe_mk] at this`. Rewrite using `[← this]`. Simplify using `using hxL`. Introduce `hyL`. Use `⟨⟨e.symm y, hmem' y hy⟩, hyL, ?_⟩` and prove the remaining obligations.
-
-Use `ext`. Simplify using `[f]`. Conclude with `⟨(Submodule.Quotient.equiv _ _ f hf).trans q⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mass.Transp.discModule_transport : ∀ (K V V' : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [AddCommGroup V'] [Module K V'] [Module (𝓞 K) V'] [IsScalarTower (𝓞 K) K V'] (h : V →ₗ⋆[K] V →ₗ[K] K) (h' : V' →ₗ⋆[K] V' →ₗ[K] K) (e : V ≃ₗ[K] V'), (∀ x y, h' (e x) (e y) = h x y) → ∀ (L : Submodule (𝓞 K) V) (I : Ideal (𝓞 K)), GlobalTheory.Mass.IsIntLat h' (GlobalTheory.Mass.Transp.img e L) → Nonempty ((↥(Formalism.HermitianLatticesTheory.dual h' (GlobalTheory.Mass.Transp.img e L)) ⧸ (GlobalTheory.Mass.Transp.img e L).comap (Formalism.HermitianLatticesTheory.dual h' (GlobalTheory.Mass.Transp.img e L)).subtype) ≃ₗ[𝓞 K] (𝓞 K ⧸ I)) → GlobalTheory.Mass.IsIntLat h L ∧ Nonempty ((↥(Formalism.HermitianLatticesTheory.dual h L) ⧸ L.comap (Formalism.HermitianLatticesTheory.dual h L).subtype) ≃ₗ[𝓞 K] (𝓞 K ⧸ I)) := by
   intro K V V' _ _ _ _ _ _ _ _ _ _ _ h h' e he L I hI hQ

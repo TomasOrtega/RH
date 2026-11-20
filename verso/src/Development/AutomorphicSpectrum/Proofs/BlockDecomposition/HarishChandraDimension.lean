@@ -7,9 +7,9 @@ open ReciprocityTheory.Ty.Fin
 namespace GlobalTheory.CompanionTheory.TyFin
 
 /- English proof (translation)
-Unfold `blkGL`. Rewrite using `[dif_pos (one_mem _)]`. Apply `Units.ext` to reduce the goal to its premises. Use `show Formalism.IrreducibleCountingLemmas.TYPES.blk K b c ((1 : GL ι K) : Matrix ι ι K) = 1`. Use extensionality with `i j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Formalism.IrreducibleCountingLemmas.TYPES.blk, Matrix.one_apply, Subtype.ext_iff]`.
+A detailed English derivation is pending.
 -/
 theorem blkGL_one_eq {K : Type} [Field K] [Fintype K] [DecidableEq K] {ι : Type} [Fintype ι]
     [DecidableEq ι] {s : ℕ} (b : ι → Fin s) (c : Fin s) :
@@ -22,7 +22,7 @@ theorem blkGL_one_eq {K : Type} [Field K] [Fintype K] [DecidableEq K] {ι : Type
   simp [Formalism.IrreducibleCountingLemmas.TYPES.blk, Matrix.one_apply, Subtype.ext_iff]
 
 /- English proof (translation)
-Unfold `indF`. Use `congr 1`. Establish `h : ∀ x : Γ, x * 1 * x⁻¹ = 1` using `fun x => by group`. Simplify using `only [h, one_mem, if_true, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem indF_one_eq {Γ : Type} [Group Γ] [Fintype Γ] (H : Subgroup Γ) (φ : Γ → ℂ) :
     indF H φ 1 = (Nat.card H : ℂ)⁻¹ * ((Nat.card Γ : ℂ) * φ 1) := by
@@ -34,11 +34,11 @@ theorem indF_one_eq {Γ : Type} [Group Γ] [Fintype Γ] (H : Subgroup Γ) (φ : 
     Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-Introduce `K _ _ _ ι _ _ s b lam`. Establish `h` using `congrFun (GlobalTheory.T.harish_chandra_character K ι s b lam).1 1`. Rewrite `h` using `[Representation.char_one, indF_one_eq]`. Establish `hf : hcFun b (fun c => (lam c).character) (1 : GL ι K) = ((∏ c, Module.finrank ℂ (lam c) : ℕ) : ℂ)`. Unfold `hcFun`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `push_cast`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[blkGL_one_eq, FDRep.char_one]`. Rewrite `h` using `[hf]`. Establish `hP : (Nat.card (Formalism.IrreducibleCountingLemmas.TYPES.parab K b) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ((Module.finrank ℂ (Formalism.IrreducibleCountingLemmas.TYPES.hcSpace K b lam) * Nat.card (Formalism.IrreducibleCountingLemmas.TYPES.parab K b) : ℕ) : ℂ) = ((Nat.card (GL ι K) * ∏ c, Module.finrank ℂ (lam c) : ℕ) : ℂ)`. Rewrite using `[Nat.cast_mul, h, Nat.cast_mul]`. Clear the denominators using the available nonvanishing facts. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem hcDim : ReciprocityTheory.Ty.Fin.St.HCDim := by
   intro K _ _ _ ι _ _ s b lam

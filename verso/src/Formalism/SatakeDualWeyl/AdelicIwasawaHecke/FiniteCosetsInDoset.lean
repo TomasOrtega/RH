@@ -12,7 +12,7 @@ abbrev conjInter (K : Subgroup G) (s : G) : Subgroup K :=
   (K.map (MulAut.conj s).toMonoidHom).subgroupOf K
 
 /- English proof (translation)
-Use `haveI : (conjInter K s).FiniteIndex := ⟨hK s⟩`. Conclude with `Subgroup.finite_quotient_of_finiteIndex`.
+A detailed English derivation is pending.
 -/
 theorem finite_quot_conjInter {K : Subgroup G} (hK : IsCommensurated K) (s : G) :
     Finite (K ⧸ conjInter K s) := by
@@ -20,11 +20,11 @@ theorem finite_quot_conjInter {K : Subgroup G} (hK : IsCommensurated K) (s : G) 
   exact Subgroup.finite_quotient_of_finiteIndex
 
 /- English proof (translation)
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (conjInter K s) k`. Establish `hmem : ((h⁻¹ : conjInter K s) : K) ∈ conjInter K s` using `(h⁻¹).2`. Rewrite `hmem` using `[Subgroup.mem_subgroupOf, Subgroup.mem_map]`. Take `⟨m, hmK, hm⟩` from `hmem`. Use `⟨⟨m, hmK⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hh]`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, InvMemClass.coe_inv] at hm`. Establish `hm' : s * m = ((h : K) : G)⁻¹ * s`. Rewrite using `[← hm]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subgroup.coe_mul]`. Rewrite using `[mul_assoc _ s, hm']`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_eq_out_mul (K : Subgroup G) (s : G) (k : K) :
     ∃ k' : K, (k : G) * s =
@@ -43,11 +43,9 @@ theorem mul_eq_out_mul (K : Subgroup G) (s : G) (k : K) :
   group
 
 /- English proof (translation)
-Use `haveI := finite_quot_conjInter hK s`. Use `(Set.finite_range (fun y : K ⧸ conjInter K s => ((((y.out : K) : G) * s : G) : G ⧸ K))).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨a, b, hx⟩`. Take `⟨k', hk'⟩` from `mul_eq_out_mul K s a`. Use `⟨QuotientGroup.mk a, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Simplify using `only`. Establish `hxx : (QuotientGroup.mk x.out : G ⧸ K) = x` using `Quotient.out_eq x`. Rewrite using `[← hxx, hx, hk', QuotientGroup.eq]`. Establish `e : ((((QuotientGroup.mk a : K ⧸ conjInter K s).out : K) : G) * s)⁻¹ * ((((QuotientGroup.mk a : K ⧸ conjInter K s).out : K) : G) * s * k' * b) = k' * b` using `by group`. Rewrite using `[e]`.
-
-Conclude with `K.mul_mem k'.2 b.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_cosets_in_doset {K : Subgroup G} (hK : IsCommensurated K) (s : G) :
     {x : G ⧸ K | ∃ a b : K, x.out = (a : G) * s * b}.Finite := by
@@ -67,7 +65,7 @@ theorem finite_cosets_in_doset {K : Subgroup G} (hK : IsCommensurated K) (s : G)
   exact K.mul_mem k'.2 b.2
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hf`. Use `(S.finite_toSet.biUnion fun s _ => finite_cosets_in_doset hK s).subset ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨s, hs, a, b, h⟩` from `hS _ hx`. Conclude with `Set.mem_biUnion hs ⟨a, b, h⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finite_support_cosets {k : Type} [Zero k] {K : Subgroup G} (hK : IsCommensurated K)
     {f : G → k} (hf : FinDosetSupp K f) :

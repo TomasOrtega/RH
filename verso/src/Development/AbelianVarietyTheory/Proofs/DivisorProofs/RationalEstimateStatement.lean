@@ -23,7 +23,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `⟨?_, fun hq => ?_⟩` and prove the remaining obligations. Take `⟨cc, ph', h0⟩` from `h.1`. Conclude with `⟨cc, ph', h0⟩`. Take `⟨O', h1, h2, h3⟩` from `h.2 hq`. Use `⟨{ O' with }, h1, ⟨⟨h2.lift.field, h2.lift.std, h2.lift.v0, h2.lift.c0, h2.lift.lev⟩, fun t => ⟨(h2.tuple t).reps, (h2.tuple t).B, (h2.tuple t).xi, (h2.tuple t).phi, (h2.tuple t).half⟩, h2.act, h2.bad, h2.reps, h2.ep, h2.io, h2.w, h2.cov, h2.cxi, h2.model₂⟩, h3⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem oneMapRowR_charOf (O : ∀ i, OMDat J.toCore R i Unit (fun _ => A.μ0)) (F : Face D A) (ph : Fin D.R.m → ℂ)
     (i : Fin D.R.m) (h : OneMapRowR J R κ v₀ O ph i) :
@@ -44,24 +44,24 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[phEff, p.phsOne i]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem phEff_eq_one : phEff p.R = fun _ => 1 := by
   funext i
   simp [phEff, p.phsOne i]
 
 /- English proof (translation)
-The claim follows from `h.ioExt`.
+A detailed English derivation is pending.
 -/
 theorem extremal_vectors_split_part (h : p.Rows) : IoExt (R2 p) := h.ioExt
 
 /- English proof (translation)
-The claim follows from `p.qGuard`.
+A detailed English derivation is pending.
 -/
 theorem splitPartRealisation_satisfies_qGuard : QGuard (R2 p) := p.qGuard
 
 /- English proof (translation)
-Use `oneMapRowR_charOf (κ := p.κ) (v₀ := p.v₀) p.O (F2 p) (phEff p.R) i (h.oneMap i)` as an intermediate fact. Rewrite `this` using `[phEff_eq_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_map_split_part (h : p.Rows) (i : Fin D.R.m) : OneMapRowR p.T (R2 p) p.κ p.v₀ (om2 p) (fun _ => 1) i := by
   have := oneMapRowR_charOf (κ := p.κ) (v₀ := p.v₀) p.O (F2 p) (phEff p.R) i (h.oneMap i)
@@ -69,7 +69,7 @@ theorem one_map_split_part (h : p.Rows) (i : Fin D.R.m) : OneMapRowR p.T (R2 p) 
   exact this
 
 /- English proof (translation)
-Establish `hL : Links2 p` using `GlobalTheory.T.second_link_of_weight_rows _ _ _ _ _ _ _ _ _ _ p h hm.1`. Conclude with `GlobalTheory.T.twistedClassSums_rational_of_rayClassFields D _ _ _ _ p.T (R2 p) (F2 p) p.κ p.v₀ (fw2 p) (om2 p) hL.1 (extremal_vectors_split_part p h) hL.2.2.1 hL.2.2.2.2.2.2.1 (splitPartRealisation_satisfies_qGuard p) (one_map_split_part p h) hL.2.2.2.1 hL.2.2.2.2.1 hm.2.2.rayQ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem twistedRational_at (h : p.Rows) (hm : More p) : GlobalTheory.RealIndexBound.TwistedRational (R2 p) (F2 p) fun _ => 1 := by
   have hL : Links2 p := GlobalTheory.T.second_link_of_weight_rows _ _ _ _ _ _ _ _ _ _ p h hm.1
@@ -79,7 +79,7 @@ theorem twistedRational_at (h : p.Rows) (hm : More p) : GlobalTheory.RealIndexBo
 end Point
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ _ _ p h hm => twistedRational_at p h hm⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem ratSt : RatSt :=
   ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ _ _ p h hm => twistedRational_at p h hm⟩⟩⟩

@@ -14,11 +14,9 @@ theorem interp_rho (m₀ m₁ : ConeMetric ℂ (Ix κ)) (t : ℝ) (z : Ix κ →
     (interp m₀ m₁ t).ρ z = m₀.ρ z ^ (1 - t) * m₁.ρ z ^ t := rfl
 
 /- English proof (translation)
-Establish `hfz : ∀ y ∈ S, ContDiffAt ℝ 2 f y` using `fun y hy => hf.contDiffAt (hS.mem_nhds hy)`. Establish `hgz : ∀ y ∈ S, ContDiffAt ℝ 2 g y` using `fun y hy => hg.contDiffAt (hS.mem_nhds hy)`. Establish `e1 : fderiv ℝ h =ᶠ[𝓝 z] fun y => a • fderiv ℝ f y + b • fderiv ℝ g y` using `by filter_upwards [hS.mem_nhds hz] with y hy`. Apply the tactic sequence `have hfd : DifferentiableAt ℝ f y := (hfz y hy).differentiableAt (by first | norm_num | simp)`. Apply the tactic sequence `have hgd : DifferentiableAt ℝ g y := (hgz y hy).differentiableAt (by first | norm_num | simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : h =ᶠ[𝓝 y] fun w => a * f w + b * g w` using `by filter_upwards [hS.mem_nhds hy] with w hw using hh w hw`. Conclude with `(((hfd.hasFDerivAt.const_mul a).add (hgd.hasFDerivAt.const_mul b)).congr_of_eventuallyEq hev).fderiv`. Rewrite using `[e1.fderiv_eq]`. Apply the tactic sequence `have hf1 : DifferentiableAt ℝ (fderiv ℝ f) z := ((hfz z hz).fderiv_right (m := 1) (by first | norm_num | rfl | simp)).differentiableAt (by first | norm_num | simp)`. Apply the tactic sequence `have hg1 : DifferentiableAt ℝ (fderiv ℝ g) z := ((hgz z hz).fderiv_right (m := 1) (by first | norm_num | rfl | simp)).differentiableAt (by first | norm_num | simp)`.
-
-Conclude with `((hf1.hasFDerivAt.const_smul a).add (hg1.hasFDerivAt.const_smul b)).fderiv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fderiv2_lin_comb {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {S : Set E} (hS : IsOpen S)
     {f g h : E → ℝ} (a b : ℝ) (hf : ContDiffOn ℝ 2 f S) (hg : ContDiffOn ℝ 2 g S)
@@ -41,17 +39,15 @@ theorem fderiv2_lin_comb {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] 
   exact ((hf1.hasFDerivAt.const_smul a).add (hg1.hasFDerivAt.const_smul b)).fderiv
 
 /- English proof (translation)
-Take `⟨ht0, ht1⟩` from `ht`. Establish `hS : IsOpen {z : Ix κ → ℂ | z ≠ 0}` using `isOpen_ne`. Establish `hsm0 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) m₀.ρ {z | z ≠ 0}` using `hg₀.semipos.1`. Establish `hsm1 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) m₁.ρ {z | z ≠ 0}` using `hg₁.semipos.1`. Establish `h2 : (2 : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞)` using `by first`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `exact_mod_cast (le_top : (2 : ℕ∞) ≤ ⊤)`. Consider the case `exact WithTop.coe_le_coe.mpr (le_top : (2 : ℕ∞) ≤ ⊤)`. Consider the case `(norm_cast; exact le_top)`. Consider the case `decide`. Establish `hl0 : ContDiffOn ℝ 2 (fun z => Real.log (m₀.ρ z)) {z | z ≠ 0}` using `(hsm0.of_le h2).log fun z hz => (m₀.pos z hz).ne'`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hl1 : ContDiffOn ℝ 2 (fun z => Real.log (m₁.ρ z)) {z | z ≠ 0}` using `(hsm1.of_le h2).log fun z hz => (m₁.pos z hz).ne'`. Use `⟨hg₀.arith, hg₀.indep, hg₀.smooth, ?_, ?_, hg₀.conjMu, hg₀.vol⟩` and prove the remaining obligations. Unfold `IsSemipositiveOn`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show ContDiffOn ℝ _ (fun z => m₀.ρ z ^ (1 - t) * m₁.ρ z ^ t) _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hsm0.rpow_const_of_ne fun z hz => (m₀.pos z hz).ne').mul (hsm1.rpow_const_of_ne fun z hz => (m₁.pos z hz).ne')`. Introduce `z hz hz0 w hw`. Establish `h0` using `hg₀.semipos.2 z hz hz0 w hw`. Establish `h1` using `hg₁.semipos.2 z hz hz0 w hw`. Unfold `leviForm at h0 h1 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rw [fderiv2_lin_comb (h := fun z => Real.log ((interp m₀ m₁ t).ρ z)) hS (1 - t) t hl0 hl1 (fun y hy => by try dsimp only`. Rewrite using `[interp_rho, Real.log_mul (Real.rpow_pos_of_pos (m₀.pos y hy) _).ne' (Real.rpow_pos_of_pos (m₁.pos y hy) _).ne', Real.log_rpow (m₀.pos y hy), Real.log_rpow (m₁.pos y hy)]) hz0]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.mpr ht1) h0, mul_nonneg ht0 h1]`. Introduce `z`.
-
-Rewrite using `[interp_rho, interp_rho, hg₀.conjM z, hg₁.conjM z]`.
+Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGood_interp {x : Ix κ → Ω} {m₀ m₁ : ConeMetric ℂ (Ix κ)} {μ : Measure (Ix κ → ℂ)}
     (hg₀ : IsGood D x m₀ μ) (hg₁ : IsGood D x m₁ μ) {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :

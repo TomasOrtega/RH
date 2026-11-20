@@ -20,13 +20,11 @@ def KumPres (A : ValuationSubring Ω) (n r : ℕ) (ζ : Ω) (Z : G ℚ Ω → (Z
       ∃ k : ι → ZMod (l ^ n), (∀ i, KumVal n ζ (u i) s (k i)) ∧ Cg n (Z s 1) (∑ i, o i * ((k i).val : Qbar l))
 
 /- English proof (translation)
-Take `⟨v, hv, hsv⟩` from `hk`. Take `⟨w, hw, hsw⟩` from `hk'`. Establish `hpos : 0 < l ^ n` using `pow_pos (Fact.out : l.Prime).pos n`. Use `haveI : NeZero (l ^ n) := ⟨hpos.ne'⟩`. Establish `hv0 : v ≠ 0` using `by rintro rfl; exact hu (by rw [← hv, zero_pow hpos.ne'])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw0 : w ≠ 0` using `by rintro rfl; exact hu (by rw [← hw, zero_pow hpos.ne'])`. Establish `h1 : (w / v) ^ (l ^ n) = 1` using `by rw [div_pow, hv, hw, div_self hu]`. Take `⟨j, -, hj⟩` from `hζ.eq_pow_of_pow_eq_one h1`. Establish `hwv : w = ζ ^ j * v` using `by rw [hj]; field_simp`. Establish `e1 : s w = ζ ^ k.val * w`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hwv, map_mul, map_pow, hs, hsv]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ζ ^ k.val = ζ ^ k'.val`. Use `e1.symm.trans hsw` as an intermediate fact. Conclude with `mul_right_cancel₀ hw0 this`.
-
-Conclude with `ZMod.val_injective _ (hζ.pow_inj (ZMod.val_lt k) (ZMod.val_lt k') e2)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kumVal_unique {n : ℕ} {ζ u : Ω} {s : G ℚ Ω} {k k' : ZMod (l ^ n)} (hζ : IsPrimitiveRoot ζ (l ^ n)) (hs : s ζ = ζ)
     (hu : u ≠ 0) (hk : KumVal n ζ u s k) (hk' : KumVal n ζ u s k') : k = k' := by
@@ -47,13 +45,13 @@ theorem kumVal_unique {n : ℕ} {ζ u : Ω} {s : G ℚ Ω} {k k' : ZMod (l ^ n)}
   exact ZMod.val_injective _ (hζ.pow_inj (ZMod.val_lt k) (ZMod.val_lt k') e2)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_pow _, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem kumVal_one (n : ℕ) (ζ : Ω) (s : G ℚ Ω) : KumVal (l := l) n ζ 1 s 0 :=
   ⟨1, one_pow _, by simp⟩
 
 /- English proof (translation)
-Use `⟨hζ, hnr, fun i => i.elim, fun i => i.elim, fun s hs hc _ => ⟨fun i => i.elim, fun i => i.elim, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Cg, hZ s hs hc, Finset.sum_eq_zero (fun i _ => i.elim), sub_zero, norm_zero]`. Conclude with `norm_nonneg _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kumPres_empty (A : ValuationSubring Ω) {n r : ℕ} {ζ : Ω} (hζ : IsPrimitiveRoot ζ (l ^ n)) (hnr : n ≤ r)
     (Z : G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l) (hZ : ∀ s ∈ Ine (F := ℚ) A, cycMod ℚ Ω l r s = 1 → Z s 1 = 0) :
@@ -63,14 +61,14 @@ theorem kumPres_empty (A : ValuationSubring Ω) {n r : ℕ} {ζ : Ω} (hζ : IsP
   exact norm_nonneg _
 
 /- English proof (translation)
-Introduce `h` and use `(h.2.2.1 ()).2.1 rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (A : ValuationSubring Ω) {n r : ℕ} {ζ : Ω} (Z : G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l) (o : Unit → Qbar l) :
     ¬ KumPres A n r ζ Z (fun _ : Unit => (0 : Ω)) o :=
   fun h => (h.2.2.1 ()).2.1 rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨h, -⟩`. Use `h.eq_orderOf` as an intermediate fact. Rewrite `this` using `[orderOf_one, pow_one]`. Conclude with `(Fact.out : l.Prime).one_lt.ne this.symm`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 example (A : ValuationSubring Ω) {r : ℕ} (Z : G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l) {ι : Type} [Fintype ι] (u : ι → Ω)
     (o : ι → Qbar l) : ¬ KumPres A 1 r (1 : Ω) Z u o := by
@@ -80,13 +78,11 @@ example (A : ValuationSubring Ω) {r : ℕ} (Z : G ℚ Ω → (ZMod (l ^ r))ˣ �
   exact (Fact.out : l.Prime).one_lt.ne this.symm
 
 /- English proof (translation)
-Establish `ht' : t ^ (l ^ r) = 1`. Take `⟨d, hd⟩` from `pow_dvd_pow l hnr`. Rewrite using `[hd, pow_mul, ht, one_pow]`. Establish `h1` using `cyclotomicCharacter.spec (L := Ω) l (MulSemiringAction.toRingAut (G ℚ Ω) Ω s) t ht'`. Establish `h2 : (cyclotomicCharacter Ω l (MulSemiringAction.toRingAut (G ℚ Ω) Ω s)).val.toZModPow r = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Units.val hs` as an intermediate fact. Simplify `this` using `[cycMod, cycZ]`. Rewrite `h1` using `[h2, ZMod.val_one_eq_one_mod]`. Establish `h3 : t ^ (1 % l ^ r) = t`. Break down `Nat.lt_or_ge 1 (l ^ r) with h | h` into its components or cases.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Nat.mod_eq_of_lt h, pow_one]`. Establish `e : l ^ r = 1` using `le_antisymm h (Nat.one_le_pow _ _ (Fact.out : l.Prime).pos)`. Rewrite using `[e, Nat.mod_self, pow_zero]`. Rewrite `ht'` using `[e, pow_one]`. Conclude with `ht'.symm`.
-
-Conclude with `h1.trans h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_of_cycMod [∀ i, HasEnoughRootsOfUnity Ω (l ^ i)] {n r : ℕ} (hnr : n ≤ r) {s : G ℚ Ω}
     (hs : cycMod ℚ Ω l r s = 1) {t : Ω} (ht : t ^ (l ^ n) = 1) : s t = t := by

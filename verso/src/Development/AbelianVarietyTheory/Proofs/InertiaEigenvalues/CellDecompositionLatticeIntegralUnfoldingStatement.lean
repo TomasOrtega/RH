@@ -10,7 +10,7 @@ open NumberField IsDedekindDomain Matrix MeasureTheory GlobalTheory.CuspRep Glob
 open scoped ENNReal nonZeroDivisors Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.RSCell.CptMod.exists_isCompact_mod_NA) | (exact GlobalTheory.RSCell.CptMod.exists_isCompact_mod_NA) | (intros; apply GlobalTheory.RSCell.CptMod.exists_isCompact_mod_NA <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.cell_decomposition_lattice_integral_unfolding : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (T : Finset (HeightOneSpectrum (𝓞 E)))
     (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ), (∀ w, IsUnifV E w (ϖ w : w.adicCompletion E)) →

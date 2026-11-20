@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.AdSpan.ReVec.Sympl
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.transpose_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem quad_sum_eq_trace {A : Type} [CommRing A] {m n : ℕ} (H : Matrix (Fin n) (Fin n) A)
     (G : Matrix (Fin m) (Fin m) A) (x y : Matrix (Fin m) (Fin n) A) :
@@ -26,7 +26,7 @@ theorem quad_sum_eq_trace {A : Type} [CommRing A] {m n : ℕ} (H : Matrix (Fin n
   ring
 
 /- English proof (translation)
-Rewrite using `[Matrix.transpose_mul]`. Establish `hre : H * (Q'ᵀ * yᵀ * (G * (x * Q))) = (H * Q'ᵀ * yᵀ * G * x) * Q`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hre, Matrix.trace_mul_comm (H * Q'ᵀ * yᵀ * G * x) Q]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_change {A : Type} [CommRing A] {m n : ℕ} (H Q Q' : Matrix (Fin n) (Fin n) A)
     (G : Matrix (Fin m) (Fin m) A) (x y : Matrix (Fin m) (Fin n) A) :
@@ -40,9 +40,9 @@ theorem trace_change {A : Type} [CommRing A] {m n : ℕ} (H Q Q' : Matrix (Fin n
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hb : ∀ k, b k = ∑ l, frP S b l k • S.frame l` using `fun k => by`. Simplify using `only [frP, Module.Basis.toMatrix_apply]`. Conclude with `(S.frame.sum_repr (b k)).symm`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `S.hT (b i) (b j) = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb i, hb j]`. Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Simplify using `only [HSpace.gram, RingHom.id_apply, starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gram_reS (S : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) :
     (show Matrix (Fin S.rank) (Fin S.rank) D.host.E from HSpace.gram (reS S b))
@@ -60,7 +60,7 @@ theorem gram_reS (S : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) :
   ring
 
 /- English proof (translation)
-Establish `h` using `gram_reS S b`. Simplify using `only at h ⊢`. Rewrite using `[h, Matrix.mul_inv_rev, Matrix.mul_inv_rev, ← Matrix.conjTranspose_nonsing_inv, Matrix.inv_eq_left_inv (frPinv_mul_frP S b)]`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_reS_inv (S : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) :
     (show Matrix (Fin S.rank) (Fin S.rank) D.host.E from HSpace.gram (reS S b))⁻¹
@@ -71,7 +71,7 @@ theorem gram_reS_inv (S : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) :
     Matrix.inv_eq_left_inv (frPinv_mul_frP S b)]
 
 /- English proof (translation)
-Unfold `hO`. Simplify using `only`. Use `Eq.trans ?_ (quad_sum_eq_trace _ _ _ _)` and prove the remaining obligations. Simplify using `only [Matrix.map_apply]`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem hO_eq_trace (S T : HSp D) (x y : WO S T) :
     hO S T x y = Matrix.trace (((HSpace.gram S)⁻¹).map (incA D) *
@@ -83,11 +83,11 @@ theorem hO_eq_trace (S T : HSp D) (x y : WO S T) :
   simp only [Matrix.map_apply]
 
 /- English proof (translation)
-Establish `hP : (frPinv S b * ((HSpace.gram S)⁻¹ * (frPinv S b)ᴴ)).map (incA D) = (frPinv S b).map (incA D) * ((HSpace.gram S)⁻¹.map (incA D) * (((frPinv S b).map (incA D)).map (cA D))ᵀ)`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Use `congr 2`. Establish `hi` using `gram_reS_inv S b`. Simplify using `only at hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Establish `key` using `trace_change ((HSpace.gram S)⁻¹.map (incA D)) ((frPinv S b).map (incA D)) (((frPinv S b).map (incA D)).map (cA D)) ((HSpace.gram T).map (incA D)) x (y.map (cA D))`. Rewrite `key` using `[← hP, ← hi]`. Rewrite using `[hO_eq_trace, hO_eq_trace]`. Simplify using `only`. Use `key.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `clear key hi hP`. Unfold `reW`. Establish `hm : (HMul.hMul (α` using `Matrix (Fin T.rank) (Fin S.rank) (AE D)) y ((frPinv S b).map (incA D))).map (cA D) = Matrix.map (α := AE D) (m := Fin T.rank) (n := Fin S.rank) y (cA D) * ((frPinv S b).map (incA D)).map (cA D) := Matrix.map_mul`. Conclude with `congrArg (fun M => ((HSpace.gram S)⁻¹.map (incA D) * (Mᵀ * ((HSpace.gram T).map (incA D) * HMul.hMul (α := Matrix (Fin T.rank) (Fin S.rank) (AE D)) x ((frPinv S b).map (incA D))))).trace) hm.symm`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hO_reW (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) (x y : WO (reS S b) T) :
     hO (reS S b) T x y = hO S T (reW S T b x) (reW S T b y) := by
@@ -114,7 +114,7 @@ theorem hO_reW (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) (x y :
       HMul.hMul (α := Matrix (Fin T.rank) (Fin S.rank) (AE D)) x ((frPinv S b).map (incA D))))).trace) hm.symm
 
 /- English proof (translation)
-Introduce `D S T b x y`. Unfold `symplO`. Rewrite using `[hO_reW]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_reW : ∀ (D : D7) (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) (x y : WO (reS S b) T),
     symplO (reS S b) T x y = symplO S T (reW S T b x) (reW S T b y) := by

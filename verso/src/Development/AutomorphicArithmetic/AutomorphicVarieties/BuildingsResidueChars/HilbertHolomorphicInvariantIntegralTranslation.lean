@@ -5,7 +5,7 @@ open GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheo
 open scoped Matrix
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem map_aff' {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (x : R) :
     Matrix.GeneralLinearGroup.map f (aff 1 x) = aff 1 (f x) := by
@@ -13,21 +13,21 @@ private theorem map_aff' {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) 
   fin_cases i <;> fin_cases j <;> simp [aff]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ, add_comm]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem aff_add' {R : Type} [CommRing R] (x y : R) : aff 1 x * aff 1 y = aff 1 (x + y) := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [aff, Matrix.mul_apply, Fin.sum_univ_succ, add_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aff]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem aff_zero' {R : Type} [CommRing R] : aff (1 : Rˣ) (0 : R) = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [aff]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ = _`. Simplify using `[funext_iff, Fin.forall_fin_two, Matrix.vecMul, dotProduct, aff]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem aff_mirab' {R : Type} [CommRing R] (x : R) : aff (1 : Rˣ) x ∈ mirab R := by
   change _ = _
@@ -35,19 +35,19 @@ private theorem aff_mirab' {R : Type} [CommRing R] (x : R) : aff (1 : Rˣ) x ∈
 
 open UpperTheory.V.Af.GlobalFixedVectors in
 /- English proof (translation)
-Introduce `F _ _ _ k c ω φ hφ o ho`. Establish `key : ∀ S : Finset (Pl F), (∀ x ∈ Ohat F, (∀ w ∈ S, pLoc F w x = 0) → TR.finRep F 2 (aff 1 x) φ = φ) → ∀ x ∈ Ohat F, TR.finRep F 2 (aff 1 x) φ = φ`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact fun h x hx => h x hx (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert w S hw ih`. Introduce `h`. Use `ih fun x hx hS => ?_` and prove the remaining obligations. Establish `e : aff 1 x = aff 1 (x - sLoc F w (pLoc F w x)) * locGL F 2 w (aff 1 (pLoc F w x))` using `gl_ext fun u => by`. Rewrite using `[map_mul, map_aff', map_aff', map_sub]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hu : u = w`. Substitute `hu` using the available equality. Rewrite using `[pLoc_locGL, pLoc_sLoc, sub_self, aff_zero', one_mul]`. Rewrite using `[pLoc_locGL_of_ne hu, pLoc_sLoc_of_ne hu, sub_zero, mul_one]`. Establish `hK : aff 1 (pLoc F w x) ∈ K1 w (c w)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨aff 1 ⟨pLoc F w x, mem_Ohat.1 hx w⟩, ?_, map_aff' _ _⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map _ _ ∈ mirab _`. Rewrite using `[map_aff']`. Conclude with `aff_mirab' _`. Establish `h1 : TR.finRep F 2 (locGL F 2 w (aff 1 (pLoc F w x))) φ = φ` using `hφ.level w _ hK`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_mul, Module.End.mul_apply, h1]`. Use `h _ (sub_mem hx (sLoc_mem w hx)) fun u hu => ?_` and prove the remaining obligations. Rewrite using `[map_sub]`. Distinguish the cases in `huw : u = w`. Substitute `huw` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pLoc_sLoc, sub_self]`. Rewrite using `[pLoc_sLoc_of_ne huw, sub_zero]`. Conclude with `hS u ((Finset.mem_insert.1 hu).resolve_left huw)`. Take `⟨S, hS⟩` from `exists_KAway_subset (M := 1) (hφ.aut.level.mem_nhds (show (1 : GL (Fin 2) (Af F)) ∈ _ by simp))`. Use `key S (fun x hx h0 => hS (mem_KAway.2 ⟨⟨aff 1 ⟨x, hx⟩, ?_, map_aff' _ _⟩, fun w hw => ?_⟩)) o (mem_Ohat.2 ho)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Subsingleton (Ohat F ⧸ Ideal.span {((1 : ℕ) : ↥(Ohat F))}) := Ideal.Quotient.subsingleton_iff.2 (by simp)`. Use extensionality with `i j`. Conclude with `Subsingleton.elim _ _`. Rewrite using `[map_aff', h0 w hw, aff_zero']`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.hilbertHolomorphic_invariant_integralTranslation :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (c : Pl F → ℕ) (ω : HChar F) (φ : TR.Sm F 2), IsHol k c ω φ → ∀ o : Af F, (∀ v : Pl F, Valued.v (pLoc F v o) ≤ 1) → TR.finRep F 2 (aff 1 o) φ = φ := by

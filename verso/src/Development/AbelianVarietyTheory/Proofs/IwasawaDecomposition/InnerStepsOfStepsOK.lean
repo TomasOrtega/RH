@@ -22,17 +22,17 @@ def InnerLaws : Prop :=
     R.ωY t k (κ, 1) (R.vY t k) = levChi _ (R.βY k) (R.datYt t k R.triv) κ • R.vY t k
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem innerSteps_of_stepsOK (h : StepsOK R) : InnerSteps R := h.1
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem innerLaws_of_lawsOK (h : LawsOK R) : InnerLaws R := h.1
 
 /- English proof (translation)
-Distinguish the cases in `h : j + 1 < D.R.m`. Conclude with `⟨(hν t j h).1.1, (hν t j h).2⟩`. Establish `e : j = D.R.m - 1` using `by omega`. Substitute `e` using the available equality. Conclude with `⟨(hν' t).1.1, (hν' t).2⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem haar_fund (hν : R.models_νY) (hν' : R.models_νY') (t : T) (j : ℕ) (hj : j < D.R.m) :
     (R.νY t j).IsHaarMeasure ∧ MeasureTheory.IsFundamentalDomain (GQ (Yc D j)) (R.fdY t j) (R.νY t j) := by
@@ -43,7 +43,7 @@ theorem haar_fund (hν : R.models_νY) (hν' : R.models_νY') (t : T) (j : ℕ) 
     exact ⟨(hν' t).1.1, (hν' t).2⟩
 
 /- English proof (translation)
-Introduce `t k hk`. Establish `hk0 : k < D.R.m` using `by omega`. Take `⟨hW, hV⟩` from `hS t ⟨k, hk0⟩ hk`. Conclude with `hP.of_index_eq ⟨k, hk0⟩ (min k D.R.m) (min (k + 1) D.R.m) (min_eq_left hk0.le) (min_eq_left hk.le) (Yc D k) (Yc D (k + 1)) (R.MY k) (R.MY (k + 1)) R.θ R.ψ hθ (hC _) (R.ωY t k) (R.vY t k) hW hV (R.ItY k) (hI t k hk) _ _ (hL t k hk) _ _ (haar_fund R hν hν' t _ hk).1 (haar_fund R hν …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ioYSt_of_inner (hP : IoPair D) (hC : ∀ k, ChainPar D k) (hθ : IsInfFam R.θ) (hS : InnerSteps R)
     (hL : InnerLaws R) (hν : R.models_νY) (hν' : R.models_νY') (hI : R.chain_ItY) : IoYSt R := by
@@ -56,9 +56,9 @@ theorem ioYSt_of_inner (hP : IoPair D) (hC : ∀ k, ChainPar D k) (hθ : IsInfFa
     _ _ (R.CC t (k + 1)) le_rfl
 
 /- English proof (translation)
-Establish `key : ∀ t k, ∃ io : R.CC t (k + 1) →ₗ[ℂ] R.CC t k, k + 1 < D.R.m → Lift.IsIo (R.νY t (k + 1)) (R.fdY t (k + 1)) (thetaKO (R.ωY t k)) (R.ptY t k) (R.ItY k) (R.CC t (k + 1)) (R.CC t k) io`. Introduce `t k`. Distinguish the cases in `hk : k + 1 < D.R.m`. Take `⟨io, hio⟩` from `h t k hk`. Conclude with `⟨io, fun _ => hio⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun h' => absurd h' hk⟩`. Use `choose io hio using key`. Conclude with `⟨io, fun t k hk => hio t k (by omega)⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ioY_of_ioYSt (h : IoYSt R) : ∃ io, ({ R with ioY := io } : RealDat D A Ks).chain_ioY := by
   classical
@@ -74,7 +74,7 @@ theorem exists_ioY_of_ioYSt (h : IoYSt R) : ∃ io, ({ R with ioY := io } : Real
   exact ⟨io, fun t k hk => hio t k (by omega)⟩
 
 /- English proof (translation)
-The claim follows from `exists_ioY_of_ioYSt R (ioYSt_of_inner R hP hC hM.inf hS hL hM.νY hM.νY' hI)`.
+A detailed English derivation is pending.
 -/
 theorem exists_ioY_of_pair (hP : IoPair D) (hC : ∀ k, ChainPar D k) (hS : InnerSteps R) (hL : InnerLaws R)
     (hM : R.IsModels) (hI : R.chain_ItY) : ∃ io, ({ R with ioY := io } : RealDat D A Ks).chain_ioY :=

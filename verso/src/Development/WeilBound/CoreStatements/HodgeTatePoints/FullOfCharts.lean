@@ -11,15 +11,15 @@ open GroundTheory.Heights₂.Heights.Kleiman
 universe u v w
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ Q₁ Q₂` and use `⟨KThm.lbTwist Q₁ Q₂, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem LineTwist.full_of_charts : LineTwist.Statement.{u, w} :=
   fun _ _ _ _ _ _ _ Q₁ Q₂ => ⟨KThm.lbTwist Q₁ Q₂, rfl⟩
 
 /- English proof (translation)
-Introduce `S _ Ω _ _ N x M p q m m' b₁ b₂ h`. Use `SubSystem.ext_sub fun I => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `I.2.1`. Rewrite using `[KThm.sub_twist, KThm.sub_pow, KThm.sub_pow, KThm.sub_pow, KThm.sub_twistMul M p m I hi, KThm.sub_twistMul M q m' I hi, mul_pow, mul_pow, mul_pow, ← pow_mul, ← pow_mul, ← pow_mul, KThm.span_zpow_pow I hi, KThm.span_zpow_pow I hi, KThm.span_zpow_pow I hi, mul_mul_mul_comm, ← pow_a …`. Establish `e1 : p * (q * b₁ + b₂) = q * (p * b₁) + p * b₂` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : m * ((q * b₁ + b₂ : ℕ) : ℤ) = m' * ((p * b₁ : ℕ) : ℤ) + m * (b₂ : ℤ)`. Use `push_cast`. Take the linear combination `(b₁ : ℤ) * h`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem TwistAlg.full_of_charts : TwistAlg.Statement.{u, w} := by
   intro S _ Ω _ _ N x M p q m m' b₁ b₂ h
@@ -36,7 +36,7 @@ theorem TwistAlg.full_of_charts : TwistAlg.Statement.{u, w} := by
   rw [e1, e2]
 
 /- English proof (translation)
-The claim follows from `StepTwo.proof hRed LineTwist.full_of_charts TwistAlg.full_of_charts RestrictTwist.full (NefRestrict.assembled hRL) StepData.JProper.full SubvarDrop.full PrimeFiltration.Point.full PrimeFiltration.Restrict.full hRQ (TwistVanish.assembled hS)`.
+A detailed English derivation is pending.
 -/
 theorem StepTwo.assembled (hRed : StepTwo.Reduce.Statement.{u, v, w})
     (hRL : RestrLenRestrict.Statement.{u, w}) (hRQ : PrimeFiltration.RestrictQuot.Statement.{u, w})
@@ -46,7 +46,7 @@ theorem StepTwo.assembled (hRed : StepTwo.Reduce.Statement.{u, v, w})
     PrimeFiltration.Restrict.full hRQ (TwistVanish.assembled hS)
 
 /- English proof (translation)
-The claim follows from `ClaimVanish.proof (StepTwo.assembled hRed hRL hRQ hS) (TwistVanish.assembled hS) hCS`.
+A detailed English derivation is pending.
 -/
 theorem ClaimVanish.assembled (hRed : StepTwo.Reduce.Statement.{u, w, w})
     (hRL : RestrLenRestrict.Statement.{u, w}) (hRQ : PrimeFiltration.RestrictQuot.Statement.{u, w})

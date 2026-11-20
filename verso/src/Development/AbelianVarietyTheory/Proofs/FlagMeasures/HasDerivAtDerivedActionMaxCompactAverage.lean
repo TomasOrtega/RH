@@ -7,21 +7,21 @@ noncomputable section
 namespace GlobalTheory.KFinAvg
 
 /- English proof (translation)
-Establish `hσ : Formalism.MainNotions.S.IsURepOn (Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) σ` using `hσ'`. Take `⟨hprob, hK0, -, -⟩` from `hμ`. Establish `hKc` using `isCompact_KH k r`. Establish `hae : ∀ᵐ g ∂μ, g ∈ GlobalTheory.ThA.KH k r` using `mem_ae_iff.2 hK0`. Establish `hres : μ.restrict (GlobalTheory.ThA.KH k r) = μ` using `Measure.restrict_eq_self_of_ae_mem hae`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ D' : List (Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ), (∀ Y ∈ D', Formalism.MainNotions.S.InLieHpk k r Y) → Integrable (fun g => φ g • Formalism.MainNotions.S.dsigW (k` using `k) (r := r) σ D' (σ g v)) μ := by`. Introduce `D' hD'`. Establish `h1 : ContinuousOn (fun g => φ g • Formalism.MainNotions.S.dsigW (k` using `k) (r := r) σ D' (σ g v)) (GlobalTheory.ThA.KH k r) := hφ.continuousOn.smul ((Formalism.MainNotions.LowestKTypeMultiplicity.orbit_cont hσ hv D' hD').mono Set.inter_subset_left)`. Establish `h2 : IntegrableOn (fun g => φ g • Formalism.MainNotions.S.dsigW (k` using `k) (r := r) σ D' (σ g v)) (GlobalTheory.ThA.KH k r) μ := h1.integrableOn_compact hKc`. Rewrite `h2` using `[IntegrableOn, hres]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hXD : ∀ Y ∈ X :: D, Formalism.MainNotions.S.InLieHpk k r Y`. Introduce `Y hY`. Break down `List.mem_cons.1 hY with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `hX`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hD Y h`. Establish `hexp` using `Formalism.MainNotions.LowestKTypeMultiplicity.exp_mem_UH hX`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (𝕜 := ℝ) (x₀ := (0 : ℝ)) (F := fun (t : ℝ) g => σ (NormedSpace.exp ((t : ℂ) • X)) (φ g • Formalism.MainNotions.S.dsigW (k := k) (r := r) σ D (σ g v))) (F' := fun (t : ℝ) g => σ (NormedSpace.exp ((t : ℂ) • X)) (φ g • Formal …`. Establish `hsm` using `Formalism.MainNotions.LowestKTypeMultiplicity.smooth_orbit hσ hv hg.1`. Establish `h0` using `(Formalism.MainNotions.LowestKTypeMultiplicity.dsigW_hasDeriv hσ hsm D hD hX).const_smul (φ g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `((σ (NormedSpace.exp ((t : ℂ) • X))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h0`. Rewrite `h1` using `[← sub_self t]`. Establish `h2` using `h1.comp_sub_const t t`. Simplify using `only [map_smul]`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `s`. Establish `e : NormedSpace.exp ((s : ℂ) • X) = NormedSpace.exp ((t : ℂ) • X) * NormedSpace.exp (((s - t : ℝ) : ℂ) • X)`. Rewrite using `[← Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left _).smul_right _), ← add_smul]`. Use `congr 2`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hσ.1.2 _ (hexp t) _ (hexp (s - t))]`. Simplify using `only [Function.comp, Pi.smul_apply, ContinuousLinearMap.coe_restrictScalars', map_smul]`. Both sides reduce to the same expression. Use the proof step `simp)`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h3` using `key.2`. Simplify using `only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, hσ.1.1, one_apply_eq_self] at h3`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Conclude with `((σ _).integral_comp_comm (hint D hD)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_exp_integral_dsigW (k r : ℕ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] (σ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (H →L[ℂ] H))

@@ -21,9 +21,7 @@ open MeasureTheory
 variable {g : ℕ} {ι L : Type} [AddCommGroup L]
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology Λ.toIntSubmodule := dP`. Use `haveI : IsZLattice ℝ Λ.toIntSubmodule := ⟨sP⟩`. Take `⟨x₀, hx₀⟩` from `exists_forall_le_of_periodic Λ.toIntSubmodule hf.continuous.norm (fun a ha x => hp x a ha)`. Use `hf.apply_eq_apply_of_bounded (isBounded_iff_forall_norm_le.2 ⟨‖f x₀‖, ?_⟩) z w` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
-
-Conclude with `hx₀ x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem const_of_norm_periodic (Λ : AddSubgroup (Fin g → ℂ)) (dP : DiscreteTopology Λ)
     (sP : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) (f : (Fin g → ℂ) → ℂ) (hf : Differentiable ℂ f)
@@ -36,13 +34,11 @@ theorem const_of_norm_periodic (Λ : AddSubgroup (Fin g → ℂ)) (dP : Discrete
   exact hx₀ x
 
 /- English proof (translation)
-Use `choose k hk using Uc`. Use `set q : (Fin g → ℂ) → ℂ := fun z => fr' (k z) z / fr (k z) z with hqdef`. Establish `hq : ∀ j z, U j z → q z = fr' j z / fr j z` using `fun j z hz => by`. Establish `h1` using `n j z hz`. Rewrite `h1` using `[c j (k z) z hz (hk z)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[c j (k z) z hz (hk z), c' j (k z) z hz (hk z), mul_div_mul_left _ _ (left_ne_zero_of_mul h1)]`. Establish `hd : Differentiable ℂ q` using `fun z => by`. Establish `hm : {w | U (k z) w} ∈ nhds z` using `(Uo _).mem_nhds (hk z)`. Use `((((d' (k z)).differentiableAt hm).mul (((d (k z)).differentiableAt hm).inv (n _ _ (hk z))))).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hm] with w hw using (hq _ _ hw).trans (div_eq_mul_inv _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hc` using `const_of_norm_periodic P.range dP sP q hd (by`. Introduce and unpack `z _ ⟨a, rfl⟩`. Establish `h1` using `norm_ne_zero_iff.2 (n _ _ (hk z))`. Rewrite `h1` using `[p a _ _ (hk z)]`. Rewrite using `[hq _ _ (hk z), hq _ _ (Up _ _ a (hk z)), norm_div, norm_div, p a _ _ (hk z), p' a _ _ (hk z), mul_div_mul_left _ _ (left_ne_zero_of_mul h1)]) z 0`.
-
-Rewrite `hc` using `[hq j z hz, hq _ _ (hk 0), o _ (hk 0), div_self (n _ _ (hk 0)), div_eq_one_iff_eq (n j z hz)]`. Conclude with `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frames_eq (P : L →+ (Fin g → ℂ)) (dP : DiscreteTopology P.range) (sP : Submodule.span ℝ (Set.range P) = ⊤)
     (U : ι → (Fin g → ℂ) → Prop) (Uo : ∀ j, IsOpen {z | U j z}) (Uc : ∀ z, ∃ j, U j z)
@@ -76,7 +72,7 @@ theorem frames_eq (P : L →+ (Fin g → ℂ)) (dP : DiscreteTopology P.range) (
   exact hc
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_exp]`. Use `congr 1`. Rewrite using `[show (Real.pi / 2 : ℂ) = ((Real.pi / 2 : ℝ) : ℂ) by push_cast; rfl, Complex.add_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_factor (Hm : Matrix (Fin g) (Fin g) ℂ) (z a : Fin g → ℂ) :
     ‖Complex.exp (Real.pi * hermForm Hm z a + Real.pi / 2 * hermForm Hm a a)‖ =
@@ -87,9 +83,9 @@ theorem norm_factor (Hm : Matrix (Fin g) (Fin g) ℂ) (z a : Fin g → ℂ) :
     Complex.re_ofReal_mul]
 
 /- English proof (translation)
-Establish `h : hermForm Hm a z = star (hermForm Hm z a)`. Rewrite using `[hermForm, hermForm, ← Matrix.star_dotProduct_star, Matrix.star_mulVec, star_star, hH.eq, ← Matrix.dotProduct_mulVec]`. Establish `e : hermForm Hm (z + a) (z + a) = hermForm Hm z z + hermForm Hm z a + hermForm Hm a z + hermForm Hm a a`. Simplify using `only [hermForm, star_add, Matrix.mulVec_add, dotProduct_add, add_dotProduct]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, h]`. Simplify using `only [Complex.add_re, Complex.star_def, Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem re_hermForm_add {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) (z a : Fin g → ℂ) :
     (hermForm Hm (z + a) (z + a)).re =
@@ -105,13 +101,13 @@ theorem re_hermForm_add {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian) 
   ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `hc : Continuous θ` using `continuous_iff_continuousAt.2 fun z => by`. Take `⟨j, hj⟩` from `Uc z`. Establish `hm : {w | U j w} ∈ nhds z` using `(Uo _).mem_nhds hj`. Use `(((dS j).differentiableAt hm).continuousAt.div ((d j).differentiableAt hm).continuousAt (n _ _ hj)).congr ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hm] with w hw`. Rewrite using `[Pi.div_apply, hθ j w hw, mul_div_cancel_right₀ _ (n j w hw)]`. Establish `hh : Continuous fun z : Fin g → ℂ => hermForm Hm z z`. Unfold `hermForm`. Conclude with `continuous_id.dotProduct (continuous_const.matrix_mulVec continuous_star)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `fun_prop`. Introduce `a z`. Take `⟨j, hj⟩` from `Uc z`. Establish `h1` using `congrArg norm (Sp a j z)`. Rewrite `h1` using `[hθ j z hj, hθ j _ (Up j z a hj), norm_mul, norm_mul, p a j z hj, ← mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h2` using `mul_right_cancel₀ (norm_ne_zero_iff.2 (n _ _ (Up j z a hj))) h1`. Rewrite using `[h2, re_hermForm_add hH, mul_pow, mul_assoc, ← Real.exp_nat_mul, ← Real.exp_add]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem density (P : L →+ (Fin g → ℂ)) {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian)
     (U : ι → (Fin g → ℂ) → Prop) (Uo : ∀ j, IsOpen {z | U j z}) (Uc : ∀ z, ∃ j, U j z)
@@ -147,7 +143,7 @@ theorem density (P : L →+ (Fin g → ℂ)) {Hm : Matrix (Fin g) (Fin g) ℂ} (
     ring
 
 /- English proof (translation)
-Establish `hF' : IsAddFundamentalDomain Λ.toIntSubmodule Fd volume` using `hF`. Rewrite using `[latticeMean_eq Λ.toIntSubmodule volume hF' hf, ZLattice.covolume_eq_measure_fundamentalDomain _ _ hF', smul_eq_mul, div_eq_inv_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mean_eq (Λ : AddSubgroup (Fin g → ℂ)) [DiscreteTopology Λ.toIntSubmodule] [IsZLattice ℝ Λ.toIntSubmodule]
     {Fd : Set (Fin g → ℂ)} (hF : IsAddFundamentalDomain Λ Fd volume) {f : (Fin g → ℂ) → ℝ}
@@ -159,11 +155,9 @@ theorem mean_eq (Λ : AddSubgroup (Fin g → ℂ)) [DiscreteTopology Λ.toIntSub
   rfl
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology Λ.toIntSubmodule := dP`. Use `haveI : DiscreteTopology Λ'.toIntSubmodule := dP'`. Use `haveI : IsZLattice ℝ Λ.toIntSubmodule := ⟨sP⟩`. Use `haveI : IsZLattice ℝ Λ'.toIntSubmodule := ⟨sP'⟩`. Establish `hf' : ∀ a ∈ Λ', ∀ x, f' (x + a) = f' x` using `fun a ha x => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, rfl⟩` from `h.surjective a`. Take `⟨x, rfl⟩` from `h.surjective x`. Rewrite using `[← map_add, hff, hff, hf a ((hh a).1 ha)]`. Rewrite using `[mean_eq Λ hF hf, mean_eq Λ' hF' hf']`. Use `⟨lt_of_le_of_ne (latticeMean_nonneg _ h0) fun e => ?_, ?_⟩` and prove the remaining obligations.
-
-Take `⟨x, hx⟩` from `hne`. Conclude with `hx (congrFun (eq_zero_of_latticeMean_eq_zero _ hc h0 hf e.symm) x)`. Rewrite using `[← latticeMean_comp_equiv Λ.toIntSubmodule Λ'.toIntSubmodule (h.restrictScalars ℝ).toContinuousLinearEquiv hh hf', ← latticeMean_const_mul]`. Conclude with `congrArg _ (funext hff)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mean_pos_and_scale (Λ Λ' : AddSubgroup (Fin g → ℂ)) (dP : DiscreteTopology Λ) (dP' : DiscreteTopology Λ')
     (sP : Submodule.span ℝ (Λ : Set (Fin g → ℂ)) = ⊤) (sP' : Submodule.span ℝ (Λ' : Set (Fin g → ℂ)) = ⊤)
@@ -201,25 +195,25 @@ noncomputable def fibLift (x : Sp ℂ ⟶ Xo.X) (e : Sp ℂ ⟶ Xo.univ.t.G.left
   pullback.lift (f := x) (g := Xo.univ.t.G.hom) (𝟙 _) e (by rw [Category.id_comp, he])
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem fibLift_fst (x : Sp ℂ ⟶ Xo.X) (e : Sp ℂ ⟶ Xo.univ.t.G.left) (he : e ≫ Xo.univ.t.G.hom = x) :
     fibLift x e he ≫ gxFst x = e := pullback.lift_snd _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem fibLift_snd (x : Sp ℂ ⟶ Xo.X) (e : Sp ℂ ⟶ Xo.univ.t.G.left) (he : e ≫ Xo.univ.t.G.hom = x) :
     fibLift x e he ≫ gxSnd x = 𝟙 _ := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `IsPullback.of_hasPullback x Xo.univ.t.G.hom`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_gx (x : Sp ℂ ⟶ Xo.X) : IsPullback (gxSnd x) (gxFst x) x Xo.univ.t.G.hom :=
   IsPullback.of_hasPullback x Xo.univ.t.G.hom
 
 /- English proof (translation)
-Use `HolFibre.isHolTo_of_isPullback (isPullback_gx x) ?_ ?_` and prove the remaining obligations. Simplify using `only [fibLift_snd]`. Conclude with `HolFibre.isHolTo_const isOpen_univ _`. Simplify using `only [fibLift_fst]`. Conclude with `hol`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHolTo_fibLift {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (x : Sp ℂ ⟶ Xo.X)
     (e : V → (Sp ℂ ⟶ Xo.univ.t.G.left)) (he : ∀ z, e z ≫ Xo.univ.t.G.hom = x) (hol : IsHolTo Set.univ e) :
@@ -231,7 +225,7 @@ theorem isHolTo_fibLift {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] (x
     exact hol
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, ← (isPullback_gx x).w, ← Category.assoc, h, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem over_of_snd (x : Sp ℂ ⟶ Xo.X) (pt : Sp ℂ ⟶ Gx x) (h : pt ≫ gxSnd x = 𝟙 _) :
     (pt ≫ gxFst x) ≫ Xo.univ.t.G.hom = x := by
@@ -239,14 +233,14 @@ theorem over_of_snd (x : Sp ℂ ⟶ Xo.X) (pt : Sp ℂ ⟶ Gx x) (h : pt ≫ gxS
 
 open MonObj in
 /- English proof (translation)
-Rewrite using `[Fu.ex_add i P hP, (Fu.ex_ker i P hP _).2 ⟨a, rfl⟩, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_periodic {σ : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)} (Fu : FamilyUnif Xo σ ty) (i : Fin Fu.n)
     (P : (Fu.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (Fu.Di i) ty P) (z a) : Fu.ex i P (z + P a) = Fu.ex i P z := by
   rw [Fu.ex_add i P hP, (Fu.ex_ker i P hP _).2 ⟨a, rfl⟩, _root_.mul_one]
 
 /- English proof (translation)
-Substitute `he` using the available equality. Conclude with `⟨fun h _ hp => Set.mem_iInter.1 (h hp) 0, fun h _ hp => Set.mem_iInter.2 fun _ => h hp⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem chart_iff (x : Sp ℂ ⟶ Xo.X) (pt : Sp ℂ ⟶ Gx x) (j : Xo.univ.t.PP.L.ι) {e : Sp ℂ ⟶ Xo.univ.t.G.left}
     (he : pt ≫ gxFst x = e) : ⊤ ≤ pt ⁻¹ᵁ (PPx x).U (fun _ => j) ↔ ⊤ ≤ e ⁻¹ᵁ Xo.univ.t.PP.L.U j := by
@@ -254,9 +248,9 @@ theorem chart_iff (x : Sp ℂ ⟶ Xo.X) (pt : Sp ℂ ⟶ Gx x) (j : Xo.univ.t.PP
   exact ⟨fun h _ hp => Set.mem_iInter.1 (h hp) 0, fun h _ hp => Set.mem_iInter.2 fun _ => h hp⟩
 
 /- English proof (translation)
-Take `⟨pm, h1, h2, h3⟩` from `h`. Establish `hid : spMap (RingHom.id ℂ) = 𝟙 _` using `by simp [spMap]`. Establish `: pm = 𝟙 _` using `(isPullback_gx x).hom_ext (by rw [Category.id_comp]; exact h2.trans (by rw [hid]; exact Category.comp_id _)) (by rw [Category.id_comp]; exact h1)`. Substitute `this` using the available equality. Establish `e : ∀ h, Scheme.Hom.appLE (𝟙 (Gx x)) ((PPx x).U i) ((PPx x).U i) h = 𝟙 _` using `fun h => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Hom.appLE, Scheme.Hom.id_app]`. Use `(Category.id_comp _).trans ?_` and prove the remaining obligations. Rewrite using `[← (Gx x).presheaf.map_id]`. Both sides reduce to the same expression. Conclude with `(h3 i le_rfl).symm.trans (congrArg (fun φ => φ.hom (scal x a i * s.f i)) (e _))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sec_eq_of_secBC {x : Sp ℂ ⟶ Xo.X} {a : ℂ} {s s' : LB.Sec (PPx x)} (h : SecBC (RingHom.id ℂ) a x x s s') (i) :
     s'.f i = scal x a i * s.f i := by
@@ -276,35 +270,31 @@ theorem sec_eq_of_secBC {x : Sp ℂ ⟶ Xo.X} {a : ℂ} {s s' : LB.Sec (PPx x)} 
 end Fibre
 
 /- English proof (translation)
-Introduce `_ laws2 E _ _ _ H Dw l Xo c σ g ty Fu i i' Pm Pm' y y' G s v v' hP hP' hy hy' ⟨hx, _, hBC⟩ ⟨Hm, χ, fr, θ, Fd, hH, _, him, d, n, cp, o, p, hθ, hF, hv⟩ ⟨Hm', χ', fr', θ', Fd', hH', _, him', d', n', cp', o', p', hθ', hF', hv'⟩`. Take `⟨x, _, _, _, _, _, sc, gen⟩` from `y`. Take `⟨x', _, _, _, _, _, sc', gen'⟩` from `y'`. Simplify using `only at hx hBC hy hy' o o' hθ hθ'`. Substitute `hx` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality.
 
-Take `⟨h, gam, hex, hg, hEF, -⟩` from `familyUnif_exp_unique E H Dw l Xo _ g ty Fu i i' Pm Pm' hP hP' (hy.symm.trans hy')`. Take `⟨sv, sg, -⟩` from `sec_values_complex_fibre laws2.secTwist E H Dw l Xo x' sc`. Establish `hs` using `sec_eq_of_secBC (x := x') hBC`. Establish `hHH : ∀ z w, hermForm Hm' (h z) (h w) = hermForm Hm z w` using `fun z w => CM.HermWeil.hermForm_eq_of_im Hm' Hm h.toLinearMap h.toLinearMap LinearMap.id LinearMap.id hP.2.2.2.1 hP.2.2.2.1 (by`. Introduce and unpack `_ ⟨a, rfl⟩ _ ⟨b, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `show (hermForm Hm' (h (Pm a)) (h (Pm b))).im = (hermForm Hm (Pm a) (Pm b)).im`. Rewrite using `[← hg, ← hg, him', him, hEF]) z w`. Establish `hol` using `ExpUniqFamily.isHolTo_ex Fu i Pm hP`. Establish `per` using `ex_periodic Fu i Pm hP`. Establish `ov : ∀ z, (Fu.ex i Pm z).left ≫ Xo.univ.t.G.hom = x'` using `fun z => (Over.w (Fu.ex i Pm z)).trans hy.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `U : Xo.univ.t.PP.L.ι → (Fin g → ℂ) → Prop` to `fun j z => ⊤ ≤ (Fu.ex i Pm z).left ⁻¹ᵁ Xo.univ.t.PP.L.U j`. Establish `Uo : ∀ j, IsOpen {z | U j z}` using `fun j => by`. Simplify `(hol (Xo.univ.t.PP.L.U j) 0).1` using `only [Set.mem_univ, true_and]`. Establish `Uc : ∀ z, ∃ j, U j z` using `fun z => by`. Use `Xo.univ.t.PP.isLB.cover.ge (Set.mem_univ ((Fu.ex i Pm z).left (default : PrimeSpectrum ℂ)))` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 this`. Conclude with `⟨j, (top_le_preimage_iff_mem _ _).2 hj⟩`. Establish `Up : ∀ j z a, U j z → U j (z + Pm a)` using `fun j z a hz => by`. Simplify using `only [U, per]`. Conclude with `hz`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `U' : ∀ j z, U j z → ⊤ ≤ (Fu.ex i' Pm' (h z)).left ⁻¹ᵁ Xo.univ.t.PP.L.U j` using `fun j z hz => by`. Rewrite using `[hex]`. Conclude with `hz`. Establish `q : ∀ a j z, U j z → ‖fr j z‖ = Real.exp (Real.pi * (hermForm Hm z (Pm a)).re + Real.pi / 2 * (hermForm Hm (Pm a) (Pm a)).re) * ‖fr j (z + Pm a)‖` using `fun a j z hz => by`. Rewrite using `[(p a j z).2 hz, norm_mul, norm_mul, (p a j z).1, _root_.one_mul, norm_factor]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hfr : ∀ j z, U j z → fr' j (h z) = fr j z` using `frames_eq Pm hP.2.2.1 hP.2.2.2.1 U Uo Uc Up (fun j j' z => valAt' (Fu.ex i Pm z).left (Xo.univ.t.PP.L.U j ⊓ Xo.univ.t.PP.L.U j') (Xo.univ.t.PP.L.g j j').val) fr (fun j z => fr' j (h z)) _ d (fun j => (d' j).comp h.toContinuousLinearEquiv.differentiable.differentiableOn (U' j)) n …`. Use `cp' j j' (h z) (le_inf (U' j z h1) (U' j' z h2))` as an intermediate fact. Rewrite using `[hex] at this)` and apply the resulting hypothesis. Use the proof step `(fun j hj => by`. Establish `h0` using `U' j 0 hj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `h0` using `[map_zero]`. Use `show fr' j (h 0) = _`. Rewrite using `[map_zero, o' j h0, o j hj])`. Use `q`. Use the proof step `(fun a j z hz => by show ‖fr' j (h z)‖ = _ * ‖fr' j (h (z + Pm a))‖`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[(p' (gam a) j (h z)).2 (U' j z hz), norm_mul, norm_mul, (p' (gam a) j (h z)).1, _root_.one_mul, norm_factor, hg, hHH, hHH, map_add])`. Set `pt : (Fin g → ℂ) → (Sp ℂ ⟶ Gx (S` to `ℂ) x') := fun z => fibLift x' _ (ov z)`. Establish `holp : IsHolTo Set.univ pt` using `isHolTo_fibLift x' _ ov hol`. Set `S : Xo.univ.t.PP.L.ι → (Fin g → ℂ) → ℂ` to `fun j z => valAt' (pt z) ((PPx (S := ℂ) x').U (fun _ => j)) (sc.f (fun _ => j))`. Establish `hS : ∀ j z, U j z → S j z = θ z * fr j z` using `fun j z hz => hθ j z (pt z) (fibLift_fst _ _ _) (fibLift_snd _ _ _) hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hc, hper⟩` from `density Pm hH U Uo Uc Up fr S θ d (fun j => (holp _ _).2.mono fun z hz => ⟨trivial, (chart_iff x' (pt z) j (fibLift_fst _ _ _)).2 hz⟩) n q (fun a j z => by simp only [S, pt, per]) hS`. Establish `hθθ : ∀ z, θ' (h z) = toC s * θ z` using `fun z => by`. Take `⟨j, hj⟩` from `Uc z`. Establish `h1` using `hθ' j (h z) (pt z) ((fibLift_fst _ _ _).trans (hex z).symm) (fibLift_snd _ _ _) (U' j z hj)`. Establish `h2` using `sv (toC s) (fun _ => j) (pt z) (fibLift_snd _ _ _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[hfr j z hj]`. Use `mul_right_cancel₀ (n j z hj) ?_` and prove the remaining obligations. Rewrite using `[← h1, _root_.mul_assoc, ← hS j z hj]`. Conclude with `(congrArg _ (hs _)).trans h2`. Rewrite using `[← hv, ← hv']`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `mean_pos_and_scale Pm.range Pm'.range hP.2.2.1 hP'.2.2.1 hP.2.2.2.1 hP'.2.2.2.1 h (fun z => ⟨?_, ?_⟩) hF hF' _ hc (fun z => by positivity) ?_ ?_ (fun z => ?_)` and prove the remaining obligations. Introduce and unpack `⟨b, hb⟩`. Take `⟨a, rfl⟩` from `gam.surjective b`. Conclude with `⟨a, h.injective ((hg a).symm.trans hb)⟩`. Introduce and unpack `⟨a, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨gam a, hg a⟩`. Take `⟨J, r, hr, hne⟩` from `sg.1 gen`. Take `⟨j, rfl⟩ : ∃ j, J = fun _ => j` from `⟨J 0, funext fun k => by rw [Subsingleton.elim k 0]⟩`. Take `⟨z, hz⟩` from `Fu.ex_onto i Pm hP (Over.homMk (r ≫ gxFst (S := ℂ) x') ((over_of_snd x' r hr).trans hy))`. Establish `hz' : r ≫ gxFst (S` using `ℂ) x' = (Fu.ex i Pm z).left := by rw [hz]; rfl`.
-
-Establish `hU` using `(chart_iff x' r j hz').1 (top_le_preimage_of_valAt'_ne_zero _ hne)`. Establish `h1` using `hθ j z r hz' hr hU`. Establish `h2 : θ z ≠ 0` using `left_ne_zero_of_mul (h1 ▸ hne)`. Conclude with `⟨z, by positivity⟩`. Introduce and unpack `_ ⟨a, rfl⟩ z`.
-
-Conclude with `hper a z`. Use `show ‖θ' (h z)‖ ^ 2 * Real.exp (-Real.pi * (hermForm Hm' (h z) (h z)).re) = _`. Rewrite using `[hθθ, hHH, norm_mul, mul_pow, _root_.mul_assoc]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_l2_positive_and_scaling : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Fu : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty) (i i' : Fin Fu.n) (Pm : (Fu.Di i).La →+ (Fin g → ℂ)) (Pm' : (Fu.Di i').La →+ (Fin g → ℂ)) (y y' : FrPt Xo c (CAt σ)) (G : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) (CAt σ)) (s : CAt σ) (v v' : ℝ), IsPeriod (Fu.Di i) ty Pm → IsPeriod (Fu.Di i') ty Pm' → y.x = Fu.u i Pm → y'.x = Fu.u i' Pm' → FrChg G s y y' → IsThetaL2NormSquared Fu i Pm y v → IsThetaL2NormSquared Fu i' Pm' y' v' → 0 < v ∧ v' = ‖toC s‖ ^ 2 * v := by
   intro _ laws2 E _ _ _ H Dw l Xo c σ g ty Fu i i' Pm Pm' y y' G s v v' hP hP' hy hy' ⟨hx, _, hBC⟩

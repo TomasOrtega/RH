@@ -11,7 +11,7 @@ open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheor
 
 open GlobalTheory.CuspRep in
 /- English proof (translation)
-Introduce `E _ _ _ n μ _ V hV τ`. Take `⟨π, hπ, -⟩` from `exCusp E n μ V hV`. Use `⟨(CG.mk π).infChar τ, (sInfIff E n μ π V hπ τ _).2 (ParLaws.hasInfChar_infChar (CG.mk π) τ), fun m hm => ?_⟩` and prove the remaining obligations. Conclude with `(CG.HasInfChar.infChar_eq (π := CG.mk π) ((sInfIff E n μ π V hπ τ m).1 hm)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Dp.sInfEx :
     UpperTheory.ConvolutionTheory.Dp.SInfEx := by

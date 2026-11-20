@@ -7,7 +7,7 @@ open scoped Formalism.Per NNReal
 open Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.BSP.eq_of_hasSum_toDisc_of_J_adic` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FAinfJAdicLimitEqDiscSum.lean&line=10#L10)
 -/

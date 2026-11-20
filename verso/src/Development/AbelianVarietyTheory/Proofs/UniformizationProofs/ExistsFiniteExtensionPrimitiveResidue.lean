@@ -14,11 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `⟨by rw [← map_pow, hζ.pow_eq_one, map_one], fun l hl => hζ.dvd_of_pow_eq_one l ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `h1 : (ζ ^ l) ^ N = 1` using `by rw [← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]`. Establish `h2 : ∑ i ∈ Finset.range N, (ζ ^ l) ^ i = 0`. Use `geom_sum_mul (ζ ^ l) N` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h1, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_right (sub_ne_zero.2 hne)`. Establish `h3` using `congrArg (IsLocalRing.residue W) h2`. Simplify using `only [map_sum, map_pow, hl, one_pow, map_zero, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one] at h3`. Establish `h4` using `hN.map (IsLocalRing.residue W)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[map_natCast]`. Conclude with `h4.ne_zero (by simpa using h3)`.
+A detailed English derivation is pending.
 -/
 theorem isPrimitiveRoot_residue_of_isUnit {W : Type*} [CommRing W] [IsDomain W] [IsLocalRing W]
     {ζ : W} {N : ℕ} (hζ : IsPrimitiveRoot ζ N) (hN : IsUnit (N : W)) :
@@ -38,19 +38,19 @@ theorem isPrimitiveRoot_residue_of_isUnit {W : Type*} [CommRing W] [IsDomain W] 
   exact h4.ne_zero (by simpa using h3)
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _`. Use `⟨?_, fun n j hn hu => ?_⟩` and prove the remaining obligations. Establish `h : IsUnit ((3 : V) + -2)` using `by norm_num`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add h with h | h` into its components or cases. Conclude with `⟨3, Nat.prime_three, by exact_mod_cast h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨2, Nat.prime_two, by exact_mod_cast (IsUnit.neg_iff _).1 h⟩`. Set `F` to `AlgebraicClosure (FractionRing V)`. Establish `hpos : 0 < n ^ j` using `pow_pos hn.pos j`. Establish `: NeZero (n ^ j)` using `⟨hpos.ne'⟩`. Establish `: NeZero ((n ^ j : ℕ) : F)` using `inferInstance`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot F (n ^ j)`. Set `W : Subalgebra V F` to `Algebra.adjoin V {z}`. Establish `hzW : z ∈ W` using `Algebra.subset_adjoin rfl`. Establish `hfin : Module.Finite V W` using `Algebra.finite_adjoin_simple_of_isIntegral ⟨Polynomial.X ^ (n ^ j) - Polynomial.C 1, Polynomial.monic_X_pow_sub_C _ hpos.ne', by`. Simplify using `[hz.pow_eq_one]⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: FaithfulSMul V W` using `(faithfulSMul_iff_algebraMap_injective V W).2 fun x y h => IsFractionRing.injective V (FractionRing V) ((algebraMap (FractionRing V) F).injective (congrArg Subtype.val h))`. Establish `hfree : Module.Free V W` using `Module.free_of_finite_type_torsion_free'`. Establish `hW : IsLocalRing W` using `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isLocalRing_finite_domain (R := V) W`. Establish `hloc : IsLocalHom (algebraMap V W)` using `inferInstance`. Establish `hc` using `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isAdicComplete_finite_algebra (R := V) W`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hζ : IsPrimitiveRoot (⟨z, hzW⟩ : W) (n ^ j)` using `IsPrimitiveRoot.of_map_of_injective (f := W.val) hz Subtype.val_injective`. Establish `hnW : IsUnit (n : W)` using `by simpa using hu.map (algebraMap V W)`. Use `⟨W, inferInstance, inferInstance, inferInstance, Over.homMk (Spec.map (CommRingCat.ofHom W.val.toRingHom)) ?_, ⟨z, hzW⟩, ⟨hfin, hfree, inferInstance, hloc, hc⟩, ?_, hnW, hζ.pow_eq_one, isPrimitiveRoot_residue_of_isUnit hζ (by exact_mod_cast hnW.pow j)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `Function.Injective (Spec.map (CommRingCat.ofHom W.val.toRingHom)).appTop.hom`. Establish `h` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom W.val.toRingHom)`. Establish `hi : Function.Injective ((Spec.map (CommRingCat.ofHom W.val.toRingHom)).appTop ≫ (Scheme.ΓSpecIso _).hom).hom`. Rewrite using `[h, CommRingCat.hom_comp, RingHom.coe_comp]`.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.val_injective.comp (Scheme.ΓSpecIso _).commRingCatIsoToRingEquiv.injective`. Rewrite `hi` using `[CommRingCat.hom_comp, RingHom.coe_comp]`. Conclude with `hi.of_comp`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_extension_primitive_residue :
     ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] [CharZero V], (∃ n : ℕ, n.Prime ∧ IsUnit (n : V)) ∧ ∀ (n j : ℕ), n.Prime → IsUnit (n : V) → ∃ (W : Type) (_ : CommRing W) (_ : IsLocalRing W) (_ : Algebra V W) (φ : TF (R := V) (AlgebraicClosure (FractionRing V)) ⟶ Over.mk (Spec.map (CommRingCat.ofHom (algebraMap V W)))) (ζ : W), (Module.Finite V W ∧ Module.Free V W ∧ IsDomain W ∧ IsLocalHom (algebraMap V W) ∧ IsAdicComplete ((IsLocalRing.maximalIdeal V).map (algebraMap V W)) W) ∧ Function.Injective φ.left.appTop.hom ∧ IsUnit (n : W) ∧ ζ ^ (n ^ j) = 1 ∧ IsPrimitiveRoot (IsLocalRing.residue W ζ) (n ^ j) := by

@@ -59,7 +59,7 @@ def objMapOfSABMap (o : Obj D l b s) {t' : SAB H S'} (m : SABMap t' o.t f) : Obj
   ⟨m, fun _ => secPull_left m.cart _, fun _ => secPull_left m.cart _⟩
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Conclude with `h.trans (secPull_left m.cart _).symm`. Rewrite using `[Over.w, Over.w]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_eq_secPull {t : SAB H S} {t' : SAB H S'} (m : SABMap t' t f) {e : 𝟙_ (Over S) ⟶ t.G}
     {e' : 𝟙_ (Over S') ⟶ t'.G} (h : e'.left ≫ m.φ = f ≫ e.left) : e' = secPull m.cart e := by
@@ -142,20 +142,20 @@ theorem secEquiv_left (σ : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G) :
     (secEquiv Y σ).left = σ.left ≫ Y.m0.toSABMap.φ := rfl
 
 /- English proof (translation)
-The claim follows from `congrArg (fun x : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G => x.left ≫ Y.m.φ) ((secEquiv Y).left_inv σ)`.
+A detailed English derivation is pending.
 -/
 theorem secMap_secEquiv (σ : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G) :
     (toSecond Y).secMap (secEquiv Y σ) = σ.left ≫ Y.m.φ :=
   congrArg (fun x : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G => x.left ≫ Y.m.φ) ((secEquiv Y).left_inv σ)
 
 /- English proof (translation)
-Rewrite using `[ModelScope.extends_iff_of_subset Y U hU]`. Unfold `IndefiniteRowSideFullHecke.OpenModelSections.Model.Extends`. Rewrite using `[secMap_secEquiv]`. Use `show _ ↔ ∃ τ : Over.mk U.ι ⟶ Y.t.G, (Y.j ∣_ U) ≫ τ.left = (Y.j ⁻¹ᵁ U).ι ≫ σ.left ≫ Y.m.φ`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨j', σ', h₀, h₁, h₂⟩`. Use `⟨Over.homMk σ' h₁, ?_⟩` and prove the remaining obligations. Establish `e : Y.j ∣_ U = (Y.j ⁻¹ᵁ U).ι ≫ j'`. Rewrite using `[← cancel_mono U.ι, morphismRestrict_ι, Category.assoc, h₀]`. Rewrite using `[e, Category.assoc, ← h₂]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨τ, hτ⟩`. Establish `hr : Set.range (𝟙 (Xo.XF c) : _ ⟶ _) ⊆ Set.range (Y.j ⁻¹ᵁ U).ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hU ⟨x, rfl⟩`. Establish `hi` using `IsOpenImmersion.lift_fac (Y.j ⁻¹ᵁ U).ι (𝟙 _) hr`. Use `⟨IsOpenImmersion.lift (Y.j ⁻¹ᵁ U).ι (𝟙 _) hr ≫ Y.j ∣_ U, τ.left, ?_, Over.w τ, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, morphismRestrict_ι, ← Category.assoc, hi, Category.id_comp]`. Rewrite using `[Category.assoc, hτ, ← Category.assoc, hi, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extends_iff_of_subset (U : Y.X.Opens) (hU : Set.range Y.j ⊆ (U : Set Y.X))
     (σ : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G) : Y.Extends U σ ↔ (toSecond Y).Extends (secEquiv Y σ) U := by
@@ -181,7 +181,7 @@ theorem extends_iff_of_subset (U : Y.X.Opens) (hU : Set.range Y.j ⊆ (U : Set Y
     · rw [Category.assoc, hτ, ← Category.assoc, hi, Category.id_comp]
 
 /- English proof (translation)
-Distinguish the cases in `hU : Set.range Y.j ⊆ (U : Set Y.X)`. Rewrite using `[extends_iff_of_subset Y U hU]`. Conclude with `⟨fun h _ => h, fun h => h hU⟩`. Conclude with `⟨fun _ h => (hU h).elim, fun _ => ModelScope.extends_of_not_subset Y U hU σ⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem extends_iff (U : Y.X.Opens) (σ : 𝟙_ (Over (Xo.XF c)) ⟶ Y.oF.t.G) :
     Y.Extends U σ ↔ (Set.range Y.j ⊆ (U : Set Y.X) → (toSecond Y).Extends (secEquiv Y σ) U) := by

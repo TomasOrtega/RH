@@ -17,15 +17,15 @@ namespace GlobalTheory
 namespace PointQuot
 
 /- English proof (translation)
-Use `letI : MonObj H := { one := e mul := m one_mul := by`. Rewrite using `[← cancel_mono i, Category.assoc, hm]`. Simplify using `[MonObj.comp_mul, he, leftUnitor_hom]`. Use `mul_one := by`. Rewrite using `[← cancel_mono i, Category.assoc, hm]`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[MonObj.comp_mul, he, rightUnitor_hom]`. Use `mul_assoc := by`. Rewrite using `[← cancel_mono i]`. Simplify using `[MonObj.comp_mul, hm, _root_.mul_assoc] }`. Use `⟨{ inv := n, left_inv := ?_, right_inv := ?_ }, ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `lift n (𝟙 H) ≫ m = toUnit H ≫ e`. Rewrite using `[← cancel_mono i]`. Simplify using `[MonObj.comp_mul, hm, hn, he]`. Express the relevant statement in the definitionally equal form `lift (𝟙 H) n ≫ m = toUnit H ≫ e`. Rewrite using `[← cancel_mono i]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[MonObj.comp_mul, hm, hn, he]`. Express the relevant statement in the definitionally equal form `e ≫ i = _`. Rewrite using `[he, Hom.one_def, toUnit_unit, Category.id_comp]`. Express the relevant statement in the definitionally equal form `m ≫ i = _`. Rewrite using `[hm, Hom.mul_def]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem exists_grpObj_of_mono {𝒞 : Type*} [Category 𝒞] [CartesianMonoidalCategory 𝒞] {H A : 𝒞}
     [GrpObj A] (i : H ⟶ A) [Mono i] (e : 𝟙_ 𝒞 ⟶ H) (m : H ⊗ H ⟶ H) (n : H ⟶ H)
@@ -69,14 +69,14 @@ def openLE (Z : Over S) {V W : Z.left.Opens} (h : V ≤ W) : openObj Z V ⟶ ope
     rw [Scheme.homOfLE_ι_assoc])
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (Scheme.homOfLE_ι _ h)`.
+A detailed English derivation is pending.
 -/
 lemma openLE_ι (Z : Over S) {V W : Z.left.Opens} (h : V ≤ W) :
     openLE Z h ≫ openι Z W = openι Z V :=
   Over.OverMorphism.ext (Scheme.homOfLE_ι _ h)
 
 /- English proof (translation)
-Rewrite using `[← openLE_ι Z h, Category.assoc, hW, ← Category.assoc]`. Use `congr 1`. Conclude with `toUnit_unique _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma const_of_le {Z Y : Over S} {g : Z ⟶ Y} {c : 𝟙_ (Over S) ⟶ Y} {V W : Z.left.Opens}
     (h : V ≤ W) (hW : openι Z W ≫ g = toUnit _ ≫ c) : openι Z V ≫ g = toUnit _ ≫ c := by
@@ -85,9 +85,7 @@ lemma const_of_le {Z Y : Over S} {g : Z ⟶ Y} {c : 𝟙_ (Over S) ⟶ Y} {V W :
   exact toUnit_unique _ _
 
 /- English proof (translation)
-Use `choose V hV hfg using h`. Establish `hc : TopologicalSpace.IsOpenCover V`. Rewrite using `[TopologicalSpace.IsOpenCover, eq_top_iff]`. Conclude with `fun z _ => TopologicalSpace.Opens.mem_iSup.mpr ⟨z, hV z⟩`. Use `Over.OverMorphism.ext ((Z.left.openCoverOfIsOpenCover V hc).hom_ext _ _ fun z => ?_)` and prove the remaining obligations.
-
-Conclude with `congrArg CommaMorphism.left (hfg z)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma hom_ext_local {Z Y : Over S} (f g : Z ⟶ Y)
     (h : ∀ z : Z.left, ∃ V : Z.left.Opens, z ∈ V ∧ openι Z V ≫ f = openι Z V ≫ g) : f = g := by
@@ -111,18 +109,18 @@ def constDesc {I : Type} {A : Over S} (x : I → (𝟙_ (Over S) ⟶ A)) : const
     exact Over.w (x c))
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (Sigma.ι_desc (f := fun _ : I => S) _ _)`.
+A detailed English derivation is pending.
 -/
 lemma constPt_desc {I : Type} {A : Over S} (x : I → (𝟙_ (Over S) ⟶ A)) (c : I) :
     constPt S c ≫ constDesc x = x c :=
   Over.OverMorphism.ext (Sigma.ι_desc (f := fun _ : I => S) _ _)
 
 /- English proof (translation)
-Take `⟨c, y, hy'⟩ : ∃ (c : I) (y : S), Sigma.ι (fun _ : I => S) c y = f.left z` from `(sigmaOpenCover fun _ : I ↦ S).exists_eq (f.left z)`. Set `V : Z.left.Opens` to `f.left ⁻¹ᵁ (Sigma.ι (fun _ : I => S) c).opensRange`. Establish `hr : Set.range (V.ι ≫ f.left) ⊆ Set.range (Sigma.ι (fun _ : I => S) c)`. Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `v.2`. Establish `hl` using `IsOpenImmersion.lift_fac (Sigma.ι (fun _ : I => S) c) (V.ι ≫ f.left) hr`. Set `l : openObj Z V ⟶ 𝟙_ (Over S)` to `Over.homMk (IsOpenImmersion.lift (Sigma.ι (fun _ : I => S) c) (V.ι ≫ f.left) hr) (by`. Express the relevant statement in the definitionally equal form `_ ≫ 𝟙 S = V.ι ≫ Z.hom`. Establish `e₁ : Sigma.ι (fun _ : I => S) c ≫ (constObj S I).hom = 𝟙 S` using `Sigma.ι_desc (f := fun _ : I => S) (fun _ => 𝟙 S) c`.
+Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.w f, ← e₁]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ (constObj S I).hom) hl).trans (Category.assoc _ _ _)))`. Use `⟨V, ⟨y, hy'⟩, c, ?_⟩` and prove the remaining obligations. Rewrite using `[toUnit_unique (toUnit _) l]`. Conclude with `Over.OverMorphism.ext hl.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma locally_const {I : Type} {Z : Over S} (f : Z ⟶ constObj S I) (z : Z.left) :
     ∃ V : Z.left.Opens, z ∈ V ∧ ∃ c : I, openι Z V ≫ f = toUnit _ ≫ constPt S c := by
@@ -147,7 +145,7 @@ lemma locally_const {I : Type} {Z : Over S} (f : Z ⟶ constObj S I) (z : Z.left
   exact Over.OverMorphism.ext hl.symm
 
 /- English proof (translation)
-Take `⟨V, hV, c, h⟩` from `locally_const f z`. Conclude with `⟨V, hV, c, by rw [← Category.assoc, h, Category.assoc, constPt_desc]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma locally_const_desc {I : Type} {A Z : Over S} (x : I → (𝟙_ (Over S) ⟶ A))
     (f : Z ⟶ constObj S I) (z : Z.left) :
@@ -156,13 +154,11 @@ lemma locally_const_desc {I : Type} {A Z : Over S} (x : I → (𝟙_ (Over S) �
   exact ⟨V, hV, c, by rw [← Category.assoc, h, Category.assoc, constPt_desc]⟩
 
 /- English proof (translation)
-Use `choose V hV c hc using h`. Establish `hcov : TopologicalSpace.IsOpenCover V`. Rewrite using `[TopologicalSpace.IsOpenCover, eq_top_iff]`. Conclude with `fun z _ => TopologicalSpace.Opens.mem_iSup.mpr ⟨z, hV z⟩`. Establish `: Mono (constDesc x).left` using `Over.mono_left_of_mono _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `𝒰` to `Z.left.openCoverOfIsOpenCover V hcov`. Set `φ : ∀ z, 𝒰.X z ⟶ (constObj S I).left` to `fun z => (toUnit (openObj Z (V z)) ≫ constPt S (c z)).left`. Establish `hφ : ∀ z, φ z ≫ (constDesc x).left = 𝒰.f z ≫ g.left` using `fun (z : Z.left) => by`. Establish `: (toUnit (openObj Z (V z)) ≫ constPt S (c z)) ≫ constDesc x = openι Z (V z) ≫ g`. Rewrite using `[Category.assoc, constPt_desc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hc z).symm`. Conclude with `congrArg CommaMorphism.left this`. Establish `hcomp : ∀ a b, pullback.fst (𝒰.f a) (𝒰.f b) ≫ φ a = pullback.snd _ _ ≫ φ b` using `fun a b => by`. Rewrite using `[← cancel_mono (constDesc x).left, Category.assoc, Category.assoc, hφ, hφ, pullback.condition_assoc]`. Establish `key : 𝒰.glueMorphisms φ hcomp ≫ (constDesc x).left = g.left` using `𝒰.hom_ext _ _ fun z => by rw [𝒰.ι_glueMorphisms_assoc, hφ]`.
-
-Conclude with `⟨Over.homMk (𝒰.glueMorphisms φ hcomp) (by`. Rewrite using `[← Over.w (constDesc x), ← Category.assoc, key, Over.w]), Over.OverMorphism.ext key⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_lift {I : Type} {A Z : Over S} (x : I → (𝟙_ (Over S) ⟶ A)) [Mono (constDesc x)]
     (g : Z ⟶ A)
@@ -190,9 +186,9 @@ lemma exists_lift {I : Type} {A Z : Over S} (x : I → (𝟙_ (Over S) ⟶ A)) [
     rw [← Over.w (constDesc x), ← Category.assoc, key, Over.w]), Over.OverMorphism.ext key⟩
 
 /- English proof (translation)
-Establish `: Flat W.hom` using `inferInstance`. Establish `: Surjective W.hom` using `inferInstance`. Establish `: Epi W.hom` using `Flat.epi_of_flat_of_surjective _`. Establish `: Epi (toUnit W).left`. Establish `h` using `Over.w (toUnit W)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : (toUnit W).left = W.hom` using `(Category.comp_id _).symm.trans h`. Rewrite using `[h']`. Use the matching hypothesis. Conclude with `Over.epi_of_epi_left _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the matching hypothesis. A detailed English derivation is pending.
 -/
 lemma epi_toUnit {k : Type} [Field k] (W : Over (Sp k)) [Nonempty W.left] : Epi (toUnit W) := by
   have : Flat W.hom := inferInstance
@@ -206,11 +202,11 @@ lemma epi_toUnit {k : Type} [Field k] (W : Over (Sp k)) [Nonempty W.left] : Epi 
   exact Over.epi_of_epi_left _
 
 /- English proof (translation)
-Use `⟨fun {Z} f g h => hom_ext_local f g fun z => ?_⟩` and prove the remaining obligations. Take `⟨V, hV, c, hc⟩` from `locally_const f z`. Take `⟨W, hW, d, hd⟩` from `locally_const g z`. Establish `hc'` using `const_of_le (inf_le_left : V ⊓ W ≤ V) hc`. Establish `hd'` using `const_of_le (inf_le_right : V ⊓ W ≤ W) hd`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nonempty (openObj Z (V ⊓ W)).left` using `⟨(⟨z, hV, hW⟩ : (V ⊓ W : Z.left.Opens))⟩`. Use `epi_toUnit (openObj Z (V ⊓ W))` as an intermediate fact. Choose the witnesses or unpack the hypotheses as in `rfl : c = d := by`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← cancel_epi (toUnit (openObj Z (V ⊓ W))), ← constPt_desc x c, ← constPt_desc x d, ← reassoc_of% hc', ← reassoc_of% hd', h]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨V ⊓ W, ⟨hV, hW⟩, hc'.trans hd'.symm⟩`.
+Supply the required witnesses or components.
 -/
 lemma mono_constDesc {k : Type} [Field k] {I : Type} {A : Over (Sp k)}
     (x : I → (𝟙_ (Over (Sp k)) ⟶ A)) (hx : Function.Injective x) : Mono (constDesc x) := by
@@ -228,11 +224,11 @@ lemma mono_constDesc {k : Type} [Field k] {I : Type} {A : Over (Sp k)}
   exact ⟨V ⊓ W, ⟨hV, hW⟩, hc'.trans hd'.symm⟩
 
 /- English proof (translation)
-Establish `mem : ∀ c, x c ∈ C` using `fun c => hC.le ⟨c, rfl⟩`. Take `⟨c₀, h₀⟩` from `hC.ge C.one_mem`. Take `⟨m, hm⟩` from `exists_lift x ((fst _ _ ≫ constDesc x) * (snd _ _ ≫ constDesc x)) fun z => by`. Take `⟨V, hV, c, hc⟩` from `locally_const_desc x (fst _ _) z`. Take `⟨W, hW, d, hd⟩` from `locally_const_desc x (snd _ _) z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hC.ge (C.mul_mem (mem c) (mem d))`. Use `⟨V ⊓ W, ⟨hV, hW⟩, a, ?_⟩` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, const_of_le inf_le_left hc, const_of_le inf_le_right hd, ha, MonObj.comp_mul]`. Take `⟨n, hn⟩` from `exists_lift x (constDesc x)⁻¹ fun z => by`. Take `⟨V, hV, c, hc⟩` from `locally_const_desc x (𝟙 _) z`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hC.ge (C.inv_mem (mem c))`. Use `⟨V, hV, a, ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[Category.id_comp]`. Rewrite using `[GrpObj.comp_inv, hc, ha, GrpObj.comp_inv]`. Conclude with `exists_grpObj_of_mono _ (constPt S c₀) m n ((constPt_desc x c₀).trans h₀) hm hn`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_grpObj_constObj {I : Type} {A : Over S} [GrpObj A] (x : I → (𝟙_ (Over S) ⟶ A))
     [Mono (constDesc x)] (C : Subgroup (𝟙_ (Over S) ⟶ A)) (hC : Set.range x = C) :
@@ -256,9 +252,9 @@ lemma exists_grpObj_constObj {I : Type} {A : Over S} [GrpObj A] (x : I → (𝟙
   exact exists_grpObj_of_mono _ (constPt S c₀) m n ((constPt_desc x c₀).trans h₀) hm hn
 
 /- English proof (translation)
-Establish `h1 : (g / g') ≫ q = toUnit Z ≫ η[B]`. Rewrite using `[GrpObj.div_comp, h, div_self', Hom.one_def]`. Use `hom_ext_local _ _ fun z => ?_` and prove the remaining obligations. Take `⟨V, hV, c, hc⟩` from `locally_const_desc x (hker.lift (g / g') (toUnit Z) h1) z`. Use `⟨V, hV, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hc` using `[hker.lift_fst, GrpObj.comp_div, div_eq_iff_eq_mul]`. Rewrite using `[← Category.assoc, hc]`. Use `conv_rhs => rw [← hf c, ← Category.assoc, ← Category.assoc, MonObj.comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique (_ ≫ toUnit A) (toUnit _)]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma comp_eq_of_invariant {I : Type} {A B Y : Over S} [GrpObj A] [GrpObj B]
     (x : I → (𝟙_ (Over S) ⟶ A)) (q : A ⟶ B) [IsMonHom q]
@@ -276,11 +272,11 @@ lemma comp_eq_of_invariant {I : Type} {A B Y : Over S} [GrpObj A] [GrpObj B]
     ← Category.assoc, toUnit_unique (_ ≫ toUnit A) (toUnit _)]
 
 /- English proof (translation)
-Establish `hc : ∀ {Z : Scheme.{0}} (g g' : Z ⟶ A.left), g ≫ q.left = g' ≫ q.left → g ≫ f.left = g' ≫ f.left`. Introduce `Z g g' h`. Establish `hw : g' ≫ A.hom = g ≫ A.hom`. Rewrite using `[← Over.w q, ← Category.assoc, ← h, Category.assoc]`. Use `hf (Z := Over.mk (g ≫ A.hom)) (Over.homMk g rfl) (Over.homMk g' hw) (Over.OverMorphism.ext h)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg CommaMorphism.left this`. Establish `hfac` using `EffectiveEpi.fac q.left f.left hc`. Set `β : B ⟶ Y` to `Over.homMk (EffectiveEpi.desc q.left f.left hc) (by`. Rewrite using `[← cancel_epi q.left, ← Category.assoc, hfac, Over.w, Over.w])`. Establish `hβ : q ≫ β = f` using `Over.OverMorphism.ext hfac`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Epi q` using `Over.epi_of_epi_left q`. Conclude with `⟨β, hβ, fun β' h' => by rw [← cancel_epi q, h', hβ]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma existsUnique_desc {A B Y : Over S} (q : A ⟶ B) [Flat q.left] [Surjective q.left]
     [QuasiCompact q.left] (f : A ⟶ Y)
@@ -306,15 +302,15 @@ end PointQuot
 open PointQuot in
 
 /- English proof (translation)
-Introduce `L k _ _ P C hC`. Take `⟨n, ⟨e⟩⟩` from `Finite.exists_equiv_fin C`. Set `x : Fin n → (𝟙_ (Over (Sp k)) ⟶ P.A)` to `fun c => (e.symm c).1`. Establish `hx : Function.Injective x` using `Subtype.val_injective.comp e.symm.injective`. Establish `hr : Set.range x = C`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `y`. Conclude with `⟨by rintro ⟨c, rfl⟩; exact (e.symm c).2, fun hy => ⟨e ⟨y, hy⟩, by simp [x]⟩⟩`. Establish `mem : ∀ c, x c ∈ C` using `fun c => hr.le ⟨c, rfl⟩`. Establish `hmono` using `mono_constDesc x hx`. Take `⟨_, hi⟩` from `exists_grpObj_constObj x C hr`.
+By extensionality, compare the relevant components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs : FinEt.IsSplitOfRank (constObj (Sp k) (Fin n)).hom n` using `(FinEt.isSplitOfRank_iff_exists_iso _ _).mpr ⟨Iso.refl _, Category.id_comp _⟩`. Establish `het` using `hs.etale`. Take `⟨B, _, hB, q, hq, hfin, hflat, hsurj, hker⟩` from `L.quotient k P (constObj (Sp k) (Fin n)) (constDesc x) hi hmono hs.isFinite inferInstance`. Establish `hw : constDesc x ≫ q = 1` using `hker.w`. Use `⟨B, inferInstance, q, hB, hq, hfin, ?_, hsurj, fun y => ⟨fun hy => ?_, fun hy => ?_⟩, fun Y f hf => existsUnique_desc q f (comp_eq_of_invariant x q hker f fun c => hf _ (mem c))⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `MorphismProperty.of_isPullback_of_descendsAlong (P := @Etale) (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) ((H1.torsor_pullback (constDesc x) q hker).map (Over.forget _)).flip ⟨⟨hsurj, hflat⟩, inferInstanceAs (QuasiCompact q.left)⟩ ?_` and prove the remaining obligations. Conclude with `MorphismProperty.of_isPullback (P := @Etale) (IsPullback.of_hasPullback _ _) het`. Take `⟨z⟩ : Nonempty (𝟙_ (Over (Sp k))).left` from `inferInstanceAs (Nonempty (PrimeSpectrum k))`. Take `⟨V, hV, c, hc⟩` from `locally_const_desc x (hker.lift y (toUnit _) hy) z`. Establish `: Nonempty (openObj _ V).left` using `⟨(⟨z, hV⟩ : V)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `epi_toUnit (openObj _ V)` as an intermediate fact. Rewrite `hc` using `[hker.lift_fst, toUnit_unique (openι _ V) (toUnit _), cancel_epi]`. Conclude with `hc ▸ mem c`. Take `⟨c, rfl⟩` from `hr.ge hy`. Rewrite using `[← constPt_desc x c, Category.assoc, hw, MonObj.comp_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_quotient_by_finite_group_of_points :
     Out.Laws → ∀ (k : Type) [Field k] [IsAlgClosed k] (P : Out.PolAV (Sp k)) (C : Subgroup (𝟙_ (Over (Sp k)) ⟶ P.A)), Finite C → ∃ (B : Over (Sp k)) (_ : GrpObj B) (ψ : P.A ⟶ B), IsAbelianScheme B ∧ IsMonHom ψ ∧ IsFinite ψ.left ∧ Etale ψ.left ∧ Surjective ψ.left ∧ (∀ x : 𝟙_ (Over (Sp k)) ⟶ P.A, x ≫ ψ = 1 ↔ x ∈ C) ∧ ∀ (Y : Over (Sp k)) (f : P.A ⟶ Y), (∀ x ∈ C, ((toUnit P.A ≫ x) * 𝟙 P.A) ≫ f = f) → ∃! f' : B ⟶ Y, ψ ≫ f' = f := by

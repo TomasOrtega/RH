@@ -28,7 +28,7 @@ variable {D : D7} {u : D.what₂.Word}
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Use `show mulLat g (clsCrd D u 0 (Nat.zero_le _) c ⊔ T.atT.Pv v • Ld D u 0 (Nat.zero_le _) c) = clsCrd D u 0 (Nat.zero_le _) c' ⊔ T.atT.Pv v • Ld D u 0 (Nat.zero_le _) c'`. Unfold `mulLat at hL hLd ⊢`. Rewrite using `[Submodule.map_sup, Submodule.map_smul'', hL, hLd]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dni_lk (T : Forms0 D u) (v : (D.mem u).A.vT) (c c' : (D.mem u).C.cls 0)
     (g : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E)
@@ -41,7 +41,7 @@ theorem dni_lk (T : Forms0 D u) (v : (D.mem u).A.vT) (c c' : (D.mem u).C.cls 0)
   rw [Submodule.map_sup, Submodule.map_smul'', hL, hLd]
 
 /- English proof (translation)
-Rewrite using `[← h]`. Conclude with `Submodule.mem_map_of_mem hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dni_mem_of {E : Type} [Field E] [NumberField E] {n : ℕ} (g : Matrix (Fin n) (Fin n) E)
     {M M' : Submodule (𝓞 E) (Fin n → E)} (h : mulLat g M = M') {z : Fin n → E} (hz : z ∈ M) : g *ᵥ z ∈ M' := by
@@ -50,7 +50,7 @@ theorem dni_mem_of {E : Type} [Field E] [NumberField E] {n : ℕ} (g : Matrix (F
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-The claim follows from `dni_mem_of g (dni_lk T v c c' g hL hLd) hz`.
+A detailed English derivation is pending.
 -/
 theorem dni_mem (T : Forms0 D u) (v : (D.mem u).A.vT) (c c' : (D.mem u).C.cls 0)
     (g : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E)
@@ -62,7 +62,7 @@ theorem dni_mem (T : Forms0 D u) (v : (D.mem u).A.vT) (c c' : (D.mem u).C.cls 0)
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Establish `h` using `dni_lk T v c c' g hL hLd`. Establish `h2 : mulLat g (T.atT.Pv v • Lk T.atT 0 (Nat.zero_le _) v c) = T.atT.Pv v • Lk T.atT 0 (Nat.zero_le _) v c'`. Unfold `mulLat at h ⊢`. Rewrite using `[Submodule.map_smul'', h]`. Conclude with `dni_mem_of g h2 hz`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dni_mem_ker (T : Forms0 D u) (v : (D.mem u).A.vT) (c c' : (D.mem u).C.cls 0)
     (g : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E)
@@ -87,9 +87,9 @@ def dniFun (T : Forms0 D u) (v : (D.mem u).A.vT) (c c' : (D.mem u).C.cls 0)
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Establish `hs` using `Function.surjInv_eq (T.lv0.prk_surj v c) (T.lv0.prk v c z)`. Establish `hd : (Function.surjInv (T.lv0.prk_surj v c) (T.lv0.prk v c z) - z).1 ∈ T.atT.Pv v • Lk T.atT 0 (Nat.zero_le _) v c`. Rewrite using `[← T.lv0.prk_ker, map_sub, hs, sub_self]`. Establish `hg` using `dni_mem_ker T v c c' g hL hLd hd`. Unfold `dniFun`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← sub_eq_zero, ← map_sub, T.lv0.prk_ker]`. Simplify `hg` using `[Matrix.mulVec_sub]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dniFun_prk (T : Forms0 D u) (v : (D.mem u).A.vT) (c c' : (D.mem u).C.cls 0)
     (g : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E)
@@ -132,7 +132,7 @@ def dniLin (T : Forms0 D u) (v : (D.mem u).A.vT) (c c' : (D.mem u).C.cls 0)
     exact Matrix.mulVec_smul _ _ _
 
 /- English proof (translation)
-The claim follows from `dniFun_prk T v c c' g hL hLd z`.
+A detailed English derivation is pending.
 -/
 theorem dniLin_prk (T : Forms0 D u) (v : (D.mem u).A.vT) (c c' : (D.mem u).C.cls 0)
     (g : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E)
@@ -143,9 +143,9 @@ theorem dniLin_prk (T : Forms0 D u) (v : (D.mem u).A.vT) (c c' : (D.mem u).C.cls
   dniFun_prk T v c c' g hL hLd z
 
 /- English proof (translation)
-Establish `hid : ((Matrix.mulVecLin ((g⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)).restrictScalars (𝓞 E)).comp ((Matrix.mulVecLin (g : Matrix (Fin n) (Fin n) E)).restrictScalars (𝓞 E)) = LinearMap.id`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.restrictScalars_apply, Matrix.mulVecLin_apply, LinearMap.id_apply]`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Rewrite using `[← h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `mulLat`. Rewrite using `[← Submodule.map_comp, hid, Submodule.map_id]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dni_inv_eq {E : Type} [Field E] [NumberField E] {n : ℕ} (g : GL (Fin n) E)
     {M M' : Submodule (𝓞 E) (Fin n → E)} (h : mulLat (g : Matrix (Fin n) (Fin n) E) M = M') :
@@ -187,7 +187,7 @@ def dniEquiv (T : Forms0 D u) (v : (D.mem u).A.vT) (c c' : (D.mem u).C.cls 0) (g
       rw [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec])
 
 /- English proof (translation)
-The claim follows from `dniLin_prk T v c c' _ hL hLd z`.
+A detailed English derivation is pending.
 -/
 theorem dniEquiv_prk (T : Forms0 D u) (v : (D.mem u).A.vT) (c c' : (D.mem u).C.cls 0) (g : GL (Fin (D.R.N 0)) D.host.E)
     (hL : mulLat (g : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) (clsCrd D u 0 (Nat.zero_le _) c) =
@@ -202,9 +202,9 @@ theorem dniEquiv_prk (T : Forms0 D u) (v : (D.mem u).A.vT) (c c' : (D.mem u).C.c
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `e1` using `T.lv0.te v c z hz (Submodule.mem_sup_right (Submodule.smul_mem_smul (bwA_T_mem_Pv D u T.atT v) z.2))`. Establish `e2` using `T.lv0.te v c' ⟨_, hgz⟩ hz' (Submodule.mem_sup_right (Submodule.smul_mem_smul (bwA_T_mem_Pv D u T.atT v) hgz))`. Rewrite using `[← e1, ← e2, dniEquiv_prk]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Matrix.mulVec_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dniEquiv_te (T : Forms0 D u) (v : (D.mem u).A.vT) (c c' : (D.mem u).C.cls 0) (g : GL (Fin (D.R.N 0)) D.host.E)
     (hL : mulLat (g : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) (clsCrd D u 0 (Nat.zero_le _) c) =
@@ -225,9 +225,9 @@ theorem dniEquiv_te (T : Forms0 D u) (v : (D.mem u).A.vT) (c c' : (D.mem u).C.cl
   simp only [Matrix.mulVec_smul]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w, (D.fm u).fv 0 v c w ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `(D.fm u).fv_ne 0 v c (LinearMap.ext h)`. Take `⟨z, hz⟩` from `T.lv0.pr_surj v c (((D.fm u).fv 0 v c w)⁻¹ • w)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, map_smul, smul_eq_mul, inv_mul_cancel₀ hw]`.
+A detailed English derivation is pending.
 -/
 theorem dni_exists_one (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0) :
     ∃ z : ↥(Ld D u 0 (Nat.zero_le _) c), (D.fm u).fv 0 v c (T.lv0.pr v c z) = 1 := by

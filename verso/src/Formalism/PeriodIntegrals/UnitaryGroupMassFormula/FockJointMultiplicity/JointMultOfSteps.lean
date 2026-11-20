@@ -19,13 +19,13 @@ def RankLe : Prop := ∀ (p q r s : ℕ) (μ : Ix p q → ℚ) (μ' : Ix r s →
   JointShape p q r s μ μ' → ∃ v : Pol p q r s, JH p q r s μ μ' ≤ Submodule.span ℂ {v}
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.mp (hv hP)`. Establish `hv0 : v ≠ 0`. Introduce and unpack `rfl`. Apply `hP0` to reduce the goal to its premises. Rewrite using `[← ha, smul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Apply `hP0` to reduce the goal to its premises. Rewrite using `[← ha, zero_smul]`. Establish `heq : S = Submodule.span ℂ {v}`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `le_antisymm hv` to reduce the goal to its premises. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Establish `hva : v = a⁻¹ • P`. Rewrite using `[← ha, smul_smul, inv_mul_cancel₀ ha0, one_smul]`. Rewrite using `[hva]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `S.smul_mem _ hP`. Rewrite using `[heq]`. Conclude with `finrank_span_singleton hv0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finrank_eq_one_of_ne_zero_mem_of_le_span_singleton {V : Type*} [AddCommGroup V] [Module ℂ V] {S : Submodule ℂ V}
     {P v : V} (hP : P ∈ S) (hP0 : P ≠ 0) (hv : S ≤ Submodule.span ℂ {v}) : Module.finrank ℂ S = 1 := by
@@ -49,11 +49,9 @@ private theorem finrank_eq_one_of_ne_zero_mem_of_le_span_singleton {V : Type*} [
   exact finrank_span_singleton hv0
 
 /- English proof (translation)
-Introduce `p q r s μ μ'`. Use `⟨fun hc => ?_, fun hc => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Module.finrank ℂ (JH p q r s μ μ') = 1`. Take `⟨P, hP, hP0⟩` from `he p q r s μ μ' hc`. Take `⟨v, hv⟩` from `hr p q r s μ μ' hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `finrank_eq_one_of_ne_zero_mem_of_le_span_singleton hP hP0 hv`. Express the relevant statement in the definitionally equal form `JH p q r s μ μ' = ⊥`. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `P hP`. Assume the negation of the conclusion as `hP0`.
-
-Conclude with `hc (hs p q r s μ μ' P hP hP0)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem jointMult_of (he : Exist) (hs : ShapeOf) (hr : RankLe) : PI.FockDegreeTwoParts.JointMult := by
   intro p q r s μ μ'
@@ -163,13 +161,13 @@ def VecHW2 : Prop := ∀ (p q r s : ℕ) (a b c d : List ℤ), ShapeData p q r s
   hwVec p q r s a b c d ∈ hwSub (fockAct2 p q r s) (wtOf2 p q r s a b c d)
 
 /- English proof (translation)
-Introduce `p q r s μ μ' hcorr`. Take `⟨a, b, c, d, ha, hc, hb, hd, hpa, hpb, hpc, hpd, hl1, hl2, hl3, hl4, hμ, hμ'⟩` from `hcorr`. Establish `hS : ShapeData p q r s a b c d` using `⟨ha, hc, hb, hd, hpa, hpb, hpc, hpd, hl1, hl2, hl3, hl4⟩`. Establish `hL : wtOf1 p q r s a b c d = μ`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h` using `congrFun hμ x`. Apply the tactic sequence `cases x <;> simp only [wtOf1, sh1, FockH1Action.shiftNu, Sum.elim_inl, Sum.elim_inr] at h ⊢ <;> linarith`. Establish `hR : wtOf2 p q r s a b c d = μ'`. Use function extensionality and compare the values at `x`. Establish `h` using `congrFun hμ' x`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Apply the tactic sequence `cases x <;> simp only [wtOf2, sh2, FockH1Action.shiftNu, Sum.elim_inl, Sum.elim_inr] at h ⊢ <;> linarith`. Establish `hA` using `h1 p q r s a b c d hS`. Establish `hB` using `h2 p q r s a b c d hS`. Rewrite `hA` using `[hL]`. Rewrite `hB` using `[hR]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨hwVec p q r s a b c d, ?_, hN p q r s a b c d hS⟩` and prove the remaining obligations. Unfold `JH`. Conclude with `Submodule.mem_inf.mpr ⟨Submodule.mem_inf.mpr ⟨hA, hB⟩, Submodule.subset_span (hJ p q r s a b c d hS)⟩`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem exist_of (hN : VecNe) (hJ : VecJ) (h1 : VecHW1) (h2 : VecHW2) : Exist := by
   intro p q r s μ μ' hcorr

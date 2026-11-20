@@ -16,9 +16,9 @@ namespace GlobalTheory.LatticeInterBaseChange
 
 open NumberField IsDedekindDomain Module in
 /- English proof (translation)
-Take `⟨g, hg⟩` from `LinearMap.exists_extend ((Basis.span hli).constr F (fun a => e (φ (b a))))`. Set `f₁ : V →ₛₗ[e] F` to `g.comp iV`. Set `f₂ : V →ₛₗ[e] F` to `{ toFun := fun v => e (φ v) map_add' := fun v w => by simp map_smul' := fun t v => by simp }`. Establish `hf : f₁ = f₂`. Use `b.ext fun a => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `LinearMap.congr_fun hg (Basis.span hli a)`. Rewrite `h` using `[Basis.constr_basis, LinearMap.comp_apply, Submodule.subtype_apply, Basis.span_apply]`. Conclude with `h`. Conclude with `⟨g, fun v => LinearMap.congr_fun hf v⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_functional_comp_eq {K F : Type} [Field K] [Field F] (e : K →+* F)
     {V V' : Type} [AddCommGroup V] [Module K V] [AddCommGroup V'] [Module F V']
@@ -40,19 +40,17 @@ private theorem exists_functional_comp_eq {K F : Type} [Field K] [Field F] (e : 
 
 open NumberField IsDedekindDomain Module in
 /- English proof (translation)
-Distinguish the cases in `hc : ∀ k, c k = 0`. Conclude with `⟨0, fun j k => ⟨0, by simp⟩, fun k => by simp [hc k]⟩`. Use `push_neg at hc`. Take `⟨k₀, hk₀⟩` from `hc`. Set `I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K` to `FractionalIdeal.spanFinset (𝓞 K) Finset.univ c`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hIc : (I : Submodule (𝓞 K) K) = Submodule.span (𝓞 K) (Set.range c)`. Express the relevant statement in the definitionally equal form `Submodule.span (𝓞 K) (c '' ((Finset.univ : Finset (Fin n)) : Set (Fin n))) = _`. Rewrite using `[Finset.coe_univ, Set.image_univ]`. Establish `hI : I ≠ 0`. Introduce `h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hk₀ ((FractionalIdeal.spanFinset_eq_zero.1 h) k₀ (Finset.mem_univ _))`. Establish `h1 : (1 : K) ∈ (I : Submodule (𝓞 K) K) * ((I⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K)`. Rewrite using `[← FractionalIdeal.coe_mul, mul_inv_cancel₀ hI]`. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨1, map_one _⟩`. Establish `key : ∃ β : Fin n → K, (∀ j, β j ∈ ((I⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K)) ∧ (1 : K) = ∑ j, β j * c j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.mul_induction_on (C := fun z => ∃ β : Fin n → K, (∀ j, β j ∈ ((I⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K)) ∧ z = ∑ j, β j * c j) h1 ?_ ?_` and prove the remaining obligations. Introduce `m hm y hy`. Rewrite `hm` using `[hIc, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨r, rfl⟩` from `hm`. Use `⟨fun j => r j • y, fun j => Submodule.smul_mem _ (r j) hy, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `x y ⟨β, hβ, rfl⟩ ⟨β', hβ', rfl⟩`.
+Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨β + β', fun j => add_mem (hβ j) (hβ' j), by simp only [Pi.add_apply, add_mul, Finset.sum_add_distrib]⟩`. Take `⟨β, hβI, hβ1⟩` from `key`. Use `⟨β, fun j k => ?_, fun k => by rw [← hβ1, mul_one]⟩` and prove the remaining obligations. Establish `hck : c k ∈ I`. Rewrite using `[← FractionalIdeal.mem_coe, hIc]`.
-
-Conclude with `Submodule.subset_span ⟨k, rfl⟩`. Take `⟨r, hr⟩` from `(FractionalIdeal.mem_one_iff _).1 ((FractionalIdeal.mem_inv_iff hI).1 (FractionalIdeal.mem_coe.1 (hβI j)) (c k) hck)`. Conclude with `⟨r, hr⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_integral_inverse_coefficients {K : Type} [Field K] [NumberField K] {n : ℕ}
     (c : Fin n → K) :
@@ -103,23 +101,19 @@ private theorem exists_integral_inverse_coefficients {K : Type} [Field K] [Numbe
 
 open NumberField IsDedekindDomain Module in
 /- English proof (translation)
-Take `⟨n, r, g, hxg⟩` from `Submodule.mem_span_set'.1 hx`. Use `choose a ha hag using fun i => (g i).2`. Take `⟨β, hβint, hβ⟩` from `exists_integral_inverse_coefficients (fun i => φ (a i))`. Use `choose ρ hρ using hβint`. Use `beta_reduce at hρ hβ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hρs : ∀ j k, (ρ j k) • a j = (β j * φ (a k)) • a j`. Introduce `j k`. Rewrite using `[← hρ j k, ← algebraMap_smul K (ρ j k) (a j)]`. Set `w : Fin n → V` to `fun k => a k - ∑ j, (ρ j k) • a j`. Establish `hwA : ∀ k, w k ∈ A` using `fun k => sub_mem (ha k) (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (ha j))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hwφ : ∀ k, φ (w k) = 0`. Introduce `k`. Establish `h` using `hβ k`. Rewrite `h` using `[Finset.mul_sum]`. Simplify using `only [w, map_sub, map_sum, hρs, map_smul, smul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_eq_zero]`. Use `conv_lhs => rw [← h]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Establish `key : ∑ k, algebraMap R F (r k) * e (φ (a k)) = 0`. Rewrite using `[← h0, ← hxg, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← hag k, ← algebraMap_smul F (r k) (iV (a k)), LinearMap.map_smul, smul_eq_mul, hψ]`. Establish `hiw : ∀ k, iV (w k) = iV (a k) - ∑ j, (e (β j) * e (φ (a k))) • iV (a j)`. Introduce `k`. Simplify using `only [w, map_sub, map_sum, hρs, LinearMap.map_smulₛₗ, map_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx' : x = ∑ k, r k • iV (w k)`. Simplify using `only [hiw, smul_sub, Finset.sum_sub_distrib, Finset.smul_sum]`. Establish `h2 : ∑ k, ∑ j, r k • (e (β j) * e (φ (a k))) • iV (a j) = 0`. Establish `h3 : ∀ k j, r k • (e (β j) * e (φ (a k))) • iV (a j) = (e (β j) * (algebraMap R F (r k) * e (φ (a k)))) • iV (a j)`. Introduce `k j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul F (r k), smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h3]`. Rewrite using `[Finset.sum_comm]`.
-
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, ← Finset.mul_sum, key, mul_zero, zero_smul]`. Rewrite using `[h2, sub_zero, ← hxg]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hag k]`. Rewrite using `[hx']`.
-
-Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨w k, Submodule.mem_inf.2 ⟨hwA k, LinearMap.mem_ker.2 (hwφ k)⟩, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_span_image_inf_ker {K F R : Type} [Field K] [NumberField K] [Field F]
     [CommRing R] [Algebra R F] (e : K →+* F) {V V' : Type} [AddCommGroup V] [Module K V]
@@ -178,25 +172,23 @@ private theorem mem_span_image_inf_ker {K F R : Type} [Field K] [NumberField K] 
 open NumberField IsDedekindDomain Module in
 
 /- English proof (translation)
-Introduce `K _ _ O _ _ _ e V V' _ _ _ _ _ _ _ _ _ iV ι b hli he A U`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `Submodule.mem_inf.2 ⟨Submodule.subset_span ⟨v, (Submodule.mem_inf.1 hv).1, rfl⟩, Submodule.subset_span ⟨v, (Submodule.mem_inf.1 hv).2, rfl⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨hxA, hxU⟩` from `Submodule.mem_inf.1 hx`. Set `bQ` to `Module.finBasis K (V ⧸ U)`. Set `f : Fin (Module.finrank K (V ⧸ U)) → V →ₗ[K] K` to `fun j => (bQ.coord j).comp U.mkQ`. Establish `hU : ∀ v, v ∈ U ↔ ∀ j, f j v = 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Simplify using `only [f, LinearMap.comp_apply, Basis.coord_apply, Submodule.mkQ_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h j`. Rewrite using `[(Submodule.Quotient.mk_eq_zero U).2 h, map_zero, Finsupp.zero_apply]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `(Submodule.Quotient.mk_eq_zero U).1 ((LinearEquiv.map_eq_zero_iff bQ.repr).1 (Finsupp.ext h))`. Use `choose ψ hψ using fun j => exists_functional_comp_eq e iV b hli (f j)`. Establish `hψx : ∀ j, ψ j x = 0`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hle : Submodule.span (FractionRing O) (iV '' (U : Set V)) ≤ LinearMap.ker (ψ j)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, hψ, (hU v).1 hv j, map_zero]`. Conclude with `hle hxU`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `claim : ∀ s : Finset (Fin (Module.finrank K (V ⧸ U))), ∀ (A' : Submodule (𝓞 K) V) (y : V'), y ∈ Submodule.span O (iV '' (A' : Set V)) → (∀ j ∈ s, ψ j y = 0) → y ∈ Submodule.span O (iV '' ((A' ⊓ ⨅ j ∈ s, (LinearMap.ker (f j)).restrictScalars (𝓞 K) : Submodule (𝓞 K) V) : Set V))`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `A' y hy _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using hy`. Consider the case `insert j s hj ih`. Introduce `A' y hy h0`. Establish `h1` using `mem_span_image_inf_ker e iV he (f j) (ψ j) (hψ j) A' hy (h0 j (Finset.mem_insert_self j s))`. Establish `h2` using `ih _ y h1 fun i hi => h0 i (Finset.mem_insert_of_mem hi)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_mono (Set.image_mono ?_) h2` and prove the remaining obligations. Introduce `v hv`. Simplify using `only [SetLike.mem_coe, Submodule.mem_inf, Submodule.mem_iInf, Submodule.restrictScalars_mem, LinearMap.mem_ker, Finset.mem_insert] at hv ⊢`. Use `⟨hv.1.1, fun i hi => ?_⟩` and prove the remaining obligations. Break down `hi with rfl | hi` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hv.1.2`. Conclude with `hv.2 i hi`. Establish `hfin` using `claim Finset.univ A x hxA fun j _ => hψx j`. Use `Submodule.span_mono (Set.image_mono ?_) hfin` and prove the remaining obligations. Introduce `v hv`.
-
-Simplify using `only [SetLike.mem_coe, Submodule.mem_inf, Submodule.mem_iInf, Submodule.restrictScalars_mem, LinearMap.mem_ker, Finset.mem_univ, forall_const] at hv ⊢`. Conclude with `⟨hv.1, (hU v).2 hv.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LatticeInterBaseChange.span_inf_baseChange : ∀ (K : Type) [Field K] [NumberField K] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (e : K →+* FractionRing O) (V V' : Type) [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [FiniteDimensional K V] [AddCommGroup V'] [Module (FractionRing O) V'] [Module O V'] [IsScalarTower O (FractionRing O) V'] (iV : V →ₛₗ[e] V') (ι : Type) (b : Basis ι K V), LinearIndependent (FractionRing O) (fun a => iV (b a)) → (∀ a : 𝓞 K, e (a : K) ∈ (algebraMap O (FractionRing O)).range) → ∀ (A : Submodule (𝓞 K) V) (U : Submodule K V), Submodule.span O (iV '' ((A ⊓ U.restrictScalars (𝓞 K) : Submodule (𝓞 K) V) : Set V)) = Submodule.span O (iV '' (A : Set V)) ⊓ (Submodule.span (FractionRing O) (iV '' (U : Set V))).restrictScalars O := by
   intro K _ _ O _ _ _ e V V' _ _ _ _ _ _ _ _ _ iV ι b hli he A U

@@ -7,15 +7,15 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EtaleCechNerveBaseC
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.E.DescIntPf
 
 /- English proof (translation)
-Establish `hp : IsPullback (m.app p) ((cechAug k₀).app p) ((cechAug k).app p) (yoneda.map (pullback.fst r c))` using `hm.map ((evaluation _ _).obj p)`. Establish `hB : IsPullback (m.app p ≫ e.inv) ((cechAug k₀).app p) (yoneda.map l) (yoneda.map (pullback.fst r c))`. Use `hp.of_iso (Iso.refl _) e.symm (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Iso.refl_hom, Iso.symm_hom, ← he] erw [Iso.inv_hom_id_assoc, Category.comp_id]`. Apply the tactic sequence `erw [Category.comp_id] try erw [Category.id_comp]`. Set `φ : pullback (l ≫ r) c ⟶ pullback r c` to `pullback.lift (pullback.fst (l ≫ r) c ≫ l) (pullback.snd (l ≫ r) c) (by simp [pullback.condition])`. Establish `hφ₁ : φ ≫ pullback.fst r c = pullback.fst (l ≫ r) c ≫ l` using `pullback.lift_fst _ _ _`. Establish `hφ₂ : φ ≫ pullback.snd r c = pullback.snd (l ≫ r) c` using `pullback.lift_snd _ _ _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : IsPullback (pullback.fst (l ≫ r) c) φ l (pullback.fst r c)`. Use `IsPullback.of_bot ?_ hφ₁.symm (IsPullback.of_hasPullback r c)` and prove the remaining obligations. Rewrite using `[hφ₂]`. Conclude with `IsPullback.of_hasPullback (l ≫ r) c`. Establish `hA` using `hS.map yoneda`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ι` to `IsPullback.isoIsPullback _ _ hA hB`. Establish `hι : ι.hom ≫ m.app p ≫ e.inv = yoneda.map (pullback.fst (l ≫ r) c)` using `IsPullback.isoIsPullback_hom_fst _ _ hA hB`. Establish `key : yoneda.map (pullback.fst (l ≫ r) c) ≫ e.hom = ι.hom ≫ m.app p`. Rewrite using `[← hι]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `RelZS.of_iso (ZMod q) (tw q i) (sch.map (pullback.fst (l ≫ r) c)) (disc.map (m.app p)) (disc.mapIso ι) (disc.mapIso e) ?_ n h` and prove the remaining obligations. Use `congrArg (fun f => disc.map f) key` as an intermediate fact. Simplify using `only [Functor.map_comp] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem level_rel {Y X Y₀ S S₀ L : Scheme.{0}} (k : Y ⟶ X) (r : X ⟶ S) (c : S₀ ⟶ S)
     (k₀ : Y₀ ⟶ pullback r c) (m : cech k₀ ⟶ cech k)
@@ -77,18 +77,16 @@ private noncomputable def cech_zero {Y X : Scheme.{0}} (k : Y ⟶ X) :
   wpOne (yoneda.map k)
 
 /- English proof (translation)
-The claim follows from `WidePullback.lift_base _ _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem cech_zero_aug {Y X : Scheme.{0}} (k : Y ⟶ X) :
     (cech_zero k).hom ≫ (cechAug k).app (Opposite.op (SimplexCategory.mk 0)) = yoneda.map k :=
   WidePullback.lift_base _ _ _ _
 
 /- English proof (translation)
-Introduce `b4 q i Y X S S₀ k _ _ r c hq`. Establish `hP` using `IsPullback.of_hasPullback k (pullback.fst r c)`. Take `⟨u, hu, -⟩` from `GlobalTheory.cech_baseChange Y X _ _ _ _ k (pullback.fst r c) hP`. Establish `hq₀ : IsUnit (q : Γ(pullback r c, ⊤))`. Simplify using `using hq.map (pullback.fst r c).appTop.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI : IsIntegralHom (pullback.snd k (pullback.fst r c)) := MorphismProperty.of_isPullback hP inferInstance`. Use `haveI : Surjective (pullback.snd k (pullback.fst r c)) := MorphismProperty.of_isPullback hP inferInstance`. Use `⟨_, _, u, cechAug _, cechAug k, hu.w, b4 q k hq i, b4 q _ hq₀ i, fun p => ?_, fun n h => ?_⟩` and prove the remaining obligations. Take `⟨Z, π, e, hπ, he⟩` from `GlobalTheory.EtC.cech_level_representable (@IsIntegralHom) Y X k inferInstance (Opposite.op (SimplexCategory.mk p)) haveI : IsIntegralHom π := hπ`. Conclude with `⟨Z, π ≫ k, inferInstance, fun n h => level_rel k r c _ u hu _ (π ≫ k) e he q i n h⟩`.
-
-Conclude with `level_rel k r c _ u hu _ k (cech_zero k) (cech_zero_aug k) q i n h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.cohomology_base_change_integral_surjective_cech :
     B4 → ∀ (q : ℕ) (i : ℤ) {Y X S S₀ : Scheme.{0}} (k : Y ⟶ X) [IsIntegralHom k] [Surjective k] (r : X ⟶ S) (c : S₀ ⟶ S), IsUnit (q : Γ(X, ⊤)) → ∃ (U E : Spc) (u : U ⟶ E) (a' : U ⟶ sch.obj (pullback r c)) (a : E ⟶ sch.obj X), u ≫ a = a' ≫ sch.map (pullback.fst r c) ∧ Eqv _ a (tw q i) ∧ Eqv _ a' (tw q i) ∧ (∀ p : ℕ, ∃ (L : Scheme.{0}) (l : L ⟶ X), IsIntegralHom l ∧ ∀ m, RelZS (ZMod q) (tw q i) m (sch.map (pullback.fst (l ≫ r) c)) → RelZS (ZMod q) (tw q i) m (disc.map (u.app (Opposite.op (SimplexCategory.mk p))))) ∧ ∀ m, RelZS (ZMod q) (tw q i) m (sch.map (pullback.fst (k ≫ r) c)) → RelZS (ZMod q) (tw q i) m (disc.map (u.app (Opposite.op (SimplexCategory.mk 0)))) := by

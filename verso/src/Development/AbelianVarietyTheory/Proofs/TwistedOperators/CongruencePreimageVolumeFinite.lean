@@ -23,19 +23,15 @@ set_option maxHeartbeats 800000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Use `haveI : IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E) := IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Use `set P' := (frameMat B A d.ι).map (incA D)`. Use `set Q' := (GlobalTheory.UnitaryEmbeddingProperties.qM d).map (incA D)`. Establish `hv : Continuous fun g : GA D B => mt B g` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hvi : Continuous fun g : GA D B => mt B g⁻¹` using `Units.continuous_coe_inv.comp continuous_subtype_val`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Φ : GA D B → Matrix (Fin A.rank) (Fin A.rank) (AF D.host.F ⊗[D.host.F] D.host.E) × (Matrix (Fin A.rank) (Fin A.rank) (AF D.host.F ⊗[D.host.F] D.host.E))ᵐᵒᵖ` to `fun g => (Q' * mt B g * P', MulOpposite.op (Q' * mt B g⁻¹ * P'))`. Establish `hΦ : Continuous Φ` using `((continuous_const.matrix_mul hv).matrix_mul continuous_const).prodMk (MulOpposite.continuous_op.comp ((continuous_const.matrix_mul hvi).matrix_mul continuous_const))`. Set `φ : GA D A →* GA D B` to `MonoidHom.mk' (stabilizerEmbedding d) (GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_mul d)`. Establish `hcomp : Φ ∘ stabilizerEmbedding d = (Units.embedProduct _) ∘ (fun h : GA D A => matHom A h)`. Use function extensionality and compare the values at `h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : stabilizerEmbedding d h⁻¹ = (stabilizerEmbedding d h)⁻¹` using `map_inv φ h`. Simplify using `only [Function.comp_apply, Φ, Units.embedProduct_apply]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `(GlobalTheory.UnitaryEmbeddingGroup.matA_eq d h).symm`. Use `show MulOpposite.op (Q' * mt B (stabilizerEmbedding d h)⁻¹ * P') = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← e]`. Conclude with `congrArg MulOpposite.op (GlobalTheory.UnitaryEmbeddingGroup.matA_eq d h⁻¹).symm`. Establish `hind : IsInducing (stabilizerEmbedding d)`. Use `IsInducing.of_comp (GlobalTheory.UnitaryEmbeddingProperties.continuous_unitaryEmbedding d) hΦ ?_` and prove the remaining obligations. Rewrite using `[hcomp]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Units.isEmbedding_embedProduct.isInducing.comp (IsInducing.subtypeVal (t := ((HR (AF D.host.F) D.sp.cm.sig A.gram : Subgroup _) : Set (GL (Fin A.rank) (AF D.host.F ⊗[D.host.F] D.host.E)))))`. Establish `hrange : Set.range (stabilizerEmbedding d) = {g : GA D B | mt B g * d.a.map (incA D) = d.a.map (incA D)}`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`.
-
-Conclude with `GlobalTheory.UnitaryEmbeddingGroup.unitaryEmbedding_fixes_vectors d h`. Introduce `hg`. Conclude with `GlobalTheory.UnitaryEmbeddingGroup.mem_range_of_fix d hε g hg`. Establish `hcl : IsClosed (Set.range (stabilizerEmbedding d))`. Rewrite using `[hrange]`.
-
-Use `haveI : T2Space (AE D) := (Formalism.IndefR.Eqv.ae_facts D).2.1`. Conclude with `isClosed_eq (hv.matrix_mul continuous_const) continuous_const`. Conclude with `⟨⟨hind, GlobalTheory.UnitaryEmbeddingGroup.unitaryEmbedding_injective d⟩, hcl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_unitaryEmbedding (d : HermitianOrthogonalExtensionData A B c ε) (hε : ε ≠ 0) : IsClosedEmbedding (stabilizerEmbedding d) := by
   haveI : IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E) :=
@@ -84,13 +80,11 @@ namespace GlobalTheory.UnitaryEmbeddingVolume
 open Topology
 
 /- English proof (translation)
-Introduce `D Y V d Λ 𝔪 hΛ h𝔪 μ hμ`. Take `⟨hU, hK⟩` from `congLev_open_compact V hΛ.1 h𝔪`. Use `set S := {b : GfC Y | Lev.finE V (stabilizerEmbedding d (b : GA D Y)) ∈ congLev D.sp.cm V.gram Λ 𝔪}`. Establish `hc : Continuous fun b : GfC Y => stabilizerEmbedding d (b : GA D Y)` using `(GlobalTheory.UnitaryEmbeddingProperties.continuous_unitaryEmbedding d).comp continuous_subtype_val`. Establish `hS : S = (fun b : GfC Y => stabilizerEmbedding d (b : GA D Y)) ⁻¹' (((congLev D.sp.cm V.gram Λ 𝔪).comap (Lev.finE V) : Subgroup (GA D V)) : Set (GA D V))` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hopen : IsOpen S`. Rewrite using `[hS]`. Conclude with `hU.preimage hc`. Establish `h1 : (1 : GfC Y) ∈ S` using `by show Lev.finE V (stabilizerEmbedding d ((1 : GfC Y) : GA D Y)) ∈ congLev D.sp.cm V.gram Λ 𝔪`. Rewrite using `[OneMemClass.coe_one, show stabilizerEmbedding d (1 : GA D Y) = 1 from map_one (MonoidHom.mk' (stabilizerEmbedding d) (GlobalTheory.UnitaryEmbeddingProperties.unitaryEmbedding_mul d)), map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(congLev D.sp.cm V.gram Λ 𝔪).one_mem`. Establish `hce : IsClosedEmbedding fun b : GfC Y => stabilizerEmbedding d (b : GA D Y)` using `(isClosedEmbedding_unitaryEmbedding d one_ne_zero).comp (GlobalTheory.Ker.CongTop.isClosed_GfC Y).isClosedEmbedding_subtypeVal`. Establish `hsub : S ⊆ (fun b : GfC Y => stabilizerEmbedding d (b : GA D Y)) ⁻¹' ((Lev.levA V (congLev D.sp.cm V.gram Λ 𝔪) : Subgroup (GA D V)) : Set (GA D V))`. Introduce `b hb`. Use `⟨?_, hb⟩` and prove the remaining obligations.
-
-Use `show stabilizerEmbedding d (b : GA D Y) ∈ GfC V`. Rewrite using `[GlobalTheory.UnitaryEmbeddingGroup.mem_GfC_iff, ← GlobalTheory.UnitaryEmbeddingGroup.map_eq_one_iff d, ← GlobalTheory.UnitaryEmbeddingGroup.mem_GfC_iff]`. Conclude with `b.2`. Use `⟨hopen.measurableSet, hopen.measure_pos μ ⟨1, h1⟩, ?_⟩` and prove the remaining obligations. Conclude with `(measure_mono hsub).trans_lt (hce.isCompact_preimage hK).measure_lt_top`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem vol_pos_lt_top : ∀ (D : D7) (Y V : HSp D) (d : HermitianOrthogonalExtensionData Y V 1 1) (Λ : Lat V) (𝔪 : Ideal (𝓞 D.host.E)),
     IsSelfDualC V Λ → 𝔪 ≠ ⊥ → ∀ μ : Measure (GfC Y), μ.IsHaarMeasure →

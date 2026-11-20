@@ -18,7 +18,7 @@ Both sides reduce to the same expression.
 theorem incl_apply (n : ℕ) (m : Fin n → 𝓞 E) (i : Fin n) : incl n m i = (m i : E) := rfl
 
 /- English proof (translation)
-Introduce `a b h`. Use function extensionality and compare the values at `i`. Conclude with `RingOfIntegers.coe_injective (congrFun h i)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem incl_injective (n : ℕ) : Function.Injective (incl (E := E) n) := by
   intro a b h
@@ -34,7 +34,7 @@ Both sides reduce to the same expression.
 theorem psi_apply {n : ℕ} (G : Matrix (Fin n) (Fin n) E) (m : Fin n → 𝓞 E) : psi G m = G⁻¹ *ᵥ incl n m := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[incl_apply]`. Conclude with `(RingHom.map_mulVec (algebraMap (𝓞 E) E) Gm m i)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incl_mulVec {n : ℕ} (Gm : Matrix (Fin n) (Fin n) (𝓞 E)) (m : Fin n → 𝓞 E) :
     incl n (Gm *ᵥ m) = (Gm.map ((↑) : 𝓞 E → E)) *ᵥ incl n m := by
@@ -43,7 +43,7 @@ theorem incl_mulVec {n : ℕ} (Gm : Matrix (Fin n) (Fin n) (𝓞 E)) (m : Fin n 
   exact (RingHom.map_mulVec (algebraMap (𝓞 E) E) Gm m i)
 
 /- English proof (translation)
-Rewrite using `[psi_apply, incl_mulVec, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.2 hdet), Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_mulVec {n : ℕ} (Gm : Matrix (Fin n) (Fin n) (𝓞 E)) (hdet : (Gm.map ((↑) : 𝓞 E → E)).det ≠ 0)
     (m : Fin n → 𝓞 E) : psi (Gm.map ((↑) : 𝓞 E → E)) (Gm *ᵥ m) = incl n m := by
@@ -51,7 +51,7 @@ theorem psi_mulVec {n : ℕ} (Gm : Matrix (Fin n) (Fin n) (𝓞 E)) (hdet : (Gm.
     Matrix.one_mulVec]
 
 /- English proof (translation)
-Introduce `a b h`. Apply `incl_injective n` to reduce the goal to its premises. Use `congrArg (fun z ↦ G *ᵥ z) h` as an intermediate fact. Simplify using `only [psi_apply, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hdet), Matrix.one_mulVec] at this`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psi_injective {n : ℕ} (G : Matrix (Fin n) (Fin n) E) (hdet : G.det ≠ 0) : Function.Injective (psi G) := by
   intro a b h
@@ -62,7 +62,7 @@ theorem psi_injective {n : ℕ} (G : Matrix (Fin n) (Fin n) E) (hdet : G.det ≠
   exact this
 
 /- English proof (translation)
-Introduce `h`. Apply `hdet` to reduce the goal to its premises. Rewrite using `[show (Gm.map ((↑) : 𝓞 E → E)) = (algebraMap (𝓞 E) E).mapMatrix Gm from rfl, ← RingHom.map_det, h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_map_ne {n : ℕ} (Gm : Matrix (Fin n) (Fin n) (𝓞 E)) (hdet : (Gm.map ((↑) : 𝓞 E → E)).det ≠ 0) :
     Gm.det ≠ 0 := by
@@ -71,11 +71,11 @@ theorem det_map_ne {n : ℕ} (Gm : Matrix (Fin n) (Fin n) (𝓞 E)) (hdet : (Gm.
   rw [show (Gm.map ((↑) : 𝓞 E → E)) = (algebraMap (𝓞 E) E).mapMatrix Gm from rfl, ← RingHom.map_det, h, map_zero]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Matrix.mulVecLin Gm)` using `fun a b hab ↦ by`. Establish `: Gm *ᵥ (a - b) = 0`. Rewrite using `[Matrix.mulVec_sub]`. Conclude with `sub_eq_zero.2 hab`. Conclude with `sub_eq_zero.1 (Matrix.eq_zero_of_mulVec_eq_zero h this)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set N : Submodule ℤ (Fin n → 𝓞 E) := (LinearMap.range (Matrix.mulVecLin Gm)).restrictScalars ℤ with hN`. Set `e : (Fin n → 𝓞 E) ≃ₗ[ℤ] N` to `(LinearEquiv.ofInjective (Matrix.mulVecLin Gm) hinj).restrictScalars ℤ`. Establish `key` using `Submodule.natAbs_det_equiv N e`. Establish `hq : Nat.card ((Fin n → 𝓞 E) ⧸ N) = Nat.card ((Fin n → 𝓞 E) ⧸ LinearMap.range (Matrix.mulVecLin Gm))` using `Nat.card_congr (Submodule.Quotient.restrictScalarsEquiv ℤ (LinearMap.range (Matrix.mulVecLin Gm))).toEquiv`. Rewrite using `[← hq, ← key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Establish `hmap : (N.subtype ∘ₗ AddMonoidHom.toIntLinearMap (e : (Fin n → 𝓞 E) →+ N)) = (Matrix.mulVecLin Gm).restrictScalars ℤ`. Use extensionality with `x`. Both sides reduce to the same expression. Rewrite using `[hmap, LinearMap.det_restrictScalars, ← Matrix.toLin'_apply', LinearMap.det_toLin']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quot {n : ℕ} (Gm : Matrix (Fin n) (Fin n) (𝓞 E)) (h : Gm.det ≠ 0) :
     Nat.card ((Fin n → 𝓞 E) ⧸ LinearMap.range (Matrix.mulVecLin Gm)) = (Algebra.norm ℤ Gm.det).natAbs := by
@@ -107,27 +107,23 @@ def Between {n : ℕ} (G : Matrix (Fin n) (Fin n) E) : Set (Submodule (𝓞 E) (
   {C | P0 n ≤ C ∧ C ≤ LinearMap.range (psi G) ∧ C.FG}
 
 /- English proof (translation)
-Use `set G := Gm.map ((↑) : 𝓞 E → E) with hG`. Use `set Rg := LinearMap.range (Matrix.mulVecLin Gm) with hRg`. Establish `hcard` using `card_quot Gm (det_map_ne Gm hdet)`. Establish `hpos : (Algebra.norm ℤ Gm.det).natAbs ≠ 0`. Rewrite using `[Int.natAbs_ne_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `(Algebra.norm_ne_zero_iff).2 (det_map_ne Gm hdet)`. Establish `: Finite ((Fin n → 𝓞 E) ⧸ Rg)` using `Nat.finite_of_card_ne_zero (hcard ▸ hpos)`. Set `θ : Submodule (𝓞 E) ((Fin n → 𝓞 E) ⧸ Rg) → Submodule (𝓞 E) (Fin n → E)` to `fun H ↦ (H.comap Rg.mkQ).map (psi G)`. Set `Gen : Set (Submodule (𝓞 E) ((Fin n → 𝓞 E) ⧸ Rg))` to `{H | ∃ s : Fin n → (Fin n → 𝓞 E) ⧸ Rg, Submodule.span (𝓞 E) (Set.range s) = H}`. Establish `hsub : Between G ⊆ θ '' Gen`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `C ⟨h0, h1, hfg⟩`. Establish `hRC : Rg ≤ C.comap (psi G)`. Introduce and unpack `_ ⟨m, rfl⟩`. Use `show psi G (Gm *ᵥ m) ∈ C`. Rewrite using `[psi_mulVec Gm hdet]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h0 ⟨m, rfl⟩`. Use `⟨(C.comap (psi G)).map Rg.mkQ, ?_, ?_⟩` and prove the remaining obligations. Take `⟨b, hb, hgen⟩` from `Fr.genMod_fg (E := E) (Nat.card ((Fin n → 𝓞 E) ⧸ Rg)) Nat.card_pos.ne' n C hfg`. Establish `hb' : ∀ a, ∃ m, psi G m = b a` using `fun a ↦ h1 (hb a)`. Use `choose mb hmb using hb'`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨fun a ↦ Rg.mkQ (mb a), le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Use `Submodule.mem_map_of_mem ?_` and prove the remaining obligations. Use `show psi G (mb a) ∈ C`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hmb]`. Conclude with `hb a`. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Take `⟨c, z, hz, hx⟩` from `hgen (psi G m) hm`. Take `⟨mz, hmz⟩` from `h1 hz`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hN : (Nat.card ((Fin n → 𝓞 E) ⧸ Rg)) • Rg.mkQ mz = 0` using `card_nsmul_eq_zero'`. Establish `hm_eq : m = ∑ a, c a • mb a + (Nat.card ((Fin n → 𝓞 E) ⧸ Rg)) • mz`. Apply `psi_injective G hdet` to reduce the goal to its premises. Rewrite using `[map_add, map_sum, map_nsmul, hx, hmz, ← Nat.cast_smul_eq_nsmul E]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `Finset.sum_congr rfl fun a _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_smul, hmb]`. Rewrite using `[hm_eq, map_add, map_sum, map_nsmul, hN, add_zero]`. Conclude with `Submodule.sum_mem _ fun a _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self a))`. Use `show (((C.comap (psi G)).map Rg.mkQ).comap Rg.mkQ).map (psi G) = C`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Submodule.comap_map_mkQ, sup_eq_right.2 hRC, Submodule.map_comap_eq, inf_eq_right.2 h1]`. Establish `hGfin : Gen.Finite`. Use `(Set.finite_range fun s : Fin n → (Fin n → 𝓞 E) ⧸ Rg ↦ Submodule.span (𝓞 E) (Set.range s)).subset ?_` and prove the remaining obligations. Introduce and unpack `H ⟨s, rfl⟩`. Conclude with `⟨s, rfl⟩`.
-
-Establish `hGcard : Gen.ncard ≤ Nat.card ((Fin n → 𝓞 E) ⧸ Rg) ^ n`. Use `Formalism.HermitianLattices.LatticeEstimates.moduli_intermediate_bound (𝓞 E) ((Fin n → 𝓞 E) ⧸ Rg) n` as an intermediate fact. Rewrite using `[← Nat.card_coe_set_eq]`. Conclude with `this`. Use `⟨(hGfin.image θ).subset hsub, ?_⟩` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem between_finite_card {n : ℕ} (Gm : Matrix (Fin n) (Fin n) (𝓞 E))
     (hdet : (Gm.map ((↑) : 𝓞 E → E)).det ≠ 0) :

@@ -21,26 +21,26 @@ noncomputable def deg : Divisor k K →+ ℤ :=
   Finsupp.liftAddHom fun v => AddMonoidHom.mulRight (v.deg : ℤ)
 
 /- English proof (translation)
-Simplify using `[deg, Finsupp.liftAddHom_apply]`. Use the proof step `@[simp]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deg_apply (D : Divisor k K) : deg D = D.sum fun v n => n * v.deg := by
   simp [deg, Finsupp.liftAddHom_apply]
 
 @[simp]
 /- English proof (translation)
-Simplify using `[deg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem deg_single (v : Place k K) (n : ℤ) : deg (Finsupp.single v n) = n * v.deg := by
   simp [deg]
 
 /- English proof (translation)
-Rewrite using `[deg_apply, Finsupp.sum]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem deg_eq_sum (D : Divisor k K) : deg D = ∑ v ∈ D.support, D v * v.deg := by
   rw [deg_apply, Finsupp.sum]
 
 /- English proof (translation)
-Rewrite using `[deg_eq_sum]`. Conclude with `Finset.sum_nonneg fun v _ => mul_nonneg (by simpa using Finsupp.le_def.1 hD v) (Int.natCast_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_nonneg {D : Divisor k K} (hD : 0 ≤ D) : 0 ≤ deg D := by
   rw [deg_eq_sum]
@@ -50,11 +50,11 @@ theorem deg_nonneg {D : Divisor k K} (hD : 0 ≤ D) : 0 ≤ deg D := by
 variable [IsFunctionField k K]
 
 /- English proof (translation)
-Rewrite `h` using `[deg_eq_sum]`. Establish `hnn : ∀ v ∈ D.support, 0 ≤ D v * v.deg` using `fun v _ => mul_nonneg (by simpa using Finsupp.le_def.1 hD v) (Int.natCast_nonneg _)`. Establish `h0` using `(Finset.sum_eq_zero_iff_of_nonneg hnn).1 h`. Use extensionality with `v`. Distinguish the cases in `hv : v ∈ D.support`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Use `h0 v hv` as an intermediate fact. Establish `hdeg : (0 : ℤ) < v.deg` using `by exact_mod_cast v.deg_pos`. Break down `mul_eq_zero.1 this with h' | h'` into its components or cases. Simplify using `using h'`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `using hv`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_deg_eq_zero {D : Divisor k K} (hD : 0 ≤ D) (h : deg D = 0) : D = 0 := by
   rw [deg_eq_sum] at h
@@ -79,26 +79,26 @@ noncomputable def divisor (x : K) : Divisor k K :=
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem divisor_apply (x : K) (v : Place k K) : divisor x v = v.ord x := rfl
 
 @[simp]
 /- English proof (translation)
-Use extensionality with `v`. Simplify using the standard rewrite rules. Use the proof step `@[simp]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem divisor_zero : divisor (0 : K) = (0 : Divisor k K) := by
   ext v; simp
 
 @[simp]
 /- English proof (translation)
-Use extensionality with `v`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem divisor_one : divisor (1 : K) = (0 : Divisor k K) := by
   ext v; simp
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[v.ord_mul hx hy]`. Use the proof step `@[simp]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem divisor_mul {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
     divisor (x * y) = (divisor x + divisor y : Divisor k K) := by
@@ -106,20 +106,20 @@ theorem divisor_mul {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
 
 @[simp]
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[Place.ord_inv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem divisor_inv (x : K) : divisor x⁻¹ = -(divisor x : Divisor k K) := by
   ext v; simp [Place.ord_inv]
 
 /- English proof (translation)
-Rewrite using `[div_eq_mul_inv, divisor_mul hx (inv_ne_zero hy), divisor_inv, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem divisor_div {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
     divisor (x / y) = (divisor x - divisor y : Divisor k K) := by
   rw [div_eq_mul_inv, divisor_mul hx (inv_ne_zero hy), divisor_inv, sub_eq_add_neg]
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[v.ord_eq_zero_of_isAlgebraic hx hx0]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem divisor_eq_zero_of_isAlgebraic {x : K} (hx : IsAlgebraic k x) (hx0 : x ≠ 0) :
     divisor x = (0 : Divisor k K) := by
@@ -143,7 +143,7 @@ variable (k K) in
 noncomputable def principalDivisors : AddSubgroup (Divisor k K) := (divisorHom (k := k)).range
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨_, (Additive.toMul x).ne_zero, rfl⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨Additive.ofMul (Units.mk0 x hx), rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_principalDivisors {D : Divisor k K} :
     D ∈ principalDivisors k K ↔ ∃ x : K, x ≠ 0 ∧ divisor x = D := by
@@ -159,34 +159,34 @@ noncomputable def poleDivisor (x : K) : Divisor k K := divisor x⁻¹ ⊔ 0
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem zeroDivisor_apply (x : K) (v : Place k K) :
     zeroDivisor x v = max (v.ord x) 0 := rfl
 
 @[simp]
 /- English proof (translation)
-Simplify using `[poleDivisor, Finsupp.sup_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem poleDivisor_apply (x : K) (v : Place k K) :
     poleDivisor x v = max (-v.ord x) 0 := by
   simp [poleDivisor, Finsupp.sup_apply]
 
 /- English proof (translation)
-The claim follows from `Finsupp.le_def.2 fun v => by simp`.
+A detailed English derivation is pending.
 -/
 theorem zeroDivisor_nonneg (x : K) : (0 : Divisor k K) ≤ zeroDivisor x :=
   Finsupp.le_def.2 fun v => by simp
 
 /- English proof (translation)
-The claim follows from `Finsupp.le_def.2 fun v => by simp @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem poleDivisor_nonneg (x : K) : (0 : Divisor k K) ≤ poleDivisor x :=
   Finsupp.le_def.2 fun v => by simp
 
 @[simp]
 /- English proof (translation)
-Simplify using `[poleDivisor, zeroDivisor]`. Use the proof step `@[simp]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem poleDivisor_inv (x : K) : poleDivisor x⁻¹ = (zeroDivisor x : Divisor k K) := by
   simp [poleDivisor, zeroDivisor]
@@ -198,7 +198,7 @@ Both sides reduce to the same expression.
 theorem zeroDivisor_inv (x : K) : zeroDivisor x⁻¹ = (poleDivisor x : Divisor k K) := rfl
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [Finsupp.coe_sub, Pi.sub_apply, zeroDivisor_apply, poleDivisor_apply, divisor_apply]`. Break down `le_total 0 (v.ord x) with h | h` into its components or cases. Rewrite using `[max_eq_left h, max_eq_right (by omega)]; ring`. Rewrite using `[max_eq_right h, max_eq_left (by omega)]; ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem zeroDivisor_sub_poleDivisor (x : K) :
     zeroDivisor x - poleDivisor x = (divisor x : Divisor k K) := by
@@ -221,13 +221,13 @@ def L (D : Divisor k K) : Submodule k K where
     · rw [v.valuation_algebraMap' hc, one_mul]; exact hz v
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_L {D : Divisor k K} {z : K} :
     z ∈ L D ↔ ∀ v : Place k K, v.valuation z ≤ WithZero.exp (D v) := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_L, Finsupp.le_def]`. Use `forall_congr' fun v => ?_` and prove the remaining obligations. Rewrite using `[v.valuation_le_exp_iff hz]`. Simplify using `only [Finsupp.coe_zero, Pi.zero_apply, Finsupp.coe_add, Pi.add_apply, divisor_apply]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mem_L_iff_le {D : Divisor k K} {z : K} (hz : z ≠ 0) :
     z ∈ L D ↔ 0 ≤ divisor z + D := by
@@ -238,13 +238,13 @@ theorem mem_L_iff_le {D : Divisor k K} {z : K} (hz : z ≠ 0) :
   omega
 
 /- English proof (translation)
-Introduce `_z hz v` and use `(hz v).trans (WithZero.exp_le_exp.2 (Finsupp.le_def.1 h v))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem L_mono {D E : Divisor k K} (h : D ≤ E) : L D ≤ L E := fun _z hz v =>
   (hz v).trans (WithZero.exp_le_exp.2 (Finsupp.le_def.1 h v))
 
 /- English proof (translation)
-Rewrite using `[Place.isAlgebraic_iff_forall_mem, mem_L]`. Use `forall_congr' fun v => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.coe_zero, Pi.zero_apply, WithZero.exp_zero, v.valuation_le_one_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_L_zero {z : K} : z ∈ L (0 : Divisor k K) ↔ IsAlgebraic k z := by
   rw [Place.isAlgebraic_iff_forall_mem, mem_L]
@@ -252,9 +252,9 @@ theorem mem_L_zero {z : K} : z ∈ L (0 : Divisor k K) ↔ IsAlgebraic k z := by
   rw [Finsupp.coe_zero, Pi.zero_apply, WithZero.exp_zero, v.valuation_le_one_iff]
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `z hz`. Rewrite using `[Submodule.mem_bot]`. Assume the negation of the conclusion as `hz0`. Establish `hall : ∀ w : Place k K, z ∈ w.ring` using `fun w => (w.valuation_le_one_iff z).1 ((hz w).trans (by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Simplify using `using Finsupp.le_def.1 hD w))`. Establish `h0` using `v.ord_eq_zero_of_isAlgebraic (Place.isAlgebraic_iff_forall_mem.2 hall) hz0`. Use `hz v` as an intermediate fact. Rewrite `this` using `[v.valuation_le_exp_iff hz0, h0]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -273,27 +273,25 @@ theorem L_eq_bot_of_nonpos {D : Divisor k K} (hD : D ≤ 0) {v : Place k K} (hv 
   omega
 
 /- English proof (translation)
-Use `set E := D + Finsupp.single v 1 with hE`. Establish `hEv : E v = D v + 1` using `by simp [E]`. Establish `hEw : ∀ w, w ≠ v → E w = D w` using `fun w hw => by`. Simplify using `[E, Ne.symm hw]`. Take `⟨t, ht⟩` from `v.valuation_surjective (WithZero.exp (-(D v + 1)))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : ∀ z : L E, t * (z : K) ∈ v.ring` using `fun z => by`. Rewrite using `[← v.valuation_le_one_iff, map_mul, ht]`. Combine the equalities or inequalities in the displayed calculation. Set `φ : L E →ₗ[k] v.ResidueField` to `{ toFun := fun z => IsLocalRing.residue v.ring ⟨t * z, hmem z⟩ map_add' := fun a b => by`. Rewrite using `[← map_add]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `ext`. Simplify using `[mul_add]`. Use the proof step `map_smul' := fun c a => by`. Rewrite using `[RingHom.id_apply, Algebra.smul_def, IsScalarTower.algebraMap_apply k v.ring v.ResidueField, IsLocalRing.ResidueField.algebraMap_eq, ← map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use `ext`. Express the relevant statement in the definitionally equal form `t * ((c • a : L E) : K) = (algebraMap k v.ring c : K) * (t * a)`. Rewrite using `[Submodule.coe_smul, Algebra.smul_def, Place.coe_algebraMap_apply]`. Use `ring }`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hker : ∀ z : L E, φ z = 0 ↔ (z : K) ∈ L D`. Introduce `z`. Express the relevant statement in the definitionally equal form `IsLocalRing.residue v.ring ⟨t * z, hmem z⟩ = 0 ↔ _`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Express the relevant statement in the definitionally equal form `v.ring.valuation (t * z) < 1 ↔ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[← v.valuation_lt_one_iff, map_mul, ht]`. Prove the components needed by the constructor for the conclusion. Introduce `h w`. Distinguish the cases in `hw : w = v`. Rewrite using `[hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hz : (z : K) = 0`. Rewrite using `[hz, map_zero]`. Conclude with `zero_le`. Rewrite `h` using `[v.valuation_eq_exp_neg_ord hz, ← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[v.valuation_eq_exp_neg_ord hz, WithZero.exp_le_exp]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[← hEw w hw]`. Conclude with `z.2 w`. Introduce `h`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ψ : LinearMap.ker φ →ₗ[k] L D` to `((L E).subtype.comp (LinearMap.ker φ).subtype).codRestrict (L D) fun z => (hker z.1).1 (LinearMap.mem_ker.1 z.2)`. Establish `hψ : Function.Injective ψ` using `fun a b h => by`. Establish `h'` using `congrArg Subtype.val h`. Conclude with `Subtype.ext (Subtype.ext h')`. Establish `: FiniteDimensional k (LinearMap.ker φ)` using `Module.Finite.of_injective ψ hψ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrank` using `LinearMap.rank_range_add_rank_ker φ`. Establish `hfin : FiniteDimensional k (L E)`. Apply `Module.rank_lt_aleph0_iff.1` to reduce the goal to its premises. Rewrite using `[← hrank]`. Conclude with `Cardinal.add_lt_aleph0 (Module.rank_lt_aleph0 k _) (Module.rank_lt_aleph0 k _)`.
-
-Use `⟨hfin, ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker φ`. Establish `h2 : finrank k (LinearMap.range φ) ≤ v.deg` using `Submodule.finrank_le _`. Establish `h3 : finrank k (LinearMap.ker φ) ≤ finrank k (L D)` using `LinearMap.finrank_le_finrank_of_injective hψ`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_L_add_single (D : Divisor k K) (v : Place k K)
     [FiniteDimensional k (L D)] :
@@ -367,21 +365,19 @@ theorem finiteDimensional_L_add_single (D : Divisor k K) (v : Place k K)
   omega
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `D E hDE hn _`. Use `deg_nonneg (sub_nonneg.2 hDE)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Consider the case `succ n ih`. Introduce `D E hDE hn hD`. Distinguish the cases in `hED : E = D`. Substitute `hED` using the available equality. Conclude with `⟨hD, by omega⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, D v < E v := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hED (le_antisymm (Finsupp.le_def.2 h) hDE)`. Use `set E' := E - Finsupp.single v 1 with hE'`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Establish `hDE' : D ≤ E'` using `Finsupp.le_def.2 fun w => by`. Rewrite using `[hE', Finsupp.coe_sub, Pi.sub_apply, Finsupp.single_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finsupp.le_def.1 hDE w` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hn' : deg (E' - D) < n`. Establish `h1 : deg (E' - D) = deg (E - D) - v.deg`. Rewrite using `[hE', map_sub, map_sub, map_sub, deg_single]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Use `v.deg_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨hfin', hle'⟩` from `ih hDE' hn' hD`. Establish `hE : E = E' + Finsupp.single v 1` using `by rw [hE']; abel`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hfin'` as an intermediate fact. Take `⟨hfin, hle⟩` from `finiteDimensional_L_add_single E' v`. Rewrite `hfin`, `hle` using `[← hE]`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Establish `hdeg : deg E = deg E' + v.deg` using `by rw [hE, map_add, deg_single, one_mul]`.
-
-Establish `: (finrank k (L E) : ℤ) ≤ finrank k (L E') + v.deg` using `by exact_mod_cast hle`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_L_of_le_of_deg_lt (n : ℕ) :
     ∀ {D E : Divisor k K}, D ≤ E → deg (E - D) < n → FiniteDimensional k (L D) →
@@ -424,7 +420,7 @@ theorem finiteDimensional_L_of_le_of_deg_lt (n : ℕ) :
     omega
 
 /- English proof (translation)
-The claim follows from `finiteDimensional_L_of_le_of_deg_lt ((deg (E - D)).toNat + 1) hDE (by omega) inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_L_of_le {D E : Divisor k K} (hDE : D ≤ E)
     [FiniteDimensional k (L D)] :
@@ -449,14 +445,14 @@ instance (D : Divisor k K) : FiniteDimensional k (L D) := by
     (Submodule.inclusion_injective _)
 
 /- English proof (translation)
-The claim follows from `(finiteDimensional_L_of_le hDE).2`.
+A detailed English derivation is pending.
 -/
 theorem finrank_L_le_of_le {D E : Divisor k K} (hDE : D ≤ E) :
     (finrank k (L E) : ℤ) ≤ finrank k (L D) + deg E - deg D :=
   (finiteDimensional_L_of_le hDE).2
 
 /- English proof (translation)
-Use extensionality with `z`. Rewrite using `[mem_L_zero]`. Simplify using `[mem_algebraicClosure_iff]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem L_zero :
     L (0 : Divisor k K) = Subalgebra.toSubmodule (algebraicClosure k K).toSubalgebra := by
@@ -465,14 +461,14 @@ theorem L_zero :
   simp [mem_algebraicClosure_iff]
 
 /- English proof (translation)
-Rewrite using `[L_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finrank_L_zero : finrank k (L (0 : Divisor k K)) = finrank k (algebraicClosure k K) := by
   rw [L_zero]
   rfl
 
 /- English proof (translation)
-Use `finrank_L_le_of_le hD` as an intermediate fact. Rewrite `this` using `[finrank_L_zero, map_zero]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_L_le_deg_add {D : Divisor k K} (hD : 0 ≤ D) :
     (finrank k (L D) : ℤ) ≤ deg D + finrank k (algebraicClosure k K) := by
@@ -481,7 +477,7 @@ theorem finrank_L_le_deg_add {D : Divisor k K} (hD : 0 ≤ D) :
   omega
 
 /- English proof (translation)
-Use `finrank_L_le_deg_add hD` as an intermediate fact. Rewrite `this` using `[hk, IntermediateField.finrank_bot]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_L_le_deg_add_one (hk : algebraicClosure k K = ⊥) {D : Divisor k K}
     (hD : 0 ≤ D) : (finrank k (L D) : ℤ) ≤ deg D + 1 := by

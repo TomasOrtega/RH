@@ -56,7 +56,7 @@ def NormedMetric.integers : NormedMetric K (𝓞 K) where
 def NormedBundle.integers : NormedBundle K := ⟨𝓞 K, NormedMetric.integers K⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `‖integersCoord K σ ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] (1 : 𝓞 K))‖ = 1`. Rewrite using `[integersCoord_tmul]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem NormedMetric.integers_norm_one (σ : K →+* ℂ) :
     (NormedMetric.integers K).norm σ ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] (1 : 𝓞 K)) = 1 := by
@@ -65,7 +65,7 @@ theorem NormedMetric.integers_norm_one (σ : K →+* ℂ) :
   simp
 
 /- English proof (translation)
-The claim follows from `NormedBundle.integers ℚ`.
+A detailed English derivation is pending.
 -/
 example : NormedBundle ℚ := NormedBundle.integers ℚ
 
@@ -104,13 +104,13 @@ variable {A : Type u} [CommRing A] {N : ℕ}
 attribute [local instance] algebraOfOver in
 
 /- English proof (translation)
-Establish `: x.asHomogeneousIdeal.toIdeal.IsPrime` using `x.isPrime`. Establish `hv` using `ProjSpace.projValue_algebraMap (n := N) a x`. Establish `hC : (MvPolynomial.C a : MvPolynomial (Fin (N + 1)) A) ∈ ProjSpace.grading A N 0` using `(MvPolynomial.mem_homogeneousSubmodule _ _).mpr (MvPolynomial.isHomogeneous_C _ a)`. Establish `h1 : (1 : MvPolynomial (Fin (N + 1)) A) ∈ ProjSpace.grading A N 0` using `SetLike.GradedOne.one_mem`. Set `c : HomogeneousLocalization.NumDenSameDeg (ProjSpace.grading A N) x.asHomogeneousIdeal.toIdeal.primeCompl` to `⟨0, ⟨_, hC⟩, ⟨1, h1⟩, fun h0 ↦ (Ideal.ne_top_iff_one _).mp x.isPrime.ne_top h0⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hy : (Proj.stalkIso (ProjSpace.grading A N) x).hom.hom ((projectiveSpace A N).presheaf.germ ⊤ x trivial ((ProjSpace.toSpecBase A N).appTop ((Scheme.ΓSpecIso (.of A)).inv a))) = HomogeneousLocalization.mk c`. Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Rewrite using `[HomogeneousLocalization.val_mk]`. Express the relevant statement in the definitionally equal form `(Proj.stalkIso' (ProjSpace.grading A N) x ((ProjectiveSpectrum.Proj.structureSheaf (ProjSpace.grading A N)).presheaf.germ ⊤ x trivial _)).val = _`. Use `(congrArg HomogeneousLocalization.val (Proj.stalkIso'_germ (ProjSpace.grading A N) ⊤ x trivial _)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `hv.trans ?_` and prove the remaining obligations. Rewrite using `[Localization.mk_eq_mk']`. Conclude with `(IsLocalization.mk'_one (M := x.asHomogeneousIdeal.toIdeal.primeCompl) _ (MvPolynomial.C a)).symm`. Express the relevant statement in the definitionally equal form `evalAtPrime h _ = _`. Rewrite using `[hy]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(evalAtPrime_mk h c).trans ?_` and prove the remaining obligations. Simplify using `[c, evalAt]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evalStalkProj_base {ρ : A →+* ℂ} {w : Fin (N + 1) → ℂ} {x : projectiveSpace A N}
     (h : IsOver ρ w x) (a : A) :
@@ -146,9 +146,9 @@ theorem evalStalkProj_base {ρ : A →+* ℂ} {w : Fin (N + 1) → ℂ} {x : pro
 variable (X : ProjScheme A N)
 
 /- English proof (translation)
-Establish `e` using `Scheme.Hom.germ_stalkMap_apply X.ι ⊤ (X.point x) trivial ((ProjSpace.toSpecBase A N).appTop ((Scheme.ΓSpecIso (.of A)).inv a))`. Establish `e2 : germR (show X.point x ∈ (⊤ : X.X.Opens) from trivial) (X.baseHom a) = (X.ι.stalkMap (X.point x)).hom ((projectiveSpace A N).presheaf.germ ⊤ (X.ι.base (X.point x))`. Use `trivial ((ProjSpace.toSpecBase A N).appTop ((Scheme.ΓSpecIso (.of A)).inv a))) := by`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Check the elementary cases of the proposition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e2]`. Express the relevant statement in the definitionally equal form `X.evalStalk (X.isOver_point x) _ = _`. Rewrite using `[evalStalk_stalkMap]`. Conclude with `evalStalkProj_base _ a`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalAtPoint_baseHom {ρ : A →+* ℂ} (x : X.complexPoints ρ) (a : A) :
     X.evalAtPoint x (germR (show X.point x ∈ (⊤ : X.X.Opens) from trivial) (X.baseHom a)) = ρ a := by
@@ -191,9 +191,9 @@ theorem evalGlobalSection_apply {ρ : A →+* ℂ} (x : X.complexPoints ρ) (s :
     X.evalGlobalSection L x s = X.sectionValue x (show X.point x ∈ (⊤ : X.X.Opens) from trivial) s := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `fibreMk L _ 1 (germM _ (X.baseHom a • (s : ((preMod X.X).obj L).obj (op ⊤)))) = ρ a • fibreMk L _ 1 (germM _ (s : ((preMod X.X).obj L).obj (op ⊤)))`. Use `erw [germM_smul]`. Rewrite using `[complex_smul_def]`. Unfold `fibreMk`. Rewrite using `[← TensorProduct.smul_tmul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `erw [TensorProduct.smul_tmul']`. Use `congr 1`. Rewrite using `[Algebra.smul_def, Via.algebraMap_apply, smul_eq_mul, mul_one, mul_one]`. Use `congr 1`. Conclude with `X.evalAtPoint_baseHom x a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem evalGlobalSection_smul {ρ : A →+* ℂ} (x : X.complexPoints ρ) (a : A) (s : X.H0 L) :
     X.evalGlobalSection L x (a • s) = ρ a • X.evalGlobalSection L x s := by
@@ -236,7 +236,7 @@ theorem evalPair_apply (σ : K →+* ℂ) (x : X.complexPoints (intEmb σ)) (z :
 omit [NumberField K] in
 
 /- English proof (translation)
-Rewrite using `[evalPair_apply, evalPair_apply, evalGlobalSection_smul, smul_smul, ComplexAt.smul_def, map_mul, AlgEquiv.symm_apply_apply, mul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evalPair_smul (σ : K →+* ℂ) (x : X.complexPoints (intEmb σ)) (a : 𝓞 K) (z : ComplexAt σ)
     (s : X.H0 L) : X.evalPair L σ x (a • z) s = X.evalPair L σ x z (a • s) := by
@@ -258,7 +258,7 @@ def evalFibre (σ : K →+* ℂ) (x : X.complexPoints (intEmb σ)) :
 
 omit [NumberField K] in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `liftAddHom (X.evalPair L σ x) (X.evalPair_smul L σ x) (z ⊗ₜ[𝓞 K] s) = _`. Rewrite using `[liftAddHom_tmul]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evalFibre_tmul (σ : K →+* ℂ) (x : X.complexPoints (intEmb σ)) (z : ComplexAt σ)
     (s : X.H0 L) : X.evalFibre L σ x (z ⊗ₜ s) = (ofComplex σ).symm z • X.evalGlobalSection L x s := by
@@ -352,7 +352,7 @@ namespace ProjScheme
 variable (A : Type u) [CommRing A] (N : ℕ)
 
 /- English proof (translation)
-The claim follows from `baseSection_toSpecBase A N`.
+A detailed English derivation is pending.
 -/
 theorem toBase_base : (base A N).toBase = 𝟙 (Spec (.of A)) := baseSection_toSpecBase A N
 
@@ -403,9 +403,9 @@ def basePoint : CP N :=
   Projectivization.mk ℂ (Pi.single 0 1) (by simp [funext_iff, Pi.single_apply])
 
 /- English proof (translation)
-Rewrite using `[basePoint, CP.conj_mk]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[CP.conjVec_apply]`. Distinguish the cases in `hk : k = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem conj_basePoint : CP.conj (basePoint N) = basePoint N := by
   rw [basePoint, CP.conj_mk]
@@ -419,7 +419,7 @@ theorem conj_basePoint : CP.conj (basePoint N) = basePoint N := by
 variable {A N}
 
 /- English proof (translation)
-The claim follows from `complexPoints_base ρ`.
+A detailed English derivation is pending.
 -/
 theorem complexPoints_base' (ρ : A →+* ℂ) : (base A N).complexPoints ρ = {basePoint N} :=
   complexPoints_base ρ
@@ -455,31 +455,31 @@ def baseMeasures : (base (𝓞 K) N).PointMeasures where
     rw [Measure.map_dirac' CP.continuous_conj.measurable, conj_basePoint]
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : Flat (base (𝓞 ℚ) 1).toBase := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsReduced (base (𝓞 ℚ) 1).X := inferInstance
 /- English proof (translation)
-The claim follows from `(baseBundle (𝓞 ℚ) 1).invertible`.
+A detailed English derivation is pending.
 -/
 example : IsInvertibleSheaf (baseBundle (𝓞 ℚ) 1).L := (baseBundle (𝓞 ℚ) 1).invertible
 /- English proof (translation)
-The claim follows from `baseMeasures 1 ℚ`.
+A detailed English derivation is pending.
 -/
 example : (base (𝓞 ℚ) 1).PointMeasures := baseMeasures 1 ℚ
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : Module.Finite (𝓞 ℚ) ((base (𝓞 ℚ) 1).H0 (baseBundle (𝓞 ℚ) 1).L) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : Module.Projective (𝓞 ℚ) ((base (𝓞 ℚ) 1).H0 (baseBundle (𝓞 ℚ) 1).L) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : Nontrivial ((base (𝓞 ℚ) 1).H0 (baseBundle (𝓞 ℚ) 1).L) := inferInstance
 

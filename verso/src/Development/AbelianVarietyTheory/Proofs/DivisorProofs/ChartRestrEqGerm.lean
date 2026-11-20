@@ -13,7 +13,7 @@ open GlobalTheory.OrbitSep
 namespace GlobalTheory.LogKSDiv.Spread'
 
 /- English proof (translation)
-Use `show Spec.map (X.presheaf.germ U (B.ι y) hy ≫ B.ι.stalkMap y) ≫ _ = _`. Rewrite using `[Spec.map_comp, Category.assoc, ← IsAffineOpen.fromSpecStalk, hU.fromSpecStalk_eq_fromSpecStalk, Scheme.SpecMap_stalkMap_fromSpecStalk]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_pt' {X : Scheme.{0}} (B : X.Opens) (y : B.toScheme) {U : X.Opens} (hU : IsAffineOpen U)
     (hy : B.ι y ∈ U) :
@@ -27,13 +27,11 @@ end GlobalTheory.LogKSDiv.Spread'
 set_option autoImplicit false
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c TF Z _ _ x U hU hx ρ hρ r`. Establish `hη : (barComp TF.Y Z).ι (genericPoint (X₀ TF.Y Z)) ∈ U.1`. Establish `h` using `(genericPoint_spec (X₀ TF.Y Z)).mem_open_set_iff ((barComp TF.Y Z).ι ⁻¹ᵁ U.1).isOpen`. Conclude with `h.2 ⟨x, trivial, hx⟩`. Use `set ψ := (TF.Y.X.presheaf.germ U.1 _ hη ≫ (barComp TF.Y Z).ι.stalkMap (genericPoint (X₀ TF.Y Z))).hom with hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `GlobalTheory.LogKSDiv.Spread'.germ_pt' (barComp TF.Y Z) (genericPoint (X₀ TF.Y Z)) U.2 hη`. Establish `hmono : Mono (LogKS.chart U)`. Unfold `LogKS.chart`. Establish `: IsOpenImmersion U.2.fromSpec` using `IsAffineOpen.isOpenImmersion_fromSpec U.2`. Use `infer_instance`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : spMap ρ = spMap ψ`. Rewrite using `[← cancel_mono (LogKS.chart U), hρ]`. Conclude with `hg.symm`. Establish `e2 : ρ = ψ`. Use `Spec.map_injective e1` as an intermediate fact.
-
-Conclude with `congrArg CommRingCat.Hom.hom this`. Rewrite using `[e2, hψ, CommRingCat.hom_comp, RingHom.comp_apply, Scheme.Hom.germ_stalkMap_apply]`. Simplify using `only [GlobalTheory.LogKSDiv.stalkHom, RingHom.comp_apply, RingHom.algebraMap_toAlgebra]`. Express the relevant statement in the definitionally equal form `_ = ((X₀ TF.Y Z).presheaf.germ _ x hx ≫ (X₀ TF.Y Z).presheaf.stalkSpecializes _).hom _`. Use `erw [TopCat.Presheaf.germ_stalkSpecializes]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LogKSDiv.chartRestr_eq_germ : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), ∀ [IsIntegral (X₀ TF.Y Z)] [SmoothOfRelativeDimension Dw.dim (s₀ TF.Y Z)] (x : X₀ TF.Y Z) (U : TF.Y.X.affineOpens), U.1 ≤ barComp TF.Y Z → ∀ (hx : (barComp TF.Y Z).ι x ∈ U.1) (ρ : Γ(TF.Y.X, U.1) →+* (X₀ TF.Y Z).functionField), spMap ρ ≫ LogKS.chart U = GlobalTheory.LogKSDiv.genPt TF Z ≫ (barComp TF.Y Z).ι → ∀ r, ρ r = algebraMap ((X₀ TF.Y Z).presheaf.stalk x) (X₀ TF.Y Z).functionField (GlobalTheory.LogKSDiv.stalkHom TF Z x U hx r) := by
   intro E _ _ _ H Dw l Xo c TF Z _ _ x U hU hx ρ hρ r

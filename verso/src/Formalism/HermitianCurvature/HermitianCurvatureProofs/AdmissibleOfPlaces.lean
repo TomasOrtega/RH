@@ -13,7 +13,7 @@ noncomputable section
 section pull
 
 /- English proof (translation)
-Unfold `TB.PSDOn at hH ⊢`. Conclude with `hH.submatrix (fun x : Y => (⟨g x, hg x x.2⟩ : P))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem psd_comp {Z X : Type} (P : Finset Z) (H : Z → Z → ℂ) (hH : TB.PSDOn P H) (Y : Finset X) (g : X → Z)
     (hg : ∀ h ∈ Y, g h ∈ P) : TB.PSDOn Y (fun x y => H (g x) (g y)) := by
@@ -21,11 +21,11 @@ theorem psd_comp {Z X : Type} (P : Finset Z) (H : Z → Z → ℂ) (hH : TB.PSDO
   exact hH.submatrix (fun x : Y => (⟨g x, hg x x.2⟩ : P))
 
 /- English proof (translation)
-Establish `h1` using `psd_comp P H hH (Y.disjSum Y) (Sum.elim f g) (by`. Introduce and unpack `(x|x) hx`. Simplify `hx)` using `using hf x (by simpa`. Simplify `hx))` using `using hg x (by simpa`. Establish `hherm` using `((PBA.psd_iff_qf P H).1 hH).1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Unfold `KB.BlockPSD`. Unfold `TB.PSDOn at h1 ⊢`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `⟨i, hi⟩ ⟨j, hj⟩`. Apply the tactic sequence `rcases i with x | x <;> rcases j with y | y`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Both sides reduce to the same expression. Both sides reduce to the same expression. Conclude with `(hherm (f y) (hf y (by simpa using hj)) (g x) (hg x (by simpa using hi))).symm`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem blockPSD_pull {Z X : Type} (P : Finset Z) (H : Z → Z → ℂ) (hH : TB.PSDOn P H) (Y : Finset X)
     (f g : X → Z) (hf : ∀ h ∈ Y, f h ∈ P) (hg : ∀ h ∈ Y, g h ∈ P) :
@@ -46,9 +46,9 @@ theorem blockPSD_pull {Z X : Type} (P : Finset Z) (H : Z → Z → ℂ) (hH : TB
   · rfl
 
 /- English proof (translation)
-Unfold `KB.BlockPSD at h`. Establish `h1` using `psd_comp _ _ h (Y.disjSum Y) (Sum.map l l) (by`. Introduce and unpack `(x|x) hx`. Simplify `hx)` using `using hl x (by simpa`. Simplify `hx))` using `using hl x (by simpa`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `KB.BlockPSD`. Unfold `TB.PSDOn at h1 ⊢`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `⟨i, hi⟩ ⟨j, hj⟩`. Apply the tactic sequence `rcases i with x | x <;> rcases j with y | y <;> rfl`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockPSD_comp {α X : Type} (Y₀ : Finset α) (a w b : α → α → ℂ) (h : KB.BlockPSD Y₀ Y₀ a w b)
     (Y : Finset X) (l : X → α) (hl : ∀ x ∈ Y, l x ∈ Y₀) :
@@ -73,25 +73,25 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
 section words
 
 /- English proof (translation)
-Unfold `C.Word.cnt`. Conclude with `Finset.le_sup (f := fun v => (w v).length) (Finset.mem_univ v)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem len_le_cnt (w : C.Word S.f) (v : Fin S.f) : (w v).length ≤ w.cnt := by
   unfold C.Word.cnt
   exact Finset.le_sup (f := fun v => (w v).length) (Finset.mem_univ v)
 
 /- English proof (translation)
-Unfold `C.Word.cnt`. Conclude with `Finset.sup_le fun v _ => h v`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cnt_le {w : C.Word S.f} {n : ℕ} (h : ∀ v, (w v).length ≤ n) : w.cnt ≤ n := by
   unfold C.Word.cnt
   exact Finset.sup_le fun v _ => h v
 
 /- English proof (translation)
-Unfold `C.HidaSetting.admitted`. Use `⟨fun v => ?_, fun v => ?_⟩` and prove the remaining obligations. Take `⟨w0, hw⟩` from `h v`. Establish `hA : S.admitted w0.1` using `And.left w0.2`. Establish `hA1` using `(And.left hA) v`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hA1` using `[hw]`. Conclude with `hA1`. Take `⟨w0, hw⟩` from `h v`. Establish `hA : S.admitted w0.1` using `And.left w0.2`. Establish `hA2` using `(And.right hA) v`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hA2` using `[hw]`. Conclude with `hA2`.
+A detailed English derivation is pending.
 -/
 theorem admissible_of_places {g : C.Word S.f} (h : ∀ v, ∃ w0 : S.W, w0.1 v = g v) : S.admitted g := by
   unfold C.HidaSetting.admitted
@@ -108,9 +108,9 @@ theorem admissible_of_places {g : C.Word S.f} (h : ∀ v, ∃ w0 : S.W, w0.1 v =
     exact hA2
 
 /- English proof (translation)
-Unfold `C.listsUpTo`. Rewrite using `[Finset.mem_biUnion]`. Use `⟨L.length, Finset.mem_range.mpr (Nat.lt_succ_of_le hl), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_image]`. Use `⟨fun i => L.get i, ?_, List.ofFn_get L⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.mem_piFinset]`. Introduce `i`. Rewrite using `[Finset.mem_product]`. Conclude with `⟨Finset.mem_univ _, hT _ (List.mem_iff_get.mpr ⟨i, rfl⟩)⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_listsUpTo {T : Finset ℝ} {n : ℕ} (L : List C.Letter) (hl : L.length ≤ n)
     (hT : ∀ x ∈ L, x.2 ∈ T) : L ∈ C.listsUpTo T n := by
@@ -125,17 +125,15 @@ theorem mem_listsUpTo {T : Finset ℝ} {n : ℕ} (L : List C.Letter) (hl : L.len
   exact ⟨Finset.mem_univ _, hT _ (List.mem_iff_get.mpr ⟨i, rfl⟩)⟩
 
 /- English proof (translation)
-Establish `hA : S.admitted w0.1` using `And.left w0.2`. Establish `hc : w0.1.cnt ≤ S.Ntop` using `And.right w0.2`. Unfold `C.wall`. Rewrite using `[Fintype.mem_piFinset]`. Introduce `v`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `mem_listsUpTo (w0.1 v) ((len_le_cnt S w0.1 v).trans hc) ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨j, hj, rfl⟩` from `List.getElem_of_mem hx`. Establish `h1` using `(And.left hA) v j hj`. Establish `hlen : (w0.1 v).length - j < S.Ntop + 1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(len_le_cnt S w0.1 v).trans hc` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hnode : ∀ y, y ∈ S.grid v ((w0.1 v).length - j) ∪ S.grid1 v → y ∈ S.nodes v`. Introduce `y hy`. Unfold `C.HidaSetting.nodes`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite `hy`, the goal using `[Finset.mem_union]`. Break down `hy with hy | hy` into its components or cases. Use `left`. Conclude with `Finset.mem_biUnion.mpr ⟨_, Finset.mem_range.mpr hlen, hy⟩`. Use `right`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `hy`. Unfold `C.HidaSetting.pts`. Rewrite using `[Finset.mem_union]`. Distinguish the cases in `hb : ((w0.1 v)[j]'hj).1 = true`. Use `left`.
-
-Rewrite `h1` using `[if_pos hb]`. Conclude with `hnode _ h1`. Use `right`. Rewrite `h1` using `[if_neg hb]`. Conclude with `Finset.mem_image.mpr ⟨_, hnode _ h1, by ring⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem W_mem_wall (w0 : S.W) : w0.1 ∈ C.wall S.pts S.Ntop := by
   have hA : S.admitted w0.1 := And.left w0.2
@@ -171,7 +169,7 @@ theorem W_mem_wall (w0 : S.W) : w0.1 ∈ C.wall S.pts S.Ntop := by
 
 open Classical in
 /- English proof (translation)
-Unfold `C.HidaSetting.base C.HidaSetting.mkData`. Simplify using `only`. Rewrite using `[Finset.mem_subtype]`. Conclude with `W_mem_wall S w0`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem W_mem_Wall (w0 : S.W) : w0 ∈ S.base.Wall := by
   unfold C.HidaSetting.base C.HidaSetting.mkData
@@ -180,7 +178,7 @@ theorem W_mem_Wall (w0 : S.W) : w0 ∈ S.base.Wall := by
   exact W_mem_wall S w0
 
 /- English proof (translation)
-Unfold `TB.Data.Wb`. Rewrite using `[Finset.mem_filter]`. Conclude with `⟨W_mem_Wall S w0, h⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_Wb {w0 : S.W} {n : ℕ} (h : w0.1.cnt ≤ n) : w0 ∈ S.base.Wb n := by
   unfold TB.Data.Wb
@@ -205,9 +203,7 @@ variable {A : Finset (Fin S.f)} {w : S.W} {n : ℕ} {U : Fin S.f → Finset (Lis
   {θ : Fin S.f → List C.Letter → ℝ}
 
 /- English proof (translation)
-Unfold `pw at h`. Unfold `supp`. Use `split_ifs at h ⊢ with h1 h2`. Assume the negation of the conclusion as `ha`. Conclude with `h ((hP v h1).2.1 a ha)`.
-
-Simplify using `[h2]`. Conclude with `absurd rfl h`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pw_ne_zero (hP : ∀ v ∈ A, TB.IsProb (U v) (θ v)) {v : Fin S.f} {a : List C.Letter}
     (h : pw S A w θ v a ≠ 0) : a ∈ supp S A w U v := by
@@ -220,7 +216,7 @@ theorem pw_ne_zero (hP : ∀ v ∈ A, TB.IsProb (U v) (θ v)) {v : Fin S.f} {a :
   · exact absurd rfl h
 
 /- English proof (translation)
-Unfold `pw`. Use `split_ifs with h1 h2`. Conclude with `(hP v h1).1 a`. Conclude with `zero_le_one`. Conclude with `le_refl 0`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pw_nonneg (hP : ∀ v ∈ A, TB.IsProb (U v) (θ v)) (v : Fin S.f) (a : List C.Letter) :
     0 ≤ pw S A w θ v a := by
@@ -231,11 +227,11 @@ theorem pw_nonneg (hP : ∀ v ∈ A, TB.IsProb (U v) (θ v)) (v : Fin S.f) (a : 
   · exact le_refl 0
 
 /- English proof (translation)
-Rewrite `hg` using `[Fintype.mem_piFinset]`. Establish `hv : ∀ v, D.AdmAt S v (g v) ∧ (g v).length ≤ n`. Introduce `v`. Establish `hgv` using `hg v`. Unfold `supp at hgv`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `split_ifs at hgv with hA`. Conclude with `hU v hA (g v) hgv`. Rewrite `hgv` using `[Finset.mem_singleton]`. Rewrite using `[hgv]`. Conclude with `⟨Exists.intro w rfl, (len_le_cnt S w.1 v).trans hw⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hc : g.cnt ≤ n` using `cnt_le S (fun v => (hv v).2)`. Conclude with `⟨And.intro (admissible_of_places S (fun v => (hv v).1)) (hc.trans hn), hc⟩`.
+A detailed English derivation is pending.
 -/
 theorem supp_word (hU : ∀ v ∈ A, ∀ a ∈ U v, D.AdmAt S v a ∧ a.length ≤ n) (hw : w.1.cnt ≤ n) (hn : n ≤ S.Ntop)
     {g : C.Word S.f} (hg : g ∈ Fintype.piFinset (supp S A w U)) : S.AdmN g ∧ g.cnt ≤ n := by
@@ -253,17 +249,17 @@ theorem supp_word (hU : ∀ v ∈ A, ∀ a ∈ U v, D.AdmAt S v a ∧ a.length �
   exact ⟨And.intro (admissible_of_places S (fun v => (hv v).1)) (hc.trans hn), hc⟩
 
 /- English proof (translation)
-Establish `e1 : ∀ v, (if v ∈ A then ∑ a ∈ U v, (θ v a : ℂ) * F v a else F v (w.1 v)) = ∑ a ∈ supp S A w U v, (pw S A w θ v a : ℂ) * F v a`. Introduce `v`. Unfold `supp pw`. Distinguish the cases in `hv : v ∈ A`. Simplify using `only [if_pos hv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hv]`. Simplify using `only [e1]`. Rewrite using `[Finset.prod_univ_sum]`. Establish `e2 : ∀ w' : S.W, (pθ S A w θ w' : ℂ) * ∏ v, F v (w'.1 v) = ∏ v, (pw S A w θ v (w'.1 v) : ℂ) * F v (w'.1 v)`. Introduce `w'`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `pθ`. Use `push_cast`. Rewrite using `[← Finset.prod_mul_distrib]`. Simplify using `only [e2]`. Use `Finset.sum_bij_ne_zero (fun w' _ _ => w'.1) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w' _ h`. Rewrite using `[Fintype.mem_piFinset]`. Introduce `v`. Use `pw_ne_zero hP fun h0 => h ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ v) (by rw [h0]; simp)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `a _ _ b _ _ h`. Conclude with `Subtype.ext h`. Introduce `g hg h0`. Take `⟨hadm, hcnt⟩` from `supp_word hU hw hn hg`. Conclude with `⟨⟨g, hadm⟩, mem_Wb S hcnt, h0, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w' _ _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem expand (hP : ∀ v ∈ A, TB.IsProb (U v) (θ v))
     (hU : ∀ v ∈ A, ∀ a ∈ U v, D.AdmAt S v a ∧ a.length ≤ n) (hw : w.1.cnt ≤ n) (hn : n ≤ S.Ntop)
@@ -301,13 +297,11 @@ theorem expand (hP : ∀ v ∈ A, TB.IsProb (U v) (θ v))
     rfl
 
 /- English proof (translation)
-Use `⟨fun w' => Finset.prod_nonneg fun v _ => pw_nonneg hP v _, fun w' hw' => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Apply `hw'` to reduce the goal to its premises. Establish `hg : w'.1 ∈ Fintype.piFinset (supp S A w U)`. Rewrite using `[Fintype.mem_piFinset]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Use `pw_ne_zero hP fun h1 => h0 ?_` and prove the remaining obligations. Conclude with `Finset.prod_eq_zero (Finset.mem_univ v) h1`. Conclude with `mem_Wb S (supp_word hU hw hn hg).2`. Use `expand hP hU hw hn (fun _ _ => 1)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [mul_one, Finset.prod_const_one] at this`. Establish `e : ∏ v, (if v ∈ A then ∑ a ∈ U v, (θ v a : ℂ) else 1) = 1`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Use `split_ifs with hv`. Conclude with `(hP v hv).2.2` after adjusting the coercions.
-
-Both sides reduce to the same expression. Rewrite `this` using `[e]`. Conclude with `this` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pθ_prob (hP : ∀ v ∈ A, TB.IsProb (U v) (θ v))
     (hU : ∀ v ∈ A, ∀ a ∈ U v, D.AdmAt S v a ∧ a.length ≤ n) (hw : w.1.cnt ≤ n) (hn : n ≤ S.Ntop) :

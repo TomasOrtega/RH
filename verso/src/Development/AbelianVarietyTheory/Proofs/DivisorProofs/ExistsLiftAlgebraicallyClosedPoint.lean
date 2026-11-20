@@ -4,9 +4,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X Y f _ k _ _ y hr`. Take `⟨x₀, hx₀⟩` from `hr ⟨IsLocalRing.closedPoint k, rfl⟩`. Take `⟨z, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := f) (g := y) x₀ (IsLocalRing.closedPoint k) hx₀`. Use `LocallyOfFiniteType.jacobsonSpace (pullback.snd f y)` as an intermediate fact. Take `⟨c, -, hc⟩` from `nonempty_inter_closedPoints (X := (Limits.pullback f y : Scheme)) (Z := Set.univ) ⟨z, trivial⟩ isClosed_univ.isLocallyClosed`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc' : IsClosed {c}` using `hc`. Use `⟨pointOfClosedPoint (pullback.snd f y) c hc' ≫ pullback.fst f y, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, pointOfClosedPoint_comp, Category.id_comp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift_of_range_subset_of_isAlgClosed :
     ∀ {X Y : AlgebraicGeometry.Scheme.{0}} (f : X ⟶ Y) [AlgebraicGeometry.LocallyOfFiniteType f]

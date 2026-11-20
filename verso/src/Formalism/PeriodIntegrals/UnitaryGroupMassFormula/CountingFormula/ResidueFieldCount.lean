@@ -9,43 +9,39 @@ open Formalism.MainNotions.S
 open ValuativeRel
 
 /- English proof (translation)
-Use `hl` as an intermediate fact. Establish `hinj` using `fl_inj L`. Establish `hmax : 𝓂[F] = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Establish `hmaxI : (Ideal.span {piO L ϖ}).IsMaximal` using `fr_max L hl hE ϖ hϖ`. Set `I` to `Ideal.span {piO L ϖ}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `: Field (L.O ⧸ I)` to `Ideal.Quotient.field I`. Establish `hcard : Nat.card (L.O ⧸ I) = Nat.card 𝓀[F] ^ 2` using `fr_card L hl hc hE ϖ hϖ`. Establish `hq0 : 0 < Nat.card 𝓀[F]` using `Nat.card_pos`. Establish `: Finite (L.O ⧸ I)` using `Nat.finite_of_card_ne_zero (by rw [hcard]; positivity)`. Set `: Fintype (L.O ⧸ I)` to `Fintype.ofFinite _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `: Fintype 𝓀[F]` to `Fintype.ofFinite _`. Set `ι0 : 𝒪[F] →+* L.O` to `((algebraMap F E).comp (valuation F).integer.subtype).codRestrict L.O (fun a => fl_int_mem L a)`. Establish `hι0 : ∀ a : 𝒪[F], (ι0 a : E) = algebraMap F E a` using `fun _ => rfl`. Set `f0 : 𝒪[F] →+* (L.O ⧸ I)` to `(Ideal.Quotient.mk I).comp ι0`. Establish `hf0ϖ : f0 ϖ = 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `Ideal.Quotient.eq_zero_iff_mem.2` to reduce the goal to its premises. Establish `: ι0 ϖ = piO L ϖ` using `rfl`. Rewrite using `[this]`. Conclude with `Ideal.subset_span rfl`. Establish `: IsLocalHom f0` using `⟨fun a ha => by`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hna`. Establish `ham : a ∈ 𝓂[F]` using `(IsLocalRing.mem_maximalIdeal a).2 hna`. Rewrite `ham` using `[hmax, Ideal.mem_span_singleton']`. Take `⟨b, rfl⟩` from `ham`. Rewrite `ha` using `[map_mul, hf0ϖ, mul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `not_isUnit_zero ha⟩`. Set `ρ : 𝓀[F] →+* (L.O ⧸ I)` to `IsLocalRing.ResidueField.lift f0`. Set `: Algebra 𝓀[F] (L.O ⧸ I)` to `ρ.toAlgebra`. Establish `hρ : ∀ a : 𝒪[F], algebraMap 𝓀[F] (L.O ⧸ I) (IsLocalRing.residue 𝒪[F] a) = f0 a` using `fun _ => rfl`. Set `cjO : L.O ≃+* L.O` to `{ toFun := fun x => ⟨L.cj x, fl_cj_mem L x.2⟩ invFun := fun x => ⟨L.cj x, fl_cj_mem L x.2⟩ left_inv := fun x => Subtype.ext (L.cj_cj x) right_inv := fun x => Subtype.ext (L.cj_cj x) map_mul' := fun x y => Subtype.ext (map_mul L.cj (x : E) (y : E)) map_add' := fun x y => Subtype.e …`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcjι : ∀ a : 𝒪[F], cjO (ι0 a) = ι0 a` using `fun a => Subtype.ext (AlgEquiv.commutes L.cj _)`. Establish `hIcj : I = I.map (cjO : L.O →+* L.O)` using `by show Ideal.span {piO L ϖ} = (Ideal.span {piO L ϖ}).map (cjO : L.O →+* L.O)`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Use `congr 2`. Conclude with `(hcjι ϖ).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `σ0 : (L.O ⧸ I) ≃+* (L.O ⧸ I)` to `Ideal.quotientEquiv I I cjO hIcj`. Establish `hσ0 : ∀ x : L.O, σ0 (Ideal.Quotient.mk I x) = Ideal.Quotient.mk I (cjO x)` using `fun _ => rfl`. Set `σ : (L.O ⧸ I) ≃ₐ[𝓀[F]] (L.O ⧸ I)` to `AlgEquiv.ofRingEquiv (f := σ0) (fun a => by`. Take `⟨a', rfl⟩` from `IsLocalRing.residue_surjective a`. Rewrite using `[hρ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `show σ0 (Ideal.Quotient.mk I (ι0 a')) = Ideal.Quotient.mk I (ι0 a')`. Rewrite using `[hσ0, hcjι])`. Establish `hσ : ∀ x : L.O, σ (Ideal.Quotient.mk I x) = Ideal.Quotient.mk I (cjO x)` using `fun _ => rfl`. Set `Fr` to `FiniteField.frobeniusAlgEquivOfAlgebraic 𝓀[F] (L.O ⧸ I)`. Establish `hFr : ∀ z, Fr z = z ^ Fintype.card 𝓀[F]` using `fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hkey : ∀ z, (Fr z - z) * (Fr z - σ z) = 0`. Introduce `z`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Take `⟨t, ht⟩` from `fl_trace L hinj x.2`. Take `⟨n, hn⟩` from `fl_norm L hinj x.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hT : Ideal.Quotient.mk I x + σ (Ideal.Quotient.mk I x) = algebraMap 𝓀[F] (L.O ⧸ I) (IsLocalRing.residue 𝒪[F] t)`. Rewrite using `[hσ, ← map_add, hρ]`. Use `show _ = Ideal.Quotient.mk I (ι0 t)`. Use `congr 1`. Conclude with `Subtype.ext (by rw [hι0, ht]; rfl)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hN : Ideal.Quotient.mk I x * σ (Ideal.Quotient.mk I x) = algebraMap 𝓀[F] (L.O ⧸ I) (IsLocalRing.residue 𝒪[F] n)`. Rewrite using `[hσ, ← map_mul, hρ]`. Use `show _ = Ideal.Quotient.mk I (ι0 n)`. Use `congr 1`. Conclude with `Subtype.ext (by rw [hι0, hn]; rfl)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : Ideal.Quotient.mk I x ^ 2 - algebraMap 𝓀[F] (L.O ⧸ I) (IsLocalRing.residue 𝒪[F] t) * Ideal.Quotient.mk I x + algebraMap 𝓀[F] (L.O ⧸ I) (IsLocalRing.residue 𝒪[F] n) = 0`. Rewrite using `[← hT, ← hN]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `congrArg Fr h0`. Rewrite `h1` using `[map_add, map_sub, map_pow, map_mul, AlgEquiv.commutes, AlgEquiv.commutes, map_zero, ← hT, ← hN]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take the linear combination `h1`. Establish `hq1 : 1 < Fintype.card 𝓀[F]` using `Fintype.one_lt_card`. Establish `hfr : Module.finrank 𝓀[F] (L.O ⧸ I) = 2`. Establish `h` using `Module.card_eq_pow_finrank (K := 𝓀[F]) (V := L.O ⧸ I)`. Rewrite `h` using `[Fintype.card_eq_nat_card, hcard, Fintype.card_eq_nat_card]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[← Fintype.card_eq_nat_card]`. Conclude with `(Nat.pow_right_injective hq1 h).symm`. Establish `hσFr : σ = Fr`. Take `⟨m, hm⟩` from `(FiniteField.bijective_frobeniusAlgEquivOfAlgebraic_pow 𝓀[F] (L.O ⧸ I)).2 σ`. Establish `hm2 : m.1 < 2` using `hfr ▸ m.2`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `(by omega : m.1 = 0 ∨ m.1 = 1) with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hs1 : σ = 1` using `by rw [← hm]; simp only [h, pow_zero]`. Establish `hF1 : Fr = 1`. Use extensionality with `z`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hkey z` as an intermediate fact. Rewrite `this` using `[hs1, AlgEquiv.one_apply, mul_self_eq_zero, sub_eq_zero]`. Conclude with `this`. Establish `ho` using `FiniteField.orderOf_frobeniusAlgEquivOfAlgebraic 𝓀[F] (L.O ⧸ I)`. Rewrite `ho` using `[show FiniteField.frobeniusAlgEquivOfAlgebraic 𝓀[F] (L.O ⧸ I) = 1 from hF1, orderOf_one, hfr]`.
-
-Use linear arithmetic over natural numbers and integers. Rewrite using `[← hm]`. Simplify using `only [h, pow_one]`. Both sides reduce to the same expression. Introduce `x y hxy`.
-
-Establish `hy : y = cjO x` using `Subtype.ext hxy`. Rewrite using `[hy, ← hσ x, hσFr, hFr, Fintype.card_eq_nat_card]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fr_frob {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing E]
     [Algebra F E] [TopologicalSpace E] (L : Loc.LocE F E) (hl : IsNonarchimedeanLocalField F)
@@ -157,7 +153,7 @@ theorem fr_frob {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [Co
   rw [hy, ← hσ x, hσFr, hFr, Fintype.card_eq_nat_card]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ L hl hc hE ϖ hϖ`. Conclude with `⟨fr_max L hl hE ϖ hϖ, fr_card L hl hc hE ϖ hϖ, fr_frob L hl hc hE ϖ hϖ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem residue_field_count : FResField := by
   intro F E _ _ _ _ _ _ L hl hc hE ϖ hϖ

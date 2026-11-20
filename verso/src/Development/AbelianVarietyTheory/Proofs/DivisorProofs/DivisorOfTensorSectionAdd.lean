@@ -14,7 +14,7 @@ namespace GlobalTheory.LatChain.CanTens
 variable {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {q : X ⟶ Sp k}
 
 /- English proof (translation)
-Use `⟨isLB_dual h.isLB, fun i j hij => ?_, fun i x hx => (h.isEqn i x hx).neg⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((r i)⁻¹ : X.functionFieldˣ) : X.functionField) = fnOf (L.U i ⊓ L.U j) hij ((L.g i j)⁻¹ : Γ(X, L.U i ⊓ L.U j)ˣ) * ((r j)⁻¹ : X.functionFieldˣ)`. Rewrite using `[Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_units_inv, h.isRatSec i j hij, mul_inv]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem presents_dual {D : CartierDiv X} {L : LB X} {r : L.ι → X.functionFieldˣ} (h : Presents D L r) :
     Presents (-D) (CechPic.dual L) fun i => (r i)⁻¹ := by
@@ -24,9 +24,9 @@ theorem presents_dual {D : CartierDiv X} {L : LB X} {r : L.ι → X.functionFiel
   rw [Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, map_units_inv, h.isRatSec i j hij, mul_inv]
 
 /- English proof (translation)
-Establish `h1 : UnitAt (under y) (1 : X.functionField)` using `unitAt_one _`. Establish `e1 : ratVal (1 : X.functionField) y = 1`. Establish `e` using `ratVal_mul h1.regAt h1.regAt`. Rewrite `e` using `[mul_one]`. Conclude with `(mul_eq_left₀ (ratVal_ne_zero h1)).1 e.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `ratVal_mul hf.regAt hf.inv.regAt`. Rewrite `e` using `[mul_inv_cancel₀ hf.ne_zero, e1]`. Conclude with `eq_inv_of_mul_eq_one_right e.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratVal_inv {σ : k →+* ℂ} {y : CxPts q σ} {f : X.functionField} (hf : UnitAt (under y) f) :
     ratVal f⁻¹ y = (ratVal f y)⁻¹ := by
@@ -40,13 +40,13 @@ theorem ratVal_inv {σ : k →+* ℂ} {y : CxPts q σ} {f : X.functionField} (hf
   exact eq_inv_of_mul_eq_one_right e.symm
 
 /- English proof (translation)
-Take `⟨r, hr, rfl, H⟩` from `h`. Take `⟨r', hr', rfl, H'⟩` from `h'`. Establish `P` using `(presents_divOfRatSec M.isLB hr).tens (presents_divOfRatSec M'.isLB hr')`. Use `⟨fun c => r c.1 * r' c.2, P.isRatSec, (presents_divOfRatSec _ P.isRatSec).unique P, fun σ y => ?_⟩` and prove the remaining obligations. Take `⟨a, b⟩` from `H σ y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a', b'⟩` from `H' σ y`. Use `⟨mem_offSupp.2 fun hy => ?_, ?_⟩` and prove the remaining obligations. Break down `CartierDiv.supp_add_le _ _ hy with hy | hy` into its components or cases. Conclude with `mem_offSupp.1 a hy`. Conclude with `mem_offSupp.1 a' hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc` using `CxPts.mem_ptsIn_inf.1 (CxPts.mem_pick ((M.tens M').φ σ).isLB y)`. Rewrite `b` using `[logNorm_eq _ hr a hc.1]`. Rewrite `b'` using `[logNorm_eq _ hr' a' hc.2]`. Establish `u` using `hr.unitAt M.isLB a hc.1`. Establish `u'` using `hr'.unitAt M'.isLB a' hc.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `Real.log_mul (norm_ne_zero_iff.2 (ratVal_ne_zero u)) (norm_ne_zero_iff.2 (ratVal_ne_zero u'))`. Rewrite `e` using `[← norm_mul, ← ratVal_mul u.regAt u'.regAt]`. Use `(congrArg₂ (· - ·) e (add_div _ _ _)).trans ?_` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem can_tens {M M' : HermLB q} {E E' : CartierDiv X} (h : Can M E) (h' : Can M' E') :
     Can (M.tens M') (E + E') := by
@@ -71,11 +71,11 @@ theorem can_tens {M M' : HermLB q} {E E' : CartierDiv X} (h : Can M E) (h' : Can
     linarith
 
 /- English proof (translation)
-Take `⟨r, hr, rfl, H⟩` from `h`. Establish `P` using `presents_dual (presents_divOfRatSec M.isLB hr)`. Use `⟨fun i => (r i)⁻¹, P.isRatSec, (presents_divOfRatSec _ P.isRatSec).unique P, fun σ y => ?_⟩` and prove the remaining obligations. Take `⟨a, b⟩` from `H σ y`. Use `⟨mem_offSupp.2 fun hy => hy ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `CartierDiv.IsEqn.neg (not_not.1 (mem_offSupp.1 a))` as an intermediate fact. Rewrite `this` using `[inv_one]`. Then use the resulting hypothesis. Establish `hc` using `CxPts.mem_pick (M.dual.φ σ).isLB y`. Rewrite `b` using `[logNorm_eq _ hr a hc]`. Establish `u` using `hr.unitAt M.isLB a hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `congrArg (fun z : ℂ => Real.log ‖z‖) (ratVal_inv u)`. Simplify using `only [norm_inv, Real.log_inv] at e`. Rewrite `e` using `[← Units.val_inv_eq_inv_val]`. Use `(congrArg₂ (· - ·) e (neg_div _ _)).trans ?_` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem can_dual {M : HermLB q} {E : CartierDiv X} (h : Can M E) : Can M.dual (-E) := by
   obtain ⟨r, hr, rfl, H⟩ := h
@@ -95,7 +95,7 @@ theorem can_dual {M : HermLB q} {E : CartierDiv X} (h : Can M E) : Can M.dual (-
     linarith
 
 /- English proof (translation)
-Introduce `k _ X _ q M M'`. Use `⟨fun E E' h h' => ⟨can_tens h h', can_dual h⟩, fun r hr r' hr' => ?_⟩` and prove the remaining obligations. Establish `P` using `(presents_divOfRatSec M.isLB hr).tens (presents_divOfRatSec M'.isLB hr')`. Conclude with `⟨fun c => r c.1 * r' c.2, P.isRatSec, (presents_divOfRatSec _ P.isRatSec).unique P⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem can_tens_dual : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (q : X ⟶ Sp k) (M M' : HermLB q), (∀ E E' : CartierDiv X, Can M E → Can M' E' → Can (M.tens M') (E + E') ∧ Can M.dual (-E)) ∧ ∀ (r : M.B.ι → X.functionFieldˣ) (hr : IsRatSec M.B r) (r' : M'.B.ι → X.functionFieldˣ) (hr' : IsRatSec M'.B r'), ∃ (s : (M.tens M').B.ι → X.functionFieldˣ) (hs : IsRatSec (M.tens M').B s), (M.tens M').div hs = M.div hr + M'.div hr' := by
   intro k _ X _ q M M'

@@ -10,9 +10,9 @@ open IsDedekindDomain NumberField
 namespace ClosedPointOfGenericFibre
 
 /- English proof (translation)
-Take `⟨n, f, hf⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.mp ‹Algebra.FiniteType ℤ R›`. Establish `: (RingHom.ker f).IsPrime` using `RingHom.ker_isPrime f`. Set `e` to `(Ideal.quotientKerAlgEquivOfSurjective hf).toRingEquiv`. Establish `hM' : (M.comap e).IsMaximal` using `Ideal.comap_isMaximal_of_surjective e e.surjective`. Establish `hN' : (N.comap e).IsMaximal` using `Ideal.comap_isMaximal_of_surjective e e.surjective`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← RingEquiv.height_comap e M, ← RingEquiv.height_comap e N]`. Conclude with `ReciprocityTheory.ChartRestriction.G.Geo.DimF.height_eq_of_isMaximal_int (RingHom.ker f) _ _ hM' hN'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_eq_of_isMaximal_of_finiteType_int (R : Type) [CommRing R] [IsDomain R]
     [Algebra.FiniteType ℤ R] (M N : Ideal R) (hM : M.IsMaximal) (hN : N.IsMaximal) :
@@ -26,9 +26,9 @@ theorem height_eq_of_isMaximal_of_finiteType_int (R : Type) [CommRing R] [IsDoma
   exact ReciprocityTheory.ChartRestriction.G.Geo.DimF.height_eq_of_isMaximal_int (RingHom.ker f) _ _ hM' hN'
 
 /- English proof (translation)
-Take `⟨n, f, hf⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.mp ‹Algebra.FiniteType ℤ R›`. Establish `: (RingHom.ker f).IsPrime` using `RingHom.ker_isPrime f`. Establish `h` using `ReciprocityTheory.ChartRestriction.G.Geo.DimF.finiteRingKrullDim_mvPolynomialInt_quot (RingHom.ker f)`. Set `e` to `(Ideal.quotientKerAlgEquivOfSurjective hf).toRingEquiv`. Rewrite using `[finiteRingKrullDim_iff_ne_bot_and_top, ← ringKrullDim_eq_of_ringEquiv e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `finiteRingKrullDim_iff_ne_bot_and_top.mp h`.
+A detailed English derivation is pending.
 -/
 theorem finiteRingKrullDim_of_finiteType_int (R : Type) [CommRing R] [IsDomain R]
     [Algebra.FiniteType ℤ R] : FiniteRingKrullDim R := by
@@ -40,16 +40,16 @@ theorem finiteRingKrullDim_of_finiteType_int (R : Type) [CommRing R] [IsDomain R
   exact finiteRingKrullDim_iff_ne_bot_and_top.mp h
 
 /- English proof (translation)
-The claim follows from `Algebra.FiniteType.trans (S := 𝓞 F) inferInstance inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem finiteType_int (F : Type) [Field F] [NumberField F] (R : Type) [CommRing R]
     [Algebra (𝓞 F) R] [Algebra.FiniteType (𝓞 F) R] : Algebra.FiniteType ℤ R :=
   Algebra.FiniteType.trans (S := 𝓞 F) inferInstance inferInstance
 
 /- English proof (translation)
-Establish `: IsJacobsonRing ℤ` using `ReciprocityTheory.ChartRestriction.G.Geo.int_isJacobsonRing`. Establish `: IsJacobsonRing (𝓞 F)` using `isJacobsonRing_of_isIntegral (R := ℤ)`. Set `: Field (R ⧸ M)` to `Ideal.Quotient.field M`. Establish `: Algebra.FiniteType (𝓞 F) (R ⧸ M)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ (𝓞 F) M) (Ideal.Quotient.mkₐ_surjective _ M)`. Establish `: Module.Finite (𝓞 F) (R ⧸ M)` using `finite_of_finite_type_of_isJacobsonRing (𝓞 F) (R ⧸ M)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := 𝓞 F) (⊥ : Ideal (R ⧸ M))`. Establish `he : (⊥ : Ideal (R ⧸ M)).comap (algebraMap (𝓞 F) (R ⧸ M)) = M.comap (algebraMap (𝓞 F) R)`. Use extensionality with `c`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, Ideal.mem_bot, ← Ideal.Quotient.mk_algebraMap, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite `h` using `[he]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isMaximal_comap_of_isMaximal (F : Type) [Field F] [NumberField F] (R : Type) [CommRing R]
     [Algebra (𝓞 F) R] [Algebra.FiniteType (𝓞 F) R] (M : Ideal R) (hM : M.IsMaximal) :
@@ -69,7 +69,7 @@ theorem isMaximal_comap_of_isMaximal (F : Type) [Field F] [NumberField F] (R : T
   rwa [he] at h
 
 /- English proof (translation)
-Introduce `h`. Use `isMaximal_comap_of_isMaximal F R M hM` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `RingOfIntegers.not_isField F (Ring.isField_iff_maximal_bot.mpr this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_ne_bot_of_isMaximal (F : Type) [Field F] [NumberField F] (R : Type) [CommRing R]
     [Algebra (𝓞 F) R] [Algebra.FiniteType (𝓞 F) R] (M : Ideal R) (hM : M.IsMaximal) :
@@ -80,7 +80,7 @@ theorem comap_ne_bot_of_isMaximal (F : Type) [Field F] [NumberField F] (R : Type
   exact RingOfIntegers.not_isField F (Ring.isField_iff_maximal_bot.mpr this)
 
 /- English proof (translation)
-Establish `h1` using `Ideal.height_add_one_le_of_lt_of_isPrime (I := ⊥) (J := P) (bot_lt_iff_ne_bot.mpr hP)`. Establish `h2` using `Ideal.height_add_one_le_of_lt_of_isPrime hPM`. Rewrite `h1` using `[Ideal.height_bot, zero_add]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem two_le_height_of_lt {R : Type} [CommRing R] [IsDomain R] {P M : Ideal R} [P.IsPrime]
     [M.IsPrime] (hP : P ≠ ⊥) (hPM : P < M) : 2 ≤ M.height := by
@@ -92,21 +92,19 @@ theorem two_le_height_of_lt {R : Type} [CommRing R] [IsDomain R] {P M : Ideal R}
     _ ≤ M.height := h2
 
 /- English proof (translation)
-Use `set T := Algebra.algebraMapSubmonoid R (nonZeroDivisors (𝓞 F)) with hTdef`. Establish `hT : T ≤ nonZeroDivisors R`. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `mem_nonZeroDivisors_of_ne_zero ((map_ne_zero_iff _ hinj).mpr (nonZeroDivisors.ne_zero hc))`. Establish `: IsDomain (Localization T)` using `IsLocalization.isDomain_localization hT`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS : ¬ IsField (Localization T)`. Introduce `hS`. Set `: Field (Localization T)` to `hS.toField`. Establish `: IsLocalization (Submonoid.map (algebraMap (𝓞 F) R) (nonZeroDivisors (𝓞 F))) (Localization T)` using `Localization.isLocalization`. Establish `: Algebra.FiniteType (FractionRing (𝓞 F)) (Localization T)` using `RingHom.finiteType_localizationPreserves (algebraMap (𝓞 F) R) (nonZeroDivisors (𝓞 F)) (FractionRing (𝓞 F)) (Localization T) (RingHom.finiteType_algebraMap.mpr inferInstance)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Finite (FractionRing (𝓞 F)) (Localization T)` using `finite_of_finite_type_of_isJacobsonRing _ _`. Establish `: Algebra.IsAlgebraic (𝓞 F) (Localization T)` using `(IsFractionRing.comap_isAlgebraic_iff (K := FractionRing (𝓞 F))).mpr inferInstance`. Conclude with `hna (Algebra.IsAlgebraic.of_injective (IsScalarTower.toAlgHom (𝓞 F) R (Localization T)) (IsLocalization.injective (Localization T) hT))`. Take `⟨n, hn⟩` from `Ideal.exists_maximal (Localization T)`. Establish `hn0 : n ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hn hS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set P := n.comap (algebraMap R (Localization T)) with hPdef`. Establish `hPp : P.IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hP0 : P ≠ ⊥`. Introduce `h`. Apply `hn0` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← IsLocalization.map_under T (Localization T) n]`. Express the relevant statement in the definitionally equal form `Ideal.map _ P = ⊥`. Rewrite using `[h, Ideal.map_bot]`. Establish `hPO : P.comap (algebraMap (𝓞 F) R) = ⊥`. Rewrite using `[eq_bot_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `c hc`. Rewrite using `[Ideal.mem_bot]`. Assume the negation of the conclusion as `hc0`. Establish `hu : IsUnit (algebraMap R (Localization T) (algebraMap (𝓞 F) R c))` using `IsLocalization.map_units (Localization T) (⟨algebraMap (𝓞 F) R c, c, mem_nonZeroDivisors_of_ne_zero hc0, rfl⟩ : T)`. Conclude with `hn.ne_top (Ideal.eq_top_of_isUnit_mem _ hc hu)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPmax : ¬ P.IsMaximal` using `fun h => comap_ne_bot_of_isMaximal F R P h hPO`. Take `⟨M', hM', hPM'⟩` from `Ideal.exists_le_maximal P hPp.ne_top`. Establish `hlt : P < M'` using `lt_of_le_of_ne hPM' (fun h => hPmax (h ▸ hM'))`. Establish `h2` using `two_le_height_of_lt hP0 hlt`. Use `finiteType_int F R` as an intermediate fact.
-
-Rewrite using `[height_eq_of_isMaximal_of_finiteType_int R M M' hM hM']` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem two_le_height_of_not_isAlgebraic (F : Type) [Field F] [NumberField F] (R : Type)
     [CommRing R] [IsDomain R] [Algebra (𝓞 F) R] [Algebra.FiniteType (𝓞 F) R]
@@ -159,21 +157,17 @@ theorem two_le_height_of_not_isAlgebraic (F : Type) [Field F] [NumberField F] (R
   rwa [height_eq_of_isMaximal_of_finiteType_int R M M' hM hM']
 
 /- English proof (translation)
-Establish `hfin` using `Ideal.finite_minimalPrimes_of_isNoetherianRing R (Ideal.span {t})`. Use `set s := insert (⊥ : Ideal R) hfin.toFinset with hs`. Establish `hprime : ∀ i ∈ s, i ≠ ⊥ → i ≠ ⊥ → (id i).IsPrime`. Introduce `i hi h1 _`. Break down `Finset.mem_insert.mp hi with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `absurd h h1`. Conclude with `(hfin.mem_toFinset.mp h).1.1`. Establish `hnot : ¬ ((M : Set R) ⊆ ⋃ i ∈ (↑s : Set (Ideal R)), ((id i : Ideal R) : Set R))`. Rewrite using `[Ideal.subset_union_prime (f := id) ⊥ ⊥ hprime]`. Introduce and unpack `⟨i, hi, hMi⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact.
 
-Break down `Finset.mem_insert.mp hi with h | h` into its components or cases. Substitute `h` using the available equality. Establish `h0 : M = ⊥` using `le_bot_iff.mp hMi`. Rewrite `hM` using `[h0, Ideal.height_bot]`. Conclude with `absurd hM (by decide)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmin` using `hfin.mem_toFinset.mp h`. Establish `h1` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ i hmin`. Establish `h3` using `hM.trans ((Ideal.height_mono hMi).trans h1)`. Conclude with `absurd h3 (by decide)`. Take `⟨u, huM, hu⟩` from `Set.not_subset.mp hnot`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu' : ∀ i ∈ s, u ∉ i` using `fun i hi hui => hu (Set.mem_biUnion (x := i) (by simpa using hi) hui)`. Establish `hu0 : u ≠ 0` using `fun h => hu' ⊥ (Finset.mem_insert_self _ _) (by rw [h]; exact Ideal.zero_mem _)`. Establish `huQ : ∀ Q ∈ (Ideal.span {t}).minimalPrimes, u ∉ Q` using `fun Q hQ => hu' Q (Finset.mem_insert_of_mem (hfin.mem_toFinset.mpr hQ))`. Take `⟨P, hP, hPM⟩` from `Ideal.exists_minimalPrimes_le (I := Ideal.span {u}) (J := M) ((Ideal.span_singleton_le_iff_mem M).mpr huM)`. Establish `hPp : P.IsPrime` using `hP.1.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huP : u ∈ P` using `hP.1.2 (Ideal.mem_span_singleton_self u)`. Use `⟨P, hPp, fun h => hu0 (by rw [h, Ideal.mem_bot] at huP; exact huP), hPM, fun htP => ?_⟩` and prove the remaining obligations. Take `⟨Q, hQ, hQP⟩` from `Ideal.exists_minimalPrimes_le (I := Ideal.span {t}) (J := P) ((Ideal.span_singleton_le_iff_mem P).mpr htP)`. Establish `hQp : Q.IsPrime` using `hQ.1.1`. Establish `htQ : t ∈ Q` using `hQ.1.2 (Ideal.mem_span_singleton_self t)`.
-
-Establish `hQ0 : Q ≠ ⊥` using `fun h => ht (by rw [h, Ideal.mem_bot] at htQ; exact htQ)`. Break down `hQP.lt_or_eq with hlt | heq` into its components or cases. Establish `h2` using `two_le_height_of_lt hQ0 hlt`. Establish `h1` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes (Ideal.span {u}) P hP`. Conclude with `absurd (h2.trans h1) (by decide)`.
-
-Conclude with `huQ Q hQ (heq ▸ huP)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isPrime_ne_bot_le_notMem {R : Type} [CommRing R] [IsDomain R] [IsNoetherianRing R]
     (M : Ideal R) [M.IsPrime] (hM : 2 ≤ M.height) (t : R) (ht : t ≠ 0) :
@@ -220,27 +214,25 @@ theorem exists_isPrime_ne_bot_le_notMem {R : Type} [CommRing R] [IsDomain R] [Is
   · exact huQ Q hQ (heq ▸ huP)
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `R _ _ _ _ hinj M g hM hg hn`. Distinguish the cases in `halg : Algebra.IsAlgebraic (𝓞 F) R`. Use `⟨⊥, Ideal.isPrime_bot, bot_le, ?_, by simpa using hg, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `c`. Rewrite using `[Ideal.mem_comap, Ideal.mem_bot, Ideal.mem_bot, map_eq_zero_iff _ hinj]`. Conclude with `⟨fun x => by`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mkₐ_surjective (𝓞 F) (⊥ : Ideal R) x`. Conclude with `(halg.isAlgebraic r).algHom _⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `two_le_height_of_not_isAlgebraic F R hinj halg M hM`. Establish `hp` using `isMaximal_comap_of_isMaximal F R M hM`. Take `⟨h, hhp, hh0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (comap_ne_bot_of_isMaximal F R M hM)`. Establish `: IsNoetherianRing R` using `Algebra.FiniteType.isNoetherianRing (𝓞 F) R`. Take `⟨P, hPp, hP0, hPM, htP⟩` from `exists_isPrime_ne_bot_le_notMem M h2 (algebraMap (𝓞 F) R h * g) (mul_ne_zero ((map_ne_zero_iff _ hinj).mpr hh0) hg)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgP : g ∉ P` using `fun hgP => htP (P.mul_mem_left _ hgP)`. Establish `hPO : P.comap (algebraMap (𝓞 F) R) = ⊥`. Assume the negation of the conclusion as `hne`. Establish `hmax` using `Ideal.IsPrime.isMaximal (Ideal.comap_isPrime (algebraMap (𝓞 F) R) P) hne`. Establish `heq : P.comap (algebraMap (𝓞 F) R) = M.comap (algebraMap (𝓞 F) R)` using `hmax.eq_of_le hp.ne_top (Ideal.comap_mono hPM)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhP : h ∈ P.comap (algebraMap (𝓞 F) R)` using `heq ▸ hhp`. Conclude with `htP (P.mul_mem_right _ hhP)`. Establish `: Algebra.FiniteType (𝓞 F) (R ⧸ P)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ (𝓞 F) P) (Ideal.Quotient.mkₐ_surjective _ P)`. Establish `hinj' : Function.Injective (algebraMap (𝓞 F) (R ⧸ P))`. Rewrite using `[injective_iff_map_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `c hc`. Rewrite `hc` using `[← Ideal.Quotient.mk_algebraMap, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hc' : c ∈ P.comap (algebraMap (𝓞 F) R)` using `hc`. Rewrite `hc'` using `[hPO, Ideal.mem_bot]`. Then use the resulting hypothesis. Use `set M' := M.map (Ideal.Quotient.mk P) with hM'def`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM' : M'.IsMaximal` using `hM.map_of_surjective_of_ker_le Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hPM)`. Establish `hg' : Ideal.Quotient.mk P g ≠ 0` using `by rwa [Ne, Ideal.Quotient.eq_zero_iff_mem]`. Use `finiteType_int F R` as an intermediate fact. Use `finiteRingKrullDim_of_finiteType_int R` as an intermediate fact. Establish `hsum` using `ReciprocityTheory.ChartRestriction.G.Geo.DimF.height_add_height_map_le (q := P) (M := M) hPM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP1 : 1 ≤ P.height`. Rewrite using `[Order.one_le_iff_ne_zero, Ne, Ideal.height_eq_zero_iff_eq_bot]`. Conclude with `hP0`. Establish `hht : M'.height + 1 ≤ (n : ℕ∞)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨k, rfl⟩ : ∃ k, n = k + 1 := by`. Break down `n with _ | k` into its components or cases. Conclude with `absurd hht (by simp)`. Conclude with `⟨k, rfl⟩`. Establish `hk : M'.height ≤ k`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hht` using `[Nat.cast_add, Nat.cast_one]`. Conclude with `(ENat.add_le_add_iff_right ENat.one_ne_top).mp hht`. Take `⟨Q', hQ'p, hQ'M, hQ'O, hgQ', hQ'alg⟩` from `ih k (Nat.lt_succ_self k) (R ⧸ P) hinj' M' (Ideal.Quotient.mk P g) hM' hg' hk`. Use `set Q := Q'.comap (Ideal.Quotient.mk P) with hQdef`. Use `⟨Q, Ideal.comap_isPrime _ _, ?_, ?_, hgQ', ?_⟩` and prove the remaining obligations.
-
-Conclude with `(Ideal.comap_mono hQ'M).trans (ReciprocityTheory.ChartRestriction.G.Geo.DimF.comap_map_mk hPM).le`. Use extensionality with `c`. Rewrite using `[Ideal.mem_comap, Ideal.mem_bot, hQdef, Ideal.mem_comap, Ideal.Quotient.mk_algebraMap, ← Ideal.mem_comap, hQ'O, Ideal.mem_bot]`. Use `Algebra.IsAlgebraic.of_injective (Ideal.quotientMapₐ Q' (Ideal.Quotient.mkₐ (𝓞 F) P) le_rfl) ?_` and prove the remaining obligations. Conclude with `Ideal.quotientMap_injective`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_of_height_le (F : Type) [Field F] [NumberField F] (n : ℕ) :
     ∀ (R : Type) [CommRing R] [IsDomain R] [Algebra (𝓞 F) R] [Algebra.FiniteType (𝓞 F) R],
@@ -317,11 +309,9 @@ theorem exists_of_height_le (F : Type) [Field F] [NumberField F] (n : ℕ) :
 end ClosedPointOfGenericFibre
 
 /- English proof (translation)
-Introduce `F _ _ R _ _ _ _ _ M g ⟨hM, hg⟩`. Establish `hinj : Function.Injective (algebraMap (𝓞 F) R)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Assume the negation of the conclusion as `hc0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1 : (1 : R) ∈ Submodule.torsion (𝓞 F) R` using `(Submodule.mem_torsion_iff (1 : R)).mpr ⟨⟨c, mem_nonZeroDivisors_of_ne_zero hc0⟩, by rw [Submonoid.smul_def, Algebra.smul_def, hc, zero_mul]⟩`. Rewrite `h1` using `[Module.Flat.torsion_eq_bot, Submodule.mem_bot]`. Conclude with `one_ne_zero h1`. Establish `: IsNoetherianRing R` using `Algebra.FiniteType.isNoetherianRing (𝓞 F) R`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp (Ideal.height_ne_top hM.ne_top)`.
-
-Conclude with `ClosedPointOfGenericFibre.exists_of_height_le F n R hinj M g hM hg hn.symm.le`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ClosedPointOfGenericFibre.proof : ClosedPointOfGenericFibre.Statement := by
   intro F _ _ R _ _ _ _ _ M g ⟨hM, hg⟩

@@ -6,7 +6,7 @@ open Formalism.L2.SG.GGMirabolic
 namespace GlobalTheory.CompanionTheory.GG
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Closed.GelfandGraevMultOne_holds`.
+A detailed English derivation is pending.
 -/
 theorem gelfandGraevMultOne_holds : GelfandGraevMultOne :=
   Formalism.L2.SG.Closed.GelfandGraevMultOne_holds

@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WS
 
 /- English proof (translation)
-Establish `h0 : (unifUnit F ^ (-ord (u : F)) * u) ∈ ordShell F 0`. Rewrite using `[mem_ordShell, ord_units_mul, ord_unifUnit_zpow]`. Use linear arithmetic over natural numbers and integers. Establish `h1 : μ (unifUnit F ^ (-ord (u : F)) * u) = 1` using `isUnramifiedChar_iff.mp hμ _ h0`. Establish `h2 : μ u = μ (unifUnit F) ^ ord (u : F)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_mul, map_zpow, _root_.zpow_neg]`. Conclude with `(inv_mul_eq_one.mp h1).symm`. Rewrite using `[h2, Units.val_zpow_eq_zpow_val]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unramified_apply_eq_zpow_ord {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] {μ : Fˣ →* ℂˣ} (hμ : IsUnramifiedChar μ) (u : Fˣ) :
@@ -30,17 +30,15 @@ theorem unramified_apply_eq_zpow_ord {F : Type} [Field F] [ValuativeRel F] [Topo
   rw [h2, Units.val_zpow_eq_zpow_val]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ μ hμ A D`. Establish `hpt : (fun u : Fˣ => if -A ≤ ord (u : F) ∧ ord (u : F) ≤ -D then ((μ u : ℂˣ) : ℂ) else 0) = fun u => ∑ j ∈ Finset.Icc D A, (ordShell F (-j)).indicator (fun _ => ((μ (unifUnit F) : ℂˣ) : ℂ) ^ (-j)) u`. Use function extensionality and compare the values at `u`. Distinguish the cases in `h : -A ≤ ord (u : F) ∧ ord (u : F) ≤ -D`. Rewrite using `[if_pos h, Finset.sum_eq_single (-ord (u : F))]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem (by rw [mem_ordShell]; omega), neg_neg, unramified_apply_eq_zpow_ord hμ]`. Introduce `j _ hj`. Use `Set.indicator_of_notMem (fun hu => hj ?_) _` and prove the remaining obligations. Rewrite `hu` using `[mem_ordShell]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Introduce `hn`. Conclude with `absurd (Finset.mem_Icc.mpr (by omega)) hn`. Rewrite using `[if_neg h]`. Use `symm`. Use `Finset.sum_eq_zero fun j hj => Set.indicator_of_notMem (fun hu => h ?_) _` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu` using `[mem_ordShell]`. Use `Finset.mem_Icc.mp hj` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hint : ∀ j : ℤ, Integrable ((ordShell F (-j)).indicator (fun _ => ((μ (unifUnit F) : ℂˣ) : ℂ) ^ (-j))) (multHaar F)`. Introduce `j`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integrable_indicator_iff (measurableSet_ordShell _)]`. Conclude with `integrableOn_const (by rw [multHaar_ordShell]; exact ENNReal.one_ne_top)`. Rewrite using `[hpt, integral_finset_sum _ fun j _ => hint j]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[integral_indicator (measurableSet_ordShell _), setIntegral_const, measureReal_def, multHaar_ordShell]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_unramified_shells : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (μ : Fˣ →* ℂˣ), IsUnramifiedChar μ → ∀ A D : ℤ, ∫ u : Fˣ, (if -A ≤ ord (u : F) ∧ ord (u : F) ≤ -D then ((μ u : ℂˣ) : ℂ) else 0) ∂multHaar F = ∑ j ∈ Finset.Icc D A, ((μ (unifUnit F) : ℂˣ) : ℂ) ^ (-j) := by
   intro F _ _ _ _ _ _ μ hμ A D

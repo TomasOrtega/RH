@@ -11,9 +11,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolFan.CarDim
 
 /- English proof (translation)
-Establish `hmem : toReal β ∈ psdCone H.bar X`. Use `ConeSub.sum_smul_toReal_mem_psdCone (𝓞 E) H.bar X 1 ![β] ![1] (fun i => by fin_cases i; exact hβ) (fun i y => by fin_cases i; exact hp y) (fun i => by fin_cases i; norm_num)` as an intermediate fact. Simplify using `using this`. Take `⟨S, -, hS⟩` from `hfan.finite`. Take `⟨e, m, γ, c, hγ, -, hc, he⟩` from `hS _ hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨m, fun i => pull e.symm.toLinearMap (γ i), isCell_pull_equiv hγ e.symm, c, hc, LinearMap.ext₂ fun a b => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun₂ he (e.symm a) (e.symm b)` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_cell {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {ψ : InvFun (𝓞 E)} {X : Type}
     [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] (hfan : IsPolyFanOn H.bar ψ X)
@@ -32,15 +32,13 @@ theorem exists_cell {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
 end GlobalTheory.PolFan.CarDim
 
 /- English proof (translation)
-Introduce `E _ _ _ H q ψ hD hψ htw`. Use `⟨carFun H.bar ψ, GlobalTheory.T.carrierDimInvFun_hostFixingAut_invariant E H ψ htw, ?_⟩` and prove the remaining obligations. Introduce `X _ _ _ _ hX β hβ hp`. Establish `hfan` using `hψ X hX`. Establish `hface` using `GlobalTheory.T.polyhedralPolarisation_face_cut_isCell E H ψ X hfan (hD X)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[evalZ_carFun hβ hp]`. Use `congr 1`. Take `⟨m₀, γ₀, hγ₀, hin₀⟩` from `exists_cell hfan hβ hp`. Establish `hne : {k : ℕ | ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell H.bar ψ γ ∧ InRCone γ β ∧ genRank γ = k}.Nonempty` using `⟨_, m₀, γ₀, hγ₀, hin₀, rfl⟩`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨m, γ, h1, h2, h3⟩` from `Nat.sInf_mem hne`. Take `⟨m', δ, k1, k2, k3⟩` from `GlobalTheory.T.exists_cell_quotient_by_radical_of_mem_cone E H ψ X hface β hβ hp m γ h1 h2`. Conclude with `(Nat.sInf_le (show genRank δ ∈ cdimSet H.bar ψ X (orad β) β from ⟨m', δ, k1, k2, rfl⟩)).trans (k3.trans h3.le)`. Establish `hne' : (cdimSet H.bar ψ X (orad β) β).Nonempty`. Take `⟨m', δ, k1, k2, -⟩` from `GlobalTheory.T.exists_cell_quotient_by_radical_of_mem_cone E H ψ X hface β hβ hp m₀ γ₀ hγ₀ hin₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, m', δ, k1, k2, rfl⟩`. Take `⟨m', δ, h1, h2, h3⟩` from `Nat.sInf_mem hne'`. Take `⟨m, γ, k1, k2, k3⟩` from `GlobalTheory.T.cell_of_quotient_cell_radical_pullback E H ψ X hfan hface β hβ hp m' δ h1 h2`. Unfold `cdimQ`. Rewrite using `[← h3]`.
-
-Conclude with `(Nat.sInf_le (show genRank γ ∈ {k : ℕ | ∃ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell H.bar ψ γ ∧ InRCone γ β ∧ genRank γ = k} from ⟨m, γ, k1, k2, rfl⟩)).trans k3`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PolFan.CarDim.exists_isCarrierDim : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) (ψ : InvFun (𝓞 E)), (∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Dominates H.bar X) → IsPolyFan H.bar q ψ → IsTwInv H ψ → ∃ lab : InvFun (𝓞 E), IsTwInv H lab ∧ IsCarrierDim H.bar q ψ lab := by
   intro E _ _ _ H q ψ hD hψ htw

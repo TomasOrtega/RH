@@ -23,7 +23,7 @@ namespace GlobalTheory.CtInt
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `h : Continuous fun x : UA σ J => heightGL F (x : GL (Fin n) (AE F E))` using `(GlobalTheory.Grow.continuous_heightGL (F := F) (E := E) (n := Fin n)).comp continuous_subtype_val`. Conclude with `NNReal.continuous_coe.comp h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_ht {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : Continuous fun x : UA σ J => (ht x : ℝ) := by
   have h : Continuous fun x : UA σ J => heightGL F (x : GL (Fin n) (AE F E)) :=
@@ -31,25 +31,21 @@ theorem continuous_ht {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : Continuous fun 
   exact NNReal.continuous_coe.comp h
 
 /- English proof (translation)
-Use `GlobalTheory.AdelicU.one_le_heightGL F (x : GL (Fin n) (AE F E))` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_le_ht {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (x : UA σ J) : (1 : ℝ) ≤ ht x := by
   have := GlobalTheory.AdelicU.one_le_heightGL F (x : GL (Fin n) (AE F E))
   exact_mod_cast this
 
 /- English proof (translation)
-Use `GlobalTheory.AdelicU.heightGL_mul_le (F := F) (x : GL (Fin n) (AE F E)) (y : GL (Fin n) (AE F E))` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ht_mul_le {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (x y : UA σ J) : (ht (x * y) : ℝ) ≤ ht x * ht y := by
   have := GlobalTheory.AdelicU.heightGL_mul_le (F := F) (x : GL (Fin n) (AE F E)) (y : GL (Fin n) (AE F E))
   exact_mod_cast this
 
 /- English proof (translation)
-Take `⟨_, _, _, _⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ n X.J`. Take `⟨_, _, _, _⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ d W.J`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Use `haveI : BorelSpace (UA σ W.J) := ⟨rfl⟩`. Use `haveI := hμ`.
-
-Use `haveI : SigmaCompactSpace (UA σ X.J) := inferInstance`. Use `haveI : IsFiniteMeasureOnCompacts M.μ := inferInstance`. Use `haveI : SigmaFinite M.μ := inferInstance`. Use `haveI : SigmaFinite (M.μ.restrict M.dom) := Restrict.sigmaFinite _ _`. Use `haveI : SFinite (M.μ.restrict M.dom) := instSFiniteOfSigmaFinite`.
-
-Establish `h2 : StronglyMeasurable (Function.uncurry fun (x : UA σ W.J) (g : UA σ X.J) => theta om Φ g x)` using `(hc.comp continuous_swap).stronglyMeasurable`. Conclude with `h2.integral_prod_right (ν := M.μ.restrict M.dom)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stronglyMeasurable_I {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (om : Rep σ X W) (Φ : Fn F n d)
     (hc : Continuous fun x : UA σ X.J × UA σ W.J => theta om Φ x.1 x.2) (hμ : M.μ.IsHaarMeasure) :
@@ -73,21 +69,19 @@ end GlobalTheory.CtInt
 namespace GlobalTheory.CtInt
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH μ 𝓕 _ _ h1 Ψ hΨ h`. Establish `hTB : ThetaBasic` using `GlobalTheory.T.theta_basic_properties hK.base`. Establish `hV : IsPair B G.M X.β (X.β / X.α) om (a - G.p) G.p (a + a' - (G.p + G.q)) (G.p + G.q)` using `{ base := hT.base, herm := hT.geo.hV, skew := hT.geo.hW, good := hT.geo.hM, hX := hT.chars.heckeβ, hW := GlobalTheory.ThKRatInv.isHecke_div hT.chars.heckeβ hT.chars.heckeα, resX := hT.chars.resβ, resW := GlobalTheory.ThKRatInv.resEtaPow_div hT.chars.resβ hT.chars.resα, weil := hT …`. Take `⟨hcont, hinv, -⟩` from `(hTB F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hV).1 Ψ hΨ`. Establish `hcond : a + a' + 2 * min (a - G.p) G.p < 2 * a ∨ min (a - G.p) G.p = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hT.geo.eBig` as an intermediate fact. Use `hT.geo.lt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨-, C, k, hC⟩` from `(GlobalTheory.T.weil_convergence_of_kernel hK F E σ B a (a + a') G.V G.W G.M X.β (X.β / X.α) om _ _ _ _ hV hcond).1 Ψ hΨ`. Establish `hbd : ∀ x, ‖G.M.I om Ψ x‖ ≤ C * (ht x : ℝ) ^ k` using `fun x => (norm_integral_le_integral_norm _).trans (hC x)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hC0 : 0 ≤ C`. Establish `h0 : 0 ≤ C * (ht (1 : UA σ G.W.J) : ℝ) ^ k` using `(norm_nonneg _).trans (hbd 1)`. Conclude with `nonneg_of_mul_nonneg_left h0 (pow_pos (zero_lt_one.trans_le (one_le_ht _)) k)`. Establish `hrat : ∀ γ ∈ ratU σ G.W.J, ∀ x, G.M.I om Ψ (γ * x) = G.M.I om Ψ x`. Introduce `γ hγ x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `Model.I`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `using hinv 1 (one_mem _) γ hγ g x`. Establish `hcoc : GlobalTheory.Cusp.Cocompact (ratU σ G.W.J) (unip σ G.W H')` using `GlobalTheory.UnipCocompact.cocompact_unip F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Kc, hKc, hcov⟩` from `hcoc`. Take `⟨Bd, hBd⟩` from `hKc.exists_bound_of_continuousOn (((continuous_ht (σ := σ) G.W.J).comp continuous_subtype_val).continuousOn (s := Kc))`. Take `⟨_, _, _, _⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ (a + a') G.W.J`. Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`. Establish `hmeas : StronglyMeasurable (G.M.I om Ψ)` using `stronglyMeasurable_I G.M om Ψ hcont hT.geo.hM.haar`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm2 : Measurable fun u : unip σ G.W H' => u.1 * h` using `(continuous_subtype_val.mul continuous_const).measurable`. Use `Measure.integrableOn_of_bounded (M := C * (Bd * ht h) ^ k) (by rw [h1]; exact ENNReal.one_ne_top) (hmeas.comp_measurable hm2).aestronglyMeasurable (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Take `⟨γ, hγ, hk⟩` from `hcov u`. Establish `e : G.M.I om Ψ (u.1 * h) = G.M.I om Ψ ((γ * u).1 * h)`. Rewrite using `[Subgroup.coe_mul, mul_assoc, hrat _ (Subgroup.mem_subgroupOf.1 hγ)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : (ht (γ * u).1 : ℝ) ≤ Bd`. Use `hBd _ hk` as an intermediate fact. Simplify using `only [Function.comp_apply, Real.norm_eq_abs] at this`. Conclude with `(le_abs_self _).trans this`. Establish `hle : (ht ((γ * u).1 * h) : ℝ) ≤ Bd * ht h` using `(ht_mul_le _ _).trans (mul_le_mul_of_nonneg_right hB (NNReal.coe_nonneg _))`.
-
-Use `show ‖G.M.I om Ψ (u.1 * h)‖ ≤ C * (Bd * ht h) ^ k`. Rewrite using `[e]`. Conclude with `(hbd _).trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (NNReal.coe_nonneg _) hle k) hC0)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_ct : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → ∀ (d₁ : ℕ) (W₁ : Spc F E d₁) (H' : Plane E (a + a') d₁) (i₀ i₁ : ℕ), H'.IsAdapted σ B G.W W₁ i₀ i₁ → ∀ (μ : Measure (unip σ G.W H')) (𝓕 : Set (unip σ G.W H')), μ.IsHaarMeasure → IsFundamentalDomain ((ratU σ G.W.J).subgroupOf (unip σ G.W H')) 𝓕 μ → μ 𝓕 = 1 → ∀ Ψ ∈ schA F (Fin a × Fin (a + a')), ∀ h : UA σ G.W.J, IntegrableOn (fun u : unip σ G.W H' => G.M.I om Ψ (u.1 * h)) 𝓕 μ := by
   intro hK F E _ _ _ _ _ σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH μ 𝓕 _ _ h1 Ψ hΨ h

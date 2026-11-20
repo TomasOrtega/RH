@@ -12,15 +12,15 @@ open GlobalTheory.NormSum (Pair)
 open GlobalTheory.CMVal (IsHeckeL)
 namespace GlobalTheory.NormBigProof
 /- English proof (translation)
-Introduce `hP hI hL`. Take `⟨a1, k1⟩` from `hL`. Take `⟨a2, k2⟩` from `_root_.GlobalTheory.T.theta_lift_petersson_norm_ratio_formula hP hI ⟨a1, k1⟩`. Take `⟨a3, k3⟩` from `_root_.GlobalTheory.T.big_theta_lift_ne_zero_of_petersson_norm hP hI ⟨a1, k1⟩`. Use `⟨max a1 (max a2 a3), fun ε CF hCF => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c1, x1, l1⟩` from `k1 ε CF (le_trans (le_max_left _ _) hCF)`. Take `⟨c2, x2, l2⟩` from `k2 ε CF (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCF)`. Take `⟨c3, x3, l3⟩` from `k3 ε CF (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hCF)`. Use `⟨max c1 (max c2 c3), max x1 (max x2 x3), fun C hC D large₂ he hx hRec T Lc μ₀ hμ G => ?_⟩` and prove the remaining obligations. Establish `hl` using `l1 C (le_trans (le_max_left _ _) hC) D large₂ he (le_trans (le_max_left _ _) hx) hRec T Lc μ₀ hμ G`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hr` using `l2 C (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC) D large₂ he (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx) hRec T Lc μ₀ hμ G`. Establish `hz` using `l3 C (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hC) D large₂ he (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx) hRec T Lc μ₀ hμ G`. Introduce `δ t0 i j`. Distinguish the cases in `hex : ∃ (t : T) (Q : ℕ) (P P' : Pair D ⊤ δ t0 Q), IsBottom G t i j (modT G t) P P'`. Take `⟨t₀, Q₀, P₀, P₀', hb₀⟩` from `hex`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨Λ₀, hΛ₀, hne⟩` from `(hl i j).1 t₀`. Establish `hprod : ∏ s ∈ Icc (1 - (e0 D i j : ℤ)) (h0 D i j : ℤ), Λ₀ s ≠ 0` using `prod_ne_zero_iff.2 fun s hs => hne s (mem_Icc.1 hs).1 (le_trans (mem_Icc.1 hs).2 (by exact_mod_cast squareBottomHalfRankSum_le_halfRank D i j))`. Establish `hn₀ : (P₀.norm : ℂ) ≠ 0` using `by exact_mod_cast hz δ t0 i j t₀ Q₀ P₀ P₀' hb₀`. Use `⟨(P₀.norm : ℂ) / ∏ s ∈ Icc (1 - (e0 D i j : ℤ)) (h0 D i j : ℤ), Λ₀ s, div_ne_zero hn₀ hprod, fun t Q P P' Λ hb hΛ => ?_⟩` and prove the remaining obligations. Establish `e` using `hr δ t0 i j t t₀ Q Q₀ P P' P₀ P₀' Λ Λ₀ hb hb₀ hΛ hΛ₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[div_mul_eq_mul_div, eq_div_iff hprod, e]`. Conclude with `⟨1, one_ne_zero, fun t Q P P' Λ hb _ => absurd ⟨t, Q, P, P', hb⟩ hex⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem normBig_alt : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → LNe → NormBig := by
   intro hP hI hL
@@ -57,7 +57,7 @@ section
 open GlobalTheory.SqTop
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.NormBigProof.normBig_alt | exact _root_.GlobalTheory.NormBigProof.normBig_alt | (intros; apply _root_.GlobalTheory.NormBigProof.normBig_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.normBig_of_lNe : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → LNe → NormBig := by
   first | exact @_root_.GlobalTheory.NormBigProof.normBig_alt | exact _root_.GlobalTheory.NormBigProof.normBig_alt | (intros; apply _root_.GlobalTheory.NormBigProof.normBig_alt <;> assumption)

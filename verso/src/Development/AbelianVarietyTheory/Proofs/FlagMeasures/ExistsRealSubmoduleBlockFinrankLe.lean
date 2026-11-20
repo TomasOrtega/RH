@@ -5,9 +5,9 @@ open Finset
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n E E'`. Set `f : (E →L[ℂ] E') →ₗ[ℝ] (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n))` to `{ toFun := fun M => E'.subtypeL ∘L M ∘L E.orthogonalProjection map_add' := fun M N => by ext; simp map_smul' := fun c M => by ext; simp }`. Use `⟨LinearMap.range f, ?_, fun T => ⟨E'.orthogonalProjection ∘L T ∘L E.subtypeL, rfl⟩⟩` and prove the remaining obligations. Use `(LinearMap.finrank_range_le f).trans (le_of_eq ?_)` and prove the remaining obligations. Establish `h1 : Module.finrank ℂ (E →L[ℂ] E') = Module.finrank ℂ E * Module.finrank ℂ E'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← (LinearMap.toContinuousLinearMap (𝕜 := ℂ) (E := E) (F' := E')).finrank_eq, Module.finrank_linearMap]`. Rewrite using `[← Module.finrank_mul_finrank ℝ ℂ (E →L[ℂ] E'), Complex.finrank_real_complex, h1]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_real_submodule_block_finrank_le :
     ∀ (n : ℕ) (E E' : Submodule ℂ (EuclideanSpace ℂ (Fin n))),

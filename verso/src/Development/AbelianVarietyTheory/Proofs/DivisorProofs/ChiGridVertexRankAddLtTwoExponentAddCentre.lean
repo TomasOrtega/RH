@@ -20,27 +20,25 @@ noncomputable section
 namespace GlobalTheory.ChiGrid
 
 /- English proof (translation)
-Use `set P := D.hc τ with hP`. Use `set G := GlobalTheory.SignedHC.GridData.ofHCParam P (sLen D) (gap D C) 0 with hG`. Take `⟨hv, hb, -⟩` from `GlobalTheory.SignedHC.GridData.ofHCParam_spec P (sLen D) (gap D C) 0`. Establish `hk : D.R.m + 3 ≤ D.R.k` using `D.R.m_add_three_le_k`. Establish `hGm : G.m = D.R.m` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGk : G.k = D.R.k` using `rfl`. Establish `hGga : G.ga = gap D C` using `rfl`. Establish `h1` using `P.gap_be ⟨j, hj⟩`. Establish `e0 : P.b ⟨0, by omega⟩ = (G.b 1 : ℚ)` using `hb ⟨0, by omega⟩`. Establish `ej : P.b ⟨j, hj⟩ = (G.b (j + 1) : ℚ)` using `hb ⟨j, hj⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h2 : P.b ⟨0, by omega⟩ ≤ P.b ⟨j, hj⟩`. Break down `Nat.eq_zero_or_pos j with rfl | hj0` into its components or cases. Conclude with `le_rfl`. Use `G.b_mono 1 (j + 1) le_rfl (by omega) (by rw [hGm]; omega)` as an intermediate fact. Rewrite using `[e0, ej]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.le` after adjusting the coercions. Establish `hu2` using `P.u_last_gt (by omega) (by omega)`. Establish `hu1` using `P.v_gt_u ⟨D.R.k - 2, by omega⟩`. Establish `hu : P.u ⟨D.R.k - 2 + 1, by omega⟩ = P.u ⟨D.R.k - 1, by omega⟩` using `congrArg P.u (Fin.ext (by dsimp only; omega))`. Establish `ev0 : P.v ⟨0, by omega⟩ = (G.v 2 : ℚ)` using `hv ⟨0, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `evl : P.v ⟨D.R.k - 2, by omega⟩ = (G.v D.R.k : ℚ)`. Use `hv ⟨D.R.k - 2, by omega⟩` as an intermediate fact. Simplify using `only at this`. Rewrite `this` using `[Nat.sub_add_cancel (by omega : 2 ≤ D.R.k)]`. Then use the resulting hypothesis. Establish `hvv : G.v D.R.k < G.v 2` using `G.v_anti 2 D.R.k le_rfl (by omega) (by rw [hGk])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hvv' : (G.v D.R.k : ℚ) < G.v 2` using `by exact_mod_cast hvv`. Rewrite `hu1` using `[hu]`. Rewrite `hu1` using `[evl]`. Establish `hc : G.mid (D.R.m - i) < (cen D C τ (D.R.m - i) : ℚ) + 1` using `Int.lt_floor_add_one _`. Establish `hmid : G.mid (D.R.m - i) = G.a (D.R.m - i) + G.ga / 2` using `G.mid_eq (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `ha : G.a (D.R.m - i) = (G.v 2 : ℚ) + 1 / 2 + ((i : ℚ) + 1) * (gap D C : ℚ)`. Simplify using `only [GlobalTheory.SignedHC.GridData.a, hGm, hGga]`. Rewrite using `[Nat.cast_sub hi.le]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hc` using `[hmid, ha, hGga]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `(isLeast_gap D C).1.2.1`. Establish `hN : bigN D ≤ bigN D ^ 3` using `Nat.le_self_pow (by norm_num) _`. Establish `hr : D.R.r + 1 = D.R.k + D.R.m` using `by unfold Formalism.BasicNotions.Ranks.r; omega`. Establish `m1 : (j + 1) * D.R.t ≤ D.R.m * D.R.t` using `Nat.mul_le_mul_right _ (by omega)`. Establish `m2 : j * D.R.t ≤ D.R.m * D.R.t` using `Nat.mul_le_mul_right _ (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `m3 : (i + 1) * sLen D ≤ D.R.m * sLen D` using `Nat.mul_le_mul_right _ (by omega)`. Establish `m4 : i * sLen D ≤ D.R.m * sLen D` using `Nat.mul_le_mul_right _ (by omega)`. Establish `hrank : rankV D (i + 1) (j + 1) + rankV D i j ≤ 2 * bigN D`. Unfold `rankV bigN`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : rankV D (i + 1) (j + 1) + rankV D i j + 1 ≤ gap D C` using `by omega`. Establish `hR' : ((rankV D (i + 1) (j + 1) + rankV D i j : ℕ) : ℚ) + 1 ≤ (gap D C : ℚ)` using `by exact_mod_cast hR`. Establish `hpos : (0 : ℚ) ≤ (i : ℚ) * (gap D C : ℚ)` using `by positivity`. Establish `ht : (0 : ℚ) ≤ D.R.t` using `by positivity`. Establish `h0 : (0 : ℚ) ≤ ((rankV D (i + 1) (j + 1) + rankV D i j : ℕ) : ℚ)` using `by positivity`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem rankV_add_lt_two_e_add_two_cen {D : D7} (C : ℝ) (τ : D.what₂.Tau) (i j : ℕ) (hi : i < D.R.m) (hj : j < D.R.m) :
     ((rankV D (i + 1) (j + 1) + rankV D i j : ℕ) : ℚ) < 2 * (D.hc τ).e ⟨j, hj⟩ + 2 * (cen D C τ (D.R.m - i) : ℚ) := by

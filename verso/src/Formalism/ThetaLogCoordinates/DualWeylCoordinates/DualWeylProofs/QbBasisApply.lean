@@ -9,7 +9,7 @@ namespace Formalism.InvariantFactorPaths.ColumnFamilies
 variable {n : ℕ} [NeZero n]
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_sigma, CF.rank]`. Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[dMu, Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma qb_card_Idx {M : GLMod n} (CF : ColFam M) : Fintype.card (qb_Idx CF) = Fintype.card M.ι := by
   rw [Fintype.card_sigma, CF.rank]
@@ -28,11 +28,11 @@ lemma qb_N_row {M : GLMod n} (CF : ColFam M) (R : Type) [CommRing R] :
     ((qb_N CF).map (Int.castRingHom R)).row = qb_vecF CF R ∘ qb_e CF := rfl
 
 /- English proof (translation)
-Rewrite using `[Int.isUnit_iff_natAbs_eq, Nat.eq_one_iff_not_exists_prime_dvd]`. Introduce `p hp hdvd`. Use `haveI := Fact.mk hp`. Establish `h1 : LinearIndependent (ZMod p) ((qb_N CF).map (Int.castRingHom (ZMod p))).row`. Rewrite using `[qb_N_row]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(linearIndependent_equiv (qb_e CF)).2 (qb_indep_field hA CF (ZMod p))`. Rewrite `h1` using `[Matrix.linearIndependent_rows_iff_isUnit, Matrix.isUnit_iff_isUnit_det]`. Establish `h2 : ((qb_N CF).map (Int.castRingHom (ZMod p))).det = ((qb_N CF).det : ZMod p)`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h1` using `[h2]`. Apply `h1.ne_zero` to reduce the goal to its premises. Rewrite using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Conclude with `Int.natCast_dvd.2 hdvd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qb_N_det (hA : LemmaA) {M : GLMod n} (CF : ColFam M) : IsUnit (qb_N CF).det := by
   rw [Int.isUnit_iff_natAbs_eq, Nat.eq_one_iff_not_exists_prime_dvd]
@@ -49,7 +49,7 @@ theorem qb_N_det (hA : LemmaA) {M : GLMod n} (CF : ColFam M) : IsUnit (qb_N CF).
   exact Int.natCast_dvd.2 hdvd
 
 /- English proof (translation)
-Rewrite using `[Matrix.isUnit_iff_isUnit_det, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(qb_N_det hA CF).map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qb_N_unit (hA : LemmaA) {M : GLMod n} (CF : ColFam M) (R : Type) [CommRing R] :
     IsUnit ((qb_N CF).map (Int.castRingHom R)) := by
@@ -57,9 +57,9 @@ theorem qb_N_unit (hA : LemmaA) {M : GLMod n} (CF : ColFam M) (R : Type) [CommRi
   exact (qb_N_det hA CF).map _
 
 /- English proof (translation)
-Establish `hu` using `qb_N_unit hA CF R`. Prove the components needed by the constructor for the conclusion. Use `Matrix.linearIndependent_rows_of_isUnit hu` as an intermediate fact. Rewrite `this` using `[qb_N_row]`. Conclude with `(linearIndependent_equiv (qb_e CF)).1 this`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `Matrix.vecMul_surjective_iff_isUnit.2 hu`. Establish `h2` using `_root_.range_vecMulLinear ((qb_N CF).map (Int.castRingHom R))`. Rewrite `h2` using `[qb_N_row, EquivLike.range_comp]`. Rewrite using `[← h2, LinearMap.range_eq_top]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qb_basisR (hA : LemmaA) {M : GLMod n} (CF : ColFam M) (R : Type) [CommRing R] :
     LinearIndependent R (qb_vecF CF R) ∧ Submodule.span R (Set.range (qb_vecF CF R)) = ⊤ := by
@@ -79,14 +79,14 @@ def qb_basis (hA : LemmaA) {M : GLMod n} (CF : ColFam M) (R : Type) [CommRing R]
   Module.Basis.mk (qb_basisR hA CF R).1 (qb_basisR hA CF R).2.ge
 
 /- English proof (translation)
-Rewrite using `[qb_basis, Module.Basis.mk_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma qb_basis_apply (hA : LemmaA) {M : GLMod n} (CF : ColFam M) (R : Type) [CommRing R] (x : qb_Idx CF) :
     qb_basis hA CF R x = qb_vecF CF R x := by
   rw [qb_basis, Module.Basis.mk_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x i`. Simplify using `[qb_vecF]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma qb_vecF_int {M : GLMod n} (CF : ColFam M) : qb_vecF CF ℤ = fun x => CF.vec x.1 x.2.1 := by
   funext x i

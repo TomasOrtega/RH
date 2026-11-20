@@ -17,11 +17,11 @@ section ext
 variable {K K' : Type} [Field K] [Field K'] (f : K →+* K')
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono (Set.image_mono Submodule.subset_span))` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => simp`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Establish `: f (a • x) = RingOfIntegers.mapRingHom f a • f x`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_image_span (s : Set K) :
     Submodule.span (𝓞 K') (f '' (Submodule.span (𝓞 K) s : Set K)) = Submodule.span (𝓞 K') (f '' s) := by
@@ -47,7 +47,7 @@ def extend : Submodule (𝓞 K) K →* Submodule (𝓞 K') K' where
     rw [Submodule.span_mul_span, Set.image_mul]
 
 /- English proof (translation)
-The claim follows from `span_image_span f s`.
+A detailed English derivation is pending.
 -/
 theorem extend_span (s : Set K) :
     extend f (Submodule.span (𝓞 K) s) = Submodule.span (𝓞 K') (f '' s) := span_image_span f s
@@ -59,7 +59,7 @@ section host
 variable {R : Ranks} (H : Host R)
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.Geo.emb_mul_cc_comp]`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Conclude with `(H.conjE_apply (H.emb g) x).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conjugate_emb (g : R.GG) :
     ComplexEmbedding.conjugate (H.emb g) = H.emb (g * R.cc) := by
@@ -68,21 +68,21 @@ theorem conjugate_emb (g : R.GG) :
   exact (H.conjE_apply (H.emb g) x).symm
 
 /- English proof (translation)
-Rewrite using `[conjugate_emb, Formalism.L2.Geo.emb_mul_cc_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conjugate_emb_apply (g : R.GG) (x : H.E) :
     ComplexEmbedding.conjugate (H.emb g) x = H.emb g (H.conj x) := by
   rw [conjugate_emb, Formalism.L2.Geo.emb_mul_cc_comp]; rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨t, ht⟩ => (factEmb R H).1.1 ht ▸ t.2, fun h => ⟨⟨g, h⟩, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem ex_emb_iff (g : R.GG) :
     (∃ t : Tau R, H.emb t = H.emb g) ↔ g ∈ R.Psi :=
   ⟨fun ⟨t, ht⟩ => (factEmb R H).1.1 ht ▸ t.2, fun h => ⟨⟨g, h⟩, rfl⟩⟩
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `(factEmb R H).1.2 σ`. Rewrite using `[conjugate_emb, ex_emb_iff, ex_emb_iff]`. Rewrite using `[Formalism.HC.Frame.mem_Psi_iff, Formalism.HC.Frame.mem_Psi_iff]`. Use `show g.1.2 = 1 ↔ ¬ g.1.2 * (-1) = 1`. Apply the tactic sequence `rcases Int.units_eq_one_or g.1.2 with h | h <;> rw [h] <;> decide`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem emb_cm (σ : H.E →+* ℂ) :
     (∃ t : Tau R, H.emb t = σ) ↔ ¬ ∃ t : Tau R, H.emb t = ComplexEmbedding.conjugate σ := by
@@ -93,13 +93,11 @@ theorem emb_cm (σ : H.E →+* ℂ) :
   rcases Int.units_eq_one_or g.1.2 with h | h <;> rw [h] <;> decide
 
 /- English proof (translation)
-Establish `hc : ∀ σ : H.E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate σ) = σ` using `fun σ => star_star σ`. Establish `hi : ∀ {a b : Tau R}, H.emb a = H.emb b → a = b` using `fun h => Subtype.ext ((factEmb R H).1.1 h)`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `rintro (a | a) (b | b) h <;> simp only [Sum.elim_inl, Sum.elim_inr] at h`. Rewrite using `[hi h]`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd ⟨a, h⟩ ((emb_cm H (H.emb b)).1 ⟨b, rfl⟩)`. Conclude with `absurd ⟨b, h.symm⟩ ((emb_cm H (H.emb a)).1 ⟨a, rfl⟩)`. Use `congrArg ComplexEmbedding.conjugate h` as an intermediate fact. Rewrite `this` using `[hc, hc]`. Rewrite using `[hi this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `σ`. Distinguish the cases in `h : ∃ t : Tau R, H.emb t = ComplexEmbedding.conjugate σ`. Take `⟨t, ht⟩` from `h`. Conclude with `⟨Sum.inr t, by simp only [Sum.elim_inr]; rw [ht, hc]⟩`. Take `⟨t, ht⟩` from `(emb_cm H σ).2 h`.
-
-Conclude with `⟨Sum.inl t, ht⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sum_emb_bijective : Function.Bijective
     (Sum.elim (fun t : Tau R => H.emb t) fun t : Tau R => ComplexEmbedding.conjugate (H.emb t)) := by
@@ -126,18 +124,18 @@ open Classical in
 def typeExp (p q : ℕ) (σ : H.E →+* ℂ) : ℕ := if ∃ t : Tau R, H.emb t = σ then p else q
 
 /- English proof (translation)
-The claim follows from `if_pos ⟨t, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem typeExp_emb (p q : ℕ) (t : Tau R) : typeExp H p q (H.emb t) = p := if_pos ⟨t, rfl⟩
 
 /- English proof (translation)
-The claim follows from `if_neg ((emb_cm H _).1 ⟨t, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem typeExp_conj (p q : ℕ) (t : Tau R) :
     typeExp H p q (ComplexEmbedding.conjugate (H.emb t)) = q := if_neg ((emb_cm H _).1 ⟨t, rfl⟩)
 
 /- English proof (translation)
-Unfold `typeExp`. Distinguish the cases in `h : ∃ t : Tau R, H.emb t = σ`. Rewrite using `[if_pos h, if_neg ((emb_cm H σ).1 h)]`. Rewrite using `[if_neg h, if_pos (not_not.1 (fun h' => h ((emb_cm H σ).2 h'))), add_comm]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem typeExp_add (p q : ℕ) (σ : H.E →+* ℂ) :
     typeExp H p q σ + typeExp H p q (ComplexEmbedding.conjugate σ) = p + q := by
@@ -147,7 +145,7 @@ theorem typeExp_add (p q : ℕ) (σ : H.E →+* ℂ) :
   · rw [if_neg h, if_pos (not_not.1 (fun h' => h ((emb_cm H σ).2 h'))), add_comm]
 
 /- English proof (translation)
-Rewrite using `[← (sum_emb_bijective H).prod_comp, Fintype.prod_sum_type, Finset.prod_mul_distrib]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, typeExp_emb, typeExp_conj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_typeExp {M : Type} [CommMonoid M] (p q : ℕ) (F : (H.E →+* ℂ) → M) :
     ∏ σ, F σ ^ typeExp H p q σ =
@@ -158,7 +156,7 @@ theorem prod_typeExp {M : Type} [CommMonoid M] (p q : ℕ) (F : (H.E →+* ℂ) 
 end host
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos N with rfl | h` into its components or cases. Simplify using `using isAlgebraic_one`. Conclude with `((Complex.isPrimitiveRoot_exp N h.ne').isIntegral h).tower_top.isAlgebraic`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_exp (N : ℕ) : IsAlgebraic ℚ (Complex.exp (2 * Real.pi * Complex.I / N)) := by
   rcases Nat.eq_zero_or_pos N with rfl | h
@@ -166,9 +164,9 @@ theorem isAlgebraic_exp (N : ℕ) : IsAlgebraic ℚ (Complex.exp (2 * Real.pi * 
   · exact ((Complex.isPrimitiveRoot_exp N h.ne').isIntegral h).tower_top.isAlgebraic
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℚ E`. Use `⟨Finset.univ.image fun p : (E →+* ℂ) × Fin (Module.finrank ℚ E) => p.1 (b p.2), ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨p, -, rfl⟩` from `Finset.mem_image.1 hz`. Conclude with `(Algebra.IsAlgebraic.isAlgebraic (b p.2)).algHom p.1.toRatAlgHom`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `K hK τ x`. Rewrite using `[← b.sum_repr x, map_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_rat_smul]`. Conclude with `K.smul_mem (hK _ (Finset.mem_image.2 ⟨(τ, i), Finset.mem_univ _, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gens (E : Type) [Field E] [NumberField E] : ∃ S : Finset ℂ, (∀ z ∈ S, IsAlgebraic ℚ z) ∧
     ∀ K : IntermediateField ℚ ℂ, (∀ z ∈ S, z ∈ K) → ∀ (τ : E →+* ℂ) x, τ x ∈ K := by
@@ -193,9 +191,9 @@ theorem exists_gens (E : Type) [Field E] [NumberField E] : ∃ S : Finset ℂ, (
   star_add x y := Subtype.ext (map_add (starRingEnd ℂ) (x : ℂ) (y : ℂ))
 
 /- English proof (translation)
-Use `⟨fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[← InfinitePlace.not_isReal_iff_isComplex]`. Introduce `hv`. Establish `h1 : (⟨Complex.I, h⟩ : K) * ⟨Complex.I, h⟩ = -1` using `Subtype.ext Complex.I_mul_I`. Establish `h2` using `congrArg (InfinitePlace.embedding_of_isReal hv) h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_mul, map_neg, map_one]`. Use polynomial arithmetic with `[mul_self_nonneg (InfinitePlace.embedding_of_isReal hv ⟨Complex.I, h⟩)]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem isTotallyComplex_of_I (K : IntermediateField ℚ ℂ) [NumberField K] (h : Complex.I ∈ K) :
     IsTotallyComplex K := by
@@ -211,9 +209,9 @@ def toTop (K : IntermediateField ℚ ℂ) : K →+* (⊤ : IntermediateField ℚ
   (IntermediateField.topEquiv (F := ℚ) (E := K)).symm
 
 /- English proof (translation)
-Rewrite using `[extend_span]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, ⟨a, ha, hy⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, Subtype.ext (hy.trans (he _).symm)⟩`. Introduce and unpack `⟨a, ha, hx⟩`. Conclude with `⟨x.1, ⟨a, ha, (congrArg Subtype.val hx).trans (he _)⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem image_top {E : Type} [Field E] (K : IntermediateField ℚ ℂ) (𝔞 : Ideal (𝓞 E)) (τ : E →+* ℂ) (e : E → K)
     (he : ∀ a, (e a : ℂ) = τ a) :
@@ -230,23 +228,21 @@ theorem image_top {E : Type} [Field E] (K : IntermediateField ℚ ℂ) (𝔞 : I
     exact ⟨x.1, ⟨a, ha, (congrArg Subtype.val hx).trans (he _)⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `B S₀ S₁ S₂ h₀ h₁ h₂`. Establish `hcm : IsCMField B.host.E` using `B.host.isCMField_hostE`. Establish `hgal : IsGalois ℚ B.host.E` using `B.host.hostE_isGalois`. Take `⟨SE, hSE, hE⟩` from `exists_gens B.host.E`. Use `choose MainNotions hSK hK using fun j : ℕ => GlobalTheory.Mem.exists_finset_typeNorm_principal B.host.E (typeExp B.host (B.R.sigW j).1 (B.R.sigW j).2) _ (typeExp_add B.host _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨SC, hSC, hC⟩` from `GlobalTheory.Mem.exists_finset_capitulation B.host.E B.host.φ₀`. Set `l : List ℕ` to `[B.restRowsFiniteGroupCard, B.host.g 0 * (B.host.g 0 - 1), B.host.g 1 * (B.host.g 1 - 1), 3 ^ 4, 5 ^ 4]`. Set `l' : List ℕ` to `[B.host.pde, B.host.pde', classNumber B.host.E]`. Set `SN : Finset ℕ` to `l.toFinset ∪ l'.toFinset ∪ {B.ramOrder} ∪ Finset.univ.image B.T`. Set `SR : Finset ℂ` to `SN.image fun N : ℕ => Complex.exp (2 * Real.pi * Complex.I / N)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hfd, hKgal, hS, hI, hconj⟩` from `GlobalTheory.exists_galois_subfield_conj_stable (S₀ ∪ S₁ ∪ S₂ ∪ SE ∪ SC ∪ SR ∪ (Finset.range (B.R.m + 1)).biUnion MainNotions) (by`. Introduce `z hz`. Simplify using `only [Finset.mem_union, Finset.mem_biUnion] at hz`. Break down `hz with (((((hz | hz) | hz) | hz) | hz) | hz) | ⟨j, -, hz⟩` into its components or cases. Use `exacts [h₀ z hz, h₁ z hz, h₂ z hz, hSE z hz, hSC z hz, by`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨N, -, rfl⟩` from `Finset.mem_image.1 hz`. Conclude with `isAlgebraic_exp N, hSK j z hz])`. Simplify using `only [Finset.mem_union, Finset.mem_biUnion] at hS`. Establish `hEK` using `hE K fun z hz => hS z (by tauto)`. Establish `: NumberField K` using `{}`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `f` to `toTop K`. Establish `hR : ∀ N ∈ SN, Complex.exp (2 * Real.pi * Complex.I / (N : ℕ)) ∈ K` using `fun N hN => hS _ (Or.inl (Or.inr (Finset.mem_image.2 ⟨N, hN, rfl⟩)))`. Use `⟨{ toPre := B LL := K starLL := starOf K hconj embLL := K.val starLL_cx := fun _ => rfl embE := B.host.φ₀.codRestrict K (hEK _) embE_φ₀ := rfl LL0 := ⊤ coeffGaloisSubfield_isGalois := IsGalois.of_algEquiv IntermediateField.topEquiv.symm Ks := ⊤ Ks_le := le_rfl E_le_Ks := fun _ => …` and prove the remaining obligations. Introduce `𝔞`. Take `⟨β, hβ⟩` from `hC K (fun z hz => hS z (by tauto)) (hEK _) 𝔞`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Establish `h` using `congrArg (extend f) hβ`. Rewrite `h` using `[extend_span, Set.image_singleton]`. Conclude with `⟨f β, h.trans (image_top K 𝔞 B.host.φ₀ (fun a => B.host.φ₀.codRestrict K (hEK _) a) fun _ => rfl)⟩`. Introduce `j _ hj 𝔞 h𝔞`. Take `⟨β, hβ, hsp, hn⟩` from `hK j K (fun z hz => hS z (Or.inr ⟨j, Finset.mem_range.2 (by omega), hz⟩)) hEK 𝔞 h𝔞`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨f β, (map_ne_zero f).2 hβ, ?_, fun σ => hn (σ.comp f)⟩` and prove the remaining obligations. Establish `h` using `congrArg (extend f) hsp`. Rewrite `h` using `[prod_typeExp, extend_span, Set.image_singleton, map_prod]`. Rewrite using `[h]`. Use `Finset.prod_congr rfl fun g _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `image_top K 𝔞 (B.host.emb g) (fun a => B.host.φ₀.codRestrict K (hEK _) (B.host.sigmaOf g a)) fun _ => rfl`. Establish `e2` using `image_top K 𝔞 (ComplexEmbedding.conjugate (B.host.emb g)) (fun a => B.host.φ₀.codRestrict K (hEK _) (B.host.sigmaOf g (B.host.conj a))) fun a => (conjugate_emb_apply B.host g a).symm`. Rewrite using `[map_mul, map_pow, map_pow]`. Conclude with `congrArg₂ (· * ·) (congrArg (· ^ (B.R.sigW j).1) e1) (congrArg (· ^ (B.R.sigW j).2) e2)`. Conclude with `fun z hz => ⟨⟨z, hS z (by tauto)⟩, trivial, rfl⟩`.
-
-Conclude with `fun z hz => ⟨⟨z, hS z (by tauto)⟩, trivial, rfl⟩`. Conclude with `fun z hz => ⟨⟨z, hS z (by tauto)⟩, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_base : ∀ (B : Pre) (S₀ S₁ S₂ : Finset ℂ), (∀ z ∈ S₀, IsAlgebraic ℚ z) → (∀ z ∈ S₁, IsAlgebraic ℚ z) → (∀ z ∈ S₂, IsAlgebraic ℚ z) → ∃ B' : Base, B'.toPre = B ∧ (∀ z ∈ S₀, ∃ x ∈ B'.Ks, B'.embLL x = z) ∧ (∀ z ∈ S₁, ∃ x ∈ B'.LL0, B'.embLL x = z) ∧ ∀ z ∈ S₂, ∃ x : B'.LL, B'.embLL x = z := by
   classical
@@ -324,7 +320,7 @@ theorem exists_base : ∀ (B : Pre) (S₀ S₁ S₂ : Finset ℂ), (∀ z ∈ S�
 end GlobalTheory.Mem.BaseField
 
 /- English proof (translation)
-Take `⟨P, h1, h2⟩` from `GlobalTheory.Mem.exists_pre`. Take `⟨B, rfl, -⟩` from `GlobalTheory.Mem.BaseField.exists_base P ∅ ∅ ∅ (by simp) (by simp) (by simp)`. Conclude with `⟨B, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.Mem.exists_base_two_words :
     ∃ B : GlobalTheory.Mem.Base, Fintype.card B.Word = 2 ∧ Function.Injective B.hcW := by
@@ -333,7 +329,7 @@ theorem GlobalTheory.Mem.exists_base_two_words :
   exact ⟨B, h1, h2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.Mem.exists_base_two_words.choose⟩`.
+Supply the required witnesses or components.
 -/
 theorem GlobalTheory.Mem.nonempty_base : Nonempty GlobalTheory.Mem.Base := ⟨GlobalTheory.Mem.exists_base_two_words.choose⟩
 

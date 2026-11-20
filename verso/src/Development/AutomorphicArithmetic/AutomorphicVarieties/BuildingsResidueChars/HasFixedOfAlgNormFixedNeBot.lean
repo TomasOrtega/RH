@@ -8,7 +8,7 @@ open GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocGL Globa
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Take `⟨v, hv, hU⟩` from `h`. Use `⟨e.symm.toLinearEquiv v, by simpa using hv, fun u hu => ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun (e.symm.isIntertwining' u) v`. Simplify using `only [LinearMap.comp_apply, hU u hu] at h1`. Conclude with `h1.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.hasFixed_of_equiv {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] {ρ : Representation ℂ G V} {τ : Representation ℂ G W} (e : ρ.Equiv τ) {U : Subgroup G}
@@ -20,7 +20,7 @@ private theorem UpperTheory.V.hasFixed_of_equiv {G V W : Type} [Group G] [AddCom
   exact h1.symm
 
 /- English proof (translation)
-Take `⟨v, hv, h1⟩` from `UpperTheory.V.hasFixed_of_equiv (x.twEquiv _ _) h`. Use `⟨v, hv, fun u hu => ?_⟩` and prove the remaining obligations. Establish `h2` using `h1 u hu`. Rewrite `h2` using `[GlobalTheory.SmGL.twist_apply, detChar_of_mem_KO (GlobalTheory.SmGL.isUnram_absPow k s) (hU hu), Units.val_one, one_smul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem UpperTheory.V.hasFixed_of_nu {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (x : IrrGL k) (s : ℂ) (U : Subgroup (GL (Fin x.1) k))
@@ -33,7 +33,7 @@ private theorem UpperTheory.V.hasFixed_of_nu {k : Type} [Field k] [ValuativeRel 
     one_smul] at h2
 
 /- English proof (translation)
-Introduce `F _ _ w n σ U hU h`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 h`. Use `UpperTheory.V.hasFixed_of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred) ?_` and prove the remaining obligations. Use `UpperTheory.V.hasFixed_of_nu (IrrGL.of σ.ρ σ.smooth σ.irred) (((1 - (n : ℝ)) / 2 : ℝ) : ℂ) U hU ⟨v, hv0, ?_⟩` and prove the remaining obligations. Conclude with `fun u hu => (hv ⟨u, hu⟩).trans (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.hasFixed_of_algNorm_fixed_ne_bot :
     ∀ (F : Type) [Field F] [NumberField F] (w : HeightOneSpectrum (𝓞 F)) (n : ℕ) (σ : GlobalTheory.CuspRep.SmIrr (GL (Fin n) (w.adicCompletion F)))

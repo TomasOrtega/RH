@@ -35,7 +35,7 @@ theorem DG_inv_coe (d : Fin n → Kˣ) :
 def cj (d : Fin n → Kˣ) (g : GL (Fin n) K) : GL (Fin n) K := (DG d)⁻¹ * g * DG d
 
 /- English proof (translation)
-Unfold `cj`. Rewrite using `[Units.val_mul, Units.val_mul, DG_coe, DG_inv_coe, mul_diagonal, diagonal_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_apply (d : Fin n → Kˣ) (g : GL (Fin n) K) (a b : Fin n) :
     ((cj d g : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) a b =
@@ -44,25 +44,25 @@ theorem cj_apply (d : Fin n → Kˣ) (g : GL (Fin n) K) (a b : Fin n) :
   rw [Units.val_mul, Units.val_mul, DG_coe, DG_inv_coe, mul_diagonal, diagonal_mul]
 
 /- English proof (translation)
-Unfold `cj`. Use `group`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cj_mul (d : Fin n → Kˣ) (g g' : GL (Fin n) K) : cj d (g * g') = cj d g * cj d g' := by
   unfold cj; group
 
 /- English proof (translation)
-Unfold `cj`. Use `group`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cj_inv (d : Fin n → Kˣ) (g : GL (Fin n) K) : cj d g⁻¹ = (cj d g)⁻¹ := by
   unfold cj; group
 
 /- English proof (translation)
-Unfold `cj`. Use `group`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cj_back (d : Fin n → Kˣ) (g : GL (Fin n) K) : cj d (DG d * g * (DG d)⁻¹) = g := by
   unfold cj; group
 
 /- English proof (translation)
-Rewrite using `[cj_apply]`. Establish `h1 : ((d a : Kˣ) : K) * (((d a)⁻¹ : Kˣ) : K) = 1` using `Units.mul_inv _`. Establish `h2 : ((d b : Kˣ) : K) * (((d b)⁻¹ : Kˣ) : K) = 1` using `Units.mul_inv _`. Take the linear combination `(-(g : Matrix (Fin n) (Fin n) K) a b * ((d b : Kˣ) : K) * (((d b)⁻¹ : Kˣ) : K)) * h1 - (g : Matrix (Fin n) (Fin n) K) a b * h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem entry_back (d : Fin n → Kˣ) (g : GL (Fin n) K) (a b : Fin n) :
     (g : Matrix (Fin n) (Fin n) K) a b = ((d a : Kˣ) : K) *
@@ -74,11 +74,11 @@ theorem entry_back (d : Fin n → Kˣ) (g : GL (Fin n) K) (a b : Fin n) :
     - (g : Matrix (Fin n) (Fin n) K) a b * h2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[entry_back d, h.1 hab]`. Simplify using the standard rewrite rules.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[entry_back d, h.2 a]`. Simplify using the standard rewrite rules. Introduce `h`. Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[cj_apply, h.1 hab]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[cj_apply, h.2 a]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isUpUni_cj (d : Fin n → Kˣ) (g : GL (Fin n) K) :
     IsUpUni ((cj d g : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) ↔
@@ -94,7 +94,7 @@ theorem isUpUni_cj (d : Fin n → Kˣ) (g : GL (Fin n) K) :
     · rw [cj_apply, h.2 a]; simp
 
 /- English proof (translation)
-Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[cj_apply, h.1 hab]`. Simplify using the standard rewrite rules. Rewrite using `[cj_apply, h.2 a]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isLowUni_cj (d : Fin n → Kˣ) (g : GL (Fin n) K)
     (h : IsLowUni (g : Matrix (Fin n) (Fin n) K)) :
@@ -104,9 +104,9 @@ theorem isLowUni_cj (d : Fin n → Kˣ) (g : GL (Fin n) K)
   · rw [cj_apply, h.2 a]; simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a b`. Rewrite using `[entry_back d]`. Conclude with `R.mul_mem (R.mul_mem (hd a).1 (h a b)) (hd b).2`. Introduce `h a b`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cj_apply]`. Conclude with `R.mul_mem (R.mul_mem (hd a).2 (h a b)) (hd b).1`.
+A detailed English derivation is pending.
 -/
 theorem isInt_cj (R : Subring K) (d : Fin n → Kˣ)
     (hd : ∀ b, ((d b : Kˣ) : K) ∈ R ∧ (((d b)⁻¹ : Kˣ) : K) ∈ R) (g : GL (Fin n) K) :
@@ -121,11 +121,9 @@ theorem isInt_cj (R : Subring K) (d : Fin n → Kˣ)
     exact R.mul_mem (R.mul_mem (hd a).2 (h a b)) (hd b).1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a b`. Establish `h1` using `h a b`. Rewrite `h1` using `[DG_coe, mul_diagonal]`. Establish `h2 : Z a b = Z a b * ((d b : Kˣ) : K) * (((d b)⁻¹ : Kˣ) : K)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, Units.mul_inv, mul_one]`. Rewrite using `[h2]`. Conclude with `R.mul_mem h1 (hd b).2`. Introduce `h a b`. Rewrite using `[DG_coe, mul_diagonal]`.
-
-Conclude with `R.mul_mem (h a b) (hd b).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInt_mul_DG (R : Subring K) (d : Fin n → Kˣ)
     (hd : ∀ b, ((d b : Kˣ) : K) ∈ R ∧ (((d b)⁻¹ : Kˣ) : K) ∈ R) (Z : Matrix (Fin n) (Fin n) K) :
@@ -151,9 +149,9 @@ variable {K : Type} [CommRing K] (R : Subring K) (S : List ℕ) (T c : ℕ → K
 def dg (b : Fin S.sum) : Kˣ := c (blk S b)
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[DG_coe, mul_diagonal]`. Simplify using `only [pt]`. Use `split_ifs with hb`. Rewrite using `[dg, hb, Formalism.DoubleCosetMeasures.P.Phase.blk_revIn S a a.2]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pt_scale :
     pt S (T * c) = pt S T * ((DG (dg S c) : GL (Fin S.sum) K) : Matrix (Fin S.sum) (Fin S.sum) K) := by
@@ -165,9 +163,9 @@ theorem pt_scale :
   · simp
 
 /- English proof (translation)
-Take `⟨h1, x, hx, e⟩` from `hg`. Establish `hxd : x.det = 1` using `isLowUni_det K hx`. Use `⟨h1, ((cj (dg S c) (A5x8.sec_gl x hxd) : GL (Fin S.sum) K) : Matrix (Fin S.sum) (Fin S.sum) K), isLowUni_cj _ _ hx, ?_⟩` and prove the remaining obligations. Rewrite using `[pt_scale, ← Matrix.mul_assoc, e]`. Unfold `cj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Units.val_mul, Units.val_mul, A5x8.sec_gl_coe]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc ((DG (dg S c) : GL (Fin S.sum) K) : Matrix (Fin S.sum) (Fin S.sum) K), ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_lowW_scale {g : GL (Fin S.sum) K} (hg : g ∈ lowW K S T) : g ∈ lowW K S (T * c) := by
   obtain ⟨h1, x, hx, e⟩ := hg
@@ -182,7 +180,7 @@ theorem mem_lowW_scale {g : GL (Fin S.sum) K} (hg : g ∈ lowW K S T) : g ∈ lo
     ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]
 
 /- English proof (translation)
-Use `⟨fun hg => ?_, mem_lowW_scale S T c⟩` and prove the remaining obligations. Use `mem_lowW_scale S (T * c) c⁻¹ hg` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_right]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_lowW_scale_iff {g : GL (Fin S.sum) K} : g ∈ lowW K S (T * c) ↔ g ∈ lowW K S T := by
   refine ⟨fun hg => ?_, mem_lowW_scale S T c⟩
@@ -193,9 +191,9 @@ def fm (p : lowW K S T × upUniG K S.sum) : lowW K S (T * c) × upUniG K S.sum :
   (⟨p.1.1, mem_lowW_scale S T c p.1.2⟩, ⟨cj (dg S c) p.2.1, (isUpUni_cj _ _).2 p.2.2⟩)
 
 /- English proof (translation)
-Introduce and unpack `⟨⟨v, hv⟩, ⟨u, hu⟩⟩`. Use `⟨(⟨v, (mem_lowW_scale_iff S T c).1 hv⟩, ⟨DG (dg S c) * u * (DG (dg S c))⁻¹, ?_⟩), ?_⟩` and prove the remaining obligations. Establish `: IsUpUni ((cj (dg S c) (DG (dg S c) * u * (DG (dg S c))⁻¹) : GL (Fin S.sum) K) : Matrix (Fin S.sum) (Fin S.sum) K)` using `by rw [cj_back]; exact hu`. Conclude with `(isUpUni_cj _ _).1 this`. Unfold `fm`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [cj_back]`.
+A detailed English derivation is pending.
 -/
 theorem fm_surj : Function.Surjective (fm S T c) := by
   rintro ⟨⟨v, hv⟩, ⟨u, hu⟩⟩
@@ -207,9 +205,9 @@ theorem fm_surj : Function.Surjective (fm S T c) := by
     simp only [cj_back]
 
 /- English proof (translation)
-Use `show ((p.1.1 : GL (Fin S.sum) K) : Matrix (Fin S.sum) (Fin S.sum) K) * pt S (T * c) * ((cj (dg S c) p.2.1 : GL (Fin S.sum) K) : Matrix (Fin S.sum) (Fin S.sum) K) = ((p.1.1 : GL (Fin S.sum) K) : Matrix (Fin S.sum) (Fin S.sum) K) * pt S T * ((p.2.1 : GL (Fin S.sum) K) : Matrix (Fin …`. Rewrite using `[pt_scale]`. Unfold `cj`. Rewrite using `[Units.val_mul, Units.val_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc ((DG (dg S c) : GL (Fin S.sum) K) : Matrix (Fin S.sum) (Fin S.sum) K), ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem orbZ_fm (p : lowW K S T × upUniG K S.sum) :
     orbZ ((S, T * c) : Point K) (fm S T c p) = orbZ ((S, T) : Point K) p *
@@ -230,11 +228,11 @@ variable (hc : ∀ b, ((c b : Kˣ) : K) ∈ R ∧ (((c b)⁻¹ : Kˣ) : K) ∈ R
 
 include hc in
 /- English proof (translation)
-Unfold `A5x8.toCos`. Rewrite using `[Prod.mk.injEq, Prod.mk.injEq]`. Use `and_congr ?_ ?_` and prove the remaining obligations. Rewrite using `[Quotient.eq, Quotient.eq, QuotientGroup.rightRel_apply, QuotientGroup.rightRel_apply]`. Conclude with `Iff.rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 
-Rewrite using `[QuotientGroup.eq, QuotientGroup.eq, A5x7.mem_intSub, A5x7.mem_intSub]`. Establish `e : (((fm S T c p).2⁻¹ * (fm S T c p₁).2 : upUniG K S.sum) : GL (Fin S.sum) K) = cj (dg S c) ((p.2⁻¹ * p₁.2 : upUniG K S.sum) : GL (Fin S.sum) K)` using `by show (cj (dg S c) p.2.1)⁻¹ * cj (dg S c) p₁.2.1 = cj (dg S c) (p.2.1⁻¹ * p₁.2.1)`. Rewrite using `[cj_mul, cj_inv]`. Establish `hd : ∀ b, ((dg S c b : Kˣ) : K) ∈ R ∧ (((dg S c b)⁻¹ : Kˣ) : K) ∈ R` using `fun b => hc _`. Use `show IsInt R ((((fm S T c p).2⁻¹ * (fm S T c p₁).2 : upUniG K S.sum) : GL (Fin S.sum) K) : Matrix (Fin S.sum) (Fin S.sum) K) ∧ IsInt R (((((fm S T c p).2⁻¹ * (fm S T c p₁).2 : upUniG K S.sum) : GL (Fin S.sum) K)⁻¹ : GL (Fin S.sum) K) : Matrix (Fin S.sum) (Fin S.sum) K) ↔ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← cj_inv, isInt_cj R _ hd, isInt_cj R _ hd]`.
+A detailed English derivation is pending.
 -/
 theorem toCos_fm_iff (p p₁ : lowW K S T × upUniG K S.sum) :
     A5x8.toCos R (w := ((S, T * c) : Point K)) (fm S T c p) =
@@ -259,9 +257,9 @@ theorem toCos_fm_iff (p p₁ : lowW K S T × upUniG K S.sum) :
 
 include hc in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `q q' h`. Establish `h1` using `(toCos_fm_iff R S T c hc _ _).1 h`. Rewrite `h1` using `[A5x8.inv_toCos_rep, A5x8.inv_toCos_rep]`. Then use the resulting hypothesis. Introduce `q₁`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨p, hp⟩` from `fm_surj S T c (rep R q₁)`. Use `⟨A5x8.toCos R (w := ((S, T) : Point K)) p, ?_⟩` and prove the remaining obligations. Use `show A5x8.toCos R (w := ((S, T * c) : Point K)) (fm S T c (rep R (A5x8.toCos R (w := ((S, T) : Point K)) p))) = q₁`. Rewrite using `[(toCos_fm_iff R S T c hc _ p).2 (A5x8.inv_toCos_rep R _), hp, A5x8.inv_toCos_rep]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fm_bij : Function.Bijective (fun q : Cos R ((S, T) : Point K) =>
     A5x8.toCos R (w := ((S, T * c) : Point K)) (fm S T c (rep R q))) := by
@@ -282,13 +280,13 @@ section Typ
 variable {K : Type} [CommRing K] (R : Subring K) {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Formalism.DoubleCosetMeasures.P.mem_latZ, Formalism.DoubleCosetMeasures.P.mem_latZ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, e⟩`. Use `⟨fun b => ⟨_, (hd b).2⟩ * t b, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[DG_coe, mulVec_diagonal, Formalism.DoubleCosetMeasures.P.coeLin_apply, Formalism.DoubleCosetMeasures.P.coeLin_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨t, e⟩`. Use `⟨fun b => ⟨_, (hd b).1⟩ * t b, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `b`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[DG_coe, mulVec_diagonal, Formalism.DoubleCosetMeasures.P.coeLin_apply, Formalism.DoubleCosetMeasures.P.coeLin_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem latZ_mul_DG (d : Fin n → Kˣ)
     (hd : ∀ b, ((d b : Kˣ) : K) ∈ R ∧ (((d b)⁻¹ : Kˣ) : K) ∈ R) (Z : Matrix (Fin n) (Fin n) K) :
@@ -312,9 +310,9 @@ theorem latZ_mul_DG (d : Fin n → Kˣ)
     simp
 
 /- English proof (translation)
-Use `⟨rfl, fun v v' hv => ?_⟩` and prove the remaining obligations. Rewrite `hv` using `[Submodule.quotEquivOfEq_mk]`. Rewrite using `[← A5x4.lamLin_mk_eq R _ hv, Formalism.DoubleCosetMeasures.P.lamLin_apply, Formalism.DoubleCosetMeasures.P.lamLin_apply, Submodule.mkQ_apply, Submodule.mkQ_apply, A5x3.mk_eq_mk, Matrix.mul_inv_rev, ← Matrix.coe_units_inv, DG_inv_coe, ← Matrix.mulVec_mulVec, Formalism.DoubleCosetM …`. Use `R.sum_mem fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hj`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_diagonal, ← sub_one_mul, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `R.sum_mem fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, Formalism.DoubleCosetMeasures.P.coeLin_apply]`. Conclude with `R.mul_mem (hA j b hj) (v b).2`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iso_mul_DG (d : Fin n → Kˣ)
     (hd : ∀ b, ((d b : Kˣ) : K) ∈ R ∧ (((d b)⁻¹ : Kˣ) : K) ∈ R) (Z : Matrix (Fin n) (Fin n) K)
@@ -336,9 +334,9 @@ theorem iso_mul_DG (d : Fin n → Kˣ)
   · simp
 
 /- English proof (translation)
-Unfold `sUp`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `R.sum_mem fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hj`. Rewrite using `[cj_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hB j hj` as an intermediate fact. Establish `e : (((d j)⁻¹ : Kˣ) : K) * (y : Matrix (Fin n) (Fin n) K) j ⟨j.val + 1, hj⟩ * ((d ⟨j.val + 1, hj⟩ : Kˣ) : K) - (y : Matrix (Fin n) (Fin n) K) j ⟨j.val + 1, hj⟩ = ((((d j)⁻¹ : Kˣ) : K) * ((d ⟨j.val + 1, hj⟩ : Kˣ) : K) - 1) * (y : Matrix (Fin n) (Fin n) K) j ⟨j.val + 1, hj⟩` using `by ring`. Rewrite using `[e]`. Conclude with `this`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sUp_cj_sub (d : Fin n → Kˣ) (y : GL (Fin n) K)
     (hB : ∀ (j : Fin n) (hj : j.val + 1 < n),
@@ -360,7 +358,7 @@ theorem sUp_cj_sub (d : Fin n → Kˣ) (y : GL (Fin n) K)
   · simp
 
 /- English proof (translation)
-Establish `h1` using `A5x9.grp_sUp_mul u u⁻¹`. Rewrite `h1` using `[mul_inv_cancel, A5x9.grp_sUp_one]`. Take the linear combination `-h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem sUp_inv (u : upUniG K n) :
     sUp (((u⁻¹ : upUniG K n) : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) =
@@ -376,9 +374,9 @@ section Main
 variable {K : Type} [CommRing K] (R : Subring K) (S : List ℕ) (T c : ℕ → Kˣ)
 
 /- English proof (translation)
-Establish `h1` using `sUp_cj_sub R (dg S c) ((p.2⁻¹ : upUniG K S.sum) : GL (Fin S.sum) K) hB`. Establish `e1 : cj (dg S c) ((p.2⁻¹ : upUniG K S.sum) : GL (Fin S.sum) K) = (((fm S T c p).2⁻¹ : upUniG K S.sum) : GL (Fin S.sum) K)` using `by show cj (dg S c) (p.2.1⁻¹) = (cj (dg S c) p.2.1)⁻¹`. Rewrite using `[cj_inv]`. Rewrite `h1` using `[e1, sUp_inv, sUp_inv]`. Use `show ψ (sLow ((p.1.1 : GL (Fin S.sum) K) : Matrix (Fin S.sum) (Fin S.sum) K) + sUp (((fm S T c p).2 : GL (Fin S.sum) K) : Matrix (Fin S.sum) (Fin S.sum) K)) = ψ (sLow ((p.1.1 : GL (Fin S.sum) K) : Matrix (Fin S.sum) (Fin S.sum) K) + sUp ((p.2 : GL (Fin S.sum) K) : Matrix (Fin S.s …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : sLow ((p.1.1 : GL (Fin S.sum) K) : Matrix (Fin S.sum) (Fin S.sum) K) + sUp ((p.2 : GL (Fin S.sum) K) : Matrix (Fin S.sum) (Fin S.sum) K) = (sLow ((p.1.1 : GL (Fin S.sum) K) : Matrix (Fin S.sum) (Fin S.sum) K) + sUp (((fm S T c p).2 : GL (Fin S.sum) K) : Matrix (Fin S.sum) (F …` using `by ring`. Use `conv_rhs => rw [e2, AddChar.map_add_eq_mul, hψ _ h1, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem phase_fm (ψ : AddChar K ℂ) (hψ : ∀ r ∈ R, ψ r = 1) (p : lowW K S T × upUniG K S.sum)
     (hB : ∀ (j : Fin S.sum) (hj : j.val + 1 < S.sum),
@@ -405,13 +403,13 @@ theorem phase_fm (ψ : AddChar K ℂ) (hψ : ∀ r ∈ R, ψ r = 1) (p : lowW K 
   conv_rhs => rw [e2, AddChar.map_add_eq_mul, hψ _ h1, mul_one]
 
 /- English proof (translation)
-Establish `hd : ∀ b, ((dg S c b : Kˣ) : K) ∈ R ∧ (((dg S c b)⁻¹ : Kˣ) : K) ∈ R` using `fun b => hc _`. Rewrite using `[A5x8.Kp_eq_section R ψ hψ ((S, T * c) : Point K) w' (Cos R ((S, T) : Point K)) (Cos R w') (fun q => fm S T c (rep R q)) (fun q => rep R q) (fm_bij R S T c hc) (by simp only [A5x8.inv_toCos_rep]; exact Function.bijective_id)]`. Unfold `Kp`. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Use `show A5x8.Gterm R ψ ((S, T * c) : Point K) w' (fm S T c (rep R q.1)) (rep R q.2) = A5x8.Gterm R ψ ((S, T) : Point K) w' (rep R q.1) (rep R q.2)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `rep R q.1 = p`. Generalize the expression as in `rep R q.2 = p'`. Unfold `A5x8.Gterm`. Distinguish the cases in `hZ : IsInt R (orbZ ((S, T) : Point K) p)`. Rewrite using `[phase_fm R S T c ψ hψ p (hB p hZ), orbZ_fm, ← A5x4.card_isoZZ_congr R (iso_mul_DG R (dg S c) hd _ (hA p hZ)) (A5x4.isoZZ_refl R _)]`.
+Replace the chosen expression with an arbitrary variable. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi` using `(isInt_mul_DG R (dg S c) hd (orbZ ((S, T) : Point K) p)).2 hZ`. Distinguish the cases in `h' : IsInt R (orbZ w' p')`. Rewrite using `[if_pos ⟨hi, h'⟩, if_pos ⟨hZ, h'⟩]`. Rewrite using `[if_neg (fun h => h' h.2), if_neg (fun h => h' h.2)]`. Establish `hZ' : ¬ IsInt R (orbZ ((S, T * c) : Point K) (fm S T c p))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1`. Rewrite `h1` using `[orbZ_fm]`. Conclude with `hZ ((isInt_mul_DG R (dg S c) hd _).1 h1)`. Rewrite using `[if_neg (fun h => hZ' h.1), if_neg (fun h => hZ h.1)]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Kp_scale (ψ : AddChar K ℂ) (hψ : ∀ r ∈ R, ψ r = 1)
     (hc : ∀ b, ((c b : Kˣ) : K) ∈ R ∧ (((c b)⁻¹ : Kˣ) : K) ∈ R)
@@ -457,7 +455,7 @@ section Block
 variable {K : Type} [CommRing K] (R : Subring K)
 
 /- English proof (translation)
-Rewrite using `[Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, ← mul_assoc]`. Conclude with `R.mul_mem hx (Formalism.DoubleCosetMeasures.P.isInt_adjugate R hZ a b)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_entry {n : ℕ} {Z : Matrix (Fin n) (Fin n) K} (hZ : IsInt R Z) {x : K}
     (hx : x * Ring.inverse Z.det ∈ R) (a b : Fin n) : x * Z⁻¹ a b ∈ R := by
@@ -465,9 +463,9 @@ theorem inv_entry {n : ℕ} {Z : Matrix (Fin n) (Fin n) K} (hZ : IsInt R Z) {x :
   exact R.mul_mem hx (Formalism.DoubleCosetMeasures.P.isInt_adjugate R hZ a b)
 
 /- English proof (translation)
-Establish `hsum : (l ++ [s]).sum = l.sum + s` using `by simp`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hlt'`. Establish `hlt` using `not_le.1 hlt'`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h` using `[A5x5.blk_append_lt l s j hlt]`. Conclude with `(A5x5.blk_lt l j hlt).ne h`. Introduce `h`. Take `⟨i, rfl⟩` from `Nat.exists_eq_add_of_le h`. Conclude with `A5x5.blk_append_ge l s i (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem blk_last_iff (l : List ℕ) (s j : ℕ) (hj : j < (l ++ [s]).sum) :
     blk (l ++ [s]) j = l.length ↔ l.sum ≤ j := by
@@ -483,7 +481,7 @@ theorem blk_last_iff (l : List ℕ) (s j : ℕ) (hj : j < (l ++ [s]).sum) :
     exact A5x5.blk_append_ge l s i (by omega)
 
 /- English proof (translation)
-Unfold `dg`. Rewrite using `[(blk_last_iff l s j j.2).2 hj, Function.update_self]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dg_ge (l : List ℕ) (s : ℕ) (k : Kˣ) (j : Fin (l ++ [s]).sum) (hj : l.sum ≤ j.val) :
     dg (l ++ [s]) (Function.update (1 : ℕ → Kˣ) l.length k) j = k := by
@@ -491,7 +489,7 @@ theorem dg_ge (l : List ℕ) (s : ℕ) (k : Kˣ) (j : Fin (l ++ [s]).sum) (hj : 
   rw [(blk_last_iff l s j j.2).2 hj, Function.update_self]
 
 /- English proof (translation)
-Unfold `dg`. Rewrite using `[Function.update_of_ne (fun h => absurd ((blk_last_iff l s j j.2).1 h) (by omega))]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dg_lt (l : List ℕ) (s : ℕ) (k : Kˣ) (j : Fin (l ++ [s]).sum) (hj : j.val < l.sum) :
     dg (l ++ [s]) (Function.update (1 : ℕ → Kˣ) l.length k) j = 1 := by
@@ -500,23 +498,21 @@ theorem dg_lt (l : List ℕ) (s : ℕ) (k : Kˣ) (j : Fin (l ++ [s]).sum) (hj : 
   rfl
 
 /- English proof (translation)
-Establish `e : addBlock h s (z * k) = ((h.1 ++ [s], Function.update h.2 h.1.length z * Function.update (1 : ℕ → Kˣ) h.1.length k) : Point K)`. Unfold `addBlock`. Use `congr 1`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b = h.1.length`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hb]`. Establish `hsum : (h.1 ++ [s]).sum = h.1.sum + s` using `by simp`. Establish `hlast : h.1.sum + s - 1 < (h.1 ++ [s]).sum` using `by omega`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `show _ = Kp R ψ ((h.1 ++ [s], Function.update h.2 h.1.length z) : Point K) w'`. Use `Kp_scale R _ _ _ ψ hψ ?_ ?_ ?_ w'` and prove the remaining obligations. Introduce `b`. Distinguish the cases in `hb : b = h.1.length`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hb` using the available equality. Simplify using `[hk, hki]`. Simplify using `[Function.update_of_ne hb, R.one_mem]`. Introduce `p hZ j b hj`. Rewrite using `[dg_ge h.1 s k j (by omega)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `apply inv_entry R hZ`. Rewrite using `[A5x5.det_orbZ]`. Conclude with `h1`. Introduce `p hZ j hj`. Distinguish the cases in `c1 : j.val + 1 < h.1.sum`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[dg_lt h.1 s k j (by omega), dg_lt h.1 s k ⟨j.val + 1, hj⟩ c1]`. Simplify using `[R.zero_mem]`. Distinguish the cases in `c2 : h.1.sum ≤ j.val`. Rewrite using `[dg_ge h.1 s k j c2, dg_ge h.1 s k ⟨j.val + 1, hj⟩ (by simp; omega)]`. Simplify using `[R.zero_mem]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dg_lt h.1 s k j (by omega), dg_ge h.1 s k ⟨j.val + 1, hj⟩ (by simp; omega)]`. Establish `hL` using `(Formalism.FourierDecayAlt.P.inverse_last_column_formula K h s z hs ((p.1 : GL (Fin (h.1 ++ [s]).sum) K) : Matrix (Fin (h.1 ++ [s]).sum) (Fin (h.1 ++ [s]).sum) K) ((p.2 : GL (Fin (h.1 ++ [s]).sum) K) : Matrix (Fin (h.1 ++ [s]).sum) (Fin (h.1 ++ [s]).sum) K) p.1.2.1 p.2.2 j ⟨h.1.s …`. Apply the tactic sequence `have hZ' := inv_entry R hZ (x := ((k : K) - 1) * (z : K)) (by rw [A5x5.det_orbZ]; exact h2) j ⟨h.1.sum + s - 1, hlast⟩`. Establish `e3 : (orbZ ((h.1 ++ [s], Function.update h.2 h.1.length z) : Point K) p)⁻¹ j ⟨h.1.sum + s - 1, hlast⟩ = ((z⁻¹ : Kˣ) : K) * ((p.2 : GL (Fin (h.1 ++ [s]).sum) K) : Matrix (Fin (h.1 ++ [s]).sum) (Fin (h.1 ++ [s]).sum) K)⁻¹ j ⟨j.val + 1, hj⟩` using `hL`. Rewrite `hZ'` using `[e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.coe_inv, Matrix.coe_units_inv]`. Establish `e4 : ((k : K) - 1) * (z : K) * (((z⁻¹ : Kˣ) : K) * ((p.2 : GL (Fin (h.1 ++ [s]).sum) K) : Matrix (Fin (h.1 ++ [s]).sum) (Fin (h.1 ++ [s]).sum) K)⁻¹ j ⟨j.val + 1, hj⟩) = ((((1 : Kˣ)⁻¹ : Kˣ) : K) * (k : K) - 1) * ((p.2 : GL (Fin (h.1 ++ [s]).sum) K) : Matrix (Fin (h.1 ++ [s]).sum) …`. Establish `hz : (z : K) * ((z⁻¹ : Kˣ) : K) = 1` using `Units.mul_inv z`. Simplify using `only [inv_one, Units.val_one, one_mul]`. Take the linear combination `((k : K) - 1) * ((p.2 : GL (Fin (h.1 ++ [s]).sum) K) : Matrix (Fin (h.1 ++ [s]).sum) (Fin (h.1 ++ [s]).sum) K)⁻¹ j ⟨j.val + 1, hj⟩ * hz`.
-
-Rewrite using `[← e4]`. Conclude with `hZ'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Kp_block (ψ : AddChar K ℂ) (hψ : ∀ r ∈ R, ψ r = 1) (h : Point K) (s : ℕ) (hs : 1 ≤ s)
     (z k : Kˣ) (hk : (k : K) ∈ R) (hki : ((k⁻¹ : Kˣ) : K) ∈ R)
@@ -589,11 +585,11 @@ section Det
 variable {K : Type} [CommRing K]
 
 /- English proof (translation)
-Set `σ : Equiv.Perm (Fin s.sum)` to `⟨Formalism.DoubleCosetMeasures.P.Phase.revF s, Formalism.DoubleCosetMeasures.P.Phase.revF s, Formalism.DoubleCosetMeasures.P.Phase.revF_revF s, Formalism.DoubleCosetMeasures.P.Phase.revF_revF s⟩`. Establish `e : ∀ t : ℕ → Kˣ, pt s t = diagonal (fun a : Fin s.sum => ((t (blk s a) : Kˣ) : K)) * σ.permMatrix K`. Introduce `t`. Use extensionality with `a c`. Rewrite using `[diagonal_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [pt, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply, Option.mem_def, Option.some.injEq, mul_ite, mul_one, mul_zero]`. Use `congr 1`. Simplify using `only [σ, Equiv.coe_fn_mk, Fin.ext_iff, Formalism.DoubleCosetMeasures.P.Phase.revF_val, eq_iff_iff]`. Conclude with `eq_comm`. Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨1, fun t => by rw [e, det_mul, det_diagonal, det_permutation, h]; simp⟩`. Conclude with `⟨-1, fun t => by rw [e, det_mul, det_diagonal, det_permutation, h]; simp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem det_pt_eq (s : List ℕ) : ∃ e : Kˣ, ∀ t : ℕ → Kˣ,
     (pt s t).det = (∏ a : Fin s.sum, ((t (blk s a) : Kˣ) : K)) * (e : K) := by
@@ -615,7 +611,7 @@ theorem det_pt_eq (s : List ℕ) : ∃ e : Kˣ, ∀ t : ℕ → Kˣ,
   · exact ⟨-1, fun t => by rw [e, det_mul, det_diagonal, det_permutation, h]; simp⟩
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `det_pt_eq (K := K) (h.1 ++ [s])`. Use `⟨(∏ a : Fin h.1.sum, h.2 (blk h.1 a)) * e, fun z => ?_⟩` and prove the remaining obligations. Establish `h1 : (pt (addBlock h s z).1 (addBlock h s z).2).det = (∏ a : Fin (addBlock h s z).1.sum, (((addBlock h s z).2 (blk (addBlock h s z).1 a) : Kˣ) : K)) * (e : K)` using `he _`. Rewrite using `[h1, A5x5.prod_addBlock]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -637,13 +633,13 @@ section Top
 variable {K : Type} [CommRing K] (R : Subring K)
 
 /- English proof (translation)
-Establish `hy : ((x⁻¹ : Kˣ) : K) = 1 - ϖ * r * ((x⁻¹ : Kˣ) : K)`. Use `Units.mul_inv x` as an intermediate fact. Rewrite `this` using `[hx]`. Take the linear combination `this`. Establish `key : ∀ m : ℕ, ϖ ^ m * ((x⁻¹ : Kˣ) : K) ∈ R → ((x⁻¹ : Kˣ) : K) ∈ R`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro h`. Simplify using `using h`. Consider the case `succ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `h`. Apply `ih` to reduce the goal to its premises. Establish `e : ϖ ^ m * ((x⁻¹ : Kˣ) : K) = ϖ ^ m - r * (ϖ ^ (m + 1) * ((x⁻¹ : Kˣ) : K))`. Rewrite using `[pow_succ]`. Take the linear combination `ϖ ^ m * hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[e]`. Conclude with `R.sub_mem (R.pow_mem hϖ m) (R.mul_mem hr h)`. Take `⟨m, hm⟩` from `hu ((x⁻¹ : Kˣ) : K)`. Conclude with `key m hm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inv_mem_of_near (ϖ : K) (hϖ : ϖ ∈ R) (hu : ∀ x : K, ∃ m : ℕ, ϖ ^ m * x ∈ R) (x : Kˣ)
     (r : K) (hr : r ∈ R) (hx : (x : K) = 1 + ϖ * r) : ((x⁻¹ : Kˣ) : K) ∈ R := by
@@ -667,17 +663,15 @@ theorem inv_mem_of_near (ϖ : K) (hϖ : ϖ ∈ R) (hu : ∀ x : K, ∃ m : ℕ, 
   exact key m hm
 
 /- English proof (translation)
-Use `hOm.induction_on (p := fun s => ∃ N : ℕ, ∀ z : Kˣ, (z : K) ∈ s → (ϖ : K) ^ N * ((z⁻¹ : Kˣ) : K) ∈ R) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `⟨0, fun z hz => absurd hz (Set.notMem_empty _)⟩`. Introduce and unpack `s t hst ⟨N, hN⟩`. Conclude with `⟨N, fun z hz => hN z (hst hz)⟩`. Introduce and unpack `s t ⟨N, hN⟩ ⟨M, hM⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨N + M, fun z hz => ?_⟩` and prove the remaining obligations. Break down `hz with hz | hz` into its components or cases. Rewrite using `[pow_add, mul_comm ((ϖ : K) ^ N), mul_assoc]`. Conclude with `R.mul_mem (R.pow_mem hϖ M) (hN z hz)`. Rewrite using `[pow_add, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `R.mul_mem (R.pow_mem hϖ N) (hM z hz)`. Introduce `x hx`. Take `⟨z0, rfl⟩` from `hU x hx`. Take `⟨m, hm⟩` from `hu ((z0⁻¹ : Kˣ) : K)`. Use `⟨{z | ((z0⁻¹ : Kˣ) : K) * ((ϖ⁻¹ : Kˣ) : K) * (z - (z0 : K)) ∈ R}, mem_nhdsWithin_of_mem_nhds (IsOpen.mem_nhds ?_ ?_), m, fun z hz => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `ho.preimage (continuous_const.mul (continuous_id.sub continuous_const))`. Simplify using `[R.zero_mem]`. Establish `h0 : ((z0⁻¹ : Kˣ) : K) * (z0 : K) = 1` using `Units.inv_mul z0`. Establish `h1 : (ϖ : K) * ((ϖ⁻¹ : Kˣ) : K) = 1` using `Units.mul_inv ϖ`. Establish `h2` using `inv_mem_of_near R ϖ hϖ hu (z0⁻¹ * z) _ hz (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul]`. Take the linear combination `h0 - (((z0⁻¹ : Kˣ) : K) * ((z : K) - (z0 : K))) * h1)`. Establish `e : (ϖ : K) ^ m * ((z⁻¹ : Kˣ) : K) = ((ϖ : K) ^ m * ((z0⁻¹ : Kˣ) : K)) * (((z0⁻¹ * z)⁻¹ : Kˣ) : K)`. Rewrite using `[_root_.mul_inv_rev, inv_inv, Units.val_mul]`. Take the linear combination `(-(ϖ : K) ^ m * ((z⁻¹ : Kˣ) : K)) * h0`.
-
-Rewrite using `[e]`. Conclude with `R.mul_mem hm h2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_bdd [TopologicalSpace K] [IsTopologicalRing K] (ho : IsOpen (R : Set K)) (ϖ : Kˣ)
     (hϖ : (ϖ : K) ∈ R) (hu : ∀ x : K, ∃ m : ℕ, (ϖ : K) ^ m * x ∈ R) (Om : Set K)
@@ -725,27 +719,25 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.P.KernelScalingBack
 
 /- English proof (translation)
-Introduce `K _ _ _ R ψ hD _ s h Om hs hOm hU`. Take `⟨ϖ, hϖ, hu⟩` from `hD.unif`. Establish `hψ : ∀ r ∈ R, ψ r = 1` using `fun r hr => A5x3.psi_of_mem hD.selfDual hr`. Take `⟨N, hN⟩` from `inv_bdd R hD.isOpen ϖ hϖ hu Om hOm hU`. Take `⟨c0, hc0⟩` from `det_addBlock h s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N0, hN0⟩` from `hu ((c0⁻¹ : Kˣ) : K)`. Establish `hlat` using `A5x5.lat_mulR hD.isOpen hD.isCompact (ϖ ^ (1 + N + N0 + s * N))`. Use `⟨mulR R ((ϖ ^ (1 + N + N0 + s * N) : Kˣ) : K), ⟨hlat.op, hlat.cp⟩, ?_⟩` and prove the remaining obligations. Introduce `z z' hz hl w'`. Take `⟨r, hr, hrl⟩` from `hl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hr' : r ∈ R` using `hr`. Establish `hrl' : (ϖ : K) ^ (1 + N + N0 + s * N) * r = (z' : K) - (z : K)`. Rewrite using `[← hrl]`. Simplify using the standard rewrite rules. Establish `hy` using `hN z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hzy : (z : K) * ((z⁻¹ : Kˣ) : K) = 1` using `Units.mul_inv z`. Establish `hk1 : ((z⁻¹ * z' : Kˣ) : K) = 1 + (ϖ : K) * ((ϖ : K) ^ (N0 + s * N) * r * ((ϖ : K) ^ N * ((z⁻¹ : Kˣ) : K)))`. Rewrite using `[Units.val_mul]`. Establish `e : (ϖ : K) ^ (1 + N + N0 + s * N) = (ϖ : K) * (ϖ : K) ^ (N0 + s * N) * (ϖ : K) ^ N`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `hrl'` using `[e]`. Take the linear combination `(-((z⁻¹ : Kˣ) : K)) * hrl' + hzy`. Establish `hρ : (ϖ : K) ^ (N0 + s * N) * r * ((ϖ : K) ^ N * ((z⁻¹ : Kˣ) : K)) ∈ R` using `R.mul_mem (R.mul_mem (R.pow_mem hϖ _) hr') hy`. Establish `hk : ((z⁻¹ * z' : Kˣ) : K) ∈ R`. Rewrite using `[hk1]`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `R.add_mem R.one_mem (R.mul_mem hϖ hρ)`. Establish `hki : (((z⁻¹ * z')⁻¹ : Kˣ) : K) ∈ R` using `inv_mem_of_near R ϖ hϖ hu _ _ hρ hk1`. Establish `hkk : ((z⁻¹ * z' : Kˣ) : K) * (((z⁻¹ * z')⁻¹ : Kˣ) : K) = 1` using `Units.mul_inv _`. Establish `hinv : Ring.inverse (pt (addBlock h s z).1 (addBlock h s z).2).det = ((c0⁻¹ : Kˣ) : K) * ((z⁻¹ : Kˣ) : K) ^ s`. Rewrite using `[hc0, Ring.inverse_unit, mul_inv, Units.val_mul, ← inv_pow, Units.val_pow_eq_pow_val]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hzk : z' = z * (z⁻¹ * z')` using `by group`. Establish `hkz : ((z⁻¹ * z' : Kˣ) : K) = ((z⁻¹ : Kˣ) : K) * (z' : K)` using `Units.val_mul _ _`. Rewrite using `[hzk]`. Use `Kp_block R ψ hψ h s hs z (z⁻¹ * z') hk hki ?_ ?_ w'` and prove the remaining obligations. Rewrite using `[hinv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ((((z⁻¹ * z')⁻¹ : Kˣ) : K) - 1) * (((c0⁻¹ : Kˣ) : K) * ((z⁻¹ : Kˣ) : K) ^ s) = -(((z⁻¹ * z')⁻¹ : Kˣ) : K) * ((ϖ : K) * r * ((ϖ : K) ^ N * ((z⁻¹ : Kˣ) : K)) * ((ϖ : K) ^ N0 * ((c0⁻¹ : Kˣ) : K)) * ((ϖ : K) ^ N * ((z⁻¹ : Kˣ) : K)) ^ s)`. Establish `e1 : (ϖ : K) ^ (1 + N + N0 + s * N) = (ϖ : K) * (ϖ : K) ^ N * (ϖ : K) ^ N0 * ((ϖ : K) ^ N) ^ s` using `by ring`. Rewrite `hrl'` using `[e1]`. Rewrite `hkk` using `[hkz]`. Rewrite using `[mul_pow]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(((c0⁻¹ : Kˣ) : K) * ((z⁻¹ : Kˣ) : K) ^ s) * hkk + ((((z⁻¹ * z')⁻¹ : Kˣ) : K) * ((z⁻¹ : Kˣ) : K) * ((c0⁻¹ : Kˣ) : K) * ((z⁻¹ : Kˣ) : K) ^ s) * hrl' - ((((z⁻¹ * z')⁻¹ : Kˣ) : K) * ((c0⁻¹ : Kˣ) : K) * ((z⁻¹ : Kˣ) : K) ^ s) * hzy`. Rewrite using `[e]`. Conclude with `R.mul_mem (R.neg_mem hki) (R.mul_mem (R.mul_mem (R.mul_mem (R.mul_mem hϖ hr') hy) hN0) (R.pow_mem hy s))`. Rewrite using `[hinv]`. Establish `e : (((z⁻¹ * z' : Kˣ) : K) - 1) * (z : K) * (((c0⁻¹ : Kˣ) : K) * ((z⁻¹ : Kˣ) : K) ^ s) = (ϖ : K) ^ (1 + N) * r * ((ϖ : K) ^ N0 * ((c0⁻¹ : Kˣ) : K)) * ((ϖ : K) ^ N * ((z⁻¹ : Kˣ) : K)) ^ s`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : (ϖ : K) ^ (1 + N + N0 + s * N) = (ϖ : K) ^ (1 + N) * (ϖ : K) ^ N0 * ((ϖ : K) ^ N) ^ s` using `by ring`. Rewrite `hrl'` using `[e1]`. Rewrite using `[hkz, mul_pow]`. Take the linear combination `((z' : K) * ((c0⁻¹ : Kˣ) : K) * ((z⁻¹ : Kˣ) : K) ^ s) * hzy - (((c0⁻¹ : Kˣ) : K) * ((z⁻¹ : Kˣ) : K) ^ s) * hrl'`. Rewrite using `[e]`.
-
-Conclude with `R.mul_mem (R.mul_mem (R.mul_mem (R.pow_mem hϖ _) hr') hN0) (R.pow_mem hy s)`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phase_locally_constant : Formalism.FourierDecayAlt.A6.LocConst := by
   intro K _ _ _ R ψ hD _ s h Om hs hOm hU

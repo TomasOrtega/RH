@@ -15,9 +15,9 @@ section Gen
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formalism.L2.DIV Formalism.UG GlobalTheory.Mem GlobalTheory.Mem.Chr GlobalTheory.Mem.Col2 GlobalTheory.Mem.Col2.DetSpec Matrix
 
 /- English proof (translation)
-Establish `e : C - 1 = (C * M - 1) - C * (M - 1)` using `by rw [mul_sub, mul_one]; abel`. Establish `e2` using `congrFun (congrFun e i) j`. Rewrite `e2` using `[Matrix.sub_apply, Matrix.sub_apply, Matrix.sub_apply, Matrix.mul_apply (M := C) (N := M - 1)]`. Rewrite using `[e2]`. Use `Valuation.map_sub_lt _ (h i j) (Valuation.map_sum_lt _ one_ne_zero fun l _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left' (hC i l)).trans_lt (hM l j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem near_left {K Γ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) {n : ℕ}
     {C M : Matrix (Fin n) (Fin n) K} (hC : ∀ i j, v (C i j) ≤ 1) (hM : ∀ i j, v (M i j - (1 : Matrix (Fin n) (Fin n) K) i j) < 1)
@@ -32,9 +32,9 @@ theorem near_left {K Γ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ] (
   exact (mul_le_of_le_one_left' (hC i l)).trans_lt (hM l j)
 
 /- English proof (translation)
-Establish `e : M - 1 = (C * M - 1) - (C - 1) * M` using `by rw [_root_.sub_mul, one_mul]; abel`. Establish `e2` using `congrFun (congrFun e i) j`. Rewrite `e2` using `[Matrix.sub_apply, Matrix.sub_apply, Matrix.sub_apply, Matrix.mul_apply (M := C - 1) (N := M)]`. Rewrite using `[e2]`. Use `Valuation.map_sub_lt _ (h i j) (Valuation.map_sum_lt _ one_ne_zero fun l _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_right' (hM l j)).trans_lt (hC i l)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem near_right {K Γ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ] (v : Valuation K Γ) {n : ℕ}
     {C M : Matrix (Fin n) (Fin n) K} (hM : ∀ i j, v (M i j) ≤ 1) (hC : ∀ i j, v (C i j - (1 : Matrix (Fin n) (Fin n) K) i j) < 1)
@@ -51,11 +51,11 @@ theorem near_right {K Γ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ] 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Use `ext1 i j`. Establish `e : ∀ l, kMat P k 1 i l = adAt F P ((k⁻¹ : GL (Fin n) (AfE F E)).1 i l)` using `fun l => by show adAt F P (Col2.pullV k (Pi.single l 1) i) = _`. Unfold `Col2.pullV`. Rewrite using `[Matrix.mulVec, dotProduct, Finset.sum_eq_single l]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [e]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `kMat Col2.pullV`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec, Matrix.mulVec, dotProduct, map_sum]`. Simplify using `only [map_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kMat_mul (P : HeightOneSpectrum (𝓞 E)) (g k : GL (Fin n) (AfE F E)) (f : Sp E n ≃ₗ[E] Sp E n) :
     kMat P (g * k) f = kMat P k 1 * kMat P g f := by
@@ -75,7 +75,7 @@ theorem kMat_mul (P : HeightOneSpectrum (𝓞 E)) (g k : GL (Fin n) (AfE F E)) (
   simp only [map_mul]
 
 /- English proof (translation)
-Unfold `kMat Col2.pullV`. Rewrite using `[inv_one, Units.val_one, Matrix.one_mulVec, adAt_inclE]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kMat_one (P : HeightOneSpectrum (𝓞 E)) (f : Sp E n ≃ₗ[E] Sp E n) (i j : Fin n) :
     kMat P (1 : GL (Fin n) (AfE F E)) f i j = algebraMap E _ (f (Pi.single j 1) i) := by
@@ -85,13 +85,11 @@ theorem kMat_one (P : HeightOneSpectrum (𝓞 E)) (f : Sp E n ≃ₗ[E] Sp E n) 
 variable [StarRing E] {hc : Formalism.BasicNotions.CMData F E} {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Establish `hl` using `TopStep.liftFr_spec p.deco.2 w`. Establish `h1` using `val_kMat_sub_lt h w hl`. Establish `h2` using `val_kMat_sub_lt h' w hl`. Establish `h3` using `val_kMat_sub_lt h₀ w hf`. Establish `e1 : kMat w.1 (y * k) (p.deco.1.liftFr w) = kMat w.1 y (p.deco.1.liftFr w)` using `by ext1 a b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ZeroMove.adAt_pullV_mul w.1 y hk _ a`. Rewrite `h1` using `[e1]`. Rewrite `h2` using `[kMat_mul]`. Rewrite `h3` using `[← one_mul k', kMat_mul]`. Establish `hc1 : Formalism.L2.Herm.Carries (1 : GL (Fin n) (AfE F E)) (stdLat E n) (stdLat E n)` using `fun x => by simp`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i1` using `val_kMat_le (P := w.1) (f := 1) (hN ▸ h₀.lat : Formalism.L2.Herm.Carries k' (stdLat E n) (stdLat E n)) fun _ => Iff.rfl`. Establish `i2` using `val_kMat_le (P := w.1) (f := f) hc1 (hN ▸ hf.1 : CharValCompare.IsFr w.1 (stdLat E n) f)`. Establish `h4` using `near_right _ i2 (near_left _ i1 h1 h2) h3 i j`. Rewrite `h4` using `[kMat_one, Matrix.one_apply, if_congr (Fin.ext_iff (a := i) (b := j)) rfl rfl]`. Rewrite using `[← valued_algebraMap, map_sub, apply_ite (algebraMap E _), map_one, map_zero]`.
-
-Conclude with `h4`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_near_one {y k k' : GL (Fin n) (AfE F E)} {p p₀ : DecoF E n ST SG Q} (h : IsPtOf hc (y * k) p) (h' : IsPtOf hc (y * k') p)
     (h₀ : IsPtOf hc k' p₀) (hN : p₀.deco.1.N = stdLat E n) (w : SG) (hk : bc (prV (E := E) (w.1.under (𝓞 F))) k = 1)

@@ -2,17 +2,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.A
 
 open UpperTheory.V.Af.Rs in
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `hn hdiv`. Break down `Nat.lt_or_ge n 2 with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h1 : n = 1` using `by omega`. Substitute `h1` using the available equality. Rewrite using `[ha.1, hb.1]`. Take `⟨p, hpp, hpn⟩` from `Nat.exists_prime_and_dvd (show n ≠ 1 by omega)`. Take `⟨n', rfl⟩` from `hpn`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hn' : 1 ≤ n'` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hn)`. Establish `hlt : n' < p * n'` using `by have := hpp.two_le; nlinarith`. Establish `hep : e p = e' p` using `hdiv p hpp (dvd_mul_right p n')`. Establish `hsub : ∀ q : ℕ, q.Prime → q ∣ n' → e q = e' q` using `fun q hq hqd => hdiv q hq (dvd_mul_of_dvd_right hqd p)`. Establish `h1` using `ha.2 p hpp n' hn'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hb.2 p hpp n' hn'`. Establish `hb'` using `ih n' hlt hn' hsub`. Distinguish the cases in `hpd : p ∣ n'`. Take `⟨t, rfl⟩` from `hpd`. Establish `ht : 1 ≤ t` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hn')`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdt : p * t / p = t` using `Nat.mul_div_cancel_left t hpp.pos`. Establish `hlt' : t < p * t` using `by have := hpp.two_le; nlinarith`. Establish `hbt` using `ih t (by nlinarith) ht (fun q hq hqd => hsub q hq (dvd_mul_of_dvd_right hqd p))`. Rewrite `h1`, `h2` using `[if_pos (dvd_mul_right p t), hdt]`. Rewrite `h2` using `[hbt, hb', hp p hpp, ← hep]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `h2 - h1`. Rewrite `h1`, `h2` using `[if_neg hpd, mul_zero, add_zero]`. Rewrite `h2` using `[hb', hp p hpp]`. Rewrite using `[h2, h1]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem arFact_agree (e e' a b : ℕ → ℂ) (ha : Rec e a) (hb : Rec e' b)
     (hp : ∀ p : ℕ, p.Prime → b p = a p) :
@@ -50,21 +50,21 @@ private theorem arFact_agree (e e' a b : ℕ → ℂ) (ha : Rec e a) (hb : Rec e
       rw [h2, h1]
 
 /- English proof (translation)
-Introduce `r e e' a b ha hb hp hbad hbd`. Use `⟨{n | b n = a n}, fun n hn => hn, ?_⟩` and prove the remaining obligations. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `hn han`. Distinguish the cases in `hgood : ∀ p : ℕ, p.Prime → p ∣ n → e p = e' p`. Establish `hag` using `arFact_agree e e' a b ha hb hp n hn hgood`. Conclude with `⟨n, hag, 1, by ring, by simp, by simp [hag]⟩`. Use `push_neg at hgood`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hpp, hpn, hne⟩` from `hgood`. Establish `hap : a p = 0` using `hbad p hpp hne`. Establish `hbp : b p = 0` using `by rw [hp p hpp, hap]`. Take `⟨n'', rfl⟩` from `hpn`. Establish `hn'' : 1 ≤ n''` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hn)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `ha.2 p hpp n'' hn''`. Distinguish the cases in `hpd : p ∣ n''`. Take `⟨t, rfl⟩` from `hpd`. Establish `ht : 1 ≤ t` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hn'')`. Establish `hdt : p * t / p = t` using `Nat.mul_div_cancel_left t hpp.pos`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hb.2 p hpp (p * t) hn''`. Rewrite `h1` using `[if_pos (dvd_mul_right p t), hdt, hap, zero_mul]`. Rewrite `h2` using `[if_pos (dvd_mul_right p t), hdt, hbp, zero_mul]`. Establish `hA : a (p * (p * t)) = -(e p * a t)` using `by linear_combination h1`. Establish `hB : b (p * (p * t)) = -(e' p * b t)` using `by linear_combination h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hat : a t ≠ 0`. Introduce `h0`. Apply `han` to reduce the goal to its premises. Rewrite using `[hA, h0, mul_zero, neg_zero]`. Establish `hlt : t < p * (p * t)` using `by have := hpp.two_le; nlinarith`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n₁, hn₁, m, hnm, hA1, hB1⟩` from `ih t hlt ht hat`. Use `⟨n₁, hn₁, p * m, by rw [hnm]; ring, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hA, norm_neg, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hB, norm_neg, norm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. It suffices to derive a contradiction. Apply `han` to reduce the goal to its premises. Rewrite `h1` using `[if_neg hpd, mul_zero, add_zero, hap, zero_mul]`. Conclude with `h1`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Rs.arFact :
     UpperTheory.V.Af.Rs.ArFact := by

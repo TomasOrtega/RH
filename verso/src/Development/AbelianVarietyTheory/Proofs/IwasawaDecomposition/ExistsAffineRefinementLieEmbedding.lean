@@ -10,11 +10,11 @@ open Formalism.MainNotions.DIV.Cons (intO)
 namespace GlobalTheory.FlagEmb
 
 /- English proof (translation)
-Introduce `z z'`. Establish `e : ∑ r, (∑ j, a j z • D j) r * U z' r = ∑ j, ∑ j', a j z * b z' j' * ∑ r, D j r * C j' r`. Simplify using `only [hU z', Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul_sum]`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j' _ => Finset.sum_congr rfl fun r _ => by ring`. Establish `h' : ∀ j j', ∑ r, D j r * C j' r = if j = j' then 1 else 0` using `fun j j' => by convert h j j'`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [h', mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `hab z z'` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem LeftInv.change {S : Type} [CommRing S] {M n m : ℕ} {D C : Fin m → Fin M → S} (h : LeftInv D C)
     {U : Fin n → Fin M → S} (a : Fin m → Fin n → S) (b : Fin n → Fin m → S) (hU : ∀ z, U z = ∑ j, b z j • C j)
@@ -37,11 +37,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {t : SAB H X} {L : FinLB X} {aff : ∀ i, IsAffineOpen (L.U i)} {M : ℕ} {crd : Crd t L M}
 
 /- English proof (translation)
-Take `⟨m, v, D, ⟨hv, hs⟩, hD⟩` from `h.split i`. Establish `hv' : ∀ j, IsTanAtG t x (spMap (dualMap φ) ≫ v j)` using `fun j => hx ▸ GlobalTheory.FactorDepth.isTanAtG_map t φ (hv j)`. Establish `hC : ∀ j, crd i R φ (spMap (dualMap φ) ≫ v j) = φ ∘ crd i _ (RingHom.id _) (v j)` using `fun j => h.nat i _ R (RingHom.id _) φ (v j) (by simpa [spMap] using hv j)`. Use `choose a ha using fun j => (hb _ (hv' j)).exists`. Use `choose b hb' using fun z => (hs R φ (u z) (hx ▸ hu z)).exists`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha'` using `fun j => (h.comb_iff i φ hx hu (hv' j) _).1 (ha j)`. Establish `hb''` using `fun z => (h.comb_iff i φ hx hv' (hu z) _).1 (hx ▸ hb' z)`. Use `⟨_, (hD.map φ).change a b (fun z => by simpa only [hC] using hb'' z) fun z z' => ?_⟩` and prove the remaining obligations. Establish `e` using `(hb _ (hu z')).unique ((h.comb_iff i φ hx hu (hu z') fun z => ∑ j, a j z * b z' j).2 ?_) ((h.comb_iff i φ hx hu (hu z') fun z => if z = z' then 1 else 0).2 (by simp))`. Conclude with `congrFun e z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb'' z']`. Simplify using `only [ha', Finset.smul_sum, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem IsLieEmb.exists_leftInv (h : IsLieEmb t L aff crd) (i : Fin L.n) {R : Type} [CommRing R]
     (φ : Γ(X, L.U i) →+* R) {x : Sp R ⟶ X} (hx : spMap φ ≫ (aff i).fromSpec = x) {n : ℕ} {u : Fin n → Tn t R}
@@ -65,9 +65,9 @@ theorem IsLieEmb.exists_leftInv (h : IsLieEmb t L aff crd) (i : Fin L.n) {R : Ty
     exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [mul_comm]
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `h.exists_leftInv i φ hx (fun i => hu (en i).1 (en i).2) hb`. Use `⟨fun z => D (en.symm z), fun z z' => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `en.surjective z`. Take `⟨y', rfl⟩` from `en.surjective z'`. Use `hD y y'` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Equiv.symm_apply_apply, EmbeddingLike.apply_eq_iff_eq]`. Use `this` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem IsLieEmb.exists_leftInv_let (h : IsLieEmb t L aff crd) (i : Fin L.n) {R : Type} [CommRing R]
     (φ : Γ(X, L.U i) →+* R) {x : Sp R ⟶ X} (hx : spMap φ ≫ (aff i).fromSpec = x) {Dw : Datum H} {e : Vecs Dw t R}
@@ -83,7 +83,7 @@ theorem IsLieEmb.exists_leftInv_let (h : IsLieEmb t L aff crd) (i : Fin L.n) {R 
   convert this
 
 /- English proof (translation)
-Establish `h1 : dualMap (RingHom.id R) = RingHom.id _` using `RingHom.ext fun y => TrivSqZeroExt.inl_fst_add_inr_snd_eq y`. Simplify `(he.1 τ j).1` using `[Vecs.bc, h1, spMap]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tan_of_frame {Dw : Datum H} {l : Level H} {c : Coeff l} {R : Type} [CommRing R] {α : c.F →+* R} {x : Sp R ⟶ X}
     {e : Vecs Dw t R} (he : GlobalTheory.LocM.IsFrame t ((RingHom.id R).comp α) (spMap (RingHom.id R) ≫ x) (e.bc (RingHom.id R))) (τ) (j) :
@@ -92,13 +92,13 @@ theorem tan_of_frame {Dw : Datum H} {l : Level H} {c : Coeff l} {R : Type} [Comm
   simpa [Vecs.bc, h1, spMap] using (he.1 τ j).1
 
 /- English proof (translation)
-Introduce and unpack `⟨τ, j⟩`. Substitute `hx hx'` using the available equality. Establish `e1 : spMap (φ.comp ρ) ≫ (aff i).fromSpec = spMap φ ≫ spMap ρ ≫ (aff i).fromSpec`. Rewrite using `[spMap_comp, Category.assoc]`. Establish `e2 : spMap (φ'.comp ρ') ≫ (aff i').fromSpec = spMap φ' ≫ spMap ρ' ≫ (aff i').fromSpec`.
+Assume the hypotheses and unpack their components. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[spMap_comp, Category.assoc]`. Establish `hw` using `(he'.1 τ j).1`. Take `⟨a, ha, -⟩` from `he.2 τ (e'.bc φ' τ j) (hφ ▸ hw) (he'.1 τ j).2`. Establish `h1` using `(h.comb_iff i (φ.comp ρ) e1 (fun j => (he.1 τ j).1) (hφ ▸ hw) a).1 ha`. Establish `h2` using `h.trans i' i k (φ'.comp ρ') (φ.comp ρ) (e'.bc φ' τ j) (by rw [e1, e2, hφ]) (e2 ▸ hw)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `h.nat i' R' k ρ' φ' (e' τ j) (ht' τ j)`. Establish `h4` using `fun j => h.nat i R k ρ φ (e τ j) (ht τ j)`. Use `show φ' ∘ crd i' R' ρ' (e' τ j) ∈ _`. Rewrite using `[← h3]`. Use `h2 ▸ Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `Submodule.sum_mem _ fun j' _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j', (h4 j').symm⟩)`.
+A detailed English derivation is pending.
 -/
 theorem IsLieEmb.inBlock (h : IsLieEmb t L aff crd) {Dw : Datum H} {l : Level H} {c : Coeff l} {k : Type} [Field k]
     {R R' : Type} [CommRing R] [CommRing R'] {i i' : Fin L.n} (ρ : Γ(X, L.U i) →+* R) (ρ' : Γ(X, L.U i') →+* R')
@@ -126,11 +126,11 @@ theorem IsLieEmb.inBlock (h : IsLieEmb t L aff crd) {Dw : Datum H} {l : Level H}
   exact Submodule.sum_mem _ fun j' _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j', (h4 j').symm⟩)
 
 /- English proof (translation)
-Use `c.fin` as an intermediate fact. Establish `: NumberField c.F` using `{}`. Establish `: IsDiscreteValuationRing (c.V W)`. Use `(isDiscreteValuationRing_and_finite_residueField_of_numberField (c.V W) hp.ne_zero ?_).1` and prove the remaining obligations. Rewrite `hW`, the goal using `[ValuationSubring.mem_nonunits_iff_or]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Break down `hW with h | h` into its components or cases. Conclude with `absurd (by exact_mod_cast h) hp.ne_zero`. Conclude with `Or.inr fun h' => h (by simpa [Coeff.V] using h')`. Use `projProper _ _ _ Y.proj` as an intermediate fact. Use `LocallyOfFiniteType.isLocallyNoetherian Y.s` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CompactSpace Y.X` using `QuasiCompact.compactSpace_of_compactSpace Y.s`. Establish `: AlgebraicGeometry.IsNoetherian Y.X` using `{}`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem noetherianSpace_model {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {p : ℕ}
     {W : ValuationSubring ℂ} (Y : Model Xo c (c.V W).subtype) (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits) :
@@ -150,15 +150,13 @@ theorem noetherianSpace_model {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c
   infer_instance
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c p W Y hp hW L aff M crd h`. Use `noetherianSpace_model Y hp hW` as an intermediate fact. Take `⟨-, hloc⟩` from `GlobalTheory.T.exists_affine_eigenframe_near_image E H Dw l Xo c p W Y hp hW`. Establish `hcov : ∀ x : Y.X, ∃ i, x ∈ L.U i` using `fun x => TopologicalSpace.Opens.mem_iSup.1 ((L.isLB.cover).symm ▸ (TopologicalSpace.Opens.mem_top x))`. Use `choose ι hι using hcov`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose V α e n en hxV hVU hVj hs hfr hbas using fun x : Set.range Y.j => hloc x.1 (L.U (ι x.1)) (hι x.1) x.2`. Take `⟨T, hT⟩` from `(TopologicalSpace.NoetherianSpace.isCompact (Set.range Y.j)).elim_finite_subcover (fun x => ((V x).1 : Set Y.X)) (fun x => (V x).1.2) fun x hx => Set.mem_iUnion.2 ⟨⟨x, hx⟩, hxV _⟩`. Establish `hρ : ∀ x, ∃ ρ : Γ(Y.X, L.U (ι x.1)) →+* Γ(Y.X, (V x).1), spMap ρ ≫ (aff (ι x.1)).fromSpec = (V x).2.fromSpec` using `fun x => ⟨(Y.X.presheaf.map (homOfLE (hVU x)).op).hom, (aff (ι x.1)).map_fromSpec (V x).2 _⟩`. Use `choose ρ hρ using hρ`. Establish `htan : ∀ x τ j, IsTanAtG Y.t (V x).2.fromSpec (e x τ j)` using `fun x => tan_of_frame (hfr x _ (RingHom.id _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hD : ∀ x, ∃ D : Let Dw.mult → Fin (M + 1) → Γ(Y.X, (V x).1), LeftInv D fun z => crd (ι x.1) _ (ρ x) (e x z.1 z.2)` using `fun x => h.exists_leftInv_let (ι x.1) (ρ x) (hρ x) (en x) (htan x) (hbas x)`. Use `choose D hD using hD`. Take `⟨f, hf⟩ : ∃ f : Fin T.card → Set.range Y.j, ∀ x ∈ T, ∃ b, f b = x` from `⟨fun b => (T.equivFin.symm b).1, fun x hx => ⟨T.equivFin ⟨x, hx⟩, by simp⟩⟩`. Use `⟨T.card, fun b => V (f b), fun b => ι (f b).1, fun b => ρ (f b), fun b => α (f b), fun b => e (f b), fun b => D (f b), ?_, fun b => hρ _, fun b => hfr _, fun b => hs _, fun b => hD _, fun k _ b b' φ φ' hφ => ?_⟩` and prove the remaining obligations. Use `(Set.iUnion_subset fun b => hVj _).antisymm fun y hy => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx, hy'⟩` from `Set.mem_iUnion₂.1 (hT hy)`. Take `⟨b, rfl⟩` from `hf x hx`. Conclude with `Set.mem_iUnion.2 ⟨b, hy'⟩`. Establish `hα : φ.comp (α (f b)) = φ'.comp (α (f b'))`. Establish `e1 : spMap (φ.comp ((α (f b)).comp (c.V W).subtype)) = spMap (φ'.comp ((α (f b')).comp (c.V W).subtype))`.
-
-Rewrite using `[spMap_comp _ φ, spMap_comp _ φ', ← hs, ← hs, ← Category.assoc, ← Category.assoc]`. Conclude with `congrArg (· ≫ Y.s) hφ`. Establish `e2` using `congrArg CommRingCat.Hom.hom (Spec.map_injective e1)`. Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors (c.V W)) e2`. Conclude with `h.inBlock (ρ _) (ρ _) (hρ _) (hρ _) (htan _) (htan _) φ φ' hφ (hfr _ k φ) (hα ▸ hfr _ k φ')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isFrameCover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (p : ℕ) (W : ValuationSubring ℂ) (Y : Model Xo c (c.V W).subtype), p.Prime → (p : ℂ) ∈ W.nonunits → ∀ (L : FinLB Y.X) (aff : ∀ i, IsAffineOpen (L.U i)) (M : ℕ) (crd : Crd Y.t L M), IsLieEmb Y.t L aff crd → ∃ (n : ℕ) (V : Fin n → Y.X.affineOpens) (ι : Fin n → Fin L.n) (ρ : ∀ b, Γ(Y.X, L.U (ι b)) →+* Γ(Y.X, (V b).1)) (α : ∀ b, c.F →+* Γ(Y.X, (V b).1)) (e : ∀ b, Vecs Dw Y.t Γ(Y.X, (V b).1)) (D : ∀ b, Let Dw.mult → Fin (M + 1) → Γ(Y.X, (V b).1)), IsFrameCover Y L aff crd V ι ρ α e D := by
   intro E _ _ _ H Dw l Xo c p W Y hp hW L aff M crd h

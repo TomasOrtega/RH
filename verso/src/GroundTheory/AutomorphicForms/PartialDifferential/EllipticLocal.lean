@@ -14,19 +14,19 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDim
   [MeasurableSpace E] [BorelSpace E]
 
 /- English proof (translation)
-Rewrite using `[Real.one_le_sqrt]`. Use polynomial arithmetic with `[sq_nonneg ‖ξ‖]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem one_le_sqrt_one_add_norm_sq (ξ : E) : 1 ≤ Real.sqrt (1 + ‖ξ‖ ^ 2) := by
   rw [Real.one_le_sqrt]; nlinarith [sq_nonneg ‖ξ‖]
 
 /- English proof (translation)
-The claim follows from `Real.le_sqrt_of_sq_le (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_sqrt_one_add_norm_sq (ξ : E) : ‖ξ‖ ≤ Real.sqrt (1 + ‖ξ‖ ^ 2) :=
   Real.le_sqrt_of_sq_le (by linarith)
 
 /- English proof (translation)
-Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_natCast ((1 + ‖ξ‖ ^ 2) ^ (1 / 2 : ℝ)) k, ← Real.rpow_mul (by positivity)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rpow_eq_sqrt_pow (ξ : E) (k : ℕ) :
     (1 + ‖ξ‖ ^ 2) ^ ((k : ℝ) / 2) = Real.sqrt (1 + ‖ξ‖ ^ 2) ^ k := by
@@ -35,7 +35,7 @@ theorem rpow_eq_sqrt_pow (ξ : E) (k : ℕ) :
   congr 1; ring
 
 /- English proof (translation)
-Establish `hp : 0 < Real.sqrt (1 + ‖ξ‖ ^ 2) ^ k` using `pow_pos (lt_of_lt_of_le one_pos (one_le_sqrt_one_add_norm_sq ξ)) k`. Rewrite using `[neg_div, Real.rpow_neg (by positivity), rpow_eq_sqrt_pow, ← div_eq_mul_inv, le_div_iff₀ hp]`. Conclude with `h ξ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_of_mul_sqrt_pow_le {f : E → ℂ} {C : ℝ} {k : ℕ}
     (h : ∀ ξ, ‖f ξ‖ * Real.sqrt (1 + ‖ξ‖ ^ 2) ^ k ≤ C) (ξ : E) :
@@ -53,13 +53,13 @@ variable {ι : Type*} [Fintype ι] {m : ℕ} (c : ι → ℂ) (w : ι → Fin m 
 def symb0 : E → ℂ := fun ξ ↦ (2 * Real.pi * Complex.I) ^ m * prinSymb c w ξ
 
 /- English proof (translation)
-The claim follows from `constSymb_hasTemperateGrowth w c`.
+A detailed English derivation is pending.
 -/
 theorem parametrixSymbol_hasTemperateGrowth : (symb0 c w).HasTemperateGrowth :=
   constSymb_hasTemperateGrowth w c
 
 /- English proof (translation)
-The claim follows from `constOp_eq_fourierMultiplier w c`.
+A detailed English derivation is pending.
 -/
 theorem constOp_eq_symb0 : constOp w c = fourierMultiplierCLM ℂ (symb0 c w) :=
   constOp_eq_fourierMultiplier w c
@@ -67,7 +67,7 @@ theorem constOp_eq_symb0 : constOp w c = fourierMultiplierCLM ℂ (symb0 c w) :=
 def rhoSymb (μ : ℝ) : E → ℂ := fun ξ ↦ weight (-2) ((Real.sqrt μ : ℂ) * symb0 c w ξ)
 
 /- English proof (translation)
-Unfold `rhoSymb weight`. Use `congr 1`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _), mul_pow, Real.sq_sqrt hμ, show (-2 : ℝ) / 2 = -1 by norm_num, Real.rpow_neg_one]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem rhoSymb_eq {μ : ℝ} (hμ : 0 ≤ μ) (ξ : E) :
     rhoSymb c w μ ξ = (((1 + μ * ‖symb0 c w ξ‖ ^ 2)⁻¹ : ℝ) : ℂ) := by
@@ -77,7 +77,7 @@ theorem rhoSymb_eq {μ : ℝ} (hμ : 0 ≤ μ) (ξ : E) :
     Real.sq_sqrt hμ, show (-2 : ℝ) / 2 = -1 by norm_num, Real.rpow_neg_one]
 
 /- English proof (translation)
-The claim follows from `(weight_hasTemperateGrowth (E := ℂ) (-2)).comp ((Function.HasTemperateGrowth.const _).mul (parametrixSymbol_hasTemperateGrowth c w))`.
+A detailed English derivation is pending.
 -/
 theorem rhoSymb_hasTemperateGrowth (μ : ℝ) : (rhoSymb c w μ).HasTemperateGrowth :=
   (weight_hasTemperateGrowth (E := ℂ) (-2)).comp
@@ -86,7 +86,7 @@ theorem rhoSymb_hasTemperateGrowth (μ : ℝ) : (rhoSymb c w μ).HasTemperateGro
 def qSymb (μ : ℝ) : E → ℂ := fun ξ ↦ (μ : ℂ) * starRingEnd ℂ (symb0 c w ξ) * rhoSymb c w μ ξ
 
 /- English proof (translation)
-Establish `h : (fun ξ ↦ starRingEnd ℂ (symb0 c w ξ)).HasTemperateGrowth` using `(Complex.conjCLE.hasTemperateGrowth).comp (parametrixSymbol_hasTemperateGrowth c w)`. Conclude with `((Function.HasTemperateGrowth.const _).mul h).mul (rhoSymb_hasTemperateGrowth c w μ)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem qSymb_hasTemperateGrowth (μ : ℝ) : (qSymb c w μ).HasTemperateGrowth := by
   have h : (fun ξ ↦ starRingEnd ℂ (symb0 c w ξ)).HasTemperateGrowth :=
@@ -99,24 +99,24 @@ def qNSymb (μ : ℝ) (N : ℕ) : E → ℂ :=
 def rNSymb (μ : ℝ) (N : ℕ) : E → ℂ := fun ξ ↦ rhoSymb c w μ ξ ^ N
 
 /- English proof (translation)
-The claim follows from `(qSymb_hasTemperateGrowth c w μ).mul (Function.HasTemperateGrowth.sum fun j _ ↦ (rhoSymb_hasTemperateGrowth c w μ).pow j)`.
+A detailed English derivation is pending.
 -/
 theorem qNSymb_hasTemperateGrowth (μ : ℝ) (N : ℕ) : (qNSymb c w μ N).HasTemperateGrowth :=
   (qSymb_hasTemperateGrowth c w μ).mul
     (Function.HasTemperateGrowth.sum fun j _ ↦ (rhoSymb_hasTemperateGrowth c w μ).pow j)
 
 /- English proof (translation)
-The claim follows from `(rhoSymb_hasTemperateGrowth c w μ).pow N`.
+A detailed English derivation is pending.
 -/
 theorem rNSymb_hasTemperateGrowth (μ : ℝ) (N : ℕ) : (rNSymb c w μ N).HasTemperateGrowth :=
   (rhoSymb_hasTemperateGrowth c w μ).pow N
 
 /- English proof (translation)
-Rewrite using `[qSymb, rhoSymb_eq c w hμ]`. Establish `hpos : (0 : ℝ) < 1 + μ * ‖symb0 c w ξ‖ ^ 2` using `by positivity`. Establish `hmc : symb0 c w ξ * starRingEnd ℂ (symb0 c w ξ) = ((‖symb0 c w ξ‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hmc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ((1 - (1 + μ * ‖symb0 c w ξ‖ ^ 2)⁻¹ : ℝ) : ℂ) := by`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by push_cast; ring`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem parametrixSymbol_mul_inverseSymbol {μ : ℝ} (hμ : 0 ≤ μ) (ξ : E) :
     symb0 c w ξ * qSymb c w μ ξ = 1 - rhoSymb c w μ ξ := by
@@ -135,28 +135,28 @@ theorem parametrixSymbol_mul_inverseSymbol {μ : ℝ} (hμ : 0 ≤ μ) (ξ : E) 
     _ = _ := by push_cast; ring
 
 /- English proof (translation)
-Rewrite using `[qNSymb, ← mul_assoc, parametrixSymbol_mul_inverseSymbol c w hμ, rNSymb, mul_neg_geom_sum]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem parametrixSymbol_mul_inverseSymbolOfOrder {μ : ℝ} (hμ : 0 ≤ μ) (N : ℕ) (ξ : E) :
     symb0 c w ξ * qNSymb c w μ N ξ = 1 - rNSymb c w μ N ξ := by
   rw [qNSymb, ← mul_assoc, parametrixSymbol_mul_inverseSymbol c w hμ, rNSymb, mul_neg_geom_sum]
 
 /- English proof (translation)
-Rewrite using `[rhoSymb_eq c w hμ, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_rhoSymb {μ : ℝ} (hμ : 0 ≤ μ) (ξ : E) :
     ‖rhoSymb c w μ ξ‖ = (1 + μ * ‖symb0 c w ξ‖ ^ 2)⁻¹ := by
   rw [rhoSymb_eq c w hμ, Complex.norm_real, Real.norm_of_nonneg (by positivity)]
 
 /- English proof (translation)
-Rewrite using `[norm_rhoSymb c w hμ]`. Conclude with `inv_le_one_of_one_le₀ (by nlinarith [sq_nonneg ‖symb0 c w ξ‖])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_rhoSymb_le_one {μ : ℝ} (hμ : 0 ≤ μ) (ξ : E) : ‖rhoSymb c w μ ξ‖ ≤ 1 := by
   rw [norm_rhoSymb c w hμ]
   exact inv_le_one_of_one_le₀ (by nlinarith [sq_nonneg ‖symb0 c w ξ‖])
 
 /- English proof (translation)
-Rewrite using `[qSymb, norm_mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg hμ, Complex.norm_conj, norm_rhoSymb c w hμ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_qSymb {μ : ℝ} (hμ : 0 ≤ μ) (ξ : E) :
     ‖qSymb c w μ ξ‖ = μ * ‖symb0 c w ξ‖ * (1 + μ * ‖symb0 c w ξ‖ ^ 2)⁻¹ := by
@@ -164,7 +164,7 @@ theorem norm_qSymb {μ : ℝ} (hμ : 0 ≤ μ) (ξ : E) :
     norm_rhoSymb c w hμ]
 
 /- English proof (translation)
-Rewrite using `[norm_qSymb c w hμ]`. Use `norm_rhoSymb_le_one c w hμ ξ` as an intermediate fact. Rewrite `this` using `[norm_rhoSymb c w hμ]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_qSymb_le {μ : ℝ} (hμ : 0 ≤ μ) (ξ : E) :
     ‖qSymb c w μ ξ‖ ≤ μ * ‖symb0 c w ξ‖ := by
@@ -176,7 +176,7 @@ theorem norm_qSymb_le {μ : ℝ} (hμ : 0 ≤ μ) (ξ : E) :
     _ = _ := mul_one _
 
 /- English proof (translation)
-Rewrite using `[norm_qSymb c w hμ]`. Establish `hpos : (0 : ℝ) < 1 + μ * ‖symb0 c w ξ‖ ^ 2` using `by positivity`. Rewrite using `[show μ * ‖symb0 c w ξ‖ * (1 + μ * ‖symb0 c w ξ‖ ^ 2)⁻¹ * ‖symb0 c w ξ‖ = (μ * ‖symb0 c w ξ‖ ^ 2) / (1 + μ * ‖symb0 c w ξ‖ ^ 2) by field_simp]`. Rewrite using `[div_le_one hpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem norm_qSymb_mul_le {μ : ℝ} (hμ : 0 ≤ μ) (ξ : E) :
     ‖qSymb c w μ ξ‖ * ‖symb0 c w ξ‖ ≤ 1 := by
@@ -187,9 +187,7 @@ theorem norm_qSymb_mul_le {μ : ℝ} (hμ : 0 ≤ μ) (ξ : E) :
   rw [div_le_one hpos]; linarith
 
 /- English proof (translation)
-Rewrite using `[qNSymb, norm_mul, mul_comm]`. Use `gcongr`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_pow]`.
-
-Conclude with `pow_le_one₀ (norm_nonneg _) (norm_rhoSymb_le_one c w hμ ξ)`. Use `_ = N := by simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_qNSymb_le {μ : ℝ} (hμ : 0 ≤ μ) (N : ℕ) (ξ : E) :
     ‖qNSymb c w μ N ξ‖ ≤ N * ‖qSymb c w μ ξ‖ := by
@@ -208,7 +206,7 @@ section Bounds
 variable {ι : Type*} [Fintype ι] {m : ℕ} (c : ι → ℂ) (w : ι → Fin m → E) {cl Cu : ℝ}
 
 /- English proof (translation)
-Rewrite using `[Real.sqrt_le_iff]`. Prove the components needed by the constructor for the conclusion. Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Check the signs of the components of the expression. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sqrt_one_add_norm_sq_le_two_mul {ξ : E} (h : 1 ≤ ‖ξ‖) :
     Real.sqrt (1 + ‖ξ‖ ^ 2) ≤ 2 * ‖ξ‖ := by
@@ -217,7 +215,7 @@ theorem sqrt_one_add_norm_sq_le_two_mul {ξ : E} (h : 1 ≤ ‖ξ‖) :
   · nlinarith
 
 /- English proof (translation)
-Rewrite using `[Real.sqrt_le_iff]`. Prove the components needed by the constructor for the conclusion. Evaluate the numerical expressions. Use polynomial arithmetic with `[norm_nonneg ξ]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Evaluate the numerical expressions. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sqrt_one_add_norm_sq_le_two {ξ : E} (h : ‖ξ‖ ≤ 1) : Real.sqrt (1 + ‖ξ‖ ^ 2) ≤ 2 := by
   rw [Real.sqrt_le_iff]; constructor
@@ -229,11 +227,11 @@ variable (hcl : 0 < cl) (hCu : 0 ≤ Cu) (hlow : ∀ ξ, cl * ‖ξ‖ ^ m ≤ �
 include hcl hCu hlow hup
 
 /- English proof (translation)
-Establish `hq0` using `norm_nonneg (qSymb c w μ ξ)`. Break down `le_or_gt 1 ‖ξ‖ with h | h` into its components or cases. Establish `hS` using `pow_le_pow_left₀ (Real.sqrt_nonneg _) (sqrt_one_add_norm_sq_le_two_mul h) m`. Establish `hξm : 0 < ‖ξ‖ ^ m` using `pow_pos (by linarith) m`. Establish `hp : ‖ξ‖ ^ m ≤ ‖symb0 c w ξ‖ / cl` using `by rw [le_div_iff₀ hcl, mul_comm]; exact hlow ξ`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hS` using `pow_le_pow_left₀ (Real.sqrt_nonneg _) (sqrt_one_add_norm_sq_le_two h.le) m`. Establish `hξm : ‖ξ‖ ^ m ≤ 1` using `pow_le_one₀ (norm_nonneg _) h.le`. Establish `hq : ‖qSymb c w μ ξ‖ ≤ Cu`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm]`. Use `gcongr`. Combine the linear relations using `[inv_pos.2 hcl]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem qSymb_mul_sqrt_pow_le {μ : ℝ} (hμ0 : 0 ≤ μ) (hμ1 : μ ≤ 1) (ξ : E) :
     ‖qSymb c w μ ξ‖ * Real.sqrt (1 + ‖ξ‖ ^ 2) ^ m ≤ 2 ^ m * (cl⁻¹ + Cu) := by
@@ -262,7 +260,7 @@ theorem qSymb_mul_sqrt_pow_le {μ : ℝ} (hμ0 : 0 ≤ μ) (hμ1 : μ ≤ 1) (ξ
           rw [mul_comm]; gcongr; linarith [inv_pos.2 hcl]
 
 /- English proof (translation)
-Use `norm_le_of_mul_sqrt_pow_le (fun ξ ↦ ?_) ξ` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem qNSymb_bound {μ : ℝ} (hμ0 : 0 ≤ μ) (hμ1 : μ ≤ 1) (N : ℕ) (ξ : E) :
     ‖qNSymb c w μ N ξ‖ ≤ (N * (2 ^ m * (cl⁻¹ + Cu))) * (1 + ‖ξ‖ ^ 2) ^ (-(m : ℝ) / 2) := by
@@ -275,19 +273,17 @@ theorem qNSymb_bound {μ : ℝ} (hμ0 : 0 ≤ μ) (hμ1 : μ ≤ 1) (N : ℕ) (�
         (Nat.cast_nonneg N)
 
 /- English proof (translation)
-Use `set CQ := 2 ^ m * (cl⁻¹ + Cu)`. Establish `hCQ : 0 < CQ` using `by positivity`. Use `set lam := max 1 (2 * CQ / ε)`. Establish `hlam1 : 1 ≤ lam` using `le_max_left _ _`. Use `set S0 := Real.sqrt (1 + lam ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hS01 : 1 ≤ S0` using `by rw [Real.one_le_sqrt]; nlinarith`. Use `set D := (Cu + 1) * S0 ^ (2 * m)`. Establish `hD : 0 < D` using `by positivity`. Use `⟨min 1 (ε / (2 * D)), lt_min one_pos (by positivity), min_le_left _ _, fun ξ ↦ ?_⟩` and prove the remaining obligations. Use `set μ := min 1 (ε / (2 * D))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hμ0 : 0 ≤ μ` using `le_min zero_le_one (by positivity)`. Establish `hμ1 : μ ≤ 1` using `min_le_left _ _`. Use `set S := Real.sqrt (1 + ‖ξ‖ ^ 2)`. Establish `hS1 : 1 ≤ S` using `one_le_sqrt_one_add_norm_sq ξ`. Establish `hq0` using `norm_nonneg (qSymb c w μ ξ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `le_or_gt lam ‖ξ‖ with h | h` into its components or cases. Establish `hSl : lam ≤ S` using `h.trans (norm_le_sqrt_one_add_norm_sq ξ)`. Establish `key` using `qSymb_mul_sqrt_pow_le c w hcl hCu hlow hup hμ0 hμ1 ξ`. Establish `e : S ^ m = S ^ (m - 1) * S` using `by rw [← pow_succ, Nat.sub_add_cancel hm]`. Establish `hSpos : 0 < S` using `by linarith`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ‖qSymb c w μ ξ‖ * S ^ (m - 1) ≤ CQ / S`. Rewrite using `[le_div_iff₀ hSpos]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `hSS0 : S ≤ S0` using `Real.sqrt_le_sqrt (by nlinarith [norm_nonneg ξ])`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 
-Establish `hξS : ‖ξ‖ ^ m ≤ S ^ m` using `pow_le_pow_left₀ (norm_nonneg _) (norm_le_sqrt_one_add_norm_sq ξ) m`. Establish `hq : ‖qSymb c w μ ξ‖ ≤ μ * (Cu * S ^ m)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Combine the equalities or inequalities in the displayed calculation. Use `_ = μ * D := by ring`. Use `_ ≤ ε / (2 * D) * D := by gcongr; exact min_le_right _ _`. Use `_ = ε / 2 := by field_simp`. Use `_ ≤ ε := by linarith`.
+A detailed English derivation is pending.
 -/
 theorem exists_qSymb_small (hm : 1 ≤ m) {ε : ℝ} (hε : 0 < ε) :
     ∃ μ : ℝ, 0 < μ ∧ μ ≤ 1 ∧ ∀ ξ : E, ‖qSymb c w μ ξ‖ * Real.sqrt (1 + ‖ξ‖ ^ 2) ^ (m - 1) ≤ ε := by
@@ -339,15 +335,15 @@ theorem exists_qSymb_small (hm : 1 ≤ m) {ε : ℝ} (hε : 0 < ε) :
       _ ≤ ε := by linarith
 
 /- English proof (translation)
-Establish `hr0` using `norm_nonneg (rhoSymb c w μ ξ)`. Establish `hK : 4 ^ m ≤ 4 ^ m * (1 + (μ * cl ^ 2)⁻¹)`. Establish `: 0 ≤ (μ * cl ^ 2)⁻¹` using `by positivity`. Use polynomial arithmetic with `[pow_pos (by norm_num : (0:ℝ) < 4) m]`. Break down `le_or_gt 1 ‖ξ‖ with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hS` using `pow_le_pow_left₀ (Real.sqrt_nonneg _) (sqrt_one_add_norm_sq_le_two_mul h) (2 * m)`. Establish `hξ : 0 < ‖ξ‖` using `by linarith`. Establish `hp2 : (cl * ‖ξ‖ ^ m) ^ 2 ≤ ‖symb0 c w ξ‖ ^ 2` using `pow_le_pow_left₀ (by positivity) (hlow ξ) 2`. Establish `hpos : 0 < μ * cl ^ 2 * ‖ξ‖ ^ (2 * m)` using `by positivity`. Establish `hρ : ‖rhoSymb c w μ ξ‖ ≤ (μ * cl ^ 2 * ‖ξ‖ ^ (2 * m))⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_rhoSymb c w hμ.le]`. Apply `inv_anti₀ hpos` to reduce the goal to its premises. Establish `: μ * cl ^ 2 * ‖ξ‖ ^ (2 * m) = μ * (cl * ‖ξ‖ ^ m) ^ 2` using `by ring`. Rewrite using `[this]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, pow_mul 2 2 m]`. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Use `_ ≤ 4 ^ m * (1 + (μ * cl ^ 2)⁻¹) := by gcongr; linarith`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hS` using `pow_le_pow_left₀ (Real.sqrt_nonneg _) (sqrt_one_add_norm_sq_le_two h.le) (2 * m)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rhoSymb_mul_sqrt_pow_le {μ : ℝ} (hμ : 0 < μ) (ξ : E) :
     ‖rhoSymb c w μ ξ‖ * Real.sqrt (1 + ‖ξ‖ ^ 2) ^ (2 * m) ≤ 4 ^ m * (1 + (μ * cl ^ 2)⁻¹) := by
@@ -378,7 +374,7 @@ theorem rhoSymb_mul_sqrt_pow_le {μ : ℝ} (hμ : 0 < μ) (ξ : E) :
       _ ≤ _ := hK
 
 /- English proof (translation)
-Use `norm_le_of_mul_sqrt_pow_le (fun ξ ↦ ?_) ξ` and prove the remaining obligations. Rewrite using `[rNSymb, norm_pow, show 2 * m * N = (2 * m) * N by ring, pow_mul, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (by positivity) (rhoSymb_mul_sqrt_pow_le c w hcl hCu hlow hup hμ ξ) N`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rNSymb_bound {μ : ℝ} (hμ : 0 < μ) (N : ℕ) (ξ : E) :
     ‖rNSymb c w μ N ξ‖ ≤ (4 ^ m * (1 + (μ * cl ^ 2)⁻¹)) ^ N *
@@ -405,21 +401,21 @@ theorem bump_apply (x₀ : E) {r : ℝ} (hr : 0 < r) (x : E) :
     bump x₀ hr x = ((bumpR x₀ hr x : ℝ) : ℂ) := rfl
 
 /- English proof (translation)
-Rewrite using `[bump_apply, (bumpR x₀ hr).one_of_mem_closedBall hx, Complex.ofReal_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bump_eq_one (x₀ : E) {r : ℝ} (hr : 0 < r) {x : E} (hx : x ∈ Metric.closedBall x₀ r) :
     bump x₀ hr x = 1 := by
   rw [bump_apply, (bumpR x₀ hr).one_of_mem_closedBall hx, Complex.ofReal_one]
 
 /- English proof (translation)
-Rewrite using `[bump_apply, Complex.norm_real, Real.norm_of_nonneg (bumpR x₀ hr).nonneg]`. Conclude with `(bumpR x₀ hr).le_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_bump_le (x₀ : E) {r : ℝ} (hr : 0 < r) (x : E) : ‖bump x₀ hr x‖ ≤ 1 := by
   rw [bump_apply, Complex.norm_real, Real.norm_of_nonneg (bumpR x₀ hr).nonneg]
   exact (bumpR x₀ hr).le_one
 
 /- English proof (translation)
-Establish `: (bump x₀ hr : E → ℂ) = Complex.ofRealCLM ∘ (bumpR x₀ hr : E → ℝ)` using `rfl`. Rewrite using `[this]`. Use `(tsupport_comp_subset (g := Complex.ofRealCLM) (by simp) _).trans ?_` and prove the remaining obligations. Rewrite using `[(bumpR x₀ hr).tsupport_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tsupport_bump (x₀ : E) {r : ℝ} (hr : 0 < r) :
     tsupport (bump x₀ hr : E → ℂ) ⊆ Metric.closedBall x₀ (2 * r) := by
@@ -429,16 +425,16 @@ theorem tsupport_bump (x₀ : E) {r : ℝ} (hr : 0 < r) :
   rw [(bumpR x₀ hr).tsupport_eq]; rfl
 
 /- English proof (translation)
-The claim follows from `image_eq_zero_of_notMem_tsupport fun h ↦ hx (tsupport_bump x₀ hr h)`.
+A detailed English derivation is pending.
 -/
 theorem bump_eq_zero (x₀ : E) {r : ℝ} (hr : 0 < r) {x : E} (hx : x ∉ Metric.closedBall x₀ (2 * r)) :
     bump x₀ hr x = 0 :=
   image_eq_zero_of_notMem_tsupport fun h ↦ hx (tsupport_bump x₀ hr h)
 
 /- English proof (translation)
-Establish `h1 : (fun x ↦ g x - 1).HasTemperateGrowth` using `hg.sub (Function.HasTemperateGrowth.const 1)`. Establish `hts : tsupport (fun x ↦ g x - 1) ⊆ U`. Use `(closure_minimal ?_ hV.isClosed_compl).trans hVU` and prove the remaining obligations. Introduce `x hx hxV`. Conclude with `hx (by simp [hg1 x hxV])`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0` using `smulLeftCLM_eq_zero_of_isVanishingOn h1 hz hts`. Establish `e : smulLeftCLM ℂ (fun x ↦ g x - 1) z = smulLeftCLM ℂ g z - z`. Rewrite using `[show (fun x ↦ g x - 1) = g - fun _ ↦ (1 : ℂ) from rfl, smulLeftCLM_sub hg (Function.HasTemperateGrowth.const 1), sub_apply, smulLeftCLM_const, one_smul]`. Rewrite `h0` using `[e, sub_eq_zero]`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smulLeftCLM_eq_self {g : E → ℂ} (hg : g.HasTemperateGrowth) {V U : Set E} (hV : IsOpen V)
     (hg1 : ∀ x ∈ V, g x = 1) (hVU : Vᶜ ⊆ U) {z : 𝓢'(E, ℂ)} (hz : Distribution.IsVanishingOn z U) :
@@ -457,7 +453,7 @@ theorem smulLeftCLM_eq_self {g : E → ℂ} (hg : g.HasTemperateGrowth) {V U : S
   exact h0
 
 /- English proof (translation)
-Use `smulLeftCLM_eq_self (bump x₀ hr).hasTemperateGrowth Metric.isOpen_ball (fun x hx ↦ bump_eq_one x₀ hr (Metric.ball_subset_closedBall hx)) ?_ hz` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Set.mem_compl_iff, Metric.mem_ball, not_lt, Metric.mem_closedBall, not_le] at hx ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem bump_smul_eq_self (x₀ : E) {r ρ : ℝ} (hr : 0 < r) (hρ : ρ < r) {z : 𝓢'(E, ℂ)}
     (hz : Distribution.IsVanishingOn z (Metric.closedBall x₀ ρ)ᶜ) :
@@ -469,7 +465,7 @@ theorem bump_smul_eq_self (x₀ : E) {r ρ : ℝ} (hr : 0 < r) (hρ : ρ < r) {z
   linarith
 
 /- English proof (translation)
-Use extensionality with `φ`. Simplify using `only [smulLeftCLM_apply_apply]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [SchwartzMap.smulLeftCLM_apply_apply χ.hasTemperateGrowth, SchwartzMap.smulLeftCLM_apply_apply f.hasTemperateGrowth, SchwartzMap.smulLeftCLM_apply_apply (SchwartzMap.smulLeftCLM ℂ (χ : E → ℂ) f).hasTemperateGrowth, smul_eq_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -486,9 +482,9 @@ theorem smulLeftCLM_schwartz_mul (χ f : 𝓢(E, ℂ)) (v : 𝓢'(E, ℂ)) :
   ring
 
 /- English proof (translation)
-Use extensionality with `φ`. Simplify using `only [smulLeftCLM_apply_apply, sub_apply, smul_apply]`. Rewrite using `[← map_smul, ← map_sub]`. Use `congr 1`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [SchwartzMap.smulLeftCLM_apply_apply f.hasTemperateGrowth, SchwartzMap.smulLeftCLM_apply_apply g.hasTemperateGrowth, SchwartzMap.smulLeftCLM_apply_apply (f - c • g).hasTemperateGrowth, smul_eq_mul, sub_apply, smul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem smulLeftCLM_schwartz_sub_smul (f g : 𝓢(E, ℂ)) (c : ℂ) (v : 𝓢'(E, ℂ)) :
     smulLeftCLM ℂ ((f - c • g : 𝓢(E, ℂ)) : E → ℂ) v =
@@ -517,9 +513,9 @@ def locM {δ : ℝ} (hδ : 0 < δ) : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ) :=
 def P0 : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ) := constOp w (fun i ↦ a i x₀)
 
 /- English proof (translation)
-Establish `e : locCoeff a x₀ hδ i x = bump x₀ hδ x * (a i x - a i x₀)`. Simplify using `only [locCoeff, sub_apply, smul_apply, SchwartzMap.smulLeftCLM_apply_apply (bump x₀ hδ).hasTemperateGrowth, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul]`. Distinguish the cases in `hx : x ∈ Metric.closedBall x₀ (2 * δ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[bump_eq_zero x₀ hδ hx, norm_zero, zero_mul]`. Conclude with `hη`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_locCoeff_le {δ : ℝ} (hδ : 0 < δ) (i : Fin n) {η : ℝ} (hη : 0 ≤ η)
     (h : ∀ y ∈ Metric.closedBall x₀ (2 * δ), ‖a i y - a i x₀‖ ≤ η) (x : E) :
@@ -536,9 +532,9 @@ theorem norm_locCoeff_le {δ : ℝ} (hδ : 0 < δ) (i : Fin n) {η : ℝ} (hη :
   · rw [bump_eq_zero x₀ hδ hx, norm_zero, zero_mul]; exact hη
 
 /- English proof (translation)
-Establish `hU : IsOpen (Metric.closedBall x₀ ρ)ᶜ` using `Metric.isClosed_closedBall.isOpen_compl`. Establish `hv : ∀ i, Distribution.IsVanishingOn (iteratedLineDerivOpCLM ℂ 𝓢'(E, ℂ) (w i) u) (Metric.closedBall x₀ ρ)ᶜ` using `fun i ↦ isLocal_iteratedLineDeriv (w i) _ hU u hu`. Simplify using `only [iteratedLineDerivOpCLM_apply] at hv`. Simplify using `only [add_apply, locM, P0, prinOp, constOp, sum_apply, ContinuousLinearMap.comp_apply, smul_apply, iteratedLineDerivOpCLM_apply]`. Rewrite using `[bump_smul_eq_self x₀ hδ hρ (hNl _ hU u hu), ← add_assoc, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[locCoeff, smulLeftCLM_schwartz_sub_smul, smulLeftCLM_schwartz_mul, bump_smul_eq_self x₀ hδ hρ (isLocal_smulLeft (a i).hasTemperateGrowth _ hU _ (hv i)), bump_smul_eq_self x₀ hδ hρ (hv i)]`. Normalize the expressions using the abelian group laws.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem prinOp_add_apply_eq (hNl : IsLocal N) {δ ρ : ℝ} (hδ : 0 < δ) (hρ : ρ < δ) {u : 𝓢'(E, ℂ)}
     (hu : Distribution.IsVanishingOn u (Metric.closedBall x₀ ρ)ᶜ) :
@@ -567,14 +563,14 @@ namespace OpBound
 variable {A B : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)} {s t r C D : ℝ}
 
 /- English proof (translation)
-The claim follows from `memSobolev_of_sob_le ENNReal.ofReal_ne_top (h u hu) hu`.
+A detailed English derivation is pending.
 -/
 theorem memSobolev (h : OpBound A s t C) {u : 𝓢'(E, ℂ)} (hu : MemSobolev s 2 u) :
     MemSobolev t 2 (A u) :=
   memSobolev_of_sob_le ENNReal.ofReal_ne_top (h u hu) hu
 
 /- English proof (translation)
-The claim follows from `fun u hu ↦ by rw [ContinuousLinearMap.comp_apply, ENNReal.ofReal_mul hC, mul_assoc] exact (hA _ (hB.memSobolev hu)).trans (mul_le_mul_right (hB u hu) _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem comp (hA : OpBound A t r C) (hB : OpBound B s t D) (hC : 0 ≤ C) :
     OpBound (A ∘L B) s r (C * D) := fun u hu ↦ by
@@ -582,7 +578,7 @@ theorem comp (hA : OpBound A t r C) (hB : OpBound B s t D) (hC : 0 ≤ C) :
   exact (hA _ (hB.memSobolev hu)).trans (mul_le_mul_right (hB u hu) _)
 
 /- English proof (translation)
-The claim follows from `fun u hu ↦ by rw [add_apply, ENNReal.ofReal_add hC hD, add_mul] exact (sob_add_le _ _).trans (add_le_add (hA u hu) (hB u hu))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem add (hA : OpBound A s t C) (hB : OpBound B s t D) (hC : 0 ≤ C) (hD : 0 ≤ D) :
     OpBound (A + B) s t (C + D) := fun u hu ↦ by
@@ -590,21 +586,21 @@ theorem add (hA : OpBound A s t C) (hB : OpBound B s t D) (hC : 0 ≤ C) (hD : 0
   exact (sob_add_le _ _).trans (add_le_add (hA u hu) (hB u hu))
 
 /- English proof (translation)
-The claim follows from `fun u hu ↦ (hA u hu).trans (mul_le_mul_left (ENNReal.ofReal_le_ofReal hCD) _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mono (hA : OpBound A s t C) (hCD : C ≤ D) : OpBound A s t D := fun u hu ↦
   (hA u hu).trans (mul_le_mul_left (ENNReal.ofReal_le_ofReal hCD) _)
 
 /- English proof (translation)
-Substitute `hs ht` using the available equality. Conclude with `hA`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem congr_idx (hA : OpBound A s t C) {s' t' : ℝ} (hs : s' = s) (ht : t' = t) :
     OpBound A s' t' C := by subst hs ht; exact hA
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intro u _`. Simplify using `[sob_zero]`. Consider the case `insert a S ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h a (Finset.mem_insert_self a S)).add (ih (fun i hi ↦ hC i (Finset.mem_insert_of_mem hi)) fun i hi ↦ h i (Finset.mem_insert_of_mem hi)) (hC a (Finset.mem_insert_self a S)) (Finset.sum_nonneg fun i hi ↦ hC i (Finset.mem_insert_of_mem hi))`.
+A detailed English derivation is pending.
 -/
 theorem sum {ι : Type*} (S : Finset ι) {A : ι → 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)} {C : ι → ℝ}
     (hC : ∀ i ∈ S, 0 ≤ C i) (h : ∀ i ∈ S, OpBound (A i) s t (C i)) :
@@ -621,16 +617,16 @@ theorem sum {ι : Type*} (S : Finset ι) {A : ι → 𝓢'(E, ℂ) →L[ℂ] �
 end OpBound
 
 /- English proof (translation)
-The claim follows from `fun _ hu ↦ sob_fourierMultiplier_le hg hC hu`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem opBound_fourierMultiplier {g : E → ℂ} (hg : g.HasTemperateGrowth) {C s t : ℝ}
     (hC : ∀ ξ, ‖g ξ‖ ≤ C * (1 + ‖ξ‖ ^ 2) ^ ((s - t) / 2)) : OpBound (fourierMultiplierCLM ℂ g) s t C :=
   fun _ hu ↦ sob_fourierMultiplier_le hg hC hu
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite using `[iteratedLineDerivOpCLM_apply, iteratedLineDeriv_eq_fourierMultiplier]`. Use `sob_fourierMultiplier_le (derivSymb_hasTemperateGrowth w) (fun ξ ↦ ?_) hu` and prove the remaining obligations. Rewrite using `[show (s - (s - k)) / 2 = (k : ℝ) / 2 by ring, rpow_eq_sqrt_pow]`. Use `(norm_derivSymb_le w ξ).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `gcongr`. Conclude with `norm_le_sqrt_one_add_norm_sq ξ`.
+A detailed English derivation is pending.
 -/
 theorem opBound_iteratedLineDeriv {k : ℕ} (w : Fin k → E) (s : ℝ) :
     OpBound (iteratedLineDerivOpCLM ℂ 𝓢'(E, ℂ) w) s (s - k) (∏ j, (2 * Real.pi * ‖w j‖)) := by
@@ -643,27 +639,27 @@ theorem opBound_iteratedLineDeriv {k : ℕ} (w : Fin k → E) (s : ℝ) :
   exact norm_le_sqrt_one_add_norm_sq ξ
 
 /- English proof (translation)
-The claim follows from `fun _ hu ↦ sob_smulLeft_le χ s hu`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem opBound_smulLeft (χ : 𝓢(E, ℂ)) (s : ℝ) :
     OpBound (smulLeftCLM ℂ (χ : E → ℂ)) s s (mulConst s χ) :=
   fun _ hu ↦ sob_smulLeft_le χ s hu
 
 /- English proof (translation)
-The claim follows from `fun _ hu ↦ sob_mulPrin_le χ hM0 hM s hu`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem opBound_mulPrin (χ : 𝓢(E, ℂ)) {M : ℝ} (hM0 : 0 ≤ M) (hM : ∀ x, ‖χ x‖ ≤ M) (s : ℝ) :
     OpBound (mulPrin χ s) s s M :=
   fun _ hu ↦ sob_mulPrin_le χ hM0 hM s hu
 
 /- English proof (translation)
-Establish `hmem : ∀ v : SobolevSpace E ℂ s, MemSobolev s 2 (z - K (SobolevSpace.toDistribution v))` using `fun v ↦ (SobolevSpace.exists_toDistribution_eq_iff _).1 ⟨SobolevSpace.mk z hz - SobolevSpace.mk _ (hK.memSobolev (SobolevSpace.memSobolev_toDistribution v)), by simp⟩`. Set `f : SobolevSpace E ℂ s → SobolevSpace E ℂ s` to `fun v ↦ SobolevSpace.mk _ (hmem v)`. Establish `hf : ContractingWith (1 / 2 : NNReal) f`. Use `⟨by rw [← NNReal.coe_lt_coe]; norm_num, LipschitzWith.of_dist_le_mul fun v v' ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[dist_eq_norm, dist_eq_norm]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e : f v - f v' = SobolevSpace.mk (K (SobolevSpace.toDistribution (v' - v))) (hK.memSobolev (SobolevSpace.memSobolev_toDistribution _))`. Apply `SobolevSpace.toDistribution_injective` to reduce the goal to its premises. Simplify using `[f, map_sub]`. Rewrite using `[e]`. Establish `h` using `hK _ (SobolevSpace.memSobolev_toDistribution (v' - v))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[sob_of_mem (hK.memSobolev (SobolevSpace.memSobolev_toDistribution _)), sob_toDistribution, ← ofReal_norm, ← ofReal_norm, ← ENNReal.ofReal_mul (by norm_num)]`. Establish `h'` using `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 h`. Rewrite `h'` using `[norm_sub_rev]`. Simplify using `using h'`. Take `⟨v, hv⟩ : ∃ v, f v = v` from `⟨_, hf.fixedPoint_isFixedPt (f := f)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `⟨SobolevSpace.toDistribution v, SobolevSpace.memSobolev_toDistribution v, ?_⟩` and prove the remaining obligations. Use `congrArg SobolevSpace.toDistribution hv` as an intermediate fact. Simplify using `only [f, SobolevSpace.toDistribution_mk] at this`. Conclude with `eq_sub_iff_add_eq.1 this.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_add_eq_of_opBound {K : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)} {s : ℝ} (hK : OpBound K s s (1 / 2))
     {z : 𝓢'(E, ℂ)} (hz : MemSobolev s 2 z) : ∃ v, MemSobolev s 2 v ∧ v + K v = z := by
@@ -693,9 +689,9 @@ theorem exists_add_eq_of_opBound {K : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)} {s 
   exact eq_sub_iff_add_eq.1 this.symm
 
 /- English proof (translation)
-Establish `e : v = -K v` using `eq_neg_of_add_eq_zero_left h`. Establish `h1 : sob s v ≤ ENNReal.ofReal (1 / 2) * sob s v`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h1` using `[sob_of_mem hv, ← ofReal_norm, ← ENNReal.ofReal_mul (by norm_num)]`. Establish `h2` using `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : ‖(SobolevSpace.mk v hv : SobolevSpace E ℂ s)‖ = 0`. Combine the linear relations using `[norm_nonneg (SobolevSpace.mk v hv : SobolevSpace E ℂ s)]`. Use `congrArg SobolevSpace.toDistribution (norm_eq_zero.1 hx)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_add_eq_zero {K : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)} {s : ℝ} (hK : OpBound K s s (1 / 2))
     {v : 𝓢'(E, ℂ)} (hv : MemSobolev s 2 v) (h : v + K v = 0) : v = 0 := by
@@ -712,9 +708,9 @@ theorem eq_zero_of_add_eq_zero {K : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)} {s : 
   simpa using this
 
 /- English proof (translation)
-Use `ext1 u`. Rewrite using `[show (fun ξ ↦ 1 - r ξ) = (fun _ ↦ (1 : ℂ)) - r from rfl, fourierMultiplierCLM_apply, smulLeftCLM_sub (Function.HasTemperateGrowth.const 1) hr, sub_apply, smulLeftCLM_const, one_smul]`. Establish `e : ∀ x y : 𝓢'(E, ℂ), 𝓕⁻ (x - y) = 𝓕⁻ x - 𝓕⁻ y` using `fun x y ↦ by`. Rewrite using `[sub_eq_add_neg, FourierTransform.fourierInv_add, FourierTransform.fourierInv_neg, ← sub_eq_add_neg]`. Rewrite using `[e, FourierTransform.fourierInv_fourier_eq, sub_apply, fourierMultiplierCLM_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem fourierMultiplierCLM_one_sub {r : E → ℂ} (hr : r.HasTemperateGrowth) :
     fourierMultiplierCLM ℂ (fun ξ ↦ 1 - r ξ) =
@@ -740,7 +736,7 @@ def Rop (μ : ℝ) (k : ℕ) : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ) :=
   fourierMultiplierCLM ℂ (rNSymb (fun i ↦ a i x₀) w μ k)
 
 /- English proof (translation)
-Rewrite using `[Qop, P0, constOp_eq_symb0, fourierMultiplierCLM_compL_fourierMultiplierCLM (parametrixSymbol_hasTemperateGrowth _ w) (qNSymb_hasTemperateGrowth _ w μ k), Rop, ← fourierMultiplierCLM_one_sub (rNSymb_hasTemperateGrowth _ w μ k)]`. Use `congr 1`. Use extensionality with `ξ`. Conclude with `parametrixSymbol_mul_inverseSymbolOfOrder _ w hμ k ξ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem parametrix_comp_frozenOperator {μ : ℝ} (hμ : 0 ≤ μ) (k : ℕ) :
     Qop a w x₀ μ k ∘L P0 a w x₀ = ContinuousLinearMap.id ℂ 𝓢'(E, ℂ) - Rop a w x₀ μ k := by
@@ -751,7 +747,7 @@ theorem parametrix_comp_frozenOperator {μ : ℝ} (hμ : 0 ≤ μ) (k : ℕ) :
   exact parametrixSymbol_mul_inverseSymbolOfOrder _ w hμ k ξ
 
 /- English proof (translation)
-Rewrite using `[Qop, P0, constOp_eq_symb0, fourierMultiplierCLM_compL_fourierMultiplierCLM (qNSymb_hasTemperateGrowth _ w μ k) (parametrixSymbol_hasTemperateGrowth _ w), Rop, ← fourierMultiplierCLM_one_sub (rNSymb_hasTemperateGrowth _ w μ k)]`. Use `congr 1`. Use extensionality with `ξ`. Rewrite using `[Pi.mul_apply, mul_comm]`. Conclude with `parametrixSymbol_mul_inverseSymbolOfOrder _ w hμ k ξ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frozenOperator_comp_parametrix {μ : ℝ} (hμ : 0 ≤ μ) (k : ℕ) :
     P0 a w x₀ ∘L Qop a w x₀ μ k = ContinuousLinearMap.id ℂ 𝓢'(E, ℂ) - Rop a w x₀ μ k := by
@@ -768,7 +764,7 @@ variable {cl Cu : ℝ} (hcl : 0 < cl) (hCu : 0 ≤ Cu)
 include hcl hCu hlow hup
 
 /- English proof (translation)
-The claim follows from `opBound_fourierMultiplier (qNSymb_hasTemperateGrowth _ w μ k) fun ξ ↦ by rw [show (s - m - s) / 2 = -(m : ℝ) / 2 by ring] exact qNSymb_bound _ w hcl hCu hlow hup hμ0 hμ1 k ξ`.
+A detailed English derivation is pending.
 -/
 theorem opBound_Qop {μ : ℝ} (hμ0 : 0 ≤ μ) (hμ1 : μ ≤ 1) (k : ℕ) (s : ℝ) :
     OpBound (Qop a w x₀ μ k) (s - m) s (k * (2 ^ m * (cl⁻¹ + Cu))) :=
@@ -777,7 +773,7 @@ theorem opBound_Qop {μ : ℝ} (hμ0 : 0 ≤ μ) (hμ1 : μ ≤ 1) (k : ℕ) (s 
     exact qNSymb_bound _ w hcl hCu hlow hup hμ0 hμ1 k ξ
 
 /- English proof (translation)
-The claim follows from `opBound_fourierMultiplier (qNSymb_hasTemperateGrowth _ w μ k) fun ξ ↦ by have h := norm_le_of_mul_sqrt_pow_le hsmall ξ rw [show (s - m + 1 - s) / 2 = -((m - 1 : ℕ) : ℝ) / 2 by push_cast [hm]; ring] calc ‖qNSymb _ w μ k ξ‖ ≤ k * ‖qSymb (fun i ↦ a i x₀) w μ ξ‖ := norm_qNSymb_le _ w …`.
+A detailed English derivation is pending.
 -/
 theorem opBound_Qop_small (hm : 1 ≤ m) {μ ε : ℝ} (hμ0 : 0 ≤ μ)
     (hsmall : ∀ ξ : E, ‖qSymb (fun i ↦ a i x₀) w μ ξ‖ * Real.sqrt (1 + ‖ξ‖ ^ 2) ^ (m - 1) ≤ ε)
@@ -790,7 +786,7 @@ theorem opBound_Qop_small (hm : 1 ≤ m) {μ ε : ℝ} (hμ0 : 0 ≤ μ)
       _ = _ := by ring
 
 /- English proof (translation)
-The claim follows from `opBound_fourierMultiplier (rNSymb_hasTemperateGrowth _ w μ k) fun ξ ↦ by rw [show (s - (s + ((2 * m * k : ℕ) : ℝ))) / 2 = -((2 * m * k : ℕ) : ℝ) / 2 by ring] exact rNSymb_bound _ w hcl hCu hlow hup hμ k ξ`.
+A detailed English derivation is pending.
 -/
 theorem opBound_Rop {μ : ℝ} (hμ : 0 < μ) (k : ℕ) (s : ℝ) :
     OpBound (Rop a w x₀ μ k) s (s + (2 * m * k : ℕ)) ((4 ^ m * (1 + (μ * cl ^ 2)⁻¹)) ^ k) :=
@@ -806,9 +802,9 @@ variable {m n : ℕ} (a : Fin n → 𝓢(E, ℂ)) (w : Fin n → Fin m → E) (N
   (x₀ : E)
 
 /- English proof (translation)
-Establish `hev : ∀ᶠ y in nhds x₀, ∀ i, a i y ∈ Metric.ball (a i x₀) η` using `Filter.eventually_all.2 fun i ↦ (a i).continuous.continuousAt.eventually_mem (Metric.ball_mem_nhds _ hη)`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.1 hev`. Use `⟨ε / 4, by positivity, fun i y hy ↦ ?_⟩` and prove the remaining obligations. Establish `hy' : y ∈ Metric.ball x₀ ε`. Rewrite `hy` using `[Metric.mem_closedBall]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Metric.mem_ball]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `hball y hy' i` as an intermediate fact. Rewrite `this` using `[Metric.mem_ball, dist_eq_norm]`. Conclude with `this.le`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coeff_small {η : ℝ} (hη : 0 < η) :
     ∃ δ, 0 < δ ∧ ∀ i, ∀ y ∈ Metric.closedBall x₀ (2 * δ), ‖a i y - a i x₀‖ ≤ η := by
@@ -824,13 +820,13 @@ theorem exists_coeff_small {η : ℝ} (hη : 0 < η) :
   exact this.le
 
 /- English proof (translation)
-Establish `hP : ∀ i, 0 ≤ ∏ j, (2 * Real.pi * ‖w i j‖)` using `fun i ↦ Finset.prod_nonneg fun j _ ↦ by positivity`. Establish `e : Q ∘L locM a w N x₀ hδ = ∑ i, (Q ∘L (mulPrin (locCoeff a x₀ hδ i) (s - m) ∘L iteratedLineDerivOpCLM ℂ 𝓢'(E, ℂ) (w i)) + Q ∘L (mulRem (locCoeff a x₀ hδ i) (s - m) ∘L iteratedLineDerivOpCLM ℂ 𝓢'(E, ℂ) (w i))) + Q ∘L (smulLeftCLM ℂ (bump x₀ hδ : E → ℂ) ∘L N)` using `by ext1 u`. Simplify using `only [locM, prinOp, ContinuousLinearMap.comp_apply, add_apply, sum_apply, map_add, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smulLeftCLM_eq_mulPrin_add_mulRem _ (s - m), map_add]`. Rewrite using `[e]`. Establish `hterm : ∀ i ∈ Finset.univ, OpBound (Q ∘L (mulPrin (locCoeff a x₀ hδ i) (s - m) ∘L iteratedLineDerivOpCLM ℂ 𝓢'(E, ℂ) (w i)) + Q ∘L (mulRem (locCoeff a x₀ hδ i) (s - m) ∘L iteratedLineDerivOpCLM ℂ 𝓢'(E, ℂ) (w i))) s s (CQ * (η * ∏ j, (2 * Real.pi * ‖w i j‖)) + κ * (Cr i * ∏ j, (2 * …`. Introduce `i _`. Establish `h1` using `hQ.comp ((opBound_mulPrin _ hη (hg i) (s - m)).comp (opBound_iteratedLineDeriv (w i) s) hη) hCQ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `hQs.comp ((hCr i).comp (opBound_iteratedLineDeriv (w i) s) (hCr0 i)) hκ`. Conclude with `h1.add h2 (by have := hP i; positivity) (by have := hP i; have := hCr0 i; positivity)`. Establish `hsum` using `OpBound.sum Finset.univ (fun i _ ↦ by have := hP i; have := hCr0 i; positivity) hterm`. Establish `h3` using `hQs.comp ((opBound_smulLeft (bump x₀ hδ) (s - m + 1)).comp hCN (mulConst_nonneg _ _)) hκ`. Use `(hsum.add h3 (Finset.sum_nonneg fun i _ ↦ by have := hP i; have := hCr0 i; positivity) (by have := mulConst_nonneg (s - m + 1) (bump x₀ hδ); positivity)).mono (le_of_eq ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem opBound_Q_locM {δ : ℝ} (hδ : 0 < δ) (Q : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)) (s : ℝ)
     {η CQ κ : ℝ} (hη : 0 ≤ η) (hCQ : 0 ≤ CQ) (hκ : 0 ≤ κ)
@@ -872,15 +868,15 @@ theorem opBound_Q_locM {δ : ℝ} (hδ : 0 < δ) (Q : 𝓢'(E, ℂ) →L[ℂ] �
   ring
 
 /- English proof (translation)
-Establish `hP : ∀ i, 0 ≤ ∏ j, (2 * Real.pi * ‖w i j‖)` using `fun i ↦ Finset.prod_nonneg fun j _ ↦ by positivity`. Establish `e : locM a w N x₀ hδ ∘L Q = ∑ i, (mulPrin (locCoeff a x₀ hδ i) s ∘L (iteratedLineDerivOpCLM ℂ 𝓢'(E, ℂ) (w i) ∘L Q) + mulRem (locCoeff a x₀ hδ i) s ∘L (iteratedLineDerivOpCLM ℂ 𝓢'(E, ℂ) (w i) ∘L Q)) + smulLeftCLM ℂ (bump x₀ hδ : E → ℂ) ∘L (N ∘L Q)` using `by ext1 u`. Simplify using `only [locM, prinOp, ContinuousLinearMap.comp_apply, add_apply, sum_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smulLeftCLM_eq_mulPrin_add_mulRem _ s]`. Rewrite using `[e]`. Establish `hterm : ∀ i ∈ Finset.univ, OpBound (mulPrin (locCoeff a x₀ hδ i) s ∘L (iteratedLineDerivOpCLM ℂ 𝓢'(E, ℂ) (w i) ∘L Q) + mulRem (locCoeff a x₀ hδ i) s ∘L (iteratedLineDerivOpCLM ℂ 𝓢'(E, ℂ) (w i) ∘L Q)) s s (η * ((∏ j, (2 * Real.pi * ‖w i j‖)) * CQ) + Cr i * ((∏ j, (2 * Real.pi * ‖w …`. Introduce `i _`. Establish `h1` using `(opBound_mulPrin _ hη (hg i) s).comp (((opBound_iteratedLineDeriv (w i) (s + m)).congr_idx rfl (by ring)).comp hQ (hP i)) hη`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `(hCr i).comp (((opBound_iteratedLineDeriv (w i) (s + m - 1)).congr_idx rfl (by ring)).comp hQs (hP i)) (hCr0 i)`. Conclude with `h1.add h2 (by have := hP i; positivity) (by have := hP i; have := hCr0 i; positivity)`. Establish `hsum` using `OpBound.sum Finset.univ (fun i _ ↦ by have := hP i; have := hCr0 i; positivity) hterm`. Establish `h3` using `(opBound_smulLeft (bump x₀ hδ) s).comp (hCN.comp hQs hCN0) (mulConst_nonneg _ _)`. Use `(hsum.add h3 (Finset.sum_nonneg fun i _ ↦ by have := hP i; have := hCr0 i; positivity) (by have := mulConst_nonneg s (bump x₀ hδ); positivity)).mono (le_of_eq ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_add_distrib]`. Establish `e1 : ∑ i, η * ((∏ j, (2 * Real.pi * ‖w i j‖)) * CQ) = CQ * (η * ∑ i, ∏ j, (2 * Real.pi * ‖w i j‖))`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ ↦ by ring`. Establish `e2 : ∑ i, Cr i * ((∏ j, (2 * Real.pi * ‖w i j‖)) * κ) = κ * ∑ i, Cr i * ∏ j, (2 * Real.pi * ‖w i j‖)`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ ↦ by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem opBound_locM_Q {δ : ℝ} (hδ : 0 < δ) (Q : 𝓢'(E, ℂ) →L[ℂ] 𝓢'(E, ℂ)) (s : ℝ)
     {η CQ κ : ℝ} (hη : 0 ≤ η) (hCQ : 0 ≤ CQ) (hκ : 0 ≤ κ)
@@ -939,33 +935,31 @@ variable {m n : ℕ} (a : Fin n → 𝓢(E, ℂ)) (w : Fin n → Fin m → E) (N
 include hcl hCu hlow hup
 
 /- English proof (translation)
-Establish `hP : ∀ i, 0 ≤ ∏ j, (2 * Real.pi * ‖w i j‖)` using `fun i ↦ Finset.prod_nonneg fun j _ ↦ by positivity`. Take `⟨CQ, hCQ0, hCQ_def⟩ : ∃ CQ : ℝ, 0 ≤ CQ ∧ CQ = k * (2 ^ m * (cl⁻¹ + Cu))` from `⟨_, by positivity, rfl⟩`. Take `⟨SP, hSP0, hSP_def⟩ : ∃ SP : ℝ, 0 ≤ SP ∧ SP = ∑ i, ∏ j, (2 * Real.pi * ‖w i j‖)` from `⟨_, Finset.sum_nonneg fun i _ ↦ hP i, rfl⟩`. Take `⟨η, hη, hη_def⟩ : ∃ η : ℝ, 0 < η ∧ η = 1 / (4 * (CQ * SP + 1))` from `⟨_, by positivity, rfl⟩`. Take `⟨δ, hδ, hsmall⟩` from `exists_coeff_small a x₀ hη`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨δ, hδ, fun S ↦ ?_⟩` and prove the remaining obligations. Establish `hg : ∀ i x, ‖locCoeff a x₀ hδ i x‖ ≤ η` using `fun i ↦ norm_locCoeff_le a x₀ hδ i hη.le (hsmall i)`. Establish `hrem : ∀ (i : Fin n) (r t : ℝ), ∃ C, 0 ≤ C ∧ OpBound (mulRem (locCoeff a x₀ hδ i) r) t (t + 1) C`. Introduce `i r t`. Take `⟨C, hC0, hC⟩` from `hasOrder_mulRem (locCoeff a x₀ hδ i) r t`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨C, hC0, fun u hu ↦ by simpa using hC u hu⟩`. Use `choose Cr hCr0 hCr using hrem`. Establish `hNb : ∀ r : ℝ, ∃ C, 0 ≤ C ∧ OpBound N r (r - m + 1) C`. Introduce `r`. Take `⟨C, hC0, hC⟩` from `hN r`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨C, hC0, fun u hu ↦ by`. Use `hC u hu; rwa [show r - ((m : ℝ) - 1) = r - m + 1 by ring] at this⟩` as an intermediate fact. Use `choose CN hCN0 hCN using hNb`. Choose the witnesses or unpack the hypotheses as in `⟨X, hX0, hX_def⟩ : ∃ X : ℝ → ℝ, (∀ s, 0 ≤ X s) ∧ X = fun s ↦ (∑ i, Cr i (s - m) (s - m) * ∏ j, (2 * Real.pi * ‖w i j‖) + mulConst (s - m + 1) (bump x₀ hδ) * CN s) + (∑ i, Cr i s (s - 1) * ∏ j, (2 * Real.pi * ‖w i j‖) + mulConst s (bump x₀ hδ) * CN (s + m - 1)) := by`. Use `⟨_, fun s ↦ ?_, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Finset.sum_nonneg fun i (_ : i ∈ Finset.univ) ↦ mul_nonneg (hCr0 i (s - m) (s - m)) (hP i)`. Establish `h2` using `Finset.sum_nonneg fun i (_ : i ∈ Finset.univ) ↦ mul_nonneg (hCr0 i s (s - 1)) (hP i)`. Use `mulConst_nonneg (s - m + 1) (bump x₀ hδ)` as an intermediate fact. Use `mulConst_nonneg s (bump x₀ hδ)` as an intermediate fact. Use `hCN0 s` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Use `hCN0 (s + m - 1)` as an intermediate fact. Check the signs of the components of the expression. Establish `hSum : 0 ≤ ∑ s ∈ S, X s` using `Finset.sum_nonneg fun s _ ↦ hX0 s`. Take `⟨ε, hε, hε_def⟩ : ∃ ε : ℝ, 0 < ε ∧ ε = 1 / (4 * (k + 1) * (∑ s ∈ S, X s + 1))` from `⟨_, by positivity, rfl⟩`. Take `⟨μ, hμ0, hμ1, hq⟩` from `exists_qSymb_small _ w hcl hCu hlow hup hm hε`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨μ, hμ0, hμ1, fun s hs ↦ ?_⟩` and prove the remaining obligations. Establish `hXs : X s ≤ ∑ s ∈ S, X s` using `Finset.single_le_sum (fun s _ ↦ hX0 s) hs`. Establish `hkε : (k : ℝ) * ε * X s ≤ 1 / 4`. Establish `h1 : (k : ℝ) * X s ≤ (k + 1) * (∑ s ∈ S, X s + 1)`. Use `hX0 s` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hpos : 0 < 4 * (k + 1) * (∑ s ∈ S, X s + 1)` using `by positivity`. Rewrite using `[hε_def, show (k : ℝ) * (1 / (4 * (k + 1) * (∑ s ∈ S, X s + 1))) * X s = (k * X s) / (4 * (k + 1) * (∑ s ∈ S, X s + 1)) by ring, div_le_iff₀ hpos]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hηSP : CQ * (η * SP) ≤ 1 / 4`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[hη_def, show CQ * (1 / (4 * (CQ * SP + 1)) * SP) = (CQ * SP) / (4 * (CQ * SP + 1)) by ring, div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hQ : ∀ t, OpBound (Qop a w x₀ μ k) (t - m) t CQ` using `fun t ↦ by`. Rewrite using `[hCQ_def]`. Conclude with `opBound_Qop a w x₀ hcl hCu hlow hup hμ0.le hμ1 k t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQs : ∀ t, OpBound (Qop a w x₀ μ k) (t - m + 1) t (k * ε)` using `opBound_Qop_small a w x₀ hcl hCu hlow hup hm hμ0.le hq k`. Establish `hkε0 : 0 ≤ (k : ℝ) * ε` using `by positivity`. Establish `hXs_def` using `congrFun hX_def s`. Prove the components needed by the constructor for the conclusion. Use `(opBound_Q_locM a w N x₀ hδ _ s hη.le hCQ0 hkε0 hg (hQ s) (hQs s) (fun i ↦ hCr0 i (s - m) (s - m)) (fun i ↦ (hCr i (s - m) (s - m)).congr_idx rfl (by ring)) (hCN0 s) (hCN s)).mono ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hSP_def]`. Establish `: ∑ i, Cr i (s - m) (s - m) * ∏ j, (2 * Real.pi * ‖w i j‖) + mulConst (s - m + 1) (bump x₀ hδ) * CN s ≤ X s`. Establish `h2` using `Finset.sum_nonneg fun i (_ : i ∈ Finset.univ) ↦ mul_nonneg (hCr0 i s (s - 1)) (hP i)`. Use `mulConst_nonneg s (bump x₀ hδ)` as an intermediate fact. Use `hCN0 (s + m - 1)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[hXs_def]`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Use `(opBound_locM_Q a w N x₀ hδ _ s hη.le hCQ0 hkε0 hg ((hQ (s + m)).congr_idx (by ring) rfl) ((hQs (s + m - 1)).congr_idx (by ring) rfl) (fun i ↦ hCr0 i s (s - 1)) (fun i ↦ (hCr i s (s - 1)).congr_idx rfl (by ring)) (hCN0 (s + m - 1)) ((hCN (s + m - 1)).congr_idx rfl (by ring))).mon …` and prove the remaining obligations. Rewrite using `[← hSP_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ∑ i, Cr i s (s - 1) * ∏ j, (2 * Real.pi * ‖w i j‖) + mulConst s (bump x₀ hδ) * CN (s + m - 1) ≤ X s`. Establish `h1` using `Finset.sum_nonneg fun i (_ : i ∈ Finset.univ) ↦ mul_nonneg (hCr0 i (s - m) (s - m)) (hP i)`. Use `mulConst_nonneg (s - m + 1) (bump x₀ hδ)` as an intermediate fact. Use `hCN0 s` as an intermediate fact. Rewrite using `[hXs_def]`.
-
-Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_small (hm : 1 ≤ m) (hN : HasOrder N ((m : ℝ) - 1)) (k : ℕ) :
     ∃ δ, ∃ hδ : 0 < δ, ∀ S : Finset ℝ, ∃ μ, 0 < μ ∧ μ ≤ 1 ∧ ∀ s ∈ S,

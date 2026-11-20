@@ -6,9 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Loca
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.HV UpperTheory.V.Alg GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, -, hy⟩`. Conclude with `⟨y, hy⟩`. Introduce and unpack `⟨y, hy⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y, Submodule.mem_top, hy⟩`.
+Supply the required witnesses or components.
 -/
 private theorem mem_pow_smul {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (t : A) (N : ℕ) (x : M) :
     x ∈ (Ideal.span {t} ^ N • (⊤ : Submodule A M)) ↔ ∃ y, t ^ N • y = x := by
@@ -20,11 +20,11 @@ private theorem mem_pow_smul {A M : Type} [CommRing A] [AddCommGroup M] [Module 
     exact ⟨y, Submodule.mem_top, hy⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `Submodule.smul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `r hr n _ i`. Simplify using `using J.mul_mem_right (n i) hr`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `a b ha hb i`. Simplify using `using J.add_mem (ha i) (hb i)`. Introduce `hx`. Establish `hsum : x = ∑ i, x i • (Pi.single i (1 : R) : Fin r → R)`. Use extensionality with `j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hx i) Submodule.mem_top`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_smul_top_pi {R : Type} [CommRing R] (J : Ideal R) {r : ℕ} (x : Fin r → R) :
     x ∈ J • (⊤ : Submodule R (Fin r → R)) ↔ ∀ i, x i ∈ J := by
@@ -43,9 +43,9 @@ private theorem mem_smul_top_pi {R : Type} [CommRing R] (J : Ideal R) {r : ℕ} 
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hx i) Submodule.mem_top
 
 /- English proof (translation)
-Establish `key : ∀ a b : Fin r → R, (J • (⊤ : Submodule R (Fin r → R))).mkQ a = (J • (⊤ : Submodule R (Fin r → R))).mkQ b ↔ ∀ i, Ideal.Quotient.mk J (a i) = Ideal.Quotient.mk J (b i)`. Introduce `a b`. Simplify using `only [Submodule.mkQ_apply, Submodule.Quotient.eq, Ideal.Quotient.eq, mem_smul_top_pi]`. Both sides reduce to the same expression. Simplify using `only [IsLocallyConstant.iff_eventually_eq, key]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h i x`. Conclude with `(h x).mono fun y hy => hy i`. Introduce `h x`. Conclude with `Filter.eventually_all.mpr fun i => h i x`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem lc_iff {R G : Type} [CommRing R] [TopologicalSpace G] (J : Ideal R) {r : ℕ} (f : G → Fin r → R) :
     (IsLocallyConstant fun g => (J • (⊤ : Submodule R (Fin r → R))).mkQ (f g)) ↔
@@ -63,61 +63,49 @@ private theorem lc_iff {R G : Type} [CommRing R] [TopologicalSpace G] (J : Ideal
     exact Filter.eventually_all.mpr fun i => h i x
 
 /- English proof (translation)
-Substitute `hI` using the available equality. Establish `htinj : ∀ x : M, t • x = 0 → x = 0`. Introduce `x hx`. Set `b` to `Module.Free.chooseBasis R M`. Apply `b.repr.injective` to reduce the goal to its premises.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `i`. Establish `h` using `congrArg (fun y => b.repr y i) hx`. Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.coe_zero, Pi.zero_apply] at h`. Simplify using `using (mul_eq_zero.mp h).resolve_left ht0`. Establish `hcancel : ∀ a b : M, t • a = t • b → a = b` using `fun a b h => sub_eq_zero.mp (htinj _ (by rw [smul_sub, h, sub_self]))`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hMh : ∀ x : M, (∀ n : ℕ, ∃ y, t ^ n • y = x) → x = 0`. Introduce `x hx`. Establish `hle : Ideal.span {t} ≤ (⊥ : Ideal R).jacobson`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Conclude with `IsLocalRing.le_maximalIdeal hIne`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `Ideal.iInf_pow_smul_eq_bot_of_le_jacobson (M := M) _ hle`. Establish `hx' : x ∈ ⨅ i, Ideal.span {t} ^ i • (⊤ : Submodule R M)` using `(Submodule.mem_iInf _).mpr fun n => (mem_pow_smul t n x).mpr (hx n)`. Rewrite `hx'` using `[h]`. Simplify using `using hx'`. Set `C : Submodule R (G → M)` to `{ carrier := {z | (∀ N : ℕ, IsLocallyConstant fun g => (Ideal.span {t} ^ N • (⊤ : Submodule R M)).mkQ (z g)) ∧ ∀ g h, z (g * h) = z g + ρ g (z h)} add_mem' := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `a b ⟨ha1, ha2⟩ ⟨hb1, hb2⟩`. Use `⟨fun N => ?_, fun g h => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, map_add]`. Conclude with `(ha1 N).add (hb1 N)`. Simplify using `only [Pi.add_apply, ha2, hb2, map_add]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Use the proof step `zero_mem' := ⟨fun N => by`. Simplify using `only [Pi.zero_apply, map_zero]`. Conclude with `IsLocallyConstant.const 0,`. Use `fun g h => by simp⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `smul_mem' := by`. Introduce and unpack `r a ⟨ha1, ha2⟩`. Use `⟨fun N => ?_, fun g h => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, map_smul]`. Conclude with `(ha1 N).comp (fun q => r • q)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, ha2, smul_add, map_smul] }`. Establish `hZC : Z ≤ C` using `fun z hz => hZ z hz`. Use `haveI : Finite (R ⧸ Ideal.span {t}) := hfq`. Use `haveI hM'fin : Finite (M ⧸ Ideal.span {t} • (⊤ : Submodule R M)) := Module.finite_of_finite (R ⧸ Ideal.span {t})`. Set `ρ' : G →* AddMonoid.End (M ⧸ Ideal.span {t} • (⊤ : Submodule R M))` to `{ toFun := fun g => ((Ideal.span {t} • (⊤ : Submodule R M)).mapQ _ (ρ g) (Submodule.smul_top_le_comap_smul_top _ _)).toAddMonoidHom map_one' := by`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Use `AddMonoidHom.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H x`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `map_mul' := by`. Introduce `g h`. Use `AddMonoidHom.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H x`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Simplify using `[Module.End.mul_apply]`. Use `rfl }`. Establish `hρ' : ∀ g x, ρ' g (Submodule.Quotient.mk x) = Submodule.Quotient.mk (ρ g x)` using `fun g x => rfl`. Establish `hS` using `UpperTheory.V.Pa.Det.locallyConstant_cocycles_finite_of_phi l ρ' hΦ (by`. Introduce `m`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Proceed by induction on `m using Submodule.Quotient.induction_on with`. Consider the case `H x`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, ← Nat.cast_smul_eq_nsmul R]`. Conclude with `Submodule.smul_mem_smul hlI Submodule.mem_top)`. Use the proof step `(by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `m`. Proceed by induction on `m using Submodule.Quotient.induction_on with`. Consider the case `H x`. Establish `h1` using `hρ 1 x`. Rewrite `h1` using `[pow_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1)`. Set `Ψ : C →ₗ[R] (G → M ⧸ Ideal.span {t} • (⊤ : Submodule R M))` to `LinearMap.pi fun g => (Ideal.span {t} • (⊤ : Submodule R M)).mkQ ∘ₗ (LinearMap.proj g ∘ₗ C.subtype)`. Establish `hΨ : ∀ z g, Ψ z g = Submodule.Quotient.mk (z.1 g)` using `fun z g => rfl`. Establish `hrange : ∀ z, Ψ z ∈ {z : G → M ⧸ Ideal.span {t} • (⊤ : Submodule R M) | IsLocallyConstant z ∧ ∀ g h, z (g * h) = z g + ρ' g (z h)}`. Introduce `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hz1, hz2⟩` from `z.2`. Use `⟨?_, fun g h => ?_⟩` and prove the remaining obligations. Establish `h1` using `hz1 1`. Rewrite `h1` using `[pow_one]`. Conclude with `h1`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΨ, hΨ, hΨ, hz2, hρ', Submodule.Quotient.mk_add]`. Establish `hker : LinearMap.ker Ψ = Ideal.span {t} • (⊤ : Submodule R C)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `z hz`. Establish `hz' : ∀ g, ∃ y, t • y = z.1 g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Establish `h0 : Ψ z g = 0` using `congrFun (LinearMap.mem_ker.mp hz) g`. Rewrite `h0` using `[hΨ, Submodule.Quotient.mk_eq_zero, ← pow_one (Ideal.span {t})]`. Take `⟨y, hy⟩` from `(mem_pow_smul t 1 _).mp h0`. Conclude with `⟨y, by simpa using hy⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose y hy using hz'`. Take `⟨hz1, hz2⟩` from `z.2`. Establish `hyC : y ∈ C`. Use `⟨fun N => ?_, fun g h => ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Use `filter_upwards [(IsLocallyConstant.iff_eventually_eq _).mp (hz1 (N + 1)) x] with g hg`. Rewrite `hg`, the goal using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Take `⟨w, hw⟩` from `(mem_pow_smul t (N + 1) _).mp hg`. Use `(mem_pow_smul t N _).mpr ⟨w, hcancel _ _ ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[smul_sub, hy, hy, ← hw, ← mul_smul, ← pow_succ']`. Apply `hcancel` to reduce the goal to its premises. Rewrite using `[hy (g * h), smul_add, ← map_smul, hy g, hy h]`. Conclude with `hz2 g h`. Establish `hzt : z = t • (⟨y, hyC⟩ : C)` using `Subtype.ext (funext fun g => (hy g).symm)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hzt]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self t) Submodule.mem_top`. Introduce `z hz`. Use `Submodule.smul_induction_on hz ?_ ?_` and prove the remaining obligations. Introduce `r hr n _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.mem_ker, map_smul]`. Use function extensionality and compare the values at `g`. Rewrite using `[Pi.smul_apply, hΨ, ← Submodule.Quotient.mk_smul, Pi.zero_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.smul_mem_smul hr Submodule.mem_top`. Introduce `a b ha hb`.
-
-Conclude with `add_mem ha hb`. Establish `hfin : Finite (C ⧸ LinearMap.ker Ψ)`. Establish `hsub : (LinearMap.range Ψ : Set _) ⊆ {z : G → M ⧸ Ideal.span {t} • (⊤ : Submodule R M) | IsLocallyConstant z ∧ ∀ g h, z (g * h) = z g + ρ' g (z h)}`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `hrange z`.
-
-Use `haveI : Finite (LinearMap.range Ψ) := (hS.subset hsub).to_subtype`. Conclude with `Finite.of_equiv _ Ψ.quotKerEquivRange.symm.toEquiv`. Rewrite `hfin` using `[hker]`. Use `haveI : IsHausdorff (Ideal.span {t}) C := by`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `show x.1 g = 0`. Apply `hMh` to reduce the goal to its premises. Introduce `n`.
-
-Establish `h1` using `hx n`. Rewrite `h1` using `[SModEq.sub_mem, sub_zero]`. Take `⟨y, hy⟩` from `(mem_pow_smul t n x).mp h1`. Conclude with `⟨y.1 g, by rw [← hy]; rfl⟩`. Use `haveI : Module.Finite R (C ⧸ Ideal.span {t} • (⊤ : Submodule R C)) := Module.Finite.of_finite`.
-
-Establish `hCfin : Module.Finite R C` using `(UpperTheory.V.abelian₂.nakayama R (Ideal.span {t}) C).2 this`. Establish `hCfg : C.FG` using `Module.Finite.iff_fg.mp hCfin`. Use `haveI := isNoetherian_of_fg_of_noetherian C hCfg`. Establish `hZ'fg : (Z.comap C.subtype).FG` using `IsNoetherian.noetherian _`. Establish `hZeq : Submodule.map C.subtype (Z.comap C.subtype) = Z` using `Submodule.map_comap_eq_of_le (by rwa [Submodule.range_subtype])`.
-
-Rewrite using `[← hZeq]`. Conclude with `hZ'fg.map _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cocycles_finitely_generated (l : ℕ) [Fact l.Prime] {R G M : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
     [IsNoetherianRing R] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
@@ -280,13 +268,11 @@ private theorem cocycles_finitely_generated (l : ℕ) [Fact l.Prime] {R G M : Ty
   exact hZ'fg.map _
 
 /- English proof (translation)
-Introduce `l _ c G _ _ _ _ _ m σ Z hΦ hσ hZ`. Take `⟨hc, hf, hl, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l c.O`. Take `⟨t, ht⟩` from `IsDiscreteValuationRing.exists_irreducible c.O`. Use `haveI : IsPrecomplete (maximalIdeal c.O) c.O := hc.toIsPrecomplete`. Set `ρ : G →* Module.End c.O (Fin m → c.O)` to `(Matrix.toLinAlgEquiv' (R := c.O) (n := Fin m)).toAlgHom.toRingHom.toMonoidHom.comp (W.mat σ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hρ : ∀ g x, ρ g x = W.mat σ g *ᵥ x` using `fun g x => rfl`. Use `cocycles_finitely_generated l t (maximalIdeal c.O) ht.maximalIdeal_eq ht.ne_zero (maximalIdeal.isMaximal c.O).ne_top hf hl ρ Z hΦ (fun N x => ?_) (fun z hz => ⟨fun N => ?_, fun g h => ?_⟩)` and prove the remaining obligations. Rewrite using `[lc_iff]`. Introduce `i`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Use `filter_upwards [Filter.eventually_all.2 fun j => (hσ i j N).eventually_eq g] with g' hg'`. Simplify using `only [hρ, Matrix.mulVec, dotProduct, map_sum, map_mul, hg']`. Rewrite using `[lc_iff]`. Conclude with `fun i => (hZ z hz).1 i N`.
-
-Rewrite using `[hρ]`. Conclude with `(hZ z hz).2 g h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Det.continuousCocycles_fg_integral_of_phiCond :
     ∀ {l : ℕ} [Fact l.Prime] (c : Coef l) {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] {m : ℕ} (σ : G →* GL (Fin m) c.O) (Z : Submodule c.O (G → Fin m → c.O)), PhiCond G l → (∀ i j, AdicCont (maximalIdeal c.O) fun g => W.mat σ g i j) → (∀ z ∈ Z, (∀ i, AdicCont (maximalIdeal c.O) fun g => z g i) ∧ ∀ g h, z (g * h) = z g + W.mat σ g *ᵥ z h) → Z.FG := by

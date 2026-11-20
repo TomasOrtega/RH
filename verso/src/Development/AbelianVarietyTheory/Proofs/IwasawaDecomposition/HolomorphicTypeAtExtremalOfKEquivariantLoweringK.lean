@@ -17,9 +17,9 @@ open GlobalTheory.DefLift
 namespace GlobalTheory.KMapHol
 
 /- English proof (translation)
-Establish `hd : IsUnit (Formalism.REAL.Jm ε).det` using `isUnit_iff_ne_zero.2 (VKill.jm_det ε)`. Establish `h0 : Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0` using `hX`. Establish `h1 : X ∈ lieH (1 : Mt n)` using `by show Xᴴ * 1 + 1 * X = 0`. Rewrite `h0` using `[← hc.eq, ← Matrix.add_mul]`. Use `congrArg (· * (Formalism.REAL.Jm ε)⁻¹) h0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one, Matrix.zero_mul] at this`. Simplify using `using this`. Establish `h2 : (NormedSpace.exp (t • X))ᴴ * 1 * NormedSpace.exp (t • X) = 1` using `GlobalTheory.SmVec.exp_mem_UH isUnit_one h1 t`. Use `⟨Matrix.mem_unitaryGroup_iff'.2 (by simpa [star_eq_conjTranspose] using h2), ?_⟩` and prove the remaining obligations. Conclude with `((hc.smul_left t).exp_left).eq`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exp_mem_kset {n : ℕ} (ε : Fin n → Bool) {X : Mt n} (hX : X ∈ lieH (Formalism.REAL.Jm ε))
     (hc : Commute X (Formalism.REAL.Jm ε)) (t : ℝ) : NormedSpace.exp (t • X) ∈ Formalism.REAL.Kset ε := by
@@ -36,9 +36,9 @@ theorem exp_mem_kset {n : ℕ} (ε : Fin n → Bool) {X : Mt n} (hX : X ∈ lieH
   exact ((hc.smul_left t).exp_left).eq
 
 /- English proof (translation)
-Establish `hd : IsUnit (Formalism.REAL.Jm ε).det` using `isUnit_iff_ne_zero.2 (VKill.jm_det ε)`. Establish `h1 : Formalism.REAL.Jm ε * Eᴴ = Eᴴ * Formalism.REAL.Jm ε`. Use `congrArg conjTranspose hc.eq` as an intermediate fact. Simplify `this` using `only [conjTranspose_mul, (VKill.jm_herm ε).eq]`. Establish `h2 : conjH (Formalism.REAL.Jm ε) E = -Eᴴ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[conjH, Matrix.mul_assoc, ← h1, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hd, Matrix.one_mul]`. Rewrite using `[h2]`. Conclude with `Commute.neg_left h1.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_conjH {n : ℕ} (ε : Fin n → Bool) {E : Mt n} (hc : Commute E (Formalism.REAL.Jm ε)) :
     Commute (conjH (Formalism.REAL.Jm ε) E) (Formalism.REAL.Jm ε) := by
@@ -52,7 +52,7 @@ theorem commute_conjH {n : ℕ} (ε : Fin n → Bool) {E : Mt n} (hc : Commute E
   exact Commute.neg_left h1.symm
 
 /- English proof (translation)
-Use `show _ * _ = _ * _`. Unfold `Formalism.REAL.Jm`. Use extensionality with `i j`. Rewrite using `[mul_diagonal, diagonal_mul, Matrix.single_apply]`. Apply the tactic sequence `split_ifs with h1 h2 h3 <;> simp_all`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem commute_single {n : ℕ} (ε : Fin n → Bool) {a c : Fin n} (h : ε a = ε c) :
     Commute (Matrix.single a c (1 : ℂ)) (Formalism.REAL.Jm ε) := by
@@ -67,9 +67,9 @@ variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} {M : DSModel V S}
 open Classical in
 
 /- English proof (translation)
-Set `P` to `lowKSub (M.ε τ) (M.lam τ) (M.σ τ)`. Use `haveI : FiniteDimensional ℂ P := (h2 τ).1`. Use `haveI : CompleteSpace P := FiniteDimensional.complete ℂ P`. Set `ℓ₀ : P →ₗ[ℂ] ℂ` to `{ toFun := fun y => U (Function.update e τ ⟨⟨y, h1 τ y.2⟩, y.2⟩) x map_add' := fun y z => congrFun (U.map_update_add e τ ⟨⟨y, h1 τ y.2⟩, y.2⟩ ⟨⟨z, h1 τ z.2⟩, z.2⟩) x map_smul' := fun a y => congrFun (U.map_update_smul e τ a ⟨⟨y, h1 τ y.2⟩, y.2⟩) x }`. Use `⟨(LinearMap.toContinuousLinearMap ℓ₀).comp P.orthogonalProjection, fun u => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: P.orthogonalProjection ((u : M.sm τ) : M.H τ) = ⟨_, u.2⟩` using `Submodule.orthogonalProjection_mem_subspace_eq_self (K := P) ⟨_, u.2⟩`. Rewrite using `[ContinuousLinearMap.comp_apply, this]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_form (h1 : LowSm M) (h2 : GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.LowIrr M) (U : GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicParabolicSmoothFunctions.KMap M) (e : ∀ τ, lowT M τ)
     (τ : D.what₂.Tau) (x : GA D V) :
@@ -90,13 +90,13 @@ theorem exists_form (h1 : LowSm M) (h2 : GlobalTheory.IndefiniteRowSideFullHecke
 open Classical in
 
 /- English proof (translation)
-Establish `hP` using `M.fr_unit τ`. Establish `hPd` using `(Matrix.isUnit_iff_isUnit_det _).1 hP`. Establish `e1 : M.fr τ * X * (M.fr τ)⁻¹ = Y`. Rewrite using `[hXY, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hPd, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hPd, Matrix.mul_one]`. Establish `key : ∀ t : ℝ, U e (x * oneP θ V τ X t) = ℓ (M.rep τ (NormedSpace.exp (t • X)) ((e τ : M.sm τ) : M.H τ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `t`. Establish `hk : M.fr τ * NormedSpace.exp (t • X) * (M.fr τ)⁻¹ ∈ Formalism.REAL.Kset (M.ε τ)`. Rewrite using `[VKill.conj_exp hP, e1]`. Conclude with `exp_mem_kset _ hY hc t`. Establish `hm` using `(h2 τ).2.1 _ hk _ (e τ).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hK τ _ hk e ⟨⟨_, h1 τ hm⟩, hm⟩ rfl`. Establish `e2 : (M.fr τ)⁻¹ * (M.fr τ * NormedSpace.exp (t • X) * (M.fr τ)⁻¹) * M.fr τ = NormedSpace.exp (t • X)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hPd, Matrix.one_mul, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hPd, Matrix.mul_one]`. Rewrite `h` using `[e2]`. Conclude with `((hℓ ⟨⟨_, h1 τ hm⟩, hm⟩).trans (congrFun h x)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `Rder`. Simplify using `only [key]`. Conclude with `((ℓ.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 hd).deriv`.
+A detailed English derivation is pending.
 -/
 theorem rder_eq (θ : InfFam D) (h1 : LowSm M) (h2 : GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.LowIrr M) (U : GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicParabolicSmoothFunctions.KMap M)
     (hK : KEquiv θ M U) (e : ∀ τ, lowT M τ) (τ : D.what₂.Tau) (x : GA D V) (ℓ : M.H τ →L[ℂ] ℂ)
@@ -127,35 +127,31 @@ theorem rder_eq (θ : InfFam D) (h1 : LowSm M) (h2 : GlobalTheory.IndefiniteRowS
   exact ((ℓ.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 hd).deriv
 
 /- English proof (translation)
-Introduce `D θ V S M w hθ hS hw h1 h2 U hsm hK hp e hv g`. Take `⟨L, -, hmul, -, -, hinv, hat, -, -, hG⟩` from `GlobalTheory.RealLift.exists_real_lift D θ V hθ`. Establish `hexp : ∀ τ, ∀ X ∈ lieH (gramAt D V τ), ∀ t : ℝ, NormedSpace.exp (t • X) ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)` using `fun τ X hX t => GlobalTheory.SmVec.exp_mem_UH ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 (hG τ).2)) hX t`. Establish `hone : ∀ τ, ∀ X ∈ lieH (gramAt D V τ), ∀ t : ℝ, L (Pi.mulSingle τ (NormedSpace.exp (t • X))) = oneP θ V τ X t` using `fun τ X hX t => (hat τ _ (hexp τ X hX t)).symm`. Use `⟨fun u => U e (g * L u), ?_, fun u hu => by simp only [hinv u hu]⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.HolDict.holFn_of_killed _ _ _ _ _ _ (fun τ => ((ModelRep.model_rep D V S M τ).2.2.2 hS).1) _ ?_ ?_` and prove the remaining obligations. Introduce `k τs Xs hX u hu`. Establish `h` using `hsm e k τs Xs hX (g * L u)`. Use `h using 2 with t` and compare the differences between its conclusion and the goal. Take `⟨h1, h2⟩` from `GlobalTheory.MultHol.lift_prod L hmul (List.ofFn fun i => (Pi.mulSingle (τs i) (NormedSpace.exp (t i • Xs i)) : D.what₂.Tau → Mt V.rank)) (by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hx`. Conclude with `GlobalTheory.MultHol.mulSingle_mem_UG _ (hexp _ _ (hX i) _))`. Use `show U e (g * L (u * _)) = _`. Rewrite using `[hmul u hu _ h1, h2, List.map_ofFn, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `congrArg (fun F : Fin k → GA D V => U e (g * (L u * (List.ofFn F).prod))) (funext fun i => hone _ _ (hX i) _)`. Introduce `τ a c hac u hu`. Establish `hder : ∀ X ∈ lieH (gramAt D V τ), der τ X (fun u => U e (g * L u)) u = Rder θ V τ X (U e) (g * L u)`. Introduce `X hX`. Unfold `der Rder`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `t`. Use `show U e (g * L (u * _)) = _`. Rewrite using `[hmul u hu _ (GlobalTheory.MultHol.mulSingle_mem_UG _ (hexp _ _ hX _)), hone τ X hX, mul_assoc]`. Take `⟨hc, hU, -, hx⟩` from `ModelRep.model_rep D V S M τ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨-, hx⟩` from `hx hS`. Take `⟨hs, hk⟩` from `VKill.borel_extVec D θ V S M w _ hθ hS hw hv τ`. Establish `hk` using `hk a c hac`. Rewrite `hk`, the goal using `[hx a c]`. Use `set a' := arr (nNeg (M.ε τ)) a with ha'`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set c' := arr (nNeg (M.ε τ)) c with hc'`. Take `⟨p1, p2⟩` from `GlobalTheory.MultHol.parts_mem_lieH (hG τ).1 (hG τ).2 ((M.fr τ)⁻¹ * Matrix.single a' c' 1 * M.fr τ)`. Distinguish the cases in `hε : M.ε τ a' = M.ε τ c'`. Take `⟨ℓ, hℓ⟩` from `exists_form h1 h2 U e τ (g * L u)`. Take `⟨q1, q2⟩` from `GlobalTheory.MultHol.parts_mem_lieH (VKill.jm_herm (M.ε τ)) (VKill.jm_det (M.ε τ)) (Matrix.single a' c' 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1` using `commute_single (M.ε τ) hε`. Establish `c2` using `commute_conjH (M.ε τ) c1`. Establish `hcj : conjH (gramAt D V τ) ((M.fr τ)⁻¹ * Matrix.single a' c' 1 * M.fr τ) = (M.fr τ)⁻¹ * conjH (Formalism.REAL.Jm (M.ε τ)) (Matrix.single a' c' 1) * M.fr τ`. Rewrite using `[← M.fr_gram τ]`. Conclude with `VKill.conjH_conj (M.fr_unit τ) _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hD` using `((GlobalTheory.UnitarySmVec.smoothVec_basic _ _ _ _ (hG τ).1 (hG τ).2 hU).2 _ hs).2.1`. Establish `r1` using `rder_eq θ h1 h2 U hK e τ (g * L u) ℓ hℓ q1 ((c1.add_left c2).smul_left _) (by rw [hcj, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul]) (hD _ p1).2`. Establish `r2` using `rder_eq θ h1 h2 U hK e τ (g * L u) ℓ hℓ q2 ((c1.sub_left c2).smul_left _) (by rw [hcj, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul]) (hD _ p2).2`. Establish `hk'` using `congrArg ℓ hk`. Unfold `dRepC at hk'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hk'` using `[map_add, map_smul, smul_eq_mul]`. Unfold `derC`. Rewrite using `[hder _ p1, hder _ p2, r1, r2, hk']`. Use `split_ifs`. Rewrite using `[map_smul, hℓ (e τ), Function.update_eq_self, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_zero]`. Take `⟨-, p, hpn, hεp⟩` from `hS τ`. Establish `hq` using `nNeg_shape hpn hεp`. Establish `hsg : ∀ b : Fin V.rank, M.ε τ (arr (nNeg (M.ε τ)) b) = decide (¬ (b : ℕ) < V.rank - p)`. Introduce `b`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `b.2` as an intermediate fact. Rewrite using `[hεp, hq]`. Unfold `arr`. Use `split_ifs with hb`. Simplify using `only [hb, not_true_eq_false, decide_false, decide_eq_false_iff_not]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [hb, not_false_eq_true, decide_true, decide_eq_true_eq]`. Use linear arithmetic over natural numbers and integers. Establish `hac' : (a : ℕ) ≤ c` using `hac`. Establish `hne : a ≠ c` using `fun h => hε (by rw [ha', hc', h])`.
-
-Rewrite `hε` using `[ha', hc', hsg, hsg, decide_eq_decide]`. Establish `ha : M.ε τ a' = false` using `by rw [ha', hsg]; simp only [decide_eq_false_iff_not]; omega`. Establish `hb : M.ε τ c' = true` using `by rw [hc', hsg]; simp only [decide_eq_true_eq]; omega`. Establish `h0` using `congrFun (hp τ _ (GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicParabolicSmoothFunctions.single_mem_pMinus M τ ha hb) e) (g * L u)`. Rewrite using `[if_neg hne]`.
-
-Unfold `derC`. Rewrite using `[hder _ p1, hder _ p2]`. Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem holAd_of_kEquiv : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (w : D.what₂.Tau → Fin V.rank → ℤ), IsInfFam θ → HolShape M → WtIs M w → LowSm M → GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.LowIrr M → ∀ U : GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicParabolicSmoothFunctions.KMap M, (∀ e, GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicParabolicSmoothFunctions.IsSmoothFn V θ (U e)) → KEquiv θ M U → (∀ τ, ∀ Z ∈ GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicParabolicSmoothFunctions.pMinus M τ, ∀ e, RderC θ V τ Z (U e) = 0) → ∀ e : ∀ τ, lowT M τ, IsExtVec M (fun τ => (e τ : M.sm τ)) → HolAd θ M w (U e) := by
   classical

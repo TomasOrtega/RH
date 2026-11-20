@@ -6,11 +6,11 @@ open scoped Real ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `g E _ _ U u₁ u₂ hU h1 h2 P hP v w`. Establish `hd : ∀ Q ∈ U, DifferentiableAt ℝ u₁ Q ∧ DifferentiableAt ℝ u₂ Q` using `fun Q hQ => ⟨(h1.contDiffAt (hU.mem_nhds hQ)).differentiableAt (by norm_num), (h2.contDiffAt (hU.mem_nhds hQ)).differentiableAt (by norm_num)⟩`. Establish `key : ∀ x : Pt E g, (fun Q => fderiv ℝ (fun Q => u₁ Q - u₂ Q) Q (Complex.I • x)) =ᶠ[nhds P] (fun Q => fderiv ℝ u₁ Q (Complex.I • x) - fderiv ℝ u₂ Q (Complex.I • x))`. Introduce `x`. Use `filter_upwards [hU.mem_nhds hP] with Q hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fderiv_fun_sub (hd Q hQ).1 (hd Q hQ).2]`. Both sides reduce to the same expression. Establish `hdd : ∀ (u : Pt E g → ℝ), ContDiffOn ℝ 2 u U → ∀ y : Pt E g, DifferentiableAt ℝ (fun Q => fderiv ℝ u Q y) P`. Introduce `u hu y`. Establish `h3 : ContDiffAt ℝ 1 (fderiv ℝ u) P` using `(hu.contDiffAt (hU.mem_nhds hP)).fderiv_right (by norm_num)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `(h3.differentiableAt (by norm_num)).clm_apply (differentiableAt_const y)`. Unfold `ddc`. Rewrite using `[(key w).fderiv_eq, (key v).fderiv_eq, fderiv_fun_sub (hdd u₁ h1 _) (hdd u₂ h2 _), fderiv_fun_sub (hdd u₁ h1 _) (hdd u₂ h2 _)]`. Simplify using `only [ContinuousLinearMap.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ddc_sub_of_contDiffOn : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     {U : Set (Pt E g)} (u₁ u₂ : Pt E g → ℝ), IsOpen U → ContDiffOn ℝ 2 u₁ U →

@@ -25,11 +25,11 @@ noncomputable def splitEquiv {K V W : Type} [Field K] [AddCommGroup V] [Module K
     · simp [h, hp]
 
 /- English proof (translation)
-Establish `r : LinearMap.range f = ⊤` using `LinearMap.range_eq_top.2 (fun w => ⟨_, h w⟩)`. Establish `r' : LinearMap.range f' = ⊤` using `LinearMap.range_eq_top.2 (fun w => ⟨_, h' w⟩)`. Establish `a` using `LinearMap.finrank_range_add_finrank_ker f`. Establish `a'` using `LinearMap.finrank_range_add_finrank_ker f'`. Rewrite `a` using `[r]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a'` using `[r']`. Establish `hk : Module.finrank K (LinearMap.ker f') = Module.finrank K (LinearMap.ker f)` using `by omega`. Set `k` to `LinearEquiv.ofFinrankEq _ _ hk`. Use `⟨(splitEquiv f' s' h').trans ((k.prodCongr (LinearEquiv.refl K W)).trans (splitEquiv f s h).symm), fun v => ?_⟩` and prove the remaining obligations. Establish `hz : ∀ x : LinearMap.ker f, f x.1 = 0` using `fun x => x.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show f ((k _).1 + s (f' v)) = f' v`. Rewrite using `[map_add, hz, h, zero_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_equiv {K V W : Type} [Field K] [AddCommGroup V] [Module K V]
     [AddCommGroup W] [Module K W] [FiniteDimensional K V]
@@ -50,17 +50,17 @@ theorem exists_equiv {K V W : Type} [Field K] [AddCommGroup V] [Module K V]
   rw [map_add, hz, h, zero_add]
 
 /- English proof (translation)
-Introduce `K _ N n g c hgc`. Establish `h : ∀ w, Matrix.toLin' g (Matrix.toLin' c w) = w`. Introduce `w`. Simplify using `[Matrix.mulVec_mulVec, hgc]`. Establish `hle : N ≤ n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `LinearMap.finrank_le_finrank_of_surjective (f := Matrix.toLin' g) (fun w => ⟨_, h w⟩)` as an intermediate fact. Simplify using `using this`. Use `⟨hle, ?_⟩` and prove the remaining obligations. Use `set J : Matrix (Fin N) (Fin n) K := Matrix.of fun (j : Fin N) (k : Fin n) => if (j : ℕ) = (k : ℕ) then (1 : K) else 0 with hJ`. Establish `hJJ : J * J.transpose = 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.castLE hle i)]`. Simplify using `[hJ, Matrix.one_apply, Fin.ext_iff, eq_comm]`. Introduce `b _ hb`. Establish `: (i : ℕ) ≠ b` using `fun e => hb (Fin.ext e.symm)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hJ, this]`. Simplify using the standard rewrite rules. Establish `h' : ∀ w, Matrix.toLin' J (Matrix.toLin' J.transpose w) = w`. Introduce `w`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, Matrix.mulVec_mulVec, hJJ, Matrix.one_mulVec]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `exists_equiv _ _ _ _ h h'`. Use `⟨LinearMap.toMatrix' e.toLinearMap, LinearMap.toMatrix' e.symm.toLinearMap, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.toMatrix'_comp]`. Simplify using the standard rewrite rules. Rewrite using `[← LinearMap.toMatrix'_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, Matrix.toLin'_toMatrix']`. Conclude with `LinearMap.ext he`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_eq_inclusion : ∀ (K : Type) [Field K] (N n : ℕ) (g : Matrix (Fin N) (Fin n) K) (c : Matrix (Fin n) (Fin N) K), g * c = 1 →
     N ≤ n ∧ ∃ M P : Matrix (Fin n) (Fin n) K, M * P = 1 ∧ P * M = 1 ∧ g * M = (Matrix.of fun (j : Fin N) (k : Fin n) => if (j : ℕ) = (k : ℕ) then (1 : K) else 0) := by

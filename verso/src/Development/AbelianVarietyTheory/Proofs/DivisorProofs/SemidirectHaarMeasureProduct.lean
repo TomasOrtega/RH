@@ -8,19 +8,15 @@ open GlobalTheory.ThK.LemF.QuotInv
 namespace GlobalTheory.ModulusCoord
 
 /- English proof (translation)
-Introduce `Q L A C _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ Φ hT α sA sC kA kC hα hsA hsC hαΦ hA hC μ hμ`. Use `set ρ : Measure L := (Measure.haar : Measure L).inv with hρ`. Use `set νA : Measure A := Measure.addHaar with hνA`. Use `set νC : Measure C := Measure.addHaar with hνC`. Use `set P : Measure (L × (A × C)) := ρ.prod (νA.prod νC) with hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hΦm : Measurable Φ` using `Φ.continuous.measurable`. Use `set ν₀ : Measure Q := P.map Φ with hν₀`. Establish `hright : ν₀.IsMulRightInvariant`. Prove the components needed by the constructor for the conclusion. Introduce `q'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨l', f, g, hf, hg, hfg⟩` from `hT q'`. Set `T : L × (A × C) → L × (A × C)` to `fun p => (p.1 * l', (p.2.1 + f p.1, p.2.2 + g (p.1, p.2.1)))`. Establish `hTΦ : (· * q') ∘ Φ = Φ ∘ T` using `by funext p; exact hfg p.1 p.2.1 p.2.2`. Establish `hTmp : MeasurePreserving T P P`. Use `MeasurePreserving.skew_product (μa := ρ) (μb := ρ) (μc := νA.prod νC) (μd := νA.prod νC) (f := fun l : L => l * l') (g := fun l (x : A × C) => (x.1 + f l, x.2 + g (l, x.1))) ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `measurePreserving_mul_right ρ l'`. Conclude with `(by fun_prop : Continuous fun p : L × (A × C) => (p.2.1 + f p.1, p.2.2 + g (p.1, p.2.1))).measurable`. Use `filter_upwards with l`. Conclude with `(MeasurePreserving.skew_product (μa := νA) (μc := νC) (g := fun (a : A) (c : C) => c + g (l, a)) (measurePreserving_add_right νA (f l)) (by exact (by fun_prop : Continuous fun p : A × C => p.2 + g (l, p.1)).measurable) (ae_of_all _ fun a => map_add_right_eq_self νC (g (l, a)))).m …`. Rewrite using `[hν₀, Measure.map_map (measurable_mul_const q') hΦm, hTΦ, ← Measure.map_map hΦm hTmp.measurable, hTmp.map_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : IsFiniteMeasureOnCompacts ν₀` using `Measure.IsFiniteMeasureOnCompacts.map P Φ`. Establish `hpos : ν₀.IsOpenPosMeasure` using `Φ.continuous.isOpenPosMeasure_map Φ.surjective`. Use `haveI : ν₀.inv.IsHaarMeasure := by constructor`. Establish `hα_map : ν₀.map α = (kA * kC) • ν₀`. Establish `hcomp : α ∘ Φ = Φ ∘ Prod.map id (Prod.map sA sC)`.
-
-Use function extensionality and compare the values at `p`. Conclude with `hαΦ p.1 p.2.1 p.2.2`. Rewrite using `[hν₀, Measure.map_map hα.measurable hΦm, hcomp, ← Measure.map_map hΦm (measurable_id.prodMap (hsA.measurable.prodMap hsC.measurable)), hP, ← Measure.map_prod_map _ _ measurable_id (hsA.measurable.prodMap hsC.measurable), ← Measure.map_prod_map _ _ hsA.measurable hsC.measurable, h …`. Establish `hinv : (ν₀.inv).map α = (kA * kC) • ν₀.inv`. Establish `hc : α ∘ (fun q => q⁻¹) = (fun q => q⁻¹) ∘ α` using `by funext q; simp [map_inv]`.
-
-Rewrite using `[Measure.inv, Measure.map_map hα.measurable measurable_inv, hc, ← Measure.map_map measurable_inv hα.measurable, hα_map, Measure.map_smul]`. Rewrite using `[Measure.isMulLeftInvariant_eq_smul μ ν₀.inv, Measure.map_smul, hinv, smul_smul, mul_comm, ← smul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_haar_eq_smul_of_coords : ∀ (Q L A C : Type) [Group Q] [TopologicalSpace Q] [IsTopologicalGroup Q] [LocallyCompactSpace Q]
     [SecondCountableTopology Q] [T2Space Q] [MeasurableSpace Q] [BorelSpace Q]

@@ -14,17 +14,17 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CtS
 
 /- English proof (translation)
-Establish `a1 : m.1.val * (m.1⁻¹).val = 1` using `Units.mul_inv m.1`. Establish `a2 : (m.1⁻¹).val * m.1.val = 1` using `Units.inv_mul m.1`. Establish `b1 : m.2.val * (m.2⁻¹).val = 1` using `Units.mul_inv m.2`. Establish `b2 : (m.2⁻¹).val * m.2.val = 1` using `Units.inv_mul m.2`. Establish `h1 : fromBlocks m.1.val (m.1.val * X) 0 m.2.val * fromBlocks (m.1⁻¹).val (-(X * (m.2⁻¹).val)) 0 (m.2⁻¹).val = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[fromBlocks_multiply, ← fromBlocks_one]`. Use `congr 1`. Simplify using `[a1]`. Simplify using `[Matrix.mul_assoc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[b1]`. Establish `h2 : fromBlocks (m.1⁻¹).val (-(X * (m.2⁻¹).val)) 0 (m.2⁻¹).val * fromBlocks m.1.val (m.1.val * X) 0 m.2.val = 1`. Rewrite using `[fromBlocks_multiply, ← fromBlocks_one]`. Use `congr 1`. Simplify using `[a2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[← Matrix.mul_assoc, a2, Matrix.mul_assoc, b2]`. Simplify using the standard rewrite rules. Simplify using `[b2]`. Establish `r1 : reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (fromBlocks m.1.val (m.1.val * X) 0 m.2.val) * reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (fromBlocks (m.1⁻¹).val (-(X * (m.2⁻¹).val)) 0 (m.2⁻¹).val) = 1`. Simplify using `only [reindex_apply, submatrix_mul_equiv, h1, submatrix_one_equiv]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `r2 : reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (fromBlocks (m.1⁻¹).val (-(X * (m.2⁻¹).val)) 0 (m.2⁻¹).val) * reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (fromBlocks m.1.val (m.1.val * X) 0 m.2.val) = 1`. Simplify using `only [reindex_apply, submatrix_mul_equiv, h2, submatrix_one_equiv]`. Establish `hU : IsUnit (reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (fromBlocks m.1.val (m.1.val * X) 0 m.2.val))` using `⟨⟨_, _, r1, r2⟩, rfl⟩`. Establish `hb : (blk h w m X).val = reindex (finSumFinEquiv.trans (finCongr h)) (finSumFinEquiv.trans (finCongr h)) (fromBlocks m.1.val (m.1.val * X) 0 m.2.val)`. Unfold `blk`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only []`. Rewrite using `[dif_pos hU]`. Both sides reduce to the same expression. Conclude with `Units.inv_eq_of_mul_eq_one_right (by rw [hb]; exact r1)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem blk_inv_val {E : Type} [Field E] [NumberField E] {n a b : ℕ} (h : a + b = n) (w : Pl E)
     (m : GLw a w × GLw b w) (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)) :
@@ -72,15 +72,15 @@ theorem blk_inv_val {E : Type} [Field E] [NumberField E] {n a b : ℕ} (h : a + 
   exact Units.inv_eq_of_mul_eq_one_right (by rw [hb]; exact r1)
 
 /- English proof (translation)
-Introduce `E _ _ _ n a b h w ϖ m X`. Rewrite using `[blk_inv_val h w m X]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Establish `key : ∀ (i j : Fin a ⊕ Fin b), ϖ * fromBlocks (m.1⁻¹).val (-(X * (m.2⁻¹).val)) 0 (m.2⁻¹).val i j ∈ Ov E w`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i j`. Use `H (finSumFinEquiv.trans (finCongr h) i) (finSumFinEquiv.trans (finCongr h) j)` as an intermediate fact. Simplify `this` using `[reindex_apply, Matrix.submatrix_apply, Matrix.smul_apply, smul_eq_mul]`. Use `⟨fun i j => ?_, fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Simplify `key (Sum.inl i) (Sum.inl j)` using `[Matrix.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `key (Sum.inr i) (Sum.inr j)` using `[Matrix.smul_apply, smul_eq_mul]`. Use `(Ov E w).neg_mem (key (Sum.inl i) (Sum.inr j))` as an intermediate fact. Simplify `this` using `[Matrix.smul_apply, smul_eq_mul]`. Introduce and unpack `⟨H1, H2, H3⟩ i j`. Establish `key : ∀ (i j : Fin a ⊕ Fin b), ϖ * fromBlocks (m.1⁻¹).val (-(X * (m.2⁻¹).val)) 0 (m.2⁻¹).val i j ∈ Ov E w`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `(i | i) (j | j)`. Simplify `H1 i j` using `[Matrix.smul_apply, smul_eq_mul]`. Use `(Ov E w).neg_mem (H3 i j)` as an intermediate fact. Simplify `this` using `[Matrix.smul_apply, smul_eq_mul]`. Simplify using `using (Ov E w).zero_mem`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `H2 i j` using `[Matrix.smul_apply, smul_eq_mul]`. Simplify `key ((finSumFinEquiv.trans (finCongr h)).symm i) ((finSumFinEquiv.trans (finCongr h)).symm j)` using `[reindex_apply, Matrix.submatrix_apply, Matrix.smul_apply, smul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isInt_smul_blk_inv_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n a b : ℕ) (h : a + b = n) (w : Pl E) (ϖ : w.adicCompletion E) (m : GLw a w × GLw b w) (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)), IsInt w (ϖ • ((blk h w m X)⁻¹).val) ↔ IsInt w (ϖ • (m.1⁻¹).val) ∧ IsInt w (ϖ • (m.2⁻¹).val) ∧ IsInt w (ϖ • (X * (m.2⁻¹).val)) := by
   intro E _ _ _ n a b h w ϖ m X

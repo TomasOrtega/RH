@@ -16,9 +16,9 @@ open GlobalTheory.RegularRing GlobalTheory.IndefiniteRowSideFullHecke.Crystallin
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} {AI : LocAinf l P}
 
 /- English proof (translation)
-Introduce `x y hx h`. Use `GlobalTheory.T.ratio_invariant_in_K0 l P AI T K y x hx fun g hg => ?_` and prove the remaining obligations. Establish `h1` using `h ⟨g, hg⟩`. Establish `e : ∀ z, (P.PD K).actB ⟨g, hg⟩ z = P.actQ g z` using `fun z => P.PD_actB K ⟨g, hg⟩ z`. Rewrite `h1` using `[e, e]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mul_comm, h1, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fracInv_of_tied (T : LocTied l P AI) (K : FinExt l) : FracInv (P.PD K) := by
   intro x y hx h
@@ -32,9 +32,9 @@ variable {K K' LL : FinExt l} (h : K.1 ≤ K'.1) {V : Type} [AddCommGroup V] [Mo
   [IsScalarTower ℚ_[l] ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V)
 
 /- English proof (translation)
-Use `le_iInf fun g => (iInf_le _ (Subgroup.inclusion (GK_le h) g)).trans (le_of_eq ?_)` and prove the remaining obligations. Establish `e : actVB (P.PD K) ρ (Subgroup.inclusion (GK_le h) g) = actVB (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le h))) g`. Unfold `actVB`. Use `congr 1`. Conclude with `LinearMap.ext fun z => (P.PD_actB K _ z).trans (P.PD_actB K' g z).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`.
+A detailed English derivation is pending.
 -/
 theorem dcris_le : Dcris (P.PD K) ρ ≤ Dcris (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le h))) := by
   refine le_iInf fun g => (iInf_le _ (Subgroup.inclusion (GK_le h) g)).trans (le_of_eq ?_)
@@ -46,9 +46,9 @@ theorem dcris_le : Dcris (P.PD K) ρ ≤ Dcris (P.PD K') (ρ.comp (Subgroup.incl
   rw [e]
 
 /- English proof (translation)
-Use `le_iInf fun g => (iInf_le _ (Subgroup.inclusion (GK_le h) g)).trans (le_of_eq ?_)` and prove the remaining obligations. Establish `e : actVdR (P.PD K) ρ (Subgroup.inclusion (GK_le h) g) = actVdR (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le h))) g`. Unfold `actVdR`. Use `congr 1`. Conclude with `LinearMap.ext fun z => (P.PD_actdR K _ z).trans (P.PD_actdR K' g z).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`.
+A detailed English derivation is pending.
 -/
 theorem ddR_le : DdR (P.PD K) ρ ≤ DdR (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le h))) := by
   refine le_iInf fun g => (iInf_le _ (Subgroup.inclusion (GK_le h) g)).trans (le_of_eq ?_)
@@ -62,11 +62,11 @@ theorem ddR_le : DdR (P.PD K) ρ ≤ DdR (P.PD K') (ρ.comp (Subgroup.inclusion 
 variable [FiniteDimensional ↥LL.1 V]
 
 /- English proof (translation)
-Use `LL.2` as an intermediate fact. Establish `: IsDomain P.R.B` using `isDomain_of_tied T K`. Establish `: FiniteDimensional ℚ_[l] V` using `Module.Finite.trans ↥LL.1 V`. Take `⟨h1, -⟩` from `finite_le₀ (P.PD K) (fracInv_of_tied T K) ρ`. Take `⟨h2, h3⟩` from `finite_le₀ (P.PD K') (fracInv_of_tied T K') (ρ.comp (Subgroup.inclusion (GK_le h)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hc`, the goal using `[isCrys_iff_finrank]`. Use `le_antisymm h3 ?_` and prove the remaining obligations. Set `e` to `Module.finBasisOfFinrankEq ↥(K0 K) _ hc`. Establish `hB` using `indepB (P.PD K) (fracInv_of_tied T K) ρ e e.linearIndependent`. Set `d : Fin (Module.finrank ℚ_[l] V) → ↥(DcrisK₀ (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le h))))` to `fun i => ⟨e i, dcris_le h ρ (e i).2⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hd : LinearIndependent ↥(K0 K') d` using `LinearIndependent.of_comp (DcrisK₀ (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le h)))).subtype (hB.restrict_scalars' ↥(K0 K'))`. Simplify using `using hd.fintype_card_le_finrank`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isCrys_restrict (T : LocTied l P AI) (hc : IsCrys (P.PD K) ρ) :
     IsCrys (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le h))) := by
@@ -87,9 +87,9 @@ theorem isCrys_restrict (T : LocTied l P AI) (hc : IsCrys (P.PD K) ρ) :
   simpa using hd.fintype_card_le_finrank
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hd`. Establish `hs` using `(GlobalTheory.DRFil.filSpans T K LL ρ hd).spans _`. Use `GlobalTheory.DRFil.isDR_of_spans T K' LL _ fun y => ?_` and prove the remaining obligations. Take `⟨m, b, d, hm, e⟩` from `hs y`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨m, b, d, fun i => ddR_le h ρ (hm i), e⟩`. Introduce `hd`. Conclude with `GlobalTheory.DRFil.isDR_of_spans T K LL ρ (GlobalTheory.DRFil.spans_descent l P K K' LL h V ρ ((GlobalTheory.DRFil.filSpans T K' LL _ hd).spans _))`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isDR_restrict_iff (T : LocTied l P AI) :
     IsDR (P.PD K) ρ ↔ IsDR (P.PD K') (ρ.comp (Subgroup.inclusion (GK_le h))) := by
@@ -104,7 +104,7 @@ theorem isDR_restrict_iff (T : LocTied l P AI) :
       ((GlobalTheory.DRFil.filSpans T K' LL _ hd).spans _))
 
 /- English proof (translation)
-Introduce `_ _ _ _ T _ _ _ h _ _ _ _ _ _ ρ` and use `⟨isCrys_restrict h ρ T, isDR_restrict_iff h ρ T⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem restrict_crys_deRham : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI →
     ∀ (K K' LL : FinExt l) (h : K.1 ≤ K'.1) (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V]

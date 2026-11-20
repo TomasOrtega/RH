@@ -25,11 +25,11 @@ def genι (G : Over (Sp R)) : (Over.map (jK R)).obj ((Over.pullback (jK R)).obj 
   Over.homMk (pullback.fst G.hom (jK R)) pullback.condition
 
 /- English proof (translation)
-Use `U.gen_hom` as an intermediate fact. Establish `e` using `(cls_eq_iff (LB.isLB_pull A.isLB _) (LB.isLB_pull U.LG.isLB _)).2 U.ext`. Rewrite `e` using `[cls_pull A.isLB, cls_pull U.LG.isLB]`. Establish `hm : ∀ x y : T ⟶ (Over.pullback (jK R)).obj G, push (genι G) (x * y) = push (genι G) x * push (genι G) y` using `fun x y => push_mul (genι G) (𝟙 _) (Category.id_comp _).symm x y`. Establish `h1 : push (genι G) (1 : T ⟶ (Over.pullback (jK R)).obj G) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hm 1 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Conclude with `left_eq_mul.1 this`. Establish `hp : ∀ x : T ⟶ (Over.pullback (jK R)).obj G, @id (Pic T.left) (pull (push (genι G) x).left (cls _ U.LG.isLB)) = pull x.left (pull U.gen.hom.left (cls _ A.isLB))` using `fun x => by`. Rewrite using `[e, ← pull_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[← lam_pull U.gen.hom, lam, lam, ← hm, ← h1, ← hp, ← hp, ← hp, ← hp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lam_push (U : UnifPre I D A G) {T : Over (Sp (FractionRing R))} (x y : T ⟶ (Over.pullback (jK R)).obj G) :
     @id (Pic T.left) (lam (T := (Over.map (jK R)).obj T) (cls _ U.LG.isLB) (push (genι G) x) (push (genι G) y)) =
@@ -51,9 +51,9 @@ theorem lam_push (U : UnifPre I D A G) {T : Over (Sp (FractionRing R))} (x y : T
   rfl
 
 /- English proof (translation)
-Establish `sj : ∀ x : (Over.map (jK R)).obj T ⟶ G, ∃ x' : T ⟶ (Over.pullback (jK R)).obj G, push (genι G) x' = x` using `fun x => ⟨Over.homMk (pullback.lift x.left T.hom (Over.w x)) (pullback.lift_snd _ _ _), Over.OverMorphism.ext (pullback.lift_fst _ _ _)⟩`. Take `⟨x, rfl⟩` from `sj x`. Take `⟨y, rfl⟩` from `sj y`. Establish `e' : ∀ f : G ⟶ G, push (genι G) ((Over.pullback (jK R)).map f) = genι G ≫ f` using `fun f => Over.OverMorphism.ext (pullback.lift_fst _ _ _)`. Rewrite using `[← push_comp _ (e' _), ← push_comp _ (e' _)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(lam_push U _ _).trans (Eq.trans ?_ (lam_push U _ _).symm)` and prove the remaining obligations. Take `⟨t, ht⟩` from `GlobalTheory.RosatiDescent.exists_gen_of_rosatiAdj (oA.rosati a)`. Use `cls_of_rosati A.isLB t ht (x ≫ U.gen.hom) (y ≫ U.gen.hom)` as an intermediate fact. Rewrite using `[Category.assoc, Category.assoc, h.ext, h.ext, ← Category.assoc, ← Category.assoc, lam, lam, this]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_act (U : UnifPre I D A G) {O : Type} [Ring O] [StarRing O] [Module O D.toPre.X] {o : D.OAct O}
     {oA : A.OAct O} {oG : RingAct G O} (h : U.OLinear O o oA oG) (a : O) {T : Over (Sp (FractionRing R))}
@@ -73,19 +73,17 @@ theorem lam_act (U : UnifPre I D A G) {O : Type} [Ring O] [StarRing O] [Module O
   rw [Category.assoc, Category.assoc, h.ext, h.ext, ← Category.assoc, ← Category.assoc, lam, lam, this]
 
 /- English proof (translation)
-Introduce `R _ _ _ _ D D' F hF A' G' _ _ _ U' oA oG hlin G _ _ _ inc pr _ _ hip hpi κ₀ hκ`. Establish `hs : oG.act (star F.e * F.f * F.e) = oG.act (star F.e * star F.f * F.e)` using `congrArg oG.act hF.2.1`. Establish `hi : inc ≫ oG.act F.e = inc` using `by rw [← hpi, ← Category.assoc, hip, Category.id_comp]`. Set `GK` to `(Over.pullback (jK R)).obj G`. Establish `hL` using `U'.LG.isLB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `sy : ∀ x y : (Over.map (jK R)).obj (G2 GK) ⟶ G, lam (cls _ hL) (x ≫ inc) (y ≫ inc ≫ oG.act F.f) = lam (cls _ hL) (y ≫ inc) (x ≫ inc ≫ oG.act F.f)` using `fun x y => by`. Establish `e₁` using `lam_act U'.toUnifPre hlin F.e (x ≫ inc) (y ≫ inc ≫ oG.act F.f)`. Establish `e₂` using `lam_act U'.toUnifPre hlin F.f (x ≫ inc) (y ≫ inc)`. Establish `e₃` using `lam_act U'.toUnifPre hlin F.e (x ≫ inc) (y ≫ inc ≫ oG.act (star F.f))`. Establish `e₄ : inc ≫ oG.act F.f ≫ oG.act (star F.e) = inc ≫ oG.act (star F.f) ≫ oG.act (star F.e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (inc ≫ ·) hs` as an intermediate fact. Simplify `this` using `only [oG.map_mul, reassoc_of% hi]`. Simplify using `only [Category.assoc, hi] at e₁ e₂ e₃`. Rewrite using `[e₁, e₄, ← e₃, ← e₂, lam_comm]`. Establish `hP` using `pull_isLB (GlobalTheory.FullSiegel.isLB_lam hL) (lift (fst G G ≫ inc) (snd G G ≫ inc ≫ oG.act F.f) : G2 G ⟶ G2 G').left`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(gen_iff_sum (pull_isLB hP κ₀) _ _).2 ?_` and prove the remaining obligations. Rewrite using `[cls_pull hP, GlobalTheory.FullSiegel.cls_lam_pull hL, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, one_smul, neg_smul, pull_id, ← pull_comp]`. Set `X : (Over.map (jK R)).obj (G2 GK) ⟶ G` to `push (genι G) (fst GK GK)`. Set `Y : (Over.map (jK R)).obj (G2 GK) ⟶ G` to `push (genι G) (snd GK GK)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `k₁ : κ₀ = (lift X Y).left`. Use `pullback.hom_ext (hκ.1.trans ?_) (hκ.2.trans ?_)` and prove the remaining obligations. Conclude with `(congrArg (·.left) (lift_fst X Y)).symm`. Conclude with `(congrArg (·.left) (lift_snd X Y)).symm`. Establish `k₂ : (lift (snd GK GK) (fst GK GK)).left ≫ κ₀ = (lift Y X).left`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[k₁]`. Conclude with `lift_push (genι G) _ _`. Establish `p₁` using `pull_lam (lift X Y) (cls _ hL) (fst G G ≫ inc) (snd G G ≫ inc ≫ oG.act F.f)`. Establish `p₂` using `pull_lam (lift Y X) (cls _ hL) (fst G G ≫ inc) (snd G G ≫ inc ≫ oG.act F.f)`. Rewrite `p₁`, `p₂` using `[lift_fst_assoc, lift_snd_assoc]`.
-
-Rewrite `p₁` using `[← k₁]`. Rewrite `p₂` using `[← k₂]`. Conclude with `add_neg_eq_zero.2 (p₂.trans ((sy Y X).trans p₁.symm))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D D' : DegData R (maximalIdeal R)) (F : Factor D.toPre D'.toPre) (_ : F.Alg) (A' : PolAV (Sp (FractionRing R))) (G' : Over (Sp R)) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (U' : Unif (maximalIdeal R) D' A' G') (oA : A'.OAct F.O) (oG : RingAct G' F.O), U'.toUnifPre.OLinear F.O F.o oA oG → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (inc : G ⟶ G') (pr : G' ⟶ G), IsMonHom inc → IsMonHom pr → inc ≫ pr = 𝟙 G → pr ≫ inc = oG.act F.e → ∀ κ₀ : (G2 ((Over.pullback (jK R)).obj G)).left ⟶ (G2 G).left, Geo.Tor.IsSquare (G' := ((Over.pullback (jK R)).obj G)) (G := G) (pullback.fst G.hom (jK R)) κ₀ → ∃ u : LB.Gen (LB.LinComb (((abelian₂ G' U'.LG.L).pull (lift (fst G G ≫ inc) (snd G G ≫ inc ≫ oG.act F.f) : G2 G ⟶ G2 G').left).pull κ₀) (K := Fin 2) ![(lift (snd ((Over.pullback (jK R)).obj G) ((Over.pullback (jK R)).obj G)) (fst ((Over.pullback (jK R)).obj G) ((Over.pullback (jK R)).obj G)) : G2 ((Over.pullback (jK R)).obj G) ⟶ G2 ((Over.pullback (jK R)).obj G)).left, 𝟙 (G2 ((Over.pullback (jK R)).obj G)).left] ![1, -1]), u.IsGen := by
   intro R _ _ _ _ D D' F hF A' G' _ _ _ U' oA oG hlin G _ _ _ inc pr _ _ hip hpi κ₀ hκ

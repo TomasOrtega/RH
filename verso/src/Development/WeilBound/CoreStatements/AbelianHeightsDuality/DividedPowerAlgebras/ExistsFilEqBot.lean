@@ -12,19 +12,19 @@ namespace FubiniStudyChowHeightFormula₂.Adr
 variable {R B C : Type} [CommRing R] [CommRing B] [CommRing C] {I : Ideal R} {J J' : Ideal B} {L : Ideal C}
 
 /- English proof (translation)
-The claim follows from `Ideal.subset_span ⟨[], by simp, by simp, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem Sup.one_mem_fil (δ : DividedPowers J) : (1 : B) ∈ fil δ 0 :=
   Ideal.subset_span ⟨[], by simp, by simp, by simp⟩
 
 /- English proof (translation)
-The claim follows from `Ideal.subset_span ⟨[(n, x)], by simpa using hx, by simp, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem Sup.dpow_mem_fil (δ : DividedPowers J) {x : B} (hx : x ∈ J) (n : ℕ) : δ.dpow n x ∈ fil δ n :=
   Ideal.subset_span ⟨[(n, x)], by simpa using hx, by simp, by simp⟩
 
 /- English proof (translation)
-Rewrite using `[fil, fil, Ideal.span_mul_span', Ideal.span_le]`. Introduce and unpack `_ ⟨_, ⟨l, h1, h2, rfl⟩, _, ⟨l', h1', h2', rfl⟩, rfl⟩`. Use `Ideal.subset_span ⟨l ++ l', fun p hp ↦ ?_, ?_, by simp⟩` and prove the remaining obligations. Break down `List.mem_append.1 hp with h | h exacts [h1 p h, h1' p h]` into its components or cases. Simplify using `only [List.map_append, List.sum_append]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -37,7 +37,7 @@ theorem Sup.fil_mul_le (δ : DividedPowers J) (m n : ℕ) : fil δ m * fil δ n 
   · simp only [List.map_append, List.sum_append]; omega
 
 /- English proof (translation)
-Take `⟨N, h⟩` from `h`. Use `⟨N, fun n hn ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[fil, Ideal.span_eq_bot]`. Introduce and unpack `_ ⟨l, h1, h2, rfl⟩`. Conclude with `h l h1 (hn.trans h2)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem Sup.exists_fil_eq_bot {δ : DividedPowers J} (h : IsNilDP δ) : ∃ N, ∀ n, N ≤ n → fil δ n = ⊥ := by
   obtain ⟨N, h⟩ := h
@@ -47,19 +47,17 @@ theorem Sup.exists_fil_eq_bot {δ : DividedPowers J} (h : IsNilDP δ) : ∃ N, �
   exact h l h1 (hn.trans h2)
 
 /- English proof (translation)
-Substitute `hs` using the available equality. Establish `hdp : ∀ y ∈ Ideal.span s, ∀ n, δ.dpow n y ∈ F n`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact hg x hx`.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Introduce `n`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite using `[δ.dpow_zero (Ideal.zero_mem _)]`. Conclude with `h0`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[δ.dpow_eval_zero hn.ne']`. Conclude with `Ideal.zero_mem _`. Consider the case `add x y hx hy ihx ihy`. Introduce `n`. Rewrite using `[δ.dpow_add hx hy]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Ideal.sum_mem _ fun k hk ↦ ?_` and prove the remaining obligations. Establish `hk' : k.1 + k.2 = n` using `by simpa using hk`. Rewrite using `[← hk']`. Conclude with `hm _ _ (Ideal.mul_mem_mul (ihx k.1) (ihy k.2))`. Consider the case `smul c x hx ih`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `n`. Rewrite using `[smul_eq_mul, δ.dpow_mul hx]`. Conclude with `Ideal.mul_mem_left _ _ (ih n)`. Establish `hprod : ∀ l : List (ℕ × B), (∀ p ∈ l, p.2 ∈ Ideal.span s) → (l.map fun p ↦ δ.dpow p.1 p.2).prod ∈ F (l.map Prod.fst).sum`. Introduce `l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Proceed by induction on `l with`. Consider the case `nil => exact h0`. Consider the case `cons p l ih`. Simplify using `only [List.map_cons, List.prod_cons, List.sum_cons]`. Conclude with `hm _ _ (Ideal.mul_mem_mul (hdp p.2 (hl p (by simp)) p.1) (ih fun q hq ↦ hl q (by simp [hq])))`.
-
-Use `⟨N, fun l hl h ↦ ?_⟩` and prove the remaining obligations. Use `hprod l hl` as an intermediate fact. Rewrite `this` using `[hN _ h, Ideal.mem_bot]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem Sup.isPDNilpotent_of_family (δ : DividedPowers J) (s : Set B) (hs : J = Ideal.span s) (F : ℕ → Ideal B)
     (h0 : (1 : B) ∈ F 0) (hm : ∀ m n, F m * F n ≤ F (m + n)) (hg : ∀ x ∈ s, ∀ n, δ.dpow n x ∈ F n)
@@ -99,23 +97,23 @@ theorem Sup.isPDNilpotent_of_family (δ : DividedPowers J) (s : Set B) (hs : J =
   rwa [hN _ h, Ideal.mem_bot] at this
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_union, Ideal.span_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Sup.sup_map_eq_span (f : R →+* B) : J ⊔ I.map f = Ideal.span ((J : Set B) ∪ f '' I) := by
   rw [Ideal.span_union, Ideal.span_eq]; rfl
 
 /- English proof (translation)
-Take `⟨N₁, k₁⟩` from `Sup.exists_fil_eq_bot hκ`. Take `⟨N₂, k₂⟩` from `Sup.exists_fil_eq_bot hδ`. Set `F : ℕ → Ideal B` to `fun n ↦ ⨆ p : {p : ℕ × ℕ // p.1 + p.2 = n}, (fil κ p.1.1).map f * fil δ p.1.2`. Establish `hF : ∀ a b n, a + b = n → (fil κ a).map f * fil δ b ≤ F n` using `fun a b n h ↦ le_iSup (fun p : {p : ℕ × ℕ // p.1 + p.2 = n} ↦ (fil κ p.1.1).map f * fil δ p.1.2) ⟨(a, b), h⟩`. Establish `one : (1 : B) ∈ (fil κ 0).map f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using Ideal.mem_map_of_mem f (Sup.one_mem_fil κ)`. Use `Sup.isPDNilpotent_of_family δ' _ (hJ.trans (Sup.sup_map_eq_span f)) F ?_ (fun m n ↦ ?_) ?_ (N₁ + N₂) fun n hn ↦ ?_` and prove the remaining obligations. Simplify using `using hF 0 0 0 rfl (Ideal.mul_mem_mul one (Sup.one_mem_fil δ))`. Simplify using `only [F, Submodule.iSup_mul, Submodule.mul_iSup, iSup_le_iff]`. Introduce and unpack `⟨⟨a, b⟩, h⟩ ⟨⟨c, d⟩, h'⟩`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `le_trans ?_ (hF (c + a) (d + b) _ (by simp only at h h'; omega))` and prove the remaining obligations. Rewrite using `[mul_mul_mul_comm, ← Ideal.map_mul]`. Conclude with `Ideal.mul_mono (Ideal.map_mono (Sup.fil_mul_le _ _ _)) (Sup.fil_mul_le _ _ _)`. Introduce and unpack `x (hx | ⟨r, hr, rfl⟩) n`. Use `h₁.2 (n := n) x hx` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.id_apply] at this`. Rewrite using `[this]`. Simplify using `using hF 0 n n (zero_add n) (Ideal.mul_mem_mul one (Sup.dpow_mem_fil δ hx n))`. Rewrite using `[h₂.2 r hr]`. Simplify using `using hF n 0 n rfl (Ideal.mul_mem_mul (Ideal.mem_map_of_mem f (Sup.dpow_mem_fil κ hr n)) (Sup.one_mem_fil δ))`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `only [F, iSup_eq_bot]`. Introduce and unpack `⟨⟨a, b⟩, h⟩`. Simplify using `only at h ⊢`. Distinguish the cases in `ha : N₁ ≤ a`. Rewrite using `[k₁ a ha, Ideal.map_bot, Ideal.bot_mul]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[k₂ b (by omega), Ideal.mul_bot]`.
+A detailed English derivation is pending.
 -/
 theorem nil_sup (κ : DividedPowers I) (δ : DividedPowers J) (f : R →+* B) (δ' : DividedPowers J')
     (hJ : J' = J ⊔ I.map f) (h₁ : IsDPMorphism δ δ' (RingHom.id B)) (h₂ : IsDPMorphism κ δ' f)
@@ -149,11 +147,9 @@ theorem nil_sup (κ : DividedPowers I) (δ : DividedPowers J) (f : R →+* B) (�
     · rw [k₂ b (by omega), Ideal.mul_bot]
 
 /- English proof (translation)
-Use `IsDPMorphism.on_span δ' θ (hJ.trans (Sup.sup_map_eq_span f)) ?_ ?_` and prove the remaining obligations. Introduce and unpack `x (hx | ⟨r, hr, rfl⟩)`. Conclude with `k₁.1 (Ideal.mem_map_of_mem _ hx)`. Conclude with `k₂.1 (Ideal.mem_map_of_mem _ hr)`. Introduce and unpack `n x (hx | ⟨r, hr, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `h₁.2 (n := n) x hx` as an intermediate fact. Simplify using `only [RingHom.id_apply] at this`. Rewrite using `[this]`. Conclude with `(k₁.2 x hx).symm`. Rewrite using `[h₂.2 r hr]`.
-
-Conclude with `(k₂.2 r hr).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDPMorphism_sup (κ : DividedPowers I) (δ : DividedPowers J) (f : R →+* B) (δ' : DividedPowers J')
     (hJ : J' = J ⊔ I.map f) (h₁ : IsDPMorphism δ δ' (RingHom.id B)) (h₂ : IsDPMorphism κ δ' f)

@@ -10,24 +10,24 @@ variable {F K : Type} [Field F] [Field K] [Algebra ℂ F] [Algebra ℂ K] [Algeb
 private noncomputable def mono (x : Fin (d + 1) → F) (a : Fin d → ℕ) : F := ∏ l, (x l.succ / x 0) ^ a l
 
 /- English proof (translation)
-Simplify using `[mono]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma mono_zero (x : Fin (d + 1) → F) : mono x 0 = 1 := by simp [mono]
 
 /- English proof (translation)
-Simplify using `[mono, pow_add, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma mono_add (x : Fin (d + 1) → F) (a b : Fin d → ℕ) : mono x (a + b) = mono x a * mono x b := by
   simp [mono, pow_add, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Proceed by induction on `hy using Submonoid.closure_induction with`. Consider the case `mem z hz`. Take `⟨i, hi, j, rfl⟩` from `hz`. Rewrite `hi` using `[Finset.mem_singleton]`. Substitute `hi` using the available equality.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Consider the cases of `j using Fin.cases with`. Consider the case `zero => exact ⟨0, by rw [mono_zero, div_self hx]⟩`. Consider the case `succ l`. Use `⟨Pi.single l 1, ?_⟩` and prove the remaining obligations. Simplify using `only [mono]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.prod_eq_single l]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_apply, hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Consider the case `one => exact ⟨0, (mono_zero x).symm⟩`. Consider the case `mul y z _ _ hy hz`. Take `⟨a, rfl⟩` from `hy`. Take `⟨b, rfl⟩` from `hz`. Conclude with `⟨a + b, (mono_add x a b).symm⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private lemma mono_closure (x : Fin (d + 1) → F) (hx : x 0 ≠ 0) (y : F)
     (hy : y ∈ Submonoid.closure {y | ∃ i ∈ ({0} : Finset (Fin (d + 1))), ∃ j, y = x j / x i}) :
@@ -54,13 +54,13 @@ private lemma mono_closure (x : Fin (d + 1) → F) (hx : x 0 ≠ 0) (y : F)
     exact ⟨a + b, (mono_add x a b).symm⟩
 
 /- English proof (translation)
-Take `⟨_, hρ2⟩` from `hρ`. Use `set m : Fin (d + 1) → ℤ := Fin.cons (-(∑ l, (a l : ℤ))) (fun l => (a l : ℤ)) with hm`. Establish `hsum : ∑ j, m j = 0`. Rewrite using `[Fin.sum_univ_succ]`. Simplify using `[hm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hne : m ≠ 0`. Introduce `h`. Apply `ha` to reduce the goal to its premises. Use function extensionality and compare the values at `l`. Simplify `congrFun h l.succ` using `[hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `heq : mono x a = ∏ j, x j ^ m j`. Rewrite using `[Fin.prod_univ_succ]`. Simplify using `only [hm, Fin.cons_zero, Fin.cons_succ, zpow_natCast, zpow_neg, mono, div_pow, Finset.prod_div_distrib, Finset.prod_pow_eq_pow_sum]`. Rewrite using `[show (∑ l, (a l : ℤ)) = ((∑ l, a l : ℕ) : ℤ) by push_cast; rfl, zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heq]`. Conclude with `hρ2 m hsum hne`.
+A detailed English derivation is pending.
 -/
 private lemma rho_mono (x : Fin (d + 1) → F) (hx : x 0 ≠ 0) (ρ : F →ₗ[ℂ] ℂ) (hρ : IsRes ℂ x ρ) (a : Fin d → ℕ)
     (ha : a ≠ 0) : ρ (mono x a) = 0 := by
@@ -86,27 +86,25 @@ private lemma rho_mono (x : Fin (d + 1) → F) (hx : x 0 ≠ 0) (ρ : F →ₗ[�
 end ResValAux
 
 /- English proof (translation)
-Introduce `hval F K _ _ _ _ _ _ d x hfc ρ hρ e f hf`. Take `⟨_, _, hBval, _⟩` from `hval K (rB ℂ K (xv x) {0}) e.1`. Establish `hx0 : xv x 0 ≠ 0` using `(x 0).ne_zero`. Establish `hmemB : ∀ g ∈ rA ℂ (xv x) {0}, algebraMap F K g ∈ rB ℂ K (xv x) {0}`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(isIntegral_algebraMap : IsIntegral (rA ℂ (xv x) {0}) (algebraMap (rA ℂ (xv x) {0}) K ⟨g, hg⟩))`. Establish `hspan : ∀ g, g ∈ rA ℂ (xv x) {0} ↔ g ∈ Submodule.span ℂ (Submonoid.closure {y | ∃ i ∈ ({0} : Finset (Fin (d + 1))), ∃ j, y = xv x j / xv x i} : Set F)`. Introduce `g`. Rewrite using `[← Algebra.adjoin_eq_span]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hmono : ∀ (a : Fin d → ℕ) (h : algebraMap F K (mono (xv x) a) ∈ rB ℂ K (xv x) {0}), e.1 ⟨_, h⟩ = ρ (mono (xv x) a)`. Introduce `a h`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Establish `h1 : (⟨algebraMap F K (mono (xv x) 0), h⟩ : rB ℂ K (xv x) {0}) = 1` using `Subtype.ext (by simp [mono_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, map_one, mono_zero, hρ.1]`. Rewrite using `[rho_mono (xv x) hx0 ρ hρ a ha]`. Establish `h1 : (⟨algebraMap F K (mono (xv x) a), h⟩ : rB ℂ K (xv x) {0}) = ∏ l, (⟨algebraMap F K (xv x l.succ / xv x 0), tco_mem ℂ K (xv x) l⟩ : rB ℂ K (xv x) {0}) ^ a l` using `Subtype.ext (by simp [mono, map_prod, map_pow])`. Rewrite using `[h1, map_prod]`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l, a l ≠ 0 := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `ha (funext hc)`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ l) (by rw [map_pow, e.2 l, zero_pow hl])`. Establish `key : ∀ g (hg : g ∈ Submodule.span ℂ (Submonoid.closure {y | ∃ i ∈ ({0} : Finset (Fin (d + 1))), ∃ j, y = xv x j / xv x i} : Set F)) (h : algebraMap F K g ∈ rB ℂ K (xv x) {0}), e.1 ⟨_, h⟩ = ρ g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem y hy`. Introduce `h`. Take `⟨a, rfl⟩` from `mono_closure (xv x) hx0 y hy`.
+Extract witnesses or component facts from the available result. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmono a h`. Consider the case `zero`. Introduce `h`. Establish `h1 : (⟨algebraMap F K 0, h⟩ : rB ℂ K (xv x) {0}) = 0` using `Subtype.ext (map_zero _)`. Rewrite using `[h1, map_zero, map_zero]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `add y z hy hz ihy ihz`. Introduce `h`. Establish `hy'` using `hmemB y ((hspan y).2 hy)`. Establish `hz'` using `hmemB z ((hspan z).2 hz)`. Establish `h1 : (⟨algebraMap F K (y + z), h⟩ : rB ℂ K (xv x) {0}) = ⟨_, hy'⟩ + ⟨_, hz'⟩` using `Subtype.ext (map_add _ _ _)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, map_add, map_add, ihy hy', ihz hz']`. Consider the case `smul r y hy ihy`. Introduce `h`. Establish `hy'` using `hmemB y ((hspan y).2 hy)`. Establish `h1 : (⟨algebraMap F K (r • y), h⟩ : rB ℂ K (xv x) {0}) = r • ⟨_, hy'⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show algebraMap F K (r • y) = r • algebraMap F K y`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[h1, map_smul, map_smul, ihy hy']`. Establish `hfB` using `hmemB f hf`.
-
-Establish `hv` using `hBval ⟨_, hfB⟩`. Rewrite `hv` using `[key f ((hspan f).1 hf) hfB]`. Conclude with `hv`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.resVal_of :
     ValBasic → ResVal := by

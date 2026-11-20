@@ -10,9 +10,9 @@ open GlobalTheory.AlmostEt GlobalTheory.K5
 namespace GlobalTheory.K5.TorsionDiff
 
 /- English proof (translation)
-Establish `h2` using `congrArg (fun m => (ai * bi) • m) h`. Simplify using `only [smul_smul] at h2`. Establish `e1 : ai * bi * b = ai` using `by linear_combination ai * hb`. Establish `e2 : ai * bi * (P * a) = P * bi` using `by linear_combination (P * bi) * ha`. Rewrite `h2` using `[e1, e2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2.symm`.
+A detailed English derivation is pending.
 -/
 theorem dlog_descend {S M : Type*} [CommRing S] [AddCommGroup M] [Module S M]
     (a ai b bi P : S) (da db : M) (ha : a * ai = 1) (hb : b * bi = 1)
@@ -25,7 +25,7 @@ theorem dlog_descend {S M : Type*} [CommRing S] [AddCommGroup M] [Module S M]
   exact h2.symm
 
 /- English proof (translation)
-Establish `hpos : 0 < p ^ n` using `pow_pos (Fact.out : p.Prime).pos n`. Use `⟨zS T n ^ (p ^ n - 1), ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_succ', Nat.sub_add_cancel hpos]`. Conclude with `Subtype.ext (T.prim n).pow_eq_one`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inv_zS {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
     (T : Tower p Ω) (n : ℕ) : ∃ zi, zS T n * zi = 1 := by
@@ -35,9 +35,7 @@ theorem exists_inv_zS {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (
   exact Subtype.ext (T.prim n).pow_eq_one
 
 /- English proof (translation)
-Establish `hne : p ^ n ≠ 0` using `pow_ne_zero _ (Fact.out : p.Prime).ne_zero`. Establish `h1 : qS T n ^ (p ^ n) = algebraMap (O0 p) (integralClosure (O0 p) Ω) (qO p)` using `Subtype.ext (GlobalTheory.AlmostEt.qq_pow T n)`. Establish `h2 : IsUnit (qS T n ^ (p ^ n))`. Rewrite using `[h1]`. Conclude with `(GlobalTheory.K5.Basic.isUnit_qO p).map _`.
-
-Conclude with `((isUnit_pow_iff hne).1 h2).exists_right_inv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inv_qS {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
     (T : Tower p Ω) (n : ℕ) : ∃ qi, qS T n * qi = 1 := by
@@ -49,11 +47,11 @@ theorem exists_inv_qS {p : ℕ} [Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (
   exact ((isUnit_pow_iff hne).1 h2).exists_right_inv
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Establish `h0 : (P ^ (n + 1) * x * zm * zim) • dzm + (P ^ (n + 1) * y * qm * qim) • dqm = 0`. Rewrite using `[mul_assoc _ zm, hz, mul_assoc _ qm, hq, mul_one, mul_one, mul_smul, mul_smul, ← smul_add, ← hs, smul_comm, hη, smul_zero]`. Take `⟨⟨t, ht⟩, ⟨u, hu⟩⟩` from `hind _ _ h0`. Establish `e : n + 1 + k - 1 = n + k` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `ht` using `[e]`. Establish `hx : P ^ 4 * x = t * (P ^ k * zim)`. Apply `mul_left_cancel₀ (pow_ne_zero n hP)` to reduce the goal to its premises. Take the linear combination `zim * ht - P ^ (n + 4) * x * hz`. Establish `hy : P ^ 4 * y = P * u * (P ^ k * qim)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ (pow_ne_zero n hP)` to reduce the goal to its premises. Take the linear combination `qim * hu - P ^ (n + 4) * y * hq`. Use `⟨t, P * u, ?_⟩` and prove the remaining obligations. Establish `e6 : P ^ 6 = P ^ 4 * P ^ 2` using `by ring`. Rewrite using `[e6, mul_smul, hs, smul_add, smul_smul, smul_smul, hx, hy, mul_smul t, mul_smul (P * u), hdz, hdq, smul_smul, smul_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem span_core {S M : Type*} [CommRing S] [IsDomain S] [AddCommGroup M] [Module S M]
     (P : S) (hP : P ≠ 0) (n k : ℕ) (hn : 1 ≤ n) (η dz dq dzm dqm : M)
@@ -82,15 +80,13 @@ theorem span_core {S M : Type*} [CommRing S] [IsDomain S] [AddCommGroup M] [Modu
     hdz, hdq, smul_smul, smul_smul]
 
 /- English proof (translation)
-Introduce `p _ hp2`. Use `⟨6, ?_⟩` and prove the remaining obligations. Introduce `Ω _ _ hΩ T n hn z qn zi qi hz hq hzi hqi`. Take `rfl : z = zS T n` from `Subtype.ext hz`. Take `rfl : qn = qS T n` from `Subtype.ext hq`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : CharZero Ω := GlobalTheory.K5.Basic.charZero_of_isClo hΩ`. Establish `hP : (p : integralClosure (O0 p) Ω) ≠ 0`. Introduce `h`. Establish `h2 : (p : Ω) = 0` using `by simpa using congrArg Subtype.val h`. Conclude with `(Fact.out : p.Prime).ne_zero (by exact_mod_cast h2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `η hη`. Take `⟨m, hm, x, y, hs⟩` from `GlobalTheory.AlmostEt.p_sq_smul_kaehler_mem_span p Ω hp2 hΩ T η n`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Take `⟨zim, hzim⟩` from `exists_inv_zS T (n + k)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨qim, hqim⟩` from `exists_inv_qS T (n + k)`. Take `⟨hdz, hdq⟩` from `GlobalTheory.AlmostEt.dlog_transition p Ω T n k`. Rewrite `hη`, the goal using `[← Nat.cast_smul_eq_nsmul (integralClosure (O0 p) Ω), Nat.cast_pow]`. Conclude with `span_core _ hP n k hn η _ _ _ _ zi qi _ _ zim qim x y hzim hqim hη hs (dlog_descend _ _ _ _ _ _ _ hzi hzim hdz) (dlog_descend _ _ _ _ _ _ _ hqi hqim hdq) (fun x y h => GlobalTheory.AlmostEt.dlog_indep_pow_three p Ω hp2 hΩ T (n + k) (by omega) x y zim qim hzim hqim h)`. Introduce `x y h`.
-
-Take `⟨⟨t, ht⟩, ⟨u, hu⟩⟩` from `GlobalTheory.AlmostEt.dlog_indep_pow_three p Ω hp2 hΩ T n hn x y zi qi hzi hqi h`. Conclude with `⟨⟨(p : integralClosure (O0 p) Ω) ^ 3 * t, by linear_combination (p : integralClosure (O0 p) Ω) ^ 3 * ht⟩, ⟨(p : integralClosure (O0 p) Ω) ^ 3 * u, by linear_combination (p : integralClosure (O0 p) Ω) ^ 3 * hu⟩⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem torsion_span_and_indep : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∃ c : ℕ, ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
   ∀ (T : Tower p Ω) (n : ℕ), 1 ≤ n → ∀ z qn zi qi : integralClosure (O0 p) Ω,

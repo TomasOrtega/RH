@@ -8,9 +8,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC CochainCo
 open LateralTheory.E.EtaleTopologySheaves LateralTheory.E.LeafGhostCut UpperTheory.Et.Loc
 
 /- English proof (translation)
-Establish `h3` using `(GlobalTheory.T.free_sections_ext_res_map R (yoneda.obj X) J).2.2.1 V X x (𝟙 X)`. Establish `nat : Sec.res x (Sec.map φ (freeGen R (yoneda.obj X) X (𝟙 X))) = Sec.map φ (Sec.res x (freeGen R (yoneda.obj X) X (𝟙 X)))`. Simplify using `only [Sec.res, Sec.map]`. Conclude with `(congrArg (fun f => ModuleCat.Hom.hom f (freeGen R (yoneda.obj X) X (𝟙 X))) (φ.hom.naturality x.op)).symm`. Rewrite using `[nat, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private lemma res_val {R : Type} [CommRing R] {X : Scheme.{0}} {J : Shv R} (φ : (free R).obj (yoneda.obj X) ⟶ J)
     {V : Scheme.{0}} (x : V ⟶ X) :
@@ -45,7 +45,7 @@ private noncomputable def evE (R : Type) [CommRing R] (X : Scheme.{0}) (J : Shv 
       simp [Sec.res]⟩
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullbackSymmetry_inv_comp_fst, pullback.lift_snd, Category.assoc, pullback.lift_fst]`. Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, pullbackSymmetry_inv_comp_snd, pullback.lift_fst, Category.assoc, pullback.lift_snd]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma pullbackSymmetry_lift_map_comm {A A' Y B : Scheme.{0}} (p : Y ⟶ B) (u : A ⟶ B) (u' : A' ⟶ B) (l : A' ⟶ A) (hl : l ≫ u = u') :
     pullback.lift (pullback.fst u' p ≫ l) (pullback.snd u' p)
@@ -58,7 +58,7 @@ private lemma pullbackSymmetry_lift_map_comm {A A' Y B : Scheme.{0}} (p : Y ⟶ 
     simp
 
 /- English proof (translation)
-Establish `w : a.left ≫ U.hom = U'.hom` using `Over.w ((LateralTheory.EWeil.AcycPf.incl B).map a)`. Conclude with `pullbackSymmetry_lift_map_comm p U.hom U'.hom a.left w`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma sym_nat {B Y : Scheme.{0}} (p : Y ⟶ B) {U U' : B.Etale} (a : U' ⟶ U) :
     (LateralTheory.KummerTheory.tot p).map ((LateralTheory.EWeil.AcycPf.incl B).map a) ≫ (pullbackSymmetry p U.hom).inv =
@@ -67,14 +67,14 @@ private lemma sym_nat {B Y : Scheme.{0}} (p : Y ⟶ B) {U U' : B.Etale} (a : U' 
   exact pullbackSymmetry_lift_map_comm p U.hom U'.hom a.left w
 
 /- English proof (translation)
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma res_res {R : Type} [CommRing R] {F : Shv R} {U V W : Scheme.{0}} (f : V ⟶ U) (g : W ⟶ V) (s : Sec F U) :
     Sec.res g (Sec.res f s) = Sec.res (g ≫ f) s := by
   simp [Sec.res]
 
 /- English proof (translation)
-Establish `h4` using `(GlobalTheory.T.free_sections_ext_res_map R (yoneda.obj X') J).2.2.2 (yoneda.obj X) (yoneda.map f) X' (𝟙 X')`. Establish `hc : Sec.map ((free R).map (yoneda.map f) ≫ φ) (freeGen R (yoneda.obj X') X' (𝟙 X')) = Sec.map φ (Sec.map ((free R).map (yoneda.map f)) (freeGen R (yoneda.obj X') X' (𝟙 X')))` using `rfl`. Rewrite using `[hc, h4, ← res_val φ f]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 private lemma ev_pre {R : Type} [CommRing R] {X X' : Scheme.{0}} {J : Shv R} (f : X' ⟶ X)
     (φ : (free R).obj (yoneda.obj X) ⟶ J) :
@@ -103,9 +103,9 @@ private noncomputable def isoHP (q : ℕ) {B Y : Scheme.{0}} (p : Y ⟶ B) (J : 
     exact congrArg (fun t => Sec.res (F := J) t _) (sym_nat p a).symm)
 
 /- English proof (translation)
-Introduce `hI hR q B Y p J hJ`. Take `⟨h1, i1⟩` from `(hI (ZMod q) J p).1`. Take `⟨h2, i2⟩` from `hR (ZMod q) B ⟨(LateralTheory.KummerTheory.tot p).op ⋙ J.obj, h1⟩`. Establish `e` using `isoHP q p J`. Use `⟨(Presheaf.isSheaf_of_iso_iff e).2 h2, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Injective.of_iso ((sheafToPresheaf _ _).preimageIso (X := ⟨_, h2⟩) e.symm) i2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.homAcyclic_free_pullback_yoneda_of_injective_restriction :
     LateralTheory.KummerTheory.InjSlice → LateralTheory.EWeil.AcycPf.RestrInj → ∀ (q : ℕ) {B Y : Scheme.{0}} (p : Y ⟶ B), Good (gY p ⋙ yoneda ⋙ free (ZMod q)) := by

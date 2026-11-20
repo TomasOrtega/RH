@@ -18,7 +18,7 @@ section GLmat
 variable {E : Type} [Field E] {n : ℕ}
 
 /- English proof (translation)
-Establish `h : Matrix.GeneralLinearGroup.toLin (toGLm E n ga) = (LinearMap.GeneralLinearGroup.generalLinearEquiv E (Sp E n)).symm ga`. Simplify using `[toGLm]`. Establish `h2` using `congrArg (fun u : LinearMap.GeneralLinearGroup E (Sp E n) => (u : Sp E n →ₗ[E] Sp E n) x) h`. Simplify using `only [Matrix.GeneralLinearGroup.coe_toLin, Matrix.mulVecLin_apply] at h2`. Rewrite using `[h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -33,7 +33,7 @@ theorem toGLm_mulVec (ga : Sp E n ≃ₗ[E] Sp E n) (x : Sp E n) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[gmap, toGLm_mulVec]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gmap_eq_map (ga : Sp E n ≃ₗ[E] Sp E n) {R : Type} [CommRing R] [Algebra R E]
     (L : Submodule R (Sp E n)) :
@@ -49,9 +49,9 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
   {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Unfold `Deco.L gmap`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_image, Deco.act, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hf⟩`. Use `⟨ga.symm x, ⟨(mem_gmap ga d.N x).1 hx, hf⟩, by simp⟩` and prove the remaining obligations. Introduce and unpack `⟨y, ⟨hy, hf⟩, rfl⟩`. Use `⟨(mem_gmap ga d.N (ga y)).2 (by simpa using hy), fun P => by simpa using hf P⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem Deco.L_act (d : Deco E n ST SG) (ga : Sp E n ≃ₗ[E] Sp E n) (h : GLG E n SG) :
     (d.act ga h).L = gmap ga d.L := by
@@ -67,7 +67,7 @@ theorem Deco.L_act (d : Deco E n ST SG) (ga : Sp E n ≃ₗ[E] Sp E n) (h : GLG 
     refine ⟨(mem_gmap ga d.N (ga y)).2 (by simpa using hy), fun P => by simpa using hf P⟩
 
 /- English proof (translation)
-Unfold `Deco.Lsh`. Rewrite using `[Deco.L_act, dual_gmap ga hga]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Deco.Lsh_act (d : Deco E n ST SG) {ga : Sp E n ≃ₗ[E] Sp E n} (hga : ga ∈ UF E n) (h : GLG E n SG) :
     (d.act ga h).Lsh = gmap ga d.Lsh := by
@@ -75,11 +75,11 @@ theorem Deco.Lsh_act (d : Deco E n ST SG) {ga : Sp E n ≃ₗ[E] Sp E n} (hga : 
   rw [Deco.L_act, dual_gmap ga hga]
 
 /- English proof (translation)
-Unfold `Deco.LshKer gmap`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_image, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Deco.Lsh_act d hga h]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hf⟩`. Use `⟨ga.symm x, ⟨(mem_gmap ga d.Lsh x).1 hx, hf⟩, by simp⟩` and prove the remaining obligations. Introduce and unpack `⟨y, ⟨hy, hf⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨(mem_gmap ga d.Lsh (ga y)).2 (by simpa using hy), by simpa [Deco.act] using hf⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem Deco.LshKer_act (d : Deco E n ST SG) {ga : Sp E n ≃ₗ[E] Sp E n} (hga : ga ∈ UF E n)
     (h : GLG E n SG) (P : ST) :
@@ -109,26 +109,26 @@ section KLat
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_dualFr (M : Submodule (𝓞 K) (Fin n → K)) (φ : Fin n → K) :
     φ ∈ dualFr M ↔ ∀ x ∈ M, φ ⬝ᵥ x ∈ (1 : Submodule (𝓞 K) K) := Iff.rfl
 
 /- English proof (translation)
-Simplify using `[gLat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_gLat (g : GL (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K)) (x : Fin n → K) :
     x ∈ gLat g M ↔ ∃ y ∈ M, (g : Matrix (Fin n) (Fin n) K) *ᵥ y = x := by
   simp [gLat]
 
 /- English proof (translation)
-Establish `hinv : (((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K))ᵀ * (g : Matrix (Fin n) (Fin n) K)ᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]`. Use extensionality with `φ`. Rewrite using `[mem_dualFr, mem_gLat]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use `⟨(g : Matrix (Fin n) (Fin n) K)ᵀ *ᵥ φ, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Use `h ((g : Matrix (Fin n) (Fin n) K) *ᵥ x) ((mem_gLat g M _).2 ⟨x, hx, rfl⟩)` as an intermediate fact. Rewrite `this` using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `show (((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K))ᵀ *ᵥ ((g : Matrix (Fin n) (Fin n) K)ᵀ *ᵥ φ) = φ`. Rewrite using `[Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Introduce and unpack `⟨ψ, hψ, rfl⟩ y hy`. Take `⟨x, hx, rfl⟩` from `(mem_gLat g M y).1 hy`. Use `(mem_dualFr M ψ).1 hψ x hx` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `show (((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K))ᵀ *ᵥ ψ ⬝ᵥ ((g : Matrix (Fin n) (Fin n) K) *ᵥ x) ∈ _`. Rewrite using `[Matrix.dotProduct_mulVec, Matrix.mulVec_transpose, Matrix.vecMul_vecMul, Units.inv_mul, Matrix.vecMul_one]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem dualFr_gLat (g : GL (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K)) :
     dualFr (gLat g M) = gLat (inside₂ K n g) (dualFr M) := by
@@ -154,13 +154,11 @@ theorem dualFr_gLat (g : GL (Fin n) K) (M : Submodule (𝓞 K) (Fin n → K)) :
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Establish `hE` using `(nabDelEquiv K ι n lam M g).1`. Use extensionality with `x`. Simplify using `only [nabK, Submodule.mem_comap, Submodule.mem_map, LinearMap.coe_restrictScalars, Submodule.subtype_apply]`. Rewrite using `[hE, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy, hyx⟩`. Establish `hyV : y ∈ VV K lam`. Establish `: y = actP lam g⁻¹ x.1`. Rewrite using `[← hyx]`. Use `show y = actP lam g⁻¹ (actP lam g y)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← polyAction_mul, inv_mul_cancel, polyAction_one₂]`. Rewrite using `[this]`. Conclude with `polyAction_mem_VV lam g⁻¹ x.2`. Conclude with `⟨⟨y, hyV⟩, hy, Subtype.ext (by rw [rhoK_coe]; exact hyx)⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
-
-Conclude with `⟨y.1, hy, (rhoK_coe lam g y).symm⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nabK_gLat (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)) (g : ι → GL (Fin n) K) :
     nabK lam (fun τ => gLat (g τ) (M τ)) = (nabK lam M).map ((rhoK lam g).restrictScalars (𝓞 K)) := by
@@ -183,13 +181,11 @@ theorem nabK_gLat (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin
     exact ⟨y.1, hy, (rhoK_coe lam g y).symm⟩
 
 /- English proof (translation)
-Establish `hE` using `(nabDelEquiv K ι n lam M g).2`. Use extensionality with `x`. Simplify using `only [delK, Submodule.mem_comap, Submodule.mem_map, LinearMap.coe_restrictScalars, Submodule.subtype_apply]`. Rewrite using `[hE, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy, hyx⟩`. Establish `hyV : y ∈ VV K lam`. Establish `: y = actP lam g⁻¹ x.1`. Rewrite using `[← hyx]`. Use `show y = actP lam g⁻¹ (actP lam g y)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← polyAction_mul, inv_mul_cancel, polyAction_one₂]`. Rewrite using `[this]`. Conclude with `polyAction_mem_VV lam g⁻¹ x.2`. Conclude with `⟨⟨y, hyV⟩, hy, Subtype.ext (by rw [rhoK_coe]; exact hyx)⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
-
-Conclude with `⟨y.1, hy, (rhoK_coe lam g y).symm⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem delK_gLat (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)) (g : ι → GL (Fin n) K) :
     delK lam (fun τ => gLat (g τ) (M τ)) = (delK lam M).map ((rhoK lam g).restrictScalars (𝓞 K)) := by
@@ -219,7 +215,7 @@ variable {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] {ι : 
   (emb : ι → E →+* K)
 
 /- English proof (translation)
-Rewrite using `[gmap_eq_map]`. Conclude with `tauLatG E K ι n emb τ L (toGLm E n ga)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tauLat_gmap (τ : ι) (ga : Sp E n ≃ₗ[E] Sp E n) (L : Submodule (𝓞 E) (Sp E n)) :
     tauLat emb τ (gmap ga L) = gLat (embGL emb (toGLm E n ga) τ) (tauLat emb τ L) := by
@@ -227,7 +223,7 @@ theorem tauLat_gmap (τ : ι) (ga : Sp E n ≃ₗ[E] Sp E n) (L : Submodule (�
   exact tauLatG E K ι n emb τ L (toGLm E n ga)
 
 /- English proof (translation)
-Unfold `nabAt`. Repeatedly rewrite using `[tauLat_gmap]`. Conclude with `nabK_gLat lam _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nabAt_gmap (lam : ι → DomWeight n) (ga : Sp E n ≃ₗ[E] Sp E n) (L : Submodule (𝓞 E) (Sp E n)) :
     nabAt emb lam (gmap ga L) = (nabAt emb lam L).map ((rhoV emb lam (toGLm E n ga)).restrictScalars (𝓞 K)) := by
@@ -236,7 +232,7 @@ theorem nabAt_gmap (lam : ι → DomWeight n) (ga : Sp E n ≃ₗ[E] Sp E n) (L 
   exact nabK_gLat lam _ _
 
 /- English proof (translation)
-Unfold `delAt`. Repeatedly rewrite using `[tauLat_gmap]`. Conclude with `delK_gLat lam _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem delAt_gmap (lam : ι → DomWeight n) (ga : Sp E n ≃ₗ[E] Sp E n) (L : Submodule (𝓞 E) (Sp E n)) :
     delAt emb lam (gmap ga L) = (delAt emb lam L).map ((rhoV emb lam (toGLm E n ga)).restrictScalars (𝓞 K)) := by
@@ -245,7 +241,7 @@ theorem delAt_gmap (lam : ι → DomWeight n) (ga : Sp E n ≃ₗ[E] Sp E n) (L 
   exact delK_gLat lam _ _
 
 /- English proof (translation)
-Unfold `nabAtr`. Repeatedly rewrite using `[tauLat_gmap, dualFr_gLat]`. Conclude with `nabK_gLat lam _ (invTrK (embGL emb (toGLm E n ga)))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nabAtr_gmap (lam : ι → DomWeight n) (ga : Sp E n ≃ₗ[E] Sp E n) (L : Submodule (𝓞 E) (Sp E n)) :
     nabAtr emb lam (gmap ga L) = (nabAtr emb lam L).map ((rhoVr emb lam (toGLm E n ga)).restrictScalars (𝓞 K)) := by
@@ -254,7 +250,7 @@ theorem nabAtr_gmap (lam : ι → DomWeight n) (ga : Sp E n ≃ₗ[E] Sp E n) (L
   exact nabK_gLat lam _ (invTrK (embGL emb (toGLm E n ga)))
 
 /- English proof (translation)
-Unfold `delAtr`. Repeatedly rewrite using `[tauLat_gmap, dualFr_gLat]`. Conclude with `delK_gLat lam _ (invTrK (embGL emb (toGLm E n ga)))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem delAtr_gmap (lam : ι → DomWeight n) (ga : Sp E n ≃ₗ[E] Sp E n) (L : Submodule (𝓞 E) (Sp E n)) :
     delAtr emb lam (gmap ga L) = (delAtr emb lam L).map ((rhoVr emb lam (toGLm E n ga)).restrictScalars (𝓞 K)) := by
@@ -269,7 +265,7 @@ section PkEquiv
 variable (X : Fields) {n : ℕ} (lam : X.Tau → DomWeight n) {D : Type} (L : D → Submodule (𝓞 X.E) (Sp X.E n))
 
 /- English proof (translation)
-Use `show nabAtr X.emb lam (L d') = _`. Rewrite using `[h, nabAtr_gmap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem roundPk_nab {ga : UF X.E n} {d d' : D} (h : L d' = gmap ga.1 (L d)) :
     (roundPk X lam L).Nab d' = ((roundPk X lam L).Nab d).map (((roundPk X lam L).rho ga).restrictScalars (𝓞 X.K)) := by
@@ -278,7 +274,7 @@ theorem roundPk_nab {ga : UF X.E n} {d d' : D} (h : L d' = gmap ga.1 (L d)) :
   rfl
 
 /- English proof (translation)
-Use `show delAtr X.emb lam (L d') = _`. Rewrite using `[h, delAtr_gmap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem roundPk_del {ga : UF X.E n} {d d' : D} (h : L d' = gmap ga.1 (L d)) :
     (roundPk X lam L).Del d' = ((roundPk X lam L).Del d).map (((roundPk X lam L).rho ga).restrictScalars (𝓞 X.K)) := by
@@ -287,7 +283,7 @@ theorem roundPk_del {ga : UF X.E n} {d d' : D} (h : L d' = gmap ga.1 (L d)) :
   rfl
 
 /- English proof (translation)
-Use `show nabAt X.emb lam (L d') = _`. Rewrite using `[h, nabAt_gmap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem squarePk_nab {ga : UF X.E n} {d d' : D} (h : L d' = gmap ga.1 (L d)) :
     (squarePk X lam L).Nab d' = ((squarePk X lam L).Nab d).map (((squarePk X lam L).rho ga).restrictScalars (𝓞 X.K)) := by
@@ -296,7 +292,7 @@ theorem squarePk_nab {ga : UF X.E n} {d d' : D} (h : L d' = gmap ga.1 (L d)) :
   rfl
 
 /- English proof (translation)
-Use `show delAt X.emb lam (L d') = _`. Rewrite using `[h, delAt_gmap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem squarePk_del {ga : UF X.E n} {d d' : D} (h : L d' = gmap ga.1 (L d)) :
     (squarePk X lam L).Del d' = ((squarePk X lam L).Del d).map (((squarePk X lam L).rho ga).restrictScalars (𝓞 X.K)) := by
@@ -311,7 +307,7 @@ section ValsEquiv
 variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R)
 
 /- English proof (translation)
-The claim follows from `roundPk_nab X _ _ (d.1.Lsh_act a.1.2 a.2)`.
+A detailed English derivation is pending.
 -/
 theorem colVal_nab_smul (u : Pr.Word) (j : ℕ) {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
     (a : UF X.E (R.N j) × GLG X.E (R.N j) SG) (d : DecoSet X.E (R.N j) ST SG) :
@@ -320,7 +316,7 @@ theorem colVal_nab_smul (u : Pr.Word) (j : ℕ) {ST SG : Finset (HeightOneSpectr
   roundPk_nab X _ _ (d.1.Lsh_act a.1.2 a.2)
 
 /- English proof (translation)
-The claim follows from `roundPk_del X _ _ (d.1.Lsh_act a.1.2 a.2)`.
+A detailed English derivation is pending.
 -/
 theorem colVal_del_smul (u : Pr.Word) (j : ℕ) {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))}
     (a : UF X.E (R.N j) × GLG X.E (R.N j) SG) (d : DecoSet X.E (R.N j) ST SG) :
@@ -329,7 +325,7 @@ theorem colVal_del_smul (u : Pr.Word) (j : ℕ) {ST SG : Finset (HeightOneSpectr
   roundPk_del X _ _ (d.1.Lsh_act a.1.2 a.2)
 
 /- English proof (translation)
-Use `show delAtr X.emb (W.lamTrue u j) ((a • d).1.LshKer P) = _`. Rewrite using `[DecoSet.smul_val, Deco.LshKer_act _ a.1.2, delAtr_gmap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem BvLat_smul (u : Pr.Word) (j : ℕ) {ST SG : Finset (HeightOneSpectrum (𝓞 X.E))} (P : ST)
     (a : UF X.E (R.N j) × GLG X.E (R.N j) SG) (d : DecoSet X.E (R.N j) ST SG) :
@@ -339,7 +335,7 @@ theorem BvLat_smul (u : Pr.Word) (j : ℕ) {ST SG : Finset (HeightOneSpectrum (�
   rfl
 
 /- English proof (translation)
-The claim follows from `squarePk_nab X _ _ (d.1.N_act a.1.1 a.2)`.
+A detailed English derivation is pending.
 -/
 theorem rowVal_nab_smul {SG : Finset (HeightOneSpectrum (𝓞 X.E))}
     (a : UF X.E (R.N R.m - 1) × GLG X.E (R.N R.m - 1) SG) (d : DecoSet X.E (R.N R.m - 1) ∅ SG) :
@@ -347,7 +343,7 @@ theorem rowVal_nab_smul {SG : Finset (HeightOneSpectrum (𝓞 X.E))}
   squarePk_nab X _ _ (d.1.N_act a.1.1 a.2)
 
 /- English proof (translation)
-The claim follows from `squarePk_del X _ _ (d.1.N_act a.1.1 a.2)`.
+A detailed English derivation is pending.
 -/
 theorem rowVal_del_smul {SG : Finset (HeightOneSpectrum (𝓞 X.E))}
     (a : UF X.E (R.N R.m - 1) × GLG X.E (R.N R.m - 1) SG) (d : DecoSet X.E (R.N R.m - 1) ∅ SG) :
@@ -355,7 +351,7 @@ theorem rowVal_del_smul {SG : Finset (HeightOneSpectrum (𝓞 X.E))}
   squarePk_del X _ _ (d.1.N_act a.1.1 a.2)
 
 /- English proof (translation)
-The claim follows from `roundPk_nab X _ _ (d.1.N_act a.1.1 a.2)`.
+A detailed English derivation is pending.
 -/
 theorem mtVal_nab_smul (j : ℕ) {SG : Finset (HeightOneSpectrum (𝓞 X.E))}
     (a : UF X.E R.nV × GLG X.E R.nV SG) (d : DecoSet X.E R.nV ∅ SG) :
@@ -363,7 +359,7 @@ theorem mtVal_nab_smul (j : ℕ) {SG : Finset (HeightOneSpectrum (𝓞 X.E))}
   roundPk_nab X _ _ (d.1.N_act a.1.1 a.2)
 
 /- English proof (translation)
-The claim follows from `roundPk_del X _ _ (d.1.N_act a.1.1 a.2)`.
+A detailed English derivation is pending.
 -/
 theorem mtVal_del_smul (j : ℕ) {SG : Finset (HeightOneSpectrum (𝓞 X.E))}
     (a : UF X.E R.nV × GLG X.E R.nV SG) (d : DecoSet X.E R.nV ∅ SG) :
@@ -377,16 +373,16 @@ section PkPair
 variable {E : Type} [Field E] [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Formalism.UG.P.glEquiv_apply', toGLm_mulVec]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem glEquiv_toGLm (ga : Sp E n ≃ₗ[E] Sp E n) : Formalism.UG.glEquiv (toGLm E n ga) = ga := by
   ext x
   rw [Formalism.UG.P.glEquiv_apply', toGLm_mulVec]
 
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(∑ k, star ((Pi.single i (1 : E) : Sp E n) k) * (Pi.single j (1 : E) : Sp E n) k) = (1 : Matrix (Fin n) (Fin n) E) i j`. Rewrite using `[Matrix.one_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Pi.single_apply]`. Simplify using `[Pi.single_apply, h, Ne.symm h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem gram_hStd : Formalism.UG.gram (hStd E n) = 1 := by
   ext i j
@@ -398,7 +394,7 @@ theorem gram_hStd : Formalism.UG.gram (hStd E n) = 1 := by
   · simp [Pi.single_apply, h, Ne.symm h]
 
 /- English proof (translation)
-Establish `h` using `(Formalism.UG.P.hermitian_lattice_correspondence_holds E (Fin n) (hStd E n) (toGLm E n ga.1)).2`. Rewrite `h` using `[gram_hStd, glEquiv_toGLm]`. Conclude with `h ga.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toGLm_mem_UJ (ga : UF E n) : toGLm E n ga.1 ∈ Formalism.UG.UJ (starRingEnd E) (1 : Matrix (Fin n) (Fin n) E) := by
   have h := (Formalism.UG.P.hermitian_lattice_correspondence_holds E (Fin n) (hStd E n) (toGLm E n ga.1)).2
@@ -412,7 +408,7 @@ section PkPair2
 variable (X : Fields) {n : ℕ} (lam : X.Tau → DomWeight n) {D : Type} (L : D → Submodule (𝓞 X.E) (Sp X.E n))
 
 /- English proof (translation)
-The claim follows from `pairInv X.K X.Tau n lam _ _ (fun τ => (uJUnitary X.E X.K X.Tau n X.emb (starRingEnd X.E) τ (fun x => (hst τ x).symm) 1 _ (toGLm_mem_UJ ga)).2 (by simp)) x y`.
+A detailed English derivation is pending.
 -/
 theorem roundPk_inv (hst : ∀ (τ : X.Tau) (x : X.E), X.emb τ (star x) = star (X.emb τ x)) (ga : UF X.E n)
     (x y : VV X.K lam) :
@@ -421,7 +417,7 @@ theorem roundPk_inv (hst : ∀ (τ : X.Tau) (x : X.E), X.emb τ (star x) = star 
     (fun x => (hst τ x).symm) 1 _ (toGLm_mem_UJ ga)).2 (by simp)) x y
 
 /- English proof (translation)
-The claim follows from `pairInv X.K X.Tau n lam _ _ (fun τ => (uJUnitary X.E X.K X.Tau n X.emb (starRingEnd X.E) τ (fun x => (hst τ x).symm) 1 _ (toGLm_mem_UJ ga)).1) x y`.
+A detailed English derivation is pending.
 -/
 theorem squarePk_inv (hst : ∀ (τ : X.Tau) (x : X.E), X.emb τ (star x) = star (X.emb τ x)) (ga : UF X.E n)
     (x y : VV X.K lam) :
@@ -430,13 +426,13 @@ theorem squarePk_inv (hst : ∀ (τ : X.Tau) (x : X.E), X.emb τ (star x) = star
     (fun x => (hst τ x).symm) 1 _ (toGLm_mem_UJ ga)).1) x y
 
 /- English proof (translation)
-The claim follows from `delLeNab X.K X.Tau n lam _`.
+A detailed English derivation is pending.
 -/
 theorem roundPk_del_le (d : D) : (roundPk X lam L).Del d ≤ (roundPk X lam L).Nab d :=
   delLeNab X.K X.Tau n lam _
 
 /- English proof (translation)
-The claim follows from `delLeNab X.K X.Tau n lam _`.
+A detailed English derivation is pending.
 -/
 theorem squarePk_del_le (d : D) : (squarePk X lam L).Del d ≤ (squarePk X lam L).Nab d :=
   delLeNab X.K X.Tau n lam _
@@ -450,14 +446,14 @@ variable (K : Type) [Field K] {ι : Type} [Fintype ι] {n : ℕ}
 def extVV (lam : ι → DomWeight n) : Pol K ι n := ten fun τ => extremal K n (lam τ)
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨fun τ => extremal K n (lam τ), fun τ => Formalism.GradedWeylDivisibility.hwMem K n n le_rfl _ (natW_antitone (lam τ)), rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem extVV_mem (lam : ι → DomWeight n) : extVV K lam ∈ VV K lam :=
   Submodule.subset_span ⟨fun τ => extremal K n (lam τ),
     fun τ => Formalism.GradedWeylDivisibility.hwMem K n n le_rfl _ (natW_antitone (lam τ)), rfl⟩
 
 /- English proof (translation)
-Unfold `extVV ten`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `τ _`. Establish `hinj : Function.Injective (Formalism.GradedWeylDivisibility.blockEmb K (k` using `n) (n := n) τ) := MvPolynomial.rename_injective _ (fun a b h => (Prod.mk.inj h).2)`. Conclude with `(map_ne_zero_iff _ hinj).mpr (Formalism.GradedWeylDivisibility.hwNe K n n le_rfl _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem extVV_ne_zero (lam : ι → DomWeight n) : extVV K lam ≠ 0 := by
   unfold extVV ten
@@ -471,12 +467,12 @@ instance VV_nontrivial (lam : ι → DomWeight n) : Nontrivial (VV K lam) :=
   ⟨⟨⟨extVV K lam, extVV_mem K lam⟩, 0, fun h => extVV_ne_zero K lam (congrArg Subtype.val h)⟩⟩
 
 /- English proof (translation)
-The claim follows from `VV_nontrivial X.K C.lam`.
+A detailed English derivation is pending.
 -/
 theorem CoefPk.V_nontrivial {X : Fields} {D : Type} (C : CoefPk X n D) : Nontrivial C.V := VV_nontrivial X.K C.lam
 
 /- English proof (translation)
-Use `C.V_nontrivial` as an intermediate fact. Establish `: Module.Finite X.K C.V` using `Module.Finite.of_basis C.bV`. Conclude with `Module.finrank_pos`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem CoefPk.finrank_pos {X : Fields} {D : Type} (C : CoefPk X n D) : 0 < Module.finrank X.K C.V := by
   have := C.V_nontrivial
@@ -490,21 +486,21 @@ section LastEntry
 variable {X : Fields} {Word : Type} {R : Ranks} (W : Wts X Word R)
 
 /- English proof (translation)
-Establish `hm` using `R.two_le_m`. Establish `hk : 1 ≤ R.k` using `by have := R.m_add_three_le_k; omega`. Establish `ht : 1 ≤ R.t` using `R.t_odd.pos`. Establish `hmul : R.m * (R.t + 1) = (R.m - 1) * (R.t + 1) + (R.t + 1)`. Rewrite using `[← Nat.succ_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `hN : R.N R.m = R.k + (R.m - 1) * (R.t + 1) + R.t + 1` using `by unfold Ranks.N; rw [hmul]; ring`. Establish `hN1 : 0 < R.N R.m` using `by omega`. Establish `hN2 : 0 < R.N R.m - 1` using `by omega`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `DomWeight.detShift`. Rewrite using `[dif_pos hN1, dif_pos hN2]`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[Wts.lamTrue_eq, Wts.lamN_eq W u le_rfl]`. Establish `hlt : ¬ R.N R.m - 1 < R.k` using `by omega`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dif_neg hlt]`. Establish `e1 : (R.N R.m - 1 - R.k) / (R.t + 1) = R.m - 1`. Establish `: R.N R.m - 1 - R.k = (R.m - 1) * (R.t + 1) + R.t` using `by omega`. Rewrite using `[this]`. Conclude with `(divmod (R.t + 1) (R.m - 1) R.t (by omega)).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [e1]`. Take `⟨P, hP⟩` from `hW.row_ok τ`. Establish `hrow : (W.hc u τ).e = P.e`. Use `congrArg RowPar.e ((hW.hc_row u τ).trans hP.symm)` as an intermediate fact. Simplify `this` using `[RowPar.of]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrow]`. Use `show _ = (((W.row τ).sgTrue.w ⟨R.N R.m - 1 - 1, by omega⟩ : ℤ) : ℚ)`. Rewrite using `[← hP, RowPar.sgTrue_eq]`. Establish `hi : R.N R.m - 1 - 1 = R.k - 1 + (R.m - 1) * (R.t + 1) + R.t` using `by omega`. Simplify using `only [hi]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[RowPar.sgHC_e _ (R.m - 1) R.t ht le_rfl, RowPar.eAt_of P (by omega)]`. Unfold `rhoVec wG RowPar.sh`. Establish `c1 : ((R.N R.m - 1 : ℕ) : ℚ) = (R.k : ℚ) + ((R.m : ℚ) - 1) * ((R.t : ℚ) + 1) + R.t`. Rewrite using `[hN]; push_cast [Nat.cast_sub (by omega : 1 ≤ R.m)]; ring`. Establish `c2 : ((R.k - 1 + (R.m - 1) * (R.t + 1) + R.t : ℕ) : ℚ) = (R.k : ℚ) - 1 + ((R.m : ℚ) - 1) * ((R.t : ℚ) + 1) + R.t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Move the coercions through the operations in `[Nat.cast_sub hk, Nat.cast_sub (by omega : 1 ≤ R.m)]; ring`. Rewrite using `[c1, c2]`. Move the coercions through the operations in `[Nat.cast_sub (by omega : 1 ≤ R.m)]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lamTrue_sgTrue_detShift (hW : W.Ok) (u : Word) (τ : X.Tau) :
     (W.lamTrue u R.m τ).detShift = (W.sgTrue τ).detShift := by

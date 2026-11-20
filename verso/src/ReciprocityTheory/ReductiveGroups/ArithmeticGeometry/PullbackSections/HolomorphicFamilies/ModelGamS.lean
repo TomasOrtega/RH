@@ -13,7 +13,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD Matrix MG
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_gl_mul (τ : E →+* ℂ) (γ₁ γ₂ : GL (Fin r) E) :
     ((γ₁ * γ₂ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ =
@@ -21,7 +21,7 @@ theorem map_gl_mul (τ : E →+* ℂ) (γ₁ γ₂ : GL (Fin r) E) :
   rw [Units.val_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Rewrite using `[← map_gl_mul, inv_mul_cancel, Units.val_one, Matrix.map_one τ (map_zero τ) (map_one τ)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_gl_inv_mul (τ : E →+* ℂ) (γ : GL (Fin r) E) :
     ((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ * (γ : Matrix (Fin r) (Fin r) E).map τ = 1 := by
@@ -31,9 +31,7 @@ def TSet (Ψ : Finset (E →+* ℂ)) (g : Matrix (Fin r) (Fin r) E) : Set (Frame
   {x | ∀ τ : Ψ, ∀ a c : Fin r, c < a → (adjugate (mat x τ) * g.map τ.1 * mat x τ) a c = 0}
 
 /- English proof (translation)
-Simplify using `only [TSet, Set.setOf_forall]`. Use `isClosed_iInter fun τ => isClosed_iInter fun a => isClosed_iInter fun c => isClosed_iInter fun _ => ?_` and prove the remaining obligations. Establish `hm : Continuous fun x : Frame Ψ r => mat x τ` using `continuous_pi fun i => continuous_pi fun j => by`. Simplify using `only [mat, Matrix.of_apply]`. Use `fun_prop`.
-
-Conclude with `isClosed_eq (((hm.matrix_adjugate.matrix_mul continuous_const).matrix_mul hm).matrix_elem a c) continuous_const`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isClosed_TSet (Ψ : Finset (E →+* ℂ)) (g : Matrix (Fin r) (Fin r) E) : IsClosed (TSet Ψ g) := by
   simp only [TSet, Set.setOf_forall]
@@ -48,11 +46,11 @@ theorem isClosed_TSet (Ψ : Finset (E →+* ℂ)) (g : Matrix (Fin r) (Fin r) E)
     continuous_const
 
 /- English proof (translation)
-Simplify using `only [TSet, Set.mem_setOf_eq]`. Introduce `τ a c hca`. Establish `h1 : (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = (γ' : Matrix (Fin r) (Fin r) E).map τ.1 * (mat x τ * mat b τ)`. Establish `h0` using `congrArg (fun y => mat y τ) h`. Rewrite using `[← Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0`. Establish `h2 : adjugate (mat x τ) * ((γ'⁻¹ * γ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = (mat x τ).det • mat b τ`. Rewrite using `[map_gl_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h1, ← Matrix.mul_assoc _ ((γ' : Matrix (Fin r) (Fin r) E).map τ.1), map_gl_inv_mul, Matrix.one_mul, ← Matrix.mul_assoc, Matrix.adjugate_mul, Matrix.smul_mul, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, Matrix.smul_apply, smul_eq_mul]`. Establish `hB : b τ a c = 0` using `(hb τ).2 a c hca`. Simplify using `[mat, hB]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_TSet (Ψ : Finset (E →+* ℂ)) (γ γ' : GL (Fin r) E) {x b : Frame Ψ r} (hb : b ∈ Bor Ψ r)
     (h : lact γ x = rmul (lact γ' x) b) : x ∈ TSet Ψ ((γ'⁻¹ * γ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) := by
@@ -74,49 +72,45 @@ theorem mem_TSet (Ψ : Finset (E →+* ℂ)) (γ γ' : GL (Fin r) E) {x b : Fram
   simp [mat, hB]
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos r with rfl | hr` into its components or cases. Conclude with `⟨0, by ext a; exact Fin.elim0 a⟩`. Use `set M : Matrix (Fin r) (Fin r) ℂ := g.map τ₀.1 with hM`. Set `i0 : Fin r` to `⟨0, hr⟩`. Set `fr : (Fin r → ℂ) → Frame Ψ r` to `fun v τ a c => if τ = τ₀ ∧ c = i0 then v a else y τ a c`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `v₀ : Fin r → ℂ` to `fun a => y τ₀ a i0`. Establish `hfr : Continuous fr`. Use `continuous_pi fun τ => continuous_pi fun a => continuous_pi fun c => ?_` and prove the remaining obligations. Distinguish the cases in `h : τ = τ₀ ∧ c = i0`. Simplify using `only [fr, if_pos h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_apply a`. Simplify using `only [fr, if_neg h]`. Conclude with `continuous_const`. Establish `hfr0 : fr v₀ = y`. Use function extensionality and compare the values at `τ a c`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : τ = τ₀ ∧ c = i0`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `[fr, v₀]`. Simplify using `[fr, h]`. Establish `hdet : Continuous fun v => (mat (fr v) τ₀).det`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Continuous.matrix_det ?_` and prove the remaining obligations. Conclude with `continuous_pi fun a => continuous_pi fun c => by`. Simplify using `only [mat, Matrix.of_apply]`. Conclude with `(continuous_apply c).comp ((continuous_apply a).comp ((continuous_apply τ₀).comp hfr))`. Establish `hW1 : ∀ᶠ v in nhds v₀, fr v ∈ W` using `(hfr.tendsto' v₀ y hfr0) (hWo.mem_nhds hyW)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hP : ∀ᶠ v in nhds v₀, fr v ∈ W ∧ (mat (fr v) τ₀).det ≠ 0` using `hW1.and (hdet.continuousAt.eventually_ne (by show (mat (fr v₀) τ₀).det ≠ 0`. Rewrite using `[hfr0]`. Conclude with `hy))`. Establish `hB : ∀ v, fr v ∈ W → (mat (fr v) τ₀).det ≠ 0 → ∃ l : ℂ, M *ᵥ v = l • v`. Introduce `v hvW hd`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hT : ∀ τ : Ψ, ∀ a c : Fin r, c < a → (adjugate (mat (fr v) τ) * g.map τ.1 * mat (fr v) τ) a c = 0` using `hWT hvW`. Use `set X := mat (fr v) τ₀ with hX`. Establish `hcol : ∀ a, X a i0 = v a` using `fun a => by simp [hX, mat, fr]`. Use `set z := X.adjugate *ᵥ (M *ᵥ v) with hz`. Establish `hz0 : ∀ a, a ≠ i0 → z a = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a ha`. Establish `h1` using `hT τ₀ a i0 (by`. Rewrite using `[Fin.lt_iff_val_lt_val]`. Conclude with `Nat.pos_of_ne_zero fun h => ha (Fin.ext h))`. Establish `h2 : z a = (X.adjugate * M * X) a i0`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[hz, Matrix.mulVec_mulVec]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.mul_apply, hcol]`. Rewrite using `[h2]`. Conclude with `h1`. Establish `hXz : X *ᵥ z = X.det • (M *ᵥ v)`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hz]`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Use `_ = X.det • (M *ᵥ v) := by`. Rewrite using `[Matrix.mul_adjugate]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `first`. Consider the case `rw [Matrix.smul_mulVec, Matrix.one_mulVec]`. Consider the case `(ext i; simp [Matrix.mulVec, dotProduct, Matrix.one_apply])`. Establish `hXz' : X *ᵥ z = z i0 • v`. Use function extensionality and compare the values at `a`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single i0 (fun b _ hb => by rw [hz0 b hb, mul_zero]) (fun h => absurd (Finset.mem_univ i0) h), hcol, mul_comm]`. Use `⟨z i0 / X.det, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Establish `ha` using `congrFun (hXz.symm.trans hXz') a`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul] at ha ⊢`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hd]`. Take the linear combination `ha`. Establish `hQ : ∀ v, fr v ∈ W → (mat (fr v) τ₀).det ≠ 0 → ∀ a b, (M *ᵥ v) a * v b = (M *ᵥ v) b * v a`. Introduce `v h1 h2 a b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl⟩` from `hB v h1 h2`. Rewrite using `[hl]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hall : ∀ u : Fin r → ℂ, ∀ a b, (M *ᵥ u) a * u b = (M *ᵥ u) b * u a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `u a b`. Establish `t1 : Filter.Tendsto (fun s : ℂ => v₀ + s • u) (nhds 0) (nhds v₀)` using `Continuous.tendsto' (by fun_prop) 0 v₀ (by simp)`. Establish `t2 : Filter.Tendsto (fun s : ℂ => v₀ + (2 * s) • u) (nhds 0) (nhds v₀)` using `Continuous.tendsto' (by fun_prop) 0 v₀ (by simp)`. Establish `e1 : ∀ᶠ s in nhdsWithin (0 : ℂ) {0}ᶜ, fr (v₀ + s • u) ∈ W ∧ (mat (fr (v₀ + s • u)) τ₀).det ≠ 0` using `nhdsWithin_le_nhds (t1.eventually hP)`. Establish `e2 : ∀ᶠ s in nhdsWithin (0 : ℂ) {0}ᶜ, fr (v₀ + (2 * s) • u) ∈ W ∧ (mat (fr (v₀ + (2 * s) • u)) τ₀).det ≠ 0` using `nhdsWithin_le_nhds (t2.eventually hP)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `e3 : ∀ᶠ s in nhdsWithin (0 : ℂ) {0}ᶜ, s ≠ 0` using `self_mem_nhdsWithin`. Take `⟨s, hs1, hs2, hs0⟩` from `(e1.and (e2.and e3)).exists`. Establish `q0` using `hQ v₀ (by rw [hfr0]; exact hyW) (by rw [hfr0]; exact hy) a b`. Establish `q1` using `hQ _ hs1.1 hs1.2 a b`. Establish `q2` using `hQ _ hs2.1 hs2.2 a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_smul, Pi.add_apply, Pi.smul_apply, smul_eq_mul] at q1 q2`. Establish `key : (2 * s ^ 2) * ((M *ᵥ u) a * u b - (M *ᵥ u) b * u a) = 0`. Take the linear combination `q2 - 2 * q1 + q0`. Establish `hs2' : (2 * s ^ 2 : ℂ) ≠ 0` using `mul_ne_zero two_ne_zero (pow_ne_zero 2 hs0)`. Conclude with `sub_eq_zero.mp ((mul_eq_zero.mp key).resolve_left hs2')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcolv : ∀ j i, (M *ᵥ Pi.single j 1) i = M i j`. Introduce `j i`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `hoff : ∀ a b, a ≠ b → M a b = 0`. Introduce `a b hab`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hall (Pi.single b 1) a b`. Rewrite `h` using `[hcolv, hcolv]`. Simplify `h` using `[Pi.single_apply, hab]`. Establish `hdiag : ∀ a b, M a a = M b b`. Introduce `a b`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hab : a = b`. Rewrite using `[hab]`. Establish `h` using `hall (Pi.single a 1 + Pi.single b 1) a b`. Rewrite `h` using `[Matrix.mulVec_add]`. Simplify using `only [Pi.add_apply, hcolv] at h`.
-
-Simplify using `[Pi.single_apply, hab, Ne.symm hab, hoff a b hab, hoff b a (Ne.symm hab)] at h`. Take the linear combination `h`. Use `⟨M i0 i0, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`.
-
-Substitute `hab` using the available equality. Simplify using `[hdiag a i0]`. Simplify using `[hoff a b hab, hab]`.
+A detailed English derivation is pending.
 -/
 theorem scalar_step {Ψ : Finset (E →+* ℂ)} (τ₀ : Ψ) (g : Matrix (Fin r) (Fin r) E) {W : Set (Frame Ψ r)}
     (hWo : IsOpen W) (hWT : W ⊆ TSet Ψ g) {y : Frame Ψ r} (hyW : y ∈ W) (hy : (mat y τ₀).det ≠ 0) :

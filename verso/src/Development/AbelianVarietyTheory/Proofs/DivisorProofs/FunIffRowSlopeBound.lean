@@ -52,25 +52,23 @@ variable {S : IndefData Df} {D : RowData K Bs.Tup κ τ (Fin S.D) Bs.Ix m}
 end Same
 
 /- English proof (translation)
-Take `⟨hle, hrep⟩` from `quotMetricRep K n d H X0 hX P hP XQ hQ v`. Establish `hmap : ∀ {a b : ℕ} (A : Matrix (Fin a) (Fin b) K) (x : Fin b → K), (fun i => v.embedding (A.mulVec x i)) = (A.map v.embedding).mulVec fun i => v.embedding (x i)`. Introduce `a b A x`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Choose the witnesses or unpack the hypotheses as in `⟨R, hR⟩ : ∃ R : Matrix (Fin n) (Fin d) K, P * R = 1 := by`. Take `⟨g, hg⟩` from `P.mulVecLin.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hP)`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Use `congrArg LinearMap.toMatrix' hg` as an intermediate fact. Rewrite `this` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id, ← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin']`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hlow : ∀ s ∈ {s : ℝ | ∃ F ∈ (⊤ : Submodule K (Fin n → K)), (ι * P).mulVec F = ι.mulVec y ∧ s = Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin n)) X0 v F ^ 2}, Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin d)) XQ v y ^ 2 ≤ s`. Introduce and unpack `_ ⟨F, -, hF, rfl⟩`. Rewrite `hF` using `[← Matrix.mulVec_mulVec]`. Establish `hF'` using `hι hF`. Use `pow_le_pow_left₀ (Formalism.BasicNotions.normAt_nonneg _ _ _ _) ?_ 2` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (fnormRat K d XQ v y y).1, ← (fnormRat K n X0 v F F).1, ← hF', hmap]`. Conclude with `hle _`. Establish `hmem : ∀ G : Fin n → K, Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin n)) X0 v (G + R.mulVec (y - P.mulVec G)) ^ 2 ∈ {s : ℝ | ∃ F ∈ (⊤ : Submodule K (Fin n → K)), (ι * P).mulVec F = ι.mulVec y ∧ s = Formalism.HermitianLatticesTheory.normAt (Pi.basisFun K (Fin n)) X …`. Introduce `G`. Use `⟨_, trivial, ?_, rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mulVec_mulVec, Matrix.mulVec_add, Matrix.mulVec_mulVec (M := P), hR, Matrix.one_mulVec, add_sub_cancel]`. Use `le_antisymm ?_ (le_csInf ⟨_, hmem 0⟩ hlow)` and prove the remaining obligations. Take `⟨z, hz, hn, -⟩` from `hrep fun i => v.embedding (y i)`. Set `f : (Fin n → ℂ) → ℝ` to `fun u => fnorm (X0 v) (u + (R.map v.embedding).mulVec ((fun i => v.embedding (y i)) - (P.map v.embedding).mulVec u)) ^ 2`. Establish `hf : Continuous f`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `f fnorm Formalism.HermitianLatticesTheory.cnorm`. Use `fun_prop`. Establish `hd : DenseRange (Pi.map (fun _ : Fin n => (v.embedding : K → ℂ)))` using `DenseRange.piMap (fun _ => Formalism.BasicNotions.denseRange_embedding_of_isComplex v (IsTotallyComplex.isComplex v))`. Establish `key : quotNormSq X0 ⊤ (ι * P) v (ι.mulVec y) ≤ f z`. Use `hd.induction_on (p := fun u => quotNormSq X0 ⊤ (ι * P) v (ι.mulVec y) ≤ f u) z (isClosed_le continuous_const hf) fun G => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(csInf_le ⟨_, hlow⟩ (hmem G)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← (fnormRat K n X0 v _ 0).1]`. Unfold `f`. Use `congr 2`. Establish `h1` using `hmap R (y - P.mulVec G)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h2` using `hmap P G`. Use function extensionality and compare the values at `i`. Establish `h3 : (fun i => v.embedding ((y - P.mulVec G) i)) = (fun i => v.embedding (y i)) - (P.map v.embedding).mulVec (Pi.map (fun _ : Fin n => (v.embedding : K → ℂ)) G)`. Use function extensionality and compare the values at `k`. Simplify using `only [Pi.sub_apply, map_sub, congrFun h2 k]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Pi.add_apply, map_add, congrFun h1 i, h3]`. Both sides reduce to the same expression. Use `key.trans (le_of_eq ?_)` and prove the remaining obligations. Unfold `f`.
-
-Rewrite using `[hz, sub_self, Matrix.mulVec_zero, add_zero, hn, (fnormRat K d XQ v y y).1]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotNormSq_eq [IsTotallyComplex K] {n d D : ℕ} (H : Matrix (Fin n) (Fin n) K)
     (X0 : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ)
@@ -207,19 +205,19 @@ def coords (t : T) : (Fin (finrank K (D.V₀ t)) → K) →ₗ[K] (κ t → K) :
   (D.V₀ t).subtype ∘ₗ (Module.finBasis K (D.V₀ t)).equivFun.symm.toLinearMap
 
 /- English proof (translation)
-Rewrite using `[coords, LinearMap.range_comp, LinearEquiv.range, Submodule.map_top, Submodule.range_subtype]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coords_range (t : T) : LinearMap.range (coords D t) = D.V₀ t := by
   rw [coords, LinearMap.range_comp, LinearEquiv.range, Submodule.map_top, Submodule.range_subtype]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `D.psi.mulVecLin.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 D.psi_injective)`. Establish `hg' : ∀ x, g (D.psi.mulVec x) = x` using `fun x => LinearMap.congr_fun hg x`. Establish `hs : ∀ F, D.psi.mulVec ((LinearMap.toMatrix' (g ∘ₗ ((((D.r t)⁻¹ : Kˣ) : K) • (D.v t).mulVecLin) ∘ₗ coords D t)).mulVec F) = (((D.r t)⁻¹ : Kˣ) : K) • (D.v t).mulVec (coords D t F)`. Introduce `F`. Establish `hF : (((D.r t)⁻¹ : Kˣ) : K) • (D.v t).mulVec (coords D t F) ∈ LinearMap.range D.psi.mulVecLin`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← h t]`. Conclude with `Submodule.smul_mem _ _ ⟨_, (coords_range D t).le (LinearMap.mem_range_self _ F), rfl⟩`. Take `⟨x, hx⟩` from `hF`. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Use `show D.psi.mulVec (g ((((D.r t)⁻¹ : Kˣ) : K) • (D.v t).mulVec (coords D t F))) = _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hx, Matrix.mulVecLin_apply, hg']`. Use `⟨_, fun x => ?_, hs⟩` and prove the remaining obligations. Establish `hx : D.psi.mulVecLin (((D.r t : Kˣ) : K) • x) ∈ (D.V₀ t).map (D.v t).mulVecLin` using `h t ▸ LinearMap.mem_range_self _ _`. Take `⟨G, hG, hx⟩` from `hx`. Rewrite `hG` using `[← coords_range]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨F, rfl⟩` from `hG`. Use `⟨F, D.psi_injective ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVecLin_apply, hs, ← Matrix.mulVecLin_apply, hx, map_smul, smul_smul, Units.inv_mul, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_proj (h : OneForm D) (t : T) : ∃ P : Matrix (Fin n) (Fin (finrank K (D.V₀ t))) K,
     Function.Surjective P.mulVec ∧ ∀ F, D.psi.mulVec (P.mulVec F) =

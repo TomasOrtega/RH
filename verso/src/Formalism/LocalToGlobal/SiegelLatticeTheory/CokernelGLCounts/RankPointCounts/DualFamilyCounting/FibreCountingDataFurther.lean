@@ -26,13 +26,13 @@ variable (J : JD h L 𝔭 b a)
 include J
 
 /- English proof (translation)
-Rewrite using `[crd, h_phi J.orth J.diag J.ne]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem crd_phi (z : Fin m → 𝓞 K) (k : Fin m) : crd h b a (phi b a z) k = jK (z k) / jK (ι (a k)) := by
   rw [crd, h_phi J.orth J.diag J.ne]
 
 /- English proof (translation)
-Use `J.max.isPrime` as an intermediate fact. Rewrite using `[J.memA]`. Introduce `i`. Rewrite using `[← h_b J.orth J.diag J.ne, h_phi J.orth J.diag J.ne]`. Conclude with `HU.jK_mem_SP _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_memA (z : Fin m → 𝓞 K) : phi b a z ∈ locF 𝔭 (dualIn h ⊤ L) := by
   have := J.max.isPrime
@@ -51,11 +51,11 @@ theorem Psi_apply (z : Fin m → 𝓞 K) :
     J.Psi z = Submodule.Quotient.mk ⟨phi b a z, J.phi_memA z⟩ := rfl
 
 /- English proof (translation)
-Use `J.max.isPrime` as an intermediate fact. Introduce `q`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `hx` using `(J.memA x).1 x.2`. Use `choose z hz using fun i => exists_sub_div_mem_SP J.max (J.ne i) (hx i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[Psi_apply, Submodule.Quotient.eq, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_sub, J.memB]`. Introduce `k`. Rewrite using `[crd_sub, J.crd_phi]`. Establish `e : jK (z k) / jK (ι (a k)) - crd h b a x k = -((jK (ι (a k)) * crd h b a x k - jK (z k)) / jK (ι (a k)))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_div, mul_div_cancel_left₀ _ (jK_ι_ne_zero (J.ne k))]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `neg_mem (hz k)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Psi_surjective : Function.Surjective J.Psi := by
   have := J.max.isPrime
@@ -75,35 +75,29 @@ theorem Psi_surjective : Function.Surjective J.Psi := by
   exact neg_mem (hz k)
 
 /- English proof (translation)
-Use `J.max.isPrime` as an intermediate fact. Use `set u : Fin m → ↥(locF 𝔭 (dualIn h ⊤ L)) := fun j => ⟨_, J.u_mem j⟩ with hu`. Use `choose v hv using fun j => Submodule.Quotient.mk_surjective _ (P (Submodule.Quotient.mk (u j)))`. Establish `hav : ∀ j k, jK (ι (a j)) * crd h b a (v j) k ∈ HU.SP K 𝔭`. Introduce `j k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (ι (a j)) • (Submodule.Quotient.mk (u j) : DiscMod h ⊤ L 𝔭) = 0`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_smul, J.memB]`. Introduce `l`. Rewrite using `[crd_smul, J.crd_u]`. Use `split_ifs with hl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Substitute `hl` using the available equality. Rewrite using `[mul_one_div, div_self (jK_ι_ne_zero (J.ne l))]`. Conclude with `one_mem _`. Rewrite using `[mul_zero]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1 : (Submodule.Quotient.mk (ι (a j) • v j) : DiscMod h ⊤ L 𝔭) = 0`. Rewrite using `[Submodule.Quotient.mk_smul, hv, ← LinearMap.map_smul, h0, map_zero]`. Rewrite `h1` using `[Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_smul, J.memB]`. Establish `h2` using `h1 k`. Rewrite `h2` using `[crd_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose z hz using fun k j => exists_sub_div_mem_SP J.max (J.ne j) (hav j k)`. Use `set Y : Matrix (Fin m) (Fin m) (𝓞 K) := Matrix.of z with hY`. Establish `hcg : ∀ j k, crd h b a (gmap h b a Y (u j)) k = jK (Y k j) / jK (ι (a j))`. Introduce `j k`. Rewrite using `[J.crdG]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `J.sum_crd_u _ j`. Establish `hgv : ∀ j, gmap h b a Y (u j) - v j ∈ locF 𝔭 L`. Introduce `j`. Rewrite using `[J.memB]`. Introduce `k`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[crd_sub, hcg]`. Establish `e : jK (Y k j) / jK (ι (a j)) - crd h b a (v j) k = -((jK (ι (a j)) * crd h b a (v j) k - jK (z k j)) / jK (ι (a j)))`. Rewrite using `[sub_div, mul_div_cancel_left₀ _ (jK_ι_ne_zero (J.ne j)), hY, of_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `neg_mem (hz k j)`. Establish `hgA : ∀ j, gmap h b a Y (u j) ∈ locF 𝔭 (dualIn h ⊤ L)` using `fun j => by`. Use `add_mem (B_le_A J.orth J.diag J.ne J.bX J.loc J.fix J.max J.lat _ (hgv j)) (v j).2` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hYA : ∀ i j, jK (ι (a i) * Y i j) / jK (ι (a j)) ∈ HU.SP K 𝔭`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `i j`. Use `(J.memA _).1 (hgA j) i` as an intermediate fact. Rewrite `this` using `[hcg, ← mul_div_assoc, ← map_mul]`. Then use the resulting hypothesis. Use `⟨Y, hYA, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ∑ p, ∑ q, star (crd h b a (u i) p) * jK (gramO a Y p q) * crd h b a (u j) q = jK (gramO a Y i j) / (jK (ι (a i)) * jK (ι (a j)))`. Use `(Finset.sum_congr rfl fun p _ => J.sum_crd_u (fun q => star (crd h b a (u i) p) * jK (gramO a Y p q)) j).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `only [hu]`. Rewrite using `[J.crd_u, if_pos rfl, star_div₀, star_one, star_jK_ι J.fix, one_div_mul_eq_div, div_div]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `p _ hp`. Simplify using `only [hu]`. Rewrite using `[J.crd_u, if_neg hp, star_zero, zero_mul, zero_div]`. Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← hsum, ← form_identity J.orth J.diag J.ne J.bX J.loc J.fix J.max J.lat]`. Establish `e : h (gmap h b a Y (u i)) (gmap h b a Y (u j)) - h (u i : V) (u j : V) = (h (gmap h b a Y (u i)) (gmap h b a Y (u j)) - h (v i : V) (v j : V)) + (h (v i : V) (v j : V) - h (u i : V) (u j : V))` using `by ring`. Rewrite using `[e]`. Use `add_mem (J.h_sub_mem _ _ _ _ (v i).2 (v j).2 (hgv i) (hgv j)) ?_` and prove the remaining obligations. Rewrite using `[HU.mem_SP_iff_locF]`.
-
-Conclude with `hP (u i) (u j) (v i) (v j) (hv i) (hv j)`. Establish `hc : J.E Y hYA ∘ₗ J.Psi = P ∘ₗ J.Psi`. Use `LinearMap.pi_ext' fun j => LinearMap.ext_ring ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearMap.coe_single, Psi_apply]`. Rewrite using `[E_mk]`.
-
-Express the relevant statement in the definitionally equal form `_ = P (Submodule.Quotient.mk (u j))`. Rewrite using `[← hv, Submodule.Quotient.eq, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_sub]`. Conclude with `hgv j`. Use `LinearMap.ext fun q => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `J.Psi_surjective q`.
-
-Conclude with `LinearMap.congr_fun hc w`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_E_eq (P : Module.End (𝓞 K) (DiscMod h ⊤ L 𝔭))
     (hP : ∀ x y x' y' : ↥(locF 𝔭 (dualIn h ⊤ L)),

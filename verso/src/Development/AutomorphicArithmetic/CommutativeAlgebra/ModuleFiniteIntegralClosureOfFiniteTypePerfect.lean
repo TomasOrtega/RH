@@ -6,15 +6,13 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.FiniteIntegralCl
 open CategoryTheory Limits AlgebraicGeometry Opposite LateralTheory.E.E4
 
 /- English proof (translation)
-Use `letI : Algebra (FractionRing B) L := FractionRing.liftAlgebra B L`. Use `haveI : IsScalarTower B (FractionRing B) L := FractionRing.isScalarTower_liftAlgebra B L`. Use `haveI : Algebra.EssFiniteType (FractionRing B) L := Algebra.EssFiniteType.of_comp B (FractionRing B) L`. Set `M` to `algebraicClosure (FractionRing B) L`. Use `haveI : FiniteDimensional (FractionRing B) M := GlobalTheory.finiteDimensional_algebraicClosure_of_essFiniteType (FractionRing B) L`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : Module.Finite B (integralClosure B M) := GlobalTheory.NormFin.finite_integralClosure_of_perfectField k B (FractionRing B) M`. Set `g : M →ₐ[B] L` to `M.val.restrictScalars B`. Establish `hg : Function.Injective g` using `Subtype.val_injective`. Set `φ : integralClosure B M →ₗ[B] integralClosure B L` to `{ toFun := fun x => ⟨g x, x.2.map g⟩ map_add' := by`. Introduce `x y`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify using the standard rewrite rules. Use the proof step `map_smul' := by`. Introduce `r x`. Use `ext`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using `}`. Use `Module.Finite.of_surjective φ ?_` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Establish `hyF : IsIntegral (FractionRing B) y` using `hy.tower_top`. Set `z : M` to `⟨y, mem_algebraicClosure_iff'.mpr hyF⟩`.
-
-Establish `hz : IsIntegral B z` using `(isIntegral_algHom_iff g hg).mp hy`. Conclude with `⟨⟨z, hz⟩, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.integralClosure_finite_of_finiteType_perfect (k : Type) [Field k] [PerfectField k] (B L : Type)
     [CommRing B] [IsDomain B] [Algebra k B] [Algebra.FiniteType k B] [Field L] [Algebra B L]
@@ -49,11 +47,7 @@ private theorem UpperTheory.integralClosure_finite_of_finiteType_perfect (k : Ty
   exact ⟨⟨z, hz⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `k _ _ A L _ _ _ _ _ _`. Set `I` to `RingHom.ker (algebraMap A L)`. Use `letI : Algebra (A ⧸ I) L := (RingHom.kerLift (algebraMap A L)).toAlgebra`. Use `haveI : IsScalarTower A (A ⧸ I) L := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : FaithfulSMul (A ⧸ I) L := (faithfulSMul_iff_algebraMap_injective (A ⧸ I) L).mpr (RingHom.kerLift_injective _)`.
-
-Use `haveI : I.IsPrime := RingHom.ker_isPrime (algebraMap A L)`. Use `haveI : IsDomain (A ⧸ I) := Ideal.Quotient.isDomain I`. Use `haveI : Algebra.FiniteType k (A ⧸ I) := Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ k I) Ideal.Quotient.mk_surjective`. Use `haveI : Algebra.EssFiniteType (A ⧸ I) L := Algebra.EssFiniteType.of_comp A (A ⧸ I) L`. Use `haveI : Module.Finite A (A ⧸ I) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ A I).toLinearMap Ideal.Quotient.mk_surjective`.
-
-Use `haveI : Module.Finite (A ⧸ I) (integralClosure (A ⧸ I) L) := UpperTheory.integralClosure_finite_of_finiteType_perfect k (A ⧸ I) L`. Conclude with `GlobalTheory.finite_integralClosure_of_finite_tower A (A ⧸ I) L`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem UpperTheory.module_finite_integralClosure_of_finiteType_perfect :
     ∀ (k : Type) [Field k] [PerfectField k] (A L : Type) [CommRing A] [Algebra k A] [Algebra.FiniteType k A] [Field L] [Algebra A L] [Algebra.EssFiniteType A L], Module.Finite A (integralClosure A L) := by

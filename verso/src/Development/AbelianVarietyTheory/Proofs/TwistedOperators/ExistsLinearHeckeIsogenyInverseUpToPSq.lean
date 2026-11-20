@@ -16,7 +16,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l}
 
 /- English proof (translation)
-The claim follows from `have hA := GlobalTheory.HeckePoint.isAbelianScheme_of_proper Xo.univ.t Xo.univ.proper { comm := by have := hA.comm; infer_instance smooth := by have := hA.smooth; show Smooth (pullback.snd _ _); infer_instance proper := by have := hA.proper; show IsProper (pullback.snd _ _); infe …`.
+A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_fib {K : Type} [CommRing K] (x : Sp K ⟶ Xo.X) : IsAbelianScheme (Fib Xo x) :=
   have hA := GlobalTheory.HeckePoint.isAbelianScheme_of_proper Xo.univ.t Xo.univ.proper
@@ -26,9 +26,9 @@ theorem isAbelianScheme_fib {K : Type} [CommRing K] (x : Sp K ⟶ Xo.X) : IsAbel
     geomConnected := by have := hA.geomConnected; show GeometricallyConnected (pullback.snd _ _); infer_instance }
 
 /- English proof (translation)
-Take `⟨ρ, hρ⟩` from `GlobalTheory.HeckePoint.exists_ptsEquiv (isGrpPullback_pullback Xo.univ.t.G x) (𝟙_ (Over (Sp K))) x (Category.id_comp _)`. Use `⟨ρ, fun u => ?_, fun g u => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[fibPt, pullback.lift_fst, hρ]`. Rewrite using `[fibPt, pullback.lift_snd]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Over.w u).symm`. Establish `A : ((Over.pullback x).map g).left ≫ pullback.fst _ x = pullback.fst _ x ≫ g.left` using `pullback.lift_fst _ _ _`. Rewrite using `[hρ, Over.comp_left, Over.comp_left, hρ, Category.assoc, Category.assoc]`. Conclude with `congrArg (u.left ≫ ·) A`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fibPtsEquiv {K : Type} [Field K] (x : Sp K ⟶ Xo.X) :
     ∃ ρ : (𝟙_ (Over (Sp K)) ⟶ Fib Xo x) ≃* (Over.mk x ⟶ Xo.univ.t.G),
@@ -47,27 +47,27 @@ theorem exists_fibPtsEquiv {K : Type} [Field K] (x : Sp K ⟶ Xo.X) :
     exact congrArg (u.left ≫ ·) A
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c P p i ⟨hP, hco, hp, hpP, hpM⟩ Ω _ _ _ y C z ⟨ψ, ψp, h, hLie, hTr⟩`. Take `⟨⟨hfin, het, hsur⟩, -⟩` from `GlobalTheory.HeckePointLaw.isHkIsog_etale_unique Xo hP hco hp hpP hpM C.2 h`. Take `⟨-, h0, hf, hact, -, hker, -⟩` from `h`. Establish `hL : Out.Laws` using `abelianSchemeLaws_all.1`. Establish `hA` using `isAbelianScheme_fib y.x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `isAbelianScheme_fib z.x`. Use `hA.proper` as an intermediate fact. Use `hB.proper` as an intermediate fact. Use `hA.comm` as an intermediate fact. Take `⟨ρ, e₁, e₂⟩` from `exists_fibPtsEquiv y.x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, s₁, s₂⟩` from `exists_fibPtsEquiv z.x`. Set `f : Fib Xo y.x ⟶ Fib Xo z.x` to `Over.homMk ψ h0`. Establish `hψ : ∀ u, σ (u ≫ f) = ψp (ρ u)` using `fun u => GlobalTheory.HeckePoint.fibPt_injective _ (by`. Rewrite using `[s₁, ← hf, e₁]`. Use the proof step `rfl)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `one : ∀ (G : Over (Sp Ω)) [GrpObj G], (1 : 𝟙_ (Over (Sp Ω)) ⟶ G) = η[G]` using `fun G _ => by`. Rewrite using `[Hom.one_def]`. Simplify using the standard rewrite rules. Establish `hom : IsMonHom f` using `hL.rigidity _ _ _ hA hB f (by`. Rewrite using `[← one, ← one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `σ.injective (by rw [hψ, map_one, map_one, map_one]))`. Establish `lin : Lin f` using `fun a => GlobalTheory.HeckePoint.hom_ext_pts hA.smooth fun u => σ.injective (by`. Rewrite using `[← Category.assoc, ← Category.assoc, hψ, s₂, hψ, e₂, hact])`. Establish `hkill : ∀ u : 𝟙_ (Over (Sp Ω)) ⟶ Fib Xo y.x, u ≫ f = 1 → u ^ p ^ 2 = 1` using `fun u hu => by`. Establish `hx : ρ u ∈ C.1` using `by rw [← hker, MonoidHom.mem_ker, ← hψ, hu, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ρ.injective ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_one]`. Use `(GlobalTheory.HeckeKerModel.mem_tors_span Xo.univ.t _ (p ^ 2)).1 fun a ha => C.2.2.2.1 hx a ?_` and prove the remaining obligations. Use `(Ideal.span_singleton_le_iff_mem _).2 ?_ ha` and prove the remaining obligations. Rewrite using `[sq, Nat.cast_mul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Ideal.mul_mem_mul (Ideal.mem_span_singleton_self _) ?_` and prove the remaining obligations. Use `Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) hpP` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hpow : ∀ m : ℕ, IsMonHom (𝟙 (Fib Xo y.x) ^ m)` using `fun m => by`. Proceed by induction on `m with`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [pow_zero]`. Conclude with `inferInstanceAs (IsMonHom (toUnit _ ≫ η[Fib Xo y.x]))`. Consider the case `succ m ih`. Rewrite using `[pow_succ]`. Conclude with `inferInstanceAs (IsMonHom (lift (𝟙 (Fib Xo y.x) ^ m) (𝟙 _) ≫ μ[Fib Xo y.x]))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hpow (p ^ 2)` as an intermediate fact. Establish `: IsFinite f.left` using `hfin`. Establish `: Etale f.left` using `het`. Establish `: Surjective f.left` using `hsur`. Take `⟨π, hπ⟩` from `GlobalTheory.HeckePoint.exists_fac hA.smooth f (𝟙 (Fib Xo y.x) ^ p ^ 2) fun u hu => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MonObj.comp_pow, Category.comp_id, hkill u hu]`. Establish `homπ : IsMonHom π` using `hL.rigidity _ _ _ hB hA π (by`. Rewrite using `[← IsMonHom.one_hom f, Category.assoc, hπ, IsMonHom.one_hom])`. Establish `: Epi f.left` using `Flat.epi_of_flat_of_surjective _`. Establish `: Epi f` using `Over.epi_of_epi_left f`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨f, π, ⟨hom, homπ, hπ, ?_, lin, fun a => ?_⟩, hLie, hTr⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi f, ← Category.assoc, hπ, MonObj.pow_comp, MonObj.comp_pow, Category.id_comp, Category.comp_id]`. Use `Xo.univ.t.act.hom a` as an intermediate fact. Rewrite using `[← cancel_epi f, ← Category.assoc, ← lin a, Category.assoc, hπ, ← Category.assoc, hπ, MonObj.pow_comp, MonObj.comp_pow, Category.id_comp, Category.comp_id]`.
+A detailed English derivation is pending.
 -/
 theorem exists_hkWith_of_hkRelFr : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (P : Ideal (𝓞 E)) (p i : ℕ), GlobalTheory.IndefiniteRowSideFullHecke.UnusedSlot39.IsHeckePrime H l P p → ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra c.F Ω] (y : FrPt Xo c Ω) (C : hkKer (Xo := Xo) P p i Ω y) (z : FrPt Xo c Ω), hkRelFr P p i (hkTr Xo c p) Ω y C z → ∃ f f', HkWith p y z f f' := by
   intro E _ _ _ H Dw l Xo c P p i ⟨hP, hco, hp, hpP, hpM⟩ Ω _ _ _ y C z ⟨ψ, ψp, h, hLie, hTr⟩

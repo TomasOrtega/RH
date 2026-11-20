@@ -12,15 +12,15 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hpos`. Establish `hU0 : μA U = 0` using `nonpos_iff_eq_zero.1 (not_lt.1 hpos)`. Set `F : A → Set G` to `fun s => (fun x => (s : G)⁻¹ * x) ⁻¹' U`. Establish `hFo : ∀ s, IsOpen (F s)` using `fun s => hU.preimage (continuous_const.mul continuous_id)`. Establish `hF0 : ∀ s, μA (F s) = 0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s`. Establish `hm` using `congrArg (fun m : Measure G => m (F s)) (hinv s s.2)`. Rewrite using `[← hm, Measure.map_apply (measurable_const_mul _) (hFo s).measurableSet]`. Establish `hpre : (fun x => (s : G) * x) ⁻¹' F s = U`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[F]`. Rewrite using `[hpre, hU0]`. Take `⟨T, hT, hTU⟩` from `TopologicalSpace.isOpen_iUnion_countable F hFo`. Establish `hcov : A ⊆ ⋃ s ∈ T, F s`. Introduce `a ha`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hTU]`. Conclude with `Set.mem_iUnion.2 ⟨⟨a, ha⟩, by simp [F, h1]⟩`. Establish `hnull : μA (⋃ s ∈ T, F s) = 0` using `(measure_biUnion_null_iff hT).2 fun s _ => hF0 s`. Establish `huniv : μA Set.univ = 0`. Use `measure_mono_null (fun x _ => ?_) (measure_union_null hnull hc)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x ∈ A`. Conclude with `Or.inl (hcov hx)`. Conclude with `Or.inr hx`. Conclude with `h0 (Measure.measure_univ_eq_zero.1 huniv)`.
+Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem pos_open_one (A : Set G) (μA : Measure G) (h0 : μA ≠ 0) (hc : μA Aᶜ = 0)
     (hinv : ∀ s ∈ A, μA.map (fun x => s * x) = μA) (U : Set G) (hU : IsOpen U) (h1 : (1 : G) ∈ U) :
@@ -51,7 +51,7 @@ theorem pos_open_one (A : Set G) (μA : Measure G) (h0 : μA ≠ 0) (hc : μA A�
   exact h0 (Measure.measure_univ_eq_zero.1 huniv)
 
 /- English proof (translation)
-Take `⟨V, hVo, hV1, hVV⟩` from `exists_open_nhds_one_mul_subset (hU.mem_nhds h1)`. Establish `hApos` using `pos_open_one A μA hA0 hAc hAi V hVo hV1`. Establish `hBpos` using `pos_open_one B μB hB0 hBc hBi V hVo hV1`. Establish `hsub : V ×ˢ V ⊆ (fun p : G × G => p.1 * p.2) ⁻¹' U` using `fun p hp => hVV (Set.mul_mem_mul hp.1 hp.2)`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem pos_open_one_mul (A B : Set G) (μA μB : Measure G) [SigmaFinite μB]
     (hA0 : μA ≠ 0) (hAc : μA Aᶜ = 0) (hAi : ∀ s ∈ A, μA.map (fun x => s * x) = μA)
@@ -69,25 +69,23 @@ theorem pos_open_one_mul (A B : Set G) (μA μB : Measure G) [SigmaFinite μB]
     _ ≤ _ := Measure.le_map_apply measurable_mul.aemeasurable U
 
 /- English proof (translation)
-Take `⟨hAσ, hA0, hAc, hAi⟩` from `hA`. Take `⟨hBσ, hB0, hBc, hBi⟩` from `hB`. Use `hAσ` as an intermediate fact. Use `hBσ` as an intermediate fact. Use `set ρ := (μA.prod μB).map (fun p : G × G => p.1 * p.2) with hρ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : ∀ x : G, ∃ K, IsCompact K ∧ K ∈ nhds x` using `fun x => exists_compact_mem_nhds x`. Use `choose K hKc hKn using hK`. Establish `hmeasK : ∀ x, MeasurableSet (K x)` using `fun x => (hKc x).isClosed.measurableSet`. Set `h : G → G → ℝ≥0∞` to `fun x y => ∫⁻ s, (K x).indicator 1 (s * y) ∂ρ`. Establish `hhm : ∀ x, Measurable (h x)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Establish `hq : Measurable fun q : G × G => (K x).indicator (1 : G → ℝ≥0∞) (q.2 * q.1)` using `(measurable_one.indicator (hmeasK x)).comp (measurable_snd.mul measurable_fst)`. Conclude with `hq.lintegral_prod_right'`. Establish `hint : ∀ x, ∫⁻ y, h x y ∂ν = μG (K x)`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ∫⁻ y, ∫⁻ s, (K x).indicator 1 (s * y) ∂ρ ∂ν = μG (K x)`. Rewrite using `[← hW _ (measurable_one.indicator (hmeasK x)), lintegral_indicator_one (hmeasK x)]`. Establish `hpos : ∀ x y, y ∈ interior (K x) → 0 < h x y`. Introduce `x y hy`. Set `O` to `(fun s : G => s * y) ⁻¹' interior (K x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hOo : IsOpen O` using `isOpen_interior.preimage (continuous_id.mul continuous_const)`. Establish `hO1 : (1 : G) ∈ O` using `by simp [O, hy]`. Establish `hρO : 0 < ρ O` using `pos_open_one_mul A B μA μB hA0 hAc hAi hB0 hBc hBi O hOo hO1`. Establish `hle : ∫⁻ s, O.indicator 1 s ∂ρ ≤ ∫⁻ s, (K x).indicator 1 (s * y) ∂ρ`. Use `lintegral_mono fun s => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hs : s ∈ O`. Establish `hs' : s * y ∈ K x` using `interior_subset hs`. Simplify using `[Set.indicator_of_mem hs, Set.indicator_of_mem hs']`. Simplify using `[hs]`. Rewrite `hle` using `[lintegral_indicator_one hOo.measurableSet]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `lt_of_lt_of_le hρO hle`. Take `⟨T, hT, hTU⟩` from `TopologicalSpace.isOpen_iUnion_countable (fun x => interior (K x)) (fun _ => isOpen_interior)`. Use `hT.to_subtype` as an intermediate fact. Set `E : T × ℕ → Set G` to `fun p => {y | ((p.2 : ℝ≥0∞) + 1)⁻¹ ≤ h p.1 y}`. Use `Measure.sigmaFinite_of_countable (S := Set.range E) (Set.countable_range E) ?_ ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨⟨x, n⟩, rfl⟩`. Establish `hne0 : ((n : ℝ≥0∞) + 1)⁻¹ ≠ 0` using `ENNReal.inv_ne_zero.2 (by simp)`. Establish `hneT : ((n : ℝ≥0∞) + 1)⁻¹ ≠ ⊤` using `ENNReal.inv_ne_top.2 (by simp)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hint]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `ENNReal.div_lt_top (hKc x).measure_lt_top.ne hne0`. Use `Set.eq_univ_of_forall fun y => ?_` and prove the remaining obligations. Establish `hy : y ∈ ⋃ x ∈ T, interior (K x)`. Rewrite using `[hTU]`. Conclude with `Set.mem_iUnion.2 ⟨y, mem_interior_iff_mem_nhds.2 (hKn y)⟩`.
-
-Take `⟨x, hxT, hyx⟩` from `Set.mem_iUnion₂.1 hy`. Take `⟨n, hn⟩` from `ENNReal.exists_inv_nat_lt (hpos x y hyx).ne'`. Use `Set.mem_sUnion.2 ⟨E (⟨x, hxT⟩, n), ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show ((n : ℝ≥0∞) + 1)⁻¹ ≤ h x y`. Conclude with `le_trans (ENNReal.inv_le_inv.2 le_self_add) hn.le`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sigmaFinite_of_weil [LocallyCompactSpace G] [T2Space G]
     (μG : Measure G) [IsFiniteMeasureOnCompacts μG] (A B : Set G) (μA μB ν : Measure G)

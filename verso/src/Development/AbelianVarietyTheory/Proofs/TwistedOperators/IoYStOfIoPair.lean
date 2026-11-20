@@ -8,7 +8,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Chain
 
 /- English proof (translation)
-Substitute `ha hb` using the available equality. Conclude with `hP k V W M M' θ ψ hθ hC ω f hW hV It hI J χ hJ ν 𝓕 hν h𝓕 J' χ' C hle`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem IoPair.of_index_eq {D : D7} (hP : IoPair D) (k : Fin D.R.m) (a b : ℕ) (ha : a = k) (hb : b = k + 1)
     (V W : HSp D) (M : DSModel V (parB (Ptw D) a)) (M' : DSModel W (parB (Ptw D) b))
@@ -26,13 +26,13 @@ theorem IoPair.of_index_eq {D : D7} (hP : IoPair D) (k : Fin D.R.m) (a b : ℕ) 
   exact hP k V W M M' θ ψ hθ hC ω f hW hV It hI J χ hJ ν 𝓕 hν h𝓕 J' χ' C hle
 
 /- English proof (translation)
-Introduce `t k hk`. Establish `hkm : k < D.R.m` using `Nat.lt_of_succ_lt hk`. Establish `hIt` using `hI`. Establish `hInner` using `hν`. Establish `hLast` using `hν'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `RealDat.chain_ItY at hIt`. Unfold `RealDat.models_νY at hInner`. Unfold `RealDat.models_νY' at hLast`. Establish `hmeas : (R.νY t (k + 1)).IsHaarMeasure ∧ MeasureTheory.IsFundamentalDomain (GQ (Yc D (k + 1))) (R.fdY t (k + 1)) (R.νY t (k + 1))`. Distinguish the cases in `h2 : k + 1 + 1 < D.R.m`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨(hInner t (k + 1) h2).1.1, (hInner t (k + 1) h2).2⟩`. Establish `atLast : ∀ j, j = D.R.m - 1 → (R.νY t j).IsHaarMeasure ∧ MeasureTheory.IsFundamentalDomain (GQ (Yc D j)) (R.fdY t j) (R.νY t j)`. Introduce and unpack `j rfl`. Conclude with `⟨(hLast t).1.1, (hLast t).2⟩`. Conclude with `atLast (k + 1) (by omega)`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨hW, hV⟩` from `hS.1 t ⟨k, hkm⟩ hk`. Conclude with `IoPair.of_index_eq hP ⟨k, hkm⟩ (min k D.R.m) (min (k + 1) D.R.m) (min_eq_left hkm.le) (min_eq_left hk.le) (Yc D k) (Yc D (k + 1)) (R.MY k) (R.MY (k + 1)) R.θ R.ψ hθ (hC _) (R.ωY t k) (R.vY t k) hW hV (R.ItY k) (hIt t k hk) _ _ (hL.1 t k hk) (R.νY t (k + 1)) (R.fdY t (k + 1)) hmea …`.
+A detailed English derivation is pending.
 -/
 theorem ioYSt_of_ioPair (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m)
     (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)

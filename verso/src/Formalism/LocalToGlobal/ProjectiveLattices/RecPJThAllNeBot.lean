@@ -10,9 +10,9 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor R
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `hb`. Apply `h0` to reduce the goal to its premises. Establish `hmem : (⟨f, hc⟩ : cutR C j w) ∈ spanIn C j w s`. Unfold `spanIn`. Conclude with `Submodule.subset_span hf`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem` using `[hb]`. Conclude with `congrArg Subtype.val ((Submodule.mem_bot _).1 hmem)`.
+A detailed English derivation is pending.
 -/
 theorem spanIn_ne_bot {K : Type} [Field K] [NumberField K] {R : ℕ → Type} [∀ j, CommRing (R j)] [∀ j, Algebra K (R j)]
     [∀ j, Algebra (𝓞 K) (R j)] [∀ j, IsScalarTower (𝓞 K) K (R j)] (C : ∀ j, WeightFamilies.Wt D j → Submodule K (R j))
@@ -52,7 +52,7 @@ def recPJ (j : ℕ) (hj : InR D j) : WeightAlgebra.PJ D (recB h.toLawsCore) T.G.
 def recX : WeightAlgebra.Prov D (recB h.toLawsCore) T.G.P := fun j h1 h2 => recPJ h j ⟨h1, h2⟩
 
 /- English proof (translation)
-Take `⟨S, io, e, ho, y, hy⟩` from `h.ptNe j hj la`. Take `⟨η, hη⟩` from `T.G.liesTotal h.points_condition h.bc66 hj la S io e ho y hy`. Conclude with `⟨PtV.mk la ho y hy η hη⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem recPJ_pt_nonempty (j : ℕ) (hj : InR D j) (la : HeightOneSpectrum (𝓞 T.Q.c.F)) :
     Nonempty ((recPJ h j hj).Pt la) := by
@@ -61,13 +61,13 @@ theorem recPJ_pt_nonempty (j : ℕ) (hj : InR D j) (la : HeightOneSpectrum (𝓞
   exact ⟨PtV.mk la ho y hy η hη⟩
 
 /- English proof (translation)
-Simplify using `only [recPJ, mkX, vG, incG]`. Use `le_antisymm (iInf_le_of_le (deg w) (le_of_eq ?_)) (le_iInf fun m => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `vAtV y ((AddMonoidAlgebra.single (deg w) F.1).coeff (deg w)) = _ first`. Consider the case `simp [AddMonoidAlgebra.coeff_single]`. Consider the case `simp [AddMonoidAlgebra.single_apply]`.
+Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [Finsupp.single_apply]`. Consider the case `exact (0 : Nat)`. Express the relevant statement in the definitionally equal form `_ ≤ vAtV y ((AddMonoidAlgebra.single (deg w) F.1).coeff m)`. Distinguish the cases in `hm : deg w = m`. Substitute `hm first` using the available equality.
+Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Consider the case `simp [AddMonoidAlgebra.coeff_single]`. Consider the case `simp [AddMonoidAlgebra.single_apply]`. Consider the case `simp [Finsupp.single_apply]`. Use `first`. Consider the case `simp [AddMonoidAlgebra.coeff_single, hm]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [AddMonoidAlgebra.single_apply, hm]`. Consider the case `simp [Finsupp.single_apply, hm]`. Rewrite using `[(isVal_vAt y).zero]`. Conclude with `le_top`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem recPJ_vAt_inc (j : ℕ) (hj : InR D j) (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (y : T.PtA j la)
     (w : WeightFamilies.Wt D j) (F : (recB h.toLawsCore).Cusp j w) :
@@ -95,7 +95,7 @@ theorem recPJ_vAt_inc (j : ℕ) (hj : InR D j) (la : HeightOneSpectrum (𝓞 T.Q
       exact le_top
 
 /- English proof (translation)
-Take `⟨f, hf, hf0⟩` from `h.thNe j hj.1 hm' _ _ (dom_wtA w) hn hr hD hP`. Establish `hc : f ∈ cutR T.C j w`. Rewrite using `[cutR_eq T.C hj]`. Conclude with `h.thCusp j hj _ _ (dom_wtA w) hl f hf`. Conclude with `spanIn_ne_bot T.C j w hf hc hf0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem recPJ_thAll_ne_bot (j : ℕ) (hj : InR D j) (hm' : j < D.R.m) (w : WeightFamilies.Wt D j) (hn : 0 < w.n)
     (hr : (T.Q.Dw j).p + (T.Q.Dw j).q ≤ w.n) (hD : DF (T.Q.Dw j) (wtA w) + 2 ≤ T.Q.l.M)

@@ -12,7 +12,7 @@ open Formalism.BasicNotions Formalism.UG Formalism.L2.Forms Formalism.MainNotion
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Rewrite using `[norm_prod, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[norm_zpow, ← zpow_natCast, ← _root_.zpow_mul]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -28,7 +28,7 @@ theorem norm_sq_prod_zpow {ι : Type} [Fintype ι] (d : ι → ℂ) (k : ι → 
 variable {D : D7} {u : D.what₂.Word} (T : Forms0 D u) (B : ColBase D u)
 
 /- English proof (translation)
-Establish `: Nat.card ((D.mem u).C.stab 0 c) = 1` using `by haveI := hst c`. Conclude with `Nat.card_eq_one_iff_unique.2 ⟨hst c, ⟨1⟩⟩`. Simplify using `[Formalism.BasicNotions.ColumnChain.wt, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weight_level_zero_eq_one (hst : ∀ c, Subsingleton ((D.mem u).C.stab 0 c)) (c : (D.mem u).C.cls 0) : (D.mem u).C.wt 0 c = 1 := by
   have : Nat.card ((D.mem u).C.stab 0 c) = 1 := by
@@ -42,7 +42,7 @@ def oc (v : InfinitePlace D.what₂.LL) (c : (D.mem u).C.cls 0) :
     {y : D.what₂.Tau → Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) ℂ // ∀ τ, IsUnit (y τ).det})
 
 /- English proof (translation)
-Introduce `τ` and use `Or.inl (Zc_on B hB v c τ)`.
+Fix the arbitrary inputs and assume any hypotheses. Prove the first alternative.
 -/
 theorem oc_on (hB : B.rho = rhoC D) (v : InfinitePlace D.what₂.LL) (c : (D.mem u).C.cls 0) : (oc B v c).IsON :=
   fun τ => Or.inl (Zc_on B hB v c τ)
@@ -54,7 +54,7 @@ def termN (v : InfinitePlace D.what₂.LL) (x : ((D.fm u).lat 0).V) (c : (D.mem 
       (subP o.1 (MvPolynomial.map v.embedding (co0 T x c)))).re
 
 /- English proof (translation)
-Establish `h` using `T.norm0 v.embedding x (co0 T x) (fun c z => pol_spec T x c z) o ho`. Rewrite `h` using `[InfinitePlace.mk_embedding]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normTie_at (v : InfinitePlace D.what₂.LL) (x : ((D.fm u).lat 0).V)
     (o : Frames (gramC (gramN D 0 (Nat.zero_le _)) (embS D v.embedding))) (ho : o.IsON) :
@@ -66,9 +66,9 @@ theorem normTie_at (v : InfinitePlace D.what₂.LL) (x : ((D.fm u).lat 0).V)
 open Classical in
 
 /- English proof (translation)
-Use `coefficient_map_surjective T hst _ fun c' => ?_` and prove the remaining obligations. Distinguish the cases in `h : c' = c`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `coefficient_map_mem_span T x c'`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem exists_single (hst : ∀ c, Subsingleton ((D.mem u).C.stab 0 c)) (x : ((D.fm u).lat 0).V) (c : (D.mem u).C.cls 0) :
     ∃ xc, co0 T xc = Pi.single c (co0 T x c) := by
@@ -80,9 +80,9 @@ theorem exists_single (hst : ∀ c, Subsingleton ((D.mem u).C.stab 0 c)) (x : ((
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single c]`. Unfold `termN`. Rewrite using `[hxc, Pi.single_eq_same]`. Introduce `c' _ hc'`. Unfold `termN`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[hxc, Pi.single_eq_of_ne hc', map_zero, map_zero, ← nfAll_eq, Formalism.L2.GlobalTheoryTheory.TraceIntegrality.nfAll_zero_left, Complex.zero_re, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ c) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem termN_single (v : InfinitePlace D.what₂.LL) (x xc : ((D.fm u).lat 0).V) (c : (D.mem u).C.cls 0)
     (hxc : co0 T xc = Pi.single c (co0 T x c)) (o : Frames (gramC (gramN D 0 (Nat.zero_le _)) (embS D v.embedding))) :
@@ -97,7 +97,7 @@ theorem termN_single (v : InfinitePlace D.what₂.LL) (x xc : ((D.fm u).lat 0).V
   · intro h; exact absurd (Finset.mem_univ c) h
 
 /- English proof (translation)
-Take `⟨xc, hxc⟩` from `exists_single T hst x c`. Rewrite using `[← termN_single T v x xc c hxc o, ← termN_single T v x xc c hxc o', ← normTie_at T v xc o ho, ← normTie_at T v xc o' ho']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem termN_indep (hst : ∀ c, Subsingleton ((D.mem u).C.stab 0 c)) (v : InfinitePlace D.what₂.LL)
     (x : ((D.fm u).lat 0).V) (c : (D.mem u).C.cls 0)
@@ -108,9 +108,9 @@ theorem termN_indep (hst : ∀ c, Subsingleton ((D.mem u).C.stab 0 c)) (v : Infi
     ← normTie_at T v xc o' ho']
 
 /- English proof (translation)
-Rewrite using `[actAll_eq_subP, nfAll_smul_self_re, norm_sq_prod_zpow]`. Unfold `termN`. Rewrite using `[weight_level_zero_eq_one hst c, Complex.one_re, one_mul]`. Use `congrArg₂ (· * ·) (Finset.prod_congr rfl fun τ _ => ?_) rfl` and prove the remaining obligations. Establish `e1 : ((oc B v c).1 τ) = (Zc B v c τ)ᵀ` using `rfl`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e1, Matrix.det_transpose, lamT_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem termN_oc (hst : ∀ c, Subsingleton ((D.mem u).C.stab 0 c)) (v : InfinitePlace D.what₂.LL)
     (x : ((D.fm u).lat 0).V) (c : (D.mem u).C.cls 0) :
@@ -127,7 +127,7 @@ theorem termN_oc (hst : ∀ c, Subsingleton ((D.mem u).C.stab 0 c)) (v : Infinit
   rfl
 
 /- English proof (translation)
-Rewrite using `[coT_apply, map_actAll, actAll_comp]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `R_gC B v c τ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem coT_term (v : InfinitePlace D.what₂.LL) (x : ((D.fm u).lat 0).V) (c : (D.mem u).C.cls 0) :
     Formalism.MainNotions.flipTwoThree.actAll ((D.fm u).lam 0) (fun τ => Matrix.reindex (B.eQ c τ) (B.eQ c τ) ((B.Q c τ).X v)⁻¹)
@@ -139,9 +139,9 @@ theorem coT_term (v : InfinitePlace D.what₂.LL) (x : ((D.fm u).lat 0).V) (c : 
   exact R_gC B v c τ
 
 /- English proof (translation)
-Introduce `v x`. Take `⟨c0⟩` from `hne`. Rewrite using `[normTie_at T v x (oc B v c0) (oc_on B hB v c0)]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[coT_term, ← termN_oc T B hst v x c]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `termN_indep T hst v x c _ _ (oc_on B hB v c0) (oc_on B hB v c)`.
+A detailed English derivation is pending.
 -/
 theorem inf_coT (hB : B.rho = rhoC D) (hst : ∀ c, Subsingleton ((D.mem u).C.stab 0 c))
     (hne : Nonempty ((D.mem u).C.cls 0)) :

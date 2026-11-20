@@ -25,9 +25,9 @@ def cornerHom {Γ R : Type} [CommRing Γ] [CommRing R] {h n : ℕ}
   map_add' x y := by simp [Matrix.mul_add, Matrix.add_mul]
 
 /- English proof (translation)
-Establish `hker : RingHom.ker π ≤ RingHom.ker (cornerHom ρ e i q hqi hiq)`. Rewrite using `[hk, Ideal.span_le, Set.singleton_subset_iff]`. Use `show cornerHom ρ e i q hqi hiq (1 - e) = 0`. Rewrite using `[map_sub, map_one]`. Use `show 1 - q * ρ e * i = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← hiq, ← Matrix.mul_assoc, hqi, Matrix.one_mul, hqi, sub_self]`. Conclude with `⟨π.liftOfSurjective hπ ⟨_, hker⟩, fun x => π.liftOfRightInverse_comp_apply _ _ ⟨_, hker⟩ x⟩`.
+A detailed English derivation is pending.
 -/
 theorem corner_lift {Γ Λ R : Type} [CommRing Γ] [CommRing Λ] [CommRing R] {h n : ℕ}
     (π : Γ →+* Λ) (hπ : Function.Surjective π) (e : Γ) (hk : RingHom.ker π = Ideal.span {1 - e})
@@ -43,7 +43,7 @@ theorem corner_lift {Γ Λ R : Type} [CommRing Γ] [CommRing Λ] [CommRing R] {h
   exact ⟨π.liftOfSurjective hπ ⟨_, hker⟩, fun x => π.liftOfRightInverse_comp_apply _ _ ⟨_, hker⟩ x⟩
 
 /- English proof (translation)
-Unfold `phiInv ofPadic`. Use extensionality with `n`. Simplify using `only [RingHom.comp_apply, WittVector.map_coeff]`. Conclude with `RingHom.congr_fun (Subsingleton.elim (((_root_.frobeniusEquiv (PreTilt O p) p).symm : PreTilt O p →+* PreTilt O p).comp (ZMod.castHom (dvd_refl p) (PreTilt O p))) (ZMod.castHom (dvd_refl p) (PreTilt O p))) _`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phiInv_ofPadic_apply (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [Fact ¬IsUnit (p : O)]
     [IsAdicComplete (Ideal.span {(p : O)}) O] (c : ℤ_[p]) :
@@ -56,35 +56,29 @@ theorem phiInv_ofPadic_apply (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [F
       (ZMod.castHom (dvd_refl p) (PreTilt O p))) (ZMod.castHom (dvd_refl p) (PreTilt O p))) _
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε Γ _ _ Λ _ _ π e he hπ hk h D`. Take `⟨hdom, hloc, -, -, hν, hξ, -⟩` from `GlobalTheory.T.fontaineAinf_localDomain_xiAdic_order p C v O hv ε hε`. Take `⟨-, -, -, hΨ, hΨ'⟩` from `GlobalTheory.T.sandwich_datum_scalar_action p C v O hv ε hε Γ h D`. Establish `hμ : mu ε ≠ 0`. Rewrite using `[← xi_mul_nu]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_ne_zero hξ ?_` and prove the remaining obligations. Introduce `h0`. Conclude with `hν (by rw [h0, map_zero])`. Take `⟨n, iT, pT, hT1, hT2, hT3⟩` from `GlobalTheory.T.idempotent_matrix_local_split ℤ_[p] h (D.ρT e) (by rw [← map_mul, he.eq])`. Take `⟨n', iM, pM, hM1, hM2, hM3⟩` from `GlobalTheory.T.idempotent_matrix_local_split (Ainf p O) h (D.ρM e) (by rw [← map_mul, he.eq])`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htr` using `(GlobalTheory.T.matrix_sandwich_trace_eq (Ainf p O) h (mu ε) D.F D.G _ _ hμ D.G_mul_F (D.F_act e)).2.2`. Establish `hnn : n' = n`. Establish `h1 : ((D.ρT e).map (ofPadic p O)).trace = (n : Ainf p O)`. Rewrite using `[← AddMonoidHom.map_trace (ofPadic p O), hT3, map_natCast]`. Rewrite `htr` using `[hM3, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun x => algebraMap O C (WittVector.fontaineTheta O p x)) htr`. Simplify using `using h2`. Substitute `hnn` using the available equality. Take `⟨rT, hrT⟩` from `corner_lift (π : Γ →+* Λ) hπ e hk (D.ρT : Γ →+* _) iT pT hT1 hT2`. Take `⟨rM, hrM⟩` from `corner_lift (π : Γ →+* Λ) hπ e hk D.ρM iM pM hM1 hM2`.
+Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrT' : ∀ x, rT (π x) = pT * D.ρT x * iT` using `hrT`. Establish `hrM' : ∀ x, rM (π x) = pM * D.ρM x * iM` using `hrM`. Establish `hpM : pM * D.ρM e = pM` using `by rw [← hM2, ← Matrix.mul_assoc, hM1, Matrix.one_mul]`. Establish `hiM : D.ρM e * iM = iM` using `by rw [← hM2, Matrix.mul_assoc, hM1, Matrix.mul_one]`. Establish `hiT : D.ρT e * iT = iT` using `by rw [← hT2, Matrix.mul_assoc, hT1, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : (iT.map (ofPadic p O)).map (phiInv p O) = iT.map (ofPadic p O)` using `by ext1 i j`. Simplify using `only [Matrix.map_apply, phiInv_ofPadic_apply]`. Establish `hφe : iM.map (phiInv p O) * pM.map (phiInv p O) = (D.ρM e).map (phiInv p O)`. Rewrite using `[← Matrix.map_mul, hM2]`. Use `⟨n', { F := pM * D.F * iT.map (ofPadic p O) G := pT.map (ofPadic p O) * D.G * iM Ψ := pM * D.Ψ * iM.map (phiInv p O) Ψ' := pM.map (phiInv p O) * D.Ψ' * iM ρT := { rT with commutes' := by` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Use `show rT (algebraMap ℤ_[p] Λ c) = _`. Rewrite using `[← π.commutes, hrT', AlgHom.commutes, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, hT1] }`. Use `ρM := rM`. Use `G_mul_F := ?_`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `F_eq := ?_`. Use `Ψ_mul := ?_`. Use `F_act := ?_ }, iT, pT, iM, pM, hT1, hT2, hM1, hM2, rfl, rfl, hrT', hrM'⟩`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = pT.map (ofPadic p O) * (D.G * D.F) * ((D.ρT e).map (ofPadic p O) * iT.map (ofPadic p O)) := by`. Rewrite using `[hM2, ← D.F_act e]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by`. Rewrite using `[← Matrix.map_mul, hiT, D.G_mul_F, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, ← Matrix.map_mul, hT1, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hφ]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (pM * D.ρM e) * (D.Ψ * D.F.map (phiInv p O)) * iT.map (ofPadic p O) := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hφe, hΨ]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hpM, ← D.F_eq]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = pM * (D.Ψ * D.Ψ') * (D.ρM e * iM) := by`. Rewrite using `[hφe, ← hΨ']`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by`. Rewrite using `[hiM, D.Ψ_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, hM1]`.
-
-Introduce `a`. Take `⟨x, rfl⟩` from `hπ a`. Use `show _ * (rT (π x)).map (ofPadic p O) = rM (π x) * _`. Establish `hc : D.ρM e * D.ρM x = D.ρM x * D.ρM e` using `by rw [← map_mul, ← map_mul, mul_comm]`. Rewrite using `[hrT', hrM']`.
-
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.map_mul, Matrix.mul_assoc]`. Use `_ = pM * D.ρM e * (D.F * (D.ρT x).map (ofPadic p O)) * iT.map (ofPadic p O) := by`. Rewrite using `[hT2, D.F_act e]`. Simplify using `only [Matrix.mul_assoc]`.
-
-Use `_ = pM * (D.ρM e * D.ρM x) * D.F * iT.map (ofPadic p O) := by`. Rewrite using `[D.F_act x]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hc, ← hM2]; simp only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem datum_idempotent_part : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ (ε : PreTilt O p), IsPrimitiveRoot (root ε).untilt p → ∀ (Γ : Type) [CommRing Γ] [Algebra ℤ_[p] Γ] (Λ : Type) [CommRing Λ] [Algebra ℤ_[p] Λ] (π : Γ →ₐ[ℤ_[p]] Λ) (e : Γ), IsIdempotentElem e → Function.Surjective π → RingHom.ker π = Ideal.span {1 - e} → ∀ (h : ℕ) (D : Datum ε h Γ), ∃ (h' : ℕ) (D' : Datum ε h' Λ) (iT : Matrix (Fin h) (Fin h') ℤ_[p]) (pT : Matrix (Fin h') (Fin h) ℤ_[p]) (iM : Matrix (Fin h) (Fin h') (Ainf p O)) (pM : Matrix (Fin h') (Fin h) (Ainf p O)), pT * iT = 1 ∧ iT * pT = D.ρT e ∧ pM * iM = 1 ∧ iM * pM = D.ρM e ∧ D'.F = pM * D.F * iT.map (ofPadic p O) ∧ D'.G = pT.map (ofPadic p O) * D.G * iM ∧ (∀ x, D'.ρT (π x) = pT * D.ρT x * iT) ∧ ∀ x, D'.ρM (π x) = pM * D.ρM x * iM := by
   intro p _ C _ _ _ v O _ _ _ _ hv ε hε Γ _ _ Λ _ _ π e he hπ hk h D

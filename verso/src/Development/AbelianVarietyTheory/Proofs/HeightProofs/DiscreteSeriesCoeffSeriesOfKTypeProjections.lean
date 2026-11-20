@@ -26,13 +26,13 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {σ : Mx n → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro _ y hy`. Simplify `h0 y hy` using `[Dw]`. Consider the case `cons X l ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `hw y hy`. Establish `hX` using `hw X List.mem_cons_self`. Establish `hl : ∀ Y ∈ l, Y ∈ lieSet ε ∧ Yᴴ = -Y` using `fun Y hY => hw Y (List.mem_cons_of_mem _ hY)`. Establish `hlL : ∀ Y ∈ l, Y ∈ lieSet ε` using `fun Y hY => (hl Y hY).1`. Establish `d1` using `hd l hl X hX.1 hX.2 y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d2 : HasDerivAt (fun t : ℝ => ∑ j, ℓ j (σ (y * NormedSpace.exp (t • X)) (Dw σ l (x j)))) (∑ j, ℓ j (σ (y * NormedSpace.exp ((0 : ℝ) • X)) (dRep σ X (Dw σ l (x j))))) 0` using `HasDerivAt.fun_sum (u := Finset.univ) fun j _ => GlobalTheory.TypeSum.CoefLow.hasDerivAt_coef h (hℓ j) ((hx j).word h.1 hlL) hX.1 hy 0`. Establish `e : (fun t : ℝ => Φ l (y * NormedSpace.exp (t • X))) = fun t => ∑ j, ℓ j (σ (y * NormedSpace.exp (t • X)) (Dw σ l (x j)))`. Use function extensionality and compare the values at `t`. Conclude with `ih hl _ (mul_mem_UJ hy (exp_mem_UJ hX.1 t))`. Rewrite `d1` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[d1.unique d2]`. Simplify using `[Dw]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coef_eq_fam (h : Std ε σ) {p : ℕ} {ℓ : Fin p → (H →ₗ[ℂ] ℂ)} {x : Fin p → H}
     (hℓ : ∀ j, Sobolev₂ (lieSet ε) σ (ℓ j)) (hx : ∀ j, Sm ε σ (x j)) {Φ : List (Mx n) → Mx n → ℂ}
@@ -68,19 +68,19 @@ def pad {α : Type} [Zero α] (q : ℕ → ℕ) (a : (i : ℕ) → Fin (q i) →
   fun p => if h : p.2 < q p.1 then a p.1 ⟨p.2, h⟩ else 0
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem pad_of_lt {α : Type} [Zero α] (q : ℕ → ℕ) (a : (i : ℕ) → Fin (q i) → α) {i r : ℕ} (h : r < q i) :
     pad q a (i, r) = a i ⟨r, h⟩ := dif_pos h
 
 /- English proof (translation)
-The claim follows from `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem pad_of_ge {α : Type} [Zero α] (q : ℕ → ℕ) (a : (i : ℕ) → Fin (q i) → α) {i r : ℕ} (h : ¬ r < q i) :
     pad q a (i, r) = 0 := dif_neg h
 
 /- English proof (translation)
-Establish `h1` using `hasSum_sum_of_ne_finset_zero (L := SummationFilter.unconditional ℕ) (s := Finset.range (q i)) (f := fun r => pad q a (i, r)) (fun r hr => pad_of_ge q a fun h => hr (Finset.mem_range.2 h))`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.sum_range]`. Conclude with `Finset.sum_congr rfl fun r _ => (pad_of_lt q a r.isLt).symm`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pad_hasSum_fiber {α : Type} [AddCommMonoid α] [TopologicalSpace α] (q : ℕ → ℕ)
     (a : (i : ℕ) → Fin (q i) → α) (i : ℕ) : HasSum (fun r => pad q a (i, r)) (∑ r, a i r) := by
@@ -91,9 +91,9 @@ theorem pad_hasSum_fiber {α : Type} [AddCommMonoid α] [TopologicalSpace α] (q
   exact Finset.sum_congr rfl fun r _ => (pad_of_lt q a r.isLt).symm
 
 /- English proof (translation)
-Establish `nn : 0 ≤ pad q a` using `fun p => by`. Simplify using `only [pad, Pi.zero_apply]`. Use `split_ifs`. Conclude with `ha _ _`. Conclude with `le_rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[summable_prod_of_nonneg nn]`. Use `⟨fun i => (pad_hasSum_fiber q a i).summable, ?_⟩` and prove the remaining obligations. Use `Summable.of_nonneg_of_le (fun i => tsum_nonneg fun r => nn _) (fun i => ?_) hb` and prove the remaining obligations. Rewrite using `[(pad_hasSum_fiber q a i).tsum_eq]`. Conclude with `hle i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pad_summable (q : ℕ → ℕ) (a : (i : ℕ) → Fin (q i) → ℝ) (ha : ∀ i r, 0 ≤ a i r) (b : ℕ → ℝ)
     (hb : Summable b) (hle : ∀ i, ∑ r, a i r ≤ b i) : Summable (pad q a) := by
@@ -108,7 +108,7 @@ theorem pad_summable (q : ℕ → ℕ) (a : (i : ℕ) → Fin (q i) → ℝ) (ha
   exact hle i
 
 /- English proof (translation)
-Establish `hs' : Summable (pad q a)` using `hs.of_norm`. Establish `h3 : ∑' p, pad q a p = F` using `(hs'.hasSum.prod_fiberwise (pad_hasSum_fiber q a)).unique hF`. Rewrite using `[← h3]`. Conclude with `hs'.hasSum`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pad_hasSum (q : ℕ → ℕ) (a : (i : ℕ) → Fin (q i) → ℂ) (hs : Summable fun p => ‖pad q a p‖) {F : ℂ}
     (hF : HasSum (fun i => ∑ r, a i r) F) : HasSum (pad q a) F := by
@@ -123,27 +123,21 @@ namespace GlobalTheory.TypeSum.KSeries
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `hHC hCW n ε H _ _ _ σ hσ f hf hU hyp`. Take `⟨e, he1, he2, hP⟩` from `GlobalTheory.T.exists_rightKFourierSeries_unitary_moderateGrowth n ε`. Take `⟨N, Φ, B, hΦ0, hΦd, hΦb, hBs, hsum⟩` from `hP f hf hU`. Take `⟨S, hS, m, A, hQ⟩` from `GlobalTheory.T.exists_common_growth_exponent_gK_discreteSeries hHC hCW n ε H σ hσ N`. Use `choose p ℓ x hℓ hx heq using fun i => hyp (e i) (he1 i) (he2 i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbound : ∀ i k (w : List (Mx n)), w.length ≤ k → (∀ X ∈ w, X ∈ lieSet ε ∧ Xᴴ = -X ∧ hs X ≤ 1) → ∀ y ∈ UJset ε, ‖∑ j, ℓ i j (σ y (Dw σ w (x i j)))‖ ≤ B i k * (1 + hs y) ^ N`. Introduce `i k w hk hw y hy`. Rewrite using `[← coef_eq_fam hσ (hℓ i) (fun j => hσ.2.2.1 _ (hx i j)) (fun y hy => (hΦ0 i y hy).trans (heq i y hy)) (hΦd i) w (fun Y hY => ⟨(hw Y hY).1, (hw Y hY).2.1⟩) y hy]`. Conclude with `hΦb i k w hk hw y hy`. Use `choose q ℓ' x' c hx' hc hℓ' hsumS heq' using fun i => hQ (p i) (ℓ i) (x i) (hℓ i) (hx i) (B i) (hbound i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨S₁, hS₁, -, ⟨Bc, hBc, hctrl⟩, A₀, hA₀, hdom⟩` from `GlobalTheory.TypeSumCtrl.exists_ctrl n ε H σ hσ S hS`. Establish `hV : ∀ a, Sm ε σ (pad q x' a)` using `fun a => by`. Simplify using `only [pad]`. Use `split_ifs`. Conclude with `hx' _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sm_iff.2 (Submodule.zero_mem _)`. Establish `key : ∀ S', Words (lieSet ε) S' → Summable (fun a : ℕ × ℕ => pad q (fun i r => A₀ * c i r) a * sobNorm σ S' (pad q x' a))`. Introduce `S' hS'`. Establish `e1 : (fun a : ℕ × ℕ => pad q (fun i r => A₀ * c i r) a * sobNorm σ S' (pad q x' a)) = pad q (fun i r => A₀ * c i r * sobNorm σ S' (x' i r))`. Apply the tactic sequence `funext a; simp only [pad]; split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1]`. Use `pad_summable q _ (fun i r => mul_nonneg (mul_nonneg hA₀ (hc i r)) (sobNorm_nonneg _ _ _)) (fun i => A₀ * A S' * B i (m S')) ((hBs (m S')).mul_left (A₀ * A S')) fun i => ?_` and prove the remaining obligations. Simplify using `only [mul_assoc, ← Finset.mul_sum]`. Conclude with `mul_le_mul_of_nonneg_left (hsumS i S' hS') hA₀`. Establish `hnorm : ∀ g ∈ UJset ε, ∀ a, ‖pad q (fun i r => ℓ' i r (σ g (x' i r))) a‖ ≤ Bc g * (pad q (fun i r => A₀ * c i r) a * sobNorm σ S₁ (pad q x' a))`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `g hg a`. Simplify using `only [pad]`. Use `split_ifs with h`. Establish `hs1` using `(hx' a.1 ⟨a.2, h⟩).translate hσ.1 hg`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Establish `hterm : ∀ g a, pad q ℓ' a (σ g (pad q x' a)) = pad q (fun i r => ℓ' i r (σ g (x' i r))) a`. Apply the tactic sequence `intro g a; simp only [pad]; split_ifs <;> simp`. Establish `hsum2 : ∀ g ∈ UJset ε, HasSum (fun a : ℕ × ℕ => pad q ℓ' a (σ g (pad q x' a))) (f g)`. Introduce `g hg`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [hterm]`. Use `pad_hasSum q _ (Summable.of_nonneg_of_le (fun a => norm_nonneg _) (hnorm g hg) ((key S₁ hS₁).mul_left (Bc g))) ?_` and prove the remaining obligations. Use `(hsum g hg).congr_fun fun i => ?_` and prove the remaining obligations. Rewrite using `[heq i g hg, heq' i g hg]`. Use `⟨S₁, hS₁, ⟨Bc, hBc, hctrl⟩, pad q x' ∘ Nat.pairEquiv.symm, pad q ℓ' ∘ Nat.pairEquiv.symm, pad q (fun i r => A₀ * c i r) ∘ Nat.pairEquiv.symm, ⟨⟨fun k => hV _, fun k => ?_, fun k w hw => ?_, ?_, fun g hg => ?_⟩, fun S' hS' => ?_⟩⟩` and prove the remaining obligations.
-
-Use `show 0 ≤ pad q (fun i r => A₀ * c i r) (Nat.pairEquiv.symm k)`. Simplify using `only [pad]`. Use `split_ifs`. Conclude with `mul_nonneg hA₀ (hc _ _)`. Conclude with `le_rfl`.
-
-Use `show ‖pad q ℓ' (Nat.pairEquiv.symm k) w‖ ≤ pad q (fun i r => A₀ * c i r) (Nat.pairEquiv.symm k) * sobNorm σ S₁ w`. Simplify using `only [pad]`. Use `split_ifs with h`. Combine the equalities or inequalities in the displayed calculation. Simplify using the standard rewrite rules.
-
-Conclude with `(Nat.pairEquiv.symm.summable_iff (f := fun a : ℕ × ℕ => pad q (fun i r => A₀ * c i r) a * sobNorm σ S₁ (pad q x' a))).2 (key S₁ hS₁)`. Conclude with `(Nat.pairEquiv.symm.hasSum_iff (f := fun a : ℕ × ℕ => pad q ℓ' a (σ g (pad q x' a)))).2 (hsum2 g hg)`. Conclude with `(Nat.pairEquiv.symm.summable_iff (f := fun a : ℕ × ℕ => pad q (fun i r => A₀ * c i r) a * sobNorm σ S' (pad q x' a))).2 (key S' hS')`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasTypeAll_of_kTypes : GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach →
     ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]

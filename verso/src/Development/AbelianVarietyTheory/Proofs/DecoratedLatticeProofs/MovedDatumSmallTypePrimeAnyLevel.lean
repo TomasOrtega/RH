@@ -11,15 +11,15 @@ open scoped ComplexOrder
 namespace GlobalTheory.Core.Ht2.MovedDatumS
 
 /- English proof (translation)
-Introduce `CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H i hi P h h' hh hh'`. Establish `hP : P.1 ∈ Pr.vGs` using `(GlobalTheory.Core.Ht2.BadPrimesS.bad_primes_sharp CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H).1 P.1 P.2`. Establish `hs : cst.sharp = true` using `H.2.2.2.2.2.1`. Unfold `omPhi muAt`. Unfold `lamYat LocE.lamY at hh hh' ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Use `GlobalTheory.ColNorms.MovedDatum.locSmall_om _ _ _ hh hh' ?_` and prove the remaining obligations. Unfold `PhiAt`. Rewrite using `[hs]`. Simplify using `only [if_pos hP, if_true]`. Establish `hq0 : Formalism.L2.Col.qOf P.1 ≠ 0` using `fun h0 => P.1.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hN : ∀ j, N.R.N j = N.R.k + j * N.R.t + j` using `fun j => by unfold Ranks.N; ring`. Establish `h2` using `N.R.two_le_m`. Use `GlobalTheory.T.symmetricLevel_typePrime_datum_locally_small X.E X.K P.1 _ _ _ _ _ _ _ (i + 1) _ _ _ _ hq0 (Ideal.absNorm_mem _) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[hN, Nat.add_sub_cancel]`. Unfold `Formalism.L2.Col.cOf Ranks.r`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hN, hN, add_mul]`. Unfold `Formalism.L2.Col.cOf`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hN]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hN]`. Use linear arithmetic over natural numbers and integers. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem omPhi_locSmall_sharp : ∀ (CY : ℝ) (D : D7) (N : NumDatum) (X : Fields) (s : Seam D X) (Pr : Primes X) (W : Wts X Pr.Word N.R) (Ch : Chars X Pr N.R.m) (G : ChGlob X N.R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (mu : Tup X.F X.E X.K Sg) (cst : LocCst X (rowSG Pr sel mu)) (I : ChIdx X Pr N.R (QE sel (mu : Chr X.F X.E X.K))) (dl : ℂ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (pl : RPl N.R ≃ X.Tau) (u : Pr.Word) (δ : Code N), HypS CY N s W Ch G sel mu cst I dl χ cD pl u δ → ∀ i, i + 1 < N.R.m → ∀ (P : rowSG Pr sel mu) (h : AutY X N.R i) (h' : AutY X N.R (i + 1)), h ∈ stabL X.E _ (lamYat (Pr := Pr) i P.1) → h' ∈ stabL X.E _ (lamYat (Pr := Pr) (i + 1) P.1) → LocSmall (Formalism.L2.Col.qOf P.1) (lamYat (Pr := Pr) (R := N.R) i P.1) (lamYat (Pr := Pr) (R := N.R) (i + 1) P.1) (omPhi Ch sel mu cst i P h h') 1 := by
   intro CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ H i hi P h h' hh hh'

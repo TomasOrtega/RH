@@ -10,9 +10,9 @@ variable {Γ O Λ : Type} [Group Γ] [CommRing O] [CommRing Λ] [Algebra O Λ] {
   [TopologicalSpace Γ] {B : Type} [AddCommGroup B] [Module Λ B] [TopologicalSpace B] [DiscreteTopology B]
 
 /- English proof (translation)
-Establish `hfin : (Set.range fun p : Γ × Fin r => z.1 p.1 p.2).Finite`. Establish `hc : Continuous fun p : Γ × Fin r => z.1 p.1 p.2` using `continuous_prod_of_discrete_right.2 fun a => (continuous_apply a).comp z.2.1`. Conclude with `(isCompact_range hc).finite_of_discrete`. Use `⟨Submodule.span Λ _, Submodule.fg_span hfin, ⟨fun g a => ⟨z.1 g a, Submodule.subset_span ⟨(g, a), rfl⟩⟩, continuous_pi fun a => ((continuous_apply a).comp z.2.1).subtype_mk _, fun g h => ?_⟩, fun g a => rfl⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `e` using `congrFun (repOn_map ρ κ (Submodule.span Λ (Set.range fun p : Γ × Fin r => z.1 p.1 p.2)).subtype g (fun a => ⟨z.1 h a, Submodule.subset_span ⟨(h, a), rfl⟩⟩)) a`. Establish `e2` using `congrFun (z.2.2 g h) a`. Conclude with `e2.trans (congrArg (z.1 g a + ·) e.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_fg_cocycle [CompactSpace Γ] (z : Z1 (repOn ρ κ B)) :
     ∃ B' : Submodule Λ B, B'.FG ∧ ∃ z' : Z1 (repOn ρ κ B'), ∀ g a, ((z'.1 g a : B') : B) = z.1 g a := by
@@ -31,7 +31,7 @@ theorem exists_fg_cocycle [CompactSpace Γ] (z : Z1 (repOn ρ κ B)) :
 
 omit [TopologicalSpace Γ] [TopologicalSpace B] [DiscreteTopology B] in
 /- English proof (translation)
-Establish `: repOn ρ κ B g = repOn ρ κ B 1` using `by simp [repOn, h1, h2]`. Rewrite using `[this, map_one, Module.End.one_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem repOn_eq_of_eq_one {g : Γ} (h1 : ρ g = 1) (h2 : κ g = 1) (m : Fin r → B) : repOn ρ κ B g m = m := by
   have : repOn ρ κ B g = repOn ρ κ B 1 := by simp [repOn, h1, h2]
@@ -42,7 +42,7 @@ end General
 variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : NTw D.R D.host D.what₂ D.LL0 N}
 
 /- English proof (translation)
-Establish `hg : ∀ k, v ∉ placesOver D.host.E (D.host.g k)` using `fun k hk => hS ⟨Or.inl (Set.mem_iUnion.2 ⟨k, hk⟩), hl⟩`. Establish `hp : v ∉ X.pD i` using `fun hk => hS ⟨Or.inr hk, hl⟩`. Establish `h1 : X.rhoS i s σ = 1` using `h.1 v hl hg A hA σ hσ`. Establish `h2 : chiS i s σ = 1` using `X.twistCharacterFamily_unramified i _ _ v hl hg hp A hA σ hσ`. Simplify using `[Tgl, twGL, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem tgl_eq_one (bkP : BKPh X) (i : X.Tw) (s : X.Sig i) (h : IsotypicValuationAtRing bkP i s) (v : PlE D.host)
     (hl : v ∉ placesOver D.host.E (X.l i)) (hS : v ∉ Spl i) (A : ValuationSubring N.Om) (hA : IsPlaceOver A v)
@@ -55,15 +55,15 @@ theorem tgl_eq_one (bkP : BKPh X) (i : X.Tw) (s : X.Sig i) (h : IsotypicValuatio
   simp [Tgl, twGL, h1, h2]
 
 /- English proof (translation)
-Introduce `D N X bkP i s Λ _ _ _ κ Q hSet _ hSat B _ _ _ _ hB y hy`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Take `⟨B', hfg, z', hz⟩` from `exists_fg_cocycle (Tgl i s) κ z`. Establish `hmap : h1Map (Tgl i s) κ B'.subtype (Submodule.Quotient.mk z') = Submodule.Quotient.mk z` using `congrArg Submodule.Quotient.mk (Subtype.ext (funext fun g => funext fun a => hz g a))`. Use `⟨B', hfg, Submodule.Quotient.mk z', ?_, hmap⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mem_Sel _ _ _ _ _).2 fun v => ?_` and prove the remaining obligations. Establish `hv` using `(mem_Sel _ _ _ _ _).1 hy v`. Unfold `Formalism.GaloisCohomology.bkCond at hv ⊢`. Use `split_ifs at hv ⊢ with hl hS`. Use `hSat v hl B' B hB B'.subtype B'.injective_subtype _ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[← hmap]`. Conclude with `hv`. Discharge the goal by the elementary cases of `trivial`. Establish `hS1 : v ∉ Spl i` using `fun h => hS (Or.inl h)`. Establish `hQ : v ∉ Q` using `fun h => hS (Or.inr h)`.
+Check the elementary cases of the proposition. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 ((Submodule.Quotient.mk_eq_zero _).1 hv)`. Use `(Submodule.Quotient.mk_eq_zero _).2 ((mem_coboundaries1 _ _).2 ⟨0, fun g => ?_⟩)` and prove the remaining obligations. Establish `hg : (g.1.1 : GE N) ∈ Ine (F` using `D.host.E) (N.plOm.1 v) := g.2`. Establish `e : z.1 g.1.1 = repOn (Tgl i s) κ B g.1.1 m - m` using `hm g`. Rewrite `e` using `[repOn_eq_of_eq_one _ _ (tgl_eq_one bkP i s hSet.1.1 v hl hS1 _ (N.plOm.2 v) _ hg) (hSet.2.2.2.2.2.2.2 v hQ _ (N.plOm.2 v) _ hg), sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show z'.1 g.1.1 = repOn (Tgl i s) κ B' g.1.1 0 - 0`. Rewrite using `[LinearMap.map_zero, sub_zero]`. Use function extensionality and compare the values at `a`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(hz g.1.1 a).trans (congrFun e a)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem selColim : ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X)
     (i : X.Tw) (s : X.Sig i) (Λ : Type) [CommRing Λ] [IsLocalRing Λ] [Algebra (X.O0 i) Λ] (κ : GE N →* Λˣ)

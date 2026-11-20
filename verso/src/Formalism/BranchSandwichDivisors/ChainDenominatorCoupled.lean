@@ -4,11 +4,11 @@ import Formalism.BranchSandwichDivisors.BranchIsometryProofs.GlobalBoundRefineme
 namespace Formalism.BranchingDeterminantCap
 
 /- English proof (translation)
-The claim follows from `third_descent_inequality`.
+A detailed English derivation is pending.
 -/
 theorem stepDiiiRecord : StepDiiiRecord := third_descent_inequality
 /- English proof (translation)
-The claim follows from `chain_weights`.
+A detailed English derivation is pending.
 -/
 theorem chainWeights : ChainWeights := chain_weights
 

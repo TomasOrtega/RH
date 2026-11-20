@@ -11,9 +11,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
 
 /- English proof (translation)
-Establish `ha` using `hg.analyticOnNhd hU`. Establish `m : MeromorphicOn (e - g) U` using `(he.mono_set (Set.subset_univ _)).sub ha.meromorphicOn`. Establish `h1 : t < ((t + 1 : ℝ) : ℂ).re` using `by simp`. Establish `z : meromorphicOrderAt (e - g) s = ⊤`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `m.meromorphicOrderAt_ne_top_of_isPreconnected hc hs (h _ h1).1 hne (meromorphicOrderAt_eq_top_iff.2 ?_)` and prove the remaining obligations. Use `filter_upwards [mem_nhdsWithin_of_mem_nhds ((isOpen_lt continuous_const Complex.continuous_re).mem_nhds h1)] with z hz`. Conclude with `sub_eq_zero.2 (h z hz).2`. Use `tendsto_nhds_unique_of_eventuallyEq (l := 𝓝[≠] s) (hc'.mono_left nhdsWithin_le_nhds) ((ha s hs).continuousAt.mono_left nhdsWithin_le_nhds) ?_` and prove the remaining obligations. Use `filter_upwards [meromorphicOrderAt_eq_top_iff.1 z] with z hz using sub_eq_zero.1 hz`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mero_eq {U : Set ℂ} (hU : IsOpen U) (hc : IsPreconnected U) {e g : ℂ → ℂ} (he : MeromorphicOn e Set.univ)
     (hg : DifferentiableOn ℂ g U) {t : ℝ} (h : ∀ s : ℂ, t < s.re → s ∈ U ∧ e s = g s) {s : ℂ} (hs : s ∈ U) (hc' : ContinuousAt e s) :
@@ -31,11 +31,11 @@ theorem mero_eq {U : Set ℂ} (hU : IsOpen U) (hc : IsPreconnected U) {e g : ℂ
   filter_upwards [meromorphicOrderAt_eq_top_iff.1 z] with z hz using sub_eq_zero.1 hz
 
 /- English proof (translation)
-Establish `c0 : ContinuousAt (g · x₀) s₀` using `((hd x₀).differentiableAt Metric.isOpen_ball (Metric.mem_ball_self hρ)).continuousAt`. Establish `: Tendsto (fun y : ℂ × X => g y.1 y.2 - g y.1 x₀) (𝓝 (s₀, x₀)) (𝓝 0)`. Use `Metric.tendsto_nhds.2 fun ε hε => ?_` and prove the remaining obligations. Establish `c1 : Continuous fun y : X × Metric.sphere s₀ ρ => ‖g y.2 y.1 - g y.2 x₀‖` using `((hc.comp_continuous (f := fun y : X × Metric.sphere s₀ ρ => (y.2.1, y.1)) (by fun_prop) fun y => ⟨y.2.2, trivial⟩).sub (hc.comp_continuous (f := fun y : X × Metric.sphere s₀ ρ => (y.2.1, x₀)) (by fun_prop) fun y => ⟨y.2.2, trivial⟩)).norm`. Establish `e1 : ∀ᶠ x in 𝓝 x₀, ∀ z ∈ (Set.univ : Set (Metric.sphere s₀ ρ)), ‖g z x - g z x₀‖ < ε / 2` using `isCompact_univ.eventually_forall_of_forall_eventually fun z _ => (isOpen_lt c1 continuous_const).mem_nhds (by simpa using hε)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [prod_mem_nhds (Metric.ball_mem_nhds s₀ hρ) e1] with y hy`. Rewrite using `[dist_zero_right]`. Use `(Complex.norm_le_of_forall_mem_frontier_norm_le Metric.isBounded_ball ((hd y.2).sub (hd x₀)) (C := ε / 2) (fun z hz => ?_) (subset_closure hy.1)).trans_lt (half_lt_self hε)` and prove the remaining obligations. Rewrite `hz` using `[frontier_ball _ hρ.ne']`. Conclude with `(hy.2 ⟨z, hz⟩ trivial).le`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `this.add (c0.tendsto.comp continuous_fst.continuousAt)`. Simplify `h2` using `[ContinuousAt]`.
+A detailed English derivation is pending.
 -/
 theorem contAt_of_sphere {X : Type} [TopologicalSpace X] {g : ℂ → X → ℂ} {s₀ : ℂ} {ρ : ℝ} (hρ : 0 < ρ)
     (hd : ∀ x, DiffContOnCl ℂ (g · x) (Metric.ball s₀ ρ))
@@ -60,21 +60,19 @@ theorem contAt_of_sphere {X : Type} [TopologicalSpace X] {g : ℂ → X → ℂ}
   simpa [ContinuousAt] using h2
 
 /- English proof (translation)
-Take `⟨r, H, r0, hH, -, -, C, N, hC⟩` from `hr`. Take `⟨t, half⟩` from `h.half`. Establish `op : IsOpen (insert s₀ U)` using `isOpen_iff_mem_nhds.2 fun s hs => hs.elim (fun e => e ▸ insert_mem_nhds_iff.2 (h.disc s)) fun hs => mem_of_superset (h.isOpen.mem_nhds hs) (Set.subset_insert _ _)`. Establish `ev : ∀ s ≠ s₀, ∀ᶠ z in 𝓝 s, Function.update Ê s₀ val z = Ê z` using `fun s hs => by filter_upwards [isOpen_ne.mem_nhds hs] with z hz using Function.update_of_ne hz _ _`. Establish `hol : ∀ x, DifferentiableOn ℂ (Function.update Ê s₀ val · x) (insert s₀ U)` using `fun x s hs => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `DifferentiableAt.differentiableWithinAt ?_` and prove the remaining obligations. Distinguish the cases in `e0 : s = s₀`. Take `⟨e, he, ⟨t', h1⟩, h2, h3⟩` from `hv x`. Substitute `e0` using the available equality. Use `h2.differentiableAt.congr_of_eventuallyEq ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [h2.eventually_analyticAt, op.mem_nhds hs] with z hz hz'`. Distinguish the cases in `e1 : z = s`. Rewrite using `[e1, Function.update_self, h3]`. Rewrite using `[Function.update_of_ne e1]`. Conclude with `(mero_eq h.isOpen h.conn he (h.hol x) (t := max t t') (fun s hs => ⟨(half s (max_lt_iff.1 hs).1).1, (h1 s (max_lt_iff.1 hs).2).unique ((half s (max_lt_iff.1 hs).1).2 x)⟩) (hz'.resolve_left e1) hz.continuousAt).symm`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `((h.hol x).differentiableAt (h.isOpen.mem_nhds (hs.resolve_left e0))).congr_of_eventuallyEq ((ev s e0).mono fun z hz => congrFun hz x)`. Take `⟨ρ, ρ0, hρ⟩` from `Metric.nhds_basis_closedBall.mem_iff.1 (inter_mem (op.mem_nhds (Set.mem_insert _ _)) (Metric.ball_mem_nhds s₀ r0))`. Establish `dc : ∀ x, DiffContOnCl ℂ (Function.update Ê s₀ val · x) (Metric.ball s₀ ρ)` using `fun x => (hol x).diffContOnCl_ball fun z hz => (hρ hz).1`. Establish `sp : ∀ z ∈ Metric.sphere s₀ ρ, z ≠ s₀` using `fun z hz => Metric.ne_of_mem_sphere hz ρ0.ne'`. Establish `ca : ∀ s ∈ U, s ≠ s₀ → ∀ x, ContinuousAt (fun y : ℂ × G2 σ Y => Function.update Ê s₀ val y.1 y.2) (s, x)` using `fun s hs e x => (h.cont.continuousAt (prod_mem_nhds (h.isOpen.mem_nhds hs) univ_mem)).congr ((continuous_fst.continuousAt.eventually (ev s e)).mono fun y hy => (congrFun hy y.2).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨op, h.conn.subset_closure (Set.subset_insert _ _) (Set.insert_subset ?_ subset_closure), fun s => (h.disc s).mono fun z hz => .inr hz, ⟨max t s₀.re, fun s hs => ⟨.inr (half s (max_lt_iff.1 hs).1).1, fun x => ?_⟩⟩, hol, fun y hy => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Conclude with `mem_closure_iff_frequently.2 ((h.disc s₀).frequently.filter_mono nhdsWithin_le_nhds)`. Rewrite using `[Function.update_of_ne fun e => (max_lt_iff.1 hs).2.ne (by rw [e])]; exact (half s (max_lt_iff.1 hs).1).2 x`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Distinguish the cases in `e0 : y.1 = s₀`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show y = (s₀, y.2) from Prod.ext e0 rfl]`. Conclude with `contAt_of_sphere ρ0 dc (fun z hz => (ca z.1 ((hρ (Metric.sphere_subset_closedBall hz.1)).1.resolve_left (sp _ hz.1)) (sp _ hz.1) z.2).continuousWithinAt) _`. Conclude with `ca y.1 (hy.1.resolve_left e0) e0 y.2`. Distinguish the cases in `e0 : s = s₀`. Substitute `e0` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ρ, C / ρ ^ k, N, ρ0, fun z hz x => Complex.norm_le_of_forall_mem_frontier_norm_le Metric.isBounded_ball (dc x) (fun w hw => ?_) (subset_closure hz)⟩` and prove the remaining obligations. Rewrite `hw` using `[frontier_ball _ ρ0.ne']`. Establish `b` using `(hρ (Metric.sphere_subset_closedBall hw)).2`. Use `hC w b x` as an intermediate fact. Rewrite `this` using `[hH w b (sp w hw), norm_mul, norm_pow, mem_sphere_iff_norm.1 hw]`.
-
-Rewrite using `[Function.update_of_ne (sp w hw), div_mul_eq_mul_div, le_div_iff₀' (pow_pos ρ0 k)]`. Conclude with `this`. Take `⟨ε, C', N', ε0, hb⟩` from `h.grow s (hs.resolve_left e0)`. Take `⟨δ, δ0, hδ⟩` from `Metric.mem_nhds_iff.1 (inter_mem (ev s e0) (Metric.ball_mem_nhds s ε0))`. Conclude with `⟨δ, C', N', δ0, fun z hz x => by rw [(hδ hz).1]; exact hb z (hδ hz).2 x⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsEisCont.update {f : ℂ → G2 σ Y → ℂ} {U : Set ℂ} {Ê : ℂ → G2 σ Y → ℂ} (h : IsEisCont f U Ê) {s₀ : ℂ} {k : ℕ}
     (hr : IsRegAt Ê s₀ k) {val : G2 σ Y → ℂ} (hv : EisValueAt f s₀ val) :
@@ -132,7 +130,7 @@ theorem IsEisCont.update {f : ℂ → G2 σ Y → ℂ} {U : Set ℂ} {Ê : ℂ �
       exact ⟨δ, C', N', δ0, fun z hz x => by rw [(hδ hz).1]; exact hb z (hδ hz).2 x⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B m n A Y M r s r' s' hB hm hn hA h0 hY hM χ hχ hr dd om S l c1 c2 K a hK ha Φ₁ p1 Φ₂ p2`. Take `⟨U, Ê, hE, hR⟩` from `h2 F E σ B n Y r' s' hB hn (.inr hY) χ hχ m hr K a hK ha _ _ (h3 F E σ B m n A Y M r s r' s' hB hm hn hA h0 hY hM χ hχ hr dd om S l c1 c2 K a hK ha Φ₁ p1 Φ₂ p2)`. Take `⟨k, hk⟩` from `hR (((m : ℂ) - n) / 2)`. Conclude with `⟨_, _, hE.update hk (h1 F E σ B m n A Y M r s r' s' hB hm hn hA h0 hY hM χ hχ hr dd om S l c1 c2 K a hK ha Φ₁ p1 Φ₂ p2), Set.mem_insert _ _, fun x => by rw [Function.update_self]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem swFull_of (h1 : SWAniso) (h2 : EisContinues) (h3 : BoxSec) : SWFull := by
   intro F E _ _ _ _ _ σ B m n A Y M r s r' s' hB hm hn hA h0 hY hM χ hχ hr dd om S l c1 c2 K a hK ha Φ₁ p1 Φ₂ p2

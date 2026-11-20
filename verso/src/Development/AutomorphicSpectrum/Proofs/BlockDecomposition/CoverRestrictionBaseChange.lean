@@ -21,7 +21,7 @@ def invSign (τ : κ → ι) (s : Finset κ) (x : κ) : ℤ :=
   (∏ b ∈ s, if x < b ∧ τ b < τ x then -1 else 1) * ∏ a ∈ s, if a < x ∧ τ x < τ a then -1 else 1
 
 /- English proof (translation)
-Unfold `sortSign invSign`. Rewrite using `[Finset.prod_insert hx]`. Simplify using `only [Finset.prod_insert hx, Finset.prod_mul_distrib, lt_irrefl, false_and, if_false, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sortSign_insert (τ : κ → ι) {s : Finset κ} {x : κ} (hx : x ∉ s) :
     sortSign τ (insert x s) = sortSign τ s * invSign τ s x := by
@@ -32,7 +32,7 @@ theorem sortSign_insert (τ : κ → ι) {s : Finset κ} {x : κ} (hx : x ∉ s)
   ring
 
 /- English proof (translation)
-Rewrite using `[cubeSign, Finset.prod_ite]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cubeSign_eq_prod (t : Finset ι) (i : ι) :
     cubeSign t i = ∏ j ∈ t, if j < i then -1 else 1 := by
@@ -40,9 +40,9 @@ theorem cubeSign_eq_prod (t : Finset ι) (i : ι) :
   simp
 
 /- English proof (translation)
-Establish `hxs : ∀ a ∈ s, a ≠ x` using `fun a ha e => hx a ha (congrArg τ e)`. Rewrite using `[cubeSign_eq_prod, cubeSign_eq_prod, Finset.prod_image hs, invSign, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `h1` using `hx a ha`. Establish `h2` using `hxs a ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases lt_or_gt_of_ne h1 with h3 | h3 <;> rcases lt_or_gt_of_ne h2 with h4 | h4 <;>`. Simplify using `[h3, h4, h3.le, h4.le, not_lt.2 h3.le, not_lt.2 h4.le]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem invSign_eq (τ : κ → ι) {s : Finset κ} {x : κ} (hs : Set.InjOn τ s)
     (hx : ∀ a ∈ s, τ a ≠ τ x) :
@@ -57,9 +57,9 @@ theorem invSign_eq (τ : κ → ι) {s : Finset κ} {x : κ} (hs : Set.InjOn τ 
     simp [h3, h4, h3.le, h4.le, not_lt.2 h3.le, not_lt.2 h4.le]
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [Finset.mem_image, Finset.mem_erase]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ⟨h1, h2⟩, rfl⟩`. Conclude with `⟨fun e => h1 (ht h2 hi e), a, h2, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, a, h2, rfl⟩`. Conclude with `⟨a, ⟨fun e => h1 (congrArg τ e), h2⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem image_erase_of_injOn (τ : κ → ι) {t : Finset κ} {i : κ} (hi : i ∈ t)
     (ht : Set.InjOn τ t) : (t.erase i).image τ = (t.image τ).erase (τ i) := by
@@ -72,9 +72,9 @@ theorem image_erase_of_injOn (τ : κ → ι) {t : Finset κ} {i : κ} (hi : i �
     exact ⟨a, ⟨fun e => h1 (congrArg τ e), h2⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hs : Set.InjOn τ (t.erase i : Finset κ)` using `ht.mono (by simp [Finset.erase_subset])`. Establish `hx : ∀ a ∈ t.erase i, τ a ≠ τ i` using `fun a ha e => (Finset.mem_erase.1 ha).1 (ht (Finset.mem_erase.1 ha).2 hi e)`. Establish `h1 : sortSign τ t = sortSign τ (t.erase i) * invSign τ (t.erase i) i`. Rewrite using `[← sortSign_insert τ (Finset.notMem_erase i t), Finset.insert_erase hi]`. Rewrite using `[h1, invSign_eq τ hs hx, image_erase_of_injOn τ hi ht, cubeSign_erase_of_le t le_rfl, cubeSign_erase_of_le (t.image τ) le_rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `cubeSign_mul_self (t.image τ) (τ i)`. Take the linear combination `(-(cubeSign t i * sortSign τ (t.erase i))) * h2`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem sign_erase (τ : κ → ι) {t : Finset κ} {i : κ} (hi : i ∈ t) (ht : Set.InjOn τ t) :
     cubeSign t i * sortSign τ (t.erase i) = sortSign τ t * cubeSign (t.image τ) (τ i) := by
@@ -89,13 +89,13 @@ theorem sign_erase (τ : κ → ι) {t : Finset κ} {i : κ} (hi : i ∈ t) (ht 
   linear_combination (-(cubeSign t i * sortSign τ (t.erase i))) * h2
 
 /- English proof (translation)
-Introduce `u hu w hw e`. Simplify using `only [Finset.coe_erase, Set.mem_diff, Finset.mem_coe, Set.mem_singleton_iff] at hu hw hi`. Establish `mem : ∀ c, c ∈ t → c ≠ b → (if c = a then b else c) ∈ (t : Set κ) \ {a}`. Introduce `c hc hcb`. Distinguish the cases in `h : c = a`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h, hb, hab.symm]`. Simplify using `[h, hc]`. Establish `val : ∀ c, τ (if c = a then b else c) = τ c`. Introduce `c`. Distinguish the cases in `h : c = a`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h, hτ]`. Simplify using `[h]`. Use `hi (by simpa using mem u hu.1 hu.2) (by simpa using mem w hw.1 hw.2) (by rw [val, val, e])` as an intermediate fact. Apply the tactic sequence `by_cases h1 : u = a <;> by_cases h2 : w = a`. Rewrite using `[h1, h2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h1, h2, if_true, if_false] at this`. Conclude with `absurd this.symm hw.2`. Simplify using `only [h1, h2, if_true, if_false] at this`. Conclude with `absurd this hu.2`. Simplify `this` using `[h1, h2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem injOn_erase_swap (τ : κ → ι) {t : Finset κ} {a b : κ} (hab : a ≠ b)
     (hτ : τ a = τ b) (hb : b ∈ t) (hi : Set.InjOn τ (t.erase a : Finset κ)) :
@@ -123,13 +123,13 @@ theorem injOn_erase_swap (τ : κ → ι) {t : Finset κ} {a b : κ} (hab : a �
   · simpa [h1, h2] using this
 
 /- English proof (translation)
-Use `set r := (t.erase a).erase b with hr`. Establish `hr' : r = (t.erase b).erase a` using `Finset.erase_right_comm`. Establish `hbm : b ∈ t.erase a` using `Finset.mem_erase.2 ⟨hab.symm, hb⟩`. Establish `ham : a ∈ t.erase b` using `Finset.mem_erase.2 ⟨hab, ha⟩`. Establish `hs : Set.InjOn τ (r : Finset κ)` using `hi.mono (by simp [hr, Finset.erase_subset])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : ∀ c ∈ r, τ c ≠ τ b` using `fun c hc e => by`. Establish `h1` using `Finset.mem_erase.1 hc`. Conclude with `h1.1 (hi h1.2 hbm e)`. Establish `hx' : ∀ c ∈ r, τ c ≠ τ a` using `fun c hc => hτ ▸ hx c hc`. Establish `e1 : sortSign τ (t.erase a) = sortSign τ r * invSign τ r b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← sortSign_insert τ (Finset.notMem_erase b _), Finset.insert_erase hbm]`. Establish `e2 : sortSign τ (t.erase b) = sortSign τ r * invSign τ r a`. Rewrite using `[← sortSign_insert τ (by rw [hr']; exact Finset.notMem_erase a _), hr', Finset.insert_erase ham]`. Establish `e3 : cubeSign r b = cubeSign (t.erase a) b` using `cubeSign_erase_of_le _ le_rfl`. Establish `e4 : cubeSign r a = cubeSign (t.erase b) a` using `by rw [hr']; exact cubeSign_erase_of_le _ le_rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e5` using `cubeSign_mul_erase ha hb hab`. Rewrite using `[e1, e2, invSign_eq τ hs hx, invSign_eq τ hs hx', e3, e4, hτ]`. Take the linear combination `(sortSign τ r * cubeSign (r.image τ) (τ b)) * e5`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sign_collision (τ : κ → ι) {t : Finset κ} {a b : κ} (ha : a ∈ t) (hb : b ∈ t) (hab : a ≠ b)
     (hτ : τ a = τ b) (hi : Set.InjOn τ (t.erase a : Finset κ)) :
@@ -180,33 +180,33 @@ def total : (∀ s, A.obj s) →ₛₗ[σ] ∀ t, B.obj t where
     by_cases h : (t.image τ).card = t.card <;> simp [h, smul_comm (sortSign τ t) (σ r)]
 
 /- English proof (translation)
-The claim follows from `if_pos (Finset.card_image_iff.2 h)`.
+A detailed English derivation is pending.
 -/
 theorem total_of_inj (X : ∀ s, A.obj s) {t : Finset κ} (h : Set.InjOn τ (t : Set κ)) :
     P.total X t = sortSign τ t • P.app t (X (t.image τ)) :=
   if_pos (Finset.card_image_iff.2 h)
 
 /- English proof (translation)
-The claim follows from `if_neg fun e => h (Finset.card_image_iff.1 e)`.
+A detailed English derivation is pending.
 -/
 theorem total_of_not (X : ∀ s, A.obj s) {t : Finset κ} (h : ¬ Set.InjOn τ (t : Set κ)) :
     P.total X t = 0 :=
   if_neg fun e => h (Finset.card_image_iff.1 e)
 
 /- English proof (translation)
-Rewrite using `[Cube.totalD_apply]`. Distinguish the cases in `ht : Set.InjOn τ (t : Set κ)`. Rewrite using `[total_of_inj _ _ ht, Cube.totalD_apply, Finset.sum_image ht, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hs : Set.InjOn τ (t.erase i : Finset κ)` using `ht.mono (by simp [Finset.erase_subset])`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[total_of_inj _ _ hs, map_zsmul, ← P.app_res (Finset.erase_subset i t), map_zsmul, Cube.res_congr A X (image_erase_of_injOn τ hi ht) _ (Finset.erase_subset _ _), smul_smul, smul_smul, sign_erase τ hi ht]`. Rewrite using `[total_of_not _ _ ht]`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha, b, hb, hτab, hab⟩ : ∃ a ∈ t, ∃ b ∈ t, τ a = τ b ∧ a ≠ b := by`. Simplify `ht` using `[Set.InjOn]`. Rewrite using `[Finset.sum_eq_add_of_mem a b ha hb hab]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hi : Set.InjOn τ (t.erase a : Finset κ)`. Establish `hj` using `injOn_erase_swap τ hab hτab hb hi`. Establish `e : (t.erase a).image τ = (t.erase b).image τ`. Use extensionality with `y`. Simplify using `only [Finset.mem_image, Finset.mem_erase]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, ⟨h1, h2⟩, rfl⟩`. Distinguish the cases in `h : c = b`. Conclude with `⟨a, ⟨hab, ha⟩, by rw [h, hτab]⟩`. Conclude with `⟨c, ⟨h, h2⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨c, ⟨h1, h2⟩, rfl⟩`. Distinguish the cases in `h : c = a`. Conclude with `⟨b, ⟨hab.symm, hb⟩, by rw [h, hτab]⟩`. Conclude with `⟨c, ⟨h, h2⟩, rfl⟩`. Rewrite using `[total_of_inj _ _ hi, total_of_inj _ _ hj, map_zsmul, map_zsmul, ← P.app_res (Finset.erase_subset a t), ← P.app_res (Finset.erase_subset b t), Cube.res_congr A X e _ (Finset.image_subset_image (Finset.erase_subset b t)), smul_smul, smul_smul, ← add_smul, sign_collision τ ha hb ha …`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `hj : ¬ Set.InjOn τ (t.erase b : Finset κ)` using `fun h => hi (injOn_erase_swap τ hab.symm hτab.symm ha h)`. Rewrite using `[total_of_not _ _ hi, total_of_not _ _ hj]`. Simplify using the standard rewrite rules. Introduce `c hc hcab`. Establish `: ¬ Set.InjOn τ (t.erase c : Finset κ)` using `fun h => hab (h (by simp [ha, Ne.symm hcab.1]) (by simp [hb, Ne.symm hcab.2]) hτab)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[total_of_not _ _ this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem totalD_total (X : ∀ s, A.obj s) (t : Finset κ) :
     Cube.totalD B (P.total X) t = P.total (Cube.totalD A X) t := by
@@ -256,7 +256,7 @@ def term (p : ℕ) : Cube.Term A p →ₛₗ[σ] Cube.Term B p where
   map_smul' r x := funext fun t => by rw [map_smul, map_smulₛₗ]; rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `P.total (Cube.extend A p x) t.1 = _`. Rewrite using `[total_of_inj _ _ (Finset.card_image_iff.1 (h.trans t.2.symm)), Cube.extend_apply_of_eq A x h]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem term_of_card {p : ℕ} (x : Cube.Term A p) (t : {s : Finset κ // s.card = p})
     (h : (t.1.image τ).card = p) :
@@ -265,14 +265,14 @@ theorem term_of_card {p : ℕ} (x : Cube.Term A p) (t : {s : Finset κ // s.card
   rw [total_of_inj _ _ (Finset.card_image_iff.1 (h.trans t.2.symm)), Cube.extend_apply_of_eq A x h]
 
 /- English proof (translation)
-The claim follows from `total_of_not _ _ fun e => h ((Finset.card_image_iff.2 e).trans t.2)`.
+A detailed English derivation is pending.
 -/
 theorem term_of_not {p : ℕ} (x : Cube.Term A p) (t : {s : Finset κ // s.card = p})
     (h : (t.1.image τ).card ≠ p) : P.term p x t = 0 :=
   total_of_not _ _ fun e => h ((Finset.card_image_iff.2 e).trans t.2)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Rewrite using `[Cube.d_apply_eq_totalD B (P.term p x) (P.total (Cube.extend A p x)) (fun _ => rfl), totalD_total]`. Distinguish the cases in `h : (t.1.image τ).card = p + 1`. Rewrite using `[term_of_card _ _ _ h, total_of_inj _ _ (Finset.card_image_iff.1 (h.trans t.2.symm)), Cube.d_apply_eq_totalD A x (Cube.extend A p x) (fun s => (Cube.extend_apply_of_eq A x s.2).symm)]`. Rewrite using `[term_of_not _ _ _ h, total_of_not _ _ fun e => h ((Finset.card_image_iff.2 e).trans t.2)]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem term_d (p : ℕ) (x : Cube.Term A p) :
     P.term (p + 1) (Cube.d A p x) = Cube.d B p (P.term p x) := by
@@ -297,7 +297,7 @@ theorem coe_cocycle (p : ℕ) (x : LinearMap.ker (Cube.d A p)) :
     (P.cocycle p x).1 = P.term p x.1 := rfl
 
 /- English proof (translation)
-Consider the cases of `p with`. Consider the case `zero => rw [(cechClass_zero_eq_zero_iff A x).1 h, map_zero, map_zero]`. Consider the case `succ p`. Take `⟨y, hy⟩` from `(cechClass_succ_eq_zero_iff A p x).1 h`. Conclude with `(cechClass_succ_eq_zero_iff B p _).2 ⟨P.term _ y, by rw [← term_d, hy, coe_cocycle]⟩`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cechClass_cocycle_eq_zero (p : ℕ) (x : LinearMap.ker (Cube.d A (p + 1)))
     (h : cechClass A p x = 0) : cechClass B p (P.cocycle (p + 1) x) = 0 := by
@@ -314,7 +314,7 @@ def homology (p : ℕ) : (cechComplex A).homology p →ₛₗ[σ] (cechComplex B
 
 @[simp]
 /- English proof (translation)
-Establish `h : ((cechClass A p).quotKerEquivOfSurjective (cechClass_surjective A p)).symm (cechClass A p x) = Submodule.Quotient.mk x`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Conclude with `congrArg ((LinearMap.ker (cechClass A p)).liftQ ((cechClass B p).comp (P.cocycle (p + 1))) (P.cechClass_cocycle_eq_zero p)) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem homology_cechClass (p : ℕ) (x : LinearMap.ker (Cube.d A (p + 1))) :
     P.homology p (cechClass A p x) = cechClass B p (P.cocycle (p + 1) x) := by
@@ -327,13 +327,13 @@ theorem homology_cechClass (p : ℕ) (x : LinearMap.ker (Cube.d A (p + 1))) :
 end AltHom
 
 /- English proof (translation)
-Establish `tf : ∀ (q : ℕ) (y : Cube.Term C.X₁ q), ψ₂.term q (Cube.termMap C.f q y) = Cube.termMap D.f q (ψ₁.term q y)`. Introduce `q y`. Use function extensionality and compare the values at `t`. Distinguish the cases in `h : (t.1.image τ).card = q`. Rewrite using `[Cube.termMap_apply, AltHom.term_of_card _ _ _ h, AltHom.term_of_card _ _ _ h, map_zsmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ (hf t.1 _)`. Rewrite using `[Cube.termMap_apply, AltHom.term_of_not _ _ _ h, AltHom.term_of_not _ _ _ h, map_zero]`. Establish `tg : ∀ (q : ℕ) (y : Cube.Term C.X₂ q), ψ₃.term q (Cube.termMap C.g q y) = Cube.termMap D.g q (ψ₂.term q y)`. Introduce `q y`. Use function extensionality and compare the values at `t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : (t.1.image τ).card = q`. Rewrite using `[Cube.termMap_apply, AltHom.term_of_card _ _ _ h, AltHom.term_of_card _ _ _ h, map_zsmul]`. Conclude with `congrArg _ (hg t.1 _)`. Rewrite using `[Cube.termMap_apply, AltHom.term_of_not _ _ _ h, AltHom.term_of_not _ _ _ h, map_zero]`. Take `⟨x₃, rfl⟩` from `cechClass_surjective C.X₃ p x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x₂, x₁, h₂, h₁⟩` from `exists_lift_cechCocycle hC p x₃`. Rewrite using `[δ_cechClass hC p x₃ x₂ x₁ h₂ h₁, AltHom.homology_cechClass, AltHom.homology_cechClass]`. Use `(δ_cechClass hD p _ (ψ₂.term _ x₂) _ ?_ ?_).symm` and prove the remaining obligations. Rewrite using `[AltHom.coe_cocycle, ← h₂, tg]`. Rewrite using `[AltHom.coe_cocycle, ← AltHom.term_d, ← h₁, tf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AltHom.homology_δ {τ : κ → ι} {σ : R →+* S}
     {C : ShortComplex (Cube.{v} ι R)} {D : ShortComplex (Cube.{v'} κ S)}
@@ -376,7 +376,7 @@ variable {T T' : TopCat.{u}} {ι κ : Type} [LinearOrder ι] [LinearOrder κ]
 open SheafPull TopologicalSpace Opposite
 
 /- English proof (translation)
-Establish `: a ≫ b = c` using `Quiver.Hom.unop_inj (Subsingleton.elim _ _)`. Rewrite using `[← this, Functor.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_map_thin (P : (Opens T)ᵒᵖ ⥤ AddCommGrpCat.{u}) {A B C : (Opens T)ᵒᵖ} (a : A ⟶ B)
     (b : B ⟶ C) (c : A ⟶ C) (y : P.obj A) : P.map b (P.map a y) = P.map c y := by
@@ -409,7 +409,7 @@ theorem altAb_app (f : T' ⟶ T) {F : AbSheaf T} {G : AbSheaf T'} (φ : F ⟶ (p
       G.obj.map (homOfLE (hτ t)).op (φ.hom.app (op (cechOpen V U (t.image τ))) x) := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `B'.obj.map _ (φ₂.hom.app _ (a.hom.app _ x)) = b.hom.app _ (A'.obj.map _ (φ₁.hom.app _ x))`. Establish `h₁ : ∀ y : A.obj.obj (op (cechOpen V U (t.image τ))), φ₂.hom.app (op (cechOpen V U (t.image τ))) (a.hom.app (op (cechOpen V U (t.image τ))) y) = b.hom.app (op ((Opens.map f).obj (cechOpen V U (t.image τ)))) (φ₁.hom.app (op (cechOpen V U (t.image τ))) y)` using `fun y => ConcreteCategory.congr_hom (congrArg (fun m : A ⟶ (push f).obj B' => m.hom.app (op (cechOpen V U (t.image τ)))) h) y`. Use `(congrArg _ (h₁ x)).trans ?_` and prove the remaining obligations. Conclude with `(ConcreteCategory.congr_hom (b.hom.naturality (homOfLE (hτ t)).op) _).symm`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem altAb_comm (f : T' ⟶ T) {A B : AbSheaf T} {A' B' : AbSheaf T'} (a : A ⟶ B) (b : A' ⟶ B')
     (φ₁ : A ⟶ (push f).obj A') (φ₂ : B ⟶ (push f).obj B') (h : a ≫ φ₂ = φ₁ ≫ (push f).map b)
@@ -429,15 +429,15 @@ theorem altAb_comm (f : T' ⟶ T) {A B : AbSheaf T} {A' B' : AbSheaf T'} (a : A 
   exact (ConcreteCategory.congr_hom (b.hom.naturality (homOfLE (hτ t)).op) _).symm
 
 /- English proof (translation)
-Simplify using `[sortSign]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sortSign_singleton (τ : κ → ι) (j : κ) : sortSign τ ({j} : Finset κ) = 1 := by
   simp [sortSign]
 
 /- English proof (translation)
-Use `(congrArg _ (presheafToCechH_apply (F.obj ⋙ abToIntModule) V U y)).trans (Eq.trans ?_ (presheafToCechH_apply (G.obj ⋙ abToIntModule) W U' _).symm)` and prove the remaining obligations. Use `(AltHom.homology_cechClass _ 0 ⟨_, _⟩).trans (congrArg _ (Subtype.ext (funext fun t => ?_)))` and prove the remaining obligations. Take `⟨t, ht⟩` from `t`. Take `⟨j, rfl⟩` from `Finset.card_eq_one.1 ht`. Establish `hc : (({j} : Finset κ).image τ).card = 0 + 1` using `by simp`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(AltHom.term_of_card _ _ ⟨_, ht⟩ hc).trans ?_` and prove the remaining obligations. Rewrite using `[sortSign_singleton, one_smul]`. Express the relevant statement in the definitionally equal form `G.obj.map _ (φ.hom.app _ (F.obj.map _ y)) = G.obj.map _ (G.obj.map _ (φ.hom.app _ y))`. Use `(congrArg (G.obj.map _) (ConcreteCategory.congr_hom (φ.hom.naturality _) y)).trans ?_` and prove the remaining obligations. Conclude with `(map_map_thin _ _ _ (homOfLE ((hτ {j}).trans ((Opens.map f).map (homOfLE (cechOpen_le V U _))).le)).op _).trans (map_map_thin _ _ _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem altAb_homology_toCechAbH (f : T' ⟶ T) {F : AbSheaf T} {G : AbSheaf T'}
     (φ : F ⟶ (push f).obj G) {V : Opens T} {W : Opens T'} {U : ι → Opens T} {U' : κ → Opens T'}
@@ -460,13 +460,13 @@ theorem altAb_homology_toCechAbH (f : T' ⟶ T) {F : AbSheaf T} {G : AbSheaf T'}
     (map_map_thin _ _ _ _ _).symm
 
 /- English proof (translation)
-Proceed by induction on `n generalizing F G with`. Consider the case `zero`. Take `⟨y, rfl⟩` from `(cechAbHZeroEquiv F.property hc).symm.surjective x`. Use `(congrArg _ (altAb_homology_toCechAbH f φ τ hτ hW y)).trans ((cechAbHEquivH'_toCechAbH hc' hG _).trans (Eq.trans ?_ (congrArg _ (cechAbHEquivH'_toCechAbH hc hF y).symm)))` and prove the remaining obligations. Apply `(SheafLES.equivZero G W).injective` to reduce the goal to its premises.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[AddEquiv.apply_symm_apply, SheafPull.equivZero_pull, AddEquiv.apply_symm_apply]`. Consider the case `succ n ih`. Establish `hS` using `Flasque.injectiveShortComplex_shortExact F`. Establish `hS'` using `Flasque.injectiveShortComplex_shortExact G`. Establish `inj : Injective (Flasque.injectiveShortComplex F).X₂` using `inferInstanceAs (Injective (Injective.under F))`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₃` using `CechAcyclic.of_shortExact₃ hS hF (cechAcyclic_of_injective _)`. Establish `a₃'` using `CechAcyclic.of_shortExact₃ hS' hG (cechAcyclic_of_injective _)`. Take `⟨ψ, rfl⟩` from `exists_hom_injectiveShortComplex f φ`. Take `⟨y, rfl⟩` from `cechAbδ_surjective hS hF n x`. Establish `key` using `AltHom.homology_δ (C := (Flasque.injectiveShortComplex F).map (sheafToPresheaf _ _ ⋙ cechAbCubeFunctor V U)) (D := (Flasque.injectiveShortComplex G).map (sheafToPresheaf _ _ ⋙ cechAbCubeFunctor W U')) (cechAbSheafFunctor_shortExact hS hF) (cechAbSheafFunctor_shortExact hS' hG) (a …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(congrArg _ key).trans ((cechAbHEquivH'_δ hc' hS' hG a₃' n _).trans ?_)` and prove the remaining obligations. Use `(congrArg _ (ih ψ.τ₃ a₃ a₃' y)).trans ?_` and prove the remaining obligations. Use `(SheafPull.pull_δ f n hS hS' ψ (homOfLE hW) _).symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg _ (cechAbHEquivH'_δ hc hS hF a₃ n y).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem altAb_comparison [Finite ι] [Finite κ] (f : T' ⟶ T) {V : Opens T} {W : Opens T'}
     {U : ι → Opens T} {U' : κ → Opens T'} (hc : V ≤ ⨆ i, U i) (hc' : W ≤ ⨆ j, U' j)
@@ -514,9 +514,9 @@ open AlgebraicGeometry
 variable {X : Scheme.{u}} {ι : Type} [LinearOrder ι]
 
 /- English proof (translation)
-Establish `hb` using `(cechAbCubeToCube R F V U).term_bijective (fun _ _ => Function.bijective_id)`. Take `⟨w, hw⟩` from `(hb n).2 z.1`. Establish `hd : Cube.d (cechAbCube F.presheaf V U) (n + 1) w = 0`. Apply `(hb (n + 1)).1` to reduce the goal to its premises. Rewrite using `[Cube.SemiHom.term_d, hw, map_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `z.2`. Conclude with `⟨⟨w, hd⟩, Subtype.ext hw⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ab_cocycle (R : Type v) [CommRing R] [Algebra R Γ(X, ⊤)] (F : X.Modules)
     (V : X.Opens) (U : ι → X.Opens) (n : ℕ)
@@ -532,14 +532,14 @@ theorem exists_ab_cocycle (R : Type v) [CommRing R] [Algebra R Γ(X, ⊤)] (F : 
   exact ⟨⟨w, hd⟩, Subtype.ext hw⟩
 
 /- English proof (translation)
-Rewrite using `[h, map_zsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toΓ_eq_zsmul (G : X.Modules) (O : X.Opens) {a b : sectionsOn G O} (m : ℤ) (h : a = m • b) :
     sectionsOn.toΓ G O a = m • sectionsOn.toΓ G O b := by
   rw [h, map_zsmul]
 
 /- English proof (translation)
-Rewrite using `[h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toΓ_eq_zero (G : X.Modules) (O : X.Opens) {a : sectionsOn G O} (h : a = 0) :
     sectionsOn.toΓ G O a = 0 := by
@@ -552,13 +552,11 @@ section Main
 open CategoryTheory AlgebraicGeometry KaehlerDifferential GlobalTheory GlobalTheory.PD GlobalTheory.CechDR GlobalTheory.HodgeCoh ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Introduce `X Y g ι κ _ _ _ _ R _ _ S _ _ σ hσ V W U U' hc hc' hW τ hτ F G φ hF hG n z z' h1 h2`. Take `⟨w, rfl⟩` from `exists_ab_cocycle R F V U n z`. Take `⟨w', rfl⟩` from `exists_ab_cocycle S G W U' n z'`. Establish `hcoc : (altAb g.base (toAbSheafPush φ) τ hτ).cocycle (n + 1) w = w'`. Use `Subtype.ext (funext fun t => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `ht : (t.1.image τ).card = n + 1`. Conclude with `(AltHom.term_of_card _ _ t ht).trans (toΓ_eq_zsmul G _ _ (h1 t ht)).symm`. Conclude with `(AltHom.term_of_not _ _ t ht).trans (toΓ_eq_zero G _ (h2 t ht)).symm`. Establish `e (R' : Type) [CommRing R'] {Z : Scheme.{0}} [Algebra R' Γ(Z, ⊤)] (F' : Z.Modules) (V' : Z.Opens) {ι' : Type} [LinearOrder ι'] (U' : ι' → Z.Opens) (w : LinearMap.ker (Cube.d (cechAbCube F'.presheaf V' U') (n + 1))) : cechClass _ n ((cechAbCubeToCube R' F' V' U').cocycle (n + 1) w …` using `((cechAbCubeToCube R' F' V' U').homology_cechClass n w).symm`. Apply `(cohOn.toH' G W n).injective` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, e]`. Use `(toH'_cechHEquivCohOn S hc' hG n _).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (cohOn.toH'_pull hσ φ hW _).symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg _ (toH'_cechHEquivCohOn R hc hF n _).symm)` and prove the remaining obligations. Establish `k` using `altAb_comparison g.base hc hc' hW τ hτ (toAbSheafPush φ) (cechAcyclicMod_iff.1 hF) (cechAcyclicMod_iff.1 hG) n (cechClass _ n w)`.
-
-Conclude with `(congrArg _ ((congrArg (cechClass _ n) hcoc).symm.trans (AltHom.homology_cechClass _ n w).symm)).trans k`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cechHEquivCohOn_altPull : ∀ {X Y : Scheme.{0}} (g : Y ⟶ X) (ι κ : Type) [LinearOrder ι] [Finite ι] [LinearOrder κ] [Finite κ]
     (R : Type) [CommRing R] [Algebra R Γ(X, ⊤)] (S : Type) [CommRing S] [Algebra S Γ(Y, ⊤)] (σ : R →+* S)

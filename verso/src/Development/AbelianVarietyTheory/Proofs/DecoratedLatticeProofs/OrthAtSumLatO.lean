@@ -10,11 +10,11 @@ noncomputable section
 namespace GlobalTheory.Core.Rk.SumSplit
 
 /- English proof (translation)
-Introduce `D S A B o LA LB v y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `⟨GlobalTheory.SeeSaw.SplitLat.rat_mulVec_mem_latV o.qA (fun x hx => ?_) _ hy, GlobalTheory.SeeSaw.SplitLat.rat_mulVec_mem_latV o.qB (fun x hx => ?_) _ hy⟩` and prove the remaining obligations. Take `⟨x₁, hx₁, x₂, -, rfl⟩` from `(GlobalTheory.Core.Rk.SumBox.mem_sumLatO o LA LB x).1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[GlobalTheory.Core.Rk.SumBox.qA_split]`. Conclude with `hx₁`. Take `⟨x₁, -, x₂, hx₂, rfl⟩` from `(GlobalTheory.Core.Rk.SumBox.mem_sumLatO o LA LB x).1 hx`. Rewrite using `[GlobalTheory.Core.Rk.SumBox.qB_split]`. Conclude with `hx₂`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨hA, hB⟩`. Establish `e : y = o.jA *ᵥ (o.pA *ᵥ y) + o.jB *ᵥ (o.pB *ᵥ y)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.add_mulVec, o.sum_eq_one, Matrix.one_mulVec]`. Rewrite using `[e]`. Conclude with `add_mem (GlobalTheory.SeeSaw.SplitLat.rat_mulVec_mem_latV o.iA (fun x hx => GlobalTheory.Core.Rk.SumBox.iA_mem_sumLatO o LB hx) _ hA) (GlobalTheory.SeeSaw.SplitLat.rat_mulVec_mem_latV o.iB (fun x hx => GlobalTheory.Core.Rk.SumBox.iB_mem_sumLatO o LA hx) _ hB)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orthAt_sumLatO : ∀ (D : D7) (S A B : HSp D) (o : OrthDec S A B) (LA : Lat A) (LB : Lat B) (v : Pl D),
     OrthAt o (GlobalTheory.Core.Rk.SumBox.sumLatO o LA LB) LA LB v := by

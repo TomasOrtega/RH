@@ -11,20 +11,20 @@ variable {X X' : Scheme.{0}}
 def noChart (X : Scheme.{0}) : LB X := ⟨PEmpty, fun i => i.elim, fun i => i.elim⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun i => i.elim⟩, fun i => i.elim⟩`.
+Supply the required witnesses or components.
 -/
 theorem triv_noChart : Triv (noChart X) := ⟨⟨fun i => i.elim⟩, fun i => i.elim⟩
 
 /- English proof (translation)
-The claim follows from `ConcreteCategory.bijective_of_isIso (e.hom.app V)`.
+A detailed English derivation is pending.
 -/
 theorem bijective_app {F G : X.Modules} (e : F ≅ G) (V : X.Opens) :
     Function.Bijective (e.hom.app V) := ConcreteCategory.bijective_of_isIso (e.hom.app V)
 
 /- English proof (translation)
-Rewrite using `[lbSheaf.exists_iso_iff]`. Introduce `h`. Take `⟨U, hx, ⟨e⟩⟩` from `h (Classical.arbitrary X)`. Establish `: Nonempty U.toScheme` using `⟨⟨_, hx⟩⟩`. Establish `: Nonempty (⊤ : U.toScheme.Opens)` using `⟨⟨Classical.arbitrary _, trivial⟩⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Subsingleton Γ(F.restrict U.ι, ⊤)` using `hF _`. Establish `: Subsingleton Γ(U.toScheme, ⊤)` using `(bijective_app e ⊤).1.subsingleton`. Conclude with `not_subsingleton _ this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_exists_of_subsingleton [Nonempty X] (F : X.Modules) (hF : ∀ V, Subsingleton Γ(F, V)) :
     ¬ ∃ M : LB X, M.IsLB ∧ Nonempty (lbSheaf M ≅ F) := by
@@ -38,7 +38,7 @@ theorem not_exists_of_subsingleton [Nonempty X] (F : X.Modules) (hF : ∀ V, Sub
   exact not_subsingleton _ this
 
 /- English proof (translation)
-Use `⟨triv_noChart, fun ⟨e⟩ => ?_⟩` and prove the remaining obligations. Establish `: IsEmpty (noChart X).ι` using `inferInstanceAs (IsEmpty PEmpty)`. Take `⟨e'⟩` from `(lbSheaf.triv_iff (Inh.trivLB_isLB X)).1 (triv_trivLB X)`. Conclude with `not_exists_of_subsingleton _ (SheafModel.subsingleton_of_isEmpty (L := noChart X)) ⟨_, Inh.trivLB_isLB X, ⟨e' ≪≫ e.symm⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem triv_and_not_iso [Nonempty X] :
     Triv (noChart X) ∧ ¬ Nonempty (lbSheaf (noChart X) ≅ unitMod X) := by
@@ -49,7 +49,7 @@ theorem triv_and_not_iso [Nonempty X] :
     ⟨_, Inh.trivLB_isLB X, ⟨e' ≪≫ e.symm⟩⟩
 
 /- English proof (translation)
-The claim follows from `have h : (noChart X).IsLB := ⟨TopologicalSpace.Opens.ext (Set.ext fun x => isEmptyElim x), fun i => i.elim, fun i => i.elim⟩ ⟨h, (lbSheaf.triv_iff h).1 triv_noChart⟩`.
+A detailed English derivation is pending.
 -/
 theorem noChart_empty [IsEmpty X] :
     (noChart X).IsLB ∧ Nonempty (lbSheaf (noChart X) ≅ unitMod X) :=
@@ -58,7 +58,7 @@ theorem noChart_empty [IsEmpty X] :
   ⟨h, (lbSheaf.triv_iff h).1 triv_noChart⟩
 
 /- English proof (translation)
-The claim follows from `coord_homOfSec_app hM hM' w s p q hp hq h`.
+A detailed English derivation is pending.
 -/
 theorem coord_secEquivHom {M M' : LB X} (hM : M.IsLB) (hM' : M'.IsLB) (w : LB.Sec (LB.div M' M))
     {V O : X.Opens} (s : SecOn M V) (p : M'.ι) (q : M.ι) (hp : O ≤ V ⊓ M'.U p)
@@ -75,7 +75,7 @@ theorem isoOfGen_hom {M M' : LB X} (hM : M.IsLB) (hM' : M'.IsLB) (w : LB.Gen (LB
     (lbSheaf.isoOfGen hM hM' w hw).hom = lbSheaf.secEquivHom hM hM' (DVR.genSec w hw) := rfl
 
 /- English proof (translation)
-Use extensionality with `V a : 3`. Conclude with `(SheafModel.hom_app_eq_smul φ V a).trans (h ▸ (SheafModel.hom_app_eq_smul ψ V a).symm)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem hom_ext_one {F : X.Modules} {φ ψ : unitMod X ⟶ F}
     (h : φ.app ⊤ (1 : Γ(X, ⊤)) = ψ.app ⊤ (1 : Γ(X, ⊤))) : φ = ψ := by
@@ -88,7 +88,7 @@ open Geo.Tor
 variable (R : Type) [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Rewrite using `[(lbSheaf.secEquivHom (Inh.trivLB_isLB _) (SheafModel.negOne_isLB R)).subsingleton_congr]`. Use `⟨fun φ ψ => (cancel_epi (trivIso _).hom).1 (hom_ext_one ?_)⟩` and prove the remaining obligations. Conclude with `(SheafModel.subsingleton_negOne R).elim _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem subsingleton_div_negOne :
     Subsingleton (LB.Sec (LB.div (SheafModel.negOne R) (Inh.trivLB (PSpace R 1)))) := by
@@ -97,9 +97,9 @@ theorem subsingleton_div_negOne :
   exact (SheafModel.subsingleton_negOne R).elim _ _
 
 /- English proof (translation)
-Rewrite using `[(lbSheaf.secEquivHom (Inh.trivLB_isLB _) (GlobalTheory.ProjSpace.O1_isLB R 1)).nontrivial_congr]`. Use `⟨(trivIso _).inv ≫ unitHom (ProjSpace.coord R 1 0), (trivIso _).inv ≫ unitHom 0, fun h => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun φ => φ.app ⊤ (1 : Γ(PSpace R 1, ⊤))) ((cancel_epi _).1 h)`. Simplify using `only [unitHom_app, one_smul] at e`. Establish `e0 : ofSec (0 : LB.Sec (GlobalTheory.ProjSpace.O1 R 1)) ⊤ = 0` using `map_zero (globalEquiv _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `one_ne_zero (SheafModel.coord_independent R 1 0 ?_).1` and prove the remaining obligations. Rewrite using `[e, e0]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nontrivial_div_one :
     Nontrivial (LB.Sec (LB.div (GlobalTheory.ProjSpace.O1 R 1) (Inh.trivLB (PSpace R 1)))) := by
@@ -114,7 +114,7 @@ theorem nontrivial_div_one :
   simp
 
 /- English proof (translation)
-Rewrite using `[lbSheaf.triv_div_iff (GlobalTheory.ProjSpace.O1_isLB R 1) (SheafModel.negOne_isLB R)]`. Introduce and unpack `⟨e⟩`. Use `SheafModel.subsingleton_negOne R` as an intermediate fact. Use `(bijective_app e ⊤).1.subsingleton` as an intermediate fact. Conclude with `one_ne_zero (SheafModel.coord_independent R 1 0 (this.elim _ _)).1`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_triv_div :
     ¬ Triv (LB.div (SheafModel.negOne R) (GlobalTheory.ProjSpace.O1 R 1)) := by
@@ -125,7 +125,7 @@ theorem not_triv_div :
   exact one_ne_zero (SheafModel.coord_independent R 1 0 (this.elim _ _)).1
 
 /- English proof (translation)
-Rewrite using `[lbSheaf.triv_pull_iff (GlobalTheory.ProjSpace.O1_isLB R 1)]`. Introduce and unpack `⟨e⟩`. Conclude with `SheafModel.not_exists_gen R ((lbSheaf.triv_iff (GlobalTheory.ProjSpace.O1_isLB R 1)).2 ⟨((Scheme.Modules.pullbackId _).app _).symm ≪≫ e⟩)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem not_triv_pull_id : ¬ Triv ((GlobalTheory.ProjSpace.O1 R 1).pull (𝟙 _)) := by
   rw [lbSheaf.triv_pull_iff (GlobalTheory.ProjSpace.O1_isLB R 1)]
@@ -136,7 +136,7 @@ theorem not_triv_pull_id : ¬ Triv ((GlobalTheory.ProjSpace.O1 R 1).pull (𝟙 _
 end Line
 
 /- English proof (translation)
-The claim follows from `(lbSheaf.triv_pull_iff hM _).2 ⟨((Scheme.Modules.restrictFunctorIsoPullback (M.U i).ι).app _).symm ≪≫ (lbSheaf.chartIso hM i).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem triv_pull_chart {M : LB X} (hM : M.IsLB) (i : M.ι) : Triv (M.pull (M.U i).ι) :=
   (lbSheaf.triv_pull_iff hM _).2
@@ -144,7 +144,7 @@ theorem triv_pull_chart {M : LB X} (hM : M.IsLB) (i : M.ι) : Triv (M.pull (M.U 
       (lbSheaf.chartIso hM i).symm⟩
 
 /- English proof (translation)
-Take `⟨e⟩` from `(lbSheaf.triv_pull_iff (Inh.trivLB_isLB X) π).1 ⟨⟨fun _ => 1⟩, fun i j => by rw [map_one, map_one, Inh.linComb_triv_g, _root_.one_mul]⟩`. Conclude with `⟨(Scheme.Modules.pullback π).mapIso (trivIso X) ≪≫ e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pullback_unit (π : X' ⟶ X) :
     Nonempty ((Scheme.Modules.pullback π).obj (unitMod X) ≅ unitMod X') := by
@@ -153,7 +153,7 @@ theorem pullback_unit (π : X' ⟶ X) :
   exact ⟨(Scheme.Modules.pullback π).mapIso (trivIso X) ≪≫ e⟩
 
 /- English proof (translation)
-The claim follows from `(lbSheaf.triv_div_iff (LB.isLB_pull hM _) (LB.isLB_pull (LB.isLB_pull hM _) _)).2 ⟨(lbSheaf.pullbackIso hM _).symm ≪≫ ((Scheme.Modules.pullbackComp ρ π).app _).symm ≪≫ (Scheme.Modules.pullback ρ).mapIso (lbSheaf.pullbackIso hM π) ≪≫ lbSheaf.pullbackIso (LB.isLB_pull hM π) ρ⟩`.
+A detailed English derivation is pending.
 -/
 theorem triv_div_pull_comp {X'' : Scheme.{0}} {M : LB X} (hM : M.IsLB) (π : X' ⟶ X)
     (ρ : X'' ⟶ X') : Triv (LB.div ((M.pull π).pull ρ) (M.pull (ρ ≫ π))) :=
@@ -163,7 +163,7 @@ theorem triv_div_pull_comp {X'' : Scheme.{0}} {M : LB X} (hM : M.IsLB) (π : X' 
       lbSheaf.pullbackIso (LB.isLB_pull hM π) ρ⟩
 
 /- English proof (translation)
-The claim follows from `(lbSheaf.triv_pull_iff hM π).1 ((subsingleton_pic_iff R).1 inferInstance _ (LB.isLB_pull hM π))`.
+A detailed English derivation is pending.
 -/
 theorem pullback_local {M : LB X} (hM : M.IsLB) (R : Type) [CommRing R] [IsLocalRing R]
     (π : Spec (CommRingCat.of R) ⟶ X) :
@@ -175,7 +175,7 @@ def unitGen (u : Γ(X, ⊤)ˣ) : LB.Gen (LB.div (Inh.trivLB X) (Inh.trivLB X)) :
   ⟨fun _ => res le_top u⟩
 
 /- English proof (translation)
-Introduce `i j`. Express the relevant statement in the definitionally equal form `res _ (res _ u) = res _ 1 * (res _ 1)⁻¹ * res _ (res _ u)`. Rewrite using `[map_one, map_one, inv_one]`. Conclude with `(LB.res_res _ _ _).trans ((LB.res_res _ _ _).symm.trans ((_root_.one_mul _).symm.trans (congrArg (· * _) (_root_.one_mul 1).symm)))`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitGen_isGen (u : Γ(X, ⊤)ˣ) : (unitGen u).IsGen := by
   intro i j
@@ -185,7 +185,7 @@ theorem unitGen_isGen (u : Γ(X, ⊤)ˣ) : (unitGen u).IsGen := by
     (congrArg (· * _) (_root_.one_mul 1).symm)))
 
 /- English proof (translation)
-Use `sec_ext fun i => ?_` and prove the remaining obligations. Establish `h` using `SecOn.coord_congr (Inh.trivLB_isLB X) (Inh.trivLB_isLB X) (unitGen u) (unitGen_isGen u) s i i le_rfl le_rfl (le_inf le_top le_top)`. Rewrite `h` using `[rs_self, rs_self]`. Conclude with `h.trans (congrArg (· * coord s i) (rs_rs _ _ _))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoOfGen_unitGen (u : Γ(X, ⊤)ˣ) (s : SecOn (Inh.trivLB X) ⊤) :
     (lbSheaf.isoOfGen (Inh.trivLB_isLB X) (Inh.trivLB_isLB X) (unitGen u)

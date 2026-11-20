@@ -31,14 +31,14 @@ def Cusp (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (a : (E →+* ℂ) × ℕ �
     exact (siegelSpaceAlgebra_holds r ((U σ).X k) (laU (U σ) a n k) (laU (U σ) a n k) 0).1.2.2 _ _ (hf.2 σ hσ k)⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_cusp (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (hn : Even n)
     (f : Rul Xo c) : f ∈ Cusp U a n hn ↔ f ∈ sec Xo c a n ∧
       ∀ σ : c.F →+* ℂ, GoodEmb c σ → IsHolCusp (U σ).X (laU (U σ) a n) (rdU (U σ) f) := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ hf` and use `hf.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cusp_le_sec (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (hn : Even n) :
     Cusp U a n hn ≤ sec Xo c a n := fun _ hf => hf.1
@@ -67,9 +67,9 @@ def CuspFiniteClaim : Prop :=
   ∀ U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r, IsGoodUnif U → CuspFinite U
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `hn`. Take `⟨m', rfl⟩` from `hn'`. Use function extensionality and compare the values at `τ j`. Establish `e : (m + m + (m' + m')) / 2 = (m + m) / 2 + (m' + m') / 2` using `by omega`. Simplify using `only [laU, Pi.add_apply, e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem laU_add {σ : c.F →+* ℂ} (V : Unf Xo c σ r) (a a' : (E →+* ℂ) × ℕ → ℕ) {n n' : ℕ} (hn : Even n)
     (hn' : Even n') (k : V.Comp) : laU V (a + a') (n + n') k = laU V a n k + laU V a' n' k := by
@@ -81,7 +81,7 @@ theorem laU_add {σ : c.F →+* ℂ} (V : Unf Xo c σ r) (a a' : (E →+* ℂ) �
   split_ifs <;> push_cast <;> ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, Pi.mul_apply]`. Use `split_ifs with h`. Conclude with `evalAt_mul (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f g (V.un k ⟨x, h⟩)`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rdU_mul {σ : c.F →+* ℂ} (V : Unf Xo c σ r) (f g : Rul Xo c) (k : V.Comp) :
     rdU V (f * g) k = rdU V f k * rdU V g k := by
@@ -92,7 +92,7 @@ theorem rdU_mul {σ : c.F →+* ℂ} (V : Unf Xo c σ r) (f g : Rul Xo c) (k : V
   · simp
 
 /- English proof (translation)
-Introduce `a a' n n' h h' f hf g hg`. Use `⟨sec_mul Xo c a a' n n' hf.1 hg.1, fun σ hσ k => ?_⟩` and prove the remaining obligations. Rewrite using `[laU_add (U σ) a a' h.2 h'.2, rdU_mul]`. Conclude with `(siegelSpaceAlgebra_holds r ((U σ).X k) _ _ 0).2.1 _ (hf.2 σ hσ k) _ (hg.2 σ hσ k).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cuspMulClosed (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) : CuspMulClosed U := by
   intro a a' n n' h h' f hf g hg

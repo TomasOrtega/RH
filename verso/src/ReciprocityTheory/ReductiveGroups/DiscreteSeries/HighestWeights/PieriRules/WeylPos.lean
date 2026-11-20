@@ -7,9 +7,9 @@ namespace ReciprocityTheory.ChartRestriction.DS.HW
 open ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Establish `hsub : (univ.filter fun c => b < c ∧ ε c = ε b) ⊆ (univ.filter fun c => a < c ∧ ε c = ε a)`. Introduce `c hc`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hc ⊢`. Conclude with `⟨hab.trans hc.1, hc.2.trans he.symm⟩`. Establish `hss : (univ.filter fun c => b < c ∧ ε c = ε b) ⊂ (univ.filter fun c => a < c ∧ ε c = ε a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[Finset.ssubset_iff_of_subset hsub]`. Conclude with `⟨b, by simp [hab, he], by simp⟩`. Conclude with `Finset.card_lt_card hss`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma weylPos_above_lt {n : ℕ} (ε : Fin n → Bool) {a b : Fin n} (hab : a < b) (he : ε a = ε b) :
     (univ.filter fun c => b < c ∧ ε c = ε b).card + 1 ≤ (univ.filter fun c => a < c ∧ ε c = ε a).card := by
@@ -23,9 +23,9 @@ private lemma weylPos_above_lt {n : ℕ} (ε : Fin n → Bool) {a b : Fin n} (ha
   exact Finset.card_lt_card hss
 
 /- English proof (translation)
-Establish `hsub : (univ.filter fun c => c < a ∧ ε c = ε a) ⊆ (univ.filter fun c => c < b ∧ ε c = ε b)`. Introduce `c hc`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hc ⊢`. Conclude with `⟨hc.1.trans hab, hc.2.trans he⟩`. Establish `hss : (univ.filter fun c => c < a ∧ ε c = ε a) ⊂ (univ.filter fun c => c < b ∧ ε c = ε b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[Finset.ssubset_iff_of_subset hsub]`. Conclude with `⟨a, by simp [hab, he], by simp⟩`. Conclude with `Finset.card_lt_card hss`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma weylPos_below_lt {n : ℕ} (ε : Fin n → Bool) {a b : Fin n} (hab : a < b) (he : ε a = ε b) :
     (univ.filter fun c => c < a ∧ ε c = ε a).card + 1 ≤ (univ.filter fun c => c < b ∧ ε c = ε b).card := by
@@ -39,7 +39,7 @@ private lemma weylPos_below_lt {n : ℕ} (ε : Fin n → Bool) {a b : Fin n} (ha
   exact Finset.card_lt_card hss
 
 /- English proof (translation)
-Establish `h1` using `weylPos_above_lt ε hab he`. Establish `h2` using `weylPos_below_lt ε hab he`. Establish `h1' : ((univ.filter fun c => b < c ∧ ε c = ε b).card : ℝ) + 1 ≤ ((univ.filter fun c => a < c ∧ ε c = ε a).card : ℝ)` using `by exact_mod_cast h1`. Establish `h2' : ((univ.filter fun c => c < a ∧ ε c = ε a).card : ℝ) + 1 ≤ ((univ.filter fun c => c < b ∧ ε c = ε b).card : ℝ)` using `by exact_mod_cast h2`. Unfold `rhoC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -55,15 +55,15 @@ theorem rhoC_sub_ge_one {n : ℕ} (ε : Fin n → Bool) {a b : Fin n} (hab : a <
   linarith
 
 /- English proof (translation)
-Establish `h1` using `weylPos_above_lt ε hab he`. Establish `h2` using `weylPos_below_lt ε hab he`. Establish `h3 : (univ.filter fun c => a < c ∧ ε c = ε a).card ≤ (univ.filter fun c => b < c ∧ ε c = ε b).card + 1`. Use `(Finset.card_le_card ?_).trans (Finset.card_insert_le b _)` and prove the remaining obligations. Introduce `c hc'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert] at hc' ⊢`. Break down `lt_trichotomy c b with h | h | h` into its components or cases. Conclude with `absurd hc'.2 (hc c hc'.1 h)`. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨h, hc'.2.trans he⟩`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Establish `h4 : (univ.filter fun c => c < b ∧ ε c = ε b).card ≤ (univ.filter fun c => c < a ∧ ε c = ε a).card + 1`. Use `(Finset.card_le_card ?_).trans (Finset.card_insert_le a _)` and prove the remaining obligations. Introduce `c hc'`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert] at hc' ⊢`. Break down `lt_trichotomy c a with h | h | h` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative.
 
-Conclude with `Or.inr ⟨h, hc'.2.trans he.symm⟩`. Conclude with `Or.inl h`. Conclude with `absurd (hc'.2.trans he.symm) (hc c h hc'.1)`. Establish `e1 : ((univ.filter fun c => a < c ∧ ε c = ε a).card : ℝ) = ((univ.filter fun c => b < c ∧ ε c = ε b).card : ℝ) + 1`. Conclude with `le_antisymm h3 h1` after adjusting the coercions.
+Prove the first alternative. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ((univ.filter fun c => c < b ∧ ε c = ε b).card : ℝ) = ((univ.filter fun c => c < a ∧ ε c = ε a).card : ℝ) + 1`. Conclude with `le_antisymm h4 h2` after adjusting the coercions. Unfold `rhoC`. Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rhoC_consec {n : ℕ} (ε : Fin n → Bool) {a b : Fin n} (hab : a < b) (he : ε a = ε b)
     (hc : ∀ c, a < c → c < b → ε c ≠ ε a) : rhoC ε a - rhoC ε b = 1 := by
@@ -98,9 +98,9 @@ theorem rhoC_consec {n : ℕ} (ε : Fin n → Bool) {a b : Fin n} (hab : a < b) 
   ring
 
 /- English proof (translation)
-Introduce `n ε μ hμ`. Unfold `weylK`. Use `Finset.prod_pos fun a _ => Finset.prod_pos fun b hb => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb`. Establish `hr` using `rhoC_sub_ge_one ε hb.1 hb.2`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hd` using `hμ a b hb.1 hb.2`. Apply `div_pos` to reduce the goal to its premises. Simplify using `only [Pi.add_apply]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem weylPos : WeylPosStatement := by
   intro n ε μ hμ

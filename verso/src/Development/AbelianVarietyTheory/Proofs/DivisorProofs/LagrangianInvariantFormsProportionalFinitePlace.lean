@@ -27,9 +27,9 @@ theorem symp_apply {k : Type} [Field k] {κ : Type} [Fintype κ] (a b : (κ → 
     symp k κ a b = a.1 ⬝ᵥ b.2 - b.1 ⬝ᵥ a.2 := rfl
 
 /- English proof (translation)
-Use `⟨fun m hm => ?_, fun m hm => ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify `hm (0, Pi.single i 1)` using `[symp_apply]`. Simplify `hm (Pi.single i 1, 0)` using `[symp_apply]`. Use extensionality with `i`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components.
 
-Simplify `hm (0, Pi.single i 1)` using `[symp_apply]`. Simplify `hm (Pi.single i 1, 0)` using `[symp_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem symp_nondeg (k : Type) [Field k] (κ : Type) [Fintype κ] : (symp k κ).Nondegenerate := by
   classical
@@ -42,11 +42,11 @@ theorem symp_nondeg (k : Type) [Field k] (κ : Type) [Fintype κ] : (symp k κ).
     · simpa [symp_apply] using hm (Pi.single i 1, 0)
 
 /- English proof (translation)
-Establish `hnd` using `symp_nondeg k κ`. Establish `hle : Λ ≤ (symp k κ).orthogonal Λ`. Introduce `x hx`. Rewrite using `[LinearMap.BilinForm.mem_orthogonal_iff]`. Introduce `n hn`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[symp_apply, hiso n hn x hx, sub_self]`. Establish `hdim' : Module.finrank k Λ = Module.finrank k ((symp k κ).orthogonal Λ)`. Rewrite using `[LinearMap.BilinForm.finrank_orthogonal hnd, hdim]`. Simplify using `only [Module.finrank_prod, Module.finrank_fintype_fun_eq_card]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `heq` using `Submodule.eq_of_le_of_finrank_eq hle hdim'`. Rewrite using `[heq, LinearMap.BilinForm.mem_orthogonal_iff]`. Introduce `n hn`. Rewrite using `[symp_apply, hw n hn, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_of_orth {k : Type} [Field k] {κ : Type} [Fintype κ] (Λ : Submodule k ((κ → k) × (κ → k)))
     (hiso : ∀ a ∈ Λ, ∀ b ∈ Λ, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2) (hdim : Module.finrank k Λ = Fintype.card κ)
@@ -67,21 +67,19 @@ theorem mem_of_orth {k : Type} [Field k] {κ : Type} [Fintype κ] (Λ : Submodul
   rw [symp_apply, hw n hn, sub_self]
 
 /- English proof (translation)
-Set `π : Λ →ₗ[k] (κ → k)` to `(LinearMap.fst k (κ → k) (κ → k)).comp Λ.subtype`. Set `P` to `LinearMap.range π`. Take `⟨Q, hPQ⟩` from `Submodule.exists_isCompl P`. Set `bQ` to `Module.finBasis k Q`. Set `bP` to `Module.finBasis k P`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e : ((Fin (Module.finrank k Q) → k) × (Fin (Module.finrank k P) → k)) ≃ₗ[k] (κ → k)` to `((LinearEquiv.prodCongr bQ.equivFun.symm bP.equivFun.symm).trans (LinearEquiv.prodComm k Q P)).trans (Submodule.prodEquivOfIsCompl P Q hPQ)`. Establish `he : ∀ a, e (0, a) = (bP.equivFun.symm a : κ → k)` using `fun a => by`. Simplify using `[e, Submodule.coe_prodEquivOfIsCompl']`. Take `⟨σ, hσ⟩` from `π.rangeRestrict.exists_rightInverse_of_surjective (LinearMap.range_rangeRestrict π)`. Set `s : (Fin (Module.finrank k P) → k) →ₗ[k] (κ → k)` to `(LinearMap.snd k (κ → k) (κ → k)).comp (Λ.subtype.comp (σ.comp bP.equivFun.symm.toLinearMap))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `⟨_, _, e, s, fun a => ?_, fun b => ?_⟩` and prove the remaining obligations. Establish `h1 : π.rangeRestrict (σ (bP.equivFun.symm a)) = bP.equivFun.symm a`. Rewrite using `[← LinearMap.comp_apply, hσ, LinearMap.id_apply]`. Establish `h2 : ((σ (bP.equivFun.symm a) : Λ) : (κ → k) × (κ → k)).1 = (bP.equivFun.symm a : κ → k)` using `congrArg Subtype.val h1`. Establish `h3 : (e (0, a), s a) = ((σ (bP.equivFun.symm a) : Λ) : (κ → k) × (κ → k))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Prod.ext ?_ rfl` and prove the remaining obligations. Rewrite using `[he, h2]`. Rewrite using `[h3]`. Conclude with `(σ (bP.equivFun.symm a)).2`. Set `f : (κ → k) →ₗ[k] k` to `{ toFun := fun x => b ⬝ᵥ (e.symm x).1 map_add' := fun x y => by simp [dotProduct_add] map_smul' := fun c x => by simp [dotProduct_smul] }`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `b' : κ → k` to `fun i => f (fun j => if i = j then 1 else 0)`. Establish `hx : ∀ x, x ⬝ᵥ b' = f x` using `fun x => by`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f x]`. Simplify using `only [dotProduct, smul_eq_mul]`. Apply the tactic sequence `try rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨b', ?_, fun x => hx x⟩` and prove the remaining obligations. Apply `mem_of_orth Λ hiso hdim` to reduce the goal to its premises. Introduce `a ha`. Simplify using `only [zero_dotProduct]`. Rewrite using `[hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : a.1 ∈ P` using `⟨⟨a, ha⟩, rfl⟩`. Establish `h4 : e.symm a.1 = (0, bP.equivFun ⟨a.1, hp⟩)`. Rewrite using `[LinearEquiv.symm_apply_eq, he]`. Simplify using the standard rewrite rules. Use `show b ⬝ᵥ (e.symm a.1).1 = 0`.
-
-Rewrite using `[h4]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coord {k : Type} [Field k] {κ : Type} [Fintype κ] (Λ : Submodule k ((κ → k) × (κ → k)))
     (hiso : ∀ a ∈ Λ, ∀ b ∈ Λ, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2) (hdim : Module.finrank k Λ = Fintype.card κ) :
@@ -135,27 +133,25 @@ theorem exists_coord {k : Type} [Field k] {κ : Type} [Fintype κ] (Λ : Submodu
     simp
 
 /- English proof (translation)
-Establish `hU : {h : k | ‖ψ h - 1‖ < 1 / 2} ∈ nhds (0 : k)`. Establish `hc : Continuous fun h => ‖ψ h - 1‖` using `by fun_prop`. Conclude with `(isOpen_lt hc continuous_const).mem_nhds (by simp)`. Take `⟨γ, hγ⟩` from `IsValuativeTopology.mem_nhds_iff.mp hU`. Establish `hsub : ∀ z, ValuativeRel.valuation k z < γ → ‖ψ z - 1‖ < 1 / 2` using `fun z hz => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hγ ⟨z, hz, zero_add z⟩` as an intermediate fact. Conclude with `this`. Establish `hnsm : ∀ z, ValuativeRel.valuation k z < γ → ∀ n : ℕ, ValuativeRel.valuation k (n • z) < γ`. Introduce `z hz n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero`. Rewrite using `[zero_smul, map_zero]`. Conclude with `zero_lt_iff.mpr γ.ne_zero`. Consider the case `succ n ih`. Rewrite using `[succ_nsmul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `(ValuativeRel.valuation k).map_add_lt ih hz`. Establish `hker : ∀ h, ValuativeRel.valuation k h < γ → ψ h = 1`. Introduce `h hh`. Assume the negation of the conclusion as `hne`. Establish `hn : ∀ n : ℕ, ‖ψ h ^ n - 1‖ < 1 / 2` using `fun n => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hsub _ (hnsm h hh n)` as an intermediate fact. Rewrite `this` using `[AddChar.map_nsmul_eq_pow]`. Then use the resulting hypothesis. Establish `hz : ‖ψ h‖ = 1` using `GlobalTheory.norm_addChar_nonarch ψ hψ h`. Establish `hd : 0 < ‖ψ h - 1‖` using `norm_pos_iff.mpr (sub_ne_zero.mpr hne)`. Take `⟨N, hN⟩` from `exists_nat_gt (4 / ‖ψ h - 1‖)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNpos : 0 < N`. Establish `: (0:ℝ) < N` using `lt_trans (by positivity) hN`. Conclude with `this` after adjusting the coercions. Establish `hre : ∀ i : ℕ, (1:ℝ) / 2 < (ψ h ^ i).re` using `fun i => by`. Establish `h1` using `hn i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2` using `Complex.abs_re_le_norm (ψ h ^ i - 1)`. Establish `h3 : (ψ h ^ i - 1).re = (ψ h ^ i).re - 1` using `by simp`. Rewrite `h2` using `[h3]`. Establish `h4` using `(abs_le.mp h2).1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hsum_re : (N:ℝ) / 2 < (∑ i ∈ Finset.range N, ψ h ^ i).re`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_lt_sum_of_nonempty (Finset.nonempty_range_iff.mpr hNpos.ne') (fun i _ => hre i)` as an intermediate fact. Rewrite `this` using `[Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbound : ‖∑ i ∈ Finset.range N, ψ h ^ i‖ ≤ 2 / ‖ψ h - 1‖`. Rewrite using `[geom_sum_eq hne N, norm_div]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation. Establish `hre_le` using `Complex.re_le_norm (∑ i ∈ Finset.range N, ψ h ^ i)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : 2 / ‖ψ h - 1‖ = (4 / ‖ψ h - 1‖) / 2` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Apply `IsValuativeTopology.mem_nhds_iff.mpr` to reduce the goal to its premises.
-
-Use `⟨γ, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `show ψ (x + z) = ψ x`. Rewrite using `[AddChar.map_add_eq_mul, hker z hz, mul_one]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lc_lemma {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ψ : AddChar k ℂ) (hψ : Continuous ψ) : IsLocallyConstant ψ := by
@@ -216,7 +212,7 @@ private theorem lc_lemma {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace
   rw [AddChar.map_add_eq_mul, hker z hz, mul_one]
 
 /- English proof (translation)
-Establish `h1 : Continuous G` using `IsModuleTopology.continuous_of_linearMap G.toLinearMap`. Establish `h2 : Continuous G.symm` using `IsModuleTopology.continuous_of_linearMap G.symm.toLinearMap`. Set `H : A ≃ₜ B` to `{ toEquiv := G.toEquiv, continuous_toFun := h1, continuous_invFun := h2 }`. Conclude with `⟨hφ.1.comp_continuous h1, hφ.2.comp_homeomorph H⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 private theorem isLocallyConstant_hasCompactSupport_comp_linearEquiv {k : Type} [Field k] [TopologicalSpace k] [IsTopologicalRing k]
     {A B : Type} [AddCommGroup A] [Module k A] [TopologicalSpace A] [IsModuleTopology k A]
@@ -230,7 +226,7 @@ private theorem isLocallyConstant_hasCompactSupport_comp_linearEquiv {k : Type} 
   exact ⟨hφ.1.comp_continuous h1, hφ.2.comp_homeomorph H⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hg.mul hφ.1, hφ.2.mul_left⟩`.
+Supply the required witnesses or components.
 -/
 private theorem isLocallyConstant_hasCompactSupport_mul_left {A : Type} [TopologicalSpace A] (g : A → ℂ) (hg : IsLocallyConstant g) (φ : A → ℂ)
     (hφ : IsLocallyConstant φ ∧ HasCompactSupport φ) :
@@ -238,7 +234,7 @@ private theorem isLocallyConstant_hasCompactSupport_mul_left {A : Type} [Topolog
   ⟨hg.mul hφ.1, hφ.2.mul_left⟩
 
 /- English proof (translation)
-Establish `hg : Continuous fun x : κ → k => x ⬝ᵥ w.2 + ⅟(2 : k) * (w.1 ⬝ᵥ w.2)` using `(continuous_id.dotProduct continuous_const).add continuous_const`. Conclude with `isLocallyConstant_hasCompactSupport_mul_left _ (hψ.comp_continuous hg) _ ⟨hφ.1.comp_continuous (continuous_id.add continuous_const), hφ.2.comp_homeomorph (Homeomorph.addRight w.1)⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isLocallyConstant_hasCompactSupport_schr {k : Type} [Field k] [TopologicalSpace k] [IsTopologicalRing k] [Invertible (2 : k)]
     (ψ : AddChar k ℂ) (hψ : IsLocallyConstant ψ) {κ : Type} [Fintype κ] (w : (κ → k) × (κ → k))
@@ -250,51 +246,47 @@ private theorem isLocallyConstant_hasCompactSupport_schr {k : Type} [Field k] [T
     ⟨hφ.1.comp_continuous (continuous_id.add continuous_const), hφ.2.comp_homeomorph (Homeomorph.addRight w.1)⟩
 
 /- English proof (translation)
-Use `letI : MeasurableSpace k := borel k`. Use `haveI : BorelSpace k := ⟨rfl⟩`. Take `⟨n, m, e, s, hs, hb⟩` from `exists_coord Λ hiso hdim`. Establish `hlc : IsLocallyConstant ψ` using `lc_lemma ψ hψ`. Establish `hn1 : ∀ t, ‖ψ t‖ = 1` using `GlobalTheory.norm_addChar_nonarch ψ hψ`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hce : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Establish `hcs : Continuous s` using `IsModuleTopology.continuous_of_linearMap s`. Set `q : (Fin m → k) → k` to `fun z => ⅟(2 : k) * (e (0, z) ⬝ᵥ s z)`. Establish `hq : Continuous q` using `continuous_const.mul ((hce.comp (continuous_const.prodMk continuous_id)).dotProduct hcs)`. Establish `hsym : ∀ z a, e (0, a) ⬝ᵥ s z = e (0, z) ⬝ᵥ s a` using `fun z a => hiso _ (hs a) _ (hs z)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `G : (κ → k) ≃ₗ[k] ((Fin 0 → k) × (Fin n → k) × (Fin m → k))` to `(LinearEquiv.uniqueProd.trans e).symm`. Establish `hGe : ∀ p, G (e p) = (0, p)` using `fun p => by`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Simplify using `[LinearEquiv.uniqueProd]`. Set `Tinv : (((Fin 0 → k) × (Fin n → k) × (Fin m → k)) → ℂ) →ₗ[ℂ] ((κ → k) → ℂ)` to `{ toFun := fun Φ x => ψ (-q (e.symm x).2) * Φ (G x) map_add' := fun Φ Ψ => by funext x; simp [mul_add] map_smul' := fun c Φ => by funext x; simp; ring }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Tf : ((κ → k) → ℂ) → (((Fin 0 → k) × (Fin n → k) × (Fin m → k)) → ℂ)` to `fun φ p => ψ (q p.2.2) * φ (G.symm p)`. Establish `hTT : ∀ φ, Tinv (Tf φ) = φ` using `fun φ => by`. Use function extensionality and compare the values at `x`. Take `⟨p, rfl⟩` from `e.surjective x`. Simplify using `only [Tinv, Tf, LinearMap.coe_mk, AddHom.coe_mk, LinearEquiv.symm_apply_apply, hGe]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_mul]`. Use `congr 1`. Establish `hTf : ∀ φ ∈ SB (κ → k), Tf φ ∈ GlobalTheory.SplitWeil.SB ((Fin 0 → k) × (Fin n → k) × (Fin m → k))` using `fun φ hφ => isLocallyConstant_hasCompactSupport_mul_left (fun p : (Fin 0 → k) × (Fin n → k) × (Fin m → k) => ψ (q p.2.2)) (hlc.comp_continuous (hq.comp (continuous_snd.comp continuous_snd))) _ (isLocallyConstant_hasCompactSupport_comp_linearEquiv G.symm φ hφ)`. Establish `hTinv : ∀ Φ ∈ GlobalTheory.SplitWeil.SB ((Fin 0 → k) × (Fin n → k) × (Fin m → k)), Tinv Φ ∈ SB (κ → k)` using `fun Φ hΦ => isLocallyConstant_hasCompactSupport_mul_left (fun x : κ → k => ψ (-q (e.symm x).2)) (hlc.comp_continuous (hq.comp (continuous_snd.comp (IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap))).neg) _ (isLocallyConstant_hasCompactSupport_comp_linearEquiv G Φ hΦ)`. Set `ψc : AddChar k Circle` to `{ toFun := fun t => (⟨ψ t, by show ψ t ∈ Metric.sphere (0 : ℂ) 1`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_sphere_zero_iff_norm]`. Conclude with `hn1 t⟩ : Submonoid.unitSphere ℂ)`. Use the proof step `map_zero_eq_one' := Subtype.ext (by show ψ 0 = 1; exact AddChar.map_zero_eq_one ψ)`. Use the proof step `map_add_eq_mul' := fun a b => Subtype.ext (by show ψ (a + b) = ψ a * ψ b; exact AddChar.map_add_eq_mul ψ a b) }`. Establish `hψc : ∀ t, (ψc t : ℂ) = ψ t` using `fun t => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hψcc : Continuous ψc` using `Continuous.subtype_mk hψ _`. Establish `hψc1 : ψc ≠ 1`. Introduce `h`. Apply `hψ1` to reduce the goal to its premises. Use extensionality with `t`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `congrArg (fun c : AddChar k Circle => (c t : ℂ)) h` as an intermediate fact. Simplify `this` using `[hψc]`. Set `ν : Measure k` to `Measure.addHaar`. Establish `key : ∀ l : ((κ → k) → ℂ) →ₗ[ℂ] ℂ, (∀ w ∈ Λ, ∀ φ ∈ SB (κ → k), l (schr ψ w φ) = l φ) → ∃ c : ℂ, ∀ φ ∈ SB (κ → k), l φ = c * ∫ a, Tf φ (0, 0, a) ∂(Measure.pi fun _ => ν)`. Introduce `l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `L : GlobalTheory.SplitWeil.SB ((Fin 0 → k) × (Fin n → k) × (Fin m → k)) →ₗ[ℂ] ℂ` to `(l.comp Tinv).comp (GlobalTheory.SplitWeil.SB _).subtype`. Establish `hc1 : ∀ (b : Fin n → k) (Φ Φ' : GlobalTheory.SplitWeil.SB ((Fin 0 → k) × (Fin n → k) × (Fin m → k))), (∀ x, Φ'.1 x = (ψc (b ⬝ᵥ x.2.1) : ℂ) * Φ.1 x) → L Φ' = L Φ`. Introduce `b Φ Φ' hΦ`. Take `⟨b', hb'Λ, hb'⟩` from `hb b`. Establish `hmem` using `hTinv Φ.1 Φ.2`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : Tinv Φ'.1 = schr ψ (0, b') (Tinv Φ.1)`. Use function extensionality and compare the values at `x`. Use `show ψ (-q (e.symm x).2) * Φ'.1 (G x) = ψ (x ⬝ᵥ b' + ⅟(2 : k) * ((0 : κ → k) ⬝ᵥ b')) * (ψ (-q (e.symm (x + 0)).2) * Φ.1 (G (x + 0)))`. Rewrite using `[hΦ, hψc, add_zero, zero_dotProduct, mul_zero, add_zero, hb' x]`. Take `⟨p, rfl⟩` from `e.surjective x`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hGe, LinearEquiv.symm_apply_apply]`. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree. Use `show l (Tinv Φ'.1) = l (Tinv Φ.1)`. Rewrite using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hl _ hb'Λ _ hmem`. Establish `hc2 : ∀ (a : Fin m → k) (Φ Φ' : GlobalTheory.SplitWeil.SB ((Fin 0 → k) × (Fin n → k) × (Fin m → k))), (∀ x, Φ'.1 x = Φ.1 (x + (0, 0, a))) → L Φ' = L Φ`. Introduce `a Φ Φ' hΦ`. Set `f' : (Fin n → k) →ₗ[k] k` to `{ toFun := fun y => e (y, 0) ⬝ᵥ s a map_add' := fun y y' => by`. Rewrite using `[← add_dotProduct, ← map_add, Prod.mk_add_mk, add_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_smul' := fun c y => by`. Simplify using `only [RingHom.id_apply, smul_eq_mul]`. Rewrite using `[← smul_eq_mul, ← smul_dotProduct, ← map_smul, Prod.smul_mk, smul_zero] }`. Set `β : Fin n → k` to `fun i => f' (fun j => if i = j then 1 else 0)`. Establish `hβ : ∀ y, β ⬝ᵥ y = e (y, 0) ⬝ᵥ s a` using `fun y => by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `LinearMap.pi_apply_eq_sum_univ f' y`. Rewrite using `[dotProduct_comm]`. Use `show ∑ i, y i * β i = f' y`. Rewrite using `[h0]`. Simplify using `only [smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `try rfl`. Take `⟨b', hb'Λ, hb'⟩` from `hb (-β)`. Establish `hmem` using `hTinv Φ.1 Φ.2`. Establish `hmem2 : schr ψ (e (0, a), s a) (Tinv Φ.1) ∈ SB (κ → k)` using `isLocallyConstant_hasCompactSupport_schr ψ hlc _ _ hmem`. Establish `h1 : Tinv Φ'.1 = schr ψ (0, b') (schr ψ (e (0, a), s a) (Tinv Φ.1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use function extensionality and compare the values at `x`. Take `⟨⟨y, z⟩, rfl⟩` from `e.surjective x`. Establish `hx : e (y, z) + e (0, a) = e (y, z + a)` using `by rw [← map_add]; simp`. Establish `hphase : -(β ⬝ᵥ y) + (e (y, z) ⬝ᵥ s a + ⅟(2 : k) * (e (0, a) ⬝ᵥ s a)) + -q (z + a) = -q z`. Establish `h1 : e (y, z) = e (y, 0) + e (0, z)` using `by rw [← map_add]; simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : e (0, z + a) = e (0, z) + e (0, a)` using `by rw [← map_add]; simp`. Establish `h3` using `hsym z a`. Establish `h4 : ⅟(2 : k) + ⅟(2 : k) = 1` using `invOf_two_add_invOf_two`. Simplify using `only [q, hβ, h1, h2, map_add, add_dotProduct, dotProduct_add]`. Take the linear combination `(-⅟(2 : k)) * h3 - (e (0, z) ⬝ᵥ s a) * h4`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : Tinv Φ'.1 (e (y, z)) = ψ (-q z) * Φ.1 ((0, y, z) + (0, 0, a))`. Simplify using `only [Tinv, LinearMap.coe_mk, AddHom.coe_mk, LinearEquiv.symm_apply_apply, hGe, hΦ]`. Establish `e2 : schr ψ (0, b') (schr ψ (e (0, a), s a) (Tinv Φ.1)) (e (y, z)) = ψ (-(β ⬝ᵥ y)) * (ψ (e (y, z) ⬝ᵥ s a + ⅟(2 : k) * (e (0, a) ⬝ᵥ s a)) * (ψ (-q (z + a)) * Φ.1 (0, y, z + a)))` using `by show ψ (e (y, z) ⬝ᵥ b' + ⅟(2 : k) * ((0 : κ → k) ⬝ᵥ b')) * (ψ ((e (y, z) + 0) ⬝ᵥ s a + ⅟(2 : k) * (e (0, a) ⬝ᵥ s a)) * (ψ (-q (e.symm (e (y, z) + 0 + e (0, a))).2) * Φ.1 (G (e (y, z) + 0 + e (0, a))))) = _`. Rewrite using `[add_zero, zero_dotProduct, mul_zero, add_zero, hb', LinearEquiv.symm_apply_apply, neg_dotProduct, hx, hGe, LinearEquiv.symm_apply_apply]`. Apply the tactic sequence `try dsimp only`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try rfl`. Rewrite using `[e1, e2, ← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul, hphase]`. Simplify using the standard rewrite rules. Use `show l (Tinv Φ'.1) = l (Tinv Φ.1)`. Rewrite using `[h1, hl _ hb'Λ _ hmem2, hl _ (hs a) _ hmem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨l₀, hl₀, -⟩` from `GlobalTheory.CoinvSB.coinvariants k ψc ν hψcc hψc1 inferInstance (Fin 0) (Fin n) (Fin m) ℂ L hc1 hc2`. Set `one : GlobalTheory.SplitWeil.SB (Fin 0 → k)` to `⟨fun _ => 1, IsLocallyConstant.const 1, (Set.toFinite _).isCompact⟩`. Use `⟨l₀ one, fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨Ψ, hΨ, hLΨ⟩` from `hl₀ ⟨Tf φ, hTf φ hφ⟩`. Establish `hΨ1 : Ψ = (Ψ.1 0) • one`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, one, mul_one]`. Rewrite using `[Subsingleton.elim x 0]`. Establish `hl : l φ = L ⟨Tf φ, hTf φ hφ⟩` using `by show l φ = l (Tinv (Tf φ))`. Rewrite using `[hTT]`.
-
-Rewrite using `[hl, hLΨ, hΨ1, map_smul, smul_eq_mul, hΨ 0, mul_comm]`. Take `⟨c₁, hc₁⟩` from `key l₁ h₁`. Take `⟨c₂, hc₂⟩` from `key l₂ h₂`. Take `⟨φ₀, hφ₀, hne0⟩` from `hne`. Establish `hc2ne : c₂ ≠ 0`.
-
-Introduce `h`. Apply `hne0` to reduce the goal to its premises. Rewrite using `[hc₂ φ₀ hφ₀, h, zero_mul]`. Use `⟨c₁ / c₂, fun φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[hc₁ φ hφ, hc₂ φ hφ, ← mul_assoc, div_mul_cancel₀ c₁ hc2ne]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proportional (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [Invertible (2 : k)] (ψ : AddChar k ℂ) (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
@@ -448,7 +440,7 @@ theorem proportional (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] 
   rw [hc₁ φ hφ, hc₂ φ hφ, ← mul_assoc, div_mul_cancel₀ c₁ hc2ne]
 
 /- English proof (translation)
-Introduce `F _ _ v ψv hc hne κ _ Λ hiso hdim l₁ l₂ h₁ h₂ hne'`. Use `letI : ValuativeRel (Fv F v) := GlobalTheory.LocalData.complRel v`. Use `haveI : IsNonarchimedeanLocalField (Fv F v) := GlobalTheory.LocalData.isLocalField v`. Conclude with `proportional (Fv F v) ψv hc hne κ Λ hiso hdim l₁ l₂ h₁ h₂ hne'`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem proportional_at_place : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (ψv : AddChar (Fv F v) ℂ), Continuous ψv → ψv ≠ 1 →
     ∀ (κ : Type) [Fintype κ] (Λ : Submodule (Fv F v) ((κ → Fv F v) × (κ → Fv F v))),

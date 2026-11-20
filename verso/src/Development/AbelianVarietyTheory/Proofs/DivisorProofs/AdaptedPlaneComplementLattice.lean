@@ -9,9 +9,9 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B _ n n₁ W W₁ H i₀ i₁ r s hW hH P hP`. Establish `hL : W₁.L = W.L.comap ((Matrix.mulVecLin H.ι).restrictScalars (𝓞 E))`. Use extensionality with `u`. Rewrite using `[hH.low u]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hL]`. Conclude with `isLattice_comap_mulVecLin_of_leftInverse E n n₁ W.L H.ι P hP hW.lat`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_complement_of_adapted_plane : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), B.IsGood σ → ∀ (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁) (i₀ i₁ r s : ℕ),

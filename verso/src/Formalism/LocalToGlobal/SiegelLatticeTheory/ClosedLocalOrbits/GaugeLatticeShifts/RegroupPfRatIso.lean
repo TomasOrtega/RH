@@ -15,13 +15,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.L2.SG.PoincareInHH.PoincareSetting Formalism.L2.SG.TermOp.KExpCut Formalism.L2.SG.Full
 
 /- English proof (translation)
-Introduce `D X γ hγ`. Take `⟨g, hgU, h1, h2⟩` from `PI.UnitaryGroupMassFormula.LCG.mem_gf X.B.I ⟨γ, hγ⟩`. Set `φ` to `(X.ιE : X.B.I.E →+* D.host.E).mapMatrix (m := Fin X.B.I.n)`. Set `Mg` to `φ (g : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)`. Set `Mi` to `φ ((g⁻¹ : GL (Fin X.B.I.n) X.B.I.E) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hmul1 : Mg * Mi = 1`. Simplify using `only [Mg, Mi]`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `hmul2 : Mi * Mg = 1`. Simplify using `only [Mg, Mi]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Set `σ : (VS D).V ≃ₗ[D.host.E] (VS D).V` to `LinearEquiv.ofLinear (Matrix.toLin X.bas X.bas Mg) (Matrix.toLin X.bas X.bas Mi) (by rw [← Matrix.toLin_mul, hmul1, Matrix.toLin_one]) (by rw [← Matrix.toLin_mul, hmul2, Matrix.toLin_one])`. Establish `hcrd : ∀ y, X.crd (σ y) = (g : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ X.crd y`. Introduce `y`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show X.ιE.symm (X.bas.repr (Matrix.toLin X.bas X.bas Mg y) i) = _`. Rewrite using `[Matrix.toLin_apply, Module.Basis.repr_sum_self]`. Simplify using `[Mg, φ, Matrix.mulVec, dotProduct, Formalism.L2.SG.HidaSetting.HidaSetting.crd, Formalism.L2.SG.HidaSetting.crdOf, map_sum, map_mul]`. Use `⟨σ, ⟨g, hgU, h1, h2, hcrd⟩, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[← Formalism.L2.SG.PoincareInHH.Cut.hform_crd (X := X) (σ x) (σ y), ← Formalism.L2.SG.PoincareInHH.Cut.hform_crd (X := X) x y, hcrd, hcrd, Formalism.L2.SG.PoincareInHH.Cut.hform_mulVec _ _ _ hgU]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rational_isomorphism_holds : RatIsoC := by
   intro D X γ hγ

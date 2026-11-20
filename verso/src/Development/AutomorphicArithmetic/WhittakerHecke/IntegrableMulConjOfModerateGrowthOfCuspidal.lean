@@ -6,9 +6,9 @@ open MeasureTheory NumberField GlobalTheory.CuspRep GlobalTheory.CompanionTheory
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace UpperTheory.ConvolutionTheory.BW
 
 /- English proof (translation)
-Introduce `E _ _ _ r Φ ψ _ hΦ hψ hc`. Take `⟨N, hN⟩` from `hΦ.growth`. Take `⟨B, hB⟩` from `hN 1`. Rewrite `hB` using `[map_one]`. Take `⟨C, hC⟩` from `rapidDecay E r ψ hψ hc N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Pair.pair_int hΦ.left hψ.left ((umgOps E r).2 Φ hΦ).1 ((umgOps E r).2 ψ hψ).1 (fun x => hB x) hC`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.integrable_mul_conj_of_moderateGrowth_of_cuspidal :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (r : ℕ) (Φ ψ : Sm E r), 0 < r → Umg Φ → Umg ψ → Cusp ψ.1 →

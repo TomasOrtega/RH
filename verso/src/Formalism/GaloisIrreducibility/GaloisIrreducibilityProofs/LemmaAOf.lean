@@ -8,7 +8,7 @@ section SlopeTestRemainingChoices
 variable {K V : Type} [Field K] [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ', Module.End.mul_apply, LinearMap.restrict_coe_apply, ih, pow_succ', Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 lemma la_restrict_pow (τ : Module.End K V) (W : Submodule K V) (hτ : ∀ v ∈ W, τ v ∈ W)
     (n : ℕ) (v : W) : (((τ.restrict hτ) ^ n) v : V) = (τ ^ n) v := by
@@ -19,7 +19,7 @@ lemma la_restrict_pow (τ : Module.End K V) (W : Submodule K V) (hτ : ∀ v ∈
       Module.End.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.charpoly_natDegree φ]`. Conclude with `(Polynomial.splits_iff_card_roots.mp (IsAlgClosed.splits _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma la_card_roots [IsAlgClosed K] [FiniteDimensional K V] (φ : Module.End K V) :
     (LinearMap.charpoly φ).roots.card = finrank K V := by
@@ -29,21 +29,19 @@ lemma la_card_roots [IsAlgClosed K] [FiniteDimensional K V] (φ : Module.End K V
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Unfold `LemmaAOf LemmaA`. Introduce `hOS hRR K V ι _ _ _ _ _ τ F q O I hF hO hroots W₁ W₂ hle h1τ h1F h2τ h2F`. Take `⟨hA1, hA2⟩` from `hRR K V τ F q hF W₂ h2τ h2F`. Set `g : W₂ →ₗ[K] W₂` to `F.toLinearMap.restrict h2F`. Establish `hg : Function.Injective g`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `F.injective` to reduce the goal to its premises. Conclude with `congrArg Subtype.val hxy`. Set `F₂ : W₂ ≃ₗ[K] W₂` to `LinearEquiv.ofInjectiveEndo g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hF₂ : ∀ v, F₂ (τ.restrict h2τ v) = ((τ.restrict h2τ) ^ q) (F₂ v)`. Introduce `v`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[la_restrict_pow τ W₂ h2τ q (F₂ v)]`. Conclude with `hF (v : V)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `W₁' : Submodule K W₂` to `W₁.comap W₂.subtype`. Establish `h1τ' : ∀ v ∈ W₁', τ.restrict h2τ v ∈ W₁'` using `fun v hv => h1τ (v : V) hv`. Establish `h1F' : ∀ v ∈ W₁', F₂ v ∈ W₁'` using `fun v hv => h1F (v : V) hv`. Take `⟨hB1, hB2⟩` from `hRR K W₂ (τ.restrict h2τ) F₂ q hF₂ W₁' h1τ' h1F'`. Establish `hc2 : (LinearMap.charpoly (τ.restrict h2τ)).roots.card = finrank K W₂` using `la_card_roots _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc1 : (LinearMap.charpoly ((τ.restrict h2τ).restrict h1τ')).roots.card = finrank K W₁'` using `la_card_roots _`. Establish `hW : finrank K W₁' = finrank K W₁` using `(Submodule.comapSubtypeEquivOfLe hle).finrank_eq`. Use `set M₂ := (LinearMap.charpoly (τ.restrict h2τ)).roots with hM₂`. Use `set M₁ := (LinearMap.charpoly ((τ.restrict h2τ).restrict h1τ')).roots with hM₁`. Establish `hsplit : M₂ = M₁ + (M₂ - M₁)` using `(add_tsub_cancel_of_le hB1).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmap : (M₂ - M₁).map (fun x : K => x ^ q) = M₂ - M₁`. Establish `h` using `congrArg (Multiset.map (fun x : K => x ^ q)) hsplit`. Rewrite `h` using `[Multiset.map_add, hB2, hA2]`. Establish `h' : M₁ + (M₂ - M₁) = M₁ + Multiset.map (fun x : K => x ^ q) (M₂ - M₁)` using `hsplit.symm.trans h`. Conclude with `(add_left_cancel h').symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : M₂ - M₁ ≤ ∑ i ∈ I, (O i).val`. Rewrite using `[← hroots]`. Conclude with `tsub_le_self.trans hA1`. Take `⟨J, hJ, hcard⟩` from `hOS K ι (fun x : K => x ^ q) O I (M₂ - M₁) hO hsub hmap`. Use `⟨J, hJ, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hcard, Multiset.card_sub hB1, hc2, hc1, hW]`.
+A detailed English derivation is pending.
 -/
 theorem lemmaAOf_statement : LemmaAOf := by
   classical

@@ -35,11 +35,11 @@ open scoped InnerProductSpace ContDiff
 namespace GlobalTheory.CountFinal
 
 /- English proof (translation)
-Introduce `hV`. Establish `hDec : GlobalTheory.DSId.DecGap` using `GlobalTheory.T.lowestKType_decayGap_of_compressionFormulaGap GlobalTheory.T.lowestKType_compressionFormula_of_strictLowestKType`. Establish `hPt : GlobalTheory.Deep.PtBound` using `GlobalTheory.Deep.ptBound_of_decGap hDec`. Establish `hAbs : GlobalTheory.FlagMeas.AbsoluteVolume` using `GlobalTheory.T.hermAbsoluteVolumeBound_of_volume_ratio_induction hV`. Establish `hFM : GlobalTheory.FlagMeas.FlagMeasureBound` using `GlobalTheory.T.isotropicFlagProbabilityBound_of_volumeRatio hV`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFin` using `GlobalTheory.T.finiteDimensional_rowsSpace_discreteSeriesCount hDec hAbs`. Establish `hNear` using `GlobalTheory.NearMod.nearModerate hFM GlobalTheory.T.flag_explicit_constant_le_exp_neg_half GlobalTheory.NearElement.near_unipotent hPt`. Establish `hFar` using `GlobalTheory.T.farTermsModerateRegion_of_flagBound hFM (GlobalTheory.FarTerms.farBound_of_ptBound hPt)`. Establish `hRare` using `GlobalTheory.FlagRareProof.flagRare_of_nonzeroFlagBound (GlobalTheory.T.nonzeroFlagProbabilityBound_of_volumeRatioInduction hV)`. Establish `hDeep` using `GlobalTheory.T.deepRegion_kernelDiagonal_bound hAbs (GlobalTheory.T.deepPointKernelBound_of_pointwiseBound hPt hFin)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.discreteSeries_counting_of_finite_and_bounds hFin hFM hPt hNear hFar hRare hDeep`.
+A detailed English derivation is pending.
 -/
 theorem countingTheorem_of_volumeStep :
     GlobalTheory.FlagMeas.VolumeStep → GlobalTheory.IndefiniteRowSideFullHecke.LatticeCountingTheorem.CountingTheorem := by

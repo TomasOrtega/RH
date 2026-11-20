@@ -38,20 +38,20 @@ def EvRatPt : Prop :=
 variable {S emb embLL G A pos embV yc}
 
 /- English proof (translation)
-Introduce `γ hγ` and use `Formalism.UG.P.rational_points_le_holds F E (Fin n) σ J (FiniteAdeleRing (𝓞 F) F) ⟨γ, hγ, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ratInU : RatInU (F := F) (σ := σ) (J := J) := fun γ hγ =>
   Formalism.UG.P.rational_points_le_holds F E (Fin n) σ J (FiniteAdeleRing (𝓞 F) F) ⟨γ, hγ, rfl⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Simplify using `[atInf, Matrix.map_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem atInf_one (emb : Tau → E →+* ℂ) : atInf emb ((1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = fun _ => 1 := by
   funext τ
   simp [atInf, Matrix.map_one]
 
 /- English proof (translation)
-Introduce `τ`. Rewrite using `[atInf_one, Matrix.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTr_one (z : Frames (gramC J emb)) : IsTr (atInf emb ((1 : GL (Fin n) E) : Matrix (Fin n) (Fin n) E)) z z := by
   intro τ
@@ -63,13 +63,13 @@ def ptU (hU : RatInU (F := F) (σ := σ) (J := J)) (γ : GL (Fin n) E) (hγ : γ
     Subgroup.mul_mem _ (Subgroup.mul_mem _ (hU γ hγ) y.2) ((S.U_eq κ.1).1 κ.2).1⟩
 
 /- English proof (translation)
-Introduce `x i L hL`. Use `choose g0 hg0 hLg using hL`. Set `g : ∀ v, GL (Fin (G.P.m + 1)) (G.P.Qq v)` to `fun v => ((Matrix.isUnit_iff_isUnit_det _).2 (hg0 v)).unit`. Establish `hg : ∀ v, L v = colSpan (G.P.W v) (g v : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v))` using `hLg`. Take `⟨c, γ, κ, hγ, hpt⟩` from `hP i g`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hQV, hQ⟩` from `hR x c γ hγ κ`. Take `⟨fa, hfa, hfac⟩` from `hA x`. Set `x0` to `ptU (S := S) hU γ hγ (yc c) κ`. Establish `key : ∀ z, evC G.P A.rk pos (gramC J emb) (crdB emb A.B) (MvPolynomial.map embLL Q) z = fa x0 z`. Introduce `z`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z', hz'⟩` from `frames_tr emb hc γ hγ z`. Rewrite using `[hQ z z' hz', hfa γ hγ (yc c) x0 κ rfl z z' hz', hfac c]`. Use `⟨Q, hQV, fun g' hg' c' γ' hγ' κ' hpt' z z' hz' => ?_⟩` and prove the remaining obligations. Set `x1` to `ptU (S := S) hU γ' hγ' (yc c') κ'`. Take `⟨κ0, h01, hχ⟩` from `hO i L g g' x0 x1 hg hg' hpt hpt'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : fa x1 z = (S.chi κ0 : ℂ) * fa x0 z` using `hfa 1 (Subgroup.one_mem _) x0 x1 κ0 (by rw [map_one, one_mul]; exact h01) z z (isTr_one z)`. Establish `e2 : fa x1 z = (S.chi κ' : ℂ) * fa (yc c') z'` using `hfa γ' hγ' (yc c') x1 κ' rfl z z' hz'`. Rewrite using `[key, ← hfac c', ← e2, e1, hχ, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valEx_of (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (hU : RatInU (F := F) (σ := σ) (J := J))
     (hA : AdExt S emb embLL embV yc) (hP : PtEx S G A yc) (hO : PtOne S G A) (hR : EvRatPt S emb embLL G A pos embV) :
@@ -95,7 +95,7 @@ theorem valEx_of (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (hU
   rw [key, ← hfac c', ← e2, e1, hχ, one_mul]
 
 /- English proof (translation)
-The claim follows from `valEx_of hc ratInU hA hP hO hR`.
+A detailed English derivation is pending.
 -/
 theorem valEx_of' (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (hA : AdExt S emb embLL embV yc) (hP : PtEx S G A yc)
     (hO : PtOne S G A) (hR : EvRatPt S emb embLL G A pos embV) : ValEx S emb embLL G A pos embV yc :=
@@ -123,7 +123,7 @@ variable {p' : ℕ} {O' Kf' : Type} [CommRing O'] [IsDomain O'] [IsDiscreteValua
   (P : Places p' O' Kf')
 
 /- English proof (translation)
-Establish `e : (substR P R h).comp (MvPolynomial.rename (fun x => (⟨v, x⟩ : Var P))) = (MvPolynomial.rename (fun x => (⟨v, x⟩ : Var P))).comp (Formalism.GradedWeylDivisibility.blockAct R (h v))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `[substR, Formalism.GradedWeylDivisibility.blockAct, map_sum]`. Conclude with `congrArg (fun f => f F) e`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem substR_rename (R : Type) [CommRing R] (h : ∀ v, Fin (P.n' v) → Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) R)
     (v : Fin P.nV) (F : MvPolynomial (Fin (P.n' v) × (Fin (P.m + 1) × Fin (P.m + 1))) R) :
@@ -139,15 +139,15 @@ theorem substR_rename (R : Type) [CommRing R] (h : ∀ v, Fin (P.n' v) → Matri
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Unfold `VtupR at hQ ⊢`. Proceed by induction on `hQ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨F, hF, rfl⟩` from `hx`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨fun v => Formalism.MainNotions.G.LatticeSystems.je_rho R (P.lam0 v) (fun s => (g v s : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) R)) (F v), fun v => Formalism.MainNotions.G.LatticeSystems.je_V R (P.lam0 v) _ (F v) (hF v), ?_⟩` and prove the remaining obligations. Unfold `natActR`. Rewrite using `[LinearMap.smul_apply, AlgHom.toLinearMap_apply, map_prod]`. Simplify using `only [substR_rename]`. Rewrite using `[Finset.prod_congr rfl (fun v _ => (Finset.prod_congr rfl fun s _ => rfl : ∏ s : Fin (P.n' v), (g v s : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) R).det ^ (-(eAt P v s)) = ∏ s : Fin (P.n' v), (g v s : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) R).det ^ (-(eAt P v s))))]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.MainNotions.G.LatticeSystems.je_prod_smul]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `hb : (fun s => (((g v s)⁻¹ : GL (Fin (P.m + 1)) R) : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) R)) = fun s => ((g v s : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) R))⁻¹`. Use function extensionality and compare the values at `fun s => Matrix.coe_units_inv (g v s)`. Establish `e2 : Formalism.MainNotions.G.LatticeSystems.je_rho R (P.lam0 v) (fun s => (g v s : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) R)) (F v) = (∏ s : Fin (P.n' v), (g v s : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) R).det ^ (-(eAt P v s))) • Formalism.GradedWeylDivisibility.blockAct R (fun s …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[hb]`. Both sides reduce to the same expression. Rewrite using `[e2, map_smul]`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ a hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem natActR_VtupR (R : Type) [Field R] (g : ∀ v, Fin (P.n' v) → GL (Fin (P.m + 1)) R) (Q : XR P R)
     (hQ : Q ∈ VtupR P R) : natActR P R g Q ∈ VtupR P R := by
@@ -182,15 +182,15 @@ theorem natActR_VtupR (R : Type) [Field R] (g : ∀ v, Fin (P.n' v) → GL (Fin 
 end Stab
 
 /- English proof (translation)
-Introduce `_ _ Q hQ` and use `natActR_VtupR G.P LL _ Q hQ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vtupStab (tE : Tau → E →+* LL) : VtupStab G A pos tE (σ := σ) (J := J) :=
   fun _ _ Q hQ => natActR_VtupR G.P LL _ Q hQ
 
 /- English proof (translation)
-Introduce `x c γ hγ κ`. Take `⟨Qc, hQcV, hQc⟩` from `h1 x c`. Take `⟨r, hr⟩` from `h2 κ`. Use `⟨r • natActR G.P LL (blkLL A σ tE pos γ) Qc, Submodule.smul_mem _ r (h3 γ hγ Qc hQcV), fun z z' hz => ?_⟩` and prove the remaining obligations. Establish `hb` using `evC_blk A tE pos emb embLL htE γ (unit_of_std A.B γ hBs hγ) (gramC J emb) z' z hz Qc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_smul' embLL r, map_smul, Pi.smul_apply, hb, hQc, hr, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evRatPt_of (tE : Tau → E →+* LL) (htE : ∀ τ x, embLL (tE τ x) = emb τ x)
     (hBs : cT (σ : E →+* E) A.B.1 * J * A.B.1 = 1) (h1 : EvRatRep emb embLL G A pos embV)
@@ -203,7 +203,7 @@ theorem evRatPt_of (tE : Tau → E →+* LL) (htE : ∀ τ x, embLL (tE τ x) = 
   rw [map_smul' embLL r, map_smul, Pi.smul_apply, hb, hQc, hr, smul_eq_mul]
 
 /- English proof (translation)
-The claim follows from `valEx_of' hc hA hP hO (evRatPt_of tE htE hBs h1 h2 h3)`.
+A detailed English derivation is pending.
 -/
 theorem valEx_of_rep (tE : Tau → E →+* LL) (htE : ∀ τ x, embLL (tE τ x) = emb τ x)
     (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (hBs : cT (σ : E →+* E) A.B.1 * J * A.B.1 = 1) (hA : AdExt S emb embLL embV yc) (hP : PtEx S G A yc)
@@ -212,7 +212,7 @@ theorem valEx_of_rep (tE : Tau → E →+* LL) (htE : ∀ τ x, embLL (tE τ x) 
   valEx_of' hc hA hP hO (evRatPt_of tE htE hBs h1 h2 h3)
 
 /- English proof (translation)
-The claim follows from `valEx_of_rep tE htE hc hBs hA hP hO h1 h2 (vtupStab tE)`.
+A detailed English derivation is pending.
 -/
 theorem valEx_of_rep' (tE : Tau → E →+* LL) (htE : ∀ τ x, embLL (tE τ x) = emb τ x)
     (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (hBs : cT (σ : E →+* E) A.B.1 * J * A.B.1 = 1) (hA : AdExt S emb embLL embV yc) (hP : PtEx S G A yc)

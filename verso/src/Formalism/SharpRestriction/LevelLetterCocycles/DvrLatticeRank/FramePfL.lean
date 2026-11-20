@@ -31,7 +31,7 @@ def framepf_gco (x : ↥(NcS W T (c - 1))) : Fin Bs.r → PowerSeries O :=
 
 include hπ0 hR2 in
 /- English proof (translation)
-Establish `h` using `framepf_coord Bs π' (c - 1) hπ0 hR2 x.2`. Unfold `framepf_gco`. Rewrite using `[dif_pos h]`. Conclude with `Classical.choose_spec h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem framepf_gco_spec (x : ↥(NcS W T (c - 1))) :
     (x : W.DD T) = ∑ k, framepf_ι π' (c - 1) (framepf_gco Bs π' c x k) • Bs.b k := by
@@ -42,7 +42,7 @@ theorem framepf_gco_spec (x : ↥(NcS W T (c - 1))) :
 
 include hπ0 hΔπ hR2 γ0 in
 /- English proof (translation)
-The claim follows from `framepf_coord_uniq Bs π' (c - 1) hπ0 hΔπ hR2 γ0 ((framepf_gco_spec Bs π' c hπ0 hR2 x).symm.trans hg)`.
+A detailed English derivation is pending.
 -/
 theorem framepf_gco_eq (x : ↥(NcS W T (c - 1))) (g : Fin Bs.r → PowerSeries O)
     (hg : (x : W.DD T) = ∑ k, framepf_ι π' (c - 1) (g k) • Bs.b k) : framepf_gco Bs π' c x = g :=
@@ -51,7 +51,7 @@ theorem framepf_gco_eq (x : ↥(NcS W T (c - 1))) (g : Fin Bs.r → PowerSeries 
 
 include hπ0 in
 /- English proof (translation)
-Rewrite using `[framepf_ι_mul π' (c - 1) (hπ0 _), framepf_ι_C π' (c - 1) (hπ0 _), mul_comm (letE (c - 1)), mul_assoc, framepf_letE_ι π' (c - 1) hπ0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem framepf_ι_C_mul (o : O) (g : PowerSeries O) :
     framepf_ι π' (c - 1) (PowerSeries.C o * g) = algebraMap O (LetA O n) o * framepf_ι π' (c - 1) g := by
@@ -91,21 +91,21 @@ variable (hu : IsUnit (algebraMap (LetA O n) W.EE π'))
 include hπ0 hΔπ hR2 γ0 hu in
 
 /- English proof (translation)
-Establish `hx` using `framepf_gco_spec Bs π' c hπ0 hR2 x`. Establish `hxc` using `(mem_NcS W T (c - 1) x).1 x.2`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `hX : ∀ k, ∃ hk : PowerSeries O, framepf_gco Bs π' c x k = PowerSeries.X * hk`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k`. Use `congrFun h0 k` as an intermediate fact. Rewrite `this` using `[framepf_coordL_apply]`. Conclude with `PowerSeries.X_dvd_iff.2 this`. Use `choose hk hhk using hX`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_PiNS]`. Use `⟨⟨∑ k, framepf_ι π' (c - 1) (hk k) • Bs.b k, Submodule.sum_mem _ fun k _ => (W.N T).smul_mem _ (Bs.mem k).1, ?_⟩, hxc.2.1⟩` and prove the remaining obligations. Rewrite using `[pow_one, hx, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hhk k, smul_smul, framepf_ι_mul π' (c - 1) (hπ0 _), framepf_ι_X π' (c - 1) (hπ0 _), mul_comm (letE (c - 1)) π', mul_assoc, framepf_letE_ι π' (c - 1) hπ0]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Take `⟨⟨d, hdN, hd⟩, -⟩` from `(mem_PiNS W T π' 1 _).1 h`. Rewrite `hd` using `[pow_one]`. Establish `hdc : d ∈ NcS W T (c - 1)`. Rewrite using `[mem_NcS]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hdN, fun δ hδ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Apply `gradNPf_tf W T π' hu` to reduce the goal to its premises. Rewrite using `[smul_sub, ← hΔπ δ hδ, ← gradNPf_γD_smul, hΔπ δ hδ, hd, hxc.2.1 δ hδ, sub_self]`. Rewrite using `[← sub_eq_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `gradNPf_tf W T π' hu` to reduce the goal to its premises. Rewrite using `[smul_sub, smul_smul, mul_comm, ← smul_smul, hd, hxc.2.2, sub_self]`. Establish `hdd` using `framepf_gco_spec Bs π' c hπ0 hR2 ⟨d, hdc⟩`. Establish `e : framepf_gco Bs π' c x = fun k => PowerSeries.X * framepf_gco Bs π' c ⟨d, hdc⟩ k`. Apply `framepf_gco_eq Bs π' c hπ0 hΔπ hR2 γ0` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hd]`. Use `conv_lhs => rw [show d = ((⟨d, hdc⟩ : ↥(NcS W T (c - 1))) : W.DD T) from rfl, hdd]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, framepf_ι_mul π' (c - 1) (hπ0 _), framepf_ι_X π' (c - 1) (hπ0 _), mul_comm (letE (c - 1)) π', mul_assoc, framepf_letE_ι π' (c - 1) hπ0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[framepf_coordL_apply, e]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem framepf_coordL_ker (x : ↥(NcS W T (c - 1))) :
     framepf_coordL Bs π' c hπ0 hΔπ hR2 γ0 x = 0 ↔ (x : W.DD T) ∈ PiNS W T π' 1 := by
@@ -153,9 +153,9 @@ theorem framepf_coordL_ker (x : ↥(NcS W T (c - 1))) :
 
 include hπ0 hΔπ hR2 γ0 in
 /- English proof (translation)
-Introduce `o`. Establish `hmem : ∑ k, framepf_ι π' (c - 1) (PowerSeries.C (o k)) • Bs.b k ∈ NcS W T (c - 1)`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[framepf_ι_C π' (c - 1) (hπ0 _), mul_comm, mul_smul, algebraMap_smul]`. Conclude with `(NcS W T (c - 1)).smul_mem _ (framepf_letE_mem Bs (c - 1) k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Establish `e` using `framepf_gco_eq Bs π' c hπ0 hΔπ hR2 γ0 ⟨_, hmem⟩ (fun k => PowerSeries.C (o k)) rfl`. Use function extensionality and compare the values at `k`. Rewrite using `[framepf_coordL_apply, e, PowerSeries.constantCoeff_C]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem framepf_coordL_surj : Function.Surjective (framepf_coordL Bs π' c hπ0 hΔπ hR2 γ0) := by
   intro o

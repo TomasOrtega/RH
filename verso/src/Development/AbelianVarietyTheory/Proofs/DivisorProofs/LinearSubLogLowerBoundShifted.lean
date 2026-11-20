@@ -5,13 +5,13 @@ open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `C s x hC hs hs1 hx`. Establish `hy : 0 < 2 + C + x` using `by linarith`. Establish `hC0 : 0 < C` using `by linarith`. Establish `hC2 : 0 < C + 2` using `by linarith`. Establish `h1 : Real.log ((2 + C + x) * s / C) ≤ (2 + C + x) * s / C - 1` using `Real.log_le_sub_one_of_pos (by positivity)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Real.log_div (by positivity) hC0.ne', Real.log_mul hy.ne' hs.ne']`. Establish `h2 : C * (Real.log (2 + C + x) + Real.log s - Real.log C) ≤ (2 + C + x) * s - C`. Use `mul_le_mul_of_nonneg_left h1 hC0.le` as an intermediate fact. Establish `e : C * ((2 + C + x) * s / C - 1) = (2 + C + x) * s - C` using `by field_simp`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[Real.log_div hC2.ne' hs.ne']`. Establish `h3 : Real.log C ≤ Real.log (C + 2)` using `Real.log_le_log hC0 (by linarith)`. Establish `h4 : Real.log s ≤ 0` using `Real.log_nonpos hs.le hs1`. Establish `h5 : 0 ≤ Real.log (C + 2)` using `Real.log_nonneg (by linarith)`. Establish `h6 : C * Real.log C ≤ C * Real.log (C + 2)` using `mul_le_mul_of_nonneg_left h3 hC0.le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7 : (C + 2) * s ≤ C + 2` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem linear_sub_log_lower_bound_shifted :
     ∀ C s x : ℝ, 1 ≤ C → 0 < s → s ≤ 1 → -2 - C < x →

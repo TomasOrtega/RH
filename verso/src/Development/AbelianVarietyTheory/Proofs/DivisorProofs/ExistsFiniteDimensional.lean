@@ -14,13 +14,13 @@ def IsAvg (K K' : Subgroup G) (t : Finset G) : Prop :=
     ∀ k ∈ K, ∑ g ∈ t, φ (k * g) = ∑ g ∈ t, φ g
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, fun V _ φ hφ => h.2.2 V φ fun g k hk => hφ g k (hle hk)⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsAvg.mono {K K' K'' : Subgroup G} {t : Finset G} (h : IsAvg K K'' t) (hle : K'' ≤ K') : IsAvg K K' t :=
   ⟨h.1, h.2.1, fun V _ φ hφ => h.2.2 V φ fun g k hk => hφ g k (hle hk)⟩
 
 /- English proof (translation)
-The claim follows from `Nat.cast_ne_zero.2 (Finset.card_pos.2 h.1).ne'`.
+A detailed English derivation is pending.
 -/
 theorem IsAvg.card_ne {K K' : Subgroup G} {t : Finset G} (h : IsAvg K K' t) : (t.card : ℂ) ≠ 0 :=
   Nat.cast_ne_zero.2 (Finset.card_pos.2 h.1).ne'
@@ -37,7 +37,7 @@ def stab {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V
     rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Introduce `k hk`. Rewrite using `[map_sum, ← h.2.2 V (fun g => ρ g v) (fun g k hk => by`. Rewrite using `[map_mul, Module.End.mul_apply, show ρ k v = v from hk]) k hk]`. Simplify using `only [map_mul, Module.End.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsAvg.fix {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (v : V) {K : Subgroup G}
     {t : Finset G} (h : IsAvg K (stab ρ v) t) : ∀ k ∈ K, ρ k (∑ g ∈ t, ρ g v) = ∑ g ∈ t, ρ g v := by
@@ -47,7 +47,7 @@ theorem IsAvg.fix {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representatio
   simp only [map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h k hk`. Simplify using `using h ⟨k, hk⟩`. Introduce `h k`. Simplify using `using h k.1 k.2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_fixed {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) (K : Subgroup G) (v : V) :
     v ∈ fixed ρ K ↔ ∀ k ∈ K, ρ k v = v := by
@@ -60,7 +60,7 @@ theorem mem_fixed {V : Type} [AddCommGroup V] [Module ℂ V] (ρ : Representatio
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hK`. Conclude with `Subgroup.quotient_finite_of_isOpen _ (hK'.preimage continuous_subtype_val)`.
+A detailed English derivation is pending.
 -/
 theorem finite_quot {K K' : Subgroup G} (hK : IsCompact (K : Set G)) (hK' : IsOpen (K' : Set G)) :
     Finite (K ⧸ K'.subgroupOf K) := by
@@ -68,11 +68,11 @@ theorem finite_quot {K K' : Subgroup G} (hK : IsCompact (K : Set G)) (hK' : IsOp
   exact Subgroup.quotient_finite_of_isOpen _ (hK'.preimage continuous_subtype_val)
 
 /- English proof (translation)
-Use `haveI := finite_quot hK hK'`. Use `haveI := Fintype.ofFinite (K ⧸ K'.subgroupOf K)`. Set `o : (K ⧸ K'.subgroupOf K) → G` to `fun q => (q.out : K)`. Establish `ho : Function.Injective o` using `fun q q' h => Quotient.out_injective (Subtype.ext h)`. Use `⟨Finset.univ.image o, Finset.univ_nonempty.image _, ?_, fun V _ φ hφ k hk => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g hg`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hg`. Conclude with `q.out.2`. Rewrite using `[Finset.sum_image fun _ _ _ _ h => ho h, Finset.sum_image fun _ _ _ _ h => ho h, ← Equiv.sum_comp (MulAction.toPerm (⟨k, hk⟩ : K)) fun q => φ (o q)]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (K'.subgroupOf K) ((⟨k, hk⟩ : K) * q.out)`. Establish `e : (MulAction.toPerm (⟨k, hk⟩ : K)) q = QuotientGroup.mk ((⟨k, hk⟩ : K) * q.out)` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Simplify using `only [e, o, hh]`. Conclude with `(hφ _ _ h.2).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isAvg {K K' : Subgroup G} (hK : IsCompact (K : Set G)) (hK' : IsOpen (K' : Set G)) :
     ∃ t, IsAvg K K' t := by
@@ -96,15 +96,13 @@ theorem exists_isAvg {K K' : Subgroup G} (hK : IsCompact (K : Set G)) (hK' : IsO
     exact (hφ _ _ h.2).symm
 
 /- English proof (translation)
-Establish `key : ∀ x ∈ Submodule.span ℂ S, ∃ K' : Subgroup G, IsOpen (K' : Set G) ∧ ∀ t, IsAvg K K' t → ∑ g ∈ t, ζ g x ∈ W`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => exact ⟨⊤, isOpen_univ, fun t _ => by simp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨K₁, o₁, h₁⟩` from `hx`. Take `⟨K₂, o₂, h₂⟩` from `hy`. Use `⟨K₁ ⊓ K₂, o₁.inter o₂, fun t ht => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, Finset.sum_add_distrib]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `add_mem (h₁ t (ht.mono inf_le_left)) (h₂ t (ht.mono inf_le_right))`. Consider the case `smul c x _ hx`. Take `⟨K₁, o₁, h₁⟩` from `hx`. Use `⟨K₁, o₁, fun t ht => ?_⟩` and prove the remaining obligations. Simplify using `only [map_smul, ← Finset.smul_sum]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `W.smul_mem c (h₁ t ht)`. Introduce `x hx hfix`. Take `⟨K', o, h'⟩` from `key x hx`. Take `⟨t, ht⟩` from `exists_isAvg hK o`. Establish `h1` using `h' t ht`.
-
-Rewrite `h1` using `[Finset.sum_congr rfl fun g hg => hfix g (ht.2.1 g hg), Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ]`. Conclude with `(W.smul_mem_iff ht.card_ne).1 h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_avg {Z : Type} [AddCommGroup Z] [Module ℂ Z] (ζ : Representation ℂ G Z) {K : Subgroup G}
     (hK : IsCompact (K : Set G)) (S : Set Z) (W : Submodule ℂ Z)
@@ -139,7 +137,7 @@ def orb {U : Type} [AddCommGroup U] [Module ℂ U] (ρ : Representation ℂ G U)
 
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 /- English proof (translation)
-Introduce `g u hu`. Use `(Submodule.span_le (p := (orb ρ w).comap (ρ g))).2 ?_ hu` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `Submodule.subset_span ⟨g * x, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem orb_stable {U : Type} [AddCommGroup U] [Module ℂ U] (ρ : Representation ℂ G U) (w : U) :
     ∀ g, ∀ u ∈ orb ρ w, ρ g u ∈ orb ρ w := by
@@ -149,29 +147,25 @@ theorem orb_stable {U : Type} [AddCommGroup U] [Module ℂ U] (ρ : Representati
   exact Submodule.subset_span ⟨g * x, by simp⟩
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨s, hs, hT, hws⟩ : ∃ s : Set (V →ₗ[ℂ] U), s.Finite ∧ (∀ T ∈ s, ∀ g, T ∘ₗ π g = ρ g ∘ₗ T) ∧ w ∈ Submodule.span ℂ {x | ∃ T ∈ s, ∃ v, x = T v} := by`. Unfold `GlobalTheory.LocTypeGood.imgSpan at hw`. Proceed by induction on `hw using Submodule.iSup_induction' with`. Consider the case `mem T x hx`. Distinguish the cases in `h : ∀ g, T ∘ₗ π g = ρ g ∘ₗ T`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails.
 
-Rewrite `hx` using `[iSup_pos h]`. Take `⟨v, rfl⟩` from `hx`. Conclude with `⟨{T}, Set.finite_singleton _, by simpa using h, Submodule.subset_span ⟨T, rfl, v, rfl⟩⟩`. Rewrite `hx` using `[iSup_neg h, Submodule.mem_bot]`. Conclude with `⟨∅, Set.finite_empty, by simp, by simp [hx]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨∅, Set.finite_empty, by simp, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨s, hs, h1, h2⟩` from `hx`. Take `⟨s', hs', h1', h2'⟩` from `hy`. Use `⟨s ∪ s', hs.union hs', fun T hT => hT.elim (h1 T) (h1' T), add_mem ?_ ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.span_mono (by rintro _ ⟨T, hT, v, rfl⟩; exact ⟨T, Or.inl hT, v, rfl⟩) h2`. Conclude with `Submodule.span_mono (by rintro _ ⟨T, hT, v, rfl⟩; exact ⟨T, Or.inr hT, v, rfl⟩) h2'`. Establish `hTv : ∀ T ∈ s, ∀ g v, ρ g (T v) = T (π g v)` using `fun T h g v => (LinearMap.congr_fun (hT T h g) v).symm`. Use `set N := Submodule.span ℂ {x | ∃ T ∈ s, ∃ v, x = T v} with hN`. Establish `hle : orb ρ w ≤ N`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Use `(Submodule.span_le (p := N.comap (ρ g))).2 ?_ hws` and prove the remaining obligations. Introduce and unpack `_ ⟨T, h, v, rfl⟩`. Conclude with `Submodule.subset_span ⟨T, h, π g v, hTv T h g v⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hsm : ∀ u ∈ N, (stab ρ u : Set G) ∈ 𝓝 (1 : G)`. Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨T, h, v, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Use `Filter.mem_of_superset ((hπ.1 v).mem_nhds (by simp)) fun g hg => ?_` and prove the remaining obligations. Use `show ρ g (T v) = T v`. Rewrite using `[hTv T h, show π g v = v from hg]`. Consider the case `zero => exact Filter.mem_of_superset Filter.univ_mem fun g _ => map_zero _`. Consider the case `add x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Filter.mem_of_superset (Filter.inter_mem hx hy) fun g hg => ?_` and prove the remaining obligations. Use `show ρ g (x + y) = x + y`. Rewrite using `[map_add, show ρ g x = x from hg.1, show ρ g y = y from hg.2]`. Consider the case `smul c x _ hx`. Use `Filter.mem_of_superset hx fun g hg => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Introduce a local definition for the expression.
 
-Use `show ρ g (c • x) = c • x`. Rewrite using `[map_smul, show ρ g x = x from hg]`. Use `⟨fun u => ?_, fun K ho hc => ?_⟩` and prove the remaining obligations. Use `(stab ρ u.1).isOpen_of_mem_nhds (hsm u.1 (hle u.2))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `g`. Conclude with `Subtype.ext_iff`. Use `haveI := hπ.2 K ho hc haveI : Finite s := hs`. Set `W : Submodule ℂ U` to `⨆ T : s, (fixed π K).map T.1`. Establish `hW : ∀ x ∈ N, (∀ k ∈ K, ρ k x = x) → x ∈ W`.
-
-Use `mem_of_avg ρ hc _ W ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨T, h, v, rfl⟩`. Use `⟨stab π v, hπ.1 v, fun t ht => ?_⟩` and prove the remaining obligations. Use `Submodule.mem_iSup_of_mem ⟨T, h⟩ ⟨∑ g ∈ t, π g v, (mem_fixed _ _ _).2 (ht.fix π v), ?_⟩` and prove the remaining obligations. Simplify using `only [map_sum, hTv T h]`.
-
-Set `L : fixed (sub ρ (orb ρ w) (orb_stable ρ w)) K →ₗ[ℂ] W` to `(((orb ρ w).subtype.comp (Submodule.subtype _))).codRestrict W fun x => hW _ (hle x.1.2) fun k hk => congrArg Subtype.val ((mem_fixed _ _ _).1 x.2 k hk)`. Conclude with `FiniteDimensional.of_injective L fun x y h => Subtype.ext (Subtype.ext (show (L x).1 = (L y).1 from congrArg Subtype.val h))`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isAdmissible_orb {V U : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup U] [Module ℂ U]
     (π : Representation ℂ G V) (ρ : Representation ℂ G U) (hπ : IsAdmissible π) (w : U)
@@ -240,19 +234,17 @@ theorem isAdmissible_orb {V U : Type} [AddCommGroup V] [Module ℂ V] [AddCommGr
       Subtype.ext (Subtype.ext (show (L x).1 = (L y).1 from congrArg Subtype.val h))
 
 /- English proof (translation)
-Use `choose A hA hAD hfg using fg`. Use `haveI : ∀ j, Finite (A j) := hA`. Set `Ka : P → Subgroup G₂` to `fun a => stab ω₂ a ⊓ K₀`. Establish `hKo : ∀ j, ∀ a ∈ A j, IsOpen (Ka a : Set G₂)` using `fun j a ha => (sm2 j a (hAD j a ha)).inter ho`. Establish `hKc : ∀ j, ∀ a ∈ A j, IsCompact (Ka a : Set G₂)` using `fun j a ha => hc.inter_left ((stab ω₂ a).isClosed_of_isOpen (sm2 j a (hAD j a ha)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : ∀ i : (Σ j, A j), FiniteDimensional ℂ (fixed π (Ka i.2.1)) := fun i => hπ.2 _ (hKo i.1 _ i.2.2) (hKc i.1 _ i.2.2)`. Set `W : Submodule ℂ Z` to `⨆ i : (Σ j, A j), (fixed π (Ka i.2.1)).map (b.flip i.2.1)`. Establish `hA1 : ∀ j, ∀ a ∈ A j, ∀ u, b u a ∈ W`. Introduce `j a ha u`. Take `⟨t, ht⟩` from `exists_isAvg (hKc j a ha) (show IsOpen (stab π u : Set G₂) from hπ.1 u)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h : b (∑ g ∈ t, π g u) a ∈ W` using `Submodule.mem_iSup_of_mem ⟨j, a, ha⟩ ⟨_, (mem_fixed _ _ _).2 (ht.fix π u), rfl⟩`. Establish `e : ∀ g ∈ t, b (π g u) a = b u a` using `fun g hg => by conv_lhs => rw [← show ω₂ g a = a from (ht.2.1 g hg).1]`. Conclude with `eq2 g u a`. Rewrite `h` using `[map_sum, LinearMap.sum_apply, Finset.sum_congr rfl e, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ]`. Conclude with `(W.smul_mem_iff ht.card_ne).1 h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨W, inferInstance, mem_of_avg ζ hK _ W ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨j, u, s, hs, rfl⟩`. Use `⟨stab ω₁ s, sm1 j s hs, fun t ht => ?_⟩` and prove the remaining obligations. Simplify using `only [eq1, ← map_sum]`. Establish `h` using `hfg j _ (sum_mem fun g _ => h1 j g s hs) (ht.fix ω₁ s)`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Generalize the expression as in `∑ g ∈ t, ω₁ g s = y at h`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, h, rfl⟩` from `hx`. Use `eq2 h (π h⁻¹ u) a` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Rewrite using `[this]`. Conclude with `hA1 j a ha _`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
-
-Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [LinearMap.map_smulₛₗ]`. Conclude with `W.smul_mem _ hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_finiteDimensional {G₂ : Type} [Group G₂] [TopologicalSpace G₂] [IsTopologicalGroup G₂]
     {U P Z J : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup P] [Module ℂ P] [AddCommGroup Z] [Module ℂ Z] [Finite J]

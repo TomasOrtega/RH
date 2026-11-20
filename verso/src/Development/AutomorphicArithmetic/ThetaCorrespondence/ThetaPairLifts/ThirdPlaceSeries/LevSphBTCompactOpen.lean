@@ -18,19 +18,17 @@ open GlobalTheory.TopVol GlobalTheory.FinPl
 noncomputable section
 namespace GlobalTheory.TopVol
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W _ u a ha _`. Establish `hx : a.g.bT ∈ GfC (I.rec7 l Z).sp.X'` using `ha.top.2.1`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA (I.rec7 l Z).sp.cm.sig (I.rec7 l Z).sp.X'.gram` as an intermediate fact. Establish `hmem : ∀ h, h ∈ _root_.GlobalTheory.TopVol.sphericalLevelSubgroup W a.g.bT ↔ a.g.bT⁻¹ * h * a.g.bT ∈ Formalism.IndefR.Lev.levG _ (_root_.GlobalTheory.Fam.pk_z W).βX (_root_.GlobalTheory.TopVol.datSph_alt W)` using `fun h => _root_.GlobalTheory.TopVol.mem_level_sphere_iff_conj_mem_levS h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h hh`. Establish `h1 : a.g.bT⁻¹ * h * a.g.bT ∈ GfC (I.rec7 l Z).sp.X'` using `((hmem h).1 hh).1`. Establish `h2 : h = a.g.bT * (a.g.bT⁻¹ * h * a.g.bT) * a.g.bT⁻¹` using `by group`. Rewrite using `[h2]`. Conclude with `mul_mem (mul_mem hx h1) (inv_mem hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : (_root_.GlobalTheory.TopVol.sphericalLevelSubgroup W a.g.bT : Set (GA (I.rec7 l Z) (I.rec7 l Z).sp.X')) = (fun k => a.g.bT * k * a.g.bT⁻¹) '' (Formalism.IndefR.Lev.levG _ (_root_.GlobalTheory.Fam.pk_z W).βX (_root_.GlobalTheory.TopVol.datSph_alt W) : Set _)`. Use extensionality with `h`. Prove the components needed by the constructor for the conclusion. Introduce `hh`. Conclude with `⟨_, (hmem h).1 hh, by group⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨k, hk, rfl⟩`. Use `(hmem _).2 ?_` and prove the remaining obligations. Establish `: a.g.bT⁻¹ * (a.g.bT * k * a.g.bT⁻¹) * a.g.bT = k` using `by group`. Rewrite using `[this]`. Conclude with `hk`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[he]`. Conclude with `(GlobalTheory.ParahoricCompact.isCompact_levG _ _ _).image (by fun_prop)`. Establish `ho` using `GlobalTheory.ParahoricCompact.isOpen_comap_lev _ (_root_.GlobalTheory.Fam.pk_z W).βX (_root_.GlobalTheory.TopVol.datSph_alt W)`. Establish `hc : Continuous fun k : GfC (I.rec7 l Z).sp.X' => a.g.bT⁻¹ * (k : GA (I.rec7 l Z) (I.rec7 l Z).sp.X') * a.g.bT` using `by fun_prop`. Use `ho.preimage hc using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `k`. Simplify using `only [SetLike.mem_coe, Subgroup.mem_subgroupOf, Set.mem_preimage]`. Rewrite using `[hmem]`. Prove the components needed by the constructor for the conclusion. Introduce `hk`.
-
-Conclude with `hk.2`. Introduce `hk`. Conclude with `⟨(GfC (I.rec7 l Z).sp.X').mul_mem ((GfC (I.rec7 l Z).sp.X').mul_mem ((GfC (I.rec7 l Z).sp.X').inv_mem hx) k.2) hx, hk⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem levSph_bT_compact_open_alt : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → _root_.GlobalTheory.TopVol.sphericalLevelSubgroup W a.g.bT ≤ GfC _ ∧ IsCompact (_root_.GlobalTheory.TopVol.sphericalLevelSubgroup W a.g.bT : Set (GA (I.rec7 l Z) (I.rec7 l Z).sp.X')) ∧ IsOpen (((_root_.GlobalTheory.TopVol.sphericalLevelSubgroup W a.g.bT).subgroupOf (GfC _) : Subgroup (GfC (I.rec7 l Z).sp.X')) : Set (GfC (I.rec7 l Z).sp.X')) := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W _ u a ha _

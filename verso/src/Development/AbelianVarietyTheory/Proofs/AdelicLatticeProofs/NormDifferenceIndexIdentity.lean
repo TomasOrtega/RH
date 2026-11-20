@@ -6,20 +6,18 @@ open scoped WithZero TensorProduct
 namespace GlobalTheory.CNorm
 
 /- English proof (translation)
-Rewrite using `[← Subgroup.comap_map_eq, Subgroup.index_comap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herb_relIndex_map_range {A : Type} [CommGroup A] (f : A →* A) (H : Subgroup A) :
     (H.map f).relIndex f.range = (H ⊔ f.ker).index := by
   rw [← Subgroup.comap_map_eq, Subgroup.index_comap]
 
 /- English proof (translation)
-Establish `h1 : (C ⊔ B).relIndex (B ⊔ K) * (B ⊔ K).index = (C ⊔ B).index` using `Subgroup.relIndex_mul_index (sup_le (hCK.trans le_sup_right) le_sup_left)`. Establish `h2 : (C ⊔ B).relIndex (B ⊔ K) = (C ⊔ B ⊓ K).relIndex K`. Establish `e : B ⊔ K = K ⊔ (C ⊔ B)`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `sup_le (le_sup_right.trans le_sup_right) le_sup_left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sup_le le_sup_right (sup_le (hCK.trans le_sup_right) le_sup_left)`. Rewrite using `[e, Subgroup.relIndex_sup_right, ← sup_inf_assoc_of_le B hCK, Subgroup.inf_relIndex_right]`. Establish `h3 : C.relIndex (C ⊔ B ⊓ K) * (C ⊔ B ⊓ K).relIndex K = C.relIndex K` using `Subgroup.relIndex_mul_relIndex _ _ _ le_sup_left (sup_le hCK inf_le_right)`. Establish `h4 : C.relIndex (C ⊔ B ⊓ K) = C.relIndex (B ⊓ K)` using `Subgroup.relIndex_sup_left _ _`. Establish `h5 : Nat.card ↥(C ⊓ B) * C.relIndex (B ⊓ K) = Nat.card ↥(B ⊓ K)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : C ⊓ (B ⊓ K) = C ⊓ B`. Rewrite using `[inf_comm B K, ← inf_assoc, inf_eq_left.2 hCK]`. Rewrite using `[← Subgroup.inf_relIndex_right C, e, ← Subgroup.relIndex_bot_left, ← Subgroup.relIndex_bot_left]`. Conclude with `Subgroup.relIndex_mul_relIndex _ _ _ bot_le (e ▸ inf_le_right)`. Rewrite using `[← h1, h2, ← h3, h4, ← h5]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem herb_lattice {A : Type} [CommGroup A] (B C K : Subgroup A) (hCK : C ≤ K) :
     (C ⊔ B).index * Nat.card ↥(B ⊓ K) =
@@ -45,9 +43,9 @@ theorem herb_lattice {A : Type} [CommGroup A] (B C K : Subgroup A) (hCK : C ≤ 
   ring
 
 /- English proof (translation)
-Establish `e1` using `Finset.prod_range_succ (fun i => σ^[i] a) p`. Establish `e2` using `Finset.prod_range_succ' (fun i => σ^[i] a) p`. Rewrite `e2` using `[e1]`. Simplify using `only [h, Function.iterate_zero, id, Function.iterate_succ_apply] at e2`. Rewrite using `[nrm_apply, nrm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_right_cancel e2).symm`.
+A detailed English derivation is pending.
 -/
 theorem herb_nrm_apply_sigma {A : Type} [CommGroup A] (σ : A →* A) (p : ℕ)
     (h : ∀ a, σ^[p] a = a) (a : A) : nrm σ p (σ a) = nrm σ p a := by
@@ -59,7 +57,7 @@ theorem herb_nrm_apply_sigma {A : Type} [CommGroup A] (σ : A →* A) (p : ℕ)
   exact (mul_right_cancel e2).symm
 
 /- English proof (translation)
-Rewrite using `[nrm_apply, Finset.prod_congr rfl (fun i _ => Function.iterate_fixed ((mem_fix σ b).1 hb) i)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem herb_nrm_of_fix {A : Type} [CommGroup A] (σ : A →* A) (p : ℕ) (b : A)
     (hb : b ∈ fix σ) : nrm σ p b = b ^ p := by
@@ -67,19 +65,19 @@ theorem herb_nrm_of_fix {A : Type} [CommGroup A] (σ : A →* A) (p : ℕ) (b : 
   simp
 
 /- English proof (translation)
-Introduce `p A _ σ h`. Establish `hker : (dif σ).ker = fix σ`. Use extensionality with `a`. Rewrite using `[MonoidHom.mem_ker, dif_apply, mem_fix, div_eq_one]`. Establish `hCK : (dif σ).range ≤ (nrm σ p).ker`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[MonoidHom.mem_ker, dif_apply, _root_.map_div, herb_nrm_apply_sigma σ p h, div_self']`. Establish `hNB : (nrm σ p).range ≤ fix σ`. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[mem_fix, ← herb_nrm_apply_sigma σ p h a]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [herb_nrm_apply_sigma σ p h a]`. Rewrite using `[nrm_apply, nrm_apply, map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Function.iterate_succ_apply σ i a, Function.iterate_succ_apply']`. Establish `hpow : pows p (fix σ) = (fix σ).map (nrm σ p)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [pows, Subgroup.mem_map, powMonoidHom_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `⟨b, hb, herb_nrm_of_fix σ p b hb⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `⟨b, hb, (herb_nrm_of_fix σ p b hb).symm⟩`. Establish `htor : pTor p (fix σ) = Nat.card ↥(fix σ ⊓ (nrm σ p).ker)`. Unfold `pTor`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun x => ?_)` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mem_inf, MonoidHom.mem_ker]`. Use `and_congr_right fun hx => ?_` and prove the remaining obligations. Rewrite using `[herb_nrm_of_fix σ p x hx]`. Establish `hidx : pIdx p (fix σ) = (fix σ ⊔ (nrm σ p).ker).index * (nrm σ p).range.relIndex (fix σ)`. Unfold `pIdx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpow, ← herb_relIndex_map_range]`. Conclude with `(Subgroup.relIndex_mul_relIndex _ _ _ (Subgroup.map_le_range _ _) hNB).symm`. Establish `hl` using `herb_lattice (fix σ) (dif σ).range (nrm σ p).ker hCK`. Rewrite using `[herb_relIndex_map_range, hker, htor, hidx, mul_assoc, hl]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem herb_index_identity : ∀ (p : ℕ) (A : Type) [CommGroup A] (σ : A →* A), (∀ a, σ^[p] a = a) → (nrm σ p).range.relIndex (fix σ) * ((dif σ).range.map (dif σ)).relIndex (dif σ).range * pTor p (fix σ) = pIdx p (fix σ) * (dif σ).range.relIndex (nrm σ p).ker * Nat.card ↥((dif σ).range ⊓ fix σ) := by
   intro p A _ σ h

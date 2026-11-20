@@ -29,15 +29,15 @@ open GlobalTheory.Published GlobalTheory.Published.GrothendieckMessing
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `P : AbelianDeRham` using `GlobalTheory.T.abelianScheme_firstDeRham_structure`. Take `⟨g₁, hg₁⟩` from `GlobalTheory.AbelianDim.exists_relDim (DualNumber k) A₁ hA₁`. Establish `hA₀` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA₁ h₁`. Establish `gA₀` using `(smoothOfRelativeDimension_isStableUnderBaseChange g₁).of_isPullback h₁.1 hg₁`. Take `⟨C, _, φ, j, hφ, hic, e1⟩` from `exists_const A₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hBC` using `constMor_isBC P hA₀ gA₀ hφ hic e1`. Establish `HC : Canonical (epsDP k) (TrivSqZeroExt.fstHom k k k).toRingHom` using `canonical_of_abelianDeRham P (isDPNilpotent_squareZero _) (fun r ↦ ⟨TrivSqZeroExt.inl r, rfl⟩) rfl`. Establish `step : ∀ x ∈ liftFil (epsDP k) h₁, ∃ y ∈ liftFil (epsDP k) h₁ ⊓ liftFil (epsDP k) h₂, ∃ z : Crys (epsDP k) (GlobalTheory.DeRham.epsRed k) A₀, x = y + (DualNumber.eps : DualNumber k) • z`. Introduce `x hx`. Establish `ha` using `crysLo_mem_Fil P hA₁ hg₁ h₁ hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨d₁, hd₁, e₁⟩` from `H₁ _ ha`. Take `⟨d₂, hd₂, e₂⟩` from `H₂ _ ha`. Establish `e : d₁ = d₂` using `crys_ext P hA₀ gA₀ fun c ↦ (e₁ c).trans (e₂ c).symm`. Take `⟨z, hz⟩` from `hBC.exists (crysHi x - g (crysLo x))`. Establish `hd₁₂ : d₁ ∈ liftFil (epsDP k) h₂` using `by rw [e]; exact hd₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨d₁, ⟨hd₁, hd₁₂⟩, z, crys_ext P hA₀ gA₀ fun c ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply, e₁, hz c, crys_constMor x c]`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hEq : liftFil (epsDP k) h₁ = liftFil (epsDP k) h₁ ⊓ liftFil (epsDP k) h₂`. Use `eq_of_le_of_le_add_eps ?_ inf_le_left step` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨N, hN⟩` from `(HC g₁ A₀ A₁ i₁ h₁ hA₁ hg₁).2.1`. Establish `c` using `HC.crysToDR_bijective h₁ hA₁ hg₁`. Conclude with `⟨_, (Submodule.orderIsoMapComap (LinearEquiv.ofBijective _ c)).symm.isCompl hN⟩`. Conclude with `fun x hx ↦ (hEq.le hx).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem liftFil_le (k : Type) [Field k] (A₀ : Over (Sp k)) [GrpObj A₀] (A₁ A₂ : Over (Sp (DualNumber k)))
     [GrpObj A₁] [GrpObj A₂] (i₁ : A₀.left ⟶ A₁.left) (i₂ : A₀.left ⟶ A₂.left)
@@ -74,7 +74,7 @@ theorem liftFil_le (k : Type) [Field k] (A₀ : Over (Sp k)) [GrpObj A₀] (A₁
   exact fun x hx ↦ (hEq.le hx).2
 
 /- English proof (translation)
-Introduce `k _ A₀ _ A₁ A₂ _ _ i₁ i₂ h₁ h₂ hA₁ hA₂ g H₁ H₂`. Conclude with `le_antisymm (liftFil_le k A₀ A₁ A₂ i₁ i₂ h₁ h₂ hA₁ g H₁ H₂) (liftFil_le k A₀ A₂ A₁ i₂ i₁ h₂ h₁ hA₂ g H₂ H₁)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem liftFil_eq : ∀ (k : Type) [Field k] (A₀ : Over (Sp k)) [GrpObj A₀] (A₁ A₂ : Over (Sp (DualNumber k))) [GrpObj A₁] [GrpObj A₂] (i₁ : A₀.left ⟶ A₁.left) (i₂ : A₀.left ⟶ A₂.left) (h₁ : IsGrpPullback A₀ A₁ (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) i₁) (h₂ : IsGrpPullback A₀ A₂ (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) i₂), IsAbelianScheme A₁ → IsAbelianScheme A₂ → ∀ g : HdR A₀ → HdR A₀, (∀ x ∈ Fil A₀, IsFilLift h₁ x (g x)) → (∀ x ∈ Fil A₀, IsFilLift h₂ x (g x)) → liftFil (epsDP k) h₁ = liftFil (epsDP k) h₂ := by
   intro k _ A₀ _ A₁ A₂ _ _ i₁ i₂ h₁ h₂ hA₁ hA₂ g H₁ H₂

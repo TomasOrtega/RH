@@ -20,11 +20,11 @@ noncomputable section
 namespace GlobalTheory.GenericFibreExtend
 
 /- English proof (translation)
-Take `⟨S, hS, hc, hi, hU⟩` from `NoetherianSpace.exists_finite_set_isClosed_irreducible hF`. Establish `h1 : O ∩ F ⊆ ⋃ s ∈ {s ∈ S | (s ∩ O).Nonempty}, s`. Introduce and unpack `x ⟨hxO, hxF⟩`. Rewrite `hxF` using `[hU]`. Take `⟨s, hs, hx⟩` from `hxF`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Set.mem_biUnion (show s ∈ {s ∈ S | (s ∩ O).Nonempty} from ⟨hs, x, hx, hxO⟩) hx`. Establish `h2 : IsClosed (⋃ s ∈ {s ∈ S | (s ∩ O).Nonempty}, s)` using `(hS.subset (Set.sep_subset _ _)).isClosed_biUnion fun s hs => hc s hs.1`. Take `⟨s, ⟨hs, hsO⟩, hys⟩` from `Set.mem_iUnion₂.1 (closure_minimal h1 h2 hy)`. Take `⟨z, hz⟩` from `QuasiSober.sober (hi s hs) (hc s hs)`. Use `⟨z, ⟨(hz.mem_open_set_iff hO).2 hsO, ?_⟩, hz.specializes hys⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU]`. Conclude with `⟨s, hs, hz.mem⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_specializes_of_mem_closure {X : Type*} [TopologicalSpace X] [NoetherianSpace X]
     [QuasiSober X] {O F : Set X} (hO : IsOpen O) (hF : IsClosed F) {y : X}
@@ -46,9 +46,9 @@ theorem exists_specializes_of_mem_closure {X : Type*} [TopologicalSpace X] [Noet
 variable {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y]
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ i₀, genericPoint Y ∈ L.U i₀`. Take `⟨i₀, h₀⟩` from `h`. Use `⟨fun i => unitVal _ (L.g i i₀), fun i k hi hk => ?_⟩` and prove the remaining obligations. Establish `hη : genericPoint Y ∈ L.U i ⊓ L.U k ⊓ L.U i₀` using `⟨⟨hi, hk⟩, h₀⟩`. Establish `e` using `congrArg (unitVal _) (hL.cocycle i k i₀)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[map_mul, unitVal_res _ hη, unitVal_res _ hη, unitVal_res _ hη]`. Conclude with `eq_div_iff_mul_eq'.2 e`. Conclude with `⟨1, fun i _ hi => (h ⟨i, hi⟩).elim⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_equations' (L : LB Y) (hL : L.IsLB) : ∃ f : L.ι → Y.functionFieldˣ,
     ∀ i k, genericPoint Y ∈ L.U i → genericPoint Y ∈ L.U k →
@@ -63,11 +63,11 @@ theorem exists_equations' (L : LB Y) (hL : L.IsLB) : ∃ f : L.ι → Y.function
   · exact ⟨1, fun i _ hi => (h ⟨i, hi⟩).elim⟩
 
 /- English proof (translation)
-Introduce `(p : M.ι × N.ι) (q : M.ι × N.ι)`. Use `ExtendLineBundle.unit_ext (U := M.U p.1 ⊓ N.U p.2 ⊓ (M.U q.1 ⊓ N.U q.2)) fun h => ?_` and prove the remaining obligations. Establish `hp` using `h.1`. Establish `hq` using `h.2`. Establish `e₁` using `ha p.1 q.1 hp.1 hq.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂` using `hb p.2 q.2 hp.2 hq.2`. Establish `key : ∀ (V : Y.Opens) (_ : genericPoint Y ∈ V) (l₁ : V ≤ M.U p.1 ⊓ N.U p.2) (l₂ : V ≤ M.U p.1 ⊓ M.U q.1) (l₃ : V ≤ N.U p.2 ⊓ N.U q.2) (l₄ : V ≤ M.U q.1 ⊓ N.U q.2), unitVal V (res l₁ (s p)) = unitVal V (res l₂ (M.g p.1 q.1) * (res l₃ (N.g p.2 q.2))⁻¹ * res l₄ (s q))`. Introduce `V h l₁ l₂ l₃ l₄`. Rewrite using `[map_mul, map_mul, map_inv, unitVal_res _ h, unitVal_res _ h, unitVal_res _ h, unitVal_res _ h, e₁, e₂, hs p hp, hs q hq]`. Rewrite using `[inv_div, mul_right_comm, div_mul_div_cancel, div_mul_div_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key _ h _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem isGen_of_equations' (M N : LB Y) (a : M.ι → Y.functionFieldˣ) (b : N.ι → Y.functionFieldˣ)
     (ha : ∀ i k, genericPoint Y ∈ M.U i → genericPoint Y ∈ M.U k →
@@ -99,7 +99,7 @@ def fieldMap : X.functionField →+* Y.functionField :=
   (X.presheaf.stalkSpecializes hη ≫ j.stalkMap (genericPoint Y)).hom
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `j.stalkMap _ (X.presheaf.stalkSpecializes hη (X.presheaf.germ U _ h s)) = _`. Rewrite using `[TopCat.Presheaf.germ_stalkSpecializes_apply]`. Conclude with `Scheme.Hom.germ_stalkMap_apply j U _ _ s`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fieldMap_germ {U : X.Opens} (h : genericPoint X ∈ U) (h' : genericPoint Y ∈ j ⁻¹ᵁ U)
     (s : Γ(X, U)) :
@@ -109,9 +109,9 @@ theorem fieldMap_germ {U : X.Opens} (h : genericPoint X ∈ U) (h' : genericPoin
   exact Scheme.Hom.germ_stalkMap_apply j U _ _ s
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hu`. Take `⟨b, rfl⟩` from `j.stalkMap_surjective y a`. Take `⟨U, hx, s, rfl⟩` from `X.presheaf.exists_germ_eq b`. Use `⟨_, germ_mem hx (genericPoint_mem hx) s, ?_⟩` and prove the remaining obligations. Establish `hy : y ∈ j ⁻¹ᵁ U` using `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[fieldMap_germ j hη _ (genericPoint_mem hy), ← algebraMap_germ hy]`. Conclude with `congrArg _ (Scheme.Hom.germ_stalkMap_apply j U _ _ s).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fieldMap_eq [IsPreimmersion j] {y : Y} {u : Y.functionField}
     (hu : u ∈ localSubring y) : ∃ t ∈ localSubring (j y), fieldMap j hη t = u := by
@@ -124,7 +124,7 @@ theorem exists_fieldMap_eq [IsPreimmersion j] {y : Y} {u : Y.functionField}
   exact congrArg _ (Scheme.Hom.germ_stalkMap_apply j U _ _ s).symm
 
 /- English proof (translation)
-Introduce `u`. Take `⟨U, hx, s, rfl⟩` from `Y.presheaf.exists_germ_eq (x := genericPoint Y) u`. Take `⟨t, -, ht⟩` from `exists_fieldMap_eq j hη (germ_mem hx hx s)`. Conclude with `⟨t, ht⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fieldMap_surjective [IsPreimmersion j] : Function.Surjective (fieldMap j hη) := by
   intro u
@@ -133,9 +133,9 @@ theorem fieldMap_surjective [IsPreimmersion j] : Function.Surjective (fieldMap j
   exact ⟨t, ht⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨t', ht', e⟩` from `exists_fieldMap_eq j hη h`. Rewrite using `[← (fieldMap j hη).injective e]` and apply the resulting hypothesis. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U, hx, s, rfl⟩` from `exists_section_of_mem h`. Establish `hy : y ∈ j ⁻¹ᵁ U` using `hx`. Rewrite using `[fieldMap_germ j hη _ (genericPoint_mem hy)]`. Conclude with `germ_mem hy _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fieldMap_mem_iff [IsPreimmersion j] {y : Y} {t : X.functionField} :
     fieldMap j hη t ∈ localSubring y ↔ t ∈ localSubring (j y) := by
@@ -152,7 +152,7 @@ theorem fieldMap_mem_iff [IsPreimmersion j] {y : Y} {t : X.functionField} :
 def unitMap : X.functionFieldˣ →* Y.functionFieldˣ := Units.map (fieldMap j hη).toMonoidHom
 
 /- English proof (translation)
-Rewrite using `[mem_localUnits, mem_localUnits, ← fieldMap_mem_iff j hη, ← fieldMap_mem_iff j hη, map_inv₀]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unitMap_mem_iff [IsPreimmersion j] {y : Y} {t : X.functionFieldˣ} :
     unitMap j hη t ∈ localUnits y ↔ t ∈ localUnits (j y) := by
@@ -160,9 +160,9 @@ theorem unitMap_mem_iff [IsPreimmersion j] {y : Y} {t : X.functionFieldˣ} :
   rfl
 
 /- English proof (translation)
-Introduce `u`. Take `⟨t, ht⟩` from `fieldMap_surjective j hη u`. Establish `h0 : t ≠ 0`. Introduce and unpack `rfl`. Conclude with `u.ne_zero (ht.symm.trans (map_zero _))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨Units.mk0 t h0, Units.ext ht⟩`.
+A detailed English derivation is pending.
 -/
 theorem unitMap_surjective [IsPreimmersion j] : Function.Surjective (unitMap j hη) := by
   intro u
@@ -173,7 +173,7 @@ theorem unitMap_surjective [IsPreimmersion j] : Function.Surjective (unitMap j h
   exact ⟨Units.mk0 t h0, Units.ext ht⟩
 
 /- English proof (translation)
-Establish `h : genericPoint X ∈ U` using `genericPoint_mem (x := j (genericPoint Y)) h'`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[val_unitVal h']`. Express the relevant statement in the definitionally equal form `_ = fieldMap j hη (unitVal U a).val`. Rewrite using `[val_unitVal h, fieldMap_germ j hη h h']`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -187,9 +187,9 @@ theorem unitVal_pullU {U : X.Opens} (h' : genericPoint Y ∈ j ⁻¹ᵁ U) (a : 
   rfl
 
 /- English proof (translation)
-Establish `hle : LB.wchart M (fun _ => j) p ⊓ LB.wchart M (fun _ => j) q ≤ j ⁻¹ᵁ (M.U (p ⟨⟩) ⊓ M.U (q ⟨⟩))` using `fun y hy => ⟨LB.wchart_le M (fun _ => j) p ⟨⟩ hy.1, LB.wchart_le M (fun _ => j) q ⟨⟩ hy.2⟩`. Establish `e : (M.pull j).g p q = res hle (pullU j _ (M.g (p ⟨⟩) (q ⟨⟩)))`. Express the relevant statement in the definitionally equal form `(∏ _k : PUnit.{1}, (res hle (pullU j _ (M.g (p _k) (q _k)))) ^ (1 : ℤ)) = _`. Rewrite using `[Fintype.prod_unique, zpow_one]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(unitVal_res _ h _).trans (unitVal_pullU j hη ?_ _)` and prove the remaining obligations. Conclude with `⟨LB.wchart_le M (fun _ => j) p ⟨⟩ h.1, LB.wchart_le M (fun _ => j) q ⟨⟩ h.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem unitVal_pull (M : LB X) (p q : PUnit → M.ι)
     (h : genericPoint Y ∈ (LB.wchart M (fun _ => j) p ⊓ LB.wchart M (fun _ => j) q)) :
@@ -206,7 +206,7 @@ theorem unitVal_pull (M : LB X) (p q : PUnit → M.ι)
 
 omit [IsIntegral Y] in
 /- English proof (translation)
-Rewrite using `[isOpen_iff_eventually]`. Introduce `x hx`. Use `mem_localUnits.1 hx` as an intermediate fact. Use `filter_upwards [eventually_mem this.1, eventually_mem this.2] with y h1 h2`. Conclude with `mem_localUnits.2 ⟨h1, h2⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_localUnits (t : X.functionFieldˣ) : IsOpen {x : X | t ∈ localUnits x} := by
   rw [isOpen_iff_eventually]
@@ -222,25 +222,19 @@ namespace GlobalTheory
 open GenericFibreExtend
 
 /- English proof (translation)
-Establish `: IsNoetherian X` using `{}`. Establish `hη : j (genericPoint Y) ⤳ genericPoint X`. Take `⟨y, -, hy⟩` from `hj (genericPoint_specializes (j (genericPoint Y)))`. Rewrite using `[← hy]`. Conclude with `(genericPoint_specializes y).map j.continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: NoetherianSpace Y` using `j.isEmbedding.isInducing.noetherianSpace`. Take `⟨f', hf'⟩` from `exists_equations' L hL`. Use `choose f hf using fun i => unitMap_surjective j hη (f' i)`. Establish `hfu : ∀ i k y, y ∈ L.U i → y ∈ L.U k → f i / f k ∈ localUnits (j y)` using `fun i k y hi hk => by`. Rewrite using `[← unitMap_mem_iff j hη, map_div, hf, hf, ← hf' i k (genericPoint_mem hi) (genericPoint_mem hk)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `unitVal_mem (U := L.U i ⊓ L.U k) ⟨hi, hk⟩ _`. Use `choose V hVo hV using fun i => j.isEmbedding.isInducing.isOpen_iff.1 (L.U i).isOpen`. Establish `hV' : ∀ i y, j y ∈ V i ↔ y ∈ L.U i` using `fun i y => Set.ext_iff.1 (hV i) y`. Take `⟨ι, hι⟩` from `(NoetherianSpace.isCompact (Set.univ : Set Y)).elim_finite_subcover (fun i => (L.U i : Set Y)) (fun i => (L.U i).isOpen) (fun y _ => by`. Establish `: y ∈ ⨆ i, L.U i` using `hL.cover ▸ trivial`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Set.mem_iUnion.2 (Opens.mem_iSup.1 this))`. Set `Z : ι × ι → Set X` to `fun p => (V p.1 ∩ V p.2) ∩ {x : X | f p.1 / f p.2 ∈ localUnits x}ᶜ`. Set `W : Set X` to `⋂ p, (closure (Z p))ᶜ`. Establish `hWo : IsOpen W` using `isOpen_iInter_of_finite fun p => isClosed_closure.isOpen_compl`. Establish `hW : ∀ y, j y ∈ W` using `fun y => Set.mem_iInter.2 fun p hp => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨z, hz, hzy⟩` from `exists_specializes_of_mem_closure ((hVo _).inter (hVo _)) (isOpen_localUnits _).isClosed_compl hp`. Take `⟨y', -, rfl⟩` from `hj hzy`. Conclude with `hz.2 (hfu _ _ y' ((hV' _ _).1 hz.1.1) ((hV' _ _).1 hz.1.2))`. Take `⟨T, h₀, hT, hc⟩` from `exists_compatible_cover hX (T₀ := Set.range fun i : ι => ((⟨V i ∩ W, (hVo i).inter hWo⟩ : X.Opens), f i)) (by`. Introduce and unpack `_ ⟨i, rfl⟩ _ ⟨k, rfl⟩ x hi hk`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Assume the negation of the conclusion as `h`. Conclude with `Set.mem_iInter.1 hi.2 (i, k) (subset_closure ⟨⟨hi.1, hk.1⟩, h⟩))`. Use `choose g hg using fun p q : T => exists_unit (U := p.1.1 ⊓ q.1.1) (t := p.1.2 / q.1.2) fun y hy => hT _ p.2 _ q.2 y hy.1 hy.2`. Set `L' : LB X` to `⟨T, fun p => p.1.1, g⟩`. Use `choose s hs using fun p : L.ι × (PUnit → T) => exists_unit (U := L.U p.1 ⊓ LB.wchart L' (fun _ => j) p.2) (t := f' p.1 / unitMap j hη (p.2 ⟨⟩).1.2) fun y hy => by`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, hi, hyi⟩` from `Set.mem_iUnion₂.1 (hι (Set.mem_univ y))`. Rewrite using `[← hf, ← map_div, unitMap_mem_iff]`. Use `mul_mem (hfu p.1 i y hy.1 hyi) (hT _ (h₀ ⟨⟨i, hi⟩, rfl⟩) _ (p.2 ⟨⟩).2 (j y) ⟨(hV' _ _).2 hyi, hW y⟩ (LB.wchart_le L' (fun _ => j) p.2 ⟨⟩ hy.2))` as an intermediate fact. Rewrite `this` using `[div_mul_div_cancel]`. Then use the resulting hypothesis. Use `⟨L', ⟨?_, fun p => ExtendLineBundle.unit_ext fun h => ?_, fun p q r => ExtendLineBundle.unit_ext fun h => ?_⟩, ⟨s⟩, isGen_of_equations' L (L'.pull j) f' (fun p => unitMap j hη (p ⟨⟩).1.2) hf' (fun p q hp hq => ?_) s hs⟩` and prove the remaining obligations.
-
-Use `top_unique fun x _ => ?_` and prove the remaining obligations. Take `⟨p, hp, hx⟩` from `hc x`. Conclude with `Opens.mem_iSup.2 ⟨⟨p, hp⟩, hx⟩`. Rewrite using `[unitVal_res _ h, map_one]`. Conclude with `(hg p p ⟨h, h⟩).trans (div_self' _)`.
-
-Rewrite using `[map_mul, unitVal_res _ h, unitVal_res _ h, unitVal_res _ h]`. Conclude with `(congrArg₂ (· * ·) (hg p q h.1) (hg q r ⟨h.1.2, h.2⟩)).trans ((div_mul_div_cancel _ _ _).trans (hg p r ⟨h.1.1, h.2⟩).symm)`. Use `(unitVal_pull j hη L' p q ⟨hp, hq⟩).trans ?_` and prove the remaining obligations. Rewrite using `[← map_div]`. Use `congrArg _ (hg (p ⟨⟩) (q ⟨⟩) (genericPoint_mem (x := j (genericPoint Y)) ?_))` and prove the remaining obligations.
-
-Conclude with `⟨LB.wchart_le L' (fun _ => j) p ⟨⟩ hp, LB.wchart_le L' (fun _ => j) q ⟨⟩ hq⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lineBundle_extension_of_generalizing (X Y : Scheme.{0}) [IsIntegral X]
     [IsIntegral Y] [IsLocallyNoetherian X] [CompactSpace X] (j : Y ⟶ X) [IsPreimmersion j]

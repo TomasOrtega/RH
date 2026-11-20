@@ -9,7 +9,7 @@ namespace CoverDenseAlt
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Rewrite using `[@norm_sq_eq_re_inner ℂ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem norm_sq_eq_sqAt (E : HermitianBundle.{0} K) (σ : K →+* ℂ) (x : Fibre σ E.carrier) :
     ‖FibreSpace.equiv E.metric σ x‖ ^ 2 = sqAt E σ x := by
@@ -17,11 +17,11 @@ theorem norm_sq_eq_sqAt (E : HermitianBundle.{0} K) (σ : K →+* ℂ) (x : Fibr
   rfl
 
 /- English proof (translation)
-Establish `hnorm : ∀ x : Fibre σ E.carrier, ‖FibreSpace.equiv (E'.metric.comap φ hφ) σ x‖ ≤ Real.sqrt c * ‖FibreSpace.equiv E.metric σ x‖`. Introduce `x`. Establish `h1 : ‖FibreSpace.equiv (E'.metric.comap φ hφ) σ x‖ ^ 2 = sqAt E' σ (φ.lTensor (ComplexAt σ) x)`. Rewrite using `[← CoverDenseAlt.norm_sq_eq_sqAt, @norm_sq_eq_re_inner ℂ, @norm_sq_eq_re_inner ℂ, FibreSpace.inner_equiv, FibreSpace.inner_equiv, HermitianMetric.comap_inner E'.metric φ hφ σ]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2` using `h x`. Rewrite `h2` using `[← h1, ← CoverDenseAlt.norm_sq_eq_sqAt]`. Establish `h3 : ‖FibreSpace.equiv (E'.metric.comap φ hφ) σ x‖ ^ 2 ≤ (Real.sqrt c * ‖FibreSpace.equiv E.metric σ x‖) ^ 2`. Rewrite using `[mul_pow, Real.sq_sqrt hc.le]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (mul_nonneg (Real.sqrt_nonneg _) (norm_nonneg _)) two_ne_zero).mp h3`. Establish `key` using `LatticeLemmas.gramDet_le_of_norm_le E.metric (E'.metric.comap φ hφ) σ (Real.sqrt c) hnorm hs`. Rewrite `key` using `[gramDet_comap]`. Rewrite `key` using `[max_eq_left (Real.sqrt_nonneg c), Real.sq_sqrt hc.le]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem gram_map_le (E E' : HermitianBundle.{0} K) (φ : E.carrier →ₗ[𝓞 K] E'.carrier) (c : ℝ)
     (hφ : Function.Injective φ) (hc : 0 < c) (σ : K →+* ℂ)
@@ -48,15 +48,15 @@ theorem gram_map_le (E E' : HermitianBundle.{0} K) (φ : E.carrier →ₗ[𝓞 K
   rwa [max_eq_left (Real.sqrt_nonneg c), Real.sq_sqrt hc.le] at key
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_linearIndependent_of_le_finrank (R := 𝓞 K) (M := F) (n := E.rank F) le_rfl`. Establish `hv : LinearIndependent (𝓞 K) (fun i => (s i : E.carrier))` using `hs.map' F.subtype F.ker_subtype`. Establish `hw : LinearIndependent (𝓞 K) (fun i => φ (s i : E.carrier))` using `hv.map' φ (LinearMap.ker_eq_bot.mpr hφ)`. Set `e` to `Submodule.equivMapOfInjective φ hφ F`. Set `t : Fin (E.rank F) → F.map φ` to `fun i => e (s i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `ht : LinearIndependent (𝓞 K) t` using `hs.map' e.toLinearMap e.ker`. Establish `hrank : E'.rank (F.map φ) = E.rank F` using `(LinearEquiv.finrank_eq e).symm`. Establish `hdF` using `E.degree_eq_of_linearIndependent F hs (Fintype.card_fin _)`. Establish `hdG : E'.degree (F.map φ) = Real.log (Nat.card (F.map φ ⧸ Submodule.span (𝓞 K) (Set.range t))) - 1 / 2 * ∑ σ : K →+* ℂ, Real.log (gramDet E'.metric σ fun i => φ (s i : E.carrier))` using `E'.degree_eq_of_linearIndependent (F.map φ) ht (by rw [Fintype.card_fin, hrank])`. Establish `hcard : Nat.card (F.map φ ⧸ Submodule.span (𝓞 K) (Set.range t)) = Nat.card (F ⧸ Submodule.span (𝓞 K) (Set.range s))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Nat.card_congr (Submodule.Quotient.equiv _ _ e ?_).toEquiv).symm` and prove the remaining obligations. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Establish `hgram : ∀ σ : K →+* ℂ, Real.log (gramDet E'.metric σ fun i => φ (s i : E.carrier)) ≤ E.rank F * Real.log c + Real.log (gramDet E.metric σ fun i => (s i : E.carrier))`. Introduce `σ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle` using `gram_map_le E E' φ c hφ hc σ (h σ) hv`. Establish `hpos'` using `gramDet_pos E'.metric σ hw`. Establish `hpos` using `gramDet_pos E.metric σ hv`. Combine the equalities or inequalities in the displayed calculation. Establish `hsum` using `Finset.sum_le_sum fun σ (_ : σ ∈ Finset.univ) => hgram σ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite `hsum` using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, NumberField.Embeddings.card K ℂ, nsmul_eq_mul]`. Establish `hq : (0 : ℝ) < Module.finrank ℚ K` using `by exact_mod_cast Module.finrank_pos`. Unfold `HermitianBundle.normDegree`. Rewrite using `[div_add' _ _ _ hq.ne', div_le_div_iff_of_pos_right hq, hdF, hdG, hcard]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem normDeg_map (E E' : HermitianBundle.{0} K) (φ : E.carrier →ₗ[𝓞 K] E'.carrier) (c : ℝ)
     (hφ : Function.Injective φ) (hc : 0 < c)
@@ -99,13 +99,13 @@ theorem normDeg_map (E E' : HermitianBundle.{0} K) (φ : E.carrier →ₗ[𝓞 K
   linarith
 
 /- English proof (translation)
-Introduce `K _ _ E E' φ c hφ hc h`. Use `⟨normDeg_map E E' φ c hφ hc h, iSup₂_le fun F hF => ?_⟩` and prove the remaining obligations. Establish `hne : F.map φ ≠ ⊥`. Introduce `h0`. Use `rank_map E E' φ hφ F` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h0]`. Establish `h1` using `rank_pos E hF`. Rewrite `h1` using `[← this]`. Simplify using `[HermitianBundle.rank] at h1`. Establish `hle : ((E'.slope (F.map φ) : ℝ) : EReal) ≤ E'.slopeMax` using `le_iSup₂_of_le (F.map φ) hne le_rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `le_trans ?_ (add_le_add_left hle _)` and prove the remaining obligations. Rewrite using `[← EReal.coe_add, EReal.coe_le_coe_iff]`. Establish `hr : (0 : ℝ) < E.rank F` using `by exact_mod_cast rank_pos E hF`. Establish `hd` using `normDeg_map E E' φ c hφ hc h F`. Unfold `HermitianBundle.slope`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[rank_map E E' φ hφ, div_add' _ _ _ hr.ne']`. Use `div_le_div_of_nonneg_right ?_ hr.le` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem normDegree_le_of_metric_bounded_map : ∀ (K : Type) [Field K] [NumberField K] (E E' : HermitianBundle.{0} K) (φ : E.carrier →ₗ[𝓞 K] E'.carrier) (c : ℝ), Function.Injective φ → 0 < c → (∀ (σ : K →+* ℂ) (x : Fibre σ E.carrier), sqAt E' σ (φ.lTensor (ComplexAt σ) x) ≤ c * sqAt E σ x) → (∀ F : Submodule (𝓞 K) E.carrier, E.normDegree F ≤ E'.normDegree (F.map φ) + E.rank F / 2 * Real.log c) ∧ E.slopeMax ≤ E'.slopeMax + ((Real.log c / 2 : ℝ) : EReal) := by
   intro K _ _ E E' φ c hφ hc h

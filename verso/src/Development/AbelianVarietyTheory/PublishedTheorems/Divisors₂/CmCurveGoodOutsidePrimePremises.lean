@@ -40,7 +40,7 @@ def CMCurveGoodOutsidePrimeSt : Prop :=
 section Lattice
 
 /- English proof (translation)
-Unfold `sqrtNegNat`. Rewrite using `[mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg p)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sqrtNegNat_sq (p : ℕ) : sqrtNegNat p ^ 2 = -(p : ℂ) := by
   unfold sqrtNegNat
@@ -49,9 +49,9 @@ theorem sqrtNegNat_sq (p : ℕ) : sqrtNegNat p ^ 2 = -(p : ℂ) := by
   ring
 
 /- English proof (translation)
-Establish `hG : ∀ n, L.G n = L'.G n`. Introduce `n`. Unfold `PeriodPair.G`. Rewrite using `[h]`. Rewrite using `[latticeCurve_j_eq, latticeCurve_j_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [PeriodPair.g₂, PeriodPair.g₃, hG]`.
+Simplify using the standard rewrite rules.
 -/
 theorem latticeCurve_j_congr {L L' : PeriodPair} (h : L.lattice = L'.lattice) :
     (latticeCurve L).j = (latticeCurve L').j := by
@@ -63,7 +63,7 @@ theorem latticeCurve_j_congr {L L' : PeriodPair} (h : L.lattice = L'.lattice) :
   simp only [PeriodPair.g₂, PeriodPair.g₃, hG]
 
 /- English proof (translation)
-Apply `latticeCurve_j_congr` to reduce the goal to its premises. Use extensionality with `z`. Rewrite using `[h z, h' z]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsIntegersLattice.j_eq {p : ℕ} {L L' : PeriodPair} (h : IsIntegersLattice p L)
     (h' : IsIntegersLattice p L') : (latticeCurve L).j = (latticeCurve L').j := by
@@ -74,9 +74,9 @@ theorem IsIntegersLattice.j_eq {p : ℕ} {L L' : PeriodPair} (h : IsIntegersLatt
 variable {p : ℕ} {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Use `⟨fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[← InfinitePlace.not_isReal_iff_isComplex]`. Introduce `hv`. Establish `h1` using `congrArg (InfinitePlace.embedding_of_isReal hv) hx`. Rewrite `h1` using `[map_pow, map_neg, map_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (0 : ℝ) < p` using `by exact_mod_cast hp`. Use polynomial arithmetic with `[sq_nonneg (InfinitePlace.embedding_of_isReal hv x)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem isTotallyComplex_of_sq_eq_neg (hp : 0 < p) {x : K} (hx : x ^ 2 = -(p : K)) :
     IsTotallyComplex K := by
@@ -91,9 +91,9 @@ theorem isTotallyComplex_of_sq_eq_neg (hp : 0 < p) {x : K} (hx : x ^ 2 = -(p : K
 variable [Algebra K ℂ]
 
 /- English proof (translation)
-Introduce `hq`. Establish `h1` using `sqrtNegNat_sq p`. Rewrite `h1` using `[← hq, eq_ratCast]`. Establish `h3 : ((q ^ 2 : ℚ) : ℂ) = ((-(p : ℚ) : ℚ) : ℂ)`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `h1`. Establish `h4` using `Rat.cast_injective h3`. Establish `h5 : (0 : ℚ) < p` using `by exact_mod_cast hp`. Use polynomial arithmetic with `[sq_nonneg q]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem algebraMap_rat_ne_sqrtNegNat (hp : 0 < p) (q : ℚ) : algebraMap ℚ ℂ q ≠ sqrtNegNat p := by
   intro hq
@@ -107,11 +107,11 @@ private theorem algebraMap_rat_ne_sqrtNegNat (hp : 0 < p) (q : ℚ) : algebraMap
   nlinarith [sq_nonneg q]
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℚ (sqrtNegNat p)` using `⟨Polynomial.X ^ 2 + Polynomial.C (p : ℚ), Polynomial.monic_X_pow_add_C _ two_ne_zero, by`. Simplify using `[sqrtNegNat_sq]⟩`. Rewrite using `[IntermediateField.adjoin.finrank hint]`. Establish `hle : (minpoly ℚ (sqrtNegNat p)).natDegree ≤ 2`. Establish `hd` using `minpoly.degree_le_of_ne_zero ℚ (sqrtNegNat p) (Polynomial.X_pow_add_C_ne_zero two_pos (p : ℚ)) (by simp [sqrtNegNat_sq])`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hd` using `[Polynomial.degree_X_pow_add_C two_pos]`. Conclude with `Polynomial.natDegree_le_of_degree_le hd`. Establish `hne : (minpoly ℚ (sqrtNegNat p)).natDegree ≠ 1`. Introduce `h1`. Take `⟨q, hq⟩` from `minpoly.natDegree_eq_one_iff.mp h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `algebraMap_rat_ne_sqrtNegNat hp q hq`. Establish `hpos` using `minpoly.natDegree_pos hint`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem finrank_adjoin_sqrtNegNat_eq_two (hp : 0 < p) : Module.finrank ℚ ℚ⟮sqrtNegNat p⟯ = 2 := by
   have hint : IsIntegral ℚ (sqrtNegNat p) :=
@@ -131,11 +131,11 @@ private theorem finrank_adjoin_sqrtNegNat_eq_two (hp : 0 < p) : Module.finrank �
   omega
 
 /- English proof (translation)
-Set `φ : K →ₐ[ℚ] ℂ` to `(algebraMap K ℂ).toRatAlgHom`. Establish `hxs : sqrtNegNat p ^ 2 = φ x ^ 2`. Rewrite using `[sqrtNegNat_sq, ← map_pow, hx, map_neg, map_natCast]`. Establish `hsE : sqrtNegNat p ∈ φ.fieldRange`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp hxs with h | h` into its components or cases.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `AlgHom.mem_fieldRange.mpr ⟨x, h.symm⟩`. Conclude with `AlgHom.mem_fieldRange.mpr ⟨-x, by rw [map_neg, h]⟩`. Establish `hle : ℚ⟮sqrtNegNat p⟯ ≤ φ.fieldRange` using `IntermediateField.adjoin_simple_le_iff.mpr hsE`. Establish `hE : Module.finrank ℚ φ.fieldRange = 2`. Rewrite using `[← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(AlgEquiv.ofInjectiveField φ).toLinearEquiv.finrank_eq.symm`. Establish `: FiniteDimensional ℚ φ.fieldRange` using `Module.finite_of_finrank_pos (by omega)`. Establish `heq : ℚ⟮sqrtNegNat p⟯ = φ.fieldRange` using `IntermediateField.eq_of_le_of_finrank_eq hle (by rw [hE, finrank_adjoin_sqrtNegNat_eq_two hp])`. Rewrite using `[heq]`. Conclude with `AlgHom.mem_fieldRange`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_adjoin_sqrtNegNat_iff (hp : 0 < p) (h2 : Module.finrank ℚ K = 2) {x : K}
     (hx : x ^ 2 = -(p : K)) (z : ℂ) :
@@ -158,15 +158,13 @@ theorem mem_adjoin_sqrtNegNat_iff (hp : 0 < p) (h2 : Module.finrank ℚ K = 2) {
   exact AlgHom.mem_fieldRange
 
 /- English proof (translation)
-Set `ψ : K →ₐ[ℤ] ℂ` to `(algebraMap K ℂ).toIntAlgHom`. Establish `key : ∀ z : ℂ, (z ∈ ℚ⟮sqrtNegNat p⟯ ∧ IsIntegral ℤ z) ↔ z ∈ algebraMap K ℂ '' (((1 : (FractionalIdeal (𝓞 K)⁰ K)ˣ) : FractionalIdeal (𝓞 K)⁰ K) : Set K)`. Introduce `z`. Rewrite using `[mem_adjoin_sqrtNegNat_iff hp h2 hx z, Units.val_one]`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨⟨y, rfl⟩, hz⟩`. Establish `hy : IsIntegral ℤ y` using `(isIntegral_algHom_iff ψ (algebraMap K ℂ).injective).mp hz`. Use `⟨y, ?_, rfl⟩` and prove the remaining obligations. Conclude with `(FractionalIdeal.mem_one_iff _).mpr ⟨⟨y, hy⟩, rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨r, rfl⟩` from `(FractionalIdeal.mem_one_iff _).mp hy`. Use `⟨⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `(isIntegral_algHom_iff ψ (algebraMap K ℂ).injective).mpr r.isIntegral_coe`. Unfold `IsIntegersLattice IsIdealLattice`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `h`. Use extensionality with `z`. Conclude with `(h z).trans (key z)`. Introduce `h z`. Rewrite using `[key z]`.
-
-Conclude with `Set.ext_iff.mp h z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegersLattice_iff (hp : 0 < p) (h2 : Module.finrank ℚ K = 2) {x : K}
     (hx : x ^ 2 = -(p : K)) (L : PeriodPair) :
@@ -196,11 +194,11 @@ theorem isIntegersLattice_iff (hp : 0 < p) (h2 : Module.finrank ℚ K = 2) {x : 
     exact Set.ext_iff.mp h z
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℚ (sqrtNegNat p)` using `⟨Polynomial.X ^ 2 + Polynomial.C (p : ℚ), Polynomial.monic_X_pow_add_C _ two_ne_zero, by`. Simplify using `[sqrtNegNat_sq]⟩`. Establish `: FiniteDimensional ℚ ℚ⟮sqrtNegNat p⟯` using `IntermediateField.adjoin.finiteDimensional hint`. Establish `: NumberField ℚ⟮sqrtNegNat p⟯` using `⟨⟩`. Set `x : ℚ⟮sqrtNegNat p⟯` to `⟨sqrtNegNat p, IntermediateField.mem_adjoin_simple_self ℚ _⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hx : x ^ 2 = -(p : ℚ⟮sqrtNegNat p⟯)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[x, sqrtNegNat_sq]`. Establish `: IsTotallyComplex ℚ⟮sqrtNegNat p⟯` using `isTotallyComplex_of_sq_eq_neg hp hx`. Take `⟨L, hL⟩` from `exists_isIdealLattice (finrank_adjoin_sqrtNegNat_eq_two hp) 1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨L, (isIntegersLattice_iff hp (finrank_adjoin_sqrtNegNat_eq_two hp) hx L).mpr hL⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isIntegersLattice (hp : 0 < p) : ∃ L, IsIntegersLattice p L := by
   have hint : IsIntegral ℚ (sqrtNegNat p) :=
@@ -223,7 +221,7 @@ section Consequences
 variable {p : ℕ}
 
 /- English proof (translation)
-Apply `le_antisymm (IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ _)` to reduce the goal to its premises. Establish `h1 : IsDedekindDomain.HeightOneSpectrum.valuation K (IsDiscreteValuationRing.maximalIdeal R) (algebraMap R K w) * IsDedekindDomain.HeightOneSpectrum.valuation K (IsDiscreteValuationRing.maximalIdeal R) (algebraMap R K ↑w⁻¹) = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Rewrite using `[← h1]`. Conclude with `mul_le_of_le_one_right zero_le (IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ _)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valuation_algebraMap_unit_eq_one' {R K : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [Field K] [Algebra R K] [IsFractionRing R K] (w : Rˣ) :
@@ -239,11 +237,11 @@ private theorem valuation_algebraMap_unit_eq_one' {R K : Type} [CommRing R] [IsD
   exact mul_le_of_le_one_right zero_le (IsDedekindDomain.HeightOneSpectrum.valuation_le_one _ _)
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨C, u, hmin, hΔ⟩` from `h v`. Use `⟨C, { toIsMinimal := hmin, goodReduction := ?_ }⟩` and prove the remaining obligations. Establish `hpu : IsUnit (p : v.valuationSubringAtPrime F)`. Use `IsLocalization.map_units (M := v.asIdeal.primeCompl) (v.valuationSubringAtPrime F) ⟨(p : 𝓞 F), hv⟩` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Take `⟨w, hw⟩` from `u.isUnit.mul (hpu.pow 3).neg`. Establish `hΔ' : (C • A).Δ = algebraMap (v.valuationSubringAtPrime F) F (w : v.valuationSubringAtPrime F)`. Rewrite using `[hw, hΔ, map_mul, map_neg, map_pow, map_natCast]`. Both sides reduce to the same expression.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hΔ']`. Conclude with `valuation_algebraMap_unit_eq_one' w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasMinimalDiscriminant.hasGoodReductionOutside {F : Type} [Field F] [NumberField F]
     {A : WeierstrassCurve F} (h : HasMinimalDiscriminant A (-(p : F) ^ 3)) :
@@ -265,21 +263,21 @@ theorem HasMinimalDiscriminant.hasGoodReductionOutside {F : Type} [Field F] [Num
 variable {F : IntermediateField ℚ ℂ} {A : WeierstrassCurve F}
 
 /- English proof (translation)
-Take `⟨hF, -⟩` from `h`. Conclude with `hF`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsGoodCMCurve.numberField (h : IsGoodCMCurve p F A) : NumberField F := by
   obtain ⟨hF, -⟩ := h
   exact hF
 
 /- English proof (translation)
-Take `⟨-, hA, -⟩` from `h`. Conclude with `hA`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsGoodCMCurve.isElliptic (h : IsGoodCMCurve p F A) : A.IsElliptic := by
   obtain ⟨-, hA, -⟩ := h
   exact hA
 
 /- English proof (translation)
-Take `⟨_, _, L₀, _, _, _, hg⟩` from `h`. Conclude with `hg`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsGoodCMCurve.hasGoodReductionOutside [NumberField F] (h : IsGoodCMCurve p F A) :
     HasGoodReductionOutside p A := by
@@ -287,7 +285,7 @@ theorem IsGoodCMCurve.hasGoodReductionOutside [NumberField F] (h : IsGoodCMCurve
   exact hg
 
 /- English proof (translation)
-Take `⟨_, _, L₀, hL₀, _, hj, _⟩` from `h`. Conclude with `hj.trans (hL₀.j_eq hL)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsGoodCMCurve.j_eq [A.IsElliptic] (h : IsGoodCMCurve p F A) {L : PeriodPair}
     (hL : IsIntegersLattice p L) : (A.j : ℂ) = (latticeCurve L).j := by
@@ -295,7 +293,7 @@ theorem IsGoodCMCurve.j_eq [A.IsElliptic] (h : IsGoodCMCurve p F A) {L : PeriodP
   exact hj.trans (hL₀.j_eq hL)
 
 /- English proof (translation)
-Take `⟨_, _, L₀, hL₀, hF, _⟩` from `h`. Rewrite using `[hF, hL₀.j_eq hL]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsGoodCMCurve.field_eq (h : IsGoodCMCurve p F A) {L : PeriodPair}
     (hL : IsIntegersLattice p L) : F = ℚ⟮(latticeCurve L).j⟯ := by
@@ -303,7 +301,7 @@ theorem IsGoodCMCurve.field_eq (h : IsGoodCMCurve p F A) {L : PeriodPair}
   rw [hF, hL₀.j_eq hL]
 
 /- English proof (translation)
-Take `⟨F, -, A, hA, -⟩` from `h p hp h4 h3`. Conclude with `⟨F, A, hA⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem CMCurveGoodOutsidePrimeSt.exists_isGoodCMCurve (h : CMCurveGoodOutsidePrimeSt)
     (hp : p.Prime) (h4 : p % 4 = 3) (h3 : 3 < p) :

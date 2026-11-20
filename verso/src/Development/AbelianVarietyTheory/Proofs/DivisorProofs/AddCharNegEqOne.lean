@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.LinSchur
 
 /- English proof (translation)
-Establish `e` using `AddChar.map_add_eq_mul ψ (-x) x`. Rewrite `e` using `[neg_add_cancel, AddChar.map_zero_eq_one, h, mul_one]`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addChar_neg_eq_one {A : Type} [AddGroup A] (ψ : AddChar A ℂ) {x : A} (h : ψ x = 1) : ψ (-x) = 1 := by
   have e := AddChar.map_add_eq_mul ψ (-x) x
@@ -33,7 +33,7 @@ def latt (ψ0 : AddChar k ℂ) (n d : ℕ) (s : k) : AddSubgroup (Matrix (Fin n)
     exact addChar_neg_eq_one ψ0 (ha i j o ho)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_latt {ψ0 : AddChar k ℂ} {n d : ℕ} {s : k} {Y : Matrix (Fin n) (Fin d) k} :
     Y ∈ latt ψ0 n d s ↔ ∀ i j, ∀ o : k, ValuativeRel.valuation k o ≤ 1 → ψ0 (o * (s * Y i j)) = 1 := Iff.rfl

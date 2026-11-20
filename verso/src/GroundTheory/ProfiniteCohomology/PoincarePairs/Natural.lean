@@ -18,9 +18,9 @@ section LeibnizNatural
 variable {k : Type u} [CommRing k] {M M' N N' P : CochainComplex (ModuleCat.{u} k) ℕ}
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `homologyπ_hom_surjective M r x`. Take `⟨y, rfl⟩` from `homologyπ_hom_surjective N' s y`. Rewrite using `[hom_apply_hom_apply_eq_of_comp_eq (HomologicalComplex.homologyπ_naturality g s) y, hom_apply_hom_apply_eq_of_comp_eq (HomologicalComplex.homologyπ_naturality f r) x, LeibnizPairing.homology_homologyπ, LeibnizPairing.homology_homologyπ]`. Use `congr 1`. Apply `iCycles_hom_injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[LeibnizPairing.iCycles_cycles, LeibnizPairing.iCycles_cycles, iCycles_cyclesMap_apply, iCycles_cyclesMap_apply]`. Conclude with `hfg h _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeibnizPairing.homology_homologyMap (μ₁ : LeibnizPairing M N P)
     (μ₂ : LeibnizPairing M' N' P) (f : M ⟶ M') (g : N' ⟶ N)
@@ -65,9 +65,9 @@ noncomputable abbrev compactCohomologyResMap {A B : Rep.{u} k G} [IsDiscreteRep 
 variable {A B C : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B] [IsDiscreteRep C]
 
 /- English proof (translation)
-Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun (p : (cochainsComplex A).X n × shiftNegOneX (piComplex fun v => cochainsComplex (Rep.res (φ v).toMonoidHom A)) n) => Prod.ext ?_ ?_)` and prove the remaining obligations. Conclude with `congrArg (fun F => (F.f n).hom p.1) (cochainsMap_add g₁ g₂)`. Consider the cases of `n with`. Consider the case `zero => rfl`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n`. Use `funext fun v => ?_` and prove the remaining obligations. Conclude with `congrArg (fun F => (F.f n).hom (p.2 v)) (cochainsMap_add ((Rep.resFunctor (φ v).toMonoidHom).map g₁) ((Rep.resFunctor (φ v).toMonoidHom).map g₂))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem compactCochainsResMap_add (g₁ g₂ : A ⟶ B) :
     compactCochainsResMap φ (g₁ + g₂) = compactCochainsResMap φ g₁ + compactCochainsResMap φ g₂ := by
@@ -84,9 +84,9 @@ theorem compactCochainsResMap_add (g₁ g₂ : A ⟶ B) :
         ((Rep.resFunctor (φ v).toMonoidHom).map g₁) ((Rep.resFunctor (φ v).toMonoidHom).map g₂))
 
 /- English proof (translation)
-Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun (p : (cochainsComplex A).X n × shiftNegOneX (piComplex fun v => cochainsComplex (Rep.res (φ v).toMonoidHom A)) n) => Prod.ext ?_ ?_)` and prove the remaining obligations. Conclude with `congrArg (fun F => (F.f n).hom p.1) (cochainsMap_zero (A := A) (B := B))`. Consider the cases of `n with`. Consider the case `zero => rfl`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n`. Use `funext fun v => ?_` and prove the remaining obligations. Conclude with `congrArg (fun F => (F.f n).hom (p.2 v)) (cochainsMap_zero (A := Rep.res (φ v).toMonoidHom A) (B := Rep.res (φ v).toMonoidHom B))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem compactCochainsResMap_zero :
     compactCochainsResMap φ (0 : A ⟶ B) = 0 := by
@@ -103,7 +103,7 @@ theorem compactCochainsResMap_zero :
         (cochainsMap_zero (A := Rep.res (φ v).toMonoidHom A) (B := Rep.res (φ v).toMonoidHom B))
 
 /- English proof (translation)
-Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun (p : (cochainsComplex A).X n × shiftNegOneX (piComplex fun v => cochainsComplex (Rep.res (φ v).toMonoidHom A)) n) => Prod.ext rfl ?_)` and prove the remaining obligations. Consider the cases of `n with`. Consider the case `zero => rfl`. Consider the case `succ n => rfl`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem compactCochainsResMap_id : compactCochainsResMap φ (𝟙 A) = 𝟙 _ := by
   ext n : 1
@@ -115,7 +115,7 @@ theorem compactCochainsResMap_id : compactCochainsResMap φ (𝟙 A) = 𝟙 _ :=
   | succ n => rfl
 
 /- English proof (translation)
-Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun (p : (cochainsComplex A).X n × shiftNegOneX (piComplex fun v => cochainsComplex (Rep.res (φ v).toMonoidHom A)) n) => Prod.ext rfl ?_)` and prove the remaining obligations. Consider the cases of `n with`. Consider the case `zero => rfl`. Consider the case `succ n => rfl`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem compactCochainsResMap_comp (g : A ⟶ B) (g' : B ⟶ C) :
     compactCochainsResMap φ (g ≫ g') = compactCochainsResMap φ g ≫ compactCochainsResMap φ g' := by
@@ -128,7 +128,7 @@ theorem compactCochainsResMap_comp (g : A ⟶ B) (g' : B ⟶ C) :
   | succ n => rfl
 
 /- English proof (translation)
-Rewrite using `[compactCohomologyResMap, compactCochainsResMap_add, HomologicalComplex.homologyMap_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem compactCohomologyResMap_add (g₁ g₂ : A ⟶ B) (n : ℕ) :
     compactCohomologyResMap φ (g₁ + g₂) n =
@@ -137,21 +137,21 @@ theorem compactCohomologyResMap_add (g₁ g₂ : A ⟶ B) (n : ℕ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[compactCohomologyResMap, compactCochainsResMap_zero, HomologicalComplex.homologyMap_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem compactCohomologyResMap_zero (n : ℕ) : compactCohomologyResMap φ (0 : A ⟶ B) n = 0 := by
   rw [compactCohomologyResMap, compactCochainsResMap_zero, HomologicalComplex.homologyMap_zero]
   rfl
 
 /- English proof (translation)
-Rewrite using `[compactCohomologyResMap, compactCochainsResMap_id, HomologicalComplex.homologyMap_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem compactCohomologyResMap_id (n : ℕ) : compactCohomologyResMap φ (𝟙 A) n = 𝟙 _ := by
   rw [compactCohomologyResMap, compactCochainsResMap_id, HomologicalComplex.homologyMap_id]
   rfl
 
 /- English proof (translation)
-Rewrite using `[compactCohomologyResMap, compactCochainsResMap_comp, HomologicalComplex.homologyMap_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem compactCohomologyResMap_comp (g : A ⟶ B) (g' : B ⟶ C) (n : ℕ) :
     compactCohomologyResMap φ (g ≫ g') n =
@@ -160,7 +160,7 @@ theorem compactCohomologyResMap_comp (g : A ⟶ B) (g' : B ⟶ C) (n : ℕ) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction with`. Consider the case `empty => simp [compactCohomologyResMap_zero]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, compactCohomologyResMap_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem compactCohomologyResMap_finsetSum {J : Type*} (s : Finset J) (f : J → (A ⟶ B)) (m : ℕ) :
     compactCohomologyResMap φ (∑ j ∈ s, f j) m = ∑ j ∈ s, compactCohomologyResMap φ (f j) m := by
@@ -171,9 +171,9 @@ theorem compactCohomologyResMap_finsetSum {J : Type*} (s : Finset J) (f : J → 
     rw [Finset.sum_insert ha, Finset.sum_insert ha, compactCohomologyResMap_add, ih]
 
 /- English proof (translation)
-Establish `h0 : (∑ _j ∈ Finset.range m, 𝟙 A) = 0`. Rewrite using `[Finset.sum_const, Finset.card_range]`. Use extensionality with `a`. Conclude with `hm a`. Establish `e : (compactCohomologyResMap φ (∑ _j ∈ Finset.range m, 𝟙 A) n).hom x = (compactCohomologyResMap φ (0 : A ⟶ A) n).hom x` using `by rw [h0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[compactCohomologyResMap_finsetSum, compactCohomologyResMap_zero]`. Simplify using `only [compactCohomologyResMap_id, Finset.sum_const, Finset.card_range] at e`. Simplify using `using e`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem nsmul_compactCohomologyRes_eq_zero {m : ℕ} (hm : ∀ a : A, m • a = 0) (n : ℕ)
     (x : compactCohomologyRes φ A n) : m • x = 0 := by
@@ -198,7 +198,7 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
 /- English proof (translation)
-The claim follows from `(cupCochain_tensorHom_eq ((α ⊗ₘ 𝟙 Y) ≫ ν) ν' β hν h F E σ).symm.trans (cupCochain_tensorHom_eq' _ ν α rfl h F E σ)`.
+A detailed English derivation is pending.
 -/
 theorem cupCochain_naturality {X X' Y Y' Z : Rep.{u} k G} (ν : X ⊗ Y ⟶ Z) (ν' : X' ⊗ Y' ⟶ Z)
     (α : X' ⟶ X) (β : Y ⟶ Y') (hν : (α ⊗ₘ 𝟙 Y) ≫ ν = (𝟙 X' ⊗ₘ β) ≫ ν') {r s n : ℕ}
@@ -211,7 +211,7 @@ theorem cupCochain_naturality {X X' Y Y' Z : Rep.{u} k G} (ν : X ⊗ Y ⟶ Z) (
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
 /- English proof (translation)
-Use `Rep.Hom.ext (Representation.IntertwiningMap.ext (LinearMap.ext fun x => ?_))` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a b => exact congrArg (fun F => F.hom (a ⊗ₜ[k] b : (X' ⊗ Y : Rep k G))) hν`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem resFunctor_map_naturality {K : Type u} [Group K] (ψ : K →* G)
     {X X' Y Y' Z : Rep.{u} k G} (ν : X ⊗ Y ⟶ Z) (ν' : X' ⊗ Y' ⟶ Z) (α : X' ⟶ X) (β : Y ⟶ Y')
@@ -242,15 +242,13 @@ theorem compactCupRes_eq_homology (μ : A ⊗ B ⟶ C) {r s n : ℕ} (h : r + s 
   rfl
 
 /- English proof (translation)
-Rewrite using `[compactCupRes_eq_homology, compactCupRes_eq_homology]`. Use `(LeibnizPairing.homology_homologyMap (compactCupResLeibniz φ μ') (compactCupResLeibniz φ μ) (compactCochainsResMap φ g) (cochainsMap f) ?_ h y x).symm` and prove the remaining obligations. Introduce `r s n h p z`. Use `revert p`. Introduce `(p : (cochainsComplex A').X r × shiftNegOneX (piComplex fun v => cochainsComplex (Rep.res (φ v).toMonoidHom A')) r)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x0, b⟩` from `p`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Conclude with `cupCochain_naturality μ μ' g f hμ h (cochainOf _ x0) (cochainOf _ z) σ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the cases of `r with`. Consider the case `zero => rfl`. Consider the case `succ r`. Consider the cases of `n with`. Consider the case `zero => rfl`.
+Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ m => revert b`. Introduce `(b : (piComplex fun v => cochainsComplex (Rep.res (φ v).toMonoidHom A')).X r)`. Use `funext fun v => ?_` and prove the remaining obligations. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`.
-
-Conclude with `cupCochain_naturality ((Rep.resFunctor (φ v).toMonoidHom).map μ) ((Rep.resFunctor (φ v).toMonoidHom).map μ') ((Rep.resFunctor (φ v).toMonoidHom).map g) ((Rep.resFunctor (φ v).toMonoidHom).map f) (resFunctor_map_naturality (φ v).toMonoidHom μ μ' g f hμ) (show r + s = m by omega) ( …`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem compactCupRes_compactCohomologyResMap (μ : A ⊗ B ⟶ C) (μ' : A' ⊗ B' ⟶ C) (g : A' ⟶ A)
     (f : B ⟶ B') (hμ : (g ⊗ₘ 𝟙 B) ≫ μ = (𝟙 A' ⊗ₘ f) ≫ μ') {r s n : ℕ} (h : r + s = n)
@@ -298,7 +296,7 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
 omit [TopologicalSpace G] [IsTopologicalGroup G] in
 
 /- English proof (translation)
-Use `Rep.Hom.ext (Representation.IntertwiningMap.ext (LinearMap.ext fun x => ?_))` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a b => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensorHom_dualEvalPairing {A B : Rep.{u} k G} (f : A ⟶ B) :
     (dualMap D f ⊗ₘ 𝟙 A) ≫ dualEvalPairing D A = (𝟙 (dualRep D B) ⊗ₘ f) ≫ dualEvalPairing D B := by
@@ -309,7 +307,7 @@ theorem tensorHom_dualEvalPairing {A B : Rep.{u} k G} (f : A ⟶ B) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Rewrite using `[compactDualityMap_apply, compactDualityMap_apply, compactCupRes_compactCohomologyResMap φ (dualEvalPairing D A) (dualEvalPairing D B) (dualMap D f) f (tensorHom_dualEvalPairing D f)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem compactDualityMap_cohomologyMap {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B]
     [IsDiscreteRep (dualRep D A)] [IsDiscreteRep (dualRep D B)] (f : A ⟶ B)
@@ -321,17 +319,17 @@ theorem compactDualityMap_cohomologyMap {A B : Rep.{u} k G} [IsDiscreteRep A] [I
       (dualMap D f) f (tensorHom_dualEvalPairing D f)]
 
 /- English proof (translation)
-Establish `hdecomp : ∀ x : cohomology P r, x = ∑ j, (cohomologyMap (i j) r).hom ((cohomologyMap (p j) r).hom x)`. Introduce `x`. Establish `e` using `congrArg (fun φ => (cohomologyMap φ r).hom x) hsum`. Simplify using `only [cohomologyMap_finsetSum, cohomologyMap_id, cohomologyMap_comp, ModuleCat.hom_sum, LinearMap.sum_apply, ModuleCat.hom_comp, LinearMap.comp_apply, ModuleCat.hom_id, LinearMap.id_apply] at e`. Conclude with `e.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdual : ∀ y : compactCohomologyRes φ (dualRep D P) s, ∑ j, (compactCohomologyResMap φ (dualMap D (p j)) s).hom ((compactCohomologyResMap φ (dualMap D (i j)) s).hom y) = y`. Introduce `y`. Establish `e` using `congrArg (fun F => (compactCohomologyResMap φ (dualMap D F) s).hom y) hsum`. Simplify using `only [dualMap_finsetSum, dualMap_comp, compactCohomologyResMap_finsetSum, dualMap_id, compactCohomologyResMap_id, compactCohomologyResMap_comp, ModuleCat.hom_sum, LinearMap.sum_apply, ModuleCat.hom_comp, LinearMap.comp_apply, ModuleCat.hom_id, LinearMap.id_apply] at e`. Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `hj : ∀ j, (cohomologyMap (p j) r).hom x = 0`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `(hX j).1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use extensionality with `y`. Rewrite using `[AddMonoidHom.zero_apply, compactDualityMap_cohomologyMap, hx, AddMonoidHom.zero_apply]`. Rewrite using `[hdecomp x]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hj]`. Introduce `χ choose a ha using fun j => (hX j).2 (χ.comp (compactCohomologyResMap φ (dualMap D (p j)) s).hom.toAddMonoidHom)`. Use `⟨∑ j, (cohomologyMap (i j) r).hom (a j), ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Rewrite using `[map_sum, AddMonoidHom.finsetSum_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← hdual y, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[compactDualityMap_cohomologyMap, ha j]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bijective_compactDualityMap_of_sum {J : Type*} [Fintype J] (X : J → Rep.{u} k G)
     [∀ j, IsDiscreteRep (X j)] [∀ j, IsDiscreteRep (dualRep D (X j))] (P : Rep.{u} k G)
@@ -380,7 +378,7 @@ theorem bijective_compactDualityMap_of_sum {J : Type*} [Fintype J] (X : J → Re
     rfl
 
 /- English proof (translation)
-The claim follows from `bijective_compactDualityMap_of_sum φ D h t X (⨁ X) (biproduct.ι X) (biproduct.π X) (biproduct.total (f := X)) hX`.
+A detailed English derivation is pending.
 -/
 theorem bijective_compactDualityMap_biproduct {J : Type} [Fintype J] (X : J → Rep.{u} k G)
     [∀ j, IsDiscreteRep (X j)] [∀ j, Finite (X j)]

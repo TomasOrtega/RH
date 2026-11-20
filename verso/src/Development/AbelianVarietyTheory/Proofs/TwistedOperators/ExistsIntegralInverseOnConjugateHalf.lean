@@ -13,7 +13,7 @@ open GlobalTheory.LiftLevel
 namespace GlobalTheory.HalfUnit
 
 /- English proof (translation)
-Use `first`. Consider the case `exact star_star x`. Consider the case `rfl`. Consider the case `simp [cc]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cc_star (D : D7) (x : D.host.E) : cc (star x) = x := by
   first
@@ -22,26 +22,26 @@ theorem cc_star (D : D7) (x : D.host.E) : cc (star x) = x := by
   | simp [cc]
 
 /- English proof (translation)
-The claim follows from `Ideal.subset_span ⟨_, h, (cc_star D (s : D.host.E)).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_conjI_of (D : D7) (P : Ideal (𝓞 D.host.E)) (s : 𝓞 D.host.E)
     (h : Formalism.L2.Col.cO D.host.E s ∈ P) : s ∈ conjI P :=
   Ideal.subset_span ⟨_, h, (cc_star D (s : D.host.E)).symm⟩
 
 /- English proof (translation)
-Introduce `D P e he s hs`. Establish `hee : e * e = e` using `GlobalTheory.PlaceVec.idemSum_mul_self he`. Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Distinguish the cases in `hP : P = ∅`. Substitute `hP` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `⟨0, by rw [map_zero]; exact zero_mem _, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Take `⟨tableDegreeThreeBase, hPP0⟩` from `Finset.nonempty_iff_ne_empty.2 hP`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hs tableDegreeThreeBase hPP0 (zero_mem _)`. Establish `hsE : (s : D.host.E) ≠ 0`. Introduce `h; apply hs0; exact RingOfIntegers.ext (by simpa using h)`. Use `⟨cA D (∑ PP ∈ P, es PP) * incA D ((s : D.host.E)⁻¹), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, Finset.sum_mul, map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sum_mem fun PP hPP => ?_` and prove the remaining obligations. Establish `hc0 : Formalism.L2.Col.cO D.host.E s ≠ 0`. Introduce `h0`. Apply `hs0` to reduce the goal to its premises. Rewrite using `[← Formalism.L2.Col.cO_cO s, h0, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnot : Formalism.L2.Col.cO D.host.E s ∉ PP.asIdeal` using `fun hm => hs PP hPP (mem_conjI_of D _ s hm)`. Establish `hint` using `not_not.1 (mt ((hes PP hPP).2 _ hc0).2 hnot)`. Use `GlobalTheory.MovedIdem.finPart_conj_mem hint` as an intermediate fact. Establish `hst : star (((Formalism.L2.Col.cO D.host.E s : 𝓞 D.host.E) : D.host.E)⁻¹) = (s : D.host.E)⁻¹`. Rewrite using `[star_inv₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `star_star (s : D.host.E)`. Rewrite `this` using `[hst]`. Then use the resulting hypothesis. Establish `h1 : incA D ((s : D.host.E)⁻¹) * incA D (s : D.host.E) = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ hsE, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc (cA D _), h1, mul_one, map_mul]`. Use `_ = cA D (∑ PP ∈ P, es PP) := by rw [hee]`.
+A detailed English derivation is pending.
 -/
 theorem exists_int_inv_half : ∀ (D : D7) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (e : AE D), IsIdemSum e P →
     ∀ s : 𝓞 D.host.E, (∀ PP ∈ P, s ∉ conjI PP.asIdeal) →

@@ -162,19 +162,17 @@ def fsO1 (n : ℕ) : HermLine (GlobalTheory n) := HermLine.sqMetric fun _ => 1
 def triv (n : ℕ) : HermLine (GlobalTheory n) := HermLine.sqMetric fun _ => 0
 
 /- English proof (translation)
-Introduce `_ _ _` and use `0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : Family (GlobalTheory 2) := fun _ _ _ => 0
 
 /- English proof (translation)
-The claim follows from `isSmoothHerm_sqMetric _`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_fubiniStudyO1 (n : ℕ) : IsSmoothHerm (fsO1 n) := isSmoothHerm_sqMetric _
 
 /- English proof (translation)
-Use `⟨⟨()⟩, ⟨Ideal.isPrime_bot, ⟨∅, by simp, by simp⟩, fun _ => ⟨0, ?_⟩⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_bot]`. Conclude with `X_ne_zero _`. Conclude with `Ideal.comap_bot_of_injective _ (C_injective _ _)`. Rewrite using `[ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), MvPolynomial.ringKrullDim_of_isNoetherianRing, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField]`.
-
-Simplify using `[Nat.card_eq_fintype_card]`. Conclude with `add_comm _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isArithVar_bot (n : ℕ) : IsArithVar (⊥ : Ideal (MRing (GlobalTheory (n + 1)))) (n + 1) := by
   refine ⟨⟨()⟩, ⟨Ideal.isPrime_bot, ⟨∅, by simp, by simp⟩, fun _ => ⟨0, ?_⟩⟩, ?_, ?_⟩
@@ -188,9 +186,9 @@ theorem isArithVar_bot (n : ℕ) : IsArithVar (⊥ : Ideal (MRing (GlobalTheory 
     exact add_comm _ _
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[support_X]`. Simplify using `only [Finset.mem_singleton] at hm`. Substitute `hm` using the available equality. Consider the cases of `k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Split into cases according to the possible forms of the given data.
 
-Simplify using `[Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_Xb (n : ℕ) (i : Fin n) : IsMultiHomog (Xb n i) fun _ => 1 := by
   intro m hm k
@@ -201,9 +199,7 @@ theorem isMultiHomog_Xb (n : ℕ) (i : Fin n) : IsMultiHomog (Xb n i) fun _ => 1
   simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[mem_support_iff, coeff_C]`. Use `split_ifs at hm with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
-
-Conclude with `absurd rfl hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_C (c : ℤ) {n : ℕ} : IsMultiHomog (C c : MRing (GlobalTheory n)) 0 := by
   intro m hm k
@@ -214,14 +210,14 @@ theorem isMultiHomog_C (c : ℤ) {n : ℕ} : IsMultiHomog (C c : MRing (GlobalTh
   · exact absurd rfl hm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => 1, isMultiHomog_Xb _ _, fun _ => by simp [fsO1, HermLine.sqMetric], by rw [Ideal.mem_bot]; exact X_ne_zero _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSec_Xb (n : ℕ) (i : Fin (n + 1)) : IsSec (⊥ : Ideal (MRing (GlobalTheory (n + 1)))) (fsO1 (n + 1)) (Xb (n + 1) i) :=
   ⟨fun _ => 1, isMultiHomog_Xb _ _, fun _ => by simp [fsO1, HermLine.sqMetric],
     by rw [Ideal.mem_bot]; exact X_ne_zero _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isArithVar_bot 0, isSmoothHerm_fubiniStudyO1 1, isSec_Xb 0 0⟩`.
+Supply the required witnesses or components.
 -/
 theorem specInt_hypotheses_hold : IsArithVar (⊥ : Ideal (MRing (GlobalTheory 1))) 1 ∧ IsSmoothHerm (fsO1 1) ∧
     IsSec (⊥ : Ideal (MRing (GlobalTheory 1))) (fsO1 1) (Xb 1 0) :=

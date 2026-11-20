@@ -13,11 +13,9 @@ section Avoid
 variable {K : Type*} [Fintype K] [DecidableEq K] {ι : K → Type*} {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Use `choose i hi using hrel`. Use `⟨∏ k, X ⟨k, i k⟩ ^ c k, ?_, ?_⟩` and prove the remaining obligations. Establish `hprod` using `IsWeightedHomogeneous.prod (w := blockWeight ι) Finset.univ (fun k => (X ⟨k, i k⟩ : MRing ι R) ^ c k) (fun k => c k • blockWeight ι ⟨k, i k⟩) (fun k _ => (isWeightedHomogeneous_X R _ _).pow _)`. Establish `hc : (∑ k, c k • blockWeight ι ⟨k, i k⟩) = c`. Use function extensionality and compare the values at `k'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[blockWeight, Finset.sum_apply, Pi.single_apply]`. Rewrite `hprod` using `[hc]`. Conclude with `hprod`. Introduce `hm`. Take `⟨k, -, hk⟩` from `hH.prod_mem_iff.mp hm`.
-
-Conclude with `hi k (hH.mem_of_pow_mem _ hk)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_multiHomog_not_mem_of_isRelevant {H : Ideal (MRing ι R)} (hH : H.IsPrime)
     (hrel : IsRelevant H) (c : K → ℕ) : ∃ m : MRing ι R, IsMultiHomog m c ∧ m ∉ H := by
@@ -36,19 +34,17 @@ theorem exists_multiHomog_not_mem_of_isRelevant {H : Ideal (MRing ι R)} (hH : H
     exact hi k (hH.mem_of_pow_mem _ hk)
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨0, isWeightedHomogeneous_zero _ _ _, by simp⟩`. Consider the case `@insert Q₀ S _ ih`. Take `⟨x, hx, hxS⟩` from `ih fun Q h => hS Q (Finset.mem_insert_of_mem h)`. Take `⟨hQ₀, hrel₀, hC₀⟩` from `hS Q₀ (Finset.mem_insert_self _ _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hyQ₀⟩` from `exists_multiHomog_not_mem_of_isRelevant hQ₀ hrel₀ c`. Establish `hsub : ∀ Q ∈ S, {t : R | x + C t * y ∈ Q}.Subsingleton`. Introduce `Q hQS t ht t' ht'`. Take `⟨hQ, -, hCQ⟩` from `hS Q (Finset.mem_insert_of_mem hQS)`. Establish `hd : C (t - t') * y ∈ Q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `Q.sub_mem ht ht'`. Rewrite using `[map_sub]`. Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Break down `hQ.mem_or_mem hd with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `sub_eq_zero.mp (hCQ _ h)`. Conclude with `absurd (by simpa using Q.sub_mem ht (Q.mul_mem_left (C t) h)) (hxS Q hQS)`. Establish `hfin : (insert 0 (⋃ Q ∈ S, {t : R | x + C t * y ∈ Q})).Finite` using `(S.finite_toSet.biUnion fun Q hQ => (hsub Q hQ).finite).insert 0`. Take `⟨t, ht⟩` from `Infinite.exists_notMem_finset hfin.toFinset`. Simplify using `only [Set.Finite.mem_toFinset, Set.mem_insert_iff, Set.mem_iUnion, Set.mem_ofPred_eq, not_or, not_exists] at ht`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨ht0, htS⟩` from `ht`. Distinguish the cases in `hxQ₀ : x ∈ Q₀`. Use `⟨x + C t * y, hx.add (by simpa using (isWeightedHomogeneous_C _ t).mul hy), ?_⟩` and prove the remaining obligations. Introduce `Q hQ`. Break down `Finset.mem_insert.mp hQ with rfl | hQS` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h' : C t * y ∈ Q` using `by simpa using Q.sub_mem h hxQ₀`. Break down `hQ₀.mem_or_mem h' with h'' | h''` into its components or cases. Conclude with `ht0 (hC₀ _ h'')`. Conclude with `hyQ₀ h''`.
-
-Conclude with `htS Q hQS`. Use `⟨x, hx, fun Q hQ => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hQ with rfl | hQS` into its components or cases. Conclude with `hxQ₀`. Conclude with `hxS Q hQS`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_multiHomog_not_mem_finset [Infinite R] (c : K → ℕ) (S : Finset (Ideal (MRing ι R)))
     (hS : ∀ Q ∈ S, Q.IsPrime ∧ IsRelevant Q ∧ ∀ a : R, C a ∈ Q → a = 0) :
@@ -96,17 +92,17 @@ theorem exists_multiHomog_not_mem_finset [Infinite R] (c : K → ℕ) (S : Finse
 end Avoid
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP s hs e`. Establish `: Infinite O` using `Infinite.of_injective _ (pow_injective_of_not_isUnit hϖ.not_isUnit hϖ.ne_zero)`. Establish `hfin : (Function.support (divCycle P s)).Finite`. Apply `Set.Finite.subset (Ideal.finite_minimalPrimes_of_isNoetherianRing _ (P ⊔ Ideal.span {s}))` to reduce the goal to its premises. Introduce `W hW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hmin`. Apply `hW` to reduce the goal to its premises. Unfold `divCycle`. Rewrite using `[dif_neg]`. Conclude with `fun h => hmin h.1`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hT : ∀ Q ∈ insert P (hfin.toFinset.filter fun H => (C ϖ : MRing ι O) ∉ H), Q.IsPrime ∧ IsRelevant Q ∧ ∀ a : O, C a ∈ Q → a = 0`. Introduce `Q hQ`. Break down `Finset.mem_insert.mp hQ with rfl | hQ` into its components or cases. Use `⟨hP.multiProj.isPrime, hP.multiProj.relevant, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h : a ∈ Q.comap (C : O →+* MRing ι O)` using `ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[hP.noTorsion]`. Conclude with `(Submodule.mem_bot O).mp h`. Take `⟨hQs, hϖQ⟩` from `Finset.mem_filter.mp hQ`. Take `⟨hQp, -, hrel⟩` from `le_and_isRelevant_of_divCycle_ne_zero (Function.mem_support.mp (hfin.mem_toFinset.mp hQs))`. Use `⟨hQp, hrel, fun a ha => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `ha0`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha0 hϖ`. Rewrite `ha` using `[map_mul, map_pow]`. Break down `hQp.mem_or_mem ha with h | h` into its components or cases. Conclude with `hQp.ne_top (Ideal.eq_top_of_isUnit_mem _ h (u.isUnit.map C))`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hϖQ (hQp.mem_of_pow_mem _ h)`. Take `⟨m, hm, hmT⟩` from `exists_multiHomog_not_mem_finset e _ hT`. Use `⟨m, hm, hmT P (Finset.mem_insert_self _ _), fun H hH hϖH => hmT H ?_⟩` and prove the remaining obligations. Conclude with `Finset.mem_insert_of_mem (Finset.mem_filter.mpr ⟨hfin.mem_toFinset.mpr (Function.mem_support.mpr hH), hϖH⟩)`.
+A detailed English derivation is pending.
 -/
 theorem HorizontalAvoidingForm.proof : HorizontalAvoidingForm.Statement.{u} := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ P d hP s hs e

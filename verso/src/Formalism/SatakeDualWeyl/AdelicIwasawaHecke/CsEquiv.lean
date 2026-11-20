@@ -15,7 +15,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem csEquiv_bc_mulVec (γ : GL n E) (x : n → E) :
     (((bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ : GL n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) :
@@ -27,7 +27,7 @@ theorem csEquiv_bc_mulVec (γ : GL n E) (x : n → E) :
   rfl
 
 /- English proof (translation)
-Establish `hki` using `(stabGL _).inv_mem hk`. Use `show (((bc (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) γ * g * k)⁻¹ : GL n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) *ᵥ (fun i => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (x i)) ∈ latS (F := F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (Fin …`. Rewrite using `[_root_.mul_inv_rev, _root_.mul_inv_rev, Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← map_inv, csEquiv_bc_mulVec]`. Conclude with `(hki _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem csEquiv_mem (Λ : Submodule (𝓞 E) (n → E)) (γ : GL n E)
     (g k : GL n (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
@@ -48,11 +48,11 @@ theorem csEquiv_mem (Λ : Submodule (𝓞 E) (n → E)) (γ : GL n E)
   exact (hki _).symm
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[csEquiv_mem Λ γ g k hk x]`. Unfold `Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Use `⟨_, hx, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`. Rewrite using `[glEquiv_apply', Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Introduce and unpack `⟨y, hy, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `only [LinearMap.coe_restrictScalars, LinearEquiv.coe_coe]`. Rewrite using `[glEquiv_apply', Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem csEquiv_main (Λ : Submodule (𝓞 E) (n → E)) (γ : GL n E)
     (g k : GL n (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
@@ -79,7 +79,7 @@ theorem csEquiv_main (Λ : Submodule (𝓞 E) (n → E)) (γ : GL n E)
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n _ _ Λ γ g k hk`. Conclude with `csEquiv_main Λ γ g k hk`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem global_lattice_equiv_holds : Formalism.UG.CS.GlobLatEquiv := by
   intro F E _ _ _ _ _ n _ _ Λ γ g k hk

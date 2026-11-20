@@ -2,13 +2,13 @@ import Mathlib
 
 open MeasureTheory in
 /- English proof (translation)
-Establish `hf : Measurable (fun g => (q g, fun v : S => p v g))` using `hq.prodMk (measurable_pi_lambda _ fun v => hp v)`. Establish `hB : MeasurableSet (A ×ˢ (Set.univ.pi fun v : S => K v))` using `hA.prod (MeasurableSet.univ_pi fun v => hK v)`. Establish `h2` using `congrArg (fun ν => ν (A ×ˢ (Set.univ.pi fun v : S => K v))) h`. Simplify using `only [Measure.map_apply hf hB, Measure.restrict_apply (hf hB)] at h2`. Rewrite `h2` using `[Measure.coe_nnreal_smul_apply, Measure.prod_prod, Measure.pi_pi]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [h1, Finset.prod_const_one, mul_one] at h2`. Rewrite using `[← h2]`. Use `congr 1`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_preimage, Set.mem_prod, Set.mem_pi, Set.mem_univ, true_imp_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, hb⟩`. Conclude with `⟨⟨ha, fun v => hb v⟩, fun v _ => hb v⟩`. Introduce and unpack `⟨⟨ha, hb⟩, hc⟩`. Use `⟨ha, fun v => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hv : v ∈ S`. Conclude with `hb ⟨v, hv⟩`. Conclude with `hc v hv`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.restricted_product_measure_set
     (V G Gi : Type) (Gv : V → Type) [MeasurableSpace G] [MeasurableSpace Gi] [∀ v, MeasurableSpace (Gv v)]
@@ -44,7 +44,7 @@ private theorem UpperTheory.restricted_product_measure_set
     · exact hc v hv
 
 /- English proof (translation)
-Introduce `V G Gi Gv _ _ _ q p K μ μi m _ _ hq hp hK h1 ⟨A, hA, h0, ht⟩ S T a b hS hT`. Establish `e1` using `UpperTheory.restricted_product_measure_set V G Gi Gv q p K μ μi m hq hp hK h1 A hA S a hS`. Establish `e2` using `UpperTheory.restricted_product_measure_set V G Gi Gv q p K μ μi m hq hp hK h1 A hA T b hT`. Establish `e : (a : ENNReal) * μi A = (b : ENNReal) * μi A` using `e1.symm.trans e2`. Conclude with `ENNReal.coe_injective ((ENNReal.mul_left_inj h0 ht).1 e)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.restricted_product_measure :
     ∀ (V G Gi : Type) (Gv : V → Type) [MeasurableSpace G] [MeasurableSpace Gi] [∀ v, MeasurableSpace (Gv v)]

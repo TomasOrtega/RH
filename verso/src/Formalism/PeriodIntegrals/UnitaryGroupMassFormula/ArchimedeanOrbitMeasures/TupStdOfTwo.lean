@@ -38,9 +38,7 @@ def TupDet : Prop := ∀ {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ 
     StdConj X hb u' c S → LieCompl X S L → PsiDet X u' hT a (kap0 X hb c L) eH cν
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hP`. Take `⟨Ω, a, hC, hD⟩` from `square_chart_c1 X u' ψ hT μinf νinf fibInf hP`. Take `⟨η, hη, eH, cν, hadd, hν⟩` from `hermEuc X u' ψ hT μinf νinf fibInf hP`. Use `⟨Ω, a, hC, η, hη, eH, cν, hν, fun hb c S ι _ L hc hL => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `h1 X u' ψ hT μinf νinf fibInf hP Ω a hC hD eH hadd hb c S L hc hL`.
-
-Conclude with `h2 X u' ψ hT μinf νinf fibInf hP Ω a hC hD eH cν hadd hν hb c S L hc hL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tupPieces_of (h1 : PolarMapContDiffAtBase) (h2 : TupDet) : TupPieces := by
   intro D X u' ψ hT μinf νinf fibInf hP
@@ -51,7 +49,7 @@ theorem tupPieces_of (h1 : PolarMapContDiffAtBase) (h2 : TupDet) : TupPieces := 
   · exact h2 X u' ψ hT μinf νinf fibInf hP Ω a hC hD eH cν hadd hν hb c S L hc hL
 
 /- English proof (translation)
-The claim follows from `tupStd_of_pieces (tupPieces_of h1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem tupStd_of_two (h1 : PolarMapContDiffAtBase) (h2 : TupDet) : TupStd := tupStd_of_pieces (tupPieces_of h1 h2)
 

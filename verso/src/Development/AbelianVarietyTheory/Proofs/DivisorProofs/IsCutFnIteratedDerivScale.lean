@@ -9,9 +9,7 @@ open scoped ContDiff Topology
 namespace GlobalTheory.PsCo.Pc1
 
 /- English proof (translation)
-Establish `hev : (fun y => G (t * y)) =ᶠ[𝓝 x] (fun _ => (0 : ℝ))`. Establish `hopen : IsOpen {y : ℝ | 1 < t * y}` using `isOpen_lt continuous_const (continuous_const.mul continuous_id)`. Use `filter_upwards [hopen.mem_nhds hx] with y hy`. Conclude with `hG _ (le_of_lt hy)`. Rewrite using `[hev.iteratedDeriv_eq k]`.
-
-Simplify using `[iteratedDeriv_const]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_scale_eq_zero {G : ℝ → ℝ} (hG : ∀ x, 1 ≤ x → G x = 0) {t : ℝ} (ht : 0 < t) (k : ℕ)
     {x : ℝ} (hx : 1 < t * x) : iteratedDeriv k (fun y => G (t * y)) x = 0 := by
@@ -23,7 +21,7 @@ theorem iteratedDeriv_scale_eq_zero {G : ℝ → ℝ} (hG : ∀ x, 1 ≤ x → G
   simp [iteratedDeriv_const]
 
 /- English proof (translation)
-Use `⟨?_, 2 / t, fun x hx => iteratedDeriv_scale_eq_zero hG ht k ?_⟩` and prove the remaining obligations. Rewrite using `[iteratedDeriv_eq_iterate]`. Conclude with `ContDiff.iterate_deriv k (hGs.comp (contDiff_const.mul contDiff_id))`. Establish `: 2 ≤ t * x` using `by rwa [div_le_iff₀ ht, mul_comm] at hx`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isCutFn_iteratedDeriv_scale {G : ℝ → ℝ} (hGs : ContDiff ℝ ∞ G) (hG : ∀ x, 1 ≤ x → G x = 0) {t : ℝ}
     (ht : 0 < t) (k : ℕ) : IsCutFn (iteratedDeriv k (fun y => G (t * y))) := by
@@ -34,11 +32,11 @@ theorem isCutFn_iteratedDeriv_scale {G : ℝ → ℝ} (hGs : ContDiff ℝ ∞ G)
     linarith
 
 /- English proof (translation)
-Introduce `n ε G p hG`. Use `⟨(Finset.range (nMode ε + 1)).sup fun k => (p k).totalDegree, fun k hk => Finset.le_sup (f := fun k => (p k).totalDegree) (Finset.mem_range.2 (Nat.lt_succ_of_le hk)), fun t ht => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `: famF ε G p t = ∑ k ∈ Finset.range (nMode ε + 1), bas ε (iteratedDeriv k fun x => G (t * x)) (p k)`. Use function extensionality and compare the values at `g`. Simplify using `[famF, Finset.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Use `Submodule.sum_mem _ fun k hk => Submodule.subset_span ⟨_, p k, isCutFn_iteratedDeriv_scale hG.1 hG.2.1 ht k, Finset.le_sup (f := fun k => (p k).totalDegree) hk, rfl⟩` and prove the remaining obligations. Introduce `g hg`. Simplify using `only [famF, bas]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[iteratedDeriv_scale_eq_zero hG.2.1 ht k hg]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem stFam : StFam := by
   intro n ε G p hG

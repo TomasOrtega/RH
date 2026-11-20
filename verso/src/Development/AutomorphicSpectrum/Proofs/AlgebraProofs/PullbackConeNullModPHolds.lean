@@ -5,7 +5,7 @@ import GroundTheory.HeightsAndTheta.Heights.HilbertSamuel.PPullConeNullModP
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.HilbertSamuel.PullConeNullModP.proof`.
+A detailed English derivation is pending.
 -/
 theorem pullConeNullModP : GroundTheory.Heights₂.Heights.HilbertSamuel.PullConeNullModP.Statement :=
   GroundTheory.Heights₂.Heights.HilbertSamuel.PullConeNullModP.proof

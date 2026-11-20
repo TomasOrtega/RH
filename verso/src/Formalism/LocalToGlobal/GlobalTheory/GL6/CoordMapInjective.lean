@@ -27,7 +27,7 @@ def t2xE (Φ : M ≃ₗ[ℂ] (Cl → Fin d → ℂ)) (ρ : G →* (M →ₗ[ℂ]
   map_smul' a φ := by funext x; simp
 
 /- English proof (translation)
-Use `show Φ (ρ x.1 (ρ g φ)) (Quotient.out x.2.1) x.2.2 = Φ (ρ (g * x.1) φ) (Quotient.out x.2.1) x.2.2`. Rewrite using `[mul_comm g x.1, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coordMap_intertwines (Φ : M ≃ₗ[ℂ] (Cl → Fin d → ℂ)) (ρ : G →* (M →ₗ[ℂ] M)) (g : G) (φ : M)
     (x : G × (MulAction.orbitRel.Quotient G Cl × Fin d)) :
@@ -37,7 +37,7 @@ theorem coordMap_intertwines (Φ : M ≃ₗ[ℂ] (Cl → Fin d → ℂ)) (ρ : G
   rfl
 
 /- English proof (translation)
-Establish `h` using `Quotient.mk_out (s := MulAction.orbitRel G Cl) c`. Take `⟨g, hg⟩` from `MulAction.mem_orbit_iff.1 (MulAction.orbitRel_apply.1 h)`. Conclude with `⟨g⁻¹, by rw [← hg, inv_smul_smul]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_smul_out_eq (c : Cl) : ∃ g : G, g • Quotient.out (Quotient.mk (MulAction.orbitRel G Cl) c) = c := by
   have h := Quotient.mk_out (s := MulAction.orbitRel G Cl) c
@@ -45,9 +45,9 @@ theorem exists_smul_out_eq (c : Cl) : ∃ g : G, g • Quotient.out (Quotient.mk
   exact ⟨g⁻¹, by rw [← hg, inv_smul_smul]⟩
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `φ hE`. Establish `h0 : ∀ (g : G) (q : MulAction.orbitRel.Quotient G Cl), Φ (ρ g φ) (Quotient.out q) = 0` using `fun g q => funext fun b => congrFun hE (g, q, b)`. Establish `h1 : Φ φ = 0`. Use function extensionality and compare the values at `c`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨g, hg⟩` from `exists_smul_out_eq (G := G) c`. Use `hmono g _ φ (h0 g (Quotient.mk (MulAction.orbitRel G Cl) c))` as an intermediate fact. Rewrite `this` using `[hg]`. Conclude with `this`. Conclude with `Φ.map_eq_zero_iff.1 h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem t2xE_injective_of_monomial (Φ : M ≃ₗ[ℂ] (Cl → Fin d → ℂ)) (ρ : G →* (M →ₗ[ℂ] M))
     (hmono : ∀ (g : G) (c : Cl) (φ : M), Φ (ρ g φ) c = 0 → Φ φ (g • c) = 0) :
@@ -65,13 +65,13 @@ theorem t2xE_injective_of_monomial (Φ : M ≃ₗ[ℂ] (Cl → Fin d → ℂ)) (
   exact Φ.map_eq_zero_iff.1 h1
 
 /- English proof (translation)
-Rewrite using `[← Fintype.card_prod]`. Use `Fintype.card_of_bijective (f := fun x : G × MulAction.orbitRel.Quotient G Cl => x.1 • Quotient.out x.2) ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨g, q⟩ ⟨g', q'⟩ h`. Simplify using `only at h`. Establish `hq : ∀ (g0 : G) (q0 : MulAction.orbitRel.Quotient G Cl), (Quotient.mk (MulAction.orbitRel G Cl) (g0 • Quotient.out q0)) = q0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `g0 q0`. Use `conv_rhs => rw [← Quotient.out_eq q0]`. Conclude with `Quotient.sound (MulAction.orbitRel_apply.2 (MulAction.mem_orbit _ g0))`. Establish `hqq : q = q'` using `by rw [← hq g q, ← hq g' q', h]`. Substitute `hqq` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (g'⁻¹ * g) • Quotient.out q = Quotient.out q` using `by rw [mul_smul, h, inv_smul_smul]`. Establish `h3` using `hfree _ _ h2`. Rewrite `h3` using `[inv_mul_eq_one]`. Rewrite using `[h3]`. Introduce `c`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨g, hg⟩` from `exists_smul_out_eq (G := G) c`. Conclude with `⟨(g, _), hg⟩`.
+A detailed English derivation is pending.
 -/
 theorem card_mul_card_orbits (hfree : ∀ (g : G) (c : Cl), g • c = c → g = 1) :
     Fintype.card G * Fintype.card (MulAction.orbitRel.Quotient G Cl) = Fintype.card Cl := by
@@ -95,9 +95,9 @@ theorem card_mul_card_orbits (hfree : ∀ (g : G) (c : Cl), g • c = c → g = 
     exact ⟨(g, _), hg⟩
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℂ M` using `LinearEquiv.finiteDimensional Φ.symm`. Establish `hinj` using `t2xE_injective_of_monomial Φ ρ hmono`. Use `⟨hinj, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank ?_).1 hinj⟩` and prove the remaining obligations. Rewrite using `[Φ.finrank_eq, Module.finrank_fintype_fun_eq_card, Module.finrank_pi_fintype]`. Simplify using `only [Module.finrank_fin_fun, Finset.sum_const, Finset.card_univ, smul_eq_mul, Fintype.card_prod, Fintype.card_fin]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← card_mul_card_orbits hfree]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coordMap_bijective (Φ : M ≃ₗ[ℂ] (Cl → Fin d → ℂ)) (ρ : G →* (M →ₗ[ℂ] M))
     (hmono : ∀ (g : G) (c : Cl) (φ : M), Φ (ρ g φ) c = 0 → Φ φ (g • c) = 0)

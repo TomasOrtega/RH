@@ -15,9 +15,9 @@ variable {R : Ranks}
 def alphaH (H : Host R) : H.E := (1 + H.sqrtMinusD) / 2
 
 /- English proof (translation)
-Establish `hd16 : H.d % 16 = 7` using `H.hyp.2.2.2.1`. Establish `hb : H.sqrtMinusD ^ 2 = -(H.d : H.E)` using `H.sqd_sq`. Establish `h4 : ((H.d + 1) / 4 : ℕ) * 4 = H.d + 1` using `by omega`. Establish `h4' : ((((H.d + 1) / 4 : ℕ) : H.E)) * 4 = (H.d : H.E) + 1` using `by exact_mod_cast h4`. Unfold `alphaH`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take the linear combination `(1 / 4 : H.E) * hb + (1 / 4 : H.E) * h4'`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem alphaH_sq (H : Host R) :
     alphaH H * (alphaH H - 1) = -(((H.d + 1) / 4 : ℕ) : H.E) := by
@@ -29,7 +29,7 @@ theorem alphaH_sq (H : Host R) :
   linear_combination (1 / 4 : H.E) * hb + (1 / 4 : H.E) * h4'
 
 /- English proof (translation)
-Use `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C (((H.d + 1) / 4 : ℕ) : ℤ), by monicity!, ?_⟩` and prove the remaining obligations. Establish `h` using `alphaH_sq H`. Rewrite using `[Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_X, Polynomial.eval₂_C, algebraMap_int_eq, eq_intCast, Int.cast_natCast]`. Take the linear combination `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem alphaH_integral (H : Host R) : IsIntegral ℤ (alphaH H) := by
   refine ⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C (((H.d + 1) / 4 : ℕ) : ℤ), by monicity!, ?_⟩
@@ -39,7 +39,7 @@ theorem alphaH_integral (H : Host R) : IsIntegral ℤ (alphaH H) := by
   linear_combination h
 
 /- English proof (translation)
-Rewrite using `[Formalism.BasicNotions.Examples₂.star_eq_conj]`. Unfold `alphaH`. Rewrite using `[map_div₀, map_add, map_one, Formalism.MainNotions.UnusedSlot33.HK.conj_b]`. Establish `h2 : H.conj (2 : H.E) = 2` using `map_ofNat _ 2`. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -52,19 +52,17 @@ theorem star_alphaH (H : Host R) : (letI := H.cmStar; star (alphaH H)) = 1 - alp
   ring
 
 /- English proof (translation)
-Introduce `P h2 hconj`. Take `⟨a, ha⟩ : ∃ a : 𝓞 D.host.E, algebraMap (𝓞 D.host.E) D.host.E a = alphaH D.host` from `⟨⟨alphaH D.host, alphaH_integral D.host⟩, rfl⟩`. Establish `inj` using `FaithfulSMul.algebraMap_injective (𝓞 D.host.E) D.host.E`. Establish `coe : ∀ x : 𝓞 D.host.E, (x : D.host.E) = algebraMap (𝓞 D.host.E) D.host.E x` using `fun _ => rfl`. Establish `hP` using `P.isPrime`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd16 : D.host.d % 16 = 7` using `D.host.hyp.2.2.2.1`. Establish `hprod : a * (a - 1) ∈ P.asIdeal`. Establish `heven : ((D.host.d + 1) / 4 : ℕ) = 2 * (((D.host.d + 1) / 4 : ℕ) / 2)` using `by omega`. Establish `hk : ((((D.host.d + 1) / 4 : ℕ) : D.host.E)) = 2 * ((((D.host.d + 1) / 4 / 2 : ℕ) : D.host.E))` using `by conv_lhs => rw [heven] push_cast; ring`. Establish `he : a * (a - 1) = 2 * (-((((D.host.d + 1) / 4 / 2 : ℕ) : 𝓞 D.host.E)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `inj` to reduce the goal to its premises. Establish `h` using `alphaH_sq D.host`. Rewrite `h` using `[hk]`. Simplify using `only [map_mul, map_sub, map_one, map_neg, map_natCast, map_ofNat, ha]`. Take the linear combination `h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[he]`. Conclude with `P.asIdeal.mul_mem_right _ h2`. Establish `hstar : ∀ x : 𝓞 D.host.E, x ∈ P.asIdeal → ∃ c' ∈ P.asIdeal, algebraMap (𝓞 D.host.E) D.host.E c' = star (algebraMap (𝓞 D.host.E) D.host.E x)` using `hconj`. Establish `hsa` using `star_alphaH D.host`. Break down `hP.mem_or_mem hprod with hm | hm` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `⟨c', hc', hc'e⟩` from `hstar a hm`. Establish `h1 : a + c' = 1`. Apply `inj` to reduce the goal to its premises. Rewrite using `[map_add, map_one, hc'e, ha, hsa]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Conclude with `hP.ne_top ((Ideal.eq_top_iff_one _).2 (h1 ▸ P.asIdeal.add_mem hm hc'))`. Take `⟨c', hc', hc'e⟩` from `hstar _ hm`. Establish `h1 : -c' - (a - 1) = 1`. Apply `inj` to reduce the goal to its premises. Rewrite using `[map_sub, map_neg, map_sub, map_one, hc'e, map_sub, map_one, star_sub, star_one, ha, hsa]`.
-
-Expand and normalize the polynomial expressions, which then agree. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one _).2 (h1 ▸ P.asIdeal.sub_mem (P.asIdeal.neg_mem hc') hm))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem twoSplits (D : D7) : TwoSplits D := by
   intro P h2 hconj

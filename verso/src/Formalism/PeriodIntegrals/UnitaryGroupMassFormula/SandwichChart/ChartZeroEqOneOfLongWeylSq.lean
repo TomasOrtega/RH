@@ -24,9 +24,9 @@ def PhiP (k r : ℕ) (p : Mat k r × (Fin r → ℂ) × Mat k r × Mat k r) : Ma
   Phi k r p.1 p.2.1 p.2.2.1 p.2.2.2
 
 /- English proof (translation)
-Establish `h : tv k r 1 = fun _ => 1`. Use function extensionality and compare the values at `i`. Unfold `tv`. Apply the tactic sequence `split_ifs <;> simp`. Unfold `tM`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Rewrite using `[h, Matrix.diagonal_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Chart_tM_one : tM k r 1 = 1 := by
   have h : tv k r 1 = fun _ => 1 := by
@@ -37,13 +37,13 @@ theorem Chart_tM_one : tM k r 1 = 1 := by
   rw [h, Matrix.diagonal_one]
 
 /- English proof (translation)
-Simplify using `[PhiP, Phi, Chart_tM_one, hW k r]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chart_zero_eq_one_of_longWeylSq (hW : LongWeylElementSquare) : PhiP k r 0 = 1 := by
   simp [PhiP, Phi, Chart_tM_one, hW k r]
 
 /- English proof (translation)
-Establish `hA' : Aᴴ * Hpk k r * A = Hpk k r` using `hA`. Establish `hB' : Bᴴ * Hpk k r * B = Hpk k r` using `hB`. Use `show (A * B)ᴴ * Hpk k r * (A * B) = Hpk k r`. Rewrite using `[Matrix.conjTranspose_mul, show Bᴴ * Aᴴ * Hpk k r * (A * B) = Bᴴ * (Aᴴ * Hpk k r * A) * B by`. Simplify using `only [mul_assoc], hA', hB']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Chart_UH_mul {A B : Mat k r} (hA : A ∈ UH (Hpk k r)) (hB : B ∈ UH (Hpk k r)) :
     A * B ∈ UH (Hpk k r) := by
@@ -54,15 +54,13 @@ theorem Chart_UH_mul {A B : Mat k r} (hA : A ∈ UH (Hpk k r)) (hB : B ∈ UH (H
     simp only [mul_assoc], hA', hB']
 
 /- English proof (translation)
-Simplify using `only [Vs, Submodule.mem_prod] at hv`. Take `⟨h1, -, h3, h4⟩` from `hv`. Establish `hc : ∀ a, (1 + v.2.1) a ≠ 0`. Introduce `a h`. Establish `h0 : (1 : ℂ) + v.2.1 a = 0` using `h`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h' : v.2.1 a = -1` using `by linear_combination h0`. Establish `hle` using `norm_le_pi_norm v.2.1 a`. Rewrite `hle` using `[h', norm_neg, norm_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hw : w0B k r ∈ UH (Hpk k r)` using `hBC k r 1 (fun _ => by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Take `⟨hX, -⟩` from `hEN k r v.1 h1`. Establish `hB : bigCell k r (1 + v.2.1) 1 ∈ UH (Hpk k r)` using `hBC k r _ hc`. Take `⟨hZ, -⟩` from `(hLW k r).1 _ h3`. Establish `hX' : (NormedSpace.exp v.2.2.2)⁻¹ ∈ UH (Hpk k r)`. Rewrite using `[← Matrix.exp_neg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hm, -⟩` from `hEN k r _ ((lieNS k r).neg_mem h4)`. Conclude with `hm`. Establish `e` using `hPF k r v.1 v.2.1 v.2.2.1 v.2.2.2`. Use `show Phi k r v.1 v.2.1 v.2.2.1 v.2.2.2 ∈ UH (Hpk k r)`. Rewrite using `[e]`.
-
-Conclude with `Chart_UH_mul hw (Chart_UH_mul (Chart_UH_mul (Chart_UH_mul hX hB) hZ) hX')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Chart_phi_mem (hBC : BigCellG) (hPF : PhiForm) (hLW : LieWb) (hEN : ExpN)
     {v : Mat k r × (Fin r → ℂ) × Mat k r × Mat k r} (hv : v ∈ Vs k r) (hx : ‖v.2.1‖ < 1) :
@@ -96,11 +94,11 @@ private lemma le_of_sq_le_sq_of_nonneg_sandwich_chart {a b : ℝ} (ha : 0 ≤ a)
   nlinarith
 
 /- English proof (translation)
-Establish `h` using `(hLI k r).2.2 v hv`. Simplify using `only [hN k r] at h`. Establish `hs : 0 ≤ ∑ a, ‖v.2.1 a‖ ^ 2` using `Finset.sum_nonneg (fun a _ => by positivity)`. Establish `hx1 : ‖v.2.1‖ ≤ Real.sqrt (∑ a, ‖v.2.1 a‖ ^ 2)`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).mpr (fun a => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hx : ‖v.2.1‖ ^ 2 ≤ ∑ a, ‖v.2.1 a‖ ^ 2`. Establish `hq` using `Real.sq_sqrt hs`. Use polynomial arithmetic with `[norm_nonneg v.2.1, Real.sqrt_nonneg (∑ a, ‖v.2.1 a‖ ^ 2)]`. Establish `hL` using `norm_nonneg (Lm k r v)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Simplify using `only [Prod.norm_def]`. Apply the tactic sequence `refine max_le ?_ (max_le ?_ (max_le ?_ ?_)) <;> refine le_of_sq_le_sq_of_nonneg_sandwich_chart (norm_nonneg _) hL ?_ <;>`. Use polynomial arithmetic with `[sq_nonneg ‖v.1‖, sq_nonneg ‖v.2.1‖, sq_nonneg ‖v.2.2.1‖, sq_nonneg ‖v.2.2.2‖]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem Chart_norm_le (hN : NormRL) (hLI : LIso) {v : Mat k r × (Fin r → ℂ) × Mat k r × Mat k r}
     (hv : v ∈ Vs k r) : ‖v‖ ≤ ‖Lm k r v‖ := by
@@ -122,19 +120,17 @@ theorem Chart_norm_le (hN : NormRL) (hLI : LIso) {v : Mat k r × (Fin r → ℂ)
     nlinarith [sq_nonneg ‖v.1‖, sq_nonneg ‖v.2.1‖, sq_nonneg ‖v.2.2.1‖, sq_nonneg ‖v.2.2.2‖]
 
 /- English proof (translation)
-Establish `hE : HasStrictFDerivAt (NormedSpace.exp : Mat k r → Mat k r) ((ContinuousLinearEquiv.refl ℝ (Mat k r) : Mat k r ≃L[ℝ] Mat k r) : Mat k r →L[ℝ] Mat k r) 0` using `(hasStrictFDerivAt_exp_zero (𝕂 := ℝ) (𝔸 := Mat k r)).congr_fderiv (ContinuousLinearMap.ext fun _ => rfl)`. Use `set G := hE.localInverse _ _ _ with hGdef`. Establish `hexp0 : NormedSpace.exp (0 : Mat k r) = 1` using `by simp`. Establish `hP : HasStrictFDerivAt (PhiP k r) (Lm k r) 0` using `hPD k r`. Establish `hPe : PhiP k r 0 = NormedSpace.exp (0 : Mat k r)` using `by rw [hexp0]; exact chart_zero_eq_one_of_longWeylSq hW`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : HasStrictFDerivAt (fun v => G (PhiP k r v)) (Lm k r) 0`. Establish `h1 : HasStrictFDerivAt G (((ContinuousLinearEquiv.refl ℝ (Mat k r)).symm : Mat k r ≃L[ℝ] Mat k r) : Mat k r →L[ℝ] Mat k r) (PhiP k r 0)`. Rewrite using `[hPe]`. Conclude with `hE.to_localInverse`. Conclude with `(h1.comp 0 hP).congr_fderiv (ContinuousLinearMap.ext fun _ => rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF0 : G (PhiP k r 0) = 0` using `by rw [hPe]; exact hE.localInverse_apply_image`. Establish `hR : ∀ᶠ v in 𝓝 (0 : Mat k r × (Fin r → ℂ) × Mat k r × Mat k r), NormedSpace.exp (G (PhiP k r v)) = PhiP k r v`. Establish `ht : Filter.Tendsto (PhiP k r) (𝓝 0) (𝓝 (NormedSpace.exp (0 : Mat k r)))`. Rewrite using `[← hPe]`. Conclude with `hP.continuousAt.tendsto`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ht.eventually hE.eventually_right_inverse`. Take `⟨δL, hδL, hLg⟩` from `hLog k r`. Establish `hU : ∀ᶠ v in 𝓝 (0 : Mat k r × (Fin r → ℂ) × Mat k r × Mat k r), ‖G (PhiP k r v)‖ < δL`. Establish `ht : Filter.Tendsto (fun v => G (PhiP k r v)) (𝓝 0) (𝓝 0)`. Establish `h2` using `hF.continuousAt.tendsto`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[hF0]`. Then use the resulting hypothesis. Conclude with `(Metric.tendsto_nhds.mp ht δL hδL).mono fun v hv => by rwa [dist_zero_right] at hv`. Establish `hB1 : ∀ᶠ v in 𝓝 (0 : Mat k r × (Fin r → ℂ) × Mat k r × Mat k r), ‖v‖ < 1` using `by filter_upwards [Metric.ball_mem_nhds (0 : Mat k r × (Fin r → ℂ) × Mat k r × Mat k r) one_pos] with v hv`. Conclude with `mem_ball_zero_iff.mp hv`. Use `⟨fun v => G (PhiP k r v), hF, hF0, fun η hη => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hO : ∀ᶠ v in 𝓝 (0 : Mat k r × (Fin r → ℂ) × Mat k r × Mat k r), ‖G (PhiP k r v) - Lm k r v‖ ≤ η * ‖v‖`. Establish `h` using `(hasFDerivAt_iff_isLittleO_nhds_zero.mp hF.hasFDerivAt).def hη`. Use `filter_upwards [h] with v hv`. Simplify using `only [zero_add, hF0, sub_zero] at hv`. Conclude with `hv`.
-
-Take `⟨δ, hδ, hall⟩` from `Metric.eventually_nhds_iff.mp (hR.and (hU.and (hB1.and hO)))`. Use `⟨δ, hδ, fun v hv hvn => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4⟩` from `hall (show dist v 0 < δ by rwa [dist_zero_right])`. Establish `hx : ‖v.2.1‖ < 1` using `lt_of_le_of_lt ((norm_fst_le v.2).trans (norm_snd_le v)) h3`. Use `⟨hLg (G (PhiP k r v)) h2 (by rw [h1]; exact Chart_phi_mem hBC hPF hLW hEN hv hx), h1, h4.trans (mul_le_mul_of_nonneg_left (Chart_norm_le hN hLI hv) hη.le)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Chart_core (hN : NormRL) (hLog : LogG) (hW : LongWeylElementSquare) (hBC : BigCellG) (hPF : PhiForm)
     (hPD : PhiDeriv) (hLW : LieWb) (hEN : ExpN) (hLI : LIso) (k r : ℕ) :
@@ -186,9 +182,9 @@ theorem Chart_core (hN : NormRL) (hLog : LogG) (hW : LongWeylElementSquare) (hBC
     h4.trans (mul_le_mul_of_nonneg_left (Chart_norm_le hN hLI hv) hη.le)⟩
 
 /- English proof (translation)
-Unfold `ChartFwdOf ChartFwd`. Introduce `hN hLog hW hBC hPF hPD hLW hEN hLI k r η hη`. Take `⟨F, -, -, hFη⟩` from `Chart_core hN hLog hW hBC hPF hPD hLW hEN hLI k r`. Take `⟨δ, hδ, hδ'⟩` from `hFη η hη`. Use `⟨δ, hδ, fun v hv hvn => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2, h3⟩` from `hδ' v hv hvn`. Use `⟨F v, h1, h2, ?_⟩` and prove the remaining obligations. Establish `h4` using `norm_add_le (F v - Lm k r v) (Lm k r v)`. Rewrite `h4` using `[sub_add_cancel]`. Use polynomial arithmetic with `[h3, h4]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem chartFwd : ChartFwdOf := by
   unfold ChartFwdOf ChartFwd
@@ -203,23 +199,21 @@ theorem chartFwd : ChartFwdOf := by
   nlinarith [h3, h4]
 
 /- English proof (translation)
-Unfold `ChartBwdOf ChartBwd`. Introduce `hN hLog hW hBC hPF hPD hLW hEN hLI k r η hη`. Take `⟨F, hF, hF0, hFη⟩` from `Chart_core hN hLog hW hBC hPF hPD hLW hEN hLI k r`. Take `⟨δ1, hδ1, hδ1'⟩` from `hFη η hη`. Take `⟨q, hq⟩` from `Submodule.exists_isCompl (uH k r)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `pr : Mat k r →L[ℝ] uH k r` to `LinearMap.toContinuousLinearMap ((uH k r).linearProjOfIsCompl q hq)`. Establish `hpr : ∀ (Y : Mat k r) (hY : Y ∈ uH k r), pr Y = ⟨Y, hY⟩` using `fun Y hY => Submodule.linearProjOfIsCompl_apply_left hq ⟨Y, hY⟩`. Use `set f : Vs k r → uH k r := fun w => pr (F w) with hfdef`. Establish `hf : HasStrictFDerivAt f (pr.comp ((Lm k r).comp (Vs k r).subtypeL)) 0`. Establish `h1 : HasStrictFDerivAt F (Lm k r) ((Vs k r).subtypeL (0 : Vs k r))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`. Conclude with `hF`. Conclude with `pr.hasStrictFDerivAt.comp (0 : Vs k r) (h1.comp (0 : Vs k r) (Vs k r).subtypeL.hasStrictFDerivAt)`. Establish `hf0 : f 0 = 0` using `by show pr (F ((0 : Vs k r) : Mat k r × (Fin r → ℂ) × Mat k r × Mat k r)) = 0`. Rewrite using `[Submodule.coe_zero, hF0, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmap` using `hf.map_nhds_eq_of_surj (LinearMap.range_eq_top.mpr fun y => by`. Take `⟨v, hv, hLv⟩` from `(hLI k r).2.1 y y.2`. Use `⟨⟨v, hv⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pr (Lm k r v) = y`. Rewrite using `[hLv, hpr _ y.2])`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hmap` using `[hf0]`. Establish `hρ : 0 < min η δ1` using `lt_min hη hδ1`. Establish `hS : f '' Metric.ball (0 : Vs k r) (min η δ1) ∈ 𝓝 (0 : uH k r)` using `(congrArg (fun l => f '' Metric.ball (0 : Vs k r) (min η δ1) ∈ l) hmap).mp (Filter.image_mem_map (Metric.ball_mem_nhds _ hρ))`. Take `⟨δ2, hδ2, hball⟩` from `Metric.mem_nhds_iff.mp hS`. Use `⟨δ2, hδ2, fun Y hY hYn => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hYb : (⟨Y, hY⟩ : uH k r) ∈ Metric.ball (0 : uH k r) δ2`. Rewrite using `[mem_ball_zero_iff]`. Conclude with `hYn`. Take `⟨⟨v, hv⟩, hwS, hfw⟩` from `hball hYb`. Establish `hvn : ‖v‖ < min η δ1` using `mem_ball_zero_iff.mp hwS`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨h1, h2, h3⟩` from `hδ1' v hv (lt_of_lt_of_le hvn (min_le_right _ _))`. Establish `hFY : F v = Y`. Establish `h : pr (F v) = ⟨Y, hY⟩` using `hfw`. Rewrite `h` using `[hpr _ h1]`. Conclude with `congrArg Subtype.val h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨v, hv, ?_, lt_of_lt_of_le hvn (min_le_left _ _), ?_⟩` and prove the remaining obligations. Rewrite using `[← hFY]`. Conclude with `h2.symm`. Establish `h4` using `norm_sub_norm_le (Lm k r v) (F v)`. Rewrite `h4` using `[norm_sub_rev, hFY]`.
-
-Rewrite `h3` using `[hFY]`. Use polynomial arithmetic with `[h3, h4]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem chartBwd : ChartBwdOf := by
   unfold ChartBwdOf ChartBwd

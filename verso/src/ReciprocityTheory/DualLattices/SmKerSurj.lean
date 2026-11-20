@@ -25,7 +25,7 @@ variable {R' R : LAlg R₀} {π : LHom R' R} {ξ : (R' : Type u)}
 
 include hker in
 /- English proof (translation)
-Establish `h : ξ ∈ RingHom.ker π.1`. Rewrite using `[hker]`. Conclude with `Ideal.mem_span_singleton_self ξ`. Conclude with `(RingHom.mem_ker).1 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma π_ξ : π.1 ξ = 0 := by
   have h : ξ ∈ RingHom.ker π.1 := by
@@ -35,9 +35,9 @@ lemma π_ξ : π.1 ξ = 0 := by
 
 include hker hsq in
 /- English proof (translation)
-Establish `h1 : π.1 (Function.surjInv hsurj (π.1 a)) = π.1 a` using `Function.surjInv_eq hsurj _`. Establish `h2 : Function.surjInv hsurj (π.1 a) - a ∈ Ideal.span {ξ}`. Rewrite using `[← hker, RingHom.mem_ker, map_sub, h1, sub_self]`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 h2`. Use `show Function.surjInv hsurj (π.1 a) * ξ = a * ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : Function.surjInv hsurj (π.1 a) = a + c * ξ`. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, add_mul, mul_assoc, hsq, mul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ell_spec (a : (R' : Type u)) : ell π ξ hsurj (π.1 a) = a * ξ := by
   have h1 : π.1 (Function.surjInv hsurj (π.1 a)) = π.1 a := Function.surjInv_eq hsurj _
@@ -52,7 +52,7 @@ lemma ell_spec (a : (R' : Type u)) : ell π ξ hsurj (π.1 a) = a * ξ := by
 
 include hker in
 /- English proof (translation)
-Use `show π.1 (Function.surjInv hsurj r * ξ) = 0`. Rewrite using `[map_mul, π_ξ hker, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ell_π (r : (R : Type u)) : π.1 (ell π ξ hsurj r) = 0 := by
   show π.1 (Function.surjInv hsurj r * ξ) = 0
@@ -60,7 +60,7 @@ lemma ell_π (r : (R : Type u)) : π.1 (ell π ξ hsurj r) = 0 := by
 
 include hker hsq in
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hsurj r`. Take `⟨a', rfl⟩` from `hsurj r'`. Rewrite using `[← map_add, ell_spec hsurj hker hsq, ell_spec hsurj hker hsq, ell_spec hsurj hker hsq, add_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 lemma ell_add (r r' : (R : Type u)) :
     ell π ξ hsurj (r + r') = ell π ξ hsurj r + ell π ξ hsurj r' := by
@@ -70,7 +70,7 @@ lemma ell_add (r r' : (R : Type u)) :
 
 include hker hsq in
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `hsurj r`. Rewrite using `[← map_mul, ell_spec hsurj hker hsq, ell_spec hsurj hker hsq, mul_assoc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 lemma ell_mul (a : (R' : Type u)) (r : (R : Type u)) :
     ell π ξ hsurj (π.1 a * r) = a * ell π ξ hsurj r := by
@@ -79,7 +79,7 @@ lemma ell_mul (a : (R' : Type u)) (r : (R : Type u)) :
 
 include hker hsq in
 /- English proof (translation)
-Establish `h` using `ell_spec hsurj hker hsq 0`. Rewrite `h` using `[map_zero, zero_mul]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ell_zero : ell π ξ hsurj 0 = 0 := by
   have h := ell_spec hsurj hker hsq 0
@@ -88,7 +88,7 @@ lemma ell_zero : ell π ξ hsurj 0 = 0 := by
 
 include hker hsq in
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hsurj r`. Take `⟨b, rfl⟩` from `hsurj r'`. Rewrite using `[ell_spec hsurj hker hsq, ell_spec hsurj hker hsq]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma ell_mul_ell (r r' : (R : Type u)) : ell π ξ hsurj r * ell π ξ hsurj r' = 0 := by
   obtain ⟨a, rfl⟩ := hsurj r
@@ -135,7 +135,7 @@ def sm : LHom (FP π Dp.π) R' :=
     rw [map_add, ell_π hsurj hker, add_zero]; rfl))⟩⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `x`. Use `show π.1 (x.1.1 + ell π ξ hsurj (Dp.κ x.1.2)) = π.1 x.1.1`. Rewrite using `[map_add, ell_π hsurj hker, add_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma π_comp_sm : π.comp (sm π Dp ξ hsurj hker hsq) = π.comp (FP.p₁ π Dp.π) := by
   apply Subtype.ext
@@ -154,17 +154,17 @@ def ι₁ : LHom R' (FP π Dp.π) :=
   FP.lift π Dp.π (LHom.id R') (Dp.σ.comp π) (fun t => (Dp.sect (π.1 t)).symm)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (AlgHom.ext fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 lemma p₁_comp_ι₁ : (FP.p₁ π Dp.π).comp (ι₁ π Dp) = LHom.id R' := Subtype.ext (AlgHom.ext fun _ => rfl)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (AlgHom.ext fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 lemma p₂_comp_ι₁ : (FP.p₂ π Dp.π).comp (ι₁ π Dp) = Dp.σ.comp π := Subtype.ext (AlgHom.ext fun _ => rfl)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `t`. Use `show t + ell π ξ hsurj (Dp.κ (Dp.σ.1 (π.1 t))) = t`. Rewrite using `[Dp.κ_σ, ell_zero hsurj hker hsq, add_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sm_comp_ι₁ {ξ : (R' : Type u)} (hsurj : Function.Surjective π.1)
     (hker : RingHom.ker π.1 = Ideal.span {ξ}) (hsq : ξ * ξ = 0) :
@@ -176,13 +176,13 @@ lemma sm_comp_ι₁ {ξ : (R' : Type u)} (hsurj : Function.Surjective π.1)
   rw [Dp.κ_σ, ell_zero hsurj hker hsq, add_zero]
 
 /- English proof (translation)
-Use `⟨fun a => ⟨(ι₁ π Dp).1 a, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[sq, ← le_bot_iff]`. Use `Ideal.mul_le.2 fun x hx y hy => ?_` and prove the remaining obligations. Rewrite `hx`, `hy` using `[RingHom.mem_ker]`. Establish `hx0 : x.1.1 = 0` using `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hy0 : y.1.1 = 0` using `hy`. Establish `hx2 : x.1.2 ∈ Ideal.span {Dp.η}`. Rewrite using `[← Dp.ker_eq, RingHom.mem_ker, ← FP.mem π Dp.π x, hx0, map_zero]`. Establish `hy2 : y.1.2 ∈ Ideal.span {Dp.η}`. Rewrite using `[← Dp.ker_eq, RingHom.mem_ker, ← FP.mem π Dp.π y, hy0, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_bot]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Use `show x.1.1 * y.1.1 = 0`. Rewrite using `[hx0, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show x.1.2 * y.1.2 = 0`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hx2`. Take `⟨c', hc'⟩` from `Ideal.mem_span_singleton'.1 hy2`. Rewrite using `[← hc, ← hc']`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma p₁_sqZero : (FP.p₁ π Dp.π).SqZero := by
   refine ⟨fun a => ⟨(ι₁ π Dp).1 a, rfl⟩, ?_⟩
@@ -208,7 +208,7 @@ lemma p₁_sqZero : (FP.p₁ π Dp.π).SqZero := by
       _ = 0 := by rw [Dp.η_sq, mul_zero]
 
 /- English proof (translation)
-Introduce `a ha`. Establish `ha0 : a.1.1 = 0` using `ha`. Use `show Dp.π.1 a.1.2 = 0`. Rewrite using `[← FP.mem π Dp.π a, ha0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma p₂_ker : ∀ a ∈ (FP.p₁ π Dp.π).ker, (FP.p₂ π Dp.π).1.toLinearMap a ∈ Dp.π.ker := by
   intro a ha
@@ -220,7 +220,7 @@ variable {ξ : (R' : Type u)} (hsurj : Function.Surjective π.1)
   (hker : RingHom.ker π.1 = Ideal.span {ξ}) (hsq : ξ * ξ = 0)
 
 /- English proof (translation)
-Introduce `a ha`. Establish `ha0 : a.1.1 = 0` using `ha`. Use `show π.1 (a.1.1 + ell π ξ hsurj (Dp.κ a.1.2)) = 0`. Rewrite using `[map_add, ell_π hsurj hker, ha0, map_zero, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sm_ker : ∀ a ∈ (FP.p₁ π Dp.π).ker, (sm π Dp ξ hsurj hker hsq).1.toLinearMap a ∈ π.ker := by
   intro a ha
@@ -229,13 +229,11 @@ lemma sm_ker : ∀ a ∈ (FP.p₁ π Dp.π).ker, (sm π Dp ξ hsurj hker hsq).1.
   rw [map_add, ell_π hsurj hker, ha0, map_zero, add_zero]
 
 /- English proof (translation)
-Introduce and unpack `⟨b, hb⟩`. Establish `hb' : b ∈ RingHom.ker π.1` using `hb`. Establish `hbξ : b ∈ Ideal.span {ξ}`. Rewrite using `[← hker]`. Conclude with `hb'`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hbξ`. Establish `hmem : ((0 : (R' : Type u)), Dp.σ.1 (π.1 c) * Dp.η) ∈ fpSub π Dp.π`. Rewrite using `[mem_fpSub]`. Use `show π.1 0 = Dp.π.1 (Dp.σ.1 (π.1 c) * Dp.η)`. Rewrite using `[map_zero, map_mul, Dp.π_η, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Establish `hk : (⟨_, hmem⟩ : (FP π Dp.π : Type u)) ∈ (FP.p₁ π Dp.π).ker` using `by show (0 : (R' : Type u)) = 0`. Both sides reduce to the same expression. Use `⟨⟨⟨_, hmem⟩, hk⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (0 : (R' : Type u)) + ell π ξ hsurj (Dp.κ (Dp.σ.1 (π.1 c) * Dp.η)) = c * ξ`.
-
-Rewrite using `[Dp.κ_ση, ell_spec hsurj hker hsq, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sm_ker_surj :
     Function.Surjective ((sm π Dp ξ hsurj hker hsq).1.toLinearMap.restrict

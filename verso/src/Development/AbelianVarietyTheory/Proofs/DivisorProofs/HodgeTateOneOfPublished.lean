@@ -14,9 +14,9 @@ open GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert GlobalTheory.LocM 
 namespace GlobalTheory.ChainPts
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 D O hO p _ W hW jc hj z`. Use `haveI := isDiscreteValuationRing_V z.Z.i.c (Fact.out : p.Prime) hW`. Introduce `c`. Take `⟨B₁, f₁, hn, hr, oo, π, u, hπ, hu, hoo⟩` from `GlobalTheory.T.exists_normal_model_with_presentation h1 h2 h3 h4 D O hO p W hW jc hj z c`. Take `⟨lw, wl, hwl, hlw⟩` from `GlobalTheory.T.local_model_letters_presentation z.Z (f₁.f ≫ (nmodel z.Z).compι c) (xAll O.S) oo π u hu hoo`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨B₁, f₁, hn, hr, lw, oo, ⟨π, wl, hπ, hwl⟩, hlw, hoo⟩`.
+A detailed English derivation is pending.
 -/
 theorem htOneSt_of_prismaticDieudonne : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.Published.PrismaticDieudonnePerfd →
     GlobalTheory.GroupBplus.GroupAllSt → HTOneSt := by

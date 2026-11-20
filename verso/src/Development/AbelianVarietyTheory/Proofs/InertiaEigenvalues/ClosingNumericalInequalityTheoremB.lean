@@ -11,33 +11,31 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainN
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `CA C b l S η Rw Tb Vd f r t m p hC hp ht hf hm hl hS hη hb hL hRw hTb hVd`. Establish `hK : 0 ≤ max CA 0` using `le_max_right _ _`. Establish `hpR : (260 : ℝ) * (f : ℝ) ^ 2 * (t : ℝ) ^ 2 * ((r : ℝ) + t) ≤ (p : ℝ)` using `by exact_mod_cast hp`. Establish `htR : (1 : ℝ) ≤ t` using `by exact_mod_cast ht`. Establish `hfR : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmR : (m : ℝ) ≤ r` using `by exact_mod_cast hm`. Establish `hr0 : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `hm0 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Establish `hl0 : 0 < l` using `by linarith`. Establish `hlog3 : 1 < Real.log 3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.lt_log_iff_exp_lt (by norm_num)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlogl : 1 ≤ Real.log l`. Use `Real.log_le_log (by norm_num) hl` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog2 : Real.log 2 < 1`. Use `Real.log_two_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlam : Real.logb l (2 * b) ≤ 2 * Real.log b`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[Real.logb, div_le_iff₀ (by linarith), Real.log_mul (by norm_num) hb.ne']`. Use the polynomial consequences of the given equalities and inequalities. Use `set L := Real.log b with hLdef`. Use `set lam := Real.logb l (2 * b) with hlamdef`. Establish `hx : 0 ≤ b / l` using `div_nonneg hb.le hl0.le`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set x := b / l with hxdef`. Establish `h4x : 4 * b / l = 4 * x` using `by rw [hxdef]; ring`. Rewrite `hRw` using `[h4x]`. Establish `hinner : 3 * (r : ℝ) * (4 * x + 2 * S + 2 * lam + 1 + η + t) + 6 * (m : ℝ) * (2 * b + 1) ≤ 13 * ((r : ℝ) * (x + S + t + η + L) + m * b)`. Use polynomial arithmetic with `[mul_nonneg hr0 hx, mul_nonneg hr0 hS, mul_nonneg hr0 (sub_nonneg.2 htR), mul_nonneg hr0 hη, mul_nonneg hr0 (sub_nonneg.2 hlam), mul_nonneg hr0 (by linarith : (0:ℝ) ≤ L), mul_nonneg hm0 hb.le]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : 0 ≤ (r : ℝ) * (x + S + t + η + L) + m * b`. Establish `: 0 ≤ x + S + t + η + L` using `by linarith`. Conclude with `add_nonneg (mul_nonneg hr0 this) (mul_nonneg hm0 hb.le)`. Establish `hf0 : (0 : ℝ) ≤ f` using `by linarith`. Establish `hmain : max CA 0 * (3 * (f : ℝ) * r * (4 * x + 2 * S + 2 * lam + 1 + η + t) + 6 * (f : ℝ) * m * (2 * b + 1)) ≤ C * f * ((r : ℝ) * (x + S + t + η + L) + m * b)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `e : 3 * (f : ℝ) * r * (4 * x + 2 * S + 2 * lam + 1 + η + t) + 6 * (f : ℝ) * m * (2 * b + 1) = f * (3 * (r : ℝ) * (4 * x + 2 * S + 2 * lam + 1 + η + t) + 6 * (m : ℝ) * (2 * b + 1))` using `by ring`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Use `set Q : ℝ := (f : ℝ) ^ 2 * (t : ℝ) ^ 2 * ((r : ℝ) + t) with hQ`. Establish `hQe : Q = (f : ℝ) ^ 2 * ((t : ℝ) ^ 2 * ((r : ℝ) + t))` using `by rw [hQ]; ring`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `ht2 : (1 : ℝ) ≤ (t : ℝ) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hf2 : (f : ℝ) ≤ (f : ℝ) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hrt : (1 : ℝ) ≤ (r : ℝ) + t` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT1 : (1 : ℝ) ≤ (t : ℝ) ^ 2 * ((r : ℝ) + t)` using `one_le_mul_of_one_le_of_one_le ht2 hrt`. Establish `hfQ : (f : ℝ) ≤ Q`. Rewrite using `[hQe]`. Conclude with `hf2.trans (le_mul_of_one_le_right (sq_nonneg _) hT1)`. Establish `hVQ : 4 * ((r : ℝ) + t) * t ≤ 4 * Q`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((r : ℝ) + t) * t ≤ (t : ℝ) ^ 2 * ((r : ℝ) + t)`. Establish `: ((r : ℝ) + t) * t = ((r : ℝ) + t) * t * 1` using `by ring`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `_ = (t : ℝ) ^ 2 * ((r : ℝ) + t) := by ring`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf1 : (1 : ℝ) ≤ (f : ℝ) ^ 2` using `hfR.trans hf2`. Establish `h2 : (t : ℝ) ^ 2 * ((r : ℝ) + t) ≤ Q`. Rewrite using `[hQe]; exact le_mul_of_one_le_left (by linarith) hf1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hQ0 : 0 ≤ Q` using `by linarith`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hQL : Q ≤ Q * L` using `le_mul_of_one_le_right hQ0 hL.le`. Establish `hTbQ : Tb ≤ 240 * Q * L`. Establish `: 240 * (t : ℝ) ^ 2 * (f : ℝ) ^ 2 * ((r : ℝ) + t) * L = 240 * Q * L` using `by rw [hQ]; ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpL : 260 * Q * L ≤ (p : ℝ) * L`.
-
-Apply `mul_le_mul_of_nonneg_right _ (by linarith)` to reduce the goal to its premises. Establish `: 260 * Q = (260 : ℝ) * (f : ℝ) ^ 2 * (t : ℝ) ^ 2 * ((r : ℝ) + t)` using `by rw [hQ]; ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hQL0 : 0 ≤ Q * L` using `mul_nonneg hQ0 (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem closing_numerical_inequality :
     ∀ (CA C b l S η Rw Tb Vd : ℝ) (f r t m p : ℕ), 13 * max CA 0 ≤ C → 260 * f ^ 2 * t ^ 2 * (r + t) ≤ p → 1 ≤ t → 1 ≤ f → m ≤ r → 3 ≤ l → 0 ≤ S → 0 ≤ η → 0 < b → 1 < Real.log b → Rw ≤ max CA 0 * (3 * (f : ℝ) * r * (4 * b / l + 2 * S + 2 * Real.logb l (2 * b) + 1 + η + t) + 6 * (f : ℝ) * m * (2 * b + 1)) + f → Tb ≤ 240 * (t : ℝ) ^ 2 * (f : ℝ) ^ 2 * ((r : ℝ) + t) * Real.log b → Vd ≤ 4 * ((r : ℝ) + t) * t → Rw + Tb + Vd ≤ C * f * (r * (b / l + S + t + η + Real.log b) + m * b) + (p : ℝ) * Real.log b := by

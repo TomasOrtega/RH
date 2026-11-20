@@ -15,7 +15,7 @@ def coordR (φ : E →ₗ[F] F) : E ⊗[F] R →ₗ[F] R :=
   TensorProduct.lid F R ∘ₗ φ.rTensor R
 
 /- English proof (translation)
-Simplify using `[coordR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordR_tmul (φ : E →ₗ[F] F) (e : E) (x : R) : coordR φ (e ⊗ₜ[F] x) = φ e • x := by
   simp [coordR]
@@ -23,7 +23,7 @@ theorem coordR_tmul (φ : E →ₗ[F] F) (e : E) (x : R) : coordR φ (e ⊗ₜ[F
 attribute [local instance] Algebra.TensorProduct.rightAlgebra
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e x`. Rewrite using `[Algebra.smul_def, Algebra.TensorProduct.right_algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, coordR_tmul, coordR_tmul, mul_smul_comm]`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, mul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem coordR_smul (φ : E →ₗ[F] F) (a : R) (t : E ⊗[F] R) :
     coordR φ (a • t) = a * coordR φ t := by
@@ -40,7 +40,7 @@ def coordL (φ : E →ₗ[F] F) : E ⊗[F] R →ₗ[R] R where
   map_smul' a t := by rw [RingHom.id_apply, smul_eq_mul]; exact coordR_smul φ a t
 
 /- English proof (translation)
-The claim follows from `coordR_tmul φ e x`.
+A detailed English derivation is pending.
 -/
 theorem coordL_tmul (φ : E →ₗ[F] F) (e : E) (x : R) : coordL φ (e ⊗ₜ[F] x) = φ e • x :=
   coordR_tmul φ e x
@@ -48,7 +48,7 @@ theorem coordL_tmul (φ : E →ₗ[F] F) (e : E) (x : R) : coordL φ (e ⊗ₜ[F
 end Coord
 
 /- English proof (translation)
-Take `⟨n, hn, -, hi⟩` from `NumberField.exists_nat_le_mulHeight₁ x`. Conclude with `⟨n, Nat.pos_of_ne_zero hn, hi⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_nat_mul_isIntegral {E : Type} [Field E] [NumberField E] (x : E) :
     ∃ D : ℕ, 0 < D ∧ IsIntegral ℤ ((D : E) * x) := by
@@ -59,23 +59,19 @@ end PI.TensCpctDenWork
 
 open NumberField IsDedekindDomain TensorProduct PI.TensCpctDenWork in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _`. Use `letI := tensTop (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)`. Introduce `C hC`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `letI : Algebra (FiniteAdeleRing (𝓞 F) F) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) := Algebra.TensorProduct.rightAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : IsModuleTopology (FiniteAdeleRing (𝓞 F) F) (E ⊗[F] FiniteAdeleRing (𝓞 F) F) := ⟨rfl⟩`. Use `set b := Module.finBasis F E with hbdef`. Establish `hcont : ∀ i, Continuous (coordL (R` using `FiniteAdeleRing (𝓞 F) F) (b.coord i)) := fun i => IsModuleTopology.continuous_of_linearMap _`. Use `choose Nf hNf0 hNf using fun i => hA F _ ((hC.image (hcont i)))`. Use `choose Db hDb0 hDb using fun i => exists_nat_mul_isIntegral (b i)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set N0 : ℕ := ∏ i, Nf i with hN0`. Use `set D0 : ℕ := ∏ i, Db i with hD0`. Establish `hN0pos : 0 < N0` using `Finset.prod_pos fun i _ => hNf0 i`. Establish `hD0pos : 0 < D0` using `Finset.prod_pos fun i _ => hDb0 i`. Use `⟨N0 * D0, Nat.mul_pos hN0pos hD0pos, fun e he => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : ∀ i, IsIntegral ℤ ((N0 : F) * b.coord i e)`. Introduce `i`. Establish `hmem : algebraMap F (FiniteAdeleRing (𝓞 F) F) (b.coord i e) ∈ coordL (R` using `FiniteAdeleRing (𝓞 F) F) (b.coord i) '' C := by`. Use `⟨_, he, ?_⟩` and prove the remaining obligations. Use `show coordL (b.coord i) ((e : E) ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F)) = _`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[coordL_tmul, Algebra.smul_def, mul_one]`. Establish `h1` using `hNf i (b.coord i e) hmem`. Establish `hsplit : (N0 : F) = ((∏ j ∈ Finset.univ.erase i, Nf j : ℕ) : F) * (Nf i : F)`. Rewrite using `[hN0, ← Finset.prod_erase_mul _ _ (Finset.mem_univ i)]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit, mul_assoc]`. Conclude with `(isIntegral_natCast _).mul h1`. Establish `hb : ∀ i, IsIntegral ℤ ((D0 : E) * b i)`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsplit : (D0 : E) = ((∏ j ∈ Finset.univ.erase i, Db j : ℕ) : E) * (Db i : E)`. Rewrite using `[hD0, ← Finset.prod_erase_mul _ _ (Finset.mem_univ i)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit, mul_assoc]`.
-
-Conclude with `(isIntegral_natCast _).mul (hDb i)`. Establish `he_sum : ((N0 * D0 : ℕ) : E) * e = ∑ i, algebraMap F E ((N0 : F) * b.coord i e) * ((D0 : E) * b i)` using `by conv_lhs => rw [← b.sum_repr e]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, map_natCast, Module.Basis.coord_apply]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he_sum]`. Use `IsIntegral.sum _ fun i _ => IsIntegral.mul ?_ (hb i)` and prove the remaining obligations. Conclude with `(hφ i).map (IsScalarTower.toAlgHom ℤ F E)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem PI.tensCpctDen_of (hA : PI.AdCpctDen) : PI.TensCpctDen := by
   intro F E _ _ _ _ _

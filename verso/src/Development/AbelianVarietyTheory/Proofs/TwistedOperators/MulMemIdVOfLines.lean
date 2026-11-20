@@ -23,7 +23,7 @@ open GlobalTheory.FinPl GlobalTheory.FinPlLoc
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[← dW.pX_jX]`. Simplify using `only [Matrix.mul_apply, SuppShift.xLast_castSucc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pX_xLast_castSucc {W W₀ : HSp D} {σ : ℕ} (dW : HypDec W W₀ σ) (z : Fin W₀.rank → D.host.E) (k l : Fin σ) :
     (dW.pX ⬝ xLast dW z) k l.castSucc = (1 : Mx D σ σ) k l := by
@@ -31,7 +31,7 @@ theorem pX_xLast_castSucc {W W₀ : HSp D} {σ : ℕ} (dW : HypDec W W₀ σ) (z
   simp only [Matrix.mul_apply, SuppShift.xLast_castSucc]
 
 /- English proof (translation)
-Establish `h : (dW.pX ⬝ xLast dW z) k (Fin.last σ) = ((dW.pX ⬝ dW.j0) *ᵥ ratV z) k`. Rewrite using `[← Matrix.mulVec_mulVec]`. Simplify using `only [Matrix.mul_apply, Matrix.mulVec, dotProduct, SuppShift.xLast_last]`. Rewrite using `[h, dW.pX_j0, Matrix.zero_mulVec, Pi.zero_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pX_xLast_last {W W₀ : HSp D} {σ : ℕ} (dW : HypDec W W₀ σ) (z : Fin W₀.rank → D.host.E) (k : Fin σ) :
     (dW.pX ⬝ xLast dW z) k (Fin.last σ) = 0 := by
@@ -41,7 +41,7 @@ theorem pX_xLast_last {W W₀ : HSp D} {σ : ℕ} (dW : HypDec W W₀ σ) (z : F
   rw [h, dW.pX_j0, Matrix.zero_mulVec, Pi.zero_apply]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, Matrix.mul_apply, Fin.sum_univ_castSucc, pX_xLast_last, zero_mul, add_zero]`. Simplify using `only [pX_xLast_castSucc, Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pX_xLast_mul_apply {W W₀ : HSp D} {σ : ℕ} (dW : HypDec W W₀ σ) (z : Fin W₀.rank → D.host.E)
     (N : Mx D (σ + 1) (σ + 1)) (k : Fin σ) (j : Fin (σ + 1)) :
@@ -58,17 +58,17 @@ open GlobalTheory.FinPl GlobalTheory.FinPlLoc
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, f7⟩` from `GlobalTheory.T.fractionalIdealCompletion_properties_at_place D ψ hψ v`. Establish `hiσ : i.1 < σ` using `by have := j.2; omega`. Use `set i' : Fin σ := ⟨i.1, hiσ⟩ with hi'`. Establish `hii : i'.castSucc = i` using `Fin.ext rfl`. Use `set s := idem D (· = v) * N i j with hsdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : s ∈ idAt D (· = v)` using `Ideal.mul_mem_right _ _ (idem_mem_idAt _)`. Establish `key : ∀ a : AE D, colMul dV.jX j a ∈ latV V LV (· = v) → colMul dV.jX i (s * a) ∈ latV V LV (· = v)`. Introduce `a ha`. Establish `haA : a ∈ idAt D (· = v)` using `GlobalTheory.SeeSaw.PrimSplit.idAt_of_colMul dV ha`. Establish `h1` using `hY _ ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[PsiUnit.mulVec_colMul, Matrix.mul_assoc, dV.pX_jX, Matrix.mul_one]`. Establish `hb : N i j * a ∈ idAt D (· = v)` using `Ideal.mul_mem_left _ _ haA`. Establish `h2 : colMul (xLast dW z) i (N i j * a) ∈ latA W LW (· = v)`. Use `(f7 W LW _).2 ⟨fun k => Ideal.mul_mem_right _ _ hb, fun t ht => ?_⟩` and prove the remaining obligations. Establish `h3` using `((f7 W LW _).1 h1).2 t ht`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `((hm _).1 h3).1 i'`. Establish `e1 : (dW.pX *ᵥ (t • colMul (xLast dW z ⬝ N) j a)) i' = t * (a * N i j)`. Rewrite using `[Matrix.mulVec_smul, PsiUnit.mulVec_colMul, Pi.smul_apply, smul_eq_mul, colMul, pX_xLast_mul_apply dW z N, hii]`. Rewrite `h4` using `[e1]`. Use `h4 using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `k`. Simplify using `only [Pi.smul_apply, smul_eq_mul, colMul, ← hii, SuppShift.xLast_castSucc]`. Expand and normalize the polynomial expressions, which then agree. Establish `h5` using `(hc i (N i j * a) hb).2 h2`. Establish `e2 : s * a = N i j * a`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hsdef, mul_comm (idem D (· = v)), mul_assoc, (mem_idAt_iff _ a).1 haA]`. Rewrite using `[e2]` and apply the resulting hypothesis. Establish `h6` using `(hp i j hij s hs).1 key (idem D (· = v)) (idem_mem_intAt _)`. Rewrite `h6` using `[hsdef, mul_assoc, mul_comm (N i j), ← mul_assoc, idem_mul_self]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem psiE_idem_entry {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {V V₀ W W₀ : HSp D} {σ : ℕ}
     (dV : HypDec V V₀ (σ + 1)) (dW : HypDec W W₀ σ) (z : Fin W₀.rank → D.host.E) (LV : Lat V) (LW : Lat W) (LW₀ : Lat W₀)
@@ -116,7 +116,7 @@ open GlobalTheory.FinPl GlobalTheory.FinPlLoc
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `a ha`. Establish `h1` using `hY _ (hV a ha)`. Rewrite `h1` using `[PsiUnit.mulVec_colMul, Matrix.mul_assoc, dV.pX_jX, Matrix.mul_one]`. Establish `h2` using `hW _ h1`. Rewrite `h2` using `[PsiUnit.mulVec_colMul, colMul, pX_xLast_mul_apply dW z N k j, mul_comm]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mul_mem_idV_of_lines {V V₀ W W₀ : HSp D} {σ : ℕ} (dV : HypDec V V₀ (σ + 1)) (dW : HypDec W W₀ σ)
     (z : Fin W₀.rank → D.host.E) (LV : Lat V) (A : AddSubgroup (Fin W.rank → AE D)) (𝔟V 𝔟W : GlobalTheory.SeeSaw.FI D) {v : Pl D}
@@ -139,15 +139,15 @@ open GlobalTheory.FinPl GlobalTheory.FinPlLoc
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `(FractionalIdeal.spanSingleton_eq_spanSingleton).2 ⟨-1, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem span_neg (x : D.host.E) : FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ (-x) = FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ x :=
   (FractionalIdeal.spanSingleton_eq_spanSingleton).2 ⟨-1, by simp⟩
 
 /- English proof (translation)
-Establish `hs : FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ x ≠ 0`. Rewrite using `[Ne, FractionalIdeal.spanSingleton_eq_zero_iff]` and apply the resulting hypothesis. Rewrite using `[pow_succ x (k + 1), ← FractionalIdeal.spanSingleton_mul_spanSingleton, pow_succ 𝔞' (k + 1)]`. Establish `h1 : FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ (x ^ (k + 1)) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.spanSingleton_eq_zero_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_ne_zero _ hx`. Establish `h2 : 𝔞' ^ (k + 1) ≠ 0` using `pow_ne_zero _ h𝔞'`. Establish `h3 : 𝔞 ^ n ≠ 0` using `pow_ne_zero _ h𝔞`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem line_ratio (I 𝔞 𝔞' : GlobalTheory.SeeSaw.FI D) (h𝔞 : 𝔞 ≠ 0) (h𝔞' : 𝔞' ≠ 0) (x : D.host.E) (hx : x ≠ 0) (n k : ℕ) :
     I * (FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ (x ^ (k + 1)))⁻¹ * (𝔞 ^ n * (𝔞' ^ (k + 1))⁻¹) *
@@ -169,7 +169,7 @@ namespace GlobalTheory.UniStepFB
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[← FractionalIdeal.spanSingleton_inv, ← FractionalIdeal.spanSingleton_inv]`. Rewrite using `[← line_ratio I 𝔞 𝔞' h𝔞 h𝔞' x hx n k]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem line_ratio' (I 𝔞 𝔞' : GlobalTheory.SeeSaw.FI D) (h𝔞 : 𝔞 ≠ 0) (h𝔞' : 𝔞' ≠ 0) (x : D.host.E) (hx : x ≠ 0) (n k : ℕ) :
     FractionalIdeal.spanSingleton (𝓞 D.host.E)⁰ ((x ^ (k + 1))⁻¹) * (𝔞 ^ n * (𝔞' ^ (k + 1))⁻¹) * I *

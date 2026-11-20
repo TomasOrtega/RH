@@ -10,7 +10,7 @@ open GlobalTheory.FlagMod (GChart ev tau tau_le le_preimage_comp)
 open scoped LaurentSeries
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ArcIntegralMixed.integral_of_arcs_of_good` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIntegralOfArcsAndGoodReductionPoints.lean&line=75#L75)
 -/

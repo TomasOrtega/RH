@@ -6,23 +6,21 @@ open scoped InnerProductSpace BigOperators
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `ι _ X x0 a s ha h1 hs hC`. Establish `hs0 : ∀ v, 0 ≤ s v` using `fun v => by simpa using hC v ∅ (Finset.notMem_empty _)`. Use `summable_of_sum_le (c := Real.exp (∑' v, s v)) (fun f => finprod_nonneg fun v => ha v _) ?_` and prove the remaining obligations. Introduce `u`. Use `set S : Finset ι := u.biUnion (fun f => f.2.toFinset) with hSdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsub : ∀ f ∈ u, ∀ w, f.1 w ≠ x0 w → w ∈ S`. Introduce `f hf w hw`. Conclude with `Finset.mem_biUnion.2 ⟨f, hf, by simpa using hw⟩`. Establish `hval : ∀ f ∈ u, ∏ᶠ v, a v (f.1 v) = ∏ x ∈ S.attach, a x.1 (f.1 x.1)`. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := S)]`. Conclude with `(Finset.prod_attach S (fun v => a v (f.1 v))).symm`. Introduce `w hw`. Assume the negation of the conclusion as `hwS`. Apply `hw` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Establish `: f.1 w = x0 w`. Assume the negation of the conclusion as `hne`. Conclude with `hwS (hsub f hf w hne)`. Simplify using `[this, h1]`. Set `C : ∀ v, Finset (X v)` to `fun v => u.image (fun f => f.1 v)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Set `φ : {f : ∀ v, X v // {w | f w ≠ x0 w}.Finite} → (∀ v ∈ S, X v)` to `fun f v _ => f.1 v`. Establish `hφinj : Set.InjOn φ u`. Introduce `f hf g hg hfg`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : w ∈ S`. Conclude with `congrFun (congrFun hfg w) hw`. Establish `hf' : f.1 w = x0 w` using `by by_contra h; exact hw (hsub f hf w h)`. Establish `hg' : g.1 w = x0 w` using `by by_contra h; exact hw (hsub g hg w h)`. Rewrite using `[hf', hg']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `step1 : ∑ f ∈ u, ∏ᶠ v, a v (f.1 v) = ∑ p ∈ u.image φ, ∏ x ∈ S.attach, a x.1 (p x.1 x.2)`. Rewrite using `[Finset.sum_image hφinj]`. Conclude with `Finset.sum_congr rfl hval`. Establish `himg : u.image φ ⊆ S.pi C`. Introduce `p hp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f, hf, rfl⟩` from `Finset.mem_image.1 hp`. Conclude with `Finset.mem_pi.2 fun v hv => Finset.mem_image_of_mem _ hf`. Establish `step2 : ∑ p ∈ u.image φ, ∏ x ∈ S.attach, a x.1 (p x.1 x.2) ≤ ∑ p ∈ S.pi C, ∏ x ∈ S.attach, a x.1 (p x.1 x.2)` using `Finset.sum_le_sum_of_subset_of_nonneg himg fun p _ _ => Finset.prod_nonneg fun x _ => ha _ _`. Establish `hCv : ∀ v, ∑ x ∈ C v, a v x ≤ 1 + s v`. Introduce `v`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_insert (Finset.notMem_erase _ _), h1]`. Use `_ ≤ 1 + s v := by gcongr; exact hC v _ (Finset.notMem_erase _ _)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem summable_finprod_of_finite_support_euler : ∀ (ι : Type) [DecidableEq ι] (X : ι → Type) (x0 : ∀ v, X v)
     (a : ∀ v, X v → ℝ) (s : ι → ℝ), (∀ v x, 0 ≤ a v x) → (∀ v, a v (x0 v) = 1) → Summable s →

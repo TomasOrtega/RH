@@ -34,7 +34,7 @@ def realify (n : ℕ) : Matrix (Fin n) (Fin n) ℂ ≃ₗ[ℝ] EuclideanSpace �
     ext ⟨i, j, b⟩; cases b <;> simp [realifyFun, unrealify]
 
 /- English proof (translation)
-Use `show unrealify (WithLp.toLp 2 (realifyFun X)) = X`. Use extensionality with `i j`. Simplify using `[realifyFun, unrealify]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unrealify_realify {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) : unrealify (realify n X) = X := by
   show unrealify (WithLp.toLp 2 (realifyFun X)) = X
@@ -42,7 +42,7 @@ theorem unrealify_realify {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) : unrealify
   simp [realifyFun, unrealify]
 
 /- English proof (translation)
-Use `show ⟪WithLp.toLp 2 (realifyFun X), WithLp.toLp 2 (realifyFun Y)⟫_ℝ = _`. Simplify using `only [PiLp.inner_apply, Fintype.sum_prod_type, Fintype.sum_bool, realifyFun, Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Complex.re_sum, RCLike.inner_apply, conj_trivial, if_true, Bool.false_eq_true, if_false, Complex.mul_re, Complex.star_def, C …`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem inner_realify {n : ℕ} (X Y : Matrix (Fin n) (Fin n) ℂ) :
     ⟪realify n X, realify n Y⟫_ℝ = (Xᴴ * Y).trace.re := by
@@ -55,15 +55,13 @@ theorem inner_realify {n : ℕ} (X Y : Matrix (Fin n) (Fin n) ℂ) :
   ring
 
 /- English proof (translation)
-Establish `key : ∀ a ∈ UH H, (H * aᴴ * H) * a = 1`. Introduce `a ha`. Establish `ha' : aᴴ * H * a = H` using `ha`. Combine the equalities or inequalities in the displayed calculation. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`. Use `show (1 : Matrix (Fin N) (Fin N) ℂ)ᴴ * H * 1 = H`. Simplify using the standard rewrite rules. Introduce `a ha b hb`. Establish `ha' : aᴴ * H * a = H` using `ha`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb' : bᴴ * H * b = H` using `hb`. Use `show (a * b)ᴴ * H * (a * b) = H`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Introduce `a ha`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `key a ha`. Establish `hinv : a⁻¹ = H * aᴴ * H` using `Matrix.inv_eq_left_inv h1`. Establish `hai : a * a⁻¹ = 1` using `Matrix.mul_nonsing_inv a (Matrix.isUnit_det_of_left_inverse h1)`. Use `⟨?_, hai⟩` and prove the remaining obligations. Establish `ha' : aᴴ * H * a = H` using `ha`.
-
-Use `show (a⁻¹)ᴴ * H * a⁻¹ = H`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isMatGroup_UH {N : ℕ} (H : Matrix (Fin N) (Fin N) ℂ) (hH : H * H = 1) : PI.IsMatGroup (UH H) := by
   have key : ∀ a ∈ UH H, (H * aᴴ * H) * a = 1 := by
@@ -96,15 +94,15 @@ theorem isMatGroup_UH {N : ℕ} (H : Matrix (Fin N) (Fin N) ℂ) (hH : H * H = 1
 
 open scoped Matrix.Norms.Operator in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hX`. Establish `hexp : ∀ t : ℝ, NormedSpace.exp (t • (H * (-X)ᴴ * H)) = NormedSpace.exp (t • X)`. Introduce `t`. Establish `h` using `GlobalTheory.UpqExpChart.exp_twist hH (hX t)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : H * (-((t : ℂ) • X))ᴴ * H = t • (H * (-X)ᴴ * H)`. Establish `hs : star (t : ℂ) = (t : ℂ)` using `Complex.conj_ofReal t`. Rewrite using `[Matrix.conjTranspose_neg, Matrix.conjTranspose_smul, hs, Matrix.conjTranspose_neg, Complex.coe_smul, Matrix.mul_neg, Matrix.mul_smul, Matrix.neg_mul, Matrix.smul_mul, Matrix.mul_neg, Matrix.neg_mul, smul_neg]`. Rewrite `h` using `[e1, Complex.coe_smul]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `d1` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) (H * (-X)ᴴ * H) (0 : ℝ)`. Establish `d2` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)`. Establish `d1' : HasDerivAt (fun u : ℝ => NormedSpace.exp (u • X)) (NormedSpace.exp ((0 : ℝ) • (H * (-X)ᴴ * H)) * (H * (-X)ᴴ * H)) 0` using `d1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => (hexp t).symm)`. Establish `hYX` using `d1'.unique d2`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul] at hYX`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hHH : ∀ W : Matrix (Fin N) (Fin N) ℂ, H * (H * W) = W` using `fun W => by`. Rewrite using `[← Matrix.mul_assoc, hH, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Introduce `hX t`. Apply `GlobalTheory.UpqExpChart.exp_unitary hH` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hs : star (t : ℂ) = (t : ℂ)` using `Complex.conj_ofReal t`. Rewrite using `[Matrix.conjTranspose_smul, hs, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hX, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_lieOf_UH {N : ℕ} (H : Matrix (Fin N) (Fin N) ℂ) (hH : H * H = 1) (X : Matrix (Fin N) (Fin N) ℂ) :
     X ∈ lieOf (UH H) ↔ Xᴴ * H + H * X = 0 := by
@@ -136,13 +134,11 @@ theorem mem_lieOf_UH {N : ℕ} (H : Matrix (Fin N) (Fin N) ℂ) (hH : H * H = 1)
     rw [Matrix.conjTranspose_smul, hs, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hX, smul_zero]
 
 /- English proof (translation)
-Apply the tactic sequence `let σ : (ι × ι) ⊕ (ι × ι) ≃ Fin n × Fin n × Bool := { toFun := Sum.elim (fun p => (e p.1, e p.2, false)) (fun p => (e p.1, e p.2, true)) invFun := fun q => if q.2.2 then Sum.inr (e.symm q.1, e.symm q.2.1) else Sum.inl (e.symm q.1, e.symm q.2.1) left_inv := by rintro (p | p) <;> s …`. Establish `h1` using `PiLp.volume_preserving_ofLp (ι := Fin n × Fin n × Bool)`. Establish `h2` using `volume_measurePreserving_piCongrLeft (fun _ : (ι × ι) ⊕ (ι × ι) => ℝ) σ.symm`. Establish `h3` using `measurePreserving_sumPiEquivProdPi (X := fun _ : (ι × ι) ⊕ (ι × ι) => ℝ) (fun _ => volume)`. Establish `h4` using `MeasurePreserving.symm _ (measurePreserving_arrowProdEquivProdArrow ℝ ℝ (ι × ι) (fun _ => volume) (fun _ => volume))`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `measurePreserving_pi (fun _ : ι × ι => (volume : Measure ℝ).prod volume) (fun _ => (volume : Measure ℂ)) (fun _ => MeasurePreserving.symm _ Complex.volume_preserving_equiv_real_prod)`. Establish `total` using `h5.comp (h4.comp (h3.comp (h2.comp h1)))`. Establish `hσ1 : ∀ p : ι × ι, σ (Sum.inl p) = (e p.1, e p.2, false)` using `fun p => rfl`. Establish `hσ2 : ∀ p : ι × ι, σ (Sum.inr p) = (e p.1, e p.2, true)` using `fun p => rfl`. Use `total using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `case e'_7 => exact volume_pi`. Use `clear h1 h2 h3 h4 h5 total`. Use `clear_value σ`. Use function extensionality and compare the values at `x p`. Apply the tactic sequence `apply Complex.ext <;>`.
-
-Simplify using `[hσ1, hσ2, unrealify, MeasurableEquiv.arrowProdEquivProdArrow, MeasurableEquiv.sumPiEquivProdPi, MeasurableEquiv.piCongrLeft, Equiv.piCongrLeft_apply, eq_rec_constant, Equiv.arrowProdEquivProdArrow, Complex.measurableEquivRealProd_symm_apply]`.
+Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurePreserving_unrealify {ι : Type} [Fintype ι] {n : ℕ} (e : ι ≃ Fin n) :
     MeasurePreserving (fun (x : EuclideanSpace ℝ (Fin n × Fin n × Bool)) (p : ι × ι) =>
@@ -175,9 +171,9 @@ theorem measurePreserving_unrealify {ι : Type} [Fintype ι] {n : ℕ} (e : ι �
 variable {n P Q : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨a, rfl⟩` from `e.surjective i`. Take `⟨b, rfl⟩` from `e.surjective j`. Rewrite using `[Matrix.submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[Formalism.REAL.Jm, Formalism.UG.Jpq, Matrix.diagonal_apply, Matrix.fromBlocks, Matrix.one_apply, h1, h2]`. Apply the tactic sequence `all_goals split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jm_eq {ε : Fin n → Bool} {e : Fin P ⊕ Fin Q ≃ Fin n} (h1 : ∀ i, ε (e (Sum.inl i)) = true)
     (h2 : ∀ j, ε (e (Sum.inr j)) = false) :
@@ -195,7 +191,7 @@ def coord (e : Fin P ⊕ Fin Q ≃ Fin n) :
   (Matrix.reindexLinearEquiv ℝ ℂ e e).trans (realify n)
 
 /- English proof (translation)
-Use `show unrealify (realify n (X.submatrix e.symm e.symm)) = _`. Rewrite using `[unrealify_realify]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unrealify_coord (e : Fin P ⊕ Fin Q ≃ Fin n) (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) :
     unrealify (coord e X) = X.submatrix e.symm e.symm := by
@@ -203,7 +199,7 @@ theorem unrealify_coord (e : Fin P ⊕ Fin Q ≃ Fin n) (X : Matrix (Fin P ⊕ F
   rw [unrealify_realify]
 
 /- English proof (translation)
-Establish `h : ∀ Z : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ, coord e Z = realify n (Z.submatrix e.symm e.symm)` using `fun Z => rfl`. Rewrite using `[h, h, inner_realify, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv]`. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.submatrix_apply]`. Rewrite using `[Equiv.sum_comp e.symm (fun j => (Xᴴ * Y) j j)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem inner_coord (e : Fin P ⊕ Fin Q ≃ Fin n) (X Y : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) :
     ⟪coord e X, coord e Y⟫_ℝ = (Xᴴ * Y).trace.re := by
@@ -216,18 +212,18 @@ theorem inner_coord (e : Fin P ⊕ Fin Q ≃ Fin n) (X Y : Matrix (Fin P ⊕ Fin
 abbrev form (e : Fin P ⊕ Fin Q ≃ Fin n) : Matrix (Fin n) (Fin n) ℂ := (Formalism.UG.Jpq P Q).submatrix e.symm e.symm
 
 /- English proof (translation)
-Use `show (Formalism.UG.Jpq P Q).submatrix e.symm e.symm * (Formalism.UG.Jpq P Q).submatrix e.symm e.symm = 1`. Rewrite using `[Matrix.submatrix_mul_equiv, GlobalTheory.UpqExpChart.jpq_sq, Matrix.submatrix_one_equiv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_sq (e : Fin P ⊕ Fin Q ≃ Fin n) : form e * form e = 1 := by
   show (Formalism.UG.Jpq P Q).submatrix e.symm e.symm * (Formalism.UG.Jpq P Q).submatrix e.symm e.symm = 1
   rw [Matrix.submatrix_mul_equiv, GlobalTheory.UpqExpChart.jpq_sq, Matrix.submatrix_one_equiv]
 
 /- English proof (translation)
-Rewrite using `[mem_lieOf_UH _ (form_sq e)]`. Use `show _ ↔ Xᴴ * Formalism.UG.Jpq P Q + Formalism.UG.Jpq P Q * X = 0`. Use `show (X.submatrix e.symm e.symm)ᴴ * (Formalism.UG.Jpq P Q).submatrix e.symm e.symm + (Formalism.UG.Jpq P Q).submatrix e.symm e.symm * X.submatrix e.symm e.symm = 0 ↔ _`. Establish `hadd : ∀ A B : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ, (A + B).submatrix e.symm e.symm = A.submatrix e.symm e.symm + B.submatrix e.symm e.symm` using `fun A B => rfl`. Rewrite using `[Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, ← hadd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`. Use `congrFun (congrFun h (e i)) (e j)` as an intermediate fact. Simplify using `using this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Simplify using `[h]`.
+A detailed English derivation is pending.
 -/
 theorem submatrix_mem_lieOf (e : Fin P ⊕ Fin Q ≃ Fin n) (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) :
     X.submatrix e.symm e.symm ∈ lieOf (UH (form e)) ↔ X ∈ lieU P Q := by
@@ -247,11 +243,11 @@ theorem submatrix_mem_lieOf (e : Fin P ⊕ Fin Q ≃ Fin n) (X : Matrix (Fin P �
     simp [h]
 
 /- English proof (translation)
-Establish `hset : ((fun X => (WithLp.equiv 2 _).symm (realifyFun X)) '' lieOf (UH (form e)) : Set (EuclideanSpace ℝ (Fin n × Fin n × Bool))) = ((lieU P Q).map (coord e).toLinearMap : Set _)`. Use extensionality with `v`. Rewrite using `[Submodule.map_coe]`. Simplify using `only [Set.mem_image, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨Y, hY, rfl⟩`. Establish `hXY : (Y.submatrix e e).submatrix e.symm e.symm = Y` using `by ext i j; simp`. Use `⟨Y.submatrix e e, (submatrix_mem_lieOf e _).1 (by rw [hXY]; exact hY), ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun Z => WithLp.toLp 2 (realifyFun Z)) hXY`. Introduce and unpack `⟨X, hX, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨X.submatrix e.symm e.symm, (submatrix_mem_lieOf e X).2 hX, rfl⟩`. Unfold `lieE`. Rewrite using `[hset, Submodule.span_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_lieU (e : Fin P ⊕ Fin Q ≃ Fin n) :
     (lieU P Q).map (coord e).toLinearMap = lieE (UH (form e)) := by
@@ -280,13 +276,13 @@ theorem coe_lieCoord (e : Fin P ⊕ Fin Q ≃ Fin n) (X : lieU P Q) :
     (lieCoord e X : EuclideanSpace ℝ (Fin n × Fin n × Bool)) = coord e X := rfl
 
 /- English proof (translation)
-Establish `hJ` using `GlobalTheory.UpqExpChart.jpq_sq P Q`. Establish `hA : A.1ᴴ * Formalism.UG.Jpq P Q + Formalism.UG.Jpq P Q * A.1 = 0` using `A.2`. Establish `hB : B.1ᴴ * Formalism.UG.Jpq P Q + Formalism.UG.Jpq P Q * B.1 = 0` using `B.2`. Establish `key : ∀ Z : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ, Zᴴ * Formalism.UG.Jpq P Q + Formalism.UG.Jpq P Q * Z = 0 → Zᴴ = -(Formalism.UG.Jpq P Q * Z * Formalism.UG.Jpq P Q)`. Introduce `Z hZ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : Zᴴ * Formalism.UG.Jpq P Q = -(Formalism.UG.Jpq P Q * Z)` using `eq_neg_of_add_eq_zero_left hZ`. Combine the equalities or inequalities in the displayed calculation. Establish `h1 : (A.1ᴴ * B.1).trace = -(Formalism.UG.Jpq P Q * A.1 * (Formalism.UG.Jpq P Q * B.1)).trace`. Rewrite using `[key A.1 hA, Matrix.neg_mul, Matrix.trace_neg]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : star (A.1ᴴ * B.1).trace = -(Formalism.UG.Jpq P Q * B.1 * (Formalism.UG.Jpq P Q * A.1)).trace`. Rewrite using `[← Matrix.trace_conjTranspose, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, key B.1 hB, Matrix.neg_mul, Matrix.trace_neg]`. Simplify using `only [Matrix.mul_assoc]`. Establish `h3 : star (A.1ᴴ * B.1).trace = (A.1ᴴ * B.1).trace`. Rewrite using `[h2, h1, Matrix.trace_mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Complex.conj_eq_iff_im.mp h3`.
+A detailed English derivation is pending.
 -/
 theorem trace_im (A B : lieU P Q) : (A.1ᴴ * B.1).trace.im = 0 := by
   have hJ := GlobalTheory.UpqExpChart.jpq_sq P Q
@@ -310,11 +306,11 @@ theorem trace_im (A B : lieU P Q) : (A.1ᴴ * B.1).trace.im = 0 := by
   exact Complex.conj_eq_iff_im.mp h3
 
 /- English proof (translation)
-Establish `hn : ∀ Z, ‖coord e Z‖ ^ 2 = (Zᴴ * Z).trace.re` using `fun Z => by`. Rewrite using `[← real_inner_self_eq_norm_sq, inner_coord]`. Rewrite using `[hn, hn, hn]`. Establish `e1` using `trace_im A B`. Establish `e2` using `trace_im B A`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : star Complex.I = -Complex.I` using `Complex.conj_I`. Establish `hZ : (A.1 + Complex.I • B.1)ᴴ * (A.1 + Complex.I • B.1) = A.1ᴴ * A.1 + B.1ᴴ * B.1 + Complex.I • (A.1ᴴ * B.1) - Complex.I • (B.1ᴴ * A.1)`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_smul, hI]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul, smul_add, smul_smul, neg_mul, Complex.I_mul_I, neg_neg, one_smul, neg_smul, smul_neg]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hZ]`. Simplify using `only [Matrix.trace_add, Matrix.trace_sub, Matrix.trace_smul, smul_eq_mul, Complex.add_re, Complex.sub_re, Complex.mul_re, Complex.I_re, Complex.I_im]`. Combine the linear relations using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem norm_sq_add (e : Fin P ⊕ Fin Q ≃ Fin n) (A B : lieU P Q) :
     ‖coord e (A.1 + Complex.I • B.1)‖ ^ 2 = ‖coord e A.1‖ ^ 2 + ‖coord e B.1‖ ^ 2 := by
@@ -354,19 +350,17 @@ def cplxIsom (e : Fin P ⊕ Fin Q ≃ Fin n) :
     rfl
 
 /- English proof (translation)
-Introduce `v`. Establish `hJ` using `GlobalTheory.UpqExpChart.jpq_sq P Q`. Establish `hJh` using `GlobalTheory.OmegaLebExists.J_conjTranspose P Q`. Establish `hJJ : ∀ W : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ, Formalism.UG.Jpq P Q * (Formalism.UG.Jpq P Q * W) = W` using `fun W => by`. Rewrite using `[← Matrix.mul_assoc, hJ, Matrix.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set J := Formalism.UG.Jpq P Q`. Use `set Z := (coord e).symm v`. Set `A : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ` to `(1 / 2 : ℂ) • (Z - J * Zᴴ * J)`. Set `B : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ` to `(-Complex.I / 2) • (Z + J * Zᴴ * J)`. Establish `s1 : star (1 / 2 : ℂ) = 1 / 2` using `by simp`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s2 : star (-Complex.I / 2) = Complex.I / 2` using `by simp [Complex.conj_I]`. Establish `hA : A ∈ lieU P Q` using `by show Aᴴ * J + J * A = 0`. Simplify using `only [A, Matrix.conjTranspose_smul, s1, Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, hJh, Matrix.conjTranspose_conjTranspose, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_assoc, hJ, hJJ, Matrix.mul_one, ← smul_add]`. Rewrite using `[show Zᴴ * J - J * Z + (J * Z - Zᴴ * J) = 0 by abel, smul_zero]`. Establish `hB : B ∈ lieU P Q` using `by show Bᴴ * J + J * B = 0`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [B, Matrix.conjTranspose_smul, s2, Matrix.conjTranspose_add, Matrix.conjTranspose_mul, hJh, Matrix.conjTranspose_conjTranspose, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, hJ, hJJ, Matrix.mul_one]`. Rewrite using `[show -Complex.I / 2 = -(Complex.I / 2) by ring, neg_smul, ← sub_eq_add_neg, ← smul_sub]`. Rewrite using `[show Zᴴ * J + J * Z - (J * Z + Zᴴ * J) = 0 by abel, smul_zero]`. Establish `hAB : A + Complex.I • B = Z`. Simplify using `only [A, B, smul_smul, smul_sub, smul_add]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show Complex.I * (-Complex.I / 2) = 1 / 2 by field_simp; simp [Complex.I_sq]]`. Rewrite using `[← sub_eq_zero]`. Establish `: (2 : ℂ) ≠ 0` using `two_ne_zero`. Rewrite using `[show (1 / 2 : ℂ) • Z - (1 / 2 : ℂ) • (J * Zᴴ * J) + ((1 / 2 : ℂ) • Z + (1 / 2 : ℂ) • (J * Zᴴ * J)) - Z = ((1 / 2 : ℂ) + 1 / 2 - 1) • Z by module]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨WithLp.toLp 2 (lieCoord e ⟨A, hA⟩, lieCoord e ⟨B, hB⟩), ?_⟩` and prove the remaining obligations. Use `show coord e (((lieCoord e).symm (lieCoord e ⟨A, hA⟩)).1 + Complex.I • ((lieCoord e).symm (lieCoord e ⟨B, hB⟩)).1) = v`. Rewrite using `[ContinuousLinearEquiv.symm_apply_apply, ContinuousLinearEquiv.symm_apply_apply]`. Use `show coord e (A + Complex.I • B) = v`. Rewrite using `[hAB]`.
-
-Conclude with `(coord e).apply_symm_apply v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cplxIsom_surjective (e : Fin P ⊕ Fin Q ≃ Fin n) : Function.Surjective (cplxIsom e) := by
   intro v
@@ -409,15 +403,13 @@ theorem cplxIsom_surjective (e : Fin P ⊕ Fin Q ≃ Fin n) : Function.Surjectiv
   exact (coord e).apply_symm_apply v
 
 /- English proof (translation)
-Establish `: BorelSpace (lieU P Q)` using `⟨rfl⟩`. Use `⟨(lieCoord e).symm.isAddHaarMeasure_map _, ?_⟩` and prove the remaining obligations. Establish `hLs : Measurable (lieCoord e).symm` using `(lieCoord e).symm.continuous.measurable`. Establish `hL : Measurable (lieCoord e)` using `(lieCoord e).continuous.measurable`. Establish `hI` using `(LinearIsometryEquiv.ofSurjective (cplxIsom e) (cplxIsom_surjective e)).measurePreserving`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT` using `(measurePreserving_unrealify (ι := Fin P ⊕ Fin Q) e).comp (hI.comp (WithLp.volume_preserving_toLp (U := lieE (UH (form e))) (V := lieE (UH (form e)))))`. Establish `hG : Measurable (fun ab : lieU P Q × lieU P Q => entries ((ab.1 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) + Complex.I • (ab.2 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)))`. Use `hT.measurable.comp (hL.prodMap hL) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `ab`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show ((ab.1 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) + Complex.I • (ab.2 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)) p.1 p.2 = unrealify (coord e (((lieCoord e).symm (lieCoord e ab.1) : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) + Complex.I • ((lieCoord e).symm (lieCoord e ab. …`. Rewrite using `[ContinuousLinearEquiv.symm_apply_apply, ContinuousLinearEquiv.symm_apply_apply, unrealify_coord]`. Simplify using the standard rewrite rules. Rewrite using `[Measure.map_prod_map _ _ hLs hLs, Measure.map_map hG (hLs.prodMap hLs)]`. Use `hT.map_eq using 2` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Treat this case separately.
 
-Use `case e'_6 => rfl`. Use function extensionality and compare the values at `ab`. Use function extensionality and compare the values at `p`. Use `show ((lieCoord e).symm ab.1 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) p.1 p.2 + (Complex.I • ((lieCoord e).symm ab.2 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)) p.1 p.2 = unrealify (coord e (((lieCoord e).symm ab.1 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) + Complex.I • ((l …`. Rewrite using `[unrealify_coord]`.
-
-Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isOmegaLeb_frobenius (e : Fin P ⊕ Fin Q ≃ Fin n) :
     IsOmegaLeb ((volume : Measure (lieE (UH (form e)))).map (lieCoord e).symm) := by
@@ -456,7 +448,7 @@ def emb (e : Fin P ⊕ Fin Q ≃ Fin n) (g : UpqT P Q) : PI.MtM n :=
   Matrix.of.symm (Matrix.reindex e e (UpqT.mat g))
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `congrFun (congrFun h (e i)) (e j)` as an intermediate fact. Simplify using `using this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem submatrix_inj (e : Fin P ⊕ Fin Q ≃ Fin n) {X Y : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ}
     (h : X.submatrix e.symm e.symm = Y.submatrix e.symm e.symm) : X = Y := by
@@ -465,7 +457,7 @@ theorem submatrix_inj (e : Fin P ⊕ Fin Q ≃ Fin n) {X Y : Matrix (Fin P ⊕ F
   simpa using this
 
 /- English proof (translation)
-Set `h : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ ≃ₜ PI.MtM n` to `{ toEquiv := (Matrix.reindex e e).trans Matrix.of.symm continuous_toFun := continuous_pi fun i => continuous_pi fun j => continuous_apply_apply (e.symm i) (e.symm j) continuous_invFun := continuous_pi fun i => continuous_pi fun j => continuous_apply_apply (e i) (e j) }`. Conclude with `h.isClosedEmbedding.comp (GlobalTheory.UpqTopology.isClosedEmbedding_mat (P := P) (Q := Q))`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_emb (e : Fin P ⊕ Fin Q ≃ Fin n) : IsClosedEmbedding (emb e) := by
   let h : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ ≃ₜ PI.MtM n :=
@@ -475,7 +467,7 @@ theorem isClosedEmbedding_emb (e : Fin P ⊕ Fin Q ≃ Fin n) : IsClosedEmbeddin
   exact h.isClosedEmbedding.comp (GlobalTheory.UpqTopology.isClosedEmbedding_mat (P := P) (Q := Q))
 
 /- English proof (translation)
-Use `show (X.submatrix e.symm e.symm)ᴴ * (Formalism.UG.Jpq P Q).submatrix e.symm e.symm * X.submatrix e.symm e.symm = (Formalism.UG.Jpq P Q).submatrix e.symm e.symm ↔ _`. Rewrite using `[Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv]`. Conclude with `⟨submatrix_inj e, fun h => by rw [h]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem submatrix_mem_UH (e : Fin P ⊕ Fin Q ≃ Fin n) (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) :
     X.submatrix e.symm e.symm ∈ UH (form e) ↔ Xᴴ * Formalism.UG.Jpq P Q * X = Formalism.UG.Jpq P Q := by
@@ -485,19 +477,17 @@ theorem submatrix_mem_UH (e : Fin P ⊕ Fin Q ≃ Fin n) (X : Matrix (Fin P ⊕ 
   exact ⟨submatrix_inj e, fun h => by rw [h]⟩
 
 /- English proof (translation)
-Establish `hl` using `GlobalTheory.UpqTopology.upq_lcsc P Q`. Use `hl.1` as an intermediate fact. Use `hl.2.1` as an intermediate fact. Use `hl.2.2.1` as an intermediate fact. Use `hl.2.2.2.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hl.2.2.2.2.1` as an intermediate fact. Establish `hme : MeasurableEmbedding (emb e)` using `(isClosedEmbedding_emb e).measurableEmbedding`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hme.sigmaFinite_map`. Conclude with `(Measure.map_ne_zero_iff hme.measurable.aemeasurable).2 (NeZero.ne μ)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hme.map_apply]`. Establish `hemp : emb e ⁻¹' {x | Matrix.of x ∉ UH (form e)} = ∅`. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_not]`. Conclude with `(submatrix_mem_UH e _).2 (GlobalTheory.UpqTopology.mat_unitary g)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hemp, measure_empty]`. Introduce `s hs`. Establish `hss : (s.submatrix e e).submatrix e.symm e.symm = s` using `by ext i j; simp`. Establish `hX : (s.submatrix e e)ᴴ * Formalism.UG.Jpq P Q * s.submatrix e e = Formalism.UG.Jpq P Q`. Rewrite using `[← submatrix_mem_UH e, hss]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hs`. Take `⟨g, hg⟩ : s.submatrix e e ∈ Set.range (UpqT.mat (P` from `P) (Q := Q)) := by`. Rewrite using `[GlobalTheory.UpqTopology.range_mat]`. Conclude with `hX`. Establish `hs' : s = (UpqT.mat g).submatrix e.symm e.symm` using `by rw [hg, hss]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm : PI.lmulQ s ∘ emb e = emb e ∘ (fun h => g * h)`. Use function extensionality and compare the values at `h`. Use `show s * (UpqT.mat h).submatrix e.symm e.symm = (UpqT.mat (g * h)).submatrix e.symm e.symm`. Rewrite using `[hs', Matrix.submatrix_mul_equiv, GlobalTheory.HaarDensityUpq.mat_mul]`. Establish `hmeas : Measurable (PI.lmulQ s)`.
-
-Establish `: Continuous (PI.lmulQ s)`. Unfold `PI.lmulQ`. Conclude with `continuous_const.matrix_mul continuous_id`. Conclude with `this.measurable`. Rewrite using `[Measure.map_map hmeas hme.measurable, hcomm, ← Measure.map_map hme.measurable (measurable_const_mul g), map_mul_left_eq_self]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHaarOnM_map (e : Fin P ⊕ Fin Q ≃ Fin n) (μ : Measure (UpqT P Q)) [μ.IsHaarMeasure] :
     PI.IsHaarOnM (UH (form e)) (μ.map (emb e)) := by
@@ -540,9 +530,9 @@ theorem isHaarOnM_map (e : Fin P ⊕ Fin Q ≃ Fin n) (μ : Measure (UpqT P Q)) 
 
 open scoped Matrix.Norms.Operator in
 /- English proof (translation)
-Set `T' : E →L[ℝ] Matrix (Fin n) (Fin n) ℂ` to `LinearMap.toContinuousLinearMap T`. Set `π : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] ℂ` to `{ toFun := fun M => M i j, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Set `π' : Matrix (Fin n) (Fin n) ℂ →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap π`. Establish `hg : HasStrictFDerivAt (NormedSpace.exp : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ) (1 : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ) (T' 0)`. Rewrite using `[map_zero]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hasStrictFDerivAt_exp_zero (𝕂 := ℝ)`. Establish `h2` using `π'.hasStrictFDerivAt.comp (0 : E) (hg.comp (0 : E) T'.hasStrictFDerivAt)`. Use `⟨π'.comp ((1 : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ).comp T'), ?_, fun v => ?_⟩` and prove the remaining obligations. Conclude with `h2`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hasStrictFDerivAt_entry {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     (T : E →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
@@ -561,7 +551,7 @@ theorem hasStrictFDerivAt_entry {E : Type} [NormedAddCommGroup E] [NormedSpace �
   · rfl
 
 /- English proof (translation)
-Rewrite using `[PiLp.norm_eq_of_L1, Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem norm_toL1_eq_sum_norm_entries (X : lieU P Q) :
     ‖GlobalTheory.HaarDensityUpq.toL1 P Q X‖ = ∑ i, ∑ j, ‖(X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) i j‖ := by
@@ -569,29 +559,27 @@ private theorem norm_toL1_eq_sum_norm_entries (X : lieU P Q) :
   rfl
 
 /- English proof (translation)
-Establish `: BorelSpace (lieU P Q)` using `⟨rfl⟩`. Establish `hl` using `GlobalTheory.UpqTopology.upq_lcsc P Q`. Use `hl.1` as an intermediate fact. Use `hl.2.1` as an intermediate fact. Use `hl.2.2.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hl.2.2.2.1` as an intermediate fact. Use `hl.2.2.2.2.1` as an intermediate fact. Establish `hme : MeasurableEmbedding (emb e)` using `(isClosedEmbedding_emb e).measurableEmbedding`. Establish `hLme : MeasurableEmbedding (lieCoord e).symm` using `(lieCoord e).symm.toHomeomorph.measurableEmbedding`. Use `letI := GlobalTheory.HaarDensityUpq.sumNorm P Q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI : NormedSpace ℝ (lieU P Q) := ⟨fun a X => by show ‖GlobalTheory.HaarDensityUpq.toL1 P Q (a • X)‖ ≤ ‖a‖ * ‖GlobalTheory.HaarDensityUpq.toL1 P Q X‖`. Rewrite using `[map_smul]`. Conclude with `norm_smul_le a _⟩`. Establish `hball : ∀ r : ℝ, Metric.ball (0 : lieU P Q) r = ballU P Q r`. Introduce `r`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `X`. Rewrite using `[mem_ball_zero_iff]`. Use `show ‖GlobalTheory.HaarDensityUpq.toL1 P Q X‖ < r ↔ ∑ i, ∑ j, ‖(X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) i j‖ < r`. Rewrite using `[norm_toL1_eq_sum_norm_entries]`. Set `Φ : lieU P Q → Matrix (Fin n) (Fin n) ℂ` to `fun X => (NormedSpace.exp (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)).submatrix e.symm e.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ0 : Φ 0 = 1` using `by simp [Φ]`. Establish `hΦS : ∀ᶠ x in 𝓝 (0 : lieU P Q), Φ x ∈ UH (form e)` using `Filter.Eventually.of_forall fun X => (submatrix_mem_UH e _).2 (GlobalTheory.UpqExpChart.exp_unitary (GlobalTheory.UpqExpChart.jpq_sq P Q) X.2)`. Establish `hder : ∀ i j, ∃ D : lieU P Q →L[ℝ] ℂ, HasStrictFDerivAt (fun x => Φ x i j) D 0 ∧ ∀ v, D v = unrealify ((lieCoord e v : lieE (UH (form e))) : EuclideanSpace ℝ (Fin n × Fin n × Bool)) i j`. Introduce `i j`. Set `T : lieU P Q →ₗ[ℝ] Matrix (Fin n) (Fin n) ℂ` to `{ toFun := fun X => (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ).submatrix e.symm e.symm map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `obtain ⟨D, hD, hDv⟩ := hasStrictFDerivAt_entry T i j`. Use `⟨D, ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `hf : (fun x => Φ x i j) = fun x => NormedSpace.exp (T x) i j`. Use function extensionality and compare the values at `x`. Use `show (NormedSpace.exp (x : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)).submatrix e.symm e.symm i j = NormedSpace.exp ((x : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ).submatrix e.symm e.symm) i j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.CompactDualSwap.exp_submatrix]`. Rewrite using `[hf]`. Conclude with `hD`. Rewrite using `[hDv, coe_lieCoord, unrealify_coord]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `key` using `GlobalTheory.T.tendsto_measure_image_ball_div_volume n (UH (form e)) (μ.map (emb e)) c (isMatGroup_UH _ (form_sq e)) (isHaarOnM_map e μ) hc (lieU P Q) Φ (lieCoord e) hΦ0 hΦS hder`. Use `⟨_, isOmegaLeb_frobenius e, key.congr fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[hball r]`. Use `congr 1`. Rewrite using `[hme.map_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use `congr 1`. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_image, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, hX, h⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨X, hX, (submatrix_inj e (X := NormedSpace.exp (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)) (Y := UpqT.mat g) h).symm⟩`. Introduce and unpack `⟨X, hX, h⟩`. Use `⟨X, hX, ?_⟩` and prove the remaining obligations. Use `show (NormedSpace.exp (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)).submatrix e.symm e.symm = (UpqT.mat g).submatrix e.symm e.symm`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hLme.map_apply]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
-
-Simplify using `using hy`. Introduce `hx`. Conclude with `⟨(lieCoord e).symm x, hx, (lieCoord e).apply_symm_apply x⟩`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem omegaDensity_of_hasDens (e : Fin P ⊕ Fin Q ≃ Fin n) (μ : Measure (UpqT P Q)) [μ.IsHaarMeasure]
     (c : ℝ≥0∞) (hc : HasDens (UH (form e)) (μ.map (emb e)) c) : OmegaDensity μ c := by
@@ -666,9 +654,9 @@ theorem omegaDensity_of_hasDens (e : Fin P ⊕ Fin Q ≃ Fin n) (μ : Measure (U
       exact ⟨(lieCoord e).symm x, hx, (lieCoord e).apply_symm_apply x⟩
 
 /- English proof (translation)
-Introduce `n ε P Q e h1 h2 μ c hμ hc`. Use `hμ` as an intermediate fact. Rewrite using `[jm_eq h1 h2]`. Establish `hH` using `isHaarOnM_map e μ`. Use `⟨hH, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c', -, hc', -⟩` from `GlobalTheory.T.exists_unique_haarDensity_at_identity n (UH (form e)) (μ.map (emb e)) (isMatGroup_UH _ (form_sq e)) hH`. Establish `h3` using `omegaDensity_of_hasDens e μ _ hc'`. Rewrite using `[GlobalTheory.OmegaDensityScale.omegaDensity_unique h3 hc]`. Conclude with `hc'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDens_of_omegaDensity : ∀ (n : ℕ) (ε : Fin n → Bool) (P Q : ℕ) (e : Fin P ⊕ Fin Q ≃ Fin n), (∀ i, ε (e (Sum.inl i)) = true) → (∀ j, ε (e (Sum.inr j)) = false) → ∀ (μ : Measure (Formalism.BasicNotions.UpqT P Q)) (c : ℝ≥0∞), μ.IsHaarMeasure → Formalism.BasicNotions.OmegaDensity μ c → PI.IsHaarOnM (UH (Formalism.REAL.Jm ε)) (μ.map fun g => Matrix.of.symm (Matrix.reindex e e (Formalism.BasicNotions.UpqT.mat g))) ∧ HasDens (UH (Formalism.REAL.Jm ε)) (μ.map fun g => Matrix.of.symm (Matrix.reindex e e (Formalism.BasicNotions.UpqT.mat g))) c := by
   intro n ε P Q e h1 h2 μ c hμ hc

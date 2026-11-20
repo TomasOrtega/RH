@@ -11,11 +11,11 @@ open scoped BigOperators
 namespace GlobalTheory.HalfPeriod
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[AddSubgroup.mem_closure_pair]`. Take `⟨m, n, hmn⟩` from `h`. Rewrite `hind` using `[LinearIndependent.pair_iff]`. Establish `key : ((a - 2 * m : ℤ) : ℝ) • w₁ + ((b - 2 * n : ℤ) : ℝ) • w₂ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hmn` using `[zsmul_eq_mul, zsmul_eq_mul]`. Simplify using `only [Complex.real_smul]`. Use `push_cast`. Take the linear combination `(-2 : ℂ) * hmn`. Take `⟨h1, h2⟩` from `hind _ _ key`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `h1' : a - 2 * m = 0` using `by exact_mod_cast h1`. Establish `h2' : b - 2 * n = 0` using `by exact_mod_cast h2`. Conclude with `hab ⟨⟨m, by omega⟩, ⟨n, by omega⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem half_comb_not_mem (w₁ w₂ : ℂ) (hind : LinearIndependent ℝ ![w₁, w₂]) (a b : ℤ)
     (hab : ¬ (2 ∣ a ∧ 2 ∣ b)) :
@@ -35,15 +35,15 @@ theorem half_comb_not_mem (w₁ w₂ : ℂ) (hind : LinearIndependent ℝ ![w₁
   exact hab ⟨⟨m, by omega⟩, ⟨n, by omega⟩⟩
 
 /- English proof (translation)
-Introduce and unpack `Λ ⟨w₁, w₂, hind, rfl⟩ P _ _`. Establish `hw₁ : w₁ ∈ AddSubgroup.closure ({w₁, w₂} : Set ℂ)` using `AddSubgroup.subset_closure (by simp)`. Establish `hw₂ : w₂ ∈ AddSubgroup.closure ({w₁, w₂} : Set ℂ)` using `AddSubgroup.subset_closure (by simp)`. Establish `n₁ : w₁ / 2 ∉ AddSubgroup.closure ({w₁, w₂} : Set ℂ)`. Use `half_comb_not_mem w₁ w₂ hind 1 0 (by decide)` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `n₂ : w₂ / 2 ∉ AddSubgroup.closure ({w₁, w₂} : Set ℂ)`. Use `half_comb_not_mem w₁ w₂ hind 0 1 (by decide)` as an intermediate fact. Simplify using `using this`. Establish `n₃ : (w₁ - w₂) / 2 ∉ AddSubgroup.closure ({w₁, w₂} : Set ℂ)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `half_comb_not_mem w₁ w₂ hind 1 (-1) (by decide)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hP : P - w₁ / 2 ∈ AddSubgroup.closure ({w₁, w₂} : Set ℂ)`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails.
 
-Use `⟨w₂ / 2, by rw [mul_div_cancel₀ _ two_ne_zero]; exact hw₂, n₂, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `n₃` to reduce the goal to its premises. Use `AddSubgroup.sub_mem _ h hP` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨w₁ / 2, by rw [mul_div_cancel₀ _ two_ne_zero]; exact hw₁, n₁, hP⟩`.
+Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components.
 -/
 theorem exists_other_half_period : ∀ (Λ : AddSubgroup ℂ), GlobalTheory.EvenTheta.IsLat Λ → ∀ P : ℂ,
     2 * P ∈ Λ → P ∉ Λ → ∃ P' : ℂ, 2 * P' ∈ Λ ∧ P' ∉ Λ ∧ P - P' ∉ Λ := by

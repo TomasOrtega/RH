@@ -13,25 +13,25 @@ namespace ReciprocityTheory.ChartRestriction.G.DVR
 open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Simplify using `only [gs_eq r z U h, map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_prod {X Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) {K : Type} (S : Finset K)
     (a : K → Γ(X, U)) : gs r z U (∏ i ∈ S, a i) = ∏ i ∈ S, gs r z U (a i) := by simp only [gs_eq r z U h, map_prod]
 
 /- English proof (translation)
-Simplify using `only [gs_eq r z U h, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_fsum {X Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) {K : Type} (S : Finset K)
     (a : K → Γ(X, U)) : gs r z U (∑ i ∈ S, a i) = ∑ i ∈ S, gs r z U (a i) := by simp only [gs_eq r z U h, map_sum]
 
 /- English proof (translation)
-Simplify using `only [gs_eq r z U h, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gs_zero {X Z : Scheme.{0}} (r : Z ⟶ X) (z : Z) (U : X.Opens) (h : r z ∈ U) : gs r z U 0 = 0 := by
   simp only [gs_eq r z U h, map_zero]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => trivial`. Consider the case `insert a S _ ih`. Rewrite using `[Finset.inf_insert]`. Conclude with `⟨h a (Finset.mem_insert_self _ _), ih fun b hb => h b (Finset.mem_insert_of_mem hb)⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_finf {X : Scheme.{0}} {K : Type} (S : Finset K) (W : K → X.Opens) (x : X) (h : ∀ a ∈ S, x ∈ W a) :
     x ∈ S.inf W := by
@@ -70,9 +70,9 @@ def sv (σ : H0 U.LG.L k) {Z : Scheme.{0}} (q : Z ⟶ G.left) (z : Z) (jL : U.LG
 variable (σ : H0 U.LG.L k) (f : ∀ α : D.toPre.X, D.toPre.SecB k α)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `(gs_mul r z _ hz _ _).trans (congrArg₂ (· * ·) ?_ ((gs_res r z _ hz _).trans (gs_pull r _ z _ hz.1.2 _)))` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, gs_unit r z _ hz, map_pow]`. Conclude with `congrArg (fun u => (u ^ k).val) (gm_res r z _ hz _)`. Use `(gs_fsum r z _ hz _ _).trans (Eq.trans (Finset.sum_congr rfl fun α _ => ?_) (Finset.sum_attach S _))` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `l₁` using `U.expW_le_f e (fun _ => jM, fun _ => jL) (fun _ => jL) jf jt α.2`. Establish `l₂` using `U.expWeight_le_chart_weight e (fun _ => jM, fun _ => jL) (fun _ => jL) jf jt α.2`. Establish `a₁` using `(gs_res r z l₁ hz (((pGl U e).app _).hom ((f α.1).f (jf α.1)))).trans (gs_pull r (pGl U e) z (LB.wchart D.toPre.P.L (D.toPre.famφB α.1) (jf α.1)) (l₁ hz) ((f α.1).f (jf α.1)))`. Establish `a₂` using `(gs_unit r z _ hz (res l₂ ((tG U e α.1).s (jt α.1)))).trans (congrArg Units.val (gm_res r z l₂ hz _))`. Conclude with `(gs_mul r z _ hz _ _).trans (congrArg₂ (· * ·) a₁ a₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exp_germ {Z : Scheme.{0}} (r : Z ⟶ (thickObj R I e G).left) (z : Z) (S : Finset D.toPre.X) (jM : D.toPre.P.L.ι)
     (jL : U.LG.L.ι) (jf jt : D.toPre.X → Fin 4 → D.toPre.P.L.ι)
@@ -104,11 +104,9 @@ theorem exp_germ {Z : Scheme.{0}} (r : Z ⟶ (thickObj R I e G).left) (z : Z) (S
     exact (gs_mul r z _ hz _ _).trans (congrArg₂ (· * ·) a₁ a₂)
 
 /- English proof (translation)
-Take `⟨S, h₀, h₁⟩` from `h`. Use `⟨S, fun Z r z J hJ => ⟨fun α hα => ?_, fun jL hL => ?_⟩⟩` and prove the remaining obligations. Establish `m` using `hJ.mem (D.toPre.famφB α) (r ≫ (pGl U e))`. Conclude with `(gs_pull r _ z _ m _).symm.trans ((congrArg (gs r z _) (h₀ α hα _)).trans (gs_zero r z _ m))`. Establish `hz : r z ∈ U.expW e (fun _ => J (r ≫ (pGl U e)), fun _ => jL) (fun _ => jL) S (fun α a => J ((r ≫ (pGl U e)) ≫ D.toPre.famφB α a)) (fun α a => J (r ≫ Oφl U e α a))` using `⟨⟨⟨mem_pull.2 (hJ (r ≫ (pGl U e))), mem_pull.2 hL⟩, Set.mem_iInter.2 fun _ => hL⟩, mem_finf S _ _ fun α _ => ⟨hJ.mem (D.toPre.famφB α) (r ≫ (pGl U e)), hJ.mem _ r⟩⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k₁, k₂⟩` from `exp_germ U e k σ f r z S _ jL _ _ hz`. Use `k₁.symm.trans ((congrArg (gs r z _) (h₁ (fun _ => J (r ≫ (pGl U e)), fun _ => jL) (fun _ => jL) _ _ rfl ?_)).trans k₂)` and prove the remaining obligations. Establish `c : ∀ a, Sum.elim (fun _ : PUnit.{1} => J (r ≫ (pGl U e))) (Sum.elim (fun a : S × Fin 4 => J ((r ≫ (pGl U e)) ≫ D.toPre.famφB a.1.1 a.2)) (fun a : S × Fin 4 => J (r ≫ Oφl U e a.1.1 a.2))) a = J (r ≫ Sum.elim (fun _ : PUnit.{1} => (pGl U e)) (Sum.elim (fun a : S × Fin 4 => (pGl U …`. Introduce and unpack `(a | a | a)`. Use `exacts [rfl, congrArg J (Category.assoc _ _ _), rfl]`.
-
-Conclude with `fun a b hab => (c a).trans ((congrArg (fun q => J (r ≫ q)) hab).trans (c b).symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem expandsAt_val (h : U.ExpandsAt e k σ f) : ∃ S : Finset D.toPre.X, ∀ (Z : Scheme.{0})
     (r : Z ⟶ (thickObj R I e G).left) (z : Z) (J), Good D.toPre.P.L z J →
@@ -137,13 +135,13 @@ theorem expandsAt_val (h : U.ExpandsAt e k σ f) : ∃ S : Finset D.toPre.X, ∀
     exact fun a b hab => (c a).trans ((congrArg (fun q => J (r ≫ q)) hab).trans (c b).symm)
 
 /- English proof (translation)
-Use `⟨S, fun α hα j => fn_ext fun y hy => ?_, ?_⟩` and prove the remaining obligations. Use `choose J hJ using fun ψ : (thickObj R I e G).left ⟶ D.toPre.P.A.left => exists_chart D.toPre.P.isLB (ψ y)`. Use `(gs_pull (𝟙 _) _ y _ hy _).trans (Eq.trans ?_ (gs_zero (𝟙 _) y _ hy).symm)` and prove the remaining obligations. Rewrite using `[Category.id_comp]`. Conclude with `(sec_trans (f α) _ y hy (Good.mem hJ _ _)).trans ((congrArg _ ((h y J hJ).1 α hα)).trans (mul_zero _))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨p₁, p₂⟩ j₁ jf jt hj hc`. Take `rfl : j₁ = fun _ => p₂ PUnit.unit` from `funext fun i => (congrArg j₁ (Subsingleton.elim i 0)).trans hj`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨k₁, k₂⟩` from `exp_germ U e k σ f (𝟙 _) y S (p₁ PUnit.unit) (p₂ PUnit.unit) jf jt hy`. Take `⟨J, hJ, eJ⟩` from `exists_good D.toPre.P.L D.toPre.P.isLB y _ _ hc (by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `(a | a | a)`. Use `exacts [mem_pull.1 hy.1.1.1, Set.mem_iInter.1 (U.expW_le_f e _ _ jf jt a.1.2 hy) a.2, Set.mem_iInter.1 (U.expWeight_le_chart_weight e _ _ jf jt a.1.2 hy) a.2])`. Establish `H` using `(h y J hJ).2 (p₂ PUnit.unit) (mem_pull.1 hy.1.1.2)`. Establish `e₀ : J (pGl U e) = p₁ PUnit.unit` using `eJ (.inl PUnit.unit)`. Rewrite `H` using `[e₀]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `k₁`, `k₂` using `[Category.id_comp]`. Use `k₁.trans (H.trans (Eq.trans (Finset.sum_congr rfl fun α hα => ?_) k₂.symm))` and prove the remaining obligations. Rewrite using `[sval_of (f α) _ y J (jf α) (fun a => eJ (.inr (.inl (⟨α, hα⟩, a)))), val_of (tG U e α) _ y J (jt α) (fun a => by rw [Category.id_comp]; exact eJ (.inr (.inr (⟨α, hα⟩, a))))]`.
+A detailed English derivation is pending.
 -/
 theorem expandsAt_of_val (S : Finset D.toPre.X) (h : ∀ (y : (thickObj R I e G).left) (J), Good D.toPre.P.L y J →
     (∀ α ∉ S, sval (f α) (pGl U e) y J = 0) ∧ ∀ jL, (fGl I G e) y ∈ U.LG.L.U jL →
@@ -180,7 +178,7 @@ def bw (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) (ψ : Z ⟶ X') (z : Z) (j
     (Z.presheaf.stalk z)ˣ := gm ψ z (LB.wchart M pr jN ⊓ M'.U k) (w.s (jN, k))
 
 /- English proof (translation)
-The claim follows from `(map_prod _ _ _).trans (Finset.prod_congr rfl fun a _ => (map_zpow _ _ _).trans (congrArg (· ^ ε a) ((gm_res r z _ hz _).trans (gm_pull r (φ a) z (LB.wchart M pr (jN a) ⊓ M'.U (jM a)) ⟨Set.mem_iInter.1 hz.1 a, Set.mem_iInter.1 hz.2 a⟩ _))))`.
+A detailed English derivation is pending.
 -/
 theorem gm_linCombIso (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) {K : Type} [Fintype K] (φ : K → (Y ⟶ X')) (ε : K → ℤ)
     (r : Z ⟶ Y) (z : Z) (jN : K → Fin j → M.ι) (jM : K → M'.ι)
@@ -192,7 +190,7 @@ theorem gm_linCombIso (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) {K : Type} 
       ⟨Set.mem_iInter.1 hz.1 a, Set.mem_iInter.1 hz.2 a⟩ _))))
 
 /- English proof (translation)
-Establish `hm : q y ∈ LB.wchart (LB.LinComb M pr (fun _ => 1)) φ' (fun a i => J ((q ≫ φ' a) ≫ pr i)) ⊓ LB.wchart M' φ' (fun a => J' (q ≫ φ' a))` using `⟨Set.mem_iInter.2 fun a => Set.mem_iInter.2 fun i => hJ ((q ≫ φ' a) ≫ pr i), hJ'.mem _ q⟩`. Establish `E` using `congrArg (gs q y _) (H (fun a i => J ((q ≫ φ' a) ≫ pr i)) (fun a => J' (q ≫ φ' a)))`. Use `((gs_mul q y _ hm _ _).trans (congrArg₂ (· * ·) ((gs_unit q y _ hm _).trans (congrArg Units.val (gm_linCombIso w φ' ε q y _ _ hm))) (gs_res q y _ hm _))).symm.trans (E.trans ((gs_prod q y _ hm _ _).trans (Finset.prod_congr rfl fun i _ => ?_)))` and prove the remaining obligations. Rewrite using `[sval_of (s i) _ y J (fun a => J ((q ≫ φ' a) ≫ pr i)) (fun a => by rw [Category.assoc, ← hφ, Category.assoc])]`. Conclude with `(gs_res q y (hle _ _ i) hm _).trans (gs_pull q (pr i) y _ (hle _ _ i hm) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem box_sec_val (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) {K : Type} [Fintype K] {φ' : K → (X' ⟶ X')}
     {φ : Fin j → K → (X ⟶ X)} {ε : K → ℤ} (hφ : ∀ i a, φ' a ≫ pr i = pr i ≫ φ i a) (s' : LB.Sec (LB.LinComb M' φ' ε))
@@ -217,9 +215,9 @@ theorem box_sec_val (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) {K : Type} [F
   exact (gs_res q y (hle _ _ i) hm _).trans (gs_pull q (pr i) y _ (hle _ _ i hm) _)
 
 /- English proof (translation)
-Establish `hm : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart (LB.LinComb M pr (fun _ => 1)) φ' (fun a i => J (φ' a ≫ pr i)) ⊓ LB.wchart M' φ' (fun a => J' (φ' a))` using `⟨Set.mem_iInter.2 fun a => Set.mem_iInter.2 fun i => hJ (φ' a ≫ pr i), Set.mem_iInter.2 fun a => hJ' (φ' a)⟩`. Establish `E` using `congrArg (gm (𝟙 Y) y (LB.wchart (LB.LinComb M pr (fun _ => 1)) φ' (fun a i => J (φ' a ≫ pr i)) ⊓ LB.wchart M' φ' (fun a => J' (φ' a)))) (H (fun a i => J (φ' a ≫ pr i), fun a => J' (φ' a)))`. Establish `E₁` using `gm_linCombIso w φ' ε (𝟙 Y) y _ _ hm`. Simplify using `only [Category.id_comp] at E₁`. Rewrite using `[val_of t' _ y J' (fun a => J' (φ' a)) (fun a => by rw [Category.id_comp])]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `((map_mul _ _ _).trans (congrArg₂ (· * ·) E₁ (gm_res (𝟙 Y) y inf_le_right hm _))).symm.trans (E.symm.trans ((gm_res (𝟙 Y) y inf_le_left hm _).trans ?_))` and prove the remaining obligations. Use `(map_prod (gm (𝟙 Y) y (LB.wchart (LB.LinComb M pr (fun _ => 1)) φ' (fun a i => J (φ' a ≫ pr i)))) (fun i => res (GeneratorPullback.box_le M pr φ' (fun a i => J (φ' a ≫ pr i)) i) ((GeneratorPullback.pullAlong M (pr i) (ρ i) (φ i) ε φ' (hψ i) (t i)).s (fun a _ => J (φ' a ≫ pr i)))) …` and prove the remaining obligations. Rewrite using `[val_of (t i) (ρ i) y J (fun a => J (φ' a ≫ pr i)) (fun a => congrArg J (hψ i a).symm)]`. Conclude with `(gm_res (𝟙 Y) y (GeneratorPullback.box_le M pr φ' _ i) hm.1 _).trans (gm_rp₁ (ρ i) y _ _ _ (GeneratorPullback.box_le M pr φ' _ i hm.1) _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem box_gen_val (w : LB.Iso M' (LB.LinComb M pr (fun _ => 1))) {K : Type} [Fintype K] {Y₀ : Scheme.{0}}
     {φ' : K → (Y ⟶ X')} {φ : Fin j → K → (Y₀ ⟶ X)} {ε : K → ℤ} {ρ : Fin j → (Y ⟶ Y₀)}
@@ -266,14 +264,14 @@ def omB {Z : Scheme.{0}} (y : Z) (J : (Z ⟶ D.toPre.P.A.left) → D.toPre.P.L.�
     (ψ : Z ⟶ D'.toPre.P.A.left) : (Z.presheaf.stalk y)ˣ := bw pD.w ψ y (fun i => J (ψ ≫ (pD.pw.pr i).left)) (J' ψ)
 
 /- English proof (translation)
-The claim follows from `(P.t_pr e 0).choose i 2`.
+A detailed English derivation is pending.
 -/
 theorem box_q (P : UnifPowOf3 pD pA pG U' U) (e : ℕ) (i : Fin j) :
     pGl U'.toUnifPre e ≫ (pD.pw.pr i).left = rhoE I pG e i ≫ pGl U.toUnifPre e := (P.t_pr e 0).choose i 2
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Take `⟨hφ, H⟩` from `hf' α'`. Use `box_sec_val pD.w hφ (f' α') (fun i => f i (pD.xe α' i)) _ H (pGl U'.toUnifPre e) y hJ hJ'` as an intermediate fact. Simplify using `only [box_q P] at this`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem box_F (P : UnifPowOf3 pD pA pG U' U) {e : ℕ} {y : (thickObj R I e G').left} {J : ((thickObj R I e G').left ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι}
     {J' : ((thickObj R I e G').left ⟶ D'.toPre.P.A.left) → D'.toPre.P.L.ι}
@@ -288,7 +286,7 @@ theorem box_F (P : UnifPowOf3 pD pA pG U' U) {e : ℕ} {y : (thickObj R I e G').
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Take `⟨hψ, H⟩` from `P.t_pr e α'`. Conclude with `box_gen_val pD.w hψ _ (fun i => tG U.toUnifPre e (pD.xe α' i)) H y hJ hJ'`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem box_product_transition_identity (P : UnifPowOf3 pD pA pG U' U) {e : ℕ} {y : (thickObj R I e G').left} {J : ((thickObj R I e G').left ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι}
     {J' : ((thickObj R I e G').left ⟶ D'.toPre.P.A.left) → D'.toPre.P.L.ι}
@@ -299,9 +297,9 @@ theorem box_product_transition_identity (P : UnifPowOf3 pD pA pG U' U) {e : ℕ}
   exact box_gen_val pD.w hψ _ (fun i => tG U.toUnifPre e (pD.xe α' i)) H y hJ hJ'
 
 /- English proof (translation)
-Establish `a₀ : (pGl U'.toUnifPre e) ≫ D'.toPre.famφB α' 0 = (pGl U'.toUnifPre e)` using `Category.comp_id _`. Establish `a₁ : (pGl U'.toUnifPre e) ≫ D'.toPre.famφB α' 1 = Oφl U'.toUnifPre e α' 0` using `congrArg (fun z => z.left) ((MonObj.comp_mul (U'.gt e).pG (𝟙 _) (cP D'.toPre _ α')).trans (congrArg₂ (· * ·) (Category.comp_id _) (comp_cP D'.toPre _ α')))`. Establish `a₂ : (pGl U'.toUnifPre e) ≫ D'.toPre.famφB α' 2 = Oφl U'.toUnifPre e α' 1` using `congrArg (fun z => z.left) (comp_cP D'.toPre (U'.gt e).pG α')`. Establish `a₃ : (pGl U'.toUnifPre e) ≫ D'.toPre.famφB α' 3 = Oφl U'.toUnifPre e α' 3` using `congrArg (fun z : _ ⟶ D'.toPre.P.A => z.left) (MonObj.comp_one (M := D'.toPre.P.A) (U'.gt e).pG)`. Establish `a₄ : Oφl U'.toUnifPre e α' 2 = (pGl U'.toUnifPre e)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Fin.prod_univ_four, Fin.prod_univ_four, a₀, a₁, a₂, a₃, a₄]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow, ofMul_pow, DegPre.famε, Oinvε, Matrix.cons_val]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem box_om {e : ℕ} {y : (thickObj R I e G').left} {J : ((thickObj R I e G').left ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι}
     {J' : ((thickObj R I e G').left ⟶ D'.toPre.P.A.left) → D'.toPre.P.L.ι} (k : ℕ) (α' : D'.toPre.X) :
@@ -323,11 +321,9 @@ theorem box_om {e : ℕ} {y : (thickObj R I e G').left} {J : ((thickObj R I e G'
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Establish `hρ : ∀ i, rhoE I pG e i ≫ fGl I G e = fGl I G' e ≫ (pG.pr i).left` using `fun i => pullback.lift_fst _ _ _`. Establish `hL₁ : ∀ i, fGl I G e (rhoE I pG e i y) ∈ U.LG.L.U (jL i)` using `fun i => (congrArg (fun g => g y ∈ U.LG.L.U (jL i)) (hρ i)).mpr (hL i)`. Establish `mL : fGl I G' e y ∈ (LB.div (boxLB U.LG.L pG.pr) U'.LG.L).U (jL, jL')` using `⟨Set.mem_iInter.2 hL, hL'⟩`. Establish `hq` using `box_q P e`. Establish `mM : (pGl U'.toUnifPre e) y ∈ (LB.div (boxLB D.toPre.P.L pD.pw.pr) D'.toPre.P.L).U (fun i => J ((pGl U'.toUnifPre e) ≫ (pD.pw.pr i).left), J' (pGl U'.toUnifPre e))` using `⟨Set.mem_iInter.2 fun i => hJ ((pGl U'.toUnifPre e) ≫ (pD.pw.pr i).left), hJ' (pGl U'.toUnifPre e)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mW : ∀ i, rhoE I pG e i y ∈ (D.toPre.P.L.pull (pGl U.toUnifPre e)).U (fun _ => J ((pGl U'.toUnifPre e) ≫ (pD.pw.pr i).left)) ⊓ (U.LG.L.pull (fGl I G e)).U (fun _ => jL i)` using `fun i => ⟨mem_pull.2 ((congrArg (fun g => g y ∈ D.toPre.P.L.U (J ((pGl U'.toUnifPre e) ≫ (pD.pw.pr i).left))) (hq i)).mp (hJ _)), mem_pull.2 (hL₁ i)⟩`. Establish `hm : (𝟙 _ : (thickObj R I e G').left ⟶ _) y ∈ (pGl U'.toUnifPre e) ⁻¹ᵁ (LB.div (boxLB D.toPre.P.L pD.pw.pr) D'.toPre.P.L).U (fun i => J ((pGl U'.toUnifPre e) ≫ (pD.pw.pr i).left), J' (pGl U'.toUnifPre e)) ⊓ (LB.div (D'.toPre.P.L.pull (pGl U'.toUnifPre e)) (U'.LG.L.pull (fGl I G' …` using `⟨⟨⟨mM, mem_pull.2 (hJ' (pGl U'.toUnifPre e)), mem_pull.2 hL'⟩, by`. Rewrite using `[← Finset.inf_univ_eq_iInf]`. Conclude with `mem_finf _ _ _ fun i _ => mW i⟩, mL⟩`. Establish `W` using `congrArg (gm (𝟙 _) y _) (P.w_pr e (fun i => J ((pGl U'.toUnifPre e) ≫ (pD.pw.pr i).left)) (J' (pGl U'.toUnifPre e)) jL' jL)`.
-
-Conclude with `((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_rp₁ (pGl U'.toUnifPre e) y _ _ _ hm _) (gm_res (𝟙 _) y _ hm _))).symm.trans (W.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_prod _ _ _).trans (Finset.prod_congr rfl fun i _ => gm_rp₁ (rhoE I pG e i) y _ _ _ hm _)) (gm_rp₁ (fG …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem box_product_weight_identity (P : UnifPowOf3 pD pA pG U' U) {e : ℕ} {y : (thickObj R I e G').left} {J : ((thickObj R I e G').left ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι}
     {J' : ((thickObj R I e G').left ⟶ D'.toPre.P.A.left) → D'.toPre.P.L.ι}
@@ -362,9 +358,9 @@ theorem box_product_weight_identity (P : UnifPowOf3 pD pA pG U' U) {e : ℕ} {y 
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Establish `hρ : ∀ i, rhoE I pG e i ≫ fGl I G e = fGl I G' e ≫ (pG.pr i).left` using `fun i => pullback.lift_fst _ _ _`. Establish `hL₁ : ∀ i, fGl I G e (rhoE I pG e i y) ∈ U.LG.L.U (jL i)` using `fun i => (congrArg (fun g => g y ∈ U.LG.L.U (jL i)) (hρ i)).mpr (hL i)`. Establish `mL : fGl I G' e y ∈ (LB.div (boxLB U.LG.L pG.pr) U'.LG.L).U (jL, jL')` using `⟨Set.mem_iInter.2 hL, hL'⟩`. Establish `Sg` using `congrArg (gs (fGl I G' e) y ((LB.div (boxLB U.LG.L pG.pr) U'.LG.L).U (jL, jL'))) (hσ' jL jL')`. Rewrite `Sg` using `[gs_mul _ y _ mL, gs_unit _ y _ mL, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(congrArg₂ (· * ·) rfl (gs_res (fGl I G' e) y (boxG_le_b pG jL jL') mL _).symm).trans (Sg.trans ((gs_prod _ y _ mL _ _).trans (Finset.prod_congr rfl fun i _ => ?_)))` and prove the remaining obligations. Rewrite using `[hρ]`. Conclude with `(gs_res (fGl I G' e) y (boxG_le_c pG jL jL' i) mL _).trans (gs_pull (fGl I G' e) (pG.pr i).left y _ (boxG_le_c pG jL jL' i mL) _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem box_S (P : UnifPowOf3 pD pA pG U' U) {e k : ℕ} {y : (thickObj R I e G').left} {σ : Fin j → H0 U.LG.L k} {σ' : H0 U'.LG.L k}
     (hσ' : IsBoxSecG pG P.wL k σ' σ) {jL : Fin j → U.LG.L.ι} {jL' : U'.LG.L.ι}
@@ -384,15 +380,13 @@ theorem box_S (P : UnifPowOf3 pD pA pG U' U) {e k : ℕ} {y : (thickObj R I e G'
     (gs_pull (fGl I G' e) (pG.pr i).left y _ (boxG_le_c pG jL jL' i mL) _)
 
 /- English proof (translation)
-Use `choose S hS using fun i => expandsAt_val U.toUnifPre e k (σ i) (f i) (hE i)`. Use `expandsAt_of_val U'.toUnifPre e k σ' f' ((Fintype.piFinset S).map pD.xe.symm.toEquiv.toEmbedding) fun y J' hJ' => ?_` and prove the remaining obligations. Use `choose J hJ using fun ψ : (thickObj R I e G').left ⟶ D.toPre.P.A.left => exists_chart D.toPre.P.isLB (ψ y)`. Establish `hJ : Good D.toPre.P.L y J` using `hJ`. Establish `hF` using `box_F P hJ hJ' hf'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT` using `box_product_transition_identity P hJ hJ'`. Establish `hω` using `box_om (pD := pD) (U' := U') (y := y) (J := J) (J' := J') k`. Establish `hq` using `box_q P e`. Use `⟨fun α' hα => ?_, fun jL' hL' => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, pD.xe α' i ∉ S i := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Conclude with `hα (Finset.mem_map.2 ⟨pD.xe α', Fintype.mem_piFinset.2 fun i => by_contra fun h => hc ⟨i, h⟩, pD.xe.symm_apply_apply α'⟩)`. Conclude with `(Units.mul_right_eq_zero _).1 ((hF α').trans (Finset.prod_eq_zero (Finset.mem_univ i) ((hS i _ (rhoE I pG e i) y J hJ).1 _ hi)))`. Use `choose jL hL using fun i => exists_chart U.LG.isLB ((pG.pr i).left ((fGl I G' e) y))`. Establish `hL₁ : ∀ i, fGl I G e (rhoE I pG e i y) ∈ U.LG.L.U (jL i)` using `fun i => (congrArg (fun g => g y ∈ U.LG.L.U (jL i)) (pullback.lift_fst _ _ _ : rhoE I pG e i ≫ fGl I G e = fGl I G' e ≫ (pG.pr i).left)).mpr (hL i)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `W'` using `box_product_weight_identity P hJ hJ' hL hL'`. Establish `Sg'` using `box_S P hσ' hL hL'`. Use `(omB pD y J J' (pGl U'.toUnifPre e) ^ k).mul_right_inj.1 ?_` and prove the remaining obligations. Rewrite using `[← _root_.mul_assoc, ← Units.val_mul, ← mul_pow, W', mul_pow, Units.val_mul, _root_.mul_assoc, Sg', ← Finset.prod_pow, Units.coe_prod, ← Finset.prod_mul_distrib, Finset.sum_map, Finset.mul_sum]`. Use `(Finset.prod_congr rfl fun i _ => ?_).trans ((Finset.prod_univ_sum S fun i α => sval (f i α) (rhoE I pG e i ≫ (pGl U.toUnifPre e)) y J * (val (tG U.toUnifPre e α) (rhoE I pG e i) y J).val).trans (Finset.sum_congr rfl fun x _ => ?_))` and prove the remaining obligations.
-
-Rewrite using `[hq]`. Conclude with `(hS i _ (rhoE I pG e i) y J hJ).2 (jL i) (hL₁ i)`. Take `⟨α', rfl⟩` from `pD.xe.surjective x`. Establish `e₀ : pD.xe.symm.toEquiv.toEmbedding (pD.xe α') = α'` using `pD.xe.symm_apply_apply α'`. Rewrite using `[e₀, Finset.prod_mul_distrib, ← hF α', ← Units.coe_prod, ← hT α', ← hω α', Units.val_mul, Units.val_mul, _root_.mul_mul_mul_comm]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expandsAt_box' (P : UnifPowOf3 pD pA pG U' U) (k e : ℕ) (σ : Fin j → H0 U.LG.L k)
     (f : Fin j → ∀ α : D.toPre.X, D.toPre.SecB k α) (hE : ∀ i, U.ExpandsAt e k (σ i) (f i))

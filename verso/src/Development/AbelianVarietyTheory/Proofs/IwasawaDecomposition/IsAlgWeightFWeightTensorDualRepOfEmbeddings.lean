@@ -16,7 +16,7 @@ section Gen
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {K : Type} [Field K]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p x hp => simp only [map_mul, hp, MvPolynomial.aeval_X, MvPolynomial.eval_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem awf_eval_aeval {σ₁ σ₂ : Type} (f : σ₁ → MvPolynomial σ₂ K) (d : σ₂ → K) (P : MvPolynomial σ₁ K) :
     MvPolynomial.eval d (MvPolynomial.aeval f P) = MvPolynomial.eval (fun x => MvPolynomial.eval d (f x)) P := by
@@ -32,7 +32,7 @@ def awfLin {κ : Type} [Fintype κ] (e : Module.Basis κ ℚ L) (p : (L →+* K)
   ∑ k : κ, MvPolynomial.C (p.1 (e k)) * MvPolynomial.X (k, p.2.1, p.2.2)
 
 /- English proof (translation)
-Use `conv_lhs => rw [← e.sum_repr x]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Rat.smul_def, map_mul, map_ratCast, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem awf_emb_eq {κ : Type} [Fintype κ] (e : Module.Basis κ ℚ L) (σ : L →+* K) (x : L) :
     σ x = ∑ k : κ, σ (e k) * ((e.repr x k : ℚ) : K) := by
@@ -42,9 +42,9 @@ theorem awf_emb_eq {κ : Type} [Fintype κ] (e : Module.Basis κ ℚ L) (σ : L 
   rw [Rat.smul_def, map_mul, map_ratCast, mul_comm]
 
 /- English proof (translation)
-Set `e` to `Module.finBasis ℚ L`. Use `⟨Module.Finite.of_basis b, ι, inferInstance, inferInstance, b, _, inferInstance, e, fun i j => MvPolynomial.aeval (awfLin e) (Q i j), ?_⟩` and prove the remaining obligations. Introduce `γ γ₀ hm`. Take `rfl` from `ratHom_eq_of_match γ γ₀ hm`. Rewrite using `[hQ γ]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Rewrite using `[awf_eval_aeval]`. Use `congrArg (fun f => MvPolynomial.eval f (Q i j)) (funext fun p => ?_)` and prove the remaining obligations. Simplify using `only [awfLin, awfPt, map_sum, MvPolynomial.eval_mul, MvPolynomial.eval_C, MvPolynomial.eval_X]`. Conclude with `awf_emb_eq e p.1 _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isAlgWeightF_of_embPoly {W : Type} [AddCommGroup W] [Module K W] (ρ : Representation K (GQ L n) W)
     {ι : Type} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι K W)
@@ -74,9 +74,9 @@ def awfUniv : Pol K ι n →ₐ[K] MvPolynomial (ι × Fin n × Fin n) (MvPolyno
   MvPolynomial.aeval fun v => ∑ b : Fin n, MvPolynomial.C (MvPolynomial.X (v.1, b, v.2.1)) * MvPolynomial.X (v.1, b, v.2.2)
 
 /- English proof (translation)
-Establish `h : (MvPolynomial.map (MvPolynomial.eval fun y : ι × Fin n × Fin n => M y.1 y.2.1 y.2.2)).comp (awfUniv (K` using `K) (ι := ι) (n := n)).toRingHom = (Formalism.GradedWeylDivisibility.blockAct K (n := n) fun τ => (M τ)ᵀ).toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[awfUniv, Formalism.GradedWeylDivisibility.blockAct]`. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[awfUniv, Formalism.GradedWeylDivisibility.blockAct, Matrix.transpose_apply]`. Conclude with `congrArg (fun f : Pol K ι n →+* Pol K ι n => f F) h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem awfUniv_map (M : ι → Matrix (Fin n) (Fin n) K) (F : Pol K ι n) :
     MvPolynomial.map (MvPolynomial.eval fun y : ι × Fin n × Fin n => M y.1 y.2.1 y.2.2) (awfUniv F) =
@@ -95,7 +95,7 @@ def awfCf (ℓ : Pol K ι n →ₗ[K] K)
   ∑ m ∈ Q.support, MvPolynomial.coeff m Q * MvPolynomial.C (ℓ (MvPolynomial.monomial m 1))
 
 /- English proof (translation)
-Use `conv_rhs => rw [Q.as_sum]`. Rewrite using `[map_sum, map_sum, awfCf, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_monomial, MvPolynomial.eval_mul, MvPolynomial.eval_C, show MvPolynomial.monomial m (MvPolynomial.eval y (MvPolynomial.coeff m Q)) = MvPolynomial.eval y (MvPolynomial.coeff m Q) • (MvPolynomial.monomial m 1 : Pol K ι n) by`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one], map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem awfCf_eval (ℓ : Pol K ι n →ₗ[K] K) (y : ι × Fin n × Fin n → K)
     (Q : MvPolynomial (ι × Fin n × Fin n) (MvPolynomial (ι × Fin n × Fin n) K)) :
@@ -112,7 +112,7 @@ def awfCoord (lam : ι → DomWeight n) (i : VVIdx lam) : Pol K ι n →ₗ[K] K
   (LinearMap.exists_extend ((bVV K lam).coord i)).choose
 
 /- English proof (translation)
-Establish `h` using `(LinearMap.exists_extend ((bVV K lam).coord i)).choose_spec`. Use `LinearMap.congr_fun h F` as an intermediate fact. Simplify `this` using `[awfCoord, Module.Basis.coord_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem awfCoord_spec (lam : ι → DomWeight n) (i : VVIdx lam) (F : VV K lam) :
     awfCoord lam i (F : Pol K ι n) = (bVV K lam).repr F i := by
@@ -124,7 +124,7 @@ def awfCoef (lam : ι → DomWeight n) (i j : VVIdx lam) : MvPolynomial (ι × F
   awfCf (awfCoord lam i) (awfUniv (bVVfun K lam j))
 
 /- English proof (translation)
-Rewrite using `[awfCoef, awfCf_eval, awfUniv_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem awfCoef_eval (lam : ι → DomWeight n) (M : ι → Matrix (Fin n) (Fin n) K) (i j : VVIdx lam) :
     MvPolynomial.eval (fun y : ι × Fin n × Fin n => M y.1 y.2.1 y.2.2) (awfCoef lam i j) =
@@ -141,7 +141,7 @@ def awfDetP (σ : L →+* K) : MvPolynomial ((L →+* K) × Fin n × Fin n) K :=
   (Matrix.of fun a b => (MvPolynomial.X (σ, a, b) : MvPolynomial ((L →+* K) × Fin n × Fin n) K)).det
 
 /- English proof (translation)
-Rewrite using `[awfDetP, RingHom.map_det, RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[awfPt]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem awfDetP_eval (σ : L →+* K) (γ₀ : Matrix (Fin n) (Fin n) L) :
     MvPolynomial.eval (awfPt γ₀) (awfDetP σ) = σ γ₀.det := by
@@ -151,9 +151,9 @@ theorem awfDetP_eval (σ : L →+* K) (γ₀ : Matrix (Fin n) (Fin n) L) :
   simp [awfPt]
 
 /- English proof (translation)
-Establish `h1 : ((γ₀ : Matrix (Fin n) (Fin n) L) * conjT (IsCMField.complexConj L : L →+* L) γ₀).det = 1`. Rewrite using `[show (γ₀ : Matrix (Fin n) (Fin n) L) * conjT (IsCMField.complexConj L : L →+* L) γ₀ = 1 from hγ, Matrix.det_one]`. Establish `h2 : ((γ₀ : Matrix (Fin n) (Fin n) L).map (IsCMField.complexConj L : L →+* L)).det = (IsCMField.complexConj L : L →+* L) (γ₀ : Matrix (Fin n) (Fin n) L).det`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `h1` using `[Matrix.det_mul, conjT, Matrix.det_transpose, h2]`. Apply `eq_inv_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[RingHom.comp_apply, ← map_mul, h1, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem awf_det_conj (σ : L →+* K) (γ₀ : GL (Fin n) L) (hγ : γ₀ ∈ GQ0 L n) :
     (σ.comp (IsCMField.complexConj L : L →+* L)) (γ₀ : Matrix (Fin n) (Fin n) L).det =
@@ -170,7 +170,7 @@ theorem awf_det_conj (σ : L →+* K) (γ₀ : GL (Fin n) L) (hγ : γ₀ ∈ GQ
   rw [RingHom.comp_apply, ← map_mul, h1, map_one]
 
 /- English proof (translation)
-Establish `h1 : ((γ₀⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = conjT (IsCMField.complexConj L : L →+* L) (γ₀ : Matrix (Fin n) (Fin n) L)` using `Units.inv_eq_of_mul_eq_one_right hγ`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem awf_inv_entry (γ₀ : GL (Fin n) L) (hγ : γ₀ ∈ GQ0 L n) (k l : Fin n) :
     ((γ₀⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) k l =
@@ -186,9 +186,9 @@ def awfTwP (emb : ι → L →+* K) (lam : ι → DomWeight n) : MvPolynomial ((
     else awfDetP ((emb τ).comp (IsCMField.complexConj L : L →+* L)) ^ (-(lam τ).detShift).toNat
 
 /- English proof (translation)
-Simplify using `only [awfTwP, detTwK, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hd : ((Matrix.GeneralLinearGroup.det (embGLF emb γ₀ τ) : Kˣ) : K) = emb τ (γ₀ : Matrix (Fin n) (Fin n) L).det`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, RingHom.map_det]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[detPow, Units.val_zpow_eq_zpow_val, hd]`. Use `split_ifs with h`. Rewrite using `[map_pow, awfDetP_eval, ← zpow_natCast, Int.toNat_of_nonneg h]`. Rewrite using `[map_pow, awfDetP_eval, awf_det_conj _ _ hγ, ← zpow_natCast, Int.toNat_of_nonneg (by omega), inv_zpow', neg_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem awfTwP_eval (emb : ι → L →+* K) (lam : ι → DomWeight n) (γ₀ : GL (Fin n) L) (hγ : γ₀ ∈ GQ0 L n) :
     MvPolynomial.eval (awfPt (γ₀ : Matrix (Fin n) (Fin n) L)) (awfTwP emb lam) = detTwK lam (embGLF emb γ₀) := by
@@ -209,7 +209,7 @@ def awfTenP (emb : ι → L →+* K) (lam : ι → DomWeight n) (i j : VVIdx lam
     (awfCoef (K := K) lam i j)
 
 /- English proof (translation)
-Rewrite using `[awfTenP, MvPolynomial.eval_mul, awf_eval_aeval, ← awfCoef_eval]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem awfTenP_eval (emb : ι → L →+* K) (lam : ι → DomWeight n) (i j : VVIdx lam) (y : (L →+* K) × Fin n × Fin n → K) :
     MvPolynomial.eval y (awfTenP emb lam i j) = MvPolynomial.eval y (awfTwP emb lam) *
@@ -218,7 +218,7 @@ theorem awfTenP_eval (emb : ι → L →+* K) (lam : ι → DomWeight n) (i j : 
   simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, ← awfCoord_spec, awfTenP_eval, awfTwP_eval _ _ _ (ratHom_mem γ)]`. Simplify using `only [tenRepF, MonoidHom.comp_apply, rhoK, MonoidHom.coe_mk, OneHom.coe_mk, LinearMap.coe_restrict_apply, bVV_coe, actP, trAct, LinearMap.smul_apply, AlgHom.toLinearMap_apply, map_smul, smul_eq_mul]`. Use `congr 2`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem tenRepF_toMatrix (emb : ι → L →+* K) (lam : ι → DomWeight n) (γ : GQ L n) :
     LinearMap.toMatrix (bVV K lam) (bVV K lam) (tenRepF emb lam γ) =
@@ -239,9 +239,9 @@ variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} {ι : Type
 open Classical in
 
 /- English proof (translation)
-Establish `e : LinearMap.toMatrix (bVV K lam).dualBasis (bVV K lam).dualBasis (wtRepF emb lam γ) = (LinearMap.toMatrix (bVV K lam) (bVV K lam) (tenRepF emb lam γ⁻¹))ᵀ`. Rewrite using `[wtRepF, Representation.dual_apply, LinearMap.toMatrix_transpose]`. Rewrite using `[e, tenRepF_toMatrix]`. Use extensionality with `i j`. Use `show MvPolynomial.eval (awfPt ((ratHom γ⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) (awfTenP emb lam j i) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.eval_rename]`. Use `congrArg (fun f => MvPolynomial.eval f (awfTenP emb lam j i)) (funext fun p => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, awfPt, RingHom.comp_apply, map_inv]`. Apply the tactic sequence `rw [awf_inv_entry _ (ratHom_mem γ)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtRepF_toMatrix (emb : ι → L →+* K) (lam : ι → DomWeight n) (γ : GQ L n) :
     LinearMap.toMatrix (bVV K lam).dualBasis (bVV K lam).dualBasis (wtRepF emb lam γ) =
@@ -262,7 +262,7 @@ theorem wtRepF_toMatrix (emb : ι → L →+* K) (lam : ι → DomWeight n) (γ 
 end Dual
 
 /- English proof (translation)
-Introduce `L _ _ _ n ι _ K _ emb lam`. Conclude with `isAlgWeightF_of_embPoly _ (bVV K lam).dualBasis _ (wtRepF_toMatrix emb lam)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem wtRepF_alg : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (ι : Type) [Fintype ι] (K : Type) [Field K]
     (emb : ι → L →+* K) (lam : ι → DomWeight n), NX.IsAlgWeightF L n K (GlobalTheory.AlgWtF.wtRepF emb lam) := by

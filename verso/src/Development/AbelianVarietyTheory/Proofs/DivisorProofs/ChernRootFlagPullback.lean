@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.FlagPullRoot
 
 /- English proof (translation)
-Introduce `X Y f E N fl i`. Establish `h₁` using `pull_isLB (fl.isLB_root i) f`. Rewrite using `[GlobalTheory.Vert.pullback_firstChern f (fl.isLB_root i) h₁]`. Use `GlobalTheory.Vert.firstChernCongr _ _ ?_` and prove the remaining obligations. Establish `e : LBIso ((fl.root i).pull f) (GlobalTheory.VB.det ((fl.pull f).gr i) 1)` using `((fl.isVB_gr i).lbIso_det_pullback f).trans h₁ ((fl.isVB_gr i).pullback f).isLB_det ((fl.pull f).isLB_root i) (((fl.isVB_gr i).pullback f).lbIso_det_of_iso (fl.pullGrIso f i))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `e.symm`.
+A detailed English derivation is pending.
 -/
 theorem c1_root_flagPull : ∀ (X Y : AlgebraicGeometry.Scheme.{0}) (f : Y ⟶ X) (E : X.Modules) (N : ℕ) (fl : GlobalTheory.Vert.Flag E N) (i : Fin N), GlobalTheory.Vert.c1 _ ((GlobalTheory.FlagPairExists.flagPull f fl).isLB_root i) = GlobalTheory.Vert.picSymPull f (GlobalTheory.Vert.c1 _ (fl.isLB_root i)) := by
   intro X Y f E N fl i

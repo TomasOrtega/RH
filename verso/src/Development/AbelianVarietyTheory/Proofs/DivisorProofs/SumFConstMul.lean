@@ -34,11 +34,11 @@ def TransExp {X₁ : Setup F W i} {z₁ : X₁.M.Z} {act : Matrix (Fin 8) (Fin 8
         𝔪.yK (algebraMap X₁.o₁ X₁.S.R (X₁.S.ζ ^ e)) * algebraMap V (FractionRing V) (T' mu c')
 
 /- English proof (translation)
-Use `letI : Module R K := Module.compHom K (algebraMap R (FractionRing R))`. Take `⟨N, hN, hs, hx, hlim⟩` from `h`. Set `f : K →ₗ[R] K` to `{ toFun := fun y => c * y map_add' := fun y z => mul_add c y z map_smul' := fun r y => by`. Express the relevant statement in the definitionally equal form `c * ((algebraMap R (FractionRing R) r : FractionRing R) • y) = (algebraMap R (FractionRing R) r : FractionRing R) • (c * y)`. Rewrite using `[Algebra.smul_def, Algebra.smul_def]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `ring }`. Use `⟨N.map f, hN.map f, ⟨s, hs, rfl⟩, fun j => ⟨x j, hx j, rfl⟩, fun k => ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `hlim k`. Use `⟨S, fun T hT => ?_⟩` and prove the remaining obligations. Use `Submodule.mem_map_of_mem (f := f) (hS T hT)` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Submodule.map_smul'']`. Use `this using 1` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `c * s - ∑ j ∈ T, c * x j = c * (s - ∑ j ∈ T, x j)`. Rewrite using `[mul_sub, Finset.mul_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem sumF_const_mul {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {K : Type} [Field K]
     [Algebra (FractionRing R) K] {Ix : Type} {x : Ix → K} {s : K} (c : K) (h : SumF I K x s) :

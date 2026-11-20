@@ -22,7 +22,7 @@ abbrev uquad (A T : Over S) [GrpObj A] : Fin 4 → ((A ⊗ (A ⊗ T)).left ⟶ (
   quad (fst A (A ⊗ T)) (snd A (A ⊗ T) ≫ fst A T) (snd A (A ⊗ T) ≫ snd A T)
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;>`. Simplify using `only [quad, Fin.zero_eta, Fin.mk_one, Fin.reduceFinMk, Matrix.cons_val]`. Rewrite using `[← Over.comp_left, comp_lift]`. Apply the tactic sequence `try simp only [MonObj.comp_mul, MonObj.comp_one]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_quad {Z Z' : Over S} (r : Z' ⟶ Z) (x x' : Z ⟶ A) (y : Z ⟶ T) (i : Fin 4) :
     r.left ≫ quad x x' y i = quad (r ≫ x) (r ≫ x') (r ≫ y) i := by
@@ -32,7 +32,7 @@ theorem comp_quad {Z Z' : Over S} (r : Z' ⟶ Z) (x x' : Z ⟶ A) (y : Z ⟶ T) 
     try simp only [MonObj.comp_mul, MonObj.comp_one]
 
 /- English proof (translation)
-Break down `h with rfl | rfl` into its components or cases. Simplify using `[Fin.prod_univ_four, quad, -Over.comp_left]`. Simplify using `[Fin.prod_univ_four, quad, -Over.comp_left, mul_comm]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem prod_quad {Z : Over S} {x x' : Z ⟶ A} (y : Z ⟶ T) (h : x = 1 ∨ x' = 1)
     (U : Type) [CommGroup U] (k : (Z.left ⟶ (A ⊗ T).left) → U) :
@@ -42,9 +42,9 @@ theorem prod_quad {Z : Over S} {x x' : Z ⟶ A} (y : Z ⟶ T) (h : x = 1 ∨ x' 
   · simp [Fin.prod_univ_four, quad, -Over.comp_left, mul_comm]
 
 /- English proof (translation)
-Establish `hb : b = r ≫ Y.hom`. Use `congrArg (· ≫ A.hom) h` as an intermediate fact. Simplify using `only [Category.assoc, Over.w] at this`. Conclude with `(this.trans (Category.comp_id _)).symm`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Hom.one_def]`. Conclude with `h.trans (by rw [hb]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem homMk_comp_eq_one {Y : Over S} {Z : Scheme.{0}} (r : Z ⟶ Y.left) (u : Y ⟶ A) (b : Z ⟶ S)
     (h : r ≫ u.left = b ≫ η[A].left) : (Over.homMk r rfl : Over.mk (r ≫ Y.hom) ⟶ Y) ≫ u = 1 := by
@@ -57,7 +57,7 @@ theorem homMk_comp_eq_one {Y : Over S} {Z : Scheme.{0}} (r : Z ⟶ Y.left) (u : 
   exact h.trans (by rw [hb]; rfl)
 
 /- English proof (translation)
-Establish `e : ∀ i, r ≫ uquad A T i = quad ((Over.homMk r rfl : Over.mk (r ≫ (A ⊗ (A ⊗ T)).hom) ⟶ _) ≫ fst A (A ⊗ T)) ((Over.homMk r rfl : Over.mk (r ≫ (A ⊗ (A ⊗ T)).hom) ⟶ _) ≫ snd A (A ⊗ T) ≫ fst A T) ((Over.homMk r rfl : Over.mk (r ≫ (A ⊗ (A ⊗ T)).hom) ⟶ _) ≫ snd A (A ⊗ T) ≫ snd A T) i` using `fun i ↦ comp_quad (Over.homMk r rfl : Over.mk (r ≫ (A ⊗ (A ⊗ T)).hom) ⟶ _) _ _ _ i`. Simplify using `only [e]`. Conclude with `prod_quad _ (h.imp (homMk_comp_eq_one r _ b) (homMk_comp_eq_one r _ b)) U k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem formal_quad {Z : Scheme.{0}} (r : Z ⟶ (A ⊗ (A ⊗ T)).left) (b : Z ⟶ S)
     (h : r ≫ (fst A (A ⊗ T)).left = b ≫ η[A].left ∨ r ≫ (snd A (A ⊗ T) ≫ fst A T).left = b ≫ η[A].left)
@@ -71,7 +71,7 @@ theorem formal_quad {Z : Scheme.{0}} (r : Z ⟶ (A ⊗ (A ⊗ T)).left) (b : Z �
   exact prod_quad _ (h.imp (homMk_comp_eq_one r _ b) (homMk_comp_eq_one r _ b)) U k
 
 /- English proof (translation)
-Use `(cls_eq_zero_iff (LB.isLB_linComb hN _ _)).symm.trans ?_` and prove the remaining obligations. Rewrite using `[cls_linComb hN, Fin.sum_univ_four]`. Establish `e : ∀ a b c d : Pic Z.left, (1 : ℤ) • a + (-1 : ℤ) • b + (-1 : ℤ) • c + (1 : ℤ) • d = a - b - c + d` using `fun a b c d ↦ by simp only [one_smul, neg_smul]; abel`. Simplify using `only [quad, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, Matrix.head_cons]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -89,13 +89,13 @@ theorem triv_quad_iff {N : LB (A ⊗ T).left} (hN : N.IsLB) {Z : Over S} (x x' :
 omit [GrpObj A] in
 
 /- English proof (translation)
-Use `set B := (Over.pullback (j ≫ T.hom)).obj A`. Establish `hB : IsPullback (pullback.fst A.hom (j ≫ T.hom)) B.hom A.hom (j ≫ T.hom)` using `IsPullback.of_hasPullback _ _`. Establish `h2 : IsPullback (fst A T).left (snd A T).left A.hom T.hom` using `IsPullback.of_hasPullback _ _`. Establish `h3 : IsPullback (fst A (A ⊗ T)).left (snd A (A ⊗ T)).left A.hom (A ⊗ T).hom` using `IsPullback.of_hasPullback _ _`. Establish `hBB : IsPullback (fst B B).left (snd B B).left B.hom B.hom` using `IsPullback.of_hasPullback _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, m₁, m₂⟩ : ∃ m : B.left ⟶ (A ⊗ T).left, m ≫ (fst A T).left = pullback.fst A.hom (j ≫ T.hom) ∧ m ≫ (snd A T).left = B.hom ≫ j` from `⟨h2.lift _ _ (by rw [hB.w, Category.assoc]), h2.lift_fst _ _ _, h2.lift_snd _ _ _⟩`. Establish `hm : IsPullback m B.hom (snd A T).left j` using `IsPullback.of_right (by rw [m₁]; exact hB) m₂ h2`. Establish `mw : m ≫ (A ⊗ T).hom = B.hom ≫ j ≫ T.hom`. Rewrite using `[← Over.w (snd A T), ← Category.assoc, m₂, Category.assoc]`. Establish `ho : IsPullback ((fst B B).left ≫ pullback.fst A.hom (j ≫ T.hom)) (snd B B).left A.hom (m ≫ (A ⊗ T).hom)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mw]`. Conclude with `hBB.paste_horiz hB`. Take `⟨q, q₁, q₂⟩ : ∃ q : (B ⊗ B).left ⟶ (A ⊗ (A ⊗ T)).left, q ≫ (fst A (A ⊗ T)).left = (fst B B).left ≫ pullback.fst A.hom (j ≫ T.hom) ∧ q ≫ (snd A (A ⊗ T)).left = (snd B B).left ≫ m` from `⟨h3.lift _ _ (by rw [ho.w, Category.assoc]), h3.lift_fst _ _ _, h3.lift_snd _ _ _⟩`. Establish `hq : IsPullback q (snd B B).left (snd A (A ⊗ T)).left m` using `IsPullback.of_right (by rw [q₁]; exact ho) q₂ h3`. Use `⟨q, ?_, q₁, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.w (snd B B)]`. Conclude with `hq.paste_vert hm`. Use `show q ≫ (snd A (A ⊗ T)).left ≫ (fst A T).left = _`. Rewrite using `[← Category.assoc, q₂, Category.assoc, m₁]`.
+A detailed English derivation is pending.
 -/
 theorem exists_chart {X : Scheme.{0}} (j : X ⟶ T.left) :
     ∃ q : ((Over.pullback (j ≫ T.hom)).obj A ⊗ (Over.pullback (j ≫ T.hom)).obj A).left ⟶ (A ⊗ (A ⊗ T)).left,
@@ -132,41 +132,39 @@ theorem exists_chart {X : Scheme.{0}} (j : X ⟶ T.left) :
     rw [← Category.assoc, q₂, Category.assoc, m₁]
 
 /- English proof (translation)
-Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.laws_without_cohomology.1`. Use `hA.geomConnected` as an intermediate fact. Use `hA.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Establish `one₁ : ∀ {Z : Over S} (y : Z ⟶ T), evc hN (1 : Z ⟶ A) y = 0` using `fun y ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg (CechPic.pull y.left) ((triv_ev_iff hN _ _).1 h0)`. Rewrite `e` using `[pull_evc, map_zero, Category.comp_id, MonObj.comp_one]`. Then use the resulting hypothesis. Establish `H` using `GlobalTheory.CubeNoeth.fibTriv_clopen N (uquad A T) ![1, -1, -1, 1] (snd A (A ⊗ T) ≫ snd A T).left (fun R _ _ j ↦ by`. Take `⟨q, hq, q₀, q₁⟩` from `exists_chart (A := A) j`. Establish `hB` using `isAb_baseChange hA (j ≫ T.hom)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `one` using `one_left_fst (A := A) (j ≫ T.hom)`. Set `B` to `(Over.pullback (j ≫ T.hom)).obj A`. Establish `: Smooth B.hom` using `hB.smooth`. Establish `: IsProper B.hom` using `hB.proper`. Establish `: GeometricallyConnected B.hom` using `hB.geomConnected`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sm : Smooth (B ⊗ B).hom`. Express the relevant statement in the definitionally equal form `Smooth (pullback.fst B.hom B.hom ≫ B.hom)`. Use `infer_instance`. Establish `pr : IsProper (B ⊗ B).hom`. Express the relevant statement in the definitionally equal form `IsProper (pullback.fst B.hom B.hom ≫ B.hom)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `gc : GeometricallyConnected (B ⊗ B).hom`. Express the relevant statement in the definitionally equal form `GeometricallyConnected (pullback.fst B.hom B.hom ≫ B.hom)`. Conclude with `GeometricallyConnected.comp _ _`. Establish `hN' : (LB.LinComb N (fun k ↦ q ≫ uquad A T k) ![1, -1, -1, 1]).IsLB` using `DVR.linComb_isLB _ hN _ _`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `pf : ∀ M : LB (B ⊗ B).left, M.IsLB → Nonempty (Perf (B ⊗ B).hom M)` using `fun M hM ↦ ProperFinite.nonempty_perf_of_isProper (R := R) (B ⊗ B).hom hM`. Use `⟨_, q, (B ⊗ B).hom, hq, TrivLocus.isClosed_trivLocus R _ _ _ hN' (pf _ hN') (pf _ (isLB_pw hN' _)) pr (forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ sm gc), fun F _ g Z π f' ↦ CubeOpen.triv_basicOpen_of_triv_fibre hG Seesaw.seesaw (SmallExtLift.exists_gen …` and prove the remaining obligations. Rewrite using `[triv_pull_comp_iff]`. Use `trivAt_of_formal hN _ (formal_quad _ (B.hom ≫ j ≫ T.hom) (Or.inr ?_))` and prove the remaining obligations. Rewrite using `[Category.assoc, q₁, ← Category.assoc, ← Over.comp_left, lift_snd]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one B`. Rewrite using `[triv_pull_comp_iff]`. Use `trivAt_of_formal hN _ (formal_quad _ (B.hom ≫ j ≫ T.hom) (Or.inl ?_))` and prove the remaining obligations. Rewrite using `[Category.assoc, q₀, ← Category.assoc, ← Over.comp_left, lift_fst]`. Conclude with `one B)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `all : ∀ t, t ∈ fibTriv N (uquad A T) ![1, -1, -1, 1] (snd A (A ⊗ T) ≫ snd A T).left` using `fun t ↦ by`. Set `K` to `AlgebraicClosure (T.left.residueField t)`. Set `g : Spec (CommRingCat.of K) ⟶ T.left` to `Spec.map (CommRingCat.ofHom (algebraMap (T.left.residueField t) K)) ≫ T.left.fromSpecResidueField t`. Set `s : Sp K ⟶ S` to `g ≫ T.hom`. Set `t' : Over.mk s ⟶ T` to `Over.homMk g rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hadd` using `hgeo K s t'`. Set `π` to `pullback.fst (snd A (A ⊗ T) ≫ snd A T).left g`. Set `f'` to `pullback.snd (snd A (A ⊗ T) ≫ snd A T).left g`. Use `⟨K, inferInstance, g, _, π, f', ⟨IsLocalRing.closedPoint K, ?_⟩, IsPullback.of_hasPullback _ _, ?_⟩` and prove the remaining obligations. Use `(Scheme.range_fromSpecResidueField t).le ⟨Spec.map (CommRingCat.ofHom (algebraMap (T.left.residueField t) K)) (IsLocalRing.closedPoint K), rfl⟩` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `this`. Set `Zs : Over S` to `Over.mk (f' ≫ s)`. Establish `w : π ≫ (A ⊗ (A ⊗ T)).hom = f' ≫ s`. Rewrite using `[← Over.w (snd A (A ⊗ T) ≫ snd A T), ← Category.assoc, pullback.condition, Category.assoc]`. Set `x : Zs ⟶ A ⊗ (A ⊗ T)` to `Over.homMk π w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `τ : Zs ⟶ Over.mk s` to `Over.homMk f' rfl`. Establish `hx : x ≫ snd A (A ⊗ T) ≫ snd A T = τ ≫ t'` using `Over.OverMorphism.ext pullback.condition`. Establish `hM : (ev N (fst A (Over.mk s)) (snd A (Over.mk s) ≫ t')).IsLB` using `pull_isLB hN _`. Establish `ev₁ : ∀ a : Zs ⟶ A, evc hM a τ = evc hN a (x ≫ snd A (A ⊗ T) ≫ snd A T)` using `fun a ↦ by`. Rewrite using `[evc_ev hN, lift_fst, lift_snd_assoc, hx]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `e` using `(isAdditive_iff hM).1 hadd Zs (x ≫ fst A (A ⊗ T)) (x ≫ snd A (A ⊗ T) ≫ fst A T) τ`. Rewrite `e` using `[ev₁, ev₁, ev₁]`. Establish `ef : (fun k ↦ π ≫ uquad A T k) = quad (x ≫ fst A (A ⊗ T)) (x ≫ snd A (A ⊗ T) ≫ fst A T) (x ≫ snd A (A ⊗ T) ≫ snd A T)` using `funext fun k ↦ comp_quad x _ _ _ k`. Unfold `TrivAt`. Rewrite using `[ef, triv_quad_iff hN, one₁, e]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Set `e : T ⟶ A ⊗ (A ⊗ T)` to `lift 1 (lift 1 (𝟙 T))`. Establish `e₀ : e ≫ fst A (A ⊗ T) = 1` using `by simp [e]`. Establish `e₂ : e ≫ snd A (A ⊗ T) ≫ snd A T = 𝟙 _` using `by simp [e]`. Establish `htr` using `triv_of_local hN (uquad A T) ![1, -1, -1, 1] (snd A (A ⊗ T) ≫ snd A T).left e.left (congrArg (fun q ↦ q.left) e₂) (fun Z b ↦ formal_quad (b ≫ e.left) (b ≫ T.hom) (Or.inl ?_)) (fun V ↦ ?_) (fun s ↦ H.1 (all s))`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `rotate_left`. Rewrite using `[Category.assoc, ← Over.comp_left, e₀, Category.assoc]`. Both sides reduce to the same expression. Take `⟨q, hq, -⟩` from `exists_chart (A := A) V.ι`. Establish `hB` using `isAb_baseChange hA (V.ι ≫ T.hom)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `⟨_, q, _, hq, ?_⟩` and prove the remaining obligations. Rewrite using `[← Over.w (snd _ _)]`. Conclude with `surj_comp (surj_snd hG hB _) (hG _ _ hB).2`. Use `(isAdditive_iff hN).2 fun Y a a' t ↦ ?_` and prove the remaining obligations. Establish `h1 : TrivAt N (uquad A T) ![1, -1, -1, 1] (lift a (lift a' t)).left`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h0' : TrivAt N (uquad A T) ![1, -1, -1, 1] (𝟙 _)`. Unfold `TrivAt`. Simplify using `only [Category.id_comp]`. Conclude with `htr`. Use `h0'.comp (lift a (lift a' t)).left` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Category.comp_id]`. Then use the resulting hypothesis. Establish `ef : (fun k ↦ (lift a (lift a' t)).left ≫ uquad A T k) = quad a a' t` using `funext fun k ↦ by`. Rewrite using `[comp_quad]`. Simplify using `only [lift_fst, lift_snd_assoc, lift_snd]`. Establish `h2 : Triv (LB.LinComb N (quad a a' t) ![1, -1, -1, 1])`.
-
-Establish `h1' : Triv (LB.LinComb N (fun k ↦ (lift a (lift a' t)).left ≫ uquad A T k) ![1, -1, -1, 1])` using `h1`. Rewrite `h1'` using `[ef]`. Then use the resulting hypothesis. Establish `h3` using `(triv_quad_iff hN a a' t).1 h2`. Rewrite `h3` using `[one₁, add_zero, sub_sub, sub_eq_zero]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem isAdditive_of_geomFibres (S : Scheme.{0}) (A T : Over S) [GrpObj A] [IsLocallyNoetherian T.left]
     (hA : IsAbelianScheme A) (N : LB (A ⊗ T).left) (hN : N.IsLB) (h0 : Triv (ev N (1 : T ⟶ A) (𝟙 T)))

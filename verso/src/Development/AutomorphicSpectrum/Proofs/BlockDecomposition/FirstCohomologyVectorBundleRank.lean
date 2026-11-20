@@ -17,7 +17,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.Hodge.FirstCohomologyVectorBundle
 
 /- English proof (translation)
-Establish `h` using `isGrpPullback_pullback A (spMap (algebraMap R B))`. Take `⟨h1, h2⟩` from `GlobalTheory.AbBaseChange.isAbelianScheme_and_relDim_of_isGrpPullback _ _ _ _ g h hA hg`. Conclude with `⟨_, inferInstance, _, h1, h2, h.1⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_base {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A] {g : ℕ} (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) (B : Type) [CommRing B] [Algebra R B] :
@@ -28,7 +28,7 @@ theorem exists_base {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A] {g : �
   exact ⟨_, inferInstance, _, h1, h2, h.1⟩
 
 /- English proof (translation)
-Set `E1 : H1 F ≃ₗ[R] H1 F'` to `LinearEquiv.ofBijective m.pull1 h1`. Take `⟨hf, hp, hr⟩` from `h`. Use `⟨Module.Finite.equiv E1, Module.Projective.of_equiv E1, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.rankAtStalk_eq_of_equiv E1]`. Conclude with `hr p`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vb_of_bijective {R : Type} [CommRing R] {C C' : Type} [Category.{0} C] [Category.{0} C']
     {F : C ⥤ CommAlgCat.{0} R} {F' : C' ⥤ CommAlgCat.{0} R} (m : CoefMap (RingHom.id R) F F')
@@ -40,7 +40,7 @@ theorem vb_of_bijective {R : Type} [CommRing R] {C C' : Type} [Category.{0} C] [
   exact hr p
 
 /- English proof (translation)
-Set `E1 : H1 F ≃ₗ[R] H1 F'` to `LinearEquiv.ofBijective m.pull1 h1`. Take `⟨hf, hp, hr⟩` from `h`. Use `⟨Module.Finite.equiv E1.symm, Module.Projective.of_equiv E1.symm, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.rankAtStalk_eq_of_equiv E1]`. Conclude with `hr p`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vb_of_bijective' {R : Type} [CommRing R] {C C' : Type} [Category.{0} C] [Category.{0} C']
     {F : C ⥤ CommAlgCat.{0} R} {F' : C' ⥤ CommAlgCat.{0} R} (m : CoefMap (RingHom.id R) F F')
@@ -52,7 +52,7 @@ theorem vb_of_bijective' {R : Type} [CommRing R] {C C' : Type} [Category.{0} C] 
   exact hr p
 
 /- English proof (translation)
-Take `⟨hf, -, hr⟩` from `h`. Establish `e` using `hr ⊥`. Rewrite `e` using `[Module.rankAtStalk_eq_finrank_of_free]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem finrank_of_vb {k M : Type} [Field k] [AddCommGroup M] [Module k M] {n : ℕ} (h : VB k M n) :
     Module.finrank k M = n := by
@@ -61,19 +61,19 @@ theorem finrank_of_vb {k M : Type} [Field k] [AddCommGroup M] [Module k M] {n : 
   rwa [Module.rankAtStalk_eq_finrank_of_free] at e
 
 /- English proof (translation)
-Introduce `hD hL hB hP hS hK hT hV R _ A _ g hA hg`. Establish `: IsProper A.hom` using `hA.proper`. Establish `: IsSeparated A.hom` using `inferInstance`. Establish `: Smooth A.hom` using `hg.smooth`. Take `⟨P, iP, fP, S, hPerf⟩` from `hP R A.left A.hom inferInstance inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `low : ∀ {R₀ : Type} [CommRing R₀] (A₀ : Over (Sp R₀)) [GrpObj A₀], IsAbelianScheme A₀ → ∀ (S₀ : Sys A₀.left P), Function.Bijective (resSys A₀.hom S₀).pull1 ∧ (Stein (OAff A₀.hom) ↔ Stein (OSys A₀.hom S₀))` using `fun {R₀} _ A₀ _ h₀ S₀ => by`. Establish `: IsProper A₀.hom` using `h₀.proper`. Take `⟨b1, -, st⟩` from `hL R₀ _ _ _ _ _ (hD R₀ A₀.left A₀.hom inferInstance P S₀)`. Conclude with `⟨b1, st⟩`. Use `vb_of_bijective' (resSys A.hom S) (low A hA S).1 (hV R P (OSys A.hom S) g hPerf ?_ ?_ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `R' _ _`. Take `⟨A', _, φ, hA', hg', h⟩` from `exists_base A hA hg R'`. Take `⟨S', m, -⟩` from `hB R R' A.left A'.left A.hom A'.hom φ h inferInstance P S`. Conclude with `⟨OSys A'.hom S', m, (low A' hA' S').2.1 (hS R' A' g hA' hg')⟩`. Introduce `k _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨A', _, φ, hA', hg', h⟩` from `exists_base A hA hg k`. Take `⟨S', m, -⟩` from `hB R k A.left A'.left A.hom A'.hom φ h inferInstance P S`. Conclude with `⟨OSys A'.hom S', m, finrank_of_vb (vb_of_bijective _ (low A' hA' S').1 (hK k A' g hA' hg' (Field.toIsField k)))⟩`. Introduce `B _ _ _ t ht`. Take `⟨A', _, φ, hA', hg', h⟩` from `exists_base A hA hg B`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨S', m, -⟩` from `hB R B A.left A'.left A.hom A'.hom φ h inferInstance P S`. Take `⟨A'', _, φ', hA'', hg'', h'⟩` from `exists_base A' hA' hg' (B ⧸ Ideal.span {t})`. Establish `: IsProper A'.hom` using `hA'.proper`. Take `⟨S'', m', hm'⟩` from `hB B (B ⧸ Ideal.span {t}) A'.left A''.left A'.hom A''.hom φ' h' inferInstance P S'`. Use `⟨OSys A'.hom S', m, OSys A''.hom S'', m', fun y => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `b2` using `(low A'' hA'' S'').1`. Take `⟨d, rfl⟩` from `b2.2 y`. Take `⟨c, hc⟩` from `hT B A' g hA' hg' t ht A''.left A''.hom φ' h' d`. Use `⟨(resSys A'.hom S').pull1 c, ?_⟩` and prove the remaining obligations. Take `⟨d', hd'⟩` from `b2.2 (m'.coef.pull1 ((resSys A'.hom S').pull1 c))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e` using `(existsUnique_isPullO h'.w c).unique hc (hm' c d' hd'.symm)`. Rewrite using `[e, hd']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem first_cohomology_vector_bundle_rank : DescentSt → LowSt → SysBCSt → PerfSt → SteinSt → H1StructureFieldDim → SmallLiftSt → PerfVBSt → H1StructureBundle := by
   intro hD hL hB hP hS hK hT hV R _ A _ g hA hg

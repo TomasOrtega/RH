@@ -12,11 +12,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨-, hE, -, hc⟩` from `hσ`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hss : ∀ x, σ (σ x) = x` using `fun x => τ.injective (by rw [hc, hc, star_star])`. Assume the negation of the conclusion as `hn`. Use `IsTotallyComplex.complexEmbedding_not_isReal τ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Establish `hx : x - σ x = 0`. Assume the negation of the conclusion as `h`. Conclude with `hn ⟨_, h, by rw [map_sub, hss, neg_sub]⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2` using `hc τ x`. Rewrite `h2` using `[← sub_eq_zero.1 hx]`. Conclude with `h2.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fv_exists_skew (hσ : IsCMExt F E σ) : ∃ c : E, c ≠ 0 ∧ σ c = -c := by
   obtain ⟨-, hE, -, hc⟩ := hσ
@@ -34,9 +34,9 @@ theorem fv_exists_skew (hσ : IsCMExt F E σ) : ∃ c : E, c ≠ 0 ∧ σ c = -c
   exact h2.symm
 
 /- English proof (translation)
-Establish `hd : ∀ c : E, c ≠ 0 → ((c • J)ᵀ).det ≠ 0` using `fun c hc => by`. Rewrite using `[Matrix.det_transpose, Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ hc) hJ.2`. Break down `hJ.1 with h | h` into its components or cases. Conclude with `⟨1, one_ne_zero, fun i j => by simpa using h j i, hd 1 one_ne_zero⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hs⟩` from `fv_exists_skew hσ`. Use `⟨c, hc, fun i j => ?_, hd c hc⟩` and prove the remaining obligations. Simplify using `only [Matrix.transpose_apply, Matrix.smul_apply, smul_eq_mul, map_mul, hs, h j i]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fv_exists_herm (hσ : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (hJ : EpsHerm σ J) :
     ∃ c : E, c ≠ 0 ∧ HeckeCharacterZeroLocus.SiegelWeilU.IsHermND σ (c • J)ᵀ := by
@@ -52,9 +52,9 @@ theorem fv_exists_herm (hσ : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin
 
 omit [NumberField E] in
 /- English proof (translation)
-Establish `hu : IsUnit (inclR (F` using `F) (AF F) c) := (IsUnit.mk0 c hc).map _`. Establish `hJ : HeckeCharacterZeroLocus.SiegelWeilU.JR (F` using `F) (AF F) (c • J)ᵀ = (inclR (F := F) (AF F) c • incM F J)ᵀ := by`. Use extensionality with `i j`. Conclude with `map_mul (inclR (F := F) (AF F)) c (J j i)`. Use extensionality with `g`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `show g.1ᵀ * incM F J * g.1.map (cA σ) = incM F J ↔ (g.1.map (cA σ))ᵀ * HeckeCharacterZeroLocus.SiegelWeilU.JR (F := F) (AF F) (c • J)ᵀ * g.1 = HeckeCharacterZeroLocus.SiegelWeilU.JR (F := F) (AF F) (c • J)ᵀ`. Rewrite using `[hJ]`. Establish `e : (g.1.map (cA σ))ᵀ * (inclR (F` using `F) (AF F) c • incM F J)ᵀ * g.1 = (inclR (F := F) (AF F) c • (g.1ᵀ * incM F J * g.1.map (cA σ)))ᵀ := by`. Simplify using `only [Matrix.transpose_smul, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`. Rewrite using `[e, Matrix.transpose_inj, hu.smul_left_cancel]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fv_HR_eq {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {c : E} (hc : c ≠ 0) :
     UG (cA σ) (incM F J) = HeckeCharacterZeroLocus.SiegelWeilU.HR (AF F) σ (c • J)ᵀ := by
@@ -74,13 +74,11 @@ theorem fv_HR_eq {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {c : E} (hc : c ≠ 0)
 
 omit [NumberField E] in
 /- English proof (translation)
-Establish `hinj : Function.Injective (inclR (F` using `F) (E := E) (AF F)) := Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective (𝓞 F) F)`. Use extensionality with `g`. Rewrite using `[HeckeCharacterZeroLocus.SiegelWeilU.HFinIn, Subgroup.mem_subgroupOf, Subgroup.mem_subgroupOf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨γ, ?_, hγ⟩` and prove the remaining obligations. Establish `h : ((γ.1.map (inclR (F` using `F) (AF F))).map (sigR (AF F) σ))ᵀ * J.map (inclR (F := F) (AF F)) * γ.1.map (inclR (F := F) (AF F)) = J.map (inclR (F := F) (AF F)) := by`. Establish `h0` using `g.2`. Rewrite `h0` using `[← hγ]`. Conclude with `h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (γ.1.map (σ : E →+* E))ᵀ * J * γ.1 = J`. Use `Matrix.map_injective hinj ?_` and prove the remaining obligations. Use `show ((γ.1.map (σ : E →+* E))ᵀ * J * γ.1).map (inclR (F := F) (AF F)) = J.map (inclR (F := F) (AF F))`. Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Conclude with `h`.
-
-Introduce and unpack `⟨γ, -, hγ⟩`. Conclude with `⟨γ, hγ⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fv_rat_eq {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     (Matrix.GeneralLinearGroup.map (inclR (F := F) (AF F))).range.subgroupOf (HeckeCharacterZeroLocus.SiegelWeilU.HR (AF F) σ J) =
@@ -106,7 +104,7 @@ theorem fv_rat_eq {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     exact ⟨γ, hγ⟩
 
 /- English proof (translation)
-Substitute `hS` using the available equality. Rewrite using `[fv_rat_eq]`. Introduce `μ D hμ hD`. Conclude with `((GlobalTheory.CompanionTheory.SW.finVol_unitaryGroup F E σ hσ n J hJ).2 μ hμ).2 D hD`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fundamental_domain_finite_volume (hσ : IsCMExt F E σ) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (hJ : HeckeCharacterZeroLocus.SiegelWeilU.IsHermND σ J)
     (S : Subgroup (GL (Fin n) (AE F E))) (hS : S = HeckeCharacterZeroLocus.SiegelWeilU.HR (AF F) σ J) :
@@ -120,7 +118,7 @@ theorem fundamental_domain_finite_volume (hσ : IsCMExt F E σ) {n : ℕ} (J : M
   exact ((GlobalTheory.CompanionTheory.SW.finVol_unitaryGroup F E σ hσ n J hJ).2 μ hμ).2 D hD
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ n J hJ`. Take `⟨c, hc, h⟩` from `fv_exists_herm hσ hJ`. Conclude with `fundamental_domain_finite_volume hσ _ h _ (fv_HR_eq J hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finVolU : FinVolU := by
   intro F E _ _ _ _ _ σ hσ n J hJ

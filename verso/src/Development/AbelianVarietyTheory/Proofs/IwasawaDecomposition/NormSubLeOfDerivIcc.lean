@@ -9,7 +9,7 @@ namespace GlobalTheory.TypeSum
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Establish `h1` using `hF l hl X hX _ (mul_mem_UJ hz (exp_mem_UJ hX s))`. Establish `h2` using `HasDerivAt.comp_sub_const s s (by rw [sub_self]; exact h1)`. Use `HasDerivAt.congr_of_eventuallyEq h2 (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `show _ = F l (z * _ * _)`. Rewrite using `[Matrix.mul_assoc, ← exp_add_smul, add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsDerFam.hasDerivAt_exp {F : List (Mx n) → Mx n → ℂ} (hF : IsDerFam ε F) {l : List (Mx n)}
     (hl : ∀ Y ∈ l, Y ∈ lieSet ε) {X : Mx n} (hX : X ∈ lieSet ε) {z : Mx n} (hz : z ∈ UJset ε) (s : ℝ) :
@@ -21,7 +21,7 @@ theorem IsDerFam.hasDerivAt_exp {F : List (Mx n) → Mx n → ℂ} (hF : IsDerFa
   rw [Matrix.mul_assoc, ← exp_add_smul, add_sub_cancel]
 
 /- English proof (translation)
-Use `(convex_Icc (-δ) δ).norm_image_sub_le_of_norm_hasDerivWithin_le (fun s _ => (hf s).hasDerivWithinAt) hB (x := 0) (y := t) ⟨by linarith, hδ⟩ ht` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_sub_le_of_deriv_Icc {f f' : ℝ → ℂ} (hf : ∀ s, HasDerivAt f (f' s) s) {δ B : ℝ} (hδ : 0 ≤ δ)
     (hB : ∀ s ∈ Set.Icc (-δ) δ, ‖f' s‖ ≤ B) {t : ℝ} (ht : t ∈ Set.Icc (-δ) δ) : ‖f t - f 0‖ ≤ B * |t| := by
@@ -30,27 +30,23 @@ theorem norm_sub_le_of_deriv_Icc {f f' : ℝ → ℂ} (hf : ∀ s, HasDerivAt f 
   simpa using this
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact h0`. Consider the case `cons X l ih`. Establish `hX` using `hl X List.mem_cons_self`. Establish `hl'` using `fun Y hY => hl Y (List.mem_cons_of_mem _ hY)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ih` using `ih hl'`. Introduce `ι _ a g' hg' M hM hb`. Take `⟨C', hC'⟩` from `hG (X :: X :: l) (by`. Introduce `Y hY`. Break down `List.mem_cons.1 hY with rfl | hY` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `exacts [hX, hl Y hY])`. Establish `hmem : ∀ y ∈ Z, ∀ j, g * y * g' j ∈ UJset ε` using `fun y hy j => mul_mem_UJ (mul_mem_UJ hg (hZU hy)) (hg' j)`. Establish `hcont : Continuous fun p : Mx n × ℝ => ∑ j, ‖a j‖ * (C' * (1 + hs (g * p.1 * g' j * NormedSpace.exp (p.2 • X))) ^ N)`. Use `continuous_finset_sum _ fun j _ => continuous_const.mul (continuous_const.mul ((continuous_const.add (continuous_hs.comp ?_)).pow _))` and prove the remaining obligations. Conclude with `((continuous_const.matrix_mul continuous_fst).matrix_mul continuous_const).matrix_mul ((continuous_exp_smul X).comp continuous_snd)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨K₀, hK₀⟩` from `(hZ.prod (isCompact_Icc (a := (-1 : ℝ)) (b := 1))).bddAbove_image hcont.continuousOn`. Use `set K := max K₀ 0 with hK`. Establish `hK0 : 0 ≤ K` using `le_max_right _ _`. Establish `h2 : ∀ y ∈ Z, ∀ s ∈ Set.Icc (-1 : ℝ) 1, ‖∑ j, a j * F (X :: X :: l) (g * y * g' j * NormedSpace.exp (s • X))‖ ≤ K`. Introduce `y hy s hs'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le _ _).trans (le_trans ?_ ((hK₀ ⟨(y, s), ⟨hy, hs'⟩, rfl⟩).trans (le_max_left _ _)))` and prove the remaining obligations. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hC' _ (mul_mem_UJ (hmem y hy j) (exp_mem_UJ hX s))) (norm_nonneg _)`. Establish `e0 : NormedSpace.exp ((0 : ℝ) • X) = 1` using `by rw [zero_smul, NormedSpace.exp_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ δ : ℝ, 0 < δ → δ ≤ 1 → ‖∑ j, a j * Φ (X :: l) (g' j)‖ ≤ C * (M + K * δ)`. Introduce `δ hδ hδ1`. Establish `h1 : ∀ y ∈ Z, ∀ s ∈ Set.Icc (-δ) δ, ‖∑ j, a j * F (X :: l) (g * y * g' j * NormedSpace.exp (s • X))‖ ≤ M + K * δ`. Introduce `y hy s hs'`. Establish `h` using `norm_sub_le_of_deriv_Icc (f := fun t => ∑ j, a j * F (X :: l) (g * y * g' j * NormedSpace.exp (t • X))) (fun s => HasDerivAt.fun_sum fun j _ => (hF.hasDerivAt_exp hl hX (hmem y hy j) s).const_mul (a j)) zero_le_one (h2 y hy) (t := s) ⟨by linarith [hs'.1], by linarith [hs'.2]⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [e0, Matrix.mul_one] at h`. Establish `h' : K * |s| ≤ K * δ` using `mul_le_mul_of_nonneg_left (abs_le.2 hs') hK0`. Use `norm_le_norm_add_norm_sub' (∑ j, a j * F (X :: l) (g * y * g' j * NormedSpace.exp (s • X))) (∑ j, a j * F (X :: l) (g * y * g' j))` as an intermediate fact. Combine the linear relations using `[hb y hy]`. Establish `hψ : HasDerivAt (fun t : ℝ => ∑ j, a j * Φ l (g' j * NormedSpace.exp (t • X))) (∑ j, a j * Φ (X :: l) (g' j)) 0` using `HasDerivAt.fun_sum fun j _ => (hΦ l hl' X hX _ (hg' j)).const_mul (a j)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hMK : 0 ≤ M + K * δ` using `by positivity`. Use `hψ.le_of_lip' (by positivity) ?_` and prove the remaining obligations. Use `filter_upwards [Icc_mem_nhds (a := -δ) (b := δ) (x := (0 : ℝ)) (by linarith) hδ] with t ht`. Establish `h` using `ih (ι ⊕ ι) (Sum.elim a fun j => -a j) (Sum.elim (fun j => g' j * NormedSpace.exp (t • X)) g') (by`. Introduce and unpack `(j | j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `exacts [mul_mem_UJ (hg' j) (exp_mem_UJ hX t), hg' j]) ((M + K * δ) * |t|) (by positivity) (by`. Introduce `y hy`. Establish `h` using `norm_sub_le_of_deriv_Icc (f := fun t => ∑ j, a j * F l (g * y * g' j * NormedSpace.exp (t • X))) (fun s => HasDerivAt.fun_sum fun j _ => (hF.hasDerivAt_exp hl' hX (hmem y hy j) s).const_mul (a j)) hδ.le (h1 y hy) ht`. Simplify `h)` using `only [e0, Matrix.mul_one, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, neg_mul, Finset.sum_neg_distrib, ← sub_eq_add_neg, Matrix.mul_assoc]`. Simplify `h` using `only [e0, Matrix.mul_one, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, neg_mul, Finset.sum_neg_distrib, ← sub_eq_add_neg, sub_zero, Real.norm_eq_abs, mul_assoc]`.
-
-Establish `hlim : Tendsto (fun δ : ℝ => C * (M + K * δ)) (𝓝[>] 0) (𝓝 (C * M))`. Establish `hc : Continuous fun δ : ℝ => C * (M + K * δ)` using `by fun_prop`. Use `(hc.tendsto 0).mono_left (nhdsWithin_le_nhds (s := Set.Ioi 0))` as an intermediate fact. Simplify using `using this`. Use `ge_of_tendsto hlim ?_` and prove the remaining obligations.
-
-Use `filter_upwards [Ioc_mem_nhdsGT (zero_lt_one' ℝ)] with δ hδ`. Conclude with `key δ hδ.1 hδ.2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem domBy_derFam (n : ℕ) (ε : Fin n → Bool) (Z : Set (Mx n)) (C : ℝ) (N : ℕ) (F Φ : List (Mx n) → Mx n → ℂ)
     (g : Mx n) (hZ : IsCompact Z) (hZU : Z ⊆ UJset ε) (hC : 0 ≤ C) (hg : g ∈ UJset ε) (hF : IsDerFam ε F)

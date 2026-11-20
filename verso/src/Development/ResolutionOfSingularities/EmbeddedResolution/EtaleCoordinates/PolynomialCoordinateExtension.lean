@@ -31,28 +31,28 @@ private noncomputable def iterToSumRingHom :
     (fun j : κ => (X (Sum.inr j) : MvPolynomial (ι ⊕ κ) k))
 
 /- English proof (translation)
-Simplify using `[iterToSumRingHom]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem iterToSumHom_C_C (a : k) :
     iterToSumRingHom k ι κ (C (C a)) = C a := by
   simp [iterToSumRingHom]
 
 /- English proof (translation)
-Simplify using `[iterToSumRingHom]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem iterToSumHom_C_X (i : ι) :
     iterToSumRingHom k ι κ (C (X i)) = X (Sum.inl i) := by
   simp [iterToSumRingHom]
 
 /- English proof (translation)
-Simplify using `[iterToSumRingHom]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem iterToSumHom_X (j : κ) :
     iterToSumRingHom k ι κ (X j) = X (Sum.inr j) := by
   simp [iterToSumRingHom]
 
 /- English proof (translation)
-Simplify using `only [sumEvalIter, MvPolynomial.aeval_C]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem sumEvalIter_C (a : k) :
     sumEvalIter k ι κ (C a) = C (C a) := by
@@ -60,23 +60,21 @@ private theorem sumEvalIter_C (a : k) :
   rfl
 
 /- English proof (translation)
-Simplify using `[sumEvalIter]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sumEvalIter_X_inl (i : ι) :
     sumEvalIter k ι κ (X (Sum.inl i)) = C (X i) := by
   simp [sumEvalIter]
 
 /- English proof (translation)
-Simplify using `[sumEvalIter]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sumEvalIter_X_inr (j : κ) :
     sumEvalIter k ι κ (X (Sum.inr j)) = X j := by
   simp [sumEvalIter]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on`. Use `next a => rw [sumEvalIter_C, iterToSumHom_C_C]`. Use `next q r hq hr => simp only [map_add, hq, hr]`. Use `next q v hq =>`. Break down `v with i | j` into its components or cases.
-
-Simplify using `only [map_mul, hq, sumEvalIter_X_inl, iterToSumHom_C_X]`. Simplify using `only [map_mul, hq, sumEvalIter_X_inr, iterToSumHom_X]`.
+Proceed by induction. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem iterToSumHom_sumEvalIter (p : MvPolynomial (ι ⊕ κ) k) :
     iterToSumRingHom k ι κ (sumEvalIter k ι κ p) = p := by
@@ -89,7 +87,7 @@ private theorem iterToSumHom_sumEvalIter (p : MvPolynomial (ι ⊕ κ) k) :
     · simp only [map_mul, hq, sumEvalIter_X_inr, iterToSumHom_X]
 
 /- English proof (translation)
-Proceed by induction on `r using MvPolynomial.induction_on`. Use `next a => rw [iterToSumHom_C_C, sumEvalIter_C]`. Use `next p q hp hq => simp only [map_add, hp, hq]`. Use `next p i hp => simp only [map_mul, hp, iterToSumHom_C_X, sumEvalIter_X_inl]`.
+Proceed by induction. A detailed English derivation is pending.
 -/
 private theorem sumEvalIter_iterToSumHom_C (r : MvPolynomial ι k) :
     sumEvalIter k ι κ (iterToSumRingHom k ι κ (C r)) = C r := by
@@ -99,7 +97,7 @@ private theorem sumEvalIter_iterToSumHom_C (r : MvPolynomial ι k) :
   next p i hp => simp only [map_mul, hp, iterToSumHom_C_X, sumEvalIter_X_inl]
 
 /- English proof (translation)
-Proceed by induction on `q using MvPolynomial.induction_on`. Use `next r => exact sumEvalIter_iterToSumHom_C k ι κ r`. Use `next p p' hp hp' => simp only [map_add, hp, hp']`. Use `next p j hp => simp only [map_mul, hp, iterToSumHom_X, sumEvalIter_X_inr]`.
+Proceed by induction. A detailed English derivation is pending.
 -/
 private theorem sumEvalIter_iterToSumHom (q : MvPolynomial κ (MvPolynomial ι k)) :
     sumEvalIter k ι κ (iterToSumRingHom k ι κ q) = q := by
@@ -109,7 +107,7 @@ private theorem sumEvalIter_iterToSumHom (q : MvPolynomial κ (MvPolynomial ι k
   next p j hp => simp only [map_mul, hp, iterToSumHom_X, sumEvalIter_X_inr]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Conclude with `Function.LeftInverse.injective (iterToSumHom_sumEvalIter k ι κ)`. Conclude with `fun q => ⟨iterToSumRingHom k ι κ q, sumEvalIter_iterToSumHom k ι κ q⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem bijective_sumEvalIter :
     Function.Bijective (sumEvalIter k ι κ) := by
@@ -120,7 +118,7 @@ private theorem bijective_sumEvalIter :
 attribute [local instance] sumEvalIterAlgebra
 
 /- English proof (translation)
-Establish `hb : Function.Bijective (algebraMap (MvPolynomial (ι ⊕ κ) k) (MvPolynomial κ (MvPolynomial ι k)))` using `bijective_sumEvalIter k ι κ`. Conclude with `Algebra.FormallyEtale.of_equiv (AlgEquiv.ofBijective (Algebra.ofId (MvPolynomial (ι ⊕ κ) k) (MvPolynomial κ (MvPolynomial ι k))) hb)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem formallyEtale_sumEvalIter :
     Algebra.FormallyEtale (MvPolynomial (ι ⊕ κ) k) (MvPolynomial κ (MvPolynomial ι k)) := by
@@ -158,9 +156,9 @@ section
 universe u v
 
 /- English proof (translation)
-Set `: Algebra (MvPolynomial σ R) (MvPolynomial σ A)` to `RingHom.toAlgebra (MvPolynomial.map (algebraMap R A))`. Establish `: Algebra.FormallyEtale (MvPolynomial σ R) (TensorProduct R (MvPolynomial σ R) A)` using `inferInstance`. Establish `e : TensorProduct R (MvPolynomial σ R) A ≃ₐ[MvPolynomial σ R] MvPolynomial σ A` using `AlgEquiv.ofRingEquiv (f := (Algebra.TensorProduct.comm R (MvPolynomial σ R) A).toRingEquiv.trans (MvPolynomial.algebraTensorAlgEquiv R A).toRingEquiv) (fun p => by`. Establish `hp : algebraMap (MvPolynomial σ R) (TensorProduct R (MvPolynomial σ R) A) p = p ⊗ₜ[R] (1 : A)` using `rfl`. Establish `hq : algebraMap (MvPolynomial σ R) (MvPolynomial σ A) p = MvPolynomial.map (algebraMap R A) p` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hp, hq]`. Use the proof step `simp)`. Conclude with `Algebra.FormallyEtale.of_equiv e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem formallyEtale_mvPolynomial_map (R : Type u) [CommRing R] (A : Type v) [CommRing A]
     [Algebra R A] [Algebra.FormallyEtale R A] (σ : Type*) :
@@ -203,7 +201,7 @@ attribute [local instance] sumEvalIterAlgebra
 attribute [local instance] mapCoeffAlgebra
 
 /- English proof (translation)
-The claim follows from `IsScalarTower.of_algebraMap_eq fun x => ((sumEval k ι κ S).commutes x).symm`.
+A detailed English derivation is pending.
 -/
 theorem sumEvalAlgebra_isScalarTower :
     IsScalarTower k (MvPolynomial (ι ⊕ κ) k) (MvPolynomial κ S) :=
@@ -216,7 +214,7 @@ theorem algebraMap_eq_sumEval (p : MvPolynomial (ι ⊕ κ) k) :
     algebraMap (MvPolynomial (ι ⊕ κ) k) (MvPolynomial κ S) p = sumEval k ι κ S p := rfl
 
 /- English proof (translation)
-Simplify using `[algebraMap_eq_sumEval, sumEval]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem algebraMap_X_inl (i : ι) :
     algebraMap (MvPolynomial (ι ⊕ κ) k) (MvPolynomial κ S) (X (Sum.inl i))
@@ -224,7 +222,7 @@ Simplify using `[algebraMap_eq_sumEval, sumEval]`.
   simp [algebraMap_eq_sumEval, sumEval]
 
 /- English proof (translation)
-Simplify using `[algebraMap_eq_sumEval, sumEval]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem algebraMap_X_inr (j : κ) :
     algebraMap (MvPolynomial (ι ⊕ κ) k) (MvPolynomial κ S) (X (Sum.inr j))
@@ -232,14 +230,14 @@ Simplify using `[algebraMap_eq_sumEval, sumEval]`.
   simp [algebraMap_eq_sumEval, sumEval]
 
 /- English proof (translation)
-The claim follows from `(coord_def k (ι ⊕ κ) (MvPolynomial κ S) (Sum.inl i)).trans (algebraMap_X_inl k ι κ S i)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem coord_inl (i : ι) :
     coord k (ι ⊕ κ) (MvPolynomial κ S) (Sum.inl i) = C (coord k ι S i) :=
   (coord_def k (ι ⊕ κ) (MvPolynomial κ S) (Sum.inl i)).trans (algebraMap_X_inl k ι κ S i)
 
 /- English proof (translation)
-The claim follows from `(coord_def k (ι ⊕ κ) (MvPolynomial κ S) (Sum.inr j)).trans (algebraMap_X_inr k ι κ S j)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem coord_inr (j : κ) :
     coord k (ι ⊕ κ) (MvPolynomial κ S) (Sum.inr j) = (X j : MvPolynomial κ S) :=
@@ -253,7 +251,7 @@ private theorem algebraMap_eq_sumEvalIter (p : MvPolynomial (ι ⊕ κ) k) :
       = sumEvalIter k ι κ p := rfl
 
 /- English proof (translation)
-The claim follows from `IsScalarTower.of_algebraMap_eq fun x => by have h1 : algebraMap k (MvPolynomial κ (MvPolynomial ι k)) x = C (algebraMap k (MvPolynomial ι k) x) := rfl have h2 : algebraMap k (MvPolynomial κ S) x = C (algebraMap k S x) := rfl rw [h2, h1, algebraMap_eq_mvPolynomial_map, MvPolynomia …`.
+A detailed English derivation is pending.
 -/
 theorem mapCoeffAlgebra_isScalarTower_of_isScalarTower [IsScalarTower k (MvPolynomial ι k) S] :
     IsScalarTower k (MvPolynomial κ (MvPolynomial ι k)) (MvPolynomial κ S) :=
@@ -265,9 +263,9 @@ theorem mapCoeffAlgebra_isScalarTower_of_isScalarTower [IsScalarTower k (MvPolyn
       IsScalarTower.algebraMap_apply k (MvPolynomial ι k) S]
 
 /- English proof (translation)
-Use `mapCoeffAlgebra_isScalarTower_of_isScalarTower k ι κ S` as an intermediate fact. Use `IsScalarTower.of_algebraMap_eq' ?_` and prove the remaining obligations. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun v => ?_)` and prove the remaining obligations. Simplify using `only [algebraMap_eq_sumEval, RingHom.comp_apply, algebraMap_eq_sumEvalIter, sumEval, sumEvalIter, MvPolynomial.aeval_C]`. Conclude with `IsScalarTower.algebraMap_apply k (MvPolynomial κ (MvPolynomial ι k)) (MvPolynomial κ S) r`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases v with i | j <;>`. Simplify using `[RingHom.comp_apply, algebraMap_eq_sumEval, algebraMap_eq_sumEvalIter, sumEval, sumEvalIter, algebraMap_eq_mvPolynomial_map, coord_def]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mapCoeffAlgebra_isScalarTower [IsScalarTower k (MvPolynomial ι k) S] :
     IsScalarTower (MvPolynomial (ι ⊕ κ) k) (MvPolynomial κ (MvPolynomial ι k))
@@ -283,7 +281,7 @@ theorem mapCoeffAlgebra_isScalarTower [IsScalarTower k (MvPolynomial ι k) S] :
         sumEval, sumEvalIter, algebraMap_eq_mvPolynomial_map, coord_def]
 
 /- English proof (translation)
-Use `mapCoeffAlgebra_isScalarTower_of_isScalarTower k ι κ S` as an intermediate fact. Use `mapCoeffAlgebra_isScalarTower k ι κ S` as an intermediate fact. Establish `h1 : Algebra.FormallyEtale (MvPolynomial (ι ⊕ κ) k) (MvPolynomial κ (MvPolynomial ι k))` using `formallyEtale_sumEvalIter k ι κ`. Establish `h2 : Algebra.FormallyEtale (MvPolynomial κ (MvPolynomial ι k)) (MvPolynomial κ S)` using `formallyEtale_mvPolynomial_map (MvPolynomial ι k) S κ`. Conclude with `Algebra.FormallyEtale.comp (MvPolynomial (ι ⊕ κ) k) (MvPolynomial κ (MvPolynomial ι k)) (MvPolynomial κ S)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem formallyEtale_mvPolynomial_sum [IsScalarTower k (MvPolynomial ι k) S]
     [Algebra.FormallyEtale (MvPolynomial ι k) S] :
@@ -300,7 +298,7 @@ theorem formallyEtale_mvPolynomial_sum [IsScalarTower k (MvPolynomial ι k) S]
 variable (T : Type*) [CommRing T]
 
 /- English proof (translation)
-Use `formallyEtale_mvPolynomial_sum k ι κ S` as an intermediate fact. Conclude with `Algebra.FormallyEtale.comp (MvPolynomial (ι ⊕ κ) k) (MvPolynomial κ S) T`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem formallyEtale_trans [IsScalarTower k (MvPolynomial ι k) S]
     [Algebra (MvPolynomial κ S) T] [Algebra (MvPolynomial (ι ⊕ κ) k) T]

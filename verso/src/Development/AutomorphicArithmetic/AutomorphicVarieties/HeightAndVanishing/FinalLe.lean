@@ -12,17 +12,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBoun
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
 /- English proof (translation)
-Establish `step : ∀ e ∈ Finset.Ico 1 t, L * ∑ i ∈ T e, v i e ≤ L * ∑ i ∈ O, v i e + N * K`. Introduce `e he`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i hi`. Distinguish the cases in `hO : i ∈ O`. Rewrite using `[if_pos hO]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_neg hO]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Break down `h1 e he i hi with h | h` into its components or cases. Conclude with `absurd h hO`. Combine the linear relations using `[mul_comm (v i e) L]`. Use `_ = ∑ i ∈ T e ∩ O, L * v i e + (T e).card * K := by`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul, Finset.sum_ite_mem]`.
+Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `_ ≤ ∑ i ∈ O, L * v i e + N * K := by`. Apply `add_le_add` to reduce the goal to its premises. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg Finset.inter_subset_right (fun i _ _ => mul_nonneg hL (hv i e))`. Conclude with `mul_le_mul_of_nonneg_right (by exact_mod_cast hT e) hK`. Establish `hA : ∑ i ∈ O, ∑ e ∈ Finset.Ico 1 t, v i e ≤ q * S`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hB : ((Finset.Ico 1 t).card : ℝ) ≤ t`. Rewrite using `[Nat.card_Ico]`. Conclude with `Nat.sub_le t 1` after adjusting the coercions. Establish `hNK : 0 ≤ (N : ℝ) * K` using `mul_nonneg (Nat.cast_nonneg _) hK`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, nsmul_eq_mul, ← Finset.mul_sum, Finset.sum_comm]`. Use `_ ≤ L * (q * S) + t * (N * K) := add_le_add (mul_le_mul_of_nonneg_left hA hL) (mul_le_mul_of_nonneg_right hB hNK)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_split {ι : Type} (T : ℕ → Finset ι) (O : Finset ι) (v : ι → ℕ → ℝ) (t N q : ℕ) (L K S : ℝ)
     (hv : ∀ i e, 0 ≤ v i e) (hL : 0 ≤ L) (hK : 0 ≤ K) (hS : 0 ≤ S) (hT : ∀ e, (T e).card ≤ N) (hq : O.card ≤ q)
@@ -67,15 +65,15 @@ private theorem sum_split {ι : Type} (T : ℕ → Finset ι) (O : Finset ι) (v
         add_le_add (mul_le_mul_of_nonneg_left hA hL) (mul_le_mul_of_nonneg_right hB hNK)
 
 /- English proof (translation)
-Establish `hM0 : 0 ≤ M` using `by linarith`. Establish `hM1 : 1 ≤ M` using `by linarith`. Establish `hNt : N * (t * M ^ 6) = M ^ 7`. Rewrite using `[hM]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hNb : t * (N * (M ^ 2) ^ b) = M ^ (2 * b + 1)`. Rewrite using `[hM]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hNt, hNb]`. Establish `hX : 0 ≤ q * (B + M ^ a)` using `mul_nonneg hq (by positivity)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : L * (q * (B + M ^ a)) ≤ l * (q * (B + M ^ a))` using `mul_le_mul_of_nonneg_right hL hX`. Establish `e2 : l * (q * (B + M ^ a)) = (l * q) * B + l * q * M ^ a` using `by ring`. Establish `e3 : (l * q) * B ≤ C * B` using `mul_le_mul_of_nonneg_right hC' hB`. Establish `hlq : l * q ≤ M * M` using `mul_le_mul hlM hqM hq hM0`. Establish `e4 : l * q * M ^ a ≤ M * M * M ^ a` using `mul_le_mul_of_nonneg_right hlq (pow_nonneg hM0 a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4' : M * M * M ^ a = M ^ (a + 2)` using `by ring`. Establish `e5 : L * M ^ 7 ≤ l * M ^ 7` using `mul_le_mul_of_nonneg_right hL (pow_nonneg hM0 7)`. Establish `e6 : l * M ^ 7 ≤ M * M ^ 7` using `mul_le_mul_of_nonneg_right hlM (pow_nonneg hM0 7)`. Establish `e6' : M * M ^ 7 = M ^ 8` using `by ring`. Take `⟨D, hD⟩ : ∃ D, C = D + 1` from `⟨C - 1, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `p1 : M ^ (a + 2) ≤ M ^ D` using `pow_le_pow_right₀ hM1 (by omega)`. Establish `p2 : M ^ (2 * b + 1) ≤ M ^ D` using `pow_le_pow_right₀ hM1 (by omega)`. Establish `p3 : M ^ 8 ≤ M ^ D` using `pow_le_pow_right₀ hM1 (by omega)`. Establish `p4 : 3 * M ^ D ≤ M * M ^ D` using `mul_le_mul_of_nonneg_right h3 (pow_nonneg hM0 D)`. Establish `p5 : M ^ C = M * M ^ D` using `by rw [hD, pow_succ']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -110,67 +108,57 @@ private theorem final_le (M L l q N t B : ℝ) (a b C : ℕ) (hM : M = N * t) (h
   linarith
 
 /- English proof (translation)
-Unfold `SumIn`. Introduce `hII hV hVs hIV χ l j hl`. Use `haveI : Fact (l : ℕ).Prime := ⟨l.2⟩`. Use `haveI : IsAlgClosure ℚ (AlgebraicClosure ℚ) := by`. Use `(AlgebraicClosure.instIsAlgClosure (k := ℚ))` and compare the differences between its conclusion and the goal.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Conclude with `Subsingleton.elim _ _`. Take `⟨C2, hC2⟩` from `hII χ`. Take `⟨C5, hC5⟩` from `hV χ`. Take `⟨C6, hC6⟩` from `hVs χ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨C4, hC4⟩` from `hIV χ (l : ℕ) j hl`. Use `set Cm := max C2 (max C5 C6) with hCm`. Use `⟨C4 + 2 * Cm + 9 + (l : ℕ) * χ.N, ?_⟩` and prove the remaining obligations. Introduce `h hχ t ht2 hBig B hB hLay E _ _ _ hE Ω _ _ _ ld`. Use `haveI : NeZero h.N := ⟨h.N_pos.ne'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : NeZero (Nat.totient h.N) := ⟨(Nat.totient_pos.2 h.N_pos).ne'⟩`. Take `⟨c, hc⟩` from `exists_coef (l : ℕ) (Nat.totient h.N)`. Use `haveI := hc`. Establish `hlp : (l : ℕ).Prime` using `l.2`. Establish `hl2 : (l : ℕ) ≠ 2` using `(prime_of_mem_Bchi hl).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlB : (l : ℕ) ∈ Bchi h.chi`. Rewrite using `[hχ]`. Conclude with `hl`. Establish `hbf` using `bchiFacts h t hBig`. Establish `hlq1 : (l : ℕ) < h.q1` using `(hbf.1 _ hlB).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hld : (l : ℕ) < h.d` using `(hbf.1 _ hlB).2`. Establish `hidx` using `hostIndex h`. Establish `hNpos : 0 < h.N` using `h.N_pos`. Establish `hq1N : h.q1 ≤ h.N` using `Nat.le_of_dvd hNpos h.host_q1_dvd_N`. Establish `hqN : h.q ≤ h.N` using `Nat.le_of_dvd hNpos h.q_dvd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h16 : 16 ≤ h.N` using `Nat.le_of_dvd hNpos hidx.2.2.1`. Establish `hlN : (l : ℕ) ≤ h.N` using `by omega`. Use `set M : ℝ := (h.N : ℝ) * t with hMdef`. Use `set L : ℝ := Real.log ((l : ℕ) : ℝ) with hLdef`. Establish `hN1 : (1 : ℝ) ≤ h.N` using `by exact_mod_cast (by omega : 1 ≤ h.N)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM3 : 3 ≤ M`. Establish `a1 : (16 : ℝ) ≤ h.N` using `by exact_mod_cast h16`. Establish `a2 : (2 : ℝ) ≤ t` using `by exact_mod_cast ht2`. Rewrite using `[hMdef]`. Use the polynomial consequences of the given equalities and inequalities.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hM0 : 0 ≤ M` using `by linarith`. Establish `hl1 : (1 : ℝ) ≤ ((l : ℕ) : ℝ)` using `by exact_mod_cast hlp.one_lt.le`. Establish `hL0 : 0 ≤ L` using `Real.log_nonneg hl1`. Establish `hLl : L ≤ ((l : ℕ) : ℝ)`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < ((l : ℕ) : ℝ) by linarith)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hNM : (h.N : ℝ) ≤ M`. Establish `a2 : (1 : ℝ) ≤ t` using `by exact_mod_cast (by omega : 1 ≤ t)`. Rewrite using `[hMdef]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hlM : ((l : ℕ) : ℝ) ≤ M` using `le_trans (by exact_mod_cast hlN) hNM`. Establish `hqM : (h.q : ℝ) ≤ M` using `le_trans (by exact_mod_cast hqN) hNM`. Establish `hKb : ∀ e, 0 < e → e < t → ∀ k ≤ Cm, (((l : ℕ) : ℝ) * h.N * e) ^ k ≤ (M ^ 2) ^ Cm`. Introduce `e he0 het k hk`. Establish `he1 : (1 : ℝ) ≤ e` using `by exact_mod_cast he0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression.
 
-Establish `het' : (e : ℝ) ≤ t` using `by exact_mod_cast het.le`. Establish `hx1 : 1 ≤ ((l : ℕ) : ℝ) * h.N * e`. Establish `a1 : 1 ≤ ((l : ℕ) : ℝ) * h.N` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `hx2 : ((l : ℕ) : ℝ) * h.N * e ≤ M ^ 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `a1 : (h.N : ℝ) * e ≤ M`. Rewrite using `[hMdef]`. Conclude with `mul_le_mul_of_nonneg_left het' (by linarith)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Set `Oset : Finset (DirichletCharacter c.O h.N)` to `(Finset.Ico 1 t).biUnion (fun e => (h.X c e).filter (fun ψ => Odd (orderOf (chiP (l : ℕ) ψ))))`. Establish `hkey : ∀ e, 0 < e → e < t → ∀ ψ ∈ h.X c e, Vlen (AlgebraicClosure ℚ) c e ψ ≠ ⊤ ∧ (ψ ∈ Oset ∨ Chr.nrm (l : ℕ) c.O (Vlen (AlgebraicClosure ℚ) c e ψ) * L ≤ (M ^ 2) ^ Cm)`. Introduce `e he0 het ψ hψ`. Establish `hchar` using `((Host.mem_X h).1 hψ).1`. Break down `(UpperTheory.V.HV.cases h t hBig c.O ψ hchar (l : ℕ) e hlp hl2 he0 het).2 hlB with hc2 | hc4 | hc5` into its components or cases.
+Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hv` using `hC2 h hχ t hBig (AlgebraicClosure ℚ) (l : ℕ) c e hl2 he0 het ψ hψ hc2`. Conclude with `⟨hv.1, Or.inr (hv.2.trans (hKb e he0 het C2 (le_max_left _ _)))⟩`. Establish `hs` using `hC4 h hχ t ht2 hBig B hLay (AlgebraicClosure ℚ) c ψ hchar hc4.2.2`. Use `⟨hs.1 e he0 het, Or.inl ?_⟩` and prove the remaining obligations. Conclude with `Finset.mem_biUnion.2 ⟨e, Finset.mem_Ico.2 ⟨he0, het⟩, Finset.mem_filter.2 ⟨hψ, hc4.2.2⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hR : h.R1 (l : ℕ) ψ ≤ 2 ^ c2 ψ`. Establish `hv` using `hC5 h hχ t hBig (AlgebraicClosure ℚ) (l : ℕ) c e hl2 he0 het ψ hψ ⟨hc5, hR⟩`. Conclude with `⟨hv.1, Or.inr (hv.2.trans (hKb e he0 het C5 (le_trans (le_max_left _ _) (le_max_right _ _))))⟩`. Establish `hv` using `hC6 h hχ t hBig (AlgebraicClosure ℚ) (l : ℕ) c e hl2 he0 het ψ hψ ⟨hc5, not_le.1 hR⟩`. Conclude with `⟨hv.1, Or.inr (hv.2.trans (hKb e he0 het C6 (le_trans (le_max_right _ _) (le_max_right _ _))))⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hOcard : Oset.card ≤ h.q`. Apply `(xCard c.O h.N).2 h.q (Nat.pos_of_ne_zero h.chi.ne.out) Oset` to reduce the goal to its premises. Introduce `ψ hψ`. Take `⟨e, -, hψ'⟩` from `Finset.mem_biUnion.1 hψ`. Take `⟨hX, hodd⟩` from `Finset.mem_filter.1 hψ'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((hostOdd h c.O ψ ((Host.mem_X h).1 hX).1).2 (l : ℕ) hlp hl2 hlq1.ne hld.ne hodd).1`. Establish `hO2 : ∀ ψ ∈ Oset, ∑ e ∈ Finset.Ico 1 t, Chr.nrm (l : ℕ) c.O (Vlen (AlgebraicClosure ℚ) c e ψ) ≤ B + M ^ C4`. Introduce `ψ hψ`. Take `⟨e, -, hψ'⟩` from `Finset.mem_biUnion.1 hψ`. Take `⟨hX, hodd⟩` from `Finset.mem_filter.1 hψ'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hC4 h hχ t ht2 hBig B hLay (AlgebraicClosure ℚ) c ψ ((Host.mem_X h).1 hX).1 hodd).2`. Establish `hXsub : ∀ e, h.X c e ⊆ h.X c 0 ∪ h.X c 1`. Introduce `e ψ hψ`. Rewrite `hψ` using `[Host.mem_X]`. Rewrite using `[Finset.mem_union, Host.mem_X, Host.mem_X]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hψ.2`. Unfold `PsiEven at h2`. Break down `Nat.even_or_odd e with he | he` into its components or cases. Use `left`. Use `⟨hψ.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `PsiEven`. Rewrite using `[h2, he.neg_one_pow, pow_zero]`. Use `right`. Use `⟨hψ.1, ?_⟩` and prove the remaining obligations. Unfold `PsiEven`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[h2, he.neg_one_pow, pow_one]`. Establish `hred : ∀ e, 0 < e → e < t → plusLen (ld (l : ℕ)) e * eO (l : ℕ) c.O ≤ ∑ ψ ∈ h.X c e, (Vlen (AlgebraicClosure ℚ) c e ψ + (lossAll (l : ℕ) h.N h.H.index e : ℕ∞) * eO (l : ℕ) c.O)`. Introduce `e he0 het`. Conclude with `redAll E h.N h.H (hostLevel h E (by rw [hχ]; exact hE)) (l : ℕ) hl2 c Ω (ld (l : ℕ)) (AlgebraicClosure ℚ) e he0.ne' (h.X c e) (by`. Use extensionality with `ψ`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.mem_coe, Host.mem_X]`. Use the proof step `rfl)`. Establish `hsb` using `Chr.sumBack (l : ℕ) c.O (DirichletCharacter c.O h.N) (fun e => h.X c e) (h.X c 0 ∪ h.X c 1) (fun ψ e => Vlen (AlgebraicClosure ℚ) c e ψ) (fun e => plusLen (ld (l : ℕ)) e) (fun e => lossAll (l : ℕ) h.N h.H.index e) t hXsub (fun e he0 het => ⟨fun ψ hψ => (hkey e he0 het ψ hψ).1, hr …`. Establish `hA : (∑ e ∈ Finset.Ico 1 t, ((plusLen (ld (l : ℕ)) e).toNat : ℝ)) ≤ (∑ e ∈ Finset.Ico 1 t, ∑ ψ ∈ h.X c e, Chr.nrm (l : ℕ) c.O (Vlen (AlgebraicClosure ℚ) c e ψ)) + ((h.X c 0 ∪ h.X c 1).card : ℝ) * ∑ e ∈ Finset.Ico 1 t, ((lossAll (l : ℕ) h.N h.H.index e : ℕ) : ℝ)` using `hsb.2`. Establish `hloss : ∑ e ∈ Finset.Ico 1 t, ((lossAll (l : ℕ) h.N h.H.index e : ℕ) : ℝ) ≤ t * M ^ 6`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `e he`. Take `⟨he1, het⟩` from `Finset.mem_Ico.1 he`. Establish `hb` using `(lossLe (l : ℕ) h.N h.H.index e hlp hl2 (by omega) hidx.2.1 he1).1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb' : ((lossAll (l : ℕ) h.N h.H.index e : ℕ) : ℝ) ≤ (((h.N * e) ^ 6 : ℕ) : ℝ)`. Conclude with `hb` after adjusting the coercions. Establish `het' : (e : ℝ) ≤ t` using `by exact_mod_cast het.le`. Combine the equalities or inequalities in the displayed calculation. Apply `pow_le_pow_left₀ (by positivity)` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hMdef]`. Conclude with `mul_le_mul_of_nonneg_left het' (by positivity)`. Use `_ = ((Finset.Ico 1 t).card : ℝ) * M ^ 6 := by rw [Finset.sum_const, nsmul_eq_mul]`. Use `_ ≤ t * M ^ 6 := by`. Apply `mul_le_mul_of_nonneg_right _ (by positivity)` to reduce the goal to its premises.
-
-Rewrite using `[Nat.card_Ico]`. Conclude with `Nat.sub_le t 1` after adjusting the coercions. Establish `hsplit : L * ∑ e ∈ Finset.Ico 1 t, ∑ ψ ∈ h.X c e, Chr.nrm (l : ℕ) c.O (Vlen (AlgebraicClosure ℚ) c e ψ) ≤ L * (h.q * (B + M ^ C4)) + t * (h.N * (M ^ 2) ^ Cm)` using `sum_split (fun e => h.X c e) Oset (fun ψ e => Chr.nrm (l : ℕ) c.O (Vlen (AlgebraicClosure ℚ) c e ψ)) t h.N h.q L ((M ^ 2) ^ Cm) (B + M ^ C4) (fun ψ e => Vn_nonneg (AlgebraicClosure ℚ) c e ψ) hL0 (by positivity) (add_nonneg hB (pow_nonneg hM0 _)) (fun e => (xCard c.O h.N).1 _) hOc …`. Establish `hT0 : ((h.X c 0 ∪ h.X c 1).card : ℝ) ≤ h.N` using `by exact_mod_cast (xCard c.O h.N).1 _`. Establish `hlossnn : 0 ≤ ∑ e ∈ Finset.Ico 1 t, ((lossAll (l : ℕ) h.N h.H.index e : ℕ) : ℝ)` using `Finset.sum_nonneg (fun _ _ => Nat.cast_nonneg _)`.
-
-Establish `s1` using `mul_le_mul_of_nonneg_left hA hL0`. Rewrite `s1` using `[mul_add]`. Establish `s2 : L * (((h.X c 0 ∪ h.X c 1).card : ℝ) * ∑ e ∈ Finset.Ico 1 t, ((lossAll (l : ℕ) h.N h.H.index e : ℕ) : ℝ)) ≤ L * (h.N * (t * M ^ 6))` using `mul_le_mul_of_nonneg_left (mul_le_mul hT0 hloss hlossnn (by positivity)) hL0`. Establish `hqC : h.q = χ.N`. Simplify using `only [Host.q, hχ]`.
-
-Establish `hlqC : ((l : ℕ) : ℝ) * h.q ≤ ((C4 + 2 * Cm + 9 + (l : ℕ) * χ.N : ℕ) : ℝ)`. Rewrite using `[hqC]`. Conclude with `Nat.le_add_left _ _` after adjusting the coercions. Establish `hfin` using `final_le M L ((l : ℕ) : ℝ) (h.q : ℝ) (h.N : ℝ) (t : ℝ) B C4 Cm (C4 + 2 * Cm + 9 + (l : ℕ) * χ.N) hMdef hM3 hLl (by linarith) hlM (Nat.cast_nonneg _) hqM hB (by omega) hlqC`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Introduce `l' hl' e he0 het`. Rewrite `hl'` using `[Finset.mem_singleton]`. Substitute `hl'` using the available equality. Conclude with `hsb.1 e he0 het`. Rewrite using `[Finset.sum_singleton]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.HV.sumIn :
     CountII → CountV → CountVs → CountIV → SumIn := by

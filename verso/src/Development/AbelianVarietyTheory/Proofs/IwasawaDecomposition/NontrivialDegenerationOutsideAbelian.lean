@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G.DVR
 namespace GlobalTheory.TraitLattice
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y T y t m P hy`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Establish `hab` using `GlobalTheory.isAbelianScheme_of_unif_of_subsingleton GlobalTheory.allSixLaws.1 GlobalTheory.allSixLaws.2.1 T.V T.cpl P.D P.A t.G t.semi P.U hn`. Conclude with `hy (GlobalTheory.ModelSum.range_subset_abLocus m hab.proper ⟨closedPoint T.V, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nontrivial_of_closed_not_mem_abLocus : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : CDVR) (y : Sp T.V ⟶ Y.X) (t : SAB H (Sp T.V)) (_ : SABMap t Y.t y) (P : PELUnif (maximalIdeal T.V) t), y (closedPoint T.V) ∉ abLocus Y.t.G → Nontrivial P.D.toPre.X := by
   intro E _ _ _ H D l Xo c O _ β Y T y t m P hy

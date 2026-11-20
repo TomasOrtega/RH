@@ -8,7 +8,7 @@ open scoped ComplexOrder Classical
 namespace GlobalTheory.CompanionTheory.Ar.PB.UnitComb
 
 /- English proof (translation)
-Unfold `minorIJ`. Use `split_ifs with e`. Conclude with `RingHom.map_det V.subtype _`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coe_minorIJ {L : Type} [Field L] (V : ValuationSubring L) {N : ℕ}
     (h : Matrix (Fin N) (Fin N) V) (I J : Finset (Fin N)) :
@@ -19,7 +19,7 @@ theorem coe_minorIJ {L : Type} [Field L] (V : ValuationSubring L) {N : ℕ}
   · rfl
 
 /- English proof (translation)
-Unfold `minorIJ`. Rewrite using `[dif_pos rfl, Matrix.submatrix_one _ (J.orderEmbOfFin rfl).injective, Matrix.det_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem minorIJ_one_diag {R : Type} [CommRing R] {N : ℕ} (J : Finset (Fin N)) :
     minorIJ (1 : Matrix (Fin N) (Fin N) R) J J = 1 := by
@@ -27,7 +27,7 @@ theorem minorIJ_one_diag {R : Type} [CommRing R] {N : ℕ} (J : Finset (Fin N)) 
   rw [dif_pos rfl, Matrix.submatrix_one _ (J.orderEmbOfFin rfl).injective, Matrix.det_one]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `: ∑ a ∈ s, f a ∈ IsLocalRing.maximalIdeal R` using `Ideal.sum_mem _ fun a ha => (IsLocalRing.mem_maximalIdeal _).2 (hc a ha)`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 this h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isUnit_of_sum {R : Type} [CommRing R] [IsLocalRing R] {ι : Type} (s : Finset ι)
     (f : ι → R) (h : IsUnit (∑ a ∈ s, f a)) : ∃ a ∈ s, IsUnit (f a) := by
@@ -38,9 +38,9 @@ theorem exists_isUnit_of_sum {R : Type} [CommRing R] [IsLocalRing R] {ι : Type}
   exact (IsLocalRing.mem_maximalIdeal _).1 this h
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Distinguish the cases in `c : (i : ℕ) + 1 ≤ j`. Use `Finset.Nonempty.ne_empty ⟨⟨N - j, by omega⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_pos c]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `Finset.Nonempty.ne_empty ⟨⟨0, by omega⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, if_neg c]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem stepCols_ne_empty {N j : ℕ} (i : Fin N) (hj : j ≤ N) : stepCols N j i ≠ ∅ := by
   have hi := i.2
@@ -53,31 +53,29 @@ theorem stepCols_ne_empty {N j : ℕ} (i : Fin N) (hj : j ≤ N) : stepCols N j 
     omega
 
 /- English proof (translation)
-Introduce `L _ V N j i H κ _ u u' hj hB hH hdet hinv hu' hu horth`. Set `Hv : Matrix (Fin N) (Fin N) V` to `Matrix.of fun a b => ⟨H a b, hH a b⟩`. Establish `hHv : Hv.map V.subtype = H` using `by ext a b; rfl`. Set `uv : κ → Finset (Fin N) → V` to `fun m I => ⟨u m I, hu m I⟩`. Set `uv' : Finset (Fin N) → κ → V` to `fun I m => ⟨u' I m, hu' I m⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hdetc : ((Hv.det : V) : L) = H.det`. Use `RingHom.map_det V.subtype Hv` as an intermediate fact. Rewrite `this` using `[RingHom.mapMatrix_apply, hHv]`. Conclude with `this`. Establish `hunit : IsUnit Hv.det`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsUnit.of_mul_eq_one (⟨(H.det)⁻¹, hinv⟩ : V) ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((Hv.det : V) : L) * (H.det)⁻¹ = 1`. Rewrite using `[hdetc, mul_inv_cancel₀ hdet]`. Establish `main` using `GlobalTheory.T.block_diagonal_minor_vanishing V N j i hj`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ` using `stepCols_ne_empty (j := j) i hj`. Establish `hBv : IsBlockDiag j Hv` using `fun a b hab => Subtype.ext (hB a b hab)`. Establish `hstep : ∀ I, ¬ IsStepRows N j i I → minorIJ Hv I (stepCols N j i) = 0` using `fun I hI => (main.2.1 Hv I hBv hI).resolve_right hJ`. Establish `hsum1 : IsUnit (∑ I', minorIJ Hv⁻¹ (stepCols N j i) I' * minorIJ Hv I' (stepCols N j i))`. Rewrite using `[← main.1, Matrix.nonsing_inv_mul _ hunit, minorIJ_one_diag]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `isUnit_one`. Take `⟨I₀, -, hI₀⟩` from `exists_isUnit_of_sum _ _ hsum1`. Establish `hI₀' : IsUnit (minorIJ Hv I₀ (stepCols N j i))` using `isUnit_of_mul_isUnit_right hI₀`. Establish `hI₀s : IsStepRows N j i I₀`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hI₀'` using `[hstep I₀ hc]`. Conclude with `not_isUnit_zero hI₀'`. Establish `horthV : ∀ I', IsStepRows N j i I' → ∑ m, uv' I₀ m * uv m I' = if I₀ = I' then 1 else 0`. Introduce `I' hI'`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `horth I₀ I' hI₀s hI'` as an intermediate fact. Use `split_ifs at this ⊢ with e`. Simplify `this` using `[uv, uv']`. Simplify `this` using `[uv, uv']`. Set `w : κ → V` to `fun m => ∑ I, uv m I * minorIJ Hv I (stepCols N j i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : ∑ m, uv' I₀ m * w m = minorIJ Hv I₀ (stepCols N j i)`. Establish `e1 : ∑ m, uv' I₀ m * w m = ∑ I, (∑ m, uv' I₀ m * uv m I) * minorIJ Hv I (stepCols N j i)`. Simplify using `only [w, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[e1, Finset.sum_eq_single I₀]`. Rewrite using `[horthV I₀ hI₀s, if_pos rfl, one_mul]`. Introduce `b _ hb`. Distinguish the cases in `hs : IsStepRows N j i b`. Rewrite using `[horthV b hs, if_neg (Ne.symm hb), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hstep b hs, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite `hI₀'` using `[← hw]`. Take `⟨m, -, hm⟩` from `exists_isUnit_of_sum _ _ hI₀'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hwm : IsUnit (w m)` using `isUnit_of_mul_isUnit_right hm`. Establish `hcoe : ((w m : V) : L) = ∑ I, u m I * minorIJ H I (stepCols N j i)`. Simplify using `only [w, AddSubmonoidClass.coe_finset_sum, MulMemClass.coe_mul, coe_minorIJ, hHv]`. Both sides reduce to the same expression. Use `⟨m, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcoe]`. Introduce `h0`. Conclude with `hwm.ne_zero (Subtype.ext h0)`. Take `⟨c, hc⟩` from `hwm.exists_right_inv`. Establish `hc' : ((w m : V) : L) * (c : L) = 1` using `congrArg Subtype.val hc`.
-
-Rewrite using `[← hcoe, inv_eq_of_mul_eq_one_right hc']`. Conclude with `c.2`.
+A detailed English derivation is pending.
 -/
 theorem unit_comb : ∀ (L : Type) [Field L] (V : ValuationSubring L) (N j : ℕ) (i : Fin N) (H : Matrix (Fin N) (Fin N) L) (κ : Type) [Fintype κ] (u : κ → Finset (Fin N) → L) (u' : Finset (Fin N) → κ → L), j ≤ N → IsBlockDiag j H → (∀ a b, H a b ∈ V) → H.det ≠ 0 → (H.det)⁻¹ ∈ V → (∀ I m, u' I m ∈ V) → (∀ m I, u m I ∈ V) → (∀ I I', IsStepRows N j i I → IsStepRows N j i I' → ∑ m, u' I m * u m I' = if I = I' then 1 else 0) → ∃ m, (∑ I, u m I * minorIJ H I (stepCols N j i)) ≠ 0 ∧ (∑ I, u m I * minorIJ H I (stepCols N j i))⁻¹ ∈ V := by
   intro L _ V N j i H κ _ u u' hj hB hH hdet hinv hu' hu horth

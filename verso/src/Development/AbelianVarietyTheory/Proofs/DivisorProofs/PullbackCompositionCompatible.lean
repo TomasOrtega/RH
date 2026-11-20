@@ -18,11 +18,11 @@ namespace GlobalTheory.Discrepancy
 variable {X Y Z : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsIntegral Z]
 
 /- English proof (translation)
-Use extensionality with `f`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := X.presheaf.stalk ((t ≫ s) (genericPoint Z))) f`. Establish `key : ∀ c : X.presheaf.stalk ((t ≫ s) (genericPoint Z)), functionFieldMap (t ≫ s) (algebraMap _ X.functionField c) = functionFieldMap t (functionFieldMap s (algebraMap _ X.functionField c))`. Introduce `c`. Establish `h1` using `functionFieldMap_algebraMap (t ≫ s) (genericPoint Z) c`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `functionFieldMap_algebraMap s (t (genericPoint Z)) c`. Establish `h3` using `functionFieldMap_algebraMap t (genericPoint Z) (s.stalkMap (t (genericPoint Z)) c)`. Use `h1.trans (Eq.trans ?_ ((congrArg (functionFieldMap t) h2).trans h3).symm)` and prove the remaining obligations. Rewrite using `[Scheme.Hom.stalkMap_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [map_div₀, RingHom.comp_apply, key]`.
+Simplify using the standard rewrite rules.
 -/
 theorem functionFieldMap_comp_dominant (s : Y ⟶ X) [IsDominant s] (t : Z ⟶ Y) [IsDominant t] :
     functionFieldMap (t ≫ s) = (functionFieldMap t).comp (functionFieldMap s) := by
@@ -42,7 +42,7 @@ theorem functionFieldMap_comp_dominant (s : Y ⟶ X) [IsDominant s] (t : Z ⟶ Y
   simp only [map_div₀, RingHom.comp_apply, key]
 
 /- English proof (translation)
-The claim follows from `CartierDiv.ext_of_isEqn fun z => by obtain ⟨g, hg⟩ := D.exists_isEqn ((t ≫ s) z) refine ⟨_, isEqn_pullCart (t ≫ s) hg, ?_⟩ have e : fnPull (t ≫ s) g = fnPull t (fnPull s g) := Units.ext (RingHom.congr_fun (functionFieldMap_comp_dominant s t) g) rw [e] exact isEqn_pullCart t (isEq …`.
+A detailed English derivation is pending.
 -/
 theorem pullCart_comp (s : Y ⟶ X) [IsDominant s] (t : Z ⟶ Y) [IsDominant t] (D : CartierDiv X) :
     pullCart (t ≫ s) D = pullCart t (pullCart s D) :=
@@ -55,9 +55,9 @@ theorem pullCart_comp (s : Y ⟶ X) [IsDominant s] (t : Z ⟶ Y) [IsDominant t] 
     exact isEqn_pullCart t (isEqn_pullCart s hg)
 
 /- English proof (translation)
-Establish `key : ∀ (q q' : Z ⟶ Sp k) (_ : q = q') (φ : X.functionField →+* Z.functionField) (h : φ.comp (Cartier.constFn p) = Cartier.constFn q) (h' : φ.comp (Cartier.constFn p) = Cartier.constFn q'), IsDivOfForm (p` using `q) K (TopForm.formMap n φ h η) ↔ IsDivOfForm (p := q') K (TopForm.formMap n φ h' η) := by`. Introduce `q q' e φ h h'`. Substitute `e` using the available equality. Both sides reduce to the same expression. Establish `h' : (functionFieldMap (t ≫ s)).comp (Cartier.constFn p) = Cartier.constFn (t ≫ s ≫ p)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[EtaleKlt.functionFieldMap_comp_constFn, Category.assoc]`. Establish `e : EtaleKlt.ratPull (s ≫ p) t n (EtaleKlt.ratPull p s n η) = TopForm.formMap n (functionFieldMap (t ≫ s)) h' η` using `formMap_formMap _ _ _ (functionFieldMap_comp_dominant s t).symm _ _ _ η`. Rewrite using `[e]`. Conclude with `key _ _ (Category.assoc t s p) _ _ h'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDivOfForm_ratPull_comp {k : Type} [Field k] (p : X ⟶ Sp k) (s : Y ⟶ X) [IsDominant s]
     (t : Z ⟶ Y) [IsDominant t] (n : ℕ) (η : RatForms p n) (K : CartierDiv Z) :
@@ -79,7 +79,7 @@ theorem isDivOfForm_ratPull_comp {k : Type} [Field k] (p : X ⟶ Sp k) (s : Y �
   exact key _ _ (Category.assoc t s p) _ _ h'
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ p s _ t _` and use `⟨functionFieldMap_comp_dominant s t, pullCart_comp s t, isDivOfForm_ratPull_comp p s t⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem pull_comp : ∀ (k : Type) [Field k] (X Y Z : Scheme.{0}) [IsIntegral X] [IsIntegral Y] [IsIntegral Z] (p : X ⟶ Sp k) (s : Y ⟶ X) [IsDominant s] (t : Z ⟶ Y) [IsDominant t], functionFieldMap (t ≫ s) = (functionFieldMap t).comp (functionFieldMap s) ∧ (∀ D : CartierDiv X, pullCart (t ≫ s) D = pullCart t (pullCart s D)) ∧ ∀ (n : ℕ) (η : RatForms p n) (K : CartierDiv Z), IsDivOfForm K (EtaleKlt.ratPull p (t ≫ s) n η) ↔ IsDivOfForm K (EtaleKlt.ratPull (s ≫ p) t n (EtaleKlt.ratPull p s n η)) :=
   fun _ _ _ _ _ _ _ _ p s _ t _ =>

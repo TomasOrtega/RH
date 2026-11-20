@@ -25,7 +25,7 @@ def QJoint (D : D7) (tup : D.what₂.Tup → Fin D.R.m → Host.HChar D.host.E) 
   ∀ (i : D.nd.Loc) (j : Fin D.R.m), j.1 + 1 = D.nd.j i → paraPl D tup i j = recQPl D i
 
 /- English proof (translation)
-Introduce and unpack `v ⟨w, hw, h | h⟩`. Conclude with `⟨w, hw, Or.inl h⟩`. Conclude with `⟨w, hw, Or.inr (Or.inr h)⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem recQPl_sub_badPl (D : D7) (i : D.nd.Loc) : recQPl D i ⊆ badPl D i := by
   rintro v ⟨w, hw, h | h⟩
@@ -33,7 +33,7 @@ theorem recQPl_sub_badPl (D : D7) (i : D.nd.Loc) : recQPl D i ⊆ badPl D i := b
   · exact ⟨w, hw, Or.inr (Or.inr h)⟩
 
 /- English proof (translation)
-Rewrite using `[hJ i j hj]`. Conclude with `recQPl_sub_badPl D i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem paraPl_sub_badPl_of_joint (D : D7) (tup : D.what₂.Tup → Fin D.R.m → Host.HChar D.host.E) (hJ : QJoint D tup)
     (i : D.nd.Loc) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i) : paraPl D tup i j ⊆ badPl D i := by
@@ -41,14 +41,14 @@ theorem paraPl_sub_badPl_of_joint (D : D7) (tup : D.what₂.Tup → Fin D.R.m �
   exact recQPl_sub_badPl D i
 
 /- English proof (translation)
-Simplify using `only [paraPl, e]`.
+Simplify using the standard rewrite rules.
 -/
 theorem paraPl_congr (D : D7) (tup : D.what₂.Tup → Fin D.R.m → Host.HChar D.host.E) (i i' : D.nd.Loc) (j : Fin D.R.m)
     (e : D.nd.mu i = D.nd.mu i') : paraPl D tup i j = paraPl D tup i' j := by
   simp only [paraPl, e]
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨hg, w, hw, hu⟩`. Use `hu (h w fun k hk => hg ⟨w, hw, k, hk⟩)` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem qPl_eq_empty (D : D7) (χ : Host.HChar D.host.E)
     (h : ∀ w : PlE D.host, (∀ k, w ∉ placesOver D.host.E (D.host.g k)) → χ.UnrAt w) : qPl D χ = ∅ := by

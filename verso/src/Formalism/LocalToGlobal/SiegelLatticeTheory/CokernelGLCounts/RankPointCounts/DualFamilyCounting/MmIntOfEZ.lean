@@ -11,7 +11,7 @@ namespace Formalism.L2.SG.Pf.Cnt
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hG` using `(((mmChar_of local_unimodular_holds) D u u' hT F0 what₂ hR Z F' hz hZ hP).2 Λ).mp ⟨hΛ, hE⟩`. Assume the negation of the conclusion as `hI`. Rewrite `hG` using `[Formalism.L2.SG.Pf.Asm.glueSet_eq_empty (U := UPair D F0 F') hI]`. Conclude with `hG`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mmInt_of_EZ {D : Formalism.BasicNotions.D7} {u u' : D.what₂.Word}
     (hT : (D.mem u).A.T ≡ (D.mem u').A.T [MOD (Lat.gS D) ^ 2])

@@ -8,7 +8,7 @@ open scoped TensorProduct
 namespace GlobalTheory.T.ScalarParabolicLeviProjection
 
 /- English proof (translation)
-Proceed by induction on `q using Polynomial.induction_on generalizing v with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `monomial n a ih`. Rewrite using `[pow_succ, ← mul_assoc, map_mul (Polynomial.aeval B), map_mul (Polynomial.aeval A), Polynomial.aeval_X, Polynomial.aeval_X, Module.End.mul_apply, Module.End.mul_apply, ih, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem aeval_intertwine {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (Φ : V →ₗ[ℂ] W) (B : Module.End ℂ V) (A : Module.End ℂ W) (h : ∀ v, Φ (B v) = A (Φ v))
@@ -21,9 +21,9 @@ private theorem aeval_intertwine {V W : Type} [AddCommGroup V] [Module ℂ V] [A
       Polynomial.aeval_X, Polynomial.aeval_X, Module.End.mul_apply, Module.End.mul_apply, ih, h]
 
 /- English proof (translation)
-Use `LinearMap.ext fun F => Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Set `ev : smoothPart (ind P σ) →ₗ[ℂ] W` to `(LinearMap.proj x) ∘ₗ (indSpace P σ).subtype ∘ₗ (smoothPart (ind P σ)).subtype`. Use `aeval_intertwine ev (smInd P σ z) (σ ⟨z, hz⟩) (fun F => by show F.1.1 (x * z) = σ ⟨z, hz⟩ (F.1.1 x)` as an intermediate fact. Rewrite using `[hc]`. Conclude with `F.1.2 ⟨z, hz⟩ x) q F`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hq]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 private theorem aeval_smInd {G W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup W] [Module ℂ W] (P : Subgroup G) (σ : Representation ℂ P W) (z : G) (hz : z ∈ P)
@@ -44,14 +44,14 @@ variable {k : Type} [Field k] {α n : Type} {m : α → Type} [Fintype α] [Line
   [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Simplify using `[GeneralLinearGroup.scalar, Matrix.diagonal_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem val_scalar (t : kˣ) (i j : n) :
     ((GeneralLinearGroup.scalar n t : GL n k) : Matrix n n k) i j = if i = j then (t : k) else 0 := by
   simp [GeneralLinearGroup.scalar, Matrix.diagonal_apply]
 
 /- English proof (translation)
-Use `mem_parab.2 fun i j h => ?_` and prove the remaining obligations. Rewrite using `[val_scalar, if_neg]`. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem scalar_mem_parab (e : (Σ a, m a) ≃ n) (t : kˣ) :
     GeneralLinearGroup.scalar n t ∈ parab k e := by
@@ -61,7 +61,7 @@ private theorem scalar_mem_parab (e : (Σ a, m a) ≃ n) (t : kˣ) :
   exact lt_irrefl _ h
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[leviProj_apply, val_scalar, val_scalar]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem leviProj_scalar (e : (Σ a, m a) ≃ n) (t : kˣ) (h) (a : α) :
     leviProj k e ⟨GeneralLinearGroup.scalar n t, h⟩ a = GeneralLinearGroup.scalar (m a) t := by
@@ -70,14 +70,14 @@ private theorem leviProj_scalar (e : (Σ a, m a) ≃ n) (t : kˣ) (h) (a : α) :
   simp
 
 /- English proof (translation)
-Use `ext`. Simplify using `[GeneralLinearGroup.scalar]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem det_scalar (t : kˣ) :
     GeneralLinearGroup.det (GeneralLinearGroup.scalar n t) = t ^ Fintype.card n := by
   ext; simp [GeneralLinearGroup.scalar]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[GeneralLinearGroup.scalar, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem scalar_comm (t : kˣ) (x : GL n k) :
     x * GeneralLinearGroup.scalar n t = GeneralLinearGroup.scalar n t * x := by
@@ -101,11 +101,9 @@ private def spl (φ : (Σ j, d j) ≃ m) (e1 : Fin 1 ≃ d false) : Fin 1 ⊕ d 
       right_inv := by rintro ⟨_ | _, _⟩ <;> simp } φ
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `mem_unipRad.1 hu`. Use `mem_unipRad.2 ⟨mem_parab_iff.2 ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(_ | _) (_ | _) i j hlt`. Conclude with `absurd hlt (by decide)`. Conclude with `absurd hlt (by decide)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Take `⟨j, rfl⟩` from `e1.surjective j`. Conclude with `(mem_parab_two k).1 h1 i j`. Conclude with `absurd hlt (by decide)`. Introduce and unpack `(_ | _) i j`. Take `⟨i, rfl⟩` from `e1.surjective i`.
-
-Take `⟨j, rfl⟩` from `e1.surjective j`. Take `rfl : i = j` from `Subsingleton.elim _ _`. Conclude with `(h2 false i i).trans (by simp)`. Conclude with `h2 true i j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem mem_unipRad_spl (φ : (Σ j, d j) ≃ m) (e1 : Fin 1 ≃ d false) {u : GL m k}
     (hu : u ∈ unipRad k (two (spl φ e1))) : u ∈ unipRad k φ := by
@@ -125,13 +123,11 @@ private theorem mem_unipRad_spl (φ : (Σ j, d j) ≃ m) (e1 : Fin 1 ≃ d false
     · exact h2 true i j
 
 /- English proof (translation)
-Use extensionality with `x y`. Take `⟨⟨a, i⟩, rfl⟩` from `φ.surjective x`. Take `⟨⟨b, j⟩, rfl⟩` from `φ.surjective y`. Apply the tactic sequence `rcases a with _ | _ <;> rcases b with _ | _`. Take `⟨i, rfl⟩` from `e1.surjective i`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨j, rfl⟩` from `e1.surjective j`. Take `rfl : i = j` from `Subsingleton.elim _ _`. Rewrite using `[leviEmb_apply_same, h0, val_scalar, if_pos rfl]`. Use `Eq.symm ((leviEmb_apply_same k (two (spl φ e1)) _ false i i).trans ?_)` and prove the remaining obligations. Conclude with `(val_scalar t i i).trans (if_pos rfl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨i, rfl⟩` from `e1.surjective i`. Rewrite using `[leviEmb_apply_ne k φ h (by decide)]`. Conclude with `(leviEmb_apply_ne k (two (spl φ e1)) _ (a := false) (b := true) (by decide) i j).symm`. Take `⟨j, rfl⟩` from `e1.surjective j`. Rewrite using `[leviEmb_apply_ne k φ h (by decide)]`.
-
-Conclude with `(leviEmb_apply_ne k (two (spl φ e1)) _ (a := true) (b := false) (by decide) i j).symm`. Rewrite using `[leviEmb_apply_same, h1]`. Conclude with `(leviEmb_apply_same k (two (spl φ e1)) (leviTwo k (Fin 1) (d true) (GeneralLinearGroup.scalar (Fin 1) t, 1)) true i j).symm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem leviEmb_spl (φ : (Σ j, d j) ≃ m) (e1 : Fin 1 ≃ d false) (t : kˣ) (h : Levi k d)
     (h0 : h false = GeneralLinearGroup.scalar _ t) (h1 : h true = 1) :
@@ -159,35 +155,33 @@ private theorem leviEmb_spl (φ : (Σ j, d j) ≃ m) (e1 : Fin 1 ≃ d false) (t
 end
 
 /- English proof (translation)
-Simplify using `[modExp, Finset.sum_filter]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem modExp_false (d : Bool → Type) [∀ a, Fintype (d a)] :
     modExp d false = Fintype.card (d true) := by
   simp [modExp, Finset.sum_filter]
 
 /- English proof (translation)
-Simplify using `[modExp, Finset.sum_filter]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem modExp_true (d : Bool → Type) [∀ a, Fintype (d a)] :
     modExp d true = -Fintype.card (d false) := by
   simp [modExp, Finset.sum_filter]
 
 /- English proof (translation)
-Use `set ρ : Representation ℂ (Levi k (Two (Fin 1) m)) (ℂ ⊗[ℂ] Y) := (extTensor (detRep (Fin 1) ξ) τ).comp (leviTwo k (Fin 1) m).symm.toMonoidHom with hρ`. Establish `hρ1 : ∀ (g : Levi k (Two (Fin 1) m)) (y : Y), GeneralLinearGroup.det (g false) = 1 → ρ g ((1 : ℂ) ⊗ₜ[ℂ] y) = (1 : ℂ) ⊗ₜ[ℂ] τ (g true) y`. Introduce `g y hg`. Use `(extTensor_tmul (detRep (Fin 1) ξ) τ (g false, g true) 1 y).trans ?_` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `(ofChar_apply _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[detChar_apply, mul_one]`. Conclude with `(congrArg (fun x => ((ξ x : ℂˣ) : ℂ)) hg).trans (by simp)`. Set `Φ : Jacquet τ (unipRad k (two (spl (m` to `m) (f true) e1))) →ₗ[ℂ] Jacquet ρ (relUnip k f) := Submodule.mapQ _ _ (TensorProduct.mk ℂ ℂ Y 1) (by`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨u, y, rfl⟩`. Establish `hu : leviTwo k (Fin 1) m (1, u.1) ∈ relUnip k f`. Introduce and unpack `(_ | _) -`. Conclude with `one_mem (unipRad k (f false))`. Conclude with `mem_unipRad_spl (m := m) (f true) e1 u.2`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Submodule.subset_span ⟨⟨_, hu⟩, (1 : ℂ) ⊗ₜ[ℂ] y, ?_⟩` and prove the remaining obligations. Rewrite using `[hρ1 _ _ (map_one _)]`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, map_sub]`. Use the proof step `rfl)`. Establish `hΦ : ∀ y : Y, Φ (Submodule.Quotient.mk y) = Submodule.Quotient.mk ((1 : ℂ) ⊗ₜ[ℂ] y)` using `fun _ => rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hc1 : Fintype.card (c true false) = 1`. Rewrite using `[← Fintype.card_congr e1, Fintype.card_fin]`. Establish `hδ : relDeltaHalf k c h = deltaHalf k (Two (Fin 1) (c true true)) (leviTwo k (Fin 1) (c true true) (GeneralLinearGroup.scalar (Fin 1) ϖ, 1))`. Rewrite using `[deltaHalf_two, relDeltaHalf_apply]`. Simplify using `only [deltaHalf_apply, Fintype.prod_bool, h0, h1, det_scalar, h00, hc1, map_one, modExp_false, Fintype.card_fin, pow_zero, pow_one, mul_one, one_mul, Int.cast_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Take `⟨y, rfl⟩` from `(TensorProduct.lid ℂ Y).symm.surjective w`. Rewrite using `[TensorProduct.lid_symm_apply, ← hΦ, ← aeval_intertwine Φ (jac₂ (spl (m := m) (f true) e1) τ (GeneralLinearGroup.scalar (Fin 1) ϖ, 1)), hq]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `v`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ v`. Establish `hd : GeneralLinearGroup.det (relEmb k f h false) = 1`. Rewrite using `[relEmb_apply, det_leviEmb, Fintype.prod_bool, h0, h1, det_scalar, h00]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[hΦ, relJac_mk, hρ1 _ _ hd, hδ, relEmb_apply, ← hΦ, ← map_smul]`. Use `congr 1`. Use `(jac_mk (two (spl (m := m) (f true) e1)) τ (leviTwo k (Fin 1) (c true true) (GeneralLinearGroup.scalar (Fin 1) ϖ, 1)) v).trans ?_` and prove the remaining obligations. Rewrite using `[← leviEmb_spl (m := m) (f true) e1 ϖ (h true) (h0 true) (h1 true)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem key {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {m : Type} [Fintype m] [DecidableEq m] {Y : Type} [AddCommGroup Y]
@@ -249,7 +243,7 @@ private theorem key {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
   rw [← leviEmb_spl (m := m) (f true) e1 ϖ (h true) (h0 true) (h1 true)]
 
 /- English proof (translation)
-Use `aeval_smInd (relParab k g) ((twist σ (relDeltaHalf k c)).comp (relProj k g)) z hz hc q ?_` and prove the remaining obligations. Establish `h : ((twist σ (relDeltaHalf k c)).comp (relProj k g)) ⟨z, hz⟩ = σ (relProj k g ⟨z, hz⟩)`. Use `LinearMap.ext fun v => (twist_apply σ (relDeltaHalf k c) (relProj k g ⟨z, hz⟩) v).trans ?_` and prove the remaining obligations. Rewrite using `[hδ, Units.val_one, one_smul]`. Rewrite using `[h, hq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem aeval_relInd {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {α β : Type} [Fintype α] [Fintype β] [LinearOrder β]
@@ -267,7 +261,7 @@ private theorem aeval_relInd {k : Type} [Field k] [ValuativeRel k] [TopologicalS
   rw [h, hq]
 
 /- English proof (translation)
-The claim follows from `aeval_relInd (c := fun j i => c i j) g ((relJac f ρ).comp (swapBlocks k c)) z hz hc hδ q hq`.
+A detailed English derivation is pending.
 -/
 private theorem aeval_cell {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {α β : Type} [Fintype α] [Fintype β] [LinearOrder β] [LinearOrder α]
@@ -290,7 +284,7 @@ variable {k : Type} [Field k] {m : Type} [Fintype m] [DecidableEq m]
   {c : Bool → Bool → Type} [∀ i j, Fintype (c i j)] [∀ i j, DecidableEq (c i j)]
 
 /- English proof (translation)
-Introduce and unpack `(_ | _) -`. Conclude with `scalar_mem_parab (n := Fin 1) (g false) ϖ`. Conclude with `one_mem (parab k (n := m) (g true))`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem z_mem (g : ∀ j, (Σ i, c j i) ≃ Two (Fin 1) m j) (ϖ : kˣ) :
     leviTwo k (Fin 1) m (GeneralLinearGroup.scalar (Fin 1) ϖ, 1) ∈ relParab k g := by
@@ -299,14 +293,14 @@ private theorem z_mem (g : ∀ j, (Σ i, c j i) ≃ Two (Fin 1) m j) (ϖ : kˣ) 
   · exact one_mem (parab k (n := m) (g true))
 
 /- English proof (translation)
-The claim follows from `leviProj_scalar (n := Fin 1) (g false) ϖ (scalar_mem_parab (n := Fin 1) (g false) ϖ) i`.
+A detailed English derivation is pending.
 -/
 private theorem z_false (g : ∀ j, (Σ i, c j i) ≃ Two (Fin 1) m j) (ϖ : kˣ) (i : Bool) :
     relProj k g ⟨_, z_mem g ϖ⟩ false i = GeneralLinearGroup.scalar _ ϖ :=
   leviProj_scalar (n := Fin 1) (g false) ϖ (scalar_mem_parab (n := Fin 1) (g false) ϖ) i
 
 /- English proof (translation)
-Use extensionality with `x y`. Use `show (1 : Matrix m m k) (g true ⟨i, x⟩) (g true ⟨i, y⟩) = (1 : Matrix (c true i) (c true i) k) x y`. Simplify using `[Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem z_true (g : ∀ j, (Σ i, c j i) ≃ Two (Fin 1) m j) (ϖ : kˣ) (i : Bool) :
     relProj k g ⟨_, z_mem g ϖ⟩ true i = 1 := by
@@ -315,7 +309,7 @@ private theorem z_true (g : ∀ j, (Σ i, c j i) ≃ Two (Fin 1) m j) (ϖ : kˣ)
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Take `⟨⟨a, b⟩, rfl⟩` from `(leviTwo k (Fin 1) m).surjective x`. Rewrite using `[← map_mul, ← map_mul, Prod.mk_mul_mk, Prod.mk_mul_mk, scalar_comm, mul_one, one_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem z_comm (ϖ : kˣ) (x : Levi k (Two (Fin 1) m)) :
     x * leviTwo k (Fin 1) m (GeneralLinearGroup.scalar (Fin 1) ϖ, 1) =
@@ -325,7 +319,7 @@ private theorem z_comm (ϖ : kˣ) (x : Levi k (Two (Fin 1) m)) :
 end
 
 /- English proof (translation)
-Rewrite using `[relDeltaHalf_apply]`. Simplify using `only [deltaHalf_apply, Fintype.prod_bool, h0, h1, det_scalar, h00, map_one, modExp_true, pow_zero, mul_one, one_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem delta_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {c : Bool → Bool → Type} [∀ i j, Fintype (c i j)]
@@ -338,7 +332,7 @@ private theorem delta_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpac
   simp
 
 /- English proof (translation)
-The claim follows from `aeval_cell f g _ _ (z_mem (c := fun j i => c i j) g ϖ) (z_comm ϖ) (delta_one (c := fun j i => c i j) h00 ϖ _ (z_false (c := fun j i => c i j) g ϖ) (z_true (c := fun j i => c i j) g ϖ)) q (key τ ξ ϖ f h00 e1 _ (z_false (c := fun j i => c i j) g ϖ) (z_true (c := fun j i => c i j) g …`.
+A detailed English derivation is pending.
 -/
 private theorem main {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {m : Type} [Fintype m] [DecidableEq m] {Y : Type} [AddCommGroup Y]
@@ -358,7 +352,7 @@ private theorem main {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
       (z_true (c := fun j i => c i j) g ϖ) q hq)
 
 /- English proof (translation)
-Establish `h : ∑ i, b.1 i false = Fintype.card (Fin 1)` using `b.2.2 false`. Rewrite `h` using `[Fintype.sum_bool, hb, add_zero, Fintype.card_fin]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem size_one {m : Type} [Fintype m] (b : SizeMatrix (Two (Fin 1) m) (Two (Fin 1) m))
     (hb : b.1 false false = 0) : 1 = b.1 true false := by
@@ -370,7 +364,7 @@ end GlobalTheory.T.ScalarParabolicLeviProjection
 
 open GlobalTheory.T.ScalarParabolicLeviProjection in
 /- English proof (translation)
-Introduce `k _ _ _ _ m _ _ Y _ _ τ ξ ϖ H b hb`. Establish `hq` using `H (Fin (b.1 true true)) (spl (m := m) (d := fun j => Fin (b.1 true j)) (b.nonempty_rows.some true) (finCongr (size_one b hb)))`. Establish `h00 : Fintype.card (Fin (b.1 false false)) = 0` using `(Fintype.card_fin _).trans hb`. Conclude with `hq.elim fun q hq => ⟨b.nonempty_rows.some, b.nonempty_cols.some, q, hq.1, main τ ξ ϖ (c := fun i j => Fin (b.1 i j)) _ _ h00 (finCongr (size_one b hb)) q hq.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.jacquet_polynomial_scalar_eval : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {m : Type} [Fintype m] [DecidableEq m] {Y : Type} [AddCommGroup Y] [Module ℂ Y]

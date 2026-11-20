@@ -10,9 +10,9 @@ namespace GlobalTheory.CompanionTheory.CosieveRel
 universe w w'
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `ht`. Set `b : (∀ i, N i ⊗[R] M₂ i) ≃+ (∀ i, N i ⊗[R] M i)` to `AddEquiv.piCongrRight fun i => (TensorProduct.congr (LinearEquiv.refl R (N i)) (a i).symm).toAddEquiv`. Use `⟨(b.trans g).trans a', fun i n x => ?_⟩` and prove the remaining obligations. Establish `hb : b (Pi.single i (n ⊗ₜ x)) = Pi.single i (n ⊗ₜ (a i).symm x)`. Use function extensionality and compare the values at `k`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[b]`. Simplify using `[b, Pi.single_eq_of_ne hk]`. Simplify using `only [AddEquiv.trans_apply, hb, hg, hc, LinearEquiv.apply_symm_apply]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tens_transfer {R : Type} [CommRing R] {ι : Type} [DecidableEq ι] {N : ι → Type} [∀ i, AddCommGroup (N i)]
     [∀ i, Module R (N i)] {M M₂ : ι → Type w} [∀ i, AddCommGroup (M i)] [∀ i, Module R (M i)]
@@ -34,7 +34,7 @@ theorem tens_transfer {R : Type} [CommRing R] {ι : Type} [DecidableEq ι] {N : 
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Conclude with `congrArg Submodule.Quotient.mk (Subtype.ext (h z.1))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pull_pull_id {D : Type 1} [Category.{0} D] {F : C ⥤ ModuleCat.{0} R} {E : D ⥤ ModuleCat.{0} R}
     (m : CH.Mor F E (RingHom.id R)) (m' : CH.Mor E F (RingHom.id R)) (j : ℕ)
@@ -74,7 +74,7 @@ theorem isoH_apply (F : C ⥤ ModuleCat.{0} R) {U P : ObjectProperty C} (h : P �
     isoH F h j x = (dirMor F U P).pull j x := rfl
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem isoH_morU {R' : Type} [CommRing R'] {σ : R →+* R'} {C' : Type 1} [Category.{0} C']
     {F : C ⥤ ModuleCat.{0} R} {F' : C' ⥤ ModuleCat.{0} R'} (m : CH.Mor F F' σ) {U P : ObjectProperty C}
@@ -86,11 +86,11 @@ theorem isoH_morU {R' : Type} [CommRing R'] {σ : R →+* R'} {C' : Type 1} [Cat
   rfl
 
 /- English proof (translation)
-Introduce `R R' _ _ σ C C' _ _ G ι _ _ N _ _ _ F F' τ hτ hadd hsm A _ W W' hW hW' h hyp j`. Set `U : ObjectProperty C` to `fun T => ∃ α, W α T`. Set `U' : ObjectProperty C'` to `fun T => ∃ α, W' α T`. Establish `hUU : ∀ T, U' T → U (G.obj T)` using `fun T ⟨α, hα⟩ => ⟨α, h α T hα⟩`. Set `G₁ : U'.FullSubcategory ⥤ U.FullSubcategory` to `U.lift (U'.ι ⋙ G) fun T => hUU _ T.property`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `GlobalTheory.CompanionTheory.CosieveBC.base_change_of_cover (C := U.FullSubcategory) (C' := U'.FullSubcategory) G₁ N (fun i => U.ι ⋙ F i) (U'.ι ⋙ F') (fun i n T => τ i n T.obj) (fun i n _ _ φ x => hτ i n φ.hom x) (fun i n n' T x => hadd i n n' T.obj x) (fun i r n T x => hsm i r n …` and prove the remaining obligations. Introduce `S hS j`. Take `⟨α₀, hα₀⟩` from `hS`. Establish `hP : capS W S ≤ U` using `fun T hT => ⟨α₀, hT α₀ hα₀⟩`. Establish `hP' : capS W' S ≤ U'` using `fun T hT => ⟨α₀, hT α₀ hα₀⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `tens_transfer (fun i => isoH (F i) hP j) (isoH F' hP' j).toAddEquiv (fun i n x => ?_) (hyp S ⟨α₀, hα₀⟩ j)` and prove the remaining obligations. Conclude with `isoH_morU (⟨G, τ i n, hτ i n⟩ : CH.Mor (F i) F' σ) hUU (fun T hT α hα => h α T (hT α hα)) hP hP' j x`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem base_change_rel : ∀ {R R' : Type} [CommRing R] [CommRing R'] {σ : R →+* R'} {C C' : Type 1} [Category.{0} C] [Category.{0} C']
     (G : C' ⥤ C) {ι : Type} [Fintype ι] [DecidableEq ι] (N : ι → Type) [∀ i, AddCommGroup (N i)] [∀ i, Module R (N i)]

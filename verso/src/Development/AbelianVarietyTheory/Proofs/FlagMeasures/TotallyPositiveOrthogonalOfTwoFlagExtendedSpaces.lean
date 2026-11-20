@@ -10,7 +10,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ComplPos
 
 /- English proof (translation)
-Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker] at hx ⊢`. Conclude with `fun y hy => hx y (Submodule.mem_sup_left hy)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_orth_left {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {U U' : Submodule E S.V}
     {x : S.V} (hx : x ∈ orth S (U ⊔ U')) : x ∈ orth S U := by
@@ -18,7 +18,7 @@ theorem mem_orth_left {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSp
   exact fun y hy => hx y (Submodule.mem_sup_left hy)
 
 /- English proof (translation)
-Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker] at hx ⊢`. Conclude with `fun y hy => hx y (Submodule.mem_sup_right hy)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_orth_right {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {U U' : Submodule E S.V}
     {x : S.V} (hx : x ∈ orth S (U ⊔ U')) : x ∈ orth S U' := by
@@ -26,7 +26,7 @@ theorem mem_orth_right {E : Type} [Field E] [NumberField E] [StarRing E] {S : HS
   exact fun y hy => hx y (Submodule.mem_sup_right hy)
 
 /- English proof (translation)
-Use `Fin.lastCases ?_ (fun a => ?_) b` and prove the remaining obligations. Simplify using `only [FlagG.fvec, Fin.snoc_last]`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`. Simplify using `only [FlagG.fvec, Fin.snoc_castSucc]`. Conclude with `Submodule.mem_sup_left (Submodule.subset_span ⟨a, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fvec_mem_Xplus {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
     (F : FlagG S r T) (b : Fin (r + 1)) : F.fvec b ∈ F.Xplus := by
@@ -37,19 +37,17 @@ theorem fvec_mem_Xplus {E : Type} [Field E] [NumberField E] [StarRing E] {S : HS
     exact Submodule.mem_sup_left (Submodule.subset_span ⟨a, rfl⟩)
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hxX`. Establish `hx' : ∀ y ∈ F'.Xplus, S.hT y (∑ i, c i • F.e i) = 0`. Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker] at hx`. Conclude with `hx`. Establish `hrow : ∀ b, ∑ a : Fin r, star (c a) * Zhat F F' a.castSucc b = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Establish `h1` using `hx' _ (fvec_mem_Xplus F' b)`. Establish `h2 : S.hT (∑ i, c i • F.e i) (F'.fvec b) = 0`. Rewrite using `[← S.herm.eq, h1, map_zero]`. Rewrite `h2` using `[map_sum, LinearMap.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Zhat, brS, FlagG.fvec, Fin.snoc_castSucc, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`. Use `set v : Fin (r + 1) → E := Fin.snoc (α := fun _ => E) (fun a => star (c a)) 0 with hv`. Establish `hvZ : Matrix.vecMul v (ZhatOM (Zhat F F')) = 0`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `b`. Simplify using `only [Matrix.vecMul, dotProduct, ZhatOM, Pi.zero_apply]`. Rewrite using `[Fin.sum_univ_castSucc]`. Simplify using `only [hv, Fin.snoc_castSucc, Fin.snoc_last, zero_mul, add_zero]`. Use `hrow b` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [this, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv0` using `Matrix.eq_zero_of_vecMul_eq_zero hdet hvZ`. Establish `hc : ∀ a, c a = 0`. Introduce `a`. Use `congrFun hv0 a.castSucc` as an intermediate fact. Simplify using `only [hv, Fin.snoc_castSucc, Pi.zero_apply, star_eq_zero] at this`.
-
-Conclude with `this`. Simplify using `[hc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mem_X {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
     (F : FlagG S r T) (F' : FlagG S r T') (hdet : (ZhatOM (Zhat F F')).det ≠ 0) {x : S.V}
@@ -90,9 +88,9 @@ theorem eq_zero_of_mem_X {E : Type} [Field E] [NumberField E] [StarRing E] {S : 
 end GlobalTheory.ComplPos
 
 /- English proof (translation)
-Introduce `D X Y u u' F F' w hZ _ x hx hx0`. Establish `hdet : (ZhatOM (Zhat F.fl F'.fl)).det ≠ 0`. Establish `e : ZhatOM (Zhat F.fl F'.fl) = ptMat w` using `hZ`. Rewrite using `[e]`. Conclude with `Formalism.L2.SG.Pf.StabilizerIndexVolumes.ptMat_det w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hxX : x ∈ Xsp F`. Conclude with `absurd (GlobalTheory.ComplPos.eq_zero_of_mem_X F.fl F'.fl hdet hxX (GlobalTheory.ComplPos.mem_orth_right hx)) hx0`. Establish `hT : 0 < Tu D u` using `(D.mem u).A.T_prime.pos`. Conclude with `GlobalTheory.LoopC.PerpPos.trace_pos_perp D (Tu D u) F hT x (GlobalTheory.ComplPos.mem_orth_left hx) hxX`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ComplPos.complement_totPos : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ∀ (F : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (w : Point D.host.E (D.R.rS + 1)), ZhatOM (ZhatL F F') = ptMat w → Gval F F' ≠ 0 → ∀ x ∈ orth (VS D) (Xplus F ⊔ Xplus F'), x ≠ 0 → 0 < Algebra.trace ℚ D.host.E ((VS D).hT x x) := by
   intro D X Y u u' F F' w hZ _ x hx hx0

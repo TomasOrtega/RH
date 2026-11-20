@@ -5,15 +5,15 @@ namespace GlobalTheory
 open Polynomial
 
 /- English proof (translation)
-Rewrite using `[Metric.denseRange_iff]`. Introduce `a δ δpos`. Use `haveI : CharZero Ω := j.charZero`. Establish `hint : IsIntegral ℚ_[l] a` using `(Algebra.IsAlgebraic.isAlgebraic a).isIntegral`. Use `set f : ℚ_[l][X] := minpoly ℚ_[l] a with hf`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fmon : f.Monic` using `minpoly.monic hint`. Establish `fnatdeg0 : f.natDegree ≠ 0` using `(minpoly.natDegree_pos hint).ne'`. Establish `fa0 : f.aeval a = 0` using `minpoly.aeval _ _`. Establish `hi : DenseRange (algebraMap ℚ ℚ_[l])` using `Padic.denseRange_ratCast l`. Establish `hε : (δ / (max ‖a‖ 1)) ^ f.natDegree / (f.natDegree + 1) > 0` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, gmon, gdeg, gcoeff⟩` from `exists_monic_and_natDegree_eq_and_norm_map_algebraMap_coeff_sub_lt hi fmon hε`. Take `⟨b, hb, hab⟩` from `exists_aroots_norm_sub_lt_of_norm_coeff_sub_lt hε fa0 fmon (gmon.map _) (gdeg ▸ (g.natDegree_map _)) gcoeff (IsAlgClosed.splits _)`. Establish `hab : ‖a - b‖ < δ`. Rewrite `hab` using `[← Real.rpow_natCast, ← mul_comm_div, div_self, one_mul, ← Real.rpow_mul (div_pos δpos (by positivity)).le, mul_inv_cancel₀]`. Simplify `hab` using `[mul_assoc, div_mul_cancel₀ _ (by positivity : (max ‖a‖ 1) > 0).ne']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Simplify using `[fnatdeg0]`. Check the signs of the components of the expression. Establish `he : (g.map (algebraMap ℚ ℚ_[l])).map (algebraMap ℚ_[l] (PadicAlgCl l)) = (g.map (algebraMap ℚ Ω)).map j`. Rewrite using `[Polynomial.map_map, Polynomial.map_map]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Subsingleton.elim _ _`. Rewrite `hb` using `[Polynomial.aroots_def, he, Splits.roots_map (IsAlgClosed.splits _), Multiset.mem_map]`. Take `⟨c, -, hc⟩` from `hb`. Conclude with `⟨c, by rw [hc, dist_eq_norm]; exact hab⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem denseRange_of_isAlgClosed_padicAlgCl (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω]
     [IsAlgClosed Ω] (j : Ω →+* PadicAlgCl l) : DenseRange j := by
@@ -47,7 +47,7 @@ theorem denseRange_of_isAlgClosed_padicAlgCl (l : ℕ) [Fact l.Prime] (Ω : Type
   exact ⟨c, by rw [hc, dist_eq_norm]; exact hab⟩
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ j σ τ h`. Establish `hc : ∀ g : PadicAlgCl l ≃ₐ[ℚ_[l]] PadicAlgCl l, Continuous g` using `fun g => (AddMonoidHomClass.isometry_of_norm (g : PadicAlgCl l →+* PadicAlgCl l) fun x => (spectralNorm_eq_of_equiv g x).symm).continuous`. Use `(denseRange_of_isAlgClosed_padicAlgCl l Ω j).equalizer (hc σ) (hc τ) (funext h)` as an intermediate fact. Conclude with `AlgEquiv.ext fun x => congrFun this x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem padicAlgCl_algEquiv_eq_of_eq_on_isAlgClosed :
     ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [IsAlgClosed Ω] (j : Ω →+* PadicAlgCl l)

@@ -19,7 +19,7 @@ abbrev IxB (Dw : Datum H) : Type := Σ τ : E →+* ℂ, Fin (Dw.mult τ)
 def eB (Dw : Datum H) : Fin (Fintype.card (IxB Dw)) ≃ IxB Dw := (Fintype.equivFin (IxB Dw)).symm
 
 /- English proof (translation)
-The claim follows from `isGrpPullback_pullback Xo.univ.t.G x`.
+A detailed English derivation is pending.
 -/
 theorem hS (x : Sp S ⟶ Xo.X) :
     IsGrpPullback ((Over.pullback x).obj Xo.univ.t.G) Xo.univ.t.G x (pullback.fst Xo.univ.t.G.hom x) :=
@@ -29,22 +29,22 @@ def uS (y : FrPt Xo c S) (i : Fin (Fintype.card (IxB Dw))) : epsR S ⟶ (Over.pu
   (push_surj (hS y.x) (tv (fullB y (eB Dw i)))).choose
 
 /- English proof (translation)
-The claim follows from `(push_surj (hS y.x) (tv (fullB y (eB Dw i)))).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem push_uS (y : FrPt Xo c S) (i : Fin (Fintype.card (IxB Dw))) :
     pushHom (hS y.x) (epsR S) (uS y i) = tv (fullB y (eB Dw i)) :=
   (push_surj (hS y.x) (tv (fullB y (eB Dw i)))).choose_spec
 
 /- English proof (translation)
-Use `⟨fun i => (isTangent_iff (hS y.x) _).2 (by rw [push_uS]; exact tv_mem _), fun w hw => ?_⟩` and prove the remaining obligations. Establish `hw'` using `(isTangent_iff (hS y.x) w).1 hw`. Set `m : TanM y.x Xo.univ.t.G` to `mkT _ hw'`. Establish `key : ∀ a : Fin (Fintype.card (IxB Dw)) → S, IsLieComb a (uS y) w ↔ m = ∑ k, (a ((eB Dw).symm k)) • fullB y k`. Introduce `a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[isLieComb_iff (hS y.x)]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `tanM_ext` to reduce the goal to its premises. Rewrite using `[tv_mkT, h, tv_sum, ← (eB Dw).prod_comp]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Equiv.symm_apply_apply, tv_smul]`. Conclude with `congrArg _ (push_uS y i)`. Introduce `h`. Use `congrArg tv h` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[tv_mkT, tv_sum, ← (eB Dw).prod_comp]`. Rewrite using `[this]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Equiv.symm_apply_apply, tv_smul]`. Conclude with `congrArg _ (push_uS y i).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨A, hA, hAu⟩` from `fullB_basis y m`. Use `⟨fun i => A (eB Dw i), (key _).2 (by simpa using hA), fun b hb => ?_⟩` and prove the remaining obligations. Use `hAu (fun k => b ((eB Dw).symm k)) ((key b).1 hb)` as an intermediate fact. Use function extensionality and compare the values at `i`. Simplify using `using congrFun this (eB Dw i)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem uS_basis (y : FrPt Xo c S) : IsLieBasis (uS y) := by
   refine ⟨fun i => (isTangent_iff (hS y.x) _).2 (by rw [push_uS]; exact tv_mem _), fun w hw => ?_⟩

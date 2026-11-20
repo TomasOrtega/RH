@@ -6,7 +6,7 @@ private noncomputable def l1 {ι : Type} (p : MvPolynomial ι ℂ) : ℝ :=
   ∑ α ∈ p.support, ‖p.coeff α‖
 
 /- English proof (translation)
-Unfold `l1`. Use `Finset.sum_subset h ?_` and prove the remaining obligations. Introduce `x _ hx`. Rewrite using `[notMem_support_iff.mp hx, norm_zero]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem matrixEntryAbsSum_unitaryLie_coordinates_split {ι : Type} (p : MvPolynomial ι ℂ) (s : Finset (ι →₀ ℕ))
     (h : p.support ⊆ s) : l1 p = ∑ α ∈ s, ‖p.coeff α‖ := by
@@ -16,7 +16,7 @@ private theorem matrixEntryAbsSum_unitaryLie_coordinates_split {ι : Type} (p : 
   rw [notMem_support_iff.mp hx, norm_zero]
 
 /- English proof (translation)
-Rewrite using `[matrixEntryAbsSum_unitaryLie_coordinates_split (p + q) (p.support ∪ q.support) support_add, matrixEntryAbsSum_unitaryLie_coordinates_split p (p.support ∪ q.support) Finset.subset_union_left, matrixEntryAbsSum_unitaryLie_coordinates_split q (p.support ∪ q.support) Finset.subset_u …`. Use `Finset.sum_le_sum fun α _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_add]`. Conclude with `norm_add_le _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem intMvPolynomialCoeffAbsSum_add_le {ι : Type} (p q : MvPolynomial ι ℂ) : l1 (p + q) ≤ l1 p + l1 q := by
   classical
@@ -28,7 +28,7 @@ private theorem intMvPolynomialCoeffAbsSum_add_le {ι : Type} (p q : MvPolynomia
   exact norm_add_le _ _
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [l1]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `(intMvPolynomialCoeffAbsSum_add_le _ _).trans (by linarith)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem intMvPolynomialCoeffAbsSum_sum_le {ι κ : Type} (s : Finset κ) (f : κ → MvPolynomial ι ℂ) :
     l1 (∑ i ∈ s, f i) ≤ ∑ i ∈ s, l1 (f i) := by
@@ -40,7 +40,7 @@ private theorem intMvPolynomialCoeffAbsSum_sum_le {ι κ : Type} (s : Finset κ)
     exact (intMvPolynomialCoeffAbsSum_add_le _ _).trans (by linarith)
 
 /- English proof (translation)
-Rewrite using `[matrixEntryAbsSum_unitaryLie_coordinates_split _ {a} support_monomial_subset]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem intMvPolynomialCoeffAbsSum_monomial {ι : Type} (a : ι →₀ ℕ) (c : ℂ) :
     l1 (monomial a c : MvPolynomial ι ℂ) = ‖c‖ := by
@@ -49,9 +49,9 @@ private theorem intMvPolynomialCoeffAbsSum_monomial {ι : Type} (a : ι →₀ �
   simp
 
 /- English proof (translation)
-Establish `h : p * q = ∑ a ∈ p.support, ∑ b ∈ q.support, (monomial (a + b) (p.coeff a * q.coeff b) : MvPolynomial ι ℂ)` using `by conv_lhs => rw [p.as_sum, q.as_sum, Finset.sum_mul_sum]`. Simplify using `only [monomial_mul]`. Rewrite using `[h]`. Use `(intMvPolynomialCoeffAbsSum_sum_le _ _).trans ?_` and prove the remaining obligations. Use `conv_rhs => rw [l1, l1, Finset.sum_mul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Use `(intMvPolynomialCoeffAbsSum_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [intMvPolynomialCoeffAbsSum_monomial, norm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem intMvPolynomialCoeffAbsSum_mul_le {ι : Type} (p q : MvPolynomial ι ℂ) : l1 (p * q) ≤ l1 p * l1 q := by
   have h : p * q = ∑ a ∈ p.support, ∑ b ∈ q.support,
@@ -66,9 +66,9 @@ private theorem intMvPolynomialCoeffAbsSum_mul_le {ι : Type} (p q : MvPolynomia
   simp only [intMvPolynomialCoeffAbsSum_monomial, norm_mul]
 
 /- English proof (translation)
-Rewrite using `[matrixEntryAbsSum_unitaryLie_coordinates_split (C c * p) p.support, l1, Finset.mul_sum]`. Simplify using `only [coeff_C_mul, norm_mul]`. Introduce `a ha`. Rewrite `ha`, the goal using `[mem_support_iff]`. Rewrite `ha` using `[coeff_C_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `right_ne_zero_of_mul ha`.
+A detailed English derivation is pending.
 -/
 private theorem l1_C_mul {ι : Type} (p : MvPolynomial ι ℂ) (c : ℂ) :
     l1 (C c * p) = ‖c‖ * l1 p := by
@@ -80,11 +80,11 @@ private theorem l1_C_mul {ι : Type} (p : MvPolynomial ι ℂ) (c : ℂ) :
     exact right_ne_zero_of_mul ha
 
 /- English proof (translation)
-Rewrite using `[matrixEntryAbsSum_unitaryLie_coordinates_split (homogeneousComponent k p) p.support, l1]`. Use `Finset.sum_le_sum fun a _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_homogeneousComponent]`. Use `split_ifs`. Conclude with `le_rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `a ha`. Rewrite `ha`, the goal using `[mem_support_iff]`. Rewrite `ha` using `[coeff_homogeneousComponent]`. Introduce `h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression.
 
-Apply `ha` to reduce the goal to its premises. Use `split_ifs`. Conclude with `h`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem l1_homogeneousComponent_le {ι : Type} (p : MvPolynomial ι ℂ) (k : ℕ) :
     l1 (homogeneousComponent k p) ≤ l1 p := by
@@ -104,7 +104,7 @@ private theorem l1_homogeneousComponent_le {ι : Type} (p : MvPolynomial ι ℂ)
     · rfl
 
 /- English proof (translation)
-Establish `h : rename δ p = ∑ a ∈ p.support, (monomial (Finsupp.mapDomain δ a) (p.coeff a) : MvPolynomial ι' ℂ)` using `by conv_lhs => rw [p.as_sum, map_sum]`. Simplify using `only [rename_monomial]`. Rewrite using `[h]`. Use `(intMvPolynomialCoeffAbsSum_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [intMvPolynomialCoeffAbsSum_monomial]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -120,7 +120,7 @@ private theorem l1_rename {ι ι' : Type} (p : MvPolynomial ι ℂ) (δ : ι →
   rfl
 
 /- English proof (translation)
-Introduce `ι p q`. Conclude with `⟨intMvPolynomialCoeffAbsSum_add_le p q, intMvPolynomialCoeffAbsSum_mul_le p q, l1_C_mul p, fun a c => intMvPolynomialCoeffAbsSum_monomial a c, l1_homogeneousComponent_le p, fun _ δ => l1_rename p δ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.ConvolutionTheory.FX.coeffL1_submultiplicative_facts :
     ∀ (ι : Type) (p q : MvPolynomial ι ℂ), (∑ α ∈ (p + q).support, ‖(p + q).coeff α‖) ≤ (∑ α ∈ (p).support, ‖(p).coeff α‖) + (∑ α ∈ (q).support, ‖(q).coeff α‖) ∧ (∑ α ∈ (p * q).support, ‖(p * q).coeff α‖) ≤ (∑ α ∈ (p).support, ‖(p).coeff α‖) * (∑ α ∈ (q).support, ‖(q).coeff α‖) ∧ (∀ c : ℂ, (∑ α ∈ (C c * p).support, ‖(C c * p).coeff α‖) = ‖c‖ * (∑ α ∈ (p).support, ‖(p).coeff α‖)) ∧ (∀ (α₀ : ι →₀ ℕ) (c : ℂ), (∑ α ∈ ((monomial α₀ c : MvPolynomial ι ℂ)).support, ‖((monomial α₀ c : MvPolynomial ι ℂ)).coeff α‖) = ‖c‖) ∧ (∀ k, (∑ α ∈ (homogeneousComponent k p).support, ‖(homogeneousComponent k p).coeff α‖) ≤ (∑ α ∈ (p).support, ‖(p).coeff α‖)) ∧ ∀ (ι' : Type) (δ : ι → ι'), (∑ α ∈ (rename δ p).support, ‖(rename δ p).coeff α‖) ≤ (∑ α ∈ (p).support, ‖(p).coeff α‖) := by

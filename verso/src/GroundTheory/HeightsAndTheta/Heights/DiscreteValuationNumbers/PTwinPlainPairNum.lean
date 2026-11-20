@@ -19,7 +19,7 @@ variable {K : Type} [DecidableEq K] {ι : K → Type}
 variable {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Unfold `classNum`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[FlagTypings.vNumL_perm W (h.append_left _)]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem classNum_perm {σ : Type*} (cls : σ → K → ℤ) (H : MvPolynomial σ ℤ) {L₁ L₂ : List (K → ℤ)}
     (h : L₁.Perm L₂) (W : Ideal (MRing ι O)) : classNum cls H L₁ W = classNum cls H L₂ W := by
@@ -28,9 +28,9 @@ theorem classNum_perm {σ : Type*} (cls : σ → K → ℤ) (H : MvPolynomial σ
   rw [FlagTypings.vNumL_perm W (h.append_left _)]
 
 /- English proof (translation)
-Unfold `classNum`. Rewrite using `[support_rename_of_injective he, Finset.sum_image fun a _ b _ h => Finsupp.mapDomain_injective he h]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_rename_mapDomain e he]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `classList`. Rewrite using `[← Finsupp.toMultiset_map, Multiset.map_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem classNum_rename {σ τ : Type*} (e : σ → τ) (he : Function.Injective e) (cls : τ → K → ℤ)
     (H : MvPolynomial σ ℤ) (Q : List (K → ℤ)) (W : Ideal (MRing ι O)) :
@@ -46,7 +46,7 @@ theorem classNum_rename {σ τ : Type*} (e : σ → τ) (he : Function.Injective
   rw [← Finsupp.toMultiset_map, Multiset.map_map]
 
 /- English proof (translation)
-The claim follows from `Finset.sum_subset hS fun μ _ hμ => by rw [mem_support_iff, not_not] at hμ rw [hμ, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem classNum_eq_sum_of_subset {σ : Type*} (cls : σ → K → ℤ) (H : MvPolynomial σ ℤ)
     (Q : List (K → ℤ)) (W : Ideal (MRing ι O)) {S : Finset (σ →₀ ℕ)} (hS : H.support ⊆ S) :
@@ -58,7 +58,7 @@ theorem classNum_eq_sum_of_subset {σ : Type*} (cls : σ → K → ℤ) (H : MvP
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Rewrite using `[← Multiset.coe_eq_coe, ← Multiset.coe_add]`. Simplify using `only [classList, Multiset.coe_toList, map_add, Multiset.map_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem classList_add_perm {σ : Type*} (cls : σ → K → ℤ) (μ ν : σ →₀ ℕ) :
     (classList cls (μ + ν)).Perm (classList cls μ ++ classList cls ν) := by
@@ -68,9 +68,9 @@ theorem classList_add_perm {σ : Type*} (cls : σ → K → ℤ) (μ ν : σ →
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Establish `hs : ∀ s : Multiset (Fin r), (s.map fun x => ({a x} : Multiset σ)).sum = s.map a`. Introduce `s`. Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons b s ih => simp [ih]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← Multiset.coe_eq_coe, classList, Multiset.coe_toList, map_sum]`. Simplify using `only [Finsupp.toMultiset_single, one_smul]`. Rewrite using `[Finset.sum_eq_multiset_sum, hs, Multiset.map_map, ← Fin.univ_val_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem classList_sum_single {σ : Type*} (cls : σ → K → ℤ) {r : ℕ} (a : Fin r → σ) :
     (classList cls (∑ j, Finsupp.single (a j) 1)).Perm (List.ofFn fun j => cls (a j)) := by
@@ -85,11 +85,9 @@ theorem classList_sum_single {σ : Type*} (cls : σ → K → ℤ) {r : ℕ} (a 
   rfl
 
 /- English proof (translation)
-Establish `hsub : (A * monomial t 1).support ⊆ A.support.image (· + t)`. Introduce `ν hν`. Rewrite `hν` using `[mem_support_iff, coeff_mul_monomial']`. Use `split_ifs at hν with hle`. Rewrite `hν` using `[mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.mem_image.mpr ⟨ν - t, mem_support_iff.mpr hν, tsub_add_cancel_of_le hle⟩`. Conclude with `absurd rfl hν`. Rewrite using `[classNum_eq_sum_of_subset cls _ Q W hsub, Finset.sum_image fun a _ b _ h => add_right_cancel h]`. Unfold `classNum`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[coeff_mul_monomial, mul_one, ← List.append_assoc, FlagTypings.vNumL_perm W ((classList_add_perm cls μ t).append_right Q)]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classNum_mul_monomial {σ : Type*} [DecidableEq σ] (cls : σ → K → ℤ) (A : MvPolynomial σ ℤ)
     (t : σ →₀ ℕ) (Q : List (K → ℤ)) (W : Ideal (MRing ι O)) :
@@ -118,9 +116,9 @@ def term {r : ℕ} (l : Fin r) (μ : Fin r →₀ ℕ) : MvPolynomial (Fin r ⊕
     ∏ j ∈ Finset.univ.filter (fun j => l < j), X (Sum.inl j) ^ μ j
 
 /- English proof (translation)
-Unfold `IndefiniteRowSideFullHecke.NumbersDVR.Bundles.divDiff`. Simplify using `only [map_sum, map_mul, map_prod, map_pow, rename_X, rename_C, finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd]`. Use `(Finset.sum_subset hS ?_).trans (Finset.sum_congr rfl fun μ _ => ?_)` and prove the remaining obligations. Introduce `μ _ hμ`. Rewrite `hμ` using `[mem_support_iff, not_not]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[hμ]`. Unfold `term`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rename_divDiff_eq_sum {r : ℕ} (l : Fin r) (G : MvPolynomial (Fin r) ℤ)
     {S : Finset (Fin r →₀ ℕ)} (hS : G.support ⊆ S) :
@@ -139,9 +137,9 @@ theorem rename_divDiff_eq_sum {r : ℕ} (l : Fin r) (G : MvPolynomial (Fin r) �
 def tailMono (N r : ℕ) : Fin (N + r) →₀ ℕ := ∑ j : Fin r, Finsupp.single (Fin.natAdd N j) 1
 
 /- English proof (translation)
-Rewrite using `[tailMono, Finsupp.finsetSum_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Fin.val_natAdd, Fin.val_castAdd] at this`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem tailMono_castAdd (N r : ℕ) (i : Fin N) : tailMono N r (Fin.castAdd r i) = 0 := by
   rw [tailMono, Finsupp.finsetSum_apply]
@@ -153,9 +151,9 @@ theorem tailMono_castAdd (N r : ℕ) (i : Fin N) : tailMono N r (Fin.castAdd r i
   omega
 
 /- English proof (translation)
-Rewrite using `[tailMono, Finsupp.finsetSum_apply, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hb` to reduce the goal to its premises. Use `ext`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_natAdd] at this`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
 Simplify using the standard rewrite rules.
 -/
@@ -173,13 +171,13 @@ theorem tailMono_natAdd (N r : ℕ) (j : Fin r) : tailMono N r (Fin.natAdd N j) 
   · simp
 
 /- English proof (translation)
-Establish `hlt : ∀ j : Fin r, ¬ Fin.natAdd N j < Fin.castAdd r i`. Introduce `j h`. Rewrite `h` using `[Fin.lt_def, Fin.val_natAdd, Fin.val_castAdd]`. Use linear arithmetic over natural numbers and integers. Establish `hgt : ∀ j : Fin r, Fin.castAdd r i < Fin.natAdd N j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `j`. Rewrite using `[Fin.lt_def, Fin.val_natAdd, Fin.val_castAdd]`. Use linear arithmetic over natural numbers and integers. Establish `hcc : ∀ j k : Fin N, (Fin.castAdd r j < Fin.castAdd r k ↔ j < k)`. Introduce `j k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Fin.lt_def, Fin.val_castAdd]`. Establish `h1 : (∏ j ∈ Finset.univ.filter (fun j => j < Fin.castAdd r i), (X (Sum.inr j) : MvPolynomial (Fin (N + r) ⊕ Fin (N + r)) ℤ) ^ ν j) = ∏ j ∈ Finset.univ.filter (fun j => j < i), X (Sum.inr (Fin.castAdd r j)) ^ μ j`. Rewrite using `[Finset.prod_filter, Finset.prod_filter, Fin.prod_univ_add]`. Simplify using `only [hlt, if_false, Finset.prod_const_one, mul_one, hcc, hc]`. Establish `h3 : (∏ j ∈ Finset.univ.filter (fun j => Fin.castAdd r i < j), (X (Sum.inl j) : MvPolynomial (Fin (N + r) ⊕ Fin (N + r)) ℤ) ^ ν j) = (∏ j ∈ Finset.univ.filter (fun j => i < j), X (Sum.inl (Fin.castAdd r j)) ^ μ j) * ∏ j : Fin r, X (Sum.inl (Fin.natAdd N j))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_filter, Finset.prod_filter, Fin.prod_univ_add]`. Simplify using `only [hgt, if_true, hcc, hc, hn, pow_one]`. Unfold `term`. Rewrite using `[h1, h3, hc i]`. Simplify using `only [map_mul, map_prod, map_pow, map_sum, rename_X, Sum.map_inl, Sum.map_inr]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -216,7 +214,7 @@ theorem term_tail {N r : ℕ} (i : Fin N) (μ : Fin N →₀ ℕ) (ν : Fin (N +
   ring
 
 /- English proof (translation)
-Rewrite using `[tailMono, monomial_sum_one, map_prod]`. Simplify using `only [rename_X]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem prod_X_natAdd (N r : ℕ) :
     rename (Fin.natAdd N) (∏ j : Fin r, (X j : MvPolynomial (Fin r) ℤ)) =
@@ -226,15 +224,15 @@ theorem prod_X_natAdd (N r : ℕ) :
   rfl
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun μ : Fin N →₀ ℕ => Finsupp.mapDomain (Fin.castAdd r) μ + tailMono N r)` using `fun a b h => Finsupp.mapDomain_injective (Fin.castAdd_injective _ _) (add_right_cancel h)`. Establish `hsub : (rename (Fin.castAdd r) G * monomial (tailMono N r) 1).support ⊆ G.support.image (fun μ => Finsupp.mapDomain (Fin.castAdd r) μ + tailMono N r)`. Introduce `ν hν`. Rewrite `hν` using `[mem_support_iff, coeff_mul_monomial']`. Use `split_ifs at hν with hle`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hν` using `[mul_one]`. Establish `hmem : ν - tailMono N r ∈ (rename (Fin.castAdd r) G).support` using `mem_support_iff.mpr hν`. Rewrite `hmem` using `[support_rename_of_injective (Fin.castAdd_injective _ _), Finset.mem_image]`. Take `⟨μ, hμ, he⟩` from `hmem`. Conclude with `Finset.mem_image.mpr ⟨μ, hμ, by rw [he, tsub_add_cancel_of_le hle]⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd rfl hν`. Rewrite using `[prod_X_natAdd, rename_divDiff_eq_sum (Fin.castAdd r i) _ hsub, Finset.sum_image fun a _ b _ h => hinj h, rename_divDiff_eq_sum i G subset_rfl, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Establish `hc : ∀ j, (Finsupp.mapDomain (Fin.castAdd r) μ + tailMono N r) (Fin.castAdd r j) = μ j`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finsupp.add_apply, Finsupp.mapDomain_apply (Fin.castAdd_injective _ _), tailMono_castAdd, add_zero]`. Establish `hn : ∀ j, (Finsupp.mapDomain (Fin.castAdd r) μ + tailMono N r) (Fin.natAdd N j) = 1`. Introduce `j`. Establish `hj : Fin.natAdd N j ∉ Set.range (Fin.castAdd r : Fin N → Fin (N + r))`. Introduce and unpack `⟨k, hk⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `congrArg Fin.val hk` as an intermediate fact. Simplify using `only [Fin.val_natAdd, Fin.val_castAdd] at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finsupp.add_apply, Finsupp.mapDomain_of_notMem_range _ _ hj, tailMono_natAdd, zero_add]`. Rewrite using `[coeff_mul_monomial, coeff_rename_mapDomain _ (Fin.castAdd_injective _ _), mul_one, term_tail i μ _ hc hn, map_mul, rename_C, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rename_divDiff_castAdd {N r : ℕ} (i : Fin N) (G : MvPolynomial (Fin N) ℤ) :
     rename finSumFinEquiv.symm (IndefiniteRowSideFullHecke.NumbersDVR.Bundles.divDiff (Fin.castAdd r i)
@@ -279,17 +277,17 @@ theorem rename_divDiff_castAdd {N r : ℕ} (i : Fin N) (G : MvPolynomial (Fin N)
 end DivDiff
 
 /- English proof (translation)
-Introduce `O _ _ _ K _ _ ι _ P d N x x' f g m G hG Q hQ`. Establish `hH : (rename (Fin.castAdd Q.length) G * rename (Fin.natAdd N) (∏ j : Fin Q.length, X j) : MvPolynomial (Fin (N + Q.length)) ℤ).IsHomogeneous (d + 1)`. Establish `h2 : (∏ j : Fin Q.length, (X j : MvPolynomial (Fin Q.length) ℤ)).IsHomogeneous Q.length`. Simplify using `using IsHomogeneous.prod Finset.univ (fun j => (X j : MvPolynomial (Fin Q.length) ℤ)) (fun _ => 1) fun j _ => isHomogeneous_X ℤ j`. Establish `h3` using `(hG.rename_isHomogeneous (f := Fin.castAdd Q.length)).mul (h2.rename_isHomogeneous (f := Fin.natAdd N))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h3` using `[show m + Q.length = d + 1 by omega]`. Then use the resulting hypothesis. Rewrite using `[BundleExamples.pairNum_eq P d _ _ _ _ hH]`. Unfold `pairNum`. Establish `hr : ratDiv P 1 1 = fun _ => 0` using `funext fun W => sub_self _`. Establish `hz : ∀ n : Ideal (MRing ι O) → ℤ, cycEval n (fun _ => 0) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n`. Simplify using `[cycEval]`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, hr, hz, Finset.sum_const_zero, add_zero]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use function extensionality and compare the values at `W`. Establish `hm : (∏ j : Fin Q.length, (X (Sum.inl (Fin.natAdd N j)) : MvPolynomial (Fin (N + Q.length) ⊕ Fin (N + Q.length)) ℤ)) = monomial (∑ j : Fin Q.length, Finsupp.single (Sum.inl (Fin.natAdd N j)) 1) 1`. Rewrite using `[monomial_sum_one]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[rename_divDiff_castAdd, hm, classNum_mul_monomial, classNum_rename _ (Sum.map_injective.mpr ⟨Fin.castAdd_injective _ _, Fin.castAdd_injective _ _⟩)]`. Establish `hcls : Sum.elim (Fin.append x Q.get) (Fin.append x' Q.get) ∘ Sum.map (Fin.castAdd Q.length) (Fin.castAdd Q.length) = Sum.elim x x'`. Use function extensionality and compare the values at `p`. Apply the tactic sequence `cases p <;> simp [Fin.append_left]`. Rewrite using `[hcls]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `classNum_perm _ _ ?_ W` and prove the remaining obligations. Rewrite using `[List.append_nil]`. Use `(classList_sum_single _ _).trans (List.Perm.of_eq ?_)` and prove the remaining obligations. Simplify using `[Fin.append_right]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem proof : plainPairNumber.Statement.{u} := by
   intro O _ _ _ K _ _ ι _ P d N x x' f g m G hG Q hQ

@@ -59,9 +59,9 @@ def sigK (π : G n →* (U →L[ℂ] U)) : Matrix.unitaryGroup (Fin n) ℂ →* 
     simp [uG]
 
 /- English proof (translation)
-Take `⟨S, hS, hvS, hk⟩` from `hv`. Use `⟨S.map (A : U →ₗ[ℂ] U), inferInstance, Submodule.mem_map_of_mem hvS, ?_⟩` and prove the remaining obligations. Introduce and unpack `k _ ⟨w, hw, rfl⟩`. Establish `h` using `congrArg (fun B : U →L[ℂ] U => B w) (hA k)`. Simplify using `only [ContinuousLinearMap.comp_apply] at h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨π (uG k) w, hk k w hw, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem map_mem_kfin (π : G n →* (U →L[ℂ] U)) (A : U →L[ℂ] U) (hA : ∀ k, A ∘L π (uG k) = π (uG k) ∘L A) {v : U}
     (hv : v ∈ kfin π) : A v ∈ kfin π := by

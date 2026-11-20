@@ -10,9 +10,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.UG Formalism.
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `haveI : Nontrivial (FiniteAdeleRing (𝓞 D.host.F) D.host.F) := by`. Take `⟨P, hP⟩` from `Ideal.exists_maximal (𝓞 D.host.F)`. Establish `hne : P ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField _)`. Conclude with `(evalV D.host.F ⟨P, hP.isPrime, hne⟩).toRingHom.domain_nontrivial`. Use `haveI : Nontrivial (D.host.E ⊗[D.host.F] FiniteAdeleRing (𝓞 D.host.F) D.host.F) := inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a b hab`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Apply `(inclE (F := D.host.F) (E := D.host.E) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)).injective` to reduce the goal to its premises. Establish `h2` using `congrArg (fun g : GL (Fin D.R.k) _ => g.val i j) hab`. Simplify `h2` using `[bc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem bc_inclE_injective (D : D7) :
     Function.Injective
@@ -31,7 +31,7 @@ theorem bc_inclE_injective (D : D7) :
   simpa [bc] using h2
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.IndefiniteRowSideFullHecke.ColumnStabiliser.map_colStab D Lv u y).symm`.
+A detailed English derivation is pending.
 -/
 theorem stabGroup_eq_map (D : D7) (Lv : LevelData D) (u : D.what₂.Word)
     (y : GlobalTheory.IndefiniteRowSideFullHecke.TrivialColumnStabiliser.GAf D) :
@@ -46,7 +46,7 @@ def stabEquiv (D : D7) (Lv : LevelData D) (u : D.what₂.Word) (y : GlobalTheory
     (MulEquiv.subgroupCongr (stabGroup_eq_map D Lv u y).symm)
 
 /- English proof (translation)
-Rewrite using `[stabGroup_eq_map, Subgroup.map_eq_bot_iff_of_injective _ (bc_inclE_injective D)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem stabGroup_eq_bot_iff (D : D7) (Lv : LevelData D) (u : D.what₂.Word)
     (y : GlobalTheory.IndefiniteRowSideFullHecke.TrivialColumnStabiliser.GAf D) :
@@ -54,7 +54,7 @@ theorem stabGroup_eq_bot_iff (D : D7) (Lv : LevelData D) (u : D.what₂.Word)
   rw [stabGroup_eq_map, Subgroup.map_eq_bot_iff_of_injective _ (bc_inclE_injective D)]
 
 /- English proof (translation)
-Use `imp_congr_right fun _ => imp_congr_right fun _ => ?_` and prove the remaining obligations. Conclude with `⟨fun h y => (stabGroup_eq_bot_iff D Lv u y).1 (h y.1 y.2), fun h y hy => (stabGroup_eq_bot_iff D Lv u ⟨y, hy⟩).2 (h ⟨y, hy⟩)⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem at_iff (D : D7) (Lv : LevelData D) (u : D.what₂.Word) :
     (GBig D → (∀ i : Fin 2, SplitsF D (D.host.g i)) →
@@ -65,7 +65,7 @@ theorem at_iff (D : D7) (Lv : LevelData D) (u : D.what₂.Word) :
     fun h y hy => (stabGroup_eq_bot_iff D Lv u ⟨y, hy⟩).2 (h ⟨y, hy⟩)⟩
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun D => forall_congr' fun Lv => forall_congr' fun u => at_iff D Lv u`.
+A detailed English derivation is pending.
 -/
 theorem columnStabilisersTrivial_iff :
     GlobalTheory.IndefiniteRowSideFullHecke.TrivialColumnStabiliser.ColumnStabilisersTrivial ↔ GlobalTheory.IndefiniteRowSideFullHecke.ColumnStabiliser.ColStabTrivial :=

@@ -15,9 +15,9 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
   {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨twistBundle S x 0, rfl⟩`. Consider the case `succ n ih`. Take `⟨Q', hQ'⟩` from `ih`. Take `⟨Q'', hQ''⟩` from `hLT S Ω N x Q' Q`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Q'', by rw [hQ'', hQ']; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lineBundle_pow (hLT : LineTwist.Statement.{u, w}) (Q : LineBundle S x) (n : ℕ) :
     ∃ Q' : LineBundle S x, Q'.toSubSystem = Q.toSubSystem.pow n := by
@@ -29,7 +29,7 @@ theorem exists_lineBundle_pow (hLT : LineTwist.Statement.{u, w}) (Q : LineBundle
     exact ⟨Q'', by rw [hQ'', hQ']; rfl⟩
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `exists_lineBundle_pow hLT M a`. Take `⟨Q, hQ⟩` from `hLT S Ω N x P (twistBundle S x c)`. Conclude with `⟨Q, by rw [hQ, hP]; rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lineBundle_twistMulOf (hLT : LineTwist.Statement.{u, w}) (M : LineBundle S x) (a : ℕ)
     (c : ℤ) : ∃ Q : LineBundle S x, Q.toSubSystem = twistMul M.toSubSystem a c := by
@@ -40,11 +40,11 @@ theorem exists_lineBundle_twistMulOf (hLT : LineTwist.Statement.{u, w}) (M : Lin
 variable {K' : Type w} [Field K'] [Algebra S K'] {y : Fin (N + 1) → K'}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Take `⟨r', hr'⟩` from `hRT.1 S Ω N x K' y hxy hle 0`. Conclude with `⟨twistBundle S x 0, twistBundle S y 0, r', rfl, rfl, hr'⟩`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨Q, Q', r', hQ, hQ', hr⟩` from `ih`. Take `⟨Qn, hQn⟩` from `hLT S Ω N x Q M`. Take `⟨Qn', hQn'⟩` from `hLT S K' N y Q' M'`. Take `⟨r'', hr''⟩` from `hRT.2 S Ω N x K' y hxy Q M Q' M' r' r hr h`. Use `⟨Qn, Qn', r'', by rw [hQn, hQ]; rfl, by rw [hQn', hQ']; rfl, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hQn, hQn']`. Conclude with `hr''`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_restrict_pow (hLT : LineTwist.Statement.{u, w}) (hRT : RestrictTwist.Statement.{u, w})
     (hxy : ∀ i, y i ≠ 0 → x i ≠ 0) (hle : primeOf (S := S) x ≤ primeOf (S := S) y)
@@ -66,9 +66,9 @@ theorem exists_restrict_pow (hLT : LineTwist.Statement.{u, w}) (hRT : RestrictTw
     exact hr''
 
 /- English proof (translation)
-Take `⟨P, P', rP, hP, hP', hrP⟩` from `exists_restrict_pow hLT hRT hxy hle M M' r h a`. Take `⟨rc, hrc⟩` from `hRT.1 S Ω N x K' y hxy hle c`. Take `⟨L, hL⟩` from `hLT S Ω N x P (twistBundle S x c)`. Take `⟨L', hL'⟩` from `hLT S K' N y P' (twistBundle S y c)`. Take `⟨rL, hrL⟩` from `hRT.2 S Ω N x K' y hxy P (twistBundle S x c) P' (twistBundle S y c) rP rc hrP hrc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, Q', r', hQ, hQ', hr'⟩` from `exists_restrict_pow hLT hRT hxy hle L L' rL (by rw [hL, hL']; exact hrL) b`. Use `⟨Q, Q', r', ?_, ?_, hr'⟩` and prove the remaining obligations. Rewrite using `[hQ, hL, hP]`. Both sides reduce to the same expression. Rewrite using `[hQ', hL', hP']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -98,31 +98,29 @@ section OnW
 variable {k : Type u} [Field k] {Ω : Type w} [Field Ω] [Algebra k Ω] {N : ℕ} {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Take `⟨j, hjp⟩` from `hrel`. Establish `hj : x j ≠ 0` using `fun h0 => hjp (hle ((mem_primeOf_of_isHomogeneous x (isHomogeneous_X k j)).mpr (by rw [aeval_X]; exact h0)))`. Take `⟨hcp, hpt⟩` from `hPt k Ω N x pp hpr hhom hle j hj hjp`. Use `hcp` as an intermediate fact. Set `A` to `chartRing k x (singleChart hj)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `I : Ideal A` to `chartPrime pp hj`. Set `ψ : A →ₐ[k] I.ResidueField` to `IsScalarTower.toAlgHom k A I.ResidueField`. Establish `hker : RingHom.ker ψ = I` using `Ideal.ker_algebraMap_residueField I`. Establish `hxy : ∀ i, ψ (ratio hj i) ≠ 0 → x i ≠ 0`. Introduce `i h hx`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `h` to reduce the goal to its premises. Establish `h0 : ratio (S` using `k) hj i = 0 := Subtype.ext (by change x i / x j = 0; rw [hx, zero_div])`. Rewrite using `[h0, map_zero]`. Establish `hpy : primeOf (S` using `k) (fun i => ψ (ratio hj i)) = pp := hpt _ ψ hker`. Establish `hxy' : primeOf (S` using `k) x ≤ primeOf (S := k) (fun i => ψ (ratio hj i)) := hpy ▸ hle`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨f, e₀, hfJ, hfh, hfq⟩` from `hJP k Ω N x T`. Take `⟨e, he, hsub⟩` from `hDrop k Ω N x T.d pp T.dim hpr hhom hle ⟨j, hjp⟩ ⟨f, hJ f e₀ hfJ hfh, hfq⟩`. Establish `hsubW : IsSubvar (fun i => ψ (ratio hj i)) (primeOf (S` using `k) (fun i => ψ (ratio hj i))) e := by`. Rewrite using `[hpy]`. Conclude with `⟨hsub.isPrime, hsub.homog, le_of_eq hpy, hsub.relevant, hsub.dim⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨M', rM, hM'⟩` from `hRes k Ω N x pp hpr hhom hle j hj hjp _ ψ hker hxy T.M`. Establish `hRM : RestrictData T.M.toSubSystem hxy M'.toSubSystem rM` using `⟨fun I => (hM' I).1, fun I => (hM' I).2.1, fun I => (hM' I).2.2.1, fun I => (hM' I).2.2.2⟩`. Establish `hnef : Nef M'.toSubSystem` using `hNR k Ω N x _ _ hxy hxy' T.M M' rM hRM T.nef`. Establish `hts : 0 < T.t - T.s'`. Establish `hd : (1 : ℚ) ≤ (T.d : ℚ) + 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Nat.cast_nonneg T.d : (0 : ℚ) ≤ T.d)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ht : 0 < T.t`. Assume the negation of the conclusion as `hneg'`. Establish `hneg : T.t ≤ 0` using `not_lt.mp hneg'`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: T.t / ((T.d : ℚ) + 1) ≤ 0` using `div_nonpos_of_nonpos_of_nonneg hneg (by positivity)`. Combine the linear relations using `[T.s'_pos, T.s'_lt]`. Establish `: T.t / ((T.d : ℚ) + 1) ≤ T.t` using `div_le_self ht.le hd`. Combine the linear relations using `[T.s'_lt]`. Take `⟨q, m', hq, hm', hva⟩` from `hK e he _ N _ M' hsubW hnef (T.t - T.s') hts`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨rr, h, hvb⟩` from `hva`. Establish `hqm : (q : ℤ) * T.m = T.p * m'`. Establish `: (((q : ℤ) * T.m : ℤ) : ℚ) = ((T.p * m' : ℤ) : ℚ)` using `by push_cast; rw [T.m_eq, hm']; ring`. Conclude with `this` after adjusting the coercions. Take `⟨B, hB⟩` from `exists_lineBundle_twistMulOf hLT M' q m'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨L', hL'⟩` from `exists_lineBundle_twistMulOf hLT M' T.p T.m`. Establish `hv : ∀ b₂ : ℕ, ∃ c₀ : ℤ, ∀ (b' : ℕ) (c : ℤ), c₀ ≤ c → Subsingleton (((((twistMul M'.toSubSystem T.p T.m).pow b₂).twist ((twistMul M'.toSubSystem q m').pow b')).twist (twistSys k (fun i => ψ (ratio hj i)) c)).H 1)`. Introduce `b₂`. Take `⟨G, hG⟩` from `exists_lineBundle_pow hLT L' b₂`. Take `⟨c₀, hc₀⟩` from `hTV k _ N _ G B rr h (fun l => by rw [hB]; exact hvb.mem_secs l) (fun I => by rw [hB]; exact hvb.generates I)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c₀, fun b' c hc => ?_⟩` and prove the remaining obligations. Establish `hs` using `hc₀ b' c hc`. Rewrite `hs` using `[hG, hL', hB]`. Then use the resulting hypothesis. Use `choose cv hcv using hv`. Use `⟨∑ b₂ ∈ Finset.range q, |cv b₂|, fun b Q hQ c hc => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Qb, Qb', r', hQb, hQb', hrd⟩` from `exists_restrict_twistMul_pow hLT hRT hxy hxy' T.M M' rM hRM T.p T.m b`. Take `⟨eqv⟩` from `hRQ k Ω N x pp hpr hhom hle j hj hjp _ ψ hker hxy Qb Qb' r' hrd c 1`. Establish `hQbQ : Qb.toSubSystem = Q.toSubSystem` using `by rw [hQb, hQ]; rfl`. Establish `hW : Qb'.toSubSystem = ((twistMul M'.toSubSystem T.p T.m).pow (b % q)).twist ((twistMul M'.toSubSystem q m').pow (T.p * (b / q)))`. Rewrite using `[hQb', ← hTA k _ N _ M'.toSubSystem T.p q T.m m' (b / q) (b % q) hqm, Nat.div_add_mod b q]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : b % q < q` using `Nat.mod_lt b (by omega)`. Establish `hcb : cv (b % q) ≤ c` using `le_trans (le_abs_self _) (le_trans (Finset.single_le_sum (f := fun b₂ => |cv b₂|) (fun _ _ => abs_nonneg _) (Finset.mem_range.mpr hlt)) hc)`. Establish `hs : Subsingleton ((Qb'.twist (twistSys k (fun i => ψ (ratio hj i)) c)).H 1)`. Rewrite using `[hW]`. Conclude with `hcv (b % q) (T.p * (b / q)) c hcb`.
-
-Rewrite using `[← hQbQ]`. Conclude with `@Equiv.subsingleton _ _ eqv.toEquiv hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem StepTwo.onW (hLT : LineTwist.Statement.{u, w}) (hTA : TwistAlg.Statement.{u, w})
     (hRT : RestrictTwist.Statement.{u, w}) (hNR : NefRestrict.Statement.{u, w})
@@ -216,13 +214,13 @@ theorem StepTwo.onW (hLT : LineTwist.Statement.{u, w}) (hTA : TwistAlg.Statement
 end OnW
 
 /- English proof (translation)
-Introduce `k _ Ω _ _ N x T hK E _ _ _ _ M₁ M₂ hle hJ`. Take `⟨n, pr, sh, hpr, hred⟩` from `hRed k Ω N x E M₁ M₂ hle T.J hJ`. Establish `hLpow : ∀ b : ℕ, ∃ Q : LineBundle k x, Q.toSubSystem = T.L.pow b` using `fun b => by`. Take `⟨L, hL⟩` from `exists_lineBundle_twistMulOf hLT T.M T.p T.m`. Take `⟨Q, hQ⟩` from `exists_lineBundle_pow hLT L b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Q, by rw [hQ, hL]; rfl⟩`. Use `choose Qb hQb using hLpow`. Establish `hW : ∀ i, ∃ c₁ : ℤ, (∃ j, (X j : Poly k N) ∉ pr i) → ∀ (b : ℕ) (c : ℤ), c₁ ≤ c → Subsingleton (SubSystem.quotH ((Qb b).twist (twistSys k x c)) (((Qb b).twist (twistSys k x c)).twist (idealSys x (pr i))) 1)`. Introduce `i`. Distinguish the cases in `hrel : ∃ j, (X j : Poly k N) ∉ pr i`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨c₁, hc₁⟩` from `StepTwo.onW hLT hTA hRT hNR hJP hDrop hPt hRes hRQ hTV T hK (pr i) (hpr i).1 (hpr i).2.1 (hpr i).2.2.1 (hpr i).2.2.2 hrel`. Conclude with `⟨c₁, fun _ b c hc => hc₁ b (Qb b) (hQb b) c hc⟩`. Conclude with `⟨0, fun h => absurd h hrel⟩`. Use `choose cw hcw using hW`. Use `⟨∑ i, |cw i - sh i|, fun b c hc => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `hred (Qb b) c (fun i hi => hcw i hi b (c + sh i) (by`. Establish `h1 : |cw i - sh i| ≤ ∑ i, |cw i - sh i|` using `Finset.single_le_sum (f := fun i => |cw i - sh i|) (fun _ _ => abs_nonneg _) (Finset.mem_univ i)`. Establish `h2` using `le_abs_self (cw i - sh i)`. Use the proof step `linarith))`. Rewrite `hs` using `[hQb b]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem StepTwo.proof (hRed : StepTwo.Reduce.Statement.{u, v, w}) (hLT : LineTwist.Statement.{u, w})
     (hTA : TwistAlg.Statement.{u, w}) (hRT : RestrictTwist.Statement.{u, w})

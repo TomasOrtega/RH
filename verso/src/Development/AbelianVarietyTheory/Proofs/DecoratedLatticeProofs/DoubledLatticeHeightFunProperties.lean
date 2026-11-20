@@ -16,7 +16,7 @@ namespace GlobalTheory.Core.Rk.IP
 variable {D : D7} (A : HSp D) (L : Lat A) (a : GL (Fin A.rank) (AE D))
 
 /- English proof (translation)
-Use `haveI : Submodule.IsLattice D.host.E L := hL.1`. Establish `hI` using `GlobalTheory.T.adelicIwasawa_doubledGroup_selfDualLattice D A L a hL ha`. Rewrite using `[hgtL, hI.hgtAd_eq (isCMExt_host D)]`. Simplify using `only [io, proj_ioH, projArch_ioH, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hgtL_eq_prod (hL : IsSelfDualC A L) (ha : IsMaj A a) (g : GA D A) : hgtL A L a g = (∏ w, hgtArch D.sp.cm.sig (dblSp A).gram w (Formalism.UG.bc (compInf _ _ w) a)
       (ioH _ D.sp.cm.sig (gram_hdbl A) (projArch D.sp.cm.sig A.gram w g, 1))) *
@@ -27,9 +27,9 @@ theorem hgtL_eq_prod (hL : IsSelfDualC A L) (ha : IsMaj A a) (g : GA D A) : hgtL
   simp only [io, proj_ioH, projArch_ioH, map_one]
 
 /- English proof (translation)
-Use `haveI : Submodule.IsLattice D.host.E L := hL.1`. Set `H : Subgroup (GA D A)` to `⨅ (v) (_ : v ∉ Sf), (stabLoc D.sp.cm.sig A.gram L v).comap (proj D.sp.cm.sig A.gram v)`. Establish `hH : (H : Set (GA D A)) = openOff A L Sf`. Use extensionality with `g`. Simplify using `[H, openOff, Subgroup.mem_iInf, Subgroup.mem_comap]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hH]`. Use `Subgroup.isOpen_mono (H₁ := levelOpen D.sp.cm.sig A.gram L) (fun g hg => ?_) (isOpen_levelOpen _ _ _)` and prove the remaining obligations. Simplify using `only [H, Subgroup.mem_iInf, Subgroup.mem_comap]`. Conclude with `fun v _ => (mem_levelOpen.1 hg) v`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem isOpen_openOff (hL : IsSelfDualC A L) (Sf : Finset (FinPl D)) : IsOpen (openOff A L Sf) := by
   haveI : Submodule.IsLattice D.host.E L := hL.1
@@ -43,7 +43,7 @@ theorem isOpen_openOff (hL : IsSelfDualC A L) (Sf : Finset (FinPl D)) : IsOpen (
   exact fun v _ => (mem_levelOpen.1 hg) v
 
 /- English proof (translation)
-Use `haveI : Submodule.IsLattice D.host.E L := hL.1`. Use `haveI := t2Space_adeleRing' (F := D.host.F)`. Establish `hI` using `GlobalTheory.T.adelicIwasawa_doubledGroup_selfDualLattice D A L a hL ha`. Use `show Continuous fun g => hgtAd D.sp.cm.sig (dblSp A).gram L a (io A (g, 1))`. Conclude with `(hI.continuous_hgtH continuous_absE (isCompact_KAd (isCMExt_host D))).comp ((continuous_io A).comp (continuous_id.prodMk continuous_const))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_hgtL (hL : IsSelfDualC A L) (ha : IsMaj A a) : Continuous (hgtL A L a) := by
   haveI : Submodule.IsLattice D.host.E L := hL.1
@@ -54,9 +54,9 @@ theorem continuous_hgtL (hL : IsSelfDualC A L) (ha : IsMaj A a) : Continuous (hg
     ((continuous_io A).comp (continuous_id.prodMk continuous_const))
 
 /- English proof (translation)
-Rewrite using `[hgtL_eq_prod A L a hL ha g]`. Use `mul_le_one' (Finset.prod_le_one' fun w _ => ?_) ?_` and prove the remaining obligations. Use `GlobalTheory.T.doublingHeightAtRealPlace_le_one D A a ha w (projArch D.sp.cm.sig A.gram w g)` as an intermediate fact. Simplify `this` using `[GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtW]`. Distinguish the cases in `hf : (Function.mulSupport fun v => hgtFin D.sp.cm.sig (dblSp A).gram L v (ioH _ D.sp.cm.sig (gram_hdbl A) (proj D.sp.cm.sig A.gram v g, 1))).Finite`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[finprod_eq_prod _ hf]`. Conclude with `Finset.prod_le_one' fun v _ => GlobalTheory.T.siegelHeightFinitePlace_doublingEmbedding_le_one D A L hL v _`. Rewrite using `[finprod_of_infinite_mulSupport hf]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hgtL_le_one (hL : IsSelfDualC A L) (ha : IsMaj A a) (g : GA D A) : hgtL A L a g ≤ 1 := by
   rw [hgtL_eq_prod A L a hL ha g]
@@ -70,9 +70,9 @@ theorem hgtL_le_one (hL : IsSelfDualC A L) (ha : IsMaj A a) (g : GA D A) : hgtL 
     · rw [finprod_of_infinite_mulSupport hf]
 
 /- English proof (translation)
-Use `haveI : Submodule.IsLattice D.host.E L := hL.1`. Rewrite using `[hgtL_eq_prod A L a hL ha g]`. Establish `hsub : (Function.mulSupport fun v => hgtFin D.sp.cm.sig (dblSp A).gram L v (ioH _ D.sp.cm.sig (gram_hdbl A) (proj D.sp.cm.sig A.gram v g, 1))) ⊆ (Sf : Set (FinPl D))`. Introduce `v hv`. Assume the negation of the conclusion as `hvS`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv (hgtH_of_mem (continuous_absEv v) (isCompact_KFin v) ((ioH_mem_KFin (gram_hdbl A)).2 ⟨hg v hvS, one_mem _⟩))`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsub]`. Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hgtL_eq_prod_off (hL : IsSelfDualC A L) (ha : IsMaj A a) (Sf : Finset (FinPl D)) (g : GA D A)
     (hg : g ∈ openOff A L Sf) : (hgtL A L a g : ℝ) = (∏ w, GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtW A a w (projArch D.sp.cm.sig A.gram w g)) *
@@ -90,7 +90,7 @@ theorem hgtL_eq_prod_off (hL : IsSelfDualC A L) (ha : IsMaj A a) (Sf : Finset (F
   rfl
 
 /- English proof (translation)
-Introduce `D A L a hL ha`. Conclude with `⟨continuous_hgtL A L a hL ha, fun g => ⟨hgtH_pos _, hgtL_le_one A L a hL ha g⟩, fun Sf => ⟨isOpen_openOff A L hL Sf, fun g hg => hgtL_eq_prod_off A L a hL ha Sf g hg⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem hgtL_props : ∀ (D : D7) (A : HSp D) (L : Lat A) (a : GL (Fin A.rank) (AE D)), IsSelfDualC A L → IsMaj A a → Continuous (hgtL A L a) ∧ (∀ g, 0 < hgtL A L a g ∧ hgtL A L a g ≤ 1) ∧ ∀ (Sf : Finset (FinPl D)), IsOpen (openOff A L Sf) ∧ ∀ g ∈ openOff A L Sf, (hgtL A L a g : ℝ) = (∏ w, GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtW A a w (projArch D.sp.cm.sig A.gram w g)) * ∏ v ∈ Sf, GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtV A L v (proj D.sp.cm.sig A.gram v g) := by
   intro D A L a hL ha

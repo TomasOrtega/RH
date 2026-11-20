@@ -21,11 +21,11 @@ open TensorProduct
 namespace GlobalTheory.InertKU
 
 /- English proof (translation)
-Establish `key : ALint L ≤ (Formalism.UG.tensInt (F` using `maximalRealSubfield L) (v.adicCompletion (maximalRealSubfield L)) (Formalism.UG.intOE L) (Formalism.UG.Ov (maximalRealSubfield L) v)).comap (compAt L v) := by`. Rewrite using `[ALint, Subring.closure_le]`. Introduce and unpack `_ (⟨y, rfl⟩ | ⟨a, ha, rfl⟩)`. Apply `Subring.subset_closure left` to reduce the goal to its premises. Use `⟨⟨(y : L), y, rfl⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.InertUmax.compAt_tmul]`. Both sides reduce to the same expression. Apply `Subring.subset_closure right` to reduce the goal to its premises. Use `⟨⟨a v, ha v⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.InertUmax.compAt_tmul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key hz`.
+A detailed English derivation is pending.
 -/
 theorem compAt_mem_tensInt (L : Type) [Field L] [NumberField L] [IsCMField L]
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) {z : AL L} (hz : z ∈ ALint L) :
@@ -49,11 +49,11 @@ theorem compAt_mem_tensInt (L : Type) [Field L] [NumberField L] [IsCMField L]
   exact key hz
 
 /- English proof (translation)
-Set `M : Matrix (Fin n) (Fin n) S` to `fun i j => ⟨_, hg i j⟩`. Set `M' : Matrix (Fin n) (Fin n) S` to `fun i j => ⟨_, hg' i j⟩`. Establish `hM : (RingHom.mapMatrix S.subtype) M = (g : Matrix (Fin n) (Fin n) K)` using `rfl`. Establish `hM' : (RingHom.mapMatrix S.subtype) M' = ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)` using `rfl`. Establish `inj : Function.Injective (RingHom.mapMatrix (m` using `Fin n) S.subtype) := by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `A B h`. Use extensionality with `i j`. Conclude with `congrFun (congrFun h i) j`. Establish `h1 : M * M' = 1` using `inj (by rw [map_mul, map_one, hM, hM']; exact Units.mul_inv g)`. Establish `h2 : M' * M = 1` using `inj (by rw [map_mul, map_one, hM, hM']; exact Units.inv_mul g)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨M, M', h1, h2⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_range_bc_of_entries {K : Type} [Field K] (S : Subring K) {n : ℕ} (g : GL (Fin n) K)
     (hg : ∀ i j, (g : Matrix (Fin n) (Fin n) K) i j ∈ S)
@@ -74,7 +74,7 @@ theorem mem_range_bc_of_entries {K : Type} [Field K] (S : Subring K) {n : ℕ} (
   rfl
 
 /- English proof (translation)
-Unfold `InertDatum.loc`. Simplify using `only [InvMemClass.coe_inv, map_inv]`. Use `group`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_inv (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L))
@@ -84,9 +84,9 @@ theorem loc_inv (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
   group
 
 /- English proof (translation)
-Establish `hP` using `GlobalTheory.InertUmax.entries_mem_of_range _ _ Dv.Pint`. Establish `hP'` using `GlobalTheory.InertUmax.entries_mem_of_range _ _ (inv_mem Dv.Pint)`. Establish `hE : ∀ l k, ((Formalism.UG.bc (n` using `Fin n) (Dv.e : L ⊗[maximalRealSubfield L] v.adicCompletion (maximalRealSubfield L) →+* w.adicCompletion L) (Matrix.GeneralLinearGroup.map (compAt L v) (y : GL (Fin n) (AL L))) : GL (Fin n) _) : Matrix (Fin n) (Fin n) (w.adicCompletion L)) l k ∈ Formalism.UG.intL (w.adicCompletion …`. Unfold `InertDatum.loc`. Simplify using `only [Units.val_mul, Matrix.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Conclude with `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hP' i l) (hE l k)) (hP k j)`.
+A detailed English derivation is pending.
 -/
 theorem loc_entries_mem (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L))
@@ -106,9 +106,9 @@ theorem loc_entries_mem (L : Type) [Field L] [NumberField L] [IsCMField L] (n : 
     (Subring.sum_mem _ fun l _ => Subring.mul_mem _ (hP' i l) (hE l k)) (hP k j)
 
 /- English proof (translation)
-Introduce `L _ _ _ n v w Dv x hx hg`. Rewrite using `[Formalism.UG.KU, Subgroup.mem_subgroupOf]`. Use `⟨hg, ?_⟩` and prove the remaining obligations. Apply `mem_range_bc_of_entries` to reduce the goal to its premises. Conclude with `loc_entries_mem L n v w Dv x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Rewrite using `[← loc_inv]`. Conclude with `loc_entries_mem L n v w Dv x⁻¹ (inv_mem hx) i j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_mem_KU : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)) (Dv : InertDatum L n v w) (x : GAf L n), x ∈ Umax L n → ∀ hg : Dv.loc x ∈ Formalism.UG.GU Dv.σw n, (⟨Dv.loc x, hg⟩ : Formalism.UG.GU Dv.σw n) ∈ Formalism.UG.KU Dv.σw n := by
   intro L _ _ _ n v w Dv x hx hg

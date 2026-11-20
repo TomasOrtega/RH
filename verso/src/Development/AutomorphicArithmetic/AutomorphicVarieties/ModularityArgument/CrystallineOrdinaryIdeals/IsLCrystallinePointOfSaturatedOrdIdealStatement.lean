@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module UpperTheory.V.Loc UpperTheory.V.U3 UpperTheory.V.Alg IsLocalRing Polynomial Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.OrdLocPt.main` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicArithmetic%2FAutomorphicVarieties%2FModularityArgument%2FCrystallineOrdinaryIdeals%2FIsLCrystallinePointOfSaturatedOrdIdeal.lean&line=15#L15)
 -/

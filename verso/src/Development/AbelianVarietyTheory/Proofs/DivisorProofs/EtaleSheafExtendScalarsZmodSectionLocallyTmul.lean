@@ -8,11 +8,9 @@ open scoped ChangeOfRings
 namespace GlobalTheory.EtC.ExtOnto
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by rw [map_zero]; rfl⟩`. Consider the case `tmul s m`. Take `⟨r, rfl⟩` from `hf s`. Use `⟨r • m, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `erw [ModuleCat.ExtendRestrictScalarsAdj.unit_app, map_smul, ModuleCat.restrictScalars.smul_def]`. Conclude with `(ModuleCat.ExtendScalars.smul_tmul (M := N) f (f r) 1 m).trans (congrArg (fun t : S => t ⊗ₜ[R,f] m) (mul_one _))`. Consider the case `add x y hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`.
-
-Conclude with `⟨a + b, by rw [map_add, ha, hb]; rfl⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem unit_surjective {R S : Type 1} [CommRing R] [CommRing S] (f : R →+* S) (hf : Function.Surjective f)
     (N : ModuleCat.{1} R) (z : (ModuleCat.extendScalars.{1,1,1} f).obj N) :
@@ -30,7 +28,7 @@ theorem unit_surjective {R S : Type 1} [CommRing R] [CommRing S] (f : R →+* S)
     exact ⟨a + b, by rw [map_add, ha, hb]; rfl⟩
 
 /- English proof (translation)
-Introduce `s`. Take `⟨r, hr⟩` from `hφ s.down`. Conclude with `⟨⟨r⟩, ULift.ext _ _ hr⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem uliftHom_surjective {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (hφ : Function.Surjective φ) :
     Function.Surjective (uliftHom φ) := by
@@ -39,9 +37,9 @@ theorem uliftHom_surjective {R S : Type} [CommRing R] [CommRing S] (φ : R →+*
   exact ⟨⟨r⟩, ULift.ext _ _ hr⟩
 
 /- English proof (translation)
-Introduce `Q q _ hq M U y`. Establish `hs` using `uliftHom_surjective (ZMod.castHom hq (ZMod q)) (ZMod.ringHom_surjective _)`. Establish `h1` using `(GlobalTheory.T.etaleToSheafify_locally_bijective_and_lift (ZMod q) (M.obj ⋙ ModuleCat.extendScalars.{1, 1, 1} (uliftHom (ZMod.castHom hq (ZMod q))))).1 U y`. Use `GlobalTheory.EtC.loc_calculus.2.1 _ _ _ h1 ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨z, hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨m, hm⟩` from `unit_surjective _ hs (M.obj.obj (op V)) z`. Use `⟨m, ?_⟩` and prove the remaining obligations. Substitute `hm` using the available equality. Conclude with `hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ext_onto : ∀ (Q q : ℕ) [NeZero Q] (hq : q ∣ Q) (M : Shv (ZMod Q)) (U : Scheme.{0})
     (y : Sec ((extSh (ZMod.castHom hq (ZMod q))).obj M) U),

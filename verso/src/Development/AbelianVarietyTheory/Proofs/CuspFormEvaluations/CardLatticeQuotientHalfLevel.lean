@@ -13,11 +13,11 @@ namespace GlobalTheory
 open scoped TensorProduct in
 
 /- English proof (translation)
-Establish `hA : Finite (Ideal (R ⧸ I))` using `Finite.of_injective (fun J : Ideal (R ⧸ I) => (J : Set (R ⧸ I))) SetLike.coe_injective`. Establish `hMS : Finite (MaximalSpectrum (R ⧸ I))` using `Finite.of_injective (fun m : MaximalSpectrum (R ⧸ I) => m.asIdeal) (fun a b h => MaximalSpectrum.ext h)`. Establish `rk : ∀ P : MaximalSpectrum (R ⧸ I), Module.finrank ((R ⧸ I) ⧸ P.1) (((R ⧸ I) ⧸ P.1) ⊗[R ⧸ I] ((R ⧸ I) ⊗[R] N)) = Module.finrank R N`. Introduce `P`. Establish `hP` using `P.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `_ : Field ((R ⧸ I) ⧸ P.1)` to `Ideal.Quotient.field P.1`. Rewrite using `[(TensorProduct.AlgebraTensorModule.cancelBaseChange R (R ⧸ I) ((R ⧸ I) ⧸ P.1) ((R ⧸ I) ⧸ P.1) N).finrank_eq]`. Establish `h1` using `congrFun (Module.rankAtStalk_eq_finrank_of_free (R := (R ⧸ I) ⧸ P.1) (M := ((R ⧸ I) ⧸ P.1) ⊗[R] N)) ⟨⊥, Ideal.isPrime_bot⟩`. Rewrite `h1` using `[Module.rankAtStalk_baseChange, Pi.natCast_apply, Nat.cast_id]`. Rewrite using `[← h1]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `PrimeSpectrum.comap (algebraMap R ((R ⧸ I) ⧸ P.1)) ⟨⊥, Ideal.isPrime_bot⟩ = q`. Take `⟨p, hp⟩` from `q`. Rewrite using `[← Ideal.finrank_fiber_eq_rankAtStalk, Ideal.finrank_fiber_eq_finrank]`. Take `⟨b⟩` from `Module.nonempty_basis_of_flat_of_finrank_eq (R ⧸ I) ((R ⧸ I) ⊗[R] N) (Module.finrank R N) rk`. Combine the equalities or inequalities in the displayed calculation.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 -/
 theorem natCard_quot_smul_top_of_projective {R N : Type} [CommRing R] [IsDomain R] [AddCommGroup N] [Module R N]
     [Module.Finite R N] [Module.Projective R N] (I : Ideal R) [Finite (R ⧸ I)] :
@@ -48,13 +48,11 @@ theorem natCard_quot_smul_top_of_projective {R N : Type} [CommRing R] [IsDomain 
     _ = Nat.card (R ⧸ I) ^ Module.finrank R N := by simp [Nat.card_fun]
 
 /- English proof (translation)
-Establish `h1 : Ideal.absNorm (l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)) = Ideal.absNorm l.Mb`. Simplify using `only [Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Conclude with `Nat.card_congr (Ideal.quotientEquiv l.Mb _ H.bar rfl).toEquiv.symm`. Establish `h2` using `congrArg Ideal.absNorm l.prod`. Rewrite `h2` using `[map_mul, h1, Ideal.absNorm_span_singleton]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (Algebra.norm ℤ ((l.M : ℕ) : 𝓞 E)).natAbs = l.M ^ Module.finrank ℚ E`. Establish `: ((l.M : ℕ) : 𝓞 E) = algebraMap ℤ (𝓞 E) (l.M : ℤ)` using `by simp`. Rewrite using `[this, Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank]`. Simplify using `[Int.natAbs_pow]`. Establish `hev : Module.finrank ℚ E = 2 * FD.fdeg E`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E`. Rewrite `h` using `[Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E]`. Unfold `FD.fdeg`. Use linear arithmetic over natural numbers and integers. Rewrite `h2` using `[h3, hev, pow_mul', ← sq]`.
-
-Conclude with `Nat.pow_left_injective two_ne_zero h2`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_level_half {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (l : Level H) :
     Ideal.absNorm l.Mb = l.M ^ FD.fdeg E := by
@@ -76,13 +74,11 @@ theorem absNorm_level_half {E : Type} [Field E] [NumberField E] [IsCMField E] {H
   exact Nat.pow_left_injective two_ne_zero h2
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l`. Unfold `LevQ`. Use `Dw.fin` as an intermediate fact. Use `Dw.proj` as an intermediate fact. Establish `hN` using `absNorm_level_half l`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (𝓞 E ⧸ l.Mb)`. Rewrite using `[← Ideal.absNorm_ne_zero_iff, hN]`. Conclude with `pow_ne_zero _ (by have := l.three_le; omega)`. Establish `hc` using `natCard_quot_smul_top_of_projective (N := Dw.La) l.Mb`. Establish `hq : Nat.card (𝓞 E ⧸ l.Mb) = l.M ^ FD.fdeg E`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hN, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite `hc` using `[Dw.rank, hq, ← pow_mul]`. Use `⟨?_, hc⟩` and prove the remaining obligations. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[hc]`.
-
-Conclude with `pow_ne_zero _ (by have := l.three_le; omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_levQ : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H),
     Finite (LevQ Dw l) ∧ Nat.card (LevQ Dw l) = l.M ^ (FD.fdeg E * (Dw.p + Dw.q)) := by

@@ -20,7 +20,7 @@ def blkW : (Σ k, ι k) → K → ℕ := fun p => Pi.single p.1 1
 open Classical in
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite using `[← h (mem_support_iff.mp hm), Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_sigma, Finset.sum_eq_single k]`. Simplify using `[blkW]`. Introduce `b _ hb`. Simplify using `[blkW, Ne.symm hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -38,11 +38,11 @@ omit [Fintype K] in
 open Classical in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k'`. Rewrite using `[Finset.sum_apply]`. Distinguish the cases in `h : ∃ k, κ k = k'`. Take `⟨k, rfl⟩` from `h`. Rewrite using `[hκ.extend_apply, Finset.sum_eq_single k]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hκ.ne hb]`. Simplify using the standard rewrite rules. Rewrite using `[Function.extend_apply' _ _ _ h]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Establish `hk : k' ≠ κ k` using `fun e => h ⟨k, e.symm⟩`. Simplify using `[hk]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sum_single_eq_extend {K₀ : Type} [Fintype K₀] (κ : K₀ → K) (hκ : Function.Injective κ) (α : K₀ → ℕ) :
     (∑ k, α k • (Pi.single (κ k) 1 : K → ℕ)) = Function.extend κ α 0 := by
@@ -63,18 +63,18 @@ theorem sum_single_eq_extend {K₀ : Type} [Fintype K₀] (κ : K₀ → K) (hκ
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-The claim follows from `IsWeightedHomogeneous.prod _ _ _ fun k _ => (isWeightedHomogeneous_X ℤ _ (q k)).pow (α k)`.
+A detailed English derivation is pending.
 -/
 theorem wh_prod_X_pow {K₀ : Type} [Fintype K₀] (q : K₀ → Σ k, ι k) (α : K₀ → ℕ) :
     IsWeightedHomogeneous (blkW (ι := ι)) (∏ k, (X (q k) : MRing ι) ^ α k) (∑ k, α k • blkW (q k)) :=
   IsWeightedHomogeneous.prod _ _ _ fun k _ => (isWeightedHomogeneous_X ℤ _ (q k)).pow (α k)
 
 /- English proof (translation)
-Establish `h` using `wh_prod_X_pow (ι := ι) (fun k => ⟨k, i k⟩) α`. Establish `e : (∑ k, α k • blkW (ι` using `ι) ⟨k, i k⟩) = α := by`. Use function extensionality and compare the values at `k`. Simplify using `only [blkW, Finset.sum_apply]`. Rewrite using `[Finset.sum_eq_single k]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules. Rewrite `h` using `[e]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isMultiHomog_of_wh h`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomog_coordPow (i : ∀ k, ι k) (α : K → ℕ) :
     IsMultiHomog (∏ k, (X ⟨k, i k⟩ : MRing ι) ^ α k) α := by
@@ -93,9 +93,9 @@ theorem isMultiHomog_coordPow (i : ∀ k, ι k) (α : K → ℕ) :
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `h` using `wh_prod_X_pow (ι := ι') (fun k => v ⟨k, i k⟩) α`. Establish `e : (∑ k, α k • blkW (ι` using `ι') (v ⟨k, i k⟩)) = Function.extend κ α 0 := by`. Simplify using `only [blkW, hv.2.2.1]`. Conclude with `sum_single_eq_extend κ hv.1 α`. Rewrite `h` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_prod, map_pow, rename_X]`. Conclude with `isMultiHomog_of_wh h`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomog_rename_coordPow {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     (i : ∀ k, ι k) (α : K → ℕ) :
@@ -111,7 +111,7 @@ theorem isMultiHomog_rename_coordPow {κ : K → K'} {v : (Σ k, ι k) → (Σ k
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Introduce `h`. Take `⟨k, -, hk⟩` from `(hV.prod_mem_iff).mp h`. Conclude with `hi k (hV.mem_of_pow_mem _ hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem coordPow_not_mem {V : Ideal (MRing ι)} (hV : V.IsPrime) (i : ∀ k, ι k)
     (hi : ∀ k, (X ⟨k, i k⟩ : MRing ι) ∉ V) (α : K → ℕ) : (∏ k, (X ⟨k, i k⟩ : MRing ι) ^ α k) ∉ V := by
@@ -120,11 +120,11 @@ theorem coordPow_not_mem {V : Ideal (MRing ι)} (hV : V.IsPrime) (i : ∀ k, ι 
   exact hi k (hV.mem_of_pow_mem _ hk)
 
 /- English proof (translation)
-Establish `e : A'.h = A.h ∘ fun z' p => z' (v p)` using `funext h.2`. Unfold `IsSmoothHerm`. Rewrite using `[e]`. Use `hA.comp (contDiff_pi.2 fun p => contDiff_apply ℝ ℂ (v p)).contDiffOn ?_` and prove the remaining obligations. Introduce `z' hz'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_ofPred_eq] at hz' ⊢`. Introduce `k`. Take `⟨i', hi'⟩` from `hz' (κ k)`. Take `⟨p, hp⟩` from `hv.2.2.2 ⟨κ k, i'⟩ ⟨k, rfl⟩`. Establish `h2 : p.1 = k` using `hv.1 (by rw [← hv.2.2.1 p, hp])`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨pk, pi⟩` from `p`. Simplify using `only at h2`. Substitute `h2` using the available equality. Conclude with `⟨pi, by rw [hp]; exact hi'⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem isSmoothHerm_pull {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : IsBlockMap κ v)
     {A : HermLine ι} {A' : HermLine ι'} (hA : IsSmoothHerm A) (h : IsPullHerm κ v A A') :
@@ -145,24 +145,22 @@ theorem isSmoothHerm_pull {κ : K → K'} {v : (Σ k, ι k) → (Σ k', ι' k')}
   exact ⟨pi, by rw [hp]; exact hi'⟩
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' G J L L' _ hP'`. Conclude with `absurd hP' (h0 K' ι' P')`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem genDegAt_zero (h0 : ArithVarZeroStatement) (I : AllFam) : GenDegAt I 0 := by
   intro K _ ι _ K' _ ι' _ κ v P' G J L L' _ hP'
   exact absurd hP' (h0 K' ι' P')
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' G J L L' hv hP' hP hJ hL hLL'`. Establish `hrel` using `hP.2.1.2.2`. Use `choose i hi using hrel`. Establish `hPp : (imageZ v P').IsPrime` using `hP.2.1.1`. Set `α : K → ℕ` to `fun k => ((L (Fin.last n)).a k).toNat`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `β : K → ℕ` to `fun k => (-(L (Fin.last n)).a k).toNat`. Establish `hfP` using `coordPow_not_mem hPp i hi α`. Establish `hgP` using `coordPow_not_mem hPp i hi β`. Establish `hfP' : rename v (∏ k, (X ⟨k, i k⟩ : MRing ι) ^ α k) ∉ P'` using `fun h => hfP (Ideal.mem_comap.mpr h)`. Establish `hgP' : rename v (∏ k, (X ⟨k, i k⟩ : MRing ι) ^ β k) ∉ P'` using `fun h => hgP (Ideal.mem_comap.mpr h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsec : IsRatSectionOn (imageZ v P') (L (Fin.last n)) (∏ k, (X ⟨k, i k⟩ : MRing ι) ^ α k) (∏ k, (X ⟨k, i k⟩ : MRing ι) ^ β k)` using `⟨α, β, isMultiHomog_coordPow i α, isMultiHomog_coordPow i β, hfP, hgP, fun k => Int.toNat_sub_toNat_neg _⟩`. Establish `hsec' : IsRatSectionOn P' (L' (Fin.last n)) (rename v (∏ k, (X ⟨k, i k⟩ : MRing ι) ^ α k)) (rename v (∏ k, (X ⟨k, i k⟩ : MRing ι) ^ β k))`. Use `⟨_, _, isMultiHomog_rename_coordPow hv i α, isMultiHomog_rename_coordPow hv i β, hfP', hgP', fun k' => ?_⟩` and prove the remaining obligations. Rewrite using `[(hLL' (Fin.last n)).1, pullDeg]`. Distinguish the cases in `h : ∃ k, κ k = k'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `h`. Rewrite using `[hv.1.extend_apply, hv.1.extend_apply, hv.1.extend_apply]`. Conclude with `Int.toNat_sub_toNat_neg _`. Rewrite using `[Function.extend_apply' _ _ _ h, Function.extend_apply' _ _ _ h, Function.extend_apply' _ _ _ h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL' : ∀ j, IsSmoothHerm (L' j)` using `fun j => isSmoothHerm_pull hv (hL j) (hLL' j)`. Establish `e1` using `hRat K' ι' (I K' ι') (hI K' ι') P' n (Fin.init L') (L' (Fin.last n)) _ _ hP' (fun j => hL' _) (hL' _) hsec'`. Establish `e2` using `hRat K ι (I K ι) (hI K ι) (imageZ v P') n (Fin.init L) (L (Fin.last n)) _ _ hP (fun j => hL _) (hL _) hsec`. Rewrite `e1`, `e2` using `[Fin.snoc_init_self]`. Rewrite using `[e1, e2, recRRat, recRRat, hCyc I hI n ih K ι K' ι' κ v P' G J (Fin.init L) (Fin.init L') _ α hv hP' hP hJ (fun j => hL _) (fun j => hLL' _) (isMultiHomog_coordPow i α) hfP, hCyc I hI n ih K ι K' ι' κ v P' G J (Fin.init L) (Fin.init L') _ β hv hP' hP hJ (fun j => hL _) (fun j => …`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem genDegAt_succ (hRat : RatR.Statement) (hCyc : ArithmeticIntersectionCycle.Statement) (hInt : ArithmeticIntersectionIntegral.Statement)
     (I : AllFam) (hI : I.IsFamily) (n : ℕ) (ih : GenDegAt I n) : GenDegAt I (n + 1) := by
@@ -209,7 +207,7 @@ theorem genDegAt_succ (hRat : RatR.Statement) (hCyc : ArithmeticIntersectionCycl
 end PushforwardArithIntersection
 
 /- English proof (translation)
-Unfold `PushforwardArithIntersection.Statement GenDegStatement`. Introduce `I hI K _ ι _ K' _ ι' _ κ v P' d G J L L' hv hP' hP hJ hL hLL'`. Establish `key : ∀ n, GenDegAt I n` using `fun n => Nat.rec (PushforwardArithIntersection.genDegAt_zero h0 I) (fun n ih => PushforwardArithIntersection.genDegAt_succ hRat hCyc hInt I hI n ih) n`. Conclude with `key d K ι K' ι' κ v P' G J L L' hv hP' hP hJ hL hLL'`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem PushforwardArithIntersection.proof (h0 : ArithVarZeroStatement) (hRat : RatR.Statement) (hCyc : ArithmeticIntersectionCycle.Statement)
     (hInt : ArithmeticIntersectionIntegral.Statement) : PushforwardArithIntersection.Statement := by

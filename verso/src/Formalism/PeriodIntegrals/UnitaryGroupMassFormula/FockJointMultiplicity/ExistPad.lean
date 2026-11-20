@@ -7,23 +7,23 @@ noncomputable section
 namespace PI.FJMX
 
 /- English proof (translation)
-Rewrite using `[PI.FJM.posPart, List.pairwise_map]`. Conclude with `ha.imp fun h => by omega`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posPart_pw (a : List ℤ) (ha : a.Pairwise (· ≥ ·)) : (PI.FJM.posPart a).Pairwise (· ≥ ·) := by
   rw [PI.FJM.posPart, List.pairwise_map]
   exact ha.imp fun h => by omega
 
 /- English proof (translation)
-Rewrite using `[PI.FJM.negPart, List.pairwise_reverse, List.pairwise_map]`. Conclude with `hb.imp fun h => by omega`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem negPart_pw (b : List ℤ) (hb : b.Pairwise (· ≥ ·)) : (PI.FJM.negPart b).Pairwise (· ≥ ·) := by
   rw [PI.FJM.negPart, List.pairwise_reverse, List.pairwise_map]
   exact hb.imp fun h => by omega
 
 /- English proof (translation)
-Distinguish the cases in `h : i < a.length`. Rewrite using `[dif_pos h, List.getD_eq_getElem _ _ (by simpa [PI.FJM.posPart] using h)]`. Simplify using `only [PI.FJM.posPart, List.getElem_map]`. Establish `hpos` using `ha _ (List.getElem_mem h)`. Use `Int.toNat_of_nonneg hpos.le` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Rewrite using `[dif_neg h, List.getD_eq_default _ _ (by simpa [PI.FJM.posPart] using not_lt.1 h)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem posPart_getD (a : List ℤ) (ha : ∀ v ∈ a, 0 < v) (i : ℕ) :
     ((PI.FJM.posPart a).getD i 0 : ℚ) = if h : i < a.length then ((a[i] : ℤ) : ℚ) else 0 := by
@@ -37,11 +37,11 @@ theorem posPart_getD (a : List ℤ) (ha : ∀ v ∈ a, 0 < v) (i : ℕ) :
     simp
 
 /- English proof (translation)
-Distinguish the cases in `h : j < b.length`. Rewrite using `[dif_pos h, List.getD_eq_getElem _ _ (by simpa [PI.FJM.negPart] using h)]`. Simplify using `only [PI.FJM.negPart, List.getElem_reverse, List.getElem_map, List.length_map]`. Establish `hneg` using `hb _ (List.getElem_mem (l := b) (n := b.length - 1 - j) (by omega))`. Use `Int.toNat_of_nonneg (show 0 ≤ -b[b.length - 1 - j] by omega)` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((-b[b.length - 1 - j]).toNat : ℚ) = ((-b[b.length - 1 - j] : ℤ) : ℚ)`. Conclude with `this` after adjusting the coercions. Rewrite using `[h2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h, List.getD_eq_default _ _ (by simpa [PI.FJM.negPart] using not_lt.1 h)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules.
 -/
 theorem negPart_getD (b : List ℤ) (hb : ∀ v ∈ b, v < 0) (j : ℕ) :
     ((PI.FJM.negPart b).getD j 0 : ℚ) =
@@ -60,11 +60,11 @@ theorem negPart_getD (b : List ℤ) (hb : ∀ v ∈ b, v < 0) (j : ℕ) :
     simp
 
 /- English proof (translation)
-Rewrite using `[posPart_getD a ha, negPart_getD b hb]`. Rewrite using `[pad, List.getD_eq_getElem _ _ (by simp; omega)]`. Simplify using `only [List.getElem_map]`. Distinguish the cases in `h1 : i < a.length`. Rewrite using `[List.getElem_append_left (by simp; omega), List.getElem_append_left h1, dif_pos h1, dif_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Distinguish the cases in `h2 : i < a.length + (n - a.length - b.length)`. Rewrite using `[List.getElem_append_left (by simp; omega), List.getElem_append_right (by omega), dif_neg h1, dif_neg (by omega)]`. Simplify using the standard rewrite rules. Rewrite using `[List.getElem_append_right (by simp; omega), dif_neg h1, dif_pos (by omega)]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [neg_neg, sub_neg_eq_add, zero_add]`. Use `congr 2`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pad_getD (a b : List ℤ) (n : ℕ) (hn : a.length + b.length ≤ n) (ha : ∀ v ∈ a, 0 < v)
     (hb : ∀ v ∈ b, v < 0) (i : ℕ) (hi : i < n) :

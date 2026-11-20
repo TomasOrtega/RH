@@ -14,9 +14,9 @@ namespace SectionFn
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g)
 
 /- English proof (translation)
-Introduce `z`. Take `⟨i, hi⟩` from `PullHermitian.exists_chart (u.ex z).left hL`. Establish `hn` using `(u.hol (L.U i) (s.f i)).1.mem_nhds hi`. Establish `d : DifferentiableOn ℂ (fun w => valAt' (u.ex w).left (L.U i) (s.f i) * (u.fr i w)⁻¹) {w | ⊤ ≤ (u.ex w).left ⁻¹ᵁ L.U i}` using `(u.hol (L.U i) (s.f i)).2.mul ((u.fr_hol i).inv fun w hw => u.fr_ne i w hw)`. Use `(d.differentiableAt hn).congr_of_eventuallyEq (Filter.mem_of_superset hn fun w hw => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `u.fr_ne i w hw` as an intermediate fact. Express the relevant statement in the definitionally equal form `θ w = valAt' (u.ex w).left (L.U i) (s.f i) * (u.fr i w)⁻¹`. Rewrite using `[h i w hw]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem differentiable_of_isFn (hL : L.IsLB) {s : L.Sec} {θ : (Fin g → ℂ) → ℂ} (h : u.IsFn s θ) :
     Differentiable ℂ θ := by
@@ -33,11 +33,11 @@ theorem differentiable_of_isFn (hL : L.IsLB) {s : L.Sec} {θ : (Fin g → ℂ) �
   field_simp
 
 /- English proof (translation)
-Use `⟨differentiable_of_isFn u hL h, fun l z => ?_⟩` and prove the remaining obligations. Establish `hper : u.ex (z + l) = u.ex z`. Rewrite using `[u.ex_add, (u.ker l).2 l.2, _root_.mul_one]`. Take `⟨i, hi⟩` from `PullHermitian.exists_chart (u.ex z).left hL`. Establish `hi' : ⊤ ≤ (u.ex (z + l)).left ⁻¹ᵁ L.U i` using `by rwa [hper]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `h i z hi`. Establish `h2` using `h i (z + l) hi'`. Rewrite `h2` using `[hper, h1, hAH.2.2.2 l i z hi]`. Use `mul_right_cancel₀ (u.fr_ne i _ hi') ?_` and prove the remaining obligations. Rewrite using `[← h2, pow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `hermForm`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isThetaFn_of_isFn (hL : L.IsLB) {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : u.Λ → ℂ} (hAH : u.IsAH Hm χ)
     {s : L.Sec} {θ : (Fin g → ℂ) → ℂ} (h : u.IsFn s θ) : u.IsThetaFn Hm χ 1 θ := by
@@ -55,11 +55,9 @@ theorem isThetaFn_of_isFn (hL : L.IsLB) {Hm : Matrix (Fin g) (Fin g) ℂ} {χ : 
   ring
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hp`. Establish `hle : A.left.basicOpen (s.f i) ≤ ⊥`. Use `ComplexPoints.opens_le_of_complexPoints A.hom _ _ fun y hy hyb => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `u.ex_onto (Over.homMk y hy)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hzy : (u.ex z).left = y` using `by rw [hz]; rfl`. Substitute `hzy` using the available equality. Establish `hne` using `(top_le_preimage_basicOpen_iff _ _ _).1 hyb`. Establish `hU` using `top_le_preimage_of_valAt'_ne_zero _ hne`. Conclude with `absurd (by simpa using h i z hU) hne`.
-
-Conclude with `hle hi`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_isFn [LocallyOfFiniteType A.hom] {s : L.Sec} {θ : (Fin g → ℂ) → ℂ} (h : u.IsFn s θ)
     {p : A.left} (hp : p ∈ Out.nonzeroLocus s) : θ ≠ 0 := by
@@ -78,9 +76,9 @@ theorem ne_zero_of_isFn [LocallyOfFiniteType A.hom] {s : L.Sec} {θ : (Fin g →
 end SectionFn
 
 /- English proof (translation)
-Introduce `x u Hm χ θ hAH h`. Use `⟨SectionFn.isThetaFn_of_isFn u x.P.isLB hAH h, ?_⟩` and prove the remaining obligations. Take `⟨p, -, hp⟩` from `x.th_ne (default : PrimeSpectrum ℂ)`. Use `x.P.smoothDim` as an intermediate fact. Establish `: Smooth x.P.A.hom` using `SmoothOfRelativeDimension.smooth x.P.g _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `SectionFn.ne_zero_of_isFn u h hp`.
+A detailed English derivation is pending.
 -/
 theorem isThetaFn_and_ne_zero_of_isFn :
     ∀ (x : KeyIn ℂ) (u : HolUnif x.P.A x.P.L x.P.g) (Hm : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (χ : u.Λ → ℂ)

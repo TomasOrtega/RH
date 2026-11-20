@@ -18,7 +18,7 @@ open NumberField IsDedekindDomain MeasureTheory GlobalTheory.CuspRep Formalism.L
 open scoped ENNReal ComplexConjugate nonZeroDivisors
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CellBump.exists_cellPart_unfoldedIntegral_positive_alt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsCellPartUnfoldedIntegralPositive.lean&line=246#L246)
 -/

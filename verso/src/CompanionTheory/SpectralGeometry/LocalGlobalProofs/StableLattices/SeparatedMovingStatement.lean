@@ -15,7 +15,7 @@ def cosetEquiv (e : G ≃* G') (K : Subgroup G) : G ⧸ K ≃ G' ⧸ K.map e.toM
       exact (Subgroup.mem_map_iff_mem (f := e.toMonoidHom) e.injective).symm)
 
 /- English proof (translation)
-Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H a`. Express the relevant statement in the definitionally equal form `((e (g * a) : G') : G' ⧸ K.map e.toMonoidHom) = ((e g * e a : G') : G' ⧸ K.map e.toMonoidHom)`. Rewrite using `[map_mul]`.
+Proceed by induction. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma cosetEquiv_smul (e : G ≃* G') (K : Subgroup G) (g : G) (x : G ⧸ K) :
     cosetEquiv e K (g • x) = e g • cosetEquiv e K x := by
@@ -25,19 +25,19 @@ lemma cosetEquiv_smul (e : G ≃* G') (K : Subgroup G) (g : G) (x : G ⧸ K) :
     rw [map_mul]
 
 /- English proof (translation)
-Introduce `G G' _ _ e K hK S`. Set `φ` to `cosetEquiv e K`. Take `⟨Γ', hfin, hstab, hsep⟩` from `hK (S.image φ)`. Set `Γ : Subgroup G` to `Γ'.comap e.toMonoidHom`. Establish `hmem : ∀ γ : Γ, e (γ : G) ∈ Γ'` using `fun γ => γ.2`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsymm : ∀ γ' : Γ', e.symm (γ' : G') ∈ Γ` using `fun γ' => by`. Express the relevant statement in the definitionally equal form `e (e.symm (γ' : G')) ∈ Γ'`. Simplify using `using γ'.2`. Establish `hact : ∀ (γ : Γ) (x : G ⧸ K), φ (γ • x) = (⟨e (γ : G), hmem γ⟩ : Γ') • φ x` using `fun γ x => cosetEquiv_smul e K (γ : G) x`. Use `⟨Γ, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `f : MulAction.orbitRel.Quotient Γ' (G' ⧸ K.map e.toMonoidHom) → MulAction.orbitRel.Quotient Γ (G ⧸ K)` to `Quotient.map' φ.symm (by`. Introduce and unpack `a b ⟨γ', rfl⟩`. Use `⟨⟨e.symm (γ' : G'), hsymm γ'⟩, ?_⟩` and prove the remaining obligations. Apply `φ.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `φ (_ • φ.symm b) = φ (φ.symm (γ' • b))`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hact]`. Establish `h : (⟨e (e.symm (γ' : G')), hmem ⟨e.symm (γ' : G'), hsymm γ'⟩⟩ : Γ') = γ'` using `Subtype.ext (e.apply_symm_apply _)`. Rewrite using `[h, φ.apply_symm_apply, φ.apply_symm_apply])`. Use `Finite.of_surjective f ?_` and prove the remaining obligations. Introduce `q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `q using Quotient.inductionOn' with`. Consider the case `h x`. Conclude with `⟨Quotient.mk'' (φ x), congrArg (Quotient.mk'' (s₁ := MulAction.orbitRel Γ (G ⧸ K))) (φ.symm_apply_apply x)⟩`. Introduce `x`. Set `f : MulAction.stabilizer Γ x → MulAction.stabilizer Γ' (φ x)` to `fun γ => ⟨⟨e ((γ : Γ) : G), hmem γ⟩, by`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Rewrite using `[MulAction.mem_stabilizer_iff, ← hact, MulAction.mem_stabilizer_iff.mp γ.2]⟩`. Use `Finite.of_injective f ?_` and prove the remaining obligations. Introduce `a b hab`. Establish `h` using `congrArg (fun c : MulAction.stabilizer Γ' (φ x) => ((c : Γ') : G')) hab`. Conclude with `Subtype.ext (Subtype.ext (e.injective h))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx y hy γ hxy`. Apply `φ.injective` to reduce the goal to its premises. Conclude with `hsep (φ x) (Finset.mem_image_of_mem φ hx) (φ y) (Finset.mem_image_of_mem φ hy) ⟨e (γ : G), hmem γ⟩ (by rw [← hact, hxy])`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem stSepMove : StSepMove := by
   intro G G' _ _ e K hK S

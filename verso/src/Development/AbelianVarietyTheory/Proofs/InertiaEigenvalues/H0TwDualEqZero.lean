@@ -11,13 +11,13 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.LocTwoOnto
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `y`. Establish `hfix : ∀ g, twDual μ ρ g φ = φ` using `hφ`. Set `f : M →ₗ[R] R` to `φ`. Establish `hmul : ∀ g m, f (ρ g m) = ((μ g : Rˣ) : R) * f m`. Introduce `g m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `congrArg (fun ψ : TDual R M => ψ (ρ g m)) (hfix g)`. Simplify using `only [twDual_apply, Representation.inv_self_apply] at h`. Conclude with `h.symm`. Establish `hzero : f.toAddMonoidHom = 0` using `hc _ fun g h m => by`. Simplify using `only [LinearMap.toAddMonoidHom_coe, hmul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Apply `Subtype.ext` to reduce the goal to its premises. Apply `TDual.ext` to reduce the goal to its premises. Introduce `m`. Establish `hm` using `congrArg (fun k : M →+ R => k m) hzero`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.toAddMonoidHom_coe, AddMonoidHom.zero_apply] at hm`. Conclude with `hm`.
+A detailed English derivation is pending.
 -/
 theorem H0_twDual_eq_zero {R Γ M : Type} [CommRing R] [Group Γ] [AddCommGroup M] [Module R M]
     (μ : Γ →* Rˣ) (ρ : Representation R Γ M)
@@ -45,19 +45,19 @@ theorem H0_twDual_eq_zero {R Γ M : Type} [CommRing R] [Group Γ] [AddCommGroup 
   exact hm
 
 /- English proof (translation)
-Introduce `hPT F Ω _ _ _ _ _ _ l _ Λ M _ _ _ _ _ _ S Av ρ hl hS hAv hρ hcomm x`. Establish `hl0 : 0 < l ^ 1` using `pow_pos (Fact.out : l.Prime).pos 1`. Establish `: NeZero (l ^ (1 : ℕ))` using `⟨hl0.ne'⟩`. Establish `hl1 : ∀ m : M, (l ^ (1 : ℕ)) • m = 0` using `fun m => by rw [pow_one]; exact hl m`. Establish `instZ : Module (ZMod (l ^ (1 : ℕ))) M` using `AddCommGroup.zmodModule hl1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ContinuousConstSMul (ZMod (l ^ (1 : ℕ))) M` using `⟨fun _ => continuous_of_discreteTopology⟩`. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed F`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Take `⟨ζ, hζ⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic (l ^ (1 : ℕ)) Ω) (Polynomial.degree_cyclotomic_pos _ _ hl0).ne'`. Establish `hζ' : IsPrimitiveRoot ζ (l ^ (1 : ℕ))` using `(Polynomial.isRoot_cyclotomic_iff_charZero hl0).1 hζ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨inv, -, hall⟩` from `hPT F Ω l 1 one_pos ζ hζ'`. Take `⟨μ, hμ⟩` from `PoitouTate.exists_lift_cycMod (Ω := Ω) (r := 1) hS`. Set `ρ' : GS Ω (S : Set (HeightOneSpectrum (𝓞 F))) →* Module.End (ZMod (l ^ (1 : ℕ))) M` to `{ toFun := fun g => (ρ g).toAddMonoidHom.toZModLinearMap (l ^ (1 : ℕ)) map_one' := by ext m; simp map_mul' := fun g h => by ext m; simp }`. Establish `hρ' : ContAction ρ'` using `hρ`. Take `⟨hNT, -⟩` from `hall S hS Av hAv μ hμ M ρ' hρ'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc' : ∀ φ : M →+ ZMod (l ^ (1 : ℕ)), (∀ g h m, φ (ρ' g (ρ' h m)) = φ (ρ' h (ρ' g m))) → φ = 0` using `fun φ hφ => hcomm (ZMod (l ^ (1 : ℕ))) φ hφ`. Use `choose z hz using fun v => Submodule.Quotient.mk_surjective _ (x v)`. Set `z' : ∀ v : S, Z2 (ρ'.comp (locFam S Av v))` to `fun v => ⟨(z v).1, (z v).2⟩`. Take `⟨y', hy'⟩` from `LinearMap.mem_range.1 ((hNT.mem_range_localization_H2_iff (fun v => Submodule.Quotient.mk (z' v))).2 fun y => by`. Rewrite using `[H0_twDual_eq_zero μ ρ' hc' y]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use the proof step `simp)`. Take `⟨w', hw'⟩` from `Submodule.Quotient.mk_surjective _ y'`. Set `w : Z2 ρ` to `⟨w'.1, w'.2⟩`. Use `⟨Submodule.Quotient.mk w, fun v => ?_⟩` and prove the remaining obligations. Establish `hv` using `congrFun hy' v`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hv` using `[← hw']`. Express the relevant statement in the definitionally equal form `resH2 ρ' (locFam S Av v) (continuous_locFam S Av v) (Submodule.Quotient.mk w') = Submodule.Quotient.mk (z' v) at hv`. Rewrite `hv` using `[resH2, Submodule.mapQ_apply, Submodule.Quotient.eq]`. Rewrite using `[← hz v, resH2, Submodule.mapQ_apply, Submodule.Quotient.eq]`. Simplify using `only [Submodule.mem_comap, Submodule.coe_subtype] at hv ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc, hcd⟩` from `(separated_dvr_second_cohomology_mem _ _).1 hv`. Use `(separated_dvr_second_cohomology_mem _ _).2 ⟨c, hc, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Establish `hp` using `congrFun hcd p`. Conclude with `hp`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem loc2_surjective : PoitouTateTotallyComplex → ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyComplex F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (Λ M : Type) [CommRing Λ] [AddCommGroup M] [Module Λ M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (S : Finset (HeightOneSpectrum (𝓞 F))) (Av : S → ValuationSubring Ω) (ρ : Representation Λ (GS Ω (S : Set (HeightOneSpectrum (𝓞 F)))) M), (∀ m : M, l • m = 0) → ContainsAbove S l → (∀ v, IsPlaceOver (Av v) v.1) → ContAction ρ → (∀ (C : Type) [AddCommGroup C] (φ : M →+ C), (∀ g h m, φ (ρ g (ρ h m)) = φ (ρ h (ρ g m))) → φ = 0) → ∀ x : ∀ v : S, H2 (ρ.comp (locFam S Av v)), ∃ y : H2 ρ, ∀ v, resH2 ρ (locFam S Av v) (continuous_locFam S Av v) y = x v := by
   intro hPT F Ω _ _ _ _ _ _ l _ Λ M _ _ _ _ _ _ S Av ρ hl hS hAv hρ hcomm x

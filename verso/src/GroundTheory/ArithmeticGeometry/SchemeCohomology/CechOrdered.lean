@@ -35,7 +35,7 @@ noncomputable def bd (q : ℕ) : Chain ι (q + 1) →+ Chain ι q :=
   (AlgebraicTopology.AlternatingFaceMapComplex.objD (chainSimplicial ι) q).hom
 
 /- English proof (translation)
-Establish `h` using `hom_finset_sum_apply Finset.univ (fun a : Fin (q + 2) => ((-1 : ℤ) ^ (a : ℕ)) • (chainSimplicial ι).δ a) (Finsupp.single t c)`. Use `h.trans (Finset.sum_congr rfl fun a _ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((-1 : ℤ) ^ (a : ℕ)) • Finsupp.mapDomain _ (Finsupp.single t c) = _`. Rewrite using `[Finsupp.mapDomain_single]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma bd_single (q : ℕ) (t : Fin (q + 2) → ι) (c : ℤ) :
     bd q (Finsupp.single t c) =
@@ -48,7 +48,7 @@ lemma bd_single (q : ℕ) (t : Fin (q + 2) → ι) (c : ℤ) :
   rfl
 
 /- English proof (translation)
-Use `AlgebraicTopology.AlternatingFaceMapComplex.d_squared (chainSimplicial ι) q` as an intermediate fact. Conclude with `congrArg (fun f => f.hom z) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma bd_bd (q : ℕ) (z : Chain ι (q + 2)) : bd q (bd (q + 1) z) = 0 := by
   have := AlgebraicTopology.AlternatingFaceMapComplex.d_squared (chainSimplicial ι) q
@@ -58,14 +58,14 @@ noncomputable def lin {q r : ℕ} (B : (Fin (q + 1) → ι) → Chain ι r) : Ch
   Finsupp.liftAddHom fun s => (smulAddHom ℤ (Chain ι r)).flip (B s)
 
 /- English proof (translation)
-Simplify using `[lin]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma lin_single {q r : ℕ} (B : (Fin (q + 1) → ι) → Chain ι r) (s : Fin (q + 1) → ι)
     (c : ℤ) : lin B (Finsupp.single s c) = c • B s := by
   simp [lin]
 
 /- English proof (translation)
-Simplify using `[lin, Finsupp.liftAddHom_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma lin_apply {q r : ℕ} (B : (Fin (q + 1) → ι) → Chain ι r) (z : Chain ι q) :
     lin B z = z.sum fun s c => c • B s := by
@@ -76,14 +76,14 @@ noncomputable def cone {q : ℕ} (c : ι) : Chain ι q →+ Chain ι (q + 1) :=
   Finsupp.mapDomain.addMonoidHom fun t => (Fin.cons c t : Fin (q + 2) → ι)
 
 /- English proof (translation)
-Simplify using `[cone]`.
+Simplify using the standard rewrite rules.
 -/
 lemma cone_single {q : ℕ} (c : ι) (t : Fin (q + 1) → ι) (k : ℤ) :
     cone c (Finsupp.single t k) = Finsupp.single (Fin.cons c t : Fin (q + 2) → ι) k := by
   simp [cone]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma cons_comp_succAbove_zero' {n : ℕ} (c : ι) (i : Fin (n + 1) → ι) :
     (Fin.cons c i : Fin (n + 2) → ι) ∘ (0 : Fin (n + 2)).succAbove = i := by
@@ -91,7 +91,7 @@ lemma cons_comp_succAbove_zero' {n : ℕ} (c : ι) (i : Fin (n + 1) → ι) :
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Consider the cases of `a using Fin.cases with`. Consider the case `zero => simp`. Consider the case `succ a => simp`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 lemma cons_comp_succAbove_succ' {n : ℕ} (c : ι) (i : Fin (n + 1) → ι) (k : Fin (n + 1)) :
     (Fin.cons c i : Fin (n + 2) → ι) ∘ k.succ.succAbove = Fin.cons c (i ∘ k.succAbove) := by
@@ -101,9 +101,9 @@ lemma cons_comp_succAbove_succ' {n : ℕ} (c : ι) (i : Fin (n + 1) → ι) (k :
   | succ a => simp
 
 /- English proof (translation)
-Proceed by induction on `z using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add z z' hz hz' => rw [map_add, map_add, hz, hz', map_add, map_add]`. Normalize the expressions using the abelian group laws. Consider the case `single t k`.
+Proceed by induction. Treat this case separately. Treat this case separately. Normalize the expressions using the abelian group laws. Treat this case separately.
 
-Rewrite using `[cone_single, bd_single, Fin.sum_univ_succ, bd_single, map_sum]`. Simplify using `only [Fin.val_zero, pow_zero, one_smul, cons_comp_succAbove_zero', Fin.val_succ, cons_comp_succAbove_succ', map_zsmul, cone_single, pow_succ, mul_neg, mul_one, neg_smul, Finset.sum_neg_distrib, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma bd_cone {q : ℕ} (c : ι) (z : Chain ι (q + 1)) :
     bd (q + 1) (cone c z) = z - cone c (bd q z) := by
@@ -124,12 +124,12 @@ section Supp
 variable {q : ℕ} {Q Q' : (Fin (q + 1) → ι) → Prop}
 
 /- English proof (translation)
-Introduce `_ h` and use `(h rfl).elim`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma Supp.zero : Supp Q (0 : Chain ι q) := fun _ h => (h rfl).elim
 
 /- English proof (translation)
-Introduce `t h` and use `by by_cases h1 : z t = 0 · exact hz' t (by simpa [h1] using h) · exact hz t h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma Supp.add {z z' : Chain ι q} (hz : Supp Q z) (hz' : Supp Q z') : Supp Q (z + z') :=
   fun t h => by
@@ -138,26 +138,26 @@ lemma Supp.add {z z' : Chain ι q} (hz : Supp Q z) (hz' : Supp Q z') : Supp Q (z
     · exact hz t h1
 
 /- English proof (translation)
-Introduce `t h` and use `hz t fun h' => h (by simp [h'])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma Supp.smul {z : Chain ι q} (c : ℤ) (hz : Supp Q z) : Supp Q (c • z) :=
   fun t h => hz t fun h' => h (by simp [h'])
 
 /- English proof (translation)
-Simplify using `using hz.smul (-1)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma Supp.neg {z : Chain ι q} (hz : Supp Q z) : Supp Q (-z) := by
   simpa using hz.smul (-1)
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `hz.add hz'.neg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Supp.sub {z z' : Chain ι q} (hz : Supp Q z) (hz' : Supp Q z') : Supp Q (z - z') := by
   rw [sub_eq_add_neg]
   exact hz.add hz'.neg
 
 /- English proof (translation)
-Introduce `s h` and use `by by_cases hs : s = t · exact hs ▸ ht · exact (h (Finsupp.single_eq_of_ne hs)).elim`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma Supp.single {t : Fin (q + 1) → ι} (c : ℤ) (ht : Q t) : Supp Q (Finsupp.single t c) :=
   fun s h => by
@@ -166,7 +166,7 @@ lemma Supp.single {t : Fin (q + 1) → ι} (c : ℤ) (ht : Q t) : Supp Q (Finsup
     · exact (h (Finsupp.single_eq_of_ne hs)).elim
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using Supp.zero`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).add (ih fun b hb => h b (Finset.mem_insert_of_mem hb))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Supp.sum {α : Type*} (s : Finset α) (f : α → Chain ι q) (h : ∀ a ∈ s, Supp Q (f a)) :
     Supp Q (∑ a ∈ s, f a) := by
@@ -178,13 +178,13 @@ lemma Supp.sum {α : Type*} (s : Finset α) (f : α → Chain ι q) (h : ∀ a �
     exact (h a (Finset.mem_insert_self a s)).add (ih fun b hb => h b (Finset.mem_insert_of_mem hb))
 
 /- English proof (translation)
-Introduce `t ht` and use `h t (hz t ht)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma Supp.mono {z : Chain ι q} (hz : Supp Q z) (h : ∀ t, Q t → Q' t) : Supp Q' z :=
   fun t ht => h t (hz t ht)
 
 /- English proof (translation)
-Rewrite using `[lin_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma lin_eq_sum {r : ℕ} (B : (Fin (q + 1) → ι) → Chain ι r) (z : Chain ι q) :
     lin B z = ∑ s ∈ z.support, z s • B s := by
@@ -192,7 +192,7 @@ lemma lin_eq_sum {r : ℕ} (B : (Fin (q + 1) → ι) → Chain ι r) (z : Chain 
   rfl
 
 /- English proof (translation)
-Rewrite using `[lin_eq_sum]`. Conclude with `Supp.sum _ _ fun s hs => (h s (Finsupp.mem_support_iff.mp hs)).smul _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Supp.lin {r : ℕ} {R : (Fin (r + 1) → ι) → Prop} (B : (Fin (q + 1) → ι) → Chain ι r)
     (z : Chain ι q) (h : ∀ s, z s ≠ 0 → Supp R (B s)) : Supp R (lin B z) := by
@@ -200,9 +200,9 @@ lemma Supp.lin {r : ℕ} {R : (Fin (r + 1) → ι) → Prop} (B : (Fin (q + 1) �
   exact Supp.sum _ _ fun s hs => (h s (Finsupp.mem_support_iff.mp hs)).smul _
 
 /- English proof (translation)
-Introduce `s hs`. Rewrite `hs` using `[Finsupp.mapDomain, Finsupp.sum, Finsupp.finsetSum_apply]`. Take `⟨t, ht, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hs`. Distinguish the cases in `hft : f t = s`. Conclude with `hft ▸ h t (hz t (Finsupp.mem_support_iff.mp ht))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hft] at hne`.
+A detailed English derivation is pending.
 -/
 lemma Supp.mapDomain {r : ℕ} {R : (Fin (r + 1) → ι) → Prop}
     (f : (Fin (q + 1) → ι) → (Fin (r + 1) → ι)) {z : Chain ι q} (hz : Supp Q z)
@@ -216,7 +216,7 @@ lemma Supp.mapDomain {r : ℕ} {R : (Fin (r + 1) → ι) → Prop}
   · simp [hft] at hne
 
 /- English proof (translation)
-Rewrite using `[← Finsupp.sum_single z]`. Simplify using `only [Finsupp.sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun t ht => h t _ (hz t (Finsupp.mem_support_iff.mp ht))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma eq_of_supp {M : Type*} [AddCommGroup M] (f g : Chain ι q →+ M) {z : Chain ι q}
     (hz : Supp Q z) (h : ∀ t (k : ℤ), Q t → f (Finsupp.single t k) = g (Finsupp.single t k)) :
@@ -232,7 +232,7 @@ section Lin
 variable {q r s : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `z using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add z z' hz hz' => rw [map_add, hz, hz']`. Consider the case `single t k => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 lemma lin_single_id (z : Chain ι q) : lin (fun t => Finsupp.single t 1) z = z := by
   induction z using Finsupp.induction_linear with
@@ -241,7 +241,7 @@ lemma lin_single_id (z : Chain ι q) : lin (fun t => Finsupp.single t 1) z = z :
   | single t k => simp
 
 /- English proof (translation)
-Proceed by induction on `z using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add z z' hz hz' => rw [map_add, hz, hz', map_add, map_add]`. Consider the case `single t k => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 lemma lin_comp (L : Chain ι r →+ Chain ι s) (B : (Fin (q + 1) → ι) → Chain ι r) (z : Chain ι q) :
     lin (fun t => L (B t)) z = L (lin B z) := by
@@ -251,7 +251,7 @@ lemma lin_comp (L : Chain ι r →+ Chain ι s) (B : (Fin (q + 1) → ι) → Ch
   | single t k => simp
 
 /- English proof (translation)
-Proceed by induction on `z using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add z z' hz hz' => rw [map_add, hz, hz', map_add, map_add]`. Normalize the expressions using the abelian group laws. Consider the case `single t k => simp [smul_sub]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Normalize the expressions using the abelian group laws. Treat this case separately.
 -/
 lemma lin_sub' (B B' : (Fin (q + 1) → ι) → Chain ι r) (z : Chain ι q) :
     lin (fun t => B t - B' t) z = lin B z - lin B' z := by
@@ -261,7 +261,7 @@ lemma lin_sub' (B B' : (Fin (q + 1) → ι) → Chain ι r) (z : Chain ι q) :
   | single t k => simp [smul_sub]
 
 /- English proof (translation)
-Proceed by induction on `z using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add z z' hz hz' => rw [map_add, hz, hz', add_zero]`. Consider the case `single t k => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 lemma lin_zero' (z : Chain ι q) : lin (fun _ => (0 : Chain ι r)) z = 0 := by
   induction z using Finsupp.induction_linear with
@@ -270,14 +270,14 @@ lemma lin_zero' (z : Chain ι q) : lin (fun _ => (0 : Chain ι r)) z = 0 := by
   | single t k => simp
 
 /- English proof (translation)
-Rewrite using `[lin_comp (lin B) (fun t => bd q (Finsupp.single t 1)), lin_comp (bd q), lin_single_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma lin_bd_single (B : (Fin (q + 1) → ι) → Chain ι r) (z : Chain ι (q + 1)) :
     lin (fun t => lin B (bd q (Finsupp.single t 1))) z = lin B (bd q z) := by
   rw [lin_comp (lin B) (fun t => bd q (Finsupp.single t 1)), lin_comp (bd q), lin_single_id]
 
 /- English proof (translation)
-Rewrite using `[bd_single, map_sum]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma lin_bd_single_apply (B : (Fin (q + 1) → ι) → Chain ι r) (t : Fin (q + 2) → ι) :
     lin B (bd q (Finsupp.single t 1)) =
@@ -286,7 +286,7 @@ lemma lin_bd_single_apply (B : (Fin (q + 1) → ι) → Chain ι r) (t : Fin (q 
   simp
 
 /- English proof (translation)
-Rewrite using `[← lin_single_id z, ← lin_comp]`. Use `Supp.lin _ _ fun t ht => ?_` and prove the remaining obligations. Rewrite using `[bd_single]`. Use `Supp.sum _ _ fun a _ => ?_` and prove the remaining obligations. Conclude with `(Supp.single _ (h t (hz t (by simpa using ht)) a)).smul _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma Supp.bd {Q : (Fin (q + 2) → ι) → Prop} {R : (Fin (q + 1) → ι) → Prop} {z : Chain ι (q + 1)}
     (hz : Supp Q z) (h : ∀ t, Q t → ∀ a : Fin (q + 2), R (t ∘ a.succAbove)) : Supp R (bd q z) := by
@@ -304,7 +304,7 @@ noncomputable def ocone {q : ℕ} (c : ι) : Chain ι q →+ Chain ι (q + 1) :=
   lin fun t => if c < t 0 then Finsupp.single (Fin.cons c t : Fin (q + 2) → ι) 1 else 0
 
 /- English proof (translation)
-Simplify using `[ocone]`.
+Simplify using the standard rewrite rules.
 -/
 lemma ocone_single {q : ℕ} (c : ι) (t : Fin (q + 1) → ι) (k : ℤ) :
     ocone c (Finsupp.single t k) =
@@ -312,17 +312,17 @@ lemma ocone_single {q : ℕ} (c : ι) (t : Fin (q + 1) → ι) (k : ℤ) :
   simp [ocone]
 
 /- English proof (translation)
-Use `eq_of_supp ((bd (q + 1)).comp (ocone c)) (AddMonoidHom.id _ - (ocone c).comp (bd q)) hz fun t k ⟨ht, htS⟩ => ?_` and prove the remaining obligations. Simplify using `only [AddMonoidHom.coe_comp, Function.comp_apply, AddMonoidHom.sub_apply, AddMonoidHom.id_apply]`. Rewrite using `[ocone_single, bd_single, map_sum]`. Establish `hface : ∀ a : Fin (q + 2), t 0 ≤ (t ∘ a.succAbove) 0` using `fun a => ht.monotone (Fin.zero_le _)`. Distinguish the cases in `hct : c < t 0`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hct, map_zsmul, ← cone_single, bd_cone, bd_single, map_sum]`. Simplify using `only [ocone_single, smul_sub, map_zsmul, Finset.smul_sum]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_pos (hct.trans_le (hface a)), cone_single]`. Simplify using `[mul_comm]`. Establish `hc0 : t 0 = c` using `le_antisymm (not_lt.mp hct) (hc _ (htS 0))`. Rewrite using `[if_neg hct, smul_zero, map_zero, Fin.sum_univ_succ]`. Simplify using `only [ocone_single, Fin.val_zero, pow_zero, one_smul, Fin.val_succ, map_zsmul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : c < (t ∘ (0 : Fin (q + 2)).succAbove) 0`. Rewrite using `[← hc0]`. Conclude with `ht (by simp)`. Rewrite using `[if_pos h1]`. Establish `h2 : ∀ b : Fin (q + 1), ¬ c < (t ∘ b.succ.succAbove) 0` using `fun b => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hc0]`. Simplify using `only [h2, if_false, smul_zero, Finset.sum_const_zero, add_zero]`. Establish `h3 : (Fin.cons c (t ∘ (0 : Fin (q + 2)).succAbove) : Fin (q + 2) → ι) = t`. Rewrite using `[← hc0]`. Use function extensionality and compare the values at `a`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `a using Fin.cases with`. Consider the case `zero => rfl`. Consider the case `succ a => simp`. Rewrite using `[h3]`. Simplify using the standard rewrite rules.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma bd_ocone {q : ℕ} (c : ι) (S : Set ι) (hc : ∀ s ∈ S, c ≤ s) (z : Chain ι (q + 1))
     (hz : Supp (fun t => StrictMono t ∧ ∀ a, t a ∈ S) z) :
@@ -368,19 +368,19 @@ noncomputable def aug {q : ℕ} : Chain ι q →+ ℤ :=
 
 omit [LinearOrder ι] in
 /- English proof (translation)
-Simplify using `[aug]`.
+Simplify using the standard rewrite rules.
 -/
 lemma aug_single {q : ℕ} (t : Fin (q + 1) → ι) (k : ℤ) : aug (Finsupp.single t k) = k := by
   simp [aug]
 
 /- English proof (translation)
-Use `eq_of_supp ((bd 0).comp (ocone c)) (AddMonoidHom.id _ - (zmultiplesHom _ (Finsupp.single (fun _ => c) 1)).comp aug) hz fun t k htS => ?_` and prove the remaining obligations. Simplify using `only [AddMonoidHom.coe_comp, Function.comp_apply, AddMonoidHom.sub_apply, AddMonoidHom.id_apply, zmultiplesHom_apply, aug_single]`. Rewrite using `[ocone_single]`. Distinguish the cases in `hct : c < t 0`. Rewrite using `[if_pos hct, map_zsmul, bd_single, Fin.sum_univ_two]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `e0 : (Fin.cons c t : Fin 2 → ι) ∘ (0 : Fin 2).succAbove = t`. Use function extensionality and compare the values at `a`. Rewrite using `[Fin.fin_one_eq_zero a]`. Both sides reduce to the same expression. Establish `e1 : (Fin.cons c t : Fin 2 → ι) ∘ (1 : Fin 2).succAbove = fun _ => c`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[Fin.fin_one_eq_zero a]`. Both sides reduce to the same expression. Rewrite using `[e0, e1]`. Simplify using `[sub_eq_add_neg]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hc0 : t 0 = c` using `le_antisymm (not_lt.mp hct) (hc _ htS)`. Establish `ht : t = fun _ => c` using `by funext a; rw [Fin.fin_one_eq_zero a, hc0]`. Rewrite using `[if_neg hct, smul_zero, map_zero, ht]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma bd_ocone_zero (c : ι) (S : Set ι) (hc : ∀ s ∈ S, c ≤ s) (z : Chain ι 0)
     (hz : Supp (fun t => t 0 ∈ S) z) :
@@ -408,13 +408,13 @@ noncomputable def minR {q : ℕ} (i : Fin (q + 1) → ι) : ι :=
   Finset.univ.inf' Finset.univ_nonempty i
 
 /- English proof (translation)
-The claim follows from `Finset.inf'_le _ (Finset.mem_univ a)`.
+A detailed English derivation is pending.
 -/
 lemma minR_le {q : ℕ} (i : Fin (q + 1) → ι) (a : Fin (q + 1)) : minR i ≤ i a :=
   Finset.inf'_le _ (Finset.mem_univ a)
 
 /- English proof (translation)
-Take `⟨a, -, ha⟩` from `Finset.exists_mem_eq_inf' Finset.univ_nonempty i`. Conclude with `⟨a, ha.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma minR_mem {q : ℕ} (i : Fin (q + 1) → ι) : minR i ∈ Set.range i := by
   obtain ⟨a, -, ha⟩ := Finset.exists_mem_eq_inf' Finset.univ_nonempty i
@@ -428,7 +428,7 @@ def InRange {q r : ℕ} (i : Fin (r + 1) → ι) (t : Fin (q + 1) → ι) : Prop
 
 omit [LinearOrder ι] in
 /- English proof (translation)
-Introduce `b` and use `by obtain ⟨c, hc⟩ := h b exact ⟨_, hc⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma inRange_face {q r : ℕ} {i : Fin (r + 2) → ι} {t : Fin (q + 1) → ι} (a : Fin (r + 2))
     (h : InRange (i ∘ a.succAbove) t) : InRange i t := fun b => by
@@ -436,7 +436,7 @@ lemma inRange_face {q r : ℕ} {i : Fin (r + 2) → ι} {t : Fin (q + 1) → ι}
   exact ⟨_, hc⟩
 
 /- English proof (translation)
-The claim follows from `| 0, i => Supp.single _ ⟨fun a b hab => absurd hab (by simp [Fin.fin_one_eq_zero a, Fin.fin_one_eq_zero b]), fun a => ⟨a, rfl⟩⟩ | q + 1, i => by refine Supp.lin _ _ fun t ht => ?_ have hw : Supp (fun t => StrictMono t ∧ InRange i t) (lin (proj q) (bd q (Finsupp.single i 1))) := b …`.
+A detailed English derivation is pending.
 -/
 lemma proj_supp : ∀ (q : ℕ) (i : Fin (q + 1) → ι),
     Supp (fun t => StrictMono t ∧ InRange i t) (proj q i)
@@ -459,7 +459,7 @@ lemma proj_supp : ∀ (q : ℕ) (i : Fin (q + 1) → ι),
     · exact Supp.zero
 
 /- English proof (translation)
-Rewrite using `[← lin_comp, ← lin_bd_single]`. Conclude with `congrArg (lin · z) (funext hq)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma bd_lin_proj (q : ℕ)
     (hq : ∀ i : Fin (q + 2) → ι, bd q (proj (q + 1) i) = lin (proj q) (bd q (Finsupp.single i 1)))
@@ -468,7 +468,7 @@ lemma bd_lin_proj (q : ℕ)
   exact congrArg (lin · z) (funext hq)
 
 /- English proof (translation)
-The claim follows from `| 0, i => by have hw : lin (proj 0) (bd 0 (Finsupp.single i 1)) = bd 0 (Finsupp.single i 1) := lin_single_id _ change bd 0 (ocone (minR i) (lin (proj 0) (bd 0 (Finsupp.single i 1)))) = _ rw [hw, bd_ocone_zero (minR i) (Set.range i) (fun s ⟨a, ha⟩ => ha ▸ minR_le i a)] · have : au …`.
+A detailed English derivation is pending.
 -/
 theorem bd_proj : ∀ (q : ℕ) (i : Fin (q + 2) → ι),
     bd q (proj (q + 1) i) = lin (proj q) (bd q (Finsupp.single i 1))
@@ -492,7 +492,7 @@ theorem bd_proj : ∀ (q : ℕ) (i : Fin (q + 2) → ι),
         ⟨hs.1, fun b => inRange_face a hs.2 b⟩).smul _
 
 /- English proof (translation)
-The claim follows from `| 0, i, _ => rfl | q + 1, i, hi => by change ocone (minR i) (lin (proj q) (bd q (Finsupp.single i 1))) = _ have hmin : minR i = i 0 := le_antisymm (minR_le i 0) (by obtain ⟨a, ha⟩ := minR_mem i rw [← ha] exact hi.monotone (Fin.zero_le a)) rw [lin_bd_single_apply, hmin] simp only …`.
+A detailed English derivation is pending.
 -/
 theorem proj_of_strictMono : ∀ (q : ℕ) (i : Fin (q + 1) → ι), StrictMono i →
     proj q i = Finsupp.single i 1
@@ -519,9 +519,9 @@ theorem proj_of_strictMono : ∀ (q : ℕ) (i : Fin (q + 1) → ι), StrictMono 
     | succ a => simp
 
 /- English proof (translation)
-Use extensionality with `t`. Assume the negation of the conclusion as `h`. Take `⟨hts, htr⟩` from `proj_supp q i t h`. Establish `h1 : (Finset.univ.image t).card ≤ (Finset.univ.image i).card` using `Finset.card_le_card fun x hx => by`. Take `⟨a, -, rfl⟩` from `Finset.mem_image.mp hx`.
+By extensionality, compare the relevant components. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `htr a`. Conclude with `Finset.mem_image.mpr ⟨b, Finset.mem_univ _, hb⟩`. Rewrite `h1` using `[Finset.card_image_of_injective _ hts.injective, Finset.card_univ, Fintype.card_fin]`. Establish `h2 : (Finset.univ.image i).card = (Finset.univ : Finset (Fin (q + 1))).card` using `le_antisymm Finset.card_image_le (by rw [Finset.card_univ, Fintype.card_fin]; exact h1)`. Conclude with `hi fun a b hab => Finset.card_image_iff.mp h2 (by simp) (by simp) hab`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem proj_eq_zero_of_not_injective (q : ℕ) (i : Fin (q + 1) → ι)
     (hi : ¬ Function.Injective i) : proj q i = 0 := by
@@ -545,7 +545,7 @@ noncomputable def hom : (q : ℕ) → (Fin (q + 1) → ι) → Chain ι (q + 1)
       (Finsupp.single i 1 - proj (q + 1) i - lin (hom q) (bd q (Finsupp.single i 1)))
 
 /- English proof (translation)
-The claim follows from `| 0, _ => Supp.zero | q + 1, i => by have hw : Supp (fun t => InRange i t) (Finsupp.single i 1 - proj (q + 1) i - lin (hom q) (bd q (Finsupp.single i 1))) := by refine ((Supp.single _ fun a => ⟨a, rfl⟩).sub ((proj_supp (q + 1) i).mono fun t ht => ht.2)).sub ?_ rw [lin_bd_single_a …`.
+A detailed English derivation is pending.
 -/
 lemma hom_supp : ∀ (q : ℕ) (i : Fin (q + 1) → ι), Supp (fun t => InRange i t) (hom q i)
   | 0, _ => Supp.zero
@@ -563,7 +563,7 @@ lemma hom_supp : ∀ (q : ℕ) (i : Fin (q + 1) → ι), Supp (fun t => InRange 
     | succ a => simpa using ht a
 
 /- English proof (translation)
-The claim follows from `| 0, i => by change bd 1 (cone (i 0) _) = _ rw [bd_cone] have : bd 0 (Finsupp.single i 1 - proj 1 i - lin (hom 0) (bd 0 (Finsupp.single i 1))) = 0 := by rw [map_sub, map_sub, bd_proj, show hom 0 = fun _ => 0 from rfl, lin_zero', map_zero] rw [show lin (proj 0) (bd 0 (Finsupp.sing …`.
+A detailed English derivation is pending.
 -/
 theorem bd_hom : ∀ (q : ℕ) (i : Fin (q + 2) → ι),
     bd (q + 1) (hom (q + 1) i) =
@@ -595,9 +595,9 @@ section Pairing
 variable {ι : Type w} {X : TopCat.{u}} (P : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}) (U : ι → Opens X)
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx`, the goal using `[mem_inter_iff]`. Introduce `a`. Take `⟨b, hb⟩` from `h a`. Rewrite using `[← hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx b`.
+A detailed English derivation is pending.
 -/
 lemma inter_le_of_inRange {q r : ℕ} {i : Fin (r + 1) → ι} {t : Fin (q + 1) → ι}
     (h : ∀ a, t a ∈ Set.range i) : inter U i ≤ inter U t := by
@@ -617,16 +617,16 @@ noncomputable def pair {q : ℕ} (σ : Cochain P U q) (V : Opens X) : Chain ι q
     if h : V ≤ inter U t then zmultiplesHom _ (res P h (σ t)) else 0
 
 /- English proof (translation)
-Simplify using `[pair, h]`.
+Simplify using the standard rewrite rules.
 -/
 lemma pair_single {q : ℕ} (σ : Cochain P U q) {V : Opens X} (t : Fin (q + 1) → ι) (k : ℤ)
     (h : V ≤ inter U t) : pair σ V (Finsupp.single t k) = k • res P h (σ t) := by
   simp [pair, h]
 
 /- English proof (translation)
-Proceed by induction on `z using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add z z' hz hz' => rw [map_add, map_add, map_add, hz, hz']`. Normalize the expressions using the abelian group laws. Consider the case `single t k`.
+Proceed by induction. Treat this case separately. Treat this case separately. Normalize the expressions using the abelian group laws. Treat this case separately.
 
-Distinguish the cases in `h : V ≤ inter U t`. Rewrite using `[pair_single _ _ _ h, pair_single _ _ _ h, pair_single _ _ _ h, Pi.add_apply, map_add, smul_add]`. Simplify using `[pair, h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma pair_add {q : ℕ} (σ τ : Cochain P U q) (V : Opens X) (z : Chain ι q) :
     pair (σ + τ) V z = pair σ V z + pair τ V z := by
@@ -640,9 +640,9 @@ lemma pair_add {q : ℕ} (σ τ : Cochain P U q) (V : Opens X) (z : Chain ι q) 
     · simp [pair, h]
 
 /- English proof (translation)
-Proceed by induction on `z using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add z z' hz hz' => rw [map_add, hz, hz', add_zero]`. Consider the case `single t k`. Distinguish the cases in `h : V ≤ inter U t`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[pair_single _ _ _ h, Pi.zero_apply, map_zero, smul_zero]`. Simplify using `[pair, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma pair_zero {q : ℕ} (V : Opens X) (z : Chain ι q) : pair (0 : Cochain P U q) V z = 0 := by
   induction z using Finsupp.induction_linear with
@@ -654,7 +654,7 @@ lemma pair_zero {q : ℕ} (V : Opens X) (z : Chain ι q) : pair (0 : Cochain P U
     · simp [pair, h]
 
 /- English proof (translation)
-Use `eq_of_supp ((res P hVW).comp (pair σ W)) (pair σ V) hz fun t k ht => ?_` and prove the remaining obligations. Simplify using `only [AddMonoidHom.coe_comp, Function.comp_apply]`. Rewrite using `[pair_single _ _ _ ht, pair_single _ _ _ (hVW.trans ht), map_zsmul, res_res]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma res_pair {q : ℕ} (σ : Cochain P U q) {V W : Opens X} (hVW : V ≤ W) {z : Chain ι q}
     (hz : Supp (fun t => W ≤ inter U t) z) : res P hVW (pair σ W z) = pair σ V z := by
@@ -663,7 +663,7 @@ lemma res_pair {q : ℕ} (σ : Cochain P U q) {V W : Opens X} (hVW : V ≤ W) {z
   rw [pair_single _ _ _ ht, pair_single _ _ _ (hVW.trans ht), map_zsmul, res_res]
 
 /- English proof (translation)
-Use `eq_of_supp (pair (d P U q σ) V) ((pair σ V).comp (bd q)) hz fun t k ht => ?_` and prove the remaining obligations. Simplify using `only [AddMonoidHom.coe_comp, Function.comp_apply]`. Rewrite using `[pair_single _ _ _ ht, bd_single, map_sum, d_apply, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, res_res, map_zsmul, pair_single _ _ _ (ht.trans (inter_le_comp U t a.succAbove)), smul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma pair_d {q : ℕ} (σ : Cochain P U q) {V : Opens X} {z : Chain ι (q + 1)}
     (hz : Supp (fun t => V ≤ inter U t) z) : pair (d P U q σ) V z = pair σ V (bd q z) := by
@@ -683,7 +683,7 @@ variable {ι : Type w} [LinearOrder ι] {X : TopCat.{u}} (P : (Opens X)ᵒᵖ �
 
 omit [LinearOrder ι] in
 /- English proof (translation)
-The claim follows from `hz.mono fun t ht => inter_le_of_inRange U (h t ht)`.
+A detailed English derivation is pending.
 -/
 lemma supp_inter {q r : ℕ} {i : Fin (r + 1) → ι} {Q : (Fin (q + 1) → ι) → Prop} {z : Chain ι q}
     (hz : Supp Q z) (h : ∀ t, Q t → InRange i t) : Supp (fun t => inter U i ≤ inter U t) z :=
@@ -714,21 +714,21 @@ lemma homotopy_apply (q : ℕ) (σ : Cochain P U (q + 1)) (i : Fin (q + 1) → �
     homotopy P U q σ i = pair σ (inter U i) (hom q i) := rfl
 
 /- English proof (translation)
-Rewrite using `[altProj_apply, proj_of_strictMono q i hi, pair_single _ _ _ le_rfl, one_smul, res_refl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem altProj_apply_of_strictMono (q : ℕ) (σ : Cochain P U q) {i : Fin (q + 1) → ι}
     (hi : StrictMono i) : altProj P U q σ i = σ i := by
   rw [altProj_apply, proj_of_strictMono q i hi, pair_single _ _ _ le_rfl, one_smul, res_refl]
 
 /- English proof (translation)
-Rewrite using `[altProj_apply, proj_eq_zero_of_not_injective q i hi, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem altProj_apply_of_not_injective (q : ℕ) (σ : Cochain P U q) {i : Fin (q + 1) → ι}
     (hi : ¬ Function.Injective i) : altProj P U q σ i = 0 := by
   rw [altProj_apply, proj_eq_zero_of_not_injective q i hi, map_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `altProj_apply_of_not_injective q σ fun hi => ?_` and prove the remaining obligations. Use `Fintype.card_le_of_injective i hi` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem altProj_eq_zero [Fintype ι] {q : ℕ} (hq : Fintype.card ι ≤ q) (σ : Cochain P U q) :
     altProj P U q σ = 0 := by
@@ -739,7 +739,7 @@ theorem altProj_eq_zero [Fintype ι] {q : ℕ} (hq : Fintype.card ι ≤ q) (σ 
   omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[d_apply, altProj_apply, pair_d σ (supp_inter U (proj_supp (q + 1) i) fun t ht => ht.2), bd_proj, lin_bd_single_apply, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[altProj_apply, res_pair σ _ (supp_inter U (proj_supp q _) fun t ht => ht.2), map_zsmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem d_altProj (q : ℕ) (σ : Cochain P U q) :
     d P U q (altProj P U q σ) = altProj P U (q + 1) (d P U q σ) := by
@@ -750,9 +750,9 @@ theorem d_altProj (q : ℕ) (σ : Cochain P U q) :
   rw [altProj_apply, res_pair σ _ (supp_inter U (proj_supp q _) fun t ht => ht.2), map_zsmul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, Pi.sub_apply, d_apply, homotopy_apply, pair_d σ (supp_inter U (hom_supp (q + 1) i) fun t ht => ht), bd_hom, map_sub, map_sub, lin_bd_single_apply, map_sum, pair_single _ _ _ le_rfl, one_smul, res_refl, altProj_apply]`. Establish `: ∑ a : Fin (q + 2), ((-1 : ℤ) ^ (a : ℕ)) • res P (inter_le_comp U i a.succAbove) (homotopy P U q σ (i ∘ a.succAbove)) = ∑ a : Fin (q + 2), pair σ (inter U i) (((-1 : ℤ) ^ (a : ℕ)) • hom q (i ∘ a.succAbove))`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[homotopy_apply, res_pair σ _ (supp_inter U (hom_supp q _) fun t ht => ht), map_zsmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem d_homotopy_add (q : ℕ) (σ : Cochain P U (q + 1)) :
     d P U q (homotopy P U q σ) + homotopy P U (q + 1) (d P U (q + 1) σ) =
@@ -770,7 +770,7 @@ theorem d_homotopy_add (q : ℕ) (σ : Cochain P U (q + 1)) :
   abel
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[homotopy_apply, Pi.sub_apply, altProj_apply]`. Express the relevant statement in the definitionally equal form `pair _ _ 0 = σ i - pair σ (inter U i) (Finsupp.single i 1)`. Rewrite using `[map_zero, pair_single _ _ _ le_rfl, one_smul, res_refl, sub_self]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem homotopy_d_zero (σ : Cochain P U 0) :
     homotopy P U 0 (d P U 0 σ) = σ - altProj P U 0 σ := by
@@ -780,14 +780,14 @@ theorem homotopy_d_zero (σ : Cochain P U 0) :
   rw [map_zero, pair_single _ _ _ le_rfl, one_smul, res_refl, sub_self]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨homotopy P U q σ, by rw [← d_homotopy_add, hσ, map_zero, add_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_d_eq_sub_altProj (q : ℕ) (σ : Cochain P U (q + 1)) (hσ : d P U (q + 1) σ = 0) :
     ∃ τ, d P U q τ = σ - altProj P U (q + 1) σ :=
   ⟨homotopy P U q σ, by rw [← d_homotopy_add, hσ, map_zero, add_zero]⟩
 
 /- English proof (translation)
-Use `homotopy_d_zero σ` as an intermediate fact. Rewrite `this` using `[hσ, map_zero]`. Conclude with `(sub_eq_zero.mp this.symm).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_altProj_of_d_eq_zero (σ : Cochain P U 0) (hσ : d P U 0 σ = 0) :
     altProj P U 0 σ = σ := by
@@ -796,7 +796,7 @@ theorem eq_altProj_of_d_eq_zero (σ : Cochain P U 0) (hσ : d P U 0 σ = 0) :
   exact (sub_eq_zero.mp this.symm).symm
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `exists_d_eq_sub_altProj q σ hσ`. Conclude with `⟨τ, by rw [hτ, altProj_eq_zero hq, sub_zero]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_d_eq_of_card_le [Fintype ι] (q : ℕ) (hq : Fintype.card ι ≤ q + 1)
     (σ : Cochain P U (q + 1)) (hσ : d P U (q + 1) σ = 0) : ∃ τ, d P U q τ = σ := by
@@ -804,7 +804,7 @@ theorem exists_d_eq_of_card_le [Fintype ι] (q : ℕ) (hq : Fintype.card ι ≤ 
   exact ⟨τ, by rw [hτ, altProj_eq_zero hq, sub_zero]⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `eq_of_supp (pair σ (inter U i)) (pair σ' (inter U i)) (proj_supp q i) fun t k ht => ?_` and prove the remaining obligations. Establish `hle` using `inter_le_of_inRange U ht.2`. Rewrite using `[pair_single _ _ _ hle, pair_single _ _ _ hle, h t ht.1]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem altProj_congr (q : ℕ) {σ σ' : Cochain P U q} (h : ∀ t, StrictMono t → σ t = σ' t) :
     altProj P U q σ = altProj P U q σ' := by
@@ -814,7 +814,7 @@ theorem altProj_congr (q : ℕ) {σ σ' : Cochain P U q} (h : ∀ t, StrictMono 
   rw [pair_single _ _ _ hle, pair_single _ _ _ hle, h t ht.1]
 
 /- English proof (translation)
-Rewrite using `[cls_eq_cls_iff, coboundaries_succ]`. Take `⟨τ, hτ⟩` from `exists_d_eq_sub_altProj q σ hσ`. Conclude with `⟨τ, hτ⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cls_altProj (q : ℕ) (σ : Cochain P U (q + 1)) (hσ : d P U (q + 1) σ = 0) :
     cls (altProj P U (q + 1) σ) (by rw [d_altProj, hσ, map_zero]) = cls σ hσ := by
@@ -823,7 +823,7 @@ theorem cls_altProj (q : ℕ) (σ : Cochain P U (q + 1)) (hσ : d P U (q + 1) σ
   exact ⟨τ, hτ⟩
 
 /- English proof (translation)
-Take `⟨q, rfl⟩ : ∃ q, n = q + 1` from `⟨n - 1, by omega⟩`. Use `subsingleton_of_forall_eq 0 fun c => ?_` and prove the remaining obligations. Take `⟨σ, hσ, rfl⟩` from `exists_cls c`. Rewrite using `[cls_eq_zero_iff, coboundaries_succ]`. Conclude with `exists_d_eq_of_card_le q hn σ hσ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subsingleton_cechH [Fintype ι] {n : ℕ} (hn : Fintype.card ι ≤ n) (hn0 : 0 < n) :
     Subsingleton (cechH P U n) := by

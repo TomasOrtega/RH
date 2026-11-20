@@ -7,9 +7,9 @@ namespace Formalism.GrowthSums
 namespace KapPrime
 
 /- English proof (translation)
-Establish `hY0 : 0 < Y` using `by linarith`. Establish `hkY : 1 ≤ k * Y` using `one_le_mul_of_one_le_of_one_le hk hY`. Establish `hp0 : 0 < p` using `lt_of_lt_of_le (by positivity) hp`. Rewrite using `[div_le_div_iff₀ (by positivity) hY0]`. Establish `h1 : k * Y ≤ (k * Y) ^ 4` using `le_self_pow₀ hkY (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (k ^ 2 * Y ^ 2) ^ 2 ≤ p ^ 2` using `pow_le_pow_left₀ (by positivity) hp 2`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma u1 {k p Y : ℝ} (hk : 1 ≤ k) (hY : 1 ≤ Y) (hp : k ^ 2 * Y ^ 2 ≤ p) : k / p ^ 2 ≤ 1 / Y := by
   have hY0 : 0 < Y := by linarith
@@ -21,9 +21,9 @@ lemma u1 {k p Y : ℝ} (hk : 1 ≤ k) (hY : 1 ≤ Y) (hp : k ^ 2 * Y ^ 2 ≤ p) 
   nlinarith
 
 /- English proof (translation)
-Establish `hY0 : 0 < Y` using `by linarith`. Establish `hkY : 1 ≤ k * Y` using `one_le_mul_of_one_le_of_one_le hk hY`. Establish `hp0 : 0 < p` using `lt_of_lt_of_le (by positivity) hp`. Establish `ha0 : 0 < a` using `lt_of_lt_of_le hb0 hab`. Rewrite using `[div_le_div_iff₀ (by positivity) hY0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : k * Y ≤ (k * Y) ^ 2` using `le_self_pow₀ hkY (by norm_num)`. Establish `h2 : k * Y ≤ p` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma u2 {k p Y a b' : ℝ} (hk : 1 ≤ k) (hY : 1 ≤ Y) (hp : k ^ 2 * Y ^ 2 ≤ p) (hb0 : 0 < b')
     (hab : b' ≤ a) : k * b' / (p * a) ≤ 1 / Y := by
@@ -39,9 +39,9 @@ lemma u2 {k p Y a b' : ℝ} (hk : 1 ≤ k) (hY : 1 ≤ Y) (hp : k ^ 2 * Y ^ 2 �
     _ = 1 * (p * a) := by ring
 
 /- English proof (translation)
-Establish `hY0 : 0 < Y` using `by linarith`. Establish `hkY : 1 ≤ k * Y` using `one_le_mul_of_one_le_of_one_le hk hY`. Establish `hp0 : 0 < p` using `lt_of_lt_of_le (by positivity) hp`. Rewrite using `[div_le_div_iff₀ hp0 hY0]`. Establish `h1 : k * Y ≤ (k * Y) ^ 2` using `le_self_pow₀ hkY (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : La * Y ≤ p` using `by nlinarith`. Establish `hN₁0 : 0 ≤ N₁` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma u3 {k p Y La N₁ : ℝ} (hk : 1 ≤ k) (hY : 1 ≤ Y) (hN₁ : 1 ≤ N₁) (hp : k ^ 2 * Y ^ 2 ≤ p)
     (_hLa0 : 0 ≤ La) (hLa : La < k) : La * N₁ / p ≤ N₁ / Y := by
@@ -56,11 +56,11 @@ lemma u3 {k p Y La N₁ : ℝ} (hk : 1 ≤ k) (hY : 1 ≤ Y) (hN₁ : 1 ≤ N₁
     _ ≤ N₁ * p := mul_le_mul_of_nonneg_left h2 hN₁0
 
 /- English proof (translation)
-Establish `hY0 : 0 < Y` using `by linarith`. Establish `hm : 1 ≤ k * Y * Yb * N * la` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hk hY) hYb) hN) hla`. Establish `hLa0 : 0 < La` using `by linarith`. Establish `hLb : 0 ≤ La * b' * Y` using `by positivity`. Establish `h1 : La * b' * Y * 1 ≤ La * b' * Y * (k * Y * Yb * N * la)` using `mul_le_mul_of_nonneg_left hm hLb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : 0 < a`. Establish `: 0 < k * Y ^ 2 * Yb * N * La * la * b'`. Establish `: 0 < k` using `by linarith`. Establish `: 0 < Yb` using `by linarith`. Establish `: 0 < N` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 < la` using `by linarith`. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[div_le_div_iff₀ ha0 hY0]`. Establish `h2 : La * b' * Y * (k * Y * Yb * N * la) = k * Y ^ 2 * Yb * N * La * la * b'` using `by ring`.
+Establish an intermediate fact. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -88,11 +88,11 @@ lemma u4 {k Y Yb N La la a b' : ℝ} (hk : 1 ≤ k) (hY : 1 ≤ Y) (hYb : 1 ≤ 
   linarith
 
 /- English proof (translation)
-Establish `hk0 : 0 < k` using `by linarith`. Establish `hQ0 : 0 < Q` using `by linarith`. Establish `hN0 : 0 < N` using `by linarith`. Establish `hY0 : 0 < Y` using `by linarith`. Establish `hZ0 : 0 < Z` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN₁0 : 0 < N₁` using `by linarith`. Establish `hW : 0 < k ^ 3 * N * Q ^ 4 * Z * Y` using `by positivity`. Establish `ha0 : 0 < a` using `lt_of_lt_of_le hW ha`. Establish `hCc : 0 ≤ Cc` using `by nlinarith`. Establish `hQ2 : Q ^ 2 ≤ Q ^ 4` using `pow_le_pow_right₀ hQ (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_le_div_iff₀ ha0 (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma u5 {Cc k N N₁ Q c a Y Z : ℝ} (hk : 1 ≤ k) (hN : 1 ≤ N) (hN₁ : 1 ≤ N₁) (hQ : 1 ≤ Q)
     (hY : 1 ≤ Y) (hZ : 1 ≤ Z) (hc0 : 0 ≤ c) (hc : c ≤ 2 * Cc * Z)

@@ -13,7 +13,7 @@ open scoped ContDiff ComplexOrder Classical
 namespace GlobalTheory.CurveDens
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vec_eq_sum_single_smul {D : ℕ} (ξ : V D) :
     ξ = ∑ j, ξ j • (EuclideanSpace.single j (1 : ℂ) : V D) := by
@@ -21,7 +21,7 @@ theorem vec_eq_sum_single_smul {D : ℕ} (ξ : V D) :
   simp [Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `only [angleForm, map_add, map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem angleForm_add_vec {D : ℕ} (n : ℕ) (a a' : V D → ℝ) (q : V D → ℂ) (ξ η z : V D) :
     angleForm n a a' q (ξ + η) z = angleForm n a a' q ξ z + angleForm n a a' q η z := by
@@ -29,7 +29,7 @@ theorem angleForm_add_vec {D : ℕ} (n : ℕ) (a a' : V D → ℝ) (q : V D → 
   ring
 
 /- English proof (translation)
-Set `L : V D →ₗ[ℂ] ℂ` to `{ toFun := fun η => angleForm n a a' q η z map_add' := fun η η' => angleForm_add_vec n a a' q η η' z map_smul' := fun c η => (angleForm_props _ n a a' q η z).1 c }`. Express the relevant statement in the definitionally equal form `L ξ = ∑ j, ξ j * L (EuclideanSpace.single j 1)`. Use `conv_lhs => rw [vec_eq_sum_single_smul ξ]`. Simplify using `only [map_sum, map_smul, smul_eq_mul]`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem angleForm_eq_sum_coeff {D : ℕ} (n : ℕ) (a a' : V D → ℝ) (q : V D → ℂ) (ξ z : V D) :
     angleForm n a a' q ξ z = ∑ j, ξ j * angleForm n a a' q (EuclideanSpace.single j 1) z := by
@@ -42,11 +42,11 @@ theorem angleForm_eq_sum_coeff {D : ℕ} (n : ℕ) (a a' : V D → ℝ) (q : V D
   simp only [map_sum, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `D n a a' q z ξ ha ha' hq h0 h0'`. Establish `hd : ∀ η : V D, DifferentiableAt ℝ (angleForm n a a' q η) z` using `fun η => ((angleForm_props _ n a a' q η z).2.1 ha ha' hq h0 h0').differentiableAt one_ne_zero`. Establish `he : angleForm n a a' q ξ = fun x => ∑ j, ξ j • angleForm n a a' q (EuclideanSpace.single j 1) x`. Use function extensionality and compare the values at `fun x => angleForm_eq_sum_coeff n a a' q ξ x`. Rewrite using `[he, dbar_sum (A := fun j x => ξ j • angleForm n a a' q (EuclideanSpace.single j 1) x) fun j _ => (hd _).fun_const_smul (ξ j), ContinuousLinearMap.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[dbar_const_smul _ (hd _), ContinuousLinearMap.smul_apply, smul_eq_mul]`. Generalize the expression as in `dbar (angleForm n a a' q (EuclideanSpace.single j 1)) z = T`. Establish `hT : T ξ = ∑ l, starRingEnd ℂ (ξ l) * T (EuclideanSpace.single l 1)` using `by conv_lhs => rw [vec_eq_sum_single_smul ξ]`. Simplify using `only [map_sum, map_smulₛₗ, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hT, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_dbar_angleForm_single : ∀ (D n : ℕ) (a a' : V D → ℝ) (q : V D → ℂ) (z ξ : V D), ContDiffAt ℝ 2 a z → ContDiffAt ℝ 2 a' z → ContDiffAt ℝ 2 q z → 0 < a z → 0 < a' z → ∑ j, ∑ l, ξ j * dbar (CurveDens.angleForm n a a' q (EuclideanSpace.single j 1)) z (EuclideanSpace.single l 1) * starRingEnd ℂ (ξ l) = dbar (CurveDens.angleForm n a a' q ξ) z ξ := by
   intro D n a a' q z ξ ha ha' hq h0 h0'

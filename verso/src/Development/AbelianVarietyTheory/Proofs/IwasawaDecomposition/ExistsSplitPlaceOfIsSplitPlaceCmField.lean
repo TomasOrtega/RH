@@ -10,7 +10,7 @@ open scoped TensorProduct
 namespace GlobalTheory.HeightCounting.SplitPlaceOf
 
 /- English proof (translation)
-Introduce `D P hP` and use `GlobalTheory.RowUnitProof.exists_splitPlace_eq D P hP`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_splitPlace : ∀ (D : D7) (P : PlE D.host), IsSplitPl D.host P →
     ∃ s : SplitPlace D.host.E, s.w = P :=

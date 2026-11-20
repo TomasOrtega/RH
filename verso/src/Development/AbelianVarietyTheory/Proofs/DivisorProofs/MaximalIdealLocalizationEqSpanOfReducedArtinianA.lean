@@ -4,13 +4,13 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set x : R ⧸ Ideal.span {T} := Ideal.Quotient.mk _ z`. Take `⟨k, y, hy⟩` from `IsArtinian.exists_pow_succ_smul_dvd x (1 : R ⧸ Ideal.span {T})`. Simplify using `only [smul_eq_mul, mul_one] at hy`. Take `⟨w, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Establish `h0 : x * (1 - x * Ideal.Quotient.mk _ w) = 0`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsReduced.eq_zero` to reduce the goal to its premises. Use `⟨k + 1, ?_⟩` and prove the remaining obligations. Establish `: x ^ k * (1 - x * Ideal.Quotient.mk _ w) = 0`. Rewrite using `[mul_sub, mul_one, ← mul_assoc, ← pow_succ, hy, sub_self]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1 - z * w, ?_, ?_⟩` and prove the remaining obligations. Introduce `hc`. Establish `: (1 : R) ∈ n`. Use `n.add_mem hc (n.mul_mem_right w hz)` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Ideal.IsPrime.ne_top ‹_›) ((Ideal.eq_top_iff_one _).2 this)`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Simplify `h0` using `[x, mul_comm]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_not_mem_mul_mem_span_of_reduced_artinian (R : Type) [CommRing R] (T : R)
     (hred : IsReduced (R ⧸ Ideal.span {T})) (hart : IsArtinianRing (R ⧸ Ideal.span {T}))
@@ -38,11 +38,11 @@ theorem exists_not_mem_mul_mem_span_of_reduced_artinian (R : Type) [CommRing R] 
     simpa [x, mul_comm] using h0
 
 /- English proof (translation)
-Introduce `R _ T hred hart n _ hT`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, hc, hcz⟩` from `exists_not_mem_mul_mem_span_of_reduced_artinian R T hred hart n z hz`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 hcz`. Establish `hu : IsUnit (algebraMap R (Localization.AtPrime n) c)` using `IsLocalization.map_units (Localization.AtPrime n) (⟨c, hc⟩ : n.primeCompl)`. Rewrite using `[Ideal.mem_comap]`. Establish `: algebraMap R (Localization.AtPrime n) z = (hu.unit⁻¹ : (Localization.AtPrime n)ˣ) * algebraMap R _ a * algebraMap R _ T`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, ← map_mul, ha, map_mul, ← mul_assoc, IsUnit.val_inv_mul, one_mul]`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `Ideal.mem_map_of_mem _ hT`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maximalIdeal_localization_eq_span_of_reduced_artinian :
     ∀ (R : Type) [CommRing R] (T : R), IsReduced (R ⧸ Ideal.span {T}) → IsArtinianRing (R ⧸ Ideal.span {T}) → ∀ (n : Ideal R) [n.IsPrime], T ∈ n → IsLocalRing.maximalIdeal (Localization.AtPrime n) = Ideal.span {algebraMap R (Localization.AtPrime n) T} := by

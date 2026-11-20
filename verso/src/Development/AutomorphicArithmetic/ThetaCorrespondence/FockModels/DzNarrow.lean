@@ -10,11 +10,11 @@ namespace UpperTheory.Lit.Dz
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Take `⟨E⟩` from `GlobalTheory.LocGL.DetQuot.nonempty_equiv_multiProd (k := k) (eOne m) (θ := fun _ : Fin m => (1 : kˣ →* ℂˣ)) (Θ := (1 : Levi k (fun _ : Fin m => Fin 1) →* ℂˣ)) (fun g => by simp)`. Establish `h1 : IsSmoothChar (1 : kˣ →* ℂˣ)` using `isSmoothChar_one`. Use `⟨(GlobalTheory.SmGL.MultiIrr.isIrreducible_iff_of_equiv E).2 (multi_irr k m 1 h1), ?_, ?_⟩` and prove the remaining obligations. Take `⟨f, hf, hf1⟩` from `GlobalTheory.SatInd.exists_fixed_apply_one (eOne m) (ρ := ofChar (1 : Levi k (fun _ : Fin m => Fin 1) →* ℂˣ)) (x := (1 : ℂ)) fun g _ => by simp show fixed (parInd (eOne m) (ofChar (1 : Levi k (fun _ : Fin m => Fin 1) →* ℂˣ))) (GlobalTheory.SplitWeil.KO k (Fin m)) ≠ ⊥`. Introduce `hbot`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : f ∈ (⊥ : Submodule ℂ _)` using `hbot ▸ hf`. Rewrite `h0` using `[Submodule.mem_bot]`. Rewrite `hf1` using `[h0]`. Conclude with `absurd hf1 (by simp)`. Establish `hc : HasCentralChar (multiProd (eOne m) fun _ : Fin m => detRep (Fin 1) (1 : kˣ →* ℂˣ)) 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z f`. Rewrite using `[GlobalTheory.BoundaryMaps.multiProd_scalar (eOne m) _ (fun _ => (1 : kˣ →* ℂˣ)) (fun _ => by simpa using GlobalTheory.BoundaryMaps.hasCentralChar_detRep (k := k) 1 (1 : kˣ →* ℂˣ)) z f]`. Simplify using the standard rewrite rules. Conclude with `GlobalTheory.LocGL.hasCentralChar_of_equiv E.symm hc`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genA_free (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (m : ℕ) :
     (psOne k m).IsIrreducible ∧ IsSpherical (psOne k m) ∧ HasCentralChar (psOne k m) 1 := by
@@ -38,9 +38,9 @@ theorem genA_free (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
     exact GlobalTheory.LocGL.hasCentralChar_of_equiv E.symm hc
 
 /- English proof (translation)
-Introduce `E _ _ w g _ i hi ψ₀ _ ψ hψc hL m`. Take `⟨hirr, hsph, hcen⟩` from `genA_free (w.adicCompletion E) m`. Set `τ₀ : IrrRep (GL (Fin m) (w.adicCompletion E))` to `⟨PS (w.adicCompletion E) m, psOne (w.adicCompletion E) m, isSmooth_parInd _ _, hirr⟩`. Use `⟨τ₀, 1, ?_, hcen, ?_⟩` and prove the remaining obligations. Take `⟨φ⟩` from `IrrRep.nonempty_equiv_rep τ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `fixed_ne_bot_of_equiv' φ.symm hsph`. Take `⟨l, hl, hlv⟩` from `exists_cell_functional (lowS_one i hi m) (lowS_KO i hi m) (lowS_upper i hi m) (lowS_diag i hi m) ψ hψc (psi_of_lifts i hi hL)`. Conclude with `⟨l, cellVec (lowS_one i hi m) (lowS_diag i hi m), hl, hlv, fun x hx => cellVec_fixed (lowS_one i hi m) (lowS_diag i hi m) ⟨x, hx, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem genSph : GenSph := by
   intro E _ _ w g _ i hi ψ₀ _ ψ hψc hL m
@@ -56,7 +56,7 @@ theorem genSph : GenSph := by
       cellVec_fixed (lowS_one i hi m) (lowS_diag i hi m) ⟨x, hx, rfl⟩⟩
 
 /- English proof (translation)
-The claim follows from `narrowBig_of lCusp lDepth lTame (lMatchBig_of lCusp lDepth (lOneOf (lTameRec art GlobalTheory.T.chevalley_units)) (lPin_of_dig dig) lKondo (lFinPair lFE) lPsi genSph (lRed DiscreteGroups.sglob.LConv.cuspGen) lTw (galEps_of_art (fun L Ω _ _ _ _ _ A v h => by obtain ⟨rc, ⟨a, ha, -⟩ …`.
+A detailed English derivation is pending.
 -/
 theorem narrowBig (art : GlobalTheory.Published.GlobalArtinReciprocity) (hL : GlobalTheory.Published.LocalLanglandsGL) : NarrowBig :=
   narrowBig_of lCusp lDepth lTame

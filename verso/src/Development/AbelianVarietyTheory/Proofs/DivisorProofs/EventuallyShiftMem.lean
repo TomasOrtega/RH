@@ -25,14 +25,14 @@ def splitL (I : Type) [Fintype I] (g : ℕ) : (I ⊕ Fin g → ℂ) →L[ℂ] To
 omit [DecidableEq I] in
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [splitL]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem shift_eq (w : Fin g → ℂ) (x : I ⊕ Fin g → ℂ) :
     (((fun i ↦ x (Sum.inl i)), w + fun b ↦ x (Sum.inr b)) : Tot I g) = (0, w) + splitL I g x := by
   ext <;> simp [splitL]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i <;> simp [splitL, Pi.single_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem splitL_single (b : Fin g) :
     splitL I g (Pi.single (Sum.inr b) 1) = ((0, Pi.single b 1) : Tot I g) := by
@@ -41,7 +41,7 @@ theorem splitL_single (b : Fin g) :
 omit [DecidableEq I] in
 
 /- English proof (translation)
-Establish `hc : Continuous (fun x : I ⊕ Fin g → ℂ ↦ ((0, w) : Tot I g) + splitL I g x)` using `continuous_const.add (splitL I g).continuous`. Use `hc.continuousAt.eventually (W.isOpen.mem_nhds ?_)` and prove the remaining obligations. Simplify using `using hw`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eventually_shift_mem {W : Opens (Tot I g)} {w : Fin g → ℂ} (hw : ((0 : I → ℂ), w) ∈ W) :
     ∀ᶠ x : I ⊕ Fin g → ℂ in 𝓝 0, (0, w) + splitL I g x ∈ W := by
@@ -53,7 +53,7 @@ theorem eventually_shift_mem {W : Opens (Tot I g)} {w : Fin g → ℂ} (hw : ((0
 omit [DecidableEq I] in
 
 /- English proof (translation)
-The claim follows from `AnalyticAt.comp_of_eq (f := fun x : I ⊕ Fin g → ℂ ↦ ((0, w) : Tot I g) + splitL I g x) (h.analytic _ hw) (analyticAt_const.add ((splitL I g).analyticAt 0)) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_shifted {W : Opens (Tot I g)} (h : Hol W) {w : Fin g → ℂ} (hw : ((0 : I → ℂ), w) ∈ W) :
     AnalyticAt ℂ (fun x : I ⊕ Fin g → ℂ ↦ h.fn ((0, w) + splitL I g x)) 0 :=
@@ -61,7 +61,7 @@ theorem analyticAt_shifted {W : Opens (Tot I g)} (h : Hol W) {w : Fin g → ℂ}
     (h.analytic _ hw) (analyticAt_const.add ((splitL I g).analyticAt 0)) (by simp)
 
 /- English proof (translation)
-Use `filter_upwards [eventually_shift_mem hw] with z hz`. Establish `e : HasFDerivAt (fun x : I ⊕ Fin g → ℂ ↦ h.fn ((0, w) + splitL I g x)) ((fderiv ℂ h.fn ((0, w) + splitL I g z)).comp (splitL I g)) z` using `HasFDerivAt.comp (f := fun x : I ⊕ Fin g → ℂ ↦ ((0, w) : Tot I g) + splitL I g x) z (h.analytic _ hz).differentiableAt.hasFDerivAt ((splitL I g).hasFDerivAt.const_add _)`. Rewrite using `[e.fderiv, ContinuousLinearMap.comp_apply, splitL_single]`. Conclude with `(Hol.fn_der _ h hz).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fderiv_shifted {W : Opens (Tot I g)} (h : Hol W) {w : Fin g → ℂ} (hw : ((0 : I → ℂ), w) ∈ W)
     (b : Fin g) :
@@ -80,21 +80,17 @@ end GlobalTheory.AnPer.CloseTaylor
 open GlobalTheory.AnPer.CloseTaylor in
 
 /- English proof (translation)
-Introduce `I _ _ g D _ _ J N hJ t ht r n hn hnn E _ _ _ W W₀ a ha hW ρ₁ ρ₂ h₁ h₂`. Proceed by induction on `r generalizing ρ₁ with`. Consider the case `zero`. Establish `: ρ₁ = ρ₂` using `RingHom.ext fun h ↦ GlobalTheory.tensor_hol_ext_of_values W₀ D _ _ fun p hp ↦ by`. Rewrite using `[h₁, h₂]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Relation.ReflTransGen.refl`. Consider the case `succ r ih`. Take `⟨ρ', hρ'⟩` from `GlobalTheory.T.tensorLift_ev_rho_eq_taylor_slice N (Sum.elim t fun b ↦ ∑ j : Fin r, n j.succ b) (fun s ↦ hJ _ fun c ↦ by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `s c with i | b` into its components or cases. Conclude with `ht i`. Conclude with `J.sum_mem fun j _ ↦ hn _ _) W W₀ a ha hW`. Use `Relation.ReflTransGen.head (b := (ρ' : Hol W →+* D ⊗[ℂ] Hol W₀)) ?_ (ih (fun j ↦ n j.succ) (fun j ↦ hn _) (fun j ↦ hnn _) _ hρ')` and prove the remaining obligations. Use `⟨fun b ↦ (-n 0 b) ⊗ₜ[ℂ] 1, fun b ↦ Ideal.mem_map_of_mem _ (J.neg_mem (hn 0 b)), fun b c ↦ ?_, fun h ↦ ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, neg_mul_neg, hnn, zero_tmul]`. Use `GlobalTheory.tensor_hol_ext_of_values W₀ D _ _ fun p hp ↦ ?_` and prove the remaining obligations. Establish `e : (Sum.elim t fun b ↦ ∑ j : Fin r, n j.succ b) = fun i : I ⊕ Fin g ↦ (Sum.elim t fun b ↦ ∑ j, n j b) i + (Sum.elim (fun _ ↦ 0) fun b ↦ -n 0 b) i`. Use extensionality with `(i | b)`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `[Fin.sum_univ_succ]`. Establish `hs` using `GlobalTheory.T.taylor_add_square_zero_nilpotent N (Sum.elim t fun b ↦ ∑ j, n j b) (Sum.elim (fun _ : I ↦ 0) fun b ↦ -n 0 b) (fun s hs ↦ hJ s fun c ↦ (Ideal.span_le.2 (by`. Introduce and unpack `_ (⟨i | b, rfl⟩ | ⟨i | b, rfl⟩)`. Conclude with `ht i`. Conclude with `J.sum_mem fun j _ ↦ hn _ _`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `J.zero_mem`. Conclude with `J.neg_mem (hn 0 b))) (hs c))`. Apply the tactic sequence `(by rintro (i | b) (j | c) <;> simp [hnn]) _ (analyticAt_shifted h (hW p hp))`. Take `⟨-, -, -, hcongr, -, -⟩` from `GlobalTheory.PeriodFamily.taylor_formal_properties N (Sum.elim t fun b ↦ ∑ j, n j b)`. Rewrite using `[RingHom.coe_coe, hρ', map_add, map_sum, h₁, e]`.
-
-Simplify using `only [map_mul, h₁, shift_eq]`. Rewrite using `[hs, Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, mul_zero, Finset.sum_const_zero, zero_add]`. Use `congrArg _ (Finset.sum_congr rfl fun b _ ↦ ?_)` and prove the remaining obligations. Rewrite using `[hcongr _ _ (fderiv_shifted h (hW p hp) b)]`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AnPer.close_of_sliceTaylor : ∀ {I : Type} [Fintype I] [DecidableEq I] {g : ℕ} {D : Type} [CommRing D] [Algebra ℂ D] (J : Ideal D) (N : ℕ), (∀ s : Fin (N + 1) → D, (∀ a, s a ∈ J) → ∏ a, s a = 0) → ∀ (t : I → D), (∀ i, t i ∈ J) → ∀ (r : ℕ) (n : Fin r → Fin g → D), (∀ j a, n j a ∈ J) → (∀ j a b, n j a * n j b = 0) → ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] (W : Opens (Tot I g)) (W₀ : Opens E) (a : E → Fin g → ℂ), AnalyticOnNhd ℂ a W₀ → (∀ p ∈ W₀, ((0 : I → ℂ), a p) ∈ W) → ∀ ρ₁ ρ₂ : Hol W →+* D ⊗[ℂ] Hol W₀, (∀ (h : Hol W) (p : E) (hp : p ∈ W₀), Algebra.TensorProduct.lift (AlgHom.id ℂ D) ((Algebra.ofId ℂ D).comp (Hol.ev p hp)) (fun _ _ ↦ Commute.all _ _) (ρ₁ h) = GlobalTheory.PeriodFamily.taylor N (Sum.elim t fun b ↦ ∑ j, n j b) (fun x : I ⊕ Fin g → ℂ ↦ h.fn (fun i ↦ x (Sum.inl i), a p + fun b ↦ x (Sum.inr b)))) → (∀ (h : Hol W) (p : E) (hp : p ∈ W₀), Algebra.TensorProduct.lift (AlgHom.id ℂ D) ((Algebra.ofId ℂ D).comp (Hol.ev p hp)) (fun _ _ ↦ Commute.all _ _) (ρ₂ h) = GlobalTheory.PeriodFamily.taylor N (Sum.elim t fun _ ↦ 0) (fun x : I ⊕ Fin g → ℂ ↦ h.fn (fun i ↦ x (Sum.inl i), a p + fun b ↦ x (Sum.inr b)))) → Close (J.map (Algebra.TensorProduct.includeLeft : D →ₐ[ℂ] D ⊗[ℂ] Hol W₀)) ρ₁ ρ₂ := by
   intro I _ _ g D _ _ J N hJ t ht r n hn hnn E _ _ _ W W₀ a ha hW ρ₁ ρ₂ h₁ h₂

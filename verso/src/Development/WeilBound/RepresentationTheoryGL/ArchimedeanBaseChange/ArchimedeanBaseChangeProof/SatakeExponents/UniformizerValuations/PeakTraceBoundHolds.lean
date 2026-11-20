@@ -16,9 +16,9 @@ section Gel
 variable {E : Type*} [CStarAlgebra E]
 
 /- English proof (translation)
-Establish `: IsClosed (S.topologicalClosure : Set E)` using `S.isClosed_topologicalClosure`. Establish `: Nontrivial S.topologicalClosure` using `⟨⟨0, 1, fun h => by simpa using congrArg ψ h⟩⟩`. Establish `: StarHomClass (S.topologicalClosure →ₐ[ℂ] ℂ) S.topologicalClosure ℂ` using `AlgHomClass.instStarHomClass`. Use `⟨{ ψ.comp (StarSubalgebra.inclusion S.le_topologicalClosure).toAlgHom with map_star' := fun y => ?_ }, fun y => ?_, fun y => rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ψ (StarSubalgebra.inclusion S.le_topologicalClosure (star y)) = star (ψ (StarSubalgebra.inclusion S.le_topologicalClosure y))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_star, map_star]`. Express the relevant statement in the definitionally equal form `‖ψ (StarSubalgebra.inclusion S.le_topologicalClosure y)‖ ≤ ‖(y : E)‖`. Conclude with `(AlgHom.norm_apply_le_self ψ _).trans_eq rfl`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem restr (S : StarSubalgebra ℂ E) (hS : ∀ x ∈ S, ∀ y ∈ S, x * y = y * x)
     (ψ : S.topologicalClosure →ₐ[ℂ] ℂ) :
@@ -38,9 +38,9 @@ theorem restr (S : StarSubalgebra ℂ E) (hS : ∀ x ∈ S, ∀ y ∈ S, x * y =
     exact (AlgHom.norm_apply_le_self ψ _).trans_eq rfl
 
 /- English proof (translation)
-Establish `: IsClosed (S.topologicalClosure : Set E)` using `S.isClosed_topologicalClosure`. Establish `hs' : ∀ x y : S, x * y = y * x` using `fun x y => Subtype.ext (hS _ x.2 _ y.2)`. Use `letI : NormedCommRing S.topologicalClosure := { SubringClass.toNormedRing S.topologicalClosure with mul_comm := (S.commRingTopologicalClosure hs').mul_comm }`. Use `letI : CommCStarAlgebra S.topologicalClosure := { }`. Use `set xc := StarSubalgebra.inclusion S.le_topologicalClosure ⟨x, hx⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h1 : ‖x‖ = ‖xc‖` using `rfl`. Apply the tactic sequence `rw [h1, ← (AddMonoidHomClass.isometry_iff_norm _).mp (gelfandTransform_isometry S.topologicalClosure) xc]`. Use `(ContinuousMap.norm_le _ hc).2 fun φ => ?_` and prove the remaining obligations. Use `h (WeakDual.CharacterSpace.equivAlgHom φ)` as an intermediate fact. Rewrite `this` using `[WeakDual.CharacterSpace.equivAlgHom_coe]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem norm_le_of_chars (S : StarSubalgebra ℂ E) (hS : ∀ x ∈ S, ∀ y ∈ S, x * y = y * x)
     (x : E) (hx : x ∈ S) (c : ℝ) (hc : 0 ≤ c)
@@ -60,15 +60,15 @@ theorem norm_le_of_chars (S : StarSubalgebra ℂ E) (hS : ∀ x ∈ S, ∀ y ∈
   rwa [WeakDual.CharacterSpace.equivAlgHom_coe] at this
 
 /- English proof (translation)
-Establish `: CompleteSpace S.topologicalClosure` using `S.isClosed_topologicalClosure.completeSpace_coe`. Establish `hev : ∀ a : S.topologicalClosure, Continuous (fun φ : WeakDual.characterSpace ℂ S.topologicalClosure => φ a)` using `fun a => (WeakDual.eval_continuous a).comp continuous_subtype_val`. Set `K : Set (WeakDual.characterSpace ℂ S.topologicalClosure)` to `{φ | ε ≤ ‖φ (StarSubalgebra.inclusion S.le_topologicalClosure ⟨b, hb⟩)‖}`. Establish `hK : IsClosed K` using `isClosed_le continuous_const (hev _).norm`. Set `U : κ → Set (WeakDual.characterSpace ℂ S.topologicalClosure)` to `fun i => {φ | 1 < ‖φ (StarSubalgebra.inclusion S.le_topologicalClosure ⟨f i, hf i⟩)‖}`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hU : ∀ i, IsOpen (U i)` using `fun i => isOpen_lt continuous_const (hev _).norm`. Establish `hcov : K ⊆ ⋃ i, U i`. Introduce `φ hφ`. Take `⟨i, hi⟩` from `h (WeakDual.CharacterSpace.equivAlgHom φ) (by rw [WeakDual.CharacterSpace.equivAlgHom_coe]; exact hφ)`. Use `Set.mem_iUnion.2 ⟨i, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hi` using `[WeakDual.CharacterSpace.equivAlgHom_coe]`. Conclude with `hi`. Take `⟨t, ht⟩` from `hK.isCompact.elim_finite_subcover U hU hcov`. Use `⟨t, fun ψ hψ => ?_⟩` and prove the remaining obligations. Establish `hmem : WeakDual.CharacterSpace.equivAlgHom.symm ψ ∈ K` using `by show ε ≤ ‖(WeakDual.CharacterSpace.equivAlgHom.symm ψ) _‖`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[WeakDual.CharacterSpace.equivAlgHom_symm_coe]`. Conclude with `hψ`. Use `ht hmem` as an intermediate fact. Simplify using `only [Set.mem_iUnion] at this`. Take `⟨i, hi, hi'⟩` from `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨i, hi, ?_⟩` and prove the remaining obligations. Establish `hi'' : 1 < ‖(WeakDual.CharacterSpace.equivAlgHom.symm ψ) (StarSubalgebra.inclusion S.le_topologicalClosure ⟨f i, hf i⟩)‖` using `hi'`. Rewrite `hi''` using `[WeakDual.CharacterSpace.equivAlgHom_symm_coe]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finite_cover (S : StarSubalgebra ℂ E) (hS : ∀ x ∈ S, ∀ y ∈ S, x * y = y * x)
     {κ : Type*} (f : κ → E) (hf : ∀ i, f i ∈ S) (b : E) (hb : b ∈ S) (ε : ℝ)
@@ -112,7 +112,7 @@ theorem finite_cover (S : StarSubalgebra ℂ E) (hS : ∀ x ∈ S, ∀ y ∈ S, 
 end Gel
 
 /- English proof (translation)
-Rewrite using `[← h.geom_sum₂_mul k]`. Use `Commute.isNilpotent_mul_left ?_ hn` and prove the remaining obligations. Use `Commute.sum_left _ _ _ fun i _ => ?_` and prove the remaining obligations. Conclude with `(((Commute.refl x).sub_right h).pow_left i).mul_left ((h.symm.sub_right (Commute.refl y)).pow_left _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nil_pow_sub {R : Type*} [Ring R] {x y : R} (h : Commute x y) (hn : IsNilpotent (x - y))
     (k : ℕ) : IsNilpotent (x ^ k - y ^ k) := by
@@ -123,15 +123,15 @@ theorem nil_pow_sub {R : Type*} [Ring R] {x y : R} (h : Commute x y) (hn : IsNil
     ((h.symm.sub_right (Commute.refl y)).pow_left _)
 
 /- English proof (translation)
-Establish `hds` using `DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top T.independent_maxGenEigenspace (Module.End.iSup_maxGenEigenspace_eq_top T)`. Establish `hk : ∀ μ, Set.MapsTo (T ^ k) (T.maxGenEigenspace μ) (T.maxGenEigenspace μ)` using `fun μ => T.mapsTo_maxGenEigenspace_of_comm (Commute.self_pow T k) μ`. Rewrite using `[LinearMap.trace_eq_sum_trace_restrict' hds hfin hk]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Establish `h1` using `T.mapsTo_maxGenEigenspace_of_comm (Commute.refl T) μ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hnil` using `T.isNilpotent_restrict_maxGenEigenspace_sub_algebraMap μ`. Establish `hpow : (T ^ k).restrict (hk μ) = (T.restrict h1) ^ k` using `(Module.End.pow_restrict (f' := T) k h1).symm`. Establish `hA : Set.MapsTo (algebraMap ℂ (Module.End ℂ V) μ) (T.maxGenEigenspace μ) (T.maxGenEigenspace μ)` using `fun x hx => by simpa [Module.algebraMap_end_apply] using Submodule.smul_mem _ μ hx`. Establish `hAe : (algebraMap ℂ (Module.End ℂ V) μ).restrict hA = algebraMap ℂ (Module.End ℂ (T.maxGenEigenspace μ)) μ`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `show (algebraMap ℂ (Module.End ℂ V) μ) x.1 = _`. Simplify using `[Module.algebraMap_end_apply]`. Establish `hnil' : IsNilpotent (T.restrict h1 - algebraMap ℂ (Module.End ℂ (T.maxGenEigenspace μ)) μ)`. Rewrite using `[← hAe, LinearMap.restrict_sub h1 hA]`. Conclude with `hnil`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm : Commute (T.restrict h1) (algebraMap ℂ (Module.End ℂ (T.maxGenEigenspace μ)) μ)` using `Algebra.commute_algebraMap_right _ _`. Establish `hn2 : IsNilpotent ((T.restrict h1) ^ k - algebraMap ℂ _ (μ ^ k))`. Rewrite using `[map_pow]`. Conclude with `nil_pow_sub hcomm hnil' k`. Use `LinearMap.trace_comp_eq_mul_of_commute_of_isNilpotent (μ ^ k) (Commute.one_left ((T.restrict h1) ^ k)) hn2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `this` using `[Module.End.one_eq_id, LinearMap.id_comp]`. Rewrite using `[hpow, this, LinearMap.trace_id]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem trace_pow_eq {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (T : Module.End ℂ V) (hfin : {μ | T.maxGenEigenspace μ ≠ ⊥}.Finite) (k : ℕ) :
@@ -169,21 +169,19 @@ theorem trace_pow_eq {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimension
   ring
 
 /- English proof (translation)
-Establish `hfin : {μ | T.maxGenEigenspace μ ≠ ⊥}.Finite` using `WellFoundedGT.finite_ne_bot_of_iSupIndep T.independent_maxGenEigenspace`. Use `set r' : ℝ := (r + ‖μ‖) / 2 with hr'`. Establish `hr'0 : 0 < r'`. Establish `: 0 < ‖μ‖` using `lt_of_le_of_lt hr hrμ`. Rewrite using `[hr']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hrr' : r ≤ r'` using `by rw [hr']; linarith`. Establish `hr'μ : r' < ‖μ‖` using `by rw [hr']; linarith`. Set `ι` to `(hfin.toFinset : Set ℂ)`. Establish `key` using `GlobalTheory.T.regularized_exponential_sum ι (fun i => (Module.finrank ℂ (T.maxGenEigenspace i.1) : ℂ)) (fun i => i.1) r' (max C 0 * (r' ^ j)⁻¹) N hr'0.le ?_ μ hr'μ`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : μ ∈ hfin.toFinset`. Rewrite using `[Set.Finite.mem_toFinset]`. Introduce `hbot`. Establish `hvm : v ∈ T.maxGenEigenspace μ` using `Module.End.eigenspace_le_maxGenEigenspace (Module.End.mem_eigenspace_iff.mpr hTv)`. Rewrite `hvm` using `[hbot]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv ((Submodule.mem_bot ℂ).mp hvm)`. Rewrite using `[Finset.sum_eq_single_of_mem (⟨μ, Finset.mem_coe.mpr hmem⟩ : ι) (by simp) (fun b _ hb => by`. It suffices to derive a contradiction. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at *`. Conclude with `hb (Subtype.ext (by assumption)))] at key`.
+It suffices to derive a contradiction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Nat.cast_eq_zero] at key`. Establish `hpos : Module.finrank ℂ (T.maxGenEigenspace μ) ≠ 0`. Rewrite `hmem` using `[Set.Finite.mem_toFinset]`. Conclude with `Submodule.finrank_eq_zero.not.mpr hmem`. Conclude with `hpos key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `filter_upwards [h, Filter.eventually_ge_atTop j] with k hk hkj`. Establish `hsum : ∑ i : ι, (Module.finrank ℂ (T.maxGenEigenspace i.1) : ℂ) * i.1 ^ k = LinearMap.trace ℂ V (T ^ k)`. Rewrite using `[trace_pow_eq T hfin k]`. Conclude with `Finset.sum_coe_sort hfin.toFinset (fun i => (Module.finrank ℂ (T.maxGenEigenspace i) : ℂ) * i ^ k)`. Rewrite using `[hsum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `hk.trans ?_` and prove the remaining obligations. Establish `h1 : r ^ (k - j) ≤ r' ^ (k - j)` using `pow_le_pow_left₀ hr hrr' _`. Establish `h2 : r' ^ (k - j) = (r' ^ j)⁻¹ * r' ^ k`. Rewrite using `[pow_sub₀ _ hr'0.ne' hkj]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `h3 : (0 : ℝ) ≤ (1 + k) ^ N` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem trace_contra {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (T : Module.End ℂ V) (v : V) (hv : v ≠ 0) (μ : ℂ) (hTv : T v = μ • v) (r C : ℝ) (N j : ℕ)
@@ -237,19 +235,17 @@ theorem trace_contra {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimension
       _ = max C 0 * (r' ^ j)⁻¹ * (1 + k) ^ N * r' ^ k := by rw [h2]; ring
 
 /- English proof (translation)
-Establish `hB : ∀ g, Commute (star (β ^ m) * β ^ m) (R g)`. Introduce `g`. Establish `h1 : Commute (β ^ m) (R g)` using `(hβ g).pow_left m`. Establish `h2 : Commute (star (β ^ m)) (R g)`. Establish `h3` using `((hβ (star g)).pow_left m).star_star`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[map_star, star_star]`. Then use the resulting hypothesis. Conclude with `h2.mul_left h1`. Establish `hcomm : ∀ a ∈ Set.range R ∪ {star (β ^ m) * β ^ m}, ∀ b ∈ Set.range R ∪ {star (β ^ m) * β ^ m}, a * b = b * a`. Introduce and unpack `a (⟨g, rfl⟩ | ha) b (⟨g', rfl⟩ | hb)`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb` using `[Set.mem_singleton_iff]`. Substitute `hb` using the available equality. Conclude with `((hB g).eq).symm`. Rewrite `ha` using `[Set.mem_singleton_iff]`. Substitute `ha` using the available equality.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `(hB g').eq`. Rewrite `ha`, `hb` using `[Set.mem_singleton_iff]`. Substitute `ha` using the available equality. Substitute `hb` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hcs : ∀ a ∈ Set.range R ∪ {star (β ^ m) * β ^ m}, ∀ b ∈ Set.range R ∪ {star (β ^ m) * β ^ m}, a * star b = star b * a`. Introduce `a ha b hb`. Break down `hb with ⟨g', rfl⟩ | hb` into its components or cases. Rewrite using `[← map_star]`. Conclude with `hcomm a ha _ (Or.inl ⟨_, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hb` using `[Set.mem_singleton_iff]`. Substitute `hb` using the available equality. Rewrite using `[star_mul, star_star]`. Conclude with `hcomm a ha _ (Or.inr rfl)`. Introduce `x hx y hy`.
-
-Use `letI := StarAlgebra.adjoinCommRingOfComm ℂ hcomm hcs`. Conclude with `congrArg Subtype.val (mul_comm (⟨x, hx⟩ : StarAlgebra.adjoin ℂ _) ⟨y, hy⟩)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem adjoin_comm {A : Type} [CommRing A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A]
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -282,59 +278,53 @@ theorem adjoin_comm {A : Type} [CommRing A] [StarRing A] [Algebra ℂ A] [StarMo
   exact congrArg Subtype.val (mul_comm (⟨x, hx⟩ : StarAlgebra.adjoin ℂ _) ⟨y, hy⟩)
 
 /- English proof (translation)
-Set `S : ∀ s, StarSubalgebra ℂ (H s →L[ℂ] H s)` to `fun s => StarAlgebra.adjoin ℂ (Set.range (R s) ∪ {star (β s ^ m) * β s ^ m})`. Establish `hSc : ∀ s, ∀ x ∈ S s, ∀ y ∈ S s, x * y = y * x` using `fun s => adjoin_comm (R s) (β s) m (hβ s)`. Establish `hR : ∀ s g, R s g ∈ S s` using `fun s g => StarAlgebra.subset_adjoin ℂ _ (Or.inl ⟨g, rfl⟩)`. Establish `hB : ∀ s, star (β s ^ m) * β s ^ m ∈ S s` using `fun s => StarAlgebra.subset_adjoin ℂ _ (Or.inr rfl)`. Set `θ : ∀ s, (S s →⋆ₐ[ℂ] ℂ) → (A →⋆ₐ[ℂ] ℂ)` to `fun s χ => χ.comp (StarAlgHom.codRestrict (R s) (S s) (hR s))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hθ : ∀ s χ g, θ s χ g = χ ⟨R s g, hR s g⟩` using `fun _ _ _ => rfl`. Use `set ε0 : ℝ := ε ^ 2 with hε0`. Establish `hε0p : 0 < ε0` using `by positivity`. Set `d : A → A` to `fun g => g - algebraMap ℂ A (p g)`. Establish `hpd : ∀ g, p (d g) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Simplify using `only [d, map_sub]`. Rewrite using `[AlgHomClass.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]`. Establish `hcov : ∀ s, ∃ t : Finset A, ∀ ψ : (S s).topologicalClosure →ₐ[ℂ] ℂ, ε0 ≤ ‖ψ (StarSubalgebra.inclusion (S s).le_topologicalClosure ⟨_, hB s⟩)‖ → ∃ g ∈ t, 1 < ‖ψ (StarSubalgebra.inclusion (S s).le_topologicalClosure ⟨_, hR s (d g)⟩)‖`. Introduce `s`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `finite_cover (S s) (hSc s) (fun g => R s (d g)) (fun g => hR s (d g)) _ (hB s) ε0` to reduce the goal to its premises. Introduce `ψ hψ`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Take `⟨χ, hχb, hχ⟩` from `restr (S s) (hSc s) ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz : ∀ g, θ s χ (d g) = 0`. Introduce `g`. Assume the negation of the conclusion as `hz`. Establish `h2` using `hno ((2 / θ s χ (d g)) • g)`. Rewrite `h2` using `[← hχ, ← hθ]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hd : d ((2 / θ s χ (d g)) • g) = (2 / θ s χ (d g)) • d g`. Simplify using `only [d, map_smul, smul_sub, smul_eq_mul, Algebra.algebraMap_eq_smul_one, smul_smul]`. Rewrite `h2` using `[hd, map_smul, smul_eq_mul, div_mul_cancel₀ _ hz]`. Evaluate the numerical expressions using `at h2`. Establish `hp : ∀ g, χ ⟨R s g, StarAlgebra.subset_adjoin ℂ _ (Or.inl ⟨g, rfl⟩)⟩ = p g`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g`. Use `hz g` as an intermediate fact. Rewrite `this` using `[show d g = g - algebraMap ℂ A (p g) from rfl, map_sub, AlgHomClass.commutes]`. Rewrite using `[← hθ]`. Simplify `this` using `[sub_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0` using `hne s χ hχb hp`. Rewrite `hψ` using `[← hχ]`. Rewrite `hψ` using `[h0, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `choose t ht using hcov`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set h : A := ∑ s, ∑ g ∈ t s, star (d g) * d g with hh`. Establish `hph : p h = 0` using `by simp [hh, map_sum, map_mul, map_star, hpd]`. Use `set M : ℝ := 2 + ∑ s, ‖R s h‖ with hM`. Establish `hM2 : ∀ s, ‖R s h‖ + 2 ≤ M`. Introduce `s`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.single_le_sum (f := fun s => ‖R s h‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ s)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hMpos : 0 < M` using `by have := hM2 (Classical.arbitrary ι); linarith [norm_nonneg (R (Classical.arbitrary ι) h)]`. Use `set b0 : ℝ := 1 + ∑ s, ‖star (β s ^ m) * β s ^ m‖ with hb0`. Establish `hb0s : ∀ s, ‖star (β s ^ m) * β s ^ m‖ ≤ b0`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `s`. Use `Finset.single_le_sum (f := fun s => ‖star (β s ^ m) * β s ^ m‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ s)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb0p : 0 < b0` using `by positivity`. Use `set q : ℝ := 1 - 1 / M with hq`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `hq0 : 0 ≤ q`. Rewrite using `[hq, sub_nonneg, div_le_one hMpos]`. Use `hM2 (Classical.arbitrary ι)` as an intermediate fact. Combine the linear relations using `[norm_nonneg (R (Classical.arbitrary ι) h)]`. Establish `hq1 : q < 1` using `by rw [hq]; have : 0 < 1 / M := by positivity`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨L, hL⟩` from `exists_pow_lt_of_lt_one (div_pos hε0p hb0p) hq1`. Use `⟨(1 - ((M : ℂ)⁻¹) • h) ^ L, by simp [map_pow, map_sub, hph], fun s => ?_⟩` and prove the remaining obligations. Use `set g : A := (1 - ((M : ℂ)⁻¹) • h) ^ L with hg`. Use `set B := star (β s ^ m) * β s ^ m with hBdef`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : R s (star g) * B * R s g ∈ S s` using `mul_mem (mul_mem (hR s _) (hB s)) (hR s g)`. Establish `hkey : ‖R s (star g) * B * R s g‖ ≤ ε0`. Apply `norm_le_of_chars (S s) (hSc s) _ hx ε0 hε0p.le` to reduce the goal to its premises. Introduce `ψ`. Take `⟨χ, hχb, hχ⟩` from `restr (S s) (hSc s) ψ`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hχ]`. Establish `hsplit : (⟨R s (star g) * B * R s g, hx⟩ : S s) = ⟨R s (star g), hR s _⟩ * ⟨B, hB s⟩ * ⟨R s g, hR s g⟩` using `rfl`. Rewrite using `[hsplit, map_mul, map_mul, ← hθ, ← hθ, map_star]`. Use `set w := θ s χ g`. Use `set T : ℝ := ∑ s', ∑ g' ∈ t s', ‖θ s χ (d g')‖ ^ 2 with hT`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hTh : θ s χ h = (T : ℂ)`. Simplify using `only [hh, hT, map_sum, map_mul, map_star, Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression. Establish `hT0 : 0 ≤ T` using `by positivity`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hTM : T + 2 ≤ M`. Establish `h1 : ‖θ s χ h‖ ≤ ‖R s h‖` using `by rw [hθ]; exact hχb _`. Rewrite `h1` using `[hTh, Complex.norm_real, Real.norm_of_nonneg hT0]`. Combine the linear relations using `[hM2 s]`. Establish `hw : w = ((1 - T / M : ℝ) : ℂ) ^ L`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [w, hg, map_pow, map_sub, map_one, map_smul, hTh, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hwn : ‖w‖ = (1 - T / M) ^ L`. Rewrite using `[hw, norm_pow, Complex.norm_real, Real.norm_of_nonneg]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_nonneg, div_le_one hMpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hw1 : ‖w‖ ≤ 1`. Rewrite using `[hwn]`. Apply `pow_le_one₀` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sub_nonneg, div_le_one hMpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: 0 ≤ T / M` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hχB : ‖χ ⟨B, hB s⟩‖ ≤ b0` using `(hχb _).trans (hb0s s)`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[norm_mul, norm_mul, norm_star]`. Distinguish the cases in `hbig : ε0 ≤ ‖χ ⟨B, hB s⟩‖`. Take `⟨g', hg't, hg'⟩` from `ht s ψ (by rw [← hχ]; exact hbig)`. Rewrite `hg'` using `[← hχ, ← hθ]`. Establish `hT1 : 1 < T`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `a1 : ‖θ s χ (d g')‖ ^ 2 ≤ ∑ g'' ∈ t s, ‖θ s χ (d g'')‖ ^ 2` using `Finset.single_le_sum (f := fun g'' => ‖θ s χ (d g'')‖ ^ 2) (fun _ _ => by positivity) hg't`. Establish `a2 : ∑ g'' ∈ t s, ‖θ s χ (d g'')‖ ^ 2 ≤ T` using `Finset.single_le_sum (f := fun s' => ∑ g'' ∈ t s', ‖θ s χ (d g'')‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ s)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hwq : ‖w‖ ≤ q ^ L`. Rewrite using `[hwn]`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 
-Apply `pow_le_pow_left₀` to reduce the goal to its premises. Rewrite using `[sub_nonneg, div_le_one hMpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hq]`. Establish `: 1 / M ≤ T / M` using `div_le_div_of_nonneg_right hT1.le hMpos.le`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul (mul_le_mul hw1 hχB (norm_nonneg _) zero_le_one) hwq (norm_nonneg _) (by positivity)` to reduce the goal to its premises. Use `_ ≤ ε0 := by`. Use `(lt_div_iff₀ hb0p).1 hL` as an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities. Use `push_neg at hbig`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul (mul_le_mul hw1 hbig.le (norm_nonneg _) zero_le_one) hw1 (norm_nonneg _) (by positivity)` to reduce the goal to its premises. Use `_ = ε0 := by ring`.
-
-Establish `hsq : ‖β s ^ m * R s g‖ ^ 2 ≤ ε ^ 2`. Establish `e1 : star (β s ^ m * R s g) * (β s ^ m * R s g) = R s (star g) * B * R s g`. Rewrite using `[star_mul, map_star, hBdef]`. Use `noncomm_ring`. Rewrite using `[sq, ← CStarRing.norm_star_mul_self, e1]`.
-
-Conclude with `hkey`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use polynomial arithmetic with `[norm_nonneg (β s ^ m * R s g)]`.
+Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem peak {A : Type} [CommRing A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A]
     {ι : Type} [Fintype ι] [Nonempty ι] {H : ι → Type} [∀ s, NormedAddCommGroup (H s)]
@@ -488,19 +478,17 @@ end PositivityTheory.Rg.BcB.F.ExponentialIntegralMeasures
 
 open PositivityTheory.Rg.BcB.F.ExponentialIntegralMeasures in
 /- English proof (translation)
-Introduce `A _ _ _ _ ι _ _ H _ _ _ R β m V _ _ _ ρ u p a₀ hβ hu ha₀ hbound hv`. Take `⟨v, hv0, huv, hρv⟩` from `hv`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hμpos : 0 < ‖p a₀‖` using `norm_pos_iff.2 ha₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set K : ℝ := 1 + ∑ s, ‖R s a₀‖ with hK`. Establish `hKs : ∀ s, ‖R s a₀‖ ≤ K`. Introduce `s`. Use `Finset.single_le_sum (f := fun s => ‖R s a₀‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ s)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hKp : 0 < K` using `by positivity`. Take `⟨g, hg1, hgs⟩` from `peak R β m p hβ hne (‖p a₀‖ / 2 / K) (by positivity)`. Take `⟨C, N, j, hC⟩` from `hbound (a₀ * g) (Ideal.mul_mem_right _ _ (Ideal.subset_span rfl))`. Use `trace_contra (u * ρ (a₀ * g)) v hv0 (p a₀) ?_ (‖p a₀‖ / 2) (max C 0) N j (by positivity) (by linarith) ?_` and prove the remaining obligations. Simplify using `[Module.End.mul_apply, map_mul, hρv, hg1, huv, map_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `filter_upwards [hC, Filter.eventually_gt_atTop j] with k hk hkj`. Use `hk.trans ?_` and prove the remaining obligations. Establish `hX : ∀ s, ‖(β s ^ m * R s (a₀ * g)) ^ (k - j)‖ ≤ (‖p a₀‖ / 2) ^ (k - j)`. Introduce `s`. Establish `h1 : ‖β s ^ m * R s (a₀ * g)‖ ≤ ‖p a₀‖ / 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : β s ^ m * R s (a₀ * g) = R s a₀ * (β s ^ m * R s g)`. Rewrite using `[map_mul, ← mul_assoc, ← mul_assoc, ((hβ s a₀).pow_left m).eq]`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsup : Finset.univ.sup' Finset.univ_nonempty (fun s => ‖(β s ^ m * R s (a₀ * g)) ^ (k - j)‖) ≤ (‖p a₀‖ / 2) ^ (k - j)` using `Finset.sup'_le _ _ (fun s _ => hX s)`. Establish `hsup0 : 0 ≤ Finset.univ.sup' Finset.univ_nonempty (fun s => ‖(β s ^ m * R s (a₀ * g)) ^ (k - j)‖)` using `(norm_nonneg _).trans (Finset.le_sup' (fun s => ‖(β s ^ m * R s (a₀ * g)) ^ (k - j)‖) (Finset.mem_univ (Classical.arbitrary ι)))`. Establish `hk0 : (0 : ℝ) ≤ (1 + (k : ℝ)) ^ N` using `by positivity`. Use `set σ := Finset.univ.sup' Finset.univ_nonempty (fun s => ‖(β s ^ m * R s (a₀ * g)) ^ (k - j)‖)`. Combine the equalities or inequalities in the displayed calculation.
-
-Apply `mul_le_mul_of_nonneg_right _ hsup0` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) hk0`. Use `_ ≤ max C 0 * (1 + (k : ℝ)) ^ N * (‖p a₀‖ / 2) ^ (k - j) := by`. Apply `mul_le_mul_of_nonneg_left hsup` to reduce the goal to its premises. Conclude with `mul_nonneg (le_max_right _ _) hk0`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Rg.BcB.F.peak_trace_bound_holds : PositivityTheory.Rg.BcB.F.PeakTraceBound := by
   intro A _ _ _ _ ι _ _ H _ _ _ R β m V _ _ _ ρ u p a₀ hβ hu ha₀ hbound hv

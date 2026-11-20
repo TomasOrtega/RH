@@ -28,7 +28,7 @@ def UnitOfP : Prop :=
     ∃ i' : Fin 2, UnitAt (R.S.ρ.map (ξ : R.S.R →+* c₁.O)) v i'
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M hL L _ _ _ _ _ Φ k c₁ _ f R ξ r hr _ hI v hc i j hij`. Take `⟨i', hu⟩` from `hU Ω l ι c N e ψ η σ g₁ B M hL L Φ k c₁ f R ξ r hr hI v hc i j hij`. Take `⟨cw, hcw, S, K, π, ι', A, pl, e', cc, hF⟩` from `linkOf Ω l c.O η _ σ g₁ B M hL.atl L Φ k _ f R.C₀ R.ok (hD Ω l ι c N e ψ η σ g₁ B M hL L Φ k v).1`. Take `⟨δ, hδ, δ', hδ', hi⟩` from `Z.J.tan l c₁.O (Φ.ext f) R.C₀ R.ok R.T.lne cw hcw (gwlOf hP l _ _ _ Ω S K π ι' A pl e' cc hF) (fun w => leOf2 hP l _ { Φ.ext f with cw := cw } _ Ω S K π ι' A pl e' cc hF w) R.S ξ v i' hu`. Conclude with `⟨δ, hδ.1, δ', hδ'.1, hδ.2, hδ'.2, hi⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tanA_of (hP : GC.Hypotheses₂) (hD : DegEq) (hU : UnitOfP) : TanA := by
   intro Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M hL L _ _ _ _ _ Φ k c₁ _ f R ξ r hr _ hI v hc i j hij

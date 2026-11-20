@@ -19,11 +19,11 @@ variable {C : Type u} [Category.{v} C] [CartesianMonoidalCategory C] [BraidedCat
 omit [BraidedCategory C] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `h1` using `h (𝟙_ C) 1 1`. Rewrite `h1` using `[_root_.mul_one]`. Establish `h2 : (1 : 𝟙_ C ⟶ A) ≫ j = 1`. Use `h1` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(left_eq_mul.1 this)`. Simplify `h2` using `[Hom.one_def]`. Establish `h1` using `h (A ⊗ A) (fst A A) (snd A A)`. Rewrite `h1` using `[Hom.mul_def, Hom.mul_def, lift_fst_snd, Category.id_comp]`. Rewrite using `[h1]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isMonHom_of_mul {A B : C} [GrpObj A] [GrpObj B] (j : A ⟶ B)
     (h : ∀ (Y : C) (y z : Y ⟶ A), (y * z) ≫ j = (y ≫ j) * (z ≫ j)) : IsMonHom j := by
@@ -41,9 +41,9 @@ theorem isMonHom_of_mul {A B : C} [GrpObj A] [GrpObj B] (j : A ⟶ B)
     ext <;> simp
 
 /- English proof (translation)
-Establish `hw : j ≫ (𝟙 B) ^ N = toUnit A ≫ η[B]`. Rewrite using `[comp_pow_id, (ker A j).2 ⟨𝟙 _, Category.id_comp _⟩, Hom.one_def]`. Use `⟨⟨hw⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => ((ker _ s.fst).1 ?_).choose) (fun s => ?_) (fun s => ?_) (fun s m h1 _ => ?_)⟩⟩` and prove the remaining obligations. Rewrite using `[← comp_pow_id s.fst, Hom.one_def, ← toUnit_unique s.snd (toUnit _)]`. Conclude with `s.condition`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Exists.choose_spec (p := fun y => y ≫ j = s.fst) _`. Conclude with `toUnit_unique _ _`. Apply `inj` to reduce the goal to its premises. Rewrite using `[h1]`. Conclude with `(Exists.choose_spec (p := fun y => y ≫ j = s.fst) _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_of_kernel {A B : C} [GrpObj B] [IsCommMonObj B] {N : ℕ} (j : A ⟶ B)
     (inj : ∀ (Y : C) (y z : Y ⟶ A), y ≫ j = z ≫ j → y = z)
@@ -63,7 +63,7 @@ theorem isPullback_of_kernel {A B : C} [GrpObj B] [IsCommMonObj B] {N : ℕ} (j 
 
 omit [BraidedCategory C] in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [MonObj.one_comp]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.mul_comp, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pow_comp {Y A B : C} [GrpObj A] [GrpObj B] (g : Y ⟶ A) (a : A ⟶ B) [IsMonHom a] (n : ℕ) :
     (g ^ n) ≫ a = (g ≫ a) ^ n := by
@@ -78,15 +78,15 @@ variable {R : Type} [CommRing R] [IsDomain R] {T : Type} [CommGroup T] {Γ : QFG
   {G : Over S} [GrpObj G] [IsCommMonObj G] {x : Spec (CommRingCat.of R) ⟶ S} {N : ℕ} {i : Γ.G.left ⟶ G.left}
 
 /- English proof (translation)
-Set `g : Over.mk (Γ.G.hom ≫ x) ⟶ G` to `Over.homMk i h.isOver`. Establish `hj : (toPull x G g).left ≫ pullback.fst G.hom x = i` using `toPull_fst x G g`. Use `⟨toPull x G g, hj, isPullback_of_kernel _ (fun Y y z e => h.inj Y y z ?_) (fun Y c => ?_)⟩` and prove the remaining obligations. Rewrite using `[← hj, ← Category.assoc, ← Category.assoc, ← Over.comp_left, e, Over.comp_left]`. Establish `h1 : c ^ N = 1 ↔ ofPull x G c ^ N = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `map_pow (toPullHom x G Y) (ofPull x G c) N`. Establish `h3 : toPullHom x G Y (ofPull x G c) = c` using `toPull_ofPull x G c`. Rewrite `h2` using `[h3]`. Rewrite using `[← h2]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `e`. Rewrite `e` using `[← map_one (toPullHom x G Y)]`. Conclude with `toPull_inj e`. Introduce `e`. Rewrite using `[e, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h.kernel]`. Use `exists_congr fun y => ⟨fun e => hom_ext_pull ?_, fun e => ?_⟩` and prove the remaining obligations. Rewrite using `[Over.comp_left, Category.assoc, hj, e]`. Both sides reduce to the same expression. Rewrite using `[← hj, ← Category.assoc, ← Over.comp_left, e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem kernel_of_tors (h : Γ.IsTorsionAlong G x N i) :
     ∃ j : Γ.G ⟶ (Over.pullback x).obj G, j.left ≫ pullback.fst G.hom x = i ∧
@@ -114,7 +114,7 @@ theorem kernel_of_tors (h : Γ.IsTorsionAlong G x N i) :
 end Tors
 
 /- English proof (translation)
-Establish `hl` using `hp.map (Over.forget Z)`. Establish `hA : (toUnit A).left = A.hom` using `by simpa using Over.w (toUnit A)`. Rewrite using `[← hA]`. Conclude with `hl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kernel_isPullback {Z : Scheme.{0}} {A B D : Over Z} [GrpObj D] {j : A ⟶ B} {q : B ⟶ D}
     (hp : IsPullback j (toUnit A) q η[D]) : IsPullback j.left A.hom q.left (η[D]).left := by
@@ -123,7 +123,7 @@ theorem kernel_isPullback {Z : Scheme.{0}} {A B D : Over Z} [GrpObj D] {j : A �
   rw [← hA]; exact hl
 
 /- English proof (translation)
-Establish `: IsClosedImmersion ((η[B]).left ≫ B.hom)`. Establish `: (η[B]).left ≫ B.hom = 𝟙 _` using `by simpa using Over.w η[B]`. Rewrite using `[this]`. Use `infer_instance`. Conclude with `IsClosedImmersion.of_comp _ B.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_unit {Z : Scheme.{0}} (B : Over Z) [GrpObj B] [IsSeparated B.hom] :
     IsClosedImmersion (η[B]).left := by
@@ -133,9 +133,9 @@ theorem isClosedImmersion_unit {Z : Scheme.{0}} (B : Over Z) [GrpObj B] [IsSepar
   exact IsClosedImmersion.of_comp _ B.hom
 
 /- English proof (translation)
-Introduce `R _ _ T _ _ Γ S G _ _ x N i h hprop`. Take `⟨j, -, hp⟩` from `kernel_of_tors h`. Establish `: IsProper ((Over.pullback x).obj G).hom` using `hprop`. Establish `hj : IsClosedImmersion j.left` using `MorphismProperty.of_isPullback (kernel_isPullback hp).flip (isClosedImmersion_unit _)`. Establish `: IsProper Γ.G.hom` using `by rw [← Over.w j]; infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Γ.quasiFinite` as an intermediate fact. Conclude with `IsFinite.of_isProper_of_locallyQuasiFinite _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem torsion_finite : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (x : Spec (CommRingCat.of R) ⟶ S) (N : ℕ) (i : Γ.G.left ⟶ G.left), Γ.IsTorsionAlong G x N i → IsProper (pullback.snd G.hom x) → IsFinite Γ.G.hom := by
   intro R _ _ T _ _ Γ S G _ _ x N i h hprop
@@ -148,9 +148,9 @@ theorem torsion_finite : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [Co
   exact IsFinite.of_isProper_of_locallyQuasiFinite _
 
 /- English proof (translation)
-Introduce `R _ _ T _ _ Γ S G _ _ x N i h _ hN`. Take `⟨j, -, hp⟩` from `kernel_of_tors h`. Establish `hN' : IsUnit (N : Γ(Spec (CommRingCat.of R), ⊤))`. Simplify using `using hN.map (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom`. Establish `e1 : FormallyUnramified ((𝟙 ((Over.pullback x).obj G)) ^ N).left` using `GlobalTheory.formallyUnramified_mulA _ ((Over.pullback x).obj G) N hN'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `: FormallyUnramified Γ.G.hom` using `MorphismProperty.of_isPullback (kernel_isPullback hp) e1`. Use `Γ.flat` as an intermediate fact. Use `Γ.finPres` as an intermediate fact. Conclude with `Etale.of_formallyUnramified_of_flat _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem torsion_etale : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (x : Spec (CommRingCat.of R) ⟶ S) (N : ℕ) (i : Γ.G.left ⟶ G.left), Γ.IsTorsionAlong G x N i → Smooth G.hom → IsUnit (N : R) → Etale Γ.G.hom := by
   intro R _ _ T _ _ Γ S G _ _ x N i h _ hN
@@ -165,11 +165,11 @@ theorem torsion_etale : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [Com
   exact Etale.of_formallyUnramified_of_flat _
 
 /- English proof (translation)
-Introduce `R _ _ T _ _ Γ S G _ _ x N i h a _`. Set `g : Over.mk (Γ.G.hom ≫ x) ⟶ G` to `Over.homMk i h.isOver`. Establish `hg : g ^ N = 1` using `(h.kernel Γ.G g).2 ⟨𝟙 _, Category.id_comp _⟩`. Establish `hga : (g ≫ a) ^ N = 1` using `by rw [← pow_comp, hg, MonObj.one_comp]`. Take `⟨a', ha'⟩` from `(h.kernel Γ.G (g ≫ a)).1 hga`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `replace ha' : a'.left ≫ i = i ≫ a.left := ha'`. Use `⟨a', isMonHom_of_mul _ fun Y y z => h.inj Y _ _ ?_, ha'⟩` and prove the remaining obligations. Set `p : (Y ⟶ Γ.G) → (Over.mk (Y.hom ≫ x) ⟶ G)` to `fun y => Over.homMk (y.left ≫ i) (by`. Simplify using `only [Over.mk_hom, Category.assoc, h.isOver]`. Rewrite using `[← Category.assoc, Over.w])`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : ∀ y, (p y).left = y.left ≫ i` using `fun _ => rfl`. Establish `hpa : ∀ y, (p y ≫ a).left = (y ≫ a').left ≫ i` using `fun y => by`. Rewrite using `[Over.comp_left, Over.comp_left, hp, Category.assoc, Category.assoc, ha']`. Rewrite using `[← h.mul Y _ _ _ _ (hpa y) (hpa z), ← MonObj.mul_comp, Over.comp_left, Over.comp_left, h.mul Y _ _ _ _ (hp y) (hp z), Category.assoc, Category.assoc, ha']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsion_end : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (x : Spec (CommRingCat.of R) ⟶ S) (N : ℕ) (i : Γ.G.left ⟶ G.left), Γ.IsTorsionAlong G x N i → ∀ (a : G ⟶ G) [IsMonHom a], ∃ a' : Γ.G ⟶ Γ.G, IsMonHom a' ∧ a'.left ≫ i = i ≫ a.left := by
   intro R _ _ T _ _ Γ S G _ _ x N i h a _

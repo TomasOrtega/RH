@@ -26,14 +26,14 @@ def lin (d : σ → ℂ) : MvPolynomial σ ℂ := ∑ v, C (d v) * X v
 
 omit [DecidableEq σ] in
 /- English proof (translation)
-Simplify using `[lin, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_lin (d y : σ → ℂ) : eval y (lin d) = d ⬝ᵥ y := by
   simp [lin, dotProduct]
 
 omit [DecidableEq σ] in
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add P Q hP hQ => simp only [map_add, hP, hQ]`. Consider the case `mul_X P l hP => simp only [map_mul, hP, aeval_X, eval_X, eval_lin]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eval_aeval_lin (d : ι → σ → ℂ) (y : σ → ℂ) (P : MvPolynomial ι ℂ) :
     eval y (aeval (fun l => lin (d l)) P) = eval (fun l => d l ⬝ᵥ y) P := by
@@ -46,13 +46,13 @@ abbrev crdDir (σ : Type) [DecidableEq σ] : σ → σ → ℂ := fun v => Pi.si
 
 omit [DecidableEq σ] in
 /- English proof (translation)
-The claim follows from `(SCV.analyticOnNhd_of_differentiable hF Set.univ).contDiff`.
+A detailed English derivation is pending.
 -/
 theorem smooth {F : (σ → ℂ) → ℂ} (hF : Differentiable ℂ F) : ContDiff ℂ (⊤ : ℕ∞) F :=
   (SCV.analyticOnNhd_of_differentiable hF Set.univ).contDiff
 
 /- English proof (translation)
-Establish `h : (C a : MvPolynomial ι ℂ) = a • monomial 0 1` using `by simp [smul_eq_C_mul]`. Rewrite using `[h]`. Simplify using `[I2.polyDeriv_smul, I2.polyDeriv_monomial_one, I2.pdTerm_eq_itD, -smul_monomial, -monomial_zero', I2.itD_nil]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem polyDeriv_C (a : ℂ) (u : ι → W) (F : W → ℂ) (x : W) : polyDeriv (C a) u F x = a * F x := by
   have h : (C a : MvPolynomial ι ℂ) = a • monomial 0 1 := by simp [smul_eq_C_mul]
@@ -61,9 +61,9 @@ theorem polyDeriv_C (a : ℂ) (u : ι → W) (F : W → ℂ) (x : W) : polyDeriv
     -monomial_zero', I2.itD_nil]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on generalizing x with`. Consider the case `C a => rw [algHom_C, algebraMap_eq, polyDeriv_C, polyDeriv_C]`. Consider the case `add P Q hP hQ => simp only [map_add, I2.polyDeriv_add, hP, hQ]`. Consider the case `mul_X P l hP`. Rewrite using `[map_mul, aeval_X, lin, Finset.mul_sum, I2.jof_polyDeriv_sum, polyDeriv_mul_X (smooth hF)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [pi_eq_sum_univ' (d l), map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, C_mul', I2.polyDeriv_smul, polyDeriv_mul_X (smooth hF), funext hP]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem polyDeriv_aeval_lin {F : (σ → ℂ) → ℂ} (hF : Differentiable ℂ F) (d : ι → σ → ℂ)
     (P : MvPolynomial ι ℂ) (x : σ → ℂ) :
@@ -80,7 +80,7 @@ theorem polyDeriv_aeval_lin {F : (σ → ℂ) → ℂ} (hF : Differentiable ℂ 
     simp
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on generalizing x with`. Consider the case `C a => rw [C_mul', I2.polyDeriv_smul, polyDeriv_C]`. Consider the case `add P P' hP hP' => simp only [add_mul, I2.polyDeriv_add, hP, hP']`. Consider the case `mul_X P l hP`. Rewrite using `[mul_right_comm, polyDeriv_mul_X (smooth hF), polyDeriv_mul_X (smooth (differentiable_polyDeriv (smooth hF) Q u)), funext hP]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem polyDeriv_mul {F : (σ → ℂ) → ℂ} (hF : Differentiable ℂ F) (u : ι → σ → ℂ)
     (P Q : MvPolynomial ι ℂ) (x : σ → ℂ) :
@@ -93,9 +93,9 @@ theorem polyDeriv_mul {F : (σ → ℂ) → ℂ} (hF : Differentiable ℂ F) (u 
       polyDeriv_mul_X (smooth (differentiable_polyDeriv (smooth hF) Q u)), funext hP]
 
 /- English proof (translation)
-Establish `h1 (z : W) : polyDeriv Q u (fun w => G (A z + B w)) 0 = ((fun y => polyDeriv Q (B ∘ u) G y) ∘ A) z`. Establish `h` using `Jet.polyDeriv_comp_clm Q u (F := fun v => G (A z + v)) (by fun_prop) B 0`. Use `h.trans ?_` and prove the remaining obligations. Simplify using `only [polyDeriv, iteratedFDeriv_comp_add_left, map_zero, add_zero, Function.comp_apply]`. Establish `hd` using `differentiable_polyDeriv (smooth hG) Q (B ∘ u)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[funext h1, Jet.polyDeriv_comp_clm P u hd, map_zero, polyDeriv_mul hG,`. Use function extensionality and compare the values at `(polyDeriv_aeval_lin hG _ Q)]`. Conclude with `(polyDeriv_aeval_lin hd _ P 0).symm`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem polyDeriv_bi {G : (σ → ℂ) → ℂ} (hG : Differentiable ℂ G) (A B : W →L[ℂ] (σ → ℂ))
     (u : ι → W) (P Q : MvPolynomial ι ℂ) :
@@ -113,9 +113,9 @@ theorem polyDeriv_bi {G : (σ → ℂ) → ℂ} (hG : Differentiable ℂ G) (A B
   exact (polyDeriv_aeval_lin hd _ P 0).symm
 
 /- English proof (translation)
-Use `⟨∑ m ∈ Q.support, ∑ c ∈ Finset.HasAntidiagonal.antidiagonal m, (Q.coeff m * ((∏ i, (m i).factorial : ℕ) : ℂ) * MvPowerSeries.coeff c.1 (taylor K) * ((∏ i, (c.2 i).factorial : ℕ) : ℂ)⁻¹) • monomial c.2 1, fun F hF => ?_⟩` and prove the remaining obligations. Establish `hK'` using `SCV.analyticOnNhd_of_differentiable hK Set.univ 0 trivial`. Establish `hF'` using `SCV.analyticOnNhd_of_differentiable hF Set.univ 0 trivial`. Rewrite using `[dirPolyDeriv_eq_sum_coeff_taylor, show (fun x => K x * F x) = K * F from rfl, taylor_mul hK' hF', I2.jof_polyDeriv_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[I2.jof_polyDeriv_sum, MvPowerSeries.coeff_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[I2.polyDeriv_smul, coeff_taylor F]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_absorb {K : (σ → ℂ) → ℂ} (hK : Differentiable ℂ K) (Q : MvPolynomial σ ℂ) :
     ∃ p : MvPolynomial σ ℂ, ∀ F : (σ → ℂ) → ℂ, Differentiable ℂ F →
@@ -134,13 +134,11 @@ theorem exists_absorb {K : (σ → ℂ) → ℂ} (hK : Differentiable ℂ K) (Q 
   ring
 
 /- English proof (translation)
-Establish `hd (y : σ → ℂ) : Differentiable ℂ fun x : σ → ℂ => cexp (x ⬝ᵥ y)`. Unfold `dotProduct`. Use `fun_prop`. Establish `h1 (y : σ → ℂ) : eval y p = polyDeriv Q (crdDir σ) (fun x => K x * cexp (x ⬝ᵥ y)) 0`. Rewrite using `[hp _ (hd y)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `KernSym.polyDeriv_exp p (crdDir σ) (LinearMap.toContinuousLinearMap ((dotProductBilin ℂ ℂ).flip y)) 1`. Simplify using `using h.symm`. Establish `h2 : aeval (fun v => lin (S' (crdDir σ v))) Q = Q`. Use `MvPolynomial.funext fun y => ?_` and prove the remaining obligations. Rewrite using `[eval_aeval_lin, ← hQ y]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[← hS]`. Establish `h3 : (fun x => K x * cexp (x ⬝ᵥ S y)) = (fun x => K x * cexp (x ⬝ᵥ y)) ∘ S'`. Use function extensionality and compare the values at `x`. Simplify using `[hS, hK']`. Rewrite using `[h1, h1, h3, Jet.polyDeriv_comp_clm _ _ (hK.fun_mul (hd y)), map_zero, ← polyDeriv_aeval_lin (hK.fun_mul (hd y))]`.
-
-Conclude with `congrArg (fun R => polyDeriv R _ _ _) h2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absorb_invariant {K : (σ → ℂ) → ℂ} (hK : Differentiable ℂ K) {Q p : MvPolynomial σ ℂ}
     (hp : ∀ F : (σ → ℂ) → ℂ, Differentiable ℂ F →
@@ -189,9 +187,9 @@ theorem act_apply (c : T → Bool → Matrix (Fin n) (Fin n) ℂ) (y : Ell T n r
     act c y v = ∑ l, c v.1 v.2.1 v.2.2.1 l * y (v.1, v.2.1, l, v.2.2.2) := rfl
 
 /- English proof (translation)
-Simplify using `only [dotProduct, act_apply, Fintype.sum_prod_type, Finset.mul_sum, Finset.sum_mul, transpose_apply]`. Use `Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem dotProduct_act (c : T → Bool → Matrix (Fin n) (Fin n) ℂ) (x y : Ell T n r → ℂ) :
     x ⬝ᵥ act c y = act (fun t b => (c t b)ᵀ) x ⬝ᵥ y := by
@@ -212,7 +210,7 @@ def gauss (c : T → ℂ) (M : T → Matrix (Fin r) (Fin r) ℂ) (x : Ell T n r 
     fun a => x (τ, false, k, a))
 
 /- English proof (translation)
-Unfold `gauss mulVec dotProduct`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem differentiable_gauss (c : T → ℂ) (M : T → Matrix (Fin r) (Fin r) ℂ) :
     Differentiable ℂ (gauss (n := n) c M) := by
@@ -220,9 +218,9 @@ theorem differentiable_gauss (c : T → ℂ) (M : T → Matrix (Fin r) (Fin r) �
   fun_prop
 
 /- English proof (translation)
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Use `congr 3`. Establish `h0 (Z Z' : Matrix (Fin n) (Fin r) ℂ) : ∑ k, Z' k ⬝ᵥ M τ *ᵥ Z k = (Z' * M τ * Zᵀ).trace`. Simplify using `only [dotProduct_mulVec]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `h1 : (u τ)ᴴᵀ * (u τ)ᵀ = 1`. Rewrite using `[← transpose_mul, ← star_eq_conjTranspose, Matrix.mem_unitaryGroup_iff.1 (hu τ), transpose_one]`. Establish `h2` using `h0 ((u τ)ᴴ * Matrix.of fun k a => x (τ, false, k, a)) ((u τ)ᵀ * Matrix.of fun k a => x (τ, true, k, a))`. Rewrite `h2` using `[transpose_mul, ← Matrix.mul_assoc, trace_mul_comm, Matrix.mul_assoc (u τ)ᵀ, Matrix.mul_assoc (u τ)ᵀ, ← Matrix.mul_assoc, h1, Matrix.one_mul, ← h0]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_act (c : T → ℂ) (M : T → Matrix (Fin r) (Fin r) ℂ)
     {u : T → Matrix (Fin n) (Fin n) ℂ} (hu : ∀ t, u t ∈ Matrix.unitaryGroup (Fin n) ℂ)
@@ -258,9 +256,9 @@ theorem lift_apply (idx : Fin g ≃ T × Fin r) (N : T → Bool → Fin r → Fi
     lift idx N z v = ∑ a, N v.1 v.2.1 v.2.2.2 a * z v.2.2.1 (idx.symm (v.1, a)) := rfl
 
 /- English proof (translation)
-Establish `h (v : Ell T n r) : lift idx N (Pi.single k (Pi.single (idx.symm (τ, a)) 1)) v = if v.1 = τ then if v.2.2.1 = k then N τ v.2.1 v.2.2.2 a else 0 else 0`. Take `⟨t, b, l, c⟩` from `v`. Rewrite using `[lift_apply]`. Apply the tactic sequence `by_cases hl : l = k <;> by_cases ht : t = τ <;> simp [Pi.single_apply, hl, ht]`. Simplify using `only [dotProduct, h, Fintype.sum_prod_type]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single τ (by simp +contextual) (by simp)]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single k (by simp +contextual) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lift_single (idx : Fin g ≃ T × Fin r) (N : T → Bool → Fin r → Fin r → ℂ) (τ : T)
     (a : Fin r) (k : Fin n) (y : Ell T n r → ℂ) :
@@ -278,7 +276,7 @@ theorem lift_single (idx : Fin g ≃ T × Fin r) (N : T → Bool → Fin r → F
   simp
 
 /- English proof (translation)
-Simplify using `only [lift_single, act_apply, Fintype.sum_bool]`. Apply the tactic sequence `cases b <;> simp only [Bool.not_false, Bool.not_true] at hN <;>`. Apply the tactic sequence `simp only [hN, zero_mul, Finset.sum_const_zero, zero_add, add_zero, Finset.mul_sum] <;>`. Apply the tactic sequence `rw [Finset.sum_comm] <;>`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem lift_single_act (idx : Fin g ≃ T × Fin r) (N : T → Bool → Fin r → Fin r → ℂ) (τ : T)
     (a : Fin r) (b : Bool) (hN : ∀ c, N τ (!b) c a = 0) (k : Fin n)
@@ -292,9 +290,9 @@ theorem lift_single_act (idx : Fin g ≃ T × Fin r) (N : T → Bool → Fin r �
     exact Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [barP]`. Consider the case `add P Q hP hQ => simp only [barP, map_add] at *`. Rewrite using `[hP, hQ]`. Consider the case `mul_X P l hP => simp only [barP, map_mul, map_X, eval_X, conj_conj] at *`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[hP]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_barP {σ : Type} (y : σ → ℂ) (P : MvPolynomial σ ℂ) :
     eval y (barP P) = conj (eval (fun l => conj (y l)) P) := by
@@ -306,9 +304,9 @@ theorem eval_barP {σ : Type} (y : σ → ℂ) (P : MvPolynomial σ ℂ) :
 omit [Fintype T] in
 
 /- English proof (translation)
-Set `γ : T → GL (Fin n) ℂ` to `fun t => ⟨star (u t), u t, Matrix.mem_unitaryGroup_iff'.1 (hu t), Matrix.mem_unitaryGroup_iff.1 (hu t)⟩`. Establish `h` using `hP γ (fun t => Unitary.star_mem (hu t)) z fun l => conj (w l)`. Simplify using `only [eval_barP]`. Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Harm.colActHom, Harm.eval_colSubst, Harm.eval_colSubst]`. Apply the tactic sequence `congr 4 <;> funext ⟨t, ρ, k⟩ <;> cases ρ <;>`. Simplify using `[hz, hw, uc, γ, mulVec, vecMul, dotProduct, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem invFam_eval {P : J → Harm.Poly ℂ T p q (Fin n)} (hP : InvFam P)
     {u : T → Matrix (Fin n) (Fin n) ℂ} (hu : ∀ t, u t ∈ Matrix.unitaryGroup (Fin n) ℂ)
@@ -335,9 +333,9 @@ open MvPolynomial
 variable {T J : Type} [Fintype T] [DecidableEq T] [Fintype J] {n r g p q : ℕ}
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `exists_absorb (differentiable_gauss (n := n) c M) (∑ j, aeval (fun l => lin (lift idx NA (d l))) (P j) * aeval (fun l => lin (lift idx NB (d l))) (barP (P j)))`. Use `⟨R, fun u hu => absorb_invariant (differentiable_gauss c M) hR _ _ (dotProduct_act (uc u)) (fun y => ?_) (gauss_act c M hu), fun F hF => ?_⟩` and prove the remaining obligations. Simplify using `only [map_sum, map_mul, eval_aeval_lin]`. Use `invFam_eval hP hu _ _ _ _ (fun t i k => ?_) fun t i k => ?_` and prove the remaining obligations. Simplify using `only [hd]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `lift_single_act idx NA t (ρ i) _ (hA t i) k (uc u) y` and compare the differences between its conclusion and the goal. Simplify using `only [hd]`. Use `lift_single_act idx NB t (ρ i) _ (hB t i) k (uc u) y` and compare the differences between its conclusion and the goal. Rewrite using `[← hR F hF, I2.jof_polyDeriv_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => polyDeriv_bi ((differentiable_gauss c M).fun_mul hF) _ _ _ _ _`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_invariant (idx : Fin g ≃ T × Fin r) (ρ : Fin q ⊕ Fin p → Fin r)
     (NA NB : T → Bool → Fin r → Fin r → ℂ)
@@ -382,9 +380,9 @@ def ellN (s : Bool) (τ : X.Ψ) (b : Bool) (c a : Fin r) : ℂ :=
   if ((a : ℕ) < X.p0 ↔ b = s) then ellM X x₁ x₂ τ b c a else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use extensionality with `k c`. Simplify using `only [dblz, of_apply, Pi.add_apply, lift_apply, mulVec_mulVec, ← smul_mulVec, ← Finset.sum_add_distrib]`. Rewrite using `[mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `by_cases h : (a : ℕ) < X.p0 <;> simp [ellN, ellM, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dblz_eq (z w : Fin n → Fin g → ℂ) : dblz X idx x₁ x₂ z w = fun τ => Matrix.of fun k a =>
     (lift idx (ellN X x₁ x₂ false) z + lift idx (ellN X x₁ x₂ true) w) (τ, false, k, a) := by
@@ -397,9 +395,9 @@ theorem dblz_eq (z w : Fin n → Fin g → ℂ) : dblz X idx x₁ x₂ z w = fun
   by_cases h : (a : ℕ) < X.p0 <;> simp [ellN, ellM, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use extensionality with `k c`. Simplify using `only [dblz', of_apply, Pi.add_apply, lift_apply, ← mulVec_transpose, mulVec_mulVec, ← smul_mulVec, ← Finset.sum_add_distrib]`. Rewrite using `[mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `by_cases h : (a : ℕ) < X.p0 <;> simp [ellN, ellM, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dblz'_eq (z w : Fin n → Fin g → ℂ) : dblz' X idx x₁ x₂ z w = fun τ => Matrix.of fun k a =>
     (lift idx (ellN X x₁ x₂ false) z + lift idx (ellN X x₁ x₂ true) w) (τ, true, k, a) := by
@@ -422,11 +420,11 @@ namespace GlobalTheory.SW
 open InvKill
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g q0 hr idx n m P hn hP D hD h0 x₁ h₁ x₂ h₂`. Establish `hZ` using `(dblZ_mem_Hn E r X x₁ h₁ x₂ h₂).2.1`. Apply the tactic sequence `obtain ⟨R, hR, hR'⟩ := exists_invariant idx (rowIdx hr) (ellN X x₁ x₂ false) (ellN X x₁ x₂ true) (by rintro τ (i | i) c <;> have := i.isLt <;> simp [ellN] <;> omega) (by rintro τ (i | i) c <;> have := i.isLt <;> simp [ellN] <;> omega) hP (fun τ => (((aLin X x₁ x₂ τ).det * (aAnti …`. Take `⟨s, rfl⟩` from `GlobalTheory.T.exists_aeval_pairings_eq_of_invariant X.Ψ n r hn R hR`. Establish `hF : Differentiable ℂ fun w : Ell X.Ψ n r → ℂ => D (dblZ X x₁ x₂) (fun τ => Matrix.of fun k a => w (τ, false, k, a)) (fun τ => Matrix.of fun k a => w (τ, true, k, a))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `hD.1.comp (f := fun w : Ell X.Ψ n r → ℂ => ((dblZ X x₁ x₂, fun τ k a => w (τ, false, k, a), fun τ k a => w (τ, true, k, a)) : CF X.Ψ r r × CF X.Ψ n r × CF X.Ψ n r)) (s := Set.univ) (by fun_prop) fun _ _ => hZ`. Conclude with `differentiableOn_univ.1 h`. Use `Eq.trans ?_ ((hR' _ hF).trans ?_)` and prove the remaining obligations. Simplify using `only [biDeriv, kZero, dblz_eq, dblz'_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `GlobalTheory.T.polyDeriv_aeval_pairings_eq_zero_of_isHeat E X.Ψ n r D hD h0 _ hZ s` and compare the differences between its conclusion and the goal.
+A detailed English derivation is pending.
 -/
 theorem biDeriv_kZero_mul_heat_eq_zero : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (idx : Fin g ≃ X.Ψ × Fin r) (n m : ℕ)

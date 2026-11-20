@@ -14,25 +14,23 @@ variable {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Modul
   {Γ : Matrix (Fin n) (Fin n) K}
 
 /- English proof (translation)
-Use `set LX := L ⊓ X.restrictScalars (𝓞 K) with hLXd`. Use `set LY := L ⊓ Y.restrictScalars (𝓞 K) with hLYd`. Establish `hLX : Submodule.span K (LX : Set V) = X` using `cut_span L hLsp X`. Establish `hLY : Submodule.span K (LY : Set V) = Y` using `cut_span L hLsp Y`. Establish `fgLX : LX.FG` using `fg_cut L hL X`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fgLY : LY.FG` using `fg_cut L hL Y`. Use `set LP := latPow (Fin n) LX with hLPd`. Establish `fgLP : LP.FG` using `Submodule.fg_pi fun _ => fgLX`. Establish `hLPsp : Submodule.span K (LP : Set (Fin n → V)) = Submodule.pi Set.univ fun _ : Fin n => X`. Rewrite using `[hLPd, span_latPow, hLX]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLPX : ∀ x ∈ LP, x ∈ Submodule.pi Set.univ fun _ : Fin n => X` using `fun x hx i _ => (Submodule.mem_inf.mp (hx i (Set.mem_univ i))).2`. Use `set A := LP.map ((Φt Φ).restrictScalars (𝓞 K)) with hAd`. Establish `fgA : A.FG` using `fgLP.map _`. Establish `hAle : A ≤ LY`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.mem_inf.mpr ⟨?_, H.phi_mem x (hLPX x hx)⟩` and prove the remaining obligations. Simplify using `only [LinearMap.coe_restrictScalars, Φt_apply]`. Conclude with `L.sum_mem fun i _ => hΦL i (x i) (Submodule.mem_inf.mp (hx i (Set.mem_univ i))).1 (Submodule.mem_inf.mp (hx i (Set.mem_univ i))).2`. Establish `hAsp : Submodule.span K (A : Set V) = Y`. Rewrite using `[hAd, Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, hLPsp, H.map_phi]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨hAle, hAsp, idx_nonneg_of_le hI w LY A fgLY fgA (hLY.trans hAsp.symm) hAle, ?_⟩` and prove the remaining obligations. Use `set Bt := LY.map ((LinearMap.pi Ψ).restrictScalars (𝓞 K)) with hBtd`. Establish `fgBt : Bt.FG` using `fgLY.map _`. Establish `hBle : Bt ≤ LP`. Introduce and unpack `_ ⟨y, hy, rfl⟩ j _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hy'` using `Submodule.mem_inf.mp hy`. Conclude with `Submodule.mem_inf.mpr ⟨hΨL j y hy'.1 hy'.2, H.h3 j y hy'.2⟩`. Establish `hBsp : Submodule.span K (Bt : Set (Fin n → V)) = Submodule.pi Set.univ fun _ : Fin n => X`. Rewrite using `[hBtd, Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, hLY, H.map_psi]`. Establish `hΨA : A.map ((LinearMap.pi Ψ).restrictScalars (𝓞 K)) = LP.map ((matV Γ).restrictScalars (𝓞 K))`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hAd, ← Submodule.map_comp]`. Use extensionality with `z`. Simplify using `only [Submodule.mem_map, LinearMap.coe_comp, LinearMap.coe_restrictScalars, Function.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨x, hx, (H.psiPhi x (hLPX x hx)).symm⟩`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨x, hx, H.psiPhi x (hLPX x hx)⟩`. Establish `hmat` using `idx_matV hI w LX fgLX Γ H.det`. Rewrite `hmat` using `[← hLPd, ← hΨA]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hΨAsp : Submodule.span K ((A.map ((LinearMap.pi Ψ).restrictScalars (𝓞 K)) : Submodule (𝓞 K) (Fin n → V)) : Set (Fin n → V)) = Submodule.pi Set.univ fun _ : Fin n => X`. Rewrite using `[hΨA]`. Conclude with `span_map_matV Γ H.det LP X hLPsp`. Establish `hch` using `idx_chain hI w LP Bt (A.map ((LinearMap.pi Ψ).restrictScalars (𝓞 K))) fgLP fgBt (fgA.map _) (by rw [hLPsp, hBsp]) (by rw [hΨAsp, hBsp])`. Establish `hinj` using `idx_map_inj hI w (LinearMap.pi Ψ) LY A fgLY fgA (hLY.trans hAsp.symm) (fun y hy h0 => H.psi_inj y (Submodule.mem_inf.mp hy).2 h0) (fun y hy h0 => H.psi_inj y (Submodule.mem_inf.mp (hAle hy)).2 h0)`.
-
-Establish `hnn` using `idx_nonneg_of_le hI w LP Bt fgLP fgBt (by rw [hLPsp, hBsp]) hBle`. Rewrite `hinj` using `[← hBtd]`. Rewrite `hch` using `[hmat, ← hinj]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem BlockHyp.side (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) (H : BlockHyp X Y Φ Ψ Γ)
     (L : Submodule (𝓞 K) V) (hL : L.FG) (hLsp : Submodule.span K (L : Set V) = ⊤)
@@ -103,25 +101,21 @@ theorem BlockHyp.side (hI : IdxCalc) (w : HeightOneSpectrum (𝓞 K)) (H : Block
 end Side
 
 /- English proof (translation)
-Introduce `K _ _ V _ _ _ _ n X Y Φ Ψ Γ hdet h1 h2 h3 h4 M N hMfg hNfg hMsp hNsp hΦM hΨM hΦN hΨN`. Use `haveI : FiniteDimensional K V := by`. Take `⟨s, hs⟩` from `hMfg`. Use `Module.finite_def.mpr ⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[← hMsp, ← hs, Submodule.span_span_of_tower]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set Γk : Matrix (Fin n) (Fin n) K := Γ.map (algebraMap (𝓞 K) K) with hΓk`. Establish `hdetk : Γk.det = algebraMap (𝓞 K) K Γ.det` using `(RingHom.map_det _ _).symm`. Establish `H : BlockHyp X Y Φ Ψ Γk` using `⟨by rw [hdetk]; exact (map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).mpr hdet, fun i j x hx => by rw [h1 i j x hx]; rfl, h2, h3, h4⟩`. Establish `hrX : ∀ L : Submodule (𝓞 K) V, Submodule.span K (L : Set V) = ⊤ → Formalism.HN.rkK (L ⊓ X.restrictScalars (𝓞 K)) = Module.finrank K X` using `fun L hL => rk_cut L hL X`. Use `⟨by rw [rk_cut M hMsp Y, rk_cut M hMsp X, H.finrank], fun w => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hAle, hAsp, hA0, hA1⟩` from `H.side hI w M hMfg hMsp hΦM hΨM`. Take `⟨hBle, hBsp, hB0, hB1⟩` from `H.side hI w N hNfg hNsp hΦN hΨN`. Rewrite `hA1`, `hB1` using `[hdetk]`. Rewrite `hB1` using `[hrX N hNsp, ← hrX M hMsp]`. Use `set MX := M ⊓ X.restrictScalars (𝓞 K)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set NX := N ⊓ X.restrictScalars (𝓞 K)`. Use `set MY := M ⊓ Y.restrictScalars (𝓞 K)`. Use `set NY := N ⊓ Y.restrictScalars (𝓞 K)`. Use `set A := (latPow (Fin n) MX).map ((Φt Φ).restrictScalars (𝓞 K))`. Use `set B := (latPow (Fin n) NX).map ((Φt Φ).restrictScalars (𝓞 K))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fgMX : MX.FG` using `fg_cut M hMfg X`. Establish `fgNX : NX.FG` using `fg_cut N hNfg X`. Establish `fgMY : MY.FG` using `fg_cut M hMfg Y`. Establish `fgNY : NY.FG` using `fg_cut N hNfg Y`. Establish `fgA : A.FG` using `(Submodule.fg_pi fun _ => fgMX).map _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fgB : B.FG` using `(Submodule.fg_pi fun _ => fgNX).map _`. Establish `sMY : Submodule.span K (MY : Set V) = Y` using `cut_span M hMsp Y`. Establish `sNY : Submodule.span K (NY : Set V) = Y` using `cut_span N hNsp Y`. Establish `c1` using `idx_chain hI w MY A NY fgMY fgA fgNY (sMY.trans hAsp.symm) (sNY.trans hAsp.symm)`. Establish `c2` using `idx_chain hI w A B NY fgA fgB fgNY (hAsp.trans hBsp.symm) (sNY.trans hBsp.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hLX : ∀ L : Submodule (𝓞 K) V, ∀ x ∈ latPow (Fin n) (L ⊓ X.restrictScalars (𝓞 K)), x ∈ Submodule.pi Set.univ fun _ : Fin n => X` using `fun L x hx i _ => (Submodule.mem_inf.mp (hx i (Set.mem_univ i))).2`. Establish `c3` using `idx_map_inj hI w (Φt Φ) (latPow (Fin n) MX) (latPow (Fin n) NX) (Submodule.fg_pi fun _ => fgMX) (Submodule.fg_pi fun _ => fgNX) (by rw [span_latPow, span_latPow, cut_span M hMsp X, cut_span N hNsp X]) (fun x hx h0 => H.phi_inj x (hLX M x hx) h0) (fun x hx h0 => H.phi_inj x (hLX N …`. Establish `c4` using `idx_pi hI w (fun _ : Fin n => MX) (fun _ : Fin n => NX) (fun _ => fgMX) (fun _ => fgNX) (fun _ => by rw [cut_span M hMsp X, cut_span N hNsp X])`. Rewrite `c4` using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Establish `c5 : idxAt w B NY = -idxAt w NY B` using `idx_anti w B NY`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : idxAt w MY NY = idxAt w MY A + (n : ℤ) * idxAt w MX NX - idxAt w NY B`. Rewrite using `[c1, c2, c5, ← c3]`. Establish `: idxAt w (latPow (Fin n) MX) (latPow (Fin n) NX) = (n : ℤ) * idxAt w MX NX` using `c4`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hD1 : -((Formalism.HN.rkK MX : ℤ) * vAdd w (algebraMap (𝓞 K) K Γ.det)) ≤ idxAt w MY NY - (n : ℤ) * idxAt w MX NX` using `by rw [key]; linarith`. Establish `hD2 : idxAt w MY NY - (n : ℤ) * idxAt w MX NX ≤ (Formalism.HN.rkK MX : ℤ) * vAdd w (algebraMap (𝓞 K) K Γ.det)` using `by rw [key]; linarith`. Establish `hfin : |((idxAt w MY NY - (n : ℤ) * idxAt w MX NX : ℤ) : ℝ)| ≤ (((Formalism.HN.rkK MX : ℤ) * vAdd w (algebraMap (𝓞 K) K Γ.det) : ℤ) : ℝ)`. Rewrite using `[abs_le]`. Prove the components needed by the constructor for the conclusion.
-
-Conclude with `hD1` after adjusting the coercions. Conclude with `hD2` after adjusting the coercions. Move the coercions through the operations in `at hfin`. Conclude with `hfin`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem block_index_formula (hI : IdxCalc) : BlockIdx := by
   intro K _ _ V _ _ _ _ n X Y Φ Ψ Γ hdet h1 h2 h3 h4 M N hMfg hNfg hMsp hNsp hΦM hΨM hΦN hΨN

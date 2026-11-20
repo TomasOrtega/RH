@@ -13,19 +13,17 @@ open GlobalTheory.TorusPart
 
 open GlobalTheory.Conormal GlobalTheory.DualPull in
 /- English proof (translation)
-Establish `hle (W : X'.Opens) : W ≤ φ ⁻¹ᵁ φ ''ᵁ W` using `(φ.preimage_image_eq W).ge`. Establish `hα (W : X'.Opens) (f : Γ(X', W)) : φ.appLE (φ ''ᵁ W) W (hle W) ((φ.appIso W).inv f) = f`. Rewrite using `[← Scheme.Hom.appIso_hom']`. Conclude with `congr($((φ.appIso W).inv_hom_id) f)`. Establish `hinj (W : X'.Opens) : Function.Injective (φ.appLE (φ ''ᵁ W) W (hle W))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.Hom.appIso_hom']`. Conclude with `(ConcreteCategory.bijective_of_isIso (φ.appIso W).hom).1`. Establish `hV {W : X'.Opens} {V : S.Opens} (h : V ≤ e' ⁻¹ᵁ W) : V ≤ e ⁻¹ᵁ φ ''ᵁ W` using `(le_preimage_of_comp we).1 (h.trans (e'.preimage_mono (hle W)))`. Set `D : Der π' e' (conormal e)` to `{ app := fun {W V} h => (d he (hV h)).comp (φ.appIso W).inv.hom.toAddMonoidHom res_app := fun h h' f => resM_d he (hV h) h' _ app_res := fun {W W' V} h k f => by`. Establish `: (φ.appIso W').inv (resG X' k f) = resG X (φ.image_mono k) ((φ.appIso W).inv f)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[hα, appLE_resG, ← resG_appLE φ k (hle W), hα]`. Conclude with `(congrArg (d he (hV h)) this).trans (d_resG he _ _ _)`. Use `app_mul := fun {W V} h f g => by`. Use `(congrArg (d he (hV h)) (map_mul (φ.appIso W).inv.hom f g)).trans ((d_mul he _ _ _).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← appLE_appLE we (hle W) h, ← appLE_appLE we (hle W) h]`. Use `erw [hα, hα]`. Both sides reduce to the same expression. Use `app_base := fun {W V U} h k a => by`. Establish `k' : φ ''ᵁ W ≤ π ⁻¹ᵁ U`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `(le_preimage_of_comp w).2 k hx`. Establish `: (φ.appIso W).inv (π'.appLE U W k a) = π.appLE U _ k' a`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hα, appLE_appLE w]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (d he (hV h)) this).trans (d_base he _ _ _) }`. Use `⟨D.lift, Conormal.hom_ext he fun W f => ?_, Conormal.hom_ext he' fun W f => ?_⟩` and prove the remaining obligations. Establish `h'` using `(le_preimage_of_comp we).2 (le_refl (e ⁻¹ᵁ W))`. Rewrite using `[Scheme.Modules.Hom.comp_app, AddCommGrpCat.comp_apply, map_d he he' w we _ h' le_rfl, Der.lift_d]`. Establish `: (φ.appIso (φ ⁻¹ᵁ W)).inv (φ.appLE W _ le_rfl f) = resG X (φ.image_preimage_le W) f`.
-
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[hα, appLE_resG]`. Conclude with `(congrArg (d he (hV h')) this).trans (d_resG he _ _ _)`. Rewrite using `[Scheme.Modules.Hom.comp_app, AddCommGrpCat.comp_apply, Der.lift_d]`. Conclude with `(map_d he he' w we (hV le_rfl) le_rfl (hle W) _).trans (congrArg _ (hα W f))`.
+A detailed English derivation is pending.
 -/
 private theorem isIso_map_open {S X X' : Scheme.{0}} {π : X ⟶ S} {e : S ⟶ X} {π' : X' ⟶ S} {e' : S ⟶ X'}
     {φ : X' ⟶ X} [IsOpenImmersion φ] (he : e ≫ π = 𝟙 S) (he' : e' ≫ π' = 𝟙 S) (w : φ ≫ π = π')
@@ -71,7 +69,7 @@ private theorem isIso_map_open {S X X' : Scheme.{0}} {π : X ⟶ S} {e : S ⟶ X
     exact (map_d he he' w we (hV le_rfl) le_rfl (hle W) _).trans (congrArg _ (hα W f))
 
 /- English proof (translation)
-The claim follows from `isIso_map_open (sec_hom s) _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem isIso_cotMap_open {S : Scheme.{0}} {T T' : Over S} {s : 𝟙_ (Over S) ⟶ T} {s' : 𝟙_ (Over S) ⟶ T'}
     (φ : T' ⟶ T) (h : s' ≫ φ = s) [IsOpenImmersion φ.left] : IsIso (cotMap φ h) :=
@@ -83,11 +81,11 @@ private def WG {S : Scheme.{0}} {G : Over S} [GrpObj G] {X : Type} [AddCommGroup
     ∃ u : Multiplicative X →* Γ(G.left, V)ˣ, ∀ χ, Wt i V (u (Multiplicative.ofAdd χ)).val χ
 
 /- English proof (translation)
-Take `⟨-, w, hw⟩` from `hV`. Set `τ : Vo ⟶ splitTorus S X` to `(splitTorusPointsEquiv S X Vo).symm ((Units.map (j.left.appLE V ⊤ hj).hom.toMonoidHom).comp w)`. Establish `hτ (χ : X) : (chV τ χ).val = (j.left.appLE V ⊤ hj).hom (w (Multiplicative.ofAdd χ)).val`. Rewrite using `[chV, MulEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨τ, fun Z t x y h => ?_⟩` and prove the remaining obligations. Use `(splitTorusPointsEquiv S X Z).injective (MonoidHom.ext fun χ => Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(chV (y ≫ τ) χ.toAdd).val = (chV (t * (x ≫ τ)) χ.toAdd).val`. Establish `k₁` using `TorusGrading.top_le_comp_left y hj`. Establish `k₂` using `TorusGrading.top_le_comp_left x hj`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[chV_mul, Units.val_mul, TorusGrading.chV_comp, TorusGrading.chV_comp, hτ, ← TorusGrading.val_comp y hj k₁, ← TorusGrading.val_comp x hj k₂, TorusGrading.val_congr h k₁ (h ▸ k₁), hw _ Z t (x ≫ j) _ k₂, chV_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_tau {S : Scheme.{0}} {G Vo : Over S} [GrpObj G] {X : Type} [AddCommGroup X]
     {u : splitTorus S X ⟶ G} {V : G.left.Opens} (hV : WG u V) (j : Vo ⟶ G) (hj : ⊤ ≤ j.left ⁻¹ᵁ V) :
@@ -108,7 +106,7 @@ private theorem exists_tau {S : Scheme.{0}} {G Vo : Over S} [GrpObj G] {X : Type
     TorusGrading.val_congr h k₁ (h ▸ k₁), hw _ Z t (x ≫ j) _ k₂, chV_val]
 
 /- English proof (translation)
-Establish `h1 : (y / x) ≫ q = toUnit Z ≫ η[B]`. Rewrite using `[GrpObj.div_comp, h, div_self', Hom.one_def]`. Conclude with `⟨hk.lift (y / x) (toUnit Z) h1, by rw [hk.lift_fst, div_mul_cancel]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem free_etale_sheaf_zmod_exists_hom_sending_generator {S : Scheme.{0}} {T G B : Over S} [GrpObj G] [GrpObj B] {u : T ⟶ G} {q : G ⟶ B}
     [IsMonHom q] (hk : IsPullback u (toUnit _) q η[B]) {Z : Over S} (x y : Z ⟶ G) (h : x ≫ q = y ≫ q) :
@@ -118,13 +116,13 @@ private theorem free_etale_sheaf_zmod_exists_hom_sending_generator {S : Scheme.{
   exact ⟨hk.lift (y / x) (toUnit Z) h1, by rw [hk.lift_fst, div_mul_cancel]⟩
 
 /- English proof (translation)
-Take `⟨_, _, _, _, hk⟩` from `hq`. Establish `hsat : q.left ⁻¹' (q.left '' V) = V`. Use `Set.Subset.antisymm ?_ (Set.subset_preimage_image _ _)` and prove the remaining obligations. Introduce and unpack `y ⟨x, hx, e⟩`. Take `⟨z, rfl, rfl⟩` from `Scheme.Pullback.exists_preimage_pullback x y e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Set `Z : Over S` to `Over.mk (pullback.fst q.left q.left ≫ G.hom)`. Set `a : Z ⟶ G` to `Over.homMk (pullback.fst q.left q.left) rfl`. Set `b : Z ⟶ G` to `Over.homMk (pullback.snd q.left q.left) (by`. Rewrite using `[← Over.w q, ← pullback.condition_assoc, Over.w]`. Use the proof step `rfl)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `free_etale_sheaf_zmod_exists_hom_sending_generator hk a b (Over.OverMorphism.ext pullback.condition)`. Establish `h2 : (lift t a).left z ∈ (snd (splitTorus S X) G).left ⁻¹ᵁ V` using `by show (lift t a ≫ snd _ _).left z ∈ V`. Rewrite using `[lift_snd]`. Conclude with `hx`. Establish `h3 : (lift t a ≫ ((fst (splitTorus S X) G ≫ u) * snd (splitTorus S X) G)).left z ∈ V` using `hV.1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h3` using `[MonObj.comp_mul, lift_fst_assoc, lift_snd, ← ht]`. Conclude with `h3`. Use `⟨⟨q.left '' V, (Flat.isQuotientMap_of_surjective q.left).isOpen_preimage.1 (by rw [hsat]; exact V.2)⟩, ?_⟩` and prove the remaining obligations. Use `ext1`. Conclude with `hsat.symm`.
+A detailed English derivation is pending.
 -/
 private theorem exists_open {S : Scheme.{0}} {G B : Over S} [GrpObj G] [GrpObj B] {X : Type} [AddCommGroup X]
     {u : splitTorus S X ⟶ G} {q : G ⟶ B} (hq : IsKer u q) {V : G.left.Opens} (hV : WG u V) :
@@ -150,7 +148,7 @@ private theorem exists_open {S : Scheme.{0}} {G B : Over S} [GrpObj G] [GrpObj B
   exact hsat.symm
 
 /- English proof (translation)
-Use `⟨σ ≫ inv K, τ ≫ inv J, by rw [reassoc_of% c₁, IsIso.hom_inv_id], by simp [← c₂, c₃], ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono J]`. Simplify using `[c₄, c₅]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem selfDualLattice_projection_mem_of_unit_length {C : Type*} [Category C] [Preadditive C] {B G T V W : C} (a : B ⟶ G) (b : G ⟶ T)
     (J : G ⟶ V) (K : B ⟶ W) (σ : G ⟶ W) (τ : T ⟶ V) (u : V ⟶ T) (q : W ⟶ V) (hJ : IsIso J) (hK : IsIso K)
@@ -161,29 +159,29 @@ private theorem selfDualLattice_projection_mem_of_unit_length {C : Type*} [Categ
   simp [c₄, c₅]
 
 /- English proof (translation)
-Take `⟨W, rfl⟩` from `exists_open hq hV`. Take `⟨_, _, _, _, hk⟩` from `hq`. Set `Vo : Over S` to `Over.mk ((q.left ⁻¹ᵁ W).ι ≫ G.hom)`. Set `Wo : Over S` to `Over.mk (W.ι ≫ B.hom)`. Set `j : Vo ⟶ G` to `Over.homMk (q.left ⁻¹ᵁ W).ι rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `k : Wo ⟶ B` to `Over.homMk W.ι rfl`. Set `q' : Vo ⟶ Wo` to `Over.homMk (q.left ∣_ W) (by`. Express the relevant statement in the definitionally equal form `_ ≫ W.ι ≫ B.hom = _ ≫ G.hom`. Rewrite using `[morphismRestrict_ι_assoc, Over.w])`. Establish `hq' : q' ≫ k = j ≫ q` using `Over.OverMorphism.ext (morphismRestrict_ι _ _)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsOpenImmersion j.left` using `inferInstanceAs (IsOpenImmersion (q.left ⁻¹ᵁ W).ι)`. Establish `: IsOpenImmersion k.left` using `inferInstanceAs (IsOpenImmersion W.ι)`. Establish `: Flat q'.left` using `inferInstanceAs (Flat (q.left ∣_ W))`. Establish `: Surjective q'.left` using `IsZariskiLocalAtTarget.restrict (P := @Surjective) ‹Surjective q.left› W`. Establish `: QuasiCompact q'.left` using `MorphismProperty.of_isPullback (P := @QuasiCompact) (isPullback_morphismRestrict q.left W).flip ‹QuasiCompact q.left›`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Mono j` using `Over.mono_of_mono_left j`. Establish `hj : ⊤ ≤ j.left ⁻¹ᵁ q.left ⁻¹ᵁ W` using `fun y _ => y.2`. Establish `hl {Z : Over S} (g : Z ⟶ G) (h : ⊤ ≤ g.left ⁻¹ᵁ q.left ⁻¹ᵁ W) : ∃ g' : Z ⟶ Vo, g' ≫ j = g`. Establish `hr : Set.range g.left ⊆ Set.range j.left`. Introduce and unpack `_ ⟨z, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨_, h (x := z) trivial⟩, rfl⟩`. Establish `hf` using `IsOpenImmersion.lift_fac j.left g.left hr`. Conclude with `⟨Over.homMk (IsOpenImmersion.lift j.left g.left hr) (by`. Rewrite using `[← Over.w j, reassoc_of% hf, Over.w]), Over.OverMorphism.ext hf⟩`. Take `⟨τ₀, hτ₀⟩` from `exists_tau hV j hj`.
+Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e, hej⟩` from `hl η[G] he`. Set `τ : Vo ⟶ splitTorus S X` to `τ₀ * (toUnit _ ≫ e ≫ τ₀)⁻¹`. Establish `hτ (Z : Over S) (t : Z ⟶ splitTorus S X) (x y : Z ⟶ Vo) (h : y ≫ j = (t ≫ u) * (x ≫ j)) : y ≫ τ = t * (x ≫ τ)`. Simplify using `only [τ, MonObj.comp_mul, GrpObj.comp_inv, hτ₀ Z t x y h, comp_toUnit_assoc, _root_.mul_assoc]`. Establish `heτ : e ≫ τ = η`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [τ, MonObj.comp_mul, GrpObj.comp_inv, comp_toUnit_assoc, toUnit_unit, Category.id_comp, mul_inv_cancel, Hom.one_def]`. Establish `hu : (𝟙 _ ≫ u) * (toUnit _ ≫ η[G]) = u` using `by rw [← Hom.one_def, _root_.mul_one, Category.id_comp]`. Take `⟨u', hu'⟩` from `hl u (hu ▸ TorusGrading.top_le_act hV.1 (𝟙 _) (TorusGrading.top_le_comp_left _ he))`. Establish `huτ : u' ≫ τ = 𝟙 _`. Rewrite using `[hτ _ (𝟙 _) (toUnit _ ≫ e) u' (by rw [Category.assoc, hej, hu, hu']), Category.assoc, heτ, ← Hom.one_def, _root_.mul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `heu : η ≫ u' = e` using `by rw [← cancel_mono j, Category.assoc, hu', hej, IsMonHom.one_hom]`. Take `⟨σ, hσ⟩` from `AbelianQuotient.exists_desc q' ((τ ≫ u)⁻¹ * j) fun Z x y h => by`. Take `⟨t, ht⟩` from `free_etale_sheaf_zmod_exists_hom_sending_generator hk (x ≫ j) (y ≫ j) (by rw [Category.assoc, Category.assoc, ← hq', reassoc_of% h])`. Simplify using `only [MonObj.comp_mul, GrpObj.comp_inv, ← Category.assoc, hτ Z t x y ht, ht, MonObj.mul_comp]`. Use `group`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `huq : u ≫ q = 1` using `hk.w`. Establish `hσq : σ ≫ q = k`. Use `FlatQuotient.epi_of_flat_surjective q'` as an intermediate fact. Rewrite using `[← cancel_epi q', reassoc_of% hσ, MonObj.mul_comp, GrpObj.inv_comp, Category.assoc, huq, MonObj.comp_one, inv_one, _root_.one_mul, hq']`. Establish `heτu : e ≫ τ ≫ u = η` using `by rw [reassoc_of% heτ, IsMonHom.one_hom]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : η[G] = 1` using `by simp [Hom.one_def]`. Establish `heσ : e ≫ q' ≫ σ = η`. Rewrite using `[hσ, MonObj.comp_mul, GrpObj.comp_inv, heτu, hej, inv_mul_cancel, h1]`. Establish `heσ' : (e ≫ q') ≫ σ = η` using `by rw [Category.assoc, heσ]`. Establish `hek : (e ≫ q') ≫ k = η` using `by rw [Category.assoc, hq', reassoc_of% hej, IsMonHom.one_hom]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjm : (τ ≫ u) * (q' ≫ σ) = j` using `by rw [hσ, mul_inv_cancel_left]`. Establish `hq1` using `IsMonHom.one_hom q`. Establish `hu1` using `IsMonHom.one_hom u`. Use `selfDualLattice_projection_mem_of_unit_length (cotMap q hq1) (cotMap u hu1) (cotMap j hej) (cotMap k hek) (cotMap σ heσ') (cotMap τ heτ) (cotMap u' heu) (cotMap q' rfl) (isIso_cotMap_open j hej) (isIso_cotMap_open k hek) (cotMap_comp _ _ hσq _) (cotMap_comp _ _ hu' _) ((cotMap_co …` and prove the remaining obligations. Rewrite using `[cotMap_comp heσ' rfl rfl heσ, cotMap_comp hu1 heτ rfl heτu, ← cotMap_mul heτu heσ (hjm ▸ hej)]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`.
+A detailed English derivation is pending.
 -/
 private theorem exists_split {S : Scheme.{0}} {G B : Over S} [GrpObj G] [GrpObj B] {X : Type} [AddCommGroup X]
     {u : splitTorus S X ⟶ G} {q : G ⟶ B} [IsMonHom u] [IsMonHom q] [QuasiSeparated G.hom] (hq : IsKer u q)
@@ -256,11 +254,11 @@ private theorem exists_split {S : Scheme.{0}} {G B : Over S} [GrpObj G] [GrpObj 
   congr 1
 
 /- English proof (translation)
-Take `⟨τ, hτ, hχ, e⟩` from `h`. Set `t₀ : Over.mk (Z.hom ≫ f) ⟶ splitTorus S X` to `Over.homMk (t.left ≫ τ) (by`. Rewrite using `[Category.assoc, hτ, ← Category.assoc, Over.w]`. Use the proof step `rfl)`. Set `g₀ : Over.mk (Z.hom ≫ f) ⟶ G` to `Over.homMk (g.left ≫ φ) (by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hφ.1.w, ← Category.assoc, Over.w]`. Use the proof step `rfl)`. Use `⟨t₀, g₀, fun χ => ?_, rfl, ?_⟩` and prove the remaining obligations. Use `show (t.left ≫ τ).appTop.hom _ = _`. Rewrite using `[Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, hχ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `hφ.2 Z (t ≫ u') g _ _ ?_ rfl` and prove the remaining obligations. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, ← e, ← Category.assoc]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem key {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G']
     {φ : G'.left ⟶ G.left} (hφ : IsGrpPullback G' G f φ) {X : Type} [AddCommGroup X] {u : splitTorus S X ⟶ G}
@@ -280,7 +278,7 @@ private theorem key {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] {
     rw [Over.comp_left, Over.comp_left, Category.assoc, ← e, ← Category.assoc]; rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Use `⟨h, ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun q => q.hom s) (Scheme.Hom.comp_appLE a φ V ⊤ h)`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem appLE_comp_exists {Z Y Y' : Scheme.{0}} (a : Z ⟶ Y') (φ : Y' ⟶ Y) (b : Z ⟶ Y) (e : b = a ≫ φ)
     (V : Y.Opens) (h : ⊤ ≤ a ⁻¹ᵁ φ ⁻¹ᵁ V) (s : Γ(Y, V)) :
@@ -290,13 +288,11 @@ private theorem appLE_comp_exists {Z Y Y' : Scheme.{0}} (a : Z ⟶ Y') (φ : Y' 
   exact congrArg (fun q => q.hom s) (Scheme.Hom.comp_appLE a φ V ⊤ h)
 
 /- English proof (translation)
-Take `⟨hst, w, hw⟩` from `hV`. Use `⟨?_, (Units.map (φ.app V).hom.toMonoidHom).comp w, fun χ Z t g h₁ h₂ => ?_⟩` and prove the remaining obligations. Take `⟨t₀, g₀, -, e₁, e₂⟩` from `key hφ h _ (fst (splitTorus S' X) G') (snd (splitTorus S' X) G')`. Introduce `x hx`. Establish `h1 : g₀.left x ∈ V` using `by rw [e₁]; exact hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : (lift t₀ g₀).left x ∈ (snd (splitTorus S X) G).left ⁻¹ᵁ V` using `by show (lift t₀ g₀ ≫ snd _ _).left x ∈ V`. Rewrite using `[lift_snd]` and apply the resulting hypothesis. Establish `h3 : (lift t₀ g₀ ≫ ((fst (splitTorus S X) G ≫ u) * snd (splitTorus S X) G)).left x ∈ V` using `hst h2`. Rewrite `h3` using `[MonObj.comp_mul, lift_fst_assoc, lift_snd, e₂]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t₀, g₀, e₀, e₁, e₂⟩` from `key hφ h Z t g`. Take `⟨k₁, r₁⟩` from `appLE_comp_exists _ φ _ e₂ V h₁ (w (Multiplicative.ofAdd χ)).val`. Take `⟨k₂, r₂⟩` from `appLE_comp_exists _ φ _ e₁ V h₂ (w (Multiplicative.ofAdd χ)).val`. Use `hw χ _ t₀ g₀ k₁ k₂` as an intermediate fact. Rewrite `this` using `[r₁, r₂, e₀]`.
-
-Conclude with `this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wg_baseChange {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [GrpObj G] {G' : Over S'} [GrpObj G']
     {φ : G'.left ⟶ G.left} (hφ : IsGrpPullback G' G f φ) {X : Type} [AddCommGroup X] {u : splitTorus S X ⟶ G}
@@ -322,15 +318,13 @@ private theorem wg_baseChange {S S' : Scheme.{0}} {f : S' ⟶ S} {G : Over S} [G
 
 open GlobalTheory.QCoh in
 /- English proof (translation)
-Establish `hU (U V : X.Opens) : V ⊓ U ≤ U.ι.opensRange`. Rewrite using `[Scheme.Opens.opensRange_ι]`. Conclude with `inf_le_right`. Use `ShortComplex.ShortExact.mk' (DualExact.exact_of_locally _ fun V x hx => ?_) (mono_of_locally_app_injective _ fun V x hx => ?_) (epi_of_locally_app_surjective _ fun V x hx => ?_)` and prove the remaining obligations. Take `⟨U, hxU, r, s, -, -, h⟩` from `H x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨V ⊓ U, inf_le_left, ⟨hx, hxU⟩, fun t ht => FlagLocal.mem_range_of_pullback U.ι S.f (hU U V) rfl t ⟨r.app _ (pullbackSections U.ι _ le_rfl t), ?_⟩⟩` and prove the remaining obligations. Use `congr(($h).app _ (pullbackSections U.ι _ le_rfl t))` as an intermediate fact. Use `Eq.trans ?_ this` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = s.app _ (((Scheme.Modules.pullback U.ι).map S.g).app _ _) + _`. Rewrite using `[pullback_map_app_pullbackSections, ht, map_zero, map_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(_root_.zero_add _).symm`. Take `⟨U, hxU, r, s, h, -, -⟩` from `H x`. Use `⟨V ⊓ U, ⟨hx, hxU⟩, inf_le_left, fun a b e => ?_⟩` and prove the remaining obligations. Apply `(FlagLocal.bijective_pullbackSections U.ι S.X₁ (hU U V) rfl).1` to reduce the goal to its premises. Establish `ha` using `congr(($h).app _ (pullbackSections U.ι _ le_rfl a))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb` using `congr(($h).app _ (pullbackSections U.ι _ le_rfl b))`. Use `ha.symm.trans (Eq.trans ?_ hb)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `r.app _ (((Scheme.Modules.pullback U.ι).map S.f).app _ _) = r.app _ (((Scheme.Modules.pullback U.ι).map S.f).app _ _)`. Rewrite using `[pullback_map_app_pullbackSections, pullback_map_app_pullbackSections, e]`. Take `⟨U, hxU, r, s, -, h, -⟩` from `H x`.
-
-Conclude with `⟨V ⊓ U, ⟨hx, hxU⟩, inf_le_left, fun t => FlagLocal.mem_range_of_pullback U.ι S.g (hU U V) rfl t ⟨s.app _ (pullbackSections U.ι _ le_rfl t), congr(($h).app _ (pullbackSections U.ι _ le_rfl t))⟩⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem shortExact_of_local {X : Scheme.{0}} (S : ShortComplex X.Modules)
     (H : ∀ x : X, ∃ U : X.Opens, x ∈ U ∧
@@ -365,9 +359,9 @@ private theorem shortExact_of_local {X : Scheme.{0}} (S : ShortComplex X.Modules
       ⟨s.app _ (pullbackSections U.ι _ le_rfl t), congr(($h).app _ (pullbackSections U.ι _ le_rfl t))⟩⟩
 
 /- English proof (translation)
-Take `⟨r, s, e₁, e₂, e₃⟩` from `h`. Take `rfl : a = β ≫ a' ≫ inv g` from `by simp [← reassoc_of% h₁]`. Take `rfl : b = g ≫ b' ≫ inv θ` from `by simp [← reassoc_of% h₂]`. Use `⟨g ≫ r ≫ inv β, θ ≫ s ≫ inv g, by simp [reassoc_of% e₁], by simp [reassoc_of% e₂], ?_⟩` and prove the remaining obligations. Use `congr(g ≫ $e₃ ≫ inv g)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem transport {C : Type*} [Category C] [Preadditive C] {B G T B' G' T' : C} {a : B ⟶ G} {b : G ⟶ T}
     {a' : B' ⟶ G'} {b' : G' ⟶ T'} {β : B ⟶ B'} {g : G ⟶ G'} {θ : T ⟶ T'} (_ : IsIso β) (_ : IsIso g) (_ : IsIso θ)
@@ -382,17 +376,17 @@ private theorem transport {C : Type*} [Category C] [Preadditive C] {B G T B' G' 
   simpa using this
 
 /- English proof (translation)
-Introduce `S G B _ _ X _ _ _ u q _ _ hG hq hc`. Establish `hk` using `isKer_of_isQuot hq`. Use `hG.2.2.1` as an intermediate fact. Use `hq.2.2.2.2.2.2.2.2.1` as an intermediate fact. Establish `huq : u ≫ q = 1` using `hk.2.2.2.2.w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsMonHom (1 : splitTorus S X ⟶ B)` using `huq ▸ inferInstance`. Establish `h0 : omegaMap q ≫ omegaMap u = 0` using `by rw [← omegaMap_comp, omegaMap_congr huq, omegaMap_one]`. Establish `hS : (ShortComplex.mk _ _ h0).ShortExact` using `shortExact_of_local _ fun x => by`. Take `⟨V, hx, hV⟩` from `hc (unitSec G x)`. Use `⟨unitSec G ⁻¹ᵁ V, hx, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `f` to `(unitSec G ⁻¹ᵁ V).ι`. Take `⟨G', _, φ, hφ⟩ : ∃ (G' : Over _) (_ : GrpObj G') (φ : G'.left ⟶ G.left), IsGrpPullback G' G f φ` from `⟨_, _, _, isGrpPullback_pullback G f⟩`. Take `⟨B', _, ψ, hψ⟩ : ∃ (B' : Over _) (_ : GrpObj B') (ψ : B'.left ⟶ B.left), IsGrpPullback B' B f ψ` from `⟨_, _, _, isGrpPullback_pullback B f⟩`. Take `⟨u', hu', -⟩` from `existsUnique_torusCompat hφ.1 u`. Use `hu'.isMonHom hφ` as an intermediate fact.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨q', hq', sq⟩` from `IsKer.baseChange hφ hψ hu' hk`. Use `hq'.1` as an intermediate fact. Establish `: QuasiSeparated G'.hom` using `MorphismProperty.of_isPullback hφ.1 inferInstance`. Establish `hT : IsGrpPullback (splitTorus _ X) (splitTorus S X) f (SplitTorus.bcMap f X)` using `SplitTorus.isGrpPullback_bcMap f X`. Establish `: QuasiSeparated (splitTorus S X).hom` using `inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `transport (isIso_omegaBase hψ) (isIso_omegaBase hφ) (isIso_omegaBase hT) (omegaBase_naturality hφ hψ q q' sq.w.symm) (omegaBase_naturality hT hφ u u' (torusCompat_iff.1 hu').symm) (exists_split hq' (wg_baseChange hφ hu' hV.2) fun y _ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(unitSec _ ≫ _) y ∈ V`. Rewrite using `[unitSec_comp hφ]`. Conclude with `y.2`. Establish `hd` using `DualExact.shortExact_dual S _ _ hS (isFrame_dlogChar S (Module.Free.chooseBasis ℤ X)).isVB`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hd.mono_f` as an intermediate fact. Conclude with `⟨hd.epi_g, ⟨IsLimit.conePointUniqueUpToIso (kernelIsKernel _) hd.exact.fIsKernel⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.lie_quotient_kernel_torus :
     ∀ (S : Scheme.{0}) (G B : Over S) [GrpObj G] [GrpObj B] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (u : splitTorus S X ⟶ G) (q : G ⟶ B) [IsMonHom u]

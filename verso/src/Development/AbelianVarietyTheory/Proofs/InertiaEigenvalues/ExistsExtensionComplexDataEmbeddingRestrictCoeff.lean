@@ -14,11 +14,7 @@ open GlobalTheory.HeightCounting.Up (PrN)
 namespace GlobalTheory.PlaceRead
 
 /- English proof (translation)
-Use `letI : Algebra A ℂ := (e.comp (algebraMap A (FractionRing A))).toAlgebra`. Use `haveI : FaithfulSMul A B := (faithfulSMul_iff_algebraMap_injective A B).2 hinj`. Use `haveI : FaithfulSMul A ℂ := (faithfulSMul_iff_algebraMap_injective A ℂ).2 (e.injective.comp (IsFractionRing.injective A (FractionRing A)))`. Use `haveI : FaithfulSMul A (FractionRing B) := (faithfulSMul_iff_algebraMap_injective A _).2 (by`. Rewrite using `[IsScalarTower.algebraMap_eq A B (FractionRing B)]`.
-
-Conclude with `(IsFractionRing.injective B (FractionRing B)).comp hinj)`. Use `haveI : Algebra.IsAlgebraic A B := inferInstance`. Use `haveI : Algebra.IsAlgebraic B (FractionRing B) := IsLocalization.isAlgebraic _ (nonZeroDivisors B)`. Use `haveI : Algebra.IsAlgebraic A (FractionRing B) := Algebra.IsAlgebraic.trans A B _`. Set `φ : FractionRing B →ₐ[A] ℂ` to `IsAlgClosed.lift`.
-
-Conclude with `⟨φ.toRingHom, RingHom.ext fun a => φ.commutes a⟩`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_extend_fractionRing {A B : Type} [CommRing A] [IsDomain A] [CommRing B] [IsDomain B] [Algebra A B] [Module.Finite A B]
     (hinj : Function.Injective (algebraMap A B)) (e : FractionRing A →+* ℂ) :
@@ -37,15 +33,13 @@ theorem exists_extend_fractionRing {A B : Type} [CommRing A] [IsDomain A] [CommR
   exact ⟨φ.toRingHom, RingHom.ext fun a => φ.commutes a⟩
 
 /- English proof (translation)
-Introduce `D c w ρ hρ`. Use `haveI := c.Oe_fin w`. Use `⟨exists_extend_fractionRing (c.Oe_inj w) (ρ.ek (c.twI w) (c.sd w) (c.k' w)), fun hT ε hε x => ?_⟩` and prove the remaining obligations. Take `⟨y, z, hz, hyz⟩` from `IsFractionRing.div_surjective (A := D.ntw.O0 (c.twI w)) ((if c.sd w = true then D.ntw.emb0 (c.twI w) else D.ntw.emb0b (c.twI w)) x)`. Establish `hz0 : z ≠ 0` using `nonZeroDivisors.ne_zero hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz1 : algebraMap _ (FractionRing (D.ntw.O0 (c.twI w))) z ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hz`. Establish `h0 : (if c.sd w = true then D.ntw.emb0 (c.twI w) else D.ntw.emb0b (c.twI w)) x * algebraMap _ _ z = algebraMap _ _ y`. Rewrite using `[← hyz, div_mul_cancel₀ _ hz1]`. Establish `h1` using `congrArg ε (hT.embedding_baseField_condition w x y z hz0 h0)`. Establish `key : ∀ t : D.ntw.O (c.twI w), ε (algebraMap (c.Oe w) (FractionRing (c.Oe w)) (algebraMap (D.ntw.Ok (c.twI w) (c.k' w)) (c.Oe w) (algebraMap _ (D.ntw.Ok (c.twI w) (c.k' w)) t))) = ρ.eO (c.twI w) (c.sd w) t` using `fun t => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsScalarTower.algebraMap_apply (D.ntw.Ok (c.twI w) (c.k' w)) (c.Oe w), hε.apply, hρ.ek_e]`. Rewrite `h1` using `[map_mul, key, key]`. Rewrite using `[← hρ.e_LL0 (c.twI w) (c.sd w) x]`. Set `m : FractionRing (D.ntw.O0 (c.twI w)) →+* FractionRing (D.ntw.O (c.twI w))` to `IsFractionRing.map (D.ntw.O_inj (c.twI w))`. Establish `hm : ∀ t, ρ.e (c.twI w) (c.sd w) (m (algebraMap _ _ t)) = ρ.eO (c.twI w) (c.sd w) (algebraMap (D.ntw.O0 (c.twI w)) (D.ntw.O (c.twI w)) t)` using `fun t => congrArg (ρ.e (c.twI w) (c.sd w)) (IsLocalization.map_eq _ t)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun t => ρ.e (c.twI w) (c.sd w) (m t)) h0`. Simplify using `only [map_mul, hm] at h2`. Establish `hne : ρ.eO (c.twI w) (c.sd w) (algebraMap (D.ntw.O0 (c.twI w)) (D.ntw.O (c.twI w)) z) ≠ 0`. Rewrite using `[← hm]`. Conclude with `(map_ne_zero _).2 ((map_ne_zero m).2 hz1)`.
-
-Conclude with `mul_right_cancel₀ hne (h1.trans h2.symm)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extends_and_emb : ∀ (D : D7) (c : NChoice D) (w : D.what₂.places.Pl) (ρ : Setup D.ntw), ρ.Good → (∃ ε : KE c w →+* ℂ, Extends ρ ε) ∧
   (NChTie D c → ∀ ε : KE c w →+* ℂ, Extends ρ ε → ∀ x : D.LL0, ε (c.embW w (x : D.what₂.LL)) = embLL0 D x) := by

@@ -16,13 +16,13 @@ section IndFun
 variable {Γ Δ : Type*} [Group Γ] [Group Δ] [Fintype Γ] [Fintype Δ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Rewrite using `[indFun_apply]`. Establish `h1 : ∀ t : Δ, (∑ h : Γ, if e.toMonoidHom h = t⁻¹ * s * t then ψ h else 0) = ψ (e.symm s)`. Introduce `t`. Rewrite using `[Finset.sum_eq_single (e.symm (t⁻¹ * s * t))]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (by simp), map_mul, map_mul, map_inv]`. Use `hψ (e.symm s) (e.symm t)⁻¹` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Introduce `h _ hh`. Rewrite using `[if_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h'`. Apply `hh` to reduce the goal to its premises. Rewrite using `[← h']`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[h1]`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Function.comp_apply]`. Establish `: (Fintype.card Δ : ℂ) = Nat.card Γ`. Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_congr e.toEquiv]`. Rewrite using `[this, inv_mul_cancel_left₀ (Nat.cast_ne_zero.2 Nat.card_pos.ne')]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem indFun_mulEquiv (e : Γ ≃* Δ) {ψ : Γ → ℂ} (hψ : IsClassFun ψ) :
     indFun e.toMonoidHom ψ = ψ ∘ e.symm := by
@@ -82,7 +82,7 @@ omit [IsGalois K L] in
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[character_ind]`. Establish `hφ : (AlgEquiv.restrictScalarsHom K : Gal(L/fixedField H) →* Gal(L/K)) = H.subtype.comp (fixedFieldMulEquiv H).symm.toMonoidHom` using `MonoidHom.ext fun _ ↦ rfl`. Rewrite using `[hφ, ← indFun_indFun, indFun_mulEquiv (fixedFieldMulEquiv H).symm (isCharacter_character ρ).isClassFun]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem character_ind_restrictScalarsHom :
     (ρ.ind (AlgEquiv.restrictScalarsHom K)).character = indFun H.subtype (charOnSubgroup H ρ) := by

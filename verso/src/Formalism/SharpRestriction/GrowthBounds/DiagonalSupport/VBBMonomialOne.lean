@@ -9,7 +9,7 @@ namespace Formalism.MainNotions.Proposition5Numerics
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNotions.SourceCleaning Formalism.MainNotions.Pf14 Formalism.MainNotions.PlaneGramData Formalism.MainNotions.TestSideCounting Formalism.MainNotions.TestSideWords Formalism.MainNotions.G.GLWeightTheory
 
 /- English proof (translation)
-Unfold `vBB`. Rewrite using `[support_monomial, if_neg one_ne_zero, Finset.inf_singleton, coeff_monomial, if_pos rfl, valuation_one_eq_zero_alt, zero_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem vBB_monomial_one {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {σ : Type}
     (nu : σ →₀ ℕ) :
@@ -18,9 +18,9 @@ theorem vBB_monomial_one {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscr
   rw [support_monomial, if_neg one_ne_zero, Finset.inf_singleton, coeff_monomial, if_pos rfl, valuation_one_eq_zero_alt, zero_add]
 
 /- English proof (translation)
-Rewrite using `[Pol, mem_restrictSupport_iff]`. Introduce `mo hmo`. Establish `: mo = nu`. Rewrite `hmo` using `[Finset.mem_coe, mem_support_iff, coeff_monomial]`. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hmo (if_neg fun h' => h h'.symm)`. Rewrite using `[this]`. Conclude with `hnu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monomial_mem_pol {Kf : Type} [Field Kf] {ι : Type} {n : ℕ} (d : ι → ℕ) (nu : ι × Fin n →₀ ℕ)
     (hnu : ∀ x, multideg nu x = d x) : (monomial nu (1 : Kf)) ∈ Pol Kf n d := by
@@ -34,35 +34,31 @@ theorem monomial_mem_pol {Kf : Type} [Field Kf] {ι : Type} {n : ℕ} (d : ι �
   exact hnu
 
 /- English proof (translation)
-Introduce `dNo ka rho e nu hrho hJ hnu`. Establish `hp` using `hpF.out`. Establish `: CharZero (KK O)` using `dvr_fraction_field_char_zero hp S`. Take `⟨_, _, hJ3, hJ4⟩` from `hJ`. Take `⟨W, hW⟩ : ∃ W, W = algebraMap O (KK O) w` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n2, hn2⟩ : ∃ n2, n2 = padicValNat p (∏ x, (dNo x).factorial)` from `⟨_, rfl⟩`. Take `⟨vn, hvn⟩ : ∃ vn, vn = padicValNat p (expFact nu)` from `⟨_, rfl⟩`. Take `⟨Dno, hDno⟩ : ∃ Dno, Dno = DnoOf (K` from `K) p Dt.nL dNo := ⟨_, rfl⟩`. Establish `hvW : ∀ n : ℕ, vK p (W ^ n) = (((n : ℚ) / 2 : ℚ) : WithTop ℚ)` using `fun n => by`. Rewrite using `[hW]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `vK_w_pow hp S w hw2 n`. Establish `hWn0 : ∀ n : ℕ, W ^ n ≠ 0`. Introduce `n h`. Use `hvW n` as an intermediate fact. Rewrite `this` using `[h, valuation_zero_alt]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `WithTop.top_ne_coe this`. Establish `hpW : (p : KK O) = W ^ 2` using `by rw [hW, ← map_pow, hw2, map_natCast]`. Establish `hmon : (monomial nu (1 : KK O)) ∈ Pol (KK O) K dNo` using `monomial_mem_pol dNo nu hnu`. Establish `hUpol : (W ^ vn)⁻¹ • (monomial nu (1 : KK O)) ∈ Pol (KK O) K dNo` using `Submodule.smul_mem _ _ hmon`. Establish `hUBB : InBB (O` using `O) p ((W ^ vn)⁻¹ • (monomial nu (1 : KK O))) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `InBB`. Rewrite using `[vBB_smul _ (inv_ne_zero (hWn0 vn)), vK_inv _ _ (hvW vn), vBB_monomial_one, ← hvn, ← WithTop.coe_add]`. Simplify using the standard rewrite rules. Take `⟨hZ1, hZ2⟩` from `hJ3 _ hUpol`. Establish `hZBB` using `hZ2 hUBB`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hZBB` using `[← hDno]`. Establish `hYint` using `coefGe_of_inBB S w hw2 dNo _ (Submodule.smul_mem _ ((p : KK O) ^ Dno) hZ1) hZBB`. Rewrite `hYint` using `[← hW, ← hn2]`. Take `⟨cY, hcY⟩ : ∃ cY, cY = W ^ n2 * (p : KK O) ^ Dno * (W ^ vn)⁻¹` from `⟨_, rfl⟩`. Establish `hY : cY • e (monomial nu 1) = W ^ n2 • (p : KK O) ^ Dno • e ((W ^ vn)⁻¹ • (monomial nu (1 : KK O)))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_smul, smul_smul, smul_smul, hcY]`. Rewrite `hYint` using `[← hY]`. Take `⟨Yy, hYy⟩ : ∃ Yy, Yy = cY • e (monomial nu 1)` from `⟨_, rfl⟩`. Rewrite `hYint` using `[← hYy]`. Establish `hYpol : Yy ∈ Pol (KK O) K dNo`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hYy]`. Conclude with `Submodule.smul_mem _ _ (hJ3 _ hmon).1`. Take `⟨lam, hlam1, hlam2⟩` from `(hDA (TL J Dt.nL r × Fin K) (fun v => Fr.dist (segZ v.1.1) (posTL Fr v.1)) (fun v => rho (v.1, Fin.natAdd r v.2)) (fun v => hrho _ _)).2 true cP`. Establish `hlam3 : ∀ bn : TL J Dt.nL r × Fin K →₀ ℕ, geQ (vK p (binomCombF (K` using `KK O) lam bn - ((gamNo Fr p Dt.nL rho bn : ℚ) : KK O)⁻¹)) (cP : ℝ) := by`. Introduce `bn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `geQ_neg _ (hlam2 bn)`. Rewrite `h` using `[neg_sub, if_pos rfl]`. Conclude with `h`. Use `⟨diagK (fun bn => binomCombF (K := KK O) lam bn) Yy, cY, ⟨?_, diagK_mem_pol _ _ hYpol, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `bn`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[coeff_diagK]`. Use `geQ_mul _ _ (geQ_binomCombF S lam bn) (hYint bn)` as an intermediate fact. Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis. Introduce `j u hu`. Rewrite using `[diagK_binomCombF]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(degree_truncation D (KK O) (TL J Dt.nL r) Dt.trueLet K (NSet Dt.nL j u) cP lam.support hlam1 (fun m => algebraMap O (KK O) (lam m)) Yy).2`. Establish `h2 : lam1S Dt.trueLet (NSet Dt.nL j u) Yy ≤ ((ka j u 0 : ℤ) : WithBot ℤ)`. Rewrite using `[hYy]`. Conclude with `lowest_weight_le_of_isotypic D Dt.trueLet (NSet Dt.nL j u) (ka j u) _ (Submodule.smul_mem _ _ (hJ4 (monomial nu 1) ⟨j, ⟨u, by omega⟩⟩))`. Use `le_trans h1 (le_trans (add_le_add_left h2 _) ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← WithBot.coe_add]`. Use `push_cast`. Conclude with `le_rfl`. Use `⟨(n2 : ℚ) / 2 + (Dno : ℚ) - (vn : ℚ) / 2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcY, valuation_mul_alt, valuation_mul_alt, hvW, vK_inv _ _ (hvW vn), hpW, ← pow_mul, hvW, ← WithTop.coe_add, ← WithTop.coe_add]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hn2, ← hvn, ← hDno]`. Use `push_cast`.
-
-Conclude with `le_rfl`. Rewrite using `[← hYy]`. Introduce `bn`. Rewrite using `[coeff_sub, coeff_diagK, coeff_diagK, ← sub_mul]`. Use `geQ_mul _ _ (hlam3 bn) (hYint bn)` as an intermediate fact.
-
-Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem noAt (D : Formalism.BasicNotions.D7) (p : ℕ) [hpF : Fact p.Prime] {n' r K : ℕ} [NeZero n'] [NeZero r] [NeZero K] (O : Type)
     [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (S : UniformizedDVR p O) (w : O) (hw2 : w ^ 2 = (p : O))

@@ -18,7 +18,7 @@ section Loc
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open GlobalTheory.SmGL GlobalTheory.LocLanglands
 /- English proof (translation)
-Apply the tactic sequence `first | (have hOpn := UpperTheory.One.M.opn _ (_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL h); obtain ⟨_, _, _, H⟩ := hOpn) | obtain ⟨_, _, _, -, H⟩ := _root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL h`. Conclude with `H.dim _`.
+A detailed English derivation is pending.
 -/
 theorem lpDim_locRec_alt {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (h : IsPlaceOver A w) {n : ℕ}
@@ -34,7 +34,7 @@ def weilDeligneParameterAtPlace (σ : D.what₂.FT) (w : PlE D.host) :
   classical
   exact if h : Nonempty (LocAt D rep σ w) then _root_.GlobalTheory.RowPar.weilDeligneParameterOfLocalDatum hL D rep h.some else (unrW D).par σ w
 /- English proof (translation)
-Take `⟨⟨s0, τ0⟩, hw, hl⟩` from `p`. Substitute `hs` using the available equality. Take `rfl` from `splitPlace_eq_of_isLocS _ _ s s0 hw τ τ0 hτ hl`. Use `show _root_.GlobalTheory.CuspRep.ParLawsT.locRecT hL (D.nd.plOm.2 _) (GlobalTheory.LocLanglands.cls τ0) = _root_.GlobalTheory.CuspRep.ParLawsT.locRecT hL (D.nd.plOm.2 _) (GlobalTheory.LocLanglands.cls τ)`. Rewrite using `[show GlobalTheory.LocLanglands.cls τ0 = GlobalTheory.LocLanglands.cls τ from congrArg (Sigma.mk _) (cl_eq_of_isLocS (rep σ) _ τ0 τ hl hτ)]`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parameter_of_local_datum_eq_reciprocity {σ : D.what₂.FT} {w : PlE D.host} (p : LocAt D rep σ w) (s : SplitPlace D.host.E) (hs : s.w = w)
     (τ : IrrRep (GL (Fin D.R.r) (s.w.adicCompletion D.host.E))) (hτ : IsLocS (rep σ).S s τ) :
@@ -47,7 +47,7 @@ theorem parameter_of_local_datum_eq_reciprocity {σ : D.what₂.FT} {w : PlE D.h
   rw [show GlobalTheory.LocLanglands.cls τ0 = GlobalTheory.LocLanglands.cls τ from
     congrArg (Sigma.mk _) (cl_eq_of_isLocS (rep σ) _ τ0 τ hl hτ)]
 /- English proof (translation)
-Establish `h : Nonempty (LocAt D rep σ s.w)` using `⟨⟨⟨s, τ⟩, rfl, hτ⟩⟩`. Unfold `_root_.GlobalTheory.RowPar.weilDeligneParameterAtPlace`. Rewrite using `[dif_pos h]`. Conclude with `_root_.GlobalTheory.RowPar.parameter_of_local_datum_eq_reciprocity hL D rep _ s rfl τ hτ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parameter_at_place_eq_reciprocity_of_local_component (σ : D.what₂.FT) (s : SplitPlace D.host.E) (τ : IrrRep (GL (Fin D.R.r) (s.w.adicCompletion D.host.E)))
     (hτ : IsLocS (rep σ).S s τ) :
@@ -58,9 +58,9 @@ theorem parameter_at_place_eq_reciprocity_of_local_component (σ : D.what₂.FT)
   rw [dif_pos h]
   exact _root_.GlobalTheory.RowPar.parameter_of_local_datum_eq_reciprocity hL D rep _ s rfl τ hτ
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.RowPar.weilDeligneParameterAtPlace`. Distinguish the cases in `h : Nonempty (LocAt D rep σ w)`. Rewrite using `[dif_pos h]`. Generalize the expression as in `h.some = p`. Take `⟨⟨s0, τ0⟩, hw, hl⟩` from `p`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Substitute `hw` using the available equality. Conclude with `_root_.GlobalTheory.RowPar.lpDim_locRec_alt hL _ τ0`. Rewrite using `[dif_neg h]`. Conclude with `(unrW D).dim σ w`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dim_parameter_at_place_eq_rank (σ : D.what₂.FT) (w : PlE D.host) : (_root_.GlobalTheory.RowPar.weilDeligneParameterAtPlace hL D rep σ w).lpDim = D.R.r := by
   classical

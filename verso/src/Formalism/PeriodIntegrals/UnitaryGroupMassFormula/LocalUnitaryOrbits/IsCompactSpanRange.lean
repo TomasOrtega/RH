@@ -14,9 +14,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Establish `: CompactSpace (v.adicCompletionIntegers F)` using `isCompact_iff_compactSpace.mp (ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers v)`. Establish `hc : Continuous (fun c : ι → v.adicCompletionIntegers F => ∑ i, ((c i : Fv F v)) • w i)` using `continuous_finsetSum _ fun i _ => (continuous_subtype_val.comp (continuous_apply i)).smul continuous_const`. Establish `e : ((Submodule.span (v.adicCompletionIntegers F) (Set.range w) : Submodule (v.adicCompletionIntegers F) M) : Set M) = Set.range (fun c : ι → v.adicCompletionIntegers F => ∑ i, ((c i : Fv F v)) • w i)`. Use extensionality with `x`. Rewrite using `[SetLike.mem_coe, Submodule.mem_span_range_iff_exists_fun]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `isCompact_range hc`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_span_range {ι M : Type} [Fintype ι] [AddCommGroup M] [Module (Fv F v) M]
     [TopologicalSpace M] [ContinuousAdd M] [ContinuousSMul (Fv F v) M] (w : ι → M) :
@@ -37,13 +37,11 @@ theorem isCompact_span_range {ι M : Type} [Fintype ι] [AddCommGroup M] [Module
   exact isCompact_range hc
 
 /- English proof (translation)
-Unfold `OEv`. Use `congr 1`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, -, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hx` using `congrArg (algebraMap (𝓞 E) E) ((RingOfIntegers.basis E).sum_repr x)`. Rewrite `hx` using `[map_sum]`. Simplify using `only [map_zsmul] at hx`. Use `show inclR (F := F) (Fv F v) (algebraMap (𝓞 E) E x) ∈ _`. Rewrite using `[← hx, map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Conclude with `zsmul_mem (Submodule.subset_span (Set.mem_range_self i)) _`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`.
-
-Conclude with `⟨_, Set.mem_univ _, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem oEv_eq_span : OEv (E := E) v = ((Submodule.span (v.adicCompletionIntegers F)
     (Set.range (fun i => inclR (F := F) (Fv F v) ((RingOfIntegers.basis E i : 𝓞 E) : E)))) :
@@ -66,24 +64,22 @@ theorem oEv_eq_span : OEv (E := E) v = ((Submodule.span (v.adicCompletionInteger
     exact ⟨_, Set.mem_univ _, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[oEv_eq_span]`. Conclude with `isCompact_span_range v _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_oEv : IsCompact (OEv (E := E) v) := by
   rw [oEv_eq_span]
   exact isCompact_span_range v _
 
 /- English proof (translation)
-Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Use `set b := Module.finBasis F E with hb`. Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ (Finset.univ.image b)`. Establish `hyb : ∀ k, IsIntegral ℤ (y • b k)` using `fun k => hy _ (Finset.mem_image_of_mem _ (Finset.mem_univ k))`. Use `set c : Fv F v := algebraMap F (Fv F v) (y : F) with hcdef`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : c ≠ 0`. Rewrite using `[hcdef, ne_eq, map_eq_zero_iff _ (algebraMap F (Fv F v)).injective]`. Conclude with `hy0` after adjusting the coercions. Use `set W : Set (Fv F v ⊗[F] E) := ⋂ k, (fun z => PI.VolStabSW.PositiveNearLattice.crd b (Fv F v) z k * c⁻¹) ⁻¹' (v.adicCompletionIntegers F : Set (Fv F v)) with hWdef`. Establish `hWo : IsOpen W` using `isOpen_iInter_of_finite fun k => (ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isOpen_integers v).preimage ((PI.VolStabSW.PositiveNearLattice.continuous_crd b (Fv F v) k).mul continuous_const)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hW0 : (0 : Fv F v ⊗[F] E) ∈ W`. Simplify using `only [hWdef, Set.mem_iInter, Set.mem_preimage]`. Introduce `k`. Simplify using `[PI.VolStabSW.PositiveNearLattice.crd]`. Establish `hWsub : W ⊆ OEv (E` using `E) v := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Introduce `z hz`. Simplify using `only [hWdef, Set.mem_iInter, Set.mem_preimage] at hz`. Rewrite using `[PI.VolStabSW.PositiveNearLattice.eq_sum_crd b (Fv F v) z]`. Unfold `OEv`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : PI.VolStabSW.PositiveNearLattice.crd b (Fv F v) z k • ((1 : Fv F v) ⊗ₜ[F] b k) = (PI.VolStabSW.PositiveNearLattice.crd b (Fv F v) z k * c⁻¹) • inclR (F` using `F) (Fv F v) (y • b k) := by`. Establish `e2 : inclR (F` using `F) (Fv F v) (y • b k) = c • ((1 : Fv F v) ⊗ₜ[F] b k) := by show (1 : Fv F v) ⊗ₜ[F] (y • b k) = c • ((1 : Fv F v) ⊗ₜ[F] b k)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one, hcdef, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, Int.cast_smul_eq_zsmul]`. Rewrite using `[e2, smul_smul, mul_assoc, inv_mul_cancel₀ hc, mul_one]`. Rewrite using `[e1]`.
-
-Establish `hgen : inclR (F` using `F) (Fv F v) (y • b k) ∈ Submodule.span (v.adicCompletionIntegers F) ((fun x : 𝓞 E => inclR (F := F) (Fv F v) (x : E)) '' Set.univ) := Submodule.subset_span ⟨(⟨y • b k, hyb k⟩ : 𝓞 E), Set.mem_univ _, rfl⟩`. Conclude with `Submodule.smul_mem _ (⟨_, hz k⟩ : v.adicCompletionIntegers F) hgen`. Establish `hP : ((Submodule.span (v.adicCompletionIntegers F) ((fun x : 𝓞 E => inclR (F` using `F) (Fv F v) (x : E)) '' Set.univ)).toAddSubgroup : Set (Fv F v ⊗[F] E)) ∈ 𝓝 (0 : Fv F v ⊗[F] E) := Filter.mem_of_superset (hWo.mem_nhds hW0) hWsub`. Conclude with `AddSubgroup.isOpen_of_mem_nhds _ hP`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_oEv : IsOpen (OEv (E := E) v) := by
   classical
@@ -130,11 +126,9 @@ theorem isOpen_oEv : IsOpen (OEv (E := E) v) := by
   exact AddSubgroup.isOpen_of_mem_nhds _ hP
 
 /- English proof (translation)
-Use `PI.VolStabSW.locallyCompact_Fv F v` as an intermediate fact. Use `set S : Set (Fin a → Fin a → Fv F v ⊗[F] E) := Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => OEv (E := E) v with hS`. Establish `hSe : (hermOE σ v a : Set (HermR (Fv F v) σ a)) = Subtype.val ⁻¹' S`. Use extensionality with `z`. Conclude with `⟨fun h i _ j _ => h i j, fun h i j => h i trivial j trivial⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hc : Continuous (fun z : HermR (Fv F v) σ a => (z : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)))` using `continuous_subtype_val`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hSe]`. Conclude with `IsOpen.preimage hc (isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => isOpen_oEv v)`. Rewrite using `[hSe]`.
-
-Conclude with `(PI.VolStabSW.isClosed_HermR (Fv F v) σ a).isClosedEmbedding_subtypeVal.isCompact_preimage (isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_oEv v)`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermOC_holds (σ : E →ₐ[F] E) (a : ℕ) : HermOC σ v a := by
   have := PI.VolStabSW.locallyCompact_Fv F v
@@ -156,7 +150,7 @@ theorem hermOC_holds (σ : E →ₐ[F] E) (a : ℕ) : HermOC σ v a := by
 variable {n : ℕ} (Λ : Set (Fin n → E))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ratV, map_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ratV_add (x y : Fin n → E) :
     ratV (F := F) (Fv F v) (x + y) = ratV (F := F) (Fv F v) x + ratV (F := F) (Fv F v) y := by
@@ -164,7 +158,7 @@ theorem ratV_add (x y : Fin n → E) :
   simp [ratV, map_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ratV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ratV_zsmul (c : ℤ) (x : Fin n → E) :
     ratV (F := F) (Fv F v) (c • x) = c • ratV (F := F) (Fv F v) x := by
@@ -172,26 +166,22 @@ theorem ratV_zsmul (c : ℤ) (x : Fin n → E) :
   simp [ratV]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ratV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ratV_zero : ratV (F := F) (Fv F v) (0 : Fin n → E) = 0 := by
   funext i
   simp [ratV]
 
 /- English proof (translation)
-Take `⟨L, hLat, rfl⟩` from `hL`. Establish `hfg : (L.restrictScalars ℤ).FG` using `hLat.fg.restrictScalars`. Take `⟨s, hs⟩` from `hfg`. Establish `e : latLoc (E` using `E) v (L : Set (Fin n → E)) = Submodule.span (v.adicCompletionIntegers F) (Set.range (fun x : s => ratV (F := F) (Fv F v) (x : Fin n → E))) := by`. Apply `le_antisymm` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Unfold `latLoc`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `hx' : x ∈ Submodule.span ℤ (s : Set (Fin n → E))`. Rewrite using `[hs]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Use `clear hx`. Proceed by induction on `hx' using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ⟨⟨y, hy⟩, rfl⟩`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[ratV_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz`. Rewrite using `[ratV_add]`. Conclude with `Submodule.add_mem _ hy hz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Consider the case `smul c y _ hy`. Rewrite using `[ratV_zsmul]`. Conclude with `zsmul_mem hy c`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨⟨x, hx⟩, rfl⟩`.
-
-Establish `hxL : x ∈ L`. Establish `: x ∈ L.restrictScalars ℤ`. Rewrite using `[← hs]`. Conclude with `Submodule.subset_span hx`. Conclude with `this`.
-
-Conclude with `Submodule.subset_span ⟨x, hxL, rfl⟩`. Rewrite using `[e]`. Conclude with `isCompact_span_range v _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_latLoc
     (hL : ∃ L : Submodule (𝓞 E) (Fin n → E), Submodule.IsLattice E L ∧ (L : Set (Fin n → E)) = Λ) :
@@ -232,36 +222,32 @@ theorem isCompact_latLoc
   exact isCompact_span_range v _
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.FirstStatementA.main L x hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_int_smul_mem (L : Submodule (𝓞 E) (Fin n → E)) (x : Fin n → E)
     (hx : x ∈ Submodule.span E (L : Set (Fin n → E))) : ∃ m : ℤ, m ≠ 0 ∧ m • x ∈ L :=
   _root_.UpperTheory.Reformulated.B.FirstStatementA.main L x hx
 
 /- English proof (translation)
-Take `⟨L, hLat, rfl⟩` from `hL`. Establish `hsp` using `hLat.span_eq_top`. Establish `hm : ∀ i : Fin n, ∃ m : ℤ, m ≠ 0 ∧ m • (Pi.single i (1 : E) : Fin n → E) ∈ L` using `fun i => exists_int_smul_mem L _ (by rw [hsp]; exact Submodule.mem_top)`. Use `choose m hm0 hmL using hm`. Use `set N : ℤ := ∏ i, m i with hNdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN0 : N ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => hm0 i`. Establish `hNL : ∀ i, N • (Pi.single i (1 : E) : Fin n → E) ∈ L`. Introduce `i`. Establish `e : N = (∏ j ∈ Finset.univ.erase i, m j) * m i` using `(Finset.prod_erase_mul _ _ (Finset.mem_univ i)).symm`. Rewrite using `[e, mul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zsmul_mem (hmL i) _`. Use `set c : Fv F v := algebraMap F (Fv F v) (N : F) with hcdef`. Establish `hc : c ≠ 0`. Rewrite using `[hcdef, ne_eq, map_eq_zero_iff _ (algebraMap F (Fv F v)).injective]`. Conclude with `hN0` after adjusting the coercions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Establish `hkey : ∀ i, ∀ o ∈ OEv (E` using `E) v, c • (Pi.single i o : Fin n → Fv F v ⊗[F] E) ∈ latLoc (E := E) v (L : Set (Fin n → E)) := by`. Introduce `i o ho`. Unfold `OEv at ho`. Rewrite `ho` using `[SetLike.mem_coe]`. Proceed by induction on `ho using Submodule.span_induction with`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Consider the case `mem y hy`. Take `⟨x, -, rfl⟩` from `hy`. Establish `hxL : (x : E) • (N • (Pi.single i (1 : E) : Fin n → E)) ∈ L`. Establish `h` using `L.smul_mem x (hNL i)`. Rewrite `h` using `[← algebraMap_smul E x]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `e : c • (Pi.single i (inclR (F` using `F) (Fv F v) (x : E)) : Fin n → Fv F v ⊗[F] E) = ratV (F := F) (Fv F v) ((x : E) • (N • (Pi.single i (1 : E) : Fin n → E))) := by`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Simplify using `only [Pi.smul_apply, Pi.single_eq_same, ratV]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show c • ((1 : Fv F v) ⊗ₜ[F] (x : E)) = (1 : Fv F v) ⊗ₜ[F] ((x : E) • (N • (1 : E)))`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one, hcdef, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Use `congr 1`. Rewrite using `[Algebra.smul_def, map_intCast, zsmul_eq_mul, mul_one, smul_eq_mul, mul_comm]`. Simplify using `[ratV, hij, inclR]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Submodule.subset_span ⟨_, hxL, rfl⟩`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`. Rewrite using `[Pi.single_add, smul_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul r y _ hy`. Establish `e : c • (Pi.single i (r • y) : Fin n → Fv F v ⊗[F] E) = r • (c • (Pi.single i y : Fin n → Fv F v ⊗[F] E))`. Rewrite using `[Pi.single_smul', smul_comm]`. Rewrite using `[e]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ r hy`. Use `set W : Set (Fin n → Fv F v ⊗[F] E) := ⋂ i, (fun y : Fin n → Fv F v ⊗[F] E => c⁻¹ • y i) ⁻¹' OEv (E := E) v with hWdef`. Establish `hWo : IsOpen W` using `isOpen_iInter_of_finite fun i => (isOpen_oEv v).preimage ((continuous_apply i).const_smul c⁻¹)`. Establish `hW0 : (0 : Fin n → Fv F v ⊗[F] E) ∈ W`. Simplify using `only [hWdef, Set.mem_iInter, Set.mem_preimage, Pi.zero_apply, smul_zero]`.
-
-Conclude with `fun _ => oEv_zero v`. Establish `hWsub : W ⊆ latLoc (E` using `E) v (L : Set (Fin n → E)) := by`. Introduce `y hy`. Simplify using `only [hWdef, Set.mem_iInter, Set.mem_preimage] at hy`. Establish `e : y = ∑ i, c • (Pi.single i (c⁻¹ • y i) : Fin n → Fv F v ⊗[F] E)` using `by conv_lhs => rw [← Finset.univ_sum_single y]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Pi.single_smul', smul_smul, mul_inv_cancel₀ hc, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun i _ => hkey i _ (hy i)`. Conclude with `AddSubgroup.isOpen_of_mem_nhds (latLoc (E := E) v (L : Set (Fin n → E))).toAddSubgroup (Filter.mem_of_superset (hWo.mem_nhds hW0) hWsub)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_latLoc
     (hL : ∃ L : Submodule (𝓞 E) (Fin n → E), Submodule.IsLattice E L ∧ (L : Set (Fin n → E)) = Λ) :
@@ -339,9 +325,9 @@ theorem isOpen_latLoc
     (Filter.mem_of_superset (hWo.mem_nhds hW0) hWsub)
 
 /- English proof (translation)
-Introduce `hL`. Establish `e : LamT v Λ a = Set.pi Set.univ fun _ => (latLoc (E` using `E) v Λ : Set (Fin n → Fv F v ⊗[F] E)) := by`. Use extensionality with `X`. Conclude with `⟨fun h i _ => h i, fun h i => h i trivial⟩`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨isOpen_set_pi Set.finite_univ fun _ _ => isOpen_latLoc v Λ hL, isCompact_univ_pi fun _ => isCompact_latLoc v Λ hL⟩`.
+Supply the required witnesses or components.
 -/
 theorem lamOC_holds (a : ℕ) : LamOC v Λ a := by
   intro hL

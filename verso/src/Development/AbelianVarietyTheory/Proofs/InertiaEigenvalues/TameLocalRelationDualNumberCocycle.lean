@@ -13,9 +13,9 @@ variable {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
 omit [IsTopologicalGroup Γ] in
 
 /- English proof (translation)
-Establish `h1 : f j ^ f.ker.index = 1`. Rewrite using `[← map_pow]`. Conclude with `f.ker.pow_index_mem j`. Establish `h2` using `(hU _ inferInstance hf).pow_right n`. Establish `h3` using `pow_gcd_eq_one.2 ⟨h1, hC (f j)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h3` using `[h2, pow_one]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem hom_trivial {l : ℕ} (hU : ∀ U : Subgroup Γ, U.Normal → IsOpen (U : Set Γ) → U.index.Coprime l)
     {C : Type} [Group C] (f : Γ →* C) (hf : IsOpen (f.ker : Set Γ)) (n : ℕ) (hC : ∀ x : C, x ^ l ^ n = 1) (j : Γ) :
@@ -30,9 +30,9 @@ theorem hom_trivial {l : ℕ} (hU : ∀ U : Subgroup Γ, U.Normal → IsOpen (U 
 omit [IsTopologicalGroup Γ] in
 
 /- English proof (translation)
-Introduce `j hj`. Set `f : J →* Multiplicative W` to `MonoidHom.mk' (fun g => Multiplicative.ofAdd (w g)) fun a b => by`. Rewrite using `[← ofAdd_add, ← hadd a a.2 b b.2]`. Both sides reduce to the same expression. Establish `hf : IsOpen (f.ker : Set J)` using `(hw {0}).preimage continuous_subtype_val`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `hom_trivial hU f hf 1 (fun x => ?_) ⟨j, hj⟩` and prove the remaining obligations. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[toAdd_pow, pow_one, ← Nat.cast_smul_eq_nsmul K, CharP.cast_eq_zero, zero_smul, toAdd_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem vanish_of_additive {l : ℕ} {J : Subgroup Γ}
     (hU : ∀ U : Subgroup J, U.Normal → IsOpen (U : Set J) → U.index.Coprime l)
@@ -49,7 +49,7 @@ theorem vanish_of_additive {l : ℕ} {J : Subgroup Γ}
 omit [TopologicalSpace Γ] [IsTopologicalGroup Γ] in
 
 /- English proof (translation)
-Set `f : D →* Multiplicative W` to `MonoidHom.mk' (fun g => Multiplicative.ofAdd (w g)) fun a b => by`. Rewrite using `[← ofAdd_add, ← hadd a a.2 b b.2]`. Both sides reduce to the same expression. Conclude with `congrArg Multiplicative.toAdd (map_zpow f ⟨γ, hγ⟩ k)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem additive_zpow {D : Subgroup Γ} {W : Type} [AddCommGroup W] (w : Γ → W)
     (hadd : ∀ g ∈ D, ∀ h ∈ D, w (g * h) = w g + w h) {γ : Γ} (hγ : γ ∈ D) (k : ℤ) : w (γ ^ k) = k • w γ := by
@@ -58,11 +58,9 @@ theorem additive_zpow {D : Subgroup Γ} {W : Type} [AddCommGroup W] (w : Γ → 
   exact congrArg Multiplicative.toAdd (map_zpow f ⟨γ, hγ⟩ k)
 
 /- English proof (translation)
-Set `f : D →* Multiplicative W` to `MonoidHom.mk' (fun g => Multiplicative.ofAdd (w g)) fun a b => by`. Rewrite using `[← ofAdd_add, ← hadd a a.2 b b.2]`. Both sides reduce to the same expression. Establish `hle : Subgroup.zpowers γ ⊔ J ≤ f.ker.map D.subtype`. Use `sup_le ((Subgroup.zpowers_le).2 ⟨⟨γ, hγ⟩, ?_, rfl⟩) fun j hj => ⟨⟨j, hJ hj⟩, ?_, rfl⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg Multiplicative.ofAdd h0`. Conclude with `congrArg Multiplicative.ofAdd (h1 j hj)`. Establish `hsub : ((Subgroup.zpowers γ ⊔ J : Subgroup Γ) : Set Γ) ⊆ {x | w x = 0}`. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `hle hx`.
-
-Conclude with `congrArg Multiplicative.toAdd hy`. Introduce `σ hσ`. Conclude with `closure_minimal hsub (hw.isClosed_fiber 0) hσ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem vanish_closure {D J : Subgroup Γ} (hJ : J ≤ D) {W : Type} [AddCommGroup W] (w : Γ → W) (hw : IsLocallyConstant w)
     (hadd : ∀ g ∈ D, ∀ h ∈ D, w (g * h) = w g + w h) {γ : Γ} (hγ : γ ∈ D) (h0 : w γ = 0) (h1 : ∀ j ∈ J, w j = 0) :
@@ -83,11 +81,11 @@ theorem vanish_closure {D J : Subgroup Γ} (hJ : J ≤ D) {W : Type} [AddCommGro
 omit [TopologicalSpace Γ] [IsTopologicalGroup Γ] in
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use `h1 1 D.one_mem 1 D.one_mem` as an intermediate fact. Rewrite `this` using `[mul_one, h01, smul_zero, add_zero]`. Simplify using `using this`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ n ih`. Establish `e : lam (γ ^ n) = (n : K) * lam γ`. Use `additive_zpow lam hlam hγ n` as an intermediate fact. Rewrite `this` using `[zpow_natCast, zsmul_eq_mul, Int.cast_natCast]`. Then use the resulting hypothesis. Rewrite using `[pow_succ, h1 _ (D.pow_mem hγ n) _ hγ, ih, e, Nat.choose_succ_succ' n 1, Nat.choose_one_right]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use `module`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem second_pow {D : Subgroup Γ} {K : Type} [Field K] {W : Type} [AddCommGroup W] [Module K W] (z0 z1 : Γ → W)
     (lam : Γ → K) (hlam : ∀ g ∈ D, ∀ h ∈ D, lam (g * h) = lam g + lam h)
@@ -109,11 +107,11 @@ theorem second_pow {D : Subgroup Γ} {K : Type} [Field K] {W : Type} [AddCommGro
 end Abstract
 
 /- English proof (translation)
-Establish `h` using `Nat.div_add_mod q (2 * l ^ M)`. Rewrite `h` using `[hq]`. Generalize the expression as in `q / (2 * l ^ M) = t at h`. Establish `hl : ((l ^ M : ℕ) : K) = 0`. Rewrite using `[Nat.cast_pow, CharP.cast_eq_zero K l, zero_pow (by omega)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← h, Nat.cast_add, Nat.cast_mul, Nat.cast_mul, hl]`. Simplify using the standard rewrite rules. Establish `: q.choose 2 = q * (l ^ M * t)`. Rewrite using `[Nat.choose_two_right]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: q - 1 = 2 * (l ^ M * t)` using `by rw [← h, Nat.add_sub_cancel, mul_assoc]`. Rewrite using `[this, mul_left_comm, Nat.mul_div_cancel_left _ (by norm_num)]`. Rewrite using `[this, Nat.cast_mul, Nat.cast_mul, hl]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cast_of_mod {K : Type} [Field K] {l M q : ℕ} [CharP K l] (hM : 1 ≤ M) (hq : q % (2 * l ^ M) = 1) :
     (q : K) = 1 ∧ ((q.choose 2 : ℕ) : K) = 0 := by
@@ -133,27 +131,27 @@ theorem cast_of_mod {K : Type} [Field K] {l M q : ℕ} [CharP K l] (hM : 1 ≤ M
     simp
 
 /- English proof (translation)
-Introduce `hT F Ω _ _ _ _ _ l _ M A v hA hl hM hq d hd hsurj φ hφ`. Take `⟨-, -, hU, -, ⟨γ0, hγ0⟩, hrel⟩` from `hT F Ω l A v hA hl`. Establish `hID : Ine (F` using `F) A ≤ Dec (F := F) A := fun σ hσ => hσ.1`. Establish `hJI` using `GlobalTheory.TameQuot.ineKer_le_Ine (F := F) A l`. Establish `hJD` using `hJI.trans hID`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγD : γ0 ∈ Dec (F` using `F) A := hID hγ0.1`. Establish `hφD : φ ∈ Dec (F` using `F) A := hφ.1`. Establish `hdJ : ∀ j ∈ GlobalTheory.TameQuot.ineKer F A l, d j = 1` using `fun j hj => by`. Use `hom_trivial hU (d.comp (GlobalTheory.TameQuot.ineKer F A l).subtype) (hd.preimage continuous_subtype_val) M (fun x => ?_) ⟨j, hj⟩` and prove the remaining obligations. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[toAdd_pow, nsmul_eq_mul, ZMod.natCast_self, zero_mul, toAdd_one]`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : ℤ, d γ0 ^ k = Multiplicative.ofAdd 1 := by`. Take `⟨σ, hσ, hσd⟩` from `hsurj (Multiplicative.ofAdd 1)`. Establish `ho : IsOpen (((Subgroup.zpowers (d γ0)).comap d : Subgroup (G F Ω)) : Set (G F Ω))` using `Subgroup.isOpen_mono (H₁ := d.ker) (fun x hx => by`. Rewrite using `[Subgroup.mem_comap, MonoidHom.mem_ker.1 hx]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.one_mem _) hd`. Establish `hle : (Subgroup.zpowers γ0 ⊔ GlobalTheory.TameQuot.ineKer F A l).topologicalClosure ≤ (Subgroup.zpowers (d γ0)).comap d`. Use `Subgroup.topologicalClosure_minimal _ (sup_le ?_ fun j hj => ?_) (Subgroup.isClosed_of_isOpen _ ho)` and prove the remaining obligations. Conclude with `Subgroup.zpowers_le.2 (Subgroup.mem_zpowers _)`. Rewrite using `[Subgroup.mem_comap, hdJ j hj]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `Subgroup.one_mem _`. Take `⟨k, hk⟩` from `hle (hγ0.2 hσ)`. Conclude with `⟨k, hk.trans hσd⟩`. Use `⟨γ0 ^ k, Subgroup.zpow_mem _ hγ0.1 k, by rw [map_zpow, hk], ?_⟩` and prove the remaining obligations. Introduce `K _ _ W _ _ z0 hz0 hadd0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hkK : (k : K) ≠ 0`. Introduce `h0`. Establish `h1 : (k : ZMod (l ^ M)) * (d γ0).toAdd = 1`. Use `congrArg Multiplicative.toAdd hk` as an intermediate fact. Rewrite `this` using `[toAdd_zpow, zsmul_eq_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (ZMod.castHom (dvd_pow_self l (by omega : M ≠ 0)) K) h1`. Rewrite `h2` using `[map_mul, map_intCast, h0, zero_mul, map_one]`. Conclude with `zero_ne_one h2`. Establish `hz0J` using `vanish_of_additive hU K z0 hz0 fun g hg h hh => hadd0 g (hJD hg) h (hJD hh)`. Establish `e0 : z0 (γ0 ^ k) = (k : K) • z0 γ0` using `by rw [additive_zpow z0 hadd0 hγD, Int.cast_smul_eq_zsmul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun h σ hσ => ?_, fun lam z1 hlam hz1 haddl hadd1 => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[e0]`. Conclude with `vanish_closure hJD z0 hz0 hadd0 hγD ((smul_eq_zero.1 h).resolve_left hkK) hz0J σ (hγ0.2 hσ)`. Establish `hlJ` using `vanish_of_additive hU K lam hlam fun g hg h hh => haddl g (hJD hg) h (hJD hh)`. Establish `hz1J` using `vanish_of_additive hU K z1 hz1 fun g hg h hh => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[hadd1 g (hJD hg) h (hJD hh), hz0J h hh, smul_zero, add_zero]`. Establish `el : lam (γ0 ^ k) = (k : K) * lam γ0` using `by rw [additive_zpow lam haddl hγD, zsmul_eq_mul]`. Take `⟨hq1, hq2⟩` from `cast_of_mod (K := K) hM hq`. Establish `hj : (γ0 ^ normV v)⁻¹ * (φ * γ0 * φ⁻¹) ∈ GlobalTheory.TameQuot.ineKer F A l` using `(hrel ⟨φ, hφD⟩ ⟨γ0, hγD⟩ hφ hγ0).2.1`. Generalize the expression as in `hjj : (γ0 ^ normV v)⁻¹ * (φ * γ0 * φ⁻¹) = j at hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmul : φ * γ0 = γ0 ^ normV v * j * φ` using `by rw [← hjj]; group`. Establish `hp : γ0 ^ normV v ∈ Dec (F` using `F) A := Subgroup.pow_mem _ hγD _`. Establish `a1` using `hadd1 φ hφD γ0 hγD`. Establish `a2 : z1 (γ0 ^ normV v) = z1 γ0`. Rewrite using `[second_pow z0 z1 lam haddl hadd1 (hz0J 1 (Subgroup.one_mem _)) hγD, hq1, hq2, one_smul, zero_smul, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `a3 : lam (γ0 ^ normV v) = lam γ0`. Use `additive_zpow lam haddl hγD (normV v)` as an intermediate fact. Rewrite `this` using `[zpow_natCast, zsmul_eq_mul, Int.cast_natCast, hq1, one_mul]`. Then use the resulting hypothesis. Rewrite `a1` using `[hmul, hadd1 _ (Subgroup.mul_mem _ hp (hJD hj)) φ hφD, hadd1 _ hp j (hJD hj), haddl _ hp j (hJD hj), a2, a3, hz0J j hj, hz1J j hj, hlJ j hj, smul_zero, add_zero, add_zero, add_zero, add_comm (z1 φ), add_right_inj]`. Rewrite using `[el, e0, mul_smul, a1, smul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem tame_relation : TameQuotient → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (M : ℕ) (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 F)), IsPlaceOver A v → ((l : ℕ) : 𝓞 F) ∉ v.asIdeal → 1 ≤ M → normV v % (2 * l ^ M) = 1 → ∀ d : G F Ω →* Multiplicative (ZMod (l ^ M)), IsOpen (d.ker : Set (G F Ω)) → (∀ c, ∃ σ ∈ Ine (F := F) A, d σ = c) → ∀ φ : G F Ω, IsFrob A (normV v) φ → ∃ γ ∈ Ine (F := F) A, d γ = Multiplicative.ofAdd 1 ∧ ∀ (K : Type) [Field K] [CharP K l] (W : Type) [AddCommGroup W] [Module K W] (z0 : G F Ω → W), IsLocallyConstant z0 → (∀ g ∈ Dec (F := F) A, ∀ h ∈ Dec (F := F) A, z0 (g * h) = z0 g + z0 h) → (z0 γ = 0 → ∀ σ ∈ Ine (F := F) A, z0 σ = 0) ∧ ∀ (lam : G F Ω → K) (z1 : G F Ω → W), IsLocallyConstant lam → IsLocallyConstant z1 → (∀ g ∈ Dec (F := F) A, ∀ h ∈ Dec (F := F) A, lam (g * h) = lam g + lam h) → (∀ g ∈ Dec (F := F) A, ∀ h ∈ Dec (F := F) A, z1 (g * h) = z1 g + z1 h + lam g • z0 h) → lam γ • z0 φ = lam φ • z0 γ := by
   intro hT F Ω _ _ _ _ _ l _ M A v hA hl hM hq d hd hsurj φ hφ

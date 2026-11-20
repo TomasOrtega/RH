@@ -15,23 +15,19 @@ set_option linter.unusedSimpArgs false
 namespace PositivityTheory.SiegelWeilFormula.Ald
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Take `⟨tb, hTb⟩` from `frame_fromRows hb`. Take `⟨td, hTd⟩` from `frame_fromRows d.ok.frame`. Use `set P := inFrame b p with hPdef`. Use `set R0 := Matrix.fromRows (1 : Matrix (Fin n) (Fin n) (AE F E)) (0 : Matrix (Fin n) (Fin n) (AE F E)) with hR0`. Use `set R0N := Matrix.fromRows (1 : Matrix (Fin d.n) (Fin d.n) (AE F E)) (0 : Matrix (Fin d.n) (Fin d.n) (AE F E)) with hR0N`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A : Matrix (Fin n) (Fin n) (AE F E) := incM F (tb⁻¹).1 * t.1 * incM F tb.1 with hA`. Establish `hDn` using `diag_of_frame b tb hTb`. Establish `hDN` using `diag_of_frame d.b td hTd`. Establish `hp` using `mat_of_inFrame b p`. Establish `hP : P * R0 = R0 * A`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `hpt`. Rewrite `e` using `[hp, hDn]`. Establish `e2 : incM F b.1 * (P * R0) * incM F (tb⁻¹).1 = incM F b.1 * (R0 * A) * incM F (tb⁻¹).1`. Rewrite using `[hA]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Matrix.mul_assoc, cancel_l, incM_mul_inv, incM_inv_mul, Matrix.mul_one]`. Use `_ = incM F b.1 * R0 * incM F (tb⁻¹).1 * t.1 := e`. Use `_ = incM F b.1 * (R0 * (incM F (tb⁻¹).1 * t.1 * incM F tb.1)) * incM F (tb⁻¹).1 := by`. Simplify using `only [Matrix.mul_assoc, cancel_l', incM_mul_inv, incM_inv_mul, Matrix.mul_one]`. Establish `e3` using `congrArg (fun X => incM F (b⁻¹).1 * X * incM F tb.1) e2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `e3` using `only [Matrix.mul_assoc, cancel_l, cancel_l', incM_mul_inv, incM_inv_mul, Matrix.mul_one]`. Establish `hblk` using `blk_fromRows h P A hP`. Establish `hjp : inFrame d.b (j p) = blk h P 1` using `eq_blk h _ _ (hj.2.1 p) (hj.2.2 p)`. Establish `hjm` using `mat_of_inFrame d.b (j p)`. Rewrite `hjm` using `[hjp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `set blkA := (Matrix.fromBlocks A 0 0 1 : Matrix (Fin n ⊕ Fin 1) (Fin n ⊕ Fin 1) (AE F E)).submatrix (eI h) (eI h) with hblkA`. Use `set T : Matrix (Fin d.n) (Fin d.n) (AE F E) := incM F td.1 * blkA * incM F (td⁻¹).1 with hT`. Establish `hdet : T.det = t.1.det`. Rewrite using `[hT, det_conj, hblkA, det_blkA, hA, det_conj']`. Establish `hu : IsUnit T.det`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hdet, ← Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `Units.isUnit _`. Use `⟨Matrix.nonsingInvUnit T hu, ?_, ?_⟩` and prove the remaining obligations. Use `show (j p).1.1 * _ = _ * T`. Rewrite using `[hjm, hDN]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hT]`. Simplify using `only [Matrix.mul_assoc, cancel_l, incM_mul_inv, incM_inv_mul, Matrix.mul_one]`. Use `ext`. Simplify using `only [Matrix.GeneralLinearGroup.val_det_apply]`.
-
-Conclude with `hdet`.
+A detailed English derivation is pending.
 -/
 theorem jPar_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) {n : ℕ} (h : n + 1 = d.n) {Y : Spc F E n} {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b)
     {j : G2 σ Y →* d.G} (hj : _root_.PositivityTheory.SiegelWeilFormula.Ald.IsJ_k d h b j) (p : G2 σ Y) (t : GL (Fin n) (AE F E))

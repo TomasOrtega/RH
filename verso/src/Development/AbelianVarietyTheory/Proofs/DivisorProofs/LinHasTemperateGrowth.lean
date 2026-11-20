@@ -22,7 +22,7 @@ def linL {κ : Type} [Fintype κ] (b : κ → mixedEmbedding.mixedSpace F) :
       ∑ i, (LinearMap.mulRight ℝ (b i)) ∘ₗ LinearMap.proj i)
 
 /- English proof (translation)
-Simplify using `[linL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linL_apply {κ : Type} [Fintype κ] (b x : κ → mixedEmbedding.mixedSpace F) :
     linL b x = Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, x i * b i) := by
@@ -32,7 +32,7 @@ def lin {κ : Type} [Fintype κ] (b : κ → mixedEmbedding.mixedSpace F) (x : �
   ((Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, x i * b i) : ℝ) : ℂ)
 
 /- English proof (translation)
-Establish `e : lin b = ⇑(Complex.ofRealCLM.comp (linL b))`. Use function extensionality and compare the values at `x`. Simplify using `[lin, linL_apply]`. Rewrite using `[e]`. Conclude with `(Complex.ofRealCLM.comp (linL b)).hasTemperateGrowth`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_hasTemperateGrowth {κ : Type} [Fintype κ] (b : κ → mixedEmbedding.mixedSpace F) :
     (lin b).HasTemperateGrowth := by
@@ -45,7 +45,7 @@ def mulOp {κ : Type} [Fintype κ] (b : κ → mixedEmbedding.mixedSpace F) : SI
   SchwartzMap.smulLeftCLM ℂ (lin b)
 
 /- English proof (translation)
-Simplify using `[mulOp, SchwartzMap.smulLeftCLM_apply_apply (lin_hasTemperateGrowth b)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulOp_apply {κ : Type} [Fintype κ] (b : κ → mixedEmbedding.mixedSpace F) (f : SInf F κ)
     (x : κ → mixedEmbedding.mixedSpace F) : mulOp b f x = lin b x * f x := by
@@ -55,7 +55,7 @@ def dOp {κ : Type} [Fintype κ] (a b : κ → mixedEmbedding.mixedSpace F) : SI
   LineDeriv.lineDerivOpCLM ℂ (SInf F κ) a - ((2 * Real.pi * Complex.I : ℂ)) • mulOp b
 
 /- English proof (translation)
-Simplify using `[dOp, mulOp_apply, LineDeriv.lineDerivOpCLM_apply, SchwartzMap.lineDerivOp_apply_eq_fderiv]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dOp_apply {κ : Type} [Fintype κ] (a b : κ → mixedEmbedding.mixedSpace F) (f : SInf F κ)
     (x : κ → mixedEmbedding.mixedSpace F) :
@@ -69,13 +69,13 @@ def liftA (v : mixedEmbedding.mixedSpace F) : AF F :=
   LinearMap.inl F (Ainf F) (Af F) ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm v)
 
 /- English proof (translation)
-Simplify using `[evI, liftA]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evI_liftA (v : mixedEmbedding.mixedSpace F) : evI F (liftA v) = v := by
   simp [evI, liftA]
 
 /- English proof (translation)
-Establish `h1 : c.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hc)`. Establish `key : ∀ x y : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F, x.1 = 0 → y.2 = 0 → x * y = 0` using `fun x y hx hy => Prod.ext (by simp [hx]) (by simp [hy])`. Conclude with `key c (liftA v) h1 rfl`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smul_liftA {c : AF F} (hc : evI F c = 0) (v : mixedEmbedding.mixedSpace F) : c • liftA v = 0 := by
   have h1 : c.1 = 0 := (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hc)

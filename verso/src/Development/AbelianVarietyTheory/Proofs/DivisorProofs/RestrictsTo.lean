@@ -103,7 +103,7 @@ def Datum.split (α : O →+* End A) (β : O →+* End B) {m n : ℕ} (hA : IsVB
   equiv_v x := by simp [act, biprodAct]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Datum.split _ _ (isVB_freeModule_fin X 1) (isVB_freeModule_fin X 1)⟩`.
+Supply the required witnesses or components.
 -/
 example (X : Scheme.{0}) :
     let σ := scalarAct (GlobalTheory.QCoh.freeModule X (Fin 1)) (RingHom.id Γ(X, ⊤))
@@ -126,7 +126,7 @@ abbrev DieuDatumOn (g : ℕ) {T : Scheme.{0}} (f : T ⟶ C) : Type 1 :=
     (pullAct (omegaAct i) (frob C q (natCast_eq_zero C q k))) (2 * g) f
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨D, g, ρ, a, b, u, v, w₁, w₂, h, h₁, h₂, h₃, h₄, h₅, h₆, h₇⟩ => ⟨g, h, ⟨⟨D, ρ, a, b, u, v, w₁, w₂, h₁, h₂, h₃, h₄, h₅, h₆, h₇⟩⟩⟩, fun ⟨g, h, ⟨d⟩⟩ => ⟨d.D, g, d.ρ, d.a, d.b, d.u, d.v, d.w₁, d.w₂, h, d.isVB, d.exact₁, d.exact₂, d.equiv_a, d.equiv_b, d.equiv_u, d.equiv_v⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasDieu_iff : HasDieu q k c i ↔ ∃ g, IsVB (omega G) g ∧ Nonempty (DieuDatum q k c i g) :=
   ⟨fun ⟨D, g, ρ, a, b, u, v, w₁, w₂, h, h₁, h₂, h₃, h₄, h₅, h₆, h₇⟩ =>

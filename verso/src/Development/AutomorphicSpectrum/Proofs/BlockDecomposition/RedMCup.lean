@@ -7,7 +7,7 @@ open CategoryTheory AlgebraicGeometry TensorProduct GlobalTheory.LogCris Divided
 namespace GlobalTheory.CompanionTheory.RedCup
 
 /- English proof (translation)
-Establish `hm : ∀ T (u v : (CH.modF (sP Q).A).obj ((𝟭 _).obj T)), (toSq (IdF.top _) (stdI Q r c) fun _ => rfl).τ T ((CH.mulP (sP Q).A).μ _ u v) = (sqP (stdI Q r c)).μ T ((toSq (IdF.top _) (stdI Q r c) fun _ => rfl).τ T u) ((toSq (IdF.top _) (stdI Q r c) fun _ => rfl).τ T v)` using `fun _ _ _ => rfl`. Conclude with `CrystallineSemistableComparison.P.cup_pull (CH.mulP (sP Q).A) (sqP (stdI Q r c)) (𝟭 _) (toSq (IdF.top _) (stdI Q r c) fun _ => rfl).τ (toSq (IdF.top _) (stdI Q r c) fun _ => rfl).τ (toSq (IdF.top _) (stdI Q r c) fun _ => rfl).τ (toSq (IdF.top _) (stdI Q r c) fun _ => rfl).nat (to …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem redM_cup {b : Base} {L : b.Fun} (Q : ObjectProperty (Thick L)) (r : Option ℤ) (c : b.R) {i j k : ℕ} (h : i + j = k)
     (x : HO Q i) (y : HO Q j) :

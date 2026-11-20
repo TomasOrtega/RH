@@ -16,13 +16,13 @@ namespace PositivityTheory.Exh
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `k _ _ _ _` and use `⟨GlobalTheory.T.jacquet_of_induced_filtration k, GlobalTheory.T.induced_cell_semisimplification k⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem geometricLemmaGL : GlobalTheory.Published.GeometricLemma :=
   fun k _ _ _ _ => ⟨GlobalTheory.T.jacquet_of_induced_filtration k, GlobalTheory.T.induced_cell_semisimplification k⟩
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨hd, f, hf⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem embL_of_eq {x : IrrGL k} {l : List (IrrGL k)} {y : Fin l.length → IrrGL k} (e : y = l.get)
     (hd : ∑ a, (y a).1 = x.1) (f : x.rep.IntertwiningMap (prodIrr y hd)) (hf : Function.Injective f) : EmbL x l := by
@@ -30,14 +30,14 @@ theorem embL_of_eq {x : IrrGL k} {l : List (IrrGL k)} {y : Fin l.length → IrrG
   exact ⟨hd, f, hf⟩
 
 /- English proof (translation)
-The claim follows from `embL_of_eq (l := [y 0, y 1]) (y := y) (funext fun i => by fin_cases i <;> rfl) hd f hf`.
+A detailed English derivation is pending.
 -/
 theorem embL_pair {x : IrrGL k} {y : Fin 2 → IrrGL k} {hd : ∑ a, (y a).1 = x.1}
     {f : x.rep.IntertwiningMap (prodIrr y hd)} (hf : Function.Injective f) : EmbL x [y 0, y 1] :=
   embL_of_eq (l := [y 0, y 1]) (y := y) (funext fun i => by fin_cases i <;> rfl) hd f hf
 
 /- English proof (translation)
-Take `⟨n, c⟩` from `x`. Take `rfl : n = 0` from `h0`. Establish `hd : ∑ a : Fin ([] : List (IrrGL k)).length, (([] : List (IrrGL k)).get a).fst = (⟨0, c⟩ : IrrGL k).fst` using `by simp`. Take `⟨E⟩ : Nonempty ((prodIrr ([] : List (IrrGL k)).get hd).Equiv (IrrGL.rep ⟨0, c⟩))` from `exh_equiv_zero _ _ (PiTensorProduct.isEmptyEquiv (Fin 0)) _ c.rep.irr`. Conclude with `⟨hd, E.symm.toIntertwiningMap, fun a b hab => E.symm.toLinearEquiv.injective hab⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem embL_nil (x : IrrGL k) (h0 : x.1 = 0) : EmbL x [] := by
   obtain ⟨n, c⟩ := x
@@ -51,13 +51,13 @@ theorem embL_nil (x : IrrGL k) (h0 : x.1 = 0) : EmbL x [] := by
 variable (k) in
 
 /- English proof (translation)
-Establish `hJ : JacquetSubLeft k` using `GlobalTheory.T.jacquet_sub_left_of_admissible hA`. It suffices to establish `H : ∀ n : ℕ, ∀ x : IrrGL k, x.1 = n → ∃ l : List (IrrGL k), (∀ ρ ∈ l, ρ.IsCusp) ∧ EmbL x l from fun x => H _ x rfl`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `x hn`. Break down `Nat.eq_zero_or_pos x.1 with h0 | hpos` into its components or cases. Conclude with `⟨[], by simp, embL_nil x h0⟩`. Take `⟨y, hd, hc, f, hf⟩` from `hJ x hpos`. Establish `h2 : (y 1).1 < n`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hc.1` as an intermediate fact. Rewrite `hd` using `[Fin.sum_univ_two]`. Use linear arithmetic over natural numbers and integers. Take `⟨l, hl, hy⟩` from `ih _ h2 (y 1) rfl`. Use `⟨y 0 :: l, fun ρ hρ => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Break down `List.mem_cons.1 hρ with rfl | hρ exacts [hc, hl ρ hρ]` into its components or cases. Simplify `embL_pair hf)` using `using hR x (y 1) [y 0] l [] hy (by simpa`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cuspEmbP (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hR : RefineP k) : CuspEmbP k := by
   have hJ : JacquetSubLeft k := GlobalTheory.T.jacquet_sub_left_of_admissible hA
@@ -83,15 +83,15 @@ theorem cuspEmbP (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hR : Ref
 variable (k) in
 
 /- English proof (translation)
-Introduce `x a y l 𝔫 hl hx hxy hy Δ hΔ`. Take `⟨hd, f, hf⟩` from `hx`. Take `⟨hd2, g, hg⟩` from `hxy`. Establish `hG` using `geometricLemmaGL`. Establish `hBZ` using `GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : HasSupport x.rep (Finset.univ.val.map l.get)` using `hasSupport_of_isSubquotient x.2.rep.irr (fun i => hl _ (List.get_mem l i)) (.of_injective f hf)`. Take `⟨h, z, hdz, ⟨D, ⟨hD, -⟩, hz⟩, hcos⟩` from `hy`. Establish `hsy : HasSupport y.rep (∑ i, (D i).ms)` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_of_isSubquotient_prodIrr (fun i => (hz i).hasSupport) y.2.rep.irr hcos.isSubquotient`. Take `⟨sa, hsa⟩` from `GlobalTheory.CompanionTheory.Hypotheses₂.TD.exists_hasSupport hBZ hG a`. Establish `ht : ∀ i, HasSupport (([a, y] : List (IrrGL k)).get i).rep (![sa, ∑ i, (D i).ms] i)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i`. Use `fin_cases i`. Use `exacts [hsa, hsy]`. Establish `h2` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_of_isSubquotient_prodIrr ht x.2.rep.irr (.of_injective g hg)`. Establish `heq` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_unique hG hBZ h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hΔ` using `[← hD]`. Take `⟨j, -, rfl⟩` from `Multiset.mem_map.1 hΔ`. Establish `heq' : Finset.univ.val.map l.get = sa + ∑ i, (D i).ms` using `heq.trans (Fin.sum_univ_two _)`. Establish `hm : (D j).first ∈ sa + ∑ i, (D i).ms`. Use `Multiset.mem_add.2 (Or.inr (Multiset.mem_sum.2 ⟨j, Finset.mem_univ _, ?_⟩))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Segment.mem_ms.2 (Segment.mem_carrier.2 ⟨0, (D j).len_pos, by simp⟩)`. Rewrite `hm` using `[← heq']`. Take `⟨i, -, hi⟩` from `Multiset.mem_map.1 hm`. Rewrite using `[← hi]`. Conclude with `List.get_mem l i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem suppP : SuppP k := by
   intro x a y l 𝔫 hl hx hxy hy Δ hΔ
@@ -124,7 +124,7 @@ theorem suppP : SuppP k := by
   exact List.get_mem l i
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n` and use `GlobalTheory.T.irreducible_smooth_admissible_GL k (Fin n)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem irreducibleAdmissibleGL : GlobalTheory.Published.IrreducibleAdmissibleGL :=
   fun k _ _ _ _ n => GlobalTheory.T.irreducible_smooth_admissible_GL k (Fin n)
@@ -132,7 +132,7 @@ theorem irreducibleAdmissibleGL : GlobalTheory.Published.IrreducibleAdmissibleGL
 variable (k) in
 
 /- English proof (translation)
-The claim follows from `cuspEmbP k irreducibleAdmissibleGL hR`.
+A detailed English derivation is pending.
 -/
 theorem cuspEmbP_of_refine (hR : RefineP k) : CuspEmbP k :=
   cuspEmbP k irreducibleAdmissibleGL hR

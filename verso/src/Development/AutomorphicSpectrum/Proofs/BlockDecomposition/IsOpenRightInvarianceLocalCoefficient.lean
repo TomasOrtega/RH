@@ -7,11 +7,11 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.BZPhiPG.EcSmooth
 
 /- English proof (translation)
-Establish `hm : Continuous (glEmbMat k n)`. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `b using Fin.lastCases with`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `last => simpa [glEmbMat] using continuous_const`. Consider the case `cast b => simpa [glEmbMat] using continuous_const`. Consider the case `cast a`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => simpa [glEmbMat] using continuous_const`.
+Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `cast b`. Simplify `(continuous_id.matrix_elem a b)` using `[glEmbMat]`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `hm.comp Units.continuous_val`. Conclude with `hm.comp (Units.continuous_coe_inv)`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_glEmb (k : Type) [Field k] [TopologicalSpace k] [IsTopologicalRing k] (n : ℕ) :
     Continuous (glEmb k n) := by
@@ -32,18 +32,16 @@ theorem continuous_glEmb (k : Type) [Field k] [TopologicalSpace k] [IsTopologica
   · exact hm.comp (Units.continuous_coe_inv)
 
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk ((continuous_glEmb k (n + 1)).comp continuous_subtype_val) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sEmb (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) : Continuous (sEmb k n) :=
   Continuous.subtype_mk ((continuous_glEmb k (n + 1)).comp continuous_subtype_val) _
 
 /- English proof (translation)
-Set `T : Subgroup M` to `{ carrier := {g | ∀ m, e (m * g) = e m} mul_mem' := by`. Introduce `a b ha hb m`. Rewrite using `[← mul_assoc, hb, ha]`. Use the proof step `one_mem' := by`. Introduce `m`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_one]`. Use the proof step `inv_mem' := by`. Introduce `a ha m`. Use `ha (m * a⁻¹)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`.
-
-Conclude with `this.symm }`. Conclude with `T.isOpen_of_mem_nhds (g := 1) (Filter.mem_of_superset (hA.mem_nhds h1) h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_rightInv {M X : Type} [Group M] [TopologicalSpace M] [IsTopologicalGroup M] (e : M → X) (A : Set M)
     (hA : IsOpen A) (h1 : (1 : M) ∈ A) (h : ∀ g ∈ A, ∀ m, e (m * g) = e m) :
@@ -73,13 +71,13 @@ def fixX (f : XS τ σ) : Set (Mir k ((i + 1) + (t + 1))) :=
     (f : smoothPart (ind (HPG k (i + 1) (t + 1)) (sigX τ σ))).1}
 
 /- English proof (translation)
-The claim follows from `(f : smoothPart (ind (HPG k (i + 1) (t + 1)) (sigX τ σ))).2`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_fixX (f : XS τ σ) : IsOpen (fixX f) :=
   (f : smoothPart (ind (HPG k (i + 1) (t + 1)) (sigX τ σ))).2
 
 /- English proof (translation)
-Use `show ind (HPG k (i + 1) (t + 1)) (sigX τ σ) 1 _ = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem one_mem_fixX (f : XS τ σ) : (1 : Mir k ((i + 1) + (t + 1))) ∈ fixX f := by
   show ind (HPG k (i + 1) (t + 1)) (sigX τ σ) 1 _ = _
@@ -87,16 +85,16 @@ theorem one_mem_fixX (f : XS τ σ) : (1 : Mir k ((i + 1) + (t + 1))) ∈ fixX f
   rfl
 
 /- English proof (translation)
-The claim follows from `congrArg (fun w : indSpace (HPG k (i + 1) (t + 1)) (sigX τ σ) => w.1 p) hx`.
+A detailed English derivation is pending.
 -/
 theorem evX_mul_of_mem (f : XS τ σ) {x : Mir k ((i + 1) + (t + 1))} (hx : x ∈ fixX f)
     (p : Mir k ((i + 1) + (t + 1))) : evX f (p * x) = evX f p :=
   congrArg (fun w : indSpace (HPG k (i + 1) (t + 1)) (sigX τ σ) => w.1 p) hx
 
 /- English proof (translation)
-Unfold `intC`. Use `congr 1`. Use function extensionality and compare the values at `d`. Establish `h2 : dEmb k i t d * sEmb k ((i + 1) + t) (m * g) = (dEmb k i t d * sEmb k ((i + 1) + t) m) * sEmb k ((i + 1) + t) g`. Rewrite using `[MonoidHom.map_mul, mul_assoc]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `congrArg (fun v => (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ) • v) (evX_mul_of_mem f h (dEmb k i t d * sEmb k ((i + 1) + t) m))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intC_mul (ψ : AddChar k Circle) (f : XS τ σ) (m g : Mir k ((i + 1) + t))
     (h : sEmb k ((i + 1) + t) g ∈ fixX f) :
@@ -112,7 +110,7 @@ theorem intC_mul (ψ : AddChar k Circle) (f : XS τ σ) (m g : Mir k ((i + 1) + 
     (evX_mul_of_mem f h (dEmb k i t d * sEmb k ((i + 1) + t) m))
 
 /- English proof (translation)
-Establish `h5 : dpowM (k` using `k) ((i + 1) + t) (-1 / 2) (m * g) = dpowM ((i + 1) + t) (-1 / 2) m := ((dpowM (k := k) ((i + 1) + t) (-1 / 2)).map_mul m g).trans (by rw [h2, mul_one])`. Unfold `eC`. Conclude with `congrArg₂ (fun (c : ℂˣ) v => (c : ℂ) • qC τ σ v) h5 (intC_mul ψ f m g h)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem eC_mul (ψ : AddChar k Circle) (f : XS τ σ) (m g : Mir k ((i + 1) + t))
     (h : sEmb k ((i + 1) + t) g ∈ fixX f) (h2 : dpowM (k := k) ((i + 1) + t) (-1 / 2) g = 1) :
@@ -125,9 +123,9 @@ theorem eC_mul (ψ : AddChar k Circle) (f : XS τ σ) (m g : Mir k ((i + 1) + t)
 end Fix
 
 /- English proof (translation)
-Introduce `k _ _ _ _ i t ψ τ σ f`. Establish `hA : IsOpen ((sEmb k ((i + 1) + t)) ⁻¹' fixX f)` using `(isOpen_fixX f).preimage (continuous_sEmb k _)`. Establish `hB : IsOpen {g : Mir k ((i + 1) + t) | dpowM (k` using `k) ((i + 1) + t) (-1 / 2) g = 1} := (GlobalTheory.CompanionTheory.LeibPhi.isOpen_ker_dpow k ((i + 1) + t + 1) (-1 / 2)).preimage continuous_subtype_val`. Use `isOpen_rightInv (eC ψ f) _ (hA.inter hB) ⟨?_, ?_⟩ fun g hg m => eC_mul ψ f m g hg.1 hg.2` and prove the remaining obligations. Use `show sEmb k ((i + 1) + t) 1 ∈ fixX f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.map_one]`. Conclude with `one_mem_fixX f`. Conclude with `(dpowM (k := k) ((i + 1) + t) (-1 / 2)).map_one`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_eC_invariant : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (i t : ℕ) (ψ : AddChar k Circle) (τ : MRep k (i + 1))

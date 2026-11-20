@@ -10,7 +10,7 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 open UpperTheory.Gal.GamX
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ v w`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.Gal.GamX.nmEq :
     UpperTheory.Gal.GamX.NmEq := by

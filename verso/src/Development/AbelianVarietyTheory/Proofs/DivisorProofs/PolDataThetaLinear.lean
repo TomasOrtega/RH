@@ -15,21 +15,19 @@ namespace GlobalTheory.ThKLinT
 open GlobalTheory.WeilM GlobalTheory.ThK in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hKP hT`. Establish `hdec` using `(GlobalTheory.T.theta_kernel_decay hKP F E σ B a a' G X om om' hT).2`. Establish `pres : ∀ x, ∀ Φ ∈ schA F (Fin a' × Fin (a + a')), om' x Φ ∈ schA F (Fin a' × Fin (a + a'))` using `fun x Φ hΦ => (IsUWeilPair.isUSplitting hT.weil').pres x Φ hΦ`. Establish `hPol : PolData B G.M' ≤ schA F (Fin a' × Fin (a + a'))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨f, -, φ, hSB, hev, rfl⟩`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hev.and hT.geo.hM'.std).mono fun v hv => hv.1.trans hv.2)`. Establish `lin : ∀ Φ ∈ (PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), ∀ Ψ ∈ (PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), ∀ c : ℂ, G.M'.I om' (Φ + c • Ψ) = G.M'.I om' Φ + c • G.M'.I om' Ψ`. Introduce `Φ hΦ Ψ hΨ c`. Establish `hΦS` using `hPol hΦ.1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΨS` using `hPol hΨ.1`. Establish `hcΨS : c • Ψ ∈ schA F (Fin a' × Fin (a + a'))` using `Submodule.smul_mem _ c hΨS`. Use function extensionality and compare the values at `h`. Establish `e : ∀ g, theta om' (Φ + c • Ψ) g h = theta om' Φ g h + c * theta om' Ψ g h` using `fun g => by`. Establish `e1 : theta om' (Φ + c • Ψ) g h = theta om' Φ g h + theta om' (c • Ψ) g h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [theta, map_add]`. Conclude with `thetaSum_add F (pres _ Φ hΦS) (pres _ (c • Ψ) hcΨS)`. Establish `e2 : theta om' (c • Ψ) g h = c * theta om' Ψ g h`. Simplify using `only [theta, map_smul]`. Conclude with `thetaSum_smul F c _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Establish `iΦ` using `(hdec Φ hΦ.2).2.1 h`. Establish `iΨ` using `(hdec Ψ hΨ.2).2.1 h`. Simplify using `only [Model.I, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[show (fun g => theta om' (Φ + c • Ψ) g h) = fun g => theta om' Φ g h + c * theta om' Ψ g h from funext e, integral_add iΦ (iΨ.const_mul c), integral_const_mul]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨{ toFun := fun Φ => G.M'.I om' (Φ : _), map_add' := ?_, map_smul' := ?_ }, fun Φ => rfl⟩` and prove the remaining obligations. Introduce `Φ Ψ`. Use `lin Φ Φ.2 Ψ Ψ.2 1` as an intermediate fact. Simplify using `using this`. Introduce `c Φ`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0` using `lin 0 (Submodule.zero_mem _) Φ Φ.2 c`. Establish `h00` using `lin 0 (Submodule.zero_mem _) 0 (Submodule.zero_mem _) 1`. Simplify using `only [one_smul, zero_add] at h0 h00`. Establish `hz : G.M'.I om' 0 = 0`. Use `congrArg (fun f => f - G.M'.I om' 0) h00` as an intermediate fact.
-
-Simplify using `using this.symm`. Simplify `h0` using `[hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem thetaIntegral_linear_of_triple : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

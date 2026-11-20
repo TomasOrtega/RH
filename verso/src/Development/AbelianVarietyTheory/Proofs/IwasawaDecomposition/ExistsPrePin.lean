@@ -24,14 +24,14 @@ open GlobalTheory.Published GlobalTheory.NT GlobalTheory.Mem.Fld
 namespace GlobalTheory.Mem.Top.Bl.KPxCond
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.StdFrameObj.coordPre K.P K.Lv, ⟨_, _, _, _, _, _, rfl, GlobalTheory.StdFrameObj.diagSpaces_coordPre K.P K.Lv⟩, fun a b h => PinsCoord.extTo_basis _ _ a b h⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_prePin (K : Ctx) : ∃ P : Pre, K.Over P ∧ PrePin P :=
   ⟨GlobalTheory.StdFrameObj.coordPre K.P K.Lv, ⟨_, _, _, _, _, _, rfl, GlobalTheory.StdFrameObj.diagSpaces_coordPre K.P K.Lv⟩,
     fun a b h => PinsCoord.extTo_basis _ _ a b h⟩
 
 /- English proof (translation)
-Introduce `hR hP hA h2b`. Conclude with `baseCond_of (PP := fun P _ => PrePin P) (GlobalTheory.Mem.KsExactCond.ksCond_exact hR hP hA) (EvG.imp (evG_of_ev (ev_preX_frame h2b)) fun K _ _ _ _ hfr => by`. Take `⟨P, hO, hp⟩` from `exists_prePin K`. Take `⟨f⟩` from `(hfr P hO).2`. Conclude with `⟨P, f, hO, hp⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem baseCond_KPx : RayField → PrincipalIdealSt → CMCurveGoodOutsidePrimeSt → StandardLattice.SiegelMassRatioCM → BaseCond KPx := by
   intro hR hP hA h2b

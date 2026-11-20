@@ -6,13 +6,13 @@ open CategoryTheory Limits AlgebraicGeometry TopologicalSpace
 namespace LateralTheory.E.ImageInPf
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.ker, Scheme.IdealSheafData.le_ofIdeals_iff]`. Introduce `U s hs`. Simplify using `only [Scheme.IdealSheafData.vanishingIdeal_ideal, PrimeSpectrum.mem_vanishingIdeal] at hs`. Use `show s ∈ RingHom.ker (γ.app U).hom`. Rewrite using `[RingHom.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `eq_zero_of_basicOpen_eq_bot` to reduce the goal to its premises. Rewrite using `[← Scheme.preimage_basicOpen, eq_bot_iff]`. Introduce `x hx`. It suffices to derive a contradiction. Establish `hx' : γ x ∈ Y.basicOpen s` using `hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : γ x ∈ U.1` using `Y.basicOpen_le s hx'`. Take `⟨y, hy⟩ : γ x ∈ Set.range U.2.fromSpec` from `by rw [U.2.range_fromSpec]; exact hU`. Establish `h1` using `hs y (by show U.2.fromSpec y ∈ closure (Set.range γ)`. Rewrite using `[hy]`. Conclude with `subset_closure ⟨x, rfl⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : y ∈ U.2.fromSpec ⁻¹ᵁ Y.basicOpen s` using `by show U.2.fromSpec y ∈ Y.basicOpen s`. Rewrite using `[hy]` and apply the resulting hypothesis. Rewrite `h2` using `[U.2.fromSpec_preimage_basicOpen]`. Conclude with `h2 h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanishing_le_ker {V Y : Scheme.{0}} [IsReduced V] (γ : V ⟶ Y) :
     Scheme.IdealSheafData.vanishingIdeal (Closeds.closure (Set.range γ)) ≤ γ.ker := by
@@ -38,11 +38,11 @@ theorem vanishing_le_ker {V Y : Scheme.{0}} [IsReduced V] (γ : V ⟶ Y) :
   exact h2 h1
 
 /- English proof (translation)
-Use `le_antisymm (γ.ideal_ker_le U) fun s hs => vanishing_le_ker γ U ?_` and prove the remaining obligations. Simplify using `only [Scheme.IdealSheafData.vanishingIdeal_ideal, PrimeSpectrum.mem_vanishingIdeal]`. Introduce `y hy`. Assume the negation of the conclusion as `h`. Establish `h2 : y ∈ U.2.fromSpec ⁻¹ᵁ Y.basicOpen s`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[U.2.fromSpec_preimage_basicOpen]`. Conclude with `h`. Establish `hy' : U.2.fromSpec y ∈ closure (Set.range γ)` using `hy`. Take `⟨_, hz, x, rfl⟩` from `mem_closure_iff.mp hy' _ (Y.basicOpen s).2 h2`. Establish `h3 : x ∈ γ ⁻¹ᵁ Y.basicOpen s` using `hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[Scheme.preimage_basicOpen, RingHom.mem_ker.mp hs, Scheme.basicOpen_zero]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem ker_apply_red {V Y : Scheme.{0}} [IsReduced V] (γ : V ⟶ Y) (U : Y.affineOpens) :
     γ.ker.ideal U = RingHom.ker (γ.app U).hom := by
@@ -59,7 +59,7 @@ theorem ker_apply_red {V Y : Scheme.{0}} [IsReduced V] (γ : V ⟶ Y) (U : Y.aff
   exact h3
 
 /- English proof (translation)
-Rewrite using `[ker_apply_red, ker_apply_red]`. Use extensionality with `x`. Simplify using `[Scheme.Hom.appLE] using! map_eq_zero_iff _ (ConcreteCategory.bijective_of_isIso (V.presheaf.map (eqToHom (image_morphismRestrict_preimage γ O U)).op)).1`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ker_restrict_red {V Y : Scheme.{0}} [IsReduced V] (γ : V ⟶ Y) (O : Y.Opens) (U : O.toScheme.affineOpens) :
     (γ ∣_ O).ker.ideal U = γ.ker.ideal ⟨O.ι ''ᵁ U, U.2.image_of_isOpenImmersion _⟩ := by
@@ -69,9 +69,9 @@ theorem ker_restrict_red {V Y : Scheme.{0}} [IsReduced V] (γ : V ⟶ Y) (O : Y.
     (ConcreteCategory.bijective_of_isIso (V.presheaf.map (eqToHom (image_morphismRestrict_preimage γ O U)).op)).1
 
 /- English proof (translation)
-Establish `H : t.ker ≤ (γ.imageι ∣_ O).ker`. Use `(a.le_ker_comp t).trans ?_` and prove the remaining obligations. Rewrite using `[h]`. Introduce `U`. Rewrite using `[ker_restrict_red, Scheme.ker_morphismRestrict_ideal, Scheme.Hom.imageι, Scheme.IdealSheafData.ker_subschemeι]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_rfl`. Conclude with `⟨_, IsClosedImmersion.lift_fac t _ H⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem image_in_red {V Y Z : Scheme.{0}} [IsReduced V] (γ : V ⟶ Y) (O : Y.Opens) (t : Z ⟶ O.toScheme)
     (a : (γ ⁻¹ᵁ O).toScheme ⟶ Z) [IsClosedImmersion t] (h : a ≫ t = γ ∣_ O) :
@@ -86,9 +86,9 @@ theorem image_in_red {V Y Z : Scheme.{0}} [IsReduced V] (γ : V ⟶ Y) (O : Y.Op
   exact ⟨_, IsClosedImmersion.lift_fac t _ H⟩
 
 /- English proof (translation)
-Establish `H : t.ker ≤ (γ.imageι ∣_ O).ker`. Use `(a.le_ker_comp t).trans ?_` and prove the remaining obligations. Rewrite using `[h]`. Introduce `U`. Rewrite using `[Scheme.ker_morphismRestrict_ideal, Scheme.ker_morphismRestrict_ideal, Scheme.Hom.imageι, Scheme.IdealSheafData.ker_subschemeι]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_rfl`. Conclude with `⟨_, IsClosedImmersion.lift_fac t _ H⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem image_in_qc {V Y Z : Scheme.{0}} (γ : V ⟶ Y) [QuasiCompact γ] (O : Y.Opens) (t : Z ⟶ O.toScheme)
     (a : (γ ⁻¹ᵁ O).toScheme ⟶ Z) [IsClosedImmersion t] (h : a ≫ t = γ ∣_ O) :
@@ -103,7 +103,7 @@ theorem image_in_qc {V Y Z : Scheme.{0}} (γ : V ⟶ Y) [QuasiCompact γ] (O : Y
   exact ⟨_, IsClosedImmersion.lift_fac t _ H⟩
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.imageι, Scheme.IdealSheafData.range_subschemeι]`. Use `Scheme.IdealSheafData.support_antitone (vanishing_le_ker γ)` as an intermediate fact. Introduce `y hy`. Establish `h2` using `this hy`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem range_imageι_red {V Y : Scheme.{0}} [IsReduced V] (γ : V ⟶ Y) :
     Set.range γ.imageι ⊆ closure (Set.range γ) := by
@@ -126,36 +126,32 @@ def ImageInR : Prop := ∀ {S X₁ : Scheme.{0}} [IsReduced X₁] (p₁ : X₁ �
         ∃ b : (γ.imageι ⁻¹ᵁ (pullback.snd p₁ q ⁻¹ᵁ (π j ⁻¹ᵁ W j))).toScheme ⟶ Z, b ≫ t = γ.imageι ∣_ (pullback.snd p₁ q ⁻¹ᵁ (π j ⁻¹ᵁ W j))
 
 /- English proof (translation)
-Introduce `S X₁ _ p₁ _ n U Pj qj W e P q π _ _ _ _ _ V _ hV γ _ _ j Z t a ht hat`. Conclude with `image_in_red γ _ t a hat`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ImageInR_of : ImageInR := by
   intro S X₁ _ p₁ _ n U Pj qj W e P q π _ _ _ _ _ V _ hV γ _ _ j Z t a ht hat
   exact image_in_red γ _ t a hat
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, rfl⟩`. Establish `hz : γ.imageι y ∈ closure (Set.range γ)` using `range_imageι_red γ ⟨y, rfl⟩`. Take `⟨j, hj⟩` from `hcov (pullback.fst p₁ q (γ.imageι y))`. Use `Set.mem_iUnion.mpr ⟨j, ?_⟩` and prove the remaining obligations. Use `set z := γ.imageι y`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `O : (pullback p₁ q).Opens` to `pullback.fst p₁ q ⁻¹ᵁ U j`. Establish `hcomm : ((pullback.fst p₁ q ∣_ U j) ≫ e j ≫ (W j).ι) ≫ qj j = (O.ι ≫ pullback.snd p₁ q ≫ π j) ≫ qj j`. Simplify using `only [Category.assoc, hc j, hπ j, morphismRestrict_ι_assoc, pullback.condition]`. Both sides reduce to the same expression. Set `f : O.toScheme ⟶ pullback (qj j) (qj j)` to `pullback.lift _ _ hcomm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hD : IsClosed (Set.range (pullback.diagonal (qj j)))` using `(pullback.diagonal (qj j)).isClosedEmbedding.isClosed_range`. Establish `hrange : Set.range γ ⊆ Set.range O.ι`. Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Use `show pullback.fst p₁ q (γ v) ∈ U j`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← Scheme.Hom.comp_apply, hγ1]`. Conclude with `hV j v.2`. Set `γO : V.toScheme ⟶ O.toScheme` to `IsOpenImmersion.lift O.ι γ hrange`. Establish `hγO : γO ≫ O.ι = γ` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hfac : γO ≫ f = (X₁.homOfLE (hV j) ≫ e j ≫ (W j).ι) ≫ pullback.diagonal (qj j)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [f, Category.assoc, pullback.lift_fst, pullback.diagonal_fst, Category.comp_id]`. Establish `h1 : γO ≫ (pullback.fst p₁ q ∣_ U j) = X₁.homOfLE (hV j)`. Rewrite using `[← cancel_mono (U j).ι, Category.assoc, morphismRestrict_ι, reassoc_of% hγO, hγ1, Scheme.homOfLE_ι]`. Rewrite using `[reassoc_of% h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [f, Category.assoc, pullback.lift_snd, pullback.diagonal_snd, Category.comp_id]`. Rewrite using `[← hγ2 j, ← hγO, Category.assoc]`. Take `⟨zO, hzO⟩ : z ∈ Set.range O.ι` from `by rw [Scheme.Opens.range_ι]; exact hj`. Establish `hcl : zO ∈ closure (O.ι ⁻¹' Set.range γ)`. Rewrite using `[← O.ι.isOpenEmbedding.isOpenMap.preimage_closure_eq_closure_preimage O.ι.continuous]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `show O.ι zO ∈ closure (Set.range γ)`. Rewrite using `[hzO]`. Conclude with `hz`. Establish `hsub : O.ι ⁻¹' Set.range γ ⊆ f ⁻¹' Set.range (pullback.diagonal (qj j))`. Introduce and unpack `w ⟨v, hv⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hw : w = γO v` using `O.ι.isOpenEmbedding.injective (by`. Rewrite using `[← Scheme.Hom.comp_apply, hγO, hv])`. Use `⟨(X₁.homOfLE (hV j) ≫ e j ≫ (W j).ι) v, ?_⟩` and prove the remaining obligations. Rewrite using `[hw, ← Scheme.Hom.comp_apply, ← hfac, Scheme.Hom.comp_apply]`. Take `⟨p, hp⟩` from `closure_minimal hsub (hD.preimage f.continuous) hcl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (f ≫ pullback.fst _ _) zO = p`. Rewrite using `[Scheme.Hom.comp_apply, ← hp, ← Scheme.Hom.comp_apply, pullback.diagonal_fst]`. Both sides reduce to the same expression. Establish `e2 : (f ≫ pullback.snd _ _) zO = p`. Rewrite using `[Scheme.Hom.comp_apply, ← hp, ← Scheme.Hom.comp_apply, pullback.diagonal_snd]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `only [f, pullback.lift_fst, pullback.lift_snd] at e1 e2`. Use `show π j (pullback.snd p₁ q z) ∈ W j`. Establish `: π j (pullback.snd p₁ q z) = p`. Rewrite using `[← e2, ← hzO]`.
-
-Simplify using `only [Scheme.Hom.comp_apply]`. Rewrite using `[this, ← e1]`. Simplify using `only [Scheme.Hom.comp_apply]`. Establish `hmem : ∀ a : (W j).toScheme, (W j).ι a ∈ W j` using `fun a => by`. Conclude with `(Scheme.Opens.range_ι (W j)).le ⟨a, rfl⟩`.
-
-Conclude with `hmem _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem covered_red {S X₁ : Scheme.{0}} [IsReduced X₁] (p₁ : X₁ ⟶ S)
   (n : ℕ) (U : Fin n → X₁.Opens) (Pj : Fin n → Scheme.{0}) (qj : ∀ j, Pj j ⟶ S) (W : ∀ j, (Pj j).Opens)
@@ -234,17 +230,17 @@ def GraphT : Prop := ∀ {S X₁ : Scheme.{0}} (p₁ : X₁ ⟶ S) [IsProper p�
         a ≫ t = γ ∣_ (pullback.snd p₁ q ⁻¹ᵁ (π j ⁻¹ᵁ W j))
 
 /- English proof (translation)
-Introduce `S X₁ p₁ _ n U Pj qj W e P q π _ _ he hc hπ V _ hV γ h1 h2 j`. Use `he j` as an intermediate fact. Set `z1` to `pullback.fst (π j ∣_ W j) (e j)`. Set `z2` to `pullback.snd (π j ∣_ W j) (e j)`. Establish `hz : z1 ≫ (π j ∣_ W j) = z2 ≫ e j` using `pullback.condition`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hw : (z2 ≫ (U j).ι) ≫ p₁ = (z1 ≫ (π j ⁻¹ᵁ W j).ι) ≫ q`. Rewrite using `[Category.assoc, ← hc j, ← reassoc_of% hz, morphismRestrict_ι_assoc, hπ j, Category.assoc]`. Set `t0` to `pullback.lift _ _ hw`. Establish `hP` using `isPullback_morphismRestrict (pullback.snd p₁ q) (π j ⁻¹ᵁ W j)`. Establish `ht0 : z1 ≫ (π j ⁻¹ᵁ W j).ι = t0 ≫ pullback.snd p₁ q` using `(pullback.lift_snd _ _ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0' : t0 ≫ pullback.fst p₁ q = z2 ≫ (U j).ι` using `pullback.lift_fst _ _ _`. Set `t` to `hP.lift z1 t0 ht0`. Establish `e1 : t ≫ pullback.snd p₁ q ∣_ (π j ⁻¹ᵁ W j) = z1` using `hP.lift_fst _ _ _`. Establish `e2 : t ≫ (pullback.snd p₁ q ⁻¹ᵁ (π j ⁻¹ᵁ W j)).ι = t0` using `hP.lift_snd _ _ _`. Establish `hcl : IsClosedImmersion (t ≫ pullback.snd p₁ q ∣_ (π j ⁻¹ᵁ W j))` using `by rw [e1]; infer_instance`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : (γ ∣_ (pullback.snd p₁ q ⁻¹ᵁ (π j ⁻¹ᵁ W j)) ≫ pullback.snd p₁ q ∣_ (π j ⁻¹ᵁ W j)) ≫ (π j ∣_ W j) = ((γ ⁻¹ᵁ (pullback.snd p₁ q ⁻¹ᵁ (π j ⁻¹ᵁ W j))).ι ≫ X₁.homOfLE (hV j)) ≫ e j`. Rewrite using `[← cancel_mono (W j).ι]`. Simplify using `only [Category.assoc, morphismRestrict_ι, morphismRestrict_ι_assoc, h2 j]`. Set `a` to `pullback.lift _ _ ha`. Establish `a1 : a ≫ z1 = _` using `pullback.lift_fst _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `a2 : a ≫ z2 = _` using `pullback.lift_snd _ _ _`. Use `⟨_, t, a, IsClosedImmersion.of_comp t (pullback.snd p₁ q ∣_ (π j ⁻¹ᵁ W j)), hcl, ?_⟩` and prove the remaining obligations. Apply `hP.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, e1, a1]`. Rewrite using `[Category.assoc, e2, morphismRestrict_ι]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, ht0', reassoc_of% a2, Scheme.homOfLE_ι, Category.assoc, h1]`. Rewrite using `[Category.assoc, ← ht0, reassoc_of% a1, morphismRestrict_ι, morphismRestrict_ι_assoc, Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem GraphT_of : GraphT := by
   intro S X₁ p₁ _ n U Pj qj W e P q π _ _ he hc hπ V _ hV γ h1 h2 j
@@ -278,17 +274,15 @@ theorem GraphT_of : GraphT := by
     · rw [Category.assoc, ← ht0, reassoc_of% a1, morphismRestrict_ι, morphismRestrict_ι_assoc, Category.assoc]
 
 /- English proof (translation)
-Introduce `S X₁ p₁ _ hX n U Pj qj W e P q π hUn hUc hsep he hc hπ hUP`. Take `⟨x₀⟩ : Nonempty X₁` from `inferInstance`. Take `⟨j₀, -⟩` from `hUc x₀`. Set `V₀ : X₁.Opens` to `Finset.univ.inf U`. Establish `hV₀ : ∀ j, V₀ ≤ U j` using `fun j => Finset.inf_le (Finset.mem_univ j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `LateralTheory.E.CorePf.inf_nonempty U hUn _ ⟨j₀, Finset.mem_univ _⟩`. Take `⟨V', hVa, hxV, hVle⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp X₁.isBasis_affineOpens (U := V₀) hx`. Take `⟨V, rfl⟩ : ∃ V : X₁.Opens, V = V'` from `⟨V', rfl⟩`. Use `replace hVa : IsAffineOpen V := hVa`. Establish `hV : ∀ j, (V : X₁.Opens) ≤ U j` using `fun j => hVle.trans (hV₀ j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨g, ⟨hg1, hg2⟩, -⟩` from `hUP ((V : X₁.Opens).ι ≫ p₁) (fun j => X₁.homOfLE (hV j) ≫ e j ≫ (W j).ι) (by`. Introduce `j`. Simplify using `only [Category.assoc, hc j, Scheme.homOfLE_ι_assoc])`. Set `γ : (V : X₁.Opens).toScheme ⟶ pullback p₁ q` to `pullback.lift (V : X₁.Opens).ι g hg1.symm`. Establish `hγ1 : γ ≫ pullback.fst p₁ q = (V : X₁.Opens).ι` using `pullback.lift_fst _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγ2 : ∀ j, γ ≫ pullback.snd p₁ q ≫ π j = X₁.homOfLE (hV j) ≫ e j ≫ (W j).ι`. Introduce `j`. Rewrite using `[pullback.lift_snd_assoc, hg2 j]`. Use `⟨γ.image, γ.imageι, V, γ.toImage, inferInstance, LateralTheory.E.CorePf2.isClosedImmersion_of_cover _ (fun j => π j ⁻¹ᵁ W j) (LateralTheory.E.CorePf2.range_closed p₁ q γ) (covered_red p₁ n U Pj qj W e P q π hUc hsep hc hπ V hV γ hγ1 hγ2) (fun j => ?_), ⟨x, hxV⟩, ?_⟩` and prove the remaining obligations. Take `⟨Z, t, a, ht, hts, hat⟩` from `GraphT_of p₁ n U Pj qj W e P q π hUc hsep he hc hπ V hVa hV γ hγ1 hγ2 j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `image_in_red γ _ t a hat`. Rewrite using `[morphismRestrict_comp, ← hb, Category.assoc]`. Establish `: IsClosedImmersion (b ≫ t)` using `by rw [hb]; infer_instance`. Establish `: IsClosedImmersion b` using `IsClosedImmersion.of_comp_isClosedImmersion b t`. Conclude with `@IsClosedImmersion.comp _ _ _ b _ this hts`.
-
-Rewrite using `[Scheme.Hom.toImage_imageι_assoc, hγ1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Core_of : LateralTheory.E.ChowGraphCut.Core := by
   intro S X₁ p₁ _ hX n U Pj qj W e P q π hUn hUc hsep he hc hπ hUP

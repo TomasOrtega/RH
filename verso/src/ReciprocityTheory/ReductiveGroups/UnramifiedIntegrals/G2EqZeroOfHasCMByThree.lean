@@ -8,7 +8,7 @@ open Formalism.L2.Th1.CM Formalism.L2.Th1.F
 namespace ReciprocityTheory.ChartRestriction.L1
 
 /- English proof (translation)
-Establish `h : (((Real.sqrt (3 : ℕ) : ℝ) : ℂ)) ^ 2 = 3`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (by positivity)]`. Simplify using the standard rewrite rules. Unfold `omegaK`. Take the linear combination `(Complex.I ^ 2 / 4) * h + (3 / 4 : ℂ) * Complex.I_sq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem omegaK_three_sq : omegaK 3 ^ 2 = omegaK 3 - 1 := by
   have h : (((Real.sqrt (3 : ℕ) : ℝ) : ℂ)) ^ 2 = 3 := by
@@ -30,17 +30,15 @@ def mulOmegaEquiv (L : PeriodPair) (hCM : HasCMBy 3 L) : L.lattice ≃ L.lattice
     linear_combination (-(l : ℂ)) * omegaK_three_sq
 
 /- English proof (translation)
-Establish `hsq` using `omegaK_three_sq`. Establish `h4 : omegaK 3 ^ 4 = -omegaK 3`. Take the linear combination `(omegaK 3 ^ 2 + omegaK 3) * hsq`. Establish `h0 : omegaK 3 ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hsq` using `[h]`. Evaluate the numerical expressions using `at hsq`. Establish `h1 : omegaK 3 ≠ -1`. Introduce `h`. Rewrite `hsq` using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `at hsq`. Establish `key : L.G 4 = (omegaK 3 ^ 4)⁻¹ * L.G 4` using `by conv_lhs => rw [PeriodPair.G, ← (mulOmegaEquiv L hCM).tsum_eq]`. Rewrite using `[PeriodPair.G, ← tsum_mul_left]`. Use `tsum_congr fun l => ?_` and prove the remaining obligations. Use `show ((omegaK 3 * (l : ℂ)) ^ 4)⁻¹ = _`.
+Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow, mul_inv]`. Establish `hG : L.G 4 = 0`. Establish `h40 : omegaK 3 ^ 4 ≠ 0` using `pow_ne_zero _ h0`. Establish `h2 : omegaK 3 ^ 4 * L.G 4 = L.G 4` using `by conv_lhs => rw [key]`. Rewrite using `[mul_inv_cancel_left₀ h40]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h4]`. Establish `h3 : (omegaK 3 + 1) * L.G 4 = 0` using `by linear_combination -h2`. Break down `mul_eq_zero.mp h3 with h | h` into its components or cases. Conclude with `absurd (by linear_combination h) h1`. Conclude with `h`.
-
-Rewrite using `[PeriodPair.g₂, hG, mul_zero]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem g2_eq_zero_of_hasCMBy_three (L : PeriodPair) (hCM : HasCMBy 3 L) : L.g₂ = 0 := by
   have hsq := omegaK_three_sq

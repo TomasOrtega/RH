@@ -7,12 +7,12 @@ open NumberField
 namespace Formalism.DivisionValues
 
 /- English proof (translation)
-The claim follows from `divisor_inequality_explicit`.
+A detailed English derivation is pending.
 -/
 theorem divIneqRecord : DivIneqRecord := divisor_inequality_explicit
 
 /- English proof (translation)
-The claim follows from `good_twisted_lattice`.
+A detailed English derivation is pending.
 -/
 theorem goodTwist : GoodTwist := good_twisted_lattice
 

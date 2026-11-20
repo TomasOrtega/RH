@@ -5,23 +5,21 @@ open Polynomial GlobalTheory.CuspGL
 namespace GlobalTheory.CuspGL
 
 /- English proof (translation)
-Use `haveI : Finite V := Module.finite_of_finite F`. Use `haveI : Finite (Submodule F V) := Finite.of_injective (fun W : Submodule F V => (W : Set V)) SetLike.coe_injective`. Use `haveI : Fintype {W : Submodule F V // ∀ x ∈ W, g x ∈ W} := Fintype.ofFinite _`. Establish `key : ∀ (W W' : {W : Submodule F V // ∀ x ∈ W, g x ∈ W}) (v : W.1), (∀ U : Submodule F (W.1), (∀ x ∈ U, (g.restrict W.2) x ∈ U) → v ∈ U → U = ⊤) → (v : V) ∈ W'.1 → W.1 ≤ W'.1`. Introduce `W W' v hv hv' x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h` using `hv (W'.1.comap W.1.subtype) (fun y hy => W'.2 _ hy) hv'`. Establish `: (⟨x, hx⟩ : W.1) ∈ W'.1.comap W.1.subtype` using `h ▸ Submodule.mem_top`. Conclude with `this`. Set `f : (Σ W : {W : Submodule F V // ∀ x ∈ W, g x ∈ W}, {v : W.1 // ∀ U : Submodule F (W.1), (∀ x ∈ U, (g.restrict W.2) x ∈ U) → v ∈ U → U = ⊤}) → V` to `fun p => (p.2.1 : V)`. Establish `hf : Function.Bijective f`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨W, v, hv⟩ ⟨W', v', hv'⟩ h`. Establish `h' : (v : V) = v'` using `h`. Establish `hW : W = W'` using `Subtype.ext (le_antisymm (key W W' v hv (h' ▸ v'.2)) (key W' W v' hv' (h' ▸ v.2)))`. Substitute `hW` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: v = v'` using `Subtype.ext h'`. Substitute `this` using the available equality. Both sides reduce to the same expression. Introduce `v`. Set `S : Set (Submodule F V)` to `{U | (∀ x ∈ U, g x ∈ U) ∧ v ∈ U}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hinv : ∀ x ∈ sInf S, g x ∈ sInf S`. Introduce `x hx`. Rewrite `hx`, the goal using `[Submodule.mem_sInf]`. Conclude with `fun p hp => hp.1 x (hx p hp)`. Establish `hv : v ∈ sInf S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.mem_sInf]`. Conclude with `fun p hp => hp.2`. Use `⟨⟨⟨sInf S, hinv⟩, ⟨v, hv⟩, ?_⟩, rfl⟩` and prove the remaining obligations. Introduce `U hU hvU`. Establish `hle : sInf S ≤ U.map (sInf S).subtype`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `sInf_le ⟨?_, ⟨_, hvU, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨_, hU y hy, rfl⟩`. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨x, hx⟩ -`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, hy, hyx⟩` from `hle hx`. Establish `: y = ⟨x, hx⟩` using `Subtype.ext hyx`. Conclude with `this ▸ hy`. Establish `hc` using `Nat.card_congr (Equiv.ofBijective f hf)`. Rewrite `hc` using `[Nat.card_sigma, Module.natCard_eq_pow_finrank (K := F)]`.
-
-Rewrite using `[finsum_eq_sum_of_fintype]`. Conclude with `hc` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_card_cyclic_eq (F : Type) [Field F] [Finite F] (V : Type) [AddCommGroup V]
     [Module F V] [FiniteDimensional F V] (g : Module.End F V) :

@@ -10,11 +10,11 @@ open Polynomial Classical GlobalTheory.BadShare
 namespace GlobalTheory.BadShare
 
 /- English proof (translation)
-Take `⟨L₀, h₀, x, hx, hu⟩` from `hρ`. Set `L' : Lev g N` to `{ L₀ with s := L.s, k := L.k, hk := L.hk }`. Establish `hs : L'.sharp = false` using `h₀`. Rewrite using `[GlobalTheory.T.rank_levelDatum_idempotent_eq_of_same_shape g N M ρ L L' (hL.trans hs.symm) rfl rfl]`. Take `⟨a1, a2, a3, a4, -⟩` from `GlobalTheory.T.levelDatum_submonoid_chi_mul_unipotent g N L'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, h⟩` from `GlobalTheory.T.subgroupCharacterIdempotent_properties (GG g N) M ρ L'.Mem L'.chi a1 a2 a3 a4`. Use `h 1 (fun _ => x) (linearIndependent_unique_iff.2 hx) ?_` and prove the remaining obligations. Introduce `i u hm`. Establish `hchi : L'.chi u = L₀.chi u`. Simplify using `only [Lev.chi, Lev.Edge, hs, h₀, Bool.false_eq_true, if_false]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[hchi]`. Conclude with `hu u hm.1`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_rk_of_not_sharp (g : ℕ) [Fact g.Prime] (N : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M]
     [FiniteDimensional ℂ M] (ρ : Representation ℂ (GG g N) M) (hρ : IsGeneric ρ) (L : Lev g N)
@@ -34,9 +34,9 @@ theorem one_le_rk_of_not_sharp (g : ℕ) [Fact g.Prime] (N : ℕ) (M : Type) [Ad
   exact hu u hm.1
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero => exact fun L h1 h2 => GlobalTheory.T.levelDatum_idempotent_rank_ge_of_generic_free_rows_first g N M ρ hρ L h1 h2`. Consider the case `succ s ih`. Introduce `L h1 h2`. Establish `hk : s + L.k < N` using `by have := L.hk; omega`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `L' : Lev g N` to `{ L with s := s, hk := hk }`. Establish `h3` using `ih L' h1 rfl`. Establish `h4` using `GlobalTheory.T.levelDatum_idempotent_rank_le_root_exchange g N M ρ L L' h1 h1 rfl h2`. Conclude with `h3.trans (by exact_mod_cast h4)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rk_lower_of_sharp (g : ℕ) [Fact g.Prime] (N : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M]
     [FiniteDimensional ℂ M] (ρ : Representation ℂ (GG g N) M) (hρ : IsGeneric ρ) (s : ℕ) :
@@ -52,9 +52,9 @@ theorem rk_lower_of_sharp (g : ℕ) [Fact g.Prime] (N : ℕ) (M : Type) [AddComm
     exact h3.trans (by exact_mod_cast h4)
 
 /- English proof (translation)
-Introduce `g _ N M _ _ _ ρ hρ L`. Distinguish the cases in `h : L.sharp = true`. Rewrite using `[if_pos h]`. Conclude with `rk_lower_of_sharp g N M ρ hρ L.s L h rfl`. Rewrite using `[if_neg h, pow_zero, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (1 : ℝ) ≤ rk ρ L.e`. Conclude with `one_le_rk_of_not_sharp g N M ρ hρ L (by simpa using h)` after adjusting the coercions. Establish `h2 : (0 : ℝ) ≤ 1 / (g : ℝ)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rk_lev_lower : ∀ (g : ℕ) [Fact g.Prime] (N : ℕ), ∀ (M : Type) [AddCommGroup M] [Module ℂ M] [FiniteDimensional ℂ M] (ρ : Representation ℂ (GG g N) M), IsGeneric ρ → ∀ L : Lev g N, (1 - 1 / (g : ℝ)) * (g : ℝ) ^ (if L.sharp = true then L.k else 0) ≤ (rk ρ L.e : ℝ) := by
   intro g _ N M _ _ _ ρ hρ L

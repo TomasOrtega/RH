@@ -23,19 +23,17 @@ local notation "𝒪" => Formalism.L2.Herm.intAf D.host.F D.host.E
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `choose a ha using fun PP : Formalism.L2.DIV.Pl D.host.E => Ideal.Quotient.mk_surjective (I := PP.asIdeal) ((d PP : Formalism.L2.DIV.kP PP))`. Establish `hv : ∀ PP : Formalism.L2.DIV.Pl D.host.E, Valued.v (algebraMap D.host.E (PP.adicCompletion D.host.E) ((a PP : 𝓞 D.host.E) : D.host.E)) = 1`. Introduce `PP`. Rewrite using `[Formalism.UG.P.levelaf_valued_algebraMap]`. Use `le_antisymm (HeightOneSpectrum.valuation_le_one _ _) (not_lt.1 fun h => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm` using `(HeightOneSpectrum.valuation_lt_one_iff_mem PP (a PP)).1 h`. Establish `h0 : (Ideal.Quotient.mk PP.asIdeal (a PP)) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hm`. Rewrite `h0` using `[ha PP]`. Conclude with `(d PP).ne_zero h0`. Set `t : ∀ Q : Formalism.L2.DIV.Pl D.host.E, Q.adicCompletion D.host.E` to `fun Q => if Q ∈ Pg then algebraMap D.host.E (Q.adicCompletion D.host.E) ((a Q : 𝓞 D.host.E) : D.host.E) else 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ht : ∀ Q, Valued.v (t Q) = 1` using `fun Q => by`. Simplify using `only [t]`. Use `split_ifs`. Conclude with `hv Q`. Conclude with `Valuation.map_one _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz, hzc⟩` from `GlobalTheory.AdIsom.exists_of_cpt (D := D) t (fun Q => (ht Q).le)`. Take `⟨z', hz', hzc'⟩` from `GlobalTheory.AdIsom.exists_of_cpt (D := D) (fun Q => (t Q)⁻¹) (fun Q => by rw [map_inv₀, ht Q, inv_one])`. Establish `htn : ∀ Q, t Q ≠ 0` using `fun Q h => by simpa [h] using ht Q`. Establish `hzz : z * z' = 1` using `GlobalTheory.StdFrames.cpt_ext fun Q => by`. Rewrite using `[map_mul, hzc, hzc', map_one, mul_inv_cancel₀ (htn Q)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzz' : (⟨z, hz⟩ : 𝒪) * ⟨z', hz'⟩ = 1` using `Subtype.ext hzz`. Use `⟨⟨⟨z, hz⟩, ⟨z', hz'⟩, hzz', by rw [mul_comm]; exact hzz'⟩, fun PP hPP => ?_⟩` and prove the remaining obligations. Establish `hc : ((Formalism.L2.DIV.oToS D.host.F D.host.E (a PP) : 𝒪) : EAf D) = GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.inc D ((a PP : 𝓞 D.host.E) : D.host.E)` using `rfl`. Establish `h2 : Valued.v (GlobalTheory.StdFrames.cpt PP (((⟨z, hz⟩ : 𝒪) - Formalism.L2.DIV.oToS D.host.F D.host.E (a PP) : 𝒪) : EAf D)) < 1`. Rewrite using `[AddSubgroupClass.coe_sub, hc, map_sub, GlobalTheory.AdIsom.cpt_inc, hzc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [t, if_pos hPP, sub_self, map_zero]`. Conclude with `zero_lt_one`. Establish `h1 : Formalism.L2.DIV.resS D.host.F PP ((⟨z, hz⟩ : 𝒪) - Formalism.L2.DIV.oToS D.host.F D.host.E (a PP)) = 0` using `(GlobalTheory.AdIsom.resS_eq_zero_iff_cpt (D := D) PP ((⟨z, hz⟩ : 𝒪) - Formalism.L2.DIV.oToS D.host.F D.host.E (a PP))).2 h2`. Establish `h3 : Formalism.L2.DIV.resS D.host.F PP (⟨z, hz⟩ : 𝒪) = d PP`. Establish `h4 : Formalism.L2.DIV.resS D.host.F PP (Formalism.L2.DIV.oToS D.host.F D.host.E (a PP)) = Ideal.Quotient.mk PP.asIdeal (a PP)` using `Formalism.L2.DIV.resS_oToS (F := D.host.F) PP (a PP)`.
-
-Establish `h5` using `(RingHom.map_sub (Formalism.L2.DIV.resS D.host.F PP) (⟨z, hz⟩ : 𝒪) (Formalism.L2.DIV.oToS D.host.F D.host.E (a PP))).symm.trans h1`. Conclude with `(sub_eq_zero.1 h5).trans (h4.trans (ha PP))`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit_res (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)) (d : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ) :
     ∃ u : (𝒪)ˣ, ∀ PP ∈ Pg, Formalism.L2.DIV.resS D.host.F PP (u : 𝒪) = d PP := by
@@ -82,11 +80,11 @@ theorem exists_unit_res (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)) (d : ∀ PP
   exact h3
 
 /- English proof (translation)
-Establish `key : ∀ (e : Fin n → κˣ) (Y : GL (Fin n) κ), Y ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r) → (diagGL e)⁻¹ * Y * diagGL e ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r)`. Introduce `e Y hY i j hij`. Rewrite using `[diagGL_conj_apply, hY hij, mul_zero, zero_mul]`. Distinguish the cases in `hX : X ∈ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r)`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Formalism.L2.DIV.upper_block_val_submatrix hr (key dn X hX)]`. Use extensionality with `i j`. Rewrite using `[Matrix.submatrix_apply, diagGL_conj_apply, diagGL_conj_apply, Formalism.L2.DIV.upper_block_val_submatrix hr hX, Matrix.submatrix_apply, hd, hd]`. Establish `hY : (diagGL dn)⁻¹ * X * diagGL dn ∉ Formalism.L2.DIV.blockTri (Formalism.L2.DIV.blk2 r)`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hX` to reduce the goal to its premises. Use `key (fun i => (dn i)⁻¹) _ h` as an intermediate fact. Rewrite `this` using `[← diagGL_inv, inv_inv, ← mul_assoc, ← mul_assoc, mul_inv_cancel, one_mul, mul_assoc, mul_inv_cancel, mul_one]`. Then use the resulting hypothesis. Unfold `Formalism.L2.DIV.upperLeftBlock Formalism.L2.DIV.ext1`. Rewrite using `[dif_neg hX, dif_neg hY, mul_one, inv_mul_cancel]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem upperLeftBlock_diagonal_conj_eq {κ : Type} [CommRing κ] {n r : ℕ} (hr : r ≤ n) (dn : Fin n → κˣ) (d : Fin r → κˣ)
     (hd : ∀ i : Fin r, dn (Fin.castLE hr i) = d i) (X : GL (Fin n) κ) :
@@ -111,7 +109,7 @@ theorem upperLeftBlock_diagonal_conj_eq {κ : Type} [CommRing κ] {n r : ℕ} (h
     rw [dif_neg hX, dif_neg hY, mul_one, inv_mul_cancel]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `show (((diagGL u : GL (Fin n) 𝒪) : Matrix (Fin n) (Fin n) 𝒪) i j : EAf D) = _`. Rewrite using `[diagGL_val, Matrix.diagonal_apply, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem intGL_diagGL_val {n : ℕ} (u : Fin n → (𝒪)ˣ) :
     (Formalism.L2.DIV.intGL D.host.F D.host.E n (diagGL u)).val =
@@ -122,7 +120,7 @@ theorem intGL_diagGL_val {n : ℕ} (u : Fin n → (𝒪)ˣ) :
   split_ifs <;> rfl
 
 /- English proof (translation)
-Establish `h1 : Formalism.L2.DIV.intGL F E n (δ * y * δ⁻¹) = Formalism.L2.DIV.intGL F E n δ * Formalism.L2.DIV.intGL F E n y * (Formalism.L2.DIV.intGL F E n δ)⁻¹`. Rewrite using `[MonoidHom.map_mul, MonoidHom.map_mul, MonoidHom.map_inv]`. Use `show β * Formalism.L2.DIV.intGL F E n δ * Formalism.L2.DIV.intGL F E n y * (β * Formalism.L2.DIV.intGL F E n δ)⁻¹ = β * Formalism.L2.DIV.intGL F E n (δ * y * δ⁻¹) * β⁻¹`. Rewrite using `[h1]`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frGL_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β : GL (Fin n) (TensorProduct F E (Formalism.L2.Herm.Af F))) (δ y : GL (Fin n) (Formalism.L2.Herm.intAf F E)) :
@@ -136,7 +134,7 @@ theorem frGL_mul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   group
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.map_mul, MonoidHom.map_mul, MonoidHom.map_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bc_conj {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) {n : ℕ} (δ y : GL (Fin n) A) :
     Formalism.UG.bc φ (δ⁻¹ * y * δ) = (Formalism.UG.bc φ δ)⁻¹ * Formalism.UG.bc φ y * Formalism.UG.bc φ δ := by
@@ -145,27 +143,23 @@ theorem bc_conj {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) {n : ℕ
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D n r hr β Λ hβ Pg d`. Set `dn : ∀ PP : Formalism.L2.DIV.Pl D.host.E, Fin n → (Formalism.L2.DIV.kP PP)ˣ` to `fun PP j => if h : j.val < r then d PP ⟨j.val, h⟩ else 1`. Use `choose u hu using fun j : Fin n => exists_unit_res (D := D) Pg (fun PP => dn PP j)`. Use `⟨β * Formalism.L2.DIV.intGL D.host.F D.host.E n (diagGL u), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hβ x]`. Establish `hinv : ((β * Formalism.L2.DIV.intGL D.host.F D.host.E n (diagGL u))⁻¹).val = Matrix.diagonal (fun i => ((((u i)⁻¹ : (Formalism.L2.Herm.intAf D.host.F D.host.E)ˣ) : (Formalism.L2.Herm.intAf D.host.F D.host.E)) : EAf D)) * (β⁻¹).val`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, ← map_inv, diagGL_inv, intGL_diagGL_val]`. Rewrite using `[hinv]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mulVec_mulVec, Matrix.mulVec_diagonal]`. Establish `hm : ((u i : (Formalism.L2.Herm.intAf D.host.F D.host.E)) : EAf D) * ((((u i)⁻¹ : (Formalism.L2.Herm.intAf D.host.F D.host.E)ˣ) : (Formalism.L2.Herm.intAf D.host.F D.host.E)) : EAf D) = 1` using `congrArg Subtype.val (u i).mul_inv`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `Subring.mul_mem _ ((u i)⁻¹ : (Formalism.L2.Herm.intAf D.host.F D.host.E)ˣ).val.2 h`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h2` using `Subring.mul_mem _ (u i).val.2 h`. Rewrite `h2` using `[← mul_assoc, hm, one_mul]`. Then use the resulting hypothesis. Introduce `M`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨diagGL u * y * (diagGL u)⁻¹, (frGL_mul β (diagGL u) y).symm⟩`. Introduce and unpack `⟨y, rfl⟩`. Use `⟨(diagGL u)⁻¹ * y * diagGL u, ?_⟩` and prove the remaining obligations. Rewrite using `[frGL_mul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Use `group`. Introduce `PP hPP M hM`. Take `⟨y, rfl⟩` from `hM`. Establish `e1 : Formalism.L2.DIV.frGL β y = Formalism.L2.DIV.frGL (β * Formalism.L2.DIV.intGL D.host.F D.host.E n (diagGL u)) ((diagGL u)⁻¹ * y * diagGL u)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[frGL_mul]`. Use `congr 1`. Use `group`. Establish `hred : Formalism.UG.bc (Formalism.L2.DIV.resS D.host.F PP) (diagGL u) = diagGL (dn PP)`. Apply `Units.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Use extensionality with `i j`. Use `show Formalism.L2.DIV.resS D.host.F PP (((diagGL u : GL (Fin n) (Formalism.L2.Herm.intAf D.host.F D.host.E)) : Matrix (Fin n) (Fin n) (Formalism.L2.Herm.intAf D.host.F D.host.E)) i j) = ((diagGL (dn PP) : GL (Fin n) (Formalism.L2.DIV.kP PP)) : Matrix (Fin n) (Fin n) (Formalism.L2 …`. Rewrite using `[diagGL_val, diagGL_val, Matrix.diagonal_apply, Matrix.diagonal_apply]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hu i PP hPP`. Conclude with `map_zero _`. Establish `e2 : Formalism.L2.DIV.redFn (β * Formalism.L2.DIV.intGL D.host.F D.host.E n (diagGL u)) PP (Formalism.L2.DIV.frGL β y) = (diagGL (dn PP))⁻¹ * Formalism.L2.DIV.redFn β PP (Formalism.L2.DIV.frGL β y) * diagGL (dn PP)`. Establish `e3` using `Formalism.L2.DIV.redFn_frGL (β * Formalism.L2.DIV.intGL D.host.F D.host.E n (diagGL u)) PP ((diagGL u)⁻¹ * y * diagGL u)`. Establish `e4` using `Formalism.L2.DIV.redFn_frGL β PP y`.
-
-Rewrite `e3` using `[← e1]`. Rewrite using `[e3, e4, bc_conj, hred]`. Use `(congrArg (Formalism.L2.DIV.upperLeftBlock hr) e2).trans (upperLeftBlock_diagonal_conj_eq hr (dn PP) (d PP) (fun i => ?_) _)` and prove the remaining obligations. Use `show (if h : (Fin.castLE hr i).val < r then d PP ⟨(Fin.castLE hr i).val, h⟩ else 1) = d PP i`. Rewrite using `[dif_pos (show (Fin.castLE hr i).val < r from i.2)]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_rescale : ∀ {D : D7} {n r : ℕ} (hr : r ≤ n) (β : GL (Fin n) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)), IsFrame β Λ → ∀ (Pg : Finset (Pl D.host.E)) (d : ∀ PP : Pl D.host.E, Fin r → (kP PP)ˣ), ∃ β' : GL (Fin n) (EAf D), IsFrame β' Λ ∧ (∀ M, M ∈ St β' ↔ M ∈ St β) ∧ ∀ PP ∈ Pg, ∀ M ∈ St β, upperLeftBlock hr (redFn β' PP M) = (diagGL (d PP))⁻¹ * upperLeftBlock hr (redFn β PP M) * diagGL (d PP) := by
   intro D n r hr β Λ hβ Pg d

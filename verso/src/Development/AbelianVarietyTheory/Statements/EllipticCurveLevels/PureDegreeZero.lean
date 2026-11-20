@@ -69,12 +69,12 @@ def Packages : Prop :=
   Ex .csd ∧ Holds .csd .ss ∧ Holds .csd .dR ∧ Holds .csd .crys ∧ ∀ c, ClauseValidAtLevel .csd c
 
 /- English proof (translation)
-The claim follows from `Or.inl (Or.inl ⟨1, rfl⟩)`.
+Prove the first alternative.
 -/
 example (π : CuspSub E 3) (p : Prop) : GlobalTheory.CBGal.OddOrSlightlyReg π ∨ p := Or.inl (Or.inl ⟨1, rfl⟩)
 
 /- English proof (translation)
-Establish `h1 : (0 : ℝ) < |(d : ℝ)|` using `abs_pos.2 (by exact_mod_cast hd)`. Establish `h2 : (0 : ℝ) < (a : ℝ)` using `by exact_mod_cast ha`. Establish `h3 : (0 : ℝ) < |(d : ℝ)| * a` using `mul_pos h1 h2`. Rewrite using `[norm_one]`. Conclude with `⟨Real.rpow_lt_one_of_one_lt_of_neg hq (by linarith), Real.one_lt_rpow hq (by linarith)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 example (q : ℝ) (hq : 1 < q) (d : ℤ) (hd : d ≠ 0) (a : ℕ) (ha : 1 ≤ a) :
     q ^ (-(|(d : ℤ)| : ℝ) * (a : ℝ) / 2) < ‖(1 : ℂ)‖ ∧ ‖(1 : ℂ)‖ < q ^ ((|(d : ℤ)| : ℝ) * (a : ℝ) / 2) := by
@@ -85,7 +85,7 @@ example (q : ℝ) (hq : 1 < q) (d : ℤ) (hd : d ≠ 0) (a : ℕ) (ha : 1 ≤ a)
   exact ⟨Real.rpow_lt_one_of_one_lt_of_neg hq (by linarith), Real.one_lt_rpow hq (by linarith)⟩
 
 /- English proof (translation)
-Introduce `P AI hAI A h O _ _ _ Bw hj σ hσ hI hg wt hw g hdeg z hz`. Conclude with `(H.above P AI hAI w A h O Bw hj).sizeAbove σ hσ hI hg wt g hdeg z hz hw`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 example {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin a) (Qbar l)} {wt0 : ℤ}
     {HT : (E →+* Qbar l) → Multiset ℤ} (H : GlobalTheory.GalNarrow7.PropsN π χ ι r wt0 HT) (w : HeightOneSpectrum (𝓞 E)) :
@@ -94,7 +94,7 @@ example {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {ι : Qbar l ≃
   exact (H.above P AI hAI w A h O Bw hj).sizeAbove σ hσ hI hg wt g hdeg z hz hw
 
 /- English proof (translation)
-Introduce `P AI hAI A h O _ _ _ Bw hj σ hσ hI hg`. Conclude with `(H.above P AI hAI w A h O Bw hj).iwahori σ hσ hI hg`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 example {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin a) (Qbar l)} {wt0 : ℤ}
     {HT : (E →+* Qbar l) → Multiset ℤ} (H : GlobalTheory.GalNarrow7.PropsN π χ ι r wt0 HT) (w : HeightOneSpectrum (𝓞 E)) :
@@ -103,7 +103,7 @@ example {π : CuspSub E a} {χ : HChar (maximalRealSubfield E)} {ι : Qbar l ≃
   exact (H.above P AI hAI w A h O Bw hj).iwahori σ hσ hI hg
 
 /- English proof (translation)
-Introduce `w hl A h hm` and use `H w hl A h wt0 hw hm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {π : CuspSub E a} {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin a) (Qbar l)} {wt0 : ℤ}
     (H : ∀ w, Clause7At .pureDegreeZero π ι r w) (hw : IsWeight π wt0) :
@@ -113,7 +113,7 @@ example {π : CuspSub E a} {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin a) (
   fun w hl A h hm => H w hl A h wt0 hw hm
 
 /- English proof (translation)
-Introduce `hl A h wt hw` and use `H hl A h wt hw (hN A h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {π : CuspSub E a} {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin a) (Qbar l)} (w : HeightOneSpectrum (𝓞 E))
     (H : Clause7At .pureDegreeZero π ι r w)
@@ -124,7 +124,7 @@ example {π : CuspSub E a} {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin a) (
   fun hl A h wt hw => H hl A h wt hw (hN A h)
 
 /- English proof (translation)
-The claim follows from `H.2.2.2.2 .pureDegreeZero`.
+A detailed English derivation is pending.
 -/
 example (H : Packages) : ClauseValidAtLevel .csd .pureDegreeZero := H.2.2.2.2 .pureDegreeZero
 

@@ -13,11 +13,11 @@ namespace ObjectsChow
 open MvPolynomial Vertical Vertical.NormFormIrreducible
 
 /- English proof (translation)
-Use `conv_lhs => rw [g.as_sum]`. Use `conv_rhs => rw [g.as_sum]`. Rewrite using `[map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hdeg : ∑ j ∈ m.support, m j = d`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hg (mem_support_iff.mp hm)` as an intermediate fact. Rewrite `this` using `[Finsupp.weight_apply, Finsupp.sum]`. Simplify using `using this`. Rewrite using `[aeval_monomial, aeval_monomial]`. Simplify using `only [mul_pow]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finsupp.prod_mul, Finsupp.prod, Finset.prod_pow_eq_pow_sum, hdeg]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem aeval_smul_of_isHomogeneous {F K : Type*} [Field F] [Field K] [Algebra F K] {n d : ℕ}
     {g : MvPolynomial (Fin n) F} (hg : g.IsHomogeneous d) (c : K) (y : Fin n → K) :
@@ -37,49 +37,45 @@ theorem aeval_smul_of_isHomogeneous {F K : Type*} [Field F] [Field K] [Algebra F
   ring
 
 /- English proof (translation)
-Introduce `F _ _ n I i hI hdim hXi`. Take `⟨hfield, hfin⟩` from `hField F n I i hI hdim hXi`. Use `set J : Ideal (MvPolynomial (Fin n) F) := I ⊔ Ideal.span {X i - 1} with hJ`. Set `_ : Field (MvPolynomial (Fin n) F ⧸ J)` to `hfield.toField`. Set `L` to `MvPolynomial (Fin n) F ⧸ J`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `_ : FiniteDimensional F L` using `hfin`. Establish `_ : Algebra.IsAlgebraic F L` using `Algebra.IsAlgebraic.of_finite F L`. Set `K` to `AlgebraicClosure F`. Set `ξ : Fin n → L` to `fun j => Ideal.Quotient.mk J (X j)`. Establish `hξ : ∀ g : MvPolynomial (Fin n) F, aeval ξ g = Ideal.Quotient.mk J g`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Both sides reduce to the same expression. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p j hp => rw [map_mul, map_mul, hp, aeval_X]`. Establish `hξi : ξ i = 1`. Establish `: X i - 1 ∈ J` using `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Rewrite using `[← sub_eq_zero, ← map_one (Ideal.Quotient.mk J), ← map_sub]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set t : Fin n → F := Pi.single i 1 with ht_def`. Establish `ht : ∑ j, algebraMap F L (t j) * ξ j = 1`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by simp [ht_def, hj]) (fun h => absurd (Finset.mem_univ i) h)]`. Simplify using `[ht_def, hξi]`. Establish `hgen : Algebra.adjoin F (Set.range ξ) = ⊤`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hr : Set.range ξ = Ideal.Quotient.mkₐ F J '' Set.range X`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[hr, ← AlgHom.map_adjoin, MvPolynomial.adjoin_range_X, Algebra.map_top, AlgHom.range_eq_top]`. Conclude with `Ideal.Quotient.mkₐ_surjective F J`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f, hf⟩` from `chowFormExists F n 1 I hI hdim`. Establish `hhom : IsMultiHomog (chowDegree I 1) f` using `chowFormHomog F n 1 I f hf`. Establish `hfH : f.IsHomogeneous (chowDegree I 1)`. Introduce `m hm`. Establish `h` using `congrFun (hhom hm) 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h, Finsupp.weight_apply, Finsupp.weight_apply, Finsupp.sum, Finsupp.sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `hq0 : q.1 = 0` using `Subsingleton.elim _ _`. Simplify using `[groupWeight, hq0]`. Set `ι : Fin n → Fin 1 × Fin n` to `fun j => (0, j)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hsnd : ∀ p : MvPolynomial (Fin 1 × Fin n) F, rename ι (rename Prod.snd p) = p`. Introduce `p`. Rewrite using `[rename_rename]`. Use `rename_id_apply p` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `q`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `Prod.ext (Subsingleton.elim _ _) rfl`. Use `set f₀ := rename Prod.snd f with hf₀`. Use `set N : MvPolynomial (Fin n) F := normForm (R := F) L ξ with hN`. Establish `hprod : N.map (algebraMap F K) = ∏ σ : L →ₐ[F] K, embForm σ ξ` using `normForm_map_eq_prod ξ`. Establish `hdvd1 : f ∣ rename ι N`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(hf.2 _).1 fun u hu => ?_` and prove the remaining obligations. Take `⟨y, hy0, hyI, hyu⟩` from `hu`. Establish `hyi : y i ≠ 0` using `hCone F n I i hI hdim hXi K y hy0 hyI`. Set `ys : Fin n → K` to `fun j => (y i)⁻¹ * y j`. Establish `hker : J ≤ RingHom.ker (aeval (R` using `F) ys).toRingHom := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `sup_le (fun g hg => ?_) ((Ideal.span_le).mpr ?_)` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, ← sum_homogeneousComponent g, map_sum]`. Use `Finset.sum_eq_zero fun d _ => ?_` and prove the remaining obligations. Rewrite using `[aeval_smul_of_isHomogeneous (homogeneousComponent_isHomogeneous d g), hyI _ (hI.isHomog g hg d), mul_zero]`. Introduce and unpack `_ rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[ys, hyi]`. Set `σ : L →ₐ[F] K` to `Ideal.Quotient.liftₐ J (aeval ys) fun g hg => hker hg`. Establish `hσ : ∀ j, σ (ξ j) = ys j` using `fun j => (Ideal.Quotient.lift_mk J _ _).trans (by simp [ys])`. Rewrite using `[aeval_rename, aeval_def, ← eval_map, hprod, eval_prod]`. Use `Finset.prod_eq_zero (Finset.mem_univ σ) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eval_embForm]`. Simplify using `only [hσ, ys, Function.comp_apply, ι]`. Use `hyu 0` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `_ = 0 := by rw [this, mul_zero]`. Establish `hdvd2 : ∀ σ : L →ₐ[F] K, embForm σ ξ ∣ f₀.map (algebraMap F K)`. Introduce `σ`. Establish `hprime : Prime (embForm σ ξ)` using `(irreducible_embForm σ ht).prime`. Establish `hspan : (Ideal.span {embForm σ ξ}).IsPrime` using `(Ideal.span_singleton_prime hprime.ne_zero).mpr hprime`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.mem_span_singleton, ← hspan.radical, ← vanishingIdeal_zeroLocus_eq_radical (K := K), mem_vanishingIdeal_iff]`. Introduce `u hu`. Establish `hu0 : ∑ j, u j * σ (ξ j) = 0`. Use `hu _ (Ideal.mem_span_singleton_self _)` as an intermediate fact. Rewrite `this` using `[aeval_eq_eval, eval_embForm]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[aeval_eq_eval, eval_map, ← aeval_def, hf₀, aeval_rename]`. Use `(hf.2 f).2 dvd_rfl _ ⟨fun j => σ (ξ j), fun h => ?_, fun g hg => ?_, fun k => ?_⟩` and prove the remaining obligations. Use `congrFun h i` as an intermediate fact. Simplify using `[hξi] at this`. Rewrite using `[← comp_aeval_apply, hξ, Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_sup_left hg), map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[Subsingleton.elim k 0]`. Simplify using `using hu0`. Establish `hdvd3 : N.map (algebraMap F K) ∣ f₀.map (algebraMap F K)`. Rewrite using `[hprod]`. Conclude with `prod_embForm_dvd hgen ht hdvd2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hdvd4 : f₀ ∣ N`. Use `map_dvd (rename Prod.snd) hdvd1` as an intermediate fact. Rewrite `this` using `[rename_rename, show Prod.snd ∘ ι = id from rfl, rename_id_apply]`. Then use the resulting hypothesis. Establish `hf0 : f₀ ≠ 0` using `fun h => hf.1 (by rw [← hsnd f, ← hf₀, h, map_zero])`. Establish `hmap0 : f₀.map (algebraMap F K) ≠ 0` using `fun h => hf0 (map_injective _ (algebraMap F K).injective (by rw [h, map_zero]))`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨h, hh⟩` from `hdvd4`. Take `⟨q, hq⟩` from `hdvd3`. Establish `hq1 : q * h.map (algebraMap F K) = 1`. Apply `mul_left_cancel₀ hmap0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
-
-Take `⟨c, -, hc⟩` from `isUnit_iff_eq_C_of_isReduced.mp (isUnit_iff_exists_inv.mpr ⟨_, hq1⟩)`. Establish `hlin : ∀ σ : L →ₐ[F] K, (embForm σ ξ).IsHomogeneous 1` using `fun σ => IsHomogeneous.sum _ _ _ fun j _ => by`. Simplify using `using (isHomogeneous_X K j).mul (isHomogeneous_C _ (σ (ξ j)))`. Establish `h1 : (f₀.map (algebraMap F K)).IsHomogeneous (∑ _σ : L →ₐ[F] K, 1 + 0)`. Rewrite using `[hq, hprod, hc]`.
-
-Conclude with `(IsHomogeneous.prod _ _ _ fun σ _ => hlin σ).mul (isHomogeneous_C _ c)`. Establish `h2 : (f₀.map (algebraMap F K)).IsHomogeneous (chowDegree I 1)` using `hfH.rename_isHomogeneous.map _`. Rewrite using `[h2.inj_right h1 hmap0]`. Simplify using `only [Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_one, add_zero]`. Conclude with `AlgHom.card F L K`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ChowDegreeClosedPoint.proof (hField : ClosedPointChartField.Statement)
     (hCone : ClosedPointConeCoord.Statement) : ChowDegreeClosedPoint.Statement := by

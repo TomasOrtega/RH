@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `P _ g`. Rewrite using `[ENNReal.tsum_eq_iSup_sum]`. Use `iSup_le fun s => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum_of_subset fun x hx => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Fintype.mem_piFinset.2 fun p => Finset.mem_image_of_mem _ hx`. Use `_ = ∏ p : P, ∑ n ∈ s.image (fun y : P → ℤ => y p), g p n := (Finset.prod_univ_sum _ _).symm`. Use `_ ≤ ∏ p : P, ∑' (n : ℤ), g p n := Finset.prod_le_prod' fun p _ => ENNReal.sum_le_tsum _`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.MultiDimensional.multi_dim :
     ∀ {P : Type} [inst : Fintype P] (g : P → ℤ → ENNReal), ∑' (x : P → ℤ), ∏ p : P, g p (x p) ≤ ∏ p : P, ∑' (n : ℤ), g p n := by

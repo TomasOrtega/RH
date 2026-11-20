@@ -16,7 +16,7 @@ namespace GlobalTheory.UPel.HT.MoritaChar0
 variable {p : ℕ} [Fact p.Prime] (D : Datum p)
 
 /- English proof (translation)
-Rewrite using `[← (integralBasis D.F).sum_repr x, map_sum]`. Rewrite using `[AddSubmonoidClass.coe_finset_sum]`. Use `Subalgebra.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Subalgebra.coe_smul, integralBasis_apply, D.actF_coe, D.coe_actInt]`. Conclude with `Subalgebra.smul_mem _ (D.actQ_mem_algO _) _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actF_mem_algO (x : D.F) : ((D.actF x : D.endO) : Module.End ℚ D.VQ) ∈ D.algO := by
   rw [← (integralBasis D.F).sum_repr x, map_sum]
@@ -29,7 +29,7 @@ def toAlgO : D.F →+* D.algO :=
   (D.endO.val.toRingHom.comp D.actF.toRingHom).codRestrict D.algO (actF_mem_algO D)
 
 /- English proof (translation)
-Establish `h : ((D.actF x : D.endO) : Module.End ℚ D.VQ) ∈ Subalgebra.centralizer ℚ (D.algO : Set (Module.End ℚ D.VQ))`. Rewrite using `[D.centralizer_algO]`. Conclude with `(D.actF x).2`. Rewrite `h` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `Subtype.ext (h a a.2).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toAlgO_comm (x : D.F) (a : D.algO) : toAlgO D x * a = a * toAlgO D x := by
   have h : ((D.actF x : D.endO) : Module.End ℚ D.VQ) ∈ Subalgebra.centralizer ℚ (D.algO : Set (Module.End ℚ D.VQ)) := by
@@ -53,7 +53,7 @@ instance centralFAlgO : Algebra.IsCentral D.F D.algO := by
   exact Algebra.mem_bot.2 ⟨c, Subtype.ext hc.symm⟩
 
 /- English proof (translation)
-Establish `h` using `Module.finrank_mul_finrank ℚ D.F D.algO`. Rewrite `h` using `[D.finrank_algO, mul_comm (D.m ^ 2)]`. Conclude with `Nat.eq_of_mul_eq_mul_left Module.finrank_pos h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_F_algO : Module.finrank D.F D.algO = D.m ^ 2 := by
   have h := Module.finrank_mul_finrank ℚ D.F D.algO
@@ -61,9 +61,9 @@ theorem finrank_F_algO : Module.finrank D.F D.algO = D.m ^ 2 := by
   exact Nat.eq_of_mul_eq_mul_left Module.finrank_pos h
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Assume the negation of the conclusion as `h0`. Establish `hne` using `Ideal.comap_ne_bot_of_integral_mem (R := ℤ) (I := RingHom.ker (algebraMap (𝓞 K) k)) h0 (RingHom.mem_ker.2 hc) (Algebra.IsIntegral.isIntegral c)`. Apply `hne` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[RingHom.comap_ker]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 (RingHom.injective_int _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algebraMap_injective_of_charZero (K : Type) [Field K] [NumberField K] (k : Type) [Field k]
     [CharZero k] [Algebra (𝓞 K) k] : Function.Injective (algebraMap (𝓞 K) k) := by
@@ -127,15 +127,13 @@ namespace GlobalTheory.UPel.HT.MoritaChar0
 attribute [local instance] algebraFAlgO algebraOFAlgO
 
 /- English proof (translation)
-Introduce `p _ D k _ _ _ _`. Establish `hinj` using `algebraMap_injective_of_charZero D.F k`. Use `letI : Algebra D.F k := (IsFractionRing.lift hinj).toAlgebra`. Use `haveI : IsScalarTower (𝓞 D.F) D.F k := IsScalarTower.of_algebraMap_eq fun c => (IsFractionRing.lift_algebraMap hinj c).symm`. Use `haveI : SMulCommClass D.F (𝓞 D.F) k := ⟨fun a b x => by simp only [Algebra.smul_def]; ring⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : IsBaseChange D.F (ordToAlgO D).toLinearMap` using `IsLocalizedModule.isBaseChange (nonZeroDivisors (𝓞 D.F)) D.F _`. Establish `hk : IsBaseChange k (TensorProduct.mk D.F k D.algO 1)` using `TensorProduct.isBaseChange D.F D.algO k`. Establish `hc` using `hF.comp hk`. Set `φ : (k ⊗[𝓞 D.F] D.O) ≃ₐ[k] (k ⊗[D.F] D.algO)` to `AlgEquiv.ofLinearEquiv hc.equiv (by`. Rewrite using `[Algebra.TensorProduct.one_def, IsBaseChange.equiv_tmul]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Algebra.TensorProduct.one_def])`. Use the proof step `(LinearMap.map_mul_of_map_mul_tmul fun a₁ a₂ b₁ b₂ => by`. Simplify using `[IsBaseChange.equiv_tmul, Algebra.TensorProduct.tmul_mul_tmul, TensorProduct.smul_tmul'])`. Use `haveI : IsSimpleRing D.algO := D.algO_simple`. Take `⟨n, _, ⟨e⟩⟩` from `IsSimpleRing.exists_algEquiv_matrix_of_isAlgClosed k (k ⊗[D.F] D.algO)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Establish `hn : n = D.m`. Establish `h1` using `GroundTheory.Brauer.finrank_baseChange_eq D.F k D.algO`. Rewrite `h1` using `[e.toLinearEquiv.finrank_eq, Module.finrank_matrix, Module.finrank_self, finrank_F_algO, Fintype.card_fin]`. Conclude with `Nat.mul_self_inj.mp (by simpa [pow_two] using h1)`. Substitute `hn` using the available equality.
-
-Conclude with `⟨φ.trans e⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tensor_order_algEquiv_matrix : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (k : Type) [Field k]
     [IsAlgClosed k] [CharZero k] [Algebra (𝓞 D.F) k],

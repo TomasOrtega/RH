@@ -16,20 +16,18 @@ namespace GlobalTheory.Mem.WeilTwist
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨a, aval, -⟩` from `GlobalTheory.Member.exists_muVal D V 1 (isHC_one D).1 (fun _ => rfl)`. Conclude with `aval.1 g`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isDetRoot (V : HSp D) (g : GA D V) : ∃ x, IsDetRoot V g x := by
   obtain ⟨a, aval, -⟩ := GlobalTheory.Member.exists_muVal D V 1 (isHC_one D).1 (fun _ => rfl)
   exact aval.1 g
 
 /- English proof (translation)
-Take `⟨⟨C, hC⟩, -⟩` from `GlobalTheory.Mem.HeckeExp.hecke_exp_laws D`. Establish `hmul : ∀ a b : IdC D, IsHC D a → IsHC D b → IsHC D (a * b)` using `fun a b k l => (hC _).1 (C.mul_mem ((hC _).2 k) ((hC _).2 l))`. Establish `ha' : AdmE V W (χ * ν) (χ' * ν')` using `⟨ha.1, hmul _ _ ha.2.1 hν, hmul _ _ ha.2.2.1 hν', resEta_mul ha.2.2.2.1 rν, resEta_mul ha.2.2.2.2 rν'⟩`. Take `⟨o, hd, ht⟩` from `GlobalTheory.Mem.WeilOriented.exists_isWeilDatumO_of_rank_eq D ψ hψ V W χ χ' om ha ho`. Take `⟨o', hd', ht'⟩` from `GlobalTheory.Mem.WeilOriented.exists_isWeilDatumO_of_rank_eq D ψ hψ V W _ _ om' ha' ho'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨o'', hd'', hv⟩` from `GlobalTheory.WeilChange.exists_weilDatum_twist D ψ hψ V W χ χ' ν ν' o hd hν.1 hν'.1 rν rν'`. Take `⟨e, -, -, he, -, -, -, hth, -⟩` from `GlobalTheory.OrientedCoord.exists_coord D V W ha.1.le`. Use `LinearMap.ext fun Φ => Subtype.ext (funext fun w => ?_)` and prove the remaining obligations. Establish `hΦ : IsThetaFunO ψ V W fun x => Φ.1 (toTWsmall V W x)`. Simplify using `only [← he]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(hth ψ _).2 (mem_ThS.1 Φ.2)`. Establish `k` using `GlobalTheory.T.weilDatum_unique_on_thetaFunctions D ψ hψ V W _ _ o' o'' hd' hd'' (g, h) _ hΦ`. Rewrite `k` using `[ht', hv g h x y hx hy, LinearMap.smul_apply, ht]`. Establish `k2` using `congrFun k (e.symm w)`. Simplify using `only [← he, e.apply_symm_apply, Pi.smul_apply] at k2`.
-
-Conclude with `k2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twist_both {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {V W : HSp D} {χ χ' ν ν' : IdC D}
     (ha : AdmE V W χ χ') (hν : IsHC D ν) (rν : ResEta D ν 0) (hν' : IsHC D ν') (rν' : ResEta D ν' 0)
@@ -57,9 +55,9 @@ theorem twist_both {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) 
   exact k2
 
 /- English proof (translation)
-Introduce `D ψ hψ V W χ χ' ν ha hν rν om ho`. Establish `r1 : ResEta D 1 0` using `⟨rν.1, fun _ _ _ => by simp⟩`. Use `⟨fun om' ho' g h x hx => ?_, fun om' ho' g h x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `exists_isDetRoot W h`. Use `twist_both hψ ha (isHC_one D) r1 hν rν ho (om' := om') (by rwa [mul_one]) hx hy` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[MonoidHom.one_apply, mul_one]`. Then use the resulting hypothesis. Take `⟨y, hy⟩` from `exists_isDetRoot V g`. Use `twist_both hψ ha hν rν (isHC_one D) r1 ho (om' := om') (by rwa [mul_one]) hy hx` as an intermediate fact. Rewrite `this` using `[MonoidHom.one_apply, inv_one, one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem weilTwEq : ∀ D : D7, WeilTwEq D := by
   intro D ψ hψ V W χ χ' ν ha hν rν om ho

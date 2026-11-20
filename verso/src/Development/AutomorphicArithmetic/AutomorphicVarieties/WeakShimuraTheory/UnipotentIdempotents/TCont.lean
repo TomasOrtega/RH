@@ -10,7 +10,7 @@ namespace UpperTheory.V.Ws.Lk
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c}
 
 /- English proof (translation)
-Rewrite using `[T.hL]`. Conclude with `le_sup_right`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem K_le (T : Tower D) : T.K ≤ T.L := by
   rw [T.hL]

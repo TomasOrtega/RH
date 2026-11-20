@@ -23,27 +23,25 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hlam0 : lamT lam 0 = lam` using `by simp [lamT]`. Establish `hanti : Antitone lam` using `hlam.1.antitone`. Establish `hcP : 0 < cPQ ε` using `lt_of_lt_of_le (inv_pos.mpr (pow_pos Real.pi_pos _)) (inv_pi_pow_le_cPQ ε)`. Establish `hpos : ∀ t, (0:ℝ) < Module.finrank ℂ (T t).V` using `fun t => by`. Establish `: Nontrivial (T t).V` using `⟨⟨(T t).w, 0, fun h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(T t).w_norm`. Rewrite `h2` using `[h, norm_zero]`. Conclude with `zero_ne_one h2⟩⟩`. Conclude with `Module.finrank_pos` after adjusting the coercions. Establish `h1 : ∀ t, dfun (lamT lam t) / Vand (lamT lam t) = dfun (lamT lam 0) / Vand lam` using `fun t => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hlam0]`. Conclude with `fd_step dfun hstep hlam hgap t`. Establish `hd0 : 0 < dfun (lamT lam 0)`. Take `⟨t, ht⟩` from `hd.exists`. Establish `hv1 : 0 < Vand (lamT lam t)` using `vand_pos (isHCParam_lamT hlam t).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv0 : 0 < Vand lam` using `vand_pos hlam.1`. Establish `e : dfun (lamT lam 0) = Vand lam * (dfun (lamT lam t) / Vand (lamT lam t))`. Rewrite using `[h1 t]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Use `ht.1` as an intermediate fact. Check the signs of the components of the expression. Establish `hup : Filter.limsup (fun t : ℕ => ENNReal.ofReal ((t : ℝ) ^ (pOf ε * qOf ε) * (Module.finrank ℂ (T t).V : ℝ) / dfun (lamT lam t))) Filter.atTop ≤ ENNReal.ofReal (cPQ ε * PiW ε 0)`. Establish `hev : ∀ᶠ t : ℕ in Filter.atTop, ENNReal.ofReal ((t : ℝ) ^ (pOf ε * qOf ε) * (Module.finrank ℂ (T t).V : ℝ) / dfun (lamT lam t)) ≤ ENNReal.ofReal (cPQ ε) * (ENNReal.ofReal ((t : ℝ) ^ (pOf ε * qOf ε)) * ∫⁻ z : PCoord ε → ℂ, ENNReal.ofReal (Real.exp (-2 * Ph (lamT lam t) (pmat z)) * …` using `by filter_upwards [hF, hd] with t hFt hdt`. Establish `L6` using `lemma6c hFt hdt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdt0` using `hdt.1`. Establish `hD` using `hpos t`. Establish `hA : 0 ≤ (t:ℝ) ^ (pOf ε * qOf ε) * (Module.finrank ℂ (T t).V : ℝ)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_mul hA]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ENNReal.ofReal ((t:ℝ) ^ (pOf ε * qOf ε) * (Module.finrank ℂ (T t).V : ℝ)) * (ENNReal.ofReal (cPQ ε / Module.finrank ℂ (T t).V) * ∫⁻ z : PCoord ε → ℂ, ENNReal.ofReal (Real.exp (-2 * Ph (lamT lam t) (pmat z)) * Jac z)) := by gcongr`. Use `_ = _ := by`. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul hA]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (t:ℝ) ^ (pOf ε * qOf ε) * (Module.finrank ℂ (T t).V : ℝ) * (cPQ ε / Module.finrank ℂ (T t).V) = cPQ ε * (t:ℝ) ^ (pOf ε * qOf ε)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e2, ENNReal.ofReal_mul hcP.le, mul_assoc]`. Use `le_trans (Filter.limsup_le_limsup hev) ?_` and prove the remaining obligations. Rewrite using `[ENNReal.limsup_const_mul_of_ne_top ENNReal.ofReal_ne_top, ENNReal.ofReal_mul hcP.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `gcongr`. Conclude with `formal_degree_limsup_upper_bound hanti`. Establish `hlow : ENNReal.ofReal (cPQ ε * PiW ε 0) ≤ Filter.liminf (fun t : ℕ => ENNReal.ofReal ((t : ℝ) ^ (pOf ε * qOf ε) * (Module.finrank ℂ (T t).V : ℝ) / dfun (lamT lam t))) Filter.atTop`. Establish `hL` using `formal_degree_liminf_lower_bound T (matrix_coefficient_pointwise_limit hB3 H σ T j hF hsm)`. Establish `hev : ∀ᶠ t : ℕ in Filter.atTop, ENNReal.ofReal (cPQ ε) * (ENNReal.ofReal ((t : ℝ) ^ (pOf ε * qOf ε)) * ∫⁻ z : PCoord ε → ℂ, ENNReal.ofReal (‖⟪(T t).w, fF ε (lamT lam t) (T t) (pmat z) (T t).w⟫_ℂ‖ ^ 2 * Jac z)) ≤ ENNReal.ofReal ((t : ℝ) ^ (pOf ε * qOf ε) * (Module.finrank ℂ (T t). …` using `by filter_upwards [hF, hd] with t hFt hdt`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `F3` using `lintegral_fF_coeff_sq_le_finrank_div_fdeg hFt hdt`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ENNReal.ofReal ((t : ℝ) ^ (pOf ε * qOf ε)) * ENNReal.ofReal ((Module.finrank ℂ (T t).V : ℝ) / dfun (lamT lam t)) := by gcongr`. Use `_ = _ := by rw [← ENNReal.ofReal_mul (by positivity), mul_div_assoc]`.
-
-Use `le_trans ?_ (Filter.liminf_le_liminf hev)` and prove the remaining obligations. Rewrite using `[ENNReal.liminf_const_mul_of_ne_top ENNReal.ofReal_ne_top, ENNReal.ofReal_mul hcP.le]`. Use `gcongr`. Use `formal_degree_constant_eq hlam (fun t => dfun (lamT lam t)) T h1 hd0 hup hlow` as an intermediate fact. Simplify `this` using `only [hlam0]`.
+A detailed English derivation is pending.
 -/
 theorem thmFD (hB3 : Lap.Base.TangentPairingStatement) {ε : Fin n → Bool} {lam : Fin n → ℝ} {h : ℝ} (hp : 1 ≤ pOf ε)
     (hq : 1 ≤ qOf ε) (hlam : IsHCParam lam) (hgap : GapAtLeast ε lam h) (hh : thrS ε + 1 < h)

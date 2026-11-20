@@ -12,13 +12,13 @@ noncomputable section
 namespace GlobalTheory.ArchSch
 
 /- English proof (translation)
-Set `η : mixedEmbedding.mixedSpace F` to `(fun i => (ξ.1 i)⁻¹, fun i => (ξ.2 i)⁻¹)`. Establish `h1 : ξ * η * ξ = ξ`. Use extensionality with `i`. Apply the tactic sequence `by_cases hi : ξ.1 i = 0 <;> simp [η, hi]`. Apply the tactic sequence `by_cases hi : ξ.2 i = 0 <;> simp [η, hi]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2 : IsIdempotentElem (Algebra.lmul ℝ (mixedEmbedding.mixedSpace F) (ξ * η))`. Unfold `IsIdempotentElem`. Rewrite using `[← map_mul, ← mul_assoc, h1]`. Establish `h3` using `h η`. Rewrite `h3` using `[Algebra.trace_apply]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : Algebra.lmul ℝ (mixedEmbedding.mixedSpace F) (ξ * η) = 0`. Establish `hp` using `(LinearMap.IsIdempotentElem.isProj_range _ h2).trace`. Rewrite `hp` using `[h3]`. Establish `h5 : Module.finrank ℝ (LinearMap.range (Algebra.lmul ℝ (mixedEmbedding.mixedSpace F) (ξ * η))) = 0`. Conclude with `hp.symm` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `LinearMap.range_eq_bot.1 (Submodule.finrank_eq_zero.1 h5)`. Establish `h6` using `LinearMap.congr_fun h4 ξ`. Rewrite using `[← h1]`. Simplify using `using h6`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem trAE_mixed_nondeg (F : Type) [Field F] [NumberField F] (ξ : mixedEmbedding.mixedSpace F)
     (h : ∀ η : mixedEmbedding.mixedSpace F, Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (ξ * η) = 0) : ξ = 0 := by
@@ -44,9 +44,9 @@ theorem trAE_mixed_nondeg (F : Type) [Field F] [NumberField F] (ξ : mixedEmbedd
   simpa using h6
 
 /- English proof (translation)
-Establish `h1 : a.1 = 0`. Unfold `evI at h`. Conclude with `(map_eq_zero_iff _ (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective).1 h`. Establish `h2 : a.2 = 0`. Establish `h3` using `ha (((0 : Ainf F), (1 : Af F)) : Ainf F × Af F) (by unfold evI; exact map_zero _)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (1 : Af F) * a.2 = 0` using `congrArg Prod.snd h3`. Rewrite `h4` using `[one_mul]`. Then use the resulting hypothesis. Conclude with `Prod.ext h1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem trAE_eq_zero (F : Type) [Field F] [NumberField F] (a : AF F) (ha : ∀ u : AF F, evI F u = 0 → u * a = 0)
     (h : evI F a = 0) : a = 0 := by
@@ -60,23 +60,23 @@ theorem trAE_eq_zero (F : Type) [Field F] [NumberField F] (a : AF F) (ha : ∀ u
   exact Prod.ext h1 h2
 
 /- English proof (translation)
-Unfold `evI`. Conclude with `map_mul (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem trAE_evI_mul (F : Type) [Field F] [NumberField F] (a b : AF F) : evI F (a * b) = evI F a * evI F b := by
   unfold evI
   exact map_mul (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1
 
 /- English proof (translation)
-The claim follows from `(InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply ξ`.
+A detailed English derivation is pending.
 -/
 theorem trAE_evI_liftA (F : Type) [Field F] [NumberField F] (ξ : mixedEmbedding.mixedSpace F) :
     evI F (liftA F ξ) = ξ :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply ξ
 
 /- English proof (translation)
-Establish `h1 : u.1 = 0`. Unfold `evI at hu`. Conclude with `(map_eq_zero_iff _ (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective).1 hu`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * _ = 0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, zero_mul]`. Express the relevant statement in the definitionally equal form `u.2 * 0 = 0`. Rewrite using `[mul_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trAE_mul_liftA (F : Type) [Field F] [NumberField F] (ξ : mixedEmbedding.mixedSpace F) (u : AF F)
     (hu : evI F u = 0) : u * liftA F ξ = 0 := by
@@ -90,9 +90,9 @@ theorem trAE_mul_liftA (F : Type) [Field F] [NumberField F] (ξ : mixedEmbedding
     rw [mul_zero]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (Algebra.TensorProduct.basis A b).sum_repr β]`. Rewrite using `[Finset.sum_mul, map_sum]`. Establish `key : ∀ i, Algebra.trace A (A ⊗[F] E) ((Algebra.TensorProduct.basis A b) i * (1 ⊗ₜ[F] b.traceDual j)) = if i = j then 1 else 0`. Introduce `i`. Rewrite using `[Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange, ← Algebra.trace_apply, b.trace_mul_traceDual]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [smul_mul_assoc, map_smul, key, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trAE_trace_dual {F E A ι : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     [Algebra.IsSeparable F E] [CommRing A] [Algebra F A] [Fintype ι] [DecidableEq ι] (b : Module.Basis ι F E)
@@ -110,13 +110,11 @@ theorem trAE_trace_dual {F E A ι : Type} [Field F] [Field E] [Algebra F E] [Fin
     Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis F E`. Apply `(Algebra.TensorProduct.basis (AF F) b).repr.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use `ext1 j`. Rewrite using `[Finsupp.zero_apply]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `trAE_eq_zero` to reduce the goal to its premises. Introduce `u hu`. Establish `h1` using `congrArg (fun z => (Algebra.TensorProduct.basis (AF F) b).repr z j) (hβ u hu)`. Simplify using `using h1`. Apply `trAE_mixed_nondeg` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `η`. Establish `h2` using `h (liftA F η • ((1 : AF F) ⊗ₜ[F] b.traceDual j)) (by`. Introduce `u hu`. Rewrite using `[smul_smul, trAE_mul_liftA F η u hu, zero_smul])`. Rewrite `h2` using `[mul_smul_comm, map_smul, trAE_trace_dual, smul_eq_mul, trAE_evI_mul, trAE_evI_liftA, mul_comm]`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trAE_nondeg {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (β : AE F E)
     (hβ : At (evI F) β)

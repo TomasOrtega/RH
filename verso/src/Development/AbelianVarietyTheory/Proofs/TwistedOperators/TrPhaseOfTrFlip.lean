@@ -43,7 +43,7 @@ variable {k : Type} {_ : Field k} {_ : ValuativeRel k} {_ : TopologicalSpace k} 
   {_ : MeasurableSpace k} {_ : BorelSpace k} {K : Type} [Field K] (σ : K →+* ℂ)
 
 /- English proof (translation)
-Substitute `hΓ hψ hν hk hc` using the available equality. Take `rfl` from `eq_of_heq hJ`. Take `rfl` from `eq_of_heq hT`. Take `rfl` from `eq_of_heq hβ`. Conclude with `⟨Iff.rfl, Iff.rfl⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem congrW {Γ Γ' : Grid k} (hΓ : Γ = Γ') {hs : 1 ≤ Γ.s} {hs' : 1 ≤ Γ'.s} {J : Γ.Level} {J' : Γ'.Level} (hJ : HEq J J')
     {ψ ψ' : AddChar k Circle} (hψ : ψ = ψ') {ν ν' : Measure k} (hν : ν = ν') {keep keep' : Bool} (hk : keep = keep')
@@ -64,7 +64,7 @@ def castCos {Γ Γ' : Grid k} (hΓ : Γ = Γ') {hs : 1 ≤ Γ.s} {hs' : 1 ≤ Γ
   exact β
 
 /- English proof (translation)
-Substitute `hΓ` using the available equality. Take `rfl` from `eq_of_heq hJ`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem castCos_heq {Γ Γ' : Grid k} (hΓ : Γ = Γ') {hs : 1 ≤ Γ.s} {hs' : 1 ≤ Γ'.s} {J : Γ.Level} {J' : Γ'.Level}
     (hJ : HEq J J') (β : Cosets hs J) : HEq (castCos hΓ (hs' := hs') hJ β) β := by
@@ -77,25 +77,21 @@ end Loc2
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hF X X' T T' L L' sc G G' W W' S S' μ₀ μ₀' ι hA M σ hS t' Φ' β' hβ'`. Take `⟨Φ, hΦ⟩` from `hF X X' T T' L L' sc G G' W W' S S' μ₀ μ₀' ι hA Φ'`. Establish `hpre` using `hA.l.pre`. Establish `hv0` using `hA.g.v0`. Establish `hw` using `hA.g.w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ` using `hA.l.Q t'`. Establish `hψ` using `hA.w.ψ`. Use `clear hF hA`. Break down `X with ⟨⟨P⟩, _, _, _, _, _, _⟩` into its components or cases. Break down `X' with ⟨⟨P'⟩, _, _, _, _, _, _⟩` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify by unfolding definitions.
 
-Simplify using `only at hpre`. Substitute `hpre` using the available equality. Use `replace hv0 := eq_of_heq hv0`. Use `replace hw := eq_of_heq hw`. Use `replace hQ := eq_of_heq hQ`.
+Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `replace hψ := eq_of_heq hψ`. Establish `hW0 : G'.pl.W0 = G.pl.W0`. Unfold `Places.W0 Places.S0`. Rewrite using `[hv0, hw]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hloc : locPl G' t' = locPl G (ι t')`. Unfold `locPl`. Rewrite using `[hW0, hQ]`. Both sides reduce to the same expression. Establish `hcos : ∀ w, cosExp G' w = cosExp G w` using `fun w => by`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `cosExp Places.depth`. Rewrite using `[hW0, hv0]`. Both sides reduce to the same expression. Establish `hkeep : ∀ w, keepAt G' w = keepAt G w` using `fun w => by`. Unfold `keepAt`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hW0]`. Both sides reduce to the same expression. Establish `hpsi : ∀ w, psiAt W' w = psiAt W w` using `fun w => by`. Use extensionality with `x`. Use `show (W'.ψ _ : ℂ) = W.ψ _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[hψ]`. Both sides reduce to the same expression. Establish `hmem : ∀ w, w ∈ locPl G (ι t') → w ∈ locPl G' t'` using `fun w h => hloc ▸ h`. Establish `hF3` using `fun w (h : w ∈ locPl G' t') => hΦ t' w w HEq.rfl h`. Establish `hΓ : ∀ w (h : w ∈ locPl G' t'), locGrid G' t' w = locGrid G (ι t') w` using `fun w h => eq_of_heq (hF3 w h).1`.
-
-Set `β : CosFam G (ι t')` to `fun w => castCos (hΓ w.1 (hmem _ w.2)) (hF3 w.1 (hmem _ w.2)).2.1 (β' ⟨w.1, hmem _ w.2⟩)`. Establish `hβh : ∀ w : locPl G (ι t'), HEq (β' ⟨w.1, hmem _ w.2⟩) (β w)` using `fun w => (castCos_heq _ _ _).symm`. Establish `hβ : β ∈ S.supp (ι t') Φ` using `fun w => ((congrW σ (hΓ w.1 (hmem _ w.2)) (hF3 w.1 (hmem _ w.2)).2.1 (hpsi w.1) rfl (hkeep w.1) (unifAt w.1) (hcos w.1) (hF3 w.1 (hmem _ w.2)).2.2 (hβh w)).2).mp (hβ' ⟨w.1, hmem _ w.2⟩)`. Introduce `w'`. Establish `hw' : w'.1 ∈ locPl G (ι t')` using `hloc ▸ w'.2`.
-
-Conclude with `((congrW σ (hΓ w'.1 w'.2) (hF3 w'.1 w'.2).2.1 (hpsi w'.1) rfl (hkeep w'.1) (unifAt w'.1) (hcos w'.1) (hF3 w'.1 w'.2).2.2 (hβh ⟨w'.1, hw'⟩)).1).mpr (hS (ι t') Φ β hβ ⟨w'.1, hw'⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem trPhase_of_trFlip : TrFlip → TrPhase := by
   intro hF X X' T T' L L' sc G G' W W' S S' μ₀ μ₀' ι hA M σ hS t' Φ' β' hβ'

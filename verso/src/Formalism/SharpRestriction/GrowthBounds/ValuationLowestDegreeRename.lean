@@ -202,9 +202,9 @@ def TypeDecompositionsCommute (_D : Formalism.BasicNotions.D7) : Prop :=
       lam1S LL S (MvPolynomial.map (algebraMap O (KK O)) A) = lam1S LL S A)
 
 /- English proof (translation)
-Establish `h : (twistSub (R` using `R) LL S j).comp (rename (fun v : ι × Fin n => (f v.1, v.2))).toRingHom = (rename (fun v : ι × Fin n => (f v.1, v.2))).toRingHom.comp (twistSub (R := R) (⟨fun i => LL.vec (f i)⟩ : Letters ι) (f ⁻¹' S) j) := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[twistSub]`. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, rename_X, twistSub, eval₂Hom_X', Set.mem_preimage]`. Apply the tactic sequence `split_ifs <;> simp_all [map_sum, rename_X]`. Conclude with `RingHom.congr_fun h A`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem twistSub_rename {R : Type} [CommRing R] {ι κ : Type} (f : ι → κ) {n : ℕ} (LL : Letters κ) (S : Set κ)
     (j : Fin n) (A : MvPolynomial (ι × Fin n) R) :
@@ -223,9 +223,9 @@ theorem twistSub_rename {R : Type} [CommRing R] {ι κ : Type} (f : ι → κ) {
   exact RingHom.congr_fun h A
 
 /- English proof (translation)
-Unfold `sDegs`. Rewrite using `[twistSub_rename f LL S j A]`. Establish `hg : Function.Injective (fun v : ι × Fin n => (f v.1, v.2))`. Introduce `a b h`. Simplify using `only [Prod.mk.injEq] at h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Prod.ext (hf h.1) h.2`. Rewrite using `[MvPolynomial.support_rename_of_injective hg, Finset.image_biUnion]`. Apply `Finset.biUnion_congr rfl` to reduce the goal to its premises. Introduce `m _`. Rewrite using `[MvPolynomial.coeff_rename_mapDomain _ hg]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sDegs_rename {R : Type} [CommRing R] {ι κ : Type} (f : ι → κ) (hf : Function.Injective f) {n : ℕ}
     (LL : Letters κ) (S : Set κ) (j : Fin n) (A : MvPolynomial (ι × Fin n) R) :
@@ -244,7 +244,7 @@ theorem sDegs_rename {R : Type} [CommRing R] {ι κ : Type} (f : ι → κ) (hf 
   rw [MvPolynomial.coeff_rename_mapDomain _ hg]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `valS`. Rewrite using `[sDegs_rename f hf]`. Unfold `lam1S`. Rewrite using `[sDegs_rename f hf]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_lowest_degree_rename (R : Type) [CommRing R] (ι κ : Type) (f : ι → κ) (n : ℕ) [NeZero n] (LL : Letters κ) (S : Set κ)
       (A : MvPolynomial (ι × Fin n) R) (hf : Function.Injective f) :
@@ -259,9 +259,9 @@ theorem valuation_lowest_degree_rename (R : Type) [CommRing R] (ι κ : Type) (f
     rw [sDegs_rename f hf]
 
 /- English proof (translation)
-Unfold `XX'`. Rewrite using `[Submodule.mem_inf]`. Use `⟨Submodule.subset_span ⟨A, G, M, hA, hG, hc, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `mm hmm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ho mm hmm`.
+A detailed English derivation is pending.
 -/
 theorem space_criterion_clause (O : Type) [CommRing O] (n' r K : ℕ) [NeZero n'] [NeZero r] [NeZero K]
     (F : Frames n' r) (j : ℤ) (m : ℤ → ℤ) (th o : ℤ → ℝ)

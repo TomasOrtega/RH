@@ -35,15 +35,13 @@ def QBridgeAt (large₂ : SizeData₂ D) (B : WeightFamilies.Prov D) (j : ℕ) (
                   Real.log (WeightFamilies.rhoP B CR T c j ka : ℝ) / 2 ≤ WeightFamilies.PPv D large₂ Cc Ac * ka.size
 
 /- English proof (translation)
-Introduce `hCR hOb hn hlast hsize hT hc hTc`. Take `⟨K₁, _, _, _, cf, be, s, a, Carch, Bdeg, hker, hbe, hbefin, hbesum, hsfin, hint, hconj, harch, hdeg, hroom⟩` from `hbr`. Use `⟨Finsupp.ofSupportFinite be hbefin, fun la => by rw [Finsupp.ofSupportFinite_coe]; exact hbe la, ?_, fun θ hθ hmean => ?_⟩` and prove the remaining obligations. Establish `hsub : (Function.support fun la => be la * WeightFamilies.lnN B la) ⊆ ((Finsupp.ofSupportFinite be hbefin).support : Set _)`. Introduce `la hla`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.mem_coe, Finsupp.mem_support_iff, Finsupp.ofSupportFinite_coe]`. Introduce `h`. Apply `hla` to reduce the goal to its premises. Simplify using `[h]`. Establish `: ((Finsupp.ofSupportFinite be hbefin).sum fun la v => v * WeightFamilies.lnN B la) = ∑ᶠ la, be la * WeightFamilies.lnN B la`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[finsum_eq_sum_of_support_subset _ hsub, Finsupp.sum]`. Use `Finset.sum_congr rfl fun la _ => by rw [Finsupp.ofSupportFinite_coe]` and prove the remaining obligations. Rewrite using `[this]`. Conclude with `hbesum`. Take `⟨nn, hloc, hsum⟩` from `quotCore_of_local hL hLD B.KO K₁ (B.Cusp j ka) (B.Mlat j ka) hlat.fg hlat.span_eq_top (WeightFamilies.MggK B CR T c j ka) θ hθ cf hker be s hbe hbefin hsfin hint (B.supN j ka) a (WeightFamilies.PPv D large₂ Ch Ah * ka.size) Carch Bdeg hconj (fun i => hmean i) (fun σ i k h => harc …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨nn, fun la => hloc la, ?_⟩` and prove the remaining obligations. Establish `hρ : (0 : ℝ) ≤ (WeightFamilies.rhoP B CR T c j ka : ℝ)` using `Nat.cast_nonneg _`. Establish `hρeq : (WeightFamilies.rhoP B CR T c j ka : ℝ) = (Module.finrank (𝓞 B.KO) (QuotMW (B.Mlat j ka) (WeightFamilies.MggK B CR T c j ka)) : ℝ)` using `rfl`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc]`.
-
-Conclude with `mul_le_mul_of_nonneg_left hroom hρ`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qat_of_bridge (hL : QuotLocalStatement) (hLD : LenDescentStatement) (large₂ : SizeData₂ D)
     (B : WeightFamilies.Prov D) (j : ℕ) (ka : WeightFamilies.Wt D j) (CR Ck Ch Ah Cc Ac T c : ℝ)

@@ -15,7 +15,7 @@ attribute [local instance] GlobalTheory.SqIntSU.circleBorelMS GlobalTheory.SqInt
   GlobalTheory.SqIntSU.sigmaCompact_special GlobalTheory.DSSU.borelSpace_SUJ
 
 /- English proof (translation)
-Use `show umat (GlobalTheory.SqIntSU.unitScalar ε z) * umat (g : UJ ε) = _`. Rewrite using `[GlobalTheory.SqIntSU.umat_unitScalar, Matrix.smul_mul, Matrix.one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ujMat_scalarMul {n : ℕ} (ε : Fin n → Bool) (z : Circle) (g : SUJ ε) :
     ujMat ε (scalarMul ε (z, g)) = (z : ℂ) • suMat ε g := by
@@ -24,25 +24,21 @@ theorem ujMat_scalarMul {n : ℕ} (ε : Fin n → Bool) (z : Circle) (g : SUJ ε
   rfl
 
 /- English proof (translation)
-Introduce `n hn ε μ _ μ' _`. Establish `hn0 : 0 < n` using `hn`. Use `haveI : SFinite μ' := inferInstance`. Use `haveI : (circleHaar.prod μ').IsHaarMeasure := Measure.prod.instIsHaarMeasure _ _`. Establish `hsc : Continuous (scalarMul ε)` using `GlobalTheory.SqIntSU.continuous_scalarMul ε`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hν : (Measure.map (scalarMul ε) (circleHaar.prod μ')).IsHaarMeasure := Measure.isHaarMeasure_map _ (scalarMul ε) hsc (GlobalTheory.SqIntSU.scalarMul_surjective ε hn0) (GlobalTheory.SqIntSU.scalarMul_proper ε)`. Use `set ν := Measure.map (scalarMul ε) (circleHaar.prod μ') with hνdef`. Establish `hmu : μ = μ.haarScalarFactor ν • ν` using `Measure.isMulLeftInvariant_eq_smul μ ν`. Establish `hc0 : μ.haarScalarFactor ν ≠ 0` using `(Measure.haarScalarFactor_pos_of_isHaarMeasure μ ν).ne'`. Use `⟨μ.haarScalarFactor ν, hc0, hmu, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `V _ _ _ m π' π h' h hE f hf hfc`. Use `set c := μ.haarScalarFactor ν`. Establish `hUc : Continuous (ujMat ε)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hU : IsUnitaryRep (ujRep h)` using `GlobalTheory.Orb.isUnitaryRep_repVia h (fun g => g.2) hUc`. Establish `hpt : ∀ (z : Circle) (g : SUJ ε), ujRep h (scalarMul ε (z, g)) = (z : ℂ) ^ m • suRep h' g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z g`. Use `show π (ujMat ε (scalarMul ε (z, g))) = (z : ℂ) ^ m • π' (suMat ε g)`. Rewrite using `[ujMat_scalarMul]`. Conclude with `hE z (Circle.norm_coe z) _ (suMat_mem ε g)`. Use `set fm : SUJ ε → ℂ := fun g => ∫ z, f (scalarMul ε (z, g)) * (z : ℂ) ^ m ∂circleHaar with hfm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hR` using `hU.isRepOp (μ := μ) hf hfc`. Establish `key : ∀ v, Integrable (fun g => fm g • suRep h' g v) μ' ∧ ((c : ℂ)⁻¹ • repOp (ujRep h) μ f) v = ∫ g, fm g • suRep h' g v ∂μ'`. Introduce `v`. Use `set F : UJ ε → V := fun g => f g • ujRep h g v with hF`. Establish `hFc : Continuous F` using `hf.smul (hU.continuous_apply v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hFi : Integrable F ν` using `hFc.integrable_of_hasCompactSupport hfc.smul_right`. Establish `hGi : Integrable (F ∘ scalarMul ε) (circleHaar.prod μ')` using `(integrable_map_measure hFi.aestronglyMeasurable hsc.aemeasurable).1 hFi`. Establish `hin : ∀ g : SUJ ε, ∫ z, (F ∘ scalarMul ε) (z, g) ∂circleHaar = fm g • suRep h' g v`. Introduce `g`. Establish `: ∀ z : Circle, (F ∘ scalarMul ε) (z, g) = (f (scalarMul ε (z, g)) * (z : ℂ) ^ m) • suRep h' g v`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `z`. Simplify using `only [Function.comp, hF, hpt, ContinuousLinearMap.smul_apply, smul_smul]`. Simplify using `only [this]`. Conclude with `integral_smul_const _ _`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hGi.integral_prod_right` as an intermediate fact. Simplify `this` using `only [hin]`. Rewrite using `[ContinuousLinearMap.smul_apply, (hR v).2] conv_lhs => rw [hmu]`. Rewrite using `[integral_smul_nnreal_measure, hνdef, integral_map hsc.aemeasurable (hFc.aestronglyMeasurable), show ∫ x, F (scalarMul ε x) ∂(circleHaar.prod μ') = ∫ g, ∫ z, (F ∘ scalarMul ε) (z, g) ∂circleHaar ∂μ' from integral_prod_symm _ hGi]`. Simplify using `only [hin]`.
-
-Establish `: (c : ℂ) ≠ 0` using `by exact_mod_cast hc0`. Rewrite using `[NNReal.smul_def, ← Complex.coe_smul, smul_smul, inv_mul_cancel₀ this, one_smul]`. Establish `hT : IsRepOp (suRep h') μ' fm ((c : ℂ)⁻¹ • repOp (ujRep h) μ f)` using `fun v => ⟨(key v).1, (key v).2⟩`. Rewrite using `[hT.repOp_eq, smul_smul]`. Establish `: (c : ℂ) ≠ 0` using `by exact_mod_cast hc0`.
-
-Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scalar_twist : ∀ (n : ℕ), 1 ≤ n → ∀ (ε : Fin n → Bool) (μ : Measure (UJ ε)) [μ.IsHaarMeasure] (μ' : Measure (SUJ ε)) [μ'.IsHaarMeasure], ∃ c : NNReal, c ≠ 0 ∧ (letI := GlobalTheory.SqIntSU.circleBorelMS; μ = c • Measure.map (scalarMul ε) (circleHaar.prod μ')) ∧ ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V] (m : ℤ) (π' π : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V)) (h' : IsURepOn (SUset ε) π') (h : IsURepOn (UJset ε) π), Ext ε m π' π → ∀ f : UJ ε → ℂ, Continuous f → HasCompactSupport f → repOp (ujRep h) μ f = ((c : ℝ) : ℂ) • repOp (suRep h') μ' fun g : SUJ ε => ∫ z, f (scalarMul ε (z, g)) * (z : ℂ) ^ m ∂circleHaar := by
   intro n hn ε μ _ μ' _

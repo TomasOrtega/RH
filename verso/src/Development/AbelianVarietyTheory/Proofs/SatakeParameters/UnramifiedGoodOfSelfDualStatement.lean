@@ -7,7 +7,7 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Gal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.RoadU.holdsS_good_unr) | (exact GlobalTheory.RoadU.holdsS_good_unr) | (intros; apply GlobalTheory.RoadU.holdsS_good_unr <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.unramified_good_of_self_dual : Inputs → SphericalLevelCondition .csd .unr → SphericalLevelCondition .good .unr := by
   first | (exact @GlobalTheory.RoadU.holdsS_good_unr) | (exact GlobalTheory.RoadU.holdsS_good_unr) | (intros; apply GlobalTheory.RoadU.holdsS_good_unr  <;> assumption)

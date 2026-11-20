@@ -4,17 +4,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
 /- English proof (translation)
-Use `set ρ := RingOfIntegers.mapRingEquiv τ`. Establish `hw : (HeightOneSpectrum.equivOfRingEquiv ρ v).asIdeal = Ideal.map ρ v.asIdeal`. Use extensionality with `y`. Rewrite using `[Ideal.mem_map_of_equiv]`. Use `show ρ.symm y ∈ v.asIdeal ↔ _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨_, h, ρ.apply_symm_apply y⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite using `[ρ.symm_apply_apply]` and apply the resulting hypothesis.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Establish `hx' : ρ x ≠ 0` using `(map_ne_zero_iff ρ ρ.injective).mpr hx`. Rewrite using `[HeightOneSpectrum.intValuation_eq_exp_neg_multiplicity _ hx, HeightOneSpectrum.intValuation_eq_exp_neg_multiplicity _ hx']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hm : multiplicity (HeightOneSpectrum.equivOfRingEquiv ρ v).asIdeal (Ideal.span {ρ x}) = multiplicity v.asIdeal (Ideal.span {x})`. Apply `multiplicity_eq_of_emultiplicity_eq` to reduce the goal to its premises. Rewrite using `[emultiplicity_eq_emultiplicity_iff]`. Introduce `k`. Establish `hs : Ideal.span {ρ x} = Ideal.map ρ (Ideal.span {x})`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_span, Set.image_singleton]`. Rewrite using `[Ideal.dvd_iff_le, Ideal.dvd_iff_le, hw, hs, ← Ideal.map_pow]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `Ideal.comap_mono (f := ρ) h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[Ideal.comap_map_of_bijective _ ρ.bijective, Ideal.comap_map_of_bijective _ ρ.bijective]`. Then use the resulting hypothesis. Conclude with `Ideal.map_mono`. Rewrite using `[hm]`.
+A detailed English derivation is pending.
 -/
 private theorem intValuation_mapRingEquiv {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K']
     (τ : K ≃+* K') (v : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K) :
@@ -52,9 +52,9 @@ private theorem intValuation_mapRingEquiv {K K' : Type} [Field K] [NumberField K
   rw [hm]
 
 /- English proof (translation)
-Establish `hτ : ∀ z : 𝓞 K, τ (algebraMap (𝓞 K) K z) = algebraMap (𝓞 K') K' (RingOfIntegers.mapRingEquiv τ z)` using `fun z => (RingOfIntegers.mapRingEquiv_apply τ z).symm`. Establish `hval : (HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv τ) v).valuationOfNeZero (Units.map τ.toMonoidHom a) = v.valuationOfNeZero a`. Rewrite using `[← WithZero.coe_inj, HeightOneSpectrum.valuationOfNeZero_eq, HeightOneSpectrum.valuationOfNeZero_eq]`. Take `⟨x, y, -, hxy⟩` from `IsFractionRing.div_surjective (𝓞 K) (a : K)`. Use `show HeightOneSpectrum.valuation K' _ (τ (a : K)) = HeightOneSpectrum.valuation K v (a : K)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hxy, map_div₀, map_div₀, map_div₀, hτ, hτ, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap, intValuation_mapRingEquiv, intValuation_mapRingEquiv]`. Unfold `ordv`. Rewrite using `[hval]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ordv_units_map_ringEquiv {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K']
     (τ : K ≃+* K') (v : HeightOneSpectrum (𝓞 K)) (a : Kˣ) :
@@ -76,21 +76,21 @@ private theorem ordv_units_map_ringEquiv {K K' : Type} [Field K] [NumberField K]
   rw [hval]
 
 /- English proof (translation)
-Introduce `K K' _ _ _ _ τ n a`. Establish `hinv : ∀ w : 𝓞 K, RingOfIntegers.mapRingEquiv τ.symm (RingOfIntegers.mapRingEquiv τ w) = w` using `fun w => RingOfIntegers.ext (by simp [RingOfIntegers.mapRingEquiv_apply])`. Establish `hback : ∀ I, clMap τ.symm (clMap τ (ClassGroup.mk0 I)) = ClassGroup.mk0 I`. Introduce `I`. Rewrite using `[class_map_mk0, class_map_mk0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show Ideal.map (RingOfIntegers.mapRingEquiv τ.symm) (Ideal.map (RingOfIntegers.mapRingEquiv τ) (I : Ideal (𝓞 K))) = I`. Use extensionality with `y`. Rewrite using `[Ideal.mem_map_of_equiv]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite `hz` using `[Ideal.mem_map_of_equiv]`. Take `⟨w, hw, rfl⟩` from `hz`. Rewrite using `[hinv]` and apply the resulting hypothesis.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hy`. Conclude with `⟨RingOfIntegers.mapRingEquiv τ y, (Ideal.mem_map_of_equiv _ _).mpr ⟨y, hy, rfl⟩, hinv y⟩`. Establish `hinj : Function.Injective (clMap τ)`. Introduce `x y hxy`. Take `⟨I, rfl⟩` from `ClassGroup.mk0_surjective x`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨J, rfl⟩` from `ClassGroup.mk0_surjective y`. Rewrite using `[← hback I, ← hback J, hxy]`. Unfold `radCl`. Rewrite using `[MonoidHom.map_finprod_of_injective _ hinj, ← finprod_comp_equiv (HeightOneSpectrum.equivOfRingEquiv (RingOfIntegers.mapRingEquiv τ))]`. Use `finprod_congr (fun v => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zpow, ordv_units_map_ringEquiv]`. Use `congr 1`. Use `show clMap τ (ClassGroup.mk0 _) = ClassGroup.mk0 _`. Rewrite using `[class_map_mk0]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show Ideal.map (RingOfIntegers.mapRingEquiv τ) v.asIdeal = _`. Use extensionality with `y`. Rewrite using `[Ideal.mem_map_of_equiv]`. Use `show _ ↔ (RingOfIntegers.mapRingEquiv τ).symm y ∈ v.asIdeal`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite using `[RingEquiv.symm_apply_apply]` and apply the resulting hypothesis. Introduce `h`. Conclude with `⟨_, h, RingEquiv.apply_symm_apply _ y⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Kum.radClMap :
     ∀ (K K' : Type) [Field K] [NumberField K] [Field K'] [NumberField K'] (τ : K ≃+* K') (n : ℕ) (a : Kˣ), clMap τ (radCl n a) = radCl n (Units.map τ.toMonoidHom a) := by

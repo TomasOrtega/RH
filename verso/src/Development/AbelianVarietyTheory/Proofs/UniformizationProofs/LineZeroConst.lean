@@ -16,13 +16,11 @@ open GlobalTheory.UU
 namespace GlobalTheory.UU
 
 /- English proof (translation)
-Establish `hI : IsIso (Scheme.Hom.appTop (𝟙 (TF (R` using `R) F).left)) := inferInstanceAs (IsIso (Scheme.Hom.app (𝟙 (TF (R := R) F).left) ⊤))`. Take `⟨a, ha⟩` from `H1.exists_const D.P.L D.P.isLB (𝟙 _) (ConcreteCategory.bijective_of_isIso _).2 w hw (fun U _ h => by`. Rewrite using `[Fin.prod_univ_two]`. Use `show h (DegPre.zeroF D F).left ^ (k : ℤ) * h (DegPre.zeroF D F).left ^ (-(k : ℤ)) = 1`. Rewrite using `[zpow_neg, mul_inv_cancel])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩ : ∃ c : F, (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom c = a` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of F)).inv).2 a`. Establish `hc : c ≠ 0`. Introduce and unpack `rfl`. Set `z : (TF (R` to `R) F).left := (⊥ : PrimeSpectrum F)`. Use `choose I hI using fun χ : (TF (R := R) F).left ⟶ D.P.A.left => exists_chart D.P.isLB (χ z)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `ha _ (𝟙 _) z I hI`. Rewrite `e` using `[gs_eq _ z ⊤ trivial, map_zero]`. Conclude with `(val w (𝟙 _) z I).ne_zero (e.trans ((congrArg _ (map_zero _)).trans (map_zero _)))`. Use `⟨Units.mk0 c hc, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Establish `e` using `ha Z r z J hJ`.
-
-Rewrite `e` using `[Category.comp_id]`. Conclude with `e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_zero_const {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F]
     [Algebra (FractionRing R) F] (k : ℕ)
@@ -51,7 +49,7 @@ theorem line_zero_const {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F :
   exact e
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[DVR.tr_fst, Category.id_comp]`. Use `(DVR.tr_pr D F _).trans ?_` and prove the remaining obligations. Establish `: fst (TF (R` using `R) F) D.P.A ≫ DegPre.zeroF D F = 1 := MonObj.comp_one (M := D.P.A) _`. Rewrite using `[this, _root_.mul_one, Category.id_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trPt_zero {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F]
     [Algebra (FractionRing R) F] : DegPre.trPt D F (DegPre.zeroF D F) = 𝟙 _ := by
@@ -62,25 +60,23 @@ theorem trPt_zero {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F : Type)
     rw [this, _root_.mul_one, Category.id_comp]
 
 /- English proof (translation)
-Introduce `R _ _ D F _ _ k g w hb hw`. Take `⟨b, gs', hg, h0, hm⟩` from `g`. Simplify using `only at hb w`. Substitute `hb` using the available equality. Take `⟨c, hc⟩` from `line_zero_const D F k w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Use `⟨c, fun s s' H hs α j => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, vu⟩` from `exists_gen D.P.isLB (φ' := DegPre.phiφ D F 0 α (DegPre.zeroF D F)) (ε' := DegPre.deltaε k) (fun U _ h => by`. Establish `e₁ : padd D.P.A (DegPre.cF D F α) (DegPre.zeroF D F) = DegPre.cF D F α` using `_root_.mul_one (DegPre.cF D F α)`. Rewrite using `[DegPre.phiφ, trPt_zero, add_zero]`. Use `Eq.trans (DVR.prod_sum₂ (K := Fin 4) (K' := Fin 2) (U := U) _ (c := 1) (c' := 1) ?_ ?_) (Eq.trans ?_ (DVR.prod_sum₂ (K := Fin 4) (K' := Fin 4) (U := U) _ (c := ∏ i, h (DegPre.famφ D F α i) ^ DegPre.famε k i) rfl (DVR.prod_neg _ _ (c := ∏ i, h (DegPre.famφ D F α i) ^ DegPre.famε k …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Fin.prod_univ_four, DegPre.gtφ, DegPre.gtε, e₁]`. Simplify using `[Fin.prod_univ_two, DegPre.lineφ, DegPre.lineε]`. Simplify using the standard rewrite rules. Use the proof step `simp)`. Use the proof step `(LB.pullGen D.P.L _ _ (LB.mulGen D.P.L _ _ _ _ (gs' α) w) (fst (TF (R := R) F) D.P.A).left)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(DVR.pullGen_isGen _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (hg α) hw) _)`. Establish `z₁ : (DegPre.zF D F).left ≫ (fst (TF (R` using `R) F) D.P.A).left = 𝟙 _ := congrArg (fun q => q.left) (lift_fst (𝟙 (TF (R := R) F)) (toUnit _ ≫ η[D.P.A]))`. Establish `rel` using `(secRel_iff D.P.isLB _ _ _ _ _ _ _ _ _ u).1 (H α u hu (corr_of_val D.P.isLB fun y J hJ => by`. Rewrite using `[val_pull hJ, vu _ _ y J hJ, val_pull hJ, Category.id_comp, z₁]))`. Establish `key : ∀ y J, Good D.P.L y J → sval (s' α) (𝟙 _) y J = sval (s α) (𝟙 _) y J * ((val (gs' α) (fst (TF (R` using `R) F) D.P.A).left y J).val * gs (fst (TF (R := R) F) D.P.A).left y ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom c.val)) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `y J hJ`. Establish `e` using `rel _ (𝟙 _) y J hJ`. Rewrite `e` using `[vu _ _ y J hJ, val_pull hJ, val_mul hJ, Category.id_comp, Category.id_comp, Units.val_mul, hc _ _ y J hJ]`. Simplify using `only at e`. Rewrite `e` using `[trPt_zero, add_zero]`.
+Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Use `choose I hI using fun χ : (DegPre.BF D F).left ⟶ D.P.A.left => exists_chart D.P.isLB (χ y)`. Establish `hI' : Good D.P.L y I` using `hI`. Establish `e₁` using `sec_trans (s' α) (𝟙 _) y hy (hI'.mem _ (𝟙 _))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `e₂` using `sec_trans (s α) (𝟙 _) y hy (hI'.mem _ (𝟙 _))`. Establish `e₃ : gs (𝟙 _) y _ (DegPre.constBF D F c.val _ * (s α).f j) = gs (𝟙 _ ≫ (fst (TF (R` using `R) F) D.P.A).left) y ⊤ ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom c.val) * gs (𝟙 _) y (LB.wchart D.P.L (DegPre.famφ D F α) j) ((s α).f j) := (gs_mul (𝟙 _) y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_res (𝟙 _) y le_top hy _).trans (gs_pull (𝟙 _) (fst (TF (R := R) F) D.P.A).left y …`. Rewrite `e₃` using `[Category.id_comp]`. Establish `e₄ : sval (s α) (𝟙 _) y I * (val (gs' α) (fst (TF (R` using `R) F) D.P.A).left y I).val = sval (s α) (𝟙 _) y I := by`. Distinguish the cases in `hz : ∃ j, (s α).f j ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcorr : LB.Gen.Corr D.P.L _ _ _ _ (gs' α) (LB.oneGen D.P.L)` using `corr_of_val D.P.isLB fun z J hJ => (hs α hz z J hJ).trans (val_one _).symm`. Rewrite using `[val_corr hI' hcorr, val_one, Units.val_one, _root_.mul_one]`. Use `push_neg at hz`. Establish `: sval (s α) (𝟙 _) y I = 0` using `(congrArg (gs (𝟙 _) y _) (hz _)).trans ((gs_eq _ y _ (hI'.mem _ (𝟙 _)) _).trans ((congrArg _ (map_zero _)).trans (map_zero _)))`. Rewrite using `[this, MulZeroClass.zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e₅` using `key y I hI'`. Rewrite `e₅` using `[← _root_.mul_assoc, e₄]`. Use `e₁.trans (Eq.trans ?_ (e₃.trans (congrArg _ e₂)).symm)` and prove the remaining obligations. Use `(congrArg _ e₅).trans ?_` and prove the remaining obligations. Rewrite using `[sval]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem phiRaw_torus : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ) (g : GtPtF D F) (w : LB.Gen (LB.LinComb D.P.L (DegPre.lineφ D F g.b) (DegPre.lineε k))), g.b = DegPre.zeroF D F → w.IsGen → ∃ c : Fˣ, ∀ s s' : Raw D F k, PhiRaw D F k 0 g w s s' → (∀ α, (∃ j, (s α).f j ≠ 0) → ∀ z J, Good D.P.L z J → val (g.s α) (𝟙 _) z J = 1) → ∀ α j, (s' α).f j = DegPre.constBF D F c.val _ * (s α).f j := by
   intro R _ _ D F _ _ k g w hb hw

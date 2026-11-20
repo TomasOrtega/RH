@@ -20,7 +20,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, InnerProductSpace ℂ (Wq x)] [∀ x, FiniteDimensional ℂ (Wp x)] [∀ x, FiniteDimensional ℂ (Wq x)]
 
 /- English proof (translation)
-Unfold `C.HidaSetting.Ntop Sz.Glob.N C.Kst`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ntop_eq_N' (S : C.HidaSetting E Wp Wq) : (S.Ntop : ℝ) = S.G.N := by
   unfold C.HidaSetting.Ntop Sz.Glob.N C.Kst
@@ -28,7 +28,7 @@ theorem ntop_eq_N' (S : C.HidaSetting E Wp Wq) : (S.Ntop : ℝ) = S.G.N := by
   ring
 
 /- English proof (translation)
-Use extensionality with `Y`. Simplify using `only [Sz.Cfg.cutI, Set.mem_ofPred_eq, Set.mem_Icc, C.HidaSetting.cutLo, C.HidaSetting.cutHi]`. Apply the tactic sequence `constructor <;> rintro ⟨h1, h2⟩ <;> constructor <;> linarith`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cutI_eq (S : C.HidaSetting E Wp Wq) (v : Fin S.f) :
     (S.G.place (S.pl v)).cutI S.l = Set.Icc (S.cutLo v) (S.cutHi v) := by
@@ -37,7 +37,7 @@ theorem cutI_eq (S : C.HidaSetting E Wp Wq) (v : Fin S.f) :
   constructor <;> rintro ⟨h1, h2⟩ <;> constructor <;> linarith
 
 /- English proof (translation)
-Rewrite using `[PBF.qC_ofReal, Complex.ofReal_re]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem qC_re (S : C.HidaSetting E Wp Wq) (v : Fin S.f) (y : ℝ) :
     (M.qC (D.parOf S v) (y : ℂ)).re = (S.G.place (S.pl v)).q S.de S.de' S.T S.T' y := by
@@ -48,7 +48,7 @@ variable {Cb Cc : ℝ} {S : C.HidaSetting E Wp Wq} {p : ∀ v, KB.Pl (D.parOf S 
   {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ} {A₀ : ℝ}
 
 /- English proof (translation)
-Establish `hy'` using `PBCut.cutInside_of_built hB v y hy`. Take `⟨-, -, -, -, -, -, -, hl1, hlk, -⟩` from `hB`. Rewrite using `[PBF.qC_ofReal, Complex.ofReal_re]`. Conclude with `PBF.qreal_pos (D.parOf S v) (p v).hP.1 (S.l + 1) (by omega) (by show S.l + 1 ≤ S.G.k; omega) y hy'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem q_pos_cut (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (v : Fin S.f) (y : ℝ)
     (hy : y ∈ Set.Icc (S.cutLo v) (S.cutHi v)) : 0 < (M.qC (D.parOf S v) (y : ℂ)).re := by
@@ -58,11 +58,11 @@ theorem q_pos_cut (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (v : Fin S.
   exact PBF.qreal_pos (D.parOf S v) (p v).hP.1 (S.l + 1) (by omega) (by show S.l + 1 ≤ S.G.k; omega) y hy'
 
 /- English proof (translation)
-Apply `IsCompact.bddAbove_image isCompact_Icc` to reduce the goal to its premises. Introduce `Y hY`. Establish `hq : 0 < (S.G.place (S.pl v)).q S.de S.de' S.T S.T' Y`. Rewrite using `[← qC_re]`. Conclude with `q_pos_cut hB v Y hY`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hPc : Continuous fun Y => (S.G.place (S.pl v)).P Y`. Unfold `Sz.Cfg.P`. Use `fun_prop`. Establish `hqc : Continuous fun Y => (S.G.place (S.pl v)).q S.de S.de' S.T S.T' Y`. Unfold `Sz.Cfg.q`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fun_prop`. Establish `hnum : Continuous fun Y => (S.G.place (S.pl v)).P Y * (S.G.place (S.pl v)).P (Y + 1)` using `hPc.mul (hPc.comp (continuous_id.add continuous_const))`. Establish `hf : ContinuousAt (fun Y => (S.G.place (S.pl v)).P Y * (S.G.place (S.pl v)).P (Y + 1) / (S.G.place (S.pl v)).q S.de S.de' S.T S.T' Y) Y` using `hnum.continuousAt.div hqc.continuousAt hq.ne'`. Conclude with `(Real.continuous_sqrt.continuousAt.comp (continuous_abs.continuousAt.comp hf)).continuousWithinAt`.
+A detailed English derivation is pending.
 -/
 theorem core_bdd (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (v : Fin S.f) :
     BddAbove ((fun Y => (S.G.place (S.pl v)).core S.de S.de' S.T S.T' Y) '' Set.Icc (S.cutLo v) (S.cutHi v)) := by
@@ -85,11 +85,11 @@ theorem core_bdd (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (v : Fin S.f
   exact (Real.continuous_sqrt.continuousAt.comp (continuous_abs.continuousAt.comp hf)).continuousWithinAt
 
 /- English proof (translation)
-Establish `key : ∀ T0 : Set ℝ, 0 ≤ sSup ((fun Y => S.G.g ^ S.G.m * (S.G.place (S.pl v)).be S.G.ka S.de S.de' S.T S.T' Y) '' T0)`. Introduce `T0`. Apply `Real.sSup_nonneg` to reduce the goal to its premises. Introduce and unpack `_ ⟨Y, -, rfl⟩`. Apply `mul_nonneg (pow_nonneg hg.le _)` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Unfold `Sz.Cfg.be`. Conclude with `mul_nonneg (inv_nonneg.mpr (pow_nonneg hk.le _)) (Real.sqrt_nonneg _)`. Unfold `J.supA`. Apply `div_nonneg` to reduce the goal to its premises. Consider the cases of `one`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Simplify using `only [Bool.false_eq_true, ↓reduceIte, Sz.Glob.supI]`. Conclude with `key _`. Simplify using `only [↓reduceIte, Sz.Glob.cutSupLong]`. Conclude with `key _`. Conclude with `mul_nonneg (pow_nonneg hg.le _) (inv_nonneg.mpr (pow_nonneg hk.le _))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem supA_nonneg (S : C.HidaSetting E Wp Wq) (hg : 0 < S.G.g) (hk : 0 < S.G.ka) (v : Fin S.f) (one : Bool) :
     0 ≤ J.supA S.G S.de S.de' S.T S.T' S.l one (S.pl v) := by
@@ -111,19 +111,19 @@ theorem supA_nonneg (S : C.HidaSetting E Wp Wq) (hg : 0 < S.G.g) (hk : 0 < S.G.k
   · exact mul_nonneg (pow_nonneg hg.le _) (inv_nonneg.mpr (pow_nonneg hk.le _))
 
 /- English proof (translation)
-Take `⟨hg1, hg2, -, -, -, -, -, -, -, -, hG, -⟩` from `id hB`. Establish `hg : 0 < S.G.g`. Unfold `Sz.Glob.g`. Conclude with `mul_pos (Nat.cast_pos.mpr hg1) (Nat.cast_pos.mpr hg2)`. Establish `hv : 0 < S.G.v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[S.hv]`. Use `Jx5.rd_pos' (E := E)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk : 0 < S.G.ka`. Unfold `Sz.Glob.ka`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `div_pos Real.pi_pos hv`. Establish `hsub` using `Jx5.sup_core S.G S.de S.de' S.T S.T' (S.pl v) hg hk`. Establish `hbdd : BddAbove ((fun Y => (S.G.place (S.pl v)).core S.de S.de' S.T S.T' Y) '' (S.G.place (S.pl v)).cutI S.l)`. Rewrite using `[cutI_eq]`. Conclude with `core_bdd hB v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Unfold `J.supA`. Consider the cases of `one`. Simplify using `only [Bool.false_eq_true, ↓reduceIte] at hy ⊢`. Unfold `Sz.Glob.supI`. Rewrite using `[hsub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_csSup hbdd ⟨y, hy, rfl⟩`. Simplify using `only [↓reduceIte] at hy ⊢`. Unfold `Sz.Glob.cutSupLong`. Rewrite using `[hsub]`. Use `le_csSup (hbdd.mono (Set.image_mono ?_)) ⟨y, hy, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `Y hY`. Simplify using `only [Sz.Cfg.cutIntervalLong, Sz.Cfg.cutI, Set.mem_ofPred_eq] at hY ⊢`. Use `⟨hY.1, le_trans hY.2 ?_⟩` and prove the remaining obligations. Establish `h1` using `(hG v).1`. Simplify using `only [C.HidaSetting.cutHi, C.HidaSetting.cutLo] at h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[← ntop_eq_N' S]`. Establish `h0 : (0 : ℝ) ≤ S.Ntop` using `Nat.cast_nonneg _`. Establish `h3` using `pow_nonneg h0 3`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem core_le_supA (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (v : Fin S.f) (one : Bool) (y : ℝ)
     (hy : if one then y ∈ (S.G.place (S.pl v)).cutIntervalLong S.l S.G.N else y ∈ (S.G.place (S.pl v)).cutI S.l) :
@@ -175,21 +175,21 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ} {A₀ : ℝ}
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, -, hG, -⟩` from `id hB`. Take `⟨w, hw⟩` from `ha`. Establish `hA : PBD.AdmList S v a` using `hw ▸ PBD.admissible_list_of_word S w v`. Establish `hz'` using `PBD.nodeOf_mem_grid_or_grid1 S v a hA z hz`. It suffices to establish `key : ∀ e ∈ ({0, 1} : Finset ℝ), (if one then (S.Ntop : ℝ) ^ 2 / 8 else (S.Ntop : ℝ) ^ 2 + 1) ≤ |y - (PBD.nodeOf z + e)| by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion.
 
-Use `⟨?_, key 1 (by simp)⟩` and prove the remaining obligations. Simplify using `using key 0 (by simp)`. Introduce `e he`. Break down `hy with ⟨rfl, a', ha', -, hya'⟩ | ⟨rfl, hy1, hsep⟩` into its components or cases. Rewrite using `[if_neg (by decide)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `hz' with ⟨n, hn, hzn⟩ | hz1` into its components or cases. Establish `h` using `PBD.sep_grid S hG v hya' hzn (by omega) (e := 0) (by simp) he`. Simplify using `using h`. Establish `h` using `(hG v).2.2.2.2.1 (PBD.nodeOf z) hz1 a' y hya' e he 0 (by simp)`. Rewrite `h` using `[abs_sub_comm]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h`. Rewrite using `[if_pos rfl]`. Break down `hz' with ⟨n, -, hzn⟩ | hz1` into its components or cases. Establish `h` using `(hG v).2.2.2.2.1 y hy1 n (PBD.nodeOf z) hzn 0 (by simp) e he`. Establish `h8 : (S.Ntop : ℝ) ^ 2 / 8 ≤ (S.Ntop : ℝ) ^ 2 + 1`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear relations using `[sq_nonneg (S.Ntop : ℝ)]`. Simplify using `only [add_zero] at h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hne : y ≠ PBD.nodeOf z`. Introduce `hyz`.
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : ∀ δ : ℤ, -2 ≤ δ → δ ≤ 2 → 2 < |y - z.2 + δ|` using `hsep z hz`. Take `⟨b, t⟩` from `z`. Consider the cases of `b`. Establish `h` using `hs 1 (by norm_num) (by norm_num)`. Simplify using `only [PBD.nodeOf, Bool.false_eq_true, ↓reduceIte] at hyz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[hyz]`. Evaluate the numerical expressions using `at h`. Establish `h` using `hs 0 (by norm_num) (by norm_num)`. Simplify using `only [PBD.nodeOf, ↓reduceIte] at hyz`. Rewrite `h` using `[hyz]`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `at h`. Establish `h` using `(hG v).2.2.2.1 y hy1 (PBD.nodeOf z) hz1 hne 0 (by simp) e he`. Simplify using `using h`.
+Evaluate the numerical expressions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem node_far (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (v : Fin S.f) (a : List C.Letter) (ha : D.AdmAt S v a)
     (y : ℝ) (one : Bool) (hy : (one = false ∧ ∃ a', a.length < a' ∧ a' ≤ S.Ntop ∧ y ∈ S.grid v a') ∨
@@ -237,7 +237,7 @@ theorem node_far (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (v : Fin S.f
       simpa using h
 
 /- English proof (translation)
-The claim follows from `|S.P v y * S.P v (y + 1)| / (Wd.qw (M.qC (D.parOf S v)) (D.positionted a) (y : ℂ)).re ≤ (Real.exp 1 * J.supA S.G S.de S.de' S.T S.T' S.l one (S.pl v)) ^ 2 := by obtain ⟨-, -, -, -, -, -, -, -, -, -, hG, -⟩ := id hB have hcut : y ∈ (S.G.place (S.pl v)).cutI S.l := by refine ((hG v …`.
+A detailed English derivation is pending.
 -/
 theorem node_bound (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (v : Fin S.f) (a : List C.Letter) (ha : D.AdmAt S v a)
     (haN : a.length ≤ S.Ntop) (y : ℝ) (one : Bool)

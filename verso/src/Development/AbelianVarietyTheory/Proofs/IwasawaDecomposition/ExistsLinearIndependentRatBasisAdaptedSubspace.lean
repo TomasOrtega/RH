@@ -5,9 +5,9 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.AdaptedFamilyIwasawaDecomposition.exists_adapted_family`. Consider the case `exact _root_.GlobalTheory.AdaptedFamilyIwasawaDecomposition.exists_adapted_family`. Consider the case `(apply _root_.GlobalTheory.AdaptedFamilyIwasawaDecomposition.exists_adapted_family <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AdaptedFamilyIwasawaDecomposition.exists_adapted_family <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.AdaptedFamilyIwasawaDecomposition.exists_adapted_family <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AdaptedFamilyIwasawaDecomposition.exists_adapted_family ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem adapted_basis_extension (g r : ℕ) (I L : Submodule ℚ (Fin r → ℚ)) (hIL : I ≤ L)
     (hg : Module.finrank ℚ L = g) :

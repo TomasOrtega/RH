@@ -11,7 +11,7 @@ namespace GlobalTheory.PlaceWeights
 open Classical in
 
 /- English proof (translation)
-Establish `h1 : (∑ f : K →ₐ[ℚ] ℂ, (if InfinitePlace.mk (f : K →+* ℂ) = v then (1 : ℝ) else 0)) = ∑ f : K →+* ℂ, (if InfinitePlace.mk f = v then (1 : ℝ) else 0)` using `(Fintype.sum_equiv (RingHom.equivRatAlgHom (R := K) (S := ℂ)) _ _ (fun _ => rfl)).symm`. Rewrite using `[h1, Finset.sum_boole, InfinitePlace.card_filter_mk_eq, IsTotallyComplex.mult_eq]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem sum_ind_algHom (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (v : InfinitePlace K) :
     (∑ f : K →ₐ[ℚ] ℂ, (if InfinitePlace.mk (f : K →+* ℂ) = v then (1 : ℝ) else 0)) = 2 := by
@@ -22,7 +22,7 @@ theorem sum_ind_algHom (K : Type) [Field K] [NumberField K] [IsTotallyComplex K]
   norm_num
 
 /- English proof (translation)
-Rewrite using `[← InfinitePlace.sum_mult_eq]`. Simplify using `[IsTotallyComplex.mult_eq, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finrank_eq_two_mul (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] :
     Module.finrank ℚ K = 2 * Fintype.card (InfinitePlace K) := by
@@ -32,9 +32,9 @@ theorem finrank_eq_two_mul (K : Type) [Field K] [NumberField K] [IsTotallyComple
 open Classical in
 
 /- English proof (translation)
-Set `_ : Algebra K M` to `(σ₀.codRestrict M h).toAlgebra`. Establish `: IsScalarTower ℚ K M` using `IsScalarTower.of_algebraMap_eq (fun x => by simp)`. Establish `key` using `(GlobalTheory.EmbeddingMean.tower (K := ℚ) (A := K) (B := M) (C := ℂ)).2 (fun f => if InfinitePlace.mk (f : K →+* ℂ) = v then (1 : ℝ) else 0)`. Rewrite `key` using `[sum_ind_algHom, finrank_eq_two_mul K]`. Establish `hc : (Fintype.card (InfinitePlace K) : ℝ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Eq.trans ?_ (key.trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem sum_ind_placeUnder (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (σ₀ : K →+* ℂ)
     (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ M] (h : ∀ k, σ₀ k ∈ M) (v : InfinitePlace K) :
@@ -52,15 +52,15 @@ theorem sum_ind_placeUnder (K : Type) [Field K] [NumberField K] [IsTotallyComple
     field_simp
 
 /- English proof (translation)
-Introduce `K _ _ _ σ₀ M _ h`. Establish `hc : (Fintype.card (InfinitePlace K) : ℝ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Establish `hM : (Module.finrank ℚ M : ℝ) ≠ 0`. Conclude with `(Module.finrank_pos (R := ℚ) (M := M)).ne'` after adjusting the coercions. Use `⟨fun v ρ => (if placeUnder σ₀ h ρ = v then (1 : ℝ) else 0) * ((Fintype.card (InfinitePlace K) : ℝ) / (Module.finrank ℚ M : ℝ)), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v ρ`. Use `mul_nonneg ?_ (by positivity)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> norm_num`. Introduce `v`. Establish `key` using `sum_ind_placeUnder K σ₀ M h v`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_mul]`. Rewrite `key` using `[div_eq_div_iff hM hc]`. Rewrite using `[← mul_div_assoc, div_eq_one_iff_eq hM]`. Use `key using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v ρ hw`. Assume the negation of the conclusion as `hne`. Conclude with `hw (by simp [hne])`. Introduce `ρ`. Rewrite using `[← Finset.sum_mul, Finset.sum_ite_eq]`.
+Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [Finset.mem_univ, if_true]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem exists_weights : ∀ (K : Type) [Field K] [NumberField K] [IsTotallyComplex K] (σ₀ : K →+* ℂ) (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ M] (h : ∀ k, σ₀ k ∈ M), ∃ wt : InfinitePlace K → (M →ₐ[ℚ] ℂ) → ℝ, (∀ v ρ, 0 ≤ wt v ρ) ∧ (∀ v, ∑ ρ, wt v ρ = 1) ∧ (∀ v ρ, wt v ρ ≠ 0 → placeUnder σ₀ h ρ = v) ∧ ∀ ρ, (∑ v, wt v ρ) / (Fintype.card (InfinitePlace K) : ℝ) = 1 / (Module.finrank ℚ M : ℝ) := by
   classical

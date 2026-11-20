@@ -8,21 +8,19 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.PTIso.Norm
 
 /- English proof (translation)
-Introduce `F Ω F' Ω' _ _ _ _ _ _ _ _ _ _ e E hE Φ hΦ eO eV heO hI hI2 hN l _ r hc A A' hA hD ζ v iA iA' hrel hn ϖ' y' κ' χ' z' h1 h2 h3 h4 h5 h6 h7 h8`. Set `eD : Dec (F` to `F) A ≃ₜ* Dec (F := F') A' := subgroupIso Φ (Dec (F := F) A) (Dec (F := F') A') (fun a => (hD a).1)`. Establish `hcoe : ∀ g : Dec (F` using `F) A, ((eD g : Dec (F := F') A') : G F' Ω') = Φ g := fun _ => rfl`. Set `zz : Z2 (muLoc F l r A)` to `compatiblePairCocycles2 (muLoc F' l r A') (muLoc F l r A) (eD : Dec (F := F) A →* Dec (F := F') A') eD.continuous LinearMap.id continuous_id (fun g m => by show ((cycMod F' Ω' l r (Φ g) : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) * m = ((cycMod F Ω l r g : (ZMod (l ^ r))ˣ) : ZMod (l ^ r)) …`. Rewrite using `[hc]) z'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hEy : E (E.symm y') = y'` using `E.apply_symm_apply y'`. Establish `hϖ : eO (eO.symm ϖ') = ϖ'` using `eO.apply_symm_apply ϖ'`. Establish `key : iA (Submodule.Quotient.mk zz) = 1`. Use `hn (eO.symm ϖ') (E.symm y') (fun g => κ' (eD g)) (fun g => χ' (eD g)) zz ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[hI, hϖ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Rewrite using `[hI2, hϖ]`. Conclude with `h2`. Apply `E.injective` to reduce the goal to its premises. Rewrite using `[map_pow, hEy, h3, hE, ← heO, hϖ]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `g`. Apply `E.injective` to reduce the goal to its premises. Establish `h` using `h4 (eD g)`. Rewrite using `[← hΦ, hEy, ← hcoe, h, map_mul, map_pow, hEy]`. Introduce `g h show χ' (eD (g * h)) = χ' (eD g) + χ' (eD h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, h5]`. Introduce `g hg`. Conclude with `h6 (eD g) ((hD (g : G F Ω)).2.1.1 hg)`. Introduce `g hg`. Use `h7 (eD g) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN]`. Conclude with `((hD (g : G F Ω)).2.2 _).1 hg`. Introduce `g h`. Conclude with `h8 (eD g) (eD h)`. Rewrite using `[hrel zz z' ?_]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Conclude with `key`. Introduce `g h g' h' hg hh`. Establish `e1 : g' = eD g` using `Subtype.ext hg`. Establish `e2 : h' = eD h` using `Subtype.ext hh`. Substitute `e1 e2` using the available equality.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem isNormalised_transfer : ∀ (F Ω F' Ω' : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] [Field F'] [NumberField F'] [Field Ω'] [Algebra F' Ω'] [IsAlgClosure F' Ω'] (e : F ≃+* F') (E : Ω ≃+* Ω'), (∀ x : F, E (algebraMap F Ω x) = algebraMap F' Ω' (e x)) → ∀ (Φ : G F Ω ≃ₜ* G F' Ω'), (∀ (σ : G F Ω) (x : Ω), Φ σ (E x) = E (σ x)) → ∀ (eO : 𝓞 F ≃+* 𝓞 F') (eV : HeightOneSpectrum (𝓞 F) ≃ HeightOneSpectrum (𝓞 F')), (∀ x : 𝓞 F, ((eO x : 𝓞 F') : F') = e (x : F)) → (∀ (v : HeightOneSpectrum (𝓞 F)) (x : 𝓞 F), x ∈ v.asIdeal ↔ eO x ∈ (eV v).asIdeal) → (∀ (v : HeightOneSpectrum (𝓞 F)) (x : 𝓞 F), x ∈ v.asIdeal ^ 2 ↔ eO x ∈ (eV v).asIdeal ^ 2) → (∀ v : HeightOneSpectrum (𝓞 F), normV (eV v) = normV v) → ∀ (l : ℕ) [Fact l.Prime] (r : ℕ), (∀ σ : G F Ω, cycMod F' Ω' l r (Φ σ) = cycMod F Ω l r σ) → ∀ (A : ValuationSubring Ω) (A' : ValuationSubring Ω'), (∀ x, E x ∈ A' ↔ x ∈ A) → (∀ σ : G F Ω, (σ ∈ Dec (F := F) A ↔ Φ σ ∈ Dec (F := F') A') ∧ (σ ∈ Inertia (F := F) A ↔ Φ σ ∈ Inertia (F := F') A') ∧ ∀ q : ℕ, IsFrob (F := F) A q σ ↔ IsFrob (F := F') A' q (Φ σ)) → ∀ (ζ : Ω) (v : HeightOneSpectrum (𝓞 F)) (iA : H2 (muLoc F l r A) →ₗ[ZMod (l ^ r)] ZMod (l ^ r)) (iA' : H2 (muLoc F' l r A') →ₗ[ZMod (l ^ r)] ZMod (l ^ r)), (∀ (z : Z2 (muLoc F l r A)) (z' : Z2 (muLoc F' l r A')), (∀ (g h : Dec (F := F) A) (g' h' : Dec (F := F') A'), (g' : G F' Ω') = Φ g → (h' : G F' Ω') = Φ h → z'.1 (g', h') = z.1 (g, h)) → iA' (Submodule.Quotient.mk z') = iA (Submodule.Quotient.mk z)) → IsNormalised ζ A v iA → IsNormalised (E ζ) A' (eV v) iA' := by
   intro F Ω F' Ω' _ _ _ _ _ _ _ _ _ _ e E hE Φ hΦ eO eV heO hI hI2 hN l _ r hc A A' hA hD ζ v iA iA'

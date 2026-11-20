@@ -1,19 +1,17 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `k _ _ V _ _ _ S hS d`. Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Introduce `W hd hW hinv`. Distinguish the cases in `h : ∀ f ∈ S, ∀ x ∈ W, ∃ c : k, f x = c • x`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW`. Conclude with `⟨v, hv, hv0, fun f hf => h f hf v hv⟩`. Use `push Not at h`. Take `⟨f, hf, x, hx, hfx⟩` from `h`. Use `haveI : Nontrivial W := Submodule.nontrivial_iff_ne_bot.mpr hW`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue (f.restrict (hinv f hf) : Module.End k W)`. Take `⟨w, hw⟩` from `hμ.exists_hasEigenvector`. Establish `hwe : f (w : V) = μ • (w : V)`. Establish `h1` using `congrArg Subtype.val hw.apply_eq_smul`. Simplify `h1` using `[LinearMap.restrict_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw0 : (w : V) ≠ 0` using `fun h0 => hw.2 (Subtype.ext h0)`. Establish `hlt : W ⊓ f.eigenspace μ < W`. Use `lt_of_le_of_ne inf_le_left fun he => ?_` and prove the remaining obligations. Establish `hx' : x ∈ W ⊓ f.eigenspace μ` using `he.symm ▸ hx`. Conclude with `hfx μ (Module.End.mem_eigenspace_iff.mp hx'.2)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : W ⊓ f.eigenspace μ ≠ ⊥`. Introduce `hb`. Establish `hm : (w : V) ∈ W ⊓ f.eigenspace μ` using `⟨w.2, Module.End.mem_eigenspace_iff.mpr hwe⟩`. Rewrite `hm` using `[hb]`. Conclude with `hw0 ((Submodule.mem_bot k).mp hm)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hinv' : ∀ g ∈ S, ∀ y ∈ W ⊓ f.eigenspace μ, g y ∈ W ⊓ f.eigenspace μ`. Introduce `g hg y hy`. Use `⟨hinv g hg y hy.1, Module.End.mem_eigenspace_iff.mpr ?_⟩` and prove the remaining obligations. Establish `h1 : f y = μ • y` using `Module.End.mem_eigenspace_iff.mp hy.2`. Establish `h2 : f (g y) = g (f y)` using `LinearMap.congr_fun (hS f hf g hg) y`.
-
-Rewrite using `[h2, h1, map_smul]`. Take `⟨v, hv, hv0, hv'⟩` from `ih _ (hd ▸ Submodule.finrank_lt_finrank_of_lt hlt) _ rfl hne hinv'`. Conclude with `⟨v, hv.1, hv0, hv'⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.CommonEigenvectorOfCommutingSet.common_eig :
     ∀ {k : Type} [inst : Field k] [IsAlgClosed k]

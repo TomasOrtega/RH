@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.KeySecRel
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_map' {X Y : Scheme.{0}} (p : Y ⟶ X) {U V : X.Opens} (hVU : V ≤ U) {W : Y.Opens} (h : W ≤ p ⁻¹ᵁ V)
     (h' : W ≤ p ⁻¹ᵁ U) (a : Γ(X, U)) :
@@ -22,7 +22,7 @@ theorem appLE_map' {X Y : Scheme.{0}} (p : Y ⟶ X) {U V : X.Opens} (hVU : V ≤
   rw [← CommRingCat.comp_apply, Scheme.Hom.map_appLE]
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.comp_appLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_app' {X Y S : Scheme.{0}} (p : Y ⟶ X) (π : X ⟶ S) {U : S.Opens} {W : Y.Opens}
     (h : W ≤ p ⁻¹ᵁ (π ⁻¹ᵁ U)) (h' : W ≤ (p ≫ π) ⁻¹ᵁ U) (a : Γ(S, U)) :
@@ -30,15 +30,15 @@ theorem appLE_app' {X Y S : Scheme.{0}} (p : Y ⟶ X) (π : X ⟶ S) {U : S.Open
   rw [← CommRingCat.comp_apply, Scheme.Hom.comp_appLE]
 
 /- English proof (translation)
-Establish `hh : W ≤ p ⁻¹ᵁ ((CechPic.tens A (δ.pull π)).U (l, fun _ => i) ⊓ (CechPic.tens A (δ.pull π)).U (l, fun _ => i'))` using `fun y hy => ⟨h hy, h' hy⟩`. Establish `e` using `congrArg (p.appLE _ W hh).hom (σ.compat (l, fun _ => i) (l, fun _ => i'))`. Rewrite `e` using `[map_mul, appLE_map' p _ hh h, appLE_map' p _ hh h']`. Rewrite using `[e]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1 : W ≤ p ⁻¹ᵁ (A.U l)` using `fun y hy => (h hy).1`. Establish `h11 : W ≤ p ⁻¹ᵁ (A.U l ⊓ A.U l)` using `fun y hy => ⟨h1 hy, h1 hy⟩`. Establish `hg : (p.appLE _ W h11).hom (A.g l l : Γ(X, A.U l ⊓ A.U l)) = 1`. Use `congrArg (fun u : Γ(X, A.U l)ˣ => (p.appLE _ W h1).hom (u : Γ(X, A.U l))) (hA.g_self l)` as an intermediate fact. Simplify using `only [Units.val_one, map_one] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Conclude with `(appLE_map' p _ h1 h11 _).symm`. Establish `h2 : W ≤ p ⁻¹ᵁ ((δ.pull π).U (fun _ => i) ⊓ (δ.pull π).U (fun _ => i'))` using `fun y hy => ⟨(h hy).2, (h' hy).2⟩`. Establish `hd : ((δ.pull π).g (fun _ => i) (fun _ => i') : Γ(X, (δ.pull π).U (fun _ => i) ⊓ (δ.pull π).U (fun _ => i'))) = (X.presheaf.map (homOfLE (le_inf (inf_le_left.trans (LB.wchart_le δ (fun _ : PUnit => π) (fun _ => i) PUnit.unit)) (inf_le_right.trans (LB.wchart_le δ (fun _ : PUnit => …`. Unfold `LB.pull LB.LinComb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify by unfolding definitions.
 
-Simplify using `only`. Use `erw [Fintype.prod_unique, zpow_one]`. Both sides reduce to the same expression. Use `(map_mul _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg₂ (· * ·) ((appLE_map' p _ hh h11 _).trans hg) (appLE_map' p _ hh h2 _)).trans ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[_root_.one_mul]`. Use `(congrArg (p.appLE _ W h2).hom hd).trans ?_` and prove the remaining obligations. Establish `hW' : W ≤ p ⁻¹ᵁ (π ⁻¹ᵁ (δ.U i ⊓ δ.U i'))` using `hW`. Conclude with `(appLE_map' p _ h2 hW' _).trans (appLE_app' p π hW' hW _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem appLE_sec_tens {X Y S : Scheme.{0}} (p : Y ⟶ X) (π : X ⟶ S) (A : LB X) (hA : A.IsLB) (δ : LB S)
     (σ : (CechPic.tens A (δ.pull π)).Sec) (l : A.ι) (i i' : δ.ι) (W : Y.Opens)
@@ -78,11 +78,9 @@ theorem appLE_sec_tens {X Y S : Scheme.{0}} (p : Y ⟶ X) (π : X ⟶ S) (A : LB
   exact (appLE_map' p _ h2 hW' _).trans (appLE_app' p π hW' hW _)
 
 /- English proof (translation)
-Establish `e` using `Scheme.fromSpecStalk_app (X := S) (x := genericPoint S) hU`. Establish `: (KeyVals.genPt S).appLE U ⊤ (KeyVals.genPt_le U hU) = S.presheaf.germ U (genericPoint S) hU ≫ (Scheme.ΓSpecIso (S.presheaf.stalk (genericPoint S))).inv`. Unfold `KeyVals.genPt Scheme.Hom.appLE`. Use `erw [e]`. Simplify using `only [Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `erw [← Functor.map_comp]`. Use `congrArg (fun z => _ ≫ z) ?_` and prove the remaining obligations. Use `(congrArg (fun z => _ ≫ (Spec (S.presheaf.stalk (genericPoint S))).presheaf.map z) (Subsingleton.elim _ (𝟙 _))).trans ?_` and prove the remaining obligations. Rewrite using `[CategoryTheory.Functor.map_id, Category.comp_id]`. Rewrite using `[this]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem genPt_appLE {S : Scheme.{0}} [IsIntegral S] (U : S.Opens) (hU : genericPoint S ∈ U) (a : Γ(S, U)) :
     ((KeyVals.genPt S).appLE U ⊤ (KeyVals.genPt_le U hU)).hom a =
@@ -102,13 +100,13 @@ theorem genPt_appLE {S : Scheme.{0}} [IsIntegral S] (U : S.Opens) (hU : genericP
   rfl
 
 /- English proof (translation)
-Introduce `S _ G _ _ L δ σ _ i i' h2 t t' ht ht' j`. Establish `hc : pullback.fst G.hom (KeyVals.genPt S) ≫ G.hom = (KeyVals.bG G (KeyVals.genPt S)).hom ≫ KeyVals.genPt S` using `pullback.condition`. Establish `hW : (KeyVals.bL L (KeyVals.genPt S)).L.U j ≤ (pullback.fst G.hom (KeyVals.genPt S) ≫ G.hom) ⁻¹ᵁ (δ.U i ⊓ δ.U i')`. Rewrite using `[hc]`. Conclude with `fun y _ => KeyVals.genPt_le _ h2 (Set.mem_univ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hl : (KeyVals.bL L (KeyVals.genPt S)).L.U j ≤ pullback.fst G.hom (KeyVals.genPt S) ⁻¹ᵁ L.L.U (j PUnit.unit)` using `LB.wchart_le L.L (fun _ : PUnit => pullback.fst G.hom (KeyVals.genPt S)) j PUnit.unit`. Establish `h : (KeyVals.bL L (KeyVals.genPt S)).L.U j ≤ pullback.fst G.hom (KeyVals.genPt S) ⁻¹ᵁ (CechPic.tens L.L (δ.pull G.hom)).U (j PUnit.unit, fun _ => i)` using `fun y hy => ⟨hl hy, Set.mem_iInter.2 fun _ => (hW hy).1⟩`. Establish `h' : (KeyVals.bL L (KeyVals.genPt S)).L.U j ≤ pullback.fst G.hom (KeyVals.genPt S) ⁻¹ᵁ (CechPic.tens L.L (δ.pull G.hom)).U (j PUnit.unit, fun _ => i')` using `fun y hy => ⟨hl hy, Set.mem_iInter.2 fun _ => (hW hy).2⟩`. Rewrite using `[ht j h, ht' j h']`. Use `(appLE_sec_tens _ G.hom L.L L.isLB δ σ _ i i' _ h h' hW).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Unfold `constFn`. Rewrite using `[← genPt_appLE, ← CommRingCat.comp_apply]`. Use `erw [Scheme.Hom.appLE_comp_appLE]`. Establish `key : ∀ {Y : Scheme.{0}} (f f' : Y ⟶ S) (_ : f = f') (U : S.Opens) (W : Y.Opens) (a : W ≤ f ⁻¹ᵁ U) (a' : W ≤ f' ⁻¹ᵁ U) (x : Γ(S, U)), (f.appLE U W a).hom x = (f'.appLE U W a').hom x`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Y f f' e`. Substitute `e` using the available equality. Use `intros`. Both sides reduce to the same expression. Conclude with `key _ _ hc _ _ _ _ _`.
+Substitute using the available equality. Fix the arbitrary inputs and assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem locSec_eq_germ_mul : ∀ (S : Scheme.{0}) [IsIntegral S] (G : Over S) [GrpObj G] [IsCommMonObj G] (L : RigLB G) (δ : LB S)
     (σ : (CechPic.tens L.L (δ.pull G.hom)).Sec), δ.IsLB → ∀ (i i' : δ.ι) (h2 : genericPoint S ∈ δ.U i ⊓ δ.U i')

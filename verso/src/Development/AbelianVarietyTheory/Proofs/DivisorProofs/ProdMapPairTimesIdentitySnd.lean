@@ -33,9 +33,7 @@ def addBundle {A T : Over S} [MonObj A] (M : LB (A ⊗ T).left) : LB (A ⊗ (A �
     (ev M (fst A (A ⊗ T) * (snd A (A ⊗ T) ≫ fst A T)) (snd A (A ⊗ T) ≫ snd A T))
 
 /- English proof (translation)
-Introduce `x hx`. Establish `e : g.base (f.base x) = g'.base (f'.base x)`. Rewrite using `[← Scheme.Hom.comp_apply, h, Scheme.Hom.comp_apply]`. Use `show g'.base (f'.base x) ∈ U`. Rewrite using `[← e]`.
-
-Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preimage_le_of_comp {X Y Z W : Scheme.{0}} {f : X ⟶ Y} {g : Y ⟶ W} {f' : X ⟶ Z} {g' : Z ⟶ W}
     (h : f ≫ g = f' ≫ g') (U : W.Opens) : f ⁻¹ᵁ (g ⁻¹ᵁ U) ≤ f' ⁻¹ᵁ (g' ⁻¹ᵁ U) := by
@@ -47,7 +45,7 @@ theorem preimage_le_of_comp {X Y Z W : Scheme.{0}} {f : X ⟶ Y} {g : Y ⟶ W} {
   exact hx
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp [pmap2, ptFst, pmap]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem prodMapPairTimesIdentity_fst {A A' : Over S} (q : A ⟶ A') (T : Over S) :
     (pmap2 q T).left ≫ (lift (fst A' (A' ⊗ T)) (snd A' (A' ⊗ T) ≫ snd A' T)).left =
@@ -57,7 +55,7 @@ theorem prodMapPairTimesIdentity_fst {A A' : Over S} (q : A ⟶ A') (T : Over S)
   ext <;> simp [pmap2, ptFst, pmap]
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp [pmap2, ptSnd, pmap]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem prodMapPairTimesIdentity_snd {A A' : Over S} (q : A ⟶ A') (T : Over S) :
     (pmap2 q T).left ≫ (lift (snd A' (A' ⊗ T) ≫ fst A' T) (snd A' (A' ⊗ T) ≫ snd A' T)).left =
@@ -67,7 +65,7 @@ theorem prodMapPairTimesIdentity_snd {A A' : Over S} (q : A ⟶ A') (T : Over S)
   ext <;> simp [pmap2, ptSnd, pmap]
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, ← Over.comp_left]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp [pmap2, ptMul, pmap, MonObj.comp_mul, MonObj.mul_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem prodMapPairTimesIdentity_mul {A A' : Over S} [MonObj A] [MonObj A'] (q : A ⟶ A') [IsMonHom q] (T : Over S) :
     (pmap2 q T).left ≫ (lift (fst A' (A' ⊗ T) * (snd A' (A' ⊗ T) ≫ fst A' T)) (snd A' (A' ⊗ T) ≫ snd A' T)).left =
@@ -77,7 +75,7 @@ theorem prodMapPairTimesIdentity_mul {A A' : Over S} [MonObj A] [MonObj A'] (q :
   ext <;> simp [pmap2, ptMul, pmap, MonObj.comp_mul, MonObj.mul_comp]
 
 /- English proof (translation)
-Use `le_trans ?_ (preimage_le_of_comp (prodMapPairTimesIdentity_fst q T) _)` and prove the remaining obligations. Introduce `x hx`. Conclude with `LB.wchart_le M _ k.1.1 PUnit.unit hx.1.1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem addGen_le₁ {A A' T : Over S} [MonObj A'] (q : A ⟶ A') (M : LB (A' ⊗ T).left) (k : (addBundle M).ι) :
     (pmap2 q T).left ⁻¹ᵁ (addBundle M).U k ≤ (ptFst A T).left ⁻¹ᵁ ((pmap q T).left ⁻¹ᵁ M.U (k.1.1 PUnit.unit)) := by
@@ -86,7 +84,7 @@ theorem addGen_le₁ {A A' T : Over S} [MonObj A'] (q : A ⟶ A') (M : LB (A' �
   exact LB.wchart_le M _ k.1.1 PUnit.unit hx.1.1
 
 /- English proof (translation)
-Use `le_trans ?_ (preimage_le_of_comp (prodMapPairTimesIdentity_snd q T) _)` and prove the remaining obligations. Introduce `x hx`. Conclude with `LB.wchart_le M _ k.1.2 PUnit.unit hx.1.2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem addGen_le₂ {A A' T : Over S} [MonObj A'] (q : A ⟶ A') (M : LB (A' ⊗ T).left) (k : (addBundle M).ι) :
     (pmap2 q T).left ⁻¹ᵁ (addBundle M).U k ≤ (ptSnd A T).left ⁻¹ᵁ ((pmap q T).left ⁻¹ᵁ M.U (k.1.2 PUnit.unit)) := by
@@ -95,7 +93,7 @@ theorem addGen_le₂ {A A' T : Over S} [MonObj A'] (q : A ⟶ A') (M : LB (A' �
   exact LB.wchart_le M _ k.1.2 PUnit.unit hx.1.2
 
 /- English proof (translation)
-Use `le_trans ?_ (preimage_le_of_comp (prodMapPairTimesIdentity_mul q T) _)` and prove the remaining obligations. Introduce `x hx`. Conclude with `LB.wchart_le M _ k.2 PUnit.unit hx.2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem addGen_le₃ {A A' T : Over S} [MonObj A] [MonObj A'] (q : A ⟶ A') [IsMonHom q] (M : LB (A' ⊗ T).left)
     (k : (addBundle M).ι) :

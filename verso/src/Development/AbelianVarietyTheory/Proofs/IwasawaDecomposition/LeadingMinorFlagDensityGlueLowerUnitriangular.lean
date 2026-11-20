@@ -11,7 +11,7 @@ namespace GlobalTheory.FlagFibre
 variable {r p q : ℕ}
 
 /- English proof (translation)
-Use `conv_lhs => rw [← fromBlocks_toBlocks S]`. Simplify using `[fromBlocks_conjTranspose, fromBlocks_multiply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockDiag_conj (S : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) (a : Matrix (Fin p) (Fin p) ℂ)
     (b : Matrix (Fin q) (Fin q) ℂ) :
@@ -21,7 +21,7 @@ theorem blockDiag_conj (S : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) (a :
   simp [fromBlocks_conjTranspose, fromBlocks_multiply]
 
 /- English proof (translation)
-Establish `hb' : IsUnit bᴴ.det` using `by rw [det_conjTranspose]; exact hb.star`. Rewrite using `[blockDiag_conj, schur, schur]`. Simplify using `only [toBlocks_fromBlocks₁₁, toBlocks_fromBlocks₁₂, toBlocks_fromBlocks₂₁, toBlocks_fromBlocks₂₂, Matrix.mul_inv_rev, Matrix.mul_assoc, Matrix.mul_sub, Matrix.sub_mul]`. Rewrite using `[mul_nonsing_inv_cancel_left _ _ hb, nonsing_inv_mul_cancel_left _ _ hb']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem schur_blockDiag_conj (S : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) (a : Matrix (Fin p) (Fin p) ℂ)
     {b : Matrix (Fin q) (Fin q) ℂ} (hb : IsUnit b.det) :
@@ -33,9 +33,9 @@ theorem schur_blockDiag_conj (S : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ
   rw [mul_nonsing_inv_cancel_left _ _ hb, nonsing_inv_mul_cancel_left _ _ hb']
 
 /- English proof (translation)
-Establish `h1 : reindex e e ((uni (glue e w))ᴴ * A * uni (glue e w)) = (reindex e e (uni (glue e w)))ᴴ * reindex e e A * reindex e e (uni (glue e w))`. Simplify using `only [reindex_apply, conjTranspose_submatrix, submatrix_mul_equiv]`. Establish `h2 : fromBlocks (uni w.2.2) (toMat w.1 * uni w.2.1) 0 (uni w.2.1) = (fromBlocks 1 (toMat w.1) 0 1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * fromBlocks (uni w.2.2) 0 0 (uni w.2.1)`. Simplify using `[fromBlocks_multiply]`. Rewrite using `[h1, reindex_uni_glue he, h2, shear]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem reindex_conj_glue {e : Fin r ≃ Fin p ⊕ Fin q} (he : IsBlockSL2Embedding e) (A : Matrix (Fin r) (Fin r) ℂ)
     (w : (Fin p × Fin q → ℂ) × (Low q → ℂ) × (Low p → ℂ)) :
@@ -53,15 +53,13 @@ theorem reindex_conj_glue {e : Fin r ≃ Fin p ⊕ Fin q} (he : IsBlockSL2Embedd
   simp only [conjTranspose_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `r p q e he A w hS`. Establish `hR` using `reindex_conj_glue he A w`. Use `set S := shear (reindex e e A) (toMat w.1) with hSdef`. Use `set H := (uni (glue e w))ᴴ * A * uni (glue e w) with hH`. Establish `h22 : (reindex e e H).toBlocks₂₂ = (uni w.2.1)ᴴ * S.toBlocks₂₂ * uni w.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hR, blockDiag_conj, toBlocks_fromBlocks₂₂]`. Establish `hd : (reindex e e H).toBlocks₂₂.det = S.toBlocks₂₂.det`. Rewrite using `[h22, det_mul, det_mul, det_conjTranspose, det_uni]`. Simplify using the standard rewrite rules. Establish `hs : schur (reindex e e H) = (uni w.2.2)ᴴ * schur S * uni w.2.2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hR, schur_blockDiag_conj _ _ (by rw [det_uni]; exact isUnit_one)]`. Take `⟨m1, m2⟩` from `GlobalTheory.T.leadingMinor_blockDecomposition r p q e he H (hd ▸ hS)`. Rewrite `m2` using `[hd, hs]`. Rewrite `m1` using `[h22]`. Unfold `dens`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hH, ← Equiv.prod_comp e.symm, Fintype.prod_sum_type]`. Establish `a1 : ∀ a : Fin q, lminor H (e.symm (Sum.inr a)).castSucc = lminor ((uni w.2.1)ᴴ * S.toBlocks₂₂ * uni w.2.1) a.castSucc` using `fun a => m1 _ _ (by simp [he.2])`. Establish `a2 : ∀ a : Fin p, lminor H (e.symm (Sum.inl a)).castSucc = S.toBlocks₂₂.det * lminor ((uni w.2.2)ᴴ * schur S * uni w.2.2) a.castSucc` using `fun a => m2 _ _ (by simp [he.1])`. Simplify using `only [a1, a2, norm_mul, mul_zpow, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[← zpow_natCast, ← _root_.zpow_mul, neg_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dens_glue : ∀ (r p q : ℕ) (e : Fin r ≃ Fin p ⊕ Fin q), IsBlockSL2Embedding e → ∀ (A : Matrix (Fin r) (Fin r) ℂ) (w : (Fin p × Fin q → ℂ) × (Low q → ℂ) × (Low p → ℂ)), IsUnit (shear (reindex e e A) (toMat w.1)).toBlocks₂₂.det → dens A (glue e w) = dens (shear (reindex e e A) (toMat w.1)).toBlocks₂₂ w.2.1 * ‖(shear (reindex e e A) (toMat w.1)).toBlocks₂₂.det‖ ^ (-(2 * p : ℤ)) * dens (schur (shear (reindex e e A) (toMat w.1))) w.2.2 := by
   intro r p q e he A w hS

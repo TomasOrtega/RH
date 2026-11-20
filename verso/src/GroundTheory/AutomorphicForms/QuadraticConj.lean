@@ -20,21 +20,21 @@ theorem conjLinear_apply (x : E) :
 variable [Algebra.IsQuadraticExtension F E]
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_algebraMap, Algebra.IsQuadraticExtension.finrank_eq_two, nsmul_eq_mul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem trace_algebraMap_quadratic (c : F) : Algebra.trace F E (algebraMap F E c) = 2 * c := by
   rw [Algebra.trace_algebraMap, Algebra.IsQuadraticExtension.finrank_eq_two, nsmul_eq_mul]
   norm_num
 
 /- English proof (translation)
-Rewrite using `[conjLinear_apply, trace_algebraMap_quadratic, map_mul, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conjLinear_algebraMap (c : F) : conjLinear F E (algebraMap F E c) = algebraMap F E c := by
   rw [conjLinear_apply, trace_algebraMap_quadratic, map_mul, map_ofNat]
   ring
 
 /- English proof (translation)
-Simplify using `using conjLinear_algebraMap (F := F) (E := E) 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conjLinear_one : conjLinear F E 1 = 1 := by
   simpa using conjLinear_algebraMap (F := F) (E := E) 1
@@ -42,11 +42,11 @@ theorem conjLinear_one : conjLinear F E 1 = 1 := by
 omit [Algebra.IsQuadraticExtension F E] in
 
 /- English proof (translation)
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Simplify using `only [zero_smul, add_zero] at hst`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `⟨?_, rfl⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hs`. Conclude with `one_ne_zero ((smul_eq_zero.mp hst).resolve_left hs)`. It suffices to derive a contradiction. Apply `hx` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨-(s / t), ?_⟩` and prove the remaining obligations. Establish `: t • x = -(s • (1 : E))` using `eq_neg_of_add_eq_zero_right hst`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Establish `h2 : x = t⁻¹ • (t • x)` using `by rw [smul_smul, inv_mul_cancel₀ ht, one_smul]`. Rewrite using `[h2, this, smul_neg, smul_smul, neg_smul, div_eq_inv_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearIndependent_one_of_not_mem [Nontrivial E] {x : E}
     (hx : x ∉ Set.range (algebraMap F E)) : LinearIndependent F ![1, x] := by
@@ -67,7 +67,7 @@ theorem linearIndependent_one_of_not_mem [Nontrivial E] {x : E}
     rw [h2, this, smul_neg, smul_smul, neg_smul, div_eq_inv_mul]
 
 /- English proof (translation)
-The claim follows from `Module.nontrivial_of_finrank_pos (R := K) (by rw [Algebra.IsQuadraticExtension.finrank_eq_two]; norm_num)`.
+A detailed English derivation is pending.
 -/
 theorem nontrivial_quadratic (K A : Type*) [Field K] [CommRing A] [Algebra K A]
     [Algebra.IsQuadraticExtension K A] : Nontrivial A :=
@@ -80,19 +80,19 @@ noncomputable def basisOneOf {x : E} (hx : x ∉ Set.range (algebraMap F E)) : B
     (by rw [Algebra.IsQuadraticExtension.finrank_eq_two, Fintype.card_fin])
 
 /- English proof (translation)
-Simplify using `[basisOneOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem basisOneOf_zero {x : E} (hx : x ∉ Set.range (algebraMap F E)) : basisOneOf hx 0 = 1 := by
   simp [basisOneOf]
 
 /- English proof (translation)
-Simplify using `[basisOneOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem basisOneOf_one {x : E} (hx : x ∉ Set.range (algebraMap F E)) : basisOneOf hx 1 = x := by
   simp [basisOneOf]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (basisOneOf hx).sum_repr (x * x)]`. Rewrite using `[Fin.sum_univ_two, basisOneOf_zero, basisOneOf_one, Algebra.smul_def, Algebra.smul_def, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_eq_of_not_mem {x : E} (hx : x ∉ Set.range (algebraMap F E)) :
     x * x = algebraMap F E ((basisOneOf hx).repr (x * x) 0) +
@@ -102,7 +102,7 @@ theorem sq_eq_of_not_mem {x : E} (hx : x ∉ Set.range (algebraMap F E)) :
     mul_one]
 
 /- English proof (translation)
-Establish `h` using `(basisOneOf hx).repr_self 1`. Rewrite `h` using `[basisOneOf_one]`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem repr_self_zero {x : E} (hx : x ∉ Set.range (algebraMap F E)) :
     (basisOneOf hx).repr x 0 = 0 := by
@@ -111,7 +111,7 @@ theorem repr_self_zero {x : E} (hx : x ∉ Set.range (algebraMap F E)) :
   rw [h]; simp
 
 /- English proof (translation)
-Establish `h` using `(basisOneOf hx).repr_self 1`. Rewrite `h` using `[basisOneOf_one]`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem repr_self_one {x : E} (hx : x ∉ Set.range (algebraMap F E)) :
     (basisOneOf hx).repr x 1 = 1 := by
@@ -120,7 +120,7 @@ theorem repr_self_one {x : E} (hx : x ∉ Set.range (algebraMap F E)) :
   rw [h]; simp
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_eq_matrix_trace (basisOneOf hx), Matrix.trace_fin_two, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul, basisOneOf_zero, basisOneOf_one, mul_one, repr_self_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_eq_of_not_mem {x : E} (hx : x ∉ Set.range (algebraMap F E)) :
     Algebra.trace F E x = (basisOneOf hx).repr (x * x) 1 := by
@@ -129,7 +129,7 @@ theorem trace_eq_of_not_mem {x : E} (hx : x ∉ Set.range (algebraMap F E)) :
     basisOneOf_one, mul_one, repr_self_zero, zero_add]
 
 /- English proof (translation)
-Rewrite using `[Algebra.norm_eq_matrix_det (basisOneOf hx), Matrix.det_fin_two, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul, Algebra.leftMulMatrix_eq_repr_mul, basisOneOf_zero, basisOneOf_one, mul_one, repr_self_zero, repr_self_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_eq_of_not_mem {x : E} (hx : x ∉ Set.range (algebraMap F E)) :
     Algebra.norm F x = -(basisOneOf hx).repr (x * x) 0 := by
@@ -140,9 +140,9 @@ theorem norm_eq_of_not_mem {x : E} (hx : x ∉ Set.range (algebraMap F E)) :
   ring
 
 /- English proof (translation)
-Distinguish the cases in `hx : x ∈ Set.range (algebraMap F E)`. Take `⟨c, rfl⟩` from `hx`. Rewrite using `[← map_mul, conjLinear_algebraMap, conjLinear_algebraMap, map_mul]`. Establish `hsq` using `sq_eq_of_not_mem hx`. Establish `htr : Algebra.trace F E x = (basisOneOf hx).repr (x * x) 1` using `trace_eq_of_not_mem hx`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htr2 : Algebra.trace F E (x * x) = 2 * (basisOneOf hx).repr (x * x) 0 + (basisOneOf hx).repr (x * x) 1 * (basisOneOf hx).repr (x * x) 1` using `by conv_lhs => rw [hsq]`. Rewrite using `[map_add, trace_algebraMap_quadratic, ← Algebra.smul_def, map_smul, htr, smul_eq_mul]`. Rewrite using `[conjLinear_apply, conjLinear_apply, htr2, htr]`. Simplify using `only [map_add, map_mul, map_ofNat]`. Take the linear combination `(-2 : E) * hsq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem conjLinear_mul_self (x : E) :
     conjLinear F E (x * x) = conjLinear F E x * conjLinear F E x := by
@@ -160,9 +160,9 @@ theorem conjLinear_mul_self (x : E) :
     linear_combination (-2 : E) * hsq
 
 /- English proof (translation)
-Distinguish the cases in `hx : x ∈ Set.range (algebraMap F E)`. Take `⟨c, rfl⟩` from `hx`. Rewrite using `[conjLinear_algebraMap, ← Algebra.smul_def, ← Algebra.smul_def, map_smul]`. Establish `key : (conjLinear F E).comp (LinearMap.mulLeft F x) = (LinearMap.mulLeft F (conjLinear F E x)).comp (conjLinear F E)`. Use `(basisOneOf hx).ext fun i => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `fin_cases i`. Simplify using `[basisOneOf_zero, conjLinear_one]`. Simplify using `only [Fin.mk_one, basisOneOf_one, LinearMap.coe_comp, Function.comp_apply, LinearMap.mulLeft_apply]`. Conclude with `conjLinear_mul_self x`. Conclude with `LinearMap.congr_fun key y`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conjLinear_mul (x y : E) :
     conjLinear F E (x * y) = conjLinear F E x * conjLinear F E y := by
@@ -180,7 +180,7 @@ theorem conjLinear_mul (x y : E) :
     exact LinearMap.congr_fun key y
 
 /- English proof (translation)
-Rewrite using `[conjLinear_apply, conjLinear_apply x, map_sub, trace_algebraMap_quadratic, map_sub, map_mul, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conjLinear_conjLinear (x : E) : conjLinear F E (conjLinear F E x) = x := by
   rw [conjLinear_apply, conjLinear_apply x, map_sub, trace_algebraMap_quadratic, map_sub,
@@ -195,32 +195,32 @@ noncomputable def conj : E ≃ₐ[F] E :=
     conjLinear_one conjLinear_mul
 
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem conj_apply (x : E) : conj F E x = algebraMap F E (Algebra.trace F E x) - x := rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `conjLinear_conjLinear x`.
+A detailed English derivation is pending.
 -/
 theorem conj_conj (x : E) : conj F E (conj F E x) = x := conjLinear_conjLinear x
 
 /- English proof (translation)
-The claim follows from `conjLinear_algebraMap c`.
+A detailed English derivation is pending.
 -/
 theorem conj_algebraMap (c : F) : conj F E (algebraMap F E c) = algebraMap F E c :=
   conjLinear_algebraMap c
 
 /- English proof (translation)
-Rewrite using `[conj_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem add_conj (x : E) : x + conj F E x = algebraMap F E (Algebra.trace F E x) := by
   rw [conj_apply]; ring
 
 /- English proof (translation)
-Distinguish the cases in `hx : x ∈ Set.range (algebraMap F E)`. Take `⟨c, rfl⟩` from `hx`. Rewrite using `[conj_algebraMap, Algebra.norm_algebraMap, Algebra.IsQuadraticExtension.finrank_eq_two, map_pow, sq]`. Establish `hsq` using `sq_eq_of_not_mem hx`. Rewrite using `[conj_apply, trace_eq_of_not_mem hx, norm_eq_of_not_mem hx, map_neg]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-1 : E) * hsq`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mul_conj (x : E) : x * conj F E x = algebraMap F E (Algebra.norm F x) := by
   by_cases hx : x ∈ Set.range (algebraMap F E)

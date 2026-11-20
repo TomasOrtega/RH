@@ -19,7 +19,7 @@ open GlobalTheory.Desc
 namespace GlobalTheory.Desc
 
 /- English proof (translation)
-Take `⟨G, _, φ, hG, hφ⟩` from `h`. Conclude with `⟨(Over.pullback e).obj G, inferInstance, _, IsSemiAbelian.pullback _ _ hG, ReciprocityTheory.ChartRestriction.G.Chart.isGrpPullback_factor e g hφ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasExt.of_comp {W V T : Scheme.{0}} (g : W ⟶ V) (e : V ⟶ T) (B : Over W) [GrpObj B] (h : HasExt (g ≫ e) B) :
     HasExt g B := by
@@ -28,7 +28,7 @@ theorem HasExt.of_comp {W V T : Scheme.{0}} (g : W ⟶ V) (e : V ⟶ T) (B : Ove
     ReciprocityTheory.ChartRestriction.G.Chart.isGrpPullback_factor e g hφ⟩
 
 /- English proof (translation)
-Take `⟨G, _, φ, hG, hφ⟩` from `h`. Establish `h2` using `ReciprocityTheory.ChartRestriction.G.Chart.isGrpPullback_factor j l hφ`. Take `⟨e, ⟨he, -⟩, -⟩` from `GlobalTheory.semiAbelianHomExtension_holds.existsUnique_iso_of_extensions hV hA (IsSemiAbelian.pullback j G hG) hκ h2`. Conclude with `⟨G, inferInstance, e.hom.left ≫ pullback.fst _ _, hG, ((isGrpPullback_of_iso e).comp (isGrpPullback_pullback G j)).congr (Category.id_comp _) rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasExt.of_dense {W V U : Scheme.{0}} [AlgebraicGeometry.IsNoetherian V]
     (hV : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme V) (l : W ⟶ V) [IsOpenImmersion l] [IsDominant l] (j : V ⟶ U)
@@ -42,11 +42,9 @@ theorem HasExt.of_dense {W V U : Scheme.{0}} [AlgebraicGeometry.IsNoetherian V]
     ((isGrpPullback_of_iso e).comp (isGrpPullback_pullback G j)).congr (Category.id_comp _) rfl⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Set `E` to `RingEquiv.ofBijective e he`. Establish `hφ : φ = (φ.comp e).comp E.symm.toRingHom`. Use extensionality with `a`. Conclude with `congrArg φ (E.apply_symm_apply a).symm`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hφ]`. Conclude with `RingHom.Flat.comp (RingHom.Flat.of_bijective E.symm.bijective) h1`. Rewrite using `[← h2, ← Ideal.map_map, IsLocalRing.map_maximalIdeal_of_surjective e he.2]`. Conclude with `RingHom.Finite.of_comp_finite (f := e) h3`.
-
-Conclude with `RingHom.FormallyUnramified.of_comp (f := e) h'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_of_comp_bijective {B A R : Type} [CommRing B] [IsLocalRing B] [CommRing A] [IsLocalRing A]
     [CommRing R] [IsLocalRing R] (e : B →+* A) (he : Function.Bijective e) (φ : A →+* R)
@@ -65,7 +63,7 @@ theorem etale_of_comp_bijective {B A R : Type} [CommRing B] [IsLocalRing B] [Com
   · exact RingHom.FormallyUnramified.of_comp (f := e) h'
 
 /- English proof (translation)
-Substitute `hξ` using the available equality. Establish `hiso : IsIso (i.stalkMap (ξ' (IsLocalRing.closedPoint (CommRingCat.of R))))` using `(IsOpenImmersion.iff_isIso_stalkMap.1 inferInstance).2 _`. Establish `hb : Function.Bijective (i.stalkMap (ξ' (IsLocalRing.closedPoint (CommRingCat.of R)))).hom` using `ConcreteCategory.bijective_of_isIso _`. Rewrite `h`, `h'` using `[Scheme.stalkClosedPointTo_comp]`. Conclude with `etale_of_comp_bijective _ hb _ h h'`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_of_comp_openImmersion {S S' : Scheme.{0}} (i : S' ⟶ S) [IsOpenImmersion i] {R : Type} [CommRing R]
     [IsLocalRing R] (ξ' : Sp R ⟶ S') (ξ : Sp R ⟶ S) (hξ : ξ' ≫ i = ξ)
@@ -82,11 +80,11 @@ theorem etale_of_comp_openImmersion {S S' : Scheme.{0}} (i : S' ⟶ S) [IsOpenIm
   exact etale_of_comp_bijective _ hb _ h h'
 
 /- English proof (translation)
-Establish `hfl : Flat ξ`. Rewrite using `[← Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := .of R) ξ]`. Establish `: Flat (Spec.map (Scheme.stalkClosedPointTo ξ))` using `(HasRingHomProperty.Spec_iff (P := @Flat)).2 h`. Conclude with `MorphismProperty.comp_mem @Flat _ _ this (GlobalTheory.LocalRingGeneralisation.flat_fromSpecStalk _ _)`. Take `⟨p, -, hp⟩` from `Flat.generalizingMap ξ hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz : jK R z ⤳ p`. Use `(PrimeSpectrum.le_iff_specializes _ _).1 fun a ha => ?_` and prove the remaining obligations. Establish `ha' : algebraMap R (FractionRing R) a ∈ z.asIdeal` using `ha`. Use `z.isPrime` as an intermediate fact. Rewrite `ha'` using `[Ideal.eq_bot_of_prime z.asIdeal, Ideal.mem_bot, map_eq_zero_iff _ (IsFractionRing.injective R _)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha']`. Conclude with `zero_mem _`. Conclude with `(hz.map ξ.continuous).mem_open U.isOpen (by rw [hp]; exact ht)`.
+A detailed English derivation is pending.
 -/
 theorem generic_mem_of_flat {S : Scheme.{0}} {R : Type} [CommRing R] [IsLocalRing R] [IsDomain R] (ξ : Sp R ⟶ S)
     (h : (Scheme.stalkClosedPointTo ξ).hom.Flat) (U : S.Opens) (t : S) (ht : t ∈ U) (hs : t ⤳ ξ (closedPoint R))
@@ -106,13 +104,13 @@ theorem generic_mem_of_flat {S : Scheme.{0}} {R : Type} [CommRing R] [IsLocalRin
   exact (hz.map ξ.continuous).mem_open U.isOpen (by rw [hp]; exact ht)
 
 /- English proof (translation)
-Establish `h1 : Set.range C.ξ ⊆ Set.range i`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `(Scheme.preimage_eq_top_of_closedPoint_mem (R := .of C.R) C.ξ (U := i.opensRange) ⟨x, C.centre.symm⟩).ge (Set.mem_univ y)`. Set `ξ' : Sp C.R ⟶ S'` to `IsOpenImmersion.lift i C.ξ h1`. Establish `hξ : ξ' ≫ i = C.ξ` using `IsOpenImmersion.lift_fac _ _ _`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨he, hu⟩` from `etale_of_comp_openImmersion i ξ' C.ξ hξ C.etc C.unr`. Establish `hg : genericPoint S' ∈ j'.opensRange` using `((genericPoint_spec S').mem_open_set_iff j'.opensRange.isOpen).2 (by`. Rewrite using `[Set.univ_inter]`. Conclude with `Set.range_nonempty _)`. Establish `h2 : Set.range (jK C.R ≫ ξ') ⊆ Set.range j'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `generic_mem_of_flat ξ' he.1 j'.opensRange _ hg (genericPoint_specializes _) z`. Set `y' : Sp (FractionRing C.R) ⟶ X'` to `IsOpenImmersion.lift j' (jK C.R ≫ ξ') h2`. Establish `hy' : y' ≫ j' = jK C.R ≫ ξ'` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hk : C.y = y' ≫ k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← cancel_mono j, Category.assoc, w, ← Category.assoc, hy', Category.assoc, hξ, C.hy]`. Use `⟨{ R := C.R, complete := C.complete, charZero := C.charZero, ξ := ξ', centre := ?_, etc := he, unr := hu, G := C.G, semi := C.semi, y := y', hy := hy', α := _, gen := ReciprocityTheory.ChartRestriction.G.Chart.isGrpPullback_factor k y' (C.gen.congr hk rfl) }⟩` and prove the remaining obligations. Apply `i.isOpenEmbedding.injective` to reduce the goal to its premises. Conclude with `(congrArg (fun q => q (closedPoint C.R)) hξ).trans C.centre`.
+A detailed English derivation is pending.
 -/
 theorem Chart.nonempty_restrict {X S X' S' : Scheme.{0}} [IrreducibleSpace S'] [Nonempty X'] (j : X ⟶ S) [Mono j]
     (j' : X' ⟶ S') [IsOpenImmersion j'] (i : S' ⟶ S) [IsOpenImmersion i] (k : X' ⟶ X) (w : k ≫ j = j' ≫ i)
@@ -141,23 +139,23 @@ theorem Chart.nonempty_restrict {X S X' S' : Scheme.{0}} [IrreducibleSpace S'] [
   exact (congrArg (fun q => q (closedPoint C.R)) hξ).trans C.centre
 
 /- English proof (translation)
-Take `⟨x₀, p, hp⟩` from `j.denseRange.exists_mem_open i.opensRange.isOpen (Set.range_nonempty i)`. Take `⟨_, ⟨f : R, rfl⟩, hpf, hf⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (a := p) (u := (i ⁻¹ᵁ j.opensRange).1) ⟨x₀, hp.symm⟩ (i ⁻¹ᵁ j.opensRange).isOpen`. Establish `hf0 : f ≠ 0`. Introduce and unpack `rfl`. Conclude with `hpf (zero_mem _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hrange : Set.range (awayMap f) = (PrimeSpectrum.basicOpen f).1` using `PrimeSpectrum.localization_away_comap_range (Localization.Away f) f`. Establish `: IsOpenImmersion (awayMap f)` using `IsOpenImmersion.of_isLocalization f`. Establish `hne : Nonempty (Sp (Localization.Away f))`. Take `⟨q, -⟩ : p ∈ Set.range (awayMap f)` from `hrange ▸ hpf`. Conclude with `⟨q⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h1 : Set.range (awayMap f ≫ i) ⊆ Set.range j`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `hf (hrange.le (Set.mem_range_self z))`. Set `k : Sp (Localization.Away f) ⟶ X` to `IsOpenImmersion.lift j (awayMap f ≫ i) h1`. Establish `hk : k ≫ j = awayMap f ≫ i` using `IsOpenImmersion.lift_fac _ _ _`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsOpenImmersion (k ≫ j)` using `by rw [hk]; infer_instance`. Establish `: IsOpenImmersion k` using `IsOpenImmersion.of_comp k j`. Establish `hL'` using `pull_isLB hL (pullback.fst A.hom k)`. Take `⟨u, hu⟩` from `GlobalTheory.lbIso_refl hL'`. Establish `hext : HasExt (awayMap f) ((Over.pullback k).obj A)` using `GlobalTheory.T.extendsToSemiAbelian_away_of_charts R f hf0 _ (isAbelianScheme_pullback_obj k A hA) (L.pull (pullback.fst A.hom k)) hL' (relAmple_pull (isGrpPullback_pullback A k).1 hL hL' ((isGen_iff u).1 hu) k.opensRange (isAffineOpen_opensRange k) (fun y => ⟨y, rfl⟩) hamp) fun …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h2 : Set.range k ⊆ Set.range (j ⁻¹ᵁ i.opensRange).ι`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `⟨awayMap f z, (congrArg (fun q => q z) hk).symm⟩`. Set `l : Sp (Localization.Away f) ⟶ (j ⁻¹ᵁ i.opensRange).toScheme` to `IsOpenImmersion.lift _ k h2`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : l ≫ (j ⁻¹ᵁ i.opensRange).ι = k` using `IsOpenImmersion.lift_fac _ _ _`. Establish `: IsOpenImmersion (l ≫ (j ⁻¹ᵁ i.opensRange).ι)` using `by rw [hl]; infer_instance`. Establish `: IsOpenImmersion l` using `IsOpenImmersion.of_comp l (j ⁻¹ᵁ i.opensRange).ι`. Establish `hcomp : l ≫ (j ∣_ i.opensRange) ≫ i.isoOpensRange.inv = awayMap f`. Rewrite using `[← cancel_mono i, Category.assoc, Category.assoc, i.isoOpensRange_inv_comp, morphismRestrict_ι, ← Category.assoc, hl, hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsDominant l`. Establish `hd : Dense (Set.range (awayMap f))` using `(awayMap f).isOpenEmbedding.isOpen_range.dense (Set.range_nonempty _)`. Establish `hg` using `((j ∣_ i.opensRange) ≫ i.isoOpensRange.inv).isOpenEmbedding`. Use `⟨(hd.preimage hg.isOpenMap).mono ?_⟩` and prove the remaining obligations. Introduce and unpack `y ⟨z, hz⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨z, hg.injective ((congrArg (fun q => q z) hcomp).trans hz)⟩`. Use `GlobalTheory.IsNormalScheme.of_pred hS` as an intermediate fact. Establish `: IsLocallyNoetherian (j ⁻¹ᵁ i.opensRange).toScheme` using `isLocallyNoetherian_of_isOpenImmersion ((j ⁻¹ᵁ i.opensRange).ι ≫ j)`. Establish `: TopologicalSpace.NoetherianSpace (j ⁻¹ᵁ i.opensRange).toScheme` using `((j ⁻¹ᵁ i.opensRange).ι ≫ j).isOpenEmbedding.isInducing.noetherianSpace`. Establish `: AlgebraicGeometry.IsNoetherian (j ⁻¹ᵁ i.opensRange).toScheme` using `{}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: GlobalTheory.IsNormalScheme (j ⁻¹ᵁ i.opensRange).toScheme` using `GlobalTheory.IsNormalScheme.of_isOpenImmersion ((j ⁻¹ᵁ i.opensRange).ι ≫ j)`. Use `HasExt.of_dense (GlobalTheory.IsNormalScheme.pred _) l _ _ (isSemiAbelian_of_isAbelianScheme _ (isAbelianScheme_pullback_obj _ A hA)) ((Over.pullback k).obj A) _ (ReciprocityTheory.ChartRestriction.G.Chart.isGrpPullback_factor _ l ((isGrpPullback_pullback A k).congr hl.symm rfl)) …` and prove the remaining obligations. Rewrite using `[Category.assoc, hcomp]`. Conclude with `hext`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasExt_opensRange (X S : Scheme.{0}) [AlgebraicGeometry.IsNoetherian S]
     (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S) (j : X ⟶ S) [IsOpenImmersion j] [IsDominant j]
@@ -225,11 +223,11 @@ theorem hasExt_opensRange (X S : Scheme.{0}) [AlgebraicGeometry.IsNoetherian S]
   exact hext
 
 /- English proof (translation)
-Introduce `X S _ hS j _ hj A _ hA L hL hamp hC s`. Use `GlobalTheory.IsNormalScheme.of_pred hS` as an intermediate fact. Set `Z : S.Opens` to `GlobalTheory.IsNormalScheme.component ⟨_, irreducibleComponent_mem_irreducibleComponents s⟩`. Take `⟨U, hU, hs, hle⟩` from `exists_isAffineOpen_mem_and_subset (X := S) (U := Z) (x := s) mem_irreducibleComponent`. Establish `: IrreducibleSpace U.toScheme` using `Subtype.irreducibleSpace ⟨⟨s, hs⟩, isIrreducible_irreducibleComponent.2.open_subset U.isOpen hle⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: IsIntegral U.toScheme` using `GlobalTheory.IsNormalScheme.isIntegral_of_irreducibleSpace _`. Establish `: IsIntegral (Spec Γ(S, U))` using `IsIntegral.of_isIso hU.isoSpec.hom`. Establish `: IsDomain Γ(S, U)` using `(affine_isIntegral_iff _).1 this`. Establish `: IsNoetherianRing Γ(S, U)` using `IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`. Establish `: IsIntegrallyClosed Γ(S, U)` using `GlobalTheory.IsNormalScheme.isIntegrallyClosed_of_isAffineOpen hU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `i : Sp Γ(S, U) ⟶ S` to `hU.fromSpec`. Establish `: IsOpenImmersion i` using `inferInstanceAs (IsOpenImmersion hU.fromSpec)`. Use `⟨i.opensRange, ?_, hasExt_opensRange X S hS j A hA L hL hamp hC Γ(S, U) i⟩` and prove the remaining obligations. Conclude with `hU.range_fromSpec.ge hs`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_hasExt_near : ∀ (X S : Scheme.{0}) [AlgebraicGeometry.IsNoetherian S], ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S → ∀ (j : X ⟶ S) [IsOpenImmersion j], IsDominant j → ∀ (A : Over X) [GrpObj A], IsAbelianScheme A → ∀ L : LB A.left, L.IsLB → RelAmple A L → (∀ x : S, Nonempty (Chart j A x)) → ∀ s : S, ∃ U : S.Opens, s ∈ U ∧ HasExt (j ∣_ U) ((Over.pullback (j ⁻¹ᵁ U).ι).obj A) := by
   intro X S _ hS j _ hj A _ hA L hL hamp hC s

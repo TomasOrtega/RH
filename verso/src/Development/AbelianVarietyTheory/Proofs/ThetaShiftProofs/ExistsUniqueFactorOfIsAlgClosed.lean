@@ -13,7 +13,7 @@ variable {K₀ : Type u} {K₁ : Type v} {L : Type w} [Field K₀] [Field K₁] 
   [Algebra K₀ K₁] [Algebra K₁ L] [Algebra K₀ L] [IsScalarTower K₀ K₁ L]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `GaloisDescent.mem_range_algebraMap_of_forall_algEquiv _ ha`. Use `⟨k, (algebraMap K₁ L).injective ?_⟩` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_apply, hk]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_range_of_algebraMap_fixed [PerfectField K₀] [IsAlgClosed L] (a : K₁)
     (ha : ∀ s : L ≃ₐ[K₀] L, s (algebraMap K₁ L a) = algebraMap K₁ L a) :
@@ -23,7 +23,7 @@ theorem mem_range_of_algebraMap_fixed [PerfectField K₀] [IsAlgClosed L] (a : K
   rw [← IsScalarTower.algebraMap_apply, hk]
 
 /- English proof (translation)
-Use `choose f hf using h`. Establish `hi` using `(algebraMap K₀ K₁).injective`. Apply the tactic sequence `refine ⟨⟨⟨⟨f, hi ?_⟩, fun a b => hi ?_⟩, hi ?_, fun a b => hi ?_⟩, RingHom.ext hf⟩ <;>`. Simplify using `[hf]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ringHom_of_forall_mem_range {A : Type*} [CommRing A] (φ : A →+* K₁)
     (h : ∀ a, φ a ∈ Set.range (algebraMap K₀ K₁)) :
@@ -34,7 +34,7 @@ theorem exists_ringHom_of_forall_mem_range {A : Type*} [CommRing A] (φ : A →+
     simp [hf]
 
 /- English proof (translation)
-The claim follows from `exists_ringHom_of_forall_mem_range φ fun a => mem_range_of_algebraMap_fixed _ fun s => h s a`.
+A detailed English derivation is pending.
 -/
 theorem exists_ringHom_of_fixed [PerfectField K₀] [IsAlgClosed L] {A : Type*} [CommRing A]
     (φ : A →+* K₁)
@@ -52,14 +52,14 @@ variable {K₀ K₁ L : Type u} [Field K₀] [Field K₁] [Field L]
   [Algebra K₀ K₁] [Algebra K₁ L] [Algebra K₀ L] [IsScalarTower K₀ K₁ L]
 
 /- English proof (translation)
-The claim follows from `have : Surjective specAlg(K₀, K₁) := ⟨Function.surjective_to_subsingleton _⟩ Flat.epi_of_flat_of_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem epi_specAlg : Epi specAlg(K₀, K₁) :=
   have : Surjective specAlg(K₀, K₁) := ⟨Function.surjective_to_subsingleton _⟩
   Flat.epi_of_flat_of_surjective _
 
 /- English proof (translation)
-The claim follows from `have := epi_specAlg (K₀ := K₀) (K₁ := K₁) (cancel_epi _).mp h`.
+A detailed English derivation is pending.
 -/
 theorem point_ext {Z : Scheme.{u}} {y y' : Spec (.of K₀) ⟶ Z}
     (h : specAlg(K₀, K₁) ≫ y = specAlg(K₀, K₁) ≫ y') : y = y' :=
@@ -67,7 +67,7 @@ theorem point_ext {Z : Scheme.{u}} {y y' : Spec (.of K₀) ⟶ Z}
   (cancel_epi _).mp h
 
 /- English proof (translation)
-Simplify using `only [← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp]`. Use `congr 3`. Use extensionality with `a`. Simplify using `[← IsScalarTower.algebraMap_apply]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem fixed_of_factor {Z : Scheme.{u}} (y : Spec (.of K₀) ⟶ Z) (s : L ≃ₐ[K₀] L) :
     Spec.map (CommRingCat.ofHom (s : L →+* L)) ≫ specAlg(K₁, L) ≫ specAlg(K₀, K₁) ≫ y =
@@ -78,11 +78,11 @@ theorem fixed_of_factor {Z : Scheme.{u}} (y : Spec (.of K₀) ⟶ Z) (s : L ≃�
   simp [← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Take `⟨⟨z, φ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField K₁ Z).symm.surjective x`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at hx ⊢`. Take `⟨ψ, hψ⟩` from `exists_ringHom_of_fixed (K₀ := K₀) (L := L) φ.hom fun s a => by`. Establish `h` using `hx s`. Simplify using `only [← Category.assoc] at h`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[cancel_mono, ← Spec.map_comp, ← Spec.map_comp, ← Spec.map_comp, Spec.map_inj]`. Conclude with `congr(($h).hom a)`. Establish `hy : specAlg(K₀, K₁) ≫ Spec.map (CommRingCat.ofHom ψ) ≫ Z.fromSpecResidueField z = Spec.map φ ≫ Z.fromSpecResidueField z`. Rewrite using `[← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp, hψ]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components.
 
-Conclude with `⟨_, hy, fun y' hy' => point_ext (hy'.trans hy.symm)⟩`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_factor [PerfectField K₀] [IsAlgClosed L] {Z : Scheme.{u}}
     (x : Spec (.of K₁) ⟶ Z)
@@ -103,7 +103,7 @@ theorem existsUnique_factor [PerfectField K₀] [IsAlgClosed L] {Z : Scheme.{u}}
   exact ⟨_, hy, fun y' hy' => point_ext (hy'.trans hy.symm)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨y, hy⟩ s => hy ▸ fixed_of_factor y s, fun h => (existsUnique_factor x h).exists⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_factor_iff [PerfectField K₀] [IsAlgClosed L] {Z : Scheme.{u}}
     (x : Spec (.of K₁) ⟶ Z) :
@@ -112,7 +112,7 @@ theorem exists_factor_iff [PerfectField K₀] [IsAlgClosed L] {Z : Scheme.{u}}
   ⟨fun ⟨y, hy⟩ s => hy ▸ fixed_of_factor y s, fun h => (existsUnique_factor x h).exists⟩
 
 /- English proof (translation)
-The claim follows from `existsUnique_factor (L := L) x fun s => by simpa using hx s`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_factor_of_isAlgClosed [PerfectField K₀] [IsAlgClosed L] {Z : Scheme.{u}}
     (x : Spec (.of L) ⟶ Z)
@@ -121,7 +121,7 @@ theorem existsUnique_factor_of_isAlgClosed [PerfectField K₀] [IsAlgClosed L] {
   existsUnique_factor (L := L) x fun s => by simpa using hx s
 
 /- English proof (translation)
-Use `⟨fun h => h (Set.mem_univ (IsLocalRing.closedPoint K₁)), fun h p _ => ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim p (IsLocalRing.closedPoint K₁)]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_le_preimage_iff_mem {Z : Scheme.{u}} (x : Spec (.of K₁) ⟶ Z) (U : Z.Opens) :
     ⊤ ≤ x ⁻¹ᵁ U ↔ x (IsLocalRing.closedPoint K₁) ∈ U := by
@@ -130,7 +130,7 @@ theorem top_le_preimage_iff_mem {Z : Scheme.{u}} (x : Spec (.of K₁) ⟶ Z) (U 
   exact h
 
 /- English proof (translation)
-Use `⟨fun h p _ => ?_, fun h p _ => h (Set.mem_univ (specAlg(K₀, K₁) p))⟩` and prove the remaining obligations. Establish `h'` using `h (Set.mem_univ (IsLocalRing.closedPoint K₁))`. Rewrite using `[Subsingleton.elim p (specAlg(K₀, K₁) (IsLocalRing.closedPoint K₁))]`. Conclude with `h'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_le_preimage_comp_iff {Z : Scheme.{u}} (y : Spec (.of K₀) ⟶ Z) (U : Z.Opens) :
     ⊤ ≤ (specAlg(K₀, K₁) ≫ y) ⁻¹ᵁ U ↔ ⊤ ≤ y ⁻¹ᵁ U := by
@@ -140,7 +140,7 @@ theorem top_le_preimage_comp_iff {Z : Scheme.{u}} (y : Spec (.of K₀) ⟶ Z) (U
   exact h'
 
 /- English proof (translation)
-Establish `: (Spec.map g ≫ y).appLE U ⊤ h' ≫ (Scheme.ΓSpecIso B).hom = y.appLE U ⊤ h ≫ (Scheme.ΓSpecIso A).hom ≫ g`. Rewrite using `[← Scheme.ΓSpecIso_naturality, ← Category.assoc]`. Use `congr 1`. Conclude with `congr(($this).hom f)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem value_comp {A B : CommRingCat.{u}} (g : A ⟶ B) {Z : Scheme.{u}} (y : Spec A ⟶ Z)
     (U : Z.Opens) (h : ⊤ ≤ y ⁻¹ᵁ U) (h' : ⊤ ≤ (Spec.map g ≫ y) ⁻¹ᵁ U) (f : Γ(Z, U)) :
@@ -153,7 +153,7 @@ theorem value_comp {A B : CommRingCat.{u}} (g : A ⟶ B) {Z : Scheme.{u}} (y : S
   exact congr(($this).hom f)
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `(existsUnique_factor x hx).exists`. Conclude with `⟨_, (value_comp _ y U ((top_le_preimage_comp_iff y U).1 h) h f).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem value_mem_range [PerfectField K₀] [IsAlgClosed L] {Z : Scheme.{u}}
     (x : Spec (.of K₁) ⟶ Z)
@@ -165,7 +165,7 @@ theorem value_mem_range [PerfectField K₀] [IsAlgClosed L] {Z : Scheme.{u}}
   exact ⟨_, (value_comp _ y U ((top_le_preimage_comp_iff y U).1 h) h f).symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GaloisDescent.mem_range_algebraMap_of_forall_algEquiv, fun _ x hx => ⟨existsUnique_factor x hx, value_mem_range x hx⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem defined_over_of_fixed [CharZero K₀] [IsAlgClosed L] :
     (∀ a : L, (∀ s : L ≃ₐ[K₀] L, s a = a) → a ∈ Set.range (algebraMap K₀ L)) ∧

@@ -13,15 +13,13 @@ open scoped Formalism.Per
 namespace GlobalTheory.PMon
 
 /- English proof (translation)
-Introduce `l _ P AI T n _ _ K V _ _ b ρ h`. Take `⟨hdom, hreg, hu⟩` from `stRegular l P AI ⟨T⟩`. Take `⟨e, -, -, he⟩` from `GlobalTheory.T.tensorProduct_basis_coordinates ℚ_[l] (Bst P) V n b`. Use `haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Use `haveI : FiniteDimensional ℚ_[l] ↥(K0 K) := FiniteDimensional.of_injective (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).toLinearMap (IntermediateField.inclusion_injective (inf_le_left : K0 K ≤ K.1))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK0 : ∀ c : ↥(K0 K), algebraMap ↥(K0 K) (Bst P) c = algebraMap ↥(MaximalUnramifiedExtension l) (Bst P) ⟨c, c.2.2⟩` using `fun c => rfl`. Establish `hst : ∀ (g : ↥(GK K)) (y : V ⊗[ℚ_[l]] Bst P), stRep P ρ g y = TensorProduct.map (ρ g) (actSt P (g : GQ l)).toLinearMap y` using `fun g y => rfl`. Use `GlobalTheory.T.exists_periodMatrix_of_finrank_alt ℚ_[l] ↥(K0 K) (Bst P) ↥(GK K) (fun g => (actSt P (g : GQ l) : Bst P →+* Bst P)) n (fun g => LinearMap.toMatrix b b (ρ g)) (fun g => ?_) (fun g c => ?_) (fun x x' hx hh => ?_) (fun x hx hh => hu K x hx hh) ((Dst P ρ).map e.toLinear …` and prove the remaining obligations. Establish `h1 : LinearMap.toMatrix b b (ρ g) * LinearMap.toMatrix b b (ρ g⁻¹) = 1`. Rewrite using `[← LinearMap.toMatrix_mul, ← map_mul, mul_inv_cancel, map_one, LinearMap.toMatrix_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(Matrix.isUnit_det_of_right_inverse h1).ne_zero`. Rewrite using `[hK0]`. Conclude with `actSt_algebraMap P g _ _ (mem_GK.mp g.2 _ c.2.1)`. Take `⟨c, hc, hc'⟩` from `hreg K x x' hx hh`. Conclude with `⟨⟨c, hc, c.2⟩, by rw [hK0]; exact hc'⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, rfl⟩` from `e.surjective x`. Establish `h1 : e y ∈ (Dst P ρ).map e.toLinearMap ↔ y ∈ Dst P ρ`. Rewrite using `[Submodule.mem_map_equiv, LinearEquiv.symm_apply_apply]`. Rewrite using `[h1, mem_Dst]`. Use `forall_congr' fun g => ?_` and prove the remaining obligations.
-
-Rewrite using `[hst, ← e.injective.eq_iff, he]`. Both sides reduce to the same expression. Rewrite using `[LinearEquiv.finrank_map_eq, h, finrank_eq_card_basis b]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_periodMatrix_of_isSst : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (n : Type) [Fintype n] [DecidableEq n] (K : FinExt l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V] (b : Basis n ℚ_[l] V) (ρ : Representation ℚ_[l] ↥(GK K) V), IsSst P ρ → ∃ Q : GL n (Bst P), ∀ g : ↥(GK K), (LinearMap.toMatrix b b (ρ g)).map (algebraMap ℚ_[l] (Bst P)) * (Q : Matrix n n (Bst P)).map (actSt P (g : GQ l)) = Q := by
   intro l _ P AI T n _ _ K V _ _ b ρ h

@@ -13,19 +13,19 @@ open GlobalTheory GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.
 namespace GlobalTheory.DetInv.HTKer
 
 /- English proof (translation)
-Establish `inj : Function.Injective (algebraMap O C)` using `IsFractionRing.injective O C`. Establish `key : ∀ (X : Matrix (Fin h) (Fin h) O) (z : Fin h → O), toLin' (X.map (algebraMap O C)) (fun i => algebraMap O C (z i)) = fun i => algebraMap O C (toLin' X z i)`. Introduce `X z`. Use function extensionality and compare the values at `i`. Simplify using `[toLin'_apply, mulVec, dotProduct]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `h1 : (fun i => algebraMap O C (y i)) ∈ LinearMap.ker (toLin' (a.map (algebraMap O C)))`. Rewrite using `[LinearMap.mem_ker, key, hy]`. Use function extensionality and compare the values at `i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite `h1` using `[H]`. Take `⟨z, hz⟩` from `h1`. Take `⟨c, hc⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) z`. Use `choose m hm using hc`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, nonZeroDivisors.ne_zero c.2, m, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Apply `inj` to reduce the goal to its premises. Establish `h2 : (fun i => algebraMap O C (m i)) = algebraMap O C c • z`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm j]`. Simplify using `[Algebra.smul_def]`. Establish `h3` using `congrFun (key b m) i`. Rewrite `h3` using `[h2, map_smul, hz]`. Rewrite using `[← h3]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce and unpack `⟨c, hc, m, hm⟩`. Establish `h1 : (fun i => algebraMap O C (toLin' b m i)) ∈ LinearMap.ker (toLin' (a.map (algebraMap O C)))`. Rewrite using `[H]`. Conclude with `⟨_, key b m⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[LinearMap.mem_ker, key, ← hm, map_smul]`. Use function extensionality and compare the values at `i`. Establish `h2` using `congrFun h1 i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply, map_eq_zero_iff _ inj, mul_eq_zero] at h2`. Conclude with `h2.resolve_left hc`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sat_of_ker_eq_range {O C : Type} [CommRing O] [IsDomain O] [Field C] [Algebra O C] [IsFractionRing O C]
     {h : ℕ} (a b : Matrix (Fin h) (Fin h) O)
@@ -63,13 +63,13 @@ theorem sat_of_ker_eq_range {O C : Type} [CommRing O] [IsDomain O] [Field C] [Al
     exact h2.resolve_left hc
 
 /- English proof (translation)
-Establish `hle : LinearMap.range b ≤ LinearMap.ker a`. Introduce and unpack `_ ⟨m, rfl⟩`. Conclude with `(H _).2 ⟨1, one_ne_zero, m, one_smul _ _⟩`. Establish `h1` using `Submodule.rank_quotient_add_rank (R := O) ((LinearMap.range b).comap (LinearMap.ker a).subtype)`. Establish `h2 : Module.rank O (LinearMap.ker a ⧸ (LinearMap.range b).comap (LinearMap.ker a).subtype) = 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rank_eq_zero_iff_isTorsion]`. Introduce `x`. Take `⟨⟨y, hy⟩, rfl⟩` from `Submodule.mkQ_surjective _ x`. Take `⟨c, hc, m, hm⟩` from `(H y).1 hy`. Use `⟨⟨c, mem_nonZeroDivisors_of_ne_zero hc⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `c • Submodule.mkQ ((LinearMap.range b).comap (LinearMap.ker a).subtype) ⟨y, hy⟩ = 0`. Rewrite using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨m, hm.symm⟩`. Rewrite `h1` using `[h2, zero_add, (Submodule.comapSubtypeEquivOfLe hle).rank_eq, ← (LinearMap.quotKerEquivRange b).rank_eq]`. Unfold `Module.finrank`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`.
+A detailed English derivation is pending.
 -/
 theorem finrank_ker_of_sat {O M : Type} [CommRing O] [IsDomain O] [AddCommGroup M] [Module O M]
     [Module.IsTorsionFree O M] (a b : M →ₗ[O] M)
@@ -93,13 +93,11 @@ theorem finrank_ker_of_sat {O M : Type} [CommRing O] [IsDomain O] [AddCommGroup 
   rw [h1]
 
 /- English proof (translation)
-Establish `free : ∀ (N : Submodule O (Fin h → O)) [Module.Finite O N], Module.Free O N`. Introduce `N _`. Establish `: Module.Flat O N`. Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout]`. Conclude with `Submodule.isTorsionFree_iff_torsion_eq_bot.1 inferInstance`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Module.free_of_flat_of_isLocalRing`. Use `haveI := free (LinearMap.range b)`. Take `⟨s, hs⟩` from `LinearMap.exists_rightInverse_of_surjective b.rangeRestrict (LinearMap.range_rangeRestrict b)`. Establish `hb : ∀ m, b (s (b.rangeRestrict m)) = b m` using `fun m => congrArg Subtype.val (LinearMap.congr_fun hs (b.rangeRestrict m))`. Use `haveI : Module.Finite O (LinearMap.ker b) := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Module.Finite.of_surjective (LinearMap.codRestrict (LinearMap.ker b) (LinearMap.id - s ∘ₗ b.rangeRestrict) (fun m => by` and prove the remaining obligations. Simplify using `[hb])) ?_`. Introduce and unpack `⟨m, hm⟩`. Use `⟨m, Subtype.ext ?_⟩` and prove the remaining obligations. Establish `: b.rangeRestrict m = 0` using `Subtype.ext hm`.
-
-Simplify using `[this]`. Use `haveI := free (LinearMap.ker b)`. Rewrite using `[Module.finrank_linearMap, Module.finrank_self, mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_dual_ker {O : Type} [CommRing O] [IsDomain O] [ValuationRing O] {h : ℕ}
     (b : (Fin h → O) →ₗ[O] (Fin h → O)) :
@@ -135,7 +133,7 @@ noncomputable def coordO {G : PDivGroup p O} {h : ℕ} (e : G.Tate ≃ₗ[ℤ_[p
   (LinearEquiv.baseChange ℤ_[p] O _ _ e).trans (TensorProduct.piScalarRight ℤ_[p] O O (Fin h))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[coordO, IndefiniteRowSideFullHecke.EpsilonPairingZeta.toO, Algebra.smul_def, ← padicToO_unique p O (algebraMap ℤ_[p] O), mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coordO_tmul {G : PDivGroup p O} {h : ℕ} (e : G.Tate ≃ₗ[ℤ_[p]] (Fin h → ℤ_[p])) (c : O) (t : G.Tate) :
     coordO e (c ⊗ₜ t) = c • IndefiniteRowSideFullHecke.EpsilonPairingZeta.toO e t := by
@@ -146,7 +144,7 @@ variable [IsDomain O] {ε : PreTilt O p} {hε : IndefiniteRowSideFullHecke.Epsil
 
 omit [Algebra ℤ_[p] O] in
 /- English proof (translation)
-Simplify using `[IndefiniteRowSideFullHecke.EpsilonPairingZeta.pairingO, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairingO_add {G : PDivGroup p O} {h : ℕ} (e : G.Tate ≃ₗ[ℤ_[p]] (Fin h → ℤ_[p])) (y z : Fin h → O)
     (χ : G.dual.Tate) : IndefiniteRowSideFullHecke.EpsilonPairingZeta.pairingO hε e (y + z) χ =
@@ -155,7 +153,7 @@ theorem pairingO_add {G : PDivGroup p O} {h : ℕ} (e : G.Tate ≃ₗ[ℤ_[p]] (
 
 omit [Algebra ℤ_[p] O] in
 /- English proof (translation)
-Simplify using `[IndefiniteRowSideFullHecke.EpsilonPairingZeta.pairingO, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairingO_smul {G : PDivGroup p O} {h : ℕ} (e : G.Tate ≃ₗ[ℤ_[p]] (Fin h → ℤ_[p])) (c : O) (y : Fin h → O)
     (χ : G.dual.Tate) : IndefiniteRowSideFullHecke.EpsilonPairingZeta.pairingO hε e (c • y) χ = c * IndefiniteRowSideFullHecke.EpsilonPairingZeta.pairingO hε e y χ := by
@@ -164,11 +162,11 @@ theorem pairingO_smul {G : PDivGroup p O} {h : ℕ} (e : G.Tate ≃ₗ[ℤ_[p]] 
 omit [Algebra ℤ_[p] O] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Take `⟨χ, hχ⟩` from `hG ((IndefiniteRowSideFullHecke.EpsilonPairingZeta.epsEquiv hε).toLinearMap ∘ₗ LinearMap.proj i ∘ₗ e.toLinearMap)`. Establish `h1 : ∀ t, IndefiniteRowSideFullHecke.EpsilonPairingZeta.epsPairing hε G t χ = e t i`. Introduce `t`. Use `LinearMap.congr_fun hχ t` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.flip_apply] at this`. Rewrite using `[IndefiniteRowSideFullHecke.EpsilonPairingZeta.epsPairing, this]`. Simplify using the standard rewrite rules. Establish `h2 : ∀ w : Fin h → O, IndefiniteRowSideFullHecke.EpsilonPairingZeta.pairingO hε e w χ = w i`. Introduce `w`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [IndefiniteRowSideFullHecke.EpsilonPairingZeta.pairingO, h1, LinearEquiv.apply_symm_apply]`. Apply the tactic sequence `rw [Finset.sum_eq_single i] <;> simp +contextual [Pi.single_apply, eq_comm]`. Rewrite using `[← h2 y, ← h2 z, H]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairingO_inj {G : PDivGroup p O} (hG : Function.Surjective (G.pairing O).flip) {h : ℕ}
     (e : G.Tate ≃ₗ[ℤ_[p]] (Fin h → ℤ_[p])) (y z : Fin h → O)
@@ -191,7 +189,7 @@ variable {u₁ u₂ : Oˣ} {G : PDivGroup p O} {h : ℕ} {D : Datum ε h ℤ_[p]
   {fil : G.dual.omega ≃ₗ[O] D.Fil} {lie : ((Fin h → O) ⧸ D.Fil) ≃ₗ[O] G.Lie}
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c t`. Rewrite using `[coordO_tmul, map_smul, R.al_eq, hodgeTateLinear_tmul, hodgeTate_eq_omegaMap, map_smul, Submodule.coe_smul, smul_comm]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, Submodule.coe_add, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem al_coordO (R : IndefiniteRowSideFullHecke.EpsilonPairingZeta.Realizes hε u₁ u₂ G G.padicAction D e fil lie) (x : O ⊗[ℤ_[p]] G.Tate) :
     D.al (coordO e x) = (u₁ : O) • (fil (G.hodgeTateLinear x) : Fin h → O) := by
@@ -203,16 +201,16 @@ theorem al_coordO (R : IndefiniteRowSideFullHecke.EpsilonPairingZeta.Realizes h�
   | add x y hx hy => simp only [map_add, hx, hy, Submodule.coe_add, smul_add]
 
 /- English proof (translation)
-Rewrite using `[al_coordO R, ← Units.smul_def, smul_eq_zero_iff_eq, Submodule.coe_eq_zero, fil.map_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ht_eq_zero_iff (R : IndefiniteRowSideFullHecke.EpsilonPairingZeta.Realizes hε u₁ u₂ G G.padicAction D e fil lie) (x : O ⊗[ℤ_[p]] G.Tate) :
     G.hodgeTateLinear x = 0 ↔ D.al (coordO e x) = 0 := by
   rw [al_coordO R, ← Units.smul_def, smul_eq_zero_iff_eq, Submodule.coe_eq_zero, fil.map_eq_zero_iff]
 
 /- English proof (translation)
-Rewrite using `[← lie.finrank_eq]`. Use `Eq.trans ?_ (finrank_ker_of_sat D.al D.bb H)` and prove the remaining obligations. Use `LinearEquiv.finrank_eq (LinearEquiv.ofSubmodules (coordO e) _ _ ?_)` and prove the remaining obligations. Use extensionality with `y`. Take `⟨x, rfl⟩` from `(coordO e).surjective y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Simplify using `[ht_eq_zero_iff R]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finrank_ker_ht (R : IndefiniteRowSideFullHecke.EpsilonPairingZeta.Realizes hε u₁ u₂ G G.padicAction D e fil lie)
     (H : ∀ y, D.al y = 0 ↔ ∃ c : O, c ≠ 0 ∧ ∃ m, c • y = D.bb m) :
@@ -226,7 +224,7 @@ theorem finrank_ker_ht (R : IndefiniteRowSideFullHecke.EpsilonPairingZeta.Realiz
 
 omit [Algebra ℤ_[p] O] in
 /- English proof (translation)
-Establish `h1 : Module.finrank O G.dual.Lie = Module.finrank O D.Fil` using `fil.dualMap.finrank_eq.symm.trans (finrank_dual_ker D.bb)`. Rewrite using `[h1, ← lie.finrank_eq, Submodule.finrank_quotient_add_finrank]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finrank_lie_add [ValuationRing O] (fil : G.dual.omega ≃ₗ[O] D.Fil)
     (lie : ((Fin h → O) ⧸ D.Fil) ≃ₗ[O] G.Lie) :
@@ -239,33 +237,31 @@ theorem finrank_lie_add [ValuationRing O] (fil : G.dual.omega ≃ₗ[O] D.Fil)
 end
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ _ ε hε hS G ζ B hv hζ hB`. Take `⟨u₁, u₂, hS⟩` from `hS`. Use `haveI : IsFractionRing O C := hv.isFractionRing`. Use `haveI : ValuationRing O := by`. Use `@ValuationRing.mk O _ _ ⟨fun a b => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Break down `le_total (v (algebraMap O C a)) (v (algebraMap O C b)) with h | h` into its components or cases. Take `⟨c, hc⟩` from `hv.dvd_iff_le.2 h`. Conclude with `⟨c, Or.inr hc.symm⟩`. Take `⟨c, hc⟩` from `hv.dvd_iff_le.2 h`. Conclude with `⟨c, Or.inl hc.symm⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hroot : IsPrimitiveRoot (PreTilt.untilt (root ε)) p`. Simplify `hε 1` using `[IndefiniteRowSideFullHecke.EpsilonPairingZeta.zeta]`. Establish `sat : ∀ {h : ℕ} (D : Datum ε h ℤ_[p]) (y), D.al y = 0 ↔ ∃ c : O, c ≠ 0 ∧ ∃ m, c • y = D.bb m`. Introduce `h D y`. Use `sat_of_ker_eq_range (C := C) _ _ ?_ y` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(ker_bC_eq_range_alC_and_ker_alC_eq_range_bC p C v O hv ε hroot ℤ_[p] h D).2` as an intermediate fact. Simplify `this` using `only [alC, bC, redC, Matrix.map_map, RingHom.coe_comp]`. Take `⟨D, e, fil, lie, R⟩` from `hS G ℤ_[p] G.padicAction`. Take `⟨D', e', fil', lie', R'⟩` from `hS G.dual ℤ_[p] G.dual.padicAction`. Use `⟨fun x => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `swap`. Rewrite using `[finrank_ker_ht R (sat D), finrank_ker_ht R' (sat D')]`. Conclude with `finrank_lie_add fil lie`. Establish `hperf : Function.Surjective (G.pairing O).flip` using `(tate_free_perfect p O C G).2.2.2.2.2.2.2.2`. Take `⟨w, hw⟩` from `hζ.2 (IndefiniteRowSideFullHecke.EpsilonPairingZeta.epsTate hε)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨w', hw'⟩` from `(IndefiniteRowSideFullHecke.EpsilonPairingZeta.epsEquiv hε).surjective ζ`. Establish `hw'' : w' • IndefiniteRowSideFullHecke.EpsilonPairingZeta.epsTate hε = ζ` using `hw'`. Establish `hww : w' * w = 1`. Apply `hζ.1` to reduce the goal to its premises. Simplify using `only at hw ⊢`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[mul_smul, hw, hw'', one_smul]`. Establish `hBe : ∀ t χ, B t χ = IndefiniteRowSideFullHecke.EpsilonPairingZeta.epsPairing hε G t χ * w`. Introduce `t χ`. Apply `hζ.1` to reduce the goal to its premises. Simplify using `only at hw ⊢`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_smul, hw, IndefiniteRowSideFullHecke.EpsilonPairingZeta.epsPairing_smul, hB]`. Use `set W : O := algebraMap ℤ_[p] O w`. Use `set W' : O := algebraMap ℤ_[p] O w'`. Establish `hWW : W' * W = 1` using `by rw [← map_mul, hww, map_one]`. Establish `hBO : ∀ (x : O ⊗[ℤ_[p]] G.Tate) χ, (TensorProduct.rid ℤ_[p] O) ((B.flip χ).baseChange O x) = W * IndefiniteRowSideFullHecke.EpsilonPairingZeta.pairingO hε e (coordO e x) χ`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `x χ`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero`. Use `pairingO_smul (hε := hε) e 0 0 χ` as an intermediate fact. Simplify using `only [zero_smul, zero_mul] at this`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Simplify using `[this]`. Consider the case `tmul c t`. Rewrite using `[coordO_tmul, pairingO_smul, IndefiniteRowSideFullHecke.EpsilonPairingZeta.pairingO_toO, ← padicToO_unique p O (algebraMap ℤ_[p] O)]`. Simplify using `only [LinearMap.baseChange_tmul, LinearMap.flip_apply, rid_tmul, hBe, Algebra.smul_def, map_mul, W]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy, pairingO_add, mul_add]`. Establish `hb : ∀ (m : Fin G.height → O) χ, IndefiniteRowSideFullHecke.EpsilonPairingZeta.pairingO hε e (D.bb m) χ = u₂ * lie (D.Fil.mkQ m) (dlog (G` using `G) χ) := by`. Introduce `m χ`. Rewrite using `[dlog_eq_omegaMap, ← R.b_eq, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[ht_eq_zero_iff R, sat]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, m, hm⟩`. Use `⟨c, (W * u₂) • lie (D.Fil.mkQ m), hc, fun χ => ?_⟩` and prove the remaining obligations. Rewrite using `[hBO, LinearMap.smul_apply, smul_eq_mul, mul_assoc, ← hb, ← hm, pairingO_smul]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨c, y, hc, hy⟩`. Take `⟨m, hm⟩` from `D.Fil.mkQ_surjective (lie.symm y)`. Use `⟨c * W * u₂, ?_, m, pairingO_inj (hε := hε) hperf e _ _ fun χ => ?_⟩` and prove the remaining obligations. Conclude with `mul_ne_zero (mul_ne_zero hc (right_ne_zero_of_mul_eq_one hWW)) u₂.ne_zero`.
-
-Rewrite using `[hb, hm, LinearEquiv.apply_symm_apply, ← hy, hBO, pairingO_smul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem ker_hodgeTateLinear : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [IsDomain O] (ε : PreTilt O p) (hε : GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta.IsPrimitiveSystem ε), GlobalTheory.IndefiniteRowSideFullHecke.EpsilonPairingZeta.HodgeTateSandwichAt hε → ∀ (G : PDivGroup p O) (ζ : (PDivGroup.mu p O).Tate) (B : G.Tate →ₗ[ℤ_[p]] G.dual.Tate →ₗ[ℤ_[p]] ℤ_[p]), v.Integers O → Function.Bijective (fun a : ℤ_[p] => a • ζ) → (∀ s χ, pairing G O s χ = B s χ • ζ) → (∀ x : O ⊗[ℤ_[p]] G.Tate, G.hodgeTateLinear x = 0 ↔ ∃ (c : O) (y : G.Lie), c ≠ 0 ∧ ∀ χ, c * (TensorProduct.rid ℤ_[p] O) ((B.flip χ).baseChange O x) = y (dlog (G := G) χ)) ∧ Module.finrank O (LinearMap.ker G.hodgeTateLinear) + Module.finrank O (LinearMap.ker G.dual.hodgeTateLinear) = G.height := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ ε hε hS G ζ B hv hζ hB

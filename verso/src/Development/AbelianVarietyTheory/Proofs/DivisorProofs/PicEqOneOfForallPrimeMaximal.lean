@@ -7,13 +7,11 @@ namespace GlobalTheory
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use `by_contra! H`. Establish `hdis : Disjoint ((⊥ : Ideal R) : Set R) ((p.primeCompl ⊔ Submonoid.powers a : Submonoid R) : Set R)`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `x hx hxS`. Rewrite `hx` using `[SetLike.mem_coe, Ideal.mem_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `hx` using the available equality. Take `⟨y, hy, z, hz, hyz⟩` from `Submonoid.mem_sup.mp hxS`. Take `⟨n, rfl⟩` from `hz`. Conclude with `H y hy n hyz`. Take `⟨q, hq, -, hqd⟩` from `Ideal.exists_le_prime_disjoint ⊥ _ hdis`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hqp : q ≤ p`. Introduce `x hx`. Assume the negation of the conclusion as `hxp`. Conclude with `Set.disjoint_left.mp hqd hx (Submonoid.mem_sup_left (show x ∈ p.primeCompl from hxp))`. Establish `hqp'` using `(hR q hq).eq_of_le hp.ne_top hqp`.
-
-Establish `haq : a ∉ q` using `fun h => Set.disjoint_left.mp hqd h (Submonoid.mem_sup_right (Submonoid.mem_powers a))`. Conclude with `haq (hqp' ▸ ha)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_mul_pow_eq_zero_of_forall_isMaximal
     (hR : ∀ P : Ideal R, P.IsPrime → P.IsMaximal) {p : Ideal R} [hp : p.IsPrime] {a : R}
@@ -40,11 +38,11 @@ theorem exists_mul_pow_eq_zero_of_forall_isMaximal
   exact haq (hqp' ▸ ha)
 
 /- English proof (translation)
-Use `⟨?_, (basicOpen a).isOpen⟩` and prove the remaining obligations. Rewrite using `[← isOpen_compl_iff, isOpen_iff_forall_mem_open]`. Introduce `x hx`. Establish `hax : a ∈ x.asIdeal`. Simplify `hx` using `[Set.mem_compl_iff, SetLike.mem_coe, PrimeSpectrum.mem_basicOpen]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨t, ht, n, htn⟩` from `exists_mul_pow_eq_zero_of_forall_isMaximal hR hax`. Use `⟨(basicOpen t : Set (PrimeSpectrum R)), ?_, (basicOpen t).isOpen, ht⟩` and prove the remaining obligations. Introduce `y hy hya`. Rewrite `hy`, `hya` using `[SetLike.mem_coe, PrimeSpectrum.mem_basicOpen]`. Establish `: t * a ^ n ∈ y.asIdeal` using `htn ▸ y.asIdeal.zero_mem`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `y.isPrime.mem_or_mem this with h | h` into its components or cases. Conclude with `hy h`. Conclude with `hya (y.isPrime.mem_of_pow_mem n h)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isClopen_basicOpen_of_forall_isMaximal
     (hR : ∀ P : Ideal R, P.IsPrime → P.IsMaximal) (a : R) :
@@ -64,11 +62,11 @@ theorem isClopen_basicOpen_of_forall_isMaximal
   · exact hya (y.isPrime.mem_of_pow_mem n h)
 
 /- English proof (translation)
-Set `c : TopologicalSpace.Clopens (PrimeSpectrum R)` to `⟨(basicOpen a : Set (PrimeSpectrum R)), isClopen_basicOpen_of_forall_isMaximal hR a⟩`. Set `e` to `(isIdempotentElemEquivClopens (R := R)).symm c`. Establish `he : basicOpen e.1 = basicOpen a`. Rewrite using `[basicOpen_isIdempotentElemEquivClopens_symm]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨k, hk⟩` from `(basicOpen_le_basicOpen_iff _ _).mp he.le`. Establish `hmem : e.1 ∈ Ideal.span {a}`. Rewrite using `[← e.2.pow_succ_eq k, pow_succ']`. Conclude with `Ideal.mul_mem_left _ _ hk`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.mp hmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e.1, b, e.2, by rw [mul_comm, hb], fun p hp hap => ?_⟩` and prove the remaining obligations. Establish `h1 : (⟨p, hp⟩ : PrimeSpectrum R) ∈ basicOpen a` using `hap`. Rewrite `h1` using `[← he]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isIdempotentElem_mul_of_forall_isMaximal
     (hR : ∀ P : Ideal R, P.IsPrime → P.IsMaximal) (a : R) :
@@ -89,31 +87,27 @@ theorem exists_isIdempotentElem_mul_of_forall_isMaximal
   exact h1
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `((Module.Invertible.linearEquiv R M).symm 1).exists_finset`. Use `replace hS : 1 = ∑ i ∈ S, i.1 i.2 := by`. Simplify `hS` using `[LinearEquiv.symm_apply_eq, Module.Invertible.linearEquiv]`. Use `letI : LinearOrder (Module.Dual R M × M) := IsWellOrder.linearOrder WellOrderingRel`. Use `choose e b he hab hep using fun i : Module.Dual R M × M => exists_isIdempotentElem_mul_of_forall_isMaximal hR (i.1 i.2)`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Q : Module.Dual R M × M → R` to `fun l => ∏ j ∈ S with j < l, (1 - e j)`. Set `e' : Module.Dual R M × M → R` to `fun l => e l * Q l`. Establish `hQi : ∀ l, IsIdempotentElem (Q l)` using `fun l => Finset.prod_induction _ IsIdempotentElem (fun _ _ h1 h2 => h1.mul h2) IsIdempotentElem.one (fun j _ => (he j).one_sub)`. Establish `he'i : ∀ l, IsIdempotentElem (e' l)` using `fun l => (he l).mul (hQi l)`. Establish `hlt : ∀ k ∈ S, ∀ l ∈ S, k < l → e k * e' l = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k hk l _ hkl`. Establish `hmem : k ∈ S.filter (· < l)` using `Finset.mem_filter.mpr ⟨hk, hkl⟩`. Simplify using `only [e', Q]`. Rewrite using `[← Finset.mul_prod_erase _ _ hmem]`. Take the linear combination `(-(e l * ∏ x ∈ (S.filter (· < l)).erase k, (1 - e x))) * (he k).eq`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `horth : ∀ k ∈ S, ∀ l ∈ S, k ≠ l → e' k * e' l = 0`. Introduce `k hk l hl hkl`. Break down `lt_or_gt_of_ne hkl with h | h` into its components or cases. Use `hlt k hk l hl h` as an intermediate fact. Simplify using `only [e'] at this ⊢`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `Q k * this`. Use `hlt l hl k hk h` as an intermediate fact. Simplify using `only [e'] at this ⊢`. Take the linear combination `Q l * this`. Set `x : M` to `∑ k ∈ S, e' k • k.2`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : Module.Dual R M` to `∑ l ∈ S, (b l * e' l) • l.1`. Establish `hφx : φ x = ∑ l ∈ S, e' l`. Simplify using `only [φ, x, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single l]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(he'i l).eq`. Establish `h2` using `hab l`. Establish `h3 : e' l * e l = e' l`. Simplify using `only [e']`. Take the linear combination `Q l * (he l).eq`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take the linear combination `(b l * l.1 l.2) * h1 + e' l * h2 + h3`. Introduce `k hk hkl`. Use `horth l hl k hk (Ne.symm hkl)` as an intermediate fact. Take the linear combination `(b k * k.1 l.2) * this`. Introduce `h`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd hl h`. Establish `hsum : ∑ l ∈ S, e' l = 1 - ∏ i ∈ S, (1 - e i)`. Rewrite using `[Finset.prod_one_sub_ordered S e]`. Expand and normalize the polynomial expressions, which then agree. Establish `hunit : IsUnit (1 - ∏ i ∈ S, (1 - e i))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hnu`. Take `⟨m, hm, hxm⟩` from `exists_max_ideal_of_mem_nonunits hnu`. Take `⟨i, hi, him⟩ : ∃ i ∈ S, i.1 i.2 ∉ m` from `by by_contra! hall`. Conclude with `hm.ne_top ((Ideal.eq_top_iff_one _).mpr (hS ▸ Ideal.sum_mem _ hall))`. Establish `hei` using `hep i m hm.isPrime him`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : 1 - e i ∈ m`. Establish `: e i * (1 - e i) ∈ m`. Rewrite using `[mul_sub, mul_one, (he i).eq, sub_self]`. Conclude with `m.zero_mem`. Conclude with `(hm.isPrime.mem_or_mem this).resolve_left hei`.
-
-Establish `hP : ∏ i ∈ S, (1 - e i) ∈ m`. Rewrite using `[← Finset.mul_prod_erase _ _ hi]`. Conclude with `m.mul_mem_right _ h1`. Conclude with `hm.ne_top ((Ideal.eq_top_iff_one _).mpr (by simpa using m.add_mem hxm hP))`. Rewrite `hunit` using `[← hsum, ← hφx]`.
-
-Conclude with `.of_equiv <| .symm <| .ofBijective φ (Module.Invertible.bijective_of_surjective <| LinearMap.range_eq_top.mp <| Ideal.eq_top_of_isUnit_mem _ ⟨x, rfl⟩ hunit)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem free_of_invertible_of_forall_isMaximal
     (hR : ∀ P : Ideal R, P.IsPrime → P.IsMaximal) (M : Type) [AddCommGroup M] [Module R M]
@@ -185,7 +179,7 @@ theorem free_of_invertible_of_forall_isMaximal
     LinearMap.range_eq_top.mp <| Ideal.eq_top_of_isUnit_mem _ ⟨x, rfl⟩ hunit)
 
 /- English proof (translation)
-Introduce `R _ hR c`. Establish `: Subsingleton (CommRing.Pic R)` using `CommRing.Pic.subsingleton_iff.mpr fun M _ _ hM => free_of_invertible_of_forall_isMaximal hR M hM`. Conclude with `Subsingleton.elim _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pic_eq_one_of_forall_isMaximal :
     ∀ (R : Type) [CommRing R], (∀ P : Ideal R, P.IsPrime → P.IsMaximal) →

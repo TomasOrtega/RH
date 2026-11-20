@@ -10,19 +10,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `T C _ _ v ι R hR hV d O _ _ B B' hG hA h hh w0 m Ty _ r n _ cc isX a cp u ν hν P hP f hf`. Take `⟨s, c, Q, hc, hQ, rfl⟩` from `GlobalTheory.exists_integral_combination_of_mem_HaO Ty r n T.V T.Fr C ι R (fun x => (hR _).2 (hV x)) cc isX a P hP`. Take `⟨-, -, hadd, hsm⟩` from `GlobalTheory.nabValN_bilinear C d O B' (MvPowerSeries.map ι h) w0 m n (Letter Ty r n) cp (fun l j => ι (u l j))`. Establish `hsum : ∀ (g : PS C n d) (F : Fin s → MvPolynomial (Letter Ty r n) C) (S : Finset (Fin s)), nabValN B' C (MvPowerSeries.map ι h) w0 m g cp (fun l j => ι (u l j)) (∑ j ∈ S, F j) = ∑ j ∈ S, nabValN B' C (MvPowerSeries.map ι h) w0 m g cp (fun l j => ι (u l j)) (F j)`. Introduce `g F S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Use `hsm 0 g 0` as an intermediate fact. Simplify using `using this`. Consider the case `insert j S hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, hadd, ih]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Take `⟨S, hS⟩` from `GlobalTheory.T.exists_finset_nabValN_eq_sum_coeff_mul_monomial C d O B' (MvPowerSeries.map ι h) w0 m n (Letter Ty r n) cp (fun l j => ι (u l j)) (∑ j, MvPolynomial.C (c j) * MvPolynomial.map ι (Q j))`. Rewrite using `[hS f]`. Proceed by induction on `ν using WithBot.recBotCoe with`. Consider the case `bot => exact bot_le`. Consider the case `coe w`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `WithBot.coe_le_coe.2 ?_` and prove the remaining obligations. Use `v.map_le_sum fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[v.map_mul, hsum]`. Use `le_trans ?_ (le_add_of_nonneg_left (by simpa using hf μ))` and prove the remaining obligations. Use `v.map_le_sum fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsm, v.map_mul]`. Use `le_trans ?_ (le_add_of_nonneg_left (by simpa using (hR _).1 (hc j)))` and prove the remaining obligations. Establish `hmon : (MvPowerSeries.monomial μ (1 : C) : PS C n d) = MvPowerSeries.map ι (MvPowerSeries.monomial μ (1 : T.Fr) : PS T.Fr n d)`. Rewrite using `[MvPowerSeries.map_monomial, map_one ι]`. Rewrite using `[hmon, GlobalTheory.nabValN_map T.Fr C ι d O B B' hG hA h hh w0 m n _ (Letter Ty r n) cp u (Q j)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `WithBot.coe_le_coe.1 (hν (Q j) (hQ j) _ ?_)` and prove the remaining obligations. Introduce `ρ`. Rewrite using `[MvPowerSeries.coeff_monomial]`. Use `split_ifs`. Conclude with `Subring.one_mem _`.
-
-Conclude with `Subring.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nabValN_lower_bound_baseChange : ∀ (T : CDVR) (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (ι : T.Fr →+* C) (R : Subring C), (∀ x, x ∈ R ↔ ((0 : ℝ) : WithTop ℝ) ≤ v x) → (∀ x : T.V, ((0 : ℝ) : WithTop ℝ) ≤ v (ι (algebraMap T.V T.Fr x))) → ∀ (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB T.Fr d O) (B' : FB C d O), (∀ i, B'.G.F i = MvPowerSeries.map ι (B.G.F i)) → (∀ a i, B'.A.act a i = MvPowerSeries.map ι (B.A.act a i)) → ∀ (h : PS T.Fr 2 d), MvPowerSeries.constantCoeff h = 0 → ∀ (w0 : O) (m : ℕ) (Ty : Type) [Fintype Ty] (r : Ty → ℕ) (n : ℕ) [Fintype (Letter Ty r n)] (cc : Ty → Ty) (isX : Ty → Prop) (a : Ty → ℕ → ℕ) (cp : Letter Ty r n → Fin n) (u : Letter Ty r n → Fin d → T.Fr) (ν : WithBot (WithTop ℝ)), (∀ P ∈ HaO r n T.Fr (algebraMap T.V T.Fr).range cc isX a, ∀ f : PS T.Fr n d, IsIntPS T f → ν ≤ (WithBot.some (v (ι (nabValN B T.Fr h w0 m f cp u P))) : WithBot (WithTop ℝ))) → ∀ P ∈ HaO r n C R cc isX a, ∀ f : PS C n d, (∀ μ, ((0 : ℝ) : WithTop ℝ) ≤ v (MvPowerSeries.coeff μ f)) → ν ≤ (WithBot.some (v (nabValN B' C (MvPowerSeries.map ι h) w0 m f cp (fun l j => ι (u l j)) P)) : WithBot (WithTop ℝ)) := by
   intro T C _ _ v ι R hR hV d O _ _ B B' hG hA h hh w0 m Ty _ r n _ cc isX a cp u ν hν P hP f hf

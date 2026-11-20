@@ -12,17 +12,15 @@ open scoped Classical
 namespace GlobalTheory.GrFilt
 
 /- English proof (translation)
-Take `⟨t, -, ht⟩` from `exists_isFrame_subP (filtSub o T (o b + 1)) c hc (fun z => o z.1 < o b + 1) (fun V' h a => (hm (o b + 1) V f hf f' hf' c hc had V' h a).trans (by simp only [not_lt]))`. Use `set w := (hc.basis le_rfl).repr ((T b).app V (f b i)) with hw`. Establish `h1 : (liftT o T b).app V (f b i) = ∑ z : {z : Σ a, Fin (r a) // o z.1 < o b + 1}, w z • t z`. Apply `(filtSub o T (o b + 1)).incl_app_injective V` to reduce the goal to its premises. Establish `e : (filtSub o T (o b + 1)).incl.app V ((liftT o T b).app V (f b i)) = (T b).app V (f b i)` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `conv_lhs => rw [← (hc.basis le_rfl).sum_repr ((T b).app V (f b i))]`. Simplify using `only [map_sum, Scheme.Modules.Hom.app_smul, ht, IsFrame.basis_apply, resM_self]`. Use `symm`. Use `Finset.sum_of_injOn Subtype.val Subtype.val_injective.injOn (fun _ _ => Finset.mem_coe.2 (Finset.mem_univ _)) (fun j _ hj => ?_) (fun _ _ => rfl)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[(had b i).1 j (by`. Assume the negation of the conclusion as `hq`. Conclude with `hj ⟨⟨j, by omega⟩, by simp, rfl⟩), zero_smul]`. Rewrite using `[h1]`. Use `conv_rhs => rw [← ((hf' b).basis le_rfl).sum_repr ((u b).app V (f b i))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_sum, Scheme.Modules.Hom.app_smul, IsFrame.basis_apply, resM_self]`. Use `symm`. Use `Finset.sum_of_injOn (fun j => ⟨⟨b, j⟩, Nat.lt_succ_self _⟩) ?_ (fun _ _ => Finset.mem_coe.2 (Finset.mem_univ _)) (fun z _ hz => ?_) (fun j _ => ?_)` and prove the remaining obligations. Introduce `j _ j' _ h`. Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions.
 
-Rewrite using `[hκ V f hf f' hf' c hc had z.1 (t z) (ht z), dif_neg, smul_zero]`. Take `⟨⟨a, j⟩, hz'⟩` from `z`. Introduce `h`. Simplify using `only at h`. Substitute `h` using the available equality.
-
-Conclude with `hz ⟨j, by simp, rfl⟩`. Rewrite using `[hκ V f hf f' hf' c hc had ⟨b, j⟩ (t ⟨⟨b, j⟩, Nat.lt_succ_self _⟩) (ht _), dif_pos rfl, ← (had b i).2 j]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem proj_liftT_app {X : Scheme.{0}} [IsIntegral X] {ι : Type} [Fintype ι] {L : X.Modules} {E E' : ι → X.Modules}
     {r : ι → ℕ} (o : ι → ℕ) (T : ∀ a, E a ⟶ L) (u : ∀ a, E a ⟶ E' a) (hm : FrameMem r o T u)
@@ -64,7 +62,7 @@ theorem proj_liftT_app {X : Scheme.{0}} [IsIntegral X] {ι : Type} [Fintype ι] 
     rfl
 
 /- English proof (translation)
-Introduce `X _ ι _ L E E' r o _ T u hloc hm b κ hκ`. Use `GlobalTheory.LinePow.hom_ext_of_frames (ι := Fin (r b)) fun x => ?_` and prove the remaining obligations. Take `⟨V, hx, hV⟩` from `hloc x`. Take `⟨f, hf, f', hf', c, hc, had⟩` from `(locAdapted_iff o T u V).1 hV`. Conclude with `⟨V, f b, hx, hf b, fun i => proj_liftT_app o T u hm b κ hκ f hf f' hf' c hc had i⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem liftT_comp_proj : ∀ {X : Scheme.{0}} [IsIntegral X] {ι : Type} [Fintype ι] {L : X.Modules} {E E' : ι → X.Modules}
     {r : ι → ℕ} (o : ι → ℕ), Function.Injective o → ∀ (T : ∀ a, E a ⟶ L) (u : ∀ a, E a ⟶ E' a),

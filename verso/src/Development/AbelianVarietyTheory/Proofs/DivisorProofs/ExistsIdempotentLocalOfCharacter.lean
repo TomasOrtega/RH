@@ -5,15 +5,15 @@ universe u
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ A _ _ _ φ`. Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite k A`. Use `set m : Ideal A := RingHom.ker φ with hm`. Take `⟨n, hn⟩` from `IsArtinian.monotone_stabilizes (R := A) (M := A) ⟨fun n => OrderDual.toDual (m ^ n), fun _ _ h => Ideal.pow_le_pow_right h⟩`. Establish `hst : ∀ j, n ≤ j → m ^ n = m ^ j` using `fun j hj => hn j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set N := n + 1 with hN`. Establish `hI : IsIdempotentElem (m ^ N)` using `by show m ^ N * m ^ N = m ^ N`. Rewrite using `[← pow_add, ← hst (N + N) (by omega), hst N (by omega)]`. Establish `hfg : (m ^ N).FG` using `IsNoetherian.noetherian _`. Take `⟨f, hf, hIf⟩` from `(Ideal.isIdempotentElem_iff_of_fg _ hfg).1 hI`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨1 - f, hf.one_sub, ?_, ?_⟩` and prove the remaining obligations. Establish `hfm : f ∈ m`. Establish `: f ∈ m ^ N` using `by rw [hIf]; exact Ideal.subset_span rfl`. Conclude with `Ideal.pow_le_self (by omega) this`. Establish `: φ f = 0` using `hfm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[this]`. Introduce `a ha`. Establish `ham : a ∈ m` using `ha`. Establish `haN : a ^ N ∈ m ^ N` using `Ideal.pow_mem_pow ham N`. Rewrite `haN` using `[hIf, Ideal.mem_span_singleton']`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `haN`. Use `⟨N, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, hf.one_sub.pow_succ_eq n, ← hy]`. Establish `: (1 - f) * f = 0` using `by rw [sub_mul, one_mul, hf.eq, sub_self]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_idem_local_of_character :
     ∀ (k : Type) [Field k] (A : Type) [CommRing A] [Algebra k A] [FiniteDimensional k A]

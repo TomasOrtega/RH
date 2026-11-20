@@ -31,7 +31,7 @@ def H0 {a b : F} (ε : AF F) : Set (DA F a b) :=
   {x | ∃ γ : ℍ[F, a, b], nrm γ = 1 ∧ ∃ h : DA F a b, nrm h = 1 ∧ ε • (h - 1) = h - 1 ∧ x = rat γ * h}
 
 /- English proof (translation)
-Simplify using `only [nrm, QuaternionAlgebra.re_mul, QuaternionAlgebra.imI_mul, QuaternionAlgebra.imJ_mul, QuaternionAlgebra.imK_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nrm_mul {R : Type*} [CommRing R] {a b : R} (x y : ℍ[R, a, b]) : nrm (x * y) = nrm x * nrm y := by
   simp only [nrm, QuaternionAlgebra.re_mul, QuaternionAlgebra.imI_mul, QuaternionAlgebra.imJ_mul,
@@ -39,19 +39,19 @@ theorem nrm_mul {R : Type*} [CommRing R] {a b : R} (x y : ℍ[R, a, b]) : nrm (x
   ring
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [nrm, QuaternionAlgebra.algebraMap_eq] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mul_star_eq {R : Type*} [CommRing R] {a b : R} (x : ℍ[R, a, b]) : x * star x = algebraMap R ℍ[R, a, b] (nrm x) := by
   ext <;> simp [nrm, QuaternionAlgebra.algebraMap_eq] <;> ring
 
 /- English proof (translation)
-Simplify using `[nrm, rat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nrm_rat {a b : F} (x : ℍ[F, a, b]) : nrm (rat x) = algebraMap F (AF F) (nrm x) := by
   simp [nrm, rat]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by simp [nrm], 1, by simp [nrm], by simp, by ext <;> simp [rat]⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_H0_weight_zero {a b : F} (ε : AF F) : (1 : DA F a b) ∈ H0 ε :=
   ⟨1, by simp [nrm], 1, by simp [nrm], by simp, by ext <;> simp [rat]⟩

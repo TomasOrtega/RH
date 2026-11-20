@@ -11,9 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.OrArch
 
 /- English proof (translation)
-Use `haveI : Nontrivial W := φ.domain_nontrivial`. Use `IsLocalRing.of_nonunits_add fun a b ha hb hu => ?_` and prove the remaining obligations. Establish `h0 : ∀ c : W, c ∈ nonunits W → φ c = 0` using `fun c hc => by_contra fun h => hc (hW c h)`. Use `hu.map φ` as an intermediate fact. Rewrite `this` using `[map_add, h0 a ha, h0 b hb, add_zero]`.
-
-Conclude with `not_isUnit_zero this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalRing_of_value {Ω : Type} [Field Ω] (W : Subring Ω) (φ : W →+* ℂ)
     (hW : ∀ a : W, φ a ≠ 0 → IsUnit a) : IsLocalRing W := by
@@ -25,7 +23,7 @@ theorem isLocalRing_of_value {Ω : Type} [Field Ω] (W : Subring Ω) (φ : W →
   exact not_isUnit_zero this
 
 /- English proof (translation)
-Establish `hm : ∀ s, ValAt ξ z (genMap ξ ⟨centre z, hz⟩ s) ((Scheme.stalkClosedPointTo z).hom s)` using `fun s => ⟨hz, s, rfl, rfl⟩`. Conclude with `⟨(i.comp (genMap ξ ⟨centre z, hz⟩)).codRestrict W fun s => (hv _ _ (hm s)).1, fun _ => rfl, fun s => (hv _ _ (hm s)).2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_stalkHom {X : Scheme.{0}} {Ω₁ Ω : Type} [Field Ω₁] [Field Ω]
     (ξ : Spec (CommRingCat.of Ω₁) ⟶ X) (i : Ω₁ →+* Ω) (W : Subring Ω) (φ : W →+* ℂ)
@@ -39,7 +37,7 @@ theorem exists_stalkHom {X : Scheme.{0}} {Ω₁ Ω : Type} [Field Ω₁] [Field 
     fun _ => rfl, fun s => (hv _ _ (hm s)).2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun s hs => GlobalTheory.CompanionTheory.Ar.CxVal.isUnit s (by rw [← hσ]; exact (hs.map φ).ne_zero)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLocalHom_of_value {X : Scheme.{0}} {Ω : Type} [Field Ω] (W : Subring Ω) (φ : W →+* ℂ)
     (z : Spec (CommRingCat.of ℂ) ⟶ X) (σ : X.presheaf.stalk (centre z) →+* W)
@@ -47,11 +45,11 @@ theorem isLocalHom_of_value {X : Scheme.{0}} {Ω : Type} [Field Ω] (W : Subring
   ⟨fun s hs => GlobalTheory.CompanionTheory.Ar.CxVal.isUnit s (by rw [← hσ]; exact (hs.map φ).ne_zero)⟩
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`. Rewrite using `[← hσ]`. Conclude with `hWV (σ s).2`. Introduce and unpack `_ ⟨s, rfl⟩ h0 hinv`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hi : i (genMap ξ q s) ≠ 0` using `(map_ne_zero i).2 h0`. Establish `hu : IsUnit (Subring.inclusion hWV (σ s))`. Use `IsUnit.of_mul_eq_one (⟨_, hinv⟩ : V.toSubring) (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((σ s : W) : Ω) * (i (genMap ξ q s))⁻¹ = 1`. Rewrite using `[hσ, mul_inv_cancel₀ hi]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, rfl⟩` from `isUnit_of_map_unit σ s (isUnit_of_map_unit (Subring.inclusion hWV) _ hu)`. Conclude with `⟨(u⁻¹ : (X.presheaf.stalk q.1)ˣ).val, map_units_inv (genMap ξ q) u⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem domBy_of_stalkHom {X : Scheme.{0}} {Ω₁ Ω : Type} [Field Ω₁] [Field Ω]
     (ξ : Spec (CommRingCat.of Ω₁) ⟶ X) (i : Ω₁ →+* Ω) (q : Cpt ξ) (W : Subring Ω) (V : ValuationSubring Ω)
@@ -72,7 +70,7 @@ theorem domBy_of_stalkHom {X : Scheme.{0}} {Ω₁ Ω : Type} [Field Ω₁] [Fiel
     exact ⟨(u⁻¹ : (X.presheaf.stalk q.1)ˣ).val, map_units_inv (genMap ξ q) u⟩
 
 /- English proof (translation)
-Establish `: IsLocalHom (CommRingCat.ofHom σ).hom` using `hl`. Express the relevant statement in the definitionally equal form `f (X.fromSpecStalk x (Spec.map (CommRingCat.ofHom σ) (IsLocalRing.closedPoint R))) = f x`. Rewrite using `[Spec_closedPoint, Scheme.fromSpecStalk_closedPoint]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem point_closed {X Y : Scheme.{0}} (x : X) (f : X ⟶ Y) {R : Type} [CommRing R] [IsLocalRing R]
     (σ : X.presheaf.stalk x →+* R) (hl : IsLocalHom σ) :
@@ -82,7 +80,7 @@ theorem point_closed {X Y : Scheme.{0}} (x : X) (f : X ⟶ Y) {R : Type} [CommRi
   rw [Spec_closedPoint, Scheme.fromSpecStalk_closedPoint]
 
 /- English proof (translation)
-Establish `e : W.subtype.comp σ = i.comp (genMap ξ q)` using `RingHom.ext hσ`. Establish `e2 : spMap W.subtype ≫ spMap σ = spMap i ≫ spMap (genMap ξ q)` using `(LieTangent.spec_comp σ W.subtype).trans ((congrArg (fun g => Spec.map (CommRingCat.ofHom g)) e).trans (LieTangent.spec_comp _ _).symm)`. Rewrite using `[← Category.assoc, e2, Category.assoc]`. Conclude with `congrArg (spMap i ≫ ·) (LieTangent.spec_genMap ξ q)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spec_stalkHom {X : Scheme.{0}} {Ω₁ Ω : Type} [Field Ω₁] [Field Ω]
     (ξ : Spec (CommRingCat.of Ω₁) ⟶ X) (i : Ω₁ →+* Ω) (q : Cpt ξ) (W : Subring Ω)
@@ -96,13 +94,13 @@ theorem spec_stalkHom {X : Scheme.{0}} {Ω₁ Ω : Type} [Field Ω₁] [Field Ω
   exact congrArg (spMap i ≫ ·) (LieTangent.spec_genMap ξ q)
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S S₀ Ω Ω₀ _ _ K K₀ _ _ J J₀ y y₀ 𝔐 𝔐₀ i W φ z₁ z₂ hξ hW h₁ h₂`. Use `haveI := isLocalRing_of_value W φ hW`. Take `⟨σ₁, a₁, b₁⟩` from `exists_stalkHom 𝔐.ξ (RingHom.id Ω) W φ z₁ (𝔐.all _) h₁`. Take `⟨σ₂, a₂, b₂⟩` from `exists_stalkHom 𝔐₀.ξ i W φ z₂ (𝔐₀.all _) h₂`. Use `⟨σ₁, σ₂, a₁, a₂, b₁, b₂, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `l₁` using `isLocalHom_of_value W φ z₁ σ₁ b₁`. Establish `l₂` using `isLocalHom_of_value W φ z₂ σ₂ b₂`. Take `⟨V, hV⟩` from `(LocalSubring.mk W).exists_le_valuationSubring`. Take `⟨hWV, hloc⟩` from `LocalSubring.le_def.1 hV`. Establish `hc : 𝔐.f (centre z₁) = 𝔐₀.f (centre z₂)` using `image_eq_of_domBy E H D l Xo c Y S S₀ Ω Ω₀ K K₀ J J₀ y y₀ 𝔐 𝔐₀ i hξ V ⟨centre z₁, 𝔐.all _⟩ ⟨centre z₂, 𝔐₀.all _⟩ (domBy_of_stalkHom 𝔐.ξ (RingHom.id Ω) ⟨centre z₁, 𝔐.all _⟩ W V hWV hloc σ₁ l₁ a₁) (domBy_of_stalkHom 𝔐₀.ξ i ⟨centre z₂, 𝔐₀.all _⟩ W V hWV hloc σ₂ l₂ a₂)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `LieTangent.ext_of_injective (R := W) (φ := W.subtype) Subtype.val_injective ?_ ?_` and prove the remaining obligations. Conclude with `(point_closed _ 𝔐.f σ₁ l₁).trans (hc.trans (point_closed _ 𝔐₀.f σ₂ l₂).symm)`. Establish `e₁` using `spec_stalkHom 𝔐.ξ (RingHom.id Ω) ⟨centre z₁, 𝔐.all _⟩ W σ₁ a₁`. Establish `e₂` using `spec_stalkHom 𝔐₀.ξ i ⟨centre z₂, 𝔐₀.all _⟩ W σ₂ a₂`. Establish `hid : spMap (RingHom.id Ω) = 𝟙 _` using `by simp [spMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e₁` using `[hid, Category.id_comp]`. Establish `f₁` using `congrArg (· ≫ 𝔐.f) e₁`. Establish `f₂` using `congrArg (· ≫ 𝔐₀.f) e₂`. Simplify using `only [Category.assoc] at f₁ f₂`. Conclude with `f₁.trans (hξ.trans f₂.symm)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_common_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S S₀ : Finset ℕ) (Ω Ω₀ : Type) [Field Ω] [Field Ω₀] (K K₀ : Type) [Fintype K] [Fintype K₀] (J : K → Type) (J₀ : K₀ → Type) (y : (Σ k, J k) → Ω) (y₀ : (Σ k, J₀ k) → Ω₀) (𝔐 : HodgeCpt Y S y) (𝔐₀ : HodgeCpt Y S₀ y₀) (i : Ω₀ →+* Ω) (W : Subring Ω) (φ : W →+* ℂ) (z₁ : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X) (z₂ : Spec (CommRingCat.of ℂ) ⟶ 𝔐₀.X), 𝔐.ξ ≫ 𝔐.f = spMap i ≫ 𝔐₀.ξ ≫ 𝔐₀.f → (∀ a : W, φ a ≠ 0 → IsUnit a) → (∀ (a : Ω) (r : ℂ), ValAt 𝔐.ξ z₁ a r → ∃ h : a ∈ W, φ ⟨a, h⟩ = r) → (∀ (a : Ω₀) (r : ℂ), ValAt 𝔐₀.ξ z₂ a r → ∃ h : i a ∈ W, φ ⟨_, h⟩ = r) → ∃ (σ₁ : 𝔐.X.presheaf.stalk (centre z₁) →+* W) (σ₂ : 𝔐₀.X.presheaf.stalk (centre z₂) →+* W), (∀ s, (σ₁ s : Ω) = genMap 𝔐.ξ ⟨centre z₁, 𝔐.all _⟩ s) ∧ (∀ s, (σ₂ s : Ω) = i (genMap 𝔐₀.ξ ⟨centre z₂, 𝔐₀.all _⟩ s)) ∧ (∀ s, φ (σ₁ s) = (Scheme.stalkClosedPointTo z₁).hom s) ∧ (∀ s, φ (σ₂ s) = (Scheme.stalkClosedPointTo z₂).hom s) ∧ spMap σ₁ ≫ 𝔐.X.fromSpecStalk (centre z₁) ≫ 𝔐.f = spMap σ₂ ≫ 𝔐₀.X.fromSpecStalk (centre z₂) ≫ 𝔐₀.f := by
   intro E _ _ _ H D l Xo c Y S S₀ Ω Ω₀ _ _ K K₀ _ _ J J₀ y y₀ 𝔐 𝔐₀ i W φ z₁ z₂ hξ hW h₁ h₂

@@ -11,13 +11,13 @@ namespace PositivityTheory.Lit1.PTN
 attribute [local instance 2000] Rep.hV2
 
 /- English proof (translation)
-Establish `hlt : v.asIdeal ^ (1 + 1) < v.asIdeal ^ 1` using `Ideal.pow_succ_lt_pow v.ne_bot 1`. Rewrite `hlt` using `[pow_one]`. Take `⟨ϖ, hϖ, hϖ2⟩` from `SetLike.exists_of_lt hlt`. Use `⟨ϖ, hϖ, hϖ2, ?_⟩` and prove the remaining obligations. Apply `GroundTheory.Global.ord_eq_one_of_valued_eq_exp` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h0 : ϖ ≠ 0`. Introduce and unpack `rfl`. Conclude with `hϖ2 (Ideal.zero_mem _)`. Establish `hne` using `v.intValuation_ne_zero ϖ h0`. Establish `h1 : v.intValuation ϖ ≤ WithZero.exp (-(1 : ℕ) : ℤ)` using `(v.intValuation_le_pow_iff_mem ϖ 1).2 (by rwa [pow_one])`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ¬ v.intValuation ϖ ≤ WithZero.exp (-(2 : ℕ) : ℤ)` using `fun h => hϖ2 ((v.intValuation_le_pow_iff_mem ϖ 2).1 h)`. Establish `hval : v.intValuation ϖ = WithZero.exp (-1 : ℤ)`. Rewrite `h1`, `h2`, the goal using `[← WithZero.exp_log hne]`. Rewrite `h1`, `h2` using `[WithZero.exp_le_exp]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h1 h2`. Use linear arithmetic over natural numbers and integers. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `(HeightOneSpectrum.valuation_of_algebraMap v ϖ).trans hval`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_uniformizer_ord' (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) :
     ∃ ϖ : 𝓞 F, ϖ ∈ v.asIdeal ∧ ϖ ∉ v.asIdeal ^ 2 ∧

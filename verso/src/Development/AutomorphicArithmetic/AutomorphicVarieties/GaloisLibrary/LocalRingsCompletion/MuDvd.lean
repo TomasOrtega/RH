@@ -5,31 +5,29 @@ open IsDiscreteValuationRing (addVal)
 open scoped Pointwise TensorProduct Topology
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ f`. Establish `hpow : ∀ m : ℕ, addVal O (ϖ ^ m) = m`. Introduce `m`. Rewrite using `[IsDiscreteValuationRing.addVal_pow, IsDiscreteValuationRing.addVal_uniformizer hϖ]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hdvd : ∀ m : ℕ, C ϖ ^ m ∣ f ↔ ∀ n, ϖ ^ m ∣ coeff n f`. Introduce `m`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩ n`. Rewrite using `[← map_pow, PowerSeries.coeff_C_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dvd_mul_right _ _`. Introduce `h choose g hg using h`. Use `⟨PowerSeries.mk g, ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Rewrite using `[← map_pow, PowerSeries.coeff_C_mul, PowerSeries.coeff_mk, ← hg n]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∀ m : ℕ, (m : ℕ∞) ≤ mu f ↔ C ϖ ^ m ∣ f`. Introduce `m`. Rewrite using `[hdvd, mu, le_iInf_iff]`. Use `forall_congr' fun n => ?_` and prove the remaining obligations. Rewrite using `[← hpow m, IsDiscreteValuationRing.addVal_le_iff_dvd]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmu0 : mu f = 0 → map (residue O) f ≠ 0`. Introduce `h hzero`. Establish `hc` using `addVal_coeff_lam f`. Rewrite `hc` using `[h, IsDiscreteValuationRing.addVal_eq_zero_iff, ← residue_ne_zero_iff_isUnit]`. Apply `hc` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← PowerSeries.coeff_map, hzero, map_zero]`. Use `⟨h1, ⟨hmu0, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ∃ n, coeff n (map (residue O) f) ≠ 0 := by`. Assume the negation of the conclusion as `hall`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push_neg at hall`. Conclude with `h (PowerSeries.ext fun n => by simpa using hall n)`. Rewrite `hn` using `[PowerSeries.coeff_map, residue_ne_zero_iff_isUnit, ← IsDiscreteValuationRing.addVal_eq_zero_iff]`. Establish `hle` using `mu_le f n`. Rewrite `hle` using `[hn]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_antisymm hle bot_le`. Introduce `h`. Establish `hord : (map (residue O) f).order = (lam f : ℕ∞)`. Rewrite using `[PowerSeries.order_eq_nat]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[PowerSeries.coeff_map, residue_ne_zero_iff_isUnit, ← IsDiscreteValuationRing.addVal_eq_zero_iff, addVal_coeff_lam, h]`. Introduce `i hi`. Rewrite using `[PowerSeries.coeff_map]`. Assume the negation of the conclusion as `hne`. Establish `hu : IsUnit (coeff i f)` using `(residue_ne_zero_iff_isUnit _).1 hne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `hu` using `[← IsDiscreteValuationRing.addVal_eq_zero_iff]`. Establish `hli : lam f ≤ i` using `Nat.sInf_le (by show addVal O (coeff i f) = mu f`. Rewrite using `[hu, h])`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hord, ENat.toNat_coe]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `m`. Establish `hcoeff : ∀ n, addVal O (coeff n (C ϖ ^ m * f)) = m + addVal O (coeff n f)`. Introduce `n`. Rewrite using `[← map_pow, PowerSeries.coeff_C_mul, IsDiscreteValuationRing.addVal_mul, hpow]`. Establish `hmu : mu (C ϖ ^ m * f) = m + mu f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[mu, mu, ENat.add_iInf]`. Conclude with `iInf_congr hcoeff`. Use `⟨hmu, ?_⟩` and prove the remaining obligations. Rewrite using `[lam, lam]`. Use `congr 1`.
-
-Use extensionality with `n`. Simplify using `only [Set.mem_setOf_eq, hcoeff, hmu]`. Conclude with `⟨fun h => WithTop.add_left_cancel (ENat.coe_ne_top m) h, fun h => by rw [h]⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.abelian₂.mu_dvd :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O), Irreducible ϖ → ∀ f : O⟦X⟧,

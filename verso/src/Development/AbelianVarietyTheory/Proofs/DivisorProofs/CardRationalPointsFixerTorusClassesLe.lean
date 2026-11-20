@@ -16,17 +16,13 @@ open Formalism.UG (cT bc)
 namespace GlobalTheory.SphEis
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J j m C D Z J₀ hF lv hlv W hW`. Take `⟨-, hQc, -, -, hNQ, hQP, -, hnorm, hpar⟩` from `GlobalTheory.T.isotropicFrameDecomposition_subgroup_properties F E σ n J j m C D Z J₀ hF`. Take `⟨V, B₁, hV, hcov⟩` from `GlobalTheory.T.isotropicUnipotentRadical_covered_by_levi_conjugates F E σ n J j m C D Z J₀ hF lv hlv`. Take `⟨ν, π, DN, DM, hSL⟩` from `GlobalTheory.T.rationalFixatorOfColumns_isSemidirectLattice F E σ n J j m C D Z J₀ hF`. Set `Λ : Subgroup (GAd σ J)` to `ratPts σ J ⊓ fixG σ J C`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : DiscreteTopology Λ := inferInstance`. Use `haveI : Countable Λ := inferInstance`. Establish `hDom` using `GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom Λ (Measure.haar : Measure (GAd σ J))`. Take `⟨B, hB0, hB⟩` from `GlobalTheory.T.card_le_mul_of_unipotent_cover_discreteSubgroup (GAd σ J) (unipRad σ J C) (fixG σ J C ⊓ fixG σ J D) Λ (ratPts σ J) (fixG σ J C) ν π DN DM Measure.haar _ V W hSL inf_le_left inf_le_right hQc (fun q hq => by`. Take `⟨u, hu, x, hx, e, -⟩` from `GlobalTheory.T.adelicFixator_eq_unipotentRadical_mul_commonFixator F E σ n J j m C D Z J₀ hF q hq`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨u, hu, x, hx, e⟩)`. Use the proof step `(fun K hK => GlobalTheory.T.finite_compact_inter_unitaryRationalPoints F E σ n J K hK) inferInstance hDom hV hW`. Use `⟨B * B₁, fun μ T hT hdist hform => ?_⟩` and prove the remaining obligations. Use `set a := lv (tor F E fun i => (μ i : ℤ)) with ha`. Take `⟨Y, hYc, hYN, hYcov⟩` from `hcov μ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `haP : a ∈ parFlag σ J C (fun _ => 0)` using `hpar a _ (hlv.onC _)`. Establish `h1` using `hB a Y T (fun x hx => (GlobalTheory.T.leviSection_commute_of_fixes_isotropicColumns F E σ n J j m C D Z J₀ hF lv hlv _ x hx)) (fun u => by`. Use `hnorm a⁻¹ (inv_mem haP) u` as an intermediate fact. Simplify `this)` using `only [inv_inv]`. Use `hYN`.
-
-Use the proof step `(fun u hu => by`. Take `⟨γ, hγ, hγN, y, hy, w, hw, -, e⟩` from `hYcov u hu`. Conclude with `⟨γ, ⟨hγ, hNQ hγN⟩, hγN, y, hy, w, hw, e⟩)`. Use `hT`. Use the proof step `(fun t ht t' ht' h => hdist t ht t' ht' h.2)`.
-
-Use `hform`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem card_ratPts_fixG_tor_le : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (j m : ℕ) (C D : Matrix (Fin n) (Fin j) E) (Z : Matrix (Fin n) (Fin m) E) (J₀ : Matrix (Fin m) (Fin m) E), Fr σ J C D Z J₀ → ∀ lv : GL (Fin j) (AF F ⊗[F] E) →* GAd σ J, IsLv σ J C D Z lv → ∀ W : Set (GAd σ J), IsCompact W → ∃ B : ℝ, ∀ (μ : Fin j → ℕ) (T : Finset (GAd σ J)), (∀ t ∈ T, t ∈ ratPts σ J) → (∀ t ∈ T, ∀ t' ∈ T, t' * t⁻¹ ∈ fixG σ J C → t = t') → (∀ t ∈ T, ∃ q ∈ fixG σ J C, ∃ w ∈ W, t = q * lv (tor F E fun i => (μ i : ℤ)) * w) → (T.card : ℝ) ≤ B * ∏ i, bse F ^ ((m + j) * μ i) := by
   intro F E _ _ _ _ _ σ n J j m C D Z J₀ hF lv hlv W hW

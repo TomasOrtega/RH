@@ -28,12 +28,12 @@ def vlat (ψ : AddChar K ℂ) (t : K) : AddSubgroup (κ → K) where
   neg_mem' := fun ha i => (dualBall ψ t).neg_mem (ha i)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_vlat {ψ : AddChar K ℂ} {t : K} {x : κ → K} : x ∈ vlat ψ t ↔ ∀ i, x i ∈ dualBall ψ t := Iff.rfl
 
 /- English proof (translation)
-Establish `h : ∀ i, ∀ᶠ x in 𝓝 (0 : κ → K), x i ∈ dualBall ψ t` using `fun i => ((continuous_apply i).tendsto (0 : κ → K)).eventually (dualBall_mem_nhds hψc t)`. Use `filter_upwards [Filter.eventually_all.2 h] with x hx using hx`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vlat_mem_nhds {ψ : AddChar K ℂ} (hψc : Continuous ψ) (t : K) :
     ((vlat (κ := κ) ψ t : AddSubgroup (κ → K)) : Set (κ → K)) ∈ 𝓝 0 := by
@@ -42,13 +42,13 @@ theorem vlat_mem_nhds {ψ : AddChar K ℂ} (hψc : Continuous ψ) (t : K) :
   filter_upwards [Filter.eventually_all.2 h] with x hx using hx
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.isOpen_of_mem_nhds _ (vlat_mem_nhds hψc t)`.
+A detailed English derivation is pending.
 -/
 theorem vlat_isOpen {ψ : AddChar K ℂ} (hψc : Continuous ψ) (t : K) : IsOpen ((vlat (κ := κ) ψ t : AddSubgroup (κ → K)) : Set (κ → K)) :=
   AddSubgroup.isOpen_of_mem_nhds _ (vlat_mem_nhds hψc t)
 
 /- English proof (translation)
-Use `(isCompact_univ_pi (fun _ : κ => IsNonarchimedeanLocalField.isCompact_closedBall K (ValuativeRel.valuation K (x₀ / t)))).of_isClosed_subset (AddSubgroup.isClosed_of_isOpen _ (vlat_isOpen hψc t)) ?_` and prove the remaining obligations. Introduce `x hx i _`. Conclude with `dualBall_subset hx₀ ht (hx i)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem vlat_isCompact {ψ : AddChar K ℂ} (hψc : Continuous ψ) {x₀ : K} (hx₀ : ψ x₀ ≠ 1) {t : K} (ht : t ≠ 0) :
     IsCompact ((vlat (κ := κ) ψ t : AddSubgroup (κ → K)) : Set (κ → K)) := by
@@ -59,23 +59,21 @@ theorem vlat_isCompact {ψ : AddChar K ℂ} (hψc : Continuous ψ) {x₀ : K} (h
   exact dualBall_subset hx₀ ht (hx i)
 
 /- English proof (translation)
-Use `set B : Set (κ → K) := Set.univ.pi fun _ => {x : K | ValuativeRel.valuation K x ≤ 1}`. Establish `hB : IsCompact B` using `isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall K 1`. Establish `h : ∀ᶠ s in 𝓝 (0 : K), ∀ Y ∈ B, s • Y ∈ W`. Apply `hB.eventually_forall_of_forall_eventually` to reduce the goal to its premises. Introduce `Y _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc : Continuous (fun z : K × (κ → K) => z.1 • z.2)` using `continuous_fst.smul continuous_snd`. Establish `h2 : Tendsto (fun z : K × (κ → K) => z.1 • z.2) (𝓝 ((0 : K), Y)) (𝓝 0)`. Use `hc.tendsto ((0 : K), Y) using 2` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Conclude with `h2.eventually hW`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, hsub⟩` from `(IsValuativeTopology.hasBasis_nhds_zero' K).mem_iff.1 h`. Take `⟨r, hr0, hr1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := ValuativeRel.valuation K)`. Take `⟨a, ha⟩` from `ValuativeRel.valuation_surjective γ`. Establish `hx00 : x₀ ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx₀ (AddChar.map_zero_eq_one ψ)`. Use `set s := r * a with hs`. Establish `hvs : ValuativeRel.valuation K s < γ`. Rewrite using `[hs, map_mul, ha]`. Conclude with `mul_lt_of_lt_one_left (zero_lt_iff.2 hγ) hr1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs0 : s ≠ 0`. Introduce `h0`. Rewrite `hvs` using `[h0, map_zero]`. Establish `: ValuativeRel.valuation K r * γ = 0`. Rewrite using `[← ha, ← map_mul, ← hs, h0, map_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `hr0 (by simpa using h)`. Conclude with `hγ h`. Use `⟨x₀ / s, div_ne_zero hx00 hs0, ?_⟩` and prove the remaining obligations. Introduce `Y hY`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxs : x₀ / (x₀ / s) = s` using `by field_simp`. Establish `hYs : ∀ i, ValuativeRel.valuation K (Y i) ≤ ValuativeRel.valuation K s`. Introduce `i`. Use `dualBall_subset hx₀ (div_ne_zero hx00 hs0) (hY i)` as an intermediate fact. Rewrite `this` using `[Set.mem_setOf_eq, hxs]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hmem : s⁻¹ • Y ∈ B`. Introduce `i _`. Simplify using `only [Set.mem_setOf_eq, Pi.smul_apply, smul_eq_mul, map_mul, map_inv₀]`. Establish `hv0 : ValuativeRel.valuation K s ≠ 0` using `by simpa using hs0`. Rewrite using `[inv_mul_le_iff₀ (zero_lt_iff.2 hv0), mul_one]`.
-
-Conclude with `hYs i`. Use `hsub hvs (s⁻¹ • Y) hmem` as an intermediate fact. Rewrite `this` using `[smul_smul, mul_inv_cancel₀ hs0, one_smul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem vlat_small {ψ : AddChar K ℂ} {x₀ : K} (hx₀ : ψ x₀ ≠ 1) {W : Set (κ → K)} (hW : W ∈ 𝓝 0) :
     ∃ t : K, t ≠ 0 ∧ ((vlat (κ := κ) ψ t : AddSubgroup (κ → K)) : Set (κ → K)) ⊆ W := by
@@ -124,11 +122,9 @@ theorem vlat_small {ψ : AddChar K ℂ} {x₀ : K} (hx₀ : ψ x₀ ≠ 1) {W : 
   rwa [smul_smul, mul_inv_cancel₀ hs0, one_smul] at this
 
 /- English proof (translation)
-Rewrite `hx` using `[mem_vlat]`. Use `push_neg at hx`. Take `⟨i, hi⟩` from `hx`. Rewrite `hi` using `[mem_dualBall]`. Use `push_neg at hi`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨o, ho, hne⟩` from `hi`. Establish `hsum : ∀ z : κ → K, z ⬝ᵥ Pi.single i (o * t) = o * (t * z i)`. Introduce `z`. Rewrite using `[dotProduct_single]`. Expand and normalize the polynomial expressions, which then agree.
-
-Conclude with `⟨Pi.single i (o * t), by rw [hsum]; exact hne, fun u hu => by rw [hsum]; exact (mem_vlat.1 hu i) o ho⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem vlat_sep {ψ : AddChar K ℂ} (t : K) (x : κ → K) (hx : x ∉ vlat ψ t) :
     ∃ y : κ → K, ψ (x ⬝ᵥ y) ≠ 1 ∧ ∀ u ∈ vlat ψ t, ψ (u ⬝ᵥ y) = 1 := by
@@ -153,7 +149,7 @@ section Gen
 variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
 
 /- English proof (translation)
-Use `haveI := QuotientAddGroup.discreteTopology hU`. Establish `hfin : ((QuotientAddGroup.mk : V → V ⧸ U) '' tsupport f).Finite` using `(hf.isCompact.image QuotientAddGroup.continuous_mk).finite_of_discrete`. Conclude with `⟨hfin.toFinset, fun Y hY => hfin.mem_toFinset.2 ⟨Y, subset_tsupport f hY, rfl⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cover (U : AddSubgroup V) (hU : IsOpen (U : Set V)) {f : V → ℂ} (hf : HasCompactSupport f) :
     ∃ S : Finset (V ⧸ U), ∀ Y, f Y ≠ 0 → (QuotientAddGroup.mk Y : V ⧸ U) ∈ S := by
@@ -166,7 +162,7 @@ def cosetInd (U : AddSubgroup V) (q : V ⧸ U) : V → ℂ := fun Y => (U : Set 
 
 open Classical in
 /- English proof (translation)
-Establish `: (QuotientAddGroup.mk Y : V ⧸ U) = q ↔ Y + -q.out ∈ U` using `by conv_lhs => rw [← Quotient.out_eq' q]`. Rewrite using `[eq_comm]`. Use `show (QuotientAddGroup.mk q.out : V ⧸ U) = QuotientAddGroup.mk Y ↔ _`. Rewrite using `[QuotientAddGroup.eq, show Y + -q.out = -q.out + Y by abel]`. Simplify using `only [cosetInd, Set.indicator_apply, SetLike.mem_coe, Pi.one_apply, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cosetInd_apply (U : AddSubgroup V) (q : V ⧸ U) (Y : V) :
     cosetInd U q Y = if (QuotientAddGroup.mk Y : V ⧸ U) = q then 1 else 0 := by
@@ -179,9 +175,9 @@ theorem cosetInd_apply (U : AddSubgroup V) (q : V ⧸ U) (Y : V) :
   simp only [cosetInd, Set.indicator_apply, SetLike.mem_coe, Pi.one_apply, this]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `Y`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, cosetInd_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq]`. Use `split_ifs with h`. Establish `h1 : (QuotientAddGroup.mk (Quotient.out (QuotientAddGroup.mk Y : V ⧸ U)) : V ⧸ U) = QuotientAddGroup.mk Y` using `Quotient.out_eq' _`. Rewrite `h1` using `[QuotientAddGroup.eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hinv (Quotient.out (QuotientAddGroup.mk Y : V ⧸ U)) _ h1` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_left]`. Conclude with `this`. Assume the negation of the conclusion as `hne`. Conclude with `h (hS Y hne)`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem decomp (U : AddSubgroup V) {f : V → ℂ} (hinv : ∀ Y, ∀ u ∈ U, f (Y + u) = f Y)
     (S : Finset (V ⧸ U)) (hS : ∀ Y, f Y ≠ 0 → (QuotientAddGroup.mk Y : V ⧸ U) ∈ S) :
@@ -203,9 +199,9 @@ theorem decomp (U : AddSubgroup V) {f : V → ℂ} (hinv : ∀ Y, ∀ u ∈ U, f
 variable (Q : (V → ℂ) → (V → ℂ) → ℂ)
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Use `hsmul 0 0 (SB V).zero_mem g hg` as an intermediate fact. Simplify using `using this`. Consider the case `insert j S hj ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, hadd _ ((SB V).smul_mem _ (hk j)) _ ((SB V).sum_mem fun i _ => (SB V).smul_mem _ (hk i)) g hg, hsmul _ _ (hk j) g hg, ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_left (hadd : ∀ f ∈ SB V, ∀ f' ∈ SB V, ∀ g ∈ SB V, Q (f + f') g = Q f g + Q f' g)
     (hsmul : ∀ (c : ℂ), ∀ f ∈ SB V, ∀ g ∈ SB V, Q (c • f) g = c * Q f g)
@@ -222,9 +218,9 @@ theorem sum_left (hadd : ∀ f ∈ SB V, ∀ f' ∈ SB V, ∀ g ∈ SB V, Q (f +
       hsmul _ _ (hk j) g hg, ih]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Use `hsmul 0 f hf 0 (SB V).zero_mem` as an intermediate fact. Simplify using `using this`. Consider the case `insert j S hj ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, hadd f hf _ ((SB V).smul_mem _ (hk j)) _ ((SB V).sum_mem fun i _ => (SB V).smul_mem _ (hk i)), hsmul _ f hf _ (hk j), ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_right (hadd : ∀ f ∈ SB V, ∀ g ∈ SB V, ∀ g' ∈ SB V, Q f (g + g') = Q f g + Q f g')
     (hsmul : ∀ (c : ℂ), ∀ f ∈ SB V, ∀ g ∈ SB V, Q f (c • g) = conj c * Q f g)
@@ -241,29 +237,27 @@ theorem sum_right (hadd : ∀ f ∈ SB V, ∀ g ∈ SB V, ∀ g' ∈ SB V, Q f (
       hsmul _ f hf _ (hk j), ih]
 
 /- English proof (translation)
-Use `set e : V → ℂ := (U : Set V).indicator 1 with he_def`. Establish `he : e ∈ SB V` using `sb_indicator U hUo hUc`. Establish `hk : ∀ q, cosetInd U q ∈ SB V` using `fun q => sb_translate he _`. Establish `hdiag : ∀ q, Q (cosetInd U q) (cosetInd U q) = Q e e`. Introduce `q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `htr q.out (cosetInd U q) (hk q) (cosetInd U q) (hk q)` as an intermediate fact. Establish `h2 : (fun Y => cosetInd U q (Y + q.out)) = e`. Use function extensionality and compare the values at `Y`. Simplify using `only [cosetInd, he_def, add_neg_cancel_right]`. Rewrite `this` using `[h2]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.symm`. Establish `hoff : ∀ q q', q ≠ q' → Q (cosetInd U q) (cosetInd U q') = 0`. Introduce `q q' hqq`. Establish `hnot : q.out - q'.out ∉ U`. Introduce `hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hqq` to reduce the goal to its premises. Establish `h1 : (QuotientAddGroup.mk q'.out : V ⧸ U) = QuotientAddGroup.mk q.out`. Rewrite using `[QuotientAddGroup.eq, show -q'.out + q.out = q.out - q'.out by abel]`. Conclude with `hmem`. Establish `e1 : (QuotientAddGroup.mk q.out : V ⧸ U) = q` using `Quotient.out_eq' q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e2 : (QuotientAddGroup.mk q'.out : V ⧸ U) = q'` using `Quotient.out_eq' q'`. Rewrite `h1` using `[e1, e2]`. Conclude with `h1.symm`. Take `⟨Z, hZ1, hZU⟩` from `hsep _ hnot`. Establish `hmulq : ∀ r : V ⧸ U, (fun Y => χ Z Y * cosetInd U r Y) = χ Z r.out • cosetInd U r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Introduce `r`. Use function extensionality and compare the values at `Y`. Simplify using `only [Pi.smul_apply, smul_eq_mul, cosetInd]`. Distinguish the cases in `hY : Y + -r.out ∈ U`. Establish `: χ Z Y = χ Z r.out`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hχadd Z (Y + -r.out) r.out` as an intermediate fact. Rewrite `this` using `[neg_add_cancel_right, hZU _ hY, one_mul]`. Conclude with `this`. Rewrite using `[this]`. Rewrite using `[Set.indicator_of_notMem (show Y + -r.out ∉ (U : Set V) from hY), mul_zero, mul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hχ Z _ (hk q) _ (hk q')`. Rewrite `h` using `[hmulq q, hmulq q', hsmul _ _ (hk q) _ ((SB V).smul_mem _ (hk q')), hsmul' _ _ (hk q) _ (hk q')]`. Establish `hab : χ Z q.out * conj (χ Z q'.out) = χ Z (q.out - q'.out)`. Use `hχadd Z (q.out - q'.out) q'.out` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[this, mul_assoc, hχn, mul_one]`. Establish `h3 : (χ Z (q.out - q'.out) - 1) * Q (cosetInd U q) (cosetInd U q') = 0`. Rewrite using `[← hab]`. Take the linear combination `h`. Break down `mul_eq_zero.1 h3 with h4 | h4` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd (sub_eq_zero.1 h4) hZ1`. Conclude with `h4`. Establish `hfd` using `decomp U hfi S hSf`. Establish `hgd` using `decomp U hgi S hSg`. Establish `hgsum : (∑ q ∈ S, g q.out • cosetInd U q) ∈ SB V` using `(SB V).sum_mem fun q _ => (SB V).smul_mem _ (hk q)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sum_left Q hadd hsmul S _ _ hk hgsum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[sum_right Q hadd' hsmul' S _ _ hk (hk q)]`. Use `_ = ∑ q ∈ S, f q.out * (conj (g q.out) * Q e e) := by`.
-
-Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single q (fun q' _ hq' => by rw [hoff q q' (Ne.symm hq'), mul_zero]) (fun h => absurd hq h), hdiag]`. Use `_ = Q e e * ∑ q ∈ S, f q.out * conj (g q.out) := by`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun q _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem form_eq (U : AddSubgroup V) (hUo : IsOpen (U : Set V)) (hUc : IsCompact (U : Set V))
     (hadd : ∀ f ∈ SB V, ∀ f' ∈ SB V, ∀ g ∈ SB V, Q (f + f') g = Q f g + Q f' g)
@@ -356,7 +350,7 @@ variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchim
   [Invertible (2 : K)] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `Y`. Simplify using `[schr]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem schr_trans (ψ : AddChar K ℂ) (Z : κ → K) (φ : (κ → K) → ℂ) :
     schr ψ (Z, 0) φ = fun Y => φ (Y + Z) := by
@@ -364,7 +358,7 @@ theorem schr_trans (ψ : AddChar K ℂ) (Z : κ → K) (φ : (κ → K) → ℂ)
   simp [schr]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `Y`. Simplify using `[schr]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem schr_char (ψ : AddChar K ℂ) (Z : κ → K) (φ : (κ → K) → ℂ) :
     schr ψ (0, Z) φ = fun Y => ψ (Y ⬝ᵥ Z) * φ Y := by
@@ -372,21 +366,21 @@ theorem schr_char (ψ : AddChar K ℂ) (Z : κ → K) (φ : (κ → K) → ℂ) 
   simp [schr]
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (κ → K) := borel _`. Use `haveI : BorelSpace (κ → K) := ⟨rfl⟩`. Use `haveI := hμ`. Establish `hI : ∀ f ∈ SB (κ → K), ∀ g ∈ SB (κ → K), Integrable (fun x => R f x * conj (R g x)) μ` using `fun f hf g hg => GlobalTheory.PolarSB.integrable_mul_conj μ (hR f hf) (hR g hg)`. Establish `hinvar : ∀ w, ∀ f ∈ SB (κ → K), ∀ g ∈ SB (κ → K), ∫ x, R (schr ψ w f) x * conj (R (schr ψ w g) x) ∂μ = ∫ x, R f x * conj (R g x) ∂μ`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `w f hf g hg`. Rewrite using `[hRA w f hf, hRA w g hg]`. Conclude with `GlobalTheory.schr_unitary ψ hψc μ hμ (A w) (R f) (R g)`. Use `form_eq (fun f g => ∫ x, R f x * conj (R g x) ∂μ) (vlat ψ t) (vlat_isOpen hψc t) (vlat_isCompact hψc hx₀ ht) ?_ ?_ ?_ ?_ ?_ (fun Z Y => ψ (Y ⬝ᵥ Z)) ?_ ?_ ?_ (fun Y hY => vlat_sep t Y hY) hf hg hfi hgi S hSf hSg` and prove the remaining obligations. Introduce `f hf f' hf' g hg`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← integral_add (hI f hf g hg) (hI f' hf' g hg)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[map_add, Pi.add_apply, add_mul]`. Introduce `c f hf g hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul c _`. Introduce `f hf g hg g' hg'`. Rewrite using `[← integral_add (hI f hf g hg) (hI f hf g' hg')]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[map_add, Pi.add_apply, map_add, mul_add]`. Introduce `c f hf g hg`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[← integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Expand and normalize the polynomial expressions, which then agree. Introduce `Z f hf g hg`. Use `hinvar (Z, 0) f hf g hg` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[schr_trans, schr_trans]`. Then use the resulting hypothesis. Introduce `Z f hf g hg`. Use `hinvar (0, Z) f hf g hg` as an intermediate fact. Rewrite `this` using `[schr_char, schr_char]`. Then use the resulting hypothesis. Introduce `Z Y Y'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [add_dotProduct, AddChar.map_add_eq_mul]`. Introduce `Z Y`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, GlobalTheory.norm_addChar_nonarch ψ hψc]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem form_eq_loc (ψ : AddChar K ℂ) (hψc : Continuous ψ) {x₀ : K} (hx₀ : ψ x₀ ≠ 1)
     (R : ((κ → K) → ℂ) →ₗ[ℂ] (κ → K) → ℂ) (A : (κ → K) × (κ → K) → (κ → K) × (κ → K))
@@ -455,7 +449,7 @@ variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchim
   [Invertible (2 : K)] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Use `push_cast`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.ofReal_pow]`.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_mul_conj_eq {V : Type} [AddCommGroup V] {U : AddSubgroup V} (S : Finset (V ⧸ U)) (h : V → ℂ) :
     ∑ q ∈ S, h q.out * conj (h q.out) = ((∑ q ∈ S, ‖h q.out‖ ^ 2 : ℝ) : ℂ) := by
@@ -464,11 +458,11 @@ theorem sum_mul_conj_eq {V : Type} [AddCommGroup V] {U : AddSubgroup V} (S : Fin
   rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.ofReal_pow]
 
 /- English proof (translation)
-Use `set q₀ : (κ → K) ⧸ vlat (κ := κ) ψ t := QuotientAddGroup.mk 0 with hq₀_def`. Establish `h0 : ((vlat (κ` using `κ) ψ 1 : AddSubgroup (κ → K)) : Set (κ → K)).indicator (1 : (κ → K) → ℂ) 0 ≠ 0 := by`. Rewrite using `[Set.indicator_of_mem (show (0 : κ → K) ∈ ((vlat (κ := κ) ψ 1 : AddSubgroup (κ → K)) : Set (κ → K)) from (vlat (κ := κ) ψ 1).zero_mem)]`. Simplify using the standard rewrite rules. Establish `hq₀ : q₀ ∈ S` using `hS 0 h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hout : q₀.out ∈ ((vlat (κ` using `κ) ψ 1 : AddSubgroup (κ → K)) : Set (κ → K)) := by`. Establish `h1 : (QuotientAddGroup.mk q₀.out : (κ → K) ⧸ vlat (κ` using `κ) ψ t) = QuotientAddGroup.mk 0 := Quotient.out_eq' q₀`. Rewrite `h1` using `[QuotientAddGroup.eq]`. Apply `hle` to reduce the goal to its premises. Use `(vlat (κ := κ) ψ t).neg_mem h1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Use `lt_of_lt_of_le ?_ (Finset.single_le_sum (f := fun q : (κ → K) ⧸ vlat (κ := κ) ψ t => ‖((vlat (κ := κ) ψ 1 : AddSubgroup (κ → K)) : Set (κ → K)).indicator (1 : (κ → K) → ℂ) q.out‖ ^ 2) (fun q _ => by positivity) hq₀)` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem hout]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_pos_of_one {ψ : AddChar K ℂ} {t : K} (hle : vlat (κ := κ) ψ t ≤ vlat ψ 1)
     (S : Finset ((κ → K) ⧸ vlat (κ := κ) ψ t))
@@ -495,33 +489,31 @@ theorem sum_pos_of_one {ψ : AddChar K ℂ} {t : K} (hle : vlat (κ := κ) ψ t 
   simp
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀⟩ : ∃ x, ψ x ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hψ (by ext x; rw [h x, AddChar.one_apply])`. Take `⟨e₁, he₁_def⟩ : ∃ e : (κ → K) → ℂ, e = ((vlat (κ` from `κ) ψ 1 : AddSubgroup (κ → K)) : Set (κ → K)).indicator 1 := ⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he₁ : e₁ ∈ SB (κ → K)`. Rewrite using `[he₁_def]`. Conclude with `sb_indicator _ (vlat_isOpen hψc 1) (vlat_isCompact hψc hx₀ one_ne_zero)`. Establish `hTe₁` using `hT e₁ he₁`. Establish `hidA : ∀ w, ∀ φ ∈ SB (κ → K), (LinearMap.id : ((κ → K) → ℂ) →ₗ[ℂ] (κ → K) → ℂ) (schr ψ w φ) = schr ψ (id w) ((LinearMap.id : ((κ → K) → ℂ) →ₗ[ℂ] (κ → K) → ℂ) φ)` using `fun _ _ _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hidSB : ∀ φ ∈ SB (κ → K), (LinearMap.id : ((κ → K) → ℂ) →ₗ[ℂ] (κ → K) → ℂ) φ ∈ SB (κ → K)` using `fun φ hφ => hφ`. Establish `he₁inv : ∀ t, vlat (κ` using `κ) ψ t ≤ vlat ψ 1 → ∀ Y, ∀ u ∈ vlat (κ := κ) ψ t, e₁ (Y + u) = e₁ Y := by`. Introduce `t hle Y u hu`. Simplify using `only [he₁_def, Set.indicator_apply, SetLike.mem_coe, Pi.one_apply, (vlat (κ := κ) ψ 1).add_mem_cancel_right (hle hu)]`. Establish `hW₀ : {w | ∀ Y, e₁ (Y + w) = e₁ Y} ∩ {w | ∀ Y, T e₁ (Y + w) = T e₁ Y} ∩ ((vlat (κ` using `κ) ψ 1 : AddSubgroup (κ → K)) : Set (κ → K)) ∈ 𝓝 (0 : κ → K) := Filter.inter_mem (Filter.inter_mem (sb_eventually_invariant he₁) (sb_eventually_invariant hTe₁)) (vlat_mem_nhds hψc 1)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t₀, ht₀, hsub₀⟩` from `vlat_small hx₀ hW₀`. Establish `hle₀ : vlat (κ` using `κ) ψ t₀ ≤ vlat ψ 1 := fun u hu => (hsub₀ hu).2`. Take `⟨S₁, hS₁⟩` from `exists_cover (vlat (κ := κ) ψ t₀) (vlat_isOpen hψc t₀) he₁.2`. Take `⟨S₂, hS₂⟩` from `exists_cover (vlat (κ := κ) ψ t₀) (vlat_isOpen hψc t₀) hTe₁.2`. Take `⟨D₁, hD₁⟩ : ∃ D : ℝ, D = ∑ q ∈ S₁ ∪ S₂, ‖e₁ q.out‖ ^ 2` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨D₂, hD₂⟩ : ∃ D : ℝ, D = ∑ q ∈ S₁ ∪ S₂, ‖T e₁ q.out‖ ^ 2` from `⟨_, rfl⟩`. Establish `hD₁pos : 0 < D₁`. Rewrite using `[hD₁, he₁_def]`. Conclude with `sum_pos_of_one hle₀ _ (fun Y hY => Finset.mem_union_left _ (hS₁ Y (he₁_def ▸ hY)))`. Use `⟨D₂ / D₁, div_nonneg (by rw [hD₂]; exact Finset.sum_nonneg fun _ _ => by positivity) hD₁pos.le, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `μ hμ`. Establish `key : @integral _ ℂ _ _ (borel _) μ (fun x => T e₁ x * conj (T e₁ x)) = ((D₂ / D₁ : ℝ) : ℂ) * @integral _ ℂ _ _ (borel _) μ (fun x => e₁ x * conj (e₁ x))`. Establish `h1` using `form_eq_loc ψ hψc hx₀ LinearMap.id id hidSB hidA μ hμ ht₀ hTe₁ hTe₁ (fun Y u hu => (hsub₀ hu).1.2 Y) (fun Y u hu => (hsub₀ hu).1.2 Y) (S₁ ∪ S₂) (fun Y hY => Finset.mem_union_right _ (hS₂ Y hY)) (fun Y hY => Finset.mem_union_right _ (hS₂ Y hY))`. Establish `h2` using `form_eq_loc ψ hψc hx₀ LinearMap.id id hidSB hidA μ hμ ht₀ he₁ he₁ (he₁inv t₀ hle₀) (he₁inv t₀ hle₀) (S₁ ∪ S₂) (fun Y hY => Finset.mem_union_left _ (hS₁ Y hY)) (fun Y hY => Finset.mem_union_left _ (hS₁ Y hY))`. Simplify using `only [LinearMap.id_apply] at h1 h2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[sum_mul_conj_eq, ← hD₂]`. Rewrite `h2` using `[sum_mul_conj_eq, ← hD₁]`. Rewrite using `[h1, h2]`. Establish `: (D₁ : ℂ) ≠ 0` using `by exact_mod_cast hD₁pos.ne'`. Rewrite using `[Complex.ofReal_div, div_mul_eq_mul_div, eq_div_iff this]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `φ hφ φ' hφ'`. Establish `hW : {w | ∀ Y, φ (Y + w) = φ Y} ∩ {w | ∀ Y, φ' (Y + w) = φ' Y} ∩ ((vlat (κ` using `κ) ψ 1 : AddSubgroup (κ → K)) : Set (κ → K)) ∈ 𝓝 (0 : κ → K) := Filter.inter_mem (Filter.inter_mem (sb_eventually_invariant hφ) (sb_eventually_invariant hφ')) (vlat_mem_nhds hψc 1)`. Take `⟨t, ht, hsub⟩` from `vlat_small hx₀ hW`. Establish `hle : vlat (κ` using `κ) ψ t ≤ vlat ψ 1 := fun u hu => (hsub hu).2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Sa, hSa⟩` from `exists_cover (vlat (κ := κ) ψ t) (vlat_isOpen hψc t) hφ.2`. Take `⟨Sb, hSb⟩` from `exists_cover (vlat (κ := κ) ψ t) (vlat_isOpen hψc t) hφ'.2`. Take `⟨Sc, hSc⟩` from `exists_cover (vlat (κ := κ) ψ t) (vlat_isOpen hψc t) he₁.2`. Establish `hfi : ∀ Y, ∀ u ∈ vlat (κ` using `κ) ψ t, φ (Y + u) = φ Y := fun Y u hu => (hsub hu).1.1 Y`. Establish `hgi : ∀ Y, ∀ u ∈ vlat (κ` using `κ) ψ t, φ' (Y + u) = φ' Y := fun Y u hu => (hsub hu).1.2 Y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mA : ∀ Y, φ Y ≠ 0 → (QuotientAddGroup.mk Y : (κ → K) ⧸ vlat (κ` using `κ) ψ t) ∈ Sa ∪ Sb ∪ Sc := fun Y hY => Finset.mem_union_left _ (Finset.mem_union_left _ (hSa Y hY))`. Establish `mB : ∀ Y, φ' Y ≠ 0 → (QuotientAddGroup.mk Y : (κ → K) ⧸ vlat (κ` using `κ) ψ t) ∈ Sa ∪ Sb ∪ Sc := fun Y hY => Finset.mem_union_left _ (Finset.mem_union_right _ (hSb Y hY))`. Establish `mC : ∀ Y, e₁ Y ≠ 0 → (QuotientAddGroup.mk Y : (κ → K) ⧸ vlat (κ` using `κ) ψ t) ∈ Sa ∪ Sb ∪ Sc := fun Y hY => Finset.mem_union_right _ (hSc Y hY)`. Establish `hTf` using `form_eq_loc ψ hψc hx₀ T A hT hTA μ hμ ht hφ hφ' hfi hgi _ mA mB`. Establish `hLf` using `form_eq_loc ψ hψc hx₀ LinearMap.id id hidSB hidA μ hμ ht hφ hφ' hfi hgi _ mA mB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hTe` using `form_eq_loc ψ hψc hx₀ T A hT hTA μ hμ ht he₁ he₁ (he₁inv t hle) (he₁inv t hle) _ mC mC`. Establish `hLe` using `form_eq_loc ψ hψc hx₀ LinearMap.id id hidSB hidA μ hμ ht he₁ he₁ (he₁inv t hle) (he₁inv t hle) _ mC mC`. Simplify using `only [LinearMap.id_apply] at hLf hLe`. Establish `hpos : 0 < ∑ q ∈ Sa ∪ Sb ∪ Sc, ‖e₁ q.out‖ ^ 2`. Rewrite using `[he₁_def]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sum_pos_of_one hle _ (fun Y hY => mC Y (he₁_def ▸ hY))`. Rewrite `hTe`, `hLe` using `[sum_mul_conj_eq]`. Establish `hD : ((∑ q ∈ Sa ∪ Sb ∪ Sc, ‖e₁ q.out‖ ^ 2 : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hpos.ne'`. Rewrite `key` using `[hTe, hLe]`. Establish `hcancel : ∀ a b d c : ℂ, d ≠ 0 → a * d = c * (b * d) → a = c * b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `a b d c hd h`. Apply `mul_right_cancel₀ hd` to reduce the goal to its premises. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Use `hcancel _ _ _ _ hD key` as an intermediate fact.
-
-Rewrite using `[hTf, hLf, this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main_local (ψ : AddChar K ℂ) (hψc : Continuous ψ) (hψ : ψ ≠ 1)
     (T : ((κ → K) → ℂ) →ₗ[ℂ] (κ → K) → ℂ) (A : (κ → K) × (κ → K) → (κ → K) × (κ → K))
@@ -623,7 +615,7 @@ end Main
 end GlobalTheory.CompactOpenLattice
 
 /- English proof (translation)
-Introduce `F _ _ v _ κ _ ψv hc hne T A hT hTA`. Conclude with `GlobalTheory.CompactOpenLattice.main_local ψv hc hne T A hT hTA`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompactOpenLattice.inner_eq_const_mul : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) [Invertible (2 : Fv F v)] (κ : Type) [Fintype κ]
     (ψv : AddChar (Fv F v) ℂ), Continuous ψv → ψv ≠ 1 →

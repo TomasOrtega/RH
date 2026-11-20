@@ -14,9 +14,9 @@ open scoped LaurentSeries PowerSeries
 namespace GlobalTheory.TopSteps
 
 /- English proof (translation)
-Introduce `K LL n r emb D Γ hst hgal h1 h2 h3 X _ _ _`. Set `S : TopSit P` to `{ K := K, LL := LL, n := n, r := r, nz := ⟨GlobalTheory.IndefiniteRowSideFullHecke.InvariantsVanishing.letters_ne_zero hst⟩, emb := emb, D := D, Γ := Γ, hyp := ⟨hst, hgal, h1, h2, h3⟩ }`. Establish `hcrys : S.CrysCalc` using `GlobalTheory.T.crystalline_sums_twists_characters_expected_jumps AI hT S`. Establish `hcl : S.Closed` using `GlobalTheory.AdmClosure.admissible_closed S`. Establish `hstd : S.StdAdm` using `StdAdm.stdAdm S hcrys hcl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : S.Lem0 (S.Γ.Wchi 1)` using `(GlobalTheory.AdmClasses.admissibleLocalSituation_admissible_classes S hcl hstd).2 1 le_rfl S.D.one_le_letterBlockLength`. Establish `hb : S.ResBound (S.Γ.Wchi 1) 1` using `(CharBound.resBound_chars S (hR S)).2 hL`. Establish `hu : S.UnrAdm` using `GlobalTheory.UnramAdm.unramified_admissible S hcrys hcl hstd hL`. Conclude with `ChiOne.cls_eq_homModInertia S hL hb hu X`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem admissibleUntwistedCharUnramified_of_residueRealisation {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P)
     (hT : Nonempty (LocTied l P AI)) (hR : ∀ S : TopSit P, S.Real) :

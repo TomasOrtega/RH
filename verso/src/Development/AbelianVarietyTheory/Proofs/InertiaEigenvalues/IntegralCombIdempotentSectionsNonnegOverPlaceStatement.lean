@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.ProjectiveLattices.LiftLaSpec
 open AlgebraicGeometry CategoryTheory Limits NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.IndefiniteRowSideFullHecke.UnusedSlot39
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.IdemInt.idem_comb_mul_nonneg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FIntegralCombIdempotentSectionsNonnegOverPlace.lean&line=54#L54)
 -/

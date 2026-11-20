@@ -29,21 +29,21 @@ open FormExt FormExtJ
 attribute [local instance] GlobalTheory.Cris.opModule GlobalTheory.Cris.isCentralScalar_kaehler GlobalTheory.Cris.isScalarTower_kaehler
 
 /- English proof (translation)
-Establish `H` using `_root_.GlobalTheory.CechDR.hasLoc_OAff s'`. Establish `hcov` using `_root_.GlobalTheory.CechDR.pair_cover_affine φ s'`. Establish `hdir` using `_root_.GlobalTheory.CechDR.exists_pair_below_two φ s'`. Establish `hs` using `_root_.GlobalTheory.sep_of_factoring_cover (OAff s') (pairFst φ) H hcov`. Establish `hg` using `_root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (OAff s') (pairFst φ) H hcov hdir`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv` using `_root_.GlobalTheory.CatCoh.Desc.Basis.oneCocycle_vanishing_comma_of_basis (OAff s') (pairFst φ) H hcov hdir`. Establish `hv2` using `GlobalTheory.T.twoCocycle_coboundary_of_basisFunctor (OAff s') (pairFst φ) H hcov hdir`. Establish `hs1` using `_root_.GlobalTheory.CechDR.form_eq_zero_of_basis_cover s' (pairFst φ) hcov`. Establish `hg1` using `_root_.GlobalTheory.CechDR.FormExt.glue_one_forms s' (pairFst φ) hcov hdir`. Establish `unitE : ∀ {S S' : AffOp X'} (u : S ⟶ S') (b : (OAff s').obj S), IsUnit (mp (omExt (OAff s')) u (TrivSqZeroExt.inl b)) → IsUnit (mp (OAff s') u b)` using `fun u b h ↦ ((isUnit_mp_omExt_iff (OAff s') u _).1 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `HE` using `hasLoc_omExt (OAff s') H`. Establish `hcovE : ∀ T : AffOp X', ∃ (n : ℕ) (b : Fin n → (omExt (OAff s')).obj T), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S : AffOp X') (u : T ⟶ S), IsUnit (mp (omExt (OAff s')) u (b i)) → ∃ (t : (Pair φ)ᵒᵖ) (v : T ⟶ (pairFst φ).obj t) (w : (pairFst φ).obj t ⟶ S), v ≫ w = u` using `fun T ↦ by`. Take `⟨n, b, hb, h⟩` from `hcov T`. Conclude with `⟨n, fun i ↦ TrivSqZeroExt.inl (b i), span_inl_eq_top (OAff s') hb, fun i S u hu ↦ h i S u (unitE u _ hu)⟩`. Establish `hdirE : ∀ (t₁ t₂ : (Pair φ)ᵒᵖ) (S : AffOp X'), ((pairFst φ).obj t₁ ⟶ S) → ((pairFst φ).obj t₂ ⟶ S) → ∃ (n : ℕ) (b : Fin n → (omExt (OAff s')).obj S), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S' : AffOp X') (u : S ⟶ S'), IsUnit (mp (omExt (OAff s')) u (b i)) → ∃ t₃, Nonempty …` using `fun t₁ t₂ S a₁ a₂ ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨n, b, hb, h⟩` from `hdir t₁ t₂ S a₁ a₂`. Conclude with `⟨n, fun i ↦ TrivSqZeroExt.inl (b i), span_inl_eq_top (OAff s') hb, fun i S' u hu ↦ h i S' u (unitE u _ hu)⟩`. Establish `hsE` using `_root_.GlobalTheory.sep_of_factoring_cover (omExt (OAff s')) (pairFst φ) HE hcovE`. Establish `hgE` using `_root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (omExt (OAff s')) (pairFst φ) HE hcovE hdirE`. Establish `hvE` using `_root_.GlobalTheory.CatCoh.Desc.Basis.oneCocycle_vanishing_comma_of_basis (omExt (OAff s')) (pairFst φ) HE hcovE hdirE`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcovJ : ∀ j : ℕ, ∀ T : AffOp X', ∃ (n : ℕ) (b : Fin n → (omjExt (OAff s') j).obj T), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S : AffOp X') (u : T ⟶ S), IsUnit (mp (omjExt (OAff s') j) u (b i)) → ∃ (t : (Pair φ)ᵒᵖ) (v : T ⟶ (pairFst φ).obj t) (w : (pairFst φ).obj t ⟶ S), v ≫ …` using `fun j T ↦ by`. Take `⟨n, b, hb, h⟩` from `hcov T`. Conclude with `⟨n, fun i ↦ TrivSqZeroExt.inl (b i), span_inlJ_eq_top (OAff s') j hb, fun i S u hu ↦ h i S u ((isUnit_mp_omjExt_iff (OAff s') j u _).1 hu)⟩`. Establish `hdirJ : ∀ j : ℕ, ∀ (t₁ t₂ : (Pair φ)ᵒᵖ) (S : AffOp X'), ((pairFst φ).obj t₁ ⟶ S) → ((pairFst φ).obj t₂ ⟶ S) → ∃ (n : ℕ) (b : Fin n → (omjExt (OAff s') j).obj S), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S' : AffOp X') (u : S ⟶ S'), IsUnit (mp (omjExt (OAff s') j) u (b i)) → …` using `fun j t₁ t₂ S a₁ a₂ ↦ by`. Take `⟨n, b, hb, h⟩` from `hdir t₁ t₂ S a₁ a₂`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, fun i ↦ TrivSqZeroExt.inl (b i), span_inlJ_eq_top (OAff s') j hb, fun i S' u hu ↦ h i S' u ((isUnit_mp_omjExt_iff (OAff s') j u _).1 hu)⟩`. Establish `hsJ` using `fun j ↦ _root_.GlobalTheory.sep_of_factoring_cover (omjExt (OAff s') j) (pairFst φ) (GlobalTheory.T.hasLocalisationAtElements_trivSqZeroExtForms (OAff s') j H) (hcovJ j)`. Establish `hgJ` using `fun j ↦ _root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (omjExt (OAff s') j) (pairFst φ) (GlobalTheory.T.hasLocalisationAtElements_trivSqZeroExtForms (OAff s') j H) (hcovJ j) (hdirJ j)`. Establish `hs3 : ∀ (T : AffOp X') (x : Om R' ((OAff s').obj T) 3), (∀ t (u : T ⟶ (pairFst φ).obj t), pOm (OAff s') 3 u x = 0) → x = 0`. Introduce `T x hx`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : (TrivSqZeroExt.inr x : (omjExt (OAff s') 3).obj T) = 0` using `hsJ 3 T _ fun t u ↦ (mp_omjExt_inr (OAff s') 3 u x).trans (by rw [hx t u]; exact TrivSqZeroExt.inr_zero _)`. Simplify using `using congrArg TrivSqZeroExt.snd h0`. Establish `b1 : Function.Bijective (pairRes φ s').pull1` using `⟨_root_.GlobalTheory.CatCoh.CoefMap.restrict_pull1_injective_of_sep_glue _ _ hs hg, _root_.GlobalTheory.CatCoh.pull1_restrict_surjective_of_comma _ _ hs hg hv⟩`. Establish `bg` using `_root_.GlobalTheory.restrict_glob1_bijective _ _ hs1 hg1`. Establish `hs2` using `_root_.GlobalTheory.CechDR.twoForm_sep_of_basis s' (pairFst φ) hcov`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨GlobalTheory.T.comma_first_order_cocycle_lift _ _ (GlobalTheory.T.comma_descent_injective _ _ hs hg hv) b1.2 (_root_.GlobalTheory.cocycle_one_forms_coboundary_of_restrict _ _ hs1 hg1) bg.2 hs2, GlobalTheory.T.comma_second_order_cocycle_lift _ _ (GlobalTheory.T.comma_descent_rest …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem pairRes_bijective_two {R' : Type} [CommRing R'] {X X' : Scheme.{0}} (φ : X' ⟶ X)
     (s' : X' ⟶ Sp R') : Function.Bijective (pullHyp2 (pairRes φ s')) := by
@@ -128,7 +128,7 @@ variable {R R' : Type} [CommRing R] [CommRing R'] {X X' : Scheme.{0}}
 variable {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'} {σ : R →+* R'} {φ : X' ⟶ X} (h : φ ≫ s = s' ≫ spMap σ)
 
 /- English proof (translation)
-Take `⟨c', hc, hu⟩` from `(pairRes_bijective_two φ s').existsUnique (pullHyp2 (pairPull h) c)`. Conclude with `⟨c', hc.symm, fun y hy ↦ hu y hy.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem existsUnique_isPull2 (c : HH2 s) : ∃! c', IsPull2 h c c' := by
   obtain ⟨c', hc, hu⟩ := (pairRes_bijective_two φ s').existsUnique (pullHyp2 (pairPull h) c)
@@ -141,13 +141,13 @@ def pullHH2 : HH2 s →ₛₗ[σ] HH2 s' :=
   (pairResEquiv2 φ s').symm.toLinearMap.comp (pullHyp2 (pairPull h))
 
 /- English proof (translation)
-The claim follows from `((pairResEquiv2 φ s').apply_symm_apply _).symm`.
+A detailed English derivation is pending.
 -/
 theorem isPull2_pullHH2 (c : HH2 s) : IsPull2 h c (pullHH2 h c) :=
   ((pairResEquiv2 φ s').apply_symm_apply _).symm
 
 /- English proof (translation)
-The claim follows from `(existsUnique_isPull2 h c).unique e (isPull2_pullHH2 h c)`.
+A detailed English derivation is pending.
 -/
 theorem IsPull2.eq_pullHH2 {c : HH2 s} {c' : HH2 s'} (e : IsPull2 h c c') : c' = pullHH2 h c :=
   (existsUnique_isPull2 h c).unique e (isPull2_pullHH2 h c)

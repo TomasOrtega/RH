@@ -20,13 +20,13 @@ end Free
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 /- English proof (translation)
-The claim follows from `Closed.imp h fun Fm _ _ ⟨_, _, a, h⟩ => ⟨802, by norm_num, a, fun x hx hle ι p hp i hi u1 hq => wtAt_of_wtNum p i (h x hx hle ι p hp i) (le_PP (Fm.parT x hx ι)) hi u1 hq⟩`.
+A detailed English derivation is pending.
 -/
 theorem wtPt_of_wtN_alt (h : _root_.GlobalTheory.CovTop.LiftWeightNumerator) : _root_.GlobalTheory.RefSum.WtPtAlt :=
   Closed.imp h fun Fm _ _ ⟨_, _, a, h⟩ => ⟨802, by norm_num, a, fun x hx hle ι p hp i hi u1 hq =>
     wtAt_of_wtNum p i (h x hx hle ι p hp i) (le_PP (Fm.parT x hx ι)) hi u1 hq⟩
 /- English proof (translation)
-Introduce `_` and use `_root_.GlobalTheory.RefSum.DivWt.wtPt_of_wtN_alt _root_.GlobalTheory.T.lift_weight_numerator`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wt_pt_of_cov_size : _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.RefSum.WtPtAlt := fun _ => _root_.GlobalTheory.RefSum.DivWt.wtPt_of_wtN_alt _root_.GlobalTheory.T.lift_weight_numerator
 end GlobalTheory.RefSum.DivWt

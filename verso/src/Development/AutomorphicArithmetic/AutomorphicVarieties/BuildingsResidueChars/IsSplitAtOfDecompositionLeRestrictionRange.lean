@@ -10,7 +10,7 @@ variable {F E Ω : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Fi
   [IsScalarTower F E Ω]
 
 /- English proof (translation)
-Introduce `x` and use `by have hm : ∀ x, x ∈ t⁻¹ • A ↔ t x ∈ A := fun x => ValuationSubring.mem_inv_pointwise_smul_iff have hv : ∀ y, (t⁻¹ • A).valuation y < 1 ↔ A.valuation (t y) < 1 := fun y => by rw [valuation_lt_one_iff', valuation_lt_one_iff', hm, hm, map_inv₀, map_eq_zero_iff _ t.injective] rw [h …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem place_conj {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)} (h : IsPlaceOver A v) (t : G F Ω) :
     IsPlaceOver (t⁻¹ • A) v := fun x => by
@@ -21,13 +21,13 @@ private theorem place_conj {A : ValuationSubring Ω} {v : HeightOneSpectrum (�
   exact h x
 
 /- English proof (translation)
-Establish `hint : ∀ x : 𝓞 E, algebraMap E Ω (x : E) ∈ A` using `fun x => by`. Establish `h : IsIntegral A (algebraMap E Ω (x : E))` using `(x.isIntegral_coe.map (algebraMap E Ω).toIntAlgHom).tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `f : 𝓞 E →+* A` to `((algebraMap E Ω).comp (algebraMap (𝓞 E) E)).codRestrict A hint`. Set `P : Ideal (𝓞 E)` to `(IsLocalRing.maximalIdeal A).comap f`. Establish `hP : ∀ x : 𝓞 E, A.valuation (algebraMap E Ω (x : E)) < 1 ↔ x ∈ P` using `fun x => (A.valuation_lt_one_iff (f x)).symm`. Establish `hu : v.asIdeal = P.under (𝓞 F)`. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hA x, Ideal.under, Ideal.mem_comap, ← hP, IsScalarTower.algebraMap_apply F E Ω]`. Both sides reduce to the same expression. Establish `hne : P ≠ ⊥`. Introduce `h`. Apply `v.ne_bot` to reduce the goal to its premises.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, h]`. Conclude with `Ideal.comap_bot_of_injective _ (FaithfulSMul.algebraMap_injective _ _)`. Conclude with `⟨⟨P, inferInstance, hne⟩, hP, HeightOneSpectrum.ext hu.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem place_between {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 F)} (hA : IsPlaceOver A v) :
     ∃ w : HeightOneSpectrum (𝓞 E), IsPlaceOver A w ∧ w.under (𝓞 F) = v := by
@@ -54,15 +54,13 @@ private theorem place_between {A : ValuationSubring Ω} {v : HeightOneSpectrum (
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `L Ω _ _ _ _ _ _ A v hA hD w hw`. Assume the negation of the conclusion as `hs`. Establish `huniq : ∀ u : Plc L, u.under (𝓞 (Lp L)) = v → u = w` using `fun u hu => by`. Assume the negation of the conclusion as `h`. Conclude with `hs ⟨u, h, hu.trans hw.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Use `haveI : Normal (Lp L) Ω := IsAlgClosure.normal _ _`. Set `t : G (Lp L) Ω` to `(IsCMField.complexConj L).liftNormal Ω`. Establish `ht : ∀ y : L, t (algebraMap L Ω y) = algebraMap L Ω (IsCMField.complexConj L y)` using `fun y => AlgEquiv.liftNormal_commutes _ Ω y`. Take `⟨u, hu, hu'⟩` from `place_between (E := L) hA`. Take `⟨u', hu1, hu1'⟩` from `place_between (E := L) (place_conj hA t)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu` using `[huniq u hu']`. Rewrite `hu1` using `[huniq u' hu1']`. Take `⟨g, hg⟩` from `exists_smul_eq_of_isPlaceOver (F := L) hu hu1`. Establish `hg' : resP L Ω g • A = t⁻¹ • A` using `hg`. Establish `hm : t * resP L Ω g ∈ Dec (F` using `Lp L) A := by show (t * resP L Ω g) • A = A`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mul_smul, hg', smul_inv_smul]`. Take `⟨k, hk⟩` from `(Subgroup.mul_mem_cancel_right _ (MonoidHom.mem_range.2 ⟨g, rfl⟩)).1 (hD hm)`. Apply `IsCMField.complexConj_ne_one L` to reduce the goal to its premises. Use extensionality with `y`. Apply `(algebraMap L Ω).injective` to reduce the goal to its premises.
-
-Rewrite using `[← ht, ← hk]`. Conclude with `k.commutes y`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.isSplitAt_of_decomposition_le_restriction_range :
     ∀ (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (A : ValuationSubring Ω) (v : Plc (Lp L)), IsPlaceOver A v → Dec (F := Lp L) A ≤ (resP L Ω).range → ∀ w : Plc L, w.under (𝓞 (Lp L)) = v → IsSplitAt w := by

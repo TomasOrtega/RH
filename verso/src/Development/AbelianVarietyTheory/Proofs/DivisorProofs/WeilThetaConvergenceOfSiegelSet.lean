@@ -21,15 +21,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.WeilThetaConv
 
 /- English proof (translation)
-Introduce `D n V _hn hwitt θ hθ ν hν Φ`. Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Take `⟨r, Xf, Yf, hW⟩` from `GlobalTheory.SiegelSet.exists_isWittFrame (GlobalTheory.AdelicU.isCMExt_host D) (GlobalTheory.Doubling.isHermND_gram V)`. Establish `hr : r ≤ Formalism.MainNotions.SchurIrreducible.wittIdx V` using `GlobalTheory.T.hermitianWittFrame_columns_le_wittIndex D V r Xf Yf hW`. Apply the tactic sequence `have hr' : r = 0 ∨ n + r < V.rank := by rcases hwitt with h | h <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨K, Ω, c, hK, hΩ, -, hc, -, hcl, hcov, ⟨C₀, hC₀, hconj⟩, hmeas, -, -⟩` from `hRT D.host.F D.host.E D.sp.cm.sig (GlobalTheory.AdelicU.isCMExt_host D) V.rank V.gram (GlobalTheory.Doubling.isHermND_gram V) r Xf Yf hW`. Take `⟨-, C₁, hC₁⟩` from `hmeas ν hν`. Establish `hΦc : Continuous Φ.1` using `(GlobalTheory.SchwartzMaj.continuous_and_le_maj D θ hθ V.rank n Φ.1 (GlobalTheory.SchwartzPure.isSchwartzBruhat_of_mem_schwartzA D θ hθ V.rank n Φ.1 Φ.2)).1`. Take `⟨C, hC0, hC⟩` from `GlobalTheory.T.absThetaSum_siegelSet_le_torusPower D θ hθ V n r Xf Yf hW c hc (C₀ * (K : Set (GA D V))) (hC₀.mul hK) Φ`. Establish `hI` using `GlobalTheory.T.lintegral_siegelTorusCone_modulus_lt_top D.host.F V.rank r n c hc hr'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `hC₁ (fun g => GlobalTheory.SiegelFormula.absTheta V Φ.1 g) _ (by fun_prop) fun p hp t ht a ha k hk => ?_` and prove the remaining obligations. Establish `e : p * a * k = a * (a⁻¹ * p * a * k)` using `by group`. Rewrite using `[e]`. Conclude with `hC t ht a ha _ (Set.mul_mem_mul (hconj p hp t ht a ha) hk)`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = C₁ * (ENNReal.ofReal C * ∫⁻ t in GlobalTheory.SiegelSet.cone r c, ENNReal.ofReal (∏ i, t i ^ (Module.finrank ℚ D.host.F * (2 * n))) * ENNReal.ofReal ((GlobalTheory.SiegelSet.modulus D.host.F V.rank t * ∏ i, t i)⁻¹)) := by`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `congr 1`. Conclude with `lintegral_congr fun t => by rw [ENNReal.ofReal_mul hC0, mul_assoc]`. Use `_ < ⊤ := by`.
-
-Use `hI.ne` as an intermediate fact. Use `finiteness`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weilThetaConvergence_of_siegelSet (hRT : GlobalTheory.Published.SiegelSetUnitary) : GlobalTheory.Published.WeilThetaConvergence := by
   intro D n V _hn hwitt θ hθ ν hν Φ

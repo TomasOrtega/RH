@@ -22,9 +22,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 attribute [local instance] GlobalTheory.HeckeEx.fieldCAt GlobalTheory.HeckeEx.algClosedCAt
 
 /- English proof (translation)
-Establish `e0 : epsMul (1 : ℂ) = RingHom.id _`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`. Apply the tactic sequence `ext <;> simp [epsMul]`. Rewrite using `[e0]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `have : spMap (RingHom.id (DualNumber ℂ)) = 𝟙 _ := by first | rfl | exact Spec.map_id _ | simp [spMap] | (rw [CommRingCat.ofHom_id]; exact Spec.map_id _)`. Rewrite using `[this, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_epsMul_one {Y : Scheme.{0}} (v : Sp (DualNumber ℂ) ⟶ Y) : spMap (epsMul (1 : ℂ)) ≫ v = v := by
   have e0 : epsMul (1 : ℂ) = RingHom.id _ := by
@@ -39,25 +39,23 @@ theorem spMap_epsMul_one {Y : Scheme.{0}} (v : Sp (DualNumber ℂ) ⟶ Y) : spMa
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, g, e, F, ik, φ, hEF, hpt⟩` from `hU`. Take `⟨Pm, hPm, per, hPx, hv, -⟩` from `hpt k x`. Take `⟨Pm', hPm', per', hPx', hv', -⟩` from `hpt k' x'`. Establish `hpp : p.Prime` using `hP.2.2.2.1`. Establish `hC : ∀ a ∈ C, a ^ p ^ 2 = 1` using `fun a ha => GlobalTheory.HkPts.pow_eq_one hP.2.2.2.2 hK ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨gam, h, hiso, hh, honto, hder⟩` from `GlobalTheory.HeckeEx.exists_lift_deriv F (ik k) (ik k') Pm Pm' per per' hpp hPx (hB.1.trans hPx') C ψ ψp hC hI`. Use `choose cf hcf1 hcf2 hcf3 using hB.2.1`. Establish `hp0 : (p : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hpp.ne_zero`. Establish `hcol : ∀ τ n, h.toLinearMap (Pi.single (e.symm ⟨τ, n⟩) 1) = (∑ j, ((p : ℂ) * toC (cf τ n j)) • (Pi.single (e.symm ⟨τ, j⟩) 1 : Fin g → ℂ))`. Introduce `τ n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨wv, hw1, hw2, hw3⟩` from `hL τ n`. Establish `d2` using `hder (Pi.single (e.symm ⟨τ, n⟩) 1) wv hw2 (by have q := hv τ n; rw [← hw1] at q; exact q)`. Establish `d1` using `(GlobalTheory.DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ g _ F _ Pm' per' _ ((U.un k' x').u τ) _ (hv' τ) (cf τ n) (z.u τ n)).1 (hPx' ▸ hcf3 τ n)`. Establish `d3` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.ExpRows.isDerivAt0_smul d1 (p : ℂ)`. Establish `e3 : spMap (epsMul (p : ℂ)) ≫ z.u τ n = wv ≫ ψ ≫ pullback.fst _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw3]`. Use `(GlobalTheory.HeckeEx.spMap_epsMul_comp (p : ℂ) ((p : ℂ)⁻¹) _).trans ?_` and prove the remaining obligations. Rewrite using `[inv_mul_cancel₀ hp0]`. Conclude with `spMap_epsMul_one _`. Rewrite `d3` using `[e3]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `tn` using `GlobalTheory.isDerivAt0_ex_isTanAt E H Dw l Xo _ g _ F _ Pm' per'`. Use `show h (Pi.single (e.symm ⟨τ, n⟩) 1) = _`. Rewrite using `[(tn.2.2 _ (tn.1 _ _ d2)).unique d2 d3, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `(smul_smul (p : ℂ) (toC (cf τ n j)) (Pi.single (e.symm ⟨τ, j⟩) 1 : Fin g → ℂ))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `⟨(φ k').toLinearMap ∘ₗ gam ∘ₗ (φ k).symm.toLinearMap, fun τ i j => if hij : i < Dw.mult τ ∧ j < Dw.mult τ then toC (cf τ ⟨j, hij.2⟩ ⟨i, hij.1⟩) else 0, fun u v => ?_, fun w => ?_, fun τ i j hji => ?_, fun τ n hn v => ?_, fun τ i => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `(φ k).surjective u`. Take `⟨v, rfl⟩` from `(φ k).surjective v`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Rewrite using `[← hEF, ← hEF, hiso]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨a, ha⟩` from `honto ((φ k').symm w)`. Use `⟨φ k a, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[ha, map_nsmul, LinearEquiv.apply_symm_apply]`. Use `beta_reduce split_ifs with hij`. Conclude with `hcf2 τ _ _ hji`. Both sides reduce to the same expression. Take `⟨v, rfl⟩` from `(φ k).surjective v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Establish `a1` using `hPm' (gam v) (e.symm ⟨τ, ⟨n, hn⟩⟩)`. Rewrite `a1` using `[Equiv.apply_symm_apply]`. Rewrite using `[← a1, hh, Finset.sum_range, Finset.mul_sum]`. Use `(GlobalTheory.LevelCusp.apply_of_cols e h.toLinearMap (fun τ i j => (p : ℂ) * toC (cf τ i j)) hcol (Pm v) τ ⟨n, hn⟩).trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations.
-
-Rewrite using `[hPm, Equiv.apply_symm_apply, dif_pos ⟨hn, j.2⟩, _root_.mul_assoc]`. Use `beta_reduce`. Rewrite using `[dif_pos ⟨i.2, i.2⟩]`. Conclude with `congrArg _ (hcf1 τ i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem similitude_tri_of_hkIsog {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r) (hU : IsUnf U)
@@ -142,15 +140,15 @@ namespace GlobalTheory.HeckeExist
 attribute [local instance] GlobalTheory.HeckeEx.fieldCAt GlobalTheory.HeckeEx.algClosedCAt
 
 /- English proof (translation)
-Use `GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.isHeckePrime_iff.2 ⟨P.isMaximal, ?_, hp, hpP, hM⟩` and prove the remaining obligations. Establish `hQ : Formalism.HermitianLatticesTheory.conjIdeal (K` using `D.host.E) P.asIdeal = P.asIdeal.map (Hh.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) := by`. Unfold `Formalism.HermitianLatticesTheory.conjIdeal`. Rewrite using `[Ideal.map]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `r`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, e⟩`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show ((Hh.bar s : 𝓞 D.host.E) : D.host.E) = (r : D.host.E)`. Rewrite using `[Hh.bar_eq]`. Conclude with `e.symm`. Introduce and unpack `⟨s, hs, rfl⟩`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show ((Hh.bar s : 𝓞 D.host.E) : D.host.E) = _`. Rewrite using `[Hh.bar_eq]`. Both sides reduce to the same expression. Rewrite using `[← hQ]`. Establish `hmax : (P.asIdeal.map (Hh.bar : 𝓞 D.host.E →+* 𝓞 D.host.E)).IsMaximal` using `Ideal.map_isMaximal_of_equiv Hh.bar`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `hmax` using `[← hQ]`. Assume the negation of the conclusion as `hne`. Establish `hle : Formalism.HermitianLatticesTheory.conjIdeal (K` using `D.host.E) P.asIdeal ≤ P.asIdeal := le_sup_right.trans ((P.isMaximal.eq_of_le hne le_sup_left).symm.le)`. Conclude with `hc (hmax.eq_of_le P.isMaximal.ne_top hle)`.
+A detailed English derivation is pending.
 -/
 theorem isHeckePrime_of {D : D7} {Hh : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level Hh) (P : Formalism.L2.DIV.Pl D.host.E) (p : ℕ)
     (hc : Formalism.HermitianLatticesTheory.conjIdeal (K := D.host.E) P.asIdeal ≠ P.asIdeal) (hp : p.Prime) (hpP : (p : 𝓞 D.host.E) ∈ P.asIdeal)
@@ -183,7 +181,7 @@ theorem isHeckePrime_of {D : D7} {Hh : ReciprocityTheory.ChartRestriction.G.Geo.
   exact hc (hmax.eq_of_le P.isMaximal.ne_top hle)
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (IsAlgClosed ℂ) ∀ C : hkKer (Xo := T.Q.Xo ((i : ℕ) + 1)) P.asIdeal p k (CAt σ) ((T.U ((i : ℕ) + 1) σ).un (GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.dictW T i σ hV h).1 ⟨(GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaVal …`.
+A detailed English derivation is pending.
 -/
 theorem exists_coset_frBor_of_hkKer : ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.HeckePrimeDetection.HeckePointLaws → GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.SplitLinearModel D → GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.VacFixed D →
     ∀ (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)

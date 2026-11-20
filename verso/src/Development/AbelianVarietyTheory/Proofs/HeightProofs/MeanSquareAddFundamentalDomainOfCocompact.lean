@@ -7,9 +7,9 @@ namespace GlobalTheory
 open Pointwise in
 
 /- English proof (translation)
-Establish `hsub : F ⊆ ⋃ γ : Γ, ((γ +ᵥ K) ∩ F)`. Introduce `g hg`. Take `⟨γ, hγ, hk⟩` from `hcov g`. Use `Set.mem_iUnion.2 ⟨-(⟨γ, hγ⟩ : Γ), ?_, hg⟩` and prove the remaining obligations. Rewrite using `[Set.mem_neg_vadd_set_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem measure_addFundamentalDomain_lt_top_of_cocompact {G : Type} [AddGroup G]
     [TopologicalSpace G] [IsTopologicalAddGroup G] [MeasurableSpace G] [BorelSpace G]
@@ -28,23 +28,23 @@ theorem measure_addFundamentalDomain_lt_top_of_cocompact {G : Type} [AddGroup G]
     _ < ⊤ := hK.measure_lt_top
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ Γ _ K hK hcov`. Establish `: Countable Γ` using `countable_of_discrete_addSubgroup Γ`. Establish `hne : ∀ (μ : Measure G) [μ.IsAddHaarMeasure] {F : Set G}, IsAddFundamentalDomain Γ F μ → μ F ≠ 0` using `fun μ _ F hF => hF.measure_ne_zero (NeZero.ne μ)`. Establish `hfin : ∀ (μ : Measure G) [μ.IsAddHaarMeasure] {F : Set G}, IsAddFundamentalDomain Γ F μ → μ F ≠ ⊤` using `fun μ _ F hF => (measure_addFundamentalDomain_lt_top_of_cocompact Γ hK hcov μ hF).ne`. Establish `hex : ∃ (μ : Measure G) (𝓕 : Set G), μ.IsAddHaarMeasure ∧ IsAddFundamentalDomain Γ 𝓕 μ ∧ μ 𝓕 = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨D, -, -, hD⟩` from `exists_isAddFundamentalDomain_addSubgroup Γ`. Establish `h0` using `hne Measure.addHaar (hD _)`. Establish `h1` using `hfin Measure.addHaar (hD _)`. Use `⟨(Measure.addHaar D)⁻¹ • Measure.addHaar, D, Measure.IsAddHaarMeasure.smul _ (ENNReal.inv_ne_zero.2 h1) (ENNReal.inv_ne_top.2 h0), hD _, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel h0 h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hex, fun f hf hinv => ?_⟩` and prove the remaining obligations. Take `⟨μ₀, F₀, hμ₀, hF₀, h1⟩` from `hex`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hf.continuousOn`. Establish `hb : ∀ w, ‖f w‖ₑ ^ 2 ≤ ENNReal.ofReal C ^ 2` using `fun w => by`. Take `⟨γ, hγ, hk⟩` from `hcov w`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hC _ hk` as an intermediate fact. Rewrite `this` using `[hinv γ hγ]`. Rewrite using `[← ofReal_norm_eq_enorm]`. Use `gcongr`. Establish `hN : ∫⁻ w in F₀, ‖f w‖ₑ ^ 2 ∂μ₀ ≠ ⊤`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ne_top_of_le_ne_top ?_ (lintegral_mono hb)` and prove the remaining obligations. Rewrite using `[setLIntegral_const, h1, mul_one]`. Conclude with `ENNReal.pow_ne_top ENNReal.ofReal_ne_top`. Use `⟨(∫⁻ w in F₀, ‖f w‖ₑ ^ 2 ∂μ₀).toNNReal, fun μ F hμ hF => ?_⟩` and prove the remaining obligations. Establish `key : ∫⁻ w in F, ‖f w‖ₑ ^ 2 ∂μ = μ F * ((∫⁻ w in F₀, ‖f w‖ₑ ^ 2 ∂μ₀).toNNReal : ENNReal)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ENNReal.coe_toNNReal hN]`. Take `⟨c, hc⟩ : ∃ c : NNReal, μ = c • μ₀` from `⟨_, Measure.isAddLeftInvariant_eq_smul μ μ₀⟩`. Establish `hac : μ ≪ μ₀` using `hc ▸ Measure.smul_absolutelyContinuous`. Establish `hF₀' : IsAddFundamentalDomain Γ F₀ μ` using `hF₀.mono hac`. Establish `e1 : μ F = μ F₀` using `hF.measure_eq hF₀'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ∫⁻ w in F, ‖f w‖ₑ ^ 2 ∂μ = ∫⁻ w in F₀, ‖f w‖ₑ ^ 2 ∂μ` using `hF.setLIntegral_eq hF₀' _ fun g x => by`. Use `hinv g g.2 x` as an intermediate fact. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, ← this]`. Both sides reduce to the same expression. Rewrite using `[e1, e2, hc, Measure.restrict_smul, lintegral_smul_measure, Measure.smul_apply, h1]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[ENNReal.smul_def]`. Use `⟨hne μ hF, hfin μ hF, key, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (f := fun w => ‖f w‖ ^ 2) (Filter.Eventually.of_forall fun w => by positivity) (hf.norm.pow 2).aestronglyMeasurable]`. Establish `: ∀ w, ENNReal.ofReal (‖f w‖ ^ 2) = ‖f w‖ₑ ^ 2` using `fun w => by`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [this]`. Rewrite using `[key, ENNReal.toReal_mul, ENNReal.coe_toReal]`.
+A detailed English derivation is pending.
 -/
 theorem meanSquare_addFundamentalDomain_of_cocompact : ∀ (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (Γ : AddSubgroup G) [DiscreteTopology Γ] (K : Set G), IsCompact K → (∀ x : G, ∃ γ ∈ Γ, γ + x ∈ K) → (∃ (μ : Measure G) (𝓕 : Set G), μ.IsAddHaarMeasure ∧ IsAddFundamentalDomain Γ 𝓕 μ ∧ μ 𝓕 = 1) ∧ ∀ f : G → ℂ, Continuous f → (∀ γ ∈ Γ, ∀ w, ‖f (γ + w)‖ = ‖f w‖) → ∃ N : NNReal, ∀ (μ : Measure G) (𝓕 : Set G), μ.IsAddHaarMeasure → IsAddFundamentalDomain Γ 𝓕 μ → μ 𝓕 ≠ 0 ∧ μ 𝓕 ≠ ⊤ ∧ ∫⁻ w in 𝓕, ‖f w‖ₑ ^ 2 ∂μ = μ 𝓕 * N ∧ ∫ w in 𝓕, ‖f w‖ ^ 2 ∂μ = (μ 𝓕).toReal * N := by
   intro G _ _ _ _ _ _ _ _ Γ _ K hK hcov

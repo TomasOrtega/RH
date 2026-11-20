@@ -6,7 +6,7 @@ namespace Formalism.MainNotions.BridgeLemma₂
 open Formalism.HermitianLatticeCounting
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (Real.rpow_mul_natCast hb.le x n).symm`. Consider the case `(rw [← Real.rpow_natCast, ← Real.rpow_mul hb.le])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rows_rpow_pow {b : ℝ} (hb : 0 < b) (x : ℝ) (n : ℕ) : (b ^ x) ^ n = b ^ (x * n) := by
   first
@@ -14,19 +14,19 @@ theorem rows_rpow_pow {b : ℝ} (hb : 0 < b) (x : ℝ) (n : ℕ) : (b ^ x) ^ n =
     | (rw [← Real.rpow_natCast, ← Real.rpow_mul hb.le])
 
 /- English proof (translation)
-Establish `hb0 : 0 < b` using `by linarith`. Establish `hrp : ∀ y z : ℝ, (b ^ y) ^ z = b ^ (y * z)` using `fun y z => (Real.rpow_mul hb0.le y z).symm`. Establish `h6 : (41 : ℝ) ≤ b ^ 6`. Establish `h2 : (2 : ℝ) ^ 6 ≤ b ^ 6` using `by gcongr`. Evaluate the numerical expressions using `at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h41 : (41 : ℝ) ^ f ≤ b ^ (6 * (f : ℝ))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_mul, ← Real.rpow_natCast]`. Apply the tactic sequence `congr 1 <;> push_cast <;> ring`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e0 : (b ^ pe) ^ 3 = b ^ (3 * pe)`. Rewrite using `[rows_rpow_pow hb0]`. Apply the tactic sequence `congr 1 <;> push_cast <;> ring`. Establish `hA : (41 : ℝ) ^ f * (b ^ pe) ^ 3 ≤ b ^ (6 * (f : ℝ) + 3 * pe)`. Rewrite using `[Real.rpow_add hb0, e0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Apply the tactic sequence `all_goals first | exact h41 | positivity`. Establish `e1 : ((b ^ pe) ^ E1) ^ 2 = b ^ (2 * pe * E1)`. Rewrite using `[hrp, rows_rpow_pow hb0]`. Apply the tactic sequence `congr 1 <;> push_cast <;> ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ((b ^ pe) ^ cr) ^ 2 = b ^ (2 * pe * cr)`. Rewrite using `[hrp, rows_rpow_pow hb0]`. Apply the tactic sequence `congr 1 <;> push_cast <;> ring`. Establish `e3 : ((b ^ (6 * (f : ℝ) + 3 * pe)) ^ ((r + 1) ^ 2)) ^ 2 = b ^ (12 * (f : ℝ) * ((r : ℝ) + 1) ^ 2 + 6 * pe * ((r : ℝ) + 1) ^ 2)`. Rewrite using `[rows_rpow_pow hb0, rows_rpow_pow hb0]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `congr 1 <;> push_cast <;> ring`. Establish `h1δ : 1 + δ ≤ b ^ (1 : ℝ)`. Rewrite using `[Real.rpow_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, e3]`. Use `_ = _ := by`. Rewrite using `[← Real.rpow_add hb0, ← Real.rpow_add hb0, ← Real.rpow_add hb0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rows_num_Q {f r : ℕ} {b pe E1 cr δ : ℝ} (hb : 2 ≤ b) (hδ0 : 0 ≤ δ) (hδ : δ ≤ 1) :
     (1 + δ) * (((b ^ pe) ^ E1) ^ 2 * ((b ^ pe) ^ cr) ^ 2) * ((41 ^ f * (b ^ pe) ^ 3) ^ ((r + 1) ^ 2)) ^ 2 ≤
@@ -76,17 +76,17 @@ theorem rows_num_Q {f r : ℕ} {b pe E1 cr δ : ℝ} (hb : 2 ≤ b) (hδ0 : 0 �
         ring
 
 /- English proof (translation)
-Establish `hb0 : 0 < b` using `by linarith`. Establish `hb1 : 1 ≤ b` using `by linarith`. Establish `hC0 : 0 < C` using `by linarith`. Establish `hXis : 0 ≤ Xi s` using `hXiP.trans hXi`. Establish `hH : b ^ (1 + 12 * (f : ℝ) * ((r : ℝ) + 1) ^ 2 + pe * (2 * E1 + 2 * cr + 6 * ((r : ℝ) + 1) ^ 2)) ≤ Formalism.HermitianLatticeCounting.LatticeSumBounds.bigH C m f b ^ (C * ((s : ℝ) + m) * (m : ℝ) ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.HermitianLatticeCounting.LatticeSumBounds.bigH`. Rewrite using `[← Real.rpow_mul hb0.le]`. Use `first`. Consider the case `exact Real.rpow_le_rpow_of_exponent_le hb1 hexp`. Consider the case `exact (Real.rpow_le_rpow_left_iff (by linarith)).2 hexp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hB` using `(rows_num_Q (f := f) (r := r) (pe := pe) (E1 := E1) (cr := cr) hb hδ0 hδ).trans hH`. Establish `hep : 1 ≤ Real.exp 1 * Real.pi`. Establish `h1 : (1 : ℝ) ≤ Real.exp 1` using `by linarith [Real.add_one_le_exp (1 : ℝ)]`. Establish `h2 : (1 : ℝ) ≤ Real.pi` using `by linarith [Real.pi_gt_three]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hkv : 0 ≤ (k : ℝ) * v` using `by positivity`. Establish `hq : (k : ℝ) * v / (Real.exp 1 * Real.pi) ≤ (k : ℝ) * v * C`. Establish `hd : (k : ℝ) * v / (Real.exp 1 * Real.pi) ≤ (k : ℝ) * v` using `by first`. Consider the case `exact div_le_self hkv hep`. Consider the case `(rw [div_le_iff₀ (by positivity)]; nlinarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hK : ((k : ℝ) * v / (Real.exp 1 * Real.pi)) ^ (k * f) ≤ ((k : ℝ) * v) ^ (k * f) * C ^ (k * f)`. Rewrite using `[← mul_pow]`. Use `gcongr`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `_ ≤ ((2 / g) ^ ((s - 1) * k * f) * (((k : ℝ) * v) ^ (k * f) * C ^ (k * f)) * Xi s * (C * s * f) ^ (6 * s * f) * Γ * rD) * Formalism.HermitianLatticeCounting.LatticeSumBounds.bigH C m f b ^ (C * ((s : ℝ) + m) * (m : ℝ) ^ 2) := by gcongr all_goals first | assumption | positivity`. Use `_ = Formalism.HermitianLatticeCounting.LatticeSumBounds.ndRow C k m f s b g v Γ Xi * rD := by`. Unfold `Formalism.HermitianLatticeCounting.LatticeSumBounds.ndRow`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rows_num_nd {k m f s r : ℕ} {b g v Γ c C pe E1 cr δ rD XiP : ℝ} {Xi : ℕ → ℝ}
     (hb : 2 ≤ b) (hg : 0 < g) (hv : 0 < v) (hΓ : 0 ≤ Γ) (hc : 0 ≤ c) (hcC : c ≤ C) (hC : 1 ≤ C)

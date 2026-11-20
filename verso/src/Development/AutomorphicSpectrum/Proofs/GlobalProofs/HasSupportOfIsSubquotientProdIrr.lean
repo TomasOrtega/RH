@@ -16,7 +16,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Take `⟨s, d, σ, h⟩` from `GlobalTheory.CuspSupportExist.main hBZ hG k x.1 (Irr.ofIrrRep x.2.rep)`. Conclude with `⟨_, hasSupport_of_isCuspSupport h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_hasSupport (hBZ : BernsteinZelevinskyFiniteness) (hG : GeometricLemma) (x : IrrGL k) :
     ∃ s, HasSupport x.rep s := by
@@ -24,7 +24,7 @@ theorem exists_hasSupport (hBZ : BernsteinZelevinskyFiniteness) (hG : GeometricL
   exact ⟨_, hasSupport_of_isCuspSupport h⟩
 
 /- English proof (translation)
-Rewrite using `[Finset.sum, ← Multiset.sum_map_singleton (Finset.univ.val.map f), Multiset.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_univ_eq_sum {α : Type} {β : Type*} [Fintype α] (f : α → β) :
     Finset.univ.val.map f = ∑ a, ({f a} : Multiset β) := by
@@ -32,9 +32,9 @@ theorem map_univ_eq_sum {α : Type} {β : Type*} [Fintype α] (f : α → β) :
   rfl
 
 /- English proof (translation)
-Use `choose T u hu hc using ht`. Establish `h3` using `fun a => (hc a).2.2`. Use `choose e' he' using h3`. Set `e` to `stdBlocks (fun a => (y a).1) hd`. Establish `step1 : IsSubquotient (multiProd e fun a => (y a).rep) (multiProd e fun a => multiProd (e' a) fun b => (u a b).rep)` using `GlobalTheory.CuspSupportExist.L_ind k _ _ _ e _ _ _ _ (isSmooth_piTensor fun a => isSmooth_parInd _ _) (GlobalTheory.CuspSupportExist.L_pit _ _ _ _ _ _ he')`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨E, hE⟩` from `GlobalTheory.CuspSupportExist.L_stage k c N (fun a => (y a).1) e T (fun a b => (u a b).1) e' _ (fun a b => (u a b).rep) fun a b => (u a b).2.rep.smooth`. Use `⟨∑ a, T a, fun c => u (finSigmaFinEquiv.symm c).1 (finSigmaFinEquiv.symm c).2, ?_, hi, fun c => (hc _).2.1 _, E, h.trans (step1.trans hE)⟩` and prove the remaining obligations. Rewrite using `[map_univ_eq_sum, Equiv.sum_comp finSigmaFinEquiv.symm (fun p : (Σ a, Fin (T a)) => ({u p.1 p.2} : Multiset _)), Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← hu a, map_univ_eq_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSupport_of_isSubquotient_prodIrr {c N : ℕ} {y : Fin c → IrrGL k}
     {hd : ∑ a, (y a).1 = N} {t : Fin c → Multiset (IrrGL k)} (ht : ∀ a, HasSupport (y a).rep (t a))
@@ -58,15 +58,15 @@ theorem hasSupport_of_isSubquotient_prodIrr {c N : ℕ} {y : Fin c → IrrGL k}
   rw [← hu a, map_univ_eq_sum]
 
 /- English proof (translation)
-Take `⟨h, x, rfl, hi, hc, e, hsub⟩` from `hs`. Establish `hx : ∀ i, (x i).IsCusp` using `fun i => ⟨(hc i).1, (hc i).2.2⟩`. Take `⟨b, f, g, c, hrow, hcol⟩` from `exists_cell_of_isSubquotient (hG k).1 (hG k).2 e e' (fun i => (x i).2.rep.smooth) (fun i => (x i).2.rep.hasFiniteLength) hτ (hτs.trans (GlobalTheory.JacquetExact.isSubquotient_jac e' (isSmooth_parInd _ _) hsub))`. Use `choose J hJ0 hJ using fun i => exists_block_of_isCusp (hx i) (f i) (c i) (hrow i)`. Set `u : Fin h → Fin r → Multiset (IrrGL k)` to `fun i j => if j = J i then {x i} else 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hu : ∀ i j, HasSupport (IrrGL.of (c i j).ρ (c i j).smooth (c i j).irr).rep (u i j)`. Introduce `i j`. Distinguish the cases in `hj : j = J i`. Substitute `hj` using the available equality. Simplify using `only [u, if_true]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJ i]`. Conclude with `hasSupport_self (hx i)`. Take `⟨s', hs'⟩` from `exists_hasSupport hBZ hG (IrrGL.of (c i j).ρ (c i j).smooth (c i j).irr)`. Simplify using `only [u, if_neg hj]`. Rewrite `hs'` using `[eq_zero_of_hasSupport (hJ0 i j hj) hs']`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun j => ∑ i, u i j, fun j => ?_, ?_⟩` and prove the remaining obligations. Establish `hd : ∑ i, b.1 i j = d j` using `by simpa using b.2.2 j`. Establish `h1` using `isSubquotient_factor (fun j => multiProd (g j) fun i => (c i j).ρ) j (y j).irr ((hy j).trans (isSubquotient_comp hcol _))`. Take `⟨φ⟩` from `(GlobalTheory.SmGL.Placing.parInd_jac_placing k _ _ _ (g j) (stdBlocks (fun i => b.1 i j) hd) _).1 (piTensor fun i => (c i j).ρ)`. Set `ψ` to `φ.trans (prodIrrEquiv hd (fun i => (c i j).ρ) (fun i => (c i j).smooth) fun i => (c i j).irr)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hasSupport_of_isSubquotient_prodIrr (y := fun i => IrrGL.of (c i j).ρ (c i j).smooth (c i j).irr) (fun i => hu i j) (y j).irr (h1.trans (.of_injective ψ.toIntertwiningMap ψ.toLinearEquiv.injective))`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [u, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[← Multiset.sum_map_singleton (Finset.univ.val.map x), Multiset.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_sum_of_jac (hG : GeometricLemma) (hBZ : BernsteinZelevinskyFiniteness) {N : ℕ}
     {π : Representation ℂ (GL (Fin N) k) V} {s : Multiset (IrrGL k)} (hs : HasSupport π s) {r : ℕ} {d : Fin r → ℕ}
@@ -108,19 +108,17 @@ theorem exists_sum_of_jac (hG : GeometricLemma) (hBZ : BernsteinZelevinskyFinite
     rfl
 
 /- English proof (translation)
-Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce and unpack `x rfl s t hs ht`. Break down `Nat.eq_zero_or_pos x.1 with h0 | hpos` into its components or cases. Rewrite using `[eq_zero_of_hasSupport h0 hs, eq_zero_of_hasSupport h0 ht]`.
+Proceed by induction. Treat this case separately. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hc : IsCuspidal x.rep`. Rewrite using `[eq_singleton_of_isCusp ⟨hpos, hc⟩ hs, eq_singleton_of_isCusp ⟨hpos, hc⟩ ht]`. Take `⟨r, d, e, hU, hJ⟩ : ∃ (r : ℕ) (d : Fin r → ℕ) (e : (Σ a, Fin (d a)) ≃ Fin x.1), unipRad k e ≠ ⊥ ∧ ¬ Subsingleton (Jacquet x.rep (unipRad k e))` from `by by_contra! hn`. Conclude with `hc ⟨x.2.rep.smooth, hn⟩`. Take `⟨Y, _, _, τ, hτ, hτs⟩` from `GlobalTheory.IrrSubquot.exists_irreducible_subquotient _ _ (jac e x.rep) (not_subsingleton_iff_nontrivial.1 hJ)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hτsm : IsSmooth τ` using `hτs.isSmooth (isSmooth_jac e x.2.rep.smooth)`. Establish `hy : ∀ j, ∃ y : IrrRep (GL (Fin (d j)) k), IsSubquotient y.ρ (τ.comp (MonoidHom.mulSingle (fun j => GL (Fin (d j)) k) j) : Representation ℂ (GL (Fin (d j)) k) Y)`. Introduce `j`. Take `⟨X, _, _, υ, hυ, hυs⟩` from `GlobalTheory.IrrSubquot.exists_irreducible_subquotient _ _ (τ.comp (MonoidHom.mulSingle (fun j => GL (Fin (d j)) k) j)) (GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hτ)`. Conclude with `⟨⟨X, υ, hυs.isSmooth (isSmooth_comp hτsm _ (continuous_mulSingle (A := fun j => GL (Fin (d j)) k) j)), hυ⟩, hυs⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `choose y hy using hy`. Take `⟨u, hu, rfl⟩` from `exists_sum_of_jac hG hBZ hs e hτ hτs y hy`. Take `⟨u', hu', rfl⟩` from `exists_sum_of_jac hG hBZ ht e hτ hτs y hy`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hlt : d j < x.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hN : ∑ a, d a = x.1` using `by simpa using Fintype.card_congr e`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha, hda⟩ : ∃ a, a ≠ j ∧ 0 < d a := by`. Take `⟨p, q, hpq⟩` from `GlobalTheory.SmGL.CuspMax.unipRad_ne_bot_iff.1 hU`. Take `⟨⟨a, p⟩, rfl⟩` from `e.surjective p`. Take `⟨⟨b, q⟩, rfl⟩` from `e.surjective q`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite `hpq` using `[blk_apply, blk_apply]`. Distinguish the cases in `haj : a = j`. Conclude with `⟨b, fun hb => hpq.ne (haj.trans hb.symm), q.pos⟩`. Conclude with `⟨a, haj, p.pos⟩`. Establish `h1` using `Finset.add_le_sum (s := Finset.univ) (f := d) (fun _ _ => Nat.zero_le _) (Finset.mem_univ a) (Finset.mem_univ j) ha`.
-
-Use linear arithmetic over natural numbers and integers. Conclude with `ih (d j) hlt (IrrGL.of (y j).ρ (y j).smooth (y j).irr) rfl _ _ ((hu j).of_equiv (IrrGL.equivOf _ _ _)) ((hu' j).of_equiv (IrrGL.equivOf _ _ _))`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem eq_of_hasSupport (hG : GeometricLemma) (hBZ : BernsteinZelevinskyFiniteness) (N : ℕ) :
     ∀ (x : IrrGL k), x.1 = N → ∀ s t : Multiset (IrrGL k), HasSupport x.rep s → HasSupport x.rep t → s = t := by
@@ -167,7 +165,7 @@ theorem eq_of_hasSupport (hG : GeometricLemma) (hBZ : BernsteinZelevinskyFiniten
       ((hu j).of_equiv (IrrGL.equivOf _ _ _)) ((hu' j).of_equiv (IrrGL.equivOf _ _ _))
 
 /- English proof (translation)
-Establish `φ` using `IrrGL.equivOf π hs.isSmooth hs.isIrreducible`. Conclude with `eq_of_hasSupport hG hBZ N (IrrGL.of π hs.isSmooth hs.isIrreducible) rfl s t (hs.of_equiv φ) (ht.of_equiv φ)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasSupport_unique (hG : GeometricLemma) (hBZ : BernsteinZelevinskyFiniteness) {N : ℕ}
     {π : Representation ℂ (GL (Fin N) k) V} {s t : Multiset (IrrGL k)} (hs : HasSupport π s)

@@ -15,15 +15,13 @@ noncomputable section
 namespace GlobalTheory.ProjXCols
 
 /- English proof (translation)
-Take `⟨gens, hg⟩` from `hΛ.fg`. Establish `key : ∀ g : Fin n → E, ∃ z : ℤ, z ≠ 0 ∧ (z : E) • (A *ᵥ g) ∈ Λ` using `fun g => GlobalTheory.OrthDual.exists_int_smul_mem Λ (by rw [hΛ.span_eq_top]; trivial)`. Use `choose z hz0 hz using key`. Establish `hnat : ∀ g, ((z g).natAbs : E) • (A *ᵥ g) ∈ Λ`. Introduce `g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Int.natAbs_eq (z g) with h | h` into its components or cases. Establish `h1` using `hz g`. Rewrite `h1` using `[h, Int.cast_natCast]`. Conclude with `h1`. Establish `h1` using `hz g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[h, Int.cast_neg, Int.cast_natCast, neg_smul, Submodule.neg_mem_iff]`. Conclude with `h1`. Use `⟨∏ g ∈ gens, (z g).natAbs, Finset.prod_pos fun g _ => Int.natAbs_pos.2 (hz0 g), ?_⟩` and prove the remaining obligations. Set `f : (Fin n → E) →ₗ[𝓞 E] (Fin n → E)` to `(((∏ g ∈ gens, (z g).natAbs : ℕ) : E) • Matrix.mulVecLin A).restrictScalars (𝓞 E)`. Establish `hle : Submodule.span (𝓞 E) (gens : Set (Fin n → E)) ≤ Λ.comap f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.span_le]`. Introduce `g hgm`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem (fun g => (z g).natAbs) hgm`. Establish `hk' : (∏ g ∈ gens, (z g).natAbs) = (z g).natAbs * k` using `hk`. Use `show ((∏ g ∈ gens, (z g).natAbs : ℕ) : E) • (A *ᵥ g) ∈ Λ`.
-
-Rewrite using `[hk', Nat.cast_mul, mul_comm, mul_smul, Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem (hnat g) k`. Rewrite `hle` using `[hg]`. Introduce `s hs`. Conclude with `hle hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_nat_smul_mulVec_mem {E : Type} [Field E] [NumberField E] {n : ℕ}
     (Λ : Submodule (𝓞 E) (Fin n → E)) (hΛ : Submodule.IsLattice E Λ) (A : Matrix (Fin n) (Fin n) E) :
@@ -60,7 +58,7 @@ theorem exists_nat_smul_mulVec_mem {E : Type} [Field E] [NumberField E] {n : ℕ
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h : Matrix.vecMul (Matrix.vecMul (star s) S.gram) ((N : D.host.E) • Q) = Matrix.vecMul (star ((N : D.host.E) • (Mᴴ *ᵥ s))) S.gram`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_smul, hQM, star_smul, star_natCast, Matrix.star_mulVec, Matrix.conjTranspose_conjTranspose, Matrix.vecMul_smul, Matrix.smul_vecMul, Matrix.vecMul_vecMul]`. Establish `hj` using `congrFun h j`. Simplify `hj` using `only [Matrix.vecMul, dotProduct, Pi.star_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sum_mul_eq (S : HSp D) (N : ℕ) (Q M : Matrix (Fin S.rank) (Fin S.rank) D.host.E) (hQM : S.gram * Q = M * S.gram)
     (s : Fin S.rank → D.host.E) (j : Fin S.rank) :
@@ -74,7 +72,7 @@ theorem sum_mul_eq (S : HSp D) (N : ℕ) (Q M : Matrix (Fin S.rank) (Fin S.rank)
   simpa only [Matrix.vecMul, dotProduct, Pi.star_apply] using hj
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[rat, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, map_mul, map_natCast, nsmul_eq_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rat_natCast_smul {m n : ℕ} (N : ℕ) (X : Matrix (Fin m) (Fin n) D.host.E) :
     (rat ((N : D.host.E) • X) : Mx D m n) = N • (rat X : Mx D m n) := by
@@ -89,11 +87,11 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D hQ T L μ0 hL sc G W M hM F hF ρ h`. Establish `hi : 2 * ρ + 1 < D.R.m` using `by omega`. Establish `h0 : ∀ j, (Node.grid (2 * ρ + 1 + 1) 0 : Node) ≠ .grid 0 j` using `fun j hh => by injection hh with h'`. Use linear arithmetic over natural numbers and integers. Establish `hsd : IsSelfDualC (G.V (.grid (2 * ρ + 1 + 1) 0)) (G.Λ (.grid (2 * ρ + 1 + 1) 0))` using `(G.isV (show (Node.grid (2 * ρ + 1 + 1) 0 : Node).InRange D.R.m from ⟨hi, Nat.zero_le _⟩) h0).sd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Take `⟨N, hN, hNs⟩` from `exists_nat_smul_mulVec_mem _ hsd.1 ((G.V (.grid (2 * ρ + 1 + 1) 0)).gram * (F.dB ρ h).e * (F.dB ρ h).e'ᴴ)ᴴ`. Use `⟨N, hN, fun u hu => ?_⟩` and prove the remaining obligations. Establish `e1 : N • (u ⬝ (F.dB ρ h).jX ⬝ (F.dB ρ h).pX) = u ⬝ (rat ((N : D.host.E) • ((F.dB ρ h).e * (F.dB ρ h).qX)) : Mx D (G.V (.grid (2 * ρ + 1 + 1) 0)).rank (G.V (.grid (2 * ρ + 1 + 1) 0)).rank)`. Rewrite using `[rat_natCast_smul, rat_mul, Matrix.mul_smul, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e1]`. Use `GlobalTheory.CoreRowLat.latO_mul_right _ (fun s hs => ⟨_, hNs s hs, fun j => ?_⟩) hu` and prove the remaining obligations. Use `sum_mul_eq _ N _ _ ?_ s j` and prove the remaining obligations. Simplify using `only [HypDec.qX, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem nsmul_projX_mem_latBig : OnStd fun {D} _ _ {sc} {G} _ F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∃ N : ℕ, 0 < N ∧ ∀ u ∈ latBig G (2 * ρ + 1), N • (u ⬝ (F.dB ρ h).jX ⬝ (F.dB ρ h).pX) ∈ latBig G (2 * ρ + 1) := by
   intro D hQ T L μ0 hL sc G W M hM F hF ρ h

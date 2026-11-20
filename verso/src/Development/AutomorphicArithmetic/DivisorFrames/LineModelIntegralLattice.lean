@@ -14,13 +14,13 @@ open Formalism.MainNotions.DIV.Cons (intO SCF)
 open GlobalTheory.FieldPtGlue GlobalTheory.ShFam.Pad.Pull
 
 /- English proof (translation)
-The claim follows from `(Spec.map_comp _ _).symm`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.spMap_comp_spMap_divisor_frames {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp _ _).symm
 
 /- English proof (translation)
-Rewrite using `[UpperTheory.spMap_comp_spMap_divisor_frames]`. Use `congr 1`. Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [dualMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem UpperTheory.spMap_dualMap_comp_eq_spMap_dualMap_ringHom_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (dualMap g) ≫ spMap (dualMap f) = spMap (dualMap (g.comp f)) := by
@@ -30,13 +30,13 @@ private theorem UpperTheory.spMap_dualMap_comp_eq_spMap_dualMap_ringHom_comp {A 
   ext <;> simp [dualMap]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Establish `h0 : κ ≠ 0` using `fun e => hn (e ▸ A.zero_mem)`. Establish `hκ : κ⁻¹ ∈ A.nonunits` using `A.inv_mem_nonunits_iff.2 (Or.inr hn)`. Apply the tactic sequence `obtain ⟨V, hV, h₁, h₂, h₄⟩ := exists_discreteValuationSubring_of_valuationSubring (R := B) A hB (t := {(p : K), κ⁻¹}) hs (Set.toFinite _) hsA (by rintro x (rfl | rfl) <;> assumption) ⟨κ⁻¹, by simp, inv_ne_zero h0⟩`. Establish `hκV : κ ∉ V` using `(V.inv_mem_nonunits_iff.1 (h₄ _ (by simp))).resolve_left h0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hpV : (p : V) ∈ maximalIdeal V`. Rewrite using `[← ValuationSubring.coe_mem_nonunits_iff]`. Simplify using `using h₄ p (by simp)`. Take `⟨C, φ, φi, hφ⟩` from `exists_scf_embedding_dvd p V hp hpV ((Cardinal.mk_subtype_le _).trans (Cardinal.mk_le_aleph0.trans Cardinal.aleph0_le_continuum))`. Set `θ : K →+* ↥C.S` to `IsFractionRing.lift (A := V) (g := (intO ↥C.S).subtype.comp φ) ((intO ↥C.S).subtype_injective.comp φi)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hθ (v : V) : θ v = φ v` using `IsFractionRing.lift_algebraMap _ v`. Establish `h₃` using `h C (φ.comp ((algebraMap B K).codRestrict V h₁)) θ (RingHom.ext fun r => hθ ⟨_, h₁ r⟩) (fun x hx => by rw [hθ ⟨x, h₂ x hx⟩]; exact (φ _).2)`. Establish `hi : κ⁻¹ ∈ V` using `(V.mem_or_inv_mem κ).resolve_left hκV`. Take `⟨c, hc⟩` from `hφ 1 ⟨_, hi⟩ (by`. Rewrite using `[← hθ, ← hθ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [OneMemClass.coe_one, map_one, norm_one, map_inv₀, norm_inv]`. Conclude with `(one_le_inv₀ (norm_pos_iff.2 ((map_ne_zero θ).2 h0))).2 h₃)`. Establish `: κ⁻¹ * c = 1` using `(congrArg Subtype.val hc).symm`. Conclude with `hκV ((inv_mul_eq_one₀ h0).1 this ▸ c.2)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.spherical_completion_integral {p : ℕ} (hp : p.Prime) {B K : Type} [CommRing B] [IsNoetherianRing B] [Field K]
     [CharZero K] [Countable K] [Algebra B K] [Algebra.EssFiniteType B K] (A : ValuationSubring K)
@@ -69,9 +69,9 @@ private theorem UpperTheory.spherical_completion_integral {p : ℕ} (hp : p.Prim
   exact hκV ((inv_mul_eq_one₀ h0).1 this ▸ c.2)
 
 /- English proof (translation)
-Take `⟨B₀, hB₀⟩` from `Guard.exists_left_inv _ h`. Use `choose B₁ hB₁ using fun i j => residue_surjective (B₀ i j)`. Set `B : Matrix (Fin m) (Fin n) R` to `Matrix.of B₁`. Establish `e : B.map (residue R) = B₀` using `by ext i j; exact hB₁ i j`. Establish `hd : IsUnit (B * A).det`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← isUnit_map_iff (residue R), RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map_mul, e, hB₀, Matrix.det_one]`. Conclude with `isUnit_one`. Conclude with `⟨(B * A)⁻¹ * B, by rw [Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hd]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.exists_left_inverse_residue_injective {R : Type} [CommRing R] [IsLocalRing R] {n m : ℕ} (A : Matrix (Fin n) (Fin m) R)
     (h : Function.Injective (A.map (residue R)).mulVec) : ∃ B : Matrix (Fin m) (Fin n) R, B * A = 1 := by
@@ -85,11 +85,11 @@ private theorem UpperTheory.exists_left_inverse_residue_injective {R : Type} [Co
   exact ⟨(B * A)⁻¹ * B, by rw [Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hd]⟩
 
 /- English proof (translation)
-Establish `hv : ValuativeCriterion.Existence s`. Establish `h` using `(UniversallyClosed.eq_valuativeCriterion ▸ (inferInstance : UniversallyClosed s) : (ValuativeCriterion.Existence ⊓ @QuasiCompact : MorphismProperty Scheme) s)`. Conclude with `h.1`. Set `S : ValuativeCommSq s` to `{ R := A, K := K, i₁ := spMap R.subtype ≫ a, i₂ := spMap σ commSq := ⟨by`. Rewrite using `[Category.assoc, ha, UpperTheory.spMap_comp_spMap_divisor_frames]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(UpperTheory.spMap_comp_spMap_divisor_frames σ A.subtype).symm⟩ }`. Take `⟨⟨a', h1, h2⟩⟩` from `(hv S).exists_lift`. Use `⟨a', ?_⟩` and prove the remaining obligations. Establish `: IsDominant (spMap R.subtype)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 R.subtype_injective).le.trans bot_le)⟩`. Use `ext_of_isDominant_of_isSeparated s ?_ (spMap R.subtype) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, ha, h2]`. Conclude with `UpperTheory.spMap_comp_spMap_divisor_frames _ _`. Rewrite using `[← Category.assoc, UpperTheory.spMap_comp_spMap_divisor_frames]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.proper_extend_valuationSubring {K O : Type} [Field K] [CommRing O] {X : Scheme.{0}} (s : X ⟶ Sp O) [IsProper s]
     {A R : ValuationSubring K} (h : A ≤ R) (a : Sp R ⟶ X) (σ : O →+* A)
@@ -114,14 +114,14 @@ private theorem UpperTheory.proper_extend_valuationSubring {K O : Type} [Field K
     exact h1
 
 /- English proof (translation)
-Introduce `q _` and use `((IsLocalRing.specializes_closedPoint q).map a.continuous).mem_open U.isOpen h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.preimage_open_local_top {R : Type} [CommRing R] [IsLocalRing R] {X : Scheme.{0}} (a : Sp R ⟶ X) {U : X.Opens}
     (h : a (closedPoint R) ∈ U) : ⊤ ≤ a ⁻¹ᵁ U := fun q _ =>
   ((IsLocalRing.specializes_closedPoint q).map a.continuous).mem_open U.isOpen h
 
 /- English proof (translation)
-Take `⟨V, hV, hz, hle⟩` from `exists_isAffineOpen_mem_and_subset (X := X) h`. Take `⟨χ, rfl⟩` from `exists_fromSpec hV a (UpperTheory.preimage_open_local_top a hz)`. Rewrite using `[← Category.assoc, UpperTheory.spMap_comp_spMap_divisor_frames, ← valF_restrict hle (le_of_fromSpec hV rfl), valF_fromSpec]`. Conclude with `R.valuation_unit ((g.isUnit.map _).map χ).unit`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.valuation_unit_section_one {K : Type} [Field K] (R : ValuationSubring K) {X : Scheme.{0}} (a : Sp R ⟶ X)
     {U : X.Opens} (h : a (closedPoint R) ∈ U) (g : Γ(X, U)ˣ) :
@@ -135,15 +135,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {t : SAB H X}
 
 /- English proof (translation)
-Establish `hu` using `fun i => Guard.comb_tan hv (ha i)`. Establish `hmem : ‖c‖⁻¹ ∈ Guard.grSet t x Λ u i`. Take `⟨w, -, hw⟩` from `Guard.exists_comb hu (Pi.single i c)`. Use `⟨Pi.single i c, by simpa using hc, fun k hk => Pi.single_eq_of_ne hk.ne' _, ⟨w, (hL _ w (tanLinG v hv u A _ w ha hw)).2 fun j => ?_, hw⟩, by simp⟩` and prove the remaining obligations. Establish `h6 : A.mulVec (Pi.single i c) j = A j i * c`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_single]`. Both sides reduce to the same expression. Rewrite using `[h6, mul_comm]`. Conclude with `h1 j i`. Establish `hK : ∀ r ∈ Guard.grSet t x Λ u i, ‖c‖ ≤ r`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨cf, h0, -, ⟨w, hw, hc'⟩, rfl⟩`. Establish `h7` using `(hL _ w (tanLinG v hv u A cf w ha hc')).1 hw`. Establish `h8 : cf i = ∑ j, B i j * A.mulVec cf j`. Use `congrFun (Matrix.mulVec_mulVec cf B A) i` as an intermediate fact. Rewrite `this` using `[hB, Matrix.one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.symm`. Establish `h9 : ‖c * cf i‖ ≤ 1`. Rewrite using `[h8, Finset.mul_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, norm_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_one₀ (h2 i j) (norm_nonneg _) (h7 j)`. Rewrite `h9` using `[norm_mul]`. Rewrite using `[← one_div, le_div_iff₀ (norm_pos_iff.2 h0)]`. Conclude with `h9`. Conclude with `⟨le_csInf ⟨_, hmem⟩ hK, csInf_le ⟨_, hK⟩ hmem⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.lattice_graded_left_inverse {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] {x : Sp C ⟶ X}
     {Λ : Set (Sp (DualNumber C) ⟶ t.G.left)} {m n : ℕ} {u : Fin m → (Sp (DualNumber C) ⟶ t.G.left)}
@@ -180,11 +180,11 @@ private theorem UpperTheory.lattice_graded_left_inverse {C : Type} [Nontrivially
   exact ⟨le_csInf ⟨_, hmem⟩ hK, csInf_le ⟨_, hK⟩ hmem⟩
 
 /- English proof (translation)
-Establish `hDk` using `fun j => GlobalTheory.FactorDepth.isTanAtG_map t (intO C).subtype (hD j)`. Use `⟨?_, fun hc => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨xO', hx, vO, hv, rfl⟩`. Take `rfl` from `huniq xO' hx`. Take `⟨a, ha, -⟩` from `hD0 vO hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e` using `(hD1 _ (GlobalTheory.FactorDepth.isTanAtG_map t (intO C).subtype hv)).unique hw (GlobalTheory.LatDRFree.comb_map t (intO C).subtype ha)`. Introduce `i`. Rewrite using `[e]`. Conclude with `(a i).2`. Set `a : Fin n → ↥(intO C)` to `fun i => ⟨cf i, hc i⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨w', h1, ha⟩` from `Guard.exists_comb hD a`. Conclude with `⟨xO, rfl, w', h1, Guard.comb_unique hDk (GlobalTheory.LatDRFree.comb_map t (intO C).subtype ha) hw⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.integral_tangent_lattice {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] {xO : Sp ↥(intO C) ⟶ X}
     (huniq : ∀ xO' : Sp ↥(intO C) ⟶ X, spMap (intO C).subtype ≫ xO' = spMap (intO C).subtype ≫ xO → xO' = xO)
@@ -210,13 +210,13 @@ private theorem UpperTheory.integral_tangent_lattice {C : Type} [NontriviallyNor
     exact ⟨xO, rfl, w', h1, Guard.comb_unique hDk (GlobalTheory.LatDRFree.comb_map t (intO C).subtype ha) hw⟩
 
 /- English proof (translation)
-Take `⟨n, D, hD, hDb⟩` from `GlobalTheory.LieLocBasis.exists_lie_basis_stable E H X t S x`. Use `choose a ha using fun k => (hDb R β _ (hf.1 τ k).1).exists`. Set `A : Matrix (Fin n) (Fin (Dw.mult τ)) R` to `fun j k => a k j`. Establish `hA (T : Type) [CommRing T] (θ : R →+* T) (k) : IsCombAtG t (spMap (θ.comp β) ≫ x) (fun e => spMap (dualMap (θ.comp β)) ≫ D e) (fun j => A.map θ j k) (f.bc θ τ k)`. Use `GlobalTheory.LatDRFree.comb_map t θ (ha k)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Category.assoc, UpperTheory.spMap_comp_spMap_divisor_frames β θ, UpperTheory.spMap_dualMap_comp_eq_spMap_dualMap_ringHom_comp β θ] at this`. Conclude with `this`. Establish `hT (T : Type) [CommRing T] (χ : S →+* T) (e)` using `GlobalTheory.FactorDepth.isTanAtG_map t χ (hD e)`. Take `⟨B, hB⟩` from `UpperTheory.exists_left_inverse_residue_injective A (by`. Use `(Guard.indep_iff (hT _ _) (Guard.indep_of_basis (hT _ _) (hDb _ _)) _ (hA _ (residue R))).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(frame_ind (GlobalTheory.T.isFrame_compose_ringHom_baseChange E H Dw _ _ _ _ _ _ _ (residue R) _ _ hf) τ).2` as an intermediate fact. Rewrite using `[← Category.assoc, UpperTheory.spMap_comp_spMap_divisor_frames] at this)` and apply the resulting hypothesis. Use `⟨Set.range (fun q : _ × _ => A q.1 q.2) ∪ Set.range (fun q : _ × _ => B q.1 q.2), (Set.finite_range _).union (Set.finite_range _), fun C _ _ ψ θ e hu d hd hs => ?_⟩` and prove the remaining obligations. Establish `hL` using `UpperTheory.integral_tangent_lattice hu (hT _ ψ) (hDb _ ψ) (by`. Simplify using `only [← Category.assoc, UpperTheory.spMap_comp_spMap_divisor_frames ψ, UpperTheory.spMap_dualMap_comp_eq_spMap_dualMap_ringHom_comp ψ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hDb _ _)`. Simplify using `only [← Category.assoc, UpperTheory.spMap_comp_spMap_divisor_frames ψ, UpperTheory.spMap_dualMap_comp_eq_spMap_dualMap_ringHom_comp ψ, ← e] at hL`. Rewrite using `[← Category.assoc, UpperTheory.spMap_comp_spMap_divisor_frames]`. Conclude with `UpperTheory.lattice_graded_left_inverse (hT _ _) hL (A.map θ) (B.map θ) (by rw [← Matrix.map_mul, hB, Matrix.map_one _ (map_zero θ) (map_one θ)]) (hA C θ) hd (fun j k => hs _ (Or.inl ⟨(j, k), rfl⟩)) (fun j k => hs _ (Or.inr ⟨(j, k), rfl⟩)) i`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.tangent_finite_coordinates {Dw : Datum H} {l : Level H} {c : Coeff l} {S R : Type} [CommRing S] [IsLocalRing S]
     [CommRing R] [IsLocalRing R] (x : Sp S ⟶ X) (β : S →+* R) {φ : c.F →+* R} {f : Vecs Dw t R}
@@ -252,9 +252,9 @@ private theorem UpperTheory.tangent_finite_coordinates {Dw : Datum H} {l : Level
     (fun j k => hs _ (Or.inl ⟨(j, k), rfl⟩)) (fun j k => hs _ (Or.inr ⟨(j, k), rfl⟩)) i
 
 /- English proof (translation)
-Set `S` to `Algebra.EssFiniteType.subalgebra ℤ K`. Take `⟨n, g, hg⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.1 (inferInstance : Algebra.FiniteType ℤ S)`. Establish `: Countable (MvPolynomial (Fin n) ℤ)`. Rewrite using `[← Cardinal.mk_le_aleph0_iff]`. Conclude with `MvPolynomial.cardinalMk_le_max.trans (max_le (max_le Cardinal.mk_le_aleph0 Cardinal.mk_le_aleph0) le_rfl)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Countable S` using `hg.countable`. Rewrite using `[← Cardinal.mk_le_aleph0_iff]`. Conclude with `(IsLocalization.cardinalMk_le (Algebra.EssFiniteType.submonoid ℤ K)).trans Cardinal.mk_le_aleph0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.countable_essFiniteType (K : Type) [Field K] [Algebra.EssFiniteType ℤ K] : Countable K := by
   let S := Algebra.EssFiniteType.subalgebra ℤ K
@@ -267,9 +267,7 @@ private theorem UpperTheory.countable_essFiniteType (K : Type) [Field K] [Algebr
   exact (IsLocalization.cardinalMk_le (Algebra.EssFiniteType.submonoid ℤ K)).trans Cardinal.mk_le_aleph0
 
 /- English proof (translation)
-Use `choose g hg using fun x : R => h x x.2`. Take `⟨m, hm⟩` from `(hs.image g).bddAbove`. Use `⟨m, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le' (hm ⟨x, hx, rfl⟩)`. Rewrite using `[hk, pow_add, mul_assoc]`.
-
-Conclude with `mul_mem (pow_mem (natCast_mem A p) k) (hg x)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.exists_uniform_prime_power {K : Type} [Field K] {A R : ValuationSubring K} {p : ℕ}
     (h : ∀ x ∈ R, ∃ m : ℕ, (p : K) ^ m * x ∈ A) {s : Set R} (hs : s.Finite) :
@@ -285,45 +283,41 @@ end SlopeTestRemainingChoices
 
 open Formalism.MainNotions.DIV.Cons GlobalTheory.FieldPtGlue GlobalTheory.ShFam.Pad.Pull in
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ hp hW Z x M K _ R hK a φR ha f hf a₀ φ hφ t ht i hi`. Use `Z.i.c.fin` as an intermediate fact. Establish `: NumberField Z.i.c.F` using `{}`. Use `UpperTheory.countable_essFiniteType K` as an intermediate fact. Establish `: CharZero K` using `(R.subtype.comp φR).charZero_iff (RingHom.injective _) |>.1 inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : (p : K) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Take `⟨A, hAR, hVA, hpA, hA⟩` from `UpperTheory.exists_valuationSubring_below p Z.i.c.F K R φR (Z.i.c.V W) hp (natCast_mem_nonunits_V _ hp hW)`. Use `isProper_str (Z.i.c.V W) Z.n` as an intermediate fact. Establish `: IsProper Z.s` using `inferInstanceAs (IsProper (_ ≫ _))`. Use `isDiscreteValuationRing_V Z.i.c hp hW` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocallyNoetherian Z.X` using `LocallyOfFiniteType.isLocallyNoetherian Z.s`. Take `⟨a', ha'⟩` from `UpperTheory.proper_extend_valuationSubring Z.s hAR a (((R.subtype.comp φR).comp (Z.i.c.V W).subtype).codRestrict A fun v => hVA v v.2) (ha.trans (UpperTheory.spMap_comp_spMap_divisor_frames _ _))`. Take `⟨j, hj⟩` from `LB.mem_of_cover M.L.isLB (a' (closedPoint A))`. Set `B : Type` to `Z.X.presheaf.stalk (a' (closedPoint A))`. Set `ι : Sp B ⟶ Z.X` to `Z.X.fromSpecStalk _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hι (q : Sp B) : ι q ∈ M.L.U j` using `((Z.X.range_fromSpecStalk (x := a' (closedPoint A))).le ⟨q, rfl⟩).mem_open (M.L.U j).isOpen hj`. Set `β₀ : B →+* A` to `(Scheme.stalkClosedPointTo a').hom`. Set `β : B →+* R` to `(A.inclusion R hAR).comp β₀`. Establish `hβ : spMap β ≫ ι = a`. Rewrite using `[← ha', ← UpperTheory.spMap_comp_spMap_divisor_frames, Category.assoc]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ (Scheme.Spec_stalkClosedPointTo_fromSpecStalk a')`. Establish `hj' : a (closedPoint R) ∈ M.L.U j`. Rewrite using `[← hβ]`. Conclude with `hι (spMap β (closedPoint R))`. Establish `w₀ : ⊤ ≤ (spMap R.subtype ≫ a) ⁻¹ᵁ (Z.U a₀).1` using `le_of_fromSpec (Z.U a₀).2 hφ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `wi : ⊤ ≤ (spMap R.subtype ≫ a) ⁻¹ᵁ M.L.U i` using `fun q _ => UpperTheory.preimage_open_local_top a hi (Set.mem_univ (spMap R.subtype q))`. Establish `wj : ⊤ ≤ (spMap R.subtype ≫ a) ⁻¹ᵁ M.L.U j` using `fun q _ => UpperTheory.preimage_open_local_top a hj' (Set.mem_univ (spMap R.subtype q))`. Rewrite using `[M.trans K _ a₀ j i fun q hq => ⟨w₀ hq, wj hq, wi hq⟩, mul_assoc, map_mul, UpperTheory.valuation_unit_section_one R a (U := M.L.U j ⊓ M.L.U i) ⟨hj', hi⟩, one_mul]`. Establish `hr` using `GenId.val_ne_zero M w₀ wj`. Establish `I₁` using `frame_ind (GlobalTheory.T.isFrame_compose_ringHom_baseChange E H Dw _ _ _ _ _ _ _ R.subtype _ _ hf) x.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `I₂` using `frame_ind (chart_frame Z hφ) x.1`. Rewrite `I₂` using `[Category.assoc]`. Establish `ht0 (k) : t k ≠ 0`. Take `⟨cf, c1, -, c2⟩` from `ht k`. Conclude with `c1 ▸ (Pull.Tri.diag I₁ I₂ (fun k => (ht k).imp fun _ h => h.2) c2).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set u : K := valF (spMap R.subtype ≫ a) _ (M.r a₀ j).val * t x.2 with hu`. Establish `hu0 : u ≠ 0` using `mul_ne_zero hr (ht0 _)`. Take `⟨s, hs, hS⟩` from `UpperTheory.tangent_finite_coordinates (ι ≫ Z.π) β (f := f) (φ := φR) (by rwa [← Category.assoc, hβ]) x.1 x.2`. Take `⟨m, hm⟩` from `UpperTheory.exists_uniform_prime_power hA hs`. Use `letI : Algebra B K := (R.subtype.comp β).toAlgebra`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Algebra.EssFiniteType B K` using `Algebra.EssFiniteType.of_comp ℤ B K`. Establish `key (C : SCF p) (ψ : B →+* ↥(intO ↥C.S)) (θ : K →+* ↥C.S) (e : θ.comp (algebraMap B K) = (intO ↥C.S).subtype.comp ψ) (h : ∀ y ∈ (fun r : R => (p : K) ^ m * r) '' s, ‖θ y‖ ≤ 1) : ‖θ ((p : K) ^ m * u)‖ ≤ 1 ∧ ‖θ ((p : K) ^ m * u⁻¹)‖ ≤ 1`. Establish `hd : θ ((p : K) ^ m) ≠ 0` using `(map_ne_zero θ).2 (pow_ne_zero _ hp0)`. Take `⟨b1, b2⟩` from `hS _ ψ (θ.comp R.subtype) e (fun xO' h => ext_unique _ _ _ h) _ hd fun r hr => by`. Use `h _ ⟨r, hr, rfl⟩` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[map_mul]`. Then use the resulting hypothesis. Establish `g : spMap (intO ↥C.S).subtype ≫ spMap ψ ≫ ι = spMap θ ≫ spMap R.subtype ≫ a`. Rewrite using `[← hβ, ← Category.assoc, UpperTheory.spMap_comp_spMap_divisor_frames, ← e, ← Category.assoc, ← Category.assoc, UpperTheory.spMap_comp_spMap_divisor_frames, UpperTheory.spMap_comp_spMap_divisor_frames]`. Take `⟨Q, hQ⟩` from `ModelPt.exists_ptC E H Dw Xo p W Y i₀ hp hW Z C (spMap ψ ≫ ι) (by`. Introduce and unpack `_ ⟨q, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[g, ← Z.cover]`. Conclude with `Set.mem_iUnion.2 ⟨a₀, w₀ (Set.mem_univ (spMap θ q))⟩)`. Set `y : Z.Pt` to `⟨C, Q, spMap ψ ≫ ι, hQ⟩`. Establish `hy : y.gen = spMap θ ≫ spMap R.subtype ≫ a` using `g`. Establish `hn` using `M.norm y a₀ j (θ.comp φ) (by rw [hy, ← hφ, ← Category.assoc, UpperTheory.spMap_comp_spMap_divisor_frames]) fun q _ => hι (spMap ψ q)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e1 : spMap (θ.comp R.subtype) ≫ spMap β ≫ ι ≫ Z.π = spMap θ ≫ spMap R.subtype ≫ a ≫ Z.π`. Rewrite using `[← UpperTheory.spMap_comp_spMap_divisor_frames, Category.assoc, reassoc_of% hβ]`. Rewrite `b1`, `b2` using `[e1]`. Establish `e2 : f.bc (θ.comp R.subtype) x.1 = fun k => spMap (dualMap θ) ≫ f.bc R.subtype x.1 k`. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Vecs.bc, ← Category.assoc, UpperTheory.spMap_dualMap_comp_eq_spMap_dualMap_ringHom_comp]`. Establish `e3 : (Z.fr a₀).bc (θ.comp φ) x.1 = fun k => spMap (dualMap θ) ≫ (Z.fr a₀).bc φ x.1 k`. Use function extensionality and compare the values at `k`. Simplify using `only [Vecs.bc, ← Category.assoc, UpperTheory.spMap_dualMap_comp_eq_spMap_dualMap_ringHom_comp]`. Rewrite `b1`, `b2` using `[e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `hn` using `[hy, GenId.valF_map θ (U := (Z.U a₀).1 ⊓ M.L.U j) fun q hq => ⟨w₀ hq, wj hq⟩]`. Simplify using `only [lnStep, lat, dif_pos x.2.2, Bool.false_eq_true, false_and, if_false, sub_zero, Category.assoc, Fin.eta] at hn`. Rewrite using `[e3, Guard.grNorm_tri (d := fun k => θ (t k)) (fun k => GlobalTheory.FactorDepth.isTanAtG_map _ θ (I₁.1 k)) (fun k => (map_ne_zero θ).2 (ht0 k)) (fun k => by`. Take `⟨cf, c1, c2, c3⟩` from `ht k`. Conclude with `⟨fun a => θ (cf a), congrArg θ c1, fun a ha => (congrArg θ (c2 a ha)).trans (map_zero θ), GlobalTheory.LatDRFree.comb_map _ θ c3⟩)] at hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `d0` using `norm_pos_iff.2 hd`. Establish `g0` using `d0.trans_le b1`. Establish `r0` using `norm_pos_iff.2 ((map_ne_zero θ).2 hr)`. Establish `t0` using `norm_pos_iff.2 ((map_ne_zero θ).2 (ht0 x.2))`. Rewrite `hn` using `[← Real.log_mul r0.ne' (mul_pos t0 g0).ne', ← mul_assoc, ← norm_mul, ← map_mul, ← hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `u0` using `norm_pos_iff.2 ((map_ne_zero θ).2 hu0)`. Establish `e4` using `Real.eq_one_of_pos_of_log_eq_zero (mul_pos u0 g0) hn`. Rewrite using `[map_mul θ _ u, map_mul θ _ u⁻¹, norm_mul, norm_mul, map_inv₀, norm_inv, ← eq_inv_of_mul_eq_one_right e4]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← e4, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left b1 u0.le`. Rewrite using `[← mul_inv_cancel₀ d0.ne']`. Conclude with `mul_le_mul_of_nonneg_left b2 d0.le`. Establish `hB : ∀ r, algebraMap B K r ∈ A` using `fun r => (β₀ r).2`. Establish `hsA : ∀ y ∈ (fun r : R => (p : K) ^ m * r) '' s, y ∈ A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `_ ⟨r, hr, rfl⟩`. Conclude with `hm r hr`. Establish `k1` using `hAR (UpperTheory.spherical_completion_integral hp A hB hpA (hs.image _) hsA fun C ψ θ e h => (key C ψ θ e h).1)`. Establish `k2` using `hAR (UpperTheory.spherical_completion_integral hp A hB hpA (hs.image _) hsA fun C ψ θ e h => (key C ψ θ e h).2)`. Establish `hv : R.valuation ((p : K) ^ m) = 1`.
-
-Use `R.valuation_unit ((((Nat.cast_ne_zero.2 hp.ne_zero : (p : Z.i.c.F) ≠ 0).isUnit).map φR).unit)` as an intermediate fact. Rewrite using `[map_pow, show R.valuation (p : K) = 1 by simpa using this, one_pow]`. Use `replace k1 := (R.valuation_le_one_iff _).2 k1`. Use `replace k2 := (R.valuation_le_one_iff _).2 k2`. Rewrite `k1`, `k2` using `[map_mul, hv, one_mul]`.
-
-Rewrite `k2` using `[map_inv₀]`. Conclude with `le_antisymm k1 ((inv_le_one₀ (zero_lt_iff.2 ((map_ne_zero _).2 hu0))).1 k2)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.line_model_integral_lattice :
     ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}, p.Prime → (p : ℂ) ∈ W.nonunits → ∀ (Z : LocM.Mdl Y i₀) (x : Letter Dw) (M : LineModel Z false (.inl (x.1, (x.2 : ℕ))) x) (K : Type) [Field K] (R : ValuationSubring K), Algebra.EssFiniteType ℤ K → ∀ (a : Sp R ⟶ Z.X) (φR : Z.i.c.F →+* R), a ≫ Z.s = spMap φR ≫ spMap (Z.i.c.V W).subtype → ∀ f : Vecs Dw (Y Z.i).t R, LocM.IsFrame (Y Z.i).t φR (a ≫ Z.π) f → ∀ (a₀ : Fin Z.m) (φ : Γ(Z.X, (Z.U a₀).1) →+* K), spMap φ ≫ Z.chart a₀ = spMap R.subtype ≫ a → ∀ t : Fin (Dw.mult x.1) → K, (∀ i, ∃ cf : Fin (Dw.mult x.1) → K, cf i = t i ∧ (∀ m, i < m → cf m = 0) ∧ IsCombAtG (Y Z.i).t (spMap R.subtype ≫ a ≫ Z.π) (f.bc R.subtype x.1) cf ((Z.fr a₀).bc φ x.1 i)) → ∀ i : Fin M.L.n, a (closedPoint R) ∈ M.L.U i → R.valuation (valF (spMap R.subtype ≫ a) _ (M.r a₀ i).val * t x.2) = 1 := by

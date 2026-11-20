@@ -16,7 +16,7 @@ def chartVec {F : Type} [Field F] (x : (Σ k, ι k) → F) (c : ∀ k, ι k) : (
   fun p => x p * (x ⟨p.1, c p.1⟩)⁻¹
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem prod_pow_single [DecidableEq K] {F : Type} [CommMonoid F] (Y : K → F) (j : K) :
     ∏ k, Y k ^ (Pi.single j 1 : K → ℕ) k = Y j := by
@@ -27,13 +27,13 @@ theorem prod_pow_single [DecidableEq K] {F : Type} [CommMonoid F] (Y : K → F) 
   · simp
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C n => exact ⟨0, C n, homog_C n, by simp, by simp⟩`. Consider the case `add f g hf hg`. Take `⟨df, Gf, hGf, a₁, a₂⟩` from `hf`. Take `⟨dg, Gg, hGg, b₁, b₂⟩` from `hg`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨df + dg, Gf * PositivityTheory.HtPt.Gf.mon c dg + Gg * PositivityTheory.HtPt.Gf.mon c df, homog_add (homog_mul hGf (PositivityTheory.HtPt.Gf.hom_mon c dg)) (by rw [add_comm df dg]; exact homog_mul hGg (PositivityTheory.HtPt.Gf.hom_mon c df)), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, PositivityTheory.HtPt.Gf.aeval_mon, a₁, b₁, Pi.add_apply, pow_add, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [map_add, map_mul, PositivityTheory.HtPt.Gf.aeval_mon, a₂, b₂, Pi.add_apply, pow_add, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `mul_X f p hf`. Take `⟨df, Gf, hGf, a₁, a₂⟩` from `hf`. Use `⟨df + Pi.single p.1 1, Gf * X p, homog_mul hGf (homog_X p), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, aeval_X, a₁, Pi.add_apply, pow_add, Finset.prod_mul_distrib, prod_pow_single, chartVec]`. Clear denominators, using `[h₁ p.1]` for the nonvanishing conditions.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [map_mul, aeval_X, a₂, Pi.add_apply, pow_add, Finset.prod_mul_distrib, prod_pow_single, chartVec]`. Clear denominators, using `[h₂ p.1]` for the nonvanishing conditions.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem exists_form {F₁ F₂ : Type} [Field F₁] [Field F₂] (y₁ : (Σ k, ι k) → F₁) (y₂ : (Σ k, ι k) → F₂)
     (c : ∀ k, ι k) (h₁ : ∀ k, y₁ ⟨k, c k⟩ ≠ 0) (h₂ : ∀ k, y₂ ⟨k, c k⟩ ≠ 0) (f : MRing ι) :
@@ -66,7 +66,7 @@ theorem exists_form {F₁ F₂ : Type} [Field F₁] [Field F₂] (y₁ : (Σ k, 
       field_simp [h₂ p.1]
 
 /- English proof (translation)
-Take `⟨d, G, hG, e₁, e₂⟩` from `exists_form y z c hy hz f`. Establish `h0 : aeval z G = 0` using `hP G (mem_of_aeval_eq_zero hG (by rw [e₁, h, zero_mul]))`. Rewrite `h0` using `[e₂]`. Conclude with `(mul_eq_zero.1 h0).resolve_right (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hz k))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_chart_eq_zero {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (z : (Σ k, ι k) → ℂ) (c : ∀ k, ι k)
     (hy : ∀ k, y ⟨k, c k⟩ ≠ 0) (hz : ∀ k, z ⟨k, c k⟩ ≠ 0) (hP : ∀ f ∈ mCoordIdeal y, aeval z f = 0)
@@ -77,11 +77,11 @@ theorem aeval_chart_eq_zero {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (z 
   exact (mul_eq_zero.1 h0).resolve_right (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hz k))
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C n => exact ⟨|(n : ℝ)|, abs_nonneg _, fun w _ => by simp⟩`. Consider the case `add f g hf hg`. Take `⟨B₁, p₁, h₁⟩` from `hf`. Take `⟨B₂, p₂, h₂⟩` from `hg`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨B₁ + B₂, add_nonneg p₁ p₂, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Conclude with `(norm_add_le _ _).trans (add_le_add (h₁ w hw) (h₂ w hw))`. Consider the case `mul_X f p hf`. Take `⟨B, p₀, h⟩` from `hf`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B, p₀, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, aeval_X, norm_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) (hw p)).trans (h w hw)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound (f : MRing ι) :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ w : (Σ k, ι k) → ℂ, (∀ p, ‖w p‖ ≤ 1) → ‖aeval w f‖ ≤ B := by
@@ -100,9 +100,9 @@ theorem exists_bound (f : MRing ι) :
     exact (mul_le_of_le_one_right (norm_nonneg _) (hw p)).trans (h w hw)
 
 /- English proof (translation)
-Establish `h1 : (Polynomial.scaleRoots P s).eval₂ α (α r) = 0`. Rewrite using `[← hts, Polynomial.scaleRoots_eval₂_mul, ht, mul_zero]`. Rewrite `h1` using `[Polynomial.eval₂_at_apply]`. Establish `h2` using `hk _ h1`. Rewrite `h2` using `[← Polynomial.eval₂_at_apply, show β r = β s * (β r / β s) by field_simp, Polynomial.scaleRoots_eval₂_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 h2).resolve_left (pow_ne_zero _ hs)`.
+A detailed English derivation is pending.
 -/
 theorem eval₂_div_eq_zero {S R T : Type} [CommRing S] [CommRing R] [Field T] (α : S →+* R) (β : S →+* T)
     (hk : ∀ f, α f = 0 → β f = 0) (P : Polynomial S) (t : R) (r s : S) (ht : P.eval₂ α t = 0)
@@ -116,9 +116,9 @@ theorem eval₂_div_eq_zero {S R T : Type} [CommRing S] [CommRing R] [Field T] (
   exact (mul_eq_zero.1 h2).resolve_left (pow_ne_zero _ hs)
 
 /- English proof (translation)
-Establish `h1` using `Polynomial.IsRoot.norm_lt_cauchyBound hp.ne_zero hW`. Establish `h2 : p.cauchyBound ≤ B.toNNReal + 1`. Rewrite using `[Polynomial.cauchyBound, hp.leadingCoeff, nnnorm_one, div_one]`. Use `add_le_add (Finset.sup_le fun i _ => ?_) le_rfl` and prove the remaining obligations. Conclude with `NNReal.le_toNNReal_of_coe_le (hB i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : (‖W‖₊ : ℝ) ≤ ((B.toNNReal + 1 : NNReal) : ℝ)`. Conclude with `h1.le.trans h2` after adjusting the coercions. Simplify `h3` using `[add_comm, Real.coe_toNNReal _ hB0]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem norm_root_le (p : Polynomial ℂ) (hp : p.Monic) (W : ℂ) (hW : p.eval W = 0) (B : ℝ) (hB0 : 0 ≤ B)
     (hB : ∀ i, ‖p.coeff i‖ ≤ B) : ‖W‖ ≤ 1 + B := by
@@ -132,15 +132,15 @@ theorem norm_root_le (p : Polynomial ℂ) (hp : p.Monic) (W : ℂ) (hW : p.eval 
   simpa [add_comm, Real.coe_toNNReal _ hB0] using h3
 
 /- English proof (translation)
-Take `⟨p, hp, hpt⟩` from `ht`. Establish `hv : chartVec y c = fun q : Σ k, ι k => y q / y ⟨q.1, c q.1⟩`. Use function extensionality and compare the values at `q`. Simplify using `[chartVec, div_eq_mul_inv]`. Set `π : MRing ι →ₐ[ℤ] chartRingZ y c` to `aeval fun q => ⟨chartVec y c q, Algebra.subset_adjoin ⟨q, by rw [hv]⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hπ : ∀ f, ((π f : chartRingZ y c) : Ω) = aeval (chartVec y c) f`. Introduce `f`. Establish `: (chartRingZ y c).val.comp π = aeval (chartVec y c)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[π]`. Rewrite using `[← this]`. Both sides reduce to the same expression. Establish `hs : Function.Surjective π.toRingHom`. Introduce and unpack `⟨x, hx⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hx' : x ∈ (aeval (chartVec y c) : MRing ι →ₐ[ℤ] Ω).range`. Rewrite using `[← Algebra.adjoin_range_eq_range_aeval, hv]`. Conclude with `hx`. Take `⟨f, hf⟩` from `hx'`. Conclude with `⟨f, Subtype.ext ((hπ f).trans hf)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, hmap, -, hQ⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic ((Polynomial.mem_lifts p).2 (Polynomial.map_surjective _ hs p)) hp`. Use `⟨Q, hQ, ?_⟩` and prove the remaining obligations. Rewrite `hpt` using `[← hmap, Polynomial.eval₂_map]`. Establish `hc : (algebraMap (chartRingZ y c) Ω).comp π.toRingHom = (aeval (chartVec y c) : MRing ι →ₐ[ℤ] Ω).toRingHom` using `RingHom.ext hπ`. Rewrite `hpt` using `[hc]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_monic {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) {t : Ω}
     (ht : t ∈ integralClosure (chartRingZ y c) Ω) :
@@ -176,7 +176,7 @@ theorem exists_monic {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (c : ∀ k
   rwa [hc] at hpt
 
 /- English proof (translation)
-Establish `e₁ : aeval (chartVec x c) g = aeval x g * ∏ k, (x ⟨k, c k⟩)⁻¹ ^ dg k` using `aeval_scaled_homog x (fun k => (x ⟨k, c k⟩)⁻¹) hg`. Establish `e₂ : aeval (chartVec x c) h = aeval x h * ∏ k, (x ⟨k, c k⟩)⁻¹ ^ dh k` using `aeval_scaled_homog x (fun k => (x ⟨k, c k⟩)⁻¹) hh`. Establish `e₃` using `zpow_factor_inv (a := dg) (b := dh) (fun k => x ⟨k, c k⟩) hx`. Simplify using `only [hd, add_sub_cancel_left] at e₃`. Rewrite using `[e₁, e₂, e, ← e₃]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -194,7 +194,7 @@ theorem chart_ratio {F : Type} [Field F] (x : (Σ k, ι k) → F) (c : ∀ k, ι
   ring
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prod_zpow_mul {F : Type} [Field F] (Y : K → F) (a : K → ℤ) (q : ℕ) :
     ∏ k, Y k ^ (-((q : ℤ) * a k)) = (∏ k, Y k ^ (-a k)) ^ q := by
@@ -205,21 +205,19 @@ theorem prod_zpow_mul {F : Type} [Field F] (Y : K → F) (a : K → ℤ) (q : �
   ring
 
 /- English proof (translation)
-Take `⟨Q, hQ, hQt⟩` from `exists_monic y c hI`. Use `choose Bf hB0 hB using fun i => exists_bound (ι := ι) (Q.coeff i)`. Establish `hT0 : 0 ≤ ∑ i ∈ Finset.range (Q.natDegree + 1), Bf i` using `Finset.sum_nonneg fun i _ => hB0 i`. Use `⟨1 + ∑ i ∈ Finset.range (Q.natDegree + 1), Bf i, by linarith, ?_⟩` and prove the remaining obligations. Introduce `z hz hmax hP val hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨dg, dh, g, h, hg, hh, hd, e₁, hz0, e₂⟩` from `hv`. Establish `ry` using `chart_ratio y c hc a dg dh g h hg hh hd u e₁`. Establish `rz` using `chart_ratio z c hz a dg dh g h hg hh hd val e₂`. Set `α : MRing ι →+* Ω` to `(aeval (chartVec y c) : MRing ι →ₐ[ℤ] Ω).toRingHom`. Set `β : MRing ι →+* ℂ` to `(aeval (chartVec z c) : MRing ι →ₐ[ℤ] ℂ).toRingHom`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hα : ∀ f, α f = aeval (chartVec y c) f` using `fun _ => rfl`. Establish `hβ : ∀ f, β f = aeval (chartVec z c) f` using `fun _ => rfl`. Establish `hh0 : β h ≠ 0`. Establish `e : aeval (chartVec z c) h = aeval z h * ∏ k, (z ⟨k, c k⟩)⁻¹ ^ dh k` using `aeval_scaled_homog z (fun k => (z ⟨k, c k⟩)⁻¹) hh`. Rewrite using `[hβ, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero hz0 (Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (inv_ne_zero (hz k)))`. Establish `hroot` using `eval₂_div_eq_zero α β (fun f hf => aeval_chart_eq_zero y z c hc hz hP f hf) Q _ ((m : MRing ι) * g ^ q) (h ^ q) hQt (by`. Rewrite using `[prod_zpow_mul (fun k => y ⟨k, c k⟩)]`. Simplify using `only [map_mul, map_pow, map_natCast, hα, ry]`. Use the proof step `ring)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `(by rw [map_pow]; exact pow_ne_zero _ hh0)`. Establish `hW : β ((m : MRing ι) * g ^ q) / β (h ^ q) = (m : ℂ) * val ^ q * ∏ k, z ⟨k, c k⟩ ^ (-((q : ℤ) * a k))`. Rewrite using `[prod_zpow_mul (fun k => z ⟨k, c k⟩)]`. Simplify using `only [map_mul, map_pow, map_natCast]`. Rewrite using `[hβ g, rz, ← hβ h, div_eq_iff (pow_ne_zero _ hh0)]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hroot` using `[hW]`. Establish `hw1 : ∀ p, ‖chartVec z c p‖ ≤ 1`. Introduce `p`. Establish `: ‖z ⟨p.1, c p.1⟩‖ ≠ 0` using `norm_ne_zero_iff.2 (hz p.1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[chartVec, norm_mul, norm_inv, ← div_eq_mul_inv]`. Conclude with `div_le_one_of_le₀ (hmax p) (norm_nonneg _)`. Use `norm_root_le (Q.map β) (hQ.map β) _ (by rwa [Polynomial.eval_map]) _ hT0 fun i => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_map]`. Distinguish the cases in `hi : i ∈ Finset.range (Q.natDegree + 1)`.
-
-Conclude with `(hB i _ hw1).trans (Finset.single_le_sum (fun j _ => hB0 j) hi)`. Establish `: Q.coeff i = 0` using `Polynomial.coeff_eq_zero_of_natDegree_lt (by simpa [Nat.lt_succ_iff] using hi)`. Rewrite using `[this, map_zero, norm_zero]`. Conclude with `hT0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_bound {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (a : K → ℤ) (q m : ℕ) (u : Ω) (c : ∀ k, ι k)
     (hc : ∀ k, y ⟨k, c k⟩ ≠ 0)
@@ -271,15 +269,15 @@ theorem chart_bound {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (a : K → 
     exact hT0
 
 /- English proof (translation)
-Set `S : Set ((Σ k, ι k) → ℂ)` to `{w | (∀ p, ‖w p‖ ≤ 1) ∧ ∀ k, ∃ i, ‖w ⟨k, i⟩‖ = 1}`. Establish `hcl : IsClosed S`. Establish `e : S = (⋂ p, {w : (Σ k, ι k) → ℂ | ‖w p‖ ≤ 1}) ∩ ⋂ k, ⋃ i, {w | ‖w ⟨k, i⟩‖ = 1}`. Use extensionality with `w`. Simplify using `[S]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Use `IsClosed.inter (isClosed_iInter fun p => isClosed_le (by fun_prop) continuous_const) (isClosed_iInter fun k => isClosed_iUnion_of_finite fun i => isClosed_eq (by fun_prop) continuous_const)` and prove the remaining obligations. Establish `hS : IsCompact S`. Use `IsCompact.of_isClosed_subset (isCompact_closedBall (0 : (Σ k, ι k) → ℂ) 1) hcl fun w hw => ?_` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff, pi_norm_le_iff_of_nonneg zero_le_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw.1`. Establish `hne : ∀ w ∈ S, ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0`. Introduce `w hw k`. Take `⟨i, hi⟩` from `hw.2 k`. Use `⟨i, fun h0 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[h0] at hi`. Establish `hcont : ContinuousOn A.h S` using `hA.continuousOn.mono fun w hw => hne w hw`. Distinguish the cases in `hS0 : S.Nonempty`. Take `⟨w₀, hw₀, hmin⟩` from `hS.exists_isMinOn hS0 hcont`. Conclude with `⟨A.h w₀, A.pos w₀ (hne w₀ hw₀), fun w h₁ h₂ => hmin ⟨h₁, h₂⟩⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨1, one_pos, fun w h₁ h₂ => absurd ⟨w, h₁, h₂⟩ hS0⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_lower (A : HermLine ι) (hA : IsSmoothHerm A) :
     ∃ δ : ℝ, 0 < δ ∧ ∀ w : (Σ k, ι k) → ℂ, (∀ p, ‖w p‖ ≤ 1) → (∀ k, ∃ i, ‖w ⟨k, i⟩‖ = 1) → δ ≤ A.h w := by
@@ -307,31 +305,29 @@ theorem exists_lower (A : HermLine ι) (hA : IsSmoothHerm A) :
   · exact ⟨1, one_pos, fun w h₁ h₂ => absurd ⟨w, h₁, h₂⟩ hS0⟩
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y d _ _ A q m u hA hq hm hu`. Take `⟨δ, hδ, hlow⟩` from `exists_lower A hA`. Establish `hc : ∀ c : ∀ k, ι k, ∃ B : ℝ, 0 ≤ B ∧ ((∀ k, y ⟨k, c k⟩ ≠ 0) → ∀ z : (Σ k, ι k) → ℂ, (∀ k, z ⟨k, c k⟩ ≠ 0) → (∀ p, ‖z p‖ ≤ ‖z ⟨p.1, c p.1⟩‖) → (∀ f ∈ mCoordIdeal y, aeval z f = 0) → ∀ val : ℂ, HasVal y A.a u z val → ‖(m : ℂ) * val ^ q * ∏ k, z ⟨k, c k⟩ ^ (-((q : ℤ) * A.a k))‖ ≤ B …`. Introduce `c`. Distinguish the cases in `h : ∀ k, y ⟨k, c k⟩ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨B, h0, hB⟩` from `chart_bound y A.a q m u c h (hu c h)`. Conclude with `⟨B, h0, fun _ => hB⟩`. Conclude with `⟨0, le_rfl, fun h' => absurd h' h⟩`. Use `choose B hB0 hB using hc`. Take `⟨M, hM⟩` from `(Set.finite_range B).bddAbove`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hM' : ∀ c, B c ≤ 1 + |M|` using `fun c => (hM ⟨c, rfl⟩).trans ((le_abs_self M).trans (by linarith))`. Establish `hpos : 0 < 1 + |M|` using `by positivity`. Use `⟨Real.log ((1 + |M|) / δ), fun z hz val hv => ?_⟩` and prove the remaining obligations. Rewrite using `[Real.exp_log (div_pos hpos hδ)]`. Establish `hmax : ∀ k, ∃ i, (∀ j, ‖z ⟨k, j⟩‖ ≤ ‖z ⟨k, i⟩‖) ∧ z ⟨k, i⟩ ≠ 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Take `⟨i₀, hi₀⟩` from `hz.1 k`. Use `haveI : Nonempty (ι k) := ⟨i₀⟩`. Take `⟨i, hi⟩` from `Finite.exists_max fun j => ‖z ⟨k, j⟩‖`. Use `⟨i, hi, fun h0 => hi₀ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hi i₀` as an intermediate fact. Simplify `this` using `[h0]`. Use `choose c hcm hc0 using hmax`. Establish `hy : ∀ k, y ⟨k, c k⟩ ≠ 0`. Introduce `k h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hX : (X ⟨k, c k⟩ : MRing ι) ∈ mCoordIdeal y`. Rewrite using `[mCoordIdeal, RingHom.mem_ker, mConeMap, aeval_X, h0]`. Simplify using the standard rewrite rules. Use `hz.2 _ hX` as an intermediate fact. Rewrite `this` using `[aeval_X]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hc0 k this`. Establish `hb` using `hB c hy z hc0 (fun p => hcm p.1 p.2) hz.2 val hv`. Set `τ : K → ℂ` to `fun k => (z ⟨k, c k⟩)⁻¹`. Establish `hτ : ∀ k, τ k ≠ 0` using `fun k => inv_ne_zero (hc0 k)`. Establish `hsm` using `A.smul τ z hτ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set e : ℝ := ∏ k, ‖τ k‖ ^ A.a k with he`. Establish `hepos : 0 < e` using `Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.2 (hτ k)) _`. Establish `hlo : δ ≤ e * A.h z`. Rewrite using `[← hsm]`. Use `hlow _ (fun p => ?_) fun k => ⟨c k, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : ‖z ⟨p.1, c p.1⟩‖ ≠ 0` using `norm_ne_zero_iff.2 (hc0 p.1)`. Simplify using `only [τ, norm_mul, norm_inv]`. Rewrite using `[inv_mul_le_iff₀ (norm_pos_iff.2 (hc0 p.1)), mul_one]`. Conclude with `hcm p.1 p.2`. Simplify using `only [τ, norm_mul, norm_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `inv_mul_cancel₀ (norm_ne_zero_iff.2 (hc0 k))`. Establish `hE : ‖∏ k, z ⟨k, c k⟩ ^ (-((q : ℤ) * A.a k))‖ = e ^ q`. Rewrite using `[prod_zpow_mul (fun k => z ⟨k, c k⟩), norm_pow, norm_prod, he]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [τ, norm_zpow, norm_inv, inv_zpow']`. Establish `hb' : (m : ℝ) * (‖val‖ * e) ^ q ≤ 1 + |M|`. Use `le_trans (le_of_eq ?_) (hb.trans (hM' c))` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, norm_pow, hE, Complex.norm_natCast, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm1 : (1 : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `hnn : 0 ≤ (‖val‖ * e) ^ q` using `by positivity`. Establish `hb2 : (‖val‖ * e) ^ q ≤ (1 + |M|) ^ q`. Establish `h1 : (1 : ℝ) ≤ 1 + |M|` using `by linarith [abs_nonneg M]`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hb3 : ‖val‖ * e ≤ 1 + |M|` using `(pow_le_pow_iff_left₀ (by positivity) hpos.le hq.ne').1 hb2`. Establish `hAz : 0 < A.h z` using `A.pos z hz.1`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hδ]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem section_bound : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (y : (Σ k, ι k) → Ω) (d : ℕ), IsArithVar (mCoordIdeal y) d → Birational y → ∀ (A : HermLine ι) (q m : ℕ) (u : Ω), IsSmoothHerm A → 0 < q → 0 < m → (m : Ω) * u ^ q ∈ chartLatNm y A.a q → ∃ C : ℝ, ∀ z ∈ ptsOver ℂ (mCoordIdeal y), ∀ val : ℂ, HasVal y A.a u z val → ‖val‖ ≤ Real.exp C * A.h z := by
   intro K _ ι _ Ω _ y d _ _ A q m u hA hq hm hu

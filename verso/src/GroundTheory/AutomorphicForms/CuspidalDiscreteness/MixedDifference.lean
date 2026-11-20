@@ -7,9 +7,9 @@ variable {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [NormedAddComm
   [NormedSpace ℝ F]
 
 /- English proof (translation)
-Establish `h1 : ContDiff ℝ k ρ` using `hρ.of_le (by exact_mod_cast Nat.le_succ k)`. Establish `h2 : ContDiff ℝ k (fun t => ρ (t + y))` using `h1.comp (contDiff_id.add contDiff_const)`. Establish `hsub : iteratedFDeriv ℝ k (fun t => ρ (t + y) - ρ t) w = iteratedFDeriv ℝ k ρ (w + y) - iteratedFDeriv ℝ k ρ w`. Use `iteratedFDeriv_sub_apply (x := w) (i := k) h2.contDiffAt h1.contDiffAt` as an intermediate fact. Rewrite using `[show (fun t => ρ (t + y) - ρ t) = (fun t => ρ (t + y)) - ρ from rfl, this, iteratedFDeriv_comp_add_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsub]`. Establish `hdiff : Differentiable ℝ (fun x => iteratedFDeriv ℝ k ρ x)` using `hρ.differentiable_iteratedFDeriv (by exact_mod_cast Nat.lt_succ_self k)`. Use `Convex.norm_image_sub_le_of_norm_fderiv_le (𝕜 := ℝ) (s := Set.univ) (f := fun x => iteratedFDeriv ℝ k ρ x) (x := w) (y := w + y) (C := B) (fun x _ => hdiff x) (fun x _ => by rw [norm_fderiv_iteratedFDeriv]; exact hB x) convex_univ (Set.mem_univ _) (Set.mem_univ _)` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_iteratedFDeriv_sub_translate_le {k : ℕ} {ρ : E → F} (hρ : ContDiff ℝ (k + 1) ρ)
     {B : ℝ} (hB : ∀ w, ‖iteratedFDeriv ℝ (k + 1) ρ w‖ ≤ B) (y w : E) :
@@ -31,7 +31,7 @@ theorem norm_iteratedFDeriv_sub_translate_le {k : ℕ} {ρ : E → F} (hρ : Con
   simpa using this
 
 /- English proof (translation)
-The claim follows from `| 0, ρ, _, B, hB, v, z => by simpa [norm_iteratedFDeriv_zero] using hB z | k + 1, ρ, hρ, B, hB, v, z => by rw [altSum_succ, Fin.prod_univ_succ, ← mul_assoc] have hg : ContDiff ℝ k (fun t => ρ (t + v 0) - ρ t) := ((hρ.of_le (by exact_mod_cast Nat.le_succ k)).comp (contDiff_id.add …`.
+A detailed English derivation is pending.
 -/
 theorem norm_altSum_le : ∀ (k : ℕ) {ρ : E → F}, ContDiff ℝ k ρ → ∀ {B : ℝ},
     (∀ w, ‖iteratedFDeriv ℝ k ρ w‖ ≤ B) → ∀ (v : Fin k → E) (z : E),
@@ -47,7 +47,7 @@ theorem norm_altSum_le : ∀ (k : ℕ) {ρ : E → F}, ContDiff ℝ k ρ → ∀
       (Fin.tail v) z
 
 /- English proof (translation)
-Establish `hcont : Continuous fun x => iteratedFDeriv ℝ k ρ x` using `hρ.continuous_iteratedFDeriv (by exact_mod_cast le_top)`. Take `⟨B, hB⟩` from `hcont.bounded_above_of_compact_support (hc.iteratedFDeriv k)`. Conclude with `⟨B, norm_altSum_le k (hρ.of_le (by exact_mod_cast le_top)) hB⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_norm_altSum_le {ρ : E → F} (hρ : ContDiff ℝ (⊤ : ℕ∞) ρ)
     (hc : HasCompactSupport ρ) (k : ℕ) :

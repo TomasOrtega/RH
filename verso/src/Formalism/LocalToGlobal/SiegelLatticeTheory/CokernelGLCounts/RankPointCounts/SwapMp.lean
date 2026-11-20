@@ -8,7 +8,7 @@ open MeasureTheory MeasurableSpace Set
 namespace Formalism.L2.SG.NGCut.SplitEmbedding
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_third_bis_form.goal1 .. | (apply Bl.general_b_fact_third_bis_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_third_bis_form.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem swap_mp {ι P β : Type} [Fintype ι] [Fintype P] [MeasurableSpace β] (μ0 : Measure β) [SigmaFinite μ0] :
     MeasurePreserving (fun (x : ι → P → β) (p : P) (v : ι) => x v p)

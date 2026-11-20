@@ -5,9 +5,7 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI : Algebra.FormallyUnramified ℤ ℚ := Algebra.FormallyUnramified.of_isLocalization (nonZeroDivisors ℤ)`. Use `haveI : Algebra.EssFiniteType ℤ ℚ := Algebra.EssFiniteType.of_isLocalization ℚ (nonZeroDivisors ℤ)`. Use `haveI : Algebra.FormallyUnramified ℚ F := Algebra.FormallyUnramified.of_isSeparable ℚ F`. Use `haveI : Algebra.FormallyUnramified ℤ F := Algebra.FormallyUnramified.comp ℤ ℚ F`. Use `haveI : Algebra.EssFiniteType ℤ F := Algebra.EssFiniteType.comp ℤ ℚ F`.
-
-Use `haveI : IsReduced (k ⊗[ℤ] F) := Algebra.FormallyUnramified.isReduced_of_field k (k ⊗[ℤ] F)`. Establish `hinj : Function.Injective (Algebra.TensorProduct.map (AlgHom.id ℤ k) (IsScalarTower.toAlgHom ℤ (𝓞 F) F))` using `Module.Flat.lTensor_preserves_injective_linearMap _ (IsFractionRing.injective _ _)`. Conclude with `isReduced_of_injective _ hinj`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isReduced_charZero_tensor_ringOfIntegers (F : Type) [Field F] [NumberField F] (k : Type) [Field k]
     [CharZero k] : IsReduced (k ⊗[ℤ] 𝓞 F) := by
@@ -28,7 +26,7 @@ instance isSemisimpleRing_charZero_tensor_ringOfIntegers (F : Type) [Field F] [N
   exact IsArtinianRing.isSemisimpleRing_of_isReduced _
 
 /- English proof (translation)
-Introduce `F _ _ k _ _ M _ _`. Conclude with `Module.projective_of_isSemisimpleRing _ _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem projective_charZero_tensor_ringOfIntegers : ∀ (F : Type) [Field F] [NumberField F] (k : Type) [Field k]
     [CharZero k] (M : Type 1) [AddCommGroup M] [Module (k ⊗[ℤ] 𝓞 F) M], Module.Projective (k ⊗[ℤ] 𝓞 F) M := by

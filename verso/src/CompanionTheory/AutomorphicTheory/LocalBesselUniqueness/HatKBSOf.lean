@@ -10,9 +10,9 @@ namespace Formalism.FourierDecayAlt.P.CutBP.LimitNormalForms
 open Formalism.FourierDecayAlt.P.CutMP
 
 /- English proof (translation)
-Establish `hρ4 : R + 1 ≤ (R + 1) ^ 4` using `le_self_pow₀ (by linarith) (by norm_num)`. Establish `hn2 : n ≤ n ^ 2` using `le_self_pow₀ hn (by norm_num)`. Establish `hn23 : n ^ 2 ≤ n ^ 3` using `pow_le_pow_right₀ hn (by norm_num)`. Establish `h1 : (R + 1) * n ^ 2 ≤ (R + 1) ^ 4 * n ^ 3` using `mul_le_mul hρ4 hn23 (by positivity) (by positivity)`. Establish `h2 : R * o ≤ (R + 1) ^ 4 * (N * n ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3 : 0 ≤ (R + 1) ^ 4 * n ^ 3` using `by positivity`. Establish `h4 : 0 ≤ (R + 1) ^ 4 * (N * n ^ 2)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem kbs_arith (R n N o A : ℝ) (hR : 0 ≤ R) (hn : 1 ≤ n) (hN : 0 ≤ N) (ho : o ≤ N * n)
     (hA : 18 * (R + 1) ^ 4 * (N * n ^ 2 + n ^ 3) ≤ A) : 12 * (R + 1) * n ^ 2 + 6 * R * o + 0 ≤ A := by
@@ -29,17 +29,15 @@ theorem kbs_arith (R n N o A : ℝ) (hR : 0 ≤ R) (hn : 1 ≤ n) (hN : 0 ≤ N)
   nlinarith
 
 /- English proof (translation)
-Take `⟨ts, hts, hJ⟩` from `hH Wp Wq P Bs hpl hk e he hQ L hL u hu`. Establish `hn : (1 : ℝ) ≤ nDim P.k P.r`. Unfold `nDim`. Conclude with `Nat.le_add_left 1 _` after adjusting the coercions. Establish `hNr : (u.length : ℝ) ≤ N` using `by exact_mod_cast hN`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hord : ∀ t ∈ ts, (B.opOrder t.2 : ℝ) ≤ (N : ℝ) * nDim P.k P.r` using `fun t ht => by`. Establish `h` using `(hPoly _ _ _ _ _ _ _ (hts t ht).2.1).2.2`. Establish `h' : (B.opOrder t.2 : ℝ) ≤ (u.length : ℝ) * nDim P.k P.r` using `by unfold nDim; exact_mod_cast h`. Conclude with `h'.trans (mul_le_mul_of_nonneg_right hNr (by linarith))`. Use `⟨ts.length, fun i => (ts.get i).1, fun i => (ts.get i).2, fun i => (hts _ (List.get_mem ts i)).1, fun i => ?_, fun F A _ hCC hA hJF => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ht` using `List.get_mem ts i`. Take `⟨hs, hg, -⟩` from `hPoly _ _ _ _ _ _ _ (hts _ ht).2.1`. Use `⟨hs _, (hts _ ht).2.2, hg _ ?_, (hord _ ht).trans ?_⟩` and prove the remaining obligations. Establish `e1 : ((u.length * ((P.r + 1) * (2 * P.r + P.k + 1)) : ℕ) : ℝ) = (u.length : ℝ) * (((P.r : ℝ) + 1) * nDim P.k P.r)` using `by unfold nDim; push_cast; ring`. Establish `h0 : 0 ≤ ((P.r : ℝ) + 1) * nDim P.k P.r` using `by positivity`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[e1]`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish `hid : MA.actA P u.prod (Gauge.trJB P Bs e (B.JF Bs F)) = _` using `hJ _ hJF show MA.actA P u.prod (Gauge.trJB P Bs e (B.JF Bs F)) = ∑ k : Fin ts.length, MA.actA P (ts.get k).1 (Gauge.trJB P Bs e (B.JF Bs (B.opApply (ts.get k).2 F)))`. Rewrite using `[hid, ← Fin.sum_univ_fun_getElem]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `ht` using `List.get_mem ts i`. Establish `hnE : nDim P.k P.r = 2 * (P.r : ℝ) + P.k + 1` using `by unfold nDim; push_cast; ring`. Establish `hT` using `jdc_thrW (k := P.k) (r := P.r) (B.opOrder (ts.get i).2) A 0 le_rfl (kbs_arith _ _ N _ A (Nat.cast_nonneg _) hn (Nat.cast_nonneg _) (hord _ ht) (by rw [hnE]; exact hA))`. Establish `hth` using `Formalism.FourierDecayAlt.P.orbital_commutes_on_open_set _ _ _ _ Bs A _ F (ts.get i).2 _ subset_rfl le_rfl hT (hCC _) (fun s hs f' hf' g hg => (hts _ ht).2.2 s hs f' hf' g (jdc_om_sub_gpos _ hg))`.
-
-Conclude with `congrArg _ (trJB_congr hpl e fun g hg => hth g (jdc_om_of _ _ hg.1 hg.2))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hatProdJB (hH : HatProdB) (hPoly : JDPolyOK) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par)

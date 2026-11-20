@@ -7,37 +7,31 @@ noncomputable section
 namespace GlobalTheory.SchwartzBruhatRestrict
 
 /- English proof (translation)
-Introduce `F _ _ κ₁ κ _ _ j hj v`. Use `set ext : (κ₁ → Fv F v) → (κ → Fv F v) := fun y => Function.extend j y 0 with hext`. Establish `hr : Function.LeftInverse (fun x : κ → Fv F v => x ∘ j) ext` using `fun y => funext fun i => hj.extend_apply y 0 i`. Establish `hcr : Continuous (fun x : κ → Fv F v => x ∘ j)` using `continuous_pi fun i => continuous_apply (j i)`. Establish `hce : Continuous ext`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_pi fun k => ?_` and prove the remaining obligations. Distinguish the cases in `hk : ∃ i, j i = k`. Take `⟨i, rfl⟩` from `hk`. Simplify using `only [ext, hj.extend_apply]`. Conclude with `continuous_apply i`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [ext, Function.extend_apply' _ _ _ hk]`. Conclude with `continuous_const`. Establish `hemb : Topology.IsClosedEmbedding ext` using `hr.isClosedEmbedding hcr hce`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨φ, ⟨hlc, hcs⟩, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Conclude with `⟨hlc.comp_continuous hce, hcs.comp_isClosedEmbedding hemb⟩`. Introduce and unpack `φ₁ ⟨hlc, hcs⟩`. Set `O : Set (Fv F v)` to `(v.adicCompletionIntegers F : Set (v.adicCompletion F))`. Establish `hOeq : O = ((Valued.v : Valuation (v.adicCompletion F) _).integer : Set (v.adicCompletion F))`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [O, SetLike.mem_coe, IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, Valuation.mem_integer_iff]`. Establish `hOo : IsOpen O` using `by rw [hOeq]; exact Valued.isOpen_integer _`. Establish `hOc : IsClosed O` using `by rw [hOeq]; exact Valued.isClosed_integer _`. Establish `hOk : IsCompact O` using `isCompact_iff_compactSpace.2 (GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v)`. Establish `hO0 : (0 : Fv F v) ∈ O` using `(v.adicCompletionIntegers F).zero_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Set `S : Set (κ → Fv F v)` to `{x | ∀ k, k ∉ Set.range j → x k ∈ O}`. Establish `hSeq : S = ⋂ k ∈ (Set.range j)ᶜ, (fun x : κ → Fv F v => x k) ⁻¹' O`. Use extensionality with `x`. Simplify using `[S]`. Establish `hSo : IsOpen S`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hSeq]`. Conclude with `Set.Finite.isOpen_biInter (Set.toFinite _) fun k _ => hOo.preimage (continuous_apply k)`. Establish `hSc : IsClosed S`. Rewrite using `[hSeq]`. Conclude with `isClosed_biInter fun k _ => hOc.preimage (continuous_apply k)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `set g : (κ → Fv F v) → ℂ := fun x => φ₁ (x ∘ j) with hg`. Establish `hglc : IsLocallyConstant g` using `hlc.comp_continuous hcr`. Use `⟨S.indicator g, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ S`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `filter_upwards [hSo.mem_nhds hx, (IsLocallyConstant.iff_eventually_eq _).1 hglc x] with y hy hgy`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx, hgy]`. Use `filter_upwards [hSc.isOpen_compl.mem_nhds hx] with y hy`. Rewrite using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`. Set `C : κ → Set (Fv F v)` to `fun k => if h : k ∈ Set.range j then (fun y : κ₁ → Fv F v => y (Classical.choose h)) '' tsupport φ₁ else O`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hC : IsCompact (Set.univ.pi C)`. Use `isCompact_univ_pi fun k => ?_` and prove the remaining obligations. Distinguish the cases in `h : k ∈ Set.range j`. Simplify using `only [C, dif_pos h]`. Conclude with `hcs.isCompact.image (continuous_apply _)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [C, dif_neg h]`. Conclude with `hOk`. Use `HasCompactSupport.intro hC fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hxS : x ∈ S`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hxS`. Conclude with `hne (Set.indicator_of_notMem hxS _)`. Establish `hgx : g x ≠ 0` using `by rwa [Set.indicator_of_mem hxS] at hne`. Apply `hx` to reduce the goal to its premises. Introduce `k _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `h : k ∈ Set.range j`. Simplify using `only [C, dif_pos h]`. Use `⟨x ∘ j, subset_tsupport _ hgx, ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[Classical.choose_spec h]`.
-
-Simplify using `only [C, dif_neg h]`. Conclude with `hxS k h`. Use function extensionality and compare the values at `y`. Rewrite using `[LinearMap.funLeft_apply]`. Establish `hyS : ext y ∈ S`.
-
-Introduce `k hk`. Establish `hk' : ¬ ∃ i, j i = k` using `hk`. Simplify using `only [ext, Function.extend_apply' _ _ _ hk']`. Conclude with `hO0`. Rewrite using `[Set.indicator_of_mem hyS]`.
-
-Conclude with `congrArg φ₁ (hr y)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_funLeft_extendZero : ∀ (F : Type) [Field F] [NumberField F] {κ₁ κ : Type} [Fintype κ₁] [Fintype κ] (j : κ₁ → κ), Function.Injective j →
     ∀ v : Pl F, (SB (κ → Fv F v)).map (LinearMap.funLeft ℂ ℂ (fun y : κ₁ → Fv F v => Function.extend j y 0)) = SB (κ₁ → Fv F v) := by

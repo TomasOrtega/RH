@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 namespace GlobalTheory.CompanionTheory.SAH
 
 /- English proof (translation)
-Introduce `S _ hS U hU G H _ _ hG hH f hf`. Establish `: IsDominant U.ι` using `⟨by`. Rewrite using `[DenseRange, Scheme.Opens.range_ι]`. Conclude with `hU⟩`. Conclude with `GlobalTheory.HomExtNormal.existsUnique_hom_extension_of_dvr GlobalTheory.existsUnique_hom_extension_semiAbelian S U U.ι hS G H hG hH f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem semiAbelianHomExtension : GlobalTheory.Published.SemiAbelianHomExtension := by
   intro S _ hS U hU G H _ _ hG hH f hf

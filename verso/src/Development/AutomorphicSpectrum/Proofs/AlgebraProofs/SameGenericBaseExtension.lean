@@ -25,7 +25,7 @@ section Numbers
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Unfold `classNum`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[PairNumberRelabel.vNumL_perm W (p.append_left _)]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem classNum_perm {K : Type} [DecidableEq K] {ι : K → Type} {S : Type} (cls : S → K → ℤ)
     (H : MvPolynomial S ℤ) {Q Q' : List (K → ℤ)} (p : Q.Perm Q') (W : Ideal (MRing ι O)) :
@@ -35,7 +35,7 @@ theorem classNum_perm {K : Type} [DecidableEq K] {ι : K → Type} {S : Type} (c
   rw [PairNumberRelabel.vNumL_perm W (p.append_left _)]
 
 /- English proof (translation)
-Rewrite using `[← Multiset.coe_eq_coe]`. Unfold `classList`. Rewrite using `[← Multiset.map_coe, Multiset.coe_toList, Multiset.coe_toList, Multiset.map_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem classList_map_perm {K₁ K₂ : Type} {S : Type} (cls : S → K₂ → ℤ) (e : K₁ → K₂)
     (μ : S →₀ ℕ) :
@@ -49,7 +49,7 @@ variable {K₁ K₂ : Type} [DecidableEq K₁] [DecidableEq K₂] {ι₁ : K₁ 
   (e : K₁ ≃ K₂) (σ : (Σ k, ι₁ k) ≃ (Σ k, ι₂ k))
 
 /- English proof (translation)
-Rewrite using `[PairNumberRelabel.map_rename_eq, PairNumberRelabel.pairNum_map e σ hσ]`. Unfold `pairNum`. Simplify using `only [classNum_perm _ _ (classList_map_perm cls e μ)]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem pairNum_relabel (hσ : ∀ v, (σ v).1 = e v.1) (P : Ideal (MRing ι₁ O)) {n : ℕ}
     (x x' : Fin n → K₂ → ℤ) (f g : Fin n → MRing ι₁ O)
@@ -63,9 +63,9 @@ theorem pairNum_relabel (hσ : ∀ v, (σ v).1 = e v.1) (P : Ideal (MRing ι₁ 
   simp only [classNum_perm _ _ (classList_map_perm cls e μ)]
 
 /- English proof (translation)
-Rewrite using `[PairNumberRelabel.map_rename_eq]`. Unfold `cycEval`. Rewrite using `[← finsum_comp_equiv (PairNumberRelabel.idealEquiv (R := O) σ)]`. Use `finsum_congr fun W => ?_` and prove the remaining obligations. Rewrite using `[PairNumberRelabel.idealEquiv_apply, ← rename_C σ a, PairNumberRelabel.divCycle_map σ e hσ]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[PairNumberRelabel.classNum_map e σ hσ, classNum_perm _ _ (classList_map_perm cls e μ)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootTerm_relabel (hσ : ∀ v, (σ v).1 = e v.1) (P : Ideal (MRing ι₁ O)) {n : ℕ}
     (x : Fin n → K₂ → ℤ) (G : MvPolynomial (Fin n) ℤ) {S : Type} (cls : S → K₂ → ℤ)
@@ -101,7 +101,7 @@ def assocEquiv : (Σ k : (K ⊕ K') ⊕ K₁, Sum.elim (Sum.elim ι ι') ι₁ k
   right_inv := by rintro ⟨k | k | k, i⟩ <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨(k | k) | k, i⟩ := v <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem assocEquiv_fst (v) : (assocEquiv ι ι' ι₁ v).1 = Equiv.sumAssoc K K' K₁ v.1 := by
   obtain ⟨(k | k) | k, i⟩ := v <;> rfl
@@ -109,7 +109,7 @@ theorem assocEquiv_fst (v) : (assocEquiv ι ι' ι₁ v).1 = Equiv.sumAssoc K K'
 variable {ι ι' ι₁}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Apply the tactic sequence `obtain ⟨(k | k) | k, i⟩ := v <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem join_assoc {Ω : Type} (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) (z₁ : (Σ k, ι₁ k) → Ω) :
     joinCoord x (joinCoord z z₁) ∘ assocEquiv ι ι' ι₁ = joinCoord (joinCoord x z) z₁ := by
@@ -117,7 +117,7 @@ theorem join_assoc {Ω : Type} (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → 
   obtain ⟨(k | k) | k, i⟩ := v <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `obtain (k | k) | k := k <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pullDeg_assoc (a : K → ℤ) :
     pullDeg (K' := K' ⊕ K₁) a ∘ Equiv.sumAssoc K K' K₁ =
@@ -132,7 +132,7 @@ def assocChart (s : ∀ k : K ⊕ (K' ⊕ K₁), Sum.elim ι (Sum.elim ι' ι₁
   | .inr k => s (.inr (.inr k))
 
 /- English proof (translation)
-Apply the tactic sequence `obtain (k | k) | k := k <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem assocChart_spec (s : ∀ k : K ⊕ (K' ⊕ K₁), Sum.elim ι (Sum.elim ι' ι₁) k) (k) :
     assocEquiv ι ι' ι₁ ⟨k, assocChart s k⟩ =
@@ -142,9 +142,9 @@ theorem assocChart_spec (s : ∀ k : K ⊕ (K' ⊕ K₁), Sum.elim ι (Sum.elim 
 end Assoc
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `v ⟨a, ha, e, he, rfl⟩`. Use `PositivityTheory.Xgn.A_pull_preserve.smul_mem R' L a ha e (AddSubgroup.closure_mono ?_ he)` and prove the remaining obligations. Introduce and unpack `v ⟨b, hb, e, he, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨b, h hb, e, he, rfl⟩`. Apply `AddSubgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `v ⟨a, ha, e, he, rfl⟩`. Conclude with `⟨a, ha, e, AddSubgroup.subset_closure ⟨1, one_mem _, e, he, (one_smul _ _).symm⟩, rfl⟩`.
+Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem closure_closure {O : Type} [CommRing O] {Ω : Type} [Field Ω] [Algebra O Ω] {V : Type}
     [AddCommGroup V] [Module Ω V] (R R' : Subalgebra O Ω) (h : R ≤ R') (L : AddSubgroup V) :
@@ -161,7 +161,7 @@ theorem closure_closure {O : Type} [CommRing O] {Ω : Type} [Field Ω] [Algebra 
     exact ⟨a, ha, e, AddSubgroup.subset_closure ⟨1, one_mem _, e, he, (one_smul _ _).symm⟩, rfl⟩
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Take `⟨h1, h2, h3⟩` from `PositivityTheory.Xgn.t_relabel_bundle O Ω K₁ ι₁ K₂ ι₂ e σ hσ y`. Conclude with `⟨h1, h2, fun s₁ s₂ hs => ⟨PositivityTheory.Xgn.A_relabel_bundle.mseg_eq e σ y hs, PositivityTheory.Xgn.A_relabel_bundle.chartRing_eq O e σ hσ y hs⟩, h3⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem relabel {O : Type} [CommRing O] {Ω : Type} [Field Ω] [Algebra O Ω] {K₁ : Type} [Fintype K₁]
     [DecidableEq K₁] {ι₁ : K₁ → Type} [∀ k, Fintype (ι₁ k)] {K₂ : Type} [Fintype K₂]
@@ -183,7 +183,7 @@ theorem relabel {O : Type} [CommRing O] {Ω : Type} [Field Ω] [Algebra O Ω] {K
     PositivityTheory.Xgn.A_relabel_bundle.chartRing_eq O e σ hσ y hs⟩, h3⟩
 
 /- English proof (translation)
-Introduce `s hs`. Establish `hs₁ : mseg (joinCoord (joinCoord x z) z₁) (assocChart s) ≠ 0` using `(hc s).1 ▸ hs`. Establish `hs₀` using `PositivityTheory.Xgn.A_pull_preserve.below_ne _ _ _ hs₁`. Rewrite using `[hl s, hp₁ _ hs₁, hp _ hs₀, (hc s).2, closure_closure _ _ (JoinPullbackAlt.chartRing_le_join O _ _ _ hs₁)]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pull_pull {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {Ω : Type}
     [Field Ω] [Algebra O Ω] {K K' K₁ : Type} [Fintype K] [Fintype K'] [Fintype K₁]
@@ -208,23 +208,21 @@ theorem pull_pull {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing 
   rfl
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ _ ι _ x d hW N V _ _ E E' hEE' K' _ _ ι' _ z hm hb EB E'B hp hp'`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Establish `hsB : SameGeneric O (joinCoord x z) EB E'B` using `(PositivityTheory.Xgn.t_pull_preserve O Ω K ι x N V E E' K' ι' z EB E'B hp hp').2.1 hEE'`. Establish `hself : SameGeneric O (joinCoord x z) EB EB` using `fun s _ => ⟨fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩, fun v hv => ⟨1, one_ne_zero, by simpa using hv⟩⟩`. Take `⟨K₁, _, _, ι₁, _, z₁, F, w, b, hm₁, hb₁, hF⟩` from `GlobalTheory.CompanionTheory.Ar.CommonFlag.main O Ω (K ⊕ K') (Sum.elim ι ι') (joinCoord x z) d hm N 1 V ![EB, E'B] (Fin.forall_fin_two.2 ⟨hself, hsB⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hq : IsPull O (joinCoord x z) z₁ EB (F 0)` using `(hF 0).1`. Establish `hq' : IsPull O (joinCoord x z) z₁ E'B (F 1)` using `(hF 1).1`. Establish `hM₁ : IsModelOver (pointIdeal O (joinCoord (joinCoord x z) z₁)) d` using `((BundleExamples.isModelOver_iff O _ d).mp hm₁).2`. Establish `hs₁ : SameGeneric O (joinCoord (joinCoord x z) z₁) (F 0) (F 1)` using `(PositivityTheory.Xgn.t_pull_preserve O Ω _ _ _ N V EB E'B K₁ ι₁ z₁ (F 0) (F 1) hq hq').2.1 hsB`. Take `⟨b₂, rfl⟩ : ∃ b₂ : Fin 2 → Fin N → K ⊕ (K' ⊕ K₁) → ℤ, b = fun j i => b₂ j i ∘ Equiv.sumAssoc K K' K₁` from `⟨fun j i => b j i ∘ (Equiv.sumAssoc K K' K₁).symm, by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `j i k`. Use the proof step `simp⟩`. Take `⟨-, f, g, hfp⟩` from `GlobalTheory.T.same_generic_flag_comparison O Ω _ _ (joinCoord (joinCoord x z) z₁) ϖ hϖ d hM₁ N V (F 0) (F 1) hs₁ w w _ _ (hF 0).2 (hF 1).2 (fun i j hij => by`. Simplify using `[Finsupp.single_apply, hij.ne])`. Establish `hσ` using `assocEquiv_fst ι ι' ι₁`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hI, hK, hc, hE⟩` from `relabel (O := O) (Equiv.sumAssoc K K' K₁) (assocEquiv ι ι' ι₁) hσ (joinCoord x (joinCoord z z₁)) _ (join_assoc x z z₁)`. Take `⟨G, hG, hGf⟩` from `hE N V (F 0)`. Take `⟨G', hG', hGf'⟩` from `hE N V (F 1)`. Establish `hr : IsPull O x (joinCoord z z₁) E G` using `pull_pull x z z₁ E EB (F 0) G hp hq (fun s => hc _ _ (assocChart_spec s)) (fun s => hG _ _ (assocChart_spec s))`. Establish `hr' : IsPull O x (joinCoord z z₁) E' G'` using `pull_pull x z z₁ E' E'B (F 1) G' hp' hq' (fun s => hc _ _ (assocChart_spec s)) (fun s => hG' _ _ (assocChart_spec s))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM₂ : IsModelOver (pointIdeal O (joinCoord x (joinCoord z z₁))) d`. Rewrite using `[hI]`. Conclude with `PairNumberRelabel.isModelOver_map _ _ hσ _ d hM₁`. Establish `hm₂ : GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O (joinCoord x (joinCoord z z₁))) d` using `(BundleExamples.isModelOver_iff O _ d).mpr ⟨hW.1.map Sum.inl, hM₂⟩`. Establish `hfp₂ : IsFlagPair ϖ (joinCoord x (joinCoord z z₁)) G G' w w (b₂ 0) (b₂ 1) (fun i => rename (assocEquiv ι ι' ι₁) (f i)) (fun i => rename (assocEquiv ι ι' ι₁) (g i))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hGf w _ hfp.flag, hGf' w _ hfp.flag', hfp.sameFlag, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hI]`. Conclude with `PairNumberRelabel.isVerticalDivisor_map _ _ hσ _ ϖ _ _ _ (hfp.vertical i)`. Rewrite using `[aeval_rename, aeval_rename, join_assoc]`. Conclude with `hfp.generic i`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨A₁, B₁⟩` from `GlobalTheory.T.same_generic_flag_difference O Ω _ _ (joinCoord x z) ϖ hϖ d hm N V EB E'B hsB K₁ ι₁ z₁ hm₁ hb₁ (F 0) (F 1) hq hq' w w _ _ f g hfp`. Take `⟨A₂, B₂⟩` from `GlobalTheory.T.same_generic_flag_difference O Ω K ι x ϖ hϖ d hW N V E E' hEE' (K' ⊕ K₁) (Sum.elim ι' ι₁) (joinCoord z z₁) hm₂ (hK.trans (hb₁.trans hb)) G G' hr hr' w w _ _ _ _ hfp₂`. Use `⟨fun k hk1 hk2 q L Q hQ => ?_, fun c P hsym hP hcd q L Q hQ a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[A₁ k hk1 hk2 q _ Q hQ, A₂ k hk1 hk2 q L Q hQ]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hI, pairNum_relabel _ _ hσ]`. Simplify using `only [pullDeg_assoc]`. Rewrite using `[B₁ c P hsym hP hcd q _ Q hQ a ha, B₂ c P hsym hP hcd q L Q hQ a ha]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[hI, rootTerm_relabel _ _ hσ]`.
-
-Simplify using `only [pullDeg_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (d : ℕ), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d → ∀ (N : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (E E' : ChartBundle O (mseg x) N V), SameGeneric O x E E' → ∀ (K' : Type) [Fintype K'] [DecidableEq K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (z : (Σ k, ι' k) → Ω), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O (joinCoord x z)) d → fnField O (joinCoord x z) = fnField O x → ∀ EB E'B : ChartBundle O (mseg (joinCoord x z)) N V, IsPull O x z E EB → IsPull O x z E' E'B → (∀ (k : ℕ), 1 ≤ k → k ≤ d + 1 → ∀ (q : ℕ) (L : Fin q → K → ℤ) (Q : MvPolynomial (Fin q) ℤ), Q.IsHomogeneous (d + 1 - k) → ck O (joinCoord x z) d N EB E'B k (fun j => pullDeg (K' := K') (L j)) Q = ck O x d N E E' k L Q) ∧ (∀ (c : ℕ) (G : MvPolynomial (Fin N) ℤ), G.IsSymmetric → G.IsHomogeneous c → c ≤ d → ∀ (q : ℕ) (L : Fin q → K → ℤ) (Q : MvPolynomial (Fin q) ℤ), Q.IsHomogeneous (d - c) → ∀ a : O, a ≠ 0 → rootNum O (joinCoord x z) d N EB G (fun j => pullDeg (K' := K') (L j)) Q a = rootNum O x d N E G L Q a) := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x d hW N V _ _ E E' hEE' K' _ _ ι' _ z hm hb EB E'B hp hp'

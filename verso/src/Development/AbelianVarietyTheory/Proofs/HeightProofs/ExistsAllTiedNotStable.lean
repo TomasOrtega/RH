@@ -23,17 +23,17 @@ namespace GlobalTheory.TypeAtCompare
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨hc, Q, hQ⟩` from `Formalism.UG.P.sig_data G p q hs`. Use `set p' := (Finset.univ.filter fun a => ε a = true).card with hp'`. Use `set q' := (Finset.univ.filter fun a => ε a = false).card with hq'`. Set `e1 : Fin p' ≃ {a // ε a = true}` to `(Fintype.equivFinOfCardEq (by rw [Fintype.card_subtype])).symm`. Set `e2 : Fin q' ≃ {a // ¬ ε a = true}` to `(Fintype.equivFinOfCardEq (by rw [Fintype.card_subtype]; simp [hq'])).symm`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : Fin p' ⊕ Fin q' ≃ Fin n` to `(Equiv.sumCongr e1 e2).trans (Equiv.sumCompl _)`. Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Establish `hJ : (P⁻¹)ᴴ * G * P⁻¹ = Formalism.REAL.Jm ε`. Rewrite using `[← h]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [Matrix.mul_nonsing_inv _ hd]; simp`. Establish `hQ' : (P⁻¹.submatrix id e)ᴴ * G * P⁻¹.submatrix id e = Formalism.UG.Jpq p' q'`. Establish `: (P⁻¹.submatrix id e)ᴴ * G * P⁻¹.submatrix id e = ((P⁻¹)ᴴ * G * P⁻¹).submatrix e e`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[Matrix.mul_apply]`. Rewrite using `[this, hJ]`. Establish `h1 : ∀ a, ε (e (Sum.inl a)) = true` using `fun a => (e1 a).2`. Establish `h2 : ∀ a, ¬ ε (e (Sum.inr a)) = true` using `fun a => (e2 a).2`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Simplify using `[Formalism.REAL.Jm, Formalism.UG.Jpq, Matrix.diagonal_apply, Matrix.one_apply, h1, h2]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hn : n = p' + q'`. Use `Fintype.card_congr e` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this.symm`. Establish `h1` using `Formalism.UG.P.sig_dim G Q hQ _ hQ'`. Establish `h2` using `Formalism.UG.P.sig_dim G _ hQ' Q hQ`. Simplify using `only [Fintype.card_fin] at h1 h2 hc`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_eq_of_congr {n p q : ℕ} {ε : Fin n → Bool} {P G : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P)
     (h : Pᴴ * Formalism.REAL.Jm ε * P = G) (hs : Formalism.UG.HasSignature G p q) :
@@ -71,9 +71,9 @@ theorem card_eq_of_congr {n p q : ℕ} {ε : Fin n → Bool} {P G : Matrix (Fin 
   omega
 
 /- English proof (translation)
-Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Establish `hg' : gᴴ * G * g = G` using `hg`. Use `show (P * g * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * g * P⁻¹) = Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (P * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * P⁻¹) := by`. Rewrite using `[h, hg', ← h]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [Matrix.mul_nonsing_inv _ hd]; simp`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_mem {n : ℕ} {ε : Fin n → Bool} {P G : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P)
     (h : Pᴴ * Formalism.REAL.Jm ε * P = G) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH G) :
@@ -89,9 +89,9 @@ theorem conj_mem {n : ℕ} {ε : Fin n → Bool} {P G : Matrix (Fin n) (Fin n) �
     _ = _ := by rw [Matrix.mul_nonsing_inv _ hd]; simp
 
 /- English proof (translation)
-Establish `hd : IsUnit G.det` using `(Matrix.isUnit_iff_isUnit_det G).1 hG`. Establish `h1 : (t • X)ᴴ = G * (-(t • X)) * G⁻¹`. Establish `h2 : Xᴴ = G * (-X) * G⁻¹`. Rewrite using `[Matrix.mul_neg, ← eq_neg_of_add_eq_zero_left hX, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one]`. Rewrite using `[conjTranspose_smul, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `show (NormedSpace.exp (t • X))ᴴ * G * NormedSpace.exp (t • X) = G`. Rewrite using `[← Matrix.exp_conjTranspose, h1, Matrix.exp_conj _ _ hG, Matrix.exp_neg]`. Establish `hu : IsUnit (NormedSpace.exp (t • X)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (Matrix.isUnit_exp _)`. Rewrite using `[Matrix.mul_assoc (G * _), Matrix.nonsing_inv_mul _ hd, Matrix.mul_one, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_mem {n : ℕ} {G X : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G) (hX : Xᴴ * G + G * X = 0) (t : ℝ) :
     NormedSpace.exp (t • X) ∈ Formalism.QuantumDeterminants.UH G := by

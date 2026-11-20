@@ -23,7 +23,7 @@ def ModOne (z : ℂ) : Prop :=
   ∃ (n : ℕ) (k : K), 0 < n ∧ σ k = z ^ n ∧ ∀ φ : K →+* ℂ, ‖φ k‖ = 1
 
 /- English proof (translation)
-Unfold `ordE`. Rewrite using `[map_pow, WithZero.log_pow]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ordE_pow (w : HeightOneSpectrum (𝓞 K)) (k : K) (n : ℕ) : ordE w (k ^ n) = n * ordE w k := by
   unfold ordE
@@ -31,11 +31,11 @@ theorem ordE_pow (w : HeightOneSpectrum (𝓞 K)) (k : K) (n : ℕ) : ordE w (k 
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, k', hn, hk', h1, h2⟩`. Establish `h3 : k' = k ^ n` using `σ.injective (by rw [h1, map_pow])`. Substitute `h3` using the available equality. Use `⟨fun h => hk' (by rw [h, zero_pow hn.ne']), ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[ordE_pow]`. Move the coercions through the operations in `at h2`. Establish `hn' : (n : ℚ) ≠ 0` using `by exact_mod_cast hn.ne'`. Apply `mul_left_cancel₀ hn'` to reduce the goal to its premises. Rewrite using `[h2, mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h0, h⟩`. Conclude with `⟨1, k, one_pos, h0, by rw [pow_one], by rw [h]; simp⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem hasVal_vp_iff (w : HeightOneSpectrum (𝓞 K)) (k : K) (r : ℚ) :
     HasVal_vp σ w (σ k) r ↔ k ≠ 0 ∧ (ordE w k : ℚ) = r * (eW w : ℚ) := by
@@ -53,11 +53,11 @@ theorem hasVal_vp_iff (w : HeightOneSpectrum (𝓞 K)) (k : K) (r : ℚ) :
     exact ⟨1, k, one_pos, h0, by rw [pow_one], by rw [h]; simp⟩
 
 /- English proof (translation)
-Unfold `UnitAtW`. Rewrite using `[hasVal_vp_iff, zero_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, h⟩`. Establish `h1 : w.valuation K k ≠ 0` using `(Valuation.ne_zero_iff _).2 h0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h2 : WithZero.log (w.valuation K k) = 0`. Establish `: ordE w k = 0` using `by exact_mod_cast h`. Unfold `ordE at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← WithZero.exp_log h1, h2, WithZero.exp_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `⟨fun h0 => by simp [h0] at h, ?_⟩` and prove the remaining obligations. Unfold `ordE`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unitAtW_iff (w : HeightOneSpectrum (𝓞 K)) (k : K) : UnitAtW σ w (σ k) ↔ w.valuation K k = 1 := by
   unfold UnitAtW
@@ -77,9 +77,9 @@ theorem unitAtW_iff (w : HeightOneSpectrum (𝓞 K)) (k : K) : UnitAtW σ w (σ 
     simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, k', hn, h1, h2⟩ φ`. Establish `h3 : k' = k ^ n` using `σ.injective (by rw [h1, map_pow])`. Establish `h4` using `h2 φ`. Rewrite `h4` using `[h3, map_pow, norm_pow]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 h4`. Introduce `h`. Conclude with `⟨1, k, one_pos, by rw [pow_one], h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem modOne_iff (k : K) : ModOne σ (σ k) ↔ ∀ φ : K →+* ℂ, ‖φ k‖ = 1 := by
   constructor

@@ -6,15 +6,13 @@ open scoped BigOperators ComplexOrder
 namespace GlobalTheory.CompanionTheory.QuotPrime
 
 /- English proof (translation)
-Establish `hY' : Y.toIntSubmodule ≠ ⊤`. Introduce `h`. Apply `hY` to reduce the goal to its premises. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: x ∈ Y.toIntSubmodule` using `by rw [h]; trivial`. Conclude with `this`. Take `⟨M, hM, hYM⟩` from `(eq_top_or_exists_le_coatom Y.toIntSubmodule).resolve_left hY'`. Establish `hs : IsSimpleModule ℤ (X ⧸ M)` using `isSimpleModule_iff_isCoatom.2 hM`. Take `⟨I, hI, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.1 hs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, rfl⟩ : ∃ p : ℤ, I = Ideal.span {p}` from `⟨_, (Ideal.span_singleton_generator I).symm⟩`. Establish `hp0 : p ≠ 0`. Introduce and unpack `rfl`. Establish `h : (⊥ : Ideal ℤ).IsMaximal` using `by simpa using hI`. Conclude with `Int.not_isField (Ring.isField_iff_maximal_bot.2 h)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp : Prime p` using `(Ideal.span_singleton_prime hp0).1 hI.isPrime`. Use `⟨p.natAbs, Int.prime_iff_natAbs_prime.1 hp, ((Int.quotientSpanEquivZMod p).toAddEquiv.toAddMonoidHom.comp e.toAddEquiv.toAddMonoidHom).comp M.mkQ.toAddMonoidHom, ?_, ?_⟩` and prove the remaining obligations. Conclude with `((Int.quotientSpanEquivZMod p).surjective.comp e.surjective).comp M.mkQ_surjective`. Introduce `y hy`. Establish `h0 : M.mkQ y = 0` using `(Submodule.Quotient.mk_eq_zero M).2 (hYM hy)`.
-
-Express the relevant statement in the definitionally equal form `(Int.quotientSpanEquivZMod p) (e (M.mkQ y)) = 0`. Rewrite using `[h0, map_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_surjective_zmod_of_ne_top (X : Type*) [AddCommGroup X] [Module.Finite ℤ X]
     (Y : AddSubgroup X) (hY : Y ≠ ⊤) :
@@ -45,7 +43,7 @@ theorem exists_surjective_zmod_of_ne_top (X : Type*) [AddCommGroup X] [Module.Fi
     rw [h0, map_zero, map_zero]
 
 /- English proof (translation)
-Introduce `k X _ _ _ Y δ hδ hY`. Use `exists_surjective_zmod_of_ne_top X Y ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hδ (AddMonoidHom.ext fun x => hY x trivial)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_surjective_zmod_of_ne_zero :
     ∀ (k X : Type) [Field k] [AddCommGroup X] [Module.Finite ℤ X] (Y : AddSubgroup X)

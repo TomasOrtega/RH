@@ -25,13 +25,11 @@ theorem openSubschemeKer_eq_ker {X : Scheme.{u}} (Z : X.IdealSheafData) (W : Z.s
     openSubschemeKer Z W = (Scheme.Opens.ι W ≫ Z.subschemeι).ker := rfl
 
 /- English proof (translation)
-Establish `hindW : Topology.IsInducing ⇑(Scheme.Opens.ι W).base` using `(Scheme.Opens.ι W).isEmbedding.toIsInducing`. Establish `hrangeW : Set.range ⇑(Scheme.Opens.ι W).base = (W : Set Z.subscheme)`. Rewrite using `[Scheme.Opens.range_ι]`. Establish `hqcW : QuasiCompact (Scheme.Opens.ι W)`. Use `⟨fun U _ hUc => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hindW.isCompact_iff.mpr ?_` and prove the remaining obligations. Rewrite using `[Set.image_preimage_eq_inter_range, hrangeW]`. Conclude with `hUc.inter_right hW`. Establish `hqc : QuasiCompact (Scheme.Opens.ι W ≫ Z.subschemeι)` using `inferInstance`. Establish `hclosed : IsClosed (⇑Z.subschemeι.base '' (W : Set Z.subscheme))` using `Z.subschemeι.isClosedEmbedding.isClosedMap _ hW`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomp : ⇑(Scheme.Opens.ι W ≫ Z.subschemeι).base = ⇑Z.subschemeι.base ∘ ⇑(Scheme.Opens.ι W).base` using `rfl`. Establish `hrange : Set.range ⇑(Scheme.Opens.ι W ≫ Z.subschemeι).base = ⇑Z.subschemeι.base '' (W : Set Z.subscheme)`. Rewrite using `[hcomp, Set.range_comp, hrangeW]`. Rewrite using `[openSubschemeKer_eq_ker, Scheme.Hom.support_ker]`. Use `show closure (Set.range ⇑(Scheme.Opens.ι W ≫ Z.subschemeι).base) = ⇑Z.subschemeι.base '' (W : Set Z.subscheme)`.
-
-Rewrite using `[hrange]`. Conclude with `hclosed.closure_eq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem support_openSubschemeKer {X : Scheme.{u}} (Z : X.IdealSheafData) (W : Z.subscheme.Opens)
     (hW : IsClosed (W : Set Z.subscheme)) :
@@ -60,7 +58,7 @@ theorem support_openSubschemeKer {X : Scheme.{u}} (Z : X.IdealSheafData) (W : Z.
   exact hclosed.closure_eq
 
 /- English proof (translation)
-Establish `: IsClosedImmersion (Scheme.Opens.ι W)` using `W.isClosedImmersion_ι_of_isClosed hW`. Establish `: IsClosedImmersion (Scheme.Opens.ι W ≫ Z.subschemeι)` using `inferInstance`. Establish `hker : (Scheme.Opens.ι W ≫ Z.subschemeι).ker = (openSubschemeKer Z W).subschemeι.ker` using `(Scheme.IdealSheafData.ker_subschemeι (openSubschemeKer Z W)).symm`. Use `⟨IsClosedImmersion.lift (openSubschemeKer Z W).subschemeι (Scheme.Opens.ι W ≫ Z.subschemeι) (le_of_eq hker.symm), ?_, IsClosedImmersion.lift_fac _ _ _⟩` and prove the remaining obligations. Conclude with `IsClosedImmersion.isIso_of_ker_eq (Scheme.Opens.ι W ≫ Z.subschemeι) (openSubschemeKer Z W).subschemeι _ (IsClosedImmersion.lift_fac _ _ _) hker`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_isIso_openSubschemeKer_subscheme {X : Scheme.{u}} (Z : X.IdealSheafData)
     (W : Z.subscheme.Opens) (hW : IsClosed (W : Set Z.subscheme)) :
@@ -77,9 +75,9 @@ private theorem exists_isIso_openSubschemeKer_subscheme {X : Scheme.{u}} (Z : X.
     (openSubschemeKer Z W).subschemeι _ (IsClosedImmersion.lift_fac _ _ _) hker
 
 /- English proof (translation)
-Take `⟨e, he, hfac⟩` from `exists_isIso_openSubschemeKer_subscheme Z W hW`. Use `he` as an intermediate fact. Establish `hsm : Smooth (Scheme.Opens.ι W ≫ Z.subschemeι ≫ g)` using `inferInstance`. Establish `hfac2 : inv e ≫ Scheme.Opens.ι W ≫ Z.subschemeι ≫ g = (openSubschemeKer Z W).subschemeι ≫ g`. Rewrite using `[← Category.assoc (Scheme.Opens.ι W) Z.subschemeι g, ← hfac, Category.assoc, IsIso.inv_hom_id_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : Smooth (inv e ≫ Scheme.Opens.ι W ≫ Z.subschemeι ≫ g)` using `inferInstance`. Rewrite `key` using `[hfac2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem smooth_subschemeι_openSubschemeKer_comp {X S : Scheme.{u}} (Z : X.IdealSheafData)
     (W : Z.subscheme.Opens) (hW : IsClosed (W : Set Z.subscheme)) (g : X ⟶ S)
@@ -102,7 +100,7 @@ private theorem comap_eq_ker_fst {A B : Scheme.{u}} (f : A ⟶ B) (I : B.IdealSh
     I.comap f = (Limits.pullback.fst f I.subschemeι).ker := rfl
 
 /- English proof (translation)
-Establish `h` using `isPullback_morphismRestrict K.subschemeι V`. Establish `hfac : h.isoPullback.hom ≫ Limits.pullback.fst (Scheme.Opens.ι V) K.subschemeι = K.subschemeι ∣_ V` using `h.isoPullback_hom_fst`. Rewrite using `[comap_eq_ker_fst, ← hfac, Scheme.Hom.ker_comp_of_isIso]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem comap_opensι_eq_ker_morphismRestrict {T : Scheme.{u}} (K : T.IdealSheafData)
     (V : T.Opens) : K.comap (Scheme.Opens.ι V) = (K.subschemeι ∣_ V).ker := by
@@ -112,9 +110,7 @@ private theorem comap_opensι_eq_ker_morphismRestrict {T : Scheme.{u}} (K : T.Id
   rw [comap_eq_ker_fst, ← hfac, Scheme.Hom.ker_comp_of_isIso]
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf]`. Use `inf_eq_right.mpr ?_` and prove the remaining obligations. Introduce `x hx`. Use `show x ∈ Set.range ⇑(Scheme.Opens.ι V).base`. Rewrite using `[Scheme.Opens.range_ι]`.
-
-Conclude with `h hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem image_preimage_opensι_of_le {Y : Scheme.{u}} (V O : Y.Opens) (h : O ≤ V) :
     Scheme.Opens.ι V ''ᵁ (Scheme.Opens.ι V ⁻¹ᵁ O) = O := by
@@ -126,7 +122,7 @@ private theorem image_preimage_opensι_of_le {Y : Scheme.{u}} (V O : Y.Opens) (h
   exact h hx
 
 /- English proof (translation)
-Establish `hb` using `AlgebraicGeometry.IsOpenImmersion.bijective_appLE_of_image_eq (Scheme.Opens.ι V) O (Scheme.Opens.ι V ⁻¹ᵁ O) le_rfl (image_preimage_opensι_of_le V O h)`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `hb.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem injective_app_opensι_of_le {Y : Scheme.{u}} (V O : Y.Opens) (h : O ≤ V) :
     Function.Injective (CommRingCat.Hom.hom ((Scheme.Opens.ι V).app O)) := by
@@ -136,17 +132,17 @@ private theorem injective_app_opensι_of_le {Y : Scheme.{u}} (V O : Y.Opens) (h 
   exact hb.1
 
 /- English proof (translation)
-Establish `hpre : Scheme.Opens.ι V ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1) = P.1` using `(Scheme.Opens.ι V).preimage_image_eq P.1`. Establish `hpre2 : ((m ∣_ V) ⁻¹ᵁ P.1) = Scheme.Opens.ι (m ⁻¹ᵁ V) ⁻¹ᵁ (m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1))`. Rewrite using `[← Scheme.Hom.comp_preimage, ← morphismRestrict_ι, Scheme.Hom.comp_preimage, hpre]`. Establish `hQV : (Scheme.Opens.ι V ''ᵁ P.1) ≤ V` using `Scheme.Opens.ι_image_le ..`. Establish `hle : m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1) ≤ m ⁻¹ᵁ V` using `fun x hx => hQV hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `himg : Scheme.Opens.ι (m ⁻¹ᵁ V) ''ᵁ ((m ∣_ V) ⁻¹ᵁ P.1) = m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1)`. Rewrite using `[hpre2]`. Conclude with `image_preimage_opensι_of_le (m ⁻¹ᵁ V) (m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1)) hle`. Establish `hbij` using `AlgebraicGeometry.IsOpenImmersion.bijective_appLE_of_image_eq (Scheme.Opens.ι V) (Scheme.Opens.ι V ''ᵁ P.1) P.1 e rfl`. Establish `hinj` using `(AlgebraicGeometry.IsOpenImmersion.bijective_appLE_of_image_eq (Scheme.Opens.ι (m ⁻¹ᵁ V)) (m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1)) ((m ∣_ V) ⁻¹ᵁ P.1) hpre2.le himg).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : Scheme.Hom.appLE (Scheme.Opens.ι V) (Scheme.Opens.ι V ''ᵁ P.1) P.1 e ≫ (m ∣_ V).app P.1 = m.app (Scheme.Opens.ι V ''ᵁ P.1) ≫ Scheme.Hom.appLE (Scheme.Opens.ι (m ⁻¹ᵁ V)) (m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1)) ((m ∣_ V) ⁻¹ᵁ P.1) hpre2.le`. Rewrite using `[Scheme.Hom.app_eq_appLE (m ∣_ V), Scheme.Hom.app_eq_appLE m, Scheme.Hom.appLE_comp_appLE (m ∣_ V) (Scheme.Opens.ι V) (Scheme.Opens.ι V ''ᵁ P.1) P.1 ((m ∣_ V) ⁻¹ᵁ P.1) e le_rfl, Scheme.Hom.appLE_comp_appLE (Scheme.Opens.ι (m ⁻¹ᵁ V)) m (Scheme.Opens.ι V ''ᵁ P.1) (m ⁻¹ᵁ (Scheme.Ope …`. Conclude with `AlgebraicGeometry.Scheme.Hom.appLE_congr_hom (morphismRestrict_ι m V) _ _ _ _`. Establish `hsqr : ∀ x, (CommRingCat.Hom.hom ((m ∣_ V).app P.1)) ((CommRingCat.Hom.hom (Scheme.Hom.appLE (Scheme.Opens.ι V) (Scheme.Opens.ι V ''ᵁ P.1) P.1 e)) x) = (CommRingCat.Hom.hom (Scheme.Hom.appLE (Scheme.Opens.ι (m ⁻¹ᵁ V)) (m ⁻¹ᵁ (Scheme.Opens.ι V ''ᵁ P.1)) ((m ∣_ V) ⁻¹ᵁ P.1) hpre2.le …`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h'` using `congrArg (fun mm => (CommRingCat.Hom.hom mm) x) hsq`. Simplify `h'` using `only [CommRingCat.hom_comp, RingHom.comp_apply]`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Introduce `y hy`. Rewrite `hy` using `[RingHom.mem_ker]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, rfl⟩` from `hbij.2 y`. Use `Ideal.mem_map_of_mem _ ?_` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker]`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← hsqr x, hy, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, hsqr x]`. Rewrite `hx` using `[RingHom.mem_ker]`. Rewrite using `[hx, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ker_app_morphismRestrict_eq_map_ker {Y T : Scheme.{u}} (m : Y ⟶ T) (V : T.Opens)
     (P : V.toScheme.affineOpens)
@@ -206,21 +202,21 @@ private theorem ker_app_morphismRestrict_eq_map_ker {Y T : Scheme.{u}} (m : Y �
     rw [hx, map_zero]
 
 /- English proof (translation)
-Establish `hindW : Topology.IsInducing ⇑(Scheme.Opens.ι W).base` using `(Scheme.Opens.ι W).isEmbedding.toIsInducing`. Establish `hrangeW : Set.range ⇑(Scheme.Opens.ι W).base = (W : Set Z.subscheme)`. Rewrite using `[Scheme.Opens.range_ι]`. Establish `hqcW : QuasiCompact (Scheme.Opens.ι W)`. Use `⟨fun V _ hVc => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hindW.isCompact_iff.mpr ?_` and prove the remaining obligations. Rewrite using `[Set.image_preimage_eq_inter_range, hrangeW]`. Conclude with `hVc.inter_right hW`. Establish `hqc : QuasiCompact (Scheme.Opens.ι W ≫ Z.subschemeι)` using `inferInstance`. Establish `hqc1 : QuasiCompact ((openSubschemeKer Z W).subschemeι ∣_ U)` using `inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqc2 : QuasiCompact (Z.subschemeι ∣_ U)` using `inferInstance`. Rewrite using `[restrictIdeal_eq_comap_ι (openSubschemeKer Z W) U, restrictIdeal_eq_comap_ι Z U, comap_opensι_eq_ker_morphismRestrict (openSubschemeKer Z W) U, comap_opensι_eq_ker_morphismRestrict Z U]`. Use `Scheme.IdealSheafData.ext ?_` and prove the remaining obligations. Use function extensionality and compare the values at `P`. Establish `hQaff : IsAffineOpen (Scheme.Opens.ι U ''ᵁ P.1)` using `P.2.image_of_isOpenImmersion (Scheme.Opens.ι U)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpre : Scheme.Opens.ι U ⁻¹ᵁ (Scheme.Opens.ι U ''ᵁ P.1) = P.1` using `(Scheme.Opens.ι U).preimage_image_eq P.1`. Establish `e : P.1 ≤ Scheme.Opens.ι U ⁻¹ᵁ (Scheme.Opens.ι U ''ᵁ P.1)` using `hpre.ge`. Establish `hQU : (Scheme.Opens.ι U ''ᵁ P.1) ≤ U` using `Scheme.Opens.ι_image_le ..`. Establish `hmono : (Z.subschemeι ⁻¹ᵁ (Scheme.Opens.ι U ''ᵁ P.1)) ≤ (Z.subschemeι ⁻¹ᵁ U)` using `fun x hx => hQU hx`. Establish `hOW : (Z.subschemeι ⁻¹ᵁ (Scheme.Opens.ι U ''ᵁ P.1)) ≤ W` using `le_trans hmono hU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinjW` using `injective_app_opensι_of_le W (Z.subschemeι ⁻¹ᵁ (Scheme.Opens.ι U ''ᵁ P.1)) hOW`. Establish `hkerA : RingHom.ker (CommRingCat.Hom.hom ((openSubschemeKer Z W).subschemeι.app (Scheme.Opens.ι U ''ᵁ P.1))) = RingHom.ker (CommRingCat.Hom.hom ((Scheme.Opens.ι W ≫ Z.subschemeι).app (Scheme.Opens.ι U ''ᵁ P.1)))`. Establish `h1` using `AlgebraicGeometry.Scheme.Hom.ker_apply (openSubschemeKer Z W).subschemeι ⟨Scheme.Opens.ι U ''ᵁ P.1, hQaff⟩`. Establish `h2` using `AlgebraicGeometry.Scheme.Hom.ker_apply (Scheme.Opens.ι W ≫ Z.subschemeι) ⟨Scheme.Opens.ι U ''ᵁ P.1, hQaff⟩`. Rewrite `h1` using `[Scheme.IdealSheafData.ker_subschemeι]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, ← h2, openSubschemeKer_eq_ker]`. Establish `hmain : RingHom.ker (CommRingCat.Hom.hom ((openSubschemeKer Z W).subschemeι.app (Scheme.Opens.ι U ''ᵁ P.1))) = RingHom.ker (CommRingCat.Hom.hom (Z.subschemeι.app (Scheme.Opens.ι U ''ᵁ P.1)))`. Rewrite using `[hkerA]`. Use extensionality with `x`. Establish `hfac : (CommRingCat.Hom.hom ((Scheme.Opens.ι W ≫ Z.subschemeι).app (Scheme.Opens.ι U ''ᵁ P.1))) x = (CommRingCat.Hom.hom ((Scheme.Opens.ι W).app (Z.subschemeι ⁻¹ᵁ (Scheme.Opens.ι U ''ᵁ P.1)))) ((CommRingCat.Hom.hom (Z.subschemeι.app (Scheme.Opens.ι U ''ᵁ P.1))) x)` using `by show (CommRingCat.Hom.hom (Z.subschemeι.app (Scheme.Opens.ι U ''ᵁ P.1) ≫ (Scheme.Opens.ι W).app (Z.subschemeι ⁻¹ᵁ (Scheme.Opens.ι U ''ᵁ P.1)))) x = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CommRingCat.hom_comp, RingHom.comp_apply]`. Simplify using `only [RingHom.mem_ker, hfac]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `hinjW (hx.trans (map_zero _).symm)`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hx`. Conclude with `(congrArg _ hx).trans (map_zero _)`. Rewrite using `[AlgebraicGeometry.Scheme.Hom.ker_apply ((openSubschemeKer Z W).subschemeι ∣_ U) P, AlgebraicGeometry.Scheme.Hom.ker_apply (Z.subschemeι ∣_ U) P, ker_app_morphismRestrict_eq_map_ker (openSubschemeKer Z W).subschemeι U P e, ker_app_morphismRestrict_eq_map_ker Z.subschemeι U P e, h …`.
+A detailed English derivation is pending.
 -/
 theorem restrictIdeal_openSubschemeKer_of_preimage_le {X : Scheme.{u}} (Z : X.IdealSheafData)
     (W : Z.subscheme.Opens) (hW : IsClosed (W : Set Z.subscheme)) (U : X.Opens)
@@ -289,7 +285,7 @@ theorem restrictIdeal_openSubschemeKer_of_preimage_le {X : Scheme.{u}} (Z : X.Id
     ker_app_morphismRestrict_eq_map_ker Z.subschemeι U P e, hmain]
 
 /- English proof (translation)
-Establish `h : CategoryTheory.Limits.IsTerminal (Y.presheaf.obj (Opposite.op V))` using `Y.sheaf.isTerminalOfEqEmpty hV`. Conclude with `CommRingCat.subsingleton_of_isTerminal h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem subsingleton_sections_of_eq_bot {Y : Scheme.{u}} (V : Y.Opens)
     (hV : V = ⊥) : Subsingleton ↥(Y.presheaf.obj (Opposite.op V)) := by
@@ -298,21 +294,19 @@ private theorem subsingleton_sections_of_eq_bot {Y : Scheme.{u}} (V : Y.Opens)
   exact CommRingCat.subsingleton_of_isTerminal h
 
 /- English proof (translation)
-Establish `hnot : ∀ y : (openSubschemeKer Z W).subscheme, (openSubschemeKer Z W).subschemeι.base y ∉ U`. Introduce `y hy`. Establish `hmem : (openSubschemeKer Z W).subschemeι.base y ∈ ((openSubschemeKer Z W).support : Set X)`. Rewrite using `[← Scheme.IdealSheafData.range_subschemeι]`. Conclude with `Set.mem_range_self y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem` using `[support_openSubschemeKer Z W hW]`. Take `⟨w, hwW, hw⟩` from `hmem`. Use `hU w hwW ?_` and prove the remaining obligations. Rewrite using `[hw]`. Conclude with `hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hempty : ∀ _y : ((openSubschemeKer Z W).subschemeι ⁻¹ᵁ U).toScheme, False`. Introduce `y`. Establish `h1 : (Scheme.Opens.ι ((openSubschemeKer Z W).subschemeι ⁻¹ᵁ U)).base y ∈ ((openSubschemeKer Z W).subschemeι ⁻¹ᵁ U : Set (openSubschemeKer Z W).subscheme)`. Rewrite using `[← Scheme.Opens.range_ι]`. Conclude with `Set.mem_range_self y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hnot _ h1`. Establish `hObot : ∀ O : (((openSubschemeKer Z W).subschemeι ⁻¹ᵁ U).toScheme).Opens, O = ⊥`. Introduce `O`. Use `le_antisymm ?_ bot_le` and prove the remaining obligations. Introduce `y _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `(hempty y).elim`. Establish `hqcm : QuasiCompact ((openSubschemeKer Z W).subschemeι ∣_ U)`. Use `⟨fun O _ _ => ?_⟩` and prove the remaining obligations. Establish `hE : (⇑((openSubschemeKer Z W).subschemeι ∣_ U).base ⁻¹' O) = ∅`. Use extensionality with `y`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Introduce `_`. Conclude with `hempty y`. Rewrite using `[hE]`. Conclude with `isCompact_empty`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[restrictIdeal_eq_comap_ι, comap_opensι_eq_ker_morphismRestrict (openSubschemeKer Z W) U]`. Use `Scheme.IdealSheafData.ext ?_` and prove the remaining obligations. Use function extensionality and compare the values at `V`. Establish `hker : RingHom.ker (CommRingCat.Hom.hom (((openSubschemeKer Z W).subschemeι ∣_ U).app V.1)) = ⊤`. Use `subsingleton_sections_of_eq_bot (((openSubschemeKer Z W).subschemeι ∣_ U) ⁻¹ᵁ V.1) (hObot _)` as an intermediate fact.
-
-Rewrite using `[Ideal.eq_top_iff_one, RingHom.mem_ker]`. Conclude with `Subsingleton.elim _ _`. Rewrite using `[AlgebraicGeometry.Scheme.Hom.ker_apply ((openSubschemeKer Z W).subschemeι ∣_ U) V, hker]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem restrictIdeal_openSubschemeKer_eq_top {X : Scheme.{u}} (Z : X.IdealSheafData)
     (W : Z.subscheme.Opens) (hW : IsClosed (W : Set Z.subscheme)) (U : X.Opens)
@@ -363,11 +357,9 @@ theorem restrictIdeal_openSubschemeKer_eq_top {X : Scheme.{u}} (Z : X.IdealSheaf
   simp
 
 /- English proof (translation)
-Establish `hind : Topology.IsInducing ⇑Z.subschemeι.base` using `Z.subschemeι.isEmbedding.toIsInducing`. Take `⟨t, ht, hteq⟩` from `hind.isOpen_iff.mp W.isOpen`. Take `⟨w, hw, rfl⟩` from `hx`. Use `⟨⟨t, ht⟩, ?_, ?_⟩` and prove the remaining obligations. Establish `hwt : w ∈ ⇑Z.subschemeι.base ⁻¹' t`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hteq]`. Conclude with `hw`. Conclude with `hwt`. Introduce `y hy`. Establish `hy' : y ∈ ⇑Z.subschemeι.base ⁻¹' t` using `hy`.
-
-Rewrite `hy'` using `[hteq]`. Conclude with `hy'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_opens_preimage_subschemeι_le {X : Scheme.{u}} (Z : X.IdealSheafData)
     (W : Z.subscheme.Opens) (x : X)
@@ -388,7 +380,7 @@ theorem exists_opens_preimage_subschemeι_le {X : Scheme.{u}} (Z : X.IdealSheafD
     exact hy'
 
 /- English proof (translation)
-Establish `hclosed : IsClosed (⇑Z.subschemeι.base '' (W : Set Z.subscheme))` using `Z.subschemeι.isClosedEmbedding.isClosedMap _ hW`. Use `⟨⟨(⇑Z.subschemeι.base '' (W : Set Z.subscheme))ᶜ, hclosed.isOpen_compl⟩, hx, ?_⟩` and prove the remaining obligations. Introduce `w hw hmem`. Conclude with `hmem ⟨w, hw, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_opens_notMem_image {X : Scheme.{u}} (Z : X.IdealSheafData)
     (W : Z.subscheme.Opens) (hW : IsClosed (W : Set Z.subscheme)) (x : X)
@@ -401,9 +393,9 @@ theorem exists_opens_notMem_image {X : Scheme.{u}} (Z : X.IdealSheafData)
   exact hmem ⟨w, hw, rfl⟩
 
 /- English proof (translation)
-Establish `hinjW` using `injective_app_opensι_of_le W (Z.subschemeι ⁻¹ᵁ V) hVW`. Use extensionality with `a`. Establish `hfac : (CommRingCat.Hom.hom ((Scheme.Opens.ι W ≫ Z.subschemeι).app V)) a = (CommRingCat.Hom.hom ((Scheme.Opens.ι W).app (Z.subschemeι ⁻¹ᵁ V))) ((CommRingCat.Hom.hom (Z.subschemeι.app V)) a)` using `by show (CommRingCat.Hom.hom (Z.subschemeι.app V ≫ (Scheme.Opens.ι W).app (Z.subschemeι ⁻¹ᵁ V))) a = _`. Rewrite using `[CommRingCat.hom_comp, RingHom.comp_apply]`. Simplify using `only [RingHom.mem_ker, hfac]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `ha`. Conclude with `hinjW (ha.trans (map_zero _).symm)`. Introduce `ha`. Conclude with `(congrArg _ ha).trans (map_zero _)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem ker_app_opensι_comp_subschemeι_eq_of_preimage_le {X : Scheme.{u}} (Z : X.IdealSheafData) (W : Z.subscheme.Opens)
     (V : X.Opens) (hVW : (Z.subschemeι ⁻¹ᵁ V) ≤ W) :
@@ -425,7 +417,7 @@ private theorem ker_app_opensι_comp_subschemeι_eq_of_preimage_le {X : Scheme.{
     exact (congrArg _ ha).trans (map_zero _)
 
 /- English proof (translation)
-Establish `hmap` using `J.map_ideal_basicOpen U s`. Rewrite `hmap` using `[hJ, Ideal.map_span, Set.image_singleton]`. Use `U.2.isLocalization_basicOpen s` as an intermediate fact. Use `⟨_, ?_, hmap.symm⟩` and prove the remaining obligations. Conclude with `IsLocalization.nonZeroDivisors_le_comap (Submonoid.powers s) Γ(X, X.basicOpen s) hf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_ideal_basicOpen_eq_span_singleton_of_eq_span {X : Scheme.{u}} (J : X.IdealSheafData)
     (U : X.affineOpens) (s f : Γ(X, U.1)) (hf : f ∈ nonZeroDivisors Γ(X, U.1))
@@ -439,7 +431,7 @@ private theorem exists_ideal_basicOpen_eq_span_singleton_of_eq_span {X : Scheme.
   exact IsLocalization.nonZeroDivisors_le_comap (Submonoid.powers s) Γ(X, X.basicOpen s) hf
 
 /- English proof (translation)
-Use `subsingleton_sections_of_eq_bot V hV` as an intermediate fact. Conclude with `Subsingleton.elim _ _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem one_eq_zero_sections_of_eq_bot {Y : Scheme.{u}} (V : Y.Opens) (hV : V = ⊥) :
     (1 : Γ(Y, V)) = 0 := by
@@ -447,25 +439,23 @@ private theorem one_eq_zero_sections_of_eq_bot {Y : Scheme.{u}} (V : Y.Opens) (h
   exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Establish `hindW : Topology.IsInducing ⇑(Scheme.Opens.ι W).base` using `(Scheme.Opens.ι W).isEmbedding.toIsInducing`. Establish `hrangeW : Set.range ⇑(Scheme.Opens.ι W).base = (W : Set Z.subscheme)`. Rewrite using `[Scheme.Opens.range_ι]`. Establish `hqcW : QuasiCompact (Scheme.Opens.ι W)`. Use `⟨fun U _ hUc => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hindW.isCompact_iff.mpr ?_` and prove the remaining obligations. Rewrite using `[Set.image_preimage_eq_inter_range, hrangeW]`. Conclude with `hUc.inter_right hW`. Establish `hqc : QuasiCompact (Scheme.Opens.ι W ≫ Z.subschemeι)` using `inferInstance`. Establish `hpiece : ∀ V : X.affineOpens, (Z.subschemeι ⁻¹ᵁ V.1) ≤ W → (openSubschemeKer Z W).ideal V = Z.ideal V`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `V hVW`. Establish `h2 : RingHom.ker (CommRingCat.Hom.hom (Z.subschemeι.app V.1)) = Z.ideal V`. Rewrite using `[← AlgebraicGeometry.Scheme.Hom.ker_apply Z.subschemeι V, Scheme.IdealSheafData.ker_subschemeι]`. Rewrite using `[openSubschemeKer_eq_ker, AlgebraicGeometry.Scheme.Hom.ker_apply, ker_app_opensι_comp_subschemeι_eq_of_preimage_le Z W V.1 hVW, h2]`. Establish `hpiecetop : ∀ V : X.affineOpens, ((Scheme.Opens.ι W ≫ Z.subschemeι) ⁻¹ᵁ V.1) = ⊥ → (openSubschemeKer Z W).ideal V = ⊤`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `V hbot`. Rewrite using `[openSubschemeKer_eq_ker, AlgebraicGeometry.Scheme.Hom.ker_apply, Ideal.eq_top_iff_one, RingHom.mem_ker, map_one]`. Conclude with `one_eq_zero_sections_of_eq_bot _ hbot`. Introduce `x`. Distinguish the cases in `hx : x ∈ ⇑Z.subschemeι.base '' (W : Set Z.subscheme)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hxN, hNle⟩` from `exists_opens_preimage_subschemeι_le Z W x hx`. Take `⟨U₁, f₁, hxU₁, hf₁, hZU₁⟩` from `hZ x`. Establish `hU₁ : IsAffineOpen U₁.1` using `U₁.2`. Take `⟨s, hsN, hxs⟩` from `hU₁.exists_basicOpen_le (⟨x, hxN⟩ : ↥N) hxU₁`. Take `⟨f, hf, hZU⟩` from `exists_ideal_basicOpen_eq_span_singleton_of_eq_span Z U₁ s f₁ hf₁ hZU₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hVW : (Z.subschemeι ⁻¹ᵁ (X.basicOpen s)) ≤ W` using `fun v hv => hNle (hsN hv)`. Use `⟨⟨X.basicOpen s, hU₁.basicOpen s⟩, f, hxs, hf, ?_⟩` and prove the remaining obligations. Conclude with `(hpiece ⟨X.basicOpen s, hU₁.basicOpen s⟩ hVW).trans hZU`. Take `⟨N, hxN, hNno⟩` from `exists_opens_notMem_image Z W hW x hx`. Choose the witnesses or unpack the hypotheses as in `⟨U₀, hxU₀⟩ : ∃ U₀ : X.affineOpens, x ∈ U₀.1 := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hx' : x ∈ (⊤ : X.Opens)` using `Set.mem_univ x`. Rewrite `hx'` using `[← iSup_affineOpens_eq_top X]`. Take `⟨U₀, hU₀⟩` from `Opens.mem_iSup.mp hx'`. Conclude with `⟨U₀, hU₀⟩`. Establish `hU₀ : IsAffineOpen U₀.1` using `U₀.2`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨s, hsN, hxs⟩` from `hU₀.exists_basicOpen_le (⟨x, hxN⟩ : ↥N) hxU₀`. Use `⟨⟨X.basicOpen s, hU₀.basicOpen s⟩, 1, hxs, one_mem _, ?_⟩` and prove the remaining obligations. Establish `hbot : (Scheme.Opens.ι W ≫ Z.subschemeι) ⁻¹ᵁ (X.basicOpen s) = ⊥`. Use `le_antisymm ?_ bot_le` and prove the remaining obligations. Introduce `w hw`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw2 : Z.subschemeι.base ((Scheme.Opens.ι W).base w) ∈ X.basicOpen s` using `hw`. Establish `hmem : (Scheme.Opens.ι W).base w ∈ (W : Set Z.subscheme)`. Rewrite using `[← Scheme.Opens.range_ι W]`. Conclude with `⟨w, rfl⟩`. Conclude with `absurd (hsN hw2) (hNno _ hmem)`.
-
-Rewrite using `[Ideal.span_singleton_one]`. Conclude with `hpiecetop ⟨X.basicOpen s, hU₀.basicOpen s⟩ hbot`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocallyGeneratedByNonZeroDivisor_openSubschemeKer {X : Scheme.{u}} (Z : X.IdealSheafData)
     (W : Z.subscheme.Opens) (hW : IsClosed (W : Set Z.subscheme))

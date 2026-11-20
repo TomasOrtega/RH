@@ -17,14 +17,14 @@ section ann
 variable {T T' : ℝ}
 
 /- English proof (translation)
-Unfold `kap`. Conclude with `(mul_pos (Real.sqrt_pos.2 hT) (Real.sqrt_pos.2 hT')).ne'` after adjusting the coercions.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma kap_ne (hT : 0 < T) (hT' : 0 < T') : kap T T' ≠ 0 := by
   unfold kap
   exact_mod_cast (mul_pos (Real.sqrt_pos.2 hT) (Real.sqrt_pos.2 hT')).ne'
 
 /- English proof (translation)
-Unfold `kap`. Rewrite using `[← Complex.ofReal_mul, mul_mul_mul_comm, Real.mul_self_sqrt hT.le, Real.mul_self_sqrt hT'.le]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma kap_sq (hT : 0 < T) (hT' : 0 < T') : kap T T' * kap T T' = ((T * T' : ℝ) : ℂ) := by
   unfold kap
@@ -36,14 +36,14 @@ Both sides reduce to the same expression.
 lemma wZ_eq (ζ : ℂ) : wZ T T' ζ = -(kap T T')⁻¹ * ζ := rfl
 
 /- English proof (translation)
-Rewrite using `[wZ_eq, star_mul', star_neg, star_inv₀, kap_star]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma wZ_star (ζ : ℂ) : star (wZ T T' ζ) = -(kap T T')⁻¹ * conj ζ := by
   rw [wZ_eq, star_mul', star_neg, star_inv₀, kap_star]
   rfl
 
 /- English proof (translation)
-Introduce `h`. Rewrite `hζ` using `[h, map_zero]`. Conclude with `absurd hζ (not_lt.2 (mul_pos hT hT').le)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma zeta_ne (hT : 0 < T) (hT' : 0 < T') {ζ : ℂ} (hζ : T * T' < Complex.normSq ζ) : ζ ≠ 0 := by
   intro h
@@ -51,11 +51,11 @@ lemma zeta_ne (hT : 0 < T) (hT' : 0 < T') {ζ : ℂ} (hζ : T * T' < Complex.nor
   exact absurd hζ (not_lt.2 (mul_pos hT hT').le)
 
 /- English proof (translation)
-Establish `hk` using `kap_ne hT hT'`. Establish `h1` using `sig_sq hζ`. Establish `h2` using `kap_sq hT hT'`. Establish `h3 : gg (T * T') ζ = ζ * conj ζ - ((T * T' : ℝ) : ℂ)`. Rewrite using `[Complex.mul_conj]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `gg`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[wZ_star, wZ_eq, sZ_eq T T' hT hT' ζ hζ]`. Establish `h4 : ζ * conj ζ - sig (T * T') ζ * sig (T * T') ζ = kap T T' * kap T T'` using `by rw [h1, h3, h2]; ring`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `h4`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma ws_rel (hT : 0 < T) (hT' : 0 < T') {ζ : ℂ} (hζ : T * T' < Complex.normSq ζ) :
     wZ T T' ζ * star (wZ T T' ζ) - sZ T T' ζ * sZ T T' ζ = 1 := by
@@ -70,14 +70,14 @@ lemma ws_rel (hT : 0 < T) (hT' : 0 < T') {ζ : ℂ} (hζ : T * T' < Complex.norm
   linear_combination h4
 
 /- English proof (translation)
-Unfold `nuI`. Rewrite using `[nu_eq, star_star]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma nuI_eq (ζ : ℂ) : nuI k T T' ζ = nuG k (wZ T T' ζ) (-sZ T T' ζ) (star (wZ T T' ζ)) := by
   unfold nuI
   rw [nu_eq, star_star]
 
 /- English proof (translation)
-Rewrite using `[nuI_eq, nu_eq]`. Establish `h` using `nuG_mul h0 (wZ T T' ζ) (-sZ T T' ζ) (star (wZ T T' ζ)) (by linear_combination ws_rel hT hT' hζ)`. Rewrite `h` using `[neg_neg]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma nuI_mul (h0 : (0 : Fin (k + 1)) ≠ Fin.last k) (hT : 0 < T) (hT' : 0 < T') {ζ : ℂ}
     (hζ : T * T' < Complex.normSq ζ) : nuI k T T' ζ * nu k (wZ T T' ζ) (sZ T T' ζ) = 1 := by
@@ -90,9 +90,7 @@ end ann
 def PSL (k : ℕ) (TT : ℝ) (C : ℂ → Mb k) : Prop := (∀ i j, PS TT (fun ζ => C ζ i j)) ∧ ∀ ζ, InL k (C ζ)
 
 /- English proof (translation)
-Use `⟨fun i j => ?_, fun ζ i => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `ps_mul hf (ps_const (A i j))`. Use `show f ζ * A i (Fin.last k) = 0`. Rewrite using `[(hA i).1, mul_zero]`. Use `show f ζ * A (Fin.last k) i = 0`.
-
-Rewrite using `[(hA i).2, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma psl_smul {TT : ℝ} {f : ℂ → ℂ} (hf : PS TT f) {A : Mb k} (hA : InL k A) : PSL k TT (fun ζ => f ζ • A) := by
   refine ⟨fun i j => ?_, fun ζ i => ⟨?_, ?_⟩⟩
@@ -103,7 +101,7 @@ lemma psl_smul {TT : ℝ} {f : ℂ → ℂ} (hf : PS TT f) {A : Mb k} (hA : InL 
     rw [(hA i).2, mul_zero]
 
 /- English proof (translation)
-Use `⟨fun i j => ps_add (hC.1 i j) (hD.1 i j), fun ζ i => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `show C ζ i (Fin.last k) + D ζ i (Fin.last k) = 0`. Rewrite using `[(hC.2 ζ i).1, (hD.2 ζ i).1, add_zero]`. Use `show C ζ (Fin.last k) i + D ζ (Fin.last k) i = 0`. Rewrite using `[(hC.2 ζ i).2, (hD.2 ζ i).2, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma psl_add {TT : ℝ} {C D : ℂ → Mb k} (hC : PSL k TT C) (hD : PSL k TT D) : PSL k TT (fun ζ => C ζ + D ζ) := by
   refine ⟨fun i j => ps_add (hC.1 i j) (hD.1 i j), fun ζ i => ⟨?_, ?_⟩⟩
@@ -113,7 +111,7 @@ lemma psl_add {TT : ℝ} {C D : ℂ → Mb k} (hC : PSL k TT C) (hD : PSL k TT D
     rw [(hC.2 ζ i).2, (hD.2 ζ i).2, add_zero]
 
 /- English proof (translation)
-Use `⟨fun i j => ps_mul (ps_const c) (hC.1 i j), fun ζ i => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `show c * C ζ i (Fin.last k) = 0`. Rewrite using `[(hC.2 ζ i).1, mul_zero]`. Use `show c * C ζ (Fin.last k) i = 0`. Rewrite using `[(hC.2 ζ i).2, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma psl_csmul {TT : ℝ} (c : ℂ) {C : ℂ → Mb k} (hC : PSL k TT C) : PSL k TT (fun ζ => c • C ζ) := by
   refine ⟨fun i j => ps_mul (ps_const c) (hC.1 i j), fun ζ i => ⟨?_, ?_⟩⟩
@@ -130,7 +128,7 @@ def Dec (k : ℕ) (T T' : ℝ) (M : Mb k) : Prop :=
 variable {T T' : ℝ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, β₁, β₂, psl_smul h1 hA₁, psl_smul h2 hA₂, h3, h4, h⟩`.
+Supply the required witnesses or components.
 -/
 lemma dec_mk (M : Mb k) (f₁ f₂ β₁ β₂ : ℂ → ℂ) (A₁ A₂ : Mb k) (hA₁ : InL k A₁) (hA₂ : InL k A₂) (h1 : PS (T * T') f₁)
     (h2 : PS (T * T') f₂) (h3 : PS (T * T') β₁) (h4 : PS (T * T') β₂)
@@ -140,9 +138,9 @@ lemma dec_mk (M : Mb k) (f₁ f₂ β₁ β₂ : ℂ → ℂ) (A₁ A₂ : Mb k)
   ⟨_, _, β₁, β₂, psl_smul h1 hA₁, psl_smul h2 hA₂, h3, h4, h⟩
 
 /- English proof (translation)
-Take `⟨C₁, C₂, β₁, β₂, a1, a2, a3, a4, a5⟩` from `hM`. Take `⟨D₁, D₂, γ₁, γ₂, b1, b2, b3, b4, b5⟩` from `hN`. Use `⟨_, _, _, _, psl_add a1 b1, psl_add a2 b2, ps_add a3 b3, ps_add a4 b4, fun ζ hζ => ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [a5 ζ hζ, b5 ζ hζ]`. Rewrite using `[Matrix.mul_add, Matrix.add_mul, add_smul, add_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 lemma dec_add {M N : Mb k} (hM : Dec k T T' M) (hN : Dec k T T' N) : Dec k T T' (M + N) := by
   obtain ⟨C₁, C₂, β₁, β₂, a1, a2, a3, a4, a5⟩ := hM
@@ -153,7 +151,7 @@ lemma dec_add {M N : Mb k} (hM : Dec k T T' M) (hN : Dec k T T' N) : Dec k T T' 
   abel
 
 /- English proof (translation)
-Take `⟨C₁, C₂, β₁, β₂, a1, a2, a3, a4, a5⟩` from `hM`. Use `⟨_, _, _, _, psl_csmul c a1, psl_csmul c a2, ps_mul (ps_const c) a3, ps_mul (ps_const c) a4, fun ζ hζ => ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [a5 ζ hζ]`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, smul_add, smul_add, smul_add, smul_smul, smul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dec_smul (c : ℂ) {M : Mb k} (hM : Dec k T T' M) : Dec k T T' (c • M) := by
   obtain ⟨C₁, C₂, β₁, β₂, a1, a2, a3, a4, a5⟩ := hM
@@ -162,7 +160,7 @@ lemma dec_smul (c : ℂ) {M : Mb k} (hM : Dec k T T' M) : Dec k T T' (c • M) :
   rw [Matrix.mul_smul, Matrix.smul_mul, smul_add, smul_add, smul_add, smul_smul, smul_smul]
 
 /- English proof (translation)
-Introduce `i`. Unfold `Su`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Matrix.single_apply, if_neg (fun h => hb h.2)]`. Rewrite using `[Matrix.single_apply, if_neg (fun h => ha h.1)]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma inL_Su {a b : Fin (k + 1)} (ha : a ≠ Fin.last k) (hb : b ≠ Fin.last k) : InL k (Su k a b) := by
   intro i
@@ -172,24 +170,24 @@ lemma inL_Su {a b : Fin (k + 1)} (ha : a ≠ Fin.last k) (hb : b ≠ Fin.last k)
   · rw [Matrix.single_apply, if_neg (fun h => ha h.1)]
 
 /- English proof (translation)
-Introduce `_` and use `⟨rfl, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 lemma inL_zero : InL k (0 : Mb k) := fun _ => ⟨rfl, rfl⟩
 
 /- English proof (translation)
-The claim follows from `ps_const 0`.
+A detailed English derivation is pending.
 -/
 lemma ps_zero {TT : ℝ} : PS TT (fun _ => (0 : ℂ)) := ps_const 0
 
 /- English proof (translation)
-The claim follows from `dec_mk _ (fun _ => 1) (fun _ => 0) (fun _ => 0) (fun _ => 0) (Su k a b) 0 (inL_Su ha hb) inL_zero (ps_const 1) ps_zero ps_zero ps_zero (fun ζ _ => by simp)`.
+A detailed English derivation is pending.
 -/
 lemma dec_LL {a b : Fin (k + 1)} (ha : a ≠ Fin.last k) (hb : b ≠ Fin.last k) : Dec k T T' (Su k a b) :=
   dec_mk _ (fun _ => 1) (fun _ => 0) (fun _ => 0) (fun _ => 0) (Su k a b) 0 (inL_Su ha hb) inL_zero (ps_const 1) ps_zero
     ps_zero ps_zero (fun ζ _ => by simp)
 
 /- English proof (translation)
-Use `dec_mk _ (fun ζ => (-1 : ℂ) * (ζ * (sig (T * T') ζ)⁻¹)) (fun ζ => (-kap T T') * (sig (T * T') ζ)⁻¹) (fun _ => 0) (fun _ => 0) (Su k 0 m) (Su k 0 m) (inL_Su h0 hml) (inL_Su h0 hml) (ps_mul (ps_const _) (ps_mul ps_id ps_sigInv)) (ps_mul (ps_const _) ps_sigInv) ps_zero ps_zero (fun …` and prove the remaining obligations. Establish `hk` using `kap_ne hT hT'`. Establish `hs` using `sig_ne hζ`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, nuI_eq, nu_eq, conj0m h0 _ _ _ m hm0 hml, sZ_eq T T' hT hT' ζ hζ, wZ_eq]`. Apply the tactic sequence `match_scalars <;> field_simp <;> ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma dec_lm (h0 : (0 : Fin (k + 1)) ≠ Fin.last k) (hT : 0 < T) (hT' : 0 < T') (m : Fin (k + 1)) (hm0 : m ≠ 0)
     (hml : m ≠ Fin.last k) : Dec k T T' (Su k (Fin.last k) m) := by
@@ -202,7 +200,7 @@ lemma dec_lm (h0 : (0 : Fin (k + 1)) ≠ Fin.last k) (hT : 0 < T) (hT' : 0 < T')
   match_scalars <;> field_simp <;> ring
 
 /- English proof (translation)
-Use `dec_mk _ (fun ζ => conj ζ * (sig (T * T') ζ)⁻¹) (fun ζ => kap T T' * (sig (T * T') ζ)⁻¹) (fun _ => 0) (fun _ => 0) (Su k m 0) (Su k m 0) (inL_Su hml h0) (inL_Su hml h0) (ps_mul ps_conj ps_sigInv) (ps_mul (ps_const _) ps_sigInv) ps_zero ps_zero (fun ζ hζ => ?_)` and prove the remaining obligations. Establish `hk` using `kap_ne hT hT'`. Establish `hs` using `sig_ne hζ`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, nuI_eq, nu_eq, conjm0 h0 _ _ _ m hm0 hml, sZ_eq T T' hT hT' ζ hζ, wZ_star]`. Apply the tactic sequence `match_scalars <;> field_simp <;> ring`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma dec_ml (h0 : (0 : Fin (k + 1)) ≠ Fin.last k) (hT : 0 < T) (hT' : 0 < T') (m : Fin (k + 1)) (hm0 : m ≠ 0)
     (hml : m ≠ Fin.last k) : Dec k T T' (Su k m (Fin.last k)) := by
@@ -220,11 +218,11 @@ variable (h0 : (0 : Fin (k + 1)) ≠ Fin.last k) (hT : 0 < T) (hT' : 0 < T')
 include h0 hT hT'
 
 /- English proof (translation)
-Establish `hk` using `kap_ne hT hT'`. Establish `hs` using `sig_ne hζ`. Establish `hz` using `zeta_ne hT hT' hζ`. Establish `hzc : conj ζ ≠ 0` using `by simpa using hz`. Use `⟨?_, inv_ne_zero hk, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sZ_eq T T' hT hT' ζ hζ]`. Conclude with `mul_ne_zero (inv_ne_zero hk) hs`. Rewrite using `[wZ_star]`. Conclude with `mul_ne_zero (neg_ne_zero.2 (inv_ne_zero hk)) hzc`. Rewrite using `[sZ_eq T T' hT hT' ζ hζ, wZ_star]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[sZ_eq T T' hT hT' ζ hζ, wZ_eq]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 lemma plane_facts {ζ : ℂ} (hζ : T * T' < Complex.normSq ζ) :
     sZ T T' ζ ≠ 0 ∧ (kap T T')⁻¹ ≠ 0 ∧ star (wZ T T' ζ) ≠ 0 ∧
@@ -241,13 +239,13 @@ lemma plane_facts {ζ : ℂ} (hζ : T * T' < Complex.normSq ζ) :
   · rw [sZ_eq T T' hT hT' ζ hζ, wZ_eq]; field_simp
 
 /- English proof (translation)
-Use `dec_mk _ (fun ζ => (2⁻¹ : ℂ) * (conj ζ * (sig (T * T') ζ)⁻¹)) (fun ζ => (-2⁻¹ : ℂ) * (conj ζ * (sig (T * T') ζ)⁻¹)) (fun ζ => (-1 : ℂ) * sig (T * T') ζ) (fun _ => 0) (Su k 0 0) (Su k 0 0) (inL_Su h0 h0) (inL_Su h0 h0) (ps_mul (ps_const _) (ps_mul ps_conj ps_sigInv)) (ps_mul (ps_c …` and prove the remaining obligations. Take `⟨f1, f2, f3, f4, f5⟩` from `plane_facts h0 hT hT' hζ`. Establish `hk` using `kap_ne hT hT'`. Establish `hs` using `sig_ne hζ`. Establish `key` using `unit0l h0 _ _ _ _ _ f1 f2 f3 (ws_rel hT hT' hζ) f4`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : -(star (wZ T T' ζ) / (2 * sZ T T' ζ)) = (2⁻¹ : ℂ) * (conj ζ * (sig (T * T') ζ)⁻¹)`. Rewrite using `[sZ_eq T T' hT hT' ζ hζ, wZ_star]`. Clear the denominators using the available nonvanishing facts. Establish `e2 : star (wZ T T' ζ) / (2 * sZ T T' ζ) = (-2⁻¹ : ℂ) * (conj ζ * (sig (T * T') ζ)⁻¹)`. Rewrite using `[sZ_eq T T' hT hT' ζ hζ, wZ_star]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Establish `e3 : -(sZ T T' ζ / (kap T T')⁻¹) = (-1 : ℂ) * sig (T * T') ζ`. Rewrite using `[sZ_eq T T' hT hT' ζ hζ]`. Clear the denominators using the available nonvanishing facts. Rewrite `key` using `[e1, e2, e3, ← nuI_eq, ← nu_eq]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[zero_smul, add_zero]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dec_0l : Dec k T T' (Su k 0 (Fin.last k)) := by
   refine dec_mk _ (fun ζ => (2⁻¹ : ℂ) * (conj ζ * (sig (T * T') ζ)⁻¹)) (fun ζ => (-2⁻¹ : ℂ) * (conj ζ * (sig (T * T') ζ)⁻¹))
@@ -269,13 +267,13 @@ lemma dec_0l : Dec k T T' (Su k 0 (Fin.last k)) := by
   exact key
 
 /- English proof (translation)
-Use `dec_mk _ (fun ζ => (-2⁻¹ : ℂ) * (ζ * (sig (T * T') ζ)⁻¹)) (fun ζ => (2⁻¹ : ℂ) * (ζ * (sig (T * T') ζ)⁻¹)) (fun _ => 0) (fun ζ => (-1 : ℂ) * sig (T * T') ζ) (Su k 0 0) (Su k 0 0) (inL_Su h0 h0) (inL_Su h0 h0) (ps_mul (ps_const _) (ps_mul ps_id ps_sigInv)) (ps_mul (ps_const _) (ps_ …` and prove the remaining obligations. Take `⟨f1, f2, f3, f4, f5⟩` from `plane_facts h0 hT hT' hζ`. Establish `hk` using `kap_ne hT hT'`. Establish `hs` using `sig_ne hζ`. Establish `key` using `unitl0 h0 _ _ _ _ _ f1 f2 f3 (ws_rel hT hT' hζ) f5`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : wZ T T' ζ / (2 * sZ T T' ζ) = (-2⁻¹ : ℂ) * (ζ * (sig (T * T') ζ)⁻¹)`. Rewrite using `[sZ_eq T T' hT hT' ζ hζ, wZ_eq]`. Clear the denominators using the available nonvanishing facts. Establish `e2 : -(wZ T T' ζ / (2 * sZ T T' ζ)) = (2⁻¹ : ℂ) * (ζ * (sig (T * T') ζ)⁻¹)`. Rewrite using `[sZ_eq T T' hT hT' ζ hζ, wZ_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Establish `e3 : -(sZ T T' ζ / (kap T T')⁻¹) = (-1 : ℂ) * sig (T * T') ζ`. Rewrite using `[sZ_eq T T' hT hT' ζ hζ]`. Clear the denominators using the available nonvanishing facts. Rewrite `key` using `[e2, e1, e3, ← nuI_eq, ← nu_eq]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[zero_smul, add_zero]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma decomposition_lower_corner_unit : Dec k T T' (Su k (Fin.last k) 0) := by
   refine dec_mk _ (fun ζ => (-2⁻¹ : ℂ) * (ζ * (sig (T * T') ζ)⁻¹)) (fun ζ => (2⁻¹ : ℂ) * (ζ * (sig (T * T') ζ)⁻¹))
@@ -297,9 +295,9 @@ lemma decomposition_lower_corner_unit : Dec k T T' (Su k (Fin.last k) 0) := by
   exact key
 
 /- English proof (translation)
-Use `dec_mk _ (fun _ => 0) (fun _ => 1) (fun ζ => ζ) (fun ζ => (-1 : ℂ) * conj ζ) (Su k 0 0) (Su k 0 0) (inL_Su h0 h0) (inL_Su h0 h0) ps_zero (ps_const 1) ps_id (ps_mul (ps_const _) ps_conj) (fun ζ hζ => ?_)` and prove the remaining obligations. Take `⟨f1, f2, f3, f4, f5⟩` from `plane_facts h0 hT hT' hζ`. Establish `hk` using `kap_ne hT hT'`. Establish `key` using `unitll h0 _ _ _ _ _ _ f1 f2 f3 (ws_rel hT hT' hζ) f4 f5`. Establish `e1 : -(wZ T T' ζ / (kap T T')⁻¹) = ζ` using `by rw [wZ_eq]; field_simp`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : star (wZ T T' ζ) / (kap T T')⁻¹ = (-1 : ℂ) * conj ζ` using `by rw [wZ_star]; field_simp`. Rewrite `key` using `[e1, e2, ← nuI_eq, ← nu_eq]`. Rewrite using `[zero_smul, zero_add, one_smul]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dec_ll : Dec k T T' (Su k (Fin.last k) (Fin.last k)) := by
   refine dec_mk _ (fun _ => 0) (fun _ => 1) (fun ζ => ζ) (fun ζ => (-1 : ℂ) * conj ζ) (Su k 0 0) (Su k 0 0)
@@ -314,13 +312,11 @@ lemma dec_ll : Dec k T T' (Su k (Fin.last k) (Fin.last k)) := by
   exact key
 
 /- English proof (translation)
-Distinguish the cases in `ha : a = Fin.last k`. Substitute `ha` using the available equality. Distinguish the cases in `hb : b = Fin.last k`. Substitute `hb` using the available equality. Conclude with `dec_ll h0 hT hT'`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hb0 : b = 0`. Substitute `hb0` using the available equality. Conclude with `decomposition_lower_corner_unit h0 hT hT'`. Conclude with `dec_lm h0 hT hT' b hb0 hb`. Distinguish the cases in `hb : b = Fin.last k`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hb` using the available equality. Distinguish the cases in `ha0 : a = 0`. Substitute `ha0` using the available equality. Conclude with `dec_0l h0 hT hT'`. Conclude with `dec_ml h0 hT hT' a ha0 ha`.
-
-Conclude with `dec_LL ha hb`.
+A detailed English derivation is pending.
 -/
 lemma dec_unit (a b : Fin (k + 1)) : Dec k T T' (Su k a b) := by
   by_cases ha : a = Fin.last k
@@ -338,11 +334,11 @@ lemma dec_unit (a b : Fin (k + 1)) : Dec k T T' (Su k a b) := by
     · exact dec_LL ha hb
 
 /- English proof (translation)
-Establish `hz : Dec k T T' (0 : Mb k)`. Use `dec_smul (T := T) (T' := T') 0 (dec_LL (k := k) h0 h0)` as an intermediate fact. Rewrite `this` using `[zero_smul]`. Then use the resulting hypothesis. Rewrite using `[Matrix.matrix_eq_sum_single M]`. Use `Finset.sum_induction _ _ (fun _ _ => dec_add) hz fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_induction _ _ (fun _ _ => dec_add) hz fun j _ => ?_` and prove the remaining obligations. Establish `: Matrix.single i j (M i j) = M i j • Su k i j`. Unfold `Su`. Rewrite using `[Matrix.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dec_smul _ (dec_unit h0 hT hT' i j)`.
+A detailed English derivation is pending.
 -/
 lemma dec_all (M : Mb k) : Dec k T T' M := by
   have hz : Dec k T T' (0 : Mb k) := by

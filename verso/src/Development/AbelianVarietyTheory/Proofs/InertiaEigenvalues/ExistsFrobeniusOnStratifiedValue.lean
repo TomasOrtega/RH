@@ -21,7 +21,7 @@ theorem hf_comp {Q Q' : Obj l ↥(OL K)} (c : Hom Q Q') (g : Hom bk.prism Q) :
     BK.hf (c.comp g) = c.f.comp (BK.hf g) := rfl
 
 /- English proof (translation)
-Establish `e : (fun i => Q.D.φ (y i)) = ((S.ε g g').map Q.D.φ).mulVec (fun i => Q.D.φ (y' i))`. Use function extensionality and compare the values at `i`. Rewrite using `[hy, RingHom.map_mulVec]`. Both sides reduce to the same expression. Rewrite using `[e, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.smul_mulVec, ← Matrix.smul_mulVec, S.ε_φ]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_change (S : Strat bk d) {Q : Obj l ↥(OL K)} (g g' : Hom bk.prism Q) (y y' : Fin d → Q.A)
     (hy : y = (S.ε g g').mulVec y') :
@@ -33,9 +33,9 @@ theorem frob_change (S : Strat bk d) {Q : Obj l ↥(OL K)} (g g' : Hom bk.prism 
     S.ε_φ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h1 : p.f ((c ^ S.a • (S.A.map (BK.hf f)).mulVec (fun j => C.D.φ (y j))) i) = p.f c ^ S.a * p.f ((S.A.map (BK.hf f)).mulVec (fun j => C.D.φ (y j)) i)`. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, map_pow]`. Establish `h2 : p.f ((S.A.map (BK.hf f)).mulVec (fun j => C.D.φ (y j)) i) = (S.A.map (BK.hf (p.comp f))).mulVec (fun j => Q.D.φ (p.f (y j))) i`. Rewrite using `[RingHom.map_mulVec, Matrix.map_map, hf_comp]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `p.f_φ (y j)`. Use `h1.trans ?_` and prove the remaining obligations. Simplify using `only [h2, Pi.smul_apply, smul_eq_mul]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem push (S : Strat bk d) {C Q : Obj l ↥(OL K)} (p : Hom C Q) (f : Hom bk.prism C) (c : C.A)
     (y : Fin d → C.A) :
@@ -55,16 +55,16 @@ theorem push (S : Strat bk d) {C Q : Obj l ↥(OL K)} (p : Hom C Q) (f : Hom bk.
   simp only [h2, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-The claim follows from `funext fun i => (mul_cancel_left_mem_nonZeroDivisors hr).1 (congrFun e i)`.
+A detailed English derivation is pending.
 -/
 theorem vec_cancel {A : Type} [CommRing A] {r : A} (hr : r ∈ nonZeroDivisors A) {u w : Fin d → A}
     (e : r • u = r • w) : u = w :=
   funext fun i => (mul_cancel_left_mem_nonZeroDivisors hr).1 (congrFun e i)
 
 /- English proof (translation)
-Use `vec_cancel hr ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, smul_smul, mul_pow]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ = (u' * e') ^ a • (e ^ a • R) := by rw [hF, hT]`. Use `_ = (e ^ a * e' ^ a) • (u' ^ a • R) := by`. Rewrite using `[smul_smul, smul_smul, mul_pow]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pow_smul_transfer_of_regular {A : Type} [CommRing A] {a : ℕ} {e e' u u' : A} {L R : Fin d → A}
     (hr : e ^ a * e' ^ a ∈ nonZeroDivisors A) (hF : e' ^ a • L = e ^ a • R) (hT : u * e = u' * e') :
@@ -77,11 +77,11 @@ theorem pow_smul_transfer_of_regular {A : Type} [CommRing A] {a : ℕ} {e e' u u
         rw [smul_smul, smul_smul, mul_pow]; congr 1; ring
 
 /- English proof (translation)
-Establish `hY : ∀ j, p.f (V.v h f x j) = V.v (p.comp h) (p.comp f) x j` using `fun j => (V.v_nat p h f x j).symm`. Establish `hY' : ∀ j, q.f (V.v h f x j) = V.v (p.comp h) (q.comp f) x j`. Rewrite using `[hpq]`. Conclude with `fun j => (V.v_nat q h f x j).symm`. Establish `hF` using `frob_change S (p.comp f) (q.comp f) _ _ (V.v_ε (p.comp h) (p.comp f) (q.comp f) x)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `hT : p.f c * BK.hf (p.comp f) bk.E = q.f c * BK.hf (q.comp f) bk.E`. Establish `e1 : p.f (c * BK.hf f bk.E) = q.f (c * BK.hf f bk.E)`. Rewrite using `[hc]`. Conclude with `congrArg (fun k : Hom B Q => k.f t) hpq`. Simplify `e1` using `only [map_mul, hf_comp, RingHom.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[push S p f c, push S q f c, Matrix.mulVec_smul]`. Simplify using `only [hY, hY']`. Conclude with `pow_smul_transfer_of_regular (mul_mem (pow_mem (hn (p.comp f)) S.a) (pow_mem (hn (q.comp f)) S.a)) hF hT`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem compat (S : Strat bk d) {B C Q : Obj l ↥(OL K)} {N : Type} [AddCommGroup N] [Module B.A N]
     (V : Eval S B N) (h : Hom B C) (f : Hom bk.prism C) (c : C.A) (t : B.A) (hc : c * BK.hf f bk.E = h.f t)
@@ -104,24 +104,22 @@ theorem compat (S : Strat bk d) {B C Q : Obj l ↥(OL K)} {N : Type} [AddCommGro
   exact pow_smul_transfer_of_regular (mul_mem (pow_mem (hn (p.comp f)) S.a) (pow_mem (hn (q.comp f)) S.a)) hF hT
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_smul, mul_pow, mul_smul, hF, smul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_smul_matrix_swap_of_relation {A : Type} [CommRing A] {a : ℕ} {e e' u : A} {L M : Fin d → A} {P : Matrix (Fin d) (Fin d) A}
     (hF : e' ^ a • L = e ^ a • P.mulVec M) : e ^ a • P.mulVec (u ^ a • M) = (u * e') ^ a • L := by
   rw [Matrix.mulVec_smul, mul_pow, mul_smul, hF, smul_comm]
 
 /- English proof (translation)
-Establish `nat' : ∀ (y : N) j, h'.f (V.v a g y j) = V.v (a'.comp h) (h'.comp g) y j`. Introduce `y j`. Rewrite using `[hcomm]`. Conclude with `(V.v_nat h' a g y j).symm`. Establish `natC : ∀ (y : N) j, a'.f (V.v h f y j) = V.v (a'.comp h) (a'.comp f) y j` using `fun y j => (V.v_nat a' h f y j).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : h'.f (a.f t) = a'.f c * BK.hf (a'.comp f) bk.E`. Establish `e : h'.f (a.f t) = a'.f (h.f t)` using `congrArg (fun k : Hom B Q' => k.f t) hcomm.symm`. Rewrite using `[e, ← hc, map_mul]`. Both sides reduce to the same expression. Establish `e1 : (fun i => h'.f ((BK.hf g bk.E ^ S.a • V.v a g w) i)) = BK.hf (h'.comp g) bk.E ^ S.a • V.v (a'.comp h) (h'.comp g) w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, map_pow, nat']`. Both sides reduce to the same expression. Establish `e2 : V.v (a'.comp h) (a'.comp f) w = a'.f c ^ S.a • (S.A.map (BK.hf (a'.comp f))).mulVec fun j => Q'.D.φ (V.v (a'.comp h) (a'.comp f) x j)`. Establish `e` using `push S a' f c (V.v h f x)`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[← hw]`. Simplify using `only [natC] at e`. Conclude with `e`. Establish `e3` using `push S h' g (a.f t) (V.v a g x)`. Simplify using `only [nat', ht] at e3`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF` using `frob_change S (h'.comp g) (a'.comp f) _ _ (V.v_ε (a'.comp h) (h'.comp g) (a'.comp f) x)`. Establish `key : (fun i => h'.f ((BK.hf g bk.E ^ S.a • V.v a g w) i)) = fun i => h'.f ((a.f t ^ S.a • (S.A.map (BK.hf g)).mulVec fun j => Q.D.φ (V.v a g x j)) i)`. Establish `v1` using `(V.v_ε (a'.comp h) (h'.comp g) (a'.comp f) w).trans (congrArg _ e2)`. Conclude with `e1.trans ((congrArg (fun v => BK.hf (h'.comp g) bk.E ^ S.a • v) v1).trans ((pow_smul_matrix_swap_of_relation hF).trans e3.symm))`. Use function extensionality and compare the values at `i`.
-
-Conclude with `hinj' (congrFun key i)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem coord (S : Strat bk d) {B C Q Q' : Obj l ↥(OL K)} {N : Type} [AddCommGroup N] [Module B.A N]
     (V : Eval S B N) (h : Hom B C) (f : Hom bk.prism C) (c : C.A) (t : B.A) (hc : c * BK.hf f bk.E = h.f t)
@@ -158,19 +156,17 @@ theorem coord (S : Strat bk d) {B C Q Q' : Obj l ↥(OL K)} {N : Type} [AddCommG
   exact hinj' (congrFun key i)
 
 /- English proof (translation)
-Introduce `l _ K bk d S B N _ _ V t ht`. Take `⟨C, h, ⟨f⟩, hC⟩` from `GlobalTheory.T.exists_prism_cover_receiving_breuilKisin l K bk B`. Establish `hIC` using `(GlobalTheory.T.breuilKisinHom_eisenstein_span_and_nonZeroDivisor l K bk C f).1`. Establish `htC : h.f t ∈ Ideal.span {BK.hf f bk.E}` using `hIC ▸ h.f_I t ht`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 htC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hinj, hsurj⟩` from `GlobalTheory.T.injective_and_range_of_prism_cover l K bk d S B C N V h f hC`. Establish `hzc : ∀ x : N, ∃ y, V.v h f y = c ^ S.a • (S.A.map (BK.hf f)).mulVec (fun i => C.D.φ (V.v h f x i))` using `fun x => hsurj _ fun Q p q hpq => compat S V h f c t hc (fun g => (GlobalTheory.T.breuilKisinHom_eisenstein_span_and_nonZeroDivisor l K bk Q g).2) x p q hpq`. Use `choose Ψf hΨf using hzc`. Establish `zadd : ∀ x y : N, Ψf (x + y) = Ψf x + Ψf y`. Introduce `x y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Establish `e1 : V.v h f (x + y) = V.v h f x + V.v h f y` using `map_add (V.v h f) x y`. Establish `e2 : V.v h f (Ψf x + Ψf y) = V.v h f (Ψf x) + V.v h f (Ψf y)` using `map_add (V.v h f) _ _`. Establish `hφ : (fun i => C.D.φ (V.v h f (x + y) i)) = (fun i => C.D.φ (V.v h f x i)) + (fun i => C.D.φ (V.v h f y i))`. Use function extensionality and compare the values at `fun i => (congrArg (fun v : Fin d → C.A => C.D.φ (v i)) e1).trans (C.D.φ.map_add _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hΨf (x + y)).trans (Eq.trans ?_ ((congrArg₂ (· + ·) (hΨf x) (hΨf y)).symm.trans e2.symm))` and prove the remaining obligations. Use `(congrArg (fun v => c ^ S.a • (S.A.map (BK.hf f)).mulVec v) hφ).trans ?_` and prove the remaining obligations. Conclude with `(congrArg (c ^ S.a • ·) (Matrix.mulVec_add _ _ _)).trans (smul_add _ _ _)`. Establish `zsmul : ∀ (b : B.A) (x : N), Ψf (b • x) = B.D.φ b • Ψf x`. Introduce `b x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hinj` to reduce the goal to its premises. Establish `e1 : V.v h f (b • x) = h.f b • V.v h f x` using `LinearMap.map_smulₛₗ (V.v h f) b x`. Establish `e2 : V.v h f (B.D.φ b • Ψf x) = h.f (B.D.φ b) • V.v h f (Ψf x)` using `LinearMap.map_smulₛₗ (V.v h f) _ _`. Establish `hφ : (fun i => C.D.φ (V.v h f (b • x) i)) = h.f (B.D.φ b) • (fun i => C.D.φ (V.v h f x i))`. Use function extensionality and compare the values at `fun i => (congrArg (fun v : Fin d → C.A => C.D.φ (v i)) e1).trans ((C.D.φ.map_mul _ _).trans (congrArg (· * C.D.φ (V.v h f x i)) (h.f_φ b).symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hΨf (b • x)).trans (Eq.trans ?_ ((congrArg (h.f (B.D.φ b) • ·) (hΨf x)).symm.trans e2.symm))` and prove the remaining obligations. Use `(congrArg (fun v => c ^ S.a • (S.A.map (BK.hf f)).mulVec v) hφ).trans ?_` and prove the remaining obligations. Conclude with `(congrArg (c ^ S.a • ·) (Matrix.mulVec_smul _ _ _)).trans (smul_comm _ _ _)`. Use `⟨{ toFun := Ψf, map_add' := zadd, map_smul' := zsmul }, ?_⟩` and prove the remaining obligations. Introduce `Q a g x`.
-
-Take `⟨Q', h', a', hcomm, hinj'⟩` from `GlobalTheory.T.exists_injective_pushout_of_prismCover l K bk d S B C h hC Q a`. Conclude with `coord S V h f c t hc a g h' a' hcomm hinj' x (Ψf x) (hΨf x)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem psi_exists : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (S : Strat bk d)
     (B : Obj l ↥(OL K)) (N : Type) [AddCommGroup N] [Module B.A N] (V : Eval S B N) (t : B.A), t ∈ B.I →

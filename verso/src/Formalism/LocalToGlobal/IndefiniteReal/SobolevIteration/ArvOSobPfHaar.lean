@@ -10,9 +10,9 @@ namespace Formalism.IndefR.Tow.SobPf
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `ha' : a ∈ Formalism.QuantumDeterminants.UH G ∧ a * s = s * a` using `ha`. Establish `hb' : b ∈ Formalism.QuantumDeterminants.UH G ∧ b * s = s * b` using `hb`. Establish `h1 : aᴴ * G * a = G` using `ha'.1`. Establish `h2 : bᴴ * G * b = G` using `hb'.1`. Use `show a * b ∈ Formalism.QuantumDeterminants.UH G ∧ a * b * s = s * (a * b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (a * b)ᴴ * G * (a * b) = G`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mul_mem_KAt {G s a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ KAt G s) (hb : b ∈ KAt G s) :
     a * b ∈ KAt G s := by
@@ -33,11 +33,11 @@ theorem mul_mem_KAt {G s a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ KAt G s) 
       _ = s * (a * b) := Matrix.mul_assoc _ _ _
 
 /- English proof (translation)
-Establish `ha' : a ∈ Formalism.QuantumDeterminants.UH G ∧ a * s = s * a` using `ha`. Establish `h1 : aᴴ * G * a = G` using `ha'.1`. Establish `hleft : (G⁻¹ * aᴴ * G) * a = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hdet : IsUnit a.det` using `Matrix.isUnit_det_of_left_inverse hleft`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hright : a * a⁻¹ = 1` using `Matrix.mul_nonsing_inv a hdet`. Establish `hleft' : a⁻¹ * a = 1` using `Matrix.nonsing_inv_mul a hdet`. Use `show a⁻¹ ∈ Formalism.QuantumDeterminants.UH G ∧ a⁻¹ * s = s * a⁻¹`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (a⁻¹)ᴴ * G * a⁻¹ = G`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = G := by rw [hright]; simp`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem inv_mem_KAt {G s a : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) (ha : a ∈ KAt G s) :
     a⁻¹ ∈ KAt G s := by
@@ -64,7 +64,7 @@ theorem inv_mem_KAt {G s a : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) (ha
       _ = s * a⁻¹ := by rw [hleft', Matrix.one_mul]
 
 /- English proof (translation)
-Establish `h1 : kᴴ * G * k = G` using `hk`. Establish `hleft : (G⁻¹ * kᴴ * G) * k = 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `Matrix.inv_eq_left_inv hleft`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem inv_eq_of_UH {G k : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) (hk : k ∈ Formalism.QuantumDeterminants.UH G) :
     k⁻¹ = G⁻¹ * kᴴ * G := by
@@ -88,15 +88,13 @@ def Kg {G s : Matrix (Fin n) (Fin n) ℂ} (hs : IsCartanInv G s) : Subgroup (Mat
     rw [Matrix.coe_units_inv]; exact inv_mem_KAt (det_G_unit hs) ha
 
 /- English proof (translation)
-Establish `hGu : IsUnit G.det` using `det_G_unit hs`. Use `haveI : CompactSpace (KAt G s) := isCompact_iff_compactSpace.mp (isCompact_KAt hs)`. Establish `hl : ∀ k ∈ KAt G s, (G⁻¹ * kᴴ * G) * k = 1` using `fun k hk => by`. Establish `h1 : kᴴ * G * k = G` using `(show k ∈ Formalism.QuantumDeterminants.UH G ∧ k * s = s * k from hk).1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hr : ∀ k ∈ KAt G s, k * (G⁻¹ * kᴴ * G) = 1` using `fun k hk => by`. Rewrite using `[← Matrix.inv_eq_left_inv (hl k hk)]`. Conclude with `Matrix.mul_nonsing_inv k (Matrix.isUnit_det_of_left_inverse (hl k hk))`. Set `F : KAt G s → (Matrix (Fin n) (Fin n) ℂ)ˣ` to `fun k => ⟨k.1, G⁻¹ * k.1ᴴ * G, hr k.1 k.2, hl k.1 k.2⟩`. Establish `hF : Continuous F`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.continuous_iff]`. Use `⟨continuous_subtype_val, ?_⟩` and prove the remaining obligations. Conclude with `(continuous_const.matrix_mul continuous_subtype_val.matrix_conjTranspose).matrix_mul continuous_const`. Establish `he : ((Kg hs : Subgroup (Matrix (Fin n) (Fin n) ℂ)ˣ) : Set (Matrix (Fin n) (Fin n) ℂ)ˣ) = Set.range F`. Use extensionality with `u`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hu`. Conclude with `⟨⟨u.1, hu⟩, Units.ext rfl⟩`. Introduce and unpack `⟨k, rfl⟩`. Conclude with `k.2`.
-
-Rewrite using `[he]`. Conclude with `isCompact_range hF`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_Kg {G s : Matrix (Fin n) (Fin n) ℂ} (hs : IsCartanInv G s) :
     IsCompact ((Kg hs : Subgroup (Matrix (Fin n) (Fin n) ℂ)ˣ) : Set (Matrix (Fin n) (Fin n) ℂ)ˣ) := by
@@ -129,9 +127,9 @@ theorem isCompact_Kg {G s : Matrix (Fin n) (Fin n) ℂ} (hs : IsCartanInv G s) :
   exact isCompact_range hF
 
 /- English proof (translation)
-Establish `hGu : IsUnit G.det` using `det_G_unit hs`. Establish `h1 : kᴴ * G * k = G` using `(show k ∈ Formalism.QuantumDeterminants.UH G ∧ k * s = s * k from hk).1`. Establish `hleft : (G⁻¹ * kᴴ * G) * k = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hdet : IsUnit k.det` using `Matrix.isUnit_det_of_left_inverse hleft`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Conclude with `⟨⟨⟨k, k⁻¹, Matrix.mul_nonsing_inv k hdet, Matrix.nonsing_inv_mul k hdet⟩, hk⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_Kg_coe_eq_of_mem_KAt {G s k : Matrix (Fin n) (Fin n) ℂ} (hs : IsCartanInv G s) (hk : k ∈ KAt G s) :
     ∃ u : Kg hs, ((u : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = k := by
@@ -144,21 +142,17 @@ private theorem exists_Kg_coe_eq_of_mem_KAt {G s k : Matrix (Fin n) (Fin n) ℂ}
   exact ⟨⟨⟨k, k⁻¹, Matrix.mul_nonsing_inv k hdet, Matrix.nonsing_inv_mul k hdet⟩, hk⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `n G s hs`. Use `haveI : CompactSpace (Kg hs) := isCompact_iff_compactSpace.mp (isCompact_Kg hs)`. Use `letI : MeasurableSpace (Kg hs) := borel (Kg hs)`. Use `haveI : BorelSpace (Kg hs) := ⟨rfl⟩`. Set `ν : Measure (Kg hs)` to `Measure.haarMeasure ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : IsProbabilityMeasure ν := by`. Use `⟨?_⟩` and prove the remaining obligations. Establish `h` using `Measure.haarMeasure_self (G := Kg hs) (K₀ := ⊤)`. Rewrite `h` using `[TopologicalSpace.PositiveCompacts.coe_top]`. Then use the resulting hypothesis. Set `φ : Kg hs → (Fin n → Fin n → ℂ)` to `fun u => Matrix.of.symm ((u : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : Continuous φ` using `by show Continuous (fun u : Kg hs => ((u : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ))`. Conclude with `Units.continuous_val.comp continuous_subtype_val`. Establish `hφm : Measurable φ` using `hφ.measurable`. Establish `hcl : IsClosed {k : Fin n → Fin n → ℂ | Matrix.of k ∈ KAt G s}` using `isClosed_KAt G s`. Use `⟨ν.map φ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply hφm MeasurableSet.univ, Set.preimage_univ]`. Conclude with `measure_univ`. Rewrite using `[ae_map_iff hφm.aemeasurable hcl.measurableSet]`. Conclude with `ae_of_all _ fun u => by show ((u : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) ∈ KAt G s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `u.2`. Introduce `k₀ hk₀`. Take `⟨u₀, hu₀⟩` from `exists_Kg_coe_eq_of_mem_KAt hs hk₀`. Establish `hT : Continuous (fun k : Fin n → Fin n → ℂ => Matrix.of.symm (k₀ * Matrix.of k))` using `by show Continuous (fun k : Matrix (Fin n) (Fin n) ℂ => k₀ * k)`. Conclude with `continuous_const.matrix_mul continuous_id`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : Measurable (fun u : Kg hs => u₀ * u)` using `(continuous_const.mul continuous_id).measurable`. Establish `hcomp : (fun k : Fin n → Fin n → ℂ => Matrix.of.symm (k₀ * Matrix.of k)) ∘ φ = φ ∘ (fun u : Kg hs => u₀ * u)`. Use function extensionality and compare the values at `u`. Use `show Matrix.of.symm (k₀ * ((u : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)) = Matrix.of.symm (((u₀ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) * ((u : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ))`. Rewrite using `[hu₀]`.
-
-Rewrite using `[Measure.map_map hT.measurable hφm, hcomp, ← Measure.map_map hφm hL, map_mul_left_eq_self]`. Introduce and unpack `U hU ⟨k, hkU, hkK⟩`. Take `⟨u, hu⟩` from `exists_Kg_coe_eq_of_mem_KAt hs hkK`. Rewrite using `[Measure.map_apply hφm hU.measurableSet]`. Use `(hU.preimage hφ).measure_pos ν ⟨u, ?_⟩` and prove the remaining obligations.
-
-Use `show Matrix.of.symm ((u : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) ∈ U`. Rewrite using `[hu]`. Conclude with `hkU`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haarExists_holds : HaarExists := by
   intro n G s hs

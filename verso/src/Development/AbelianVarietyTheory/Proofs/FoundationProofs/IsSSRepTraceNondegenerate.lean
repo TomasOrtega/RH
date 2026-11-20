@@ -8,29 +8,27 @@ namespace GlobalTheory
 open NumberField IsDedekindDomain in
 open Polynomial Matrix in
 /- English proof (translation)
-Take `⟨q, hpq, hq⟩` from `Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd z.charpoly (Matrix.charpoly_monic z).ne_zero 0`. Use `set m := z.charpoly.rootMultiplicity 0 with hm`. Simplify using `only [map_zero, sub_zero] at hpq hq`. Establish `hc : q.coeff 0 ≠ 0` using `fun h => hq (Polynomial.X_dvd_iff.2 h)`. Use `set c := q.coeff 0 with hcdef`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `set R := aeval z q.divX with hR`. Establish `hq' : aeval z q = z * R + c • 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_add, map_mul, aeval_X, aeval_C, Algebra.algebraMap_eq_smul_one]`. Establish `h0 : z ^ m * (z * R + c • 1) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `Matrix.aeval_self_charpoly z` as an intermediate fact. Rewrite `this` using `[hpq, map_mul, map_pow, aeval_X, hq']`. Then use the resulting hypothesis. Establish `hRz : z * R = R * z`. Use `congrArg (aeval z) (mul_comm X q.divX)` as an intermediate fact. Simplify `this` using `[R]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : z ^ (m + 1) * R = -(c • z ^ m)`. Rewrite using `[pow_succ, mul_assoc]`. Rewrite `h0` using `[mul_add, mul_smul_comm, mul_one]`. Conclude with `eq_neg_of_add_eq_zero_left h0`. Establish `hkey : z ^ m = z ^ (m + 1) * ((-c⁻¹) • R)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_smul_comm, h1, smul_neg, smul_smul, neg_mul, inv_mul_cancel₀ hc, neg_smul, one_smul, neg_neg]`. Use `set u := (-c⁻¹) • R with hu`. Establish `hcomm : Commute z u` using `(show Commute z R from hRz).smul_right _`. Establish `hstep : ∀ i, z ^ (m + i) = z ^ (m + i + 1) * u`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[pow_add z m i, hkey, mul_assoc, ← (hcomm.pow_left i).eq, ← mul_assoc, ← pow_add, show m + 1 + i = m + i + 1 by omega]`. Establish `hpow : ∀ k, z ^ (m + 1) = z ^ (m + 1 + k) * u ^ k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `succ k ih`. Rewrite using `[ih, show m + 1 + k = m + (k + 1) by omega, hstep (k + 1), mul_assoc, ← pow_succ', show m + (k + 1) + 1 = m + 1 + (k + 1) by omega]`. Establish `hRB : R ∈ B` using `Algebra.adjoin_le (Set.singleton_subset_iff.2 hzB) (Polynomial.aeval_mem_adjoin_singleton K z)`. Establish `huB : u ∈ B` using `B.smul_mem hRB _`. Use `set n := m + 1 with hn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnn` using `hpow n`. Establish `hc' : u ^ n * z ^ n = z ^ n * u ^ n` using `(hcomm.pow_pow n n).eq.symm`. Establish `he : IsIdempotentElem (z ^ n * u ^ n)` using `by show z ^ n * u ^ n * (z ^ n * u ^ n) = z ^ n * u ^ n`. Rewrite using `[mul_assoc, ← mul_assoc (u ^ n) (z ^ n) (u ^ n), hc', ← mul_assoc, ← mul_assoc, ← pow_add, ← hnn]`. Establish `hez : z ^ n * u ^ n * z ^ n = z ^ n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, hc', ← mul_assoc, ← pow_add, ← hnn]`. Establish `htre : (z ^ n * u ^ n).trace = 0`. Establish `: z ^ n * u ^ n = z * (z ^ m * u ^ n)` using `by show z ^ (m + 1) * u ^ n = _`. Rewrite using `[pow_succ', mul_assoc]`. Rewrite using `[this]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `htr _ (B.mul_mem (B.pow_mem hzB m) (B.pow_mem huB n))`. Establish `he0 : z ^ n * u ^ n = 0`. Establish `h1 : IsIdempotentElem (Matrix.toLin' (z ^ n * u ^ n))`. Unfold `IsIdempotentElem at he ⊢`. Rewrite using `[Module.End.mul_eq_comp, ← Matrix.toLin'_mul, he]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h2` using `(LinearMap.IsIdempotentElem.trace_eq_zero_iff h1).1 (by rw [Matrix.trace_toLin'_eq, htre])`. Conclude with `Matrix.toLin'.injective (by rw [h2, map_zero])`. Establish `hzn : z ^ n = 0` using `by rw [← hez, he0, zero_mul]`. Establish `hvn : ∀ k, (z ^ k) *ᵥ v = v`. Introduce `k`.
-
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, ← Matrix.mulVec_mulVec, hv, ih]`. Rewrite using `[← hvn n, hzn, Matrix.zero_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_mulVec_eq_self_of_trace_mul_eq_zero {K : Type} [Field K] [CharZero K]
     {a : ℕ} (B : Subalgebra K (Matrix (Fin a) (Fin a) K)) {z : Matrix (Fin a) (Fin a) K}
@@ -111,53 +109,43 @@ open NumberField IsDedekindDomain in
 open Polynomial Matrix in
 
 /- English proof (translation)
-Introduce `Γ K _ _ _ a ρ hss x hx htrx`. Unfold `_root_.Formalism.MainNotions.N.IsSSRep at hss`. Use `set P : Γ → Matrix (Fin a) (Fin a) K := fun g => ((ρ g : GL (Fin a) K) : Matrix (Fin a) (Fin a) K) with hP`. Establish `hPmul : ∀ g h, P (g * h) = P g * P h` using `fun g h => by simp [hP, map_mul]`. Establish `hP1 : P 1 = 1` using `by simp [hP]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgen : ∀ g, P g ∈ Submodule.span K (Set.range P)` using `fun g => Submodule.subset_span ⟨g, rfl⟩`. Establish `hleft : ∀ g, ∀ y ∈ Submodule.span K (Set.range P), P g * y ∈ Submodule.span K (Set.range P)`. Introduce `g y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨h, rfl⟩ := hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hPmul]`. Conclude with `hgen _`. Consider the case `zero => rw [mul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y w _ _ hy hw => rw [mul_add]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.add_mem _ hy hw`. Consider the case `smul c y _ hy => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ c hy`. Establish `hAmul : ∀ y ∈ Submodule.span K (Set.range P), ∀ w ∈ Submodule.span K (Set.range P), y * w ∈ Submodule.span K (Set.range P)`. Introduce `y hy w hw`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨g, rfl⟩ := hy`. Conclude with `hleft g w hw`. Consider the case `zero => rw [zero_mul]`. Conclude with `Submodule.zero_mem _`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `add y t _ _ hy ht => rw [add_mul]`. Conclude with `Submodule.add_mem _ hy ht`. Consider the case `smul c y _ hy => rw [smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ c hy`. Set `B : Subalgebra K (Matrix (Fin a) (Fin a) K)` to `{ carrier := Submodule.span K (Set.range P) mul_mem' := fun hy hw => hAmul _ hy _ hw add_mem' := fun hy hw => Submodule.add_mem _ hy hw algebraMap_mem' := fun c => by`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one, ← hP1]`. Conclude with `Submodule.smul_mem _ c (hgen 1) }`. Set `J : Matrix (Fin a) (Fin a) K → Prop` to `fun z => z ∈ Submodule.span K (Set.range P) ∧ ∀ g, (z * P g).trace = 0`. Establish `hJtr : ∀ z, J z → ∀ y ∈ B, (z * y).trace = 0`. Introduce `z hz y hy`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : y ∈ Submodule.span K (Set.range P)` using `hy`. Use `clear hy`. Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem y hg => obtain ⟨g, rfl⟩ := hg`. Conclude with `hz.2 g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `add y w _ _ h1 h2 => rw [mul_add, Matrix.trace_add, h1, h2, add_zero]`. Consider the case `smul c y _ h => rw [mul_smul_comm, Matrix.trace_smul, h, smul_zero]`. Establish `hJleft : ∀ g z, J z → J (P g * z)`. Introduce `g z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨hleft g z hz.1, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, Matrix.trace_mul_comm, mul_assoc, ← hPmul]`. Conclude with `hz.2 _`. Establish `hJright : ∀ g z, J z → J (z * P g)`. Introduce `g z hz`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `⟨hAmul _ hz.1 _ (hgen g), fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← hPmul]`. Conclude with `hz.2 _`. Establish `hJ0 : J 0` using `⟨Submodule.zero_mem _, fun g => by simp⟩`. Establish `hJadd : ∀ y z, J y → J z → J (y + z)` using `fun y z hy hz => ⟨Submodule.add_mem _ hy.1 hz.1, fun g => by rw [add_mul, Matrix.trace_add, hy.2, hz.2, add_zero]⟩`.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hJsmul : ∀ (c : K) z, J z → J (c • z)` using `fun c z hz => ⟨Submodule.smul_mem _ c hz.1, fun g => by rw [smul_mul_assoc, Matrix.trace_smul, hz.2, smul_zero]⟩`. Establish `hfix : ∀ z, J z → ∀ v, z *ᵥ v = v → v = 0` using `fun z hz v hv => eq_zero_of_mulVec_eq_self_of_trace_mul_eq_zero B hz.1 (hJtr z hz) hv`. Establish `hpres : ∀ S : Submodule K (Fin a → K), _root_.Formalism.MainNotions.N.IsInv ρ S → ∀ y ∈ Submodule.span K (Set.range P), ∀ s ∈ S, y *ᵥ s ∈ S`. Introduce `S hS y hy s hs`. Unfold `_root_.Formalism.MainNotions.N.IsInv at hS`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨g, rfl⟩ := hy`. Conclude with `hS g s hs`. Consider the case `zero => rw [Matrix.zero_mulVec]`. Conclude with `S.zero_mem`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Consider the case `add y w _ _ h1 h2 => rw [Matrix.add_mulVec]`. Conclude with `S.add_mem h1 h2`. Consider the case `smul c y _ h => rw [Matrix.smul_mulVec]`. Conclude with `S.smul_mem c h`. Set `W : Submodule K (Fin a → K)` to `{ carrier := {v | ∀ z, J z → z *ᵥ v = 0} add_mem' := fun {v w} hv hw z hz => by rw [Matrix.mulVec_add, hv z hz, hw z hz, add_zero] zero_mem' := fun z _ => Matrix.mulVec_zero z smul_mem' := fun c v hv z hz => by rw [Matrix.mulVec_smul, hv z hz, smul_zero] }`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hWst : _root_.Formalism.MainNotions.N.IsInv ρ W`. Unfold `_root_.Formalism.MainNotions.N.IsInv`. Introduce `g v hv`. Establish `hv' : ∀ z, J z → z *ᵥ v = 0` using `hv`. Use `show ∀ z, J z → z *ᵥ (P g *ᵥ v) = 0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Introduce `z hz`. Rewrite using `[Matrix.mulVec_mulVec]`. Conclude with `hv' _ (hJright g z hz)`. Take `⟨W', hW'st, hcompl⟩` from `hss W hWst`. Establish `hW'bot : W' = ⊥`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Take `⟨S, ⟨hSst, hSW', hSne⟩, hmin⟩` from `WellFounded.has_min wellFounded_lt {S : Submodule K (Fin a → K) | _root_.Formalism.MainNotions.N.IsInv ρ S ∧ S ≤ W' ∧ S ≠ ⊥} ⟨W', hW'st, le_rfl, hne⟩`. Take `⟨s, hsS, hs0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hSne`. Set `T : Submodule K (Fin a → K)` to `{ carrier := {w | ∃ z, J z ∧ z *ᵥ s = w} add_mem' := by`. Introduce and unpack `_ _ ⟨y, hy, rfl⟩ ⟨z, hz, rfl⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨y + z, hJadd y z hy hz, Matrix.add_mulVec _ _ _⟩`. Use the proof step `zero_mem' := ⟨0, hJ0, Matrix.zero_mulVec _⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c _ ⟨z, hz, rfl⟩`. Conclude with `⟨c • z, hJsmul c z hz, Matrix.smul_mulVec _ _ _⟩ }`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hTS : T ≤ S`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `hpres S hSst z hz.1 s hsS`. Establish `hTst : _root_.Formalism.MainNotions.N.IsInv ρ T`. Unfold `_root_.Formalism.MainNotions.N.IsInv`.
-
-Introduce and unpack `g _ ⟨z, hz, rfl⟩`. Conclude with `⟨P g * z, hJleft g z hz, (Matrix.mulVec_mulVec _ _ _).symm⟩`. Distinguish the cases in `hT : T = ⊥`. Apply `hs0` to reduce the goal to its premises. Establish `hsW : s ∈ W` using `by show ∀ z, J z → z *ᵥ s = 0`.
-
-Introduce `z hz`. Establish `hzT : z *ᵥ s ∈ T` using `⟨z, hz, rfl⟩`. Rewrite `hzT` using `[hT]`. Conclude with `(Submodule.mem_bot K).1 hzT`. Conclude with `(Submodule.disjoint_def.1 hcompl.disjoint) s hsW (hSW' hsS)`.
-
-Establish `hTeq : T = S`. Assume the negation of the conclusion as `hTS'`. Conclude with `hmin T ⟨hTst, hTS.trans hSW', hT⟩ (lt_of_le_of_ne hTS hTS')`. Establish `hsT : s ∈ T` using `hTeq ▸ hsS`. Take `⟨z, hz, hzs⟩` from `hsT`.
-
-Conclude with `hs0 (hfix z hz s hzs)`. Establish `hWtop : W = ⊤`. Establish `h` using `hcompl.sup_eq_top`. Rewrite `h` using `[hW'bot, sup_bot_eq]`. Then use the resulting hypothesis. Establish `hxJ : J x` using `⟨hx, htrx⟩`.
-
-Use `Matrix.ext_iff_mulVec.2 fun v => ?_` and prove the remaining obligations. Rewrite using `[Matrix.zero_mulVec]`. Establish `hv : ∀ z, J z → z *ᵥ v = 0` using `(hWtop ▸ Submodule.mem_top : v ∈ W)`. Conclude with `hv x hxJ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.isSSRep_trace_nondegenerate :
     ∀ (Γ K : Type) [Group Γ] [Field K] [CharZero K] (a : ℕ) (ρ : Γ →* GL (Fin a) K), _root_.Formalism.MainNotions.N.IsSSRep ρ → (∀ x ∈ Submodule.span K (Set.range fun g => ((ρ g : GL (Fin a) K) : Matrix (Fin a) (Fin a) K)), (∀ g, (x * ((ρ g : GL (Fin a) K) : Matrix (Fin a) (Fin a) K)).trace = 0) → x = 0) := by

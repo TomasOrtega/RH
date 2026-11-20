@@ -12,17 +12,17 @@ open AlgebraicGeometry CategoryTheory
 namespace GlobalTheory.FlagTan.KSUniv
 open GlobalTheory.FlagTan in
 /- English proof (translation)
-Introduce `hP hG E _ _ _ H Dw l Xo c K _ _ y hpq`. Take `⟨X₀, h1, h2, hinj⟩` from `GlobalTheory.T.exists_moduliPoint_trivSqZeroExt_tangentBasis E H Dw l Xo c K y (HIx Dw (psiSet H)) (card_HIx (isHalf_psiSet H))`. Use `choose N hN using fun k : HIx Dw (psiSet H) => _root_.GlobalTheory.T.exists_kodaira_spencer_flag_tangent hP E H Dw l Xo c K y _ hpq (isTanX_dir h1 h2 (Pi.single k 1))`. Establish `hL` using `_root_.GlobalTheory.T.kodaira_spencer_of_direct_sum_deformation hP E H Dw l Xo c K y _ X₀ hpq h1 h2 N hN`. Set `L : (HIx Dw (psiSet H) → K) →ₗ[K] (HIx Dw (psiSet H) → K)` to `Fintype.linearCombination K N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hLa : ∀ M, L M = ∑ k, M k • N k` using `fun M => Fintype.linearCombination_apply _ _ _`. Establish `h0 : spMap (dir c (0 : HIx Dw (psiSet H) → K)).toRingHom ≫ X₀ = spMap (algebraMap K (DualNumber K)) ≫ y.x`. Rewrite using `[← h2, ← Category.assoc, spMap_comp_spMap']`. Use `congr 2`. Apply the tactic sequence `ext z <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `Linj : Function.Injective L` using `(injective_iff_map_eq_zero L).2 fun M hM => hinj ((_root_.GlobalTheory.T.flag_deformation_const_of_kodaira_spencer_zero hP hG E H Dw l Xo c K y _ hpq (isTanX_dir h1 h2 M) (by rw [← hM, hLa]; exact hL M)).trans h0.symm)`. Set `e` to `LinearEquiv.ofInjectiveEndo L Linj`. Set `P` to `LinearMap.toMatrix' (e.symm : (HIx Dw (psiSet H) → K) →ₗ[K] (HIx Dw (psiSet H) → K))`. Establish `hP' : ∀ M, P.mulVec M = e.symm M` using `fun M => LinearMap.toMatrix'_mulVec _ M`. Use `⟨spMap (reparam c.F P).toRingHom ≫ X₀, ?_, ?_, fun M => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, h1, sOf, spMap_comp_spMap']`. Use `congr 1`. Rewrite using `[← RingHom.comp_assoc]`. Use `congr 1`. Conclude with `(reparam c.F P).comp_algebraMap`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Category.assoc, spMap_comp_spMap', ← h2]`. Use `congr 2`. Use extensionality with `z`. Simplify using `[reparam]`. Rewrite using `[← Category.assoc, spMap_comp_spMap', dir_comp_reparam, hP']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hL (e.symm M)` as an intermediate fact. Rewrite `this` using `[← hLa, show L (e.symm M) = M from e.apply_symm_apply M]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem kodaira_spencer_universal : _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.GrothendieckDeformation → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K), 1 ≤ Dw.p + Dw.q → ∃ X : Sp (TrivSqZeroExt K (GlobalTheory.FlagTan.HIx Dw (GlobalTheory.FlagTan.psiSet H) → K)) ⟶ Xo.X, X ≫ Xo.s = sOf c _ ∧ spMap (TrivSqZeroExt.fstHom c.F K (GlobalTheory.FlagTan.HIx Dw (GlobalTheory.FlagTan.psiSet H) → K)).toRingHom ≫ X = y.x ∧ ∀ M : GlobalTheory.FlagTan.HIx Dw (GlobalTheory.FlagTan.psiSet H) → K, GlobalTheory.FlagTan.IsKS (GlobalTheory.FlagTan.psiSet H) y (spMap (GlobalTheory.FlagTan.dir c M).toRingHom ≫ X) M := by
   intro hP hG E _ _ _ H Dw l Xo c K _ _ y hpq
@@ -66,7 +66,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 open AlgebraicGeometry CategoryTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.FlagTan.KSUniv.kodaira_spencer_universal | exact _root_.GlobalTheory.FlagTan.KSUniv.kodaira_spencer_universal | (intros; apply _root_.GlobalTheory.FlagTan.KSUniv.kodaira_spencer_universal <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.kodaira_spencer_universal_family : _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.GrothendieckDeformation → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K), 1 ≤ Dw.p + Dw.q → ∃ X : Sp (TrivSqZeroExt K (GlobalTheory.FlagTan.HIx Dw (GlobalTheory.FlagTan.psiSet H) → K)) ⟶ Xo.X, X ≫ Xo.s = sOf c _ ∧ spMap (TrivSqZeroExt.fstHom c.F K (GlobalTheory.FlagTan.HIx Dw (GlobalTheory.FlagTan.psiSet H) → K)).toRingHom ≫ X = y.x ∧ ∀ M : GlobalTheory.FlagTan.HIx Dw (GlobalTheory.FlagTan.psiSet H) → K, GlobalTheory.FlagTan.IsKS (GlobalTheory.FlagTan.psiSet H) y (spMap (GlobalTheory.FlagTan.dir c M).toRingHom ≫ X) M := by
   first | exact @_root_.GlobalTheory.FlagTan.KSUniv.kodaira_spencer_universal | exact _root_.GlobalTheory.FlagTan.KSUniv.kodaira_spencer_universal | (intros; apply _root_.GlobalTheory.FlagTan.KSUniv.kodaira_spencer_universal <;> assumption)

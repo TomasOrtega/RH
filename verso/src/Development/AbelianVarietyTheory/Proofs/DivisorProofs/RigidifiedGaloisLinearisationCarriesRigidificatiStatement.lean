@@ -11,7 +11,7 @@ open GlobalTheory.Mum
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Mum.rigidified_galois_lin_carries_rig_and_cube` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRigidifiedGaloisLinearisationCarriesRigidificati.lean&line=73#L73)
 -/

@@ -8,14 +8,14 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 open Formalism.MainNotions.G
 
 /- English proof (translation)
-Establish `e` using `Int.toNat_of_nonneg h`. Conclude with `congrArg (Int.cast : ℤ → ℝ) e` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nk_toNat_cast (z : ℤ) (h : 0 ≤ z) : ((z.toNat : ℕ) : ℝ) = ((z : ℤ) : ℝ) := by
   have e := Int.toNat_of_nonneg h
   exact_mod_cast congrArg (Int.cast : ℤ → ℝ) e
 
 /- English proof (translation)
-Establish `h1 : 1 + η ≤ Real.exp η` using `by linarith [Real.add_one_le_exp η]`. Establish `h2 : (1 + η) ^ 2 ≤ Real.exp (2 * η)`. Rewrite using `[show 2 * η = η + η by ring, Real.exp_add, ← sq]`. Conclude with `pow_le_pow_left₀ (by linarith) h1 2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem brk_hat (m : ℕ) (η δ a : ℝ) (hη0 : 0 ≤ η) (hδη : δ ≤ η) (hδ0 : 0 ≤ δ) (hA0 : 0 ≤ a)
     (hm : (m : ℝ) ≤ η * a) : (a + m) * (1 + δ) ≤ Real.exp (2 * η) * a := by
@@ -32,71 +32,65 @@ theorem brk_hat (m : ℕ) (η δ a : ℝ) (hη0 : 0 ≤ η) (hδη : δ ≤ η) 
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Use `set k : ℝ := (m : ℝ) + 1 with hkdef`. Establish `hk0 : 0 < k` using `by linarith`. Use `set η : ℝ := 1 / k ^ 2 with hη`. Use `set τ : ℝ := La / (4 * k) with hτ`. Use `set δ : ℝ := 4 / p ^ 2 with hδ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hη0 : 0 < η` using `by positivity`. Establish `hη1 : η ≤ 1 / 100`. Rewrite using `[hη, div_le_div_iff₀ (by positivity) (by norm_num)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hp0 : (0 : ℝ) < p` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδη : δ ≤ η`. Rewrite using `[hδ, hη, div_le_div_iff₀ (by positivity) (by positivity)]`. Establish `h4 : k ^ 4 ≤ p ^ 2`. Establish `: k ^ 4 = (k ^ 2) ^ 2` using `by ring`. Rewrite using `[this]; exact pow_le_pow_left₀ (by positivity) hpk 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hk2 : (4 : ℝ) ≤ k ^ 2` using `by nlinarith`. Establish `h6` using `mul_le_mul_of_nonneg_left hk2 (sq_nonneg k)`. Establish `h7 : k ^ 4 = k ^ 2 * k ^ 2` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hδ0 : 0 ≤ δ` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmη : ∀ y : ℝ, k ^ 3 ≤ y → (m : ℝ) ≤ η * y`. Introduce `y hy`. Rewrite using `[hη, div_mul_eq_mul_div, one_mul, le_div_iff₀ (by positivity)]`. Establish `: (m : ℝ) ≤ k` using `by linarith`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hτ0 : 0 < τ` using `by positivity`. Establish `hτ1 : τ < 1 / 4`. Rewrite using `[hτ, div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hE2one : 1 ≤ Real.exp (2 * η)` using `by linarith [Real.add_one_le_exp (2 * η)]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0 : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Set `c : ℕ → ℝ` to `fun l => cc l + m`. Establish `hc0 : ∀ l, 0 ≤ c l` using `fun l => by have := hCnn l; show 0 ≤ cc l + m; linarith`. Establish `hAi0 : ∀ i, 0 ≤ Ai i` using `fun i => le_trans (by positivity) (hkAi i)`. Establish `hCi0 : ∀ i, 0 ≤ Ci i` using `fun i => le_trans (by positivity) (hkCi i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hAhat : ∀ i, (Ai i + m) * (1 + δ) ≤ Real.exp (2 * η) * Ai i` using `fun i => brk_hat m η δ (Ai i) hη0.le hδη hδ0 (hAi0 i) (hmη _ (hkAi i))`. Establish `hstep0 : ∀ (i : Fin s) (κ : ℝ), (ρ i + m) * (c i + ((Ai i + m) * (1 + δ)) - (u i + δ * (Ai i + m)) - (ρ i + m)) ≤ κ * (c i * ((Ai i + m) * (1 + δ))) → 0 ≤ κ → (ρ i + m) * c (i + 1) ≤ (κ * (Real.exp (2 * η) * Ai i)) * c i`. Introduce `i κ h hκ`. Establish `hcs : c (i + 1) = c i + ((Ai i + m) * (1 + δ)) - (u i + δ * (Ai i + m)) - (ρ i + m)` using `by show cc (i + 1) + m = _`. Rewrite using `[hrec i]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show _ = cc i + m + _ - _ - _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hcs]`. Use `h.trans ?_` and prove the remaining obligations. Conclude with `le_trans (mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left (hAhat i) (hc0 i)) hκ) (le_of_eq (by ring))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hfacts : ∀ i : Fin s, 0 ≤ ρ i + m ∧ ρ i + m ≤ c i ∧ ρ i + m ≤ (Ai i + m) * (1 + δ) ∧ 0 ≤ u i + δ * (Ai i + m)` using `fun i => by`. Take `⟨hr0, hrc, hrA, hu⟩` from `hρ i`. Establish `hA0` using `hAi0 i`. Use `⟨by linarith, by show _ ≤ cc i + m; linarith, ?_, ?_⟩` and prove the remaining obligations. Establish `: ρ i ≤ Ai i * (1 + δ)` using `by rw [hδ]; exact hrA`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `: -(δ * Ai i) ≤ u i`. Establish `e : -(4 * Ai i / p ^ 2) = -(δ * Ai i)` using `by rw [hδ]; ring`. Rewrite using `[← e]`. Conclude with `hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hr9 : 9 ≤ m`. Establish `: (9 : ℝ) ≤ (m : ℝ)` using `by linarith`. Conclude with `this` after adjusting the coercions. Establish `hcA : c 0 ≤ Real.exp η * A` using `by show cc 0 + m ≤ _`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hC0]`. Use `hmη _ hkA` as an intermediate fact. Establish `hA0 : 0 ≤ A` using `le_trans (by positivity) hkA`. Use polynomial arithmetic with `[Real.add_one_le_exp η]`. Establish `hl : lam0 + m ≤ c s` using `by show _ ≤ cc s + m; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hnn1 : ∀ i : Fin s, nn i + m ≤ 1 * (Real.exp (2 * η) * Ci i)` using `fun i => by`. Take `⟨h0, h1⟩` from `hn i`. Establish `hm` using `hmη _ (hkCi i)`. Establish `hC0'` using `hCi0 i`. Establish `: nn i ≤ Ci i * (1 + δ)` using `by rw [hδ]; exact h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : 1 + 2 * η ≤ Real.exp (2 * η)` using `by linarith [Real.add_one_le_exp (2 * η)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `fin : ∀ κ μ : Fin s → ℝ, (∀ i, 0 ≤ κ i) → (∀ i, 0 ≤ μ i) → (∀ i : Fin s, (ρ i + m) * c (i + 1) ≤ (κ i * (Real.exp (2 * η) * Ai i)) * c i) → (∀ i : Fin s, nn i + m ≤ μ i * (Real.exp (2 * η) * Ci i)) → (∏ i, κ i) * (∏ i, μ i) ≤ Real.exp (-τ) → ∃ θ : ℝ, 0 ≤ θ ∧ θ ^ (m - 1) ≤ Real.ex …`. Introduce `κ μ hκ hμ hst hnn hγ`. Establish `hγ0 : 0 ≤ (∏ i, κ i) * (∏ i, μ i)` using `mul_nonneg (Finset.prod_nonneg fun i _ => hκ i) (Finset.prod_nonneg fun i _ => hμ i)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `⟨Real.exp η * Real.exp (2 * η) ^ s * Real.exp (2 * η) ^ s * ((∏ i, κ i) * (∏ i, μ i)), by positivity, ?_, ?_⟩` and prove the remaining obligations. Establish `hEq1 : Real.exp η = Real.exp (1 / ((m : ℝ) + 1) ^ 2)` using `by rw [hη]`. Establish `hEq2 : Real.exp (2 * η) = Real.exp (2 / ((m : ℝ) + 1) ^ 2)`. Rewrite using `[hη]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hkdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `hτeq : τ = La / (4 * ((m : ℝ) + 1))` using `by rw [hτ]`. Rewrite using `[hEq1, hEq2]`. Conclude with `nk_exponent s m La _ hr9 hroom (by linarith) hγ0 (by rw [← hτeq]; exact hγ)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `nk_bracket s c (fun i => ρ i + m) (fun i => nn i + m) Ai Ci κ μ (lam0 + m) A (Real.exp η) (Real.exp (2 * η)) hc0 (fun i => (hfacts i).1) (fun i => by have := (hn i).1; linarith) hAi0 hCi0 hκ hμ (by linarith) (by positivity) hst hl hnn hcA`. Take `⟨i0, hi0⟩` from `hk`. Distinguish the cases in `hP : u i0 + 4 * (Ai i0 + m) / p ^ 2 ≤ La * max (cc i0) (Ai i0) / ((m : ℝ) + 1)`. Establish `hQ : ¬ (Ci i0 * (1 - La / ((m : ℝ) + 1)) ≤ nn i0)` using `fun h => hi0 ⟨hP, h⟩ push Not at hQ set μ0 : ℝ := 1 - La / k + η with hμ0`. Establish `hμ00 : 0 ≤ μ0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: La / k ≤ 1 / 4` using `by rw [div_le_iff₀ hk0]; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Apply the tactic sequence `refine fin (fun _ => 1) (fun i => if i = i0 then μ0 else 1) (fun _ => zero_le_one) (fun i => by split_ifs <;> linarith) (fun i => ?_) (fun i => ?_) ?_`. Take `⟨hr0, hrc, hrA, hu⟩` from `hfacts i`. Use `hstep0 i 1 ?_ zero_le_one` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_mul]`. Conclude with `nk_iv _ _ _ _ hr0 hrc hrA hu`. Distinguish the cases in `hi : i = i0`. Substitute `hi` using the available equality. Rewrite using `[if_pos rfl]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hm` using `hmη _ (hkCi i)`. Establish `hC0'` using `hCi0 i`. Establish `h1 : nn i + m ≤ μ0 * Ci i` using `by rw [hμ0]; nlinarith`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[if_neg hi]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Conclude with `hnn1 i`. Rewrite using `[Finset.prod_const_one, one_mul, Finset.prod_ite_eq' Finset.univ i0 (fun _ => μ0), if_pos (Finset.mem_univ _)]`. Use `le_trans (show μ0 ≤ Real.exp (-(La / k) + η) by linarith [Real.add_one_le_exp (-(La / k) + η)]) (Real.exp_le_exp.mpr ?_)` and prove the remaining obligations. Rewrite using `[hτ]`. Establish `h1 : η ≤ 3 * La / (4 * k)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hη, div_le_div_iff₀ (by positivity) (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : La / (4 * k) = La / k - 3 * La / (4 * k)` using `by field_simp; ring`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push Not at hP`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply the tactic sequence `refine fin (fun i => if i = i0 then 1 - τ else 1) (fun _ => 1) (fun i => by split_ifs <;> linarith) (fun _ => zero_le_one) (fun i => ?_) hnn1 ?_`. Take `⟨hr0, hrc, hrA, hu⟩` from `hfacts i`. Distinguish the cases in `hi : i = i0`. Substitute `hi` using the available equality. Rewrite using `[if_pos rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `hstep0 i (1 - τ) ?_ (by linarith)` and prove the remaining obligations. Establish `hcpos : 0 < c i`. Use `hCnn i` as an intermediate fact. Use `show 0 < cc i + m`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA0` using `hAi0 i`. Establish `hApos : 0 < (Ai i + m) * (1 + δ)` using `by positivity`. Apply `nk_vi _ _ _ _ _ hcpos hApos hr0 hrc hrA hu hτ0 hτ1` to reduce the goal to its premises. Establish `hmax : max (c i) ((Ai i + m) * (1 + δ)) ≤ 2 * max (cc i) (Ai i)`. Establish `hm` using `hmη _ (hkAi i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hAh` using `hAhat i`. Establish `hcm : cc i ≤ max (cc i) (Ai i)` using `le_max_left _ _`. Establish `hAm : Ai i ≤ max (cc i) (Ai i)` using `le_max_right _ _`. Apply `max_le` to reduce the goal to its premises. Use `show cc i + m ≤ _`.
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `: (m : ℝ) ≤ Ai i` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: Real.exp (2 * η) * Ai i ≤ 2 * Ai i`. Establish `: Real.exp (2 * η) ≤ 2`. Establish `h2η : 2 * η ≤ 1 / 50` using `by linarith`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `Real.exp_le_exp.mpr h2η` as an intermediate fact. Establish `h3 : Real.exp (1 / 50) ≤ 2`. Use `Real.log_two_gt_d9` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : 2 * τ * (2 * max (cc i) (Ai i)) = La * max (cc i) (Ai i) / ((m : ℝ) + 1)`. Rewrite using `[hτ]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `e2 : 4 * (Ai i + m) / p ^ 2 = δ * (Ai i + m)` using `by rw [hδ]; ring`. Use `mul_le_mul_of_nonneg_left hmax (by linarith : (0:ℝ) ≤ 2 * τ)` as an intermediate fact. Rewrite `hP` using `[e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Rewrite using `[if_neg hi]`. Use `hstep0 i 1 ?_ zero_le_one` and prove the remaining obligations. Rewrite using `[one_mul]`. Conclude with `nk_iv _ _ _ _ hr0 hrc hrA hu`. Rewrite using `[Finset.prod_const_one, mul_one, Finset.prod_ite_eq' Finset.univ i0 (fun _ => 1 - τ), if_pos (Finset.mem_univ _)]`.
-
-Combine the linear relations using `[Real.add_one_le_exp (-τ)]`.
+A detailed English derivation is pending.
 -/
 theorem brk_core (s m : ℕ) (La p A lam0 : ℝ) (Ai Ci ρ u nn : Fin s → ℝ) (cc : ℕ → ℝ)
     (hroom : 2 * s + 1 ≤ m) (hk10 : 10 ≤ (m : ℝ) + 1) (hLa1 : 1 ≤ La) (hLak : 4 * La ≤ (m : ℝ) + 1)
@@ -291,17 +285,15 @@ theorem brk_core (s m : ℕ) (La p A lam0 : ℝ) (Ai Ci ρ u nn : Fin s → ℝ)
       linarith [Real.add_one_le_exp (-τ)]
 
 /- English proof (translation)
-Introduce `X _ hD hI hc j rz ry hd A hA1 hA2 mu lam hp hk`. Take `⟨hC0, hCnn, hρ, hl0, hls, hn⟩` from `hF X hD hI hc j rz ry hd A hA1 hA2 mu lam hp`. Take `⟨hkA, hkAi, hkCi, hpk, hk10, hLa1, hLak⟩` from `hN X hD hI hc j rz ry hd A hA1`. Establish `hroom : 2 * segS X.TT j + 1 ≤ X.m`. Take `⟨⟨-, -, -, -, h5, -, h7, -⟩, -⟩` from `hI`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `(h5 j).2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hkdef : X.k = (X.m : ℝ) + 1` using `rfl`. Rewrite `hkA`, `hkAi`, `hkCi`, `hpk`, `hk10`, `hLak` using `[hkdef]`. Establish `hk' : ∃ i0, ¬ ((((pairO mu (clA C0 CE1 CE2 X j rz ry) i0 - pairRho mu i0 : ℤ) : ℝ)) + 4 * ((clA C0 CE1 CE2 X j rz ry i0 : ℝ) + X.m) / (X.p : ℝ) ^ 2 ≤ X.La C0 * max ((pairC mu i0 : ℤ) : ℝ) (clA C0 CE1 CE2 X j rz ry i0 : ℝ) / ((X.m : ℝ) + 1) ∧ (clC C0 CE1 CE2 X j rz ry i0 : ℝ) * (1 …` using `segS X.TT j) lam i0 : ℤ) : ℝ)) := by`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Unfold `KeptPair at hk`. Conclude with `not_forall.mp hk`. Take `⟨θ, h0, h1, h2⟩` from `brk_core (segS X.TT j) X.m (X.La C0) (X.p : ℝ) (A : ℝ) ((lam 0 : ℤ) : ℝ) (fun i => (clA C0 CE1 CE2 X j rz ry i : ℝ)) (fun i => (clC C0 CE1 CE2 X j rz ry i : ℝ)) (fun i => ((pairRho mu i : ℤ) : ℝ)) (fun i => ((pairO mu (clA C0 CE1 CE2 X j rz ry) i - pairRho mu i : ℤ) : ℝ)) (fun i …`. Take `⟨a, b, c, d⟩` from `hρ i`. Conclude with `⟨by exact_mod_cast a, by exact_mod_cast b, c, d⟩)`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun i => by simp only [pairO]; push_cast; ring)`. Use the proof step `(by exact_mod_cast hl0) (by exact_mod_cast hls)`. Use the proof step `(fun i => by`. Take `⟨a, b⟩` from `hn i`. Conclude with `⟨by exact_mod_cast a, b⟩) hk'`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨θ, h0, h1, ?_⟩` and prove the remaining obligations. Establish `e0 : (((lam 0).toNat : ℝ) + X.m) = ((lam 0 : ℤ) : ℝ) + X.m` using `by rw [nk_toNat_cast _ hl0]`. Establish `e1 : ∏ i : Fin (segS X.TT j), (((pairRho mu i).toNat : ℝ) + X.m) = ∏ i : Fin (segS X.TT j), (((pairRho mu i : ℤ) : ℝ) + X.m)` using `Finset.prod_congr rfl fun i _ => by rw [nk_toNat_cast _ (hρ i).1]`. Establish `e2 : ∏ i : Fin (segS X.TT j), (((pairN (s` using `segS X.TT j) lam i).toNat : ℝ) + X.m) = ∏ i : Fin (segS X.TT j), (((pairN (s := segS X.TT j) lam i : ℤ) : ℝ) + X.m) := Finset.prod_congr rfl fun i _ => by rw [nk_toNat_cast _ (hn i).1]`. Rewrite using `[e0, e1, e2]`.
-
-Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bracket_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hF : PairFactsAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc)
     (hN : CoarseDegreesLargeAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) : BracketAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
@@ -347,7 +339,7 @@ theorem bracket_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hF : PairFactsAt C0 C
   exact h2
 
 /- English proof (translation)
-The claim follows from `TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => bracket_of h.1 h.2) (hF.and hN)`.
+A detailed English derivation is pending.
 -/
 theorem restBracket_of (hF : RestPairFacts) (hN : CoarseDegreesLargeBeyond) : RestBracket :=
   TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => bracket_of h.1 h.2) (hF.and hN)

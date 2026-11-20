@@ -26,7 +26,7 @@ section Pred
 variable (κ : DividedPowers I) {a b : R}
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero => simp [dpPred]`. Consider the case `succ n => simp [Finset.Nat.sum_antidiagonal_succ', dpPred, κ.dpow_add ha hb]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem sum_dpow_mul_dpPred (ha : a ∈ I) (hb : b ∈ I) (n : ℕ) :
     ∑ k ∈ Finset.HasAntidiagonal.antidiagonal n, κ.dpow k.1 a * dpPred κ k.2 b = dpPred κ n (a + b) := by
@@ -35,7 +35,7 @@ theorem sum_dpow_mul_dpPred (ha : a ∈ I) (hb : b ∈ I) (n : ℕ) :
   | succ n => simp [Finset.Nat.sum_antidiagonal_succ', dpPred, κ.dpow_add ha hb]
 
 /- English proof (translation)
-Rewrite using `[← Finset.Nat.sum_antidiagonal_swap, add_comm a b, ← sum_dpow_mul_dpPred κ hb ha]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_dpow_mul_dpPred' (ha : a ∈ I) (hb : b ∈ I) (n : ℕ) :
     ∑ k ∈ Finset.HasAntidiagonal.antidiagonal n, κ.dpow k.2 b * dpPred κ k.1 a = dpPred κ n (a + b) := by
@@ -43,7 +43,7 @@ theorem sum_dpow_mul_dpPred' (ha : a ∈ I) (hb : b ∈ I) (n : ℕ) :
   rfl
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero => simp [dpPred]`. Consider the case `succ n`. Use `κ.mul_dpow (m := n) (n := 1) ha` as an intermediate fact. Rewrite `this` using `[κ.dpow_one ha, Nat.choose_succ_self_right]`. Then use the resulting hypothesis.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem dpPred_mul_self (ha : a ∈ I) (n : ℕ) : dpPred κ n a * a = n * κ.dpow n a := by
   cases n with
@@ -53,9 +53,9 @@ theorem dpPred_mul_self (ha : a ∈ I) (n : ℕ) : dpPred κ n a * a = n * κ.dp
     rwa [κ.dpow_one ha, Nat.choose_succ_self_right] at this
 
 /- English proof (translation)
-Break down `m with _ | m` into its components or cases. Simplify using `[dpPred, κ.dpow_zero ha]`. Break down `n with _ | n` into its components or cases. Simplify using `[dpPred, κ.dpow_zero ha]`. Express the relevant statement in the definitionally equal form `κ.dpow _ a * κ.dpow n a + κ.dpow _ a * κ.dpow m a = _ * κ.dpow (m + 1 + n) a`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[κ.mul_dpow ha, κ.mul_dpow ha, ← add_assoc, Nat.choose_succ_succ' (m + 1 + n) m, show n + 1 + m = m + 1 + n by omega, Nat.choose_symm_of_eq_add (show m + 1 + n = n + 1 + m by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dpow_mul_dpPred (ha : a ∈ I) (m n : ℕ) :
     κ.dpow m a * dpPred κ n a + κ.dpow n a * dpPred κ m a = (m + n).choose m * dpPred κ (m + n) a := by
@@ -70,9 +70,9 @@ theorem dpow_mul_dpPred (ha : a ∈ I) (m n : ℕ) :
   ring
 
 /- English proof (translation)
-Break down `m with _ | m` into its components or cases. Simplify using `[dpPred]`. Take `⟨n, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hn`. Rewrite using `[show (m + 1) * n.succ = m * n.succ + n + 1 by simp only [Nat.succ_eq_add_one]; ring]`. Express the relevant statement in the definitionally equal form `κ.dpow m _ * κ.dpow n a = _ * κ.dpow _ a`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[κ.dpow_comp hn ha, mul_assoc, κ.mul_dpow ha, Nat.uniformBell_succ_left, Nat.choose_symm_add]`. Use `push_cast`. Simplify using `only [Nat.succ_eq_add_one, ← add_assoc, Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dpPred_dpow (ha : a ∈ I) (m : ℕ) {n : ℕ} (hn : n ≠ 0) :
     dpPred κ m (κ.dpow n a) * dpPred κ n a = m.uniformBell n * dpPred κ (m * n) a := by
@@ -148,13 +148,13 @@ def extDP (κ : DividedPowers I) : DividedPowers (I.comap (pr R M)) where
 variable {M}
 
 /- English proof (translation)
-The claim follows from `add_zero _`.
+A detailed English derivation is pending.
 -/
 theorem fst_extDP (κ : DividedPowers I) (n : ℕ) (x : TrivSqZeroExt R M) :
     ((extDP M κ).dpow n x).fst = κ.dpow n x.fst := add_zero _
 
 /- English proof (translation)
-The claim follows from `zero_add _`.
+A detailed English derivation is pending.
 -/
 theorem snd_extDP (κ : DividedPowers I) (n : ℕ) (x : TrivSqZeroExt R M) :
     ((extDP M κ).dpow n x).snd = dpPred κ n x.fst • x.snd := zero_add _
@@ -162,19 +162,17 @@ theorem snd_extDP (κ : DividedPowers I) (n : ℕ) (x : TrivSqZeroExt R M) :
 variable (M) in
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `h`. Establish `f : ∀ l : List (ℕ × TrivSqZeroExt R M), (l.map fun p ↦ (extDP M κ).dpow p.1 p.2).prod.fst = ((l.map fun p ↦ (p.1, p.2.fst)).map fun p ↦ κ.dpow p.1 p.2).prod` using `fun l ↦ by`. Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons p l ih => simp only [List.map_cons, List.prod_cons, fst_mul, ih, fst_extDP]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `m : ∀ l : List (ℕ × TrivSqZeroExt R M), (∀ p ∈ l, p.2 ∈ I.comap (pr R M)) → ∀ p ∈ l.map fun p ↦ (p.1, p.2.fst), p.2 ∈ I` using `fun l hl p hp ↦ by`. Take `⟨q, hq, rfl⟩` from `List.mem_map.1 hp`. Conclude with `hl q hq`. Establish `s : ∀ l : List (ℕ × TrivSqZeroExt R M), (∀ p ∈ l, p.2 ∈ I.comap (pr R M)) → ∀ l₀ : List (ℕ × R), (∀ p ∈ l₀, p.2 ∈ I) → N + 1 ≤ (l₀.map Prod.fst).sum + (l.map Prod.fst).sum → (l₀.map fun p ↦ κ.dpow p.1 p.2).prod • (l.map fun p ↦ (extDP M κ).dpow p.1 p.2).prod.snd = 0` using `fun l ↦ by`. Proceed by induction on `l with`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `nil => simp`. Consider the case `cons p l ih`. Introduce `hl l₀ h₀ hs`. Establish `hp : p.2.fst ∈ I` using `hl p (by simp)`. Establish `hl' : ∀ q ∈ l, q.2 ∈ I.comap (pr R M)` using `fun q hq ↦ hl q (by simp [hq])`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.map_cons, List.sum_cons] at hs`. Establish `e₁` using `ih hl' ((p.1, p.2.fst) :: l₀) (by simpa using ⟨hp, fun a b hab ↦ h₀ _ hab⟩) (by simp only [List.map_cons, List.sum_cons]; omega)`. Simplify using `only [List.map_cons, List.prod_cons] at e₁`. Simplify using `only [List.map_cons, List.prod_cons, snd_mul, op_smul_eq_smul, smul_add, smul_smul, fst_extDP, snd_extDP, f]`. Rewrite using `[mul_comm, e₁, zero_add]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hn : p.1 with _ | n` into its components or cases. Simplify using `[dpPred]`. Establish `e₂` using `hN ((n, p.2.fst) :: (l₀ ++ l.map fun p ↦ (p.1, p.2.fst))) (fun q hq ↦ by`. Break down `List.mem_cons.1 hq with rfl | hq` into its components or cases. Use `exacts [hp, (List.mem_append.1 hq).elim (h₀ q) (m l hl' q)])`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by simp only [List.map_cons, List.sum_cons, List.map_append, List.sum_append, List.map_map, Function.comp_def]; change N ≤ n + (_ + (l.map Prod.fst).sum); omega)`. Simplify using `only [List.map_cons, List.prod_cons, List.map_append, List.prod_append] at e₂`. Rewrite using `[← mul_assoc, mul_comm, dpPred, e₂, zero_smul]`. Use `⟨N + 1, fun l hl hs ↦ TrivSqZeroExt.ext ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[f]`.
-
-Conclude with `hN _ (m l hl) (by simp only [List.map_map, Function.comp_def]; exact (Nat.le_succ N).trans hs)`. Simplify `hs)` using `using s l hl [] (by simp) (by simpa`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isDPNilpotent_extend {κ : DividedPowers I} (h : IsNilDP κ) : IsNilDP (extDP M κ) := by
   obtain ⟨N, hN⟩ := h
@@ -225,11 +223,11 @@ def extMap (σ : R →+* R') (u : M →ₛₗ[σ] M') : TrivSqZeroExt R M →+* 
   map_mul' a b := by ext <;> simp [u.map_smulₛₗ]
 
 /- English proof (translation)
-Establish `f : ∀ x, (extMap σ u x).fst = σ x.fst` using `fun _ ↦ add_zero _`. Establish `s : ∀ x, (extMap σ u x).snd = u x.snd` using `fun _ ↦ zero_add _`. Use `⟨Ideal.map_le_iff_le_comap.2 fun x hx ↦ ?_, fun {n} x hx ↦ TrivSqZeroExt.ext ?_ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(extMap σ u x).fst ∈ I'`. Rewrite using `[f]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.1 (Ideal.mem_map_of_mem _ hx)`. Rewrite using `[fst_extDP, f, f, fst_extDP, h.2 x.fst hx]`. Rewrite using `[snd_extDP, f, s, s, snd_extDP, u.map_smulₛₗ]`. Consider the cases of `n with`. Consider the case `zero => simp [dpPred]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n => rw [dpPred, dpPred, h.2 x.fst hx]`.
+A detailed English derivation is pending.
 -/
 theorem isDPMorphism_extMap {κ : DividedPowers I} {κ' : DividedPowers I'} {σ : R →+* R'}
     (h : IsDPMorphism κ κ' σ) (u : M →ₛₗ[σ] M') : IsDPMorphism (extDP M κ) (extDP M' κ') (extMap σ u) := by
@@ -246,7 +244,7 @@ theorem isDPMorphism_extMap {κ : DividedPowers I} {κ' : DividedPowers I'} {σ 
     | succ n => rw [dpPred, dpPred, h.2 x.fst hx]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Ideal.map_comap_le, fun _ _ ↦ (fst_extDP κ _ _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem isDPMorphism_pr (κ : DividedPowers I) : IsDPMorphism (extDP M κ) κ (pr R M) :=
   ⟨Ideal.map_comap_le, fun _ _ ↦ (fst_extDP κ _ _).symm⟩
@@ -258,21 +256,21 @@ def IsDPDer (κ : DividedPowers I) (D : Derivation T R M) : Prop :=
   ∀ (n : ℕ), ∀ a ∈ I, D (κ.dpow (n + 1) a) = κ.dpow n a • D a
 
 /- English proof (translation)
-The claim follows from `fun n a ha ↦ by rw [Ideal.mem_bot.1 ha, dpow_eval_zero _ n.succ_ne_zero, map_zero, smul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isDPDerivation_zero_ideal (D : Derivation T R M) : IsDPDer (dp0 R) D := fun n a ha ↦ by
   rw [Ideal.mem_bot.1 ha, dpow_eval_zero _ n.succ_ne_zero, map_zero, smul_zero]
 
 /- English proof (translation)
-Establish `key : ∀ a ∈ J.map (algebraMap T R), ∀ n, D (κ.dpow n a) = dpPred κ n a • D a` using `fun a ha ↦ by`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem a ha`. Take `⟨a, ha, rfl⟩` from `ha`. Introduce `n`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h.2 _ ha, D.map_algebraMap, D.map_algebraMap, smul_zero]`. Consider the case `zero`. Introduce `n`. Consider the cases of `n with`. Consider the case `zero => simp [κ.dpow_zero I.zero_mem]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ n => simp [dpow_eval_zero _ n.succ_ne_zero]`. Consider the case `add a b ha hb iha ihb`. Introduce `n`. Simplify using `only [κ.dpow_add (h.1 ha) (h.1 hb), map_sum, D.leibniz, iha, ihb, smul_smul, Finset.sum_add_distrib, ← Finset.sum_smul, sum_dpow_mul_dpPred κ (h.1 ha) (h.1 hb), sum_dpow_mul_dpPred' κ (h.1 ha) (h.1 hb), map_add, smul_add]`. Conclude with `add_comm _ _`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `smul r a ha ih`. Introduce `n`. Establish `e` using `congrArg TrivSqZeroExt.snd ((extDP M κ).dpow_mul (n := n) (a := derSec D r) (x := derSec D a) (show (derSec D a).fst ∈ I by rw [fst_derSec]; exact h.1 ha))`. Rewrite `e` using `[← map_mul, ← map_pow, snd_extDP, fst_derSec, snd_derSec, snd_mul, fst_derSec, snd_derSec, snd_extDP, fst_extDP, fst_derSec, snd_derSec, op_smul_eq_smul, ← ih]`. Rewrite using `[smul_eq_mul, e, κ.dpow_mul (h.1 ha), D.leibniz]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun n a ha ↦ key a (hI ha) (n + 1)`.
+A detailed English derivation is pending.
 -/
 theorem isDPDer_of_map {J : Ideal T} {δ : DividedPowers J} {κ : DividedPowers I}
     (h : IsDPMorphism δ κ (algebraMap T R)) (hI : I ≤ J.map (algebraMap T R)) (D : Derivation T R M) :
@@ -304,9 +302,9 @@ theorem isDPDer_of_map {J : Ideal T} {δ : DividedPowers J} {κ : DividedPowers 
   exact fun n a ha ↦ key a (hI ha) (n + 1)
 
 /- English proof (translation)
-Use `⟨Ideal.map_le_iff_le_comap.2 fun a ha ↦ ?_, fun {n} a ha ↦ TrivSqZeroExt.ext ?_ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(derSec D a).fst ∈ I`. Rewrite using `[fst_derSec]` and apply the resulting hypothesis. Conclude with `(fst_extDP _ _ _).trans (by rw [RingHom.coe_coe, fst_derSec, fst_derSec])`. Rewrite using `[snd_extDP, RingHom.coe_coe, fst_derSec, snd_derSec, snd_derSec]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `n with`. Consider the case `zero => simp [dpPred, κ.dpow_zero ha]`. Consider the case `succ n => exact (h n a ha).symm`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem IsDPDer.isDPMorphism {κ : DividedPowers I} {D : Derivation T R M} (h : IsDPDer κ D) :
     IsDPMorphism κ (extDP M κ) (derSec D : R →+* TrivSqZeroExt R M) := by
@@ -322,7 +320,7 @@ theorem IsDPDer.isDPMorphism {κ : DividedPowers I} {D : Derivation T R M} (h : 
 variable (M) in
 
 /- English proof (translation)
-Use `⟨Ideal.map_le_iff_le_comap.2 fun a ha ↦ ha, fun {n} a _ ↦ TrivSqZeroExt.ext (fst_extDP _ _ _) ?_⟩` and prove the remaining obligations. Conclude with `(snd_extDP _ _ _).trans (smul_zero _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isDPMorphism_inl (κ : DividedPowers I) :
     IsDPMorphism κ (extDP M κ) (algebraMap R (TrivSqZeroExt R M)) := by
@@ -334,7 +332,7 @@ section Conn
 variable {S S' : Scheme.{0}} (κ : DividedPowers I) (t : S ⟶ Sp R) (A : Over S) [GrpObj A]
 
 /- English proof (translation)
-The claim follows from `GrpMor.of_hom hσ (by rw [Category.assoc, ← Cris.spMap_comp, show (pr R M).comp σ = RingHom.id R from RingHom.ext e, Cris.spMap_id, Category.comp_id]) (𝟙 A)`.
+A detailed English derivation is pending.
 -/
 theorem secMor {σ : R →+* TrivSqZeroExt R M} (hσ : IsDPMorphism κ (extDP M κ) σ) (e : ∀ r, (σ r).fst = r) :
     GrpMor κ t A (extDP M κ) (t ≫ spMap (pr R M)) A σ (𝟙 S) (Over.Hom.left (𝟙 A)) :=
@@ -345,7 +343,7 @@ theorem secMor {σ : R →+* TrivSqZeroExt R M} (hσ : IsDPMorphism κ (extDP M 
 variable (M) in
 
 /- English proof (translation)
-The claim follows from `secMor κ t A (isDPMorphism_inl M κ) fun _ ↦ rfl`.
+A detailed English derivation is pending.
 -/
 theorem inlMor : GrpMor κ t A (extDP M κ) (t ≫ spMap (pr R M)) A (algebraMap R (TrivSqZeroExt R M)) (𝟙 S)
     (Over.Hom.left (𝟙 A)) := secMor κ t A (isDPMorphism_inl M κ) fun _ ↦ rfl
@@ -353,7 +351,7 @@ theorem inlMor : GrpMor κ t A (extDP M κ) (t ≫ spMap (pr R M)) A (algebraMap
 variable (M) in
 
 /- English proof (translation)
-The claim follows from `GrpMor.of_hom (isDPMorphism_pr κ) rfl (𝟙 A)`.
+A detailed English derivation is pending.
 -/
 theorem prMor : GrpMor (extDP M κ) (t ≫ spMap (pr R M)) A κ t A (pr R M) (𝟙 S) (Over.Hom.left (𝟙 A)) :=
   GrpMor.of_hom (isDPMorphism_pr κ) rfl (𝟙 A)
@@ -375,21 +373,21 @@ theorem inrPull_tmul (m : M) (c : prim κ t A) :
     inrPull κ t A (m ⊗ₜ c) = (inr m : TrivSqZeroExt R M) • (inlMor M κ t A).pull c := rfl
 
 /- English proof (translation)
-Simplify using `only [inrPull, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inrPull_add (ω ω' : M ⊗[R] prim κ t A) : inrPull κ t A (ω + ω') = inrPull κ t A ω + inrPull κ t A ω' := by
   simp only [inrPull, map_add]
 
 /- English proof (translation)
-Simplify using `only [inrPull, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inrPull_zero : inrPull κ t A (0 : M ⊗[R] prim κ t A) = 0 := by
   simp only [inrPull, map_zero]
 
 /- English proof (translation)
-Proceed by induction on `ω with`. Consider the case `zero => simp only [smul_zero, inrPull_zero]`. Consider the case `add a b ha hb => simp only [smul_add, inrPull_add, ha, hb]`. Consider the case `tmul m c`. Rewrite using `[smul_tmul', inrPull_tmul, inrPull_tmul, smul_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem smul_inrPull (x : TrivSqZeroExt R M) (ω : M ⊗[R] prim κ t A) :
     x • inrPull κ t A ω = inrPull κ t A (x.fst • ω) := by
@@ -402,14 +400,14 @@ theorem smul_inrPull (x : TrivSqZeroExt R M) (ω : M ⊗[R] prim κ t A) :
     ext <;> simp
 
 /- English proof (translation)
-Rewrite using `[IsConn, map_add, map_add, inrPull_add, h, h']`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem IsConn.add (h : IsConn t A hD c ω) (h' : IsConn t A hD c' ω') : IsConn t A hD (c + c') (ω + ω') := by
   rw [IsConn, map_add, map_add, inrPull_add, h, h']
   abel
 
 /- English proof (translation)
-Rewrite using `[IsConn, LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, h, smul_add, smul_inrPull, inrPull_add, inrPull_tmul, RingHom.coe_coe, fst_derSec, ← add_assoc, ← add_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem IsConn.smul (h : IsConn t A hD c ω) (r : R) : IsConn t A hD (r • c) (D r ⊗ₜ c + r • ω) := by
   rw [IsConn, LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, h, smul_add, smul_inrPull, inrPull_add, inrPull_tmul,
@@ -417,11 +415,11 @@ theorem IsConn.smul (h : IsConn t A hD c ω) (r : R) : IsConn t A hD (r • c) (
   rfl
 
 /- English proof (translation)
-Establish `k : GrpMor (extDP M κ) (t ≫ spMap (pr R M)) A (extDP M' κ') (t' ≫ spMap (pr R' M')) A' (extMap σ u) b φ` using `⟨isDPMorphism_extMap m.dp u, by`. Rewrite using `[← Category.assoc, m.base, Category.assoc, Category.assoc, ← Cris.spMap_comp, ← Cris.spMap_comp]`. Conclude with `congrArg (fun q ↦ t' ≫ spMap q) (RingHom.ext fun x ↦ (add_zero _).symm), m.w, m.mul⟩`. Apply the tactic sequence `have k₀ : ∀ c, k.pull ((inlMor M κ t A).pull c) = (inlMor M' κ' t' A').pull (m.pull c) := fun c ↦ (GrpMor.pull_pull _ k (m.comp (inlMor M' κ' t' A')) (fun r ↦ by ext <;> simp [extMap, algebraMap_eq_inl]) (by simp) c).trans (GrpMor.pull_pull _ _ _ (fun _ ↦ rfl) rfl c).symm`. Apply the tactic sequence `have k₁ : k.pull ((secMor κ t A hD.isDPMorphism (fst_derSec D)).pull c) = (secMor κ' t' A' hD'.isDPMorphism (fst_derSec D')).pull (m.pull c) := (GrpMor.pull_pull _ k (m.comp (secMor κ' t' A' hD'.isDPMorphism (fst_derSec D'))) (fun r ↦ by ext <;> simp [extMap, e]) (by simp) c).tra …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `k₂ : ∀ ω, k.pull (inrPull κ t A ω) = inrPull κ' t' A' (TensorProduct.map u m.pull ω)` using `fun ω ↦ by`. Proceed by induction on `ω with`. Consider the case `zero => simp only [map_zero, inrPull_zero]`. Consider the case `add a b ha hb => simp only [map_add, inrPull_add, ha, hb]`. Consider the case `tmul x c`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_tmul, inrPull_tmul, inrPull_tmul, LinearMap.map_smulₛₗ, k₀]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp [extMap]`. Rewrite using `[IsConn, ← k₁, h, map_add, k₀, k₂]`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsConn.pull (h : IsConn t A hD c ω) {κ' : DividedPowers I'} {t' : S' ⟶ Sp R'} {A' : Over S'} [GrpObj A']
     {σ : R →+* R'} {b : S' ⟶ S} {φ : A'.left ⟶ A.left} (m : GrpMor κ t A κ' t' A' σ b φ)
@@ -450,7 +448,7 @@ theorem IsConn.pull (h : IsConn t A hD c ω) {κ' : DividedPowers I'} {t' : S' �
   rw [IsConn, ← k₁, h, map_add, k₀, k₂]
 
 /- English proof (translation)
-Rewrite using `[IsConn, inrPull_zero, add_zero]`. Conclude with `(GrpMor.pull_pull m _ (m.comp (inlMor M κ t A)) (fun r ↦ (derSec D).commutes r) rfl c).trans (GrpMor.pull_pull _ _ _ (fun _ ↦ rfl) rfl c).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isConn_const {J : Ideal T} {δ : DividedPowers J} {S₀ : Scheme.{0}} {s : S₀ ⟶ Sp T} {B : Over S₀} [GrpObj B]
     {b : S ⟶ S₀} {φ : A.left ⟶ B.left} (m : GrpMor δ s B κ t A (algebraMap T R) b φ) (hD : IsDPDer κ D)
@@ -460,7 +458,7 @@ theorem isConn_const {J : Ideal T} {δ : DividedPowers J} {S₀ : Scheme.{0}} {s
     (fun r ↦ (derSec D).commutes r) rfl c).trans (GrpMor.pull_pull _ _ _ (fun _ ↦ rfl) rfl c).symm
 
 /- English proof (translation)
-Simplify using `using (isConn_const m hD c).smul r`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isConn_smul_const {J : Ideal T} {δ : DividedPowers J} {S₀ : Scheme.{0}} {s : S₀ ⟶ Sp T} {B : Over S₀}
     [GrpObj B] {b : S ⟶ S₀} {φ : A.left ⟶ B.left} (m : GrpMor δ s B κ t A (algebraMap T R) b φ) (hD : IsDPDer κ D)
@@ -468,13 +466,13 @@ theorem isConn_smul_const {J : Ideal T} {δ : DividedPowers J} {S₀ : Scheme.{0
   simpa using (isConn_const m hD c).smul r
 
 /- English proof (translation)
-Establish `inj : Function.Injective ((inrHom R M).rTensor (prim κ t A))` using `Function.LeftInverse.injective (g := (sndHom R M).rTensor _) fun ω ↦ by`. Rewrite using `[← LinearMap.rTensor_comp_apply, show sndHom R M ∘ₗ inrHom R M = LinearMap.id from rfl, LinearMap.rTensor_id_apply]`. Use `existsUnique_of_exists_of_unique ?_ fun ω ω' h h' ↦ inj (H.1 (add_left_cancel (h.symm.trans h')))` and prove the remaining obligations. Take `⟨z, hz⟩` from `H.2 ((secMor κ t A hD.isDPMorphism (fst_derSec D)).pull c - (inlMor M κ t A).pull c)`. Establish `p : ∀ {σ : R →+* TrivSqZeroExt R M} (hσ : IsDPMorphism κ (extDP M κ) σ) (e : ∀ r, (σ r).fst = r) (c), (prMor M κ t A).pull ((secMor κ t A hσ e).pull c) = c` using `fun hσ e c ↦ (GrpMor.pull_pull _ _ (homMor κ t (𝟙 A)) e (by simp) c).trans (Subtype.ext (IsMor.pullCohomologyOne_id _ _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `p₀ : ∀ c, (prMor M κ t A).pull ((inlMor M κ t A).pull c) = c` using `p (isDPMorphism_inl M κ) fun _ ↦ rfl`. Establish `d : ∀ z, liftSemi (inlMor M κ t A).pull z = (inlMor M κ t A).pull ((prMor M κ t A).pull (liftSemi (inlMor M κ t A).pull z)) + inrPull κ t A ((sndHom R M).rTensor _ z)` using `fun z ↦ by`. Proceed by induction on `z with`. Consider the case `zero => simp only [map_zero, inrPull_zero, add_zero]`. Consider the case `add a b ha hb`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [map_add, inrPull_add]`. Rewrite using `[add_add_add_comm, ← ha, ← hb]`. Consider the case `tmul x c`. Rewrite using `[liftSemi_tmul, LinearMap.map_smulₛₗ, p₀, LinearMap.map_smulₛₗ, LinearMap.rTensor_tmul, inrPull_tmul, ← add_smul]`. Conclude with `congrArg (· • _) (inl_fst_add_inr_snd_eq x).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(sndHom R M).rTensor _ z, ?_⟩` and prove the remaining obligations. Establish `e` using `d z`. Rewrite `e` using `[hz, map_sub, p hD.isDPMorphism (fst_derSec D), p₀, sub_self, map_zero, zero_add]`. Conclude with `sub_eq_iff_eq_add'.1 e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_isConn (H : (inlMor M κ t A).IsBC) (hD : IsDPDer κ D) (c : prim κ t A) :
     ∃! ω, IsConn t A hD c ω := by
@@ -516,7 +514,7 @@ variable {R₀ R₀' : Type} [CommRing R₀] [CommRing R₀'] {κ : DividedPower
   {A : Over (Sp R)} [GrpObj A] {i : A₀.left ⟶ A.left} {g : ℕ}
 
 /- English proof (translation)
-The claim follows from `haveI : IsMonHom (Iso.refl G).hom := inferInstanceAs (IsMonHom (𝟙 G)) isGrpPullback_of_iso (Iso.refl G)`.
+A detailed English derivation is pending.
 -/
 theorem isGrpPullback_refl {S : Scheme.{0}} (G : Over S) [GrpObj G] :
     IsGrpPullback G G (𝟙 S) (Over.Hom.left (𝟙 G)) :=
@@ -524,13 +522,13 @@ theorem isGrpPullback_refl {S : Scheme.{0}} (G : Over S) [GrpObj G] :
   isGrpPullback_of_iso (Iso.refl G)
 
 /- English proof (translation)
-Take `⟨A', _, ψ, hψ⟩` from `FlagTan.exists_isGrpPullback A (spMap (algebraMap R R'))`. Establish `n` using `(hφ.comp h).congr m.base rfl`. Set `i' : A₀'.left ⟶ A'.left` to `hψ.1.lift _ _ (n.1.w.trans (Category.assoc _ _ _).symm)`. Establish `e : i' ≫ ψ = φ ≫ i` using `hψ.1.lift_fst _ _ _`. Establish `h' : IsGrpPullback A₀' A' (spMap π') i'` using `hψ.cancel (n.congr rfl e.symm) (hψ.1.lift_snd _ _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b₀` using `H.2.2.2.1 R A g hA hg I κ hκ R₀ π hπ hI A₀ i h`. Establish `b₁` using `H.2.2.2.1 R' A' g (PolPull.isAbelianScheme_of_isGrpPullback hA hψ) ((smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hψ.1 hg) I' κ' hκ' R₀' π' hπ' hI' A₀' i' h'`. Establish `b₂` using `(H.2.2.1 R A g hA hg R' A' ψ hψ).1`. Establish `sq : ∀ z, liftSemi m.pull ((liftMor κ h).pull.lTensor R' z) = (liftMor κ' h').pull (liftSemi (AbelianDeRham.bcMor hψ).pull z)` using `fun z ↦ by`. Proceed by induction on `z with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => simp only [map_zero]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul x c`. Rewrite using `[LinearMap.lTensor_tmul, liftSemi_tmul, liftSemi_tmul, map_smul]`. Conclude with `congrArg (x • ·) ((GrpMor.pull_pull _ m ((liftMor κ h).comp m) (fun _ ↦ rfl) rfl c).trans (GrpMor.pull_pull _ _ _ (fun _ ↦ rfl) e c).symm)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `b₃ : Function.Bijective ((liftMor κ h).pull.lTensor R')` using `((LinearEquiv.ofBijective _ b₀).lTensor R').bijective`. Use `(Function.Bijective.of_comp_iff _ b₃).1 ?_` and prove the remaining obligations. Rewrite using `[show liftSemi m.pull ∘ _ = _ ∘ _ from funext sq]`. Conclude with `b₁.comp b₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBC_of_lift [Algebra R R'] (H : AbelianDeRham) (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) (hκ : IsNilDP κ) (hπ : Function.Surjective π) (hI : RingHom.ker π = I)
@@ -563,9 +561,9 @@ theorem isBC_of_lift [Algebra R R'] (H : AbelianDeRham) (hA : IsAbelianScheme A)
   exact b₁.comp b₂
 
 /- English proof (translation)
-Use `existsUnique_isConn ?_ hD c` and prove the remaining obligations. Establish `e : spMap π ≫ spMap (pr R M) = spMap (π.comp (pr R M))` using `(Cris.spMap_comp _ _).symm`. Establish `m` using `inlMor M κ (spMap π) A₀`. Express the relevant statement in the definitionally equal form `GrpMor.IsBC m`. Use `revert m`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `fun m ↦ isBC_of_lift H hA hg hκ hπ hI h (isDPNilpotent_extend M hκ) (hπ.comp fun r ↦ ⟨inl r, rfl⟩) (by rw [← RingHom.comap_ker, hI]) m (isGrpPullback_refl A₀)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem existsUnique_isConn_of_lift (H : AbelianDeRham) (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) (hκ : IsNilDP κ) (hπ : Function.Surjective π) (hI : RingHom.ker π = I)
@@ -581,7 +579,7 @@ theorem existsUnique_isConn_of_lift (H : AbelianDeRham) (hA : IsAbelianScheme A)
     (by rw [← RingHom.comap_ker, hI]) m (isGrpPullback_refl A₀)
 
 /- English proof (translation)
-Use `existsUnique_isConn_of_lift H hA hg (isDPNilpotent_bot R) (π := RingHom.id R) Function.surjective_id ((RingHom.injective_iff_ker_eq_bot _).1 Function.injective_id) ((isGrpPullback_refl A).congr (Cris.spMap_id R).symm rfl) (isDPDerivation_zero_ideal D)` as an intermediate fact. Use `revert this`. Rewrite using `[Cris.spMap_id]`. Conclude with `fun h ↦ h c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem existsUnique_gaussManin (H : AbelianDeRham) (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) (D : Derivation T R M) (c : primDR A) :

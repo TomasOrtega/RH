@@ -8,15 +8,15 @@ open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 namespace GlobalTheory.HTW
 
 /- English proof (translation)
-Establish `ht : 5 ≤ D.R.t` using `by have := D.R.rank_add_five_le; omega`. Establish `hη : 0 < L.etaSz` using `L.etaSz_pos`. Establish `hS : 0 < L.Sc` using `L.Sc_pos`. Take `⟨hC, hw1, hw2, hwb, -, hb⟩` from `h`. Establish `hLw : (0 : ℝ) ≤ (D.host.Lw : ℝ)` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb' : (100 : ℝ) ≤ L.sc.b'` using `hw1.trans hwb`. Establish `hfac : (100 : ℝ) ≤ C * ((D.host.Lw : ℝ) + 1)` using `by nlinarith`. Establish `hbig : 100 * L.sc.b' ≤ L.sc.b`. Use `mul_le_mul_of_nonneg_right hfac (by linarith : (0 : ℝ) ≤ L.sc.b')` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `htR : ((D.R.t : ℕ) : ℝ) ≤ L.sc.b` using `by nlinarith`. Establish `hb0 : 0 ≤ L.sc.b` using `by linarith`. Use `set c := (D.R.t + 1) / 2 with hcdef`. Establish `hc3 : 3 ≤ c` using `by omega`. Establish `hct : c ≤ D.R.t` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htc : D.R.t ≤ ⌈L.sc.b⌉₊` using `by exact_mod_cast htR.trans (Nat.le_ceil _)`. Establish `hcle : c ≤ ⌈L.sc.b⌉₊` using `hct.trans htc`. Establish `h1 : (⌈L.sc.b⌉₊ : ℝ) < L.sc.b + 1` using `Nat.ceil_lt_add_one hb0`. Establish `h2 : (⌊L.etaSz⌋₊ : ℝ) ≤ L.etaSz` using `Nat.floor_le hη.le`. Establish `h3 : (⌊L.Sc⌋₊ : ℝ) ≤ L.Sc` using `Nat.floor_le hS.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc3R : (3 : ℝ) ≤ (c : ℝ)` using `by exact_mod_cast hc3`. Unfold `bHat etaHat sHat hPage`. Rewrite using `[← hcdef, Nat.cast_sub hcle]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem bHat_add_etaHat_add_sHat_le_hPage {D : D7} (L : SizeData₂ D) (C : ℝ) (h : Roomy L C) :
     (bHat L : ℝ) + (etaHat L : ℝ) + (sHat L : ℝ) ≤ hPage L := by

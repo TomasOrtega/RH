@@ -17,7 +17,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Reg
 
 /- English proof (translation)
-Establish `hli : LinearIndependent L g.transpose` using `Matrix.linearIndependent_cols_iff_isUnit.mpr ((Matrix.isUnit_iff_isUnit_det g).mpr hg)`. Take `⟨m, u, b, -, h0, h1, hb, hd, e⟩` from `GlobalTheory.exists_integral_pivot_decomposition L ⊤ n n g hli`. Conclude with `⟨Equiv.ofBijective m (Finite.injective_iff_bijective.mp m.injective), u, b, h0, h1, ⟨hb, hd⟩, e⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_perm_lower_upper {L : Type} [Field L] {n : ℕ} (g : Matrix (Fin n) (Fin n) L) (hg : IsUnit g.det) :
     ∃ (σ : Equiv.Perm (Fin n)) (u b : Matrix (Fin n) (Fin n) L),
@@ -29,11 +29,11 @@ theorem exists_perm_lower_upper {L : Type} [Field L] {n : ℕ} (g : Matrix (Fin 
   exact ⟨Equiv.ofBijective m (Finite.injective_iff_bijective.mp m.injective), u, b, h0, h1, ⟨hb, hd⟩, e⟩
 
 /- English proof (translation)
-Establish `hr : Set.range q ⊆ Set.range j`. Introduce and unpack `_ ⟨a, rfl⟩`. Establish `: a = IsLocalRing.closedPoint L` using `Subsingleton.elim (α := PrimeSpectrum L) _ _`. Rewrite using `[this]`. Conclude with `hp`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `φ : CommRingCat.of A ⟶ CommRingCat.of L` to `Spec.preimage (IsOpenImmersion.lift j q hr)`. Establish `hφ : Spec.map φ ≫ j = q`. Rewrite using `[Spec.map_preimage, IsOpenImmersion.lift_fac]`. Establish `hc : CommRingCat.ofHom (algebraMap K A) ≫ φ = CommRingCat.ofHom (algebraMap K L)`. Apply `Spec.map_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Spec.map_comp]`. Use `show Spec.map φ ≫ spMap (algebraMap K A) = spMap (algebraMap K L)`. Rewrite using `[← hj, ← Category.assoc, hφ, hq]`. Conclude with `⟨{ φ.hom with commutes' := fun a => congrArg (fun t => t.hom a) hc }, hφ⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_algHom_of_mem_range {K A L : Type} [Field K] [CommRing A] [Algebra K A] [Field L] [Algebra K L]
     {X : Scheme.{0}} (s : X ⟶ Sp K) (j : Sp A ⟶ X) [IsOpenImmersion j] (hj : j ≫ s = spMap (algebraMap K A))
@@ -56,17 +56,15 @@ theorem exists_algHom_of_mem_range {K A L : Type} [Field K] [CommRing A] [Algebr
   exact ⟨{ φ.hom with commutes' := fun a => congrArg (fun t => t.hom a) hc }, hφ⟩
 
 /- English proof (translation)
-Introduce `hS E _ _ _ H Dw l Xo c hBC h L _ _ y`. Establish `hcond : y.x ≫ Xo.s = spMap (algebraMap c.F L) ≫ spMap (IntermediateField.inclusion c.le).toRingHom`. Rewrite using `[y.x_over, spMap_comp_ring]`. Both sides reduce to the same expression. Set `q : Sp L ⟶ Xo.XF c` to `pullback.lift y.x (spMap (algebraMap c.F L)) hcond`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Take `⟨A, _, _, _, j, yA, hj, hp, hjs, hsm, hyA⟩` from `GlobalTheory.T.exists_integral_smooth_chart_frame_moduli hS E H Dw l Xo c (q (IsLocalRing.closedPoint L))`. Take `⟨f, hf⟩` from `exists_algHom_of_mem_range (pullback.snd _ _) j hjs q (pullback.lift_snd _ _ _) hp`. Take `⟨z₀, hz₀⟩` from `hBC A L f yA`. Establish `hx : y.x = z₀.x`. Rewrite using `[hz₀.1, hyA, ← Category.assoc, hf]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(pullback.lift_fst _ _ _).symm`. Take `⟨g, ⟨hgu, hg⟩, -⟩` from `(GlobalTheory.T.isTriangularReframe_exists_and_unique E H Dw l Xo c L z₀).2 y hx`. Use `choose σ u b h0 h1 hb e using fun τ => exists_perm_lower_upper (g τ) (hgu τ)`. Take `⟨C, hC⟩` from `GlobalTheory.T.exists_flagCellChart_over_framedAffineOpen E H Dw l Xo c hBC h A j yA hj hjs hsm hyA σ`. Set `x : FlagVar Dw → L` to `fun v => u v.1 (σ v.1 v.2.1.2) v.2.1.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : ∀ τ, (lowM x τ).submatrix (σ τ).symm id = u τ`. Introduce `τ`. Use extensionality with `i k`. Take `⟨i, rfl⟩` from `(σ τ).surjective i`. Simplify using `only [Matrix.submatrix_apply, Equiv.symm_apply_apply, id, lowM]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h₁ h₂`. Both sides reduce to the same expression. Rewrite using `[h₂, h1]`. Conclude with `(h0 τ i k (lt_of_le_of_ne (not_lt.mp h₁) (Ne.symm h₂))).symm`. Use `⟨C, hC L f z₀ y x b hz₀ hb ?_⟩` and prove the remaining obligations.
-
-Establish `: (fun τ => (lowM x τ).submatrix (σ τ).symm id * b τ) = g` using `funext fun τ => by rw [hu τ, ← e τ]`. Rewrite using `[this]`. Conclude with `hg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atlas : ReciprocityTheory.ChartRestriction.G.Out.SecTwistSt → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), FrBC Xo c → ∀ h : GenFrEx Xo c, Atlas h := by
   intro hS E _ _ _ H Dw l Xo c hBC h L _ _ y

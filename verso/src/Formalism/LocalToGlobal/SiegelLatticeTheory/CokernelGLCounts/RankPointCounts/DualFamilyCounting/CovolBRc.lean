@@ -7,17 +7,17 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.CokernelGLCounts.RankPointCou
 namespace Formalism.L2.SG.Pf.NcReal.JX.CovB
 
 /- English proof (translation)
-The claim follows from `TrD.trDetUnimod_of TrD.detHOne_holds`.
+A detailed English derivation is pending.
 -/
 theorem trDetUnimod_holds : TrDetUnimod := TrD.trDetUnimod_of TrD.detHOne_holds
 
 /- English proof (translation)
-The claim follows from `rowBlockCovol_of trDetUnimod_holds`.
+A detailed English derivation is pending.
 -/
 theorem rowBlockCovol_holds : RowBlockCovol := rowBlockCovol_of trDetUnimod_holds
 
 /- English proof (translation)
-The claim follows from `blockCovol_of rowBlockCovol_holds`.
+A detailed English derivation is pending.
 -/
 theorem blockCovol_holds : BlockCovol := blockCovol_of rowBlockCovol_holds
 

@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Ws.H5
 
 /- English proof (translation)
-The claim follows from `eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal M)`.
+A detailed English derivation is pending.
 -/
 private theorem comap_max {B Q : Type} [CommRing B] [IsLocalRing B] [CommGroup Q] [Finite Q]
     (M : Ideal (MonoidAlgebra B Q)) [M.IsMaximal] :
@@ -12,15 +12,11 @@ private theorem comap_max {B Q : Type} [CommRing B] [IsLocalRing B] [CommGroup Q
   eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal M)
 
 /- English proof (translation)
-Use `haveI : Fact l.Prime := ⟨hl⟩`. Take `⟨k, hk⟩` from `hQ z`. Establish `hlM : ((l : ℕ) : MonoidAlgebra B Q) ∈ M`. Establish `h1 : ((l : ℕ) : B) ∈ M.comap (algebraMap B (MonoidAlgebra B Q))`. Rewrite using `[comap_max M]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hB`. Rewrite `h1` using `[Ideal.mem_comap, map_natCast]`. Conclude with `h1`. Use `letI : Field (MonoidAlgebra B Q ⧸ M) := Ideal.Quotient.field M`. Establish `hlK : ((l : ℕ) : MonoidAlgebra B Q ⧸ M) = 0`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast (Ideal.Quotient.mk M), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hlM`. Use `haveI : CharP (MonoidAlgebra B Q ⧸ M) l := by`. Break down `hl.eq_one_or_self_of_dvd _ (ringChar.dvd hlK) with h1 | h1` into its components or cases. Conclude with `absurd h1 (CharP.ringChar_ne_one)`.
-
-Rewrite using `[← h1]`. Conclude with `ringChar.charP _`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `h0 : (Ideal.Quotient.mk M (MonoidAlgebra.single z 1 - 1)) ^ l ^ k = 0`. Rewrite using `[map_sub, map_one, sub_pow_char_pow, one_pow, ← map_pow, MonoidAlgebra.single_pow, one_pow, hk, ← MonoidAlgebra.one_def, map_one, sub_self]`.
-
-Conclude with `(pow_eq_zero_iff (pow_ne_zero k hl.ne_zero)).mp h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem single_sub_mem {l : ℕ} (hl : l.Prime) {B Q : Type} [CommRing B] [IsLocalRing B]
     [CommGroup Q] [Finite Q] (hB : ((l : ℕ) : B) ∈ maximalIdeal B) (hQ : IsPGroup l Q)
@@ -50,11 +46,9 @@ private theorem single_sub_mem {l : ℕ} (hl : l.Prime) {B Q : Type} [CommRing B
   exact (pow_eq_zero_iff (pow_ne_zero k hl.ne_zero)).mp h0
 
 /- English proof (translation)
-Proceed by induction on `x using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, add_sub_add_comm]`. Conclude with `M.add_mem hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `single g b`. Establish `e : MonoidAlgebra.single g b - algebraMap B (MonoidAlgebra B Q) (MonoidAlgebra.lift B B Q 1 (MonoidAlgebra.single g b)) = algebraMap B (MonoidAlgebra B Q) b * (MonoidAlgebra.single g 1 - 1)`. Rewrite using `[MonoidAlgebra.lift_single]`. Simplify using `[mul_sub, MonoidAlgebra.single_mul_single, MonoidAlgebra.one_def]`. Rewrite using `[e]`.
-
-Conclude with `M.mul_mem_left _ (h g)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sub_aug_mem {B Q : Type} [CommRing B] [CommGroup Q]
     (M : Ideal (MonoidAlgebra B Q))
@@ -74,23 +68,19 @@ private theorem sub_aug_mem {B Q : Type} [CommRing B] [CommGroup Q]
     exact M.mul_mem_left _ (h g)
 
 /- English proof (translation)
-Introduce `l _ O B _ _ _ _ _ hB Q _ _ hQ`. Establish `hl : l.Prime` using `Fact.out`. Set `aug : MonoidAlgebra B Q →+* B` to `(MonoidAlgebra.lift B B Q 1).toRingHom`. Set `φ : MonoidAlgebra B Q →+* ResidueField B` to `(residue B).comp aug`. Establish `hφ : Function.Surjective φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `y`. Take `⟨b, rfl⟩` from `residue_surjective y`. Use `⟨algebraMap B _ b, ?_⟩` and prove the remaining obligations. Simplify using `[φ, aug]`. Establish `hM0` using `RingHom.ker_isMaximal_of_surjective φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hle : ∀ (M : Ideal (MonoidAlgebra B Q)), M.IsMaximal → RingHom.ker φ ≤ M`. Introduce `M hM x hx`. Establish `h1 : aug x ∈ maximalIdeal B`. Rewrite `hx` using `[RingHom.mem_ker]`. Conclude with `(residue_eq_zero_iff _).mp hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : algebraMap B _ (aug x) ∈ M`. Establish `: aug x ∈ M.comap (algebraMap B _)`. Rewrite using `[comap_max M]`. Conclude with `h1`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h3 : x - algebraMap B _ (aug x) ∈ M` using `sub_aug_mem M (single_sub_mem hl hB hQ M) x`. Use `M.add_mem h3 h2` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Use `haveI : IsLocalRing (MonoidAlgebra B Q) := by`. Apply `IsLocalRing.of_unique_max_ideal` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨RingHom.ker φ, hM0, fun M hM => ?_⟩` and prove the remaining obligations. Conclude with `(hM0.eq_of_le hM.ne_top (hle M hM)).symm`. Establish `hres : ∀ x : MonoidAlgebra B Q, ∃ a : O, x - algebraMap O _ a ∈ maximalIdeal (MonoidAlgebra B Q)`. Introduce `x`. Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) (aug x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `h3 : x - algebraMap B _ (aug x) ∈ maximalIdeal (MonoidAlgebra B Q)` using `sub_aug_mem _ (single_sub_mem hl hB hQ _) x`. Establish `h4 : algebraMap B (MonoidAlgebra B Q) (aug x - algebraMap O B a) ∈ maximalIdeal (MonoidAlgebra B Q)`. Establish `: aug x - algebraMap O B a ∈ (maximalIdeal (MonoidAlgebra B Q)).comap (algebraMap B _)`. Rewrite using `[comap_max]`.
-
-Conclude with `ha`. Conclude with `this`. Use `(maximalIdeal _).add_mem h3 h4` as an intermediate fact. Rewrite using `[IsScalarTower.algebraMap_apply O B (MonoidAlgebra B Q)]`. Rewrite `this` using `[map_sub, sub_add_sub_cancel]`. Then use the resulting hypothesis.
-
-Conclude with `⟨co_finite O B (MonoidAlgebra B Q) hres, fun z => single_sub_mem hl hB hQ _ z⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.H5.grpCO :
     ∀ (l : ℕ) [Fact l.Prime] (O B : Type) [CommRing O] [IsLocalRing O] [CommRing B] [Algebra O B] [IsCO O B], ((l : ℕ) : B) ∈ maximalIdeal B → ∀ (Q : Type) [CommGroup Q] [Finite Q], IsPGroup l Q → ∃ _ : IsCO O (MonoidAlgebra B Q), ∀ z : Q, (MonoidAlgebra.single z 1 - 1 : MonoidAlgebra B Q) ∈ maximalIdeal (MonoidAlgebra B Q) := by

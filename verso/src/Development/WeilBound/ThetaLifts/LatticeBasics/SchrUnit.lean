@@ -17,7 +17,7 @@ variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 attribute [local instance 100000] GroundTheory.Global.measurableSpace_adeleRing in
 /- English proof (translation)
-Introduce `z` and use `by obtain ⟨c, -, hc⟩ := lD_haar ν hν have e := hc Φ h Φ h have i := (sl_int (box_mem h h) 0).norm have ct := GroundTheory.Automorphic.GJMatrix.continuous_of_mem_schwartzBruhatPi h have : ∀ u, boxFun Φ (star Φ) (Sum.elim u u) = ((‖Φ u‖ ^ 2 : ℝ) : ℂ) := fun u => by simp [boxFun, Co …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sq_ne (ν : @Measure (κ → AF F) (borel _)) (hν : @Measure.IsAddHaarMeasure _ _ _ (borel _) ν) {Φ : (κ → AF F) → ℂ}
     (h : Φ ∈ schA F κ) (h0 : Φ ≠ 0) : ∫ u, Φ u * star (Φ u) ∂ν ≠ 0 := fun z => by
@@ -33,9 +33,9 @@ theorem sq_ne (ν : @Measure (κ → AF F) (borel _)) (hν : @Measure.IsAddHaarM
   exact h0 (funext fun u => by simpa using congrFun e u)
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (κ → AF F) := borel _`. Establish `: BorelSpace (κ → AF F)` using `⟨rfl⟩`. Take `⟨a, a0, ha⟩` from `lD_haar (F := F) (κ := κ) Measure.addHaar inferInstance`. Establish `e` using `lD_unit hu hp g h h`. Rewrite `e` using `[hc, star_smul, GlobalTheory.SchwartzBox.boxFun_smul_left, GlobalTheory.SchwartzBox.boxFun_smul_right, smul_smul, map_smul, smul_eq_mul, mul_eq_right₀ (ha Φ h Φ h ▸ mul_ne_zero (Complex.ofReal_ne_zero.2 a0.ne') (sq_ne _ inferInstance h h0)), Complex.star_def, Complex.mul_conj']`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg c) two_ne_zero).1 (by exact_mod_cast e)`.
+A detailed English derivation is pending.
 -/
 theorem norm_eig {G : Type} [Group G] {om : G →* Module.End ℂ ((κ → AF F) → ℂ)} (hu : IsUnitaryOn (adeleClass F) om)
     (hp : ∀ g, ∀ φ ∈ schA F κ, om g φ ∈ schA F κ) {g : G} {Φ} (h : Φ ∈ schA F κ) (h0 : Φ ≠ 0) {c : ℂ} (hc : om g Φ = c • Φ) :
@@ -50,9 +50,9 @@ theorem norm_eig {G : Type} [Group G] {om : G →* Module.End ℂ ((κ → AF F)
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg c) two_ne_zero).1 (by exact_mod_cast e)
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (κ → AF F) := borel _`. Establish `: BorelSpace (κ → AF F)` using `⟨rfl⟩`. Rewrite using `[← integral_add_right_eq_self (fun u => A u * star (C u)) w.1]`. Use `integral_congr_ae (.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only [schr, star_mul']`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_mul_mul_comm, Complex.star_def, Complex.mul_conj', GlobalTheory.StdCharFromIsStd.norm_psi hψ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem schr_unit {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (ν : @Measure (κ → AF F) (borel _))
     (hν : @Measure.IsAddHaarMeasure _ _ _ (borel _) ν) (w) (A C : (κ → AF F) → ℂ) :
@@ -67,7 +67,7 @@ theorem schr_unit {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (ν : @Measure (κ 
 
 open scoped Classical in
 /- English proof (translation)
-Introduce `g _` and use `⟨g (fun i => (x i).2) • ((BoundedContinuousFunction.evalCLM ℂ fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ _ ℂ)), fun f => mul_comm _ _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ev_adm (x : κ → AF F) : (LinearMap.proj x : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) ∈ (adeleClass F).adm κ := fun g _ =>
   ⟨g (fun i => (x i).2) • ((BoundedContinuousFunction.evalCLM ℂ fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1).comp
@@ -78,7 +78,7 @@ variable {f : SInf F κ} {φ : ∀ v : Pl F, (κ → Fv F v) → ℂ} (hS : ∀ 
 include hS hs
 
 /- English proof (translation)
-Take `⟨r, h1, h2⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ hs`. Establish `e` using `h2 (φ v)`. Rewrite `e` using `[Function.update_eq_self]`. Conclude with `⟨r, ⟨h1, e ▸ GlobalTheory.TensUniq.pure_mem_schA f φ hS hs⟩, e⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem rest_ex (v : Pl F) : ∃ r, Rest (evFin F v) (φ v) r ∧ tens (evFin F v) (φ v) r = pure f φ := by
   classical
@@ -88,7 +88,7 @@ theorem rest_ex (v : Pl F) : ∃ r, Rest (evFin F v) (φ v) r ∧ tens (evFin F 
   exact ⟨r, ⟨h1, e ▸ GlobalTheory.TensUniq.pure_mem_schA f φ hS hs⟩, e⟩
 
 /- English proof (translation)
-Take `⟨r, h1, h2⟩` from `rest_ex (f := f) hS hs v`. Rewrite using `[← h2, h r h1]`. Conclude with `funext fun x => mul_assoc _ _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig {v : Pl F} {S} {c : ℂ} (h : Acts (evFin F v) S (φ v) (c • φ v)) : S (pure f φ) = c • pure f φ := by
   obtain ⟨r, h1, h2⟩ := rest_ex (f := f) hS hs v
@@ -96,7 +96,7 @@ theorem eig {v : Pl F} {S} {c : ℂ} (h : Acts (evFin F v) S (φ v) (c • φ v)
   exact funext fun x => mul_assoc _ _ _
 
 /- English proof (translation)
-Use `h (fun x => ∏ᶠ v, φ v fun i => evFin F v (x i)) ⟨fun x z hz => ?_, GlobalTheory.TensUniq.pure_mem_schA f φ hS hs⟩` and prove the remaining obligations. Use `finprod_congr fun v => congrArg _ (funext fun i => ?_)` and prove the remaining obligations. Use `congrArg (evFin F v) (congrFun (hz (idem F v) (evI_idem v)) i)` as an intermediate fact. Rewrite `this` using `[Pi.smul_apply, smul_eq_mul, map_mul, evFin_idem_self, one_mul, Pi.zero_apply, map_zero]`. Rewrite using `[Pi.add_apply, map_add, this, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fix_real {S} (h : Acts (evI F) S f f) : S (pure f φ) = pure f φ := by
   refine h (fun x => ∏ᶠ v, φ v fun i => evFin F v (x i)) ⟨fun x z hz => ?_, GlobalTheory.TensUniq.pure_mem_schA f φ hS hs⟩
@@ -106,9 +106,9 @@ theorem fix_real {S} (h : Acts (evI F) S f f) : S (pure f φ) = pure f φ := by
   rw [Pi.add_apply, map_add, this, add_zero]
 
 /- English proof (translation)
-Take `⟨r, h1, h2⟩` from `rest_ex (f := f) hS hs v`. Establish `e : tens (evFin F v) (boxFun (φ v) (star (φ v))) (boxFun r (star r)) = boxFun (pure f φ) (star (pure f φ))`. Rewrite using `[← h2]`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, boxFun, Pi.star_apply, star_mul', Function.comp_def]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `m` using `GlobalTheory.TensUniq.pure_mem_schA f φ hS hs`. Rewrite using `[← e]`. Use `h _ ⟨fun x z hz => ?_, e ▸ box_mem m m⟩` and prove the remaining obligations. Conclude with `congrArg₂ (fun a b => a * star b) (h1.1 (x ∘ Sum.inl) (z ∘ Sum.inl) fun u hu => congrArg (· ∘ Sum.inl) (hz u hu)) (h1.1 (x ∘ Sum.inr) (z ∘ Sum.inr) fun u hu => congrArg (· ∘ Sum.inr) (hz u hu))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fix_box {v : Pl F} {S} (h : Acts (evFin F v) S (boxFun (φ v) (star (φ v))) (boxFun (φ v) (star (φ v)))) :
     S (boxFun (pure f φ) (star (pure f φ))) = boxFun (pure f φ) (star (pure f φ)) := by

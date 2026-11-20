@@ -60,9 +60,7 @@ section Transport
 variable {F G H V : Type} [Field F] [Group G] [Group H] [AddCommGroup V] [Module F V]
 
 /- English proof (translation)
-Establish `φ` using `Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := ρ)`. Rewrite using `[HasFiniteLength, isFiniteLength_iff_isNoetherian_isArtinian, isNoetherian_iff', isArtinian_iff]`. Use `and_congr ⟨fun _ => φ.toOrderEmbedding.wellFoundedGT, fun _ => φ.symm.toOrderEmbedding.wellFoundedGT⟩ ⟨fun h => ?_, fun _ => ?_⟩` and prove the remaining obligations. Use `haveI : WellFoundedLT (Submodule (MonoidAlgebra F G) ρ.asModule) := ⟨h⟩`. Conclude with `φ.toOrderEmbedding.wellFoundedLT`.
-
-Conclude with `φ.symm.toOrderEmbedding.wellFoundedLT.wf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_iff_wellFounded (ρ : Representation F G V) :
     HasFiniteLength ρ ↔
@@ -76,9 +74,7 @@ theorem hasFiniteLength_iff_wellFounded (ρ : Representation F G V) :
   · exact φ.symm.toOrderEmbedding.wellFoundedLT.wf
 
 /- English proof (translation)
-Set `φ : Subrepresentation (ρ.comp s : Representation F H V) ≃o Subrepresentation ρ` to `{ toFun := fun S => ⟨S.toSubmodule, fun g v hv => by`. Take `⟨h, rfl⟩` from `hs g`. Conclude with `S.apply_mem_toSubmodule h hv⟩`. Use `invFun := fun S => ⟨S.toSubmodule, fun h v hv => S.apply_mem_toSubmodule (s h) hv⟩`. Use `left_inv := fun _ => rfl`.
-
-Use `right_inv := fun _ => rfl`. Use the proof step `map_rel_iff' := Iff.rfl }`. Rewrite using `[hasFiniteLength_iff_wellFounded, hasFiniteLength_iff_wellFounded]`. Conclude with `and_congr ⟨fun _ => φ.symm.toOrderEmbedding.wellFoundedGT, fun _ => φ.toOrderEmbedding.wellFoundedGT⟩ ⟨fun _ => φ.symm.toOrderEmbedding.wellFoundedLT, fun _ => φ.toOrderEmbedding.wellFoundedLT⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_comp_iff (ρ : Representation F G V) (s : H →* G) (hs : Function.Surjective s) :
     HasFiniteLength (ρ.comp s : Representation F H V) ↔ HasFiniteLength ρ := by
@@ -96,7 +92,7 @@ theorem hasFiniteLength_comp_iff (ρ : Representation F G V) (s : H →* G) (hs 
     fun _ => φ.toOrderEmbedding.wellFoundedLT⟩
 
 /- English proof (translation)
-Use `haveI : IsSimpleOrder (Subrepresentation ρ) := h`. Use `haveI : Finite (Subrepresentation ρ) := IsSimpleOrder.instFinite`. Conclude with `(hasFiniteLength_iff_wellFounded ρ).2 ⟨Finite.to_wellFoundedGT, Finite.to_wellFoundedLT⟩`.
+A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_of_isIrreducible {ρ : Representation F G V} (h : ρ.IsIrreducible) :
     HasFiniteLength ρ := by
@@ -112,7 +108,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_` and prove the remaining obligations. Establish `h : {g : G | ind P σ g f.1 = f.1} ∈ nhds ((fun y => x⁻¹ * y) x)` using `IsOpen.mem_nhds f.2 (by simp)`. Use `filter_upwards [(continuous_const_mul x⁻¹).continuousAt.preimage_mem_nhds h] with y hy`. Establish `hy' : f.1.1 (x * (x⁻¹ * y)) = f.1.1 x` using `congrFun (congrArg Subtype.val hy) x`. Rewrite `hy'` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_smInd {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {P : Subgroup G} {σ : Representation ℂ P W} (f : smoothPart (ind P σ)) :
@@ -125,7 +121,7 @@ theorem isLocallyConstant_smInd {G : Type} [Group G] [TopologicalSpace G] [IsTop
   rwa [mul_inv_cancel_left] at hy'
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace (GL n k) := SplitFlip.locallyCompact_GL`. Use `borelize (GL n k)`. Take `⟨Φ, -⟩` from `h _ _ _ e Measure.haar W ρ hρ`. Conclude with `⟨Φ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem InductionContragredient.nonempty_equiv (h : InductionContragredient k) (e : (Σ a, m a) ≃ n)
     {ρ : Representation ℂ (Levi k m) W} (hρ : IsSmooth ρ) :
@@ -136,7 +132,7 @@ theorem InductionContragredient.nonempty_equiv (h : InductionContragredient k) (
   exact ⟨Φ⟩
 
 /- English proof (translation)
-Establish `: jacLower e π = jac (opp e) π` using `MonoidHom.ext (jacLower_eq e π)`. Rewrite using `[this]`. Conclude with `h _ _ _ (opp e) V π hπ hl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem JacquetFiniteLength.lower (h : JacquetFiniteLength k) (e : (Σ a, m a) ≃ n)
     {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π) (hl : HasFiniteLength π) :
@@ -146,7 +142,7 @@ theorem JacquetFiniteLength.lower (h : JacquetFiniteLength k) (e : (Σ a, m a) �
   exact h _ _ _ (opp e) V π hπ hl
 
 /- English proof (translation)
-Establish `key : ∀ χ : Levi k m →* ℂˣ, deltaHalf k (fun a : αᵒᵈ => m (OrderDual.ofDual a)) = χ → HasFiniteLength (smInd (parabLower k e) ((twist ρ χ).comp (leviProjLower k e)))`. Introduce and unpack `_ rfl`. Conclude with `h _ _ _ (opp e) W ρ hρ hl`. Conclude with `key _ (MonoidHom.ext fun g => deltaHalf_opp (m := m) g)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem InductionFiniteLength.lower (h : InductionFiniteLength k) (e : (Σ a, m a) ≃ n)
     {ρ : Representation ℂ (Levi k m) W} (hρ : IsSmooth ρ) (hl : HasFiniteLength ρ) :
@@ -158,7 +154,7 @@ theorem InductionFiniteLength.lower (h : InductionFiniteLength k) (e : (Σ a, m 
   exact key _ (MonoidHom.ext fun g => deltaHalf_opp (m := m) g)
 
 /- English proof (translation)
-Establish `key : ∀ χ : Levi k m →* ℂˣ, deltaHalf k (fun a : αᵒᵈ => m (OrderDual.ofDual a)) = χ → ∃ Φ : (smInd (parabLower k e) ((twist (contra ρ) χ).comp (leviProjLower k e))).Equiv (contra (smInd (parabLower k e) ((twist ρ χ).comp (leviProjLower k e)))), ∀ f' f, (Φ f').1 f = ∫ x in (KO k n …`. Introduce and unpack `_ rfl`. Conclude with `h _ _ _ (opp e) μ W ρ hρ`. Conclude with `key _ (MonoidHom.ext fun g => deltaHalf_opp (m := m) g)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem InductionContragredient.lower (h : InductionContragredient k) (e : (Σ a, m a) ≃ n)
     [MeasurableSpace (GL n k)] [BorelSpace (GL n k)] (μ : Measure (GL n k)) [μ.IsHaarMeasure]
@@ -181,7 +177,7 @@ section Two
 variable {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b]
 
 /- English proof (translation)
-The claim follows from `(hasFiniteLength_comp_iff _ _ (leviTwo k a b).surjective).2 (h _ _ _ (SmGL.two e) V π hπ hl)`.
+A detailed English derivation is pending.
 -/
 theorem JacquetFiniteLength.two (h : JacquetFiniteLength k) (e : a ⊕ b ≃ n)
     {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π) (hl : HasFiniteLength π) :
@@ -191,7 +187,7 @@ theorem JacquetFiniteLength.two (h : JacquetFiniteLength k) (e : a ⊕ b ≃ n)
 end Two
 
 /- English proof (translation)
-The claim follows from `have h := (isSmooth_ofChar_iff _).2 (hχ.detChar (n := n)) ⟨h, isIrreducible_ofChar _, hasFiniteLength_of_isIrreducible (isIrreducible_ofChar _), h, fun _ _ _ => inferInstance⟩`.
+A detailed English derivation is pending.
 -/
 example {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
     IsSmooth (detRep n χ) ∧ (detRep n χ).IsIrreducible ∧ HasFiniteLength (detRep n χ) ∧
@@ -201,7 +197,7 @@ example {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
     fun _ _ _ => inferInstance⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(isSmooth_ofChar_iff _).2 (isSmoothChar_deltaHalf k), hasFiniteLength_of_isIrreducible (isIrreducible_ofChar _)⟩`.
+Supply the required witnesses or components.
 -/
 example : IsSmooth (ofChar (deltaHalf k m)) ∧ HasFiniteLength (ofChar (deltaHalf k m)) :=
   ⟨(isSmooth_ofChar_iff _).2 (isSmoothChar_deltaHalf k),

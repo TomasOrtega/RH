@@ -11,13 +11,13 @@ open CategoryTheory NumberField IntermediateField GroundTheory.Global FiniteSubf
 noncomputable section
 
 /- English proof (translation)
-Introduce `_ _ _ ιK ιF y` and use `idelesSumInv_idelesResField ιK ιF y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sumInvRestriction : SumInvRestriction :=
   fun _ _ _ ιK ιF y => idelesSumInv_idelesResField ιK ιF y
 
 /- English proof (translation)
-The claim follows from `idelesToClasses_surjective_of sumInvRestriction K (Classical.choice (nonempty_localEmbeddings K))`.
+A detailed English derivation is pending.
 -/
 theorem idelesToClasses_surjective (K : FiniteSubfield) : Function.Surjective (idelesToClasses K 2).hom :=
   idelesToClasses_surjective_of sumInvRestriction K (Classical.choice (nonempty_localEmbeddings K))
@@ -26,9 +26,9 @@ def globalClassFormation (K : FiniteSubfield) : ClassFormation (classLimitRep K)
   globalClassFormationOf sumInvRestriction K
 
 /- English proof (translation)
-Establish `h3` using `subsingleton_cohomology_three_limitRep (K := K)`. Use `⟨fun x x' => ?_⟩` and prove the remaining obligations. Establish `hz : ∀ x : cohomology (unitsLimitRep K) 3, x = 0`. Introduce `x`. Take `⟨c, rfl⟩` from `exists_classesToUnits_eq K 2 x (Subsingleton.elim _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `idelesToClasses_surjective K c`. Conclude with `congrArg (fun f => f.hom y) (comp_δ (idelesShortComplexRes_shortExact K) 2 3 rfl)`. Rewrite using `[hz x, hz x']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subsingleton_cohomology_three_unitsLimitRep (K : FiniteSubfield) :
     Subsingleton (cohomology (unitsLimitRep K) 3) := by

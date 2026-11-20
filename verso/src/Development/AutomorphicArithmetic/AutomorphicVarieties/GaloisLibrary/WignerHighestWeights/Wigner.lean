@@ -11,9 +11,9 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Al
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ a π Ξ m m' hm hm' hne`. Take `⟨τ, hτ⟩` from `Function.ne_iff.1 hne`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : ℂ, ((m τ).map (u + ·)).prod ≠ ((m' τ).map (u + ·)).prod := by`. Assume the negation of the conclusion as `h`. Conclude with `hτ (msetSep _ _ fun u => not_not.1 fun h' => h ⟨u, h'⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, a2, a3⟩` from `tensA E a π Ξ`. Take `⟨b1, b2, b3⟩` from `tensB E a π Ξ`. Take `⟨α, hα⟩` from `alphaReal E a _ (tensorK π Ξ) (lieA π Ξ) (lieB π Ξ) a1 b1 (lieA_commute π Ξ) a2 b2 τ _ _ _ (a3 τ _ (hm τ) u) (b3 τ _ (hm' τ) u) hu`. Conclude with `homot E a _ (tensorK π Ξ) (tensorLie π Ξ) α hα (infAbs E a _ _ _ (tensDer E a π Ξ))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgRepEndIrreducible.wigner : GlobalTheory.Published.WignerVanishingGL := by
   intro E _ _ _ a π Ξ m m' hm hm' hne

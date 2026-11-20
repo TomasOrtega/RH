@@ -7,19 +7,17 @@ open NumberField Module ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheor
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ r U C _ _ M c`. Establish `h1 : M.tr 1 c ∈ (M.comp c).Γ`. Establish `h` using `M.tr_mul 1 1 c`. Simplify using `only [one_mul, one_smul] at h`. Establish `h' : (M.tr 1 c)⁻¹ ∈ (M.comp c).Γ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify `h` using `[mul_inv_rev, mul_assoc]`. Simplify using `using inv_mem h'`. Use `⟨{ carrier := M.upper c mul_mem' := ?_ one_mem' := ?_ inv_mem' := ?_ }, fun β => Iff.rfl, ?_⟩` and prove the remaining obligations. Introduce and unpack `a b ⟨u, hu, γ, hγ, rfl⟩ ⟨v, hv, γ', hγ', rfl⟩`. Establish `hc` using `(M.tr_conj u c γ').1 hγ'`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `hc` using `[hu]`. Establish `hm` using `M.tr_mul u v c`. Rewrite `hm` using `[mul_smul, hv, hu]`. Use `⟨u * v, by rw [mul_smul, hv, hu], γ * (M.tr u c * γ' * (M.tr u c)⁻¹) * (M.tr (u * v) c * (M.tr u c * M.tr v c)⁻¹)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_mem (mul_mem hγ hc) (inv_mem hm)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Use `group`. Conclude with `⟨1, one_smul _ _, (M.tr 1 c)⁻¹, inv_mem h1, by group⟩`. Introduce and unpack `a ⟨u, hu, γ, hγ, rfl⟩`. Establish `hu' : u⁻¹ • c = c` using `by rw [inv_smul_eq_iff, hu]`. Establish `hm` using `M.tr_mul u⁻¹ u c`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm` using `[inv_mul_cancel, one_smul, hu]`. Establish `hw : M.tr u⁻¹ c * M.tr u c ∈ (M.comp c).Γ`. Use `mul_mem (inv_mem h1) hm` as an intermediate fact. Simplify `inv_mem this` using `[mul_assoc]`. Establish `hc` using `(M.tr_conj u⁻¹ c γ⁻¹).1 (inv_mem hγ)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hc` using `[hu']`. Use `⟨u⁻¹, hu', (M.tr u⁻¹ c * M.tr u c)⁻¹ * (M.tr u⁻¹ c * γ⁻¹ * (M.tr u⁻¹ c)⁻¹), ?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_mem (inv_mem hw) hc`. Use `group`. Introduce `γ hγ`.
-
-Conclude with `⟨1, one_smul _ _, γ * (M.tr 1 c)⁻¹, mul_mem hγ (inv_mem h1), by group⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem upperLevel_isSubgroup : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U] [MulAction U C] (M : TwoLevels E r U C) (c : C), ∃ G : Subgroup (GL (Fin r) E), (∀ β, β ∈ G ↔ β ∈ M.upper c) ∧ (M.comp c).Γ ≤ G := by
   intro E _ _ _ r U C _ _ M c

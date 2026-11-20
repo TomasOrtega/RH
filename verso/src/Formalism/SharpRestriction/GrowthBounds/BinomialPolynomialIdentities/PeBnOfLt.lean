@@ -9,7 +9,7 @@ namespace Formalism.MainNotions.G.ColumnFamilies
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Introduce and unpack `⟨a, b⟩ ⟨c, d⟩ h`. Simplify using `only [iv, Prod.mk.injEq] at h`. Conclude with `Prod.ext (Fin.ext h.1) h.2`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iv_inj (N n : ℕ) : Function.Injective (iv N n) := by
   rintro ⟨a, b⟩ ⟨c, d⟩ h
@@ -17,29 +17,29 @@ theorem iv_inj (N n : ℕ) : Function.Injective (iv N n) := by
   exact Prod.ext (Fin.ext h.1) h.2
 
 /- English proof (translation)
-Simplify using `[Bn, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pe_Bn_of_lt {N : ℕ} (B : Fin N → ℕ) {i : ℕ} (h : i < N) : Bn B i = B ⟨i, h⟩ := by simp [Bn, h]
 
 /- English proof (translation)
-Simplify using `[Bn, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Bn_of_ge {N : ℕ} (B : Fin N → ℕ) {i : ℕ} (h : ¬ i < N) : Bn B i = 0 := by simp [Bn, h]
 
 /- English proof (translation)
-Use extensionality with `e`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, rfl⟩ i`. Distinguish the cases in `h : i < N`. Rewrite using `[if_pos h, pe_Bn_of_lt B h, ← hm ⟨i, h⟩]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Unfold `multideg`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `: ((i, a) : ℕ × Fin n) = iv N n (⟨i, h⟩, a)` using `rfl`. Rewrite using `[this, Finsupp.mapDomain_apply (iv_inj N n)]`. Rewrite using `[if_neg h]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Apply `Finsupp.mapDomain_of_notMem_range` to reduce the goal to its premises. Introduce and unpack `⟨⟨x, y⟩, hxy⟩`. Simplify using `only [iv, Prod.mk.injEq] at hxy`. Conclude with `h (hxy.1 ▸ x.2)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `he`. Establish `hsupp : (↑e.support : Set (ℕ × Fin n)) ⊆ Set.range (iv N n)`. Introduce and unpack `⟨i, a⟩ hia`. Distinguish the cases in `h : i < N`. Conclude with `⟨(⟨i, h⟩, a), rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Establish `h0` using `he i`. Rewrite `h0` using `[if_neg h]`. Use `(Finset.sum_eq_zero_iff.mp h0) a (Finset.mem_univ a)` as an intermediate fact. Simplify using `only [Finset.mem_coe, Finsupp.mem_support_iff] at hia`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hia this`. Use `⟨e.comapDomain (iv N n) (iv_inj N n).injOn, ?_, Finsupp.mapDomain_comapDomain _ (iv_inj N n) e hsupp⟩` and prove the remaining obligations. Introduce `i`. Establish `h0` using `he i.val`. Rewrite `h0` using `[if_pos i.2, pe_Bn_of_lt B i.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← h0]`. Unfold `multideg`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.comapDomain_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem expSet_eq (n N : ℕ) (B : Fin N → ℕ) :
     (fun m : Fin N × Fin n →₀ ℕ => m.mapDomain (iv N n)) '' {m | ∀ i, multideg m i = B i} =
@@ -81,9 +81,9 @@ theorem expSet_eq (n N : ℕ) (B : Fin N → ℕ) :
     rfl
 
 /- English proof (translation)
-Introduce `R _ n N B`. Rewrite using `[(Formalism.InvariantFactorPaths.GelfandTsetlinBases.polynomial_b_rank n N (Bn B)).2.2 R, ← expSet_eq, Pol, MvPolynomial.restrictSupport_eq_span, Submodule.map_span, Set.image_image, Set.image_image]`. Use `congr 1`. Apply `Set.image_congr` to reduce the goal to its premises. Introduce `m _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[rename_monomial]`.
+Simplify using the standard rewrite rules.
 -/
 theorem restPol : RestPol := by
   intro R _ n N B

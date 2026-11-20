@@ -12,7 +12,7 @@ open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel
 
 /- English proof (translation)
-Unfold `sizeE`. Use `Finset.sum_nonneg (fun i (_ : i ∈ Finset.univ) => hx i)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_le_sizeE_of_nonneg {r : ℕ} (x : Fin r → ℝ) (hx : ∀ i, 0 ≤ x i) : 1 ≤ sizeE x := by
   unfold sizeE
@@ -20,11 +20,11 @@ theorem one_le_sizeE_of_nonneg {r : ℕ} (x : Fin r → ℝ) (hx : ∀ i, 0 ≤ 
   linarith
 
 /- English proof (translation)
-Set `f : Option (Fin r) → ℝ` to `fun o => o.elim (b j) (a j)`. Take `⟨p, hp⟩` from `Finite.exists_min f`. Take `⟨q, hq⟩` from `Finite.exists_max f`. Establish `hpos : ∀ o, 0 < f o`. Introduce `o`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `o with`. Consider the case `none => exact hb`. Consider the case `some i => exact ha i`. Use `⟨f p, f q, hpos p, hpos q, fun x hx => ?_⟩` and prove the remaining obligations. Unfold `linF sizeE`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[mul_add, mul_one, Finset.mul_sum]`. Conclude with `add_le_add (hp none) (Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_right (hp (some i)) (hx i))`. Rewrite using `[mul_add, mul_one, Finset.mul_sum]`. Conclude with `add_le_add (hq none) (Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_right (hq (some i)) (hx i))`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linF_comparable_sizeE {ι : Type} {r : ℕ} (a : ι → Fin r → ℝ) (b : ι → ℝ) (j : ι)
     (ha : ∀ i, 0 < a j i) (hb : 0 < b j) :
@@ -49,17 +49,17 @@ theorem linF_comparable_sizeE {ι : Type} {r : ℕ} (a : ι → Fin r → ℝ) (
       (Finset.sum_le_sum fun i _ => mul_le_mul_of_nonneg_right (hq (some i)) (hx i))
 
 /- English proof (translation)
-Use `⟨Real.exp ((|Real.log c| + |Real.log C|) * T), (Real.exp_pos _).le, ?_⟩` and prove the remaining obligations. Introduce `L E t D hE h1 h2 ht htD`. Establish `hE0 : 0 < E` using `by linarith`. Establish `hL : 0 < L` using `lt_of_lt_of_le (mul_pos hc hE0) h1`. Establish `hu : 0 < L / E` using `div_pos hL hE0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu1 : c ≤ L / E` using `(le_div_iff₀ hE0).2 h1`. Establish `hu2 : L / E ≤ C` using `(div_le_iff₀ hE0).2 h2`. Establish `hlog1 : Real.log c ≤ Real.log (L / E)` using `Real.log_le_log hc hu1`. Establish `hlog2 : Real.log (L / E) ≤ Real.log C` using `Real.log_le_log hu hu2`. Establish `habs : |Real.log (L / E)| ≤ |Real.log c| + |Real.log C|`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[abs_le]`. Prove the components needed by the constructor for the conclusion. Use `neg_abs_le (Real.log c)` as an intermediate fact. Use `abs_nonneg (Real.log C)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `le_abs_self (Real.log C)` as an intermediate fact. Use `abs_nonneg (Real.log c)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hLE : L = (L / E) * E` using `by field_simp`. Establish `hfirst : (L / E) ^ t ≤ Real.exp ((|Real.log c| + |Real.log C|) * T)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.rpow_def_of_pos hu]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hsecond : E ^ t ≤ E ^ D` using `Real.rpow_le_rpow_of_exponent_le hE htD`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← Real.mul_rpow hu.le hE0.le, ← hLE]`. Use `_ ≤ Real.exp ((|Real.log c| + |Real.log C|) * T) * E ^ D := mul_le_mul hfirst hsecond (Real.rpow_nonneg hE0.le _) (Real.exp_pos _).le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rpow_le_of_comparable (c C T : ℝ) (hc : 0 < c) (hC : 0 < C) (hT : 0 ≤ T) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ L E t D : ℝ, 1 ≤ E → c * E ≤ L → L ≤ C * E → |t| ≤ T → t ≤ D →
@@ -97,7 +97,7 @@ theorem rpow_le_of_comparable (c C T : ℝ) (hc : 0 < c) (hC : 0 < C) (hT : 0 �
         mul_le_mul hfirst hsecond (Real.rpow_nonneg hE0.le _) (Real.exp_pos _).le
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j S hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj, ih, zpow_add₀ hE]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_zpow_eq_zpow_sum {ι : Type} (E : ℝ) (hE : E ≠ 0) (S : Finset ι) (f : ι → ℤ) :
     ∏ j ∈ S, E ^ f j = E ^ ∑ j ∈ S, f j := by
@@ -108,13 +108,13 @@ theorem prod_zpow_eq_zpow_sum {ι : Type} (E : ℝ) (hE : E ≠ 0) (S : Finset �
     rw [Finset.prod_insert hj, Finset.sum_insert hj, ih, zpow_add₀ hE]
 
 /- English proof (translation)
-Take `⟨c, C, hc, hC, hcmp⟩` from `linF_comparable_sizeE a b j ha hb`. Take `⟨K, hK0, hK⟩` from `rpow_le_of_comparable c C ((R : ℝ) + β) hc hC (by positivity)`. Use `⟨K, hK0, fun s hs hs' x hx => ?_⟩` and prove the remaining obligations. Establish `hE` using `one_le_sizeE_of_nonneg x hx`. Establish `hE0 : 0 < sizeE x` using `by linarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `hcmp x hx`. Establish `hL : 0 < linF a b j x` using `lt_of_lt_of_le (mul_pos hc hE0) h1`. Establish `hre : (-s - (β : ℂ)).re = -s.re - β` using `by simp`. Establish `hsr : |s.re| ≤ R` using `(Complex.abs_re_le_norm s).trans hs`. Establish `hβ : (0 : ℝ) ≤ β` using `by positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : |-s.re - (β : ℝ)| ≤ (R : ℝ) + β`. Rewrite `hsr`, the goal using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [hsr.1, hsr.2]`. Establish `htD : -s.re - (β : ℝ) ≤ (((B : ℤ) - (β : ℤ) : ℤ) : ℝ)`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos hL, hre, ← Real.rpow_intCast]`. Conclude with `hK _ _ _ _ hE h1 h2 ht htD`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_factor_le {ι : Type} (r : ℕ) (a : ι → Fin r → ℝ) (b : ι → ℝ) (j : ι)
     (ha : ∀ i, 0 < a j i) (hb : 0 < b j) (B R β : ℕ) :
@@ -140,11 +140,11 @@ theorem norm_factor_le {ι : Type} (r : ℕ) (a : ι → Fin r → ℝ) (b : ι 
   exact hK _ _ _ _ hE h1 h2 ht htD
 
 /- English proof (translation)
-Introduce `ι _ r a b ha hb B R β`. Establish `hj` using `fun j => norm_factor_le r a b j (ha j) (hb j) B R (β j)`. Use `choose K hK0 hK using hj`. Use `⟨∏ j, K j, Finset.prod_nonneg fun j _ => hK0 j, fun s hs hs' x hx => ?_⟩` and prove the remaining obligations. Establish `hE0 : sizeE x ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `one_le_sizeE_of_nonneg x hx` as an intermediate fact. Introduce `h`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `Fr`. Rewrite using `[norm_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, prod_zpow_eq_zpow_sum _ hE0, Finset.sum_sub_distrib]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem baseBound : ∀ (ι : Type) [Fintype ι] (r : ℕ) (a : ι → Fin r → ℝ) (b : ι → ℝ), (∀ j i, 0 < a j i) → (∀ j, 0 < b j) → ∀ (B R : ℕ) (β : ι → ℕ), ∃ C : ℝ, 0 ≤ C ∧ ∀ s : ℂ, ‖s‖ ≤ R → -(B : ℝ) ≤ s.re →
   ∀ x : Fin r → ℝ, (∀ i, 0 ≤ x i) →

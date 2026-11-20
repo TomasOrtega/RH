@@ -14,21 +14,19 @@ open NumberField IsDedekindDomain Module Formalism.BasicNotions Formalism.L2.Pj 
   GlobalTheory.FlatLine GlobalTheory.CompHt GlobalTheory.FlatCore
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U x h Z σ hσ a n hD hpos hn`. Use `⟨?_, fun P hP hoffZ => ?_⟩` and prove the remaining obligations. Use `haveI := GlobalTheory.cuspForms_finiteDimensional_of_goodEmb E H Dw l Xo c r U σ hσ (h.unf σ hσ) a n hD`. Establish `hle : cuspOn U Z (wtZ a n) ≤ cusp Xo c U a n`. Rewrite using `[← cuspW_wtZ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `cuspOn_le U Z (wtZ a n)`. Conclude with `Submodule.finiteDimensional_of_le hle`. Establish `hpts : HasPts U Z` using `GlobalTheory.FlatLine.hasPts U h.pos h.good h.unf Z`. Establish `e : goodOf c σ = σ` using `if_pos hσ`. Establish `htest` using `(hpts.1 σ).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `htest` using `[e]`. Establish `hoff : P ∈ offZero (U σ).X` using `fun k y hy => hoffZ k y fun hz => hy hz.1`. Establish `hP0 : P ∈ holSub0 (U σ).X (laU (U σ) a n)` using `⟨by rwa [← modelWt_wtZ], hoff⟩`. Establish `hsp` using `h.onto σ hσ a n hD hpos hn hP0`. Establish `hfix : rdU (U σ) (idem Z) * P = P`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `k y`. Use `show rdU (U σ) (idem Z) k y * P k y = P k y`. Distinguish the cases in `hz : (⟨k, y⟩ : Σ k, Frame ((U σ).X k).Ψ r) ∈ framesOn (U σ) Z`. Take `⟨hd, hl⟩` from `hz`. Establish `h1 : rdU (U σ) (idem Z) k y = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, hd, dif_pos]`. Rewrite using `[evR_idem hl (htest _ ⟨hd, hl⟩ hd)]`. Both sides reduce to the same expression. Rewrite using `[h1, one_mul]`. Rewrite using `[hoffZ k y hz, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Set `g : FDSec (U σ).X →ₗ[ℂ] FDSec (U σ).X` to `LinearMap.mulLeft ℂ (rdU (U σ) (idem Z))`. Establish `hmap` using `Submodule.mem_map_of_mem (f := g) hsp`. Rewrite `hmap` using `[Submodule.map_span]`. Establish `hg : g P = P` using `hfix`. Rewrite `hmap` using `[hg]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.span_mono ?_ hmap` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨f, hf, rfl⟩, rfl⟩`. Use `⟨idem Z * f, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite `hf` using `[← cuspW_wtZ]`. Conclude with `GlobalTheory.CompRestr.idem_mul_mem_cuspW h.unf Z hf`.
-
-Rewrite using `[mul_comm]`. Conclude with `mul_mem_suppOn _ (idem_mem_suppOn Z)`. Use `show rdU (U σ) (idem Z * f) = rdU (U σ) (idem Z) * rdU (U σ) f`. Conclude with `AllWt.rdU_mul (U σ) _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cuspOn_fd_and_span_rdU : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ), Laws U x → ∀ (Z : Comp Xo c) (σ : c.F →+* ℂ), GoodEmb c σ → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → (∀ τ i, i < Dw.mult τ → 1 ≤ a (τ, i)) → 4 * (finrank ℚ E * r) + 4 ≤ n → FiniteDimensional c.F (cuspOn U Z (wtZ a n)) ∧ ∀ P ∈ holSub (U σ).X (modelWt (U σ) (wtZ a n)), (∀ k y, (⟨k, y⟩ : Σ k, Frame ((U σ).X k).Ψ r) ∉ framesOn (U σ) Z → P k y = 0) → P ∈ Submodule.span ℂ (rdU (U σ) '' (cuspOn U Z (wtZ a n) : Set (Rul Xo c))) := by
   intro E _ _ _ H Dw l Xo c r U x h Z σ hσ a n hD hpos hn

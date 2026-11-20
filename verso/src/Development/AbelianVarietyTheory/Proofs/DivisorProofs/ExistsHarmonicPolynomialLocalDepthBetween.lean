@@ -16,9 +16,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.RefSum.GlobalPoly
 
 /- English proof (translation)
-Establish `hne : (p : K) ≠ 0` using `by exact_mod_cast hp0`. Establish `hlt : v.valuation K (p : K) < 1`. Rewrite using `[← map_natCast (algebraMap (𝓞 K) K) p, HeightOneSpectrum.valuation_lt_one_iff_mem]`. Conclude with `hp`. Establish `h0 : v.valuation K (p : K) ≠ 0` using `by simpa using hne`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(WithZero.log_lt_log h0 one_ne_zero).2 hlt` as an intermediate fact. Simplify using `only [WithZero.log_one] at this`. Simplify using `only [vLa]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem vLa_pos_of_mem {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) {p : ℕ} (hp0 : p ≠ 0)
     (hp : (p : 𝓞 K) ∈ v.asIdeal) : 0 < vLa v (p : K) := by
@@ -32,7 +32,7 @@ theorem vLa_pos_of_mem {K : Type} [Field K] [NumberField K] (v : HeightOneSpectr
   simp only [vLa]; omega
 
 /- English proof (translation)
-Establish `: valV T.V (algebraMap T.V T.Fr x) = 1`. Rewrite using `[valV, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `fun h => (IsLocalRing.mem_maximalIdeal _).1 h hx`. Simplify using `[vV, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules.
 -/
 theorem vV_of_isUnit (T : CDVR) {x : T.V} (hx : IsUnit x) : vV T.V (algebraMap T.V T.Fr x) = 0 := by
   have : valV T.V (algebraMap T.V T.Fr x) = 1 := by
@@ -41,17 +41,15 @@ theorem vV_of_isUnit (T : CDVR) {x : T.V} (hx : IsUnit x) : vV T.V (algebraMap T
   simp [vV, this]
 
 /- English proof (translation)
-Distinguish the cases in `hpq : q = p`. Substitute `hpq` using the available equality. Conclude with `le_rfl`. Establish `hcop : IsCoprime ((q : ℤ)) (p : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hq hp).2 hpq)`. Establish `hcopV : IsCoprime ((q : T.V)) (p : T.V)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hcop.map (Int.castRingHom T.V)`. Establish `hpm : (p : T.V) ∈ IsLocalRing.maximalIdeal T.V`. Assume the negation of the conclusion as `h`. Establish `hu : IsUnit (p : T.V)`. Assume the negation of the conclusion as `h'`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `h ((IsLocalRing.mem_maximalIdeal _).2 h')`. Use `vV_of_isUnit T hu` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Use linear arithmetic over natural numbers and integers. Establish `hqu : IsUnit (q : T.V)`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h'`. Establish `hqm : (q : T.V) ∈ IsLocalRing.maximalIdeal T.V` using `(IsLocalRing.mem_maximalIdeal _).2 h'`. Take `⟨u, w, huw⟩` from `hcopV`. Establish `h1 : (1 : T.V) ∈ IsLocalRing.maximalIdeal T.V`. Rewrite using `[← huw]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hqm) (Ideal.mul_mem_left _ _ hpm)`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal T.V).ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Use `vV_of_isUnit T hqu` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Rewrite using `[this]`.
-
-Conclude with `hv.le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vV_prime_le (T : CDVR) {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hv : 0 < vV T.V (p : T.Fr)) :
     vV T.V (q : T.Fr) ≤ vV T.V (p : T.Fr) := by
@@ -81,17 +79,15 @@ theorem vV_prime_le (T : CDVR) {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hv : 0
 end GlobalTheory.RefSum.GlobalPoly
 
 /- English proof (translation)
-Introduce `D H Dw l Xo c`. Use `letI := H.starRing`. Introduce `p hp la a ha n hn A B hNu`. Take `⟨N, hN⟩` from `exists_nat_gt (B + ∑ q ∈ D.host.condN.primeFactors, 1 * D.host.vdH q * ((Formalism.L2.Pj.DF Dw a : ℕ) : ℝ) / 2)`. Take `⟨P₁, hP₁, hglob⟩` from `GlobalTheory.T.exists_global_harmonic_congr_column_polynomial D.host.E H Dw l Xo c p la a ha n hn N`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨P₁, hP₁, fun T io e ho y hy Ch k => ?_⟩` and prove the remaining obligations. Take `⟨Bc, R, hcols, hR, heq⟩` from `hglob T io e ho`. Establish `hchoice` using `GlobalTheory.T.columnPolynomial_localDepth_eq_placeDepth D.host.E H Dw l Xo c p la T io e ho y Ch (gap Dw a) n Bc hcols k`. Establish `hv : 0 < vV T.V (p : T.Fr)`. Rewrite using `[← map_natCast io p, ho.2]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_pos (by exact_mod_cast ho.1) (GlobalTheory.RefSum.GlobalPoly.vLa_pos_of_mem la.1 hp.out.ne_zero la.2)`. Establish `hve : vV T.V (p : T.Fr) = ((vV T.V (p : T.Fr)).toNat : ℤ)` using `(Int.toNat_of_nonneg hv.le).symm`. Establish `he : 0 < (vV T.V (p : T.Fr)).toNat` using `by omega`. Establish `hch` using `GlobalTheory.PlaceInt.HostChart.chBound_host D H Dw l Xo c (fun _ => rfl) T io y Ch _ he a n (Formalism.L2.Pj.DF Dw a) le_rfl`. Establish `hNu'` using `hNu T io e ho y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpert` using `GlobalTheory.T.localDepth_stable_under_prime_pow_perturbation D.host.E H Dw l Xo c p T io y Ch _ he hve a n N k _ B (polyT Bc (gap Dw a)) R hch hR (hchoice.trans_le (hNu'.2 hy)) (by`. Use `lt_of_le_of_lt (add_le_add le_rfl (Finset.sum_le_sum fun q hq => ?_)) hN` and prove the remaining obligations. Establish `hqp : q.Prime` using `Nat.prime_of_mem_primeFactors hq`. Establish `hle` using `GlobalTheory.RefSum.GlobalPoly.vV_prime_le T hp.out hqp hv`. Establish `hr : (vV T.V (q : T.Fr) : ℝ) / ((vV T.V (p : T.Fr)).toNat : ℝ) ≤ 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_one (by exact_mod_cast he)]`. Rewrite `hle` using `[hve]`. Conclude with `hle` after adjusting the coercions. Conclude with `div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hr (D.host.vdH_nonneg q)) (Nat.cast_nonneg _)) zero_le_two)`. Rewrite using `[heq, hpert, hchoice]`.
-
-Conclude with `⟨hNu'.1, hNu'.2 hy⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RefSum.GlobalPoly.exists_polyBetween : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (p : ℕ) [Fact p.Prime] (la : PointsOfFlagModel.abelian₂ p c) (a : (D.host.E →+* ℂ) × ℕ → ℕ), (∀ τ, Antitone fun i => a (τ, i)) → ∀ n : ℕ, ∑ f : Lt1 Dw, 2 * rk f ≤ n → ∀ A B : ℝ, NuBetween Xo la (gap Dw a) A B → ∃ P₁ ∈ harmA (Dw := Dw) c a n, PolyBetween Xo la P₁ A B := by
   intro D H Dw l Xo c

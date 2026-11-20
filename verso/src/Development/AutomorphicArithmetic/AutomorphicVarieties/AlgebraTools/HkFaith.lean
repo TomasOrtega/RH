@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.HkDed
 open MvPolynomial Equiv UpperTheory.V.AlgebraTools.Hk
 
 /- English proof (translation)
-Introduce `h0`. Use `congrArg (MvPolynomial.coeff (Finsupp.single i 1)) h0` as an intermediate fact. Simplify using `[MvPolynomial.coeff_X', MvPolynomial.coeff_C_mul, Finsupp.single_left_inj, h, Ne.symm h] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem X_sub_ne {R : Type} [CommRing R] [IsDomain R] {n : ℕ} (q : R) {i j : Fin n} (h : i ≠ j) :
     (X i - C q * X j : MvPolynomial (Fin n) R) ≠ 0 := by
@@ -14,27 +14,25 @@ private theorem X_sub_ne {R : Type} [CommRing R] [IsDomain R] {n : ℕ} (q : R) 
   simp [MvPolynomial.coeff_X', MvPolynomial.coeff_C_mul, Finsupp.single_left_inj, h, Ne.symm h] at this
 
 /- English proof (translation)
-Introduce `R _ _ n q H _ _ b hfaith c hc`. Set `K` to `FractionRing (MvPolynomial (Fin n) R)`. Establish `hinj` using `IsFractionRing.injective (MvPolynomial (Fin n) R) K`. Use `choose F hF1 hF2 hF3 using fun u => UpperTheory.V.AlgebraTools.hkAct R n q H b K u`. Use `choose Y hY1 hY2 using hF1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ x : MvPolynomial (Fin n) R, ∑ v, (∑ u, algebraMap (MvPolynomial (Fin n) R) K (c u) * F u v) * algebraMap (MvPolynomial (Fin n) R) K (rename v x) = 0`. Introduce `x`. Establish `h1 : b.th (∑ u, c u * Y u x) * b.one = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum, Finset.sum_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[map_mul, mul_assoc]`. Use `_ = ∑ u, b.th (c u) * (b.T u * b.th x * b.one) := by simp [hY1]`. Use `_ = (∑ u, b.th (c u) * b.T u) * b.th x * b.one := by`. Rewrite using `[Finset.sum_mul, Finset.sum_mul]`. Simplify using `[mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `_ = 0 := hc x`. Establish `h2` using `congrArg (algebraMap (MvPolynomial (Fin n) R) K) (hfaith _ h1)`. Rewrite `h2` using `[map_sum, map_zero]`. Rewrite `h2` using `[map_mul, hY2, Finset.mul_sum]`. Rewrite `h2` using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← h2]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hD` using `UpperTheory.V.AlgebraTools.hkDedekind R n K _ key`. Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨w0, hw0⟩ : ∃ w, c w ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hne (funext hall)`. Take `⟨w, hwS, hmax⟩` from `(Finset.univ.filter (fun u => c u ≠ 0)).exists_max_image invN ⟨w0, by simp [hw0]⟩`. Establish `hcw : c w ≠ 0` using `by simpa using hwS`. Establish `hw` using `congrFun hD w`. Simplify using `only [Pi.zero_apply] at hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hw` using `[Finset.sum_eq_single w]`. Apply `mul_ne_zero _ _ hw` to reduce the goal to its premises. Conclude with `fun h => hcw (hinj (by rw [h, map_zero]))`. Rewrite using `[hF2 w]`. Use `Finset.prod_ne_zero_iff.mpr fun p hp => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hlt : p.1 < p.2`. Simplify using `[invSet, pairs] at hp`. Conclude with `hp.1`. Establish `hpne : p.1 ≠ p.2` using `ne_of_lt hlt`. Use `div_ne_zero ?_ ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `fun h => X_sub_ne q hpne (hinj (by rw [h, map_zero]))`. Introduce `h`. Apply `X_sub_ne (1 : R) hpne` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Simplify using `using h`.
-
-Introduce `u _ hu`. Distinguish the cases in `hcu : c u = 0`. Simplify using `[hcu]`. Rewrite using `[hF3 u w (fun h => hu h.symm) (hmax u (by simp [hcu])), mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.hkFaith :
     ∀ (R : Type) [CommRing R] [IsDomain R] (n : ℕ) (q : R) (H : Type) [Ring H] [Algebra R H] (b : Bern n q H), b.Faithful → ∀ c : Perm (Fin n) → MvPolynomial (Fin n) R,

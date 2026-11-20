@@ -20,17 +20,17 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.MainNot
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `_ _ h` and use `D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tauE_injective : Function.Injective (tauE D) := fun _ _ h =>
   D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 h))
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `(factEmb D.R D.host).1.2 σ`. Establish `hc : ComplexEmbedding.conjugate (D.host.emb g) = D.host.emb (g * D.R.cc)`. Rewrite using `[Formalism.L2.Geo.emb_mul_cc_comp]`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Use `letI := D.host.cmStar`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Use `haveI : IsCMField D.host.E := D.host.isCMField_hostE`. Establish `h1 : star x = D.host.conj x` using `bridge_star_holds D.R D.host x`. Establish `h2 : D.host.emb g (star x) = starRingEnd ℂ (D.host.emb g x)` using `IsCMField.complexEmbedding_complexConj D.host.E (D.host.emb g) x`. Rewrite `h2` using `[h1]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ g', (∃ ρ, tauE D ρ = D.host.emb g') ↔ g' ∈ D.R.Psi` using `fun g' => by`. Rewrite using `[← Formalism.L2.Geo.exists_tauEmb_iff D g']`. Conclude with `exists_congr fun ρ => eq_comm`. Rewrite using `[hc, key, key]`. Conclude with `Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tauE_cm (σ : D.host.E →+* ℂ) :
     (∃ ρ, tauE D ρ = σ) ↔ ¬ ∃ ρ, tauE D ρ = ComplexEmbedding.conjugate σ := by
@@ -59,7 +59,7 @@ theorem infMat_eq (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* �
     infMat D.sp.cm.sig V.gram θ h = Formalism.L2.Pj.archM V θ h := rfl
 
 /- English proof (translation)
-Unfold `Formalism.L2.Pj.archM`. Rewrite using `[map_mul, Units.val_mul, Matrix.map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem archM_mul (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (a b : GA D V) :
     Formalism.L2.Pj.archM V θ (a * b) = Formalism.L2.Pj.archM V θ a * Formalism.L2.Pj.archM V θ b := by
@@ -67,7 +67,7 @@ theorem archM_mul (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* �
   rw [map_mul, Units.val_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Pj.archM`. Rewrite using `[map_one, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem archM_one (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) :
     Formalism.L2.Pj.archM V θ 1 = 1 := by
@@ -75,9 +75,9 @@ theorem archM_one (V : HSp D) (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* �
   rw [map_one, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Take `⟨e, he, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Establish `a1 : (infHom V k).1 = (infHom V 1).1` using `by rw [map_one]; exact congrArg Units.val h1`. Establish `a2 : (finHom V k).1 = (finHom V 1).1` using `by rw [map_one]; exact congrArg Units.val h2`. Use `Subtype.ext (Units.ext (Matrix.ext fun a b => e.injective (Prod.ext ?_ ?_)))` and prove the remaining obligations. Rewrite using `[(he _).1, (he _).1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun (congrFun a1 a) b`. Rewrite using `[(he _).2, (he _).2]`. Conclude with `congrFun (congrFun a2 a) b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_mem (V : HSp D) (k : GA D V) (h1 : k ∈ GfC V) (h2 : k ∈ GinfC V) : k = 1 := by
   obtain ⟨e, he, -⟩ := GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E
@@ -88,15 +88,13 @@ theorem eq_one_of_mem (V : HSp D) (k : GA D V) (h1 : k ∈ GfC V) (h2 : k ∈ Gi
   · rw [(he _).2, (he _).2]; exact congrFun (congrFun a2 a) b
 
 /- English proof (translation)
-Set `Ψ : Finset (D.host.E →+* ℂ)` to `Finset.univ.filter fun σ => ∃ ρ, tauE D ρ = σ`. Establish `hmem : ∀ σ, σ ∈ Ψ ↔ ∃ ρ, tauE D ρ = σ` using `fun σ => by simp [Ψ]`. Use `choose r hr using fun σ : Ψ => (hmem σ.1).1 σ.2`. Establish `hsurj : ∀ ρ, r ⟨tauE D ρ, (hmem _).2 ⟨ρ, rfl⟩⟩ = ρ` using `fun ρ => tauE_injective (hr _)`. Take `⟨h1, -, -, h2⟩` from `(GlobalTheory.UnitaryGlue.adelic_glue D V).2 Ψ (fun σ => θ (r σ)) (fun σ => by rw [hmem, hmem]; exact tauE_cm σ) (fun σ => by rw [← hr σ]; exact hθ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh, hu⟩` from `h2 (fun σ => if r σ = τ then g else 1) (fun σ => by`. Distinguish the cases in `c : r σ = τ`. Rewrite using `[if_pos c, ← hr σ, c]`. Conclude with `hg`. Rewrite using `[if_neg c, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one, Matrix.one_mul, Matrix.mul_one])`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : ∀ ρ, Formalism.L2.Pj.archM V (θ ρ) h = if ρ = τ then g else 1` using `fun ρ => by`. Use `hu ⟨tauE D ρ, (hmem _).2 ⟨ρ, rfl⟩⟩` as an intermediate fact. Simplify using `only [hsurj] at this`. Conclude with `this`. Use `⟨h, ⟨hh, (hu' τ).trans (if_pos rfl), fun ρ c => (hu' ρ).trans (if_neg c)⟩, fun h' hh' => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `e : ∀ ρ, Formalism.L2.Pj.archM V (θ ρ) h' = Formalism.L2.Pj.archM V (θ ρ) h` using `fun ρ => by`. Rewrite using `[hu']`. Distinguish the cases in `c : ρ = τ`. Rewrite using `[if_pos c, c]`. Conclude with `hh'.2.1`.
-
-Rewrite using `[if_neg c]`. Conclude with `hh'.2.2 ρ c`. Use `mul_inv_eq_one.1 (eq_one_of_mem V _ (h1 _ fun σ => ?_) (mul_mem hh'.1 (inv_mem hh)))` and prove the remaining obligations. Rewrite using `[archM_mul, e, ← archM_mul, mul_inv_cancel, archM_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_isAtTau (V : HSp D) (τ : D.what₂.Tau)
     (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (hθ : IsInfFam θ)

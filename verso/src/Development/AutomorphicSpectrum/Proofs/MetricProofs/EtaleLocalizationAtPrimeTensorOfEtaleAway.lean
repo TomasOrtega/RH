@@ -9,9 +9,9 @@ namespace GlobalTheory.CompanionTheory.Ar.PB
 open MvPolynomial GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-Introduce `Ψ _ _ N j R hR h`. Use `⟨(mem_homogeneousSubmodule _ _).2 hR, ?_⟩` and prove the remaining obligations. Introduce and unpack `σ ⟨τ, a, b, hab, hblock, rfl⟩`. Use `MvPolynomial.funext fun lam => ?_` and prove the remaining obligations. Rewrite using `[eval_rename, map_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eq_neg_of_add_eq_zero_right (h τ a b hab hblock lam)`.
+A detailed English derivation is pending.
 -/
 theorem mem_antisymSpace_of_pointwise :
     ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (R : MvPolynomial (Ψ × Fin N) ℝ),

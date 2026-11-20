@@ -13,9 +13,9 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil PositivityTheory.RgUd.T
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_inf, mem_lat, mem_C_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨(mem_Gz_iff Z u).1 h2, fun i j => ?_⟩` and prove the remaining obligations. Use `((mem_congruenceSubgroup_iff k n).1 h1).2 i j` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.sub_apply]`. Introduce and unpack `⟨h1, h2⟩`. Take `⟨w, hw, hwv⟩` from `exists_unit (k := k) m hm (u.val - 1) h2`. Establish `: w = u` using `Units.ext (by rw [hwv]; abel)`. Conclude with `⟨this ▸ hw, (mem_Gz_iff Z u).2 h1⟩`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem memK (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (m : ℕ) (hm : 1 ≤ m) (u : GL (Fin n) k) :
     u ∈ congruenceSubgroup k n m ⊓ GzS Z ↔
@@ -33,7 +33,7 @@ theorem memK (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (m : ℕ) (hm : 1 ≤
     exact ⟨this ▸ hw, (mem_Gz_iff Z u).2 h1⟩
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mem_map_equiv, MulAut.conj_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem memK' (K : Subgroup (GL (Fin n) k)) (g u : GL (Fin n) k) :
     u ∈ K.map (MulAut.conj g).toMonoidHom ↔ g⁻¹ * u * g ∈ K := by

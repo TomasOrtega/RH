@@ -16,11 +16,11 @@ open GlobalTheory.Models
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K C _ _ _ A B f _ _ _ _`. Establish `hw : f.left ≫ pullback.snd B.hom (spMap (algebraMap K C)) = pullback.snd A.hom (spMap (algebraMap K C))`. Simplify using `using Over.w f`. Establish `hφ : (f.left ≫ pullback.fst _ _) ≫ B.hom = pullback.fst _ _ ≫ A.hom`. Rewrite using `[Category.assoc, pullback.condition, reassoc_of% hw, pullback.condition]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨R, ψ, hR, hψ, hRψ⟩` from `Spread.exists_fg_comp_eq A.hom B.hom (f.left ≫ pullback.fst _ _) hφ`. Take `⟨t, rfl⟩` from `hR`. Set `L : IntermediateField K C` to `IntermediateField.adjoin K (t : Set C)`. Establish `hle : Algebra.adjoin K (t : Set C) ≤ L.toSubalgebra` using `IntermediateField.algebra_adjoin_le_adjoin K _`. Use `⟨L, Spread.bcMap A.hom (Subalgebra.inclusion hle) ≫ ψ, ⟨t, rfl⟩, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, hψ, Spread.bcMap_fst_assoc]`. Introduce `i h₁ h₂`. Rewrite using `[Spread.eq_bcMap A.hom L.val h₁ h₂, ← Category.assoc, Spread.bcMap_comp_of_eq A.hom _ _ (Algebra.adjoin K (t : Set C)).val fun _ ↦ rfl, hRψ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_descends_to_fg_intermediateField : ∀ (K C : Type) [Field K] [Field C] [Algebra K C] (A B : Over (Sp K)) (f : (Over.pullback (spMap (algebraMap K C))).obj A ⟶ (Over.pullback (spMap (algebraMap K C))).obj B), LocallyOfFiniteType A.hom → QuasiCompact A.hom → IsSeparated A.hom → LocallyOfFiniteType B.hom → ∃ (L : IntermediateField K C) (f₀ : pullback A.hom (spMap (algebraMap K L)) ⟶ B.left), L.FG ∧ f₀ ≫ B.hom = pullback.fst _ _ ≫ A.hom ∧ ∀ i : pullback A.hom (spMap (algebraMap K C)) ⟶ pullback A.hom (spMap (algebraMap K L)), i ≫ pullback.fst _ _ = pullback.fst _ _ → i ≫ pullback.snd _ _ = pullback.snd _ _ ≫ spMap (algebraMap L C) → i ≫ f₀ = f.left ≫ pullback.fst _ _ := by
   intro K C _ _ _ A B f _ _ _ _

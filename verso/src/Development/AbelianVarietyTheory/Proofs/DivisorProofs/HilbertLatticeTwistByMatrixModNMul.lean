@@ -13,9 +13,9 @@ namespace GlobalTheory.HilbFam.TwistMul
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Introduce `j _`. Establish `h : ∀ i, y i * ((A i j : ℤ) : F) ∈ (1 : Submodule (𝓞 F) F)` using `fun i ↦ by`. Use `Submodule.smul_of_tower_mem (1 : Submodule (𝓞 F) F) (A i j) (hy i (Set.mem_univ i))` as an intermediate fact. Rewrite `this` using `[zsmul_eq_mul, mul_comm]`. Then use the resulting hypothesis. Establish `e : Matrix.vecMul y (A.map (Int.cast : ℤ → F)) j = y 0 * ((A 0 j : ℤ) : F) + y 1 * ((A 1 j : ℤ) : F)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_two]`. Express the relevant statement in the definitionally equal form `Matrix.vecMul y (A.map (Int.cast : ℤ → F)) j ∈ (1 : Submodule (𝓞 F) F)`. Rewrite using `[e]`. Conclude with `Submodule.add_mem _ (h 0) (h 1)`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem std_vecMul_int (A : Matrix (Fin 2) (Fin 2) ℤ) {y : Fin 2 → F} (hy : y ∈ stdLat F) :
     Matrix.vecMul y (A.map (Int.cast : ℤ → F)) ∈ stdLat F := by
@@ -30,22 +30,22 @@ theorem std_vecMul_int (A : Matrix (Fin 2) (Fin 2) ℤ) {y : Fin 2 → F} (hy : 
   exact Submodule.add_mem _ (h 0) (h 1)
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `Submodule.smul_of_tower_mem _ N hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem std_natCast_smul (N : ℕ) {y : Fin 2 → F} (hy : y ∈ stdLat F) : (N : F) • y ∈ stdLat F := by
   rw [Nat.cast_smul_eq_nsmul]
   exact Submodule.smul_of_tower_mem _ N hy
 
 /- English proof (translation)
-Introduce `F _ _ _ N L α β hL`. Establish `lift : ∀ γ : Matrix (Fin 2) (Fin 2) (ZMod N), ∃ C : Matrix (Fin 2) (Fin 2) ℤ, C.map (Int.cast : ℤ → ZMod N) = γ` using `fun γ ↦ ⟨γ.map (ZMod.cast : ZMod N → ℤ), by ext i j; simp⟩`. Take `⟨A, rfl⟩` from `lift α`. Take `⟨B, rfl⟩` from `lift β`. Establish `hm : A.map (Int.cast : ℤ → ZMod N) * B.map (Int.cast : ℤ → ZMod N) = (A * B).map (Int.cast : ℤ → ZMod N)` using `(Matrix.map_mul (f := Int.castRingHom (ZMod N))).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hF : (A * B).map (Int.cast : ℤ → F) = A.map (Int.cast : ℤ → F) * B.map (Int.cast : ℤ → F)` using `Matrix.map_mul (f := Int.castRingHom F)`. Establish `hT : twist N L (A.map (Int.cast : ℤ → ZMod N)) ≤ stdLat F`. Introduce `v hv`. Take `⟨y, hy, w, hw, rfl⟩` from `(GlobalTheory.T.mem_hilbertLatticeTwist_iff_lift F N L A v hL).1 hv`. Conclude with `Submodule.add_mem _ (std_vecMul_int A (hL hy)) (std_natCast_smul N hw)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Use extensionality with `v`. Rewrite using `[GlobalTheory.T.mem_hilbertLatticeTwist_iff_lift F N _ B v hT, GlobalTheory.T.mem_hilbertLatticeTwist_iff_lift F N L (A * B) v hL, hF]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, w, hw, rfl⟩`.
+By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, w', hw', rfl⟩` from `(GlobalTheory.T.mem_hilbertLatticeTwist_iff_lift F N L A u hL).1 hu`. Use `⟨y, hy, Matrix.vecMul w' (B.map (Int.cast : ℤ → F)) + w, Submodule.add_mem _ (std_vecMul_int B hw') hw, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_vecMul, Matrix.vecMul_vecMul, Matrix.smul_vecMul, smul_add, add_assoc]`. Introduce and unpack `⟨y, hy, w, hw, rfl⟩`. Use `⟨Matrix.vecMul y (A.map (Int.cast : ℤ → F)), (GlobalTheory.T.mem_hilbertLatticeTwist_iff_lift F N L A _ hL).2 ⟨y, hy, 0, Submodule.zero_mem _, by simp⟩, w, hw, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.vecMul_vecMul]`.
+A detailed English derivation is pending.
 -/
 theorem twist_twist : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (N : ℕ) (L : Lat F)
     (α β : Matrix (Fin 2) (Fin 2) (ZMod N)), L ≤ stdLat F → twist N (twist N L α) β = twist N L (α * β) := by

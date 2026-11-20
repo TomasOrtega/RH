@@ -38,9 +38,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `key : (projBundleMap P B).comp (rename (inlV (ι₂` using `fun _ : Unit => Fin N1)) : MRing ι →ₐ[ℤ] MRing (PBlk ι N1)).toRingHom = (C : FnField P →+* MvPolynomial (Fin n) (FnField P)).comp ((algebraMap (MRing ι ⧸ P) (FnField P)).comp (Ideal.Quotient.mk P)) := by`. Use `MvPolynomial.ringHom_ext (fun r => ?_) (fun p => ?_)` and prove the remaining obligations. Establish `hC` using `RingHom.ext_int (((projBundleMap P B).comp (rename (inlV (ι₂ := fun _ : Unit => Fin N1)) : MRing ι →ₐ[ℤ] MRing (PBlk ι N1)).toRingHom).comp C) (((C : FnField P →+* MvPolynomial (Fin n) (FnField P)).comp ((algebraMap (MRing ι ⧸ P) (FnField P)).comp (Ideal.Quotient.mk P))).comp C)`. Conclude with `RingHom.congr_fun hC r`. Take `⟨k, i⟩` from `p`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `[projBundleMap, inlV, genPt]`. Use extensionality with `f`. Express the relevant statement in the definitionally equal form `projBundleMap P B ((rename (inlV (ι₂ := fun _ : Unit => Fin N1)) : MRing ι →ₐ[ℤ] MRing (PBlk ι N1)).toRingHom f) = 0 ↔ f ∈ P`. Rewrite using `[← RingHom.comp_apply, key, RingHom.comp_apply, RingHom.comp_apply, MvPolynomial.C_eq_zero, map_eq_zero_iff _ (IsFractionRing.injective _ _), Ideal.Quotient.eq_zero_iff_mem]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem imageZ_projBundleIdeal (P : Ideal (MRing ι)) {N1 n : ℕ} (B : Matrix (Fin n) (Fin N1) (FnField P)) :
     imageZ (inlV (ι₂ := fun _ : Unit => Fin N1)) (projBundleIdeal P B) = P := by

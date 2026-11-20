@@ -19,14 +19,14 @@ section SlopeTestRemainingChoices
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `Continuous.matrix_det (continuous_apply τ)`.
+A detailed English derivation is pending.
 -/
 theorem archEx_continuous_det {r : ℕ} {Ψ : Finset (E →+* ℂ)} (τ : Ψ) :
     Continuous fun y : Frame Ψ r => (mat y τ).det :=
   Continuous.matrix_det (continuous_apply τ)
 
 /- English proof (translation)
-The claim follows from `(archEx_continuous_det τ).continuousOn.inv₀ fun _ hy => (hy τ).1`.
+A detailed English derivation is pending.
 -/
 theorem archEx_continuousOn_horizGen {r : ℕ} (X : Data E r) (τ : X.Ψ) : ContinuousOn (horizGen τ) X.dom :=
   (archEx_continuous_det τ).continuousOn.inv₀ fun _ hy => (hy τ).1
@@ -34,7 +34,7 @@ theorem archEx_continuousOn_horizGen {r : ℕ} (X : Data E r) (τ : X.Ψ) : Cont
 variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
 /- English proof (translation)
-Use `((hU.2.1 k).2 _).2 ?_` and prove the remaining obligations. Establish `hσ0 : σ ⟨H.rt0, c.le (baseKA l).ρ.2⟩ = H.rt0` using `hσ`. Conclude with `(congrArg σ (Subtype.ext τ.2)).trans hσ0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem archEx_relab_mem {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (hσ : GoodEmb c σ) (hU : IsUnf U) (τ : Psi H) (k : U.Comp) :
     relab c σ τ.1 ∈ (U.X k).Ψ := by
@@ -45,27 +45,27 @@ theorem archEx_relab_mem {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (hσ : GoodEmb
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U x hL Z τ`. Take `⟨G, f, g, -, hf, hg, hf0, hq⟩` from `GlobalTheory.T.exists_cuspForm_pair_quotient_horizontal_generator E H Dw l Xo c r U x hL Z τ`. Establish `hfs : f ∈ secZ Xo c (exZ Dw G)` using `cuspW_le_secZ G hf.1`. Establish `hgs : g ∈ secZ Xo c (exZ Dw (G + wtOf Dw (flatWt Dw τ) 0))` using `cuspW_le_secZ _ hg.1`. Establish `hex : exZ Dw (G + wtOf Dw (flatWt Dw τ) 0) - exZ Dw G = exOf Dw (flatWt Dw τ) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.sub_apply, exZ_add, exOf, add_sub_cancel_left]`. Establish `hmem : ∀ σ (hσ : GoodEmb c σ) k, relab c σ τ.1 ∈ ((U σ).X k).Ψ` using `fun σ hσ k => archEx_relab_mem (U σ) hσ (hL.unf σ hσ) τ k`. Establish `hgood : ∀ σ, GoodEmb c (goodOf c σ)` using `fun σ => goodEmb_goodOf c σ`. Establish `hσ₀` using `hgood c.F.val.toRingHom`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `goodOf c c.F.val.toRingHom = σ₀ at hσ₀`. Take `⟨a₀, ha₀, h₀⟩` from `hq σ₀ hσ₀`. Take `⟨sig, hsig, hsi, hsf⟩` from `GlobalTheory.T.exists_section_quotient_of_continuous_reading E H Dw l Xo c r U x hL Z _ _ f g hfs hf.2 hgs hg.2 hf0 σ₀ hσ₀ (fun k y => a₀ * horizGen ⟨_, hmem σ₀ hσ₀ k⟩ y) (fun k => continuousOn_const.mul (archEx_continuousOn_horizGen _ _)) (fun z hz => h₀ z.1 _ z.2 hz)`. Rewrite `hsig` using `[hex]`. Establish `hrd : ∀ σ (hσ : GoodEmb c σ), ∃ a : ℂ, a ≠ 0 ∧ ∀ z ∈ framesOn (U σ) Z, rdU (U σ) sig z.1 z.2 = a * horizGen ⟨_, hmem σ hσ z.1⟩ z.2` using `fun σ hσ => by`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨a, ha, h⟩` from `hq σ hσ`. Conclude with `⟨a, ha, (GlobalTheory.T.cusp_section_annihilator E H Dw l Xo c r U x hL Z G _ f sig hf hf0 hsig).2 rfl σ hσ (fun k y => a * horizGen ⟨_, hmem σ hσ k⟩ y) (fun k => continuousOn_const.mul (archEx_continuousOn_horizGen _ _)) (fun z hz => hsf.symm ▸ h z.1 _ z.2 hz)⟩`. Establish `hnorm : ∀ σ (hσ : GoodEmb c σ), ∃ b : ℝ, 0 < b ∧ homN (U σ) x (wtOf Dw (flatWt Dw τ) 0) sig '' framesOn (U σ) Z = {b}` using `fun σ hσ => by`. Take `⟨a, ha, h⟩` from `hrd σ hσ`. Take `⟨k, hk⟩` from `framesOn_eq_model E H Dw l Xo c r U x hL Z σ hσ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `GlobalTheory.CompBij.frames_nonempty ((U σ).X k)`. Use `⟨lieFacZ Dw x (wtOf Dw (flatWt Dw τ) 0) * (‖a‖ * Real.sqrt ‖relab c σ τ.1 ((U σ).X k).Gm.det‖), mul_pos (lieFacZ_pos _ _) (mul_pos (norm_pos_iff.2 ha) (Real.sqrt_pos.2 (norm_pos_iff.2 ((map_ne_zero _).2 ((U σ).X k).Gm_det)))), image_eq_singleton_iff.2 ⟨⟨⟨k, y⟩, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hk]`. Conclude with `⟨rfl, hy⟩`. Introduce and unpack `⟨k', y'⟩ hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `h1` using `h _ hz`. Establish `hz'` using `hz`. Rewrite `hz'` using `[hk]`. Take `⟨rfl, hy'⟩ : k' = k ∧ y' ∈ ((U σ).X k').dom` from `hz'`. Rewrite using `[← pnorm_horizGen ((U σ).X k') ⟨_, hmem σ hσ k'⟩ hy', homN, ptN, modelWt_flatWt (U σ) hσ (hL.unf σ hσ) τ k' (hmem σ hσ k')]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only at h1`. Simplify using `only [Data.pnorm, h1, norm_mul, mul_assoc]`. Establish `hg0 : g ≠ 0` using `fun h0 => by`. Establish `h1 : sig = 0` using `hsi.symm.trans ((GlobalTheory.T.cusp_section_annihilator E H Dw l Xo c r U x hL Z G _ f sig hf hf0 hsig).1 (hsf.trans h0))`. Take `⟨b, hb, h2⟩` from `hnorm σ₀ hσ₀`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨z, hz⟩, h3⟩` from `image_eq_singleton_iff.1 h2`. Establish `h4` using `h3 z hz`. Rewrite `h4` using `[h1, ← zero_smul c.F (0 : Rul Xo c), homN_smul, map_zero, norm_zero, zero_mul]`. Conclude with `hb.ne h4`. Take `⟨inv, hinv, hii, hig⟩` from `GlobalTheory.T.exists_section_quotient_of_continuous_reading E H Dw l Xo c r U x hL Z _ _ g f hgs hg.2 hfs hf.2 hg0 σ₀ hσ₀ (fun k y => a₀⁻¹ * (mat y ⟨_, hmem σ₀ hσ₀ k⟩).det) (fun k => (continuous_const.mul (archEx_continuous_det _)).continuousOn) (fun z hz => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd` using `(hz.1 ⟨_, hmem σ₀ hσ₀ z.1⟩).1`. Rewrite using `[h₀ z.1 (hmem σ₀ hσ₀ z.1) z.2 hz, horizGen]`. Use the proof step `field_simp)`. Rewrite `hinv` using `[← neg_sub, hex]`. Establish `hif : idem Z * f = f` using `by rw [← hig, ← mul_assoc, hii]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : sig * inv - idem Z ∈ secZ Xo c 0`. Use `mul_mem_secZ hsig hinv` as an intermediate fact. Rewrite `this` using `[add_neg_cancel]`. Conclude with `Submodule.sub_mem _ this (idem_mem_secZ Z)`. Establish `hone : sig * inv = idem Z`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1` using `(GlobalTheory.T.cusp_section_annihilator E H Dw l Xo c r U x hL Z G _ f _ hf hf0 hs0).1 (by`. Rewrite using `[sub_mul, hif, mul_right_comm, hsf, mul_comm, hig, sub_self])`. Rewrite `h1` using `[mul_sub, ← mul_assoc, hsi, idem_mul_idem, sub_eq_zero]`. Then use the resulting hypothesis. Use `choose b hb hb' using fun σ => hnorm _ (hgood σ)`. Conclude with `⟨⟨sig, inv, hsig, hinv, hsi, hii, hone, b, hb, hb'⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem archEx_always : Always fun U x => ArchEx U x := by
   intro E _ _ _ H Dw l Xo c r U x hL Z τ

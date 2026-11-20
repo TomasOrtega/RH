@@ -9,9 +9,7 @@ noncomputable section
 namespace GlobalTheory.NegDefStab
 
 /- English proof (translation)
-Use extensionality with `i j`. Break down `i with i | i` into its components or cases. Conclude with `i.elim0`. Break down `j with j | j` into its components or cases. Conclude with `j.elim0`.
-
-Simplify using `[Formalism.UG.Jpq, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jpq_zero_left (n : ℕ) : Formalism.UG.Jpq 0 n = -1 := by
   ext i j
@@ -22,17 +20,17 @@ theorem jpq_zero_left (n : ℕ) : Formalism.UG.Jpq 0 n = -1 := by
     · simp [Formalism.UG.Jpq, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite `hA` using `[jpq_zero_left, Matrix.mul_neg, Matrix.mul_one, Matrix.neg_mul]`. Establish `hA' : A.conjTranspose * A = -Jt` using `by rw [← hA, neg_neg]`. Establish `hJ' : IsUnit (-Jt).det`. Rewrite using `[Matrix.det_neg]`. Conclude with `((isUnit_one.neg).pow _).mul hJ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hX' : X.conjTranspose * (-Jt) * X = -Jt`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, hX]`. Set `L : Matrix (Fin m) (Fin 0 ⊕ Fin n) ℂ` to `(-Jt)⁻¹ * A.conjTranspose`. Establish `hLA : L * A = 1`. Simplify using `only [L, Matrix.mul_assoc, hA']`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Matrix.nonsing_inv_mul _ hJ'`. Establish `hAL : A * L = 1` using `(Matrix.mul_eq_one_comm_of_equiv (A := A) (B := L) e.symm).mpr hLA`. Set `bm : Matrix (Fin 0 ⊕ Fin n) (Fin 0 ⊕ Fin n) ℂ` to `A * X * L`. Establish `hbb : bm.conjTranspose * bm = 1`. Establish `: bm.conjTranspose * bm = L.conjTranspose * (X.conjTranspose * (A.conjTranspose * A) * X) * L`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [bm, Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[this, hA', hX', ← hA']`. Rewrite using `[show L.conjTranspose * (A.conjTranspose * A) * L = (A * L).conjTranspose * (A * L) by`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]]`. Rewrite using `[hAL, Matrix.conjTranspose_one, Matrix.one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hbb' : bm * bm.conjTranspose = 1` using `(Matrix.mul_eq_one_comm_of_equiv (A := bm.conjTranspose) (B := bm) (Equiv.refl _)).mp hbb`. Set `g : GL (Fin 0 ⊕ Fin n) ℂ` to `⟨bm, bm.conjTranspose, hbb', hbb⟩`. Establish `hg : g ∈ Formalism.UG.Upq 0 n` using `by show Formalism.UG.cT (starRingEnd ℂ) bm * Formalism.UG.Jpq 0 n * bm = Formalism.UG.Jpq 0 n`. Establish `e' : Formalism.UG.cT (starRingEnd ℂ) bm = bm.conjTranspose`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Formalism.UG.cT, Matrix.conjTranspose_apply]`. Rewrite using `[e', jpq_zero_left, Matrix.mul_neg, Matrix.mul_one, Matrix.neg_mul, hbb]`. Use `⟨(⟨g, hg⟩ : Formalism.UG.Upq 0 n), ?_⟩` and prove the remaining obligations. Use `show bm * A = A * X`. Simplify using `only [bm, Matrix.mul_assoc, hLA, Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unitary_of_negative_definite {n m : ℕ} (e : Fin m ≃ Fin 0 ⊕ Fin n) (A : Matrix (Fin 0 ⊕ Fin n) (Fin m) ℂ)
     (Jt X : Matrix (Fin m) (Fin m) ℂ) (hJ : IsUnit Jt.det)
@@ -72,15 +70,15 @@ theorem unitary_of_negative_definite {n m : ℕ} (e : Fin m ≃ Fin 0 ⊕ Fin n)
 open Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.StabFin in
 
 /- English proof (translation)
-Introduce `D W n hW hsig μ hμ`. Take `⟨θ, hθ⟩` from `hμ.2.1`. Take `⟨A, hA⟩` from `(hμ.2.2 θ hθ).1`. Establish `h` using `(hμ.2.2 θ hθ).2 A hA (fun _ => Set.univ) (fun _ => MeasurableSet.univ)`. Establish `hp : D.cd.cd 0 n Set.univ = 1` using `GlobalTheory.CompactDualSwap.cd_zero_univ D.cd n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hp, Finset.prod_const_one] at h`. Use `h using 2` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨hg, fun ρ => ?_⟩` and prove the remaining obligations. Establish `h0` using `hW (embOf D ρ)`. Rewrite `h0` using `[hsig]`. Take `⟨e, P', hP⟩` from `h0`. Establish `hJ : IsUnit (W.gram.map (embOf D ρ)).det`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd` using `congrArg Matrix.det hP`. Rewrite `hd` using `[jpq_zero_left, Matrix.det_mul, Matrix.det_mul, Matrix.det_reindex_self]`. Use `isUnit_iff_ne_zero.mpr fun h0 => ?_` and prove the remaining obligations. Rewrite `hd` using `[h0, mul_zero, zero_mul, Matrix.det_neg, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero) hd.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `unitary_of_negative_definite e (A ρ) _ _ hJ (hA ρ) (infMat_unitary D.sp.cm.sig (fun _ => rfl) (fun x => (D.sp.cm.fixed _).mpr ⟨x, rfl⟩) (embOf D ρ) (D.sp.cm.cmUnram.2.1 _) (θ ρ) (hθ ρ) W.gram g)`. Conclude with `⟨b, Set.mem_univ _, hb⟩`. Introduce `hg`. Conclude with `hg.1`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem measure_SFin_negDef : ∀ (D : D7) (W : HSpace D.host.E) (n : ℕ), W.SigOK → (∀ τ, W.sig τ = (0, n)) →
     ∀ μ : Measure (HA (AF D.host.F) D.sp.cm.sig W.gram), IsVolMeas D W 0 n μ →

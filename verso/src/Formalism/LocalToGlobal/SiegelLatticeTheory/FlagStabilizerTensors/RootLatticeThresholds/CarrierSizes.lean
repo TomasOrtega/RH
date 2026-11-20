@@ -11,7 +11,7 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S
 namespace Formalism.L2.SG.Pf.CarrierSz
 
 /- English proof (translation)
-The claim follows from `D.host.isCMField_hostE Formalism.FourierDecayAlt.S6.Unram D.host.E := by have : IsCMField D.host.E := D.host.isCMField_hostE exact Formalism.MainNotions.LocalModelPeriodLattices.unramE D`.
+A detailed English derivation is pending.
 -/
 theorem unram_host (D : D7) :
     haveI : IsCMField D.host.E := D.host.isCMField_hostE
@@ -20,7 +20,7 @@ theorem unram_host (D : D7) :
   exact Formalism.MainNotions.LocalModelPeriodLattices.unramE D
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(D.host.g_prime 0).pos, (D.host.g_prime 1).pos⟩`.
+Supply the required witnesses or components.
 -/
 theorem g_pos (D : D7) : 0 < D.host.g 0 ∧ 0 < D.host.g 1 :=
   ⟨(D.host.g_prime 0).pos, (D.host.g_prime 1).pos⟩
@@ -32,7 +32,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)]
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.C.HidaSetting.cutHi Formalism.FourierDecayAlt.C.HidaSetting.cutLo`. Simplify using `only [Formalism.FourierDecayAlt.Sz.Glob.place]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cut_len (S : Formalism.FourierDecayAlt.C.HidaSetting E Wp Wq) (v : Fin S.f) :
     S.cutHi v - S.cutLo v = S.G.Del / 2 - 5 / 2 := by
@@ -41,7 +41,7 @@ theorem cut_len (S : Formalism.FourierDecayAlt.C.HidaSetting E Wp Wq) (v : Fin S
   ring
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.C.HidaSetting.Ntop Formalism.FourierDecayAlt.C.Kst`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ntop_eq (S : Formalism.FourierDecayAlt.C.HidaSetting E Wp Wq) : (S.Ntop : ℝ) = 20 * ((S.G.r : ℝ) + 1) := by
   unfold Formalism.FourierDecayAlt.C.HidaSetting.Ntop Formalism.FourierDecayAlt.C.Kst
@@ -51,11 +51,11 @@ theorem ntop_eq (S : Formalism.FourierDecayAlt.C.HidaSetting E Wp Wq) : (S.Ntop 
 end Cut
 
 /- English proof (translation)
-Establish `hx0 : 0 < x` using `by linarith`. Establish `hlog : 1 ≤ Real.log x`. Rewrite using `[Real.le_log_iff_exp_le hx0]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1 : x ^ t = x * x ^ (t - 1)` using `by conv_lhs => rw [show t = 1 + (t - 1) by ring]`. Rewrite using `[Real.rpow_add hx0, Real.rpow_one]`. Establish `h2 : t ≤ x ^ (t - 1)`. Rewrite using `[Real.rpow_def_of_pos hx0]`. Use `Real.add_one_le_exp (Real.log x * (t - 1))` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[h1]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem rpow_ge_mul {x t : ℝ} (hx : 3 ≤ x) (ht : 1 ≤ t) : t * x ≤ x ^ t := by
   have hx0 : 0 < x := by linarith
@@ -74,11 +74,11 @@ theorem rpow_ge_mul {x t : ℝ} (hx : 3 ≤ x) (ht : 1 ≤ t) : t * x ≤ x ^ t 
   nlinarith
 
 /- English proof (translation)
-Take `⟨-, -, hmf, hfk, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hDel, -, -, -, -, -⟩` from `h`. Establish `hm` using `D.R.two_le_m`. Establish `hf16 : 16 ≤ D.R.f` using `le_trans (by have := Nat.pow_le_pow_left hm 4; norm_num at this ⊢; omega) hmf`. Establish `hk16 : 16 ≤ D.R.k` using `le_trans hf16 hfk`. Establish `hL : 1 < large₂.sc.L` using `Real.one_lt_rpow large₂.sc.one_lt_alt large₂.sc.eps_pos`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : (16 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf16`. Establish `hk : (16 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk16`. Establish `hkf : (D.R.k : ℝ) * D.R.f ≤ (D.R.k : ℝ) * D.R.f * large₂.sc.L`. Establish `: 0 ≤ (D.R.k : ℝ) * D.R.f` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h3 : (3 : ℝ) ≤ (D.R.k : ℝ) * D.R.f * large₂.sc.L` using `by nlinarith`. Use `rpow_ge_mul h3 hCl` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem del_ge (D : D7) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT : ℝ} (h : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT)
     (hCl : 1 ≤ Cl) : Cl * ((D.R.k : ℝ) * D.R.f) ≤ (D.s.Del : ℝ) := by
@@ -102,23 +102,23 @@ theorem del_ge (D : D7) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT : ℝ} 
 def ClCut (C₆ : ℝ) : ℝ := max 1 ((420 * C₆ + 48125) / 8)
 
 /- English proof (translation)
-Establish `hCl1 : 1 ≤ Cl` using `le_trans (le_max_left _ _) hCl`. Establish `hCl2 : (420 * C₆ + 48125) / 8 ≤ Cl` using `le_trans (le_max_right _ _) hCl`. Establish `hD` using `del_ge D large₂ h hCl1`. Take `⟨-, -, hmf, hfk, -⟩` from `h`. Establish `hmR : (D.R.m : ℝ) = 2 * ((D.R.rS : ℝ) + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : D.R.m = 2 * D.R.rS + 2`. Unfold `Formalism.BasicNotions.Ranks.rS`. Take `⟨a, ha⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `: (D.R.m : ℝ) = 2 * (D.R.rS : ℝ) + 2` using `by exact_mod_cast h2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hf : (D.R.m : ℝ) ^ 4 ≤ D.R.f` using `by exact_mod_cast hmf`. Establish `hk1 : (D.R.f : ℝ) ≤ D.R.k` using `by exact_mod_cast hfk`. Establish `hm2 : (2 : ℝ) ≤ D.R.m` using `by exact_mod_cast D.R.two_le_m`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `hR : (D.R.rS : ℝ) + 1 = R at hmR ⊢`. Generalize the expression as in `hk : (D.R.k : ℝ) = k at hk1 hD ⊢`. Establish `hR1 : 1 ≤ R` using `by nlinarith`. Establish `hR3 : R ^ 3 ≤ R ^ 4` using `pow_le_pow_right₀ hR1 (by norm_num)`. Establish `hRR : R ≤ R ^ 4`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hR4 : 1 ≤ R ^ 4` using `one_le_pow₀ hR1`. Establish `hm4 : (16 : ℝ) ≤ (D.R.m : ℝ) ^ 4`. Use `pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 2) hm2 4` as an intermediate fact. Evaluate the numerical expressions using `at this ⊢`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk1' : 1 ≤ k` using `by linarith`. Establish `hP1 : R ^ 4 ≤ k * R ^ 4` using `by nlinarith`. Establish `hPk : k * R ^ 3 ≤ k * R ^ 4` using `by nlinarith`. Establish `hkf : 16 * (k * R ^ 4) ≤ k * (D.R.f : ℝ)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h16 : 16 * R ^ 4 = (D.R.m : ℝ) ^ 4` using `by rw [hmR]; ring`. Use the polynomial consequences of the given equalities and inequalities. Establish `hDel : 16 * Cl * (k * R ^ 4) ≤ (D.s.Del : ℝ)`. Use `mul_le_mul_of_nonneg_left hkf (by linarith : (0 : ℝ) ≤ Cl)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hbig : (420 * C₆ + 48125) * (k * R ^ 4) ≤ 8 * Cl * (k * R ^ 4)`. Establish `hP0 : 0 ≤ k * R ^ 4` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `: C₆ * (k * (20 * R) * R ^ 2 + (20 * R) ^ 2 * R ^ 2) ≤ C₆ * (420 * (k * R ^ 4))`. Apply `mul_le_mul_of_nonneg_left _ hC6` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem long_cut_num (D : D7) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT : ℝ} (h : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT)
     (C₆ : ℝ) (hC6 : 0 ≤ C₆) (hCl : ClCut C₆ ≤ Cl) :
@@ -168,7 +168,7 @@ theorem long_cut_num (D : D7) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT :
     nlinarith
 
 /- English proof (translation)
-Rewrite using `[cut_len, ntop_eq, hk, hr, hDel]`. Conclude with `long_cut_num D large₂ h C₆ hC6 hCl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem long_cut (D : D7) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT : ℝ} (h : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT)
     (C₆ : ℝ) (hC6 : 0 ≤ C₆) (hCl : ClCut C₆ ≤ Cl)
@@ -205,17 +205,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem gridsOK_iff (S : C.HidaSetting E Wp Wq) :
     C.GridsOK S ↔ ∀ v, GridsAt (S.G.place (S.pl v)) S.l S.Ntop (S.grid v) (S.grid1 v) := Iff.rfl
 
 /- English proof (translation)
-Set `bad : Finset ℝ` to `(Finset.Icc 1 (c.k + c.m - 1)).image (fun s => -c.lam s) ∪ (Finset.Icc 1 (c.k + c.m - 1)).image (fun s => -c.lam s - 1)`. Take `⟨y, hy, hyb⟩` from `(Set.Icc_infinite h).exists_notMem_finset bad`. Use `⟨y, hy.1, hy.2, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Unfold `Cfg.P at h0`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Take `⟨s, hs, hs0⟩` from `Finset.prod_eq_zero_iff.mp h0`. Conclude with `hyb (Finset.mem_union_left _ (Finset.mem_image.mpr ⟨s, hs, by linarith⟩))`. Introduce `h0`. Unfold `Cfg.P at h0`. Take `⟨s, hs, hs0⟩` from `Finset.prod_eq_zero_iff.mp h0`.
-
-Conclude with `hyb (Finset.mem_union_right _ (Finset.mem_image.mpr ⟨s, hs, by linarith⟩))`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_good (c : Cfg) {A B : ℝ} (h : A < B) :
     ∃ y, A ≤ y ∧ y ≤ B ∧ c.P y ≠ 0 ∧ c.P (y + 1) ≠ 0 := by
@@ -237,7 +235,7 @@ def pickIn (c : Cfg) (A B : ℝ) : ℝ :=
   Classical.epsilon (fun y => A ≤ y ∧ y ≤ B ∧ c.P y ≠ 0 ∧ c.P (y + 1) ≠ 0)
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec (exists_good c h)`.
+A detailed English derivation is pending.
 -/
 theorem pickIn_spec (c : Cfg) {A B : ℝ} (h : A < B) :
     A ≤ pickIn c A B ∧ pickIn c A B ≤ B ∧ c.P (pickIn c A B) ≠ 0 ∧ c.P (pickIn c A B + 1) ≠ 0 :=
@@ -255,7 +253,7 @@ def node1 (c : Cfg) (l N j : ℕ) : ℝ :=
 def grid1Of (c : Cfg) (l N : ℕ) : Finset ℝ := (Finset.range N).image (node1 c l N)
 
 /- English proof (translation)
-The claim follows from `pickIn_spec c (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem first_level_node_spec (c : Cfg) (l N j : ℕ) :
     5 / 2 - c.v l + (j : ℝ) * (N : ℝ) ^ 2 ≤ node1 c l N j ∧
@@ -264,7 +262,7 @@ theorem first_level_node_spec (c : Cfg) (l N j : ℕ) :
   pickIn_spec c (by linarith)
 
 /- English proof (translation)
-Establish `h1` using `first_level_node_spec c l N j`. Establish `h2` using `first_level_node_spec c l N j'`. Establish `hj : (j : ℝ) + 1 ≤ j'` using `by exact_mod_cast h`. Establish `hN : 0 ≤ (N : ℝ) ^ 2` using `by positivity`. Use polynomial arithmetic with `[h1.2.1, h2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem first_level_nodes_separated (c : Cfg) (l N : ℕ) {j j' : ℕ} (h : j < j') :
     (N : ℝ) ^ 2 - 1 / 2 ≤ node1 c l N j' - node1 c l N j := by
@@ -275,49 +273,47 @@ theorem first_level_nodes_separated (c : Cfg) (l N : ℕ) {j j' : ℕ} (h : j < 
   nlinarith [h1.2.1, h2.1]
 
 /- English proof (translation)
-Establish `hN' : (2 : ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `hN0 : (0 : ℝ) < N` using `by linarith`. Use `set α : ℝ := 5 / 2 - c.v l with hα`. Use `set β : ℝ := c.Del / 2 - c.v l with hβ`. Establish `hlenab : β - α = c.Del / 2 - 5 / 2` using `by rw [hα, hβ]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set q : ℝ := (β - α) / (6 * N) with hq`. Establish `hq6 : β - α = 6 * N * q` using `by rw [hq]; field_simp`. Establish `hq1 : (N : ℝ) ^ 2 + 1 ≤ q`. Rewrite using `[hq, le_div_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq2 : (1 : ℝ) < q` using `by nlinarith`. Establish `hgL : ∀ a : ℕ, C.gridL α β N a = α + 2 * N * q + (2 * (a : ℝ) - 2) * q`. Introduce `a`. Unfold `C.gridL`. Rewrite using `[← hq, hq6]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hgrid : ∀ a, ∀ y ∈ gridOf c l N a, 1 ≤ a ∧ a ≤ N ∧ C.gridL α β N a ≤ y ∧ y ≤ C.gridL α β N a + q - 1`. Introduce `a y hy`. Unfold `gridOf at hy`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Use `split_ifs at hy with ha`. Rewrite `hy` using `[Finset.mem_singleton]`. Substitute `hy` using the available equality. Use `pickIn_spec c (A := C.gridL α β N a) (B := C.gridL α β N a + q - 1) (by linarith [hq2])` as an intermediate fact. Conclude with `⟨ha.1, ha.2, this.1, this.2.1⟩`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Simplify using `at hy`. Establish `hgridP : ∀ a, ∀ y ∈ gridOf c l N a, c.P y ≠ 0 ∧ c.P (y + 1) ≠ 0`. Introduce `a y hy`. Unfold `gridOf at hy`. Use `split_ifs at hy with ha`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Rewrite `hy` using `[Finset.mem_singleton]`. Substitute `hy` using the available equality. Use `pickIn_spec c (A := C.gridL α β N a) (B := C.gridL α β N a + q - 1) (by linarith [hq2])` as an intermediate fact. Conclude with `⟨this.2.2.1, this.2.2.2⟩`. Simplify using `at hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hgridB : ∀ a, ∀ y ∈ gridOf c l N a, α + 2 * N * q ≤ y ∧ y + 1 ≤ α + 4 * N * q`. Introduce `a y hy`. Take `⟨ha1, haN, hlo, hhi⟩` from `hgrid a y hy`. Rewrite `hlo`, `hhi` using `[hgL]`. Establish `ha1' : (1 : ℝ) ≤ a` using `by exact_mod_cast ha1`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `haN' : (a : ℝ) ≤ N` using `by exact_mod_cast haN`. Establish `hq0 : 0 ≤ q` using `by nlinarith`. Apply the tactic sequence `constructor <;> nlinarith`. Establish `hg1 : ∀ y ∈ grid1Of c l N, α ≤ y ∧ y + 1 ≤ α + (N : ℝ) ^ 3 - 5 / 2 ∧ c.P y ≠ 0 ∧ c.P (y + 1) ≠ 0`. Introduce `y hy`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `grid1Of at hy`. Take `⟨j, hj, rfl⟩` from `Finset.mem_image.mp hy`. Establish `hs` using `first_level_node_spec c l N j`. Establish `hjN : (j : ℝ) + 1 ≤ N`. Use `Finset.mem_range.mp hj` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `this` after adjusting the coercions. Establish `hj0 : (0 : ℝ) ≤ j` using `by positivity`. Use `⟨by nlinarith [hs.1], ?_, hs.2.2.1, hs.2.2.2⟩` and prove the remaining obligations. Establish `: (j : ℝ) * (N : ℝ) ^ 2 ≤ ((N : ℝ) - 1) * (N : ℝ) ^ 2`. Apply `mul_le_mul_of_nonneg_right (by linarith) (by positivity)` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[hs.2.1]`. Establish `hlen' : 6 * (N : ℝ) ^ 3 + 6 * N ≤ 6 * N * q` using `by rw [← hq6, hlenab]; exact hlen`. Establish `hq3 : (N : ℝ) ^ 2 + 1 ≤ q` using `hq1`. Establish `hqpos : 0 < q` using `by nlinarith`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hlenab]`. Conclude with `hlen`. Introduce `a y hy`. Conclude with `hgrid a y hy`. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, -, -⟩` from `hg1 y hy`. Simplify using `only [Cfg.cutIntervalLong, Set.mem_ofPred_eq]`. Rewrite `h1`, `h2` using `[hα]`. Use `⟨⟨by linarith, by linarith⟩, by linarith, by linarith⟩` and prove the remaining obligations. Introduce `y hy y' hy' hne e he e' he'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Unfold `grid1Of at hy hy'`. Take `⟨j, -, rfl⟩` from `Finset.mem_image.mp hy`. Take `⟨j', -, rfl⟩` from `Finset.mem_image.mp hy'`. Establish `hjj : j ≠ j'` using `fun h => hne (by rw [h])`. Establish `he1 : e = 0 ∨ e = 1` using `by simpa using he`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he1' : e' = 0 ∨ e' = 1` using `by simpa using he'`. Establish `hN8 : (N : ℝ) ^ 2 / 8 + 1 ≤ (N : ℝ) ^ 2 - 1 / 2` using `by nlinarith`. Break down `Nat.lt_or_gt_of_ne hjj with h | h` into its components or cases. Use `first_level_nodes_separated c l N h` as an intermediate fact. Rewrite using `[abs_sub_comm]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `rcases he1 with rfl | rfl <;> rcases he1' with rfl | rfl <;>`. Rewrite using `[abs_of_nonneg (by linarith)]; linarith`. Use `first_level_nodes_separated c l N h` as an intermediate fact. Apply the tactic sequence `rcases he1 with rfl | rfl <;> rcases he1' with rfl | rfl <;>`. Rewrite using `[abs_of_nonneg (by linarith)]; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy a y' hy' e he e' he'`. Take `⟨h1, h2, -, -⟩` from `hg1 y hy`. Take `⟨h3, -⟩` from `hgridB a y' hy'`. Establish `he1 : e = 0 ∨ e = 1` using `by simpa using he`. Establish `he1' : e' = 0 ∨ e' = 1` using `by simpa using he'`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hN3 : (N : ℝ) ^ 2 + 1 + 1 ≤ (N : ℝ) ^ 3` using `by nlinarith`. Establish `hgap : (N : ℝ) ^ 3 + 5 / 2 ≤ 2 * N * q - (N : ℝ) ^ 3` using `by nlinarith`. Rewrite using `[abs_sub_comm]`. Apply the tactic sequence `rcases he1 with rfl | rfl <;> rcases he1' with rfl | rfl <;>`. Rewrite using `[abs_of_nonneg (by linarith)]; linarith`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `y hy`. Establish `hβq : β = α + 6 * N * q` using `by linarith`. Simplify using `only [Cfg.cutI, Set.mem_ofPred_eq]`. Break down `hy with ⟨a, ha⟩ | hy` into its components or cases. Take `⟨h1, h2⟩` from `hgridB a y ha`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hP1, hP2⟩` from `hgridP a y ha`. Rewrite `h1`, `h2` using `[hα]`. Rewrite `hβq` using `[hβ]`. Use `⟨⟨by linarith, by nlinarith⟩, ⟨by linarith, by nlinarith⟩, hP1, hP2⟩` and prove the remaining obligations. Take `⟨h1, h2, hP1, hP2⟩` from `hg1 y hy`.
-
-Establish `hN6 : (N : ℝ) ^ 3 ≤ 6 * N * q` using `by nlinarith`. Rewrite `h1`, `h2` using `[hα]`. Rewrite `hβq` using `[hβ]`. Use `⟨⟨by linarith, by linarith⟩, ⟨by linarith, by linarith⟩, hP1, hP2⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gridsAt_of (c : Cfg) (l N : ℕ) (hN : 2 ≤ N) (hlen : 6 * (N : ℝ) ^ 3 + 6 * N ≤ c.Del / 2 - 5 / 2) :
     GridsAt c l N (gridOf c l N) (grid1Of c l N) := by
@@ -435,11 +431,11 @@ theorem gridsAt_of (c : Cfg) (l N : ℕ) (hN : 2 ≤ N) (hlen : 6 * (N : ℝ) ^ 
       refine ⟨⟨by linarith, by linarith⟩, ⟨by linarith, by linarith⟩, hP1, hP2⟩
 
 /- English proof (translation)
-Use `⟨?_, fun a h1 h2 => by simp [gridOf, h1, h2]⟩` and prove the remaining obligations. Unfold `grid1Of`. Rewrite using `[Finset.card_image_of_injective _ ?_, Finset.card_range]`. Introduce `j j' h`. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hN' : (1 : ℝ) ≤ N` using `by exact_mod_cast hN`. Break down `Nat.lt_or_gt_of_ne hne with hl | hl` into its components or cases. Use `first_level_nodes_separated c l N hl` as an intermediate fact. Rewrite `this` using `[h]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `first_level_nodes_separated c l N hl` as an intermediate fact. Rewrite `this` using `[h]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem grids_card (c : Cfg) (l N : ℕ) (hN : 1 ≤ N) :
     (grid1Of c l N).card = N ∧ ∀ a, 1 ≤ a → a ≤ N → (gridOf c l N a).card = 1 := by
@@ -454,7 +450,7 @@ theorem grids_card (c : Cfg) (l N : ℕ) (hN : 1 ≤ N) :
   · have := first_level_nodes_separated c l N hl; rw [h] at this; nlinarith
 
 /- English proof (translation)
-Rewrite using `[gridsOK_iff]`. Introduce `v`. Rewrite using `[hg, hg1]`. Establish `hN : 2 ≤ S.Ntop` using `by unfold C.HidaSetting.Ntop C.Kst; omega`. Conclude with `gridsAt_of _ _ _ hN hlen`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gridsOK_of (S : C.HidaSetting E Wp Wq) (hlen : 6 * (S.Ntop : ℝ) ^ 3 + 6 * S.Ntop ≤ S.G.Del / 2 - 5 / 2)
     (hg : ∀ v, S.grid v = gridOf (S.G.place (S.pl v)) S.l S.Ntop)
@@ -466,7 +462,7 @@ theorem gridsOK_of (S : C.HidaSetting E Wp Wq) (hlen : 6 * (S.Ntop : ℝ) ^ 3 + 
   exact gridsAt_of _ _ _ hN hlen
 
 /- English proof (translation)
-Use `gridsOK_of S ?_ hg hg1` and prove the remaining obligations. Rewrite using `[ntop_eq, hr, hDel]`. Conclude with `(long_cut_num D large₂ h 0 le_rfl hCl).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gridsOK_hyp (D : D7) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT : ℝ} (h : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT)
     (hCl : ClCut 0 ≤ Cl) [IsCMField D.host.E] {Wp Wq : InfinitePlace D.host.E → Type}
@@ -490,9 +486,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, NormedAddCommGroup (Wq x)] [∀ x, InnerProductSpace ℂ (Wq x)]
 
 /- English proof (translation)
-Establish `hM` using `Formalism.FourierDecayAlt.P.threshold_mono`. Use `⟨fun b v => ?_, fun b s v => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `0 ≤ J.thrS S.G S.CA S.de S.de' S.T S.T' S.l b 1 (S.pl v)`. Conclude with `(hM _ S.G S.CA S.CA S.de S.de' S.T S.T' S.l hCA le_rfl hg hv hI b 1 (S.pl v)).1`. Express the relevant statement in the definitionally equal form `0 ≤ (if b + s ≤ S.G.r + 1 then J.thrS S.G S.CA S.de S.de' S.T S.T' S.l b (s + 1) (S.pl v) else 2 * J.thrP S.G S.CA S.de S.de' S.T S.T' S.l b (S.pl v))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `h` using `hM _ S.G S.CA S.CA S.de S.de' S.T S.T' S.l hCA le_rfl hg hv hI b (s + 1) (S.pl v)`. Use `split_ifs`. Conclude with `h.1`. Combine the linear relations using `[h.2.2.1]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem thr_nonneg (S : C.HidaSetting E Wp Wq) (hCA : 0 ≤ S.CA) (hg : 0 < S.G.g) (hv : 0 < S.G.v) (hI : 0 < S.G.lenI) :
     (∀ b v, 0 ≤ S.base.szD b v) ∧ (∀ b s v, 0 ≤ S.base.szL b s v) := by
@@ -508,14 +504,14 @@ theorem thr_nonneg (S : C.HidaSetting E Wp Wq) (hCA : 0 ≤ S.CA) (hg : 0 < S.G.
     · linarith [h.2.2.1]
 
 /- English proof (translation)
-Introduce `i _ _ v` and use `⟨(thr_nonneg S hCA hg hv hI).1 i v, le_rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem thresholdsWave_self (S : C.HidaSetting E Wp Wq) (hCA : 0 ≤ S.CA) (hg : 0 < S.G.g) (hv : 0 < S.G.v)
     (hI : 0 < S.G.lenI) : JC.HidaCurvatureBarriers S (fun i v => S.base.szD i v) :=
   fun i _ _ v => ⟨(thr_nonneg S hCA hg hv hI).1 i v, le_rfl⟩
 
 /- English proof (translation)
-Establish `h` using `(thr_nonneg S hCA hg hv hI).2`. Use `⟨fun b s _ _ _ v => ⟨h b s v, le_rfl⟩, fun s _ _ v => ⟨by linarith [h (S.G.r + 2 - s) s v], by ring_nf; rfl⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem thresholdsLift_self (S : C.HidaSetting E Wp Wq) (hCA : 0 ≤ S.CA) (hg : 0 < S.G.g) (hv : 0 < S.G.v)
     (hI : 0 < S.G.lenI) :
@@ -524,11 +520,11 @@ theorem thresholdsLift_self (S : C.HidaSetting E Wp Wq) (hCA : 0 ≤ S.CA) (hg :
   refine ⟨fun b s _ _ _ v => ⟨h b s v, le_rfl⟩, fun s _ _ v => ⟨by linarith [h (S.G.r + 2 - s) s v], by ring_nf; rfl⟩⟩
 
 /- English proof (translation)
-Establish `hc` using `(long_cut_num D large₂ h 0 le_rfl hCl).1`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hv1, -⟩` from `h`. Establish `hp` using `g_pos D`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `Sz.Glob.g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[hg1, hg2]`. Conclude with `mul_pos (by exact_mod_cast hp.1) (by exact_mod_cast hp.2)`. Rewrite using `[hv]`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `Sz.Glob.lenI`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hDel]`. Establish `: (0 : ℝ) < 6 * (20 * ((D.R.rS : ℝ) + 1)) ^ 3 + 6 * (20 * ((D.R.rS : ℝ) + 1))` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem glob_pos (D : D7) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT : ℝ} (h : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT)
     (hCl : ClCut 0 ≤ Cl) (S : C.HidaSetting E Wp Wq) (hr : S.G.r = D.R.rS) (hDel : S.G.Del = (D.s.Del : ℝ))
@@ -548,7 +544,7 @@ theorem glob_pos (D : D7) (large₂ : SizeData₂ D) {C' Cl Cg cb Cu cT CT : ℝ
     linarith
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h1, by omega⟩`.
+Supply the required witnesses or components.
 -/
 theorem position_bounds {k l : ℕ} (h1 : 1 ≤ l) (h2 : l + 2 ≤ k) : 1 ≤ l ∧ l ≤ k := ⟨h1, by omega⟩
 

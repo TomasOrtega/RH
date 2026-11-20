@@ -14,21 +14,19 @@ noncomputable section
 namespace GlobalTheory.OppositeEdges
 
 /- English proof (translation)
-Introduce `hj κ hκ`. Use `set g : Γ.VertexGroup := Pi.mulSingle (j + 1, Γ.m) κ with hg`. Establish `hap : ∀ z, apow (1 : kˣ) z = 1` using `fun z => apow_of_valuation_eq_one (by simp) z`. Establish `hK : ∀ Y, g Y ∈ GlobalTheory.SplitWeil.KO k _`. Introduce `Y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hY : Y = (j + 1, Γ.m)`. Substitute `hY` using the available equality. Simplify `hκ` using `[hg]`. Rewrite using `[hg, Pi.mulSingle_eq_of_ne hY]`. Conclude with `one_mem _`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : ∀ Y, ∀ z : ℂ, apow (gdet (Assignment.one.read (g Y))) z = 1` using `fun Y z => apow_of_valuation_eq_one (valuation_gdet_of_mem_KO (Assignment.one.read_mem_KO (hK Y))) z`. Establish `hfar : ∀ b : Edge, b.src ≠ (j + 1, Γ.m) → b.tgt ≠ (j + 1, Γ.m) → Γ.edgeFactor .one g b = 1`. Introduce `b h1 h2`. Simplify using `[Grid.edgeFactor, hg, Pi.mulSingle_eq_of_ne h1, Pi.mulSingle_eq_of_ne h2, hap]`. Establish `htheta : (((List.range Γ.m).reverse.map (Edge.theta Γ.m)).map (Γ.edgeFactor .one g)).prod = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `List.prod_eq_one fun c hc => ?_` and prove the remaining obligations. Take `⟨b, hb, rfl⟩` from `List.mem_map.1 hc`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hb`. Apply the tactic sequence `apply hfar <;> simp [Edge.src, Edge.tgt] <;> omega`. Establish `hex : (((List.range Γ.m).map (Edge.ex · Γ.m)).map (Γ.edgeFactor .one g)).prod = ∏ i ∈ Finset.range Γ.m, Γ.edgeFactor .one g (.ex i Γ.m)`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[List.map_map, Finset.prod_eq_multiset_prod]`. Both sides reduce to the same expression. Establish `hne : j ≠ j + 1` using `by omega`. Establish `hrest : ∀ i ∈ Finset.range Γ.m, i ≠ j ∧ i ≠ j + 1 → Γ.edgeFactor .one g (.ex i Γ.m) = 1`. Introduce `i _ hi`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `apply hfar <;> simp [Edge.src, Edge.tgt] <;> omega`. Rewrite using `[oppositePath, List.map_append, List.prod_append, htheta, mul_one, hex, Finset.prod_eq_mul j (j + 1) hne hrest (by simp; omega) (by simp; omega)]`. Establish `hκa : ∀ z : ℂ, apow (gdet (Assignment.one.read κ)) z = 1` using `fun z => apow_of_valuation_eq_one (valuation_gdet_of_mem_KO (Assignment.one.read_mem_KO hκ)) z`. Establish `hj1 : (j + 1 + 1, Γ.m) ≠ (j + 1, Γ.m)` using `by simp`. Establish `hj0 : (j, Γ.m) ≠ (j + 1, Γ.m)` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Grid.edgeFactor, Edge.src, Edge.tgt, ha, mul_one, hg, Pi.mulSingle_eq_of_ne hj1, Pi.mulSingle_eq_of_ne hj0, Pi.mulSingle_eq_same, hκa, map_one, hap, Units.val_one, inv_one, one_mul]`. Simplify using `only [Grid.kappa, Grid.blockChar, MonoidHom.div_apply, Units.val_div_eq_div_val, Units.val_inv_eq_inv_val, Nat.add_sub_cancel]`. Establish `h1` using `Units.ne_zero (Γ.chi (Γ.m - (j + 1)) (gdet κ))`. Establish `h2` using `Units.ne_zero (Γ.chi (Γ.m - j) (gdet κ))`. Establish `h3` using `Units.ne_zero ((Γ.eta ^ ((Γ.rank (j + 1, Γ.m) + 1) % 2)) (gdet κ))`.
-
-Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem oppositePath_prod_mulSingle {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (Γ : Grid k) (j : ℕ) :

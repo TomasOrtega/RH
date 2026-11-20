@@ -8,7 +8,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.LieVB
 
 /- English proof (translation)
-Introduce `O _ V hV`. Establish `H : IsPullback (spMap (algebraMap O (DualNumber O))) (𝟙 _) (𝟙 _) (spMap (algebraMap O (DualNumber O)))` using `IsPullback.of_vert_isIso ⟨by simp⟩`. Establish `h` using `GlobalTheory.EpsThick.comb_bijective_of_isAffineOpen H hV`. Use `Eq.mpr (congrArg Function.Bijective (funext fun ab => ?_)) h` and prove the remaining obligations. Rewrite using `[Scheme.Hom.appLE_eq_app, _root_.mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

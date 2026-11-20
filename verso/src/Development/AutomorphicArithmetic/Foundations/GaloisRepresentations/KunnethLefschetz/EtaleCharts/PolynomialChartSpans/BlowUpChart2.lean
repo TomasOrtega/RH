@@ -6,13 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry UpperTheory.Gal.DifferentialFormSec
 namespace UpperTheory.Gal.KunnethLefschetz.G
 
 /- English proof (translation)
-Introduce `R _ Z W _ π hπ D c`. Use `set φ := MvPolynomial.eval₂Hom (secMap (p1 Z) c.h1).toRingHom c.s with hφ`. Establish `hs : (fun k => φ (MvPolynomial.X k)) = c.s`. Use function extensionality and compare the values at `k`. Simplify using `[hφ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hflat : φ.Flat`. Establish `he` using `dCoord R Z D c`. Use `algebraize [φ]`. Conclude with `Algebra.Smooth.flat _ _`. Use `haveI : QuasiCompact (Over.Hom.left (dg Z)) := by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `QuasiCompact (pullback.diagonal (Over.hom Z))`. Use `infer_instance`. Establish `hI : (Scheme.Hom.ker (Over.Hom.left (dg Z))).ideal ⟨c.N, c.aff⟩ = Ideal.span (Set.range fun k => φ (MvPolynomial.X k))`. Rewrite using `[Scheme.Hom.ker_apply, hs, Scheme.Hom.app_eq_appLE]`. Conclude with `c.ker`.
-
-Establish `key` using `bChartEx R π _ hπ ⟨c.N, c.aff⟩ D (Sec Z c.U) φ hflat hI`. Rewrite `key` using `[hs]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blChart : BlowUpChart₂ := by
   intro R _ Z W _ π hπ D c

@@ -14,11 +14,11 @@ open GlobalTheory.Poinc GlobalTheory.Poinc.Sep
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `n hn hodd j hj V₁ _ _ _ hV hunit D X C _ e u mo hmo hT K _ _ ev ρ₀ hρ₀ th hth`. Establish `hn3 : 3 ≤ n`. Establish `h2` using `hn.two_le`. Break down `hodd with ⟨k, rfl⟩` into its components or cases. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers.
 
-Establish `hm3 : 3 ≤ n ^ j` using `le_trans hn3 (Nat.le_self_pow (by omega) n)`. Establish `hmu : IsUnit ((n ^ j : ℕ) : V₁)` using `by push_cast; exact hunit.pow j`. Take `⟨M, lam, hM, H⟩` from `GlobalTheory.T.theta_terms_separation_algebraically_closed (n ^ j) (hodd.pow) hm3 V₁ hV hmu D X C e u mo hmo hT K ev ρ₀ hρ₀ th hth`. Use `⟨M, lam, hM, fun y c hc => ?_⟩` and prove the remaining obligations. Use `haveI : IsNoetherianRing V₁ := hV.1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, hτ, hv⟩` from `GlobalTheory.T.exists_torsionFrame_isValueAt_thetaConstant (Sp V₁) D.P ρ₀ hρ₀ (n ^ j) (hodd.pow) _ th y _ hc`. Conclude with `H (y ^ n ^ j) τ c (GlobalTheory.USep.isTorsFrame_sq _ D.P ρ₀ (n ^ j) _ (y ^ n ^ j) τ hτ) hv`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.USep.thetaConst_eq_lam_root_mul_unit : ∀ (n : ℕ), n.Prime → Odd n → ∀ j : ℕ, 1 ≤ j → ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] [IsLocalRing V₁], IsCN V₁ → IsUnit (n : V₁) →
   ∀ (D : DegPre V₁) (X C : Type) [AddCommGroup X] (e : X ≃+ D.X) (u : X → C → V₁) (mo : X → V₁),

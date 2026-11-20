@@ -18,25 +18,23 @@ end GlobalTheory.BotTransJet
 namespace GlobalTheory.BotTransJet
 open GlobalTheory.Grid (neg)
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X hP hI hL hX dg`. Establish `hIs` using `hX.is`. Establish `hψ : IsStdChar D W.ψ (-1)` using `hIs.isVac.1`. Establish `hθ : IsInfFam W.θ` using `hIs.isVac.2.inf`. Use `set f : WO A WW → ℂ := fun w => starRingEnd ℂ (X.vac w) with hfdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf0 : IsVacO W.ψ W.θ A WW X.rA.s X.rW.s X.rA.Λ X.rW.Λ f` using `GlobalTheory.VacConj.isVacO_conj_negSp W.ψ W.θ A WW X.rA.s X.rW.s _ _ X.vac hIs.isVac`. Establish `hf : IsVacO W.ψ W.θ A WW X.rA.s X.rW.s (colLat (1 : GL (Fin A.rank) D.host.E) : Set _) (colLat (1 : GL (Fin WW.rank) D.host.E) : Set _) f`. Rewrite using `[← std_eq_colLat_one X.rA.Λ hX.std.2.1, ← std_eq_colLat_one X.rW.Λ hX.stdW.2.1]`. Conclude with `hf0`. Establish `hS : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (1 : GL (Fin A.rank) D.host.E).1 * A.gram * (1 : GL (Fin A.rank) D.host.E).1 = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hX.std.1]`. Simplify using `[Formalism.UG.cT]`. Establish `hW : Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (1 : GL (Fin WW.rank) D.host.E).1 * WW.gram * (1 : GL (Fin WW.rank) D.host.E).1 = 1`. Rewrite using `[hX.stdW.1]`. Simplify using `[Formalism.UG.cT]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcA : ∀ τ, IsCartanInv (gramAt D A τ) (X.rA.s τ)` using `fun τ => (hIs.rigA.2.2 τ).1`. Establish `hcW : ∀ τ, IsCartanInv (gramAt D WW τ) (X.rW.s τ)` using `fun τ => (hIs.rigW.2.2 τ).1`. Establish `hBA : (fun τ => (1 : GL (Fin A.rank) D.host.E).1.map (tauE D τ)) = X.rA.B`. Use function extensionality and compare the values at `τ`. Rewrite using `[(hX.std.2.2 τ).2]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hBW : (fun τ => (1 : GL (Fin WW.rank) D.host.E).1.map (tauE D τ)) = X.rW.B`. Use function extensionality and compare the values at `τ`. Rewrite using `[(hX.stdW.2.2 τ).2]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hC, hδ⟩` from `GlobalTheory.FunObj.exists_delta D`. Take `⟨t0, ht0⟩` from `((hI D).t0Ex D.host.ccK δ hC).1`. Establish `hev : Even (A.rank * WW.rank)` using `even_bot hX`. Take `⟨e0, he0, -⟩` from `GlobalTheory.Vacuum.exists_vacuum D D.host.ccK δ hC t0 ht0 A.rank WW.rank hev`. Take `⟨c, hc⟩` from `GlobalTheory.FockPos.fock_jets_eq_unit_mul_period_jets W.ψ W.θ A WW X.rA.s X.rW.s 1 1 hS hW hcA hcW δ t0 hC hδ ht0 e0 he0 f hf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hΩ : starRingEnd ℂ ((c : ℂ) * dg.prod fun τ n => GlobalTheory.FunObj.period δ τ ^ n) ≠ 0` using `(map_ne_zero _).2 (mul_ne_zero c.ne_zero (Finsupp.prod_ne_zero_iff.2 fun τ _ => pow_ne_zero _ (GlobalTheory.FunObj.period_ne_zero hδ τ)))`. Use `⟨_, hΩ, fun u hu k hk => ?_⟩` and prove the remaining obligations. Take `⟨m, a, s, ha, hs, hjet⟩` from `_root_.GlobalTheory.T.finite_translate_jets_fock hP hI W.ψ W.θ A WW X.rA.s X.rW.s 1 1 hS hW hcA hcW δ t0 hC hδ ht0 e0 he0 f hf c (fun k => hc k) u hu`. Establish `hconj` using `jet_negSp_heis W.ψ W.θ hψ hθ A WW X.rA.s X.rW.s X.rA.B X.rW.B X.vac u k`. Establish `hprod : (k.prod fun v n => GlobalTheory.FunObj.period δ v.1 ^ n) = dg.prod fun τ n => GlobalTheory.FunObj.period δ τ ^ n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hk, Finsupp.prod_mapDomain_index (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)]`. Establish `hcoef : TaylorLogMetric.CoefIn D (StandardLatticesGL3.comb D (TaylorLogMetric.tor0 D D.host.ccK δ) a s e0) TaylorLogMetric.Qbar` using `((hI D).alg D.host.ccK δ hC t0 ht0 A.rank WW.rank (StandardLatticesGL3.stdL D A.rank) (StandardLatticesGL3.stdL D WW.rank) (GlobalTheory.MovedVacuum.sd_stdL D _) (GlobalTheory.MovedVacuum.sd_stdL D _) hev e0 he0.2.2.2.1).2.2.1 m a s (fun l => (mem_algebraicClosure_iff).2 (ha l)) …`. Establish `hY : IsAlgebraic ℚ (GL3Theta.applyAt0 D (MvPolynomial.monomial k 1) (StandardLatticesGL3.comb D (TaylorLogMetric.tor0 D D.host.ccK δ) a s e0))`. Use `applyAt0_isAlgebraic (fun α => ?_) hcoef` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_monomial]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `isAlgebraic_one`. Conclude with `isAlgebraic_zero`. Express the relevant statement in the definitionally equal form `IsAlgebraic ℚ (pureTensorO W.ψ W.θ (negSp A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (heisO W.ψ (negSp A) WW u X.vac) (MvPolynomial.monomial k 1) 0 / _)`. Rewrite using `[hconj, ← hBA, ← hBW, hjet k, hprod, show ∀ x y z : ℂ, x * (y * z) = (x * y) * z from fun _ _ _ => (mul_assoc _ _ _).symm, map_mul, mul_div_cancel_left₀ _ hΩ]`.
-
-Conclude with `conj_isAlgebraic hY`.
+A detailed English derivation is pending.
 -/
 theorem isAlgebraic_pureTensorO_div_period : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
@@ -118,7 +116,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.BotTransJet.isAlgebraic_pureTensorO_div_period | exact _root_.GlobalTheory.BotTransJet.isAlgebraic_pureTensorO_div_period | (intros; apply _root_.GlobalTheory.BotTransJet.isAlgebraic_pureTensorO_div_period <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.bottom_translate_jets_algebraic : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

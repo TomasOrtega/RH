@@ -18,13 +18,11 @@ theorem matRep_apply' {l : ℕ} [Fact l.Prime] {K LL : FinExt l} {k : ℕ}
     matRep M g v a = ∑ b, M g a b * v b := rfl
 
 /- English proof (translation)
-Use `LL.2` as an intermediate fact. Use `K.2` as an intermediate fact. Set `φ : Formalism.GaloisCohomology.GK l K.1 →* ↥(GK K)` to `(IntermediateField.fixingSubgroupEquiv K.1).symm.toMonoidHom`. Establish `hφ : Continuous φ` using `(GlobalTheory.fixingSubgroupEquiv_bicontinuous _ _ K.1).2`. Establish `hφs : Function.Surjective φ` using `(IntermediateField.fixingSubgroupEquiv K.1).symm.surjective`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ReciprocityTheory.Gal.ContAction (matRep M)`. Use `continuous_pi fun a => ?_` and prove the remaining obligations. Simplify using `only [matRep_apply']`. Use `continuous_finsetSum _ fun b _ => Continuous.mul ?_ ((continuous_apply b).comp continuous_snd)` and prove the remaining obligations. Conclude with `(hM.comp continuous_fst).matrix_elem a b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hn : ∀ g v, ‖matRep M g v‖ ≤ ‖v‖` using `fun g v => by`. Use `(pi_norm_le_iff_of_nonneg (norm_nonneg v)).2 fun a => ?_` and prove the remaining obligations. Rewrite using `[matRep_apply']`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg v) fun b _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`.
-
-Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (hi g a b)).trans (norm_le_pi_norm v b)`. Conclude with `finite_cocycles_of_compact_cover (l := l) (matRep M) hc hn φ hφ hφs (fun r N _ _ _ _ _ rho hr hrho => (hK l K.1 K.2 r N rho hr hrho).2.1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_continuous_cocycles_matRep (hK : Formalism.GaloisCohomology.LocalFinitenessK) {l : ℕ} [Fact l.Prime] (K LL : FinExt l)
     {k : ℕ} (M : ↥(GK K) →* Matrix (Fin k) (Fin k) ↥LL.1) (hM : Continuous fun g => M g)
@@ -52,7 +50,7 @@ theorem finite_continuous_cocycles_matRep (hK : Formalism.GaloisCohomology.Local
     (fun r N _ _ _ _ _ rho hr hrho => (hK l K.1 K.2 r N rho hr hrho).2.1)
 
 /- English proof (translation)
-Introduce `hK l _ P K LL k M hM hi`. Establish `h1` using `finite_continuous_cocycles_matRep hK K LL M hM hi`. Establish `h2 : Module.Finite ↥LL.1 (finiteCocycles (P.PD K) (matRep M))` using `Module.Finite.of_injective (Submodule.inclusion (fun _ hx => hx.1 : finiteCocycles (P.PD K) (matRep M) ≤ continuousCocycles (matRep M))) (Submodule.inclusion_injective _)`. Conclude with `Module.Finite.quotient _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_H1fV_matRep : Formalism.GaloisCohomology.LocalFinitenessK → ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l)
     (K LL : FinExt l) (k : ℕ) (M : ↥(GK K) →* Matrix (Fin k) (Fin k) ↥LL.1),

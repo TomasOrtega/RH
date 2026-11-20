@@ -11,15 +11,13 @@ open scoped ENNReal TensorProduct
 namespace GlobalTheory.StabFrameCompat
 
 /- English proof (translation)
-Take `⟨N, -, -, hN, -⟩` from `GlobalTheory.UnfoldingCompare.exists_frame_inv hc hx h1 h2`. Use `set X : Matrix (Fin P ⊕ Fin Q) Unit ℂ := replicateCol Unit x with hX`. Establish `e : Y = C * (N * Y).toRows₁ + X * (N * Y).toRows₂`. Rewrite using `[← fromCols_mul_fromRows, fromRows_toRows, ← Matrix.mul_assoc, hN, Matrix.one_mul]`. Use `set U := (N * Y).toRows₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set V := (N * Y).toRows₂`. Use `⟨U, ?_⟩` and prove the remaining obligations. Establish `hV : V = 0`. Establish `h3 : (Yᴴ * Formalism.UG.Jpq P Q) *ᵥ x = Uᴴ *ᵥ ((Cᴴ * Formalism.UG.Jpq P Q) *ᵥ x) + Vᴴ *ᵥ ((Xᴴ * Formalism.UG.Jpq P Q) *ᵥ x)` using `by conv_lhs => rw [e]`. Rewrite using `[conjTranspose_add, conjTranspose_mul, conjTranspose_mul, Matrix.add_mul, add_mulVec, Matrix.mul_assoc, Matrix.mul_assoc, ← mulVec_mulVec, ← mulVec_mulVec x Vᴴ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[hY, h2, mulVec_zero, zero_add]`. Establish `h4 : ((Xᴴ * Formalism.UG.Jpq P Q) *ᵥ x) () = star x ⬝ᵥ Formalism.UG.Jpq P Q *ᵥ x`. Rewrite using `[← mulVec_mulVec]`. Both sides reduce to the same expression. Use extensionality with `u i`.
+Both sides reduce to the same expression. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h5` using `congrFun h3 i`. Rewrite `h5` using `[Pi.zero_apply, mulVec, dotProduct, Fintype.sum_unique]`. Establish `h6 : star (V () i) * (star x ⬝ᵥ Formalism.UG.Jpq P Q *ᵥ x) = 0`. Rewrite using `[← h4]`. Conclude with `h5.symm`.
-
-Break down `mul_eq_zero.1 h6 with h | h` into its components or cases. Simplify using `using h`. Conclude with `absurd h hx`. Rewrite `e` using `[hV, Matrix.mul_zero, add_zero]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor {P Q P' Q' : ℕ} (hc : P' + Q' + 1 = P + Q) {x : Fin P ⊕ Fin Q → ℂ}
     (hx : star x ⬝ᵥ Formalism.UG.Jpq P Q *ᵥ x ≠ 0)
@@ -57,19 +55,17 @@ theorem exists_factor {P Q P' Q' : ℕ} (hc : P' + Q' + 1 = P + Q) {x : Fin P �
   exact e
 
 /- English proof (translation)
-Introduce `P Q P' Q' M M' hc hM G G' B x A hA hB hdet hBx hx j hj`. Take `⟨C, h1, h2, h3⟩` from `hj`. Establish `hY : ((A * B)ᴴ * Formalism.UG.Jpq P Q) *ᵥ (A *ᵥ x) = 0`. Rewrite using `[mulVec_mulVec, conjTranspose_mul, ← hBx, ← hA]`. Simplify using `only [Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨A', hA'⟩` from `exists_factor hc hx h1 h2 (A * B) hY`. Establish `hG : A'ᴴ * Formalism.UG.Jpq P' Q' * A' = G'`. Establish `: (C * A')ᴴ * Formalism.UG.Jpq P Q * (C * A') = G'`. Rewrite using `[← hA', ← hB, ← hA, conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this, ← h1, conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `⟨A', hG, ?_⟩` and prove the remaining obligations. Introduce `g g' t t' hg hgB ht ht'`. Establish `hl : (G'⁻¹ * A'ᴴ * Formalism.UG.Jpq P' Q') * A' = 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Matrix.nonsing_inv_mul G' (Ne.isUnit hdet)` as an intermediate fact. Rewrite using `[← this]`. Use `conv_rhs => arg 2`. Rewrite using `[← hG]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : Fin M' ≃ Fin P' ⊕ Fin Q'` using `(finCongr hM).trans finSumFinEquiv.symm`. Establish `hr : A' * (G'⁻¹ * A'ᴴ * Formalism.UG.Jpq P' Q') = 1` using `(Matrix.mul_eq_one_comm_of_equiv e).1 hl`. Use `GlobalTheory.UnfoldingCompare.eq_of_frame hc hx h1 h2 ?_ ?_` and prove the remaining obligations. Establish `k : UpqT.mat t * C * A' = UpqT.mat (j t') * C * A'`. Rewrite using `[(h3 t').2, Matrix.mul_assoc, Matrix.mul_assoc, ← hA', ht', ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← hA', ht, Matrix.mul_assoc, hgB, Matrix.mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hr, Matrix.mul_one]`. Use `_ = UpqT.mat (j t') * C * (A' * (G'⁻¹ * A'ᴴ * Formalism.UG.Jpq P' Q')) := by`. Rewrite using `[← Matrix.mul_assoc _ A', k, Matrix.mul_assoc _ A']`. Use `_ = _ := by rw [hr, Matrix.mul_one]`.
-
-Rewrite using `[(h3 t').1, mulVec_mulVec, ht, ← mulVec_mulVec, hg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compatible_frame : ∀ (P Q P' Q' M M' : ℕ), P' + Q' + 1 = P + Q → M' = P' + Q' → ∀ (G : Matrix (Fin M) (Fin M) ℂ) (G' : Matrix (Fin M') (Fin M') ℂ) (B : Matrix (Fin M) (Fin M') ℂ) (x : Fin M → ℂ) (A : Matrix (Fin P ⊕ Fin Q) (Fin M) ℂ), Aᴴ * Formalism.UG.Jpq P Q * A = G → Bᴴ * G * B = G' → G'.det ≠ 0 → (Bᴴ * G) *ᵥ x = 0 → star (A *ᵥ x) ⬝ᵥ Formalism.UG.Jpq P Q *ᵥ (A *ᵥ x) ≠ 0 → ∀ j : UpqT P' Q' →* UpqT P Q, IsStabEmb (A *ᵥ x) j → ∃ A' : Matrix (Fin P' ⊕ Fin Q') (Fin M') ℂ, A'ᴴ * Formalism.UG.Jpq P' Q' * A' = G' ∧ ∀ (g : Matrix (Fin M) (Fin M) ℂ) (g' : Matrix (Fin M') (Fin M') ℂ) (t : UpqT P Q) (t' : UpqT P' Q'), g *ᵥ x = x → g * B = B * g' → UpqT.mat t * A = A * g → UpqT.mat t' * A' = A' * g' → t = j t' := by
   intro P Q P' Q' M M' hc hM G G' B x A hA hB hdet hBx hx j hj

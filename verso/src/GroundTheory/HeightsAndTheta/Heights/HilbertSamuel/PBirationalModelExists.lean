@@ -16,14 +16,14 @@ namespace BirationalModelExists
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Introduce `m hm`. Simplify using `at hm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_zero' (a : K → ℕ) : IsMultiHomog (0 : MRing ι) a := by
   intro m hm
   simp at hm
 
 /- English proof (translation)
-Introduce `m hm`. Break down `Finset.mem_union.1 (support_add hm) with h | h` into its components or cases. Use `exacts [hf m h, hg m h]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_add' {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (hg : IsMultiHomog g a) :
     IsMultiHomog (f + g) a := by
@@ -33,7 +33,7 @@ theorem isMultiHomog_add' {f g : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f 
   exacts [hf m h, hg m h]
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite `hm` using `[support_neg]`. Conclude with `hf m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_neg' {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) : IsMultiHomog (-f) a := by
   intro m hm
@@ -41,11 +41,11 @@ theorem isMultiHomog_neg' {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a)
   exact hf m hm
 
 /- English proof (translation)
-Rewrite using `[aeval_def, aeval_def, eval₂_eq', eval₂_eq', Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hprod : ∏ p, (z p * u p.1) ^ m p = (∏ p, z p ^ m p) * ∏ k, u k ^ a k`. Repeatedly rewrite using `[mul_pow, Finset.prod_mul_distrib]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ i, u k ^ m ⟨k, i⟩ = u k ^ a k`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hg m hm k]`. Rewrite using `[hprod]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem aeval_scale {S : Type*} [CommRing S] [Algebra ℤ S] {g : MRing ι} {a : K → ℕ} (hg : IsMultiHomog g a)
     (z : (Σ k, ι k) → S) (u : K → S) :
@@ -63,7 +63,7 @@ theorem aeval_scale {S : Type*} [CommRing S] [Algebra ℤ S] {g : MRing ι} {a :
   ring
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p n hp => simp [hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem hom_aeval {S T : Type*} [CommRing S] [CommRing T] [Algebra ℤ S] [Algebra ℤ T] (φ : S →+* T) (z : (Σ k, ι k) → S) (g : MRing ι) :
     φ (aeval z g) = aeval (fun p => φ (z p)) g := by
@@ -78,7 +78,7 @@ def coordClass (p : Σ k, ι k) : FractionRing (MRing ι ⧸ P) :=
   algebraMap (MRing ι ⧸ P) (FractionRing (MRing ι ⧸ P)) (Ideal.Quotient.mk P (X p))
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p n hp => simp only [map_mul, hp, aeval_X, coordClass]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem aeval_coordClass (g : MRing ι) :
     aeval (coordClass P) g = algebraMap (MRing ι ⧸ P) (FractionRing (MRing ι ⧸ P)) (Ideal.Quotient.mk P g) := by
@@ -88,7 +88,7 @@ theorem aeval_coordClass (g : MRing ι) :
   | mul_X p n hp => simp only [map_mul, hp, aeval_X, coordClass]
 
 /- English proof (translation)
-Rewrite using `[aeval_coordClass, map_eq_zero_iff _ (IsFractionRing.injective (MRing ι ⧸ P) (FractionRing (MRing ι ⧸ P))), Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_coordClass_eq_zero (g : MRing ι) : aeval (coordClass P) g = 0 ↔ g ∈ P := by
   rw [aeval_coordClass, map_eq_zero_iff _ (IsFractionRing.injective (MRing ι ⧸ P) (FractionRing (MRing ι ⧸ P))),
@@ -127,7 +127,7 @@ def fnField : Subfield (FractionRing (MRing ι ⧸ P)) where
 variable {P}
 
 /- English proof (translation)
-Establish `h` using `(aeval_coordClass_eq_zero P (X p)).not.2 hp`. Rewrite `h` using `[aeval_X]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coordClass_ne_zero {p : Σ k, ι k} (hp : (X p : MRing ι) ∉ P) : coordClass P p ≠ 0 := by
   have h := (aeval_coordClass_eq_zero P (X p)).not.2 hp
@@ -148,9 +148,7 @@ theorem coe_birPoint (c : ∀ k, ι k) (hc : ∀ k, (X ⟨k, c k⟩ : MRing ι) 
     (birPoint c hc p : FractionRing (MRing ι ⧸ P)) = coordClass P p / coordClass P ⟨p.1, c p.1⟩ := rfl
 
 /- English proof (translation)
-Establish `h` using `hom_aeval (fnField P).subtype (birPoint c hc) g`. Establish `hf : (fun p => (fnField P).subtype (birPoint c hc p)) = fun p => coordClass P p * (fun k => (coordClass P ⟨k, c k⟩)⁻¹) p.1`. Use function extensionality and compare the values at `p`. Conclude with `div_eq_mul_inv _ _`. Rewrite `h` using `[hf]`.
-
-Conclude with `h.trans (aeval_scale hg (coordClass P) fun k => (coordClass P ⟨k, c k⟩)⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_aeval_birPoint (c : ∀ k, ι k) (hc : ∀ k, (X ⟨k, c k⟩ : MRing ι) ∉ P) {g : MRing ι} {a : K → ℕ}
     (hg : IsMultiHomog g a) :
@@ -165,16 +163,16 @@ theorem coe_aeval_birPoint (c : ∀ k, ι k) (hc : ∀ k, (X ⟨k, c k⟩ : MRin
   exact h.trans (aeval_scale hg (coordClass P) fun k => (coordClass P ⟨k, c k⟩)⁻¹)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (inv_ne_zero (coordClass_ne_zero (hc k)))`.
+A detailed English derivation is pending.
 -/
 theorem prod_inv_ne_zero (c : ∀ k, ι k) (hc : ∀ k, (X ⟨k, c k⟩ : MRing ι) ∉ P) (a : K → ℕ) :
     ∏ k, (coordClass P ⟨k, c k⟩)⁻¹ ^ a k ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (inv_ne_zero (coordClass_ne_zero (hc k)))
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `e1` using `map_intCast (eval₂Hom (fnField P).subtype (fun k => coordClass P ⟨k, c k⟩)) a`. Simplify using `only [coe_eval₂Hom] at e1`. Simplify `e1` using `[mConeMap]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `add p q hp hq => simp only [map_add, eval₂_add, hp, hq]`. Consider the case `mul_X p n hp`. Establish `hX : mConeMap (birPoint c hc) (X n) = C (birPoint c hc n) * X n.1` using `by simp [mConeMap]`. Establish `e : (fnField P).subtype (birPoint c hc n) * coordClass P ⟨n.1, c n.1⟩ = coordClass P n` using `div_mul_cancel₀ _ (coordClass_ne_zero (hc n.1))`. Rewrite using `[map_mul, eval₂_mul, hp, hX, eval₂_mul, eval₂_C, eval₂_X, map_mul, aeval_X, e]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_mConeMap_birPoint (c : ∀ k, ι k) (hc : ∀ k, (X ⟨k, c k⟩ : MRing ι) ∉ P) (f : MRing ι) :
     eval₂ (fnField P).subtype (fun k => coordClass P ⟨k, c k⟩) (mConeMap (birPoint c hc) f) =
@@ -192,13 +190,13 @@ theorem eval_mConeMap_birPoint (c : ∀ k, ι k) (hc : ∀ k, (X ⟨k, c k⟩ : 
     rw [map_mul, eval₂_mul, hp, hX, eval₂_mul, eval₂_C, eval₂_X, map_mul, aeval_X, e]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`. Rewrite `hf` using `[mCoordIdeal, RingHom.mem_ker]`. Establish `h` using `eval_mConeMap_birPoint c hc f`. Rewrite `h` using `[hf, eval₂_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(aeval_coordClass_eq_zero P f).1 h.symm`. Take `⟨S, hS, rfl⟩` from `hP`. Rewrite using `[Ideal.span_le]`. Introduce `g hgS`. Take `⟨a, ha⟩` from `hS g hgS`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgP : aeval (coordClass (Ideal.span S)) g = 0` using `(aeval_coordClass_eq_zero _ g).2 (Ideal.subset_span hgS)`. Establish `hy : aeval (birPoint c hc) g = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_aeval_birPoint c hc ha, hgP, zero_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `show g ∈ RingHom.ker (mConeMap (birPoint c hc))`. Rewrite using `[RingHom.mem_ker]`. Use `show aeval (fun p => C (birPoint c hc p) * X p.1) g = 0`. Use `(aeval_scale ha (fun p => C (birPoint c hc p)) X).trans ?_` and prove the remaining obligations. Rewrite using `[← hom_aeval C, hy, map_zero, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mCoordIdeal_birPoint (hP : IsMultiHomogIdeal P) (c : ∀ k, ι k)
     (hc : ∀ k, (X ⟨k, c k⟩ : MRing ι) ∉ P) : mCoordIdeal (birPoint c hc) = P := by
@@ -225,9 +223,9 @@ theorem mCoordIdeal_birPoint (hP : IsMultiHomogIdeal P) (c : ∀ k, ι k)
     rw [← hom_aeval C, hy, map_zero, zero_mul]
 
 /- English proof (translation)
-Introduce and unpack `⟨s, d, g, h, hg, hh, h0, hs⟩`. Use `⟨d, g, h, hg, hh, ?_, ?_⟩` and prove the remaining obligations. Introduce `h'`. Use `congrArg (fun t : fnField P => (t : FractionRing (MRing ι ⧸ P))) h'` as an intermediate fact. Simplify using `only [coe_aeval_birPoint c hc hh, ZeroMemClass.coe_zero] at this`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mul_ne_zero h0 (prod_inv_ne_zero c hc d) this`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subfield.coe_mul, coe_aeval_birPoint c hc hg, coe_aeval_birPoint c hc hh]`. Use `show _ = s * _`. Rewrite using `[hs, mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem birational_birPoint (c : ∀ k, ι k) (hc : ∀ k, (X ⟨k, c k⟩ : MRing ι) ∉ P) :
     Birational (birPoint c hc) := by
@@ -245,7 +243,7 @@ theorem birational_birPoint (c : ∀ k, ι k) (hc : ∀ k, (X ⟨k, c k⟩ : MRi
 end BirationalModelExists
 
 /- English proof (translation)
-Introduce `K _ ι _ P d hP`. Take `⟨_, ⟨hprime, hhom, hrel⟩, _, _⟩` from `hP`. Use `choose c hc using hrel`. Use `hprime` as an intermediate fact. Conclude with `⟨BirationalModelExists.fnField P, inferInstance, BirationalModelExists.birPoint c hc, BirationalModelExists.mCoordIdeal_birPoint hhom c hc, BirationalModelExists.birational_birPoint c hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem BirationalModelExists.proof : BirationalModelExists.Statement := by
   intro K _ ι _ P d hP

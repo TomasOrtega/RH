@@ -17,7 +17,7 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections MonObj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Establish `h (i) : GlobalTheory.LieMet.tanOf (hv i) = ∑ b, d i b • GlobalTheory.LieMet.tanOf (hu b)` using `(GlobalTheory.LieMet.isComb_iff (fun b => GlobalTheory.LieMet.tanOf (hu b)) _ (GlobalTheory.LieMet.tanOf (hv i))).1 (hd i)`. Use `⟨_, (GlobalTheory.LieMet.isComb_iff (fun b => GlobalTheory.LieMet.tanOf (hu b)) _ _).2 ?_, (GlobalTheory.LieMet.isComb_iff (fun b => GlobalTheory.LieMet.tanOf (hv b)) cf _).2 rfl⟩` and prove the remaining obligations. Simplify using `only [h, Finset.smul_sum, smul_smul, Matrix.vecMul, dotProduct, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_comb_comb {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} (t : SAB H X) {K : Type} [CommRing K] (x : Sp K ⟶ X) {r m : ℕ} (hr : r = m)
@@ -34,11 +34,11 @@ theorem exists_comb_comb {E : Type} [Field E] [NumberField E] [IsCMField E] {H :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Establish `hd : IsUnit d.det`. Assume the negation of the conclusion as `hd`. Use `h.ne_zero (Matrix.det_eq_zero_of_row_eq_zero l fun j => ?_)` and prove the remaining obligations. Simplify using `[lieMat, Matrix.nonsing_inv_apply_not_isUnit _ hd]`. Establish `e (m : Fin r) : ∑ b, d l b * d⁻¹ b m = if l = m then 1 else 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_apply, Matrix.mul_nonsing_inv _ hd, Matrix.one_apply]`. Simplify using `only [lieMat, cond_true, Matrix.vecMul, dotProduct, Finset.sum_mul, Matrix.submatrix_apply, Matrix.transpose_apply, id]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_assoc, ← Finset.mul_sum, mul_comm (d⁻¹ _ _), e]`. Rewrite using `[Finset.sum_eq_single l.rev (fun m _ hm => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h => hm (by rw [h, Fin.rev_rev])), mul_zero]) (by simp), Fin.rev_rev, if_pos rfl, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_vecMul_lieMat {K : Type} [Field K] {r : ℕ} {d : Matrix (Fin r) (Fin r) K}
     (h : IsUnit (lieMat true d).det) (cf : Fin r → K) (l : Fin r) :
@@ -57,25 +57,23 @@ theorem sum_vecMul_lieMat {K : Type} [Field K] {r : ℕ} {d : Matrix (Fin r) (Fi
     rw [if_neg (fun h => hm (by rw [h, Fin.rev_rev])), mul_zero]) (by simp), Fin.rev_rev, if_pos rfl, mul_one]
 
 /- English proof (translation)
-Introduce `D O c Bs E hE Bg jB πB u hu hr Y₀ π₀ fl₀ G _ j jG φ χ x g hg hb a`. Take `⟨-, hx, hχ, hA⟩` from `hb`. Establish `hx' : x = GlobalTheory.FlagCov.genPt G ≫ jG ≫ πB ≫ genι O.s.T.Z` using `hx.trans (Category.assoc _ _ _)`. Establish `hv : (fun l => spMap (dualMap φ) ≫ (O.Φ.C c).f0.v (embB D a) l) = g.v (embB D a)`. Use function extensionality and compare the values at `fun l => (hg _ l).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `key (V : Bs.Opens) (f : Fin (rkB D.what₂.Tau O.N O.j a) → Γ(E a, V)) (hf : IsFrame f) (hxV : ⊤ ≤ ((GlobalTheory.FlagCov.genPt G ≫ jG) ≫ jB) ⁻¹ᵁ V) : ∃ d : Matrix (Fin (rkB D.what₂.Tau O.N O.j a)) (Fin (rkB D.what₂.Tau O.N O.j a)) G.functionField, (∀ i, IsTanAtG O.s.T.Z.t x (u a V …`. Establish `h1` using `(hu a).1 V f hf G.functionField (GlobalTheory.FlagCov.genPt G ≫ jG) hxV (χ.comp O.κ.e.toRingHom) (by`. Rewrite using `[← Category.assoc πB, ← Category.assoc, hχ, ← Spec.map_comp]`. Use the proof step `rfl)`. Establish `h2 : (χ.comp O.κ.e.toRingHom).comp O.κ.e.symm.toRingHom = χ` using `RingHom.ext fun z => congrArg χ (O.κ.e.apply_symm_apply z)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2, ← hx]`. Use `choose d hd hd' using fun l => h1.2 (g.v (embB D a) l) ⟨g.tan _ l, g.eig _ l⟩`. Conclude with `⟨Matrix.of fun i => d (Fin.cast (hr a) i), fun i => (h1.1 i).1, fun i => hd _, fun l d' h => hd' l d' h, hA a V f hf hxV _ fun i => hd _⟩`. Use `⟨fun k V f hf W hWV t hy hxV => ?_, fun i ch V f hf W hW hWV t ht hy hxV => ?_⟩` and prove the remaining obligations. Take `⟨d, h1, h2, h3, h4⟩` from `key V f hf hxV`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨cf, hc1, hc2⟩` from `h4.2 k W hWV t hy`. Introduce `aG uu v x'`. Establish `haG : aG = Matrix.vecMul cf (lieMat (!a.2) d)` using `hc2`. Establish `hv' : v = g.v (embB D a)` using `hv`. Establish `hx'' : x' = x` using `hx'.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[haG, hv', hx'']`. Take `⟨τ, b⟩` from `a`. Consider the cases of `b`. Introduce `l d' hd' hl`. Rewrite using `[h3 l d' hd']`.
+Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(sum_vecMul_lieMat h4.1 cf _).trans (hc1 _ ?_)` and prove the remaining obligations. Rewrite using `[Fin.val_rev, Fin.val_cast]`. Use linear arithmetic over natural numbers and integers. Take `⟨w, hw1, hw2⟩` from `exists_comb_comb _ x (hr _) h1 (g.tan _) h2 cf`. Conclude with `⟨w, _, hw1, hw2, fun l hl => hc1 _ hl⟩`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, h1, h2, h3, h4⟩` from `key V f hf hxV`. Take `⟨cf, -, hc2⟩` from `h4.2 i.succ W hWV t hy`. Establish `hc1` using `GlobalTheory.T.flag_matrix_graded_quotient _ _ _ _ (hE a) π₀ (fl₀ a) V f hf _ _ _ h4 i (ch PUnit.unit) W hW hWV t ht hy cf hc2`. Introduce `aG uu v x'`. Establish `haG : aG = Matrix.vecMul cf (lieMat (!a.2) d)` using `hc2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv' : v = g.v (embB D a)` using `hv`. Establish `hx'' : x' = x` using `hx'.symm`. Rewrite using `[haG, hv', hx'']`. Take `⟨τ, b⟩` from `a`. Consider the cases of `b`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `l d' hd' hl`. Rewrite using `[h3 l d' hd']`. Use `(sum_vecMul_lieMat h4.1 cf _).trans_ne ?_` and prove the remaining obligations. Rewrite using `[show (Fin.cast (hr _).symm l).rev = i from Fin.ext (by rw [Fin.val_rev, Fin.val_cast]; omega)]` and apply the resulting hypothesis. Take `⟨w, hw1, hw2⟩` from `exists_comb_comb _ x (hr _) h1 (g.tan _) h2 cf`.
-
-Conclude with `⟨w, _, hw1, hw2, hc1⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem flagAgree_of_bears : ∀ (D : D7) (O : Setup D) (c : O.s.Comp) (Bs : Scheme.{0}) (E : D.what₂.Tau × Bool → Bs.Modules) (hE : ∀ a, IsVB (E a) (rkB D.what₂.Tau O.N O.j a)) (Bg : Scheme.{0}) (jB : Bg ⟶ Bs) (πB : Bg ⟶ gen O.s.T.Z) (u : ∀ a, FrAssign O.s.T.Z (E a) (rkB D.what₂.Tau O.N O.j a) jB), (∀ a, IsLieFrames O.s.T.Z O.κ.e jB πB (E a) _ (embB D a) (!a.2) (u a)) → ∀ (hr : ∀ a, rkB D.what₂.Tau O.N O.j a = O.S.Dw.mult (embB D a)) (Y₀ : Scheme.{0}) (π₀ : Y₀ ⟶ Bs) (fl₀ : ∀ a, Vert.Flag ((Scheme.Modules.pullback π₀).obj (E a)) (rkB D.what₂.Tau O.N O.j a)) (G : Scheme.{0}) [IsIntegral G] (j : G ⟶ Y₀) (jG : G ⟶ Bg) (φ : (O.var c).Fn →+* G.functionField) (χ : O.κ.c.F →+* G.functionField) (x : Sp G.functionField ⟶ O.s.T.Z.X) (g : EigFrame O.s.T.Z χ x), (O.Φ.C c).f0.IsMap φ g → Bears O.s.T.Z (embB D) (fun a => !a.2) hr hE jB πB u π₀ fl₀ (GlobalTheory.FlagCov.genPt G ≫ j) (GlobalTheory.FlagCov.genPt G ≫ jG) g → ∀ a, GlobalTheory.FlagCov.FlagAgree hE jB πB u π₀ fl₀ j φ jG a (hr a) := by
   intro D O c Bs E hE Bg jB πB u hu hr Y₀ π₀ fl₀ G _ j jG φ χ x g hg hb a

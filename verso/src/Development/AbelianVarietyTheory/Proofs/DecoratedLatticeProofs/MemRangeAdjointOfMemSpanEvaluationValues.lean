@@ -5,15 +5,15 @@ open scoped ComplexConjugate InnerProductSpace
 namespace GlobalTheory.ChainOnto
 
 /- English proof (translation)
-Set `cd : InnerProductSpace.Core ℂ C` to `{ inner := fun x y => ip y x conj_inner_symm := fun x y => by simp [hsym y x] re_inner_nonneg := fun x => by`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Conclude with `(hpos x hx).le`. Use `add_left := fun x y z => by simp`.
+Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `smul_left := fun x y r => by simp`. Use `definite := fun x hx => by`. Assume the negation of the conclusion as `h`. Use `hpos x h` as an intermediate fact. Express the relevant statement in the definitionally equal form `ip x x = 0 at hx`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Rewrite `this` using `[hx]`. Simplify using `at this }`. Use `letI : NormedAddCommGroup C := @InnerProductSpace.Core.toNormedAddCommGroup ℂ C _ _ _ cd`. Use `letI : InnerProductSpace ℂ C := InnerProductSpace.ofCore cd.toCore`. Set `b` to `stdOrthonormalBasis ℂ C`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨_, b, fun i j => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `orthonormal_iff_ite.mp b.orthonormal j i`. Establish `e : ⟪b j, b i⟫_ℂ = ip (b i) (b j)` using `rfl`. Rewrite `h` using `[e]`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hij : i = j`. Simplify using `[hij]`. Simplify using `[hij, Ne.symm hij]`. Establish `h` using `b.sum_repr' x`. Conclude with `h.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_orthonormal_expansion_of_sesq {C : Type} [AddCommGroup C] [Module ℂ C] [FiniteDimensional ℂ C]
     (ip : C →ₗ[ℂ] C →ₗ⋆[ℂ] ℂ) (hsym : ∀ x y, ip x y = conj (ip y x))
@@ -50,31 +50,31 @@ theorem exists_orthonormal_expansion_of_sesq {C : Type} [AddCommGroup C] [Module
     exact h.symm
 
 /- English proof (translation)
-Introduce `X W C _ _ _ _ _ ev K ipD ip pet hD hDpos hsym hpos hpet x F l hF hl hF0`. Take `⟨n, b, hb, hexp⟩` from `exists_orthonormal_expansion_of_sesq ip hsym hpos`. Set `Φ : (Fin n → W) →ₗ[ℂ] (X → ℂ)` to `∑ j, (ev (b j)).comp (LinearMap.proj j)`. Establish `hΦ : ∀ u, Φ u = ∑ j, ev (b j) (u j)`. Introduce `u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Φ, LinearMap.sum_apply]`. Establish `hspan : Submodule.span ℂ {G | ∃ y, ∃ w ∈ K, G = ev y w} ≤ (Submodule.pi Set.univ (fun _ : Fin n => K)).map Φ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `G ⟨y, w, hw, rfl⟩`. Use `⟨fun j => ip y (b j) • w, fun j _ => K.smul_mem _ hw, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hΦ]`. Use `conv_rhs => rw [hexp y]`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Simplify using `only [map_smul, LinearMap.smul_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hFu⟩` from `hspan hF`. Establish `huK : ∀ j, u j ∈ K` using `fun j => hu j (Set.mem_univ j)`. Rewrite `hFu` using `[hΦ]`. Establish `key : ∀ k, ∀ w ∈ K, ipD w (u k) = ip (b k) x * l w`. Introduce `k w hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hl (b k) w hw`. Rewrite `h1` using `[← hFu, hpet]`. Simplify `h1` using `only [hb, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `hex : ∃ k, u k ≠ 0`. Assume the negation of the conclusion as `h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_neg at h`. Apply `hF0` to reduce the goal to its premises. Rewrite using `[← hFu]`. Simplify using `[h]`. Take `⟨k, hk⟩` from `hex`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hkpos` using `hDpos (u k) hk`. Rewrite `hkpos` using `[key k (u k) (huK k)]`. Establish `ha : ip (b k) x ≠ 0`. Introduce `h`. Rewrite `hkpos` using `[h, zero_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `at hkpos`. Establish `hx : x ≠ 0`. Introduce and unpack `rfl; exact ha (by simp)`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Take `⟨w₀, hw₀def⟩ : ∃ w₀, w₀ = (conj (ip (b k) x))⁻¹ • u k` from `⟨_, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw₀K : w₀ ∈ K` using `hw₀def ▸ K.smul_mem _ (huK k)`. Establish `hw₀ : ∀ w ∈ K, ipD w w₀ = l w`. Introduce `w hw`. Rewrite using `[hw₀def, LinearMap.map_smulₛₗ, key k w hw, map_inv₀, Complex.conj_conj, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ ha, one_mul]`. Establish `hu_eq : ∀ j, u j = conj (ip (b j) x) • w₀`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j`. Establish `hdK : u j - conj (ip (b j) x) • w₀ ∈ K` using `K.sub_mem (huK j) (K.smul_mem _ hw₀K)`. Establish `hd0 : ∀ w ∈ K, ipD w (u j - conj (ip (b j) x) • w₀) = 0`. Introduce `w hw`. Rewrite using `[map_sub, LinearMap.map_smulₛₗ, key j w hw, hw₀ w hw, Complex.conj_conj, smul_eq_mul, sub_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Use `hDpos _ (sub_ne_zero.mpr hne)` as an intermediate fact. Rewrite `this` using `[hd0 _ hdK]`. Simplify using `at this`. Use `⟨w₀, hw₀K, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hFu]`. Establish `hsum : ∑ j, ev (b j) (u j) = ∑ j, ev (b j) (conj (ip (b j) x) • w₀)` using `Finset.sum_congr rfl (fun j _ => by rw [hu_eq j])`. Rewrite using `[hsum]`. Use `conv_rhs => rw [hexp x]`. Rewrite using `[map_sum, LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Simplify using `only [map_smul, LinearMap.smul_apply]`. Rewrite using `[hsym x (b j)]`.
+A detailed English derivation is pending.
 -/
 theorem value_of_adjoint_of_mem_span : ∀ (X W C : Type) [AddCommGroup W] [Module ℂ W] [AddCommGroup C] [Module ℂ C] [FiniteDimensional ℂ C] (ev : C →ₗ[ℂ] W →ₗ[ℂ] (X → ℂ)) (K : Submodule ℂ W) (ipD : W →ₗ[ℂ] W →ₗ⋆[ℂ] ℂ) (ip : C →ₗ[ℂ] C →ₗ⋆[ℂ] ℂ) (pet : (X → ℂ) → (X → ℂ) → ℂ), (∀ w w', ipD w w' = conj (ipD w' w)) → (∀ w, w ≠ 0 → 0 < (ipD w w).re) → (∀ x y, ip x y = conj (ip y x)) → (∀ x, x ≠ 0 → 0 < (ip x x).re) → (∀ (y : C) (w : W) (n : ℕ) (ys : Fin n → C) (ws : Fin n → W), pet (ev y w) (∑ i, ev (ys i) (ws i)) = ∑ i, ip y (ys i) * ipD w (ws i)) → ∀ (x : C) (F : X → ℂ) (l : W → ℂ), F ∈ Submodule.span ℂ {G | ∃ y, ∃ w ∈ K, G = ev y w} → (∀ y, ∀ w ∈ K, pet (ev y w) F = ip y x * l w) → F ≠ 0 → x ≠ 0 ∧ ∃ w ∈ K, F = ev x w := by
   intro X W C _ _ _ _ _ ev K ipD ip pet hD hDpos hsym hpos hpet x F l hF hl hF0

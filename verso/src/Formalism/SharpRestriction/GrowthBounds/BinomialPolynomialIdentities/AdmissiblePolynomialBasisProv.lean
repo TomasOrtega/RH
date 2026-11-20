@@ -6,18 +6,18 @@ import Formalism.SharpRestriction.GrowthBounds.BinomialPolynomialIdentities.Exte
 namespace Formalism.MainNotions.G.ColumnFamilies
 
 /- English proof (translation)
-The claim follows from `word_basis_of_path_restrictions D restPathTo restPathFrom restStd restPsi restPol`.
+A detailed English derivation is pending.
 -/
 theorem admissible_standardPath_basis (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.CovariantDegrees.PathBasisOverRing D :=
   word_basis_of_path_restrictions D restPathTo restPathFrom restStd restPsi restPol
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.CovariantDegrees.path_basis_of_field_basis D (admissible_standardPath_basis D)`.
+A detailed English derivation is pending.
 -/
 theorem admissible_polynomial_basis (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.CovariantDegrees.PathColumnBasis D := Formalism.MainNotions.CovariantDegrees.path_basis_of_field_basis D (admissible_standardPath_basis D)
 
 /- English proof (translation)
-The claim follows from `admissible_polynomial_basis D`.
+A detailed English derivation is pending.
 -/
 theorem admissible_polynomial_basis_prov (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.CovariantDegrees.HyperplaneRank D := admissible_polynomial_basis D
 

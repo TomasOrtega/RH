@@ -12,26 +12,24 @@ namespace PositivityTheory.SiegelWeilFormula.AStep
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Rewrite using `[Complex.cpow_def_of_ne_zero (by exact_mod_cast (Real.exp_pos r).ne'), ← Complex.ofReal_log (Real.exp_pos r).le, Real.log_exp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cpow_exp (r : ℝ) (w : ℂ) : ((Real.exp r : ℝ) : ℂ) ^ w = Complex.exp (r * w) := by
   rw [Complex.cpow_def_of_ne_zero (by exact_mod_cast (Real.exp_pos r).ne'), ← Complex.ofReal_log (Real.exp_pos r).le,
     Real.log_exp]
 
 /- English proof (translation)
-Use `set c := Complex.exp (τ * (2 * z + d.n)) with hc`. Establish `hterm : ∀ g : L.sd.G, ((d.Ht (L.j g * (R.ι w y * x)) : ℝ) : ℂ) ^ (z - s0 d.m d.n) * d.sec0 Φ (L.j g * (R.ι w y * x)) = c * (((d.Ht (L.j g * x) : ℝ) : ℂ) ^ (z - s0 d.m d.n) * d.sec0 Φ (L.j g * x))`. Introduce `g`. Rewrite using `[← mul_assoc, j_comm_dil R L w τ y hy g, mul_assoc]`. Take `⟨ha, h0⟩` from `a_dil R w L.i₀ τ y hy (L.j g * x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[section_dilation_exp H R w L.i₀ τ y hy hΦ]`. Establish `e1 : ((d.Ht (R.ι w y * (L.j g * x)) : ℝ) : ℂ) = ((Real.exp (2 * τ) : ℝ) : ℂ) * ((d.a (L.j g * x) : ℝ) : ℂ)`. Unfold `SD.Ht`. Rewrite using `[Real.coe_toNNReal _ (by rw [ha]; exact mul_nonneg (Real.exp_pos _).le h0), ha, Complex.ofReal_mul]`. Establish `e2 : ((d.Ht (L.j g * x) : ℝ) : ℂ) = ((d.a (L.j g * x) : ℝ) : ℂ)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `SD.Ht`. Rewrite using `[Real.coe_toNNReal _ h0]`. Rewrite using `[e1, e2, Complex.mul_cpow_ofReal_nonneg (Real.exp_pos _).le h0, cpow_exp, hc]`. Establish `e3 : Complex.exp (((2 * τ : ℝ) : ℂ) * (z - s0 d.m d.n)) * Complex.exp (τ * d.m) = Complex.exp (τ * (2 * z + d.n))`. Rewrite using `[← Complex.exp_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Unfold `s0`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e3]`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `cOne`. Establish `hfun : (fun g : L.sd.G => ((d.Ht (L.j g * (R.ι w y * x)) : ℝ) : ℂ) ^ (z - s0 d.m d.n) * d.sec0 Φ (L.j g * (R.ι w y * x))) = fun g => c * (((d.Ht (L.j g * x) : ℝ) : ℂ) ^ (z - s0 d.m d.n) * d.sec0 Φ (L.j g * x))` using `funext hterm`. Rewrite using `[hfun]`. Establish `hcs : ∀ (Ψ : L.sd.G → ℂ), GlobalTheory.Eis.cosetSum (par2 σ L.Y) (rat2 σ L.Y) (fun g => c * Ψ g) = fun g' => c * GlobalTheory.Eis.cosetSum (par2 σ L.Y) (rat2 σ L.Y) Ψ g'`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Ψ`. Use function extensionality and compare the values at `g'`. Simplify using `only [GlobalTheory.Eis.cosetSum, GlobalTheory.Eis.term]`. Conclude with `tsum_mul_left`. Rewrite using `[hcs]`.
-
-Simplify using `only [fc, mul_assoc]`. Conclude with `integral_const_mul _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cOneLaw_pf (H : Hyps) {d : SD σ} (R : RD d) (L : LD d) {Φ : d.Fn} (hΦ : Φ ∈ d.sch) (w : InfinitePlace F)
     {nb' lam' 𝓖'} (hc' : CoefData (σ := σ) (Y := L.Y) L.b nb' lam' 𝓖') (T' : nF σ L.Y L.b)

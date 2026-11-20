@@ -11,7 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FinPl
 
 /- English proof (translation)
-Take `⟨Λ₀, h₀, hI, -⟩` from `(GlobalTheory.T.splitPlaceHermitianFrame_properties D k p S n β).2.2.2.1 L hL`. Establish `e : Λ = Λ₀` using `Submodule.ext fun x => (h x).trans (hI x).symm`. Conclude with `e ▸ h₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLattice_of_isLat_selfDual {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {p : SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [DecidableEq n]
@@ -22,7 +22,7 @@ theorem isLattice_of_isLat_selfDual {D : D7} {k : Type} [Field k] [ValuativeRel 
   exact e ▸ h₀
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p n n' _ _ _ _ S T α β LS LT hS hT ΛS ΛT hα hβ`. Use `haveI := isLattice_of_isLat_selfDual α LS hS ΛS hα`. Use `haveI := isLattice_of_isLat_selfDual β LT hT ΛT hβ`. Conclude with `GlobalTheory.LatPair.latInd_mem_SB ΛS ΛT`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem latInd_mem_SB_of_selfDual : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (S T : HSp D) (α : Frame p S n') (β : Frame p T n) (LS : Lat S) (LT : Lat T), IsSelfDualC S LS → IsSelfDualC T LT → ∀ (ΛS : Submodule 𝒪[k] (n' → k)) (ΛT : Submodule 𝒪[k] (n → k)), α.IsLat LS ΛS → β.IsLat LT ΛT → latInd ΛS ΛT ∈ SB (Matrix n n' k) := by
   intro D k _ _ _ _ p n n' _ _ _ _ S T α β LS LT hS hT ΛS ΛT hα hβ

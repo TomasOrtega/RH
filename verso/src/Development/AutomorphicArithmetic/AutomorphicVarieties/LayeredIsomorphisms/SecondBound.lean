@@ -46,7 +46,7 @@ def TwoIn : Prop :=
 def Good (eta Ct : ℝ) (Exc : Finset ℕ) (x : ℝ) : Prop := ∀ e ∈ Exc, (e : ℝ) ≤ x ^ Ct → (e : ℝ) ≤ x ^ eta
 
 /- English proof (translation)
-Introduce `e he hle` and use `hT e (h he) hle`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Good.mono {eta Ct x : ℝ} {S T : Finset ℕ} (h : S ⊆ T) (hT : Good eta Ct T x) : Good eta Ct S x := fun e he hle => hT e (h he) hle
 

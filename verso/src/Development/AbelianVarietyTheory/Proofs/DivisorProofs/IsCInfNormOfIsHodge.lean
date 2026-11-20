@@ -12,15 +12,13 @@ open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 namespace GlobalTheory.PPAS
 
 /- English proof (translation)
-Introduce `Y π hs`. Take `⟨P', φ, hg, hpull⟩` from `GlobalTheory.PPAS.exists_pull X Y P π`. Take `⟨hφ, -⟩` from `id hpull`. Take `⟨h', H'⟩` from `GlobalTheory.PPAS.exists_isDualRiemann k Y (π ≫ p) P' Real.pi Real.pi_pos`. Establish `hc` using `GlobalTheory.HodgeSmooth.isCInf_of_isDualRiemann k Y (π ≫ p) 1 hs P' Real.pi Real.pi_pos h' H'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf` using `GlobalTheory.HodgePull.form_omegaBase k X p Y (π ≫ p) π rfl P P' φ hφ hg hpull Real.pi h h' H H'`. Use `clear H'`. Use `revert h' hc hf`. Generalize the expression as in `P'.g = r at *`. Substitute `hg` using the available equality.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h' hc hf`. Apply the tactic sequence `have e : h'.IsIsometry (h.pull π rfl) (asIso (LieVB.omegaBase hφ)).symm := by`. Introduce `σ V s t y hy`. Use `hf σ V ((inv (LieVB.omegaBase hφ)).app V s) ((inv (LieVB.omegaBase hφ)).app V t) y hy` as an intermediate fact. Simplify using `only [Iso.symm_hom, asIso_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← this]`. Use `congr 1`. Conclude with `(congr(($(IsIso.inv_hom_id (LieVB.omegaBase hφ))).app V s) :)`. Conclude with `(congr(($(IsIso.inv_hom_id (LieVB.omegaBase hφ))).app V t) :)`. Rewrite using `[(VMetric.isIsometry_iff _).1 e]`.
-
-Conclude with `hc.map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCInfNorm_of_isHodge {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} (P : PPAS X)
     {h : VMetric p (LieVB.omega P.A) P.g} (H : P.IsHodge h) : h.IsCInfNorm := by

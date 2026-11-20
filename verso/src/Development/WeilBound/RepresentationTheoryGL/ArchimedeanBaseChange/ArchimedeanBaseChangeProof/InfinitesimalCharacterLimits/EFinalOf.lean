@@ -9,7 +9,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 namespace PositivityTheory.Rg.BcB.SpectralAccumulation
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.e45_final_gluing : InfinitesimalCharacterGlue) PositivityTheory.Rg.BcB.E.E3.etale_base_change_of_duality hS (LimG.lim5 hF) Trees.treeLemmas.2.2.1 Trees.treeLemmas.2.1 Trees.treeLemmas.1 hL admissible_discrete_spaces Untw.untwOfReal_holds Trees.treeLemmas.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem eFinal_of (hS : Sep4) (hF : FinDisc) (hL : LimVec) : EFinal :=
   (GlobalTheory.T.e45_final_gluing : InfinitesimalCharacterGlue) PositivityTheory.Rg.BcB.E.E3.etale_base_change_of_duality hS (LimG.lim5 hF) Trees.treeLemmas.2.2.1 Trees.treeLemmas.2.1

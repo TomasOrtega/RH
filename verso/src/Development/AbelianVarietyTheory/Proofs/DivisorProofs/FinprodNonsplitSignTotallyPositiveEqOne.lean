@@ -11,7 +11,7 @@ namespace GlobalTheory.TotPosSign
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hw ((WithAbs.equiv w.1).symm t)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem embReal_algebraMap {w : InfinitePlace F} (hw : w.IsReal) (t : F) :
     InfinitePlace.Completion.extensionEmbeddingOfIsReal hw (algebraMap F w.Completion t) =
@@ -20,9 +20,9 @@ theorem embReal_algebraMap {w : InfinitePlace F} (hw : w.IsReal) (t : F) :
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.QuadSymbol.eta_eq_one_iff, GlobalTheory.QuadSymbol.mem_normGroup_iff]`. Use `set g := InfinitePlace.Completion.ringEquivRealOfIsReal hw`. Use `set a : w.Completion := algebraMap F w.Completion (t : F)`. Establish `hga : g a = InfinitePlace.embedding_of_isReal hw (t : F)`. Rewrite using `[InfinitePlace.Completion.ringEquivRealOfIsReal_apply, embReal_algebraMap]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨algebraMap w.Completion (w.Completion ⊗[F] E) (g.symm (Real.sqrt (g a))), ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.norm_algebraMap, Module.finrank_baseChange, Algebra.IsQuadraticExtension.finrank_eq_two F E, ← map_pow, Real.sq_sqrt (hga ▸ ht.le), RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eta_inf_eq_one [Algebra.IsQuadraticExtension F E] {w : InfinitePlace F} (hw : w.IsReal) (t : Fˣ)
     (ht : 0 < InfinitePlace.embedding_of_isReal hw (t : F)) :
@@ -45,7 +45,7 @@ section Loc
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(fun z : WithZero (Multiplicative ℤ) => if h : z = 0 then (0 : ℤ) else -Multiplicative.toAdd (WithZero.unzero h)) (Valued.v x) = (fun z : WithZero (Multiplicative ℤ) => if h : z = 0 then (0 : ℤ) else -Multiplicative.toAdd (WithZero.unzero h)) (Valued.v y)`. Rewrite using `[h]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ordL_congr {L L' : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] [Field L']
     [Valued L' (WithZero (Multiplicative ℤ))] {x : L} {y : L'} (h : Valued.v x = Valued.v y) : ordL x = ordL y := by
@@ -56,7 +56,7 @@ theorem ordL_congr {L L' : Type} [Field L] [Valued L (WithZero (Multiplicative �
   rw [h]
 
 /- English proof (translation)
-Establish `h0 : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Unfold `ordL`. Rewrite using `[dif_neg h0, neg_neg]`. Use `conv_lhs => rw [← WithZero.coe_unzero h0]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem valued_eq_exp {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {x : L} (hx : x ≠ 0) :
     Valued.v x = WithZero.exp (-ordL x) := by
@@ -67,11 +67,11 @@ theorem valued_eq_exp {L : Type} [Field L] [Valued L (WithZero (Multiplicative �
   rfl
 
 /- English proof (translation)
-Establish `h2 : Module.finrank F E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two F E`. Set `χ : (v.adicCompletion F)ˣ →* ℤˣ` to `MonoidHom.mk' (GlobalTheory.QuadSymbol.eta F E (v.adicCompletion F)) ((GlobalTheory.QuadSymbol.localCharacters F E).1 v)`. Use `set π := atFin v (unif v)`. Use `set k := ordL (x : v.adicCompletion F)`. Establish `hπ : Valued.v (π : v.adicCompletion F) = WithZero.exp (-1 : ℤ)` using `unif_spec v`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `set u := x * π ^ (-k)`. Establish `hu1 : IsUnitAt v u`. Unfold `IsUnitAt`. Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, hπ, valued_eq_exp x.ne_zero, ← WithZero.exp_zsmul, ← WithZero.exp_add]`. Simplify using `[k]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : x = u * π ^ k` using `by simp [u]`. Establish `e1 : χ u = 1` using `GlobalTheory.QuadSymbol.eta_eq_one_iff.2 (GlobalTheory.LFun.mem_normGroup_of_isUnram h2 hu hu1)`. Establish `e2 : χ π = -1` using `GlobalTheory.QuadSymbol.eta_eq_neg_one_iff.2 (GlobalTheory.LFun.not_mem_normGroup_of_inert h2 hv hu (unif_spec v))`. Express the relevant statement in the definitionally equal form `χ x = _`. Rewrite using `[hx, map_mul, map_zpow, e1, e2, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eta_inert [Algebra.IsQuadraticExtension F E] {v : HeightOneSpectrum (𝓞 F)}
     (hv : ¬ Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v) (hu : Formalism.MainNotions.SchurIrreducible.IsUnram (E := E) v) (x : (v.adicCompletion F)ˣ) :
@@ -105,16 +105,14 @@ section CM
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Take `⟨u, hne, hu⟩` from `h`. Conclude with `GlobalTheory.LFun.isSplit_iff.2 ⟨u, w, hne, hu, rfl⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSplit_under {w : Pl E} (h : IsSplitAt w) : Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) (w.under (𝓞 ↥(maximalRealSubfield E))) := by
   obtain ⟨u, hne, hu⟩ := h
   exact GlobalTheory.LFun.isSplit_iff.2 ⟨u, w, hne, hu, rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `hs`. Take `⟨a, b, hab, ha, hb⟩` from `GlobalTheory.LFun.isSplit_iff.1 hs`. Distinguish the cases in `haw : a = w`. Substitute `haw` using the available equality. Conclude with `h ⟨b, hab.symm, hb⟩`.
-
-Conclude with `h ⟨a, haw, ha⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem not_isSplit_under {w : Pl E} (h : ¬ IsSplitAt w) : ¬ Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) (w.under (𝓞 ↥(maximalRealSubfield E))) := by
   rintro hs
@@ -125,7 +123,7 @@ theorem not_isSplit_under {w : Pl E} (h : ¬ IsSplitAt w) : ¬ Formalism.MainNot
   · exact h ⟨a, haw, ha⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LFun.isUnram_iff.2 fun P _ => by haveI := hU P exact Ideal.ramificationIdx_eq_one_of_isUnramifiedAt`.
+A detailed English derivation is pending.
 -/
 theorem isUnram_of_unr (hU : Unr E) (v : HeightOneSpectrum (𝓞 ↥(maximalRealSubfield E))) : Formalism.MainNotions.SchurIrreducible.IsUnram (E := E) v :=
   GlobalTheory.LFun.isUnram_iff.2 fun P _ => by
@@ -133,7 +131,7 @@ theorem isUnram_of_unr (hU : Unr E) (v : HeightOneSpectrum (𝓞 ↥(maximalReal
     exact Ideal.ramificationIdx_eq_one_of_isUnramifiedAt
 
 /- English proof (translation)
-Break down `Int.even_or_odd k with hk | hk` into its components or cases. Rewrite using `[hk.neg_one_zpow, hk.neg_one_zpow]`. Simplify using the standard rewrite rules. Rewrite using `[hk.neg_one_zpow, hk.neg_one_zpow]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem neg_one_zpow_cast (k : ℤ) : ((((-1 : ℤˣ) ^ k : ℤˣ) : ℤ) : ℂ) = (-1 : ℂ) ^ k := by
   rcases Int.even_or_odd k with hk | hk
@@ -141,11 +139,11 @@ theorem neg_one_zpow_cast (k : ℤ) : ((((-1 : ℤˣ) ^ k : ℤˣ) : ℤ) : ℂ)
   · rw [hk.neg_one_zpow, hk.neg_one_zpow]; simp
 
 /- English proof (translation)
-Establish `h2 : Module.finrank ↥(maximalRealSubfield E) E = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two ↥(maximalRealSubfield E) E`. Use `split_ifs with hs`. Rewrite using `[GlobalTheory.QuadSymbol.eta_eq_one_iff.2 (GlobalTheory.LFun.mem_normGroup_of_isSplit h2 (isSplit_under hs) _)]`. Simplify using the standard rewrite rules. Rewrite using `[eta_inert (not_isSplit_under hs) (isUnram_of_unr hU _), neg_one_zpow_cast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `ordL_congr ?_` and prove the remaining obligations. Establish `hx : ((GlobalTheory.QuadSymbol.finDiag ↥(maximalRealSubfield E) t (w.under (𝓞 ↥(maximalRealSubfield E))) : (w.under (𝓞 ↥(maximalRealSubfield E))).adicCompletion ↥(maximalRealSubfield E))) = algebraMap ↥(maximalRealSubfield E) _ (t : ↥(maximalRealSubfield E))` using `rfl`. Establish `e` using `GlobalTheory.LFun.valued_complMap (F := ↥(maximalRealSubfield E)) (E := E) (w := w) rfl (a := algebraMap ↥(maximalRealSubfield E) ((w.under (𝓞 ↥(maximalRealSubfield E))).adicCompletion ↥(maximalRealSubfield E)) (t : ↥(maximalRealSubfield E))) (by simp)`. Rewrite `e` using `[GlobalTheory.LFun.isUnram_iff.1 (isUnram_of_unr hU _) w rfl, pow_one, GlobalTheory.LFun.complMap_algebraMap]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, e]`.
+A detailed English derivation is pending.
 -/
 theorem term_eq (hU : Unr E) (w : Pl E) (t : Units ↥(maximalRealSubfield E)) :
     (if IsSplitAt w then (1 : ℂ) else (-1) ^ ordL (algebraMap E (w.adicCompletion E) (algebraMap ↥(maximalRealSubfield E) E t))) =
@@ -166,9 +164,9 @@ theorem term_eq (hU : Unr E) (w : Pl E) (t : Units ↥(maximalRealSubfield E)) :
     rw [hx, e]
 
 /- English proof (translation)
-Use `⟨fun _ _ => Set.mem_univ _, fun a ha b hb hab => ?_, fun v _ => ?_⟩` and prove the remaining obligations. Take `⟨u, -, hu⟩` from `hS a`. Conclude with `(hu a ⟨ha, rfl⟩).trans (hu b ⟨hb, hab.symm⟩).symm`. Take `⟨w, hw⟩` from `(GlobalTheory.QNorm.places_over ↥(maximalRealSubfield E) E).2.1 v`. Take `⟨u, ⟨hu, hu'⟩, -⟩` from `hS w`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨u, hu, hu'.trans hw⟩`.
+A detailed English derivation is pending.
 -/
 theorem bijOn_under {S : Set (Pl E)} (hS : IsSection S) :
     Set.BijOn (fun w : Pl E => w.under (𝓞 ↥(maximalRealSubfield E))) S Set.univ := by
@@ -188,17 +186,17 @@ namespace GlobalTheory.UnitaryClasses
 open GlobalTheory.TotPosSign in
 
 /- English proof (translation)
-Introduce `E _ _ _ hU S hS d hd hpos`. Establish `hmem : d ∈ maximalRealSubfield E` using `(mem_maximalRealSubfield_iff d).2 fun φ => by`. Take `⟨r, -, hr⟩` from `hpos φ`. Rewrite using `[hr, Complex.star_def, Complex.conj_ofReal]`. Use `set t0 : ↥(maximalRealSubfield E) := ⟨d, hmem⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ht0 : algebraMap (↥(maximalRealSubfield E)) E t0 = d` using `rfl`. Establish `ht0' : t0 ≠ 0` using `fun h => hd (by rw [← ht0, h, map_zero])`. Use `set t := Units.mk0 t0 ht0'`. Establish `PF` using `GlobalTheory.QuadSymbol.productFormula (↥(maximalRealSubfield E)) E t`. Establish `hinf : ∀ w : InfinitePlace ↥(maximalRealSubfield E), GlobalTheory.QuadSymbol.eta (↥(maximalRealSubfield E)) E w.Completion (GlobalTheory.QuadSymbol.infDiag _ t w) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w`. Establish `hw : w.IsReal` using `IsTotallyReal.isReal w`. Use `eta_inf_eq_one hw t ?_` and prove the remaining obligations. Use `letI : Algebra (↥(maximalRealSubfield E)) ℂ := w.embedding.toAlgebra`. Set `τ : E →ₐ[↥(maximalRealSubfield E)] ℂ` to `IsAlgClosed.lift`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr, e⟩` from `hpos τ.toRingHom`. Establish `e2 : (InfinitePlace.embedding_of_isReal hw (t : ↥(maximalRealSubfield E)) : ℂ) = r`. Rewrite using `[InfinitePlace.embedding_of_isReal_apply, ← e]`. Conclude with `(τ.commutes t0).symm`. Rewrite `e2` using `[Complex.ofReal_inj]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Conclude with `hr`. Establish `hfin : ∏ᶠ v : HeightOneSpectrum (𝓞 ↥(maximalRealSubfield E)), GlobalTheory.QuadSymbol.eta (↥(maximalRealSubfield E)) E (v.adicCompletion (↥(maximalRealSubfield E))) (GlobalTheory.QuadSymbol.finDiag (↥(maximalRealSubfield E)) t v) = 1`. Establish `h` using `PF.2`. Unfold `GlobalTheory.QuadSymbol.etaProd at h`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[Finset.prod_eq_one fun w _ => hinf w, mul_one]`. Then use the resulting hypothesis. Set `cz : ℤˣ →* ℂ` to `(Int.castRingHom ℂ).toMonoidHom.comp (Units.coeHom ℤ)`. Establish `hd' : d = algebraMap (↥(maximalRealSubfield E)) E ((t : Units ↥(maximalRealSubfield E)) : ↥(maximalRealSubfield E))` using `rfl`. Rewrite using `[hd', finprod_mem_eq_of_bijOn _ (bijOn_under hS) (g := fun v : HeightOneSpectrum (𝓞 ↥(maximalRealSubfield E)) => cz (GlobalTheory.QuadSymbol.eta (↥(maximalRealSubfield E)) E (v.adicCompletion (↥(maximalRealSubfield E))) (GlobalTheory.QuadSymbol.finDiag (↥(maximalRealSubfield E)) …`.
+A detailed English derivation is pending.
 -/
 theorem signProd_totPos : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ S : Set (Pl E), IsSection S →
     ∀ d : E, d ≠ 0 → (∀ τ : E →+* ℂ, ∃ r : ℝ, 0 < r ∧ τ d = r) →

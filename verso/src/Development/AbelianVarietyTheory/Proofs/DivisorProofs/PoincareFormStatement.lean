@@ -22,27 +22,25 @@ open ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M GlobalTheory.Indefinite
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `e X _ _ _ _ _ A K hK hKp m L s D hB`. Take `⟨hzero, hopen⟩` from `GlobalTheory.T.boundary_norm_zero_iff_open_compl A L s D hB`. Establish `hnorm1 : ∀ i y, normSec (L i) (s i) y ≤ 1` using `fun i y => (hB i).2.2.2 y`. Establish `hne : ∀ y, y ∉ ⋃ i, D i → ∀ i, normSec (L i) (s i) y ≠ 0` using `fun y hy i h => hy (Set.mem_iUnion.2 ⟨i, (hzero i y).1 h⟩)`. Establish `hSB` using `GlobalTheory.T.scalar_bounds_of_norm_le_one L s D hnorm1 hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : ∀ ψ : OpenPartialHomeomorph X (Fin e → ℂ), IsCompatChart A ψ → ∀ z ∈ ψ.target, ∀ w, 0 ≤ formAt ψ K z w`. Take `⟨C, hC, h⟩` from `GlobalTheory.T.form_bounded_by_positive_potential A K K hK hK hKp`. Introduce `ψ hψ z hz w`. Establish `h1` using `h ψ hψ z hz w`. Establish `h2` using `abs_nonneg (formAt ψ K z w)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Use the polynomial consequences of the given equalities and inequalities. Establish `hCi : ∀ i : Fin m, ∃ C : ℝ, 0 < C ∧ ∀ ψ : OpenPartialHomeomorph X (Fin e → ℂ), IsCompatChart A ψ → ∀ z ∈ ψ.target, ∀ w, |formAt ψ (L i) z w| ≤ C * formAt ψ K z w` using `fun i => GlobalTheory.T.form_bounded_by_positive_potential A (L i) K (hB i).1 hK hKp`. Use `choose Cf hCf hCfb using hCi`.
+Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Kc : ℝ := 1 + ∑ i, Cf i with hKcdef`. Establish `hKc : 0 < Kc`. Establish `: 0 ≤ ∑ i, Cf i` using `Finset.sum_nonneg fun i _ => (hCf i).le`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hchern : ∀ (i : Fin m) (ψ : OpenPartialHomeomorph X (Fin e → ℂ)), IsCompatChart A ψ → ∀ z ∈ ψ.target, ψ.symm z ∉ ⋃ j, D j → ∀ w, |ddcAt ψ (rComp L s i) z w| ≤ Kc * formAt ψ K z w`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i ψ hψ z hz hzD w`. Establish `hzi : ψ.symm z ∉ D i` using `fun h => hzD (Set.mem_iUnion.2 ⟨i, h⟩)`. Rewrite using `[GlobalTheory.T.ddc_boundary_potential_eq_form A L s D hB i ψ hψ z hz hzi w]`. Establish `h1` using `hCfb i ψ hψ z hz w`. Establish `h0` using `ha ψ hψ z hz w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hle : Cf i ≤ Kc`. Establish `: Cf i ≤ ∑ j, Cf j` using `Finset.single_le_sum (f := Cf) (fun j _ => (hCf j).le) (Finset.mem_univ i)`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Take `⟨C7, hC7, h7⟩` from `GlobalTheory.T.gradient_boundary_potential_bound A K L s D hK hKp hB`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h7' : ∀ (i : Fin m) (ψ : OpenPartialHomeomorph X (Fin e → ℂ)), IsCompatChart A ψ → ∀ z ∈ ψ.target, ψ.symm z ∉ ⋃ j, D j → ∀ w, gradSqAt ψ (rComp L s i) z w ≤ C7 * Real.exp (rComp L s i (ψ.symm z)) * formAt ψ K z w` using `fun i ψ hψ z hz hzD w => h7 i ψ hψ z hz (fun h => hzD (Set.mem_iUnion.2 ⟨i, h⟩)) w`. Establish `hTS : ∀ c : ℝ, 0 < c → c ≤ Real.exp 1 / (2 * (m + 1) * Kc) → TwoSided A K L s D c`. Introduce `c hc hcs`. Apply `GlobalTheory.T.poincare_form_bound_of_ddc A K L s D Kc c hK hB hKc hchern ha hc` to reduce the goal to its premises. Establish `hm : (0 : ℝ) < 2 * (m + 1) * Kc` using `by positivity`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h1 : c * (2 * (m + 1) * Kc) ≤ Real.exp 1`. Rewrite `hcs` using `[le_div_iff₀ hm]`. Then use the resulting hypothesis. Establish `h2 : 0 ≤ c * Kc` using `by positivity`. Use polynomial arithmetic with `[Real.exp_pos 1]`. Use `⟨Real.exp 1 / (2 * (m + 1) * Kc), by positivity, hopen, hSB, ?_, ?_⟩` and prove the remaining obligations.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c hc hcs`. Establish `hT` using `hTS c hc hcs`. Use `⟨GlobalTheory.T.poincare_potential_is_potential A K L s D c hK hB, hT, GlobalTheory.T.poincare_form_two_sided_bound A K L s D Kc C7 c hK hB hopen hSB hKc hchern ha hC7 h7' hc hT, ?_⟩` and prove the remaining obligations. Apply `GlobalTheory.T.potential_extends_across_boundary A (poincarePot K L s c) D hopen (GlobalTheory.T.poincare_potential_is_potential A K L s D c hK hB) (GlobalTheory.T.adapted_polydisc_exists_at A L s D hB)` to reduce the goal to its premises. Introduce `ψ σ hψ`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ρ, hρ, -, h⟩` from `GlobalTheory.T.poincare_metric_local_bound A K L s D ψ σ hK hKp hB hψ`. Conclude with `⟨ρ, hρ, h c hc hT⟩`. Introduce `ψ σ hψ`. Take `⟨ρ, hρ, hρ2, hP2⟩` from `GlobalTheory.T.poincare_metric_local_bound A K L s D ψ σ hK hKp hB hψ`. Take `⟨C3, hC3, h3⟩` from `GlobalTheory.T.boundary_potential_comparable_tsum A L s D ψ σ hB hψ`.
-
-Use `⟨ρ, hρ, hρ2, ⟨C3, hC3, fun z hz hzD => h3 z (Metric.ball_subset_ball hρ2 hz) hzD⟩, fun c hc hcs => hP2 c hc (hTS c hc hcs)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem poincareForm_normalCrossings : PoincareFormStatement := by
   intro e X _ _ _ _ _ A K hK hKp m L s D hB

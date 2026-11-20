@@ -37,7 +37,7 @@ def FFStatement : Prop :=
     ∀ FF, IsFundSet X x0 FF → InFF X x0 W FF (poin X la P)
 
 /- English proof (translation)
-Unfold `lact mat`. Use `differentiable_pi.2 fun τ => differentiable_pi.2 fun a => differentiable_pi.2 fun b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_lact {Ψ : Finset (E →+* ℂ)} (γ : GL (Fin r) E) :
     Differentiable ℂ (lact (Ψ := Ψ) γ) := by
@@ -47,15 +47,13 @@ theorem differentiable_lact {Ψ : Finset (E →+* ℂ)} (γ : GL (Fin r) E) :
   fun_prop
 
 /- English proof (translation)
-Unfold `poin`. Establish `hχ : ∀ γ : X.Γ, ‖X.χ la γ.1‖ = 1` using `fun γ => by`. Take `⟨n, hn, h⟩` from `X.χ_fin la`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 (by rw [← norm_pow, h γ.1 γ.2, norm_one])`. Establish `hn : ∀ γ : X.Γ, ‖(X.χ la γ.1)⁻¹ * P (lact γ.1 x)‖ = ‖P (lact γ.1 x)‖` using `fun γ => by`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_inv, hχ γ, inv_one, one_mul]`. Distinguish the cases in `hs : Summable fun γ : X.Γ => ‖P (lact γ.1 x)‖`. Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Use `(norm_tsum_le_tsum_norm ?_).trans (le_of_eq (tsum_congr hn))` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs.congr fun γ => (hn γ).symm`. Use `_ = ∑' γ : X.Γ, ‖P (lact γ.1 x)‖ₑ := by`. Rewrite using `[ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) hs]`. Simplify using `only [ofReal_norm_eq_enorm]`. Establish `htop : ∑' γ : X.Γ, ‖P (lact γ.1 x)‖ₑ = ⊤`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Apply `hs` to reduce the goal to its premises. Establish `h2 : Summable fun γ : X.Γ => ‖P (lact γ.1 x)‖₊`. Rewrite using `[← ENNReal.tsum_coe_ne_top_iff_summable]`. Simplify `h` using `only [enorm_eq_nnnorm]`.
-
-Conclude with `NNReal.summable_coe.2 h2`. Rewrite using `[htop]`. Conclude with `le_top`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem enorm_poin_le (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) :
     ENNReal.ofReal ‖poin X la P x‖ ≤ ∑' γ : X.Γ, ‖P (lact γ.1 x)‖ₑ := by
@@ -86,9 +84,9 @@ theorem enorm_poin_le (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ)
     exact le_top
 
 /- English proof (translation)
-Unfold `supR`. Use `iSup₂_le fun z _ => iSup_le fun hz => ENNReal.rpow_le_rpow ?_ (by norm_num)` and prove the remaining obligations. Establish `he : 0 < Real.exp (-phla X la (cpt X x z))` using `Real.exp_pos _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_div_of_pos (by positivity)]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 -/
 theorem supR_le (X : Data E r) (la : Wt X.Ψ r) (W : Frame X.Ψ r → ℝ≥0∞) {c : ℝ} (hc : 0 < c)
     (hW : ∀ x ∈ X.dom, ENNReal.ofReal (c * Real.exp (-phla X la x)) ≤ W x) (ρ : ℝ) (x : Frame X.Ψ r) :
@@ -118,14 +116,14 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Unfold `sgn`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_sgn' (p0 a : ℕ) : ‖((sgn p0 a : ℝ) : ℂ)‖ = 1 := by
   unfold sgn
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `IsOrth at hx`. Unfold `dmin lminor`. Rewrite using `[hx τ, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal, norm_prod]`. Conclude with `Finset.prod_eq_one fun a _ => norm_sgn' _ _`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_dmin_orth' (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (τ : X.Ψ)
     (i : Fin (r + 1)) : ‖dmin X.Gm x τ i‖ = 1 := by
@@ -135,7 +133,7 @@ theorem norm_dmin_orth' (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (τ 
   exact Finset.prod_eq_one fun a _ => norm_sgn' _ _
 
 /- English proof (translation)
-Unfold `Data.pnorm`. Simplify using `[norm_div, norm_dmin_orth' X hx]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem pnorm_orth' (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) {x : Frame X.Ψ r}
     (hx : IsOrth X x) : X.pnorm la P x = ‖P x‖ := by
@@ -143,21 +141,19 @@ theorem pnorm_orth' (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) {
   simp [norm_div, norm_dmin_orth' X hx]
 
 /- English proof (translation)
-Introduce `r X x0 hx0 hPD la W bb hW hWl hbb F P hFd hA hP hPF`. Establish `H : Hyp X x0 la W bb F P` using `⟨hx0, hPD, hW, hWl, hbb, hFd, hA, hP, hPF⟩`. Take `⟨c, hc, hcW⟩` from `hWl`. Establish `hterm : ∀ (γ : X.Γ) y, ‖(X.χ la γ.1)⁻¹ * P (lact γ.1 y)‖ = ‖P (lact γ.1 y)‖`. Introduce `γ y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[norm_mul, norm_inv, norm_chi X la γ.2, inv_one, one_mul]`. Take `⟨C1, hC1⟩` from `hB r X x0 la W bb F P H 1 one_pos le_rfl`. Establish `horth : ∀ y ∈ X.dom, IsOrth X y → ‖poin X la P y‖ ≤ max C1 0 * (1 / c) ^ (1 / 2 : ℝ)`. Introduce `y hy hyo`. Establish `h1` using `(enorm_poin_le X la P y).trans ((hC1 y hy hyo).trans (mul_le_mul_of_nonneg_left (supR_le X la W hc hcW 1 y) (zero_le)))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : ENNReal.ofReal C1 * ENNReal.ofReal (1 / c) ^ (1 / 2 : ℝ) ≤ ENNReal.ofReal (max C1 0 * (1 / c) ^ (1 / 2 : ℝ))`. Rewrite using `[ENNReal.ofReal_rpow_of_nonneg (by positivity) (by norm_num), ENNReal.ofReal_mul (le_max_right _ _)]`. Use `gcongr`. Conclude with `le_max_left _ _`. Conclude with `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 (h1.trans h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ⟨⟨?_, ?_, ?_⟩, ?_⟩, hF r X x0 la W bb F P H, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨ε, hε, u, hu, hub⟩` from `hL r X x0 la W bb F P H x hx`. Conclude with `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun γ => (hterm γ x).le.trans (hub γ x (Metric.mem_ball_self hε))) hu`. Unfold `poin`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `differentiableOn_tsum_loc (isOpenDom X) _ (fun γ => ?_) (fun x hx => ?_)` and prove the remaining obligations. Conclude with `(differentiableOn_const _).mul (hP.1.comp (differentiable_lact γ.1).differentiableOn fun y hy => lactDom X γ.2 hy)`. Take `⟨ε, hε, u, hu, hub⟩` from `hL r X x0 la W bb F P H x hx`. Conclude with `⟨ε, hε, u, hu, fun γ y hy => (hterm γ y).le.trans (hub γ y hy)⟩`. Introduce `x hx b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `poin_rmul X la P hP.2 hx hb`. Introduce `γ hγ x _`. Conclude with `poin_lact X la P hγ x`. Use `⟨max C1 0 * (1 / c) ^ (1 / 2 : ℝ), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hb` using `FrameDegreeData.bOf_mem X hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ho : IsOrth X (rmul x (FrameDegreeData.bOf X x))` using `FrameDegreeData.ortho_bOf X hx`. Establish `hxb : rmul x (FrameDegreeData.bOf X x) ∈ X.dom` using `rmulDom X hb hx`. Rewrite using `[← FrameDegreeData.pnorm_rmul X la _ (fun y hy b hb => poin_rmul X la P hP.2 hy hb) x hx _ hb, pnorm_orth' X la _ ho]`. Conclude with `horth _ hxb ho`. Introduce `ρ hρ hρ1`.
-
-Take `⟨C, hC⟩` from `hB r X x0 la W bb F P H ρ hρ hρ1`. Conclude with `⟨C, fun x hx hxo => (enorm_poin_le X la P x).trans (hC x hx hxo)⟩`. Introduce `la' g hg x hx`. Conclude with `poin_mul X la la' P g hg x hx`.
+A detailed English derivation is pending.
 -/
 theorem poin_of (hL : LocStatement (E := E)) (hB : BallStatement (E := E)) (hF : FFStatement (E := E)) :
     PoinStatement (E := E) := by

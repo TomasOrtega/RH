@@ -14,7 +14,7 @@ open Formalism.L2.SG.RealObj Formalism.L2.SG.HidaSetting Formalism.L2.SG.RealObj
 attribute [local instance] Formalism.BasicNotions.Host.cmStar instCM
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.D.bSt`. Use `List.prod_pos fun x hx => ?_` and prove the remaining obligations. Take `⟨a, -, rfl⟩` from `List.mem_map.mp hx`. Conclude with `Finset.prod_pos fun m _ => zpow_pos (div_pos (zpow_pos hκ _) Real.pi_pos) _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem bSt_pos {κ : ℝ} (hκ : 0 < κ) (p : Formalism.FourierDecayAlt.C.LPt) : 0 < Formalism.FourierDecayAlt.D.bSt κ p := by
   unfold Formalism.FourierDecayAlt.D.bSt
@@ -55,13 +55,11 @@ def MeasPinAt (sc : ℝ) (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k) : P
             (trG ((PP).Q v) ((PP).Qi v) ((h v)⁻¹ * (gamW X u u' w) v * h' v)) (hloc.2 ▸ Formalism.FourierDecayAlt.D.ptPerm _)
 
 /- English proof (translation)
-Introduce `hsc hFX hB hemb p w hp hw h h' hD v μRv hH hpin F`. Take `⟨hZ, hG, hloc, hGV⟩` from `orbVec_data X u u' e he hv C CA de de' l grid grid1 T hT fc χ sg ν' m₀ top A₀ Mo sc hsc i0 i0' hFX hB hemb hbase p w hp hw h h' hD v`. Establish `hloc' : Formalism.FourierDecayAlt.D.IsLocPt (Formalism.FourierDecayAlt.D.toStd (PP).S.G.r (PP).S.g 1 (Formalism.FourierDecayAlt.C.loc ((PP).S.emb ((PP).τ.symm v)) p)) ((PP).S.G.r + 1)` using `hloc`. Rewrite using `[hMP p w hp hw h h' hD v μRv hH hpin hloc']`. Establish `hrel` using `Formalism.FourierDecayAlt.P.relevant_points_holds D.R.k D.R.rS _ _ ((PP).T ((PP).τ.symm v)).base _ _ hloc hGV hZ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmono` using `Formalism.FourierDecayAlt.P.Dx2.VV.ptMatN_monoP' _ (D.R.rS + 1) hloc.2 hloc.1`. Establish `hHaar` using `Formalism.FourierDecayAlt.P.radial_measure_is_haar D.R.k D.R.rS _ _ ((PP).T ((PP).τ.symm v)).base _ _ _ hGV hmono.2 (hZ.trans hmono.1)`. Establish `hb : 0 < Formalism.FourierDecayAlt.D.bSt (Formalism.FourierDecayAlt.D.kapG ((PP).S.g : ℝ) (Formalism.FourierDecayAlt.S6.rd D.host.E)) (Formalism.FourierDecayAlt.C.loc ((PP).S.emb ((PP).τ.symm v)) p)`. Use `bSt_pos ?_ _` and prove the remaining obligations. Unfold `Formalism.FourierDecayAlt.D.kapG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Establish `hg : (0 : ℝ) < ((PP).S.g : ℝ)` using `by show (0 : ℝ) < ((D.host.g 0 * D.host.g 1 : ℕ) : ℝ)`. Conclude with `Nat.mul_pos (Formalism.L2.SG.Pf.CarrierSz.g_pos D).1 (Formalism.L2.SG.Pf.CarrierSz.g_pos D).2` after adjusting the coercions. Conclude with `div_pos (by positivity) (mul_pos hg (Formalism.FourierDecayAlt.P.Jx3.rd_pos D.host.E))`. Establish `hHaar' : Formalism.FourierDecayAlt.B.IsHaarOn (Formalism.FourierDecayAlt.C6.Rset (trG ((PP).Q v) ((PP).Qi v) ((h v)⁻¹ * (gamW X u u' w) v * h' v))) (Formalism.FourierDecayAlt.D.muR ((PP).T ((PP).τ.symm v)).base (trG ((PP).Q v) ((PP).Qi v) ((h v)⁻¹ * (gamW X u u' w) v * h' v)) (hl …` using `hHaar`. Use `(Bridge.orbJ_smul _ _ _ F hrel hHaar' hb).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[orbVec_vecV X u u' e he hv C CA de de' l grid grid1 T hT fc χ sg ν' m₀ top A₀ Mo sc hsc i0 i0' hFX hB hemb hbase p w hp hw h h' hD v F hloc']`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbVecAt_carrierOf (sc : ℝ) (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k)
     (hbase : ∀ v, Formalism.FourierDecayAlt.D.IsBaseFrame ((PP).T ((PP).τ.symm v)).base ((PP).ν' ((PP).τ.symm v))

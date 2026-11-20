@@ -14,17 +14,17 @@ noncomputable section
 namespace GlobalTheory.Poinc.Chart
 
 /- English proof (translation)
-Rewrite `hg` using `[← Category.assoc]`. Substitute `hg` using the available equality. Establish `hpt : genericPoint (Sp K) = closedPoint (CommRingCat.of K)` using `Subsingleton.elim _ _`. Rewrite using `[hpt]`. Establish `h1 : ((spMap φ ≫ j) ≫ q).stalkMap (closedPoint (CommRingCat.of K)) = Scheme.stalkClosedPointTo ((spMap φ ≫ j) ≫ q) ≫ (stalkClosedPointIso (CommRingCat.of K)).inv` using `(Iso.eq_comp_inv _).2 rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Use `RingHom.Finite.comp (RingHom.Finite.of_surjective _ (ConcreteCategory.bijective_of_isIso (stalkClosedPointIso (CommRingCat.of K)).inv).2) ?_` and prove the remaining obligations. Rewrite using `[Scheme.stalkClosedPointTo_comp]`. Use `set τ := Scheme.stalkClosedPointTo (spMap φ ≫ j) with hτdef`. Establish `h2 : q.stalkMap _ ≫ τ = (X.residue _ ≫ q.residueFieldMap _) ≫ Y.descResidueField τ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.residue_residueFieldMap, Category.assoc, Scheme.residue_descResidueField]`. Establish `hτ : ∀ a : A, ∃ s, τ.hom s = φ a`. Introduce `a`. Establish `h3 : τ = j.stalkMap _ ≫ Scheme.stalkClosedPointTo (spMap φ)` using `Scheme.stalkClosedPointTo_comp _ _`. Establish `h5 : (Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (Spec (CommRingCat.of A)).presheaf.germ ⊤ ((spMap φ) (closedPoint (CommRingCat.of K))) trivial ≫ inv (j.stalkMap ((spMap φ) (closedPoint (CommRingCat.of K)))) ≫ j.stalkMap ((spMap φ) (closedPoint (CommRingCat.of K))) ≫ Scheme.stalkC …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsIso.inv_hom_id_assoc, Scheme.germ_stalkClosedPointTo_Spec, Iso.inv_hom_id_assoc]`. Use `⟨((Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (Spec (CommRingCat.of A)).presheaf.germ ⊤ ((spMap φ) (closedPoint (CommRingCat.of K))) trivial ≫ inv (j.stalkMap ((spMap φ) (closedPoint (CommRingCat.of K))))).hom a, ?_⟩` and prove the remaining obligations. Rewrite using `[h3]`. Conclude with `congrArg (fun m => m.hom a) h5`. Establish `hsurj : Function.Surjective (Y.descResidueField τ).hom`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `z`. Take `⟨a, c, rfl⟩` from `hφ z`. Take `⟨s, hs⟩` from `hτ a`. Take `⟨t, ht⟩` from `hτ c`. Use `⟨Y.residue _ s / Y.residue _ t, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_div₀, ← hs, ← ht]`. Both sides reduce to the same expression. Rewrite using `[h2]`. Conclude with `(RingHom.Finite.of_surjective _ hsurj).comp ((GlobalTheory.residueFieldMap_finite_of_locallyQuasiFinite q _).comp (RingHom.Finite.of_surjective _ (Scheme.residue_surjective X _)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkMap_finite_of_chart (K A : Type) [Field K] [CommRing A] {X Y : Scheme.{0}} (q : Y ⟶ X) (j : Sp A ⟶ Y)
     (φ : A →+* K) [IsFinite q] [IsOpenImmersion j] (hφ : ∀ z : K, ∃ a c : A, z = φ a / φ c) (g : Sp K ⟶ X)
@@ -70,33 +70,29 @@ theorem stalkMap_finite_of_chart (K A : Type) [Field K] [CommRing A] {X Y : Sche
     (RingHom.Finite.of_surjective _ (Scheme.residue_surjective X _)))
 
 /- English proof (translation)
-Introduce `n N X Y sX sY q hn hN hsX hsY hq he hs η hη`. Take `⟨η', hη', rfl⟩` from `GlobalTheory.QuotTriple.genericPoints_subset_image (π := q) hη`. Establish `hgen : (sY η').asIdeal = ⊥`. Set `b : Sp (cycAway N)` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (cycAway N))`. Establish `hb : b ⤳ sY η'` using `(PrimeSpectrum.le_iff_specializes _ _).1 (show (⊥ : Ideal _) ≤ _ from bot_le)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨z', hz', e⟩` from `Flat.generalizingMap sY hb`. Establish `h1 : closure {η'} ⊆ closure ({z'} : Set Y)` using `hz'.closure_subset`. Establish `h2 : closure ({z'} : Set Y) ⊆ closure {η'}` using `hη'.2 isIrreducible_singleton.closure h1`. Establish `h3 : η' ⤳ z'` using `specializes_iff_closure_subset.2 h2`. Establish `: z' = η'` using `(hz'.antisymm h3).eq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← this, e]`. Take `⟨_, ⟨U, hU, rfl⟩, hηU, -⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ η') isOpen_univ`. Use `replace hU : IsAffineOpen U := hU`. Use `haveI : LocallyOfFiniteType sY := inferInstance`. Set `P : PrimeSpectrum Γ(Y, U)` to `hU.primeIdealOf ⟨η', hηU⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hP : hU.fromSpec P = η'` using `hU.fromSpec_primeIdealOf _`. Set `ψ : cycAway N →+* Γ(Y, U)` to `(Spec.preimage (hU.fromSpec ≫ sY)).hom`. Establish `hψ : spMap ψ = hU.fromSpec ≫ sY` using `Spec.map_preimage _`. Establish `hft : ψ.FiniteType`. Establish `: LocallyOfFiniteType (spMap ψ)` using `by rw [hψ]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).1 this`. Establish `hker : Ideal.comap ψ P.asIdeal = ⊥`. Establish `h1 : spMap ψ P = sY (hU.fromSpec P)` using `by rw [hψ]; rfl`. Express the relevant statement in the definitionally equal form `(spMap ψ P).asIdeal = ⊥`. Rewrite using `[h1, hP]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `hgen`. Use `letI : Algebra (cycAway N) Γ(Y, U) := ψ.toAlgebra`. Set `Ω` to `FractionRing (Γ(Y, U) ⧸ P.asIdeal)`. Set `φ : Γ(Y, U) →+* Ω` to `(algebraMap (Γ(Y, U) ⧸ P.asIdeal) Ω).comp (Ideal.Quotient.mk P.asIdeal)`. Establish `hφker : ∀ a, φ a = 0 ↔ a ∈ P.asIdeal` using `fun a => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Simplify using `only [φ, RingHom.comp_apply]`. Rewrite using `[(IsFractionRing.injective (Γ(Y, U) ⧸ P.asIdeal) Ω).eq_iff' (map_zero _), Ideal.Quotient.eq_zero_iff_mem]`. Use `letI : Algebra (cycAway N) Ω := (φ.comp ψ).toAlgebra`. Set `f : Γ(Y, U) →ₐ[cycAway N] Ω` to `{ φ with commutes' := fun _ => rfl }`. Establish `hinj : Function.Injective (algebraMap (cycAway N) Ω)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `: x ∈ Ideal.comap ψ P.asIdeal` using `(hφker (ψ x)).1 hx`. Rewrite `this` using `[hker, Ideal.mem_bot]`. Then use the resulting hypothesis. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap hinj`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : ArithBase (cycAway N) Ω := ⟨GlobalTheory.CycAwayReg.isDedekindDomain_cycAway N, finiteType_cycAway N, inferInstance, hinj⟩`. Use `⟨Ω, inferInstance, inferInstance, inferInstance, f.range, spMap f.rangeRestrict.toRingHom ≫ hU.fromSpec, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Algebra.map_top] haveI : Algebra.FiniteType (cycAway N) Γ(Y, U) := hft`. Conclude with `Algebra.FiniteType.out.map f`. Introduce `z`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, s, -, rfl⟩` from `IsFractionRing.div_surjective (A := Γ(Y, U) ⧸ P.asIdeal) z`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective s`. Conclude with `⟨f a, ⟨a, rfl⟩, f c, ⟨c, rfl⟩, rfl⟩`. Rewrite using `[Category.assoc, ← hψ, ← Spec.map_comp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Introduce `w`. Establish `hw : spMap f.rangeRestrict.toRingHom (spMap f.range.val.toRingHom w) = P`. Use `PrimeSpectrum.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.comap (f.rangeRestrict.toRingHom) (Ideal.comap f.range.val.toRingHom w.asIdeal) = P.asIdeal`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[@Ideal.eq_bot_of_prime _ _ w.asIdeal (PrimeSpectrum.isPrime (show PrimeSpectrum Ω from w))]`. Use extensionality with `a`. Simplify using `only [Ideal.mem_comap, Ideal.mem_bot]`. Conclude with `hφker a`. Use `show q (hU.fromSpec (spMap f.rangeRestrict.toRingHom (spMap f.range.val.toRingHom w))) = q η'`.
-
-Rewrite using `[hw, hP]`. Establish `e : spMap f.range.val.toRingHom ≫ spMap f.rangeRestrict.toRingHom = spMap (f.range.val.toRingHom.comp f.rangeRestrict.toRingHom)` using `(Spec.map_comp _ _).symm`. Use `stalkMap_finite_of_chart Ω Γ(Y, U) q hU.fromSpec (f.range.val.toRingHom.comp f.rangeRestrict.toRingHom) (fun z => ?_) _ (by rw [← e]; simp only [Category.assoc])` and prove the remaining obligations. Take `⟨x, s, -, rfl⟩` from `IsFractionRing.div_surjective (A := Γ(Y, U) ⧸ P.asIdeal) z`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
-
-Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective s`. Conclude with `⟨a, c, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_chart : ∀ (n N : ℕ) (X Y : Scheme.{0}) (sX : X ⟶ Sp (cycAway n)) (sY : Y ⟶ Sp (cycAway N)) (q : Y ⟶ X), 0 < n → 0 < N → Smooth sX → Smooth sY → IsFinite q → Etale q → Surjective q → ∀ η ∈ genericPoints X, ∃ (Ω : Type) (_ : Field Ω) (_ : Algebra (cycAway N) Ω) (_ : ArithBase (cycAway N) Ω) (R : Subalgebra (cycAway N) Ω) (y : Sp R ⟶ Y), R.FG ∧ (∀ z : Ω, ∃ a ∈ R, ∃ c ∈ R, z = a / c) ∧ y ≫ sY = spMap (algebraMap (cycAway N) R) ∧ (∀ w, (spMap R.val.toRingHom ≫ y ≫ q) w = η) ∧ ((spMap R.val.toRingHom ≫ y ≫ q).stalkMap (genericPoint (Sp Ω))).hom.Finite := by
   intro n N X Y sX sY q hn hN hsX hsY hq he hs η hη

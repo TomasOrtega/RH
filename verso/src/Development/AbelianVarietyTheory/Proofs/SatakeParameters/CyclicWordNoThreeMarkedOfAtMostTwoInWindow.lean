@@ -8,9 +8,9 @@ open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n th L hL hw`. Establish `key : ∀ i, ¬(th i ∧ th (i + 1) ∧ th (i + 2))`. Introduce `i h`. Use `hw i 0 1 2 (by norm_num) (by norm_num) (by omega)` as an intermediate fact. Simplify using `only [Nat.cast_zero, add_zero, Nat.cast_one, Nat.cast_ofNat] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this h`. Use `⟨key, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Conclude with `key 0 ⟨hall _, hall _, hall _⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.noThree_of_windowTwo : ∀ {n : ℕ} (th : ZMod n → Prop) (L : ℕ),
     3 ≤ L → _root_.GlobalTheory.HTW.WindowTwo th L →

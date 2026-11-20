@@ -5,11 +5,11 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ a π Ξ r hr hC`. Take `⟨c, hc⟩` from `GlobalTheory.CuspRep.Central.lie_scalar π 1`. Establish `hc' : ∀ ψ ∈ π.V, lie E a (oneL E a) ψ = c • ψ` using `hc`. Establish `h0 : c + (r : ℂ) = 0`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `not_hasCohomology_of_central hne (fun m => ?_) hC` and prove the remaining obligations. Proceed by induction on `m using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, hx, hy, smul_add]`. Consider the case `tmul φ v`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `e : π.op (.lie (oneL E a)) φ = c • φ` using `Subtype.ext (hc' φ.1 φ.2)`. Establish `hr' : Ξ.dmat (oneL E a) = (r : ℂ) • (1 : Matrix (Fin Ξ.d) (Fin Ξ.d) ℂ)` using `hr`. Rewrite using `[tensorLie_tmul, e, hr', Matrix.smul_mulVec, Matrix.one_mulVec, add_smul, TensorProduct.smul_tmul', TensorProduct.tmul_smul]`. Introduce `φ hφ`. Rewrite using `[hc' φ hφ, eq_neg_of_add_eq_zero_left h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Lit.Bor.oneEig :
     UpperTheory.V.Lit.Bor.OneEig := by

@@ -9,7 +9,7 @@ namespace GlobalTheory.CompanionTheory.CuspFinGL.Transl
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (g * x * h) = φ.1 (g * h * x)`. Rewrite using `[mul_assoc g x h, mul_assoc g h x, hc x]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem rt_comm_of_central {h : GA E a} (hc : ∀ g : GA E a, h * g = g * h) (x : GA E a) (φ : Sm E a) :
     rt E a x (rt E a h φ) = rt E a h (rt E a x φ) := by
@@ -18,7 +18,7 @@ theorem rt_comm_of_central {h : GA E a} (hc : ∀ g : GA E a, h * g = g * h) (x 
   rw [mul_assoc g x h, mul_assoc g h x, hc x]
 
 /- English proof (translation)
-Introduce `φ ψ e` and use `by refine Subtype.ext (funext fun g => ?_) have := congrArg (fun f : Sm E a => f.1 (g * h⁻¹)) e simpa using this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rt_injective (h : GA E a) : Function.Injective (rt E a h) := fun φ ψ e => by
   refine Subtype.ext (funext fun g => ?_)
@@ -26,17 +26,15 @@ theorem rt_injective (h : GA E a) : Function.Injective (rt E a h) := fun φ ψ e
   simpa using this
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `φ.1 (ratGL E a γ * g * h) = φ.1 (g * h)`. Rewrite using `[mul_assoc, hφ.left]`. Use `level := by`. Establish `e : {k | finRep E a k (rt E a h φ) = rt E a h φ} = {k | finRep E a k φ = φ}`. Use extensionality with `k`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `rt E a (finGL E a k) (rt E a h φ) = rt E a h φ ↔ rt E a (finGL E a k) φ = φ`. Rewrite using `[rt_comm_of_central hc]`. Conclude with `(rt_injective h).eq_iff`. Rewrite using `[e]`. Conclude with `hφ.level`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `kfin := by`. Use `hφ.kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k => cptRep E a k φ)).map (rt E a h)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨cptRep E a k φ, Submodule.subset_span ⟨k, rfl⟩, (rt_comm_of_central hc _ φ).symm⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `zfin := by`. Use `hφ.zfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a)).map (rt E a h)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `⟨z φ, Submodule.subset_span ⟨z, hz, rfl⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(LinearMap.congr_fun (GlobalTheory.CompanionTheory.CTFin.Slice1.commute_rt_of_mem_Zalg hz h).eq φ).symm`. Use `growth g := by`. Take `⟨C, N, hb⟩` from `hφ.growth (g * h)`. Use `⟨C, N, fun y => ?_⟩` and prove the remaining obligations. Establish `e : (rt E a h φ).1 (g * infGL E a y) = φ.1 (g * h * infGL E a y)`.
-
-Express the relevant statement in the definitionally equal form `φ.1 (g * infGL E a y * h) = _`. Rewrite using `[mul_assoc g _ h, mul_assoc g h, hc]`. Rewrite using `[e]`. Conclude with `hb y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAutForm_rt_of_central {h : GA E a} (hc : ∀ g : GA E a, h * g = g * h) {φ : Sm E a}
     (hφ : IsAutForm φ) : IsAutForm (rt E a h φ) where
@@ -76,13 +74,13 @@ theorem isAutForm_rt_of_central {h : GA E a} (hc : ∀ g : GA E a, h * g = g * h
     exact hb y
 
 /- English proof (translation)
-Introduce `E _ _ _ a L W _ _ ρ J hJ φ hφ hcusp t`. Use `set h := GlobalTheory.UnitaryBC.splitCentre E a t with hh`. Establish `hc : ∀ g : GA E a, h * g = g * h` using `GlobalTheory.CuspRep.CuspidalL2GL.splitCentre_comm t`. Take `⟨hA, hL, hK, hZ⟩` from `hφ`. Use `⟨⟨isAutForm_rt_of_central hc hA, fun k hk => ?_, fun g => ?_, fun z hz => ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `rt E a (finGL E a k) (rt E a h φ) = rt E a h φ`. Rewrite using `[rt_comm_of_central hc]`. Conclude with `congrArg (rt E a h) (hL k hk)`. Establish `e : (fun k : Kinf E a => (cptRep E a k (rt E a h φ)).1 g) = fun k : Kinf E a => (cptRep E a k φ).1 (g * h)`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (fun f : Sm E a => f.1 g) (rt_comm_of_central hc _ φ)`. Rewrite using `[e]`. Conclude with `hK (g * h)`. Establish `e` using `LinearMap.congr_fun (GlobalTheory.CompanionTheory.CTFin.Slice1.commute_rt_of_mem_Zalg (hJ hz) h).eq φ`. Rewrite `e` using `[Module.End.mul_apply, Module.End.mul_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, hZ z hz, map_zero]`. Introduce `r hr hr' inst1 inst2 μ 𝓕 hμ hF g`. Establish `e : ∀ x : BlockIx a r → Ad E, (rt E a h φ).1 (unip x * g) = φ.1 (unip x * (g * h))` using `fun x => congrArg φ.1 (mul_assoc _ _ _)`. Simplify using `only [e]`. Conclude with `hcusp r hr hr' μ 𝓕 hμ hF (g * h)`.
+A detailed English derivation is pending.
 -/
 theorem rt_splitCentre_mem : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (L : Subgroup (GL (Fin a) (Af E))) (W : Type) [AddCommGroup W] [Module ℂ W]

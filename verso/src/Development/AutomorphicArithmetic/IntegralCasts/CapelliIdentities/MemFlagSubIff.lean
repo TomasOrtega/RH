@@ -10,13 +10,13 @@ noncomputable def UpperTheory.Reformulated.B.Qi34.flagSub :
       Submodule.span F ((⇑b : Fin n → N) '' {j : Fin n | (↑j : ℕ) < i})
 
 /- English proof (translation)
-Introduce `F _ n i x`. Unfold `UpperTheory.Reformulated.B.Qi34.flagSub`. Rewrite using `[Module.Basis.mem_span_image]`. Prove the components needed by the constructor for the conclusion. Introduce `h j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hx`. Establish `hmem : j ∈ ((Pi.basisFun F (Fin n)).repr x).support`. Rewrite using `[Finsupp.mem_support_iff, Pi.basisFun_repr]`. Conclude with `hx`. Establish `hlt : (j : ℕ) < i` using `h (Finset.mem_coe.mpr hmem)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce `h j hj`. Establish `hx : x j ≠ 0`. Use `Finsupp.mem_support_iff.mp (Finset.mem_coe.mp hj)` as an intermediate fact. Rewrite `this` using `[Pi.basisFun_repr]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the negation of the conclusion and derive a contradiction.
 
-Use `show (j : ℕ) < i`. Assume the negation of the conclusion as `hlt`. Conclude with `hx (h j (not_lt.mp hlt))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qi34.mem_flagSub_iff :
     ∀ {F : Type} [inst : Field F] {n : ℕ} (i : ℕ) (x : Fin n → F),

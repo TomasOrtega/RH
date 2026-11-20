@@ -2,9 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 
 open UpperTheory.V.Pr in
 /- English proof (translation)
-Rewrite `h` using `[qdim, ringKrullDim_quotient]`. Take `⟨l, hl⟩` from `Order.le_krullDim_iff.mp h`. Use `⟨(l 0).1, fun y hy => (l 0).2 hy, ?_⟩` and prove the remaining obligations. Rewrite using `[qdim, ringKrullDim_quotient]`. Apply `Order.le_krullDim_iff.mpr` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨{ length := l.length, toFun := fun i => ⟨(l i).1, ?_⟩, step := fun i => ?_ }, hl⟩` and prove the remaining obligations. Rewrite using `[PrimeSpectrum.mem_zeroLocus]`. Conclude with `(show (l 0).1.asIdeal ≤ (l i).1.asIdeal from l.monotone (Fin.zero_le i))`. Conclude with `l.step i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Pr.exists_prime_qdim {R : Type} [CommRing R] (J : Ideal R) (n : ℕ)
     (h : (n : WithBot ℕ∞) ≤ qdim J) :
@@ -20,25 +20,25 @@ private theorem UpperTheory.V.Pr.exists_prime_qdim {R : Type} [CommRing R] (J : 
   · exact l.step i
 
 /- English proof (translation)
-Introduce `R _ _ L hL I hIg hIti hIbig P hPti hPmin`. Establish `hW : ∀ p ∈ L.Nice, (∃ P ≤ p, P ∈ L.TI ∧ P ∈ L.Good) → ∀ P' ≤ p, P' ∈ L.TI → P' ∈ L.Good`. Introduce `p hp hS`. Break down `hL.nice_type p hp with hpt | hpt` into its components or cases. Take `⟨Q, hQp, _, hQg⟩` from `hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Establish `hpg` using `hL.good_up Q p hQp hQg`. Introduce `P' hP' _`. Conclude with `hL.p1 p hp hpt hpg P' hP'`. Conclude with `hL.p23 p hp hpt p Relation.ReflTransGen.refl hS`. Set `Inv : PrimeSpectrum R → Prop` to `fun Q => (Q ∈ L.TI → Q ∈ L.Good) ∧ ((Q ∈ L.TI ∧ Q ∈ L.Good) ∨ (Q ∈ L.Thick ∧ ∃ p0 ∈ L.Nice, p0 ∈ L.TE ∧ (∃ P ≤ p0, P ∈ L.TI ∧ P ∈ L.Good) ∧ ∃ p ∈ L.Nice, p ∈ L.TE ∧ Q ≤ p ∧ Relation.ReflTransGen L.Link p0 p))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `K : ∀ Q, L.Comp Q → Inv Q → ∀ M : PrimeSpectrum R, Q ≤ M → (L.D1 : WithBot ℕ∞) ≤ qdim M.asIdeal → ∃ p ∈ L.Nice, M ≤ p ∧ ∀ P' ≤ p, P' ∈ L.TI → P' ∈ L.Good`. Introduce `Q hQc hQ M hQM hM`. Break down `hQ.2 with ⟨hti, hg⟩ | ⟨hth, p0, hp0n, hp0e, hS, p, hpn, hpe, hQp, hrt⟩` into its components or cases. Establish `hMg` using `hL.good_up Q M hQM hg`. Take `⟨p, hpn, hMp⟩` from `hL.nice_good M hMg hM`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨p, hpn, hMp, hW p hpn ⟨Q, le_trans hQM hMp, hti, hg⟩⟩`. Take `⟨p', hp'n, hp'e, hMp'⟩` from `hL.nice_thick Q hth hQc M hQM hM`. Conclude with `⟨p', hp'n, hMp', hL.p23 p0 hp0n hp0e p' (hrt.tail ⟨hpn, hpe, hp'n, hp'e, Q, hth, hQc, hQp, le_trans hQM hMp'⟩) hS⟩`. Establish `step : ∀ Q Q', L.Adj Q Q' → Inv Q → Inv Q'`. Introduce `Q Q' hadj hQ`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hQc, hQ'c, hbig⟩` from `hadj`. Take `⟨M, hJM, hM⟩` from `UpperTheory.V.Pr.exists_prime_qdim _ _ hbig`. Establish `hQM : Q ≤ M` using `show Q.asIdeal ≤ M.asIdeal from le_trans le_sup_left hJM`. Establish `hQ'M : Q' ≤ M` using `show Q'.asIdeal ≤ M.asIdeal from le_trans le_sup_right hJM`. Take `⟨p, hpn, hMp, hWp⟩` from `K Q hQc hQ M hQM hM`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hQ'ti : Q' ∈ L.TI`. Establish `hg` using `hWp Q' (le_trans hQ'M hMp) hQ'ti`. Conclude with `⟨fun _ => hg, Or.inl ⟨hQ'ti, hg⟩⟩`. Establish `hth : Q' ∈ L.Thick` using `(hL.dich Q' hQ'c).resolve_left hQ'ti`. Use `⟨fun h => absurd h hQ'ti, Or.inr ⟨hth, ?_⟩⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨p', hp'n, hp'e, hMp'⟩` from `hL.nice_thick Q' hth hQ'c M hQ'M hM`. Break down `hQ.2 with ⟨hti, hg⟩ | ⟨hQth, p0, hp0n, hp0e, hS, p1, hp1n, hp1e, hQp1, hrt⟩` into its components or cases. Conclude with `⟨p', hp'n, hp'e, ⟨Q, le_trans hQM hMp', hti, hg⟩, p', hp'n, hp'e, le_trans hQ'M hMp', Relation.ReflTransGen.refl⟩`. Conclude with `⟨p0, hp0n, hp0e, hS, p', hp'n, hp'e, le_trans hQ'M hMp', hrt.tail ⟨hp1n, hp1e, hp'n, hp'e, Q, hQth, hQc, hQp1, le_trans hQM hMp'⟩⟩`. Take `⟨q, hq, hqI⟩` from `Ideal.exists_minimalPrimes_le (I := ⊥) (J := I.asIdeal) bot_le`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `P0 : PrimeSpectrum R` to `⟨q, hq.1.1⟩`. Establish `hP0I : P0 ≤ I` using `show q ≤ I.asIdeal from hqI`. Establish `hP0ti : P0 ∈ L.TI` using `hL.ti_down P0 I hP0I hIti`. Establish `hP0c : L.Comp P0` using `hL.comp P0 hP0ti hq`. Take `⟨p, hpn, hIp⟩` from `hL.nice_good I hIg hIbig`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP0g` using `hW p hpn ⟨I, hIp, hIti, hIg⟩ P0 (le_trans hP0I hIp) hP0ti`. Establish `hP0 : Inv P0` using `⟨fun _ => hP0g, Or.inl ⟨hP0ti, hP0g⟩⟩`. Establish `hall : ∀ Q, Relation.ReflTransGen L.Adj P0 Q → Inv Q`. Introduce `Q hch`. Proceed by induction on `hch with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `refl => exact hP0`. Consider the case `tail _ hadj ih => exact step _ _ hadj ih`. Conclude with `(hall P (hL.chain P0 P hP0c (hL.comp P hPti hPmin))).1 hPti`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pr.locProp :
     UpperTheory.V.Pr.LocProp := by

@@ -9,15 +9,15 @@ namespace GlobalTheory.LamTie
 open GlobalTheory.SignedHC
 
 /- English proof (translation)
-Take `⟨hv, hb, -⟩` from `GridData.ofHCParam_spec P s ga c`. Establish `hk` using `R.m_add_three_le_k`. Establish `hm` using `R.two_le_m`. Establish `h1 : (GridData.ofHCParam P s ga c).v (R.k - 2 + 2) < (GridData.ofHCParam P s ga c).v 2` using `(GridData.ofHCParam P s ga c).v_anti 2 _ le_rfl (by omega) (show R.k - 2 + 2 ≤ R.k by omega)`. Establish `h2 : (GridData.ofHCParam P s ga c).b (0 + 1) ≤ (GridData.ofHCParam P s ga c).b (j.1 + 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos j.1 with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `((GridData.ofHCParam P s ga c).b_mono _ _ le_rfl (by omega) (show j.1 + 1 ≤ R.m from j.2)).le`. Establish `h1' : P.v ⟨R.k - 2, by omega⟩ < ((GridData.ofHCParam P s ga c).v 2 : ℚ)`. Rewrite using `[hv]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1` after adjusting the coercions. Establish `h2' : P.b ⟨0, by omega⟩ ≤ P.b j`. Rewrite using `[hb, hb]`. Conclude with `h2` after adjusting the coercions. Establish `h3` using `P.v_gt_u ⟨R.k - 2, by omega⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h4` using `P.u_last_gt (by omega) (by omega)`. Establish `h5 : P.u ⟨R.k - 2 + 1, by omega⟩ = P.u ⟨R.k - 1, by omega⟩`. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Establish `h6` using `P.gap_be j`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h7 : (0 : ℚ) ≤ R.t` using `by positivity`. Simplify using `only at h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem e_add_v_two_pos {R : Ranks} (P : HCParam R) (s ga : ℕ) (c : ℕ → ℤ) (j : Fin R.m) :
     0 < P.e j + ((GridData.ofHCParam P s ga c).v 2 : ℚ) := by
@@ -44,9 +44,9 @@ theorem e_add_v_two_pos {R : Ranks} (P : HCParam R) (s ga : ℕ) (c : ℕ → �
   linarith
 
 /- English proof (translation)
-Establish `hk` using `D.R.m_add_three_le_k`. Take `⟨a, ha⟩` from `D.R.k_even`. Take `⟨b, hb⟩` from `D.R.m_even`. Establish `h : Odd (D.R.r + 6)`. Rewrite using `[Nat.odd_iff]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Simplify using `only [BlochKatoReduction.Gen.NFun, BlochKatoReduction.Gen.sFun, if_pos h, GlobalTheory.Grid.bigN, GlobalTheory.Grid.sLen]`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem nFun_eq_bigN (D : D7) : BlochKatoReduction.Gen.NFun D.R = GlobalTheory.Grid.bigN D := by
   have hk := D.R.m_add_three_le_k
@@ -57,11 +57,11 @@ theorem nFun_eq_bigN (D : D7) : BlochKatoReduction.Gen.NFun D.R = GlobalTheory.G
   simp only [BlochKatoReduction.Gen.NFun, BlochKatoReduction.Gen.sFun, if_pos h, GlobalTheory.Grid.bigN, GlobalTheory.Grid.sLen]
 
 /- English proof (translation)
-Establish `h1` using `e_add_v_two_pos (D.hc (D.eTau.symm g)) (GlobalTheory.Grid.sLen D) (GlobalTheory.Grid.gap D) 0 j`. Establish `h2` using `Int.lt_floor_add_one ((GlobalTheory.Grid.gridOf D (GlobalTheory.Grid.gap D) 0 (D.eTau.symm g)).mid (a.1 + 1))`. Establish `h3` using `(GlobalTheory.Grid.gridOf D (GlobalTheory.Grid.gap D) 0 (D.eTau.symm g)).mid_eq (i := a.1 + 1) (by omega)`. Establish `h4 : (GlobalTheory.Grid.gridOf D (GlobalTheory.Grid.gap D) 0 (D.eTau.symm g)).a (a.1 + 1) = ((GlobalTheory.Grid.gridOf D (GlobalTheory.Grid.gap D) 0 (D.eTau.symm g)).v 2 : ℚ) + 1 / 2 + ((D.R.m : ℚ) + 1 - ((a.1 + 1 : ℕ) : ℚ)) * (GlobalTheory.Grid.gap D : ℚ)` using `rfl`. Establish `h5 : ((GlobalTheory.Grid.gridOf D (GlobalTheory.Grid.gap D) 0 (D.eTau.symm g)).ga : ℚ) = GlobalTheory.Grid.gap D` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6` using `(GlobalTheory.Grid.isLeast_gap D).1.2.1`. Establish `h7 : GlobalTheory.Grid.bigN D ≤ GlobalTheory.Grid.bigN D ^ 3` using `Nat.le_self_pow (by norm_num) _`. Establish `h8 : ((GlobalTheory.Grid.bigN D + 2 : ℕ) : ℚ) ≤ GlobalTheory.Grid.gap D` using `by exact_mod_cast (by omega)`. Establish `h9 : ((a.1 + 1 : ℕ) : ℚ) ≤ D.R.m` using `by exact_mod_cast a.2`. Establish `h10 : (0 : ℚ) ≤ GlobalTheory.Grid.gap D` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h11 : (GlobalTheory.Grid.gap D : ℚ) ≤ ((D.R.m : ℚ) + 1 - ((a.1 + 1 : ℕ) : ℚ)) * (GlobalTheory.Grid.gap D : ℚ)` using `by nlinarith`. Rewrite using `[nFun_eq_bigN]`. Unfold `eExp GlobalTheory.Grid.cen`. Move the coercions through the operations in `at h8`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem nFun_add_one_lt_eExp_add_cen (D : D7) (j a : Fin D.R.m) (g : D.R.Psi) :
     (BlochKatoReduction.Gen.NFun D.R : ℚ) + 1 < eExp D j g + (GlobalTheory.Grid.cen D (D.eTau.symm g) (a.1 + 1) : ℚ) := by

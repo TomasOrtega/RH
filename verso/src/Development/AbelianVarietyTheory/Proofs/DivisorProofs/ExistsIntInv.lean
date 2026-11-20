@@ -8,19 +8,17 @@ open NumberField MvPowerSeries IsLocalRing ReciprocityTheory.PGsh ReciprocityThe
 namespace GlobalTheory.IntInv
 
 /- English proof (translation)
-Introduce `C _ _ v d Θ hint h0 h1`. Use `set S := ReciprocityTheory.ChartRestriction.G.Sh.PTb.intRing v`. Set `Θ' : Fin d → MvPowerSeries (Fin d) S` to `fun a α => ⟨coeff α (Θ a), hint a α⟩`. Establish `hΘ' : ∀ a, map S.subtype (Θ' a) = Θ a` using `fun a => by ext α; rfl`. Establish `h0' : ∀ a, constantCoeff (Θ' a) = 0` using `fun a => Subtype.ext (by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `coeff 0 (Θ a) = 0`. Rewrite using `[coeff_zero_eq_constantCoeff_apply]`. Conclude with `h0 a)`. Establish `h1' : ∀ a b, coeff (Finsupp.single b 1) (Θ' a) = (1 : Matrix (Fin d) (Fin d) S) a b`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `coeff (Finsupp.single b 1) (Θ a) = _`. Rewrite using `[h1 a b, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> rfl`. Establish `hu : IsUnit (1 : Matrix (Fin d) (Fin d) S).det` using `by rw [Matrix.det_one]; exact isUnit_one`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ψ, hψ0, hψΘ, hΘψ⟩` from `ReciprocityTheory.ChartRestriction.G.LF.InvFun.exists_inv Θ' h0' 1 h1' hu`. Establish `hsψ : HasSubst ψ` using `hasSubst_of_constantCoeff_zero hψ0`. Establish `hsΘ : HasSubst Θ'` using `hasSubst_of_constantCoeff_zero h0'`. Use `⟨fun a => map S.subtype (ψ a), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a α`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[coeff_map]`. Conclude with `(coeff α (ψ a)).2`. Introduce `a`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, hψ0 a]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a`. Establish `key` using `map_subst hsψ (h := S.subtype) (Θ' a)`. Rewrite `key` using `[hΘ', hψΘ a, map_X]`. Conclude with `key.symm`. Introduce `a`.
-
-Establish `key` using `map_subst hsΘ (h := S.subtype) (ψ a)`. Establish `e : (fun s => map S.subtype (Θ' s)) = Θ` using `funext hΘ'`. Rewrite `key` using `[e, hΘψ a, map_X]`. Conclude with `key.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_inv : ∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)), ∀ (d : ℕ) (Θ : Fin d → MvPowerSeries (Fin d) C), (∀ a, MvIsInt v (Θ a)) → (∀ a, constantCoeff (Θ a) = 0) → (∀ a b, coeff (Finsupp.single b 1) (Θ a) = if a = b then 1 else 0) → ∃ Ψ : Fin d → MvPowerSeries (Fin d) C, (∀ a, MvIsInt v (Ψ a)) ∧ (∀ a, constantCoeff (Ψ a) = 0) ∧ (∀ a, subst Ψ (Θ a) = MvPowerSeries.X a) ∧ ∀ a, subst Θ (Ψ a) = MvPowerSeries.X a := by
   intro C _ _ v d Θ hint h0 h1

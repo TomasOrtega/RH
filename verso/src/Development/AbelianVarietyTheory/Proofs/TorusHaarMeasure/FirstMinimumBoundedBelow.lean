@@ -21,7 +21,7 @@ noncomputable def leviCol (X : Data E 2) (x0 : Frame X.Ψ 2) (τ : X.Ψ) (z : V 
   (leviV (nd X) (fun w => ((Real.log (colSq (cpt X x0 w) τ) : ℝ) : ℂ)) z ξ).re
 
 /- English proof (translation)
-Establish `h : HasFDerivAt (fun w : V n => c + d * w k) (d • (EuclideanSpace.proj k : V n →L[ℂ] ℂ)) z` using `((EuclideanSpace.proj k : V n →L[ℂ] ℂ).hasFDerivAt.const_mul d).const_add c`. Rewrite using `[wd_of_differentiableAt h.differentiableAt, h.fderiv]`. Simplify using `[bas, eq_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wd_affine {n : ℕ} (c d : ℂ) (k j : Fin n) (z : V n) :
     wd n j (fun w : V n => c + d * w k) z = if j = k then d else 0 := by
@@ -32,15 +32,15 @@ theorem wd_affine {n : ℕ} (c d : ℂ) (k j : Fin n) (z : V n) :
   simp [bas, eq_comm]
 
 /- English proof (translation)
-Set `g : Fin 2 → V (nd X) → ℂ` to `fun a w => x0 τ a 0 + x0 τ a 1 * w (idx X τ)`. Establish `hs : ∀ w, colSq (cpt X x0 w) τ = sqNorm fun a => g a w` using `fun w => by`. Simplify using `[colSq, sqNorm, compact_frame_first_column, g, Complex.normSq_eq_norm_sq]`. Establish `hpos : 0 < sqNorm fun a => g a z` using `hs z ▸ colSq_pos (by rwa [det_cpt])`. Establish `hne : (fun a => g a z) ≠ 0` using `fun h0 => by rw [h0] at hpos; simp [sqNorm] at hpos`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcd : ∀ a, ContDiffAt ℂ 2 (g a) z` using `fun a => (contDiff_const.add (contDiff_const.mul (EuclideanSpace.proj (idx X τ) : V (nd X) →L[ℂ] ℂ).contDiff)).contDiffAt`. Establish `hL` using `leviLogNormSq (nd X) 2 g z ξ hcd hne`. Establish `hJ : wJac (nd X) 2 g z *ᵥ ξ = fun a => x0 τ a 1 * ξ (idx X τ)`. Use function extensionality and compare the values at `a`. Simplify using `[wJac, Matrix.mulVec, dotProduct, g, wd_affine]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Unfold `leviCol`. Simplify using `only [hs]`. Rewrite using `[hL, Complex.ofReal_re, hJ]`. Use `⟨div_nonneg (Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _) hpos.le, fun hξ => div_pos (sqNorm_pos fun h0 => ?_) hpos⟩` and prove the remaining obligations. Rewrite `h0` using `[projPerp_mulVec]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set c := ((sqNorm fun a => g a z : ℝ) : ℂ)⁻¹ * (star (fun a => g a z) ⬝ᵥ fun a => x0 τ a 1 * ξ (idx X τ))`. Establish `e0 : x0 τ 0 1 * ξ (idx X τ) - c * (x0 τ 0 0 + x0 τ 0 1 * z (idx X τ)) = 0` using `congrFun h0 0`. Establish `e1 : x0 τ 1 1 * ξ (idx X τ) - c * (x0 τ 1 0 + x0 τ 1 1 * z (idx X τ)) = 0` using `congrFun h0 1`. Rewrite `h` using `[det_mat]`. Establish `hc : c = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(mul_eq_zero_iff_right h).1` to reduce the goal to its premises. Take the linear combination `x0 τ 0 1 * e1 - x0 τ 1 1 * e0`. Apply `mul_ne_zero h hξ` to reduce the goal to its premises. Rewrite `e0`, `e1` using `[hc]`. Take the linear combination `x0 τ 0 0 * e1 - x0 τ 1 0 * e0`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem leviCol_eq (X : Data E 2) {x0 : Frame X.Ψ 2} {τ : X.Ψ} (h : (mat x0 τ).det ≠ 0)
     (z : V (nd X)) (ξ : Fin (nd X) → ℂ) :
@@ -75,7 +75,7 @@ theorem leviCol_eq (X : Data E 2) {x0 : Frame X.Ψ 2} {τ : X.Ψ} (h : (mat x0 �
   linear_combination x0 τ 0 0 * e1 - x0 τ 1 0 * e0
 
 /- English proof (translation)
-Use `ContDiffAt.log ?_ (colSq_pos (by rwa [det_cpt])).ne'` and prove the remaining obligations. Establish `hc : ∀ a, ContDiffAt ℝ 2 (fun w => ‖cpt X x0 w τ a 0‖ ^ 2) z` using `fun a => (((IW.cpt_entry_cd X x0 τ a 0).restrict_scalars ℝ).of_le HE.two_le_inf).contDiffAt.norm_sq ℂ`. Conclude with `(hc 0).add (hc 1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem logCol_cd (X : Data E 2) {x0 : Frame X.Ψ 2} {τ : X.Ψ} (h : (mat x0 τ).det ≠ 0)
     (z : V (nd X)) : ContDiffAt ℝ 2 (fun w => Real.log (colSq (cpt X x0 w) τ)) z := by
@@ -86,7 +86,7 @@ theorem logCol_cd (X : Data E 2) {x0 : Frame X.Ψ 2} {τ : X.Ψ} (h : (mat x0 τ
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Use extensionality with `τ`. Simplify using `using hall τ`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem univ_two {Ψ : Finset (E →+* ℂ)} {τ₁ τ₂ : Ψ} (hall : ∀ τ, τ = τ₁ ∨ τ = τ₂) [DecidableEq Ψ] :
     (Finset.univ : Finset Ψ) = {τ₁, τ₂} := by
@@ -94,7 +94,7 @@ theorem univ_two {Ψ : Finset (E →+* ℂ)} {τ₁ τ₂ : Ψ} (hall : ∀ τ, 
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[univ_two hall, Finset.prod_pair hne]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_two {Ψ : Finset (E →+* ℂ)} {τ₁ τ₂ : Ψ} (hne : τ₁ ≠ τ₂) (hall : ∀ τ, τ = τ₁ ∨ τ = τ₂)
     {M : Type*} [CommMonoid M] (f : Ψ → M) : ∏ τ, f τ = f τ₁ * f τ₂ := by
@@ -103,7 +103,7 @@ theorem prod_two {Ψ : Finset (E →+* ℂ)} {τ₁ τ₂ : Ψ} (hne : τ₁ ≠
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[univ_two hall, Finset.sum_pair hne]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_two {Ψ : Finset (E →+* ℂ)} {τ₁ τ₂ : Ψ} (hne : τ₁ ≠ τ₂) (hall : ∀ τ, τ = τ₁ ∨ τ = τ₂)
     {M : Type*} [AddCommMonoid M] (f : Ψ → M) : ∑ τ, f τ = f τ₁ + f τ₂ := by
@@ -111,7 +111,7 @@ theorem sum_two {Ψ : Finset (E →+* ℂ)} {τ₁ τ₂ : Ψ} (hne : τ₁ ≠ 
   rw [univ_two hall, Finset.sum_pair hne]
 
 /- English proof (translation)
-Establish `h1` using `logCol_cd X (hx τ₁).1 z`. Establish `h2` using `logCol_cd X (hx τ₂).1 z`. Unfold `leviM leviCol`. Simplify using `only [phla_cpt hG hp hx, sum_two hne hall]`. Rewrite using `[Y.LocalMaximumSecondDerivative.leviV_ofReal_add ((contDiffAt_const.mul h1).add contDiffAt_const) ((contDiffAt_const.mul h2).add contDiffAt_const), Y.leviV_const_mul h1, Y.leviV_const_mul h2, Complex.add_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem leviM_phla {X : Data E 2} (hG : X.Gm = 1) (hp : X.p0 = 2) {τ₁ τ₂ : X.Ψ} (hne : τ₁ ≠ τ₂)
     (hall : ∀ τ, τ = τ₁ ∨ τ = τ₂) {x0 : Frame X.Ψ 2} (hx : x0 ∈ X.dom) (la : Wt X.Ψ 2)
@@ -127,9 +127,9 @@ theorem leviM_phla {X : Data E 2} (hG : X.Gm = 1) (hp : X.p0 = 2) {τ₁ τ₂ :
     Complex.add_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `Function.ne_iff.1 hξ`. Take `⟨τ, rfl⟩` from `idx_surjective X k`. Establish `h1` using `leviCol_eq X (hx τ₁).1 z ξ`. Establish `h2` using `leviCol_eq X (hx τ₂).1 z ξ`. Break down `hall τ with rfl | rfl` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Combine the linear relations using `[h1.2 hk, h2.1]`. Combine the linear relations using `[h2.2 hk, h1.1]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem leviCol_add_pos {X : Data E 2} {τ₁ τ₂ : X.Ψ}
     (hall : ∀ τ, τ = τ₁ ∨ τ = τ₂) {x0 : Frame X.Ψ 2} (hx : x0 ∈ X.dom)
@@ -148,7 +148,7 @@ def idF (Ψ : Finset (E →+* ℂ)) : Frame Ψ 2 := fun _ => ![![1, 0], ![0, 1]]
 def swF (Ψ : Finset (E →+* ℂ)) : Frame Ψ 2 := fun _ => ![![0, 1], ![1, 0]]
 
 /- English proof (translation)
-Introduce `τ`. Use extensionality with `a b`. Rewrite using `[hG, hp, gram_one]`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [idF, sgn]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isOrth_idF {X : Data E 2} (hG : X.Gm = 1) (hp : X.p0 = 2) : IsOrth X (idF X.Ψ) := by
   intro τ
@@ -157,9 +157,9 @@ theorem isOrth_idF {X : Data E 2} (hG : X.Gm = 1) (hp : X.p0 = 2) : IsOrth X (id
   fin_cases a <;> fin_cases b <;> simp [idF, sgn]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `ClosedDiscontinuity.firstMinimum_invariant_continuous_pos_on_frames 2 X two_pos`. Establish `hsub : {x : Frame X.Ψ 2 | IsOrth X x} ⊆ X.dom` using `fun x hx => IW.orth_mem_dom X x hx`. Take `⟨y, hy, hmin⟩` from `(isCompact_orth hG hp).exists_isMinOn ⟨_, isOrth_idF hG hp⟩ (h2.mono hsub)`. Use `⟨_, h3 y (hsub hy), fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨x1, ho, b, hb, rfl⟩` from `ortho_holds 2 X x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `h1 1 X.Γ.one_mem x1 (hsub ho) b hb` as an intermediate fact. Rewrite `this` using `[lact_one']`. Rewrite using `[this]`. Conclude with `hmin ho`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem first_minimum_bounded_below {X : Data E 2} (hG : X.Gm = 1) (hp : X.p0 = 2) :
     ∃ ε : ℝ, 0 < ε ∧ ∀ x ∈ X.dom, ε ≤ X.la1 x := by

@@ -14,7 +14,7 @@ section Gen
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_ne_zero]`. Establish `h1` using `hs.2.2.det_pos.ne'`. Rewrite `h1` using `[Matrix.det_mul]`. Conclude with `left_ne_zero_of_mul h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_G_unit {G s : Matrix (Fin n) (Fin n) ℂ} (hs : IsCartanInv G s) : IsUnit G.det := by
   rw [isUnit_iff_ne_zero]
@@ -23,9 +23,9 @@ theorem det_G_unit {G s : Matrix (Fin n) (Fin n) ℂ} (hs : IsCartanInv G s) : I
   exact left_ne_zero_of_mul h1
 
 /- English proof (translation)
-Establish `h : gᴴ * G * g = G` using `hg`. Establish `h'` using `congrArg Matrix.det h`. Rewrite `h'` using `[Matrix.det_mul, Matrix.det_mul]`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h'` using `[h0, mul_zero]`. Conclude with `hG.ne_zero h'.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_UH_unit {G g : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) (hg : g ∈ Formalism.QuantumDeterminants.UH G) :
     IsUnit g.det := by
@@ -38,7 +38,7 @@ theorem det_UH_unit {G g : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) (hg :
   exact hG.ne_zero h'.symm
 
 /- English proof (translation)
-Establish `hd` using `det_UH_unit hG hg`. Establish `h : gᴴ * G * g = G` using `hg`. Use `show (g⁻¹)ᴴ * G * g⁻¹ = G`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem inv_mem_UH {G g : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) (hg : g ∈ Formalism.QuantumDeterminants.UH G) :
     g⁻¹ ∈ Formalism.QuantumDeterminants.UH G := by
@@ -50,11 +50,11 @@ theorem inv_mem_UH {G g : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) (hg : 
     _ = G := by rw [Matrix.mul_nonsing_inv _ hd, Matrix.conjTranspose_one, one_mul, mul_one]
 
 /- English proof (translation)
-Establish `hd` using `det_UH_unit hG hg`. Establish `h : gᴴ * G * g = G` using `hg`. Establish `hX' : Xᴴ * G + G * X = 0` using `hX`. Establish `e0 : g * g⁻¹ = 1` using `Matrix.mul_nonsing_inv g hd`. Establish `e1 : G * g⁻¹ = gᴴ * G`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e2 : (g⁻¹)ᴴ * G = G * g`. Combine the equalities or inequalities in the displayed calculation. Use `show (g⁻¹ * X * g)ᴴ * G + G * (g⁻¹ * X * g) = 0`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = gᴴ * (Xᴴ * G + G * X) * g := by`. Rewrite using `[e1, e2]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hX', Matrix.mul_zero, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_mem_lieG {G g X : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) (hg : g ∈ Formalism.QuantumDeterminants.UH G)
     (hX : X ∈ lieG G) : g⁻¹ * X * g ∈ lieG G := by
@@ -79,9 +79,9 @@ theorem conj_mem_lieG {G g X : Matrix (Fin n) (Fin n) ℂ} (hG : IsUnit G.det) (
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Distinguish the cases in `hf : DifferentiableAt ℝ f 0`. Conclude with `((A.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 hf.hasDerivAt).deriv`. Establish `hAf : ¬ DifferentiableAt ℝ (fun t => A (f t)) 0`. Introduce `h`. Apply `hf` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e : (fun t => B (A (f t))) = f` using `funext fun t => hBA (f t)`. Rewrite using `[← e]`. Conclude with `(B.restrictScalars ℝ).differentiableAt.comp 0 h`. Rewrite using `[deriv_zero_of_not_differentiableAt hf, deriv_zero_of_not_differentiableAt hAf, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deriv_clm_inv (A B : H →L[ℂ] H) (hBA : ∀ v, B (A v) = v) (f : ℝ → H) :
     deriv (fun t => A (f t)) 0 = A (deriv f 0) := by
@@ -96,15 +96,13 @@ theorem deriv_clm_inv (A B : H →L[ℂ] H) (hBA : ∀ v, B (A v) = v) (f : ℝ 
     rw [deriv_zero_of_not_differentiableAt hf, deriv_zero_of_not_differentiableAt hAf, map_zero]
 
 /- English proof (translation)
-Establish `hd` using `det_UH_unit hG hg`. Establish `hY` using `conj_mem_lieG hG hg hX`. Establish `hfun : (fun t : ℝ => π (NormedSpace.exp (t • X)) (π g u)) = fun t : ℝ => π g (π (NormedSpace.exp (t • (g⁻¹ * X * g))) u)`. Use function extensionality and compare the values at `t`. Establish `he : NormedSpace.exp (t • X) * g = g * NormedSpace.exp (t • (g⁻¹ * X * g))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, Matrix.exp_conj' g (t • X) ((Matrix.isUnit_iff_isUnit_det _).2 hd)]`. Simplify using `only [← mul_assoc, Matrix.mul_nonsing_inv _ hd, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hπ.2.1 _ (expS_mem_UH hX t) _ hg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `_ = π (g * NormedSpace.exp (t • (g⁻¹ * X * g))) u := by rw [he]`. Use `_ = π g (π (NormedSpace.exp (t • (g⁻¹ * X * g))) u) := by`. Rewrite using `[hπ.2.1 _ hg _ (expS_mem_UH hY t)]`. Both sides reduce to the same expression. Establish `hBA : ∀ v, π g⁻¹ (π g v) = v`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hπ.2.1 _ (inv_mem_UH hG hg) _ hg, Matrix.nonsing_inv_mul _ hd, hπ.1]`. Both sides reduce to the same expression. Use `show deriv (fun t : ℝ => π (NormedSpace.exp (t • X)) (π g u)) 0 = π g (deriv (fun t : ℝ => π (NormedSpace.exp (t • (g⁻¹ * X * g))) u) 0)`. Rewrite using `[hfun]`.
-
-Conclude with `deriv_clm_inv (π g) (π g⁻¹) hBA _`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dRep_rep {G : Matrix (Fin n) (Fin n) ℂ} {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hπ : IsGRep G π) (hG : IsUnit G.det) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH G)
@@ -134,7 +132,7 @@ theorem dRep_rep {G : Matrix (Fin n) (Fin n) ℂ} {π : Matrix (Fin n) (Fin n) �
   exact deriv_clm_inv (π g) (π g⁻¹) hBA _
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons X l ih => show dRep π X (dL π l (π g u)) = π g (dRep π (g⁻¹ * X * g) (dL π (l.map fun X => g⁻¹ * X * g) u))`. Rewrite using `[ih (fun Y hY => hl Y (List.mem_cons_of_mem _ hY)), dRep_rep hπ hG hg (hl X (by simp)) _]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem dL_rep {G : Matrix (Fin n) (Fin n) ℂ} {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     (hπ : IsGRep G π) (hG : IsUnit G.det) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH G)
@@ -149,7 +147,7 @@ theorem dL_rep {G : Matrix (Fin n) (Fin n) ℂ} {π : Matrix (Fin n) (Fin n) ℂ
 end Gen
 
 /- English proof (translation)
-Establish `hcont : ∀ i j, Continuous fun k => ‖f k i j - (1 : Matrix (Fin n) (Fin n) ℂ) i j‖` using `fun i j => ((hf.matrix_elem i j).sub continuous_const).norm`. Simplify using `only [Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => isOpen_lt (hcont i j) continuous_const`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isOpen_near {n : ℕ} (δ : ℝ) (f : Matrix (Fin n) (Fin n) ℂ → Matrix (Fin n) (Fin n) ℂ) (hf : Continuous f) :
     IsOpen {k | ∀ i j, ‖f k i j - (1 : Matrix (Fin n) (Fin n) ℂ) i j‖ < δ} := by
@@ -159,21 +157,19 @@ theorem isOpen_near {n : ℕ} (δ : ℝ) (f : Matrix (Fin n) (Fin n) ℂ → Mat
   exact isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => isOpen_lt (hcont i j) continuous_const
 
 /- English proof (translation)
-Introduce `n H _ _ G s π hs hπ w hw l hl`. Establish `hG` using `det_G_unit hs`. Establish `hc1 : Cont1` using `continuity_of_sobolev_chart h4 foldCont_holds`. Establish `hcont : ContinuousOn (fun k : Fin n → Fin n → ℂ => dL π l (π (Matrix.of k) w)) {k | Matrix.of k ∈ KAt G s}`. Introduce `k0 hk0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk0K : Matrix.of k0 ∈ KAt G s` using `hk0`. Establish `hk0U : Matrix.of k0 ∈ Formalism.QuantumDeterminants.UH G` using `hk0K.1`. Establish `hd` using `det_UH_unit hG hk0U`. Establish `hl' : ∀ X ∈ l.map (fun X => (Matrix.of k0)⁻¹ * X * Matrix.of k0), X ∈ lieG G`. Introduce `X hX`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 hX`. Conclude with `conj_mem_lieG hG hk0U (hl Y hY)`. Use `Metric.continuousWithinAt_iff.2 fun ε hε => ?_` and prove the remaining obligations. Take `⟨δ, hδ, hδ'⟩` from `hc1 G s π hs hπ w hw _ hl' ε hε`. Establish `hO : IsOpen {k : Fin n → Fin n → ℂ | ∀ i j, ‖((Matrix.of k0)⁻¹ * Matrix.of k) i j - (1 : Matrix (Fin n) (Fin n) ℂ) i j‖ < δ}`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ i j, Continuous fun k : Fin n → Fin n → ℂ => ‖((Matrix.of k0)⁻¹ * Matrix.of k) i j - (1 : Matrix (Fin n) (Fin n) ℂ) i j‖` using `fun i j => (((continuous_const.matrix_mul (continuous_id' : Continuous fun k : Fin n → Fin n → ℂ => Matrix.of k)).matrix_elem i j).sub continuous_const).norm`. Simplify using `only [Set.setOf_forall]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => isOpen_lt (hc i j) continuous_const`. Establish `hk0O : ∀ i j, ‖((Matrix.of k0)⁻¹ * Matrix.of k0) i j - (1 : Matrix (Fin n) (Fin n) ℂ) i j‖ < δ`. Introduce `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Matrix.nonsing_inv_mul _ hd, sub_self, norm_zero]`. Conclude with `hδ`. Take `⟨ρ, hρ, hρO⟩` from `Metric.isOpen_iff.1 hO k0 hk0O`. Use `⟨ρ, hρ, fun {k} hk hdk => ?_⟩` and prove the remaining obligations. Establish `hkK : Matrix.of k ∈ KAt G s` using `hk`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkU : Matrix.of k ∈ Formalism.QuantumDeterminants.UH G` using `hkK.1`. Establish `hg : (Matrix.of k0)⁻¹ * Matrix.of k ∈ Formalism.QuantumDeterminants.UH G` using `mul_mem_UH₂ G _ (inv_mem_UH hG hk0U) _ hkU`. Establish `hnear` using `hρO (Metric.mem_ball.2 hdk)`. Establish `hkk : π (Matrix.of k) w = π (Matrix.of k0) (π ((Matrix.of k0)⁻¹ * Matrix.of k) w)`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hπ.2.1 _ hk0U _ hg, Matrix.mul_nonsing_inv_cancel_left _ _ hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dist_eq_norm]`. Rewrite using `[hkk, dL_rep hπ hG hk0U l hl, dL_rep hπ hG hk0U l hl, ← map_sub, hπ.2.2.1 _ hk0U]`. Conclude with `hδ' _ hg hnear`. Establish `hK : IsCompact {k : Fin n → Fin n → ℂ | Matrix.of k ∈ KAt G s}` using `isCompact_KAt hs`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hcont`.
-
-Conclude with `⟨C, fun k hk => hC (Matrix.of.symm k) hk⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem foldBddK_of (h4 : SobChart) : FoldBddK := by
   intro n H _ _ G s π hs hπ w hw l hl

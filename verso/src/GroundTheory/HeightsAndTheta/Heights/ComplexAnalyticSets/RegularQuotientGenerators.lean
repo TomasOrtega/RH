@@ -9,17 +9,15 @@ open IsLocalRing Ideal
 universe u
 
 /- English proof (translation)
-Take `⟨t, htc, hts⟩` from `Submodule.FG.exists_span_finset_card_eq_spanFinrank (IsNoetherian.noetherian (maximalIdeal (R ⧸ I)))`. Use `choose g hg using fun y : R ⧸ I => Ideal.Quotient.mk_surjective y`. Use `set s : Finset R := t.image g with hs`. Establish `hmk : ∀ a ∈ maximalIdeal R, Ideal.Quotient.mk I a ∈ maximalIdeal (R ⧸ I)`. Introduce `a ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `Ideal.mem_map_of_mem (Ideal.Quotient.mk I) ha`. Rewrite `h` using `[map_maximalIdeal_of_surjective (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective]`. Then use the resulting hypothesis. Establish `hsm : (s : Set R) ⊆ maximalIdeal R`. Introduce `a ha`. Simplify using `only [hs, Finset.coe_image, Set.mem_image, Finset.mem_coe] at ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy, rfl⟩` from `ha`. Establish `hy' : y ∈ maximalIdeal (R ⧸ I)` using `hts ▸ Submodule.subset_span hy`. Assume the negation of the conclusion as `hn`. Establish `hu : IsUnit (g y)` using `not_not.mp fun h => hn ((mem_maximalIdeal _).mpr h)`. Conclude with `(mem_maximalIdeal _).mp hy' (hg y ▸ hu.map (Ideal.Quotient.mk I))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmap : (Ideal.span (s : Set R)).map (Ideal.Quotient.mk I) = maximalIdeal (R ⧸ I)`. Rewrite using `[Ideal.map_span, hs, Finset.coe_image, ← Set.image_comp, show (Ideal.Quotient.mk I) ∘ g = id from funext hg, Set.image_id]`. Conclude with `hts`. Establish `hle : maximalIdeal R ≤ Ideal.span (s : Set R) ⊔ maximalIdeal R • maximalIdeal R`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Ideal.Quotient.mk I a ∈ (Ideal.span (s : Set R)).map (Ideal.Quotient.mk I)` using `hmap ▸ hmk a ha`. Rewrite `h1` using `[← Ideal.mem_comap, Ideal.comap_map_of_surjective' _ Ideal.Quotient.mk_surjective, Ideal.mk_ker]`. Conclude with `sup_le_sup_left (hI.trans (le_of_eq (by rw [pow_two, Ideal.smul_eq_mul]))) _ h1`. Establish `hm : maximalIdeal R = Ideal.span (s : Set R)` using `le_antisymm (Submodule.le_of_le_smul_of_le_jacobson_bot (IsNoetherian.noetherian _) (jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge hle) (Ideal.span_le.mpr hsm)`. Rewrite using `[hm, ← htc]`.
-
-Use `(Submodule.spanFinrank_span_le_ncard_of_finite s.finite_toSet).trans ?_` and prove the remaining obligations. Rewrite using `[Set.ncard_coe_finset]`. Conclude with `Finset.card_image_le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spanFinrank_maximalIdeal_le_quotient_of_le_sq {R : Type u} [CommRing R] [IsLocalRing R]
     [IsNoetherianRing R] {I : Ideal R} (hI : I ≤ maximalIdeal R ^ 2) [IsLocalRing (R ⧸ I)] :
@@ -61,31 +59,29 @@ theorem spanFinrank_maximalIdeal_le_quotient_of_le_sq {R : Type u} [CommRing R] 
   exact Finset.card_image_le
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `R _ _ I _ hd`. Use `⟨Fin.elim0, fun j => j.elim0, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.range_eq_empty, Ideal.span_empty]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `GroundTheory.Arith.SchemeCoh.IsRegularLocalRing.isDomain (R := R)` as an intermediate fact. Assume the negation of the conclusion as `hI`. Take `⟨y, hyI, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Establish `h1` using `ringKrullDim_quotient_succ_le_of_nonZeroDivisor (mem_nonZeroDivisors_of_ne_zero hy0)`. Establish `h2 : ringKrullDim (R ⧸ I) ≤ ringKrullDim (R ⧸ Ideal.span {y})` using `ringKrullDim_le_of_surjective (Ideal.Quotient.factor ((Ideal.span_singleton_le_iff_mem I).mpr hyI)) (Ideal.Quotient.factor_surjective _)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : ringKrullDim R = ((maximalIdeal R).spanFinrank : WithBot ℕ∞)` using `((isRegularLocalRing_iff R).mp inferInstance).symm`. Rewrite `hd` using `[Nat.cast_zero, add_zero]`. Establish `h3 : ((maximalIdeal R).spanFinrank : WithBot ℕ∞) + 1 ≤ (maximalIdeal R).spanFinrank`. Rewrite using `[← hR]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h4 : (maximalIdeal R).spanFinrank + 1 ≤ (maximalIdeal R).spanFinrank` using `by exact_mod_cast h3`. Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih`. Introduce `R _ _ I _ hd`. Establish `hR : ringKrullDim R = ((maximalIdeal R).spanFinrank : WithBot ℕ∞)` using `((isRegularLocalRing_iff R).mp inferInstance).symm`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hRI : ringKrullDim (R ⧸ I) = ((maximalIdeal (R ⧸ I)).spanFinrank : WithBot ℕ∞)` using `((isRegularLocalRing_iff (R ⧸ I)).mp inferInstance).symm`. Establish `hdd : (maximalIdeal R).spanFinrank = (maximalIdeal (R ⧸ I)).spanFinrank + (n + 1)`. Rewrite `hd` using `[hR, hRI]`. Conclude with `hd` after adjusting the coercions. Establish `hItop : I ≠ ⊤` using `Ideal.Quotient.nontrivial_iff.mp inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIm : I ≤ maximalIdeal R` using `le_maximalIdeal hItop`. Choose the witnesses or unpack the hypotheses as in `⟨x, hxI, hx2⟩ : ∃ x ∈ I, x ∉ maximalIdeal R ^ 2 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `spanFinrank_maximalIdeal_le_quotient_of_le_sq (I := I) h` as an intermediate fact.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hxm : x ∈ maximalIdeal R` using `hIm hxI`. Establish `hxI' : Ideal.span {x} ≤ I` using `(Ideal.span_singleton_le_iff_mem I).mpr hxI`. Establish `hne : Ideal.span {x} ≠ ⊤` using `fun h => hItop (top_le_iff.mp (h ▸ hxI'))`. Establish `: Nontrivial (R ⧸ Ideal.span {x})` using `Ideal.Quotient.nontrivial_iff.mpr hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: IsLocalRing (R ⧸ Ideal.span {x})` using `IsLocalRing.of_surjective' (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective`. Take `⟨hreg, hdim⟩` from `GroundTheory.Arith.SchemeCoh.isRegularLocalRing_quotient hxm hx2`. Use `hreg` as an intermediate fact. Set `e` to `DoubleQuot.quotQuotEquivQuotOfLE hxI'`. Establish `: IsRegularLocalRing ((R ⧸ Ideal.span {x}) ⧸ I.map (Ideal.Quotient.mk (Ideal.span {x})))` using `IsRegularLocalRing.of_ringEquiv e.symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR' : ringKrullDim (R ⧸ Ideal.span {x}) = ((maximalIdeal (R ⧸ Ideal.span {x})).spanFinrank : WithBot ℕ∞)` using `((isRegularLocalRing_iff _).mp inferInstance).symm`. Establish `hd' : ringKrullDim (R ⧸ Ideal.span {x}) = ringKrullDim ((R ⧸ Ideal.span {x}) ⧸ I.map (Ideal.Quotient.mk (Ideal.span {x}))) + n`. Rewrite using `[ringKrullDim_eq_of_ringEquiv e, hRI, hR']`. Rewrite `hdim` using `[hR, hR']`. Establish `h5 : (maximalIdeal (R ⧸ Ideal.span {x})).spanFinrank + 1 = (maximalIdeal R).spanFinrank`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `hdim` after adjusting the coercions. Establish `h6 : (maximalIdeal (R ⧸ Ideal.span {x})).spanFinrank = (maximalIdeal (R ⧸ I)).spanFinrank + n`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h6]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Take `⟨f', hf'I, hf'⟩` from `ih _ _ hd'`. Establish `hlift : ∀ j, ∃ a ∈ I, Ideal.Quotient.mk (Ideal.span {x}) a = f' j` using `fun j => (Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).mp (hf'I j)`. Use `choose g hgI hg using hlift`. Use `⟨(Fin.cons x g : Fin (n + 1) → R), Fin.forall_fin_succ.mpr ⟨by simpa using hxI, fun i => by simpa using hgI i⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Fin.range_cons, Ideal.span_insert]`. Establish `hcomap : I = (I.map (Ideal.Quotient.mk (Ideal.span {x}))).comap (Ideal.Quotient.mk (Ideal.span {x}))`. Rewrite using `[Ideal.comap_map_of_surjective' _ Ideal.Quotient.mk_surjective, Ideal.mk_ker, sup_eq_left.mpr hxI']`. Establish `hrange : Set.range f' = Ideal.Quotient.mk (Ideal.span {x}) '' Set.range g`. Rewrite using `[← Set.range_comp]`.
-
-Conclude with `congrArg Set.range (funext hg).symm`. Rewrite using `[hcomap, hf', hrange, ← Ideal.map_span, Ideal.comap_map_of_surjective' _ Ideal.Quotient.mk_surjective, Ideal.mk_ker, sup_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_span_eq_of_isRegularLocalRing_quotient (n : ℕ) :
     ∀ (R : Type u) [CommRing R] [IsRegularLocalRing R] (I : Ideal R) [IsRegularLocalRing (R ⧸ I)],

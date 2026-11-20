@@ -16,7 +16,7 @@ section LcAlg
 variable {K : Type} [Field K] {R : Subring K} {σ τ : Type} [Fintype σ] [Fintype τ]
 
 /- English proof (translation)
-Take `⟨α, hα, rfl⟩` from `h`. Use `choose β hβ e using hf`. Use `⟨fun t => ∑ s, α s * β s t, fun t => sum_mem fun s _ => mul_mem (hα s) (hβ s t), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem Lc.comp_lc {f : σ → K} {g : τ → K} {a : K} (h : Lc R f a) (hf : ∀ s, Lc R g (f s)) : Lc R g a := by
   obtain ⟨α, hα, rfl⟩ := h
@@ -26,7 +26,7 @@ theorem Lc.comp_lc {f : σ → K} {g : τ → K} {a : K} (h : Lc R f a) (hf : �
     _ = _ := by rw [Finset.sum_comm]; simp_rw [Finset.sum_mul]
 
 /- English proof (translation)
-Take `⟨α, hα, rfl⟩` from `h`. Rewrite using `[Finset.sum_div]`. Conclude with `sum_mem fun s _ => by rw [mul_div_assoc]; exact mul_mem (hα s) (hf s)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Lc.div_mem_of {f : σ → K} {a η : K} (h : Lc R f a) (hf : ∀ s, f s / η ∈ R) : a / η ∈ R := by
   obtain ⟨α, hα, rfl⟩ := h
@@ -40,7 +40,7 @@ section LocPt
 variable {X : Scheme.{0}} [IsIntegral X]
 
 /- English proof (translation)
-Take `⟨h0, h1, α, hα, e⟩` from `h`. Establish `A : ∀ᶠ z in 𝓝 x, ∀ s, RegAt z (f s / η)` using `eventually_all.2 fun s => eventually_regAt (h1 s)`. Establish `B : ∀ᶠ z in 𝓝 x, ∀ s, RegAt z (α s)` using `eventually_all.2 fun s => eventually_regAt (hα s)`. Conclude with `(A.and B).mono fun z hz => ⟨h0, hz.1, α, hz.2, e⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Gen.eventually_nhds {x : X} {σ : Type} [Fintype σ] {f : σ → X.functionField} {η : X.functionField}
     (h : Gen (loc x) f η) : ∀ᶠ z in 𝓝 x, Gen (loc z) f η := by
@@ -50,16 +50,16 @@ theorem Gen.eventually_nhds {x : X} {σ : Type} [Fintype σ] {f : σ → X.funct
   exact (A.and B).mono fun z hz => ⟨h0, hz.1, α, hz.2, e⟩
 
 /- English proof (translation)
-The claim follows from `(unitAt_iff h0).2 ⟨h, h'⟩`.
+A detailed English derivation is pending.
 -/
 theorem unitAt_of_mem_loc {z : X} {f : X.functionField} (h0 : f ≠ 0) (h : f ∈ loc z) (h' : f⁻¹ ∈ loc z) :
     UnitAt z f :=
   (unitAt_iff h0).2 ⟨h, h'⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hu'`. Establish `h1 : ZeroAt z u` using `zeroAt_iff.2 ⟨hu, hu'⟩`. Establish `h2 : ZeroAt z ρ` using `zeroAt_iff.2 ⟨hρ, hn⟩`. Establish `h3` using `(h1.mul hα).add (h2.mul hβ)`. Rewrite `h3` using `[← e]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(zeroAt_iff.1 h3).2 (unitAt_one z)`.
+A detailed English derivation is pending.
 -/
 theorem unitAt_of_comb {z : X} {u ρ α β : X.functionField} (hu : RegAt z u) (hρ : RegAt z ρ) (hn : ¬ UnitAt z ρ)
     (hα : RegAt z α) (hβ : RegAt z β) (e : 1 = u * α + ρ * β) : UnitAt z u := by
@@ -71,7 +71,7 @@ theorem unitAt_of_comb {z : X} {u ρ α β : X.functionField} (hu : RegAt z u) (
   exact (zeroAt_iff.1 h3).2 (unitAt_one z)
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Establish `hv' : v = w * (-1)` using `by linear_combination (-1 : X.functionField) * e`. Establish `hm : RegAt z (-1 : X.functionField)` using `mem_loc.1 (neg_mem (mem_loc.2 (unitAt_one z).regAt))`. Rewrite `hv` using `[hv']`. Conclude with `(zeroAt_iff.1 (hw.mul hm)).2 hv`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_unitAt_add_zeroAt {z : X} {v w f : X.functionField} (hv : UnitAt z v) (hw : ZeroAt z w)
     (e : f = v + w) : f ≠ 0 := by
@@ -84,31 +84,29 @@ theorem ne_zero_of_unitAt_add_zeroAt {z : X} {v w f : X.functionField} (hv : Uni
 end LocPt
 
 /- English proof (translation)
-Introduce `X _ p k a N M c j γ hγ hreg hcoh η hgen`. Establish `E` using `fun x (hx : Ov p x) => GlobalTheory.T.triangular_frame_diagonal_ratios X.functionField N (loc x) (M x) j γ (fun i => (η x i : X.functionField)) (hcoh x hx).1 (hreg x hx).1 hγ (hgen x hx)`. Establish `CG` using `GlobalTheory.T.local_generators_cohere_near_point X p k a N M c j γ hγ hreg hcoh`. Establish `KEY : ∀ x, Ov p x → ∀ i : Fin N, ¬ UnitAt x ((η x i.succ : X.functionField) / η x i.castSucc) → UnitAt x ((M x)⁻¹ i j / η x i.castSucc)`. Introduce `x hx i hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨-, -, -, -, hE⟩` from `E x hx`. Take `⟨hρ, α, hα, β, hβ, e⟩` from `hE i`. Establish `hy : (M x)⁻¹ i j / η x i.castSucc ∈ loc x`. Use `(hgen x hx i.castSucc).2.1 (some i)` as an intermediate fact. Simplify `this` using `[gens]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `unitAt_of_comb hy hρ hn hα hβ ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Take the linear combination `e`. Establish `hU : ∀ x, Ov p x → ∀ᶠ z in 𝓝 x, Ov p z → ∀ i, UnitAt z ((η x i : X.functionField) / η z i)`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `filter_upwards [CG x hx, eventually_all.2 fun i => Gen.eventually_nhds (hgen x hx i)] with z h1 h2 hz i`. Take `⟨h3, -⟩` from `h1 hz`. Establish `g` using `hgen z hz i`. Use `unitAt_of_mem_loc (div_ne_zero (η x i).ne_zero (η z i).ne_zero) ?_ ?_` and prove the remaining obligations. Conclude with `((h2 i).2.2.comp_lc fun s => (h3 i s).2).div_mem_of g.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inv_div]`. Conclude with `(g.2.2.comp_lc fun s => (h3 i s).1).div_mem_of (h2 i).2.1`. Use `⟨η, Units.mk0 γ hγ, fun i x hx => ?_, fun x hx => ?_, fun i => ?_⟩` and prove the remaining obligations. Take `⟨-, -, -, h4, -⟩` from `E x hx`. Use `⟨(h4 i).1, ⟨a, ?_⟩, (hU x hx).mono fun z hz hz' => hz hz' i⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `: (p : X.functionField) ^ a / η x i = ((p : X.functionField) ^ a / γ) * (γ / η x i)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `(hreg x hx).2.mul (h4 i).2`. Take `⟨-, h1, h2, h4, h5⟩` from `E x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨unitAt_of_mem_loc (η x 0).ne_zero (h4 0).1 h1, unitAt_of_mem_loc ?_ ?_ ?_, fun i => ⟨(h5 i).1, ?_⟩⟩` and prove the remaining obligations. Simplify using `[hγ]`. Simplify using `using h2`. Simplify `(h4 (Fin.last N)).2` using `[inv_div]`. Use `unitAt_one x using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Units.val_div_eq_div_val, Units.val_mul]`. Clear the denominators using the available nonvanishing facts. Use `⟨fun x => if h : (M x)⁻¹ i j = 0 then 1 else Units.mk0 ((M x)⁻¹ i j / c x i) (div_ne_zero h (c x i).ne_zero), fun x hx => ⟨fun hn => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `hu` using `KEY x hx i hn`. Establish `hy : (M x)⁻¹ i j ≠ 0` using `fun h0 => hu.ne_zero (by rw [h0, zero_div])`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[dif_neg hy]`. Use `hu using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Units.val_mk0]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [CG x hx] with z hz hz' hn`. Take `⟨-, hc⟩` from `hz hz'`. Take `⟨hd, hl⟩` from `hc i`. Establish `hu` using `hl.div_mem_of (hgen z hz' i.succ).2.1`. Establish `hv` using `KEY z hz' i hn`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyz : (M z)⁻¹ i j ≠ 0` using `fun h0 => hv.ne_zero (by rw [h0, zero_div])`. Take `⟨-, -, -, -, h5⟩` from `E z hz'`. Establish `hρ : ZeroAt z ((η z i.succ : X.functionField) / η z i.castSucc)` using `zeroAt_iff.2 ⟨(h5 i).1, hn⟩`. Apply the tactic sequence `have hyx' := ne_zero_of_unitAt_add_zeroAt (hd.mul hv) (hρ.mul (mem_loc.1 hu)) (f := (M x)⁻¹ i j / (η z i.castSucc : X.functionField)) (by field_simp; try ring)`. Establish `hyx : (M x)⁻¹ i j ≠ 0` using `fun h0 => hyx' (by rw [h0, zero_div])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try beta_reduce`. Rewrite using `[dif_neg hyx, dif_neg hyz]`. Simplify using `only [Units.val_mk0]`. Establish `key : ((M x)⁻¹ i j / (c x i : X.functionField) / ((M z)⁻¹ i j / (c z i : X.functionField)) - 1) / ((η z i.succ : X.functionField) / η z i.castSucc) = ((M x)⁻¹ i j - (c x i : X.functionField) / c z i * (M z)⁻¹ i j) / η z i.succ * ((c x i : X.functionField) / c z i * ((M z)⁻¹ i j / …`. Clear the denominators using the available nonvanishing facts.
-
-Apply the tactic sequence `try ring`. Rewrite using `[key]`. Conclude with `(mem_loc.1 hu).mul (hd.mul hv).inv.regAt`.
+A detailed English derivation is pending.
 -/
 theorem link_adapted_step : ∀ (X : Scheme.{0}) [IsIntegral X] (p k a N : ℕ) (M : X → Matrix (Fin N) (Fin N) X.functionField) (c : X → Fin N → X.functionFieldˣ) (j : Fin N) (γ : X.functionField), γ ≠ 0 → (∀ x, Ov p x → RegAt x γ ∧ RegAt x ((p : X.functionField) ^ a / γ)) → Coh p (k + 1 + a) M c → ∀ η : X → Fin (N + 1) → X.functionFieldˣ, (∀ x, Ov p x → ∀ i, Gen (loc x) (gens γ (fun l => (M x)⁻¹ l j) i) (η x i)) → Link p c fun x i => c x i * η x i.succ / η x i.castSucc := by
   intro X _ p k a N M c j γ hγ hreg hcoh η hgen

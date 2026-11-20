@@ -18,7 +18,7 @@ variable {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸} (h : IsExpLieAlgebra 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (π : BanachRep G E)
 
 /- English proof (translation)
-Set `_` to `h.chartedSpace`. Conclude with `(ℓ.restrictScalars ℝ).contDiff.comp_contMDiff hv`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isSmoothFun_coeff {v : E} (hv : h.IsSmoothVector π v) (ℓ : E →L[ℂ] ℂ) :
     h.IsSmoothFun (fun g : G => ℓ (π g v)) := by
@@ -26,9 +26,9 @@ theorem isSmoothFun_coeff {v : E} (hv : h.IsSmoothVector π v) (ℓ : E →L[ℂ
   exact (ℓ.restrictScalars ℝ).contDiff.comp_contMDiff hv
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Establish `e : (fun Y : 𝔤 => ℓ (π (g * h.expG Y) v)) = ((ℓ.comp (π g)).restrictScalars ℝ) ∘ h.expOrbit π v`. Use function extensionality and compare the values at `Y`. Simplify using `[expOrbit]`. Establish `hd : HasFDerivAt (fun Y : 𝔤 => ℓ (π (g * h.expG Y) v)) (((ℓ.comp (π g)).restrictScalars ℝ).comp (fderiv ℝ (h.expOrbit π v) 0)) 0`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `((ℓ.comp (π g)).restrictScalars ℝ).hasFDerivAt.comp 0 ((h.differentiable_expOrbit π hv 0).hasFDerivAt)`. Use `show fderiv ℝ (fun Y : 𝔤 => ℓ (π (g * h.expG Y) v)) 0 X = _`. Rewrite using `[hd.fderiv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rightDeriv_coeff {v : E} (hv : h.IsSmoothVector π v) (ℓ : E →L[ℂ] ℂ) (X : 𝔤) :
     h.rightDeriv X (fun g : G => ℓ (π g v)) = fun g => ℓ (π g (h.derivOp π X v)) := by
@@ -67,13 +67,13 @@ Both sides reduce to the same expression.
     h.coeffLin π ℓ v = h.coeffFun π ℓ v := rfl
 
 /- English proof (translation)
-Take `⟨t, rfl⟩ : ∃ t, UniversalEnvelopingAlgebra.mkAlgHom ℝ h.lieSubalgebra t = u` from `RingCon.mkₐ_surjective (α := ℝ) (UniversalEnvelopingAlgebra.ringCon ℝ h.lieSubalgebra) u`. Proceed by induction on `t using TensorAlgebra.induction generalizing v with`. Consider the case `algebraMap r`. Simplify using `only [AlgHom.commutes, Module.algebraMap_end_apply]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `g`. Simplify using `only [coe_coeffFun]`. Use `show r • ℓ (π g v) = ℓ (π g ((r • v : h.smoothVectors π) : E))`. Rewrite using `[Submodule.coe_smul_of_tower, ← Complex.coe_smul, ← Complex.coe_smul, map_smul, map_smul]`. Consider the case `ι x => show h.rightUAction (F := ℂ) (UniversalEnvelopingAlgebra.ι ℝ x) (h.coeffFun π ℓ v) = h.coeffFun π ℓ (h.uAction π (UniversalEnvelopingAlgebra.ι ℝ x) v)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rightUAction_ι, uAction_ι]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_rightDerivEnd, coe_coeffFun, rightDeriv_coeff h π v.2]`. Both sides reduce to the same expression. Consider the case `mul a b iha ihb`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, ihb, iha]`. Consider the case `add a b iha ihb`. Rewrite using `[map_add, map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, iha, ihb]`. Conclude with `((h.coeffLin π ℓ).map_add _ _).symm`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rightUAction_coeffFun (ℓ : E →L[ℂ] ℂ) (u : UniversalEnvelopingAlgebra ℝ h.lieSubalgebra)
     (v : h.smoothVectors π) :
@@ -106,18 +106,18 @@ noncomputable def laplacianElt {ι : Type*} [Fintype ι] (bL : Module.Basis ι �
   ∑ i, UniversalEnvelopingAlgebra.ι ℝ (bL i) * UniversalEnvelopingAlgebra.ι ℝ (bL i)
 
 /- English proof (translation)
-Simplify using `only [laplacianElt, laplacian, map_sum, map_mul, rightUAction_ι]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rightUAction_laplacianElt {ι : Type*} [Fintype ι] (bL : Module.Basis ι ℝ h.lieSubalgebra) :
     h.rightUAction (F := ℂ) (h.laplacianElt bL) = h.laplacian bL := by
   simp only [laplacianElt, laplacian, map_sum, map_mul, rightUAction_ι]
 
 /- English proof (translation)
-Establish `hpow : ∀ k : ℕ, Φ ∘ₗ (A ^ k) = (B ^ k) ∘ₗ Φ`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp [Module.End.one_eq_id]`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[pow_succ, pow_succ, Module.End.mul_eq_comp, Module.End.mul_eq_comp, ← LinearMap.comp_assoc, ih, LinearMap.comp_assoc, hAB, LinearMap.comp_assoc]`. Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, map_add, LinearMap.comp_add, LinearMap.add_comp, hp, hq]`. Consider the case `monomial k c`. Rewrite using `[aeval_monomial, aeval_monomial]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `v`. Simplify using `only [LinearMap.comp_apply, Module.End.mul_apply, Module.algebraMap_end_apply, map_smul]`. Rewrite using `[← LinearMap.comp_apply Φ (A ^ k), hpow]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comp_aeval_eq {V W : Type*} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (Φ : V →ₗ[ℂ] W) {A : Module.End ℂ V} {B : Module.End ℂ W} (hAB : Φ ∘ₗ A = B ∘ₗ Φ) (P : ℂ[X]) :
@@ -139,9 +139,9 @@ theorem comp_aeval_eq {V W : Type*} [AddCommGroup V] [Module ℂ V] [AddCommGrou
     rfl
 
 /- English proof (translation)
-Use `h.analyticAt_of_aeval_laplacian_eq_zero bL P hP (h.coeffFun π ℓ v) ?_ g` and prove the remaining obligations. Establish `hc : h.coeffLin π ℓ ∘ₗ h.uAction π (h.laplacianElt bL) = h.laplacian bL ∘ₗ h.coeffLin π ℓ` using `by ext1 w`. Simplify using `only [LinearMap.comp_apply, coeffLin_apply]`. Rewrite using `[← rightUAction_laplacianElt, rightUAction_coeffFun]`. Use `congrArg (fun L => L v) (comp_aeval_eq (h.coeffLin π ℓ) hc P)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, coeffLin_apply] at this`. Rewrite using `[← this, hv]`. Conclude with `(h.coeffLin π ℓ).map_zero`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem analyticAt_coeff {ι : Type*} [Fintype ι] (bL : Module.Basis ι ℝ h.lieSubalgebra) {P : ℂ[X]}
     (hP : P.Monic) {v : h.smoothVectors π} (hv : aeval (h.uAction π (h.laplacianElt bL)) P v = 0)
@@ -158,7 +158,7 @@ theorem analyticAt_coeff {ι : Type*} [Fintype ι] (bL : Module.Basis ι ℝ h.l
   exact (h.coeffLin π ℓ).map_zero
 
 /- English proof (translation)
-Establish `htop : analyticOrderAt f 0 = ⊤`. Use `ENat.eq_top_iff_forall_ge.2 fun k => ?_` and prove the remaining obligations. Conclude with `(natCast_le_analyticOrderAt_iff_iteratedDeriv_eq_zero (hf 0 (Set.mem_univ _))).2 fun i _ => h0 i`. Establish `hev : f =ᶠ[𝓝 0] 0` using `analyticOrderAt_eq_top.1 htop`. Conclude with `hf.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ 0) hev (Set.mem_univ t)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_iteratedDeriv_eq_zero {f : ℝ → ℂ} (hf : AnalyticOnNhd ℝ f Set.univ)
     (h0 : ∀ k : ℕ, iteratedDeriv k f 0 = 0) (t : ℝ) : f t = 0 := by
@@ -175,7 +175,7 @@ section Complete
 variable [CompleteSpace E]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact hv`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `h.isSmoothVector_derivOp π ih Y`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmoothVector_iterate_derivOp {v : E} (hv : h.IsSmoothVector π v) (Y : 𝔤) (k : ℕ) :
     h.IsSmoothVector π ((h.derivOp π Y)^[k] v) := by
@@ -186,9 +186,9 @@ theorem isSmoothVector_iterate_derivOp {v : E} (hv : h.IsSmoothVector π v) (Y :
     exact h.isSmoothVector_derivOp π ih Y
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[iteratedDeriv_succ, ih]`. Use function extensionality and compare the values at `t`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hd` using `((ℓ.restrictScalars ℝ).hasFDerivAt).comp_hasDerivAt t (h.hasDerivAt_orbit_smul π (h.isSmoothVector_iterate_derivOp π hv Y k) Y t)`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `hd.deriv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_coeff_line {v : E} (hv : h.IsSmoothVector π v) (ℓ : E →L[ℂ] ℂ) (Y : 𝔤)
     (k : ℕ) :
@@ -216,17 +216,17 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [CompleteS
   (π : BanachRep G E)
 
 /- English proof (translation)
-Use `set ℓ : E →L[ℂ] ℂ := innerSL ℂ w`. Establish `hℓ : ∀ x, ℓ x = ⟪w, x⟫_ℂ` using `fun x => rfl`. Take `⟨P, hP, hPv⟩` from `hSP v hv`. Use `set f : ℝ → ℂ := fun t => ℓ (π (h.expG (t • Y)) v) with hf`. Establish `han : AnalyticOnNhd ℝ f Set.univ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t₀ _`. Establish `h1` using `h.analyticAt_coeff π bL hP hPv ℓ (h.expG (t₀ • Y))`. Establish `h2 : AnalyticAt ℝ (fun t : ℝ => (t - t₀) • Y) t₀` using `(analyticAt_id.sub analyticAt_const).smul analyticAt_const`. Establish `h3 : AnalyticAt ℝ ((fun Z : 𝔤 => ℓ (π (h.expG (t₀ • Y) * h.expG Z) v)) ∘ (fun t : ℝ => (t - t₀) • Y)) t₀`. Use `AnalyticAt.comp ?_ h2` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using h1`. Use `h3.congr (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hf]`. Rewrite using `[← h.expG_add_smul, add_sub_cancel]`. Establish `hder : ∀ k, iteratedDeriv k f 0 = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Rewrite using `[hf, h.iteratedDeriv_coeff_line π (hS v hv) ℓ Y k]`. Simplify using `only [zero_smul, h.expG_zero, BanachRep.map_one, one_apply_eq_self]`. Rewrite using `[hℓ]`. Use `hw _ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Use `clear hf han`. Proceed by induction on `k with`. Consider the case `zero => exact hv`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply']`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hSd Y _ ih`. Use `eq_zero_of_iteratedDeriv_eq_zero han hder 1` as an intermediate fact. Simplify using `only [hf, one_smul] at this`. Rewrite `this` using `[hℓ]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem inner_map_expG_eq_zero {ι : Type*} [Fintype ι] (bL : Module.Basis ι ℝ h.lieSubalgebra)
     (S : Submodule ℂ E) (hS : ∀ v ∈ S, h.IsSmoothVector π v)

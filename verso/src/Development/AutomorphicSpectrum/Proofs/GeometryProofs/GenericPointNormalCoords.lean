@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.XR
 
 /- English proof (translation)
-Establish `e : (X.presheaf.stalkSpecializes p.2).hom ((X.presheaf.germ U p.1 hpU).hom s) = (X.presheaf.germ U (genPt ξ) heU).hom s` using `ConcreteCategory.congr_hom (X.presheaf.germ_stalkSpecializes hpU p.2) s`. Conclude with `congrArg (fun t : X.presheaf.stalk (genPt ξ) => (Scheme.stalkClosedPointTo ξ).hom t) e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem genMap_germ {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} (p : Cpt ξ)
     {U : X.Opens} (hpU : p.1 ∈ U) (heU : genPt ξ ∈ U) (s : Γ(X, U)) :
@@ -29,11 +29,11 @@ theorem genMap_germ {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRing
   exact congrArg (fun t : X.presheaf.stalk (genPt ξ) => (Scheme.stalkClosedPointTo ξ).hom t) e
 
 /- English proof (translation)
-Take `⟨U, hU, hpU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := p.1) (U := ⊤) trivial`. Establish `heU : genPt ξ ∈ U` using `p.2.mem_open U.isOpen hpU`. Take `⟨g, hg⟩ : ∃ g : X.presheaf.stalk (genPt ξ), (Scheme.stalkClosedPointTo ξ).hom g = a` from `hξ.bij.2 a`. Use `letI alg : Algebra Γ(X, U) (X.presheaf.stalk (genPt ξ)) := TopCat.Presheaf.algebra_section_stalk X.presheaf (⟨genPt ξ, heU⟩ : U)`. Establish `hloc : IsLocalization.AtPrime (X.presheaf.stalk (genPt ξ)) (hU.primeIdealOf ⟨genPt ξ, heU⟩).asIdeal` using `hU.isLocalization_stalk ⟨genPt ξ, heU⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Take `⟨⟨f, h⟩, hfh⟩` from `IsLocalization.surj (hU.primeIdealOf ⟨genPt ξ, heU⟩).asIdeal.primeCompl g`. Establish `hunit` using `IsLocalization.map_units (X.presheaf.stalk (genPt ξ)) h`. Set `ψ : X.presheaf.stalk (genPt ξ) →+* Ω` to `(Scheme.stalkClosedPointTo ξ).hom`. Establish `germ_val : ∀ s : Γ(X, U), genMap ξ p ((X.presheaf.germ U p.1 hpU).hom s) = (Scheme.stalkClosedPointTo ξ).hom (algebraMap Γ(X, U) (X.presheaf.stalk (genPt ξ)) s)` using `fun s => genMap_germ p hpU heU s`. Establish `hv : (Scheme.stalkClosedPointTo ξ).hom (algebraMap Γ(X, U) (X.presheaf.stalk (genPt ξ)) (h : Γ(X, U))) ≠ 0` using `(hunit.map (Scheme.stalkClosedPointTo ξ).hom).ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(X.presheaf.germ U p.1 hpU).hom f, (X.presheaf.germ U p.1 hpU).hom h, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[germ_val]`. Conclude with `hv`. Rewrite using `[germ_val, germ_val, eq_div_iff hv, ← hg]`. Conclude with `(map_mul ψ _ _).symm.trans (congrArg ψ hfh)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_div_genMap {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     (hξ : IsCptGen ξ) (p : Cpt ξ) (a : Ω) :
@@ -61,11 +61,9 @@ theorem exists_eq_div_genMap {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec 
     exact (map_mul ψ _ _).symm.trans (congrArg ψ hfh)
 
 /- English proof (translation)
-Introduce `p a ha`. Take `⟨hd, hc⟩` from `hX p.1`. Use `letI : Algebra (X.presheaf.stalk p.1) Ω := (genMap ξ p).toAlgebra`. Establish `hinj : Function.Injective (algebraMap (X.presheaf.stalk p.1) Ω)` using `hξ.inj p`. Use `haveI : FaithfulSMul (X.presheaf.stalk p.1) Ω := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsFractionRing (X.presheaf.stalk p.1) Ω := IsFractionRing.of_field _ _ fun z => by`. Take `⟨u, v, -, e⟩` from `exists_eq_div_genMap hξ p z`. Conclude with `⟨u, v, e⟩`. Use `letI : Algebra (X.presheaf.stalk p.1) (regAt ξ p) := (genMap ξ p).rangeRestrict.toAlgebra`. Use `haveI : IsScalarTower (X.presheaf.stalk p.1) (regAt ξ p) Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
-
-Use `haveI : Algebra.IsIntegral (X.presheaf.stalk p.1) (regAt ξ p) := Algebra.IsIntegral.of_surjective (R := X.presheaf.stalk p.1) (A := X.presheaf.stalk p.1) (Algebra.ofId _ _) (genMap ξ p).rangeRestrict_surjective`. Take `⟨b, hb⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := X.presheaf.stalk p.1) (K := Ω)).1 (isIntegral_trans (R := X.presheaf.stalk p.1) (A := regAt ξ p) a ha)`. Conclude with `⟨b, hb⟩`.
+Supply the required witnesses or components. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem normalCpt_of_isCptGen {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
     (hξ : IsCptGen ξ) (hX : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X) : Flat.NormalCpt ξ := by
@@ -87,19 +85,15 @@ theorem normalCpt_of_isCptGen {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec
   exact ⟨b, hb⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y e he`. Use `haveI : FiniteDimensional ℚ c.F := c.fin`. Use `haveI : NumberField c.F := { to_charZero := inferInstance, to_finiteDimensional := c.fin }`. Establish `hfrac : (letI` using `(algebraMap (𝓞 c.F) c.F).toAlgebra; IsFractionRing (𝓞 c.F) c.F) := by`. Establish `: (algebraMap (𝓞 c.F) c.F).toAlgebra = (inferInstance : Algebra (𝓞 c.F) c.F)` using `Algebra.algebra_ext _ _ fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use `infer_instance`. Establish `hmax : ∀ y : Y.X, y ⤳ e → y = e`. Introduce `y hy`. Establish `h1 : closure {e} = closure {y}` using `(show Maximal IsIrreducible (closure {e}) from he).eq_of_le isIrreducible_singleton.closure (specializes_iff_closure_subset.1 hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(inseparable_iff_closure_eq.2 h1.symm).eq`. Establish `hgen : IsCptGen (Ω` using `Y.X.residueField e) (Y.X.fromSpecResidueField e) := isCptGen_of_maximal Y.X (fun x => (Y.normal x).1) e hmax`. Establish `hj : e ∈ Set.range Y.j` using `GlobalTheory.T.generic_points_in_generic_fibre E H D l Xo c (𝓞 c.F) _ Y inferInstance hfrac he`. Establish `hr : Set.range (Y.X.fromSpecResidueField e) ⊆ Set.range Y.j`. Rewrite using `[Scheme.range_fromSpecResidueField]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Set.singleton_subset_iff.2 hj`. Take `⟨y, hy⟩` from `GlobalTheory.T.field_point_lifts_generic_fibre E H D l Xo c (𝓞 c.F) _ Y hfrac (Y.X.residueField e) (Y.X.fromSpecResidueField e) hr`. Establish `hch : CharZero (Y.X.residueField e)`. Set `φ : c.F →+* Y.X.residueField e` to `(Spec.preimage (y ≫ pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom))).hom`. Conclude with `charZero_of_injective_ringHom φ.injective`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hover : Y.X.fromSpecResidueField e ≫ Y.s ≫ spMap (Int.castRingHom (𝓞 c.F)) = spMap (algebraMap ℤ (Y.X.residueField e))`. Rewrite using `[← Spec.map_preimage (Y.X.fromSpecResidueField e ≫ Y.s ≫ spMap (Int.castRingHom (𝓞 c.F)))]`. Use `congr 1`. Use `ext1`. Conclude with `Subsingleton.elim (α := ℤ →+* Y.X.residueField e) _ _`.
-
-Take `⟨n, x, hx⟩` from `GlobalTheory.T.projective_over_coords_exist ℤ Y.X (Y.s ≫ spMap (Int.castRingHom (𝓞 c.F))) (GlobalTheory.T.projective_over_restrict_int (𝓞 c.F) Y.X Y.s Y.proj) (Y.X.residueField e) (Y.X.fromSpecResidueField e) hgen hover`. Use `⟨Y.X.residueField e, inferInstance, hch, n, x, y, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hy]`. Conclude with `hx`. Rewrite using `[hy]`.
-
-Conclude with `normalCpt_of_isCptGen hgen Y.normal`. Rewrite using `[hy]`. Conclude with `Y.X.fromSpecResidueField_apply e _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cpt_of_genericPoint : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), ∀ (l : Geo.Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)), ∀ e ∈ genericPoints Y.X, ∃ (K : Type) (_ : Field K) (_ : CharZero K) (n : ℕ) (x : Fin n → K) (y : Sp K ⟶ Xo.XF c), CoordTie ℤ (y ≫ Y.j) x ∧ Flat.NormalCpt (y ≫ Y.j) ∧ GlobalTheory.CompanionTheory.Ar.genPt (y ≫ Y.j) = e := by
   intro E _ _ _ H D l Xo c Y e he

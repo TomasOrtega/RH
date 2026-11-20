@@ -15,7 +15,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 open GlobalTheory.StdDual (codiff codiff_ne_zero)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨plane_lines hσ (ε := 1) (mul_one 1) (fun a b => by rw [hX.herm, one_mul]) hX.lat (fun y => by rw [hX.dual] refine forall₂_congr fun x _ => ?_ rw [FractionalIdeal.mem_one_iff] exact ⟨fun e => ⟨⟨_, e⟩, rfl⟩, fun ⟨o, e⟩ => e ▸ RingOfIntegers.isIntegral_coe o⟩) one_ne_zero h, plane_ …`.
+Supply the required witnesses or components.
 -/
 theorem lines {B : Base F E} (hB : B.IsGood σ) {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁}
     {H : Plane E n n₁} {H' : Plane E d d₁} {r s r' s' i j i' j' : ℕ} (hX : X.IsHerm σ B r s) (hW : W.IsSkew σ B r' s')
@@ -32,7 +32,7 @@ theorem lines {B : Base F E} (hB : B.IsGood σ) {n d n₁ d₁ : ℕ} {X : Spc F
       exact forall₂_congr fun x _ => inD_iff _) codiff_ne_zero h'⟩
 
 /- English proof (translation)
-Rewrite using `[shiftA, ← smul_assoc, line_lat a b, lat_iff (mul_ne_zero a.ne b.ne)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem memA {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {H : Plane E n n₁} {H' : Plane E d d₁} {𝔭 𝔮 : FI E}
     (a : Line X.L H.x 𝔭) (b : Line W.L H'.y 𝔮) (v : Pl F) (l : (AE F E)ˣ) :
@@ -40,7 +40,7 @@ theorem memA {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {H : Plane E 
   rw [shiftA, ← smul_assoc, line_lat a b, lat_iff (mul_ne_zero a.ne b.ne)]
 
 /- English proof (translation)
-Rewrite using `[shiftB, ← smul_assoc, line_lat a b, lat_iff (mul_ne_zero a.ne b.ne), inAt_cj_iff hσ (mul_ne_zero a.ne b.ne)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem memB (hσ : ∀ x, σ (σ x) = x) {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {H : Plane E n n₁} {H' : Plane E d d₁}
     {𝔭 𝔮 : FI E} (a : Line X.L H.y 𝔭) (b : Line W.L H'.x 𝔮) (v : Pl F) (l : (AE F E)ˣ) :
@@ -48,9 +48,9 @@ theorem memB (hσ : ∀ x, σ (σ x) = x) {n d n₁ d₁ : ℕ} {X : Spc F E n} 
   rw [shiftB, ← smul_assoc, line_lat a b, lat_iff (mul_ne_zero a.ne b.ne), inAt_cj_iff hσ (mul_ne_zero a.ne b.ne)]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ H H' r s r' s' i j i' j' hB hX hW h h' u hu`. Establish `hσ` using `PositivityTheory.ThK.Vac.sigma_sigma hB.cm`. Take `⟨⟨a, a'⟩, b, b'⟩` from `lines hB hX hW h h' hσ`. Break down `hu with rfl | rfl` into its components or cases. Conclude with `⟨_, mul_ne_zero a.ne b'.ne, memA a b'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨_, cj_ne hσ (mul_ne_zero a'.ne b.ne), memB hσ a' b⟩`.
+Supply the required witnesses or components.
 -/
 theorem idealId0 : IdealId0 := by
   intro F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ H H' r s r' s' i j i' j' hB hX hW h h' u hu
@@ -61,13 +61,13 @@ theorem idealId0 : IdealId0 := by
   · exact ⟨_, cj_ne hσ (mul_ne_zero a'.ne b.ne), memB hσ a' b⟩
 
 /- English proof (translation)
-Use `⟨1, 1, -1, -1, ?_⟩` and prove the remaining obligations. Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ H H' r s r' s' i j i' j' hB hX hW h h' hi hj hi' hj' u e₁ e₂ hu`. Establish `hσ` using `PositivityTheory.ThK.Vac.sigma_sigma hB.cm`. Take `⟨⟨a, a'⟩, b, b'⟩` from `lines hB hX hW h h' hσ`. Establish `pD` using `pr_codiff hB`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `p1 : Pr B.P (1 : FI E)` using `fun w _ => FractionalIdeal.count_one _ _`. Establish `pa` using `plane_pr hσ hB.cm one_ne_zero p1 hX.bas h hi hj ⟨a, a'⟩`. Establish `pb` using `plane_pr hσ hB.cm codiff_ne_zero pD hW.bas h' hi' hj' ⟨b, b'⟩`. Establish `ca` using `cj_ne hσ a.ne`. Establish `cb` using `cj_ne hσ b.ne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tr : ∀ ν : Chr F E, ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range ν 0 → ∀ x : (AF F)ˣ, ν (ideleMap F E x) = 1` using `fun ν hν x => hν.triv_of_even Even.zero x`. Break down `hu with ⟨rfl, rfl, rfl⟩ | ⟨rfl, rfl, rfl⟩` into its components or cases. Use `⟨_, mul_ne_zero a.ne b'.ne, memA a b', pa.mul a.ne b'.ne (pD.mul codiff_ne_zero (inv_ne_zero cb) (pb.cj hσ hB.cm b.ne).inv), fun ν _ hν hu => ?_⟩` and prove the remaining obligations. Rewrite using `[idealVal_mul _ a.ne b'.ne, idealVal_mul _ codiff_ne_zero (inv_ne_zero cb), idealVal_inv, idealVal_cj hσ b.ne pb hu (nu_conj hB.cm (tr ν hν)), idealVal_codiff hB (tr ν hν) hu]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `pp : Pr B.P (1 * (cj hσ H.𝔟)⁻¹ * H'.𝔟)` using `(p1.mul (one_ne_zero (α := FI E)) (inv_ne_zero ca) (pa.cj hσ hB.cm a.ne).inv).mul a'.ne b.ne pb`. Use `⟨_, cj_ne hσ (mul_ne_zero a'.ne b.ne), memB hσ a' b, pp.cj hσ hB.cm (mul_ne_zero a'.ne b.ne), fun ν _ hν hu => ?_⟩` and prove the remaining obligations. Rewrite using `[idealVal_cj hσ (mul_ne_zero a'.ne b.ne) pp hu (nu_conj hB.cm (tr ν hν)), idealVal_mul _ a'.ne b.ne, one_mul, idealVal_inv, idealVal_cj hσ a.ne pa hu (nu_conj hB.cm (tr ν hν))]`. Simplify using `[mul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem idealId' : IdealId' := by
   refine ⟨1, 1, -1, -1, ?_⟩

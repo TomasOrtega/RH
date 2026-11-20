@@ -9,9 +9,9 @@ namespace GlobalTheory.SympBlocks
 open scoped ComplexOrder
 
 /- English proof (translation)
-Establish `h4 : Dᵀ * A - Bᵀ * C = 1`. Simplify `congrArg Matrix.transpose h3` using `[transpose_sub, transpose_mul]`. Establish `e3 : Aᵀ * D = 1 + Cᵀ * B` using `by rw [← h3]; abel`. Establish `e4 : Dᵀ * A = 1 + Bᵀ * C` using `by rw [← h4]; abel`. Simplify using `only [Matrix.add_mul, Matrix.mul_sub, Matrix.smul_mul, Matrix.mul_smul, smul_sub, smul_smul, I_mul_I]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1, ← h2, e3, e4]`. Use `module`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_identity {l : Type} [Fintype l] [DecidableEq l] (A B C D : Matrix l l ℂ)
     (h1 : Aᵀ * C = Cᵀ * A) (h2 : Bᵀ * D = Dᵀ * B) (h3 : Aᵀ * D - Cᵀ * B = 1) :
@@ -26,9 +26,9 @@ theorem herm_identity {l : Type} [Fintype l] [DecidableEq l] (A B C D : Matrix l
   module
 
 /- English proof (translation)
-Establish `h4 : Dᵀ * A - Bᵀ * C = 1`. Simplify `congrArg Matrix.transpose h3` using `[transpose_sub, transpose_mul]`. Establish `e3 : Aᵀ * D = 1 + Cᵀ * B` using `by rw [← h3]; abel`. Establish `e4 : Dᵀ * A = 1 + Bᵀ * C` using `by rw [← h4]; abel`. Simplify using `only [transpose_sub, transpose_smul, Matrix.sub_mul, Matrix.mul_sub, Matrix.smul_mul, Matrix.mul_smul, smul_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1, ← h2, e3, e4]`. Use `module`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_identity {l : Type} [Fintype l] [DecidableEq l] (A B C D : Matrix l l ℂ)
     (h1 : Aᵀ * C = Cᵀ * A) (h2 : Bᵀ * D = Dᵀ * B) (h3 : Aᵀ * D - Cᵀ * B = 1) :
@@ -49,27 +49,23 @@ namespace GlobalTheory.SympBlocks
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `l _ _ s P Q hP hQ hs`. Establish `hs' : fromBlocks s.toBlocks₁₁ s.toBlocks₁₂ s.toBlocks₂₁ s.toBlocks₂₂ ∈ Matrix.symplecticGroup l ℝ` using `by rwa [fromBlocks_toBlocks]`. Take `⟨r1, r2, r3⟩` from `SymplecticGroup.fromBlocks_mem_iff.1 hs'`. Use `set A := s.toBlocks₁₁.map Complex.ofRealHom`. Use `set B := s.toBlocks₁₂.map Complex.ofRealHom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set C := s.toBlocks₂₁.map Complex.ofRealHom`. Use `set D := s.toBlocks₂₂.map Complex.ofRealHom`. Establish `h1 : Aᵀ * C = Cᵀ * A`. Simplify using `only [A, C, ← transpose_map, ← Matrix.map_mul, r1]`. Establish `h2 : Bᵀ * D = Dᵀ * B`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [B, D, ← transpose_map, ← Matrix.map_mul, r2]`. Establish `h3 : Aᵀ * D - Cᵀ * B = 1`. Simplify using `only [A, B, C, D, ← transpose_map, ← Matrix.map_mul]`. Rewrite using `[← Matrix.map_sub _ (fun a b => map_sub Complex.ofRealHom a b), r3]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ePQ : P = A - I • B ∧ Q = C - I • D`. Apply the tactic sequence `constructor <;> ext a b <;> simp [A, B, C, D, hP, hQ, toBlocks₁₁, toBlocks₁₂, toBlocks₂₁, toBlocks₂₂]`. Take `⟨eP, eQ⟩` from `ePQ`. Establish `hPc : Pᴴ = Aᵀ + I • Bᵀ`. Rewrite using `[eP]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Simplify using `[A, B, conjTranspose_apply, transpose_apply]`. Establish `hQc : Qᴴ = Cᵀ + I • Dᵀ`. Rewrite using `[eQ]`. Use extensionality with `a b`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[C, D, conjTranspose_apply, transpose_apply]`. Establish `hH : Pᴴ * Q - Qᴴ * P = (-(2 * I)) • (1 : Matrix l l ℂ)`. Rewrite using `[hPc, hQc, eP, eQ]`. Conclude with `herm_identity A B C D h1 h2 h3`. Establish `hS : Pᵀ * Q = Qᵀ * P`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[eP, eQ]`. Conclude with `symm_identity A B C D h1 h2 h3`. Establish `hdet : P.det ≠ 0`. Introduce `h0`. Take `⟨v, hv0, hv⟩` from `(Matrix.exists_mulVec_eq_zero_iff).2 h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : star v ⬝ᵥ ((Pᴴ * Q - Qᴴ * P) *ᵥ v) = 0`. Rewrite using `[Matrix.sub_mulVec, dotProduct_sub, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_zero, dotProduct_zero, sub_zero, dotProduct_mulVec, ← star_mulVec, hv, star_zero, zero_dotProduct]`. Rewrite `key` using `[hH, Matrix.smul_mulVec, Matrix.one_mulVec, dotProduct_smul, smul_eq_mul]`. Establish `h2I : (-(2 * I)) ≠ 0` using `by simp [I_ne_zero]`. Establish `: star v ⬝ᵥ v = 0` using `(mul_eq_zero.1 key).resolve_left h2I`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv0 (dotProduct_star_self_eq_zero.1 this)`. Use `⟨hdet, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit P.det` using `isUnit_iff_ne_zero.2 hdet`. Establish `huT : IsUnit Pᵀ.det` using `by rwa [det_transpose]`. Apply `Matrix.IsSymm.neg` to reduce the goal to its premises.
-
-Unfold `Matrix.IsSymm`. Rewrite using `[transpose_mul, transpose_nonsing_inv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, mul_nonsing_inv _ hu, Matrix.mul_one]`. Use `_ = Pᵀ⁻¹ * (Pᵀ * Q) * P⁻¹ := by rw [hS]`.
-
-Use `_ = Q * P⁻¹ := by rw [← Matrix.mul_assoc, nonsing_inv_mul _ huT, Matrix.one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_and_isSymm : ∀ (l : Type) [Fintype l] [DecidableEq l]
     (s : Matrix (l ⊕ l) (l ⊕ l) ℝ) (P Q : Matrix l l ℂ),

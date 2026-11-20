@@ -19,9 +19,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hm : Continuous (Units.map (complMap (splitPrime_under t)).toMonoidHom)` using `Units.continuous_map (GlobalTheory.LFun.SplitChart.continuous_complMap (splitPrime_under t))`. Establish `h1 : Continuous fun x : (Fv F v)ˣ => ((chrW χ t x : ℂˣ) : ℂ)` using `(continuous_locChar hχ (splitPrime t)).comp hm`. Establish `h2 : Continuous fun x : (Fv F v)ˣ => (((chrW χ t x)⁻¹ : ℂˣ) : ℂ)`. Establish `: (fun x : (Fv F v)ˣ => (((chrW χ t x)⁻¹ : ℂˣ) : ℂ)) = fun x => ((chrW χ t x⁻¹ : ℂˣ) : ℂ)`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[map_inv]`. Rewrite using `[this]`. Conclude with `h1.comp continuous_inv`. Conclude with `Units.continuous_iff.2 ⟨h1, h2⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_chrW {χ : Chr F E} (hχ : Continuous χ) {v : Pl F} (t : E →ₐ[F] Fv F v) :
     Continuous (chrW χ t) := by
@@ -37,7 +37,7 @@ theorem continuous_chrW {χ : Chr F E} (hχ : Continuous χ) {v : Pl F} (t : E �
   exact Units.continuous_iff.2 ⟨h1, h2⟩
 
 /- English proof (translation)
-Introduce `g` and use `by show ‖((Circle.toUnits _ : ℂˣ) : ℂ)‖ = 1 exact Circle.norm_coe _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnitaryChar_chrW (χ : Chr F E) {v : Pl F} (t : E →ₐ[F] Fv F v) :
     GlobalTheory.SmGL.IsUnitaryChar (chrW χ t) := fun g => by
@@ -45,7 +45,7 @@ theorem isUnitaryChar_chrW (χ : Chr F E) {v : Pl F} (t : E →ₐ[F] Fv F v) :
   exact Circle.norm_coe _
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' hT v _ t`. Establish `hν : Continuous X.ν` using `by show Continuous fun x => X.α x / X.β x`. Conclude with `hT.chars.heckeα.1.div' hT.chars.heckeβ.1`. Conclude with `⟨GlobalTheory.RootEx.UniformLattices.isOpen_ker_of_continuous _ (continuous_chrW hν t), isUnitaryChar_chrW _ t⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chrW_nu_smooth_unitary : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

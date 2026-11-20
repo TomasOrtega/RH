@@ -19,7 +19,7 @@ open scoped ComplexOrder
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.Dict.LatEmbEx
 
 /- English proof (translation)
-Introduce `τ`. Establish `: ballMat q 0 τ = 0` using `by ext a b; simp [ballMat]`. Rewrite using `[this]`. Simplify using `using Matrix.PosDef.one`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem zero_mem_ballDom {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} (q : Ψ × Fin j × Fin j' ≃ Fin n) : (0 : Fin n → ℂ) ∈ ballDom q := by
   intro τ
@@ -28,11 +28,11 @@ theorem zero_mem_ballDom {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} (q : Ψ × Fin 
   simpa using Matrix.PosDef.one
 
 /- English proof (translation)
-Establish `nd` using `traceForm_nondegenerate ℚ E`. Apply `nd.1` to reduce the goal to its premises. Introduce `a`. Establish `halg : IsAlgebraic ℤ a` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic a)`. Take `⟨n, hn, hint⟩` from `halg.exists_integral_multiple`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : Algebra.trace ℚ E ((n • a) * w) = 0` using `hw ⟨n • a, hint⟩`. Establish `hnq : ((n : ℤ) : ℚ) ≠ 0` using `by exact_mod_cast hn`. Establish `h2 : (n • a) * w = ((n : ℚ)) • (w * a)`. Rewrite using `[← Int.cast_smul_eq_zsmul ℚ n a, smul_mul_assoc, mul_comm a w]`. Rewrite `h1` using `[h2, map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Algebra.traceForm_apply]`. Conclude with `(mul_eq_zero.1 h1).resolve_left hnq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_zero_of_int {E : Type} [Field E] [NumberField E] (w : E)
     (hw : ∀ a : 𝓞 E, Algebra.trace ℚ E ((a : E) * w) = 0) : w = 0 := by
@@ -51,41 +51,37 @@ theorem trace_zero_of_int {E : Type} [Field E] [NumberField E] (w : E)
   exact (mul_eq_zero.1 h1).resolve_left hnq
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ H F`. Establish `h0 : (0 : Fin n → ℂ) ∈ ballDom F.q` using `zero_mem_ballDom F.q`. Take `⟨R, hR⟩ : ∃ R, R = F.R 0` from `⟨_, rfl⟩`. Use `haveI := R.free`. Use `haveI := R.fin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hform : R.form = F.form` using `by rw [hR]; exact F.form_eq 0`. Establish `hrk` using `GlobalTheory.T.CM_field_degree_eq_twice_card E Ψ F.σ F.cm`. Establish `hg` using `GlobalTheory.T.genus_eq_card_mul_signature E Ψ g j j' R.B F.σ F.cm (by rw [hR]; exact F.sig 0 h0)`. Take `⟨N, hN, e, einj, esmul, hspan⟩` from `GlobalTheory.T.lattice_rational_embedding E Λ`. Establish `hpos : 0 < Module.finrank ℚ E` using `Module.finrank_pos`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hNj : N = j + j'`. Rewrite `hN` using `[R.rank, hrk, hg]`. Establish `hc : 0 < Fintype.card Ψ` using `by omega`. Establish `: Fintype.card Ψ * N = Fintype.card Ψ * (j + j')` using `by nlinarith`. Conclude with `Nat.eq_of_mul_eq_mul_left hc this`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hNj` using the available equality. Establish `hunim : Function.Bijective F.form` using `hform ▸ R.unimod`. Establish `halt : ∀ x, F.form x x = 0` using `fun x => by rw [← hform]; exact R.alt x`. Establish `hadj : ∀ a a' : 𝓞 E, (a' : E) = IsCMField.complexConj E (a : E) → ∀ x y, F.form (a • x) y = F.form x (a' • y)`. Rewrite using `[← hform]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `R.adj`. Take `⟨B, hBe, hBadj, hBskew, hBnd⟩` from `GlobalTheory.T.alternating_form_hermitian_descent E Λ (j + j') e einj esmul hspan F.form halt hunim hadj`. Take `⟨h, m, hm, hmaster, hint⟩` from `GlobalTheory.T.skew_hermitian_form_exists E H Λ (j + j') e B hBadj hBskew hBnd`. Establish `hdual` using `GlobalTheory.T.alternating_form_lattice_compatible E H Λ (j + j') e einj F.form hunim B hBe hBskew hBnd hspan h m hm hmaster`. Establish `hrt : (H.rt : E) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Establish `h1 : ((H.rt ^ 2 : 𝓞 E) : E) = ((-(H.d : 𝓞 E) : 𝓞 E) : E)` using `by rw [H.rt_sq]`. Establish `hd : H.d ≠ 0` using `H.d_prime.ne_zero`. Simplify using `[h0] at h1`. Conclude with `hd h1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hxi : ((m : E) * (H.rt : E))⁻¹ ≠ 0` using `inv_ne_zero (mul_ne_zero (by exact_mod_cast hm) hrt)`. Use `choose eps heps hxieq using fun τ => GlobalTheory.T.embedding_inverse_root_imaginary E H (F.σ τ) m hm`. Establish `hmat : ∀ x y, ((F.form x y : ℤ) : ℚ) = Algebra.trace ℚ E (((m : E) * (H.rt : E))⁻¹ * h.toSesq (e y) (e x))`. Introduce `x y`. Use `hmaster 1 (e x) (e y)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[one_mul, one_smul]`. Rewrite using `[this, hBe]`. Set `lam : Module.Basis (Fin (2 * g)) ℤ Λ` to `(Module.finBasisOfFinrankEq ℤ Λ R.rank)`. Take `⟨bas, hbas⟩` from `GlobalTheory.T.real_basis_from_lattice_basis E Ψ g (j + j') F.σ F.cm hg Λ e hspan lam`. Establish `hlat : IsLattice E e.range`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `a _ ⟨x, rfl⟩`. Conclude with `⟨a • x, esmul a x⟩`. Establish `: AddGroup.FG Λ` using `Module.Finite.iff_addGroup_fg.1 inferInstance`. Conclude with `(AddGroup.fg_iff_addSubgroup_fg _).1 (AddGroup.fg_range e)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff]`. Introduce `v _`. Take `⟨k, x, hk, hx⟩` from `hspan v`. Establish `hk' : (k : E) ≠ 0` using `by exact_mod_cast hk`. Establish `: v = (k : E)⁻¹ • e x`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hx, Nat.cast_smul_eq_nsmul E k v |>.symm, smul_smul, inv_mul_cancel₀ hk', one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨x, rfl⟩)`. Establish `hintegral : IsIntegralOn h e.range`. Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hint x y`. Establish `hDI : IsDIntegral h (e.range.relIndex (dualLattice h e.range)) e.range` using `⟨hlat, hintegral, hdual, le_rfl⟩`. Establish `horth : ∀ x y, h.toSesq (e x) (e y) = 0 ↔ ∀ a : 𝓞 E, F.form (a • x) y = 0`. Introduce `x y`. Establish `hsw : h.toSesq (e x) (e y) = 0 ↔ h.toSesq (e y) (e x) = 0`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h1`. Establish `h2` using `h.isSymm.eq (e x) (e y)`. Rewrite `h2` using `[h1]`. Simplify using `using h2.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h1`. Establish `h2` using `h.isSymm.eq (e y) (e x)`. Rewrite `h2` using `[h1]`. Simplify using `using h2.symm`. Establish `hfa : ∀ a : 𝓞 E, ((F.form (a • x) y : ℤ) : ℚ) = Algebra.trace ℚ E ((a : E) * (((m : E) * (H.rt : E))⁻¹ * h.toSesq (e y) (e x)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a`. Rewrite using `[hmaster (a : E) (e x) (e y), ← hBe, esmul]`. Rewrite using `[hsw]`. Prove the components needed by the constructor for the conclusion. Introduce `h1 a`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hfa a` as an intermediate fact. Rewrite `this` using `[h1, mul_zero, mul_zero, map_zero]`. Conclude with `this` after adjusting the coercions. Introduce `h1`. Establish `: ((m : E) * (H.rt : E))⁻¹ * h.toSesq (e y) (e x) = 0`.
-
-Apply `trace_zero_of_int` to reduce the goal to its premises. Introduce `a`. Rewrite using `[← hfa a, h1 a]`. Simplify using the standard rewrite rules. Conclude with `(mul_eq_zero.1 this).resolve_left hxi`.
-
-Establish `hcpos : 0 < 1 / ((m : ℝ) * Real.sqrt H.d)`. Establish `h1 : (0 : ℝ) < m` using `by exact_mod_cast Nat.pos_of_ne_zero hm`. Establish `h2 : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Check the signs of the components of the expression. Conclude with `⟨{ h := h, e := e, e_inj := einj, e_smul := esmul, Dn := _, integral := hDI, orth := horth, xi := ((m : E) * (H.rt : E))⁻¹, c := 1 / ((m : ℝ) * Real.sqrt H.d), c_pos := hcpos, eps := eps, eps_sq := heps, xi_eq := hxieq, form_eq := hmat, lam := lam, bas := bas, bas_eq := hbas }⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_latEmb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (_H : Host E) (F : UnivFam E Ψ j j' n g Λ), Nonempty (LatEmb F) := by
   intro E _ _ _ Ψ _ j j' n g Λ _ _ H F

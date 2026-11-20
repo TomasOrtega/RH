@@ -7,49 +7,43 @@ open scoped ComplexConjugate Topology Real
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨M, hM, htrans⟩` from `HalfMax.exists_period X la`. Take `⟨C0, hC0⟩` from `hP.1.2`. Use `set w : ℝ := ∑ τ, X.spread la τ with hw`. Establish `hpi` using `Real.pi_pos`. Use `⟨2 ^ (w / 2) * C0, π / M, by positivity, fun z0 hz0 t' ht' htt' => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hv, hvv, hv0⟩` from `id hξ`. Use `set e : X.Ψ → Fin r → ℂ := fun τ => Data.emb τ.1 v with he`. Establish `he0 : ∀ τ : X.Ψ, e τ ≠ 0`. Introduce `τ h`. Apply `hv0` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Use `congr_fun h a` as an intermediate fact. Simplify `this` using `[e, Data.emb]`. Establish `heIso : X.IsIsoV e` using `fun τ => ⟨by show hermC τ.1 X.Gm (fun a => τ.1 (v a)) (fun a => τ.1 (v a)) = 0`. Rewrite using `[EmbeddingHermitianPairs.hermC_emb, hvv, map_zero], he0 τ⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set t : ℝ := t' / 2 with ht`. Establish `ht0 : 0 < t` using `by linarith`. Establish `htt : ∀ τ, 2 * t ≤ X.ttV e z0 τ`. Introduce `τ`. Establish `h : t' ≤ X.ttV e z0 τ` using `htt' τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfl : ∀ s, X.flowV e s z0 = X.flow v s z0` using `fun s => rfl`. Establish `hdom : ∀ ζ : ℂ, -(2 * t) < ζ.im → X.flow v (fun _ => ζ) z0 ∈ X.dom`. Introduce `ζ hζ`. Rewrite using `[← hfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((flowDomainCriterion_holds r X e heIso z0 hz0 (fun _ => ζ)).1).2 (fun τ => ?_)` and prove the remaining obligations. Use `show 0 < 1 + ζ.im / X.ttV e z0 τ`. Establish `h` using `htt τ`. Establish `hpos' : 0 < X.ttV e z0 τ` using `by linarith`. Establish `: -1 < ζ.im / X.ttV e z0 τ` using `by rw [lt_div_iff₀ hpos']; linarith`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set g : ℂ → ℂ := fun ζ => if -(2 * t) < ζ.im then P (X.flow v (fun _ => ζ) z0) else 0 with hg`. Take `⟨γ, hγ, hχ, hγm⟩` from `htrans v hv hvv`. Establish `hper : Function.Periodic g M`. Introduce `ζ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hg, Complex.add_im, Complex.ofReal_im, add_zero]`. Use `split_ifs with h`. Establish `hy` using `hdom ζ h`. Establish `hlact : X.flow v (fun _ => ζ + (M : ℂ)) z0 = lact γ (X.flow v (fun _ => ζ) z0)`. Use function extensionality and compare the values at `τ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show X.flowMat v τ (ζ + M) * mat z0 τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat (X.flow v (fun _ => ζ) z0) τ`. Rewrite using `[AdmissibleHermitianColumns.mat_flow, hγm τ, ← Matrix.mul_assoc, EmbeddingHermitianPairs.flowMat_mul X hvv, add_comm]`. Rewrite using `[hlact, hP.1.1.2.2 γ hγ _ hy, hχ, one_mul]`. Both sides reduce to the same expression. Establish `hopen` using `FourierCoefficientDomain.isOpen_dom X`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hdiff : ∀ ζ : ℂ, -(2 * t) < ζ.im → DifferentiableAt ℂ g ζ`. Introduce `ζ hζ`. Establish `hev : g =ᶠ[𝓝 ζ] fun ζ => P (X.flow v (fun _ => ζ) z0)`. Establish `: {ζ : ℂ | -(2 * t) < ζ.im} ∈ 𝓝 ζ` using `(isOpen_lt continuous_const Complex.continuous_im).mem_nhds hζ`. Use `filter_upwards [this] with ζ' h'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [hg, if_pos (show -(2 * t) < ζ'.im from h')]`. Use `DifferentiableAt.congr_of_eventuallyEq ?_ hev` and prove the remaining obligations. Establish `hF : DifferentiableAt ℂ (fun ζ : ℂ => X.flow v (fun _ => ζ) z0) ζ` using `((FlowMeanContinuity.flow_differentiable X v z0).comp (differentiable_pi.2 fun _ => differentiable_id)) ζ`. Conclude with `(hP.1.1.1.differentiableAt (hopen.mem_nhds (hdom ζ hζ))).comp ζ hF`. Establish `hzero : Tendsto g (comap im atTop) (𝓝 0)` using `HalfMax.tendsto_zero X la P hP hz0 hξ (fun ζ hζ => hdom ζ (by linarith)) g (fun ζ hζ => by simp only [hg, if_pos (show -(2 * t) < ζ.im by linarith)])`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnz : 0 < X.nfac la z0` using `flowTermNormDecay.nfac_pos X la hz0`. Use `set B : ℝ := 2 ^ (w / 2) * C0 / X.nfac la z0 with hB`. Establish `hBd : ∀ ζ : ℂ, ζ.im = -t → ‖g ζ‖ ≤ B`. Introduce `ζ hζ`. Establish `hlt : -(2 * t) < ζ.im` using `by linarith`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hg, if_pos hlt]`. Use `set y := X.flow v (fun _ => ζ) z0 with hy`. Establish `hyd` using `hdom ζ hlt`. Establish `hnf : 0 < X.nfac la y` using `flowTermNormDecay.nfac_pos X la hyd`. Establish `hratio : X.nfac la z0 / X.nfac la y ≤ ∏ τ : X.Ψ, (max (1 + ζ.im / X.ttV e z0 τ) (1 + ζ.im / X.ttV e z0 τ)⁻¹) ^ (X.spread la τ / 2)` using `(m3bNorm_holds r X e heIso la z0 hz0 (fun _ => ζ) (by rw [hfl]; exact hyd)).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hprod : ∏ τ : X.Ψ, (max (1 + ζ.im / X.ttV e z0 τ) (1 + ζ.im / X.ttV e z0 τ)⁻¹) ^ (X.spread la τ / 2) ≤ (2 : ℝ) ^ (w / 2)`. Establish `hterm : ∀ τ : X.Ψ, (max (1 + ζ.im / X.ttV e z0 τ) (1 + ζ.im / X.ttV e z0 τ)⁻¹) ^ (X.spread la τ / 2) ≤ (2 : ℝ) ^ (X.spread la τ / 2)`. Introduce `τ`. Establish `h` using `htt τ`. Establish `hT : 0 < X.ttV e z0 τ` using `by linarith`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq1 : 1 / 2 ≤ 1 + ζ.im / X.ttV e z0 τ`. Rewrite using `[hζ, neg_div]`. Establish `: t / X.ttV e z0 τ ≤ 1 / 2` using `by rw [div_le_iff₀ hT]; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq2 : 1 + ζ.im / X.ttV e z0 τ ≤ 1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hζ, neg_div]`. Establish `: 0 ≤ t / X.ttV e z0 τ` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hqpos : 0 < 1 + ζ.im / X.ttV e z0 τ` using `by linarith`. Establish `hinv : (1 + ζ.im / X.ttV e z0 τ)⁻¹ ≤ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[inv_le_comm₀ hqpos two_pos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsp` using `flowTermNormDecay.spread_nonneg' X la τ`. Conclude with `Real.rpow_le_rpow (le_trans hqpos.le (le_max_left _ _)) (max_le (by linarith) hinv) (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `htt τ`. Establish `hT : 0 < X.ttV e z0 τ` using `by linarith`. Establish `: t / X.ttV e z0 τ ≤ 1 / 2` using `by rw [div_le_iff₀ hT]; linarith`. Rewrite using `[hζ, neg_div]`. Use the proof step `linarith) (le_max_left _ _)) _) (fun τ _ => hterm τ)`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ = (2 : ℝ) ^ (∑ τ : X.Ψ, X.spread la τ / 2) := (Real.rpow_sum_of_pos two_pos _ _).symm`. Use `_ = (2 : ℝ) ^ (w / 2) := by rw [← Finset.sum_div]`. Establish `h1 : ‖P y‖ * X.nfac la y ≤ C0` using `hC0 y hyd`. Establish `h2 : X.nfac la z0 ≤ 2 ^ (w / 2) * X.nfac la y`. Rewrite `hratio` using `[div_le_iff₀ hnf]`.
-
-Conclude with `hratio.trans (mul_le_mul_of_nonneg_right hprod hnf.le)`. Rewrite using `[hB, le_div_iff₀ hnz]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsch` using `PeriodicSchwarzLemma.periodic_schwarz hM ht0 (show t < 2 * t by linarith) hper hdiff hzero hBd`. Establish `hg0 : g 0 = P z0`.
-
-Simplify using `only [hg, Complex.zero_im, if_pos (show -(2 * t) < (0 : ℝ) by linarith)]`. Use `congr 1`. Conclude with `EmbeddingHermitianPairs.flow_zero X v z0`. Rewrite `hsch` using `[hg0]`. Establish `hexp : -2 * π * t / M = -(π / M) * t'`.
-
-Rewrite using `[ht]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hsch` using `[hexp, hB, ← mul_div_assoc, le_div_iff₀ hnz]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cusp_pnorm_le_exp_neg_of_isIso (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ)
     (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (v : Fin r → E) (hP : P ∈ X.SS la)

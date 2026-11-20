@@ -18,13 +18,13 @@ noncomputable section
 namespace GlobalTheory.TorusValueP
 
 /- English proof (translation)
-Establish `h1 : mat g * mat g⁻¹ = 1`. Unfold `mat`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, mul_inv_cancel]`. Both sides reduce to the same expression. Establish `h2 : mat g⁻¹ * mat g = 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Unfold `mat`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel]`. Both sides reduce to the same expression. Establish `hg : (mat g)ᵀ * incM F W.J * (mat g).map (cA σ) = incM F W.J` using `g.2`. Use `⟨⟨⟨Matrix.fromBlocks (mat g) 0 0 1, Matrix.fromBlocks (mat g⁻¹) 0 0 1, ?_, ?_⟩, ?_⟩, rfl⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.fromBlocks_multiply]`. Simplify using `[h1]`. Rewrite using `[Matrix.fromBlocks_multiply]`. Simplify using `[h2]`. Use `show (Matrix.fromBlocks (mat g) 0 0 1)ᵀ * dbl (incM F W.J) * (Matrix.fromBlocks (mat g) 0 0 1).map (cA σ) = dbl (incM F W.J)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hm1 : (1 : Matrix (Fin d) (Fin d) (AE F E)).map (cA σ) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[Matrix.fromBlocks_transpose, dbl, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `[hm1, hg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levi_block {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {d : ℕ}
     (W : Spc F E d) (g : UA σ W.J) :
@@ -43,19 +43,19 @@ theorem levi_block {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
     simp [hm1, hg]
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hA hP₁ e he t m hm k hk hne`. Take `⟨⟨_, dd, omd, hdc, hspl, hbox⟩, -, -⟩` from `hP.weil`. Take `⟨u, hu⟩` from `GlobalTheory.T.doubled_unipotent_scalar_translation F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ hA ((↑t⁻¹ : AE F E) - 1)`. Take `⟨gd, hgd⟩` from `levi_block σ W m`. Take `⟨hT, hdet⟩` from `GlobalTheory.T.seesaw_pair_restriction_is_pair F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hA hP₁ t m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hp : ((gd * u).1.1 : Matrix (Fin d ⊕ Fin d) (Fin d ⊕ Fin d) (AE F E)) = Matrix.fromBlocks (mat m) 0 0 1 * GlobalTheory.DblUnip.unipMat (cA σ).toRingHom (incM F W.J) (incV F H'.x) (incV F H'.y) ((↑t⁻¹ : AE F E) - 1)`. Rewrite using `[← hgd, ← hu]`. Both sides reduce to the same expression. Take `⟨Λ, hadm, hinv, hΛp, φ₀, hφ₀, hne0⟩` from `GlobalTheory.T.seesaw_pair_restriction_levi hPr F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hA hP₁ e he t m hm k hk hne dd omd hdc hspl (fun g gd h φ₁ h₁ φ₂ h₂ => hbox g gd h φ₁ h₁ φ₂ h₂) (gd * u) hp`. Establish `hTu : IsUnit (GlobalTheory.DblUnip.diagMat (cA σ).toRingHom (incM F W.J) (incV F H'.x) (incV F H'.y) ((↑t⁻¹ : AE F E) - 1)).det`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hdet]`. Conclude with `(Units.map (cA σ).toMonoidHom t⁻¹).isUnit`. Set `T : GL (Fin d) (AE F E)` to `Matrix.nonsingInvUnit _ hTu`. Establish `hsieg` using `hspl.2.2 Λ hadm hinv (gd * u) T (by rw [hp]; exact hT) φ₀ hφ₀`. Establish `hdetT : Matrix.GeneralLinearGroup.det T = Units.map (cA σ).toMonoidHom t⁻¹` using `Units.ext (by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `hdet)`. Rewrite `hsieg` using `[hdetT, hΛp φ₀ hφ₀]`. Establish `hc` using `GlobalTheory.T.witt_character_conjugate_inverse F E σ B n d X W M χX χW om r s r' s' hP t⁻¹`. Establish `hmo` using `GlobalTheory.T.adelic_modulus_norm_eq_abs F E (Units.map (cA σ).toMonoidHom t⁻¹)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `habs : (absE F E (Units.map (cA σ).toMonoidHom t⁻¹) : ℝ) = ((absE F E t : ℝ))⁻¹`. Rewrite using `[show Units.map (cA σ).toMonoidHom t⁻¹ = GlobalTheory.Doubling.conjUnit σ t⁻¹ from rfl, GlobalTheory.Doubling.absE_conjUnit, map_inv, NNReal.coe_inv]`. Rewrite `hsieg` using `[hc, map_inv, inv_inv, hmo, habs, Fintype.card_fin]`. Establish `hA0 : (0 : ℝ) < (absE F E t : ℝ)`. Establish `h1 : absE F E t * absE F E t⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : absE F E t ≠ 0` using `fun h => by rw [h, zero_mul] at h1; exact zero_ne_one h1`. Conclude with `pos_iff_ne_zero.mpr h2` after adjusting the coercions. Establish `h` using `mul_right_cancel₀ hne0 hsieg`. Establish `e1 : ((absE F E t : ℝ))⁻¹ ^ ((n : ℝ) / 2) * (absE F E t : ℝ) ^ (n : ℝ) = (absE F E t : ℝ) ^ ((n : ℝ) / 2)`. Rewrite using `[Real.inv_rpow hA0.le, ← Real.rpow_neg hA0.le, ← Real.rpow_add hA0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Establish `e2 : (absE F E t : ℝ) ^ (-(n : ℝ)) * (absE F E t : ℝ) ^ (n : ℝ) = 1`. Rewrite using `[← Real.rpow_add hA0]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem torus_evalZero_value : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

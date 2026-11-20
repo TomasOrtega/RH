@@ -14,9 +14,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CechPoset
 
 /- English proof (translation)
-Establish `hm : Monotone (pr D' hD' D'' hD'' hle)` using `fun I J h => Subtype.mk_le_mk.2 (Prod.mk_le_mk.2 ⟨cov_mono D'' hD'' h, cov_mono D' hD' h⟩)`. Establish `h1 : (pairRes ψ s'').pull2 (pullHO2 w y) = (pairPull w).pull2 y` using `(LinearEquiv.ofBijective (pairRes ψ s'').pull2 (pairRes_pull2_bijective ψ s'')).apply_symm_apply _`. Establish `h2` using `congrArg (CoefMap.restrict (OPair ψ s'') hm.functor.op).pull2 h1`. Generalize the expression as in `pullHO2 w y = z at h2 ⊢`. Take `⟨z, rfl⟩` from `CatCoh.H2.mk_surjective _ z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `CatCoh.H2.mk_surjective _ y`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem restrict_pull2_pullHO2 {R' R'' : Type} [CommRing R'] [CommRing R''] {X' X'' : Scheme.{0}}
     {s' : X' ⟶ Sp R'} {s'' : X'' ⟶ Sp R''} {σ : R' →+* R''} {ψ : X'' ⟶ X'}

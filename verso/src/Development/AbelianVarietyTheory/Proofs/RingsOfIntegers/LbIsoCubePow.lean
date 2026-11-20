@@ -23,7 +23,7 @@ open GlobalTheory.CechPic
 variable {S : Scheme.{0}} {G' G : Over S} [GrpObj G'] [IsCommMonObj G'] [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-The claim follows from `(Geo.Tor.psum_hom (MonoidHom.mk' (· ≫ q) fun a b => MonObj.mul_comp a b q) x I).trans ((congrArg (fun z => psum G z I) (funext e)).trans (Geo.Tor.psum_hom (Geo.Tor.preHom h) y I).symm)`.
+A detailed English derivation is pending.
 -/
 theorem psum_comp_hom (q : G' ⟶ G) [IsMonHom q] {T' T : Over S} {n : ℕ} (x : Fin n → (T' ⟶ G'))
     (y : Fin n → (T ⟶ G)) (h : T' ⟶ T) (e : ∀ k, x k ≫ q = h ≫ y k) (I : Finset (Fin n)) :
@@ -32,11 +32,11 @@ theorem psum_comp_hom (q : G' ⟶ G) [IsMonHom q] {T' T : Over S} {n : ℕ} (x :
     ((congrArg (fun z => psum G z I) (funext e)).trans (Geo.Tor.psum_hom (Geo.Tor.preHom h) y I).symm)
 
 /- English proof (translation)
-Establish `a` using `cls_linComb hL' _ _ h₁`. Establish `b` using `cls_linComb hL _ _ h₂`. Establish `c : cls L' hL' = ∑ i, pull (p.pr i).left (cls L hL)`. Rewrite using `[(cls_eq_iff hL' (LB.isLB_linComb hL _ _)).2 hb, cls_linComb hL]`. Simplify using `only [one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `a.trans (Eq.trans ?_ (Finset.sum_congr rfl fun i _ => congrArg (pull (h i).left) b.symm))` and prove the remaining obligations. Simplify using `only [c, map_sum, map_zsmul, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Use `p.hom i` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← pull_comp, ← pull_comp, ← Over.comp_left, ← Over.comp_left, psum_comp_hom (p.pr i) x y (h i) (e i)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cls_cube_box {j : ℕ} (p : IsPowGrp G' G j) {L : LB G.left} {L' : LB G'.left} (hL : L.IsLB) (hL' : L'.IsLB)
     (hb : Geo.Tor.LBIso L' (boxLB L p.pr)) {T' T : Over S} {n : ℕ} (x : Fin n → (T' ⟶ G'))
@@ -56,9 +56,9 @@ theorem cls_cube_box {j : ℕ} (p : IsPowGrp G' G j) {L : LB G.left} {L' : LB G'
   rw [← pull_comp, ← pull_comp, ← Over.comp_left, ← Over.comp_left, psum_comp_hom (p.pr i) x y (h i) (e i)]
 
 /- English proof (translation)
-Introduce `S G' G _ _ _ _ j p L L' hL hL' hb f g f' g' hf hg H`. Establish `i₁ : (cubeLB G ![fst G G ≫ f, snd G G] L).IsLB` using `LB.isLB_linComb hL _ _`. Establish `i₂ : (cubeLB G ![fst G G, snd G G ≫ g] L).IsLB` using `LB.isLB_linComb hL _ _`. Establish `i₃ : (cubeLB G' ![fst G' G' ≫ f', snd G' G'] L').IsLB` using `LB.isLB_linComb hL' _ _`. Establish `i₄ : (cubeLB G' ![fst G' G', snd G' G' ≫ g'] L').IsLB` using `LB.isLB_linComb hL' _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(cls_eq_iff i₃ i₄).1 ?_` and prove the remaining obligations. Apply the tactic sequence `rw [cls_cube_box p hL hL' hb _ _ (fun i => p.pr i ⊗ₘ p.pr i) (fun i k => by fin_cases k <;> simp [hf]) i₃ i₁, cls_cube_box p hL hL' hb _ _ (fun i => p.pr i ⊗ₘ p.pr i) (fun i k => by fin_cases k <;> simp [hg]) i₄ i₂, (cls_eq_iff i₁ i₂).2 H]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lbIso_cube_pow : ∀ (S : Scheme.{0}) (G' G : Over S) [GrpObj G'] [IsCommMonObj G'] [GrpObj G] [IsCommMonObj G] (j : ℕ) (p : IsPowGrp G' G j) (L : LB G.left) (L' : LB G'.left), L.IsLB → L'.IsLB → Geo.Tor.LBIso L' (boxLB L p.pr) → ∀ (f g : G ⟶ G) (f' g' : G' ⟶ G'), (∀ i, f' ≫ p.pr i = p.pr i ≫ f) → (∀ i, g' ≫ p.pr i = p.pr i ≫ g) → Geo.Tor.LBIso (cubeLB G ![fst G G ≫ f, snd G G] L) (cubeLB G ![fst G G, snd G G ≫ g] L) → Geo.Tor.LBIso (cubeLB G' ![fst G' G' ≫ f', snd G' G'] L') (cubeLB G' ![fst G' G', snd G' G' ≫ g'] L') := by
   intro S G' G _ _ _ _ j p L L' hL hL' hb f g f' g' hf hg H

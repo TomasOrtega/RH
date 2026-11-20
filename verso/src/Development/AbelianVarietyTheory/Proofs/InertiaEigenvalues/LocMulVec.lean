@@ -13,7 +13,7 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 variable {D : D7} (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
 
 /- English proof (translation)
-The claim follows from `(goodO_ringOfIntegers (D.nd.l i) (D.nbr i w hw).LL).2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem isTopRing : IsTopologicalRing (Br.LL D.nbr i w hw) :=
   (goodO_ringOfIntegers (D.nd.l i) (D.nbr i w hw).LL).2.2.2.1
@@ -32,9 +32,9 @@ def toLLv {a n : ℕ} (y : Fin a → Fin n → KK D.nd i) : Fin a → Fin n → 
   fun j m => Br.toLLK (D.nbr i w hw) (y j m)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Rewrite using `[RingHom.map_mulVec]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `only [Br.loc, Br.locM, Br.locO, mapM, MonoidHom.coe_comp, Function.comp_apply, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, RingHom.mapMatrix_apply, Matrix.map_apply, toK]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg Subtype.val (Br.toLLK_alg (D.nbr i w hw) _).symm`.
+A detailed English derivation is pending.
 -/
 theorem loc_mulVec {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) (g : Br.G D.nbr i w hw)
     (v : Fin k → KK D.nd i) :
@@ -56,11 +56,11 @@ def XV {a : ℕ} (Y : Submodule (D.nd.O i) (Fin a → Fin D.R.nV → KK D.nd i))
   Submodule.span _ (toLLv i w hw '' (Y : Set (Fin a → Fin D.R.nV → KK D.nd i)))
 
 /- English proof (translation)
-Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨y, hy, rfl⟩` from `hu`. Use `Submodule.subset_span ⟨_, hst ((Br.iota D.nbr i w hw g : Gw D.nd w) : GE D.nd) y hy, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[sumRho_apply]`. Conclude with `(loc_mulVec i w hw _ g (y j)).symm`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [map_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ hu hv`. Consider the case `smul c u _ hu => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hu`.
+A detailed English derivation is pending.
 -/
 theorem XV_stable {a : ℕ} (x : Fin a → D.nd.X i) (Y : Submodule (D.nd.O i) (Fin a → Fin D.R.nV → KK D.nd i))
     (hst : ∀ γ : GE D.nd, ∀ y ∈ Y,
@@ -102,7 +102,7 @@ def pushSet {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i)) {a : 
         (φ ⟨_, hE ((Br.iota D.nbr i w hw g : Gw D.nd w) : GE D.nd)⟩)}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_cutCoc (Xs : Set (D.nd.X i)) {k : ℕ} (M : GE D.nd →* Matrix (Fin k) (Fin k) (D.nd.O i))
     (c : Br.G D.nbr i w hw → (Fin k → Br.LL D.nbr i w hw) ⧸ (Br.locLat D.nbr i w hw M).T) :

@@ -10,23 +10,21 @@ open GlobalTheory.GalCut GlobalTheory.UnitaryBC GlobalTheory.Cong GlobalTheory.D
 namespace UpperTheory.Gal.Wt
 
 /- English proof (translation)
-Introduce `hEB hEv hTor hQR hBd hEP E _ _ _ a τ W K ν d B hB U hU hBU hne κ hκ k`. Take `⟨e, he⟩` from `GlobalTheory.T.archimedeanUnitaryPoints_equiv_unitaryGroup E a τ`. Establish `hx : ∀ u : Matrix.unitaryGroup (Fin a) ℂ, ∃ x : infU E a, x.1 ∈ embU a τ ∧ cEmb τ x.1 = unitaryIncl a u` using `fun u => by`. Establish `h` using `he (e.symm u)`. Rewrite `h` using `[e.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨⟨(e.symm u).1, (Subgroup.mem_inf.1 (e.symm u).2).1⟩, (e.symm u).2, h.symm⟩`. Use `choose x hx using fun z : Circle => (show ∃ x : infU E a, x.1 ∈ embU a τ ∧ cEmb τ x.1 = tor a k z by`. Take `⟨u, hu⟩` from `(hTor a k z).2.1`. Rewrite using `[← hu]`. Conclude with `hx u)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Name the introduced variables `hxu`. Establish `hc : IsCirc τ k x` using `hx`. Take `⟨S, hS, hBS⟩` from `hB.fin`. Establish `hexp : ∀ (T : Submodule ℂ (Circle → ℂ)) (Φ : Circle → UA E a → ℂ), (∀ z, Φ z ∈ S) → (∀ g, (fun z => Φ z g) ∈ T) → ∀ L : (UA E a → ℂ) →ₗ[ℂ] ℂ, (fun z => L (Φ z)) ∈ T` using `fun T Φ h1 h2 L => hEv S (UA E a) Circle (fun g => LinearMap.proj g ∘ₗ S.subtype) (fun m hm => Subtype.ext (funext hm)) T (fun z => ⟨Φ z, h1 z⟩) h2 (L ∘ₗ S.subtype)`. Take `⟨y₁, y₂, v, hv⟩` from `hne`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Take `⟨p, hp0, hp⟩` from `hEP E a τ U hU κ hκ _ (hBU y₁ y₂ v) hv`. Use `(hBd a k κ _).1 {w | ∃ y₁ y₂ v, w = p (B y₁ y₂ v)} ⟨_, ⟨y₁, y₂, v, rfl⟩, hp0⟩ ?_ ?_` and prove the remaining obligations. Introduce and unpack `u _ ⟨y₁, y₂, v, rfl⟩`. Take `⟨x', h1, h2⟩` from `hxu u`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `⟨_, _, _, by rw [← h2, ← hp _ h1 _ (hBU _ _ _), hB.inf x']⟩`. Introduce and unpack `_ ⟨y₁, y₂, v, rfl⟩ L`. Use `hexp _ _ (fun z => hBS _ _ _) (fun g => hB.le k x hc y₁ y₂ v g) (L ∘ₗ p)` as an intermediate fact. Use `this using 2 with z` and compare the differences between its conclusion and the goal. Rewrite using `[← (hx z).2, ← hp _ (hx z).1 _ (hBU _ _ _), hB.inf (x z)]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Both sides reduce to the same expression. Choose the witnesses or unpack the hypotheses as in `⟨y, v', hv'⟩ : ∃ y v', B 1 y v' ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨u, b, hb, rfl⟩` from `hQR a y₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x', -, h2⟩` from `hxu u`. Establish `e1` using `hB.inf x' 1 ((cEmb τ x'.1)⁻¹ * y₂) (W.rep x'⁻¹ v)`. Rewrite `e1` using `[h, map_zero, mul_one, mul_inv_cancel_left, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply, h2]`. Rewrite `hv` using `[hB.up b hb, ← e1, smul_zero]`. Conclude with `hv rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, hp0, hp⟩` from `hEP E a τ U hU κ hκ _ (hBU 1 y v') hv'`. Use `(hBd a k κ _).2 _ hp0 fun L => ?_` and prove the remaining obligations. Establish `h1` using `hexp _ _ (fun z => hBS _ _ _) (fun g => hB.ge k x hc y v' g) (L ∘ₗ p)`. Establish `h2` using `hEB.2.1 _ _ _ _ (hEB.2.2.2.1 1 (psum ν k)).2 h1`. Rewrite using `[sub_eq_add_neg]`.
-
-Use `h2 using 2 with z` and compare the differences between its conclusion and the goal. Rewrite using `[← (hx z).2, ← hp _ (hx z).1 _ (hBU _ _ _), hB.inf (x z), (hx z).2, mul_one, ← one_mul (tor a k z), hB.up _ (hTor a k z).1, (hTor a k z).2.2.1, map_smul, map_smul, one_mul, one_mul]`. Both sides reduce to the same expression.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem famSum_of : ExpBasic → EvLem → TorFacts → QR → WtBd → EmbProj → FamSum := by
   intro hEB hEv hTor hQR hBd hEP E _ _ _ a τ W K ν d B hB U hU hBU hne κ hκ k

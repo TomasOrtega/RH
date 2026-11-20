@@ -12,19 +12,17 @@ def StableDvd (A : Type*) [CommRing A] : Prop :=
   ∀ (a b : A) (I : Ideal A), b ≠ 0 → I ≠ ⊥ → (∀ r ∈ I, ∃ s ∈ I, a * r = b * s) → b ∣ a
 
 /- English proof (translation)
-Rewrite using `[isIntegrallyClosed_iff (FractionRing A)]`. Introduce `y hy`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := A) y`. Use `set K := FractionRing A`. Use `set y : K := algebraMap A K a / algebraMap A K b with hydef`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hbK : algebraMap A K b ≠ 0`. Simplify using `using hb0`. Establish `hinj : Function.Injective (algebraMap A K)` using `IsFractionRing.injective A K`. Take `⟨d, hd, hdN⟩` from `FractionalIdeal.isFractional_of_fg (S := nonZeroDivisors A) hy.fg_adjoin_singleton`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `I : Ideal A` to `{ carrier := {r | ∀ z ∈ Algebra.adjoin A {y}, ∃ s : A, algebraMap A K s = r • z} zero_mem' := fun z _ => ⟨0, by simp⟩ add_mem' := by`. Introduce `r r' hr hr' z hz`. Take `⟨s, hs⟩` from `hr z hz`. Take `⟨s', hs'⟩` from `hr' z hz`. Conclude with `⟨s + s', by rw [map_add, hs, hs', add_smul]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use the proof step `smul_mem' := by`. Introduce `c r hr z hz`. Take `⟨s, hs⟩` from `hr z hz`. Conclude with `⟨c * s, by rw [map_mul, hs, smul_eq_mul, mul_smul, Algebra.smul_def c]⟩ }`. Establish `hyN : y ∈ Algebra.adjoin A {y}` using `Algebra.self_mem_adjoin_singleton A y`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hdI : d ∈ I` using `fun z hz => hdN z hz`. Establish `hI : I ≠ ⊥` using `fun h0 => nonZeroDivisors.ne_zero hd (by simpa [h0] using hdI)`. Take `⟨c, hc⟩` from `h a b I hb0 hI (by`. Introduce `r hr`. Take `⟨s, hs⟩` from `hr y hyN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s, fun z hz => ?_, hinj ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `hr (y * z) (mul_mem hyN hz)`. Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[ht, Algebra.smul_def s, hs, smul_mul_assoc]`. Rewrite using `[map_mul, map_mul, hs, Algebra.smul_def, hydef, mul_left_comm, mul_div_cancel₀ _ hbK, mul_comm])`.
-
-Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[hydef, hc, map_mul, mul_div_cancel_left₀ _ hbK]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem StableDvd.isIntegrallyClosed {A : Type*} [CommRing A] [IsDomain A] (h : StableDvd A) :
     IsIntegrallyClosed A := by
@@ -70,9 +68,9 @@ section Step
 variable {A : Type*} [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsLocalRing A] {x : A}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SaturatedNotDvd.main`. Consider the case `exact _root_.GlobalTheory.SaturatedNotDvd.main`. Consider the case `(apply _root_.GlobalTheory.SaturatedNotDvd.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SaturatedNotDvd.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SaturatedNotDvd.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SaturatedNotDvd.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem dvd_of_not_dvd (hx : Prime x) (h : StableDvd (A ⧸ Ideal.span {x})) {a b : A}
     (hb : ¬ x ∣ b) {I : Ideal A} (hI : I ≠ ⊥)
@@ -88,13 +86,13 @@ theorem dvd_of_not_dvd (hx : Prime x) (h : StableDvd (A ⧸ Ideal.span {x})) {a 
 omit [IsLocalRing A] in
 
 /- English proof (translation)
-Assume the negation of the conclusion as `ha`. Establish `key : ∀ k : ℕ, ∀ r ∈ I, x ^ k ∣ r`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro r _`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `r hr`. Take `⟨s, hs, e⟩` from `hst r hr`. Take `⟨v, rfl⟩` from `ih s hs`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hx.pow_dvd_of_dvd_mul_left (k + 1) ha ⟨b * v, by linear_combination e⟩`. Take `⟨r, hr, hr0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Take `⟨n, c, hc, e⟩` from `WfDvdMonoid.max_power_factor' hr0 hx.not_unit`. Take `⟨v, hv⟩` from `key (n + 1) r hr`. Use `hc ⟨v, mul_left_cancel₀ (pow_ne_zero n hx.ne_zero) ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hv - e`.
+A detailed English derivation is pending.
 -/
 theorem prime_dvd_of_stable (hx : Prime x) {a b : A} {I : Ideal A} (hI : I ≠ ⊥)
     (hst : ∀ r ∈ I, ∃ s ∈ I, a * r = x * b * s) : x ∣ a := by
@@ -115,11 +113,11 @@ theorem prime_dvd_of_stable (hx : Prime x) {a b : A} {I : Ideal A} (hI : I ≠ �
   linear_combination hv - e
 
 /- English proof (translation)
-Introduce `a b I hb hI hst`. Take `⟨n, c, hc, rfl⟩` from `WfDvdMonoid.max_power_factor' hb hx.not_unit`. Use `clear hb`. Proceed by induction on `n generalizing a with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hst`, the goal using `[pow_zero, one_mul]`. Conclude with `dvd_of_not_dvd hx h hc hI hst`. Consider the case `succ n ih`. Take `⟨a, rfl⟩` from `prime_dvd_of_stable hx (a := a) (b := x ^ n * c) hI (fun r hr => by`. Take `⟨s, hs, e⟩` from `hst r hr`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s, hs, by linear_combination e⟩)`. Take `⟨v, hv⟩` from `ih a (fun r hr => by`. Take `⟨s, hs, e⟩` from `hst r hr`. Conclude with `⟨s, hs, mul_left_cancel₀ hx.ne_zero (by linear_combination e)⟩)`. Conclude with `⟨v, by rw [hv]; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem StableDvd.of_quotient (hx : Prime x) (h : StableDvd (A ⧸ Ideal.span {x})) :
     StableDvd A := by
@@ -143,15 +141,15 @@ end Step
 
 open ReciprocityTheory.CA.AB.RegA in
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n IH`. Introduce `R _ _ hn`. Establish `: IsDomain R` using `IsRegularLocalRing.isDomain R`. Distinguish the cases in `hsq : maximalIdeal R ≤ maximalIdeal R ^ 2`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `h0` using `IsRegularLocalRing.maximalIdeal_eq_bot_of_le_sq R hsq`. Introduce `a b I hb _ _`. Use `IsUnit.dvd ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hu`. Establish `: b ∈ maximalIdeal R` using `hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `this` using `[h0]`. Conclude with `hb this`. Take `⟨x, hx, hx2⟩` from `SetLike.not_le_iff_exists.mp hsq`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hx2 (zero_mem _)`. Establish `hquot` using `IsRegularLocalRing.quotient_span_singleton hx hx2`. Establish `hxp : Prime x`. Rewrite using `[← Ideal.span_singleton_prime hx0, ← Ideal.Quotient.isDomain_iff_prime]`. Conclude with `IsRegularLocalRing.isDomain _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `StableDvd.of_quotient hxp (IH _ ?_ _ rfl)` and prove the remaining obligations. Establish `h1` using `IsRegularLocalRing.spanFinrank_maximalIdeal_quotient_succ_le R hx hx2`. Establish `h2 : Submodule.spanFinrank (maximalIdeal R) = Module.finrank (ResidueField R) (CotangentSpace R)`. Rewrite using `[IsLocalRing.spanFinrank_maximalIdeal_eq_finrank_cotangentSpace]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem stableDvd_of_spanFinrank_eq (n : ℕ) :
     ∀ (R : Type) [CommRing R] [IsRegularLocalRing R],
@@ -186,7 +184,7 @@ theorem stableDvd_of_spanFinrank_eq (n : ℕ) :
 end RegularNormal
 
 /- English proof (translation)
-Introduce `T _ _`. Establish `hd : IsDomain T` using `ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.isDomain T`. Conclude with `⟨hd, (RegularNormal.stableDvd_of_spanFinrank_eq _ T rfl).isIntegrallyClosed⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isDomain_and_isIntegrallyClosed_of_isRegularLocalRing :
     ∀ (T : Type) [CommRing T] [IsRegularLocalRing T], IsDomain T ∧ IsIntegrallyClosed T := by

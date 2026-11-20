@@ -7,15 +7,15 @@ import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.PiSeenA
 namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi
 
 /- English proof (translation)
-Introduce `V B _ _ _ L w e h`. Establish `hr : ∀ r : LinearMap.range L, (r : V) = ∑ b, e b (r : V) • w b`. Introduce and unpack `⟨_, v, rfl⟩`. Conclude with `h v`. Set `A : LinearMap.range L →ₗ[ℂ] (B → ℂ)` to `LinearMap.pi fun b => (e b).comp (LinearMap.range L).subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `c : (B → ℂ) →ₗ[ℂ] LinearMap.range L` to `L.rangeRestrict.comp (Fintype.linearCombination ℂ w)`. Establish `hA : Function.Injective A`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr0`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr r]`. Establish `hz : ∀ b, e b (r : V) = 0` using `fun b => congrFun hr0 b`. Simplify using `[hz]`. Use `haveI : FiniteDimensional ℂ (LinearMap.range L) := FiniteDimensional.of_injective A hA`. Establish `hL : (L.restrict fun x _ => LinearMap.mem_range_self L x) = c ∘ₗ A`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `r`. Establish `h1 : (c (A r) : V) = L (∑ b, e b (r : V) • w b)`. Simplify using `[c, A, Fintype.linearCombination_apply]`. Rewrite using `[LinearMap.comp_apply, h1, ← hr r]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hL, LinearMap.trace_comp_comm', LinearMap.trace_eq_matrix_trace ℂ (Pi.basisFun ℂ B)]`. Simplify using `only [Matrix.trace, Matrix.diag_apply, LinearMap.toMatrix_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `[c, A, Fintype.linearCombination_apply, Pi.single_apply, ite_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trFin_pf : TrFin := by
   intro V B _ _ _ L w e h

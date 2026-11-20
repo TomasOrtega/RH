@@ -10,9 +10,7 @@ noncomputable section
 namespace GlobalTheory.CoeffFieldLower
 
 /- English proof (translation)
-Establish `hl : 0 < l ^ 1` using `pow_pos (Fact.out : l.Prime).pos 1`. Establish `hfin : ({x : PadicAlgCl l | x ^ (l ^ 1) = 1}).Finite` using `(nthRoots (l ^ 1) (1 : PadicAlgCl l)).toFinset.finite_toSet.subset fun x hx => by`. Rewrite using `[Finset.mem_coe, Multiset.mem_toFinset, Polynomial.mem_nthRoots hl]`. Conclude with `hx`. Use `hfin.to_subtype` as an intermediate fact.
-
-Use `show FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] {x : PadicAlgCl l | x ^ (l ^ 1) = 1})`. Conclude with `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_muK_one (l : ℕ) [Fact l.Prime] : FiniteDimensional ℚ_[l] (muK l 1) := by
   classical
@@ -42,13 +40,11 @@ def low (D : D7) : Big D := fun l hl j =>
     infer_instance⟩
 
 /- English proof (translation)
-Introduce `D`. Use `⟨low D, fun l _ j => ⟨fun x => ?_, ?_, fun K0 hK0 w hw => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : IntermediateField.adjoin ℚ_[l] (Set.range j) ≤ (low D l j).1` using `le_sup_left.trans le_sup_left`. Conclude with `h1 (IntermediateField.subset_adjoin _ _ ⟨x, rfl⟩)`. Conclude with `le_sup_right.trans le_sup_left`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex` using `GlobalTheory.PlaceBridge.exists_locBridge l D.host.E D.nd.Om w (D.nd.plOm.1 w) hw (D.nd.plOm.2 w)`. Establish `hspec` using `(Classical.choose_spec hex).choose_spec`. Establish `hL : (bridgeLow D l w).1 ≤ K0.1`. Use `le_trans ?_ hK0` and prove the remaining obligations. Use `le_trans ?_ le_sup_right` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : w ∈ (placesOver_finite' D.host.E l (Fact.out : l.Prime).ne_zero).toFinset` using `by simpa using hw`. Conclude with `le_iSup₂ (f := fun w (_ : w ∈ (placesOver_finite' D.host.E l (Fact.out : l.Prime).ne_zero).toFinset) => (bridgeLow D l w).1) w hmem`. Establish `e : bridgeLow D l w = (Classical.choose_spec hex).choose` using `dif_pos hw`. Establish `hL' : (Classical.choose_spec hex).choose.1 ≤ K0.1` using `e ▸ hL`. Take `⟨Bw, hBj, -⟩` from `hspec.2 K0 hL'`.
-
-Conclude with `⟨Bw, fun x => by rw [hBj]; exact hspec.1 x⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_low : ∀ (D : D7), ∃ c0 : Big D, ∀ (l : ℕ) [Fact l.Prime] (j : ↥D.LL0 →+* PadicAlgCl l), (∀ x, j x ∈ (c0 l j).1) ∧ muK l 1 ≤ (c0 l j).1 ∧ ∀ K0 : Loc.FinExt l, (c0 l j).1 ≤ K0.1 → ∀ w ∈ placesOver D.host.E l, ∃ Bw : LocBridge l D.host.E D.nd.Om (Dec (F := D.host.E) (D.nd.plOm.1 w)) ↥(Loc.OL K0), ∀ x, x ∈ D.nd.plOm.1 w ↔ ‖Bw.j x‖ ≤ 1 := by
   intro D

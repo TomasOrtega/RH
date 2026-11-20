@@ -9,9 +9,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply F₀ (MvPolynomial (ArcLt Dw) (LaurentSeries K₁)) (ArcS Dw K₁)]`. Establish `h1 : algebraMap F₀ (LaurentSeries K₁) r = HahnSeries.ofPowerSeries ℤ K₁ (algebraMap F₀ (PowerSeries K₁) r)` using `rfl`. Establish `h2 : algebraMap F₀ (PowerSeries K₁) r = PowerSeries.C (R` using `K₁) (algebraMap F₀ K₁ r) := by first`. Consider the case `(rw [IsScalarTower.algebraMap_apply F₀ K₁ (PowerSeries K₁)]; rfl)`. Consider the case `exact MvPowerSeries.algebraMap_apply`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact PowerSeries.algebraMap_apply' r`. Consider the case `simp [Algebra.algebraMap_eq_smul_one]`. Simplify using `only [arcι, RingHom.comp_apply, MvPolynomial.algebraMap_apply, h1, h2]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem arcS_pin (Dw : Datum H) (K₁ : Type) [Field K₁] {F₀ : Type} [Field F₀] [Algebra F₀ K₁] (r : F₀) :
     algebraMap F₀ (ArcS Dw K₁) r = arcι Dw K₁ (PowerSeries.C (R := K₁) (algebraMap F₀ K₁ r)) := by

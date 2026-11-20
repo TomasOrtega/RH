@@ -8,13 +8,13 @@ open scoped Real ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hopen : IsOpen (cov U g)` using `hU.prod isOpen_univ`. Establish `hd : Differentiable ℂ (fun z : Fin g → ℂ => f (b, z))`. Introduce `z`. Establish `hz : (b, z) ∈ cov U g` using `⟨hb, Set.mem_univ _⟩`. Use `(hf (b, z) hz).differentiableAt (hopen.mem_nhds hz)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.comp z ((differentiableAt_const b).prodMk differentiableAt_id)`. Establish `hper : ∀ (i : Fin g) z, (fun z => f (b, z)) (z + Pi.single i 1) = (fun z => f (b, z)) z` using `fun i z => hp (b, z) ⟨hb, Set.mem_univ _⟩ i`. Establish `ht` using `fourierCoeff_unitCube_translate_of_entire_periodic g _ hd hper n w`. Establish `hcont : ∀ v : Fin g → ℂ, Continuous (fun x : Fin g → ℝ => f (b, (fun i => (x i : ℂ)) + v) * Complex.exp (-(2 * π * Complex.I) * ∑ i, (n i : ℂ) * (x i : ℂ)))`. Introduce `v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(hd.continuous.comp (by fun_prop)).mul (by fun_prop)`. Establish `hint : ∀ v : Fin g → ℂ, IntegrableOn (fun x : Fin g → ℝ => f (b, (fun i => (x i : ℂ)) + v) * Complex.exp (-(2 * π * Complex.I) * ∑ i, (n i : ℂ) * (x i : ℂ))) (Set.Icc (0 : Fin g → ℝ) 1)` using `fun v => (hcont v).integrableOn_Icc`. Establish `hint0` using `hint 0`. Simplify using `only [add_zero] at hint0`. Repeatedly rewrite using `[sub_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_sub (hint w) hint0]`. Rewrite using `[ht, coef, ch]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_translate_sub_mul_char_of_periodic {g : ℕ} {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℂ E] {U : Set E} (f : Pt E g → ℂ) (hU : IsOpen U)
@@ -51,7 +51,7 @@ theorem integral_translate_sub_mul_char_of_periodic {g : ℕ} {E : Type} [Normed
   ring
 
 /- English proof (translation)
-Introduce `b hb n`. Rewrite using `[← integral_translate_sub_mul_char_of_periodic f₁ hU hf₁ hp₁ hb n (w₂ b), ← integral_translate_sub_mul_char_of_periodic f₂ hU hf₂ hp₂ hb n (w₁ b)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[h (b, fun i => (x i : ℂ)) ⟨hb, Set.mem_univ _⟩]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_mul_ch_sub_one_eq_of_translate_diff {g : ℕ} {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [FiniteDimensional ℂ E] {U : Set E} (f₁ f₂ : Pt E g → ℂ)

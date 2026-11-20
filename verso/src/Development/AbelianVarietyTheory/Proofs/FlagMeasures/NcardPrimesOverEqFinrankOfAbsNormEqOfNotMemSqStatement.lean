@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.NcardPrimesOverEqFin
 open NumberField
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ncard_primesOver_eq_finrank_of_absNorm_eq_of_not_mem_sq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FNcardPrimesOverEqFinrankOfAbsNormEqOfNotMemSq.lean&line=7#L7)
 -/

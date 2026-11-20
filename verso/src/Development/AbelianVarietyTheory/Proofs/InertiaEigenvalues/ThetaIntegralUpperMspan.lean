@@ -29,11 +29,11 @@ def measSub (E : Type) [Field E] [NumberField E] (a : ℕ) : Submodule ℂ (GA E
   smul_mem' c _ hF := Measurable.const_smul hF c
 
 /- English proof (translation)
-Establish `hu : Continuous fun q : invSet E a => (IsUnit.unit (q.2 : IsUnit (Matrix.of q.1)) : GL (Fin a) (Cinf E))`. Use `Units.continuous_iff.2 ⟨continuous_subtype_val, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.ConstTermSmooth.contDiffOn_invM.continuousOn.comp_continuous (f := fun q : invSet E a => q.1) continuous_subtype_val fun q => q.2` as an intermediate fact. Use `Continuous.congr this fun q => ?_` and prove the remaining obligations. Simplify using `only [Matrix.coe_units_inv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hm : Measurable fun x => (⟨toL (γ x).val, (γ x).isUnit⟩ : invSet E a)` using `h.subtype_mk`. Use `hu.measurable.comp hm using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Use `ext1`.
+Both sides reduce to the same expression. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem measurable_gl_of_matrix {X : Type} [MeasurableSpace X] {γ : X → GL (Fin a) (Cinf E)}
     (h : Measurable fun x => (γ x : Matrix (Fin a) (Fin a) (Cinf E))) : Measurable γ := by
@@ -52,9 +52,9 @@ theorem measurable_gl_of_matrix {X : Type} [MeasurableSpace X] {γ : X → GL (F
   rfl
 
 /- English proof (translation)
-Establish `hF'` using `hF`. Unfold `GlobalTheory.JSW.mspanR at hF'`. Use `Submodule.mem_sInf.1 hF' (measSub E a) ⟨fun φ hφ => ?_, fun F hF h => ?_, fun F hF X _ ν _ k γ hk => ?_⟩` and prove the remaining obligations. Conclude with `(continuous_of_mem_or (π := π) (Or.inl hφ)).measurable`. Conclude with `(hF : Measurable F).comp (continuous_mul_right h).measurable`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγ : Measurable fun p : GA E a × X => p.1 * infGL E a (γ p.2)` using `measurable_fst.mul ((GlobalTheory.ConstTermSmooth.continuous_infGL.measurable.comp (measurable_gl_of_matrix hk.2.1)).comp measurable_snd)`. Establish `h1 : StronglyMeasurable fun p : GA E a × X => k p.2 * F (p.1 * infGL E a (γ p.2))` using `((hk.1.comp measurable_snd).mul ((hF : Measurable F).comp hγ)).stronglyMeasurable`. Conclude with `(h1.integral_prod_right' (ν := ν)).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_of_mem_mspanR (π : CuspSub E a) {F : GA E a → ℂ} (hF : F ∈ GlobalTheory.JSW.mspanR π) : Measurable F := by
   have hF' := hF
@@ -71,11 +71,11 @@ theorem measurable_of_mem_mspanR (π : CuspSub E a) {F : GA E a → ℂ} (hF : F
     exact (h1.integral_prod_right' (ν := ν)).measurable
 
 /- English proof (translation)
-Use `set s : Set (GA E a × (Fin a → Cinf E)) := Set.univ ×ˢ rowSet E ℓ with hsdef`. Establish `hsm : MeasurableSet s` using `(isOpen_univ.prod (isOpen_rowSet ℓ)).measurableSet`. Use `measurable_of_restrict_of_restrict_compl hsm ?_ ?_` and prove the remaining obligations. Establish `hc : Continuous fun p : s => p.1.1 * (infGL E a (rowGL ℓ p.1.2))⁻¹`. Establish `h2 : ContinuousOn (fun p : GA E a × (Fin a → Cinf E) => p.1 * (infGL E a (rowGL ℓ p.2))⁻¹) s` using `continuous_fst.continuousOn.mul ((continuousOn_inv_rowGL ℓ).comp continuous_snd.continuousOn fun p hp => hp.2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2.restrict`. Establish `hm` using `hc.measurable`. Conclude with `((h.comp hm).mul (Complex.continuous_conj.measurable.comp (h'.comp hm))).mul (hΦ.measurable.comp (measurable_snd.comp measurable_subtype_coe))`. Use `(measurable_const (a := (0 : ℂ)) : Measurable fun _ : (sᶜ : Set (GA E a × (Fin a → Cinf E))) => (0 : ℂ)) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Establish `hp : p.1.2 ∉ tsupport Φ` using `fun hp => p.2 ⟨trivial, hs hp⟩`. Express the relevant statement in the definitionally equal form `rsInf ℓ φ φ' Φ p.1.1 p.1.2 = 0`. Simplify using `[rsInf, image_eq_zero_of_notMem_tsupport hp]`.
+A detailed English derivation is pending.
 -/
 theorem measurable_rsInf {ℓ : Fin a} {φ φ' : GA E a → ℂ} {Φ : (Fin a → Cinf E) → ℂ} (h : Measurable φ)
     (h' : Measurable φ') (hΦ : Continuous Φ) (hs : tsupport Φ ⊆ rowSet E ℓ) :
@@ -98,7 +98,7 @@ theorem measurable_rsInf {ℓ : Fin a} {φ φ' : GA E a → ℂ} {Φ : (Fin a �
     simp [rsInf, image_eq_zero_of_notMem_tsupport hp]
 
 /- English proof (translation)
-Establish `hY : Continuous fun g : GA E a => (fun j => algebraMap E (Ad E) (ξ j)) ᵥ* g.val` using `continuous_const.matrix_vecMul Units.continuous_val`. Establish `hI : Continuous fun g : GA E a => fun i => pInf E (((fun j => algebraMap E (Ad E) (ξ j)) ᵥ* g.val) i)` using `continuous_pi fun i => GlobalTheory.ShortVecDecay.continuous_pInf.comp ((continuous_apply i).comp hY)`. Establish `hF : Continuous fun g : GA E a => (fun i => pFin E (((fun j => algebraMap E (Ad E) (ξ j)) ᵥ* g.val) i)) - η` using `(continuous_pi fun i => (continuous_snd : Continuous (pFin E)).comp ((continuous_apply i).comp hY)).sub continuous_const`. Establish `h3 : Continuous ((latt a J).indicator (1 : (Fin a → Af E) → ℂ))` using `IsClopen.continuous_indicator ⟨isClosed_latt J, isOpen_latt J⟩ continuous_const`. Conclude with `((measurable_rsInf h h' hΦ hs).comp (measurable_id.prodMk hI.measurable)).mul (h3.comp hF).measurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_rsPsi_vecMul {ℓ : Fin a} {φ φ' : GA E a → ℂ} {Φ : (Fin a → Cinf E) → ℂ} (h : Measurable φ)
     (h' : Measurable φ') (hΦ : Continuous Φ) (hs : tsupport Φ ⊆ rowSet E ℓ) (J : (FractionalIdeal (𝓞 E)⁰ E)ˣ)
@@ -116,9 +116,9 @@ theorem measurable_rsPsi_vecMul {ℓ : Fin a} {φ φ' : GA E a → ℂ} {Φ : (F
   exact ((measurable_rsInf h h' hΦ hs).comp (measurable_id.prodMk hI.measurable)).mul (h3.comp hF).measurable
 
 /- English proof (translation)
-Introduce `E _ _ _ a ℓ π π' hπ hπ' φ φ' hφ hφ' Φ hΦ hc hs J η μ _ 𝓕 h𝓕`. Establish `hdec : ∀ {ρ : CuspSub E a}, ρ.IsUnitary → ∀ {ψ : Sm E a}, (ψ ∈ ρ.V ∨ ψ.1 ∈ GlobalTheory.JSW.mspanR ρ) → Decays ψ.1` using `fun {ρ} hρ {ψ} hψ L hL C₀ hC₀ N => GlobalTheory.T.cuspFormSmoothSpan_norm_le_shortRationalVector E a ρ hρ ψ hψ [] L hL C₀ hC₀ N`. Establish `hmeas : ∀ {ρ : CuspSub E a} {ψ : Sm E a}, (ψ ∈ ρ.V ∨ ψ.1 ∈ GlobalTheory.JSW.mspanR ρ) → Measurable ψ.1` using `fun {ρ} {ψ} hψ => hψ.elim (fun h => (continuous_of_mem_or (π := ρ) (Or.inl h)).measurable) (GlobalTheory.RSThetaM.measurable_of_mem_mspanR ρ)`. Establish `hK` using `isSmallKernel_rsPsi (hdec hπ hφ) (hdec hπ' hφ') hΦ hc hs J η`. Take `⟨C, hC⟩` from `hK.tsum_le (N := 1) le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3⟩` from `hK.integrableOn μ h𝓕 fun ξ _ => (GlobalTheory.RSThetaM.measurable_rsPsi_vecMul (hmeas hφ) (hmeas hφ') hΦ hs J η ξ).aestronglyMeasurable`. Use `⟨fun g => (hC g).1, h1, h2, h3, (h3.continuous.comp Complex.continuous_ofReal).congr fun x => ?_⟩` and prove the remaining obligations. Use `integral_congr_ae (.of_forall fun g => ?_)` and prove the remaining obligations. Conclude with `congrArg _ (Complex.ofReal_cpow (ideleModule E _).2.le x).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem theta_integral_upper_mspan : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (ℓ : Fin a)
     (π π' : CuspSub E a), π.IsUnitary → π'.IsUnitary → ∀ φ φ' : Sm E a,

@@ -16,7 +16,7 @@ open CrystallineSemistableComparison.Pb CrystallineSemistableComparison.HT
 variable {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
 
 /- English proof (translation)
-Introduce `x _`. Discharge the goal by the elementary cases of `trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Check the elementary cases of the proposition.
 -/
 theorem inTop (T : Thick (smFun X q)) :
     InU (γ := dividedPowersBot K) (p := 0) (q := q) (κ := Ideal.Quotient.mk ⊥) ⊤ T := by

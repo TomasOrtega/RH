@@ -4,9 +4,9 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.BijectiveDualAdd
 namespace GlobalTheory.ZModDual
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.StandardAdditiveCharacter.bijective_dual_addChar`. Consider the case `exact _root_.GlobalTheory.StandardAdditiveCharacter.bijective_dual_addChar`. Consider the case `(apply _root_.GlobalTheory.StandardAdditiveCharacter.bijective_dual_addChar <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.StandardAdditiveCharacter.bijective_dual_addChar <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.StandardAdditiveCharacter.bijective_dual_addChar <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.StandardAdditiveCharacter.bijective_dual_addChar ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem stdAddChar_comp_bijective (n : ℕ) [NeZero n] (A : Type) [AddCommGroup A]
     [Module (ZMod n) A] :
@@ -21,7 +21,7 @@ theorem stdAddChar_comp_bijective (n : ℕ) [NeZero n] (A : Type) [AddCommGroup 
   | (intros; exact _root_.GlobalTheory.StandardAdditiveCharacter.bijective_dual_addChar ..)
 
 /- English proof (translation)
-Use `Fintype.ofFinite A` as an intermediate fact. Rewrite using `[Nat.card_eq_of_bijective _ (stdAddChar_comp_bijective n A), Nat.card_eq_fintype_card (α := AddChar A ℂ), AddChar.card_eq, ← Nat.card_eq_fintype_card]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_dual_eq (n : ℕ) [NeZero n] (A : Type) [AddCommGroup A] [Module (ZMod n) A]
     [Finite A] : Nat.card (Module.Dual (ZMod n) A) = Nat.card A := by

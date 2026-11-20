@@ -15,23 +15,23 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hMO : ∀ i j, M i j ∈ L.O`. Introduce `i j`. Take `⟨o, ho, he⟩` from `hcl i j`. Establish `: M i j = t * o + (1 : Matrix (Fin n) (Fin n) E) i j`. Rewrite using `[← he]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Use `L.O.add_mem (L.O.mul_mem ht ho) ?_` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[L.O.one_mem]`. Simplify using `[h, L.O.zero_mem]`. Set `f : L.O →+* E` to `L.O.subtype`. Set `M' : Matrix (Fin n) (Fin n) L.O` to `Matrix.of fun i j => ⟨M i j, hMO i j⟩`. Establish `hM' : f.mapMatrix M' = M`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hdet : M'.det = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1 : f M'.det = (f.mapMatrix M').det` using `RingHom.map_det f M'`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2 : M.det = 1`. Rewrite using `[Matrix.det_of_upperTriangular (M := M) (fun i j hij => hlow i j hij)]`. Simplify using `[hdiag]`. Express the relevant statement in the definitionally equal form `f M'.det = f 1`. Rewrite using `[h1, hM', h2, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : IsUnit M'.det` using `by rw [hdet]; exact isUnit_one`. Use `⟨f.mapMatrix M'⁻¹, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hM', ← map_mul, Matrix.nonsing_inv_mul _ hu, map_one]`. Rewrite using `[← hM', ← map_mul, Matrix.mul_nonsing_inv _ hu, map_one]`. Introduce `i j set Mi := f.mapMatrix M'⁻¹ with hMi`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinv : Mi * M = 1`. Rewrite using `[hMi, ← hM', ← map_mul, Matrix.nonsing_inv_mul _ hu, map_one]`. Establish `key : Mi - 1 = -(Mi * (M - 1))`. Rewrite using `[Matrix.mul_sub, hinv, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `choose o ho he using hcl`. Use `⟨-(∑ k, (M'⁻¹ i k : E) * o k j), ?_, ?_⟩` and prove the remaining obligations. Conclude with `L.O.neg_mem (L.O.sum_mem fun k _ => L.O.mul_mem (M'⁻¹ i k).2 (ho k j))`. Rewrite using `[key, Matrix.neg_apply, Matrix.mul_apply]`. Simplify using `only [he]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[mul_neg, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[hMi, f]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem unitriangular_inv_close {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E) (n : ℕ) (M : Matrix (Fin n) (Fin n) E) (t : E) (ht : t ∈ L.O) (hlow : ∀ i j, j < i → M i j = 0) (hdiag : ∀ i, M i i = 1) (hcl : ∀ i j, ∃ o ∈ L.O, (M - 1) i j = t * o) : ∃ Mi : Matrix (Fin n) (Fin n) E, Mi * M = 1 ∧ M * Mi = 1 ∧ ∀ i j, ∃ o ∈ L.O, (Mi - 1) i j = t * o := by
   have hMO : ∀ i j, M i j ∈ L.O := by

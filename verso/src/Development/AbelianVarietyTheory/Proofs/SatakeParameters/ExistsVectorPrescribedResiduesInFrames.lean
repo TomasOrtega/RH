@@ -8,23 +8,19 @@ namespace GlobalTheory.CRTFrame
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Use `set I : Ideal (𝓞 E) := Ideal.span {M} with hIdef`. Establish `hI : I ≠ ⊥`. Rewrite using `[hIdef, Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hM`. Establish `hex : ∃ m : ℕ, ¬ I ≤ P.asIdeal ^ m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hI` to reduce the goal to its premises. Establish `hP : P.asIdeal ≠ ⊤` using `P.isPrime.ne_top`. Use `Ideal.iInf_pow_eq_bot_of_isDomain P.asIdeal hP` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_bot_iff, ← this]`. Conclude with `le_iInf h`. Use `set m0 := Nat.find hex with hm0`. Establish `hm0pos : m0 ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Nat.find_spec hex` as an intermediate fact. Rewrite `this` using `[← hm0, h0, pow_zero]`. Conclude with `this (by rw [Ideal.one_eq_top]; exact le_top)`. Use `⟨m0 - 1, ?_⟩` and prove the remaining obligations. Establish `hle : I ≤ P.asIdeal ^ (m0 - 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Nat.find_min hex (show m0 - 1 < m0 by omega)` as an intermediate fact. Use `push Not at this`. Conclude with `this`. Establish `hnle : ¬ I ≤ P.asIdeal ^ (m0 - 1 + 1)`. Rewrite using `[show m0 - 1 + 1 = m0 by omega]; exact Nat.find_spec hex`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨Q, hQ⟩` from `Ideal.dvd_iff_le.mpr hle`. Establish `hQP : ¬ Q ≤ P.asIdeal`. Introduce `h`. Apply `hnle` to reduce the goal to its premises. Rewrite using `[hQ, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Ideal.mul_mono_right h`. Take `⟨s, hsQ, hsP⟩` from `Set.not_subset.mp hQP`. Introduce `z hz`. Establish `hmem : z * s ∈ I`. Rewrite using `[hQ]`.
-
-Conclude with `Ideal.mul_mem_mul hz hsQ`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.mp hmem`. Establish `hM' : algebraMap (𝓞 E) E M ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 E) E)]`. Conclude with `hM`.
-
-Use `⟨a, s, hsP, ?_⟩` and prove the remaining obligations. Establish `h2 : algebraMap (𝓞 E) E a * algebraMap (𝓞 E) E M = algebraMap (𝓞 E) E z * algebraMap (𝓞 E) E s`. Rewrite using `[← map_mul, ← map_mul, ha]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_pow_intAt_div (P : HeightOneSpectrum (𝓞 E)) (M : 𝓞 E) (hM : M ≠ 0) :
     ∃ k : ℕ, ∀ z : 𝓞 E, z ∈ P.asIdeal ^ k →
@@ -74,29 +70,25 @@ theorem exists_pow_intAt_div (P : HeightOneSpectrum (𝓞 E)) (M : 𝓞 E) (hM :
   linear_combination -h2
 
 /- English proof (translation)
-Use `set w : SB → Sp E n := fun P => f P (y0 P) with hwdef`. Use `set c : SB → Fin n → Fin n → E := fun P j l => (f P).symm (Pi.single j 1) l with hcdef`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 E)) ((Finset.univ.image (fun x : SB × Fin n × Fin n => c x.1 x.2.1 x.2.2)) ∪ (Finset.univ.image (fun x : SB × Fin n => w x.1 x.2)))`. Use `set D : 𝓞 E := (b : 𝓞 E) with hDdef`. Establish `hD : D ≠ 0` using `nonZeroDivisors.ne_zero b.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hc : ∀ P j l, ∃ r : 𝓞 E, algebraMap (𝓞 E) E r = algebraMap (𝓞 E) E D * c P j l`. Introduce `P j l`. Take `⟨r, hr⟩` from `hb (c P j l) (Finset.mem_union_left _ (Finset.mem_image.mpr ⟨(P, j, l), Finset.mem_univ _, rfl⟩))`. Conclude with `⟨r, by rw [hr, Algebra.smul_def]⟩`. Establish `hw : ∀ P j, ∃ r : 𝓞 E, algebraMap (𝓞 E) E r = algebraMap (𝓞 E) E D * w P j`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `P j`. Take `⟨r, hr⟩` from `hb (w P j) (Finset.mem_union_right _ (Finset.mem_image.mpr ⟨(P, j), Finset.mem_univ _, rfl⟩))`. Conclude with `⟨r, by rw [hr, Algebra.smul_def]⟩`. Use `choose cr hcr using hc`. Use `choose wr hwr using hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN : ∀ P : SB, ((qOf P.1 : ℕ) : 𝓞 E) ≠ 0`. Introduce `P`. Rewrite using `[Ne, Nat.cast_eq_zero]`. Use `show Ideal.absNorm P.1.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `P.1.ne_bot`. Use `set M : SB → 𝓞 E := fun P => ((qOf P.1 : ℕ) : 𝓞 E) ^ (e P) * D * D with hMdef`. Establish `hM : ∀ P, M P ≠ 0` using `fun P => mul_ne_zero (mul_ne_zero (pow_ne_zero _ (hN P)) hD) hD`. Use `choose k hk using fun P : SB => exists_pow_intAt_div P.1 (M P) (hM P)`. Use `set kk : HeightOneSpectrum (𝓞 E) → ℕ := fun P => if h : P ∈ SB then k ⟨P, h⟩ else 0 with hkkdef`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `crt : ∀ j : Fin n, ∃ z : 𝓞 E, ∀ (P : HeightOneSpectrum (𝓞 E)) (hP : P ∈ SB), z - wr ⟨P, hP⟩ j ∈ P.asIdeal ^ kk P` using `fun j => IsDedekindDomain.exists_forall_sub_mem_ideal (fun P : HeightOneSpectrum (𝓞 E) => P.asIdeal) kk (fun i _ => i.prime) (fun i _ j _ hij h => hij (HeightOneSpectrum.ext h)) (fun P => wr P j)`. Use `choose z hz using crt`. Establish `hD' : algebraMap (𝓞 E) E D ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 E) E)]`. Conclude with `hD`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨fun j => (algebraMap (𝓞 E) E D)⁻¹ * algebraMap (𝓞 E) E (z j), ?_⟩` and prove the remaining obligations. Introduce `P l`. Establish `hexp : ∀ v : Sp E n, (f P).symm v l = ∑ j, v j * c P j l`. Introduce `v`. Establish `hv : v = ∑ j, v j • (Pi.single j 1 : Sp E n)`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hv]`. Simplify using `[map_sum, map_smul, Finset.sum_apply, c]`. Establish `hmem : (∑ j, (z j - wr P j) * cr P j l) ∈ P.1.asIdeal ^ k P`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_right _ _ ?_` and prove the remaining obligations. Use `hz j P.1 P.2` as an intermediate fact. Simplify `this` using `[kk, P.2]`. Establish `key` using `hk P _ hmem`. Use `key using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : (f P).symm (fun j => (algebraMap (𝓞 E) E D)⁻¹ * algebraMap (𝓞 E) E (z j)) - y0 P = (f P).symm ((fun j => (algebraMap (𝓞 E) E D)⁻¹ * algebraMap (𝓞 E) E (z j)) - w P)`. Rewrite using `[map_sub]`. Simplify using `[w]`. Rewrite using `[h1, hexp, Finset.mul_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Establish `e1` using `hcr P j l`. Establish `e2` using `hwr P j`. Simplify using `only [M, map_mul, map_sub, map_pow, map_natCast, Pi.sub_apply]`. Rewrite using `[e1, e2]`. Establish `hq : ((qOf P.1 : ℕ) : E) ≠ 0`.
-
-Use `hN P` as an intermediate fact. Introduce `h`. Apply `this` to reduce the goal to its premises. Conclude with `(IsFractionRing.injective (𝓞 E) E) (by rw [map_natCast, h, map_zero])`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem approx_frames (E : Type) [Field E] [NumberField E] (n : ℕ) (SB : Finset (HeightOneSpectrum (𝓞 E)))
     (f : SB → (Sp E n ≃ₗ[E] Sp E n)) (y0 : SB → Sp E n) (e : SB → ℕ) :
@@ -168,7 +160,7 @@ theorem approx_frames (E : Type) [Field E] [NumberField E] (n : ℕ) (SB : Finse
   field_simp
 
 /- English proof (translation)
-Introduce `E _ _ n SB f y0 e` and use `approx_frames E n SB f y0 e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem approx_frames_target : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (SB : Finset (HeightOneSpectrum (𝓞 E))) (f : SB → (Sp E n ≃ₗ[E] Sp E n)) (y0 : SB → Sp E n) (e : SB → ℕ),
     ∃ y : Sp E n, ∀ P l, IntAt P.1 ((((qOf P.1 : ℕ) : E) ^ (e P))⁻¹ * ((f P).symm y - y0 P) l) :=

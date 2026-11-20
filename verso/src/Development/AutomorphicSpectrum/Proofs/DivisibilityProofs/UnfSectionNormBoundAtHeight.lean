@@ -24,7 +24,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} {U : Unf Xo c σ r}
 
 /- English proof (translation)
-Use `⟨h.choose, h.choose_spec.choose, h.choose_spec.choose_spec.choose, h.choose_spec.choose_spec.choose_spec, ?_⟩` and prove the remaining obligations. Unfold `evR evalAt`. Rewrite using `[dif_pos h]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_test (f : Rul Xo c) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S)
     (h : FromTest (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) y) :
@@ -34,21 +34,19 @@ theorem exists_test (f : Rul Xo c) {S : Type} [CommRing S] [Algebra c.F S] (y : 
   rw [dif_pos h]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Take `⟨W⟩` from `PullbackSections.nonempty_unfAt hU k x`. Take `⟨Wu⟩` from `PullbackSections.nonempty_unitAt W (PullbackSections.PfSupAtUnit.dmin_ortho _ hx)`. Establish `hH` using `PositivityTheory.UnitarySelfGeneration.GF.hm_diag hσ hU W Wu hx`. Use `choose cf h1 h2 h3 using ht.2.1 τ`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Y : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ` to `fun j i => toC (cf i j)`. Set `Dv : Fin (Dw.mult τ) → Fin W.g → ℂ` to `fun i => ∑ j, Y j i • (Pi.single (W.e.symm ⟨τ, j⟩) 1 : Fin W.g → ℂ)`. Establish `hd : ∀ i, IsDerivAt0 (fun z => (W.F.ex (W.ik k) W.Pm z).left) (Dv i) (v i).left` using `fun i => by`. Rewrite using `[hv]`. Use `(GlobalTheory.DerLin.isCombAt_iff_isDerivAt0 E H Dw l Xo _ W.g _ W.F (W.ik k) W.Pm W.per _ ((U.un k x).u τ) (fun i => Pi.single (W.e.symm ⟨τ, i⟩) 1) (W.der τ) (fun j => Y j i) _).1 ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h3 i` as an intermediate fact. Rewrite `this` using `[W.pt]`. Conclude with `this`. Use `set κ : ℝ := Real.pi * (2 * ‖relab c σ τ (U.X k).ξ0‖) with hκ`. Establish `hκ0 : 0 ≤ κ` using `by positivity`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `Γ : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ` to `Matrix.of fun a b => Real.pi * hermForm Wu.Hm (Dv a) (Dv b)`. Use `⟨Γ, (hodgeGram_iff_period E H Dw l Xo _ W.g _ W.F (W.ik k) W.Pm Wu.Hm W.per Wu.herm Wu.c1 z (hz.trans (ht.1.trans W.pt)) _ v Dv Γ hd).2 fun a b => rfl, ?_⟩` and prove the remaining obligations. Establish `hG : Γᵀ = Yᴴ * ((κ : ℂ) • (1 : Matrix _ _ ℂ)) * Y`. Use extensionality with `p q`. Use `show (Real.pi : ℂ) * hermForm Wu.Hm (Dv q) (Dv p) = _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MetricChange.hermForm_sum]`. Establish `hf : ∀ a b : Fin (Dw.mult τ), hermForm Wu.Hm (Pi.single (W.e.symm ⟨τ, a⟩) 1) (Pi.single (W.e.symm ⟨τ, b⟩) 1) = if a = b then ((2 * ‖relab c σ τ (U.X k).ξ0‖ : ℝ) : ℂ) else 0`. Introduce `a b`. Rewrite using `[hH, hermForm, single_dotProduct, Matrix.mulVec_diagonal, _root_.one_mul, Equiv.apply_symm_apply, Pi.star_apply]`. Use `split_ifs with hab`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne (fun hh => hab (eq_of_heq (Sigma.mk.inj (W.e.symm.injective hh)).2))]`. Simplify using the standard rewrite rules. Simplify using `only [hf, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.smul_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, mul_ite, ite_mul, mul_zero, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, smul_eq_mul, Finset.mul_sum, hκ]`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hdet : Y.det = ∏ i, toC (t (some ⟨τ, i⟩) : CAt σ)`. Establish `hb : Y.BlockTriangular id` using `fun a b h => h2 b a h`.
-
-Rewrite using `[Matrix.det_of_upperTriangular hb]`. Conclude with `Finset.prod_congr rfl fun i _ => h1 i`. Rewrite using `[← Matrix.det_transpose, hG, Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_smul, Matrix.det_one, hdet]`. Simplify using `only [Fintype.card_fin, _root_.mul_one, norm_mul, norm_star, norm_pow, Complex.norm_real, norm_prod, Fin.cast_eq_self, Real.norm_eq_abs, abs_of_nonneg hκ0]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_gram_det (hσ : GoodEmb c σ) (hU : IsUnf U) {k : U.Comp} (x : (U.X k).dom)
     (hx : (U.X k).IsOrtho x.1) (y : FrPt Xo c (CAt σ)) (t : Ix Dw → (CAt σ)ˣ) (ht : FrBor t (U.un k x) y)
@@ -107,9 +105,9 @@ theorem exists_gram_det (hσ : GoodEmb c σ) (hU : IsUnf U) {k : U.Comp} (x : (U
   ring
 
 /- English proof (translation)
-Unfold `Data.pnorm`. Use `congr 1`. Rewrite using `[Fintype.prod_eq_single τ]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[GlobalTheory.FlatLine.modelFlat, Real.sqrt_eq_rpow]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce `τ' h`. Simplify using `[GlobalTheory.FlatLine.modelFlat, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem pnorm_flat (X : Data E r) (τ : X.Ψ) (P : Frame X.Ψ r → ℂ) (y : Frame X.Ψ r) :
     X.pnorm (GlobalTheory.FlatLine.modelFlat r τ) P y =
@@ -124,9 +122,9 @@ theorem pnorm_flat (X : Data E r) (τ : X.Ψ) (P : Frame X.Ψ r → ℂ) (y : Fr
     simp [GlobalTheory.FlatLine.modelFlat, h]
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Establish `e : ∏ a, f a = ∏ a : Fin (q + p), f (Fin.cast (by omega) a)` using `(Fintype.prod_equiv (finCongr (by omega)) _ _ fun a => by simp).symm`. Rewrite using `[e, Fin.prod_univ_add, mul_comm]`. Use `congr 1`. Rewrite using `[← Equiv.prod_comp Fin.revPerm]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `ext`. Simplify using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem prod_split {p q r : ℕ} (hr : r = p + q) (f : Fin r → ℝ) :
     ∏ a, f a = (∏ i : Fin p, f ⟨q + i, by omega⟩) * ∏ j : Fin q, f ⟨q - 1 - j, by omega⟩ := by
@@ -149,39 +147,35 @@ namespace GlobalTheory.CompanionTheory.Ar.Br
 open GlobalTheory.CompanionTheory.Ar.Br.FlatNorm ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c r σ U x Z τ s φ t hσ hU hx hs hline hread hinf z hz htest`. Take `⟨k, y⟩` from `z`. Take `⟨hy, hlies⟩` from `hz`. Establish `ht` using `htest hy`. Simplify using `only at hy hlies ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Take `⟨p, ψ, z₀, hmap, hval⟩` from `exists_test s (U.un k ⟨y, hy⟩) ht`. Establish `hp : D.mult τ.1 = D.p` using `by simp [Datum.mult, τ.2]`. Establish `hq : D.mult (ComplexEmbedding.conjugate τ.1) = D.q`. Establish `h` using `GlobalTheory.AllWt.conj_not_mem τ`. Establish `h' : ¬ (ComplexEmbedding.conjugate τ.1) (H.rt : E) = H.rt0` using `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Datum.mult`. Rewrite using `[if_neg h']`. Set `ψ' : p.R →+* ℂ` to `(ψ : p.R →+* CAt σ)`. Set `yF : Sp ℂ ⟶ Xo.XF c` to `GlobalTheory.AllWt.ptF (S := CAt σ) (U.un k ⟨y, hy⟩)`. Establish `hβ : ψ'.comp (algebraMap c.F p.R) = σ` using `RingHom.ext fun a => ψ.commutes a`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hu : under yF = spMap ψ' ≫ z₀.x` using `by show GlobalTheory.AllWt.ptF (S := CAt σ) (U.un k ⟨y, hy⟩) ≫ pullback.fst _ _ = _`. Rewrite using `[GlobalTheory.AllWt.ptF, pullback.lift_fst]`. Conclude with `hmap.1`. Establish `hsn : yF ≫ pullback.snd _ _ = spMap (ψ'.comp (algebraMap c.F p.R))` using `by show GlobalTheory.AllWt.ptF (S := CAt σ) (U.un k ⟨y, hy⟩) ≫ pullback.snd _ _ = _`. Rewrite using `[GlobalTheory.AllWt.ptF, pullback.lift_snd, hβ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hrange : Set.range yF ⊆ (Z : Set (Xo.XF c))`. Introduce and unpack `_ ⟨s', rfl⟩`. Conclude with `hlies s'`. Take `⟨v, w, hv, hw, hfr⟩` from `GlobalTheory.CompanionTheory.Ar.FrameEig.isFramed_frPt E H D l Xo c τ.1 p.R z₀ ℂ ψ' yF hp hq hu hsn`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfZ` using `hfr _ hrange`. Establish `hread'` using `hread p z₀ ℂ ψ' yF hu hsn hrange v w hp hq hv hw`. Rewrite `hfZ` using `[hβ]`. Take `⟨x₀, tt, ho, hb, hnorm⟩` from `PositivityTheory.UnitarySelfGeneration.GF.move hσ hU ⟨y, hy⟩`. Establish `hz' : under yF = (U.un k ⟨y, hy⟩).x`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hu]`. Conclude with `hmap.1.symm`. Establish `hv' : ∀ i, (v i).left = (U.un k ⟨y, hy⟩).u τ.1 (Fin.cast hp.symm i)` using `fun i => by`. Rewrite using `[hv i]`. Conclude with `(hmap.2.1 _ _).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hw' : ∀ j, (w j).left = (U.un k ⟨y, hy⟩).u (ComplexEmbedding.conjugate τ.1) (Fin.cast hq.symm j)` using `fun j => by`. Rewrite using `[hw j]`. Conclude with `(hmap.2.1 _ _).symm`. Take `⟨Γ, hΓ, dΓ⟩` from `exists_gram_det hσ hU x₀ ho _ tt hb τ.1 D.p hp (under yF) hz' v hv'`. Take `⟨Δ, hΔ, dΔ⟩` from `exists_gram_det hσ hU x₀ ho _ tt hb (ComplexEmbedding.conjugate τ.1) D.q hq (under yF) hz' w hw'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hI` using `hinf yF v w Γ Δ hfZ hΓ hΔ`. Establish `hφ : φ ℂ yF v w ≠ 0` using `hline.ne ℂ σ yF v w hfZ`. Take `⟨-, hrt, -, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Take `⟨hp0, hty⟩` from `hU.2.1 k`. Establish `hτ : relab c σ τ.1 ∈ (U.X k).Ψ` using `(hty _).2 ((hrt τ.1).2 τ.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hx1 : ‖relab c σ τ.1 (U.X k).ξ0‖ = x` using `hx k _`. Establish `hx2 : ‖relab c σ (ComplexEmbedding.conjugate τ.1) (U.X k).ξ0‖ = x` using `hx k _`. Establish `hx0 : 0 < x` using `hx1 ▸ norm_pos_iff.2 ((map_ne_zero _).2 (U.X k).ξ0_ne)`. Rewrite `dΓ` using `[hx1]`. Rewrite `dΔ` using `[hx2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `set A : ℝ := ∏ i : Fin D.p, ‖toC (tt (some ⟨τ.1, Fin.cast hp.symm i⟩) : CAt σ)‖ with hA`. Use `set B : ℝ := ∏ j : Fin D.q, ‖toC (tt (some ⟨ComplexEmbedding.conjugate τ.1, Fin.cast hq.symm j⟩) : CAt σ)‖ with hB`. Establish `hA0 : 0 < A` using `Finset.prod_pos fun i _ => norm_pos_iff.2 (Units.ne_zero (M₀ := ℂ) (tt _))`. Establish `hB0 : 0 < B` using `Finset.prod_pos fun i _ => norm_pos_iff.2 (Units.ne_zero (M₀ := ℂ) (tt _))`. Establish `hprod : ∏ a : Fin r, Real.sqrt ‖dmin (U.X k).Gm y ⟨_, hτ⟩ a.succ / dmin (U.X k).Gm y ⟨_, hτ⟩ a.castSucc‖ = A * B⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[prod_split (p := D.p) (q := D.q) hU.1, hA, hB, ← Finset.prod_inv_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h` using `(hnorm ⟨τ.1, Fin.cast hp.symm i⟩ ⟨_, hτ⟩ ⟨D.q + i, by have := hU.1; omega⟩).1 rfl (by show D.q + (i : ℕ) = (U.X k).p0 + (i : ℕ); rw [hp0])`. Rewrite using `[← h, Real.sqrt_sq (norm_nonneg _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hj` using `j.2`. Establish `h` using `(hnorm ⟨ComplexEmbedding.conjugate τ.1, Fin.cast hq.symm j⟩ ⟨_, hτ⟩ ⟨D.q - 1 - j, by have := hU.1; omega⟩).2 (GlobalTheory.AllWt.relab_conj σ τ.1).symm (by show D.q - 1 - (j : ℕ) + (j : ℕ) + 1 = (U.X k).p0; rw [hp0]; omega)`. Rewrite using `[← inv_eq_iff_eq_inv.2 h, Real.sqrt_inv, Real.sqrt_sq (norm_nonneg _)]`. Establish `hrd : rdU U s k y = φ ℂ yF v w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, hy, dif_pos]`. Rewrite using `[hval]`. Conclude with `hread'`. Establish `hL : GlobalTheory.AllWt.lieFacZ D x (GlobalTheory.AllWt.wtOf D (GlobalTheory.FlatLine.flatWt D τ) 0) = Real.exp (-(((D.q : ℝ) - D.p) / 2) * Real.log (2 * Real.pi * x))`. Rewrite using `[GlobalTheory.AllWt.lieFacZ, GlobalTheory.FlatLine.Model.sum_flatWt]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.AllWt.homN, GlobalTheory.AllWt.ptN]`. Simplify using `only`. Rewrite using `[GlobalTheory.FlatLine.modelWt_flatWt U hσ hU τ k hτ, pnorm_flat, hrd, hprod, hL, ← hI, dΓ, dΔ]`. Establish `hκ : Real.pi * (2 * x) = 2 * Real.pi * x` using `by ring`. Establish `hκ0 : 0 < 2 * Real.pi * x` using `by positivity`.
-
-Establish `hP : 0 < ‖φ ℂ yF v w‖` using `norm_pos_iff.2 hφ`. Rewrite using `[hκ, Real.log_mul (pow_pos hκ0 _).ne' (pow_pos hA0 _).ne', Real.log_mul (pow_pos hκ0 _).ne' (pow_pos hB0 _).ne', Real.log_pow, Real.log_pow, Real.log_pow, Real.log_pow]`. Use `conv_lhs => rw [← Real.exp_log hP, ← Real.exp_log hA0, ← Real.exp_log (inv_pos.2 hB0), Real.log_inv]`. Rewrite using `[← Real.exp_add, ← Real.exp_add, ← Real.exp_add]`. Use `congr 1`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem homN_eq_exp_hodge : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (r : ℕ) (σ : c.F →+* ℂ) (U : Formalism.L2.Pj.Unf Xo c σ r) (x : ℝ) (Z : Formalism.L2.Pj.Comp Xo c) (τ : GlobalTheory.AllWt.Psi H) (s : Formalism.L2.Pj.Rul Xo c) (φ : FrameFn Xo c) (t : ℝ), Formalism.L2.Pj.GoodEmb c σ → Formalism.L2.Pj.IsUnf U → (∀ k (τ' : E →+* ℂ), ‖τ' (U.X k).ξ0‖ = x) → s ∈ GlobalTheory.AllWt.secZ Xo c (GlobalTheory.AllWt.exOf D (GlobalTheory.FlatLine.flatWt D τ) 0) → IsLineFn (Z : Set (Xo.XF c)) τ.1 φ → Reads (Z : Set (Xo.XF c)) τ.1 s φ → HasInfNorm (Z : Set (Xo.XF c)) τ.1 φ σ t → ∀ z ∈ GlobalTheory.AllWt.framesOn U Z, (∀ hz : z.2 ∈ (U.X z.1).dom, GlobalTheory.FlatLine.Tested (U.un z.1 ⟨z.2, hz⟩)) → GlobalTheory.AllWt.homN U x (GlobalTheory.AllWt.wtOf D (GlobalTheory.FlatLine.flatWt D τ) 0) s z = Real.exp t := by
   intro E _ _ _ H D l Xo c r σ U x Z τ s φ t hσ hU hx hs hline hread hinf z hz htest

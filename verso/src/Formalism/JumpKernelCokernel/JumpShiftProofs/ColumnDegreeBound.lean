@@ -3,9 +3,9 @@ import Formalism.JumpKernelCokernel.Statement
 namespace Formalism.KernelCokernelLengths
 
 /- English proof (translation)
-Introduce `ℓ hℓ bi S η h hh`. Establish `h2 : bi + S + η ≤ h + η` using `by omega`. Use `gcongr`. Apply the tactic sequence `all_goals first`. Consider the case `exact_mod_cast h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [sub_nonneg]; exact_mod_cast (by omega : 1 ≤ ℓ))`. Consider the case `(rw [sub_pos]; exact_mod_cast (by omega : 1 < ℓ))`.
+A detailed English derivation is pending.
 -/
 theorem column_degree_bound : CDge := by
   intro ℓ hℓ bi S η h hh

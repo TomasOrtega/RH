@@ -15,9 +15,9 @@ namespace IsExpLieAlgebra
 variable (h : IsExpLieAlgebra G 𝔤)
 
 /- English proof (translation)
-Establish `hPz : (((h.prodExp (⇑b) z : G) : 𝔸ˣ) : 𝔸) = prodExpVal (fun i => (b i : 𝔸)) z` using `h.val_prodExp _ z`. Establish `hN : (((h.prodExp (⇑b) z : G) : 𝔸ˣ) : 𝔸) ∈ h.nhdOne` using `hPz ▸ hz`. Establish `hL` using `h.symm_mem_lie hN`. Rewrite `hL` using `[hPz]`. Establish `e1 : ((b.equivFun.symm (prodExpCoord b z) : 𝔤) : 𝔸) = (expPartialHomeomorph ℝ 𝔸).symm (prodExpVal (fun i => (b i : 𝔸)) z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [prodExpCoord, logCoord, LinearEquiv.coe_toContinuousLinearEquiv', LinearEquiv.symm_apply_apply]`. Conclude with `subspaceProj_of_mem hL`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_expG, e1, h.exp_symm hz, hPz]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodExp_eq_expG_prodExpCoord {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) {z : Fin d → ℝ}
     (hz : prodExpVal (fun i => (b i : 𝔸)) z ∈ h.nhdOne) :
@@ -38,35 +38,31 @@ theorem prodExp_eq_expG_prodExpCoord {d : ℕ} (b : Module.Basis (Fin d) ℝ �
 variable [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Take `⟨r, ρ, c, W, hr, hρ, hρpos, hW, hPW, hcP, hc, hint⟩` from `h.exists_haar_density_prodExp μ b`. Use `set P := h.prodExp (⇑b) with hPdef`. Establish `hPc : Continuous P` using `h.continuous_prodExp _`. Use `⟨r / 2, by positivity, fun K hK hKs => ?_⟩` and prove the remaining obligations. Establish `hεr : closedBall (0 : Fin d → ℝ) (r / 2) ⊆ ball 0 r` using `closedBall_subset_ball (by linarith)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set C := P '' closedBall (0 : Fin d → ℝ) (r / 2) with hCdef`. Establish `hCc : IsCompact C` using `(isCompact_closedBall _ _).image hPc`. Set `κ : G → ℂ` to `W.indicator fun y => K (c y) * (((ρ (c y))⁻¹ : ℝ) : ℂ)`. Establish `hκC : ∀ y, y ∉ C → κ y = 0`. Introduce `y hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hyW : y ∈ W`. Establish `hz : c y ∉ closedBall (0 : Fin d → ℝ) (r / 2)` using `fun hz => hy ⟨c y, hz, hcP y hyW⟩`. Establish `: K (c y) = 0` using `image_eq_zero_of_notMem_tsupport fun h' => hz (hKs h')`. Simplify using `[κ, indicator_of_mem hyW, this]`. Simplify using `[κ, indicator_of_notMem hyW]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκsupp : tsupport κ ⊆ C` using `closure_minimal (fun y hy => by_contra fun h' => hy (hκC y h')) hCc.isClosed`. Establish `hKc : IsCompact (tsupport K)` using `(isCompact_closedBall _ _).of_isClosed_subset (isClosed_tsupport _) hKs`. Establish `hκsupp' : tsupport κ ⊆ P '' tsupport K`. Use `closure_minimal (fun y hy => ?_) (hKc.image hPc).isClosed` and prove the remaining obligations. Distinguish the cases in `hyW : y ∈ W`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hK0 : K (c y) ≠ 0`. Introduce `h0`. Apply `hy` to reduce the goal to its premises. Simplify using `[κ, indicator_of_mem hyW, h0]`. Conclude with `⟨c y, subset_tsupport _ hK0, hcP y hyW⟩`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (by simp [κ, indicator_of_notMem hyW]) hy`. Establish `hκW : ∀ z ∈ ball (0 : Fin d → ℝ) r, κ (P z) * (ρ z : ℂ) = K z`. Introduce `z hz`. Take `⟨hzW, hcz⟩` from `hPW z hz`. Establish `hρz : (ρ z : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (hρpos z hz).ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Simplify using `only [κ, indicator_of_mem hzW, hcz, Complex.ofReal_inv]`. Clear the denominators using the available nonvanishing facts. Establish `hsmooth : (letI` using `h.chartedSpace; ContMDiff 𝓘(ℝ, 𝔤) 𝓘(ℝ, ℂ) ∞ κ) := by`. Introduce `g`. Rewrite using `[h.contMDiffAt_iff_expG]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hcont : Continuous (fun Y : 𝔤 => g * h.expG Y)` using `continuous_const.mul h.continuous_expG`. Establish `hg0 : g * h.expG 0 = g` using `by rw [h.expG_zero, mul_one]`. Distinguish the cases in `hg : g ∈ C`. Take `⟨z₀, hz₀, rfl⟩` from `hg`. Establish `hz₀r : z₀ ∈ ball (0 : Fin d → ℝ) r` using `hεr hz₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hgW, hcg⟩` from `hPW z₀ hz₀r`. Establish `hev : (fun Y : 𝔤 => κ (P z₀ * h.expG Y)) =ᶠ[𝓝 0] fun Y => K (c (P z₀ * h.expG Y)) * (((ρ (c (P z₀ * h.expG Y)))⁻¹ : ℝ) : ℂ)`. Establish `: ∀ᶠ Y in 𝓝 (0 : 𝔤), P z₀ * h.expG Y ∈ W`. Use `hcont.continuousAt (x := 0)` as an intermediate fact. Rewrite `this` using `[ContinuousAt, hg0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `this (hW.mem_nhds hgW)`. Use `filter_upwards [this] with Y hY`. Simplify using `[κ, indicator_of_mem hY]`. Use `ContDiffAt.congr_of_eventuallyEq ?_ hev` and prove the remaining obligations. Establish `hc0` using `hc (P z₀) hgW`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ0 : ρ (c (P z₀ * h.expG 0)) ≠ 0`. Rewrite using `[hg0, hcg]`. Conclude with `(hρpos z₀ hz₀r).ne'`. Conclude with `(hK.contDiffAt.comp _ hc0).mul ((Complex.ofRealCLM.contDiff.contDiffAt).comp _ ((hρ.contDiffAt.comp _ hc0).inv hρ0))`. Establish `hev : (fun Y : 𝔤 => κ (g * h.expG Y)) =ᶠ[𝓝 0] fun _ => 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: ∀ᶠ Y in 𝓝 (0 : 𝔤), g * h.expG Y ∈ Cᶜ`. Use `hcont.continuousAt (x := 0)` as an intermediate fact. Rewrite `this` using `[ContinuousAt, hg0]`. Conclude with `this (hCc.isClosed.isOpen_compl.mem_nhds hg)`. Use `filter_upwards [this] with Y hY`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hκC _ hY`. Conclude with `contDiffAt_const.congr_of_eventuallyEq hev`. Establish `hκc : Continuous κ`. Set `` to `h.chartedSpace`. Conclude with `hsmooth.continuous`.
-
-Use `⟨κ, hsmooth, HasCompactSupport.intro hCc hκC, hκsupp', fun φ hφ => ?_⟩` and prove the remaining obligations. Establish `hψ₀s : tsupport (fun y => κ y * φ y) ⊆ P '' ball 0 r` using `(tsupport_mul_subset_left).trans (hκsupp.trans (image_mono hεr))`. Rewrite using `[hint (fun y => κ y * φ y) (hκc.mul hφ) ((HasCompactSupport.intro hCc hκC).mul_right) hψ₀s]`. Rewrite using `[← setIntegral_eq_integral_of_forall_compl_eq_zero (f := fun t => K t * φ (P t)) (s := ball (0 : Fin d → ℝ) r) fun z hz => by`. Establish `: K z = 0` using `image_eq_zero_of_notMem_tsupport fun h' => hz (hεr (hKs h'))`.
-
-Simplify using `[this]]`. Use `setIntegral_congr_fun measurableSet_ball fun z hz => ?_` and prove the remaining obligations. Rewrite using `[mul_right_comm, hκW z hz]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smooth_density_prodExp_tsupport {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) :
     ∃ ε > 0, ∀ K : (Fin d → ℝ) → ℂ, ContDiff ℝ ∞ K → tsupport K ⊆ closedBall 0 ε →
@@ -154,63 +150,55 @@ theorem exists_smooth_density_prodExp_tsupport {d : ℕ} (b : Module.Basis (Fin 
   rw [mul_right_comm, hκW z hz]
 
 /- English proof (translation)
-Take `⟨ε₁, hε₁, hdens⟩` from `h.exists_smooth_density_prodExp_tsupport μ b`. Take `⟨S, T, ψ, hSo, hTo, h0S, hΦST, hψTS, hψΦ, hΦψ, hψs, hSN⟩` from `h.exists_prodExp_coord b`. Use `set Φ := prodExpCoord b with hΦdef`. Use `set P := h.prodExp (⇑b) with hPdef`. Establish `hΦ0 : Φ 0 = 0` using `prodExpCoord_zero b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0T : (0 : Fin d → ℝ) ∈ T` using `hΦ0 ▸ hΦST h0S`. Establish `hψ0 : ψ 0 = 0` using `by have := hψΦ 0 h0S; rwa [hΦ0] at this`. Establish `hSU : S ⊆ {t | prodExpVal (fun i => (b i : 𝔸)) t ∈ (expPartialHomeomorph ℝ 𝔸).target}` using `fun t ht => h.nhdOne_subset_target (hSN t ht)`. Establish `hΦs : ContDiffOn ℝ ∞ Φ S` using `(contDiffOn_prodExpCoord b).mono hSU`. Establish `hΦat : ∀ t ∈ S, ContDiffAt ℝ ∞ Φ t` using `fun t ht => hΦs.contDiffAt (hSo.mem_nhds ht)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψat : ∀ w ∈ T, ContDiffAt ℝ ∞ ψ w` using `fun w hw => hψs.contDiffAt (hTo.mem_nhds hw)`. Establish `hPΦ : ∀ t ∈ S, P t = h.expG (b.equivFun.symm (Φ t))` using `fun t ht => h.prodExp_eq_expG_prodExpCoord b (hSN t ht)`. Establish `hdet : ∀ t ∈ S, (fderiv ℝ Φ t).det ≠ 0`. Introduce `t ht`. Establish `hΦt : HasFDerivAt Φ (fderiv ℝ Φ t) t` using `((hΦat t ht).differentiableAt (by simp)).hasFDerivAt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψt : HasFDerivAt ψ (fderiv ℝ ψ (Φ t)) (Φ t)` using `((hψat _ (hΦST ht)).differentiableAt (by simp)).hasFDerivAt`. Establish `hcomp` using `hψt.comp t hΦt`. Establish `hid : (ψ ∘ Φ) =ᶠ[𝓝 t] id` using `by filter_upwards [hSo.mem_nhds ht] with s hs`. Conclude with `hψΦ s hs`. Establish `e : (fderiv ℝ ψ (Φ t)).comp (fderiv ℝ Φ t) = ContinuousLinearMap.id ℝ (Fin d → ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hcomp.fderiv, hid.fderiv_eq, fderiv_id]`. Introduce `h0`. Use `congrArg (fun L : (Fin d → ℝ) →L[ℝ] (Fin d → ℝ) => L.det) e` as an intermediate fact. Simplify using `only [ContinuousLinearMap.det, ContinuousLinearMap.coe_id, LinearMap.det_id] at this`. Establish `h2 : LinearMap.det ((fderiv ℝ ψ (Φ t) : (Fin d → ℝ) →ₗ[ℝ] (Fin d → ℝ)) ∘ₗ (fderiv ℝ Φ t : (Fin d → ℝ) →ₗ[ℝ] (Fin d → ℝ))) = 1` using `this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[LinearMap.det_comp]`. Use `replace this := h2`. Rewrite `this` using `[show LinearMap.det (fderiv ℝ Φ t : (Fin d → ℝ) →ₗ[ℝ] (Fin d → ℝ)) = 0 from h0, mul_zero]`. Conclude with `zero_ne_one this`. Establish `hψc : ContinuousAt ψ 0` using `(hψat 0 h0T).continuousAt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨δ, hδ, hδT⟩` from `Metric.isOpen_iff.1 hTo 0 h0T`. Take `⟨η, hη, hηψ⟩` from `Metric.continuousAt_iff.1 hψc ε₁ hε₁`. Use `⟨min (δ / 2) (η / 2), lt_min (by positivity) (by positivity), fun β hβ hβs => ?_⟩` and prove the remaining obligations. Use `set ε := min (δ / 2) (η / 2) with hεdef`. Establish `hεδ : ε < δ` using `lt_of_le_of_lt (min_le_left _ _) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hεη : ε < η` using `lt_of_le_of_lt (min_le_right _ _) (by linarith)`. Use `set e : (Fin d → ℝ) → EuclideanSpace ℝ (Fin d) := fun w => WithLp.toLp 2 w with he`. Use `set β' : (Fin d → ℝ) → ℂ := fun w => β (e w) with hβ'`. Establish `he_cont : Continuous e` using `PiLp.continuous_toLp 2 _`. Establish `hβ'c : ContDiff ℝ ∞ β'` using `hβ.comp PiLp.contDiff_toLp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm : ∀ w : Fin d → ℝ, ‖w‖ ≤ ‖e w‖` using `fun w => (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => by`. Simplify `PiLp.norm_apply_le (e w) i` using `[e]`. Establish `hβ's : tsupport β' ⊆ closedBall 0 ε`. Use `closure_minimal (fun w hw => ?_) isClosed_closedBall` and prove the remaining obligations. Establish `: e w ∈ closedBall 0 ε` using `hβs (subset_tsupport _ hw)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this`, the goal using `[mem_closedBall_zero_iff]`. Conclude with `(hnorm w).trans this`. Establish `hβ'T : tsupport β' ⊆ T` using `fun w hw => hδT (by`. Use `hβ's hw` as an intermediate fact. Rewrite `this` using `[mem_closedBall_zero_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[mem_ball_zero_iff]`. Use the proof step `linarith)`. Establish `hβ'comp : IsCompact (tsupport β')` using `(isCompact_closedBall _ _).of_isClosed_subset (isClosed_tsupport _) hβ's`. Establish `hβ'e : ∀ w ∈ tsupport β', e w ∈ tsupport β`. Introduce `w hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: tsupport β' ⊆ e ⁻¹' tsupport β` using `closure_minimal (fun v hv => subset_tsupport _ hv) ((isClosed_tsupport β).preimage he_cont)`. Conclude with `this hw`. Use `set C' := ψ '' tsupport β' with hC'def`. Establish `hC'c : IsCompact C'` using `hβ'comp.image_of_continuousOn (hψs.continuousOn.mono hβ'T)`. Establish `hC'S : C' ⊆ S` using `by rintro _ ⟨w, hw, rfl⟩; exact hψTS (hβ'T hw)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hC'ε : C' ⊆ closedBall 0 ε₁`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Establish `hw'` using `hβ's hw`. Rewrite `hw'` using `[mem_closedBall_zero_iff]`. Use `hηψ (x := w) (by rw [dist_zero_right]; linarith)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `this` using `[hψ0, dist_zero_right]`. Rewrite using `[mem_closedBall_zero_iff]`. Conclude with `this.le`. Set `K : (Fin d → ℝ) → ℂ` to `fun t => if t ∈ S then ((|(fderiv ℝ Φ t).det| : ℝ) : ℂ) * β' (Φ t) else 0`. Establish `hKsupp : Function.support K ⊆ C'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce `t ht`. Distinguish the cases in `htS : t ∈ S`. Establish `hβt : β' (Φ t) ≠ 0`. Introduce `h0`. Apply `ht` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[K, htS, h0]`. Conclude with `⟨Φ t, subset_tsupport _ hβt, hψΦ t htS⟩`. Conclude with `absurd (by simp [K, htS]) ht`. Establish `hKts : tsupport K ⊆ C'` using `closure_minimal hKsupp hC'c.isClosed`. Establish `hK : ContDiff ℝ ∞ K`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `t`. Distinguish the cases in `htS : t ∈ S`. Establish `hev : K =ᶠ[𝓝 t] fun s => ((|(fderiv ℝ Φ s).det| : ℝ) : ℂ) * β' (Φ s)` using `by filter_upwards [hSo.mem_nhds htS] with s hs`. Simplify using `[K, hs]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `ContDiffAt.congr_of_eventuallyEq ?_ hev` and prove the remaining obligations. Establish `hfd : ContDiffAt ℝ ∞ (fderiv ℝ Φ) t` using `(hΦat t htS).fderiv_right (by simp)`. Establish `hd : ContDiffAt ℝ ∞ (fun s => (fderiv ℝ Φ s).det) t` using `contDiff_det_pi.contDiffAt.comp t hfd`. Establish `ha : ContDiffAt ℝ ∞ (fun s => |(fderiv ℝ Φ s).det|) t`. Use `(contDiffAt_abs (n := ⊤) (hdet t htS)).comp t hd` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Conclude with `((Complex.ofRealCLM.contDiff.contDiffAt).comp t ha).mul (hβ'c.contDiffAt.comp t (hΦat t htS))`. Establish `hev : K =ᶠ[𝓝 t] fun _ => 0`. Establish `htC : t ∉ C'` using `fun hC => htS (hC'S hC)`. Use `filter_upwards [hC'c.isClosed.isOpen_compl.mem_nhds htC] with s hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hs (hKsupp hne)`. Conclude with `contDiffAt_const.congr_of_eventuallyEq hev`. Take `⟨κ, hκs, hκc, hκt, hκint⟩` from `hdens K hK (hKts.trans hC'ε)`. Use `⟨κ, hκs, hκc, ?_, fun φ hφ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `hκt.trans ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Take `⟨w, hw, rfl⟩` from `hKts ht`. Establish `hψw : ψ w ∈ S` using `hψTS (hβ'T hw)`. Use `⟨e w, hβ'e w hw, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hPΦ _ hψw, hΦψ w (hβ'T hw)]`. Use `congr 1`. Rewrite using `[hκint φ hφ] set F : (Fin d → ℝ) → ℂ := fun w => β' w * φ (h.expG (b.equivFun.symm w)) with hF`. Establish `h1 : ∫ x, β x * φ (h.expG (coordEquiv b x)) = ∫ w, F w`. Use `(EuclideanSpace.volume_preserving_symm_measurableEquiv_toLp (Fin d)).integral_comp' (g := F)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← this]`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `[F, β', e, coordEquiv]`. Rewrite using `[h1]`. Use `set s := S ∩ Φ ⁻¹' T with hsdef`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : IsOpen s` using `hΦs.continuousOn.isOpen_inter_preimage hSo hTo`. Establish `hΦs_img : Φ '' s = T`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, rfl⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `ht.2`. Introduce `hw; exact ⟨ψ w, ⟨hψTS hw, by rw [mem_preimage, hΦψ w hw]; exact hw⟩, hΦψ w hw⟩`. Establish `h2 : ∫ w, F w = ∫ w in T, F w`. Use `(setIntegral_eq_integral_of_forall_compl_eq_zero fun w hw => ?_).symm` and prove the remaining obligations. Establish `: β' w = 0` using `image_eq_zero_of_notMem_tsupport fun h' => hw (hβ'T h')`.
-
-Simplify using `[F, this]`. Establish `hderiv : ∀ t ∈ s, HasFDerivWithinAt Φ (fderiv ℝ Φ t) s t` using `fun t ht => ((hΦat t ht.1).differentiableAt (by simp)).hasFDerivAt.hasFDerivWithinAt`. Establish `hinj : InjOn Φ s` using `fun t₁ ht₁ t₂ ht₂ he => by`. Rewrite using `[← hψΦ t₁ ht₁.1, ← hψΦ t₂ ht₂.1, he]`. Establish `h3` using `integral_image_eq_integral_abs_det_fderiv_smul volume hs.measurableSet hderiv hinj F`.
-
-Rewrite `h3` using `[hΦs_img]`. Rewrite using `[h2, h3]`. Rewrite using `[← setIntegral_eq_integral_of_forall_compl_eq_zero (s := s) (f := fun t => K t * φ (P t)) fun t ht => by`. Distinguish the cases in `htS : t ∈ S`. Establish `hΦt : Φ t ∉ T` using `fun hT => ht ⟨htS, hT⟩`.
-
-Establish `: β' (Φ t) = 0` using `image_eq_zero_of_notMem_tsupport fun h' => hΦt (hβ'T h')`. Simplify using `[K, htS, this]`. Simplify using `[K, htS]]`. Use `setIntegral_congr_fun hs.measurableSet fun t ht => ?_` and prove the remaining obligations. Simplify using `only [K, if_pos ht.1, F, Complex.real_smul, hPΦ t ht.1]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_smooth_density_expCoord {d : ℕ} (b : Module.Basis (Fin d) ℝ 𝔤) :
     ∃ ε > 0, ∀ β : EuclideanSpace ℝ (Fin d) → ℂ, ContDiff ℝ ∞ β →

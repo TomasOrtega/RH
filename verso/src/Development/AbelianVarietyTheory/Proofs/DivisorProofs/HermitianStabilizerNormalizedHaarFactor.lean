@@ -22,29 +22,19 @@ namespace GlobalTheory.ConeMeas
 open GlobalTheory.RestrMeas
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n r s X hB hX K hK μK μ hμK hμ μKI μI hKI hμI μKv μv hKv hv`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`. Use `haveI : LocallyCompactSpace (AE F E) := e.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E) := e.secondCountableTopology`. Use `haveI : T2Space (AE F E) := e.isEmbedding.t2Space`. Use `haveI : LocallyCompactSpace (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : SecondCountableTopology (AE F E)ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : LocallyCompactSpace (AE F E)ˣ := Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AE F E)ˣ := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `haveI : BorelSpace (AE F E)ˣ := ⟨rfl⟩`. Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evI F)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : ∀ v : Pl F, IsTopologicalGroup (idelesAt E (evFin F v)) := fun v => (idelesAt_facts E (evFin F v)).1`. Use `haveI : ∀ v : Pl F, LocallyCompactSpace (idelesAt E (evFin F v)) := fun v => (idelesAt_facts E (evFin F v)).2.1`. Use `haveI : ∀ v : Pl F, SecondCountableTopology (idelesAt E (evFin F v)) := fun v => (idelesAt_facts E (evFin F v)).2.2.1`. Use `haveI : ∀ v : Pl F, T2Space (idelesAt E (evFin F v)) := fun v => (idelesAt_facts E (evFin F v)).2.2.2.1`. Use `haveI : ∀ v : Pl F, BorelSpace (idelesAt E (evFin F v)) := fun v => (idelesAt_facts E (evFin F v)).2.2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : ∀ w : Unit, ((fun _ : Unit => μI) w).IsHaarMeasure := fun _ => hμI`. Use `haveI : ∀ v : Pl F, (μv v).IsHaarMeasure := fun v => (hv v).1`. Take `⟨ν, hν, -⟩` from `(GlobalTheory.T.idele_restricted_product_structure (F := F) (E := E)).existsUnique_isHaarProd (fun _ => μI) μv (Eventually.of_forall fun v => (hv v).2)`. Use `haveI := hν.2.2.1`. Use `haveI := hμ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hsc : μ = Measure.haarScalarFactor μ ν • ν` using `Measure.isMulLeftInvariant_eq_smul μ ν`. Establish `hcpos : 0 < Measure.haarScalarFactor μ ν` using `Measure.haarScalarFactor_pos_of_isHaarMeasure μ ν`. Use `set c := Measure.haarScalarFactor μ ν`. Take `⟨κK, hκK, hKp⟩` from `GlobalTheory.T.stabilizer_normalized_haar_restricted B hB hX hK μK hμK μKI hKI μKv hKv`. Use `⟨(c : ℝ) * κK, mul_pos (by exact_mod_cast hcpos) hκK, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Introduce `T H Q g hH hHk hQ hQk hg1 hg2 hg3 hg4`. Establish `idel : ∀ (h : (AE F E)ˣ → ℂ) (q : Pl F → (AE F E)ˣ → ℂ), Integrable (fun l : idelesAt E (evI F) => h l.1) μI → (∀ v ∈ T, Integrable (fun l : idelesAt E (evFin F v) => q v l.1) (μv v)) → Integrable (fun l => h (unitArch F E l) * (∏ v ∈ T, q v (unitAt E v l)) * ∏ᶠ (v : Pl F) (_ : v …`. Introduce `h q hh hq`. Take `⟨hi, he⟩` from `GlobalTheory.T.idele_restricted_product_haar μI hμI μv hv ν hν.2.2.2 T h q g hh hq hg2 hg3 hg4`. Rewrite using `[hsc]`.
-
-Use `⟨hi.smul_measure_nnreal, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_smul_nnreal_measure, he, NNReal.smul_def, Complex.real_smul]`. Establish `hmem` using `fun (k : K) => GlobalTheory.ThK.ConeEuler.StabComp.comp_mem_of_isStab F E σ B n X K hK k.1 k.2`. Establish `hA : ∀ k : K, compArch σ X.J k.1 ∈ KAt K (evI F)` using `fun k => ⟨(hmem k).2, compArch_mem k.1⟩`. Establish `hV : ∀ (k : K) v, compAt σ X.J v k.1 ∈ KAt K (evFin F v)` using `fun k v => ⟨(hmem k).1 v, compAt_mem v k.1⟩`.
-
-Establish `inner` using `fun k : K => idel (H (compArch σ X.J k.1)) (fun v => Q v (compAt σ X.J v k.1)) (hHk _ (hA k)) (fun v hvT => hQk v hvT _ (hV k v))`. Use `haveI : IsFiniteMeasure μKI := ⟨by rw [hKI.2]; exact ENNReal.one_lt_top⟩`. Establish `ha : Integrable (fun k : KAt K (evI F) => ∫ l : idelesAt E (evI F), H k.1 l.1 ∂μI) μKI` using `hH.integral_prod_left`. Establish `hb : ∀ v ∈ T, Integrable (fun k : KAt K (evFin F v) => ∫ l : idelesAt E (evFin F v), Q v k.1 l.1 ∂(μv v)) (μKv v)` using `fun v hvT => by haveI : IsFiniteMeasure (μKv v) := ⟨by rw [(hKv v).2]; exact ENNReal.one_lt_top⟩`. Conclude with `(hQ v hvT).integral_prod_left`.
-
-Take `⟨hi, he⟩` from `hKp T (fun k => ∫ l : idelesAt E (evI F), H k l.1 ∂μI) (fun v k => ∫ l : idelesAt E (evFin F v), Q v k l.1 ∂(μv v)) ha hb`. Establish `hfun : (fun k : K => ∫ l, H (compArch σ X.J k.1) (unitArch F E l) * (∏ v ∈ T, Q v (compAt σ X.J v k.1) (unitAt E v l)) * ∏ᶠ (v : Pl F) (_ : v ∉ T), g v (unitAt E v l) ∂μ) = fun k : K => ((c : ℂ) * ∏' v : {v : Pl F // v ∉ T}, ∫ l : idelesAt E (evFin F v.1), g v.1 l.1 ∂(μv v.1)) * …`. Use function extensionality and compare the values at `k`. Rewrite using `[(inner k).2]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `⟨fun k => (inner k).1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun]`. Conclude with `hi.const_mul _`. Rewrite using `[hfun, integral_const_mul, he]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_comp_euler : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (B : Base F E) {n r s : ℕ} {X : Spc F E n}, B.IsGood σ → X.IsHerm σ B r s →

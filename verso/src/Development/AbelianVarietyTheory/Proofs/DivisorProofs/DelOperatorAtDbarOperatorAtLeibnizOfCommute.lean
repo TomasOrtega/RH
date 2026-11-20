@@ -13,11 +13,11 @@ open scoped ContDiff ComplexConjugate Topology
 namespace GlobalTheory.CxForm.FormMul
 
 /- English proof (translation)
-Introduce `n F G v F' hF hG`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Unfold `delAt`. Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coefwise_mul (T := fun f => del f v (coordVec a)) (fun f hf => by rw [del_sum (fun p _ => hf p), ContinuousLinearMap.sum_apply]) (fun f g hf hg => del_mul hf hg _) (fun c => by rw [del_const]; rfl) hF hG]`. Simplify using `only [mul_add, ← mul_assoc, h]`. Unfold `dbarAt`. Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coefwise_mul (T := fun f => dbar f v (coordVec a)) (fun f hf => by rw [dbar_sum (fun p _ => hf p), ContinuousLinearMap.sum_apply]) (fun f g hf hg => dbar_mul hf hg _) (fun c => by rw [dbar_const]; rfl) hF hG]`. Simplify using `only [mul_add, ← mul_assoc, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem leibniz_of_comm : ∀ (n : ℕ) (F G : V n → Alt n) (v : V n) (F' : Alt n),
     (∀ S, DifferentiableAt ℝ (fun x => (bas n).repr (F x) S) v) →

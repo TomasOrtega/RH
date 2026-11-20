@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.E.E8.TwSec.Gen
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `Polynomial.cyclotomic.dvd_X_pow_sub_one q ℤ`. Establish `h` using `congrArg (Polynomial.aeval ζ.1) hp`. Rewrite `h` using `[map_mul, ζ.2.2, zero_mul]`. Simplify `h` using `[sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem prim_pow_eq_one {q : ℕ} {A : Type} [CommRing A] (ζ : Prim q A) : ζ.1 ^ q = 1 := by
   obtain ⟨p, hp⟩ := Polynomial.cyclotomic.dvd_X_pow_sub_one q ℤ
@@ -15,9 +15,9 @@ theorem prim_pow_eq_one {q : ℕ} {A : Type} [CommRing A] (ζ : Prim q A) : ζ.1
   simpa [sub_eq_zero] using h
 
 /- English proof (translation)
-Establish `hu : IsUnit (q : K)` using `by simpa using ζ.2.1.map φ`. Establish `: NeZero (q : K)` using `⟨hu.ne_zero⟩`. Establish `h` using `Polynomial.aeval_algHom_apply φ.toIntAlgHom ζ.1 (Polynomial.cyclotomic q ℤ)`. Rewrite `h` using `[ζ.2.2, map_zero]`. Establish `h2 : Polynomial.aeval (φ ζ.1) (Polynomial.cyclotomic q ℤ) = 0` using `by simpa using h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic, ← Polynomial.IsRoot.def, Polynomial.isRoot_cyclotomic_iff]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem prim_isPrimitiveRoot {q : ℕ} [NeZero q] {A K : Type} [CommRing A] [Field K] (φ : A →+* K) (ζ : Prim q A) :
     IsPrimitiveRoot (φ ζ.1) q := by
@@ -30,7 +30,7 @@ theorem prim_isPrimitiveRoot {q : ℕ} [NeZero q] {A K : Type} [CommRing A] [Fie
     Polynomial.isRoot_cyclotomic_iff] at h2
 
 /- English proof (translation)
-Establish `hζ` using `prim_isPrimitiveRoot φ ζ`. Establish `hξ` using `prim_isPrimitiveRoot φ ξ`. Take `⟨i, hi, e⟩` from `hζ.eq_pow_of_pow_eq_one hξ.pow_eq_one`. Use `⟨i, hi, ?_, e.symm⟩` and prove the remaining obligations. Conclude with `(hζ.pow_iff_coprime (NeZero.pos q) i).mp (by rw [e]; exact hξ)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_pow {q : ℕ} [NeZero q] {A K : Type} [CommRing A] [Field K] (φ : A →+* K) (ζ ξ : Prim q A) :
     ∃ k < q, k.Coprime q ∧ φ ξ.1 = φ ζ.1 ^ k := by
@@ -41,13 +41,13 @@ theorem exists_pow {q : ℕ} [NeZero q] {A K : Type} [CommRing A] [Field K] (φ 
   exact (hζ.pow_iff_coprime (NeZero.pos q) i).mp (by rw [e]; exact hξ)
 
 /- English proof (translation)
-Establish `hq0 : q ≠ 0` using `by rintro rfl; simp at hq`. Establish `hkq : k * (q - 1) + k = k * q`. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le (Nat.one_le_iff_ne_zero.mpr hq0)`. Simplify using `[mul_add]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hyk : y ^ (k * (q - 1)) * y ^ k = 1` using `by rw [← pow_add, hkq, mul_comm, pow_mul, hy, one_pow]`. Establish `hu : (x * y ^ (k * (q - 1))) ^ q = 1`. Rewrite using `[mul_pow, hx, one_mul, ← pow_mul, mul_comm, pow_mul, hy, one_pow]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `: φ (x * y ^ (k * (q - 1))) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_pow, h, ← pow_add, add_comm, hkq, mul_comm, pow_mul, ← map_pow, hy, map_one, one_pow]`. Simplify `hq` using `[map_sum, map_pow, this]`. Introduce `B _ ψ hs`. Establish `h0 : ψ (∑ b ∈ Finset.range q, (x * y ^ (k * (q - 1))) ^ b) * (ψ (x * y ^ (k * (q - 1))) - 1) = 0`. Rewrite using `[← map_one ψ, ← map_sub, ← map_mul, geom_sum_mul, hu, sub_self, map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ψ (x * y ^ (k * (q - 1))) = 1`. Use `(hs.mul_right_eq_zero).mp h0` as an intermediate fact. Conclude with `sub_eq_zero.mp this`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem key_ring {A K : Type} [CommRing A] [Field K] (φ : A →+* K) (x y : A) (q k : ℕ) (hq : (q : K) ≠ 0)
     (hx : x ^ q = 1) (hy : y ^ q = 1) (h : φ x = φ y ^ k) :
@@ -75,9 +75,7 @@ theorem key_ring {A K : Type} [CommRing A] [Field K] (φ : A →+* K) (x y : A) 
       _ = ψ y ^ k := by rw [h1, one_mul]
 
 /- English proof (translation)
-Use `set O := W.basicOpen s`. Rewrite using `[Scheme.Γ_map_op]`. Use `RingedSpace.isUnit_of_isUnit_germ O.toScheme.toRingedSpace ⊤ _ (fun y _ => ?_)` and prove the remaining obligations. Establish `hy : y ∈ O.toScheme.basicOpen (O.ι.appTop s)`. Rewrite using `[← Scheme.preimage_basicOpen_top]`.
-
-Use `show O.ι y ∈ O`. Conclude with `y.2`. Conclude with `(Scheme.mem_basicOpen_top _ _ _).mp hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_res {W : Scheme.{0}} (s : Γ(W, ⊤)) :
     IsUnit ((Scheme.Γ.map (W.basicOpen s).ι.op).hom s) := by
@@ -95,7 +93,7 @@ end LateralTheory.E.E8.TwSec.Gen
 namespace LateralTheory.E.E8.TwSec.Gen
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (Finsupp.mapDomain _ (Finsupp.single ξ r)) = _`. Rewrite using `[Finsupp.mapDomain_single]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mk {q : ℕ} (j : ℤ) {A B : CommRingCat.{0}} (f : A ⟶ B) (ξ : Prim q A) (r : ULift.{1} (ZMod q)) :
     ((twF q j).map f).hom (Submodule.Quotient.mk (p := twRel q j A) (Finsupp.single ξ r)) =
@@ -104,9 +102,9 @@ theorem map_mk {q : ℕ} (j : ℤ) {A B : CommRingCat.{0}} (f : A ⟶ B) (ξ : P
   rw [Finsupp.mapDomain_single]
 
 /- English proof (translation)
-Unfold `twCls`. Establish `h1 : (ULift.up ((((ZMod.unitOfCoprime k hc) ^ j : (ZMod q)ˣ)) : ZMod q) : ULift.{1} (ZMod q)) • (Submodule.Quotient.mk (p` using `twRel q j B) (Finsupp.single ζ 1)) = Submodule.Quotient.mk (Finsupp.single ζ (ULift.up ((((ZMod.unitOfCoprime k hc) ^ j : (ZMod q)ˣ)) : ZMod q))) := by`. Rewrite using `[← Submodule.Quotient.mk_smul, Finsupp.smul_single, smul_eq_mul, mul_one]`. Use `Eq.trans ?_ h1.symm` and prove the remaining obligations. Rewrite using `[Submodule.Quotient.eq]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.subset_span ⟨ζ, ξ, ZMod.unitOfCoprime k hc, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[h, ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hk]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mk_pow {q : ℕ} (j : ℤ) {B : CommRingCat.{0}} (ζ ξ : Prim q B) (k : ℕ) (hk : k < q) (hc : k.Coprime q)
     (h : ξ.1 = ζ.1 ^ k) :
@@ -123,7 +121,7 @@ theorem mk_pow {q : ℕ} (j : ℤ) {B : CommRingCat.{0}} (ζ ξ : Prim q B) (k :
   rw [h, ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hk]
 
 /- English proof (translation)
-Rewrite using `[← W.homOfLE_ι h, op_comp, Functor.map_comp, Functor.map_comp, ModuleCat.hom_comp]`. Conclude with `congrArg (ModuleCat.Hom.hom ((twF q j).map (Scheme.Γ.map (W.homOfLE h).op))) e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_le {q : ℕ} (j : ℤ) {W : Scheme.{0}} {O O' : W.Opens} (h : O' ≤ O) {x y : (twF q j).obj Γ(W, ⊤)}
     (e : ((twF q j).map (Scheme.Γ.map O.ι.op)).hom x = ((twF q j).map (Scheme.Γ.map O.ι.op)).hom y) :
@@ -132,11 +130,11 @@ theorem res_le {q : ℕ} (j : ℤ) {W : Scheme.{0}} {O O' : W.Opens} (h : O' ≤
   exact congrArg (ModuleCat.Hom.hom ((twF q j).map (Scheme.Γ.map (W.homOfLE h).op))) e
 
 /- English proof (translation)
-Take `⟨k, hk, hc, e⟩` from `exists_pow (W.Γevaluation w0).hom ζ ξ`. Establish `hq : ((q : ℕ) : W.residueField w0) ≠ 0`. Use `ζ.2.1.map (W.Γevaluation w0).hom` as an intermediate fact. Simplify using `using this.ne_zero`. Take `⟨h1, h2⟩` from `key_ring (W.Γevaluation w0).hom ξ.1 ζ.1 q k hq (prim_pow_eq_one ξ) (prim_pow_eq_one ζ) e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `⟨W.basicOpen (∑ b ∈ Finset.range q, (ξ.1 * ζ.1 ^ (k * (q - 1))) ^ b), (((ZMod.unitOfCoprime k hc) ^ j : (ZMod q)ˣ) : ZMod q), (W.evaluation_ne_zero_iff_mem_basicOpen (U := ⊤) w0 trivial _).mp h1, ?_⟩` and prove the remaining obligations. Establish `hs` using `h2 _ (Scheme.Γ.map (W.basicOpen (∑ b ∈ Finset.range q, (ξ.1 * ζ.1 ^ (k * (q - 1))) ^ b)).ι.op).hom (isUnit_res _)`. Use `(map_mk j _ ξ 1).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (LinearMap.map_smul _ _ _).symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg _ (map_mk j _ ζ 1).symm)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mk_pow j _ _ k hk hc hs`.
+A detailed English derivation is pending.
 -/
 theorem core {q : ℕ} [NeZero q] (j : ℤ) {W : Scheme.{0}} (ζ ξ : Prim q Γ(W, ⊤)) (w0 : W) :
     ∃ (O : W.Opens) (c : ZMod q), w0 ∈ O ∧
@@ -163,19 +161,19 @@ namespace LateralTheory.E.E8.TwSec
 
 open Gen in
 /- English proof (translation)
-Introduce `q _ j W ζ t w0`. Take `⟨f, rfl⟩` from `Submodule.Quotient.mk_surjective (twRel q j Γ(W, ⊤)) t`. Proceed by induction on `f using Finsupp.induction_linear with`. Consider the case `zero`. Use `⟨⊤, 0, trivial, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : (Submodule.Quotient.mk 0 : (twF q j).obj Γ(W, ⊤)) = 0` using `Submodule.Quotient.mk_zero _`. Establish `h0 : (ULift.up (0 : ZMod q) : ULift.{1} (ZMod q)) • twCls j ζ = 0` using `zero_smul _ _`. Rewrite using `[hm, h0]`. Conclude with `rfl`. Consider the case `add f g hf hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Take `⟨O1, c1, h1, e1⟩` from `hf`. Take `⟨O2, c2, h2, e2⟩` from `hg`. Use `⟨O1 ⊓ O2, c1 + c2, ⟨h1, h2⟩, ?_⟩` and prove the remaining obligations. Establish `hm : (Submodule.Quotient.mk (f + g) : (twF q j).obj Γ(W, ⊤)) = (Submodule.Quotient.mk f : (twF q j).obj Γ(W, ⊤)) + (Submodule.Quotient.mk g : (twF q j).obj Γ(W, ⊤))` using `Submodule.Quotient.mk_add _`. Rewrite using `[hm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(LinearMap.map_add _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[res_le j inf_le_left e1, res_le j inf_le_right e2]`. Use `(LinearMap.map_add _ _ _).symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `(add_smul _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 
-Consider the case `single ξ r`. Take `⟨O, c, h, e⟩` from `core j ζ ξ w0`. Use `⟨O, r.down * c, h, ?_⟩` and prove the remaining obligations. Establish `hr : Finsupp.single ξ r = r • Finsupp.single ξ (1 : ULift.{1} (ZMod q))`. Rewrite using `[Finsupp.smul_single, smul_eq_mul, mul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : (Submodule.Quotient.mk (r • Finsupp.single ξ (1 : ULift.{1} (ZMod q))) : (twF q j).obj Γ(W, ⊤)) = r • (Submodule.Quotient.mk (Finsupp.single ξ 1) : (twF q j).obj Γ(W, ⊤))` using `Submodule.Quotient.mk_smul _ _ _`. Rewrite using `[hr, hm]`. Use `(LinearMap.map_smul _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[e]`. Use `(LinearMap.map_smul _ _ _).symm.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `smul_smul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem LeafTwGen_of : LeafTwGen := by
   intro q _ j W ζ t w0

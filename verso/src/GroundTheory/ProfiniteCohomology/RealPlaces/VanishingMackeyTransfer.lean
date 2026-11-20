@@ -20,7 +20,7 @@ variable {Kv Ew Ωv ΩE : Type*} [Field Kv] [Field Ew] [Field Ωv] [Field ΩE] [
   (hfix : ∀ (σ : Ωv ≃ₐ[Kv] Ωv) (y : Ew), σ (algebraMap Ew Ωv y) = algebraMap Ew Ωv y)
 
 /- English proof (translation)
-Establish `h1 : algebraMap Kv Ωv a = θ (algebraMap Ew ΩE (algebraMap Kv Ew a))` using `(IsScalarTower.algebraMap_apply Kv Ew Ωv a).trans (θ.commutes _).symm`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem conj_algebraMap_eq (τ : ΩE ≃ₐ[Ew] ΩE) (a : Kv) :
     θ (τ (θ.symm (algebraMap Kv Ωv a))) = algebraMap Kv Ωv a := by
@@ -64,21 +64,19 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1)))
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hLO : (infPlaceOfEmbedding (gsRealEmbedding S ιr v x) L : InfinitePlace L.1).LiesOver v.1` using `(infPlaceOfEmbedding (gsRealEmbedding S ιr v x) L).2`. Establish `hf : Module.finrank v.1.Completion (infPlaceOfEmbedding (gsRealEmbedding S ιr v x) L : InfinitePlace L.1).Completion = 1` using `(InfinitePlace.finrank_completion_eq_one_iff _).2 fun h => (InfinitePlace.not_isReal_iff_isComplex.2 h.2) hreal`. Establish `hcK : ∀ y : (infPlaceOfEmbedding (gsRealEmbedding S ιr v x) L : InfinitePlace L.1).Completion, ∃ a : v.1.Completion, infCompletionEmbedding (gsRealEmbedding S ιr v x) L y = algebraMap v.1.Completion (AlgebraicClosure v.1.Completion) a`. Introduce `y`. Establish `hmem : y ∈ (⊥ : Subalgebra v.1.Completion (infPlaceOfEmbedding (gsRealEmbedding S ιr v x) L : InfinitePlace L.1).Completion)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Subalgebra.bot_eq_top_of_finrank_eq_one hf]`. Conclude with `Algebra.mem_top`. Take `⟨a, rfl⟩` from `Algebra.mem_bot.1 hmem`. Conclude with `⟨a, (infCompletionEmbedding (gsRealEmbedding S ιr v x) L).commutes a⟩`. Set `_ : Algebra (infPlaceOfEmbedding (gsRealEmbedding S ιr v x) L : InfinitePlace L.1).Completion (AlgebraicClosure v.1.Completion)` to `(infCompletionEmbedding (gsRealEmbedding S ιr v x) L).toRingHom.toAlgebra`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsScalarTower v.1.Completion (infPlaceOfEmbedding (gsRealEmbedding S ιr v x) L : InfinitePlace L.1).Completion (AlgebraicClosure v.1.Completion)` using `IsScalarTower.of_algebraMap_eq fun a => ((infCompletionEmbedding (gsRealEmbedding S ιr v x) L).commutes a).symm`. Establish `: Algebra.IsAlgebraic (infPlaceOfEmbedding (gsRealEmbedding S ιr v x) L : InfinitePlace L.1).Completion (AlgebraicClosure v.1.Completion)` using `Algebra.IsAlgebraic.tower_top (K := v.1.Completion) _`. Establish `: IsAlgClosure (infPlaceOfEmbedding (gsRealEmbedding S ιr v x) L : InfinitePlace L.1).Completion (AlgebraicClosure v.1.Completion)` using `⟨inferInstance, inferInstance⟩`. Set `θ : AlgebraicClosure (infPlaceOfEmbedding (gsRealEmbedding S ιr v x) L : InfinitePlace L.1).Completion ≃ₐ[ (infPlaceOfEmbedding (gsRealEmbedding S ιr v x) L : InfinitePlace L.1).Completion] AlgebraicClosure v.1.Completion` to `IsAlgClosure.equiv _ _ _`. Set `_ : Algebra L.1 (AlgebraicClosure v.1.Completion)` to `((algebraMap (infPlaceOfEmbedding (gsRealEmbedding S ιr v x) L : InfinitePlace L.1).Completion (AlgebraicClosure v.1.Completion)).comp (algebraMap L.1 (infPlaceOfEmbedding (gsRealEmbedding S ιr v x) L : InfinitePlace L.1).Completion)).toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsScalarTower L.1 (infPlaceOfEmbedding (gsRealEmbedding S ιr v x) L : InfinitePlace L.1).Completion (AlgebraicClosure v.1.Completion)` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `ιE' : ℚ̄ →ₐ[L.1] AlgebraicClosure v.1.Completion` to `{ (gsRealEmbedding S ιr v x).toRingHom with commutes' := fun y => (infCompletionEmbedding_algebraMap (gsRealEmbedding S ιr v x) L y).symm }`. Set `ιw : ℚ̄ →ₐ[L.1] AlgebraicClosure (infPlaceOfEmbedding (gsRealEmbedding S ιr v x) L : InfinitePlace L.1).Completion` to `(θ.symm.toAlgHom.restrictScalars L.1).comp ιE'`. Establish `hfix : ∀ (σ : Gal(AlgebraicClosure v.1.Completion / v.1.Completion)) (y : (infPlaceOfEmbedding (gsRealEmbedding S ιr v x) L : InfinitePlace L.1).Completion), σ (algebraMap _ (AlgebraicClosure v.1.Completion) y) = algebraMap _ (AlgebraicClosure v.1.Completion) y`. Introduce `σ y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hcK y`. Express the relevant statement in the definitionally equal form `σ (infCompletionEmbedding (gsRealEmbedding S ιr v x) L y) = infCompletionEmbedding (gsRealEmbedding S ιr v x) L y`. Rewrite using `[ha]`. Conclude with `σ.commutes a`. Use `⟨ιw, galConjEquiv θ hfix, fun g hg => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ y : maxUnramifiedOutside L.1 ℚ̄ (placesOver S), θ.symm (gsRealEmbedding S ιr v x ((gsBaseChange S hL ⟨x * gsRealFamily S ιr v g * x⁻¹, hg⟩ y : maxUnramifiedOutside L.1 ℚ̄ (placesOver S)) : ℚ̄)) = θ.symm (g (gsRealEmbedding S ιr v x (y : ℚ̄)))`. Introduce `y`. Establish `hc` using `gsRealEmbedding_conj S ιr v x g ((gsFieldEquiv hL).symm y)`. Rewrite `hc` using `[coe_fieldEquivOfRestrictScalarsEq_symm]`. Rewrite using `[coe_gsBaseChange_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg θ.symm hc`. Establish `hιw : ∀ z, ιw z = θ.symm (gsRealEmbedding S ιr v x z)` using `fun _ => rfl`. Establish `key' : ∀ y : maxUnramifiedOutside L.1 ℚ̄ (placesOver S), (ιw.comp (maxUnramifiedOutside L.1 ℚ̄ (placesOver S)).val) (gsBaseChange S hL ⟨x * gsRealFamily S ιr v g * x⁻¹, hg⟩ y) = galConjEquiv θ hfix g ((ιw.comp (maxUnramifiedOutside L.1 ℚ̄ (placesOver S)).val) y)`. Introduce `y`. Simplify using `only [AlgHom.comp_apply, IntermediateField.coe_val, galConjEquiv_apply]`.
-
-Rewrite using `[hιw, hιw, θ.apply_symm_apply]`. Conclude with `key y`. Conclude with `((decompHom_eq_iff (Kv := (infPlaceOfEmbedding (gsRealEmbedding S ιr v x) L : InfinitePlace L.1).Completion) (ιw.comp (maxUnramifiedOutside L.1 ℚ̄ (placesOver S)).val) (galConjEquiv θ hfix g) (gsBaseChange S hL ⟨x * gsRealFamily S ιr v g * x⁻¹, hg⟩)).2 key').symm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_real_data (v : {v : InfinitePlace K.1 // v.IsReal}) (x : galUnramifiedOutside K.1 ℚ̄ S)
     (hreal : (infPlaceOfEmbedding (gsRealEmbedding S ιr v x) L : InfinitePlace L.1).IsReal) :
@@ -176,9 +174,9 @@ variable {k H G : Type} [CommRing k] [Group H] [TopologicalSpace H] [IsTopologic
   [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Establish `h1 : cohomologyMapAlong e.toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom e) f n ≫ cohomologyMapAlong e.symm.toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom e.symm) g n = 𝟙 _`. Rewrite using `[← cohomologyMapAlong_comp]`. Conclude with `cohomologyMapAlong_eq_id _ _ (MonoidHom.ext fun x => e.apply_symm_apply x) (fun a => hgf a) n`. Establish `h2 : cohomologyMapAlong e.symm.toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom e.symm) g n ≫ cohomologyMapAlong e.toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom e) f n = 𝟙 _`. Rewrite using `[← cohomologyMapAlong_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `cohomologyMapAlong_eq_id _ _ (MonoidHom.ext fun x => e.symm_apply_apply x) (fun b => hfg b) n`. Establish `l1 : Function.LeftInverse (cohomologyMapAlong e.symm.toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom e.symm) g n).hom (cohomologyMapAlong e.toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom e) f n).hom` using `fun x => (hom_apply_hom_apply_of_comp_eq h1 x).trans rfl`. Establish `l2 : Function.RightInverse (cohomologyMapAlong e.symm.toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom e.symm) g n).hom (cohomologyMapAlong e.toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom e) f n).hom` using `fun y => (hom_apply_hom_apply_of_comp_eq h2 y).trans rfl`. Conclude with `⟨l1.injective, l2.surjective⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bijective_cohomologyMapAlong_of_equiv (e : H ≃ₜ* G) {A : Rep.{0} k G} {B : Rep.{0} k H}
     [IsDiscreteRep A] [IsDiscreteRep B] (f : Rep.res e.toMulEquiv.toMonoidHom A ⟶ B)
@@ -227,19 +225,17 @@ def trivialRes (n : ℕ) (c : cohomology (Rep.trivial k W V) n) :
 include hσ hmem he in
 
 /- English proof (translation)
-Establish `: IsDiscreteRep (Rep.res E.symm.toMulEquiv.toMonoidHom (Rep.trivial k W V))` using `IsDiscreteRep.res (continuous_mulEquiv_toMonoidHom E.symm) _`. Set `m0 : Rep.res E.symm.toMulEquiv.toMonoidHom (Rep.trivial k W V) ⟶ Rep.trivial k Γ V` to `Rep.ofHom ⟨LinearMap.id, fun _ => rfl⟩`. Set `m0' : Rep.res E.symm.symm.toMulEquiv.toMonoidHom (Rep.trivial k Γ V) ⟶ Rep.trivial k W V` to `Rep.ofHom ⟨LinearMap.id, fun _ => rfl⟩`. Set `Φ` to `cohomologyMapAlong E.symm.toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom E.symm) m0 n`. Establish `hΦ : Function.Bijective Φ.hom` using `bijective_cohomologyMapAlong_of_equiv E.symm m0 m0' (fun _ => rfl) (fun _ => rfl) n`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: ∀ q, IsDiscreteRep (Rep.res (e q).symm.toMulEquiv.toMonoidHom (Rep.res (f (mem q)).toMonoidHom (Rep.trivial k W V)))` using `fun q => IsDiscreteRep.res (continuous_mulEquiv_toMonoidHom (e q).symm) _`. Set `m1 : ∀ q, Rep.res (e q).symm.toMulEquiv.toMonoidHom (Rep.res (f (mem q)).toMonoidHom (Rep.trivial k W V)) ⟶ Rep.res (g q).toMonoidHom (Rep.trivial k Γ V)` to `fun _ => Rep.ofHom ⟨LinearMap.id, fun _ => rfl⟩`. Set `m1' : ∀ q, Rep.res (e q).symm.symm.toMulEquiv.toMonoidHom (Rep.res (g q).toMonoidHom (Rep.trivial k Γ V)) ⟶ Rep.res (f (mem q)).toMonoidHom (Rep.trivial k W V)` to `fun _ => Rep.ofHom ⟨LinearMap.id, fun _ => rfl⟩`. Set `τ` to `fun q => cohomologyMapAlong (e q).symm.toMulEquiv.toMonoidHom (continuous_mulEquiv_toMonoidHom (e q).symm) (m1 q) n`. Establish `hτ : ∀ q, Function.Bijective (τ q).hom` using `fun q => bijective_cohomologyMapAlong_of_equiv (e q).symm (m1 q) (m1' q) (fun _ => rfl) (fun _ => rfl) n`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmaps : ∀ q, (f (mem q)).toMonoidHom.comp (e q).symm.toMulEquiv.toMonoidHom = E.symm.toMulEquiv.toMonoidHom.comp (g q).toMonoidHom` using `fun q => MonoidHom.ext fun y => by`. Express the relevant statement in the definitionally equal form `f (mem q) ((e q).symm y) = E.symm (g q y)`. Rewrite using `[E.eq_symm_apply, he q, (e q).apply_symm_apply]`. Establish `key : ∀ q c, (τ q).hom (trivialRes (k` using `k) V f n c (mem q)) = (globalToLocal g (Rep.trivial k Γ V) (fun q => Rep.res (g q).toMonoidHom (Rep.trivial k Γ V)) (fun _ => 𝟙 _) n).hom (Φ.hom c) q := by`. Introduce `q c`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomp` using `(cohomologyMapAlong_comp _ (continuous_toMonoidHom (f (mem q))) (𝟙 _) _ (continuous_mulEquiv_toMonoidHom (e q).symm) (m1 q) n).symm.trans ((cohomologyMapAlong_congr _ _ _ _ (hmaps q) (fun _ => rfl) n).trans (cohomologyMapAlong_comp _ (continuous_mulEquiv_toMonoidHom E.symm) m0 _ …`. Conclude with `hom_apply_hom_apply_eq_of_comp_eq hcomp c`. Use `⟨fun hinj c c' hcc => ?_, fun hsurj t => ?_⟩` and prove the remaining obligations. Apply `hΦ.1` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `q`. Conclude with `(key q c).symm.trans ((congrArg (τ q).hom (congrFun hcc (mem q))).trans (key q c'))`. Take `⟨y, hy⟩` from `hsurj fun q => (τ q).hom (t (mem q))`. Take `⟨c, rfl⟩` from `hΦ.2 y`. Use `⟨c, funext fun p => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : mem (σ p) = p` using `hσ (hmem _)`. Establish `h2` using `(hτ (σ p)).1 ((key (σ p) c).trans (congrFun hy (σ p)))`. Establish `hgen : ∀ p' : P, p' = p → trivialRes (k` using `k) V f n c p' = t p' → trivialRes (k := k) V f n c p = t p := by`. Introduce `p' hp' h`. Substitute `hp'` using the available equality.
-
-Conclude with `h`. Conclude with `hgen _ hp h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem trivialRes_transfer (n : ℕ) :
     (Function.Injective (globalToLocal g (Rep.trivial k Γ V) (fun q => Rep.res (g q).toMonoidHom
@@ -322,7 +318,7 @@ theorem mackeyTopRes_trivial_eq [∀ p : MackeyTopIndex ψ W, IsDiscreteRep
 omit [CompactSpace G] [∀ w, CompactSpace (F w)] in
 
 /- English proof (translation)
-Rewrite using `[mackeyTopRes_trivial_eq]`. Conclude with `trivialRes_transfer E V (fun p : MackeyTopIndex ψ W => mackeyConjₜ W (ψ p.1.1) p.1.2.out) g σ hσ mem hmem e he n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mackeyTopRes_transfer {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     (E : (W : Subgroup G) ≃ₜ* Γ) [IsDiscreteRep (Rep.trivial k Γ V)]
@@ -362,7 +358,7 @@ theorem coe_realMemberPlace (p : MackeyTopIndex (gsRealFamily S ιr) (gsOpenSubg
   rfl
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `w`. Substitute `hp` using the available equality. Conclude with `exists_real_data S ιr hL p.1.1 p.1.2.out hw`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_real_data_of_eq (p : MackeyTopIndex (gsRealFamily S ιr) (gsOpenSubgroup S hL))
     (w : {w : InfinitePlace L.1 // w.IsReal})
@@ -384,9 +380,9 @@ set_option maxHeartbeats 1000000 in
 include h2S in
 
 /- English proof (translation)
-Establish `h2SL : ∀ v : HeightOneSpectrum (𝓞 L.1), ((2 : ℕ) : 𝓞 L.1) ∈ v.asIdeal → v ∈ placesOver S` using `fun v hv => mem_placesOver_of_natCast_mem h2S hv`. Use `choose mem hmem using realMemberPlace_surjective S ιr hL`. Use `choose ιrL e he using fun w => exists_real_data_of_eq S ιr hL (mem w) w ((coe_realMemberPlace S ιr hL (mem w)).symm.trans (congrArg Subtype.val (hmem w)))`. Set `e' : ∀ w : {w : InfinitePlace L.1 // w.IsReal}, (mackeySubgroup (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr (mem w).1.1).toMonoidHom (mem w).1.2.out) ≃ₜ* Gal(AlgebraicClosure w.1.Completion / w.1.Completion)` to `fun w => { toMulEquiv := ((MulEquiv.subgroupCongr (mem w).2).trans Subgroup.topEquiv).trans (e w) continuous_toFun := continuous_of_discreteTopology continuous_invFun := continuous_of_discreteTopology }`. Establish `he' : ∀ w x, gsBaseChange S hL (mackeyConjₜ (gsOpenSubgroup S hL) (gsRealFamily S ιr (mem w).1.1) (mem w).1.2.out x) = gsRealFamily (placesOver S) ιrL w (e' w x)` using `fun w x => (congrArg (gsBaseChange S hL) (Subtype.ext rfl)).trans (he w (x : Gal(AlgebraicClosure (mem w).1.1.1.Completion / (mem w).1.1.1.Completion)) ((mem_mackeySubgroup _ _ _ _).1 x.2))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ∀ p : MackeyTopIndex (gsRealFamily S ιr) (gsOpenSubgroup S hL), IsDiscreteRep (Rep.res (mackeyConjₜ (gsOpenSubgroup S hL) (gsRealFamily S ιr p.1.1) p.1.2.out).toMonoidHom (Rep.trivial (ULift.{0} ℤ) (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (ULift.{0} (ZMo …` using `fun p => IsDiscreteRep.res (continuous_toMonoidHom _) _`. Establish `: ∀ w : {w : InfinitePlace L.1 // w.IsReal}, IsDiscreteRep (Rep.res (gsRealFamily (placesOver S) ιrL w).toMonoidHom (Rep.trivial (ULift.{0} ℤ) (galUnramifiedOutside L.1 ℚ̄ (placesOver S)) (ULift.{0} (ZMod 2))))` using `fun w => IsDiscreteRep.res (continuous_toMonoidHom _) _`. Establish `ht` using `mackeyTopRes_transfer (k := ULift.{0} ℤ) (gsRealFamily S ιr) (gsOpenSubgroup S hL) (ULift.{0} (ZMod 2)) (gsBaseChange S hL) (gsRealFamily (placesOver S) ιrL) (realMemberPlace S ιr hL) (realMemberPlace_injective S ιr hL) mem hmem e' he' j`. Conclude with `⟨fun hj => ht.1 (injective_gsRealRes_zmodRep_two (placesOver S) ιrL h2SL hj), fun hj => ht.2 (surjective_gsRealRes_zmodRep_two (placesOver S) ιrL h2SL hj)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gsMackeyTop_gsOpenSubgroup (j : ℕ) :
     (4 ≤ j → GsMackeyTopInjective S ιr (gsOpenSubgroup S hL) j) ∧
@@ -429,7 +425,7 @@ variable (ιs : ∀ v : S, ℚ̄ →ₐ[K.1] AlgebraicClosure ((v : HeightOneSpe
 include h2S in
 
 /- English proof (translation)
-Take `⟨L', hKL', hL', rfl⟩` from `exists_gsOpenSubgroup_eq K S W`. Conclude with `gsTateCompactCohomology_coind_zmodRep_eq_zero_of S ιs ιr (gsOpenSubgroup S hL') (fun j hj => (gsMackeyTop_gsOpenSubgroup S ιr hL' h2S j).1 hj) (fun j hj => (gsMackeyTop_gsOpenSubgroup S ιr hL' h2S j).2 hj) hr x`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gsTateCompactCohomology_coind_zmodRep_two_eq_zero
     (W : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S)) {r : ℕ} (hr : 4 ≤ r)

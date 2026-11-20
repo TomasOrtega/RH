@@ -46,16 +46,16 @@ def Fix (x : d.G) : Prop :=
   ∀ k, inFrame d.b x k (Sum.inl L.i₀) = (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) k (Sum.inl L.i₀)
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem fix_one : Fix L (1 : d.G) := by
   intro k
   rw [GlobalTheory.EisBL.DoubledParabolic.inFrame_one]
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, Matrix.mul_apply, Finset.sum_eq_single (Sum.inl L.i₀)]`. Rewrite using `[hy, Matrix.one_apply_eq, mul_one]`. Conclude with `hx k`. Introduce `j _ hj`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy j, Matrix.one_apply_ne hj, mul_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fix_mul {x y : d.G} (hx : Fix L x) (hy : Fix L y) : Fix L (x * y) := by
   intro k
@@ -65,9 +65,9 @@ theorem fix_mul {x y : d.G} (hx : Fix L x) (hy : Fix L y) : Fix L (x * y) := by
   · simp
 
 /- English proof (translation)
-Introduce `k`. Establish `h1` using `congrFun (congrFun (GlobalTheory.EisBL.DoubledParabolic.inFrame_inv_mul d.b x) k) (Sum.inl L.i₀)`. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_single (Sum.inl L.i₀)]`. Rewrite `h1` using `[hx, Matrix.one_apply_eq, mul_one]`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _ hj`. Rewrite using `[hx j, Matrix.one_apply_ne hj, mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fix_inv {x : d.G} (hx : Fix L x) : Fix L x⁻¹ := by
   intro k
@@ -78,14 +78,14 @@ theorem fix_inv {x : d.G} (hx : Fix L x) : Fix L x⁻¹ := by
   · simp
 
 /- English proof (translation)
-Introduce `k`. Conclude with `(L.j_out g (Sum.inl L.i₀) (by simp) k).2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fix_j (g : G2 σ L.Y) : Fix L (L.j g) := by
   intro k
   exact (L.j_out g (Sum.inl L.i₀) (by simp) k).2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h1`. Use `lagrangian_condition_parabolic_mul L ((par2 σ d.Y).inv_mem hp) h1` as an intermediate fact. Rewrite `this` using `[← mul_assoc, inv_mul_cancel, one_mul]`. Then use the resulting hypothesis. Conclude with `lagrangian_condition_parabolic_mul L hp`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lagrangian_condition_parabolic_iff {p g : d.G} (hp : p ∈ par2 σ d.Y) : LagrangianCondition L (p * g) ↔ LagrangianCondition L g := by
   constructor
@@ -95,9 +95,9 @@ theorem lagrangian_condition_parabolic_iff {p g : d.G} (hp : p ∈ par2 σ d.Y) 
   · exact lagrangian_condition_parabolic_mul L hp
 
 /- English proof (translation)
-Introduce `hS`. Take `⟨a₀, b₀, ha, hb, hW⟩` from `h.wf`. Establish `h1` using `hS L.i₀`. Rewrite `h1` using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, Matrix.mul_apply, Finset.sum_eq_single (Sum.inl L.i₀)]`. Rewrite `h1` using `[hg, Matrix.one_apply_eq, mul_one, hW]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[Matrix.single_apply, Matrix.one_apply] at h1`. Conclude with `hb (kfour.inclR_injective (F := F) (by rw [h1, map_zero]))`. Introduce `j _ hj`. Rewrite using `[hg j, Matrix.one_apply_ne hj, mul_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_lagrangian_w1_mul (h : Hyp L nb uM nb' w₁ cM δ) {g : d.G} (hg : Fix L g) : ¬ LagrangianCondition L (w₁ * g) := by
   intro hS
@@ -111,14 +111,14 @@ theorem not_lagrangian_w1_mul (h : Hyp L nb uM nb' w₁ cM δ) {g : d.G} (hg : F
   · simp
 
 /- English proof (translation)
-Conclude with `rep_mk γ`.
+A detailed English derivation is pending.
 -/
 theorem out_mk (d : SD σ) (γ : rat2 σ d.Y) :
     ∃ p ∈ par2 σ d.Y, p ∈ rat2 σ d.Y ∧ rep (Quotient.mk _ γ : Cs d) = p * γ.1 := by
   exact rep_mk γ
 
 /- English proof (translation)
-Rewrite using `[Quotient.eq, QuotientGroup.rightRel_apply, Subgroup.mem_subgroupOf]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mk_eq_mk (d : SD σ) {γ γ' : rat2 σ d.Y} :
     (Quotient.mk _ γ : Cs d) = Quotient.mk _ γ' ↔ γ'.1 * γ.1⁻¹ ∈ par2 σ d.Y := by
@@ -126,19 +126,19 @@ theorem mk_eq_mk (d : SD σ) {γ γ' : rat2 σ d.Y} :
   simp
 
 /- English proof (translation)
-The claim follows from `(Quotient.out q).2`.
+A detailed English derivation is pending.
 -/
 theorem rep_mem (d : SD σ) (q : Cs d) : rep q ∈ rat2 σ d.Y := (Quotient.out q).2
 
 /- English proof (translation)
-The claim follows from `Quotient.out_eq q`.
+A detailed English derivation is pending.
 -/
 theorem mk_rep (d : SD σ) (q : Cs d) : (Quotient.mk _ ⟨rep q, rep_mem d q⟩ : Cs d) = q := Quotient.out_eq q
 
 /- English proof (translation)
-Use extensionality with `r c`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : P l`. Rewrite using `[hN l c hl, mul_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM r l hl, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_eq_zero_of_supp {ι : Type} [Fintype ι] (P : ι → Prop) {M N : Matrix ι ι (AE F E)}
     (hM : ∀ r l, ¬ P l → M r l = 0) (hN : ∀ l c, P l → N l c = 0) : M * N = 0 := by
@@ -150,17 +150,15 @@ theorem mul_eq_zero_of_supp {ι : Type} [Fintype ι] (P : ι → Prop) {M N : Ma
   · rw [hM r l hl, zero_mul]
 
 /- English proof (translation)
-Take `⟨a₀, b₀, ha, hb, hW⟩` from `h.wf`. Apply `kunf.inFrame_injective d.b` to reduce the goal to its premises. Rewrite using `[GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, GlobalTheory.EisBL.DoubledParabolic.inFrame_mul]`. Use `set W := inFrame d.b w₁`. Use `set J := inFrame d.b (L.j g)`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hJ` using `pad_j L g`. Set `P : Fin d.n ⊕ Fin d.n → Prop` to `fun l => l = Sum.inl L.i₀ ∨ l = Sum.inr L.i₀`. Establish `hWo : ∀ r c, ¬ (P r ∧ P c) → (W - 1) r c = 0`. Introduce `r c hrc`. Rewrite using `[Matrix.sub_apply, hW]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [P, not_and_or] at hrc`. Apply the tactic sequence `rcases hrc with hr | hr <;> push_neg at hr <;>`. Simplify using `[Matrix.single_apply, Matrix.one_apply, hr.1, hr.2, Ne.symm hr.1, Ne.symm hr.2]`. Establish `hJo : ∀ r c, (P r ∨ P c) → (J - 1) r c = 0`. Introduce `r c hrc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Matrix.sub_apply, sub_eq_zero]`. Break down `hrc with (h | h) | (h | h)` into its components or cases. Conclude with `hJ r c (Or.inl h)`. Conclude with `hJ r c (Or.inr (Or.inl h))`. Conclude with `hJ r c (Or.inr (Or.inr (Or.inl h)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hJ r c (Or.inr (Or.inr (Or.inr h)))`. Establish `e1 : (W - 1) * (J - 1) = 0` using `mul_eq_zero_of_supp P (fun r l hl => hWo r l fun h => hl h.2) (fun l c hl => hJo l c (Or.inl hl))`. Establish `e2 : (J - 1) * (W - 1) = 0` using `mul_eq_zero_of_supp (fun l => ¬ P l) (fun r l hl => hJo r l (Or.inr (not_not.1 hl))) (fun l c hl => hWo l c fun h => hl h.1)`. Establish `eW : W = 1 + (W - 1)` using `by abel`. Establish `eJ : J = 1 + (J - 1)` using `by abel`.
-
-Rewrite using `[eW, eJ]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, e1, e2]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem w1_mul_j_comm (h : Hyp L nb uM nb' w₁ cM δ) (g : G2 σ L.Y) : w₁ * L.j g = L.j g * w₁ := by
   obtain ⟨a₀, b₀, ha, hb, hW⟩ := h.wf
@@ -195,7 +193,7 @@ theorem w1_mul_j_comm (h : Hyp L nb uM nb' w₁ cM δ) (g : G2 σ L.Y) : w₁ * 
   abel
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [cA, hσ]`. Consider the case `add a b ha hb => simp [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_inv' (hσ : ∀ x, σ (σ x) = x) (z : AE F E) : cA σ (cA σ z) = z := by
   induction z using TensorProduct.induction_on with
@@ -204,7 +202,7 @@ theorem cA_inv' (hσ : ∀ x, σ (σ x) = x) (z : AE F E) : cA σ (cA σ z) = z 
   | add a b ha hb => simp [map_add, ha, hb]
 
 /- English proof (translation)
-Use `C1.Au_mul L (-u) u` as an intermediate fact. Simplify using `only [neg_add_cancel] at this`. Rewrite using `[show uA L (-u) * uA L u = C1.Au L (-u) * C1.Au L u from rfl, this]`. Simplify using `[C1.Au]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem uA_neg_mul (u : Fin L.n → AE F E) : uA L (-u) * uA L u = 1 := by
   have := C1.Au_mul L (-u) u
@@ -213,13 +211,13 @@ theorem uA_neg_mul (u : Fin L.n → AE F E) : uA L (-u) * uA L u = 1 := by
   simp [C1.Au]
 
 /- English proof (translation)
-Take `⟨A', hA'⟩` from `h.cf c`. Take `⟨ε, hε⟩` from `d.ok.frame.1`. Establish `hσ` using `kfour.sigma_sigma_of_good d.ok.good`. Establish `h2` using `kunf.frame_eq hε (cM c)`. Rewrite `h2` using `[hA']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [kunf.jw, Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.transpose_zero, Matrix.zero_mul, Matrix.mul_zero, zero_add, add_zero, Matrix.mul_one, Matrix.map_zero _ (map_zero (cA σ))] at h2`. Establish `h1 : (uA L c.1)ᵀ * A'.map (cA σ) = 1` using `(Matrix.fromBlocks_inj.1 h2).2.1`. Establish `h1' : A'.map (cA σ) * (uA L c.1)ᵀ = 1` using `mul_eq_one_comm.1 h1`. Establish `hinv : (uA L c.1)ᵀ * (uA L (-c.1))ᵀ = 1` using `by rw [← Matrix.transpose_mul, uA_neg_mul, Matrix.transpose_one]`. Establish `e : A'.map (cA σ) = (uA L (-c.1))ᵀ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e2 : A' = (uA L (-c.1))ᵀ.map (cA σ)`. Rewrite using `[← e, Matrix.map_map]`. Use extensionality with `i j`. Simplify using `[cA_inv' hσ]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hA', e2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cM_frame (h : Hyp L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × AF F) :
     inFrame d.b (cM c) = Matrix.fromBlocks (uA L c.1) (aB L δ c.2) 0 ((uA L (-c.1))ᵀ.map (cA σ)) := by
@@ -244,7 +242,7 @@ theorem cM_frame (h : Hyp L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × A
   rw [hA', e2]
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[cM_frame h]`. Break down `k with k | k` into its components or cases. Simplify using `[uA, Matrix.one_apply, Matrix.single_apply, Matrix.sum_apply, C4.em_ne L]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fix_cM' (h : Hyp L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × AF F) : Fix L (cM c) := by
   intro k
@@ -254,13 +252,13 @@ theorem fix_cM' (h : Hyp L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × AF
   · simp
 
 /- English proof (translation)
-Take `⟨u₀, hu₀⟩` from `ComplexParameterFamilyContinuity.mem_ratVec.1 hu`. Take `⟨a₀, ha₀⟩` from `ha`. Use `kunf.rat_of_inFrame (b := d.b) (M := Matrix.fromBlocks (1 + ∑ j, Matrix.single L.i₀ (L.em j) (u₀ j)) (Matrix.single L.i₀ L.i₀ (a₀ • δ)) 0 ((1 + ∑ j, Matrix.single L.i₀ (L.em j) (-u₀ j))ᵀ.map σ)) ?_` and prove the remaining obligations. Rewrite using `[cM_frame h, ← hu₀, ← ha₀, Afc.incM_fromBlocks, kfour.incM_zero]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i k`. Simplify using `[incM, uA, GlobalTheory.ThK.incV, Matrix.single_apply, Matrix.one_apply, Matrix.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Use extensionality with `i k`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components.
 
-Simplify using `only [incM, aB, Matrix.map_apply, Matrix.single_apply]`. Use `split_ifs`. Use `show (algebraMap F (AF F) a₀) • ((1 : AF F) ⊗ₜ[F] δ) = (1 : AF F) ⊗ₜ[F] (a₀ • δ)`. Rewrite using `[TensorProduct.tmul_smul, TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, mul_one, ← Algebra.algebraMap_eq_smul_one]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i k`. Simplify using `[incM, uA, GlobalTheory.ThK.incV, Matrix.single_apply, Matrix.one_apply, Matrix.sum_apply, GlobalTheory.EisBL.DoubledUnipotentRadical.cA_inclR]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [GlobalTheory.EisBL.DoubledUnipotentRadical.cA_inclR]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cM_rat' (h : Hyp L nb uM nb' w₁ cM δ) {c : (Fin L.n → AE F E) × AF F} (hu : c.1 ∈ L.ratV)
     (ha : c.2 ∈ (algebraMap F (AF F)).range) : cM c ∈ rat2 σ d.Y := by
@@ -287,7 +285,7 @@ theorem cM_rat' (h : Hyp L nb uM nb' w₁ cM δ) {c : (Fin L.n → AE F E) × AF
     split_ifs <;> simp [GlobalTheory.EisBL.DoubledUnipotentRadical.cA_inclR]
 
 /- English proof (translation)
-Use extensionality with `r r'`. Apply the tactic sequence `rcases r with k | k <;> rcases r' with k' | k' <;>`. Apply the tactic sequence `simp [cM_frame h, emS, uA, aB, Matrix.one_apply, Matrix.single_apply, Matrix.sum_apply, C4.em_ne L, L.inj.eq_iff, Ne.symm (C4.em_ne L _)] <;> split_ifs <;> simp`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem emS_cM (h : Hyp L nb uM nb' w₁ cM δ) (c : (Fin L.n → AE F E) × AF F) :
     (inFrame d.b (cM c)).submatrix (emS L) (emS L) = 1 := by

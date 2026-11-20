@@ -3,13 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TorsionBoundsChain
 open CategoryTheory UpperTheory.V.KH
 
 /- English proof (translation)
-Introduce `ι _ _ M`. Establish `key : |M.det| ≤ ∏ i, ∑ k, |M i k|`. Rewrite using `[← Matrix.det_transpose, Matrix.det_apply]`. Set `e : Equiv.Perm ι ↪ (ι → ι)` to `⟨fun σ => ⇑σ, DFunLike.coe_injective⟩`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;>`. Simplify using `[h, Finset.abs_prod, Matrix.transpose_apply]`. Use `_ = ∑ f ∈ (Finset.univ : Finset (Equiv.Perm ι)).map e, ∏ i, |M i (f i)| := by`. Rewrite using `[Finset.sum_map]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `_ ≤ ∑ f : ι → ι, ∏ i, |M i (f i)| := Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _) (fun f _ _ => Finset.prod_nonneg fun i _ => abs_nonneg _)`. Use `_ = ∏ i, ∑ k, |M i k| := (Fintype.prod_sum (fun i k => |M i k|)).symm`. Establish `h2 : ((M.det.natAbs : ℕ) : ℤ) ≤ ((∏ i, ∑ k, (M i k).natAbs : ℕ) : ℤ)`. Use `push_cast`.
-
-Simplify `key` using `[Int.natCast_natAbs]`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KH.det_natAbs_le_prod_l1_norms :
     ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (M : Matrix ι ι ℤ),

@@ -30,11 +30,11 @@ open Filter Topology
 open scoped Classical
 
 /- English proof (translation)
-Use `set M := 2 ^ k * (Finset.Iic (k, 0)).sup (fun m => SchwartzMap.seminorm ℝ m.1 m.2) f with hM`. Establish `h0 : ∀ w : E, (1 + ‖w‖) ^ k * ‖f w‖ ≤ M` using `fun w => by`. Establish `h1` using `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (k, 0)) le_rfl le_rfl f w`. Rewrite `h1` using `[norm_iteratedFDeriv_zero]`. Then use the resulting hypothesis. Establish `hM0 : 0 ≤ M` using `le_trans (by positivity) (h0 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(1 + R) ^ k * M, by positivity, fun x y hy => ?_⟩` and prove the remaining obligations. Establish `hx : 0 < (1 + ‖x‖) ^ k` using `by positivity`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hx]`. Establish `h2 : 1 + ‖x‖ ≤ (1 + R) * (1 + ‖x + y‖)`. Establish `: ‖x‖ ≤ ‖x + y‖ + ‖y‖` using `by simpa using norm_sub_le (x + y) y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[norm_nonneg (x + y), norm_nonneg y, mul_nonneg hR (norm_nonneg (x + y))]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem schwartz_translate_decay {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (f : SchwartzMap E ℂ) (k : ℕ)
     (R : ℝ) (hR : 0 ≤ R) :
@@ -55,9 +55,9 @@ theorem schwartz_translate_decay {E : Type} [NormedAddCommGroup E] [NormedSpace 
     _ ≤ (1 + R) ^ k * M := by gcongr; exact h0 _
 
 /- English proof (translation)
-Use `Summable.of_norm_bounded_eventually (ZLattice.summable_norm_pow_inv L _ (Nat.lt_succ_self _)) ?_` and prove the remaining obligations. Use `(Set.finite_singleton (0 : L)).subset fun z hz => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Apply `hz` to reduce the goal to its premises. Establish `hz0 : 0 < ‖z‖` using `norm_pos_iff.2 h0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `show ‖((1 + ‖(z : E)‖) ^ (Module.finrank ℤ L + 1))⁻¹‖ ≤ ‖z‖⁻¹ ^ (Module.finrank ℤ L + 1)`. Rewrite using `[norm_inv, norm_pow, Real.norm_of_nonneg (by positivity), ← inv_pow]`. Use `gcongr`. Use `show ‖z‖ ≤ 1 + ‖z‖`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem summable_one_add_norm_inv {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     (L : Submodule ℤ E) [DiscreteTopology L] :
@@ -76,7 +76,7 @@ theorem summable_one_add_norm_inv {E : Type} [NormedAddCommGroup E] [NormedSpace
 variable (F : Type) [Field F] [NumberField F]
 
 /- English proof (translation)
-Rewrite using `[InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mixed_algebraMap_fst (x : F) :
     InfiniteAdeleRing.ringEquiv_mixedSpace F (algebraMap F (AdeleRing (𝓞 F) F) x).1 = mixedEmbedding F x := by
@@ -84,25 +84,23 @@ theorem mixed_algebraMap_fst (x : F) :
   rfl
 
 /- English proof (translation)
-Set `zi : (κ → AdeleRing (𝓞 F) F) → (κ → mixedEmbedding.mixedSpace F)` to `fun z i => InfiniteAdeleRing.ringEquiv_mixedSpace F (z i).1`. Set `zf : (κ → AdeleRing (𝓞 F) F) → (κ → FiniteAdeleRing (𝓞 F) F)` to `fun z i => (z i).2`. Establish `hzi : Continuous zi` using `continuous_pi fun i => (GlobalTheory.ThetaTransformMeas.continuous_mixed F).comp (continuous_fst.comp (continuous_apply i))`. Establish `hzf : Continuous zf` using `continuous_pi fun i => continuous_snd.comp (continuous_apply i)`. Take `⟨R, hR⟩` from `(hK.image hzi).isBounded.subset_closedBall 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Bg, hBg⟩` from `hg.1.continuous.bounded_above_of_compact_support hg.2`. Establish `hBg0 : 0 ≤ Bg` using `(norm_nonneg _).trans (hBg 0)`. Set `C : Set (κ → FiniteAdeleRing (𝓞 F) F)` to `(fun p => p.1 - p.2) '' (tsupport g ×ˢ (zf '' K))`. Establish `hC : IsCompact C` using `(hg.2.isCompact.prod (hK.image hzf)).image (continuous_fst.sub continuous_snd)`. Take `⟨N, hN, hNC⟩` from `GlobalTheory.WeilM.exists_nat_mul_integral_of_isCompact F hC`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := GlobalTheory.WeilM.discreteTopology_denomLattice F κ hN`. Set `e : (κ → F) → (κ → mixedEmbedding.mixedSpace F)` to `fun ξ i => mixedEmbedding F (ξ i)`. Set `S : Set (κ → F)` to `{ξ | e ξ ∈ GlobalTheory.WeilM.denomLattice F κ N}`. Take `⟨D, hD0, hD⟩` from `schwartz_translate_decay f (Module.finrank ℤ (GlobalTheory.WeilM.denomLattice F κ N) + 1) (max R 0) (le_max_right _ _)`. Set `h : (κ → F) → ℝ` to `S.indicator fun ξ => D * ((1 + ‖e ξ‖) ^ (Module.finrank ℤ (GlobalTheory.WeilM.denomLattice F κ N) + 1))⁻¹ * Bg`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hh : ∀ ξ, 0 ≤ h ξ` using `fun ξ => Set.indicator_nonneg (fun _ _ => by positivity) ξ`. Establish `hsum : Summable h`. Rewrite using `[← summable_subtype_iff_indicator]`. Set `j : S → GlobalTheory.WeilM.denomLattice F κ N` to `fun ξ => ⟨_, ξ.2⟩`. Establish `hj : Function.Injective j` using `fun a b hab => Subtype.ext (funext fun i => mixedEmbedding_injective F (congrFun (congrArg Subtype.val hab) i))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(((summable_one_add_norm_inv _).comp_injective hj).mul_left D).mul_right Bg`. Use `⟨∑' ξ, h ξ, fun z hz s => ?_⟩` and prove the remaining obligations. Use `le_trans (Finset.sum_le_sum fun ξ _ => ?_) (hsum.sum_le_tsum s fun ξ _ => hh ξ)` and prove the remaining obligations. Establish `hsplit : GlobalTheory.WeilM.pureA F f g ((fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) + z) = f (e ξ + zi z) * g ((fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) + zf z)`. Unfold `GlobalTheory.WeilM.pureA`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 2`. Use function extensionality and compare the values at `i`. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F ((algebraMap F (AdeleRing (𝓞 F) F) (ξ i)).1 + (z i).1) = _`. Rewrite using `[map_add, mixed_algebraMap_fst]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit, norm_mul]`. Distinguish the cases in `hg0 : g ((fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) + zf z) = 0`. Rewrite using `[hg0, norm_zero, mul_zero]`. Conclude with `hh ξ`. Establish `hmem : (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i)) ∈ C` using `⟨(_, zf z), ⟨subset_tsupport _ hg0, z, hz, rfl⟩, add_sub_cancel_right _ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hξS : ξ ∈ S` using `by show ∀ i, (N : ℝ) • e ξ i ∈ mixedEmbedding.integerLattice F`. Introduce `i`. Take `⟨y, hy⟩` from `(IntegralFinAdele.integral_finiteAdele_properties F).2.2.2.1 ((N : F) * ξ i) fun v => by`. Rewrite using `[map_mul, map_natCast]`. Conclude with `hNC _ hmem i v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (mixedEmbedding F) hy`. Rewrite `h2` using `[← nsmul_eq_mul, map_nsmul, ← Nat.cast_smul_eq_nsmul ℝ]`. Conclude with `h2.symm`. Use `show _ ≤ S.indicator _ ξ`.
-
-Rewrite using `[Set.indicator_of_mem hξS]`. Establish `hzR : ‖zi z‖ ≤ max R 0` using `le_max_of_le_left (mem_closedBall_zero_iff.1 (hR ⟨z, hz, rfl⟩))`. Conclude with `mul_le_mul (hD _ _ hzR) (hBg _) (norm_nonneg _) (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem pureA_bound {κ : Type} [Fintype κ] (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ)
     {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ GlobalTheory.WeilM.SB (κ → FiniteAdeleRing (𝓞 F) F))
@@ -166,13 +164,11 @@ theorem pureA_bound {κ : Type} [Fintype κ] (f : SchwartzMap (κ → mixedEmbed
   exact mul_le_mul (hD _ _ hzR) (hBg _) (norm_nonneg _) (by positivity)
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Conclude with `pureA_bound F f hg hK`. Consider the case `zero => exact ⟨0, fun z _ s => by simp⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add Φ Ψ _ _ h1 h2`. Take `⟨B1, hB1⟩` from `h1`. Take `⟨B2, hB2⟩` from `h2`. Use `⟨B1 + B2, fun z hz s => ?_⟩` and prove the remaining obligations. Use `le_trans (Finset.sum_le_sum fun ξ _ => norm_add_le (Φ _) (Ψ _)) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_add_distrib]`. Conclude with `add_le_add (hB1 z hz s) (hB2 z hz s)`. Consider the case `smul c Φ _ h`. Take `⟨B, hB⟩` from `h`. Use `⟨‖c‖ * B, fun z hz s => ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul, ← Finset.mul_sum]`. Conclude with `mul_le_mul_of_nonneg_left (hB z hz s) (norm_nonneg c)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem schA_bound_compact {κ : Type} [Fintype κ] {Φ : (κ → AdeleRing (𝓞 F) F) → ℂ} (hΦ : Φ ∈ GlobalTheory.WeilM.schA F κ)
     {K : Set (κ → AdeleRing (𝓞 F) F)} (hK : IsCompact K) :
@@ -197,11 +193,11 @@ theorem schA_bound_compact {κ : Type} [Fintype κ] {Φ : (κ → AdeleRing (�
     exact mul_le_mul_of_nonneg_left (hB z hz s) (norm_nonneg c)
 
 /- English proof (translation)
-Introduce `F _ _ ι _ Φ hΦ`. Take `⟨K, hK, hcov⟩` from `GlobalTheory.RatVecDomain.exists_compact_cover_ratVec F ι`. Take `⟨B, hB⟩` from `schA_bound_compact F hΦ hK`. Use `⟨B, fun z => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hγK⟩` from `hcov z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨η, rfl⟩` from `(GlobalTheory.ThetaParseval.mem_ratVec_iff _).1 hγ`. Set `G : (ι → F) → ℝ` to `fun ξ => ‖Φ ((fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) + ((fun i => algebraMap F (AdeleRing (𝓞 F) F) (η i)) + z))‖`. Establish `hG : ∀ ξ : ι → F, ‖Φ ((fun i => algebraMap F (AF F) (ξ i)) + z)‖ = G (Equiv.subRight η ξ)`. Introduce `ξ`. Use `show _ = ‖Φ _‖`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `only [Equiv.subRight_apply, Pi.add_apply, Pi.sub_apply, map_sub]`. Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem tsum_norm_translate_le : ∀ (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι],
     ∀ Φ ∈ GlobalTheory.WeilM.schA F ι,

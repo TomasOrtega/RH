@@ -30,9 +30,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {k : Type} [Field k] {y : Sp k ⟶ X} {m : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ i, actR t.act a (tanOf (hv i)) = lam a • tanOf (hv i)` using `fun i => tan_ext (he i a)`. Establish `e` using `(comb_iff hv cf hw).1 hc`. Establish `: actR t.act a (tanOf hw) = lam a • tanOf hw`. Rewrite using `[e, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, key, smul_comm]`. Conclude with `congrArg (fun z => (tv z).left) this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eig_of_comb {v : Fin m → (Sp (DualNumber k) ⟶ t.G.left)} (hv : ∀ i, IsTanAtG t y (v i)) {lam : 𝓞 E → k}
     (he : ∀ i a, v i ≫ (t.act.act a).left = spMap (epsMul (lam a)) ≫ v i) {cf : Fin m → k}
@@ -71,7 +71,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Z : Mdl Y i₀} {F : DVF p}
 
 /- English proof (translation)
-Use `Fintype.linearIndependent_iffₛ.2 fun c c' e => ?_` and prove the remaining obligations. Establish `hw` using `isTan_tv (∑ i, c i • tanOf (h.1 τ i).1)`. Establish `hc : IsCombAtG t y (v τ) c (tv (∑ i, c i • tanOf (h.1 τ i).1)).left` using `(comb_iff (fun i => (h.1 τ i).1) c hw).2 rfl`. Establish `hc' : IsCombAtG t y (v τ) c' (tv (∑ i, c i • tanOf (h.1 τ i).1)).left` using `(comb_iff (fun i => (h.1 τ i).1) c' hw).2 e`. Conclude with `fun i => congrFun ((h.2 τ _ hw (eig_of_comb (fun i => (h.1 τ i).1) (fun j a => (h.1 τ j).2 a) hw hc)).unique hc hc') i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem linInd_of_frame {X : Scheme.{0}} {t : SAB H X} {k : Type} [Field k] {y : Sp k ⟶ X} {l : Level H} {c : Coeff l}
     {f : c.F →+* k} {v : Vecs Dw t k} (h : IsFrame t f y v) (τ : E →+* ℂ) :

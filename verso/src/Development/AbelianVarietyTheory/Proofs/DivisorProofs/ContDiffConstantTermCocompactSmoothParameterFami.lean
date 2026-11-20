@@ -15,11 +15,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Secon
 omit [SecondCountableTopology G] [DiscreteTopology Γ] [LocallyCompactSpace N] in
 
 /- English proof (translation)
-Use `letI : MeasurableSpace E := borel E`. Use `haveI : BorelSpace E := ⟨rfl⟩`. Establish `hl : LeftInv (Γ.subgroupOf N) (fun n : N => Φ (n * g))` using `fun γ hγ n => by`. Simplify using `only [Subgroup.coe_mul, mul_assoc]`. Conclude with `hinv _ hγ _`.
+Equip the data with the indicated structure. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : Measurable (fun n : N => Φ (n * g))` using `(hΦ.comp ((continuous_subtype_val).mul continuous_const)).measurable`. Establish `hq : Measurable (descend (Γ.subgroupOf N) (fun n : N => Φ (n * g)))`. Use `measurable_from_quotient.2 ?_` and prove the remaining obligations. Establish `e : (descend (Γ.subgroupOf N) (fun n : N => Φ (n * g))) ∘ Quotient.mk'' = fun n : N => Φ (n * g)` using `hl.lift_descend`. Rewrite using `[e]`.
-
-Conclude with `hm`. Conclude with `hq.aestronglyMeasurable`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aestronglyMeasurable_out {E : Type} [NormedAddCommGroup E] [SecondCountableTopology E]
     {Φ : G → E} (hΦ : Continuous Φ) (hinv : ∀ γ ∈ Γ, ∀ x, Φ (γ * x) = Φ x) (g : G)
@@ -41,9 +39,9 @@ theorem aestronglyMeasurable_out {E : Type} [NormedAddCommGroup E] [SecondCounta
 omit [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [DiscreteTopology Γ] [LocallyCompactSpace N] in
 
 /- English proof (translation)
-Take `⟨K, hK, hs⟩` from `hc`. Take `⟨C, hC⟩` from `(hK.prod hS).exists_bound_of_continuousOn (f := fun p : N × T => Ψ (p.1 * g) p.2) (hΨ.comp (((continuous_subtype_val.comp continuous_fst).mul continuous_const).prodMk continuous_snd)).continuousOn`. Use `⟨C, fun n t ht => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hk⟩` from `hs n`. Establish `e : Ψ (((γ * n : N) : G) * g) t = Ψ (n * g) t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Subgroup.coe_mul, mul_assoc]`. Conclude with `hinv _ hγ _ _`. Conclude with `e ▸ hC (γ * n, t) ⟨hk, ht⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_bound {T E : Type} [TopologicalSpace T] [NormedAddCommGroup E] (hc : Cocompact Γ N)
     {Ψ : G → T → E} (hΨ : Continuous fun p : G × T => Ψ p.1 p.2) (hinv : ∀ γ ∈ Γ, ∀ x t, Ψ (γ * x) t = Ψ x t)
@@ -58,9 +56,9 @@ theorem exists_bound {T E : Type} [TopologicalSpace T] [NormedAddCommGroup E] (h
   exact e ▸ hC (γ * n, t) ⟨hk, ht⟩
 
 /- English proof (translation)
-Use `hc.isProbabilityMeasure` as an intermediate fact. Establish `hinv' : ∀ γ ∈ Γ, ∀ x t, fderiv ℝ (H (γ * x)) t = fderiv ℝ (H x) t` using `fun γ hγ x t => by`. Rewrite using `[show H (γ * x) = H x from funext (hinv γ hγ x)]`. Take `⟨C, hC⟩` from `exists_bound (Ψ := fun x t => fderiv ℝ (H x) t) hc h1 hinv' g (isCompact_closedBall t₀ 1)`. Take `⟨C0, hC0⟩` from `exists_bound (Ψ := H) hc h0 hinv g (isCompact_closedBall t₀ 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hm : ∀ t, AEStronglyMeasurable (fun q : Quot (Γ.subgroupOf N) => H ((q.out : N) * g) t) (probMeasure Γ N)` using `fun t => aestronglyMeasurable_out (Φ := fun x => H x t) (h0.comp (continuous_id.prodMk continuous_const)) (fun γ hγ x => hinv γ hγ x t) g _`. Establish `hm' : AEStronglyMeasurable (fun q : Quot (Γ.subgroupOf N) => fderiv ℝ (H ((q.out : N) * g)) t₀) (probMeasure Γ N)` using `aestronglyMeasurable_out (Φ := fun x => fderiv ℝ (H x) t₀) (h1.comp (continuous_id.prodMk continuous_const)) (fun γ hγ x => hinv' γ hγ x t₀) g _`. Conclude with `hasFDerivAt_integral_of_dominated_of_fderiv_le (bound := fun _ => C) (Metric.ball_mem_nhds t₀ one_pos) (.of_forall hm) (Integrable.of_bound (hm t₀) C0 (.of_forall fun q => hC0 _ t₀ (Metric.mem_closedBall_self zero_le_one))) hm' (.of_forall fun q t ht => hC _ t (Metric.ball_subset …`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_param {k : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     (hc : Cocompact Γ N) (H : G → (Fin k → ℝ) → E)
@@ -90,7 +88,7 @@ theorem hasFDerivAt_param {k : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpa
 omit [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] in
 
 /- English proof (translation)
-Rewrite using `[iteratedFDeriv_succ_eq_comp_right]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem iteratedFDeriv_fderiv_eq {k : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (f : (Fin k → ℝ) → E) (m : ℕ) (t : Fin k → ℝ) :
@@ -102,7 +100,7 @@ theorem iteratedFDeriv_fderiv_eq {k : ℕ} {E : Type} [NormedAddCommGroup E] [No
 omit [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] in
 
 /- English proof (translation)
-Establish `e : (fun p : X × (Fin k → ℝ) => H p.1 p.2) = fun p => continuousMultilinearCurryFin0 ℝ (Fin k → ℝ) E (iteratedFDeriv ℝ 0 (H p.1) p.2)`. Use function extensionality and compare the values at `p`. Simplify using `[continuousMultilinearCurryFin0_apply, iteratedFDeriv_zero_apply]`. Rewrite using `[e]`. Conclude with `(continuousMultilinearCurryFin0 ℝ (Fin k → ℝ) E).continuous.comp h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_iteratedFDeriv_zero {X : Type} [TopologicalSpace X] {k : ℕ} {E : Type} [NormedAddCommGroup E]
     [NormedSpace ℝ E] {H : X → (Fin k → ℝ) → E}
@@ -114,13 +112,13 @@ theorem continuous_of_iteratedFDeriv_zero {X : Type} [TopologicalSpace X] {k : �
   rw [e]; exact (continuousMultilinearCurryFin0 ℝ (Fin k → ℝ) E).continuous.comp h
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `E _ _ _ H hinv hs hm`. Establish `h1 : Continuous fun p : G × (Fin k → ℝ) => fderiv ℝ (H p.1) p.2`. Use `continuous_of_iteratedFDeriv_zero (H := fun x => fderiv ℝ (H x)) ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [iteratedFDeriv_fderiv_eq]`. Conclude with `(continuousMultilinearCurryRightEquiv' ℝ 0 (Fin k → ℝ) E).continuous.comp (hm 1)`. Use `contDiff_zero.2 (continuous_iff_continuousAt.2 fun t => ?_)` and prove the remaining obligations. Conclude with `(hasFDerivAt_param hc H hinv (fun x => (hs x).differentiable (by simp)) (continuous_of_iteratedFDeriv_zero (hm 0)) h1 g t).continuousAt`. Consider the case `succ n ih`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `E _ _ _ H hinv hs hm`. Establish `hm' : ∀ m : ℕ, Continuous fun p : G × (Fin k → ℝ) => iteratedFDeriv ℝ m (fderiv ℝ (H p.1)) p.2`. Introduce `m`. Simplify using `only [iteratedFDeriv_fderiv_eq]`. Conclude with `(continuousMultilinearCurryRightEquiv' ℝ m (Fin k → ℝ) E).continuous.comp (hm (m + 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinv' : ∀ γ ∈ Γ, ∀ x t, fderiv ℝ (H (γ * x)) t = fderiv ℝ (H x) t` using `fun γ hγ x t => by`. Rewrite using `[show H (γ * x) = H x from funext (hinv γ hγ x)]`. Use `contDiff_succ_iff_hasFDerivAt.2 ⟨_, ih (fun x => fderiv ℝ (H x)) hinv' (fun x => (contDiff_infty_iff_fderiv.1 (hs x)).2) hm', fun t => ?_⟩` and prove the remaining obligations. Conclude with `hasFDerivAt_param hc H hinv (fun x => (contDiff_infty_iff_fderiv.1 (hs x)).1) (continuous_of_iteratedFDeriv_zero (hm 0)) (continuous_of_iteratedFDeriv_zero (H := fun x => fderiv ℝ (H x)) (hm' 0)) g t`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_param (hc : Cocompact Γ N) (g : G) {k : ℕ} (n : ℕ) :
     ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] (H : G → (Fin k → ℝ) → E),
@@ -154,7 +152,7 @@ theorem contDiff_param (hc : Cocompact Γ N) (g : G) {k : ℕ} (n : ℕ) :
 end GlobalTheory.Cusp.SmoothParam
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ Γ N _ _ hc k F hinv hs hm g`. Conclude with `contDiff_infty.2 fun n => GlobalTheory.Cusp.SmoothParam.contDiff_param hc g n F hinv hs hm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Cusp.contDiff_constTermOn_param : ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] {Γ N : Subgroup G} [DiscreteTopology Γ]

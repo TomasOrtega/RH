@@ -15,9 +15,9 @@ def conjSum (w : MonoidAlgebra R G) : MonoidAlgebra R G :=
   ∑ h : G, MonoidAlgebra.of R G h * w * MonoidAlgebra.of R G h⁻¹
 
 /- English proof (translation)
-Unfold `conjSum`. Rewrite using `[Finset.sum_mul, Finset.mul_sum, ← Equiv.sum_comp (Equiv.mulLeft m)]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Establish `hm : MonoidAlgebra.of R G m⁻¹ * MonoidAlgebra.of R G m = 1`. Rewrite using `[← map_mul, inv_mul_cancel, map_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Equiv.coe_mulLeft, mul_inv_rev, map_mul, mul_assoc, hm, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conjSum_comm_of (w : MonoidAlgebra R G) (m : G) :
     conjSum w * MonoidAlgebra.of R G m = MonoidAlgebra.of R G m * conjSum w := by
@@ -29,9 +29,9 @@ theorem conjSum_comm_of (w : MonoidAlgebra R G) (m : G) :
   simp only [Equiv.coe_mulLeft, mul_inv_rev, map_mul, mul_assoc, hm, mul_one]
 
 /- English proof (translation)
-Rewrite using `[Subalgebra.mem_center_iff]`. Introduce `a`. Proceed by induction on `a using MonoidAlgebra.induction_on with`. Consider the case `of m => exact (conjSum_comm_of w m).symm`. Consider the case `add x y hx hy => rw [add_mul, mul_add, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `smul r x hx => rw [smul_mul_assoc, mul_smul_comm, hx]`.
+Treat this case separately.
 -/
 theorem conjSum_mem_center (w : MonoidAlgebra R G) :
     conjSum w ∈ Subalgebra.center R (MonoidAlgebra R G) := by
@@ -43,19 +43,19 @@ theorem conjSum_mem_center (w : MonoidAlgebra R G) :
   | smul r x hx => rw [smul_mul_assoc, mul_smul_comm, hx]
 
 /- English proof (translation)
-Simplify using `only [conjSum, mul_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conjSum_add (x y : MonoidAlgebra R G) : conjSum (x + y) = conjSum x + conjSum y := by
   simp only [conjSum, mul_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [conjSum, Finset.smul_sum, mul_smul_comm, smul_mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conjSum_smul (r : R) (x : MonoidAlgebra R G) : conjSum (r • x) = r • conjSum x := by
   simp only [conjSum, Finset.smul_sum, mul_smul_comm, smul_mul_assoc]
 
 /- English proof (translation)
-Unfold `conjSum`. Establish `e : ∀ h : G, MonoidAlgebra.of R G h * z * MonoidAlgebra.of R G h⁻¹ = z` using `fun h => by`. Rewrite using `[mul_assoc, hz, ← mul_assoc, ← map_mul, mul_inv_cancel, map_one, one_mul]`. Simplify using `only [e, Finset.sum_const, Finset.card_univ]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conjSum_of_central (z : MonoidAlgebra R G) (hz : ∀ a, z * a = a * z) :
     conjSum z = Fintype.card G • z := by
@@ -65,7 +65,7 @@ theorem conjSum_of_central (z : MonoidAlgebra R G) (hz : ∀ a, z * a = a * z) :
   simp only [e, Finset.sum_const, Finset.card_univ]
 
 /- English proof (translation)
-Use `show MonoidAlgebra.mapRingHom G f (conjSum w) = conjSum (MonoidAlgebra.mapRingHom G f w)`. Simplify using `only [conjSum, map_sum, map_mul, MonoidAlgebra.of_apply, MonoidAlgebra.mapRingHom_single, map_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mapCoef_conjSum {S : Type} [CommRing S] (f : R →+* S) (w : MonoidAlgebra R G) :
     PairedCharacterCondition.mapCoef f (conjSum w) = conjSum (PairedCharacterCondition.mapCoef f w) := by
@@ -73,7 +73,7 @@ theorem mapCoef_conjSum {S : Type} [CommRing S] (f : R →+* S) (w : MonoidAlgeb
   simp only [conjSum, map_sum, map_mul, MonoidAlgebra.of_apply, MonoidAlgebra.mapRingHom_single, map_one]
 
 /- English proof (translation)
-Use `show MonoidAlgebra.mapRingHom G f _ = _`. Simplify using `only [MonoidAlgebra.of_apply, MonoidAlgebra.mapRingHom_single, map_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mapCoef_of {S : Type} [CommRing S] (f : R →+* S) (m : G) :
     PairedCharacterCondition.mapCoef f (MonoidAlgebra.of R G m) = MonoidAlgebra.of S G m := by
@@ -81,9 +81,9 @@ theorem mapCoef_of {S : Type} [CommRing S] (f : R →+* S) (m : G) :
   simp only [MonoidAlgebra.of_apply, MonoidAlgebra.mapRingHom_single, map_one]
 
 /- English proof (translation)
-Rewrite `hz`, the goal using `[Subalgebra.mem_center_iff]`. Introduce `a`. Proceed by induction on `a using MonoidAlgebra.induction_on with`. Consider the case `of m`. Rewrite using `[← mapCoef_of f m]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `show MonoidAlgebra.mapRingHom G f _ * MonoidAlgebra.mapRingHom G f _ = MonoidAlgebra.mapRingHom G f _ * MonoidAlgebra.mapRingHom G f _`. Rewrite using `[← map_mul, ← map_mul, hz]`. Consider the case `add x y hx hy => rw [add_mul, mul_add, hx, hy]`. Consider the case `smul r x hx => rw [smul_mul_assoc, mul_smul_comm, hx]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mapCoef_central {S : Type} [CommRing S] (f : R →+* S) (z : MonoidAlgebra R G)
     (hz : z ∈ Subalgebra.center R (MonoidAlgebra R G)) :
@@ -100,7 +100,7 @@ theorem mapCoef_central {S : Type} [CommRing S] (f : R →+* S) (z : MonoidAlgeb
   | smul r x hx => rw [smul_mul_assoc, mul_smul_comm, hx]
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `[PairedCharacterCondition.mapCoef]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapCoef_smul {S : Type} [CommRing S] (f : R →+* S) (r : R) (x : MonoidAlgebra R G) :
     PairedCharacterCondition.mapCoef f (r • x) = f r • PairedCharacterCondition.mapCoef f x := by
@@ -108,7 +108,7 @@ theorem mapCoef_smul {S : Type} [CommRing S] (f : R →+* S) (r : R) (x : Monoid
   simp [PairedCharacterCondition.mapCoef]
 
 /- English proof (translation)
-The claim follows from `map_add (MonoidAlgebra.mapRingHom G f) x y`.
+A detailed English derivation is pending.
 -/
 theorem mapCoef_add {S : Type} [CommRing S] (f : R →+* S) (x y : MonoidAlgebra R G) :
     PairedCharacterCondition.mapCoef f (x + y) = PairedCharacterCondition.mapCoef f x + PairedCharacterCondition.mapCoef f y :=
@@ -121,7 +121,7 @@ section Forms
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `NTypes.onMt`. Rewrite using `[dif_pos ha, dif_pos hb, dif_pos (add_mem ha hb), ← map_add]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem onMt_add (i : D.nd.Loc) {a b : MonoidAlgebra ℂ (G0g D.nd)}
     (ha : a ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd)))
@@ -133,7 +133,7 @@ theorem onMt_add (i : D.nd.Loc) {a b : MonoidAlgebra ℂ (G0g D.nd)}
   rfl
 
 /- English proof (translation)
-Unfold `NTypes.onMt`. Rewrite using `[dif_pos ha, dif_pos (Subalgebra.smul_mem _ ha c), ← map_smul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem onMt_smul (i : D.nd.Loc) (c : ℂ) {a : MonoidAlgebra ℂ (G0g D.nd)}
     (ha : a ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd))) :
@@ -143,7 +143,7 @@ theorem onMt_smul (i : D.nd.Loc) (c : ℂ) {a : MonoidAlgebra ℂ (G0g D.nd)}
   rfl
 
 /- English proof (translation)
-Use `iSup₂_le fun P hP F hF => ?_` and prove the remaining obligations. Conclude with `Submodule.mem_comap.2 (le_biSup (D.naut.typeV i) hP (hC i P z F hF))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem onMt_typeSum (hC : OnMtPreservesTypeV D) (i : D.nd.Loc) (z : MonoidAlgebra ℂ (G0g D.nd))
     (o : Option (D.nd.X i)) :
@@ -155,7 +155,7 @@ def ptPart (D : D7) (i : D.nd.Loc) : Submodule ℂ (D.what₂.Mt (D.nd.mu i) (D.
   ⨆ (o : Option (D.nd.X i)) (_ : o ≠ none), typeSum D i o
 
 /- English proof (translation)
-The claim follows from `iSup₂_le fun o ho F hF => Submodule.mem_comap.2 (Submodule.mem_iSup_of_mem o (Submodule.mem_iSup_of_mem ho (onMt_typeSum hC i z o hF)))`.
+A detailed English derivation is pending.
 -/
 theorem onMt_ptPart (hC : OnMtPreservesTypeV D) (i : D.nd.Loc) (z : MonoidAlgebra ℂ (G0g D.nd)) :
     ptPart D i ≤ (ptPart D i).comap (D.ntypes.onMt (D.nd.mu i) (D.nd.j i) z) :=
@@ -163,7 +163,7 @@ theorem onMt_ptPart (hC : OnMtPreservesTypeV D) (i : D.nd.Loc) (z : MonoidAlgebr
     (Submodule.mem_iSup_of_mem o (Submodule.mem_iSup_of_mem ho (onMt_typeSum hC i z o hF)))
 
 /- English proof (translation)
-Establish `hw : w ∈ ⨆ x, heckeEig (D.nd.T i) (D.nd.act i) x`. Rewrite using `[Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.EigSpan_holds D.nd i]`. Conclude with `Submodule.mem_top`. Use `Submodule.iSup_induction _ (motive := fun w => s.Φ w ∈ ptPart D i) hw (fun x v hv => ?_) (by rw [map_zero]; exact Submodule.zero_mem _) (fun v v' h h' => by rw [map_add]; exact Submodule.add_mem _ h h')` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem (some x) (Submodule.mem_iSup_of_mem (Option.some_ne_none x) (s.eig x v hv))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Phi_mem {i : D.nd.Loc} (s : Sec D i) (w : TensorProduct (D.nd.O i) (KK D.nd i) (D.nd.Mt i)) :
     s.Φ w ∈ ptPart D i := by
@@ -176,15 +176,15 @@ theorem Phi_mem {i : D.nd.Loc} (s : Sec D i) (w : TensorProduct (D.nd.O i) (KK D
     (Submodule.mem_iSup_of_mem (Option.some_ne_none x) (s.eig x v hv))
 
 /- English proof (translation)
-Use `set T := D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (PairedCharacterCondition.mapCoef (iotaO D.nd D.naut i) (C : MonoidAlgebra (D.nd.O i) (G0g D.nd))) with hT`. Establish `hw : w ∈ Submodule.span (KK D.nd i) (Set.range (D.nd.prMt i))`. Rewrite using `[D.nd.prMt_span i]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hw using Submodule.span_induction with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem v hv`. Take `⟨y, rfl⟩` from `hv`. Take `⟨y', hy'⟩` from `P.zL_stable i CL hCL y`. Establish `hy2 : D.what₂.jMt _ _ y' = T (D.what₂.jMt _ _ y)` using `by rw [hy', heq]`. Rewrite using `[← P.zO_act i C y y' hy2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hind` using `(GlobalTheory.PendOf.PrTypeProof.typeSum_indep D i) none`. Establish `h1` using `s.split y`. Establish `h2` using `s.split y'`. Establish `hA : s.Φ (D.nd.prMt i y') - T (s.Φ (D.nd.prMt i y)) = -((D.what₂.jMt _ _ y' - s.Φ (D.nd.prMt i y')) - T (D.what₂.jMt _ _ y - s.Φ (D.nd.prMt i y)))`. Rewrite using `[map_sub T, ← hy2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `m1 : s.Φ (D.nd.prMt i y') - T (s.Φ (D.nd.prMt i y)) ∈ typeSum D i none`. Rewrite using `[hA]`. Conclude with `Submodule.neg_mem _ (Submodule.sub_mem _ h2 (onMt_typeSum hC i _ none h1))`. Establish `m2 : s.Φ (D.nd.prMt i y') - T (s.Φ (D.nd.prMt i y)) ∈ ptPart D i` using `Submodule.sub_mem _ (Phi_mem s _) (onMt_ptPart hC i _ (Phi_mem s _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `sub_eq_zero.1 ((Submodule.disjoint_def.1 hind) _ m1 m2)`. Consider the case `zero => simp only [map_zero]`. Consider the case `add v v' _ _ h h' => simp only [map_add, h, h']`. Consider the case `smul a v _ h => rw [LinearMap.map_smul, s.semi, h, s.semi, LinearMap.map_smul]`.
+A detailed English derivation is pending.
 -/
 theorem class_step (P : PairedCharacterCondition.Pend D) (hC : OnMtPreservesTypeV D) (i : D.nd.Loc) (s : Sec D i)
     (C : ↥(Subalgebra.center (D.nd.O i) (MonoidAlgebra (D.nd.O i) (G0g D.nd))))
@@ -227,7 +227,7 @@ section Main
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[LinearMap.baseChange_smul, LinearMap.smul_apply, ← algebraMap_smul (KK D.nd i) r, s.semi]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lhs_smul {i : D.nd.Loc} (s : Sec D i) (r : D.nd.O i) (f : Module.End (D.nd.O i) (D.nd.Mt i))
     (w : TensorProduct (D.nd.O i) (KK D.nd i) (D.nd.Mt i)) :
@@ -236,17 +236,15 @@ theorem lhs_smul {i : D.nd.Loc} (s : Sec D i) (r : D.nd.O i) (f : Module.End (D.
   rfl
 
 /- English proof (translation)
-Use `haveI : ∀ k, NeZero (D.host.g k) := fun k => ⟨(D.host.g_prime k).ne_zero⟩`. Establish `hQ : ∀ v : MonoidAlgebra (D.nd.O i) (G0g D.nd), ∀ w, s.Φ ((P.zO i ⟨conjSum v, conjSum_mem_center v⟩).baseChange (KK D.nd i) w) = D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (PairedCharacterCondition.mapCoef (iotaO D.nd D.naut i) (conjSum v)) (s.Φ w)`. Introduce `v`. Proceed by induction on `v using MonoidAlgebra.induction_on with`. Consider the case `of m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Use `class_step P hC i s _ (conjSum (MonoidAlgebra.of D.what₂.LL _ m)) (fun a => ((Subalgebra.mem_center_iff.1 (conjSum_mem_center _)) a).symm) ?_ w` and prove the remaining obligations. Use `show _ = PairedCharacterCondition.mapCoef _ (conjSum _)`. Rewrite using `[mapCoef_conjSum, mapCoef_conjSum, mapCoef_of, mapCoef_of]`. Consider the case `add x y hx hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w`. Establish `e : (⟨conjSum (x + y), conjSum_mem_center _⟩ : ↥(Subalgebra.center (D.nd.O i) (MonoidAlgebra (D.nd.O i) (G0g D.nd)))) = ⟨conjSum x, conjSum_mem_center _⟩ + ⟨conjSum y, conjSum_mem_center _⟩` using `Subtype.ext (conjSum_add x y)`. Rewrite using `[e, map_add, LinearMap.baseChange_add, LinearMap.add_apply, map_add, hx, hy, conjSum_add, mapCoef_add, onMt_add i (mapCoef_central _ _ (conjSum_mem_center _)) (mapCoef_central _ _ (conjSum_mem_center _)), LinearMap.add_apply]`. Consider the case `smul r x hx`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (⟨conjSum (r • x), conjSum_mem_center _⟩ : ↥(Subalgebra.center (D.nd.O i) (MonoidAlgebra (D.nd.O i) (G0g D.nd)))) = r • ⟨conjSum x, conjSum_mem_center _⟩` using `Subtype.ext (conjSum_smul r x)`. Rewrite using `[e, map_smul, lhs_smul, hx, conjSum_smul, mapCoef_smul, onMt_smul i _ (mapCoef_central _ _ (conjSum_mem_center _)), LinearMap.smul_apply]`. Establish `hz : ∀ a, (z : MonoidAlgebra (D.nd.O i) (G0g D.nd)) * a = a * z` using `fun a => ((Subalgebra.mem_center_iff.1 z.2) a).symm`. Use `set n : D.nd.O i := (Fintype.card (G0g D.nd) : D.nd.O i) with hn`. Establish `e : (⟨conjSum (z : MonoidAlgebra (D.nd.O i) (G0g D.nd)), conjSum_mem_center _⟩ : ↥(Subalgebra.center (D.nd.O i) (MonoidAlgebra (D.nd.O i) (G0g D.nd)))) = n • z`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show conjSum (z : MonoidAlgebra (D.nd.O i) (G0g D.nd)) = _`. Rewrite using `[conjSum_of_central _ hz, ← Nat.cast_smul_eq_nsmul (D.nd.O i)]`. Both sides reduce to the same expression. Establish `h` using `hQ z w`.
-
-Rewrite `h` using `[e, map_smul, lhs_smul, hn, conjSum_of_central _ hz, ← Nat.cast_smul_eq_nsmul (D.nd.O i), mapCoef_smul, onMt_smul i _ (mapCoef_central _ _ z.2), LinearMap.smul_apply, map_natCast]`. Establish `hne : ((Fintype.card (G0g D.nd) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Conclude with `smul_right_injective _ hne h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem all_central (P : PairedCharacterCondition.Pend D) (hC : OnMtPreservesTypeV D) (i : D.nd.Loc) (s : Sec D i)
     (z : ↥(Subalgebra.center (D.nd.O i) (MonoidAlgebra (D.nd.O i) (G0g D.nd))))
@@ -300,9 +298,9 @@ theorem all_central (P : PairedCharacterCondition.Pend D) (hC : OnMtPreservesTyp
   exact smul_right_injective _ hne h
 
 /- English proof (translation)
-Introduce `D P hS hC i z x c hzc u hu`. Set `s` to `(hS i).some`. Use `s.inj ?_` and prove the remaining obligations. Establish `h1` using `all_central P hC i s z u`. Establish `h2 : D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (PairedCharacterCondition.mapCoef (iotaO D.nd D.naut i) (z : MonoidAlgebra (D.nd.O i) (G0g D.nd))) (s.Φ u) = iotaO D.nd D.naut i c • s.Φ u`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : typeSum D i (some x) ≤ Module.End.eigenspace (D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (PairedCharacterCondition.mapCoef (iotaO D.nd D.naut i) (z : MonoidAlgebra (D.nd.O i) (G0g D.nd)))) (iotaO D.nd D.naut i c)` using `iSup₂_le fun PI hPI F hF => Module.End.mem_eigenspace_iff.2 (hzc PI hPI F hF)`. Conclude with `Module.End.mem_eigenspace_iff.1 (hle (s.eig x u hu))`. Rewrite using `[h1, h2, ← algebraMap_smul (KK D.nd i) c u, s.semi]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (P : PairedCharacterCondition.Pend D), (∀ i, Nonempty (Sec D i)) → OnMtPreservesTypeV D → EigSpan P := by
   intro D P hS hC i z x c hzc u hu

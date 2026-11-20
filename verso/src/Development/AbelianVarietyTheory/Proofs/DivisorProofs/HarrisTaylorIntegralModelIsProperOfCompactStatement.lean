@@ -14,7 +14,7 @@ open scoped CategoryTheory.Obj
 open GlobalTheory.UPel.HT
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.UPel.HT.isProper_model_of_compact` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHarrisTaylorIntegralModelIsProperOfCompact.lean&line=27#L27)
 -/

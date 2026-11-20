@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GalMapGalElt
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.exists_smul_dvd_of_localization_atPrime_tensor) | (exact GlobalTheory.exists_smul_dvd_of_localization_atPrime_tensor) | (intros; apply GlobalTheory.exists_smul_dvd_of_localization_atPrime_tensor <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_smul_dvd_of_localization_atPrime_tensor' : ∀ (R C O : Type) [CommRing R] [CommRing C] [Algebra R C] [CommRing O] [Algebra R O]
     (Q : Ideal O) [Q.IsPrime] (b : R) (m : O ⊗[R] C),

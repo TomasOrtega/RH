@@ -10,13 +10,11 @@ open scoped Formalism.Per
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l _ P AI T K V _ _ _ V' _ _ _ ρ ρ' m hD hS`. Take `⟨B, h1, h2, h3⟩` from `GlobalTheory.T.exists_pairing_Dst_Dcris_frobenius_fixed l P AI T K V V' ρ ρ' m hD hS`. Use `haveI := GlobalTheory.T.finiteDimensional_Dst_of_isSst' l P K V ρ hS`. Use `GlobalTheory.T.finrank_add_finrank_le_finrank_inf_comap_sub_id' ℚ_[l] _ _ (Dst P ρ) ((Dst P ρ).map (monV P ℚ_[l] V)) ((l : ℚ_[l]) • phiV P ℚ_[l] V) B ?_ ?_ ?_ ?_ h3` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[SetLike.mem_coe, mem_Dst]`. Rewrite using `[mem_Dst]`. Introduce `g`. Rewrite using `[← Module.End.mul_apply, ← monV_stRep, Module.End.mul_apply, hx g]`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[mem_Dst]`. Introduce `g`. Rewrite using `[LinearMap.smul_apply, map_smul, ← Module.End.mul_apply, ← phiV_stRep, Module.End.mul_apply, hx g]`. Introduce and unpack `_ ⟨x, hx, rfl⟩ w`. Conclude with `h1 x hx w`.
-
-Introduce `x hx w`. Conclude with `h2 x hx w`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finrank_dcris_phi_fixed_add_finrank_mon_le : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (K : FinExt l) (V : Type) [AddCommGroup V] [Module ℚ_[l] V] [FiniteDimensional ℚ_[l] V] (V' : Type) [AddCommGroup V'] [Module ℚ_[l] V'] [FiniteDimensional ℚ_[l] V'] (ρ : Representation ℚ_[l] ↥(GK K) V) (ρ' : Representation ℚ_[l] ↥(GK K) V') (m : V →ₗ[ℚ_[l]] V' →ₗ[ℚ_[l]] ℚ_[l]), IsDual1 (P.PD K) ρ ρ' m → IsSst P ρ → finrank ℚ_[l] ↥(Dcris (P.PD K) ρ' ⊓ LinearMap.ker (φVB (P.PD K) (LL := ℚ_[l]) (V := V') - LinearMap.id)) + finrank ℚ_[l] ↥((Dst P ρ).map (monV P ℚ_[l] V)) ≤ finrank ℚ_[l] ↥(Dst P ρ ⊓ ((Dst P ρ).map (monV P ℚ_[l] V)).comap ((l : ℚ_[l]) • phiV P ℚ_[l] V - LinearMap.id)) := by
   intro l _ P AI T K V _ _ _ V' _ _ _ ρ ρ' m hD hS

@@ -13,9 +13,9 @@ section OrderFree
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨n, c⟩` from `x`. Take `⟨m, c'⟩` from `y`. Establish `hn : Δ.deg = n` using `hx.deg_eq`. Establish `hm : Δ.deg = m` using `hy.deg_eq`. Take `rfl : n = m` from `hn.symm.trans hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← IrrGL.of_rep ⟨n, c⟩, ← IrrGL.of_rep ⟨n, c'⟩]`. Conclude with `IrrGL.of_eq_of.2 (IsLSeg.unique hy hx)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irrGL_eq_of_isLSeg_same {Δ : Segment k} {x y : IrrGL k} (hx : IsLSeg Δ x.rep) (hy : IsLSeg Δ y.rep) :
     x = y := by
@@ -28,9 +28,9 @@ theorem irrGL_eq_of_isLSeg_same {Δ : Segment k} {x y : IrrGL k} (hx : IsLSeg Δ
   exact IrrGL.of_eq_of.2 (IsLSeg.unique hy hx)
 
 /- English proof (translation)
-Establish `hc : ∀ z, Fintype.card {a // y a = z} = Fintype.card {a // x a = z}` using `fun z => by`. Establish `h1` using `congrArg (Multiset.count z) h`. Simplify using `only [Multiset.count_map] at h1`. Rewrite using `[Fintype.card_subtype, Fintype.card_subtype]`. Simplify `h1` using `[Finset.card, Finset.filter, eq_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `⟨Equiv.ofFiberEquiv (f := y) (g := x) fun z => Fintype.equivOfCardEq (hc z), fun a => (Equiv.ofFiberEquiv_map _ a).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem perm_of_univ_map_eq {α : Type*} {l : ℕ} {x y : Fin l → α}
     (h : Finset.univ.val.map y = Finset.univ.val.map x) : ∃ e : Equiv.Perm (Fin l), ∀ a, y a = x (e a) := by
@@ -46,13 +46,11 @@ theorem perm_of_univ_map_eq {α : Type*} {l : ℕ} {x y : Fin l → α}
 end OrderFree
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hA hcomm 𝔪 h N x hd hx V _ _ π hπ`. Take `⟨h', y, hd', ⟨Γy, ⟨hmy, hordy⟩, hLy⟩, hcos⟩` from `hπ`. Take `⟨Γx, ⟨hmx, hordx⟩, hLx⟩` from `hx`. Establish `hcard : h' = h`. Use `congrArg Multiset.card (hmy.trans hmx.symm)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Substitute `hcard` using the available equality. Take `⟨σ, hσ⟩` from `perm_of_univ_map_eq (hmy.trans hmx.symm)`. Establish `hy : y = x ∘ σ` using `funext fun a => by`. Establish `h1 : IsLSeg (Γx (σ a)) (y a).rep` using `hσ a ▸ hLy a`.
+Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `irrGL_eq_of_isLSeg_same h1 (hLx (σ a))`. Establish `hΓ : Γy = Γx ∘ σ` using `funext hσ`. Substitute `hy` using the available equality. Substitute `hΓ` using the available equality. Take `⟨φ⟩` from `cs_reorderord hA hcomm Γx σ x hd hd' hordx hordy hLx`.
-
-Conclude with `hcos.of_equiv (Representation.Equiv.refl _) φ.symm`.
+Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cs_orderfree : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.Published.IrreducibleAdmissibleGL → LUnlinkedComm k → LOrderFree k := by
   intro k _ _ _ _ hA hcomm 𝔪 h N x hd hx V _ _ π hπ

@@ -13,23 +13,23 @@ namespace GlobalTheory.EisM
 def hch (n : ℕ) (x : ℝ) : ℂ := cexp (2 * π * Complex.I * n * x)
 
 /- English proof (translation)
-Establish `: (2 * π * Complex.I * n * x : ℂ) = ((2 * π * n * x : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[hch, this, Complex.norm_exp_ofReal_mul_I]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hch_norm (n : ℕ) (x : ℝ) : ‖hch n x‖ = 1 := by
   have : (2 * π * Complex.I * n * x : ℂ) = ((2 * π * n * x : ℝ) : ℂ) * Complex.I := by push_cast; ring
   rw [hch, this, Complex.norm_exp_ofReal_mul_I]
 
 /- English proof (translation)
-Unfold `hch`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem hch_cont (n : ℕ) : Continuous (hch n) := by unfold hch; fun_prop
 
 /- English proof (translation)
-Establish `e : ∀ x : ℝ, conj (hch m x) * hch n x = cexp ((2 * π * Complex.I * ((n : ℂ) - m)) * x)` using `fun x => by`. Rewrite using `[hch, hch, ← Complex.exp_conj, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [map_mul, Complex.conj_ofReal, Complex.conj_I, map_natCast, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [e]`. Use `split_ifs with h`. Simplify using `[h]`. Establish `h0 : ((n : ℂ) - m) ≠ 0` using `sub_ne_zero.2 (by exact_mod_cast Ne.symm h)`. Establish `hc : (2 * π * Complex.I * ((n : ℂ) - m)) ≠ 0` using `mul_ne_zero Complex.two_pi_I_ne_zero h0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_exp_mul_complex hc]`. Use `Complex.exp_int_mul_two_pi_mul_I ((n : ℤ) - m)` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite `this` using `[mul_comm]`. Simplify using `[this]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hch_orth (m n : ℕ) : ∫ x in (0 : ℝ)..1, conj (hch m x) * hch n x = if m = n then 1 else 0 := by
   have e : ∀ x : ℝ, conj (hch m x) * hch n x = cexp ((2 * π * Complex.I * ((n : ℂ) - m)) * x) := fun x => by
@@ -49,17 +49,17 @@ theorem hch_orth (m n : ℕ) : ∫ x in (0 : ℝ)..1, conj (hch m x) * hch n x =
     simp [this]
 
 /- English proof (translation)
-Set `T : ℕ × ℕ → ℝ → ℂ` to `fun p x => conj (b p.1 * hch p.1 x) * (a p.2 * hch p.2 x)`. Establish `hT : ∀ p, Continuous (T p)` using `fun p => (Complex.continuous_conj.comp (continuous_const.mul (hch_cont p.1))).mul (continuous_const.mul (hch_cont p.2))`. Establish `hn : ∀ p x, ‖T p x‖ = ‖b p.1‖ * ‖a p.2‖` using `fun p x => by`. Simplify using `[T, hch_norm]`. Establish `h` using `hasSum_integral_of_summable_integral_norm (μ := volume.restrict (Set.Ioc (0 : ℝ) 1)) (F := T) (fun p => (hT p).integrableOn_Ioc) (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(summable_mul_of_summable_norm' hb.norm hb ha.norm ha).congr fun p => ?_` and prove the remaining obligations. Simplify using `only [hn]`. Use the proof step `simp)`. Establish `hs : ∀ x, ∑' p, T p x = conj (G x) * F x` using `fun x => by`. Establish `h1 : HasSum (fun n => conj (b n * hch n x)) (conj (G x))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (Complex.hasSum_conj'.2 (hG x))`. Establish `h2` using `tsum_mul_tsum_of_summable_norm h1.summable.norm (hF x).summable.norm`. Rewrite `h2` using `[h1.tsum_eq, (hF x).tsum_eq]`. Conclude with `h2.symm`. Establish `hi : ∀ p, ∫ x in Set.Ioc (0 : ℝ) 1, T p x = conj (b p.1) * a p.2 * if p.1 = p.2 then 1 else 0` using `fun p => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hch_orth, ← intervalIntegral.integral_of_le zero_le_one, ← intervalIntegral.integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [T, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hs, hi] at h`. Rewrite `h` using `[← intervalIntegral.integral_of_le zero_le_one]`. Establish `hinj : Function.Injective fun n : ℕ => (n, n)` using `fun _ _ h => (Prod.ext_iff.1 h).1`. Use `(hinj.hasSum_iff (f := fun p : ℕ × ℕ => conj (b p.1) * a p.2 * if p.1 = p.2 then 1 else 0) (fun p hp => by` as an intermediate fact. Rewrite using `[if_neg, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Conclude with `hp ⟨p.1, Prod.ext rfl h⟩)).2 h`. Use `cast (congrArg (HasSum · _) (funext fun n => ?_)) this` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasSum_parseval_unit (a b : ℕ → ℂ) (ha : Summable fun n => ‖a n‖) (hb : Summable fun n => ‖b n‖)
     (F G : ℝ → ℂ) (hF : ∀ x, HasSum (fun n => a n * hch n x) (F x))
@@ -99,9 +99,9 @@ theorem hasSum_parseval_unit (a b : ℕ → ℂ) (ha : Summable fun n => ‖a n�
   simp
 
 /- English proof (translation)
-Establish `him : 0 < ((x : ℂ) + y * Complex.I).im` using `by simpa using hy`. Establish `hterm : ∀ n : ℕ, a n * cexp (2 * π * Complex.I * n * (ofComplex ((x : ℂ) + y * Complex.I) : ℂ)) = (a n * (Real.exp (-2 * π * n * y) : ℝ)) * hch n x` using `fun n => by`. Rewrite using `[ofComplex_apply_of_im_pos him, UpperHalfPlane.coe_mk, hch, Complex.ofReal_exp, mul_assoc (a n), ← Complex.exp_add]`. Use `congr 2`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `(2 * π * n * y : ℂ) * Complex.I_mul_I`. Establish `hs` using `((GlobalTheory.T.qExpansion_polyGrowth_summable_continuous a ha).1 (ofComplex ((x : ℂ) + y * Complex.I))).of_norm`. Use `hs.hasSum` as an intermediate fact. Simplify using `only [qs]`. Simplify `this` using `only [hterm]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem qs_line (a : ℕ → ℂ) (ha : PolyB a) (y : ℝ) (hy : 0 < y) (x : ℝ) :
     HasSum (fun n : ℕ => (a n * (Real.exp (-2 * π * n * y) : ℝ)) * hch n x)
@@ -119,11 +119,11 @@ theorem qs_line (a : ℕ → ℂ) (ha : PolyB a) (y : ℝ) (hy : 0 < y) (x : ℝ
   simpa only [hterm] using this
 
 /- English proof (translation)
-Introduce `h b y hh hb hy`. Establish `sm : ∀ a : ℕ → ℂ, PolyB a → Summable fun n : ℕ => ‖a n * (Real.exp (-2 * π * n * y) : ℝ)‖` using `fun a ha => by`. Use `(qs_line a ha y hy 0).summable.norm` as an intermediate fact. Simplify `this` using `[hch_norm]`. Establish `H` using `hasSum_parseval_unit _ _ (sm b hb) (sm h hh) _ _ (qs_line b hb y hy) (qs_line h hh y hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `cast (congrArg (HasSum · _) (funext fun n => ?_)) H` and prove the remaining obligations. Establish `: Real.exp (-4 * π * n * y) = Real.exp (-2 * π * n * y) * Real.exp (-2 * π * n * y)`. Rewrite using `[← Real.exp_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this, map_mul, Complex.conj_ofReal, Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem parseval_line : ∀ (h b : ℕ → ℂ) (y : ℝ), PolyB h → PolyB b → 0 < y →
     HasSum (fun n : ℕ => conj (h n) * b n * (Real.exp (-4 * π * n * y) : ℝ))

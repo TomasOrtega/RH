@@ -10,21 +10,19 @@ open scoped TensorProduct
 namespace GlobalTheory.EtC.MVEpi
 
 /- English proof (translation)
-Use `set I : Ideal A := Ideal.span {f} with hI`. Use `set J : Ideal A' := Ideal.span {algebraMap A A' f} with hJ`. Establish `hIJ : I ≤ J.comap (algebraMap A A')`. Rewrite using `[hI, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `Ideal.subset_span rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Set `φ : A ⧸ I →+* A' ⧸ J` to `Ideal.quotientMap J (algebraMap A A') hIJ`. Establish `hφ : Function.Bijective φ`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite `ha` using `[Ideal.quotientMap_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (hi a ha)`. Introduce `b`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `hs b`. Use `⟨Ideal.Quotient.mk I a, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.quotientMap_mk, Ideal.Quotient.eq]`. Use `J.neg_mem ha` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `e : A ⧸ I ≃+* A' ⧸ J` to `RingEquiv.ofBijective φ hφ`. Establish `hIp : I ≤ p.asIdeal`. Rewrite using `[hI, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `hp`. Set `p0 : Ideal (A ⧸ I)` to `p.asIdeal.map (Ideal.Quotient.mk I)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Establish `hp0 : p0.IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact hIp)`. Set `q : Ideal A'` to `(p0.comap (e.symm : A' ⧸ J →+* A ⧸ I)).comap (Ideal.Quotient.mk J)`. Establish `hq : q.IsPrime` using `Ideal.comap_isPrime _ _`. Use `⟨⟨q, hq⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `he : e.symm (Ideal.Quotient.mk J (algebraMap A A' a)) = Ideal.Quotient.mk I a`. Rewrite using `[RingEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk J (algebraMap A A' a) ∈ p0.comap (e.symm : A' ⧸ J →+* A ⧸ I) ↔ a ∈ p.asIdeal`. Rewrite using `[Ideal.mem_comap]`.
-
-Express the relevant statement in the definitionally equal form `e.symm (Ideal.Quotient.mk J (algebraMap A A' a)) ∈ p0 ↔ _`. Rewrite using `[he]`. Conclude with `Ideal.mem_quotient_iff_mem hIp`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prime_over (A A' : Type) [CommRing A] [CommRing A'] [Algebra A A'] (f : A)
     (hs : ∀ a' : A', ∃ a : A, a' - algebraMap A A' a ∈ Ideal.span {algebraMap A A' f})
@@ -72,9 +70,9 @@ theorem exists_prime_over (A A' : Type) [CommRing A] [CommRing A'] [Algebra A A'
   exact Ideal.mem_quotient_iff_mem hIp
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `ht`. Take `⟨z, hz1, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := x) (g := e) t b hb.symm`. Take `⟨W0, hW, hzW, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp (pullback x e).isBasis_affineOpens) (show z ∈ (⊤ : (pullback x e).Opens) from trivial)`. Set `W : (pullback x e).Opens` to `W0`. Use `haveI : IsAffine W := hW`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨W, W.ι ≫ pullback.fst x e, inferInstance, inferInstance, ⟨⟨z, hzW⟩, ?_⟩, W.ι ≫ pullback.snd x e, ?_⟩` and prove the remaining obligations. Conclude with `hz1`. Simplify using `[pullback.condition]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_point {X B : Scheme.{0}} (e : B ⟶ X) [Etale e] {T : Scheme.{0}} (x : T ⟶ X) (t : T)
     (ht : x t ∈ Set.range e) :
@@ -90,13 +88,13 @@ theorem loc_point {X B : Scheme.{0}} (e : B ⟶ X) [Etale e] {T : Scheme.{0}} (x
   · simp [pullback.condition]
 
 /- English proof (translation)
-Use `⟨fun {F} φ ψ hφψ => ?_⟩` and prove the remaining obligations. Establish `ef : (free R).map f ≫ φ = (free R).map f ≫ ψ`. Simplify using `using congrArg (biprod.inl ≫ ·) hφψ`. Establish `eg : (free R).map g ≫ φ = (free R).map g ≫ ψ`. Simplify using `using congrArg (biprod.inr ≫ ·) hφψ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `res_map : ∀ {G H : Shv R} (χ : G ⟶ H) {V U : Scheme.{0}} (k : V ⟶ U) (s : Sec G U), Sec.res k (Sec.map χ s) = Sec.map χ (Sec.res k s)`. Introduce `G H χ V U k s`. Conclude with `(NatTrans.naturality_apply χ.hom k.op s).symm`. Establish `map_comp : ∀ {G H K : Shv R} (χ : G ⟶ H) (ω : H ⟶ K) {U : Scheme.{0}} (s : Sec G U), Sec.map (χ ≫ ω) s = Sec.map ω (Sec.map χ s)` using `by intros; rfl`. Take `⟨-, hext, hres, -⟩` from `GlobalTheory.T.free_sections_ext_res_map R E F`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, hmapP⟩` from `GlobalTheory.T.free_sections_ext_res_map R P F`. Take `⟨-, -, -, hmapQ⟩` from `GlobalTheory.T.free_sections_ext_res_map R Q F`. Apply `hext` to reduce the goal to its premises. Introduce `T x`. Apply `(GlobalTheory.T.etaleSheafSections_ext_and_glue R F T).1` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS, hP⟩` from `h T x`. Use `⟨S, hS, fun V k hk => ?_⟩` and prove the remaining obligations. Break down `hP V k hk with ⟨y, hy⟩ | ⟨y, hy⟩` into its components or cases. Rewrite using `[res_map, res_map, hres, ← hy, ← hmapP, ← map_comp, ← map_comp, ef]`. Rewrite using `[res_map, res_map, hres, ← hy, ← hmapQ, ← map_comp, ← map_comp, eg]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epi_of_loc (R : Type) [CommRing R] {P Q E : PSh} (f : P ⟶ E) (g : Q ⟶ E)
     (h : ∀ (T : Scheme.{0}) (x : E.obj (op T)),
@@ -131,15 +129,15 @@ end GlobalTheory.EtC.MVEpi
 namespace GlobalTheory.EtC.MVEpi
 
 /- English proof (translation)
-Introduce `R _ A A' _ _ _ _ f hs hi`. Use `haveI hd : Etale (Spec.map (CommRingCat.ofHom (algebraMap A A'))) := HasRingHomProperty.Spec_iff.mpr (RingHom.etale_algebraMap.mpr inferInstance)`. Apply `epi_of_loc` to reduce the goal to its premises. Introduce `T (x : T ⟶ Spec (CommRingCat.of A))`. Rewrite using `[GlobalTheory.T.etaleLocally_iff_affine_etale_point_cover]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Distinguish the cases in `hf : f ∈ (x t).asIdeal`. Take `⟨q, hq⟩` from `exists_prime_over A A' f hs hi (x t) hf`. Take `⟨V, g, hV, hg, ht, y, hy⟩` from `loc_point (Spec.map (CommRingCat.ofHom (algebraMap A A'))) x t ⟨q, hq⟩`. Conclude with `⟨V, g, hV, hg, ht, Or.inr ⟨y, hy⟩⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hr : x t ∈ Set.range (PrimeSpectrum.comap (algebraMap A (Localization.Away f)))`. Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away f) f]`. Conclude with `hf`. Take `⟨q, hq⟩` from `hr`. Take `⟨V, g, hV, hg, ht, y, hy⟩` from `loc_point (Spec.map (CommRingCat.ofHom (algebraMap A (Localization.Away f)))) x t ⟨q, hq⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨V, g, hV, hg, ht, Or.inl ⟨y, hy⟩⟩`. Introduce and unpack `V W g k (⟨y, hy⟩ | ⟨y, hy⟩)`. Use `Or.inl ⟨k ≫ y, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(k ≫ y) ≫ _ = (k ≫ g) ≫ x`. Express the relevant statement in the definitionally equal form `y ≫ _ = g ≫ x at hy`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, hy, Category.assoc]`. Use `Or.inr ⟨k ≫ y, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(k ≫ y) ≫ _ = (k ≫ g) ≫ x`. Express the relevant statement in the definitionally equal form `y ≫ _ = g ≫ x at hy`. Rewrite using `[Category.assoc, hy, Category.assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mv_right_epi : ∀ (R : Type) [CommRing R] (A A' : Type) [CommRing A] [CommRing A'] [Algebra A A']
     [Algebra.Etale A A'] (f : A), (∀ a' : A', ∃ a : A, a' - algebraMap A A' a ∈ Ideal.span {algebraMap A A' f}) →

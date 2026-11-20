@@ -23,7 +23,7 @@ def dOf (m n : ℕ) : RedIn (B.DD false (PAlg.base l) n) (B.κb (okToOC l K) fal
   Classical.choose (redIn_ex (S.L m).γ (m + 1) (S.L m).lam ((hS.lev m).lat (m + 1) le_rfl).tf (hC m).1 (hC m).2 n)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (redIn_ex (S.L m).γ (m + 1) (S.L m).lam ((hS.lev m).lat (m + 1) le_rfl).tf (hC m).1 (hC m).2 n) c`.
+A detailed English derivation is pending.
 -/
 theorem hcOf (m n : ℕ) (c : Acris l) :
     (dOf S hS hC m n).ρ ((PAlg.base l).cris n c) = Ideal.Quotient.mk _ ((S.L m).lam c) :=

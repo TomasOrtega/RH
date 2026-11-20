@@ -7,30 +7,30 @@ open GlobalTheory.Dec (IsHaarSub IsIsoC NW IsSqIntIrr)
 open scoped Topology InnerProductSpace
 
 /- English proof (translation)
-Rewrite using `[mulVec_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem act_mul {n : ℕ} {ε : Fin n → Bool} (g h : UJ ε) (y : Fin n → ℂ) :
     uMat (g * h) *ᵥ y = uMat g *ᵥ (uMat h *ᵥ y) := by
   rw [mulVec_mulVec]; rfl
 
 /- English proof (translation)
-Rewrite using `[← act_mul, inv_mul_cancel]`. Conclude with `one_mulVec y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem act_inv {n : ℕ} {ε : Fin n → Bool} (g : UJ ε) (y : Fin n → ℂ) :
     uMat g⁻¹ *ᵥ (uMat g *ᵥ y) = y := by
   rw [← act_mul, inv_mul_cancel]; exact one_mulVec y
 
 /- English proof (translation)
-Rewrite using `[← act_mul, mul_inv_cancel]`. Conclude with `one_mulVec y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem act_inv' {n : ℕ} {ε : Fin n → Bool} (g : UJ ε) (y : Fin n → ℂ) :
     uMat g *ᵥ (uMat g⁻¹ *ᵥ y) = y := by
   rw [← act_mul, mul_inv_cancel]; exact one_mulVec y
 
 /- English proof (translation)
-Introduce `z hz`. Establish `hpiS : ∀ i, ∀ y ∈ W i, uMat p⁻¹ *ᵥ y ∈ W i` using `(parab ε W).inv_mem hp`. Establish `h1 : Jm ε *ᵥ (uMat p *ᵥ y) = (uMat p⁻¹)ᴴ *ᵥ (Jm ε *ᵥ y)`. Rewrite using `[mulVec_mulVec, mulVec_mulVec, conjTranspose_inv_mul_Jm]`. Rewrite using `[h1, dotProduct_mulVec, ← star_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy _ (hpiS _ _ hz)`.
+A detailed English derivation is pending.
 -/
 private theorem keeps_perp {n a : ℕ} {ε : Fin n → Bool} {W : Flag n a} {p : UJ ε} (hp : p ∈ parab ε W)
     {y : Fin n → ℂ} (hy : ∀ z ∈ W (Fin.last a), star z ⬝ᵥ (Jm ε *ᵥ y) = 0) :
@@ -43,9 +43,9 @@ private theorem keeps_perp {n a : ℕ} {ε : Fin n → Bool} {W : Flag n a} {p :
   exact hy _ (hpiS _ _ hz)
 
 /- English proof (translation)
-Establish `e : ∀ y, uMat (p⁻¹ * m * p) *ᵥ y - y = uMat p⁻¹ *ᵥ (uMat m *ᵥ (uMat p *ᵥ y) - uMat p *ᵥ y)` using `fun y => by`. Rewrite using `[mulVec_sub, act_inv, act_mul, act_mul]`. Establish `hi` using `(parab ε W).inv_mem hp`. Use `⟨fun i y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hi _ _ (hm.1 i _ (hp _ y hy))`. Rewrite using `[e]`. Conclude with `hi _ _ (hm.2 _ (keeps_perp hp hy))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conj_mem {n a : ℕ} {ε : Fin n → Bool} {W : Flag n a} {p m : UJ ε} (hp : p ∈ parab ε W)
     (hm : m ∈ flagN ε W) : p⁻¹ * m * p ∈ flagN ε W := by
@@ -57,13 +57,11 @@ private theorem conj_mem {n a : ℕ} {ε : Fin n → Bool} {W : Flag n a} {p m :
   · rw [e]; exact hi _ _ (hm.2 _ (keeps_perp hp hy))
 
 /- English proof (translation)
-Establish `hpS : ∀ i, ∀ y ∈ W i, uMat p *ᵥ y ∈ W i` using `hp`. Establish `hpiS : ∀ i, ∀ y ∈ W i, uMat p⁻¹ *ᵥ y ∈ W i` using `(parab ε W).inv_mem hp`. Establish `htS : ∀ i, ∀ y ∈ W i, uMat t *ᵥ y ∈ W i` using `fun i y hy => (ht.1 i y hy).1`. Establish `htiS : ∀ i, ∀ y ∈ W i, uMat t⁻¹ *ᵥ y ∈ W i` using `(parab ε W).inv_mem (show t ∈ parab ε W from htS)`. Simplify using `only [flagN, Set.mem_setOf_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨fun i y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `e : uMat (t⁻¹ * (p * t * p⁻¹)) *ᵥ y - y = uMat t⁻¹ *ᵥ (uMat p *ᵥ (uMat t *ᵥ (uMat p⁻¹ *ᵥ y) - (Real.exp (x i) : ℂ) • (uMat p⁻¹ *ᵥ y))) - uMat t⁻¹ *ᵥ (uMat t *ᵥ y - (Real.exp (x i) : ℂ) • y)`. Simplify using `only [act_mul, mulVec_sub, mulVec_smul, act_inv, act_inv']`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sub_mem _ (htiS _ _ (hpS _ _ (ht.2.1 i _ (hpiS _ _ hy)))) (htiS _ _ (ht.2.1 i y hy))`. Establish `e : uMat (t⁻¹ * (p * t * p⁻¹)) *ᵥ y - y = uMat t⁻¹ *ᵥ (uMat p *ᵥ (uMat t *ᵥ (uMat p⁻¹ *ᵥ y) - uMat p⁻¹ *ᵥ y)) - uMat t⁻¹ *ᵥ (uMat t *ᵥ y - y)`. Simplify using `only [act_mul, mulVec_sub, act_inv, act_inv']`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
-
-Conclude with `Submodule.sub_mem _ (htiS _ _ (hpS _ _ (ht.2.2 _ (keeps_perp ((parab ε W).inv_mem hp) hy)))) (htiS _ _ (ht.2.2 y hy))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comm_mem {n a : ℕ} {ε : Fin n → Bool} {W : Flag n a} {p t : UJ ε} {x : Fin a → ℝ}
     (hp : p ∈ parab ε W) (ht : IsSplit ε W x t) : t⁻¹ * (p * t * p⁻¹) ∈ flagN ε W := by
@@ -94,35 +92,31 @@ private theorem comm_mem {n a : ℕ} {ε : Fin n → Bool} {W : Flag n a} {p t :
       (htiS _ _ (ht.2.2 y hy))
 
 /- English proof (translation)
-Introduce `n ε j W hW hj`. Take `⟨a, ha_cont, ha_add, ha_split⟩` from `exists_split n ε j W hW`. Take `⟨h, hh_cont, hh1, hhK, hhP⟩` from `exists_height hW hj`. Take `⟨⟨N, hN⟩, -, -⟩` from `UnipRad.flagN_subgroup_closed_keeps n ε 1 j W hW`. Establish `hone_levi : (1 : UJ ε) ∈ leviOne ε W` using `(leviOne ε W).one_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hone_N : (1 : UJ ε) ∈ flagN ε W` using `hN ▸ N.one_mem`. Establish `hN_inv : ∀ m ∈ flagN ε W, m⁻¹ ∈ flagN ε W`. Introduce `m hm`. Rewrite `hm`, the goal using `[← hN]`. Conclude with `N.inv_mem hm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsplit_par : ∀ t, a t ∈ parab ε W` using `fun t => show ∀ i, ∀ y ∈ W i, uMat (a t) *ᵥ y ∈ W i from fun i y hy => ((ha_split t).1 i y hy).1`. Establish `hheight : ∀ x t g, IsSplit ε W x t → h (t * g) = x + h g`. Introduce `x t g hs`. Use `hhP 1 hone_N 1 hone_levi x t hs g` as an intermediate fact. Rewrite `this` using `[one_mul, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `ha0 : a 0 = 1`. Establish `h0` using `congrArg (fun g => (a 0)⁻¹ * g) (ha_add 0 0)`. Simplify using `only [add_zero, inv_mul_cancel, ← mul_assoc, one_mul] at h0`. Conclude with `h0.symm`. Establish `hainv : ∀ t, (a t)⁻¹ = a (-t)` using `fun t => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : a t * a (-t) = 1` using `by rw [← ha_add, add_neg_cancel, ha0]`. Conclude with `(eq_inv_of_mul_eq_one_right h2).symm`. Establish `hK : IsCompact (KG ε : Set (UJ ε))` using `isCompact_iff_compactSpace.2 (instCompactKG n ε)`. Establish `hkmem : ∀ k ∈ maxK ε, k ∈ KG ε` using `fun k hk => by`. Rewrite using `[← SetLike.mem_coe, KG_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hk`. Establish `hshift : ∀ y g : UJ ε, ∃ k ∈ KG ε, h (y * g) = h y + h (k * g)`. Introduce `y g`. Take `⟨k, hkK, hk⟩` from `GlobalTheory.RealIwasawa.exists_stab_mul_compact hW y`. Take `⟨u, hu, m, hm, x, t, hs, hp⟩` from `exists_langlands_decomp hW hj hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hkG` using `hkmem k hkK`. Use `⟨k, hkG, ?_⟩` and prove the remaining obligations. Establish `e1 : y * g = u * m * t * (k * g)`. Rewrite using `[← hp]`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e2 : y = u * m * t * k`. Rewrite using `[← hp]`. Use `group`. Establish `hk0 : h k = 0`. Use `hhK 1 k hkG` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[one_mul, hh1]`. Then use the resulting hypothesis. Rewrite using `[e1, hhP u hu m hm x t hs, e2, hhP u hu m hm x t hs, hk0, add_zero]`. Use `⟨a, fun g => -(h g⁻¹ 0), ha_cont, ha_add, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t m hm`. Conclude with `conj_mem (hsplit_par t) hm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `((continuous_apply 0).comp (hh_cont.comp continuous_inv)).neg`. Introduce `g m hm show -(h (g * m)⁻¹ 0) = -(h g⁻¹ 0)`. Use `hhP m⁻¹ (hN_inv m hm) 1 hone_levi 0 1 isSplit_one g⁻¹` as an intermediate fact. Rewrite `this` using `[mul_one, mul_one, zero_add]`. Rewrite using `[_root_.mul_inv_rev, this]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g t show -(h (g * a t)⁻¹ 0) = -(h g⁻¹ 0) + t`. Rewrite using `[_root_.mul_inv_rev, hainv, hheight _ _ _ (ha_split (-t))]`. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `D hD`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hS : IsCompact ((fun q : UJ ε × UJ ε => q.1 * q.2) '' ((KG ε : Set (UJ ε)) ×ˢ D))` using `(hK.prod hD).image continuous_mul`. Take `⟨c, hc⟩` from `hS.exists_bound_of_continuousOn (f := fun g => h g 0) ((continuous_apply 0).comp hh_cont).continuousOn`. Use `⟨c, fun g hg x => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, hyg⟩` from `hshift x⁻¹ g`. Use `show |-(h (g⁻¹ * x)⁻¹ 0) - -(h x⁻¹ 0)| ≤ c`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[_root_.mul_inv_rev, _root_.inv_inv, hyg]`. Establish `hb` using `hc (k * g) ⟨(k, g), ⟨hk, hg⟩, rfl⟩`. Rewrite `hb` using `[Real.norm_eq_abs]`. Establish `e : -((h x⁻¹ + h (k * g)) 0) - -(h x⁻¹ 0) = -(h (k * g) 0)`. Simplify using `only [Pi.add_apply]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, abs_neg]`. Conclude with `hb`. Use `⟨(KG ε : Set (UJ ε)), hK, fun x => ?_⟩` and prove the remaining obligations. Take `⟨k, hkK, hk⟩` from `GlobalTheory.RealIwasawa.exists_stab_mul_compact hW x⁻¹`.
-
-Establish `hkG` using `hkmem k hkK`. Use `⟨k⁻¹, (KG ε).inv_mem hkG, fun t => ?_⟩` and prove the remaining obligations. Establish `hq : x⁻¹ * k⁻¹ ∈ parab ε W` using `hk`. Use `⟨(a t)⁻¹ * ((x⁻¹ * k⁻¹) * a t * (x⁻¹ * k⁻¹)⁻¹), comm_mem hq (ha_split t), ?_⟩` and prove the remaining obligations. Use `group`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Cusp.exists_isRay :
     ∀ (n : ℕ) (ε : Fin n → Bool) (j : Fin 1 → ℕ) (W : Flag n 1), IsIsoFlag ε j W → (∀ i, 1 ≤ j i) →

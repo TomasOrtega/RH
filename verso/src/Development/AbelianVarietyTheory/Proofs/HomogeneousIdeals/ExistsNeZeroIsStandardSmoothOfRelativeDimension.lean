@@ -12,11 +12,11 @@ open scoped Manifold ContDiff
 section Null
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `finrank_le_iff_exists_linearMap.1 h.le`. Take `⟨L, hL⟩` from `i.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hi)`. Establish `hsurj : Function.Surjective L` using `fun x => ⟨i x, DFunLike.congr_fun hL x⟩`. Establish `hker : LinearMap.ker L ≠ ⊥` using `LinearMap.ker_ne_bot_of_finrank_lt h`. Set `L' : F →L[ℝ] E` to `LinearMap.toContinuousLinearMap L`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `him : f '' s = (f ∘ L') '' (L' ⁻¹' s)`. Rewrite using `[image_comp, image_preimage_eq s (f := L') hsurj]`. Rewrite using `[him]`. Use `addHaar_image_eq_zero_of_det_fderivWithin_eq_zero μ (f' := fun x => (fderivWithin ℝ f s (L' x)).comp L') (fun x hx => ?_) (fun x _ => ?_)` and prove the remaining obligations. Conclude with `(hf _ hx).hasFDerivWithinAt.comp x L'.hasFDerivWithinAt (mapsTo_preimage _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.det_eq_zero_iff_ker_ne_bot.2 fun h0 => hker (le_bot_iff.1 ?_)` and prove the remaining obligations. Rewrite using `[← h0]`. Introduce `v hv`. Establish `: L' v = 0` using `hv`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem addHaar_image_eq_zero_of_finrank_lt {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ F]
@@ -43,7 +43,7 @@ theorem addHaar_image_eq_zero_of_finrank_lt {E F : Type*} [NormedAddCommGroup E]
 variable {d : ℕ}
 
 /- English proof (translation)
-Use `addHaar_image_eq_zero_of_finrank_lt volume ?_ (hf.restrictScalars ℝ)` and prove the remaining obligations. Rewrite using `[finrank_real_of_complex, finrank_real_of_complex]`. Simplify using `using h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem volume_image_eq_zero_of_finrank_lt {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [FiniteDimensional ℂ E] (h : finrank ℂ E < d) {s : Set E} {f : E → Fin d → ℂ}
@@ -53,9 +53,9 @@ theorem volume_image_eq_zero_of_finrank_lt {E : Type*} [NormedAddCommGroup E] [N
   simpa using h
 
 /- English proof (translation)
-Take `⟨t, htc, ht⟩` from `countable_cover_nhds (U := fun x : M => (extChartAt I x).source) fun x => extChartAt_source_mem_nhds x`. Establish `: range f ⊆ ⋃ x ∈ t, (f ∘ (extChartAt I x).symm) '' (extChartAt I x).target`. Introduce and unpack `_ ⟨m, rfl⟩`. Take `⟨x, hx, hm⟩` from `mem_iUnion₂.1 (ht.symm ▸ mem_univ m)`. Conclude with `mem_iUnion₂.2 ⟨x, hx, extChartAt I x m, (extChartAt I x).map_source hm, by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.comp_apply, (extChartAt I x).left_inv hm]⟩`. Use `measure_mono_null this ((measure_biUnion_null_iff htc).2 fun x _ => ?_)` and prove the remaining obligations. Conclude with `volume_image_eq_zero_of_finrank_lt h (mdifferentiableOn_iff_differentiableOn.1 (hf.comp_mdifferentiableOn mdifferentiableOn_extChartAt_symm))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem volume_range_eq_zero_of_mdifferentiable {E H M : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] [FiniteDimensional ℂ E] [TopologicalSpace H] {I : ModelWithCorners ℂ E H}
@@ -82,11 +82,9 @@ universe u
 variable {K A : Type u} [Field K] [CommRing A] [Algebra K A] {d : ℕ}
 
 /- English proof (translation)
-Use `haveI : Nontrivial A := by`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Rewrite `hd` using `[ringKrullDim_eq_bot_of_subsingleton]`. Conclude with `WithBot.bot_ne_natCast _ hd`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Take `⟨s, g, hg, hfin⟩` from `exists_finite_inj_algHom_of_fg K A`. Use `letI := g.toRingHom.toAlgebra`. Use `haveI : FaithfulSMul (MvPolynomial (Fin s) K) A := (faithfulSMul_iff_algebraMap_injective _ _).mpr hg`. Use `haveI : Algebra.IsIntegral (MvPolynomial (Fin s) K) A := ⟨RingHom.Finite.to_isIntegral hfin⟩`. Rewrite `hd` using `[ringKrullDim_eq_of_isIntegral (MvPolynomial (Fin s) K) A, MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`.
-
-Take `rfl : s = d` from `by simpa using hd`. Conclude with `⟨g, hg, hfin⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finite_injective_of_ringKrullDim_eq [Algebra.FiniteType K A]
     (hd : ringKrullDim A = d) :
@@ -107,7 +105,7 @@ theorem exists_finite_injective_of_ringKrullDim_eq [Algebra.FiniteType K A]
   exact ⟨g, hg, hfin⟩
 
 /- English proof (translation)
-Use `haveI : FaithfulSMul R S := inferInstance`. Conclude with `⟨this, isAlgebraic_of_quasiFiniteAt R S ⊥⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem faithfulSMul_and_isAlgebraic_of_etale (R S : Type*) [CommRing R] [IsDomain R] [CommRing S]
     [IsDomain S] [Algebra R S] [Algebra.Etale R S] :
@@ -116,9 +114,7 @@ theorem faithfulSMul_and_isAlgebraic_of_etale (R S : Type*) [CommRing R] [IsDoma
   exact ⟨this, isAlgebraic_of_quasiFiniteAt R S ⊥⟩
 
 /- English proof (translation)
-Use `letI : Algebra (MvPolynomial (Fin d) K) A := g.toRingHom.toAlgebra`. Use `haveI : Algebra.Etale (MvPolynomial (Fin d) K) A := hg`. Use `haveI : IsScalarTower K (MvPolynomial (Fin d) K) A := IsScalarTower.of_algebraMap_eq fun x => (g.commutes x).symm`. Take `⟨_, _⟩` from `faithfulSMul_and_isAlgebraic_of_etale (MvPolynomial (Fin d) K) A`. Rewrite using `[trdeg_eq_of_isAlgebraic_top K (MvPolynomial (Fin d) K) A, MvPolynomial.trdeg_of_isDomain]`.
-
-Simplify using the standard rewrite rules.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trdeg_eq_of_etale [IsDomain A] (g : MvPolynomial (Fin d) K →ₐ[K] A) (hg : g.Etale) :
     Algebra.trdeg K A = d := by
@@ -131,7 +127,7 @@ theorem trdeg_eq_of_etale [IsDomain A] (g : MvPolynomial (Fin d) K →ₐ[K] A) 
   simp
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `Algebra.IsStandardSmoothOfRelativeDimension.exists_etale_mvPolynomial d K A`. Use `haveI := Algebra.IsStandardSmoothOfRelativeDimension.isStandardSmooth (R := K) (S := A) d`. Conclude with `ringKrullDim_eq_of_trdeg_eq K A (trdeg_eq_of_etale g hg)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_eq_of_isStandardSmooth [IsDomain A]
     [Algebra.IsStandardSmoothOfRelativeDimension d K A] : ringKrullDim A = d := by
@@ -140,11 +136,9 @@ theorem ringKrullDim_eq_of_isStandardSmooth [IsDomain A]
   exact ringKrullDim_eq_of_trdeg_eq K A (trdeg_eq_of_etale g hg)
 
 /- English proof (translation)
-Use `haveI : Algebra.FinitePresentation K A := Algebra.FinitePresentation.of_finiteType.1 ‹_›`. Take `⟨s, hs, ι, σ, _, _, ⟨Q⟩⟩` from `Algebra.IsSmoothAt.exists_notMem_isStandardSmooth K P`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Establish `hs0 : Submonoid.powers s ≤ nonZeroDivisors A` using `powers_le_nonZeroDivisors_of_noZeroDivisors fun h => hs (h ▸ P.zero_mem)`. Use `haveI : IsDomain (Localization.Away s) := IsLocalization.isDomain_localization hs0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI H : Algebra.IsStandardSmoothOfRelativeDimension Q.dimension K (Localization.Away s) := Q.isStandardSmoothOfRelativeDimension rfl`. Take `⟨g, hg⟩` from `Algebra.IsStandardSmoothOfRelativeDimension.exists_etale_mvPolynomial Q.dimension K (Localization.Away s)`. Establish `h1` using `trdeg_eq_of_etale g hg`. Use `haveI : FaithfulSMul A (Localization.Away s) := (faithfulSMul_iff_algebraMap_injective _ _).mpr (IsLocalization.injective _ hs0)`. Use `haveI : Algebra.IsAlgebraic A (Localization.Away s) := IsLocalization.isAlgebraic _ (Submonoid.powers s)`.
-
-Rewrite `h1` using `[trdeg_eq_of_isAlgebraic_top K A (Localization.Away s)]`. Establish `h2` using `ringKrullDim_eq_of_trdeg_eq K A h1`. Rewrite `h2` using `[hd]`. Take `rfl : d = Q.dimension` from `by exact_mod_cast h2`. Conclude with `H`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_notMem_isStandardSmoothOfRelativeDimension [IsDomain A] [Algebra.FiniteType K A]
     (hd : ringKrullDim A = d) (P : Ideal A) [P.IsPrime] [Algebra.IsSmoothAt K P] :
@@ -171,9 +165,7 @@ theorem exists_notMem_isStandardSmoothOfRelativeDimension [IsDomain A] [Algebra.
   exact H
 
 /- English proof (translation)
-Use `haveI : Algebra.IsSmoothAt K (⊥ : Ideal A) := by haveI : IsLocalization (⊥ : Ideal A).primeCompl (FractionRing A) := by`. Rewrite using `[Ideal.primeCompl_bot]`. Use `infer_instance`. Set `e` to `(IsLocalization.algEquiv (⊥ : Ideal A).primeCompl (FractionRing A) (Localization.AtPrime (⊥ : Ideal A))).restrictScalars K`. Use `haveI : Algebra.EssFiniteType K (FractionRing A) := .comp K A _`.
-
-Use `haveI : Algebra.FormallySmooth K (FractionRing A) := Algebra.FormallySmooth.of_perfectField`. Conclude with `Algebra.FormallySmooth.of_equiv e`. Simplify using `using exists_notMem_isStandardSmoothOfRelativeDimension (K := K) hd ⊥`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_isStandardSmoothOfRelativeDimension [PerfectField K] [IsDomain A]
     [Algebra.FiniteType K A] (hd : ringKrullDim A = d) :
@@ -193,9 +185,9 @@ end Algebra
 variable {A : Type} [CommRing A] [Algebra ℂ A] {d : ℕ}
 
 /- English proof (translation)
-Use `letI : Algebra (MvPolynomial (Fin d) ℂ) A := g.toRingHom.toAlgebra`. Take `⟨r, hr, c, hc⟩` from `(hg.isAlgebraic f).exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero hf)`. Use `measure_mono_null ?_ (ReciprocityTheory.MultiplicativeHeights.ae_eval_ne_zero_of_ne_zero_fin d r hr)` and prove the remaining obligations. Introduce and unpack `_ ⟨p, hp, rfl⟩`. Establish `h1 : eval (coords g p) r = p (g r)` using `aeval_coords g p r`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h2 : g r = f * c` using `hc`. Simplify using `only [mem_compl_iff, mem_setOf_eq, not_not]`. Rewrite using `[h1, h2, map_mul, hp, zero_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem volume_coords_image_zeroSet [IsDomain A] (g : MvPolynomial (Fin d) ℂ →ₐ[ℂ] A)
     (hg : @Algebra.IsAlgebraic _ A _ _ g.toRingHom.toAlgebra) {f : A} (hf : f ≠ 0) :
@@ -211,7 +203,7 @@ theorem volume_coords_image_zeroSet [IsDomain A] (g : MvPolynomial (Fin d) ℂ �
   rw [h1, h2, map_mul, hp, zero_mul]
 
 /- English proof (translation)
-Use `letI : Algebra (MvPolynomial (Fin d) ℂ) A := g.toRingHom.toAlgebra`. Use `haveI : Algebra.Etale (MvPolynomial (Fin d) ℂ) A := hg`. Conclude with `volume_coords_image_zeroSet g (faithfulSMul_and_isAlgebraic_of_etale _ A).2 hf`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem volume_coords_image_zeroSet_of_etale [IsDomain A] (g : MvPolynomial (Fin d) ℂ →ₐ[ℂ] A)
     (hg : g.Etale) {f : A} (hf : f ≠ 0) :
@@ -221,7 +213,7 @@ theorem volume_coords_image_zeroSet_of_etale [IsDomain A] (g : MvPolynomial (Fin
   exact volume_coords_image_zeroSet g (faithfulSMul_and_isAlgebraic_of_etale _ A).2 hf
 
 /- English proof (translation)
-The claim follows from `(mvPolynomialHomeomorph ℂ ℂ (Fin d)).isProperMap.comp (isProperMap_comap g (RingHom.Finite.to_isIntegral hg))`.
+A detailed English derivation is pending.
 -/
 theorem isProperMap_coords (g : MvPolynomial (Fin d) ℂ →ₐ[ℂ] A) (hg : g.Finite) :
     IsProperMap (coords g : (A →ₐ[ℂ] ℂ) → Fin d → ℂ) :=
@@ -229,7 +221,7 @@ theorem isProperMap_coords (g : MvPolynomial (Fin d) ℂ →ₐ[ℂ] A) (hg : g.
     (isProperMap_comap g (RingHom.Finite.to_isIntegral hg))
 
 /- English proof (translation)
-The claim follows from `(mvPolynomialHomeomorph ℂ ℂ (Fin d)).surjective.comp (surjective_comap_of_isIntegral g (RingHom.Finite.to_isIntegral hg) hinj)`.
+A detailed English derivation is pending.
 -/
 theorem surjective_coords (g : MvPolynomial (Fin d) ℂ →ₐ[ℂ] A) (hg : g.Finite)
     (hinj : Function.Injective g) : Function.Surjective (coords g : (A →ₐ[ℂ] ℂ) → Fin d → ℂ) :=
@@ -237,14 +229,14 @@ theorem surjective_coords (g : MvPolynomial (Fin d) ℂ →ₐ[ℂ] A) (hg : g.F
     (surjective_comap_of_isIntegral g (RingHom.Finite.to_isIntegral hg) hinj)
 
 /- English proof (translation)
-The claim follows from `(mvPolynomialHomeomorph ℂ ℂ (Fin d)).isOpenMap.comp (isOpenMap_comap g hg hinj)`.
+A detailed English derivation is pending.
 -/
 theorem isOpenMap_coords [IsDomain A] (g : MvPolynomial (Fin d) ℂ →ₐ[ℂ] A) (hg : g.Finite)
     (hinj : Function.Injective g) : IsOpenMap (coords g : (A →ₐ[ℂ] ℂ) → Fin d → ℂ) :=
   (mvPolynomialHomeomorph ℂ ℂ (Fin d)).isOpenMap.comp (isOpenMap_comap g hg hinj)
 
 /- English proof (translation)
-Establish `h1 : Dense (coords g '' S)ᶜ` using `Measure.dense_of_ae (μ := volume) (measure_eq_zero_iff_ae_notMem.1 hS)`. Use `(h1.preimage (isOpenMap_coords g hg hinj)).mono ?_` and prove the remaining obligations. Introduce `p hp hpS`. Conclude with `hp ⟨p, hpS, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dense_compl_of_volume_coords_image [IsDomain A] (g : MvPolynomial (Fin d) ℂ →ₐ[ℂ] A)
     (hg : g.Finite) (hinj : Function.Injective g) {S : Set (A →ₐ[ℂ] ℂ)}
@@ -256,7 +248,7 @@ theorem dense_compl_of_volume_coords_image [IsDomain A] (g : MvPolynomial (Fin d
   exact hp ⟨p, hpS, rfl⟩
 
 /- English proof (translation)
-Take `⟨s, g, hinj, hg⟩` from `exists_finite_inj_algHom_of_fg ℂ A`. Use `dense_compl_of_volume_coords_image g hg hinj (volume_coords_image_zeroSet g ?_ hf)` and prove the remaining obligations. Use `letI := g.toRingHom.toAlgebra`. Use `haveI : Module.Finite (MvPolynomial (Fin s) ℂ) A := hg`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem dense_nonvanishing [IsDomain A] [Algebra.FiniteType ℂ A] {f : A} (hf : f ≠ 0) :
     Dense {p : A →ₐ[ℂ] ℂ | p f ≠ 0} := by
@@ -267,30 +259,28 @@ theorem dense_nonvanishing [IsDomain A] [Algebra.FiniteType ℂ A] {f : A} (hf :
   infer_instance
 
 /- English proof (translation)
-The claim follows from `interior_eq_empty_iff_dense_compl.2 (dense_nonvanishing hf)`.
+A detailed English derivation is pending.
 -/
 theorem interior_zeroSet_eq_empty [IsDomain A] [Algebra.FiniteType ℂ A] {f : A} (hf : f ≠ 0) :
     interior {p : A →ₐ[ℂ] ℂ | p f = 0} = ∅ :=
   interior_eq_empty_iff_dense_compl.2 (dense_nonvanishing hf)
 
 /- English proof (translation)
-Take `⟨x, s, hx⟩` from `he.exists_eq_div`. Distinguish the cases in `hs : s = 0`. Establish `: e.source = ∅` using `eq_empty_of_forall_notMem fun p hp => (hx p hp).1 (by simp [hs])`. Simplify using `[this]`. Establish `hs0 : Submonoid.powers s ≤ nonZeroDivisors A` using `powers_le_nonZeroDivisors_of_noZeroDivisors hs`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `B` to `Localization.Away s`. Use `haveI : IsDomain B := IsLocalization.isDomain_localization hs0`. Establish `hAB : Function.Injective (algebraMap A B)` using `IsLocalization.injective _ hs0`. Set `g : MvPolynomial (Fin d) ℂ →ₐ[ℂ] B` to `aeval fun i => algebraMap A B (x i) * IsLocalization.Away.invSelf s`. Establish `hsub : e '' (e.source ∩ {p | p f = 0}) ⊆ coords g '' {q : B →ₐ[ℂ] ℂ | q (algebraMap A B f) = 0}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨p, ⟨hp, hpf⟩, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨q, rfl⟩ : p ∈ range (comap (IsScalarTower.toAlgHom ℂ A B)) := by`. Rewrite using `[range_comap_away s]`. Conclude with `(hx p hp).1`. Use `⟨q, hpf, funext fun i => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(hx _ hp).2 i]`. Use `apply_eq_div_of_mul_eq q (IsLocalization.Away.algebraMap_isUnit s) ?_` and prove the remaining obligations. Simplify using `only [g, aeval_X]`. Rewrite using `[mul_assoc, mul_comm _ (algebraMap A B s), IsLocalization.Away.mul_invSelf, mul_one]`. Use `measure_mono_null hsub ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hinj : Function.Injective g`. Use `volume_coords_image_zeroSet g ?_ ((map_ne_zero_iff _ hAB).2 hf)` and prove the remaining obligations. Use `letI : Algebra (MvPolynomial (Fin d) ℂ) B := g.toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℂ (MvPolynomial (Fin d) ℂ) B := IsScalarTower.of_algebraMap_eq fun x => (g.commutes x).symm`. Use `haveI : FaithfulSMul (MvPolynomial (Fin d) ℂ) B := (faithfulSMul_iff_algebraMap_injective _ _).mpr hinj`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : FaithfulSMul A B := (faithfulSMul_iff_algebraMap_injective _ _).mpr hAB`. Use `haveI : Algebra.IsAlgebraic A B := IsLocalization.isAlgebraic _ (Submonoid.powers s)`. Take `⟨n, h1, h2⟩` from `exists_ringKrullDim_eq_and_trdeg_eq ℂ A`. Rewrite `h1` using `[hd]`. Take `rfl : d = n` from `by exact_mod_cast h1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `trdeg_add_eq ℂ (MvPolynomial (Fin d) ℂ) (A := B)`. Rewrite `h3` using `[trdeg_eq_of_isAlgebraic_top ℂ A B, h2, MvPolynomial.trdeg_of_isDomain]`. Simplify using `only [Cardinal.mk_fintype, Fintype.card_fin, Cardinal.lift_natCast] at h3`. Establish `h4 : Algebra.trdeg (MvPolynomial (Fin d) ℂ) B = 0` using `Cardinal.eq_of_add_eq_add_left (h3.trans (add_zero _).symm) (Cardinal.natCast_lt_aleph0)`. Conclude with `trdeg_eq_zero_iff.1 h4`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hinj` using `[injective_iff_map_eq_zero] at hinj push Not`. Take `⟨r, hr0, hr⟩` from `hinj`. Use `measure_mono_null ?_ (ReciprocityTheory.MultiplicativeHeights.ae_eval_ne_zero_of_ne_zero_fin d r hr)` and prove the remaining obligations. Introduce and unpack `_ ⟨p, -, rfl⟩`. Establish `h1 : eval (coords g p) r = p (g r)` using `aeval_coords g p r`.
-
-Simplify using `only [mem_compl_iff, mem_setOf_eq, not_not]`. Rewrite using `[h1, hr0, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem IsAlgebraicChart.volume_image_zeroSet [IsDomain A] [Algebra.FiniteType ℂ A]
     (hd : ringKrullDim A = d) {e : OpenPartialHomeomorph (A →ₐ[ℂ] ℂ) (Fin d → ℂ)}
@@ -346,7 +336,7 @@ theorem IsAlgebraicChart.volume_image_zeroSet [IsDomain A] [Algebra.FiniteType �
     rw [h1, hr0, map_zero]
 
 /- English proof (translation)
-Use `haveI := RingHom.ker_isPrime p`. Take `⟨s, hs, H⟩` from `exists_notMem_isStandardSmoothOfRelativeDimension (K := ℂ) hd (RingHom.ker p)`. Conclude with `exists_isAlgebraicChart_of_away s (Localization.Away s) p hs`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isAlgebraicChart_of_isSmoothAt [IsDomain A] [Algebra.FiniteType ℂ A]
     (hd : ringKrullDim A = d) (p : A →ₐ[ℂ] ℂ)
@@ -358,7 +348,7 @@ theorem exists_isAlgebraicChart_of_isSmoothAt [IsDomain A] [Algebra.FiniteType �
   exact exists_isAlgebraicChart_of_away s (Localization.Away s) p hs
 
 /- English proof (translation)
-Introduce `p` and use `exists_isAlgebraicChart_of_isSmoothAt hd p inferInstance`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasAlgebraicCharts_of_smooth [IsDomain A] [Algebra.Smooth ℂ A]
     (hd : ringKrullDim A = d) : HasAlgebraicCharts ℂ A d := fun p =>
@@ -372,7 +362,7 @@ variable {ι : Type*} [Countable ι] {E H M : ι → Type*} [∀ i, NormedAddCom
   [∀ i, ChartedSpace (H i) (M i)] [∀ i, IsManifold (I i) 1 (M i)] [∀ i, LindelofSpace (M i)]
 
 /- English proof (translation)
-Rewrite using `[image_iUnion]`. Use `measure_iUnion_null fun i => ?_` and prove the remaining obligations. Rewrite using `[← range_comp]`. Conclude with `volume_range_eq_zero_of_mdifferentiable (I := I i) (hE i) fun m => mdifferentiableAt_pi_of_forall fun j => hφ i _ m`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volume_coords_image_iUnion_range (g : MvPolynomial (Fin d) ℂ →ₐ[ℂ] A)
     (hE : ∀ i, finrank ℂ (E i) < d) (φ : ∀ i, M i → (A →ₐ[ℂ] ℂ))
@@ -385,7 +375,7 @@ theorem volume_coords_image_iUnion_range (g : MvPolynomial (Fin d) ℂ →ₐ[�
     mdifferentiableAt_pi_of_forall fun j => hφ i _ m
 
 /- English proof (translation)
-Take `⟨g, hinj, hg⟩` from `exists_finite_injective_of_ringKrullDim_eq (K := ℂ) hd`. Introduce `h`. Use `volume_coords_image_iUnion_range g hE φ hφ` as an intermediate fact. Rewrite `this` using `[h, image_univ, (surjective_coords g hg hinj).range_eq]`. Conclude with `(isOpen_univ.measure_ne_zero volume univ_nonempty) this`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iUnion_range_ne_univ [Algebra.FiniteType ℂ A] (hd : ringKrullDim A = d)
     (hE : ∀ i, finrank ℂ (E i) < d) (φ : ∀ i, M i → (A →ₐ[ℂ] ℂ))
@@ -397,7 +387,7 @@ theorem iUnion_range_ne_univ [Algebra.FiniteType ℂ A] (hd : ringKrullDim A = d
   exact (isOpen_univ.measure_ne_zero volume univ_nonempty) this
 
 /- English proof (translation)
-Take `⟨g, hinj, hg⟩` from `exists_finite_injective_of_ringKrullDim_eq (K := ℂ) hd`. Conclude with `dense_compl_of_volume_coords_image g hg hinj (volume_coords_image_iUnion_range g hE φ hφ)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dense_compl_iUnion_range [IsDomain A] [Algebra.FiniteType ℂ A] (hd : ringKrullDim A = d)
     (hE : ∀ i, finrank ℂ (E i) < d) (φ : ∀ i, M i → (A →ₐ[ℂ] ℂ))
@@ -412,7 +402,7 @@ section Immersion
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {U : Set E} {φ : E → (A →ₐ[ℂ] ℂ)}
 
 /- English proof (translation)
-Simplify using `only [map_mul]`. Rewrite using `[fderiv_fun_mul (hφ a) (hφ b)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fderiv_apply_mul {z : E} (hφ : ∀ a, DifferentiableAt ℂ (fun z => φ z a) z) (v : E)
     (a b : A) : fderiv ℂ (fun z => φ z (a * b)) z v =
@@ -422,7 +412,7 @@ theorem fderiv_apply_mul {z : E} (hφ : ∀ a, DifferentiableAt ℂ (fun z => φ
   simp
 
 /- English proof (translation)
-Simplify using `only [map_add]`. Rewrite using `[fderiv_fun_add (hφ a) (hφ b)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fderiv_apply_add {z : E} (hφ : ∀ a, DifferentiableAt ℂ (fun z => φ z a) z) (v : E)
     (a b : A) : fderiv ℂ (fun z => φ z (a + b)) z v =
@@ -432,7 +422,7 @@ theorem fderiv_apply_add {z : E} (hφ : ∀ a, DifferentiableAt ℂ (fun z => φ
   simp
 
 /- English proof (translation)
-Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a ha => exact hs a ha`. Consider the case `algebraMap c => simp`. Consider the case `add a b _ _ ha hb => rw [fderiv_apply_add hφ, ha, hb, add_zero]`. Consider the case `mul a b _ _ ha hb => rw [fderiv_apply_mul hφ, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
 Simplify using the standard rewrite rules.
 -/
@@ -447,9 +437,9 @@ theorem fderiv_apply_eq_zero_of_mem_adjoin {z : E}
   | mul a b _ _ ha hb => rw [fderiv_apply_mul hφ, ha, hb]; simp
 
 /- English proof (translation)
-Proceed by induction on `h using Polynomial.induction_on with`. Consider the case `C r => simpa using hv r`. Consider the case `add P Q hP hQ`. Rewrite using `[Polynomial.eval₂_add, fderiv_apply_add hφ, hP, hQ]`. Simplify using `[add_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `monomial n r ih`. Rewrite using `[pow_succ, ← mul_assoc, Polynomial.eval₂_mul, Polynomial.eval₂_X, fderiv_apply_mul hφ, ih, Polynomial.derivative_mul (g := Polynomial.X), Polynomial.derivative_X, Polynomial.eval₂_add, Polynomial.eval₂_mul _ _ (p := Polynomial.derivative _), Polynomial.eval₂_X, mul_one]`. Simplify using `only [map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fderiv_apply_eval₂ {R : Type*} [CommRing R] (g : R →+* A) {z : E}
     (hφ : ∀ a, DifferentiableAt ℂ (fun z => φ z a) z) (v : E)
@@ -469,15 +459,15 @@ theorem fderiv_apply_eval₂ {R : Type*} [CommRing R] (g : R →+* A) {z : E}
     ring
 
 /- English proof (translation)
-Take `⟨h, hm, hh⟩` from `ha`. Set `c : ℕ → A` to `fun k => (Polynomial.derivative^[k] h).eval₂ g a`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk, z₀, hz₀, hk'⟩ : ∃ k, (∀ z ∈ U, φ z (c k) = 0) ∧ ∃ z ∈ U, φ z (c (k + 1)) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hall : ∀ k, ∀ z ∈ U, φ z (c k) = 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro z _`. Simplify using `[c, hh]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ k ih => exact hcon k ih`. Take `⟨z, hz⟩` from `hne`. Establish `h1` using `hall h.natDegree z hz`. Establish `h2 : Polynomial.derivative^[h.natDegree] h = Polynomial.C (h.natDegree.factorial : R)`. Rewrite using `[Polynomial.eq_C_of_natDegree_le_zero (p := Polynomial.derivative^[h.natDegree] h) ((Polynomial.natDegree_iterate_derivative h _).trans (by simp)), Polynomial.coeff_iterate_derivative, zero_add, Nat.descFactorial_self, hm.coeff_natDegree, nsmul_eq_mul, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[c, h2, Nat.factorial_ne_zero] at h1`. Use `⟨U ∩ (fun z => φ z (c (k + 1))) ⁻¹' {0}ᶜ, inter_subset_left, (hφ _).continuousOn.isOpen_inter_preimage hU isOpen_compl_singleton, ⟨z₀, hz₀, hk'⟩, fun z hz v hv => ?_⟩` and prove the remaining obligations. Establish `h1` using `fderiv_apply_eval₂ g (fun a => (hφ a).differentiableAt (hU.mem_nhds hz.1)) v hv a (Polynomial.derivative^[k] h)`. Establish `h2 : (fun z => φ z (c k)) =ᶠ[𝓝 z] fun _ => 0` using `by filter_upwards [hU.mem_nhds hz.1] with w hw using hk w hw`. Rewrite `h1` using `[← Function.iterate_succ_apply' Polynomial.derivative]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[show (fun z => φ z ((Polynomial.derivative^[k] h).eval₂ g a)) = fun z => φ z (c k) from rfl, h2.fderiv_eq]`. Simplify using `only [fderiv_fun_const, Pi.zero_apply, ContinuousLinearMap.zero_apply] at h1`. Conclude with `(mul_eq_zero.1 h1.symm).resolve_left hz.2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isOpen_fderiv_eq_zero {R : Type*} [CommRing R] (g : R →+* A) {a : A}
     (ha : g.IsIntegralElem a) (hU : IsOpen U) (hne : U.Nonempty)
@@ -516,17 +506,15 @@ theorem exists_isOpen_fderiv_eq_zero {R : Type*} [CommRing R] (g : R →+* A) {a
   exact (mul_eq_zero.1 h1.symm).resolve_left hz.2
 
 /- English proof (translation)
-Take `⟨g, -, hg⟩` from `exists_finite_injective_of_ringKrullDim_eq (K := ℂ) hd`. Establish `hint : g.toRingHom.IsIntegral` using `RingHom.Finite.to_isIntegral hg`. Take `⟨s, hs⟩` from `(inferInstance : Algebra.FiniteType ℂ A).out`. Establish `key : ∀ t : Finset A, ∃ V ⊆ U, IsOpen V ∧ V.Nonempty ∧ ∀ z ∈ V, ∀ v, (∀ r, fderiv ℂ (fun z => φ z (g r)) z v = 0) → ∀ a ∈ t, fderiv ℂ (fun z => φ z a) z v = 0`. Introduce `t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => exact ⟨U, subset_rfl, hU, hne, by simp⟩`. Consider the case `insert a t _ ih`. Take `⟨V, hVU, hV, hVne, H⟩` from `ih`. Take `⟨W, hWV, hW, hWne, H'⟩` from `exists_isOpen_fderiv_eq_zero (φ := φ) g.toRingHom (hint a) hV hVne fun a => (hφ a).mono hVU`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨W, hWV.trans hVU, hW, hWne, fun z hz v hv b hb => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hb with rfl | hb` into its components or cases. Conclude with `H' z hz v hv`. Conclude with `H z (hWV hz) v hv b hb`. Take `⟨V, hVU, -, ⟨z, hz⟩, H⟩` from `key s`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hd' : ∀ a, DifferentiableAt ℂ (fun z => φ z a) z` using `fun a => (hφ a).differentiableAt (hU.mem_nhds (hVU hz))`. Set `L : E →ₗ[ℂ] (Fin d → ℂ)` to `LinearMap.pi fun i => (fderiv ℂ (fun z => φ z (g (X i))) z : E →ₗ[ℂ] ℂ)`. Establish `hL : Function.Injective L`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `himm z (hVU hz) v fun a => fderiv_apply_eq_zero_of_mem_adjoin hd' v (H z hz v fun r => ?_) (hs ▸ Algebra.mem_top)` and prove the remaining obligations. Use `fderiv_apply_eq_zero_of_mem_adjoin hd' v (s := range fun i => g (X i)) ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `congrFun hv i`. Rewrite using `[Algebra.adjoin_range_eq_range_aeval]`.
-
-Conclude with `⟨r, (DFunLike.congr_fun (MvPolynomial.aeval_unique g) r).symm⟩`. Simplify using `using L.lift_rank_le_of_injective hL`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem rank_le_of_immersion [Algebra.FiniteType ℂ A] (hd : ringKrullDim A = d)
     (hU : IsOpen U) (hne : U.Nonempty) (hφ : ∀ a, DifferentiableOn ℂ (fun z => φ z a) U)
@@ -570,7 +558,7 @@ theorem rank_le_of_immersion [Algebra.FiniteType ℂ A] (hd : ringKrullDim A = d
 end Immersion
 
 /- English proof (translation)
-Use `⟨fun g hg => ⟨isLocalHomeomorph_coords_of_etale g hg, exists_chart_of_etale g hg⟩, fun _ => ⟨Algebra.IsStandardSmoothOfRelativeDimension.exists_etale_mvPolynomial d ℂ A, hasAlgebraicCharts_of_isStandardSmooth, HasAlgebraicCharts.isManifold _, HasAlgebraicCharts.contMDiff_eval _⟩, …` and prove the remaining obligations. Introduce `ι _ E H M _ _ _ _ I _ _ _ _ φ hE hφ`. Conclude with `⟨iUnion_range_ne_univ hd hE φ hφ, dense_compl_iUnion_range hd hE φ hφ⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem complexPoints_manifold_and_dimension (A : Type) [CommRing A] [Algebra ℂ A]
     [Algebra.FiniteType ℂ A] (d : ℕ) :

@@ -6,21 +6,19 @@ open CategoryTheory Limits AlgebraicGeometry LateralTheory.E.t_E2Cut Polynomial
 namespace LateralTheory.E.NormPf.FFPf
 
 /- English proof (translation)
-Apply `IsAlgClosed.of_exists_root` to reduce the goal to its premises. Introduce `p hp hirr`. Establish `hd : 0 < p.natDegree` using `Irreducible.natDegree_pos hirr`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors R) ((Finset.range (p.natDegree + 1)).image p.coeff)`. Use `set d : K := algebraMap R K b with hdd`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd0 : d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2`. Establish `hint : ∀ i, ∃ r : R, algebraMap R K r = p.coeff i * d`. Introduce `i`. Distinguish the cases in `hi : i ≤ p.natDegree`. Take `⟨r, hr⟩` from `hb (p.coeff i) (Finset.mem_image.mpr ⟨i, Finset.mem_range.mpr (by omega), rfl⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite using `[hr, Algebra.smul_def, mul_comm]`. Conclude with `⟨0, by rw [coeff_eq_zero_of_natDegree_lt (by omega)]; simp⟩`. Establish `hl : scaleRoots p d ∈ lifts (algebraMap R K)`. Rewrite using `[lifts_iff_coeff_lifts]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[coeff_scaleRoots]`. Distinguish the cases in `hi : i < p.natDegree`. Take `⟨r, hr⟩` from `hint i`. Use `⟨r * b ^ (p.natDegree - i - 1), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_pow, hr, ← hdd, mul_assoc, ← pow_succ']`. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `he : i = p.natDegree`. Substitute `he; exact ⟨1, by rw [hp.coeff_natDegree]; simp⟩` using the available equality.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨0, by rw [coeff_eq_zero_of_natDegree_lt (by omega)]; simp⟩`. Take `⟨q, hq, hqd, hqm⟩` from `lifts_and_degree_eq_and_monic hl ((monic_scaleRoots_iff d).mpr hp)`. Establish `hqn : 0 < q.natDegree`. Rewrite using `[natDegree_eq_of_degree_eq hqd, natDegree_scaleRoots]`. Conclude with `hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr⟩` from `h q hqm hqn`. Use `⟨algebraMap R K r / d, ?_⟩` and prove the remaining obligations. Establish `e1` using `scaleRoots_eval₂_mul (p := p) (RingHom.id K) (algebraMap R K r / d) d`. Simplify using `only [RingHom.id_apply, eval₂_id] at e1`. Rewrite `e1` using `[mul_div_cancel₀ _ hd0, ← hq, Polynomial.eval_map, eval₂_at_apply, hr, map_zero]`.
-
-Conclude with `(mul_eq_zero.mp e1.symm).resolve_left (pow_ne_zero _ hd0)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algClosed_of_aic (R K : Type) [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
     (h : GlobalTheory.EtC.AIC R) : IsAlgClosed K := by
@@ -63,9 +61,9 @@ theorem algClosed_of_aic (R K : Type) [CommRing R] [IsDomain R] [Field K] [Algeb
   exact (mul_eq_zero.mp e1.symm).resolve_left (pow_ne_zero _ hd0)
 
 /- English proof (translation)
-Introduce `Z _ hZ`. Take `⟨x⟩` from `(inferInstance : Nonempty Z)`. Take `⟨_, ⟨V, hV, rfl⟩, hxV, -⟩` from `Z.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Establish `: Nonempty V` using `⟨⟨x, hxV⟩⟩`. Use `functionField_isFractionRing_of_isAffineOpen Z V hV` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `algClosed_of_aic Γ(Z, V) Z.functionField (hZ.2 V hV ⟨x, hxV⟩)`.
+A detailed English derivation is pending.
 -/
 theorem ffAlg : FFAlg := by
   intro Z _ hZ

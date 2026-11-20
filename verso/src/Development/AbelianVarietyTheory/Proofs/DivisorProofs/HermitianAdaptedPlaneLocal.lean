@@ -16,17 +16,15 @@ noncomputable section
 namespace GlobalTheory.MixXUniq
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he e' hheis hinv hpt`. Establish `hstd : IsStd B.ψ` using `hP.base.std`. Set `δ : Fn F n₁ d →ₗ[ℂ] ℂ` to `LinearMap.proj 0`. Establish `hδ : δ ∈ (adeleClass F).adm (Fin n₁ × Fin d)` using `GlobalTheory.EvZeroUniq.proj_zero_mem_adm F _`. Establish `hρ : ∀ u, ∀ Φ ∈ schA F (Fin n × Fin d), M.co.rho B.ψ u Φ ∈ schA F (Fin n × Fin d)` using `fun u Φ hΦ => GlobalTheory.EvZeroUniq.schr_mem_schA _ hstd _ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδe : ∀ (f : Fn F n₁ d) x, f x = δ (M₁.co.rho B.ψ (M₁.co.e.symm (x, 0)) f)` using `fun f x => GlobalTheory.EvZeroUniq.apply_eq_rho _ _ f x`. Establish `hfix : ∀ z, (M₁.co.e z).1 = 0 → ∀ f : Fn F n₁ d, δ (M₁.co.rho B.ψ z f) = δ f` using `fun z hz f => GlobalTheory.EvZeroUniq.rho_apply_zero _ _ f z hz`. Take `⟨Φ₀, hΦ₀, hne⟩` from `GlobalTheory.T.eigen_intertwiner_extension F E σ B n d n₁ d X W X₁ W M M₁ H.ι 1 _ e hP.good hP₁.good he`. Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀⟩ : ∃ x, e Φ₀ x ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at h`. Conclude with `hne (funext h)`. Take `⟨L, hLiso, hLrank, hL⟩` from `GlobalTheory.T.adapted_plane_restriction_is_pair F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁`. Establish `hinvL : ∀ l : Fn F n d →ₗ[ℂ] ℂ, (∀ u ∈ {u : Matrix (Fin n) (Fin d) (AE F E) | ∃ z, u = Matrix.vecMulVec (incV F H.x) z}, ∀ Φ ∈ schA F (Fin n × Fin d), l (M.co.rho B.ψ u Φ) = l Φ) → (∀ z : Matrix (Fin n₁) (Fin d) (AE F E), (M₁.co.e z).1 = 0 → ∀ Φ ∈ schA F (Fin n × Fin d), l (M.co. …`. Introduce `l h1 h2 t w hw φ hφ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu, z, hz, heq⟩` from `hL t w hw`. Rewrite using `[heq φ, h1 u hu _ (hρ _ φ hφ), h2 z hz φ hφ]`. Take `⟨c, hc⟩` from `GlobalTheory.T.adelicStoneVonNeumann_lagrangian_uniqueness F B.ψ hstd (Fin n × Fin d) L hLiso hLrank (δ ∘ₗ e') (hpt 0) (δ ∘ₗ e) (GlobalTheory.T.eigen_intertwiner_good_models F E σ B n d n₁ d X W X₁ W M M₁ H.ι 1 _ e hP.good hP₁.good he δ hδ) (hinvL _ (fun u hu Φ hΦ => by simp only …`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[he.Heisenberg₂ _ Φ₀ hΦ₀, ← hδe]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hx₀⟩`. Use `⟨c, fun Φ hΦ => funext fun x => ?_⟩` and prove the remaining obligations. Establish `h1` using `hc _ (hρ (incM F H.ι * M₁.co.e.symm (x, 0) * (incM F (1 : Matrix (Fin d) (Fin d) E))ᵀ) Φ hΦ)`. Simplify using `only [LinearMap.comp_apply] at h1`. Rewrite `h1` using `[hheis _ Φ hΦ, he.Heisenberg₂ _ Φ hΦ, ← hδe, ← hδe]`.
-
-Simplify using `using h1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

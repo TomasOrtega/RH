@@ -14,20 +14,20 @@ namespace GlobalTheory.PeriodLattice
 variable {P : ReciprocityTheory.ChartRestriction.G.Out.PolAV (Sp ℂ)}
 
 /- English proof (translation)
-The claim follows from `(IsMonHom.monoidHom f (𝟙_ (Over (Sp ℂ)))).map_one`.
+A detailed English derivation is pending.
 -/
 theorem one_comp_of_isMonHom (f : P.A ⟶ P.A) (hf : IsMonHom f) :
     (1 : 𝟙_ (Over (Sp ℂ)) ⟶ P.A) ≫ f = 1 :=
   (IsMonHom.monoidHom f (𝟙_ (Over (Sp ℂ)))).map_one
 
 /- English proof (translation)
-Rewrite using `[Hom.mul_def, Hom.mul_def, ← Category.assoc, comp_lift]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_mul' (x : 𝟙_ (Over (Sp ℂ)) ⟶ P.A) (f g : P.A ⟶ P.A) : x ≫ (f * g) = (x ≫ f) * (x ≫ g) := by
   rw [Hom.mul_def, Hom.mul_def, ← Category.assoc, comp_lift]
 
 /- English proof (translation)
-Simplify using `[Hom.one_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comp_one' (x : 𝟙_ (Over (Sp ℂ)) ⟶ P.A) : x ≫ (1 : P.A ⟶ P.A) = 1 := by
   simp [Hom.one_def]
@@ -37,7 +37,7 @@ section Lift
 variable (u : HolUnif P.A P.L P.g)
 
 /- English proof (translation)
-Establish `h` using `u.ex_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `(mul_eq_left.mp h.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_zero : u.ex 0 = 1 := by
   have h := u.ex_add 0 0
@@ -45,7 +45,7 @@ theorem ex_zero : u.ex 0 = 1 := by
   exact (mul_eq_left.mp h.symm)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [zero_smul, pow_zero, ex_zero]`. Consider the case `succ k ih => rw [succ_nsmul, u.ex_add, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ex_nsmul (k : ℕ) (z : Fin P.g → ℂ) : u.ex (k • z) = u.ex z ^ k := by
   induction k with
@@ -53,11 +53,11 @@ theorem ex_nsmul (k : ℕ) (z : Fin P.g → ℂ) : u.ex (k • z) = u.ex z ^ k :
   | succ k ih => rw [succ_nsmul, u.ex_add, ih, pow_succ]
 
 /- English proof (translation)
-Establish `hmem : ∀ z, (F - F') z ∈ u.Λ`. Introduce `z`. Rewrite using `[← u.ker]`. Establish `h` using `u.ex_add ((F - F') z) (F' z)`. Rewrite `h` using `[LinearMap.sub_apply, sub_add_cancel, hF, hF']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_eq_right.mp h.symm`. Use `haveI := u.discrete`. Set `D : (Fin P.g → ℂ) → u.Λ` to `fun z => ⟨(F - F') z, hmem z⟩`. Establish `hD : Continuous D` using `Continuous.subtype_mk (LinearMap.continuous_of_finiteDimensional _) _`. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : D z = D 0` using `PreconnectedSpace.constant inferInstance hD`. Establish `h2 : (F - F') z = 0`. Use `congrArg Subtype.val h1` as an intermediate fact. Simplify `this` using `[D]`. Conclude with `sub_eq_zero.mp (by simpa using h2)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lift_unique (f : P.A ⟶ P.A) (F F' : (Fin P.g → ℂ) →ₗ[ℂ] (Fin P.g → ℂ))
     (hF : ∀ z, u.ex (F z) = u.ex z ≫ f) (hF' : ∀ z, u.ex (F' z) = u.ex z ≫ f) : F = F' := by
@@ -83,20 +83,20 @@ variable (hl : ∀ f : P.A ⟶ P.A, IsMonHom f → ∃ F : (Fin P.g → ℂ) →
 def lift (f : P.A ⟶ P.A) (hf : IsMonHom f) : (Fin P.g → ℂ) →ₗ[ℂ] (Fin P.g → ℂ) := Classical.choose (hl f hf)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (hl f hf) z`.
+A detailed English derivation is pending.
 -/
 theorem lift_spec (f : P.A ⟶ P.A) (hf : IsMonHom f) (z) : u.ex (lift u hl f hf z) = u.ex z ≫ f :=
   Classical.choose_spec (hl f hf) z
 
 /- English proof (translation)
-The claim follows from `lift_unique u f _ _ (lift_spec u hl f hf) hF`.
+A detailed English derivation is pending.
 -/
 theorem lift_eq (f : P.A ⟶ P.A) (hf : IsMonHom f) (F : (Fin P.g → ℂ) →ₗ[ℂ] (Fin P.g → ℂ))
     (hF : ∀ z, u.ex (F z) = u.ex z ≫ f) : lift u hl f hf = F :=
   lift_unique u f _ _ (lift_spec u hl f hf) hF
 
 /- English proof (translation)
-Rewrite `hz`, the goal using `[← u.ker]`. Rewrite using `[lift_spec, hz, one_comp_of_isMonHom f hf]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_mem (f : P.A ⟶ P.A) (hf : IsMonHom f) {z} (hz : z ∈ u.Λ) : lift u hl f hf z ∈ u.Λ := by
   rw [← u.ker] at hz ⊢
@@ -122,7 +122,7 @@ variable (u : HolUnif P.A P.L P.g)
   {O : Type} [CommRing O] (act : OAct O P.A)
 
 /- English proof (translation)
-Establish `h` using `act.add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.mp h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_zero : act.act 0 = 1 := by
   have h := act.add 0 0
@@ -168,7 +168,7 @@ variable (u : HolUnif P.A P.L P.g)
   (hl : ∀ f : P.A ⟶ P.A, IsMonHom f → ∃ F : (Fin P.g → ℂ) →ₗ[ℂ] (Fin P.g → ℂ), ∀ z, u.ex (F z) = u.ex z ≫ f)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, Module.End.one_apply, Function.iterate_zero, id, Category.comp_id]`. Consider the case `succ k ih => rw [pow_succ', Module.End.mul_apply, lift_spec, ih, Function.iterate_succ_apply', Category.assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem lift_pow_spec (θ : P.A ⟶ P.A) (hθ : IsMonHom θ) (k : ℕ) (z : Fin P.g → ℂ) :
     u.ex ((lift u hl θ hθ ^ k) z) = u.ex z ≫ (fun f : P.A ⟶ P.A => f ≫ θ)^[k] (𝟙 P.A) := by
@@ -178,33 +178,29 @@ theorem lift_pow_spec (θ : P.A ⟶ P.A) (hθ : IsMonHom θ) (k : ℕ) (z : Fin 
 
 include u hl in
 /- English proof (translation)
-Use `letI inst : Module (𝓞 E) u.Λ := Module.compHom u.Λ (ringAct u hl act)`. Establish `hsmul : ∀ (c : 𝓞 E) (x : u.Λ), ((c • x : u.Λ) : Fin P.g → ℂ) = lift u hl (act.act c) (act.hom c) x` using `fun _ _ => rfl`. Establish `hcomm : ∀ c, (lift u hl θ hθ).comp (lift u hl (act.act c) (act.hom c)) = (lift u hl (act.act c) (act.hom c)).comp (lift u hl θ hθ)` using `fun c => lift_unique u (act.act c ≫ θ) _ _ (fun z => by rw [LinearMap.comp_apply, lift_spec, lift_spec, Category.assoc]) (fun z => by rw [LinearMap.comp_apply, lift_spec, lift_spec, Category.assoc, hc])`. Set `F : u.Λ →ₗ[𝓞 E] u.Λ` to `{ toFun := liftZ u hl θ hθ map_add' := map_add _ map_smul' := fun c x => Subtype.ext (by`. Simplify using `only [RingHom.id_apply, hsmul, liftZ_val]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Conclude with `(LinearMap.congr_fun (hcomm c) x : _)) }`. Establish `hFval : ∀ x : u.Λ, ((F x : u.Λ) : Fin P.g → ℂ) = lift u hl θ hθ x` using `fun _ => rfl`. Establish `hn' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr hn.ne'`. Set `ψ : u.Λ → (𝟙_ (Over (Sp ℂ)) ⟶ P.A)` to `fun a => u.ex ((n : ℂ)⁻¹ • (a : Fin P.g → ℂ))`. Establish `hψlift : ∀ (f : P.A ⟶ P.A) (hf : IsMonHom f) (a : u.Λ), u.ex ((n : ℂ)⁻¹ • lift u hl f hf a) = ψ a ≫ f` using `fun f hf a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_smul, lift_spec]`. Use `haveI := u.discrete`. Use `haveI : IsZLattice ℝ u.Λ := ⟨u.full⟩`. Use `haveI hZ : Module.Finite ℤ u.Λ := ZLattice.module_finite ℝ u.Λ`. Use `⟨u.Λ, inferInstance, inst, F, ψ, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result.
 
-Conclude with `Module.Finite.of_restrictScalars_finite ℤ (𝓞 E) u.Λ`. Use `Module.IsTorsionFree.of_smul_eq_zero fun c x h => ?_` and prove the remaining obligations. Distinguish the cases in `hc0 : c = 0`. Conclude with `Or.inl hc0`. Use `right`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨r, hr⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {c}))`. Establish `hm : Ideal.absNorm (Ideal.span {c}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hc0`. Establish `h1 : (Ideal.absNorm (Ideal.span {c}) : 𝓞 E) • x = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hr, mul_smul, h, smul_zero]`. Rewrite `h1` using `[Nat.cast_smul_eq_nsmul]`. Establish `h2` using `congrArg Subtype.val h1`. Rewrite `h2` using `[AddSubmonoidClass.coe_nsmul, ZeroMemClass.coe_zero, ← Nat.cast_smul_eq_nsmul ℂ]`. Conclude with `Subtype.ext ((smul_eq_zero.mp h2).resolve_left (Nat.cast_ne_zero.mpr hm))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Establish `hpow : lift u hl θ hθ ^ N = 1`. Rewrite using `[lift_unique u (𝟙 P.A) (lift u hl θ hθ ^ N) 1 (fun z => by rw [lift_pow_spec, hN]) (fun z => by rw [Module.End.one_apply, Category.comp_id])]`. Establish `hit : ∀ (k : ℕ) (x : u.Λ), (((F ^ k) x : u.Λ) : Fin P.g → ℂ) = (lift u hl θ hθ ^ k) x`. Introduce `k`. Proceed by induction on `k with`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero => intro x`. Both sides reduce to the same expression. Consider the case `succ k ih => intro x`. Rewrite using `[pow_succ', Module.End.mul_apply, hFval, ih, pow_succ', Module.End.mul_apply]`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hit, hpow]`. Both sides reduce to the same expression. Introduce `a b`. Simplify using `only [ψ, Submodule.coe_add, smul_add, u.ex_add]`. Introduce `c a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [ψ]`. Rewrite using `[hsmul, hψlift]`. Introduce `a`. Simplify using `only [ψ]`. Rewrite using `[u.ker]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨⟨_, h⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[AddSubmonoidClass.coe_nsmul, ← Nat.cast_smul_eq_nsmul ℂ, smul_inv_smul₀ hn']`. Introduce and unpack `⟨b, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddSubmonoidClass.coe_nsmul, ← Nat.cast_smul_eq_nsmul ℂ, inv_smul_smul₀ hn']`. Conclude with `b.2`. Introduce `q hq`. Take `⟨z, rfl⟩` from `u.ex_onto q`. Establish `hz : (n : ℂ) • z ∈ u.Λ`.
-
-Rewrite using `[← u.ker, Nat.cast_smul_eq_nsmul, ex_nsmul, hq]`. Use `⟨⟨_, hz⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [ψ]`. Rewrite using `[inv_smul_smul₀ hn']`. Introduce `a`.
-
-Simplify using `only [ψ]`. Rewrite using `[hFval, hψlift]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main_of_unif (E : Type) [Field E] [NumberField E] (act : OAct (𝓞 E) P.A) (θ : P.A ⟶ P.A) (N n : ℕ)
     (hθ : IsMonHom θ) (hN : (fun f : P.A ⟶ P.A => f ≫ θ)^[N] (𝟙 P.A) = 𝟙 P.A)
@@ -293,7 +289,7 @@ end Main
 end GlobalTheory.PeriodLattice
 
 /- English proof (translation)
-Introduce `E _ _ P act θ N n hθ _ hN hc hn`. Take `⟨rig, hrig⟩` from `P.rigid`. Take `⟨u, -, -, -, -, -, -, -, hl, -⟩` from `GlobalTheory.thetaUnifAV_all P rig hrig`. Conclude with `GlobalTheory.PeriodLattice.main_of_unif u hl E act θ N n hθ hN hc hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.periodLattice_of_finiteOrder : ∀ (E : Type) [Field E] [NumberField E] (P : ReciprocityTheory.ChartRestriction.G.Out.PolAV (Sp ℂ)) (act : OAct (𝓞 E) P.A) (θ : P.A ⟶ P.A) (N n : ℕ), IsMonHom θ → 0 < N → (fun f : P.A ⟶ P.A => f ≫ θ)^[N] (𝟙 P.A) = 𝟙 P.A → (∀ a, act.act a ≫ θ = θ ≫ act.act a) → 0 < n → ∃ (Λ : Type) (_ : AddCommGroup Λ) (_ : Module (𝓞 E) Λ) (F : Λ →ₗ[𝓞 E] Λ) (ψ : Λ → (𝟙_ (Over (Sp ℂ)) ⟶ P.A)), Module.Finite (𝓞 E) Λ ∧ Module.IsTorsionFree (𝓞 E) Λ ∧ F ^ N = 1 ∧ (∀ a b, ψ (a + b) = ψ a * ψ b) ∧ (∀ (c : 𝓞 E) a, ψ (c • a) = ψ a ≫ act.act c) ∧ (∀ a, ψ a = 1 ↔ ∃ b, a = n • b) ∧ (∀ q : 𝟙_ (Over (Sp ℂ)) ⟶ P.A, q ^ n = 1 → ∃ a, ψ a = q) ∧ ∀ a, ψ (F a) = ψ a ≫ θ := by
   intro E _ _ P act θ N n hθ _ hN hc hn

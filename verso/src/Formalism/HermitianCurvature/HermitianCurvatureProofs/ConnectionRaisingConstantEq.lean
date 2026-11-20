@@ -16,7 +16,7 @@ section Proj
 variable {P : M.Par} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] (κ : (M.Ty P → ℂ) →ₐ[ℂ] A)
 
 /- English proof (translation)
-Unfold `proj`. Rewrite using `[← map_mul]`. Use `split_ifs with h`. Apply the tactic sequence `subst h; congr 1; funext x; by_cases hx : x = ρ <;> simp [hx]`. Apply the tactic sequence `rw [← map_zero κ]; congr 1; funext x; by_cases hx : x = ρ <;> by_cases hy : x = σ <;> simp_all`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem pj_mul (ρ σ : M.Ty P) : proj κ ρ * proj κ σ = if ρ = σ then proj κ ρ else 0 := by
   unfold proj
@@ -26,76 +26,76 @@ theorem pj_mul (ρ σ : M.Ty P) : proj κ ρ * proj κ σ = if ρ = σ then proj
   · rw [← map_zero κ]; congr 1; funext x; by_cases hx : x = ρ <;> by_cases hy : x = σ <;> simp_all
 
 /- English proof (translation)
-Simplify using `[pj_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pj_idem (ρ : M.Ty P) : proj κ ρ * proj κ ρ = proj κ ρ := by simp [pj_mul]
 
 /- English proof (translation)
-Simplify using `[pj_mul, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pj_orth {ρ σ : M.Ty P} (h : ρ ≠ σ) : proj κ ρ * proj κ σ = 0 := by simp [pj_mul, h]
 
 /- English proof (translation)
-Unfold `proj`. Rewrite using `[← map_sum, ← map_one κ]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sum_pj : ∑ ρ, proj κ ρ = 1 := by
   unfold proj
   rw [← map_sum, ← map_one κ]; congr 1; funext x; simp
 
 /- English proof (translation)
-Unfold `proj`. Repeatedly rewrite using `[← map_smul, ← map_sum]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem kap_eq (f : M.Ty P → ℂ) : κ f = ∑ ρ, f ρ • proj κ ρ := by
   unfold proj
   simp_rw [← map_smul, ← map_sum]; congr 1; funext x; simp
 
 /- English proof (translation)
-Unfold `proj`. Apply the tactic sequence `rw [← map_mul, ← map_smul]; congr 1; funext x; by_cases hx : x = ρ <;> simp [hx]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kap_mul_pj (f : M.Ty P → ℂ) (ρ : M.Ty P) : κ f * proj κ ρ = f ρ • proj κ ρ := by
   unfold proj
   rw [← map_mul, ← map_smul]; congr 1; funext x; by_cases hx : x = ρ <;> simp [hx]
 
 /- English proof (translation)
-Unfold `proj`. Apply the tactic sequence `rw [← map_mul, ← map_smul]; congr 1; funext x; by_cases hx : x = ρ <;> simp [hx]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pj_mul_kap (f : M.Ty P → ℂ) (ρ : M.Ty P) : proj κ ρ * κ f = f ρ • proj κ ρ := by
   unfold proj
   rw [← map_mul, ← map_smul]; congr 1; funext x; by_cases hx : x = ρ <;> simp [hx]
 
 /- English proof (translation)
-Rewrite using `[← map_mul, ← map_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kap_comm (f g : M.Ty P → ℂ) : κ f * κ g = κ g * κ f := by
   rw [← map_mul, ← map_mul, mul_comm]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem decomp (X : A) : X = ∑ σ, ∑ τ, proj κ σ * X * proj κ τ := by
   calc X = (∑ σ, proj κ σ) * X * (∑ τ, proj κ τ) := by rw [sum_pj, one_mul, mul_one]
     _ = _ := by rw [Finset.sum_mul, Finset.sum_mul]; simp_rw [Finset.mul_sum]
 
 /- English proof (translation)
-Rewrite using `[decomp κ X, decomp κ Y]`. Repeatedly rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem eq_of_blocks {X Y : A} (h : ∀ σ τ, proj κ σ * X * proj κ τ = proj κ σ * Y * proj κ τ) : X = Y := by
   rw [decomp κ X, decomp κ Y]; simp_rw [h]
 
 /- English proof (translation)
-Rewrite using `[← mul_one X, ← mul_one Y, ← sum_pj κ, Finset.mul_sum, Finset.mul_sum]`. Repeatedly rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem eq_of_rblocks {X Y : A} (h : ∀ τ, X * proj κ τ = Y * proj κ τ) : X = Y := by
   rw [← mul_one X, ← mul_one Y, ← sum_pj κ, Finset.mul_sum, Finset.mul_sum]; simp_rw [h]
 
 /- English proof (translation)
-Unfold `xA xiA`. Rewrite using `[← map_mul, ← map_one κ]`. Use `congr 1`. Use function extensionality and compare the values at `ρ`. Simplify using `[h ρ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem xA_xiA {Y : ℂ} (h : Reg P Y) : xA κ Y * xiA κ Y = 1 := by
   unfold xA xiA; rw [← map_mul, ← map_one κ]; congr 1; funext ρ; simp [h ρ]
 
 /- English proof (translation)
-Unfold `xA xiA`. Rewrite using `[← map_mul, ← map_one κ]`. Use `congr 1`. Use function extensionality and compare the values at `ρ`. Simplify using `[h ρ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem xiA_xA {Y : ℂ} (h : Reg P Y) : xiA κ Y * xA κ Y = 1 := by
   unfold xA xiA; rw [← map_mul, ← map_one κ]; congr 1; funext ρ; simp [h ρ]
@@ -111,34 +111,34 @@ def ev (p : A[X]) (Y : ℂ) : A := p.eval₂ (RingHom.id A) (algebraMap ℂ A Y)
 def IsPF (f : ℂ → A) : Prop := ∃ p : A[X], ∀ Y, f Y = ev p Y
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨C a, fun Y => by simp [ev]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPF_const (a : A) : IsPF fun _ : ℂ => a := ⟨C a, fun Y => by simp [ev]⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hf`. Take `⟨q, hq⟩` from `hg`. Conclude with `⟨p + q, fun Y => by simp [ev, hp, hq]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isPF_add {f g : ℂ → A} (hf : IsPF f) (hg : IsPF g) : IsPF fun Y => f Y + g Y := by
   obtain ⟨p, hp⟩ := hf; obtain ⟨q, hq⟩ := hg
   exact ⟨p + q, fun Y => by simp [ev, hp, hq]⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hf`. Conclude with `⟨-p, fun Y => by simp [ev, hp]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isPF_neg {f : ℂ → A} (hf : IsPF f) : IsPF fun Y => -f Y := by
   obtain ⟨p, hp⟩ := hf
   exact ⟨-p, fun Y => by simp [ev, hp]⟩
 
 /- English proof (translation)
-Simplify `isPF_add hf (isPF_neg hg)` using `[sub_eq_add_neg]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isPF_sub {f g : ℂ → A} (hf : IsPF f) (hg : IsPF g) : IsPF fun Y => f Y - g Y := by
   simpa [sub_eq_add_neg] using isPF_add hf (isPF_neg hg)
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hf`. Take `⟨q, hq⟩` from `hg`. Use `⟨p * q, fun Y => ?_⟩` and prove the remaining obligations. Use `show f Y * g Y = _`. Rewrite using `[hp, hq, ev, ev, ev, eval₂_mul_noncomm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Conclude with `(Algebra.commutes Y _).symm`.
+A detailed English derivation is pending.
 -/
 theorem isPF_mul {f g : ℂ → A} (hf : IsPF f) (hg : IsPF g) : IsPF fun Y => f Y * g Y := by
   obtain ⟨p, hp⟩ := hf; obtain ⟨q, hq⟩ := hg
@@ -148,16 +148,16 @@ theorem isPF_mul {f g : ℂ → A} (hf : IsPF f) (hg : IsPF g) : IsPF fun Y => f
   intro k; exact (Algebra.commutes Y _).symm
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.IsPFSum.isPF_sum s hf`.
+A detailed English derivation is pending.
 -/
 theorem isPF_sum {ι : Type} (s : Finset ι) {f : ι → ℂ → A} (hf : ∀ i ∈ s, IsPF (f i)) :
     IsPF fun Y => ∑ i ∈ s, f i Y :=
   _root_.UpperTheory.Reformulated.B.IsPFSum.isPF_sum s hf
 
 /- English proof (translation)
-Use `⟨Q.map (algebraMap ℂ A) * C a, fun Y => ?_⟩` and prove the remaining obligations. Rewrite using `[ev, eval₂_mul_noncomm, eval₂_map, eval₂_C]`. Simplify using `only [RingHom.id_comp, Algebra.smul_def]`. Use `congr 1`. Rewrite using `[← Polynomial.eval₂_at_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Conclude with `(Algebra.commutes Y _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isPF_cpoly (Q : ℂ[X]) (a : A) : IsPF fun Y => Q.eval Y • a := by
   refine ⟨Q.map (algebraMap ℂ A) * C a, fun Y => ?_⟩
@@ -168,29 +168,29 @@ theorem isPF_cpoly (Q : ℂ[X]) (a : A) : IsPF fun Y => Q.eval Y • a := by
   · intro k; exact (Algebra.commutes Y _).symm
 
 /- English proof (translation)
-Use `isPF_mul (isPF_cpoly Q (1 : A)) hf` as an intermediate fact. Simplify `this` using `[smul_mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isPF_smul_fun {f : ℂ → A} (Q : ℂ[X]) (hf : IsPF f) : IsPF fun Y => Q.eval Y • f Y := by
   have := isPF_mul (isPF_cpoly Q (1 : A)) hf
   simpa [smul_mul_assoc] using this
 
 /- English proof (translation)
-Simplify using `using isPF_cpoly (X : ℂ[X]) a`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isPF_id_smul (a : A) : IsPF fun Y => Y • a := by simpa using isPF_cpoly (X : ℂ[X]) a
 
 /- English proof (translation)
-Simplify `isPF_cpoly Q (1 : A)` using `[Algebra.algebraMap_eq_smul_one]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isPF_algebraMap (Q : ℂ[X]) : IsPF fun Y => algebraMap ℂ A (Q.eval Y) := by
   simpa [Algebra.algebraMap_eq_smul_one] using isPF_cpoly Q (1 : A)
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hf`. Introduce `Y`. Rewrite using `[hp, ← Module.forall_dual_apply_eq_zero_iff ℂ]`. Introduce `φ`. Set `q : ℂ[X]` to `p.sum fun n a => monomial n (φ a)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hq : ∀ Z, q.eval Z = φ (ev p Z)`. Introduce `Z`. Simplify using `only [q, ev, eval₂_eq_sum, Polynomial.sum, eval_finsetSum, eval_monomial, map_sum, RingHom.id_apply]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[← map_pow, ← Algebra.commutes, ← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: q = 0`. Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Use `hS.mono fun Z hZ => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, IsRoot, hq, ← hp, h0 Z hZ, map_zero]`. Rewrite using `[← hq, this, eval_zero]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPF_zero {f : ℂ → A} (hf : IsPF f) {S : Set ℂ} (hS : S.Infinite) (h0 : ∀ Y ∈ S, f Y = 0) :
     ∀ Y, f Y = 0 := by
@@ -211,7 +211,7 @@ theorem isPF_zero {f : ℂ → A} (hf : IsPF f) {S : Set ℂ} (hS : S.Infinite) 
   rw [← hq, this, eval_zero]
 
 /- English proof (translation)
-Use `isPF_zero (isPF_sub hf hg) hS (fun Y hY => by simp [h0 Y hY])` as an intermediate fact. Introduce `Y`. Conclude with `sub_eq_zero.mp (this Y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isPF_eq {f g : ℂ → A} (hf : IsPF f) (hg : IsPF g) {S : Set ℂ} (hS : S.Infinite)
     (h0 : ∀ Y ∈ S, f Y = g Y) : ∀ Y, f Y = g Y := by
@@ -219,13 +219,13 @@ theorem isPF_eq {f g : ℂ → A} (hf : IsPF f) (hg : IsPF g) {S : Set ℂ} (hS 
   intro Y; exact sub_eq_zero.mp (this Y)
 
 /- English proof (translation)
-Use `h.infinite_compl` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cofinite_infinite {S : Set ℂ} (h : Sᶜ.Finite) : S.Infinite := by
   have := h.infinite_compl; simpa using this
 
 /- English proof (translation)
-Establish `: Set.range (fun x : ℝ => (x : ℂ)) ⊆ {Y : ℂ | star Y = Y}`. Introduce and unpack `_ ⟨x, rfl⟩`. Simplify using `[Complex.conj_ofReal]`. Conclude with `(Set.infinite_range_of_injective Complex.ofReal_injective).mono this`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem real_infinite : {Y : ℂ | star Y = Y}.Infinite := by
   have : Set.range (fun x : ℝ => (x : ℂ)) ⊆ {Y : ℂ | star Y = Y} := by
@@ -239,16 +239,16 @@ section Types
 open Formalism.FourierDecayAlt.M
 
 /- English proof (translation)
-Rewrite using `[Mx3.rho_eq P π _ ⟨by omega, by omega⟩]; congr 3`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_succ (P : M.Par) (π : M.Ty P) (i : Fin (P.k - 1)) :
     M.rho P π ((i : ℕ) + 1) = P.lo ((i : ℕ) + 1) + (((π i : Fin _) : ℕ) : ℝ) := by
   rw [Mx3.rho_eq P π _ ⟨by omega, by omega⟩]; congr 3
 
 /- English proof (translation)
-Establish `hI` using `Mx3.tyInterlaces P hP π`. Establish `hI'` using `Mx3.tyInterlaces P hP π'`. Break down `lt_trichotomy i j with hij | hij | hij` into its components or cases. Establish `o` using `(Mx3.ord P.k P.u P.u' (M.rho P π') hI' i hi).2.2.2 j hj hij`. Establish `b` using `hI i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear relations using `[o.1, b.2.2.1]`. Conclude with `hij`. Establish `o` using `(Mx3.ord P.k P.u P.u' (M.rho P π) hI j hj).2.2.2 i hi hij`. Establish `b` using `hI' j hj`. Combine the linear relations using `[o.1, b.2.2.1]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem idx_eq (P : M.Par) (hP : P.OK) (π π' : M.Ty P) {i j : ℕ} (hi : i ∈ Icc 1 (P.k - 1))
     (hj : j ∈ Icc 1 (P.k - 1)) (h : M.rho P π i = M.rho P π' j) : i = j := by
@@ -264,7 +264,7 @@ theorem idx_eq (P : M.Par) (hP : P.OK) (π π' : M.Ty P) {i j : ℕ} (hi : i ∈
     linarith [o.1, b.2.2.1]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply `Fin.ext` to reduce the goal to its premises. Use `h ((i : ℕ) + 1) (Finset.mem_Icc.2 ⟨by omega, by omega⟩)` as an intermediate fact. Rewrite `this` using `[rho_succ, rho_succ]`. Conclude with `add_left_cancel this` after adjusting the coercions.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ty_ext (P : M.Par) {π π' : M.Ty P} (h : ∀ i ∈ Icc 1 (P.k - 1), M.rho P π i = M.rho P π' i) : π = π' := by
   funext i; apply Fin.ext
@@ -273,9 +273,9 @@ theorem ty_ext (P : M.Par) {π π' : M.Ty P} (h : ∀ i ∈ Icc 1 (P.k - 1), M.r
   exact_mod_cast add_left_cancel this
 
 /- English proof (translation)
-Introduce `i`. Use `h ((i : ℕ) + 1) (Finset.mem_Icc.2 ⟨by omega, by omega⟩)` as an intermediate fact. Rewrite `this` using `[rho_succ, rho_succ]`. Use `split_ifs at this with hl`. Simplify using `only [hl, if_true]; exact_mod_cast (by linarith : ((((π' i : Fin _) : ℕ) : ℝ)) = (((π i : Fin _) : ℕ) : ℝ) + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hl, if_false, add_zero]; exact_mod_cast (by linarith : ((((π' i : Fin _) : ℕ) : ℝ)) = (((π i : Fin _) : ℕ) : ℝ))`.
+A detailed English derivation is pending.
 -/
 theorem up_of_rho (P : M.Par) {l : ℕ} {π π' : M.Ty P}
     (h : ∀ i ∈ Icc 1 (P.k - 1), M.rho P π' i = M.rho P π i + if i = l then 1 else 0) : M.Up P l π π' := by
@@ -287,13 +287,13 @@ theorem up_of_rho (P : M.Par) {l : ℕ} {π π' : M.Ty P}
   · simp only [hl, if_false, add_zero]; exact_mod_cast (by linarith : ((((π' i : Fin _) : ℕ) : ℝ)) = (((π i : Fin _) : ℕ) : ℝ))
 
 /- English proof (translation)
-The claim follows from `Mx3.rhoUp P l π π' h i hi`.
+A detailed English derivation is pending.
 -/
 theorem up_rho (P : M.Par) {l : ℕ} {π π' : M.Ty P} (h : M.Up P l π π') (i : ℕ) (hi : i ∈ Icc 1 (P.k - 1)) :
     M.rho P π' i = M.rho P π i + if i = l then 1 else 0 := Mx3.rhoUp P l π π' h i hi
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Use `h ⟨l - 1, by have := Finset.mem_Icc.1 hl; omega⟩` as an intermediate fact. Establish `_hl'` using `Finset.mem_Icc.1 hl`. Apply the tactic sequence `simp only at this; split_ifs at this with h' <;> omega`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem up_ne (P : M.Par) {l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) {π π' : M.Ty P} (h : M.Up P l π π') : π ≠ π' := by
   rintro rfl
@@ -302,21 +302,21 @@ theorem up_ne (P : M.Par) {l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) {π π' : M.Ty 
   simp only at this; split_ifs at this with h' <;> omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[h i, h' i]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem up_right (P : M.Par) {l : ℕ} {π σ σ' : M.Ty P} (h : M.Up P l π σ) (h' : M.Up P l π σ') : σ = σ' := by
   funext i; apply Fin.ext; rw [h i, h' i]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply `Fin.ext` to reduce the goal to its premises. Use `h i` as an intermediate fact. Use `h' i` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem up_left (P : M.Par) {l : ℕ} {π π' σ : M.Ty P} (h : M.Up P l π σ) (h' : M.Up P l π' σ) : π = π' := by
   funext i; apply Fin.ext; have := h i; have := h' i; omega
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `a` using `Finset.mem_Icc.1 hl`. Establish `e1` using `h ⟨l - 1, by omega⟩`. Establish `e2` using `h' ⟨l - 1, by omega⟩`. Simplify using `only at e1 e2`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs at e1 e2 <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem up_idx (P : M.Par) {l l' : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) (hl' : l' ∈ Icc 1 (P.k - 1)) {π σ : M.Ty P}
     (h : M.Up P l π σ) (h' : M.Up P l' π σ) : l = l' := by
@@ -328,9 +328,9 @@ theorem up_idx (P : M.Par) {l l' : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) (hl' : l' �
   split_ifs at e1 e2 <;> omega
 
 /- English proof (translation)
-Establish `a` using `Finset.mem_Icc.1 hi`. Establish `b` using `Finset.mem_Icc.1 hj`. Establish `c` using `Finset.mem_Icc.1 hl`. Establish `e1` using `h1 ⟨l - 1, by omega⟩; have e2 := h2 ⟨l - 1, by omega⟩; have e3 := h3 ⟨l - 1, by omega⟩`. Establish `f1` using `h1 ⟨i - 1, by omega⟩; have f2 := h2 ⟨i - 1, by omega⟩; have f3 := h3 ⟨i - 1, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g1` using `h1 ⟨j - 1, by omega⟩; have g2 := h2 ⟨j - 1, by omega⟩; have g3 := h3 ⟨j - 1, by omega⟩`. Simplify using `only at e1 e2 e3 f1 f2 f3 g1 g2 g3`. Apply the tactic sequence `split_ifs at e1 e2 e3 f1 f2 f3 g1 g2 g3 <;> omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem not_up_up (P : M.Par) {i j l : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) (hj : j ∈ Icc 1 (P.k - 1))
     (hl : l ∈ Icc 1 (P.k - 1)) {τ μ σ : M.Ty P} (h1 : M.Up P i τ μ) (h2 : M.Up P j μ σ) (h3 : M.Up P l τ σ) : False := by
@@ -342,9 +342,9 @@ theorem not_up_up (P : M.Par) {i j l : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) (hj : j
   split_ifs at e1 e2 e3 f1 f2 f3 g1 g2 g3 <;> omega
 
 /- English proof (translation)
-Establish `a` using `Finset.mem_Icc.1 hi`. Establish `b` using `Finset.mem_Icc.1 hj`. Establish `c` using `Finset.mem_Icc.1 hl`. Establish `e1` using `h1 ⟨l - 1, by omega⟩; have e2 := h2 ⟨l - 1, by omega⟩; have e3 := h3 ⟨l - 1, by omega⟩`. Establish `f1` using `h1 ⟨i - 1, by omega⟩; have f2 := h2 ⟨i - 1, by omega⟩; have f3 := h3 ⟨i - 1, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g1` using `h1 ⟨j - 1, by omega⟩; have g2 := h2 ⟨j - 1, by omega⟩; have g3 := h3 ⟨j - 1, by omega⟩`. Simplify using `only at e1 e2 e3 f1 f2 f3 g1 g2 g3`. Apply the tactic sequence `split_ifs at e1 e2 e3 f1 f2 f3 g1 g2 g3 <;> omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem not_up_down (P : M.Par) {i j l : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) (hj : j ∈ Icc 1 (P.k - 1))
     (hl : l ∈ Icc 1 (P.k - 1)) {τ μ σ : M.Ty P} (h1 : M.Up P i τ μ) (h2 : M.Up P j σ μ) (h3 : M.Up P l τ σ) : False := by
@@ -356,9 +356,9 @@ theorem not_up_down (P : M.Par) {i j l : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) (hj :
   split_ifs at e1 e2 e3 f1 f2 f3 g1 g2 g3 <;> omega
 
 /- English proof (translation)
-Establish `a` using `Finset.mem_Icc.1 hi`. Establish `b` using `Finset.mem_Icc.1 hj`. Establish `c` using `Finset.mem_Icc.1 hl`. Establish `e1` using `h1 ⟨l - 1, by omega⟩; have e2 := h2 ⟨l - 1, by omega⟩; have e3 := h3 ⟨l - 1, by omega⟩`. Establish `f1` using `h1 ⟨i - 1, by omega⟩; have f2 := h2 ⟨i - 1, by omega⟩; have f3 := h3 ⟨i - 1, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g1` using `h1 ⟨j - 1, by omega⟩; have g2 := h2 ⟨j - 1, by omega⟩; have g3 := h3 ⟨j - 1, by omega⟩`. Simplify using `only at e1 e2 e3 f1 f2 f3 g1 g2 g3`. Apply the tactic sequence `split_ifs at e1 e2 e3 f1 f2 f3 g1 g2 g3 <;> omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem not_down_up (P : M.Par) {i j l : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) (hj : j ∈ Icc 1 (P.k - 1))
     (hl : l ∈ Icc 1 (P.k - 1)) {τ μ σ : M.Ty P} (h1 : M.Up P i μ τ) (h2 : M.Up P j μ σ) (h3 : M.Up P l τ σ) : False := by
@@ -377,34 +377,34 @@ variable {P : M.Par} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] {L0 : PreL
   {QQ : ℂ → Matrix (Fin 2) (Fin 2) A} {κ : (M.Ty P → ℂ) →ₐ[ℂ] A}
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.2.2.1 f`.
+A detailed English derivation is pending.
 -/
 theorem H_kstar (h : SHyp P L0 QQ κ) (f : M.Ty P → ℂ) : star (κ f) = κ fun ρ => star (f ρ) :=
   h.2.2.2.2.2.2.1 f
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.2.2.2.1 f`.
+A detailed English derivation is pending.
 -/
 theorem H_kops (h : SHyp P L0 QQ κ) (f : M.Ty P → ℂ) : ∀ g ∈ L0.ops, Commute (κ f) g :=
   h.2.2.2.2.2.2.2.1 f
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem H_start (h : SHyp P L0 QQ κ) : Wd.IsStart QQ (M.qC P) := h.2.2.2.1
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.2.1 Y`.
+A detailed English derivation is pending.
 -/
 theorem diagonal_entry_hypothesis (h : SHyp P L0 QQ κ) (Y : ℂ) : QQ Y 1 1 = L0.GG * xA κ Y := h.2.2.2.2.2.1 Y
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.1 Y Y'`.
+A detailed English derivation is pending.
 -/
 theorem lower_left_commute_self (h : SHyp P L0 QQ κ) (Y Y' : ℂ) : Commute (QQ Y 1 0) (QQ Y' 1 0) := h.2.2.2.2.1 Y Y'
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.2.2.2.2.2.1 Y`.
+A detailed English derivation is pending.
 -/
 theorem levelSubgroupAtPlace (h : SHyp P L0 QQ κ) (Y : ℂ) :
     QQ Y 1 0 * L0.ζ = L0.ζ * QQ Y 1 0 - QQ Y 1 1 ∧ QQ Y 1 1 * L0.ζ = L0.ζ * QQ Y 1 1 ∧
@@ -413,15 +413,15 @@ theorem levelSubgroupAtPlace (h : SHyp P L0 QQ κ) (Y : ℂ) :
   h.2.2.2.2.2.2.2.2.2.1 Y
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.2.2.2.2.2.2 Y a b`.
+A detailed English derivation is pending.
 -/
 theorem H_crd (h : SHyp P L0 QQ κ) (Y : ℂ) (a b : Fin 2) : ∀ g ∈ L0.crdOps, Commute (QQ Y a b) g :=
   h.2.2.2.2.2.2.2.2.2.2 Y a b
 
 /- English proof (translation)
-Take `⟨n, C, hC, -⟩` from `h.2.2.2.2.2.2.2.2.1`. Use `⟨∑ j ∈ Finset.range n, Polynomial.monomial j (C a b j), fun Y => ?_⟩` and prove the remaining obligations. Use `show QQ Y a b = _`. Rewrite using `[hC, ev, Polynomial.eval₂_finsetSum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.eval₂_monomial, RingHom.id_apply, ← map_pow, ← Algebra.commutes, Algebra.smul_def]`.
+A detailed English derivation is pending.
 -/
 theorem H_poly (h : SHyp P L0 QQ κ) (a b : Fin 2) : IsPF fun Y => QQ Y a b := by
   obtain ⟨n, C, hC, -⟩ := h.2.2.2.2.2.2.2.2.1
@@ -432,40 +432,40 @@ theorem H_poly (h : SHyp P L0 QQ κ) (a b : Fin 2) : IsPF fun Y => QQ Y a b := b
   rw [Polynomial.eval₂_monomial, RingHom.id_apply, ← map_pow, ← Algebra.commutes, Algebra.smul_def]
 
 /- English proof (translation)
-Establish `e : ∀ w : ℂ, algebraMap ℂ A w = κ (algebraMap ℂ (M.Ty P → ℂ) w)` using `fun w => (κ.commutes w).symm`. Rewrite using `[e, e, H_kstar h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem H_alg_star (h : SHyp P L0 QQ κ) (z : ℂ) : star (algebraMap ℂ A z) = algebraMap ℂ A (star z) := by
   have e : ∀ w : ℂ, algebraMap ℂ A w = κ (algebraMap ℂ (M.Ty P → ℂ) w) := fun w => (κ.commutes w).symm
   rw [e, e, H_kstar h]; rfl
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, star_mul, H_alg_star h, ← Algebra.commutes, ← Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem H_smul_star (h : SHyp P L0 QQ κ) (z : ℂ) (a : A) : star (z • a) = star z • star a := by
   rw [Algebra.smul_def, star_mul, H_alg_star h, ← Algebra.commutes, ← Algebra.smul_def]
 
 /- English proof (translation)
-Apply the tactic sequence `unfold proj; rw [H_kstar h]; congr 1; funext x; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem H_pj_star (h : SHyp P L0 QQ κ) (ρ : M.Ty P) : star (proj κ ρ) = proj κ ρ := by
   unfold proj; rw [H_kstar h]; congr 1; funext x; split_ifs <;> simp
 
 /- English proof (translation)
-Use `congrFun (congrFun ((H_start h).herm Y hY) b) a` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem H_herm (h : SHyp P L0 QQ κ) {Y : ℂ} (hY : star Y = Y) (a b : Fin 2) : star (QQ Y a b) = QQ Y b a := by
   have := congrFun (congrFun ((H_start h).herm Y hY) b) a
   simpa [Matrix.conjTranspose_apply] using this
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.rtt_relation_entries ℂ A QQ v u ((H_start h).rtt v u) i j k l`.
+A detailed English derivation is pending.
 -/
 theorem H_rtt (h : SHyp P L0 QQ κ) (u v : ℂ) (i j k l : Fin 2) :
     (u - v) • (QQ u i j * QQ v k l - QQ v k l * QQ u i j) = QQ u k j * QQ v i l - QQ v k j * QQ u i l :=
   Formalism.FourierDecayAlt.P.rtt_relation_entries ℂ A QQ v u ((H_start h).rtt v u) i j k l
 
 /- English proof (translation)
-Use `congrFun (congrFun ((H_start h).det Y).2 0) 1` as an intermediate fact. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, Formalism.YangianSpanCharacter.T.J] at this`. Rewrite using `[← this]`. Use `noncomm_ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quantum_determinant_relation (h : SHyp P L0 QQ κ) (Y : ℂ) :
     QQ Y 0 0 * QQ (Y + 1) 1 1 - QQ Y 0 1 * QQ (Y + 1) 1 0 = algebraMap ℂ A (M.qC P Y) := by
@@ -474,7 +474,7 @@ theorem quantum_determinant_relation (h : SHyp P L0 QQ κ) (Y : ℂ) :
   rw [← this]; noncomm_ring
 
 /- English proof (translation)
-Use `congrFun (congrFun ((H_start h).det Y).2 1) 1` as an intermediate fact. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, Formalism.YangianSpanCharacter.T.J] at this`. Conclude with `sub_eq_zero.mp (by rw [← this]; noncomm_ring)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lower_diagonal_shift_relation (h : SHyp P L0 QQ κ) (Y : ℂ) : QQ Y 1 0 * QQ (Y + 1) 1 1 = QQ Y 1 1 * QQ (Y + 1) 1 0 := by
   have := congrFun (congrFun ((H_start h).det Y).2 1) 1
@@ -490,9 +490,7 @@ variable {P : M.Par} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] (κ : (M.T
 def GlobalTheory (R : M.Ty P → M.Ty P → Prop) (X : A) : Prop := ∀ σ τ, ¬ R τ σ → proj κ σ * X * proj κ τ = 0
 
 /- English proof (translation)
-Establish `: X * Y = X * (∑ μ, proj κ μ) * Y` using `by rw [sum_pj, mul_one]`. Rewrite using `[this, Finset.mul_sum, Finset.sum_mul, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Establish `e : proj κ μ = proj κ μ * proj κ μ` using `(pj_idem κ μ).symm`. Use `conv_lhs => rw [e]`.
-
-Use `noncomm_ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem blk_expand (X Y : A) (σ τ : M.Ty P) :
     proj κ σ * (X * Y) * proj κ τ = ∑ μ, (proj κ σ * X * proj κ μ) * (proj κ μ * Y * proj κ τ) := by
@@ -504,9 +502,9 @@ theorem blk_expand (X Y : A) (σ τ : M.Ty P) :
   noncomm_ring
 
 /- English proof (translation)
-Introduce `σ τ h`. Rewrite using `[blk_expand]`. Use `Finset.sum_eq_zero fun μ _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : S τ μ`. Establish `h2 : ¬ R μ σ` using `fun h2 => h ⟨μ, h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[hX σ μ h2, zero_mul]`. Rewrite using `[hY μ τ h1, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_mul {R S : M.Ty P → M.Ty P → Prop} {X Y : A} (hX : GlobalTheory κ R X) (hY : GlobalTheory κ S Y) :
     GlobalTheory κ (fun τ σ => ∃ μ, S τ μ ∧ R μ σ) (X * Y) := by
@@ -519,38 +517,38 @@ theorem blk_mul {R S : M.Ty P → M.Ty P → Prop} {X Y : A} (hX : GlobalTheory 
   · rw [hY μ τ h1, mul_zero]
 
 /- English proof (translation)
-Introduce `σ τ h` and use `hX σ τ fun h' => h (hRS τ σ h')`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blk_mono {R S : M.Ty P → M.Ty P → Prop} {X : A} (hX : GlobalTheory κ R X) (hRS : ∀ τ σ, R τ σ → S τ σ) :
     GlobalTheory κ S X := fun σ τ h => hX σ τ fun h' => h (hRS τ σ h')
 
 /- English proof (translation)
-Introduce `σ τ h`. Rewrite using `[mul_add, add_mul, hX σ τ h, hY σ τ h, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_add {R : M.Ty P → M.Ty P → Prop} {X Y : A} (hX : GlobalTheory κ R X) (hY : GlobalTheory κ R Y) : GlobalTheory κ R (X + Y) := by
   intro σ τ h; rw [mul_add, add_mul, hX σ τ h, hY σ τ h, add_zero]
 
 /- English proof (translation)
-Introduce `σ τ h`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_eq_zero fun i hi => hX i hi σ τ h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blk_sum {R : M.Ty P → M.Ty P → Prop} {ι : Type} (s : Finset ι) {X : ι → A} (hX : ∀ i ∈ s, GlobalTheory κ R (X i)) :
     GlobalTheory κ R (∑ i ∈ s, X i) := by
   intro σ τ h; rw [Finset.mul_sum, Finset.sum_mul]; exact Finset.sum_eq_zero fun i hi => hX i hi σ τ h
 
 /- English proof (translation)
-Introduce `σ τ _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem blk_zero (R : M.Ty P → M.Ty P → Prop) : GlobalTheory κ R (0 : A) := by intro σ τ _; simp
 
 /- English proof (translation)
-Introduce `σ τ h`. Rewrite using `[(hX σ).eq, mul_assoc, pj_orth κ (Ne.symm h), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_diag {X : A} (hX : ∀ ρ, Commute (proj κ ρ) X) : GlobalTheory κ (fun τ σ => τ = σ) X := by
   intro σ τ h
   rw [(hX σ).eq, mul_assoc, pj_orth κ (Ne.symm h), mul_zero]
 
 /- English proof (translation)
-Introduce `σ τ h`. Use `hX τ σ h` as an intermediate fact. Establish `e` using `congrArg star this`. Rewrite `e` using `[star_mul, star_mul, hs, hs, star_zero, ← mul_assoc]`. Conclude with `e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blk_star {R : M.Ty P → M.Ty P → Prop} {X : A} (hs : ∀ ρ, star (proj κ ρ) = proj κ ρ) (hX : GlobalTheory κ R X) :
     GlobalTheory κ (fun τ σ => R σ τ) (star X) := by
@@ -561,9 +559,9 @@ theorem blk_star {R : M.Ty P → M.Ty P → Prop} {X : A} (hs : ∀ ρ, star (pr
   exact e
 
 /- English proof (translation)
-Use `hR l (fun x => if x = ρ then 1 else 0) 0 (by` as an intermediate fact. Introduce `a b hab`. Simplify using `only [Pi.zero_apply]`. Use `split_ifs with hh`. Substitute `hh` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd ⟨b, hab⟩ h`. Use the proof step `rfl)`. Rewrite `this` using `[map_zero, zero_mul]`. Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem ss_pj_none {SS : ℕ → A} (hR : Raises κ SS) {l : ℕ} {ρ : M.Ty P} (h : ¬ ∃ ρ', M.Up P l ρ ρ') :
     SS l * proj κ ρ = 0 := by
@@ -577,9 +575,9 @@ theorem ss_pj_none {SS : ℕ → A} (hR : Raises κ SS) {l : ℕ} {ρ : M.Ty P} 
   exact this.symm
 
 /- English proof (translation)
-Use `hR l _ _ fun a b hab => ?_` and prove the remaining obligations. Distinguish the cases in `ha : a = ρ`. Substitute `ha` using the available equality. Use `up_right P hab h` as an intermediate fact. Substitute `this` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `hb : b ≠ ρ'` using `fun hb => ha (up_left P hab (hb ▸ h))`. Simplify using `[ha, hb]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem ss_pj_up {SS : ℕ → A} (hR : Raises κ SS) {l : ℕ} {ρ ρ' : M.Ty P} (h : M.Up P l ρ ρ') :
     proj κ ρ' * SS l = SS l * proj κ ρ := by
@@ -590,16 +588,16 @@ theorem ss_pj_up {SS : ℕ → A} (hR : Raises κ SS) {l : ℕ} {ρ ρ' : M.Ty P
     simp [ha, hb]
 
 /- English proof (translation)
-Rewrite using `[ss_pj_up κ hR h, mul_assoc, pj_idem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pj_ss_pj {SS : ℕ → A} (hR : Raises κ SS) {l : ℕ} {ρ ρ' : M.Ty P} (h : M.Up P l ρ ρ') :
     proj κ ρ' * SS l * proj κ ρ = SS l * proj κ ρ := by
   rw [ss_pj_up κ hR h, mul_assoc, pj_idem]
 
 /- English proof (translation)
-Introduce `σ τ h`. Distinguish the cases in `hτ : ∃ τ', M.Up P l τ τ'`. Take `⟨τ', hτ'⟩` from `hτ`. Establish `hne : σ ≠ τ'` using `fun e => h (e ▸ hτ')`. Rewrite using `[mul_assoc, ← ss_pj_up κ hR hτ', ← mul_assoc, pj_orth κ hne, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, ss_pj_none κ hR hτ, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_ss {SS : ℕ → A} (hR : Raises κ SS) (l : ℕ) : GlobalTheory κ (M.Up P l) (SS l) := by
   intro σ τ h
@@ -610,7 +608,7 @@ theorem blk_ss {SS : ℕ → A} (hR : Raises κ SS) (l : ℕ) : GlobalTheory κ 
   · rw [mul_assoc, ss_pj_none κ hR hτ, mul_zero]
 
 /- English proof (translation)
-The claim follows from `blk_diag κ fun ρ => by unfold proj; exact kap_comm κ _ _`.
+A detailed English derivation is pending.
 -/
 theorem blk_kap (f : M.Ty P → ℂ) : GlobalTheory κ (fun τ σ => τ = σ) (κ f) :=
   blk_diag κ fun ρ => by unfold proj; exact kap_comm κ _ _
@@ -620,9 +618,9 @@ end GlobalTheory
 section Regular
 
 /- English proof (translation)
-Unfold `M.xC`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i _ h0`. Apply `h` to reduce the goal to its premises. Use `congrArg Complex.im h0` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem xC_ne_of_im (P : M.Par) (ρ : M.Ty P) {Y : ℂ} (h : Y.im ≠ 0) : M.xC P ρ Y ≠ 0 := by
   unfold M.xC
@@ -633,14 +631,14 @@ theorem xC_ne_of_im (P : M.Par) (ρ : M.Ty P) {Y : ℂ} (h : Y.im ≠ 0) : M.xC 
   simpa using this
 
 /- English proof (translation)
-Introduce `ρ` and use `xC_ne_of_im P ρ h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem reg_of_im (P : M.Par) {Y : ℂ} (h : Y.im ≠ 0) : Reg P Y := fun ρ => xC_ne_of_im P ρ h
 
 /- English proof (translation)
-Establish `: {Y : ℂ | ¬ Reg P Y} ⊆ ⋃ ρ : M.Ty P, ⋃ i ∈ Icc 1 (P.k - 1), {-((M.rho P ρ i : ℝ) : ℂ)}`. Introduce `Y hY`. Simplify using `only [Reg, not_forall, not_not, Set.mem_setOf_eq] at hY`. Take `⟨ρ, hρ⟩` from `hY`. Unfold `M.xC at hρ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Take `⟨i, hi, h0⟩` from `Finset.prod_eq_zero_iff.1 hρ`. Simplify using `only [Set.mem_iUnion, Set.mem_singleton_iff]`. Conclude with `⟨ρ, i, hi, by linear_combination h0⟩`. Use `Set.Finite.subset ?_ this` and prove the remaining obligations. Conclude with `Set.finite_iUnion fun ρ => Set.Finite.biUnion (Finset.finite_toSet _) fun i _ => Set.finite_singleton _`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nreg_finite (P : M.Par) : {Y : ℂ | ¬ Reg P Y}.Finite := by
   have : {Y : ℂ | ¬ Reg P Y} ⊆ ⋃ ρ : M.Ty P, ⋃ i ∈ Icc 1 (P.k - 1), {-((M.rho P ρ i : ℝ) : ℂ)} := by
@@ -655,16 +653,16 @@ theorem nreg_finite (P : M.Par) : {Y : ℂ | ¬ Reg P Y}.Finite := by
   exact Set.finite_iUnion fun ρ => Set.Finite.biUnion (Finset.finite_toSet _) fun i _ => Set.finite_singleton _
 
 /- English proof (translation)
-Apply `cofinite_infinite` to reduce the goal to its premises. Simplify `nreg_finite P` using `[Set.compl_setOf]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem reg_infinite (P : M.Par) : {Y : ℂ | Reg P Y}.Infinite := by
   apply cofinite_infinite
   simpa [Set.compl_setOf] using nreg_finite P
 
 /- English proof (translation)
-Apply `cofinite_infinite` to reduce the goal to its premises. Establish `h2 : {Y : ℂ | ¬ Reg P (Y + 1)}.Finite`. Use `(nreg_finite P).preimage (f := fun Y : ℂ => Y + 1) (add_left_injective 1).injOn` as an intermediate fact. Simplify using `using this`. Use `((nreg_finite P).union h2).subset ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Y hY`. Simplify using `only [Set.mem_compl_iff, Set.mem_setOf_eq, not_and_or] at hY`. Break down `hY with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem regular_pairs_infinite (P : M.Par) : {Y : ℂ | Reg P Y ∧ Reg P (Y + 1)}.Infinite := by
   apply cofinite_infinite
@@ -686,60 +684,60 @@ variable {P : M.Par} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] {L0 : PreL
   {QQ : ℂ → Matrix (Fin 2) (Fin 2) A} {κ : (M.Ty P → ℂ) →ₐ[ℂ] A}
 
 /- English proof (translation)
-Simplify using `[PreLevel.ops, PreLevel.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sb_mem_GG : L0.GG ∈ L0.ops := by simp [PreLevel.ops, PreLevel.fns]
 /- English proof (translation)
-Simplify using `[PreLevel.ops, PreLevel.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sb_mem_GGi : L0.GGi ∈ L0.ops := by simp [PreLevel.ops, PreLevel.fns]
 /- English proof (translation)
-Simplify using `[PreLevel.ops, PreLevel.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sb_mem_ζ : L0.ζ ∈ L0.ops := by simp [PreLevel.ops, PreLevel.fns]
 /- English proof (translation)
-Simplify using `[PreLevel.ops, PreLevel.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sb_mem_ζb : L0.ζb ∈ L0.ops := by simp [PreLevel.ops, PreLevel.fns]
 
 /- English proof (translation)
-The claim follows from `(H_kops h _ _ sb_mem_GG).eq`.
+A detailed English derivation is pending.
 -/
 theorem sb_pj_GG (h : SHyp P L0 QQ κ) (ρ : M.Ty P) : proj κ ρ * L0.GG = L0.GG * proj κ ρ :=
   (H_kops h _ _ sb_mem_GG).eq
 
 /- English proof (translation)
-The claim follows from `(H_kops h _ _ sb_mem_GGi).eq`.
+A detailed English derivation is pending.
 -/
 theorem sb_pj_GGi (h : SHyp P L0 QQ κ) (ρ : M.Ty P) : proj κ ρ * L0.GGi = L0.GGi * proj κ ρ :=
   (H_kops h _ _ sb_mem_GGi).eq
 
 /- English proof (translation)
-The claim follows from `(H_kops h _ _ sb_mem_ζb).eq`.
+A detailed English derivation is pending.
 -/
 theorem sb_pj_ζb (h : SHyp P L0 QQ κ) (ρ : M.Ty P) : proj κ ρ * L0.ζb = L0.ζb * proj κ ρ :=
   (H_kops h _ _ sb_mem_ζb).eq
 
 /- English proof (translation)
-The claim follows from `(H_kops h _ _ sb_mem_ζb).eq`.
+A detailed English derivation is pending.
 -/
 theorem sb_x_ζb (h : SHyp P L0 QQ κ) (v : ℂ) : xA κ v * L0.ζb = L0.ζb * xA κ v :=
   (H_kops h _ _ sb_mem_ζb).eq
 
 /- English proof (translation)
-The claim follows from `L0.fns_comm _ (by simp) _ (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem sb_GG_ζb : L0.GG * L0.ζb = L0.ζb * L0.GG :=
   L0.fns_comm _ (by simp) _ (by simp)
 
 /- English proof (translation)
-The claim follows from `L0.fns_comm _ (by simp) _ (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem sb_GGi_ζb : L0.GGi * L0.ζb = L0.ζb * L0.GGi :=
   L0.fns_comm _ (by simp) _ (by simp)
 
 /- English proof (translation)
-Take `⟨e1, -, -, -, e5, -⟩` from `levelSubgroupAtPlace h v`. Establish `e2 : QQ v 1 0 * algebraMap ℂ A L0.TT = algebraMap ℂ A L0.TT * QQ v 1 0` using `(Algebra.commutes _ _).symm`. Rewrite using `[L0.GG_def, mul_sub, sub_mul, e2, ← mul_assoc, e1, sub_mul, mul_assoc, e5]`. Use `noncomm_ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lower_left_gamma_commutator (h : SHyp P L0 QQ κ) (v : ℂ) :
     QQ v 1 0 * L0.GG = L0.GG * QQ v 1 0 - QQ v 1 1 * L0.ζb := by
@@ -752,19 +750,19 @@ def lowerBlockAlt (κ : (M.Ty P → ℂ) →ₐ[ℂ] A) (QQ : ℂ → Matrix (Fi
   proj κ σ * QQ v 1 0 * proj κ ρ
 
 /- English proof (translation)
-The claim follows from `pj_mul_kap κ (fun ρ => M.xC P ρ u) σ`.
+A detailed English derivation is pending.
 -/
 theorem projection_mul_coordinate (σ : M.Ty P) (u : ℂ) : proj κ σ * xA κ u = M.xC P σ u • proj κ σ :=
   pj_mul_kap κ (fun ρ => M.xC P ρ u) σ
 
 /- English proof (translation)
-The claim follows from `kap_mul_pj κ (fun ρ => M.xC P ρ u) σ`.
+A detailed English derivation is pending.
 -/
 theorem sb_x_pj (σ : M.Ty P) (u : ℂ) : xA κ u * proj κ σ = M.xC P σ u • proj κ σ :=
   kap_mul_pj κ (fun ρ => M.xC P ρ u) σ
 
 /- English proof (translation)
-Rewrite using `[diagonal_entry_hypothesis h, lowerBlockAlt]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem sb_sand1 (h : SHyp P L0 QQ κ) (σ ρ : M.Ty P) (u v : ℂ) :
     proj κ σ * (QQ u 1 1 * QQ v 1 0) * proj κ ρ = L0.GG * (M.xC P σ u • lowerBlockAlt κ QQ σ ρ v) := by
@@ -775,11 +773,11 @@ theorem sb_sand1 (h : SHyp P L0 QQ κ) (σ ρ : M.Ty P) (u v : ℂ) :
     _ = _ := by rw [projection_mul_coordinate]; simp only [smul_mul_assoc, mul_smul_comm, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[diagonal_entry_hypothesis h, lowerBlockAlt]`. Establish `e` using `lower_left_gamma_commutator h v`. Rewrite `e` using `[diagonal_entry_hypothesis h]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_sub, sub_mul, mul_smul_comm, smul_sub, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = M.xC P ρ u • (L0.GG * (proj κ σ * QQ v 1 0 * proj κ ρ)) - M.xC P ρ u • (L0.GG * ((proj κ σ * xA κ v) * L0.ζb * proj κ ρ)) := by`. Rewrite using `[sb_pj_GG h]`. Simplify using `only [mul_assoc]`. Use `_ = _ := by`. Rewrite using `[projection_mul_coordinate, smul_mul_assoc, smul_mul_assoc, sb_pj_ζb h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [mul_sub, mul_smul_comm, smul_smul, mul_assoc]`. Use `congr 1`. Rewrite using `[mul_comm (M.xC P σ v)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sb_sand2 (h : SHyp P L0 QQ κ) (σ ρ : M.Ty P) (u v : ℂ) :
     proj κ σ * (QQ v 1 0 * QQ u 1 1) * proj κ ρ =
@@ -802,9 +800,9 @@ theorem sb_sand2 (h : SHyp P L0 QQ κ) (σ ρ : M.Ty P) (u v : ℂ) :
         congr 1; rw [mul_comm (M.xC P σ v)]
 
 /- English proof (translation)
-Establish `r` using `H_rtt h u v 1 1 1 0`. Establish `r2` using `congrArg (fun Z => L0.GGi * (proj κ σ * Z * proj κ ρ)) r`. Simplify using `only [smul_sub, mul_sub, sub_mul, mul_smul_comm, smul_mul_assoc] at r2`. Rewrite `r2` using `[sb_sand1 h, sb_sand2 h, sb_sand1 h]`. Establish `cancel : ∀ Z : A, L0.GGi * (L0.GG * Z) = Z` using `fun Z => by rw [← mul_assoc, L0.GGi_GG, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [cancel] at r2`. Rewrite using `[smul_sub]`. Conclude with `r2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sb_feq (h : SHyp P L0 QQ κ) (σ ρ : M.Ty P) (u v : ℂ) :
     (u - v) • (M.xC P σ u • lowerBlockAlt κ QQ σ ρ v -
@@ -820,15 +818,15 @@ theorem sb_feq (h : SHyp P L0 QQ κ) (σ ρ : M.Ty P) (u v : ℂ) :
   exact r2
 
 /- English proof (translation)
-Rewrite using `[lowerBlockAlt, mul_assoc, pj_idem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sb_T_pj (σ ρ : M.Ty P) (v : ℂ) : lowerBlockAlt κ QQ σ ρ v * proj κ ρ = lowerBlockAlt κ QQ σ ρ v := by
   rw [lowerBlockAlt, mul_assoc, pj_idem]
 
 /- English proof (translation)
-Establish `e` using `sb_feq h ρ ρ u v`. Rewrite `e` using `[pj_idem]`. Establish `key : (M.xC P ρ u * M.xC P ρ v) • ((M.xC P ρ u)⁻¹ • lowerBlockAlt κ QQ ρ ρ u + u • (L0.ζb * proj κ ρ)) = (M.xC P ρ u * M.xC P ρ v) • ((M.xC P ρ v)⁻¹ • lowerBlockAlt κ QQ ρ ρ v + v • (L0.ζb * proj κ ρ))`. Rewrite using `[smul_add, smul_add, smul_smul, smul_smul, smul_smul, smul_smul]`. Rewrite using `[show M.xC P ρ u * M.xC P ρ v * (M.xC P ρ u)⁻¹ = M.xC P ρ v by field_simp, show M.xC P ρ u * M.xC P ρ v * (M.xC P ρ v)⁻¹ = M.xC P ρ u by field_simp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take the linear combination `(norm := module) e`. Conclude with `smul_right_injective A (mul_ne_zero hu hv) key`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sb_diag (h : SHyp P L0 QQ κ) (ρ : M.Ty P) {u v : ℂ} (hu : M.xC P ρ u ≠ 0) (hv : M.xC P ρ v ≠ 0) :
     (M.xC P ρ u)⁻¹ • lowerBlockAlt κ QQ ρ ρ u + u • (L0.ζb * proj κ ρ) =
@@ -844,7 +842,7 @@ theorem sb_diag (h : SHyp P L0 QQ κ) (ρ : M.Ty P) {u v : ℂ} (hu : M.xC P ρ 
   exact smul_right_injective A (mul_ne_zero hu hv) key
 
 /- English proof (translation)
-Unfold `M.xC at h`. Take `⟨i, hi, h0⟩` from `Finset.prod_eq_zero_iff.1 h`. Conclude with `⟨i, hi, by linear_combination h0⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sb_xC_zero {π : M.Ty P} {Y : ℂ} (h : M.xC P π Y = 0) :
     ∃ i ∈ Icc 1 (P.k - 1), Y = -((M.rho P π i : ℝ) : ℂ) := by
@@ -853,16 +851,16 @@ theorem sb_xC_zero {π : M.Ty P} {Y : ℂ} (h : M.xC P π Y = 0) :
   exact ⟨i, hi, by linear_combination h0⟩
 
 /- English proof (translation)
-Unfold `M.xC`. Conclude with `Finset.prod_eq_zero hi (by ring)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sb_xC_root (π : M.Ty P) {i : ℕ} (hi : i ∈ Icc 1 (P.k - 1)) : M.xC P π (-((M.rho P π i : ℝ) : ℂ)) = 0 := by
   unfold M.xC
   exact Finset.prod_eq_zero hi (by ring)
 
 /- English proof (translation)
-Apply `ty_ext P` to reduce the goal to its premises. Introduce `i hi`. Establish `h0 : M.xC P σ (-((M.rho P ρ i : ℝ) : ℂ)) = 0` using `by rw [hx]; exact sb_xC_root ρ hi`. Take `⟨j, hj, e⟩` from `sb_xC_zero h0`. Establish `e' : M.rho P ρ i = M.rho P σ j` using `by exact_mod_cast neg_injective e`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `idx_eq P hP ρ σ hi hj e'` as an intermediate fact. Substitute `this` using the available equality. Conclude with `e'.symm`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem type_eq_of_coordinate (hP : P.OK) {σ ρ : M.Ty P} (hx : ∀ u, M.xC P σ u = M.xC P ρ u) : σ = ρ := by
   apply ty_ext P
@@ -874,23 +872,21 @@ theorem type_eq_of_coordinate (hP : P.OK) {σ ρ : M.Ty P} (hx : ∀ u, M.xC P �
   subst this; exact e'.symm
 
 /- English proof (translation)
-Establish `ha` using `hc (1 - c)`. Establish `hxa : M.xC P ρ (1 - c) = 0`. Rewrite `ha` using `[show (1 - c + c - 1 : ℂ) = 0 by ring, show (1 - c + c : ℂ) = 1 by ring, mul_zero, mul_one]`. Conclude with `ha.symm`. Take `⟨m, hm, em⟩` from `sb_xC_zero hxa`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcm : c = ((M.rho P ρ m : ℝ) : ℂ) + 1` using `by linear_combination -em`. Establish `hb : ∀ i ∈ Icc 1 (P.k - 1), i ≠ m → M.rho P σ i = M.rho P ρ i`. Introduce `i hi him`. Establish `e` using `hc (-((M.rho P ρ i : ℝ) : ℂ))`. Rewrite `e` using `[sb_xC_root ρ hi, zero_mul, mul_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `e with e | e` into its components or cases. Take `⟨j, hj, ej⟩` from `sb_xC_zero e`. Establish `ej' : M.rho P ρ i = M.rho P σ j` using `by exact_mod_cast neg_injective ej`. Use `idx_eq P hP ρ σ hi hj ej'` as an intermediate fact. Substitute `this` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. It suffices to derive a contradiction.
 
-Conclude with `ej'.symm`. It suffices to derive a contradiction. Apply `him` to reduce the goal to its premises. Establish `: M.rho P ρ i = M.rho P ρ m`. Establish `: ((M.rho P ρ i : ℝ) : ℂ) = ((M.rho P ρ m : ℝ) : ℂ)` using `by linear_combination -e + hcm`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Conclude with `idx_eq P hP ρ ρ hi hm this`. Establish `hmm : M.rho P σ m = M.rho P ρ m + 1`. Establish `e` using `hc (-((M.rho P σ m : ℝ) : ℂ))`. Rewrite `e` using `[sb_xC_root σ hm, zero_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Break down `mul_eq_zero.1 e.symm with e | e` into its components or cases. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Take `⟨j, hj, ej⟩` from `sb_xC_zero e`. Establish `ej' : M.rho P σ m = M.rho P ρ j` using `by exact_mod_cast neg_injective ej`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `idx_eq P hP σ ρ hm hj ej'` as an intermediate fact. Substitute `this` using the available equality. Apply `ty_ext P` to reduce the goal to its premises. Introduce `i hi`. Distinguish the cases in `him : i = m`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `him` using the available equality. Conclude with `ej'`. Conclude with `hb i hi him`. Establish `: ((M.rho P σ m : ℝ) : ℂ) = ((M.rho P ρ m : ℝ) : ℂ) + 1` using `by linear_combination -e + hcm`. Conclude with `this` after adjusting the coercions.
-
-Use `⟨m, hm, up_of_rho P fun i hi => ?_, hcm⟩` and prove the remaining obligations. Distinguish the cases in `him : i = m`. Substitute `him` using the available equality. Simplify using `[hmm]`. Simplify using `[him, hb i hi him]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sb_roots (hP : P.OK) {σ ρ : M.Ty P} (hne : σ ≠ ρ) {c : ℂ}
     (hc : ∀ u, M.xC P σ u * (u + c - 1) = M.xC P ρ u * (u + c)) :
@@ -938,31 +934,25 @@ theorem sb_roots (hP : P.OK) {σ ρ : M.Ty P} (hne : σ ≠ ρ) {c : ℂ}
   · simp [him, hb i hi him]
 
 /- English proof (translation)
-Use `set T := lowerBlockAlt κ QQ σ ρ with hTdef`. Use `set xs := M.xC P σ`. Use `set xr := M.xC P ρ`. Establish `O : ∀ u v, (u - v) • (xs u • T v - xr u • T v) = xs u • T v - xs v • T u`. Introduce `u v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `sb_feq h σ ρ u v`. Rewrite `e` using `[pj_orth κ hne, mul_zero, smul_zero, sub_zero]`. Conclude with `e`. Establish `S : ∀ u v, (xs u - xr u) • T v = (xs v - xr v) • T u`. Introduce `u v`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality. Both sides reduce to the same expression. Establish `e1` using `O u v`. Establish `e2` using `O v u`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails.
 
-Establish `: (u - v) • ((xs u - xr u) • T v - (xs v - xr v) • T u) = 0`. Take the linear combination `(norm := module) e1 + e2`. Break down `smul_eq_zero.1 this with h0 | h0` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h0) huv`. Conclude with `sub_eq_zero.1 h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hD : ∀ u, xs u - xr u = 0`. Conclude with `absurd (type_eq_of_coordinate hP fun u => sub_eq_zero.1 (hD u)) hne`. Use `push Not at hD`. Take `⟨u0, hu0⟩` from `hD`. Use `set K := (xs u0 - xr u0)⁻¹ • T u0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT : ∀ v, T v = (xs v - xr v) • K`. Introduce `v`. Establish `e` using `S u0 v`. Establish `: T v = (xs u0 - xr u0)⁻¹ • ((xs u0 - xr u0) • T v)` using `by rw [smul_smul, inv_mul_cancel₀ hu0, one_smul]`. Rewrite using `[this, e, smul_smul, smul_smul, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Distinguish the cases in `hK : K = 0`. Use `left`. Introduce `v`. Rewrite using `[hT v, hK, smul_zero]`. Use `right`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hsc : ∀ u v, ((u - v) * (xs u - xr u) - xs u) * (xs v - xr v) + xs v * (xs u - xr u) = 0`. Introduce `u v`. Establish `e` using `O u v`. Rewrite `e` using `[hT u, hT v]`. Establish `: (((u - v) * (xs u - xr u) - xs u) * (xs v - xr v) + xs v * (xs u - xr u)) • K = 0`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take the linear combination `(norm := module) e`. Conclude with `(smul_eq_zero.1 this).resolve_right hK`. Use `set c0 := xs u0 / (xs u0 - xr u0) - u0`. Establish `hxs : ∀ u, xs u = (xs u - xr u) * (u + c0)`. Introduce `u`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e` using `hsc u u0`. Apply `mul_right_cancel₀ hu0` to reduce the goal to its premises. Establish `hdc : xs u0 / (xs u0 - xr u0) * (xs u0 - xr u0) = xs u0` using `div_mul_cancel₀ _ hu0`. Simplify using `only [c0]`. Take the linear combination `-e - (xs u - xr u) * hdc`.
-
-Establish `hc : ∀ u, xs u * (u + c0 - 1) = xr u * (u + c0)`. Introduce `u`. Establish `e` using `hxs u`. Take the linear combination `(-1 : ℂ) * e`. Take `⟨m, hm, hup, hcm⟩` from `sb_roots hP hne hc`.
-
-Use `⟨m, hm, hup, K, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[hT v, smul_smul]`. Use `congr 1`. Establish `e` using `hxs v`. Rewrite `e` using `[hcm]`.
-
-Take the linear combination `(-1 : ℂ) * e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sb_off (h : SHyp P L0 QQ κ) (hP : P.OK) {σ ρ : M.Ty P} (hne : σ ≠ ρ) :
     (∀ v, lowerBlockAlt κ QQ σ ρ v = 0) ∨ ∃ m ∈ Icc 1 (P.k - 1), M.Up P m ρ σ ∧
@@ -1029,7 +1019,7 @@ theorem sb_off (h : SHyp P L0 QQ κ) (hP : P.OK) {σ ρ : M.Ty P} (hne : σ ≠ 
 def regular_base_point : ℂ := Complex.I
 
 /- English proof (translation)
-The claim follows from `reg_of_im P (by simp [regular_base_point])`.
+A detailed English derivation is pending.
 -/
 theorem regular_base_point_reg : Reg P regular_base_point := reg_of_im P (by simp [regular_base_point])
 
@@ -1043,7 +1033,7 @@ def sb_b (L0 : PreLevel A P.r) (κ : (M.Ty P → ℂ) →ₐ[ℂ] A) (QQ : ℂ �
   L0.GGi * ((M.xC P ρ regular_base_point)⁻¹ • lowerBlockAlt κ QQ ρ ρ regular_base_point + regular_base_point • (L0.ζb * proj κ ρ))
 
 /- English proof (translation)
-Rewrite using `[lowerBlockAlt, mul_assoc, pj_mul]`. Use `split_ifs with h`. Substitute `h` using the available equality. Both sides reduce to the same expression. Rewrite using `[mul_zero]`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sb_T_pj' (σ ρ' ρ : M.Ty P) (v : ℂ) :
     lowerBlockAlt κ QQ σ ρ' v * proj κ ρ = if ρ' = ρ then lowerBlockAlt κ QQ σ ρ v else 0 := by
@@ -1053,7 +1043,7 @@ theorem sb_T_pj' (σ ρ' ρ : M.Ty P) (v : ℂ) :
   · rw [mul_zero]
 
 /- English proof (translation)
-Rewrite using `[sb_K, smul_mul_assoc, sb_T_pj']`. Use `split_ifs with h`. Substitute `h` using the available equality. Both sides reduce to the same expression. Rewrite using `[smul_zero]`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sb_K_pj (l : ℕ) (ρ' σ ρ : M.Ty P) :
     sb_K κ QQ l ρ' σ * proj κ ρ = if ρ' = ρ then sb_K κ QQ l ρ σ else 0 := by
@@ -1063,13 +1053,11 @@ theorem sb_K_pj (l : ℕ) (ρ' σ ρ : M.Ty P) :
   · rw [smul_zero]
 
 /- English proof (translation)
-Rewrite using `[sb_SS, Finset.sum_mul, Finset.sum_eq_single ρ]`. Rewrite using `[Finset.sum_mul, Finset.sum_eq_single σ]`. Rewrite using `[if_pos ⟨hl, hup⟩, sb_K_pj, if_pos rfl]`. Introduce `σ' _ hσ'`. Rewrite using `[if_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `· rw [zero_mul]`. Introduce and unpack `⟨-, hup'⟩`. Conclude with `hσ' (up_right P hup' hup)`. Simplify using the standard rewrite rules. Introduce `ρ' _ hρ'`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_eq_zero fun σ' _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[sb_K_pj, if_neg hρ']`. Rewrite using `[zero_mul]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sb_SS_pj {l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) {ρ σ : M.Ty P} (hup : M.Up P l ρ σ) :
     sb_SS κ QQ l * proj κ ρ = sb_K κ QQ l ρ σ := by
@@ -1089,7 +1077,7 @@ theorem sb_SS_pj {l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) {ρ σ : M.Ty P} (hup : 
   · simp
 
 /- English proof (translation)
-Unfold `M.xC at hY`. Conclude with `(Finset.prod_ne_zero_iff.1 hY) l hl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sb_up_factor {σ : M.Ty P} {Y : ℂ} (hY : M.xC P σ Y ≠ 0) {l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) :
     Y + ((M.rho P σ l : ℝ) : ℂ) ≠ 0 := by
@@ -1097,15 +1085,15 @@ theorem sb_up_factor {σ : M.Ty P} {Y : ℂ} (hY : M.xC P σ Y ≠ 0) {l : ℕ} 
   exact (Finset.prod_ne_zero_iff.1 hY) l hl
 
 /- English proof (translation)
-Establish `hne : σ ≠ ρ` using `fun e => up_ne P hl hup e.symm`. Establish `hσl : M.rho P σ l = M.rho P ρ l + 1`. Use `up_rho P hup l hl` as an intermediate fact. Simplify using `using this`. Establish `hfac : ∀ Z : ℂ, Reg P Z → Z + ((M.rho P ρ l : ℝ) : ℂ) + 1 ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `Z hZ`. Use `sb_up_factor (hZ σ) hl` as an intermediate fact. Rewrite `this` using `[hσl]`. Move the coercions through the operations in `at this`. Rewrite `this` using `[← add_assoc]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Break down `sb_off h hP hne with h0 | ⟨m, hm, hupm, K, hK⟩` into its components or cases. Simplify using `[sb_K, h0]`. Establish `hml : m = l` using `up_idx P hm hl hupm hup`. Substitute `hml` using the available equality. Establish `h0` using `regular_base_point_reg (P := P)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hKK : sb_K κ QQ m ρ σ = K`. Rewrite using `[sb_K, div_eq_mul_inv, mul_comm, ← smul_smul, hK regular_base_point, smul_smul, inv_mul_cancel₀ (h0 σ), one_smul]`. Establish `hTY : lowerBlockAlt κ QQ σ ρ Y = ((Y + ((M.rho P ρ m : ℝ) : ℂ) + 1)⁻¹ * M.xC P σ Y) • K`. Rewrite using `[← smul_smul, ← hK Y, smul_smul, inv_mul_cancel₀ (hfac Y hY), one_smul]`. Rewrite using `[hKK, hTY, smul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Clear denominators, using `[hY σ]` for the nonvanishing conditions.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 -/
 theorem sb_K_eval (h : SHyp P L0 QQ κ) (hP : P.OK) {l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) {ρ σ : M.Ty P}
     (hup : M.Up P l ρ σ) {Y : ℂ} (hY : Reg P Y) :
@@ -1131,7 +1119,7 @@ theorem sb_K_eval (h : SHyp P L0 QQ κ) (hP : P.OK) {l : ℕ} (hl : l ∈ Icc 1 
     field_simp [hY σ]
 
 /- English proof (translation)
-Unfold `lA xiA`. Rewrite using `[← mul_assoc, ← mul_assoc, pj_mul_kap, smul_mul_assoc, smul_mul_assoc, smul_mul_assoc, sb_pj_GGi h, lowerBlockAlt]`. Simplify using `only [mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sb_lA_blk (h : SHyp P L0 QQ κ) (σ ρ : M.Ty P) (Y : ℂ) :
     proj κ σ * lA L0 QQ κ Y * proj κ ρ = (M.xC P σ Y)⁻¹ • (L0.GGi * lowerBlockAlt κ QQ σ ρ Y) := by
@@ -1140,7 +1128,7 @@ theorem sb_lA_blk (h : SHyp P L0 QQ κ) (σ ρ : M.Ty P) (Y : ℂ) :
   simp only [mul_assoc]
 
 /- English proof (translation)
-Establish `e` using `sb_diag h ρ (regular_base_point_reg ρ) (hY ρ)`. Establish `e1 : sb_b L0 κ QQ ρ * proj κ ρ = L0.GGi * ((M.xC P ρ regular_base_point)⁻¹ • lowerBlockAlt κ QQ ρ ρ regular_base_point + regular_base_point • (L0.ζb * proj κ ρ))`. Rewrite using `[sb_b, mul_assoc, add_mul, smul_mul_assoc, smul_mul_assoc, sb_T_pj, mul_assoc, pj_idem]`. Rewrite using `[sub_mul, e1, e, smul_mul_assoc, mul_assoc, show L0.ζb * (L0.GGi * proj κ ρ) = L0.GGi * (L0.ζb * proj κ ρ) by rw [← mul_assoc, ← sb_GGi_ζb, mul_assoc], mul_add, mul_smul_comm, mul_smul_comm]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem sb_diag_form (h : SHyp P L0 QQ κ) (ρ : M.Ty P) {Y : ℂ} (hY : Reg P Y) :
     (sb_b L0 κ QQ ρ - Y • (L0.ζb * L0.GGi)) * proj κ ρ = (M.xC P ρ Y)⁻¹ • (L0.GGi * lowerBlockAlt κ QQ ρ ρ Y) := by
@@ -1153,15 +1141,15 @@ theorem sb_diag_form (h : SHyp P L0 QQ κ) (ρ : M.Ty P) {Y : ℂ} (hY : Reg P Y
   abel
 
 /- English proof (translation)
-Introduce `Y hY ρ ρ'`. Rewrite using `[sb_lA_blk h]`. Distinguish the cases in `hρ : ρ' = ρ`. Substitute `hρ` using the available equality. Rewrite using `[if_pos rfl, Finset.sum_eq_zero (fun l hl => if_neg (fun hu => up_ne P hl hu rfl)), add_zero, sb_diag_form h ρ' hY]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hρ, zero_add]`. Distinguish the cases in `hex : ∃ l ∈ Icc 1 (P.k - 1), M.Up P l ρ ρ'`. Take `⟨l, hl, hup⟩` from `hex`. Rewrite using `[Finset.sum_eq_single l]`. Rewrite using `[if_pos hup, mul_assoc, sb_SS_pj hl hup, ← mul_smul_comm (Y + ((M.rho P ρ l : ℝ) : ℂ) + 1)⁻¹, sb_K_eval h hP hl hup hY, mul_smul_comm]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `l' hl' hne`. Rewrite using `[if_neg]`. Introduce `hup'`. Conclude with `hne (up_idx P hl' hl hup' hup)`. Introduce `hl'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd hl hl'`. Rewrite using `[Finset.sum_eq_zero]`. Break down `sb_off h hP hρ with h0 | ⟨m, hm, hup, -⟩` into its components or cases. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd ⟨m, hm, hup⟩ hex`. Introduce `l hl`. Rewrite using `[if_neg]`. Introduce `hup`. Conclude with `hex ⟨l, hl, hup⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sb_form (h : SHyp P L0 QQ κ) (hP : P.OK) : SForm P L0 QQ κ (sb_b L0 κ QQ) (sb_SS κ QQ) := by
   intro Y hY ρ ρ'
@@ -1186,11 +1174,11 @@ theorem sb_form (h : SHyp P L0 QQ κ) (hP : P.OK) : SForm P L0 QQ κ (sb_b L0 κ
       · intro l hl; rw [if_neg]; intro hup; exact hex ⟨l, hl, hup⟩
 
 /- English proof (translation)
-Introduce `l f g hfg`. Unfold `sb_SS`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `split_ifs with hc`. Establish `e1 : κ g * lowerBlockAlt κ QQ σ ρ regular_base_point = g σ • lowerBlockAlt κ QQ σ ρ regular_base_point`. Rewrite using `[lowerBlockAlt, ← mul_assoc, ← mul_assoc, kap_mul_pj, smul_mul_assoc, smul_mul_assoc]`. Establish `e2 : lowerBlockAlt κ QQ σ ρ regular_base_point * κ f = f ρ • lowerBlockAlt κ QQ σ ρ regular_base_point`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lowerBlockAlt, mul_assoc, pj_mul_kap, mul_smul_comm]`. Rewrite using `[sb_K, mul_smul_comm, smul_mul_assoc, e1, e2, hfg ρ σ hc.2]`. Rewrite using `[mul_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sb_raises : Raises κ (sb_SS κ QQ) := by
   intro l f g hfg
@@ -1208,7 +1196,7 @@ theorem sb_raises : Raises κ (sb_SS κ QQ) := by
   · rw [mul_zero, zero_mul]
 
 /- English proof (translation)
-Use `show X * ai = ai * X`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sb_comm_inv {X a ai : A} (h : Commute X a) (h1 : a * ai = 1) (h2 : ai * a = 1) : Commute X ai := by
   show X * ai = ai * X
@@ -1219,13 +1207,9 @@ theorem sb_comm_inv {X a ai : A} (h : Commute X a) (h1 : a * ai = 1) (h2 : ai * 
     _ = ai * X := by rw [h1, mul_one]
 
 /- English proof (translation)
-Establish `hGG : Commute X L0.GG`. Rewrite using `[L0.GG_def]`. Conclude with `(hz.mul_right hzb).sub_right (Algebra.commutes _ X).symm`. Introduce `g hg`. Simplify using `only [PreLevel.ops, PreLevel.fns, Set.mem_union, Set.mem_insert_iff, Set.mem_singleton_iff, Set.mem_range] at hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hg with (((((⟨i, rfl⟩ | ⟨i, rfl⟩) | ⟨i, rfl⟩) | ⟨i, rfl⟩) | (rfl | rfl | rfl | rfl | rfl | rfl)) | ⟨i, rfl⟩) | ⟨i, rfl⟩` into its components or cases. Conclude with `hc _ (by simp [PreLevel.crdOps])`. Conclude with `hc _ (by simp [PreLevel.crdOps])`. Conclude with `hc _ (by simp [PreLevel.crdOps])`. Conclude with `hc _ (by simp [PreLevel.crdOps])`.
-
-Conclude with `hz`. Conclude with `sb_comm_inv hz L0.ζ_ζi L0.ζi_ζ`. Conclude with `hzb`. Conclude with `sb_comm_inv hzb L0.ζb_ζbi L0.ζbi_ζb`. Conclude with `hGG`.
-
-Conclude with `sb_comm_inv hGG L0.GG_GGi L0.GGi_GG`. Conclude with `hc _ (by simp [PreLevel.crdOps])`. Conclude with `hc _ (by simp [PreLevel.crdOps])`.
+A detailed English derivation is pending.
 -/
 theorem sb_comm_ops {X : A} (hz : Commute X L0.ζ) (hzb : Commute X L0.ζb) (hc : ∀ g ∈ L0.crdOps, Commute X g) :
     ∀ g ∈ L0.ops, Commute X g := by
@@ -1250,18 +1234,18 @@ theorem sb_comm_ops {X : A} (hz : Commute X L0.ζ) (hzb : Commute X L0.ζb) (hc 
   · exact hc _ (by simp [PreLevel.crdOps])
 
 /- English proof (translation)
-Simplify using `only [PreLevel.crdOps, PreLevel.ops, PreLevel.fns, Set.mem_union] at hg ⊢`. The claim follows by propositional logic.
+Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem sb_crd_sub_ops {g : A} (hg : g ∈ L0.crdOps) : g ∈ L0.ops := by
   simp only [PreLevel.crdOps, PreLevel.ops, PreLevel.fns, Set.mem_union] at hg ⊢
   tauto
 
 /- English proof (translation)
-Take `⟨e1, -, -, -, e5, -⟩` from `levelSubgroupAtPlace h v`. Establish `hPz : ∀ τ, Commute (proj κ τ) L0.ζ` using `fun τ => H_kops h _ _ sb_mem_ζ`. Establish `hPzb : ∀ τ, Commute (proj κ τ) L0.ζb` using `fun τ => H_kops h _ _ sb_mem_ζb`. Establish `h22 : proj κ σ * QQ v 1 1 * proj κ ρ = 0`. Rewrite using `[diagonal_entry_hypothesis h, ← mul_assoc, sb_pj_GG h, mul_assoc, mul_assoc, sb_x_pj, mul_smul_comm, pj_orth κ hne, smul_zero, mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `sb_comm_ops` to reduce the goal to its premises. Use `show lowerBlockAlt κ QQ σ ρ v * L0.ζ = L0.ζ * lowerBlockAlt κ QQ σ ρ v`. Rewrite using `[lowerBlockAlt, mul_assoc, (hPz ρ).eq, ← mul_assoc, mul_assoc (proj κ σ), e1, mul_sub, sub_mul, h22, sub_zero, ← mul_assoc, (hPz σ).eq]`. Simplify using `only [mul_assoc]`. Use `show lowerBlockAlt κ QQ σ ρ v * L0.ζb = L0.ζb * lowerBlockAlt κ QQ σ ρ v`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[lowerBlockAlt, mul_assoc, (hPzb ρ).eq, ← mul_assoc, mul_assoc (proj κ σ), e5, ← mul_assoc, (hPzb σ).eq]`. Simplify using `only [mul_assoc]`. Introduce `g hg`. Establish `hp : ∀ τ, Commute (proj κ τ) g` using `fun τ => H_kops h _ _ (sb_crd_sub_ops hg)`. Conclude with `((hp σ).mul_left (H_crd h v 1 0 g hg)).mul_left (hp ρ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sb_T_comm (h : SHyp P L0 QQ κ) {σ ρ : M.Ty P} (hne : σ ≠ ρ) (v : ℂ) :
     ∀ g ∈ L0.ops, Commute (lowerBlockAlt κ QQ σ ρ v) g := by
@@ -1284,9 +1268,7 @@ theorem sb_T_comm (h : SHyp P L0 QQ κ) {σ ρ : M.Ty P} (hne : σ ≠ ρ) (v : 
     exact ((hp σ).mul_left (H_crd h v 1 0 g hg)).mul_left (hp ρ)
 
 /- English proof (translation)
-Introduce `g hg`. Unfold `sb_SS`. Use `Commute.sum_left _ _ _ fun ρ _ => Commute.sum_left _ _ _ fun σ _ => ?_` and prove the remaining obligations. Use `split_ifs with hc`. Establish `hne : σ ≠ ρ` using `fun e => up_ne P hc.1 hc.2 e.symm`.
-
-Conclude with `(sb_T_comm h hne regular_base_point g hg).smul_left _`. Conclude with `Commute.zero_left g`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sb_SS_comm (h : SHyp P L0 QQ κ) (l : ℕ) : ∀ g ∈ L0.ops, Commute (sb_SS κ QQ l) g := by
   intro g hg
@@ -1298,7 +1280,7 @@ theorem sb_SS_comm (h : SHyp P L0 QQ κ) (l : ℕ) : ∀ g ∈ L0.ops, Commute (
   · exact Commute.zero_left g
 
 /- English proof (translation)
-Introduce `_ _ _ P A _ _ _ L0 QQ κ hP h`. Conclude with `⟨sb_b L0 κ QQ, sb_SS κ QQ, sb_form h hP, sb_raises, fun l => sb_SS_comm h l⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem sb_main : SBlock := by
   intro _ _ _ P A _ _ _ L0 QQ κ hP h
@@ -1312,60 +1294,60 @@ variable {P : M.Par} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] {L : R.Lev
   {κ : (M.Ty P → ℂ) →ₐ[ℂ] A} {SS : ℕ → A}
 
 /- English proof (translation)
-The claim follows from `hc.2.1 f`.
+A detailed English derivation is pending.
 -/
 theorem sn_kc (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (f : M.Ty P → ℂ) :
     ∀ g ∈ L.fns ∪ {L.nab, L.nabs}, Commute (κ f) g := hc.2.1 f
 
 /- English proof (translation)
-The claim follows from `sn_kc hc f _ (by simp [R.LevelData.fns])`.
+A detailed English derivation is pending.
 -/
 theorem sn_kG (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (f : M.Ty P → ℂ) : Commute (κ f) L.GG :=
   sn_kc hc f _ (by simp [R.LevelData.fns])
 
 /- English proof (translation)
-The claim follows from `sn_kc hc f _ (by simp [R.LevelData.fns])`.
+A detailed English derivation is pending.
 -/
 theorem sn_kGi (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (f : M.Ty P → ℂ) : Commute (κ f) L.GGi :=
   sn_kc hc f _ (by simp [R.LevelData.fns])
 
 /- English proof (translation)
-The claim follows from `sn_kc hc f _ (by simp [R.LevelData.fns])`.
+A detailed English derivation is pending.
 -/
 theorem sn_kz (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (f : M.Ty P → ℂ) : Commute (κ f) L.ζ :=
   sn_kc hc f _ (by simp [R.LevelData.fns])
 
 /- English proof (translation)
-The claim follows from `sn_kc hc f _ (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem sn_knabs (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (f : M.Ty P → ℂ) : Commute (κ f) L.nabs :=
   sn_kc hc f _ (by simp)
 
 /- English proof (translation)
-The claim follows from `(Algebra.commutes z _).symm`.
+A detailed English derivation is pending.
 -/
 theorem sn_kalg (f : M.Ty P → ℂ) (z : ℂ) : Commute (κ f) (algebraMap ℂ A z) := (Algebra.commutes z _).symm
 
 /- English proof (translation)
-Unfold `R.LevelData.m0`. Conclude with `((sn_knabs hc f).neg_right).sub_right ((sn_kalg f _).mul_right ((sn_kz hc f).mul_right (sn_kGi hc f)))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem kappa_commute_raising (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (f : M.Ty P → ℂ) (Y : ℂ) : Commute (κ f) (L.m0 Y) := by
   unfold R.LevelData.m0
   exact ((sn_knabs hc f).neg_right).sub_right ((sn_kalg f _).mul_right ((sn_kz hc f).mul_right (sn_kGi hc f)))
 
 /- English proof (translation)
-The claim follows from `hc.2.2.1 l _ (by simp [R.LevelData.fns])`.
+A detailed English derivation is pending.
 -/
 theorem sn_sGi (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (l : ℕ) : Commute (SS l) L.GGi :=
   hc.2.2.1 l _ (by simp [R.LevelData.fns])
 
 /- English proof (translation)
-The claim follows from `hc.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem sn_raises (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) : Raises κ SS := hc.2.2.2.1
 
 /- English proof (translation)
-Establish `e : ∀ w : ℂ, algebraMap ℂ A w = κ (algebraMap ℂ (M.Ty P → ℂ) w)` using `fun w => (κ.commutes w).symm`. Rewrite using `[e, e]`. Conclude with `hc.1 _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sn_alg_star (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (z : ℂ) :
     star (algebraMap ℂ A z) = algebraMap ℂ A (star z) := by
@@ -1373,14 +1355,14 @@ theorem sn_alg_star (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (z : ℂ) :
   rw [e, e]; exact hc.1 _
 
 /- English proof (translation)
-Establish `hz : star L.ζb = L.ζ` using `by rw [← hs.1, star_star]`. Rewrite using `[L.GG_def, star_sub, star_mul, hz, hs.1, sn_alg_star hc, hs.2.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sn_G_star (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (hs : Fr.IsStarLevel L) : star L.GG = L.GG := by
   have hz : star L.ζb = L.ζ := by rw [← hs.1, star_star]
   rw [L.GG_def, star_sub, star_mul, hz, hs.1, sn_alg_star hc, hs.2.2]
 
 /- English proof (translation)
-Establish `h1 : star L.GGi * L.GG = 1`. Rewrite using `[← sn_G_star hc hs, ← star_mul, L.GG_GGi, star_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem sn_Gi_star (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (hs : Fr.IsStarLevel L) : star L.GGi = L.GGi := by
   have h1 : star L.GGi * L.GG = 1 := by
@@ -1389,7 +1371,7 @@ theorem sn_Gi_star (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (hs : Fr.IsSt
     _ = L.GGi := by rw [← mul_assoc, h1, one_mul]
 
 /- English proof (translation)
-Use `(sn_sGi hc l).star_star` as an intermediate fact. Rewrite `this` using `[sn_Gi_star hc hs]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sn_ssGi (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (hs : Fr.IsStarLevel L) (l : ℕ) :
     Commute (star (SS l)) L.GGi := by
@@ -1407,11 +1389,11 @@ def sn_hsh (P : M.Par) (l j : ℕ) (ρ : M.Ty P) (Y : ℂ) : ℂ :=
   ∏ i ∈ Icc 1 (P.k - 1) \ {l}, (Y + ((M.rho P ρ i : ℂ) + if i = j then 1 else 0))
 
 /- English proof (translation)
-Unfold `M.xC M.xEx`. Rewrite using `[Finset.prod_eq_mul_prod_sdiff_singleton j _ (fun h => absurd hj h)]`. Use `congr 1`. Rewrite using `[up_rho P h j hj]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi'` using `Finset.mem_sdiff.1 hi`. Rewrite using `[up_rho P h i hi'.1]`. Establish `: i ≠ j` using `fun e => hi'.2 (by simp [e])`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sn_x_up {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) {ρ ρ' : M.Ty P} (h : M.Up P j ρ ρ') (Y : ℂ) :
     M.xC P ρ' Y = (Y + M.rho P ρ j + 1) * M.xEx P {j} ρ Y := by
@@ -1426,7 +1408,7 @@ theorem sn_x_up {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) {ρ ρ' : M.Ty P} (h : M.
     simp [this]
 
 /- English proof (translation)
-Unfold `M.xEx sn_hsh`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[up_rho P h i (Finset.mem_sdiff.1 hi).1]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sn_xEx_up {j : ℕ} {ρ ρ' : M.Ty P} (h : M.Up P j ρ ρ') (l : ℕ) (Y : ℂ) :
     M.xEx P {l} ρ' Y = sn_hsh P l j ρ Y := by
@@ -1436,7 +1418,7 @@ theorem sn_xEx_up {j : ℕ} {ρ ρ' : M.Ty P} (h : M.Up P j ρ ρ') (l : ℕ) (Y
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `M.xEx sn_hsh`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `: i ≠ j` using `fun e => (Finset.mem_sdiff.1 hi).2 (by simp [e])`. Simplify using `[this]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sn_hsh_same (j : ℕ) (ρ : M.Ty P) (Y : ℂ) : sn_hsh P j j ρ Y = M.xEx P {j} ρ Y := by
   unfold M.xEx sn_hsh
@@ -1445,11 +1427,11 @@ theorem sn_hsh_same (j : ℕ) (ρ : M.Ty P) (Y : ℂ) : sn_hsh P j j ρ Y = M.xE
   simp [this]
 
 /- English proof (translation)
-Unfold `M.xEx sn_hsh`. Establish `hjm : j ∈ Icc 1 (P.k - 1) \ {l}` using `Finset.mem_sdiff.2 ⟨hj, by simpa using hlj.symm⟩`. Rewrite using `[Finset.prod_eq_mul_prod_sdiff_singleton j _ (fun h => absurd hjm h)]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e : (Icc 1 (P.k - 1) \ {l}) \ {j} = Icc 1 (P.k - 1) \ {l, j}`. Use extensionality with `i`. Simplify using `only [Finset.mem_sdiff, Finset.mem_singleton, Finset.mem_insert]`. The claim follows by propositional logic.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-Rewrite using `[e]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `: i ≠ j` using `fun e' => (Finset.mem_sdiff.1 hi).2 (by simp [e'])`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sn_hsh_diff {l j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (hlj : l ≠ j) (ρ : M.Ty P) (Y : ℂ) :
     sn_hsh P l j ρ Y = (Y + M.rho P ρ j + 1) * M.xEx P {l, j} ρ Y := by
@@ -1466,21 +1448,21 @@ theorem sn_hsh_diff {l j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (hlj : l ≠ j) (ρ
     simp [this]
 
 /- English proof (translation)
-The claim follows from `hR j _ _ fun ρ ρ' h => by rw [sn_x_up hj h]`.
+A detailed English derivation is pending.
 -/
 theorem sn_kxi_ss (hR : Raises κ SS) {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (Y : ℂ) :
     xiA κ Y * SS j = SS j * κ (fun ρ => ((Y + M.rho P ρ j + 1) * M.xEx P {j} ρ Y)⁻¹) :=
   hR j _ _ fun ρ ρ' h => by rw [sn_x_up hj h]
 
 /- English proof (translation)
-The claim follows from `hR j _ _ fun ρ ρ' h => by rw [sn_xEx_up h]`.
+A detailed English derivation is pending.
 -/
 theorem sn_kxl_ss (hR : Raises κ SS) (j l : ℕ) (Y : ℂ) :
     κ (fun ρ => M.xEx P {l} ρ Y) * SS j = SS j * κ (fun ρ => sn_hsh P l j ρ Y) :=
   hR j _ _ fun ρ ρ' h => by rw [sn_xEx_up h]
 
 /- English proof (translation)
-Establish `h` using `sn_raises hc l (fun ρ => star (M.xEx P {l} ρ Y)) (fun ρ => star (M.xEx P {l} ρ Y)) (fun ρ ρ' h => by rw [sn_xEx_up h, sn_hsh_same])`. Establish `h2` using `congrArg star h`. Rewrite `h2` using `[star_mul, star_mul, show star (κ _) = _ from hc.1 _]`. Simplify using `only [star_star] at h2`. Conclude with `h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sn_kxl_sss (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (l : ℕ) (Y : ℂ) :
     κ (fun ρ => M.xEx P {l} ρ Y) * star (SS l) = star (SS l) * κ (fun ρ => M.xEx P {l} ρ Y) := by
@@ -1492,7 +1474,7 @@ theorem sn_kxl_sss (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (l : ℕ) (Y 
   exact h2.symm
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem upper_left_from_determinant {t11 t12 t21 t21' τ τ' τi τi' q : A} (hD3 : t11 * τ' - t12 * t21' = q)
     (hD4 : t21 * τ' = τ * t21') (h1 : τ' * τi' = 1) (h2 : τi * τ = 1) : t11 = q * τi' + t12 * τi * t21 := by
@@ -1504,9 +1486,9 @@ theorem upper_left_from_determinant {t11 t12 t21 t21' τ τ' τi τi' q : A} (hD
     _ = q * τi' + t12 * τi * t21 := by rw [h1, mul_one]
 
 /- English proof (translation)
-Establish `k1 : G * x * m * (Gi * xi) = G * m * Gi`. Combine the equalities or inequalities in the displayed calculation. Establish `k2 : Gi * xi * (G * x * l) = l`. Combine the equalities or inequalities in the displayed calculation. Establish `k3 : G * m * Gi * (G * x * l) = G * x * m * l`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem sn_expand {G Gi x xi m l S12 weightedSumBis : A} (hGG : Gi * G = 1) (hx : x * xi = 1) (hxi : xi * x = 1)
     (hmx : m * x = x * m) (hxGi : x * Gi = Gi * x) (hxiG : xi * G = G * xi) :
@@ -1538,9 +1520,9 @@ variable {P : M.Par} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] {L : R.Lev
   {κ : (M.Ty P → ℂ) →ₐ[ℂ] A} {SS : ℕ → A}
 
 /- English proof (translation)
-Establish `h1 : ∀ j, ∑ l ∈ s.erase j, F l j = ∑ l ∈ s, if l ≠ j then F l j else 0` using `fun j => by`. Rewrite using `[← Finset.sum_filter, Finset.filter_ne']`. Establish `h2 : ∀ l, ∑ j ∈ s.erase l, F l j = ∑ j ∈ s, if j ≠ l then F l j else 0` using `fun l => by`. Rewrite using `[← Finset.sum_filter, Finset.filter_ne']`. Repeatedly rewrite using `[h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[ne_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sn_sum_swap (s : Finset ℕ) (F : ℕ → ℕ → A) :
     ∑ j ∈ s, ∑ l ∈ s.erase j, F l j = ∑ l ∈ s, ∑ j ∈ s.erase l, F l j := by
@@ -1554,7 +1536,7 @@ theorem sn_sum_swap (s : Finset ℕ) (F : ℕ → ℕ → A) :
   simp [ne_comm]
 
 /- English proof (translation)
-Unfold `Q.NFData.weightedSumBis`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[mul_assoc, kap_mul_pj, mul_smul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lower_sum_mul_projection (τ : M.Ty P) (Y : ℂ) :
     Q.NFData.weightedSumBis (⟨L, κ, SS⟩ : Q.NFData P A) Y * proj κ τ =
@@ -1566,7 +1548,7 @@ theorem lower_sum_mul_projection (τ : M.Ty P) (Y : ℂ) :
   rw [mul_assoc, kap_mul_pj, mul_smul_comm]
 
 /- English proof (translation)
-Rewrite using `[mul_assoc, ← mul_assoc (xiA κ Y), sn_kxi_ss hR hj, mul_assoc, kap_mul_pj, mul_smul_comm, mul_smul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sn_stepB (hR : Raises κ SS) {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (τ : M.Ty P) (Y : ℂ) :
     (L.GGi * xiA κ Y) * (SS j * proj κ τ) =
@@ -1574,11 +1556,11 @@ theorem sn_stepB (hR : Raises κ SS) {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (τ 
   rw [mul_assoc, ← mul_assoc (xiA κ Y), sn_kxi_ss hR hj, mul_assoc, kap_mul_pj, mul_smul_comm, mul_smul_comm]
 
 /- English proof (translation)
-Unfold `Q.NFData.S12`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only`. Establish `e1 : (κ fun ρ => M.xEx P {l} ρ Y) * star (SS l) * (L.GGi * (SS j * proj κ τ)) = L.GGi * (star (SS l) * ((κ fun ρ => M.xEx P {l} ρ Y) * SS j) * proj κ τ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[sn_kxl_sss hc l Y]`. Establish `a` using `(sn_ssGi hc hs l).eq`. Establish `b` using `(sn_kGi hc (fun ρ => M.xEx P {l} ρ Y)).eq`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, sn_kxl_ss (sn_raises hc) j l Y]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show star (SS l) * (SS j * κ fun ρ => sn_hsh P l j ρ Y) * proj κ τ = star (SS l) * SS j * ((κ fun ρ => sn_hsh P l j ρ Y) * proj κ τ) by noncomm_ring, kap_mul_pj, mul_smul_comm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem sn_stepC (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (hs : Fr.IsStarLevel L) (j : ℕ) (τ : M.Ty P) (Y : ℂ) :
     Q.NFData.S12 (⟨L, κ, SS⟩ : Q.NFData P A) Y * (L.GGi * (SS j * proj κ τ)) =
@@ -1602,13 +1584,13 @@ theorem sn_stepC (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (hs : Fr.IsStar
     mul_smul_comm]
 
 /- English proof (translation)
-Distinguish the cases in `hτ : ∃ τ', M.Up P j τ τ'`. Take `⟨τ', hU⟩` from `hτ`. Establish `hx` using `hY τ'`. Rewrite `hx` using `[sn_x_up hj hU]`. Establish `ha : (Y + M.rho P τ j + 1) ≠ 0` using `left_ne_zero_of_mul hx`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : M.xEx P {j} τ Y ≠ 0` using `right_ne_zero_of_mul hx`. Rewrite using `[← Finset.add_sum_erase _ _ hj]`. Use `congr 1`. Rewrite using `[sn_hsh_same]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Clear the denominators using the available nonvanishing facts. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Establish `hlj : l ≠ j` using `Finset.ne_of_mem_erase hl`. Rewrite using `[sn_hsh_diff hj hlj]`. Use `congr 1`.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Clear the denominators using the available nonvanishing facts. Establish `h0` using `ss_pj_none κ (sn_raises hc) hτ`. Establish `z : ∀ l, star (SS l) * SS j * proj κ τ = 0` using `fun l => by rw [mul_assoc, h0, mul_zero]`. Simplify using `[z]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sn_stepE (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) {Y : ℂ} (hY : Reg P Y) {j : ℕ}
     (hj : j ∈ Icc 1 (P.k - 1)) (τ : M.Ty P) :
@@ -1633,13 +1615,13 @@ theorem sn_stepE (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) {Y : ℂ} (hY :
     simp [z]
 
 /- English proof (translation)
-Rewrite using `[mul_assoc, mul_assoc, lower_sum_mul_projection, Finset.mul_sum, Finset.mul_sum]`. Establish `e : ∀ j ∈ Icc 1 (P.k - 1), Q.NFData.S12 (⟨L, κ, SS⟩ : Q.NFData P A) Y * (L.GGi * xiA κ Y * (M.xEx P {j} τ Y • (SS j * proj κ τ))) = L.GGi * ∑ l ∈ Icc 1 (P.k - 1), (M.xEx P {j} τ Y * ((Y + M.rho P τ j + 1) * M.xEx P {j} τ Y)⁻¹ * sn_hsh P l j τ Y) • (star (SS l) * SS j * proj κ τ)`. Introduce `j hj`. Rewrite using `[mul_smul_comm, sn_stepB (sn_raises hc) hj, smul_smul, mul_smul_comm, sn_stepC hc hs, ← mul_smul_comm, Finset.smul_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Rewrite using `[Finset.sum_congr rfl e, ← Finset.mul_sum, ← mul_add]`. Use `congr 1`. Rewrite using `[Finset.sum_congr rfl fun j hj => sn_stepE hc hY hj τ, Finset.sum_add_distrib, sn_sum_swap]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Unfold `Q.NFData.S4`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[mul_assoc _ (κ _), kap_mul_pj, mul_smul_comm, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem upper_left_tail_projection (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (hs : Fr.IsStarLevel L) {Y : ℂ} (hY : Reg P Y)
     (τ : M.Ty P) :
@@ -1677,14 +1659,14 @@ variable {P : M.Par} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] {L : R.Lev
   {κ : (M.Ty P → ℂ) →ₐ[ℂ] A} {SS : ℕ → A}
 
 /- English proof (translation)
-Simplify using `[Polynomial.eval_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sn_prod_eval (s : Finset ℕ) (c : ℕ → ℂ) (Y : ℂ) :
     (∏ i ∈ s, (X + C (c i))).eval Y = ∏ i ∈ s, (Y + c i) := by
   simp [Polynomial.eval_prod]
 
 /- English proof (translation)
-Establish `e : (fun Y => (∏ i ∈ s, (Y + c i)) • f Y) = fun Y => (∏ i ∈ s, (X + C (c i))).eval Y • f Y`. Use function extensionality and compare the values at `fun Y => by rw [sn_prod_eval]`. Rewrite using `[e]`. Conclude with `isPF_smul_fun _ hf`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sn_isPF_prod_smul (s : Finset ℕ) (c : ℕ → ℂ) {f : ℂ → A} (hf : IsPF f) :
     IsPF fun Y => (∏ i ∈ s, (Y + c i)) • f Y := by
@@ -1693,7 +1675,7 @@ theorem sn_isPF_prod_smul (s : Finset ℕ) (c : ℕ → ℂ) {f : ℂ → A} (hf
   rw [e]; exact isPF_smul_fun _ hf
 
 /- English proof (translation)
-Establish `e : (fun Y => κ (fun ρ => ∏ i ∈ s, (Y + c ρ i))) = fun Y => ∑ ρ, (∏ i ∈ s, (Y + c ρ i)) • proj κ ρ`. Use function extensionality and compare the values at `fun Y => kap_eq κ _`. Rewrite using `[e]`. Conclude with `isPF_sum _ fun ρ _ => sn_isPF_prod_smul s (c ρ) (isPF_const _)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sn_isPF_kprod (s : Finset ℕ) (c : M.Ty P → ℕ → ℂ) :
     IsPF fun Y => κ (fun ρ => ∏ i ∈ s, (Y + c ρ i)) := by
@@ -1703,18 +1685,18 @@ theorem sn_isPF_kprod (s : Finset ℕ) (c : M.Ty P → ℕ → ℂ) :
   exact isPF_sum _ fun ρ _ => sn_isPF_prod_smul s (c ρ) (isPF_const _)
 
 /- English proof (translation)
-The claim follows from `sn_isPF_kprod (Icc 1 (P.k - 1)) fun ρ i => (M.rho P ρ i : ℂ)`.
+A detailed English derivation is pending.
 -/
 theorem polynomial_coordinate : IsPF fun Y => xA κ Y := sn_isPF_kprod (Icc 1 (P.k - 1)) fun ρ i => (M.rho P ρ i : ℂ)
 
 /- English proof (translation)
-The claim follows from `sn_isPF_kprod (Icc 1 (P.k - 1) \ s) fun ρ i => (M.rho P ρ i : ℂ)`.
+A detailed English derivation is pending.
 -/
 theorem sn_isPF_xEx (s : Finset ℕ) : IsPF fun Y => κ (fun ρ => M.xEx P s ρ Y) :=
   sn_isPF_kprod (Icc 1 (P.k - 1) \ s) fun ρ i => (M.rho P ρ i : ℂ)
 
 /- English proof (translation)
-Establish `e : (fun Y => L.m0 Y) = fun Y => -L.nabs - algebraMap ℂ A ((X - C (1 / 2 : ℂ)).eval Y) * (L.ζ * L.GGi)`. Use function extensionality and compare the values at `Y`. Simplify using `[R.LevelData.m0]`. Rewrite using `[e]`. Conclude with `isPF_sub (isPF_const _) (isPF_mul (isPF_algebraMap _) (isPF_const _))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polynomial_raising : IsPF fun Y => L.m0 Y := by
   have e : (fun Y => L.m0 Y) = fun Y => -L.nabs - algebraMap ℂ A ((X - C (1 / 2 : ℂ)).eval Y) * (L.ζ * L.GGi) := by
@@ -1722,7 +1704,7 @@ theorem polynomial_raising : IsPF fun Y => L.m0 Y := by
   rw [e]; exact isPF_sub (isPF_const _) (isPF_mul (isPF_algebraMap _) (isPF_const _))
 
 /- English proof (translation)
-Establish `e : (fun Y => L.l0 Y) = fun Y => -L.nab - algebraMap ℂ A ((X + C (1 / 2 : ℂ)).eval Y) * (L.ζb * L.GGi)`. Use function extensionality and compare the values at `Y`. Simplify using `[R.LevelData.l0]`. Rewrite using `[e]`. Conclude with `isPF_sub (isPF_const _) (isPF_mul (isPF_algebraMap _) (isPF_const _))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polynomial_lowering : IsPF fun Y => L.l0 Y := by
   have e : (fun Y => L.l0 Y) = fun Y => -L.nab - algebraMap ℂ A ((X + C (1 / 2 : ℂ)).eval Y) * (L.ζb * L.GGi) := by
@@ -1730,28 +1712,28 @@ theorem polynomial_lowering : IsPF fun Y => L.l0 Y := by
   rw [e]; exact isPF_sub (isPF_const _) (isPF_mul (isPF_algebraMap _) (isPF_const _))
 
 /- English proof (translation)
-Unfold `Q.NFData.weightedSumBis`. Conclude with `isPF_sum _ fun l _ => isPF_mul (isPF_const _) (sn_isPF_xEx _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem polynomial_lower_sum : IsPF fun Y => Q.NFData.weightedSumBis (⟨L, κ, SS⟩ : Q.NFData P A) Y := by
   unfold Q.NFData.weightedSumBis
   exact isPF_sum _ fun l _ => isPF_mul (isPF_const _) (sn_isPF_xEx _)
 
 /- English proof (translation)
-Unfold `Q.NFData.S12`. Conclude with `isPF_sum _ fun l _ => isPF_mul (sn_isPF_xEx _) (isPF_const _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem polynomial_upper_sum : IsPF fun Y => Q.NFData.S12 (⟨L, κ, SS⟩ : Q.NFData P A) Y := by
   unfold Q.NFData.S12
   exact isPF_sum _ fun l _ => isPF_mul (sn_isPF_xEx _) (isPF_const _)
 
 /- English proof (translation)
-Unfold `Q.NFData.S4`. Conclude with `isPF_sum _ fun l _ => isPF_sum _ fun j _ => isPF_mul (isPF_const _) (sn_isPF_xEx _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem polynomial_quartic_sum : IsPF fun Y => Q.NFData.S4 (⟨L, κ, SS⟩ : Q.NFData P A) Y := by
   unfold Q.NFData.S4
   exact isPF_sum _ fun l _ => isPF_sum _ fun j _ => isPF_mul (isPF_const _) (sn_isPF_xEx _)
 
 /- English proof (translation)
-Establish `e : (fun Y => κ (fun ρ => M.wC P ρ Y)) = fun Y => ∑ ρ, (M.wNum P ρ /ₘ M.coordinatePolynomial P ρ).eval Y • proj κ ρ`. Use function extensionality and compare the values at `fun Y => kap_eq κ _`. Rewrite using `[e]`. Conclude with `isPF_sum _ fun ρ _ => isPF_cpoly _ _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sn_isPF_w : IsPF fun Y => κ (fun ρ => M.wC P ρ Y) := by
   have e : (fun Y => κ (fun ρ => M.wC P ρ Y)) = fun Y => ∑ ρ, (M.wNum P ρ /ₘ M.coordinatePolynomial P ρ).eval Y • proj κ ρ :=
@@ -1764,7 +1746,7 @@ def upperLeftTail (L : R.LevelData A P.r) (κ : (M.Ty P → ℂ) →ₐ[ℂ] A) 
     Q.NFData.S12 (⟨L, κ, SS⟩ : Q.NFData P A) Y * L.l0 Y
 
 /- English proof (translation)
-Unfold `upperLeftTail`. Conclude with `isPF_add (isPF_add (isPF_mul (isPF_mul (isPF_mul (isPF_const _) polynomial_coordinate) polynomial_raising) polynomial_lowering) (isPF_mul (isPF_mul (isPF_mul (isPF_const _) polynomial_raising) (isPF_const _)) polynomial_lower_sum)) (isPF_mul polynomial_upper_sum polynomial_loweri …`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem polynomial_upper_left_tail : IsPF fun Y => upperLeftTail L κ SS Y := by
   unfold upperLeftTail
@@ -1773,7 +1755,7 @@ theorem polynomial_upper_left_tail : IsPF fun Y => upperLeftTail L κ SS Y := by
     (isPF_mul polynomial_upper_sum polynomial_lowering)
 
 /- English proof (translation)
-Simplify using `only [Q.NFData.QQ, upperLeftTail, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.empty_val', Matrix.cons_val_fin_one, Q.NFData.x, xA]`. Use `noncomm_ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem upper_left_decomposition (Y : ℂ) : (Q.NFData.QQ (⟨L, κ, SS⟩ : Q.NFData P A) Y) 0 0 =
     L.GGi * κ (fun ρ => M.wC P ρ Y) + upperLeftTail L κ SS Y + L.GGi * Q.NFData.S4 (⟨L, κ, SS⟩ : Q.NFData P A) Y := by
@@ -1782,7 +1764,7 @@ theorem upper_left_decomposition (Y : ℂ) : (Q.NFData.QQ (⟨L, κ, SS⟩ : Q.N
   noncomm_ring
 
 /- English proof (translation)
-Repeatedly rewrite using `[upper_left_decomposition]`. Conclude with `isPF_add (isPF_add (isPF_mul (isPF_const _) sn_isPF_w) polynomial_upper_left_tail) (isPF_mul (isPF_const _) polynomial_quartic_sum)`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polynomial_upper_left : IsPF fun Y => (Q.NFData.QQ (⟨L, κ, SS⟩ : Q.NFData P A) Y) 0 0 := by
   simp_rw [upper_left_decomposition]
@@ -1796,15 +1778,13 @@ variable {P : M.Par} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] {L : R.Lev
   {κ : (M.Ty P → ℂ) →ₐ[ℂ] A} {SS : ℕ → A}
 
 /- English proof (translation)
-Establish `cG : ∀ Z, xA κ Z * L.GGi = L.GGi * xA κ Z` using `fun Z => (sn_kGi hc _).eq`. Establish `cG' : ∀ Z, xiA κ Z * L.GG = L.GG * xiA κ Z` using `fun Z => (sn_kG hc _).eq`. Establish `h1 : L.GG * xA κ (Y + 1) * (L.GGi * xiA κ (Y + 1)) = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : L.GGi * xiA κ Y * (L.GG * xA κ Y) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `d3 : QQ Y 0 0 * (L.GG * xA κ (Y + 1)) - QQ Y 0 1 * QQ (Y + 1) 1 0 = algebraMap ℂ A (M.qC P Y)`. Rewrite using `[← h22]`. Conclude with `hD3 Y`. Establish `d4 : QQ Y 1 0 * (L.GG * xA κ (Y + 1)) = (L.GG * xA κ Y) * QQ (Y + 1) 1 0`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h22, ← h22]`. Conclude with `hD4 Y`. Establish `a3` using `upper_left_from_determinant d3 d4 h1 h2`. Establish `ex : QQ Y 0 1 * (L.GGi * xiA κ Y) * QQ Y 1 0 = upperLeftTail L κ SS Y + Q.NFData.S12 (⟨L, κ, SS⟩ : Q.NFData P A) Y * (L.GGi * xiA κ Y) * Q.NFData.weightedSumBis (⟨L, κ, SS⟩ : Q.NFData P A) Y`. Rewrite using `[h12, h21, sn_expand L.GGi_GG (xA_xiA κ hY) (xiA_xA κ hY) (kappa_commute_raising hc _ Y).eq.symm (cG Y) (cG' Y)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `upperLeftTail`. Use `noncomm_ring`. Establish `hq : algebraMap ℂ A (M.qC P Y) * (L.GGi * xiA κ (Y + 1)) * proj κ τ = (M.qC P Y / M.xC P τ (Y + 1)) • (L.GGi * proj κ τ)`. Establish `e : xiA κ (Y + 1) * proj κ τ = (M.xC P τ (Y + 1))⁻¹ • proj κ τ` using `kap_mul_pj κ _ τ`. Rewrite using `[mul_assoc, mul_assoc, e, mul_smul_comm, mul_smul_comm, ← Algebra.smul_def, smul_smul, div_eq_mul_inv, mul_comm (M.qC P Y)]`.
-
-Rewrite using `[a3, ex, add_mul, add_mul, hq, upper_left_tail_projection hc hs hY τ]`. Use `noncomm_ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sn_core (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (hs : Fr.IsStarLevel L) {QQ : ℂ → Matrix (Fin 2) (Fin 2) A}
     (h22 : ∀ Y, QQ Y 1 1 = L.GG * xA κ Y)
@@ -1853,13 +1833,13 @@ variable {P : M.Par} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] {L : R.Lev
   {κ : (M.Ty P → ℂ) →ₐ[ℂ] A} {SS : ℕ → A}
 
 /- English proof (translation)
-Unfold `M.xC; exact Finset.prod_congr rfl fun i _ => by ring`.
+Replace the relevant objects with their definitions.
 -/
 theorem coordinate_shift_product (τ : M.Ty P) (Y : ℂ) : M.xC P τ (Y + 1) = ∏ i ∈ Icc 1 (P.k - 1), (Y + (1 + (M.rho P τ i : ℂ))) := by
   unfold M.xC; exact Finset.prod_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Simplify using `only [M.qP, M.qC, eval_mul, eval_C, eval_prod, eval_add, eval_X]`. Use `congr 1; exact Finset.prod_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem sn_qeval (Y : ℂ) : (M.qP P).eval Y = M.qC P Y := by
   simp only [M.qP, M.qC, eval_mul, eval_C, eval_prod, eval_add, eval_X]
@@ -1869,24 +1849,22 @@ def sn_e (P : M.Par) (τ : M.Ty P) (j : ℕ) (Y : ℂ) : ℂ :=
   (∏ i ∈ Icc 1 (P.k - 1) \ {j}, (Y + (M.rho P τ i : ℂ))) * ∏ i ∈ Icc 1 (P.k - 1) \ {j}, (Y + (1 + (M.rho P τ i : ℂ)))
 
 /- English proof (translation)
-Rewrite using `[coordinate_shift_product, Finset.prod_eq_mul_prod_sdiff_singleton j _ (fun h => absurd hj h)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coordinate_shift_split {j : ℕ} (hj : j ∈ Icc 1 (P.k - 1)) (τ : M.Ty P) (Y : ℂ) :
     M.xC P τ (Y + 1) = (Y + M.rho P τ j + 1) * ∏ i ∈ Icc 1 (P.k - 1) \ {j}, (Y + (1 + (M.rho P τ i : ℂ))) := by
   rw [coordinate_shift_product, Finset.prod_eq_mul_prod_sdiff_singleton j _ (fun h => absurd hj h)]; ring
 
 /- English proof (translation)
-Establish `pfx : ∀ {f : ℂ → A}, IsPF f → IsPF fun Y => M.xC P τ (Y + 1) • f Y` using `fun {f} hf => by`. Repeatedly rewrite using `[coordinate_shift_product]`. Conclude with `sn_isPF_prod_smul _ _ hf`. Use `isPF_eq (f := fun Z => M.xC P τ (Z + 1) • (QQ Z 0 0 * proj κ τ)) (g := fun Z => M.qC P Z • (L.GGi * proj κ τ) + M.xC P τ (Z + 1) • (upperLeftTail L κ SS Z * proj κ τ) + (L.GGi * (∑ j ∈ Icc 1 (P.k - 1), sn_e P τ j Z • (star (SS j) * SS j * proj κ τ)) + M.xC P τ (Z + 1) • (L.GGi * …` and prove the remaining obligations. Use `isPF_add (isPF_add ?_ (pfx (isPF_mul polynomial_upper_left_tail (isPF_const _)))) (isPF_add ?_ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[← sn_qeval]`. Conclude with `isPF_cpoly _ _`. Use `isPF_mul (isPF_const _) (isPF_sum _ fun j _ => ?_)` and prove the remaining obligations. Unfold `sn_e`. Repeatedly rewrite using `[mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `sn_isPF_prod_smul _ _ (sn_isPF_prod_smul _ _ (isPF_const _))`. Conclude with `pfx (isPF_mul (isPF_const _) (isPF_mul polynomial_quartic_sum (isPF_const _)))`. Introduce and unpack `Z ⟨hZ, hZ1⟩`. Establish `hx : M.xC P τ (Z + 1) ≠ 0` using `hZ1 τ`. Rewrite using `[sn_core hc hs h22 h21 h12 hD3 hD4 hZ hZ1 τ, smul_add, smul_add, smul_smul, mul_div_cancel₀ _ hx, smul_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 2`. Rewrite using `[← mul_smul_comm, Finset.smul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Establish `hx'` using `hx`. Rewrite `hx'` using `[coordinate_shift_split hj]`. Establish `ha : Z + M.rho P τ j + 1 ≠ 0` using `left_ne_zero_of_mul hx'`. Rewrite using `[coordinate_shift_split hj, sn_e]`.
-
-Unfold `M.xEx`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem sn_res (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (hs : Fr.IsStarLevel L) {QQ : ℂ → Matrix (Fin 2) (Fin 2) A}
     (h22 : ∀ Y, QQ Y 1 1 = L.GG * xA κ Y)
@@ -1933,9 +1911,9 @@ variable {P : M.Par} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] {L : R.Lev
   {κ : (M.Ty P → ℂ) →ₐ[ℂ] A} {SS : ℕ → A}
 
 /- English proof (translation)
-Unfold `sn_e`. Apply `mul_eq_zero_of_right` to reduce the goal to its premises. Apply `Finset.prod_eq_zero (i := l)` to reduce the goal to its premises. Conclude with `Finset.mem_sdiff.2 ⟨hl, by simpa using hjl.symm⟩`. Use `push_cast`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem sn_e_other {j l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) (hjl : j ≠ l) (τ : M.Ty P) :
     sn_e P τ j ((-(M.rho P τ l) - 1 : ℝ) : ℂ) = 0 := by
@@ -1946,7 +1924,7 @@ theorem sn_e_other {j l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) (hjl : j ≠ l) (τ 
   · push_cast; ring
 
 /- English proof (translation)
-Unfold `sn_e`. Rewrite using `[Finset.sdiff_singleton_eq_erase, mul_comm]`. Use `push_cast`. Apply the tactic sequence `congr 1 <;> exact Finset.prod_congr rfl fun i _ => by ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sn_e_self (l : ℕ) (τ : M.Ty P) :
     sn_e P τ l ((-(M.rho P τ l) - 1 : ℝ) : ℂ) =
@@ -1958,9 +1936,9 @@ theorem sn_e_self (l : ℕ) (τ : M.Ty P) :
   congr 1 <;> exact Finset.prod_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Establish `r` using `sn_res hc hs h22 h21 h12 hD3 hD4 hpoly τ ((-(M.rho P τ l) - 1 : ℝ) : ℂ)`. Establish `hx : M.xC P τ (((-(M.rho P τ l) - 1 : ℝ) : ℂ) + 1) = 0`. Rewrite using `[coordinate_shift_split hl]`. Apply `mul_eq_zero_of_left` to reduce the goal to its premises. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `r` using `[hx, zero_smul, zero_smul, zero_smul, add_zero, add_zero, Finset.sum_eq_single l (fun j hj hjl => by rw [sn_e_other hl hjl, zero_smul]) (fun h => absurd hl h), ← mul_smul_comm, ← mul_add]`. Use `congrArg (L.GG * ·) r` as an intermediate fact. Simplify using `only [mul_zero, ← mul_assoc, L.GG_GGi, one_mul] at this`. Rewrite using `[← this]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sn_norm_eq (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (hs : Fr.IsStarLevel L)
     {QQ : ℂ → Matrix (Fin 2) (Fin 2) A}
@@ -1983,15 +1961,13 @@ theorem sn_norm_eq (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (hs : Fr.IsSt
   rw [← this]
 
 /- English proof (translation)
-Distinguish the cases in `hτ : ∃ τ', M.Up P l τ τ'`. Take `⟨τ', hU⟩` from `hτ`. Establish `hpos` using `((hNF P hP l hl τ).1 τ' hU).1`. Use `set den : ℝ := (∏ j ∈ (Icc 1 (P.k - 1)).erase l, (M.rho P τ j - M.rho P τ l)) * ∏ j ∈ (Icc 1 (P.k - 1)).erase l, (M.rho P τ j - M.rho P τ l - 1) with hden`. Establish `hd : den ≠ 0`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Unfold `M.Nrm at hpos`. Rewrite `hpos` using `[← hden, h0, div_zero]`. Conclude with `lt_irrefl _ hpos`. Establish `key` using `Mx3.nrm_key P hP l hl τ`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[← hden]`. Establish `e` using `sn_norm_eq hc hs h22 h21 h12 hD3 hD4 hpoly hl τ`. Rewrite `e` using `[sn_e_self, ← hden, (hRP P τ _).2, show I.qpoly P.k P.T P.T' P.u P.u' (-M.rho P τ l - 1) = -(M.Nrm P l τ * den) by linarith]`. Establish `hdC : ((den : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hd`. Establish `e3 : ((den : ℝ) : ℂ) • (star (SS l) * SS l * proj κ τ) = ((den : ℝ) : ℂ) • (((M.Nrm P l τ : ℝ) : ℂ) • proj κ τ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[eq_neg_of_add_eq_zero_right e, smul_smul]`. Use `push_cast`. Rewrite using `[neg_smul, neg_neg, mul_comm]`. Conclude with `smul_right_injective A hdC e3`. Rewrite using `[mul_assoc, ss_pj_none κ (sn_raises hc) hτ, mul_zero, (hNF P hP l hl τ).2.1 hτ]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sn_norm_blk (hc : RelCore (⟨L, κ, SS⟩ : Q.NFData P A)) (hs : Fr.IsStarLevel L) (hP : P.OK)
     (hNF : M.NrmFacts) (hRP : M.RealPoints)
@@ -2027,17 +2003,17 @@ end SN7
 section SN8
 
 /- English proof (translation)
-Establish `hx1 : (M.coordinatePolynomial P τ).eval Y = M.xC P τ (Y + 1)`. Rewrite using `[coordinate_shift_product]`. Simplify using `only [M.coordinatePolynomial, eval_prod, eval_add, eval_X, eval_C]`. Conclude with `Finset.prod_congr rfl fun i _ => by ring`. Establish `hw` using `congrArg (Polynomial.eval Y) (hWE P hP τ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hw` using `[eval_mul, hx1]`. Establish `hwc : M.wC P τ Y = (M.wNum P τ).eval Y / M.xC P τ (Y + 1)`. Rewrite using `[hw, M.wC]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hwc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [M.wNum, eval_add, eval_finsetSum, eval_mul, eval_C, eval_prod, eval_X, sn_qeval]`. Rewrite using `[add_div, Finset.sum_div]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hsplit` using `coordinate_shift_split hj τ Y`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne` using `hY1`. Rewrite `hne` using `[hsplit]`. Establish `hB` using `right_ne_zero_of_mul hne`. Establish `ha` using `left_ne_zero_of_mul hne`. Establish `e1 : ∏ i ∈ (Icc 1 (P.k - 1)).erase j, (Y + ((M.rho P τ i : ℂ) + 1)) = ∏ i ∈ Icc 1 (P.k - 1) \ {j}, (Y + (1 + (M.rho P τ i : ℂ)))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sdiff_singleton_eq_erase]; exact Finset.prod_congr rfl fun i _ => by ring`. Establish `e2 : ∏ i ∈ (Icc 1 (P.k - 1)).erase j, (Y + (M.rho P τ i : ℂ)) = M.xEx P {j} τ Y`. Unfold `M.xEx`. Rewrite using `[Finset.sdiff_singleton_eq_erase]`. Rewrite using `[hsplit, e1, e2]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem sn_wC {P : M.Par} (hWE : M.WExact) (hP : P.OK) (τ : M.Ty P) {Y : ℂ} (hY1 : M.xC P τ (Y + 1) ≠ 0) :
     M.wC P τ Y = M.qC P Y / M.xC P τ (Y + 1) +
@@ -2068,15 +2044,15 @@ theorem sn_wC {P : M.Par} (hWE : M.WExact) (hP : P.OK) (τ : M.Ty P) {Y : ℂ} (
   field_simp
 
 /- English proof (translation)
-Introduce `_ _ _ hNF hRP hWE P A _ _ _ L0 QQ κ b SS L hP hS _ _ _ hExt _ _ hst hc hQ`. Establish `hGG : L.GG = L0.GG` using `hExt.2.2.2.2.2.2.2.2.2.2.1`. Establish `h22 : ∀ Y, QQ Y 1 1 = L.GG * xA κ Y` using `fun Y => by rw [diagonal_entry_hypothesis hS, hGG]`. Establish `h21 : ∀ Y, QQ Y 1 0 = L.GG * xA κ Y * L.l0 Y + Q.NFData.weightedSumBis (⟨L, κ, SS⟩ : Q.NFData P A) Y` using `fun Y => by`. Rewrite using `[(hQ Y).1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Q.NFData.QQ, Q.NFData.x, xA]`. Establish `h12 : ∀ Y, QQ Y 0 1 = L.GG * xA κ Y * L.m0 Y + Q.NFData.S12 (⟨L, κ, SS⟩ : Q.NFData P A) Y` using `fun Y => by`. Rewrite using `[(hQ Y).2]`. Simplify using `[Q.NFData.QQ, Q.NFData.x, xA]`. Establish `hD3` using `quantum_determinant_relation hS`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hD4` using `lower_diagonal_shift_relation hS`. Establish `hpoly` using `H_poly hS 0 0`. Use `⟨fun l hl => ?_, fun Y => ?_⟩` and prove the remaining obligations. Use `show star (SS l) * SS l = κ fun ρ => ((M.Nrm P l ρ : ℝ) : ℂ)`. Conclude with `eq_of_rblocks κ fun τ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sn_norm_blk hc hst hP hNF hRP h22 h21 h12 hD3 hD4 hpoly hl τ, kap_mul_pj]`. Use `isPF_eq hpoly polynomial_upper_left (regular_pairs_infinite P) ?_ Y` and prove the remaining obligations. Introduce and unpack `Z ⟨hZ, hZ1⟩`. Use `eq_of_rblocks κ fun τ => ?_` and prove the remaining obligations. Establish `hsum : ∑ j ∈ Icc 1 (P.k - 1), (M.xEx P {j} τ Z / (Z + M.rho P τ j + 1)) • (star (SS j) * SS j * proj κ τ) = (∑ j ∈ Icc 1 (P.k - 1), M.xEx P {j} τ Z / (Z + M.rho P τ j + 1) * ((M.Nrm P j τ : ℝ) : ℂ)) • proj κ τ`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[sn_norm_blk hc hst hP hNF hRP h22 h21 h12 hD3 hD4 hpoly hj τ, smul_smul]`. Rewrite using `[sn_core hc hst h22 h21 h12 hD3 hD4 hZ hZ1 τ, upper_left_decomposition, hsum, add_mul, add_mul, mul_assoc L.GGi (κ _), kap_mul_pj, sn_wC hWE hP τ (hZ1 τ), add_smul, mul_add, mul_smul_comm, mul_assoc L.GGi]`. Use `noncomm_ring`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sn_main : Formalism.FourierDecayAlt.NF.SNorm := by
   intro _ _ _ hNF hRP hWE P A _ _ _ L0 QQ κ b SS L hP hS _ _ _ hExt _ _ hst hc hQ
@@ -2112,7 +2088,7 @@ section SC
 variable {P : M.Par} {A : Type} [Ring A] [StarRing A] [Algebra ℂ A]
 
 /- English proof (translation)
-The claim follows from `L0.fns_comm x hx y hy`.
+A detailed English derivation is pending.
 -/
 theorem sc_fc (L0 : PreLevel A P.r) {x y : A} (hx : x ∈ L0.fns) (hy : y ∈ L0.fns) : x * y = y * x :=
   L0.fns_comm x hx y hy
@@ -2120,80 +2096,80 @@ theorem sc_fc (L0 : PreLevel A P.r) {x y : A} (hx : x ∈ L0.fns) (hy : y ∈ L0
 section Mem
 variable (L0 : PreLevel A P.r)
 /- English proof (translation)
-Simplify using `[PreLevel.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_mζ : L0.ζ ∈ L0.fns := by simp [PreLevel.fns]
 /- English proof (translation)
-Simplify using `[PreLevel.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_mζi : L0.ζi ∈ L0.fns := by simp [PreLevel.fns]
 /- English proof (translation)
-Simplify using `[PreLevel.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_mζb : L0.ζb ∈ L0.fns := by simp [PreLevel.fns]
 /- English proof (translation)
-Simplify using `[PreLevel.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_mζbi : L0.ζbi ∈ L0.fns := by simp [PreLevel.fns]
 /- English proof (translation)
-Simplify using `[PreLevel.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_mGG : L0.GG ∈ L0.fns := by simp [PreLevel.fns]
 /- English proof (translation)
-Simplify using `[PreLevel.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_mGGi : L0.GGi ∈ L0.fns := by simp [PreLevel.fns]
 /- English proof (translation)
-Simplify using `[PreLevel.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_mc (l) : L0.c l ∈ L0.fns := by simp [PreLevel.fns]
 /- English proof (translation)
-Simplify using `[PreLevel.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_mci (l) : L0.ci l ∈ L0.fns := by simp [PreLevel.fns]
 /- English proof (translation)
-Simplify using `[PreLevel.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_mcb (l) : L0.cb l ∈ L0.fns := by simp [PreLevel.fns]
 /- English proof (translation)
-Simplify using `[PreLevel.fns]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_mcbi (l) : L0.cbi l ∈ L0.fns := by simp [PreLevel.fns]
 /- English proof (translation)
-Unfold `PreLevel.ops`. Conclude with `Or.inl (Or.inl hx)`.
+Replace the relevant objects with their definitions. Prove the first alternative.
 -/
 theorem sc_ops_of_fns {x : A} (hx : x ∈ L0.fns) : x ∈ L0.ops := by
   unfold PreLevel.ops; exact Or.inl (Or.inl hx)
 /- English proof (translation)
-Unfold `PreLevel.ops`. Conclude with `Or.inl (Or.inr ⟨l, rfl⟩)`.
+Replace the relevant objects with their definitions. Prove the first alternative.
 -/
 theorem sc_mp (l) : L0.p l ∈ L0.ops := by unfold PreLevel.ops; exact Or.inl (Or.inr ⟨l, rfl⟩)
 /- English proof (translation)
-Unfold `PreLevel.ops`. Conclude with `Or.inr ⟨l, rfl⟩`.
+Replace the relevant objects with their definitions. Prove the second alternative.
 -/
 theorem sc_mpb (l) : L0.pb l ∈ L0.ops := by unfold PreLevel.ops; exact Or.inr ⟨l, rfl⟩
 /- English proof (translation)
-Simplify using `[PreLevel.crdOps]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_crd_c (l) : L0.c l ∈ L0.crdOps := by simp [PreLevel.crdOps]
 /- English proof (translation)
-Simplify using `[PreLevel.crdOps]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_crd_ci (l) : L0.ci l ∈ L0.crdOps := by simp [PreLevel.crdOps]
 /- English proof (translation)
-Simplify using `[PreLevel.crdOps]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_crd_cb (l) : L0.cb l ∈ L0.crdOps := by simp [PreLevel.crdOps]
 /- English proof (translation)
-Simplify using `[PreLevel.crdOps]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_crd_cbi (l) : L0.cbi l ∈ L0.crdOps := by simp [PreLevel.crdOps]
 /- English proof (translation)
-Simplify using `[PreLevel.crdOps]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_crd_p (l) : L0.p l ∈ L0.crdOps := by simp [PreLevel.crdOps]
 /- English proof (translation)
-Simplify using `[PreLevel.crdOps]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sc_crd_pb (l) : L0.pb l ∈ L0.crdOps := by simp [PreLevel.crdOps]
 end Mem
@@ -2203,33 +2179,33 @@ section Core
 variable {L0 : PreLevel A P.r} {QQ : ℂ → Matrix (Fin 2) (Fin 2) A} {κ : (M.Ty P → ℂ) →ₐ[ℂ] A}
 
 /- English proof (translation)
-The claim follows from `(H_kops h f g (sc_ops_of_fns L0 hg)).eq`.
+A detailed English derivation is pending.
 -/
 theorem sc_kc (h : SHyp P L0 QQ κ) (f : M.Ty P → ℂ) {g : A} (hg : g ∈ L0.fns) : κ f * g = g * κ f :=
   (H_kops h f g (sc_ops_of_fns L0 hg)).eq
 
 /- English proof (translation)
-The claim follows from `(H_kops h f g hg).eq`.
+A detailed English derivation is pending.
 -/
 theorem sc_kops (h : SHyp P L0 QQ κ) (f : M.Ty P → ℂ) {g : A} (hg : g ∈ L0.ops) : κ f * g = g * κ f :=
   (H_kops h f g hg).eq
 
 /- English proof (translation)
-The claim follows from `sc_kops h _ hg`.
+A detailed English derivation is pending.
 -/
 theorem sc_pc (h : SHyp P L0 QQ κ) (ρ : M.Ty P) {g : A} (hg : g ∈ L0.ops) : proj κ ρ * g = g * proj κ ρ :=
   sc_kops h _ hg
 
 /- English proof (translation)
-The claim follows from `sc_kc h _ hg`.
+A detailed English derivation is pending.
 -/
 theorem sc_pf (h : SHyp P L0 QQ κ) (ρ : M.Ty P) {g : A} (hg : g ∈ L0.fns) : proj κ ρ * g = g * proj κ ρ :=
   sc_kc h _ hg
 
 /- English proof (translation)
-Unfold `PreLevel.crdOps at hg`. Break down `hg with ((((⟨l, rfl⟩ | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩` into its components or cases. Conclude with `⟨sc_ops_of_fns L0 (sc_mc L0 l), sc_fc L0 (sc_mGGi L0) (sc_mc L0 l)⟩`. Conclude with `⟨sc_ops_of_fns L0 (sc_mci L0 l), sc_fc L0 (sc_mGGi L0) (sc_mci L0 l)⟩`. Conclude with `⟨sc_ops_of_fns L0 (sc_mcb L0 l), sc_fc L0 (sc_mGGi L0) (sc_mcb L0 l)⟩`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨sc_ops_of_fns L0 (sc_mcbi L0 l), sc_fc L0 (sc_mGGi L0) (sc_mcbi L0 l)⟩`. Conclude with `⟨sc_mp L0 l, (L0.p_GGi l).symm⟩`. Conclude with `⟨sc_mpb L0 l, (L0.pb_GGi l).symm⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem sc_crd_ops {g : A} (hg : g ∈ L0.crdOps) : g ∈ L0.ops ∧ L0.GGi * g = g * L0.GGi := by
   unfold PreLevel.crdOps at hg
@@ -2242,7 +2218,7 @@ theorem sc_crd_ops {g : A} (hg : g ∈ L0.crdOps) : g ∈ L0.ops ∧ L0.GGi * g 
   · exact ⟨sc_mpb L0 l, (L0.pb_GGi l).symm⟩
 
 /- English proof (translation)
-Unfold `lA`. Establish `e : L0.GG * xA κ Y * (xiA κ Y * L0.GGi * QQ Y 1 0) = L0.GG * (xA κ Y * xiA κ Y) * L0.GGi * QQ Y 1 0` using `by noncomm_ring`. Rewrite using `[e, xA_xiA κ hY, mul_one, L0.GG_GGi, one_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_lreg (h : SHyp P L0 QQ κ) {Y : ℂ} (hY : Reg P Y) : QQ Y 1 0 = L0.GG * xA κ Y * lA L0 QQ κ Y := by
   unfold lA
@@ -2251,7 +2227,7 @@ theorem sc_lreg (h : SHyp P L0 QQ κ) {Y : ℂ} (hY : Reg P Y) : QQ Y 1 0 = L0.G
   rw [e, xA_xiA κ hY, mul_one, L0.GG_GGi, one_mul]
 
 /- English proof (translation)
-Use `hF Y hY ρ ρ` as an intermediate fact. Rewrite `this` using `[if_pos rfl, Finset.sum_eq_zero, add_zero]`. Conclude with `this`. Introduce `l hl`. Rewrite using `[if_neg (fun hu => up_ne P hl hu rfl)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_ldiag {b : M.Ty P → A} {SS : ℕ → A} (hF : SForm P L0 QQ κ b SS) {Y : ℂ} (hY : Reg P Y) (ρ : M.Ty P) :
     proj κ ρ * lA L0 QQ κ Y * proj κ ρ = (b ρ - Y • (L0.ζb * L0.GGi)) * proj κ ρ := by
@@ -2261,9 +2237,9 @@ theorem sc_ldiag {b : M.Ty P → A} {SS : ℕ → A} (hF : SForm P L0 QQ κ b SS
   · intro l hl; rw [if_neg (fun hu => up_ne P hl hu rfl)]
 
 /- English proof (translation)
-Use `hF Y hY ρ ρ'` as an intermediate fact. Rewrite `this` using `[if_neg (fun e => up_ne P hl hu e.symm), zero_add, Finset.sum_eq_single l]`. Rewrite using `[this, if_pos hu]`. Introduce `j hj hjl`. Rewrite using `[if_neg (fun hu' => hjl (up_idx P hj hl hu' hu))]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd hl h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sc_lup {b : M.Ty P → A} {SS : ℕ → A} (hF : SForm P L0 QQ κ b SS) {Y : ℂ} (hY : Reg P Y) {l : ℕ}
     (hl : l ∈ Icc 1 (P.k - 1)) {ρ ρ' : M.Ty P} (hu : M.Up P l ρ ρ') :
@@ -2275,7 +2251,7 @@ theorem sc_lup {b : M.Ty P → A} {SS : ℕ → A} (hF : SForm P L0 QQ κ b SS) 
   · intro h; exact absurd hl h
 
 /- English proof (translation)
-Use `hF Y hY ρ ρ'` as an intermediate fact. Rewrite `this` using `[if_neg hne, zero_add, Finset.sum_eq_zero]`. Conclude with `this`. Introduce `l hl`. Rewrite using `[if_neg (hn l hl)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_lzero {b : M.Ty P → A} {SS : ℕ → A} (hF : SForm P L0 QQ κ b SS) {Y : ℂ} (hY : Reg P Y)
     {ρ ρ' : M.Ty P} (hne : ρ' ≠ ρ) (hn : ∀ l ∈ Icc 1 (P.k - 1), ¬ M.Up P l ρ ρ') :
@@ -2286,23 +2262,23 @@ theorem sc_lzero {b : M.Ty P → A} {SS : ℕ → A} (hF : SForm P L0 QQ κ b SS
   · intro l hl; rw [if_neg (hn l hl)]
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, sc_pf h ρ (sc_mζb L0), mul_assoc, sc_pf h ρ (sc_mGGi L0), mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_Zp (h : SHyp P L0 QQ κ) (ρ : M.Ty P) :
     proj κ ρ * (L0.ζb * L0.GGi) = (L0.ζb * L0.GGi) * proj κ ρ := by
   rw [← mul_assoc, sc_pf h ρ (sc_mζb L0), mul_assoc, sc_pf h ρ (sc_mGGi L0), mul_assoc]
 
 /- English proof (translation)
-The claim follows from `(reg_infinite P).nonempty`.
+A detailed English derivation is pending.
 -/
 theorem sc_exreg (P : M.Par) : ∃ Y, Reg P Y := (reg_infinite P).nonempty
 
 /- English proof (translation)
-Take `⟨Y, hY⟩` from `sc_exreg P`. Establish `e` using `sc_ldiag hF hY ρ`. Establish `e2 : proj κ ρ * (proj κ ρ * lA L0 QQ κ Y * proj κ ρ) = proj κ ρ * lA L0 QQ κ Y * proj κ ρ`. Rewrite using `[← mul_assoc, ← mul_assoc, pj_idem]`. Rewrite `e2` using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hZ` using `sc_Zp h ρ`. Establish `e3a : proj κ ρ * (b ρ * proj κ ρ) = proj κ ρ * b ρ * proj κ ρ` using `(mul_assoc _ _ _).symm`. Establish `e3b : proj κ ρ * ((L0.ζb * L0.GGi) * proj κ ρ) = (L0.ζb * L0.GGi) * proj κ ρ`. Rewrite using `[← mul_assoc, hZ, mul_assoc, pj_idem]`. Establish `e3 : proj κ ρ * ((b ρ - Y • (L0.ζb * L0.GGi)) * proj κ ρ) = proj κ ρ * b ρ * proj κ ρ - Y • ((L0.ζb * L0.GGi) * proj κ ρ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, e3a, e3b]`. Rewrite `e2` using `[e3, sub_mul, smul_mul_assoc]`. Conclude with `sub_left_inj.mp e2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_pbp (h : SHyp P L0 QQ κ) {b : M.Ty P → A} {SS : ℕ → A} (hF : SForm P L0 QQ κ b SS) (ρ : M.Ty P) :
     proj κ ρ * b ρ * proj κ ρ = b ρ * proj κ ρ := by
@@ -2326,9 +2302,9 @@ def sc_B (κ : (M.Ty P → ℂ) →ₐ[ℂ] A) (b : M.Ty P → A) : A := ∑ ρ,
 def sc_D (κ : (M.Ty P → ℂ) →ₐ[ℂ] A) (X : A) : A := ∑ ρ, proj κ ρ * X * proj κ ρ
 
 /- English proof (translation)
-Unfold `sc_B sc_D`. Establish `: ∀ ρ, proj κ ρ * b ρ * proj κ ρ = proj κ ρ * lA L0 QQ κ Y * proj κ ρ + Y • ((L0.ζb * L0.GGi) * proj κ ρ)`. Introduce `ρ`. Rewrite using `[sc_pbp h hF ρ, sc_ldiag hF hY ρ, sub_mul, smul_mul_assoc]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Repeatedly rewrite using `[this, Finset.sum_add_distrib, ← Finset.smul_sum, ← Finset.mul_sum, sum_pj, mul_one]`.
+Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem sc_B_eq (h : SHyp P L0 QQ κ) {b : M.Ty P → A} {SS : ℕ → A} (hF : SForm P L0 QQ κ b SS) {Y : ℂ}
     (hY : Reg P Y) : sc_B κ b = sc_D κ (lA L0 QQ κ Y) + Y • (L0.ζb * L0.GGi) := by
@@ -2338,9 +2314,9 @@ theorem sc_B_eq (h : SHyp P L0 QQ κ) {b : M.Ty P → A} {SS : ℕ → A} (hF : 
   simp_rw [this, Finset.sum_add_distrib, ← Finset.smul_sum, ← Finset.mul_sum, sum_pj, mul_one]
 
 /- English proof (translation)
-Unfold `sc_D`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, hg ρ]`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `noncomm_ring`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← mul_assoc, ← hg ρ]`. Use `noncomm_ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_D_comm {g : A} (hg : ∀ ρ, proj κ ρ * g = g * proj κ ρ) (X : A) :
     sc_D κ X * g = sc_D κ (X * g) ∧ g * sc_D κ X = sc_D κ (g * X) := by
@@ -2350,9 +2326,9 @@ theorem sc_D_comm {g : A} (hg : ∀ ρ, proj κ ρ * g = g * proj κ ρ) (X : A)
   · rw [Finset.mul_sum]; refine Finset.sum_congr rfl fun ρ _ => ?_; rw [← mul_assoc, ← mul_assoc, ← hg ρ]; noncomm_ring
 
 /- English proof (translation)
-Unfold `lA`. Establish `h1` using `(levelSubgroupAtPlace h Y).1`. Establish `hx : xiA κ Y * L0.ζ = L0.ζ * xiA κ Y` using `sc_kc h _ (sc_mζ L0)`. Establish `hg : L0.GGi * L0.ζ = L0.ζ * L0.GGi` using `sc_fc L0 (sc_mGGi L0) (sc_mζ L0)`. Establish `hgx : L0.GGi * L0.GG = 1` using `L0.GGi_GG`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `key : xiA κ Y * L0.GGi * L0.ζ = L0.ζ * (xiA κ Y * L0.GGi)`. Rewrite using `[mul_assoc, hg, ← mul_assoc, hx, mul_assoc]`. Rewrite using `[hgx, mul_one, xiA_xA κ hY, key]`. Use `noncomm_ring`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_lζ (h : SHyp P L0 QQ κ) {Y : ℂ} (hY : Reg P Y) : lA L0 QQ κ Y * L0.ζ = L0.ζ * lA L0 QQ κ Y - 1 := by
   unfold lA
@@ -2369,7 +2345,7 @@ theorem sc_lζ (h : SHyp P L0 QQ κ) {Y : ℂ} (hY : Reg P Y) : lA L0 QQ κ Y * 
         rw [hgx, mul_one, xiA_xA κ hY, key]; noncomm_ring
 
 /- English proof (translation)
-Unfold `lA`. Establish `h1` using `(levelSubgroupAtPlace h Y).2.2.2.2.1`. Establish `hx : xiA κ Y * L0.ζb = L0.ζb * xiA κ Y` using `sc_kc h _ (sc_mζb L0)`. Establish `hg : L0.GGi * L0.ζb = L0.ζb * L0.GGi` using `sc_fc L0 (sc_mGGi L0) (sc_mζb L0)`. Rewrite using `[mul_assoc, h1, ← mul_assoc, mul_assoc (xiA κ Y), hg, ← mul_assoc, hx, mul_assoc, mul_assoc, mul_assoc]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_lζb (h : SHyp P L0 QQ κ) (Y : ℂ) : lA L0 QQ κ Y * L0.ζb = L0.ζb * lA L0 QQ κ Y := by
   unfold lA
@@ -2379,7 +2355,7 @@ theorem sc_lζb (h : SHyp P L0 QQ κ) (Y : ℂ) : lA L0 QQ κ Y * L0.ζb = L0.ζ
   rw [mul_assoc, h1, ← mul_assoc, mul_assoc (xiA κ Y), hg, ← mul_assoc, hx, mul_assoc, mul_assoc, mul_assoc]
 
 /- English proof (translation)
-Unfold `lA`. Take `⟨ho, hgi⟩` from `sc_crd_ops hg`. Establish `h1` using `(H_crd h Y 1 0 g hg).eq`. Establish `hx : xiA κ Y * g = g * xiA κ Y` using `sc_kops h _ ho`. Rewrite using `[mul_assoc, h1, ← mul_assoc, mul_assoc (xiA κ Y), hgi, ← mul_assoc, hx, mul_assoc, mul_assoc, mul_assoc]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_lcrd (h : SHyp P L0 QQ κ) (Y : ℂ) {g : A} (hg : g ∈ L0.crdOps) : lA L0 QQ κ Y * g = g * lA L0 QQ κ Y := by
   unfold lA
@@ -2395,9 +2371,9 @@ section Conn
 variable {L0 : PreLevel A P.r} {QQ : ℂ → Matrix (Fin 2) (Fin 2) A} {κ : (M.Ty P → ℂ) →ₐ[ℂ] A}
 
 /- English proof (translation)
-Unfold `PreLevel.crdOps at hg`. Break down `hg with ((((⟨l, rfl⟩ | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩) | ⟨l, rfl⟩` into its components or cases. Conclude with `⟨sc_fc L0 (sc_mζb L0) (sc_mc L0 l), sc_fc L0 (sc_mζ L0) (sc_mc L0 l)⟩`. Conclude with `⟨sc_fc L0 (sc_mζb L0) (sc_mci L0 l), sc_fc L0 (sc_mζ L0) (sc_mci L0 l)⟩`. Conclude with `⟨sc_fc L0 (sc_mζb L0) (sc_mcb L0 l), sc_fc L0 (sc_mζ L0) (sc_mcb L0 l)⟩`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨sc_fc L0 (sc_mζb L0) (sc_mcbi L0 l), sc_fc L0 (sc_mζ L0) (sc_mcbi L0 l)⟩`. Conclude with `⟨(L0.p_ζb l).symm, (L0.p_ζ l).symm⟩`. Conclude with `⟨(L0.pb_ζb l).symm, (L0.pb_ζ l).symm⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem coordinate_commute_zeta {g : A} (hg : g ∈ L0.crdOps) : L0.ζb * g = g * L0.ζb ∧ L0.ζ * g = g * L0.ζ := by
   unfold PreLevel.crdOps at hg
@@ -2410,16 +2386,16 @@ theorem coordinate_commute_zeta {g : A} (hg : g ∈ L0.crdOps) : L0.ζb * g = g 
   · exact ⟨(L0.pb_ζb l).symm, (L0.pb_ζ l).symm⟩
 
 /- English proof (translation)
-Rewrite using `[mul_assoc, hi, ← mul_assoc, hb, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_Zc {g : A} (hb : L0.ζb * g = g * L0.ζb) (hi : L0.GGi * g = g * L0.GGi) :
     (L0.ζb * L0.GGi) * g = g * (L0.ζb * L0.GGi) := by
   rw [mul_assoc, hi, ← mul_assoc, hb, mul_assoc]
 
 /- English proof (translation)
-Take `⟨Y, hY⟩` from `sc_exreg P`. Take `⟨c1, c2⟩` from `sc_D_comm (κ := κ) (fun ρ => sc_pc h ρ hg) (lA L0 QQ κ Y)`. Establish `hsum : sc_D κ (g * lA L0 QQ κ Y + c) = sc_D κ (g * lA L0 QQ κ Y) + sc_D κ c`. Unfold `sc_D`. Rewrite using `[← Finset.sum_add_distrib]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Use `noncomm_ring`. Rewrite using `[sc_B_eq h hF hY, add_mul, c1, hl Y hY, hsum, hD, ← c2, smul_mul_assoc, hZ, mul_add, mul_smul_comm]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem sc_B_rel (h : SHyp P L0 QQ κ) {b : M.Ty P → A} {SS : ℕ → A} (hF : SForm P L0 QQ κ b SS) {g c : A}
     (hg : g ∈ L0.ops) (hZ : (L0.ζb * L0.GGi) * g = g * (L0.ζb * L0.GGi))
@@ -2433,18 +2409,18 @@ theorem sc_B_rel (h : SHyp P L0 QQ κ) {b : M.Ty P → A} {SS : ℕ → A} (hF :
   abel
 
 /- English proof (translation)
-Unfold `sc_D`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem sc_D_zero : sc_D κ (0 : A) = 0 := by unfold sc_D; simp
 
 /- English proof (translation)
-Unfold `sc_D`. Repeatedly rewrite using `[mul_neg, neg_mul, mul_one, pj_idem]`. Rewrite using `[Finset.sum_neg_distrib, sum_pj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_D_neg_one : sc_D κ (-1 : A) = -1 := by
   unfold sc_D; simp_rw [mul_neg, neg_mul, mul_one, pj_idem]; rw [Finset.sum_neg_distrib, sum_pj]
 
 /- English proof (translation)
-The claim follows from `sc_B_rel h hF (sc_ops_of_fns L0 (sc_mζ L0)) (sc_Zc (sc_fc L0 (sc_mζb L0) (sc_mζ L0)) (sc_fc L0 (sc_mGGi L0) (sc_mζ L0))) (fun Y hY => by rw [sc_lζ h hY]; abel) sc_D_neg_one`.
+A detailed English derivation is pending.
 -/
 theorem sc_Bζ (h : SHyp P L0 QQ κ) {b : M.Ty P → A} {SS : ℕ → A} (hF : SForm P L0 QQ κ b SS) :
     sc_B κ b * L0.ζ = L0.ζ * sc_B κ b + (-1) :=
@@ -2453,7 +2429,7 @@ theorem sc_Bζ (h : SHyp P L0 QQ κ) {b : M.Ty P → A} {SS : ℕ → A} (hF : S
     (fun Y hY => by rw [sc_lζ h hY]; abel) sc_D_neg_one
 
 /- English proof (translation)
-The claim follows from `sc_B_rel h hF (sc_ops_of_fns L0 (sc_mζb L0)) (sc_Zc rfl (sc_fc L0 (sc_mGGi L0) (sc_mζb L0))) (fun Y _ => by rw [sc_lζb h Y, add_zero]) sc_D_zero`.
+A detailed English derivation is pending.
 -/
 theorem sc_Bζb (h : SHyp P L0 QQ κ) {b : M.Ty P → A} {SS : ℕ → A} (hF : SForm P L0 QQ κ b SS) :
     sc_B κ b * L0.ζb = L0.ζb * sc_B κ b + 0 :=
@@ -2462,7 +2438,7 @@ theorem sc_Bζb (h : SHyp P L0 QQ κ) {b : M.Ty P → A} {SS : ℕ → A} (hF : 
     (fun Y _ => by rw [sc_lζb h Y, add_zero]) sc_D_zero
 
 /- English proof (translation)
-The claim follows from `sc_B_rel h hF (sc_crd_ops hg).1 (sc_Zc (coordinate_commute_zeta hg).1 (sc_crd_ops hg).2) (fun Y _ => by rw [sc_lcrd h Y hg, add_zero]) sc_D_zero`.
+A detailed English derivation is pending.
 -/
 theorem sc_Bcrd (h : SHyp P L0 QQ κ) {b : M.Ty P → A} {SS : ℕ → A} (hF : SForm P L0 QQ κ b SS) {g : A}
     (hg : g ∈ L0.crdOps) : sc_B κ b * g = g * sc_B κ b + 0 :=
@@ -2470,7 +2446,7 @@ theorem sc_Bcrd (h : SHyp P L0 QQ κ) {b : M.Ty P → A} {SS : ℕ → A} (hF : 
     (fun Y _ => by rw [sc_lcrd h Y hg, add_zero]) sc_D_zero
 
 /- English proof (translation)
-Unfold `sc_B`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem sc_Bkap (κ : (M.Ty P → ℂ) →ₐ[ℂ] A) (b : M.Ty P → A) (f : M.Ty P → ℂ) :
     κ f * sc_B κ b = sc_B κ b * κ f := by
@@ -2489,7 +2465,7 @@ section Nab
 variable {L0 : PreLevel A P.r} {QQ : ℂ → Matrix (Fin 2) (Fin 2) A} {κ : (M.Ty P → ℂ) →ₐ[ℂ] A}
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sc_inv_rel {X a ai c : A} (h : X * a = a * X + c) (h1 : a * ai = 1) (h2 : ai * a = 1) :
     X * ai = ai * X - ai * c * ai := by
@@ -2505,35 +2481,35 @@ theorem sc_N_eq (b : M.Ty P → A) :
     nabDef L0 κ b = -sc_B κ b - (1 / 2 : ℂ) • (L0.ζb * L0.GGi) := rfl
 
 /- English proof (translation)
-Rewrite using `[sc_N_eq, sub_mul, neg_mul, hB, smul_mul_assoc, hZ, mul_sub, mul_neg, mul_smul_comm]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem sc_N_rel {b : M.Ty P → A} {g c : A} (hB : sc_B κ b * g = g * sc_B κ b + c)
     (hZ : (L0.ζb * L0.GGi) * g = g * (L0.ζb * L0.GGi)) : nabDef L0 κ b * g = g * nabDef L0 κ b - c := by
   rw [sc_N_eq, sub_mul, neg_mul, hB, smul_mul_assoc, hZ, mul_sub, mul_neg, mul_smul_comm]; abel
 
 /- English proof (translation)
-Rewrite using `[sc_N_rel (sc_Bζ h hF) (sc_Zc (sc_fc L0 (sc_mζb L0) (sc_mζ L0)) (sc_fc L0 (sc_mGGi L0) (sc_mζ L0)))]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem sc_Nζ (h : SHyp P L0 QQ κ) {b : M.Ty P → A} {SS : ℕ → A} (hF : SForm P L0 QQ κ b SS) :
     nabDef L0 κ b * L0.ζ = L0.ζ * nabDef L0 κ b + 1 := by
   rw [sc_N_rel (sc_Bζ h hF) (sc_Zc (sc_fc L0 (sc_mζb L0) (sc_mζ L0)) (sc_fc L0 (sc_mGGi L0) (sc_mζ L0)))]; abel
 
 /- English proof (translation)
-Rewrite using `[sc_N_rel (sc_Bζb h hF) (sc_Zc rfl (sc_fc L0 (sc_mGGi L0) (sc_mζb L0)))]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem sc_Nζb (h : SHyp P L0 QQ κ) {b : M.Ty P → A} {SS : ℕ → A} (hF : SForm P L0 QQ κ b SS) :
     nabDef L0 κ b * L0.ζb = L0.ζb * nabDef L0 κ b := by
   rw [sc_N_rel (sc_Bζb h hF) (sc_Zc rfl (sc_fc L0 (sc_mGGi L0) (sc_mζb L0)))]; abel
 
 /- English proof (translation)
-Rewrite using `[sc_N_rel (sc_Bcrd h hF hg) (sc_Zc (coordinate_commute_zeta hg).1 (sc_crd_ops hg).2)]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem sc_Ncrd (h : SHyp P L0 QQ κ) {b : M.Ty P → A} {SS : ℕ → A} (hF : SForm P L0 QQ κ b SS) {g : A}
     (hg : g ∈ L0.crdOps) : nabDef L0 κ b * g = g * nabDef L0 κ b := by
   rw [sc_N_rel (sc_Bcrd h hF hg) (sc_Zc (coordinate_commute_zeta hg).1 (sc_crd_ops hg).2)]; abel
 
 /- English proof (translation)
-Establish `hZ : κ f * (L0.ζb * L0.GGi) = (L0.ζb * L0.GGi) * κ f`. Rewrite using `[← mul_assoc, sc_kc h f (sc_mζb L0), mul_assoc, sc_kc h f (sc_mGGi L0), mul_assoc]`. Rewrite using `[sc_N_eq, mul_sub, sub_mul, mul_neg, neg_mul, sc_Bkap, mul_smul_comm, smul_mul_assoc, hZ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_Nkap (h : SHyp P L0 QQ κ) (b : M.Ty P → A) (f : M.Ty P → ℂ) :
     κ f * nabDef L0 κ b = nabDef L0 κ b * κ f := by
@@ -2542,9 +2518,9 @@ theorem sc_Nkap (h : SHyp P L0 QQ κ) (b : M.Ty P → A) (f : M.Ty P → ℂ) :
   rw [sc_N_eq, mul_sub, sub_mul, mul_neg, neg_mul, sc_Bkap, mul_smul_comm, smul_mul_assoc, hZ]
 
 /- English proof (translation)
-Establish `e1` using `sc_Nζ h hF`. Establish `e2` using `sc_Nζb h hF`. Establish `e3 : nabDef L0 κ b * algebraMap ℂ A L0.TT = algebraMap ℂ A L0.TT * nabDef L0 κ b` using `(Algebra.commutes _ _).symm`. Rewrite using `[L0.GG_def]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e1, e3]`. Use `noncomm_ring`. Use `_ = _ := by rw [e2]; noncomm_ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_NGG (h : SHyp P L0 QQ κ) {b : M.Ty P → A} {SS : ℕ → A} (hF : SForm P L0 QQ κ b SS) :
     nabDef L0 κ b * L0.GG = L0.GG * nabDef L0 κ b + L0.ζb := by
@@ -2559,28 +2535,28 @@ theorem sc_NGG (h : SHyp P L0 QQ κ) {b : M.Ty P → A} {SS : ℕ → A} (hF : S
     _ = _ := by rw [e2]; noncomm_ring
 
 /- English proof (translation)
-Rewrite using `[sc_inv_rel (sc_NGG h hF) L0.GG_GGi L0.GGi_GG, sc_fc L0 (sc_mGGi L0) (sc_mζb L0)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_NGGi (h : SHyp P L0 QQ κ) {b : M.Ty P → A} {SS : ℕ → A} (hF : SForm P L0 QQ κ b SS) :
     nabDef L0 κ b * L0.GGi = L0.GGi * nabDef L0 κ b - L0.ζb * L0.GGi * L0.GGi := by
   rw [sc_inv_rel (sc_NGG h hF) L0.GG_GGi L0.GGi_GG, sc_fc L0 (sc_mGGi L0) (sc_mζb L0)]
 
 /- English proof (translation)
-Rewrite using `[sc_inv_rel (sc_Nζ h hF) L0.ζ_ζi L0.ζi_ζ, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_Nζi (h : SHyp P L0 QQ κ) {b : M.Ty P → A} {SS : ℕ → A} (hF : SForm P L0 QQ κ b SS) :
     nabDef L0 κ b * L0.ζi = L0.ζi * nabDef L0 κ b - L0.ζi * L0.ζi := by
   rw [sc_inv_rel (sc_Nζ h hF) L0.ζ_ζi L0.ζi_ζ, mul_one]
 
 /- English proof (translation)
-Rewrite using `[sc_inv_rel (a := L0.ζb) (c := 0) (by rw [sc_Nζb h hF, add_zero]) L0.ζb_ζbi L0.ζbi_ζb]; simp`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_Nζbi (h : SHyp P L0 QQ κ) {b : M.Ty P → A} {SS : ℕ → A} (hF : SForm P L0 QQ κ b SS) :
     nabDef L0 κ b * L0.ζbi = L0.ζbi * nabDef L0 κ b := by
   rw [sc_inv_rel (a := L0.ζb) (c := 0) (by rw [sc_Nζb h hF, add_zero]) L0.ζb_ζbi L0.ζbi_ζb]; simp
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sc_inv_uniq {a b b' : A} (h1 : b * a = 1) (h2 : a * b' = 1) : b = b' := by
   calc b = b * (a * b') := by rw [h2, mul_one]
@@ -2588,54 +2564,54 @@ theorem sc_inv_uniq {a b b' : A} (h1 : b * a = 1) (h2 : a * b' = 1) : b = b' := 
     _ = b' := by rw [h1, one_mul]
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem sc_sζ (h : SHyp P L0 QQ κ) : star L0.ζ = L0.ζb := h.1
 /- English proof (translation)
-Rewrite using `[← sc_sζ h, star_star]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_sζb (h : SHyp P L0 QQ κ) : star L0.ζb = L0.ζ := by rw [← sc_sζ h, star_star]
 /- English proof (translation)
-The claim follows from `sc_inv_uniq (a := L0.ζb) (by rw [← sc_sζ h, ← star_mul, L0.ζ_ζi, star_one]) L0.ζb_ζbi`.
+A detailed English derivation is pending.
 -/
 theorem sc_sζi (h : SHyp P L0 QQ κ) : star L0.ζi = L0.ζbi :=
   sc_inv_uniq (a := L0.ζb) (by rw [← sc_sζ h, ← star_mul, L0.ζ_ζi, star_one]) L0.ζb_ζbi
 /- English proof (translation)
-Rewrite using `[← sc_sζi h, star_star]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_sζbi (h : SHyp P L0 QQ κ) : star L0.ζbi = L0.ζi := by rw [← sc_sζi h, star_star]
 /- English proof (translation)
-Rewrite using `[L0.GG_def, star_sub, star_mul, sc_sζ h, sc_sζb h, H_alg_star h, h.2.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_sGG (h : SHyp P L0 QQ κ) : star L0.GG = L0.GG := by
   rw [L0.GG_def, star_sub, star_mul, sc_sζ h, sc_sζb h, H_alg_star h, h.2.1]
 /- English proof (translation)
-The claim follows from `sc_inv_uniq (a := L0.GG) (by rw [← sc_sGG h, ← star_mul, L0.GG_GGi, star_one]) L0.GG_GGi`.
+A detailed English derivation is pending.
 -/
 theorem sc_sGGi (h : SHyp P L0 QQ κ) : star L0.GGi = L0.GGi :=
   sc_inv_uniq (a := L0.GG) (by rw [← sc_sGG h, ← star_mul, L0.GG_GGi, star_one]) L0.GG_GGi
 /- English proof (translation)
-The claim follows from `(h.2.2.1 l).1`.
+A detailed English derivation is pending.
 -/
 theorem sc_sc (h : SHyp P L0 QQ κ) (l) : star (L0.c l) = L0.cb l := (h.2.2.1 l).1
 /- English proof (translation)
-The claim follows from `(h.2.2.1 l).2.1`.
+A detailed English derivation is pending.
 -/
 theorem sc_sci (h : SHyp P L0 QQ κ) (l) : star (L0.ci l) = L0.cbi l := (h.2.2.1 l).2.1
 /- English proof (translation)
-The claim follows from `(h.2.2.1 l).2.2`.
+A detailed English derivation is pending.
 -/
 theorem sc_sp (h : SHyp P L0 QQ κ) (l) : star (L0.p l) = -L0.pb l := (h.2.2.1 l).2.2
 /- English proof (translation)
-Rewrite using `[← sc_sc h, star_star]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_scb (h : SHyp P L0 QQ κ) (l) : star (L0.cb l) = L0.c l := by rw [← sc_sc h, star_star]
 /- English proof (translation)
-Rewrite using `[← sc_sci h, star_star]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_scbi (h : SHyp P L0 QQ κ) (l) : star (L0.cbi l) = L0.ci l := by rw [← sc_sci h, star_star]
 /- English proof (translation)
-Rewrite using `[← neg_neg (L0.pb l), ← sc_sp h, star_neg, star_star]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_spb (h : SHyp P L0 QQ κ) (l) : star (L0.pb l) = -L0.p l := by
   rw [← neg_neg (L0.pb l), ← sc_sp h, star_neg, star_star]
@@ -2648,7 +2624,7 @@ variable {L0 : PreLevel A P.r} {QQ : ℂ → Matrix (Fin 2) (Fin 2) A} {κ : (M.
   {b : M.Ty P → A} {SS : ℕ → A}
 
 /- English proof (translation)
-Establish `e` using `congrArg star (sc_Nζ h hF)`. Rewrite `e` using `[star_mul, star_add, star_mul, star_one, sc_sζ h]`. Rewrite using `[e]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem sc_Nsζb (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) :
     star (nabDef L0 κ b) * L0.ζb = L0.ζb * star (nabDef L0 κ b) - 1 := by
@@ -2657,7 +2633,7 @@ theorem sc_Nsζb (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) :
   rw [e]; abel
 
 /- English proof (translation)
-Establish `e` using `congrArg star (sc_Nζi h hF)`. Rewrite `e` using `[star_mul, star_sub, star_mul, star_mul, sc_sζi h]`. Rewrite using `[e]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem sc_Nsζbi (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) :
     star (nabDef L0 κ b) * L0.ζbi = L0.ζbi * star (nabDef L0 κ b) + L0.ζbi * L0.ζbi := by
@@ -2666,7 +2642,7 @@ theorem sc_Nsζbi (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) :
   rw [e]; abel
 
 /- English proof (translation)
-Establish `e` using `congrArg star (sc_Nζb h hF)`. Rewrite `e` using `[star_mul, star_mul, sc_sζb h]`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_Nsζ (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) :
     star (nabDef L0 κ b) * L0.ζ = L0.ζ * star (nabDef L0 κ b) := by
@@ -2675,7 +2651,7 @@ theorem sc_Nsζ (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) :
   exact e.symm
 
 /- English proof (translation)
-Establish `e` using `congrArg star (sc_Nζbi h hF)`. Rewrite `e` using `[star_mul, star_mul, sc_sζbi h]`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_Nsζi (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) :
     star (nabDef L0 κ b) * L0.ζi = L0.ζi * star (nabDef L0 κ b) := by
@@ -2684,7 +2660,7 @@ theorem sc_Nsζi (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) :
   exact e.symm
 
 /- English proof (translation)
-Establish `e` using `congrArg star (sc_NGG h hF)`. Rewrite `e` using `[star_mul, star_add, star_mul, sc_sGG h, sc_sζb h]`. Rewrite using `[e]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem sc_NsGG (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) :
     star (nabDef L0 κ b) * L0.GG = L0.GG * star (nabDef L0 κ b) - L0.ζ := by
@@ -2693,9 +2669,9 @@ theorem sc_NsGG (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) :
   rw [e]; abel
 
 /- English proof (translation)
-Establish `e` using `congrArg star (sc_NGGi h hF)`. Rewrite `e` using `[star_mul, star_sub, star_mul, star_mul, star_mul, sc_sGGi h, sc_sζb h]`. Establish `c1 : L0.GGi * L0.ζ = L0.ζ * L0.GGi` using `sc_fc L0 (sc_mGGi L0) (sc_mζ L0)`. Establish `c : L0.GGi * (L0.GGi * L0.ζ) = L0.ζ * L0.GGi * L0.GGi`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e, c]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem sc_NsGGi (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) :
     star (nabDef L0 κ b) * L0.GGi = L0.GGi * star (nabDef L0 κ b) + L0.ζ * L0.GGi * L0.GGi := by
@@ -2709,7 +2685,7 @@ theorem sc_NsGGi (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) :
   rw [e, c]; abel
 
 /- English proof (translation)
-Establish `e` using `congrArg star (sc_Ncrd h hF hg)`. Rewrite `e` using `[star_mul, star_mul, hs]`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_Ns_of {g g' : A} (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (hg : g ∈ L0.crdOps)
     (hs : star g = g') : star (nabDef L0 κ b) * g' = g' * star (nabDef L0 κ b) := by
@@ -2718,7 +2694,7 @@ theorem sc_Ns_of {g g' : A} (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (
   exact e.symm
 
 /- English proof (translation)
-Establish `e` using `congrArg star (sc_Nkap h b (fun ρ => star (f ρ)))`. Rewrite `e` using `[star_mul, star_mul, H_kstar h]`. Simplify using `only [star_star] at e`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sc_Nskap (h : SHyp P L0 QQ κ) (b : M.Ty P → A) (f : M.Ty P → ℂ) :
     κ f * star (nabDef L0 κ b) = star (nabDef L0 κ b) * κ f := by
@@ -2840,9 +2816,9 @@ variable {L0 : PreLevel A P.r} {QQ : ℂ → Matrix (Fin 2) (Fin 2) A} {κ : (M.
   {b : M.Ty P → A} {SS : ℕ → A}
 
 /- English proof (translation)
-Establish `e : ∀ Y, κ (fun ρ => ∏ i ∈ s ρ, (Y + g ρ i)) = ∑ ρ, (∏ i ∈ s ρ, (Polynomial.X + Polynomial.C (g ρ i))).eval Y • proj κ ρ`. Introduce `Y`. Rewrite using `[kap_eq]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.eval_prod]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Repeatedly rewrite using `[e]`. Conclude with `isPF_sum _ fun ρ _ => isPF_cpoly _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_isPF_kap (κ : (M.Ty P → ℂ) →ₐ[ℂ] A) (g : M.Ty P → ℕ → ℂ) (s : M.Ty P → Finset ℕ) :
     IsPF fun Y => κ (fun ρ => ∏ i ∈ s ρ, (Y + g ρ i)) := by
@@ -2854,21 +2830,21 @@ theorem sc_isPF_kap (κ : (M.Ty P → ℂ) →ₐ[ℂ] A) (g : M.Ty P → ℕ �
   exact isPF_sum _ fun ρ _ => isPF_cpoly _ _
 
 /- English proof (translation)
-The claim follows from `sc_isPF_kap κ (fun ρ i => (M.rho P ρ i : ℂ)) (fun _ => Icc 1 (P.k - 1))`.
+A detailed English derivation is pending.
 -/
 theorem sc_isPF_xA (κ : (M.Ty P → ℂ) →ₐ[ℂ] A) : IsPF fun Y => xA κ Y :=
   sc_isPF_kap κ (fun ρ i => (M.rho P ρ i : ℂ)) (fun _ => Icc 1 (P.k - 1))
 
 /- English proof (translation)
-The claim follows from `sc_isPF_kap κ (fun ρ i => (M.rho P ρ i : ℂ)) (fun _ => Icc 1 (P.k - 1) \ ex)`.
+A detailed English derivation is pending.
 -/
 theorem sc_isPF_xEx (κ : (M.Ty P → ℂ) →ₐ[ℂ] A) (ex : Finset ℕ) : IsPF fun Y => κ (fun ρ => M.xEx P ex ρ Y) :=
   sc_isPF_kap κ (fun ρ i => (M.rho P ρ i : ℂ)) (fun _ => Icc 1 (P.k - 1) \ ex)
 
 /- English proof (translation)
-Unfold `M.xC M.xEx`. Rewrite using `[← Finset.mul_prod_erase _ _ hl, Finset.sdiff_singleton_eq_erase]`. Use `congr 1`. Rewrite using `[up_rho P hu l hl, if_pos rfl]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[up_rho P hu i (Finset.mem_of_mem_erase hi), if_neg (Finset.ne_of_mem_erase hi), add_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_x_up {l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) {τ σ : M.Ty P} (hu : M.Up P l τ σ) (Y : ℂ) :
     M.xC P σ Y = (Y + (M.rho P τ l : ℂ) + 1) * M.xEx P {l} τ Y := by
@@ -2880,7 +2856,7 @@ theorem sc_x_up {l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) {τ σ : M.Ty P} (hu : M.
     rw [up_rho P hu i (Finset.mem_of_mem_erase hi), if_neg (Finset.ne_of_mem_erase hi), add_zero]
 
 /- English proof (translation)
-Unfold `M.xC M.xEx`. Rewrite using `[← Finset.mul_prod_erase _ _ hl, Finset.sdiff_singleton_eq_erase]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_x_self {l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) (τ : M.Ty P) (Y : ℂ) :
     M.xC P τ Y = (Y + (M.rho P τ l : ℂ)) * M.xEx P {l} τ Y := by
@@ -2888,7 +2864,7 @@ theorem sc_x_self {l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) (τ : M.Ty P) (Y : ℂ)
   rw [← Finset.mul_prod_erase _ _ hl, Finset.sdiff_singleton_eq_erase]
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, ← mul_assoc, sc_pf h σ (sc_mGG L0), mul_assoc L0.GG, xA, pj_mul_kap, mul_smul_comm, smul_mul_assoc, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_pGx (h : SHyp P L0 QQ κ) (σ : M.Ty P) (Y : ℂ) (X : A) :
     proj κ σ * (L0.GG * xA κ Y * X) = M.xC P σ Y • (L0.GG * (proj κ σ * X)) := by
@@ -2896,14 +2872,14 @@ theorem sc_pGx (h : SHyp P L0 QQ κ) (σ : M.Ty P) (Y : ℂ) (X : A) :
     smul_mul_assoc, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[sc_pGx h, smul_mul_assoc, mul_assoc, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem projection_gamma_coordinate (h : SHyp P L0 QQ κ) (σ τ : M.Ty P) (Y : ℂ) (X : A) :
     proj κ σ * (L0.GG * xA κ Y * X) * proj κ τ = M.xC P σ Y • (L0.GG * (proj κ σ * X * proj κ τ)) := by
   rw [sc_pGx h, smul_mul_assoc, mul_assoc, mul_assoc]
 
 /- English proof (translation)
-Unfold `sc_B`. Rewrite using `[Finset.sum_mul, Finset.sum_eq_single σ]`. Rewrite using `[mul_assoc, pj_idem, sc_pbp h hF]`. Introduce `ρ _ hρ`. Rewrite using `[mul_assoc, pj_orth κ hρ, mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -2916,13 +2892,13 @@ theorem sc_B_pj (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (σ : M.Ty P)
   · simp
 
 /- English proof (translation)
-Unfold `proj`. Conclude with `sc_Bkap κ b _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sc_B_pc (b : M.Ty P → A) (σ : M.Ty P) : proj κ σ * sc_B κ b = sc_B κ b * proj κ σ := by
   unfold proj; exact sc_Bkap κ b _
 
 /- English proof (translation)
-Use `show -(nabDef L0 κ b) - algebraMap ℂ A (Y + 1 / 2) * (L0.ζb * L0.GGi) = _`. Rewrite using `[sc_N_eq, ← Algebra.smul_def, add_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem connection_lowering_eq (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (Y : ℂ) :
     (sc_LL h hF).l0 Y = sc_B κ b - Y • (L0.ζb * L0.GGi) := by
@@ -2930,14 +2906,14 @@ theorem connection_lowering_eq (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS
   rw [sc_N_eq, ← Algebra.smul_def, add_smul]; abel
 
 /- English proof (translation)
-Rewrite using `[connection_lowering_eq, mul_sub, sub_mul, sc_B_pc, mul_smul_comm, smul_mul_assoc, sc_Zp h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem connection_lowering_projection (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (Y : ℂ) (σ : M.Ty P) :
     proj κ σ * (sc_LL h hF).l0 Y = (sc_LL h hF).l0 Y * proj κ σ := by
   rw [connection_lowering_eq, mul_sub, sub_mul, sc_B_pc, mul_smul_comm, smul_mul_assoc, sc_Zp h]
 
 /- English proof (translation)
-Rewrite using `[connection_lowering_projection, mul_assoc]`. Use `split_ifs with hst`. Substitute `hst` using the available equality. Rewrite using `[pj_idem, connection_lowering_eq, sub_mul, sc_B_pj h hF, smul_mul_assoc, sub_mul, smul_mul_assoc]`. Rewrite using `[pj_orth κ hst, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem connection_lowering_block (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (Y : ℂ) (σ τ : M.Ty P) :
     proj κ σ * (sc_LL h hF).l0 Y * proj κ τ = if σ = τ then (b σ - Y • (L0.ζb * L0.GGi)) * proj κ σ else 0 := by
@@ -2947,7 +2923,7 @@ theorem connection_lowering_block (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b
   · rw [pj_orth κ hst, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_assoc, kap_mul_pj, mul_smul_comm, mul_smul_comm, ← mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lower_sum_block_entry (hR : Raises κ SS) (Y : ℂ) (σ τ : M.Ty P) :
     proj κ σ * (∑ l ∈ Icc 1 (P.k - 1), SS l * κ (fun ρ => M.xEx P {l} ρ Y)) * proj κ τ =
@@ -2964,17 +2940,17 @@ theorem connection_lower_left_entry (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ
       L0.GG * xA κ Y * (sc_LL h hF).l0 Y + ∑ l ∈ Icc 1 (P.k - 1), SS l * κ (fun ρ => M.xEx P {l} ρ Y) := rfl
 
 /- English proof (translation)
-Rewrite using `[connection_lower_left_entry]`. Apply `eq_of_blocks κ` to reduce the goal to its premises. Introduce `σ τ`. Apply the tactic sequence `rw [sc_lreg h hY, mul_add, add_mul, lower_sum_block_entry hR, projection_gamma_coordinate h, projection_gamma_coordinate h, connection_lowering_block h hF]`. Distinguish the cases in `hst : σ = τ`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hst` using the available equality. Rewrite using `[sc_ldiag hF hY, if_pos rfl, Finset.sum_eq_zero, add_zero]`. Introduce `l hl`. Rewrite using `[blk_ss κ hR l σ σ (fun hu => up_ne P hl hu rfl), smul_zero]`. Rewrite using `[if_neg hst, mul_zero, smul_zero, zero_add]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hex : ∃ l ∈ Icc 1 (P.k - 1), M.Up P l τ σ`. Take `⟨l, hl, hu⟩` from `hex`. Rewrite using `[sc_lup hF hY hl hu, Finset.sum_eq_single l, pj_ss_pj κ hR hu, mul_smul_comm, ← mul_assoc, ← mul_assoc, L0.GG_GGi, one_mul, smul_smul]`. Use `congr 1`. Establish `hx` using `sc_x_up hl hu Y`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hne : (Y + (M.rho P τ l : ℂ) + 1) ≠ 0`. Introduce `h0`. Apply `hY σ` to reduce the goal to its premises. Rewrite using `[hx, h0, zero_mul]`. Rewrite using `[hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Introduce `j hj hjl`. Rewrite using `[blk_ss κ hR j σ τ (fun hu' => hjl (up_idx P hj hl hu' hu)), smul_zero]`. Introduce `hn`. Conclude with `absurd hl hn`.
+Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hex`. Rewrite using `[sc_lzero hF hY hst (fun l hl => hex l hl), mul_zero, smul_zero, Finset.sum_eq_zero]`. Introduce `l hl`. Rewrite using `[blk_ss κ hR l σ τ (hex l hl), smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem connection_lower_left_regular (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (hR : Raises κ SS) {Y : ℂ} (hY : Reg P Y) :
     QQ Y 1 0 = (Q.NFData.QQ (⟨sc_LL h hF, κ, SS⟩ : Q.NFData P A) Y) 1 0 := by
@@ -3004,7 +2980,7 @@ theorem connection_lower_left_regular (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ 
       intro l hl; rw [blk_ss κ hR l σ τ (hex l hl), smul_zero]
 
 /- English proof (translation)
-Establish `hpf : IsPF fun Y => (Q.NFData.QQ (⟨sc_LL h hF, κ, SS⟩ : Q.NFData P A) Y) 1 0`. Repeatedly rewrite using `[connection_lower_left_entry, connection_lowering_eq]`. Use `isPF_add (isPF_mul (isPF_mul (isPF_const _) (sc_isPF_xA κ)) (isPF_sub (isPF_const _) (isPF_id_smul _))) (isPF_sum _ fun l _ => isPF_mul (isPF_const _) (sc_isPF_xEx κ {l}))` and prove the remaining obligations. Conclude with `isPF_eq (H_poly h 1 0) hpf (reg_infinite P) (fun Y hY => connection_lower_left_regular h hF hR hY) Y`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem connection_lower_left_eq (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (hR : Raises κ SS) (Y : ℂ) :
     QQ Y 1 0 = (Q.NFData.QQ (⟨sc_LL h hF, κ, SS⟩ : Q.NFData P A) Y) 1 0 := by
@@ -3022,7 +2998,7 @@ variable {L0 : PreLevel A P.r} {QQ : ℂ → Matrix (Fin 2) (Fin 2) A} {κ : (M.
   {b : M.Ty P → A} {SS : ℕ → A}
 
 /- English proof (translation)
-Rewrite using `[show star (∏ i ∈ s, (Y + (g i : ℂ))) = starRingEnd ℂ (∏ i ∈ s, (Y + (g i : ℂ))) from rfl, map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, Complex.conj_ofReal]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem sc_star_prod {Y : ℂ} (hY : star Y = Y) (s : Finset ℕ) (g : ℕ → ℝ) :
     star (∏ i ∈ s, (Y + (g i : ℂ))) = ∏ i ∈ s, (Y + (g i : ℂ)) := by
@@ -3032,15 +3008,15 @@ theorem sc_star_prod {Y : ℂ} (hY : star Y = Y) (s : Finset ℕ) (g : ℕ → �
   congr 1
 
 /- English proof (translation)
-Unfold `xA`. Rewrite using `[H_kstar h]`. Use `congr 1`. Use function extensionality and compare the values at `ρ`. Unfold `M.xC`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Conclude with `sc_star_prod hY _ _`.
+A detailed English derivation is pending.
 -/
 theorem sc_star_xA (h : SHyp P L0 QQ κ) {Y : ℂ} (hY : star Y = Y) : star (xA κ Y) = xA κ Y := by
   unfold xA; rw [H_kstar h]; congr 1; funext ρ; unfold M.xC; exact sc_star_prod hY _ _
 
 /- English proof (translation)
-Rewrite using `[H_kstar h]`. Use `congr 1`. Use function extensionality and compare the values at `ρ`. Unfold `M.xEx`. Conclude with `sc_star_prod hY _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sc_star_kx (h : SHyp P L0 QQ κ) {Y : ℂ} (hY : star Y = Y) (ex : Finset ℕ) :
     star (κ fun ρ => M.xEx P ex ρ Y) = κ fun ρ => M.xEx P ex ρ Y := by
@@ -3054,7 +3030,7 @@ theorem connection_upper_right_entry (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ �
       L0.GG * xA κ Y * (sc_LL h hF).m0 Y + ∑ l ∈ Icc 1 (P.k - 1), (κ fun ρ => M.xEx P {l} ρ Y) * star (SS l) := rfl
 
 /- English proof (translation)
-Use `show -star (nabDef L0 κ b) - algebraMap ℂ A (Y - 1 / 2) * (L0.ζ * L0.GGi) = _`. Rewrite using `[← Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem connection_raising_constant_eq (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (Y : ℂ) :
     (sc_LL h hF).m0 Y = -star (nabDef L0 κ b) - (Y - 1 / 2) • (L0.ζ * L0.GGi) := by
@@ -3062,7 +3038,7 @@ theorem connection_raising_constant_eq (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ
   rw [← Algebra.smul_def]
 
 /- English proof (translation)
-Use `show -(nabDef L0 κ b) - algebraMap ℂ A (Y + 1 / 2) * (L0.ζb * L0.GGi) = _`. Rewrite using `[← Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem connection_lowering_eq_nabla (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (Y : ℂ) :
     (sc_LL h hF).l0 Y = -nabDef L0 κ b - (Y + 1 / 2) • (L0.ζb * L0.GGi) := by
@@ -3070,15 +3046,15 @@ theorem connection_lowering_eq_nabla (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ �
   rw [← Algebra.smul_def]
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, sc_fc L0 (sc_mGG L0) (sc_mζ L0), mul_assoc, L0.GG_GGi, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_GGζGGi (L0 : PreLevel A P.r) : L0.GG * (L0.ζ * L0.GGi) = L0.ζ := by
   rw [← mul_assoc, sc_fc L0 (sc_mGG L0) (sc_mζ L0), mul_assoc, L0.GG_GGi, mul_one]
 
 /- English proof (translation)
-Establish `hc : star (Y + 1 / 2 : ℂ) = Y + 1 / 2` using `by simp [hY]`. Rewrite using `[connection_lowering_eq_nabla, connection_raising_constant_eq, star_sub, star_neg, H_smul_star h, star_mul, sc_sGGi h, sc_sζb h, hc, mul_sub, sub_mul, mul_neg, neg_mul, mul_smul_comm, smul_mul_assoc]`. Establish `e1b : L0.GG * (L0.ζ * L0.GGi * L0.GGi) = L0.ζ * L0.GGi`. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : L0.GG * star (nabDef L0 κ b) * L0.GGi = star (nabDef L0 κ b) + L0.ζ * L0.GGi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, sc_NsGGi h hF, mul_add, ← mul_assoc, L0.GG_GGi, one_mul, e1b]`. Establish `e2 : L0.GG * (L0.ζ * L0.GGi) * L0.GGi = L0.ζ * L0.GGi` using `by rw [sc_GGζGGi]`. Establish `e3 : L0.GGi * L0.ζ = L0.ζ * L0.GGi` using `sc_fc L0 (sc_mGGi L0) (sc_mζ L0)`. Rewrite using `[e1, e2, e3, show (Y + 1 / 2 : ℂ) = (Y - 1 / 2) + 1 by ring, add_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem connection_star_lowering (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) {Y : ℂ} (hY : star Y = Y) :
     star ((sc_LL h hF).l0 Y) = L0.GG * (sc_LL h hF).m0 Y * L0.GGi := by
@@ -3098,7 +3074,7 @@ theorem connection_star_lowering (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b 
   abel
 
 /- English proof (translation)
-Unfold `xA`. Rewrite using `[connection_raising_constant_eq, mul_sub, sub_mul, mul_neg, neg_mul, sc_Nskap h, mul_smul_comm, smul_mul_assoc, ← mul_assoc, sc_kc h _ (sc_mζ L0), mul_assoc, sc_kc h _ (sc_mGGi L0), mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem connection_coordinate_commute (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (Y : ℂ) :
     xA κ Y * (sc_LL h hF).m0 Y = (sc_LL h hF).m0 Y * xA κ Y := by
@@ -3107,9 +3083,9 @@ theorem connection_coordinate_commute (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ 
     sc_kc h _ (sc_mζ L0), mul_assoc, sc_kc h _ (sc_mGGi L0), mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[← H_herm h hY 1 0, connection_lower_left_eq h hF hR Y, connection_lower_left_entry, connection_upper_right_entry, star_add, star_sum]`. Use `congr 1`. Rewrite using `[star_mul, star_mul, sc_star_xA h hY, sc_sGG h, connection_star_lowering h hF hY]`. Establish `hx : L0.GGi * xA κ Y * L0.GG = xA κ Y` using `by show L0.GGi * κ (fun ρ => M.xC P ρ Y) * L0.GG = κ (fun ρ => M.xC P ρ Y)`. Rewrite using `[← sc_kc h _ (sc_mGGi L0), mul_assoc, L0.GGi_GG, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[star_mul, sc_star_kx h hY]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem connection_upper_right_real (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (hR : Raises κ SS) {Y : ℂ} (hY : star Y = Y) :
     QQ Y 0 1 = (Q.NFData.QQ (⟨sc_LL h hF, κ, SS⟩ : Q.NFData P A) Y) 0 1 := by
@@ -3126,9 +3102,9 @@ theorem connection_upper_right_real (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ
     rw [star_mul, sc_star_kx h hY]
 
 /- English proof (translation)
-Establish `hpf : IsPF fun Y => (Q.NFData.QQ (⟨sc_LL h hF, κ, SS⟩ : Q.NFData P A) Y) 0 1`. Repeatedly rewrite using `[connection_upper_right_entry, connection_raising_constant_eq]`. Use `isPF_add (isPF_mul (isPF_mul (isPF_const _) (sc_isPF_xA κ)) (isPF_sub (isPF_const _) ?_)) (isPF_sum _ fun l _ => isPF_mul (sc_isPF_xEx κ {l}) (isPF_const _))` and prove the remaining obligations. Use `isPF_cpoly (A := A) (Polynomial.X - Polynomial.C (1 / 2)) (L0.ζ * L0.GGi)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `isPF_eq (H_poly h 0 1) hpf real_infinite (fun Y hY => connection_upper_right_real h hF hR hY) Y`.
+A detailed English derivation is pending.
 -/
 theorem connection_upper_right_eq (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (hR : Raises κ SS) (Y : ℂ) :
     QQ Y 0 1 = (Q.NFData.QQ (⟨sc_LL h hF, κ, SS⟩ : Q.NFData P A) Y) 0 1 := by
@@ -3148,9 +3124,9 @@ variable {L0 : PreLevel A P.r} {QQ : ℂ → Matrix (Fin 2) (Fin 2) A} {κ : (M.
   {b : M.Ty P → A} {SS : ℕ → A}
 
 /- English proof (translation)
-Unfold `M.xEx`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `i _ h0`. Apply `h` to reduce the goal to its premises. Use `congrArg Complex.im h0` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sc_xEx_ne (P : M.Par) (ρ : M.Ty P) (ex : Finset ℕ) {Y : ℂ} (h : Y.im ≠ 0) : M.xEx P ex ρ Y ≠ 0 := by
   unfold M.xEx
@@ -3161,14 +3137,14 @@ theorem sc_xEx_ne (P : M.Par) (ρ : M.Ty P) (ex : Finset ℕ) {Y : ℂ} (h : Y.i
   simpa using this
 
 /- English proof (translation)
-Use `conv_lhs => rw [← hW]`. Rewrite using `[← mul_assoc, xA, kap_mul_pj, smul_mul_assoc, hW]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_x_of_P {σ : M.Ty P} {W : A} (hW : proj κ σ * W = W) (Y : ℂ) : xA κ Y * W = M.xC P σ Y • W := by
   conv_lhs => rw [← hW]
   rw [← mul_assoc, xA, kap_mul_pj, smul_mul_assoc, hW]
 
 /- English proof (translation)
-Establish `c1 : proj κ σ * xA κ Y = xA κ Y * proj κ σ` using `by unfold proj xA; exact kap_comm κ _ _`. Rewrite using `[← mul_assoc, ← mul_assoc, sc_pf h σ (sc_mGG L0), mul_assoc L0.GG, c1, ← mul_assoc, mul_assoc _ (proj κ σ), connection_lowering_projection h hF, ← mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_G_pc (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (Y : ℂ) (σ : M.Ty P) :
     proj κ σ * (L0.GG * xA κ Y * (sc_LL h hF).l0 Y) = (L0.GG * xA κ Y * (sc_LL h hF).l0 Y) * proj κ σ := by
@@ -3177,7 +3153,7 @@ theorem sc_G_pc (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (Y : ℂ) (σ
     connection_lowering_projection h hF, ← mul_assoc]
 
 /- English proof (translation)
-Use `blk_sum κ _ fun j hj => ?_` and prove the remaining obligations. Use `blk_mono κ (blk_mul κ (blk_ss κ hR j) (blk_kap κ _)) ?_` and prove the remaining obligations. Introduce and unpack `τ σ ⟨μ, rfl, hμ⟩`. Conclude with `⟨j, hj, hμ⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem lower_sum_block_structure (hR : Raises κ SS) (Y : ℂ) :
     GlobalTheory κ (fun τ σ => ∃ j ∈ Icc 1 (P.k - 1), M.Up P j τ σ)
@@ -3187,7 +3163,7 @@ theorem lower_sum_block_structure (hR : Raises κ SS) (Y : ℂ) :
   rintro τ σ ⟨μ, rfl, hμ⟩; exact ⟨j, hj, hμ⟩
 
 /- English proof (translation)
-Apply the tactic sequence `rw [lower_sum_block_entry hR, Finset.sum_eq_single l, pj_ss_pj κ hR hu]`. Introduce `j hj hjl`. Rewrite using `[blk_ss κ hR j ρ' ρ (fun hu' => hjl (up_idx P hj hl hu' hu)), smul_zero]`. Introduce `hn`. Conclude with `absurd hl hn`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lower_sum_raising_block (hR : Raises κ SS) {l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) {ρ ρ' : M.Ty P} (hu : M.Up P l ρ ρ') (Y : ℂ) :
     proj κ ρ' * (∑ l ∈ Icc 1 (P.k - 1), SS l * κ (fun ρ => M.xEx P {l} ρ Y)) * proj κ ρ =
@@ -3197,7 +3173,7 @@ theorem lower_sum_raising_block (hR : Raises κ SS) {l : ℕ} (hl : l ∈ Icc 1 
   · intro hn; exact absurd hl hn
 
 /- English proof (translation)
-Use `blk_mul κ (lower_sum_block_structure hR u) (lower_sum_block_structure hR v) ρ' ρ ?_` and prove the remaining obligations. Introduce and unpack `⟨μ, ⟨i, hi, h1⟩, ⟨j, hj, h2⟩⟩`. Conclude with `not_up_up P hi hj hl h1 h2 hu`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem lower_sum_square_raising_zero (hR : Raises κ SS) {l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) {ρ ρ' : M.Ty P} (hu : M.Up P l ρ ρ')
     (u v : ℂ) :
@@ -3208,46 +3184,40 @@ theorem lower_sum_square_raising_zero (hR : Raises κ SS) {l : ℕ} (hl : l ∈ 
   exact not_up_up P hi hj hl h1 h2 hu
 
 /- English proof (translation)
-Rewrite using `[mul_assoc, sc_pf h ρ hg, ← mul_assoc, (hSS l g (sc_ops_of_fns L0 hg)).eq, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_K_comm (h : SHyp P L0 QQ κ) (hSS : ∀ l, ∀ g ∈ L0.ops, Commute (SS l) g) (l : ℕ) (ρ : M.Ty P)
     {g : A} (hg : g ∈ L0.fns) : (SS l * proj κ ρ) * g = g * (SS l * proj κ ρ) := by
   rw [mul_assoc, sc_pf h ρ hg, ← mul_assoc, (hSS l g (sc_ops_of_fns L0 hg)).eq, mul_assoc]
 
 /- English proof (translation)
-Use `set K := SS l * proj κ ρ with hK`. Use `set N := nabDef L0 κ b with hN`. Use `set Z := L0.ζb * L0.GGi with hZ`. Use `set G := fun Y => L0.GG * xA κ Y * (sc_LL h hF).l0 Y with hGdef`. Use `set S := fun Y => ∑ l ∈ Icc 1 (P.k - 1), SS l * κ (fun ρ => M.xEx P {l} ρ Y) with hSdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set e := fun Y => M.xEx P {l} ρ Y with he`. Establish `hne : ρ ≠ ρ'` using `up_ne P hl hu`. Establish `hPK : proj κ ρ' * K = K` using `by rw [hK, ← mul_assoc, pj_ss_pj κ hR hu]`. Establish `hKGG : K * L0.GG = L0.GG * K` using `sc_K_comm h hSS l ρ (sc_mGG L0)`. Establish `hKZ : K * Z = Z * K`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `c1 : K * L0.ζb = L0.ζb * K` using `sc_K_comm h hSS l ρ (sc_mζb L0)`. Establish `c2 : K * L0.GGi = L0.GGi * K` using `sc_K_comm h hSS l ρ (sc_mGGi L0)`. Rewrite using `[hZ, ← mul_assoc, c1, mul_assoc, c2, mul_assoc]`. Establish `hKx : ∀ Y, K * xA κ Y = M.xC P ρ Y • K`. Introduce `Y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hK, mul_assoc, xA, pj_mul_kap, mul_smul_comm]`. Establish `hG : ∀ Y, G Y * K - K * G Y = L0.GG * (M.xC P ρ' Y • ((sc_LL h hF).l0 Y * K) - M.xC P ρ Y • (K * (sc_LL h hF).l0 Y))`. Introduce `Y`. Establish `hPl : proj κ ρ' * ((sc_LL h hF).l0 Y * K) = (sc_LL h hF).l0 Y * K`. Rewrite using `[← mul_assoc, connection_lowering_projection h hF, mul_assoc, hPK]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Establish `a1 : G Y * K = L0.GG * (M.xC P ρ' Y • ((sc_LL h hF).l0 Y * K))`. Simplify using `only [hGdef]`. Rewrite using `[mul_assoc, mul_assoc, sc_x_of_P hPl]`. Establish `a2 : K * G Y = L0.GG * (M.xC P ρ Y • (K * (sc_LL h hF).l0 Y))`. Simplify using `only [hGdef]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[a1, a2, mul_sub]`. Establish `hGP : ∀ Y σ, proj κ σ * G Y = G Y * proj κ σ` using `fun Y σ => sc_G_pc h hF Y σ`. Establish `hT : ∀ u v, proj κ ρ' * (QQ u 1 0 * QQ v 1 0) * proj κ ρ = e v • (G u * K) + e u • (K * G v)`. Introduce `u v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[connection_lower_left_eq h hF hR u, connection_lower_left_eq h hF hR v, connection_lower_left_entry, connection_lower_left_entry]`. Establish `p1 : proj κ ρ' * (G u * G v) * proj κ ρ = 0`. Use `blk_diag κ (X := G u * G v) (fun σ => ?_) ρ' ρ hne` and prove the remaining obligations. Use `show proj κ σ * (G u * G v) = (G u * G v) * proj κ σ`. Rewrite using `[← mul_assoc, hGP u σ, mul_assoc, hGP v σ, ← mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `p2 : proj κ ρ' * (G u * S v) * proj κ ρ = e v • (G u * K)`. Combine the equalities or inequalities in the displayed calculation. Establish `p3 : proj κ ρ' * (S u * G v) * proj κ ρ = e u • (K * G v)`. Combine the equalities or inequalities in the displayed calculation. Establish `p4 : proj κ ρ' * (S u * S v) * proj κ ρ = 0` using `lower_sum_square_raising_zero hR hl hu u v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (G u + S u) * (G v + S v) = G u * G v + G u * S v + S u * G v + S u * S v` using `by noncomm_ring`. Simplify using `only [hGdef, hSdef] at this p1 p2 p3 p4 ⊢`. Rewrite using `[this, mul_add, mul_add, mul_add, add_mul, add_mul, add_mul, p1, p2, p3, p4, zero_add, add_zero]`. Establish `hC : ∀ u v, e v • (G u * K - K * G u) - e u • (G v * K - K * G v) = 0`. Introduce `u v`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `c` using `hT u v`. Rewrite `c` using `[(lower_left_commute_self h u v).eq, hT v u]`. Rewrite using `[smul_sub, smul_sub]`. Rewrite using `[show e v • (G u * K) - e v • (K * G u) - (e u • (G v * K) - e u • (K * G v)) = (e v • (G u * K) + e u • (K * G v)) - (e u • (G v * K) + e v • (K * G u)) by abel, c, sub_self]`. Use `set u : ℂ := Complex.I with hu'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set v : ℂ := 2 * Complex.I with hv'`. Establish `c2 : e v • (M.xC P ρ' u • ((sc_LL h hF).l0 u * K) - M.xC P ρ u • (K * (sc_LL h hF).l0 u)) - e u • (M.xC P ρ' v • ((sc_LL h hF).l0 v * K) - M.xC P ρ v • (K * (sc_LL h hF).l0 v)) = 0`. Establish `c' : L0.GG * (e v • (M.xC P ρ' u • ((sc_LL h hF).l0 u * K) - M.xC P ρ u • (K * (sc_LL h hF).l0 u)) - e u • (M.xC P ρ' v • ((sc_LL h hF).l0 v * K) - M.xC P ρ v • (K * (sc_LL h hF).l0 v))) = 0`. Rewrite using `[mul_sub, mul_smul_comm, mul_smul_comm, ← hG u, ← hG v]`. Conclude with `hC u v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg (fun X => L0.GGi * X) c'` as an intermediate fact. Simplify using `only [← mul_assoc, L0.GGi_GG, one_mul, mul_zero] at this`. Conclude with `this`. Rewrite `c2` using `[sc_x_up hl hu u, sc_x_up hl hu v, sc_x_self hl ρ u, sc_x_self hl ρ v, connection_lowering_eq_nabla, connection_lowering_eq_nabla]`. Establish `e2 : ∀ Y : ℂ, K * (-N - (Y + 1 / 2) • Z) = -(K * N) - (Y + 1 / 2) • (Z * K)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Introduce `Y`. Rewrite using `[mul_sub, mul_neg, mul_smul_comm, hKZ]`. Establish `e3 : ∀ Y : ℂ, (-N - (Y + 1 / 2) • Z) * K = -(N * K) - (Y + 1 / 2) • (Z * K)`. Introduce `Y`. Rewrite using `[sub_mul, neg_mul, smul_mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `c2` using `[e2, e2, e3, e3]`. Establish `c3 : (e u * e v * (u - v)) • (K * N - N * K - Z * K) = 0`. Rewrite using `[← c2]`. Simplify using `only [he]`. Use `module`.
-
-Break down `smul_eq_zero.1 c3 with h0 | h0` into its components or cases. It suffices to derive a contradiction. Establish `h1 : e u ≠ 0` using `sc_xEx_ne P ρ {l} (by simp [hu'])`. Establish `h2 : e v ≠ 0` using `sc_xEx_ne P ρ {l} (by simp [hv'])`. Establish `h3 : u - v ≠ 0`.
-
-Rewrite using `[hu', hv']`. Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact. Evaluate the numerical expressions using `at this`. Conclude with `mul_ne_zero (mul_ne_zero h1 h2) h3 h0`.
-
-Conclude with `h0`.
+Establish an intermediate fact. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem sc_keyN (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (hR : Raises κ SS)
     (hSS : ∀ l, ∀ g ∈ L0.ops, Commute (SS l) g) {l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) {ρ ρ' : M.Ty P}
@@ -3337,16 +3307,16 @@ theorem sc_keyN (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (hR : Raises 
   · exact h0
 
 /- English proof (translation)
-Unfold `proj`. Conclude with `sc_Nkap h b _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sc_N_pc (h : SHyp P L0 QQ κ) (b : M.Ty P → A) (σ : M.Ty P) :
     proj κ σ * nabDef L0 κ b = nabDef L0 κ b * proj κ σ := by
   unfold proj; exact sc_Nkap h b _
 
 /- English proof (translation)
-Apply `eq_of_rblocks κ` to reduce the goal to its premises. Introduce `ρ`. Distinguish the cases in `hex : ∃ ρ', M.Up P l ρ ρ'`. Take `⟨ρ', hu⟩` from `hex`. Establish `k` using `sc_keyN h hF hR hSS hl hu`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← sub_eq_zero, show nabDef L0 κ b * (SS l * proj κ ρ) - ((SS l * proj κ ρ) * nabDef L0 κ b - L0.ζb * L0.GGi * (SS l * proj κ ρ)) = -((SS l * proj κ ρ) * nabDef L0 κ b - nabDef L0 κ b * (SS l * proj κ ρ) - (L0.ζb * L0.GGi) * (SS l * proj κ ρ)) by abel, k, neg_zero]`. Use `_ = _ := by rw [mul_assoc (SS l), sc_N_pc h b ρ]; noncomm_ring`. Establish `h0` using `ss_pj_none κ hR hex`. Rewrite using `[mul_assoc, h0, mul_zero, sub_mul, mul_assoc, ← sc_N_pc h b ρ, ← mul_assoc, h0, zero_mul, mul_assoc, h0, mul_zero, sub_zero]`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_nabSS (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (hR : Raises κ SS)
     (hSS : ∀ l, ∀ g ∈ L0.ops, Commute (SS l) g) {l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) :
@@ -3374,7 +3344,7 @@ variable {L0 : PreLevel A P.r} {QQ : ℂ → Matrix (Fin 2) (Fin 2) A} {κ : (M.
   {b : M.Ty P → A} {SS : ℕ → A}
 
 /- English proof (translation)
-Establish `a` using `Finset.mem_Icc.1 hl`. Establish `e1` using `hu ⟨l - 1, by omega⟩; have e2 := h2 ⟨l - 1, by omega⟩`. Simplify using `only at e1 e2`. Apply the tactic sequence `split_ifs at e1 e2 <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sc_not_back {l j : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) {ρ ρ' : M.Ty P} (hu : M.Up P l ρ ρ') (h2 : M.Up P j ρ' ρ) :
     False := by
@@ -3384,7 +3354,7 @@ theorem sc_not_back {l j : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) {ρ ρ' : M.Ty P} (
   split_ifs at e1 e2 <;> omega
 
 /- English proof (translation)
-Use `blk_sum κ _ fun j hj => ?_` and prove the remaining obligations. Use `blk_mono κ (blk_mul κ (blk_kap κ _) (blk_star κ (H_pj_star h) (blk_ss κ hR j))) ?_` and prove the remaining obligations. Introduce and unpack `τ σ ⟨μ, hμ, rfl⟩`. Conclude with `⟨j, hj, hμ⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem upper_sum_block_structure (h : SHyp P L0 QQ κ) (hR : Raises κ SS) (Y : ℂ) :
     GlobalTheory κ (fun τ σ => ∃ j ∈ Icc 1 (P.k - 1), M.Up P j σ τ)
@@ -3394,9 +3364,9 @@ theorem upper_sum_block_structure (h : SHyp P L0 QQ κ) (hR : Raises κ SS) (Y :
   rintro τ σ ⟨μ, hμ, rfl⟩; exact ⟨j, hj, hμ⟩
 
 /- English proof (translation)
-Establish `hW : proj κ σ * (L0.ζ * L0.GGi) = (L0.ζ * L0.GGi) * proj κ σ`. Rewrite using `[← mul_assoc, sc_pf h σ (sc_mζ L0), mul_assoc, sc_pf h σ (sc_mGGi L0), mul_assoc]`. Establish `hN : proj κ σ * star (nabDef L0 κ b) = star (nabDef L0 κ b) * proj κ σ`. Unfold `proj`. Conclude with `sc_Nskap h b _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[connection_raising_constant_eq, mul_sub, sub_mul, mul_neg, neg_mul, hN, mul_smul_comm, smul_mul_assoc, hW]`.
+A detailed English derivation is pending.
 -/
 theorem connection_raising_projection (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (Y : ℂ) (σ : M.Ty P) :
     proj κ σ * (sc_LL h hF).m0 Y = (sc_LL h hF).m0 Y * proj κ σ := by
@@ -3407,7 +3377,7 @@ theorem connection_raising_projection (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ 
   rw [connection_raising_constant_eq, mul_sub, sub_mul, mul_neg, neg_mul, hN, mul_smul_comm, smul_mul_assoc, hW]
 
 /- English proof (translation)
-Establish `c1 : proj κ σ * xA κ Y = xA κ Y * proj κ σ` using `by unfold proj xA; exact kap_comm κ _ _`. Rewrite using `[← mul_assoc, ← mul_assoc, sc_pf h σ (sc_mGG L0), mul_assoc L0.GG, c1, ← mul_assoc, mul_assoc _ (proj κ σ), connection_raising_projection h hF, ← mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sc_H_pc (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (Y : ℂ) (σ : M.Ty P) :
     proj κ σ * (L0.GG * xA κ Y * (sc_LL h hF).m0 Y) = (L0.GG * xA κ Y * (sc_LL h hF).m0 Y) * proj κ σ := by
@@ -3416,9 +3386,9 @@ theorem sc_H_pc (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (Y : ℂ) (σ
     connection_raising_projection h hF, ← mul_assoc]
 
 /- English proof (translation)
-Establish `e1b : L0.GG * (L0.ζ * L0.GGi * L0.GGi) = L0.ζ * L0.GGi`. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : L0.GG * star (nabDef L0 κ b) * L0.GGi = star (nabDef L0 κ b) + L0.ζ * L0.GGi`. Rewrite using `[mul_assoc, sc_NsGGi h hF, mul_add, ← mul_assoc, L0.GG_GGi, one_mul, e1b]`. Establish `e2 : L0.GG * (L0.ζ * L0.GGi) * L0.GGi = L0.ζ * L0.GGi` using `by rw [sc_GGζGGi]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[connection_raising_constant_eq, connection_raising_constant_eq, mul_sub, sub_mul, mul_neg, neg_mul, mul_smul_comm, smul_mul_assoc, e1, e2, show (Y + 1 - 1 / 2 : ℂ) = (Y - 1 / 2) + 1 by ring, add_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem connection_raising_gamma_shift (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (Y : ℂ) :
     L0.GG * (sc_LL h hF).m0 Y * L0.GGi = (sc_LL h hF).m0 (Y + 1) := by
@@ -3435,38 +3405,34 @@ theorem connection_raising_gamma_shift (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ
   abel
 
 /- English proof (translation)
-The claim follows from `diagonal_entry_hypothesis h Y`.
+A detailed English derivation is pending.
 -/
 theorem connection_diagonal_entry (h : SHyp P L0 QQ κ) (Y : ℂ) : QQ Y 1 1 = L0.GG * xA κ Y := diagonal_entry_hypothesis h Y
 
 /- English proof (translation)
-Use `set K := SS l * proj κ ρ with hK`. Use `set H := fun Y => L0.GG * xA κ Y * (sc_LL h hF).m0 Y with hHdef`. Establish `hne : ρ ≠ ρ'` using `up_ne P hl hu`. Establish `hPK : proj κ ρ' * K = K` using `by rw [hK, ← mul_assoc, pj_ss_pj κ hR hu]`. Establish `hKGGi : K * L0.GGi = L0.GGi * K` using `sc_K_comm h hSS l ρ (sc_mGGi L0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hB : proj κ ρ' * (QQ v 0 1 * QQ (v + 1) 1 0) * proj κ ρ = M.xEx P {l} ρ (v + 1) • (H v * K)`. Rewrite using `[connection_upper_right_eq h hF hR v, connection_lower_left_eq h hF hR (v + 1), connection_upper_right_entry, connection_lower_left_entry]`. Use `set G1 := L0.GG * xA κ (v + 1) * (sc_LL h hF).l0 (v + 1)`. Use `set S1 := ∑ l ∈ Icc 1 (P.k - 1), SS l * κ (fun ρ => M.xEx P {l} ρ (v + 1))`. Use `set H0 := L0.GG * xA κ v * (sc_LL h hF).m0 v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `set T0 := ∑ l ∈ Icc 1 (P.k - 1), (κ fun ρ => M.xEx P {l} ρ v) * star (SS l)`. Establish `p1 : proj κ ρ' * (H0 * G1) * proj κ ρ = 0`. Use `blk_diag κ (X := H0 * G1) (fun σ => ?_) ρ' ρ hne` and prove the remaining obligations. Use `show proj κ σ * (H0 * G1) = (H0 * G1) * proj κ σ`. Rewrite using `[← mul_assoc, sc_H_pc h hF v σ, mul_assoc, sc_G_pc h hF (v + 1) σ, ← mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `p2 : proj κ ρ' * (H0 * S1) * proj κ ρ = M.xEx P {l} ρ (v + 1) • (H0 * K)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show proj κ ρ' * H0 = H0 * proj κ ρ' from sc_H_pc h hF v ρ']`. Simplify using `only [mul_assoc]`. Use `_ = _ := by rw [lower_sum_raising_block hR hl hu (v + 1), mul_smul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `p3 : proj κ ρ' * (T0 * G1) * proj κ ρ = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show G1 * proj κ ρ = proj κ ρ * G1 from (sc_G_pc h hF (v + 1) ρ).symm]`. Simplify using `only [mul_assoc]`. Use `_ = 0 := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[upper_sum_block_structure h hR v ρ' ρ (fun ⟨j, _, hj⟩ => sc_not_back hl hu hj), zero_mul]`. Establish `p4 : proj κ ρ' * (T0 * S1) * proj κ ρ = 0`. Use `blk_mul κ (upper_sum_block_structure h hR v) (lower_sum_block_structure hR (v + 1)) ρ' ρ ?_` and prove the remaining obligations. Introduce and unpack `⟨μ, ⟨i, hi, h1⟩, ⟨j, hj, h2⟩⟩`. Conclude with `not_up_down P hi hj hl h1 h2 hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (H0 + T0) * (G1 + S1) = H0 * G1 + H0 * S1 + T0 * G1 + T0 * S1` using `by noncomm_ring`. Rewrite using `[this, mul_add, mul_add, mul_add, add_mul, add_mul, add_mul, p1, p2, p3, p4, zero_add, add_zero, add_zero]`. Establish `hD` using `quantum_determinant_relation h v`. Establish `hq : proj κ ρ' * algebraMap ℂ A (M.qC P v) * proj κ ρ = 0`. Rewrite using `[← Algebra.commutes, mul_assoc, pj_orth κ hne.symm, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : proj κ ρ' * (QQ v 0 0 * QQ (v + 1) 1 1) * proj κ ρ = M.xC P ρ (v + 1) • (proj κ ρ' * QQ v 0 0 * proj κ ρ * L0.GG)`. Apply the tactic sequence `rw [connection_diagonal_entry h, mul_assoc, mul_assoc, mul_assoc, xA, kap_mul_pj, mul_smul_comm, mul_smul_comm, mul_smul_comm, ← sc_pf h ρ (sc_mGG L0)]`. Use `noncomm_ring`. Establish `hE : M.xC P ρ (v + 1) • (proj κ ρ' * QQ v 0 0 * proj κ ρ * L0.GG) = M.xEx P {l} ρ (v + 1) • (H v * K)`. Rewrite using `[← hL, ← hB]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : QQ v 0 0 * QQ (v + 1) 1 1 = QQ v 0 1 * QQ (v + 1) 1 0 + algebraMap ℂ A (M.qC P v)`. Rewrite using `[← hD]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, mul_add, add_mul, hq, add_zero]`. Establish `hHK : H v * K = M.xC P ρ' v • (L0.GG * ((sc_LL h hF).m0 v * K))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hPm : proj κ ρ' * ((sc_LL h hF).m0 v * K) = (sc_LL h hF).m0 v * K`. Rewrite using `[← mul_assoc, connection_raising_projection h hF, mul_assoc, hPK]`. Simplify using `only [hHdef]`. Rewrite using `[mul_assoc, mul_assoc, sc_x_of_P hPm, mul_smul_comm]`. Rewrite `hE` using `[hHK, smul_smul, sc_x_self hl ρ (v + 1), sc_x_up hl hu v]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hn1 : M.xEx P {l} ρ (v + 1) ≠ 0` using `sc_xEx_ne P ρ {l} (by simpa using hv)`. Establish `hn2 : (v + 1 + (M.rho P ρ l : ℂ)) ≠ 0`. Introduce `h0`. Apply `hv` to reduce the goal to its premises. Use `congrArg Complex.im h0` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using this`. Establish `hE2 : proj κ ρ' * QQ v 0 0 * proj κ ρ * L0.GG = M.xEx P {l} ρ v • (L0.GG * ((sc_LL h hF).m0 v * K))`. Establish `hc : (v + 1 + (M.rho P ρ l : ℂ)) * M.xEx P {l} ρ (v + 1) ≠ 0` using `mul_ne_zero hn2 hn1`. Use `congrArg (fun X => ((v + 1 + (M.rho P ρ l : ℂ)) * M.xEx P {l} ρ (v + 1))⁻¹ • X) hE` as an intermediate fact. Simplify using `only [smul_smul, inv_mul_cancel₀ hc, one_smul] at this`.
-
-Rewrite using `[this]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `congrArg (fun X => X * L0.GGi) hE2` as an intermediate fact.
-
-Simplify using `only [mul_assoc, L0.GG_GGi, mul_one, smul_mul_assoc] at this`. Rewrite using `[show proj κ ρ' * QQ v 0 0 * proj κ ρ = proj κ ρ' * (QQ v 0 0 * proj κ ρ) by rw [mul_assoc], this, ← connection_raising_gamma_shift h hF v, hKGGi]`. Simplify using `only [mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem upper_left_raising_block (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (hR : Raises κ SS)
     (hSS : ∀ l, ∀ g ∈ L0.ops, Commute (SS l) g) {l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) {ρ ρ' : M.Ty P}
@@ -3548,17 +3514,13 @@ variable {L0 : PreLevel A P.r} {QQ : ℂ → Matrix (Fin 2) (Fin 2) A} {κ : (M.
   {b : M.Ty P → A} {SS : ℕ → A}
 
 /- English proof (translation)
-Establish `hne : ρ ≠ ρ'` using `up_ne P hl hu`. Rewrite using `[connection_upper_right_eq h hF hR u, connection_lower_left_eq h hF hR w, connection_upper_right_entry, connection_lower_left_entry]`. Use `set G1 := L0.GG * xA κ w * (sc_LL h hF).l0 w`. Use `set S1 := ∑ l ∈ Icc 1 (P.k - 1), SS l * κ (fun ρ => M.xEx P {l} ρ w)`. Use `set H0 := L0.GG * xA κ u * (sc_LL h hF).m0 u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `set T0 := ∑ l ∈ Icc 1 (P.k - 1), (κ fun ρ => M.xEx P {l} ρ u) * star (SS l)`. Establish `p1 : proj κ ρ' * (H0 * G1) * proj κ ρ = 0`. Use `blk_diag κ (X := H0 * G1) (fun σ => ?_) ρ' ρ hne` and prove the remaining obligations. Use `show proj κ σ * (H0 * G1) = (H0 * G1) * proj κ σ`. Rewrite using `[← mul_assoc, sc_H_pc h hF u σ, mul_assoc, sc_G_pc h hF w σ, ← mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `p2 : proj κ ρ' * (H0 * S1) * proj κ ρ = M.xEx P {l} ρ w • (H0 * (SS l * proj κ ρ))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show proj κ ρ' * H0 = H0 * proj κ ρ' from sc_H_pc h hF u ρ']`. Simplify using `only [mul_assoc]`. Use `_ = _ := by rw [lower_sum_raising_block hR hl hu w, mul_smul_comm]`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `p3 : proj κ ρ' * (T0 * G1) * proj κ ρ = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show G1 * proj κ ρ = proj κ ρ * G1 from (sc_G_pc h hF w ρ).symm]`. Simplify using `only [mul_assoc]`. Use `_ = 0 := by`.
-
-Rewrite using `[upper_sum_block_structure h hR u ρ' ρ (fun ⟨j, _, hj⟩ => sc_not_back hl hu hj), zero_mul]`. Establish `p4 : proj κ ρ' * (T0 * S1) * proj κ ρ = 0`. Use `blk_mul κ (upper_sum_block_structure h hR u) (lower_sum_block_structure hR w) ρ' ρ ?_` and prove the remaining obligations. Introduce and unpack `⟨μ, ⟨i, hi, h1⟩, ⟨j, hj, h2⟩⟩`. Conclude with `not_up_down P hi hj hl h1 h2 hu`.
-
-Establish `: (H0 + T0) * (G1 + S1) = H0 * G1 + H0 * S1 + T0 * G1 + T0 * S1` using `by noncomm_ring`. Rewrite using `[this, mul_add, mul_add, mul_add, add_mul, add_mul, add_mul, p1, p2, p3, p4, zero_add, add_zero, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upper_lower_block_product (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (hR : Raises κ SS) {l : ℕ}
     (hl : l ∈ Icc 1 (P.k - 1)) {ρ ρ' : M.Ty P} (hu : M.Up P l ρ ρ') (u w : ℂ) :
@@ -3593,17 +3555,13 @@ theorem upper_lower_block_product (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b
   rw [this, mul_add, mul_add, mul_add, add_mul, add_mul, add_mul, p1, p2, p3, p4, zero_add, add_zero, add_zero]
 
 /- English proof (translation)
-Establish `hne : ρ ≠ ρ'` using `up_ne P hl hu`. Rewrite using `[connection_upper_right_eq h hF hR u, connection_lower_left_eq h hF hR w, connection_upper_right_entry, connection_lower_left_entry]`. Use `set G1 := L0.GG * xA κ w * (sc_LL h hF).l0 w`. Use `set S1 := ∑ l ∈ Icc 1 (P.k - 1), SS l * κ (fun ρ => M.xEx P {l} ρ w)`. Use `set H0 := L0.GG * xA κ u * (sc_LL h hF).m0 u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `set T0 := ∑ l ∈ Icc 1 (P.k - 1), (κ fun ρ => M.xEx P {l} ρ u) * star (SS l)`. Establish `p1 : proj κ ρ' * (G1 * H0) * proj κ ρ = 0`. Use `blk_diag κ (X := G1 * H0) (fun σ => ?_) ρ' ρ hne` and prove the remaining obligations. Use `show proj κ σ * (G1 * H0) = (G1 * H0) * proj κ σ`. Rewrite using `[← mul_assoc, sc_G_pc h hF w σ, mul_assoc, sc_H_pc h hF u σ, ← mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `p2 : proj κ ρ' * (G1 * T0) * proj κ ρ = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show proj κ ρ' * G1 = G1 * proj κ ρ' from sc_G_pc h hF w ρ']`. Simplify using `only [mul_assoc]`. Use `_ = 0 := by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[upper_sum_block_structure h hR u ρ' ρ (fun ⟨j, _, hj⟩ => sc_not_back hl hu hj), mul_zero]`. Establish `p3 : proj κ ρ' * (S1 * H0) * proj κ ρ = M.xEx P {l} ρ w • ((SS l * proj κ ρ) * H0)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show H0 * proj κ ρ = proj κ ρ * H0 from (sc_H_pc h hF u ρ).symm]`. Simplify using `only [mul_assoc]`.
-
-Use `_ = _ := by rw [lower_sum_raising_block hR hl hu w, smul_mul_assoc]`. Establish `p4 : proj κ ρ' * (S1 * T0) * proj κ ρ = 0`. Use `blk_mul κ (lower_sum_block_structure hR w) (upper_sum_block_structure h hR u) ρ' ρ ?_` and prove the remaining obligations. Introduce and unpack `⟨μ, ⟨i, hi, h1⟩, ⟨j, hj, h2⟩⟩`. Conclude with `not_down_up P hi hj hl h1 h2 hu`.
-
-Establish `: (G1 + S1) * (H0 + T0) = G1 * H0 + G1 * T0 + S1 * H0 + S1 * T0` using `by noncomm_ring`. Rewrite using `[this, mul_add, mul_add, mul_add, add_mul, add_mul, add_mul, p1, p2, p3, p4, zero_add, zero_add, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lower_upper_block_product (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (hR : Raises κ SS) {l : ℕ}
     (hl : l ∈ Icc 1 (P.k - 1)) {ρ ρ' : M.Ty P} (hu : M.Up P l ρ ρ') (u w : ℂ) :
@@ -3638,33 +3596,29 @@ theorem lower_upper_block_product (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b
   rw [this, mul_add, mul_add, mul_add, add_mul, add_mul, add_mul, p1, p2, p3, p4, zero_add, zero_add, add_zero]
 
 /- English proof (translation)
-Use `set K := SS l * proj κ ρ with hK`. Use `set Ns := star (nabDef L0 κ b) with hNs`. Use `set W := L0.ζ * L0.GGi with hW`. Use `set e := fun Y => M.xEx P {l} ρ Y with he`. Establish `hPK : proj κ ρ' * K = K` using `by rw [hK, ← mul_assoc, pj_ss_pj κ hR hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKGG : K * L0.GG = L0.GG * K` using `sc_K_comm h hSS l ρ (sc_mGG L0)`. Establish `hKW : K * W = W * K`. Establish `c1 : K * L0.ζ = L0.ζ * K` using `sc_K_comm h hSS l ρ (sc_mζ L0)`. Establish `c2 : K * L0.GGi = L0.GGi * K` using `sc_K_comm h hSS l ρ (sc_mGGi L0)`. Rewrite using `[hW, ← mul_assoc, c1, mul_assoc, c2, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hKx : ∀ Y, K * xA κ Y = M.xC P ρ Y • K`. Introduce `Y`. Rewrite using `[hK, mul_assoc, xA, pj_mul_kap, mul_smul_comm]`. Establish `hH : ∀ Y, (L0.GG * xA κ Y * (sc_LL h hF).m0 Y) * K - K * (L0.GG * xA κ Y * (sc_LL h hF).m0 Y) = L0.GG * (M.xC P ρ' Y • ((sc_LL h hF).m0 Y * K) - M.xC P ρ Y • (K * (sc_LL h hF).m0 Y))`. Introduce `Y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPm : proj κ ρ' * ((sc_LL h hF).m0 Y * K) = (sc_LL h hF).m0 Y * K`. Rewrite using `[← mul_assoc, connection_raising_projection h hF, mul_assoc, hPK]`. Establish `a1 : (L0.GG * xA κ Y * (sc_LL h hF).m0 Y) * K = L0.GG * (M.xC P ρ' Y • ((sc_LL h hF).m0 Y * K))`. Rewrite using `[mul_assoc, mul_assoc, sc_x_of_P hPm]`. Establish `a2 : K * (L0.GG * xA κ Y * (sc_LL h hF).m0 Y) = L0.GG * (M.xC P ρ Y • (K * (sc_LL h hF).m0 Y))`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = L0.GG * (K * xA κ Y) * (sc_LL h hF).m0 Y := by rw [hKGG]; simp only [mul_assoc]`. Use `_ = _ := by rw [hKx, mul_assoc, smul_mul_assoc]`. Rewrite using `[a1, a2, mul_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set u : ℂ := Complex.I with hu'`. Use `set v : ℂ := 2 * Complex.I with hv'`. Establish `huim : u.im ≠ 0` using `by simp [hu']`. Establish `hvim : v.im ≠ 0` using `by simp [hv']`. Establish `hR1 : proj κ ρ' * ((u - v) • (QQ u 0 1 * QQ v 1 0 - QQ v 1 0 * QQ u 0 1)) * proj κ ρ = proj κ ρ' * (QQ u 1 1 * QQ v 0 0 - QQ v 1 1 * QQ u 0 0) * proj κ ρ` using `by rw [H_rtt h u v 0 1 1 0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rw [mul_smul_comm, smul_mul_assoc, mul_sub, sub_mul, upper_lower_block_product h hF hR hl hu u v, lower_upper_block_product h hF hR hl hu u v, mul_sub, sub_mul, connection_diagonal_entry h, connection_diagonal_entry h, projection_gamma_coordinate h, projection_gamma_coordinate h, …`. Establish `c2 : (u - v) • (M.xEx P {l} ρ v • (M.xC P ρ' u • ((sc_LL h hF).m0 u * K) - M.xC P ρ u • (K * (sc_LL h hF).m0 u))) - ((M.xC P ρ' u * M.xEx P {l} ρ v) • ((sc_LL h hF).m0 (v + 1) * K) - (M.xC P ρ' v * M.xEx P {l} ρ u) • ((sc_LL h hF).m0 (u + 1) * K)) = 0`. Establish `c' : L0.GG * ((u - v) • (M.xEx P {l} ρ v • (M.xC P ρ' u • ((sc_LL h hF).m0 u * K) - M.xC P ρ u • (K * (sc_LL h hF).m0 u))) - ((M.xC P ρ' u * M.xEx P {l} ρ v) • ((sc_LL h hF).m0 (v + 1) * K) - (M.xC P ρ' v * M.xEx P {l} ρ u) • ((sc_LL h hF).m0 (u + 1) * K))) = 0`. Establish `e1 : L0.GG * ((u - v) • (M.xEx P {l} ρ v • (M.xC P ρ' u • ((sc_LL h hF).m0 u * K) - M.xC P ρ u • (K * (sc_LL h hF).m0 u))) - ((M.xC P ρ' u * M.xEx P {l} ρ v) • ((sc_LL h hF).m0 (v + 1) * K) - (M.xC P ρ' v * M.xEx P {l} ρ u) • ((sc_LL h hF).m0 (u + 1) * K))) = (u - v) • M.xEx P {l …`. Simplify using `only [mul_sub, mul_smul_comm, smul_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `module`. Rewrite using `[e1, hR1, sub_self]`. Use `congrArg (fun X => L0.GGi * X) c'` as an intermediate fact. Simplify using `only [← mul_assoc, L0.GGi_GG, one_mul, mul_zero] at this`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `c2` using `[sc_x_up hl hu u, sc_x_up hl hu v, sc_x_self hl ρ u, connection_raising_constant_eq, connection_raising_constant_eq, connection_raising_constant_eq]`. Establish `e2 : ∀ Y : ℂ, K * (-Ns - (Y - 1 / 2) • W) = -(K * Ns) - (Y - 1 / 2) • (W * K)`. Introduce `Y`. Rewrite using `[mul_sub, mul_neg, mul_smul_comm, hKW]`. Establish `e3 : ∀ Y : ℂ, (-Ns - (Y - 1 / 2) • W) * K = -(Ns * K) - (Y - 1 / 2) • (W * K)`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Y`. Rewrite using `[sub_mul, neg_mul, smul_mul_assoc]`. Rewrite `c2` using `[e2, e3, e3, e3]`. Establish `c3 : (e u * e v * (u - v) * (u + (M.rho P ρ l : ℂ))) • (K * Ns - Ns * K - W * K) = 0`. Rewrite using `[← c2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Simplify using `only [he]`. Use `module`. Break down `smul_eq_zero.1 c3 with h0 | h0` into its components or cases. It suffices to derive a contradiction. Establish `h1 : e u ≠ 0` using `sc_xEx_ne P ρ {l} huim`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : e v ≠ 0` using `sc_xEx_ne P ρ {l} hvim`. Establish `h3 : u - v ≠ 0`. Rewrite using `[hu', hv']`. Introduce `h`. Use `congrArg Complex.im h` as an intermediate fact.
-
-Evaluate the numerical expressions using `at this`. Establish `h4 : u + (M.rho P ρ l : ℂ) ≠ 0`. Introduce `h`. Apply `huim` to reduce the goal to its premises. Use `congrArg Complex.im h` as an intermediate fact.
-
-Simplify using `using this`. Conclude with `mul_ne_zero (mul_ne_zero (mul_ne_zero h1 h2) h3) h4 h0`. Conclude with `h0`.
+A detailed English derivation is pending.
 -/
 theorem sc_keyNs (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (hR : Raises κ SS)
     (hSS : ∀ l, ∀ g ∈ L0.ops, Commute (SS l) g) {l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) {ρ ρ' : M.Ty P}
@@ -3746,11 +3700,11 @@ theorem sc_keyNs (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (hR : Raises
   · exact h0
 
 /- English proof (translation)
-Establish `hNp : ∀ ρ, proj κ ρ * star (nabDef L0 κ b) = star (nabDef L0 κ b) * proj κ ρ`. Introduce `ρ`. Unfold `proj`. Conclude with `sc_Nskap h b _`. Apply `eq_of_rblocks κ` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ρ`. Distinguish the cases in `hex : ∃ ρ', M.Up P l ρ ρ'`. Take `⟨ρ', hu⟩` from `hex`. Establish `k` using `sc_keyNs h hF hR hSS hl hu`. Combine the equalities or inequalities in the displayed calculation.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero, show star (nabDef L0 κ b) * (SS l * proj κ ρ) - ((SS l * proj κ ρ) * star (nabDef L0 κ b) - L0.ζ * L0.GGi * (SS l * proj κ ρ)) = -((SS l * proj κ ρ) * star (nabDef L0 κ b) - star (nabDef L0 κ b) * (SS l * proj κ ρ) - (L0.ζ * L0.GGi) * (SS l * proj κ ρ)) by abel, k …`. Use `_ = _ := by rw [mul_assoc (SS l), hNp ρ]; noncomm_ring`. Establish `h0` using `ss_pj_none κ hR hex`. Rewrite using `[mul_assoc, h0, mul_zero, sub_mul, mul_assoc, ← hNp ρ, ← mul_assoc, h0, zero_mul, mul_assoc, h0, mul_zero, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_nabsSS (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (hR : Raises κ SS)
     (hSS : ∀ l, ∀ g ∈ L0.ops, Commute (SS l) g) {l : ℕ} (hl : l ∈ Icc 1 (P.k - 1)) :
@@ -3773,9 +3727,9 @@ theorem sc_nabsSS (h : SHyp P L0 QQ κ) (hF : SForm P L0 QQ κ b SS) (hR : Raise
       mul_zero, sub_zero]
 
 /- English proof (translation)
-Introduce `P A _ _ _ L0 QQ κ b SS _hP h hF hR hSS`. Use `⟨sc_LL h hF, ⟨rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl, rfl⟩, rfl, rfl, ⟨h.1, rfl, h.2.1⟩, ⟨H_kstar h, ?_, fun l g hg => hSS l g hg, hR, fun l hl => ⟨sc_nabSS h hF hR hSS hl, sc_nabsSS h hF hR hSS hl⟩⟩, fun Y => ⟨connection_lower_left_eq h hF hR Y, connection_up …` and prove the remaining obligations. Introduce `f g hg`. Break down `hg with hg | hg` into its components or cases. Conclude with `H_kops h f g (sc_ops_of_fns L0 hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hg with rfl | hg` into its components or cases. Conclude with `sc_Nkap h b f`. Rewrite `hg` using `[Set.mem_singleton_iff]`. Substitute `hg` using the available equality. Conclude with `sc_Nskap h b f`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem sc_main : Formalism.FourierDecayAlt.NF.SConn := by
   intro P A _ _ _ L0 QQ κ b SS _hP h hF hR hSS
@@ -3794,9 +3748,9 @@ end Main
 end SC
 
 /- English proof (translation)
-Introduce `P A _ _ _ d`. Unfold `Q.NFData.Rel RelCore RelNorm`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, c, e, f, g⟩`. Conclude with `⟨⟨a, b, c, e, f⟩, g⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨a, b, c, e, f⟩, g⟩`. Conclude with `⟨a, b, c, e, f, g⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem relIsCoreNorm : RelIsCoreNorm := by
   intro P A _ _ _ d
@@ -3806,11 +3760,9 @@ theorem relIsCoreNorm : RelIsCoreNorm := by
   · rintro ⟨⟨a, b, c, e, f⟩, g⟩; exact ⟨a, b, c, e, f, g⟩
 
 /- English proof (translation)
-Introduce `hI hC hU hN hRP hW hB hSC hSN hRel P A _ _ _ L0 QQ κ hP h`. Take `⟨b, SS, hF, hR, hSS⟩` from `hB hI hC hU P A L0 QQ κ hP h`. Take `⟨L, hExt, hnab, hnabs, hst, hcore, hqq⟩` from `hSC P A L0 QQ κ b SS hP h hF hR hSS`. Take `⟨hnorm, h11⟩` from `hSN hI hC hU hN hRP hW P A L0 QQ κ b SS L hP h hF hR hSS hExt hnab hnabs hst hcore (fun Y => ⟨(hqq Y).1, (hqq Y).2.1⟩)`. Use `⟨⟨L, κ, SS⟩, hExt, rfl, hst, (hRel P A ⟨L, κ, SS⟩).2 ⟨hcore, hnorm⟩, fun Y => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `h11 Y`. Conclude with `(hqq Y).2.1`. Conclude with `(hqq Y).1`.
-
-Conclude with `(hqq Y).2.2`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem thmSOfSteps : ThmSOfSteps := by
   intro hI hC hU hN hRP hW hB hSC hSN hRel P A _ _ _ L0 QQ κ hP h
@@ -3833,27 +3785,27 @@ end Formalism.FourierDecayAlt.P.NFx2
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `NFx2.sb_main`.
+A detailed English derivation is pending.
 -/
 theorem shift_block : Formalism.FourierDecayAlt.NF.SBlock := NFx2.sb_main
 
 /- English proof (translation)
-The claim follows from `NFx2.sc_main`.
+A detailed English derivation is pending.
 -/
 theorem shift_connection : Formalism.FourierDecayAlt.NF.SConn := NFx2.sc_main
 
 /- English proof (translation)
-The claim follows from `NFx2.sn_main`.
+A detailed English derivation is pending.
 -/
 theorem shift_norm : Formalism.FourierDecayAlt.NF.SNorm := NFx2.sn_main
 
 /- English proof (translation)
-The claim follows from `NFx2.thmSOfSteps`.
+A detailed English derivation is pending.
 -/
 theorem theorem_S_of_steps : Formalism.FourierDecayAlt.NF.ThmSOfSteps := NFx2.thmSOfSteps
 
 /- English proof (translation)
-The claim follows from `NFx2.thmSOfSteps Mx3.tyInterlaces Mx3.tyComplete Mx3.rhoUp Mx3.nrmFacts Mx3.realPoints Mx3.wExact NFx2.sb_main NFx2.sc_main NFx2.sn_main NFx2.relIsCoreNorm`.
+A detailed English derivation is pending.
 -/
 theorem theorem_S_ring : Formalism.FourierDecayAlt.NF.ThmSRing :=
   NFx2.thmSOfSteps Mx3.tyInterlaces Mx3.tyComplete Mx3.rhoUp Mx3.nrmFacts Mx3.realPoints Mx3.wExact

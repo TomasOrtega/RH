@@ -11,11 +11,11 @@ def IsAt {K : Type} [Field K] {r : ℕ} (i : Fin r) (x : Fin r → K) : Prop :=
   ∀ a, a ≠ i → x a = 0
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_unique]`. Simplify using `only [gramC, Matrix.of_apply, embVec, diagMet, Matrix.mulVec_diagonal, dotProduct, Pi.star_apply]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `only [Fin.default_eq_zero, Matrix.cons_val_zero]`. Rewrite using `[show star (σ (x i)) * (((δ σ i : ℝ) : ℂ) * σ (x i)) = ((δ σ i : ℝ) : ℂ) * (starRingEnd ℂ (σ (x i)) * σ (x i)) by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Complex.star_def]`. Use the proof step `ring]`. Rewrite using `[Complex.conj_mul']`. Simplify using `only [Complex.re_ofReal_mul]`. Use `norm_cast`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Put the expressions in a common number system so they can be compared. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `a _ ha`. Simplify using `[Fin.default_eq_zero, hx a ha]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gramC_single {K : Type} [Field K] [NumberField K] {r : ℕ} (δ : (K →+* ℂ) → Fin r → ℝ)
     (σ : K →+* ℂ) (i : Fin r) (x : Fin r → K) (hx : IsAt i x) :
@@ -38,7 +38,7 @@ theorem gramC_single {K : Type} [Field K] [NumberField K] {r : ℕ} (δ : (K →
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Unfold `latDeg spanIdx`. Use `congr 2`. Conclude with `Finset.sum_congr rfl fun σ _ => by rw [gramC_single δ σ i x hx]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem latDeg_single {K : Type} [Field K] [NumberField K] {r : ℕ}
     (δ : (K →+* ℂ) → Fin r → ℝ) (C : Submodule (𝓞 K) (Fin r → K)) (i : Fin r) (x : Fin r → K)
@@ -50,9 +50,9 @@ theorem latDeg_single {K : Type} [Field K] [NumberField K] {r : ℕ}
   exact Finset.sum_congr rfl fun σ _ => by rw [gramC_single δ σ i x hx]
 
 /- English proof (translation)
-Establish `h1 : ∀ σ : K →+* ℂ, Real.log (‖σ z‖ ^ 2 * d) = 2 * Real.log ‖σ z‖ + Real.log d`. Introduce `σ`. Establish `: ‖σ z‖ ≠ 0` using `by simpa using hz`. Rewrite using `[Real.log_mul (pow_ne_zero 2 this) hd.ne', Real.log_pow]`. Use `push_cast`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1, Finset.sum_add_distrib, ← Finset.mul_sum, sum_log_norm_emb, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem sum_log_single {K : Type} [Field K] [NumberField K] (z : K) (hz : z ≠ 0) (d : ℝ)
     (hd : 0 < d) :
@@ -68,11 +68,11 @@ theorem sum_log_single {K : Type} [Field K] [NumberField K] (z : K) (hz : z ≠ 
     Finset.card_univ, nsmul_eq_mul]
 
 /- English proof (translation)
-Establish `hv0 : v ≠ 0` using `fun h => hvi (by rw [h]; rfl)`. Use `⟨fun j => by fin_cases j; simpa using hv, ?_, ?_⟩` and prove the remaining obligations. Conclude with `linearIndependent_unique_iff.2 (by simpa using hv0)`. Introduce `x hx`. Rewrite using `[Set.range_unique, Submodule.mem_span_singleton]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨x i / v i, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Fin.default_eq_zero, Matrix.cons_val_zero]`. Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hat x hx a ha, hat v hv a ha, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kBasisIn_single {K : Type} [Field K] [NumberField K] {r : ℕ} (i : Fin r)
     (Gr : Submodule (𝓞 K) (Fin r → K)) (hat : ∀ x ∈ Gr, IsAt i x) (v : Fin r → K)
@@ -91,25 +91,23 @@ theorem kBasisIn_single {K : Type} [Field K] [NumberField K] {r : ℕ} (i : Fin 
     · rw [hat x hx a ha, hat v hv a ha, mul_zero]
 
 /- English proof (translation)
-Establish `hpd : ∀ σ, (diagMet δ σ).PosDef` using `fun σ => Matrix.posDef_diagonal_iff.2 fun a => by exact_mod_cast hδ σ a`. Establish `hci : ∀ j, c j i ≠ 0`. Introduce `j h0`. Apply `hc.2.1.ne_zero j` to reduce the goal to its premises. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality. Conclude with `h0`. Conclude with `hat _ (hC (hc.1 j)) a ha`. Use `match k, c, hc, hci with`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `0, c, hc, _ => exact (latDeg_zero_fam _ _ c hc).le`. Consider the case `1, c, hc, hci`. Establish `hc1 : c = ![c 0]` using `by funext j; fin_cases j; rfl`. Establish `hGc : IsKBasisIn Gr c`. Rewrite using `[hc1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Treat this case separately. It suffices to derive a contradiction.
 
-Conclude with `kBasisIn_single i Gr hat (c 0) (hC (hc.1 0)) (hci 0)`. Combine the equalities or inequalities in the displayed calculation. Consider the case `k + 2, c, hc, hci`. It suffices to derive a contradiction. Establish `hli` using `hc.2.1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `t : Fin (k + 2) → K` to `fun j => if j = 0 then c 1 i else if j = 1 then -(c 0 i) else 0`. Establish `ht : ∑ j, t j • c j = 0`. Rewrite using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`. Establish `h0 : ∀ j : Fin k, t j.succ.succ = 0` using `fun j => by`. Simplify using `only [t]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[if_neg (Fin.succ_ne_zero _), if_neg]`. Introduce `h`. Conclude with `Fin.succ_ne_zero j (Fin.succ_injective _ h)`. Simplify using `only [h0, zero_smul, Finset.sum_const_zero, add_zero]`. Establish `t0 : t 0 = c 1 i` using `by simp [t]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `t1 : t (Fin.succ 0) = -(c 0 i)`. Simplify using `only [t]`. Rewrite using `[if_neg (Fin.succ_ne_zero _)]`. Both sides reduce to the same expression. Rewrite using `[t0, t1]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `a`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality. Simplify using `only [Fin.succ_zero_eq_one]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hat _ (hC (hc.1 0)) a ha, hat _ (hC (hc.1 _)) a ha]`. Expand and normalize the polynomial expressions, which then agree. Use `Fintype.linearIndependent_iff.1 hli t ht 1` as an intermediate fact. Simplify using `[t] at this`.
-
-Conclude with `hci 0 this`.
+A detailed English derivation is pending.
 -/
 theorem rankOne_le_zero (hB : LatDegBasisStatement) {K : Type} [Field K] [NumberField K]
     {r : ℕ} (δ : (K →+* ℂ) → Fin r → ℝ) (hδ : ∀ σ i, 0 < δ σ i) (i : Fin r)
@@ -169,19 +167,17 @@ theorem rankOne_le_zero (hB : LatDegBasisStatement) {K : Type} [Field K] [Number
     exact hci 0 this
 
 /- English proof (translation)
-Establish `heq : A ⊔ X = X.comap π ⊓ (A ⊔ C)`. Apply `le_antisymm` to reduce the goal to its premises. Use `le_inf (sup_le ?_ ?_) (sup_le_sup_left hXC A)` and prove the remaining obligations. Introduce `a ha show π a ∈ X`. Rewrite using `[hA a ha]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `X.zero_mem`. Introduce `x hx show π x ∈ X`. Rewrite using `[hC x (hXC hx)]`. Conclude with `hx`. Introduce and unpack `z ⟨hzX, hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha, w, hw, rfl⟩` from `AddSubgroup.mem_sup.1 hz`. Establish `hπ : π (a + w) = w` using `by rw [map_add, hA a ha, hC w hw, zero_add]`. Establish `hwX : w ∈ X`. Establish `: π (a + w) ∈ X` using `hzX`. Rewrite `this` using `[hπ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AddSubgroup.add_mem_sup ha hwX`. Establish `hmap : (A ⊔ C).map π = C`. Rewrite using `[AddSubgroup.map_sup]`. Establish `h1 : A.map π = ⊥`. Rewrite using `[eq_bot_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨a, ha, rfl⟩`. Rewrite using `[hA a ha]`. Conclude with `AddSubgroup.zero_mem _`. Establish `h2 : C.map π = C`. Apply `le_antisymm` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[hC x hx]`. Conclude with `hx`. Introduce `x hx`. Conclude with `⟨x, hx, hC x hx⟩`.
-
-Rewrite using `[h1, h2, bot_sup_eq]`. Rewrite using `[heq, AddSubgroup.inf_relIndex_right, AddSubgroup.relIndex_comap, hmap]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_sup_proj {G : Type} [AddCommGroup G] (π : G →+ G) (A X C : AddSubgroup G)
     (hXC : X ≤ C) (hA : ∀ a ∈ A, π a = 0) (hC : ∀ x ∈ C, π x = x) :

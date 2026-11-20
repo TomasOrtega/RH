@@ -12,17 +12,15 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.HCCusp.RealLog
 
 /- English proof (translation)
-Introduce `D θ hθ V δ hδ`. Establish `R : GlobalTheory.SmoothForms.RealPoints θ V` using `(GlobalTheory.T.adelicUnitary_realPoints_structure_realPlaces D).2 θ hθ V`. Take `⟨δ₁, C, hδ₁, hC, hlog⟩` from `GlobalTheory.CuspGeo.MeanValue.exists_log hθ R`. Use `set ε : ℝ := min δ₁ (δ / (2 * (C + 1))) with hε`. Establish `hε0 : 0 < ε` using `lt_min hδ₁ (by positivity)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCε : C * ε < δ`. Establish `h1 : ε ≤ δ / (2 * (C + 1))` using `min_le_right _ _`. Establish `h2 : C * ε ≤ C * (δ / (2 * (C + 1)))` using `mul_le_mul_of_nonneg_left h1 hC`. Establish `h3 : C * (δ / (2 * (C + 1))) < δ`. Rewrite using `[mul_div_assoc', div_lt_iff₀ (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Conclude with `lt_of_le_of_lt h2 h3`. Establish `hcont : ∀ τ, Continuous fun g : GA D V => infMat D.sp.cm.sig V.gram (θ τ) g`. Introduce `τ`. Establish `hc` using `GlobalTheory.SobLoc.continuous_arch (θ := θ) hθ V τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hc` using `only [Formalism.IndefR.FWT.archM_eq]`. Establish `hone : ∀ τ, infMat D.sp.cm.sig V.gram (θ τ) (1 : GA D V) = 1` using `fun τ => R.2.2.2.2.1 1 (one_mem _) τ`. Use `⟨⋂ τ, ⋂ i, ⋂ j, {g : GA D V | ‖(infMat D.sp.cm.sig V.gram (θ τ) g - 1) i j‖ < ε}, ?_, ?_⟩` and prove the remaining obligations. Use `Filter.iInter_mem.2 fun τ => Filter.iInter_mem.2 fun i => Filter.iInter_mem.2 fun j => ?_` and prove the remaining obligations. Use `IsOpen.mem_nhds ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `isOpen_lt (((hcont τ).sub continuous_const).matrix_elem i j).norm continuous_const`. Simplify using `only [Set.mem_ofPred_eq, hone, sub_self, Matrix.zero_apply, norm_zero]`. Conclude with `hε0`. Introduce `r hr hrinf`. Simplify using `only [Set.mem_iInter, Set.mem_ofPred_eq] at hr`.
-
-Establish `hclose : GlobalTheory.CuspGeo.CloseR θ V r ε` using `⟨hrinf, fun τ i j => (hr τ i j).le⟩`. Take `⟨Z, hZ, hn⟩` from `hlog r ε hε0.le (min_le_left _ _) hclose`. Conclude with `⟨Z, lt_of_le_of_lt hn hCε, hZ⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_small_log : ∀ (D : D7) (θ : GlobalTheory.Mem.Th.InfF D), IsInfFam θ → ∀ (V : HSp D) (δ : ℝ), 0 < δ →
     ∃ N ∈ 𝓝 (1 : GA D V), ∀ r ∈ N, r ∈ GinfC V →

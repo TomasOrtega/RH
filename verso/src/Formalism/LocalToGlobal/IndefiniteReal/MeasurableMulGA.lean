@@ -13,39 +13,37 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma (F := D.host.F) (E := D.host.E) D.sp.cm.sig V.gram`.
+A detailed English derivation is pending.
 -/
 theorem countable_GQ (V : HSp D) : Countable (GQ V) :=
   Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma (F := D.host.F) (E := D.host.E) D.sp.cm.sig V.gram
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableMulHA (F := D.host.F) (E := D.host.E) D.sp.cm.sig V.gram`.
+A detailed English derivation is pending.
 -/
 theorem measurableMul_GA (V : HSp D) : MeasurableMul (GA D V) :=
   Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.measurableMulHA (F := D.host.F) (E := D.host.E) D.sp.cm.sig V.gram
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA (F := D.host.F) (E := D.host.E) D.sp.cm.sig V.gram`.
+A detailed English derivation is pending.
 -/
 theorem borel_GA (V : HSp D) : BorelSpace (GA D V) :=
   Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA (F := D.host.F) (E := D.host.E) D.sp.cm.sig V.gram
 
 /- English proof (translation)
-Introduce `F hc hinv hne hint`. Use `countable_GQ V` as an intermediate fact. Use `measurableMul_GA V` as an intermediate fact. Use `borel_GA V` as an intermediate fact. Use `hH` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set U : Set (GA D V) := {g | F g ≠ 0} with hUdef`. Establish `hUo : IsOpen U` using `isOpen_ne_fun hc continuous_const`. Establish `hUne : U.Nonempty`. Assume the negation of the conclusion as `h`. Apply `hne` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Assume the negation of the conclusion as `hg`. Conclude with `h ⟨g, hg⟩`. Establish `hUpos : 0 < μ U` using `hUo.measure_pos μ hUne`. Establish `hnn : 0 ≤ᵐ[μ.restrict 𝓕] fun g => ‖F g‖ ^ 2` using `ae_of_all _ (fun g => by positivity)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `lt_of_le_of_ne (integral_nonneg fun g => by positivity) ?_` and prove the remaining obligations. Introduce `h0`. Establish `hz : (fun g => ‖F g‖ ^ 2) =ᵐ[μ.restrict 𝓕] 0` using `(integral_eq_zero_iff_of_nonneg_ae hnn hint).1 h0.symm`. Establish `hset : {g : GA D V | ¬ (‖F g‖ ^ 2 = (0 : GA D V → ℝ) g)} = U`. Use extensionality with `g`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hUdef]`. Establish `hFU : μ (U ∩ 𝓕) = 0`. Establish `h1` using `ae_iff.1 hz`. Rewrite `h1` using `[hset, Measure.restrict_apply hUo.measurableSet]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : U ≤ᵐ[μ] (⋃ γ : GQ V, (fun x => (γ : GA D V) * x) ⁻¹' (U ∩ 𝓕) : Set (GA D V))` using `by filter_upwards [hF.ae_covers] with x hx hxU`. Take `⟨γ, hγ⟩` from `hx`. Use `Set.mem_iUnion.2 ⟨γ, ?_, ?_⟩` and prove the remaining obligations. Use `show F ((γ : GA D V) * x) ≠ 0`. Rewrite using `[hinv _ γ.2 x]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hxU`. Conclude with `hγ`. Establish `hU0 : μ U = 0`. Use `le_antisymm ((measure_mono_ae key).trans ?_) bot_le` and prove the remaining obligations. Use `(measure_iUnion_le _).trans ?_` and prove the remaining obligations.
-
-Simplify using `only [measure_preimage_mul, hFU, tsum_zero, le_refl]`. Conclude with `hUpos.ne' hU0`.
+A detailed English derivation is pending.
 -/
 theorem petPos (V : HSp D) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) (hH : μ.IsHaarMeasure)
     (hF : IsFundamentalDomain (GQ V) 𝓕 μ) : PetPos V μ 𝓕 := by

@@ -22,7 +22,7 @@ def IsDom (la : Wt X.Ψ r) (n : ℕ) (P : Frame X.Ψ r → ℂ) : Prop :=
 variable {X g}
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `h.2`. Conclude with `⟨h, C, fun x hx => by simpa using hC x hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsDom.of_bdd {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (h : X.IsBddSec la P) :
     IsDom X g la 0 P := by
@@ -30,13 +30,13 @@ theorem IsDom.of_bdd {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (h : X.IsBddSec
   exact ⟨h, C, fun x hx => by simpa using hC x hx⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨bdd_zero X la, 0, fun x _ => by simp [Data.pnorm]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsDom.zero (la : Wt X.Ψ r) (n : ℕ) : IsDom X g la n 0 :=
   ⟨bdd_zero X la, 0, fun x _ => by simp [Data.pnorm]⟩
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hP.2`. Take `⟨C', hC'⟩` from `hQ.2`. Use `⟨bdd_add X hP.1 hQ.1, C + C', fun x hx => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem IsDom.add {la : Wt X.Ψ r} {n : ℕ} {P Q : Frame X.Ψ r → ℂ} (hP : IsDom X g la n P)
     (hQ : IsDom X g la n Q) : IsDom X g la n (P + Q) := by
@@ -50,9 +50,7 @@ theorem IsDom.add {la : Wt X.Ψ r} {n : ℕ} {P Q : Frame X.Ψ r → ℂ} (hP : 
     _ = (C + C') * g x ^ n := by ring
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hP.2`. Use `⟨bdd_smul X a hP.1, ‖a‖ * C, fun x hx => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[pnorm_eq, pnorm_eq, Pi.smul_apply, smul_eq_mul, norm_mul, mul_assoc]`. Use `_ ≤ ‖a‖ * (C * g x ^ n) := mul_le_mul_of_nonneg_left (hC x hx) (norm_nonneg a)`.
-
-Use `_ = ‖a‖ * C * g x ^ n := by ring`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsDom.smul {la : Wt X.Ψ r} {n : ℕ} {P : Frame X.Ψ r → ℂ} (a : ℂ) (hP : IsDom X g la n P) :
     IsDom X g la n (a • P) := by
@@ -64,9 +62,9 @@ theorem IsDom.smul {la : Wt X.Ψ r} {n : ℕ} {P : Frame X.Ψ r → ℂ} (a : �
     _ = ‖a‖ * C * g x ^ n := by ring
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hP.2`. Take `⟨C', hC'⟩` from `hQ.2`. Use `⟨bdd_mul X hP.1 hQ.1, C * C', fun x hx => ?_⟩` and prove the remaining obligations. Establish `e : X.pnorm (la + la') (P * Q) x = X.pnorm la P x * X.pnorm la' Q x`. Rewrite using `[pnorm_eq, pnorm_eq, pnorm_eq, Pi.mul_apply, norm_mul, nfac_add X hx]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem IsDom.mul {la la' : Wt X.Ψ r} {n n' : ℕ} {P Q : Frame X.Ψ r → ℂ} (hP : IsDom X g la n P)
     (hQ : IsDom X g la' n' Q) : IsDom X g (la + la') (n + n') (P * Q) := by
@@ -83,14 +81,14 @@ theorem IsDom.mul {la la' : Wt X.Ψ r} {n n' : ℕ} {P Q : Frame X.Ψ r → ℂ}
     _ = C * C' * g x ^ (n + n') := by ring
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction P (IsDom X g la n) (fun _ _ ha hb => ha.add hb) (IsDom.zero la n) hP`.
+A detailed English derivation is pending.
 -/
 theorem IsDom.sum {ι : Type*} (S : Finset ι) {la : Wt X.Ψ r} {n : ℕ} {P : ι → Frame X.Ψ r → ℂ}
     (hP : ∀ i ∈ S, IsDom X g la n (P i)) : IsDom X g la n (∑ i ∈ S, P i) :=
   Finset.sum_induction P (IsDom X g la n) (fun _ _ ha hb => ha.add hb) (IsDom.zero la n) hP
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simpa using hQ`. Consider the case `succ m ih`. Establish `h` using `ih.mul hP`. Rewrite `h` using `[add_assoc, ← succ_nsmul, add_assoc, mul_assoc, ← pow_succ]`. Then use the resulting hypothesis.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsDom.mul_pow {la L : Wt X.Ψ r} {n : ℕ} {P Q : Frame X.Ψ r → ℂ} (hQ : IsDom X g la n Q)
     (hP : IsDom X g L 1 P) (m : ℕ) : IsDom X g (la + m • L) (n + m) (Q * P ^ m) := by
@@ -101,9 +99,9 @@ theorem IsDom.mul_pow {la L : Wt X.Ψ r} {n : ℕ} {P Q : Frame X.Ψ r → ℂ} 
     rwa [add_assoc, ← succ_nsmul, add_assoc, mul_assoc, ← pow_succ] at h
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using hQ`. Consider the case `insert a S ha ih`. Establish `h` using `ih.mul_pow (hP a) (α a)`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, add_comm (α a), mul_comm (P a ^ α a), add_nsmul, ← add_assoc, ← add_assoc, ← mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem IsDom.mul_prod {ι : Type*} (S : Finset ι) {la L : Wt X.Ψ r} {n : ℕ} {Q : Frame X.Ψ r → ℂ}
     {P : ι → Frame X.Ψ r → ℂ} (hQ : IsDom X g la n Q) (hP : ∀ i, IsDom X g L 1 (P i)) (α : ι → ℕ) :
@@ -118,7 +116,7 @@ theorem IsDom.mul_prod {ι : Type*} (S : Finset ι) {la L : Wt X.Ψ r} {n : ℕ}
     exact h
 
 /- English proof (translation)
-Use `⟨hP, Real.sqrt K, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[pow_one, ← Real.sqrt_mul' _ (hW x)]`. Conclude with `Real.le_sqrt_of_sq_le (hK x hx)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsDom.of_sq_le {W : Frame X.Ψ r → ℝ} {la : Wt X.Ψ r}
     {P : Frame X.Ψ r → ℂ} (hP : X.IsBddSec la P) {K : ℝ} (hW : ∀ x, 0 ≤ W x)
@@ -131,15 +129,15 @@ theorem IsDom.of_sq_le {W : Frame X.Ψ r → ℝ} {la : Wt X.Ψ r}
 end
 
 /- English proof (translation)
-Introduce `r X Xa Fl G T a δ ha t ht cc`. Use `set W : Frame X.Ψ r → ℝ := fun x => ∑ k, X.pnorm Xa.L (Xa.w k) x ^ 2 with hWdef`. Establish `hW : ∀ x, 0 ≤ W x` using `fun x => Finset.sum_nonneg fun _ _ => sq_nonneg _`. Take `⟨K0, hK0⟩` from `Fl.denom_le_family`. Take `⟨K1, hK1⟩` from `Fl.s_le_w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw0 : IsDom X (fun x => Real.sqrt (W x)) Xa.L 1 Fl.w0` using `IsDom.of_sq_le Fl.weightForm_vanishes.1.1 hW hK0`. Establish `hs : ∀ k, IsDom X (fun x => Real.sqrt (W x)) Xa.L 1 (Fl.s k)` using `fun k => IsDom.of_sq_le (Fl.s_van k).1.1 hW (K := K1) fun x hx => (Finset.single_le_sum (f := fun k => X.pnorm Xa.L (Fl.s k) x ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ k)).trans (hK1 x hx)`. Establish `e : leadM X Fl.s Fl.w0 t T a cc = ∑ α ∈ multiLt (nd X) a, ∑ k, cc α k • (t k * (∏ q, Fl.s q ^ α q) * Fl.w0 ^ (T - ∑ q, α q))`. Use function extensionality and compare the values at `x`. Simplify using `only [leadM, monoM, Finset.sum_apply, Pi.smul_apply, Pi.mul_apply, Finset.prod_apply, Pi.pow_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun α _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hD : IsDom X (fun x => Real.sqrt (W x)) (G + T • Xa.L) T (leadM X Fl.s Fl.w0 t T a cc)`. Rewrite using `[e]`. Use `IsDom.sum _ fun α hα => IsDom.sum _ fun k _ => IsDom.smul _ ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hlt : ∑ q, α q < a`. Simplify `hα` using `[multiLt, Finset.Nat.mem_antidiagonalTuple]`. Establish `hle : ∑ q, α q ≤ T` using `by omega`. Establish `h` using `((IsDom.of_bdd (ht k)).mul_prod Finset.univ hs α).mul_pow hw0 (T - ∑ q, α q)`. Rewrite `h` using `[add_assoc, ← add_nsmul, zero_add, Nat.add_sub_cancel' hle]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨hb, C, hC⟩` from `hD`. Use `⟨hb, C ^ 2, fun x hx => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem main : ∀ (r : ℕ) (X : Data E r) (Xa : ArchInM X) (Fl : FlatM X Xa) (G : Wt X.Ψ r) (T a δ : ℕ), a ≤ T + 1 →
     ∀ (t : Fin δ → Frame X.Ψ r → ℂ), (∀ k, X.IsBddSec G (t k)) → ∀ cc : (Fin (nd X) → ℕ) → Fin δ → ℂ,

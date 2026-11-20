@@ -23,7 +23,7 @@ namespace GlobalTheory.LogFlatLam
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[map_smul, Algebra.smul_def, map_mul, T.zD, hF.ι, hF.t, Core.tB, C.ι_j, map_mul, GlobalTheory.RingIface.zD_eq_alg]`. Simplify using `only [aDp, RingHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eD_smul_tB {P : LocPrime l} {AI : LocAinf l P} {T : LocTied l P AI} {C : Core l} (hF : Fits T C)
     (z : ℤ_[l]) :
@@ -33,7 +33,7 @@ theorem eD_smul_tB {P : LocPrime l} {AI : LocAinf l P} {T : LocTied l P AI} {C :
   simp only [aDp, RingHom.comp_apply]
 
 /- English proof (translation)
-Establish `he` using `GlobalTheory.T.isPrimitiveTiltedRootOfUnity_localPeriodRingsData l C`. Take `⟨n, y, hy⟩` from `(GlobalTheory.MemLoc.BdRField.bdR_isField l).2.2.2 C.ε he x`. Use `⟨n, (GlobalTheory.MemLoc.mem_FilD_iff_xi_pow l C.ε he _ x).2 ⟨y, ?_⟩⟩` and prove the remaining obligations. Simplify using `using hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_mem_FilD_neg (C : Core l) (x : Per.BdR l) : ∃ n : ℕ, x ∈ Per.FilD l (-(n : ℤ)) := by
   have he := GlobalTheory.T.isPrimitiveTiltedRootOfUnity_localPeriodRingsData l C
@@ -42,11 +42,11 @@ theorem exists_mem_FilD_neg (C : Core l) (x : Per.BdR l) : ∃ n : ℕ, x ∈ Pe
   simpa using hy
 
 /- English proof (translation)
-Establish `h1` using `(T.fil K 1 _).1 hc`. Establish `e : algebraMap ↥K.1 P.R.BdR c = algebraMap (Om l) P.R.BdR (c : Om l)` using `rfl`. Rewrite `h1` using `[e, hF.o]`. Take `⟨z, hz, hze⟩` from `(GlobalTheory.BdRQuot.mem_FilD_nat 1 _).1 (by exact_mod_cast h1)`. Establish `hz' : z = C.o (c : Om l)` using `(GlobalTheory.MemLoc.BdRField.bdR_isField l).2.1 hze`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : Per.θD l z = 0`. Use `(GlobalTheory.MemLoc.thetaD_onto_ker l).2` as an intermediate fact. Rewrite `hz` using `[← this]`. Conclude with `hz`. Rewrite `h0` using `[hz', C.o_sec.th]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (c : Om l) = 0` using `(algebraMap (Om l) ℂ_[l]).injective (by simpa using h0)`. Conclude with `Subtype.ext this`.
+A detailed English derivation is pending.
 -/
 theorem const_eq_zero_of_mem_Fil_one {P : LocPrime l} {AI : LocAinf l P} {T : LocTied l P AI} {C : Core l}
     (hF : Fits T C) (K : FinExt l) (c : ↥K.1) (hc : algebraMap ↥K.1 P.R.BdR c ∈ (P.PD K).Fil 1) : c = 0 := by
@@ -70,14 +70,14 @@ namespace GlobalTheory.LogFlatLam
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RingIface.sigD_alg l g x`.
+A detailed English derivation is pending.
 -/
 theorem σD_alg (g : GQ l) (x : Per.BdRp l) :
     Per.σD g (algebraMap (Per.BdRp l) (Per.BdR l) x) = algebraMap (Per.BdRp l) (Per.BdR l) (Per.σDp g x) :=
   GlobalTheory.RingIface.sigD_alg l g x
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RingIface.sigDp_alg l g a`.
+A detailed English derivation is pending.
 -/
 theorem σDp_alg (g : GQ l) (a : Per.AinfP l) :
     Per.σDp g (algebraMap (Per.AinfP l) (Per.BdRp l) a) =
@@ -85,7 +85,7 @@ theorem σDp_alg (g : GQ l) (a : Per.AinfP l) :
   GlobalTheory.RingIface.sigDp_alg l g a
 
 /- English proof (translation)
-Simplify using `only [aDp, RingHom.comp_apply, σDp_alg, GlobalTheory.RingBasics.awayMap_algebraMap₂]`.
+Simplify using the standard rewrite rules.
 -/
 theorem σDp_aDp (g : GQ l) (a : Ainf l) : Per.σDp g (aDp l a) = aDp l (Per.σA g a) := by
   simp only [aDp, RingHom.comp_apply, σDp_alg, GlobalTheory.RingBasics.awayMap_algebraMap₂]
@@ -95,29 +95,27 @@ end GlobalTheory.LogFlatLam
 open GlobalTheory.LogFlatLam in
 
 /- English proof (translation)
-Introduce and unpack `l _ K bk P AI T C hF b c ⟨hact, -⟩ - happrox`. Take `⟨ι, hιC, hιg⟩` from `GlobalTheory.BstLog.iota_exists l P AI T`. Establish `hinj` using `(GlobalTheory.MemLoc.BdRField.bdR_isField l).2.1`. Use `set yA := ι (Polynomial.X + Polynomial.C b) with hyA`. Establish `hy : ∀ g : ↥(GK K), P.actQdR (g : GQ l) yA = yA + P.ιB ((c g : ℚ_[l]) • P.tB)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Rewrite using `[hyA, ← hιg, hact g, map_add, hιC]`. Establish `hKc : ∀ (g : ↥(GK K)) (d : ↥K.1), P.actQdR (g : GQ l) (algebraMap ↥K.1 P.R.BdR d) = algebraMap ↥K.1 P.R.BdR d`. Introduce `g d`. Rewrite using `[← P.PD_actdR K g, AlgEquiv.commutes]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `exists_mem_FilD_neg C (T.eD yA)`. Establish `hn' : yA ∈ (P.PD K).Fil (-(n : ℤ))` using `(T.fil K _ _).2 hn`. Establish `hg1 : ∀ g : ↥(GK K), (P.PD K).actdR g yA - yA ∈ (P.PD K).Fil 1`. Introduce `g`. Rewrite using `[P.PD_actdR, hy, add_sub_cancel_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(T.fil K 1 _).2 ?_` and prove the remaining obligations. Rewrite using `[eD_smul_tB hF]`. Conclude with `(GlobalTheory.BdRQuot.mem_FilD_nat 1 _).2 ⟨_, Ideal.mul_mem_left _ _ (GlobalTheory.MemLoc.core_t_unit_fil l C).2.1, rfl⟩` after adjusting the coercions. Take `⟨c0, -, hc0⟩` from `GlobalTheory.FilInv.const_of_invariant_mod l P AI T K (-(n : ℤ)) 1 yA hn' hg1`. Use `set lamA := yA - algebraMap ↥K.1 P.R.BdR c0 with hlamA`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨lam, hlam1, hlamE⟩` from `(GlobalTheory.BdRQuot.mem_FilD_nat 1 _).1 (by exact_mod_cast (T.fil K 1 lamA).1 hc0)`. Establish `hequiv : ∀ g : ↥(GK K), Per.σDp (g : GQ l) lam = lam + aDp l (Per.zA l (c g)) * C.j C.t`. Introduce `g`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_add, ← σD_alg, hlamE, ← T.actD, hlamA, map_sub, hKc, hy]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_sub, map_add, eD_smul_tB hF]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨lam, hequiv, fun m => ?_⟩` and prove the remaining obligations. Take `⟨k, s, hEs, hs⟩` from `happrox m`. Use `⟨k, s, hEs, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set x := aDp l (bk.ev s) - (l : Per.BdRp l) ^ k * lam with hx`. Use `set xA := T.eD.symm (algebraMap (Per.BdRp l) (Per.BdR l) x) with hxA`. Establish `hxA' : T.eD xA = algebraMap (Per.BdRp l) (Per.BdR l) x` using `by rw [hxA, RingEquiv.apply_symm_apply]`. Establish `hx1 : xA ∈ (P.PD K).Fil 1`. Use `(T.fil K 1 _).2 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hxA']`. Use `(GlobalTheory.BdRQuot.mem_FilD_nat 1 _).2 ⟨x, ?_, rfl⟩` and prove the remaining obligations. Use `Ideal.sub_mem _ (((GlobalTheory.AinfEPow.ePow_facts l K bk 1).2.2.1 _).2 ?_) (Ideal.mul_mem_left _ _ hlam1)` and prove the remaining obligations. Rewrite using `[pow_one]`. Conclude with `map_dvd _ hEs`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hxg : ∀ g : ↥(GK K), (P.PD K).actdR g xA - xA ∈ (P.PD K).Fil (m : ℤ)`. Introduce `g`. Use `(T.fil K _ _).2 ?_` and prove the remaining obligations. Rewrite using `[map_sub, P.PD_actdR, T.actD, hxA', σD_alg, ← map_sub]`. Use `(GlobalTheory.BdRQuot.mem_FilD_nat m _).2 ⟨_, ?_, rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : Per.σDp (g : GQ l) x - x = aDp l (Per.σA (g : GQ l) (bk.ev s) - bk.ev s) - (l : Per.BdRp l) ^ k * (aDp l (Per.zA l (c g)) * C.j C.t)`. Rewrite using `[hx, map_sub, map_mul, map_pow, map_natCast, σDp_aDp, hequiv, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hs g`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c', hc'1, hc'm⟩` from `GlobalTheory.FilInv.const_of_invariant_mod l P AI T K 1 (m : ℤ) xA hx1 hxg`. Establish `hc'0 : c' = 0` using `const_eq_zero_of_mem_Fil_one hF K c' hc'1`. Rewrite `hc'm` using `[hc'0, map_zero, sub_zero]`. Establish `h` using `(T.fil K _ _).1 hc'm`. Rewrite `h` using `[hxA']`.
-
-Take `⟨z, hz, hze⟩` from `(GlobalTheory.BdRQuot.mem_FilD_nat m _).1 h`. Rewrite using `[← hinj hze]`. Conclude with `hz`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LogFlatLam.exists_lam : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (C : Core l), Fits T C → ∀ (b : P.R.B) (c : ↥(GK K) → ℤ_[l]), ((∀ g : ↥(GK K), actSt P (g : GQ l) (Polynomial.X + Polynomial.C b) = Polynomial.X + Polynomial.C b + Polynomial.C ((c g : ℚ_[l]) • P.tB)) ∧ phiSt P (Polynomial.X + Polynomial.C b) = (l : Bst P) * (Polynomial.X + Polynomial.C b)) → (∀ g, bk.FixFlat g → c g = 0) → (∀ m : ℕ, ∃ (k : ℕ) (s : bk.S), bk.E ∣ s ∧ ∀ g : ↥(GK K), aDp l (Per.σA (g : GQ l) (bk.ev s) - bk.ev s) - (l : Per.BdRp l) ^ k * (aDp l (Per.zA l (c g)) * C.j C.t) ∈ Per.FilP l m) → ∃ lam : Per.BdRp l, (∀ g : ↥(GK K), Per.σDp (g : GQ l) lam = lam + aDp l (Per.zA l (c g)) * C.j C.t) ∧ (∀ m : ℕ, ∃ (k : ℕ) (s : bk.S), bk.E ∣ s ∧ aDp l (bk.ev s) - (l : Per.BdRp l) ^ k * lam ∈ Per.FilP l m) := by
   rintro l _ K bk P AI T C hF b c ⟨hact, -⟩ - happrox

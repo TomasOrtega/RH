@@ -19,7 +19,7 @@ variable {X X' Z : Scheme.{0}}
 def zeroSec (M : LB X) : LB.Sec M := ⟨fun _ => 0, fun _ _ => by rw [map_zero, map_zero, mul_zero]⟩
 
 /- English proof (translation)
-Distinguish the cases in `h : r z ∈ U`. Rewrite using `[gs_eq r z U h, map_zero, map_zero]`. Conclude with `dif_neg h`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_zero (r : Z ⟶ X) (z : Z) (U : X.Opens) : gs r z U 0 = 0 := by
   by_cases h : r z ∈ U
@@ -27,15 +27,15 @@ theorem gs_zero (r : Z ⟶ X) (z : Z) (U : X.Opens) : gs r z U 0 = 0 := by
   · exact dif_neg h
 
 /- English proof (translation)
-The claim follows from `gs_zero r z _`.
+A detailed English derivation is pending.
 -/
 theorem sval_zeroSec (M : LB X) (π : X' ⟶ X) (r : Z ⟶ X') (z : Z) (J : (Z ⟶ X) → M.ι) :
     sval (zeroSec (M.pull π)) r z J = 0 := gs_zero r z _
 
 /- English proof (translation)
-Establish `le : ∀ j : PUnit → M.ι, (M.pull (𝟙 X)).U j ≤ M.U (j PUnit.unit)` using `fun j y hy => mem_pull.1 hy`. Establish `v : ∀ (Z : Scheme.{0}) (r : Z ⟶ X) (z : Z) (j : PUnit → M.ι), r z ∈ M.U (j PUnit.unit) → gs r z ((M.pull (𝟙 X)).U j) (rs X (le j) (τ.f (j PUnit.unit))) = gs r z (M.U (j PUnit.unit)) (τ.f (j PUnit.unit))` using `fun Z r z j hj => gs_res r z (le j) (mem_pull.2 hj) _`. Use `⟨⟨fun j => rs X (le j) (τ.f (j PUnit.unit)), fun j j' => fn_ext fun y hy => ?_⟩, v⟩` and prove the remaining obligations. Establish `hm : (𝟙 X : X ⟶ X) y ∈ M.U (j PUnit.unit) ⊓ M.U (j' PUnit.unit)` using `⟨le j hy.1, le j' hy.2⟩`. Use `((gs_res (𝟙 X) y _ hy _).trans (v _ _ y j hm.1)).trans (Eq.trans ?_ ((gs_mul (𝟙 X) y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_unit (𝟙 X) y _ hy _).trans (congrArg Units.val (gm_pull_g M (𝟙 X) (𝟙 X) y j j' hy.1 hy.2))) ((gs_res (𝟙 X) y _ hy _).trans (v _ _ y j' hm.2)))).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.id_comp]`. Conclude with `(gs_res (𝟙 X) y _ hm _).symm.trans ((congrArg (gs (𝟙 X) y _) (τ.compat _ _)).trans ((gs_mul (𝟙 X) y _ hm _ _).trans (congrArg₂ (· * ·) (gs_unit (𝟙 X) y _ hm _) (gs_res (𝟙 X) y _ hm _))))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pull_id {M : LB X} (τ : LB.Sec M) : ∃ s : LB.Sec (M.pull (𝟙 X)),
     ∀ (Z : Scheme.{0}) (r : Z ⟶ X) (z : Z) (j : PUnit → M.ι), r z ∈ M.U (j PUnit.unit) →
@@ -56,9 +56,9 @@ theorem exists_pull_id {M : LB X} (τ : LB.Sec M) : ∃ s : LB.Sec (M.pull (𝟙
     ((gs_mul (𝟙 X) y _ hm _ _).trans (congrArg₂ (· * ·) (gs_unit (𝟙 X) y _ hm _) (gs_res (𝟙 X) y _ hm _))))
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.coe_eval₂Hom, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_eq, MvPolynomial.eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `hd : ∑ j ∈ a.support, a j = e`. Use `hP (MvPolynomial.mem_support_iff.1 ha)` as an intermediate fact. Rewrite using `[← this, Finsupp.weight_apply, Finsupp.sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval₂Hom_scale {κ R A : Type} [CommRing R] [CommRing A] (φ : R →+* A) (c : A) (x : κ → A)
     {P : MvPolynomial κ R} {e : ℕ} (hP : P.IsHomogeneous e) :
@@ -87,9 +87,9 @@ def formSec {R : Type} [CommRing R] (p : X ⟶ Spec (CommRingCat.of R)) {N : LB 
     exact funext fun a => (σ a).compat i j
 
 /- English proof (translation)
-Take `⟨s, hv⟩` from `exists_pull_id τ`. Establish `e : s = zeroSec _` using `(GlobalTheory.SecAlg.existsUnique_sec R I hI Y hs hp M hM (fun _ => zeroSec _) (fun e z J _ => (sval_zeroSec _ _ _ z J).trans (sval_zeroSec _ _ _ z J).symm)).unique (fun e z J hJ => by`. Establish `hm : (fstG I e Y).left z ∈ M.U (J ((fstG I e Y).left ≫ 𝟙 _))` using `hJ ((fstG I e Y).left ≫ 𝟙 _)`. Conclude with `(hv _ _ z _ hm).trans ((h e z _ hm).trans (sval_zeroSec _ _ _ z J).symm))`. Use the proof step `(fun e z J _ => (sval_zeroSec _ _ _ z J).trans (sval_zeroSec _ _ _ z J).symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Rewrite using `[← hv _ (𝟙 _) y (fun _ => k) hy, e, gs_zero]`. Conclude with `gs_zero _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem sec_eq_zero (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (hI : IsAdicComplete I R)
     (Y : Over (Spec (CommRingCat.of R))) (hs : Smooth Y.hom) (hp : IsProjBy Y.hom) (M : LB Y.left) (hM : M.IsLB)
@@ -108,7 +108,7 @@ theorem sec_eq_zero (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (hI : IsA
   exact gs_zero _ _ _
 
 /- English proof (translation)
-Introduce `R _ _ I hI Y hs hp N _ σ d _ hN hF h k` and use `sec_eq_zero R I hI Y hs hp (pw N d) (isLB_pw hN d) (formSec Y.hom σ hF) h k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem form_eq_zero : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R), IsAdicComplete I R → ∀ (Y : Over (Spec (CommRingCat.of R))), Smooth Y.hom → IsProjBy Y.hom → ∀ (N : LB Y.left) (κ : Type) (σ : κ → LB.Sec N) (d : ℕ) (F : MvPolynomial κ R), N.IsLB → F.IsHomogeneous d → (∀ (e : ℕ) (z : (thickObj R I e Y).left) (k : N.ι), pullback.fst Y.hom (thick R I e) z ∈ N.U k → gs (pullback.fst Y.hom (thick R I e)) z (N.U k) (MvPolynomial.eval₂Hom (cst Y.hom (N.U k)) (fun j => (σ j).f k) F) = 0) → ∀ k, MvPolynomial.eval₂Hom (cst Y.hom (N.U k)) (fun j => (σ j).f k) F = 0 :=
   fun R _ _ I hI Y hs hp N _ σ d _ hN hF h k =>

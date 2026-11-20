@@ -6,9 +6,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Establish `e : G x - G' x = G (x - a) - G' (x - a)` using `by rw [map_sub, map_sub, ha]; ring`. Rewrite using `[e]`. Use `Ideal.sub_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[← Ideal.map_map]`. Conclude with `Ideal.mem_map_of_mem G hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, ← Ideal.map_map]`. Conclude with `Ideal.mem_map_of_mem G' hx`.
+A detailed English derivation is pending.
 -/
 theorem envExt_sub_mem {S A C : Type} [CommRing S] [CommRing A] [CommRing C] (G G' : A →+* C) (s : S →+* A)
     (J : Ideal S) (x a : A) (hs : G.comp s = G'.comp s) (ha : G a = G' a) (hx : x - a ∈ J.map s) :
@@ -20,7 +20,7 @@ theorem envExt_sub_mem {S A C : Type} [CommRing S] [CommRing A] [CommRing C] (G 
   · rw [hs, ← Ideal.map_map]; exact Ideal.mem_map_of_mem G' hx
 
 /- English proof (translation)
-The claim follows from `h.haus z fun n => by rw [SModEq.sub_mem, sub_zero, smul_eq_mul, Ideal.mul_top] exact hz n`.
+A detailed English derivation is pending.
 -/
 theorem envExt_haus {C : Type} [CommRing C] (I : Ideal C) (h : IsHausdorff I C) (z : C) (hz : ∀ n : ℕ, z ∈ I ^ n) :
     z = 0 :=
@@ -31,25 +31,23 @@ theorem envExt_haus {C : Type} [CommRing C] (I : Ideal C) (h : IsHausdorff I C) 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `l _ K bk B d p En C _ φ F F' hl hF hF' hb hX hd hH`. Establish `hw : F En.w = F' En.w`. Establish `h1` using `congrArg F En.w_eq`. Establish `h2` using `congrArg F' En.w_eq`. Rewrite `h1`, `h2` using `[map_add, map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : F (En.inl.f d) * F En.w = F (En.inl.f d) * F' En.w`. Rewrite `h1`, the goal using `[hb d]`. Rewrite `h1` using `[hb p]`. Rewrite `h1` using `[hX]`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `-h1`. Conclude with `(mul_cancel_left_mem_nonZeroDivisors hd).1 h3`. Establish `hδ : ∀ a, F a = F' a → F (En.Q.D.δ a) = F' (En.Q.D.δ a)`. Introduce `a ha`. Establish `e1` using `hF a`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hF' a`. Rewrite `e1`, `e2` using `[En.Q.D.φ_eq, map_add, map_mul, map_pow, map_natCast]`. Rewrite `e2` using `[← ha]`. Establish `: ((l : ℕ) : C) * (F (En.Q.D.δ a) - F' (En.Q.D.δ a)) = 0`. Take the linear combination `e1 - e2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.1 (hl _ this)`. Establish `hit : ∀ i : ℕ, F (En.Q.D.δ^[i] En.w) = F' (En.Q.D.δ^[i] En.w)`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => exact hw`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ i ih`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `hδ _ ih`. Establish `hbasis : ∀ α, F (En.tb.b α) = F' (En.tb.b α)`. Introduce `α`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[En.tb_b, map_finsuppProd, map_finsuppProd]`. Use `Finsupp.prod_congr fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_pow, hit i]`. Establish `hcomp : F.comp En.inl.f = F'.comp En.inl.f` using `RingHom.ext hb`. Establish `key : ∀ x (n : ℕ), F x - F' x ∈ ((Ideal.span {((l : ℕ) : B.A)} ⊔ B.I) ^ n).map (F.comp En.inl.f)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x n`. Establish `hfin` using `En.tb.fin x n`. Establish `happ` using `En.tb.approx x n hfin.toFinset (fun i hi => by`. Assume the negation of the conclusion as `h`. Conclude with `hi (hfin.mem_toFinset.2 h))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : F (∑ i ∈ hfin.toFinset, En.inl.f (En.tb.c i x) * En.tb.b i) = F' (∑ i ∈ hfin.toFinset, En.inl.f (En.tb.c i x) * En.tb.b i)`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hb, hbasis]`. Conclude with `envExt_sub_mem F F' En.inl.f _ _ _ hcomp hsum happ`.
-
-Use extensionality with `x`. Conclude with `sub_eq_zero.1 (envExt_haus _ hH _ fun n => by rw [← Ideal.map_pow]; exact key x n)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem envExt_agree : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (B : Obj l ↥(OL K)) (d p : B.A) (En : Env bk B d p) (C : Type) [CommRing C] (φ : C →+* C) (F F' : En.Q.A →+* C), (∀ c : C, ((l : ℕ) : C) * c = 0 → c = 0) → (∀ a, F (En.Q.D.φ a) = φ (F a)) → (∀ a, F' (En.Q.D.φ a) = φ (F' a)) → (∀ b, F (En.inl.f b) = F' (En.inl.f b)) → F (BK.hf En.inr X) = F' (BK.hf En.inr X) → F (En.inl.f d) ∈ nonZeroDivisors C → IsHausdorff ((Ideal.span {((l : ℕ) : B.A)} ⊔ B.I).map (F.comp En.inl.f)) C → F = F' := by
   intro l _ K bk B d p En C _ φ F F' hl hF hF' hb hX hd hH

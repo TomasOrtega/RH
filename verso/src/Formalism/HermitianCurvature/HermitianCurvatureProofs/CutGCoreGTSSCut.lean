@@ -72,7 +72,7 @@ def GTSSPhase : Prop :=
         ∃ e' : M.Ty P → ℂ → (Wq →L[ℂ] Wp), IsFrameB P Bs e' ∧ KapF P Bs d e' ∧ NabF P Bs d e' ∧ SSF P Bs d e'
 
 /- English proof (translation)
-Unfold `fnZ`. Use `congr 1`. Use function extensionality and compare the values at `q`. Conclude with `h _ q.2.2`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem fnZ_congr (P : M.Par) {f g : ℂ → ℂ} (h : ∀ ζ ∈ Ann P, f ζ = g ζ) : fnZ P f = fnZ P g := by
   unfold fnZ
@@ -81,7 +81,7 @@ theorem fnZ_congr (P : M.Par) {f g : ℂ → ℂ} (h : ∀ ζ ∈ Ann P, f ζ = 
   exact h _ q.2.2
 
 /- English proof (translation)
-Use `show P.TT < Complex.normSq (((Real.sqrt P.TT + 1 : ℝ)) : ℂ)`. Rewrite using `[Complex.normSq_ofReal]`. Establish `h1` using `Real.sq_sqrt hTT.le`. Establish `h2` using `Real.sqrt_nonneg P.TT`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem ann_pt (P : M.Par) (hTT : 0 < P.TT) : ((Real.sqrt P.TT + 1 : ℝ) : ℂ) ∈ Ann P := by
   show P.TT < Complex.normSq (((Real.sqrt P.TT + 1 : ℝ)) : ℂ)
@@ -93,13 +93,13 @@ theorem ann_pt (P : M.Par) (hTT : 0 < P.TT) : ((Real.sqrt P.TT + 1 : ℝ) : ℂ)
 def GTSSOfCut : Prop := GTSSLocal → GTSSAdjPt → GTSSConst → GTSSPhase → GTSS
 
 /- English proof (translation)
-Introduce `hL hA hC hP`. Introduce `Wp Wq _ _ _ _ _ _ P Bs X d hH e he hk hn`. Take `⟨s, t, hst, hSL⟩` from `hL Wp Wq P Bs X d hH e he hk`. Establish `hc` using `hC Wp Wq P Bs X d hH e he hk hn s t hst hSL`. Use `choose! C D hCD using hc`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hζ0 : (((|P.TT| + 1 : ℝ)) : ℂ) ∈ Ann P` using `by show P.TT < Complex.normSq (((|P.TT| + 1 : ℝ)) : ℂ)`. Rewrite using `[Complex.normSq_ofReal]`. Use polynomial arithmetic with `[abs_nonneg P.TT, le_abs_self P.TT]`. Apply `hP Wp Wq P Bs X d hH e he hk hn C D` to reduce the goal to its premises. Introduce `l hl Φ ρ'`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `hSL l hl Φ ρ'`. Use `⟨h1.trans ?_, h2.trans ?_⟩` and prove the remaining obligations. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[fnZ_congr P (f := s l ρ' ρ) (g := fun _ => C l ρ' ρ) (fun ζ hζ => (hCD l hl ρ' ρ ζ hζ).1)]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fnZ_congr P (f := t l ρ' ρ) (g := fun _ => D l ρ' ρ) (fun ζ hζ => (hCD l hl ρ' ρ ζ hζ).2)]`. Introduce `l hl ρ ρ'`. Establish `h` using `hA Wp Wq P Bs X d hH e he hk s t hst hSL l hl ρ ρ' _ hζ0`. Rewrite `h` using `[(hCD l hl ρ ρ' _ hζ0).2, (hCD l hl ρ' ρ _ hζ0).1]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gTSS_of_cut : GTSSOfCut := by
   intro hL hA hC hP

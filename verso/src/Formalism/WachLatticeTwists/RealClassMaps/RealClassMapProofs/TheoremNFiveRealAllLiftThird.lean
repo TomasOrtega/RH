@@ -14,19 +14,17 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open ReciprocityTheory.ChartRestriction.T2 (PadicCoeff FracTop IsFGTop cupFG IsCycOn)
 
 /- English proof (translation)
-Establish `hfg : IsFGTop O (Ymod r χ E)`. Use `hA.fg` as an intermediate fact. Use `hA.t2` as an intermediate fact. Use `hA.csmul` as an intermediate fact. Use `⟨?_, inferInstance, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Module.Finite.of_injective ((Ymod r χ E).subtype.restrictScalars O) Subtype.val_injective`. Conclude with `⟨Continuous.subtype_mk (f := fun q : O × (Ymod r χ E) => q.1 • (q.2 : A)) (continuous_fst.smul (continuous_subtype_val.comp continuous_snd)) _⟩`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha, hka⟩ : ∃ a : O, a ≠ 0 ∧ ∀ y : Ymod r χ E, a • ψ y = 0 := by`. Take `⟨s, hs⟩` from `hfg.fg.fg_top`. Use `choose f hf0 hf using fun y : Ymod r χ E => htors (ψ y)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨∏ y ∈ s, f y, Finset.prod_ne_zero_iff.2 (fun y _ => hf0 y), fun y => ?_⟩` and prove the remaining obligations. Establish `hy : y ∈ Submodule.span O (s : Set (Ymod r χ E))` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem f hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[hc, mul_comm, mul_smul, hf, smul_zero]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, smul_add, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [map_smul, smul_comm, hx, smul_zero]`. Establish `hopen` using `hfg.isOpen_mulSub hO ha`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : Continuous fun g => yY r χ E g` using `Continuous.subtype_mk (f := fun g => (uElt r χ g - 1) * E) ((hur.sub continuous_const).mul continuous_const) _`. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `g₀`. Use `⟨(fun g => yY r χ E g - yY r χ E g₀) ⁻¹' _, hopen.preimage (hy.sub continuous_const), ?_, ?_⟩` and prove the remaining obligations. Use `show yY r χ E g₀ - yY r χ E g₀ ∈ Formalism.RepresentationBoundsCohomology.LOC.mulSub a (Ymod r χ E)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[sub_self]`. Conclude with `zero_mem _`. Introduce and unpack `g ⟨z, hz⟩`. Establish `hz' : a • z = yY r χ E g - yY r χ E g₀` using `hz`. Establish `h1 : ψ (yY r χ E g - yY r χ E g₀) = 0`.
-
-Rewrite using `[← hz', map_smul, hka]`. Rewrite `h1` using `[map_sub, sub_eq_zero]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lc_of_torsion (p : ℕ) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
@@ -75,7 +73,7 @@ theorem lc_of_torsion (p : ℕ) {O : Type} [CommRing O] [IsDomain O] [IsDiscrete
     exact h1
 
 /- English proof (translation)
-Use `⟨colPsi (O := O) (M := M) r χ E e₁ δ D j Kc k0 φ, ?_, rfl⟩` and prove the remaining obligations. Set `ψ : Ymod r χ E →ₗ[O] M` to `(φ ∘ₗ (colRelJ r χ E e₁ δ D j Kc k0).mkQ ∘ₗ LinearMap.inl A (Ymod r χ E) _).restrictScalars O`. Conclude with `lc_of_torsion p r χ E hO hA hur htors ψ`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem colPsi_lc (p : ℕ) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
@@ -95,11 +93,11 @@ theorem colPsi_lc (p : ℕ) {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValu
   exact lc_of_torsion p r χ E hO hA hur htors ψ
 
 /- English proof (translation)
-Establish `h1 : ∀ y : KO O, ∃ c : O, c ≠ 0 ∧ c • y = 0`. Introduce `y`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H x`. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj (nonZeroDivisors O) x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨b, nonZeroDivisors.ne_zero b.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_one]`. Conclude with `⟨a, by rw [Algebra.smul_def, mul_comm]; exact hab.symm⟩`. Use `choose c hc0 hc using fun i => h1 (m i)`. Use `⟨∏ i, c i, Finset.prod_ne_zero_iff.2 fun i _ => hc0 i, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, ← Finset.prod_erase_mul _ _ (Finset.mem_univ i), mul_smul, hc i, smul_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pi_ko_torsion (O : Type) [CommRing O] [IsDomain O] (d : Type) [Fintype d] (m : d → KO O) :
     ∃ c : O, c ≠ 0 ∧ c • m = 0 := by
@@ -119,13 +117,13 @@ theorem pi_ko_torsion (O : Type) [CommRing O] [IsDomain O] (d : Type) [Fintype d
   rfl
 
 /- English proof (translation)
-Take `⟨K, hK, i, h1, -, -⟩` from `ReciprocityTheory.ChartRestriction.T2.exists_dec_equiv (F := Ek) Aw hp`. Establish `hεD : D.ε = ε.comp (Aw.decompositionSubgroup Ek).subtype`. Use extensionality with `g`. Simplify using `[hε g]`. Establish `hcw : IsCycOn ℓ (Aw.decompositionSubgroup Ek) (ε.comp (Aw.decompositionSubgroup Ek).subtype)` using `fun g n ζ h => hcyc g.1 n ζ h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcD : ReciprocityTheory.ChartRestriction.T2.IsCyc ℓ K (ReciprocityTheory.ChartRestriction.T2.carry i D.ε)` using `h1 O D.ε (hεD ▸ hcw)`. Establish `hD' : ReciprocityTheory.ChartRestriction.T2.RealLatG i D` using `⟨hcD, hD.lat, hD.perf, hD.contT, hD.openT, hD.t2, hD.t2', hD.cs, hD.cs'⟩`. Establish `hfin : Module.Finite O (H1 D.ρTl')` using `ReciprocityTheory.ChartRestriction.T2.finite_H1_of_iso hK hO i hD'`. Establish `hspan : ∀ y : H1 D.ρT', ∃ c : O, c ≠ 0 ∧ c • y ∈ LinearMap.range D.j'` using `ReciprocityTheory.ChartRestriction.T2.j'_span_iso hO hF i hD'`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : (LinearMap.range D.j').FG := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[LinearMap.range_eq_map]`. Conclude with `Submodule.FG.map _ Module.Finite.fg_top`. Use `⟨⟨s, eq_top_iff.2 fun y _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨c, hc, hy⟩` from `hspan y`. Rewrite `hy` using `[← hs]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hy' : c • y ∈ Submodule.span (FractionRing O) (s : Set (H1 D.ρT'))` using `Submodule.span_le_restrictScalars O (FractionRing O) _ hy`. Rewrite using `[← ReciprocityTheory.ChartRestriction.T2.inv_smul_smul_frac hc y]`. Conclude with `Submodule.smul_mem _ _ hy'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_H1V'_dec (ℓ : ℕ) [Fact ℓ.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
@@ -163,7 +161,7 @@ theorem finite_H1V'_dec (ℓ : ℕ) [Fact ℓ.Prime] {O : Type} [CommRing O] [Is
   exact Submodule.smul_mem _ _ hy'
 
 /- English proof (translation)
-Use `haveI := finite_H1V'_dec ℓ Aw hp D ε hO hF hcyc hε hD`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem finite_Hf_dec (ℓ : ℕ) [Fact ℓ.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [TopologicalSpace O] [TopologicalSpace (FractionRing O)]
@@ -185,9 +183,7 @@ theorem finite_Hf_dec (ℓ : ℕ) [Fact ℓ.Prime] {O : Type} [CommRing O] [IsDo
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-Introduce `ℓ _ O _ _ _ _ _ _ _ _ _ X X' T T' Z p q b h1 h2 d _ _ R' _ _ _ _ _ hdet Tc _ _ _ _ Ek Ω _ _ _ _ _ r χ E e₁ δ ι _ _ colIdx hinj Aw pl Av j e' hE2 he1 π' ρπ hρπ t ht bl hbl ρk hsurj hblk _ _ _ _ hcard1 sE tE δO what₂ qs s H0 Sha uT wT sT mT dT UT hEsum cols eO cB vδ N h0 c1 L _ _ _ …`. Establish `hfin : ∀ w ∈ cols, Module.Finite (FractionRing O) (Hf₂ (conj w))`. Introduce `w hw`. Establish `hr` using `hRows (conj w) (hrows ▸ Finset.mem_image_of_mem conj hw)`. Conclude with `finite_Hf_dec ℓ (Aw (conj w)) hr.1 (Dat (conj w)) ε hO hFr hcyc hr.2.2.1 hr.2.2.2.1 (Hf₂ (conj w))`.
-
-Conclude with `theorem_n_five_real_second ℓ O X X' T T' Z p q b h1 h2 d R' hdet Tc Ek Ω r χ E e₁ δ ι colIdx hinj Aw pl Av j e' hE2 he1 π' ρπ hρπ t ht bl hbl ρk hsurj hblk hcard1 sE tE δO what₂ qs s H0 Sha uT wT sT mT dT UT hEsum L tens v₁ κ V iL qV Ff κz F Vo VS Io IS ε T₁ T₂ ρ₁ ρ₂ inc π γ lam …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem theorem_n_five_real_third : RealClassMapThirdPlace := by
   intro ℓ _ O _ _ _ _ _ _ _ _ _ X X' T T' Z p q b h1 h2 d _ _ R' _ _ _ _ _ hdet Tc _ _ _ _ Ek Ω _ _ _ _ _
@@ -222,9 +218,7 @@ theorem theorem_n_five_real_third : RealClassMapThirdPlace := by
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-Introduce `ℓ _ O _ _ _ _ _ _ _ _ _ X X' T T' Z p q b h1 h2 d _ _ R' _ _ _ _ _ hdet Tc _ _ _ _ Ek Ω _ _ _ _ _ r χ E e₁ δ ι _ _ colIdx hinj Aw pl Av j e' hE2 he1 π' ρπ hρπ t ht bl hbl ρk hsurj hblk _ _ _ _ hcard1 sE tE δO what₂ qs s H0 Sha uT wT sT mT dT UT hEsum cols eO cB vδ N h0 c1 L _ _ _ …`. Establish `hfin : ∀ w ∈ cols, Module.Finite (FractionRing O) (Hf₂ (conj w))`. Introduce `w hw`. Establish `hr` using `hRows (conj w) (hrows ▸ Finset.mem_image_of_mem conj hw)`. Conclude with `finite_Hf_dec ℓ (Aw (conj w)) hr.1 (Dat (conj w)) ε hO hFr hcyc hr.2.2.1 hr.2.2.2.1 (Hf₂ (conj w))`.
-
-Conclude with `theorem_n_five_real_lift ℓ O X X' T T' Z p q b h1 h2 d R' hdet Tc Ek Ω r χ E e₁ δ ι colIdx hinj Aw pl Av j e' hE2 he1 π' ρπ hρπ t ht bl hbl ρk hsurj hblk hcard1 sE tE δO what₂ qs s H0 Sha uT wT sT mT dT UT hEsum L tens v₁ κ V iL qV Ff κz F Vo VS Io IS ε T₁ T₂ ρ₁ ρ₂ inc π γ lam VT …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem theorem_n_five_real_lift_third : RealClassMapLiftThirdPlace := by
   intro ℓ _ O _ _ _ _ _ _ _ _ _ X X' T T' Z p q b h1 h2 d _ _ R' _ _ _ _ _ hdet Tc _ _ _ _ Ek Ω _ _ _ _ _
@@ -259,7 +253,7 @@ theorem theorem_n_five_real_lift_third : RealClassMapLiftThirdPlace := by
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-Introduce `ℓ _ O _ _ _ _ _ _ _ _ _ X X' T T' Z p q b h1 h2 d _ _ R' _ _ _ _ _ hdet Tc _ _ _ _ Ek Ω _ _ _ _ _ r χ E e₁ δ ι _ _ colIdx hinj Aw pl Av j e' hE2 he1 π' ρπ hρπ t ht bl hbl ρk hsurj hblk _ _ _ _ hcard1 sE tE δO what₂ qs s H0 Sha uT wT sT mT dT UT hEsum cols eO cB vδ N h0 c1 L _ _ _ …`. Conclude with `theorem_n_five_real_all_second ℓ O X X' T T' Z p q b h1 h2 d R' hdet Tc Ek Ω r χ E e₁ δ ι colIdx hinj Aw pl Av j e' hE2 he1 π' ρπ hρπ t ht bl hbl ρk hsurj hblk hcard1 sE tE δO what₂ qs s H0 Sha uT wT sT mT dT UT hEsum L tens v₁ κ V iL qV Ff κz F Vo VS Io IS ε T₁ T₂ ρ₁ ρ₂ inc π γ …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem theorem_n_five_real_all_third : RealClassMapEveryThirdPlace := by
   intro ℓ _ O _ _ _ _ _ _ _ _ _ X X' T T' Z p q b h1 h2 d _ _ R' _ _ _ _ _ hdet Tc _ _ _ _ Ek Ω _ _ _ _ _
@@ -285,7 +279,7 @@ theorem theorem_n_five_real_all_third : RealClassMapEveryThirdPlace := by
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-Introduce `ℓ _ O _ _ _ _ _ _ _ _ _ X X' T T' Z p q b h1 h2 d _ _ R' _ _ _ _ _ hdet Tc _ _ _ _ Ek Ω _ _ _ _ _ r χ E e₁ δ ι _ _ colIdx hinj Aw pl Av j e' hE2 he1 π' ρπ hρπ t ht bl hbl ρk hsurj hblk _ _ _ _ hcard1 sE tE δO what₂ qs s H0 Sha uT wT sT mT dT UT hEsum cols eO cB vδ N h0 c1 L _ _ _ …`. Conclude with `theorem_n_five_real_all_lift ℓ O X X' T T' Z p q b h1 h2 d R' hdet Tc Ek Ω r χ E e₁ δ ι colIdx hinj Aw pl Av j e' hE2 he1 π' ρπ hρπ t ht bl hbl ρk hsurj hblk hcard1 sE tE δO what₂ qs s H0 Sha uT wT sT mT dT UT hEsum L tens v₁ κ V iL qV Ff κz F Vo VS Io IS ε T₁ T₂ ρ₁ ρ₂ inc π γ la …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem theorem_n_five_real_all_lift_third : RealClassMapLiftEveryThirdPlace := by
   intro ℓ _ O _ _ _ _ _ _ _ _ _ X X' T T' Z p q b h1 h2 d _ _ R' _ _ _ _ _ hdet Tc _ _ _ _ Ek Ω _ _ _ _ _

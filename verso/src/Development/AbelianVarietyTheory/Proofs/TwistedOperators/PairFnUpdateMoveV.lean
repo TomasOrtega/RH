@@ -13,7 +13,7 @@ namespace GlobalTheory.RowVertexInv
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
 /- English proof (translation)
-Establish `e : matHom (negSp V) (negGA V g) = matHom V g` using `Units.ext (mt_negGA V g)`. Simplify using `only [GfC, MonoidHom.mem_ker, infHom, MonoidHom.comp_apply] at hg ⊢`. Rewrite using `[e]`. Conclude with `hg`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem negGA_mem_GfC_row (V : HSp D) {g : GA D V} (hg : g ∈ GfC V) : negGA V g ∈ GfC (negSp V) := by
   have e : matHom (negSp V) (negGA V g) = matHom V g := Units.ext (mt_negGA V g)
@@ -22,7 +22,7 @@ theorem negGA_mem_GfC_row (V : HSp D) {g : GA D V} (hg : g ∈ GfC V) : negGA V 
   exact hg
 
 /- English proof (translation)
-Establish `e : G.toPair p (g * k) (h * k') = G.toPair p g h * G.toPair p k k'`. Apply the tactic sequence `cases p <;> simp [GridData.toPair, map_mul, Prod.ext_iff]`. Unfold `GridData.Weil.ker`. Rewrite using `[e]`. Simplify using `only [thetaKO, Prod.mk.eta, map_mul, Module.End.mul_apply]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ker_mul_row (W : G.Weil) (p : Pair T) (F : WO (G.pS p) (G.pT p) → ℂ) (g k : GA D (G.V p.small))
     (h k' : GA D (G.V p.big)) : W.ker p F (g * k) (h * k') = W.ker p (W.om p (G.toPair p k k') F) g h := by
@@ -33,13 +33,13 @@ theorem ker_mul_row (W : G.Weil) (p : Pair T) (F : WO (G.pS p) (G.pT p) → ℂ)
   simp only [thetaKO, Prod.mk.eta, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Establish `hmem : (G.toPair p g h).1 ∈ GfC (G.pS p) ∧ (G.toPair p g h).2 ∈ GfC (G.pT p)`. Consider the cases of `p with`. Consider the case `chi i j => exact ⟨negGA_mem_GfC_row _ h.2, g.2⟩`. Consider the case `mu t i j => exact ⟨g.2, h.2⟩`. Consider the case `core i => exact ⟨negGA_mem_GfC_row _ h.2, g.2⟩`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `top t j => exact ⟨g.2, h.2⟩`. Establish `key : ∀ P, W.ker p (fockIn W B p f P) ((x : GA D (G.V p.small)) * (g : GA D (G.V p.small))) ((y : GA D (G.V p.big)) * (h : GA D (G.V p.big))) = W.ker p (fockIn W B p (W.om p (G.toPair p g h) f) P) x y`. Introduce `P`. Rewrite using `[ker_mul_row]`. Use `congr 1`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e` using `(GlobalTheory.OrientedHeis.om_pureTensorO D W.ψ W.θ _ _ _ _ (W.om p) (W.om_is p hp) W.θ_is (G.cartS W.cart p) (G.cartS W.cart p) (G.onS B p) (G.onS B p) (G.onT W.cart p) (G.onT W.cart p) (G.onT B p) (G.onT B p) (G.toPair p g h).1 (G.toPair p g h).2 (fun τ => by rw [GlobalTheory.F …`. Simplify using `only [Prod.mk.eta] at e`. Conclude with `e`. Unfold `fockComp`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Conclude with `key _`.
+A detailed English derivation is pending.
 -/
 theorem fockComp_mul_row (W : G.Weil) (B : VertexFrames G) (p : Pair T) (hp : p.InRange D.R.m)
     (f : WO (G.pS p) (G.pT p) → ℂ) (hf : IsThetaFunO W.ψ (G.pS p) (G.pT p) f) (x g : FinPt G p.small) (y h : FinPt G p.big) :
@@ -70,7 +70,7 @@ theorem fockComp_mul_row (W : G.Weil) (B : VertexFrames G) (p : Pair T) (hp : p.
   exact key _
 
 /- English proof (translation)
-Establish `e` using `fockComp_mul_row W S.N.frC p hp f hf (a * S.N.u _) 1 (b * S.N.u _) ((S.N.u p.big)⁻¹ * h * S.N.u p.big)`. Rewrite `e` using `[mul_one, OneMemClass.coe_one]`. Unfold `kkV`. Rewrite using `[show b * h * S.N.u p.big = b * S.N.u p.big * ((S.N.u p.big)⁻¹ * h * S.N.u p.big) by group, e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem kkV_mul_big (S : GridChoice W U) (p : Pair T) (hp : p.InRange D.R.m) (f : WO (G.pS p) (G.pT p) → ℂ)
     (hf : IsThetaFunO W.ψ (G.pS p) (G.pT p) f) (a : FinPt G p.small) (b h : FinPt G p.big) :
@@ -82,7 +82,7 @@ theorem kkV_mul_big (S : GridChoice W U) (p : Pair T) (hp : p.InRange D.R.m) (f 
   rw [show b * h * S.N.u p.big = b * S.N.u p.big * ((S.N.u p.big)⁻¹ * h * S.N.u p.big) by group, e]
 
 /- English proof (translation)
-Establish `e` using `fockComp_mul_row W S.N.frC p hp f hf (a * S.N.u _) ((S.N.u p.small)⁻¹ * g * S.N.u p.small) (b * S.N.u _) 1`. Rewrite `e` using `[mul_one, OneMemClass.coe_one]`. Unfold `kkV`. Rewrite using `[show a * g * S.N.u p.small = a * S.N.u p.small * ((S.N.u p.small)⁻¹ * g * S.N.u p.small) by group, e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem kkV_mul_small (S : GridChoice W U) (p : Pair T) (hp : p.InRange D.R.m) (f : WO (G.pS p) (G.pT p) → ℂ)
     (hf : IsThetaFunO W.ψ (G.pS p) (G.pT p) f) (a g : FinPt G p.small) (b : FinPt G p.big) :
@@ -94,15 +94,15 @@ theorem kkV_mul_small (S : GridChoice W U) (p : Pair T) (hp : p.InRange D.R.m) (
   rw [show a * g * S.N.u p.small = a * S.N.u p.small * ((S.N.u p.small)⁻¹ * g * S.N.u p.small) by group, e]
 
 /- English proof (translation)
-Establish `e : ∀ (i : ℕ) (h : i < D.R.m), moveV S j hj k v (.inl ⟨i, h⟩) = v (.inl ⟨i, h⟩)` using `fun i h => (Function.update_of_ne Sum.inl_ne_inr _ _).trans (Function.update_of_ne Sum.inl_ne_inr _ _)`. Establish `hcol : colV S (moveV S j hj k v) x = colV S v x`. Simplify using `only [colV, e]`. Establish `key : ∀ (i : ℕ) (hi : i < D.R.m), kkV S (.chi i D.R.m) (v (.inr ⟨i, hi⟩)) (Function.update y (j + 1) (y (j + 1) * k) i) (Function.update y (j + 1) (y (j + 1) * k) (i + 1)) = kkV S (.chi i D.R.m) (moveV S j hj k v (.inr ⟨i, hi⟩)) (y i) (y (i + 1))`. Introduce `i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h1 : i = j`. Substitute `h1` using the available equality. Rewrite using `[Function.update_of_ne (show i ≠ i + 1 by omega), Function.update_self]`. Establish `hm : moveV S i hj k v (.inr ⟨i, hi⟩) = W.om (.chi i D.R.m) (G.toPair (.chi i D.R.m) 1 (moved S i k)) (v (.inr ⟨i, hi⟩))` using `(Function.update_of_ne (by simp) _ _).trans (Function.update_self _ _ _)`. Rewrite using `[hm]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `kkV_mul_big S (.chi i D.R.m) (show i + 1 ≤ D.R.m ∧ D.R.m ≤ D.R.m from ⟨by omega, le_rfl⟩) _ (hv (.inr ⟨i, hi⟩)) (y i) (y (i + 1)) k`. Distinguish the cases in `h2 : i = j + 1`. Substitute `h2` using the available equality. Rewrite using `[Function.update_self, Function.update_of_ne (show j + 1 + 1 ≠ j + 1 by omega)]`. Establish `hm : moveV S j hj k v (.inr ⟨j + 1, hi⟩) = W.om (.chi (j + 1) D.R.m) (G.toPair (.chi (j + 1) D.R.m) (moved S j k) 1) (v (.inr ⟨j + 1, hi⟩))` using `Function.update_self _ _ _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Conclude with `kkV_mul_small S (.chi (j + 1) D.R.m) (show j + 1 + 1 ≤ D.R.m ∧ D.R.m ≤ D.R.m from ⟨by omega, le_rfl⟩) _ (hv (.inr ⟨j + 1, hi⟩)) (y (j + 1)) k (y (j + 1 + 1))`. Rewrite using `[Function.update_of_ne h2, Function.update_of_ne (show i + 1 ≠ j + 1 by omega)]`. Establish `hm : moveV S j hj k v (.inr ⟨i, hi⟩) = v (.inr ⟨i, hi⟩)` using `(Function.update_of_ne (by simp; omega) _ _).trans (Function.update_of_ne (by simp; omega) _ _)`. Rewrite using `[hm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hrow : rowV S v (Function.update y (j + 1) (y (j + 1) * k)) = rowV S (moveV S j hj k v) y`. Simplify using `only [rowV, key]`. Rewrite using `[pairFn, pairFn, hcol, hrow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairFn_update_moveV (S : GridChoice W U) {t : T} (x : ∀ j, FinPt G (.top j)) (y : ∀ i, FinPt G (.grid i D.R.m))
     (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m)) (v : ∀ a, FactorFn G t a)

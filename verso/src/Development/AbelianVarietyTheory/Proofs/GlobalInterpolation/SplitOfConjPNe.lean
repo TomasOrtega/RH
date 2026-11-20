@@ -10,9 +10,9 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatt
 namespace GlobalTheory.ThetaMove
 
 /- English proof (translation)
-Introduce `X P v hX hP hv`. Take `rfl : P.under (𝓞 X.F) = v` from `HeightOneSpectrum.ext hv`. Establish `key` using `GlobalTheory.MuConj.mem_above_iff hX.star_F hX.rankE P hP`. Use `⟨GlobalTheory.Mem.GoodPlace.map_eq_mul hX.rankE hP.symm ((key _).2 (Or.inr rfl)), fun Q => ?_⟩` and prove the remaining obligations. Rewrite using `[← key Q]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h => HeightOneSpectrum.ext h, fun h => congrArg HeightOneSpectrum.asIdeal h⟩`.
+Supply the required witnesses or components.
 -/
 theorem split_of_conj_ne₂ : ∀ (X : Fields) (P : HeightOneSpectrum (𝓞 X.E)) (v : HeightOneSpectrum (𝓞 X.F)),
     X.Ok → conjPrime₂ P ≠ P → P.asIdeal.under (𝓞 X.F) = v.asIdeal →

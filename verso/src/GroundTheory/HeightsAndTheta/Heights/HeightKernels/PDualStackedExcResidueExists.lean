@@ -16,7 +16,7 @@ namespace StackedExceptionalResidueExists
 variable {K : Type} [Field K] [NumberField K] {i : ℕ} {F F' : HermLattice K i}
 
 /- English proof (translation)
-Use `by_contra! h`. Establish `h1 : (dualLattice F).toAddSubgroup.relIndex (dualLattice F').toAddSubgroup = 1` using `AddSubgroup.relIndex_eq_one.mpr fun φ hφ => h φ hφ`. Rewrite `h1` using `[DualLatticeIndex.proof K i F F' hlt.le]`. Establish `h2` using `AddSubgroup.relIndex_eq_one.mp h1`. Conclude with `hlt.not_ge fun x hx => h2 hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_mem_not_mem (hlt : F'.lattice < F.lattice) :
     ∃ φc ∈ dualLattice F', φc ∉ dualLattice F := by
@@ -43,15 +43,15 @@ def annIdeal (F : HermLattice K i) (φc : Fin i → K) : Ideal (𝓞 K) where
     exact smul_mem_dual F c hx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_annIdeal {φc : Fin i → K} {μ : 𝓞 K} :
     μ ∈ annIdeal F φc ↔ algebraMap (𝓞 K) K μ • φc ∈ dualLattice F := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[Ideal.isMaximal_iff]`. Use `⟨fun h => hc' ?_, fun J x hle hx hxJ => ?_⟩` and prove the remaining obligations. Use `mem_annIdeal.mp h` as an intermediate fact. Rewrite `this` using `[map_one, one_smul]`. Then use the resulting hypothesis. Take `⟨l, hl⟩` from `exists_sub_mem_dual hlt hcov (smul_mem_dual F' x hc) (mem_annIdeal.not.mp hx) hc`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `h1 : 1 - l * x ∈ annIdeal F φc`. Rewrite using `[mem_annIdeal, map_sub, map_one, map_mul, sub_smul, one_smul, mul_smul]`. Conclude with `hl`. Establish `h2` using `J.add_mem (hle h1) (J.mul_mem_left l hxJ)`. Rewrite `h2` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem annIdeal_isMaximal (hlt : F'.lattice < F.lattice)
     (hcov : ∀ N : Submodule (𝓞 K) (Fin i → K), F'.lattice ≤ N → N ≤ F.lattice → N = F'.lattice ∨ N = F.lattice)
@@ -68,7 +68,7 @@ theorem annIdeal_isMaximal (hlt : F'.lattice < F.lattice)
   rwa [sub_add_cancel] at h2
 
 /- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq, mem_annIdeal, map_sub, sub_smul]`. Establish `e : algebraMap (𝓞 K) K l • φc - algebraMap (𝓞 K) K l' • φc = (φ - algebraMap (𝓞 K) K l' • φc) - (φ - algebraMap (𝓞 K) K l • φc)` using `by abel`. Rewrite using `[e]`. Conclude with `sub_mem h' h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_eq_of {φc φ : Fin i → K} {l l' : 𝓞 K} (h : φ - algebraMap (𝓞 K) K l • φc ∈ dualLattice F)
     (h' : φ - algebraMap (𝓞 K) K l' • φc ∈ dualLattice F) :
@@ -85,7 +85,7 @@ def coeff (hlt : F'.lattice < F.lattice)
   (exists_sub_mem_dual hlt hcov hc hc' φ.2).choose
 
 /- English proof (translation)
-The claim follows from `(exists_sub_mem_dual hlt hcov hc hc' φ.2).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem coeff_spec (hlt : F'.lattice < F.lattice)
     (hcov : ∀ N : Submodule (𝓞 K) (Fin i → K), F'.lattice ≤ N → N ≤ F.lattice → N = F'.lattice ∨ N = F.lattice)
@@ -116,7 +116,7 @@ def rhoDual (hlt : F'.lattice < F.lattice)
     exact add_mem (coeff_spec hlt hcov hc hc' φ) (coeff_spec hlt hcov hc hc' ψ)
 
 /- English proof (translation)
-The claim follows from `mk_eq_of (coeff_spec hlt hcov hc hc' φ) h`.
+A detailed English derivation is pending.
 -/
 theorem rhoDual_eq (hlt : F'.lattice < F.lattice)
     (hcov : ∀ N : Submodule (𝓞 K) (Fin i → K), F'.lattice ≤ N → N ≤ F.lattice → N = F'.lattice ∨ N = F.lattice)
@@ -130,23 +130,21 @@ end StackedExceptionalResidueExists
 open StackedExceptionalResidueExists in
 
 /- English proof (translation)
-Introduce `K _ _ i F F' T _ _ b b' a _ hlt hcov _`. Take `⟨φc, hc, hc'⟩` from `exists_mem_not_mem hlt`. Use `set 𝔭 := annIdeal F φc with h𝔭`. Establish `hmax : 𝔭.IsMaximal` using `annIdeal_isMaximal hlt hcov hc hc'`. Set `_ : Field (𝓞 K ⧸ 𝔭)` to `Ideal.Quotient.field 𝔭`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσs, hσl⟩` from `hσ K i F 𝔭 hmax`. Use `set ρ' := rhoDual hlt hcov hc hc' with hρ'`. Establish `hker : ∀ φ : dualLattice F', ρ' φ = 0 ↔ (φ : Fin i → K) ∈ dualLattice F`. Introduce `φ`. Establish `hs` using `coeff_spec hlt hcov hc hc' φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk 𝔭 (coeff hlt hcov hc hc' φ) = 0 ↔ _`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, mem_annIdeal]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `add_mem hs h` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Introduce `h`. Use `sub_mem h hs` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `hsurj : Function.Surjective ρ'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Take `⟨l, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Use `⟨⟨algebraMap (𝓞 K) K l • φc, smul_mem_dual F' l hc⟩, rhoDual_eq hlt hcov hc hc' _ l ?_⟩` and prove the remaining obligations. Use `show algebraMap (𝓞 K) K l • φc - algebraMap (𝓞 K) K l • φc ∈ dualLattice F`. Rewrite using `[sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Establish `hcard : Nat.card (𝓞 K ⧸ 𝔭) = F'.lattice.toAddSubgroup.relIndex F.lattice.toAddSubgroup`. Rewrite using `[← DualLatticeIndex.proof K i F F' hlt.le]`. Establish `hk : (dualLattice F).toAddSubgroup.addSubgroupOf (dualLattice F').toAddSubgroup = ρ'.ker`. Use extensionality with `φ`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[AddSubgroup.mem_addSubgroupOf, AddMonoidHom.mem_ker, hker]`. Both sides reduce to the same expression. Rewrite using `[AddSubgroup.relIndex, hk, AddSubgroup.index_ker, AddMonoidHom.range_eq_top.mpr hsurj]`. Conclude with `(Nat.card_congr (Equiv.Set.univ _)).symm`. Use `⟨𝓞 K ⧸ 𝔭, inferInstance, Fintype.ofFinite _, fun t => ρ' (b' t), fun t => σ (b t), ⟨Ideal.Quotient.mk 𝔭, ρ', σ, Ideal.Quotient.mk_surjective, hsurj, hσs, hker, ?_, hσl, fun t => rfl, fun t => rfl⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `μ φ ψ h`. Rewrite using `[rhoDual_eq hlt hcov hc hc' ψ (μ * coeff hlt hcov hc hc' φ), map_mul]`. Both sides reduce to the same expression. Rewrite using `[h, map_mul, mul_smul, ← smul_sub]`. Conclude with `smul_mem_dual F μ (coeff_spec hlt hcov hc hc' φ)`.
-
-Rewrite using `[← hcard]`. Conclude with `Fintype.card_eq_nat_card`.
+A detailed English derivation is pending.
 -/
 theorem DualStackedExcResidueExists.proof (hσ : DualLatticeModPrime.Statement) :
     DualStackedExcResidueExists.Statement := by

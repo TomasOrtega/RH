@@ -15,9 +15,9 @@ noncomputable def scaleT (c : K → ℂ) : MvPolynomial K ℂ →ₐ[ℂ] MvPoly
 
 omit [Fintype K] in
 /- English proof (translation)
-Establish `h : (scaleT (fun k => (c k)⁻¹)).comp (scaleT c) = AlgHom.id ℂ _`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `k`. Simplify using `only [scaleT, AlgHom.comp_apply, aeval_X, map_mul, algHom_C, AlgHom.id_apply]`. Rewrite using `[← mul_assoc, algebraMap_eq, ← C_mul, mul_inv_cancel₀ (hc k), C_1, one_mul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `DFunLike.congr_fun h f`.
+A detailed English derivation is pending.
 -/
 theorem scaleT_inv_scaleT (c : K → ℂ) (hc : ∀ k, c k ≠ 0) (f : MvPolynomial K ℂ) :
     scaleT (fun k => (c k)⁻¹) (scaleT c f) = f := by
@@ -31,9 +31,9 @@ theorem scaleT_inv_scaleT (c : K → ℂ) (hc : ∀ k, c k ≠ 0) (f : MvPolynom
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `h : mConeMap (fun q : Σ k, ι k => c q.1 * z q) = ((scaleT c).restrictScalars ℤ).comp (mConeMap z)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `p`. Simplify using `only [mConeMap, scaleT, AlgHom.comp_apply, aeval_X, AlgHom.restrictScalars_apply, map_mul, algHom_C, algebraMap_eq, mul_assoc]`. Rewrite using `[mul_left_comm]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mConeMap_torus (c : K → ℂ) (z : (Σ k, ι k) → ℂ) (f : MRing ι) :
     mConeMap (fun q : Σ k, ι k => c q.1 * z q) f = scaleT c (mConeMap z f) := by
@@ -50,9 +50,9 @@ theorem mConeMap_torus (c : K → ℂ) (z : (Σ k, ι k) → ℂ) (f : MRing ι)
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Use extensionality with `f`. Rewrite using `[mCoordIdeal, mCoordIdeal, RingHom.mem_ker, RingHom.mem_ker, mConeMap_torus]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg (scaleT fun k => (c k)⁻¹) h` as an intermediate fact.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[scaleT_inv_scaleT c hc, map_zero]`. Then use the resulting hypothesis. Introduce `h`. Rewrite using `[h, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem mCoordIdeal_torus (c : K → ℂ) (hc : ∀ k, c k ≠ 0) (z : (Σ k, ι k) → ℂ) :
     mCoordIdeal (fun q : Σ k, ι k => c q.1 * z q) = mCoordIdeal z := by
@@ -66,9 +66,9 @@ theorem mCoordIdeal_torus (c : K → ℂ) (hc : ∀ k, c k ≠ 0) (z : (Σ k, ι
     rw [h, map_zero]
 
 /- English proof (translation)
-Take `⟨d, g, h, hg, hh, hy, he, h0, rfl⟩` from `hv`. Establish `hu : (∏ k, c k ^ d k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k)`. Use `⟨d, g, h, hg, hh, hy, he, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eval_smul_homog h d hh]`. Conclude with `mul_ne_zero hu h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eval_smul_homog g d hg, eval_smul_homog h d hh, mul_div_mul_left _ _ hu]`.
+A detailed English derivation is pending.
 -/
 theorem isValueAt_torus {x : (Σ k, ι k) → Ω} {s : Ω} {z : (Σ k, ι k) → ℂ} {v : ℂ} (c : K → ℂ)
     (hc : ∀ k, c k ≠ 0) (hv : IsValueAt x s z v) :
@@ -81,7 +81,7 @@ theorem isValueAt_torus {x : (Σ k, ι k) → Ω} {s : Ω} {z : (Σ k, ι k) →
   · rw [eval_smul_homog g d hg, eval_smul_homog h d hh, mul_div_mul_left _ _ hu]
 
 /- English proof (translation)
-Establish `h` using `isValueAt_torus (fun k => (c k)⁻¹) (fun k => inv_ne_zero (hc k)) hv`. Establish `e : (fun q : Σ k, ι k => (c q.1)⁻¹ * (c q.1 * z q)) = z`. Use function extensionality and compare the values at `q`. Conclude with `inv_mul_cancel_left₀ (hc q.1) _`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isValueAt_of_torus {x : (Σ k, ι k) → Ω} {s : Ω} {z : (Σ k, ι k) → ℂ} {v : ℂ} (c : K → ℂ)
     (hc : ∀ k, c k ≠ 0) (hv : IsValueAt x s (fun q : Σ k, ι k => c q.1 * z q) v) :
@@ -93,7 +93,7 @@ theorem isValueAt_of_torus {x : (Σ k, ι k) → Ω} {s : Ω} {z : (Σ k, ι k) 
   rwa [e] at h
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ v, IsValueAt x s z v`. Take `⟨v, hv⟩` from `h`. Rewrite using `[valAt_eq hz hv, valAt_eq hcz (isValueAt_torus c hc hv)]`. Establish `h' : ¬ ∃ v, IsValueAt x s (fun q : Σ k, ι k => c q.1 * z q) v` using `fun ⟨v, hv⟩ => h ⟨v, isValueAt_of_torus c hc hv⟩`. Rewrite using `[valAt, valAt, dif_neg h, dif_neg h']`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt_torus {x : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ} (c : K → ℂ) (hc : ∀ k, c k ≠ 0)
     (hz : z ∈ mcPts (mCoordIdeal x))
@@ -107,7 +107,7 @@ theorem valAt_torus {x : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ} (c : K 
     rw [valAt, valAt, dif_neg h, dif_neg h']
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ x z c hc`. Use `⟨mCoordIdeal_torus c hc z, fun hz => ?_⟩` and prove the remaining obligations. Establish `hcz` using `mcPts_smul (CoordinateConeArithVar.isMultiHomogIdeal x) c hc hz`. Conclude with `⟨hcz, valAt_torus c hc hz hcz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem main : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω]
     (x : (Σ k, ι k) → Ω) (z : (Σ k, ι k) → ℂ) (c : K → ℂ), (∀ k, c k ≠ 0) →

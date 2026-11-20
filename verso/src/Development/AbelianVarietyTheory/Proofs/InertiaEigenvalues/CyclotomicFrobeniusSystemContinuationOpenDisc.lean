@@ -17,27 +17,27 @@ def Bd (r c : ℝ) (a : K⟦X⟧) : Prop := ∀ k, ‖coeff k a‖ * r ^ k ≤ c
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-The claim follows from `le_trans (by simp) (h 0)`.
+A detailed English derivation is pending.
 -/
 theorem Bd.nonneg {r c : ℝ} {a : K⟦X⟧} (h : Bd r c a) : 0 ≤ c :=
   le_trans (by simp) (h 0)
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Introduce `k` and use `(h k).trans hc`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bd.mono {r c c' : ℝ} {a : K⟦X⟧} (h : Bd r c a) (hc : c ≤ c') : Bd r c' a :=
   fun k => (h k).trans hc
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Introduce `k` and use `le_trans (by gcongr) (h k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bd.radius {r r' c : ℝ} {a : K⟦X⟧} (h : Bd r c a) (h0 : 0 ≤ r') (hr : r' ≤ r) : Bd r' c a :=
   fun k => le_trans (by gcongr) (h k)
 
 /- English proof (translation)
-Rewrite using `[← le_div_iff₀ hx]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun i hi => (le_div_iff₀ hx).2 (h i hi)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sum_mul_le {ι : Type} (s : Finset ι) (f : ι → K) {x c : ℝ} (hx : 0 < x) (hc : 0 ≤ c)
     (h : ∀ i ∈ s, ‖f i‖ * x ≤ c) : ‖∑ i ∈ s, f i‖ * x ≤ c := by
@@ -46,7 +46,7 @@ theorem norm_sum_mul_le {ι : Type} (s : Finset ι) (f : ι → K) {x c : ℝ} (
     fun i hi => (le_div_iff₀ hx).2 (h i hi)
 
 /- English proof (translation)
-Introduce `k` and use `by rw [map_sum] exact norm_sum_mul_le _ _ (by positivity) hc fun i hi => h i hi k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bd.sum {ι : Type} (s : Finset ι) (f : ι → K⟦X⟧) {r c : ℝ} (hr : 0 < r) (hc : 0 ≤ c)
     (h : ∀ i ∈ s, Bd r c (f i)) : Bd r c (∑ i ∈ s, f i) := fun k => by
@@ -54,14 +54,14 @@ theorem Bd.sum {ι : Type} (s : Finset ι) (f : ι → K⟦X⟧) {r c : ℝ} (hr
   exact norm_sum_mul_le _ _ (by positivity) hc fun i hi => h i hi k
 
 /- English proof (translation)
-Apply the tactic sequence `have := Bd.sum Finset.univ ![a, b] hr ha.nonneg (fun i _ => by fin_cases i <;> assumption)`. Simplify using `using this`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Bd.add {r c : ℝ} (hr : 0 < r) {a b : K⟦X⟧} (ha : Bd r c a) (hb : Bd r c b) : Bd r c (a + b) := by
   have := Bd.sum Finset.univ ![a, b] hr ha.nonneg (fun i _ => by fin_cases i <;> assumption)
   simpa using this
 
 /- English proof (translation)
-Introduce `k` and use `by rw [coeff_mul] refine norm_sum_mul_le _ _ (by positivity) (mul_nonneg ha.nonneg hb.nonneg) fun p hp => ?_ have hp' : p.1 + p.2 = k := by simpa using hp rw [← hp', norm_mul, pow_add, mul_mul_mul_comm] exact mul_le_mul (ha _) (hb _) (by positivity) ha.nonneg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bd.mul {r c c' : ℝ} (hr : 0 < r) {a b : K⟦X⟧} (ha : Bd r c a) (hb : Bd r c' b) :
     Bd r (c * c') (a * b) := fun k => by
@@ -73,7 +73,7 @@ theorem Bd.mul {r c c' : ℝ} (hr : 0 < r) {a b : K⟦X⟧} (ha : Bd r c a) (hb 
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Introduce `k` and use `by rw [coeff_C] split_ifs with h · simp [h] · simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bd_C (r : ℝ) (x : K) : Bd r ‖x‖ (C x) := fun k => by
   rw [coeff_C]
@@ -83,7 +83,7 @@ theorem bd_C (r : ℝ) (x : K) : Bd r ‖x‖ (C x) := fun k => by
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Introduce `k` and use `by rw [coeff_X] split_ifs with h · simp [h] · simp [hr.le]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bd_X {r : ℝ} (hr : 0 < r) : Bd r r (X : K⟦X⟧) := fun k => by
   rw [coeff_X]
@@ -92,7 +92,7 @@ theorem bd_X {r : ℝ} (hr : 0 < r) : Bd r r (X : K⟦X⟧) := fun k => by
   · simp [hr.le]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using bd_C r (1 : K)`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `ih.mul hr ha`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Bd.pow {r c : ℝ} (hr : 0 < r) {a : K⟦X⟧} (ha : Bd r c a) (n : ℕ) : Bd r (c ^ n) (a ^ n) := by
   induction n with
@@ -101,7 +101,7 @@ theorem Bd.pow {r c : ℝ} (hr : 0 < r) {a : K⟦X⟧} (ha : Bd r c a) (n : ℕ)
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Introduce `k` and use `by rw [coeff_map] exact mul_le_one₀ (hf _) (by positivity) (pow_le_one₀ hr.le h1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bd_map {O : Type} [CommRing O] (f : O →+* K) (hf : ∀ x, ‖f x‖ ≤ 1) {r : ℝ} (hr : 0 < r)
     (h1 : r ≤ 1) (a : O⟦X⟧) : Bd r 1 (PowerSeries.map f a) := fun k => by
@@ -109,7 +109,7 @@ theorem bd_map {O : Type} [CommRing O] (f : O →+* K) (hf : ∀ x, ‖f x‖ �
   exact mul_le_one₀ (hf _) (by positivity) (pow_le_one₀ hr.le h1)
 
 /- English proof (translation)
-Introduce `k` and use `by have := InvBasis.coeff_mul_apply γ hγ 1 a k simp only [one_mul] at this rw [this] refine norm_sum_mul_le _ _ (by positivity) ha.nonneg fun d _ => ?_ rw [norm_mul, mul_right_comm, mul_comm] exact (mul_le_mul_of_nonneg_left (h.pow hr d k) (norm_nonneg _)).trans (ha d)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bd.apply (γ : K⟦X⟧ →ₐ[K] K⟦X⟧) (hγ : constantCoeff (γ X) = 0) {r r₁ c : ℝ} (hr : 0 < r)
     (h : Bd r r₁ (γ X)) {a : K⟦X⟧} (ha : Bd r₁ c a) : Bd r c (γ a) := fun k => by
@@ -121,7 +121,7 @@ theorem Bd.apply (γ : K⟦X⟧ →ₐ[K] K⟦X⟧) (hγ : constantCoeff (γ X) 
   exact (mul_le_mul_of_nonneg_left (h.pow hr d k) (norm_nonneg _)).trans (ha d)
 
 /- English proof (translation)
-Use `choose c hc using h`. Take `⟨B, hB⟩` from `(Set.finite_range c).bddAbove`. Conclude with `⟨max B 0, le_max_right _ _, fun i => (hc i).mono ((hB ⟨i, rfl⟩).trans (le_max_left _ _))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_bd_uniform {ι : Type} [Finite ι] {r : ℝ} (f : ι → K⟦X⟧) (h : ∀ i, ∃ c, Bd r c (f i)) :
     ∃ c, 0 ≤ c ∧ ∀ i, Bd r c (f i) := by
@@ -131,7 +131,7 @@ theorem exists_bd_uniform {ι : Type} [Finite ι] {r : ℝ} (f : ι → K⟦X⟧
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h.bddAbove_range`. Conclude with `⟨c, fun k => hc ⟨k, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bd_of_tendsto {r : ℝ} {a : K⟦X⟧}
     (h : Filter.Tendsto (fun k : ℕ => ‖coeff k a‖ * r ^ k) Filter.atTop (nhds 0)) : ∃ c, Bd r c a := by
@@ -140,9 +140,9 @@ theorem bd_of_tendsto {r : ℝ} {a : K⟦X⟧}
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Establish `hr0 : 0 < r` using `h0.trans hr`. Establish `h1` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (r := r' / r) (by positivity) ((div_lt_one hr0).2 hr)).const_mul c`. Rewrite `h1` using `[mul_zero]`. Use `squeeze_zero (fun k => by positivity) (fun k => ?_) h1` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[div_pow]`. Clear the denominators using the available nonvanishing facts. Use `_ ≤ _ := mul_le_mul_of_nonneg_right (h k) (by positivity)`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem Bd.tendsto {r r' c : ℝ} {a : K⟦X⟧} (h : Bd r c a) (h0 : 0 < r') (hr : r' < r) :
     Filter.Tendsto (fun k : ℕ => ‖coeff k a‖ * r' ^ k) Filter.atTop (nhds 0) := by
@@ -156,7 +156,7 @@ theorem Bd.tendsto {r r' c : ℝ} {a : K⟦X⟧} (h : Bd r c a) (h0 : 0 < r') (h
     _ ≤ _ := mul_le_mul_of_nonneg_right (h k) (by positivity)
 
 /- English proof (translation)
-Take `⟨c, ha⟩` from `ha`. Take `⟨c', hb⟩` from `hb`. Conclude with `⟨_, ha.mul hr hb⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ex_mul {r : ℝ} (hr : 0 < r) {a b : K⟦X⟧} (ha : ∃ c, Bd r c a) (hb : ∃ c, Bd r c b) :
     ∃ c, Bd r c (a * b) := by
@@ -165,7 +165,7 @@ theorem ex_mul {r : ℝ} (hr : 0 < r) {a b : K⟦X⟧} (ha : ∃ c, Bd r c a) (h
   exact ⟨_, ha.mul hr hb⟩
 
 /- English proof (translation)
-Take `⟨c, h0, hc⟩` from `exists_bd_uniform f h`. Conclude with `⟨c, Bd.sum _ _ hr h0 fun i _ => hc i⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ex_sum {κ : Type} [Fintype κ] {r : ℝ} (hr : 0 < r) (f : κ → K⟦X⟧) (h : ∀ i, ∃ c, Bd r c (f i)) :
     ∃ c, Bd r c (∑ i, f i) := by
@@ -173,15 +173,15 @@ theorem ex_sum {κ : Type} [Fintype κ] {r : ℝ} (hr : 0 < r) (f : κ → K⟦X
   exact ⟨c, Bd.sum _ _ hr h0 fun i _ => hc i⟩
 
 /- English proof (translation)
-Use `set q := max lam r with hq`. Establish `hq0 : 0 < q` using `lt_max_of_lt_right hr`. Establish `hq1 : q < 1` using `max_lt hlam hr1`. Establish `step : ∀ x, 0 < x → x ≤ r → (∀ i a b, ∃ c, Bd (q * x) c (W i a b)) → ∀ i a b, ∃ c, Bd x c (W i a b)`. Introduce `x hx hxr hb i a b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx1 : x < 1` using `hxr.trans_lt hr1`. Establish `hγx : Bd x (q * x) (γ X)` using `(hγb x hx hx1).mono (mul_le_mul_of_nonneg_right (max_le_max le_rfl hxr) hx.le)`. Rewrite using `[hW i, Matrix.mul_apply]`. Use `ex_sum hx _ fun j => ex_mul hx ?_ (hD x hx hx1 _ _ _)` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ex_sum hx _ fun k => ex_mul hx (hP x hx hx1 _ _ _) ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `hb (σ i) k j`. Conclude with `⟨c, Bd.apply γ hγ hx hγx hc⟩`. Establish `iter : ∀ n : ℕ, (∀ i a b, ∃ c, Bd (q ^ n * r) c (W i a b)) → ∀ i a b, ∃ c, Bd r c (W i a b)`. Introduce `n`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Introduce `hb`. Use `ih (step _ (by positivity) (mul_le_of_le_one_left hr.le (pow_le_one₀ hq0.le hq1.le)) ?_)` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← mul_assoc, ← pow_succ']` and apply the resulting hypothesis. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hρ hq1`. Use `iter n fun i a b => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `h i a b`. Conclude with `⟨c, hc.radius (by positivity) ((mul_le_of_le_one_right (by positivity) hr1.le).trans hn.le)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem continuation_abstract {ι κ : Type} [Fintype κ] (γ : K⟦X⟧ →ₐ[K] K⟦X⟧)
     (hγ : constantCoeff (γ X) = 0) (lam : ℝ) (hlam : lam < 1)
@@ -224,19 +224,19 @@ end Bound
 variable (l : ℕ) [hl : Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `act_nat_X l O l`.
+A detailed English derivation is pending.
 -/
 theorem phi_X (O : Type) [CommRing O] [Algebra ℤ_[l] O] : phi l O X = (1 + X : O⟦X⟧) ^ l - 1 :=
   act_nat_X l O l
 
 /- English proof (translation)
-Establish `hs : HasSubst (cyc l K (l : ℤ_[l]))` using `HasSubst.of_constantCoeff_zero' (cyc_const l K _)`. Establish `hne : (1 + X : K⟦X⟧) ≠ 0` using `fun h => by simp [h] at h1`. Establish `hl1 : l - 1 + 1 = l` using `Nat.sub_add_cancel hl.out.one_le`. Apply `derivative.ext` to reduce the goal to its premises. Establish `e : derivative K (phi l K t) = phi l K (derivative K t) * derivative K ((1 + X) ^ l - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[phi, act_apply, act_apply, derivative_subst hs, cyc_natCast]`. Establish `e2` using `congrArg (phi l K) h1`. Rewrite `e2` using `[map_mul, map_add, map_one, phi_X, add_sub_cancel]`. Establish `e3 : derivative K ((1 + X : K⟦X⟧) ^ l - 1) = (l : K⟦X⟧) * (1 + X : K⟦X⟧) ^ (l - 1)`. Simplify using `[Derivation.leibniz_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e4 : derivative K ((l : K⟦X⟧) * t) = (l : K⟦X⟧) * derivative K t`. Rewrite using `[← nsmul_eq_mul, map_nsmul, nsmul_eq_mul]`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Establish `e5 : (1 + X : K⟦X⟧) ^ l = (1 + X) ^ (l - 1) * (1 + X)` using `by rw [← pow_succ, hl1]`. Rewrite `e2` using `[e5]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e, e3, e4]`. Take the linear combination `(l : K⟦X⟧) * e2 - (l : K⟦X⟧) * h1`. Take `⟨a, rfl⟩` from `X_dvd_iff.2 h0`. Simplify using `[phi_X]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem phi_log_series (K : Type) [Field K] [CharZero K] [Algebra ℤ_[l] K] (t : K⟦X⟧)
     (h0 : constantCoeff t = 0) (h1 : (1 + X) * derivative K t = 1) : phi l K t = (l : K⟦X⟧) * t := by
@@ -261,7 +261,7 @@ theorem phi_log_series (K : Type) [Field K] [CharZero K] [Algebra ℤ_[l] K] (t 
     simp [phi_X]
 
 /- English proof (translation)
-Establish `h1 : (0 : ℝ) < l` using `by exact_mod_cast hl.out.pos`. Establish `h0 : (k : ℚ_[l]) ≠ 0` using `by exact_mod_cast hk`. Rewrite using `[PadicInt.norm_def, PadicInt.coe_natCast, Padic.norm_eq_zpow_neg_valuation h0, Padic.valuation_natCast, zpow_neg, zpow_natCast, ← div_eq_mul_inv, one_le_div (by positivity)]`. Conclude with `Nat.le_of_dvd (Nat.pos_of_ne_zero hk) pow_padicValNat_dvd` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_le_norm_nat (k : ℕ) (hk : k ≠ 0) : 1 ≤ k * ‖(k : ℤ_[l])‖ := by
   have h1 : (0 : ℝ) < l := by exact_mod_cast hl.out.pos
@@ -273,19 +273,19 @@ theorem inv_le_norm_nat (k : ℕ) (hk : k ≠ 0) : 1 ≤ k * ‖(k : ℤ_[l])‖
 variable (LL : FinExt l)
 
 /- English proof (translation)
-Rewrite using `[← InvBasis.norm_algebraMap l LL, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_nat (k : ℕ) : ‖(k : ↥LL.1)‖ = ‖(k : ℤ_[l])‖ := by
   rw [← InvBasis.norm_algebraMap l LL, map_natCast]
 
 /- English proof (translation)
-Establish `hd : ∀ k, ‖coeff k (derivative _ (X * a))‖ = 1`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Use `congrArg (coeff 0) h1` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `this` using `[add_mul, one_mul, map_add, coeff_zero_X_mul, add_zero, coeff_one, if_pos rfl]`. Rewrite using `[this, norm_one]`. Consider the case `succ k ih`. Use `congrArg (coeff (k + 1)) h1` as an intermediate fact. Rewrite `this` using `[add_mul, one_mul, map_add, coeff_succ_X_mul, coeff_one, if_neg k.succ_ne_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[eq_neg_of_add_eq_zero_left this, norm_neg, ih]`. Establish `hb : ∀ k, ‖coeff k a‖ ≤ k + 1`. Introduce `k`. Establish `h` using `hd k`. Rewrite `h` using `[coeff_derivative, coeff_succ_X_mul, norm_mul, ← Nat.cast_succ, norm_nat]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `inv_le_norm_nat l (k + 1) k.succ_ne_zero`. Combine the equalities or inequalities in the displayed calculation. Use `bd_of_tendsto (squeeze_zero (fun k => by positivity) (fun k => mul_le_mul_of_nonneg_right (hb k) (by positivity)) ?_)` and prove the remaining obligations. Simplify `(tendsto_self_mul_const_pow_of_lt_one hr.le hr1).add (tendsto_pow_atTop_nhds_zero_of_lt_one hr.le hr1)` using `[add_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bd_log_div (a : (↥LL.1)⟦X⟧) (h1 : (1 + X) * derivative _ (X * a) = 1) (r : ℝ) (hr : 0 < r)
     (hr1 : r < 1) : ∃ c, Bd r c a := by
@@ -314,17 +314,17 @@ theorem bd_log_div (a : (↥LL.1)⟦X⟧) (h1 : (1 + X) * derivative _ (X * a) =
     (tendsto_pow_atTop_nhds_zero_of_lt_one hr.le hr1)
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Per.Val.mem_OL_iff LL x.1).1 x.2`.
+A detailed English derivation is pending.
 -/
 theorem norm_OL (x : ↥(OL LL)) : ‖algebraMap ↥(OL LL) ↥LL.1 x‖ ≤ 1 :=
   (GlobalTheory.Per.Val.mem_OL_iff LL x.1).1 x.2
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `exists_add_pow_prime_eq hl.out (X : (↥(OL LL))⟦X⟧) 1`. Establish `e : phi l ↥LL.1 X = X ^ l + C (l : ↥LL.1) * X * PowerSeries.map (algebraMap ↥(OL LL) ↥LL.1) b`. Use `congrArg (PowerSeries.map (algebraMap ↥(OL LL) ↥LL.1)) hb` as an intermediate fact. Simplify using `only [map_add, map_pow, map_mul, map_one, map_X, map_natCast] at this`. Rewrite using `[phi_X, map_natCast, add_comm 1 X, this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `Bd.add hr (((bd_X hr).pow hr l).mono ?_) (((((bd_C r _).mul hr (bd_X hr))).mul hr (bd_map _ (norm_OL l LL) hr hr1.le b)).mono ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one, norm_nat, PadicInt.norm_p]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) hr.le`.
+A detailed English derivation is pending.
 -/
 theorem bd_phi_X (r : ℝ) (hr : 0 < r) (hr1 : r < 1) :
     Bd r (max (l : ℝ)⁻¹ r * r) (phi l ↥LL.1 X) := by
@@ -345,20 +345,20 @@ theorem bd_phi_X (r : ℝ) (hr : 0 < r) (hr1 : r < 1) :
     exact mul_le_mul_of_nonneg_right (le_max_left _ _) hr.le
 
 /- English proof (translation)
-Simplify using `[phi_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem phi_X_const (O : Type) [CommRing O] [Algebra ℤ_[l] O] : constantCoeff (phi l O X) = 0 := by
   simp [phi_X]
 
 /- English proof (translation)
-The claim follows from `inv_lt_one_of_one_lt₀ (by exact_mod_cast hl.out.one_lt)`.
+A detailed English derivation is pending.
 -/
 theorem inv_lt_one : (l : ℝ)⁻¹ < 1 := inv_lt_one_of_one_lt₀ (by exact_mod_cast hl.out.one_lt)
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simpa using ha`. Consider the case `succ j ih`. Take `⟨c, hc⟩` from `ih`. Rewrite using `[pow_succ', AlgHom.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨c, Bd.apply _ (phi_X_const l _) hr ((bd_phi_X l LL r hr hr1).mono (mul_le_of_le_one_left hr.le (max_le (inv_lt_one l).le hr1.le))) hc⟩`.
+Supply the required witnesses or components.
 -/
 theorem ex_phi_pow (j : ℕ) {r : ℝ} (hr : 0 < r) (hr1 : r < 1) {a : (↥LL.1)⟦X⟧} (ha : ∃ c, Bd r c a) :
     ∃ c, Bd r c ((phi l ↥LL.1 ^ j) a) := by
@@ -371,15 +371,13 @@ theorem ex_phi_pow (j : ℕ) {r : ℝ} (hr : 0 < r) (hr1 : r < 1) {a : (↥LL.1)
       (mul_le_of_le_one_left hr.le (max_le (inv_lt_one l).le hr1.le))) hc⟩
 
 /- English proof (translation)
-Establish `hj : ∀ j : ℕ, (phi l ↥LL.1 ^ j) t = (l : (↥LL.1)⟦X⟧) ^ j * t`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[pow_succ', AlgHom.mul_apply, ih, map_mul, map_pow, map_natCast, phi_log_series l _ t h0 h1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hX : XX l ↥LL.1 s ≠ 0` using `fun h => by`. Rewrite `hτ` using `[h, zero_mul]`. Simplify using `[← hτ] at h1`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨a, ha⟩` from `X_dvd_iff.2 h0`. Establish `h2` using `hj (s - 1)`. Use `conv_lhs at h2 => rw [ha, map_mul, phi_pow_X]`. Establish `h3 : (phi l ↥LL.1 ^ (s - 1)) a = (l : (↥LL.1)⟦X⟧) ^ (s - 1) * τ`. Apply `mul_left_cancel₀ hX` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_left_comm, hτ, ← h2, XX]`. Establish `hl0 : (l : ↥LL.1) ≠ 0` using `by exact_mod_cast hl.out.ne_zero`. Establish `h4 : τ = C (((l : ↥LL.1) ^ (s - 1))⁻¹) * (phi l ↥LL.1 ^ (s - 1)) a`. Rewrite using `[h3, ← mul_assoc, ← map_natCast (C (R := ↥LL.1)), ← map_pow, ← map_mul, inv_mul_cancel₀ (pow_ne_zero _ hl0), map_one, one_mul]`. Rewrite using `[h4]`.
-
-Conclude with `ex_mul hr ⟨_, bd_C r _⟩ (ex_phi_pow l LL _ hr hr1 (bd_log_div l LL a (ha ▸ h1) r hr hr1))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bd_tau (s : ℕ) (t τ : (↥LL.1)⟦X⟧) (h0 : constantCoeff t = 0)
     (h1 : (1 + X) * derivative _ t = 1) (hτ : XX l ↥LL.1 s * τ = t) (r : ℝ) (hr : 0 < r) (hr1 : r < 1) :
@@ -414,17 +412,15 @@ namespace GlobalTheory.Cyc
 open Cont
 
 /- English proof (translation)
-Introduce `l hl LL s r n M _ hs t τ h0 h1 hτ U Pm Cm ρ hρ hU hc i a b x hx hx1`. Establish `hX : XX l ↥LL.1 s ≠ 0` using `fun h => by`. Rewrite `hτ` using `[h, zero_mul]`. Simplify using `[← hτ] at h1`. Establish `hQ : QQ l ↥LL.1 s * phi l ↥LL.1 τ = (l : (↥LL.1)⟦X⟧) * τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ hX` to reduce the goal to its premises. Rewrite using `[← mul_assoc, ← (XX_QQ_properties l _ s hs).1, ← map_mul, hτ, phi_log_series l _ t h0 h1, ← hτ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hl0 : (l : ↥LL.1) ≠ 0` using `by exact_mod_cast hl.out.ne_zero`. Establish `hinv : C (((l : ↥LL.1) ^ M)⁻¹) * (l : (↥LL.1)⟦X⟧) ^ M = 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast (C (R := ↥LL.1)), ← map_pow, ← map_mul, inv_mul_cancel₀ (pow_ne_zero _ hl0), map_one]`. Take `⟨y, hxy, hy1⟩` from `exists_between hx1`. Establish `key` using `continuation_abstract (phi l ↥LL.1) (phi_X_const l _) _ (inv_lt_one l) (bd_phi_X l LL) (fun i : ZMod n => i - 1) (fun i => τ ^ M • U i) (fun i => (Pm i).map (PowerSeries.map (algebraMap ↥(OL LL) ↥LL.1))) (fun i => C (((l : ↥LL.1) ^ M)⁻¹) • (Cm i).map C) (fun z hz hz1 i a b => ⟨1, …`. Establish `e : (τ ^ M • U (i - 1)).map (phi l ↥LL.1) = phi l ↥LL.1 τ ^ M • (U (i - 1)).map (phi l ↥LL.1)` using `by ext1 a b`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [e, Matrix.mul_smul, Matrix.smul_mul, ← hU, smul_smul]`. Use `congr 1`. Establish `: phi l ↥LL.1 τ ^ M * QQ l ↥LL.1 s ^ M = (l : (↥LL.1)⟦X⟧) ^ M * τ ^ M`. Rewrite using `[← mul_pow, mul_comm, hQ, mul_pow]`. Take the linear combination `-(C (((l : ↥LL.1) ^ M)⁻¹)) * this - τ ^ M * hinv)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use the proof step `(min (ρ / 2) (1 / 2)) (by positivity)`. Use the proof step `(fun i a b => by`. Establish `hz : 0 < min (ρ / 2) (1 / 2)` using `by positivity`. Take `⟨c, hc'⟩` from `bd_tau l LL s t τ h0 h1 hτ _ hz ((min_le_right _ _).trans_lt (by norm_num))`. Conclude with `ex_mul hz ⟨_, hc'.pow hz M⟩ (bd_of_tendsto (hc i a b _ hz ((min_le_left _ _).trans_lt (by linarith)))))`.
-
-Use `y (hx.trans hxy) hy1 i a b`. Take `⟨c, hc⟩` from `key`. Conclude with `hc.tendsto hx hxy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem continuation_to_open_disc : ∀ (l : ℕ) [Fact l.Prime], ∀ (LL : FinExt l) (s r n M : ℕ) [NeZero n], 1 ≤ s → ∀ (t τ : PowerSeries ↥LL.1), PowerSeries.constantCoeff t = 0 → (1 + PowerSeries.X) * PowerSeries.derivative ↥LL.1 t = 1 → XX l ↥LL.1 s * τ = t → ∀ (U : ZMod n → Matrix (Fin r) (Fin r) (PowerSeries ↥LL.1)) (Pm : ZMod n → Matrix (Fin r) (Fin r) (PowerSeries ↥(OL LL))) (Cm : ZMod n → Matrix (Fin r) (Fin r) ↥LL.1) (ρ : ℝ), 0 < ρ → (∀ i, QQ l ↥LL.1 s ^ M • U i = (Pm i).map (PowerSeries.map (algebraMap ↥(OL LL) ↥LL.1)) * (U (i - 1)).map (phi l ↥LL.1) * (Cm i).map PowerSeries.C) → (∀ i a b, (∀ r : ℝ, 0 < r → r < ρ → Filter.Tendsto (fun k : ℕ => ‖((PowerSeries.coeff k (U i a b) : ↥LL.1) : Om l)‖ * r ^ k) Filter.atTop (nhds 0))) → ∀ i a b, (∀ r : ℝ, 0 < r → r < 1 → Filter.Tendsto (fun k : ℕ => ‖((PowerSeries.coeff k (τ ^ M * U i a b) : ↥LL.1) : Om l)‖ * r ^ k) Filter.atTop (nhds 0)) := by
   intro l hl LL s r n M _ hs t τ h0 h1 hτ U Pm Cm ρ hρ hU hc i a b x hx hx1

@@ -84,7 +84,7 @@ def Clause3 : Prop :=
     Formalism.MainNotions.SchurIrreducible.IsHCMod πU M io → Formalism.MainNotions.SchurIrreducible.AdmGK M → Formalism.MainNotions.SchurIrreducible.IrrGK M → Formalism.MainNotions.SchurIrreducible.IrrU πU
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun p q h T => ⟨h1 p q h T, h2 p q h T, h3 p q h T⟩, h4⟩`.
+Supply the required witnesses or components.
 -/
 theorem hcm_of (h1 : Clause1) (h2 : Clause2) (h3 : Clause3) (h4 : GlobalTheory.Published.KFiniteAnalyticUJ) :
     GlobalTheory.Published.HarishChandraModules :=

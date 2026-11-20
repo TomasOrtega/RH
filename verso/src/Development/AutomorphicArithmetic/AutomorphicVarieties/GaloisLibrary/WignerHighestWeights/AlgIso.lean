@@ -24,7 +24,7 @@ private def pairSub {d d' : ℕ} (T : (Fin d → ℂ) ≃ₗ[ℂ] (Fin d' → �
       Matrix.smul_mulVec, Matrix.one_mulVec, map_smul]
 
 /- English proof (translation)
-Introduce `E _ _ _ a Ξ Ξ' m h h'`. Take `⟨T, hT⟩` from `algIsoLie E a Ξ Ξ' m h h'`. Take `⟨h1, h2⟩` from `pairAlg E a Ξ Ξ' (pairSub T) (fun τ i j v => hT τ i j v)`. Conclude with `⟨T, fun y v => h2 y v, fun X v => h1 X v⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.AlgRepEndIrreducible.algIso :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (Ξ Ξ' : AlgRep E a) (m : (E →+* ℂ) → Multiset ℂ),

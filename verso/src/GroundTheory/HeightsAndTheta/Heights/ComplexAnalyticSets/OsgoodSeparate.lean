@@ -14,7 +14,7 @@ noncomputable section
 namespace OsgoodSeparate
 
 /- English proof (translation)
-Establish `hR : 0 < R` using `pos_of_mem_ball hx`. Use `(mem_ball_pi_iff hR).mpr fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using hx`. Simplify `(mem_ball_pi_iff hR).mp hy j` using `[Fin.tail]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cons_mem_ball {n : ℕ} {c : Fin (n + 1) → ℂ} {R : ℝ} {x : ℂ} (hx : x ∈ ball (c 0) R)
     {y : Fin n → ℂ} (hy : y ∈ ball (Fin.tail c) R) : (Fin.cons x y : Fin (n + 1) → ℂ) ∈ ball c R := by
@@ -25,7 +25,7 @@ theorem cons_mem_ball {n : ℕ} {c : Fin (n + 1) → ℂ} {R : ℝ} {x : ℂ} (h
   · simpa [Fin.tail] using (mem_ball_pi_iff hR).mp hy j
 
 /- English proof (translation)
-The claim follows from `| 0, G, c, _, _, _, r, _, _, z, _ => by rw [torusIntegral_dim0] simp [Subsingleton.elim z c] | n + 1, G, c, R, hc, hs, r, hr0, hrR, z, hz => by have htor : ∀ θ, torusMap c (fun _ => r) θ ∈ ball c R := fun θ => closedBall_subset_ball hrR (torusMap_mem_closedBall c hr0.le θ) have h …`.
+A detailed English derivation is pending.
 -/
 theorem cauchy_torus : ∀ (n : ℕ) (G : (Fin n → ℂ) → ℂ) (c : Fin n → ℂ) (R : ℝ),
     ContinuousOn G (ball c R) →
@@ -93,11 +93,11 @@ end OsgoodSeparate
 open OsgoodSeparate in
 
 /- English proof (translation)
-Introduce `c hcU`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hU c hcU`. Establish `hr : 0 < ε / 2` using `half_pos hε`. Establish `hrε : ε / 2 < ε` using `half_lt_self hε`. Establish `hcb : ContinuousOn g (ball c ε)` using `hc.mono hball`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsb : ∀ z ∈ ball c ε, ∀ i, DifferentiableAt ℂ (fun t => g (Function.update z i t)) (z i)` using `fun z hz => hs z (hball hz)`. Establish `htor : Continuous fun θ => g (torusMap c (fun _ => ε / 2) θ)` using `hcb.comp_continuous (continuous_torusMap c _) fun θ => closedBall_subset_ball hrε (torusMap_mem_closedBall c hr.le θ)`. Use `set L := torusFunctional c (ε / 2) g htor`. Establish `hne : (2 * π * I : ℂ) ^ n ≠ 0` using `pow_ne_zero _ (by simp [Real.pi_ne_zero, I_ne_zero])`. Establish `han : AnalyticAt ℂ (fun z => ((2 * π * I : ℂ) ^ n)⁻¹ * L (kern c (ε / 2) z)) c` using `analyticAt_const.mul ((L.analyticAt _).comp (kern_analyticAt_of_mem c hr (mem_ball_self hr)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `han.congr ?_` and prove the remaining obligations. Use `filter_upwards [isOpen_ball.mem_nhds (mem_ball_self hr)] with z hz`. Use `show ((2 * π * I : ℂ) ^ n)⁻¹ * fctl c (ε / 2) g (kern c (ε / 2) z) = g z`. Rewrite using `[fctl_kern hr g hz, cauchy_torus n g c ε hcb hsb (ε / 2) hr hrε z hz, ← mul_assoc, inv_mul_cancel₀ hne, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem analyticOnNhd_of_continuousOn_of_separately {n : ℕ} {U : Set (Fin n → ℂ)}
     {g : (Fin n → ℂ) → ℂ} (hU : IsOpen U) (hc : ContinuousOn g U)
@@ -124,7 +124,7 @@ theorem analyticOnNhd_of_continuousOn_of_separately {n : ℕ} {U : Set (Fin n �
     inv_mul_cancel₀ hne, one_mul]
 
 /- English proof (translation)
-The claim follows from `(analyticOnNhd_of_continuousOn_of_separately hU hc hs).differentiableOn`.
+A detailed English derivation is pending.
 -/
 theorem differentiableOn_of_continuousOn_of_separately {n : ℕ} {U : Set (Fin n → ℂ)}
     {g : (Fin n → ℂ) → ℂ} (hU : IsOpen U) (hc : ContinuousOn g U)

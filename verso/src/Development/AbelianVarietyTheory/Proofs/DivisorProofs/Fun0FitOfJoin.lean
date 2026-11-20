@@ -36,7 +36,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ZetaDenominatorsFit
 namespace GlobalTheory.BigTop.Fun.Close
 
 /- English proof (translation)
-Introduce `hP hJ hHT hTheta hLoc hSep hLam`. Take `⟨hTD, hTr, hTw, hZD, hRefl⟩` from `hJ`. Conclude with `GlobalTheory.BigTop.Fun.Close.fun0Fit_close hP (GlobalTheory.Published.HeckeTateFunctionalEquation.abs hHT) hTD hTr hTw hZD hRefl hTheta hLoc hSep hLam`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fun0Fit_of_join : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.Mem.LiteralAutomorphy.JoinOut → GlobalTheory.Published.HeckeTateFunctionalEquation → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate → GlobalTheory.BigTop.LamLow → GlobalTheory.BigTop.Fun.Fun0Fit @GlobalTheory.BigTop.Fun.Fld := by
   intro hP hJ hHT hTheta hLoc hSep hLam

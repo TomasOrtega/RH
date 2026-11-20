@@ -3,7 +3,7 @@ import Formalism.PeriodIntegrals.FoldUnfold
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnfoldingIdentity.FoldUnfoldMain
 
 /- English proof (translation)
-The claim follows from `PI.FoldUnfold.UnitaryGroupMassFormula.foldUnfold_main`.
+A detailed English derivation is pending.
 -/
 theorem lintegralTransversalSum : PI.FoldUnfold.FoldUnfold :=
   PI.FoldUnfold.UnitaryGroupMassFormula.foldUnfold_main

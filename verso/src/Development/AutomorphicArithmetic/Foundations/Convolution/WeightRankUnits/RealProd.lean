@@ -6,17 +6,17 @@ open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `E _ _ _ n a b hab e he lam`. Substitute `hab` using the available equality. Use `choose ι hι l₁ l₂ ε hε hinf hid using fun v : InfinitePlace E => UpperTheory.ConvolutionTheory.G2.realSigned a b (lam v) (e v) (he v)`. Set `s : ∀ v, ι v → ℤˣ` to `fun v j => if ε v j = 1 then 1 else -1`. Establish `hs : ∀ v j, ((s v j : ℤ) : ℂ) = ε v j`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v j`. Distinguish the cases in `h : ε v j = 1`. Simplify using `[s, h]`. Establish `h'` using `(hε v j).resolve_left h`. Simplify using `only [s, if_neg h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h']`. Simplify using the standard rewrite rules. Use `⟨∀ v, ι v, inferInstance, fun i v => l₁ v (i v), fun i v => l₂ v (i v), fun i => ∏ v, s v (i v), fun i v => hinf v (i v), ?_⟩` and prove the remaining obligations. Introduce and unpack `P₁ P₂ ⟨hm₁, hd₁, hs₁, hr₁⟩ ⟨hm₂, hd₂, hs₂, hr₂⟩ hc`. Establish `key : ∀ v : InfinitePlace E, UpperTheory.ConvolutionTheory.G2.phase e (resultant P₁ P₂) v * (starRingEnd ℂ) (chAt (lam v) ((P₁ * P₂).map v.embedding)) = ∑ j, ε v j * (starRingEnd ℂ) (chAt (l₁ v j) (P₁.map v.embedding)) * (starRingEnd ℂ) (chAt (l₂ v j) (P₂.map v.embedding))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Establish `hR : resultant (P₁.map v.embedding) (P₂.map v.embedding) = v.embedding (resultant P₁ P₂)`. Rewrite using `[natDegree_map, natDegree_map, resultant_map_map]`. Establish `h` using `hid v (P₁.map v.embedding) (P₂.map v.embedding) (hm₁.map _) (hm₂.map _) (by rw [natDegree_map, hd₁]) (by rw [natDegree_map, hd₂]) (by rw [← Polynomial.map_mul]; exact (hs₁.mul hs₂ hc).map) (by`. Introduce `z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[roots_mul ((hm₁.map _).mul (hm₂.map _)).ne_zero, Multiset.mem_add]`. Conclude with `hz.elim (hr₁ _ z) (hr₂ _ z))`. Rewrite `h` using `[hR]`. Rewrite using `[Polynomial.map_mul]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `chW`. Rewrite using `[← Finset.prod_mul_distrib, Finset.prod_congr rfl fun v _ => key v, Finset.prod_univ_sum, Fintype.piFinset_univ]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib]`. Simplify using `only [Units.coe_prod, Int.cast_prod, hs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.G2.realProd :
     UpperTheory.ConvolutionTheory.G2.RealProd := by

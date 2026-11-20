@@ -8,7 +8,7 @@ open GroundTheory.Global GroundTheory.Global.SemiLocal GroundTheory.Automorphic.
 open UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.GM
 
 /- English proof (translation)
-Introduce `K _ _ n _ μ _ w ν ν' hν hν'`. Conclude with `(UpperTheory.ConvolutionTheory.Tf.uiwPow K n μ w ν ν' hν hν').1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.GM.uiwMul :
     UiwMul := by

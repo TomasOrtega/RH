@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.uniformisation_dvr_unconditional | exact GlobalTheory.uniformisation_dvr_unconditional | (intros; apply GlobalTheory.uniformisation_dvr_unconditional <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.uniformisation_completeDVR : GlobalTheory.LN.USt := by
   first | exact @GlobalTheory.uniformisation_dvr_unconditional | exact GlobalTheory.uniformisation_dvr_unconditional | (intros; apply GlobalTheory.uniformisation_dvr_unconditional <;> assumption)

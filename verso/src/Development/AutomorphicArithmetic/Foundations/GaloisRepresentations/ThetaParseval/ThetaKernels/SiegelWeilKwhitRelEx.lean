@@ -14,9 +14,9 @@ noncomputable section
 namespace PositivityTheory.SiegelWeilFormula.KWhit
 open PositivityTheory.SiegelWeilFormula
 /- English proof (translation)
-Introduce `_ _ F E _ _ _ _ _ σ d R Φ _ P gf hP x t u hx T hTnd`. Take `⟨η, hOf, hη, hherm, hof, haniso, hcm, hJ, hTT⟩` from `hA F E σ d`. Take `⟨T₀, hrat, hTdh, hTdd⟩` from `hTT T hTnd`. Take `⟨θ, fr, g, l, εs, Φg, Φf, Φv, hth, hfr, hg, hΦg, hεs, hchr, hpl, hfrm, hpf, hpr⟩` from `hR F E σ d R Φ P gf hP x t u hx η hη hherm`. Take `⟨⟨μ, hμ⟩, ⟨ν, hν⟩⟩` from `hS F E σ hcm d.m (_root_.PositivityTheory.SiegelWeilFormula.KWhit.Jd_k d η) hJ d.B.ψ hchr d.n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨η, T₀, hOf, θ, fr, g, l, εs, Φg, Φf, Φv, μ, ν, ⟨hx, hrat, hη, hherm, hof, hth, hfr, hg⟩, hΦg, haniso, hεs, hcm, hJ, hTdh, hTdd, hchr, hpl, hfrm, hpf, hpr, hμ, hν⟩`.
+Supply the required witnesses or components.
 -/
 theorem relEx_of_k (hA : _root_.PositivityTheory.SiegelWeilFormula.KWhit.RelAlg_k) (hS : SdEx) (hR : _root_.PositivityTheory.SiegelWeilFormula.ThetaDictR.RelRealP_k) : _root_.PositivityTheory.SiegelWeilFormula.KWhit.RelEx_k := by
   intro _ _ F E _ _ _ _ _ σ d R Φ _ P gf hP x t u hx T hTnd
@@ -28,7 +28,7 @@ theorem relEx_of_k (hA : _root_.PositivityTheory.SiegelWeilFormula.KWhit.RelAlg_
   exact ⟨η, T₀, hOf, θ, fr, g, l, εs, Φg, Φf, Φv, μ, ν, ⟨hx, hrat, hη, hherm, hof, hth, hfr, hg⟩, hΦg, haniso, hεs,
     hcm, hJ, hTdh, hTdd, hchr, hpl, hfrm, hpf, hpr, hμ, hν⟩
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.KWhit.relEx_of_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.relAlg_pf_k sdEx _root_.PositivityTheory.SiegelWeilFormula.ThetaDictR.relReal_k`.
+A detailed English derivation is pending.
 -/
 theorem relEx_k : _root_.PositivityTheory.SiegelWeilFormula.KWhit.RelEx_k := _root_.PositivityTheory.SiegelWeilFormula.KWhit.relEx_of_k _root_.PositivityTheory.SiegelWeilFormula.KWhit.relAlg_pf_k sdEx _root_.PositivityTheory.SiegelWeilFormula.ThetaDictR.relReal_k
 end PositivityTheory.SiegelWeilFormula.KWhit

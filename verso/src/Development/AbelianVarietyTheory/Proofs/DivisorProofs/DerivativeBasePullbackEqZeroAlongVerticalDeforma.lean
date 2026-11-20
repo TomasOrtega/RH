@@ -17,13 +17,13 @@ noncomputable section
 namespace GlobalTheory.LogPole
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c TF Z U W hW K _ _ P N' w zw hzw hv hz r`. Establish `hx : w.x = spMap (GlobalTheory.FlagTan.cst c K).toRingHom ≫ P.x` using `(GlobalTheory.FlagTan.exists_isVert_iff.1 ⟨N', hv⟩).2`. Establish `hfr : frX w = spMap (GlobalTheory.FlagTan.cst c K).toRingHom ≫ frX P` using `(GlobalTheory.FlagMod.eq_frX w (by rw [Category.assoc, GlobalTheory.FlagMod.frX_fst, hx]) (by rw [Category.assoc, GlobalTheory.FlagMod.frX_snd, spMap_comp']`. Conclude with `congrArg spMap (GlobalTheory.FlagTan.cst c K).comp_algebraMap)).symm`. Establish `hb : zw ≫ toBase TF Z = spMap (GlobalTheory.FlagTan.cst c K).toRingHom ≫ (frX P ≫ TF.Y.j)` using `by show zw ≫ (inc₀ TF.X Z ≫ TF.X.π) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, hz, (TF.X.lies_ptY w).1, hfr, Category.assoc]`. Establish `h1 : ⊤ ≤ (zw ≫ toBase TF Z) ⁻¹ᵁ U` using `fun s _ => hW (hzw (Set.mem_univ s))`. Establish `h2 : ⊤ ≤ (spMap (GlobalTheory.FlagTan.cst c K).toRingHom ≫ (frX P ≫ TF.Y.j)) ⁻¹ᵁ U` using `hb ▸ h1`. Establish `hK : ∀ a b : PrimeSpectrum K, a = b` using `fun a b => by`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(Ideal.eq_bot_or_top a.asIdeal).resolve_right a.2.ne_top, (Ideal.eq_bot_or_top b.asIdeal).resolve_right b.2.ne_top]`. Establish `h3 : ⊤ ≤ (frX P ≫ TF.Y.j) ⁻¹ᵁ U` using `fun s _ => by`. Establish `hp : (spMap (GlobalTheory.FlagTan.cst c K).toRingHom) ((spMap (TrivSqZeroExt.fstHom c.F K K).toRingHom) (IsLocalRing.closedPoint K)) = s` using `hK _ _`. Establish `h₁` using `h2 (Set.mem_univ ((spMap (TrivSqZeroExt.fstHom c.F K K).toRingHom) (IsLocalRing.closedPoint K)))`. Conclude with `hp ▸ h₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.FlagMod.ev_appLE zw (toBase TF Z) hW hzw h1, GlobalTheory.FlagMod.ev_congr hb U h1 h2, GlobalTheory.FlagMod.ev_spMap _ _ U h3 h2]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem snd_ev_toBase_of_isVert : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c) (U : TF.Y.X.Opens) (W : (Y₀ TF.X Z).Opens) (hW : W ≤ toBase TF Z ⁻¹ᵁ U) (K : Type) [Field K] [Algebra c.F K] (P : FrPt Xo c K) (N' : GlobalTheory.FlagTan.FIx Dw → K) (w : FrPt Xo c (DualNumber K)) (zw : Sp (DualNumber K) ⟶ Y₀ TF.X Z) (hzw : ⊤ ≤ zw ⁻¹ᵁ W), IsVert P N' w → zw ≫ inc₀ TF.X Z = TF.X.ptY w → ∀ r, (ev zw W hzw (((toBase TF Z).appLE U W hW).hom r)).snd = 0 := by
   intro E _ _ _ H Dw l Xo c TF Z U W hW K _ _ P N' w zw hzw hv hz r

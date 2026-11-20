@@ -8,9 +8,9 @@ noncomputable def evalFun {d : ℕ} (p : Polynomial (MvPolynomial (Fin d) ℂ)) 
   Polynomial.eval v.2 (Polynomial.map (MvPolynomial.eval v.1) p)
 
 /- English proof (translation)
-Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => simpa using contDiff_const`. Consider the case `add p q hp hq => simpa using hp.add hq`. Consider the case `mul_X p i hp`. Establish `hX : ContDiff ℂ 1 (fun v : (Fin d → ℂ) × ℂ => v.1 i)` using `(contDiff_apply ℂ ℂ i).comp contDiff_fst`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `using hp.mul hX`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma contDiff_mvEval {d : ℕ} (q : MvPolynomial (Fin d) ℂ) :
     ContDiff ℂ 1 (fun v : (Fin d → ℂ) × ℂ => MvPolynomial.eval v.1 q) := by
@@ -22,9 +22,9 @@ lemma contDiff_mvEval {d : ℕ} (q : MvPolynomial (Fin d) ℂ) :
     simpa using hp.mul hX
 
 /- English proof (translation)
-Establish `h : evalFun p = fun v => ∑ i ∈ Finset.range (p.natDegree + 1), MvPolynomial.eval v.1 (p.coeff i) * v.2 ^ i`. Use function extensionality and compare the values at `v`. Unfold `evalFun`. Rewrite using `[Polynomial.eval_eq_sum_range' (Nat.lt_succ_of_le Polynomial.natDegree_map_le)]`. Simplify using `[Polynomial.coeff_map]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Apply `ContDiff.sum` to reduce the goal to its premises. Introduce `i _`. Conclude with `(contDiff_mvEval _).mul (contDiff_snd.pow i)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma contDiff_evalFun {d : ℕ} (p : Polynomial (MvPolynomial (Fin d) ℂ)) :
     ContDiff ℂ 1 (evalFun p) := by
@@ -40,15 +40,13 @@ lemma contDiff_evalFun {d : ℕ} (p : Polynomial (MvPolynomial (Fin d) ℂ)) :
   exact (contDiff_mvEval _).mul (contDiff_snd.pow i)
 
 /- English proof (translation)
-Introduce `d p x₀ a h0 h1`. Use `set q := Polynomial.map (MvPolynomial.eval x₀) p with hq`. Establish `hFs : HasStrictFDerivAt (evalFun p) (fderiv ℂ (evalFun p) (x₀, a)) (x₀, a)` using `(contDiff_evalFun p).contDiffAt.hasStrictFDerivAt one_ne_zero`. Establish `hder : fderiv ℂ (evalFun p) (x₀, a) ∘L ContinuousLinearMap.inr ℂ (Fin d → ℂ) ℂ = (1 : ℂ →L[ℂ] ℂ).smulRight (Polynomial.eval a (Polynomial.derivative q))`. Establish `h1' : HasFDerivAt (fun z => evalFun p (x₀, z)) (fderiv ℂ (evalFun p) (x₀, a) ∘L ContinuousLinearMap.inr ℂ (Fin d → ℂ) ℂ) a` using `hFs.hasFDerivAt.comp a (hasFDerivAt_prodMk_right x₀ a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2' : HasFDerivAt (fun z => evalFun p (x₀, z)) ((1 : ℂ →L[ℂ] ℂ).smulRight (Polynomial.eval a (Polynomial.derivative q))) a` using `(Polynomial.hasDerivAt q a).hasFDerivAt`. Conclude with `h1'.unique h2'`. Establish `hinv : (fderiv ℂ (evalFun p) (x₀, a) ∘L ContinuousLinearMap.inr ℂ (Fin d → ℂ) ℂ).IsInvertible`. Rewrite using `[hder]`. Use `⟨ContinuousLinearEquiv.unitsEquivAut ℂ (Units.mk0 _ h1), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `ext`. Simplify using the standard rewrite rules. Set `φ` to `hFs.implicitFunctionDataOfProdDomain hinv`. Use `⟨fun x => (φ.toOpenPartialHomeomorph.symm (evalFun p (x₀, a), x)).2, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `(hFs.eventually_apply_eq_iff_implicitFunctionOfProdDomain hinv).self_of_nhds` as an intermediate fact.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `this.mp rfl`. Use `⟨{x | (evalFun p (x₀, a), x) ∈ φ.toOpenPartialHomeomorph.target}, ?_, ?_⟩` and prove the remaining obligations. Apply `IsOpen.mem_nhds` to reduce the goal to its premises. Conclude with `φ.toOpenPartialHomeomorph.open_target.preimage (by fun_prop)`. Conclude with `φ.map_pt_mem_toOpenPartialHomeomorph_target`.
-
-Conclude with `continuous_snd.comp_continuousOn (φ.toOpenPartialHomeomorph.continuousOn_symm.comp (by fun_prop) (fun x hx => hx))`. Use `hFs.eventually_apply_implicitFunctionOfProdDomain hinv filter_upwards [this] with x hx` as an intermediate fact. Conclude with `hx.trans h0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ {d : ℕ} (p : Polynomial (MvPolynomial (Fin d) ℂ)) (x₀ : Fin d → ℂ) (a : ℂ),
     Polynomial.eval a (Polynomial.map (MvPolynomial.eval x₀) p) = (0 : ℂ) →

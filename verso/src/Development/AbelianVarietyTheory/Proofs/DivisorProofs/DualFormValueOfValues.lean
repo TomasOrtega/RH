@@ -8,9 +8,9 @@ open NumberField IsDedekindDomain GlobalTheory.CMVal GlobalTheory.IndefiniteRowS
 namespace GlobalTheory.DualFormOrtho
 
 /- English proof (translation)
-Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem u hu`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem v hv => exact h u hu v hv`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul c x _ hx => simp [hx]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul c x _ hx => simp [hx]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem bilin_eq_zero_of_span {V : Type} [AddCommGroup V] [Module ℂ V] (B : LinearMap.BilinForm ℂ V) {s t : Set V}
     (h : ∀ u ∈ s, ∀ v ∈ t, B u v = 0) {a b : V} (ha : a ∈ Submodule.span ℂ s) (hb : b ∈ Submodule.span ℂ t) : B a b = 0 := by
@@ -26,13 +26,13 @@ theorem bilin_eq_zero_of_span {V : Type} [AddCommGroup V] [Module ℂ V] (B : Li
   | smul c x _ hx => simp [hx]
 
 /- English proof (translation)
-Introduce `E _ _ _ I _ _ φ hφ hex hval ξ hξ hc`. Use `⟨hex ξ hξ, fun B hB ε => ?_⟩` and prove the remaining obligations. Establish `hv` using `hval ξ hξ hc B hB`. Establish `key : ∀ i j, i ≠ j → ∀ σ : E →+* ℂ, (σ = φ i ∨ σ = ComplexEmbedding.conjugate (φ i)) → (σ = φ j ∨ σ = ComplexEmbedding.conjugate (φ j)) → False` using `fun i j hij σ h1 h2 => hij ((hφ σ).unique h1 h2)`. Establish `gen : ∀ i j, i ≠ j → ∀ u ∈ ({eCl φ i, fCl φ i} : Set (Coh E)), ∀ v ∈ ({eCl φ j, fCl φ j} : Set (Coh E)), B u v = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `i j hij u (rfl | rfl) v (rfl | rfl)`. Conclude with `(hv (φ i) (φ j)).2 fun h => key i j hij (φ j) (Or.inr h) (Or.inl rfl)`. Conclude with `(hv (φ i) (ComplexEmbedding.conjugate (φ j))).2 fun h => key i j hij (ComplexEmbedding.conjugate (φ j)) (Or.inr h) (Or.inr rfl)`. Use `(hv (ComplexEmbedding.conjugate (φ i)) (φ j)).2 fun h => ?_` and prove the remaining obligations. Rewrite `h` using `[ComplexEmbedding.involutive_conjugate E (φ i)]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `key i j hij (φ j) (Or.inl h) (Or.inl rfl)`. Use `(hv (ComplexEmbedding.conjugate (φ i)) (ComplexEmbedding.conjugate (φ j))).2 fun h => ?_` and prove the remaining obligations. Rewrite `h` using `[ComplexEmbedding.involutive_conjugate E (φ i)]`. Conclude with `key i j hij (ComplexEmbedding.conjugate (φ j)) (Or.inl h) (Or.inr rfl)`. Use `⟨fun i j hij a ha b hb => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : B a b = 0` using `bilin_eq_zero_of_span B (gen i j hij) ha hb`. Rewrite using `[pairing, h0, mul_zero]`. Establish `h1 : B (eCl φ i) (fCl φ i) = (φ i ξ)⁻¹` using `(hv (φ i) (ComplexEmbedding.conjugate (φ i))).1 rfl`. Rewrite using `[pairing, h1, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dualFormValue_of_values : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] [DecidableEq I]
     (φ : I → E →+* ℂ), IsCMType φ → (∀ ξ : E, ξ ≠ 0 → ∃! B : LinearMap.BilinForm ℂ (Coh E), IsDualForm ξ B) →

@@ -10,7 +10,7 @@ open PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.G8
 namespace GlobalTheory.CompanionTheory.TranslAdele
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `σ (σ (g.val i j)) = g.val i j`. Conclude with `hσ _`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem thetaR_thetaR {A : Type} [CommRing A] (σ : A →+* A) (hσ : ∀ x, σ (σ x) = x) (n : ℕ)
     (g : GL (Fin n) A) : thetaR σ n (thetaR σ n g) = g := by
@@ -20,9 +20,9 @@ theorem thetaR_thetaR {A : Type} [CommRing A] (σ : A →+* A) (hσ : ∀ x, σ 
   exact hσ _
 
 /- English proof (translation)
-Establish `: z.val ∈ Set.range (Matrix.scalar (Fin n) : K →+* Matrix (Fin n) (Fin n) K)`. Apply `Matrix.mem_range_scalar_of_commute_transvectionStruct` to reduce the goal to its premises. Introduce `t`. Establish `h` using `hz ⟨t.toMatrix, t.inv.toMatrix, t.mul_inv, t.inv_mul⟩`. Establish `h'` using `congrArg Units.val h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h'.symm`. Take `⟨c, hc⟩` from `this`. Conclude with `⟨c, hc.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_scalar_of_central {K : Type} [Field K] {n : ℕ} (z : GL (Fin n) K)
     (hz : ∀ h : GL (Fin n) K, z * h = h * z) : ∃ c : K, z.val = Matrix.scalar (Fin n) c := by
@@ -36,7 +36,7 @@ theorem exists_scalar_of_central {K : Type} [Field K] {n : ℕ} (z : GL (Fin n) 
   exact ⟨c, hc.symm⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, GlobalTheory.Tw.Phi, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Phi_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (n : ℕ) :
     (GlobalTheory.Tw.Phi n R).map f = GlobalTheory.Tw.Phi n S := by
@@ -45,21 +45,19 @@ theorem Phi_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) (n : ℕ)
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `E _ _ _ n u hu g`. Establish `hz : ∀ h : GL (Fin n) E, ((PhiU n E)⁻¹ * u) * h = h * ((PhiU n E)⁻¹ * u)`. Introduce `h`. Establish `hinv : thetaE E n (thetaE E n h) = h` using `thetaR_thetaR (conjE E) (fun x => IsCMField.complexConj_apply_apply E x) n h`. Establish `h1` using `hu.1 (thetaE E n h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hinv]`. Establish `h2 : thE E n (thetaE E n h) = PhiU n E * h * (PhiU n E)⁻¹`. Use `thetaGL_eq n E (IsCMField.complexConj E).toRingEquiv.toRingHom (thetaE E n h)` as an intermediate fact. Rewrite `this` using `[show thetaR (IsCMField.complexConj E).toRingEquiv.toRingHom n (thetaE E n h) = h from hinv]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Establish `h3 : h * (PhiU n E)⁻¹ * u = (PhiU n E)⁻¹ * u * h`. Establish `h4 : PhiU n E * h * (PhiU n E)⁻¹ * u = u * h` using `by rw [h1]; group`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h3, mul_assoc h]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `exists_scalar_of_central _ hz`. Use `set w : GA E n := ratGL E n ((PhiU n E)⁻¹ * u) with hw`. Establish `hwc : ∀ t : GA E n, w * t = t * w`. Introduce `t`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : w.val = Matrix.scalar (Fin n) (algebraMap E (Ad E) c)`. Establish `: w.val = (((PhiU n E)⁻¹ * u : GL (Fin n) E).val).map (algebraMap E (Ad E))` using `rfl`. Rewrite using `[this, hc]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.scalar_apply, hij]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, Units.val_mul, hval]`. Conclude with `Matrix.scalar_commute _ (fun r' => Commute.all _ _) _`. Establish `hP : ratGL E n (PhiU n E) = PhiU n (Ad E)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[phiU_val, ← Phi_map (algebraMap E (Ad E)) n, ← phiU_val]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hr : ratGL E n u = PhiU n (Ad E) * w`. Rewrite using `[hw, map_mul, map_inv, hP, mul_inv_cancel_left]`. Rewrite using `[thetaGL_eq, hr]`. Establish `h5 : w * thetaA E n g * w⁻¹ = thetaA E n g` using `by rw [hwc]; group`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem translAd : TranslAd := by
   intro E _ _ _ n u hu g

@@ -14,7 +14,7 @@ variable {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
   {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
 
 /- English proof (translation)
-Simplify using `using Hadamard.re_det_gram_sum_smul (𝕜 := ℝ) e m`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem det_gram_real_sum_smul (e : ι → E) (m : Matrix ι ι ℝ) :
     (gram ℝ (fun j => ∑ i, m i j • e i)).det = m.det ^ 2 * (gram ℝ e).det := by
@@ -29,7 +29,7 @@ variable {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
   {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `: Module.Finite ℤ L` using `.of_fg h`. Establish `: IsAddTorsionFree V` using `.of_isTorsionFree ℝ V`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem free_of_fg {V : Type*} [AddCommGroup V] [Module ℝ V] {L : Submodule ℤ V} (h : L.FG) :
     Module.Free ℤ L := by
@@ -47,9 +47,9 @@ noncomputable def spanCovol (L : Submodule ℤ E) : ℝ :=
   else 0
 
 /- English proof (translation)
-Set `w : ι → L` to `fun j => ⟨b' j, h (b' j).2⟩`. Establish `h1 : L'.toAddSubgroup.relIndex L.toAddSubgroup = (b.det w).natAbs` using `AddSubgroup.relIndex_eq_natAbs_det L'.toAddSubgroup L.toAddSubgroup h b' b`. Establish `h2 : (fun j => (b' j : E)) = fun j => ∑ i, ((b.toMatrix w).map (Int.cast : ℤ → ℝ)) i j • (b i : E)`. Use function extensionality and compare the values at `j`. Use `congrArg (fun x : L => (x : E)) (b.sum_repr (w j))` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [AddSubmonoidClass.coe_finsetSum, SetLike.val_smul] at this`. Simplify using `only [map_apply, Basis.toMatrix_apply, Int.cast_smul_eq_zsmul]`. Conclude with `this.symm`. Rewrite using `[h2, det_gram_real_sum_smul, h1, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq_eq_abs, ← Int.cast_det, Nat.cast_natAbs, Int.cast_abs, Basis.det_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqrt_det_gram_eq_relIndex_mul {L' L : Submodule ℤ E} (h : L' ≤ L) (b' : Basis ι ℤ L')
     (b : Basis ι ℤ L) :
@@ -69,9 +69,9 @@ theorem sqrt_det_gram_eq_relIndex_mul {L' L : Submodule ℤ E} (h : L' ≤ L) (b
     ← Int.cast_det, Nat.cast_natAbs, Int.cast_abs, Basis.det_apply]
 
 /- English proof (translation)
-Establish `hf : Module.Finite ℤ L` using `.of_basis b`. Establish `hfg : L.FG` using `Module.Finite.iff_fg.1 hf`. Establish `: Module.Free ℤ L` using `.of_basis b`. Set `e` to `(finBasis ℤ L).indexEquiv b`. Rewrite using `[spanCovol, dif_pos hfg, sqrt_det_gram_eq_relIndex_mul le_rfl b ((finBasis ℤ L).reindex e), AddSubgroup.relIndex_self, Nat.cast_one, one_mul, ← Hadamard.det_gram_comp_equiv _ e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `congr 3`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem spanCovol_eq_sqrt_det_gram {L : Submodule ℤ E} (b : Basis ι ℤ L) :
     spanCovol L = √(gram ℝ fun i => (b i : E)).det := by
@@ -86,7 +86,7 @@ theorem spanCovol_eq_sqrt_det_gram {L : Submodule ℤ E} (b : Basis ι ℤ L) :
   simp
 
 /- English proof (translation)
-Rewrite using `[spanCovol_eq_sqrt_det_gram (Basis.span hv)]`. Simplify using the standard rewrite rules. Use the proof step `@[simp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem spanCovol_span {v : ι → E} (hv : LinearIndependent ℤ v) :
     spanCovol (span ℤ (Set.range v)) = √(gram ℝ v).det := by
@@ -95,7 +95,7 @@ theorem spanCovol_span {v : ι → E} (hv : LinearIndependent ℤ v) :
 
 @[simp]
 /- English proof (translation)
-Use `spanCovol_span (E := E) (ι := Empty) (v := Empty.elim) linearIndependent_empty_type` as an intermediate fact. Rewrite `this` using `[Set.range_eq_empty, span_empty]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem spanCovol_bot : spanCovol (⊥ : Submodule ℤ E) = 1 := by
   have := spanCovol_span (E := E) (ι := Empty) (v := Empty.elim) linearIndependent_empty_type
@@ -103,9 +103,9 @@ theorem spanCovol_bot : spanCovol (⊥ : Submodule ℤ E) = 1 := by
   simpa using this
 
 /- English proof (translation)
-Establish `: Module.Finite ℤ L` using `.of_fg hL`. Establish `: Module.Free ℤ L` using `free_of_fg hL`. Set `b` to `finBasis ℤ L`. Rewrite using `[spanCovol_eq_sqrt_det_gram (b.map (L.equivMapOfInjective (T.toLinearMap.restrictScalars ℤ) T.injective)), spanCovol_eq_sqrt_det_gram b]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Conclude with `T.inner_map_map _ _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem spanCovol_map_linearIsometry {L : Submodule ℤ E} (hL : L.FG) (T : E →ₗᵢ[ℝ] F) :
     spanCovol (L.map (T.toLinearMap.restrictScalars ℤ)) = spanCovol L := by
@@ -126,7 +126,7 @@ section Discrete
 variable {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
 /- English proof (translation)
-The claim follows from `DiscreteTopology.of_continuous_injective (β := L) (f := Set.inclusion h) (continuous_inclusion h) (Set.inclusion_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem discreteTopology_of_le {N L : Submodule ℤ V} [DiscreteTopology L] (h : N ≤ L) :
     DiscreteTopology N :=
@@ -136,13 +136,13 @@ theorem discreteTopology_of_le {N L : Submodule ℤ V} [DiscreteTopology L] (h :
 variable [FiniteDimensional ℝ V]
 
 /- English proof (translation)
-The claim follows from `Module.Finite.iff_fg.1 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem fg_of_discrete (L : Submodule ℤ V) [DiscreteTopology L] : L.FG :=
   Module.Finite.iff_fg.1 inferInstance
 
 /- English proof (translation)
-Set `β` to `Basis.extend hv.linearIndepOn_id`. Use `⟨β.reindex (β.indexEquiv (finBasis ℝ V)), ?_⟩` and prove the remaining obligations. Rewrite using `[Basis.range_reindex, Basis.range_extend]`. Conclude with `Basis.subset_extend _`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis_range_subset {ι : Type*} {v : ι → V} (hv : LinearIndependent ℝ v) :
     ∃ β : Basis (Fin (finrank ℝ V)) ℝ V, Set.range v ⊆ Set.range β := by
@@ -152,7 +152,7 @@ theorem exists_basis_range_subset {ι : Type*} {v : ι → V} (hv : LinearIndepe
   exact Basis.subset_extend _
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `exists_basis_range_subset hv`. Conclude with `discreteTopology_of_le (span_mono hβ)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem discreteTopology_span_of_linearIndependent {ι : Type*} {v : ι → V}
     (hv : LinearIndependent ℝ v) : DiscreteTopology (span ℤ (Set.range v)) := by
@@ -161,7 +161,7 @@ theorem discreteTopology_span_of_linearIndependent {ι : Type*} {v : ι → V}
 
 omit [NormedSpace ℝ V] [FiniteDimensional ℝ V] in
 /- English proof (translation)
-Use `congrArg (Submodule.map L.subtype) b.span_eq` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, ← Set.range_comp, map_subtype_top]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem span_range_coe_basis {ι : Type*} {L : Submodule ℤ V} (b : Basis ι ℤ L) :
     span ℤ (Set.range fun i => (b i : V)) = L := by
@@ -169,7 +169,7 @@ theorem span_range_coe_basis {ι : Type*} {L : Submodule ℤ V} (b : Basis ι �
   rwa [Submodule.map_span, ← Set.range_comp, map_subtype_top] at this
 
 /- English proof (translation)
-The claim follows from `linearIndependent_real_of_int_of_discrete L (fun i => (b i).2) (b.linearIndependent.map' L.subtype (ker_subtype L))`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_real_coe_basis {ι : Type*} [Fintype ι] {L : Submodule ℤ V}
     [DiscreteTopology L] (b : Basis ι ℤ L) : LinearIndependent ℝ fun i => (b i : V) :=
@@ -184,7 +184,7 @@ variable {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteD
   [NormedAddCommGroup F] [InnerProductSpace ℝ F]
 
 /- English proof (translation)
-Rewrite using `[spanCovol_eq_sqrt_det_gram (finBasis ℤ L), covolume_eq_sqrt_det_gram L (finBasis ℤ L)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spanCovol_eq_covolume [MeasurableSpace E] [BorelSpace E] (L : Submodule ℤ E)
     [DiscreteTopology L] [IsZLattice ℝ L] : spanCovol L = ZLattice.covolume L := by
@@ -199,7 +199,7 @@ instance isZLattice_comap_subtype_span (L : Submodule ℤ E) [DiscreteTopology L
   ⟨span_span_coe_preimage⟩
 
 /- English proof (translation)
-Apply the tactic sequence `rw [← spanCovol_map_linearIsometry (fg_of_discrete _) S.subtypeₗᵢ]`. Use `congr 1`. Conclude with `map_comap_eq_self fun x hx => ⟨⟨x, h hx⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem spanCovol_comap_subtype (L : Submodule ℤ E) [DiscreteTopology L] (S : Submodule ℝ E)
     (h : (L : Set E) ⊆ S) : spanCovol (ZLattice.comap ℝ L S.subtype) = spanCovol L := by
@@ -208,7 +208,7 @@ theorem spanCovol_comap_subtype (L : Submodule ℤ E) [DiscreteTopology L] (S : 
   exact map_comap_eq_self fun x hx => ⟨⟨x, h hx⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← spanCovol_eq_covolume, spanCovol_comap_subtype L _ subset_span]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spanCovol_eq_covolume_comap_span [MeasurableSpace E] [BorelSpace E] (L : Submodule ℤ E)
     [DiscreteTopology L] :

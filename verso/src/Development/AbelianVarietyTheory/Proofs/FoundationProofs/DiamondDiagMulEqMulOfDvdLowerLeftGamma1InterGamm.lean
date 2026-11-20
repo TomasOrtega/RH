@@ -8,23 +8,23 @@ open GlobalTheory.HeckeFamilyMatrices
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Introduce `N l q σ γ hq hnd hσ hγ hc`. Take `⟨u, hu⟩` from `hc`. Establish `hcop : Nat.Coprime q (N * l)` using `(Nat.Prime.coprime_iff_not_dvd hq).2 hnd`. Establish `hcN : IsCoprime (N : ℤ) (q : ℤ)` using `Nat.isCoprime_iff_coprime.2 (Nat.Coprime.coprime_mul_right_right hcop).symm`. Establish `hcl : IsCoprime (l : ℤ) (q : ℤ)` using `Nat.isCoprime_iff_coprime.2 (Nat.Coprime.coprime_mul_left_right hcop).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, h0⟩` from `Subgroup.mem_inf.1 hγ`. Take `⟨ha, hd, hcN'⟩` from `(Gamma1_mem N γ).1 h1`. Establish `hcl'` using `Gamma0_mem.1 h0`. Establish `hu' : (γ 1 0 : ℤ) = q * u` using `hu`. Establish `huN : (u : ZMod N) = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hcN'`, the goal using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Rewrite `hcN'` using `[hu']`. Conclude with `hcN.dvd_of_dvd_mul_left hcN'`. Establish `hul : (u : ZMod l) = 0`. Rewrite `hcl'`, the goal using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcl'` using `[hu']`. Conclude with `hcl.dvd_of_dvd_mul_left hcl'`. Establish `hs : ((N * l : ℕ) : ℤ) ∣ σ 1 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 hσ.1`. Establish `hsN : ((σ 1 0 : ℤ) : ZMod N) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 (dvd_trans (by push_cast; exact dvd_mul_right _ _) hs)`. Establish `hsl : ((σ 1 0 : ℤ) : ZMod l) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 (dvd_trans (by push_cast; exact dvd_mul_left _ _) hs)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dσ : σ 0 0 * σ 1 1 - σ 0 1 * σ 1 0 = 1`. Use `σ.det_coe` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Then use the resulting hypothesis. Establish `dγ : γ 0 0 * γ 1 1 - γ 0 1 * γ 1 0 = 1`. Use `γ.det_coe` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.det_fin_two]`. Then use the resulting hypothesis. Establish `dσN : ((σ 0 0 : ℤ) : ZMod N) * ((σ 1 1 : ℤ) : ZMod N) = 1`. Use `congrArg (Int.cast : ℤ → ZMod N) dσ` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite `this` using `[hsN]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using this`. Use `⟨⟨!![(σ 0 0 * γ 0 0 + σ 0 1 * u) * σ 1 1 - (σ 0 0 * (q * γ 0 1) + σ 0 1 * γ 1 1) * σ 1 0, -(σ 0 0 * γ 0 0 + σ 0 1 * u) * σ 0 1 + (σ 0 0 * (q * γ 0 1) + σ 0 1 * γ 1 1) * σ 0 0; (σ 1 0 * γ 0 0 + σ 1 1 * u) * σ 1 1 - (σ 1 0 * (q * γ 0 1) + σ 1 1 * γ 1 1) * σ 1 0, -(σ 1 0 * γ 0 0 + σ …` and prove the remaining obligations. Rewrite using `[Matrix.det_fin_two_of]`. Rewrite `dγ` using `[hu']`. Take the linear combination `(σ 0 0 * σ 1 1 - σ 0 1 * σ 1 0 + 1) * (γ 0 0 * γ 1 1 - γ 0 1 * (q * u)) * dσ + dγ`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Subgroup.mem_inf.2 ⟨(Gamma1_mem N _).2 ⟨?_, ?_, ?_⟩, Gamma0_mem.2 ?_⟩` and prove the remaining obligations. Simplify using `[hsN, huN, ha, hd, dσN]`. Simplify using `[hsN, huN, ha, hd, mul_comm, dσN]`. Simplify using `[hsN, huN]`. Simplify using `[hsl, hul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [mat, dg, Matrix.mul_apply, Fin.sum_univ_two, hu']`. Take the linear combination `(-(q : ℤ) * (σ 0 0 * γ 0 0 + σ 0 1 * u)) * dσ`. Take the linear combination `(-(σ 0 0 * (q * γ 0 1) + σ 0 1 * γ 1 1)) * dσ`. Take the linear combination `(-(q : ℤ) * (σ 1 0 * γ 0 0 + σ 1 1 * u)) * dσ`. Take the linear combination `(-(σ 1 0 * (q * γ 0 1) + σ 1 1 * γ 1 1)) * dσ`.
+Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem dia_diag_mul_of_dvd_lowerLeft : ∀ (N l q : ℕ) (σ γ : SL(2, ℤ)), q.Prime → ¬ q ∣ N * l → GlobalTheory.Hk.IsDia N l q σ → γ ∈ GlobalTheory.Hk.lev N l → (q : ℤ) ∣ mat γ 1 0 → ∃ γ' ∈ GlobalTheory.Hk.lev N l, mat σ * dg q 1 * mat γ = mat γ' * (mat σ * dg q 1) := by
   intro N l q σ γ hq hnd hσ hγ hc

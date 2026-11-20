@@ -41,57 +41,45 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.EqFamily
 
 /- English proof (translation)
-The claim follows from `Spec.map_comp _ _`.
+A detailed English derivation is pending.
 -/
 theorem spMap_comp_eq {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := Spec.map_comp _ _
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Z _ hpq S _ ρ p _ n hN hK hζ hsplit hgp N bs`. Establish `hHom : HomSt` using `GlobalTheory.T.homomorphism_result`. Establish `hExt : ExtSt` using `GlobalTheory.T.extension_result`. Establish `hSpec : SpecSt` using `GlobalTheory.T.spectral_result`. Establish `hChar : CharSt` using `GlobalTheory.T.character_of_spectral_result GlobalTheory.T.spectral_result`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGens : GensSt` using `GlobalTheory.T.generators_result`. Establish `hLift : LiftSt` using `GlobalTheory.T.lifting_result`. Establish `hPt : PointSt` using `GlobalTheory.T.point_result_of_integrality GlobalTheory.T.integrality_result`. Use `haveI : CharZero S.functionField := hK`. Use `haveI := GlobalTheory.LatDRFree.intO_isLocalRing ℂ_[p]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := GlobalTheory.DetHT.mono_j_int Z`. Establish `hq : p ^ n ≠ 0` using `pow_ne_zero _ (Fact.out : p.Prime).ne_zero`. Establish `hgen (s : S) : spMap (algebraMap (S.presheaf.stalk s) S.functionField) ≫ (S.fromSpecStalk s ≫ ρ) = S.fromSpecStalk (genericPoint S) ≫ ρ`. Rewrite using `[← Category.assoc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `Scheme.SpecMap_stalkSpecializes_fromSpecStalk (genericPoint_specializes s)`. Take `⟨ξ₀, hξ₀⟩` from `GlobalTheory.DetHT.exists_lift_int Z (K := S.functionField) (S.fromSpecStalk (genericPoint S) ≫ ρ) (by`. Introduce and unpack `_ ⟨q, rfl⟩`. Take `rfl : q = IsLocalRing.closedPoint _` from `Subsingleton.elim (α := PrimeSpectrum S.functionField) _ _`. Conclude with `((Scheme.Hom.comp_apply _ _ _).trans (congrArg ρ Scheme.fromSpecStalk_closedPoint)).symm ▸ hgp)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, ζ, hζp, hG, hsg, hact⟩` from `GlobalTheory.T.toroidal_split_torus_basis E H Dw l Xo c _ _ Z S.functionField ξ₀ (p ^ n) hq hζ (hξ₀ ▸ hsplit) N bs`. Take `⟨χ, hχ, hχg⟩` from `hHom E H Dw l Xo c _ _ Z S.functionField ξ₀ _ hξ₀ (p ^ n) hq N s ζ _ hζp (GlobalTheory.EqHalf.isUnit_det_gram Dw bs) hG hsg`. Establish `key (s : S)` using `by haveI := (hN s).1 haveI := (hN s).2`. Conclude with `GlobalTheory.T.integral_point_extension_split E H Z.X Z.t S.functionField _ (p ^ n) hq hζ hsplit (S.presheaf.stalk s) _ (hgen s)`. Establish `hz (y : Sp ↥(intO ℂ_[p]) ⟶ S) : spMap (Scheme.stalkClosedPointTo y).hom ≫ (S.fromSpecStalk (y (IsLocalRing.closedPoint _)) ≫ ρ) = y ≫ ρ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc]`. Conclude with `congrArg (· ≫ ρ) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk y)`. Establish `L (y : Sp ↥(intO ℂ_[p]) ⟶ S)` using `(key (y (IsLocalRing.closedPoint _))).2 p (Scheme.stalkClosedPointTo y).hom (y ≫ ρ) inferInstance (hz y)`. Set `ch : Fin N → ∀ y : Sp ↥(intO ℂ_[p]) ⟶ S, TorsChar Z.t (y ≫ ρ) (p ^ n)` to `fun j y => Classical.choose ((L y).1 (χ j))`. Establish `hc (j : Fin N) (y : Sp ↥(intO ℂ_[p]) ⟶ S)` using `Classical.choose_spec ((L y).1 (χ j))`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `memU (U : S.Opens) (hU : IsAffineOpen U) (x : Γ(S, U) →+* ↥(intO ℂ_[p])) (y : Sp ↥(intO ℂ_[p]) ⟶ S) (hxy : spMap x ≫ hU.fromSpec = y) : y (IsLocalRing.closedPoint _) ∈ U`. Rewrite using `[← SetLike.mem_coe, ← hU.range_fromSpec, ← hxy]`. Conclude with `⟨_, rfl⟩`. Use `⟨ch, fun y => ?_, fun y => ?_, fun U hU g e he => ?_, fun y K _ k z₀ hK hy => ?_⟩` and prove the remaining obligations. Use `haveI := (hN (y (IsLocalRing.closedPoint _))).1 haveI := (hN (y (IsLocalRing.closedPoint _))).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hGens E H Z.X Z.t S.functionField _ (p ^ n) hq hζ hsplit _ _ (hgen _) p _ _ inferInstance (hz y) N χ _ hχg fun m => hc m y`. Use `haveI := (hN (y (IsLocalRing.closedPoint _))).1 haveI := (hN (y (IsLocalRing.closedPoint _))).2`. Conclude with `GlobalTheory.T.split_torus_extends_normal_local E H Z.X Z.t S.functionField _ (p ^ n) hq hζ hsplit _ _ (hgen _) p _ _ inferInstance (hz y) N χ _ _ (GlobalTheory.T.toroidal_torus_sections_basis E H Dw l Xo c _ _ Z S.functionField ξ₀ _ hξ₀ (p ^ n) hq N bs s ζ hG hsg hact χ hχ) fun …`. Distinguish the cases in `hne : Nonempty U swap`. Conclude with `⟨fun _ _ => 0, fun x y hxy _ => absurd ⟨⟨_, memU U hU x y hxy⟩⟩ hne⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `haveI : IsIntegrallyClosed Γ(S, U) := GlobalTheory.LineNorm.Chart.isIntegrallyClosed_sections hN hU`. Use `haveI := functionField_isFractionRing_of_isAffineOpen S U hU`. Establish `hgU : genericPoint S ∈ U`. Take `⟨u⟩` from `hne`. Conclude with `(genericPoint_specializes u.1).mem_open U.isOpen u.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hchart : spMap (algebraMap Γ(S, U) S.functionField) ≫ (hU.fromSpec ≫ ρ) = S.fromSpecStalk (genericPoint S) ≫ ρ`. Rewrite using `[← Category.assoc, ← hU.fromSpecStalk_eq_fromSpecStalk hgU]`. Both sides reduce to the same expression. Use `choose hh hhs using fun j : Fin N => GlobalTheory.T.integral_point_torsion_split E H Z.X Z.t S.functionField _ p n hsplit Γ(S, U) (hU.fromSpec ≫ ρ) hchart g e he.1 (χ j)`. Use `⟨hh, fun x y hxy j => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs` using `memU U hU x y hxy`. Set `φ` to `(S.presheaf.germ U _ hs).hom`. Establish `hu : (algebraMap (S.presheaf.stalk (y (IsLocalRing.closedPoint _))) S.functionField).comp φ = algebraMap Γ(S, U) S.functionField` using `by show (S.presheaf.germ U _ hs ≫ S.presheaf.stalkSpecializes (genericPoint_specializes _)).hom = _`. Rewrite using `[TopCat.Presheaf.germ_stalkSpecializes]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : spMap φ ≫ hU.fromSpec ≫ ρ = S.fromSpecStalk (y (IsLocalRing.closedPoint _)) ≫ ρ`. Rewrite using `[← Category.assoc, ← hU.fromSpecStalk_eq_fromSpecStalk hs]`. Both sides reduce to the same expression. Establish `heq : (Scheme.stalkClosedPointTo y).hom.comp φ = x`. Apply `GlobalTheory.LineNorm.Chart.ringHom_ext hU` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hxy]`. Use `show Spec.map (CommRingCat.ofHom ((Scheme.stalkClosedPointTo y).hom.comp φ)) ≫ hU.fromSpec = y`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Use `show _ ≫ hU.fromSpecStalk hs = y`. Rewrite using `[hU.fromSpecStalk_eq_fromSpecStalk hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Scheme.Spec_stalkClosedPointTo_fromSpecStalk y`. Establish `k : DlogIs Z.t p n (ch j y) (fun i => spMap (dualMap ((Scheme.stalkClosedPointTo y).hom.comp φ)) ≫ e i) (fun i => ((Scheme.stalkClosedPointTo y).hom.comp φ) (hh j i))` using `hhs j _ φ _ _ _ _ (ch j y) hu hx0 inferInstance (hz y) (hc j y)`. Rewrite `k` using `[heq]`. Conclude with `k`. Take `⟨ω, hω⟩ : ∃ ω : Sp ℂ_[p] ⟶ S, ω = spMap (intO ℂ_[p]).subtype ≫ y` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `a : S` to `y (IsLocalRing.closedPoint _)`. Set `b : S` to `ω (IsLocalRing.closedPoint _)`. Establish `hba : b ⤳ a`. Establish `: b = y (spMap (intO ℂ_[p]).subtype (IsLocalRing.closedPoint _))` using `by simp only [b, hω]; rfl`. Rewrite using `[this]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `(IsLocalRing.specializes_closedPoint _).map y.continuous`. Use `haveI := (hN a).1`. Use `haveI := (hN a).2`. Use `haveI := (hN b).1`. Use `haveI := (hN b).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `r : S.presheaf.stalk a →+* S.presheaf.stalk b` to `(S.presheaf.stalkSpecializes hba).hom`. Set `ψ' : S.presheaf.stalk b →+* ℂ_[p]` to `(Scheme.stalkClosedPointTo ω).hom`. Establish `hψ' : spMap ψ' ≫ S.fromSpecStalk b = ω` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ω`. Establish `hr : spMap r ≫ S.fromSpecStalk a = S.fromSpecStalk b` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk hba`. Establish `hωρ : spMap ψ' ≫ S.fromSpecStalk b ≫ ρ = (spMap k ≫ z₀) ≫ Z.j`.
-
-Rewrite using `[← Category.assoc, hψ', hω, Category.assoc, hy, Category.assoc]`. Take `⟨x₀, hx₀⟩` from `hLift E H Dw l Xo c Z _ _ ψ' inferInstance (S.fromSpecStalk b ≫ ρ) _ hωρ`. Establish `h1 : spMap (algebraMap (S.presheaf.stalk b) S.functionField) ≫ x₀ = ξ₀`. Rewrite using `[← cancel_mono Z.j, Category.assoc, hx₀, hgen, hξ₀]`. Establish `h2 : spMap ψ' ≫ x₀ = spMap k ≫ z₀` using `by rw [← cancel_mono Z.j, Category.assoc, hx₀, hωρ]`.
-
-Establish `h3 : ψ'.comp r = (intO ℂ_[p]).subtype.comp (Scheme.stalkClosedPointTo y).hom`. Establish `e : spMap (ψ'.comp r) ≫ S.fromSpecStalk a = spMap ((intO ℂ_[p]).subtype.comp (Scheme.stalkClosedPointTo y).hom) ≫ S.fromSpecStalk a`. Rewrite using `[spMap_comp_eq, spMap_comp_eq, Category.assoc, Category.assoc, hr, hψ', hω]`. Conclude with `congrArg (_ ≫ ·) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk y).symm`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono _).1 e))`.
-
-Establish `h4 : (algebraMap (S.presheaf.stalk b) S.functionField).comp r = algebraMap (S.presheaf.stalk a) S.functionField` using `congrArg CommRingCat.Hom.hom (TopCat.Presheaf.stalkSpecializes_comp S.presheaf _ _)`. Establish `hinj` using `IsFractionRing.injective (S.presheaf.stalk b) S.functionField`. Use `choose s' hs' hs'' using fun m => hExt E H Dw l Xo c _ _ Z _ _ x₀ ξ₀ h1 (p ^ n) hq (s m) (hG.1 m)`. Set `o : Over.mk (spMap k ≫ z₀) ⟶ Over.mk x₀` to `Over.homMk (spMap ψ') h2`. Take `⟨ζ₀, hζ₀⟩` from `GlobalTheory.HtChar.root_mem (R := S.presheaf.stalk b) hq (u := (ζ : S.functionField)) (by rw [← Units.val_pow_eq_pow_val, hζp.pow_eq_one, Units.val_one])`.
-
-Establish `hp₀ : IsPrimitiveRoot ζ₀ (p ^ n)` using `IsPrimitiveRoot.of_map_of_injective (f := algebraMap _ S.functionField) (by rw [hζ₀]; exact IsPrimitiveRoot.coe_units_iff.2 hζp) hinj`. Set `ζ'` to `(hp₀.isUnit hq).unit`. Establish `hζ' : Units.map (algebraMap (S.presheaf.stalk b) S.functionField).toMonoidHom ζ' = ζ` using `Units.ext hζ₀`. Use `⟨spMap k ≫ z₀, fun m => o ≫ s' m, Units.map ψ'.toMonoidHom ζ', IsPrimitiveRoot.coe_units_iff.1 (GlobalTheory.HtChar.prim_map ψ' hq hp₀), hPt E H Dw l Xo c Z hpq p K k z₀ hK _ _ rfl (by` and prove the remaining obligations. Rewrite using `[hy, Category.assoc]), ⟨fun m => ?_, fun m m' => ?_⟩, fun m => ?_⟩`.
-
-Rewrite using `[← MonObj.comp_pow, hs', MonObj.comp_one]`. Rewrite using `[← map_zpow]`. Use `hSpec E H Dw l Xo c _ _ Z _ _ _ _ ψ' hinj x₀ ξ₀ _ (p ^ n) hq (s' m) (s' m') (s m) (s m') _ _ (hs' m) (hs' m') (hs'' m).symm (hs'' m').symm rfl rfl _ ?_` and prove the remaining obligations. Rewrite using `[map_zpow, hζ']`. Conclude with `hG.2 m m'`.
-
-Conclude with `hChar E H Dw l Xo c _ _ Z S.functionField ξ₀ _ hξ₀ (p ^ n) hq hζ hsplit _ _ (hgen a) _ r _ x₀ hinj h4 (by rw [hx₀, ← Category.assoc, hr]) h1 p _ ψ' _ _ inferInstance h3 (hz y) h2 (s m) (s' m) _ (hs' m) (hs'' m).symm rfl (χ m) _ (hχ m) (hc m y)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_family : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) [IsLocallyNoetherian Z.X],

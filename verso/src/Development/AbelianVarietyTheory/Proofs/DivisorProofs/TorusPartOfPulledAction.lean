@@ -15,35 +15,31 @@ noncomputable section
 namespace GlobalTheory.TorusPart
 
 /- English proof (translation)
-Introduce `O _ K Ω _ _ _ _ G _ hG i G' _ i' φ hφ X _ _ _ u' A _ q' j hA hu hk hq`. Use `hG.comm` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact. Use `hG.separated` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `T' : TorusExtension G'` to `{ X := X, B := A, isAbelian := hA, q := q', q_hom := hk.1, q_flat := hk.2.1, q_surjective := hk.2.2.1, q_quasiCompact := hk.2.2.2.1, i := u', i_hom := hu, isKernel := hk.2.2.2.2 }`. Take `⟨e, he, -⟩` from `grpPullback_iso hφ.1 (isGrpPullback_pullback G (spMap (algebraMap K Ω)))`. Use `haveI := he`. Take `⟨F, hF, ⟨T₀⟩⟩` from `GlobalTheory.exists_finite_torusExtension K Ω G inferInstance inferInstance inferInstance ⟨torusExtOfIso e T'⟩`. Use `letI := T₀.addCommGroup`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI := T₀.grpB`. Use `T₀.free` as an intermediate fact. Use `T₀.finite` as an intermediate fact. Use `T₀.isAbelian.proper` as an intermediate fact. Use `T₀.isAbelian.comm` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `T₀.i_hom` as an intermediate fact. Use `T₀.q_hom` as an intermediate fact. Set `i₀ : OAct O ((Over.pullback (spMap (algebraMap K F))).obj G)` to `OAct.pullback _ G i`. Establish `h₀ : IsActPull i₀ i (spMap (algebraMap K F)) (pullback.fst G.hom _)` using `exists_isActPull _ i`. Establish `hk₀ : IsKer T₀.i T₀.q` using `isKer_torusExtension T₀`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu₀ : ∀ a, T₀.i ≫ i₀.act a ≫ T₀.q = toUnit _ ≫ η[T₀.B]` using `fun a => by`. Use `i₀.hom a` as an intermediate fact. Rewrite using `[GlobalTheory.SemiRigid.torus_const T₀.X T₀.B (T₀.i ≫ i₀.act a ≫ T₀.q)]`. Simplify using `[IsMonHom.one_hom_assoc, IsMonHom.one_hom]`. Take `⟨j₀, hj₀⟩` from `hk₀.exists_oAct i₀ hu₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `f` to `spMap (algebraMap F Ω)`. Establish `hf : f ≫ spMap (algebraMap K F) = spMap (algebraMap K Ω)` using `FieldModel.spMap_comp (IsScalarTower.algebraMap_eq K F Ω).symm`. Take `⟨φ', eφ', Hφ'⟩` from `FieldModel.exists_baseChange (X₀ := G) hf hφ.1.1`. Establish `gp : IsGrpPullback G' ((Over.pullback (spMap (algebraMap K F))).obj G) f φ'` using `(isGrpPullback_pullback G _).cancel (hφ.1.congr hf.symm eφ'.symm) Hφ'.w`. Establish `hact : ∀ a, (i'.act a).left ≫ φ' = φ' ≫ (i₀.act a).left` using `fun a => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(isGrpPullback_pullback G (spMap (algebraMap K F))).1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, eφ', h₀.2 a, ← Category.assoc, eφ']`. Conclude with `hφ.2 a`. Rewrite using `[Category.assoc, Category.assoc, Over.w (i₀.act a), Hφ'.w, ← Category.assoc, Over.w (i'.act a)]`. Take `⟨u'', hu'', -⟩` from `existsUnique_torusCompat gp.1 T₀.i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: IsMonHom u''` using `TorusCompat.isMonHom gp hu''`. Take `⟨q'', hk'', hsq⟩` from `IsKer.baseChange gp (isGrpPullback_pullback T₀.B f) hu'' hk₀`. Use `hA.proper` as an intermediate fact. Establish `hBp : IsProper ((Over.pullback f).obj T₀.B).hom` using `by show IsProper (pullback.snd T₀.B.hom f); infer_instance`. Use `hk''.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hk.1` as an intermediate fact. Establish `c₁ : u'' ≫ q' = toUnit _ ≫ η[A]`. Rewrite using `[GlobalTheory.SemiRigid.torus_const T₀.X A (u'' ≫ q')]`. Simplify using `[IsMonHom.one_hom_assoc, IsMonHom.one_hom]`. Establish `c₂ : u' ≫ q'' = toUnit _ ≫ η[(Over.pullback f).obj T₀.B]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.SemiRigid.torus_const X _ (u' ≫ q'')]`. Simplify using `[IsMonHom.one_hom_assoc, IsMonHom.one_hom]`. Take `⟨β, hβ, hβq⟩` from `flatQuotient_iso_of_same_kernel _ G' _ A _ _ q'' u'' q' u' hk''.1 inferInstance hk''.2.1 hk''.2.2.1 hk''.2.2.2.1 hk''.2.2.2.2 hk.1 hu hk.2.1 hk.2.2.1 hk.2.2.2.1 hk.2.2.2.2 c₂ c₁`. Use `haveI := hβ`. Set `jω : OAct O ((Over.pullback f).obj T₀.B)` to `OAct.pullback f T₀.B j₀`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : ∀ a, (i'.act a).left ≫ q''.left ≫ pullback.fst T₀.B.hom f = q''.left ≫ pullback.fst T₀.B.hom f ≫ (j₀.act a).left` using `fun a => by`. Establish `h1` using `congrArg CommaMorphism.left (hj₀ a)`. Simplify using `only [Over.comp_left] at h1`. Rewrite using `[← hsq.w, reassoc_of% (hact a), h1]`. Conclude with `(reassoc_of% hsq.w) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ a, i'.act a ≫ q'' = q'' ≫ jω.act a` using `fun a => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `(isGrpPullback_pullback T₀.B f).1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, (exists_isActPull f j₀).2 a]`. Conclude with `e1 a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Over.w _).trans (Over.w _).symm`. Use `hk.2.1` as an intermediate fact. Use `hk.2.2.1` as an intermediate fact. Use `haveI : Epi q' := FlatQuotient.epi_of_flat_surjective q'`. Establish `key2 : ∀ a, j.act a ≫ β.hom = β.hom ≫ jω.act a` using `fun a => by`.
-
-Rewrite using `[← cancel_epi q', ← reassoc_of% (hq a), hβq, reassoc_of% hβq]`. Conclude with `key a`. Use `⟨F, hF, _, inferInstance, i₀, pullback.fst G.hom _, T₀.X, T₀.addCommGroup, T₀.free, T₀.finite, T₀.i, T₀.B, T₀.grpB, T₀.q, j₀, β.hom.left ≫ pullback.fst T₀.B.hom f, h₀, T₀.isAbelian, T₀.i_hom, hk₀, hj₀, ?_, ?_⟩` and prove the remaining obligations. Conclude with `((isGrpPullback_of_iso β).comp (isGrpPullback_pullback T₀.B f)).congr (Category.id_comp f) rfl`. Introduce `a`.
-
-Establish `k3` using `congrArg CommaMorphism.left (key2 a)`. Simplify using `only [Over.comp_left] at k3`. Rewrite using `[reassoc_of% k3, (exists_isActPull f j₀).2 a, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_torusExtension_act : ∀ (O : Type) [CommRing O] (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω]
     [Algebra.IsAlgebraic K Ω] (G : Over (Sp K)) [GrpObj G], IsSemiAbelian G → ∀ (i : OAct O G) (G' : Over (Sp Ω))

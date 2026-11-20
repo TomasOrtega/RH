@@ -17,13 +17,13 @@ section Dim
 variable {S : Type} [TopologicalSpace S]
 
 /- English proof (translation)
-Unfold `topologicalKrullDim at *`. Use `iSup_le fun q => ?_` and prove the remaining obligations. Set `f` to `IrreducibleCloseds.map (Subtype.val : C → S) continuous_subtype_val`. Establish `hf : StrictMono f` using `IrreducibleCloseds.map_strictMono_of_isInducing Topology.IsInducing.subtypeVal`. Set `q'` to `q.map f hf`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `top : IrreducibleCloseds S` to `⟨Set.univ, IrreducibleSpace.isIrreducible_univ S, isClosed_univ⟩`. Establish `hlt : q'.last < top`. Establish `hsub : (q'.last : Set S) ⊆ C` using `by show closure (Subtype.val '' (q.last : Set C)) ⊆ C`. Conclude with `closure_minimal (by rintro _ ⟨t, -, rfl⟩; exact t.2) hC`. Use `lt_of_le_of_ne (fun x _ => Set.mem_univ x) fun heq => hne ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.eq_univ_of_univ_subset fun x _ => hsub ?_` and prove the remaining obligations. Rewrite using `[heq]`. Conclude with `Set.mem_univ x`. Establish `h1` using `Order.LTSeries.length_le_krullDim (q'.snoc top hlt)`. Establish `h2 : ((q.length + 1 : ℕ) : WithBot ℕ∞) ≤ ((D + 1 : ℕ) : WithBot ℕ∞)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h1.trans hS` using `[q']`. Establish `h3 : q.length + 1 ≤ D + 1` using `by exact_mod_cast h2`. Conclude with `(by omega : q.length ≤ D)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem dim_le_of_ne_univ [IrreducibleSpace S] {C : Set S} (hC : IsClosed C) (hne : C ≠ Set.univ) {D : ℕ}
     (hS : topologicalKrullDim S ≤ ((D + 1 : ℕ) : WithBot ℕ∞)) : topologicalKrullDim C ≤ D := by
@@ -48,13 +48,13 @@ theorem dim_le_of_ne_univ [IrreducibleSpace S] {C : Set S} (hC : IsClosed C) (hn
   exact_mod_cast (by omega : q.length ≤ D)
 
 /- English proof (translation)
-Unfold `topologicalKrullDim at *`. Use `iSup_le fun q => ?_` and prove the remaining obligations. Set `f` to `IrreducibleCloseds.map (Subtype.val : T → S) continuous_subtype_val`. Establish `hf : StrictMono f` using `IrreducibleCloseds.map_strictMono_of_isInducing Topology.IsInducing.subtypeVal`. Set `q'` to `q.map f hf`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨t, ht⟩` from `q.head.isIrreducible.nonempty`. Establish `htm : (t : S) ∈ (q'.head : Set S)` using `subset_closure ⟨t, ht, rfl⟩`. Take `⟨s, hs, hsc⟩` from `q'.head.isClosed.exists_closed_singleton ⟨_, htm⟩`. Set `bot : IrreducibleCloseds S` to `⟨{s}, isIrreducible_singleton, hsc⟩`. Establish `hlt : bot < q'.head`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `lt_of_le_of_ne (fun x hx => (Set.mem_singleton_iff.1 hx) ▸ hs) fun heq => ?_` and prove the remaining obligations. Establish `: (t : S) ∈ (bot : Set S)` using `by rw [heq]; exact htm`. Establish `hts : (t : S) = s` using `this`. Conclude with `hT s hsc (hts ▸ t.2)`. Establish `h1` using `Order.LTSeries.length_le_krullDim (q'.cons bot hlt)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((q.length + 1 : ℕ) : WithBot ℕ∞) ≤ ((D + 1 : ℕ) : WithBot ℕ∞)`. Simplify `h1.trans hS` using `[q']`. Establish `h3 : q.length + 1 ≤ D + 1` using `by exact_mod_cast h2`. Conclude with `(by omega : q.length ≤ D)` after adjusting the coercions.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dim_le_of_closedPoint_notMem [T0Space S] [CompactSpace S] {T : Set S}
     (hT : ∀ s : S, IsClosed ({s} : Set S) → s ∉ T) {D : ℕ}
@@ -84,14 +84,14 @@ end Dim
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `(CharP.char_is_prime_or_zero (X.residueField x) _).symm`.
+A detailed English derivation is pending.
 -/
 theorem ringChar_eq_zero_or_prime (x : X) :
     ringChar (X.residueField x) = 0 ∨ (ringChar (X.residueField x)).Prime :=
   (CharP.char_is_prime_or_zero (X.residueField x) _).symm
 
 /- English proof (translation)
-Rewrite using `[← Scheme.evaluation_eq_zero_iff_notMem_basicOpen X x (show x ∈ (⊤ : X.Opens) from trivial)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem natCast_eq_zero_iff (ℓ : ℕ) (x : X) :
     (ℓ : X.residueField x) = 0 ↔ x ∉ X.basicOpen ((ℓ : ℕ) : Γ(X, ⊤)) := by
@@ -99,7 +99,7 @@ theorem natCast_eq_zero_iff (ℓ : ℕ) (x : X) :
   simp
 
 /- English proof (translation)
-Rewrite using `[← natCast_eq_zero_iff, ringChar.spec]`. Conclude with `(show ringChar (X.residueField x) = ℓ from hx) ▸ dvd_refl _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem notMem_basicOpen_of_mem_fib {ℓ : ℕ} {x : X} (hx : x ∈ fib X ℓ) :
     x ∉ X.basicOpen ((ℓ : ℕ) : Γ(X, ⊤)) := by
@@ -107,9 +107,9 @@ theorem notMem_basicOpen_of_mem_fib {ℓ : ℕ} {x : X} (hx : x ∈ fib X ℓ) :
   exact (show ringChar (X.residueField x) = ℓ from hx) ▸ dvd_refl _
 
 /- English proof (translation)
-Use `⟨notMem_basicOpen_of_mem_fib, fun h => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[← natCast_eq_zero_iff, ringChar.spec]`. Break down `hℓ.eq_one_or_self_of_dvd _ h with h1 | h1` into its components or cases. Establish `h2 : ((1 : ℕ) : X.residueField x) = 0` using `(ringChar.spec _ 1).2 (by rw [h1])`. Simplify using `at h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem mem_fib_iff_of_prime {ℓ : ℕ} (hℓ : ℓ.Prime) (x : X) :
     x ∈ fib X ℓ ↔ x ∉ X.basicOpen ((ℓ : ℕ) : Γ(X, ⊤)) := by
@@ -121,11 +121,9 @@ theorem mem_fib_iff_of_prime {ℓ : ℕ} (hℓ : ℓ.Prime) (x : X) :
   · exact h1
 
 /- English proof (translation)
-Distinguish the cases in `hp : ℓ.Prime`. Establish `e : fib X ℓ = ((X.basicOpen ((ℓ : ℕ) : Γ(X, ⊤)) : Set X))ᶜ` using `Set.ext fun x => mem_fib_iff_of_prime hp x`. Rewrite using `[e]`. Conclude with `(X.basicOpen _).isOpen.isClosed_compl`. Establish `e : fib X ℓ = ∅` using `Set.eq_empty_iff_forall_notMem.2 fun x hx => by`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : ringChar (X.residueField x) = ℓ` using `hx`. Break down `ringChar_eq_zero_or_prime x with h | h` into its components or cases. Conclude with `hℓ (hx'.symm.trans h)`. Conclude with `hp (hx' ▸ h)`. Rewrite using `[e]`.
-
-Conclude with `isClosed_empty`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_fib {ℓ : ℕ} (hℓ : ℓ ≠ 0) : IsClosed (fib X ℓ) := by
   by_cases hp : ℓ.Prime
@@ -142,7 +140,7 @@ theorem isClosed_fib {ℓ : ℕ} (hℓ : ℓ ≠ 0) : IsClosed (fib X ℓ) := by
     exact isClosed_empty
 
 /- English proof (translation)
-Break down `ringChar_eq_zero_or_prime x with h0 | hp` into its components or cases. Conclude with `h0`. Establish `hx : x ∈ fib X (ringChar (X.residueField x))` using `rfl`. Establish `hy' : ringChar (X.residueField y) = ringChar (X.residueField x)` using `h.mem_closed (isClosed_fib hp.ne_zero) hx`. Conclude with `absurd (hy'.symm.trans hy) hp.ne_zero`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_fib_zero_of_specializes {x y : X} (h : x ⤳ y) (hy : y ∈ fib X 0) : x ∈ fib X 0 := by
   rcases ringChar_eq_zero_or_prime x with h0 | hp
@@ -155,7 +153,7 @@ theorem mem_fib_zero_of_specializes {x y : X} (h : x ⤳ y) (hy : y ∈ fib X 0)
 variable {k : Type} [CommRing k] {p : X ⟶ Sp k} {D : ℕ}
 
 /- English proof (translation)
-Introduce `h`. Establish `hb : X.basicOpen ((ℓ : ℕ) : Γ(X, ⊤)) = ⊥` using `eq_bot_iff.2 fun x hx => (notMem_basicOpen_of_mem_fib (h.symm ▸ Set.mem_univ x : x ∈ fib X ℓ) hx).elim`. Establish `h0` using `(AlgebraicGeometry.basicOpen_eq_bot_iff _).1 hb`. Use `hX.charZero` as an intermediate fact. Conclude with `hℓ (Nat.cast_eq_zero.1 h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fib_ne_univ [IsIntegral X] (hX : IsArithVar p D) {ℓ : ℕ} (hℓ : ℓ ≠ 0) : fib X ℓ ≠ Set.univ := by
   intro h
@@ -166,7 +164,7 @@ theorem fib_ne_univ [IsIntegral X] (hX : IsArithVar p D) {ℓ : ℕ} (hℓ : ℓ
   exact hℓ (Nat.cast_eq_zero.1 h0)
 
 /- English proof (translation)
-Introduce `h0`. Use `hX.finite_residueField hx` as an intermediate fact. Conclude with `CharP.char_ne_zero_of_finite (X.residueField x) (ringChar (X.residueField x)) h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem closedPoint_notMem_fib_zero (hX : IsArithVar p D) (x : X) (hx : IsClosed ({x} : Set X)) :
     x ∉ fib X 0 := by
@@ -175,15 +173,11 @@ theorem closedPoint_notMem_fib_zero (hX : IsArithVar p D) (x : X) (hx : IsClosed
   exact CharP.char_ne_zero_of_finite (X.residueField x) (ringChar (X.residueField x)) h0
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX`. Use `hX.isNoetherian` as an intermediate fact. Use `⟨fun x => ?_, fun ℓ hℓ => isClosed_fib hℓ, fun x y h hy => mem_fib_zero_of_specializes h hy, fun ℓ => ?_, fun W hW => ?_⟩` and prove the remaining obligations. Break down `ringChar_eq_zero_or_prime x with h | h` into its components or cases. Conclude with `.inl h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `.inr ⟨_, h, rfl⟩`. Break down `eq_or_ne ℓ 0 with rfl | hℓ` into its components or cases. Conclude with `dim_le_of_closedPoint_notMem (fun s hs => closedPoint_notMem_fib_zero hX s hs) hX.dim_eq.le`. Conclude with `dim_le_of_ne_univ (isClosed_fib hℓ) (fib_ne_univ hX hℓ) hX.dim_eq.le`. Take `⟨T, hTf, hTc, hTi, rfl⟩` from `NoetherianSpace.exists_finite_set_isClosed_irreducible hW`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Set `ch : Set X → ℕ` to `fun t => if h : IsIrreducible t then ringChar (X.residueField (IsIrreducible.genericPoint h)) else 0`. Use `⟨(hTf.toFinset.image ch).filter Nat.Prime, fun ℓ hℓ => (Finset.mem_filter.1 hℓ).2, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨t, ht, hxt⟩`. Establish `hct : ch t = ringChar (X.residueField (IsIrreducible.genericPoint (hTi t ht)))` using `dif_pos (hTi t ht)`. Establish `hg` using `IsIrreducible.isGenericPoint_genericPoint (hTi t ht) (hTc t ht)`.
-
-Establish `hsp` using `hg.specializes hxt`. Break down `ringChar_eq_zero_or_prime (IsIrreducible.genericPoint (hTi t ht)) with h0 | hp` into its components or cases. Use `left`. Conclude with `hsp.mem_closed isClosed_closure (subset_closure ⟨⟨t, ht, hg.mem⟩, h0⟩)`. Use `right`.
-
-Use `Set.mem_iUnion₂.2 ⟨ch t, Finset.mem_filter.2 ⟨Finset.mem_image.2 ⟨t, hTf.mem_toFinset.2 ht, rfl⟩, hct ▸ hp⟩, ?_⟩` and prove the remaining obligations. Conclude with `hsp.mem_closed (isClosed_fib (hct ▸ hp.ne_zero)) hct.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fib_structure : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → (∀ x : X, x ∈ fib X 0 ∨ ∃ ℓ : ℕ, ℓ.Prime ∧ x ∈ fib X ℓ) ∧

@@ -22,11 +22,11 @@ def LCSurj : Prop := ∀ (q : ℕ) (A : Type) [CommRing A] [IsLocalRing A], SH A
         b.comap (pullback.snd (fibMap p ι₁) (fibMap p ι₂)).base.hom
 
 /- English proof (translation)
-Unfold `Root at hR`. Unfold `LCIso at hL`. Unfold `LCSurj at hT`. Introduce `H q i A _ _ hSH hq Z U V p hp hZ ι₁ ι₂ h1 h2 hU hV hcov w`. Take `⟨ζ⟩` from `hR q A p hZ hq`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `hL H q i Z ζ`. Establish `k1 : fibMap p ι₁ ≫ pullback.fst p (cpt A) = pullback.fst (ι₁ ≫ p) (cpt A) ≫ ι₁` using `by rw [fibMap]; exact pullback.lift_fst _ _ _`. Establish `k2 : fibMap p ι₂ ≫ pullback.fst p (cpt A) = pullback.fst (ι₂ ≫ p) (cpt A) ≫ ι₂` using `by rw [fibMap]; exact pullback.lift_fst _ _ _`. Establish `eq : pullback.snd (fibMap p ι₁) (fibMap p ι₂) ≫ pullback.fst (ι₂ ≫ p) (cpt A) ≫ ι₂ = pullback.fst (fibMap p ι₁) (fibMap p ι₂) ≫ pullback.fst (ι₁ ≫ p) (cpt A) ≫ ι₁`. Rewrite using `[← k2, ← k1, ← Category.assoc, ← pullback.condition, Category.assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, b, hab⟩` from `hT q A hSH hq p hp hZ ι₁ ι₂ h1 h2 hU hV hcov ((e _ (pullback.fst (fibMap p ι₁) (fibMap p ι₂) ≫ pullback.fst (ι₁ ≫ p) (cpt A) ≫ ι₁)).symm w)`. Use `⟨e _ (pullback.fst (ι₁ ≫ p) (cpt A) ≫ ι₁) a, e _ (pullback.fst (ι₂ ≫ p) (cpt A) ≫ ι₂) b, ?_⟩` and prove the remaining obligations. Rewrite using `[he _ _ (pullback.fst (fibMap p ι₁) (fibMap p ι₂)) rfl, he _ _ (pullback.snd (fibMap p ι₁) (fibMap p ι₂)) eq, ← map_sub, ← hab, AddEquiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem goal_of (hR : Root) (hL : LCIso) (hT : LCSurj) : ChartSurj := by
   unfold Root at hR

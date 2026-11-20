@@ -11,7 +11,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Simplify using `only [ebox, Set.mem_setOf_eq, Matrix.add_apply, Matrix.sub_apply, sub_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_ebox_add_iff {A D : Type} (ϖ : kˣ) (C x Y : Matrix A D k) (r : A → D → ℕ) :
     Y ∈ ebox ϖ (C + x) r ↔ Y - C ∈ ebox ϖ x r := by
@@ -20,28 +20,28 @@ theorem mem_ebox_add_iff {A D : Type} (ϖ : kˣ) (C x Y : Matrix A D k) (r : A �
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Simplify using `only [ebox, Set.mem_setOf_eq, Matrix.sub_apply, Matrix.zero_apply, sub_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_ebox_iff_sub {A D : Type} (ϖ : kˣ) (C Y : Matrix A D k) (r : A → D → ℕ) :
     Y ∈ ebox ϖ C r ↔ Y - C ∈ ebox ϖ 0 r := by
   simp only [ebox, Set.mem_setOf_eq, Matrix.sub_apply, Matrix.zero_apply, sub_zero]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ A D _ _ ϖ hϖ r r' hrr'`. Establish `h1 : valuation k (ϖ : k) ≤ 1` using `hϖ ▸ uniformizer_lt_one.le`. Establish `hsub : ∀ X : Matrix A D k, ebox ϖ X r' ⊆ ebox ϖ X r`. Introduce `X Y hY i j`. Use `(hY i j).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Units.val_pow_eq_pow_val, map_pow]`. Conclude with `pow_le_pow_right_of_le_one' h1 (hrr' i j)`. Establish `hself : ∀ X : Matrix A D k, X ∈ ebox ϖ X r'` using `fun X i j => by simp`. Take `⟨S0, hS0⟩` from `(isCompact_ebox ϖ (0 : Matrix A D k) r).elim_finite_subcover (fun x : ebox ϖ (0 : Matrix A D k) r => ebox ϖ x.1 r') (fun x => (isClopen_ebox k A D ϖ _ r').isOpen) (fun y hy => Set.mem_iUnion.2 ⟨⟨y, hy⟩, hself y⟩)`. Use `haveI : Nonempty (Matrix A D k) := ⟨0⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : Matrix A D k → Matrix A D k` to `fun x => Classical.epsilon (fun y => ebox ϖ y r' = ebox ϖ x r')`. Establish `hf : ∀ x, ebox ϖ (f x) r' = ebox ϖ x r'` using `fun x => Classical.epsilon_spec (p := fun y => ebox ϖ y r' = ebox ϖ x r') ⟨x, rfl⟩`. Establish `hf' : ∀ x y, ebox ϖ x r' = ebox ϖ y r' → f x = f y`. Introduce `x y h`. Use `show Classical.epsilon _ = Classical.epsilon _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[h]`. Use `⟨S0.image (fun x => f x.1), fun C => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use extensionality with `Y`. Prove the components needed by the constructor for the conclusion. Introduce `hY`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hY0` using `hS0 ((mem_ebox_iff_sub ϖ C Y r).1 hY)`. Take `⟨x, hx, hYx⟩` from `Set.mem_iUnion₂.1 hY0`. Use `Set.mem_iUnion₂.2 ⟨f x.1, Finset.mem_image_of_mem _ hx, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_ebox_add_iff, hf]`. Conclude with `hYx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hY`. Take `⟨z, hz, hYz⟩` from `Set.mem_iUnion₂.1 hY`. Take `⟨x, -, rfl⟩` from `Finset.mem_image.1 hz`. Rewrite `hYz` using `[mem_ebox_add_iff, hf]`. Rewrite using `[mem_ebox_iff_sub, ← ebox_eq_of_mem x.2]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hsub _ hYz`. Introduce `a ha b hb hab`. Take `⟨x, -, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 ha)`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hb)`. Rewrite using `[Function.onFun, Set.disjoint_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `Y hYa hYb`. Apply `hab` to reduce the goal to its premises. Rewrite `hYa`, `hYb` using `[mem_ebox_add_iff]`. Apply `hf'` to reduce the goal to its premises. Rewrite using `[← hf x.1, ← hf y.1, ← ebox_eq_of_mem hYa, ← ebox_eq_of_mem hYb]`.
+A detailed English derivation is pending.
 -/
 theorem ebox_eq_biUnion_disjoint : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (A D : Type) [Fintype A] [Fintype D] (ϖ : kˣ), IsUnif ϖ → ∀ (r r' : A → D → ℕ), (∀ i j, r i j ≤ r' i j) →

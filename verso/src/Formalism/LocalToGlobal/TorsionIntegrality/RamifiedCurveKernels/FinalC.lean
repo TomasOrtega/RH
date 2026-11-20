@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.TorsionIntegrality.RamifiedCurveKernels.PairedSqu
 namespace Formalism.L2.Th1.G
 
 /- English proof (translation)
-The claim follows from `kernel_two_holds`.
+A detailed English derivation is pending.
 -/
 theorem kernelTwo : KernelTwo := kernel_two_holds
 

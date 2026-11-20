@@ -15,15 +15,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Core.Mi.Unfold
 
 /- English proof (translation)
-Introduce `D X h u ψ A B 𝓢 h𝓢 f hf`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig (D.sp.Y 0).gram` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig (D.sp.Y 0).gram` as an intermediate fact. Establish `hH : B.lev.μR.IsHaarMeasure` using `(GlobalTheory.BesselQuot.besGrp_quotient D D.R.rS B.lev).1`. Establish `hR` using `Formalism.L2.SG.Pf.foldReady_holds X.B.I`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: BorelSpace X.B.I.GA` using `hR.2.2.2.1`. Establish `hgrp` using `(GlobalTheory.Core.Mi.besGrp_eq_sGroup D X h u ψ A B).2`. Establish `: Countable (GQ (D.sp.Y 0))` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig (D.sp.Y 0).gram`. Establish `: Countable ((GQ (D.sp.Y 0)).subgroupOf (besGrp B.d B.o))` using `Function.Injective.countable (f := fun x : (GQ (D.sp.Y 0)).subgroupOf (besGrp B.d B.o) => (⟨x.1.1, x.2⟩ : GQ (D.sp.Y 0))) fun a b e => Subtype.ext (Subtype.ext (congrArg (Subtype.val : GQ (D.sp.Y 0) → GA D (D.sp.Y 0)) e))`. Establish `: SMulInvariantMeasure ((GQ (D.sp.Y 0)).subgroupOf (besGrp B.d B.o)) (besGrp B.d B.o) B.lev.μR` using `⟨fun γ S _ => by show B.lev.μR ((fun y => (γ : besGrp B.d B.o) * y) ⁻¹' S) = B.lev.μR S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `measure_preimage_mul _ (γ : besGrp B.d B.o) S⟩`. Establish `hιm : Measurable (fun s : besGrp B.d B.o => f (iotaX X h s.1))` using `hf.comp ((iotaX X h).continuous.measurable.comp measurable_subtype_coe)`. Rewrite using `[h𝓢.lintegral_eq_tsum'' (fun s => f (iotaX X h s.1))]`. Rewrite using `[← lintegral_tsum (f := fun (γ : (GQ (D.sp.Y 0)).subgroupOf (besGrp B.d B.o)) (x : besGrp B.d B.o) => f (iotaX X h (γ • x).1)) (fun γ => (hιm.comp (measurable_const_smul γ)).aemeasurable)]`. Use `lintegral_congr fun s => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `e : (GQ (D.sp.Y 0)).subgroupOf (besGrp B.d B.o) ≃ Srat X u` to `Equiv.ofBijective (fun γ => ⟨iotaX X h γ.1.1, (hgrp _).1 ⟨Subgroup.mem_subgroupOf.1 γ.2, γ.1.2⟩⟩) ⟨fun a b e => Subtype.ext (Subtype.ext ((iotaX X h).injective (congrArg Subtype.val e))), fun σ => by`. Establish `hm` using `(hgrp ((iotaX X h).symm σ)).2 (by simpa using σ.2)`. Conclude with `⟨⟨⟨_, hm.2⟩, Subgroup.mem_subgroupOf.2 hm.1⟩, Subtype.ext (by simp)⟩⟩`. Rewrite using `[← e.tsum_eq]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show f (iotaX X h ((γ : besGrp B.d B.o) * s).1) = f (iotaX X h γ.1.1 * iotaX X h s.1)`. Rewrite using `[Subgroup.coe_mul, map_mul]`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_unfold : ∀ (D : D7) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (u : D.what₂.Word) (ψ : AddChar (AF D.host.F) ℂ) (A : HSp D) (B : SBes X h u ψ A) (𝓢 : Set (besGrp B.d B.o)), IsFundamentalDomain ((GQ (D.sp.Y 0)).subgroupOf (besGrp B.d B.o)) 𝓢 B.lev.μR → ∀ f : X.B.I.GA → ENNReal, Measurable f → ∫⁻ s, f (iotaX X h s.1) ∂B.lev.μR = ∫⁻ s in 𝓢, ∑' σ : Srat X u, f ((σ : X.B.I.GA) * iotaX X h s.1) ∂B.lev.μR := by
   intro D X h u ψ A B 𝓢 h𝓢 f hf

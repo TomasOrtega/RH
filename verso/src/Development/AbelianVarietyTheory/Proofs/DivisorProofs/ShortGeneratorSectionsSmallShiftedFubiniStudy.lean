@@ -15,21 +15,19 @@ open CategoryTheory AlgebraicGeometry
 namespace GlobalTheory.ImageModel
 
 /- English proof (translation)
-Introduce `K V Ω _ _ _ _ _ _ _ _ Nm W ev D X _ p L ψ s hM hev n w abelian₂ t hw ht j hj τ y`. Take `⟨N, n', b, g, A, c, gw, hF, hgw, hb, hφ⟩` from `hM.fs`. Take `⟨σ, rfl⟩ : ∃ σ : K →+* ℂ, σ.comp (algebraMap (𝓞 K) K) = τ` from `⟨_, GlobalTheory.TrueGeo.OfLattice.extEmb_comp τ⟩`. Use `(le_of_eq (GlobalTheory.HermLB.nsq_shift L (fun _ => t) (fun _ => rfl) (GlobalTheory.CxPts.secVal p _ (s ⟨w j, hj⟩)) y)).trans ?_` and prove the remaining obligations. Use `set i := GlobalTheory.CxPts.pick ((L.φ (σ.comp (algebraMap (𝓞 K) K))).isLB) y with hi_def`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hi` using `GlobalTheory.CxPts.mem_pick ((L.φ (σ.comp (algebraMap (𝓞 K) K))).isLB) y`. Rewrite using `[GlobalTheory.Weight.nsq_eq _ (GlobalTheory.CxPts.secVal_mem _) hi, GlobalTheory.CxPts.secVal_apply, hφ σ i y]`. Use `set ℓ : W → ℂ := fun x => ReciprocityTheory.ChartRestriction.G.Geo.Tor.valR y.1 (L.B.U i) ((s x).f i) with hℓ`. Establish `hlin : ∀ (m : ℕ) (β : Fin m → 𝓞 K) (u : Fin m → W) (x : W), (x : V) = ∑ k, β k • (u k : V) → ℓ x = ∑ k, σ (β k : K) * ℓ (u k)` using `fun m β u x hx => GlobalTheory.T.valR_imageModelSection_semilinear K V Ω Nm W ev D X p L ψ s hM hev _ i y hi m β u x hx`. Establish `hbd` using `GlobalTheory.T.norm_sq_semilinear_le_latticeFrame_norm_sq K V Nm W N n' b g A c gw σ ℓ hF hgw hb hlin ⟨w j, hj⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S := ∑ a, ‖∑ k, (∑ m, σ (c k m) * A σ m a) * ℓ (gw k)‖ ^ 2 with hS`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `hev' : GlobalTheory.CxPts.ev p (σ.comp (algebraMap (𝓞 K) K)) (L.B.U i) ((s ⟨w j, hj⟩).f i) y = ℓ ⟨w j, hj⟩` using `rfl`. Rewrite using `[hev']`. Establish `hNm0 : 0 ≤ Nm σ (w j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hF.norm σ (w j)]`. Conclude with `Real.sqrt_nonneg _`. Establish `hNm : Nm σ (w j) ≤ abelian₂` using `hw.le j σ`. Establish `hLam0 : 0 < abelian₂` using `lt_of_lt_of_le one_pos hw.one_le`. Establish `hLt : abelian₂ ≤ Real.exp t` using `(Real.log_le_iff_le_exp hLam0).1 ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hLam2 : abelian₂ ^ 2 * Real.exp (-(2 * t)) ≤ 1`. Establish `h1 : abelian₂ ^ 2 ≤ Real.exp t ^ 2` using `pow_le_pow_left₀ hLam0.le hLt 2`. Establish `h2 : Real.exp t ^ 2 * Real.exp (-(2 * t)) = 1`. Rewrite using `[← Real.exp_nat_mul, ← Real.exp_add]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Break down `hS0.eq_or_lt with h0 | hpos` into its components or cases. Establish `: ‖ℓ ⟨w j, hj⟩‖ ^ 2 ≤ 0` using `by simpa [← h0] using hbd`. Establish `hz : ‖ℓ ⟨w j, hj⟩‖ ^ 2 = 0` using `le_antisymm this (sq_nonneg _)`. Rewrite using `[hz]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Real.exp_neg, Real.exp_log hpos]`. Establish `h3 : ‖ℓ ⟨w j, hj⟩‖ ^ 2 * S⁻¹ ≤ abelian₂ ^ 2`. Rewrite using `[← div_eq_mul_inv, div_le_iff₀ hpos]`. Combine the equalities or inequalities in the displayed calculation.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem smallSec_shift_of_isShortGen : ∀ (K V Ω : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] (Nm : (K →+* ℂ) → V → ℝ) (W : Submodule (𝓞 K) V) (ev : V →ₗ[K] Ω) (D : ℕ) (X : AlgebraicGeometry.Scheme.{0}) [AlgebraicGeometry.IsIntegral X] (p : X ⟶ Sp (𝓞 K)) (L : GlobalTheory.HermLB p) (ψ : Ω →+* X.functionField) (s : W → L.B.Sec), GlobalTheory.ImageModel.IsModelOf Nm W ev D p L ψ s → ev ≠ 0 → ∀ (n : ℕ) (w : Fin n → V) (abelian₂ t : ℝ), GlobalTheory.CompHt.IsShortGen Nm W w abelian₂ → Real.log abelian₂ ≤ t → ∀ (j : Fin n) (hj : w j ∈ W), s ⟨w j, hj⟩ ∈ (L.shift (fun _ => t) (fun _ => rfl)).smallSec := by
   intro K V Ω _ _ _ _ _ _ _ _ Nm W ev D X _ p L ψ s hM hev n w abelian₂ t hw ht j hj τ y

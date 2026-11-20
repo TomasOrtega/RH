@@ -24,21 +24,19 @@ noncomputable section
 namespace GlobalTheory.LogResProj
 
 /- English proof (translation)
-Introduce `hP F _ _ X _ p D hp hdim T hT`. Take `⟨W', s, U, hW', hsm, hpr, hU, hiso⟩` from `WeakRes.weak_resolution hP F X p D hp hdim`. Use `hW'` as an intermediate fact. Establish `g₁` using `GlobalTheory.Published.generic_of_isIso_restrict s U hU`. Set `T' : Closeds W'` to `⟨s ⁻¹' (T : Set X), T.isClosed.preimage s.continuous⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `I : W'.IdealSheafData` to `Scheme.IdealSheafData.vanishingIdeal T'`. Establish `hIs : I.support = T'` using `by ext1; exact Scheme.IdealSheafData.coe_support_vanishingIdeal T'`. Establish `hgW : genericPoint W' ∉ (T' : Set W')` using `by show s (genericPoint W') ∉ (T : Set X)`. Rewrite using `[g₁.1]`. Conclude with `hT`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hI : I ≠ ⊥`. Introduce `h`. Apply `hgW` to reduce the goal to its premises. Establish `: I.support = ⊤` using `by rw [h]; simp`. Rewrite using `[← hIs, this]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Discharge the goal by the elementary cases of `trivial`. Take `⟨Y, s', hY, hsm', hpr', -, hiso', -, hsnc⟩` from `hP F D W' (s ≫ p) hW' hsm hpr I hI`. Use `hY` as an intermediate fact. Establish `hne : ((I.support.compl : W'.Opens) : Set W').Nonempty` using `⟨genericPoint W', by show genericPoint W' ∉ (I.support : Set W'); rw [hIs]; exact hgW⟩`. Establish `g₂` using `GlobalTheory.Published.generic_of_isIso_restrict s' _ hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpL : LocallyOfFiniteType p`. Take `⟨N, i, hi, rfl⟩` from `hp`. Use `isProper_str F N` as an intermediate fact. Use `infer_instance`. Establish `: Smooth (s ≫ p)` using `by haveI := hsm; exact SmoothOfRelativeDimension.smooth D _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Smooth (s' ≫ s ≫ p)` using `by haveI := hsm'; exact SmoothOfRelativeDimension.smooth D _`. Establish `hd₁` using `GlobalTheory.OpenDim.topologicalKrullDim_eq_of_isIso_restrict F X W' p (s ≫ p) s hpL inferInstance rfl U hU hiso`. Establish `hd₂` using `GlobalTheory.OpenDim.topologicalKrullDim_eq_of_isIso_restrict F W' Y (s ≫ p) (s' ≫ s ≫ p) s' inferInstance inferInstance rfl _ hne hiso'`. Use `⟨Y, hY, s' ≫ s, by simpa using hsm', by simpa using hpr', by rw [hd₂, hd₁, hdim], ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_apply, g₂.1, g₁.1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.CurveDegreesCompare.residueDegree_comp, g₂.2, g₂.1, g₁.2, mul_one]`. Establish `hE : (I.comap s').support = ⟨(s' ≫ s) ⁻¹' (T : Set X), T.isClosed.preimage (s' ≫ s).continuous⟩` using `by ext1`. Rewrite using `[Scheme.IdealSheafData.support_comap, Closeds.coe_preimage, hIs]`. Use extensionality with `y`. Simplify using `[T']`.
-
-Rewrite using `[← hE]`. Conclude with `hsnc`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_logResolution : GlobalTheory.Published.Principalisation → ∀ (F : Type) [Field F] [CharZero F] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp F) (D : ℕ), IsProjOver p → topologicalKrullDim X = (D : ℕ) → ∀ T : Closeds X, genericPoint X ∉ T → ∃ (Y : Scheme.{0}) (_ : IsIntegral Y) (π : Y ⟶ X), SmoothOfRelativeDimension D (π ≫ p) ∧ IsProjOver (π ≫ p) ∧ topologicalKrullDim Y = D ∧ π (genericPoint Y) = genericPoint X ∧ π.residueDegree (genericPoint Y) = 1 ∧ FinalTheorems.Snc (Scheme.IdealSheafData.vanishingIdeal (⟨π ⁻¹' (T : Set X), T.isClosed.preimage π.continuous⟩ : Closeds Y)) := by
   intro hP F _ _ X _ p D hp hdim T hT

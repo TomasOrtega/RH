@@ -10,17 +10,15 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace GlobalTheory.TupleCharAtType
 /- English proof (translation)
-Establish `hwg : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw k v).asIdeal` using `D.naut.plGw_over k v`. Establish `hgp` using `D.host.g_prime k`. Rewrite using `[D.nd.mu_w i, P.tp.xi_tw, D.nd.w_l i]`. Establish `hdel : (P.cf.delAt (D.nd.l i)).UnrAt (D.naut.plGw k v)`. Unfold `CharFrame.delAt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `split_ifs`. Conclude with `P.cf.isDel'.unr _ (natCast_notMem hgp D.host.pde'_prime (D.host.pde_ne_g k).2.symm hwg)`. Conclude with `P.cf.isDel.unr _ (natCast_notMem hgp D.host.pde_prime (D.host.pde_ne_g k).1.symm hwg)`. Establish `hpsi : (P.tp.psi (D.nd.w i)).UnrAt (D.naut.plGw k v)`. Establish `hψ` using `P.tp.psi_is (D.nd.w i) (D.nd.w_tw i)`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hl : D.nd.l i = D.host.g k`. Introduce `x _`. Use `hψ.atl _ ?_ x` and prove the remaining obligations. Unfold `OverP`. Rewrite using `[D.nd.w_l i, hl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hwg`. Use `(hψ.ram _).2 ?_` and prove the remaining obligations. Rewrite using `[← P.Q_eq i]`. Establish `hlp : (D.nd.l i).Prime` using `(D.nd.lPrime i).out`. Establish `hS : D.naut.plGw k v ∈ D.nd.S i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the first alternative. Prove the second alternative.
 
-Rewrite using `[D.nd.S_def i]`. Use `⟨?_, natCast_notMem hgp hlp (Ne.symm hl) hwg⟩` and prove the remaining obligations. Use `fin_cases k`. Conclude with `Or.inl hwg`. Conclude with `Or.inr (Or.inl hwg)`.
-
-Conclude with `Finset.disjoint_left.mp (D.nd.SQ_disj i) hS`. Introduce `x hx`. Rewrite using `[HChar.loc_mul, hdel x hx, hpsi x hx, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xi_unrAt_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) (i : D.nd.Loc) (k : Fin 2) (v : D.nd.PlG k) :
     (P.tp.xi (D.nd.mu i)).UnrAt (D.naut.plGw k v) := by
@@ -53,9 +51,9 @@ theorem xi_unrAt_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} (P :
   intro x hx
   rw [HChar.loc_mul, hdel x hx, hpsi x hx, mul_one]
 /- English proof (translation)
-Introduce `hL D P S hS i k v hw j hj u hu hnot`. Rewrite using `[(hS.mu i _ hw j hj).2 (Units.mk0 (u : D.host.E) hu)]`. Establish `hx` using `_root_.GlobalTheory.TupleCharAtType.xi_unrAt_alt P i k v _ (isUnitAt_of_notMem u hu hnot)`. Use `show (((P.cf.mu0 j * P.tp.xi (D.nd.mu i)).loc (D.naut.plGw k v) (atFin _ (Units.mk0 (u : D.host.E) hu)) : ℂˣ) : ℂ) = _`. Rewrite using `[HChar.loc_mul, hx, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mu_unit_value_eq_loc_k_mu0 : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) (S : Reading P.T), _root_.GlobalTheory.NPin.IsFaithfulReading P S → ∀ (i : D.nd.Loc) (k : Fin 2) (v : D.nd.PlG k) (hw : IsSplitPl D.host (D.naut.plGw k v)) (j : Fin D.R.m), j.1 + 1 = D.nd.j i → ∀ (u : 𝓞 D.host.E) (hu : (u : D.host.E) ≠ 0), u ∉ (D.naut.plGw k v).asIdeal → (((S i _ hw).mu (Units.map (algebraMap D.host.E ((D.naut.plGw k v).adicCompletion D.host.E)).toMonoidHom (Units.mk0 (u : D.host.E) hu)) : ℂˣ) : ℂ) = (((P.cf.mu0 j).locK (D.naut.plGw k v) (Units.mk0 (u : D.host.E) hu) : ℂˣ) : ℂ) := by
   intro hL D P S hS i k v hw j hj u hu hnot

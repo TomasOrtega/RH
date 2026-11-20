@@ -24,7 +24,7 @@ structure IsQ {n : ℕ} (i₀ : Fin n) (M : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ 
   row : ∀ b, b ≠ Sum.inr i₀ → M (Sum.inr i₀) b = 0
 
 /- English proof (translation)
-Establish `h : absE F E u * absE F E u⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Establish `: absE F E u ≠ 0` using `fun h0 => by rw [h0, zero_mul] at h; exact zero_ne_one h`. Conclude with `pos_iff_ne_zero.2 this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem absE_pos (u : (AE F E)ˣ) : 0 < (absE F E u : ℝ) := by
   have h : absE F E u * absE F E u⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel, map_one]
@@ -32,7 +32,7 @@ theorem absE_pos (u : (AE F E)ˣ) : 0 < (absE F E u : ℝ) := by
   exact_mod_cast pos_iff_ne_zero.2 this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `X`. Simplify using `only [SD.T, Pi.zero_apply]`. Establish `: d.dd.rho d.B.ψ (X * (incM F d.b.1.toCols₂)ᵀ) 0 = 0` using `funext fun z => mul_zero _`. Rewrite using `[this, map_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem T_zero (d : SD σ) : d.T 0 = 0 := by
   funext X

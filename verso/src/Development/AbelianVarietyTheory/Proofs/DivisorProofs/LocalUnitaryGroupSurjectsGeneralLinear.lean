@@ -12,11 +12,11 @@ namespace GlobalTheory.SurjAtPlaceV
 open GlobalTheory.LeviAtPlace
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B a a' G X om om' hTr v _ t g'`. Establish `h` using `hTr.base.cm`. Establish `hJ : IsUnit (G.V.J.map t).det`. Take `⟨φ⟩ : Nonempty (F →+* ℂ)` from `inferInstance`. Establish `h0` using `det_ne_zero_of_sig (hTr.geo.hV.sig (InfinitePlace.mk φ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : G.V.J.det ≠ 0` using `fun e => h0 (by`. Rewrite using `[show G.V.J.map _ = RingHom.mapMatrix _ G.V.J from rfl, ← RingHom.map_det, e, map_zero])`. Rewrite using `[show G.V.J.map t = (t : E →+* Fv F v).mapMatrix G.V.J from rfl, ← RingHom.map_det]`. Conclude with `isUnit_iff_ne_zero.2 ((map_ne_zero _).2 h1)`. Use `⟨leviHom h t G.V.J hJ hTr.geo.hV.herm g', lift_sub_one_at v _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[leviHom_map_piW, GlobalTheory.LeviAtPlace.locMat, pairMat_fst]`.
+A detailed English derivation is pending.
 -/
 theorem surj_at_place : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

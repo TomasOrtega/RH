@@ -14,13 +14,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo (mcPts IsMultiHomog SameOrbit)
 namespace GlobalTheory.CompanionTheory.MixZ.ArchInt
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨i, hi⟩` from `GlobalTheory.CxPts.exists_mem_ptsIn (p := q) (σ := σ) ψ.isLB.cover y`. Establish `hu : GlobalTheory.Cartier.UnitAt (GlobalTheory.Cartier.under y) ((r i : X.functionField))` using `GlobalTheory.Cartier.IsRatSec.unitAt ψ.isLB hr hy hi`. Take `⟨V, hyV, hV⟩` from `GlobalTheory.Cartier.UnitAt.exists_nhds hu`. Establish `hgV : genericPoint X ∈ V` using `GlobalTheory.Cartier.gen_mem hyV`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `GlobalTheory.Cartier.exists_unit_fnOf_eq hV`. Establish `hyV' : y ∈ GlobalTheory.CxPts.ptsIn q σ V` using `GlobalTheory.CxPts.mem_ptsIn.2 hyV`. Establish `hNo : IsOpen (GlobalTheory.CxPts.ptsIn q σ V ∩ GlobalTheory.CxPts.ptsIn q σ (L.U i) ∩ GlobalTheory.Cartier.offSupp q σ (divOfRatSec ψ.isLB hr))` using `((GlobalTheory.CxPts.isOpen_ptsIn V).inter (GlobalTheory.CxPts.isOpen_ptsIn _)).inter (GlobalTheory.Cartier.isOpen_offSupp _)`. Establish `hyN : y ∈ GlobalTheory.CxPts.ptsIn q σ V ∩ GlobalTheory.CxPts.ptsIn q σ (L.U i) ∩ GlobalTheory.Cartier.offSupp q σ (divOfRatSec ψ.isLB hr)` using `⟨⟨hyV', hi⟩, hy⟩`. Establish `heq : ∀ z ∈ GlobalTheory.CxPts.ptsIn q σ V ∩ GlobalTheory.CxPts.ptsIn q σ (L.U i) ∩ GlobalTheory.Cartier.offSupp q σ (divOfRatSec ψ.isLB hr), Real.log ‖GlobalTheory.CxPts.ev q σ V (a : X.presheaf.obj (Opposite.op V)) z‖ - ψ.φ i z / 2 = GlobalTheory.Cartier.logNorm ψ r z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `z ⟨⟨hzV, hzi⟩, hz⟩`. Rewrite using `[GlobalTheory.Cartier.logNorm_eq ψ hr hz hzi, ← ha hgV, GlobalTheory.Cartier.ratVal_fnOf hzV]`. Establish `hne : GlobalTheory.CxPts.ev q σ V (a : X.presheaf.obj (Opposite.op V)) y ≠ 0`. Rewrite using `[← GlobalTheory.Cartier.ratVal_fnOf hyV' hgV, ha hgV]`. Conclude with `GlobalTheory.Cartier.ratVal_ne_zero hu`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hev : ContinuousAt (GlobalTheory.CxPts.ev q σ V (a : X.presheaf.obj (Opposite.op V))) y` using `(GlobalTheory.CxPts.continuousOn_ev _).continuousAt ((GlobalTheory.CxPts.isOpen_ptsIn V).mem_nhds hyV')`. Establish `hφ : ContinuousAt (ψ.φ i) y` using `(hψ i y hi).continuousAt`. Establish `hg : ContinuousAt (fun z => Real.log ‖GlobalTheory.CxPts.ev q σ V (a : X.presheaf.obj (Opposite.op V)) z‖ - ψ.φ i z / 2) y` using `(hev.norm.log (norm_ne_zero_iff.2 hne)).sub (hφ.div_const 2)`. Conclude with `(hg.congr (Filter.eventuallyEq_of_mem (hNo.mem_nhds hyN) heq)).continuousWithinAt`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousOn_logNorm_offSupp {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X]
     {q : X ⟶ Sp k} {σ : k →+* ℂ} {L : LB X} (ψ : GlobalTheory.Weight q σ L) (hψ : ψ.IsCInf)

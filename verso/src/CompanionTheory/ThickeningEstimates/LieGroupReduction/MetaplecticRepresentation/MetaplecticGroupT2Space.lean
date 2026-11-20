@@ -13,21 +13,21 @@ namespace MpE
 
 omit [Fintype l] in
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Matrix.toBlocks₁₁, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toBlocks₁₁_one' : (1 : Mat l).toBlocks₁₁ = 1 := by
   ext a b
   simp [Matrix.toBlocks₁₁, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[sec, block_inl_inl_one, block_inl_inr_one, block_inr_inl_one, toBlocks₁₁_one', Matrix.det_one, abs_one, Real.sqrt_one, inv_one, Ring.inverse_one, big_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_one : sec (1 : Mat l) = 1 := by
   rw [sec, block_inl_inl_one, block_inl_inr_one, block_inr_inl_one, toBlocks₁₁_one', Matrix.det_one, abs_one, Real.sqrt_one, inv_one,
     Ring.inverse_one, big_one]
 
 /- English proof (translation)
-Establish `hc : Continuous fun s : Sp l => s.1.toBlocks₁₁.det` using `Continuous.matrix_det (continuous_pi fun i => continuous_pi fun j => continuous_subtype_val.matrix_elem (Sum.inl i) (Sum.inl j))`. Establish `h1 : (1 : Sp l).1.toBlocks₁₁.det = 1`. Rewrite using `[show (1 : Sp l).1 = 1 from rfl, toBlocks₁₁_one', Matrix.det_one]`. Establish `h2 : ∀ᶠ y in 𝓝 ((1 : Sp l).1.toBlocks₁₁.det), (0 : ℝ) < y` using `lt_mem_nhds (by rw [h1]; exact one_pos)`. Conclude with `(hc.tendsto 1).eventually h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_det_pos : ∀ᶠ s in 𝓝 (1 : Sp l), 0 < s.1.toBlocks₁₁.det := by
   have hc : Continuous fun s : Sp l => s.1.toBlocks₁₁.det :=
@@ -39,7 +39,7 @@ theorem eventually_det_pos : ∀ᶠ s in 𝓝 (1 : Sp l), 0 < s.1.toBlocks₁₁
   exact (hc.tendsto 1).eventually h2
 
 /- English proof (translation)
-Establish `h` using `continuous_pr.tendsto (1 : G l)`. Rewrite `h` using `[map_one]`. Conclude with `h.eventually eventually_det_pos`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_det_pos_G : ∀ᶠ g in 𝓝 (1 : G l), 0 < (pr g).1.toBlocks₁₁.det := by
   have h := continuous_pr.tendsto (1 : G l)
@@ -47,9 +47,9 @@ theorem eventually_det_pos_G : ∀ᶠ g in 𝓝 (1 : G l), 0 < (pr g).1.toBlocks
   exact h.eventually eventually_det_pos
 
 /- English proof (translation)
-Set `m' : (l ⊕ l) → (l ⊕ l) → (((l ⊕ l) → (l ⊕ l) → ℝ) →L[ℝ] ℝ)` to `fun a b => (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : l ⊕ l => ℝ) b).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : l ⊕ l => (l ⊕ l) → ℝ) a)`. Establish `h` using `hD ((l ⊕ l) → (l ⊕ l) → ℝ) (fun x => Matrix.of x) m' (fun a b => (1 : Mat l) a b) rfl (fun a b => (m' a b).hasFDerivAt.congr_of_eventuallyEq (Eventually.of_forall fun x => rfl)) f`. Establish `h2 : schwartzToL2 l (sec (Matrix.of fun a b => (1 : Mat l) a b) f) = schwartzToL2 l f`. Rewrite using `[show (Matrix.of fun a b => (1 : Mat l) a b) = 1 from rfl, sec_one, ContinuousLinearMap.one_apply]`. Establish `h3 : Tendsto (fun x : (l ⊕ l) → (l ⊕ l) → ℝ => schwartzToL2 l (sec (Matrix.of x) f)) (𝓝 (fun a b => (1 : Mat l) a b)) (𝓝 (schwartzToL2 l f))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h.continuousAt.tendsto using 2` and compare the differences between its conclusion and the goal. Conclude with `h2.symm`. Establish `hc : Continuous fun s : Sp l => (fun a b => (s.1 : Mat l) a b : (l ⊕ l) → (l ⊕ l) → ℝ)` using `continuous_pi fun a => continuous_pi fun b => continuous_subtype_val.matrix_elem a b`. Establish `h4 : Tendsto (fun s : Sp l => (fun a b => (s.1 : Mat l) a b : (l ⊕ l) → (l ⊕ l) → ℝ)) (𝓝 1) (𝓝 (fun a b => (1 : Mat l) a b))` using `hc.tendsto 1`. Conclude with `h3.comp h4`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendsto_sec (hD : SecDer l) (f : Sch l) :
     Tendsto (fun s : Sp l => schwartzToL2 l (sec s.1 f)) (𝓝 1) (𝓝 (schwartzToL2 l f)) := by
@@ -71,7 +71,7 @@ theorem tendsto_sec (hD : SecDer l) (f : Sch l) :
   exact h3.comp h4
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `exists_ne_zero (l := l) 0`. Use `⟨φ, fun h => hφ ?_⟩` and prove the remaining obligations. Establish `: φ = 0` using `injective_toLp 2 volume (show φ.toLp 2 volume = (0 : Sch l).toLp 2 volume by`. Rewrite using `[← schwartzToL2_apply, ← schwartzToL2_apply, h, map_zero])`. Simplify using `[this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_sch_ne : ∃ f : Sch l, schwartzToL2 l f ≠ 0 := by
   obtain ⟨φ, hφ⟩ := exists_ne_zero (l := l) 0
@@ -86,19 +86,17 @@ end MpE
 open MpE
 
 /- English proof (translation)
-Take `⟨ε, -, hker, hεom⟩` from `hK`. Take `⟨f, hf⟩` from `exists_sch_ne (l := l)`. Establish `hv : 0 < ‖schwartzToL2 l f‖` using `norm_pos_iff.2 hf`. Establish `hom : ∀ᶠ g in 𝓝 (1 : G l), ‖om g (schwartzToL2 l f) - schwartzToL2 l f‖ < ‖schwartzToL2 l f‖`. Establish `h` using `(continuous_om (schwartzToL2 l f)).tendsto (1 : G l)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[map_one]`. Conclude with `(tendsto_iff_norm_sub_tendsto_zero.1 h).eventually (gt_mem_nhds hv)`. Establish `hsec : ∀ᶠ g in 𝓝 (1 : G l), ‖schwartzToL2 l (sec (pr g).1 f) - schwartzToL2 l f‖ < ‖schwartzToL2 l f‖`. Establish `h` using `continuous_pr.tendsto (1 : G l)`. Rewrite `h` using `[map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(tendsto_iff_norm_sub_tendsto_zero.1 ((tendsto_sec hD f).comp h)).eventually (gt_mem_nhds hv)`. Use `filter_upwards [eventually_det_pos_G, hom, hsec] with g h1 h2 h3`. Take `⟨g', c, hg', hU, hc⟩` from `hS (pr g) h1.ne'`. Rewrite `hU` using `[hc h1, one_smul]`. Establish `hk : pr (g * g'⁻¹) = 1` using `by rw [map_mul, map_inv, hg', mul_inv_cancel]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction.
 
-Break down `(hker _).1 hk with h | h` into its components or cases. Rewrite using `[mul_inv_eq_one.1 h, hU, hg']`. It suffices to derive a contradiction. Establish `hg : g = ε * g'` using `mul_inv_eq_iff_eq_mul.1 h`. Establish `e1 : om g = om ε * om g'` using `by rw [hg, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : om g (schwartzToL2 l f) = -schwartzToL2 l (sec (pr g).1 f)`. Rewrite using `[e1]`. Use `show om ε (om g' (schwartzToL2 l f)) = _`. Rewrite using `[hεom, om_sch, hU]`. Rewrite `h2` using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h4 : ‖schwartzToL2 l f + schwartzToL2 l f‖ ≤ ‖schwartzToL2 l (sec (pr g).1 f) - schwartzToL2 l f‖ + ‖-schwartzToL2 l (sec (pr g).1 f) - schwartzToL2 l f‖`. Use `norm_add_le (schwartzToL2 l (sec (pr g).1 f) - schwartzToL2 l f) (-schwartzToL2 l (sec (pr g).1 f) - schwartzToL2 l f)` as an intermediate fact. Establish `e2 : schwartzToL2 l (sec (pr g).1 f) - schwartzToL2 l f + (-schwartzToL2 l (sec (pr g).1 f) - schwartzToL2 l f) = -(schwartzToL2 l f + schwartzToL2 l f)` using `by abel`. Rewrite `this` using `[e2, norm_neg]`. Then use the resulting hypothesis. Establish `h5 : ‖schwartzToL2 l f + schwartzToL2 l f‖ = 2 * ‖schwartzToL2 l f‖`.
-
-Rewrite using `[← two_smul ℂ (schwartzToL2 l f), norm_smul]`. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem nearOne_of (hS : SecEx l) (hK : Ker l) (hD : SecDer l) : NearOne l := by
   obtain ⟨ε, -, hker, hεom⟩ := hK
@@ -140,15 +138,15 @@ theorem nearOne_of (hS : SecEx l) (hK : Ker l) (hD : SecDer l) : NearOne l := by
 namespace MpE
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isInducing_F :
     IsInducing (fun g : G l => ((pr g, fun f => om g f) : Sp l × (L2 l → L2 l))) := ⟨rfl⟩
 
 /- English proof (translation)
-Use `T2Space.of_injective_continuous (f := fun g : G l => ((pr g, fun f => om g f) : Sp l × (L2 l → L2 l))) ?_ isInducing_F.continuous` and prove the remaining obligations. Introduce `g h hgh`. Simplify using `only [Prod.mk.injEq] at hgh`. Take `⟨h1, h2⟩` from `hgh`. Establish `hu : om g = om h` using `LinearIsometryEquiv.ext fun f => congrFun h2 f`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU : omS g = omS h` using `ContinuousLinearMap.ext fun f => by`. Apply `injective_toLp 2 volume` to reduce the goal to its premises. Use `show schwartzToL2 l (omS g f) = schwartzToL2 l (omS h f)`. Rewrite using `[← om_sch, ← om_sch, hu]`. Conclude with `Subtype.ext (p := (· ∈ sub l)) (Prod.ext h1 (Prod.ext hu (Units.ext hU)))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem metaplectic_group_t2Space : T2Space (G l) := by
   refine T2Space.of_injective_continuous (f := fun g : G l => ((pr g, fun f => om g f) : Sp l × (L2 l → L2 l)))
@@ -166,27 +164,25 @@ theorem metaplectic_group_t2Space : T2Space (G l) := by
 end MpE
 
 /- English proof (translation)
-Establish `: IsTopologicalGroup (G l)` using `hT`. Establish `: T2Space (G l)` using `metaplectic_group_t2Space`. Take `⟨ε, -, hker, -⟩` from `hK`. Establish `hσ : ∀ s : Sp l, ∃ g : G l, 0 < s.1.toBlocks₁₁.det → pr g = s ∧ omS g = sec s.1` using `fun s => by`. Distinguish the cases in `h : 0 < s.1.toBlocks₁₁.det`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨g, c, h1, h2, h3⟩` from `hS s h.ne'`. Conclude with `⟨g, fun _ => ⟨h1, by rw [h2, h3 h, one_smul]⟩⟩`. Conclude with `⟨1, fun h' => absurd h' h⟩`. Use `choose σ hσ using hσ`. Establish `hd : DenseRange (schwartzToL2 l)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `SchwartzMap.denseRange_toLpCLM (E := EuclideanSpace ℝ l) (F := ℂ) (μ := (volume : Measure (EuclideanSpace ℝ l))) (p := 2) ENNReal.ofNat_ne_top`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Both sides reduce to the same expression. Establish `hv : ∀ v : L2 l, Tendsto (fun s => om (σ s) v) (𝓝 1) (𝓝 v)` using `fun v => by`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Metric.tendsto_nhds]`. Introduce `δ hδ`. Take `⟨φ, hφ⟩` from `hd.exists_dist_lt v (show 0 < δ / 3 by positivity)`. Establish `h1` using `(Metric.tendsto_nhds.1 (tendsto_sec hD φ)) (δ / 3) (by positivity)`. Use `filter_upwards [h1, eventually_det_pos] with s hs1 hs2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `e : om (σ s) (schwartzToL2 l φ) = schwartzToL2 l (sec s.1 φ)` using `by rw [om_sch, (hσ s hs2).2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[(om (σ s)).isometry.dist_eq, e, dist_comm (schwartzToL2 l φ) v]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : Tendsto σ (𝓝 1) (𝓝 1)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpr : Tendsto (fun s => pr (σ s)) (𝓝 (1 : Sp l)) (𝓝 1)` using `tendsto_id.congr' (eventually_det_pos.mono fun s hs => (hσ s hs).1.symm)`. Establish `h2 : Tendsto (fun s => ((pr (σ s), fun f => om (σ s) f) : Sp l × (L2 l → L2 l))) (𝓝 1) (𝓝 ((pr (1 : G l), fun f => om (1 : G l) f)))`. Rewrite using `[map_one, map_one]`. Use `hpr.prodMk_nhds (tendsto_pi_nhds.2 fun v => ?_)` and prove the remaining obligations. Simplify using `using hv v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `isInducing_F.tendsto_nhds_iff.2 h2`. Establish `hopen : IsOpenMap (pr : G l → Sp l)`. Introduce `U hU`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `_ ⟨g, hg, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hc : Tendsto (fun t : Sp l => (pr g)⁻¹ * t) (𝓝 (pr g)) (𝓝 1)`. Establish `: Continuous fun t : Sp l => (pr g)⁻¹ * t` using `Continuous.subtype_mk (continuous_const.mul continuous_subtype_val) fun t => ((pr g)⁻¹ * t).2`. Simplify using `using this.tendsto (pr g)`. Establish `h1 : Tendsto (fun t => g * σ ((pr g)⁻¹ * t)) (𝓝 (pr g)) (𝓝 g)`. Use `((continuous_const_mul g).tendsto 1).comp (key.comp hc)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Use `filter_upwards [h1 (hU.mem_nhds hg), hc.eventually eventually_det_pos] with t ht ht'`. Conclude with `⟨_, ht, by rw [map_mul, (hσ _ ht').1, mul_inv_cancel_left]⟩`. Establish `hker' : ((pr : G l →* Sp l).ker : Set (G l)) = {1, ε}`. Use extensionality with `g`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_insert_iff, Set.mem_singleton_iff]`. Conclude with `hker g`. Establish `hdisc : IsDiscrete ((pr : G l →* Sp l).ker : Set (G l))`. Rewrite using `[hker']`. Conclude with `((Set.finite_singleton ε).insert 1).isDiscrete`.
-
-Establish `hq : IsQuotientMap (pr : G l → Sp l)` using `hopen.isQuotientMap continuous_pr hO`. Conclude with `(hq.isQuotientCoveringMap_of_isDiscrete_ker_monoidHom hdisc).isCoveringMap`.
+A detailed English derivation is pending.
 -/
 theorem cover_of (hT : TopG l) (hO : Surj l) (hK : Ker l) (hS : SecEx l) (hD : SecDer l) : Cover l := by
   have : IsTopologicalGroup (G l) := hT

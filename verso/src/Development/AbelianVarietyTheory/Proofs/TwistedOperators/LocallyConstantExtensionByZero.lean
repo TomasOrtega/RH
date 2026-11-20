@@ -14,9 +14,9 @@ variable {X : Type} [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X]
   [TotallyDisconnectedSpace X] in
 
 /- English proof (translation)
-Establish `hB` using `loc_compact_Haus_tot_disc_of_zero_dim (H := X)`. Establish `h : ∀ x ∈ K, ∃ U : Set X, (IsClopen U ∧ IsCompact U) ∧ x ∈ U ∧ U ⊆ W`. Introduce `x hx`. Take `⟨C, hCx, hCW, hC⟩` from `local_compact_nhds (hW.mem_nhds (hKW hx))`. Take `⟨U, hU, hxU, hUC⟩` from `hB.exists_subset_of_mem_open (mem_interior_iff_mem_nhds.2 hCx) isOpen_interior`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U, ⟨hU, hC.of_isClosed_subset hU.isClosed (hUC.trans interior_subset)⟩, hxU, (hUC.trans interior_subset).trans hCW⟩`. Use `choose U hU hxU hUW using h`. Take `⟨t, ht⟩` from `hK.elim_nhds_subcover' U fun x hx => (hU x hx).1.isOpen.mem_nhds (hxU x hx)`. Conclude with `⟨⋃ x ∈ t, U x x.2, t.isCompact_biUnion fun x _ => (hU x x.2).2, isClopen_biUnion_finset fun x _ => (hU x x.2).1, ht, Set.iUnion₂_subset fun x _ => hUW x x.2⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SBExtend.exists_isCompact_isClopen_between {K W : Set X} (hK : IsCompact K)
     (hW : IsOpen W) (hKW : K ⊆ W) : ∃ V : Set X, IsCompact V ∧ IsClopen V ∧ K ⊆ V ∧ V ⊆ W := by
@@ -39,7 +39,7 @@ variable {X : Type} [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X]
 omit [LocallyCompactSpace X] [TotallyDisconnectedSpace X] in
 
 /- English proof (translation)
-Use `show IsLocallyConstant _ ∧ HasCompactSupport _`. Use `⟨fun s => ?_, HasCompactSupport.intro hc fun x hx => Set.indicator_of_notMem hx _⟩` and prove the remaining obligations. Apply the tactic sequence `rcases Set.indicator_const_preimage V s (1 : ℂ) with h | h | h | h <;> rw [h]`. Use `exacts [isOpen_univ, hV.isOpen, hV.compl.isOpen, isOpen_empty]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SBExtend.indicator_mem_SB {V : Set X} (hc : IsCompact V)
     (hV : IsClopen V) : (V.indicator fun _ => (1 : ℂ)) ∈ _root_.GlobalTheory.SplitWeil.SB X := by
@@ -49,21 +49,19 @@ theorem _root_.GlobalTheory.SBExtend.indicator_mem_SB {V : Set X} (hc : IsCompac
   exacts [isOpen_univ, hV.isOpen, hV.compl.isOpen, isOpen_empty]
 
 /- English proof (translation)
-Introduce `X _ _ _ _ U Z hU hZU f`. Take `⟨f, hl, hs⟩` from `f`. Establish `hfin : (f '' tsupport f).Finite` using `by haveI : CompactSpace (tsupport f) := isCompact_iff_compactSpace.1 hs`. Use `(hl.comp_continuous (continuous_subtype_val (p := (· ∈ tsupport f)))).range_finite` as an intermediate fact. Use `this.subset ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `⟨⟨z, hz⟩, rfl⟩`. Establish `h : ∀ c : ℂ, ∃ V : Set X, IsCompact V ∧ IsClopen V ∧ V ⊆ U ∧ (c ≠ 0 → ∀ z : Z, (z : X) ∈ V ↔ f z = c)`. Introduce `c`. Distinguish the cases in `hc : c = 0`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨∅, isCompact_empty, isClopen_empty, Set.empty_subset _, fun h => absurd hc h⟩`. Establish `hcl` using `hl.isClopen_fiber c`. Take `⟨W, hW, hWe⟩` from `isOpen_induced_iff.1 hcl.isOpen`. Establish `hcomp : IsCompact {z : Z | f z = c}` using `hs.isCompact.of_isClosed_subset hcl.isClosed fun z hz => subset_tsupport _ (by`. Rewrite using `[Function.mem_support, show f z = c from hz]`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc)`. Take `⟨V, hV1, hV2, hV3, hV4⟩` from `exists_isCompact_isClopen_between (hcomp.image continuous_subtype_val) (hW.inter hU) (by`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `⟨(hWe.symm ▸ hz : z ∈ Subtype.val ⁻¹' W), hZU z.2⟩)`. Use `⟨V, hV1, hV2, fun x hx => (hV4 hx).2, fun _ z => ⟨fun hz => ?_, fun hz => hV3 ⟨z, hz, rfl⟩⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: z ∈ Subtype.val ⁻¹' W` using `(hV4 hz).1`. Rewrite `this` using `[hWe]`. Conclude with `this`. Use `choose V hV1 hV2 hV3 hV4 using h`. Use `⟨⟨∑ c ∈ hfin.toFinset.erase 0, c • (V c).indicator fun _ => (1 : ℂ), Submodule.sum_mem _ fun c _ => Submodule.smul_mem _ _ (indicator_mem_SB (hV1 c) (hV2 c))⟩, fun z => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single (f z)]`. Distinguish the cases in `hz : f z = 0`. Simplify using `[hz]`. Rewrite using `[Set.indicator_of_mem ((hV4 _ hz z).2 rfl), mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc hne`. Rewrite using `[Set.indicator_of_notMem (fun h => hne ((hV4 c (Finset.ne_of_mem_erase hc) z).1 h).symm), mul_zero]`. Introduce `hn`. Distinguish the cases in `hz : f z = 0`. Simplify using `[hz]`.
-
-Conclude with `absurd (Finset.mem_erase.2 ⟨hz, hfin.mem_toFinset.2 ⟨z, subset_tsupport _ hz, rfl⟩⟩) hn`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_eq_zero fun c _ => by`. Rewrite using `[Set.indicator_of_notMem (fun h => hx (hV3 c h)), mul_zero]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extension : ∀ (X : Type) [TopologicalSpace X] [T2Space X] [LocallyCompactSpace X] [TotallyDisconnectedSpace X] (U Z : Set X), IsOpen U → Z ⊆ U → ∀ f : SB Z, ∃ F : SB X, (∀ z : Z, F.1 z = f.1 z) ∧ ∀ x, x ∉ U → F.1 x = 0 := by
   classical

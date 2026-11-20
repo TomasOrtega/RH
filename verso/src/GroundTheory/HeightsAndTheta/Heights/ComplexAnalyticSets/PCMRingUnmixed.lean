@@ -9,17 +9,17 @@ namespace GroundTheory.Heights₂.Heights
 open IsLocalRing RingTheory.Sequence
 
 /- English proof (translation)
-Introduce `A _ _ p hp`. Take `⟨rs, hm, hreg, hdim⟩` from `IsCohenMacaulayLocalRing.exists_isWeaklyRegular (B := A)`. Take `⟨hprime, y, hy⟩` from `isAssociatedPrime_iff.mp hp`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `hprime.ne_top` to reduce the goal to its premises. Rewrite using `[hy, eq_top_iff]`. Introduce `r _`. Rewrite using `[Submodule.mem_colon_singleton, smul_zero]`. Conclude with `Submodule.zero_mem _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD` using `length_le_ringKrullDim_quotient_colon rs y hy0 hm hreg`. Rewrite `hD` using `[← hy, ← hdim]`. Establish `heq : ringKrullDim (A ⧸ p) = ringKrullDim A` using `le_antisymm (ringKrullDim_le_of_surjective _ Ideal.Quotient.mk_surjective) hD`. Use `⟨⟨⟨hprime, bot_le⟩, fun q hq hqp => ?_⟩, heq⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hpq`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hlt : q < p` using `lt_of_le_of_ne hqp fun h => hpq (h ▸ le_rfl)`. Establish `hq' : q.IsPrime` using `hq.1`. Establish `h1` using `Order.coheight_add_one_le (α := PrimeSpectrum A) (a := ⟨p, hprime⟩) (b := ⟨q, hq'⟩) hlt`. Establish `h2 : ringKrullDim (A ⧸ q) ≤ ringKrullDim A` using `ringKrullDim_le_of_surjective _ Ideal.Quotient.mk_surjective`. Rewrite `h2` using `[ringKrullDim_quotient_eq_coheight, hdim]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `heq` using `[ringKrullDim_quotient_eq_coheight, hdim]`. Establish `e1 : Order.coheight (⟨p, hprime⟩ : PrimeSpectrum A) = (rs.length : ℕ∞)` using `by exact_mod_cast heq`. Establish `e2 : Order.coheight (⟨q, hq'⟩ : PrimeSpectrum A) ≤ (rs.length : ℕ∞)` using `by exact_mod_cast h2`. Rewrite `h1` using `[e1]`. Establish `h3 : ((rs.length + 1 : ℕ) : ℕ∞) ≤ (rs.length : ℕ)` using `by exact_mod_cast h1.trans e2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : rs.length + 1 ≤ rs.length` using `by exact_mod_cast h3`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem CMRingUnmixed.proof : CMRingUnmixed.Statement := by
   intro A _ _ p hp

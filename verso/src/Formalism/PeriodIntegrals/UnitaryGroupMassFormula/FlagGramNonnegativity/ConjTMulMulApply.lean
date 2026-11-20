@@ -7,7 +7,7 @@ open Matrix PI.FlagGramNonneg
 namespace PI.UnitaryGroupMassFormula.FlagGramNonneg
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr v, ← b.sum_repr w]`. Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ₂, LinearMap.map_smul, smul_eq_mul, map_mul, starRingEnd_apply, hτ, dotProduct, mulVec, Matrix.map_apply, PI.FlagGramNonneg.gram, Pi.star_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tau_form {E : Type} [Field E] [StarRing E] {V : Type} [AddCommGroup V] [Module E V]
     (hT : V →ₗ⋆[E] V →ₗ[E] E) {N : ℕ} (b : Module.Basis (Fin N) E V) (τ : E →+* ℂ)
@@ -23,7 +23,7 @@ theorem tau_form {E : Type} [Field E] [StarRing E] {V : Type} [AddCommGroup V] [
   ring
 
 /- English proof (translation)
-Simplify using `only [mul_apply, conjTranspose_apply, dotProduct, mulVec, Pi.star_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjT_mul_mul_apply {m n : Type} [Fintype m] (A : Matrix m n ℂ) (B : Matrix m m ℂ) (i j : n) :
     (Aᴴ * B * A) i j = star (fun k => A k i) ⬝ᵥ (B *ᵥ fun k => A k j) := by
@@ -33,7 +33,7 @@ theorem conjT_mul_mul_apply {m n : Type} [Fintype m] (A : Matrix m n ℂ) (B : M
   exact Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Rewrite using `[conjT_mul_mul_apply, tau_form hT b τ hτ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gram_tau {E : Type} [Field E] [StarRing E] {V : Type} [AddCommGroup V] [Module E V]
     (hT : V →ₗ⋆[E] V →ₗ[E] E) {N : ℕ} (b : Module.Basis (Fin N) E V) (τ : E →+* ℂ)

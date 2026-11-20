@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CharTensor
 
 /- English proof (translation)
-Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `add x y hx hy => rw [map_add, hx, hy, smul_add]`. Consider the case `smul_tprod c x`. Rewrite using `[map_smul, smul_comm, piTensor_tprod, PositivityTheory.Lbc.torusChar, ← MultilinearMap.map_smul_univ]`. Simplify using `[detRep]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem piTensor_detRep_apply {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {n : ℕ} (ξ : Fin n → (kˣ →* ℂˣ)) (t : ∀ _ : Fin n, GL (Fin 1) k)
@@ -22,7 +22,7 @@ theorem piTensor_detRep_apply {k : Type} [Field k] [ValuativeRel k] [Topological
     simp [detRep]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg (PiTensorProduct.constantBaseRingEquiv (Fin n) ℂ) h`. Simplify using `at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem tprod_one_ne_zero (n : ℕ) : PiTensorProduct.tprod ℂ (fun _ : Fin n => (1 : ℂ)) ≠ 0 := by
   intro h
@@ -30,11 +30,9 @@ theorem tprod_one_ne_zero (n : ℕ) : PiTensorProduct.tprod ℂ (fun _ : Fin n =
   simp at h1
 
 /- English proof (translation)
-Set `E : (piTensor fun a => detRep (Fin 1) (ξ a)).Equiv (piTensor fun a => (IrrGL.ofChar (ξ a) (hξ a)).rep)` to `piTensorEquiv fun a => equivRep (IrrRep.det (Fin 1) (ξ a) (hξ a))`. Set `o : PiTensorProduct ℂ (fun _ : Fin n => ℂ)` to `PiTensorProduct.tprod ℂ fun _ => 1`. Set `g₀ : (jac (stdBlocks (fun a => (IrrGL.ofChar (ξ a) (hξ a)).1) hd) π).IntertwiningMap (piTensor fun a => detRep (Fin 1) (ξ a))` to `{ toFun := fun w => f w • o map_add' := fun v w => by simp [add_smul] map_smul' := fun c w => by simp [mul_smul] isIntertwining' := fun t => LinearMap.ext fun w => by show f (jac _ π t w) • o = piTensor (fun a => detRep (Fin 1) (ξ a)) t (f w • o)`. Rewrite using `[hfe]`. Conclude with `(mul_smul _ _ _).trans (piTensor_detRep_apply ξ t (f w • o)).symm }`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w, f w ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hf (LinearMap.ext h)`. Use `⟨E.toIntertwiningMap.comp g₀, w, fun h => ?_⟩` and prove the remaining obligations.
-
-Establish `h1 : E.toLinearEquiv (f w • o) = 0` using `h`. Rewrite `h1` using `[LinearEquiv.map_eq_zero_iff]`. Conclude with `(smul_ne_zero hw (tprod_one_ne_zero n)) h1`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_intertwiningMap_piTensor_ofChar {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V]
@@ -67,7 +65,7 @@ theorem exists_intertwiningMap_piTensor_ofChar {k : Type} [Field k] [ValuativeRe
   exact (smul_ne_zero hw (tprod_one_ne_zero n)) h1
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n V _ _ π ξ hξ hd f hf hfe`. Conclude with `exists_intertwiningMap_piTensor_ofChar n π ξ hξ hd f hf hfe`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem chartotensor : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (ξ : Fin n → (kˣ →* ℂˣ)) (hξ : ∀ a, IsSmoothChar (ξ a)) (hd : ∑ a, (IrrGL.ofChar (ξ a) (hξ a)).1 = n) (f : Jacquet π (unipRad k (stdBlocks (fun a => (IrrGL.ofChar (ξ a) (hξ a)).1) hd)) →ₗ[ℂ] ℂ), f ≠ 0 → (∀ t w, f (jac (stdBlocks (fun a => (IrrGL.ofChar (ξ a) (hξ a)).1) hd) π t w) = PositivityTheory.Lbc.torusChar ξ t * f w) → ∃ g : (jac (stdBlocks (fun a => (IrrGL.ofChar (ξ a) (hξ a)).1) hd) π).IntertwiningMap (piTensor fun a => (IrrGL.ofChar (ξ a) (hξ a)).rep), ∃ w, g w ≠ 0 := by
   intro k _ _ _ _ n V _ _ π ξ hξ hd f hf hfe

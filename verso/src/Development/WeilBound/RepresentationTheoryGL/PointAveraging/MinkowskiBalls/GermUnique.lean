@@ -12,9 +12,9 @@ namespace PositivityTheory.Rg.Ming.UniqX
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use extensionality with `y`. Establish `hc : 0 < valuation k (c : k)`. Rewrite using `[zero_lt_iff]`. Simplify using the standard rewrite rules. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, SetLike.mem_coe, Valuation.mem_integer_iff, Units.smul_def, Units.val_inv_eq_inv_val, smul_eq_mul, map_mul, map_inv₀, neg_add_eq_sub, inv_mul_le_one₀ hc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valSet_eq (a : k) (c : kˣ) :
     {y : k | valuation k (y - a) ≤ valuation k (c : k)} = (fun y => -a + y) ⁻¹' (c • (𝒪[k] : Set k)) := by
@@ -26,14 +26,14 @@ theorem valSet_eq (a : k) (c : kˣ) :
     Units.val_inv_eq_inv_val, smul_eq_mul, map_mul, map_inv₀, neg_add_eq_sub, inv_mul_le_one₀ hc]
 
 /- English proof (translation)
-Rewrite using `[valSet_eq]`. Conclude with `(Valuation.isOpen_integer.smul c).preimage (continuous_const.add continuous_id)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_valSet (a : k) (c : kˣ) : IsOpen {y : k | valuation k (y - a) ≤ valuation k (c : k)} := by
   rw [valSet_eq]
   exact (Valuation.isOpen_integer.smul c).preimage (continuous_const.add continuous_id)
 
 /- English proof (translation)
-Take `⟨hH, h1⟩` from `hν`. Use `haveI := hH`. Use `haveI : SecondCountableTopology k := by exact secondCountable k`. Rewrite using `[valSet_eq, measure_preimage_add, ← distribHaarChar_mul, h1, mul_one, nabs, ENNReal.ofReal_coe_nnreal]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vol_valSet [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (hν : IsUnitVol ν) (a : k) (c : kˣ) :
     ν {y : k | valuation k (y - a) ≤ valuation k (c : k)} = ENNReal.ofReal (nabs k c) := by
@@ -45,9 +45,9 @@ theorem vol_valSet [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (hν : Is
 variable {n r : ℕ}
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [ballM, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h i _ l _`. Conclude with `h i l`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h i l`. Conclude with `h i (Set.mem_univ _) l (Set.mem_univ _)`.
+A detailed English derivation is pending.
 -/
 theorem ballM_eq_pi (c : kˣ) (x₀ : Matrix (Fin n) (Fin r) k) :
     (ballM c x₀ : Set (Matrix (Fin n) (Fin r) k)) =
@@ -62,7 +62,7 @@ theorem ballM_eq_pi (c : kˣ) (x₀ : Matrix (Fin n) (Fin r) k) :
     exact h i (Set.mem_univ _) l (Set.mem_univ _)
 
 /- English proof (translation)
-Rewrite using `[ballM_eq_pi]`. Conclude with `MeasurableSet.univ_pi fun i => MeasurableSet.univ_pi fun l => (isOpen_valSet _ c).measurableSet`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurableSet_ballM [MeasurableSpace k] [BorelSpace k] (c : kˣ) (x₀ : Matrix (Fin n) (Fin r) k) :
     MeasurableSet (ballM c x₀) := by
@@ -70,9 +70,7 @@ theorem measurableSet_ballM [MeasurableSpace k] [BorelSpace k] (c : kˣ) (x₀ :
   exact MeasurableSet.univ_pi fun i => MeasurableSet.univ_pi fun l => (isOpen_valSet _ c).measurableSet
 
 /- English proof (translation)
-Take `⟨hH, h1⟩` from `hν`. Use `haveI := hH`. Use `haveI : SecondCountableTopology k := by exact secondCountable k`. Rewrite using `[volM, ballM_eq_pi]`. Use `erw [Measure.pi_pi]`.
-
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Measure.pi_pi]`. Conclude with `Finset.prod_congr rfl fun l _ => vol_valSet ν ⟨hH, h1⟩ (x₀ i l) c`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volM_ballM [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (hν : IsUnitVol ν) (c : kˣ)
     (x₀ : Matrix (Fin n) (Fin r) k) :
@@ -87,11 +85,11 @@ theorem volM_ballM [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (hν : Is
   exact Finset.prod_congr rfl fun l _ => vol_valSet ν ⟨hH, h1⟩ (x₀ i l) c
 
 /- English proof (translation)
-Establish `hpos : 0 < nabs k c`. Unfold `nabs`. Establish `h : distribHaarChar k c * distribHaarChar k c⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`. Establish `hne : distribHaarChar k c ≠ 0` using `left_ne_zero_of_mul_eq_one h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `pos_iff_ne_zero.2 hne` after adjusting the coercions. Rewrite using `[volM_ballM ν hν, ENNReal.toReal_prod]`. Use `Finset.prod_ne_zero_iff.2 fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.toReal_prod]`. Use `Finset.prod_ne_zero_iff.2 fun l _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENNReal.toReal_ofReal hpos.le]`. Conclude with `hpos.ne'`.
+A detailed English derivation is pending.
 -/
 theorem volM_ballM_ne_zero [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (hν : IsUnitVol ν) (c : kˣ)
     (x₀ : Matrix (Fin n) (Fin r) k) : (volM ν (Fin n) (Fin r) (ballM c x₀)).toReal ≠ 0 := by
@@ -109,7 +107,7 @@ theorem volM_ballM_ne_zero [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (
   exact hpos.ne'
 
 /- English proof (translation)
-Rewrite using `[integral_indicator_const _ (measurableSet_ballM c x₀)]`. Simplify using `[Measure.real]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integral_ind [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (c : kˣ) (x₀ : Matrix (Fin n) (Fin r) k) :
     ∫ x, (ballM c x₀).indicator (fun _ => (1 : ℂ)) x ∂volM ν (Fin n) (Fin r) =
@@ -118,14 +116,14 @@ theorem integral_ind [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (c : k�
   simp [Measure.real]
 
 /- English proof (translation)
-Introduce `_ hx i l` and use `(hx i l).trans hle`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ballM_mono {c c' : kˣ} (hle : valuation k (c : k) ≤ valuation k (c' : k))
     {x₀ : Matrix (Fin n) (Fin r) k} : ballM c x₀ ⊆ ballM c' x₀ :=
   fun _ hx i l => (hx i l).trans hle
 
 /- English proof (translation)
-Break down `le_total (valuation k (c₁ : k)) (valuation k (c₂ : k)) with h | h` into its components or cases. Conclude with `⟨c₁, le_rfl, h⟩`. Conclude with `⟨c₂, h, le_rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_le_both (c₁ c₂ : kˣ) :
     ∃ c : kˣ, valuation k (c : k) ≤ valuation k (c₁ : k) ∧ valuation k (c : k) ≤ valuation k (c₂ : k) := by
@@ -136,14 +134,14 @@ theorem exists_le_both (c₁ c₂ : kˣ) :
 variable {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun Φ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem germ_zero [MeasurableSpace k] (ν : Measure k) (B : SB (Matrix (Fin n) (Fin r) k) →ₗ[ℂ] W →ₗ[ℂ] V)
     (x₀ : Matrix (Fin n) (Fin r) k) : IsGerm ν B x₀ 0 0 :=
   ⟨1, fun Φ _ => by simp⟩
 
 /- English proof (translation)
-Take `⟨c₁, e₁⟩` from `h₁`. Take `⟨c₂, e₂⟩` from `h₂`. Take `⟨c, hc₁, hc₂⟩` from `exists_le_both c₁ c₂`. Use `⟨c, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smul, e₁ Φ (fun x hx => ballM_mono hc₁ (hΦ x hx)), e₂ Φ (fun x hx => ballM_mono hc₂ (hΦ x hx)), smul_add, smul_comm a]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem germ_comb [MeasurableSpace k] (ν : Measure k) (B : SB (Matrix (Fin n) (Fin r) k) →ₗ[ℂ] W →ₗ[ℂ] V)
     (x₀ : Matrix (Fin n) (Fin r) k) (a : ℂ) {w₁ w₂ : W} {v₁ v₂ : V}
@@ -156,11 +154,11 @@ theorem germ_comb [MeasurableSpace k] (ν : Measure k) (B : SB (Matrix (Fin n) (
     e₂ Φ (fun x hx => ballM_mono hc₂ (hΦ x hx)), smul_add, smul_comm a]
 
 /- English proof (translation)
-Take `⟨c₁, hc₁⟩` from `h₁`. Take `⟨c₂, hc₂⟩` from `h₂`. Take `⟨c, hle₁, hle₂⟩` from `exists_le_both c₁ c₂`. Set `Φ : SB (Matrix (Fin n) (Fin r) k)` to `⟨(ballM c x₀).indicator fun _ => (1 : ℂ), ((hb k n r).1 c x₀).2.2.1⟩`. Establish `hsupp : ∀ x, (Φ : Matrix (Fin n) (Fin r) k → ℂ) x ≠ 0 → x ∈ ballM c x₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x hx`. Assume the negation of the conclusion as `h`. Conclude with `hx (by simp [Φ, Set.indicator, h])`. Establish `e₁` using `hc₁ Φ fun x hx => ballM_mono hle₁ (hsupp x hx)`. Establish `e₂` using `hc₂ Φ fun x hx => ballM_mono hle₂ (hsupp x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : (∫ x, (Φ : Matrix (Fin n) (Fin r) k → ℂ) x ∂volM ν (Fin n) (Fin r)) ≠ 0`. Express the relevant statement in the definitionally equal form `(∫ x, (ballM c x₀).indicator (fun _ => (1 : ℂ)) x ∂volM ν (Fin n) (Fin r)) ≠ 0`. Rewrite using `[integral_ind]`. Conclude with `Complex.ofReal_ne_zero.2 (volM_ballM_ne_zero ν hν c x₀)`. Conclude with `smul_right_injective V hI (e₁.symm.trans e₂)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_unique (hb : BallSt) [MeasurableSpace k] [BorelSpace k] (ν : Measure k) (hν : IsUnitVol ν)
     (B : SB (Matrix (Fin n) (Fin r) k) →ₗ[ℂ] W →ₗ[ℂ] V) (x₀ : Matrix (Fin n) (Fin r) k) {w : W} {v₁ v₂ : V}
@@ -188,13 +186,13 @@ namespace PositivityTheory.Rg.Ming
 
 open PositivityTheory.Rg.Ming.UniqX in
 /- English proof (translation)
-Introduce `hb`. Unfold `UniqSt`. Introduce `k _ _ _ _ _ _ ν hν n r V _ _ W _ _ B x₀ hex`. Use `choose f hf using hex`. Establish `hadd : ∀ w₁ w₂ : W, f (w₁ + w₂) = f w₁ + f w₂`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w₁ w₂`. Establish `h` using `germ_comb ν B x₀ 1 (hf w₁) (hf w₂)`. Rewrite `h` using `[one_smul, one_smul]`. Conclude with `germ_unique hb ν hν B x₀ (hf (w₁ + w₂)) h`. Establish `hsmul : ∀ (a : ℂ) (w : W), f (a • w) = a • f w`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a w`. Establish `h` using `germ_comb ν B x₀ a (hf w) (germ_zero ν B x₀)`. Rewrite `h` using `[add_zero, add_zero]`. Conclude with `germ_unique hb ν hν B x₀ (hf (a • w)) h`. Use `⟨{ toFun := f, map_add' := hadd, map_smul' := hsmul }, fun w v => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `germ_unique hb ν hν B x₀ h (hf w)`. Introduce and unpack `rfl`. Conclude with `hf w`.
+A detailed English derivation is pending.
 -/
 theorem uniq : BallSt → UniqSt := by
   intro hb

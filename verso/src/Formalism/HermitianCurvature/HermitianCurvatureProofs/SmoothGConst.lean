@@ -35,13 +35,13 @@ def SmoothG (a : Q.Mx k ρ → ℂ) : Prop :=
     IsOpen U ∧ y₀ ∈ U ∧ ContDiffOn ℝ ∞ F U ∧ ∀ y ∈ U, Matrix.of y ∈ Q.Glev k ρ (Fin.last ρ) → a (Matrix.of y) = F y
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨Set.univ, fun _ => s, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem smoothG_const (s : ℂ) : SmoothG k ρ (fun _ => s) := fun _ _ =>
   ⟨Set.univ, fun _ => s, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Introduce `y₀ hy`. Take `⟨U, F, hU, hyU, hF, haF⟩` from `ha y₀ hy`. Take `⟨U', F', hU', hyU', hF', hbF⟩` from `hb y₀ hy`. Conclude with `⟨U ∩ U', fun y => F y * F' y, hU.inter hU', ⟨hyU, hyU'⟩, (hF.mono Set.inter_subset_left).mul (hF'.mono Set.inter_subset_right), fun y hy hG => by show a (Matrix.of y) * b (Matrix.of y) = F y * F' y; rw [haF y hy.1 hG, hbF y hy.2 hG]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem smoothG_mul {a b : Q.Mx k ρ → ℂ} (ha : SmoothG k ρ a) (hb : SmoothG k ρ b) :
     SmoothG k ρ (fun g => a g * b g) := by
@@ -53,7 +53,7 @@ theorem smoothG_mul {a b : Q.Mx k ρ → ℂ} (ha : SmoothG k ρ a) (hb : Smooth
     fun y hy hG => by show a (Matrix.of y) * b (Matrix.of y) = F y * F' y; rw [haF y hy.1 hG, hbF y hy.2 hG]⟩
 
 /- English proof (translation)
-Introduce `y₀ hy`. Take `⟨U, F, hU, hyU, hF, haF⟩` from `ha y₀ hy`. Take `⟨U', F', hU', hyU', hF', hbF⟩` from `hb y₀ hy`. Conclude with `⟨U ∩ U', fun y => F y - F' y, hU.inter hU', ⟨hyU, hyU'⟩, (hF.mono Set.inter_subset_left).sub (hF'.mono Set.inter_subset_right), fun y hy hG => by show a (Matrix.of y) - b (Matrix.of y) = F y - F' y; rw [haF y hy.1 hG, hbF y hy.2 hG]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem smoothG_sub {a b : Q.Mx k ρ → ℂ} (ha : SmoothG k ρ a) (hb : SmoothG k ρ b) :
     SmoothG k ρ (fun g => a g - b g) := by
@@ -65,7 +65,7 @@ theorem smoothG_sub {a b : Q.Mx k ρ → ℂ} (ha : SmoothG k ρ a) (hb : Smooth
     fun y hy hG => by show a (Matrix.of y) - b (Matrix.of y) = F y - F' y; rw [haF y hy.1 hG, hbF y hy.2 hG]⟩
 
 /- English proof (translation)
-Introduce `q₀ hq hG`. Take `⟨U, F, hU, hqU, hF, hfF⟩` from `hf q₀ hq hG`. Conclude with `⟨U ∩ U₀, F, hU.inter hU₀, ⟨hqU, hq⟩, hF.mono Set.inter_subset_left, fun q hq' hG' => (h q hq'.2 hG').symm.trans (hfF q hq'.1 hG')⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem parFam_congr {Par : Type} [NormedAddCommGroup Par] [NormedSpace ℝ Par] {U₀ : Set (Par × Mt k ρ)}
     {f g : Par × Mt k ρ → E} (hf : PBI.ParFam k ρ U₀ f)
@@ -77,9 +77,9 @@ theorem parFam_congr {Par : Type} [NormedAddCommGroup Par] [NormedSpace ℝ Par]
     fun q hq' hG' => (h q hq'.2 hG').symm.trans (hfF q hq'.1 hG')⟩
 
 /- English proof (translation)
-Introduce `q₀ hq hG`. Take `⟨U, F, hU, hqU, hF, hfF⟩` from `hf q₀ hq hG`. Take `⟨U', A, hU', hqU', hA, haA⟩` from `ha q₀.2 hG`. Use `⟨U ∩ Prod.snd ⁻¹' U', fun q => A q.2 • F q, hU.inter (hU'.preimage continuous_snd), ⟨hqU, hqU'⟩, ?_, fun q hq' hG' => ?_⟩` and prove the remaining obligations. Conclude with `(hA.comp contDiff_snd.contDiffOn (fun q hq => hq.2)).smul (hF.mono Set.inter_subset_left)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show a (Matrix.of q.2) • f q = A q.2 • F q`. Rewrite using `[haA q.2 hq'.2 hG', hfF q hq'.1 hG']`.
+A detailed English derivation is pending.
 -/
 theorem parFam_smulG {Par : Type} [NormedAddCommGroup Par] [NormedSpace ℝ Par] {U₀ : Set (Par × Mt k ρ)}
     {a : Q.Mx k ρ → ℂ} (ha : SmoothG k ρ a) {f : Par × Mt k ρ → E} (hf : PBI.ParFam k ρ U₀ f) :
@@ -94,21 +94,21 @@ theorem parFam_smulG {Par : Type} [NormedAddCommGroup Par] [NormedSpace ℝ Par]
     rw [haA q.2 hq'.2 hG', hfF q hq'.1 hG']
 
 /- English proof (translation)
-Introduce `Par _ _ _ _ _ U₀ _ f hf`. Use `⟨hf, fun q _ hG W _ hqW hW => hW q hqW hG, fun ν _ Kp _ _ fi y V _ hyV hyG _ hi => hi y hyV hyG⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem parOK_id : ParOK k ρ (E := E) (fun f => f) := by
   intro Par _ _ _ _ _ U₀ _ f hf
   refine ⟨hf, fun q _ hG W _ hqW hW => hW q hqW hG, fun ν _ Kp _ _ fi y V _ hyV hyG _ hi => hi y hyV hyG⟩
 
 /- English proof (translation)
-Introduce `Par _ _ _ _ _ U₀ _ f hf`. Use `⟨parFam_zero, fun _ _ _ _ _ _ _ => rfl, fun ν _ Kp _ _ fi y V _ _ _ _ _ => by simp⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem parOK_zero : ParOK k ρ (E := E) (fun _ _ => 0) := by
   intro Par _ _ _ _ _ U₀ _ f hf
   refine ⟨parFam_zero, fun _ _ _ _ _ _ _ => rfl, fun ν _ Kp _ _ fi y V _ _ _ _ _ => by simp⟩
 
 /- English proof (translation)
-Establish `e : T = T'` using `funext fun f => funext fun g => h f g`. Rewrite using `[← e]`. Conclude with `hT`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parOK_congr {T T' : (Q.Mx k ρ → E) → Q.Mx k ρ → E} (hT : ParOK k ρ T) (h : ∀ f g, T f g = T' f g) :
     ParOK k ρ T' := by
@@ -116,9 +116,9 @@ theorem parOK_congr {T T' : (Q.Mx k ρ → E) → Q.Mx k ρ → E} (hT : ParOK k
   rw [← e]; exact hT
 
 /- English proof (translation)
-Introduce `Par _ _ _ _ _ U₀ hU₀ f hf`. Take `⟨a₁, b₁, c₁⟩` from `h₁ Par U₀ hU₀ f hf`. Take `⟨a₂, b₂, c₂⟩` from `h₂ Par U₀ hU₀ f hf`. Use `⟨parFam_add a₁ a₂, fun q hq hG W hW hqW hz => ?_, fun ν _ Kp hKp hν fi y V hV hyV hyG hKV hi => ?_⟩` and prove the remaining obligations. Use `show T₁ (f q.1) (Matrix.of q.2) + T₂ (f q.1) (Matrix.of q.2) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[b₁ q hq hG W hW hqW hz, b₂ q hq hG W hW hqW hz, add_zero]`. Establish `hKU : ∀ Z ∈ Kp, (Z, y) ∈ U₀` using `fun Z hZ => hKV ⟨hZ, hyV⟩ show T₁ fi (Matrix.of y) + T₂ fi (Matrix.of y) = ∫ Z, (T₁ (f Z) (Matrix.of y) + T₂ (f Z) (Matrix.of y)) ∂ν`. Rewrite using `[c₁ ν Kp hKp hν fi y V hV hyV hyG hKV hi, c₂ ν Kp hKp hν fi y V hV hyV hyG hKV hi, integral_add (parFam_integrable a₁ hKp hν hyG hKU) (parFam_integrable a₂ hKp hν hyG hKU)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parOK_add {T₁ T₂ : (Q.Mx k ρ → E) → Q.Mx k ρ → E} (h₁ : ParOK k ρ T₁) (h₂ : ParOK k ρ T₂) :
     ParOK k ρ (fun f g => T₁ f g + T₂ f g) := by
@@ -134,9 +134,9 @@ theorem parOK_add {T₁ T₂ : (Q.Mx k ρ → E) → Q.Mx k ρ → E} (h₁ : Pa
       integral_add (parFam_integrable a₁ hKp hν hyG hKU) (parFam_integrable a₂ hKp hν hyG hKU)]
 
 /- English proof (translation)
-Introduce `Par _ _ _ _ _ U₀ hU₀ f hf`. Take `⟨a₁, b₁, c₁⟩` from `hT Par U₀ hU₀ f hf`. Use `⟨parFam_smulG ha a₁, fun q hq hG W hW hqW hz => ?_, fun ν _ Kp hKp hν fi y V hV hyV hyG hKV hi => ?_⟩` and prove the remaining obligations. Use `show a (Matrix.of q.2) • T (f q.1) (Matrix.of q.2) = 0`. Rewrite using `[b₁ q hq hG W hW hqW hz, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show a (Matrix.of y) • T fi (Matrix.of y) = ∫ Z, a (Matrix.of y) • T (f Z) (Matrix.of y) ∂ν`. Rewrite using `[c₁ ν Kp hKp hν fi y V hV hyV hyG hKV hi, integral_smul]`.
+A detailed English derivation is pending.
 -/
 theorem parOK_smulG {a : Q.Mx k ρ → ℂ} (ha : SmoothG k ρ a) {T : (Q.Mx k ρ → E) → Q.Mx k ρ → E}
     (hT : ParOK k ρ T) : ParOK k ρ (fun f g => a g • T f g) := by
@@ -149,21 +149,21 @@ theorem parOK_smulG {a : Q.Mx k ρ → ℂ} (ha : SmoothG k ρ a) {T : (Q.Mx k �
     rw [c₁ ν Kp hKp hν fi y V hV hyV hyG hKV hi, integral_smul]
 
 /- English proof (translation)
-The claim follows from `parOK_smulG (smoothG_const s) hT`.
+A detailed English derivation is pending.
 -/
 theorem parOK_csmul (s : ℂ) {T : (Q.Mx k ρ → E) → Q.Mx k ρ → E} (hT : ParOK k ρ T) :
     ParOK k ρ (fun f g => s • T f g) := parOK_smulG (smoothG_const s) hT
 
 /- English proof (translation)
-The claim follows from `parOK_congr (parOK_csmul (-1) hT) (fun f g => by simp)`.
+A detailed English derivation is pending.
 -/
 theorem parOK_neg {T : (Q.Mx k ρ → E) → Q.Mx k ρ → E} (hT : ParOK k ρ T) : ParOK k ρ (fun f g => -T f g) :=
   parOK_congr (parOK_csmul (-1) hT) (fun f g => by simp)
 
 /- English proof (translation)
-Introduce `Par _ _ _ _ _ U₀ hU₀ f hf`. Take `⟨a₂, b₂, c₂⟩` from `h₂ Par U₀ hU₀ f hf`. Take `⟨a₁, b₁, c₁⟩` from `h₁ Par U₀ hU₀ (fun Z => T₂ (f Z)) a₂`. Use `⟨a₁, fun q hq hG W hW hqW hz => ?_, fun ν _ Kp hKp hν fi y V hV hyV hyG hKV hi => ?_⟩` and prove the remaining obligations. Use `b₁ q hq hG (W ∩ U₀) (hW.inter hU₀) ⟨hqW, hq⟩ (fun q' hq' hG' => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `b₂ q' hq'.2 hG' W hW hq'.1 hz`. Use `c₁ ν Kp hKp hν (T₂ fi) y V hV hyV hyG hKV (fun y' hy' hG' => ?_)` and prove the remaining obligations. Conclude with `c₂ ν Kp hKp hν fi y' V hV hy' hG' hKV hi`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem parOK_comp {T₁ T₂ : (Q.Mx k ρ → E) → Q.Mx k ρ → E} (h₁ : ParOK k ρ T₁) (h₂ : ParOK k ρ T₂) :
     ParOK k ρ (fun f => T₁ (T₂ f)) := by
@@ -177,7 +177,7 @@ theorem parOK_comp {T₁ T₂ : (Q.Mx k ρ → E) → Q.Mx k ρ → E} (h₁ : P
     exact c₂ ν Kp hKp hν fi y' V hV hy' hG' hKV hi
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact parOK_congr parOK_zero (fun f g => by simp)`. Consider the case `insert a s ha ih`. Use `parOK_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))` as an intermediate fact. Conclude with `parOK_congr this (fun f g => by simp [Finset.sum_insert ha])`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem parOK_sum {ι : Type} (s : Finset ι) {T : ι → (Q.Mx k ρ → E) → Q.Mx k ρ → E}
     (h : ∀ i ∈ s, ParOK k ρ (T i)) : ParOK k ρ (fun f g => ∑ i ∈ s, T i f g) := by
@@ -189,7 +189,7 @@ theorem parOK_sum {ι : Type} (s : Finset ι) {T : ι → (Q.Mx k ρ → E) → 
     exact parOK_congr this (fun f g => by simp [Finset.sum_insert ha])
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact parOK_id`. Consider the case `cons T L ih`. Conclude with `parOK_comp (hL T List.mem_cons_self) (ih fun T' hT' => hL T' (List.mem_cons_of_mem _ hT'))`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem parOK_foldr (L : List ((Q.Mx k ρ → E) → Q.Mx k ρ → E)) (hL : ∀ T ∈ L, ParOK k ρ T) :
     ParOK k ρ (fun f => L.foldr (fun T h => T h) f) := by

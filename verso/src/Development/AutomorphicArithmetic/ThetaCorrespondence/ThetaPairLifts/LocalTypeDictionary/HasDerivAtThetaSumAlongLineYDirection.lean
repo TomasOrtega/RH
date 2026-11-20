@@ -21,25 +21,23 @@ noncomputable section
 open scoped Classical
 namespace GlobalTheory.ThetaLineDerY
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ n d Y Wd M ψ χX χW om hψ hG hW γ hγ f f₁ r hR hD u`. Distinguish the cases in `hf : f = 0`. Substitute `hf` using the available equality. Establish `hR0 : Rest (evI F) (⇑(0 : SInf F (Fin n × Fin d))) r` using `hR`. Establish `ht0 : tens (evI F) (⇑(0 : SInf F (Fin n × Fin d))) r = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using `[tens]`. Establish `h1 : tens (evI F) (⇑f₁) r = 0`. Use function extensionality and compare the values at `x`. Establish `h` using `hD r hR0 x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [ht0, map_zero] at h`. Conclude with `(h.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ))).trans rfl`. Establish `hrho0 : M.co.rho ψ u 0 = 0`. Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hth0 : GlobalTheory.WeilM.thetaSum F (0 : (Fin n × Fin d → AF F) → ℂ) = 0`. Simplify using `[GlobalTheory.WeilM.thetaSum]`. Simplify using `only [ht0, h1, map_zero, hrho0, hth0]`. Conclude with `hasDerivAt_const (0 : ℝ) (0 : ℂ)`. Take `⟨c, g, hc, hlim⟩` from `_root_.GlobalTheory.T.archimedean_line_pairing_twist hP M ψ χX χW om hψ hG hW γ hγ f r hR`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Λ, hΛ⟩` from `GlobalTheory.ThetaSchrCont.exists_clm_hasSum M ψ hψ u f r hR hf`. Establish `hcurve : (fun t : ℝ => GlobalTheory.WeilM.thetaSum F (M.co.rho ψ u (om (γ (Multiplicative.ofAdd t), 1) (tens (evI F) f r)))) = fun t => Λ (c t)`. Use function extensionality and compare the values at `t`. Rewrite using `[hc t]`. Conclude with `(hΛ (c t)).tsum_eq`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ev : ∀ y : Fin n × Fin d → mixedEmbedding.mixedSpace F, Continuous fun s : SInf F (Fin n × Fin d) => s y`. Introduce `y`. Establish `h1` using `(SchwartzMap.toBoundedContinuousFunctionCLM ℂ (Fin n × Fin d → mixedEmbedding.mixedSpace F) ℂ).continuous`. Conclude with `(continuous_eval_const (F := BoundedContinuousFunction (Fin n × Fin d → mixedEmbedding.mixedSpace F) ℂ) y).comp h1`. Establish `hg : tens (evI F) (⇑g) r = tens (evI F) (⇑f₁) r`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Establish `h1` using `hD r hR x`. Establish `h2 : HasDerivAt (fun t : ℝ => tens (evI F) (⇑(c t)) r x) (tens (evI F) (⇑g) r x) 0`. Rewrite using `[hasDerivAt_iff_tendsto_slope]`. Use `((((ev _).tendsto g).comp hlim).mul_const (r x)).congr' (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Function.comp_apply, tens]`. Rewrite using `[slope_def_module]`. Simplify using `only [SchwartzMap.smul_apply, SchwartzMap.sub_apply, sub_zero, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : (fun t : ℝ => tens (evI F) (⇑(c t)) r x) = fun t => om (γ (Multiplicative.ofAdd t), 1) (tens (evI F) (⇑f) r) x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[hc t]`. Rewrite `h2` using `[h3]`. Conclude with `h2.unique h1`. Establish `hend : GlobalTheory.WeilM.thetaSum F (M.co.rho ψ u (tens (evI F) (⇑f₁) r)) = Λ g`.
-
-Rewrite using `[← hg]`. Conclude with `(hΛ g).tsum_eq`. Rewrite using `[hcurve, hend, hasDerivAt_iff_tendsto_slope]`. Use `(Λ.continuous.tendsto g |>.comp hlim).congr' (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `[slope_def_module, map_sub, map_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_thetaSum_along_line_y_direction : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ)
@@ -117,7 +115,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.ThetaLineDerY.hasDerivAt_thetaSum_along_line_y_direction | exact _root_.GlobalTheory.ThetaLineDerY.hasDerivAt_thetaSum_along_line_y_direction | (intros; apply _root_.GlobalTheory.ThetaLineDerY.hasDerivAt_thetaSum_along_line_y_direction <;> assum …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.thetaSum_differentiable_along_line : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Wd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ)

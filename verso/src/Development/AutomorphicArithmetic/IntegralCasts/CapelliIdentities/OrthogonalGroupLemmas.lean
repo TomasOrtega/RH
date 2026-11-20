@@ -6,9 +6,9 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.WeilTensorModels
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ClosureSpanCoefficients
 
 /- English proof (translation)
-Introduce `F _ _ a b ha hb`. Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations. Establish `h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (a + b) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F a + GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F b` using `map_add (NumberField.InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1`. Rewrite using `[h, ha.1, hb.1, add_zero]`. Rewrite using `[map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (ha.2 v) (hb.2 v)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.OrthogonalGroupLemmas.aux1 :
     ∀ (F : Type) [inst : Field F] [inst_1 : NumberField F] {a b : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F},
@@ -37,7 +37,7 @@ theorem UpperTheory.Reformulated.B.OrthogonalGroupLemmas.aux1 :
     exact add_mem (ha.2 v) (hb.2 v)
 
 /- English proof (translation)
-Introduce `F _ _`. Use `⟨map_zero (NumberField.InfiniteAdeleRing.ringEquiv_mixedSpace F), fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.OrthogonalGroupLemmas.aux2 :
     ∀ (F : Type) [inst : Field F] [inst_1 : NumberField F],
@@ -51,9 +51,9 @@ theorem UpperTheory.Reformulated.B.OrthogonalGroupLemmas.aux2 :
   exact zero_mem _
 
 /- English proof (translation)
-Introduce `F _ _ a ha`. Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations. Establish `h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F (-a) = -GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F a` using `map_neg (NumberField.InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1`. Rewrite using `[h, ha.1, neg_zero]`. Rewrite using `[map_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_mem (ha.2 v)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.OrthogonalGroupLemmas.aux3 :
     ∀ (F : Type) [inst : Field F] [inst_1 : NumberField F] {a : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F},
@@ -89,13 +89,13 @@ noncomputable def UpperTheory.Reformulated.B.OrthogonalGroupLemmas.Oh :
         neg_mem' := @UpperTheory.Reformulated.B.OrthogonalGroupLemmas.aux3 F inst inst_1 : AddSubgroup (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) }
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n Y hL`. Establish `h1 : Module.Finite (NumberField.RingOfIntegers E) Y.L` using `Module.Finite.iff_fg.2 hL.fg`. Establish `h2 : Module.Finite ℤ Y.L` using `Module.Finite.trans (NumberField.RingOfIntegers E) Y.L`. Take `⟨m, x, hx⟩` from `Module.Finite.exists_fin (R := ℤ) (M := Y.L)`. Use `⟨m, x, hx, fun z => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `f : Y.L →+ (Fin n → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)` to `{ toFun := fun l => GlobalTheory.ThK.incV F (l : Fin n → E) map_zero' := funext fun _ => map_zero (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (E := E) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F)) map_add' := fun a b => funext fun …`. Establish `hs : GlobalTheory.ThK.latHat Y = AddSubgroup.closure {z | ∃ a ∈ UpperTheory.Reformulated.B.OrthogonalGroupLemmas.Oh F, ∃ l : Y.L, z = a • f l}`. Unfold `GlobalTheory.ThK.latHat`. Use `congr 1`. Use extensionality with `w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, h0, hv, y, hy, rfl⟩`. Conclude with `⟨a, ⟨h0, hv⟩, ⟨y, hy⟩, rfl⟩`. Introduce and unpack `⟨a, ⟨h0, hv⟩, y, rfl⟩`. Conclude with `⟨a, h0, hv, y.1, y.2, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[hs]`. Conclude with `UpperTheory.closure_span_coefficients (UpperTheory.Reformulated.B.OrthogonalGroupLemmas.Oh F) f x hx z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.OrthogonalGroupLemmas.lat_gen :
     ∀ {F E : Type} [inst : Field F] [inst_1 : NumberField F] [inst_2 : Field E] [NumberField E] [inst_4 : Algebra F E]

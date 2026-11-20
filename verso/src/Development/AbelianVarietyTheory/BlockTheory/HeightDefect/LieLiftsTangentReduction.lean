@@ -16,7 +16,7 @@ def IsGtTangent {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} (ν : GtPt D
     ∀ χ : D.X, LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ (ν.s χ) (epsRed R)) (LB.oneGen D.P.L)
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem IsGtTangent.isTangent {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {ν : GtPt D (epsR R)}
     (h : IsGtTangent ν) : IsTangent ν.b := h.1

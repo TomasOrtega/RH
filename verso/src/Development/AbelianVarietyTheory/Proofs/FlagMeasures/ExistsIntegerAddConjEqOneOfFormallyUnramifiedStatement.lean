@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Formalism.MainNotions.Glo
 open scoped TensorProduct ENNReal nonZeroDivisors Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.exists_integer_add_conj_eq_one_of_formallyUnramified | exact GlobalTheory.exists_integer_add_conj_eq_one_of_formallyUnramified | (intros; apply GlobalTheory.exists_integer_add_conj_eq_one_of_formallyUnramified <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_integer_add_conj_eq_one_of_formallyUnramified' : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → Algebra.FormallyUnramified (𝓞 F) (𝓞 E) → ∃ θ : 𝓞 E, (θ : E) + σ θ = 1 := by
   first | exact @GlobalTheory.exists_integer_add_conj_eq_one_of_formallyUnramified | exact GlobalTheory.exists_integer_add_conj_eq_one_of_formallyUnramified | (intros; apply GlobalTheory.exists_integer_add_conj_eq_one_of_formallyUnramified <;> assumption)

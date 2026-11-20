@@ -19,7 +19,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CoefModel
 
 /- English proof (translation)
-Introduce `_ _ hR i _ _ _ _ σ hσ` and use `exists_coefAt_of_posDef i (hR.models.vpos i) σ hσ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_coefAt_five : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Core5 R F → ∀ (i : Fin D.R.m), ∀ gramR c0R c0L, Comparison₂ R gramR c0R c0L → ∀ (σ : D.what₂.LL →+* ℂ), OverK σ → ∃ (c : CoefA (Vc D i)) (c₁ : VsV D i D.what₂.LL →ₛₗ[σ] c.W), CoefAt i σ c c₁ :=
   fun _ _ hR i _ _ _ _ σ hσ => exists_coefAt_of_posDef i (hR.models.vpos i) σ hσ
@@ -31,9 +31,9 @@ namespace GlobalTheory.ConjForms
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC i gramR c0R c0L hT σ c c₁ hc`. Establish `h1` using `hT.coefL i A.μ0`. Take `⟨e, -, he, -⟩` from `h1`. Establish `hact : ∀ γ : GQ (Vc D i), ∃ T : VsV D i D.what₂.LL → VsV D i D.what₂.LL, (∀ v, c0L i (T v) = (R.cV i).coef.ρ γ (c0L i v)) ∧ ∀ v, c₁ (T v) = c.coef.ρ γ (c₁ v)` using `fun γ => (exists_ratMat (Vc D i) γ).elim fun γE hγ => ⟨rhoVr (labLL D) (lamV D i) γE, (hT.mapL i).1 γ γE hγ, hc.act γ γE hγ⟩`. Establish `h2` using `exists_baseChange (W' := c.W) σ c.coef.ρ (R.B.L i A.μ0).pres (c0L i) c₁ e he hact (levChar_mem R hC.lev hC.grp.chiW i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨H, j, hm, hb⟩` from `h2`. Use `⟨H, j, hc.coef, hc.act, hc.indep, hc.span, hc.pair, hm, fun x h => ?_⟩` and prove the remaining obligations. Conclude with `(hb x h).imp fun v hv => ⟨(congrFun (hC.models.jV i A.μ0 x) h).trans hv.1, hv.2⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_conjForms_five : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Core5 R F → ∀ (i : Fin D.R.m), ∀ gramR c0R c0L, Comparison₂ R gramR c0R c0L → ∀ (σ : D.what₂.LL →+* ℂ) (c : CoefA (Vc D i)) (c₁ : VsV D i D.what₂.LL →ₛₗ[σ] c.W), CoefAt i σ c c₁ → ∃ (H : HMod (Bridge.Gf (Vc D i) → c.W)) (j : A.fam.amb.FL i A.μ0 →ₛₗ[σ] H.H), IsConjForms R i σ (c0L i) c c₁ H j := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC i gramR c0R c0L hT σ c c₁ hc
@@ -54,13 +54,13 @@ end GlobalTheory.ConjForms
 namespace GlobalTheory.GalLift
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F _ i gramR c0R c0L ht gramR' c0R' c0L' ht' σ c c₁ H j hf`. Establish `h1` using `ht.coefL i A.μ0`. Establish `h2` using `ht'.coefL i A.μ0`. Establish `m1` using `ht.mapL i`. Establish `m2` using `ht'.mapL i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, he1, he2, he3, -⟩` from `h1`. Take `⟨e', he1', he2', he3', -⟩` from `h2`. Establish `key` using `rescale_abstract _ (bVV D.what₂.LL (lamV D i)) D.what₂.embLL σ _ (c0L i) (c0L' i) _ _ e e' he1 he1' he2 he2' he3 he3' m2.2.1 c₁ hf.indep hf.span hf.pair`. Take `⟨c₁', k1, k2, k3, k4, k5⟩` from `key`. Use `⟨c₁', ⟨hf.coef, fun γ γE hγ => ?_, k1, k2, k3, hf.model, fun x h => ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `k5 _ _ _ (m1.1 γ γE hγ) (m2.1 γ γE hγ) (hf.act γ γE hγ)`. Establish `hb` using `hf.base x h`. Take `⟨v', a1, a2⟩` from `hb`. Establish `hv` using `k4 v'`. Take `⟨v, b1, b2⟩` from `hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨v, a1.trans b1, a2.trans b2⟩`.
+A detailed English derivation is pending.
 -/
 theorem conjForms_rescale_five : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Core5 R F → ∀ (i : Fin D.R.m), ∀ gramR c0R c0L, Comparison₂ R gramR c0R c0L → ∀ gramR' c0R' c0L', Comparison₂ R gramR' c0R' c0L' → ∀ (σ : D.what₂.LL →+* ℂ) (c : CoefA (Vc D i)) (c₁ : VsV D i D.what₂.LL →ₛₗ[σ] c.W) (H : HMod (Bridge.Gf (Vc D i) → c.W)) (j : A.fam.amb.FL i A.μ0 →ₛₗ[σ] H.H), IsConjForms R i σ (c0L' i) c c₁ H j → ∃ c₁' : VsV D i D.what₂.LL →ₛₗ[σ] c.W, IsConjForms R i σ (c0L i) c c₁' H j := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F _ i gramR c0R c0L ht gramR' c0R' c0L' ht' σ c c₁ H j hf
@@ -86,13 +86,13 @@ end GlobalTheory.GalLift
 namespace GlobalTheory.GalLift.Vec
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC i σ _`. Establish `hθ : IsInfFam R.θ` using `hC.models.inf`. Establish `hψ : IsStdChar D R.ψ (-1)` using `(hC.thP.ωP i A.μ0).std`. Establish `hQ : R.Q A.μ0 = ∅` using `Finset.eq_empty_iff_forall_notMem.2 fun PP hPP => (hC.lev.Q_ram A.μ0 PP).2 (Or.inl hPP) (by rw [hC.lev.xi_base]; exact fun _ _ => rfl)`. Establish `h0` using `(hC.thP.vP i A.μ0).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, he, -⟩` from `h0`. Rewrite `he` using `[hQ]`. Establish `sdV` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hC.lev.βV i)`. Establish `sdW` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hC.lev.βW i)`. Establish `hc` using `GlobalTheory.Chain.VacVec.cart_isCartanInv (R.MW i σ)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.Member.vacuum_oriented_exists D R.ψ R.θ hψ hθ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i σ)) (D.sp.V_sig _) (D.sp.W_sig _) (fun τ => isCartanInv_one (hC.models.BV i τ)) hc _ _ sdV sdW`. Take `⟨f₀, hf₀⟩` from `h1`. Establish `h2` using `GlobalTheory.PlaceVec.thPVecExists D R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i σ)) _ _ (R.βV i) (R.βW i) R.Pg ∅ (fun _ => 1) sdV sdW (hC.lev.βV i).choose_spec.1 (hC.lev.βW i).choose_spec.1 (Finset.disjoint_empty_right _) ⟨e, he⟩ f₀ hf₀`. Take `⟨f, hf⟩` from `h2`. Establish `h3` using `fun ρ => exists_isONBasis (hc ρ) (D.sp.W_sig _ (tauE D ρ))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose B hB using h3`. Establish `h4` using `hf.2`. Take `⟨e', -, h5⟩` from `h4`. Conclude with `⟨f₀, f, B, hf, hB, theta_pureTensorO hψ hθ _ _ _ _ (theta_of_thetaAt hψ hθ h5 hf₀.2.theta)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_vecData_five : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Core5 R F → ∀ (i : Fin D.R.m), ∀ (σ : D.what₂.LL →+* ℂ), OverK σ → ∃ f₀ f B, VecData R i σ f₀ f B := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC i σ _
@@ -125,7 +125,7 @@ namespace GlobalTheory.ConjThetaIntegral
 open scoped Topology ComplexOrder
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hR i σ μ' η' c₀ c c₁ H j hj ω f₀ f B io hω hv`. Establish `hm` using `hj.model`. Take `⟨χ', hχ, hH⟩` from `hm`. Conclude with `IsThetaP₂ hω (D.sp.V_sig _) (hR.models.vpos i) c hj.coef (R.βV i) (R.datVt i A.μ0) χ' (fun k hk => Units.ext (conjVal_one (hχ k) (congrArg Units.val hk))) H.e (fun x => hH.2.1.le (LinearMap.mem_range_self _ x)) (pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i σ)) …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isThetaP_conj_five : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Core5 R F → ∀ (i : Fin D.R.m), ∀ (σ : D.what₂.LL →+* ℂ) (μ' η' : (AE D)ˣ →* Circle) (c₀ : VsV D i D.what₂.LL →ₛₗ[D.what₂.embLL] (R.cV i).W) (c : CoefA (Vc D i)) (c₁ : VsV D i D.what₂.LL →ₛₗ[σ] c.W) (H : HMod (Bridge.Gf (Vc D i) → c.W)) (j : A.fam.amb.FL i A.μ0 →ₛₗ[σ] H.H), IsConjForms R i σ c₀ c c₁ H j → ∀ (ω : GA D (Vc D i) × GA D (Wc D i) →* Module.End ℂ (WO (Vc D i) (Wc D i) → ℂ)) (f₀ f : WO (Vc D i) (Wc D i) → ℂ) (B : D.what₂.Tau → Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) ℂ) (io : LowT (R.MW i σ) →ₗ[ℂ] c.W →ₗ[ℂ] PolF D (Wc D i).rank (Vc D i).rank), IsWeilDatumO R.ψ (Vc D i) (Wc D i) μ' (μ' * η'⁻¹) ω → VecData R i σ f₀ f B → ∃ thP, Lift.IsThetaP (R.νV i A.μ0) (R.fdV i A.μ0) (fun g h φ => thetaKO ω h g φ) (ptAt R i σ B f) io (LinearMap.range (c.ext ∘ₗ H.e)) thP := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hR i σ μ' η' c₀ c c₁ H j hj ω f₀ f B io hω hv
@@ -143,9 +143,9 @@ namespace GlobalTheory.GalLift.ProjLift
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC i gramR c0R c0L hT σ hσ μ' η' c c₁ H j hj ω f₀ f B io thP hL v hv h`. Establish `hspan` using `GlobalTheory.ConjSpan.span_conjForms R hC.models.jV gramR c0R c0L hT i σ c c₁ H j hj`. Establish `hlow` using `GlobalTheory.HolLowOnce.lowSm_and_lowIrr D _ _ _ (holShape_of_overK R i hσ)`. Establish `he : ∀ τ, v τ ≠ 0` using `fun τ h0 => by`. Use `(hv τ).1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[h0] at this`. Establish `hex` using `exists_lift hlow.1 hlow.2 (R.HW i σ).e (fun t => (hC.models.HW i σ).2.1.le (LinearMap.mem_range_self _ t)) (thP ∘ₗ (c.ext ∘ₗ H.e).rangeRestrict) (fun y => kEquiv_thetaP hL.2.2.1 hL.2.2.2 _) j hspan v he h`. Take `⟨φ, hφ⟩` from `hex`. Conclude with `⟨(∑ g, RealDat.eC (A := A) σ g • R.gW i σ g) ∘ₗ φ, fun x u => (proj_apply R hC.models.gW i σ (φ x) _).trans (congrArg (R.eWf i σ) (hφ x u))⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isProjOf_five : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Core5 R F → ∀ (i : Fin D.R.m), ∀ gramR c0R c0L, Comparison₂ R gramR c0R c0L → ∀ (σ : D.what₂.LL →+* ℂ), OverK σ → ∀ (μ' η' : (AE D)ˣ →* Circle) (c : CoefA (Vc D i)) (c₁ : VsV D i D.what₂.LL →ₛₗ[σ] c.W) (H : HMod (Bridge.Gf (Vc D i) → c.W)) (j : A.fam.amb.FL i A.μ0 →ₛₗ[σ] H.H), IsConjForms R i σ (c0L i) c c₁ H j → ∀ (ω : GA D (Vc D i) × GA D (Wc D i) →* Module.End ℂ (WO (Vc D i) (Wc D i) → ℂ)) (f₀ f : WO (Vc D i) (Wc D i) → ℂ) (B : D.what₂.Tau → Matrix (Fin (Wc D i).rank) (Fin (Wc D i).rank) ℂ) (io : LowT (R.MW i σ) →ₗ[ℂ] c.W →ₗ[ℂ] PolF D (Wc D i).rank (Vc D i).rank) (thP : LinearMap.range (c.ext ∘ₗ H.e) →ₗ[ℂ] (LowT (R.MW i σ) →ₗ[ℂ] (GA D (Wc D i) → ℂ))), LiftData R i σ μ' η' c H ω f₀ f B io thP → ∀ v : ∀ ρ, lowT (R.MW i σ) ρ, IsExtVec (R.MW i σ) (fun ρ => v ρ) → (∀ x, ∃ t : (R.HW i σ).H, (R.HW i σ).e t (fun ρ => v ρ) = thP ((c.ext ∘ₗ H.e).rangeRestrict (j x)) (PiTensorProduct.tprod ℂ v)) → ∃ th, IsProjOf R i σ thP th := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC i gramR c0R c0L hT σ hσ μ' η' c c₁ H j hj ω f₀ f B io thP hL v hv h
@@ -166,7 +166,7 @@ end GlobalTheory.GalLift.ProjLift
 namespace GlobalTheory.GalLift
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.CoefModel.exists_coefAt_five, GlobalTheory.ConjForms.exists_conjForms_five, GlobalTheory.GalLift.conjForms_rescale_five, GlobalTheory.GalLift.Vec.exists_vecData_five, GlobalTheory.ConjThetaIntegral.exists_isThetaP_conj_five, GlobalTheory.GalLift.ProjLift.exists_isPr …`.
+Supply the required witnesses or components.
 -/
 theorem conjLift_five : (∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A
     : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks

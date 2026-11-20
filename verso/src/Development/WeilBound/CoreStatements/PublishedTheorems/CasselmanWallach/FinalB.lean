@@ -6,7 +6,7 @@ namespace PositivityTheory.CWB
 open PositivityTheory.CW
 
 /- English proof (translation)
-The claim follows from `cw_of maxPr`.
+A detailed English derivation is pending.
 -/
 theorem casselmanWallach : GlobalTheory.Published.CasselmanWallach := cw_of maxPr
 

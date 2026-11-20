@@ -7,9 +7,9 @@ open MeasureTheory NumberField Formalism.BasicNotions Formalism.MainNotions.S Fo
 namespace GlobalTheory.DegreeRankEquations
 
 /- English proof (translation)
-Establish `e1 : Module.finrank ℚ X.B.I.E = Module.finrank ℚ D.host.E` using `(X.ιE.toRatAlgEquiv).toLinearEquiv.finrank_eq`. Establish `e2 : Module.finrank ℚ X.B.I.F * Module.finrank X.B.I.F X.B.I.E = Module.finrank ℚ X.B.I.E` using `Module.finrank_mul_finrank ℚ X.B.I.F X.B.I.E`. Establish `e3 : Module.finrank X.B.I.F X.B.I.E = 2` using `X.B.I.cm.deg2`. Establish `e4 : Module.finrank ℚ D.host.E = 2 * D.R.f`. Rewrite using `[D.host.finrank_cmField]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Ranks.f Ranks.n`. Put the polynomial expressions in normal form. Rewrite `e2` using `[e3]`. Unfold `AutInst.f`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Put the polynomial expressions in normal form. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem f_eq (D : D7) (X : HidaSetting D) : X.B.I.f = D.R.f := by
   have e1 : Module.finrank ℚ X.B.I.E = Module.finrank ℚ D.host.E :=
@@ -26,11 +26,11 @@ theorem f_eq (D : D7) (X : HidaSetting D) : X.B.I.f = D.R.f := by
   omega
 
 /- English proof (translation)
-Establish `hd : discr X.B.I.E = discr D.host.E` using `NumberField.discr_eq_discr_of_algEquiv X.B.I.E X.ιE.toRatAlgEquiv`. Establish `e1 : Module.finrank ℚ X.B.I.E = Module.finrank ℚ D.host.E` using `(X.ιE.toRatAlgEquiv).toLinearEquiv.finrank_eq`. Establish `e2 : Module.finrank ℚ X.B.I.F * Module.finrank X.B.I.F X.B.I.E = Module.finrank ℚ X.B.I.E` using `Module.finrank_mul_finrank ℚ X.B.I.F X.B.I.E`. Establish `e3 : Module.finrank X.B.I.F X.B.I.E = 2` using `X.B.I.cm.deg2`. Establish `e4 : (Module.finrank ℚ D.host.E : ℝ) = 2 * (X.B.I.f : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `AutInst.f`. Establish `: Module.finrank ℚ D.host.E = 2 * Module.finrank ℚ X.B.I.F` using `by rw [← e1, ← e2, e3, mul_comm]`. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `AutInst.rd Host.rdE`. Rewrite using `[hd, e4]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rd_eq (D : D7) (X : HidaSetting D) : X.B.I.rd = D.host.rdE := by
   have hd : discr X.B.I.E = discr D.host.E := NumberField.discr_eq_discr_of_algEquiv X.B.I.E X.ιE.toRatAlgEquiv

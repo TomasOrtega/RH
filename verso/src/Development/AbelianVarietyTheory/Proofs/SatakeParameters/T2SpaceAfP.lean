@@ -11,7 +11,7 @@ open Topology
 namespace GlobalTheory.GfTop
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun s _ hs => Set.subsingleton_of_image hi s (isTotallyDisconnected_of_totallyDisconnectedSpace (f '' s) (f '' s) subset_rfl (hs.image f hf.continuousOn))⟩`.
+Supply the required witnesses or components.
 -/
 theorem td_of_inj {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] [TotallyDisconnectedSpace Y]
     {f : X → Y} (hf : Continuous f) (hi : Function.Injective f) : TotallyDisconnectedSpace X :=
@@ -19,7 +19,7 @@ theorem td_of_inj {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] [Total
     (isTotallyDisconnected_of_totallyDisconnectedSpace (f '' s) (f '' s) subset_rfl (hs.image f hf.continuousOn))⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.locallyCompactSpace, hf.isEmbedding.t2Space, td_of_inj hf.continuous hf.injective, hf.isEmbedding.secondCountableTopology⟩`.
+Supply the required witnesses or components.
 -/
 theorem props_of_closedEmb {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y] [LocallyCompactSpace Y]
     [T2Space Y] [TotallyDisconnectedSpace Y] [SecondCountableTopology Y] {f : X → Y} (hf : IsClosedEmbedding f) :
@@ -28,11 +28,11 @@ theorem props_of_closedEmb {X Y : Type*} [TopologicalSpace X] [TopologicalSpace 
     hf.isEmbedding.secondCountableTopology⟩
 
 /- English proof (translation)
-Use `⟨Units.isEmbedding_embedProduct, ?_⟩` and prove the remaining obligations. Establish `h : Set.range (Units.embedProduct A) = {x : A × Aᵐᵒᵖ | x.1 * x.2.unop = 1 ∧ x.2.unop * x.1 = 1}`. Use extensionality with `⟨a, b⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← hu]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨a, b.unop, h1, h2⟩, rfl⟩`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isClosed_eq (continuous_fst.mul (MulOpposite.continuous_unop.comp continuous_snd)) continuous_const).inter (isClosed_eq ((MulOpposite.continuous_unop.comp continuous_snd).mul continuous_fst) continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_embedProduct' (A : Type*) [TopologicalSpace A] [Monoid A] [ContinuousMul A] [T2Space A] :
     IsClosedEmbedding (Units.embedProduct A) := by
@@ -51,7 +51,7 @@ theorem isClosedEmbedding_embedProduct' (A : Type*) [TopologicalSpace A] [Monoid
     (isClosed_eq ((MulOpposite.continuous_unop.comp continuous_snd).mul continuous_fst) continuous_const)
 
 /- English proof (translation)
-Take `⟨o1, o2, o3, o4⟩` from `props_of_closedEmb (MulOpposite.opHomeomorph (M := A)).symm.isClosedEmbedding`. Conclude with `props_of_closedEmb (isClosedEmbedding_embedProduct' A)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem units_props (A : Type*) [TopologicalSpace A] [Monoid A] [ContinuousMul A] [LocallyCompactSpace A]
     [T2Space A] [TotallyDisconnectedSpace A] [SecondCountableTopology A] :
@@ -60,7 +60,7 @@ theorem units_props (A : Type*) [TopologicalSpace A] [Monoid A] [ContinuousMul A
   exact props_of_closedEmb (isClosedEmbedding_embedProduct' A)
 
 /- English proof (translation)
-Use `haveI : ContinuousAdd M := IsModuleTopology.toContinuousAdd R M`. Set `b` to `Module.Free.chooseBasis R M`. Set `e : M ≃ₜ (Module.Free.ChooseBasisIndex R M → R)` to `{ toEquiv := b.equivFun.toEquiv continuous_toFun := IsModuleTopology.continuous_of_linearMap b.equivFun.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap b.equivFun.symm.toLinearMap }`. Conclude with `props_of_closedEmb e.isClosedEmbedding`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem module_props (R : Type*) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R]
     [T2Space R] [TotallyDisconnectedSpace R] [SecondCountableTopology R]
@@ -82,15 +82,13 @@ open GlobalTheory.LKTrip
 variable {C : Type} [Ring C] [Algebra ℚ C] [Module.Finite ℚ C] (star : C →+* Cᵐᵒᵖ)
 
 /- English proof (translation)
-Use `letI : TopologicalSpace (R ⊗[ℚ] C) := moduleTopology R (R ⊗[ℚ] C)`. Use `haveI : IsModuleTopology R (R ⊗[ℚ] C) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (R ⊗[ℚ] C) := IsModuleTopology.isTopologicalRing R (R ⊗[ℚ] C)`. Take `⟨m1, m2, m3, m4⟩` from `module_props R (R ⊗[ℚ] C)`. Take `⟨u1, u2, u3, u4⟩` from `units_props (R ⊗[ℚ] C)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨v1, v2, v3, v4⟩` from `units_props R`. Set `f : C →ₗ[ℚ] C` to `(MulOpposite.opLinearEquiv ℚ).symm.toLinearMap ∘ₗ star.toRatAlgHom.toLinearMap`. Establish `hσeq : (fun y : R ⊗[ℚ] C => (starT star R y).unop) = LinearMap.baseChange R f`. Use function extensionality and compare the values at `y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul r x`. Rewrite using `[starT_tmul, LinearMap.baseChange_tmul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, MulOpposite.unop_add] at hx hy ⊢`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hx, hy]`. Establish `hσ : Continuous (fun y : R ⊗[ℚ] C => (starT star R y).unop)`. Rewrite using `[hσeq]`. Conclude with `IsModuleTopology.continuous_of_linearMap _`. Establish `hcl : IsClosed ((UPts star R : Subgroup ((R ⊗[ℚ] C)ˣ × Rˣ)) : Set ((R ⊗[ℚ] C)ˣ × Rˣ))`.
-
-Establish `hs : ((UPts star R : Subgroup ((R ⊗[ℚ] C)ˣ × Rˣ)) : Set ((R ⊗[ℚ] C)ˣ × Rˣ)) = {x | ((x.1 : (R ⊗[ℚ] C)ˣ) : R ⊗[ℚ] C) * (starT star R ((x.1 : (R ⊗[ℚ] C)ˣ) : R ⊗[ℚ] C)).unop = algebraMap R (R ⊗[ℚ] C) ((x.2 : Rˣ) : R)}` using `rfl`. Rewrite using `[hs]`. Conclude with `isClosed_eq ((Units.continuous_val.comp continuous_fst).mul (hσ.comp (Units.continuous_val.comp continuous_fst))) ((continuous_algebraMap R (R ⊗[ℚ] C)).comp (Units.continuous_val.comp continuous_snd))`. Conclude with `props_of_closedEmb hcl.isClosedEmbedding_subtypeVal`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upts_props (R : Type) [CommRing R] [Algebra ℚ R] [TopologicalSpace R] [IsTopologicalRing R]
     [LocallyCompactSpace R] [T2Space R] [TotallyDisconnectedSpace R] [SecondCountableTopology R] :
@@ -136,20 +134,20 @@ section AfP
 variable (p : ℕ)
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (T2Space (Πʳ v : AwayP p, [v.1.adicCompletion ℚ, v.1.adicCompletionIntegers ℚ]))`.
+A detailed English derivation is pending.
 -/
 theorem t2Space_afP : T2Space (AfP p) :=
   inferInstanceAs (T2Space (Πʳ v : AwayP p, [v.1.adicCompletion ℚ, v.1.adicCompletionIntegers ℚ]))
 
 /- English proof (translation)
-The claim follows from `(LevelExists.isCompact_intAfP p).locallyCompactSpace_of_mem_nhds_of_addGroup ((LevelExists.isOpen_intAfP p).mem_nhds (LevelExists.intAfP p).zero_mem)`.
+A detailed English derivation is pending.
 -/
 theorem finiteAdeleRingAway_locallyCompactSpace : LocallyCompactSpace (AfP p) :=
   (LevelExists.isCompact_intAfP p).locallyCompactSpace_of_mem_nhds_of_addGroup
     ((LevelExists.isOpen_intAfP p).mem_nhds (LevelExists.intAfP p).zero_mem)
 
 /- English proof (translation)
-The claim follows from `td_of_inj (X := Πʳ v : AwayP p, [v.1.adicCompletion ℚ, v.1.adicCompletionIntegers ℚ]) (f := fun x => (x : ∀ v : AwayP p, v.1.adicCompletion ℚ)) RestrictedProduct.continuous_coe (fun x y h => RestrictedProduct.ext _ _ fun i => congrFun h i)`.
+A detailed English derivation is pending.
 -/
 theorem finiteAdeleRingAway_totallyDisconnectedSpace : TotallyDisconnectedSpace (AfP p) :=
   td_of_inj (X := Πʳ v : AwayP p, [v.1.adicCompletion ℚ, v.1.adicCompletionIntegers ℚ])
@@ -157,7 +155,7 @@ theorem finiteAdeleRingAway_totallyDisconnectedSpace : TotallyDisconnectedSpace 
     (fun x y h => RestrictedProduct.ext _ _ fun i => congrFun h i)
 
 /- English proof (translation)
-Establish `hI : Countable (Ideal ℤ)`. Establish `hs : Function.Surjective (fun n : ℤ => Ideal.span {n})` using `fun I => ⟨Submodule.IsPrincipal.generator I, Ideal.span_singleton_generator I⟩`. Conclude with `hs.countable`. Establish `hi : Function.Injective (fun v : AwayP p => v.1.asIdeal)` using `fun v w h => Subtype.ext (HeightOneSpectrum.ext h)`. Conclude with `hi.countable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem countable_awayP : Countable (AwayP p) := by
   have hI : Countable (Ideal ℤ) := by
@@ -169,7 +167,7 @@ theorem countable_awayP : Countable (AwayP p) := by
   exact hi.countable
 
 /- English proof (translation)
-Use `haveI : Fact ((Rat.HeightOneSpectrum.primesEquiv v : Nat.Primes) : ℕ).Prime := ⟨(Rat.HeightOneSpectrum.primesEquiv v).2⟩`. Conclude with `(Rat.HeightOneSpectrum.adicCompletion.padicEquiv v).toHomeomorph.isEmbedding.secondCountableTopology`.
+A detailed English derivation is pending.
 -/
 theorem compl_sc (v : HeightOneSpectrum ℤ) : SecondCountableTopology (v.adicCompletion ℚ) := by
   haveI : Fact ((Rat.HeightOneSpectrum.primesEquiv v : Nat.Primes) : ℕ).Prime :=
@@ -177,13 +175,11 @@ theorem compl_sc (v : HeightOneSpectrum ℤ) : SecondCountableTopology (v.adicCo
   exact (Rat.HeightOneSpectrum.adicCompletion.padicEquiv v).toHomeomorph.isEmbedding.secondCountableTopology
 
 /- English proof (translation)
-Use `haveI := countable_awayP p`. Use `haveI : ∀ v : AwayP p, SecondCountableTopology (v.1.adicCompletion ℚ) := fun v => compl_sc v.1`. Establish `hAopen : ∀ v : AwayP p, IsOpen ((v.1.adicCompletionIntegers ℚ : Set (v.1.adicCompletion ℚ)))` using `fun v => Valued.isOpen_valuationSubring _`. Establish `hS : ∀ S : Finset (AwayP p), Filter.cofinite ≤ Filter.principal ((S : Set (AwayP p))ᶜ)` using `fun S => Filter.le_principal_iff.2 S.finite_toSet.compl_mem_cofinite`. Set `U : Finset (AwayP p) → Set (Πʳ v : AwayP p, [v.1.adicCompletion ℚ, v.1.adicCompletionIntegers ℚ])` to `fun S => Set.range (RestrictedProduct.inclusion (fun v : AwayP p => v.1.adicCompletion ℚ) (fun v : AwayP p => (v.1.adicCompletionIntegers ℚ : Set (v.1.adicCompletion ℚ))) (hS S))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUo : ∀ S, IsOpen (U S)` using `fun S => (RestrictedProduct.isOpenEmbedding_inclusion_principal hAopen (hS S)).isOpen_range`. Establish `hsc : ∀ S, SecondCountableTopology (U S)` using `fun S => by haveI : SecondCountableTopology (Πʳ v : AwayP p, [v.1.adicCompletion ℚ, v.1.adicCompletionIntegers ℚ]_[ Filter.principal ((S : Set (AwayP p))ᶜ)]) := RestrictedProduct.isEmbedding_coe_of_principal.secondCountableTopology`. Conclude with `(RestrictedProduct.isOpenEmbedding_inclusion_principal hAopen (hS S)).isEmbedding.toHomeomorph.symm.isEmbedding.secondCountableTopology`. Establish `hcov : ⋃ S, U S = Set.univ`. Use `Set.eq_univ_of_forall fun x => Set.mem_iUnion.2 ⟨(Filter.eventually_cofinite.1 x.2).toFinset, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `show x ∈ Set.range _`. Rewrite using `[RestrictedProduct.range_inclusion]`. Use `Filter.eventually_principal.2 fun i hi => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hi (by rw [Finset.mem_coe, Set.Finite.mem_toFinset]; exact h)`.
-
-Conclude with `@TopologicalSpace.secondCountableTopology_of_countable_cover _ _ _ _ U hsc hUo hcov`.
+A detailed English derivation is pending.
 -/
 theorem finiteAdeleRingAway_secondCountableTopology : SecondCountableTopology (AfP p) := by
   haveI := countable_awayP p

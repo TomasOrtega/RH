@@ -13,14 +13,14 @@ namespace UpperTheory.V.Cu.RankFourTensorSourceAtPrime
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `ext`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 private theorem toB_chi (c : Coef l) (g : G ℚ Ω) : toB (chiO ℚ Ω l c.O) g = cycBar ℚ Ω l g := by
   ext
   rfl
 
 /- English proof (translation)
-Use `haveI : FaithfulSMul E Ω := (faithfulSMul_iff_algebraMap_injective E Ω).2 (algebraMap E Ω).injective`. Use `haveI : Module.IsTorsionFree E Ω := DivisionSemiring.to_moduleIsTorsionFree`. Use `haveI : IsAlgClosure E Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) E⟩`. Conclude with `(galEmbTop ℚ E Ω).1.continuous`.
+A detailed English derivation is pending.
 -/
 private theorem cont_emb (E : Type) [Field E] [NumberField E] [Algebra E Ω] : Continuous (galEmb ℚ E Ω) := by
   haveI : FaithfulSMul E Ω := (faithfulSMul_iff_algebraMap_injective E Ω).2 (algebraMap E Ω).injective
@@ -29,12 +29,12 @@ private theorem cont_emb (E : Type) [Field E] [NumberField E] [Algebra E Ω] : C
   exact (galEmbTop ℚ E Ω).1.continuous
 
 /- English proof (translation)
-The claim follows from `cont_emb F`.
+A detailed English derivation is pending.
 -/
 private theorem cont_res (F : IntermediateField ℚ Ω) [NumberField F] : Continuous (resQ F) := cont_emb F
 
 /- English proof (translation)
-Establish `h : Continuous fun g => ((toB d.δ g : (Qbar l)ˣ) : Qbar l)` using `((UpperTheory.integrality_of_norm_coefficients l).2 d.c _ _).1 d.tw.cont`. Use `Units.continuous_iff.2 ⟨h, ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_inv_eq_inv_val]`. Conclude with `h.inv₀ fun g => (toB d.δ g).ne_zero`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cont_delta (d : UpperTheory.V.Cu.Dat Ω l) : Continuous (toB d.δ) := by
   have h : Continuous fun g => ((toB d.δ g : (Qbar l)ˣ) : Qbar l) := ((UpperTheory.integrality_of_norm_coefficients l).2 d.c _ _).1 d.tw.cont

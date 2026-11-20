@@ -7,25 +7,23 @@ open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.PRep GlobalT
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G V _ _ _ π hπ N H χ v hv0 hv hconj`. Use `set K : Submodule ℂ V := twKer π N 1 with hK`. Establish `hgv : ∀ g : G, π g v ∈ K`. Introduce `g`. Take `⟨h, hn, hχ⟩` from `hconj g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : π (g * h * g⁻¹) (π g v) - (1 : ℂ) • π g v ∈ K`. Use `Submodule.subset_span ⟨⟨_, hn⟩, π g v, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hcalc : π (g * h * g⁻¹) (π g v) = (χ h : ℂ) • π g v`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: g * (h : G) * g⁻¹ * g = g * h` using `by group`. Rewrite using `[this, map_mul, Module.End.mul_apply, hv h, map_smul]`. Rewrite `hmem` using `[hcalc, ← sub_smul]`. Establish `hne : (χ h : ℂ) - 1 ≠ 0`. Introduce `e`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hχ` to reduce the goal to its premises. Use `ext`. Simplify `e` using `[sub_eq_zero]`. Use `K.smul_mem ((χ h : ℂ) - 1)⁻¹ hmem` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hne, one_smul]`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Set `S : Submodule ℂ V` to `⨅ g : G, K.comap (π g)`. Establish `hS : ∀ w, w ∈ S ↔ ∀ g : G, π g w ∈ K`. Introduce `w`. Simplify using `[S, Submodule.mem_iInf]`. Set `Wr : Subrepresentation π` to `{ toSubmodule := S apply_mem_toSubmodule := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g w hw`. Rewrite `hw`, the goal using `[hS]`. Introduce `g'`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Conclude with `hw _ }`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvW : v ∈ S` using `(hS v).2 hgv`. Establish `htop : K = ⊤`. Break down `hπ.eq_bot_or_eq_top Wr with e | e` into its components or cases. It suffices to derive a contradiction. Establish `: v ∈ Wr.toSubmodule` using `hvW`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[e]`. Conclude with `hv0 this`. Rewrite using `[eq_top_iff]`. Introduce `w _`. Establish `: w ∈ Wr.toSubmodule` using `by rw [e]; trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hS w).1 this 1` as an intermediate fact. Simplify using `using this`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective K a`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective K b`.
-
-Conclude with `(Submodule.Quotient.eq K).2 (by rw [htop]; trivial)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem jacquet_subsingleton_of_char_nontrivial_on_conj :
     ∀ (G V : Type) [Group G] [AddCommGroup V] [Module ℂ V] (π : Representation ℂ G V), π.IsIrreducible →

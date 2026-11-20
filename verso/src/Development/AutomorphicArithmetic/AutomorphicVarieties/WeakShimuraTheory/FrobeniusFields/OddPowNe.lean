@@ -4,15 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `hxm`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hn`. Use `set u := Units.mk0 x hx0 with hu_def`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hu : u ^ 2 ^ n = 1` using `Units.ext (by simpa [u] using hn)`. Establish `hum : u ^ m = 1` using `Units.ext (by simpa [u] using hxm)`. Take `⟨j, -, hoj⟩` from `(Nat.dvd_prime_pow Nat.prime_two).mp (orderOf_dvd_of_pow_eq_one hu)`. Establish `hdm : (orderOf u : ℤ) ∣ m` using `orderOf_dvd_iff_zpow_eq_one.mpr hum`. Consider the cases of `j with`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `zero`. Rewrite `hoj` using `[pow_zero, orderOf_eq_one_iff]`. Apply `h4` to reduce the goal to its premises. Establish `hx1 : x = 1` using `by simpa [u] using congrArg Units.val hoj`. Simplify using `[hx1]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ j`. Establish `h2 : (2 : ℤ) ∣ m`. Use `dvd_trans ?_ hdm` and prove the remaining obligations. Rewrite using `[hoj]`. Conclude with `dvd_pow_self 2 (Nat.succ_ne_zero j)` after adjusting the coercions.
-
-Conclude with `(Int.not_even_iff_odd.mpr hm) (even_iff_two_dvd.mpr h2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem odd_pow_ne {k : Type} [Field k] {x : k} {n : ℕ} (hn : x ^ 2 ^ n = 1) (h4 : x ^ 4 ≠ 1) {m : ℤ} (hm : Odd m) :
     x ^ m ≠ 1 := by
@@ -39,13 +37,13 @@ private theorem odd_pow_ne {k : Type} [Field k] {x : k} {n : ℕ} (hn : x ^ 2 ^ 
     exact (Int.not_even_iff_odd.mpr hm) (even_iff_two_dvd.mpr h2)
 
 /- English proof (translation)
-Establish `h2 : (2 : k) ≠ 0`. Introduce `h`. Apply `h1` to reduce the goal to its premises. Take the linear combination `-h`. Introduce `i j h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp at h ⊢`. Apply the tactic sequence `all_goals first`. Consider the case `exact absurd (by linear_combination h * h) hx`. Consider the case `exact absurd (by linear_combination (-x - 1) * h) hx`. Consider the case `exact absurd (by linear_combination (x - 1) * h) hx`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact absurd (by linear_combination (-x + 1) * h) hx`. Consider the case `exact absurd (by linear_combination (x + 1) * h) hx`. Consider the case `exact h1 h`. Consider the case `exact h1 h.symm`. Consider the case `exact h0 ((mul_eq_zero.mp (by linear_combination -h : (2 : k) * x = 0)).resolve_left h2)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact h0 ((mul_eq_zero.mp (by linear_combination h : (2 : k) * x = 0)).resolve_left h2)`.
+A detailed English derivation is pending.
 -/
 private theorem dist4 {k : Type} [Field k] {x : k} (h1 : (-1 : k) ≠ 1) (h0 : x ≠ 0) (hx : x ^ 2 ≠ 1) :
     Function.Injective (![x * -1, -1, x, 1] : Fin 4 → k) := by
@@ -67,67 +65,59 @@ private theorem dist4 {k : Type} [Field k] {x : k} (h1 : (-1 : k) ≠ 1) (h0 : x
     | exact h0 ((mul_eq_zero.mp (by linear_combination h : (2 : k) * x = 0)).resolve_left h2)
 
 /- English proof (translation)
-Apply the tactic sequence `cases pr <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem lab_inj (pr : Bool) : Function.Injective (lab pr) := by
   cases pr <;> decide
 
 /- English proof (translation)
-Apply the tactic sequence `cases pr <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem lab_surj (pr : Bool) : ∃ i, lab pr i = 3 := by
   cases pr <;> decide
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD X T hOn a u t hE`. Take `⟨h1, -, hal, hth, -, -, hrb, -, -⟩` from `barFacts D hD`. Take `⟨n, hn⟩` from `X.ord`. Establish `hxord : ∀ g, Raw.bar D.ξ g ^ 2 ^ n = 1`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Raw.bar]`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, ← MonoidHom.pow_apply, hn]`. Simplify using the standard rewrite rules. Establish `hchi : ∀ b i, chi D b i = D.ps (lab b i)` using `fun b i => rfl`. Establish `lift : ∀ y ∈ X.H ⊓ X.η.ker, ∃ s ∈ T.GalL, resQ T.F s = y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Take `⟨s, hs⟩` from `exists_resQ (F := T.F) (g := y) (by rw [hOn.1]; exact hy.1)`. Use `⟨s, ?_, hs⟩` and prove the remaining obligations. Unfold `Tower.GalL`. Rewrite using `[Subgroup.mem_comap, hOn.2, hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy.2`. Establish `hbu : Raw.bar D.om u = 1` using `by simp [Raw.bar, hE.u_om]`. Establish `hxu1 : Raw.bar D.ξ u ≠ 1`. Introduce `h`. Apply `hE.u_xi` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, one_pow]`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w`. Break down `Int.even_or_odd w.1 with he | ho` into its components or cases. Take `⟨s, hsG, hs⟩` from `lift a hE.a_mem`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s, hsG, ?_⟩` and prove the remaining obligations. Rewrite using `[hrb, hs, hE.a_xi, hE.a_psi, hE.a_om, one_zpow, mul_one, he.neg_one_zpow]`. Conclude with `fun h => h1 h.symm`. Take `⟨s, hsG, hs⟩` from `lift u hE.u_mem`. Use `⟨s, hsG, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrb, hs, hE.u_psi, one_zpow, mul_one, hbu]`. Conclude with `odd_pow_ne (hxord u) hE.u_xi ho`. Introduce `w hw`. Distinguish the cases in `ho : Odd w.1`. Take `⟨s, hsG, hs⟩` from `lift u hE.u_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨s, hsG, ?_⟩` and prove the remaining obligations. Rewrite using `[hrb, hs, hE.u_psi, one_zpow, mul_one]`. Conclude with `odd_pow_ne (hxord u) hE.u_xi ho`. Take `⟨w1, w2⟩` from `w`. Simplify using `[UpperTheory.V.Ws.roots, oddRoots, wAl, wBe, wTh, wPs] at hw`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hsG, hs⟩` from `lift t hE.t_mem`. Use `⟨s, hsG, ?_⟩` and prove the remaining obligations. Rewrite using `[hrb, hs, hE.t_psi]`. Break down `hw with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Apply the tactic sequence `all_goals first`.
+Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Consider the case `exact absurd (by decide) ho`. Consider the case `(split_ifs <;> simpa using h1)`. Introduce `η hη2 hηom hperm`. Take `⟨i0, hi0⟩` from `lab_surj T.pr`. Take `⟨j, hj⟩` from `hperm i0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : ∀ s : T.GalL, (η s : ResidueField c.O) = Raw.bar (D.ps (lab T.pr j)) (resQ T.F s)`. Introduce `s`. Establish `h` using `hj s`. Rewrite `h` using `[hchi, hchi, hi0]`. Establish `h3 : D.ps 3 = 1` using `rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[h3]`. Simplify `h` using `[Raw.bar]`. Take `⟨su, hsuG, hsu⟩` from `lift u hE.u_mem`. Take `⟨st, hstG, hst⟩` from `lift t hE.t_mem`. Establish `hηu : η ⟨su, hsuG⟩ = 1` using `hηom _ (by simp only [hsu]; exact hE.u_om)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hηt : η ⟨st, hstG⟩ = 1` using `hηom _ (by simp only [hst]; exact hE.t_om)`. Establish `ku` using `key ⟨su, hsuG⟩`. Establish `kt` using `key ⟨st, hstG⟩`. Rewrite `ku` using `[hηu]`. Rewrite `kt` using `[hηt]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. It suffices to derive a contradiction.
 
-Simplify using `only [hsu] at ku`. Simplify using `only [hst] at kt`. Generalize the expression as in `lab T.pr j = k at ku kt key`. Use `fin_cases k`. It suffices to derive a contradiction.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `_ = Raw.bar D.th u at ku`. Simplify using `only [hth, hE.u_psi, mul_one, Units.val_one] at ku`. Conclude with `hxu1 ku.symm`. It suffices to derive a contradiction. Express the relevant statement in the definitionally equal form `_ = Raw.bar D.Psi t at kt`.
+It suffices to derive a contradiction. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [hE.t_psi, Units.val_one] at kt`. Conclude with `h1 kt.symm`. It suffices to derive a contradiction. Express the relevant statement in the definitionally equal form `_ = Raw.bar D.al u at ku`. Simplify using `only [hal, Units.val_one] at ku`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hxu1 ku.symm`. Use extensionality with `s`. Establish `h0 : D.ps 3 = 1` using `rfl`. Use `key s` as an intermediate fact. Simplify using `only [Fin.reduceFinMk, Fin.isValue] at this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[h0]`. Simplify `this` using `[Raw.bar]`. Use `⟨(1, 0), by simp [UpperTheory.V.Ws.roots, oddRoots, wAl], fun m hm0 hm4 => ?_⟩` and prove the remaining obligations. Take `⟨s, hsG, hs⟩` from `lift u hE.u_mem`. Use `⟨s, hsG, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hrb, hs, hE.u_psi]`. Simplify using `only [one_zpow, mul_one, zpow_one]`. Use `interval_cases m`. Simplify using `using hxu1`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `hE.u_xi` to reduce the goal to its premises. Rewrite using `[show 4 = 2 * 2 by rfl, pow_mul, h, one_pow]`. Establish `h3` using `odd_pow_ne (hxord u) hE.u_xi (m := 3) (by decide)`. Simplify using `using h3`. Conclude with `hE.u_xi`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `hg0 i j hij heq`. Rewrite `heq` using `[hg0]`. Establish `hx0 : Raw.bar D.ξ t ≠ 0`. Introduce `h0`. Establish `h` using `hxord t`.
-
-Rewrite `h` using `[h0, zero_pow (by positivity)]`. Conclude with `zero_ne_one h`. Establish `hinj` using `dist4 h1 hx0 hE.t_xi`. Establish `hvals : ∀ k, Raw.bar (D.ps k) t = ![Raw.bar D.ξ t * -1, -1, Raw.bar D.ξ t, 1] k`. Introduce `k`.
-
-Use `fin_cases k`. Use `show Raw.bar D.th t = _`. Simplify using `[hth, hE.t_psi]`. Use `show Raw.bar D.Psi t = _`. Simplify using `[hE.t_psi]`.
-
-Use `show Raw.bar D.al t = _`. Simplify using `[hal]`. Use `show Raw.bar (1 : G ℚ Ω →* (↥c.O)ˣ) t = _`. Simplify using `[Raw.bar]`. Rewrite `heq` using `[hchi, hchi, hvals, hvals]`.
-
-Conclude with `hij (lab_inj T.pr (hinj heq))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.ok2A :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (X : Set2 D) (T : Tower D), X.On T → ∀ a u t, X.Elts a u t → (∀ w, ∃ g ∈ T.GalL, T.rb w g ≠ Raw.bar D.om (resQ T.F g)) ∧ (∀ w ∈ roots, ∃ g ∈ T.GalL, T.rb w g ≠ 1) ∧ (∀ η : T.GalL →* (ResidueField c.O)ˣ, η ^ 2 = 1 → (∀ g : T.GalL, D.om (resQ T.F g) = 1 → η g = 1) → (∀ i, ∃ j, ∀ g : T.GalL, η g * Raw.bar (chi D T.pr i) (resQ T.F g) = Raw.bar (chi D T.pr j) (resQ T.F g)) → η = 1) ∧ (∃ w ∈ roots, ∀ n : ℕ, 0 < n → n ≤ 4 → ∃ g ∈ T.GalL, T.rb w g ^ n ≠ 1) ∧ (resQ T.F T.g0 = t → ∀ i j, i ≠ j → Raw.bar (chi D T.pr i) (resQ T.F T.g0) ≠ Raw.bar (chi D T.pr j) (resQ T.F T.g0)) := by

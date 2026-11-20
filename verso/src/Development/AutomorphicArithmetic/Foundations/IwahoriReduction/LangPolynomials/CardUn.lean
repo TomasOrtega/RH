@@ -6,29 +6,25 @@ noncomputable section
 namespace UpperTheory.Kd.C7
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Establish `hgl : (g : ZMod l) ≠ 0`. Rewrite using `[Ne, ZMod.natCast_eq_zero_iff]`. Conclude with `hg`. Establish `hf : (l : ℤ) ∣ (g : ℤ) ^ (l - 1) - 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`. Rewrite using `[ZMod.pow_card_sub_one_eq_one hgl, sub_self]`. Take `⟨a, ha⟩` from `hf`. Establish `han : ¬ (l : ℤ) ∣ a`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨b, rfl⟩`. Conclude with `hnd ⟨b, by rw [ha]; ring⟩`. Establish `hga : (g : ℤ) ^ (l - 1) = 1 + l * a`. Rewrite using `[← ha]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `r with _ | n` into its components or cases. Establish `: Subsingleton (ZMod (l ^ 0))ˣ`. Rewrite using `[pow_zero]`. Use `infer_instance`. Rewrite using `[Subsingleton.elim x 1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Subgroup.one_mem _`. Use `set u := un g hg (n + 1) with hu`. Establish `hcast : (u : ZMod (l ^ (n + 1))) = (g : ZMod (l ^ (n + 1)))`. Simplify using `[hu, un]`. Establish `h1 : orderOf (u ^ (l - 1)) = l ^ n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← orderOf_units, Units.val_pow_eq_pow_val, hcast]`. Establish `e : (g : ZMod (l ^ (n + 1))) ^ (l - 1) = 1 + (l : ZMod (l ^ (n + 1))) * (a : ZMod (l ^ (n + 1)))`. Use `congrArg (Int.cast : ℤ → ZMod (l ^ (n + 1))) hga` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `ZMod.orderOf_one_add_mul_prime hp hl2 a han n`. Establish `hm : l ∣ l ^ (n + 1)` using `dvd_pow_self l (Nat.succ_ne_zero n)`. Establish `h2 : l - 1 ∣ orderOf u`. Establish `h3 : orderOf (ZMod.unitsMap hm u) = l - 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← orderOf_units]`. Establish `: ((ZMod.unitsMap hm u : (ZMod l)ˣ) : ZMod l) = (g : ZMod l)`. Simplify using `[ZMod.unitsMap, hcast]`. Rewrite using `[this, ho]`. Rewrite using `[← h3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `orderOf_map_dvd _ u`. Establish `h4 : l ^ n ∣ orderOf u` using `h1 ▸ orderOf_pow_dvd _`. Establish `hcard : Nat.card (ZMod (l ^ (n + 1)))ˣ = l ^ n * (l - 1)`. Rewrite using `[Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, Nat.totient_prime_pow_succ hp]`. Establish `hcop : Nat.Coprime (l ^ n) (l - 1)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Nat.Coprime.pow_left` to reduce the goal to its premises. Rewrite using `[Nat.coprime_self_sub_right hp.pos]`. Simplify using the standard rewrite rules. Establish `h5 : orderOf u = Nat.card (ZMod (l ^ (n + 1)))ˣ`. Apply `Nat.dvd_antisymm` to reduce the goal to its premises.
-
-Conclude with `orderOf_dvd_natCard u`. Rewrite using `[hcard]`. Conclude with `hcop.mul_dvd_of_dvd_of_dvd h4 h2`. Establish `htop : Subgroup.zpowers u = ⊤`. Apply `Subgroup.eq_top_of_card_eq` to reduce the goal to its premises.
-
-Rewrite using `[Nat.card_zpowers, h5]`. Rewrite using `[htop]`. Conclude with `Subgroup.mem_top x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_zpowers_un_of_primitive_root_mod_sq {l : ℕ} [Fact (Nat.Prime l)] (hl2 : l ≠ 2) (g : ℕ) (hg : ¬ l ∣ g)
     (ho : orderOf (g : ZMod l) = l - 1) (hnd : ¬ ((l : ℤ) ^ 2 ∣ (g : ℤ) ^ (l - 1) - 1))
@@ -91,29 +87,25 @@ private theorem mem_zpowers_un_of_primitive_root_mod_sq {l : ℕ} [Fact (Nat.Pri
   exact Subgroup.mem_top x
 
 /- English proof (translation)
-Introduce `l _ hl2`. Establish `hp : l.Prime` using `Fact.out`. Take `⟨c, hc⟩` from `isCyclic_iff_exists_orderOf_eq_natCard.mp (ZMod.isCyclic_units_prime hp)`. Rewrite `hc` using `[Nat.card_eq_fintype_card, ZMod.card_units]`. Establish `hc0 : (((c : ZMod l).val : ℕ) : ZMod l) = c` using `ZMod.natCast_zmod_val _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set c0 : ℕ := (c : ZMod l).val with hc0def`. Establish `hnd0 : ¬ l ∣ c0`. Introduce `h`. Establish `h'` using `(ZMod.natCast_eq_zero_iff c0 l).mpr h`. Rewrite `h'` using `[hc0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `c.ne_zero h'`. Establish `hord : ∀ k : ℕ, orderOf ((c0 + l * k : ℕ) : ZMod l) = l - 1`. Introduce `k`. Use `push_cast`. Rewrite using `[ZMod.natCast_self, zero_mul, add_zero, hc0, orderOf_units, hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hndk : ∀ k : ℕ, ¬ l ∣ c0 + l * k`. Introduce `k h`. Conclude with `hnd0 ((Nat.dvd_add_left (dvd_mul_right l k)).mp h)`. Establish `hc2 : 2 ≤ c0`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `push_neg at h`. Establish `h01 : c0 = 0 ∨ c0 = 1` using `by omega`. Break down `h01 with h0 | h1` into its components or cases. Conclude with `hnd0 (h0 ▸ dvd_zero l)`. Establish `h1' : (c : ZMod l) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[← hc0, h1, Nat.cast_one]`. Establish `hc1 : c = 1` using `Units.ext h1'`. Rewrite `hc` using `[hc1, orderOf_one]`. Use `hp.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hsq : (l : ℤ) ^ 2 ∣ (c0 : ℤ) ^ (l - 1) - 1`. Establish `hnd1 : ¬ ((l : ℤ) ^ 2 ∣ ((c0 + l * 1 : ℕ) : ℤ) ^ (l - 1) - 1)`. Introduce `hB`. Establish `key` using `sq_dvd_add_pow_sub_sub (l : ℤ) (c0 : ℤ) (l - 1)`. Establish `hsum : (l : ℤ) ^ 2 ∣ (c0 : ℤ) ^ (l - 1 - 1) * l * ((l - 1 : ℕ) : ℤ)`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (c0 : ℤ) ^ (l - 1 - 1) * l * ((l - 1 : ℕ) : ℤ) = (((c0 + l * 1 : ℕ) : ℤ) ^ (l - 1) - 1) - (((c0 : ℤ) + l) ^ (l - 1) - (c0 : ℤ) ^ (l - 1 - 1) * l * ((l - 1 : ℕ) : ℤ) - (c0 : ℤ) ^ (l - 1)) - ((c0 : ℤ) ^ (l - 1) - 1)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `dvd_sub (dvd_sub hB key) hsq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h6 : (l : ℤ) ∣ (c0 : ℤ) ^ (l - 1 - 1) * ((l - 1 : ℕ) : ℤ)`. Establish `hl0 : (l : ℤ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Rewrite using `[← mul_dvd_mul_iff_left hl0]`. Establish `e2 : (l : ℤ) * ((c0 : ℤ) ^ (l - 1 - 1) * ((l - 1 : ℕ) : ℤ)) = (c0 : ℤ) ^ (l - 1 - 1) * l * ((l - 1 : ℕ) : ℤ)` using `by ring`. Rewrite using `[e2, ← sq]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components.
 
-Conclude with `hsum`. Establish `h7 : l ∣ c0 ^ (l - 1 - 1) * (l - 1)` using `by exact_mod_cast h6`. Break down `(Nat.Prime.dvd_mul hp).mp h7 with h8 | h8` into its components or cases. Conclude with `hnd0 (hp.dvd_of_dvd_pow h8)`. Use `hp.two_le` as an intermediate fact.
-
-Use `Nat.le_of_dvd (by omega) h8` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `⟨c0 + l * 1, hndk 1, by omega, mem_zpowers_un_of_primitive_root_mod_sq hl2 _ (hndk 1) (hord 1) hnd1⟩`. Establish `h0` using `hord 0`. Simplify using `only [mul_zero, add_zero] at h0`.
-
-Conclude with `⟨c0, hnd0, hc2, mem_zpowers_un_of_primitive_root_mod_sq hl2 c0 hnd0 h0 hsq⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pGenEx : SGenEx := by
   intro l _ hl2

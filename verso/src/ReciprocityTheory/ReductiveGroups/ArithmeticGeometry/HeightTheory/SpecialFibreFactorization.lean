@@ -19,15 +19,15 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Take `⟨P, Q, hQ0, hQx, hPQ, hspec⟩` from `d.norm_generic_ratio_spec hd h c`. Take `⟨Pp, Pm, hPm0, hPpx, hPmx, hPi⟩` from `d.pi_free hd h c (d.w (d.jc c) c)`. Take `⟨κ, hκ, hκeq⟩` from `d.norm_ratio_pi hd h c x hx`. Use `⟨κ, hκ, ?_⟩` and prove the remaining obligations. Establish `hφinj` using `IsFractionRing.injective (KTp K d.D d.N) (KTf K d.D d.N)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hpoly : Q * F * Pm = P * Pp`. Apply `hφinj` to reduce the goal to its premises. Simplify using `only [map_mul]`. Rewrite using `[hF, hPi, hPQ]`. Simplify using `only [fZ]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsub` using `congrArg (d.sub0 x) hpoly`. Simplify using `only [map_mul, hQx, hPmx, hPpx] at hsub`. Establish `hφ` using `congrArg (algebraMap (KTp K d.D d.N) (KTf K d.D d.N)) hsub`. Simplify using `only [map_mul] at hφ`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hφ` using `[hspec x hx, hPi]`. Establish `hQ' : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) Q ≠ 0` using `(map_ne_zero_iff _ hφinj).mpr hQ0`. Establish `hPm' : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) Pm ≠ 0` using `(map_ne_zero_iff _ hφinj).mpr hPm0`. Rewrite using `[← hκeq]`. Apply `mul_left_cancel₀ (mul_ne_zero hQ' hPm')` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem SpecialFibreFactorization (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (F : KTp K d.D d.N)
     (hF : algebraMap (KTp K d.D d.N) (KTf K d.D d.N) F = d.fZ h c)

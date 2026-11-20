@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.SplitChoose
 
 /- English proof (translation)
-Introduce `F _ _ v h`. Use `(GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff v (2 : 𝓞 F)).2 h` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_two_of_not_mem : ∀ {F : Type} [Field F] [NumberField F] (v : Pl F), (2 : 𝓞 F) ∉ v.asIdeal →
     IsUnit (2 : v.adicCompletionIntegers F) := by
@@ -23,7 +23,7 @@ theorem isUnit_two_of_not_mem : ∀ {F : Type} [Field F] [NumberField F] (v : Pl
   rwa [map_ofNat] at this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d W r s hB hW v hv hψ h2 g hg`. Take `⟨π₁, π₂, b₁, b₂, hP, hS⟩` from `GlobalTheory.T.exists_local_dictionary_splitPlace σ B W r s hB hW v hv hψ`. Conclude with `GlobalTheory.T.splitPlace_bigCell_exists_admissible_inverse_alt GlobalTheory.T.exists_dual_pair_isUnit_det_blocks' σ W v hW.skew (isUnit_two_of_not_mem v h2) π₁ π₂ b₁ b₂ hP hS g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_admissible_unipotent_splitPlace_alt : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     {d : ℕ} (W : Spc F E d) (r s : ℕ), B.IsGood σ → W.IsSkew σ B r s →

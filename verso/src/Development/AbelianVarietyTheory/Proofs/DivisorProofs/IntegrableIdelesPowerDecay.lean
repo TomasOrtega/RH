@@ -18,13 +18,13 @@ open MeasureTheory Measure Set
 open scoped ENNReal
 
 /- English proof (translation)
-The claim follows from `Units.isOpenEmbedding_val.isInducing.secondCountableTopology`.
+A detailed English derivation is pending.
 -/
 theorem secondCountable_unitsC : SecondCountableTopology ℂˣ :=
   Units.isOpenEmbedding_val.isInducing.secondCountableTopology
 
 /- English proof (translation)
-Rewrite using `[congrArg (@borel ℂˣ) Units.isOpenEmbedding_val.isInducing.eq_induced, borel_comap, ← BorelSpace.measurable_eq (α := ℂ)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem borel_unitsC : BorelSpace ℂˣ where
   measurable_eq := by
@@ -49,13 +49,13 @@ def scaleMap (t : ι → ℂˣ) : (ι → ℂ) →ₗ[ℝ] (ι → ℂ) :=
 
 omit [Fintype ι] in
 /- English proof (translation)
-Simplify using `[scaleMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scaleMap_apply (t : ι → ℂˣ) (b : ι → ℂ) (i : ι) : scaleMap t b i = (t i : ℂ) * b i := by
   simp [scaleMap]
 
 /- English proof (translation)
-Rewrite using `[scaleMap, LinearMap.det_pi]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Algebra.norm_apply, Algebra.norm_complex_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_scaleMap (t : ι → ℂˣ) : LinearMap.det (scaleMap t) = ∏ i, Complex.normSq (t i : ℂ) := by
   rw [scaleMap, LinearMap.det_pi]
@@ -63,12 +63,12 @@ theorem det_scaleMap (t : ι → ℂˣ) : LinearMap.det (scaleMap t) = ∏ i, Co
   rw [← Algebra.norm_apply, Algebra.norm_complex_apply]
 
 /- English proof (translation)
-Introduce `_ hs` and use `⟨_, hs, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem measurable_units_val : Measurable (Units.val : ℂˣ → ℂ) := fun _ hs => ⟨_, hs, rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `hf ht`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem measurable_to_units {α : Type} [MeasurableSpace α] {f : α → ℂˣ} (hf : Measurable fun x => (f x : ℂ)) :
     Measurable f := by
@@ -76,16 +76,16 @@ theorem measurable_to_units {α : Type} [MeasurableSpace α] {f : α → ℂˣ} 
   exact hf ht
 
 /- English proof (translation)
-The claim follows from `Finset.measurable_prod _ fun i _ => ((measurable_pi_apply i).enorm.inv).pow_const 2`.
+A detailed English derivation is pending.
 -/
 theorem measurable_invSqWt : Measurable (invSqWt : (ι → ℂ) → ℝ≥0∞) :=
   Finset.measurable_prod _ fun i _ => ((measurable_pi_apply i).enorm.inv).pow_const 2
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use `measurable_pi_lambda _ fun i => measurable_to_units ?_` and prove the remaining obligations. Establish `: (fun b : ι → ℂ => ((toUnits b i : ℂˣ) : ℂ)) = fun b => if b i = 0 then 1 else b i`. Use function extensionality and compare the values at `b`. Apply the tactic sequence `by_cases h : b i = 0 <;> simp [toUnits, h]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Measurable.ite ((measurableSet_singleton 0).preimage (measurable_pi_apply i)) measurable_const (measurable_pi_apply i)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_toUnits : Measurable (toUnits : (ι → ℂ) → ι → ℂˣ) := by
   refine measurable_pi_lambda _ fun i => measurable_to_units ?_
@@ -97,7 +97,7 @@ theorem measurable_toUnits : Measurable (toUnits : (ι → ℂ) → ι → ℂˣ
     (measurable_pi_apply i)
 
 /- English proof (translation)
-Establish `h0 : ∀ᵐ z ∂(volume : Measure ℂ), z ≠ 0` using `compl_mem_ae_iff.2 (measure_singleton 0)`. Conclude with `ae_all_iff.2 fun i => (Measure.tendsto_eval_ae_ae (μ := fun _ : ι => (volume : Measure ℂ)) (i := i)).eventually h0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ae_ne_zero : ∀ᵐ b ∂(volume : Measure (ι → ℂ)), ∀ i, b i ≠ 0 := by
   have h0 : ∀ᵐ z ∂(volume : Measure ℂ), z ≠ 0 := compl_mem_ae_iff.2 (measure_singleton 0)
@@ -105,23 +105,23 @@ theorem ae_ne_zero : ∀ᵐ b ∂(volume : Measure (ι → ℂ)), ∀ i, b i ≠
     (Measure.tendsto_eval_ae_ae (μ := fun _ : ι => (volume : Measure ℂ)) (i := i)).eventually h0
 
 /- English proof (translation)
-The claim follows from `(withDensity_absolutelyContinuous _ _).ae_le ae_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem ae_ne_zero_w : ∀ᵐ b ∂(wVol ι), ∀ i, b i ≠ 0 :=
   (withDensity_absolutelyContinuous _ _).ae_le ae_ne_zero
 
 /- English proof (translation)
-Establish `hL : Measurable (scaleMap t)` using `(scaleMap t).continuous_of_finiteDimensional.measurable`. Establish `hDpos : 0 < ∏ i, Complex.normSq (t i : ℂ)` using `Finset.prod_pos fun i _ => Complex.normSq_pos.2 (t i).ne_zero`. Establish `hD : LinearMap.det (scaleMap t) ≠ 0` using `by rw [det_scaleMap]; exact hDpos.ne'`. Use `set κ : ℝ≥0∞ := ∏ i, ‖(t i : ℂ)‖ₑ ^ 2 with hκdef`. Establish `hκ0 : κ ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (enorm_ne_zero.2 (t i).ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκtop : κ ≠ ⊤` using `ENNReal.prod_ne_top fun i _ => ENNReal.pow_ne_top enorm_ne_top`. Establish `hκD : ENNReal.ofReal (∏ i, Complex.normSq (t i : ℂ)) = κ`. Rewrite using `[ENNReal.ofReal_prod_of_nonneg fun i _ => Complex.normSq_nonneg _]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.normSq_eq_norm_sq, ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hκ : κ * ENNReal.ofReal |(LinearMap.det (scaleMap t))⁻¹| = 1`. Rewrite using `[det_scaleMap, abs_of_pos (inv_pos.2 hDpos), ENNReal.ofReal_inv_of_pos hDpos, hκD, ENNReal.mul_inv_cancel hκ0 hκtop]`. Establish `hW : ∀ b, invSqWt b = κ * invSqWt (scaleMap t b)`. Introduce `b`. Rewrite using `[invSqWt, invSqWt, hκdef, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h0 : ‖(t i : ℂ)‖ₑ ≠ 0` using `enorm_ne_zero.2 (t i).ne_zero`. Rewrite using `[scaleMap_apply, enorm_mul, ENNReal.mul_inv (Or.inl h0) (Or.inl enorm_ne_top), mul_pow, ← mul_assoc, ← mul_pow, ENNReal.mul_inv_cancel h0 enorm_ne_top, one_pow, one_mul]`. Use extensionality with `s hs`. Rewrite using `[map_apply hL hs, wVol, withDensity_apply _ (hL hs), withDensity_apply _ hs, ← lintegral_indicator (hL hs), ← lintegral_indicator hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hind : (scaleMap t ⁻¹' s).indicator invSqWt = fun b => κ * s.indicator invSqWt (scaleMap t b)`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : scaleMap t b ∈ s`. Rewrite using `[indicator_of_mem (show b ∈ scaleMap t ⁻¹' s from hb), indicator_of_mem hb, hW]`. Rewrite using `[indicator_of_notMem (show b ∉ scaleMap t ⁻¹' s from hb), indicator_of_notMem hb, mul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : Measurable (s.indicator (invSqWt : (ι → ℂ) → ℝ≥0∞))` using `measurable_invSqWt.indicator hs`. Rewrite using `[hind]`. Use `beta_reduce`. Rewrite using `[lintegral_const_mul _ (f := fun b => s.indicator invSqWt (scaleMap t b)) (hm.comp hL), ← lintegral_map hm hL, map_linearMap_addHaar_eq_smul_addHaar _ hD, lintegral_smul_measure, smul_eq_mul, ← mul_assoc, hκ, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_scaleMap (t : ι → ℂˣ) : (wVol ι).map (scaleMap t) = wVol ι := by
   have hL : Measurable (scaleMap t) := (scaleMap t).continuous_of_finiteDimensional.measurable
@@ -221,9 +221,9 @@ instance : IsFiniteMeasureOnCompacts (unitsHaar ι) := by
     measure_closedBall_lt_top
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : unitsHaar ι univ = 0` using `by rw [h]; rfl`. Rewrite `h1` using `[unitsHaar, map_apply measurable_toUnits MeasurableSet.univ, preimage_univ, wVol, withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ, lintegral_eq_zero_iff measurable_invSqWt]`. Establish `hpos : ∀ b : ι → ℂ, invSqWt b ≠ 0` using `fun b => Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (ENNReal.inv_ne_zero.2 enorm_ne_top)`. Establish `hF : ∀ᵐ b ∂(volume : Measure (ι → ℂ)), False` using `h1.mono fun b hb => hpos b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `NeZero.ne (volume : Measure (ι → ℂ)) (ae_eq_bot.1 (Filter.eventually_false_iff_eq_bot.1 hF))`.
+A detailed English derivation is pending.
 -/
 theorem unitsHaar_ne_zero : unitsHaar ι ≠ 0 := by
   intro h
@@ -239,7 +239,7 @@ theorem unitsHaar_ne_zero : unitsHaar ι ≠ 0 := by
 def decay (z N : ℕ) (a : ι → ℂˣ) : ℝ := (∏ i, ‖(a i : ℂ)‖ ^ 2) ^ z / (1 + ∑ i, ‖(a i : ℂ)‖) ^ N
 
 /- English proof (translation)
-Establish `hc : ∀ i, Continuous fun a : ι → ℂˣ => ‖(a i : ℂ)‖` using `fun i => (Units.continuous_val.comp (continuous_apply i)).norm`. Use `((continuous_finset_prod _ fun i _ => (hc i).pow 2).pow z).div ((continuous_const.add (continuous_finsetSum _ fun i _ => hc i)).pow N) fun a => ?_` and prove the remaining obligations. Check the signs of the components of the expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Check the signs of the components of the expression.
 -/
 theorem continuous_decay (z N : ℕ) : Continuous (decay (ι := ι) z N) := by
   have hc : ∀ i, Continuous fun a : ι → ℂˣ => ‖(a i : ℂ)‖ := fun i =>
@@ -249,13 +249,13 @@ theorem continuous_decay (z N : ℕ) : Continuous (decay (ι := ι) z N) := by
   positivity
 
 /- English proof (translation)
-Use `set S := 1 + ∑ i, x i with hSdef`. Establish `hS : ∀ i, 1 + x i ≤ S` using `fun i => by`. Use `Finset.single_le_sum (f := x) (fun j _ => (hx j).le) (Finset.mem_univ i)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : ∀ i, 0 < 1 + x i` using `fun i => by linarith [hx i]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS0 : 0 < S`. Establish `: 0 ≤ ∑ i, x i` using `Finset.sum_nonneg fun i _ => (hx i).le`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← Finset.prod_pow, pow_mul, ← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_div_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun i _ => by have := hx i; positivity) fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hxi` using `hx i`. Establish `hxS : x i ≤ S` using `by linarith [hS i]`. Establish `e1 : (x i ^ 2)⁻¹ * ((x i ^ 2) ^ (k + 1) / S ^ (2 * k + 3)) = (x i ^ 2) ^ k / S ^ (2 * k + 3)`. Establish `hx2 : x i ^ 2 ≠ 0` using `by positivity`. Rewrite using `[pow_succ' (x i ^ 2) k, ← mul_div_assoc, ← mul_assoc, inv_mul_cancel₀ hx2, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (1 + x i) ^ (-(3 : ℝ)) = ((1 + x i) ^ 3)⁻¹`. Rewrite using `[Real.rpow_neg (hpos i).le]`. Use `norm_cast`. Rewrite using `[e1, e2]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem decay_bound (k : ℕ) (x : ι → ℝ) (hx : ∀ i, 0 < x i) :
     (∏ i, (x i ^ 2)⁻¹) * ((∏ i, x i ^ 2) ^ (k + 1) / (1 + ∑ i, x i) ^ ((2 * k + 3) * Fintype.card ι)) ≤
@@ -284,15 +284,13 @@ theorem decay_bound (k : ℕ) (x : ι → ℝ) (hx : ∀ i, 0 < x i) :
     _ ≤ ((1 + x i) ^ 3)⁻¹ := by have := hpos i; gcongr; exact hS i
 
 /- English proof (translation)
-Use `set N := (2 * k + 3) * Fintype.card ι`. Establish `hc` using `continuous_decay (ι := ι) (k + 1) N`. Use `⟨hc.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `hh : Integrable (fun b : ι → ℂ => ∏ i, (1 + ‖b i‖) ^ (-(3 : ℝ))) (volume : Measure (ι → ℂ))`. Use `Integrable.fintype_prod (μ := fun _ : ι => (volume : Measure ℂ)) (f := fun _ (x : ℂ) => (1 + ‖x‖) ^ (-(3 : ℝ))) fun _ => integrable_one_add_norm (by rw [Complex.finrank_real_complex]; norm_num)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `this`. Unfold `HasFiniteIntegral`. Rewrite using `[unitsHaar, lintegral_map hc.measurable.enorm measurable_toUnits, wVol, lintegral_withDensity_eq_lintegral_mul _ measurable_invSqWt (g := fun b => ‖decay (k + 1) N (toUnits b)‖ₑ) (hc.measurable.enorm.comp measurable_toUnits)]`. Use `lt_of_le_of_lt (lintegral_mono_ae ?_) hh.2` and prove the remaining obligations. Use `filter_upwards [ae_ne_zero] with b hb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : ∀ i, ((toUnits b i : ℂˣ) : ℂ) = b i` using `fun i => by simp [toUnits, hb i]`. Establish `hx : ∀ i, 0 < ‖b i‖` using `fun i => norm_pos_iff.2 (hb i)`. Establish `hd : decay (k + 1) N (toUnits b) = (∏ i, ‖b i‖ ^ 2) ^ (k + 1) / (1 + ∑ i, ‖b i‖) ^ N`. Simplify using `only [decay, hval]`. Establish `hw : invSqWt b = ENNReal.ofReal (∏ i, (‖b i‖ ^ 2)⁻¹)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[invSqWt, ENNReal.ofReal_prod_of_nonneg (fun i _ => by positivity)]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_inv_of_pos (by have := hx i; positivity), ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm, ENNReal.inv_pow]`. Establish `h1 : 0 ≤ decay (k + 1) N (toUnits b)` using `by rw [hd]; positivity`. Establish `h2 : 0 ≤ ∏ i, (1 + ‖b i‖) ^ (-(3 : ℝ))` using `Finset.prod_nonneg fun i _ => by positivity`.
-
-Simplify using `only [Pi.mul_apply, Function.comp]`. Rewrite using `[hw, Real.enorm_eq_ofReal h1, Real.enorm_eq_ofReal h2, ← ENNReal.ofReal_mul (by positivity), hd]`. Conclude with `ENNReal.ofReal_le_ofReal (decay_bound k (fun i => ‖b i‖) hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_decay (k : ℕ) :
     Integrable (decay (ι := ι) (k + 1) ((2 * k + 3) * Fintype.card ι)) (unitsHaar ι) := by
@@ -332,9 +330,9 @@ open GlobalTheory.Doubling (absE)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hfin : ∀ v, GlobalTheory.Doubling.unitFin F E v l = 1` using `fun v => by`. Use `(at_evI_iff.1 hl) v` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`. Conclude with `Units.ext this`. Rewrite using `[GlobalTheory.Doubling.absE_apply, finprod_eq_one_of_forall_eq_one (fun v => by rw [hfin v, map_one]), mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.Doubling.absEw_eq_sq hcm (τ w)]`. Use `push_cast`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem absE_of_mem_arch {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w)
     {l : (AE F E)ˣ} (hl : l ∈ idelesAt E (evI F)) :
@@ -351,13 +349,13 @@ theorem absE_of_mem_arch {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (τ : ∀ w
   rfl
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evI F)`. Set `φ : idelesAt E (evI F) →* (InfinitePlace F → ℂˣ)` to `MonoidHom.pi fun w => (Units.map (piInf (τ w)).toMonoidHom).comp (idelesAt E (evI F)).subtype`. Establish `hφ : ∀ l w, ((φ l w : ℂˣ) : ℂ) = piInf (τ w) l.1.1` using `fun _ _ => rfl`. Establish `hφc : Continuous φ` using `continuous_pi fun w => (Continuous.units_map _ (GlobalTheory.Grow.continuous_infEmb_compInf F w (τ w))).comp continuous_subtype_val`. Establish `hinj : Function.Injective φ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[injective_iff_map_eq_one]`. Introduce `l hl`. Establish `h1 : l.1.1 - 1 = 0` using `GlobalTheory.ArchInj.eq_zero_of_at_of_piInf F E σ hcm τ _ l.2 fun w => by`. Rewrite using `[map_sub, map_one, sub_eq_zero, ← hφ, hl]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Subtype.ext (Units.ext (sub_eq_zero.1 h1))`. Establish `hsurj : Function.Surjective φ`. Introduce `a`. Take `⟨t, ht, htw⟩` from `exists_unit_at_evI_piInf_eq σ τ (fun w => (a w : ℂ)) hcm fun w => (a w).ne_zero`. Conclude with `⟨⟨t, ht⟩, funext fun w => Units.ext (htw w)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `ho : IsOpenMap φ` using `φ.isOpenMap_of_sigmaCompact hsurj hφc`. Set `hh` to `(Equiv.ofBijective φ ⟨hinj, hsurj⟩).toHomeomorphOfContinuousOpen hφc ho`. Conclude with `⟨{ MulEquiv.ofBijective φ ⟨hinj, hsurj⟩ with continuous_toFun := hφc, continuous_invFun := hh.symm.continuous }, hφ⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_archEquiv {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) :
     ∃ e : idelesAt E (evI F) ≃ₜ* (InfinitePlace F → ℂˣ), ∀ l w, ((e l w : ℂˣ) : ℂ) = piInf (τ w) l.1.1 := by
@@ -385,15 +383,15 @@ theorem exists_archEquiv {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) (τ : ∀ w
 end Ideles
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB μ hμ z hz`. Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evI F)`. Establish `hcm : IsCMExt F E σ` using `hB.cm`. Take `⟨k, rfl⟩ : ∃ k, z = k + 1` from `⟨z - 1, by omega⟩`. Take `⟨e, he⟩` from `exists_archEquiv hcm B.emb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := e.isHaarMeasure_map μ`. Establish `hsm` using `isMulLeftInvariant_eq_smul (unitsHaar (InfinitePlace F)) (μ.map e)`. Use `set c := haarScalarFactor (unitsHaar (InfinitePlace F)) (μ.map e)`. Establish `hc0 : c ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `unitsHaar_ne_zero (ι := InfinitePlace F)` to reduce the goal to its premises. Rewrite using `[hsm, h, zero_smul]`. Establish `hν : μ.map e = (c⁻¹ : NNReal) • unitsHaar (InfinitePlace F)`. Rewrite using `[hsm, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Use `⟨(2 * k + 3) * Fintype.card (InfinitePlace F), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI` using `integrable_decay (ι := InfinitePlace F) k`. Establish `hI' : Integrable (decay (k + 1) ((2 * k + 3) * Fintype.card (InfinitePlace F))) (μ.map e)`. Rewrite using `[hν]`. Conclude with `hI.smul_measure_nnreal`. Establish `hme : MeasurableEmbedding e` using `e.toHomeomorph.measurableEmbedding`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `hI'` using `[hme.integrable_map_iff]`. Use `hI' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `l`. Simplify using `only [Function.comp, decay, he, absE_of_mem_arch hcm B.emb l.2]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrable_absE_pow_div : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E), B.IsGood σ →

@@ -5,19 +5,17 @@ open NumberField
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Introduce `E _ _ u n M hn hu hM ⟨x, hx⟩`. Establish `hlt : ∀ φ : E →+* ℂ, ‖φ (x : E)‖ < 1`. Introduce `φ`. Establish `h1 : (φ (u : E)) ^ n = 1`. Use `congrArg (fun y : 𝓞 E => φ (y : E)) hu` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `h2 : ‖φ (u : E)‖ = 1`. Use `congrArg norm h1` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').1 this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : φ (u : E) - 1 = (M : ℂ) * φ (x : E)`. Use `congrArg (fun y : 𝓞 E => φ (y : E)) hx` as an intermediate fact. Simplify using `using this`. Establish `h4 : (M : ℝ) * ‖φ (x : E)‖ ≤ 2`. Establish `h5` using `norm_sub_le (φ (u : E)) 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h5` using `[h3, norm_mul, h2, norm_one, Complex.norm_natCast]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h6 : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Use polynomial arithmetic with `[norm_nonneg (φ (x : E))]`. Assume the negation of the conclusion as `hne`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hx0 : (x : E) ≠ 0`. Introduce `h0`. Establish `: x = 0` using `by exact_mod_cast h0`. Rewrite `hx` using `[this, mul_zero, sub_eq_zero]`. Conclude with `hne hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, hpow⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_le_one E ℂ hx0 (RingOfIntegers.isIntegral_coe x) (fun φ => (hlt φ).le)`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h7` using `congrArg (fun y : E => ‖φ y‖) hpow`. Simplify using `only [map_pow, norm_pow, map_one, norm_one] at h7`. Establish `h8` using `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hk.ne').1 h7`.
-
-Conclude with `(hlt φ).ne h8`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem root_of_unity_eq_one_of_dvd_sub_one :
     ∀ (E : Type) [Field E] [NumberField E] (u : 𝓞 E) (n M : ℕ),

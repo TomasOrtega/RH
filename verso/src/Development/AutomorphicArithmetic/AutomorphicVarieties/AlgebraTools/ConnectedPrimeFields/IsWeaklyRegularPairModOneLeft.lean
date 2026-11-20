@@ -27,7 +27,7 @@ def CohenType (R : Type) [CommRing R] : Prop :=
   ∀ p : Ideal R, p.IsPrime → HasBase (R ⧸ p)
 
 /- English proof (translation)
-The claim follows from `inferInstance normal := inferInstance cm := ⟨inferInstance, 0, by simp [ringKrullDim_eq_zero_of_field], [], rfl, by simp, RingTheory.Sequence.IsRegular.nil K K⟩ complete := by rw [IsLocalRing.maximalIdeal_eq_bot] infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem isBase_field (K : Type) [Field K] : IsBase K where
   dom := inferInstance
@@ -39,7 +39,7 @@ theorem isBase_field (K : Type) [Field K] : IsBase K where
     infer_instance
 
 /- English proof (translation)
-Take `⟨A, _, _, i, hA, hi, hf⟩` from `h`. Conclude with `⟨A, inferInstance, inferInstance, e.toRingHom.comp i, hA, e.injective.comp hi, (RingHom.Finite.of_surjective _ e.surjective).comp hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HasBase.of_ringEquiv {R S : Type} [CommRing R] [CommRing S] (e : R ≃+* S)
     (h : HasBase R) : HasBase S := by
@@ -48,7 +48,7 @@ theorem HasBase.of_ringEquiv {R S : Type} [CommRing R] [CommRing S] (e : R ≃+*
     (RingHom.Finite.of_surjective _ e.surjective).comp hf⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a h => by simpa using h, fun a _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isWeaklyRegularPairMod_one_left {A : Type} [CommRing A] (J : Ideal A) (v : A) : Reg2 J 1 v :=
   ⟨fun a h => by simpa using h, fun a _ => by simp⟩

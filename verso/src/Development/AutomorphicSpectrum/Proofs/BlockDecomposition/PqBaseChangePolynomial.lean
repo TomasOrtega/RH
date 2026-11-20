@@ -7,23 +7,23 @@ open scoped LaurentPolynomial
 namespace GlobalTheory.CompanionTheory.Perfection
 
 /- English proof (translation)
-Introduce `p _ A _ B _ _ K _ _ i h hA hK hPQ`. Set `i₁ : Polynomial K →+* B ⊗[A] K` to `Polynomial.eval₂RingHom (Algebra.TensorProduct.includeRight : K →ₐ[A] B ⊗[A] K).toRingHom (i Polynomial.X ⊗ₜ[A] (1 : K))`. Establish `hC : ∀ a, i₁ (Polynomial.C a) = (1 : B) ⊗ₜ[A] a`. Introduce `a`. Simplify using `[i₁]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hX : i₁ Polynomial.X = i Polynomial.X ⊗ₜ[A] (1 : K)`. Simplify using `[i₁]`. Establish `hj : ∀ s : Polynomial A, i₁ (Polynomial.mapRingHom (algebraMap A K) s) = i s ⊗ₜ[A] (1 : K)`. Introduce `s`. Proceed by induction on `s using Polynomial.induction_on with`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `C a`. Establish `h1 : i (Polynomial.C a) = algebraMap A B a`. Rewrite using `[← Polynomial.algebraMap_eq]`. Conclude with `i.commutes a`. Rewrite using `[Polynomial.coe_mapRingHom, Polynomial.map_C, hC, h1, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add f g hf hg`. Rewrite using `[map_add, map_add, hf, hg, map_add, TensorProduct.add_tmul]`. Consider the case `monomial n a ih`. Establish `e : (Polynomial.C a * Polynomial.X ^ (n + 1) : Polynomial A) = (Polynomial.C a * Polynomial.X ^ n) * Polynomial.X` using `by ring`. Rewrite using `[e, map_mul, map_mul, ih, map_mul]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : Polynomial.mapRingHom (algebraMap A K) (Polynomial.X : Polynomial A) = Polynomial.X`. Simplify using the standard rewrite rules. Rewrite using `[e2, hX, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Simplify using `only [map_mul]`. Establish `hcl : Subring.closure (Set.range (Polynomial.C : K →+* Polynomial K) ∪ Set.range (Polynomial.mapRingHom (algebraMap A K))) = ⊤`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff]`. Introduce `f _`. Proceed by induction on `f using Polynomial.induction_on with`. Consider the case `C a => exact Subring.subset_closure (Or.inl ⟨a, rfl⟩)`. Consider the case `add f g hf hg => exact Subring.add_mem _ (hf trivial) (hg trivial)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `monomial n a ih`. Establish `e : (Polynomial.C a * Polynomial.X ^ (n + 1) : Polynomial K) = (Polynomial.C a * Polynomial.X ^ n) * Polynomial.X` using `by ring`. Rewrite using `[e]`. Use `Subring.mul_mem _ (ih trivial) (Subring.subset_closure (Or.inr ⟨Polynomial.X, ?_⟩))` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcomp : (Polynomial.C : K →+* Polynomial K).comp (algebraMap A K) = (Polynomial.mapRingHom (algebraMap A K)).comp (algebraMap A (Polynomial A))`. Use extensionality with `a`. Simplify using `[Polynomial.algebraMap_apply]`. Establish `key` using `GlobalTheory.T.perfect_tensor_generated_lift p A (Polynomial A) B K (Polynomial K) i (Ideal.span {h}) Polynomial.C (Polynomial.mapRingHom (algebraMap A K)) i₁ hA hK hPQ hcomp hcl hC hj`. Use `⟨i₁, ?_, hC, hX⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[Ideal.map_span, Set.image_singleton]`. Simplify using `using key`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pq_baseChange_polynomial : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A](B : Type) [CommRing B] [Algebra A B] (K : Type) [CommRing K] [Algebra A K] (i : Polynomial A →ₐ[A] B) (h : Polynomial A), Pf p A → Pf p K → PQ p (i : Polynomial A →+* B) (Ideal.span {h}) → ∃ i₁ : Polynomial K →+* B ⊗[A] K, PQ p i₁ (Ideal.span {h.map (algebraMap A K)}) ∧ (∀ a, i₁ (Polynomial.C a) = (1 : B) ⊗ₜ[A] a) ∧ i₁ Polynomial.X = i Polynomial.X ⊗ₜ[A] (1 : K) := by
   intro p _ A _ B _ _ K _ _ i h hA hK hPQ

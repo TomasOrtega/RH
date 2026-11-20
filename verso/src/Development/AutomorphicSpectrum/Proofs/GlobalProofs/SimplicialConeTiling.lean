@@ -15,7 +15,7 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Cones.SignTiles
 variable {V : Type} [AddCommGroup V] [Module ℚ V]
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `empty => exact .empty`. Consider the case `cone s hli hP hQs => exact .cone s hli hP (hQ _ hQs)`. Consider the case `union _ _ hAB ihA ihB => exact .union ihA ihB hAB`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tile_mono {P : Set V} {Q Q' : Set V → Prop} (hQ : ∀ A, Q A → Q' A) {C : Set V} (h : Tile P Q C) :
     Tile P Q' C := by
@@ -25,7 +25,7 @@ theorem tile_mono {P : Set V} {Q Q' : Set V → Prop} (hQ : ∀ A, Q A → Q' A)
   | union _ _ hAB ihA ihB => exact .union ihA ihB hAB
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `empty => exact .empty`. Consider the case `cone s hli hP hQs => exact hc s hli hP hQs`. Consider the case `union _ _ hAB ihA ihB => exact .union ihA ihB hAB`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tile_refine {P : Set V} {Q Q' : Set V → Prop}
     (hc : ∀ s : Finset V, LinearIndepOn ℚ id (s : Set V) → (s : Set V) ⊆ P → Q (coneOn s) → Tile P Q' (coneOn s))
@@ -36,7 +36,7 @@ theorem tile_refine {P : Set V} {Q Q' : Set V → Prop}
   | union _ _ hAB ihA ihB => exact .union ihA ihB hAB
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `empty => exact .empty`. Consider the case `cone s hli hP hQs => exact .cone s hli hP ⟨hQs, subset_rfl⟩`. Consider the case `@union A B _ _ hAB ihA ihB`. Conclude with `.union (tile_mono (fun X hX => ⟨hX.1, hX.2.trans Set.subset_union_left⟩) ihA) (tile_mono (fun X hX => ⟨hX.1, hX.2.trans Set.subset_union_right⟩) ihB) hAB`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tile_inside {P : Set V} {Q : Set V → Prop} {C : Set V} (h : Tile P Q C) :
     Tile P (fun A => Q A ∧ A ⊆ C) C := by
@@ -48,7 +48,7 @@ theorem tile_inside {P : Set V} {Q : Set V → Prop} {C : Set V} (h : Tile P Q C
       (tile_mono (fun X hX => ⟨hX.1, hX.2.trans Set.subset_union_right⟩) ihB) hAB
 
 /- English proof (translation)
-Break down `h with h | h | h` into its components or cases. Conclude with `Or.inl fun x hx => h x (hAC hx)`. Conclude with `Or.inr (Or.inl fun x hx => h x (hAC hx))`. Conclude with `Or.inr (Or.inr fun x hx => h x (hAC hx))`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Prove the second alternative.
 -/
 theorem signConst_mono {l : V →ₗ[ℚ] ℚ} {A C : Set V} (h : SignConst l C) (hAC : A ⊆ C) : SignConst l A := by
   rcases h with h | h | h
@@ -57,7 +57,7 @@ theorem signConst_mono {l : V →ₗ[ℚ] ℚ} {A C : Set V} (h : SignConst l C)
   · exact Or.inr (Or.inr fun x hx => h x (hAC hx))
 
 /- English proof (translation)
-Break down `h with h | h | h` into its components or cases. Rewrite using `[h x hx, h y hy]`. Rewrite using `[sign_pos (h x hx), sign_pos (h y hy)]`. Rewrite using `[sign_neg (h x hx), sign_neg (h y hy)]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sign_eq_of_signConst {l : V →ₗ[ℚ] ℚ} {A : Set V} (h : SignConst l A) {x y : V} (hx : x ∈ A) (hy : y ∈ A) :
     SignType.sign (l x) = SignType.sign (l y) := by
@@ -67,9 +67,9 @@ theorem sign_eq_of_signConst {l : V →ₗ[ℚ] ℚ} {A : Set V} (h : SignConst 
   · rw [sign_neg (h x hx), sign_neg (h y hy)]
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `hΛ.exists_finset_coe`. Use `Finset.induction_on t ?_ ?_` and prove the remaining obligations. Conclude with `.cone s hli hP ⟨subset_rfl, fun l hl => by simp at hl⟩`. Introduce `l t _ ih`. Use `tile_refine (fun u hu huP hQu => ?_) ih` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `tile_mono (fun A hA => ⟨hA.2.trans hQu.1, fun l' hl' => ?_⟩) (tile_inside (GlobalTheory.T.simplicial_cone_tiles_sign P l u hu huP))` and prove the remaining obligations. Break down `Finset.mem_insert.1 (Finset.mem_coe.1 hl') with rfl | h'` into its components or cases. Conclude with `hA.1`. Conclude with `signConst_mono (hQu.2 l' (Finset.mem_coe.2 h')) hA.2`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem tile_signs (P : ConvexCone ℚ V) (s : Finset V) (hli : LinearIndepOn ℚ id (s : Set V))
     (hP : (s : Set V) ⊆ (P : Set V)) (Λ : Set (V →ₗ[ℚ] ℚ)) (hΛ : Λ.Finite) :
@@ -87,11 +87,9 @@ theorem tile_signs (P : ConvexCone ℚ V) (s : Finset V) (hli : LinearIndepOn �
     · exact signConst_mono (hQu.2 l' (Finset.mem_coe.2 h')) hA.2
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `empty`. Rewrite using `[Set.empty_inter]`. Conclude with `.empty`. Consider the case `cone s hli hP hQs`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hQs with hs | hs` into its components or cases. Rewrite using `[Set.inter_eq_left.2 hs]`. Conclude with `.cone s hli hP trivial`. Rewrite using `[Set.disjoint_iff_inter_eq_empty.1 hs]`. Conclude with `.empty`.
-
-Consider the case `union _ _ hAB ihA ihB`. Rewrite using `[Set.union_inter_distrib_right]`. Conclude with `.union ihA ihB (hAB.mono Set.inter_subset_left Set.inter_subset_left)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tile_inter {P E C : Set V} (h : Tile P (fun A => A ⊆ E ∨ Disjoint A E) C) :
     Tile P (fun _ => True) (C ∩ E) := by
@@ -110,19 +108,17 @@ theorem tile_inter {P E C : Set V} (h : Tile P (fun A => A ⊆ E ∨ Disjoint A 
     exact .union ihA ihB (hAB.mono Set.inter_subset_left Set.inter_subset_left)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, rfl⟩ i`. Rewrite using `[Finset.sum_image (fun a _ c _ hac => b.injective hac)]`. Establish `hrep : b.repr (∑ j, t (b j) • b j) i = t (b i)`. Simplify using `only [map_sum, map_smul, Module.Basis.repr_self, Finsupp.smul_single, smul_eq_mul, mul_one, Finsupp.finsetSum_apply]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[Finsupp.single_apply, if_pos rfl]`. Introduce `j _ hji`. Rewrite using `[Finsupp.single_apply, if_neg hji]`. Introduce `hi`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ i) hi`. Rewrite using `[hrep]`. Conclude with `ht _ (Finset.mem_image_of_mem b (Finset.mem_univ i))`. Introduce `hx`. Establish `key : ∀ i, ∑ j, b.repr (b i) j * b.repr x j = b.repr x i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[Module.Basis.repr_self, Finset.sum_eq_single i]`. Rewrite using `[Finsupp.single_apply, if_pos rfl, one_mul]`. Introduce `j _ hji`. Rewrite using `[Finsupp.single_apply, if_neg (Ne.symm hji), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`. Use `⟨fun v => ∑ j, b.repr v j * b.repr x j, ?_, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show 0 < ∑ j, b.repr (b i) j * b.repr x j`. Rewrite using `[key]`. Conclude with `hx i`. Rewrite using `[Finset.sum_image (fun a _ c _ hac => b.injective hac)] conv_lhs => rw [← b.sum_repr x]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Use `show b.repr x i • b i = (∑ j, b.repr (b i) j * b.repr x j) • b i`. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_coneOn_basis [DecidableEq V] {κ : Type} [Fintype κ] (b : Module.Basis κ ℚ V) (x : V) :
     x ∈ coneOn (Finset.univ.image b) ↔ ∀ i, 0 < b.repr x i := by
@@ -163,15 +159,13 @@ theorem mem_coneOn_basis [DecidableEq V] {κ : Type} [Fintype κ] (b : Module.Ba
       rw [key]
 
 /- English proof (translation)
-Introduce `V _ _ κ _ P b hb Λ hΛ E hE hdec`. Establish `hcoe : ((Finset.univ.image b : Finset V) : Set V) = Set.range b`. Simplify using `[Set.image_univ]`. Establish `hli : LinearIndepOn ℚ id ((Finset.univ.image b : Finset V) : Set V)`. Rewrite using `[hcoe]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(linearIndepOn_id_range_iff b.injective).2 b.linearIndependent`. Establish `hP' : ((Finset.univ.image b : Finset V) : Set V) ⊆ (P : Set V)`. Rewrite using `[hcoe]`. Introduce and unpack `v ⟨i, rfl⟩`. Conclude with `hb i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT` using `tile_inter (tile_mono (Q' := fun A => A ⊆ E ∨ Disjoint A E) (fun A hA => ?_) (tile_signs P _ hli hP' Λ hΛ))`. Establish `hEs : coneOn (Finset.univ.image b) ∩ E = E` using `Set.inter_eq_right.2 fun x hx => (mem_coneOn_basis b x).2 (hE x hx)`. Rewrite `hT` using `[hEs]`. Conclude with `hT`. Take `⟨hAs, hAl⟩` from `hA`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hex : ∃ x ∈ A, x ∈ E`. Use `left`. Take `⟨x, hxA, hxE⟩` from `hex`. Introduce `y hyA`. Conclude with `hdec x y ((mem_coneOn_basis b x).1 (hAs hxA)) ((mem_coneOn_basis b y).1 (hAs hyA)) (fun l hl => sign_eq_of_signConst (hAl l hl) hxA hyA) hxE`.
-
-Use `right`. Conclude with `Set.disjoint_left.2 fun x hxA hxE => hex ⟨x, hxA, hxE⟩`.
+A detailed English derivation is pending.
 -/
 theorem tile_of_signs : ∀ {V : Type} [AddCommGroup V] [Module ℚ V] {κ : Type} [Fintype κ] (P : ConvexCone ℚ V)
     (b : Module.Basis κ ℚ V), (∀ i, b i ∈ P) → ∀ (Λ : Set (V →ₗ[ℚ] ℚ)), Λ.Finite → ∀ (E : Set V),

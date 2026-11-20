@@ -22,11 +22,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {m : ℕ} {J : Matrix (Fin m) (Fin m) E} {v : HeightOneSpectrum (𝓞 F)}
 
 /- English proof (translation)
-Establish `key : ∀ y : Fin m → Fv F v ⊗[F] E, y ∈ latLoc F (stdLattice E m) v ↔ (∀ i, splitVec τ y i ∈ v.adicCompletionIntegers F) ∧ ∀ i, splitVec (τ.comp σ) y i ∈ v.adicCompletionIntegers F` using `fun y => by`. Rewrite using `[mem_latLoc_iff_split τ h, mem_splitLat_stdLattice h, mem_splitLat_stdLattice h]`. Rewrite using `[mem_stabLoc]`. Simplify using `only [key, splitVec_matHom_mulVec, mem_GLint_iff_mulVec]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `H`. Use `⟨fun u => ?_, fun u => ?_⟩` and prove the remaining obligations. Simplify using `using H (splitIncl h τ u)`. Simplify using `using H (splitIncl h (τ.comp σ) u)`. Introduce and unpack `⟨H1, H2⟩ y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Conclude with `and_congr (H1 _) (H2 _)`.
+A detailed English derivation is pending.
 -/
 theorem mem_stabLoc_std_iff (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) {g : GLoc σ J v} :
     g ∈ stabLoc σ J (stdLattice E m) v ↔
@@ -49,9 +49,9 @@ theorem mem_stabLoc_std_iff (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) {g : 
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `e` using `splitHom_unitary τ g`. Establish `i1 : (splitHom σ J τ g).1 * (splitHom σ J τ g⁻¹).1 = 1`. Rewrite using `[map_inv, Units.mul_inv]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Matrix.mul_assoc _ (splitHom σ J τ g).1, i1]`. Simplify using `[Matrix.mul_assoc]`. Use `_ = _ := by rw [e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem transpose_splitHom_comp (τ : E →ₐ[F] Fv F v) (hJ : J.map τ * J.map τ = -1) (g : GLoc σ J v) :
     (splitHom σ J (τ.comp σ) g).1ᵀ = -(J.map τ * (splitHom σ J τ g⁻¹).1 * J.map τ) := by
@@ -68,7 +68,7 @@ theorem transpose_splitHom_comp (τ : E →ₐ[F] Fv F v) (hJ : J.map τ * J.map
     _ = _ := by rw [e]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun l _ => mul_mem (hX i l) (hY l j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_entry_mem {ι : Type} [Fintype ι] {X Y : Matrix ι ι (Fv F v)}
     (hX : ∀ i j, X i j ∈ v.adicCompletionIntegers F) (hY : ∀ i j, Y i j ∈ v.adicCompletionIntegers F) (i j : ι) :
@@ -79,13 +79,11 @@ theorem mul_entry_mem {ι : Type} [Fintype ι] {X Y : Matrix ι ι (Fv F v)}
 omit [NumberField E] in
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[mem_GLint_iff]`. Take `⟨h1, h2⟩` from `hg`. Establish `h2' : ∀ i j, (splitHom σ J τ g⁻¹).1 i j ∈ v.adicCompletionIntegers F`. Rewrite using `[map_inv]`. Conclude with `h2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1' : ∀ i j, (splitHom σ J τ g⁻¹⁻¹).1 i j ∈ v.adicCompletionIntegers F`. Rewrite using `[inv_inv]`. Conclude with `h1`. Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun₂ (transpose_splitHom_comp τ hJ g) j i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[Matrix.transpose_apply]`. Rewrite using `[e, Matrix.neg_apply]`. Conclude with `neg_mem (mul_entry_mem (mul_entry_mem hint h2') hint j i)`. Establish `e` using `congrFun₂ (transpose_splitHom_comp τ hJ g⁻¹) j i`. Rewrite `e` using `[Matrix.transpose_apply, map_inv]`.
-
-Rewrite using `[e, Matrix.neg_apply]`. Conclude with `neg_mem (mul_entry_mem (mul_entry_mem hint h1') hint j i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_mem_GLint (τ : E →ₐ[F] Fv F v) (hJ : J.map τ * J.map τ = -1)
     (hint : ∀ i j, J.map τ i j ∈ v.adicCompletionIntegers F) {g : GLoc σ J v}
@@ -108,7 +106,7 @@ theorem comp_mem_GLint (τ : E →ₐ[F] Fv F v) (hJ : J.map τ * J.map τ = -1)
     exact neg_mem (mul_entry_mem (mul_entry_mem hint h1') hint j i)
 
 /- English proof (translation)
-The claim follows from `(mem_stabLoc_std_iff h τ).trans ⟨fun H => H.1, fun H => ⟨H, comp_mem_GLint τ hJ hint H⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_stabLoc_std_iff_GLint (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (hJ : J.map τ * J.map τ = -1)
     (hint : ∀ i j, J.map τ i j ∈ v.adicCompletionIntegers F) {g : GLoc σ J v} :
@@ -129,9 +127,9 @@ theorem blkGL_val {R : Type} [CommRing R] (x : GL (Fin (n + n)) R) (i j : Ix n) 
     (blkGL n x).1 i j = x.1 (finSumFinEquiv i) (finSumFinEquiv j) := rfl
 
 /- English proof (translation)
-Rewrite using `[mem_GLint_iff, mem_GLint_iff, ← map_inv]`. Simplify using `only [blkGL_val]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun H => ⟨fun i j => H.1 _ _, fun i j => H.2 _ _⟩`. Use `fun H => ⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using H.1 (finSumFinEquiv.symm i) (finSumFinEquiv.symm j)`. Simplify using `using H.2 (finSumFinEquiv.symm i) (finSumFinEquiv.symm j)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_GLint_iff_blkGL {x : GL (Fin (n + n)) (Lv D v)} :
     x ∈ GLint (Fin (n + n)) (v.adicCompletionIntegers D.host.F).toSubring ↔
@@ -145,11 +143,11 @@ theorem mem_GLint_iff_blkGL {x : GL (Fin (n + n)) (Lv D v)} :
     · simpa using H.2 (finSumFinEquiv.symm i) (finSumFinEquiv.symm j)
 
 /- English proof (translation)
-Establish `e : (Jst D n).map τ = blk4 0 1 (-1) 0`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Jst, blk4, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with a | a <;> rcases finSumFinEquiv.symm j with b | b <;>`. Simplify using `[Matrix.one_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `e2 : (Matrix.fromBlocks (-1) 0 0 (-1) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (Fv D.host.F v)) = -1`. Rewrite using `[← Matrix.fromBlocks_one, Matrix.fromBlocks_neg]`. Simplify using the standard rewrite rules. Rewrite using `[e, blk4, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.mul_one, zero_add, add_zero, Matrix.mul_neg, neg_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2]`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Jst_map_sq (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) :
     (Jst D n).map τ * (Jst D n).map τ = -1 := by
@@ -168,7 +166,7 @@ theorem Jst_map_sq (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) :
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Simplify using `only [Matrix.map_apply, Jst, blk4, Matrix.submatrix_apply]`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with a | a <;> rcases finSumFinEquiv.symm j with b | b <;>`. Apply the tactic sequence `simp [Matrix.one_apply] <;> split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jst_map_int (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (i j : Fin (n + n)) :
     (Jst D n).map τ i j ∈ v.adicCompletionIntegers D.host.F := by
@@ -179,7 +177,7 @@ theorem Jst_map_int (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (i j : Fin (n
 end Blocks
 
 /- English proof (translation)
-The claim follows from `(mem_stabLoc_std_iff_GLint (isCMExt_host D) τ (Jst_map_sq τ) (Jst_map_int τ)).trans mem_GLint_iff_blkGL`.
+A detailed English derivation is pending.
 -/
 theorem mem_KUpFin_iff (D : D7) (n : ℕ) (v : Pl D) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v)
     (g : GLoc D.sp.cm.sig (Jst D n) v) :

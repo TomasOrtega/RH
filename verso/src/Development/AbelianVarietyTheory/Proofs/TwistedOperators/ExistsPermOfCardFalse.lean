@@ -20,14 +20,14 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.GridJoin
 
 /- English proof (translation)
-Rewrite using `[Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Apply the tactic sequence `congr 1; funext a; cases ε a <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jm_mul_jm {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   rw [Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
   congr 1; funext a; cases ε a <;> simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Formalism.REAL.Jm, Matrix.diagonal_apply, σ.injective.eq_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem jm_submatrix {n : ℕ} (ε : Fin n → Bool) (σ : Equiv.Perm (Fin n)) :
     (Formalism.REAL.Jm ε).submatrix σ σ = Formalism.REAL.Jm (ε ∘ σ) := by
@@ -35,7 +35,7 @@ theorem jm_submatrix {n : ℕ} (ε : Fin n → Bool) (σ : Equiv.Perm (Fin n)) :
   simp [Formalism.REAL.Jm, Matrix.diagonal_apply, σ.injective.eq_iff]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, Matrix.conjTranspose_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gram_submatrix {n : ℕ} (O G : Matrix (Fin n) (Fin n) ℂ) (σ : Equiv.Perm (Fin n)) :
     (O.submatrix id σ)ᴴ * G * O.submatrix id σ = (Oᴴ * G * O).submatrix σ σ := by
@@ -43,7 +43,7 @@ theorem gram_submatrix {n : ℕ} (O G : Matrix (Fin n) (Fin n) ℂ) (σ : Equiv.
   simp [Matrix.mul_apply, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mul_submatrix_cols {n : ℕ} (C O : Matrix (Fin n) (Fin n) ℂ) (σ : Equiv.Perm (Fin n)) :
     C * O.submatrix id σ = (C * O).submatrix id σ := by
@@ -51,14 +51,14 @@ theorem mul_submatrix_cols {n : ℕ} (C O : Matrix (Fin n) (Fin n) ℂ) (σ : Eq
   simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[← jm_submatrix, Matrix.submatrix_mul_equiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem submatrix_mul_jm {n : ℕ} (O : Matrix (Fin n) (Fin n) ℂ) (ε : Fin n → Bool) (σ : Equiv.Perm (Fin n)) :
     (O * Formalism.REAL.Jm ε).submatrix id σ = O.submatrix id σ * Formalism.REAL.Jm (ε ∘ σ) := by
   rw [← jm_submatrix, Matrix.submatrix_mul_equiv]
 
 /- English proof (translation)
-Use `IsUnit.of_mul_eq_one_right (Formalism.REAL.Jm ε * (Oᴴ * G)) ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, h, jm_mul_jm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_of_gram {n : ℕ} {O G : Matrix (Fin n) (Fin n) ℂ} {ε : Fin n → Bool} (h : Oᴴ * G * O = Formalism.REAL.Jm ε) :
     IsUnit O := by
@@ -66,7 +66,7 @@ theorem isUnit_of_gram {n : ℕ} {O G : Matrix (Fin n) (Fin n) ℂ} {ε : Fin n 
   rw [Matrix.mul_assoc, h, jm_mul_jm]
 
 /- English proof (translation)
-The claim follows from `(Formalism.UG.P.signature_unique _ _ _ _ _ _ (GlobalTheory.AutInhab.hasSignature_of_frame (isUnit_of_gram h) h) (hV (tauE D τ))).2`.
+A detailed English derivation is pending.
 -/
 theorem card_false_of_gram {D : D7} {V : HSp D} (hV : V.SigOK) (τ : D.what₂.Tau) {O : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     {ε : Fin V.rank → Bool} (h : Oᴴ * gramAt D V τ * O = Formalism.REAL.Jm ε) :
@@ -74,11 +74,11 @@ theorem card_false_of_gram {D : D7} {V : HSp D} (hV : V.SigOK) (τ : D.what₂.T
   (Formalism.UG.P.signature_unique _ _ _ _ _ _ (GlobalTheory.AutInhab.hasSignature_of_frame (isUnit_of_gram h) h) (hV (tauE D τ))).2
 
 /- English proof (translation)
-Establish `hc : ∀ f : Fin n → Bool, (Finset.univ.filter fun a => f a = true).card + (Finset.univ.filter fun a => f a = false).card = n` using `fun f => by`. Use `Finset.card_filter_add_card_filter_not (s := Finset.univ) (fun a => f a = true)` as an intermediate fact. Simplify using `using this`. Establish `e : ∀ c : Bool, Fintype.card {a // ε' a = c} = Fintype.card {a // ε a = c}`. Introduce `c`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Fintype.card_subtype, Fintype.card_subtype]`. Consider the cases of `c`. Conclude with `h.symm`. Establish `h1` using `hc ε`. Establish `h2` using `hc ε'`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Set `σ : Fin n ≃ Fin n` to `Equiv.ofFiberEquiv (f := ε') (g := ε) fun c => Fintype.equivOfCardEq (e c)`. Conclude with `⟨σ, fun a => Equiv.ofFiberEquiv_map _ a⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_perm_of_card_false {n : ℕ} (ε ε' : Fin n → Bool)
     (h : (Finset.univ.filter fun a => ε a = false).card = (Finset.univ.filter fun a => ε' a = false).card) :
@@ -97,9 +97,9 @@ theorem exists_perm_of_card_false {n : ℕ} (ε ε' : Fin n → Bool)
   exact ⟨σ, fun a => Equiv.ofFiberEquiv_map _ a⟩
 
 /- English proof (translation)
-Establish `hc' : (entries S).card = n` using `(SignedHC.IsRegular.card_entries hS).trans hc`. Establish `hinj : Function.Injective (descEnum (entries S) hc')` using `(strictAnti_descEnum _ hc').injective`. Establish `hS' : S = Finset.univ.image fun a => (descEnum _ hc' a, sign S (descEnum _ hc' a))` using `by conv_lhs => rw [SignedHC.IsRegular.eq_ofSign hS, ← image_descEnum _ hc', ofSign, Finset.image_image]`. Both sides reduce to the same expression. Use `⟨fun a => (descEnum _ hc' a : ℝ), fun a => sign S (descEnum _ hc' a), ⟨fun a b h => by simpa using strictAnti_descEnum _ hc' h, _, fun _ => rfl, hS'⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[SignedHC.nMinus]`. Use `conv_rhs => rw [hS']`. Rewrite using `[Finset.filter_image, Finset.card_image_of_injective _ (fun a b h => hinj (congrArg Prod.fst h))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isEnum_of_regular {n : ℕ} {S : SPar} (hS : SignedHC.IsRegular S) (hc : S.card = n) :
     ∃ (lam : Fin n → ℝ) (ε : Fin n → Bool), IsEnum S lam ε ∧
@@ -116,14 +116,14 @@ theorem exists_isEnum_of_regular {n : ℕ} {S : SPar} (hS : SignedHC.IsRegular S
   rw [Finset.filter_image, Finset.card_image_of_injective _ (fun a b h => hinj (congrArg Prod.fst h))]
 
 /- English proof (translation)
-Simplify using `only [dualPar, shift, Finset.image_image]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem dualPar_shift_eq (c : ℚ) (S : SPar) : dualPar (shift c S) = S.image fun x => (-(x.1 + c), x.2) := by
   simp only [dualPar, shift, Finset.image_image]
   rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨a, s⟩ ⟨b, t⟩ h`. Simplify using `only [Prod.mk.injEq, neg_inj, add_left_inj] at h`. Rewrite using `[h.1, h.2]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualPar_shift_inj (c : ℚ) : Function.Injective fun x : ℚ × Bool => (-(x.1 + c), x.2) := by
   rintro ⟨a, s⟩ ⟨b, t⟩ h
@@ -131,9 +131,9 @@ theorem dualPar_shift_inj (c : ℚ) : Function.Injective fun x : ℚ × Bool => 
   rw [h.1, h.2]
 
 /- English proof (translation)
-Rewrite using `[dualPar_shift_eq]`. Use `⟨?_, Finset.card_image_of_injective _ (dualPar_shift_inj c), ?_⟩` and prove the remaining obligations. Introduce `x hx y hy hxy`. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨b, hb, rfl⟩` from `Finset.mem_image.1 hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [neg_inj, add_left_inj] at hxy`. Conclude with `hS a ha b hb hxy`. Rewrite using `[SignedHC.nMinus, SignedHC.nMinus, Finset.filter_image, Finset.card_image_of_injective _ (dualPar_shift_inj c)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualPar_shift_counts (c : ℚ) {S : SPar} (hS : SignedHC.IsRegular S) :
     SignedHC.IsRegular (dualPar (shift c S)) ∧ (dualPar (shift c S)).card = S.card ∧ nMinus (dualPar (shift c S)) = SignedHC.nMinus S := by
@@ -147,7 +147,7 @@ theorem dualPar_shift_counts (c : ℚ) {S : SPar} (hS : SignedHC.IsRegular S) :
   · rw [SignedHC.nMinus, SignedHC.nMinus, Finset.filter_image, Finset.card_image_of_injective _ (dualPar_shift_inj c)]
 
 /- English proof (translation)
-Use `⟨SignedHC.isRegular_plus E, Finset.card_image_of_injective _ fun a b h => congrArg Prod.fst h, ?_⟩` and prove the remaining obligations. Rewrite using `[SignedHC.nMinus, plus, Finset.filter_image]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem plus_counts (E : Finset ℚ) : SignedHC.IsRegular (plus E) ∧ (plus E).card = E.card ∧ nMinus (plus E) = 0 := by
   refine ⟨SignedHC.isRegular_plus E, Finset.card_image_of_injective _ fun a b h => congrArg Prod.fst h, ?_⟩
@@ -159,9 +159,9 @@ end GlobalTheory.GridJoin
 namespace GlobalTheory.GridJoin
 
 /- English proof (translation)
-Take `⟨ε, h1, h2⟩` from `h`. Take `⟨lam, ε', hE, hc'⟩` from `exists_isEnum_of_regular hS hc`. Take `⟨σ, hσ⟩` from `exists_perm_of_card_false ε ε' (by rw [card_false_of_gram hV τ h1, hc', hm])`. Establish `e : ε ∘ σ = ε'` using `funext hσ`. Use `⟨σ, lam, ε', hE, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[gram_submatrix, h1, jm_submatrix, e]`. Rewrite using `[mul_submatrix_cols, h2, submatrix_mul_jm, e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_perm_onb {D : D7} {V : HSp D} (hV : V.SigOK) (τ : D.what₂.Tau) {S : SPar}
     (hS : SignedHC.IsRegular S) (hc : S.card = V.rank) (hm : SignedHC.nMinus S = (V.sig (tauE D τ)).2)
@@ -179,11 +179,11 @@ theorem exists_perm_onb {D : D7} {V : HSp D} (hV : V.SigOK) (τ : D.what₂.Tau)
   · rw [mul_submatrix_cols, h2, submatrix_mul_jm, e]
 
 /- English proof (translation)
-Take `⟨ε, h1, h2⟩` from `h`. Establish `hc` using `card_false_of_gram hV τ h1`. Rewrite `hc` using `[h0, Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Establish `hJ : Formalism.REAL.Jm ε = 1`. Rewrite using `[Formalism.REAL.Jm, ← Matrix.diagonal_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Use `hc (Finset.mem_univ a)` as an intermediate fact. Apply the tactic sequence `cases hε : ε a <;> simp_all`. Rewrite `h2` using `[hJ, Matrix.mul_one]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, hu⟩` from `isUnit_of_gram h1`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 -/
 theorem cart_eq_one {D : D7} {V : HSp D} (hV : V.SigOK) (τ : D.what₂.Tau) (h0 : (V.sig (tauE D τ)).2 = 0)
     {O C : Matrix (Fin V.rank) (Fin V.rank) ℂ}
@@ -207,7 +207,7 @@ end GlobalTheory.GridJoin
 namespace GlobalTheory.GridJoin
 
 /- English proof (translation)
-Take `⟨hr, hc⟩` from `GlobalTheory.T.gridParameter_regular_card_eq_rankFormula D hH τ i j h1 h2 h3`. Take `⟨a, b, c⟩` from `dualPar_shift_counts (if Odd (i + j) then -(1 / 2) else 0) hr`. Conclude with `⟨a, b.trans hc, c.trans (GlobalTheory.SignedHC.Model.nMinus_parD _ i j)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem parV_counts (D : D7) (hH : HostHyp D) (τ : D.what₂.Tau) {i j : ℕ} (h1 : 1 ≤ i) (h2 : i ≤ D.R.m) (h3 : j ≤ D.R.m) :
     SignedHC.IsRegular (GlobalTheory.Grid.parV D i j τ) ∧ (GlobalTheory.Grid.parV D i j τ).card = GlobalTheory.Grid.rkV D i j ∧
@@ -217,7 +217,7 @@ theorem parV_counts (D : D7) (hH : HostHyp D) (τ : D.what₂.Tau) {i j : ℕ} (
   exact ⟨a, b.trans hc, c.trans (GlobalTheory.SignedHC.Model.nMinus_parD _ i j)⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.gridParam_regular_card_minusCount D hH τ i h`.
+A detailed English derivation is pending.
 -/
 theorem parP_counts (D : D7) (hH : HostHyp D) (τ : D.what₂.Tau) {i : ℕ} (h : i ≤ D.R.m) :
     SignedHC.IsRegular (GlobalTheory.Grid.parP D i τ) ∧ (GlobalTheory.Grid.parP D i τ).card = GlobalTheory.Grid.rkP D i ∧
@@ -225,7 +225,7 @@ theorem parP_counts (D : D7) (hH : HostHyp D) (τ : D.what₂.Tau) {i : ℕ} (h 
   GlobalTheory.T.gridParam_regular_card_minusCount D hH τ i h
 
 /- English proof (translation)
-Take `⟨a, b, c⟩` from `plus_counts ((GlobalTheory.Grid.grid D τ).weightX j)`. Conclude with `⟨a, b.trans (GlobalTheory.T.card_weightSet_grid_eq_gridRowSpaceRank D hH τ j h1 h2), c⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem parXp_counts (D : D7) (hH : HostHyp D) (τ : D.what₂.Tau) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
     SignedHC.IsRegular (GlobalTheory.Grid.parXp D j τ) ∧ (GlobalTheory.Grid.parXp D j τ).card = GlobalTheory.Grid.rkX D j ∧
@@ -234,39 +234,35 @@ theorem parXp_counts (D : D7) (hH : HostHyp D) (τ : D.what₂.Tau) {j : ℕ} (h
   exact ⟨a, b.trans (GlobalTheory.T.card_weightSet_grid_eq_gridRowSpaceRank D hH τ j h1 h2), c⟩
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R sc hH _ G' W hW`. Set `Good : ∀ X : GlobalTheory.ChiGrid.Node, SPar → D.what₂.Tau → Equiv.Perm (Fin (G'.V X).rank) → Prop` to `fun X S τ σ => ∃ (lam : Fin (G'.V X).rank → ℝ) (ε : Fin (G'.V X).rank → Bool), IsEnum S lam ε ∧ ((W.onb X τ).submatrix id σ)ᴴ * gramAt D (G'.V X) τ * (W.onb X τ).submatrix id σ = Formalism.REAL.Jm ε ∧ W.cart X τ * (W.onb X τ).submatrix id σ = (W.onb X τ).submatrix id σ * Formalis …`. Establish `key : ∀ X : GlobalTheory.ChiGrid.Node, X.InRange D.R.m → (∀ j, X ≠ .grid 0 j) → ∀ (S : SPar) τ, SignedHC.IsRegular S → S.card = X.rank D → SignedHC.nMinus S = X.neg D.R.m → ∃ σ, Good X S τ σ`. Introduce `X hX h0 S τ hS hc hm`. Establish `hv` using `G'.isV hX h0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `exists_perm_onb hv.sigOK τ hS (hc.trans hv.rank.symm) (by rw [hv.sig, hm]) (W.onb_is X hX τ)`. Establish `eV : ∀ i j τ, ∃ σ, (1 ≤ i ∧ i ≤ D.R.m ∧ j ≤ D.R.m) → Good (.grid i j) (GlobalTheory.Grid.parV D i j τ) τ σ`. Introduce `i j τ`. Distinguish the cases in `h : 1 ≤ i ∧ i ≤ D.R.m ∧ j ≤ D.R.m`. Take `⟨hr, hc, hm⟩` from `parV_counts D hH τ h.1 h.2.1 h.2.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ⟩` from `key (.grid i j) ⟨h.2.1, h.2.2⟩ (fun j' e => by cases e; omega) _ τ hr hc hm`. Conclude with `⟨σ, fun _ => hσ⟩`. Conclude with `⟨1, fun h' => absurd h' h⟩`. Establish `eP : ∀ i τ, ∃ σ, i ≤ D.R.m → Good (.core i) (GlobalTheory.Grid.parP D i τ) τ σ`. Introduce `i τ`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : i ≤ D.R.m`. Take `⟨hr, hc, hm⟩` from `parP_counts D hH τ h`. Take `⟨σ, hσ⟩` from `key (.core i) h (fun j' e => GlobalTheory.ChiGrid.Node.noConfusion e) _ τ hr hc hm`. Conclude with `⟨σ, fun _ => hσ⟩`. Conclude with `⟨1, fun h' => absurd h' h⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `eX : ∀ j τ, ∃ σ, (1 ≤ j ∧ j ≤ D.R.m) → Good (.top j) (GlobalTheory.Grid.parXp D j τ) τ σ`. Introduce `j τ`. Distinguish the cases in `h : 1 ≤ j ∧ j ≤ D.R.m`. Take `⟨hr, hc, hm⟩` from `parXp_counts D hH τ h.1 h.2`. Take `⟨σ, hσ⟩` from `key (.top j) h.2 (fun j' e => GlobalTheory.ChiGrid.Node.noConfusion e) _ τ hr hc hm`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨σ, fun _ => hσ⟩`. Conclude with `⟨1, fun h' => absurd h' h⟩`. Use `choose σV hσV using eV`. Use `choose σP hσP using eP`. Use `choose σX hσX using eX`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hcartP : ∀ τ, W.cart (.core D.R.m) τ = 1` using `fun τ => by`. Establish `hv` using `G'.isV (X := .core D.R.m) le_rfl (fun j e => GlobalTheory.ChiGrid.Node.noConfusion e)`. Use `cart_eq_one hv.sigOK τ ?_ (W.onb_is _ le_rfl τ)` and prove the remaining obligations. Rewrite using `[hv.sig]`. Use `show (D.R.m - D.R.m + 1) / 2 = 0`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Treat this case separately.
 
-Use linear arithmetic over natural numbers and integers. Establish `hcart0 : ∀ τ, W.cart (.top 0) τ = 1` using `fun τ => by`. Establish `hv` using `G'.isV (X := .top 0) (Nat.zero_le _) (fun j e => GlobalTheory.ChiGrid.Node.noConfusion e)`. Conclude with `cart_eq_one hv.sigOK τ (by rw [hv.sig]; rfl) (W.onb_is _ (Nat.zero_le _) τ)`. Set `onb' : ∀ X : GlobalTheory.ChiGrid.Node, D.what₂.Tau → Matrix (Fin (G'.V X).rank) (Fin (G'.V X).rank) ℂ` to `fun X => match X with`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `.grid 0 j => W.onb (.grid 0 j)`. Consider the case `.grid (i + 1) j => fun τ => (W.onb (.grid (i + 1) j) τ).submatrix id (σV (i + 1) j τ)`. Consider the case `.core i => fun τ => (W.onb (.core i) τ).submatrix id (σP i τ)`. Consider the case `.top 0 => fun τ => (W.onb (.core D.R.m) τ).submatrix id (σP D.R.m τ)`. Consider the case `.top (j + 1) => fun τ => (W.onb (.top (j + 1)) τ).submatrix id (σX (j + 1) τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `honb : ∀ X : GlobalTheory.ChiGrid.Node, X.InRange D.R.m → ∀ τ, ∃ ε : Fin (G'.V X).rank → Bool, (onb' X τ)ᴴ * gramAt D (G'.V X) τ * onb' X τ = Formalism.REAL.Jm ε ∧ W.cart X τ * onb' X τ = onb' X τ * Formalism.REAL.Jm ε`. Introduce `X hX τ`. Break down `X with ⟨_ | i, j⟩ | i | _ | j` into its components or cases. Conclude with `W.onb_is _ hX τ`. Take `⟨-, ε, -, h1, h2⟩` from `hσV (i + 1) j τ ⟨by omega, hX.1, hX.2⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨ε, h1, h2⟩`. Take `⟨-, ε, -, h1, h2⟩` from `hσP i τ hX`. Conclude with `⟨ε, h1, h2⟩`. Take `⟨-, ε, -, h1, h2⟩` from `hσP D.R.m τ le_rfl`. Use `⟨ε, h1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h2` using `[hcartP]`. Rewrite using `[hcart0]`. Conclude with `h2`. Take `⟨-, ε, -, h1, h2⟩` from `hσX (j + 1) τ ⟨by omega, hX⟩`. Conclude with `⟨ε, h1, h2⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `W' : G'.Weil` to `{ W with onb := onb', onb_is := honb }`. Use `⟨W', ⟨hW.ψ, hW.θ, hW.cartY, hW.cartX, hW.onbY, hW.onbX, hW.omY, hW.omX⟩, rfl, rfl, rfl, rfl, rfl, rfl, fun j => rfl, ?_, fun τ => ⟨σP D.R.m τ, rfl⟩, ?_, ?_, ?_, ?_, funext fun τ => rfl⟩` and prove the remaining obligations. Introduce `X hX h0 h1 τ`. Break down `X with ⟨_ | i, j⟩ | i | _ | j` into its components or cases. Conclude with `absurd rfl (h0 j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨σV (i + 1) j τ, rfl⟩`. Conclude with `⟨σP i τ, rfl⟩`. Conclude with `absurd rfl h1`. Conclude with `⟨σX (j + 1) τ, rfl⟩`. Introduce `i j h1 h2 h3 τ`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨i, rfl⟩ : ∃ i', i = i' + 1` from `⟨i - 1, by omega⟩`. Take `⟨lam, ε, hE, he, -⟩` from `hσV (i + 1) j τ ⟨h1, h2, h3⟩`. Conclude with `⟨lam, ε, hE, he⟩`. Introduce `i h τ`. Take `⟨lam, ε, hE, he, -⟩` from `hσP i τ h`.
-
-Conclude with `⟨lam, ε, hE, he⟩`. Introduce `j h1 h2 τ`. Take `⟨j, rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Take `⟨lam, ε, hE, he, -⟩` from `hσX (j + 1) τ ⟨h1, h2⟩`. Conclude with `⟨lam, ε, hE, he⟩`.
-
-Use function extensionality and compare the values at `τ show W.cart (.top 0) τ = W.cart (.core D.R.m) τ`. Rewrite using `[hcart0, hcartP]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_weil_ordered : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {sc : GlobalTheory.ChiGrid.Consts},

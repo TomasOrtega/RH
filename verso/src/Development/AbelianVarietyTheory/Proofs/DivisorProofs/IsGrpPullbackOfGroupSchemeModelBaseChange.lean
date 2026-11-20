@@ -18,9 +18,9 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.SS
 
 /- English proof (translation)
-Introduce `K W L _ _ _ _ _ A _ G _ hM A' _ ψ hψ`. Take `⟨e, he⟩` from `hM`. Take `⟨e₁, he₁, -⟩` from `grpPullback_iso hψ (isGrpPullback_pullback A (spMap (algebraMap K L)))`. Establish `: IsMonHom (e₁ ≪≫ e.symm).hom` using `inferInstanceAs (IsMonHom (e₁.hom ≫ e.inv))`. Establish `h` using `(isGrpPullback_of_iso (e₁ ≪≫ e.symm)).comp (isGrpPullback_pullback G (spMap (algebraMap W L)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨_, h.congr (Category.id_comp _) rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isGrpPullback_of_isModel : ∀ (K W L : Type) [Field K] [CommRing W] [Field L] [Algebra K L] [Algebra W L] (A : Over (Sp K)) [GrpObj A] (G : Over (Sp W)) [GrpObj G], GlobalTheory.SS.IsModel (L := L) A G → ∀ (A' : Over (Sp L)) [GrpObj A'] (ψ : A'.left ⟶ A.left), IsGrpPullback A' A (spMap (algebraMap K L)) ψ → ∃ φ : A'.left ⟶ G.left, IsGrpPullback A' G (spMap (algebraMap W L)) φ := by
   intro K W L _ _ _ _ _ A _ G _ hM A' _ ψ hψ

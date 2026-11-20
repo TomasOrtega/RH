@@ -28,7 +28,7 @@ namespace GlobalTheory.ChainTw
 variable {D : D7}
 
 /- English proof (translation)
-Set `ι : s.CC c →ₗ[ℂ] (flat c w j s hr).CC c` to `Submodule.inclusion hle`. Conclude with `@FiniteDimensional.of_injective ℂ _ _ _ _ _ _ _ ι (Submodule.inclusion_injective hle) hFD`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem t_fd {c : Com D} {w : Twist D} {j : ℕ} {s : PiLocalization₂ D} {hr : D.R.r ≤ s.V.rank}
     (hle : s.CC c ≤ (flat c w j s hr).CC c) (hFD : FiniteDimensional ℂ ((flat c w j s hr).CC c)) :
@@ -37,7 +37,7 @@ theorem t_fd {c : Com D} {w : Twist D} {j : ℕ} {s : PiLocalization₂ D} {hr :
   exact @FiniteDimensional.of_injective ℂ _ _ _ _ _ _ _ ι (Submodule.inclusion_injective hle) hFD
 
 /- English proof (translation)
-Take `⟨ipD, ipF, hm⟩` from `h`. Set `ι : s.CC c →ₗ[ℂ] (flat c w j s hr).CC c` to `Submodule.inclusion hle`. Set `ip : s.CC c →ₗ[ℂ] s.CC c →ₗ⋆[ℂ] ℂ` to `(ipF.comp ι).compl₂ ι`. Establish `hι : ∀ x : s.CC c, ι x ≠ 0 ↔ x ≠ 0` using `fun x => (Submodule.inclusion_injective hle).ne_iff' (map_zero ι)`. Conclude with `⟨ipD, ip, hm.pure, hm.hermD, hm.posD, fun x y => hm.herm (ι x) (ι y), fun x hx => hm.pos (ι x) ((hι x).2 hx), fun x y v v' => hm.integ (ι x) (ι y) v v', fun x y v v' => hm.schur (ι x) (ι y) v v'⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem t_met {c : Com D} {w : Twist D} {j : ℕ} {s : PiLocalization₂ D} {hr : D.R.r ≤ s.V.rank}
     (hle : s.CC c ≤ (flat c w j s hr).CC c) (h : ∃ ipD ip, IsMet c (flat c w j s hr) ipD ip) :
@@ -51,7 +51,7 @@ theorem t_met {c : Com D} {w : Twist D} {j : ℕ} {s : PiLocalization₂ D} {hr 
       fun x y v v' => hm.schur (ι x) (ι y) v v'⟩
 
 /- English proof (translation)
-Introduce `x v hv h0`. Set `ι : s.CC c →ₗ[ℂ] (flat c w j s hr).CC c` to `Submodule.inclusion hle`. Assume the negation of the conclusion as `hx`. Conclude with `(Submodule.inclusion_injective hle).ne_iff' (map_zero ι) |>.2 hx (h (ι x) v hv h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem t_van {c : Com D} {w : Twist D} {j : ℕ} {s : PiLocalization₂ D} {hr : D.R.r ≤ s.V.rank}
     (hle : s.CC c ≤ (flat c w j s hr).CC c)
@@ -63,7 +63,7 @@ theorem t_van {c : Com D} {w : Twist D} {j : ℕ} {s : PiLocalization₂ D} {hr 
   exact (Submodule.inclusion_injective hle).ne_iff' (map_zero ι) |>.2 hx (h (ι x) v hv h0)
 
 /- English proof (translation)
-Introduce `x v B hv hP` and use `by let ι : s.CC c →ₗ[ℂ] (flat c w j s hr).CC c := Submodule.inclusion hle have h' := h (ι x) v B hv hP exact ⟨fun h0 => h'.1 (by rw [h0]; exact map_zero ι), fun v' hv' => h'.2 v' hv'⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem t_par {c : Com D} {w : Twist D} {j : ℕ} {s : PiLocalization₂ D} {hr : D.R.r ≤ s.V.rank}
     (hle : s.CC c ≤ (flat c w j s hr).CC c)
@@ -74,9 +74,9 @@ theorem t_par {c : Com D} {w : Twist D} {j : ℕ} {s : PiLocalization₂ D} {hr 
   exact ⟨fun h0 => h'.1 (by rw [h0]; exact map_zero ι), fun v' hv' => h'.2 v' hv'⟩
 
 /- English proof (translation)
-Introduce `hHC hCR D c w hw j hj s hs`. Take `⟨hr, hL, hf⟩` from `hs`. Establish `hle : s.CC c ≤ (flat c w j s hr).CC c` using `GlobalTheory.T.chain_stage_forms_twisted_level_le_finer_level D c w hw j hj s ⟨hr, hL, hf⟩ hr`. Establish `hMet : MetEx D` using `GlobalTheory.ChainMetric.metEx hCR D`. Establish `hLev : LevFacts D` using `LevelFacts.levFacts D`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨t_fd hle (finDim_of_levFacts hHC D hLev c hw.com j hj _ hf), t_met hle (hMet c hw.com j hj _ hf), t_van hle (val_eq_zero_imp D hMet c hw.com j hj _ hf), t_par hle (GlobalTheory.T.hecke_parameters_of_element_from_one_nonzero_value hCR D hMet hLev c hw.com j hj _ hf)⟩`.
+Supply the required witnesses or components.
 -/
 theorem softQ_all : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, SoftQ D := by
   intro hHC hCR D c w hw j hj s hs
@@ -88,7 +88,7 @@ theorem softQ_all : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.
     t_van hle (val_eq_zero_imp D hMet c hw.com j hj _ hf), t_par hle (GlobalTheory.T.hecke_parameters_of_element_from_one_nonzero_value hCR D hMet hLev c hw.com j hj _ hf)⟩
 
 /- English proof (translation)
-The claim follows from `softQ_all`.
+A detailed English derivation is pending.
 -/
 example : GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ D : D7, SoftQ D := softQ_all
 

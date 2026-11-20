@@ -7,7 +7,7 @@ noncomputable section
 namespace GlobalTheory.EtC.Tr
 
 /- English proof (translation)
-The claim follows from `ModuleCat.free_map_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem freePresheaf_map_app_freeMk (R : Type) [CommRing R] {P Q : Scheme.{0}ᵒᵖ ⥤ Type} (α : P ⟶ Q) (U : Scheme.{0}ᵒᵖ)
     (x : P.obj U) :
@@ -16,7 +16,7 @@ theorem freePresheaf_map_app_freeMk (R : Type) [CommRing R] {P Q : Scheme.{0}ᵒ
   ModuleCat.free_map_apply _ _
 
 /- English proof (translation)
-The claim follows from `ModuleCat.free_map_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem freePresheaf_obj_map_freeMk (R : Type) [CommRing R] (P : Scheme.{0}ᵒᵖ ⥤ Type) {U V : Scheme.{0}ᵒᵖ} (f : U ⟶ V)
     (x : P.obj U) :
@@ -25,7 +25,7 @@ theorem freePresheaf_obj_map_freeMk (R : Type) [CommRing R] (P : Scheme.{0}ᵒ�
   ModuleCat.free_map_apply _ _
 
 /- English proof (translation)
-The claim follows from `congrArg (ConcreteCategory.hom (β.app U)) (freePresheaf_map_app_freeMk R α U x)`.
+A detailed English derivation is pending.
 -/
 theorem freePresheaf_map_comp_app_freeMk (R : Type) [CommRing R] {P Q : Scheme.{0}ᵒᵖ ⥤ Type}
     {G : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)} (α : P ⟶ Q) (β : (GlobalTheory.EtC.freeP R).obj Q ⟶ G)
@@ -35,7 +35,7 @@ theorem freePresheaf_map_comp_app_freeMk (R : Type) [CommRing R] {P Q : Scheme.{
   congrArg (ConcreteCategory.hom (β.app U)) (freePresheaf_map_app_freeMk R α U x)
 
 /- English proof (translation)
-Establish `h` using `ConcreteCategory.congr_hom (β.naturality f) (ModuleCat.freeMk (ULift.up x))`. Conclude with `h.symm.trans (congrArg (ConcreteCategory.hom (β.app V)) (freePresheaf_obj_map_freeMk R P f x))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem freePresheaf_hom_naturality_freeMk (R : Type) [CommRing R] {P : Scheme.{0}ᵒᵖ ⥤ Type}
     {G : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)} (β : (GlobalTheory.EtC.freeP R).obj P ⟶ G)
@@ -50,15 +50,13 @@ end GlobalTheory.EtC.Tr
 namespace GlobalTheory.EtC.Tr
 
 /- English proof (translation)
-Set `adj` to `sheafificationAdjunction Scheme.etaleTopology.{0} (ModuleCat.{1} (ULift.{1} R))`. Apply `(adj.homEquiv ((GlobalTheory.EtC.freeP R).obj (yoneda.obj S)) F).injective` to reduce the goal to its premises. Establish `key : ∀ ⦃W : Scheme.{0}⦄ (v : W ⟶ S), T v → ConcreteCategory.hom ((adj.homEquiv _ F φ).app (op W)) (ModuleCat.freeMk (ULift.up v)) = ConcreteCategory.hom ((adj.homEquiv _ F ψ).app (op W)) (ModuleCat.freeMk (ULift.up v))`. Introduce `W v hv`. Establish `e : ∀ χ : GlobalTheory.EtC.Tr.freeSch R S ⟶ F, adj.homEquiv _ F ((GlobalTheory.EtC.free R).map (yoneda.map v) ≫ χ) = (GlobalTheory.EtC.freeP R).map (yoneda.map v) ≫ adj.homEquiv _ F χ` using `fun χ => adj.homEquiv_naturality_left _ _`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h' : (GlobalTheory.EtC.freeP R).map (yoneda.map v) ≫ adj.homEquiv _ F φ = (GlobalTheory.EtC.freeP R).map (yoneda.map v) ≫ adj.homEquiv _ F ψ`. Rewrite using `[← e φ, ← e ψ]`. Conclude with `congrArg (adj.homEquiv _ F) (h v hv)`. Establish `h1` using `ConcreteCategory.congr_hom (NatTrans.congr_app h' (op W)) (ModuleCat.freeMk (ULift.up (𝟙 W)))`. Rewrite `h1` using `[freePresheaf_map_comp_app_freeMk, freePresheaf_map_comp_app_freeMk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hv1 : ConcreteCategory.hom ((yoneda.map v).app (op W)) (𝟙 W) = v` using `Category.id_comp v`. Rewrite `h1` using `[hv1]`. Conclude with `h1`. Apply `NatTrans.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `U`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Apply `ModuleCat.free_hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨g⟩`. Apply `Sheaf.isSeparated F U.unop (T.pullback g) (Scheme.etaleTopology.pullback_stable g hT)` to reduce the goal to its premises. Introduce `W w hw`. Establish `nat : ∀ χ : GlobalTheory.EtC.Tr.freeSch R S ⟶ F, ConcreteCategory.hom (F.obj.map w.op) (ConcreteCategory.hom ((adj.homEquiv _ F χ).app U) (ModuleCat.freeMk (ULift.up g))) = ConcreteCategory.hom ((adj.homEquiv _ F χ).app (op W)) (ModuleCat.freeMk (ULift.up (w ≫ g)))` using `fun χ => freePresheaf_hom_naturality_freeMk R (adj.homEquiv _ F χ) w.op g`.
-
-Conclude with `(nat φ).trans ((key (w ≫ g) hw).trans (nat ψ).symm)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem free_hom_ext_of_covering (R : Type) [CommRing R] {S : Scheme.{0}} (F : GlobalTheory.EtC.Shv R)
     (φ ψ : GlobalTheory.EtC.Tr.freeSch R S ⟶ F) (T : Sieve S) (hT : T ∈ Scheme.etaleTopology S)
@@ -98,7 +96,7 @@ theorem free_hom_ext_of_covering (R : Type) [CommRing R] {S : Scheme.{0}} (F : G
 end GlobalTheory.EtC.Tr
 
 /- English proof (translation)
-The claim follows from `@GlobalTheory.EtC.Tr.free_hom_ext_of_covering`.
+A detailed English derivation is pending.
 -/
 example : ∀ (R : Type) [CommRing R] {S : Scheme.{0}} (F : GlobalTheory.EtC.Shv R) (φ ψ : GlobalTheory.EtC.Tr.freeSch R S ⟶ F) (T : Sieve S), T ∈ Scheme.etaleTopology S → (∀ ⦃V : Scheme.{0}⦄ (v : V ⟶ S), T v → (GlobalTheory.EtC.free R).map (yoneda.map v) ≫ φ = (GlobalTheory.EtC.free R).map (yoneda.map v) ≫ ψ) → φ = ψ :=
   @GlobalTheory.EtC.Tr.free_hom_ext_of_covering

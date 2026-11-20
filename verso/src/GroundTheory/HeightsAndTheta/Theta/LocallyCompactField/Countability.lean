@@ -26,7 +26,7 @@ Both sides reduce to the same expression.
 theorem mulLeftAddEquiv_apply (a : R) (ha : a ≠ 0) (x : R) : mulLeftAddEquiv a ha x = a * x := rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[mulLeftAddEquiv_apply, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mulLeftAddEquiv_mul (a b : R) (ha : a ≠ 0) (hb : b ≠ 0) :
     mulLeftAddEquiv (a * b) (mul_ne_zero ha hb) =
@@ -35,7 +35,7 @@ theorem mulLeftAddEquiv_mul (a b : R) (ha : a ≠ 0) (hb : b ≠ 0) :
   simp [mulLeftAddEquiv_apply, mul_assoc]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_neBot, ← isOpen_singleton_iff_punctured_nhds]`. Conclude with `hR (discreteTopology_iff_isOpen_singleton_zero.mpr h)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nhdsNE_zero_neBot (hR : ¬ DiscreteTopology R) : (𝓝[≠] (0 : R)).NeBot := by
   by_contra h
@@ -43,7 +43,7 @@ theorem nhdsNE_zero_neBot (hR : ¬ DiscreteTopology R) : (𝓝[≠] (0 : R)).NeB
   exact hR (discreteTopology_iff_isOpen_singleton_zero.mpr h)
 
 /- English proof (translation)
-Apply `hK.eventually_forall_of_forall_eventually` to reduce the goal to its premises. Introduce `w _`. Establish `h : Tendsto (fun z : R × R => z.1 * z.2) (𝓝 (0, w)) (𝓝 (0 * w))` using `continuous_mul.tendsto _`. Rewrite `h` using `[zero_mul]`. Conclude with `h.eventually_mem hN`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_mul_mem_of_isCompact {K N : Set R} (hK : IsCompact K) (hN : N ∈ 𝓝 (0 : R)) :
     ∀ᶠ u in 𝓝 (0 : R), ∀ w ∈ K, u * w ∈ N := by
@@ -57,43 +57,41 @@ theorem eventually_mul_mem_of_isCompact {K N : Set R} (hK : IsCompact K) (hN : N
 variable [LocallyCompactSpace R] [T2Space R]
 
 /- English proof (translation)
-Set `_ : MeasurableSpace R` to `borel R`. Establish `_ : BorelSpace R` using `⟨rfl⟩`. Establish `_` using `nhdsNE_zero_neBot hR`. Set `ν : Measure R` to `addHaar`. Set `md : ∀ a : R, a ≠ 0 → ℝ≥0` to `fun a ha => addEquivAddHaarChar (mulLeftAddEquiv a ha)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `md_image : ∀ (a : R) (ha : a ≠ 0) (S : Set R), ν ((fun x => a * x) '' S) = (md a ha : ℝ≥0∞) * ν S`. Introduce `a ha S`. Establish `h` using `addEquivAddHaarChar_smul_preimage ν (X := (fun x => a * x) '' S) (mulLeftAddEquiv a ha)`. Establish `hpre : (mulLeftAddEquiv a ha) ⁻¹' ((fun x => a * x) '' S) = S` using `preimage_image_eq S (mulLeftAddEquiv a ha).injective`. Rewrite `h` using `[hpre, ENNReal.smul_def, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h.symm`. Establish `md_pos : ∀ (a : R) (ha : a ≠ 0), 0 < md a ha` using `fun a ha => addEquivAddHaarChar_pos _`. Establish `md_mul : ∀ (a b : R) (ha : a ≠ 0) (hb : b ≠ 0), md (a * b) (mul_ne_zero ha hb) = md b hb * md a ha`. Introduce `a b ha hb`. Simplify using `only [md]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulLeftAddEquiv_mul a b ha hb, addEquivAddHaarChar_trans]`. Establish `md_pow : ∀ (a : R) (ha : a ≠ 0) (n : ℕ), md (a ^ n) (pow_ne_zero n ha) = md a ha ^ n`. Introduce `a ha n`. Proceed by induction on `n with`. Consider the case `zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [md, pow_zero]`. Establish `: mulLeftAddEquiv (1 : R) one_ne_zero = ContinuousAddEquiv.refl R`. Use extensionality with `x`. Simplify using `[mulLeftAddEquiv_apply]`. Rewrite using `[this, addEquivAddHaarChar_refl]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Establish `h` using `md_mul (a ^ n) a (pow_ne_zero n ha) ha`. Simplify using `only [← pow_succ] at h`. Rewrite using `[h, ih, pow_succ, mul_comm]`. Take `⟨V0, hV0c, hV0n⟩ : ∃ V0 : Set R, IsCompact V0 ∧ V0 ∈ 𝓝 (0 : R)` from `exists_compact_mem_nhds 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set W : Set R := insert 1 V0 with hWdef`. Establish `hWc : IsCompact W` using `hV0c.insert 1`. Establish `hWn : W ∈ 𝓝 (0 : R)` using `mem_of_superset hV0n (subset_insert _ _)`. Establish `h1W : (1 : R) ∈ W` using `mem_insert _ _`. Establish `hWpos : 0 < ν W` using `measure_pos_of_mem_nhds ν hWn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWfin : ν W ≠ ∞` using `hWc.measure_lt_top.ne`. Establish `hV0pos : 0 < ν V0` using `measure_pos_of_mem_nhds ν hV0n`. Take `⟨O, hOsup, hOo, hOlt⟩` from `Set.exists_isOpen_lt_of_lt ({0} : Set R) (ν V0) (by rw [measure_singleton (μ := ν) (0 : R)]; exact hV0pos)`. Take `⟨V, hVn, hVsub, hVc⟩` from `local_compact_nhds (inter_mem (hOo.mem_nhds (hOsup rfl)) hV0n)`. Establish `hVW : V ⊆ W` using `fun x hx => subset_insert _ _ (hVsub hx).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hVO : ν V < ν W` using `((measure_mono fun x hx => (hVsub hx).1).trans_lt hOlt).trans_le (measure_mono (subset_insert _ _))`. Take `⟨t, htV, ht0⟩` from `((eventually_mul_mem_of_isCompact hWc hVn).filter_mono nhdsWithin_le_nhds).and (self_mem_nhdsWithin : ({0}ᶜ : Set R) ∈ 𝓝[≠] (0 : R)) |>.exists`. Establish `ht0' : t ≠ 0` using `ht0`. Establish `hmd_t : md t ht0' < 1`. Establish `h1 : ν ((fun x => t * x) '' W) ≤ ν V` using `measure_mono (by rintro _ ⟨w, hw, rfl⟩; exact htV w hw)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[md_image]`. Establish `h2 : (md t ht0' : ℝ≥0∞) * ν W < 1 * ν W` using `by rw [one_mul]; exact h1.trans_lt hVO`. Establish `h3` using `(ENNReal.mul_lt_mul_iff_left hWpos.ne' hWfin).mp h2`. Conclude with `h3` after adjusting the coercions. Set `S : ℕ → Set R` to `fun n => (fun x => t ^ n * x) '' W`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hSc : ∀ n, IsCompact (S n)` using `fun n => hWc.image (continuous_const.mul continuous_id)`. Establish `hSanti : Antitone S`. Apply `antitone_nat_of_succ_le` to reduce the goal to its premises. Introduce `n`. Introduce and unpack `_ ⟨w, hw, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨t * w, hVW (htV w hw), by simp only [pow_succ, mul_assoc]⟩`. Establish `hSmem : ∀ n, t ^ n ∈ S n` using `fun n => ⟨1, h1W, mul_one _⟩`. Use `set C : Set R := (fun p : R × R => p.1 * p.2) '' (W ×ˢ W)`. Establish `hCfin : ν C ≠ ∞` using `((hWc.prod hWc).image continuous_mul).measure_lt_top.ne`. Establish `hinter : ∀ a ∈ ⋂ n, S n, a = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Assume the negation of the conclusion as `ha0`. Establish `key : ∀ n : ℕ, (md a ha0 : ℝ≥0∞) * ν W ≤ (md t ht0' : ℝ≥0∞) ^ n * ν C`. Introduce `n`. Take `⟨w, hw, hwa⟩` from `mem_iInter.mp ha n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hw0 : w ≠ 0`. Introduce and unpack `rfl`. Simplify using `only [mul_zero] at hwa`. Conclude with `ha0 hwa.symm`. Establish `hmd : md a ha0 = md w hw0 * md t ht0' ^ n`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `md_mul (t ^ n) w (pow_ne_zero n ht0') hw0` as an intermediate fact. Simplify using `only [hwa] at this`. Rewrite using `[this, md_pow]`. Establish `hsub : (fun x => w * x) '' W ⊆ C`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Supply the required witnesses or components. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `⟨(w, x), ⟨hw, hx⟩, rfl⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmd]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = (md t ht0' : ℝ≥0∞) ^ n * ν ((fun x => w * x) '' W) := by rw [md_image]`. Use `_ ≤ (md t ht0' : ℝ≥0∞) ^ n * ν C := by gcongr`. Establish `hlim : Tendsto (fun n : ℕ => (md t ht0' : ℝ≥0∞) ^ n * ν C) atTop (𝓝 0)`. Establish `h` using `ENNReal.Tendsto.mul_const (ENNReal.tendsto_pow_atTop_nhds_zero_iff.mpr (ENNReal.coe_lt_one_iff.mpr hmd_t)) (Or.inr hCfin) (a := 0) (b := ν C)`. Rewrite `h` using `[zero_mul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hle` using `ge_of_tendsto' hlim key`. Establish `hpos : 0 < (md a ha0 : ℝ≥0∞) * ν W` using `ENNReal.mul_pos (by exact_mod_cast (md_pos a ha0).ne') hWpos.ne'`. Conclude with `absurd hle (not_le.mpr hpos)`. Use `⟨t, ht0', ?_⟩` and prove the remaining obligations. Introduce `U hU`.
-
-Take `⟨n, hn⟩` from `exists_subset_nhds_of_isCompact hSanti.directed_ge hSc (U := U) (fun x hx => by rw [hinter x hx]; exact hU)`. Rewrite using `[mem_map, mem_atTop_sets]`. Conclude with `⟨n, fun m hm => hn (hSanti hm (hSmem m))⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_tendsto_pow_zero (hR : ¬ DiscreteTopology R) :
     ∃ t : R, t ≠ 0 ∧ Tendsto (fun n : ℕ => t ^ n) atTop (𝓝 0) := by
@@ -210,9 +208,9 @@ theorem exists_tendsto_pow_zero (hR : ¬ DiscreteTopology R) :
   exact ⟨n, fun m hm => hn (hSanti hm (hSmem m))⟩
 
 /- English proof (translation)
-Take `⟨t, ht0, ht⟩` from `exists_tendsto_pow_zero hR`. Take `⟨W, hWc, hWn⟩ : ∃ W : Set R, IsCompact W ∧ W ∈ 𝓝 (0 : R)` from `exists_compact_mem_nhds 0`. Use `⟨⟨fun n => (fun x => (t ^ n)⁻¹ * x) '' W, fun n => hWc.image (continuous_const.mul continuous_id), ?_⟩⟩` and prove the remaining obligations. Apply `eq_univ_of_forall` to reduce the goal to its premises. Introduce `x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : Tendsto (fun n : ℕ => t ^ n * x) atTop (𝓝 0)`. Use `ht.mul_const x` as an intermediate fact. Rewrite `this` using `[zero_mul]`. Then use the resulting hypothesis. Take `⟨n, hn⟩` from `(h.eventually_mem hWn).exists`. Conclude with `mem_iUnion.mpr ⟨n, t ^ n * x, hn, inv_mul_cancel_left₀ (pow_ne_zero n ht0) x⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem locField_sigmaCompactSpace (hR : ¬ DiscreteTopology R) : SigmaCompactSpace R := by
   obtain ⟨t, ht0, ht⟩ := exists_tendsto_pow_zero hR
@@ -228,11 +226,11 @@ theorem locField_sigmaCompactSpace (hR : ¬ DiscreteTopology R) : SigmaCompactSp
   exact mem_iUnion.mpr ⟨n, t ^ n * x, hn, inv_mul_cancel_left₀ (pow_ne_zero n ht0) x⟩
 
 /- English proof (translation)
-Take `⟨t, ht0, ht⟩` from `exists_tendsto_pow_zero hR`. Take `⟨W, hWc, hWn⟩ : ∃ W : Set R, IsCompact W ∧ W ∈ 𝓝 (0 : R)` from `exists_compact_mem_nhds 0`. Establish `hb : (𝓝 (0 : R)).HasBasis (fun _ : ℕ => True) (fun n => (fun x => t ^ n * x) '' W)`. Use `⟨fun U => ⟨fun hU => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `(ht.eventually (eventually_mul_mem_of_isCompact hWc hU)).exists`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, trivial, by rintro _ ⟨w, hw, rfl⟩; exact hn w hw⟩`. Introduce and unpack `⟨n, -, hn⟩`. Apply `mem_of_superset _ hn` to reduce the goal to its premises. Establish `h` using `(mulLeftAddEquiv (t ^ n) (pow_ne_zero n ht0)).toHomeomorph.isOpenMap.image_mem_nhds hWn`. Establish `e1 : ((mulLeftAddEquiv (t ^ n) (pow_ne_zero n ht0)).toHomeomorph : R → R) = fun x => t ^ n * x` using `rfl`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[e1]`. Simplify `h` using `only [mul_zero]`. Conclude with `hb.isCountablyGenerated`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem locField_nhds_zero_isCountablyGenerated (hR : ¬ DiscreteTopology R) :
     (𝓝 (0 : R)).IsCountablyGenerated := by
@@ -253,9 +251,9 @@ theorem locField_nhds_zero_isCountablyGenerated (hR : ¬ DiscreteTopology R) :
   exact hb.isCountablyGenerated
 
 /- English proof (translation)
-Establish `_` using `locField_sigmaCompactSpace hR`. Establish `_` using `locField_nhds_zero_isCountablyGenerated hR`. Set `_` to `IsTopologicalAddGroup.rightUniformSpace R`. Establish `_` using `isUniformAddGroup_of_addCommGroup (G := R)`. Establish `_ : (uniformity R).IsCountablyGenerated` using `IsUniformAddGroup.uniformity_countably_generated`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `_ : TopologicalSpace.MetrizableSpace R` using `UniformSpace.metrizableSpace`. Set `_` to `TopologicalSpace.metrizableSpaceMetric R`. Conclude with `EMetric.secondCountable_of_sigmaCompact R`.
+Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem locField_secondCountable (hR : ¬ DiscreteTopology R) : SecondCountableTopology R := by
   have _ := locField_sigmaCompactSpace hR
@@ -290,11 +288,11 @@ end Module
 section Haar
 
 /- English proof (translation)
-Establish `h : μ = addHaarScalarFactor μ addHaar • addHaar`. Use extensionality with `s _`. Establish `hs : s = ⋃ n, s ∩ compactCovering G n`. Rewrite using `[← inter_iUnion, iUnion_compactCovering, inter_univ]`. Establish `hmono : Monotone (fun n => s ∩ compactCovering G n)` using `fun m n hmn => inter_subset_inter_right _ (compactCovering_subset G hmn)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hs, hmono.measure_iUnion, hmono.measure_iUnion]`. Use `congr 1`. Use function extensionality and compare the values at `n`. Rewrite using `[Measure.smul_apply]`. Conclude with `measure_isAddInvariant_eq_smul_of_isCompact_closure μ addHaar ((isCompact_compactCovering G n).closure_of_subset inter_subset_right)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem isAddHaar_regular {G : Type*} [AddGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [LocallyCompactSpace G] [SigmaCompactSpace G] [MeasurableSpace G] [BorelSpace G]

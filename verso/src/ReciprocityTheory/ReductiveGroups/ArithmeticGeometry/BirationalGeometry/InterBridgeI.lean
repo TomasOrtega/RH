@@ -9,25 +9,23 @@ open MeasureTheory Set Filter Topology ReciprocityTheory.AnForm.M
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Establish `hne : Nonempty (ChartPartition A)` using `existsPartition A`. Rewrite using `[mInt, dif_pos hne, integralWith]`. Generalize the expression as in `hne.some = Pt`. Establish `hnull : ∀ j, volume ((q ∘ (A.chart j).symm) '' (goodT A q j ∩ (A.chart j).symm ⁻¹' S)) = 0`. Introduce `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero (μ := volume) ?_ ?_` and prove the remaining obligations. Introduce `u hu`. Conclude with `(hu.1.2.1.differentiableAt.restrictScalars ℝ).differentiableWithinAt`. Conclude with `measure_mono_null (show goodT A q j ∩ (A.chart j).symm ⁻¹' S ⊆ (A.chart j).target ∩ (A.chart j).symm ⁻¹' S from fun u hu => ⟨hu.1.1, hu.2⟩) (hS j)`. Establish `hfinj : ∀ j, ∀ᵐ y ∂(volume : Measure (Fin e → ℂ)), (goodT A q j ∩ (q ∘ (A.chart j).symm) ⁻¹' {y}).Finite`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Use `filter_upwards [compl_mem_ae_iff.2 (hnull j)] with y hy`. Rewrite using `[goodT_fibre_eq A q S hq j hy]`. Conclude with `((hfin y).subset inter_subset_right).image _`. Establish `harea : ∀ j, Integrable (fibSum (goodT A q j) (q ∘ (A.chart j).symm) (fun u => Pt.χ j ((A.chart j).symm u) * g ((A.chart j).symm u) * locDens A Φ j u)) ∧ ∫ u in goodT A q j, Pt.χ j ((A.chart j).symm u) * g ((A.chart j).symm u) * locDens A Φ j u = ∫ y, fibSum (goodT A q j) (q ∘ (A …` using `fun j => area_open (isOpen_goodT A q j) (fun u hu => hu.2) ((integrableOn_chart A Pt Φ g hg j).mono_set (fun u hu => hu.1)) (hfinj j)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `htarget : ∀ j, ∫ u in (A.chart j).target, Pt.χ j ((A.chart j).symm u) * g ((A.chart j).symm u) * locDens A Φ j u = ∫ u in goodT A q j, Pt.χ j ((A.chart j).symm u) * g ((A.chart j).symm u) * locDens A Φ j u`. Introduce `j`. Apply `setIntegral_congr_set` to reduce the goal to its premises. Rewrite using `[ae_eq_set]`. Use `⟨measure_mono_null (target_diff_goodT_subset A q S hq j) (hS j), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[diff_eq_empty.2 (fun u hu => hu.1)]`. Conclude with `measure_empty`. Establish `hj : ∀ j y, y ∉ (q ∘ (A.chart j).symm) '' (goodT A q j ∩ (A.chart j).symm ⁻¹' S) → fibSum (goodT A q j) (q ∘ (A.chart j).symm) (fun u => Pt.χ j ((A.chart j).symm u) * g ((A.chart j).symm u) * locDens A Φ j u) y = ∑ᶠ x ∈ q ⁻¹' {y} \ S, Pt.χ j x * (g x * pushDens A Φ q x)`. Introduce `j y hy`. Unfold `fibSum`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[goodT_fibre_eq A q S hq j hy, finsum_mem_image ((A.chart j).injOn.mono inter_subset_left)]`. Combine the equalities or inequalities in the displayed calculation. Apply `finsum_mem_inter_support_eq` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `only [mem_inter_iff, Function.mem_support]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, h2⟩, h3⟩`. Conclude with `⟨h2, h3⟩`. Introduce and unpack `⟨h2, h3⟩`. Conclude with `⟨⟨Pt.tsupport_subset j (subset_tsupport _ (left_ne_zero_of_mul h3)), h2⟩, h3⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hae : ∀ᵐ y ∂(volume : Measure (Fin e → ℂ)), ∀ j, y ∉ (q ∘ (A.chart j).symm) '' (goodT A q j ∩ (A.chart j).symm ⁻¹' S)`. Rewrite using `[ae_all_iff]`. Introduce `j`. Conclude with `compl_mem_ae_iff.2 (hnull j)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with y hy`. Establish `hF` using `hfin y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`.
-
-Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, Pt.sum_eq_one, one_mul]`. Use `_ = ∑ᶠ x ∈ q ⁻¹' {y} \ S, g x * pushDens A Φ q x := (finsum_mem_eq_finite_toFinset_sum _ hF).symm`.
+A detailed English derivation is pending.
 -/
 theorem pushForward_null' [CompactSpace X] [T2Space X] (A : FinHolAtlas e X)
     (Φ : Fin e → LocPot X) (hΦ : ∀ i, IsPotential A (Φ i)) (q : X → Fin e → ℂ) (S : Set X)

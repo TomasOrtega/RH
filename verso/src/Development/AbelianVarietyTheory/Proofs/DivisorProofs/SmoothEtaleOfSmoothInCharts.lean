@@ -15,9 +15,9 @@ variable {n : ℕ} {Y : Type} [TopologicalSpace Y] [T2Space Y] [SecondCountableT
   [MeasurableSpace Y] [BorelSpace Y] {ι La : Type} [AddCommGroup La]
 
 /- English proof (translation)
-Establish `ho : IsOpen ((A.chart i).target ∩ (A.chart i).symm ⁻¹' U)` using `(A.chart i).isOpen_inter_preimage_symm hE.isOpen`. Establish `hm : A.chart i x ∈ (A.chart i).target ∩ (A.chart i).symm ⁻¹' U` using `⟨(A.chart i).map_source hi, by simp [(A.chart i).left_inv hi, hx]⟩`. Establish `hk : ∀ k, ContDiffOn ℂ ∞ (fun v => (z ∘ (A.chart i).symm) v k) ((A.chart i).target ∩ (A.chart i).symm ⁻¹' U)` using `fun k => contDiffOn_of_differentiableOn n _ _ ho ((EuclideanSpace.proj k : V n →L[ℂ] ℂ).differentiable.comp_differentiableOn (hE.holo i))`. Establish `hpi` using `contDiffOn_pi.mpr hk`. Establish `h2 : ContDiffOn ℂ ∞ (z ∘ (A.chart i).symm) ((A.chart i).target ∩ (A.chart i).symm ⁻¹' U)` using `(PiLp.continuousLinearEquiv 2 ℂ (fun _ : Fin n => ℂ)).symm.contDiff.comp_contDiffOn hpi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(h2 _ hm).contDiffAt (ho.mem_nhds hm)`.
+A detailed English derivation is pending.
 -/
 theorem etaleSmooth_contDiffAt_chart {A : WeightedAtlas n Y ι La} {U : Set Y} {z : Y → V n}
     (hE : Etale A U z) {x : Y} (hx : x ∈ U) {i : ι} (hi : x ∈ (A.chart i).source) :
@@ -37,19 +37,17 @@ theorem etaleSmooth_contDiffAt_chart {A : WeightedAtlas n Y ι La} {U : Set Y} {
   exact (h2 _ hm).contDiffAt (ho.mem_nhds hm)
 
 /- English proof (translation)
-Establish `hzs : ∀ v' ∈ e.target, z (e.symm v' : Y) = v'` using `fun v' hv' => by`. Use `he (e.map_target hv')` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this, e.right_inv hv']`. Use `set x : U := e.symm v with hxdef`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set G : V n → V n := fun v' => A.chart i (e.symm v' : Y) with hG`. Establish `hz` using `etaleSmooth_contDiffAt_chart hE x.2 hi`. Establish `hdet : (GlobalTheory.OTY.jz A z i x).det ≠ 0` using `hE.det_ne i x x.2 hi`. Use `set f' := (GlobalTheory.OTY.jz A z i x).toContinuousLinearEquivOfDetNeZero hdet with hf'def`. Establish `hf' : HasFDerivAt (z ∘ (A.chart i).symm) (f' : V n →L[ℂ] V n) (A.chart i x)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hf'def, ContinuousLinearMap.coe_toContinuousLinearEquivOfDetNeZero]`. Conclude with `(hz.differentiableAt (by simp)).hasFDerivAt`. Establish `hn : (∞ : WithTop ℕ∞) ≠ 0` using `by simp`. Establish `hstrict` using `hz.hasStrictFDerivAt' hf' hn`. Establish `hzx : (z ∘ (A.chart i).symm) (A.chart i x) = v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Function.comp_apply, (A.chart i).left_inv hi]`. Conclude with `hzs v hv`. Establish `hGv : G v = A.chart i x` using `rfl`. Establish `hc0 : ContinuousAt (Subtype.val ∘ e.symm) v` using `continuous_subtype_val.continuousAt.comp (e.continuousAt_symm hv)`. Establish `hsrc : ∀ᶠ v' in 𝓝 v, ((e.symm v' : U) : Y) ∈ (A.chart i).source` using `hc0.eventually_mem ((A.chart i).open_source.mem_nhds hi)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hGc : ContinuousAt G v` using `ContinuousAt.comp (f := Subtype.val ∘ e.symm) ((A.chart i).continuousAt hi) hc0`. Establish `hright : ∀ᶠ v' in 𝓝 v, (z ∘ (A.chart i).symm) (G v') = v'` using `by filter_upwards [hsrc, e.open_target.mem_nhds hv] with v' h1 h2`. Rewrite using `[hG]`. Simplify using `only [Function.comp_apply]`. Rewrite using `[(A.chart i).left_inv h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hzs v' h2`. Establish `hleft : ∀ᶠ v' in 𝓝 v, hstrict.localInverse _ _ _ ((z ∘ (A.chart i).symm) (G v')) = G v'`. Use `hGc.tendsto.eventually (f := G) (by rw [hGv]; exact hstrict.eventually_left_inverse)` as an intermediate fact. Conclude with `this`. Establish `heq : G =ᶠ[𝓝 v] hstrict.localInverse _ _ _` using `by filter_upwards [hleft, hright] with v' h1 h2`.
-
-Rewrite using `[← h1, h2]`. Establish `hloc : ContDiffAt ℂ ∞ (hz.localInverse hf' hn) ((z ∘ (A.chart i).symm) (A.chart i x))` using `hz.to_localInverse hf' hn`. Rewrite `hloc` using `[hzx]`. Conclude with `⟨hloc.congr_of_eventuallyEq heq, hsrc⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem etaleSmooth_inverse {A : WeightedAtlas n Y ι La} {U : Set Y} {z : Y → V n}
     (hE : Etale A U z) (e : OpenPartialHomeomorph U (V n))
@@ -100,9 +98,9 @@ theorem etaleSmooth_inverse {A : WeightedAtlas n Y ι La} {U : Set Y} {z : Y →
   exact ⟨hloc.congr_of_eventuallyEq heq, hsrc⟩
 
 /- English proof (translation)
-Introduce `e he v hv`. Take `⟨i, hi, hui⟩` from `hu _ (e.symm v).2`. Take `⟨hG, hsrc⟩` from `etaleSmooth_inverse hE e he v hv i hi`. Establish `hc : ContDiffAt ℝ ∞ ((u ∘ (A.chart i).symm) ∘ fun v' => A.chart i (e.symm v' : Y)) v` using `hui.comp v (hG.restrict_scalars ℝ)`. Use `(hc.congr_of_eventuallyEq ?_).contDiffWithinAt` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hsrc] with v' h1`. Simplify using `[(A.chart i).left_inv h1]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem etaleSmooth_complex {A : WeightedAtlas n Y ι La} {U : Set Y} {z : Y → V n}
     (hE : Etale A U z) (u : Y → ℂ)
@@ -121,7 +119,7 @@ theorem etaleSmooth_complex {A : WeightedAtlas n Y ι La} {U : Set Y} {z : Y →
 end
 
 /- English proof (translation)
-Introduce `n Y _ _ _ _ _ ι La _ A U z hE`. Use `⟨fun u hu => etaleSmooth_complex hE u hu, fun φ hφ => ?_⟩` and prove the remaining obligations. Use `etaleSmooth_complex hE (fun y => (φ y : ℂ)) fun x hx => ?_` and prove the remaining obligations. Take `⟨i, hi, h⟩` from `hφ x hx`. Conclude with `⟨i, hi, Complex.ofRealCLM.contDiff.contDiffAt.comp _ h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem smooth_etale_of_smooth_in_charts : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (U : Set Y) (z : Y → V n), Etale A U z → (∀ u : Y → ℂ, (∀ x ∈ U, ∃ i, x ∈ (A.chart i).source ∧ ContDiffAt ℝ ∞ (u ∘ (A.chart i).symm) (A.chart i x)) → Smooth n (fun y : U => z y) (fun y : U => u y)) ∧ (∀ φ : Y → ℝ, (∀ x ∈ U, ∃ i, x ∈ (A.chart i).source ∧ ContDiffAt ℝ ∞ (φ ∘ (A.chart i).symm) (A.chart i x)) → SmoothR n (fun y : U => z y) (fun y : U => φ y)) := by
   intro n Y _ _ _ _ _ ι La _ A U z hE

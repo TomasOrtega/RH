@@ -26,9 +26,9 @@ namespace GlobalTheory.HL.RowCoset
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨g, -, rfl⟩` from `h`. Use `⟨hΓ.fg.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.map_coe]`. Establish `: (((g : G.V →ₗ[E] G.V).restrictScalars (𝓞 E)) : G.V → G.V) = ((g : G.V →ₗ[E] G.V) : G.V → G.V)` using `rfl`. Rewrite using `[this, Submodule.span_image, hΓ.span_eq_top, Submodule.map_top, LinearMap.range_eq_top]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `g.surjective`.
+A detailed English derivation is pending.
 -/
 theorem isLattice_of_lrel {A : Places F E sig} {r k : ℕ} (G : GFrames A r k) {Γ Γ' : G.Lt}
     (hΓ : Submodule.IsLattice E Γ) (h : G.LRel Γ Γ') : Submodule.IsLattice E Γ' := by
@@ -40,9 +40,9 @@ theorem isLattice_of_lrel {A : Places F E sig} {r k : ℕ} (G : GFrames A r k) {
   exact g.surjective
 
 /- English proof (translation)
-Establish `hl` using `isLattice_of_lrel G hΓ.1 h`. Establish `e` using `((GlobalTheory.T.globalHermitianFrames_terms_orbits_local A r k G hk d hex).2.1 Γ Γ' hΓ hl).1 h`. Use `⟨hl, fun p => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hsp⟩` from `e p`. Rewrite using `[hsp]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `(A.loc p).lf` as an intermediate fact. Use `(A.loc p).char0` as an intermediate fact. Conclude with `(GlobalTheory.FrameAct.stabiliser_acts_on_terms (A.L p) r k (G.S p) (d p) _ (hΓ.2 p) s hs).1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem term_of_lrel {A : Places F E sig} {r k : ℕ} (G : GFrames A r k) (hk : 4 * r + 7 ≤ k) {d : G.Dat}
     (hex : ∃ Λ₀, G.IsTerm d Λ₀) {Γ Γ' : G.Lt} (hΓ : G.IsTerm d Γ) (h : G.LRel Γ Γ') : G.IsTerm d Γ' := by
@@ -60,63 +60,57 @@ end GlobalTheory.HL.RowCoset
 namespace GlobalTheory.HL.RowCoset
 
 /- English proof (translation)
-Introduce `D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c ν hν t₀ ρ U U' hMv hrelv hpt Q`. Use `set d₀ := G.datOf (c.lat ρ t₀.lam) with hd₀`. Establish `hrow : ∀ t : TauC Y u u', (Y.tO u u').rowOf t = (Y.tO u u').rowOf t₀ → t.lam = t₀.lam ∧ t.lam' = t₀.lam'` using `fun t h => ⟨congrArg (fun x => x.1.1) h, congrArg (fun x => x.2.1.1) h⟩`. Establish `hmv : ∀ (t : TauC Y u u') n m, (n ∈ NRat (lf D (X.Fu u)) ∧ m ∈ NRat (lf D (X.Fu u')) ∧ t.lin = n⁻¹ * t₀.lin * m) → ∃ A A' : Formalism.L2.SG.PairVal.MatR D, MovesTo F00 F'0 (lf D (X.Fu u)) t.frame (ρ * n) (U * A) (U' * A')`. Introduce `t n m h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨A, A', -, -, -, -, hM⟩` from `(GlobalTheory.T.rational_unipotent_groups_lattices_global_coordinates D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c t₀ ρ U U' hMv).2.2.2.2.2 t n m h`. Conclude with `⟨A, A', hM⟩`. Establish `hdat : ∀ (t : TauC Y u u') n m, (Y.tO u u').rowOf t = (Y.tO u u').rowOf t₀ → (n ∈ NRat (lf D (X.Fu u)) ∧ m ∈ NRat (lf D (X.Fu u')) ∧ t.lin = n⁻¹ * t₀.lin * m) → G.datOf (c.lat (ρ * n) t.lam) = d₀`. Introduce `t n m hr h`. Take `⟨h1, h2⟩` from `hrow t hr`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.T.termRow_eq_iff_movedLatticeInnerData_eq D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c t₀ ρ U U' hMv t n m h1 h2 h).1 hr`. Establish `hterm : ∀ (t : TauC Y u u') n m, (Y.tO u u').rowOf t = (Y.tO u u').rowOf t₀ → (n ∈ NRat (lf D (X.Fu u)) ∧ m ∈ NRat (lf D (X.Fu u')) ∧ t.lin = n⁻¹ * t₀.lin * m) → G.IsTerm d₀ (c.lat (ρ * n) t.lam)`. Introduce `t n m hr h`. Take `⟨A, A', hM⟩` from `hmv t n m h`. Use `(GlobalTheory.T.movedTermLattice_isGlobalTerm_phase D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c t (ρ * n) (U * A) (U' * A') hM).1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[hdat t n m hr h]`. Then use the resulting hypothesis. Establish `hgen : ∀ (t : TauC Y u u') n m, (Y.tO u u').rowOf t = (Y.tO u u').rowOf t₀ → (n ∈ NRat (lf D (X.Fu u)) ∧ m ∈ NRat (lf D (X.Fu u')) ∧ t.lin = n⁻¹ * t₀.lin * m) → (t.generic ↔ G.Gen d₀ (c.lat (ρ * n) t.lam))`. Introduce `t n m hr h`. Take `⟨A, A', hM⟩` from `hmv t n m h`. Use `GlobalTheory.T.generic_iff_zero_defectGroup_coordinates D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c t (ρ * n) (U * A) (U' * A') hM` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[hdat t n m hr h]`. Then use the resulting hypothesis. Establish `hinj : ∀ (t t' : TauC Y u u') n m n' m', (Y.tO u u').rowOf t = (Y.tO u u').rowOf t₀ → (Y.tO u u').rowOf t' = (Y.tO u u').rowOf t₀ → (n ∈ NRat (lf D (X.Fu u)) ∧ m ∈ NRat (lf D (X.Fu u')) ∧ t.lin = n⁻¹ * t₀.lin * m) → (n' ∈ NRat (lf D (X.Fu u)) ∧ m' ∈ NRat (lf D (X.Fu u')) ∧ t'.lin …`. Introduce `t t' n m n' m' hr hr' h h'`. Take `⟨a1, a2⟩` from `hrow t hr`. Take `⟨b1, b2⟩` from `hrow t' hr'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.doubleCoset_term_eq_iff_stabiliserOrbit D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c t₀ ρ U U' hMv t t' n m n' m' a1 a2 b1 b2 h h'`. Establish `hex : ∃ Λ₀, G.IsTerm d₀ Λ₀` using `⟨_, (GlobalTheory.T.movedTermLattice_isGlobalTerm_phase D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c t₀ ρ U U' hMv).1⟩`. Establish `hfin : {o : Quot G.LRel | G.IsTerm d₀ o.out}.Finite` using `(GlobalTheory.T.hermitian_amplitude_mass_product_structure _ _ _ G hk d₀ hex (fun _ _ => True) (fun _ _ _ _ _ _ => trivial) (Set.finite_empty.subset fun _ ⟨_, _, h⟩ => absurd trivial h)).2.2.2`. Establish `heqv : Equivalence G.LRel` using `(GlobalTheory.T.globalHermitianFrames_terms_orbits_local _ _ _ G hk d₀ hex).2.2.1`. Establish `hsurj` using `fun Γ hΓ => GlobalTheory.T.exists_term_of_globalTerm_strongApprox D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c t₀ ρ U U' hMv Γ hΓ`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `τ : Quot G.LRel → TauC Y u u'` to `fun o => if h : G.IsTerm d₀ o.out then (hsurj o.out h).choose else t₀`. Establish `hτ : ∀ o, G.IsTerm d₀ o.out → ∃ n m, (Y.tO u u').rowOf (τ o) = (Y.tO u u').rowOf t₀ ∧ (n ∈ NRat (lf D (X.Fu u)) ∧ m ∈ NRat (lf D (X.Fu u')) ∧ (τ o).lin = n⁻¹ * t₀.lin * m) ∧ o.out = c.lat (ρ * n) (τ o).lam`. Introduce `o h`. Establish `e : τ o = (hsurj o.out h).choose` using `dif_pos h`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hsurj o.out h).choose_spec`. Set `Cf : Finset (Quot G.LRel)` to `hfin.toFinset.filter (fun o => Q (¬ G.Gen d₀ o.out))`. Establish `hmemC : ∀ o, o ∈ Cf ↔ G.IsTerm d₀ o.out ∧ Q (¬ G.Gen d₀ o.out)`. Introduce `o`. Simplify using `[Cf]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set S : Set (TauC Y u u') := {t : TauC Y u u' | (Y.tO u u').rowOf t = (Y.tO u u').rowOf t₀ ∧ nmlOf Y u u' t = nmlOf Y u u' t₀ ∧ Q (¬ t.generic)} with hS`. Establish `hτS : ∀ o ∈ Cf, τ o ∈ S`. Introduce `o ho`. Take `⟨hT, hPo⟩` from `(hmemC o).1 ho`. Take `⟨n, m, hr, h, he⟩` from `hτ o hT`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hr, (GlobalTheory.T.doubleCoset_eq_iff_isometry_unipotent_translate D X Y u u' hSt t₀ (τ o)).2 ⟨n, m, h⟩, ?_⟩` and prove the remaining obligations. Establish `hg` using `hgen (τ o) n m hr h`. Rewrite `hg` using `[← he]`. Establish `: (¬ (τ o).generic) = (¬ G.Gen d₀ o.out)` using `propext (not_congr hg)`. Rewrite using `[this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hPo`. Establish `hτinj : Set.InjOn τ Cf`. Introduce `o ho o' ho' e`. Take `⟨hT, -⟩` from `(hmemC o).1 ho`. Take `⟨hT', -⟩` from `(hmemC o').1 ho'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Take `⟨n, m, hr, h, he⟩` from `hτ o hT`. Take `⟨n', m', hr', h', he'⟩` from `hτ o' hT'`. Establish `hl` using `(hinj (τ o) (τ o') n m n' m' hr hr' h h').1 e`. Rewrite `hl` using `[← he, ← he']`. Combine the equalities or inequalities in the displayed calculation.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hτsurj : ∀ t ∈ S, ∃ o ∈ Cf, τ o = t`. Introduce and unpack `t ⟨hr, hn, hq⟩`. Take `⟨n, m, h⟩` from `(GlobalTheory.T.doubleCoset_eq_iff_isometry_unipotent_translate D X Y u u' hSt t₀ t).1 hn`. Establish `hΓ` using `hterm t n m hr h`. Take `⟨o, ho⟩ : ∃ o : Quot G.LRel, o = Quot.mk G.LRel (c.lat (ρ * n) t.lam)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrel1 : G.LRel (c.lat (ρ * n) t.lam) o.out`. Establish `e : Quot.mk G.LRel o.out = Quot.mk G.LRel (c.lat (ρ * n) t.lam)` using `by rw [Quot.out_eq o, ho]`. Conclude with `heqv.symm ((Equivalence.eqvGen_iff heqv).1 (Quot.eqvGen_exact e))`. Establish `hT : G.IsTerm d₀ o.out` using `term_of_lrel G hk hex hΓ hrel1`. Take `⟨n', m', hr', h', he'⟩` from `hτ o hT`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `heq : τ o = t` using `(hinj (τ o) t n' m' n m hr' hr h' h).2 (by rw [← he']; exact heqv.symm hrel1)`. Use `⟨o, (hmemC o).2 ⟨hT, ?_⟩, heq⟩` and prove the remaining obligations. Establish `hg` using `hgen (τ o) n' m' hr' h'`. Rewrite `hg` using `[← he', heq]`. Establish `: (¬ G.Gen d₀ o.out) = (¬ t.generic)` using `propext (not_congr hg.symm)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hq`. Take `⟨T, hTn, hamp⟩` from `GlobalTheory.T.rowTerm_amplitude_eq_mass_mul_phase D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c ν hν t₀ ρ U U' hMv hrelv hpt`. Use `set K : ℝ := ((X.B.g : ℝ) ^ (D.R.f * Fintype.card (Formalism.L2.SG.RealObj.FreeE w)))⁻¹ with hK`. Set `q₀ : {Λ // Λ ∈ Y.what₂ u} × {Λ' // Λ' ∈ Y.what₂ u'}` to `(⟨t₀.lam, t₀.mem⟩, ⟨t₀.lam', t₀.mem'⟩)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `V : Formalism.L2.SG.PackageTie.HS (X.Vpi u') (X.Vpi u) → H1 X u u' (Y.what₂ u) (Y.what₂ u')` to `fun x => WithLp.toLp 2 (fun q => if q = q₀ then x else 0)`. Establish `hVadd : ∀ x y, V x + V y = V (x + y)`. Introduce `x y`. Use `show WithLp.toLp 2 _ + WithLp.toLp 2 _ = WithLp.toLp 2 _`. Rewrite using `[← WithLp.toLp_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `q`. Apply the tactic sequence `by_cases h : q = q₀ <;> simp [h]`. Establish `hV0 : V 0 = 0` using `by show WithLp.toLp 2 _ = 0`. Establish `: (fun q => if q = q₀ then (0 : Formalism.L2.SG.PackageTie.HS (X.Vpi u') (X.Vpi u)) else 0) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `q`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hVsum : ∀ (s : Finset (Quot G.LRel)) (x : Quot G.LRel → Formalism.L2.SG.PackageTie.HS (X.Vpi u') (X.Vpi u)), ∑ o ∈ s, V (x o) = V (∑ o ∈ s, x o)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `s x`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [hV0]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ih, hVadd]`. Establish `hVn : ∀ x, ‖V x‖ ^ 2 = ‖x‖ ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x`. Use `show ‖(WithLp.toLp 2 (fun q => if q = q₀ then x else 0) : H1 X u u' (Y.what₂ u) (Y.what₂ u'))‖ ^ 2 = _`. Rewrite using `[PiLp.norm_sq_eq_of_L2]`. Apply the tactic sequence `have : ∀ q, ‖(if q = q₀ then x else 0 : Formalism.L2.SG.PackageTie.HS (X.Vpi u') (X.Vpi u))‖ ^ 2 = if q = q₀ then ‖x‖ ^ 2 else 0 := fun q => by by_cases h : q = q₀ <;> simp [h]`. Simplify using `only [this, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvec : ∀ o ∈ Cf, (Y.tO u u').vec (τ o) = V (((Formalism.L2.SG.TermOp.wt t₀ : ℝ) : ℂ) • Formalism.L2.SG.PackageTie.hsEmb ((((K * G.mu o.out : ℝ) : ℂ) * G.om d₀ o.out) • T))`. Introduce `o ho`. Take `⟨hT, -⟩` from `(hmemC o).1 ho`. Take `⟨n, m, hr, h, he⟩` from `hτ o hT`. Take `⟨h1, h2⟩` from `hrow (τ o) hr`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha` using `hamp (τ o) n m hr h`. Rewrite `ha` using `[← he]`. Use `show WithLp.toLp 2 _ = WithLp.toLp 2 _`. Use `congr 1`. Use function extensionality and compare the values at `q`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hq : ((⟨(τ o).lam, (τ o).mem⟩, ⟨(τ o).lam', (τ o).mem'⟩) : {Λ // Λ ∈ Y.what₂ u} × {Λ' // Λ' ∈ Y.what₂ u'}) = q₀` using `Prod.ext (Subtype.ext h1) (Subtype.ext h2)`. Establish `hw : Formalism.L2.SG.TermOp.wt (τ o) = Formalism.L2.SG.TermOp.wt t₀`. Unfold `Formalism.L2.SG.TermOp.wt`. Rewrite using `[h1, h2]`. Rewrite using `[hq, hw, ha]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hzero : ∀ t ∉ Cf.image τ, S.indicator (Y.tO u u').vec t = 0`. Introduce `t ht`. Apply `Set.indicator_of_notMem` to reduce the goal to its premises. Introduce `hSt'`. Take `⟨o, ho, e⟩` from `hτsurj t hSt'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Conclude with `ht (Finset.mem_image.2 ⟨o, ho, e⟩)`. Establish `hampeq : G.amp d₀ (fun Γ => Q (¬ G.Gen d₀ Γ)) = ∑ o ∈ Cf, (G.mu o.out : ℂ) * G.om d₀ o.out`. Unfold `GFrames.amp`. Rewrite using `[tsum_eq_sum (s := Cf)]`. Conclude with `Finset.sum_congr rfl fun o ho => if_pos ((hmemC o).1 ho)`.
-
-Introduce `o ho`. Conclude with `if_neg fun h => ho ((hmemC o).2 h)`. Rewrite using `[tsum_eq_sum hzero, Finset.sum_image hτinj]`. Rewrite using `[Finset.sum_congr rfl fun o ho => by rw [Set.indicator_of_mem (hτS o ho), hvec o ho], hVsum, hVn]`. Establish `hsum : ∑ o ∈ Cf, ((Formalism.L2.SG.TermOp.wt t₀ : ℝ) : ℂ) • Formalism.L2.SG.PackageTie.hsEmb ((((K * G.mu o.out : ℝ) : ℂ) * G.om d₀ o.out) • T) = ((Formalism.L2.SG.TermOp.wt t₀ : ℝ) : ℂ) • (((K : ℂ) * G.amp d₀ (fun Γ => Q (¬ G.Gen d₀ Γ))) • Formalism.L2.SG.PackageTie.hsEmb T)`.
-
-Rewrite using `[hampeq, Finset.mul_sum, Finset.sum_smul, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun o _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `congr 2`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum, norm_smul, norm_smul, norm_mul, hTn, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs]`. Simplify using `only [mul_pow, sq_abs]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem row_coset_sum_norm_sq : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → 4 * D.R.rS + 7 ≤ D.R.k → ∀ (w : Point D.host.E (D.R.rS + 1)) (F00 : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F'0 : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (FP : ∀ p : PlF D, LocNG.FPair (locH (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p) D.R.rS), ZhatOM (ZhatL F00 F'0) = ptMat w → Gval F00 F'0 ≠ 0 → (∀ p, AtBase (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p F00 F'0 (Tu D u) (Tu D u') (FP p) ∧ (FP p).RelG (LocNG.theta (Y.M p))) → ∀ (G : GFrames (placesOf (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D)) D.R.rS D.R.k) (c : GCoord (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) F00 F'0 FP G), ∀ ν, Formalism.L2.SG.RealObj.NuQPin X u u' ν → ∀ (t₀ : TauC Y u u') (ρ : ((VS D).V ≃ₗ[D.host.E] (VS D).V)) (U U' : Formalism.L2.SG.PairVal.MatR D), MovesTo F00 F'0 (lf D (X.Fu u)) t₀.frame ρ U U' → t₀.relevant → Formalism.L2.SG.PairVal.ptOf t₀.toTerm = w → ∀ Q : Prop → Prop, ‖∑' t : TauC Y u u', {t : TauC Y u u' | (Y.tO u u').rowOf t = (Y.tO u u').rowOf t₀ ∧ nmlOf Y u u' t = nmlOf Y u u' t₀ ∧ Q (¬ t.generic)}.indicator (Y.tO u u').vec t‖ ^ 2 = Formalism.L2.SG.TermOp.wt t₀ ^ 2 * ‖G.amp (G.datOf (c.lat ρ t₀.lam)) (fun Γ => Q (¬ G.Gen (G.datOf (c.lat ρ t₀.lam)) Γ))‖ ^ 2 * ((((X.B.g : ℝ) ^ (D.R.f * Fintype.card (Formalism.L2.SG.RealObj.FreeE w)))⁻¹) ^ 2 * ‖Formalism.L2.SG.PackageTie.hsEmb (Jw Y u u' ν w)‖ ^ 2) := by
   intro D X Y u u' hSt hk w F00 F'0 FP hZ hGv hAt G c ν hν t₀ ρ U U' hMv hrelv hpt Q

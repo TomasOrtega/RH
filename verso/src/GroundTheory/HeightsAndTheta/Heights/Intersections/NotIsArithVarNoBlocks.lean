@@ -41,23 +41,23 @@ def DegreesQModel.Statement : Prop :=
         (fun j => (L j).a)
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P e L hP hL _` and use `h K ι P e L hP hL`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DegreeGenericRes.of_degreeGeneric (h : GroundTheory.Heights₂.Heights.Inter.DegreeGeneric.Statement) :
     DegreeGenericRes.Statement :=
   fun K _ _ ι _ P e L hP hL _ => h K ι P e L hP hL
 
 /- English proof (translation)
-Introduce `K _ _ ι _ _ e L hP hL hR` and use `h K ι _ e L (isProjVarQ_of_isArithVar hP) hR (fun j => isSmoothMetric_of_isSmoothHerm _ _ (hL j))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DegreesQModel.of_degreesQ (h : DegreesQ.Statement) : DegreesQModel.Statement :=
   fun K _ _ ι _ _ e L hP hL hR => h K ι _ e L (isProjVarQ_of_isArithVar hP) hR
     (fun j => isSmoothMetric_of_isSmoothHerm _ _ (hL j))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h K _ _ ι _ P e L hP hL hR`. Rewrite using `[hI K ι P e L hP hL hR]`. Conclude with `h K ι P e L hP hL hR`. Introduce `h K _ _ ι _ P e L hP hL hR`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hI K ι P e L hP hL hR]`. Conclude with `h K ι P e L hP hL hR`.
+A detailed English derivation is pending.
 -/
 theorem DegreesQ.res_iff_model (hI : IntBridge.Statement) :
     DegreeGenericRes.Statement ↔ DegreesQModel.Statement := by
@@ -70,7 +70,7 @@ theorem DegreesQ.res_iff_model (hI : IntBridge.Statement) :
     exact h K ι P e L hP hL hR
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨DegreeGenericRes.of_degreeGeneric, fun h K _ _ ι _ P e L hP hL => h K ι P e L hP hL (hR K ι _ e (isProjVarQ_of_isArithVar hP))⟩`.
+Supply the required witnesses or components.
 -/
 theorem DegreeGeneric.iff_res (hR : ResComps.Statement) :
     GroundTheory.Heights₂.Heights.Inter.DegreeGeneric.Statement ↔ DegreeGenericRes.Statement :=
@@ -78,14 +78,14 @@ theorem DegreeGeneric.iff_res (hR : ResComps.Statement) :
     h K ι P e L hP hL (hR K ι _ e (isProjVarQ_of_isArithVar hP))⟩
 
 /- English proof (translation)
-The claim follows from `(DegreeGeneric.iff_res hR).trans (DegreesQ.res_iff_model hI)`.
+A detailed English derivation is pending.
 -/
 theorem DegreesQ.equiv_model (hI : IntBridge.Statement) (hR : ResComps.Statement) :
     GroundTheory.Heights₂.Heights.Inter.DegreeGeneric.Statement ↔ DegreesQModel.Statement :=
   (DegreeGeneric.iff_res hR).trans (DegreesQ.res_iff_model hI)
 
 /- English proof (translation)
-The claim follows from `(DegreesQ.equiv_model hI hR).mpr (DegreesQModel.of_degreesQ h)`.
+A detailed English derivation is pending.
 -/
 theorem DegreeGeneric.of_degreesQ (hI : IntBridge.Statement) (hR : ResComps.Statement)
     (h : DegreesQ.Statement) : GroundTheory.Heights₂.Heights.Inter.DegreeGeneric.Statement :=

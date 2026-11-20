@@ -8,9 +8,9 @@ open scoped MatrixGroups ModularForm Manifold
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => simp`. Consider the case `succ r ih`. Rewrite using `[Finset.sum_range_succ, ih, Nat.mul_succ, Finset.sum_range_add]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_range_mul_eq (h : ℕ → ℂ) (q r : ℕ) :
     ∑ i ∈ Finset.range r, ∑ j ∈ Finset.range q, h (j + q * i) = ∑ m ∈ Finset.range (q * r), h m := by
@@ -23,7 +23,7 @@ theorem sum_range_mul_eq (h : ℕ → ℂ) (q r : ℕ) :
     rw [Nat.add_comm]
 
 /- English proof (translation)
-Rewrite using `[Complex.div_natCast_im]`. Simplify using `only [Complex.add_im, Complex.natCast_im, add_zero]`. Conclude with `div_pos τ.im_pos (by exact_mod_cast hq)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem im_div_pos (τ : ℍ) (j q : ℕ) (hq : 0 < q) : 0 < (((τ : ℂ) + j) / q).im := by
   rw [Complex.div_natCast_im]
@@ -31,13 +31,13 @@ theorem im_div_pos (τ : ℍ) (j q : ℕ) (hq : 0 < q) : 0 < (((τ : ℂ) + j) /
   exact div_pos τ.im_pos (by exact_mod_cast hq)
 
 /- English proof (translation)
-Establish `ha' : (a : ℂ) ≠ 0` using `by exact_mod_cast ha.ne'`. Establish `hb' : (b : ℂ) ≠ 0` using `by exact_mod_cast hb.ne'`. Simplify using `only [uOp]`. Rewrite using `[← sum_range_mul_eq (fun m : ℕ => f (ofComplex (((τ : ℂ) + m) / ((a : ℂ) * b)))) a b]`. Use `conv_rhs => rw [Finset.sum_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv, mul_assoc]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ofComplex_apply_of_im_pos (im_div_pos τ j a ha)]`. Use `congr 2`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem uOp_uOp_eq (f : ℍ → ℂ) (a b : ℕ) (ha : 0 < a) (hb : 0 < b) (τ : ℍ) :
     uOp a (uOp b f) τ =
@@ -60,7 +60,7 @@ theorem uOp_uOp_eq (f : ℍ → ℂ) (a b : ℕ) (ha : 0 < a) (hb : 0 < b) (τ :
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Rewrite using `[uOp_uOp_eq f q r hq hr, uOp_uOp_eq f r q hr hq, mul_comm (r : ℂ), Nat.mul_comm r q]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem uOp_comm (f : ℍ → ℂ) (q r : ℕ) (hq : 0 < q) (hr : 0 < r) :
     uOp q (uOp r f) = uOp r (uOp q f) := by
@@ -68,11 +68,11 @@ theorem uOp_comm (f : ℍ → ℂ) (q r : ℕ) (hq : 0 < q) (hr : 0 < r) :
   rw [uOp_uOp_eq f q r hq hr, uOp_uOp_eq f r q hr hq, mul_comm (r : ℂ), Nat.mul_comm r q]
 
 /- English proof (translation)
-Establish `hinj : Set.InjOn (fun j => r * j % q) (Finset.range q : Set ℕ)`. Introduce `a ha b hb hab`. Simplify using `only [Finset.coe_range, Set.mem_Iio] at ha hb`. Establish `h1 : a ≡ b [MOD q]` using `Nat.ModEq.cancel_left_of_coprime hc hab`. Unfold `Nat.ModEq at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h1` using `[Nat.mod_eq_of_lt ha, Nat.mod_eq_of_lt hb]`. Then use the resulting hypothesis. Establish `himg : (Finset.range q).image (fun j => r * j % q) = Finset.range q`. Apply `Finset.eq_of_subset_of_card_le` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Finset.mem_image, Finset.mem_range] at hx ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨a, _, rfl⟩` from `hx`. Conclude with `Nat.mod_lt _ hq`. Rewrite using `[Finset.card_image_of_injOn hinj]`. Rewrite using `[← Finset.sum_image hinj, himg]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_mul_mod (G : ℕ → ℂ) (q r : ℕ) (hq : 0 < q) (hc : Nat.Coprime q r) :
     ∑ j ∈ Finset.range q, G (r * j % q) = ∑ j ∈ Finset.range q, G j := by
@@ -92,9 +92,9 @@ theorem sum_mul_mod (G : ℕ → ℂ) (q r : ℕ) (hq : 0 < q) (hc : Nat.Coprime
   rw [← Finset.sum_image hinj, himg]
 
 /- English proof (translation)
-Establish `hz1 : 0 < (z + 1).im` using `by simpa using hz`. Establish `h1 : ofComplex (z + 1) = (1 : ℝ) +ᵥ ofComplex z`. Apply `UpperHalfPlane.ext` to reduce the goal to its premises. Rewrite using `[coe_vadd, ofComplex_apply_of_im_pos hz1, ofComplex_apply_of_im_pos hz]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, hper]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem per_ofComplex (g : ℍ → ℂ) (hper : ∀ τ : ℍ, g ((1 : ℝ) +ᵥ τ) = g τ) (z : ℂ) (hz : 0 < z.im) :
     g (ofComplex (z + 1)) = g (ofComplex z) := by
@@ -107,21 +107,19 @@ theorem per_ofComplex (g : ℍ → ℂ) (hper : ∀ τ : ℍ, g ((1 : ℝ) +ᵥ 
   rw [h1, hper]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `hq' : (q : ℂ) ≠ 0` using `by exact_mod_cast hq.ne'`. Establish `hw : 0 < ((r : ℂ) * τ).im`. Simplify using `only [Complex.mul_im, Complex.natCast_re, Complex.natCast_im, zero_mul, add_zero]`. Conclude with `mul_pos (by exact_mod_cast hr) τ.im_pos`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [uOp, vOp]`. Rewrite using `[ofComplex_apply_of_im_pos hw]`. Use `congr 1`. Use `set w : ℂ := (r : ℂ) * τ with hwdef`. Use `set G : ℕ → ℂ := fun m => g (ofComplex ((w + m) / q)) with hG`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hGq : ∀ m n : ℕ, G (m + q * n) = G m`. Introduce `m n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← ih]`. Simplify using `only [hG]`. Establish `hpos : 0 < ((w + ((m + q * n : ℕ) : ℂ)) / q).im`. Rewrite using `[Complex.div_natCast_im]`. Simplify using `only [Complex.add_im, Complex.natCast_im, add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Conclude with `div_pos hw (by exact_mod_cast hq)`. Rewrite using `[← per_ofComplex g hper _ hpos]`. Use `congr 2`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hmod : ∀ m, G m = G (m % q)` using `fun m => by conv_lhs => rw [← Nat.mod_add_div m q]`. Conclude with `hGq _ _`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [hG]`. Rewrite using `[ofComplex_apply_of_im_pos (im_div_pos τ j q hq)]`. Use `congr 2`. Rewrite using `[hwdef]`. Use `push_cast`.
-
-Clear the denominators using the available nonvanishing facts. Use `_ = ∑ j ∈ Finset.range q, G (r * j % q) := Finset.sum_congr rfl fun j _ => hmod _`. Use `_ = ∑ j ∈ Finset.range q, G j := sum_mul_mod G q r hq hc`. Use `_ = _ := rfl`.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem uOp_vOp (g : ℍ → ℂ) (q r : ℕ) (hq : 0 < q) (hr : 0 < r) (hc : Nat.Coprime q r)
     (hper : ∀ τ : ℍ, g ((1 : ℝ) +ᵥ τ) = g τ) :
@@ -169,21 +167,21 @@ theorem uOp_vOp (g : ℍ → ℂ) (q r : ℕ) (hq : 0 < q) (hr : 0 < r) (hc : Na
     _ = _ := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Simplify using `[uOp, Finset.sum_add_distrib, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem uOp_add (q : ℕ) (f g : ℍ → ℂ) : uOp q (f + g) = uOp q f + uOp q g := by
   funext τ
   simp [uOp, Finset.sum_add_distrib, mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Simplify using `[uOp, Finset.mul_sum, mul_left_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem uOp_smul (q : ℕ) (c : ℂ) (f : ℍ → ℂ) : uOp q (c • f) = c • uOp q f := by
   funext τ
   simp [uOp, Finset.mul_sum, mul_left_comm]
 
 /- English proof (translation)
-Use `Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Gamma1_mem]`. Simplify using `[ModularGroup.T]`. Rewrite using `[Gamma0_mem]`. Simplify using `[ModularGroup.T]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem T_mem_lev (N l : ℕ) : ModularGroup.T ∈ lev N l := by
   refine Subgroup.mem_inf.2 ⟨?_, ?_⟩
@@ -193,15 +191,15 @@ theorem T_mem_lev (N l : ℕ) : ModularGroup.T ∈ lev N l := by
     simp [ModularGroup.T]
 
 /- English proof (translation)
-Introduce `N l q r k σ hN hl hq hqd hr hrd hσ f`. Establish `hq0 : 0 < q` using `hq.pos`. Establish `hr0 : 0 < r` using `hr.pos`. Establish `hne : q ≠ r` using `fun h => hrd (h ▸ hqd)`. Establish `hcop : Nat.Coprime q r` using `(Nat.coprime_primes hq hr).2 hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : ∀ γ ∈ lev N l, (⇑f) ∣[k] γ = ⇑f` using `fun γ hγ => by`. Rewrite using `[SL_slash]`. Conclude with `f.slash_action_eq' _ ⟨γ, hγ, rfl⟩`. Establish `hper : ∀ τ : ℍ, ((⇑f) ∣[k] σ) ((1 : ℝ) +ᵥ τ) = ((⇑f) ∣[k] σ) τ`. Introduce `τ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ((⇑f) ∣[k] σ) ∣[k] ModularGroup.T = (⇑f) ∣[k] σ`. Establish `e : σ * ModularGroup.T = (σ * ModularGroup.T * σ⁻¹) * σ` using `by group`. Rewrite using `[← SlashAction.slash_mul, e, SlashAction.slash_mul, hinv _ (isDia_conj_mem_lev N l r σ _ hσ (T_mem_lev N l))]`. Establish `h2` using `congr_fun h1 τ`. Establish `hden : denom (ModularGroup.T : GL (Fin 2) ℝ) τ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[denom]`. Simplify using `[ModularGroup.coe_T]`. Rewrite `h2` using `[SL_slash_apply, modular_T_smul]`. Simplify `h2` using `[hden]`. Establish `hd` using `GlobalTheory.T.heckeUOperatorExplicit_comm_diamondOperatorOfMatrix N l q k r σ hN hl hq hqd hσ f`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `GlobalTheory.Hk.dia at hd`. Simplify using `only [GlobalTheory.Hk.heckeT]`. Rewrite using `[uOp_add, uOp_smul, uOp_comm _ q r hq0 hr0, uOp_vOp _ q r hq0 hr0 hcop hper, hd]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uOp_heckeT_comm : ∀ (N l q r : ℕ) (k : ℤ) (σ : SL(2, ℤ)), 0 < N → 0 < l → q.Prime → q ∣ N * l →
     r.Prime → ¬ r ∣ N * l → GlobalTheory.Hk.IsDia N l r σ → ∀ f : ModularForm (GlobalTheory.Hk.lev N l) k,

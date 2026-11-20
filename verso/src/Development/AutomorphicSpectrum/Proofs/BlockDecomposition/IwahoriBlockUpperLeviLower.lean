@@ -12,31 +12,29 @@ def Cong (v : Valuation k Γ) (r : Γ) {n : ℕ} (A : Matrix (Fin n) (Fin n) k) 
   ∀ i j, v (A i j - (1 : Matrix (Fin n) (Fin n) k) i j) ≤ r
 
 /- English proof (translation)
-Set `I : Ideal v.integer` to `{ carrier := {x | v (x : k) ≤ r} add_mem' := fun {a b} ha hb => by`. Use `Valuation.map_add_le v ha hb` as an intermediate fact. Simplify using `using this`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c x hx => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : v (c : k) ≤ 1` using `c.2`. Establish `hx' : v (x : k) ≤ r` using `hx`. Use `show v ((c * x : v.integer) : k) ≤ r`. Rewrite using `[Subring.coe_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hImem : ∀ x : v.integer, x ∈ I ↔ v (x : k) ≤ r` using `fun x => Iff.rfl`. Establish `hI : ∀ x ∈ I, IsUnit (1 + x)`. Introduce `x hx`. Establish `hx' : v (x : k) < 1` using `lt_of_le_of_lt ((hImem x).1 hx) hr`. Establish `h1 : v (1 + (x : k)) = 1` using `Valuation.map_one_add_of_lt v hx'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : (1 + (x : k)) ≠ 0`. Introduce `h`. Rewrite `h1` using `[h, map_zero]`. Conclude with `zero_ne_one h1`. Establish `hmem : (1 + (x : k))⁻¹ ∈ v.integer` using `by show v _ ≤ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[map_inv₀, h1, inv_one]`. Use `isUnit_iff_exists_inv.2 ⟨⟨(1 + (x : k))⁻¹, hmem⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `using mul_inv_cancel₀ h0`. Establish `hone : ∀ i j, v ((1 : Matrix (Fin n) (Fin n) k) i j) ≤ 1`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`. Establish `hint : ∀ i j, v (g i j) ≤ 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Introduce `i j`. Use `Valuation.map_add_le v ((hg i j).trans hr.le) (hone i j)` as an intermediate fact. Simplify using `using this`. Set `g' : Matrix (Fin n) (Fin n) v.integer` to `fun i j => ⟨g i j, hint i j⟩`. Establish `hone' : ∀ i j, (((1 : Matrix (Fin n) (Fin n) v.integer) i j : v.integer) : k) = (1 : Matrix (Fin n) (Fin n) k) i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Introduce `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hg' : ∀ i j, g' i j - (1 : Matrix (Fin n) (Fin n) v.integer) i j ∈ I`. Introduce `i j`. Rewrite using `[hImem, AddSubgroupClass.coe_sub, hone']`. Conclude with `hg i j`. Take `⟨u, d, l, hu, hd, hl, h⟩` from `IwahoriUDL.exists_udl_of_isUnit I hI n g' hg'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `back : ∀ a : Matrix (Fin n) (Fin n) v.integer, (∀ i j, a i j - (1 : Matrix (Fin n) (Fin n) v.integer) i j ∈ I) → Cong v r (a.map v.integer.subtype)`. Introduce `a ha i j`. Use `(hImem _).1 (ha i j)` as an intermediate fact. Rewrite `this` using `[AddSubgroupClass.coe_sub, hone']`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨u.map v.integer.subtype, d.map v.integer.subtype, l.map v.integer.subtype, back u hu.1, back l hl.1, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Simplify using `[hu.2.1 i j hij]`. Introduce `i`. Simplify using `[hu.2.2 i]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i j hij`. Simplify using `[hd.2 i j hij]`. Introduce `i j hij`. Simplify using `[hl.2.1 i j hij]`. Introduce `i`.
-
-Simplify using `[hl.2.2 i]`. Establish `hgg : g = g'.map v.integer.subtype`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[hgg, h, Matrix.map_mul, Matrix.map_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_udl (v : Valuation k Γ) {r : Γ} (hr : r < 1) (n : ℕ)
     (g : Matrix (Fin n) (Fin n) k) (hg : Cong v r g) :
@@ -119,31 +117,31 @@ theorem exists_udl (v : Valuation k Γ) {r : Γ} (hr : r < 1) (n : ℕ)
     rw [hgg, h, Matrix.map_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Set `m : Matrix (Fin n) (Fin n) k` to `fun i j => if β i = β j then u i j else 0`. Establish `hmb : ∀ i j, β i ≠ β j → m i j = 0` using `fun i j h => if_neg h`. Establish `hmu : ∀ i j, β i = β j → m i j = u i j` using `fun i j h => if_pos h`. Establish `hm0 : ∀ i j, j < i → m i j = 0`. Introduce `i j h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hb : β i = β j`. Rewrite using `[hmu i j hb, hu0 i j h]`. Conclude with `hmb i j hb`. Establish `hm1 : ∀ i, m i i = 1` using `fun i => by rw [hmu i i rfl, hu1]`. Establish `hdet : ∀ A : Matrix (Fin n) (Fin n) k, (∀ i j, j < i → A i j = 0) → (∀ i, A i i = 1) → A.det = 1`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `A h0 h1`. Rewrite using `[Matrix.det_of_upperTriangular (fun i j h => h0 i j h)]`. Simplify using `[h1]`. Establish `hmd : m.det = 1` using `hdet m hm0 hm1`. Establish `hud : u.det = 1` using `hdet u hu0 hu1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmC : Cong v r m`. Introduce `i j`. Distinguish the cases in `hb : β i = β j`. Rewrite using `[hmu i j hb]`. Conclude with `hu i j`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hij : i ≠ j` using `fun e => hb (by rw [e])`. Rewrite using `[hmb i j hb, Matrix.one_apply_ne hij]`. Simplify using the standard rewrite rules. Establish `hmU : IsUnit m.det` using `by simp [hmd]`. Establish `huU : IsUnit u.det` using `by simp [hud]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Invertible m := Matrix.invertibleOfIsUnitDet m hmU`. Establish `hmw : m * m⁻¹ = 1` using `Matrix.mul_nonsing_inv m hmU`. Establish `hwm : m⁻¹ * m = 1` using `Matrix.nonsing_inv_mul m hmU`. Establish `hbu : BlockTriangular u β`. Introduce `i j h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `hu0 i j ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Conclude with `absurd (hβ (not_lt.1 hc)) (not_le.2 h)`. Establish `hbm : BlockTriangular m β` using `fun i j h => hmb i j h.ne'`. Establish `hbw : BlockTriangular m⁻¹ β` using `Matrix.blockTriangular_inv_of_blockTriangular hbm`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hK : Cong v r (u * m⁻¹)`. Set `ug : GL (Fin n) k` to `Matrix.nonsingInvUnit u huU`. Set `mg : GL (Fin n) k` to `Matrix.nonsingInvUnit m hmU`. Establish `hugK : ug ∈ PrincipalCongruence.principalCongruence v r hr` using `hu`. Establish `hmgK : mg ∈ PrincipalCongruence.principalCongruence v r hr` using `hmC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hag` using `mul_mem hugK (inv_mem hmgK)`. Establish `hcoe : ((ug * mg⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = u * m⁻¹`. Rewrite using `[Units.val_mul, Matrix.coe_units_inv]`. Both sides reduce to the same expression. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hag i j` as an intermediate fact. Rewrite `this` using `[hcoe]`. Then use the resulting hypothesis. Use `⟨u * m⁻¹, m, ?_, hmd, hK, hmC, ?_, hmb, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul, hud, Matrix.det_nonsing_inv, hmd]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j hij`. Break down `hij.lt_or_eq with h | h` into its components or cases. Establish `hne : i ≠ j` using `fun e => h.ne (by rw [e])`. Rewrite using `[Matrix.one_apply_ne hne]`. Conclude with `(hbu.mul hbw) h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (u * m⁻¹) i j = (m * m⁻¹) i j`. Simplify using `only [Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy (β x) (β i) with hx | hx | hx` into its components or cases. Rewrite using `[hbu hx, hbm hx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmu i x hx.symm]`. Establish `: m⁻¹ x j = 0` using `hbw (by rw [h]; exact hx)`. Rewrite using `[this, mul_zero, mul_zero]`. Rewrite using `[key, hmw]`. Rewrite using `[Matrix.mul_assoc, hwm, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem up_split (v : Valuation k Γ) {r : Γ} (hr : r < 1) {n : ℕ} (β : Fin n → ℕ)
     (hβ : Monotone β) (u : Matrix (Fin n) (Fin n) k) (hu : Cong v r u)
@@ -220,7 +218,7 @@ theorem up_split (v : Valuation k Γ) {r : Γ} (hr : r < 1) {n : ℕ} (β : Fin 
   · rw [Matrix.mul_assoc, hwm, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `i j`. Establish `h1 : (1 : Matrix (Fin n) (Fin n) k) i j = (1 : Matrix (Fin n) (Fin n) k) j i`. Simplify using `[Matrix.one_apply, eq_comm]`. Rewrite using `[h1, Matrix.transpose_apply]`. Conclude with `hA j i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_transpose (v : Valuation k Γ) {r : Γ} {n : ℕ} {A : Matrix (Fin n) (Fin n) k}
     (hA : Cong v r A) : Cong v r Aᵀ := by
@@ -231,16 +229,16 @@ theorem cong_transpose (v : Valuation k Γ) {r : Γ} {n : ℕ} {A : Matrix (Fin 
   exact hA j i
 
 /- English proof (translation)
-Simplify using `[mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem units_conj {M : Type*} [Monoid M] (p q : Mˣ) (x : M) :
     ((p⁻¹ : Mˣ) : M) * ((p : M) * x * (q : M)) * ((q⁻¹ : Mˣ) : M) = x := by
   simp [mul_assoc]
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Distinguish the cases in `hx : β i = β x`. Rewrite using `[hB x j (fun e => hij (hx.trans e)), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA i x hx, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blockDiag_mul {n : ℕ} (β : Fin n → ℕ) {A B : Matrix (Fin n) (Fin n) k}
     (hA : ∀ i j, β i ≠ β j → A i j = 0) (hB : ∀ i j, β i ≠ β j → B i j = 0) :
@@ -253,17 +251,17 @@ theorem blockDiag_mul {n : ℕ} (β : Fin n → ℕ) {A B : Matrix (Fin n) (Fin 
   · rw [hA i x hx, zero_mul]
 
 /- English proof (translation)
-Take `⟨u, d, t, hu, ht, hu0, hu1, hd0, ht0, ht1, hudt⟩` from `exists_udl v hr n _ hg`. Take `⟨a, m, had, hmd, haC, hmC, hab, hmb, huam⟩` from `up_split v hr β hβ u hu hu0 hu1`. Establish `htC : Cong v r tᵀ` using `cong_transpose v ht`. Take `⟨b, c, hbd, hcd, hbC, hcC, hbb, hcb, htbc⟩` from `up_split v hr β hβ tᵀ htC (fun i j h => ht0 j i h) ht1`. Establish `htt : t = cᵀ * bᵀ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.transpose_mul, ← htbc, Matrix.transpose_transpose]`. Establish `hbtC : Cong v r bᵀ` using `cong_transpose v hbC`. Set `npg : GL (Fin n) k` to `Matrix.nonsingInvUnit a (by simp [had])`. Set `nmg : GL (Fin n) k` to `Matrix.nonsingInvUnit bᵀ (by simp [hbd])`. Establish `hnpK : npg ∈ PrincipalCongruence.principalCongruence v r hr` using `haC`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hnmK : nmg ∈ PrincipalCongruence.principalCongruence v r hr` using `hbtC`. Establish `hgK : g ∈ PrincipalCongruence.principalCongruence v r hr` using `hg`. Establish `hlK` using `mul_mem (mul_mem (inv_mem hnpK) hgK) (inv_mem hnmK)`. Establish `hprod : (g : Matrix (Fin n) (Fin n) k) = (npg : Matrix (Fin n) (Fin n) k) * (m * d * cᵀ) * (nmg : Matrix (Fin n) (Fin n) k)` using `by show (g : Matrix (Fin n) (Fin n) k) = a * (m * d * cᵀ) * bᵀ`. Rewrite using `[hudt, huam, htt]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Establish `hlev : ((npg⁻¹ * g * nmg⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = m * d * cᵀ`. Rewrite using `[Units.val_mul, Units.val_mul, hprod]`. Conclude with `units_conj npg nmg _`. Use `⟨nmg, hnmK, npg⁻¹ * g * nmg⁻¹, hlK, npg, hnpK, ?_, ?_, hab, by group⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij show bᵀ i j = _`. Rewrite using `[Matrix.transpose_apply, hbb j i hij, ← Matrix.transpose_apply (1 : Matrix (Fin n) (Fin n) k) j i, Matrix.transpose_one]`. Rewrite using `[hlev]`. Use `blockDiag_mul β (blockDiag_mul β hmb ?_) ?_` and prove the remaining obligations. Introduce `i j hij`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hd0 i j (fun e => hij (by rw [e]))`. Introduce `i j hij`. Conclude with `hcb j i hij.symm`.
+A detailed English derivation is pending.
 -/
 theorem factor (v : Valuation k Γ) {r : Γ} (hr : r < 1) {n : ℕ} (β : Fin n → ℕ)
     (hβ : Monotone β) (g : GL (Fin n) k) (hg : Cong v r (g : Matrix (Fin n) (Fin n) k)) :
@@ -310,7 +308,7 @@ theorem factor (v : Valuation k Γ) {r : Γ} (hr : r < 1) {n : ℕ} (β : Fin n 
       exact hcb j i hij.symm
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N ϖ m β _ hϖ _ hm hβ g hg`. Establish `hr : ValuativeRel.valuation k (ϖ ^ m) < 1`. Rewrite using `[map_pow]`. Conclude with `pow_lt_one₀ zero_le' hϖ (by omega)`. Conclude with `factor (ValuativeRel.valuation k) hr β hβ g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwahori_block_upper_levi_lower : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (ϖ : k) (m : ℕ) (β : Fin N → ℕ), ϖ ≠ 0 → ValuativeRel.valuation k (ϖ) < 1 → (∀ x : k, ValuativeRel.valuation k (x) < 1 → ValuativeRel.valuation k (x) ≤ ValuativeRel.valuation k (ϖ)) → 1 ≤ m → Monotone β → ∀ g ∈ {g : GL (Fin N) k | ∀ i j, ValuativeRel.valuation k ((g : Matrix (Fin N) (Fin N) k) i j - (1 : Matrix (Fin N) (Fin N) k) i j) ≤ ValuativeRel.valuation k (ϖ ^ m)}, ∃ nm ∈ {g : GL (Fin N) k | ∀ i j, ValuativeRel.valuation k ((g : Matrix (Fin N) (Fin N) k) i j - (1 : Matrix (Fin N) (Fin N) k) i j) ≤ ValuativeRel.valuation k (ϖ ^ m)}, ∃ l ∈ {g : GL (Fin N) k | ∀ i j, ValuativeRel.valuation k ((g : Matrix (Fin N) (Fin N) k) i j - (1 : Matrix (Fin N) (Fin N) k) i j) ≤ ValuativeRel.valuation k (ϖ ^ m)}, ∃ np ∈ {g : GL (Fin N) k | ∀ i j, ValuativeRel.valuation k ((g : Matrix (Fin N) (Fin N) k) i j - (1 : Matrix (Fin N) (Fin N) k) i j) ≤ ValuativeRel.valuation k (ϖ ^ m)}, (∀ i j, β i ≤ β j → (nm : Matrix (Fin N) (Fin N) k) i j = (1 : Matrix (Fin N) (Fin N) k) i j) ∧ (∀ i j, β i ≠ β j → (l : Matrix (Fin N) (Fin N) k) i j = 0) ∧ (∀ i j, β j ≤ β i → (np : Matrix (Fin N) (Fin N) k) i j = (1 : Matrix (Fin N) (Fin N) k) i j) ∧ g = np * l * nm := by
   intro k _ _ _ _ N ϖ m β _ hϖ _ hm hβ g hg

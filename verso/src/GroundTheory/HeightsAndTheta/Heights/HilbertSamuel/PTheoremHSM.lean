@@ -11,7 +11,7 @@ noncomputable section
 variable {D : ℕ} {Ω : Type} [Field Ω] [CharZero Ω] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Unfold `resolutionVolumeL2 resolutionSectionL2Norm`. Rewrite using `[← Real.sqrt_mul (by norm_num)]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Establish `hb : 0 ≤ ∫ y, ptNorm d.m (Int.castRingHom ℂ) n f (conjPt (resPt d y)) ^ 2 ∂d.dV` using `integral_nonneg fun y => sq_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem resolutionVolumeL2_le_sqrt_two_mul (d : HSMDatum D Ω κ) (n : ℕ) (f : MvPolynomial (Ix κ) ℤ) :
     resolutionVolumeL2 d n f ≤ Real.sqrt 2 * resolutionSectionL2Norm d n f := by
@@ -23,9 +23,9 @@ theorem resolutionVolumeL2_le_sqrt_two_mul (d : HSMDatum D Ω κ) (n : ℕ) (f :
   linarith
 
 /- English proof (translation)
-Introduce `D Ω _ _ κ _ I d hI`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hA` using `(h₁ D Ω κ I d hI).2`. Establish `hB` using `(h₂ D I hI).const_mul_left (genDeg (ι := GlobalTheory κ) (coordIdeal ℤ d.x) D 1 : ℝ)`. Conclude with `(hA.add hB).congr_left fun n => by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `ResolutionSupBound.toInt h₃ D Ω κ d`. Use `⟨max C 0 * Real.sqrt 2, fun n hn f hf z hz => ?_⟩` and prove the remaining obligations. Establish `hp : 0 ≤ (n : ℝ) ^ ((D : ℝ) / 2)` using `by positivity`. Establish `hv : 0 ≤ resolutionVolumeL2 d n f` using `Real.sqrt_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem TheoremHSM.proof (h₁ : ReductionToProjective.Statement) (h₂ : HilbertSamuelProjective.Statement)
     (h₃ : ResolutionSupBound.Statement) : TheoremHSM.Statement := by

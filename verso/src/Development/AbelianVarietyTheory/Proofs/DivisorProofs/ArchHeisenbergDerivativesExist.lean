@@ -17,19 +17,19 @@ section Real
 variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
 /- English proof (translation)
-Establish `h0 : γ 0 = b`. Take `⟨C, hC⟩` from `h 0 0`. Establish `h1` using `hC 0 (by simp)`. Simplify using `only [Complex.ofReal_zero, zero_smul, sub_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, mul_zero] at h1`. Use extensionality with `x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Establish `hx` using `SchwartzMap.norm_le_seminorm ℂ (γ 0 - b) x`. Establish `h2 : ‖(γ 0 - b) x‖ = 0` using `le_antisymm (hx.trans h1) (norm_nonneg _)`. Rewrite `h2` using `[norm_eq_zero, SchwartzMap.sub_apply, sub_eq_zero]`. Conclude with `h2`. Substitute `h0` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨s, C, -, hC⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ V ℂ) ((normSeminorm ℂ ℂ).comp T.toLinearMap) (continuous_norm.comp T.continuous)`. Use `choose K hK using fun p : ℕ × ℕ => h p.1 p.2`. Establish `hb : ∀ t : ℝ, |t| ≤ 1 → ‖T (γ t - γ 0 - (t : ℂ) • v)‖ ≤ (C * ∑ p ∈ s, |K p|) * t ^ 2`. Introduce `t ht`. Establish `h1` using `hC (γ t - γ 0 - (t : ℂ) • v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Seminorm.comp_apply, coe_normSeminorm, ContinuousLinearMap.coe_coe, Seminorm.smul_apply, NNReal.smul_def, smul_eq_mul] at h1`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ C.2` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Seminorm.finset_sup_apply_le (Finset.sum_nonneg fun _ _ => by positivity) fun p hp => ?_` and prove the remaining obligations. Use `((hK p t ht).trans (mul_le_mul_of_nonneg_right (le_abs_self _) (sq_nonneg t))).trans ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun q => |K q| * t ^ 2) (fun _ _ => by positivity) hp`. Rewrite using `[hasDerivAt_iff_isLittleO]`. Establish `hO : (fun t : ℝ => T (γ t) - T (γ 0) - (t - 0) • T v) =O[nhds 0] (fun t : ℝ => t ^ 2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Asymptotics.IsBigO.of_bound (C * ∑ p ∈ s, |K p|) ?_` and prove the remaining obligations. Use `filter_upwards [Metric.closedBall_mem_nhds (0 : ℝ) one_pos] with t ht`. Establish `ht' : |t| ≤ 1` using `by simpa [Real.dist_eq] using ht`. Establish `e : T (γ t) - T (γ 0) - (t - 0) • T v = T (γ t - γ 0 - (t : ℂ) • v)`. Rewrite using `[map_sub, map_sub, map_smul, sub_zero, Complex.real_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[e, Real.norm_eq_abs, abs_of_nonneg (sq_nonneg t)]`. Conclude with `hb t ht'`. Use `hO.trans_isLittleO ?_` and prove the remaining obligations. Use `Asymptotics.isLittleO_pow_id (𝕜 := ℝ) (n := 2) (by norm_num)` as an intermediate fact. Simplify `this` using `[sub_zero]`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_of_bound (γ : ℝ → 𝓢(V, ℂ)) (b v : 𝓢(V, ℂ))
     (h : ∀ k n : ℕ, ∃ C : ℝ, ∀ t : ℝ, |t| ≤ 1 → SchwartzMap.seminorm ℂ k n (γ t - b - (t : ℂ) • v) ≤ C * t ^ 2)
@@ -74,19 +74,17 @@ theorem hasDerivAt_of_bound (γ : ℝ → 𝓢(V, ℂ)) (b v : 𝓢(V, ℂ))
   simpa [sub_zero] using this
 
 /- English proof (translation)
-Use `hasDerivAt_of_bound _ f _ (fun k n => ?_) T` and prove the remaining obligations. Use `set P : 𝓢(V, ℂ) →L[ℂ] 𝓢(V, ℂ) := SchwartzMap.smulLeftCLM ℂ (fun x => ((L x : ℝ) : ℂ)) with hP`. Use `set d := LineDeriv.lineDerivOpCLM ℂ 𝓢(V, ℂ) a f with hd`. Take `⟨C3, hC3⟩` from `GlobalTheory.T.schwartz_seminorm_smulLeft_linear_phase_le L c k n`. Use `choose C1 hC1 using fun m => GlobalTheory.T.schwartz_seminorm_translate_sub_lineDeriv_le a f k m`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C2, hC2⟩` from `GlobalTheory.T.schwartzSeminorm_linearPhase_second_order_le L c d k n`. Take `⟨C0, hC0⟩` from `GlobalTheory.T.schwartzSeminorm_linearPhase_second_order_le L c f k n`. Use `set p := SchwartzMap.seminorm ℂ k n (E := V) (F := ℂ) with hp`. Use `⟨|C3| * ∑ m ∈ Finset.range (n + 1), |C1 m| + |C2| + 2 * Real.pi * p (P d) + |C0|, fun t ht => ?_⟩` and prove the remaining obligations. Use `set M : 𝓢(V, ℂ) →L[ℂ] 𝓢(V, ℂ) := SchwartzMap.smulLeftCLM ℂ (fun x => Complex.exp (-(2 * Real.pi * Complex.I) * ((t * L x + t ^ 2 * c : ℝ) : ℂ))) with hM`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set X := SchwartzMap.compSubConstCLM ℂ (-(t • a)) f - f - (t : ℂ) • d with hX`. Use `set Y := M d - d + ((t : ℂ) * (2 * Real.pi * Complex.I)) • P d with hY`. Use `set Z := M f - f + ((t : ℂ) * (2 * Real.pi * Complex.I)) • P f with hZ`. Establish `e : M (SchwartzMap.compSubConstCLM ℂ (-(t • a)) f) - f - (t : ℂ) • (d - (2 * Real.pi * Complex.I) • P f) = M X + (t : ℂ) • Y - ((t : ℂ) ^ 2 * (2 * Real.pi * Complex.I)) • P d + Z`. Rewrite using `[hX, hY, hZ, map_sub, map_sub, map_smul]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `module`. Rewrite using `[e]`. Establish `t1 : p (M X) ≤ |C3| * (∑ m ∈ Finset.range (n + 1), |C1 m|) * t ^ 2`. Use `(hC3 t ht X).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `t2 : p ((t : ℂ) • Y) ≤ |C2| * t ^ 2`. Rewrite using `[map_smul_eq_mul, Complex.norm_real, Real.norm_eq_abs]`. Establish `h2` using `hC2 t ht`. Combine the equalities or inequalities in the displayed calculation. Establish `t3 : p (((t : ℂ) ^ 2 * (2 * Real.pi * Complex.I)) • P d) = 2 * Real.pi * p (P d) * t ^ 2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[map_smul_eq_mul]`. Simplify using `only [norm_mul, norm_pow, Complex.norm_real, Real.norm_eq_abs, Complex.norm_ofNat, Complex.norm_I, abs_of_pos Real.pi_pos, sq_abs]`. Expand and normalize the polynomial expressions, which then agree. Establish `t4 : p Z ≤ |C0| * t ^ 2` using `(hC0 t ht).trans (mul_le_mul_of_nonneg_right (le_abs_self _) (sq_nonneg _))`. Establish `tri : p (M X + (t : ℂ) • Y - ((t : ℂ) ^ 2 * (2 * Real.pi * Complex.I)) • P d + Z) ≤ p (M X) + p ((t : ℂ) • Y) + p (((t : ℂ) ^ 2 * (2 * Real.pi * Complex.I)) • P d) + p Z`.
-
-Use `(map_add_le_add p _ _).trans (add_le_add ?_ le_rfl)` and prove the remaining obligations. Use `(map_sub_le_add p _ _).trans (add_le_add ?_ le_rfl)` and prove the remaining obligations. Conclude with `map_add_le_add p _ _`. Rewrite `tri` using `[t3]`. Use polynomial arithmetic with `[t1, t2, t4, tri]`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_heis (a : V) (L : V →L[ℝ] ℝ) (c : ℝ) (f : 𝓢(V, ℂ)) (T : 𝓢(V, ℂ) →L[ℂ] ℂ) :
     HasDerivAt (fun t : ℝ => T (SchwartzMap.smulLeftCLM ℂ (fun x => Complex.exp (-(2 * Real.pi * Complex.I) * ((t * L x + t ^ 2 * c : ℝ) : ℂ)))
@@ -170,7 +168,7 @@ Both sides reduce to the same expression.
 theorem evH_apply (a : AF F) : evH F a = evI F a := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ (mixedEmbedding.mixedSpace F) t)) = _`. Conclude with `RingEquiv.apply_symm_apply _ _`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem evH_realAd (t : ℝ) : evH F (realAd F t) = algebraMap ℝ (mixedEmbedding.mixedSpace F) t := by
   change InfiniteAdeleRing.ringEquiv_mixedSpace F
@@ -183,11 +181,11 @@ Both sides reduce to the same expression.
 theorem realAd_snd (t : ℝ) : (realAd F t).2 = 0 := rfl
 
 /- English proof (translation)
-Establish `e1 : (fun x : V => -(t * L x + t ^ 2 * c)) = ⇑(-(t • L)) + fun _ => -(t ^ 2 * c)`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.add_apply, ContinuousLinearMap.neg_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : Function.HasTemperateGrowth fun x : V => -(t * L x + t ^ 2 * c)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Conclude with `(-(t • L)).hasTemperateGrowth.add (Function.HasTemperateGrowth.const _)`. Establish `e2 : (fun x => Complex.exp (-(2 * Real.pi * Complex.I) * ((t * L x + t ^ 2 * c : ℝ) : ℂ))) = (GlobalTheory.Published.Metaplectic.eChar : ℝ → ℂ) ∘ fun x : V => -(t * L x + t ^ 2 * c)`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, GlobalTheory.Published.Metaplectic.eChar_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `GlobalTheory.Published.Metaplectic.hasTemperateGrowth_eChar.comp h1`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasTemperateGrowth_phase {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (L : V →L[ℝ] ℝ) (c t : ℝ) :
     Function.HasTemperateGrowth (fun x => Complex.exp (-(2 * Real.pi * Complex.I) * ((t * L x + t ^ 2 * c : ℝ) : ℂ))) := by
@@ -209,9 +207,9 @@ theorem hasTemperateGrowth_phase {V : Type} [NormedAddCommGroup V] [NormedSpace 
   exact GlobalTheory.Published.Metaplectic.hasTemperateGrowth_eChar.comp h1
 
 /- English proof (translation)
-Establish `h2 : evH F (⅟(2 : AF F)) * 2 = 1`. Rewrite using `[← map_ofNat (evH F) 2, ← map_mul, invOf_mul_self, map_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[show (2 : ℝ) * (1 / 2) = 1 by norm_num, map_one, mul_one]`. Use `_ = (evH F (⅟(2 : AF F)) * 2) * algebraMap ℝ (mixedEmbedding.mixedSpace F) (1 / 2) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [h2, one_mul]`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem evH_invOf_two [Invertible (2 : AF F)] :
     evH F (⅟(2 : AF F)) = algebraMap ℝ (mixedEmbedding.mixedSpace F) (1 / 2) := by
@@ -224,21 +222,19 @@ theorem evH_invOf_two [Invertible (2 : AF F)] :
     _ = _ := by rw [h2, one_mul]
 
 /- English proof (translation)
-Use `set a := (d.e u).1 with ha`. Use `set b := (d.e u).2 with hb`. Use `set X1 : κ → mixedEmbedding.mixedSpace F := fun i => evI F (a i) with hX1`. Use `set Y : κ → mixedEmbedding.mixedSpace F := fun i => evI F (b i) with hY`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsm : d.e (realAd F t • u) = realAd F t • d.e u` using `map_smul _ _ _`. Simplify using `only [Darboux.rho, schr, hsm, pureA]`. Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply (hasTemperateGrowth_phase _ _ _), SchwartzMap.compSubConstCLM_apply, smul_eq_mul]`. Establish `hfin : (fun i => ((x + (realAd F t • d.e u).1) i).2) = fun i => (x i).2`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `(x i).2 + (realAd F t).2 * (a i).2 = _`. Rewrite using `[realAd_snd, zero_mul, add_zero]`. Establish `harch : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((x + (realAd F t • d.e u).1) i).1) = (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1) - -(t • X1)`. Use function extensionality and compare the values at `i`. Rewrite using `[sub_neg_eq_add]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `evH F (x i + realAd F t * a i) = evH F (x i) + t • evH F (a i)`. Rewrite using `[map_add, map_mul, evH_realAd, Algebra.smul_def]`. Use `set A := x ⬝ᵥ (realAd F t • d.e u).2 + ⅟(2 : AF F) * ((realAd F t • d.e u).1 ⬝ᵥ (realAd F t • d.e u).2) with hAdef`. Establish `hA : A = realAd F t * (x ⬝ᵥ b + ⅟(2 : AF F) * (realAd F t * (a ⬝ᵥ b)))`. Rewrite using `[hAdef]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Prod.smul_fst, Prod.smul_snd, dotProduct_smul, smul_dotProduct, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hAt : At (evI F) A`. Introduce `v hv`. Rewrite using `[smul_eq_mul, hA, ← mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv1 : v.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hv)`. Establish `hvr : v * realAd F t = 0` using `Prod.ext (by change v.1 * (realAd F t).1 = 0; rw [hv1, zero_mul]) (by change v.2 * (realAd F t).2 = 0; rw [realAd_snd, mul_zero])`. Rewrite using `[hvr, zero_mul]`. Establish `htr : Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F A) = t * trL Y (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1) + t ^ 2 * (1 / 2 * Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (X1 ⬝ᵥ Y))`. Establish `e1 : evI F A = algebraMap ℝ (mixedEmbedding.mixedSpace F) t * ((⇑(evH F) ∘ x) ⬝ᵥ (⇑(evH F) ∘ b) + algebraMap ℝ (mixedEmbedding.mixedSpace F) (1 / 2) * (algebraMap ℝ (mixedEmbedding.mixedSpace F) t * ((⇑(evH F) ∘ a) ⬝ᵥ (⇑(evH F) ∘ b))))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← evH_apply, hA, map_mul, map_add, map_mul, map_mul, evH_realAd, RingHom.map_dotProduct, RingHom.map_dotProduct, evH_invOf_two]`. Rewrite using `[e1, trL_apply]`. Simplify using `only [← Algebra.smul_def, map_add, map_smul, smul_eq_mul]`. Express the relevant statement in the definitionally equal form `t * (Algebra.trace ℝ (mixedEmbedding.mixedSpace F) ((fun i => evH F (x i)) ⬝ᵥ Y) + 1 / 2 * (t * Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (X1 ⬝ᵥ Y))) = t * Algebra.trace ℝ (mixedEmbedding.mixedSpace F) ((fun i => evH F (x i)) ⬝ᵥ Y) + t ^ 2 * (1 / 2 * Algebra.trace ℝ (mixedEmb …`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hψ.2.2 A hAt, htr, hfin, harch]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rho_pureA [Invertible (2 : AF F)] {W : Type} [AddCommGroup W] [Module (AF F) W] {B : W → W → AF F}
     (d : Darboux B κ) (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (u : W) (t : ℝ) (f : SInf F κ)
@@ -301,11 +297,11 @@ end Adelic
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ α β κ _ _ _ _ _ ψ JA JB d hψ`. Set `x₁ : Matrix α β (AE F E) → (κ → mixedEmbedding.mixedSpace F)` to `fun u i => evI F ((d.e u).1 i)`. Set `y : Matrix α β (AE F E) → (κ → mixedEmbedding.mixedSpace F)` to `fun u i => evI F ((d.e u).2 i)`. Use `⟨fun u => LineDeriv.lineDerivOpCLM ℂ (SInf F κ) (x₁ u) - (2 * Real.pi * Complex.I) • SchwartzMap.smulLeftCLM ℂ (fun x => ((trL (y u) x : ℝ) : ℂ)), fun u _ f => ⟨?_, fun x => ?_⟩⟩` and prove the remaining obligations. Introduce `g hg l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨T, hT⟩` from `hl g hg`. Establish `h` using `hasDerivAt_heis (x₁ u) (trL (y u)) (1 / 2 * Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (x₁ u ⬝ᵥ y u)) f T`. Rewrite using `[hT]`. Use `(h.congr_deriv ?_).congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[rho_pureA d ψ hψ u t f g, hT]`. Establish `htg : Function.HasTemperateGrowth fun x : κ → mixedEmbedding.mixedSpace F => ((trL (y u) x : ℝ) : ℂ)` using `(Complex.ofRealCLM.comp (trL (y u))).hasTemperateGrowth`. Simplify using `only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply, SchwartzMap.sub_apply, SchwartzMap.smul_apply, LineDeriv.lineDerivOpCLM_apply, SchwartzMap.lineDerivOp_apply_eq_fderiv, SchwartzMap.smulLeftCLM_apply_apply htg, smul_eq_mul]`. Simplify using `only [trL_apply, dotProduct, x₁, y]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

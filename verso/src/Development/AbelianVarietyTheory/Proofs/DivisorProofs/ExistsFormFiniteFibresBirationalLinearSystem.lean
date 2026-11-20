@@ -16,7 +16,7 @@ namespace GlobalTheory.BirFiniteFibre
 open GlobalTheory.Points
 
 /- English proof (translation)
-Rewrite using `[aeval_def, aeval_def, eval₂_eq, eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `: a.degree = d` using `by rw [Finsupp.degree_eq_weight_one]; exact hp (mem_support_iff.1 ha)`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Rewrite using `[← this, Finsupp.degree_apply, mul_left_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_smul_of_isHomogeneous {F K σ : Type} [CommRing F] [CommRing K] [Algebra F K] {d : ℕ}
     {p : MvPolynomial σ F} (hp : p.IsHomogeneous d) (c : K) (y : σ → K) :
@@ -28,7 +28,7 @@ theorem aeval_smul_of_isHomogeneous {F K σ : Type} [CommRing F] [CommRing K] [A
   rw [← this, Finsupp.degree_apply, mul_left_comm]
 
 /- English proof (translation)
-Take `⟨n, i, hi, e⟩` from `h.proj`. Use `isProper_str F n` as an intermediate fact. Establish `: IsProper S.str` using `e ▸ inferInstance`. Conclude with `⟨by simpa using QuasiCompact.isCompact_preimage (f := S.str) Set.univ isOpen_univ isCompact_univ⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem compactSpace_Y {F : Type} [Field F] (S : LinSys F) (h : S.IsVariety) : CompactSpace S.Y := by
   obtain ⟨n, i, hi, e⟩ := h.proj
@@ -37,13 +37,13 @@ theorem compactSpace_Y {F : Type} [Field F] (S : LinSys F) (h : S.IsVariety) : C
   exact ⟨by simpa using QuasiCompact.isCompact_preimage (f := S.str) Set.univ isOpen_univ isCompact_univ⟩
 
 /- English proof (translation)
-Take `⟨n, i, hi, e⟩` from `h.proj`. Use `isProper_str F n` as an intermediate fact. Establish `: IsProper S.str` using `e ▸ inferInstance`. Establish `hle : W ≤ S.str ⁻¹ᵁ ⊤` using `le_top`. Establish `hft : (S.str.appLE ⊤ W hle).hom.FiniteType` using `HasRingHomProperty.appLE (P := @LocallyOfFiniteType) S.str inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨W, hW⟩ hle`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := (S.str.appLE ⊤ W hle).hom.toAlgebra`. Take `⟨s, hs⟩ : Algebra.FiniteType Γ(Sp F, ⊤) Γ(S.Y, W)` from `hft`. Use `⟨s, fun K _ _ x x' hx hx' H => Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h1` using `(le_iff_ptOf_mem _ _).2 hx`. Establish `h2` using `(le_iff_ptOf_mem _ _).2 hx'`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ext_of_valR hW h1 h2 fun f => ?_` and prove the remaining obligations. Establish `hf : f ∈ Algebra.adjoin Γ(Sp F, ⊤) (s : Set Γ(S.Y, W))` using `hs ▸ Algebra.mem_top`. Proceed by induction on `hf using Algebra.adjoin_induction with`. Consider the case `mem a ha => exact H a ha`. Consider the case `algebraMap r`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `(valR_appLE x.1 S.str hle h1 r).trans ((congrArg (fun q => valR q ⊤ r) (x.2.trans x'.2.symm)).trans (valR_appLE x'.1 S.str hle h2 r).symm)`. Consider the case `add a b _ _ ha hb => rw [valR_add _ _ h1, valR_add _ _ h2, ha, hb]`. Consider the case `mul a b _ _ ha hb => rw [valR_mul _ _ h1, valR_mul _ _ h2, ha, hb]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_finset_separating {F : Type} [Field F] (S : LinSys F) (h : S.IsVariety) (W : S.Y.Opens)
     (hW : IsAffineOpen W) : ∃ s : Finset Γ(S.Y, W), ∀ (K : Type) [Field K] [Algebra F K] (x x' : S.Pt K),
@@ -70,21 +70,15 @@ theorem exists_finset_separating {F : Type} [Field F] (S : LinSys F) (h : S.IsVa
   | mul a b _ _ ha hb => rw [valR_mul _ _ h1, valR_mul _ _ h2, ha, hb]
 
 /- English proof (translation)
-Introduce `F _ S hV hb hB`. Use `haveI := compactSpace_Y S hV`. Use `haveI := HeightExists.isPrime_imageIdeal hV`. Establish `hcov : ∀ y : S.Y, ∃ W : S.Y.Opens, IsAffineOpen W ∧ y ∈ W` using `fun y => by`. Take `⟨W, hW, hy, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := y) trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨W, hW, hy⟩`. Use `choose W hW hy using hcov`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun y => (W y : Set S.Y)) (fun y => (W y).isOpen) (fun y _ => Set.mem_iUnion.2 ⟨y, hy y⟩)`. Use `choose s hs using fun z => exists_finset_separating S hV (W z) (hW z)`. Use `choose d P Q hP hQ hQI _ hval using fun z a => GlobalTheory.T.exists_homogeneous_forms_quotient_birational_system F S hV hb hB (W z) a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨∑ z ∈ t, ∑ a ∈ s z, d z a, ∏ z ∈ t, ∏ a ∈ s z, Q z a, ?_, ?_, fun K _ _ y => ?_⟩` and prove the remaining obligations. Conclude with `IsHomogeneous.prod _ _ _ fun z _ => IsHomogeneous.prod _ _ _ fun a _ => hQ z a`. Rewrite using `[Ideal.IsPrime.prod_mem_iff]`. Introduce and unpack `⟨z, -, hz⟩`. Rewrite `hz` using `[Ideal.IsPrime.prod_mem_iff]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨a, -, ha⟩` from `hz`. Conclude with `hQI z a ha`. Establish `key : ∀ z ∈ t, ∀ a ∈ s z, ∀ x : S.Pt K, ptOf x.1 ∈ W z → aeval (S.coords x.1) (∏ z ∈ t, ∏ a ∈ s z, Q z a) ≠ 0 → (∃ c : K, S.coords x.1 = c • y) → valR x.1 (W z) a = aeval y (P z a) / aeval y (Q z a)`. Introduce and unpack `z hz a ha x hx hg ⟨c, hc⟩`. Establish `h1 : aeval (S.coords x.1) (Q z a) ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg` using `[map_prod, Finset.prod_ne_zero_iff]`. Use `hg z hz` as an intermediate fact. Rewrite `this` using `[map_prod, Finset.prod_ne_zero_iff]`. Conclude with `this a ha`. Establish `h2` using `hval z a K x hx`.
-
-Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Conclude with `hb.coords_ne_zero x.1 (hc.trans (zero_smul _ _))`. Rewrite `h1`, `h2` using `[hc, aeval_smul_of_isHomogeneous (hQ z a)]`. Rewrite `h2` using `[aeval_smul_of_isHomogeneous (hP z a), mul_left_comm]`.
-
-Rewrite using `[eq_div_iff (right_ne_zero_of_mul h1)]`. Conclude with `mul_left_cancel₀ (pow_ne_zero _ hc0) h2`. Use `(t.finite_toSet.biUnion (t := fun z => {x : S.Pt K | ptOf x.1 ∈ W z ∧ aeval (S.coords x.1) (∏ z ∈ t, ∏ a ∈ s z, Q z a) ≠ 0 ∧ ∃ c : K, S.coords x.1 = c • y}) fun z hz => Set.Subsingleton.finite fun x hx x' hx' => ?_).subset fun x hx => ?_` and prove the remaining obligations. Conclude with `hs z K x x' hx.1 hx'.1 fun a ha => (key z hz a ha x hx.1 hx.2.1 hx.2.2).trans (key z hz a ha x' hx'.1 hx'.2.1 hx'.2.2).symm`. Take `⟨z, hz, hxz⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ (ptOf x.1)))`.
-
-Conclude with `Set.mem_iUnion₂.2 ⟨z, hz, hxz, hx⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_form_finite_fibres : ∀ (F : Type) [Field F] (S : LinSys F), S.IsVariety → S.BasePointFree → S.Birational → ∃ (d : ℕ) (g : MvPolynomial (Fin S.N) F), g.IsHomogeneous d ∧ g ∉ S.imageIdeal ∧ ∀ (K : Type) [Field K] [Algebra F K] (y : Fin S.N → K), {x : S.Pt K | aeval (S.coords x.1) g ≠ 0 ∧ ∃ c : K, S.coords x.1 = c • y}.Finite := by
   intro F _ S hV hb hB

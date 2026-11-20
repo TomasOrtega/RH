@@ -11,7 +11,7 @@ noncomputable section
 namespace LateralTheory.EtaleFoundations.GenIsoInj
 
 /- English proof (translation)
-Establish `: r = ((r.down.val : ℕ) : ULift.{1} (ZMod q))`. Apply `ULift.ext` to reduce the goal to its premises. Simplify using `only [ULift.down_natCast, ZMod.natCast_zmod_val]`. Use `conv_lhs => rw [this]`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ulift_smul_eq {q : ℕ} [NeZero q] {M : Type*} [AddCommGroup M] [Module (ULift.{1} (ZMod q)) M]
     (r : ULift.{1} (ZMod q)) (x : M) : r • x = r.down.val • x := by
@@ -21,7 +21,7 @@ theorem ulift_smul_eq {q : ℕ} [NeZero q] {M : Type*} [AddCommGroup M] [Module 
   rw [Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]`. Establish `: ((c : ℕ) : ULift.{1} (ZMod q)) = 0` using `by ext; simpa using (ZMod.natCast_eq_zero_iff c q).2 hc`. Rewrite using `[this, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem q_smul {q : ℕ} [NeZero q] {M : Type*} [AddCommGroup M] [Module (ULift.{1} (ZMod q)) M]
     (c : ℕ) (hc : q ∣ c) (x : M) : c • x = 0 := by
@@ -31,15 +31,15 @@ theorem q_smul {q : ℕ} [NeZero q] {M : Type*} [AddCommGroup M] [Module (ULift.
   rw [this, zero_smul]
 
 /- English proof (translation)
-Use `letI : Module (ZMod q) M := Module.compHom M (ULift.ringEquiv.symm : ZMod q ≃+* ULift.{1} (ZMod q)).toRingHom`. Establish `hsm : ∀ (r : ZMod q) (x : M), r • x = (ULift.up r : ULift.{1} (ZMod q)) • x` using `fun r x => rfl`. Set `f : ZMod q →ₗ[ZMod q] M` to `LinearMap.toSpanSingleton (ZMod q) M g`. Establish `hf : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `r hr`. Establish `h1 : r.val • g = 0`. Establish `h2 : (ULift.up r : ULift.{1} (ZMod q)) • g = 0` using `hr`. Establish `h4` using `ulift_smul_eq (M := M) (ULift.up r : ULift.{1} (ZMod q)) g`. Conclude with `h4.symm.trans h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hg _ h1`. Rewrite using `[← ZMod.natCast_zmod_val r]`. Conclude with `(ZMod.natCast_eq_zero_iff _ _).2 h3`. Take `⟨h, hh⟩` from `(KStar.Selmer.zmod_baer (N := q)).extension_property f hf LinearMap.id`. Use `⟨{ toFun := fun x => ULift.up (h x), map_add' := fun x y => by ext; simp, map_smul' := fun r x => ?_ }, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ULift.up (h (r.down • x)) = r • ULift.up (h x)`. Rewrite using `[h.map_smul]`. Use `ext`. Simplify using `[smul_eq_mul]`. Use `LinearMap.congr_fun hh 1` as an intermediate fact.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [LinearMap.comp_apply, f, LinearMap.toSpanSingleton_apply, one_smul, LinearMap.id_apply] at this`. Use `ext`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_functional {q : ℕ} [NeZero q] {M : Type 1} [AddCommGroup M] [Module (ULift.{1} (ZMod q)) M]
     (g : M) (hg : ∀ c : ℕ, c • g = 0 → q ∣ c) :
@@ -69,9 +69,9 @@ theorem exists_functional {q : ℕ} [NeZero q] {M : Type 1} [AddCommGroup M] [Mo
     ext; simpa using this
 
 /- English proof (translation)
-Take `⟨F, hF⟩` from `exists_functional g hg`. Take `⟨F', hF'⟩` from `exists_functional g' hg'`. Set `L` to `TensorProduct.lift ((LinearMap.mul (ULift.{1} (ZMod q)) (ULift.{1} (ZMod q))).compl₂ F' ∘ₗ F)`. Use `congrArg L h` as an intermediate fact. Simplify using `only [map_nsmul, L, TensorProduct.lift.tmul, LinearMap.comp_apply, LinearMap.compl₂_apply, LinearMap.mul_apply', hF, hF', mul_one, map_zero, nsmul_eq_mul] at this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrArg ULift.down this`. Simplify using `at h2`. Conclude with `(ZMod.natCast_eq_zero_iff _ _).1 h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dvd_of_tmul {q : ℕ} [NeZero q] {M N : Type 1} [AddCommGroup M] [Module (ULift.{1} (ZMod q)) M]
     [AddCommGroup N] [Module (ULift.{1} (ZMod q)) N] (g : M) (g' : N)
@@ -92,37 +92,37 @@ end LateralTheory.EtaleFoundations.GenIsoInj
 namespace LateralTheory.EtaleFoundations.GenIsoInj
 
 /- English proof (translation)
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_comp {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (h : W ⟶ V) (g : V ⟶ U)
     (x : Sec F U) : Sec.res (h ≫ g) x = Sec.res h (Sec.res g x) := by
   simp [Sec.res]
 
 /- English proof (translation)
-The claim follows from `map_nsmul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem sm_nsmul {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} (c : ℕ) (x : Sec F U) :
     Sec.map φ (c • x) = c • Sec.map φ x := map_nsmul _ _ _
 /- English proof (translation)
-The claim follows from `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem sm_zero {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {U : Scheme.{0}} :
     Sec.map φ (0 : Sec F U) = 0 := map_zero _
 /- English proof (translation)
-The claim follows from `map_nsmul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem sr_nsmul {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) (c : ℕ) (x : Sec F U) :
     Sec.res g (c • x) = c • Sec.res g x := map_nsmul _ _ _
 /- English proof (translation)
-The claim follows from `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem sr_zero {R : Type} [CommRing R] {F : Shv R} {V U : Scheme.{0}} (g : V ⟶ U) :
     Sec.res g (0 : Sec F U) = 0 := map_zero _
 
 /- English proof (translation)
-Set `ψ : (sgl F).X 0 ⟶ F` to `(HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 F).hom`. Establish `hψ : sglι F ≫ ψ = 𝟙 F` using `(HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 F).inv_hom_id`. Establish `e : ∀ y : Sec F U, Sec.map ψ (Sec.map (sglι F) y) = y` using `fun y => by`. Rewrite using `[TwMulPf.sec_map_comp, hψ, TwMulPf.sec_map_id]`. Establish `h' : Sec.map (sglι F) (c • x) = Sec.map (sglι F) 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show Sec.map (sglι F) (c • x) = c • Sec.map (sglι F) x from map_nsmul _ c x, h]`. Conclude with `(map_zero _).symm`. Use `congrArg (Sec.map ψ) h'` as an intermediate fact. Rewrite `this` using `[e, e]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sgl_smul_eq_zero {q : ℕ} {F : Shv (ZMod q)} {U : Scheme.{0}} (c : ℕ) (x : Sec F U)
     (h : c • Sec.map (sglι F) x = 0) : c • x = 0 := by
@@ -141,15 +141,13 @@ end LateralTheory.EtaleFoundations.GenIsoInj
 open LateralTheory.EtaleFoundations.GenIsoInj LateralTheory.EtaleFoundations.TwMulPf in
 
 /- English proof (translation)
-Introduce `q _ i j k T μ hμ hk φ hφ U a ha`. Establish `nt : ∀ (l : ℤ) (W : Scheme.{0}) [Nonempty W] (ζ : Prim q Γ(W, ⊤)) (c : ℕ), c • Sec.map (sglι (tw q l)) (twGen l ζ) = 0 → q ∣ c` using `fun l W _ ζ c h => (hts q l).2.2.1 W ζ c (sgl_smul_eq_zero c _ h)`. Use `hlb.2.2.2.2.1 U _ (hlb.2.1 U _ _ ((hts q k).1 U a) ?_)` and prove the remaining obligations. Introduce and unpack `V g (h0 | ⟨ζ, c, hc⟩)`. Conclude with `hlb.1 V _ fun W h => by rw [res_comp, h0, sr_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : c • μ.mul V 0 0 0 (add_zero 0) (Sec.map (sglι _) (twGen i ζ)) (Sec.map (sglι _) (twGen j ζ)) = 0`. Rewrite using `[← hφ V ζ, ← sm_nsmul, ← sm_nsmul, ← hc, ← sec_res_map, ha, sr_zero, sm_zero]`. Set `x : Tens (sgl (tw q i)) (sgl (tw q j)) V 0` to `DirectSum.lof (ULift.{1} (ZMod q)) {p : ℤ × ℤ // p.1 + p.2 = 0} (fun p => Sec ((sgl (tw q i)).X p.1.1) V ⊗[ULift.{1} (ZMod q)] Sec ((sgl (tw q j)).X p.1.2) V) ⟨(0, 0), rfl⟩ (c • (Sec.map (sglι _) (twGen i ζ) ⊗ₜ Sec.map (sglι _) (twGen j ζ)))`. Establish `hx : μ.lift V 0 x = 0`. Simplify using `only [x, Pair.lift, DirectSum.toModule_lof, map_nsmul, TensorProduct.lift.tmul]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1`. Use `hlb.2.1 V _ _ (hμ.2 V 0 x hx) fun W h hW => ?_` and prove the remaining obligations. Establish `hW' : c • (Sec.res h (Sec.map (sglι _) (twGen i ζ)) ⊗ₜ[ULift.{1} (ZMod q)] Sec.res h (Sec.map (sglι _) (twGen j ζ))) = 0`. Use `congrArg (DirectSum.component (ULift.{1} (ZMod q)) {p : ℤ × ℤ // p.1 + p.2 = 0} (fun p => Sec ((sgl (tw q i)).X p.1.1) W ⊗[ULift.{1} (ZMod q)] Sec ((sgl (tw q j)).X p.1.2) W) ⟨(0, 0), rfl⟩) hW` as an intermediate fact. Simplify `this` using `[x, Tens.res, DirectSum.component.lof_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `show Sec.res (h ≫ g) a = 0`. Rewrite using `[res_comp, hc, sr_nsmul]`. Distinguish the cases in `hne : Nonempty W`. Rewrite `hW'` using `[sec_res_map, sec_res_map, (hts q i).2.2.2.1, (hts q j).2.2.2.1]`. Conclude with `q_smul c (dvd_of_tmul _ _ (nt i W _) (nt j W _) c hW') _`.
-
-Establish `: IsEmpty W` using `not_nonempty_iff.1 hne`. Conclude with `(hsg (ZMod q) (tw q k) W).1 _ _ (hlb.2.2.2.2.2.2 W _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LateralTheory.EtaleFoundations.etale_tate_twist_generator_map_injective_of_sections_glue (hts : LateralTheory.EtaleFoundations.EtaleTateTwistSectionsLocallyGenerated)
     (hlb : LateralTheory.EtaleFoundations.EtaleLocalPropertyBasicClosure) (hsg : LateralTheory.EtaleFoundations.EtaleSheafSectionsSeparatedAndGlue) :

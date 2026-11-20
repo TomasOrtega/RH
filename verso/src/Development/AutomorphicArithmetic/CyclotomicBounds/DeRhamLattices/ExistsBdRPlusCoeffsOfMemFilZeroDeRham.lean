@@ -8,13 +8,13 @@ set_option maxHeartbeats 2000000
 set_option synthInstance.maxHeartbeats 400000
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add a a' ha ha'`. Take `⟨d, hd⟩` from `ha`. Take `⟨d', hd'⟩` from `ha'`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨d + d', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hd, hd', ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, map_add, AddMonoidHom.add_apply]`. Consider the case `tmul v x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨y0, hy0⟩` from `hF x x.2`. Take `⟨q, t, y1, ht, hy⟩` from `hT v y0`. Use `⟨fun k => b.repr t k ⊗ₜ[Z] y1, ?_⟩` and prove the remaining obligations. Establish `h1 : (t : V) = ∑ k, b.repr t k • ((b k : T) : V)`. Establish `h2` using `congrArg T.subtype (b.sum_repr t).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_sum]`. Simplify `h2` using `only [map_smul, Submodule.subtype_apply]`. Rewrite using `[hf, hy0, hy, ← TensorProduct.smul_tmul, ← ht, h1, TensorProduct.sum_tmul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hact, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem span_abs {Q Z O D B V κ : Type} [CommRing Q] [CommRing Z] [CommRing O] [CommRing D]
     [CommRing B] [Algebra Z O] [Algebra Z D] [Algebra Q B] [AddCommGroup V] [Module Q V] [Module O V]
@@ -49,13 +49,13 @@ private theorem span_abs {Q Z O D B V κ : Type} [CommRing Q] [CommRing Z] [Comm
     rw [hact, mul_one]
 
 /- English proof (translation)
-Introduce `l _ LL T Pl AI Td act hact κ _ b v hv`. Take `⟨y, rfl⟩` from `hv`. Use `span_abs (Q := ℚ_[l]) (Z := ℤ_[l]) T.L.T b (((Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)).Fil 0).restrictScalars ℚ_[l]) (GlobalTheory.BKGal.JumpDR.cD Td) act ?_ ?_ ?_ (AlgebraTensorModule.map (LinearMap.id : T.V →ₗ[↥LL.1] T.V) (((Pl.PD (Formalism.MainNotions.Element …` and prove the remaining obligations. Introduce `o d v e`. Use `(hact o d v e).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Apply the tactic sequence `first | done | rfl | exact (algebraMap_smul (↥LL.1) o v)`. Introduce `x hx`. Conclude with `((UpperTheory.KN.fil_zero_eq_range_cD_and_cD_injective l Pl AI Td (Formalism.MainNotions.ElementDenominator.qlExt l)).1 x).1 hx`. Introduce `v y`.
+Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, x, hx⟩` from `UpperTheory.KN.exists_prime_pow_smul_mem_lattice l LL T v`. Take `⟨z, hz⟩` from `((GlobalTheory.MemLoc.isUnit_l_BdRp l).pow n).exists_right_inv`. Use `⟨(l : ℚ_[l]) ^ n, x, z * y, hx, ?_⟩` and prove the remaining obligations. Establish `h : y = ((l : ℕ) : Per.BdRp l) ^ n * (z * y)` using `by rw [← mul_assoc, hz, one_mul]`. Use `conv_lhs => rw [h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Rewrite using `[map_mul, map_pow, map_natCast, Algebra.smul_def, map_pow, map_natCast]`. Introduce `v x`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.exists_BdRPlus_coeffs_of_mem_filZero_deRham :
     ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l) (T : QLat LL) (Pl : LocPrime l) (AI : LocAinf l Pl) (Td : LocTied l Pl AI) (act : OD l ↥(OL LL) →+ (T.V ⊗[ℚ_[l]] Pl.R.BdR →+ T.V ⊗[ℚ_[l]] Pl.R.BdR)), (∀ (o : ↥(OL LL)) (b : Per.BdRp l) (v : T.V) (c : Pl.R.BdR), act (o ⊗ₜ[ℤ_[l]] b) (v ⊗ₜ[ℚ_[l]] c) = ((o : ↥LL.1) • v) ⊗ₜ[ℚ_[l]] (GlobalTheory.BKGal.JumpDR.cD Td b * c)) → ∀ (κ : Type) [Fintype κ] (b : Module.Basis κ ↥(OL LL) ↥T.L.T), ∀ v : T.V ⊗[ℚ_[l]] Pl.R.BdR, v ∈ FilV (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) (LL := ↥LL.1) (V := T.V) (0) → ∃ d : κ → OD l ↥(OL LL), v = ∑ k, act (d k) (((b k : ↥T.L.T) : T.V) ⊗ₜ[ℚ_[l]] (1 : Pl.R.BdR)) := by

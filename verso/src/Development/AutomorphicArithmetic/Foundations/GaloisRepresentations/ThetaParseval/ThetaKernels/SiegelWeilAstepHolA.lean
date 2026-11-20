@@ -15,9 +15,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.AStep
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Use function extensionality and compare the values at `X`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.T, Pi.sub_apply]`. Rewrite using `[← map_sub]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Darboux.rho, schr, Pi.sub_apply, mul_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem T_sub_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (Φ Φ' : d.Fn) : d.T (Φ - Φ') = d.T Φ - d.T Φ' := by
   funext X
@@ -27,11 +27,11 @@ theorem T_sub_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) (Φ Φ' 
   funext x
   simp only [Darboux.rho, schr, Pi.sub_apply, mul_sub]
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨g, hg, rfl⟩` from `hf`. Use `⟨fun X => (∏ w' ∈ Finset.univ.erase w, fP 1 (R.loc w' X)) * g fun k => (d.crd X k).2, Submodule.subset_span ⟨fun _ => 1, g, hg, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `X`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.RD_k.tens]`. Rewrite using `[← mul_assoc, Finset.mul_prod_erase _ (fun w' => fP 1 (R.loc w' X)) (Finset.mem_univ w)]`. Consider the case `zero => exact ⟨0, zero_mem _, by funext X; simp [_root_.PositivityTheory.SiegelWeilFormula.RD_k.tens]⟩`. Consider the case `add f f' _ _ h h'`. Take `⟨Ψ, hΨ, rfl⟩` from `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨Ψ', hΨ', rfl⟩` from `h'`. Conclude with `⟨Ψ + Ψ', add_mem hΨ hΨ', by funext X; simp [_root_.PositivityTheory.SiegelWeilFormula.RD_k.tens, mul_add]⟩`. Consider the case `smul a f _ h`. Take `⟨Ψ, hΨ, rfl⟩` from `h`. Conclude with `⟨a • Ψ, Submodule.smul_mem _ a hΨ, by funext X; simp [_root_.PositivityTheory.SiegelWeilFormula.RD_k.tens]; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem vac_tens_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F) (f : Mx F E d.m d.n → ℂ) (hf : f ∈ R.vac) :
     ∃ Ψ ∈ R.away w, f = R.tens w (fP 1) Ψ := by
@@ -52,15 +52,15 @@ theorem vac_tens_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : 
     obtain ⟨Ψ, hΨ, rfl⟩ := h
     exact ⟨a • Ψ, Submodule.smul_mem _ a hΨ, by funext X; simp [_root_.PositivityTheory.SiegelWeilFormula.RD_k.tens]; ring⟩
 /- English proof (translation)
-Introduce `L hL`. Establish `hK` using `H.polyKFin F E σ d R Φ hΦ ((H.vacK F E σ d R).2.1 hv)`. Establish `hsec` using `H.secK F E σ d Φ hK`. Establish `hEis` using `H.eisWk F E σ d _ _ hsec`. Take `⟨hadd, hbd⟩` from `H.lamBd F E σ d L hL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨nb, lam, 𝓖, T, x, hc, hT, rfl⟩` from `hL`. Take `⟨hUo, hR, hs, hp, hd, hcont, hinv, hfar⟩` from `hE`. Take `⟨hDiff, hComm⟩` from `lamDeriv (rat2 σ d.Y) _ hadd hbd U Ê hUo hd hcont hinv`. Use `show fc d.B.ψ d.b nb lam 𝓖 (fun g => iteratedDeriv j (Ê · g) (s0 d.m d.n)) T x = 0`. Rewrite using `[← hComm _ hs j]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t', ht'⟩` from `H.unfold F E σ d _ _ hsec hEis`. Take `⟨ε, w, hw, -⟩` from `(H.auxEx F E σ d).2.1`. Establish `hWL` using `H.whitLow F E σ d R hmn Φ hΦ hv nb lam 𝓖 hc ε w hw T hT x`. Rewrite `hWL` using `[zero_mul]`. Use `ordVal U p (fun z => fc d.B.ψ d.b nb lam 𝓖 (Ê z) T x) (fun z => ∫ β, flat d.a (d.sec0 Φ) (s0 d.m d.n) z (w * nb β * x) * d.B.ψ (-d.tt (T.1.1 * β.1)) ∂lam) (max t t') (s0 d.m d.n) 0 hUo hR hs hp hDiff ?_ hWL j hj` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, mul_zero]`. Introduce `z hz`. Establish `h1` using `(hfar z (lt_of_le_of_lt (le_max_left _ _) hz)).2`. Establish `h2` using `(ht' z (lt_of_le_of_lt (le_max_right _ _) hz) nb lam 𝓖 hc ε w hw x).2 T hT`. Rewrite using `[← h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [fc, h1, mul_assoc]`. Conclude with `integral_const_mul _ _`.
+A detailed English derivation is pending.
 -/
 theorem ndA_k (H : _root_.PositivityTheory.SiegelWeilFormula.AStep.Hyps_k) {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (hmn : d.m < d.n) {Φ : d.Fn} (hΦ : Φ ∈ d.sch) (hv : d.T Φ ∈ R.vac)
     {U p Ê t} (hE : _root_.PositivityTheory.SiegelWeilFormula.AStep.EData_k d (d.sec0 Φ) (s0 d.m d.n) (s0 d.m d.n) U p Ê t) (j : ℕ) (hj : j ≤ p.rootMultiplicity (s0 d.m d.n)) :
@@ -90,19 +90,15 @@ theorem ndA_k (H : _root_.PositivityTheory.SiegelWeilFormula.AStep.Hyps_k) {d : 
     simp only [fc, h1, mul_assoc]
     exact integral_const_mul _ _
 /- English proof (translation)
-Take `⟨-, -, hTG, hLC, hT2, hSC⟩` from `H.auxEx F E σ d`. Establish `hE'` using `hE`. Take `⟨hUo, hR, hs, hp, hd, hcont, hinv, hfar⟩` from `hE'`. Establish `hAc` using `famCont U Ê hUo hd hcont _ hs j`. Establish `hAi : ∀ γ ∈ rat2 σ d.Y, ∀ g, iteratedDeriv j (Ê · (γ * g)) (s0 d.m d.n) = iteratedDeriv j (Ê · g) (s0 d.m d.n)` using `fun γ hγ g => derivInv U Ê hUo _ hs γ g (fun z hz => hinv z hz γ hγ g) j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Ψ, hΨ, hTΨ⟩` from `_root_.PositivityTheory.SiegelWeilFormula.AStep.vac_tens_k R w _ hv`. Take `⟨Lop, hLop⟩` from `H.locOpEx F E σ d R w`. Take `⟨φ, hφ⟩` from `H.liftEx F E σ d R w Ψ hΨ`. Take `⟨sL, ρ, pp, qq, e, -, hLD, hsL, -⟩` from `H.locInst F E σ d R w Lop hLop`. Establish `hΦφ : φ 1 = Φ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0` using `(H.tAll.1 F E σ d).2.2 (φ 1 - Φ) (sub_mem (hφ 1).1 hΦ) (by rw [_root_.PositivityTheory.SiegelWeilFormula.AStep.T_sub_k, (hφ 1).2, hTΨ, sub_self])`. Conclude with `sub_eq_zero.1 h0`. Establish `hpq : pp = d.m ∧ qq = 0 ∨ pp = 0 ∧ qq = d.m`. Break down `hLD.sign with ⟨-, h1, h2⟩ | ⟨-, h1, h2⟩` into its components or cases. Use `left`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[h1, h2, cnt_true, cnt_false]`. Conclude with `⟨rfl, rfl⟩`. Use `right`. Rewrite using `[h1, h2, cnt_true, cnt_false]`. Conclude with `⟨rfl, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨pp, qq, e, hpq, ?_⟩` and prove the remaining obligations. Use `haveI := hTG`. Use `haveI := hLC`. Use `haveI := hT2`. Use `haveI := hSC`.
-
-Use `H.holLead d.m d.n pp qq e d.ok.hm hmn hpq d.G (par2 σ d.Y) (rat2 σ d.Y) (R.ι w) (s0 d.m d.n) d.Ht (d.sec0 Φ) (R.cont w) ?_ U p Ê t hUo hR hs hd hcont (fun z hz => ⟨(hfar z hz).1, fun g => (hfar z hz).2 g⟩) j hlow ?_` and prove the remaining obligations. Introduce `g`. Take `⟨x, y, c, r, hr, hg, hxy⟩` from `H.gSplit F E σ d R w Lop hLop Ψ hΨ φ hφ g`. Use `⟨x, y, c, r, hr, hg, fun y' => ⟨(hxy y').1, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← hΦφ, (hxy y').2 1, ← hsL, hLD.vac]`.
-
-Introduce `ψ hψ nb hnb g a b`. Conclude with `H.lamSing F E σ d R w _ hAc hAi (_root_.PositivityTheory.SiegelWeilFormula.AStep.ndA_k H R hmn hΦ hv hE j hj) ψ hψ nb hnb g a b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem holA_pf_k (H : _root_.PositivityTheory.SiegelWeilFormula.AStep.Hyps_k) {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (hmn : d.m < d.n) {Φ : d.Fn} (hΦ : Φ ∈ d.sch) (hv : d.T Φ ∈ R.vac)
     {U : Set ℂ} {p : Polynomial ℂ} {Ê : ℂ → d.G → ℂ} {t : ℝ}

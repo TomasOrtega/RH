@@ -8,11 +8,11 @@ open scoped ValuativeRel
 namespace GlobalTheory.CompanionTheory.SphTheta
 
 /- English proof (translation)
-Introduce `F _ _ _ _ E _ _ _ _ _ _ c hc u hu`. Establish `h1 : ValuativeRel.valuation F (u : F) = 1` using `mem_unitFiltrationUnits_zero_iff.mp hu`. Establish `ha : (u : F) ≤ᵥ 1` using `(Valuation.Compatible.vle_iff_le (v := ValuativeRel.valuation F) _ _).mpr (by simp [h1])`. Establish `hb : (1 : F) ≤ᵥ (u : F)` using `(Valuation.Compatible.vle_iff_le (v := ValuativeRel.valuation F) _ _).mpr (by simp [h1])`. Establish `ha' : algebraMap F E (u : F) ≤ᵥ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using (ValuativeExtension.vle_iff_vle (A := F) (B := E) (u : F) 1).mpr ha`. Establish `hb' : (1 : E) ≤ᵥ algebraMap F E (u : F)`. Simplify using `using (ValuativeExtension.vle_iff_vle (A := F) (B := E) 1 (u : F)).mpr hb`. Establish `h2 : Units.map (algebraMap F E).toMonoidHom u ∈ unitFiltrationUnits E 0`. Rewrite using `[mem_unitFiltrationUnits_zero_iff]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show ValuativeRel.valuation E (algebraMap F E (u : F)) = 1`. Conclude with `le_antisymm (by simpa using (Valuation.Compatible.vle_iff_le (v := ValuativeRel.valuation E) _ _).mp ha') (by simpa using (Valuation.Compatible.vle_iff_le (v := ValuativeRel.valuation E) _ _).mp hb')`. Conclude with `hc h2`.
+A detailed English derivation is pending.
 -/
 theorem isUnramifiedChar_comp_unitsMap : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [Algebra F E] [ValuativeExtension F E] (c : Eˣ →* ℂˣ), IsUnramifiedChar c → IsUnramifiedChar (c.comp (Units.map (algebraMap F E).toMonoidHom)) := by
   intro F _ _ _ _ E _ _ _ _ _ _ c hc u hu

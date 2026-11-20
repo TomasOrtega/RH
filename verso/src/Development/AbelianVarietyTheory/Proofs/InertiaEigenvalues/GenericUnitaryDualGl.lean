@@ -16,9 +16,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Loc
 namespace GlobalTheory.GenericUnitaryBridge
 
 /- English proof (translation)
-Take `⟨n, c⟩` from `w`. Take `⟨n', c'⟩` from `δ`. Take `⟨hd1, hc1⟩` from `h`. Take `⟨hd2, hc2⟩` from `isSpeh_one (⟨n', c'⟩ : IrrGL k)`. Take `rfl : n = n'` from `hd1.symm.trans hd2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ⟩` from `hc2.unique hc1`. Conclude with `((IrrGL.of_rep _).symm.trans (IrrGL.of_eq_of.2 ⟨φ⟩)).trans (IrrGL.of_rep _)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_of_isSpeh_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {δ w : IrrGL k} (h : IsSpeh δ 1 w.rep) : w = δ := by
@@ -31,31 +31,27 @@ theorem eq_of_isSpeh_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace
   exact ((IrrGL.of_rep _).symm.trans (IrrGL.of_eq_of.2 ⟨φ⟩)).trans (IrrGL.of_rep _)
 
 /- English proof (translation)
-Introduce `hU hSq hGen hLM hSC k _ _ _ _ _ N V _ _ π hs hi hu hg`. Establish `ord` using `GlobalTheory.LocGL.UnitaryOrder.add_one_le_of_precedes k`. Set `Good : Segment k → Prop` to `fun Δ => ∃ (δ : IrrGL k) (Γ : Segment k) (t : ℝ), IsLSeg Γ δ.rep ∧ IsUnitarisable δ.rep ∧ Δ = Γ.nu (t : ℂ)`. Establish `key : ∀ (w : IrrGL k) (r : ℝ), IsUnitarySpeh w → ∃ 𝔫 : Multiset (Segment k), IsL 𝔫 (w.nu (r : ℂ)).rep ∧ (∀ Γ ∈ 𝔫, Good Γ) ∧ (IsUnitaryLSeg w ∨ ∃ (Γ : Segment k) (t : ℝ), Γ.nu (t : ℂ) ∈ 𝔫 ∧ Γ.nu ((t - 1 : ℝ) : ℂ) ∈ 𝔫)`. Introduce and unpack `w r ⟨δ, m, hsq, hm, hsp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨Δ, hΔ⟩` from `hSq k δ hsq`. Use `⟨_, hD k ord δ w Δ m hΔ hsq.2.1 hsp r, ?_, ?_⟩` and prove the remaining obligations. Introduce `Γ hΓ`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 (Multiset.mem_coe.1 hΓ)`. Conclude with `⟨δ, Δ, _, hΔ, hsq.2.1, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Break down `Nat.lt_or_ge m 2 with h2 | h2` into its components or cases. Use `left`. Take `rfl : m = 1` from `by omega`. Take `rfl` from `eq_of_isSpeh_one hsp`. Conclude with `⟨⟨Δ, hΔ⟩, hsq.2.1⟩`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `right`. Use `⟨Δ, r + ((m : ℝ) - 1) / 2, Multiset.mem_coe.2 (List.mem_ofFn.2 ⟨⟨0, by omega⟩, ?_⟩), Multiset.mem_coe.2 (List.mem_ofFn.2 ⟨⟨1, by omega⟩, ?_⟩)⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `congr 2`. Use `push_cast`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨u, τ, hu1, hτ1, h, x, hd, hx, ⟨φ⟩⟩` from `hU k N V π hs hi hu`. Establish `hfac : ∀ j, ∃ (y : IrrGL k) (s : ℝ), IsUnitarySpeh y ∧ x j = y.nu (s : ℂ)`. Introduce `j`. Establish `hm : x j ∈ factors u τ` using `hx ▸ List.mem_ofFn.2 ⟨j, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Break down `List.mem_append.1 hm with hm | hm` into its components or cases. Conclude with `⟨x j, 0, hu1 _ hm, by simp⟩`. Take `⟨p, hp, hm⟩` from `List.mem_flatMap.1 hm`. Break down `List.mem_pair.1 hm with e | e` into its components or cases. Conclude with `⟨p.1, p.2, (hτ1 p hp).1, e⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨p.1, -p.2, (hτ1 p hp).1, e⟩`. Use `choose y s hy hxs using hfac`. Establish `h𝔪 : ∀ j, ∃ 𝔪 : Multiset (Segment k), IsL 𝔪 (x j).rep ∧ ∀ Γ ∈ 𝔪, Good Γ` using `fun j => by`. Take `⟨𝔪, h1, h2, -⟩` from `key (y j) (s j) (hy j)`. Conclude with `⟨𝔪, hxs j ▸ h1, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose 𝔪 h𝔪L h𝔪G using h𝔪`. Establish `hL : IsL (∑ j, 𝔪 j) π` using `hB k hLM Good (fun 𝔫 h𝔫 => hA k hSC ord 𝔫 h𝔫) h N x hd 𝔪 h𝔪L h𝔪G V π hi ⟨φ⟩`. Take `⟨h', Δ', z, hd', hunl, hz, ⟨ψ⟩⟩` from `hGen k N V π hs hi hg`. Establish `hL' : IsL (Finset.univ.val.map Δ') π` using `⟨h', z, hd', ⟨Δ', ⟨rfl, fun i j hij hP => hunl i j hij.ne hP.1⟩, hz⟩, (isCosocle_self hi).of_equiv (.refl _) ψ⟩`. Establish `heq : ∑ j, 𝔪 j = Finset.univ.val.map Δ'` using `(hLM k).1 _ _ (IrrGL.of π hs hi) (hL.of_equiv (IrrGL.equivOf π hs hi)) (hL'.of_equiv (IrrGL.equivOf π hs hi))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hno : ∀ Γ ∈ ∑ j, 𝔪 j, ∀ Γ' ∈ ∑ j, 𝔪 j, ¬ Γ.Linked Γ'`. Rewrite using `[heq]`. Introduce `Γ hΓ Γ' hΓ' hl`. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hΓ`. Take `⟨i', -, rfl⟩` from `Multiset.mem_map.1 hΓ'`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `e : i = i'`. Substitute `e` using the available equality. Conclude with `Segment.not_linked_self _ hl`. Conclude with `hunl i i' e hl`. Establish `hgood : ∀ (w : IrrGL k) (r : ℝ), IsUnitarySpeh w → w.nu (r : ℂ) ∈ List.ofFn x → IsUnitaryLSeg w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality.
 
-Introduce `w r hw hmem`. Take `⟨j, hj⟩` from `List.mem_ofFn.1 hmem`. Take `⟨𝔫, h1, -, h3⟩` from `key w r hw`. Break down `h3 with h3 | ⟨Γ, t, h4, h5⟩` into its components or cases. Conclude with `h3`.
-
-Establish `e : 𝔫 = 𝔪 j` using `(hLM k).1 _ _ (x j) (hj ▸ h1) (h𝔪L j)`. Substitute `e` using the available equality. Conclude with `absurd (hF k Γ t) (hno _ (Multiset.mem_sum.2 ⟨j, Finset.mem_univ _, h4⟩) _ (Multiset.mem_sum.2 ⟨j, Finset.mem_univ _, h5⟩))`. Use `⟨u, τ, fun w hw => hgood w 0 (hu1 w hw) ?_, fun p hp => ⟨hgood p.1 p.2 (hτ1 p hp).1 ?_, (hτ1 p hp).2⟩, h, x, hd, hx, ⟨φ⟩⟩` and prove the remaining obligations. Rewrite using `[hx]`.
-
-Simplify using `only [Complex.ofReal_zero, IrrGL.nu_zero]`. Conclude with `List.mem_append_left _ hw`. Rewrite using `[hx]`. Conclude with `List.mem_append_right _ (List.mem_flatMap.2 ⟨p, hp, by simp⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_lemmas (hA : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k], GlobalTheory.Published.StandardCosocleGL → (∀ (δ δ' : IrrGL k) (Δ Δ' : Segment k), IsLSeg Δ δ.rep → IsUnitarisable δ.rep → IsLSeg Δ' δ'.rep →
       IsUnitarisable δ'.rep → ∀ x y : ℝ, (Δ.nu x).Precedes (Δ'.nu y) → x + 1 ≤ y) →
@@ -147,7 +143,7 @@ theorem of_lemmas (hA : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
     exact List.mem_append_right _ (List.mem_flatMap.2 ⟨p, hp, by simp⟩)
 
 /- English proof (translation)
-The claim follows from `of_lemmas GlobalTheory.T.langlands_classification_unitary GlobalTheory.T.standard_module_properties GlobalTheory.T.speh_langlands_quotient GlobalTheory.T.segment_linked_shift`.
+A detailed English derivation is pending.
 -/
 theorem genericUnitaryDualGL_of_hypotheses : GlobalTheory.Published.UnitaryDualGL → GlobalTheory.Published.SquareIntegrableSegment →
     GlobalTheory.Published.GenericUnlinkedGL → GlobalTheory.Published.LanglandsMultisegments → GlobalTheory.Published.StandardCosocleGL →

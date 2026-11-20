@@ -7,7 +7,7 @@ namespace GlobalTheory.IwahoriNewtonTest
 
 open Finset Matrix in
 /- English proof (translation)
-Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, map_add, (IsLocalRing.residue_eq_zero_iff _).mpr (Ideal.mul_mem_right c _ hϖ), add_zero, IsLocalRing.residue_ne_zero_iff_isUnit]`. Conclude with `hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnit_add_mul_of_mem_maximalIdeal {O : Type*} [CommRing O] [IsLocalRing O] {ϖ : O}
     (hϖ : ϖ ∈ IsLocalRing.maximalIdeal O) {u : O} (hu : IsUnit u) (c : O) :
@@ -19,13 +19,11 @@ private theorem isUnit_add_mul_of_mem_maximalIdeal {O : Type*} [CommRing O] [IsL
 
 open Finset Matrix in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `i`. Rewrite using `[mul_apply, ← Finset.add_sum_erase _ _ (Finset.mem_univ i)]`. Establish `hs : ϖ ∣ ∑ l ∈ univ.erase i, A i l * B l i`. Use `Finset.dvd_sum fun l hl => ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Break down `lt_or_gt_of_ne (Finset.ne_of_mem_erase hl) with h | h` into its components or cases. Conclude with `Dvd.dvd.mul_right (hA' i l h) _`. Conclude with `Dvd.dvd.mul_left (hB' l i h) _`. Take `⟨c, hc⟩` from `hs`. Rewrite using `[hc]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isUnit_add_mul_of_mem_maximalIdeal hϖ ((hA i).mul (hB i)) c`. Introduce `i j hij`. Rewrite using `[mul_apply]`. Use `Finset.dvd_sum fun l _ => ?_` and prove the remaining obligations. Break down `lt_or_ge l i with h | h` into its components or cases.
-
-Conclude with `Dvd.dvd.mul_right (hA' i l h) _`. Conclude with `Dvd.dvd.mul_left (hB' l j (lt_of_lt_of_le hij h)) _`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem isUnit_diag_dvd_lower_mul {O : Type*} [CommRing O] [IsLocalRing O] {ϖ : O}
     (hϖ : ϖ ∈ IsLocalRing.maximalIdeal O) {r : ℕ} (A B : Matrix (Fin r) (Fin r) O)
@@ -52,9 +50,9 @@ private theorem isUnit_diag_dvd_lower_mul {O : Type*} [CommRing O] [IsLocalRing 
 
 open Finset Matrix in
 /- English proof (translation)
-Rewrite using `[← IsLocalRing.residue_ne_zero_iff_isUnit, RingHom.map_det]`. Establish `htri : (N.map (IsLocalRing.residue O)).BlockTriangular id`. Introduce `i j hij`. Take `⟨c, hc⟩` from `hl i j hij`. Simplify using `only [map_apply, hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `(IsLocalRing.residue_eq_zero_iff _).mpr (Ideal.mul_mem_right _ _ hϖ)`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.det_of_upperTriangular htri]`. Use `Finset.prod_ne_zero_iff.mpr fun i _ => ?_` and prove the remaining obligations. Simplify `hd i` using `[IsLocalRing.residue_ne_zero_iff_isUnit]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem isUnit_det_of_isUnit_diag_of_dvd_lower {O : Type*} [CommRing O] [IsLocalRing O] {ϖ : O}
     (hϖ : ϖ ∈ IsLocalRing.maximalIdeal O) {ι : Type*} [Fintype ι] [DecidableEq ι] [LinearOrder ι]
@@ -72,9 +70,9 @@ private theorem isUnit_det_of_isUnit_diag_of_dvd_lower {O : Type*} [CommRing O] 
 
 open Finset Matrix in
 /- English proof (translation)
-Establish `: (univ.filter fun j : Fin r => r - k ≤ (j : ℕ)).map Fin.valEmbedding = Finset.Ico (r - k) r`. Use extensionality with `x`. Simplify using `only [mem_map, mem_filter, mem_univ, true_and, Fin.valEmbedding_apply, mem_Ico]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨hj, j.2⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨x, h2⟩, h1, rfl⟩`. Rewrite using `[← card_map, this, Nat.card_Ico]`. Use linear arithmetic over natural numbers and integers.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem card_filter_sub_le_eq (r k : ℕ) (hk : k ≤ r) :
     (univ.filter fun j : Fin r => r - k ≤ (j : ℕ)).card = k := by
@@ -88,15 +86,15 @@ private theorem card_filter_sub_le_eq (r k : ℕ) (hk : k ≤ r) :
 
 open Finset Matrix in
 /- English proof (translation)
-Use `set T := univ.filter fun j : Fin r => r - k ≤ (j : ℕ)`. Establish `hcard : (s \ T).card = (T \ s).card`. Establish `h1` using `card_sdiff_add_card_inter s T`. Establish `h2` using `card_sdiff_add_card_inter T s`. Rewrite `h2` using `[inter_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hne' : (s \ T).Nonempty`. Rewrite using `[nonempty_iff_ne_empty, Ne, sdiff_eq_empty_iff_subset]`. Introduce `hsub`. Conclude with `hne (eq_of_subset_of_card_le hsub hs.ge)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx, hmin⟩` from `(s \ T).exists_min_image a hne'`. Establish `hlt : ∀ y ∈ T \ s, a y < a x`. Introduce `y hy`. Establish `hxT : ¬ (r - k ≤ (x : ℕ))` using `by simpa [T] using (mem_sdiff.mp hx).2`. Establish `hyT : r - k ≤ (y : ℕ)` using `by simpa [T] using (mem_sdiff.mp hy).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ha (show x < y from Fin.lt_def.mpr (by omega))`. Establish `hT : ∑ j ∈ T \ s, a j < ∑ j ∈ s \ T, a j`. Establish `hn : (T \ s).Nonempty` using `by rw [← card_pos, ← hcard]; exact card_pos.mpr hne'`. Combine the equalities or inequalities in the displayed calculation. Establish `e1` using `sum_sdiff (f := a) (inter_subset_left : s ∩ T ⊆ s)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `sum_sdiff (f := a) (inter_subset_right : s ∩ T ⊆ T)`. Rewrite `e1` using `[sdiff_inter_self_left]`. Rewrite `e2` using `[sdiff_inter_self_right]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem sum_filter_lt_sum_of_strictAnti {r : ℕ} {a : Fin r → ℕ} (ha : StrictAnti a) (k : ℕ)
     (s : Finset (Fin r)) (hs : s.card = (univ.filter fun j : Fin r => r - k ≤ (j : ℕ)).card)
@@ -131,19 +129,17 @@ private theorem sum_filter_lt_sum_of_strictAnti {r : ℕ} {a : Fin r → ℕ} (h
 open Finset Matrix in
 
 /- English proof (translation)
-Unfold `_root_.Formalism.PacketSums.IwahoriNewton`. Introduce `O _ _ ϖ hϖ r a ha i₁ i₂ h1 h2 h1' h2' k hk`. Establish `hc : ((i₁ * diagonal fun i => ϖ ^ a i) * i₂).charpoly = ((i₂ * i₁) * diagonal fun i => ϖ ^ a i).charpoly`. Rewrite using `[charpoly_mul_comm, ← mul_assoc]`. Take `⟨hU, hU'⟩` from `isUnit_diag_dvd_lower_mul hϖ i₂ i₁ h2 h1 h2' h1'`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set U := i₂ * i₁`. Establish `key` using `charpoly_coeff_eq_sum_minors (U * diagonal fun i => ϖ ^ a i) k (by simpa using hk)`. Rewrite `key` using `[Fintype.card_fin]`. Rewrite using `[hc, key]`. Establish `hminor : ∀ s : Finset (Fin r), ((U * diagonal fun i => ϖ ^ a i).submatrix (Subtype.val : s → Fin r) Subtype.val).det = ϖ ^ (∑ j ∈ s, a j) * (U.submatrix (Subtype.val : s → Fin r) Subtype.val).det`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Establish `: (U * diagonal fun i => ϖ ^ a i).submatrix (Subtype.val : s → Fin r) Subtype.val = U.submatrix Subtype.val Subtype.val * diagonal (fun j : s => ϖ ^ a j)`. Use extensionality with `i j`. Simplify using `[mul_diagonal]`. Rewrite using `[this, det_mul, det_diagonal, mul_comm, Finset.prod_pow_eq_pow_sum, Finset.sum_coe_sort s]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hunit : ∀ s : Finset (Fin r), IsUnit (U.submatrix (Subtype.val : s → Fin r) Subtype.val).det` using `fun s => isUnit_det_of_isUnit_diag_of_dvd_lower hϖ _ (fun i => hU i) (fun i j h => hU' i j h)`. Use `set T := univ.filter fun j : Fin r => r - k ≤ (j : ℕ)`. Establish `hT : T ∈ powersetCard k (univ : Finset (Fin r))` using `mem_powersetCard.mpr ⟨subset_univ _, card_filter_sub_le_eq r k hk⟩`. Rewrite using `[← add_sum_erase _ _ hT]`. Establish `hrest : ϖ ^ (∑ j ∈ T, a j + 1) ∣ ∑ s ∈ (powersetCard k univ).erase T, ((U * diagonal fun i => ϖ ^ a i).submatrix (Subtype.val : s → Fin r) Subtype.val).det`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `dvd_sum fun s hs => ?_` and prove the remaining obligations. Rewrite using `[hminor]`. Establish `hsT` using `ne_of_mem_erase hs`. Establish `hcs : s.card = T.card`. Rewrite using `[(mem_powersetCard.mp (mem_of_mem_erase hs)).2, card_filter_sub_le_eq r k hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Dvd.dvd.mul_right (pow_dvd_pow _ (sum_filter_lt_sum_of_strictAnti ha k s hcs hsT)) _`. Take `⟨c, hc'⟩` from `hrest`. Rewrite using `[hc', hminor, pow_succ, mul_assoc, ← mul_add]`. Use `⟨((isUnit_neg_one (α := O)).pow k |>.mul (isUnit_add_mul_of_mem_maximalIdeal hϖ (hunit T) c)).unit, ?_⟩` and prove the remaining obligations. Simplify using `only [IsUnit.unit_spec]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.IwahoriNewtonTest.intersectionNumber_baseChange : _root_.Formalism.PacketSums.IwahoriNewton := by
   unfold _root_.Formalism.PacketSums.IwahoriNewton
@@ -186,7 +182,7 @@ theorem _root_.GlobalTheory.IwahoriNewtonTest.intersectionNumber_baseChange : _r
   ring
 
 /- English proof (translation)
-Use `⟨?_, two_ne_zero, by decide, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.mem_span_singleton_self _`. Apply the tactic sequence `intro i; fin_cases i <;> simp`. Apply the tactic sequence `intro i j h; fin_cases i <;> fin_cases j <;> simp_all`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem premises_model :
     (2 : ℤ_[2]) ∈ IsLocalRing.maximalIdeal ℤ_[2] ∧ (2 : ℤ_[2]) ≠ 0 ∧

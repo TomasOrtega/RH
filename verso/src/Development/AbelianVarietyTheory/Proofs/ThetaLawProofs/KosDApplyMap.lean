@@ -18,9 +18,9 @@ open GlobalTheory.KeyKa
 namespace GlobalTheory.KosResidueExact
 
 /- English proof (translation)
-Break down `p with p | a` into its components or cases. Break down `q with q | a` into its components or cases. Simplify using `only [kosD, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `a.elim0`. Conclude with `a.elim0`.
+A detailed English derivation is pending.
 -/
 theorem kosD_apply_map {k K : Type} [CommRing k] [CommRing K] (f : k →+* K) {g : ℕ} {N : ℕ → ℕ}
     (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) k) (p q : KIx g 0 N) :
@@ -35,11 +35,11 @@ theorem kosD_apply_map {k K : Type} [CommRing k] [CommRing K] (f : k →+* K) {g
   · exact a.elim0
 
 /- English proof (translation)
-Take `⟨lam, hlam⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap k K) (LinearMap.ker_eq_bot.2 (algebraMap k K).injective)`. Establish `hl : ∀ a, lam (algebraMap k K a) = a` using `fun a => LinearMap.congr_fun hlam a`. Take `⟨w, hw⟩` from `H (fun p => algebraMap k K (v p)) (by`. Use function extensionality and compare the values at `p`. Use `congrArg (algebraMap k K) (congrFun hv p)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Pi.zero_apply, map_zero] at this ⊢`. Simplify `this)` using `only [kosD_apply_map]`. Use `⟨fun q => lam (w q), fun p hp => ?_⟩` and prove the remaining obligations. Use `congrArg lam (hw p hp)` as an intermediate fact. Rewrite `this` using `[hl]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, kosD_apply_map]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def, map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem descend {k K : Type} [Field k] [Field K] [Algebra k K] {g : ℕ} {N : ℕ → ℕ}
     (m : Fin g → ∀ j j', Matrix (Fin (N j)) (Fin (N j')) k)
@@ -66,9 +66,9 @@ theorem descend {k K : Type} [Field k] [Field K] [Algebra k K] {g : ℕ} {N : �
   rw [← Algebra.smul_def, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Establish `: m' = fun i j j' => (m i j j').map f`. Use function extensionality and compare the values at `i j j'`. Use extensionality with `k k'`. Conclude with `hm i j j' k k'`.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Substitute using the available equality.
 
-Substitute `this` using the available equality. Conclude with `H`.
+A detailed English derivation is pending.
 -/
 theorem transport {O K : Type} [CommRing O] [CommRing K] (f : O →+* K) {g g' : ℕ} (hg : g' = g) (l n : ℕ)
     (m : Fin g → ∀ j j', Matrix (Fin ((l - j * n) ^ g)) (Fin ((l - j' * n) ^ g)) O)
@@ -90,9 +90,9 @@ theorem transport {O K : Type} [CommRing O] [CommRing K] (f : O →+* K) {g g' :
   exact H
 
 /- English proof (translation)
-Introduce `hL O _ _ _ k _ f x n l s b m hn hl hb hm hZ`. Take `⟨x', φ, w, hg, s', b', m', -, -, -, hb', hm', hmm, hZ'⟩` from `GlobalTheory.T.exists_keyData_baseChange_sections_matrices hL O (AlgebraicClosure k) ((algebraMap k (AlgebraicClosure k)).comp f) x n l s b m hl hb hm`. Establish `hfin : Finite (Sp (AlgebraicClosure k))` using `inferInstanceAs (Finite (PrimeSpectrum (AlgebraicClosure k)))`. Establish `hc : ∀ y : x'.P.A.left, ∃ i, y ∈ x'.P.L.U i` using `fun y => exists_chart x'.P.isLB y`. Use `choose c hc using hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H` using `(GlobalTheory.T.koszul_sections_exact_algClosed_polarisedAV hL (AlgebraicClosure k) x' n l s' b' m' c hn (by rw [hg]; exact hl) (hZ' hfin hZ) hb' hm' hc).1`. Establish `H'` using `transport ((algebraMap k (AlgebraicClosure k)).comp f) hg l n m m' hmm H`. Conclude with `descend (K := AlgebraicClosure k) (N := fun j => (l - j * n) ^ x.P.g) (fun i j j' => (m i j j').map f) H'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : Out.Laws → ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] (k : Type) [Field k] (f : O →+* k) (x : KeyIn O) (n l : ℕ) (s : Fin x.P.g → RR x n) (b : ∀ j, Fin ((l - j * n) ^ x.P.g) → RR x (l - j * n)) (m), 1 ≤ n → x.P.g * n < l → (∀ j ≤ x.P.g, IsBasis x (b j)) → IsMul x l s b m → FinZ x s → (∀ v : KIx x.P.g 0 (fun j => (l - j * n) ^ x.P.g) → k, (kosD (fun i j j' => (m i j j').map f) (fun _ => 0)).mulVec v = 0 → ∃ w, ∀ p, p.1 ≠ ∅ → v (.inl p) = (kosD (d := 0) (fun i j j' => (m i j j').map f) (fun _ => 0)).mulVec w (.inl p)) := by
   intro hL O _ _ _ k _ f x n l s b m hn hl hb hm hZ

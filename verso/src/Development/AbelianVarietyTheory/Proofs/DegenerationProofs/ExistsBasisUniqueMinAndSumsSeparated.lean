@@ -6,15 +6,15 @@ open Module
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `e.repr.injective (Finsupp.ext fun i => ?_)` and prove the remaining obligations. Establish `h1 : ∑ j, (e.repr (α j) i : ℝ) = ∑ j, (e.repr (β j) i : ℝ) + N' * (e.repr w i : ℝ)`. Use `congrArg (fun x => e.repr x i) h` as an intermediate fact. Simplify using `only [map_add, map_sum, map_nsmul, Finsupp.coe_add, Pi.add_apply, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.coe_smul, Pi.smul_apply, nsmul_eq_mul] at this`. Conclude with `this` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `bound : ∀ γ : Fin k → X, (∀ j i, |(e.repr (γ j) i : ℝ)| ≤ C) → |∑ j, (e.repr (γ j) i : ℝ)| ≤ D * C` using `fun γ hγ => by`. Use `(Finset.abs_sum_le_sum_abs _ _).trans ((Finset.sum_le_sum fun j _ => hγ j i).trans ?_)` and prove the remaining obligations. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Conclude with `mul_le_mul_of_nonneg_right (by exact_mod_cast hk) hC`. Establish `hA` using `abs_le.1 (bound α hα)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `abs_le.1 (bound β hβ)`. Establish `hpos : (0 : ℝ) < N'` using `lt_of_le_of_lt (by positivity) hN'`. Establish `h2 : (e.repr w i : ℝ) < 1`. Assume the negation of the conclusion as `hc`. Use `mul_le_mul_of_nonneg_left (not_lt.1 hc) hpos.le` as an intermediate fact.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear relations using `[hA.2, hB.1]`. Establish `h3 : (-1 : ℝ) < (e.repr w i : ℝ)`. Assume the negation of the conclusion as `hc`. Use `mul_le_mul_of_nonneg_left (not_lt.1 hc) hpos.le` as an intermediate fact. Combine the linear relations using `[hA.1, hB.2]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2' : e.repr w i < 1` using `by exact_mod_cast h2`. Establish `h3' : -1 < e.repr w i` using `by exact_mod_cast h3`. Simplify using `only [map_zero, Finsupp.coe_zero, Pi.zero_apply]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sum_eq_sum_add_nsmul {X : Type*} [AddCommGroup X] {ι : Type*}
     (e : Basis ι ℤ X) {C : ℝ} (hC : 0 ≤ C) {N' D k : ℕ} (hN' : 2 * (D : ℝ) * C < N') (hk : k ≤ D)
@@ -49,11 +49,11 @@ theorem eq_zero_of_sum_eq_sum_add_nsmul {X : Type*} [AddCommGroup X] {ι : Type*
   omega
 
 /- English proof (translation)
-Introduce `X _ _ _ q hq d g N N' D hd hg hN hN'`. Take `⟨e, -, h2, h3⟩` from `exists_reduced_basis_unique_min_of_le hd hg q (posDef_realExt_of_tendsto q hq)`. Establish `h0 : (0 : ℝ) ≤ 2 * (g : ℝ) * (2 : ℝ) ^ ((g : ℝ) / 2)` using `by positivity`. Establish `hN1 : (1 : ℤ) ≤ (N : ℤ)`. Establish `: (1 : ℝ) ≤ N` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Use `⟨e, fun i μ hμ => ?_, fun k α β hk hα hβ w h => ?_⟩` and prove the remaining obligations. Use `h3 (N : ℤ) (by push_cast; linarith) i μ hμ` as an intermediate fact. Simplify `this` using `only [natCast_zsmul]`. Establish `key : ∀ γ : Fin k → X, (∀ j w, q (γ j) ≤ q (γ j + N • w)) → ∀ j i, |(e.repr (γ j) i : ℝ)| ≤ (g : ℝ) * (3 / 2 : ℝ) ^ g * (2 : ℝ) ^ ((g : ℝ) / 2 - 1) * N` using `fun γ hγ j i => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h2 (N : ℤ) hN1 (γ j) (fun w => by simpa only [natCast_zsmul] using hγ j w) i` as an intermediate fact. Simplify `this` using `only [Int.cast_natCast]`. Conclude with `eq_zero_of_sum_eq_sum_add_nsmul e (by positivity) (by linarith) hk α β (key α hα) (key β hβ) w h`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_basis_unique_min_and_sums_separated :
     ∀ (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (q : QuadraticMap ℤ X ℝ), Filter.Tendsto q Filter.cofinite Filter.atTop → ∀ (d g N N' D : ℕ), finrank ℤ X = d → d ≤ g → 1 + 2 * (g : ℝ) * (2 : ℝ) ^ ((g : ℝ) / 2) < N → 2 * (D : ℝ) * ((g : ℝ) * (3 / 2 : ℝ) ^ g * (2 : ℝ) ^ ((g : ℝ) / 2 - 1)) * N < N' → ∃ e : Basis (Fin d) ℤ X, (∀ (i : Fin d) (μ : X), μ ≠ 0 → q (e i) < q (e i + N • μ) ∧ q (-e i) < q (-e i + N • μ)) ∧ ∀ (k : ℕ) (α β : Fin k → X), k ≤ D → (∀ j w, q (α j) ≤ q (α j + N • w)) → (∀ j w, q (β j) ≤ q (β j + N • w)) → ∀ w : X, ∑ j, α j = ∑ j, β j + N' • w → w = 0 := by

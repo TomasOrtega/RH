@@ -26,7 +26,7 @@ def complexUnitsHom {w : InfinitePlace K} (hw : w.IsComplex) : ℂˣ →ₜ* (w.
 
 omit [NumberField K] in
 /- English proof (translation)
-Rewrite using `[← ringEquivRealOfIsReal_apply]`. Conclude with `(ringEquivRealOfIsReal hw).apply_symm_apply _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extensionEmbeddingOfIsReal_realUnitsHom {w : InfinitePlace K} (hw : w.IsReal) (x : ℝˣ) :
     extensionEmbeddingOfIsReal hw ((realUnitsHom hw x : (w.Completion)ˣ) : w.Completion) = x := by
@@ -36,7 +36,7 @@ theorem extensionEmbeddingOfIsReal_realUnitsHom {w : InfinitePlace K} (hw : w.Is
 omit [NumberField K] in
 
 /- English proof (translation)
-The claim follows from `Units.ext ((ringEquivRealOfIsReal hw).symm_apply_apply _)`.
+A detailed English derivation is pending.
 -/
 theorem realUnitsHom_surjective {w : InfinitePlace K} (hw : w.IsReal) (a : (w.Completion)ˣ) :
     realUnitsHom hw (Units.map (ringEquivRealOfIsReal hw : w.Completion →+* ℝ).toMonoidHom a) = a :=
@@ -45,7 +45,7 @@ theorem realUnitsHom_surjective {w : InfinitePlace K} (hw : w.IsReal) (a : (w.Co
 omit [NumberField K] in
 
 /- English proof (translation)
-The claim follows from `Units.ext ((ringEquivComplexOfIsComplex hw).symm_apply_apply _)`.
+A detailed English derivation is pending.
 -/
 theorem complexUnitsHom_surjective {w : InfinitePlace K} (hw : w.IsComplex) (a : (w.Completion)ˣ) :
     complexUnitsHom hw
@@ -61,7 +61,7 @@ def ofInfinite : (InfiniteAdeleRing K)ˣ →* IdeleGroup K :=
 
 @[simp]
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((prodEquiv K) ((ContinuousMulEquiv.symm (prodEquiv K)) (x, 1))).1 = x`. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`. Use the proof step `@[simp]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toInfinite_ofInfinite (x : (InfiniteAdeleRing K)ˣ) : toInfinite K (ofInfinite x) = x := by
   change ((prodEquiv K) ((ContinuousMulEquiv.symm (prodEquiv K)) (x, 1))).1 = x
@@ -69,16 +69,16 @@ theorem toInfinite_ofInfinite (x : (InfiniteAdeleRing K)ˣ) : toInfinite K (ofIn
 
 @[simp]
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((prodEquiv K) ((ContinuousMulEquiv.symm (prodEquiv K)) (x, 1))).2 = 1`. Rewrite using `[ContinuousMulEquiv.apply_symm_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem toFinite_ofInfinite (x : (InfiniteAdeleRing K)ˣ) : toFinite K (ofInfinite x) = 1 := by
   change ((prodEquiv K) ((ContinuousMulEquiv.symm (prodEquiv K)) (x, 1))).2 = 1
   rw [ContinuousMulEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Apply `(prodEquiv K).injective` to reduce the goal to its premises. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `toInfinite K (ofFinite (toFinite K x) * ofInfinite (toInfinite K x)) = toInfinite K x`. Rewrite using `[map_mul, toInfinite_ofFinite, toInfinite_ofInfinite, one_mul]`. Express the relevant statement in the definitionally equal form `toFinite K (ofFinite (toFinite K x) * ofInfinite (toInfinite K x)) = toFinite K x`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_mul, toFinite_ofFinite, toFinite_ofInfinite, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ofFinite_mul_ofInfinite (x : IdeleGroup K) :
     ofFinite (toFinite K x) * ofInfinite (toInfinite K x) = x := by
@@ -102,14 +102,14 @@ theorem coe_infiniteComponent (w : InfinitePlace K) (x : (InfiniteAdeleRing K)ˣ
   rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem ofInfinite_map_infiniteAdeleSingle (w : InfinitePlace K) (a : (w.Completion)ˣ) :
     ofInfinite (Units.map (infiniteAdeleSingle w) a) = infiniteEmbedding w a :=
   Units.ext rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.coe_prod]`. Conclude with `Finset.univ_prod_mulSingle (fun w : InfinitePlace K ↦ (x : InfiniteAdeleRing K) w)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_map_infiniteAdeleSingle (x : (InfiniteAdeleRing K)ˣ) :
     ∏ w, Units.map (infiniteAdeleSingle w) (infiniteComponent w x) = x := by
@@ -119,7 +119,7 @@ theorem prod_map_infiniteAdeleSingle (x : (InfiniteAdeleRing K)ˣ) :
   exact Finset.univ_prod_mulSingle (fun w : InfinitePlace K ↦ (x : InfiniteAdeleRing K) w)
 
 /- English proof (translation)
-Use `conv_lhs => rw [← prod_map_infiniteAdeleSingle x]`. Rewrite using `[map_prod]`. Simplify using `only [ofInfinite_map_infiniteAdeleSingle]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ofInfinite_eq_prod (x : (InfiniteAdeleRing K)ˣ) :
     ofInfinite x = ∏ w, infiniteEmbedding w (infiniteComponent w x) := by
@@ -154,7 +154,7 @@ def infinitePositive : Subgroup (InfiniteAdeleRing K)ˣ where
 
 omit [NumberField K] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_infinitePositive {x : (InfiniteAdeleRing K)ˣ} :
     x ∈ infinitePositive K ↔ ∀ (w : InfinitePlace K) (hw : w.IsReal),
@@ -181,11 +181,11 @@ theorem infiniteSign_apply_val (x : (InfiniteAdeleRing K)ˣ) (w : {w : InfiniteP
 omit [NumberField K] in
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_infinitePositive, MonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `w`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[infiniteSign_apply_val, Pi.one_apply, Units.val_one, sign_eq_one_iff]`. Conclude with `h w.1 w.2`. Introduce `h w hw`. Establish `h'` using `congrArg Units.val (congrFun h ⟨w, hw⟩)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h'` using `[infiniteSign_apply_val, Pi.one_apply, Units.val_one, sign_eq_one_iff]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem infinitePositive_eq_ker : infinitePositive K = (infiniteSign K).ker := by
   ext x
@@ -210,7 +210,7 @@ def rayGroup (𝔪 : Ideal (𝓞 K)) : Subgroup (IdeleGroup K) :=
   (diagonal K).range ⊔ (idealLevel 𝔪).map ofFinite ⊔ (infinitePositive K).map ofInfinite
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[mem_standardOpenSubgroup_iff_toFinite_mem, toFinite_ofFinite]`. Conclude with `finiteLevel_le_finiteLevel_zero _ hx`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_idealLevel_le_standardOpenSubgroup (𝔪 : Ideal (𝓞 K)) :
     (idealLevel 𝔪).map ofFinite ≤ standardOpenSubgroup K := by
@@ -219,7 +219,7 @@ theorem map_idealLevel_le_standardOpenSubgroup (𝔪 : Ideal (𝓞 K)) :
   exact finiteLevel_le_finiteLevel_zero _ hx
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, -, rfl⟩`. Rewrite using `[mem_standardOpenSubgroup_iff_toFinite_mem, toFinite_ofInfinite]`. Conclude with `one_mem _`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_infinitePositive_le_standardOpenSubgroup :
     (infinitePositive K).map ofInfinite ≤ standardOpenSubgroup K := by
@@ -228,7 +228,7 @@ theorem map_infinitePositive_le_standardOpenSubgroup :
   exact one_mem _
 
 /- English proof (translation)
-The claim follows from `sup_le (sup_le le_sup_left ((map_idealLevel_le_standardOpenSubgroup 𝔪).trans le_sup_right)) (map_infinitePositive_le_standardOpenSubgroup.trans le_sup_right)`.
+A detailed English derivation is pending.
 -/
 theorem rayGroup_le (𝔪 : Ideal (𝓞 K)) :
     rayGroup K 𝔪 ≤ (diagonal K).range ⊔ standardOpenSubgroup K :=
@@ -236,11 +236,11 @@ theorem rayGroup_le (𝔪 : Ideal (𝓞 K)) :
     (map_infinitePositive_le_standardOpenSubgroup.trans le_sup_right)
 
 /- English proof (translation)
-Establish `hc : IsCompact (finiteLevel (K` using `K) 0 : Set (FiniteAdeleRing (𝓞 K) K)ˣ) := by`. Use `isCompact_finite_units_integral K using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, Set.mem_ofPred_eq, mem_finiteLevel]`. Use `forall_congr' fun v ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.zero_apply, unitsLevel_zero, Submonoid.mem_units_iff]`. Both sides reduce to the same expression. Establish `: CompactSpace (finiteLevel (K` using `K) 0) := isCompact_iff_compactSpace.1 hc`. Establish `hm : HasFiniteMulSupport fun v : HeightOneSpectrum (𝓞 K) ↦ v.asIdeal ^ multiplicity v.asIdeal 𝔪`. Simplify `Ideal.hasFiniteMulSupport h𝔪` using `only [HeightOneSpectrum.maxPowDividing_eq_pow_multiplicity h𝔪]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hs : (support fun v : HeightOneSpectrum (𝓞 K) ↦ multiplicity v.asIdeal 𝔪).Finite`. Rewrite using `[← mulSupport_asIdeal_pow]`. Conclude with `hm`. Conclude with `Subgroup.quotient_finite_of_isOpen _ ((isOpen_finiteLevel hs).preimage continuous_subtype_val)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_quotient_idealLevel {𝔪 : Ideal (𝓞 K)} (h𝔪 : 𝔪 ≠ ⊥) :
     Finite (finiteLevel (K := K) 0 ⧸ (idealLevel 𝔪).subgroupOf (finiteLevel 0)) := by
@@ -271,9 +271,9 @@ def standardOpenFiniteHom (𝔪 : Ideal (𝓞 K)) :
     fun u ↦ (mem_standardOpenSubgroup_iff_toFinite_mem _).1 u.2)
 
 /- English proof (translation)
-Introduce `u hu`. Take `⟨h1, h2⟩` from `Subgroup.mem_inf.1 hu`. Rewrite `h1` using `[MonoidHom.mem_ker, standardOpenInfiniteHom, MonoidHom.comp_apply, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`. Rewrite `h2` using `[MonoidHom.mem_ker, standardOpenFiniteHom, MonoidHom.comp_apply, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff, Subgroup.mem_subgroupOf]`. Rewrite using `[Subgroup.mem_subgroupOf, ← ofFinite_mul_ofInfinite (u : IdeleGroup K)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (Subgroup.mem_sup_left ⟨_, h2, rfl⟩) (Subgroup.mem_sup_right ⟨_, h1, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem ker_inf_ker_le (𝔪 : Ideal (𝓞 K)) :
     (standardOpenInfiniteHom (K := K)).ker ⊓ (standardOpenFiniteHom 𝔪).ker ≤
@@ -297,15 +297,13 @@ variable (K) in
 abbrev RayClassGroup (𝔪 : Ideal (𝓞 K)) : Type _ := IdeleGroup K ⧸ rayGroup K 𝔪
 
 /- English proof (translation)
-Use `set R := rayGroup K 𝔪`. Use `set U := standardOpenSubgroup K`. Use `set M := (diagonal K).range ⊔ U`. Establish `hM : M.FiniteIndex`. Rewrite using `[show M = (IdeleGroup.toClassGroup (K := K)).ker from (ker_toClassGroup).symm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subgroup.finiteIndex_ker _`. Establish `: Finite ((InfiniteAdeleRing K)ˣ ⧸ infinitePositive K)` using `Subgroup.finite_quotient_of_finiteIndex`. Establish `: Finite (finiteLevel (K` using `K) 0 ⧸ (idealLevel 𝔪).subgroupOf (finiteLevel 0)) := finite_quotient_idealLevel h𝔪`. Establish `: Finite (standardOpenInfiniteHom (K` using `K)).range := Finite.of_injective _ Subtype.val_injective`. Establish `: Finite (standardOpenFiniteHom (K` using `K) 𝔪).range := Finite.of_injective _ Subtype.val_injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (standardOpenInfiniteHom (K` using `K)).ker.FiniteIndex := Subgroup.finiteIndex_ker _`. Establish `: (standardOpenFiniteHom (K` using `K) 𝔪).ker.FiniteIndex := Subgroup.finiteIndex_ker _`. Establish `h2 : (((idealLevel 𝔪).map ofFinite ⊔ (infinitePositive K).map ofInfinite).subgroupOf U).FiniteIndex` using `Subgroup.finiteIndex_of_le (ker_inf_ker_le 𝔪)`. Establish `hWP : (idealLevel 𝔪).map ofFinite ⊔ (infinitePositive K).map ofInfinite ≤ R` using `sup_le (le_sup_right.trans le_sup_left) le_sup_right`. Establish `h3 : (R.subgroupOf U).FiniteIndex` using `Subgroup.finiteIndex_of_le fun x hx ↦ Subgroup.mem_subgroupOf.2 (hWP (Subgroup.mem_subgroupOf.1 hx))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hUR : U ⊔ R = M` using `le_antisymm (sup_le le_sup_right (rayGroup_le 𝔪)) (sup_le ((le_sup_left.trans le_sup_left).trans le_sup_right) le_sup_left)`. Establish `hRM : R.relIndex M ≠ 0`. Rewrite using `[← hUR, Subgroup.relIndex_sup_right]`. Conclude with `h3.index_ne_zero`. Establish `hR : R.index ≠ 0`.
-
-Rewrite using `[← Subgroup.relIndex_mul_index (rayGroup_le 𝔪)]`. Conclude with `mul_ne_zero hRM hM.index_ne_zero`. Conclude with `Subgroup.index_ne_zero_iff_finite.1 hR`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RayClassGroup.finite {𝔪 : Ideal (𝓞 K)} (h𝔪 : 𝔪 ≠ ⊥) : Finite (RayClassGroup K 𝔪) := by
   set R := rayGroup K 𝔪

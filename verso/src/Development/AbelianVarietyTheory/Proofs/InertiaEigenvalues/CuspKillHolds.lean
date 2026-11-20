@@ -15,15 +15,11 @@ open GlobalTheory.RawLift
 namespace GlobalTheory.CuspKillProof
 
 /- English proof (translation)
-Introduce `D W ν hν s I hI Γ hΓQ hNΓ hnorm 𝓓 h𝓓 Φ φ hΦc hΦΓ hΦN hφ hcusp hint`. Take `⟨i1, i2, i3⟩` from `GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D W`. Use `haveI : BorelSpace (GA D W) := ⟨rfl⟩`. Use `haveI : Countable (GQ W) := GlobalTheory.AutomorphicL2Unitary.countable_of_discrete`. Use `haveI : Countable Γ := Function.Injective.countable (Subgroup.inclusion_injective hΓQ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hNc : IsClosed (NI W I : Set (GA D W))`. Rewrite using `[← GlobalTheory.Cusp.NA_frameFlag hI]`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField D.host.F`. Conclude with `GlobalTheory.Cusp.IsoFlag.isClosed_unip _ _ _`. Establish `hcc : GlobalTheory.Cusp.Cocompact (GQ W) (NI W I)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite using `[← GlobalTheory.Cusp.NA_frameFlag hI]`. Conclude with `GlobalTheory.Cusp.cocompact_single _`. Use `haveI : LocallyCompactSpace (NI W I) := hNc.locallyCompactSpace`. Establish `hsub : Γ.subgroupOf (NI W I) = (GQ W).subgroupOf (NI W I)`. Use extensionality with `x`.
-
-Simplify using `only [Subgroup.mem_subgroupOf]`. Conclude with `⟨fun h => hΓQ h, fun h => hNΓ ⟨x.2, h⟩⟩`. Use `set κ : Measure (NI W I) := Measure.haar`. Use `set 𝓝 : Set (NI W I) := GlobalTheory.AutomorphicL2Unitary.stdDom ((GQ W).subgroupOf (NI W I))`. Establish `h𝓝Q : IsFundamentalDomain ((GQ W).subgroupOf (NI W I)) 𝓝 κ` using `GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom _ κ`.
-
-Establish `h𝓝Γ : IsFundamentalDomain (Γ.subgroupOf (NI W I)) 𝓝 κ` using `by rw [hsub]; exact h𝓝Q`. Establish `h𝓝t : κ 𝓝 ≠ ⊤` using `hcc.measure_ne_top h𝓝Q`. Establish `h0 : ∀ g, ∫ n in 𝓝, φ ((n : GA D W) * g) ∂κ = 0` using `hcusp s I hI κ 𝓝 inferInstance h𝓝Q`. Conclude with `GlobalTheory.UnfoldNormal.unfold_zero_mean (GA D W) ν Γ (NI W I) inferInstance hNc hnorm κ 𝓝 inferInstance h𝓝Γ h𝓝t Φ φ hΦc.measurable hφ.cont.measurable hΦN hΦΓ (fun γ hγ g => hφ.left γ (hΓQ hγ) g) h0 𝓓 h𝓓 hint`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cuspKill_holds : ∀ D : D7, CuspKill D := by
   intro D W ν hν s I hI Γ hΓQ hNΓ hnorm 𝓓 h𝓓 Φ φ hΦc hΦΓ hΦN hφ hcusp hint

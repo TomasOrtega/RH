@@ -17,7 +17,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BigOn.Exp
 
 /- English proof (translation)
-Introduce `eps Fm x hx i p hp hM t ht hlow j`. Take `⟨hc, -, hu, -⟩` from `GlobalTheory.T.second_link_of_weight_rows _ _ _ _ _ _ _ _ _ _ p hp hM.1`. Establish `hTie : TieIn p.T p.R.toRealDat p.κ p.v₀` using `⟨p.fw.laws, p.fw.alg_eq, p.fw.kap, p.fw.hv₀, p.fw.chiR, p.fw.x0⟩`. Conclude with `{ size := (Fm.parT x hx i).nV_ge host := p.host std := GlobalTheory.StdFrame.vStd_of_orthonormal_span _ j (p.stdV j) laws := p.fw.laws core := { lev := hc.lev grp := ⟨hc.grp.red_R, hc.grp.red_L, hc.grp.levels, hc.grp.record, hc.grp.chiW⟩ fam := ⟨hc.fam.tie, hc.fam.Sb, hc.fam.root …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ratHyp0_at_point : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (p : Pt Fm x hx i), p.Rows → More p →
   ∀ t : (Fm.D x i).ntw.Tw, (Fm.D x i).ntw.NonzeroIndexPlace t →

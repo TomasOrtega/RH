@@ -10,9 +10,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hx : ⊤ ≤ x ⁻¹ᵁ U` using `fun p _ => by`. Establish `hsp : (p : PrimeSpectrum P) ⤳ closedPoint P` using `(PrimeSpectrum.le_iff_specializes _ _).mp (IsLocalRing.le_maximalIdeal (p : PrimeSpectrum P).isPrime.ne_top)`. Conclude with `hsp.mem_open (x ⁻¹ᵁ U).isOpen h`. Use `⟨(x.appLE U ⊤ hx ≫ (Scheme.ΓSpecIso (CommRingCat.of P)).hom).hom, ?_⟩` and prove the remaining obligations. Establish `h` using `IsAffineOpen.SpecMap_appLE_fromSpec x hU (isAffineOpen_top (Spec (CommRingCat.of P))) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[IsAffineOpen.fromSpec_top, Scheme.isoSpec_Spec_inv]`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_comp, Category.assoc, h, ← Category.assoc, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bxFibre_exists_chart {Y : Scheme.{0}} {U : Y.Opens} (hU : IsAffineOpen U) {P : Type}
     [CommRing P] [IsLocalRing P] (x : Spec (CommRingCat.of P) ⟶ Y)
@@ -31,7 +31,7 @@ theorem bxFibre_exists_chart {Y : Scheme.{0}} {U : Y.Opens} (hU : IsAffineOpen U
     Iso.inv_hom_id, Spec.map_id, Category.id_comp]
 
 /- English proof (translation)
-Use `(Scheme.Hom.comp_apply _ _ _).trans (congrArg (fun y => x y) ?_)` and prove the remaining obligations. Conclude with `IsLocalRing.comap_closedPoint f`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem bxFibre_closed {Y : Scheme.{0}} {P Q : Type} [CommRing P] [IsLocalRing P] [CommRing Q]
     [IsLocalRing Q] (f : P →+* Q) [IsLocalHom f] (x : Spec (CommRingCat.of P) ⟶ Y) :
@@ -40,7 +40,7 @@ theorem bxFibre_closed {Y : Scheme.{0}} {P Q : Type} [CommRing P] [IsLocalRing P
   exact IsLocalRing.comap_closedPoint f
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bxFibre_comp {Y : Scheme.{0}} {A P Q : Type} [CommRing A] [CommRing P] [CommRing Q]
     (φ : A →+* P) (f : P →+* Q) (g : Spec (CommRingCat.of A) ⟶ Y) :
@@ -50,7 +50,7 @@ theorem bxFibre_comp {Y : Scheme.{0}} {A P Q : Type} [CommRing A] [CommRing P] [
   rfl
 
 /- English proof (translation)
-Rewrite `h` using `[cancel_mono]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bxFibre_inj {Y : Scheme.{0}} {U : Y.Opens} (hU : IsAffineOpen U) {P : Type}
     [CommRing P] {φ ψ : Γ(Y, U) →+* P}
@@ -60,7 +60,7 @@ theorem bxFibre_inj {Y : Scheme.{0}} {U : Y.Opens} (hU : IsAffineOpen U) {P : Ty
   exact congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
 /- English proof (translation)
-Take `⟨_, ⟨U, hU, rfl⟩, hmem, -⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ y) isOpen_univ`. Conclude with `⟨U, hU, hmem⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bxFibre_affine {Y : Scheme.{0}} (y : Y) : ∃ U : Y.Opens, IsAffineOpen U ∧ y ∈ U := by
   obtain ⟨_, ⟨U, hU, rfl⟩, hmem, -⟩ := Y.isBasis_affineOpens.exists_subset_of_mem_open
@@ -68,11 +68,11 @@ theorem bxFibre_affine {Y : Scheme.{0}} (y : Y) : ∃ U : Y.Opens, IsAffineOpen 
   exact ⟨U, hU, hmem⟩
 
 /- English proof (translation)
-Take `⟨U, hU, hmem⟩` from `bxFibre_affine (c (closedPoint F))`. Establish `hmem' : c' (closedPoint F) ∈ U`. Rewrite using `[← bxFibre_closed p c', ← hp, bxFibre_closed p c]`. Conclude with `hmem`. Take `⟨φ, hφ⟩` from `bxFibre_exists_chart hU c hmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, hψ⟩` from `bxFibre_exists_chart hU c' hmem'`. Rewrite `hp`, `hq`, the goal using `[hφ, hψ]`. Establish `h1 : p.comp φ = p.comp ψ` using `bxFibre_inj hU ((bxFibre_comp φ p hU.fromSpec).symm.trans (hp.trans (bxFibre_comp ψ p hU.fromSpec)))`. Establish `h2 : q.comp φ = q.comp ψ` using `bxFibre_inj hU ((bxFibre_comp φ q hU.fromSpec).symm.trans (hq.trans (bxFibre_comp ψ q hU.fromSpec)))`. Establish `: φ = ψ` using `RingHom.ext fun s => hinj _ _ (RingHom.congr_fun h1 s) (RingHom.congr_fun h2 s)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem bxFibre_unique {Y : Scheme.{0}} {F P Q : Type} [CommRing F] [IsLocalRing F] [CommRing P]
     [IsLocalRing P] [CommRing Q] (p : F →+* P) [IsLocalHom p] (q : F →+* Q)
@@ -96,13 +96,11 @@ theorem bxFibre_unique {Y : Scheme.{0}} {F P Q : Type} [CommRing F] [IsLocalRing
   rw [this]
 
 /- English proof (translation)
-Take `⟨U, hU, hmem⟩` from `bxFibre_affine (a (closedPoint P))`. Establish `hmem' : b (closedPoint Q) ∈ U`. Rewrite using `[← bxFibre_closed g b, ← h, bxFibre_closed f a]`. Conclude with `hmem`. Take `⟨φ, hφ⟩` from `bxFibre_exists_chart hU a hmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, hψ⟩` from `bxFibre_exists_chart hU b hmem'`. Rewrite `h`, the goal using `[hφ, hψ]`. Use `erw [bxFibre_comp, bxFibre_comp] at h`. Establish `h1` using `bxFibre_inj hU h`. Establish `h2 : ∀ s, ∃ c, p c = φ s ∧ q c = ψ s` using `fun s => (hex _ _ (RingHom.congr_fun h1 s)).exists`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose k hk hk' using h2`. Set `χ : Γ(Y, U) →+* F` to `{ toFun := k map_one' := hinj _ _ (by simp [hk]) (by simp [hk']) map_mul' := fun s t => hinj _ _ (by simp [hk]) (by simp [hk']) map_zero' := hinj _ _ (by simp [hk]) (by simp [hk']) map_add' := fun s t => hinj _ _ (by simp [hk]) (by simp [hk']) }`. Use `⟨Spec.map (CommRingCat.ofHom χ) ≫ hU.fromSpec, ?_, ?_⟩` and prove the remaining obligations. Use `erw [bxFibre_comp]`. Establish `: p.comp χ = φ` using `RingHom.ext hk`.
-
-Rewrite using `[this]`. Use `erw [bxFibre_comp]`. Establish `: q.comp χ = ψ` using `RingHom.ext hk'`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bxFibre_exists {Y : Scheme.{0}} {F P Q R : Type} [CommRing F] [CommRing P]
     [IsLocalRing P] [CommRing Q] [IsLocalRing Q] [CommRing R] [IsLocalRing R]
@@ -140,13 +138,11 @@ theorem bxFibre_exists {Y : Scheme.{0}} {F P Q R : Type} [CommRing F] [CommRing 
     rw [this]
 
 /- English proof (translation)
-Introduce `R₀ _ X F R₁ R₂ R p₁ p₂ f₁ f₂ hsq a b hab`. Take `⟨hc, -, -, hex⟩` from `hsq`. Use `haveI : IsLocalHom p₁.1.toRingHom := p₁.2`. Use `haveI : IsLocalHom f₁.1.toRingHom := f₁.2`. Use `haveI : IsLocalHom f₂.1.toRingHom := f₂.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinj : ∀ s t, p₁.1.toRingHom s = p₁.1.toRingHom t → p₂.1.toRingHom s = p₂.1.toRingHom t → s = t` using `fun s t h1 h2 => (hex (p₁.1 t) (p₂.1 t) (AlgHom.congr_fun hc t)).unique ⟨h1, h2⟩ ⟨rfl, rfl⟩`. Take `⟨c, h1, h2⟩` from `bxFibre_exists (Y := X.left) p₁.1.toRingHom p₂.1.toRingHom f₁.1.toRingHom f₂.1.toRingHom hex hinj a.left b.left (congrArg (·.left) hab)`. Establish `hw : c ≫ X.hom = (sp (R₀` using `R₀) (F : Type)).hom := by`. Use `bxFibre_unique p₁.1.toRingHom p₂.1.toRingHom hinj _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(Over.w a).trans (Over.w (spMap p₁.1)).symm`. Rewrite using `[← Category.assoc, h2]`. Conclude with `(Over.w b).trans (Over.w (spMap p₂.1)).symm`. Use `⟨Over.homMk c hw, ⟨Over.OverMorphism.ext h1, Over.OverMorphism.ext h2⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `c' ⟨k1, k2⟩`.
-
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `bxFibre_unique (Y := X.left) p₁.1.toRingHom p₂.1.toRingHom hinj _ _ ((congrArg (·.left) k1).trans h1.symm) ((congrArg (·.left) k2).trans h2.symm)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem points_fibre_product :
   (∀ {R₀ : Type} [CommRing R₀] (X : Over (Spec (CommRingCat.of R₀))) {F R₁ R₂ R : LAlg R₀} (p₁ : LHom F R₁) (p₂ : LHom F R₂) (f₁ : LHom R₁ R) (f₂ : LHom R₂ R),

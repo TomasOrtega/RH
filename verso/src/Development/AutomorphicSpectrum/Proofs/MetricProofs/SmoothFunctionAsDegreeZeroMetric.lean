@@ -26,7 +26,7 @@ def deproj (p : (k : K) → ι k) (M : (Σ k, ι k × ι k) → ℂ) : (Σ k, ι
   fun q => M ⟨q.1, (q.2, p q.1)⟩ / M ⟨q.1, (p q.1, p q.1)⟩
 
 /- English proof (translation)
-Establish `hb : z ∈ HermExtend.blocksNe ι` using `fun k => ⟨p k, hz k⟩`. Establish `hn : ((HermExtend.blkSq z k : ℝ) : ℂ) ≠ 0`. Conclude with `(HermExtend.blkSq_pos hb k).ne'` after adjusting the coercions. Conclude with `mul_ne_zero (mul_ne_zero (hz k) ((map_ne_zero _).2 (hz k))) (inv_ne_zero hn)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem proj_diag_ne {p : (k : K) → ι k} {z : (Σ k, ι k) → ℂ} (hz : ∀ k, z ⟨k, p k⟩ ≠ 0) (k : K) :
     HermExtend.proj z ⟨k, (p k, p k)⟩ ≠ 0 := by
@@ -36,9 +36,9 @@ theorem proj_diag_ne {p : (k : K) → ι k} {z : (Σ k, ι k) → ℂ} (hz : ∀
   exact mul_ne_zero (mul_ne_zero (hz k) ((map_ne_zero _).2 (hz k))) (inv_ne_zero hn)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Take `⟨k, i⟩` from `q`. Establish `hb : z ∈ HermExtend.blocksNe ι` using `fun k => ⟨p k, hz k⟩`. Establish `hn : ((HermExtend.blkSq z k : ℝ) : ℂ) ≠ 0`. Conclude with `(HermExtend.blkSq_pos hb k).ne'` after adjusting the coercions.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : starRingEnd ℂ (z ⟨k, p k⟩) ≠ 0` using `(map_ne_zero _).2 (hz k)`. Establish `h1` using `hz k`. Simplify using `only [deproj, HermExtend.proj, affCoord]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem deproj_proj {p : (k : K) → ι k} {z : (Σ k, ι k) → ℂ} (hz : ∀ k, z ⟨k, p k⟩ ≠ 0) :
     deproj p (HermExtend.proj z) = affCoord p z := by
@@ -53,7 +53,7 @@ theorem deproj_proj {p : (k : K) → ι k} {z : (Σ k, ι k) → ℂ} (hz : ∀ 
   field_simp
 
 /- English proof (translation)
-Use `contDiffAt_pi.2 fun q => ?_` and prove the remaining obligations. Simplify using `only [deproj, div_eq_mul_inv]`. Conclude with `(contDiff_apply ℝ ℂ _).contDiffAt.mul (ContDiffAt.inv (contDiff_apply ℝ ℂ _).contDiffAt (hM q.1))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffAt_deproj (p : (k : K) → ι k) {M : (Σ k, ι k × ι k) → ℂ}
     (hM : ∀ k, M ⟨k, (p k, p k)⟩ ≠ 0) : ContDiffAt ℝ 𝕟 (deproj p) M := by
@@ -63,7 +63,7 @@ theorem contDiffAt_deproj (p : (k : K) → ι k) {M : (Σ k, ι k × ι k) → �
     (ContDiffAt.inv (contDiff_apply ℝ ℂ _).contDiffAt (hM q.1))
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Conclude with `HermExtend.proj_smul c hc z'`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem proj_eq_of_sameOrbit {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') :
     HermExtend.proj z = HermExtend.proj z' := by
@@ -71,13 +71,11 @@ theorem proj_eq_of_sameOrbit {z z' : (Σ k, ι k) → ℂ} (h : SameOrbit z z') 
   exact HermExtend.proj_smul c hc z'
 
 /- English proof (translation)
-Use `haveI : CompleteSpace E := FiniteDimensional.complete ℂ E`. Use `haveI : CompleteSpace F := FiniteDimensional.complete ℂ F`. Establish `hT : HasFDerivAt a (fderiv ℂ a y₀) y₀` using `ha.differentiableAt.hasFDerivAt`. Take `⟨L, hL⟩` from `LinearMap.exists_leftInverse_of_injective ((fderiv ℂ a y₀ : E →L[ℂ] F) : E →ₗ[ℂ] F) hk`. Set `Lc : F →L[ℂ] E` to `LinearMap.toContinuousLinearMap L`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hLT : Lc.comp (fderiv ℂ a y₀) = ((ContinuousLinearEquiv.refl ℂ E : E ≃L[ℂ] E) : E →L[ℂ] E)`. Use extensionality with `v`. Conclude with `LinearMap.congr_fun hL v`. Establish `hψ : AnalyticAt ℂ (fun y => Lc (a y)) y₀` using `Lc.analyticAt _ |>.comp ha`. Establish `hd : HasFDerivAt (fun y => Lc (a y)) ((ContinuousLinearEquiv.refl ℂ E : E ≃L[ℂ] E) : E →L[ℂ] E) y₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hLT]`. Conclude with `Lc.hasFDerivAt.comp y₀ hT`. Establish `hc : ContDiffAt ℂ ω (fun y => Lc (a y)) y₀` using `hψ.contDiffAt`. Establish `hn : (ω : WithTop ℕ∞) ≠ 0` using `by simp`. Establish `hg` using `hc.to_localInverse hd hn`.
-
-Use `⟨fun w => hc.localInverse hd hn (Lc w), ?_, hc.localInverse_apply_image hd hn, (hc.hasStrictFDerivAt' hd hn).eventually_left_inverse⟩` and prove the remaining obligations. Establish `hga : AnalyticAt ℂ (hc.localInverse hd hn) (Lc (a y₀))` using `hg.analyticAt`. Establish `ht : Filter.Tendsto Lc (𝓝 (a y₀)) (𝓝 (Lc (a y₀)))` using `Lc.continuous.tendsto _`. Use `filter_upwards [ht.eventually hga.eventually_analyticAt] with w hw`. Conclude with `hw.comp (Lc.analyticAt w)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_localLeftInverse {E F : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [FiniteDimensional ℂ E] [NormedAddCommGroup F] [NormedSpace ℂ F] [FiniteDimensional ℂ F]
@@ -109,17 +107,15 @@ theorem exists_localLeftInverse {E F : Type} [NormedAddCommGroup E] [NormedSpace
   exact hw.comp (Lc.analyticAt w)
 
 /- English proof (translation)
-Set `t : F → Set ℝ` to `fun w => {v | ∀ x, g x = w → v = u x}`. Establish `ht : ∀ w, Convex ℝ (t w)`. Introduce `w a ha b hb s r hs hr hsr x hx`. Use `show s • a + r • b = u x`. Rewrite using `[ha x hx, hb x hx, ← add_smul, hsr, one_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `Hloc : ∀ w, ∃ U ∈ 𝓝 w, ∃ f : F → ℝ, ContMDiffOn 𝓘(ℝ, F) 𝓘(ℝ, ℝ) 𝕟 f U ∧ ∀ y ∈ U, f y ∈ t y`. Introduce `w`. Distinguish the cases in `hw : w ∈ Set.range g`. Take `⟨x₀, rfl⟩` from `hw`. Take `⟨f, hf, hfu⟩` from `hloc x₀`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hN : x₀ ∈ interior {y | f (g y) = u y}` using `mem_interior_iff_mem_nhds.2 hfu`. Establish `hC : IsClosed (g '' (interior {y | f (g y) = u y})ᶜ)` using `(isOpen_interior.isClosed_compl.isCompact.image hg).isClosed`. Establish `hx : g x₀ ∉ g '' (interior {y | f (g y) = u y})ᶜ`. Introduce and unpack `⟨y, hy, e⟩`. Conclude with `hy (hinj e ▸ hN)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨{w | ContDiffAt ℝ 𝕟 f w} ∩ (g '' (interior {y | f (g y) = u y})ᶜ)ᶜ, Filter.inter_mem hf (hC.isOpen_compl.mem_nhds hx), f, ?_, ?_⟩` and prove the remaining obligations. Conclude with `contMDiffOn_iff_contDiffOn.2 fun w hw => (show ContDiffAt ℝ 𝕟 f w from hw.1).contDiffWithinAt`. Introduce and unpack `w ⟨_, hw⟩ x rfl`. Establish `hxN : x ∈ interior {y | f (g y) = u y}`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `hw ⟨x, h, rfl⟩`. Conclude with `(interior_subset hxN : x ∈ {y | f (g y) = u y})`. Use `⟨(Set.range g)ᶜ, (isCompact_range hg).isClosed.isOpen_compl.mem_nhds hw, fun _ => 0, contMDiffOn_const, ?_⟩` and prove the remaining obligations. Introduce and unpack `w hw x rfl`. Conclude with `absurd ⟨x, rfl⟩ hw`.
-
-Take `⟨v, hv⟩` from `exists_contMDiffMap_forall_mem_convex_of_local 𝓘(ℝ, F) (n := (⊤ : ℕ∞)) ht Hloc`. Conclude with `⟨v, contMDiff_iff_contDiff.1 v.contMDiff, fun x => hv (g x) x rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ext_of_local {X : Type} [TopologicalSpace X] [CompactSpace X] {F : Type}
     [NormedAddCommGroup F] [NormedSpace ℝ F] [FiniteDimensional ℝ F] {g : X → F}
@@ -163,7 +159,7 @@ theorem exists_ext_of_local {X : Type} [TopologicalSpace X] [CompactSpace X] {F 
 variable {P : Ideal (MRing ι)} {D : ℕ}
 
 /- English proof (translation)
-Introduce `h`. Use `h.2 1 trivial` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem not_mem_mcPts_top (z : (Σ k, ι k) → ℂ) : z ∉ mcPts (⊤ : Ideal (MRing ι)) := by
   intro h
@@ -171,9 +167,9 @@ theorem not_mem_mcPts_top (z : (Σ k, ι k) → ℂ) : z ∉ mcPts (⊤ : Ideal 
   simp at this
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun x₀ => ?_` and prove the remaining obligations. Establish `hU : R.U x₀ ∈ 𝓝 x₀` using `(R.isOpen_U x₀).mem_nhds (R.mem_U x₀)`. Establish `hl : ContinuousAt (fun y => R.lift x₀ y) x₀` using `continuousAt_pi.2 fun q => (continuousOn_lift R x₀ q).continuousAt hU`. Establish `hb : R.lift x₀ x₀ ∈ HermExtend.blocksNe ι` using `(R.mem x₀ x₀ (R.mem_U x₀)).1`. Establish `hp : ContinuousAt HermExtend.proj (R.lift x₀ x₀)` using `HermExtend.contDiffOn_proj.continuousOn.continuousAt (HermExtend.isOpen_blocksNe.mem_nhds hb)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ContinuousAt (fun y => HermExtend.proj (R.lift x₀ y)) x₀` using `ContinuousAt.comp (f := fun y => R.lift x₀ y) hp hl`. Use `hc.congr ?_` and prove the remaining obligations. Use `filter_upwards [hU] with y hy`. Conclude with `(proj_eq_of_sameOrbit (R.compat y x₀ y ⟨R.mem_U y, hy⟩)).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_diag (R : AnLogRes P ⊤ D) :
     Continuous fun x => HermExtend.proj (R.lift x x) := by
@@ -191,7 +187,7 @@ theorem continuous_diag (R : AnLogRes P ⊤ D) :
   exact (proj_eq_of_sameOrbit (R.compat y x₀ y ⟨R.mem_U y, hy⟩)).symm
 
 /- English proof (translation)
-Introduce `x x' h`. Take `⟨c, hc, e⟩` from `HermExtend.eq_smul_of_proj_eq (R.mem x' x' (R.mem_U x')).1 h`. Conclude with `(R.inj x' x (not_mem_mcPts_top _) ⟨c, hc, e⟩).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem injective_diag (R : AnLogRes P ⊤ D) :
     Function.Injective fun x => HermExtend.proj (R.lift x x) := by
@@ -200,21 +196,19 @@ theorem injective_diag (R : AnLogRes P ⊤ D) :
   exact (R.inj x' x (not_mem_mcPts_top _) ⟨c, hc, e⟩).symm
 
 /- English proof (translation)
-Establish `hz₀ : R.lift x₀ x₀ ∈ mcPts P` using `R.mem x₀ x₀ (R.mem_U x₀)`. Use `choose p hp using hz₀.1`. Take `⟨j, hj⟩` from `R.A.cover x₀`. Establish `hy₀ : R.A.chart j x₀ ∈ (R.A.chart j).target` using `(R.A.chart j).map_source hj`. Establish `hsy : (R.A.chart j).symm (R.A.chart j x₀) = x₀` using `(R.A.chart j).left_inv hj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyT : R.A.chart j x₀ ∈ (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' R.U x₀` using `⟨hy₀, by rw [Set.mem_preimage, hsy]; exact R.mem_U x₀⟩`. Establish `ha : AnalyticAt ℂ (fun y => affCoord p (R.lift x₀ ((R.A.chart j).symm y))) (R.A.chart j x₀)`. Use `analyticAt_pi_iff.2 fun q => ?_` and prove the remaining obligations. Establish `h1` using `R.holo x₀ q j _ hyT`. Establish `h2` using `R.holo x₀ ⟨q.1, p q.1⟩ j _ hyT`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `AnalyticAt.div h1 h2 ?_` and prove the remaining obligations. Simplify `hp q.1` using `[hsy]`. Establish `hk` using `R.immersion x₀ (not_mem_mcPts_top _) p hp j hj`. Take `⟨r, hr, hr0, hrl⟩` from `exists_localLeftInverse ha hk`. Establish `ha0 : deproj p (HermExtend.proj (R.lift x₀ x₀)) = affCoord p (R.lift x₀ ((R.A.chart j).symm (R.A.chart j x₀)))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[deproj_proj hp, hsy]`. Use `⟨fun w => u ((R.A.chart j).symm (r (deproj p w))), ?_, ?_⟩` and prove the remaining obligations. Establish `hdp` using `contDiffAt_deproj p (proj_diag_ne hp)`. Establish `hopen : ∀ᶠ w : (Σ k, ι k × ι k) → ℂ in 𝓝 (HermExtend.proj (R.lift x₀ x₀)), ∀ k, w ⟨k, (p k, p k)⟩ ≠ 0` using `Filter.eventually_all.2 fun k => ((continuous_apply (⟨k, (p k, p k)⟩ : Σ k, ι k × ι k)).continuousAt).eventually_ne (proj_diag_ne hp k)`. Establish `hcont : Filter.Tendsto (deproj p) (𝓝 (HermExtend.proj (R.lift x₀ x₀))) (𝓝 (affCoord p (R.lift x₀ ((R.A.chart j).symm (R.A.chart j x₀)))))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ha0]`. Conclude with `hdp.continuousAt.tendsto`. Establish `htar : ∀ᶠ w' in 𝓝 (affCoord p (R.lift x₀ ((R.A.chart j).symm (R.A.chart j x₀)))), r w' ∈ (R.A.chart j).target` using `hr.self_of_nhds.continuousAt.tendsto.eventually_mem ((R.A.chart j).open_target.mem_nhds (by rw [hr0]; exact hy₀))`. Use `filter_upwards [hopen, hcont.eventually hr, hcont.eventually htar] with w h1 h2 h3`. Establish `hus : ContDiffAt ℝ 𝕟 (u ∘ (R.A.chart j).symm) (r (deproj p w))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(hu j).contDiffAt ?_` and prove the remaining obligations. Establish `: (R.A.chart j).target ∩ (R.A.chart j).symm ⁻¹' Set.univ = (R.A.chart j).target` using `by simp`. Rewrite using `[this]`. Conclude with `(R.A.chart j).open_target.mem_nhds h3`. Establish `hrw : ContDiffAt ℝ 𝕟 r (deproj p w)` using `h2.contDiffAt.restrict_scalars ℝ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ContDiffAt.comp (g := u ∘ (R.A.chart j).symm) w hus (hrw.comp w (contDiffAt_deproj p h1))`. Establish `hl : ∀ᶠ y in 𝓝 x₀, r (affCoord p (R.lift x₀ ((R.A.chart j).symm (R.A.chart j y)))) = R.A.chart j y` using `((R.A.chart j).continuousAt hj).tendsto.eventually hrl`. Establish `hU : R.U x₀ ∈ 𝓝 x₀` using `(R.isOpen_U x₀).mem_nhds (R.mem_U x₀)`. Establish `hnz : ∀ᶠ y in 𝓝 x₀, ∀ k, R.lift x₀ y ⟨k, p k⟩ ≠ 0` using `Filter.eventually_all.2 fun k => ((continuousOn_lift R x₀ ⟨k, p k⟩).continuousAt hU).eventually_ne (hp k)`. Use `filter_upwards [hl, hnz, hU, (R.A.chart j).open_source.mem_nhds hj] with y h1 h2 h3 h4`.
-
-Establish `hs : (R.A.chart j).symm (R.A.chart j y) = y` using `(R.A.chart j).left_inv h4`. Rewrite `h1` using `[hs]`. Use `show u ((R.A.chart j).symm (r (deproj p (HermExtend.proj (R.lift y y))))) = u y`. Rewrite using `[proj_eq_of_sameOrbit (R.compat y x₀ y ⟨R.mem_U y, h3⟩), deproj_proj h2, h1, hs]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_ext (R : AnLogRes P ⊤ D) {u : R.X → ℝ} (hu : R.A.Smooth u) (x₀ : R.X) :
     ∃ f : ((Σ k, ι k × ι k) → ℂ) → ℝ,
@@ -278,9 +272,9 @@ theorem local_ext (R : AnLogRes P ⊤ D) {u : R.X → ℝ} (hu : R.A.Smooth u) (
 end SmoothExt
 
 /- English proof (translation)
-Introduce `K _ ι _ P D R u hu`. Take `⟨v, hv, hvu⟩` from `SmoothExt.exists_ext_of_local (SmoothExt.continuous_diag R) (SmoothExt.injective_diag R) (SmoothExt.local_ext R hu)`. Use `⟨{ a := 0, h := fun z => Real.exp (v (HermExtend.proj z)), pos := fun _ _ => Real.exp_pos _, smul := fun c z hc => ?_ }, rfl, ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `e : HermExtend.proj (fun p : Σ k, ι k => c p.1 * z p) = HermExtend.proj z` using `HermExtend.proj_smul c hc z`. Simplify using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(hv.comp_contDiffOn HermExtend.contDiffOn_proj).exp`. Use `show Real.log (Real.exp (v (HermExtend.proj (R.lift x x)))) = u x`. Rewrite using `[Real.log_exp]`. Conclude with `hvu x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hermLine_log_eq_of_smooth :
     ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι)) (D : ℕ)

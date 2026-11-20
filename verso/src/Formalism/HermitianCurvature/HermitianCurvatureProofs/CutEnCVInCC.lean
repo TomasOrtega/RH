@@ -10,7 +10,7 @@ open Formalism.REAL Formalism.QuantumDeterminants
 namespace Formalism.FourierDecayAlt.P.CutMP.En
 
 /- English proof (translation)
-The claim follows from `| [], _ => ⟨0, by simpa using (Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_zero (k := k) (r := r) (E := E) (A := A) (m := m))⟩ | cw :: L, hL => by have h1 : B.InCC A m (fun g => cw.1 • B.Rw cw.2 F g) := by have hw := hL cw (by simp) have h0 : B.InCC A (m + cw.2.length) F …`.
+A detailed English derivation is pending.
 -/
 theorem inCC_wordSum {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {A : ℝ} {m n : ℕ}
     {F : B.Mat k r → E} (hF : B.InCC A (m + n) F) :
@@ -31,9 +31,9 @@ theorem inCC_wordSum {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace 
     simpa [List.map_cons, List.sum_cons] using Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_add hc₁ hc₂
 
 /- English proof (translation)
-Introduce `k r E _ _ A m F Y s hF`. Take `⟨L, hLw, hCV⟩` from `Formalism.FourierDecayAlt.P.capelli_word_sum k r Y`. Establish `hck : B.CkOn ((2 * r + k + 1 : ℕ) : ℕ∞) (B.GV k r) F`. Take `⟨c, hc⟩` from `hF`. Conclude with `Formalism.FourierDecayAlt.P.B5.ckOn_mono (by exact_mod_cast Nat.le_add_left _ _) hc.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `inCC_wordSum hF L hLw`. Use `⟨_, Formalism.FourierDecayAlt.P.Qx8.CCle_congr (f := fun g => s • (L.map fun cw => cw.1 • B.Rw cw.2 F g).sum) ?_ (Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_smul s hc)⟩` and prove the remaining obligations. Introduce `g hg`. Rewrite using `[Pi.smul_apply, hCV E (B.GV k r) F hck g hg hg]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefficient_vector_in_L2_class : CVInCC := by
   intro k r E _ _ A m F Y s hF

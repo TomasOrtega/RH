@@ -13,9 +13,9 @@ open GlobalTheory.Doubling (absE)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d n₁ d₁ : ℕ}
 
 /- English proof (translation)
-Take `⟨t⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r x`. Express the relevant statement in the definitionally equal form `r ⊗ₜ[F] σ (σ x) = _`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[t.injective (show t (σ (σ x)) = t x by rw [h.2.2.2, h.2.2.2]; exact Complex.conj_conj _)]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem cA_cA (h : IsCMExt F E σ) (a : AE F E) : cA σ (cA σ a) = a := by
   obtain ⟨t⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -27,7 +27,7 @@ theorem cA_cA (h : IsCMExt F E σ) (a : AE F E) : cA σ (cA σ a) = a := by
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Simplify using `only [hTens, incM, Matrix.map_apply, map_sum, map_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem hTens_inc (J : Matrix (Fin n) (Fin n) E) (J' : Matrix (Fin d) (Fin d) E) (x y : Matrix (Fin n) (Fin d) E) :
     hTens (cA σ) (incM F J) (incM F J') (incM F x) (incM F y) = inclR (F := F) (AF F) (hTens σ J J' x y) := by
@@ -35,7 +35,7 @@ theorem hTens_inc (J : Matrix (Fin n) (Fin n) E) (J' : Matrix (Fin d) (Fin d) E)
   rfl
 
 /- English proof (translation)
-Simplify using `only [hTens, Matrix.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hTens_smul (J : Matrix (Fin n) (Fin n) E) (J' : Matrix (Fin d) (Fin d) E) (x y : Matrix (Fin n) (Fin d) E) (a b : E) :
     hTens σ J J' (a • x) (b • y) = a * σ b * hTens σ J J' x y := by
@@ -44,18 +44,18 @@ theorem hTens_smul (J : Matrix (Fin n) (Fin n) E) (J' : Matrix (Fin d) (Fin d) E
     Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `map_mul (inclR (F := F) (AF F)) _ _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem incM_smul (a : E) (x : Matrix (Fin n) (Fin d) E) : incM F (a • x) = inclR (F := F) (AF F) a • incM F x := by
   ext i j
   exact map_mul (inclR (F := F) (AF F)) _ _
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.Finite.of_basis b`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `h0 : hTens σ X.J W.J z₀ v₀ ≠ 0` using `fun h => by`. Rewrite `hu` using `[hTens_inc, h, map_zero]`. Conclude with `(hu.map (piInf (B.emb w))).ne_zero (map_zero _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i => (-σ (b.traceDual i) / hTens σ X.J W.J z₀ v₀) • z₀, fun j a => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[incM_smul, ← smul_assoc]`. Conclude with `hI _`. Rewrite using `[sy, symp, hTens_inc, hTens_smul, show -σ (b.traceDual i) / hTens σ X.J W.J z₀ v₀ * σ (b j) * hTens σ X.J W.J z₀ v₀ = -σ (b j * b.traceDual i) by rw [map_mul]; field_simp, map_neg, neg_one_mul, neg_neg]`. Express the relevant statement in the definitionally equal form `Algebra.trace (AF F) _ ((1 : AF F) ⊗ₜ[F] _) = _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[GlobalTheory.ThK.Dbl.Dense.trace_tmul, one_mul, show σ (b j * b.traceDual i) = AlgEquiv.ofBijective σ (Algebra.IsAlgebraic.algHom_bijective σ) (b j * b.traceDual i) from rfl, Algebra.trace_eq_of_algEquiv, Module.Basis.trace_mul_traceDual]`. Simplify using `only [eq_comm (a := i)]`. Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem exists_dual (B : Base F E) {X : Spc F E n} {W : Spc F E d} {I : Set (Ten F E n d)} {v₀ z₀ : Matrix (Fin n) (Fin d) E}
     (hI : ∀ a : AE F E, a • incM F z₀ ∈ I) (hu : IsUnit (hTens (cA σ) (incM F X.J) (incM F W.J) (incM F z₀) (incM F v₀)))
@@ -78,9 +78,7 @@ theorem exists_dual (B : Base F E) {X : Spc F E n} {W : Spc F E d} {I : Set (Ten
     split_ifs <;> simp
 
 /- English proof (translation)
-Use `haveI := h.1`. Rewrite using `[Algebra.smul_def, map_mul, norm_mul, normAtPlace_apply_of_isReal (IsTotallyReal.isReal w)]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `‖infEmb t (evInf F w y ⊗ₜ[F] (1 : E))‖ = ‖InfinitePlace.Completion.extensionEmbeddingOfIsReal (IsTotallyReal.isReal w) (y.1 w)‖`. Rewrite using `[infEmb_tmul, map_one, mul_one, (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal _).norm_map_of_map_zero (map_zero _)]`.
-
-Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_piInf_smul (h : IsCMExt F E σ) {w : InfinitePlace F} (t : EmbOver E w) (y : AF F) (β : AE F E) :
     ‖piInf t (y • β)‖ = normAtPlace w (evI F y) * ‖piInf t β‖ := by
@@ -98,35 +96,33 @@ def Nice {κ : Type} [Fintype κ] (μ : Measure (AE F E)ˣ) (z : ℕ) (v : AE F 
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `zero`. Use `⟨Empty, inferInstance, Empty.elim, fun i => i.elim, fun i => i.elim, fun i => i.elim, fun a => ?_, fun _ _ i => i.elim⟩` and prove the remaining obligations. Rewrite using `[Finset.univ_eq_empty, Finset.sum_empty, ← map_zero e]`. Conclude with `congrArg e (funext fun x => mul_zero _)`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨ι₁, _, φ, g, h1, h2, h3, h4⟩` from `hx`. Take `⟨ι₂, _, φ', g', h1', h2', h3', h4'⟩` from `hy`. Use `⟨ι₁ ⊕ ι₂, inferInstance, Sum.elim φ φ', Sum.elim g g', Sum.forall.2 ⟨h1, h1'⟩, Sum.forall.2 ⟨h2, h2'⟩, fun a => ?_, fun q hq => Sum.forall.2 ⟨h4 q hq, h4' q hq⟩⟩` and prove the remaining obligations. Rewrite using `[Fintype.sum_sum_type]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[← h3 a, ← h3' a, ← map_add]`. Use `congr 1`. Conclude with `funext fun x => mul_add _ _ _`. Consider the case `smul c x _ hx`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ι₁, _, φ, g, h1, h2, h3, h4⟩` from `hx`. Use `⟨ι₁, inferInstance, fun i => c • φ i, g, fun i => Submodule.smul_mem _ _ (h1 i), h2, fun a => ?_, h4⟩` and prove the remaining obligations. Simplify using `only [GlobalTheory.ThK.Dbl.Dense.pureA_smul]`. Rewrite using `[← Finset.smul_sum, ← h3 a, ← map_smul]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `funext fun x => mul_left_comm _ _ _`. Consider the case `mem x hx`. Take `⟨f, φ, hφ, rfl⟩` from `hx`. Take `⟨⟨_, -⟩, -, _, -, -, _, -⟩` from `ideleTop F E`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ _ _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : ContinuousSMul (AF F) (AE F E) := IsModuleTopology.toContinuousSMul _ _`. Set `b` to `Module.finBasis F E`. Set `Bt` to `Algebra.TensorProduct.basis (AF F) b`. Take `⟨zz, hD⟩` from `exists_dual B hI hu b`. Take `⟨r, φ₁, C, A, h1, h2, h3, h4, h5, h6⟩` from `hS F E σ B n d n₁ d₁ X W X₁ W₁ M M₁ hB hM hM₁ ι ι' I e he _ _ _ hD φ hφ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `y : AE F E → Fin (Module.finrank F E) → AF F` to `fun a => Bt.equivFun (τ a)`. Establish `hy : Continuous y` using `IsModuleTopology.continuous_of_linearMap (Bt.equivFun.toLinearMap ∘ₗ τ.toLinearMap)`. Establish `e1 : ∀ a, τ a = ∑ j, y a j • Bt j` using `fun a => (Bt.sum_equivFun _).symm`. Establish `e2 : ∀ a, a = ∑ j, y a j • τ (Bt j)` using `fun a => by conv_lhs => rw [← hτ a, e1 a, map_sum]`. Simplify using `only [map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Fin r, inferInstance, φ₁, fun i a => A i (y a) f, h1, fun i => (h3 i f).comp hy, fun a => ?_, fun q hq i => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← h4, lin, e1 a, Finset.sum_smul]`. Use `congr 2`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[incM_smul, smul_assoc, Algebra.TensorProduct.basis_apply]`. Both sides reduce to the same expression. Take `⟨N, hN⟩` from `hT F E σ B hB μ hμ z hz`. Take `⟨p, -, hp⟩` from `h6 q N hq`. Establish `hN'` using `hN _ (h2.image (f := fun c => ∑ j, mk 0 (c j) • τ (Bt j)) (continuous_finsetSum _ fun j _ => Continuous.smul (f := fun c : _ → Af F => mk 0 (c j)) (g := fun _ => τ (Bt j)) (continuous_const.prodMk (continuous_apply j)) continuous_const))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set K := ∑ j, ∑ w, ‖piInf (B.emb w) (τ (Bt j))‖ with hK`. Establish `hK0 : 0 ≤ K` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Use `⟨((hq.comp ((h3 i f).comp (hy.comp Units.continuous_val))).mul ((NNReal.continuous_coe.comp GlobalTheory.Doubling.continuous_absE).pow z)).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Use `lt_of_le_of_lt (lintegral_mono fun l => ?_) ((lintegral_indicator_le _ _).trans_lt ((lintegral_const_mul' (ENNReal.ofReal (p f * (1 + K) ^ N)) _ ENNReal.ofReal_ne_top).trans_lt (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hN')))` and prove the remaining obligations. Distinguish the cases in `hl : (fun j => (y l j).2) ∈ C`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem, ← ENNReal.ofReal_mul (by positivity), Real.enorm_eq_ofReal (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[← mul_div_assoc, mul_div_right_comm]`. Use `mul_le_mul_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[le_div_iff₀ (by positivity)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `le_trans ?_ (mul_le_mul_of_nonneg_right (hp i (y l) f) (by positivity))` and prove the remaining obligations. Rewrite using `[mul_assoc, ← mul_pow]`. Use `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) ?_ _) (apply_nonneg _ _)` and prove the remaining obligations. Use `set s := ∑ j, ∑ w : InfinitePlace F, normAtPlace w (evI F (y l j)) with hs`. Establish `hs1 : ∀ j w, normAtPlace w (evI F (y l j)) ≤ s` using `fun j w => (Finset.single_le_sum (fun w _ => normAtPlace_nonneg w _) (Finset.mem_univ w)).trans (Finset.single_le_sum (f := fun j => ∑ w : InfinitePlace F, normAtPlace w (evI F (y l j))) (fun j _ => Finset.sum_nonneg fun w _ => normAtPlace_nonneg w _) (Finset.mem_univ j))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hs0 : 0 ≤ s` using `Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun w _ => normAtPlace_nonneg w _`. Establish `: ∑ w, ‖piInf (B.emb w) (l : AE F E)‖ ≤ s * K`. Rewrite using `[hK, Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_le_sum fun w _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [e2 l, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.mul_sum]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_piInf_smul hB.cm]`. Conclude with `mul_le_mul_of_nonneg_right (hs1 j w) (norm_nonneg _)`. Use the polynomial consequences of the given equalities and inequalities.
-
-Use `⟨_, ⟨_, hl, rfl⟩, fun u hu => ?_⟩ beta_reduce` and prove the remaining obligations. Rewrite using `[congrArg (· - ∑ j, mk 0 (y l j).2 • τ (Bt j)) (e2 l), ← Finset.sum_sub_distrib, Finset.smul_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_smul, ← smul_assoc, show y l j - mk 0 (y l j).2 = mk (y l j).1 0 from Prod.ext (sub_zero _) (sub_self _), at_mk _ u hu, zero_smul]`. Simplify using `only [h5 i _ hl, ContinuousLinearMap.zero_apply, map_zero, zero_mul, enorm_zero, zero_le]`.
+A detailed English derivation is pending.
 -/
 theorem nice (hS : Slice) (hT : TateAbs) {B : Base F E} {X : Spc F E n} {W : Spc F E d} {X₁ : Spc F E n₁} {W₁ : Spc F E d₁}
     {M : Model σ X W} {M₁ : Model σ X₁ W₁} (hB : B.IsGood σ) (hM : M.IsGood B.ψ) (hM₁ : M₁.IsGood B.ψ) {ι ι' I e}

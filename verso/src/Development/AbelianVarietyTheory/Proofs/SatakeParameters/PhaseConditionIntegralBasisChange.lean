@@ -7,25 +7,23 @@ namespace GlobalTheory
 open Matrix in
 
 /- English proof (translation)
-Introduce `L _ _ σ δ n n' A ψ P Q Q' hσσ hσv hP hQ' hQQ' x hx C' hskew hv hint`. Establish `hmap1 : (1 : Matrix (Fin n) (Fin n) L).map σ = 1` using `Matrix.map_one σ (map_zero σ) (map_one σ)`. Establish `hyQ' : (P * x * Q) * Q' = P * x` using `by rw [Matrix.mul_assoc, hQQ', Matrix.mul_one]`. Establish `e1 : ∀ Z : Matrix (Fin n) (Fin n') L, Q * (Q' * Z) = Z`. Introduce `Z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.mul_assoc, hQQ', Matrix.one_mul]`. Establish `e2 : ∀ Z : Matrix (Fin n) (Fin n') L, (Q'.map σ)ᵀ * ((Q.map σ)ᵀ * Z) = Z`. Introduce `Z`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.transpose_mul, ← Matrix.map_mul, hQQ', hmap1, Matrix.transpose_one, Matrix.one_mul]`. Establish `intMul : ∀ {a b c : ℕ} (M : Matrix (Fin a) (Fin b) L) (N : Matrix (Fin b) (Fin c) L), (∀ i j, M i j ∈ Formalism.UG.intL L) → (∀ i j, N i j ∈ Formalism.UG.intL L) → ∀ i j, (M * N) i j ∈ Formalism.UG.intL L`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a b c M N hM hN i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hM i k) (hN k j)`. Establish `hPσ : ∀ i j, (P.map σ)ᵀ i j ∈ Formalism.UG.intL L`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show Valued.v (σ (P j i)) ≤ 1`. Rewrite using `[hσv]`. Conclude with `hP j i`. Establish `htr : Matrix.trace ((P.map σ)ᵀ * C' * P * (x * A * (x.map σ)ᵀ)) = Matrix.trace (C' * ((P * x * Q) * (Q' * A * (Q'.map σ)ᵀ) * ((P * x * Q).map σ)ᵀ))`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_mul, Matrix.transpose_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc, e1, e2]`. Rewrite using `[Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hCx : (P.map σ)ᵀ * (C' * (P * x * Q)) * Q' = (P.map σ)ᵀ * C' * P * x`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = (P.map σ)ᵀ * (C' * (P * x)) := by rw [hyQ']`. Use `_ = _ := by simp only [Matrix.mul_assoc]`. Use `hx ((P.map σ)ᵀ * C' * P) ?_ ?_ ?_` as an intermediate fact. Rewrite `this` using `[htr]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Introduce `i j`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, hσσ, hskew, Finset.sum_mul, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j`. Establish `hlt : ∀ (a b : L), Valued.v a ≤ 1 → Valued.v b < 1 → Valued.v (a * b) < 1`. Introduce `a b ha hb`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_lt _ one_ne_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `hlt _ _ (hP k j) ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`.
-
-Use `Valuation.map_sum_lt _ one_ne_zero fun l _ => ?_` and prove the remaining obligations. Conclude with `hlt _ _ (hPσ i l) (hv l k)`. Introduce `i j`. Rewrite using `[← hCx]`. Conclude with `intMul _ _ (intMul _ _ hPσ hint) hQ' i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phaseCondition_basisChange : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L) (δ : L)
     (n n' : ℕ) (A : Matrix (Fin n) (Fin n) L) (ψ : AddChar L ℂ)

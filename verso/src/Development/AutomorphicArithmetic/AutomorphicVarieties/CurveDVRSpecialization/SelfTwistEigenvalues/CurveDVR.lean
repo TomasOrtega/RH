@@ -6,14 +6,14 @@ open Polynomial Matrix
 
 open IsLocalRing in
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.PrecompleteOfFiniteOverAdicComplete.curveDVR_prec_finite I`.
+A detailed English derivation is pending.
 -/
 private theorem curveDVR_prec_finite {O M : Type} [CommRing O] [IsNoetherianRing O] (I : Ideal O)
     [IsAdicComplete I O] [AddCommGroup M] [Module O M] [Module.Finite O M] : IsPrecomplete I M :=
   _root_.UpperTheory.Reformulated.B.PrecompleteOfFiniteOverAdicComplete.curveDVR_prec_finite I
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun f hf => by simp only [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] at hf ⊢ obtain ⟨L, hL⟩ := IsPrecomplete.prec' (I := J) (fun k => f ((e + 1) * k)) (fun {m n} hmn => by rw [SModEq.sub_mem, smul_eq_mul, Ideal.mul_top] have h := hf (Nat.mul_le_mul_left (e + 1) hmn) rw [pow_mul …`.
+Supply the required witnesses or components.
 -/
 private theorem curveDVR_prec_cofinal {R : Type} [CommRing R] {I J : Ideal R} (hJI : J ≤ I) {e : ℕ}
     (he : I ^ e ≤ J) (hJ : IsPrecomplete J R) : IsPrecomplete I R := ⟨fun f hf => by
@@ -32,11 +32,11 @@ private theorem curveDVR_prec_cofinal {R : Type} [CommRing R] {I J : Ideal R} (h
 
 open IsLocalRing in
 /- English proof (translation)
-Use `haveI hN : IsNoetherianRing R' := IsNoetherianRing.of_finite R R'`. Establish `hcomap : (maximalIdeal R').comap (algebraMap R R') = maximalIdeal R` using `eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (maximalIdeal R'))`. Establish `hle : (maximalIdeal R).map (algebraMap R R') ≤ maximalIdeal R'` using `Ideal.map_le_iff_le_comap.2 hcomap.ge`. Establish `hrad : maximalIdeal R' ≤ ((maximalIdeal R).map (algebraMap R R')).radical`. Rewrite using `[Ideal.radical_eq_sInf]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_sInf fun P hP => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hP`. Establish `h3 : P.comap (algebraMap R R') = maximalIdeal R` using `((maximalIdeal.isMaximal R).eq_of_le (Ideal.comap_ne_top _ h2.ne_top) (Ideal.map_le_iff_le_comap.1 h1)).symm`. Establish `h4 : P.IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := R) P (h3 ▸ maximalIdeal.isMaximal R)`. Conclude with `(eq_maximalIdeal h4).ge`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hrad (IsNoetherian.noetherian _)`. Establish `hP : IsPrecomplete (maximalIdeal R') R'` using `curveDVR_prec_cofinal hle he (IsPrecomplete.map_algebraMap_iff.2 (curveDVR_prec_finite _))`. Conclude with `{ toIsHausdorff := inferInstance, toIsPrecomplete := hP }`.
+A detailed English derivation is pending.
 -/
 private theorem curveDVR_complete {R R' : Type} [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     [IsAdicComplete (maximalIdeal R) R] [CommRing R'] [Algebra R R'] [Module.Finite R R']
@@ -63,11 +63,9 @@ private theorem curveDVR_complete {R R' : Type} [CommRing R] [IsLocalRing R] [Is
 
 open IsLocalRing in
 /- English proof (translation)
-Use `letI : Algebra (FractionRing A) (FractionRing R) := FractionRing.liftAlgebra A (FractionRing R)`. Use `haveI : IsScalarTower A (FractionRing A) (FractionRing R) := FractionRing.isScalarTower_liftAlgebra A (FractionRing R)`. Use `haveI : FiniteDimensional (FractionRing A) (FractionRing R) := inferInstance`. Take `⟨hfin, hdvr⟩` from `UpperTheory.V.Pr.T.completeDVRExt (A := A) (K := FractionRing A) (L := FractionRing R)`. Establish `hmem : ∀ r : R, algebraMap R (FractionRing R) r ∈ integralClosure A (FractionRing R)` using `fun r => (Algebra.IsIntegral.isIntegral (R := A) r).algebraMap`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : R →+* integralClosure A (FractionRing R)` to `(algebraMap R (FractionRing R)).codRestrict (integralClosure A (FractionRing R)) hmem`. Establish `hinj : Function.Injective f` using `fun x y h => IsFractionRing.injective R (FractionRing R) (congrArg Subtype.val h)`. Use `letI : Algebra R (integralClosure A (FractionRing R)) := f.toAlgebra`. Use `haveI : IsScalarTower A R (integralClosure A (FractionRing R)) := IsScalarTower.of_algebraMap_eq fun x => Subtype.ext (IsScalarTower.algebraMap_apply A R (FractionRing R) x)`. Use `haveI hF : Module.Finite R (integralClosure A (FractionRing R)) := Module.Finite.of_restrictScalars_finite A R _`.
-
-Establish `hf : f.Finite` using `hF`. Use `haveI hl : IsLocalHom f := hf.to_isIntegral.isLocalHom hinj`. Use `haveI : IsLocalHom (algebraMap R (integralClosure A (FractionRing R))) := hl`. Use `⟨integralClosure A (FractionRing R), inferInstance, inferInstance, hdvr, f, curveDVR_complete (R := R), ?_, hinj, hl, hf⟩` and prove the remaining obligations. Conclude with `Module.finite_of_finite (ResidueField R)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_dvr_quotient_of_complete_local {A R : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
     [IsAdicComplete (maximalIdeal A) A] [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R]
@@ -102,9 +100,7 @@ private theorem exists_dvr_quotient_of_complete_local {A R : Type} [CommRing A] 
   exact Module.finite_of_finite (ResidueField R)
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ _ p _ _ hdim`. Take `⟨g, hinj, -, hfin⟩` from `UpperTheory.V.Pr.T.curveOverSeries (R := R) p hdim`. Use `letI : Algebra (PowerSeries (ZMod p)) R := g.toAlgebra`. Use `haveI : FaithfulSMul (PowerSeries (ZMod p)) R := (faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Use `haveI : Module.Finite (PowerSeries (ZMod p)) R := hfin`.
-
-Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal (PowerSeries (ZMod p))) (PowerSeries (ZMod p)) := by`. Rewrite using `[PowerSeries.maximalIdeal_eq_span_X]`. Use `infer_instance`. Conclude with `exists_dvr_quotient_of_complete_local (A := PowerSeries (ZMod p))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pr.T.curveDVR :
     ∀ {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R]

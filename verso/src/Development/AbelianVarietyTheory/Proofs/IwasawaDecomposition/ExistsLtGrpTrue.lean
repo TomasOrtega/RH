@@ -26,16 +26,16 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.Rw
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem holdsLU_stepW (h : LowerUnitaryCaseCondition) : StepW Pinned fun K B f T w => ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)
     (z : Dat (w.st Z) w.I hX T Wt), GrpTrue Z.N f → GrpAt (w.st Z) w.I → z.R.toRealDat.ExAt → GlobalTheory.RealGeo.InGeo z.geo →
     HoldsL z.R z.F := h
 
 /- English proof (translation)
-Take `⟨R⟩` from `GlobalTheory.Mem.Df.rowsDef_nonempty w.I w.ok w.pins w.l hX`. Take `⟨kb, ks, hk⟩` from `GlobalTheory.Mem.Df.Model.exists_ka B`. Set `W' : RowsRest B w.C` to `{ R.W with eOp := fun _ => 0 eOp_idem := fun _ => LinearMap.comp_zero _ eOp_sa := fun _ => LinearMap.IsSymmetric.zero kaBig := kb kaSmall := ks }`. Take `⟨V, -⟩` from `GlobalTheory.Mem.DivModel.exists_divStage B w.C W'`. Take `⟨S, -⟩` from `GlobalTheory.Mem.SProv.exists_sStage_true K B w.C W' G.cd hO (GlobalTheory.Mem.Df.cols_pos w.I w.ok w.pins w.l hX) (show R.W.Drows ≤ R.W.Dall by rw [R.std.drows, R.std.dall])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hMt : ∀ (μ : w.C.Tup) (j : ℕ), W'.eMt μ j = 0` using `fun μ j => by haveI := R.std.mt μ j`. Conclude with `LinearMap.ext fun _ => Subsingleton.elim _ _`. Take `⟨N, -, -, hN, -⟩` from `GlobalTheory.Mem.Top.exists_nStage_grpTrue hG B w.C W' R.std.sha (fun j v _ _ => R.std.eta j v) (fun _ => rfl) hMt f`. Use `⟨⟨W', V, S, N, G⟩, rfl, hN, GlobalTheory.Mem.R3.Model.grpAt_of_grpTrue (w.st ⟨W', V, S, N, G⟩) w.I w.ok (by show GrpTrue N w.I.C; rw [w.C_eq]; exact hN), hk w.C W' rfl rfl V S N G⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_lt_grpTrue (hG : GlobalTheory.Published.GreenCuspidal) {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T)
     (hO : K.Over B.toPre) (hX : B.fields.Ok) (G : GJStage B w.C) :

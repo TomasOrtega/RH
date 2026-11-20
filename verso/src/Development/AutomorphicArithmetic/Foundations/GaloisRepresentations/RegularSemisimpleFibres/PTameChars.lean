@@ -6,9 +6,9 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N V _ _ π ω h`. Take `⟨μ, hμ, H⟩` from `h`. Establish `hs : ∀ j, IsSmoothChar (μ j)` using `fun j => isSmoothChar_of_isTame (hμ j).isTame`. Use `⟨μ, hs, fun j u hu => ?_, ?_, fun j u => hμ j u⟩` and prove the remaining obligations. Conclude with `(hμ j).isTame u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hasSupport_of_isCuspSupport H` as an intermediate fact. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.tameChars :
     TameChars := by

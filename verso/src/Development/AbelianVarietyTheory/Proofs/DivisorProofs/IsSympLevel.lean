@@ -23,17 +23,17 @@ def Induces {D : Datum H} (l : Level H) {Q : Type} [Group Q] (etaA eta ev : D.La
     ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La), ev a ^ (l.M' / l.M) = eta a
 
 /- English proof (translation)
-The claim follows from `Nat.dvd_lcm_right _ _`.
+A detailed English derivation is pending.
 -/
 theorem A_dvd_M' (l : Level H) : l.A ∣ l.M' := Nat.dvd_lcm_right _ _
 
 /- English proof (translation)
-The claim follows from `Nat.dvd_lcm_left _ _`.
+A detailed English derivation is pending.
 -/
 theorem M_dvd_M' (l : Level H) : l.M ∣ l.M' := Nat.dvd_lcm_left _ _
 
 /- English proof (translation)
-The claim follows from `Nat.lcm_pos (by have := l.three_le; omega) l.A_pos`.
+A detailed English derivation is pending.
 -/
 theorem M'_pos (l : Level H) : 0 < l.M' := Nat.lcm_pos (by have := l.three_le; omega) l.A_pos
 

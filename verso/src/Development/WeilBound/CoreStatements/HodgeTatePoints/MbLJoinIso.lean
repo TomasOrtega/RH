@@ -11,9 +11,9 @@ open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberFiel
 namespace PositivityTheory.HtPt.Mb.LJoinIso.JoinIso
 
 /- English proof (translation)
-Introduce `a ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨q, rfl⟩` from `hy`. Conclude with `h q`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `algebraMap r => exact ho r`. Consider the case `add _ _ _ _ h1 h2 => exact add_mem h1 h2`. Consider the case `mul _ _ _ _ h1 h2 => exact mul_mem h1 h2`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem chRing_mem {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {ι : Type} {J : ι → Ω} {d : ι}
     {S : Subring Ω} (ho : ∀ r : o, algebraMap o Ω r ∈ S) (h : ∀ q, J q / J d ∈ S) :
@@ -28,9 +28,9 @@ theorem chRing_mem {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω]
   | mul _ _ _ _ h1 h2 => exact mul_mem h1 h2
 
 /- English proof (translation)
-Establish `hle : ∀ {p q : Cpt M.ξ}, InChart M.ξ x c p → InChart M.ξ x c q → (∀ u ∈ chRing o x c, unitAt M.ξ p u → unitAt M.ξ q u) → regAt M.ξ p ≤ regAt M.ξ q`. Introduce `p q hp hq h a ha`. Take `⟨u, hu, v, hv, hvu, rfl⟩` from `((PositivityTheory.HtPt.Ma.regat_loc o Ω κ x M c p hp).2 a).1 ha`. Conclude with `((PositivityTheory.HtPt.Ma.regat_loc o Ω κ x M c q hq).2 _).2 ⟨u, hu, v, hv, h v hv hvu, rfl⟩`. Establish `h1` using `(PositivityTheory.HtPt.Ma.reg_le_spec o Ω κ x M p q).1 (hle hp hq fun u hu => (h u hu).1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(PositivityTheory.HtPt.Ma.reg_le_spec o Ω κ x M q p).1 (hle hq hp fun u hu => (h u hu).2)`. Conclude with `Subtype.ext (h2.antisymm h1).eq`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_units {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω] {κ : Type} [Finite κ] {x : κ → Ω}
     (M : PModel o x) {c : κ} {p q : Cpt M.ξ} (hp : InChart M.ξ x c p) (hq : InChart M.ξ x c q)
@@ -45,27 +45,27 @@ theorem eq_of_units {o : Type} [CommRing o] {Ω : Type} [Field Ω] [Algebra o Ω
   exact Subtype.ext (h2.antisymm h1).eq
 
 /- English proof (translation)
-Introduce `o _ Ω _ _ κ _ x M κ' _ w M' f hd p ⟨l, hl⟩`. Take `⟨c, hc⟩` from `M.tie.cover p`. Establish `hJ0 : joinCo (RingHom.id Ω) x w (c, l) ≠ 0` using `mul_ne_zero hc.1 hl.1`. Establish `ratio : ∀ j m, joinCo (RingHom.id Ω) x w (j, m) / joinCo (RingHom.id Ω) x w (c, l) = (x j / x c) * (w m / w l)` using `fun j m => by`. Simplify using `only [joinCo, RingHom.id_apply, mul_div_mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hpJ : ∀ q, joinCo (RingHom.id Ω) x w q / joinCo (RingHom.id Ω) x w (c, l) ∈ regAt M.ξ p`. Introduce and unpack `⟨j, m⟩`. Rewrite using `[ratio]`. Conclude with `mul_mem (hc.2 j) (hl.2 m)`. Establish `hAp` using `(PositivityTheory.HtPt.Ma.regat_loc o Ω κ x M c p hc).1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hctr : p ∈ ctrSet o (joinCo (RingHom.id Ω) x w) (RingHom.id Ω) M.ξ` using `⟨(c, l), hJ0, chRing_mem (fun r => hAp _ (Subalgebra.algebraMap_mem _ r)) hpJ⟩`. Take `⟨p', ⟨hle', hun'⟩, -, hch'⟩` from `PositivityTheory.HtPt.Mb.centre o Ω (κ × κ') (joinCo (RingHom.id Ω) x w) M' M.X Ω M.ξ (RingHom.id Ω) p hctr`. Establish `hle : ∀ a ∈ regAt M'.ξ p', a ∈ regAt M.ξ p` using `hle'`. Establish `hun : ∀ a ∈ regAt M'.ξ p', unitAt M.ξ p a → unitAt M'.ξ p' a` using `hun'`. Establish `hp'c : InChart M'.ξ (joinCo (RingHom.id Ω) x w) (c, l) p'` using `hch' (c, l) hJ0 hpJ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dom` using `PositivityTheory.HtPt.Mb.dom_local M.X Ω M.ξ M'.X Ω M'.ξ (RingHom.id Ω) f hd`. Take `⟨h, hq1', hq2'⟩` from `dom p'`. Establish `hq1 : ∀ a ∈ regAt M.ξ ⟨f p'.1, h⟩, a ∈ regAt M'.ξ p'` using `hq1'`. Establish `hq2 : ∀ a ∈ regAt M.ξ ⟨f p'.1, h⟩, unitAt M'.ξ p' a → unitAt M.ξ ⟨f p'.1, h⟩ a` using `hq2'`. Establish `hx : ∀ j, x j / x c ∈ regAt M'.ξ p'` using `fun j => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : joinCo (RingHom.id Ω) x w (j, l) / joinCo (RingHom.id Ω) x w (c, l) = x j / x c`. Rewrite using `[ratio, div_self hl.1, mul_one]`. Rewrite using `[← e]`. Conclude with `hp'c.2 (j, l)`. Take `⟨c₁, hc₁⟩` from `M.tie.cover ⟨f p'.1, h⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : unitAt M.ξ ⟨f p'.1, h⟩ (x c / x c₁)` using `hq2 _ (hc₁.2 c) ⟨div_ne_zero hc.1 hc₁.1, hq1 _ (hc₁.2 c), by rw [inv_div]; exact hx c₁⟩`. Establish `hqc : InChart M.ξ x c ⟨f p'.1, h⟩` using `⟨hc.1, fun j => by`. Establish `e : x j / x c = (x j / x c₁) * (x c / x c₁)⁻¹`. Establish `h1` using `hc.1`. Establish `h2` using `hc₁.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `mul_mem (hc₁.2 j) hu.2.2⟩`. Establish `hqp : (⟨f p'.1, h⟩ : Cpt M.ξ) = p`. Use `eq_of_units M hqc hc fun u hu => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `uq` using `(PositivityTheory.HtPt.Ma.regat_loc o Ω κ x M c _ hqc).1 u hu`. Conclude with `⟨fun k => ⟨k.1, hAp u hu, hle _ (hq1 _ k.2.2)⟩, fun k => hq2 u uq (hun u (hq1 u uq) k)⟩`. Establish `e' : f p'.1 = p.1` using `congrArg Subtype.val hqp`. Rewrite `hq1` using `[hqp]`. Establish `hreg : regAt M'.ξ p' = regAt M.ξ p` using `le_antisymm hle hq1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `uniq : ∀ p'' : Cpt M'.ξ, f p''.1 = p.1 → p'' = p'`. Introduce `p'' e`. Take `⟨h2, r1', r2'⟩` from `dom p''`. Establish `e2 : (⟨f p''.1, h2⟩ : Cpt M.ξ) = p` using `Subtype.ext e`. Rewrite `r1'`, `r2'` using `[e2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r1 : ∀ a ∈ regAt M.ξ p, a ∈ regAt M'.ξ p''` using `r1'`. Establish `r2 : ∀ a ∈ regAt M.ξ p, unitAt M'.ξ p'' a → unitAt M.ξ p a` using `r2'`. Establish `hch : InChart M'.ξ (joinCo (RingHom.id Ω) x w) (c, l) p''` using `⟨hJ0, fun q => r1 _ (hpJ q)⟩`. Use `eq_of_units M' hch hp'c fun u hu => ?_` and prove the remaining obligations. Establish `up'` using `(PositivityTheory.HtPt.Ma.regat_loc o Ω (κ × κ') _ M' (c, l) p' hp'c).1 u hu`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `up` using `hle u up'`. Conclude with `⟨fun k => hun u up' (r2 u up k), fun k => ⟨k.1, r1 u up, r1 _ (hle _ k.2.2)⟩⟩`. Use `⟨⟨p', e', fun p'' e => uniq p'' e⟩, fun p'' e => ?_, hd⟩` and prove the remaining obligations. Rewrite using `[uniq p'' e, hreg, Subring.map_id]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoAt_of_chart : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (κ' : Type) [Finite κ'] (w : κ' → Ω) (M' : PModel o (joinCo (RingHom.id Ω) x w)) (f : M'.X ⟶ M.X), Dominates M'.ξ M.ξ f (RingHom.id Ω) → ∀ p : Cpt M.ξ, (∃ l, InChart M.ξ w l p) → IsoAt M'.ξ f (RingHom.id Ω) p := by
   intro o _ Ω _ _ κ _ x M κ' _ w M' f hd p ⟨l, hl⟩
@@ -132,7 +132,7 @@ end PositivityTheory.HtPt.Mb.LJoinIso.JoinIso
 open AlgebraicGeometry CategoryTheory GlobalTheory.CompanionTheory.Ar NumberField in
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.HtPt.Mb.LJoinIso.JoinIso.isoAt_of_chart`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.HtPt.Mb.join_iso : ∀ (o : Type) [CommRing o] (Ω : Type) [Field Ω] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (M : PModel o x) (κ' : Type) [Finite κ'] (w : κ' → Ω) (M' : PModel o (joinCo (RingHom.id Ω) x w)) (f : M'.X ⟶ M.X), Dominates M'.ξ M.ξ f (RingHom.id Ω) → ∀ p : Cpt M.ξ, (∃ l, InChart M.ξ w l p) → IsoAt M'.ξ f (RingHom.id Ω) p :=
   @PositivityTheory.HtPt.Mb.LJoinIso.JoinIso.isoAt_of_chart

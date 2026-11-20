@@ -18,23 +18,19 @@ open Filter Topology
 open GlobalTheory.AffinePoints in
 
 /- English proof (translation)
-Use `letI : Algebra k ℂ := σ.toAlgebra`. Use `haveI : FaithfulSMul k ℂ := (faithfulSMul_iff_algebraMap_injective _ _).2 hσ`. Use `haveI : Module.Flat k ℂ := inferInstance`. Establish `hinj : Function.Injective (algebraMap k (A ⧸ P))`. Rewrite using `[injective_iff_map_eq_zero]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a ha`. Conclude with `hP a (Ideal.Quotient.eq_zero_iff_mem.1 ha)`. Use `haveI : Nontrivial (ℂ ⊗[k] (A ⧸ P)) := by`. Establish `h` using `Module.Flat.lTensor_preserves_injective_linearMap (M := ℂ) (Algebra.linearMap k (A ⧸ P)) hinj`. Use `haveI : Nontrivial (ℂ ⊗[k] k) := (TensorProduct.rid k ℂ).toEquiv.nontrivial`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h.nontrivial`. Take `⟨ψ₀⟩` from `GlobalTheory.GeomPointLift.nonempty_algHom_of_isAlgClosed ℂ (ℂ ⊗[k] (A ⧸ P))`. Set `ψ : ℂ ⊗[k] A →ₐ[ℂ] ℂ` to `ψ₀.comp (Algebra.TensorProduct.map (AlgHom.id ℂ ℂ) (Ideal.Quotient.mkₐ k P))`. Establish `hψb : ψ (1 ⊗ₜ b) = 0`. Simplify using `[ψ, Ideal.Quotient.eq_zero_iff_mem.2 hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hnz : (1 ⊗ₜ b : ℂ ⊗[k] A) ∈ nonZeroDivisors (ℂ ⊗[k] A)`. Establish `h` using `Module.Flat.lTensor_preserves_injective_linearMap (M := ℂ) (LinearMap.mulLeft k b) (mul_right_injective₀ hb0)`. Establish `e : ∀ x : ℂ ⊗[k] A, LinearMap.lTensor ℂ (LinearMap.mulLeft k b) x = (1 ⊗ₜ b) * x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Consider the case `zero => simp`. Consider the case `tmul c a => simp`. Consider the case `add x y hx hy => rw [map_add, hx, hy, mul_add]`. Rewrite using `[mem_nonZeroDivisors_iff_left]`. Introduce `x hx`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `h (by rw [e, hx, map_zero])`. Use `haveI := RingHom.ker_isPrime ψ`. Take `⟨q, hq, hqle⟩` from `Ideal.exists_minimalPrimes_le (I := (⊥ : Ideal (ℂ ⊗[k] A))) (J := RingHom.ker ψ) bot_le`. Use `haveI : q.IsPrime := hq.1.1`. Establish `hbq : (1 ⊗ₜ b : ℂ ⊗[k] A) ∉ q` using `fun h => Set.disjoint_left.1 (Ideal.disjoint_nonZeroDivisors_of_mem_minimalPrimes hq) h hnz`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Set `B` to `(ℂ ⊗[k] A) ⧸ q`. Set `m : A →+* B` to `(Ideal.Quotient.mk q).comp Algebra.TensorProduct.includeRight.toRingHom`. Set `p₀ : B →ₐ[ℂ] ℂ` to `Ideal.Quotient.liftₐ q ψ fun a ha => hqle ha`. Establish `hm : ∀ (r : B →ₐ[ℂ] ℂ) a, r (m (algebraMap k A a)) = σ a` using `fun r a => by`. Establish `: m (algebraMap k A a) = algebraMap ℂ B (σ a)`.
-
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk q (Algebra.TensorProduct.includeRight (algebraMap k A a)) = _`. Rewrite using `[AlgHom.commutes, IsScalarTower.algebraMap_apply k ℂ (ℂ ⊗[k] A)]`. Both sides reduce to the same expression. Rewrite using `[this, AlgHom.commutes]`. Both sides reduce to the same expression.
-
-Establish `hd` using `dense_nonvanishing (A := B) (f := m b) fun h => hbq (Ideal.Quotient.eq_zero_iff_mem.1 h)`. Use `⟨B →ₐ[ℂ] ℂ, 𝓝[{r | r (m b) ≠ 0}] p₀, mem_closure_iff_nhdsWithin_neBot.1 (hd p₀), fun r => r.toRingHom.comp m, p₀.toRingHom.comp m, hm, hm p₀, hψb, self_mem_nhdsWithin, fun a => ?_⟩` and prove the remaining obligations. Conclude with `((continuous_eval (m a)).tendsto p₀).mono_left nhdsWithin_le_nhds`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_approx {k A : Type} [CommRing k] [IsDedekindDomain k] [CommRing A] [IsDomain A] [Algebra k A]
     [Algebra.FiniteType k A] (σ : k →+* ℂ) (hσ : Function.Injective σ) (P : Ideal A) [P.IsPrime]
@@ -98,25 +94,23 @@ open GlobalTheory.Points GlobalTheory.CechPic GlobalTheory.CxPts GlobalTheory.Ca
 open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hreg`. Take `⟨z, hz, hzero⟩` from `GlobalTheory.NormalPole.exists_zeroAt_inv X hN x g hreg`. Establish `hg0 : g ≠ 0` using `fun h => hreg (h ▸ regAt_zero x)`. Establish `hpz : (p z).asIdeal = ⊥` using `le_bot_iff.1 (hpx ▸ (PrimeSpectrum.le_iff_specializes _ _).2 (hz.map p.continuous))`. Take `⟨W₀, hzW, g₀, hg₀⟩` from `hzero.regAt.exists_fnOf`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hzU, hUW⟩` from `exists_isAffineOpen_mem_and_subset (memInf hzW (hz.mem_open W.isOpen hx))`. Establish `hle : U ≤ W₀ ⊓ W` using `hUW`. Take `⟨b, hb'⟩ : ∃ b : Γ(X, U), ∀ h, fnOf _ h b = g⁻¹` from `⟨resG X (hle.trans inf_le_left) g₀, fun h => (fnOf_resG _ h _).trans hg₀⟩`. Establish `hb0 : b ≠ 0` using `fun h => inv_ne_zero hg0 (by rw [← hb' (gen_mem hzU), h, map_zero])`. Establish `hzb : z ∉ X.basicOpen b` using `fun h => (zeroAt_iff.1 hzero).2 (hb' (gen_mem hzU) ▸ (unitAt_fnOf_iff hzU _ b).2 h)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem (a : Γ(X, U)) : z ∈ X.basicOpen a ↔ a ∉ (hU.primeIdealOf ⟨z, hzU⟩).asIdeal` using `by conv_lhs => rw [← show hU.fromSpec (hU.primeIdealOf ⟨z, hzU⟩) = z from hU.fromSpec_primeIdealOf ⟨z, hzU⟩]`. Express the relevant statement in the definitionally equal form `hU.primeIdealOf ⟨z, hzU⟩ ∈ hU.fromSpec ⁻¹ᵁ X.basicOpen a ↔ _`. Rewrite using `[hU.fromSpec_preimage_basicOpen]`. Both sides reduce to the same expression. Use `haveI : Nonempty U := ⟨⟨z, hzU⟩⟩`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Equip the data with the indicated structure.
 
-Use `letI : Algebra k Γ(X, U) := (algX p U).toAlgebra`. Use `haveI : Algebra.FiniteType k Γ(X, U) := RingHom.FiniteType.comp (p.finiteType_appLE (isAffineOpen_top _) hU le_top) (RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of k)).inv).2)`. Take `⟨ι, l, _, φ, φ₀, h₁, h₂, h₃, h₄, h₅⟩` from `exists_approx σ hσ (hU.primeIdealOf ⟨z, hzU⟩).asIdeal (fun a ha => by`. Assume the negation of the conclusion as `h0`. Establish `e` using `Scheme.basicOpen_appLE p U ⊤ le_top ((Scheme.ΓSpecIso (CommRingCat.of k)).inv a)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[basicOpen_eq_of_affine]`. Establish `h : z ∈ X.basicOpen (algX p U a)` using `(SetLike.ext_iff.1 e z).2 ⟨hzU, by`. Express the relevant statement in the definitionally equal form `a ∉ (p z).asIdeal`. Rewrite using `[hpz]`. Conclude with `h0⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(hmem _).1 h ha)`. Use the proof step `(not_not.1 fun h => hzb ((hmem b).2 h)) hb0`. Set `y (i : ι) : CxPts p σ` to `ofHom hU (φ i) (h₁ i)`. Set `y₀ : CxPts p σ` to `ofHom hU φ₀ h₂`. Establish `hy (i) : y i ∈ ptsIn p σ U` using `ofHom_mem hU _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy₀ : y₀ ∈ ptsIn p σ U` using `ofHom_mem hU _ _`. Establish `hlim : Tendsto y l (𝓝 y₀)` using `tendsto_subtype_rng.2 (tendsto_of_isAffineOpen hU hy₀ (.of_forall hy) fun a => by`. Establish `e₀ : valR y₀.1 U a = φ₀ a` using `ev_ofHom hU _ _ a`. Rewrite using `[e₀]`. Conclude with `(h₅ a).congr fun i => (ev_ofHom hU (φ i) (h₁ i) a).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : Tendsto (fun i => Φ (y i) * ‖φ i b‖ ^ 2) l (𝓝 (Φ y₀ * ‖φ₀ b‖ ^ 2))` using `((hΦ y₀ (ptsIn_mono (hle.trans inf_le_right) hy₀)).tendsto.comp hlim).mul ((h₅ b).norm.pow 2)`. Rewrite `hT` using `[h₃, norm_zero, zero_pow two_ne_zero, mul_zero]`. Use `absurd (ge_of_tendsto hT (h₄.mono fun i hi => ?_)) (not_le.2 one_pos)` and prove the remaining obligations. Establish `hev : ev p σ U b (y i) = φ i b` using `ev_ofHom hU _ _ b`. Establish `hu : UnitAt (under (y i)) g⁻¹` using `hb' (gen_mem hzU) ▸ (unitAt_fnOf_iff (mem_ptsIn.1 (hy i)) _ b).2 (mem_ptsIn.1 ((mem_ptsIn_basicOpen (hy i) b).2 (hev ▸ hi)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hgu : UnitAt (under (y i)) g` using `inv_inv g ▸ hu.inv`. Establish `hmul` using `ratVal_mul hgu.regAt hu.regAt`. Establish `hone : ratVal (1 : X.functionField) (y i) = 1`. Use `ratVal_fnOf (hy i) (gen_mem hzU) 1` as an intermediate fact. Rewrite `this` using `[map_one, ev_eq (hy i), map_one]`. Then use the resulting hypothesis.
-
-Rewrite `hmul` using `[mul_inv_cancel₀ hg0, hone, ← hb' (gen_mem hzU), ratVal_fnOf (hy i), hev]`. Establish `h` using `hb (y i) (ptsIn_mono (hle.trans inf_le_right) (hy i)) hgu.regAt`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem regAt_of_bounded {k : Type} [CommRing k] [IsDedekindDomain k] {X : Scheme.{0}} [IsIntegral X]
     [IsLocallyNoetherian X] (p : X ⟶ Sp k) [LocallyOfFiniteType p]
@@ -195,11 +189,11 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hP D T j Y e o hY hE Z u X _ p L ψ s t hGood hBir hNB hdg hM i hi f hf w hw k x hx hpx`. Establish `: IsProper p`. Take `⟨n, c, hc, h⟩` from `hM.arith.isProjOver`. Use `isProper_str (𝓞 Y.d.c₂.F) n` as an intermediate fact. Rewrite using `[← h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Use `hM.arith.isLocallyNoetherian` as an intermediate fact. Take `⟨τ⟩ : Nonempty (Y.d.c₂.F →+* ℂ)` from `inferInstance`. Set `σ` to `τ.comp (algebraMap (𝓞 Y.d.c₂.F) Y.d.c₂.F)`. Use `regAt_of_bounded p hM.normal σ (τ.injective.comp (IsFractionRing.injective _ _)) (L.B.U k) _ (fun y => Real.exp (2 * ((8 * i : ℕ) : ℝ) * t) * Real.exp (((8 * i : ℕ) : ℝ) * (L.φ σ).φ k y)) (fun y hy => continuousAt_const.mul (Real.continuous_exp.continuousAt.comp (continuousAt_con …` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.T.hermitian_lattice_sections_good_three hP D T j Y e o hY hE Z u X p L ψ s t hGood hBir hNB hdg hM i hi f hf w hw σ y k hy hr`. Rewrite `h` using `[Real.exp_neg, mul_inv_le_iff₀ (Real.exp_pos _)]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem main : Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (u : GlobalTheory.AllWt.Weight (T.Q.Dw j)) (X : AlgebraicGeometry.Scheme.{0}) [AlgebraicGeometry.IsIntegral X] (p : X ⟶ Sp (𝓞 Y.d.c₂.F)) (L : GlobalTheory.HermLB p) (ψ : Om Z →+* X.functionField) (s : latOn Y.U Z (wtOf (T.Q.Dw j) u 0) → L.B.Sec) (t : ℝ), GoodOn Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) u 0) → GlobalTheory.DegVal.BirOn Y.U Z (wtOf (T.Q.Dw j) u 0) → NoBase Y.U Z (wtOf (T.Q.Dw j) u 0) → 0 < Y.dg u Z → GlobalTheory.ImageModel.IsModelOf (normOn Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) u 0)) (latOn Y.U Z (wtOf (T.Q.Dw j) u 0)) (genPoint Z (cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0))) (dimFlag (T.Q.Dw j)) p L ψ s → ∀ i : ℕ, 1 ≤ i → ∀ f ∈ smallL Y.U (xiR D) (fun _ => D.sp.W j) Y.dict Z (wtOf (T.Q.Dw j) u 0) (8 * i) t, ∀ w : latOn Y.U Z (wtOf (T.Q.Dw j) u 0), genVal Z ((w : cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0)) : Rul Y.d.Xo₂ Y.d.c₂) ≠ 0 → ∀ (k : L.B.ι) (x : X) (hx : x ∈ L.B.U k), (p x).asIdeal = ⊥ → GlobalTheory.Cartier.RegAt x (ψ (genVal Z (f : Rul Y.d.Xo₂ Y.d.c₂)) * (ψ (genVal Z ((w : cuspOn Y.U Z (wtOf (T.Q.Dw j) u 0)) : Rul Y.d.Xo₂ Y.d.c₂)))⁻¹ ^ (8 * i) * fnOf (L.B.U k) (gen_mem hx) ((s w).f k) ^ (8 * i)) := by
   intro hP D T j Y e o hY hE Z u X _ p L ψ s t hGood hBir hNB hdg hM i hi f hf w hw k x hx hpx

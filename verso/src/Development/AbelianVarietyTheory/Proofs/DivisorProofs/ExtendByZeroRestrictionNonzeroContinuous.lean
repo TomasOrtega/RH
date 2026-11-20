@@ -11,14 +11,14 @@ noncomputable section
 namespace GlobalTheory.ThK.AdaptEv.Restr
 
 /- English proof (translation)
-Apply the tactic sequence `funext k; simp only [ext0, Pi.smul_apply]; cases eq k <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem extendByZeroOffSubset_smul_apply {κ ι κ₁ R S : Type} [Zero R] [SMulZeroClass S R] (eq : κ ≃ ι ⊕ κ₁) (c : S) (a : κ₁ → R) :
     ext0 eq (c • a) = c • ext0 eq a := by
   funext k; simp only [ext0, Pi.smul_apply]; cases eq k <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `funext k; simp only [ext0]; cases eq k <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem matrixExtendByZero_zero {κ ι κ₁ R : Type} [Zero R] (eq : κ ≃ ι ⊕ κ₁) : ext0 eq (0 : κ₁ → R) = 0 := by
   funext k; simp only [ext0]; cases eq k <;> rfl
@@ -41,7 +41,7 @@ theorem extend_by_zero_linear_apply {κ ι κ₁ : Type} [Fintype κ] [Fintype �
     (x : κ₁ → mixedEmbedding.mixedSpace F) : extendByZeroCLM' F eq x = ext0 eq x := rfl
 
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun p => ?_` and prove the remaining obligations. Use `norm_le_pi_norm (ext0 eq x) (eq.symm (Sum.inr p))` as an intermediate fact. Rewrite `this` using `[ext0_inr]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem norm_le_norm_extend_by_zero {κ ι κ₁ : Type} [Fintype κ] [Fintype κ₁] (eq : κ ≃ ι ⊕ κ₁)
     (x : κ₁ → mixedEmbedding.mixedSpace F) : ‖x‖ ≤ ‖ext0 eq x‖ := by
@@ -63,9 +63,9 @@ theorem restrS_apply {κ ι κ₁ : Type} [Fintype κ] [Fintype κ₁] (eq : κ 
     (y : κ₁ → mixedEmbedding.mixedSpace F) : restrS F eq f y = f (ext0 eq y) := rfl
 
 /- English proof (translation)
-Introduce `h`. Set `b : ContDiffBump (0 : κ → mixedEmbedding.mixedSpace F)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `hs : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left (g := fun t : ℝ => (t : ℂ)) (by simp)`. Establish `hc : ContDiff ℝ (⊤ : ℕ∞) (fun x => ((b x : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp b.contDiff`. Establish `h1` using `congrArg (fun T : SInf F κ →L[ℂ] SInf F κ₁ => T (hs.toSchwartzMap hc) 0) h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : b 0 = 1` using `b.one_of_mem_closedBall (by simp [b])`. Simplify using `only [restrS_apply, matrixExtendByZero_zero, ContinuousLinearMap.zero_apply, SchwartzMap.zero_apply] at h1`. Express the relevant statement in the definitionally equal form `((b 0 : ℝ) : ℂ) = 0 at h1`. Simplify using `[h2] at h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem restrS_ne_zero {κ ι κ₁ : Type} [Fintype κ] [Fintype κ₁] (eq : κ ≃ ι ⊕ κ₁) : restrS F eq ≠ 0 := by
   classical
@@ -83,7 +83,7 @@ theorem restrS_ne_zero {κ ι κ₁ : Type} [Fintype κ] [Fintype κ₁] (eq : �
 end GlobalTheory.ThK.AdaptEv.Restr
 
 /- English proof (translation)
-Introduce `F _ _ κ ι κ₁ _ _ _ eq`. Conclude with `⟨Restr.restrS F eq, Restr.restrS_ne_zero F eq, fun f y => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.ThK.AdaptEv.exists_restr_schwartz :
     ∀ (F : Type) [Field F] [NumberField F] {κ ι κ₁ : Type} [Fintype κ] [Fintype ι] [Fintype κ₁] (eq : κ ≃ ι ⊕ κ₁),

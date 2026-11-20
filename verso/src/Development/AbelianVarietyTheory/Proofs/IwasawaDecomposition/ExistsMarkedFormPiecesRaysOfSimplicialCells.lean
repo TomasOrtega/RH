@@ -14,9 +14,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolFan.OrbMark
 
 /- English proof (translation)
-Introduce `E _ _ _ H φ hφ X₀ _ _ _ m₀ δ₀ h₀ hind hprim v t hv ht hvt X _ _ _ β hβ`. Take `⟨τ, f, hτ, hf, hsemi, hrel⟩` from `GlobalTheory.T.exists_semilinear_pullback_of_markedOrbitIndicator H.w0 v β hβ`. Take `⟨u, hsum, hli, hu⟩` from `GlobalTheory.T.exists_descended_rays_marked_form_pieces E H δ₀ h₀.mem h₀.nonneg hind hprim v t ht hvt β τ f hτ hf hsemi hrel`. Use `⟨fun i => pullAdd f (u i), hsum, fun i hi => (hu i hi).2, ?_⟩` and prove the remaining obligations. Introduce `m δ hδ hδi c hc hβc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hA` using `GlobalTheory.T.marked_form_pieces_in_every_cell_cone E H φ hφ δ₀ h₀ t ht (CarDim.orad v : Submodule (𝓞 E) X₀).mkQ (Submodule.mkQ_surjective _) τ f hτ hf hsemi u (fun i hi => ⟨(hu i hi).1, (hu i hi).2.1, (hu i hi).2.2.1⟩) β hsum m δ hδ c hc hβc`. Establish `hB` using `GlobalTheory.T.cell_ray_in_cone_of_marked_form_pieces E H φ hφ δ₀ h₀ hind v t ht hvt (CarDim.orad v : Submodule (𝓞 E) X₀).mkQ (Submodule.mkQ_surjective _) τ f hτ hf hsemi u (fun i hi => (hu i hi).1) β (fun x y x₀ y₀ hx hy => hrel x y x₀ y₀ hx hy) m δ hδ c hc hβc`. Conclude with `GlobalTheory.T.cone_match_rays_after_dropping_zero_coords (fun i => pullAdd f (u i)) t ht hli β hsum m δ hδi c hc hβc hA hB`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_pieces_match : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (φ : InvFun (𝓞 E)), IsTwInv H φ →
   ∀ {X₀ : Type} [AddCommGroup X₀] [Module (𝓞 E) X₀] [Module.Finite (𝓞 E) X₀] {m₀ : ℕ} (δ₀ : Fin m₀ → LinearMap.BilinForm ℤ X₀) (h₀ : IsCell H.bar φ δ₀),

@@ -35,9 +35,9 @@ section Leaves
 variable {B B' : Base} {C : Cols B} {C' : Cols B'} (a : Late B C) (a' : Late B' C')
 
 /- English proof (translation)
-Use `pre_sub`. Establish `e : @Eq (type_of% (@IsThetaFunO a.D)) ((by with_unfolding_all exact ((@IsThetaFunO a'.D) :))) (@IsThetaFunO a.D)`. Use function extensionality and compare the values at `ψ S T f`. Use `propext ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `h' : @IsThetaFunO a'.D ((by with_unfolding_all exact (ψ :))) ((by with_unfolding_all exact (S :))) ((by with_unfolding_all exact (T :))) ((by with_unfolding_all exact (f :)))` using `(by with_unfolding_all exact (h :))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨(by with_unfolding_all exact (h'.quasi :)), (by with_unfolding_all exact (h'.level :)), (by with_unfolding_all exact (h'.cont :)), (by with_unfolding_all exact (h'.smooth :))⟩`. Establish `h' : @IsThetaFunO a'.D ((by with_unfolding_all exact (ψ :))) ((by with_unfolding_all exact (S :))) ((by with_unfolding_all exact (T :))) ((by with_unfolding_all exact (f :)))` using `⟨(by with_unfolding_all exact (h.quasi :)), (by with_unfolding_all exact (h.level :)), (by with_unfolding_all exact (h.cont :)), (by with_unfolding_all exact (h.smooth :))⟩`. Conclude with `(by with_unfolding_all exact (h' :))`. Conclude with `(by with_unfolding_all exact ((heq_of_eq e) :))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem thetaFun_heq (hP : B'.toPre = B.toPre) : HEq (@IsThetaFunO a'.D) (@IsThetaFunO a.D) := by
   pre_sub
@@ -51,9 +51,9 @@ private theorem thetaFun_heq (hP : B'.toPre = B.toPre) : HEq (@IsThetaFunO a'.D)
   exact (by with_unfolding_all exact ((heq_of_eq e) :))
 
 /- English proof (translation)
-Use `pre_sub`. Establish `e : @Eq (type_of% (@IsVacuum a.D)) ((by with_unfolding_all exact ((@IsVacuum a'.D) :))) (@IsVacuum a.D)`. Use function extensionality and compare the values at `m n x1 x2 x3 x4 x5 x6 x7`. Use `propext ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `h' : @IsVacuum a'.D m n ((by with_unfolding_all exact (x1 :))) ((by with_unfolding_all exact (x2 :))) ((by with_unfolding_all exact (x3 :))) ((by with_unfolding_all exact (x4 :))) ((by with_unfolding_all exact (x5 :))) ((by with_unfolding_all exact (x6 :))) ((by with_unfolding_al …` using `(by with_unfolding_all exact (h :))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨(by with_unfolding_all exact (h'.inf :)), (by with_unfolding_all exact (h'.theta :)), (by with_unfolding_all exact (h'.lat :)), (by with_unfolding_all exact (h'.fock :)), (by with_unfolding_all exact (h'.norm :))⟩`. Establish `h' : @IsVacuum a'.D m n ((by with_unfolding_all exact (x1 :))) ((by with_unfolding_all exact (x2 :))) ((by with_unfolding_all exact (x3 :))) ((by with_unfolding_all exact (x4 :))) ((by with_unfolding_all exact (x5 :))) ((by with_unfolding_all exact (x6 :))) ((by with_unfolding_al …` using `⟨(by with_unfolding_all exact (h.inf :)), (by with_unfolding_all exact (h.theta :)), (by with_unfolding_all exact (h.lat :)), (by with_unfolding_all exact (h.fock :)), (by with_unfolding_all exact (h.norm :))⟩`. Conclude with `(by with_unfolding_all exact (h' :))`. Conclude with `(by with_unfolding_all exact ((heq_of_eq e) :))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem vacuum_heq (hP : B'.toPre = B.toPre) : HEq (@IsVacuum a'.D) (@IsVacuum a.D) := by
   pre_sub
@@ -68,9 +68,9 @@ private theorem vacuum_heq (hP : B'.toPre = B.toPre) : HEq (@IsVacuum a'.D) (@Is
   exact (by with_unfolding_all exact ((heq_of_eq e) :))
 
 /- English proof (translation)
-Use `pre_sub`. Establish `e : @Eq (type_of% (@IsPlaceModel a.D)) ((by with_unfolding_all exact ((@IsPlaceModel a'.D) :))) (@IsPlaceModel a.D)`. Use function extensionality and compare the values at `m n x1 x2 x3 x4 x5 x6 x7 x8`. Use `propext ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `h' : @IsPlaceModel a'.D m n ((by with_unfolding_all exact (x1 :))) ((by with_unfolding_all exact (x2 :))) ((by with_unfolding_all exact (x3 :))) ((by with_unfolding_all exact (x4 :))) ((by with_unfolding_all exact (x5 :))) ((by with_unfolding_all exact (x6 :))) ((by with_unfoldin …` using `(by with_unfolding_all exact (h :))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨(by with_unfolding_all exact (h'.trans :)), (by with_unfolding_all exact (h'.modul :)), (by with_unfolding_all exact (h'.vac :))⟩`. Establish `h' : @IsPlaceModel a'.D m n ((by with_unfolding_all exact (x1 :))) ((by with_unfolding_all exact (x2 :))) ((by with_unfolding_all exact (x3 :))) ((by with_unfolding_all exact (x4 :))) ((by with_unfolding_all exact (x5 :))) ((by with_unfolding_all exact (x6 :))) ((by with_unfoldin …` using `⟨(by with_unfolding_all exact (h.trans :)), (by with_unfolding_all exact (h.modul :)), (by with_unfolding_all exact (h.vac :))⟩`. Conclude with `(by with_unfolding_all exact (h' :))`. Conclude with `(by with_unfolding_all exact ((heq_of_eq e) :))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem placeModel_heq (hP : B'.toPre = B.toPre) : HEq (@IsPlaceModel a'.D) (@IsPlaceModel a.D) := by
   pre_sub
@@ -85,9 +85,9 @@ private theorem placeModel_heq (hP : B'.toPre = B.toPre) : HEq (@IsPlaceModel a'
   exact (by with_unfolding_all exact ((heq_of_eq e) :))
 
 /- English proof (translation)
-Use `pre_sub`. Establish `e : @Eq (type_of% (@Fock.Sk.PairSetup a.D)) ((by with_unfolding_all exact ((@Fock.Sk.PairSetup a'.D) :))) (@Fock.Sk.PairSetup a.D)`. Use function extensionality and compare the values at `x1 x2 x3 x4 x5 x6 x7 x8 x9 x10`. Use `propext ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `h' : @Fock.Sk.PairSetup a'.D ((by with_unfolding_all exact (x1 :))) ((by with_unfolding_all exact (x2 :))) ((by with_unfolding_all exact (x3 :))) ((by with_unfolding_all exact (x4 :))) ((by with_unfolding_all exact (x5 :))) ((by with_unfolding_all exact (x6 :))) ((by with_unfoldi …` using `(by with_unfolding_all exact (h :))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨(by with_unfolding_all exact (h'.std :)), (by with_unfolding_all exact (h'.inf :)), (by with_unfolding_all exact (h'.cartS :)), (by with_unfolding_all exact (h'.cartT :)), (by with_unfolding_all exact (h'.onbS :)), (by with_unfolding_all exact (h'.onbT :))⟩`. Establish `h' : @Fock.Sk.PairSetup a'.D ((by with_unfolding_all exact (x1 :))) ((by with_unfolding_all exact (x2 :))) ((by with_unfolding_all exact (x3 :))) ((by with_unfolding_all exact (x4 :))) ((by with_unfolding_all exact (x5 :))) ((by with_unfolding_all exact (x6 :))) ((by with_unfoldi …` using `⟨(by with_unfolding_all exact (h.std :)), (by with_unfolding_all exact (h.inf :)), (by with_unfolding_all exact (h.cartS :)), (by with_unfolding_all exact (h.cartT :)), (by with_unfolding_all exact (h.onbS :)), (by with_unfolding_all exact (h.onbT :))⟩`. Conclude with `(by with_unfolding_all exact (h' :))`. Conclude with `(by with_unfolding_all exact ((heq_of_eq e) :))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem pairSetup_heq (hP : B'.toPre = B.toPre) : HEq (@Fock.Sk.PairSetup a'.D) (@Fock.Sk.PairSetup a.D) := by
   pre_sub
@@ -109,13 +109,7 @@ variable {B B' : Base} {C : Cols B} {C' : Cols B'} {a : Late B C} {a' : Late B' 
   {V W : HSp a.D} {V' W' : HSp a'.D}
 
 /- English proof (translation)
-Establish `k1` using `thetaFun_heq a a' hP`. Establish `k2` using `pairSetup_heq a a' hP`. Use `pre_sub`. Use `ksub hV V' V`. Use `ksub hW W' W`.
-
-Use `ksub hψ ψ' ψ`. Use `ksub hμ μ' μ`. Use `ksub hη η' η`. Use `ksub hω ω' ω`. Use `keq e1 (@IsThetaFunO a'.D) (@IsThetaFunO a.D) k1`.
-
-Use `keq e2 (@Fock.Sk.PairSetup a'.D) (@Fock.Sk.PairSetup a.D) k2`. Use `⟨⟨(by with_unfolding_all exact (h.datum.std :)), (by with_unfolding_all exact (h.datum.hecS :)), (by with_unfolding_all exact (h.datum.hecT :)), (by with_unfolding_all exact (h.datum.resS :)), (by with_unfolding_all exact (h.datum.resT :)), ?_, ?_, ?_, ?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `rewrite [e1]; exact (by with_unfolding_all exact (h.datum.om_pres :))`. Use `rewrite [e1]; exact (by with_unfolding_all exact (h.datum.om_heis :))`. Use `rewrite [e1]; exact (by with_unfolding_all exact (h.datum.om_aut :))`.
-
-Use `rewrite [e1]; exact (by with_unfolding_all exact (h.datum.om_cont :))`. Use `rewrite [e1]; exact (by with_unfolding_all exact (h.datum.om_unit :))`. Use `rewrite [e1]; exact (by with_unfolding_all exact (h.datum.om_split :))`. Use `delta SphInertAtO; rewrite [e1]; exact (by with_unfolding_all exact (h.inert :))`. Use `delta RealAtO; rewrite [e2, e1]; exact (by with_unfolding_all exact (h.real :))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem weilFull_of (hP : B'.toPre = B.toPre) (hV : HEq V' V) (hW : HEq W' W)
     {ψ : AddChar (AF a.D.host.F) ℂ} {ψ' : AddChar (AF a'.D.host.F) ℂ} (hψ : HEq ψ' ψ)
@@ -143,7 +137,7 @@ private theorem weilFull_of (hP : B'.toPre = B.toPre) (hV : HEq V' V) (hW : HEq 
   · delta RealAtO; rewrite [e2, e1]; exact (by with_unfolding_all exact (h.real :))
 
 /- English proof (translation)
-Establish `e : ∀ y : ∀ PP : Pl D.host.E, Matrix (Fin S.rank) (Fin T.rank) (kP PP), omegaQ ∅ T.rank ξ' (-1) y = omegaQ ∅ T.rank ξ (-1) y` using `fun y => by simp [omegaQ]`. Unfold `IsThPVecOf at h ⊢`. Simplify using `only [e]`. Conclude with `h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem thPVec_empty {D : D7} {ψ θ} {S T : HSp D} {sS sT ΛS ΛT βS βT Pg ξ} (ξ') {f₀ f}
     (h : IsThPVecOf ψ θ S T sS sT ΛS ΛT βS βT Pg ∅ ξ f₀ f) : IsThPVecOf ψ θ S T sS sT ΛS ΛT βS βT Pg ∅ ξ' f₀ f := by
@@ -154,15 +148,7 @@ private theorem thPVec_empty {D : D7} {ψ θ} {S T : HSp D} {sS sT ΛS ΛT βS �
   exact h
 
 /- English proof (translation)
-Establish `k1` using `thetaFun_heq a a' hP`. Establish `k2` using `vacuum_heq a a' hP`. Establish `k3` using `placeModel_heq a a' hP`. Use `pre_sub`. Use `ksub hV V' V`.
-
-Use `ksub hW W' W`. Use `ksub hψ ψ' ψ`. Use `ksub hθ θ' θ`. Use `ksub hs s' s`. Use `ksub hΛV ΛV' ΛV`.
-
-Use `ksub hΛW ΛW' ΛW`. Use `ksub hβV βV' βV`. Use `ksub hβW βW' βW`. Use `ksub hPg Pg' Pg`. Use `ksub h₀ f₀' f₀`.
-
-Use `ksub hf f' f`. Use `keq e1 (@IsThetaFunO a'.D) (@IsThetaFunO a.D) k1`. Use `keq e2 (@IsVacuum a'.D) (@IsVacuum a.D) k2`. Use `keq e3 (@IsPlaceModel a'.D) (@IsPlaceModel a.D) k3`. Use `delta IsThPVecOf IsVacO IsThetaAt`.
-
-Use `rewrite [e1, e2, e3]`. Conclude with `(by with_unfolding_all exact (h :))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem thPVec_of (hP : B'.toPre = B.toPre) (hV : HEq V' V) (hW : HEq W' W)
     {ψ : AddChar (AF a.D.host.F) ℂ} {ψ' : AddChar (AF a'.D.host.F) ℂ} (hψ : HEq ψ' ψ)
@@ -217,20 +203,14 @@ local macro "tie_cases" : tactic => `(tactic| (
   ksub h7 f' M.fr))
 
 /- English proof (translation)
-Use `tie_cases`. Conclude with `(by with_unfolding_all exact ((HEq.refl (cart M)) :))`.
+A detailed English derivation is pending.
 -/
 private theorem cart_heq (hP : B'.toPre = B.toPre) (hW : HEq W' W) (h : DSTie M' M) : HEq (cart M') (cart M) := by
   tie_cases
   exact (by with_unfolding_all exact ((HEq.refl (cart M)) :))
 
 /- English proof (translation)
-Use `tie_cases`. Use `ksub hV V' V`. Take `⟨W₁, ρ₁⟩` from `c'`. Name the introduced variables `nW' iW' _`. Simplify using `only at c1 c2 c3 c4`.
-
-Use `ksub c1 W₁ c.W`. Use `ksub c3 nW' c.nW`. Use `ksub c4 iW' c.iW`. Use `ksub c2 ρ₁ c.ρ`. Use `ksub hθ θ' θ`.
-
-Use `ksub hψ ψ' ψ`. Use `ksub hBV BV' BV`. Use `ksub hio io' io`. Use `ksub hω ω' ω`. Use `ksub hv v' v`.
-
-Use `ksub hΔ Δ' Δ`. Conclude with `(by with_unfolding_all exact (h0 :))`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 private theorem ioW_of (hP : B'.toPre = B.toPre) (hV : HEq V' V) (hW : HEq W' W) (h : DSTie M' M)
     {θ : InfFam a.D} {θ' : InfFam a'.D} (hθ : HEq θ' θ)
@@ -272,7 +252,7 @@ local macro "pre_cases" : tactic => `(tactic| (
   subst e))
 
 /- English proof (translation)
-Use `pre_cases`. Conclude with `(by with_unfolding_all exact ((HEq.refl (RealDat.Delta i)) :))`.
+A detailed English derivation is pending.
 -/
 private theorem delta_heq (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} (h : (i : ℕ) = i') :
     HEq (RealDat.Delta i') (RealDat.Delta i) := by
@@ -280,9 +260,7 @@ private theorem delta_heq (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin 
   exact (by with_unfolding_all exact ((HEq.refl (RealDat.Delta i)) :))
 
 /- English proof (translation)
-Use `pre_cases`. Use `ksub hΛV ΛV' ΛV`. Use `ksub hΛW ΛW' ΛW`. Use `ksub hβV βV' βV`. Use `ksub hβW βW' βW`.
-
-Conclude with `(by with_unfolding_all exact ((And.intro (HEq.refl (ΛV i)) (And.intro (HEq.refl (ΛW i)) (And.intro (HEq.refl (βV i)) (HEq.refl (βW i))))) :))`.
+A detailed English derivation is pending.
 -/
 private theorem frames_heq (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} (h : (i : ℕ) = i')
     {ΛV : ∀ i, Submodule (𝓞 a.D.host.E) (Fin (Vc a.D i).rank → a.D.host.E)}
@@ -313,11 +291,11 @@ private def WeilAt1 {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A 
   IsIoW R.θ (R.MW i (sg0 D A)) (R.cV i) (R.ωP i t) (R.ptP i t) (RealDat.Delta i) (R.ioP i)
 
 /- English proof (translation)
-Establish `s : a.D.what₂.embLL = sg0 a.D A` using `(sgAt_mk _ R.hv0).symm`. Establish `s' : a'.D.what₂.embLL = sg0 a'.D A'` using `(sgAt_mk _ R'.hv0).symm`. Establish `hM0 : DSTie (R'.MW i' (sg0 a'.D A')) (R.MW i (sg0 a.D A))` using `s ▸ s' ▸ hM`. Establish `hW` using `wc_heq hP h`. Establish `hV` using `vc_heq hP h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨l1, l2, l3, l4⟩` from `frames_heq hP h hΛV hΛW hβV hβW`. Take `⟨w1, w2, w3⟩` from `h0`. Use `⟨weilFull_of hP hV hW hψ hμ hη hω w1, ?_, ioW_of hP hV hW hM0 hθ hψ c1 c2 c3 c4 hBV hio hω hv (delta_heq hP h) w3⟩` and prove the remaining obligations. Rewrite `w2` using `[hQ]`. Rewrite using `[hQ']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `thPVec_empty _ (thPVec_of hP hV hW hψ hθ (cart_heq hP hW hM0) l1 l2 l3 l4 hPg hvac hv (thPVec_empty _ w2))`.
+A detailed English derivation is pending.
 -/
 private theorem exists_isOrbQuot_of_isHaarOn (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} (h : (i : ℕ) = i') {t : T0} {t' : T0'}
     (hψ : HEq R'.ψ R.ψ) (hθ : HEq R'.θ R.θ) (hβW : HEq R'.βW R.βW) (hβV : HEq R'.βV R.βV) (hΛV : HEq R'.ΛV R.ΛV)
@@ -349,11 +327,9 @@ end
 open GlobalTheory.Mem.R3.Rw.WeilAtExt in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Ks _ _ _ Xg tr z Wt' R' hE hEx hS hL i'`. Use `letI := z.alg`. Establish `hP : B'.toPre = B.toPre` using `hE.1`. Establish `hm` using `LiftExt.m_eq (a := Z) (a' := Z') hP`. Set `i : Fin (w.st Z).toD7.R.m` to `Fin.cast hm i'`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h : (i : ℕ) = i'` using `rfl`. Use `obt ⟨⟨hψ, hθ, hβW, -, -, -, hβV, hΛV, hΛW, hPg, -, -, h1, -⟩, h2⟩ := hS`. Use `obt ⟨c1, c2, c3, c4, hvac, hio, hBV, m1, m2, m3, m4, m5, m6, m7, -⟩ := h1 i i' h`. Use `obt ⟨hω, hv, -⟩ := h2 i i' h`. Use `obt ⟨hμ, hη, hQ', hQ⟩ := hL`.
-
-Establish `hb` using `RealDat.thP_of_weak z.pins.char.base.thP hEx`. Conclude with `exists_isOrbQuot_of_isHaarOn (a := Z) (a' := Z') (R := z.R.toRealDat) (R' := R'.toRealDat) hP h hψ hθ hβW hβV hΛV hΛW hPg c1 c2 c3 c4 hvac hio hBV ⟨m1, m2, m3, m4, m5, m6, m7⟩ hω hv (hμ i i' h).1 hη hQ' hQ ⟨z.pins.char.fullP i _, hb.vP i _, hb.ioP i _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.referenceTuple_weilDatum_vector_polynomialMap_enlarged : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'}
   {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl}

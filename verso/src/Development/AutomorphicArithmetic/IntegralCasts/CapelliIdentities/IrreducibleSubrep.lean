@@ -22,17 +22,15 @@ noncomputable def UpperTheory.Reformulated.B.IrreducibleSubrep.RepIso :
       ∃ (g : GL (Fin n) k), ∀ (s : Γ), (r' : Γ → GL (Fin n) k) s = g * (r : Γ → GL (Fin n) k) s * g⁻¹
 
 /- English proof (translation)
-Introduce `Γ k _ _ n r r' hr hiso`. Take `⟨hne, -, hmin⟩` from `hr`. Take `⟨g, hg⟩` from `hiso`. Use `⟨hne, fun _ _ _ => Submodule.mem_top, fun W' _ hW' => ?_⟩` and prove the remaining obligations. Establish `hcomm : ∀ s : Γ, (g : Matrix (Fin n) (Fin n) k) * (r s : Matrix (Fin n) (Fin n) k) = (r' s : Matrix (Fin n) (Fin n) k) * (g : Matrix (Fin n) (Fin n) k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `s`. Rewrite using `[← Units.val_mul, ← Units.val_mul, hg s, inv_mul_cancel_right]`. Establish `hsec : ∀ v : Fin n → k, (g : Matrix (Fin n) (Fin n) k).mulVec (((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).mulVec v) = v`. Introduce `v`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : UpperTheory.Reformulated.B.IrreducibleSubrep.IsInv r (W'.comap (Matrix.mulVecLin (g : Matrix (Fin n) (Fin n) k)))`. Introduce `s v hv`. Rewrite `hv`, the goal using `[Submodule.mem_comap, Matrix.mulVecLin_apply]`. Rewrite using `[Matrix.mulVec_mulVec, hcomm, ← Matrix.mulVec_mulVec]`. Conclude with `hW' s _ hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hmin _ le_top hinv with h | h` into its components or cases. Use `left`. Rewrite `h`, the goal using `[Submodule.eq_bot_iff]`. Introduce `w hw`. Establish `h0` using `h (((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).mulVec w) (by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_comap, Matrix.mulVecLin_apply, hsec]`. Conclude with `hw)`. Rewrite using `[← hsec w, h0, Matrix.mulVec_zero]`. Use `right`. Rewrite `h`, the goal using `[Submodule.eq_top_iff']`.
-
-Introduce `w`. Establish `h0` using `h (((g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).mulVec w)`. Rewrite `h0` using `[Submodule.mem_comap, Matrix.mulVecLin_apply, hsec]`. Then use the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.IrreducibleSubrep.irr_of_iso :
     ∀ {Γ k : Type} [inst : Group Γ] [inst_1 : Field k] {n : ℕ} {r r' : Γ →* GL (Fin n) k},

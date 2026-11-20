@@ -14,13 +14,13 @@ section Gen
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Take `⟨hd, hall⟩` from `h`. Establish `hint` using `(hall w w w w).2`. Establish `e1 : ∀ g : Formalism.REAL.UJ ε, coefOn σ w w g * star (coefOn σ w w g) = (((‖coefOn σ w w g‖ ^ 2 : ℝ)) : ℂ)`. Introduce `g`. Rewrite using `[Complex.star_def, RCLike.mul_conj]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Simplify using `only [e1] at hint`. Rewrite `hint` using `[integral_complex_ofReal, inner_self_eq_norm_sq_to_K]`. Establish `key : (∫ g, ‖coefOn σ w w g‖ ^ 2 ∂μ : ℝ) = ‖w‖ ^ 4 / d`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ((‖w‖ : ℂ) ^ 2 * (‖w‖ : ℂ) ^ 2 / (d : ℂ)) = ((‖w‖ ^ 4 / d : ℝ) : ℂ)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ((∫ g, ‖coefOn σ w w g‖ ^ 2 ∂μ : ℝ) : ℂ) = ((‖w‖ ^ 4 / d : ℝ) : ℂ)` using `hint.trans h3`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ‖w‖ ≠ 0` using `norm_ne_zero_iff.2 hw`. Unfold `fdegOf`. Rewrite using `[key]`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem deg_fdegOf {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (μ : Measure (Formalism.REAL.UJ ε)) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (d : ℝ) (w : H)
@@ -47,9 +47,9 @@ theorem deg_fdegOf {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   field_simp
 
 /- English proof (translation)
-Establish `hi : ∀ g : Formalism.REAL.UJ ε, coefOn σ' (U v) (U v) g = coefOn σ v v g`. Introduce `g`. Unfold `coefOn`. Rewrite using `[← hU (umat g) (by exact g.2) v, U.inner_map_map]`. Unfold `fdegOf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [hi, U.norm_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem deg_fdegOf_equiv {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup H']
     [InnerProductSpace ℂ H'] (m : Measure (Formalism.REAL.UJ ε)) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H))
@@ -63,7 +63,7 @@ theorem deg_fdegOf_equiv {H H' : Type} [NormedAddCommGroup H] [InnerProductSpace
   simp only [hi, U.norm_map]
 
 /- English proof (translation)
-Unfold `fdegOf`. Rewrite using `[integral_smul_measure, ENNReal.coe_toReal, smul_eq_mul]`. Establish `hc' : (c : ℝ) ≠ 0` using `by exact_mod_cast hc.ne'`. Rewrite using `[← mul_div_assoc, mul_div_mul_left _ _ hc']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem deg_fdegOf_smul {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (c : NNReal) (hc : 0 < c)
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (v : H) :
@@ -74,7 +74,7 @@ theorem deg_fdegOf_smul {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ
   rw [← mul_div_assoc, mul_div_mul_left _ _ hc']
 
 /- English proof (translation)
-The claim follows from `let T' : H →ₗᵢ[ℂ] H := { toLinearMap := T.toLinearMap, norm_map' := hT } T'.inner_map_map x y`.
+A detailed English derivation is pending.
 -/
 theorem deg_inner_isom {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (T : H →L[ℂ] H)
     (hT : ∀ v, ‖T v‖ = ‖v‖) (x y : H) : ⟪T x, T y⟫_ℂ = ⟪x, y⟫_ℂ :=
@@ -82,9 +82,9 @@ theorem deg_inner_isom {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ 
   T'.inner_map_map x y
 
 /- English proof (translation)
-Simplify using `only [UJset, Set.mem_setOf_eq] at *`. Unfold `Formalism.REAL.inUJ at *`. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc] at *`. Rewrite using `[← Matrix.mul_assoc _ a b, ← Matrix.mul_assoc aᴴ _ b, ha]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb`.
+A detailed English derivation is pending.
 -/
 theorem deg_UJ_mul {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ UJset ε) (hb : b ∈ UJset ε) : a * b ∈ UJset ε := by
   simp only [UJset, Set.mem_setOf_eq] at *
@@ -97,25 +97,23 @@ theorem deg_UJ_mul {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ UJset ε) (hb 
 end Gen
 
 /- English proof (translation)
-Take `⟨hPu, hPJ⟩` from `hP`. Take `⟨hPu', hPJ'⟩` from `hP'`. Take `⟨⟨hσ1, hσmul⟩, hiso, -⟩` from `hrep`. Establish `h1 : σ (P'⁻¹ * 1 * P') = 1` using `hσ1`. Establish `hm : ∀ a ∈ UJset ε, ∀ b ∈ UJset ε, σ (P'⁻¹ * (a * b) * P') = (σ (P'⁻¹ * a * P')).comp (σ (P'⁻¹ * b * P'))` using `hσmul`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiso' : ∀ g ∈ UJset ε, ∀ x : H, ‖σ (P'⁻¹ * g * P') x‖ = ‖x‖` using `hiso`. Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hPu`. Establish `hdet' : IsUnit P'.det` using `(Matrix.isUnit_iff_isUnit_det P').1 hPu'`. Establish `hPPi : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hdet`. Establish `hPPi' : P' * P'⁻¹ = 1` using `Matrix.mul_nonsing_inv P' hdet'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPiP' : P'⁻¹ * P' = 1` using `Matrix.nonsing_inv_mul P' hdet'`. Establish `hmem : ∀ A B : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, Aᴴ * Formalism.REAL.Jm ε * A = Formalism.QuantumDeterminants.Hpk k r → Bᴴ * Formalism.REAL.Jm ε * B = Formalism.QuantumDeterminants.Hpk k r → B * B⁻¹ = 1 → A * B⁻¹ ∈ UJset ε`. Introduce `A B hA hB hBB`. Use `show (A * B⁻¹)ᴴ * Formalism.REAL.Jm ε * (A * B⁻¹) = Formalism.REAL.Jm ε`. Establish `hB1 : (B⁻¹)ᴴ * Bᴴ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.conjTranspose_mul, hBB, Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (B⁻¹)ᴴ * (Bᴴ * Formalism.REAL.Jm ε * B) * B⁻¹ := by rw [hA, hB]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = ((B⁻¹)ᴴ * Bᴴ) * Formalism.REAL.Jm ε * (B * B⁻¹) := by simp only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [hB1, hBB, Matrix.one_mul, Matrix.mul_one]`. Establish `hQ : P * P'⁻¹ ∈ UJset ε` using `hmem P P' hPJ hPJ' hPPi'`. Establish `hQi : P' * P⁻¹ ∈ UJset ε` using `hmem P' P hPJ' hPJ hPPi`. Establish `hQQi : P * P'⁻¹ * (P' * P⁻¹) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc P'⁻¹, hPiP', Matrix.one_mul, hPPi]`. Establish `hBC : ∀ x : H, σ (P'⁻¹ * (P * P'⁻¹) * P') (σ (P'⁻¹ * (P' * P⁻¹) * P') x) = x`. Introduce `x`. Establish `e` using `congrArg (fun T : H →L[ℂ] H => T x) (hm _ hQ _ hQi)`. Simplify using `only [ContinuousLinearMap.comp_apply, hQQi, h1, one_apply_eq_self] at e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Conclude with `e.symm`. Establish `hcoef : ∀ a b : H, coefOn (ε` using `ε) (fun g => σ (P'⁻¹ * g * P')) a b = coefOn (ε := ε) (fun g => σ (P⁻¹ * g * P)) (σ (P'⁻¹ * (P' * P⁻¹) * P') a) (σ (P'⁻¹ * (P' * P⁻¹) * P') b) := by`. Introduce `a b`. Use function extensionality and compare the values at `g`. Unfold `coefOn`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Establish `hg : umat g ∈ UJset ε` using `by exact g.2`. Establish `hconj : P⁻¹ * umat g * P = P'⁻¹ * (P' * P⁻¹ * umat g * (P * P'⁻¹)) * P'`. Simplify using `only [← Matrix.mul_assoc, hPiP', Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc _ P'⁻¹ P', hPiP', Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hconj, hm _ (deg_UJ_mul hQi hg) _ hQ, hm _ hQi _ hg]`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Rewrite using `[hBC a, deg_inner_isom _ (hiso' _ hQi)]`. Use `⟨hd.1, fun v w v' w' => ?_⟩` and prove the remaining obligations. Establish `hv` using `hd.2 (σ (P'⁻¹ * (P' * P⁻¹) * P') v) (σ (P'⁻¹ * (P' * P⁻¹) * P') w) (σ (P'⁻¹ * (P' * P⁻¹) * P') v') (σ (P'⁻¹ * (P' * P⁻¹) * P') w')`.
-
-Rewrite using `[hcoef v w, hcoef v' w']`. Use `⟨hv.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hv.2, deg_inner_isom _ (hiso' _ hQi), deg_inner_isom _ (hiso' _ hQi)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_isFdeg_cayley {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (m : Measure (Formalism.REAL.UJ ε))

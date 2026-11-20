@@ -14,17 +14,15 @@ open GlobalTheory.CompanionTheory.IwaDbl.FrameCore
 open Formalism.UG (cT bc)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
 /- English proof (translation)
-Establish `hc` using `hB.cm`. Break down `hY with h | h` into its components or cases. Use `⟨1, one_ne_zero, fun i j => by simpa using h.herm j i, fun w => ⟨_, 1, ?_, h.cartan w, one_ne_zero, ?_⟩⟩` and prove the remaining obligations. Conclude with `Matrix.ext fun i j => (hc.2.2.2 _ _).symm.trans (congrArg _ (h.herm i j))`. Use extensionality with `i j`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨x, hx⟩ : ∃ x, x - σ x ≠ 0` from `by by_contra! e`. Use `hc.2.1` as an intermediate fact. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (InfinitePlace.mk τ)) (InfinitePlace.isReal_mk_iff.2 (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun y => (hc.2.2.2 τ y).symm.trans (congrArg τ (sub_eq_zero.1 (e y)).symm))))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : σ (x - σ x) = -(x - σ x)` using `by rw [map_sub, cm_conj_conj hc, neg_sub]`. Use `⟨_, hx, fun i j => ?_, fun w => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `σ (_ * Y.J i j) = _ * Y.J j i`. Rewrite using `[map_mul, hs, h.skew, neg_mul_neg]`. Establish `h1` using `hc.2.2.2 (B.emb w).1 (x - σ x)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hs, map_neg]`. Establish `h2 : (B.emb w).1 (x - σ x) = ((B.emb w).1 (x - σ x)).im * Complex.I`. Use `congrArg Complex.re h1` as an intermediate fact. Simplify using `only [Complex.neg_re, Complex.star_def, Complex.conj_re] at this`. Conclude with `Complex.ext (by simp only [Complex.mul_I_re, Complex.ofReal_im]; linarith) (by simp)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, ((B.emb w).1 (x - σ x)).im, Matrix.ext fun i j => ?_, h.cartan w, fun e => hx ?_, Matrix.ext fun i j => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `star (Complex.I * (B.emb w).1 (Y.J j i)) = Complex.I * (B.emb w).1 (Y.J i j)`. Rewrite using `[star_mul', ← hc.2.2.2, h.skew]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[e]`.
-
-Conclude with `(map_eq_zero _).1 (h2.trans (by simp))`. Express the relevant statement in the definitionally equal form `(B.emb w).1 (_ * Y.J j i) = _ * (Complex.I * (B.emb w).1 (Y.J j i))`. Rewrite using `[map_mul, ← mul_assoc, ← h2]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_scal_k {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) {r s : ℕ} (hY : Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s) :
     ∃ ξ : E, ξ ≠ 0 ∧ (∀ i j, σ ((ξ • Y.Jᵀ) j i) = (ξ • Y.Jᵀ) i j) ∧ ∀ w, ∃ (M : Matrix (Fin n) (Fin n) ℂ) (r : ℝ), Mᴴ = M ∧
@@ -59,11 +57,9 @@ theorem exists_scal_k {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) {
       · change (B.emb w).1 (_ * Y.J j i) = _ * (Complex.I * (B.emb w).1 (Y.J j i))
         rw [map_mul, ← mul_assoc, ← h2]
 /- English proof (translation)
-Establish `hL : Y.L.IsLattice E` using `hY.elim (·.lat) (·.lat)`. Take `⟨ξ, hξ, hh, hw⟩` from `_root_.GlobalTheory.ThK.Dbl.Hgt.exists_scal_k hB hY`. Use `choose M r h1 h2 h3 h4 using hw`. Use `choose b hb hb' using fun w => exists_arch hB.cm (B.emb w) (h1 w) (isUnit_of_cartan (h2 w)) (h2 w) (h3 w) (h4 w)`. Take `⟨a, -, ha⟩` from `Frames.exists_isLatticeFrame_of_arch Y.L b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : b = fun w => bc (compInf F E w) a` from `(funext ha).symm`. Take `⟨g, rfl⟩` from `back_surj hξ x`. Take `⟨p, k, hk, rfl⟩` from `HasIwasawa.adelic (a := a) (_root_.GlobalTheory.ThK.Dbl.Hgt.hasIwasawa_fin'_k hB hY (det_ne hY) hξ hh) hb g`. Establish `k2` using `keeps_back hL.fg hξ (mem_KAd.1 (inv_mem hk)).1`. Rewrite `k2` using `[map_inv]`.
-
-Conclude with `⟨⟨_, back_mem_par hξ p.2⟩, back σ Y hξ k, ⟨fun w => back_comm hξ _ ((hb' w _).1 ((mem_KAd.1 hk).2 w)), keeps_back hL.fg hξ (mem_KAd.1 hk).1, k2⟩, map_mul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem iwasawa2_k {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) {r s : ℕ} (hY : Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s) (x : G2 σ Y) :
     ∃ p : siegelOf (Equiv.refl (Fin n ⊕ Fin n)) (UG (cA σ) (dbl (incM F Y.J))).subtype, ∃ k ∈ stab2 σ Y B, x = p * k := by
@@ -80,11 +76,11 @@ theorem iwasawa2_k {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) {r s
   exact ⟨⟨_, back_mem_par hξ p.2⟩, back σ Y hξ k, ⟨fun w => back_comm hξ _ ((hb' w _).1 ((mem_KAd.1 hk).2 w)),
     keeps_back hL.fg hξ (mem_KAd.1 hk).1, k2⟩, map_mul _ _ _⟩
 /- English proof (translation)
-Use `isTopologicalRing_tens (F := F) (E := E) (R := AF F)` as an intermediate fact. Use `t2Space_adeleRing' (F := F)` as an intermediate fact. Use `t2Space_tensorProduct_finiteExtension (F := F) (E := E) (R := AF F)` as an intermediate fact. Establish `hI` using `iwasawaOf_of_isCompact (ν := absE F E) continuous_subtype_val continuous_absE hK (_root_.GlobalTheory.ThK.Dbl.Hgt.iwasawa2_k hB hY)`. Use `⟨⟨_, fun x => hgtOf (Equiv.refl _) (UG (cA σ) (dbl (incM F Y.J))).subtype (absE F E) (stab2 σ Y B) x, isStab2_stab2 B, ⟨fun x => ?_, fun p t hp k hk => ?_⟩, NNReal.continuous_coe.comp (hI.continuous_hgtOf continuous_subtype_val continuous_absE hK), fun x => hgtOf_pos x⟩, emb2 σ Y …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨p, h⟩` from `_root_.GlobalTheory.ThK.Dbl.Hgt.iwasawa2_k hB hY x`. Conclude with `⟨p, leviOf _ _ p, isPar_iff.2 ⟨mem_siegelOf.1 p.2, rfl⟩, h⟩`. Take `⟨h1, h2⟩` from `isPar_iff.1 hp`. Use `hI.hgtOf_mul ⟨p, mem_siegelOf.2 h1⟩ hk` as an intermediate fact. Rewrite using `[show t = leviOf (Equiv.refl _) (UG (cA σ) (dbl (incM F Y.J))).subtype ⟨p, mem_siegelOf.2 h1⟩ from Units.ext h2.symm]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg NNReal.toReal this`.
+A detailed English derivation is pending.
 -/
 theorem hgtEx_core_k {B : Base F E} (hB : _root_.UpperTheory.TP.W.GoodK σ B) {r s : ℕ} (hY : Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s)
     (hK : IsCompact (stab2 σ Y B : Set (G2 σ Y))) :

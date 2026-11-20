@@ -13,13 +13,11 @@ open GlobalTheory.CompanionTheory.FinActS
 namespace GlobalTheory.CompanionTheory.FinActS
 
 /- English proof (translation)
-Establish `hT : {i | ¬ Q i ⊆ V i}.Finite` using `Filter.eventually_cofinite.mp hQV`. Use `haveI : Finite {i | ¬ Q i ⊆ V i} := hT.to_subtype`. Set `f : Γ ⧸ (⨅ i, (V i).comap (p i)) → ∀ i : {i | ¬ Q i ⊆ V i}, Hl i.1 ⧸ V i.1` to `fun q i => ((p i.1 q.out : Hl i.1) : Hl i.1 ⧸ V i.1)`. Establish `hfin : (Set.univ.pi fun i : {i | ¬ Q i ⊆ V i} => {c : Hl i.1 ⧸ V i.1 | c.out ∈ Q i.1}).Finite` using `Set.Finite.pi fun i => hQf i.1`. Use `Set.Finite.of_injOn (f := f) ?_ ?_ hfin` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q hq i _`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (V i.1) (p i.1 q.out)`. Use `show (((p i.1 q.out : Hl i.1) : Hl i.1 ⧸ V i.1)).out ∈ Q i.1`. Rewrite using `[hh]`. Conclude with `hQ i.1 _ (hq i.1) _ h.2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q hq q' hq' hfq`. Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q']`. Use `QuotientGroup.eq.mpr ?_` and prove the remaining obligations. Use `Subgroup.mem_iInf.mpr fun i => ?_` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, map_mul, map_inv]`.
-
-Distinguish the cases in `hi : Q i ⊆ V i`. Conclude with `(V i).mul_mem ((V i).inv_mem (hi (hq i))) (hi (hq' i))`. Conclude with `QuotientGroup.eq.mp (congrFun hfq ⟨i, hi⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem finite_cosets_of_components_mem
     {ι Γ : Type} [Group Γ] {Hl : ι → Type} [∀ i, Group (Hl i)] (p : ∀ i, Γ →* Hl i)

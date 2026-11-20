@@ -16,7 +16,7 @@ variable {D : D7} {T : D.host.E} {F0 : FlagG (VS D) D.R.rS T} {f : Fin D.R.rS �
   {M : Submodule (𝓞 D.host.E) (WbQ D F0)}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem rs_mem_lamC {v : (VS D).V} : v ∈ lamC D F0 f M ↔
     (∀ a, star ((VS D).hT (F0.e a) v) ∈ (aaI D a)⁻¹) ∧
@@ -24,11 +24,11 @@ theorem rs_mem_lamC {v : (VS D).V} : v ∈ lamC D F0 f M ↔
     ∀ a, (VS D).hT (f a) (vPr D F0 f v) ∈ aaI D a := Iff.rfl
 
 /- English proof (translation)
-Establish `h0 : ∀ a, (VS D).hT (F0.e a) v = 0` using `fun a => hv _ (Submodule.subset_span ⟨a, rfl⟩)`. Establish `hvPr : vPr D F0 f v = v` using `by simp [vPr, h0]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, ⟨w, hw, hwM⟩, h3⟩`. Establish `hwv : w = ⟨v, hv⟩` using `Subtype.ext (hw.trans hvPr)`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Substitute `hwv` using the available equality. Conclude with `⟨hwM, fun a => by rw [← hvPr]; exact h3 a⟩`. Introduce and unpack `⟨hM, h3⟩`. Use `⟨fun a => ?_, ⟨⟨v, hv⟩, hvPr.symm, hM⟩, fun a => ?_⟩` and prove the remaining obligations. Simplify using `only [h0, star_zero]`.
+Substitute using the available equality. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `fi_zero D _`. Rewrite using `[hvPr]`. Conclude with `h3 a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rs_mem_lamC_perp {v : (VS D).V} (hv : v ∈ perpS (VS D) F0.X) :
     v ∈ lamC D F0 f M ↔ (Submodule.Quotient.mk (⟨v, hv⟩ : perpS (VS D) F0.X) : WbQ D F0) ∈ M ∧
@@ -48,14 +48,14 @@ theorem rs_mem_lamC_perp {v : (VS D).V} (hv : v ∈ perpS (VS D) F0.X) :
       exact h3 a
 
 /- English proof (translation)
-Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker] at hy`. Conclude with `fun x hx => hy x hx`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rs_orth_perp {y : (VS D).V} (hy : y ∈ orth (VS D) F0.X) : y ∈ perpS (VS D) F0.X := by
   simp only [orth, Submodule.mem_iInf, LinearMap.mem_ker] at hy
   exact fun x hx => hy x hx
 
 /- English proof (translation)
-Rewrite using `[rs_mem_lamC_perp (z_mem_perp D F0)]`. Use `⟨hM.2.2.1, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[hf.2.2 a]`. Conclude with `fi_zero D _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rs_z_mem (hf : PartnerOK D F0 f) (hM : IsGlueLat (hWb D F0) (zbar D F0) M) :
     F0.z ∈ lamC D F0 f M := by
@@ -65,17 +65,15 @@ theorem rs_z_mem (hf : PartnerOK D F0 f) (hM : IsGlueLat (hWb D F0) (zbar D F0) 
   exact fi_zero D _
 
 /- English proof (translation)
-Establish `hXe : ∀ y ∈ F0.X, ∀ b, (VS D).hT y (F0.e b) = 0`. Introduce `y hy b`. Establish `hy' : y ∈ Submodule.span D.host.E (Set.range F0.e)` using `hy`. Use `clear hy`. Proceed by induction on `hy' using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem z hz`. Take `⟨c, rfl⟩` from `hz`. Conclude with `F0.e_iso c b`. Consider the case `zero => rw [map_zero, LinearMap.zero_apply]`. Consider the case `add y z _ _ hy hz => rw [map_add, LinearMap.add_apply, hy, hz, add_zero]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `smul c y _ hy => rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, hy, smul_zero]`. Establish `hperp : x • F0.e a ∈ perpS (VS D) F0.X`. Introduce `y hy`. Rewrite using `[map_smul, hXe y hy a, smul_zero]`. Rewrite using `[rs_mem_lamC_perp hperp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨?_, fun b => ?_⟩` and prove the remaining obligations. Establish `hmem : x • F0.e a ∈ F0.X` using `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Establish `h0 : (Submodule.Quotient.mk (⟨x • F0.e a, hperp⟩ : perpS (VS D) F0.X) : WbQ D F0) = 0` using `(Submodule.Quotient.mk_eq_zero _).mpr hmem`. Rewrite using `[h0]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Establish `hs : starRingEnd D.host.E ((VS D).hT (F0.e a) (f b)) = (VS D).hT (f b) (F0.e a)` using `by first`. Consider the case `exact (VS D).herm (F0.e a) (f b)`. Consider the case `exact (VS D).herm.eq (F0.e a) (f b)`. Rewrite using `[map_smul, ← hs, hf.1 a b, smul_eq_mul]`. Use `split_ifs with hab`.
-
-Substitute `hab` using the available equality. Simplify using `using hx`. Simplify using `only [map_zero, mul_zero]`. Conclude with `FractionalIdeal.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rs_smul_e_mem (hf : PartnerOK D F0 f) {a : Fin D.R.rS} {x : D.host.E} (hx : x ∈ aaI D a) :
     x • F0.e a ∈ lamC D F0 f M := by
@@ -112,13 +110,13 @@ theorem rs_smul_e_mem (hf : PartnerOK D F0 f) {a : Fin D.R.rS} {x : D.host.E} (h
       exact FractionalIdeal.zero_mem _
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `v ⟨hvΛ, hvX⟩`. Establish `hvX' : v ∈ F0.X` using `hvX`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun D.host.E).1 hvX'`. Establish `hα` using `((rs_mem_lamC_perp (rs_X_le_perp D F0 hvX')).1 hvΛ).2`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hca : ∀ a, c a ∈ aaI D a`. Introduce `a`. Establish `h` using `hα a`. Rewrite `h` using `[← hc, map_sum]`. Simplify using `only [map_smul, rs_hT_f_e hf, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Rewrite using `[← hc]`. Use `Submodule.sum_mem _ fun a _ => Submodule.subset_span ⟨a, c a, hca a, rfl⟩` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, x, hx, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨rs_smul_e_mem hf hx, Submodule.smul_mem _ x (rs_e_mem_X D F0 a)⟩`.
+A detailed English derivation is pending.
 -/
 theorem rs_xlam (hf : PartnerOK D F0 f) : XLam (lamC D F0 f M) (lf D F0) = XS D F0 := by
   apply le_antisymm
@@ -140,11 +138,11 @@ theorem rs_xlam (hf : PartnerOK D F0 f) : XLam (lamC D F0 f M) (lf D F0) = XS D 
     exact ⟨rs_smul_e_mem hf hx, Submodule.smul_mem _ x (rs_e_mem_X D F0 a)⟩
 
 /- English proof (translation)
-Take `⟨y, hy, x, hx, hyx⟩` from `Submodule.mem_sup.1 hc.1`. Establish `hyΛ : y ∈ lamC D F0 f M` using `hy.1`. Establish `hyp : y ∈ perpS (VS D) F0.X` using `rs_orth_perp hy.2`. Establish `hxX : x ∈ F0.X` using `hx`. Establish `hxp : x ∈ perpS (VS D) F0.X` using `rs_X_le_perp D F0 hxX`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyM` using `((rs_mem_lamC_perp hyp).1 hyΛ).1`. Apply `hM.2.2.2 c` to reduce the goal to its premises. Establish `hsum : c • (⟨F0.z, z_mem_perp D F0⟩ : perpS (VS D) F0.X) = ⟨y, hyp⟩ + ⟨x, hxp⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_smul, Submodule.coe_add]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `hyx.symm`. Rewrite using `[zbar, ← Submodule.Quotient.mk_smul, hsum, Submodule.Quotient.mk_add, rs_mk_X_zero D F0 hxX, add_zero]`. Conclude with `hyM`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rs_prim (hf : PartnerOK D F0 f) (hM : IsGlueLat (hWb D F0) (zbar D F0) M) (c : D.host.E)
     (hc : c • F0.z ∈ Lsub (lamC D F0 f M) (lf D F0)) : ∃ o : 𝓞 D.host.E, (o : D.host.E) = c := by
@@ -165,11 +163,11 @@ theorem rs_prim (hf : PartnerOK D F0 f) (hM : IsGlueLat (hWb D F0) (zbar D F0) M
 def rsLift (w : perpS (VS D) F0.X) : (VS D).V := (w : (VS D).V) - ∑ a, (VS D).hT (f a) w • F0.e a
 
 /- English proof (translation)
-Use `show ∀ x ∈ F0.X, (VS D).hT x (rsLift (f := f) w) = 0`. Introduce `x hx`. Establish `hxe : ∀ b, (VS D).hT x (F0.e b) = 0`. Introduce `b`. Establish `hx' : x ∈ Submodule.span D.host.E (Set.range F0.e)` using `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Use `clear hx`. Proceed by induction on `hx' using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, rfl⟩` from `hy`. Conclude with `F0.e_iso a b`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [map_zero, LinearMap.zero_apply]`. Consider the case `add y z _ _ hy hz => rw [map_add, LinearMap.add_apply, hy, hz, add_zero]`. Consider the case `smul c y _ hy => rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, hy, smul_zero]`. Simplify using `only [rsLift, map_sub, map_sum, map_smul, hxe, smul_zero, Finset.sum_const_zero, sub_zero]`. Conclude with `w.2 x hx`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rs_lift_perp (w : perpS (VS D) F0.X) : rsLift (f := f) w ∈ perpS (VS D) F0.X := by
   show ∀ x ∈ F0.X, (VS D).hT x (rsLift (f := f) w) = 0
@@ -189,7 +187,7 @@ theorem rs_lift_perp (w : perpS (VS D) F0.X) : rsLift (f := f) w ∈ perpS (VS D
   exact w.2 x hx
 
 /- English proof (translation)
-Apply `(Submodule.Quotient.eq _).mpr` to reduce the goal to its premises. Use `show (((⟨rsLift (f := f) w, rs_lift_perp w⟩ : perpS (VS D) F0.X) - w : perpS (VS D) F0.X) : (VS D).V) ∈ F0.X`. Simplify using `only [Submodule.coe_sub, rsLift, sub_sub_cancel_left]`. Conclude with `neg_mem (sum_mem fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩))`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rs_lift_mk (w : perpS (VS D) F0.X) :
     (Submodule.Quotient.mk (⟨rsLift (f := f) w, rs_lift_perp w⟩ : perpS (VS D) F0.X) : WbQ D F0) =
@@ -200,9 +198,9 @@ theorem rs_lift_mk (w : perpS (VS D) F0.X) :
   exact neg_mem (sum_mem fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩))
 
 /- English proof (translation)
-Establish `hfe : ∀ a, (VS D).hT (f b) (F0.e a) = if a = b then 1 else 0`. Introduce `a`. Establish `hs : starRingEnd D.host.E ((VS D).hT (F0.e a) (f b)) = (VS D).hT (f b) (F0.e a)` using `by first`. Consider the case `exact (VS D).herm (F0.e a) (f b)`. Consider the case `exact (VS D).herm.eq (F0.e a) (f b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← hs, hf.1 a b]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [rsLift, map_sub, map_sum, map_smul, hfe, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, sub_self]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem rs_hT_f_lift (hf : PartnerOK D F0 f) (w : perpS (VS D) F0.X) (b : Fin D.R.rS) :
     (VS D).hT (f b) (rsLift (f := f) w) = 0 := by
@@ -218,9 +216,7 @@ theorem rs_hT_f_lift (hf : PartnerOK D F0 f) (w : perpS (VS D) F0.X) (b : Fin D.
     Finset.sum_ite_eq', Finset.mem_univ, if_true, sub_self]
 
 /- English proof (translation)
-Rewrite using `[rs_mem_lamC_perp (rs_lift_perp w)]`. Use `⟨?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[rs_lift_mk]`. Conclude with `hw`. Rewrite using `[rs_hT_f_lift hf w a]`.
-
-Conclude with `FractionalIdeal.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rs_lift_mem (hf : PartnerOK D F0 f) (w : perpS (VS D) F0.X)
     (hw : (Submodule.Quotient.mk w : WbQ D F0) ∈ M) : rsLift (f := f) w ∈ lamC D F0 f M := by
@@ -232,9 +228,9 @@ theorem rs_lift_mem (hf : PartnerOK D F0 f) (w : perpS (VS D) F0.X)
     exact FractionalIdeal.zero_mem _
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Establish `hw' : (w : (VS D).V) ∈ lamC D F0 f M` using `hw`. Conclude with `((rs_mem_lamC_perp w.2).1 hw').1`. Introduce `m hm`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ m`. Use `⟨⟨rsLift (f := f) w, rs_lift_perp w⟩, rs_lift_mem hf w hm, ?_⟩` and prove the remaining obligations. Conclude with `rs_lift_mk w`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rs_mof (hf : PartnerOK D F0 f) : Mof D F0 (lamC D F0 f M) = M := by
   apply le_antisymm
@@ -249,7 +245,7 @@ theorem rs_mof (hf : PartnerOK D F0 f) : Mof D F0 (lamC D F0 f M) = M := by
 end Flag
 
 /- English proof (translation)
-Introduce `D u F0 f M hf hM`. Conclude with `⟨rs_z_mem hf hM, rs_xlam hf, rs_prim hf hM, rs_mof hf⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem lattice_flag_exists : LamFlag := by
   intro D u F0 f M hf hM

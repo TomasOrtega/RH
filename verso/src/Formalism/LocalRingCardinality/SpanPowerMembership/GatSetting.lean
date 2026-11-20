@@ -24,14 +24,14 @@ def sigN : Qn p n ≃+* Qn p n :=
   IsFractionRing.ringEquivOfRingEquiv (WittVector.frobeniusEquiv p (GaloisField p n))
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.ringEquivOfRingEquiv_algebraMap _ x`.
+A detailed English derivation is pending.
 -/
 theorem sigN_alg (x : Wn p n) :
     sigN p n (algebraMap (Wn p n) (Qn p n) x) = algebraMap (Wn p n) (Qn p n) (WittVector.frobenius x) :=
   IsFractionRing.ringEquivOfRingEquiv_algebraMap _ x
 
 /- English proof (translation)
-The claim follows from `(IsFractionRing.injective (On p n) (Kn p n)).comp algebraMap_injective`.
+A detailed English derivation is pending.
 -/
 theorem inj_WK : Function.Injective ((algebraMap (On p n) (Kn p n)).comp (algebraMap (Wn p n) (On p n))) :=
   (IsFractionRing.injective (On p n) (Kn p n)).comp algebraMap_injective
@@ -39,7 +39,7 @@ theorem inj_WK : Function.Injective ((algebraMap (On p n) (Kn p n)).comp (algebr
 def iotaN : Qn p n →+* Kn p n := IsFractionRing.lift (inj_WK p n)
 
 /- English proof (translation)
-Use extensionality with `i`. Rewrite using `[WittVector.iterate_frobenius_coeff]`. Establish `: Fintype (GaloisField p n)` using `Fintype.ofFinite _`. Establish `h` using `FiniteField.pow_card (x.coeff i)`. Rewrite `h` using `[← Nat.card_eq_fintype_card, GaloisField.card p n hn]`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem frob_iter (hn : n ≠ 0) (x : Wn p n) : (WittVector.frobenius^[n]) x = x := by
   ext i
@@ -49,9 +49,9 @@ theorem frob_iter (hn : n ≠ 0) (x : Wn p n) : (WittVector.frobenius^[n]) x = x
   rwa [← Nat.card_eq_fintype_card, GaloisField.card p n hn] at h
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[pow_succ', Function.iterate_succ_apply']`. Use `show sigN p n ((sigN p n ^ k) _) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih, sigN_alg]`.
+A detailed English derivation is pending.
 -/
 theorem sigN_pow_alg (k : ℕ) (x : Wn p n) :
     (sigN p n ^ k) (algebraMap (Wn p n) (Qn p n) x) =
@@ -64,7 +64,7 @@ theorem sigN_pow_alg (k : ℕ) (x : Wn p n) :
     rw [ih, sigN_alg]
 
 /- English proof (translation)
-Apply `RingEquiv.toRingHom_injective` to reduce the goal to its premises. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (Wn p n))` to reduce the goal to its premises. Use `ext1 x`. Use `show (sigN p n ^ n) (algebraMap (Wn p n) (Qn p n) x) = algebraMap (Wn p n) (Qn p n) x`. Rewrite using `[sigN_pow_alg, frob_iter p n hn]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigN_period (hn : n ≠ 0) : sigN p n ^ n = 1 := by
   apply RingEquiv.toRingHom_injective
@@ -74,7 +74,7 @@ theorem sigN_period (hn : n ≠ 0) : sigN p n ^ n = 1 := by
   rw [sigN_pow_alg, frob_iter p n hn]
 
 /- English proof (translation)
-The claim follows from `hp.out five_le := h5 two_le := h2 even := he frac_alt := inferInstance frac_O := inferInstance p_unif := WittVector.irreducible p res_card := by rw [Nat.card_congr (WittVector.quotientPEquiv (p := p) (k := GaloisField p n)).toEquiv, GaloisField.card p n (by omega)] eq_sum_herm_sm …`.
+A detailed English derivation is pending.
 -/
 theorem hidaSettingOfEven (h5 : 5 ≤ p) (h2 : 2 ≤ n) (he : Even n) :
     HidaSetting p n (Wn p n) (Qn p n) (On p n) (Kn p n) (iotaN p n) (sigN p n)

@@ -14,7 +14,7 @@ open AlgebraicGeometry CategoryTheory
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Establish `h : ∀ U : X.affineOpens, (A * C).ideal U ≤ (B * D).ideal U`. Introduce `U`. Rewrite using `[Scheme.IdealSheafData.ideal_mul, Scheme.IdealSheafData.ideal_mul]`. Conclude with `Ideal.mul_mono (h1 U) (h2 U)`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mul_le_mul_idealSheafData {X : Scheme.{u}} {A B C D : X.IdealSheafData}
     (h1 : A ≤ B) (h2 : C ≤ D) : A * C ≤ B * D := by
@@ -25,7 +25,7 @@ private theorem mul_le_mul_idealSheafData {X : Scheme.{u}} {A B C D : X.IdealShe
   exact h
 
 /- English proof (translation)
-Establish `hU : ∀ U : X.affineOpens, (I ^ a).ideal U ≤ (I ^ b).ideal U`. Introduce `U`. Rewrite using `[Scheme.IdealSheafData.ideal_pow, Scheme.IdealSheafData.ideal_pow]`. Conclude with `Ideal.pow_le_pow_right h`. Conclude with `hU`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem idealSheafData_pow_antitone_of_le {X : Scheme.{u}} (I : X.IdealSheafData) {a b : ℕ}
     (h : b ≤ a) : I ^ a ≤ I ^ b := by
@@ -36,9 +36,9 @@ private theorem idealSheafData_pow_antitone_of_le {X : Scheme.{u}} (I : X.IdealS
   exact hU
 
 /- English proof (translation)
-Introduce `L`. Proceed by induction on `L with`. Consider the case `nil`. Introduce `_`. Conclude with `le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `cons a L ih`. Introduce `h`. Simplify using `only [List.map_cons, List.prod_cons]`. Conclude with `mul_le_mul_idealSheafData (h a (by simp)) (ih fun j hj => h j (by simp [hj]))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem listProd_map_le_listProd_map {X : Scheme.{u}} (f g : ℕ → X.IdealSheafData) :
     ∀ L : List ℕ, (∀ j ∈ L, f j ≤ g j) → (L.map f).prod ≤ (L.map g).prod := by
@@ -53,7 +53,7 @@ private theorem listProd_map_le_listProd_map {X : Scheme.{u}} (f g : ℕ → X.I
       exact mul_le_mul_idealSheafData (h a (by simp)) (ih fun j hj => h j (by simp [hj]))
 
 /- English proof (translation)
-Establish `h : List.range 1 = [0]` using `rfl`. Rewrite using `[h, List.map_cons, List.map_nil, List.prod_cons, List.prod_nil, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem listProd_map_range_one {X : Scheme.{u}} (f : ℕ → X.IdealSheafData) :
     ((List.range 1).map f).prod = f 0 := by
@@ -64,18 +64,18 @@ private def extendExponentsByZero (m s : ℕ) (t : Fin m → Fin (s + 1)) (j : �
   if h : j < m then (t ⟨j, h⟩ : ℕ) else 0
 
 /- English proof (translation)
-The claim follows from `dif_pos hj`.
+A detailed English derivation is pending.
 -/
 private theorem extendExponentsByZero_apply_of_lt (m s : ℕ) (t : Fin m → Fin (s + 1)) (j : ℕ) (hj : j < m) :
     extendExponentsByZero m s t j = (t ⟨j, hj⟩ : ℕ) :=
   dif_pos hj
 
 /- English proof (translation)
-Distinguish the cases in `h : ∀ j ∈ Finset.range m, c j ≤ s`. Use `le_trans hc (le_of_eq (Finset.sum_congr rfl ?_))` and prove the remaining obligations. Introduce `j hj`. Rewrite using `[min_eq_left (h j hj)]`. Use `push Not at h`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj, hjs⟩` from `h`. Establish `hjm : j < m` using `Finset.mem_range.mp hj`. Establish `h1 : 1 ≤ m - j` using `by omega`. Establish `hterm : s ≤ (m - j) * min (c j) s`. Establish `hmin : min (c j) s = s` using `min_eq_right (le_of_lt hjs)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmin]`. Combine the equalities or inequalities in the displayed calculation. Use `le_trans hterm (Finset.single_le_sum (f := fun j : ℕ => (m - j) * min (c j) s) ?_ hj)` and prove the remaining obligations. Introduce `i _`. Conclude with `Nat.zero_le _`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem le_sum_mul_min_of_le_sum (m s : ℕ) (c : ℕ → ℕ)
     (hc : s ≤ ∑ j ∈ Finset.range m, (m - j) * c j) :
@@ -99,7 +99,7 @@ private theorem le_sum_mul_min_of_le_sum (m s : ℕ) (c : ℕ → ℕ)
     exact Nat.zero_le _
 
 /- English proof (translation)
-Rewrite using `[tunedSheaf_eq_iSup]`. Conclude with `le_iSup (fun c : {c : ℕ → ℕ // s ≤ ∑ j ∈ Finset.range m, (m - j) * c j} => ((List.range m).map (fun j => derivIdealSheafIterate k p j I ^ (c.1 j))).prod) ⟨c, hc⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_pow_derivIdealSheafIterate_le_tunedSheaf (k : Type u) [Field k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -112,11 +112,11 @@ theorem prod_pow_derivIdealSheafIterate_le_tunedSheaf (k : Type u) [Field k] [Is
     ((List.range m).map (fun j => derivIdealSheafIterate k p j I ^ (c.1 j))).prod) ⟨c, hc⟩
 
 /- English proof (translation)
-Rewrite using `[tunedSheaf_eq_iSup]`. Use `le_antisymm (iSup_le ?_) (iSup_le ?_)` and prove the remaining obligations. Introduce and unpack `⟨c, hc⟩`. Establish `hex : ∀ j : ℕ, j < m → extendExponentsByZero m s (fun i : Fin m => (⟨min (c i.1) s, Nat.lt_succ_of_le (min_le_right _ _)⟩ : Fin (s + 1))) j = min (c j) s` using `fun j hj => extendExponentsByZero_apply_of_lt m s _ j hj`. Establish `hconstr : s ≤ ∑ j ∈ Finset.range m, (m - j) * extendExponentsByZero m s (fun i : Fin m => (⟨min (c i.1) s, Nat.lt_succ_of_le (min_le_right _ _)⟩ : Fin (s + 1))) j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_trans (le_sum_mul_min_of_le_sum m s c hc) (le_of_eq (Finset.sum_congr rfl ?_))` and prove the remaining obligations. Introduce `j hj`. Rewrite using `[hex j (Finset.mem_range.mp hj)]`. Establish `hprod : ((List.range m).map (fun j => derivIdealSheafIterate k p j I ^ c j)).prod ≤ ((List.range m).map (fun j => derivIdealSheafIterate k p j I ^ extendExponentsByZero m s (fun i : Fin m => (⟨min (c i.1) s, Nat.lt_succ_of_le (min_le_right _ _)⟩ : Fin (s + 1))) j)).prod`. Use `listProd_map_le_listProd_map _ _ (List.range m) fun j hj => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hex j (List.mem_range.mp hj)]`. Conclude with `idealSheafData_pow_antitone_of_le _ (min_le_left _ _)`. Conclude with `le_iSup_of_le ⟨_, hconstr⟩ hprod`. Introduce and unpack `⟨t, ht⟩`. Conclude with `le_iSup_of_le ⟨extendExponentsByZero m s t, ht⟩ le_rfl`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem tunedSheaf_eq_iSup_fin (k : Type u) [Field k] [IsNoetherianRing k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -151,7 +151,7 @@ private theorem tunedSheaf_eq_iSup_fin (k : Type u) [Field k] [IsNoetherianRing 
     exact le_iSup_of_le ⟨extendExponentsByZero m s t, ht⟩ le_rfl
 
 /- English proof (translation)
-Establish `h : ∀ U : X.affineOpens, (I ^ c).ideal U ≤ I.ideal U`. Introduce `U`. Rewrite using `[Scheme.IdealSheafData.ideal_pow]`. Conclude with `Ideal.pow_le_self (by omega)`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idealSheafData_pow_le_self {X : Scheme.{u}} (I : X.IdealSheafData) {c : ℕ}
     (hc : 1 ≤ c) : I ^ c ≤ I := by
@@ -162,11 +162,9 @@ theorem idealSheafData_pow_le_self {X : Scheme.{u}} (I : X.IdealSheafData) {c : 
   exact h
 
 /- English proof (translation)
-Rewrite using `[tunedSheaf_eq_iSup]`. Use `le_antisymm (iSup_le ?_) ?_` and prove the remaining obligations. Introduce and unpack `⟨c, hc⟩`. Establish `hc1 : 1 ≤ c 0` using `by simpa using hc`. Establish `key : ((List.range 1).map (fun j => derivIdealSheafIterate k p j I ^ c j)).prod ≤ I`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[listProd_map_range_one]`. Conclude with `idealSheafData_pow_le_self I hc1`. Conclude with `key`. Establish `key : I ≤ ((List.range 1).map (fun j => derivIdealSheafIterate k p j I ^ ((fun _ : ℕ => 1) j))).prod`. Rewrite using `[listProd_map_range_one]`.
-
-Conclude with `le_of_eq (pow_one I).symm`. Conclude with `le_trans key (le_iSup (fun c : {c : ℕ → ℕ // 1 ≤ ∑ j ∈ Finset.range 1, (1 - j) * c j} => ((List.range 1).map (fun j => derivIdealSheafIterate k p j I ^ (c.1 j))).prod) ⟨fun _ => 1, by simp⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tunedSheaf_one_one (k : Type u) [Field k] [IsNoetherianRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p] (I : X.IdealSheafData) :
@@ -189,7 +187,7 @@ theorem tunedSheaf_one_one (k : Type u) [Field k] [IsNoetherianRing k] {X : Sche
       ⟨fun _ => 1, by simp⟩)
 
 /- English proof (translation)
-Rewrite using `[balancedTunedSheaf_eq, tuningExponent_one, tunedSheaf_one_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem balancedTunedSheaf_one (k : Type u) [Field k] [IsNoetherianRing k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p] (I : X.IdealSheafData) :
@@ -197,13 +195,13 @@ theorem balancedTunedSheaf_one (k : Type u) [Field k] [IsNoetherianRing k] {X : 
   rw [balancedTunedSheaf_eq, tuningExponent_one, tunedSheaf_one_one]
 
 /- English proof (translation)
-Establish `hm1 : m - 1 + 1 = m` using `by omega`. Establish `htop : derivIdealSheafIterate k p (m - 1) I = ⊤` using `derivIdealSheafIterate_eq_top_of_orderAtLeastLocus_eq_empty k p I (m - 1) (by rw [hm1]; exact h)`. Establish `hmem : m - 1 ∈ Finset.range m` using `Finset.mem_range.mpr (by omega)`. Establish `hm2 : m - (m - 1) = 1` using `by omega`. Establish `heq : ∑ j ∈ Finset.range m, (m - j) * (if j = m - 1 then s else 0) = (m - (m - 1)) * (if m - 1 = m - 1 then s else 0)` using `Finset.sum_eq_single (m - 1) (fun b _ hb => by rw [if_neg hb, mul_zero]) (fun hb => absurd hmem hb)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (m - (m - 1)) * (if m - 1 = m - 1 then s else 0) = s` using `by simp [hm2]`. Establish `hsum : s ≤ ∑ j ∈ Finset.range m, (m - j) * (if j = m - 1 then s else 0)` using `(heq.trans h3).ge`. Establish `hprod : ((List.range m).map (fun j => derivIdealSheafIterate k p j I ^ (if j = m - 1 then s else 0))).prod = ⊤`. Establish `h1 : ((List.range m).map (fun j => derivIdealSheafIterate k p j I ^ (if j = m - 1 then s else 0))).prod = 1`. Use `List.prod_eq_one ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Rewrite `hx` using `[List.mem_map]`. Take `⟨j, -, rfl⟩` from `hx`. Distinguish the cases in `hj : j = m - 1`. Substitute `hj` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[htop, ← Scheme.IdealSheafData.one_eq_top, one_pow]`. Rewrite using `[if_neg hj, pow_zero]`. Rewrite using `[h1, Scheme.IdealSheafData.one_eq_top]`. Rewrite using `[tunedSheaf_eq_iSup]`. Conclude with `top_le_iff.mp (le_trans (le_of_eq hprod.symm) (le_iSup (fun c : {c : ℕ → ℕ // s ≤ ∑ j ∈ Finset.range m, (m - j) * c j} => ((List.range m).map (fun j => derivIdealSheafIterate k p j I ^ (c.1 j))).prod) ⟨fun j => if j = m - 1 then s else 0, hsum⟩))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tunedSheaf_eq_top_of_orderAtLeastLocus_eq_empty (k : Type u) [Field k] [CharZero k]
     [IsNoetherianRing k] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
@@ -243,7 +241,7 @@ theorem tunedSheaf_eq_top_of_orderAtLeastLocus_eq_empty (k : Type u) [Field k] [
       ⟨fun j => if j = m - 1 then s else 0, hsum⟩))
 
 /- English proof (translation)
-Rewrite using `[balancedTunedSheaf_eq]`. Conclude with `tunedSheaf_eq_top_of_orderAtLeastLocus_eq_empty k p I hm (tuningExponent m) h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem balancedTunedSheaf_eq_top_of_orderAtLeastLocus_eq_empty (k : Type u) [Field k] [CharZero k]
     [IsNoetherianRing k] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
@@ -254,9 +252,9 @@ theorem balancedTunedSheaf_eq_top_of_orderAtLeastLocus_eq_empty (k : Type u) [Fi
   exact tunedSheaf_eq_top_of_orderAtLeastLocus_eq_empty k p I hm (tuningExponent m) h
 
 /- English proof (translation)
-Rewrite using `[tunedSheaf_eq_iSup_fin k (h ≫ p) (I.comap h) m s, tunedSheaf_eq_iSup_fin k p I m s, Scheme.IdealSheafData.comap_iSup]`. Use `iSup_congr fun t => ?_` and prove the remaining obligations. Establish `hfun : (fun j : ℕ => derivIdealSheafIterate k (h ≫ p) j (I.comap h) ^ extendExponentsByZero m s t.1 j) = (fun J : X.IdealSheafData => J.comap h) ∘ (fun j : ℕ => derivIdealSheafIterate k p j I ^ extendExponentsByZero m s t.1 j)`. Use function extensionality and compare the values at `j`. Use `show derivIdealSheafIterate k (h ≫ p) j (I.comap h) ^ extendExponentsByZero m s t.1 j = (derivIdealSheafIterate k p j I ^ extendExponentsByZero m s t.1 j).comap h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[derivIdealSheafIterate_comap k p h j I, Scheme.IdealSheafData.comap_pow]`. Rewrite using `[Scheme.IdealSheafData.comap_listProd, List.map_map]`. Conclude with `congrArg List.prod (congrArg (fun F : ℕ → Y.IdealSheafData => List.map F (List.range m)) hfun)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tunedSheaf_comap (k : Type u) [Field k] [IsNoetherianRing k] {X Y : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] [LocallyOfFiniteType p]
@@ -279,7 +277,7 @@ theorem tunedSheaf_comap (k : Type u) [Field k] [IsNoetherianRing k] {X Y : Sche
     (congrArg (fun F : ℕ → Y.IdealSheafData => List.map F (List.range m)) hfun)
 
 /- English proof (translation)
-Rewrite using `[balancedTunedSheaf_eq, balancedTunedSheaf_eq]`. Conclude with `tunedSheaf_comap k p h I m (tuningExponent m)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem balancedTunedSheaf_comap (k : Type u) [Field k] [IsNoetherianRing k] {X Y : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] [LocallyOfFiniteType p]

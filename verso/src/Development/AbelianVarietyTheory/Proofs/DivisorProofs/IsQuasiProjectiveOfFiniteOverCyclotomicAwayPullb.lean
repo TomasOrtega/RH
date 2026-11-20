@@ -9,7 +9,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.CycAwayQProj
 
 /- English proof (translation)
-Establish `h : Algebra.FiniteType ℤ (Algebra.adjoin ℤ s)` using `(Subalgebra.fg_iff_finiteType _).1 (Subalgebra.fg_def.2 ⟨s, hs, rfl⟩)`. Establish `e : Algebra.adjoin ℤ s ≃+* Subring.closure s` using `RingEquiv.subringCongr (s := (Algebra.adjoin ℤ s).toSubring) (by rw [Algebra.adjoin_int]; rfl)`. Establish `h' : Algebra.FiniteType ℤ (Subring.closure s)` using `h.equiv (AlgEquiv.ofRingEquiv (f := e) fun x => by simp)`. Use `RingHom.finiteType_algebraMap.2 h'` as an intermediate fact. Rewrite `this` using `[RingHom.eq_intCast' (algebraMap ℤ (Subring.closure s))]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem finiteType_closure {K : Type} [CommRing K] {s : Set K} (hs : s.Finite) :
     (Int.castRingHom (Subring.closure s)).FiniteType := by
@@ -22,13 +22,13 @@ theorem finiteType_closure {K : Type} [CommRing K] {s : Set K} (hs : s.Finite) :
   rwa [RingHom.eq_intCast' (algebraMap ℤ (Subring.closure s))] at this
 
 /- English proof (translation)
-The claim follows from `finiteType_closure (Set.toFinite _)`.
+A detailed English derivation is pending.
 -/
 theorem finiteType_cycAway (M : ℕ) : (Int.castRingHom (cycAway M)).FiniteType :=
   finiteType_closure (Set.toFinite _)
 
 /- English proof (translation)
-Take `⟨_, hL⟩` from `(isQProjOver_iff_locallyOfFiniteType_and_exists_isAmpleLB s).1 h`. Establish `: LocallyOfFiniteType (spMap f)` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).2 hf`. Conclude with `(isQProjOver_iff_locallyOfFiniteType_and_exists_isAmpleLB _).2 ⟨inferInstance, hL⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isQProjOver_comp_spMap {A B : Type} [CommRing A] [CommRing B] {f : A →+* B} (hf : f.FiniteType)
     {Y : Scheme.{0}} {s : Y ⟶ Sp B} (h : IsQProjOver s) : IsQProjOver (s ≫ spMap f) := by
@@ -37,7 +37,7 @@ theorem isQProjOver_comp_spMap {A B : Type} [CommRing A] [CommRing B] {f : A →
   exact (isQProjOver_iff_locallyOfFiniteType_and_exists_isAmpleLB _).2 ⟨inferInstance, hL⟩
 
 /- English proof (translation)
-Introduce `M _ _ _ _ _ _ hs _ π _` and use `isQProjOver_comp_of_isFinite π (isQProjOver_of_isPullback (IsPullback.of_hasPullback _ _) (isQProjOver_comp_spMap (finiteType_cycAway M) hs))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isQProjOver_of_isFinite_pullback : ∀ (M : ℕ) (R : Type) [CommRing R] [IsNoetherianRing R], IsUnit ((M : ℕ) : R) → ∀ (Y : Scheme.{0}) (s : Y ⟶ Sp (cycAway M)), IsQProjOver s → ∀ (Z : Scheme.{0}) (π : Z ⟶ pullback (s ≫ spMap (Int.castRingHom (cycAway M))) (spMap (Int.castRingHom R))), IsFinite π → IsQProjOver (π ≫ pullback.snd _ _) :=
   fun M _ _ _ _ _ _ hs _ π _ =>

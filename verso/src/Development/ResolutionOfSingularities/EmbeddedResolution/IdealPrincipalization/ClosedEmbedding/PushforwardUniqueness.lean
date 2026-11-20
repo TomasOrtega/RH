@@ -26,7 +26,7 @@ structure SequenceOfBlowupsPushforward {S X : Scheme.{u}} (j : S ⟶ X) (BS : Se
     B.center i = imageIdealSheaf (σ i hi.le) (BS.center i)
 
 /- English proof (translation)
-Rewrite using `[show imageIdealSheaf f J = J.map f from map_eq_imageIdealSheaf ..]`. Conclude with `Blowup.comap_map_of_isClosedImmersion f J`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comap_imageIdealSheaf_of_isIso {A B : Scheme.{u}} (f : A ⟶ B) [IsIso f]
     (J : A.IdealSheafData) :
@@ -35,15 +35,15 @@ private theorem comap_imageIdealSheaf_of_isIso {A B : Scheme.{u}} (f : A ⟶ B) 
   exact Blowup.comap_map_of_isClosedImmersion f J
 
 /- English proof (translation)
-Establish `hB` using `B.isBlowupAlongIdealSheaf_blowupMorphism i hi`. Establish `hB'` using `B'.isBlowupAlongIdealSheaf_blowupMorphism i hi'`. Establish `cB : Blowup.IsLocallyGeneratedByNonZeroDivisor ((B.center i).comap (B.transitionMapSucc i))` using `hB.1`. Establish `cB' : Blowup.IsLocallyGeneratedByNonZeroDivisor ((B'.center i).comap (B'.transitionMapSucc i))` using `hB'.1`. Establish `hinv : (B.center i).comap f.inv = B'.center i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hf, ← AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, Iso.inv_hom_id, AlgebraicGeometry.Scheme.IdealSheafData.comap_id]`. Establish `c1 : Blowup.IsLocallyGeneratedByNonZeroDivisor ((B'.center i).comap (B.transitionMapSucc i ≫ f.hom))`. Rewrite using `[AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, hf]`. Conclude with `cB`. Establish `c2 : Blowup.IsLocallyGeneratedByNonZeroDivisor ((B.center i).comap (B'.transitionMapSucc i ≫ f.inv))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, hinv]`. Conclude with `cB'`. Take `⟨a, ha⟩` from `(hB'.2 _ (B.transitionMapSucc i ≫ f.hom) c1).exists`. Take `⟨b, hb⟩` from `(hB.2 _ (B'.transitionMapSucc i ≫ f.inv) c2).exists`. Establish `hab : a ≫ b = 𝟙 _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(hB.2 _ (B.transitionMapSucc i) cB).unique ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hb, ← Category.assoc, ha, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Rewrite using `[Category.id_comp]`. Establish `hba : b ≫ a = 𝟙 _`. Use `(hB'.2 _ (B'.transitionMapSucc i) cB').unique ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, ha, ← Category.assoc, hb, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Rewrite using `[Category.id_comp]`. Conclude with `⟨⟨a, b, hab, hba⟩, ha⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_iso_succ_comp_blowupMorphism {X : Scheme.{u}} (B B' : SequenceOfBlowups X) (i : ℕ)
     (hi : i < B.length) (hi' : i < B'.length) (f : B.schemeAt i ≅ B'.schemeAt i)
@@ -78,7 +78,7 @@ private theorem exists_iso_succ_comp_blowupMorphism {X : Scheme.{u}} (B B' : Seq
   exact ⟨⟨a, b, hab, hba⟩, ha⟩
 
 /- English proof (translation)
-Rewrite using `[d'.center i hi', ← hf, imageIdealSheaf_comp, comap_imageIdealSheaf_of_isIso, d.center i hi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem comap_center_eq_of_sequenceOfBlowupsPushforward {S X : Scheme.{u}} {j : S ⟶ X}
     {BS : SequenceOfBlowups S} {B B' : SequenceOfBlowups X}
@@ -91,9 +91,7 @@ private theorem comap_center_eq_of_sequenceOfBlowupsPushforward {S X : Scheme.{u
 namespace SequenceOfBlowupsPushforward
 
 /- English proof (translation)
-Take `⟨hlen, σ, hci, h0, hstep, hcent, hker⟩` from `h`. Use `⟨⟨hlen, fun i hi => σ i (by omega), fun i hi => hci i _, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `h0`. Introduce `i hi`. Conclude with `hstep i (by omega)`.
-
-Introduce `i hi`. Conclude with `hcent i (by omega)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nonempty_of_isPushforward {S X : Scheme.{u}} (j : S ⟶ X) [IsClosedImmersion j]
     {BS : SequenceOfBlowups S} {B : SequenceOfBlowups X} (h : IsPushforwardBlowupSeq j BS B) :
@@ -107,7 +105,7 @@ theorem nonempty_of_isPushforward {S X : Scheme.{u}} (j : S ⟶ X) [IsClosedImme
     exact hcent i (by omega)
 
 /- English proof (translation)
-The claim follows from `d.lengthEq ▸ d'.lengthEq`.
+A detailed English derivation is pending.
 -/
 theorem length_eq_length {S X : Scheme.{u}} {j : S ⟶ X}
     {BS : SequenceOfBlowups S} {B B' : SequenceOfBlowups X}
@@ -116,31 +114,27 @@ theorem length_eq_length {S X : Scheme.{u}} {j : S ⟶ X}
   d.lengthEq ▸ d'.lengthEq
 
 /- English proof (translation)
-Establish `hlength : B.length = B'.length` using `length_eq_length d d'`. Establish `hSL : BS.length = B.length` using `d.lengthEq`. Establish `key : ∀ n : ℕ, n ≤ B.length → ∃ e : ∀ i : ℕ, i ≤ n → (B.schemeAt i ≅ B'.schemeAt i), (∀ (i : ℕ) (hi : i ≤ n) (h1 : i ≤ B.length) (h2 : i ≤ B'.length), d.σ i h1 ≫ (e i hi).hom = d'.σ i h2) ∧ ((e 0 (Nat.zero_le n)).hom ≫ B'.isoZero.hom = B.isoZero.hom) ∧ (∀ (i : ℕ) (hi : i + 1 ≤ n) …`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `_`. Use `⟨fun i hi => eqToIso (congrArg B.schemeAt (Nat.le_zero.mp hi)) ≪≫ (B.isoZero ≪≫ B'.isoZero.symm) ≪≫ eqToIso (congrArg B'.schemeAt (Nat.le_zero.mp hi).symm), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi h1 h2`. Take `rfl : i = 0` from `Nat.le_zero.mp hi`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hz : d.σ 0 h1 ≫ B.isoZero.hom = d'.σ 0 h2 ≫ B'.isoZero.hom` using `d.zero.trans d'.zero.symm`. Establish `hgoal : d.σ 0 h1 ≫ B.isoZero.hom ≫ B'.isoZero.inv = d'.σ 0 h2`. Rewrite using `[← Category.assoc, hz, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Simplify using `using hgoal`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Introduce `i hi`. Conclude with `absurd hi (Nat.not_succ_le_zero i)`. Consider the case `succ n ih`. Introduce `hn1`. Take `⟨e, hσ, h0, hsq⟩` from `ih (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnB : n < B.length` using `by omega`. Establish `hnB' : n < B'.length` using `by omega`. Establish `hnS : n < BS.length` using `by omega`. Establish `hcen : (B'.center n).comap (e n le_rfl).hom = B.center n` using `comap_center_eq_of_sequenceOfBlowupsPushforward d d' n hnB hnB' (e n le_rfl) (hσ n le_rfl hnB.le hnB'.le)`. Take `⟨g, hg⟩` from `exists_iso_succ_comp_blowupMorphism B B' n hnB hnB' (e n le_rfl) hcen`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i hi => if hin : i ≤ n then e i hin else eqToIso (congrArg B.schemeAt (by omega : i = n + 1)) ≪≫ g ≪≫ eqToIso (congrArg B'.schemeAt (by omega : n + 1 = i)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi h1 h2`. Distinguish the cases in `hin : i ≤ n`. Simplify using `only [dif_pos hin]`. Conclude with `hσ i hin h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hie : i = n + 1` using `by omega`. Substitute `hie` using the available equality. Simplify using `only [dif_neg hin, Iso.trans_hom, eqToIso.hom, eqToHom_refl, Category.id_comp, Category.comp_id]`. Establish `hBcen : (B'.center n).comap (d'.σ n hnB'.le) = BS.center n`. Use `d'.isClosedImmersion n hnB'.le` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[d'.center n hnB', show imageIdealSheaf (d'.σ n hnB'.le) (BS.center n) = (BS.center n).map (d'.σ n hnB'.le) from map_eq_imageIdealSheaf .., Blowup.comap_map_of_isClosedImmersion]`. Establish `hcart : Blowup.IsLocallyGeneratedByNonZeroDivisor ((B'.center n).comap (BS.transitionMapSucc n ≫ d'.σ n hnB'.le))`. Rewrite using `[AlgebraicGeometry.Scheme.IdealSheafData.comap_comp, hBcen]`. Conclude with `(BS.isBlowupAlongIdealSheaf_blowupMorphism n hnS).1`. Establish `hstep : (d.σ (n + 1) hnB ≫ g.hom) ≫ B'.transitionMapSucc n = BS.transitionMapSucc n ≫ d'.σ n hnB'.le`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Category.assoc, hg, ← Category.assoc, d.square n hnB, Category.assoc, hσ n le_rfl hnB.le hnB'.le]`. Conclude with `((B'.isBlowupAlongIdealSheaf_blowupMorphism n hnB').2 _ (BS.transitionMapSucc n ≫ d'.σ n hnB'.le) hcart).unique hstep (d'.square n hnB')`. Establish `hzz : (0 : ℕ) ≤ n` using `Nat.zero_le n`. Simplify using `only [dif_pos hzz]`. Conclude with `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i hi`. Distinguish the cases in `hin : i + 1 ≤ n`. Establish `hin' : i ≤ n` using `Nat.le_of_succ_le hin`. Simplify using `only [dif_pos hin, dif_pos hin']`. Conclude with `hsq i hin`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hien : i = n` using `by omega`. Establish `hile : i ≤ n` using `le_of_eq hien`. Substitute `hien` using the available equality. Simplify using `only [dif_neg hin, dif_pos hile, Iso.trans_hom, eqToIso.hom, eqToHom_refl, Category.id_comp, Category.comp_id]`. Conclude with `hg`.
-
-Take `⟨e, hσ, h0, hsq⟩` from `key B.length le_rfl`. Use `⟨hlength, e, h0, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Conclude with `hsq i hi`. Introduce `i hi`.
-
-Conclude with `comap_center_eq_of_sequenceOfBlowupsPushforward d d' i hi (by omega) (e i hi.le) (hσ i hi.le hi.le (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isomorphic {S X : Scheme.{u}} {j : S ⟶ X} [IsClosedImmersion j]
     {BS : SequenceOfBlowups S} {B B' : SequenceOfBlowups X}
@@ -234,7 +228,7 @@ theorem isomorphic {S X : Scheme.{u}} {j : S ⟶ X} [IsClosedImmersion j]
 end SequenceOfBlowupsPushforward
 
 /- English proof (translation)
-Take `⟨d⟩` from `SequenceOfBlowupsPushforward.nonempty_of_isPushforward j h`. Take `⟨d'⟩` from `SequenceOfBlowupsPushforward.nonempty_of_isPushforward j h'`. Conclude with `d.isomorphic d'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsPushforwardBlowupSeq.isomorphic {S X : Scheme.{u}} (j : S ⟶ X) [IsClosedImmersion j]
     {BS : SequenceOfBlowups S} {B B' : SequenceOfBlowups X}

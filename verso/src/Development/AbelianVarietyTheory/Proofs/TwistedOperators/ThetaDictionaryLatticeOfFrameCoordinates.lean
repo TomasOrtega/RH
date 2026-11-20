@@ -13,7 +13,7 @@ namespace GlobalTheory.DictLatPin
 variable {D : D7}
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Conclude with `h g`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem latFrame_cast {V W : HSp D} (hV : V = W) {r : ℕ} (hr : V.rank = r) (hr' : W.rank = r)
     {Comp : Type} {X : Comp → ReciprocityTheory.ChartRestriction.G.FD.Data D.host.E r}
@@ -39,25 +39,23 @@ open GlobalTheory.DictLatPin in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ _ _ _ hMods _ hT i σ hσ hV γ hγ g hFr v`. Substitute `hσ` using the available equality. Establish `hj : InR D ((i : ℕ) + 1)` using `inR i`. Establish `hL` using `hT.laws`. Establish `hg` using `T.toCore.good_σ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `hL.pins`. Take `⟨hr, g', e, F', ik, φ, th, -, -, hth, hD⟩` from `hL.adPin _ hj _ hg`. Establish `hcl` using `latFrame_cast hV hr (rank_Wc i) (T.dict ((i : ℕ) + 1) T.σ₀) th (T.x₀ ((i : ℕ) + 1) T.σ₀) (fun h => by`. Take `⟨γ₁, hq, hl, -, hf⟩` from `hD.2 h`. Conclude with `⟨γ₁, hq, hl, hf⟩) g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨γ', hγ', hΛ, hf'⟩` from `hcl`. Establish `hres : res T (sg0 D A) = T.toCore.σ₀`. Rewrite using `[show sg0 D A = D.what₂.embLL from sgAt_mk _ R.hv0, res_embLL T hT.alg hP.2.2.1]`. Establish `hx : IsModelBaseFrameFamily (R.MW i (sg0 D A)) (rank_Wc i) (T.x₀ ((i : ℕ) + 1) T.toCore.σ₀)` using `hres ▸ hT.x0 i (sg0 D A) (base_embedding_good T R hT.alg hP.2.2.1)`. Use `set k := (GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.dictW T i T.σ₀ hV g).1 with hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU` using `hL.unf _ hj _ hg`. Establish `hΨ` using `(hU.2.1 k).2`. Take `⟨ρ₀⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm 1⟩`. Establish `hτ₀ : tauE D ρ₀ ∈ ((T.U ((i : ℕ) + 1) T.σ₀).X k).Ψ` using `(hΨ _).2 (hP.1.2.2.2 ρ₀)`. Set `τ₀ : ((T.U ((i : ℕ) + 1) T.σ₀).X k).Ψ` to `⟨tauE D ρ₀, hτ₀⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `hFr ρ₀ τ₀ rfl`. Establish `h2` using `hf' τ₀`. Establish `hth' : th k τ₀ = R.θ ρ₀` using `GlobalTheory.LettersCheck.isInfEmb_unique (tauE D ρ₀) _ _ (hth k τ₀) (hMods.inf ρ₀)`. Rewrite `h1` using `[← hx.mul]`. Rewrite `h2` using `[hth']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : Matrix.reindex (finCongr (rank_Wc i)) (finCongr (rank_Wc i)) (archM (Wc D i) (R.θ ρ₀) (γ' * g)) * T.x₀ ((i : ℕ) + 1) T.σ₀ (tauE D ρ₀) = Matrix.reindex (finCongr (rank_Wc i)) (finCongr (rank_Wc i)) (archM (Wc D i) (R.θ ρ₀) (γ * g)) * T.x₀ ((i : ℕ) + 1) T.σ₀ (tauE D ρ₀)` using `h2.symm.trans h1`. Establish `hx₀ : IsOrthogonalFrame ((T.U ((i : ℕ) + 1) T.σ₀).X k) (T.x₀ ((i : ℕ) + 1) T.σ₀)` using `hL.familyUniformisationBasePointOrthogonal _ hj _ hg k`. Take `⟨-, hu2, -⟩` from `GlobalTheory.UnitFrames.unit_frame_eq_orthonormal_mul_triangular D.host.E D.R.r ((T.U ((i : ℕ) + 1) T.σ₀).X k).p0 ((T.U ((i : ℕ) + 1) T.σ₀).X k).Ψ ((T.U ((i : ℕ) + 1) T.σ₀).X k).Gm ((T.U ((i : ℕ) + 1) T.σ₀).X k).Gm_herm`. Establish `hdet : IsUnit (T.x₀ ((i : ℕ) + 1) T.σ₀ (tauE D ρ₀)).det` using `(((hu2 (fun τ => T.x₀ ((i : ℕ) + 1) T.σ₀ τ.1) fun τ => hx₀ τ.1 τ.2).1 τ₀).1).isUnit`. Establish `h4 : archM (Wc D i) (R.θ ρ₀) (γ' * g) = archM (Wc D i) (R.θ ρ₀) (γ * g)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (· * (T.x₀ ((i : ℕ) + 1) T.σ₀ (tauE D ρ₀))⁻¹) h3` as an intermediate fact. Simplify using `only [Matrix.mul_nonsing_inv_cancel_right _ _ hdet] at this`. Conclude with `(Matrix.reindex (finCongr (rank_Wc i)) (finCongr (rank_Wc i))).injective this`. Establish `h5 : ∀ δ : GA D (Wc D i), archM (Wc D i) (R.θ ρ₀) δ = archM (Wc D i) (R.θ ρ₀) (δ * g) * archM (Wc D i) (R.θ ρ₀) g⁻¹` using `fun δ => by`. Rewrite using `[← GlobalTheory.PointAtPlace.archM_mul, mul_inv_cancel_right]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hγγ : γ' = γ` using `GlobalTheory.AdTh.MarkUniq.rat_eq_of_archM (Wc D i) hγ' hγ (tauE D ρ₀) (R.θ ρ₀) (hMods.inf ρ₀) (by rw [h5 γ', h5 γ, h4])`. Substitute `hγγ` using the available equality. Rewrite using `[← SetLike.mem_coe, hΛ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hw' : w ∈ latG (Wc D i) (γ' * g)` using `hw`. Use `hw' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `m`. Simplify using the standard rewrite rules. Introduce `hv`.
-
-Conclude with `⟨_, hv, funext fun m => by simp⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DictLatPin.lat_of_frAt : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m)
     (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A)

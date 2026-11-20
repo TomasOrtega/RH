@@ -15,15 +15,15 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hsa : StrictAnti lam` using `(fdc_stdGap hlam hgap hh).1`. Establish `key : ∀ t : ℕ, ∃ (H : Type) (_ : NormedAddCommGroup H) (_ : InnerProductSpace ℂ H) (_ : CompleteSpace H) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (T : KType ε (lowK ε (lamT lam t))) (j : T.V →L[ℂ] H), FData ε (lamT lam t) σ T j ∧ (∃ (H' : Type) (_ : NormedAddCommGroup H') (_ …`. Introduce `t`. Establish `hμ` using `isHCParam_lamT hlam t`. Establish `hg : GapAtLeast ε (lamT lam t) (h + t)` using `gap_lamT hsa hgap t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : (0 : ℝ) ≤ t` using `Nat.cast_nonneg t`. Establish `hh' : thrStar ε + 1 < h + t` using `by linarith`. Establish `hstd` using `fdc_stdGap hμ hg hh'`. Set `T : KType ε (lowK ε (lamT lam t))` to `(HW.kType_exists ε _ hμ).some`. Take `⟨m, hm, hP⟩` from `fdc_model hp hq hμ hg hh' T`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨d, H, i1, i2, σ, hDS, hd⟩` from `fdc_ds_exists hp hq hμ hg hh'`. Use `haveI : CompleteSpace H := hDS.1`. Take `⟨j, hiso, hk, -, hform⟩` from `anyF hDS hstd hP`. Establish `hΨ : ∀ z : PCoord ε → ℂ, PsiM T m (NormedSpace.exp (pmat z)) = fF ε (lamT lam t) T (pmat z)`. Introduce `z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[psiM_exp_pmat, psM_exp_pmat hm T z]`. Take `⟨H', i1', i2', σ', w', hsm, hlink⟩` from `Lap.Base.link n ε _ T (PsiM T m) hstd hP`. Use `⟨H, i1, i2, inferInstance, σ, T, j, ⟨hDS.2.2.1, hiso, hk, fun z => ?_⟩, ⟨H', i1', i2', σ', w', hsm, fun z => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hform _ (exp_pmat_inUJ z), hΨ]`. Rewrite using `[hlink _ (exp_pmat_inUJ z), hΨ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fdcD_eq hμ hg hh' ⟨H, i1, i2, σ, hDS, hd⟩]`. Conclude with `hd`. Use `choose H i1 i2 i3 σ T j hF hsm hd using key`. Conclude with `thmFD Lap.Base.b3 hp hq hlam hgap hh (fdcD ε) (fdc_step hp hq hh) H σ T j (Filter.Eventually.of_forall hF) (Filter.Eventually.of_forall hsm) (Filter.Eventually.of_forall hd)`.
+A detailed English derivation is pending.
 -/
 theorem fdc_cd {ε : Fin n → Bool} (hp : 1 ≤ pOf ε) (hq : 1 ≤ qOf ε) {lam : Fin n → ℝ} (hlam : IsHCParam lam)
     {h : ℝ} (hgap : GapAtLeast ε lam h) (hh : thrStar ε + 1 < h) : fdcD ε lam = dimVlam lam := by
@@ -63,17 +63,15 @@ theorem fdc_cd {ε : Fin n → Bool} (hp : 1 ≤ pOf ε) (hq : 1 ≤ qOf ε) {la
     (Filter.Eventually.of_forall hF) (Filter.Eventually.of_forall hsm) (Filter.Eventually.of_forall hd)
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `fdcGood_of_isDS hσ`. Establish `hgood : FdcGood ε lam d` using `⟨H, inferInstance, inferInstance, σ, hσ, hd⟩`. Establish `h1 : fdcD ε lam = d` using `fdcD_eq hlam hgap hh hgood`. Rewrite using `[← fdc_cd hp hq hlam hgap hh, h1]`. Take `⟨hdpos, hint⟩` from `hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hI⟩` from `hint v v v v`. Establish `h3 : (fun g : Formalism.REAL.UJ ε => Formalism.MainNotions.S.coefOn σ v v g * star (Formalism.MainNotions.S.coefOn σ v v g)) = fun g : Formalism.REAL.UJ ε => ((‖Formalism.MainNotions.S.coefOn σ v v g‖ ^ 2 : ℝ) : ℂ)`. Use function extensionality and compare the values at `g`. Use `first`. Consider the case `(rw [RCLike.star_def, RCLike.mul_conj]; push_cast; ring_nf; done)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]; push_cast; ring_nf; done)`. Consider the case `(simp [Complex.mul_conj, Complex.normSq_eq_norm_sq]; done)`. Consider the case `(simp [Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.sq_norm]; done)`. Consider the case `(simp [RCLike.mul_conj]; done)`. Rewrite `hI` using `[h3]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `first | rw [integral_complex_ofReal] at hI | rw [integral_ofReal] at hI`. Rewrite `hI` using `[inner_self_eq_norm_sq_to_K]`. Establish `hJ : ∫ g, ‖Formalism.MainNotions.S.coefOn σ v v g‖ ^ 2 ∂(muCD ε) = ‖v‖ ^ 4 / d`. Establish `h4 : ((∫ g, ‖Formalism.MainNotions.S.coefOn σ v v g‖ ^ 2 ∂(muCD ε) : ℝ) : ℂ) = ((‖v‖ ^ 4 / d : ℝ) : ℂ)`. Rewrite using `[hI]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `first | (push_cast; ring_nf; done) | (simp; done) | (norm_cast; ring_nf; done) | (simp; ring_nf; done)`. Conclude with `h4` after adjusting the coercions. Establish `hv4 : ‖v‖ ^ 4 ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.2 hv)`. Unfold `Formalism.MainNotions.S.fdegOf`. Rewrite using `[hJ]`.
-
-Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem fdCons_cd {ε : Fin n → Bool} (hp : 1 ≤ pOf ε) (hq : 1 ≤ qOf ε) {lam : Fin n → ℝ} (hlam : IsHCParam lam)
     {h : ℝ} (hgap : GapAtLeast ε lam h) (hh : thrStar ε + 1 < h)
@@ -111,13 +109,13 @@ theorem fdCons_cd {ε : Fin n → Bool} (hp : 1 ≤ pOf ε) (hq : 1 ≤ qOf ε) 
   field_simp
 
 /- English proof (translation)
-Use `haveI := muCD_isHaar ε`. Take `⟨κ, hκ0, hκtop, hκ⟩ : ∃ κ : ENNReal, κ ≠ 0 ∧ κ ≠ ⊤ ∧ muCD ε = κ • Formalism.REAL.muG ε` from `by first`. Consider the case `exact MeasureTheory.Measure.isHaarMeasure_eq_smul_isHaarMeasure _ _`. Consider the case `exact ⟨muCD ε (Classical.arbitrary (TopologicalSpace.PositiveCompacts (Formalism.REAL.UJ ε))), (MeasureTheory.Measure.measure_pos_of_nonempty_interior _ (Classical.arbitrary (TopologicalSpace.PositiveCompacts (Formalism.REAL.UJ ε))).interior_nonempty).ne', (Classical.arbitrary (T …`. Use `⟨κ.toReal, ENNReal.toReal_pos hκ0 hκtop, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `lam H _ _ _ σ v hlam hσ h hgap hh hp hq hΨ hv`. Establish `hcd` using `fdCons_cd hp hq hlam hgap hh hΨ hσ hv`. Establish `hfd : Formalism.QuantumDeterminants.fdegHC lam = dimVlam lam` using `rfl`. Rewrite `hcd` using `[hκ]`. Unfold `Formalism.MainNotions.S.fdegOf at hcd ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcd` using `[MeasureTheory.integral_smul_measure, smul_eq_mul]`. Rewrite using `[hfd, ← hcd]`. Establish `hκ' : κ.toReal ≠ 0` using `(ENNReal.toReal_pos hκ0 hκtop).ne'`. Distinguish the cases in `hI : ∫ g, ‖Formalism.MainNotions.S.coefOn σ v v g‖ ^ 2 ∂(Formalism.REAL.muG ε) = 0`. Rewrite using `[hI]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem fdCons_muG (n : ℕ) (ε : Fin n → Bool) : ∃ c : ℝ, 0 < c ∧
     ∀ (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]

@@ -9,13 +9,11 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 namespace GlobalTheory.ZH.SpanImm
 
 /- English proof (translation)
-Rewrite using `[← RingHom.range_eq_top]`. It suffices to establish `h : Subring.closure (Set.range c ∪ Set.range r) = (MvPolynomial.eval₂Hom c r).range by`. Rewrite using `[h]`. Use `le_antisymm (Subring.closure_le.2 ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨MvPolynomial.C a, MvPolynomial.eval₂Hom_C _ _ _⟩`. Conclude with `⟨MvPolynomial.X j, MvPolynomial.eval₂Hom_X' _ _ _⟩`. Introduce and unpack `_ ⟨q, rfl⟩`. Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a`.
+Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Rewrite using `[MvPolynomial.eval₂Hom_C]`. Conclude with `Subring.subset_closure (Or.inl ⟨a, rfl⟩)`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p j hp`.
-
-Rewrite using `[map_mul, MvPolynomial.eval₂Hom_X']`. Conclude with `mul_mem hp (Subring.subset_closure (Or.inr ⟨j, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closure_eq_top_iff {A B J : Type} [CommRing A] [CommRing B] (c : A →+* B) (r : J → B) :
     Subring.closure (Set.range c ∪ Set.range r) = ⊤ ↔
@@ -38,7 +36,7 @@ theorem closure_eq_top_iff {A B J : Type} [CommRing A] [CommRing B] (c : A →+*
       exact mul_mem hp (Subring.subset_closure (Or.inr ⟨j, rfl⟩))
 
 /- English proof (translation)
-Establish `hs` using `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of k)).inv).2`. Conclude with `hs.range_comp (p.appLE ⊤ U le_top).hom`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem range_constFn {k : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k) (U : X.Opens) :
     Set.range (constFn p U) = Set.range (p.appLE ⊤ U le_top).hom := by
@@ -46,7 +44,7 @@ theorem range_constFn {k : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k) 
   exact hs.range_comp (p.appLE ⊤ U le_top).hom
 
 /- English proof (translation)
-Unfold `ImmBy AmpleSpan.EmbedsBy`. Simplify using `only [Set.mem_univ, iSup_pos, forall_true_left, range_constFn, closure_eq_top_iff]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem immBy_iff {k : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k) (H : LB X) {J : Type}
     (s : J → H.Sec) : ImmBy p H s Set.univ ↔ AmpleSpan.EmbedsBy p s := by
@@ -55,7 +53,7 @@ theorem immBy_iff {k : Type} [CommRing k] {X : Scheme.{0}} (p : X ⟶ Sp k) (H :
   rfl
 
 /- English proof (translation)
-Introduce `k _ X p _ H _ I J _ _ t s ht hs`. Use `(immBy_iff p H s).2 (((immBy_iff p H t).1 ht).of_inSpan fun i => ?_)` and prove the remaining obligations. Take `⟨a, ha⟩` from `hs i`. Conclude with `⟨fun j => (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom (a j), ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem immBy_of_span : (∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) [IsProper p] (H : LB X), H.IsLB → ∀ (I J : Type) [Fintype I] [Fintype J] (t : I → H.Sec) (s : J → H.Sec), ImmBy p H t Set.univ → (∀ i, ∃ a : J → k, IsLin p s a (t i)) → ImmBy p H s Set.univ) := by
   intro k _ X p _ H _ I J _ _ t s ht hs

@@ -12,13 +12,13 @@ namespace GlobalTheory.FinPl.FrameCong
 variable {D : D7}
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hα, -, c, hc, x, hx, rfl⟩` from `hy`. Rewrite `hc` using `[Set.mem_singleton_iff]`. Substitute `hc` using the available equality.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Establish `hint : a * (pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 : D.host.E)) ∈ intAt D (· = v)`. Use `⟨Ideal.mul_mem_right _ _ ha.1, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_mul]`. Conclude with `FrameLat.mul_mem_intAE ha.2 (AddSubgroup.subset_closure ⟨α, hα, 1, rfl⟩)`. Establish `h` using `FrameLat.int_mul_mem hint hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ i, (pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 : D.host.E)) * incA D (x i) = pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 * x i)` using `fun i => by`. Express the relevant statement in the definitionally equal form `_ * ((1 : AF D.host.F) ⊗ₜ[D.host.F] x i) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Simplify `h` using `only [mul_assoc, h1]`. Consider the case `zero => simp only [Pi.zero_apply, mul_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => simp only [Pi.add_apply, mul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => simp only [Pi.neg_apply, mul_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem intAt_mul_mem {S : HSp D} {L : Lat S} {v : Pl D} {a : AE D} (ha : a ∈ intAt D (· = v))
     {y : Fin S.rank → AE D} (hy : y ∈ latV S L (· = v)) : (fun i => a * y i) ∈ latV S L (· = v) := by
@@ -42,13 +42,11 @@ theorem intAt_mul_mem {S : HSp D} {L : Lat S} {v : Pl D} {a : AE D} (ha : a ∈ 
   | neg x _ hx => simp only [Pi.neg_apply, mul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hα, hα0, c, hc, x, hx, rfl⟩` from `hy`. Rewrite `hc` using `[Set.mem_singleton_iff]`. Substitute `hc` using the available equality.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Use `AddSubgroup.subset_closure ⟨α, hα, hα0, 1, rfl, m • x, Submodule.smul_mem_smul hm hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `((1 : AF D.host.F) ⊗ₜ[D.host.F] (m : D.host.E)) * _ = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, one_mul, one_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `zero => simp only [Pi.zero_apply, mul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => simp only [Pi.add_apply, mul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => simp only [Pi.neg_apply, mul_neg]`.
-
-Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem inc_mul_mem {S : HSp D} {L : Lat S} {P : Pl D → Prop} {𝔪 : Ideal (𝓞 D.host.E)} {m : 𝓞 D.host.E} (hm : m ∈ 𝔪)
     {y : Fin S.rank → AE D} (hy : y ∈ latV S L P) :
@@ -68,23 +66,19 @@ theorem inc_mul_mem {S : HSp D} {L : Lat S} {P : Pl D → Prop} {𝔪 : Ideal (�
   | neg x _ hx => simp only [Pi.neg_apply, mul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p S L n _ _ β hβ 𝔪 d ⟨m, hm, hmd⟩ k₀ hk y hy`. Establish `hpi : ∀ x : n → k, x ∈ (Submodule.pi Set.univ fun _ : n => (1 : Submodule 𝒪[k] k)) ↔ ∀ j, x j ∈ 𝒪[k]`. Introduce `x`. Simplify using `only [Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]`. Use `forall_congr' fun j => ⟨?_, fun h => ⟨⟨x j, h⟩, rfl⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨z, hz⟩`. Rewrite using `[← hz]`. Conclude with `z.2`. Use `set g : GL n k := Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) k₀ with hg`. Use `set Y : Fin S.rank → k := fun i => p.pr (y i) with hY`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set x : n → k := β.b' *ᵥ Y with hx`. Establish `hbx : β.b *ᵥ x = Y` using `by rw [hx, Matrix.mulVec_mulVec, β.bb', Matrix.one_mulVec]`. Establish `hxint : ∀ j, x j ∈ 𝒪[k]`. Rewrite using `[← hpi, hβ x, hbx]`. Simplify using `only [hY, p.sec_pr]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `intAt_mul_mem (FrameLat.e_mem_intAt p) hy`. Set `x₀ : n → 𝒪[k]` to `fun j => ⟨x j, hxint j⟩`. Establish `hz : ∀ i, ((k₀.1 - 1) *ᵥ x₀) i ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ d` using `fun i => Ideal.sum_mem _ fun j _ => Ideal.mul_mem_right _ _ (hk i j)`. Use `choose c hc hcz using fun i => hmd _ (hz i)`. Establish `hgx : (g.val - 1) *ᵥ x = p.pr (incA D (m : D.host.E)) • c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, mul_comm, ← hcz i]`. Establish `h1 : g.val - 1 = (k₀.1 - 1).map (algebraMap 𝒪[k] k)`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `(RingHom.map_mulVec (algebraMap 𝒪[k] k) (k₀.1 - 1) x₀ i).symm`. Establish `hpr : ∀ i, p.pr (((mt S (β.gl g) - 1) *ᵥ y) i) = p.pr (incA D (m : D.host.E)) * (β.b *ᵥ c) i`. Introduce `i`. Rewrite using `[RingHom.map_mulVec, Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _), β.gl_mat g]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : β.b * g.val * β.b' - 1 = β.b * (g.val - 1) * β.b'`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, β.bb']`. Rewrite using `[h2, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Express the relevant statement in the definitionally equal form `(β.b *ᵥ ((g.val - 1) *ᵥ x)) i = _`. Rewrite using `[hgx, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`.
-
-Establish `hc'` using `(hβ c).1 ((hpi c).2 hc)`. Establish `h` using `inc_mul_mem hm hc'`. Establish `heq : (fun i => p.e * ((mt S (β.gl g) - 1) *ᵥ y) i) = fun i => incA D (m : D.host.E) * p.sec ((β.b *ᵥ c) i)`. Use function extensionality and compare the values at `i`. Rewrite using `[← p.sec_pr, hpr, mul_comm (incA D _), FrameLat.sec_mul_right, mul_comm]`.
-
-Rewrite using `[heq]`. Conclude with `h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_one_mulVec_mem : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (p : GlobalTheory.FinPl.SplitPt D k) (S : HSp D) (L : GlobalTheory.FinPl.Lat S) (n : Type) [Fintype n]

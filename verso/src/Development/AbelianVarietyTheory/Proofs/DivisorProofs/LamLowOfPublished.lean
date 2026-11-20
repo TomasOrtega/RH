@@ -28,11 +28,11 @@ open Formalism.IndefR.Cx GlobalTheory.BigOn
 namespace GlobalTheory.BigTop
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 h6 h7`. Use `(Formalism.MainNotions.DIV.closed_Csz_ge FamHyp 8).imp ?_` and prove the remaining obligations. Introduce `eps Fm CH _ h8`. Take `⟨x0, hx0⟩` from `GlobalTheory.T.thetaLift_weightSizes_eventually_along_family eps Fm`. Use `⟨x0, fun x hx hle i p hp C => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hS : ∀ j, Sizes (Fm.D x i) j (Fm.L x i).sc.b` using `hx0 x hx hle i`. Use `GlobalTheory.T.finiteness_inputs_real_data_three h1 h2 h3 h4 h5 h6 h7 (T := p.T) (R := p.R) (F := p.F) p.κ p.v₀ p.O 1 (Fm.L x i).sc.b C CH hp.ok hp.sep p.charW hp.exAt hp.prim p.phsOne p.stdChar p.fw p.bar hp.ioExt p.pins (fun j => (hp.oneMap j).1) p.phase hS ?_ ?_ ⟨_, ⟨Fm.params …` and prove the remaining obligations. Introduce `j`. Use `GlobalTheory.T.hookLogSum_sub_sizeTerm_le_lowerBound (Fm.D x i) (Fm.L x i) p.Del p.h0 Fm.Csz j h8 (hS j)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j show _ - C * 0 ≤ _`. Rewrite using `[mul_zero, sub_zero]`. Conclude with `le_rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamLow_of_classicalTheorems : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelWeilUnitaryConvergent →
     GlobalTheory.Published.DoublingMethod → GlobalTheory.Published.UnramifiedDoublingGL → GlobalTheory.Published.BernsteinZelevinskyFiniteness →

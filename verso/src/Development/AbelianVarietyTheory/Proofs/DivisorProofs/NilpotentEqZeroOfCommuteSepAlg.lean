@@ -17,17 +17,15 @@ open GlobalTheory.TruncKer GlobalTheory.IndefiniteRowSideFullHecke.NonFieldTypeV
 namespace GlobalTheory.RegSSClass
 
 /- English proof (translation)
-Use `set f := Matrix.toLin' A`. Establish `hcp : f.charpoly = A.charpoly` using `Matrix.charpoly_toLin' A`. Establish `hfg : Commute f (Matrix.toLin' N)` using `hc.map Matrix.toLinAlgEquiv'`. Establish `hNl : IsNilpotent (Matrix.toLin' N)` using `hN.map Matrix.toLinAlgEquiv'`. Take `⟨k, hk⟩` from `hNl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ μ, Module.End.maxGenEigenspace f μ ≤ LinearMap.ker (Matrix.toLin' N)` using `fun μ v hv => by`. Establish `h1 : Module.finrank K (Module.End.maxGenEigenspace f μ) ≤ 1`. Rewrite using `[LinearMap.finrank_maxGenEigenspace_eq, hcp]`. Conclude with `Polynomial.rootMultiplicity_le_one_of_separable hA μ`. Distinguish the cases in `h0 : v = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h0]`. Establish `h2 : Module.finrank K (Module.End.maxGenEigenspace f μ) = 1` using `le_antisymm h1 (Module.finrank_pos_iff_exists_ne_zero.2 ⟨⟨v, hv⟩, fun h => h0 (congrArg Subtype.val h)⟩)`. Take `⟨c, hc⟩` from `(finrank_eq_one_iff_of_nonzero' (⟨v, hv⟩ : Module.End.maxGenEigenspace f μ) fun h => h0 (congrArg Subtype.val h)).1 h2 ⟨_, Module.End.mapsTo_maxGenEigenspace_of_comm hfg μ hv⟩`. Establish `hc' : Matrix.toLin' N v = c • v` using `(congrArg Subtype.val hc).symm`. Establish `hpow : ∀ m : ℕ, (Matrix.toLin' N ^ m) v = c ^ m • v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ', Module.End.mul_apply, ih, map_smul, hc', smul_smul, pow_succ]`. Establish `h5 : c ^ k • v = 0` using `by rw [← hpow, hk]; rfl`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hc0 : c = 0`. Break down `smul_eq_zero.1 h5 with h | h` into its components or cases. Conclude with `pow_eq_zero_iff'.1 h |>.1`. Conclude with `absurd h h0`. Rewrite using `[LinearMap.mem_ker, hc', hc0, zero_smul]`.
-
-Establish `h3` using `iSup_le key`. Rewrite `h3` using `[Module.End.iSup_maxGenEigenspace_eq_top, top_le_iff, LinearMap.ker_eq_top]`. Conclude with `Matrix.toLin'.injective (by rw [h3, map_zero])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nilpotent_eq_zero_of_commute_sep_alg {K : Type} [Field K] [IsAlgClosed K] {n : ℕ}
     {A N : Matrix (Fin n) (Fin n) K} (hA : A.charpoly.Separable) (hN : IsNilpotent N) (hc : Commute A N) :
@@ -63,7 +61,7 @@ theorem nilpotent_eq_zero_of_commute_sep_alg {K : Type} [Field K] [IsAlgClosed K
   exact Matrix.toLin'.injective (by rw [h3, map_zero])
 
 /- English proof (translation)
-Establish `h` using `nilpotent_eq_zero_of_commute_sep_alg (K := AlgebraicClosure K) (A := A.map (algebraMap K (AlgebraicClosure K))) (N := N.map (algebraMap K (AlgebraicClosure K))) (by rw [Matrix.charpoly_map]; exact hA.map) (hN.map (algebraMap K (AlgebraicClosure K)).mapMatrix) (hc.map (algebraMap …`. Use extensionality with `i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nilpotent_eq_zero_of_commute_sep {K : Type} [Field K] {n : ℕ}
     {A N : Matrix (Fin n) (Fin n) K} (hA : A.charpoly.Separable) (hN : IsNilpotent N) (hc : Commute A N) :
@@ -77,7 +75,7 @@ theorem nilpotent_eq_zero_of_commute_sep {K : Type} [Field K] {n : ℕ}
   simpa using this
 
 /- English proof (translation)
-Use `Module.End.isSemisimple_of_squarefree_aeval_eq_zero (p := A.charpoly) h.squarefree ?_` and prove the remaining obligations. Use `LinearMap.aeval_self_charpoly (Matrix.toLin' A)` as an intermediate fact. Rewrite `this` using `[Matrix.charpoly_toLin']`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isSemisimple_of_charpoly_separable {K : Type} [Field K] {n : ℕ} {A : Matrix (Fin n) (Fin n) K}
     (h : A.charpoly.Separable) : Module.End.IsSemisimple (Matrix.toLin' A) := by
@@ -86,7 +84,7 @@ theorem isSemisimple_of_charpoly_separable {K : Type} [Field K] {n : ℕ} {A : M
   rwa [Matrix.charpoly_toLin'] at this
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `isConj_iff.1 h`. Simplify using `using Matrix.charpoly_units_conj c.1 a.1.1`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem charpoly_eq_of_isConj {K : Type} [Field K] {n : ℕ} {G : Subgroup (GL (Fin n) K)} {a b : G}
     (h : IsConj a b) : b.1.1.charpoly = a.1.1.charpoly := by
@@ -97,13 +95,11 @@ end GlobalTheory.RegSSClass
 
 open GlobalTheory.RegSSClass in
 /- English proof (translation)
-Introduce `D V γ hγ`. Establish `hs : γ.1.1.charpoly.Separable` using `hγ`. Use `⟨γ, isSemisimple_of_charpoly_separable hs, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨x, ⟨isSemisimple_of_charpoly_separable ?_, Commute.refl _, by simp⟩, hx⟩` and prove the remaining obligations. Rewrite using `[charpoly_eq_of_isConj hx]`. Conclude with `hs`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨s, ⟨_, hcomm, hnil⟩, hconj⟩`. Establish `hss : s.1.1.charpoly.Separable` using `by rw [charpoly_eq_of_isConj hconj]; exact hs`. Establish `h0` using `nilpotent_eq_zero_of_commute_sep hss hnil (hcomm.symm.sub_right (Commute.refl _))`. Establish `hxs : x = s` using `Subtype.ext (Units.ext (sub_eq_zero.1 h0))`. Rewrite using `[hxs]`.
-
-Conclude with `hconj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.regSS_conjClass_isSSClass : ∀ {D : D7} {V : HSp D} (γ : GF V), IsRegSS γ.1.1 → IsSSClass {δ : GF V | IsConj γ δ} := by
   intro D V γ hγ

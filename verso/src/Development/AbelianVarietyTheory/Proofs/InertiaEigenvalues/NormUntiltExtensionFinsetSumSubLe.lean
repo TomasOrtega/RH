@@ -9,21 +9,19 @@ open scoped Formalism.Per
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l _ F _ ι tsh hn hι hsurj α s z R hR hz`. Take `⟨-, -, -, -, -, hon, -, -⟩` from `GlobalTheory.PSer.Laws.sh_laws l`. Establish `hl : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹` using `GlobalTheory.PSer.Laws.norm_l`. Establish `hlpos : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hl1 : ‖(l : ℂ_[l])‖ < 1` using `by rw [hl]; exact inv_lt_one_of_one_lt₀ hlpos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl0 : 0 < ‖(l : ℂ_[l])‖` using `by rw [hl]; exact inv_pos.2 (by linarith)`. Take `⟨w, hw⟩` from `hon (l : ℂ_[l]) hl1.le`. Establish `hnw : ‖ι w‖ = ‖(l : ℂ_[l])‖` using `by rw [← hn, hι, hw]`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N : ℕ, ‖ι w‖ ^ N * R ≤ 1 := by`. Break down `le_or_gt R 1 with h | h` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨0, by simpa using h⟩`. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one (inv_pos.2 (by linarith : (0:ℝ) < R)) (hnw ▸ hl1)`. Use `⟨N, ?_⟩` and prove the remaining obligations. Use `mul_lt_mul_of_pos_right hN (by linarith : (0:ℝ) < R)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel₀ (by linarith)]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.le`. Use `set c : F := ι w ^ N with hc`. Establish `hcn : ‖c‖ = ‖ι w‖ ^ N` using `by rw [hc, norm_pow]`. Establish `hcpos : 0 < ‖c‖` using `by rw [hcn, hnw]; exact pow_pos hl0 N`. Establish `hx : ∀ a, ∃ x : Fl l, ι x = if a ∈ s then c * z a else 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a`. Use `split_ifs with ha`. Use `hsurj _ ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hcn]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨0, map_zero ι⟩`. Use `choose x hxe using hx`. Establish `hxa : ∀ a ∈ s, ι (x a) = c * z a` using `fun a ha => by rw [hxe, if_pos ha]`. Establish `hsa : ∀ a ∈ s, sh (x a) = tsh c * tsh (z a)` using `fun a ha => by`. Rewrite using `[← hι, hxa a ha, map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hss : sh (∑ a ∈ s, x a) = tsh c * tsh (∑ a ∈ s, z a)`. Rewrite using `[← hι, map_sum, Finset.sum_congr rfl hxa, ← Finset.mul_sum, map_mul]`. Establish `hbd : ∀ a ∈ s, ‖sh (x a)‖ ≤ ‖c‖ * R` using `fun a ha => by`. Rewrite using `[hsa a ha, norm_mul, hn, hn]`. Conclude with `mul_le_mul_of_nonneg_left (hz a ha) (norm_nonneg _)`.
-
-Establish `key` using `(untilt_sum_sub_le l α s (‖c‖ * R) x (mul_nonneg (norm_nonneg _) hR) hbd).1`. Rewrite `key` using `[hss, Finset.sum_congr rfl hsa, ← Finset.mul_sum, ← mul_sub, norm_mul, hn]`. Establish `: ‖c‖ * ‖tsh (∑ a ∈ s, z a) - ∑ a ∈ s, tsh (z a)‖ ≤ ‖c‖ * (‖(l : ℂ_[l])‖ * R)`. Combine the linear relations using `[key]`. Conclude with `le_of_mul_le_mul_left this hcpos`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem untilt_ext_sum_sub_le : ∀ (l : ℕ) [Fact l.Prime] (F : Type) [NormedField F] (ι : Fl l →+* F)
     (tsh : F →*₀ ℂ_[l]),

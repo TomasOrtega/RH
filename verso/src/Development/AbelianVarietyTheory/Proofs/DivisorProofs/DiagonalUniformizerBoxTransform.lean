@@ -9,13 +9,13 @@ namespace GlobalTheory.ScaleBoxPre
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[Units.val_pow_eq_pow_val, map_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_unit_pow (ϖ : kˣ) (m : ℕ) : valuation k ((ϖ ^ m : kˣ) : k) = valuation k (ϖ : k) ^ m := by
   rw [Units.val_pow_eq_pow_val, map_pow]
 
 /- English proof (translation)
-Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, by omega⟩`. Rewrite using `[val_unit_pow, val_unit_pow, Nat.add_sub_cancel, map_mul, pow_succ', mul_comm (valuation k (ϖ : k)), mul_comm (valuation k (ϖ : k)) (valuation k (ϖ : k) ^ M)]`. Establish `h0 : 0 < valuation k (ϖ : k)` using `zero_lt_iff.2 (by simp)`. Rewrite using `[← mul_inv_le_iff₀ h0, mul_inv_cancel_right₀ h0.ne']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem le_shift_down {ϖ : kˣ} {y : k} {N : ℕ} (hN : 1 ≤ N) :
     valuation k ((ϖ : k) * y) ≤ valuation k ((ϖ ^ N : kˣ) : k) ↔
@@ -27,7 +27,7 @@ theorem le_shift_down {ϖ : kˣ} {y : k} {N : ℕ} (hN : 1 ≤ N) :
   rw [← mul_inv_le_iff₀ h0, mul_inv_cancel_right₀ h0.ne']
 
 /- English proof (translation)
-Rewrite using `[val_unit_pow, val_unit_pow, map_mul, pow_succ, Units.val_inv_eq_inv_val, map_inv₀]`. Establish `h0 : 0 < valuation k (ϖ : k)` using `zero_lt_iff.2 (by simp)`. Conclude with `mul_inv_le_iff₀ h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_shift_up {ϖ : kˣ} {y : k} {N : ℕ} :
     valuation k (y * ((ϖ⁻¹ : kˣ) : k)) ≤ valuation k ((ϖ ^ N : kˣ) : k) ↔
@@ -37,7 +37,7 @@ theorem le_shift_up {ϖ : kˣ} {y : k} {N : ℕ} :
   exact mul_inv_le_iff₀ h0
 
 /- English proof (translation)
-Simplify using `only [dgl_val, diagonal_transpose, diagonal_mul, mul_diagonal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem entry_scale {n d : ℕ} (i₀ : Fin n) (j₀ : Fin d) (ϖ : kˣ) (Y : Matrix (Fin n) (Fin d) k) (i : Fin n)
     (j : Fin d) : (((dgl i₀ ϖ).1)ᵀ * Y * (dgl j₀ ϖ⁻¹).1) i j =
@@ -45,24 +45,24 @@ theorem entry_scale {n d : ℕ} (i₀ : Fin n) (j₀ : Fin d) (ϖ : kˣ) (Y : Ma
   simp only [dgl_val, diagonal_transpose, diagonal_mul, mul_diagonal]
 
 /- English proof (translation)
-Simplify using `only [dgl_val, mul_diagonal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem entry_scale_right {n d : ℕ} (j₀ : Fin d) (ϖ : kˣ) (Y : Matrix (Fin n) (Fin d) k) (i : Fin n)
     (j : Fin d) : (Y * (dgl j₀ ϖ⁻¹).1) i j = Y i j * Function.update (1 : Fin d → k) j₀ ((ϖ⁻¹ : kˣ) : k) j := by
   simp only [dgl_val, mul_diagonal]
 
 /- English proof (translation)
-Establish `hu : (ϖ : k) * ((ϖ⁻¹ : kˣ) : k) = 1` using `Units.mul_inv ϖ`. Prove the components needed by the constructor for the conclusion. Use extensionality with `Y`. Simplify using `only [Set.mem_setOf_eq, box, ebox]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[entry_scale]`. Apply the tactic sequence `by_cases hi : i = i₀ <;> by_cases hj : j = j₀`. Substitute `hi hj` using the available equality. Establish `e : (ϖ : k) * Y i j * ((ϖ⁻¹ : kˣ) : k) = Y i j`. Rewrite using `[mul_comm (ϖ : k), mul_assoc, hu, mul_one]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.update_self, e, scaledBoxRadiiAtEntry, ne_eq, not_true_eq_false, and_false, and_false, if_false]`. Substitute `hi` using the available equality. Rewrite using `[h₁ j, if_neg hj, Function.update_self, Function.update_of_ne hj, Pi.one_apply, mul_one, sub_zero, sub_zero, le_shift_down hN]`. Simplify using `only [scaledBoxRadiiAtEntry, hj, ne_eq, not_false_eq_true, and_self, if_true]`. Substitute `hj` using the available equality.
+Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Rewrite using `[h₁' i hi, Function.update_self, Function.update_of_ne hi, Pi.one_apply, one_mul, sub_zero, sub_zero, le_shift_up]`. Simplify using `only [scaledBoxRadiiAtEntry, hi, ne_eq, not_false_eq_true, and_self, if_true, false_and, if_false]`. Rewrite using `[Function.update_of_ne hi, Function.update_of_ne hj, Pi.one_apply, Pi.one_apply, one_mul, mul_one]`. Simplify using `only [scaledBoxRadiiAtEntry, hi, hj, ne_eq, not_false_eq_true, false_and, and_false, if_false]`. Use extensionality with `Y`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_setOf_eq, box, ebox]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Rewrite using `[entry_scale_right]`. Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[h₂ i, Function.update_self, sub_zero, sub_zero, le_shift_up]`. Simplify using `only [baseCellRadiiAtColumn, if_true]`. Rewrite using `[Function.update_of_ne hj, Pi.one_apply, mul_one]`. Simplify using `only [baseCellRadiiAtColumn, hj, if_false]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem preimage_box_scale_eq_ebox (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n d : ℕ) (i₀ : Fin n) (j₀ : Fin d) (ϖ : kˣ)

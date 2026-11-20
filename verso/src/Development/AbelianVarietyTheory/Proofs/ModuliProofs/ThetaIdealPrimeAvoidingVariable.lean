@@ -16,9 +16,9 @@ open GlobalTheory.ZM
 namespace GlobalTheory.ThetaPrime
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval₂_eq, MvPolynomial.eval₂_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `h1 : ∑ i ∈ m.support, m i = n`. Use `hF (MvPolynomial.mem_support_iff.1 hm)` as an intermediate fact. Rewrite using `[← this, Finsupp.weight_apply, Finsupp.sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, h1]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval₂_smul_of_isHomogeneous {o K I : Type} [CommRing o] [CommRing K] (β : o →+* K)
     (v : I → K) (c : K) {F : MvPolynomial I o} {n : ℕ} (hF : F.IsHomogeneous n) :
@@ -35,11 +35,11 @@ theorem eval₂_smul_of_isHomogeneous {o K I : Type} [CommRing o] [CommRing K] (
   ring
 
 /- English proof (translation)
-Proceed by induction on `G using MvPolynomial.induction_on with`. Consider the case `C c => exact ⟨0, MvPolynomial.C c, fun K _ β v _ => by simp⟩`. Consider the case `add p q hp hq`. Take `⟨n, H, hH⟩` from `hp`. Take `⟨m, H', hH'⟩` from `hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨n + m, MvPolynomial.X a₀ ^ m * H + MvPolynomial.X a₀ ^ n * H', fun K _ β v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [MvPolynomial.eval₂_add, MvPolynomial.eval₂_mul, MvPolynomial.eval₂_pow, MvPolynomial.eval₂_X, hH K β v hv, hH' K β v hv]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p i hp`. Take `⟨n, H, hH⟩` from `hp`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨n + 1, H * MvPolynomial.X (a i), fun K _ β v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [MvPolynomial.eval₂_mul, MvPolynomial.eval₂_X, hH K β v hv]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_homogenisation {o I D : Type} [CommRing o] (a₀ : I) (a : D → I)
     (G : MvPolynomial D o) : ∃ (n : ℕ) (H : MvPolynomial I o),
@@ -66,7 +66,7 @@ noncomputable def coneIdeal {o I Z : Type} [CommRing o] (em : o →+* ℂ) (B : 
   ⨅ (z : Z) (_ : z ∈ B) (c : ℂ) (_ : c ≠ 0), RingHom.ker (MvPolynomial.eval₂Hom em (c • θ z))
 
 /- English proof (translation)
-Simplify using `[coneIdeal, Ideal.mem_iInf, RingHom.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_coneIdeal {o I Z : Type} [CommRing o] {em : o →+* ℂ} {B : Set Z} {θ : Z → I → ℂ}
     {F : MvPolynomial I o} : F ∈ coneIdeal em B θ ↔
@@ -74,9 +74,9 @@ theorem mem_coneIdeal {o I Z : Type} [CommRing o] {em : o →+* ℂ} {B : Set Z}
   simp [coneIdeal, Ideal.mem_iInf, RingHom.mem_ker]
 
 /- English proof (translation)
-Take `⟨z, hz, c, hc0, h⟩` from `GlobalTheory.exists_veryGeneral_point_of_holomorphic_family o em I d B θ ho hc hn hd`. Establish `: coneIdeal em B θ = RingHom.ker (MvPolynomial.eval₂Hom em (c • θ z))`. Use extensionality with `F`. Rewrite using `[mem_coneIdeal, RingHom.mem_ker, MvPolynomial.coe_eval₂Hom]`. Conclude with `⟨fun hF => hF z hz c hc0, h F⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[this]`. Conclude with `RingHom.ker_isPrime _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coneIdeal_isPrime {o I : Type} [CommRing o] [Countable o] [Countable I] (em : o →+* ℂ)
     {d : ℕ} {B : Set (Fin d → ℂ)} (θ : (Fin d → ℂ) → I → ℂ) (ho : IsOpen B)
@@ -92,19 +92,17 @@ theorem coneIdeal_isPrime {o I : Type} [CommRing o] [Countable o] [Countable I] 
   exact RingHom.ker_isPrime _
 
 /- English proof (translation)
-Rewrite `h₁` using `[mem_coneIdeal]`. Use `push Not at h₁`. Take `⟨z₁, hz₁, c₁, -, h₁⟩` from `h₁`. Establish `h₁' : θ z₁ a₁ ≠ 0`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h₁` to reduce the goal to its premises. Simplify using `[h]`. Establish `hcont : ContinuousAt (fun z => θ z a₁) z₁` using `(hd a₁).continuousOn.continuousAt (ho.mem_nhds hz₁)`. Establish `hU : {z | z ∈ B ∧ θ z a₁ ≠ 0} ∈ nhds z₁` using `Filter.inter_mem (ho.mem_nhds hz₁) (hcont.eventually_ne h₁')`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 hU`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsub : Metric.ball z₁ ε ⊆ B` using `fun z hz => (hball hz).1`. Take `⟨a₀, a, ⟨z₀, hz₀, h₀⟩, hind⟩` from `GlobalTheory.CountableFibres.exists_independent_ratios d I (Metric.ball z₁ ε) θ Metric.isOpen_ball (convex_ball z₁ ε).isPreconnected ⟨z₁, Metric.mem_ball_self hε⟩ (fun a => (hd a).mono hsub) (fun z hz => ⟨fun h => (hball hz).2 (by rw [h]; rfl), Set.Countable.mono (fun z' hz' => A …`. Establish `hX : MvPolynomial.X a₀ ∉ coneIdeal em B θ`. Introduce `h`. Use `mem_coneIdeal.1 h z₀ (hsub hz₀) 1 one_ne_zero` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h₀] at this`. Use `⟨a₀, a, hX, fun K _ β v hv G hG => ?_⟩` and prove the remaining obligations. Establish `hv₀ : v a₀ ≠ 0`. Introduce `h`. Apply `hX` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hv, RingHom.mem_ker]`. Simplify using `[h]`. Take `⟨n, H, hH⟩` from `exists_homogenisation a₀ a G`. Establish `hHP : H ∈ coneIdeal em B θ`. Rewrite using `[← hv, RingHom.mem_ker, MvPolynomial.coe_eval₂Hom, hH K β v hv₀, hG, mul_zero]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmap : MvPolynomial.map em G = 0`. Use `hind _ fun z hz hz0 => ?_` and prove the remaining obligations. Use `mem_coneIdeal.1 hHP z (hsub hz) 1 one_ne_zero` as an intermediate fact. Rewrite `this` using `[one_smul, hH ℂ em _ hz0]`. Rewrite using `[MvPolynomial.eval_map]`.
-
-Conclude with `(mul_eq_zero.1 this).resolve_left (pow_ne_zero _ hz0)`. Conclude with `MvPolynomial.map_injective em hem (by rw [hmap, map_zero])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratios {o I : Type} [CommRing o] [Finite I] (em : o →+* ℂ)
     (hem : Function.Injective em) {d : ℕ} {B : Set (Fin d → ℂ)} (θ : (Fin d → ℂ) → I → ℂ)
@@ -156,7 +154,7 @@ theorem exists_ratios {o I : Type} [CommRing o] [Finite I] (em : o →+* ℂ)
   exact MvPolynomial.map_injective em hem (by rw [hmap, map_zero])
 
 /- English proof (translation)
-Take `⟨n, f, hf⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.1 h`. Establish `: Countable (MvPolynomial (Fin n) ℤ)`. Rewrite using `[← Cardinal.mk_le_aleph0_iff]`. Conclude with `MvPolynomial.cardinalMk_le_max.trans (by simp)`. Conclude with `hf.countable`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem countable_of_finiteType (o : Type) [CommRing o] (h : Algebra.FiniteType ℤ o) :
     Countable o := by
@@ -167,7 +165,7 @@ theorem countable_of_finiteType (o : Type) [CommRing o] (h : Algebra.FiniteType 
   exact hf.countable
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Function.ne_iff.1 hv`. Conclude with `Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨a, rfl⟩) (IsUnit.mk0 _ ha)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem span_range_eq_top {K I : Type} [Field K] {v : I → K} (hv : v ≠ 0) :
     Ideal.span (Set.range v) = ⊤ := by
@@ -175,25 +173,25 @@ theorem span_range_eq_top {K I : Type} [Field K] {v : I → K} (hv : v ≠ 0) :
   exact Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨a, rfl⟩) (IsUnit.mk0 _ ha)
 
 /- English proof (translation)
-Introduce `hL hL2 g N' J Mat κ w w' o _ b em C d hAr hG p a₁ hN hp hle hX`. Take `⟨-, hft, hem⟩` from `hAr`. Establish `: Countable o` using `countable_of_finiteType o hft`. Establish `: NeZero (N' ^ 2)` using `⟨pow_ne_zero _ hN⟩`. Take `⟨r, B, θ, hfam, hcov⟩` from `hG.fam`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmem : ∀ F, F ∈ thIdeal em C ↔ ∀ t v, C t → t.HasTh (𝟙 _) v → MvPolynomial.eval₂ em v F = 0`. Introduce `F`. Simplify using `[thIdeal, Ideal.mem_iInf, RingHom.mem_ker]`. Establish `hinf : (Finset.univ : Finset (Fin r)).inf (fun i => coneIdeal em (B i) (θ i)) ≤ p`. Use `le_trans (fun F hF => ?_) hle` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hmem]`. Introduce `t v ht hv`. Take `⟨i, z, hz, hθ⟩` from `hcov t ht`. Establish `hFi : F ∈ coneIdeal em (B i) (θ i)` using `(Finset.inf_le (f := fun i => coneIdeal em (B i) (θ i)) (Finset.mem_univ i)) hF`. Establish `key : ∃ c : ℂ, c ≠ 0 ∧ v = c • θ i z`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : θ i z = 0`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[h0, smul_zero]`. Take `⟨u, hu⟩` from `GlobalTheory.hasTh_unique_unit hL hL2 o g N' J b _ _ t ℂ _ v (θ i z) hv hθ (span_range_eq_top hne)`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Use `hu a` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify using `using this`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨u, hu⟩` from `GlobalTheory.hasTh_unique_unit hL hL2 o g N' J b _ _ t ℂ _ (θ i z) v hθ hv (span_range_eq_top h0)`. Conclude with `⟨u, u.ne_zero, funext hu⟩`. Take `⟨c, hc, rfl⟩` from `key`. Conclude with `mem_coneIdeal.1 hFi z hz c hc`. Take `⟨i, -, hi⟩` from `hp.inf_le'.1 hinf`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ho, hc, hd, hz⟩` from `hfam i`. Establish `hX' : MvPolynomial.X a₁ ∉ coneIdeal em (B i) (θ i)` using `fun h => hX (hi h)`. Establish `hn : (B i).Nonempty`. Assume the negation of the conclusion as `hne`. Apply `hX'` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_coneIdeal]`. Introduce `z hz`. Conclude with `absurd ⟨z, hz⟩ hne`. Take `⟨a₀, a, h₀, hind⟩` from `exists_ratios em hem (θ i) ho hd (fun z hz' => (hz z hz').2) a₁ hX'`. Use `⟨_, a₀, a, coneIdeal_isPrime em (θ i) ho hc hn hd, fun F hF => ?_, hi, h₀, hind⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_coneIdeal]`. Introduce `z hz' c _`. Take `⟨t, ht, hθ⟩` from `(hz z hz').1`. Establish `hcomp` using `(GlobalTheory.ZM.ThIdeal.thIdeal_radical_homogeneous_torsionFree o g N' J b em C hem).2.1 F hF`. Rewrite using `[← MvPolynomial.sum_homogeneousComponent F, MvPolynomial.eval₂_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun e _ => ?_` and prove the remaining obligations. Rewrite using `[eval₂_smul_of_isHomogeneous em _ c (MvPolynomial.homogeneousComponent_isHomogeneous e F), (hmem _).1 (hcomp e) t _ ht hθ, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_prime_independent_ratios : Out.Laws → Out.Laws2 → ∀ (g N' : ℕ) (J : Type) (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ : ℕ) (w w' : J) (o : Type) [CommRing o] (b : TBase o (N' ^ 2)) (em : o →+* ℂ) (C : TObj g (N' ^ 2) J b (spMap em) → Prop) (d : ℕ), ArBase em → GoodClass em C Mat κ w w' d → ∀ (p : Ideal (MvPolynomial (Ix g (N' ^ 2)) o)) (a₁ : Ix g (N' ^ 2)), N' ≠ 0 → p.IsPrime → thIdeal em C ≤ p → MvPolynomial.X a₁ ∉ p → ∃ (P : Ideal (MvPolynomial (Ix g (N' ^ 2)) o)) (a₀ : Ix g (N' ^ 2)) (a : Fin d → Ix g (N' ^ 2)), P.IsPrime ∧ thIdeal em C ≤ P ∧ P ≤ p ∧ MvPolynomial.X a₀ ∉ P ∧ ∀ (K : Type) [Field K] (β : o →+* K) (v : Ix g (N' ^ 2) → K), RingHom.ker (MvPolynomial.eval₂Hom β v) = P → ∀ G : MvPolynomial (Fin d) o, MvPolynomial.eval₂ β (fun i => v (a i) / v a₀) G = 0 → G = 0 := by
   intro hL hL2 g N' J Mat κ w w' o _ b em C d hAr hG p a₁ hN hp hle hX

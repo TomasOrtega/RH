@@ -14,14 +14,14 @@ Both sides reduce to the same expression.
 theorem pM_apply (s : Equiv.Perm (Fin n)) (i j : Fin n) : pM R s i j = if i = s j then 1 else 0 := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[pM_apply, Matrix.one_apply, Equiv.Perm.one_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem pM_one : pM R (1 : Equiv.Perm (Fin n)) = 1 := by
   ext i j
   rw [pM_apply, Matrix.one_apply, Equiv.Perm.one_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (t j)]`. Rewrite using `[pM_apply, pM_apply, pM_apply, if_pos rfl, mul_one, Equiv.Perm.mul_apply]`. Introduce `b _ hb`. Rewrite using `[pM_apply R t, if_neg hb, mul_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -34,7 +34,7 @@ theorem pM_mul (s t : Equiv.Perm (Fin n)) : pM R (s * t) = pM R s * pM R t := by
   · simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, pM_apply]`. Distinguish the cases in `h : j = s i`. Rewrite using `[if_pos h, if_pos (by rw [h]; simp)]`. Rewrite using `[if_neg h, if_neg (fun h' => h (by rw [h']; simp))]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pM_transpose (s : Equiv.Perm (Fin n)) : (pM R s)ᵀ = pM R s⁻¹ := by
   ext i j
@@ -44,7 +44,7 @@ theorem pM_transpose (s : Equiv.Perm (Fin n)) : (pM R s)ᵀ = pM R s⁻¹ := by
   · rw [if_neg h, if_neg (fun h' => h (by rw [h']; simp))]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, pM_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pM_map {S : Type} [CommRing S] (f : R →+* S) (s : Equiv.Perm (Fin n)) : (pM R s).map f = pM S s := by
   ext i j

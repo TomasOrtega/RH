@@ -16,7 +16,7 @@ def CongE {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} (P : Heigh
   ∀ x ∈ stdAt E n P, (((qOf P : ℕ) : E) ^ c)⁻¹ • (g x - g' x) ∈ stdAt E n P
 
 /- English proof (translation)
-Introduce `x _` and use `by rw [sub_self, smul_zero] exact Submodule.zero_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem congE_refl {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (c : ℕ)
     (g : Sp E n ≃ₗ[E] Sp E n) : CongE P c g g := fun x _ => by
@@ -24,7 +24,7 @@ theorem congE_refl {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} (
   exact Submodule.zero_mem _
 
 /- English proof (translation)
-Introduce `x hx` and use `by rw [← neg_sub, smul_neg] exact Submodule.neg_mem _ (h x hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem CongE.symm {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {P : HeightOneSpectrum (𝓞 E)} {c : ℕ}
     {g g' : Sp E n ≃ₗ[E] Sp E n} (h : CongE P c g g') : CongE P c g' g := fun x hx => by
@@ -70,7 +70,7 @@ def Keeps {u : B.Word} {a : I.ι} {i : ℕ} {b : (I.stp u a i).β} (κ : (I.stp 
   (I.stp u a i).gam b κ = 1 ∧ cosetIn ((I.stp u a i).act b κ p) = cosetIn p
 
 /- English proof (translation)
-Use `⟨one_mem _, fun h x _ => ?_, fun h => ?_⟩` and prove the remaining obligations. Use `show redV P.1 x = ((1 : GL (Fin (B.R.N i)) (𝓞 B.fields.E ⧸ P.1.asIdeal))⁻¹).1.mulVec (redV P.1 x)`. Simplify using the standard rewrite rules. Use `show _ = ((1 : Formalism.L2.Col.GLint B.fields.E (B.R.N i) P.1)⁻¹).1`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem liftsInv_one {u : B.Word} {a : I.ι} {i : ℕ} {b : (I.stp u a i).β} (P : SBof I a) :
     LiftsInv I (1 : (I.stp u a i).G b) P 1 := by
@@ -81,7 +81,7 @@ theorem liftsInv_one {u : B.Word} {a : I.ι} {i : ℕ} {b : (I.stp u a i).β} (P
     simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨map_one _, congrArg cosetIn (@one_smul _ _ _ ((I.stp u a i).actD b) p)⟩`.
+Supply the required witnesses or components.
 -/
 theorem keeps_one {u : B.Word} {a : I.ι} {i : ℕ} {b : (I.stp u a i).β} (p : (I.stp u a i).D b) :
     Keeps I (1 : (I.stp u a i).G b) p :=

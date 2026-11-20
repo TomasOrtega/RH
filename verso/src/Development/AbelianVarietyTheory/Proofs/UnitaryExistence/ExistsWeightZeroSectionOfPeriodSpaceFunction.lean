@@ -15,15 +15,13 @@ namespace GlobalTheory.CompFun
 open GlobalTheory.CompIdem
 
 /- English proof (translation)
-Set `Ω` to `AlgebraicClosure κ`. Set `ψ : F →ₐ[K] Ω` to `IsAlgClosed.lift`. Set `pb` to `Field.powerBasisOfFiniteOfSeparable K F`. Set `m : κ ⊗[K] F →ₐ[κ] Ω` to `Algebra.TensorProduct.lift (Algebra.ofId κ Ω) ψ fun _ _ => Commute.all _ _`. Set `b` to `Algebra.TensorProduct.basis κ pb.basis`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hd : (minpoly κ (ψ pb.gen)).natDegree = pb.dim`. Rewrite using `[GlobalTheory.GeomIrr.natDegree_minpoly_eq h (pb.isIntegral_gen.map ψ), minpoly.algHom_eq ψ ψ.toRingHom.injective, pb.natDegree_minpoly]`. Establish `li : LinearIndependent κ (m.toLinearMap ∘ b)`. Establish `h1` using `(linearIndependent_pow (K := κ) (ψ pb.gen)).comp (Fin.cast hd.symm) (Fin.cast_injective _)`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `i`. Simplify using `[m, b]`. Establish `hinj : Function.Injective m`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : Finsupp.linearCombination κ (m.toLinearMap ∘ b) (b.repr x) = 0`. Rewrite using `[← Finsupp.apply_linearCombination, b.linearCombination_repr]`. Conclude with `hx`. Conclude with `b.repr.map_eq_zero_iff.1 (linearIndependent_iff.1 li _ h2)`. Establish `: IsDomain (κ ⊗[K] F)` using `hinj.isDomain m.toRingHom`.
-
-Conclude with `Algebra.TensorProduct.isField_of_isAlgebraic K κ F (Or.inr inferInstance)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isField_tensor {K κ F : Type} [Field K] [CharZero K] [Field κ] [Field F] [Algebra K κ] [Algebra K F]
     [FiniteDimensional K F] (h : ∀ x : κ, IsIntegral K x → x ∈ (algebraMap K κ).range) : IsField (κ ⊗[K] F) := by
@@ -51,11 +49,11 @@ theorem isField_tensor {K κ F : Type} [Field K] [CharZero K] [Field κ] [Field 
   exact Algebra.TensorProduct.isField_of_isAlgebraic K κ F (Or.inr inferInstance)
 
 /- English proof (translation)
-Use `letI : Algebra K (Y.residueField pt) := (Spec.preimage (Y.fromSpecResidueField pt ≫ s)).hom.toAlgebra`. Establish `hf` using `isField_tensor (F := F) (κ := Y.residueField pt) h`. Establish `H` using `isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct K (Y.residueField pt) F)`. Establish `e : Spec.map (CommRingCat.ofHom (algebraMap K (Y.residueField pt))) = Y.fromSpecResidueField pt ≫ s` using `Spec.map_preimage _`. Rewrite `H` using `[e]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `H'` using `IsPullback.of_right' H.flip (IsPullback.of_hasPullback s (spMap (algebraMap K F))).flip`. Establish `hs : Subsingleton (PrimeSpectrum (Y.residueField pt ⊗[K] F))`. Use `letI := hf.toField`. Use `infer_instance`. Take `⟨x, hx, -⟩` from `Scheme.exists_preimage_of_isPullback H' a (IsLocalRing.closedPoint _) (ha.trans (Scheme.fromSpecResidueField_apply pt _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, -⟩` from `Scheme.exists_preimage_of_isPullback H' b (IsLocalRing.closedPoint _) (hb.trans (Scheme.fromSpecResidueField_apply pt _).symm)`. Rewrite using `[← hx, ← hy, hs.elim x y]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_fst_eq {K F : Type} [Field K] [CharZero K] [Field F] [Algebra K F] [FiniteDimensional K F]
     {Y : Scheme.{0}} (s : Y ⟶ Sp K) (pt : Y)
@@ -80,9 +78,9 @@ theorem eq_of_fst_eq {K F : Type} [Field K] [CharZero K] [Field F] [Algebra K F]
   rw [← hx, ← hy, hs.elim x y]
 
 /- English proof (translation)
-Set `π` to `pullback.fst s (spMap (algebraMap K F))`. Use `haveI : Flat (spMap (algebraMap K F)) := (HasRingHomProperty.Spec_iff (P := @Flat)).2 (GlobalTheory.GeomIrr.flat_of_field _)`. Take `⟨Z, hZ, hle⟩` from `exists_mem_irreducibleComponents_subset_of_isIrreducible (connectedComponent (π b)) ⟨⟨_, mem_connectedComponent⟩, GlobalTheory.KeyFam.isPreirreducible_connectedComponent_of_smooth s _⟩`. Establish `hg` using `(hZ.1 : IsIrreducible Z).isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents Z hZ)`. Take `⟨a', ha, ea⟩` from `Flat.generalizingMap π (hg.specializes (hle hab))`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b', hb, eb⟩` from `Flat.generalizingMap π (hg.specializes (hle mem_connectedComponent))`. Take `rfl : a' = b'` from `eq_of_fst_eq s _ (h ⟨Z, hZ⟩) a' b' ea eb`. Establish `h1` using `ha.mem_closed isClosed_connectedComponent mem_connectedComponent`. Establish `h2` using `hb.mem_closed isClosed_connectedComponent mem_connectedComponent`. Rewrite `h1` using `[connectedComponent_eq h2]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_connectedComponent_of_fst {K F : Type} [Field K] [CharZero K] [Field F] [Algebra K F]
     [FiniteDimensional K F] {Y : Scheme.{0}} (s : Y ⟶ Sp K) [Smooth s]
@@ -107,7 +105,7 @@ theorem mem_connectedComponent_of_fst {K F : Type} [Field K] [CharZero K] [Field
   rwa [connectedComponent_eq h2] at h1
 
 /- English proof (translation)
-Use `letI := σ.toAlgebra`. Conclude with `⟨(IsAlgClosed.lift : F →ₐ[K] ℂ).toRingHom, AlgHom.comp_algebraMap _⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components.
 -/
 theorem exists_extension {K F : Type} [Field K] [Field F] [Algebra K F] [Algebra.IsAlgebraic K F] (σ : K →+* ℂ) :
     ∃ σ' : F →+* ℂ, σ'.comp (algebraMap K F) = σ := by
@@ -115,17 +113,15 @@ theorem exists_extension {K F : Type} [Field K] [Field F] [Algebra K F] [Algebra
   exact ⟨(IsAlgClosed.lift : F →ₐ[K] ℂ).toRingHom, AlgHom.comp_algebraMap _⟩
 
 /- English proof (translation)
-Establish `hKL : K ≤ algebraicClosure ℚ ℂ` using `fun z hz => mem_algebraicClosure_iff'.2 ((Algebra.IsIntegral.isIntegral (R := ℚ) (⟨z, hz⟩ : K)).map K.val)`. Take `⟨S, hS, hrat⟩` from `exists_rational_components hKL s`. Use `haveI : FiniteDimensional ℚ (IntermediateField.adjoin ℚ (S : Set ℂ)) := IntermediateField.finiteDimensional_adjoin fun z hz => mem_algebraicClosure_iff'.1 (hS z hz)`. Set `F : IntermediateField ℚ ℂ` to `K ⊔ IntermediateField.adjoin ℚ (S : Set ℂ)`. Establish `hK : K ≤ F` using `le_sup_left`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `hrat F hK (sup_le hKL (IntermediateField.adjoin_le_iff.2 hS)) fun z hz => (le_sup_right : _ ≤ F) (IntermediateField.subset_adjoin ℚ _ hz)`. Use `letI : Algebra K F := (IntermediateField.inclusion hK).toRingHom.toAlgebra`. Use `haveI : IsScalarTower ℚ K F := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Use `haveI : FiniteDimensional K F := Module.Finite.of_restrictScalars_finite ℚ K F`. Take `⟨σ', hσ⟩` from `exists_extension (F := F) σ`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `e : spMap σ' ≫ spMap (algebraMap K F) = spMap σ` using `by rw [CompIdem.spMap_comp, hσ]`. Set `Y'` to `pullback s (spMap (algebraMap K F))`. Set `π : Y' ⟶ Y` to `pullback.fst _ _`. Set `s' : Y' ⟶ Sp F` to `pullback.snd _ _`. Establish `: IsLocallyNoetherian Y'` using `LocallyOfFiniteType.isLocallyNoetherian s'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: CompactSpace Y'` using `QuasiCompact.compactSpace_of_compactSpace s'`. Establish `: IsNoetherian Y'` using `{}`. Set `p' : Sp ℂ ⟶ Y'` to `pullback.lift p (spMap σ') (hp.trans e.symm)`. Set `q' : Sp ℂ ⟶ Y'` to `pullback.lift q (spMap σ') (hq.trans e.symm)`. Establish `ep : p' ≫ π = p` using `pullback.lift_fst _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `eq : q' ≫ π = q` using `pullback.lift_fst _ _ _`. Establish `hc : p' (IsLocalRing.closedPoint ℂ) ∈ connectedComponent (q' (IsLocalRing.closedPoint ℂ))` using `mem_connectedComponent_of_fst s h _ _ (by rw [← ep, ← eq] at hpq; exact hpq)`. Take `⟨r, hr1, hr2⟩` from `hr (q' (IsLocalRing.closedPoint ℂ))`. Use `const_on_component σ' s' r hr1 (fun x => t (x ≫ π)) (fun m B y hB hy hh => ht m B _ hB (fun b hb => by` as an intermediate fact. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hy b hb, e]) (GlobalTheory.LocLift.isHolTo_comp_hom hh _))`.
-
-Use the proof step `p' q' (pullback.lift_snd _ _ _) (pullback.lift_snd _ _ _) ((connectedComponent_eq hr2) ▸ hc) hr2`. Simplify `this` using `only [ep, eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem const_on_component_of_closed {K : IntermediateField ℚ ℂ} [FiniteDimensional ℚ K] (σ : K →+* ℂ)
     {Y : Scheme.{0}} (s : Y ⟶ Sp K) [Smooth s] [QuasiCompact s]
@@ -174,25 +170,25 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {l : Level H} {Xo : Moduli D l} {c : Coeff l}
 
 /- English proof (translation)
-Use `CompFin.quasiCompact_alt Xo` as an intermediate fact. Use `Xo.smooth` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth D.dim Xo.s`. Use `c.fin` as an intermediate fact. Take `⟨t, ht, hcont⟩` from `exists_index F`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `CompFin.isNoetherian_XF Xo c` as an intermediate fact. Set `s : Xo.XF c ⟶ Sp c.F` to `pullback.snd _ _`. Set `pr : Xo.XF c ⟶ Xo.X` to `pullback.fst _ _`. Establish `hover : ∀ p : Sp ℂ ⟶ Xo.XF c, p ≫ s = spMap σ → (p ≫ pr) ≫ Xo.s = spMap (σ.comp (IntermediateField.inclusion c.le).toRingHom)`. Introduce `p hp`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hp, CompIdem.spMap_comp]`. Establish `hconst : ∀ p q : Sp ℂ ⟶ Xo.XF c, p ≫ s = spMap σ → q ≫ s = spMap σ → p (IsLocalRing.closedPoint ℂ) ∈ connectedComponent (q (IsLocalRing.closedPoint ℂ)) → t (p ≫ pr) = t (q ≫ pr)`. Use `const_on_component_of_closed σ s (fun Z x hx => ?_) (fun x => t (x ≫ pr)) (fun m B y hB hy hh => hcont m B _ hB (fun b hb => hover _ (hy b hb)) (GlobalTheory.LocLift.isHolTo_comp_hom hh _))` and prove the remaining obligations. Establish `hx' : IsIntegral c.F (A` using `kap Z) x := hx`. Take `⟨k, hk⟩` from `hcl Z (algebraMap (kap Z) (Om Z) x) hx'.algebraMap.isAlgebraic`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hk` using `[IsScalarTower.algebraMap_apply c.F (kap Z) (Om Z)]`. Conclude with `⟨k, (algebraMap (kap Z) (Om Z)).injective hk⟩`. Set `U : Set (Xo.XF c)` to `{z | ∃ p : Sp ℂ ⟶ Xo.XF c, p ≫ s = spMap σ ∧ p (IsLocalRing.closedPoint ℂ) ∈ connectedComponent z ∧ t (p ≫ pr) = i}`. Establish `hUc : ∀ z w, w ∈ connectedComponent z → (w ∈ U ↔ z ∈ U)`. Introduce `z w h`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [U, Set.mem_setOf_eq, connectedComponent_eq h]`. Establish `hU : IsClopen U`. Use `⟨⟨isOpen_iff_forall_mem_open.2 fun z hz => ?_⟩, isOpen_iff_forall_mem_open.2 fun z hz => ?_⟩` and prove the remaining obligations. Conclude with `⟨connectedComponent z, fun w hw h => hz ((hUc z w hw).1 h), isOpen_connectedComponent_of_noetherianSpace z, mem_connectedComponent⟩`. Conclude with `⟨connectedComponent z, fun w hw => (hUc z w hw).2 hz, isOpen_connectedComponent_of_noetherianSpace z, mem_connectedComponent⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Take `⟨χ, h1, h2, h3⟩` from `exists_indicator hA U hU`. Use `⟨χ, h1, h2, fun y i' P hP hy => ?_⟩` and prove the remaining obligations. Establish `: IsReduced (CAt σ)` using `inferInstanceAs (IsReduced ℂ)`. Take `⟨h4, h5⟩` from `h3 (CAt σ) y`. Set `p : Sp ℂ ⟶ Xo.XF c` to `basePt (S := CAt σ) y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hp : p ≫ s = spMap σ` using `pullback.lift_snd _ _ _`. Establish `hp' : t (p ≫ pr) = i'`. Establish `: p ≫ pr = F.u i' P` using `(pullback.lift_fst _ _ _).trans hy`. Rewrite using `[this]`. Conclude with `ht i' P hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `v : ℂ` to `evR Xo c χ (S := CAt σ) y`. Establish `h6 : v ∉ (IsLocalRing.closedPoint ℂ).asIdeal ↔ p (IsLocalRing.closedPoint ℂ) ∈ U` using `h5 (IsLocalRing.closedPoint ℂ)`. Establish `h7 : v ≠ 0 ↔ i' = i`. Establish `h8 : v ∉ (IsLocalRing.closedPoint ℂ).asIdeal ↔ v ≠ 0` using `by show v ∉ IsLocalRing.maximalIdeal ℂ ↔ _`. Rewrite using `[IsLocalRing.notMem_maximalIdeal, isUnit_iff_ne_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h8, h6]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, hqp, hqi⟩`. Conclude with `Fin.ext (hp'.symm.trans ((hconst q p hq hp hqp).symm.trans hqi))`. Introduce and unpack `rfl`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨p, hp, mem_connectedComponent, hp'⟩`. Establish `h9 : IsIdempotentElem v` using `h4`. Use `split_ifs with h`. Conclude with `(IsIdempotentElem.iff_eq_zero_or_one.1 h9).resolve_left (h7.2 h)`. Conclude with `not_not.1 (mt h7.1 h)`.
+A detailed English derivation is pending.
 -/
 theorem exists_idempotent (hA : AllTest Xo c) (σ : c.F →+* ℂ) {g : ℕ} {ty : Fin g → (E →+* ℂ)}
     (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty) (hcl : FnAlgClosed Xo c)
@@ -260,9 +256,9 @@ theorem exists_idempotent (hA : AllTest Xo c) (σ : c.F →+* ℂ) {g : ℕ} {ty
   · exact not_not.1 (mt h7.1 h)
 
 /- English proof (translation)
-Use `⟨fun p q φ y z _ => (map_one φ).symm, fun p t y y' _ => ?_⟩` and prove the remaining obligations. Establish `hw : wchar (ex D 0 0) t = 1`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `have : ex D 0 0 i = 0 := by rcases i with _ | ⟨τ, i⟩ <;> simp [ex]`. Rewrite using `[this, pow_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, _root_.one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem one_mem_sec : (1 : Rul Xo c) ∈ sec Xo c 0 0 := by
   refine ⟨fun p q φ y z _ => (map_one φ).symm, fun p t y y' _ => ?_⟩
@@ -274,9 +270,9 @@ theorem one_mem_sec : (1 : Rul Xo c) ∈ sec Xo c 0 0 := by
   rfl
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ, ih, pow_succ]`. Simplify using `only [Algebra.smul_def, map_sub, map_mul, map_one]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `(algebraMap K R (v ^ m) - 1) * (algebraMap K R v - 1) * he`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem one_add_smul_pow {K R : Type} [CommRing K] [CommRing R] [Algebra K R] {e : R} (he : e * e = e) (v : K)
     (m : ℕ) : (1 + (v - 1) • e) ^ m = 1 + (v ^ m - 1) • e := by
@@ -288,17 +284,17 @@ theorem one_add_smul_pow {K R : Type} [CommRing K] [CommRing R] [Algebra K R] {e
     linear_combination (algebraMap K R (v ^ m) - 1) * (algebraMap K R v - 1) * he
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c σ g ty F _ _ _ _ hcl v`. Establish `hA` using `GlobalTheory.Frames.allTest_of_secBaseChange GlobalTheory.allSixLaws.1.secBaseChange E H D l Xo c`. Use `choose χ h1 h2 h3 using exists_idempotent hA σ F hcl`. Use `⟨∏ i, (1 + (v i - 1) • χ i), ?_, fun m hm => ?_, fun y i P hP hy => ?_⟩` and prove the remaining obligations. Use `Finset.prod_induction _ (· ∈ sec Xo c 0 0) (fun a b ha hb => ?_) one_mem_sec fun i _ => add_mem one_mem_sec (Submodule.smul_mem _ _ (h1 i))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using sec_mul Xo c 0 0 0 0 ha hb`. Rewrite using `[← Finset.prod_pow]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[one_add_smul_pow (h2 i), hm i, sub_self, zero_smul, add_zero]`. Establish `: IsReduced (CAt σ)` using `inferInstanceAs (IsReduced ℂ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy'` using `hA (CAt σ) y`. Set `ev : Rul Xo c →* CAt σ` to `{ toFun := fun f => evR Xo c f y map_one' := evalAt_one _ _ y hy' map_mul' := fun f f' => evalAt_mul _ _ f f' y }`. Establish `hv : ∀ j, ev (1 + (v j - 1) • χ j) = if i = j then algebraMap c.F (CAt σ) (v i) else 1`. Introduce `j`. Establish `e` using `h3 j y i P hP hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : ev (1 + (v j - 1) • χ j) = 1 + algebraMap c.F (CAt σ) (v j - 1) * evR Xo c (χ j) y`. Use `(evalAt_add _ _ _ _ y).trans ?_` and prove the remaining obligations. Rewrite using `[evalAt_one _ _ y hy', evalAt_smul]`. Both sides reduce to the same expression. Rewrite using `[e', e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `: ev (∏ i, (1 + (v i - 1) • χ i)) = algebraMap c.F (CAt σ) (v i)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_prod, Finset.prod_congr rfl fun j _ => hv j, Finset.prod_ite_eq]`. Simplify using the standard rewrite rules. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_section_of_function : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty), 1 ≤ D.p + D.q → (σ.comp (IntermediateField.inclusion c.le).toRingHom) (baseKA l).ρ = H.rt0 → IsTypeFn H D.p D.q ty → l.A = 1 → FnAlgClosed Xo c → ∀ v : Fin F.n → c.F, ∃ f ∈ sec Xo c 0 0, (∀ m : ℕ, (∀ i, v i ^ m = 1) → f ^ m = 1) ∧ ∀ (y : FrPt Xo c (CAt σ)) (i : Fin F.n) P, IsPeriod (F.Di i) ty P → y.x = F.u i P → Formalism.L2.PjFree.toC (evR Xo c f y) = σ (v i) := by
   intro E _ _ _ H D l Xo c σ g ty F _ _ _ _ hcl v

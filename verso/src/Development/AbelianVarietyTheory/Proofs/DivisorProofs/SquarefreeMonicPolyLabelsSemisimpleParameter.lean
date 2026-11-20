@@ -14,11 +14,11 @@ open GlobalTheory.GoodCharsCompare
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Establish `hp : 0 < p ^ d - 1` using `g_pow_sub_pos hd`. Establish `h : ∃ m : ℕ, L.gen d ^ n = L.gen d ^ m` using `⟨n, rfl⟩`. Unfold `GlobalTheory.GLq.thetaOf`. Rewrite using `[dif_pos h]`. Establish `hfin : IsOfFinOrder (L.gen d)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← orderOf_pos_iff, L.gen_order d hd]`. Conclude with `hp`. Establish `h1` using `hfin.pow_eq_pow_iff_modEq.1 h.choose_spec`. Rewrite `h1` using `[L.gen_order d hd]`. Establish `h2 : L.teich x ^ (p ^ d - 1) = 1` using `by rw [← map_pow, hx, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_eq_pow_mod _ h2, pow_eq_pow_mod n h2]`. Conclude with `congrArg _ h1.symm`.
+A detailed English derivation is pending.
 -/
 theorem thetaOf_gen_pow (L : GlobalTheory.GLq.LabelDatum p) {d : ℕ} (hd : 0 < d) {x : Fbar p} (hx : x ^ (p ^ d - 1) = 1)
     (n : ℕ) : GlobalTheory.GLq.thetaOf L d x (L.gen d ^ n) = L.teich x ^ n := by
@@ -35,9 +35,9 @@ theorem thetaOf_gen_pow (L : GlobalTheory.GLq.LabelDatum p) {d : ℕ} (hd : 0 < 
   exact congrArg _ h1.symm
 
 /- English proof (translation)
-Use `haveI : NeZero (p ^ d - 1) := ⟨(g_pow_sub_pos hd).ne'⟩`. Establish `hprim : IsPrimitiveRoot (L.gen d) (p ^ d - 1)` using `L.gen_order d hd ▸ IsPrimitiveRoot.orderOf _`. Establish `hu : ((u : (Fbar p)ˣ) : Fbar p) ^ (p ^ d - 1) = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, (mem_rootsOfUnity _ _).1 u.2, Units.val_one]`. Take `⟨n, -, hn⟩` from `hprim.eq_pow_of_pow_eq_one hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨n, hn.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_gen_pow (L : GlobalTheory.GLq.LabelDatum p) {d : ℕ} (hd : 0 < d) (u : Tor p d) :
     ∃ n : ℕ, ((u : (Fbar p)ˣ) : Fbar p) = L.gen d ^ n := by
@@ -49,9 +49,9 @@ theorem exists_gen_pow (L : GlobalTheory.GLq.LabelDatum p) {d : ℕ} (hd : 0 < d
   exact ⟨n, hn.symm⟩
 
 /- English proof (translation)
-Set `φ : Tor p d →* ℂ` to `{ toFun := fun u => GlobalTheory.GLq.thetaOf L d x ((u : (Fbar p)ˣ) : Fbar p) map_one' := by`. Use `thetaOf_gen_pow L hd hx 0` as an intermediate fact. Simplify using `using this`. Use the proof step `map_mul' := by`. Introduce `u v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `exists_gen_pow L hd u`. Take `⟨m, hm⟩` from `exists_gen_pow L hd v`. Rewrite using `[Subgroup.coe_mul, Units.val_mul, hn, hm, ← pow_add, thetaOf_gen_pow L hd hx, thetaOf_gen_pow L hd hx, thetaOf_gen_pow L hd hx, pow_add] }`. Conclude with `⟨φ.toHomUnits, hx, fun u => rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_char (L : GlobalTheory.GLq.LabelDatum p) {d : ℕ} (hd : 0 < d) {x : Fbar p} (hx : x ^ (p ^ d - 1) = 1) :
     ∃ θ : Tor p d →* ℂˣ, LabelsChar L θ x := by
@@ -69,44 +69,42 @@ theorem exists_char (L : GlobalTheory.GLq.LabelDatum p) {d : ℕ} (hd : 0 < d) {
   exact ⟨φ.toHomUnits, hx, fun u => rfl⟩
 
 /- English proof (translation)
-The claim follows from `(eq_minpoly (minpoly.monic (isInt y)) (minpoly.irreducible (isInt y)) h).symm`.
+A detailed English derivation is pending.
 -/
 theorem minpoly_eq_of_mem {y z : Fbar p} (h : z ∈ Formalism.CyclotomicNorms.rootsBar (minpoly (ZMod p) y)) :
     minpoly (ZMod p) z = minpoly (ZMod p) y :=
   (eq_minpoly (minpoly.monic (isInt y)) (minpoly.irreducible (isInt y)) h).symm
 
 /- English proof (translation)
-The claim follows from `mem_roots_minpoly.2 ⟨0, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem self_mem (y : Fbar p) : y ∈ Formalism.CyclotomicNorms.rootsBar (minpoly (ZMod p) y) :=
   mem_roots_minpoly.2 ⟨0, by simp⟩
 
 /- English proof (translation)
-Establish `hf` using `hm.ne_zero`. Establish `hnd` using `(squarefree_iff hf).1 hs`. Establish `hz0` using `(coeff_zero_iff hf).1 h0`. Set `S` to `(Formalism.CyclotomicNorms.rootsBar f).toFinset`. Establish `hS : S.card = r` using `by rw [Multiset.toFinset_card_of_nodup hnd, card_rootsBar, hr]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : Fin r ≃ S` to `(Finset.equivFinOfCardEq hS).symm`. Set `z : Fin r → Fbar p` to `fun i => (e i : Fbar p)`. Establish `zinj : Function.Injective z` using `Subtype.val_injective.comp e.injective`. Establish `zmem : ∀ i, z i ∈ Formalism.CyclotomicNorms.rootsBar f` using `fun i => Multiset.mem_toFinset.1 (e i).2`. Establish `zsurj : ∀ w ∈ Formalism.CyclotomicNorms.rootsBar f, ∃ i, z i = w` using `fun w hw => ⟨e.symm ⟨w, Multiset.mem_toFinset.2 hw⟩, by simp [z]⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `m : Fin r → (ZMod p)[X]` to `fun i => minpoly (ZMod p) (z i)`. Establish `hsub : ∀ i w, w ∈ Formalism.CyclotomicNorms.rootsBar (m i) → w ∈ Formalism.CyclotomicNorms.rootsBar f`. Introduce `i w hw`. Take `⟨k, rfl⟩` from `mem_roots_minpoly.1 hw`. Rewrite using `[mem_rootsBar hf]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `aeval_pow_g _ _ _ ((mem_rootsBar hf).1 (zmem i))`. Establish `hb : ∃ b : Fin r → Fin r, (∀ i, m (b i) = m i) ∧ ∀ i j, m i = m j → b i = b j`. Use `⟨fun i => @Function.invFun _ _ ⟨i⟩ m (m i), fun i => @Function.invFun_eq _ _ ⟨i⟩ m _ ⟨i, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `i j h`. Simplify using `only [h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb1, hb2⟩` from `hb`. Establish `hbc : ∀ c : Cyc b, ∀ i, b i = c.1 ↔ m i = m c.1`. Introduce and unpack `⟨c, j, rfl⟩ i`. Conclude with `⟨fun h => by rw [← hb1 i]; exact congrArg m h, fun h => hb2 _ _ (h.trans (hb1 j))⟩`. Establish `hlen : ∀ c : Cyc b, cycLen b c = dg (z c.1)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Rewrite using `[dg, ← card_rootsBar, ← Multiset.toFinset_card_of_nodup (nodup_minpoly _), cycLen, Fintype.card_subtype]`. Use `Finset.card_bij (fun i _ => z i) ?_ ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Establish `h1 : m i = m c.1` using `(hbc c i).1 (Finset.mem_filter.1 hi).2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Multiset.mem_toFinset]`. Conclude with `(show minpoly (ZMod p) (z i) = minpoly (ZMod p) (z c.1) from h1) ▸ self_mem (z i)`. Introduce `i _ j _ h`. Conclude with `zinj h`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `hw` using `[Multiset.mem_toFinset]`. Take `⟨i, rfl⟩` from `zsurj w (hsub _ w hw)`. Conclude with `⟨i, Finset.mem_filter.2 ⟨Finset.mem_univ _, (hbc c i).2 (minpoly_eq_of_mem hw)⟩, rfl⟩`. Use `⟨b, fun c => z c.1, fun c => ?_, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[hlen]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_dg (fun h => hz0 (h ▸ zmem _))`. Rewrite using `[Multiset.Nodup.ext hnd (Finset.univ.nodup.map ?_)]`. Introduce `w`. Rewrite using `[Multiset.mem_map]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `hw`. Take `⟨i, rfl⟩` from `zsurj w hw`. Set `c : Cyc b` to `⟨b i, i, rfl⟩`. Establish `h1 : z i ∈ Formalism.CyclotomicNorms.rootsBar (minpoly (ZMod p) (z c.1))` using `(show minpoly (ZMod p) (z i) = minpoly (ZMod p) (z c.1) from (hb1 i).symm) ▸ self_mem (z i)`. Rewrite `h1` using `[← Multiset.mem_toFinset, roots_minpoly]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Take `⟨k, hk, hk'⟩` from `Finset.mem_image.1 h1`. Conclude with `⟨⟨c, ⟨k, by rw [hlen]; exact Finset.mem_range.1 hk⟩⟩, Finset.mem_univ_val _, hk'⟩`. Introduce and unpack `⟨y, -, rfl⟩`. Conclude with `hsub y.1.1 _ (mem_roots_minpoly.2 ⟨_, rfl⟩)`. Introduce and unpack `⟨c, i⟩ ⟨c', j⟩ h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : z c.1 ^ p ^ (i : ℕ) = z c'.1 ^ p ^ (j : ℕ)` using `h`. Establish `e1` using `minpoly_eq_of_mem (y := z c.1) (mem_roots_minpoly.2 ⟨i, rfl⟩)`. Establish `e2` using `minpoly_eq_of_mem (y := z c'.1) (mem_roots_minpoly.2 ⟨j, rfl⟩)`. Establish `e3 : m c.1 = m c'.1` using `e1.symm.trans (h' ▸ e2)`. Establish `e4 : c = c'` using `Subtype.ext (((hbc c c.1).2 rfl).symm.trans ((hbc c' c.1).2 e3))`.
-
-Substitute `e4` using the available equality. Use `(frobenius_orbit_degreeOverPrimeFieldFbar (z c.1)).2 i (hlen c ▸ i.2) j (hlen c ▸ j.2) h'` as an intermediate fact. Rewrite using `[Fin.ext this]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rootPoly (r : ℕ) (f : (ZMod p)[X]) (hm : f.Monic) (hr : f.natDegree = r) (h0 : f.coeff 0 ≠ 0)
     (hs : Squarefree f) : ∃ (b : Fin r → Fin r) (x : Cyc b → Fbar p), IsRootPoly x f := by
@@ -178,7 +176,7 @@ theorem exists_rootPoly (r : ℕ) (f : (ZMod p)[X]) (hm : f.Monic) (hr : f.natDe
       rw [Fin.ext this]
 
 /- English proof (translation)
-Introduce `p _ L r f hm hr h0 hs`. Take `⟨b, x, hx⟩` from `exists_rootPoly r f hm hr h0 hs`. Use `choose θ hθ using fun c => exists_char L (cycLen_pos b c) (hx.1 c)`. Conclude with `⟨⟨b, θ⟩, x, hθ, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem param_exists : ∀ (p : ℕ) [Fact p.Prime] (L : GlobalTheory.GLq.LabelDatum p) (r : ℕ) (f : (ZMod p)[X]),
     f.Monic → f.natDegree = r → f.coeff 0 ≠ 0 → Squarefree f →

@@ -6,21 +6,17 @@ open scoped ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k S hcont hder`. Establish `key : ∀ n : ℕ, ∀ f ∈ S, ContDiff ℝ n f`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `f hf`. Conclude with `contDiff_zero.2 (hcont f hf)`. Consider the case `succ n ih`. Introduce `f hf`. Establish `hD : ∀ j : Fin k, ∃ D : (Fin k → ℝ) → ℂ, ContDiff ℝ n D ∧ ∀ t, HasDerivAt (fun s : ℝ => f (t + s • Pi.single j 1)) (D t) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Take `⟨ι, hι, c, g, hc, hg, hd⟩` from `hder f hf j`. Use `⟨fun t => ∑ i, c i t * g i t, ContDiff.sum fun i _ => ?_, hd⟩` and prove the remaining obligations. Conclude with `((hc i).of_le (mod_cast le_top)).mul (ih _ (hg i))`. Use `choose D hDc hDd using hD`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hF` using `GlobalTheory.hasFDerivAt_of_continuous_partials k f D (fun i t => by`. Establish `h : HasDerivAt (fun s : ℝ => f (t + s • Pi.single i 1)) (D i t) (t i - t i)`. Rewrite using `[sub_self]`. Conclude with `hDd i t`. Use `(h.comp_sub_const (t i) (t i)).congr_of_eventuallyEq (Eventually.of_forall fun s => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `show f (Function.update t i s) = f (t + (s - t i) • Pi.single i 1)`. Use `congr 1`. Use extensionality with `m`. Distinguish the cases in `hm : m = i`. Substitute `hm` using the available equality.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Simplify using `[hm, Function.update_apply])`. Use the proof step `(fun i => (hDc i).continuous)`. Establish `hcast : ((n + 1 : ℕ) : WithTop ℕ∞) = (n : WithTop ℕ∞) + 1` using `by push_cast; rfl`. Rewrite using `[hcast, contDiff_succ_iff_fderiv]`.
-
-Use `⟨fun t => (hF t).differentiableAt, by simp, ?_⟩` and prove the remaining obligations. Establish `hfd : fderiv ℝ f = fun t => ∑ i, (ContinuousLinearMap.proj i : (Fin k → ℝ) →L[ℝ] ℝ).smulRight (D i t)`. Use function extensionality and compare the values at `fun t => (hF t).fderiv`. Rewrite using `[hfd]`. Conclude with `ContDiff.sum fun i _ => (ContinuousLinearMap.smulRightL ℝ (Fin k → ℝ) ℂ (ContinuousLinearMap.proj i)).contDiff.comp (hDc i)`.
-
-Introduce `f hf`. Conclude with `contDiff_infty.2 fun n => key n f hf`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem contDiff_of_partials_in_smooth_span :
     ∀ (k : ℕ) (S : Set ((Fin k → ℝ) → ℂ)), (∀ f ∈ S, Continuous f) →

@@ -19,7 +19,7 @@ open GlobalTheory.HkFam
 namespace GlobalTheory.HkSplit
 
 /- English proof (translation)
-Use `GlobalTheory.IsNormalScheme.of_pred hZ` as an intermediate fact. Establish `hC` using `GlobalTheory.IsNormalScheme.isOpen_of_mem_irreducibleComponents (irreducibleComponent_mem_irreducibleComponents p)`. Take `⟨W, hW, hpW, hle⟩` from `exists_isAffineOpen_mem_and_subset (U := ⟨_, hC⟩) (x := p) mem_irreducibleComponent`. Conclude with `⟨W, hW, hpW, (GlobalTheory.IsNormalScheme.isDomain_and_isIntegrallyClosed_of_isIrreducible ⟨⟨p, hpW⟩, (isIrreducible_irreducibleComponent (x := p)).2.open_subset W.isOpen fun q hq => hle hq⟩).1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_affine_isDomain {Z : Scheme.{0}} [IsLocallyNoetherian Z] (hZ : Geo.Tor.IsNormalScheme Z) (p : Z) :
     ∃ W : Z.Opens, IsAffineOpen W ∧ p ∈ W ∧ IsDomain Γ(Z, W) := by
@@ -32,7 +32,7 @@ theorem exists_affine_isDomain {Z : Scheme.{0}} [IsLocallyNoetherian Z] (hZ : Ge
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.obj_pull E H D l _ _ (baseKA l) (baseKA l) (RingHom.id _) S S' s (f ≫ s) f rfl rfl (by rw [show spMap (RingHom.id (KA l)) = 𝟙 _ from Spec.map_id _, Category.comp_id]) o`.
+A detailed English derivation is pending.
 -/
 theorem exists_pull {S S' : Scheme.{0}} (s : S ⟶ Sp (KA l)) (f : S' ⟶ S) (o : Ob D l s) :
     ∃ o' : Ob D l (f ≫ s), Nonempty (ObjMap o' o f) :=
@@ -40,13 +40,13 @@ theorem exists_pull {S S' : Scheme.{0}} (s : S ⟶ Sp (KA l)) (f : S' ⟶ S) (o 
     (by rw [show spMap (RingHom.id (KA l)) = 𝟙 _ from Spec.map_id _, Category.comp_id]) o
 
 /- English proof (translation)
-Set `U : S.Opens` to `⟨Set.range g, g.isOpenMap.isOpen_range⟩`. Take `⟨g', hg'⟩ : ∃ g' : S' ⟶ U.toScheme, g' ≫ U.ι = g` from `⟨IsOpenImmersion.lift U.ι g (by simp [U]), IsOpenImmersion.lift_fac _ _ _⟩`. Establish `hU : ∀ x : S, x ∈ U → x ∈ Set.range g` using `fun _ h => h`. Establish `hqU : q ∈ U` using `hq`. Use `clear_value U`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hg'` using the available equality. Rewrite `hs` using `[Category.assoc]`. Substitute `hs` using the available equality. Take `⟨o₁, ⟨m₁⟩⟩` from `exists_pull s U.ι o`. Take `⟨m', hm'⟩` from `((GlobalTheory.ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ _ _ _ _ _ _ o o₁ o').2 U.ι g' m₁).2 m`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he : Etale g'` using `Etale.of_comp g' U.ι`. Establish `hsur : Surjective g'` using `⟨fun y => by`. Take `⟨x, hx⟩` from `hU (U.ι y) y.2`. Conclude with `⟨x, U.ι.isOpenEmbedding.injective (by simpa using hx)⟩⟩`. Use `⟨U, o₁, m₁, hqU, GlobalTheory.T.heckeQuotient_descends_etale_surjective_cover E H D l Xo 𝔓 p i _ _ _ g' o₁ o' m' _ hA (GlobalTheory.HkSetPull.heckeSet_pull D 𝔓 p i m₁.toSABMap K hK) he hsur inferInstance ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hQ` using `[hm', Scheme.Hom.comp_base, TopCat.coe_comp, Set.preimage_comp]`. Conclude with `hQ`.
+A detailed English derivation is pending.
 -/
 theorem hasQuot_image (Xo : Moduli D l) (𝔓 : Ideal (𝓞 E)) (p i : ℕ) {S S' : Scheme.{0}} [IsReduced S] [IsNoetherian S']
     (s : S ⟶ Sp (KA l)) (g : S' ⟶ S) [Etale g] (o : Ob D l s) (s' : S' ⟶ Sp (KA l)) (hs : s' = g ≫ s)
@@ -76,13 +76,13 @@ theorem hasQuot_image (Xo : Moduli D l) (𝔓 : Ideal (𝓞 E)) (p i : ℕ) {S S
 end GlobalTheory.HkSplit
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo 𝔓 p i n S s o σ K hD hA hs hL hK`. Take `⟨hr, hN, hn⟩` from `GlobalTheory.isReduced_isNormalScheme_isLocallyNoetherian_of_smooth_over_field _ S s hs`. Use `GlobalTheory.T.heckeQuotient_of_open_cover_reduced_base E H D l Xo 𝔓 p i S s o K hA hK fun q => ?_` and prove the remaining obligations. Take `⟨W, hW, hq, hd⟩` from `GlobalTheory.HkSplit.exists_affine_isDomain hN q`. Establish `hR : IsNoetherianRing Γ(S, W)` using `IsLocallyNoetherian.component_noetherian ⟨W, hW⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `j : Sp Γ(S, W) ⟶ S` to `hW.fromSpec`. Establish `hj : IsOpenImmersion j` using `inferInstanceAs (IsOpenImmersion hW.fromSpec)`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : q ∈ Set.range j := by`. Rewrite using `[show Set.range j = W from hW.range_fromSpec]`. Conclude with `hq`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨o₁, ⟨m₁⟩⟩` from `GlobalTheory.HkSplit.exists_pull s j o`. Take `⟨σ', -, hL'⟩` from `GlobalTheory.HkSetPull.lists_pull m₁.toSABMap.cart K _ n σ hL`. Take `⟨R', _, π, o', m, he, ⟨y, hy⟩, hQ⟩` from `GlobalTheory.T.exists_etale_hasHeckeQuotient_noetherian_domain E H D l 𝔓 p i n Γ(S, W) (j ≫ s) o₁ σ' _ x hD hA hL' (GlobalTheory.HkSetPull.heckeSet_pull D 𝔓 p i m₁.toSABMap K hK)`. Take `⟨m', hm'⟩` from `((GlobalTheory.ObjMaps.id_comp_cancel E H D l _ _ _ _ _ _ _ _ _ _ _ _ o o₁ o').2 j π m₁).1 m`. Establish `: IsLocallyNoetherian (Sp R')` using `LocallyOfFiniteType.isLocallyNoetherian π`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsNoetherian (Sp R')` using `{}`. Use `GlobalTheory.HkSplit.hasQuot_image Xo 𝔓 p i s (π ≫ j) o _ (Category.assoc _ _ _).symm o' m' K hA hK ?_ q ⟨y, by rw [Scheme.Hom.comp_apply, hy, hx]⟩` and prove the remaining obligations. Rewrite using `[hm', Scheme.Hom.comp_base, TopCat.coe_comp, Set.preimage_comp]`. Conclude with `hQ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.hasQuot_of_lists_of_smooth : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (𝔓 : Ideal (𝓞 E)) (p i n : ℕ) (S : Scheme.{0}) (s : S ⟶ Sp (KA l)) (o : Ob D l s) (σ : Fin n → (𝟙_ (Over S) ⟶ o.t.G)) (K : Set o.t.G.left), 1 ≤ D.p + D.q → admitted l 𝔓 p → Smooth s → Lists (p ^ 2) σ K → HeckeSet D o.t 𝔓 p i K → HasQuot o p K := by
   intro E _ _ _ H D l Xo 𝔓 p i n S s o σ K hD hA hs hL hK

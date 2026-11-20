@@ -6,7 +6,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.BZRes
 
 /- English proof (translation)
-Establish `e1 : ((wGL k h : GL (Fin (i + t + 1)) k) : Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k) = (1 : Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k).submatrix (wPerm h) id` using `rfl`. Establish `e2 : (((wGL k h)⁻¹ : GL (Fin (i + t + 1)) k) : Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k) = (1 : Matrix (Fin (i + t + 1)) (Fin (i + t + 1)) k).submatrix id (wPerm h)` using `rfl`. Rewrite using `[Units.val_mul, Units.val_mul, e1, e2]`. Simplify using `[Matrix.mul_apply, Matrix.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wGL_conj_apply (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {i t : ℕ} (h : (i + 1) + t = i + t + 1) (g : GL (Fin (i + t + 1)) k) (a b : Fin (i + t + 1)) :
@@ -18,14 +18,14 @@ theorem wGL_conj_apply (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k
   simp [Matrix.mul_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Simplify using `[wPerm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wPerm_two {i t : ℕ} (h : (i + 1) + t = i + t + 1) (x : Σ x, Two (Fin (i + 1)) (Fin t) x) :
     wPerm h (two (stdSum h) x) = ePG i t x := by
   simp [wPerm]
 
 /- English proof (translation)
-Use `show (p : GL (Fin (i + t + 1)) k) ∈ parab k (ePG i t) ↔ _`. Rewrite using `[mem_parab_iff, mem_parab_iff]`. Use `forall_congr' fun a => forall_congr' fun b => forall_congr' fun x => forall_congr' fun y => ?_` and prove the remaining obligations. Rewrite using `[wGL_conj_apply, wPerm_two, wPerm_two]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_HPG_iff_conj_mem_parab (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {i t : ℕ} (h : (i + 1) + t = i + t + 1) (p : Mir k (i + t)) :

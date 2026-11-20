@@ -6,7 +6,7 @@ namespace GlobalTheory.JR.WeilQuad.NearZero
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
 /- English proof (translation)
-Establish `hE : Module.Finite F E` using `Module.finite_of_finrank_pos (by rw [Unram.finrank_eq (F := F) (E := E)]; norm_num)`. Establish `h` using `A.push.out`. Conclude with `Module.Finite.equiv h.equiv`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_E_L [Unram F E] (A : Et F E) : Module.Finite E A.L := by
   have hE : Module.Finite F E := Module.finite_of_finrank_pos (by rw [Unram.finrank_eq (F := F) (E := E)]; norm_num)
@@ -14,7 +14,7 @@ theorem finite_E_L [Unram F E] (A : Et F E) : Module.Finite E A.L := by
   exact Module.Finite.equiv h.equiv
 
 /- English proof (translation)
-Establish `hE : Module.Finite F E` using `Module.finite_of_finrank_pos (by rw [Unram.finrank_eq (F := F) (E := E)]; norm_num)`. Use `finite_E_L A` as an intermediate fact. Conclude with `Module.Finite.trans E A.L`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_F_L [Unram F E] (A : Et F E) : Module.Finite F A.L := by
   have hE : Module.Finite F E := Module.finite_of_finrank_pos (by rw [Unram.finrank_eq (F := F) (E := E)]; norm_num)
@@ -22,18 +22,16 @@ theorem finite_F_L [Unram F E] (A : Et F E) : Module.Finite F A.L := by
   exact Module.Finite.trans E A.L
 
 /- English proof (translation)
-Use `finite_F_L A` as an intermediate fact. Conclude with `Module.Finite.of_restrictScalars_finite F A.K A.L`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_K_L [Unram F E] (A : Et F E) : Module.Finite A.K A.L := by
   have := finite_F_L A
   exact Module.Finite.of_restrictScalars_finite F A.K A.L
 
 /- English proof (translation)
-Use `letI : Field A.K := hK.toField`. Use `finite_K_L A` as an intermediate fact. Set `b` to `Module.Free.chooseBasis A.K A.L`. Establish `hfun : (fun y : A.L => A.NL y) = fun y => (Algebra.leftMulMatrix b y).det`. Use function extensionality and compare the values at `y`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Algebra.norm_eq_matrix_det b y`. Rewrite using `[hfun]`. Use `Continuous.matrix_det (continuous_matrix fun i j => ?_)` and prove the remaining obligations. Set `φ : A.L →ₗ[A.K] A.K` to `(LinearMap.proj j : (_ → A.K) →ₗ[A.K] A.K) ∘ₗ (LinearMap.proj i : (_ → _ → A.K) →ₗ[A.K] _) ∘ₗ (Algebra.leftMulMatrix b).toLinearMap`. Establish `hφ : Continuous (φ.restrictScalars F)` using `IsModuleTopology.continuous_of_linearMap _`.
-
-Conclude with `hφ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_NL [Unram F E] (A : Et F E) (hK : IsField A.K) :
     Continuous (fun y : A.L => A.NL y) := by
@@ -50,7 +48,7 @@ theorem continuous_NL [Unram F E] (A : Et F E) (hK : IsField A.K) :
   exact hφ
 
 /- English proof (translation)
-Use `letI : Field A.K := hK.toField`. Use `finite_K_L A` as an intermediate fact. Use `haveI : Nontrivial A.L := ⟨hL.exists_pair_ne⟩`. Conclude with `Algebra.norm_zero`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem NL_zero [Unram F E] (A : Et F E) (hK : IsField A.K) (hL : IsField A.L) : A.NL (0 : A.L) = 0 := by
   letI : Field A.K := hK.toField
@@ -61,11 +59,9 @@ theorem NL_zero [Unram F E] (A : Et F E) (hK : IsField A.K) (hL : IsField A.L) :
 end GlobalTheory.JR.WeilQuad.NearZero
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ x μ ω h`. Take `⟨hK, hL, hψ, -, -⟩` from `h`. Set `g : A.L → F` to `fun y => Algebra.trace F A.K ((x : A.K) * A.NL y)`. Establish `hg : Continuous g`. Establish `ht : Continuous (Algebra.trace F A.K)` using `IsModuleTopology.continuous_of_linearMap _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ht.comp (continuous_const.mul (NearZero.continuous_NL A hK))`. Establish `hg0 : g 0 = 0` using `by simp [g, NearZero.NL_zero A hK hL]`. Establish `hmem : g ⁻¹' Metric.ball 0 1 ∈ 𝓝 (0 : A.L)` using `hg.continuousAt.preimage_mem_nhds (by rw [hg0]; exact Metric.ball_mem_nhds 0 one_pos)`. Use `Filter.mem_of_superset hmem fun y hy => ?_` and prove the remaining obligations. Establish `hy' : ‖g y‖ < 1` using `by simpa using hy`.
-
-Conclude with `hψ.1 _ hy'.le`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.JR.WeilQuad.psiK_norm_eq_one_near_zero : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (x : A.Kˣ) (μ : Measure A.L)

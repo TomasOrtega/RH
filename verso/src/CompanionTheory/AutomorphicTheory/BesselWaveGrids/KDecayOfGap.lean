@@ -15,7 +15,7 @@ open CompanionTheory.WaveGrid.Coef
 def LimSteps : Prop := GfPoly ∧ SpanPow ∧ CoefSmooth ∧ CoefCC ∧ CoefEig ∧ PhZero ∧ BetaInfZero
 
 /- English proof (translation)
-Use `Finset.prod_le_prod (fun _ _ => add_nonneg (abs_nonneg _) hd) fun s _ => ?_` and prove the remaining obligations. Establish `h1` using `h s`. Establish `h2` using `abs_add_le (y + lam s) (lam' s - lam s)`. Rewrite `h2` using `[show y + lam s + (lam' s - lam s) = y + lam' s by ring]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem pStar_box {n : ℕ} {lam lam' : Fin n → ℝ} {e d c : ℝ} (h : lam' ∈ Box lam e) (hd : 0 ≤ d) (hc : e + d ≤ c)
     (y : ℝ) : CompanionTheory.LimBd.Main.PStar lam' d y ≤ PStar lam c y := by
@@ -26,7 +26,7 @@ theorem pStar_box {n : ℕ} {lam lam' : Fin n → ℝ} {e d c : ℝ} (h : lam' �
   linarith
 
 /- English proof (translation)
-Use `MainStatements.BetaInf.kDecay_of_zuckT hZ k r ε ⌈X + d⌉₊ _ _ (Nat.le_ceil _) ?_` and prove the remaining obligations. Use `Nat.ceil_lt_add_one (show 0 ≤ X + d by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem kDecay_of_gap {t : ∀ n : ℕ, (Fin n → Bool) → ℝ} (hZ : ZuckT t) (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool)
     {X d h : ℝ} (hX : 0 ≤ X) (hd : 0 ≤ d) (hh : t _ ε + X + 3 * d + 1 < h) : KDecay k r ε (X + d) (h - 2 * d) := by
@@ -35,7 +35,7 @@ theorem kDecay_of_gap {t : ∀ n : ℕ, (Fin n → Bool) → ℝ} (hZ : ZuckT t)
   linarith
 
 /- English proof (translation)
-Introduce `a b hab` and use `hh.trans (hg a b hab)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gap_mono {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {h h' : ℝ} (hg : PI.ZuckTensor.GapAtLeast ε lam h)
     (hh : h' ≤ h) : PI.ZuckTensor.GapAtLeast ε lam h' := fun a b hab => hh.trans (hg a b hab)
@@ -70,15 +70,15 @@ def EndEq (t : ∀ n : ℕ, (Fin n → Bool) → ℝ) : Prop :=
       BigCellDerivativeExpansion p f b C₃ (2 * p₀ + n₀) → ThmBpAt p f b C₄ n₀ p₀
 
 /- English proof (translation)
-Introduce `Cb C₃ CT C₀ hC₃ hCT hC₀`. Take `⟨C₄, c₃, Cc, Cc', Cc'', H⟩` from `hAsm Cb C₃ (6 + CT) C₀ hC₃ (by linarith) hC₀`. Use `set CA : ℝ := max (max (max c₃ Cc) (max Cc' Cc'')) 46 with hCA`. Establish `k0 : 46 ≤ CA` using `le_max_right _ _`. Establish `k1 : c₃ ≤ CA` using `le_max_of_le_left (le_max_of_le_left (le_max_left _ _))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k2 : Cc ≤ CA` using `le_max_of_le_left (le_max_of_le_left (le_max_right _ _))`. Establish `k3 : Cc' ≤ CA` using `le_max_of_le_left (le_max_of_le_right (le_max_left _ _))`. Establish `k4 : Cc'' ≤ CA` using `le_max_of_le_left (le_max_of_le_right (le_max_right _ _))`. Use `⟨C₄, CA, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ _ P p f b p₀ lam lam' ε c g e h hfK hbox hec hgap hh hL hu hu' hTT hT hlen hN hp₀ hCb hexp`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨s1, s2, s3, s4, s5, s6, s7⟩` from `hS`. Establish `hd : (0 : ℝ) ≤ (((2 * P.r + 2) * p₀ : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hX : 0 ≤ CA * thrX P.k P.r` using `mul_nonneg (by linarith) (thrX_nonneg _ _)`. Establish `hD` using `kDecay_of_gap hZ P.k P.r ε hX hd hh`. Establish `hfA` using `kfin_inCC hK s4 hD (gap_mono hgap (by linarith)) hfK`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXA : CA * thrX P.k P.r ≤ CA * thrX P.k P.r + (((2 * P.r + 2) * p₀ : ℕ) : ℝ)` using `by linarith`. Establish `hXA' : CA * thrX P.k P.r ≤ CA * thrX P.k P.r + (((2 * P.r + 2) * p₀ : ℕ) : ℝ) - (((2 * P.r + 2) * p₀ : ℕ) : ℝ)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc : 0 < c` using `by linarith [hL.c_ge]`. Take `⟨hW, hLi⟩` from `grids_diff p lam c g b hL hu hu' hlen`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hΛ1, hΛ2⟩` from `gridΛ_bounds p b CT hL.b_ge_three hCT hTT`. Conclude with `H Wp Wq P p f b _ _ p₀ Topx2.chi0 (PStar lam c) (gridY P p.l0 (3 * (P.r + 1))) 3 (3 * (P.r + 1)) hL.b_ge_three hΛ1 hΛ2 hT hp₀ le_rfl (by omega) Topx2.base_cutoff_is_truncation (PStar_pos lam hc) hCb (kfin_ckOn hK s3 hfK) hfA (kfin_ffkb hK s3 s5 hB p hfK (fun m hm => thr_JF _ _ m …`.
+A detailed English derivation is pending.
 -/
 theorem endDiff_of (hAsm : AsmDiff) (hS : LimSteps) (hB : SmoothKB) (hK : PI.KFinSmooth)
     {t : ∀ n : ℕ, (Fin n → Bool) → ℝ} (hZ : ZuckT t) (hZd : ZuckDualT t) : EndDiff t := by
@@ -112,17 +112,17 @@ theorem endDiff_of (hAsm : AsmDiff) (hS : LimSteps) (hB : SmoothKB) (hK : PI.KFi
       (thr_AB _ _ k0 hXA) hD (by linarith) fun y _ => pStar_box hbox hd hec y))
 
 /- English proof (translation)
-Introduce `C₃ CT C₀ hC₃ hCT hC₀`. Take `⟨Cb, c₅, -, hSh⟩` from `EqShift.shiftAtR_full hW`. Take `⟨C₄, c₃, Cc, Cc', Cc'', H⟩` from `hAsm Cb C₃ (6 + CT) C₀ hC₃ (by linarith) hC₀`. Use `set CA : ℝ := max (max (max c₃ Cc) (max Cc' Cc'')) (max 46 c₅) with hCA`. Establish `k0 : 46 ≤ CA` using `le_max_of_le_right (le_max_left _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k5 : c₅ ≤ CA` using `le_max_of_le_right (le_max_right _ _)`. Establish `k1 : c₃ ≤ CA` using `le_max_of_le_left (le_max_of_le_left (le_max_left _ _))`. Establish `k2 : Cc ≤ CA` using `le_max_of_le_left (le_max_of_le_left (le_max_right _ _))`. Establish `k3 : Cc' ≤ CA` using `le_max_of_le_left (le_max_of_le_right (le_max_left _ _))`. Establish `k4 : Cc'' ≤ CA` using `le_max_of_le_left (le_max_of_le_right (le_max_right _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C₄, CA, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ _ P p f b p₀ n₀ l lam lam' ε c g e h hfK hbox hec hgap hh hL hu huu hTT hT hn₀ hl1 hlk hposition hN hp₀ hexp`. Take `⟨s1, s2, s3, s4, s5, s6, s7⟩` from `hS`. Establish `hd : (0 : ℝ) ≤ (((2 * P.r + 2) * p₀ + n₀ * (P.r + 1) : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `hX : 0 ≤ CA * thrX P.k P.r` using `mul_nonneg (by linarith) (thrX_nonneg _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD` using `kDecay_of_gap hZ P.k P.r ε hX hd hh`. Establish `hfA` using `kfin_inCC hK s4 hD (gap_mono hgap (by linarith)) hfK`. Establish `hXA : CA * thrX P.k P.r ≤ CA * thrX P.k P.r + (((2 * P.r + 2) * p₀ + n₀ * (P.r + 1) : ℕ) : ℝ)` using `by linarith`. Establish `hXA' : CA * thrX P.k P.r ≤ CA * thrX P.k P.r + (((2 * P.r + 2) * p₀ + n₀ * (P.r + 1) : ℕ) : ℝ) - (((2 * P.r + 2) * p₀ : ℕ) : ℝ) - ((n₀ * (P.r + 1) : ℕ) : ℝ)`. Rewrite using `[Nat.cast_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc : 0 < c` using `by linarith [hL.c_ge]`. Establish `hJ` using `kfin_ffkb hK s3 s5 hB p hfK (fun m hm => thr_JF _ _ m hm k0 hXA) hfA`. Take `⟨S, e1, e2, e3, e4, e5, e6, hDp, hDm, hJp, hJm⟩` from `hSh P Wp Wq p f b n₀ l _ huu hl1 hlk (huu ▸ hposition) hL.b_ge_three (fun i hi => huu ▸ hu.u_le i (Finset.mem_Icc.1 hi).1 (Finset.mem_Icc.1 hi).2) (thr_conv _ _ k5 (by linarith) hXA) (thr_JF _ _ _ (Nat.zero_le _) k0 hXA) (hfA 1) (hfA 0) hJ`. Rewrite `e2`, `e4` using `[← huu]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hWp, hLip⟩` from `grids_plus S.pp lam c g b l n₀ hL hu hn₀ hl1 hlk hposition e1 e2 e5`. Take `⟨hWm, hLim⟩` from `grids_minus S.pm lam c g b l n₀ hL hu hn₀ hl1 hlk hposition e3 e4 e6`. Take `⟨hΛ1, hΛ2⟩` from `gridΛ_bounds p b CT hL.b_ge_three hCT hTT`. Conclude with `H P Wp Wq p f b n₀ S _ _ p₀ Topx2.chi0 (PStar lam c) (PStar lam c) (gridY (shP P S.up S.up') S.pp.l0 (3 * (P.r + 1))) (gridY (shP P S.um S.um') S.pm.l0 (3 * (P.r + 1))) 3 (3 * (P.r + 1)) hL.b_ge_three hΛ1 hΛ2 hT hn₀.le hp₀ le_rfl (by omega) Topx2.base_cutoff_is_truncation (PStar_ …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem endEq_of (hAsm : AsmEq) (hW : WigExists) (hS : LimSteps) (hB : SmoothKB) (hK : PI.KFinSmooth)
     {t : ∀ n : ℕ, (Fin n → Bool) → ℝ} (hZ : ZuckT t) (hZd : ZuckDualT t) : EndEq t := by

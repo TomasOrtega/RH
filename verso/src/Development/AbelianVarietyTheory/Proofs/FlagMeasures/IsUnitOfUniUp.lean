@@ -11,13 +11,13 @@ open scoped Classical
 variable {g : ℕ} [Fact g.Prime]
 
 /- English proof (translation)
-Simplify using `[entN, hi, hj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem entN_lt {n : ℕ} (M : Mt g n) {i j : ℕ} (hi : i < n) (hj : j < n) : entN M i j = M ⟨i, hi⟩ ⟨j, hj⟩ := by
   simp [entN, hi, hj]
 
 /- English proof (translation)
-Simplify using `[entN]`.
+Simplify using the standard rewrite rules.
 -/
 theorem entN_fin {n : ℕ} (M : Mt g n) (i j : Fin n) : entN M i j = M i j := by
   simp [entN]
@@ -26,7 +26,7 @@ open Polynomial in
 open scoped Classical in
 variable {g : ℕ} [Fact g.Prime] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GLq.toG`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.GLm.OpenCell.coe_toG {n : ℕ} {M : _root_.GlobalTheory.GLq.Mt g n} (h : IsUnit M) :
     ((_root_.GlobalTheory.GLq.toG M : _root_.GlobalTheory.GLq.Gn g n) : _root_.GlobalTheory.GLq.Mt g n) = M := by
@@ -35,9 +35,9 @@ theorem _root_.GlobalTheory.GLm.OpenCell.coe_toG {n : ℕ} {M : _root_.GlobalThe
   rfl
 
 /- English proof (translation)
-Use `coe_toG (M := Matrix.of fun r j : Fin n => if r = σ j then 1 else 0) ?_` and prove the remaining obligations. Use `IsUnit.of_mul_eq_one (Matrix.of fun r j : Fin n => if j = σ r then (1 : ZMod g) else 0) ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single (σ.symm i)]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[eq_comm]`. Introduce `k _ hk`. Establish `: i ≠ σ k` using `fun h => hk (by simp [h])`. Simplify using `[this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pm_coe {n : ℕ} (σ : Equiv.Perm (Fin n)) :
     ((pm g σ : Gn g n) : Mt g n) = Matrix.of fun r j : Fin n => if r = σ j then 1 else 0 := by
@@ -53,7 +53,7 @@ theorem pm_coe {n : ℕ} (σ : Equiv.Perm (Fin n)) :
   · simp
 
 /- English proof (translation)
-Establish `h1 : pm g σ * ((pm g σ)⁻¹ * x * pm g σ) = x * pm g σ` using `by group`. Establish `h2` using `congrArg (fun z : Gn g n => (z : Mt g n) (σ i) j) h1`. Generalize the expression as in `(pm g σ)⁻¹ * x * pm g σ = y at h2 ⊢`. Simplify using `only [Units.val_mul, pm_coe, Matrix.mul_apply, Matrix.of_apply] at h2`. Simplify using `using h2`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conj_pm {n : ℕ} (σ : Equiv.Perm (Fin n)) (x : Gn g n) (i j : Fin n) :
     (((pm g σ)⁻¹ * x * pm g σ : Gn g n) : Mt g n) i j = (x : Mt g n) (σ i) (σ j) := by
@@ -67,9 +67,9 @@ open Polynomial in
 open scoped Classical in
 variable {g : ℕ} [Fact g.Prime] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GLq.wh _root_.GlobalTheory.GLq.tr _root_.Formalism.MainNotions.ArithmeticCylinders.eU _root_.Formalism.MainNotions.ArithmeticCylinders.eDat _root_.GlobalTheory.GLm.supFrom`. Simplify using `only [MonoidAlgebra.coeff_smul, MonoidAlgebra.coeff_sum, MonoidAlgebra.coeff_single, Finsupp.smul_apply, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.single_apply, Finset.sum_ite_eq', smul_eq_mul, Finset.range_eq_Ico]`. Rewrite using `[Finset.mul_sum, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.GLm.OpenCell.wh_eq (ψ : AddChar (ZMod g) ℂ) {n : ℕ} (χ : _root_.GlobalTheory.GLq.Gn g n → ℂ) :
     _root_.GlobalTheory.GLq.wh ψ χ = ((Finset.univ.filter fun u : _root_.GlobalTheory.GLq.Gn g n => _root_.Formalism.MainNotions.ArithmeticCylinders.IsUniUp (u : _root_.GlobalTheory.GLq.Mt g n)).card : ℂ)⁻¹ *
@@ -96,7 +96,7 @@ variable {a b : ℕ} {σ : Equiv.Perm (Fin (a + b))}
 include hσ
 
 /- English proof (translation)
-Rewrite using `[entN_lt _ hi hj, conj_pm, ← entN_fin (x : Mt g (a + b)), hσ, hσ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem entN_conj (x : Gn g (a + b)) {i j : ℕ} (hi : i < a + b) (hj : j < a + b) :
     entN (((pm g σ)⁻¹ * x * pm g σ : Gn g (a + b)) : Mt g (a + b)) i j =
@@ -104,9 +104,9 @@ theorem entN_conj (x : Gn g (a + b)) {i j : ℕ} (hi : i < a + b) (hj : j < a + 
   rw [entN_lt _ hi hj, conj_pm, ← entN_fin (x : Mt g (a + b)), hσ, hσ]
 
 /- English proof (translation)
-Use `and_congr_right fun _ => ⟨fun h i j hi hj hj' => ?_, fun h i j hj hi => ?_⟩` and prove the remaining obligations. Establish `h1` using `h ⟨a + i, by omega⟩ ⟨j - b, by omega⟩ (by show j - b < a; omega) (by show a ≤ a + i; omega)`. Rewrite `h1` using `[← entN_lt (((pm g σ)⁻¹ * x * pm g σ : Gn g (a + b)) : Mt g (a + b)), entN_conj hσ x (by omega) (by omega), if_neg (by omega), if_pos (by omega), Nat.add_sub_cancel_left, show b + (j - b) = j by omega]`. Conclude with `h1`. Establish `hi'` using `i.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← entN_fin (((pm g σ)⁻¹ * x * pm g σ : Gn g (a + b)) : Mt g (a + b)), entN_conj hσ x i.2 j.2, if_neg (by omega), if_pos hj]`. Conclude with `h _ _ (by omega) (by omega) (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem good_iff (x : Gn g (a + b)) :
     (IsUniUp (x : Mt g (a + b)) ∧ InPar a (((pm g σ)⁻¹ * x * pm g σ : Gn g (a + b)) : Mt g (a + b))) ↔
@@ -126,9 +126,9 @@ open Polynomial in
 open scoped Classical in
 variable {g : ℕ} [Fact g.Prime] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.one_apply, Matrix.of_apply]`. Rewrite using `[Finset.sum_eq_single (σ.symm i)]`. Simplify using `[eq_comm]`. Introduce `k _ hk`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: i ≠ σ k` using `fun h => hk (by simp [h])`. Simplify using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma permMatrix_mul_transpose_eq_one {n : ℕ} (σ : Equiv.Perm (Fin n)) :
     (Matrix.of (fun r j => if r = σ j then (1 : ZMod g) else 0) *
@@ -146,11 +146,11 @@ open Polynomial in
 open scoped Classical in
 variable {g : ℕ} [Fact g.Prime] in
 /- English proof (translation)
-Use `set Pm : _root_.GlobalTheory.GLq.Mt g n := Matrix.of (fun r j => if r = σ j then (1 : ZMod g) else 0) with hPm`. Establish `hunit : IsUnit Pm`. Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Use `isUnit_iff_exists_inv.mpr ⟨(Matrix.transpose Pm).det, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.det_mul, hPm, permMatrix_mul_transpose_eq_one, Matrix.det_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP : ((_root_.GlobalTheory.GLm.pm g σ : _root_.GlobalTheory.GLq.Gn g n) : _root_.GlobalTheory.GLq.Mt g n) = Pm`. Unfold `_root_.GlobalTheory.GLm.pm`. Conclude with `_root_.GlobalTheory.GLm.OpenCell.coe_toG hunit`. Establish `hPinv : (((_root_.GlobalTheory.GLm.pm g σ)⁻¹ : _root_.GlobalTheory.GLq.Gn g n) : _root_.GlobalTheory.GLq.Mt g n) = Matrix.transpose Pm`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP, permMatrix_mul_transpose_eq_one, mul_one]`. Use `_ = Matrix.transpose Pm := by rw [← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[Units.val_mul, Units.val_mul, hPinv, hP]`. Use extensionality with `i j`. Simplify using `[Pm, Matrix.mul_apply, Matrix.transpose_apply, Matrix.of_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma coe_pm_inv_mul_mul_pm {n : ℕ} (σ : Equiv.Perm (Fin n)) (x : _root_.GlobalTheory.GLq.Gn g n) :
     (((_root_.GlobalTheory.GLm.pm g σ)⁻¹ * x * _root_.GlobalTheory.GLm.pm g σ :
@@ -178,7 +178,7 @@ open Polynomial in
 open scoped Classical in
 variable {g : ℕ} [Fact g.Prime] in
 /- English proof (translation)
-Simplify using `[_root_.Formalism.MainNotions.ArithmeticCylinders.entN, hi, hj]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma entN_eq_apply_of_lt' {A : Type} [Zero A] {n : ℕ} (M : Matrix (Fin n) (Fin n) A) {i j : ℕ}
     (hi : i < n) (hj : j < n) : _root_.Formalism.MainNotions.ArithmeticCylinders.entN M i j = M ⟨i, hi⟩ ⟨j, hj⟩ := by
@@ -188,7 +188,7 @@ open Polynomial in
 open scoped Classical in
 variable {g : ℕ} [Fact g.Prime] in
 /- English proof (translation)
-Simplify using `[_root_.Formalism.MainNotions.ArithmeticCylinders.entN]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma entN_fin_eq_apply {A : Type} [Zero A] {n : ℕ} (M : Matrix (Fin n) (Fin n) A) (i j : Fin n) :
     _root_.Formalism.MainNotions.ArithmeticCylinders.entN M i j = M i j := by
@@ -201,15 +201,15 @@ variable {a b : ℕ} {σ : Equiv.Perm (Fin (a + b))}
   (hσ : ∀ j : Fin (a + b), (σ j : ℕ) = if (j : ℕ) < a then b + j else j - a) in
 include hσ in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GLm.OpenCell.Good _root_.GlobalTheory.GLq.InPar`. Use `and_congr_right fun _ => ⟨fun h i j hi hj hjn => ?_, fun h i j hj hi => ?_⟩` and prove the remaining obligations. Establish `hI` using `hσ (σ.symm ⟨i, by omega⟩)`. Establish `hJ` using `hσ (σ.symm ⟨j, hjn⟩)`. Simplify using `only [Equiv.apply_symm_apply] at hI hJ`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hIa : a ≤ ((σ.symm ⟨i, by omega⟩ : Fin (a + b)) : ℕ)`. Assume the negation of the conclusion as `hlt`. Rewrite `hI` using `[if_pos (by omega)]`. Use linear arithmetic over natural numbers and integers. Establish `hJa : ((σ.symm ⟨j, hjn⟩ : Fin (a + b)) : ℕ) < a`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hle`. Rewrite `hJ` using `[if_neg hle]`. Use linear arithmetic over natural numbers and integers. Use `h _ _ hJa hIa` as an intermediate fact. Simplify using `only [Matrix.submatrix_apply, Equiv.apply_symm_apply] at this`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[entN_eq_apply_of_lt' _ (by omega) hjn]`. Conclude with `this`. Establish `hI` using `hσ i`. Establish `hJ` using `hσ j`. Rewrite `hI` using `[if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hJ` using `[if_pos hj]`. Use `h (σ i) (σ j) (by omega) (by omega) (σ j).2` as an intermediate fact. Rewrite `this` using `[entN_fin_eq_apply]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma isUniUp_and_inPar_iff_good (M : _root_.GlobalTheory.GLq.Mt g (a + b)) :
     _root_.Formalism.MainNotions.ArithmeticCylinders.IsUniUp M ∧ _root_.GlobalTheory.GLq.InPar a (M.submatrix σ σ) ↔
@@ -243,7 +243,7 @@ open Polynomial in
 open scoped Classical in
 variable {g : ℕ} [Fact g.Prime] in
 /- English proof (translation)
-Unfold `_root_.Formalism.MainNotions.ArithmeticCylinders.IsUniUp at h`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_of_upperTriangular]`. Simplify using `[(h _ _).2 rfl]`. Introduce `i j hij`. Conclude with `(h i j).1 hij`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma isUnit_of_isUniUp' {n : ℕ} {M : _root_.GlobalTheory.GLq.Mt g n} (h : _root_.Formalism.MainNotions.ArithmeticCylinders.IsUniUp M) :
     IsUnit M := by
@@ -260,7 +260,7 @@ variable {a b : ℕ} {σ : Equiv.Perm (Fin (a + b))}
   (hσ : ∀ j : Fin (a + b), (σ j : ℕ) = if (j : ℕ) < a then b + j else j - a) in
 include hσ in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GLq.tl`. Rewrite using `[entN_eq_apply_of_lt' _ (by omega) (by omega), Matrix.submatrix_apply]`. Apply the tactic sequence `congr 1 <;> apply Fin.ext <;> rw [hσ] <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma tl_submatrix_apply (M : _root_.GlobalTheory.GLq.Mt g (a + b)) (i j : Fin a) :
     _root_.GlobalTheory.GLq.tl a (M.submatrix σ σ) i j = M ⟨b + i, by omega⟩ ⟨b + j, by omega⟩ := by
@@ -275,9 +275,9 @@ variable {a b : ℕ} {σ : Equiv.Perm (Fin (a + b))}
   (hσ : ∀ j : Fin (a + b), (σ j : ℕ) = if (j : ℕ) < a then b + j else j - a) in
 include hσ in
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[tl_submatrix_apply hσ]`. Use `⟨fun h => (hM.1 _ _).1 ?_, fun h => (hM.1 _ _).2 ?_⟩` and prove the remaining obligations. Rewrite `h`, the goal using `[Fin.lt_def]`. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[h]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 private lemma isUniUp_tl_of_good {M : _root_.GlobalTheory.GLq.Mt g (a + b)}
     (hM : _root_.GlobalTheory.GLm.OpenCell.Good b M) :
@@ -297,7 +297,7 @@ variable {a b : ℕ} {σ : Equiv.Perm (Fin (a + b))}
   (hσ : ∀ j : Fin (a + b), (σ j : ℕ) = if (j : ℕ) < a then b + j else j - a) in
 include hσ in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GLq.br`. Rewrite using `[entN_eq_apply_of_lt' _ (by omega) (by omega), Matrix.submatrix_apply]`. Apply the tactic sequence `congr 1 <;> apply Fin.ext <;> rw [hσ] <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma br_submatrix_apply (M : _root_.GlobalTheory.GLq.Mt g (a + b)) (i j : Fin b) :
     _root_.GlobalTheory.GLq.br a b (M.submatrix σ σ) i j = M ⟨i, by omega⟩ ⟨j, by omega⟩ := by
@@ -312,9 +312,9 @@ variable {a b : ℕ} {σ : Equiv.Perm (Fin (a + b))}
   (hσ : ∀ j : Fin (a + b), (σ j : ℕ) = if (j : ℕ) < a then b + j else j - a) in
 include hσ in
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[br_submatrix_apply hσ]`. Use `⟨fun h => (hM.1 _ _).1 ?_, fun h => (hM.1 _ _).2 ?_⟩` and prove the remaining obligations. Rewrite `h`, the goal using `[Fin.lt_def]`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma isUniUp_br_of_good {M : _root_.GlobalTheory.GLq.Mt g (a + b)}
     (hM : _root_.GlobalTheory.GLm.OpenCell.Good b M) :
@@ -333,13 +333,11 @@ variable {a b : ℕ} {σ : Equiv.Perm (Fin (a + b))}
   (hσ : ∀ j : Fin (a + b), (σ j : ℕ) = if (j : ℕ) < a then b + j else j - a) in
 include hσ in
 /- English proof (translation)
-Use `⟨fun r s => ⟨fun h => ?_, fun h => ?_⟩, fun i j hi hj hjn => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[Fin.lt_def]`. Simplify using `only [_root_.GlobalTheory.GLm.OpenCell.bd]`. Use `split_ifs with h1 h2 h2`. Rewrite using `[entN_eq_apply_of_lt' _ h1 h2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `(hv _ _).1 (by rw [Fin.lt_def]; exact h)`. Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite using `[entN_eq_apply_of_lt' _ (by omega) (by omega)]`. Conclude with `(hu _ _).1 (by rw [Fin.lt_def]; simp only; omega)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Simplify using `only [_root_.GlobalTheory.GLm.OpenCell.bd]`. Use `split_ifs with h1`. Rewrite using `[entN_eq_apply_of_lt' _ h1 h1]`. Conclude with `(hv _ _).2 rfl`.
-
-Rewrite using `[entN_eq_apply_of_lt' _ (by omega) (by omega)]`. Conclude with `(hu _ _).2 rfl`. Rewrite using `[entN_eq_apply_of_lt' _ (by omega) hjn]`. Simplify using `only [_root_.GlobalTheory.GLm.OpenCell.bd]`. Rewrite using `[if_pos hi, if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma good_bd_of_isUniUp {u : _root_.GlobalTheory.GLq.Mt g a}
     {v : _root_.GlobalTheory.GLq.Mt g b} (hu : _root_.Formalism.MainNotions.ArithmeticCylinders.IsUniUp u) (hv : _root_.Formalism.MainNotions.ArithmeticCylinders.IsUniUp v) :
@@ -372,9 +370,9 @@ variable {a b : ℕ} {σ : Equiv.Perm (Fin (a + b))}
   (hσ : ∀ j : Fin (a + b), (σ j : ℕ) = if (j : ℕ) < a then b + j else j - a) in
 include hσ in
 /- English proof (translation)
-Use extensionality with `r s`. Simplify using `only [_root_.GlobalTheory.GLm.OpenCell.bd]`. Use `split_ifs with h1 h2 h2`. Rewrite using `[entN_eq_apply_of_lt' _ h1 h2, br_submatrix_apply hσ]`. Use `hM.2 r s h1 (by omega) s.2` as an intermediate fact.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[entN_fin_eq_apply]`. Conclude with `this.symm`. Conclude with `((hM.1 r s).1 (by rw [Fin.lt_def]; omega)).symm`. Rewrite using `[entN_eq_apply_of_lt' _ (by omega) (by omega), tl_submatrix_apply hσ]`. Apply the tactic sequence `congr 1 <;> apply Fin.ext <;> simp <;> omega`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private lemma bd_tl_br_eq_of_good {M : _root_.GlobalTheory.GLq.Mt g (a + b)}
     (hM : _root_.GlobalTheory.GLm.OpenCell.Good b M) :
@@ -398,7 +396,7 @@ variable {a b : ℕ} {σ : Equiv.Perm (Fin (a + b))}
   (hσ : ∀ j : Fin (a + b), (σ j : ℕ) = if (j : ℕ) < a then b + j else j - a) in
 include hσ in
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[tl_submatrix_apply hσ]`. Simplify using `only [_root_.GlobalTheory.GLm.OpenCell.bd]`. Rewrite using `[if_neg (by omega), if_neg (by omega), entN_eq_apply_of_lt' _ (by omega) (by omega)]`. Apply the tactic sequence `congr 1 <;> apply Fin.ext <;> simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma tl_bd_submatrix (u : _root_.GlobalTheory.GLq.Mt g a) (v : _root_.GlobalTheory.GLq.Mt g b) :
     _root_.GlobalTheory.GLq.tl a ((_root_.GlobalTheory.GLm.OpenCell.bd (a + b) u v).submatrix σ σ) = u := by
@@ -415,7 +413,7 @@ variable {a b : ℕ} {σ : Equiv.Perm (Fin (a + b))}
   (hσ : ∀ j : Fin (a + b), (σ j : ℕ) = if (j : ℕ) < a then b + j else j - a) in
 include hσ in
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[br_submatrix_apply hσ]`. Simplify using `only [_root_.GlobalTheory.GLm.OpenCell.bd]`. Rewrite using `[if_pos i.2, if_pos j.2, entN_fin_eq_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma br_bd_submatrix (u : _root_.GlobalTheory.GLq.Mt g a) (v : _root_.GlobalTheory.GLq.Mt g b) :
     _root_.GlobalTheory.GLq.br a b ((_root_.GlobalTheory.GLm.OpenCell.bd (a + b) u v).submatrix σ σ) = v := by
@@ -428,7 +426,7 @@ open Polynomial in
 open scoped Classical in
 variable {g : ℕ} [Fact g.Prime] in
 /- English proof (translation)
-Unfold `_root_.Formalism.MainNotions.ArithmeticCylinders.entN`. Rewrite using `[dif_neg]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 private lemma entN_eq_zero_of_le {A : Type} [Zero A] {n : ℕ} (M : Matrix (Fin n) (Fin n) A) {i j : ℕ}
     (h : n ≤ i ∨ n ≤ j) : _root_.Formalism.MainNotions.ArithmeticCylinders.entN M i j = 0 := by
@@ -440,9 +438,9 @@ open Polynomial in
 open scoped Classical in
 variable {g : ℕ} [Fact g.Prime] in
 /- English proof (translation)
-Rewrite using `[entN_eq_apply_of_lt' _ (by omega) hj]`. Simplify using `only [_root_.GlobalTheory.GLm.OpenCell.bd]`. Apply the tactic sequence `split_ifs <;> first`. Consider the case `(exfalso; omega)`. Consider the case `(simp; done)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [entN_eq_zero_of_le v (Or.inr (by omega))]; simp; done)`. Consider the case `(rw [entN_eq_zero_of_le v (Or.inl (by omega)), zero_add]; congr 1; omega)`.
+Treat this case separately. Treat this case separately.
 -/
 private lemma entN_bd_superdiagonal {a b : ℕ} (u : _root_.GlobalTheory.GLq.Mt g a)
     (v : _root_.GlobalTheory.GLq.Mt g b) {j : ℕ} (hj : j + 1 < a + b) :
@@ -460,13 +458,13 @@ open Polynomial in
 open scoped Classical in
 variable {g : ℕ} [Fact g.Prime] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GLm.supFrom`. Rewrite using `[Finset.sum_congr rfl fun j hj => entN_bd_superdiagonal u v (by simp only [Finset.mem_Ico] at hj; omega), Finset.sum_add_distrib, add_comm]`. Use `congr 1`. Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Rewrite using `[Finset.sum_eq_zero]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `j hj`. Simplify using `only [Finset.mem_Ico] at hj`. Rewrite using `[if_neg (by omega)]`. Rewrite using `[← Finset.range_eq_Ico, ← Finset.range_eq_Ico, show a + b - 1 = b + (a - 1) by omega, Finset.sum_range_add, Finset.sum_eq_zero (fun j hj => by`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mem_range] at hj; rw [if_neg (by omega)]), zero_add]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[if_pos (by omega), Nat.add_sub_cancel_left]`. Use `(Finset.sum_subset (fun j hj => by simp only [Finset.mem_Ico] at hj ⊢; omega) fun j _ hj => ?_).symm` and prove the remaining obligations. Simplify using `only [Finset.mem_Ico, not_and, not_lt] at hj`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `entN_eq_zero_of_le v (Or.inr (by omega))`.
+A detailed English derivation is pending.
 -/
 private lemma supFrom_zero_bd {a b : ℕ} (u : _root_.GlobalTheory.GLq.Mt g a)
     (v : _root_.GlobalTheory.GLq.Mt g b) :
@@ -497,27 +495,25 @@ open scoped Classical in
 variable {g : ℕ} [Fact g.Prime] in
 
 /- English proof (translation)
-Introduce `g _ ψ a b n σ Φ hn hσ`. Substitute `hn` using the available equality. Simplify using `only [coe_pm_inv_mul_mul_pm, _root_.GlobalTheory.GLm.OpenCell.wh_eq]`. Rewrite using `[← Finset.sum_filter]`. Use `set S := Finset.univ.filter fun x : _root_.GlobalTheory.GLq.Gn g (a + b) => _root_.Formalism.MainNotions.ArithmeticCylinders.IsUniUp (x : _root_.GlobalTheory.GLq.Mt g (a + b)) ∧ _root_.GlobalTheory.GLq.InPar a ((x : _root_.GlobalTheory.GLq.Mt g (a + b)).submatrix σ σ) with hS`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set UA := Finset.univ.filter fun u : _root_.GlobalTheory.GLq.Gn g a => _root_.Formalism.MainNotions.ArithmeticCylinders.IsUniUp (u : _root_.GlobalTheory.GLq.Mt g a)`. Use `set UB := Finset.univ.filter fun v : _root_.GlobalTheory.GLq.Gn g b => _root_.Formalism.MainNotions.ArithmeticCylinders.IsUniUp (v : _root_.GlobalTheory.GLq.Mt g b)`. Establish `hmem : ∀ x, x ∈ S ↔ _root_.GlobalTheory.GLm.OpenCell.Good b (x : _root_.GlobalTheory.GLq.Mt g (a + b))`. Introduce `x`. Rewrite using `[hS, Finset.mem_filter, isUniUp_and_inPar_iff_good hσ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `hmemT : ∀ p : _root_.GlobalTheory.GLq.Gn g a × _root_.GlobalTheory.GLq.Gn g b, p ∈ UA ×ˢ UB ↔ _root_.Formalism.MainNotions.ArithmeticCylinders.IsUniUp (p.1 : _root_.GlobalTheory.GLq.Mt g a) ∧ _root_.Formalism.MainNotions.ArithmeticCylinders.IsUniUp (p.2 : _root_.GlobalTheory.GLq. …`. Introduce `p`. Simplify using `[UA, UB]`. Set `toPair : _root_.GlobalTheory.GLq.Gn g (a + b) → _root_.GlobalTheory.GLq.Gn g a × _root_.GlobalTheory.GLq.Gn g b` to `fun x => (_root_.GlobalTheory.GLq.toG (_root_.GlobalTheory.GLq.tl a ((x : _root_.GlobalTheory.GLq.Mt g (a + b)).submatrix σ σ)), _root_.GlobalTheory.GLq.toG (_root_.GlobalTheory.GLq.br a b ((x : _root_.GlobalTheory.GLq.Mt g (a + b)).submatrix σ σ)))`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ofPair : _root_.GlobalTheory.GLq.Gn g a × _root_.GlobalTheory.GLq.Gn g b → _root_.GlobalTheory.GLq.Gn g (a + b)` to `fun p => _root_.GlobalTheory.GLq.toG (_root_.GlobalTheory.GLm.OpenCell.bd (a + b) (p.1 : _root_.GlobalTheory.GLq.Mt g a) (p.2 : _root_.GlobalTheory.GLq.Mt g b))`. Establish `hfst : ∀ x ∈ S, ((toPair x).1 : _root_.GlobalTheory.GLq.Mt g a) = _root_.GlobalTheory.GLq.tl a ((x : _root_.GlobalTheory.GLq.Mt g (a + b)).submatrix σ σ)` using `fun x hx => _root_.GlobalTheory.GLm.OpenCell.coe_toG (isUnit_of_isUniUp' (isUniUp_tl_of_good hσ ((hmem x).1 hx)))`. Establish `hsnd : ∀ x ∈ S, ((toPair x).2 : _root_.GlobalTheory.GLq.Mt g b) = _root_.GlobalTheory.GLq.br a b ((x : _root_.GlobalTheory.GLq.Mt g (a + b)).submatrix σ σ)` using `fun x hx => _root_.GlobalTheory.GLm.OpenCell.coe_toG (isUnit_of_isUniUp' (isUniUp_br_of_good hσ ((hmem x).1 hx)))`. Establish `hof : ∀ p ∈ UA ×ˢ UB, ((ofPair p : _root_.GlobalTheory.GLq.Gn g (a + b)) : _root_.GlobalTheory.GLq.Mt g (a + b)) = _root_.GlobalTheory.GLm.OpenCell.bd (a + b) (p.1 : _root_.GlobalTheory.GLq.Mt g a) (p.2 : _root_.GlobalTheory.GLq.Mt g b)`. Introduce `p hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hp` using `[hmemT]`. Conclude with `_root_.GlobalTheory.GLm.OpenCell.coe_toG (isUnit_of_isUniUp' (good_bd_of_isUniUp hσ hp.1 hp.2).1)`. Establish `hi : ∀ x ∈ S, toPair x ∈ UA ×ˢ UB`. Introduce `x hx`. Rewrite using `[hmemT, hfst x hx, hsnd x hx]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨isUniUp_tl_of_good hσ ((hmem x).1 hx), isUniUp_br_of_good hσ ((hmem x).1 hx)⟩`. Establish `hj : ∀ p ∈ UA ×ˢ UB, ofPair p ∈ S`. Introduce `p hp`. Rewrite using `[hmem, hof p hp]`. Rewrite `hp` using `[hmemT]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `good_bd_of_isUniUp hσ hp.1 hp.2`. Establish `hleft : ∀ x ∈ S, ofPair (toPair x) = x`. Introduce `x hx`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hof _ (hi x hx), hfst x hx, hsnd x hx, bd_tl_br_eq_of_good hσ ((hmem x).1 hx)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hright : ∀ p ∈ UA ×ˢ UB, toPair (ofPair p) = p`. Introduce `p hp`. Establish `hS'` using `hj p hp`. Use `Prod.ext (Units.ext ?_) (Units.ext ?_)` and prove the remaining obligations. Rewrite using `[hfst _ hS', hof p hp, tl_bd_submatrix hσ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsnd _ hS', hof p hp, br_bd_submatrix hσ]`. Establish `hcard : S.card = UA.card * UB.card`. Rewrite using `[← Finset.card_product]`. Conclude with `Finset.card_nbij' toPair ofPair hi hj hleft hright`. Establish `hsum : ∑ x ∈ S, (ψ (_root_.GlobalTheory.GLm.supFrom 0 (x : _root_.GlobalTheory.GLq.Mt g (a + b))))⁻¹ * Φ (toPair x).1 (toPair x).2 = ∑ p ∈ UA ×ˢ UB, (ψ (_root_.GlobalTheory.GLm.supFrom 0 (p.1 : _root_.GlobalTheory.GLq.Mt g a)))⁻¹ * ((ψ (_root_.GlobalTheory.GLm.supFrom 0 (p.2 : _r …`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_nbij' toPair ofPair hi hj hleft hright fun x hx => ?_` and prove the remaining obligations. Rewrite using `[hfst x hx, hsnd x hx]`. Use `conv_lhs => rw [← bd_tl_br_eq_of_good hσ ((hmem x).1 hx), supFrom_zero_bd, AddChar.map_add_eq_mul, mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum, hcard, Finset.sum_product]`.
-
-Use `push_cast`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun u _ => Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GLm.OpenCell.openCell : ∀ (g : ℕ) [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ) (a b n : ℕ) (σ : Equiv.Perm (Fin n)) (Φ : _root_.GlobalTheory.GLq.Gn g a → _root_.GlobalTheory.GLq.Gn g b → ℂ), n = a + b → (∀ j : Fin n, (σ j : ℕ) = if (j : ℕ) < a then b + j else j - a) → ((Finset.univ.filter fun x : _root_.GlobalTheory.GLq.Gn g n => _root_.Formalism.MainNotions.ArithmeticCylinders.IsUniUp (x : _root_.GlobalTheory.GLq.Mt g n) ∧ _root_.GlobalTheory.GLq.InPar a (((_root_.GlobalTheory.GLm.pm g σ)⁻¹ * x * _root_.GlobalTheory.GLm.pm g σ : _root_.GlobalTheory.GLq.Gn g n) : _root_.GlobalTheory.GLq.Mt g n)).card : ℂ)⁻¹ * (∑ x : _root_.GlobalTheory.GLq.Gn g n, if _root_.Formalism.MainNotions.ArithmeticCylinders.IsUniUp (x : _root_.GlobalTheory.GLq.Mt g n) ∧ _root_.GlobalTheory.GLq.InPar a (((_root_.GlobalTheory.GLm.pm g σ)⁻¹ * x * _root_.GlobalTheory.GLm.pm g σ : _root_.GlobalTheory.GLq.Gn g n) : _root_.GlobalTheory.GLq.Mt g n) then (ψ (_root_.GlobalTheory.GLm.supFrom 0 (x : _root_.GlobalTheory.GLq.Mt g n)))⁻¹ * Φ (_root_.GlobalTheory.GLq.toG (_root_.GlobalTheory.GLq.tl a (((_root_.GlobalTheory.GLm.pm g σ)⁻¹ * x * _root_.GlobalTheory.GLm.pm g σ : _root_.GlobalTheory.GLq.Gn g n) : _root_.GlobalTheory.GLq.Mt g n))) (_root_.GlobalTheory.GLq.toG (_root_.GlobalTheory.GLq.br a b (((_root_.GlobalTheory.GLm.pm g σ)⁻¹ * x * _root_.GlobalTheory.GLm.pm g σ : _root_.GlobalTheory.GLq.Gn g n) : _root_.GlobalTheory.GLq.Mt g n))) else 0) = _root_.GlobalTheory.GLq.wh ψ (fun x => _root_.GlobalTheory.GLq.wh ψ (Φ x)) := by
   intro g _ ψ a b n σ Φ hn hσ

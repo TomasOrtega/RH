@@ -13,43 +13,43 @@ namespace GlobalTheory.HilbertThetaSeries.CmpP
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Introduce `w hw` and use `by rw [map_mul]; exact mul_le_one' (hx w hw) (hy w hw)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pint_mul {p : ℕ} {x y : F} (hx : PInt p x) (hy : PInt p y) : PInt p (x * y) := fun w hw => by
   rw [map_mul]; exact mul_le_one' (hx w hw) (hy w hw)
 
 /- English proof (translation)
-Introduce `w hw` and use `Valuation.map_add_le _ (hx w hw) (hy w hw)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pint_add {p : ℕ} {x y : F} (hx : PInt p x) (hy : PInt p y) : PInt p (x + y) := fun w hw =>
   Valuation.map_add_le _ (hx w hw) (hy w hw)
 
 /- English proof (translation)
-Introduce `w hw` and use `by rw [map_mul, hx w hw, hy w hw, mul_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem punit_mul {p : ℕ} {x y : F} (hx : PUnit p x) (hy : PUnit p y) : PUnit p (x * y) := fun w hw => by
   rw [map_mul, hx w hw, hy w hw, mul_one]
 
 /- English proof (translation)
-Rewrite using `[reAt, ← InfinitePlace.embedding_of_isReal_apply, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem reAt_eq [IsTotallyReal F] (v : InfinitePlace F) (x : F) :
     reAt v x = InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) x := by
   rw [reAt, ← InfinitePlace.embedding_of_isReal_apply, Complex.ofReal_re]
 
 /- English proof (translation)
-Introduce `v` and use `by have := mul_pos (hx v) (hy v); rw [reAt_eq] at this ⊢; rw [reAt_eq] at this; simpa [map_mul] using this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tp_mul [IsTotallyReal F] {x y : F} (hx : TP x) (hy : TP y) : TP (x * y) := fun v => by
   have := mul_pos (hx v) (hy v); rw [reAt_eq] at this ⊢; rw [reAt_eq] at this; simpa [map_mul] using this
 
 /- English proof (translation)
-Introduce `v` and use `by rw [reAt_eq, map_one]; exact one_pos`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tp_one [IsTotallyReal F] : TP (1 : F) := fun v => by rw [reAt_eq, map_one]; exact one_pos
 
 /- English proof (translation)
-Rewrite using `[← Rat.cast_abs, ← InfinitePlace.prod_eq_abs_norm]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `hv : v.IsReal` using `IsTotallyReal.isReal v`. Establish `hm : v.mult = 1` using `by simp [InfinitePlace.mult, hv]`. Rewrite using `[hm, pow_one, reAt, ← InfinitePlace.norm_embedding_eq, ← InfinitePlace.embedding_of_isReal_apply hv, Complex.ofReal_re, Complex.norm_real, Real.norm_eq_abs]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem abs_norm_eq [IsTotallyReal F] (x : F) : |((Algebra.norm ℚ x : ℚ) : ℝ)| = ∏ v, |reAt v x| := by
   rw [← Rat.cast_abs, ← InfinitePlace.prod_eq_abs_norm]
@@ -66,17 +66,15 @@ namespace GlobalTheory.HilbertThetaSeries.CmpP
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-Take `⟨a, b, c, d, de, dt⟩` from `h`. Take `⟨a', b', c', d', de', dt'⟩` from `h'`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: (γ * γ').val 0 0 = γ.val 0 0 * γ'.val 0 0 + (δ * γ.val 0 1) * (γ'.val 1 0 / δ)`. Simplify using `only [Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `pint_add (pint_mul a a') (pint_mul b c')`. Establish `: δ * (γ * γ').val 0 1 = γ.val 0 0 * (δ * γ'.val 0 1) + (δ * γ.val 0 1) * γ'.val 1 1`. Simplify using `only [Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `pint_add (pint_mul a b') (pint_mul b d')`. Establish `: (γ * γ').val 1 0 / δ = (γ.val 1 0 / δ) * γ'.val 0 0 + γ.val 1 1 * (γ'.val 1 0 / δ)`. Simplify using `only [Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `pint_add (pint_mul c a') (pint_mul d c')`. Establish `: (γ * γ').val 1 1 = (γ.val 1 0 / δ) * (δ * γ'.val 0 1) + γ.val 1 1 * γ'.val 1 1`. Simplify using `only [Units.val_mul, Matrix.mul_apply, Fin.sum_univ_two]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `pint_add (pint_mul c b') (pint_mul d d')`. Rewrite using `[Units.val_mul, Matrix.det_mul]`. Conclude with `punit_mul de de'`.
-
-Rewrite using `[Units.val_mul, Matrix.det_mul]`. Conclude with `tp_mul dt dt'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inG_mul {p : ℕ} {δ : F} (hδ0 : δ ≠ 0) {γ γ' : GL (Fin 2) F} (h : InG p δ γ) (h' : InG p δ γ') :
     InG p δ (γ * γ') := by
@@ -99,9 +97,9 @@ theorem inG_mul {p : ℕ} {δ : F} (hδ0 : δ ≠ 0) {γ γ' : GL (Fin 2) F} (h 
   · rw [Units.val_mul, Matrix.det_mul]; exact tp_mul dt dt'
 
 /- English proof (translation)
-Establish `h1 : PInt p (1 : F)` using `fun w _ => by rw [map_one]`. Establish `h0 : PInt p (0 : F)` using `fun w _ => by rw [map_zero]; exact zero_le'`. Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩ <;> simp [h1, h0]`. Introduce `w _`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `tp_one`.
+A detailed English derivation is pending.
 -/
 theorem inG_one (p : ℕ) (δ : F) : InG p δ 1 := by
   have h1 : PInt p (1 : F) := fun w _ => by rw [map_one]
@@ -118,20 +116,20 @@ section Alg
 variable {M : Type} [CommGroupWithZero M] {a z t d c s : M}
 
 /- English proof (translation)
-The claim follows from `mul_right_cancel₀ ht (by rw [mul_assoc, h, ← mul_assoc, ← mul_assoc, ha, one_mul, mul_comm])`.
+A detailed English derivation is pending.
 -/
 theorem alg1 (ha : a * z = 1) (ht : t ≠ 0) (h : c * t = z * t * s) : a * c = s :=
   mul_right_cancel₀ ht (by rw [mul_assoc, h, ← mul_assoc, ← mul_assoc, ha, one_mul, mul_comm])
 
 /- English proof (translation)
-Rewrite using `[h]; calc d * (a * (z * t * s)) = (a * z) * (t * d) * s := by ac_rfl _ = s := by rw [ha, hd, one_mul, one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem alg2 (ha : a * z = 1) (hd : t * d = 1) (h : c = z * t * s) : d * (a * c) = s := by
   rw [h]; calc d * (a * (z * t * s)) = (a * z) * (t * d) * s := by ac_rfl
     _ = s := by rw [ha, hd, one_mul, one_mul]
 
 /- English proof (translation)
-Establish `hd0 : d ≠ 0` using `right_ne_zero_of_mul_eq_one hd`. Establish `: d⁻¹ = t` using `(eq_inv_of_mul_eq_one_left hd).symm`. Rewrite using `[div_eq_mul_inv, this, mul_assoc, h, ← mul_assoc, ha, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem alg3 (ha : a * z = 1) (hd : t * d = 1) (h : c * t = z * s) : a * c / d = s := by
   have hd0 : d ≠ 0 := right_ne_zero_of_mul_eq_one hd
@@ -139,12 +137,12 @@ theorem alg3 (ha : a * z = 1) (hd : t * d = 1) (h : c * t = z * s) : a * c / d =
   rw [div_eq_mul_inv, this, mul_assoc, h, ← mul_assoc, ha, one_mul]
 
 /- English proof (translation)
-Rewrite using `[h, ← mul_assoc, ha, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem alg4 (ha : a * z = 1) (h : c = z * s) : a * c = s := by rw [h, ← mul_assoc, ha, one_mul]
 
 /- English proof (translation)
-The claim follows from `mul_right_cancel₀ ht (by calc a ^ 2 * c * t = a ^ 2 * (c * t) := by rw [mul_assoc] _ = (a * z) ^ 2 * s * t := by rw [h, mul_pow]; ac_rfl _ = s * t := by rw [ha, one_pow, one_mul])`.
+A detailed English derivation is pending.
 -/
 theorem alg5 (ha : a * z = 1) (ht : t ≠ 0) (h : c * t = z ^ 2 * t * s) : a ^ 2 * c = s :=
   mul_right_cancel₀ ht (by
@@ -156,7 +154,7 @@ end Alg
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-The claim follows from `|((Algebra.norm ℚ (Matrix.GeneralLinearGroup.scalar (Fin 2) η * γ).val.det : ℚ) : ℝ)| * absF y' = (r : ℝ) ^ 2 * absF y := by obtain ⟨ξ, hξT, hξ⟩ := (GlobalTheory.HilbertThetaSeries.del_exists_and_move F p hp.out).2 δ hδ (z * y) have hK := ((GlobalTheory.HilbertThetaSeries.kMem F) …`.
+A detailed English derivation is pending.
 -/
 theorem rep_cmp {p : ℕ} [hp : Fact p.Prime] {δ : F} (hδ : IsDel p δ) (y y' z : (Af F)ˣ) (γ : GL (Fin 2) F)
     (u : GL (Fin 2) (Af F)) (hy : AtP p δ y) (hy' : AtP p δ y') (hT : TP γ.val.det) (hu : u ∈ KLev F 2 1)
@@ -250,7 +248,7 @@ theorem rep_cmp {p : ℕ} [hp : Fact p.Prime] {δ : F} (hδ : IsDel p δ) (y y' 
 end GlobalTheory.HilbertThetaSeries.CmpP
 
 /- English proof (translation)
-Introduce `F _ _ _ p hp δ hδ` and use `⟨fun _ _ h h' => GlobalTheory.HilbertThetaSeries.CmpP.inG_mul (GlobalTheory.HilbertThetaSeries.denominators_prime_to F p hp.out δ hδ).1 h h', GlobalTheory.HilbertThetaSeries.CmpP.inG_one p δ, fun y y' z γ u hy hy' hT hu heq => GlobalTheory.HilbertThetaSeries.CmpP.rep_cmp hδ y y' …`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.HilbertThetaSeries.CmpP.compare_at_p : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (p : ℕ) [Fact p.Prime] (δ : F), IsDel p δ → (∀ γ γ' : GL (Fin 2) F, InG p δ γ → InG p δ γ' → InG p δ (γ * γ')) ∧ InG p δ 1 ∧ ∀ (y y' z : (Af F)ˣ) (γ : GL (Fin 2) F) (u : GL (Fin 2) (Af F)), AtP p δ y → AtP p δ y' → TP γ.val.det → u ∈ KLev F 2 1 → toFin γ * aff y 0 = Matrix.GeneralLinearGroup.scalar (Fin 2) z * aff y' 0 * u → ∃ (η : Fˣ) (r : ℚ), InG p δ (Matrix.GeneralLinearGroup.scalar (Fin 2) η * γ) ∧ 0 < r ∧ ‖(r : ℚ_[p])‖ = 1 ∧ |((Algebra.norm ℚ (Matrix.GeneralLinearGroup.scalar (Fin 2) η * γ).val.det : ℚ) : ℝ)| * absF y' = (r : ℝ) ^ 2 * absF y :=
   fun F _ _ _ p hp δ hδ =>
@@ -261,7 +259,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.CmpP.compare_at_p | exact GlobalTheory.HilbertThetaSeries.CmpP.compare_at_p | (intros; apply GlobalTheory.HilbertThetaSeries.CmpP.compare_at_p <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_inG_scalar_mul_and_abs_norm_det_mul_absF_eq : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (p : ℕ) [Fact p.Prime] (δ : F), IsDel p δ → (∀ γ γ' : GL (Fin 2) F, InG p δ γ → InG p δ γ' → InG p δ (γ * γ')) ∧ InG p δ 1 ∧ ∀ (y y' z : (Af F)ˣ) (γ : GL (Fin 2) F) (u : GL (Fin 2) (Af F)), AtP p δ y → AtP p δ y' → TP γ.val.det → u ∈ KLev F 2 1 → toFin γ * aff y 0 = Matrix.GeneralLinearGroup.scalar (Fin 2) z * aff y' 0 * u → ∃ (η : Fˣ) (r : ℚ), InG p δ (Matrix.GeneralLinearGroup.scalar (Fin 2) η * γ) ∧ 0 < r ∧ ‖(r : ℚ_[p])‖ = 1 ∧ |((Algebra.norm ℚ (Matrix.GeneralLinearGroup.scalar (Fin 2) η * γ).val.det : ℚ) : ℝ)| * absF y' = (r : ℝ) ^ 2 * absF y := by
   first | exact @GlobalTheory.HilbertThetaSeries.CmpP.compare_at_p | exact GlobalTheory.HilbertThetaSeries.CmpP.compare_at_p | (intros; apply GlobalTheory.HilbertThetaSeries.CmpP.compare_at_p <;> assumption)

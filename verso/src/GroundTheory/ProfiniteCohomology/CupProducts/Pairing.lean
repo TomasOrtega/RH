@@ -23,7 +23,7 @@ def pairingHom (β : A →ₗ[k] B →ₗ[k] C)
 
 @[simp]
 /- English proof (translation)
-The claim follows from `TensorProduct.lift.tmul a b`.
+A detailed English derivation is pending.
 -/
 theorem pairingHom_tmul (β : A →ₗ[k] B →ₗ[k] C)
     (hβ : ∀ (g : G) (a : A) (b : B), β (A.ρ g a) (B.ρ g b) = C.ρ g (β a b)) (a : A) (b : B) :
@@ -50,7 +50,7 @@ theorem cupPairing_apply (μ : A ⊗ B ⟶ C) (h : p + q = n) (x : cohomology A 
   rfl
 
 /- English proof (translation)
-Rewrite using `[cupPairing_apply, cup_cohomologyπ, cohomologyMap_cohomologyπ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cupPairing_cohomologyπ (μ : A ⊗ B ⟶ C) (h : p + q = n) (x : cocycles A p)
     (y : cocycles B q) :
@@ -59,7 +59,7 @@ theorem cupPairing_cohomologyπ (μ : A ⊗ B ⟶ C) (h : p + q = n) (x : cocycl
   rw [cupPairing_apply, cup_cohomologyπ, cohomologyMap_cohomologyπ]
 
 /- English proof (translation)
-Rewrite using `[cochainOf_cocycleι_cyclesMap, cocycleι_cupCocycles, cochainOf_cupLocallyConstant]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cochainOf_cocycleι_cyclesMap_cupCocycles (μ : A ⊗ B ⟶ C) (h : p + q = n)
     (x : cocycles A p) (y : cocycles B q) (s : Fin n → G) :
@@ -72,7 +72,7 @@ theorem cochainOf_cocycleι_cyclesMap_cupCocycles (μ : A ⊗ B ⟶ C) (h : p + 
   rfl
 
 /- English proof (translation)
-Rewrite using `[cochainOf_cocycleι_cyclesMap_cupCocycles, pairingHom_tmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cochainOf_cocycleι_cyclesMap_pairingHom (β : A →ₗ[k] B →ₗ[k] C)
     (hβ : ∀ (g : G) (a : A) (b : B), β (A.ρ g a) (B.ρ g b) = C.ρ g (β a b)) (h : p + q = n)
@@ -87,7 +87,7 @@ theorem cochainOf_cocycleι_cyclesMap_pairingHom (β : A →ₗ[k] B →ₗ[k] C
 variable {A' B' C' : Rep.{u} k G} [IsDiscreteRep A'] [IsDiscreteRep B'] [IsDiscreteRep C']
 
 /- English proof (translation)
-Rewrite using `[cupPairing_apply, cupPairing_apply, ← cohomologyMap_tensorHom_cup, cohomologyMap_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cupPairing_cohomologyMap (μ : A ⊗ B ⟶ C) (f : A' ⟶ A) (g : B' ⟶ B) (h : p + q = n)
     (x : cohomology A' p) (y : cohomology B' q) :
@@ -97,7 +97,7 @@ theorem cupPairing_cohomologyMap (μ : A ⊗ B ⟶ C) (f : A' ⟶ A) (g : B' ⟶
   rfl
 
 /- English proof (translation)
-Rewrite using `[cupPairing_apply, cupPairing_apply, cohomologyMap_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cohomologyMap_cupPairing (μ : A ⊗ B ⟶ C) (ν : C ⟶ C') (h : p + q = n)
     (x : cohomology A p) (y : cohomology B q) :
@@ -106,7 +106,7 @@ theorem cohomologyMap_cupPairing (μ : A ⊗ B ⟶ C) (ν : C ⟶ C') (h : p + q
   rfl
 
 /- English proof (translation)
-Rewrite using `[cupPairing_apply, cupPairing_apply, ← cohomologyMap_resTensorIso_cohomologyRes_cup, ← ConcreteCategory.comp_apply, ← ConcreteCategory.comp_apply, cohomologyMap_comp_cohomologyRes, ← cohomologyMap_comp, Iso.hom_inv_id_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cohomologyRes_cupPairing (μ : A ⊗ B ⟶ C) (S : Subgroup G) (h : p + q = n)
     (x : cohomology A p) (y : cohomology B q) :

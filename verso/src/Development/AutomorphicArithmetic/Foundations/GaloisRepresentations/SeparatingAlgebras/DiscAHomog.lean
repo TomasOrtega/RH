@@ -14,9 +14,9 @@ private noncomputable def discB (a : ℕ) : MvPolynomial (Fin a) ℤ :=
     (MvPolynomial.X q.1 * MvPolynomial.X q.2.2 - MvPolynomial.X q.2.1 ^ 2)
 
 /- English proof (translation)
-Introduce `σ`. Simplify using `only [discA, map_prod, map_sub, map_pow, MvPolynomial.rename_X]`. Use `Finset.prod_equiv (σ.prodCongr σ) ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨i, j⟩`. Simplify using `[Finset.mem_offDiag]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce `p _`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 private theorem discA_symm (a n : ℕ) : (discA a n).IsSymmetric := by
   intro σ
@@ -28,9 +28,9 @@ private theorem discA_symm (a n : ℕ) : (discA a n).IsSymmetric := by
     rfl
 
 /- English proof (translation)
-Introduce `σ`. Simplify using `only [discB, map_prod, map_sub, map_mul, map_pow, MvPolynomial.rename_X]`. Use `Finset.prod_equiv (σ.prodCongr (σ.prodCongr σ)) ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨i, j, k⟩`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce `p _`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 private theorem discB_symm (a : ℕ) : (discB a).IsSymmetric := by
   intro σ
@@ -42,7 +42,7 @@ private theorem discB_symm (a : ℕ) : (discB a).IsSymmetric := by
     rfl
 
 /- English proof (translation)
-Use `⟨_, MvPolynomial.IsHomogeneous.prod _ _ (fun _ => ∑ c ∈ Finset.Icc 1 n, c) fun p _ => MvPolynomial.IsHomogeneous.prod _ _ (fun c => c) fun c _ => ?_⟩` and prove the remaining obligations. Conclude with `(MvPolynomial.isHomogeneous_X_pow _ _).sub (MvPolynomial.isHomogeneous_X_pow _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem discA_homog (a n : ℕ) : ∃ d, (discA a n).IsHomogeneous d := by
   refine ⟨_, MvPolynomial.IsHomogeneous.prod _ _ (fun _ => ∑ c ∈ Finset.Icc 1 n, c) fun p _ =>
@@ -50,7 +50,7 @@ private theorem discA_homog (a n : ℕ) : ∃ d, (discA a n).IsHomogeneous d := 
   exact (MvPolynomial.isHomogeneous_X_pow _ _).sub (MvPolynomial.isHomogeneous_X_pow _ _)
 
 /- English proof (translation)
-Use `⟨_, MvPolynomial.IsHomogeneous.prod _ _ (fun _ => 2) fun q _ => ?_⟩` and prove the remaining obligations. Conclude with `((MvPolynomial.isHomogeneous_X _ _).mul (MvPolynomial.isHomogeneous_X _ _)).sub (MvPolynomial.isHomogeneous_X_pow _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem discB_homog (a : ℕ) : ∃ d, (discB a).IsHomogeneous d := by
   refine ⟨_, MvPolynomial.IsHomogeneous.prod _ _ (fun _ => 2) fun q _ => ?_⟩
@@ -58,9 +58,9 @@ private theorem discB_homog (a : ℕ) : ∃ d, (discB a).IsHomogeneous d := by
     (MvPolynomial.isHomogeneous_X_pow _ _)
 
 /- English proof (translation)
-Use `Finset.prod_ne_zero_iff.2 fun p hp => Finset.prod_ne_zero_iff.2 fun c hc h => ?_` and prove the remaining obligations. Establish `hne : p.1 ≠ p.2` using `(Finset.mem_offDiag.1 hp).2.2`. Establish `hc0 : c ≠ 0`. Use `(Finset.mem_Icc.1 hc).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `congrArg (MvPolynomial.eval (Pi.single p.1 (1 : ℤ))) h` as an intermediate fact. Simplify using `[Pi.single_eq_of_ne hne.symm, hc0] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem discA_ne (a n : ℕ) : discA a n ≠ 0 := by
   refine Finset.prod_ne_zero_iff.2 fun p hp => Finset.prod_ne_zero_iff.2 fun c hc h => ?_
@@ -72,9 +72,9 @@ private theorem discA_ne (a n : ℕ) : discA a n ≠ 0 := by
   simp [Pi.single_eq_of_ne hne.symm, hc0] at this
 
 /- English proof (translation)
-Use `Finset.prod_ne_zero_iff.2 fun q hq h => ?_` and prove the remaining obligations. Establish `hq' : ¬ (q.1 = q.2.1 ∧ q.2.2 = q.2.1)` using `(Finset.mem_filter.1 hq).2`. Establish `hz : (Pi.single q.2.1 (1 : ℤ) : Fin a → ℤ) q.1 * (Pi.single q.2.1 (1 : ℤ) : Fin a → ℤ) q.2.2 = 0`. Distinguish the cases in `h1 : q.1 = q.2.1`. Establish `h2 : q.2.2 ≠ q.2.1` using `fun h2 => hq' ⟨h1, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[Pi.single_eq_of_ne h2, mul_zero]`. Rewrite using `[Pi.single_eq_of_ne h1, zero_mul]`. Use `congrArg (MvPolynomial.eval (Pi.single q.2.1 (1 : ℤ))) h` as an intermediate fact. Simplify using `only [map_sub, map_mul, map_pow, MvPolynomial.eval_X, map_zero, hz, Pi.single_eq_same] at this`. Evaluate the numerical expressions using `at this`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 private theorem discB_ne (a : ℕ) : discB a ≠ 0 := by
   refine Finset.prod_ne_zero_iff.2 fun q hq h => ?_
@@ -89,13 +89,13 @@ private theorem discB_ne (a : ℕ) : discB a ≠ 0 := by
   norm_num at this
 
 /- English proof (translation)
-Introduce `a n`. Establish `hne : discA a n * discB a ≠ 0` using `mul_ne_zero (discA_ne a n) (discB_ne a)`. Take `⟨d₁, h₁⟩` from `discA_homog a n`. Take `⟨d₂, h₂⟩` from `discB_homog a`. Establish `hh` using `h₁.mul h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨discA a n * discB a, ?_, ?_, hne, ?_⟩` and prove the remaining obligations. Introduce `σ`. Rewrite using `[map_mul, discA_symm a n σ, discB_symm a σ]`. Rewrite using `[hh.totalDegree hne]`. Conclude with `hh`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _ z hz`. Rewrite `hz` using `[map_mul]`. Establish `hA` using `left_ne_zero_of_mul hz`. Establish `hB` using `right_ne_zero_of_mul hz`. Simplify using `only [discA, discB, map_prod, map_sub, map_mul, map_pow, MvPolynomial.aeval_X] at hA hB`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i j hij c hc1 hcn => ?_, fun i j k' hq => ?_⟩` and prove the remaining obligations. Establish `h1` using `Finset.prod_ne_zero_iff.1 hA (i, j) (Finset.mem_offDiag.2 ⟨Finset.mem_univ _, Finset.mem_univ _, hij⟩)`. Conclude with `sub_ne_zero.1 (Finset.prod_ne_zero_iff.1 h1 c (Finset.mem_Icc.2 ⟨hc1, hcn⟩))`. Conclude with `sub_ne_zero.1 (Finset.prod_ne_zero_iff.1 hB (i, j, k') (Finset.mem_filter.2 ⟨Finset.mem_univ _, hq⟩))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Gen.discEx2_pf :
     UpperTheory.Gal.Gen.DiscEx2 := by

@@ -16,11 +16,11 @@ noncomputable section
 namespace GlobalTheory.Pdv
 
 /- English proof (translation)
-Establish `hq : ((B.wts.nuW u (i + 1) τ).w r : ℚ) = Examples₂.wtN (B.hcW u τ) r.1 + wG B.R ((B.hcW u τ).e ⟨i, hi⟩) (i + 1)`. Rewrite using `[Formalism.L2.Col.Wts.nuW_eq _ u hi τ r]`. Rewrite using `[show B.wts.lamN u i τ = Examples₂.lamOf (B.hcW u τ) i from rfl, Formalism.L2.Col.lamOf_wtN _ hi.le r]`. Establish `hrow : DV.nuRow (I.rec7 l Z) u (i + 1) τ r = (((B.wts.nuW u (i + 1) τ).w r : ℤ) : ℝ)`. Rewrite using `[GlobalTheory.ColPeriod.nuRow_succ_eq_wt (I.rec7 l Z) u i hi τ r r.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `congrArg (fun x : ℚ => (x : ℝ)) hq.symm`. Simplify using `only [Rat.cast_intCast] at h`. Conclude with `h`. Establish `hnn : 0 ≤ (B.wts.nuW u (i + 1) τ).w r`. Establish `h1` using `Formalism.L2.Ker.natW_cast (B.wts.nuW u (i + 1) τ) r`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.MoveCompare.nuW_detShift_nonneg B.wts u hi τ`. Use linear arithmetic over natural numbers and integers. Take `⟨n, hn⟩` from `Int.eq_ofNat_of_zero_le hnn`. Use `show ((⌊DV.nuRow (I.rec7 l Z) u (i + 1) τ r⌋₊ : ℕ) : ℤ) = _`. Rewrite using `[hrow, hn, Int.cast_natCast, Nat.floor_natCast]`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nuT_cast_eq_nuW {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (u : B.Word) {i : ℕ} (hi : i < B.R.m) (τ : B.fields.Tau) (r : Fin (B.R.N i)) :
@@ -45,7 +45,7 @@ private theorem nuT_cast_eq_nuW {B : Base} {X : PreX B.toPre} (I : TC B X) (l : 
   rw [hrow, hn, Int.cast_natCast, Nat.floor_natCast]
 
 /- English proof (translation)
-Establish `h3 : ((∑ r, nuT (I.rec7 l Z) u i τ r : ℕ) : ℤ) = nuDeg B u i τ`. Use `push_cast`. Conclude with `Finset.sum_congr rfl fun r _ => nuT_cast_eq_nuW I l Z u hi τ r`. Conclude with `(congrArg (Nat.cast : ℕ → ℤ) hm).trans h3`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 private theorem monoDeg_eq_nuDeg_of_degAt_eq_sum_nuT {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l))
     (u : B.Word) {i : ℕ} (hi : i < B.R.m) (τ : B.fields.Tau)
@@ -59,7 +59,7 @@ private theorem monoDeg_eq_nuDeg_of_degAt_eq_sum_nuT {B : Base} {X : PreX B.toPr
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `B X I hok hpins l Z L hT Gi Gl K Y cX ex t hJ hS u μ hμ i hi c c' m hm`. Rewrite using `[hS.O.dgen u μ, hS.O.Th u μ i c c']`. Conclude with `GlobalTheory.T.trueKernelJets_mul_detCharacters_mem_coefficientField I hok hpins l Z hJ u μ i hi c c' m fun τ => monoDeg_eq_nuDeg_of_degAt_eq_sum_nuT I l Z u hi τ m (hm τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rk_of_std : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (L : SizeData₂ (I.rec7 l Z)) (hT : GatTies (I.rec7 l Z)) (Gi : G.Inst (I.rec7 l Z) L) (Gl : G.LatInst (I.rec7 l Z)) (K : G.Consts) (Y : DivX (I.rec7 l Z)) (cX : ExtraC) (ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX) (t : KerEntTied ex), ColIn.JetsIn I → I.StdKer l Z t → t.RK := by
   intro B X I hok hpins l Z L hT Gi Gl K Y cX ex t hJ hS u μ hμ i hi c c' m hm
@@ -69,7 +69,7 @@ theorem rk_of_std : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `B X I hok hpins l Z L hT Gi Gl K Y cX ex t hJ hS u μ hμ i hi c c' m hm`. Rewrite using `[hS.O.dgen u μ, hS.O.Th u μ i c c']`. Conclude with `GlobalTheory.T.trueKernelJets_mul_detCharacters_mem_coefficientField I hok hpins l Z hJ u μ i hi c c' m fun τ => monoDeg_eq_nuDeg_of_degAt_eq_sum_nuT I l Z u hi τ m (hm τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rk_of_stdTie : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (L : SizeData₂ (I.rec7 l Z)) (hT : GatTies (I.rec7 l Z)) (Gi : G.Inst (I.rec7 l Z) L) (Gl : G.LatInst (I.rec7 l Z)) (K : G.Consts) (Y : DivX (I.rec7 l Z)) (cX : ExtraC) (ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX) (t : KerEntTied ex), ColIn.JetsIn I → I.StdKerTie l Z t → t.RK := by
   intro B X I hok hpins l Z L hT Gi Gl K Y cX ex t hJ hS u μ hμ i hi c c' m hm

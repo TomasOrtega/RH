@@ -17,14 +17,14 @@ variable {D : D7} (X : HidaSetting D)
 abbrev wK (kv : Σ k : Fin 2, D.nd.PlG k) : HeightOneSpectrum (𝓞 X.B.I.E) := wB X (D.naut.plGw kv.1 kv.2)
 
 /- English proof (translation)
-Rewrite using `[card_wB, card_res_host]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_wK (kv : Σ k : Fin 2, D.nd.PlG k) :
     Nat.card (𝓞 X.B.I.E ⧸ (wK X kv).asIdeal) = D.host.g kv.1 := by
   rw [card_wB, card_res_host]
 
 /- English proof (translation)
-The claim follows from `Nat.card_congr (Ideal.quotientEquiv (wc I w).asIdeal w.asIdeal (sigO I) (Ideal.map_comap_of_surjective _ (sigO I).surjective w.asIdeal).symm).toEquiv`.
+A detailed English derivation is pending.
 -/
 theorem card_wc {I : AutInst} (w : HeightOneSpectrum (𝓞 I.E)) :
     Nat.card (𝓞 I.E ⧸ (wc I w).asIdeal) = Nat.card (𝓞 I.E ⧸ w.asIdeal) :=
@@ -32,35 +32,35 @@ theorem card_wc {I : AutInst} (w : HeightOneSpectrum (𝓞 I.E)) :
     (Ideal.map_comap_of_surjective _ (sigO I).surjective w.asIdeal).symm).toEquiv
 
 /- English proof (translation)
-Rewrite using `[card_wc, card_wK]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_wKc (kv : Σ k : Fin 2, D.nd.PlG k) :
     Nat.card (𝓞 X.B.I.E ⧸ (wc X.B.I (wK X kv)).asIdeal) = D.host.g kv.1 := by
   rw [card_wc, card_wK]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_wB (w : HeightOneSpectrum (𝓞 D.host.E)) (a : 𝓞 X.B.I.E) :
     a ∈ (wB X w).asIdeal ↔ RingOfIntegers.mapRingEquiv X.ιE a ∈ w.asIdeal := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_wB, map_natCast]`. Conclude with `D.naut.plGw_over kv.1 kv.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gk_mem (kv : Σ k : Fin 2, D.nd.PlG k) : ((D.host.g kv.1 : ℕ) : 𝓞 X.B.I.E) ∈ (wK X kv).asIdeal := by
   rw [mem_wB, map_natCast]; exact D.naut.plGw_over kv.1 kv.2
 
 /- English proof (translation)
-The claim follows from `natCast_mem_wc X.B.I (gk_mem X kv)`.
+A detailed English derivation is pending.
 -/
 theorem gk_mem_c (kv : Σ k : Fin 2, D.nd.PlG k) :
     ((D.host.g kv.1 : ℕ) : 𝓞 X.B.I.E) ∈ (wc X.B.I (wK X kv)).asIdeal :=
   natCast_mem_wc X.B.I (gk_mem X kv)
 
 /- English proof (translation)
-Establish `hcop : IsCoprime ((D.host.g 0 : ℕ) : 𝓞 X.B.I.E) ((D.host.g 1 : ℕ) : 𝓞 X.B.I.E)`. Establish `h' : IsCoprime ((D.host.g 0 : ℕ) : ℤ) ((D.host.g 1 : ℕ) : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes (D.host.g_prime 0) (D.host.g_prime 1)).2 D.host.g_ne)`. Simplify using `using h'.map (Int.castRingHom (𝓞 X.B.I.E))`. Take `⟨a, b, hab⟩` from `hcop`. Use `P.add_mem (P.mul_mem_left a h0) (P.mul_mem_left b h1)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[hab]`. Conclude with `hP ((Ideal.eq_top_iff_one _).2 this)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_both (P : Ideal (𝓞 X.B.I.E)) (hP : P ≠ ⊤) (h0 : ((D.host.g 0 : ℕ) : 𝓞 X.B.I.E) ∈ P)
     (h1 : ((D.host.g 1 : ℕ) : 𝓞 X.B.I.E) ∈ P) : False := by
@@ -74,7 +74,7 @@ theorem not_both (P : Ideal (𝓞 X.B.I.E)) (hP : P ≠ ⊤) (h0 : ((D.host.g 0 
   exact hP ((Ideal.eq_top_iff_one _).2 this)
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases k <;> fin_cases k'`. Conclude with `hk rfl`. Conclude with `not_both X P hP h0 h1`. Conclude with `not_both X P hP h1 h0`. Conclude with `hk rfl`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem not_both' (P : Ideal (𝓞 X.B.I.E)) (hP : P ≠ ⊤) {k k' : Fin 2} (hk : k ≠ k')
     (h0 : ((D.host.g k : ℕ) : 𝓞 X.B.I.E) ∈ P) (h1 : ((D.host.g k' : ℕ) : 𝓞 X.B.I.E) ∈ P) : False := by
@@ -85,13 +85,13 @@ theorem not_both' (P : Ideal (𝓞 X.B.I.E)) (hP : P ≠ ⊤) {k k' : Fin 2} (hk
   · exact hk rfl
 
 /- English proof (translation)
-Rewrite using `[X.g_eq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem g_eq_cast : ((X.B.g : ℕ) : 𝓞 X.B.I.E) = ((D.host.g 0 : ℕ) : 𝓞 X.B.I.E) * ((D.host.g 1 : ℕ) : 𝓞 X.B.I.E) := by
   rw [X.g_eq]; push_cast; ring
 
 /- English proof (translation)
-Rewrite `h` using `[g_eq_cast]`. Break down `hP.mem_or_mem h with h | h` into its components or cases. Use `exacts [⟨0, h⟩, ⟨1, h⟩]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem gk_of_g {P : Ideal (𝓞 X.B.I.E)} (hP : P.IsPrime) (h : ((X.B.g : ℕ) : 𝓞 X.B.I.E) ∈ P) :
     ∃ k : Fin 2, ((D.host.g k : ℕ) : 𝓞 X.B.I.E) ∈ P := by
@@ -100,7 +100,7 @@ theorem gk_of_g {P : Ideal (𝓞 X.B.I.E)} (hP : P.IsPrime) (h : ((X.B.g : ℕ) 
   exacts [⟨0, h⟩, ⟨1, h⟩]
 
 /- English proof (translation)
-Rewrite using `[g_eq_cast]`. Use `fin_cases k`. Conclude with `P.mul_mem_right _ h`. Conclude with `P.mul_mem_left _ h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem g_mem_of_gk {P : Ideal (𝓞 X.B.I.E)} {k : Fin 2} (h : ((D.host.g k : ℕ) : 𝓞 X.B.I.E) ∈ P) :
     ((X.B.g : ℕ) : 𝓞 X.B.I.E) ∈ P := by
@@ -110,9 +110,9 @@ theorem g_mem_of_gk {P : Ideal (𝓞 X.B.I.E)} {k : Fin 2} (h : ((D.host.g k : �
   · exact P.mul_mem_left _ h
 
 /- English proof (translation)
-Establish `hwH : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ (toH X P).asIdeal` using `by show (RingOfIntegers.mapRingEquiv X.ιE).symm ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `hP`. Take `⟨v, hv | hv⟩` from `cover X k (toH X P) hwH`. Conclude with `⟨v, Or.inl (by rw [← wB_toH X P, hv])⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨v, Or.inr (by rw [← wB_toH X P, hv, wB_conjH X])⟩`.
+A detailed English derivation is pending.
 -/
 theorem over_gk (P : HeightOneSpectrum (𝓞 X.B.I.E)) (k : Fin 2) (hP : ((D.host.g k : ℕ) : 𝓞 X.B.I.E) ∈ P.asIdeal) :
     ∃ v : D.nd.PlG k, P = wK X ⟨k, v⟩ ∨ P = wc X.B.I (wK X ⟨k, v⟩) := by
@@ -124,7 +124,7 @@ theorem over_gk (P : HeightOneSpectrum (𝓞 X.B.I.E)) (k : Fin 2) (hP : ((D.hos
   · exact ⟨v, Or.inr (by rw [← wB_toH X P, hv, wB_conjH X])⟩
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `gk_of_g X P.isPrime hP`. Take `⟨v, hv⟩` from `over_gk X P k hk`. Conclude with `⟨⟨k, v⟩, hv⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem over_g (P : HeightOneSpectrum (𝓞 X.B.I.E)) (hP : ((X.B.g : ℕ) : 𝓞 X.B.I.E) ∈ P.asIdeal) :
     ∃ kv : Σ k : Fin 2, D.nd.PlG k, P = wK X kv ∨ P = wc X.B.I (wK X kv) := by
@@ -133,7 +133,7 @@ theorem over_g (P : HeightOneSpectrum (𝓞 X.B.I.E)) (hP : ((X.B.g : ℕ) : �
   exact ⟨⟨k, v⟩, hv⟩
 
 /- English proof (translation)
-Use `HeightOneSpectrum.ext ?_` and prove the remaining obligations. Use extensionality with `a`. Take `⟨b, rfl⟩` from `(RingOfIntegers.mapRingEquiv X.ιE).surjective a`. Rewrite using `[← mem_wB, ← mem_wB, h]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem wB_inj {w w' : HeightOneSpectrum (𝓞 D.host.E)} (h : wB X w = wB X w') : w = w' := by
   refine HeightOneSpectrum.ext ?_
@@ -142,11 +142,9 @@ theorem wB_inj {w w' : HeightOneSpectrum (𝓞 D.host.E)} (h : wB X w = wB X w')
   rw [← mem_wB, ← mem_wB, h]
 
 /- English proof (translation)
-Take `⟨k, v⟩` from `kv`. Take `⟨k', v'⟩` from `kv'`. Introduce `he`. Distinguish the cases in `hk : k = k'`. Substitute `hk` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hv : v ≠ v'` using `fun hv => h (by rw [hv])`. Conclude with `hv (D.naut.plGw_inj k (wB_inj X he))`. Establish `h0` using `gk_mem X ⟨k, v⟩`. Establish `h1` using `gk_mem X ⟨k', v'⟩`. Rewrite `h1` using `[← he]`.
-
-Conclude with `not_both' X _ (wK X ⟨k, v⟩).isPrime.ne_top hk h0 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wK_ne {kv kv' : Σ k : Fin 2, D.nd.PlG k} (h : kv ≠ kv') : wK X kv ≠ wK X kv' := by
   obtain ⟨k, v⟩ := kv
@@ -162,11 +160,11 @@ theorem wK_ne {kv kv' : Σ k : Fin 2, D.nd.PlG k} (h : kv ≠ kv') : wK X kv ≠
     exact not_both' X _ (wK X ⟨k, v⟩).isPrime.ne_top hk h0 h1
 
 /- English proof (translation)
-Take `⟨k, v⟩` from `kv`. Take `⟨k', v'⟩` from `kv'`. Introduce `he`. Distinguish the cases in `hk : k = k'`. Substitute `hk` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite `he` using `[show wc X.B.I (wK X ⟨k, v'⟩) = wB X (conjH (D.naut.plGw k v')) from (wB_conjH X _).symm]`. Establish `he'` using `wB_inj X he`. Apply `D.naut.plGw_nconj k v' v` to reduce the goal to its premises. Use `isConjPl_conjH X (D.naut.plGw k v')` as an intermediate fact. Rewrite `this` using `[← he']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `h0` using `gk_mem X ⟨k, v⟩`. Establish `h1` using `gk_mem_c X ⟨k', v'⟩`. Rewrite `h1` using `[← he]`. Conclude with `not_both' X _ (wK X ⟨k, v⟩).isPrime.ne_top hk h0 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wK_ne_wc (kv kv' : Σ k : Fin 2, D.nd.PlG k) : wK X kv ≠ wc X.B.I (wK X kv') := by
   obtain ⟨k, v⟩ := kv
@@ -186,13 +184,13 @@ theorem wK_ne_wc (kv kv' : Σ k : Fin 2, D.nd.PlG k) : wK X kv ≠ wc X.B.I (wK 
     exact not_both' X _ (wK X ⟨k, v⟩).isPrime.ne_top hk h0 h1
 
 /- English proof (translation)
-Establish `hk : ∀ k : Fin 2, a ∈ Ideal.span {((D.host.g k : ℕ) : 𝓞 X.B.I.E)}`. Introduce `k`. Use `mem_span_of_all (D.host.g_prime k) (unram X k) fun P hPm hgP => ?_` and prove the remaining obligations. Set `P' : HeightOneSpectrum (𝓞 X.B.I.E)` to `⟨P, hPm.isPrime, fun hb => by`. Rewrite `hgP` using `[hb]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(by exact_mod_cast (D.host.g_prime k).ne_zero : ((D.host.g k : ℕ) : 𝓞 X.B.I.E) ≠ 0) ((Submodule.mem_bot _).1 hgP)⟩`. Conclude with `ha P' (g_mem_of_gk X hgP)`. Take `⟨u, hu⟩` from `Ideal.mem_span_singleton'.1 (hk 0)`. Take `⟨v, hv⟩` from `Ideal.mem_span_singleton'.1 (hk 1)`. Establish `hcop : IsCoprime ((D.host.g 0 : ℕ) : 𝓞 X.B.I.E) ((D.host.g 1 : ℕ) : 𝓞 X.B.I.E)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h' : IsCoprime ((D.host.g 0 : ℕ) : ℤ) ((D.host.g 1 : ℕ) : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes (D.host.g_prime 0) (D.host.g_prime 1)).2 D.host.g_ne)`. Simplify using `using h'.map (Int.castRingHom (𝓞 X.B.I.E))`. Take `⟨α, β, hαβ⟩` from `hcop`. Use `⟨α * v + β * u, ?_⟩` and prove the remaining obligations. Rewrite using `[g_eq_cast]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hv, hu]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by ring`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mem_g_of_all {a : 𝓞 X.B.I.E}
     (ha : ∀ P : HeightOneSpectrum (𝓞 X.B.I.E), ((X.B.g : ℕ) : 𝓞 X.B.I.E) ∈ P.asIdeal → a ∈ P.asIdeal) :
@@ -221,15 +219,13 @@ theorem mem_g_of_all {a : 𝓞 X.B.I.E}
     _ = _ := by ring
 
 /- English proof (translation)
-Set `S : Set (HeightOneSpectrum (𝓞 X.B.I.E))` to `Formalism.MainNotions.BridgeLemma.plOver X.B.I.E (D.host.g 0) ∪ Formalism.MainNotions.BridgeLemma.plOver X.B.I.E (D.host.g 1)`. Establish `hS : S.Finite` using `(Formalism.MainNotions.BridgeLemma.finite_plOver X.B.I.E (D.host.g_prime 0)).union (Formalism.MainNotions.BridgeLemma.finite_plOver X.B.I.E (D.host.g_prime 1))`. Establish `: Finite S` using `hS.to_subtype`. Establish `hcop : Pairwise (Function.onFun IsCoprime fun P : S => (P.1).asIdeal)`. Introduce `P Q hPQ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.onFun, Ideal.isCoprime_iff_sup_eq]`. Use `Ideal.IsMaximal.coprime_of_ne (P.1).isMaximal (Q.1).isMaximal fun h => hPQ ?_` and prove the remaining obligations. Conclude with `Subtype.ext (HeightOneSpectrum.ext h)`. Take `⟨ε, hε⟩` from `Ideal.exists_forall_sub_mem_ideal hcop fun P => if P.1 = wK X kv then 1 else 0`. Establish `hmem : ∀ P : HeightOneSpectrum (𝓞 X.B.I.E), ((X.B.g : ℕ) : 𝓞 X.B.I.E) ∈ P.asIdeal → P ∈ S`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP`. Take `⟨k, hk⟩` from `gk_of_g X P.isPrime hP`. Use `fin_cases k`. Conclude with `Or.inl hk`. Conclude with `Or.inr hk`.
+Extract witnesses or component facts from the available result. Prove the first alternative. Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨ε, ?_, fun P hP hne => ?_⟩` and prove the remaining obligations. Use `hε ⟨wK X kv, hmem _ (g_mem_of_gk X (gk_mem X kv))⟩` as an intermediate fact. Simplify using `using this`. Use `hε ⟨P, hmem P hP⟩` as an intermediate fact. Simplify using `only [if_neg hne, sub_zero] at this`.
-
-Conclude with `this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_eps (kv : Σ k : Fin 2, D.nd.PlG k) :
     ∃ ε : 𝓞 X.B.I.E, ε - 1 ∈ (wK X kv).asIdeal ∧
@@ -260,9 +256,9 @@ theorem exists_eps (kv : Σ k : Fin 2, D.nd.PlG k) :
     exact this
 
 /- English proof (translation)
-Use `mem_span_of_all (D.host.g_prime k') (unram X k') fun P hPm hgP => ?_` and prove the remaining obligations. Set `P' : HeightOneSpectrum (𝓞 X.B.I.E)` to `⟨P, hPm.isPrime, fun hb => by`. Rewrite `hgP` using `[hb]`. Conclude with `(by exact_mod_cast (D.host.g_prime k').ne_zero : ((D.host.g k' : ℕ) : 𝓞 X.B.I.E) ≠ 0) ((Submodule.mem_bot _).1 hgP)⟩`. Use `hε P' (g_mem_of_gk X hgP) fun he => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h0` using `gk_mem X kv`. Establish `h1 : ((D.host.g k' : ℕ) : 𝓞 X.B.I.E) ∈ (wK X kv).asIdeal` using `by rw [← he]; exact hgP`. Conclude with `not_both' X _ (wK X kv).isPrime.ne_top hk h1 h0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eps_other (kv : Σ k : Fin 2, D.nd.PlG k) {ε : 𝓞 X.B.I.E}
     (hε : ∀ P : HeightOneSpectrum (𝓞 X.B.I.E), ((X.B.g : ℕ) : 𝓞 X.B.I.E) ∈ P.asIdeal → P ≠ wK X kv → ε ∈ P.asIdeal)

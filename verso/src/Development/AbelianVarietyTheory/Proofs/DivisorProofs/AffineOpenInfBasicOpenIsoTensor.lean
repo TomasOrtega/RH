@@ -7,19 +7,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ T π B _ _ U₁ e₁ h r`. Use `letI : Algebra B (Localization.Away r ⊗[R] B) := Algebra.TensorProduct.rightAlgebra`. Use `haveI : IsLocalization.Away (algebraMap R B r) (Localization.Away r ⊗[R] B) := by`. Use `IsLocalization.tensorRight (R := R) (S := B) (Localization.Away r) (Submonoid.powers r)` as an intermediate fact. Simplify `this` using `[Algebra.algebraMapSubmonoid, Submonoid.map_powers]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `g : Sp (Localization.Away r ⊗[R] B) ⟶ Sp B` to `spMap (algebraMap B (Localization.Away r ⊗[R] B))`. Use `haveI : IsOpenImmersion g := IsOpenImmersion.of_isLocalization (algebraMap R B r)`. Set `f : Sp (Localization.Away r ⊗[R] B) ⟶ T` to `g ≫ e₁.hom ≫ U₁.ι`. Establish `hg : Set.range g.base = (PrimeSpectrum.basicOpen (algebraMap R B r) : Set (PrimeSpectrum B))` using `PrimeSpectrum.localization_away_comap_range _ _`. Establish `hr : Set.range f.base = Set.range (U₁ ⊓ π ⁻¹ᵁ (PrimeSpectrum.basicOpen r : (Sp R).Opens)).ι.base`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Establish `key : ∀ y : Sp B, π (U₁.ι (e₁.hom y)) ∈ (PrimeSpectrum.basicOpen r : (Sp R).Opens) ↔ y ∈ Set.range g.base`. Introduce `y`. Rewrite using `[hg, ← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, h]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Use `⟨(e₁.hom (g z)).2, ?_⟩` and prove the remaining obligations. Conclude with `(key (g z)).2 ⟨z, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨hx, hx'⟩`. Take `⟨y, hy⟩` from `e₁.hom.surjective ⟨x, hx⟩`. Establish `hy' : U₁.ι (e₁.hom y) = x` using `by rw [hy]; rfl`. Take `⟨z, hz⟩` from `(key y).1 (by rw [hy']; exact hx')`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hy', ← hz]`. Both sides reduce to the same expression. Use `⟨IsOpenImmersion.isoOfRangeEq f _ hr, ?_⟩` and prove the remaining obligations. Rewrite using `[IsOpenImmersion.isoOfRangeEq_hom_fac_assoc]`. Simplify using `only [f, Category.assoc, h, g]`.
-
-Rewrite using `[spMap, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `(Algebra.TensorProduct.includeRight (R := R) (A := Localization.Away r) (B := B)).comp_algebraMap`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem affineOpen_inf_basicOpen_iso_tensor :
     ∀ (R : Type) [CommRing R] (T : Scheme.{0}) (π : T ⟶ Sp R) (B : Type) [CommRing B] [Algebra R B] (U₁ : T.Opens) (e₁ : Sp B ≅ U₁.toScheme), e₁.hom ≫ U₁.ι ≫ π = spMap (algebraMap R B) → ∀ r : R, ∃ e : Sp (Localization.Away r ⊗[R] B) ≅ (U₁ ⊓ π ⁻¹ᵁ (PrimeSpectrum.basicOpen r : (Sp R).Opens)).toScheme, e.hom ≫ (U₁ ⊓ π ⁻¹ᵁ (PrimeSpectrum.basicOpen r : (Sp R).Opens)).ι ≫ π = spMap (algebraMap R (Localization.Away r ⊗[R] B)) := by

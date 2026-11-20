@@ -14,9 +14,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.SiegelFamLocal
 
 /- English proof (translation)
-Introduce `g n hg hn hodd F R _ _ _ β c hc`. Use `haveI : IsNoetherianRing (AdicCompletion (IsLocalRing.maximalIdeal R) R) := GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion _ _`. Use `haveI : Module.Flat R (AdicCompletion (IsLocalRing.maximalIdeal R) R) := AdicCompletion.flat_of_isNoetherian _`. Use `haveI : Module.FaithfullyFlat R (AdicCompletion (IsLocalRing.maximalIdeal R) R) := Module.FaithfullyFlat.of_flat_of_isLocalHom`. Use `GlobalTheory.T.siegelFamily_classified_of_faithfullyFlat g n hg hn hodd F R (AdicCompletion (IsLocalRing.maximalIdeal R) R) β c hc ?_` and prove the remaining obligations.
-
-Introduce `c' hc'`. Establish `hp : c'.Principal` using `GlobalTheory.SiegLevCalc.sRel_principal ((sRel_one_one_iff c' c _).2 hc') hc`. Conclude with `GlobalTheory.T.siegelFamily_classifies_complete_noetherian_local g n hg hn hodd F (AdicCompletion (IsLocalRing.maximalIdeal R) R) inferInstance ((algebraMap R (AdicCompletion (IsLocalRing.maximalIdeal R) R)).comp β) c' hp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_point_of_principal : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ F : SFam g n (zetaAway n), ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] (β : cycAway n →+* R) (c : SiegPre g n (zetaAway n) (spMap β)), c.Principal → ∃ f : Sp R ⟶ F.X, f ≫ F.s = spMap β ∧ SiegPB c F.univ f := by
   intro g n hg hn hodd F R _ _ _ β c hc

@@ -7,7 +7,7 @@ namespace Formalism.FourierDecayAlt.P.CutBP
 open Formalism.FourierDecayAlt
 
 /- English proof (translation)
-The claim follows from `germCutPD_of_data hA p nn χ F Y K N Cb hCb hF hχ hnn germ_data_low_levels germ_data_top_level`.
+A detailed English derivation is pending.
 -/
 theorem germ_truncation_positive (hA : P5.ThmPActual) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par}
@@ -17,7 +17,7 @@ theorem germ_truncation_positive (hA : P5.ThmPActual) {Wp Wq : Type} [NormedAddC
   germCutPD_of_data hA p nn χ F Y K N Cb hCb hF hχ hnn germ_data_low_levels germ_data_top_level
 
 /- English proof (translation)
-The claim follows from `block_growth_bound_of_compact_coef_of_germ_data hA p nn G Y K N Cb hCb hG hnn germ_data_low_levels germ_data_top_level`.
+A detailed English derivation is pending.
 -/
 theorem block_growth_bound_of_compact_coef (hA : P5.ThmPActual) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par}

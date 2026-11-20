@@ -6,13 +6,13 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 namespace GlobalTheory.CompanionTheory.EdgeRoot
 
 /- English proof (translation)
-Use `((hKap q i U ζ 1).2.1 (twGen i ζ) ?_).symm` and prove the remaining obligations. Introduce `V g a h`. Rewrite using `[((hRep q i U ζ).1 V g).1]`. Distinguish the cases in `hV : Nonempty V`. Take `⟨v⟩` from `hV`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `ha : (1 : ZMod q) = a` using `h v`. Substitute `ha` using the available equality. Conclude with `(one_smul _ _).symm`. Establish `hV' : IsEmpty V` using `not_nonempty_iff.1 hV`. Establish `h0` using `(hKap q i U ζ 1).1 V g 0 (fun v => hV'.elim v)`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(hKap q i U ζ 1).1 V g 1 (fun v => hV'.elim v)`. Establish `hz : twGen i (primRes g ζ) = 0`. Establish `e : (ULift.up (1 : ZMod q) : ULift.{1} (ZMod q)) • twGen i (primRes g ζ) = (ULift.up (0 : ZMod q) : ULift.{1} (ZMod q)) • twGen i (primRes g ζ)` using `h1.symm.trans h0`. Establish `e1 : (ULift.up (1 : ZMod q) : ULift.{1} (ZMod q)) • twGen i (primRes g ζ) = twGen i (primRes g ζ)` using `one_smul _ _`. Establish `e0 : (ULift.up (0 : ZMod q) : ULift.{1} (ZMod q)) • twGen i (primRes g ζ) = 0` using `zero_smul _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[e1, e0]`. Conclude with `e`. Rewrite using `[hz, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kap_one_eq_twGen (hRep : CrystallineSemistableComparison.E.RepRoot) (hKap : CrystallineSemistableComparison.E.KapSpec) {q : ℕ} (i : ℤ) {U : Scheme.{0}}
     (ζ : Prim q Γ(U, ⊤)) : kap i ζ 1 = twGen i ζ := by
@@ -38,7 +38,7 @@ theorem kap_one_eq_twGen (hRep : CrystallineSemistableComparison.E.RepRoot) (hKa
     rw [hz, smul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `∑ i : Fin 2, (-1 : ℤ) ^ (i : ℕ) • (A.map (GlobalTheory.CatH.toLast i s)).hom 1 = (0 : A.obj _)`. Rewrite using `[Fin.sum_univ_two, map_one, map_one]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem d_one_eq_zero {C : Type 1} [Category.{0} C] {R : Type} [CommRing R] (A : C ⥤ CommAlgCat.{0} R) :
     d (modF A) 0 (fun s => (1 : A.obj (s.obj (Fin.last 0)))) = 0 := by
@@ -48,9 +48,9 @@ theorem d_one_eq_zero {C : Type 1} [Category.{0} C] {R : Type} [CommRing R] (A :
   simp
 
 /- English proof (translation)
-Introduce `hEt hRep hKap hGen q _ C _ P X Y ζ hζ i`. Use `((hEt hGen q C P X Y i 0 (rootClass i ζ)).2 _ ?_).symm` and prove the remaining obligations. Use `⟨resGen i ζ, (hRep q i X ζ).2, ?_⟩` and prove the remaining obligations. Use `⟨fun s => (1 : (lcF P.S q).obj (s.obj (Fin.last 0))), d_one_eq_zero (lcF P.S q), ?_, rfl⟩` and prove the remaining obligations. Use `⟨rfl, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `Sec.map (resι _ (tw q i)) (kap i (P.ζ (s.obj (Fin.last 0))) 1) = Sec.res (Y.y (s.obj (Fin.last 0))) (resGen i ζ)`. Rewrite using `[kap_one_eq_twGen hRep hKap, ((hRep q i X ζ).1 _ _).2, hζ]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem etRoot_of_spec : CrystallineSemistableComparison.E.EtSpec → CrystallineSemistableComparison.E.RepRoot → CrystallineSemistableComparison.E.KapSpec → CrystallineSemistableComparison.E.EtRoot := by
   intro hEt hRep hKap hGen q _ C _ P X Y ζ hζ i

@@ -15,7 +15,7 @@ namespace GlobalTheory.FlatTors.TorsMapExists
 open ReciprocityTheory.ChartRestriction.G.DVR
 
 /- English proof (translation)
-Use `⟨by rw [h'.1, h.1, Category.assoc], fun χ => corr_of_val D.P.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[val_corr hJ (h'.2 χ), val_pull hJ, val_corr hJ (h.2 χ), val_pull hJ, val_pull hJ, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPull_trans {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {T T' T'' : Over (Sp R)}
     {a : T'.left ⟶ T.left} {b : T''.left ⟶ T'.left} {g : GtPt D T} {g' : GtPt D T'} {g'' : GtPt D T''}
@@ -24,7 +24,7 @@ theorem isPull_trans {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {T T' T
   rw [val_corr hJ (h'.2 χ), val_pull hJ, val_corr hJ (h.2 χ), val_pull hJ, val_pull hJ, Category.assoc]
 
 /- English proof (translation)
-The claim follows from `isPull_trans (T'' := TF (R := R) F) (g'' := ⟨g''.b, g''.s, g''.isGen, g''.s_zero, g''.mult⟩) h h'`.
+A detailed English derivation is pending.
 -/
 theorem isPullF_trans {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {T T' : Over (Sp R)}
     {F : Type} [Field F] [Algebra (FractionRing R) F]
@@ -33,7 +33,7 @@ theorem isPullF_trans {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {T T' 
   isPull_trans (T'' := TF (R := R) F) (g'' := ⟨g''.b, g''.s, g''.isGen, g''.s_zero, g''.mult⟩) h h'
 
 /- English proof (translation)
-Establish `h₁ : p''.y = p.y` using `Eq.trans h'.1 h.1`. Establish `h₂` using `isPull_trans (T := overW W T) (T' := overW W T') (T'' := overW W T'') (a := a.left) (b := b.left) (g := p.g) (g' := p'.g) (g'' := p''.g) h.2 h'.2`. Conclude with `⟨h₁, h₂⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem pair_trans {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {W : (Sp R).Opens} {ψW : PsiOn D W} {k : ℕ}
     {T T' T'' : Over W.toScheme} {a : T' ⟶ T} {b : T'' ⟶ T'} {p : QkPtW D W ψW k T} {p' : QkPtW D W ψW k T'}
@@ -45,7 +45,7 @@ theorem pair_trans {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {W : (Sp 
   exact ⟨h₁, h₂⟩
 
 /- English proof (translation)
-Establish `h₁ : q.y = p.y` using `Eq.trans h'.1 h.1`. Establish `h₂` using `isPullF_trans (T := overW W T) (T' := overW W T') (a := a.left) (b := x) (g := p.g) (g' := p'.g) (g'' := q.g) h.2 h'.2`. Conclude with `⟨h₁, h₂⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem pairF_trans {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {W : (Sp R).Opens} {ψW : PsiOn D W} {k : ℕ}
     {F : Type} [Field F] [Algebra (FractionRing R) F]
@@ -58,13 +58,11 @@ theorem pairF_trans {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {W : (Sp
   exact ⟨h₁, h₂⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ _ _ hR t P W hW hp ψW k hk`. Use `choose N p₀ hN using GlobalTheory.T.exists_torsion_pair_representative E H R hR t P W hW hp ψW k hk`. Use `choose v hv hvF using fun y => GlobalTheory.T.exists_torsion_hom_image E H R hR t P W hW hp ψW k hk y (N y) (p₀ y) (hN y)`. Use `choose c hc hu using fun y => (hN y).2.2.2`. Establish `key : ∀ y T (p : QkPtW P.D.toPre W ψW k T) (hy : p.y = y), (Over.map W.ι).map (c p.y T p rfl) ≫ v p.y = (Over.map W.ι).map (c y T p hy) ≫ v y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression.
 
-Introduce `y T p hy`. Substitute `hy` using the available equality. Both sides reduce to the same expression. Use `⟨fun T p => (Over.map W.ι).map (c p.y T p rfl) ≫ v p.y, fun T p => ?_, fun T T' h p p' hh => ?_, fun F _ _ _ T x hx p q hq => ?_⟩` and prove the remaining obligations. Rewrite using `[← MonObj.comp_pow, hv, MonObj.comp_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hu p.y T' p' hh.1 (h ≫ c p.y T p rfl) (pair_trans (hc p.y T p rfl) hh)` as an intermediate fact. Use `(key p.y T' p' hh.1).trans ?_` and prove the remaining obligations. Rewrite using `[← this, Functor.map_comp, Category.assoc]`. Establish `e : (c p.y T p rfl).left ≫ (overW W (N p.y)).hom = (overW W T).hom` using `Over.w ((Over.map W.ι).map (c p.y T p rfl))`. Establish `hx' : OverGen F (overW W (N p.y)) (x ≫ (c p.y T p rfl).left)` using `(Category.assoc _ _ _).trans ((congrArg (x ≫ ·) e).trans hx)`.
-
-Use `hvF p.y F (x ≫ (c p.y T p rfl).left) hx' q (pairF_trans (hc p.y T p rfl) hq)` as an intermediate fact. Rewrite `this` using `[Category.assoc]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isTorsMap :
     AllFlat fun {E} _ _ _ {H} {R} _ _ _ {t} P {W} ψW k => ∃ f, IsTorsMap P ψW k f := by

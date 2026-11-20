@@ -14,7 +14,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {ζ : E}
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Establish `h : IsPrimitiveRoot (ζ ^ 2) 2` using `hζ.pow (by norm_num) (by norm_num : 4 = 2 * 2)`. Rewrite using `[← sq]`. Conclude with `h.eq_neg_one_of_two_right`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_eq (hζ : IsPrimitiveRoot ζ 4) : ζ * ζ = -1 := by
   have h : IsPrimitiveRoot (ζ ^ 2) 2 := hζ.pow (by norm_num) (by norm_num : 4 = 2 * 2)
@@ -22,7 +22,7 @@ theorem sq_eq (hζ : IsPrimitiveRoot ζ 4) : ζ * ζ = -1 := by
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Establish `h : τ ζ * τ ζ = Complex.I * Complex.I`. Rewrite using `[← map_mul, sq_eq hζ, Complex.I_mul_I]`. Simplify using the standard rewrite rules. Conclude with `mul_self_eq_mul_self_iff.mp h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem emb_eq (hζ : IsPrimitiveRoot ζ 4) (τ : E →+* ℂ) : τ ζ = Complex.I ∨ τ ζ = -Complex.I := by
   have h : τ ζ * τ ζ = Complex.I * Complex.I := by
@@ -30,7 +30,7 @@ theorem emb_eq (hζ : IsPrimitiveRoot ζ 4) (τ : E →+* ℂ) : τ ζ = Complex
   exact mul_self_eq_mul_self_iff.mp h
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[emb_cc, map_neg]`. Apply the tactic sequence `rcases emb_eq hζ τ with h | h <;> simp [h]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cc_root (hζ : IsPrimitiveRoot ζ 4) : cc ζ = -ζ := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -39,17 +39,17 @@ theorem cc_root (hζ : IsPrimitiveRoot ζ 4) : cc ζ = -ζ := by
   rcases emb_eq hζ τ with h | h <;> simp [h]
 
 /- English proof (translation)
-The claim follows from `map_add _ x y`.
+A detailed English derivation is pending.
 -/
 theorem cc_add (x y : E) : cc (x + y) = cc x + cc y := map_add _ x y
 
 /- English proof (translation)
-The claim follows from `map_intCast _ n`.
+A detailed English derivation is pending.
 -/
 theorem cc_intCast (n : ℤ) : cc (n : E) = n := map_intCast _ n
 
 /- English proof (translation)
-Establish `h : cc (ζ / 2) = cc ζ / 2`. Unfold `cc`. Rewrite using `[map_div₀, map_ofNat]`. Rewrite using `[h, cc_root hζ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cc_half_root (hζ : IsPrimitiveRoot ζ 4) : cc (ζ / 2) = -(ζ / 2) := by
   have h : cc (ζ / 2) = cc ζ / 2 := by
@@ -57,7 +57,7 @@ theorem cc_half_root (hζ : IsPrimitiveRoot ζ 4) : cc (ζ / 2) = -(ζ / 2) := b
   rw [h, cc_root hζ]; ring
 
 /- English proof (translation)
-Establish `h` using `Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ) ζ`. Establish `h2 : ((IsCMField.complexConj E).restrictScalars ℚ) ζ = -ζ` using `cc_root hζ`. Rewrite `h` using `[h2, map_neg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem trace_root (hζ : IsPrimitiveRoot ζ 4) : Algebra.trace ℚ E ζ = 0 := by
   have h := Algebra.trace_eq_of_algEquiv ((IsCMField.complexConj E).restrictScalars ℚ) ζ
@@ -71,7 +71,7 @@ variable [IsCyclotomicExtension {4} ℚ E]
 
 omit [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[IsCyclotomicExtension.finrank (n := 4) E (Polynomial.cyclotomic.irreducible_rat (by norm_num))]`. Evaluate the decidable proposition.
+Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 -/
 theorem finrank_eq : Module.finrank ℚ E = 2 := by
   rw [IsCyclotomicExtension.finrank (n := 4) E (Polynomial.cyclotomic.irreducible_rat (by norm_num))]
@@ -80,19 +80,19 @@ theorem finrank_eq : Module.finrank ℚ E = 2 := by
 omit [IsCMField E] in
 
 /- English proof (translation)
-Establish `hmem : a ∈ Algebra.adjoin ℤ {hζ.integralPowerBasis.gen}`. Rewrite using `[hζ.integralPowerBasis.adjoin_gen_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Rewrite `hmem` using `[hζ.integralPowerBasis_gen]`. Establish `hs` using `sq_eq hζ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Proceed by induction on `hmem using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Conclude with `⟨0, 1, by simp only [Int.cast_zero, Int.cast_one, zero_add, one_mul]; rfl⟩`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components.
 
-Consider the case `algebraMap r => exact ⟨r, 0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, b, h1⟩` from `hx`. Take `⟨c, d, h2⟩` from `hy`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 E) E x = _ at h1`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `algebraMap (𝓞 E) E y = _ at h2`. Use `⟨a + c, b + d, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 E) E (x + y) = _`. Rewrite using `[map_add, h1, h2]`. Use `push_cast`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x y _ _ hx hy`. Take `⟨a, b, h1⟩` from `hx`. Take `⟨c, d, h2⟩` from `hy`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 E) E x = _ at h1`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `algebraMap (𝓞 E) E y = _ at h2`. Use `⟨a * c - b * d, a * d + b * c, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 E) E (x * y) = _`. Rewrite using `[map_mul, h1, h2]`. Use `push_cast`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `(b * d : E) * hs`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_coords (hζ : IsPrimitiveRoot ζ 4) (a : 𝓞 E) :
     ∃ m n : ℤ, (a : E) = m + n * ζ := by
@@ -128,9 +128,9 @@ theorem exists_coords (hζ : IsPrimitiveRoot ζ 4) (a : 𝓞 E) :
     linear_combination (b * d : E) * hs
 
 /- English proof (translation)
-Establish `hs` using `sq_eq hζ`. Establish `h : -(ζ / 2) * (((a : E) + b * ζ) * cc ((c : E) + d * ζ)) = algebraMap ℚ E (((b * c - a * d : ℤ) : ℚ) / 2) + (-(((a * c + b * d : ℤ) : ℚ) / 2)) • ζ`. Rewrite using `[cc_add, cc_mul, cc_intCast, cc_intCast, cc_root hζ, Algebra.smul_def]`. Simplify using `only [map_div₀, map_intCast, map_neg, map_ofNat]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `(-(b * c - a * d : E) / 2 + b * d * ζ / 2) * hs`. Rewrite using `[h, map_add, map_smul, trace_root hζ, Algebra.trace_algebraMap, finrank_eq]`. Simplify using `only [smul_zero, add_zero, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trace_form (hζ : IsPrimitiveRoot ζ 4) (a b c d : ℤ) :
     Algebra.trace ℚ E (-(ζ / 2) * (((a : E) + b * ζ) * cc ((c : E) + d * ζ))) =
@@ -155,9 +155,9 @@ def intLat (E : Type) [Field E] : Submodule (𝓞 E) (Fin 1 → E) :=
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[intLat, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a, by simp [e1, Algebra.smul_def]⟩`. Introduce and unpack `⟨a, ha⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Simplify using `[e1, Algebra.smul_def, ha]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_intLat (x : Fin 1 → E) : x ∈ intLat E ↔ ∃ a : 𝓞 E, (a : E) = x 0 := by
   rw [intLat, Submodule.mem_span_singleton]
@@ -172,9 +172,9 @@ theorem mem_intLat (x : Fin 1 → E) : x ∈ intLat E ↔ ∃ a : 𝓞 E, (a : E
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Rewrite using `[mem_intLat]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Conclude with `ha ▸ a.isIntegral_coe`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨⟨x 0, h⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_intLat_iff (x : Fin 1 → E) : x ∈ intLat E ↔ IsIntegral ℤ (x 0) := by
   rw [mem_intLat]
@@ -184,12 +184,12 @@ theorem mem_intLat_iff (x : Fin 1 → E) : x ∈ intLat E ↔ IsIntegral ℤ (x 
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-The claim follows from `Submodule.subset_span (Set.mem_singleton _)`.
+A detailed English derivation is pending.
 -/
 theorem first_raising_mem_equivariant : (e1 : Fin 1 → E) ∈ intLat E := Submodule.subset_span (Set.mem_singleton _)
 
 /- English proof (translation)
-Rewrite using `[herm_one]`. Conclude with `((mem_intLat_iff x).mp hx).mul (isIntegral_cc ((mem_intLat_iff y).mp hy))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_int {x y : Fin 1 → E} (hx : x ∈ intLat E) (hy : y ∈ intLat E) :
     IsIntegral ℤ (herm (1 : Matrix (Fin 1) (Fin 1) E) x y) := by
@@ -197,9 +197,7 @@ theorem herm_int {x y : Fin 1 → E} (hx : x ∈ intLat E) (hy : y ∈ intLat E)
   exact ((mem_intLat_iff x).mp hx).mul (isIntegral_cc ((mem_intLat_iff y).mp hy))
 
 /- English proof (translation)
-Rewrite `h` using `[herm_one]`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Break down `mul_eq_zero.mp h with h | h` into its components or cases. Conclude with `h`.
-
-Conclude with `cc_eq_zero h`.
+Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_iso {ξ : Fin 1 → E} (h : herm (1 : Matrix (Fin 1) (Fin 1) E) ξ ξ = 0) :
     ξ = 0 := by
@@ -212,15 +210,15 @@ theorem eq_zero_of_iso {ξ : Fin 1 → E} (h : herm (1 : Matrix (Fin 1) (Fin 1) 
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, e1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulVec_firstBasisVector (γ : Matrix (Fin 1) (Fin 1) E) : Matrix.mulVec γ e1 0 = γ 0 0 := by
   simp [Matrix.mulVec, dotProduct, e1]
 
 /- English proof (translation)
-Establish `h1` using `hγ.1 e1 e1`. Rewrite `h1` using `[herm_one, herm_one, mulVec_firstBasisVector]`. Simplify using `only [e1, cc_one, mul_one] at h1`. Establish `h2` using `congrArg φ h1`. Rewrite `h2` using `[map_mul, emb_cc, map_one, Complex.mul_conj]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : ‖φ ((γ : Matrix (Fin 1) (Fin 1) E) 0 0)‖ ^ 2 = 1`. Rewrite using `[← Complex.normSq_eq_norm_sq]`. Conclude with `h2` after adjusting the coercions. Use polynomial arithmetic with `[norm_nonneg (φ ((γ : Matrix (Fin 1) (Fin 1) E) 0 0))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_entry {γ : GL (Fin 1) E} (hγ : IsUStab 1 (intLat E) γ) (φ : E →+* ℂ) :
     ‖φ ((γ : Matrix (Fin 1) (Fin 1) E) 0 0)‖ = 1 := by
@@ -234,15 +232,15 @@ theorem norm_entry {γ : GL (Fin 1) E} (hγ : IsUStab 1 (intLat E) γ) (φ : E �
   nlinarith [norm_nonneg (φ ((γ : Matrix (Fin 1) (Fin 1) E) 0 0))]
 
 /- English proof (translation)
-Take `⟨y, hy, hyy⟩` from `h e1 first_raising_mem_equivariant`. Take `⟨a, ha⟩` from `(mem_intLat y).mp hy`. Establish `h0` using `congrFun hyy 0`. Simplify using `only [Pi.sub_apply, mulVec_firstBasisVector, Pi.smul_apply, smul_eq_mul, ← ha] at h0`. Establish `he : (e1 : Fin 1 → E) 0 = 1` using `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h0` using `[he]`. Establish `ha0 : a = 0`. Assume the negation of the conclusion as `hne`. Take `⟨σ, hσ⟩` from `NumberField.exists_conjugate_one_le_norm hne`. Apply the tactic sequence `have h1 := norm_entry hγ σ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun z => ‖σ z‖) h0`. Simplify using `only [map_sub, map_mul, map_natCast, map_one, norm_mul, Complex.norm_natCast] at h2`. Establish `h3` using `norm_sub_le (σ ((γ : Matrix (Fin 1) (Fin 1) E) 0 0)) 1`. Rewrite `h3` using `[h2, h1, norm_one]`. Express the relevant statement in the definitionally equal form `1 ≤ ‖σ (a : E)‖ at hσ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Move the coercions through the operations in `at h3`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h0` using `[ha0]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `fin_cases i`. Use `fin_cases j`. Simplify `h0` using `[sub_eq_zero]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_one_of_cong {γ : GL (Fin 1) E} (hγ : IsUStab 1 (intLat E) γ)
     (h : ∀ x ∈ intLat E, ∃ y ∈ intLat E,
@@ -414,7 +412,7 @@ noncomputable def dataX [IsCyclotomicExtension {4} ℚ E] (hζ : IsPrimitiveRoot
 noncomputable def coordProd {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ 1) : ℂ := ∏ τ, x τ 0 0
 
 /- English proof (translation)
-Unfold `dmin lminor`. Conclude with `Matrix.det_isEmpty (n := Fin 0)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dmin_zero {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ 1) (τ : Ψ) :
     dmin (1 : Matrix (Fin 1) (Fin 1) E) x τ (Fin.castSucc 0) = 1 := by
@@ -422,7 +420,7 @@ theorem dmin_zero {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ 1) (τ : Ψ) :
   exact Matrix.det_isEmpty (n := Fin 0)
 
 /- English proof (translation)
-Unfold `dmin lminor`. Use `(Matrix.det_fin_one _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `gram τ.1 1 (mat x τ) 0 0 = _`. Simplify using `[gram, hermC, col, mat, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem dmin_one {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ 1) (τ : Ψ) :
     dmin (1 : Matrix (Fin 1) (Fin 1) E) x τ (Fin.succ 0) = ((‖x τ 0 0‖ ^ 2 : ℝ) : ℂ) := by
@@ -432,9 +430,9 @@ theorem dmin_one {Ψ : Finset (E →+* ℂ)} (x : Frame Ψ 1) (τ : Ψ) :
   simp [gram, hermC, col, mat, Complex.mul_conj, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Unfold `Data.pnorm coordProd`. Rewrite using `[norm_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_one (fun τ _ => by positivity) fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_one]`. Express the relevant statement in the definitionally equal form `_ * ‖dmin 1 x τ _ / dmin 1 x τ _‖ ^ (-((1 : ℤ) : ℝ) / 2) ≤ 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[dmin_zero, dmin_one, div_one, Complex.norm_real, Real.norm_of_nonneg (sq_nonneg _), ← Real.rpow_natCast, ← Real.rpow_mul (norm_nonneg _)]`. Establish `: ((2 : ℕ) : ℝ) * (-((1 : ℤ) : ℝ) / 2) = -1` using `by norm_num`. Rewrite using `[this, Real.rpow_neg_one]`. Conclude with `mul_inv_le_one`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pnorm_coordProd_le (hζ : IsPrimitiveRoot ζ 4) (x : Frame (data hζ).Ψ 1) :
     (data hζ).pnorm 1 coordProd x ≤ 1 := by
@@ -450,13 +448,13 @@ theorem pnorm_coordProd_le (hζ : IsPrimitiveRoot ζ 4) (x : Frame (data hζ).Ψ
   exact mul_inv_le_one
 
 /- English proof (translation)
-Use `⟨⟨⟨?_, ?_, ?_⟩, 1, fun x _ => pnorm_coordProd_le hζ x⟩, ?_⟩` and prove the remaining obligations. Apply `Differentiable.differentiableOn` to reduce the goal to its premises. Unfold `coordProd`. Use `fun_prop`. Introduce `x _ b _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `coordProd bchar rmul`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.mul_apply, mat, mul_comm]`. Introduce `γ hγ x _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : γ = 1` using `Subgroup.mem_bot.mp hγ`. Substitute `h1` using the available equality. Establish `hx : lact 1 x = x`. Use function extensionality and compare the values at `τ`. Simplify using `[lact, mat]`.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hx]`. Conclude with `(one_mul _).symm`. Introduce and unpack `ξ ⟨_, h, hne⟩`. Conclude with `absurd (eq_zero_of_iso h) hne`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem coordProd_mem (hζ : IsPrimitiveRoot ζ 4) : coordProd ∈ (data hζ).SS 1 := by
   refine ⟨⟨⟨?_, ?_, ?_⟩, 1, fun x _ => pnorm_coordProd_le hζ x⟩, ?_⟩
@@ -481,9 +479,9 @@ theorem coordProd_mem (hζ : IsPrimitiveRoot ζ 4) : coordProd ∈ (data hζ).SS
     exact absurd (eq_zero_of_iso h) hne
 
 /- English proof (translation)
-Introduce `τ`. Use `⟨by simp [mat], fun i => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `0 < psgn 1 i * (dmin 1 _ τ i).re`. Use `fin_cases i`. Express the relevant statement in the definitionally equal form `0 < psgn 1 0 * (dmin 1 _ τ (Fin.castSucc 0)).re`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dmin_zero]`. Simplify using `[psgn]`. Express the relevant statement in the definitionally equal form `0 < psgn 1 1 * (dmin 1 _ τ (Fin.succ 0)).re`. Rewrite using `[dmin_one]`. Simplify using `[psgn, sgn]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_mem_dom (hζ : IsPrimitiveRoot ζ 4) :
     (fun _ _ _ => 1 : Frame (data hζ).Ψ 1) ∈ (data hζ).dom := by
@@ -497,9 +495,9 @@ theorem one_mem_dom (hζ : IsPrimitiveRoot ζ 4) :
     rw [dmin_one]; simp [psgn, sgn]
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h : τ ∈ (data hζ).Ψ`. Conclude with `⟨⟨τ, h⟩⟩`. Distinguish the cases in `h' : ComplexEmbedding.conjugate τ ∈ (data hζ).Ψ`. Conclude with `⟨⟨_, h'⟩⟩`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `absurd (((data hζ).cmType τ).mpr h') h`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_type (hζ : IsPrimitiveRoot ζ 4) : Nonempty (data hζ).Ψ := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -515,11 +513,9 @@ noncomputable def gaussCuspData : DataX E4 1 :=
   GaussCusp.dataX (IsCyclotomicExtension.zeta_spec 4 ℚ E4)
 
 /- English proof (translation)
-Establish `hζ` using `IsCyclotomicExtension.zeta_spec 4 ℚ E4`. Use `⟨gaussCuspData, 1, GaussCusp.coordProd, 1, GaussCusp.coordProd_mem hζ, ?_, ⟨_, GaussCusp.one_mem_dom hζ, by simp [GaussCusp.coordProd]⟩, one_pos, rfl, ?_⟩` and prove the remaining obligations. Take `⟨τ⟩` from `GaussCusp.nonempty_type hζ`. Introduce `h`. Conclude with `one_ne_zero (congrFun (congrFun h τ) 0)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v _ hv b _ _`. Rewrite using `[GaussCusp.eq_zero_of_iso hv]`. Use `⟨1, Subgroup.one_mem _, rfl, fun τ => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `fin_cases i`.
-
-Use `fin_cases j`. Simplify using `[Data.flowMat]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_cuspData_rank_one : ∃ (X : DataX E4 1) (la : Wt X.Ψ 1) (P : Frame X.Ψ 1 → ℂ) (M : ℝ),
     P ∈ X.SS la ∧ la ≠ 0 ∧ (∃ x ∈ X.dom, P x ≠ 0) ∧ 0 < M ∧ X.Λ = X.L' ∧

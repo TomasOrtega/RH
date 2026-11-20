@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Establish `h : ((n : End A)) = n • (𝟙 A : End A)`. Rewrite using `[← zsmul_one]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(((n : End A)) : A ⟶ A) ≫ u = n • u`. Rewrite using `[h, Preadditive.zsmul_comp, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem intCast_comp_cpisog {K : Type} [Field K] {A B : AbVar K} (n : ℤ) (u : A ⟶ B) :
     (show A ⟶ A from ((n : End A))) ≫ u = n • u := by
@@ -21,7 +21,7 @@ theorem intCast_comp_cpisog {K : Type} [Field K] {A B : AbVar K} (n : ℤ) (u : 
   rw [h, Preadditive.zsmul_comp, Category.id_comp]
 
 /- English proof (translation)
-Establish `h : ((n : End B)) = n • (𝟙 B : End B)`. Rewrite using `[← zsmul_one]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `u ≫ (((n : End B)) : B ⟶ B) = n • u`. Rewrite using `[h, Preadditive.comp_zsmul, Category.comp_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_intCast_cpisog {K : Type} [Field K] {A B : AbVar K} (n : ℤ) (u : A ⟶ B) :
     u ≫ (show B ⟶ B from ((n : End B))) = n • u := by
@@ -31,11 +31,11 @@ theorem comp_intCast_cpisog {K : Type} [Field K] {A B : AbVar K} (n : ℤ) (u : 
   rw [h, Preadditive.comp_zsmul, Category.comp_id]
 
 /- English proof (translation)
-Introduce `K _ A B u f g hu hfg`. Take `⟨hdim, -, hpos, -⟩` from `GlobalTheory.AV.AbVar.isogeny_flat_finrank K A B u hu`. Establish `key : ∀ n : ℤ, deg (A` using `A) (B := A) ((n : End A) - f) = deg (A := B) (B := B) ((n : End B) - g) := by`. Introduce `n`. Establish `hc : (show A ⟶ A from ((n : End A) - f)) ≫ u = u ≫ (show B ⟶ B from ((n : End B) - g))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(((n : End A)) - f : A ⟶ A) ≫ u = u ≫ (((n : End B)) - g : B ⟶ B)`. Rewrite using `[Preadditive.sub_comp, Preadditive.comp_sub, intCast_comp_cpisog, comp_intCast_cpisog]`. Conclude with `congrArg (n • u - ·) hfg`. Establish `h1` using `(GlobalTheory.AV.AbVar.isIsogeny_comp_iff_and_deg_comp K A A B (show A ⟶ A from ((n : End A) - f)) u rfl hdim).2`. Establish `h2` using `(GlobalTheory.AV.AbVar.isIsogeny_comp_iff_and_deg_comp K A B B u (show B ⟶ B from ((n : End B) - g)) hdim rfl).2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hc, h2, mul_comm]`. Conclude with `(Nat.eq_of_mul_eq_mul_right hpos h1).symm`. Take `⟨⟨hm, hd, hev⟩, -⟩` from `GlobalTheory.T.abelianVarietyEndCharpoly_spec K A f`. Establish `hg : IsCharpoly g (charpoly f)` using `⟨hm, by rw [hd, hdim], fun n => by rw [hev n, key n]⟩`. Conclude with `(GlobalTheory.T.abelianVarietyEndCharpoly_spec K B g).2 _ hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem charpoly_eq_of_isogeny_intertwines : ∀ (K : Type) [Field K] (A B : AbVar K) (u : A ⟶ B) (f : End A) (g : End B), IsIsogeny u → (show A ⟶ A from f) ≫ u = u ≫ (show B ⟶ B from g) → charpoly f = charpoly g := by
   intro K _ A B u f g hu hfg

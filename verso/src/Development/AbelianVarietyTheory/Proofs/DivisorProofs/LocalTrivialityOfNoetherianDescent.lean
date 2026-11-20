@@ -16,21 +16,21 @@ namespace GlobalTheory.LocTrivDescent
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Rewrite using `[← cls_pull hL f (pull_isLB hL f), cls_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem triv_iff {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) (f : Y ⟶ X) :
     (∃ t : (L.pull f).Gen, t.IsGen) ↔ CechPic.pull f (cls L hL) = 0 := by
   rw [← cls_pull hL f (pull_isLB hL f), cls_eq_zero_iff]
 
 /- English proof (translation)
-The claim follows from `(cls_linComb hL _ _ h).trans (by simp [pull_id])`.
+A detailed English derivation is pending.
 -/
 theorem cls_lbPow_eq {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (k : ℕ) (h : (Hecke.lbPow L k).IsLB) :
     cls _ h = k • cls L hL :=
   (cls_linComb hL _ _ h).trans (by simp [pull_id])
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun z => z.left) (map_one (pushHom h (𝟙_ (Over S'))))`. Set `U : Over.mk ((𝟙_ (Over S')).hom ≫ f) ⟶ 𝟙_ (Over S)` to `Over.homMk f (by simp)`. Establish `e2 : (1 : Over.mk ((𝟙_ (Over S')).hom ≫ f) ⟶ G) = U ≫ 1` using `(comp_one U).symm`. Conclude with `e.trans (by rw [e2]; rfl)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_left_comp {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) :
@@ -41,9 +41,9 @@ theorem one_left_comp {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G]
   exact e.trans (by rw [e2]; rfl)
 
 /- English proof (translation)
-Establish `w : pullback.fst A₁.hom (spMap (g₀.comp j)) ≫ A₁.hom = (pullback.snd A₁.hom (spMap (g₀.comp j)) ≫ spMap g₀) ≫ spMap j`. Rewrite using `[pullback.condition, Category.assoc, GlobalTheory.spMap_comp_ring]`. Set `a` to `hψ.lift _ _ w`. Establish `ha1 : a ≫ ψ = pullback.fst _ _` using `hψ.lift_fst _ _ _`. Establish `ha2 : a ≫ A.hom = pullback.snd _ _ ≫ spMap g₀` using `hψ.lift_snd _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `n` to `pullback.lift a (pullback.snd _ _) ha2`. Establish `hn : n ≫ pullback.fst A.hom (spMap g₀) = a` using `pullback.lift_fst _ _ _`. Rewrite using `[← ha1, ← hn, Category.assoc, pull_comp, pull_comp, h, map_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fibre_triv {R R₁ : Type} [CommRing R] [CommRing R₁] (j : R₁ →+* R) {A : Over (Sp R)} {A₁ : Over (Sp R₁)}
     {ψ : A.left ⟶ A₁.left} (hψ : IsPullback ψ A.hom A₁.hom (spMap j)) {K : Type} [Field K] (g₀ : R →+* K)
@@ -60,9 +60,9 @@ theorem fibre_triv {R R₁ : Type} [CommRing R] [CommRing R₁] (j : R₁ →+* 
   rw [← ha1, ← hn, Category.assoc, pull_comp, pull_comp, h, map_zero]
 
 /- English proof (translation)
-Establish `le : A.hom ⁻¹ᵁ PrimeSpectrum.basicOpen (j r) ≤ ψ ⁻¹ᵁ (A₁.hom ⁻¹ᵁ PrimeSpectrum.basicOpen r)`. Introduce `x hx`. Establish `e : A₁.hom.base (ψ.base x) = (spMap j).base (A.hom.base x)`. Rewrite using `[← Scheme.Hom.comp_apply, w, Scheme.Hom.comp_apply]`. Use `show A₁.hom.base (ψ.base x) ∈ PrimeSpectrum.basicOpen r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hx`. Rewrite using `[← pull_comp, ← Scheme.Hom.resLE_comp_ι ψ le, pull_comp, h, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basicOpen_triv {R R₁ : Type} [CommRing R] [CommRing R₁] (j : R₁ →+* R) {A : Over (Sp R)}
     {A₁ : Over (Sp R₁)} {ψ : A.left ⟶ A₁.left} (w : ψ ≫ A₁.hom = A.hom ≫ spMap j) (c : Pic A₁.left) (r : R₁)
@@ -83,9 +83,9 @@ namespace GlobalTheory.LocTrivDescent
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Establish `hT` using `LB.isLB_triv X₀`. Establish `z : cls (LB.triv X₀) hT = 0` using `rfl`. Establish `key : ∀ {Y : Scheme.{0}} (g : Y ⟶ X₀), CechPic.pull g (cls M hM) = 0 ↔ LBIso (M.pull g) ((LB.triv X₀).pull g)`. Introduce `Y g`. Rewrite using `[← cls_eq_iff (pull_isLB hM g) (pull_isLB hT g), cls_pull hM, cls_pull hT, z, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨F, hF⟩` from `GlobalTheory.lbIso_descends_to_subring_containing_finset S R₀ X X₀ f f₀ π M (LB.triv X₀) hp hM hT ((key π).1 h0)`. Conclude with `⟨F, fun R₁ h hs X₁ f₁ π₁ hp₁ => (key π₁).2 (hF R₁ h hs X₁ f₁ π₁ hp₁)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cls_spread (S : Type) [CommRing S] (R₀ : Subring S) (X X₀ : Scheme.{0}) (f : X ⟶ Sp S) (f₀ : X₀ ⟶ Sp R₀)
     (π : X ⟶ X₀) [QuasiCompact f₀] [QuasiSeparated f₀] (M : LB X₀) (hM : M.IsLB)
@@ -103,31 +103,27 @@ theorem cls_spread (S : Type) [CommRing S] (R₀ : Subring S) (X X₀ : Scheme.{
   exact ⟨F, fun R₁ h hs X₁ f₁ π₁ hp₁ => (key π₁).2 (hF R₁ h hs X₁ f₁ π₁ hp₁)⟩
 
 /- English proof (translation)
-Introduce `H R _ A _ hA M hM h1 k hk h2 K _ g₀ h3`. Take `⟨S, G₀, _, φ, L₀, hft, hab, hφ, hL₀, hiso⟩` from `GlobalTheory.AmpleFibreMove.exists_fg_model R A hA M hM`. Use `hab.proper` as an intermediate fact. Use `set c₀ := cls L₀ hL₀ with hc₀`. Establish `hc : cls M hM = CechPic.pull φ c₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc₀, ← cls_pull hL₀ φ (pull_isLB hL₀ φ)]`. Conclude with `(cls_eq_iff _ _).2 hiso`. Set `e₀ : Sp S ⟶ G₀.left` to `(1 : 𝟙_ (Over (Sp S)) ⟶ G₀).left`. Establish `ha : CechPic.pull (spMap S.subtype) (CechPic.pull e₀ c₀) = 0`. Rewrite using `[← pull_comp, ← one_left_comp hφ, pull_comp, ← hc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(triv_iff hM _).1 h1`. Take `⟨F₁, hF₁⟩` from `cls_spread R S (Sp R) (Sp S) (𝟙 _) (𝟙 _) (spMap S.subtype) (L₀.pull e₀) (pull_isLB hL₀ e₀) (IsPullback.id_vert _) ha`. Establish `hP₀ : (Hecke.lbPow L₀ k).IsLB` using `LB.isLB_linComb hL₀ _ _`. Establish `hb : CechPic.pull φ (cls _ hP₀) = 0`. Take `⟨t, ht⟩` from `h2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hPM : (Hecke.lbPow M k).IsLB` using `LB.isLB_linComb hM _ _`. Establish `e` using `(cls_eq_zero_iff hPM).2 ⟨t, ht⟩`. Rewrite `e` using `[cls_lbPow_eq hM, hc]`. Rewrite using `[cls_lbPow_eq hL₀, map_nsmul]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨F₂, hF₂⟩` from `cls_spread R S A.left G₀.left A.hom G₀.hom φ _ hP₀ hφ.1 hb`. Take `⟨u, hu⟩ : ∃ u : R, (k : R) * u = 1` from `⟨_, hk.mul_val_inv⟩`. Take `⟨R₁, h, hT, hft₁⟩` from `GlobalTheory.KeyTf.exists_finiteType_subring_adjoin R S (F₁ ∪ F₂ ∪ {u}) hft`. Establish `hT₁ : (F₁ : Set R) ⊆ R₁` using `fun x hx => hT (by simp [hx])`. Establish `hT₂ : (F₂ : Set R) ⊆ R₁` using `fun x hx => hT (by simp [hx])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hu₁ : u ∈ R₁` using `hT (by simp)`. Establish `: IsNoetherianRing R₁` using `Algebra.FiniteType.isNoetherianRing ℤ R₁`. Set `t : Sp R₁ ⟶ Sp S` to `spMap (Subring.inclusion h)`. Establish `et : spMap R₁.subtype ≫ t = spMap S.subtype`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `hab.comm` as an intermediate fact. Use `hab.smooth` as an intermediate fact. Use `hab.geomConnected` as an intermediate fact. Use `letI : GrpObj ((Over.pullback t).obj G₀) := Functor.grpObjObj`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `A₁ : Over (Sp R₁)` to `(Over.pullback t).obj G₀`. Establish `hab₁ : IsAbelianScheme A₁` using `{ comm := inferInstance smooth := inferInstanceAs (Smooth (pullback.snd G₀.hom t)) proper := inferInstanceAs (IsProper (pullback.snd G₀.hom t)) geomConnected := inferInstanceAs (GeometricallyConnected (pullback.snd G₀.hom t)) }`. Establish `hpb₁ : IsPullback (pullback.fst G₀.hom t) A₁.hom G₀.hom t` using `IsPullback.of_hasPullback _ _`. Establish `wφ : φ ≫ G₀.hom = (A.hom ≫ spMap R₁.subtype) ≫ t`. Rewrite using `[Category.assoc, et]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hφ.1.w`. Set `ψ : A.left ⟶ A₁.left` to `pullback.lift φ (A.hom ≫ spMap R₁.subtype) wφ`. Establish `hψ₁ : ψ ≫ pullback.fst G₀.hom t = φ` using `pullback.lift_fst _ _ _`. Establish `hψ₂ : ψ ≫ A₁.hom = A.hom ≫ spMap R₁.subtype` using `pullback.lift_snd _ _ _`. Establish `hψ : IsGrpPullback A A₁ (spMap R₁.subtype) ψ` using `(isGrpPullback_pullback G₀ t).cancel (hφ.congr et.symm hψ₁.symm) hψ₂`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `M₁ : LB A₁.left` to `L₀.pull (pullback.fst G₀.hom t)`. Establish `hM₁ : M₁.IsLB` using `pull_isLB hL₀ _`. Establish `hc₁ : cls M₁ hM₁ = CechPic.pull (pullback.fst G₀.hom t) c₀` using `cls_pull hL₀ _ _`. Establish `hcM : cls M hM = CechPic.pull ψ (cls M₁ hM₁)`. Rewrite using `[hc₁, ← pull_comp, hψ₁, hc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r, hr, hgen⟩` from `H R₁ A₁ hab₁ M₁ hM₁ ((triv_iff hM₁ _).2 (by`. Rewrite using `[hc₁, ← pull_comp, one_left_comp (isGrpPullback_pullback G₀ t), pull_comp]`. Conclude with `hF₁ R₁ h hT₁ (Sp R₁) (𝟙 _) t (IsPullback.id_vert _)))`. Use `k (isUnit_iff_exists_inv.2 ⟨⟨u, hu₁⟩, Subtype.ext (by simpa using hu)⟩)`. Use the proof step `(by`.
-
-Establish `hPM₁ : (Hecke.lbPow M₁ k).IsLB` using `LB.isLB_linComb hM₁ _ _`. Use `(cls_eq_zero_iff hPM₁).1 ?_` and prove the remaining obligations. Rewrite using `[cls_lbPow_eq hM₁, hc₁, ← map_nsmul, ← cls_lbPow_eq hL₀ k hP₀]`. Conclude with `hF₂ R₁ h hT₂ A₁.left A₁.hom _ hpb₁)`. Use `K (g₀.comp R₁.subtype)`.
-
-Use the proof step `((triv_iff hM₁ _).2 (fibre_triv R₁.subtype hψ.1 g₀ _ (by rw [← hcM]; exact (triv_iff hM _).1 h3)))`. Use `⟨r, hr, (triv_iff hM _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[hcM]`. Conclude with `basicOpen_triv R₁.subtype hψ₂ _ r ((triv_iff hM₁ _).1 hgen)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locTriv_of_noetherian : (∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ (M : LB A.left), M.IsLB → (∃ t : (M.pull (1 : 𝟙_ (Over (Sp R)) ⟶ A).left).Gen, t.IsGen) → ∀ k : ℕ, IsUnit (k : R) → (∃ t : (GlobalTheory.UPel.HT.Hecke.lbPow M k).Gen, t.IsGen) → ∀ (K : Type) [Field K] (g₀ : R →+* K), (∃ t : (M.pull (pullback.fst A.hom (spMap g₀))).Gen, t.IsGen) → ∃ r : R, g₀ r ≠ 0 ∧ ∃ t : (M.pull (A.hom ⁻¹ᵁ PrimeSpectrum.basicOpen r).ι).Gen, t.IsGen) → ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ (M : LB A.left), M.IsLB → (∃ t : (M.pull (1 : 𝟙_ (Over (Sp R)) ⟶ A).left).Gen, t.IsGen) → ∀ k : ℕ, IsUnit (k : R) → (∃ t : (GlobalTheory.UPel.HT.Hecke.lbPow M k).Gen, t.IsGen) → ∀ (K : Type) [Field K] (g₀ : R →+* K), (∃ t : (M.pull (pullback.fst A.hom (spMap g₀))).Gen, t.IsGen) → ∃ r : R, g₀ r ≠ 0 ∧ ∃ t : (M.pull (A.hom ⁻¹ᵁ PrimeSpectrum.basicOpen r).ι).Gen, t.IsGen := by
   intro H R _ A _ hA M hM h1 k hk h2 K _ g₀ h3

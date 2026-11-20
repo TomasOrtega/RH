@@ -4,9 +4,7 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Kunne
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC CrystallineSemistableComparison CrystallineSemistableComparison.Onto UpperTheory.Gal.KunnethLefschetz.G.PX
 
 /- English proof (translation)
-Introduce `V s s' h`. Use `choose U hxU hU using h`. Use `TopCat.Sheaf.eq_of_locally_eq' V.sheaf (fun x => (U x).ι ''ᵁ ⊤) ⊤ (fun x => homOfLE le_top) ?_ s s' ?_` and prove the remaining obligations. Introduce `y _`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨y, ⟨⟨y, hxU y⟩, trivial, rfl⟩⟩`.
-
-Introduce `x`. Conclude with `hU x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.G.PX.sectionExt :
     ∀ {V : Scheme.{0}} (s s' : Γ(V, ⊤)), (∀ x : V, ∃ U : V.Opens, x ∈ U ∧ U.ι.appTop.hom s = U.ι.appTop.hom s') → s = s' := by

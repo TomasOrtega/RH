@@ -14,9 +14,9 @@ section General
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[mem_closure_iff_frequently]`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[Filter.not_frequently]`. Apply `h0` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : f =ᶠ[𝓝 x] (fun _ => (0 : ℂ))` using `h.mono fun y hy => by simpa using hy`. Use `GlobalTheory.SCV.eqOn_of_eventuallyEq isOpen_univ isPreconnected_univ hf.differentiableOn (differentiableOn_const (0 : ℂ)) (Set.mem_univ x) h1` as an intermediate fact. Use function extensionality and compare the values at `y`. Conclude with `this (Set.mem_univ y)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem dense_ne_zero [FiniteDimensional ℂ E] {f : E → ℂ} (hf : Differentiable ℂ f)
     (h0 : f ≠ 0) : Dense {x | f x ≠ 0} := by
@@ -32,9 +32,9 @@ theorem dense_ne_zero [FiniteDimensional ℂ E] {f : E → ℂ} (hf : Differenti
   exact this (Set.mem_univ y)
 
 /- English proof (translation)
-Use `choose φ hφ using h`. Use `⟨fun a => φ a a, fun a => ?_, fun x => (hφ x).self_of_nhds.2⟩` and prove the remaining obligations. Establish `key : (fun x => φ x x) =ᶠ[𝓝 a] φ a` using `by filter_upwards [(hφ a).eventually_nhds] with x hx`. Establish `hfr : ∃ᶠ y in 𝓝 x, y ∈ {x | θ x ≠ 0}` using `mem_closure_iff_frequently.mp (hU x)`. Establish `hfr2 : ∃ᶠ y in 𝓝 x, φ x y = φ a y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hfr.and_eventually (hx.and (hφ x))).mono ?_` and prove the remaining obligations. Introduce and unpack `y ⟨hy, ⟨-, h1⟩, -, h2⟩`. Conclude with `mul_right_cancel₀ hy (h2.symm.trans h1)`. Conclude with `tendsto_nhds_unique_of_frequently_eq (hφ x).self_of_nhds.1.continuousAt hx.self_of_nhds.1.continuousAt hfr2`. Conclude with `(hφ a).self_of_nhds.1.congr_of_eventuallyEq key`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_entire_quotient {θ D : E → ℂ} (hU : Dense {x | θ x ≠ 0})
     (h : ∀ a, ∃ φ : E → ℂ, ∀ᶠ x in 𝓝 a, DifferentiableAt ℂ φ x ∧ D x = φ x * θ x) :
@@ -53,37 +53,35 @@ theorem exists_entire_quotient {θ D : E → ℂ} (hU : Dense {x | θ x ≠ 0})
   exact (hφ a).self_of_nhds.1.congr_of_eventuallyEq key
 
 /- English proof (translation)
-Use `set k : ℂ := (m : ℂ) + 1 with hk`. Establish `hk0 : k ≠ 0` using `Nat.cast_add_one_ne_zero m`. Use `set D : E → ℂ := fun x => fderiv ℂ θ x ξ with hD`. Establish `hDd : Differentiable ℂ D`. Rewrite using `[← differentiableOn_univ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.SCV.differentiableOn_fderiv_apply isOpen_univ hθ.differentiableOn ξ`. Establish `hU` using `dense_ne_zero hθ h0`. Establish `hUo : IsOpen {x | θ x ≠ 0}` using `isOpen_ne_fun hθ.continuous continuous_const`. Take `⟨x₀, hx₀⟩ : ∃ x, θ x ≠ 0` from `hU.nonempty`. Establish `hU' : ∀ (p : E) (c : ℂ), c ≠ 0 → Dense {x | θ (p - c • x) ≠ 0}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `p c hc`. Use `dense_ne_zero (f := fun x => θ (p - c • x)) (hθ.comp (by fun_prop)) fun h => hx₀ ?_` and prove the remaining obligations. Use `congrFun h (c⁻¹ • (p - x₀))` as an intermediate fact. Simplify `this` using `[smul_smul, hc]`. Take `⟨ψ, hψ, hDψ⟩` from `exists_entire_quotient (D := D) hU (by`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Introduce `a`. Take `⟨b, hb1, hb2⟩` from `((hU' (s - a) k hk0).inter_of_isOpen_right hU hUo).nonempty`. Simplify using `only [Set.mem_setOf_eq] at hb1 hb2`. Use `⟨fun x => γ - k * D b / θ b - D (s - x - k • b) / θ (s - x - k • b), ?_⟩` and prove the remaining obligations. Establish `hc : ContinuousAt (fun x => θ (s - x - k • b)) a` using `(hθ.continuous.comp (by fun_prop)).continuousAt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hc.eventually_ne hb1] with x hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `d1 : DifferentiableAt ℂ (fun x => D (s - x - k • b)) x` using `(hDd.comp (f := fun x => s - x - k • b) (by fun_prop)) x`. Establish `d2 : DifferentiableAt ℂ (fun x => θ (s - x - k • b)) x` using `(hθ.comp (f := fun x => s - x - k • b) (by fun_prop)) x`. Simplify using `only [div_eq_mul_inv]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(differentiableAt_const _).sub (d1.mul (d2.inv hx))`. Use `hrel x b` as an intermediate fact. Establish `hp : θ b ^ m ≠ 0` using `pow_ne_zero _ hb2`. Clear the denominators using the available nonvanishing facts. Apply `mul_left_cancel₀ hp` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hD]`. Take the linear combination `this)`. Establish `hψc` using `hψ.continuous`. Establish `hfun : ∀ a b : E, ψ a + k * ψ b + ψ (s - a - k • b) = γ`. Establish `h1 : ∀ b, θ b ≠ 0 → ∀ a, ψ a + k * ψ b + ψ (s - a - k • b) = γ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce `b hb a`. Establish `hd` using `(hU' (s - k • b) 1 one_ne_zero).inter_of_isOpen_right hU hUo`. Use `congrFun (Continuous.ext_on hd (f := fun a => ψ a + k * ψ b + ψ (s - a - k • b)) (g := fun _ => γ) (by fun_prop) continuous_const ?_) a` and prove the remaining obligations. Introduce and unpack `x ⟨hx1, hx2⟩`. Simplify using `only [Set.mem_setOf_eq, one_smul] at hx1 hx2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hx1` using `[sub_right_comm]`. Use `hrel x b` as an intermediate fact. Establish `e1` using `hDψ x`. Establish `e2` using `hDψ b`. Establish `e3` using `hDψ (s - x - k • b)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hD] at e1 e2 e3`. Rewrite `this` using `[e1, e2, e3]`. Apply `mul_right_cancel₀ (mul_ne_zero (mul_ne_zero hx2 (pow_ne_zero (m + 1) hb)) hx1)` to reduce the goal to its premises. Take the linear combination `this`. Introduce `a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrFun (Continuous.ext_on hU (f := fun b => ψ a + k * ψ b + ψ (s - a - k • b)) (g := fun _ => γ) (by fun_prop) continuous_const fun x hx => h1 x hx a) b`. Establish `hdiff : ∀ y w : E, ψ (y + w) = ψ y + (ψ w - ψ 0)`. Introduce `y w`. Establish `e1` using `hfun (y + w) (k⁻¹ • (s - y - w))`. Establish `e2` using `hfun y (k⁻¹ • (s - y - w))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `e1`, `e2` using `[smul_inv_smul₀ hk0]`. Rewrite `e1` using `[show s - (y + w) - (s - y - w) = 0 by abel]`. Rewrite `e2` using `[show s - y - (s - y - w) = w by abel]`. Take the linear combination `e1 - e2`. Establish `hκ : Differentiable ℂ (fun r : ℂ => ψ (r • ξ) - ψ 0)` using `by fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨K, hK⟩` from `hκ.isExactOn_univ`. Use `⟨fun y => Complex.exp (t * ψ y + (K t - K 0)), by fun_prop, fun y => Complex.exp_ne_zero _, fun y => ?_⟩` and prove the remaining obligations. Establish `hF : ∀ r : ℂ, HasDerivAt (fun r : ℂ => θ (y + r • ξ) * Complex.exp (-(r * ψ y + K r))) 0 r`. Introduce `r`. Establish `hl : HasDerivAt (fun r : ℂ => y + r • ξ) ξ r`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `using ((hasDerivAt_id r).smul_const ξ).const_add y`. Establish `h1 : HasDerivAt (fun r : ℂ => θ (y + r • ξ)) (D (y + r • ξ)) r` using `(hθ (y + r • ξ)).hasFDerivAt.comp_hasDerivAt r hl`. Establish `h2 : HasDerivAt (fun r : ℂ => -(r * ψ y + K r)) (-(1 * ψ y + (ψ (r • ξ) - ψ 0))) r` using `(((hasDerivAt_id r).mul_const (ψ y)).add (hK r (Set.mem_univ r))).neg`. Use `(h1.mul h2.cexp).congr_deriv ?_` and prove the remaining obligations. Rewrite using `[hDψ, hdiff]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hc` using `is_const_of_deriv_eq_zero (fun r => (hF r).differentiableAt) (fun r => (hF r).deriv) t 0`. Simplify using `only [zero_smul, add_zero, zero_mul, zero_add] at hc`. Establish `e : θ (y + t • ξ) = (θ (y + t • ξ) * Complex.exp (-(t * ψ y + K t))) * Complex.exp (t * ψ y + K t)`. Rewrite using `[mul_assoc, ← Complex.exp_add]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[e, hc, mul_assoc, ← Complex.exp_add, mul_comm]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_unit_of_three_term [FiniteDimensional ℂ E] {θ : E → ℂ} (hθ : Differentiable ℂ θ)
     (h0 : θ ≠ 0) (ξ s : E) (γ : ℂ) (m : ℕ)
@@ -188,23 +186,21 @@ theorem exists_unit_of_three_term [FiniteDimensional ℂ E] {θ : E → ℂ} (h�
 end General
 
 /- English proof (translation)
-Introduce `H1 H2 H3 g τ hτ N hN z ξ γ hf`. Take `⟨m, rfl⟩ : ∃ m, N = m + 3` from `⟨N - 3, by omega⟩`. Take `⟨⟨hθ, hlaw⟩, h0⟩` from `H1 g τ hτ`. Establish `hper` using `H2 g τ hτ`. Establish `hdisc` using `(H3 g τ hτ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set θ : (Fin g → ℂ) → ℂ := fun z => theta 0 0 z τ with hθdef`. Establish `hmem : ∀ t : ℂ, t • ξ ∈ periodLattice τ`. Introduce `t`. Take `⟨h, h1, h2, h3⟩` from `exists_unit_of_three_term hθ h0 ξ (((m : ℂ) + 3) • z) γ m (by`. Introduce `a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set c := ((m : ℂ) + 3) • z - a - ((m : ℂ) + 1) • b with hc`. Establish `hd : ∀ p : Fin g → ℂ, HasFDerivAt (fun x => θ (x + (p - z))) (fderiv ℂ θ p) z`. Introduce `p`. Use `(hθ p).hasFDerivAt` as an intermediate fact. Rewrite `this` using `[show p = z + (p - z) by abel]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[← hasFDerivAt_comp_add_right]`. Simplify using `using this`. Establish `hdd : ∀ p : Fin g → ℂ, Differentiable ℂ (fun x => θ (x + (p - z)))` using `fun p => hθ.comp (by fun_prop)`. Establish `key` using `hf (fun x => θ (x + (a - z)) * θ (x + (b - z)) ^ (m + 1) * θ (x + (c - z))) ⟨((hdd a).mul ((hdd b).pow _)).mul (hdd c), ?_⟩`. Establish `hD` using `(((hd a).mul ((hd b).pow (m + 1))).mul (hd c)).fderiv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (fun x => θ (x + (a - z)) * θ (x + (b - z)) ^ (m + 1) * θ (x + (c - z))) = ((fun x => θ (x + (a - z))) * (fun x => θ (x + (b - z)) ^ (m + 1))) * fun x => θ (x + (c - z))` using `rfl`. Rewrite `key` using `[e, hD]`. Simplify using `at key`. Take the linear combination `key`. Introduce `n n' x`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : ∀ p : Fin g → ℂ, x + τ *ᵥ ofIntVec n + ofIntVec n' + p = x + p + τ *ᵥ ofIntVec n + ofIntVec n'` using `fun p => by abel`. Simplify using `only [e]`. Rewrite using `[hlaw n n', hlaw n n', hlaw n n', mul_pow]`. Establish `e2 : eC (-((m + 3 : ℕ) : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ x)) = eC (-(1 : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ (x + (a - z)))) * eC (-(1 : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ (x + (b - z)))) ^ (m + 1) * eC (-(1 : …`. Unfold `eC`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Complex.exp_nat_mul, ← Complex.exp_add, ← Complex.exp_add, hc]`. Use `congr 1`. Simplify using `only [dotProduct_add, dotProduct_sub, dotProduct_smul, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Use the proof step `ring) t`. Conclude with `hper _ h h1 h2 h3`. Establish `hcont : Continuous (fun t : ℂ => (⟨t • ξ, hmem t⟩ : periodLattice τ))` using `Continuous.subtype_mk (by fun_prop) _`. Use `PreconnectedSpace.constant (inferInstance : PreconnectedSpace ℂ) hcont (x := 1) (y := 0)` as an intermediate fact.
-
-Simplify using `using congrArg Subtype.val this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem level_three_separates_tangent_vectors :
     (∀ (g : ℕ) (τ : Matrix (Fin g) (Fin g) ℂ), τ ∈ SiegelH (Fin g) → (Differentiable ℂ (fun z => theta 0 0 z τ) ∧ ∀ (n n' : Fin g → ℤ) z, (fun z => theta 0 0 z τ) (z + τ *ᵥ ofIntVec n + ofIntVec n') = eC (-(1 : ℂ) * (ofIntVec n ⬝ᵥ (τ *ᵥ ofIntVec n) / 2 + ofIntVec n ⬝ᵥ z)) * (fun z => theta 0 0 z τ) z) ∧ (fun z => theta 0 0 z τ) ≠ 0) →

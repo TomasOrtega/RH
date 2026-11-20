@@ -18,7 +18,7 @@ variable {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS)
   {s : Matrix (IxF F nS nT) (IxF F nS nT) ℂ}
 
 /- English proof (translation)
-The claim follows from `SerA.main C hG hR hO hs a`.
+A detailed English derivation is pending.
 -/
 theorem ser_vacuum (C : Ctx σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hR : RatSD σ JS JT ξ₀ Λ)
     (hO : IsLatRepF σ JS JT ξ₀ B.ψ hc Λ w lam Om) (hs : CartF σ JS JT ξ₀ B θ s) (a : IxF F nS nT → ℂ) :

@@ -11,7 +11,7 @@ namespace PositivityTheory.PfSWUS
 open PositivityTheory.SiegelWeilFormula
 
 /- English proof (translation)
-The claim follows from `Gen.whitGenLtOf SwLocFin.locFin2 Gunr.unrWhit (GReal.realWhit_of PositivityTheory.Rg.Sw.WR.wr) GFac.factorX PositivityTheory.PfSWUS.HMass.siegelDensitiesLowA`.
+A detailed English derivation is pending.
 -/
 theorem whitGenLt : PositivityTheory.SiegelWeilFormula.Gen.WhitGenLt :=
   Gen.whitGenLtOf SwLocFin.locFin2 Gunr.unrWhit (GReal.realWhit_of PositivityTheory.Rg.Sw.WR.wr) GFac.factorX

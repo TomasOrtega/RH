@@ -7,7 +7,7 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 open Formalism.MainNotions.G
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_congr (Sym.equivNatSumOfFintype (Fin r) g), Nat.card_eq_fintype_card, Sym.card_sym_eq_choose, Fintype.card_fin]`. Unfold `sdXi`. Rewrite using `[show r + g - 1 = g + r - 1 by omega]`. Conclude with `Nat.choose_symm_of_eq_add (by omega)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_tuples (r g : ℕ) (hr : 0 < r) : Nat.card {P : Fin r → ℕ // ∑ i, P i = g} = sdXi r g := by
   classical
@@ -34,7 +34,7 @@ def monoEquiv (N r : ℕ) (d : Fin N → ℕ) :
     simp
 
 /- English proof (translation)
-Unfold `Pol`. Rewrite using `[Module.finrank_eq_nat_card_basis (MvPolynomial.basisRestrictSupport K _), Nat.card_congr (monoEquiv N r d), Nat.card_pi]`. Conclude with `Finset.prod_congr rfl fun i _ => card_tuples r (d i) hr`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_Pol (K : Type*) [Field K] (N r : ℕ) (hr : 0 < r) (d : Fin N → ℕ) :
     Module.finrank K (Pol K r d) = ∏ i, sdXi r (d i) := by
@@ -56,7 +56,7 @@ def dvr5 : UniformizedDVR 5 ℤ_[5] where
   complete := inferInstance
 
 /- English proof (translation)
-Introduce `N r _ LL`. Establish `h` using `hY 5 ℤ_[5] dvr5 N r LL 0 Fin.elim0 Fin.elim0 (fun k => k.elim0)`. Rewrite using `[← h]`. Unfold `Yjt chPol`. Rewrite using `[iInf_of_empty, inf_top_eq, finrank_Pol _ N r (NeZero.pos r) LL.deg, Nat.cast_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem chainDim_of (hY : DimYAt) : ChainDimAt := by
   intro N r _ LL

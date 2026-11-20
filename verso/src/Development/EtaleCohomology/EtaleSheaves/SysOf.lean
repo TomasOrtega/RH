@@ -18,7 +18,7 @@ def NbIso : Prop := ∀ {P : Scheme.{0}} [CompactSpace P] [QuasiSeparatedSpace P
         Nonempty (c.pt ≅ (Spec.map (CommRingCat.ofHom (algebraMap W (Localization.AtPrime q.asIdeal))) ≫ w).normalization)
 
 /- English proof (translation)
-Introduce `P _ _ W _ w hW y`. Take `⟨q, J, _, _, D, ι, h1, h2, h3⟩` from `hN W w hW y`. Take `⟨c, ⟨hc⟩⟩` from `hH D (fun f => (h2 f).2)`. Conclude with `⟨q, J, inferInstance, inferInstance, D, c, ι, ⟨⟨hc⟩, h1, fun f => h2 f⟩, h3 c hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Sys_of (hH : HasLim) (hN : NbIso) : Sys := by
   intro P _ _ W _ w hW y

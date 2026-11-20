@@ -21,9 +21,9 @@ structure PolFam (H : Sesq V) (α : V → ℂ) {ι : Type} (Y : ι → AddSubgro
     α (x + y) = α x * α y * Complex.exp ((Real.pi : ℂ) * Complex.I * (altE H x y : ℂ))
 
 /- English proof (translation)
-Apply the tactic sequence `have hz2 : α z * α z = 1 := by rcases h3.1 z hz with h | h <;> rw [h] <;> norm_num`. Apply the tactic sequence `have hy2 : α y * α y = 1 := by rcases h2.1 y hy with h | h <;> rw [h] <;> norm_num`. Establish `he : Complex.exp ((Real.pi : ℂ) * Complex.I * (altE H z y : ℂ)) * Complex.exp (-(Real.pi : ℂ) * Complex.I * (altE H z y : ℂ)) = 1`. Rewrite using `[← Complex.exp_add, show (Real.pi : ℂ) * Complex.I * (altE H z y : ℂ) + -(Real.pi : ℂ) * Complex.I * (altE H z y : ℂ) = 0 by ring, Complex.exp_zero]`. Unfold `psiT`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hlaw]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem psiT_one {H : Sesq V} {α : V → ℂ} {Λ₂ Λ₃ : AddSubgroup V} (h2 : IsSemiChar H Λ₂ α) (h3 : IsSemiChar H Λ₃ α)
     {z y : V} (hz : z ∈ Λ₃) (hy : y ∈ Λ₂)
@@ -42,7 +42,7 @@ theorem psiT_one {H : Sesq V} {α : V → ℂ} {Λ₂ Λ₃ : AddSubgroup V} (h2
     _ = 1 := by rw [hz2, hy2, he]; ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hP.meet x h h' i₁, hP.meet x h h' i₂, hP.meet x h h' i₃⟩ dec₁ := hP.dec i₁ dec₂ := hP.dec i₂ dec₃ := hP.dec i₃ isoA z y hz hy hz3 hy2 h1 := psiT_one hT.sc₂ hT.sc₃ hz3 hy2 (hP.semiA z y hz hy i₃ i₂ i₁ hz3 hy2 h1) isoA' z y hz hy hz3 hy2 h1 := psiT_one hT.sc₂ hT.sc₃ hz3 hy2 (hP.se …`.
+Supply the required witnesses or components.
 -/
 theorem splitTri_of {H : Sesq V} {α : V → ℂ} {ι : Type} {Y : ι → AddSubgroup V} {A A' : AddSubgroup V}
     (hP : PolFam H α Y A A') (i₁ i₂ i₃ : ι) (hT : TripleData H α (Y i₁) (Y i₂) (Y i₃)) :

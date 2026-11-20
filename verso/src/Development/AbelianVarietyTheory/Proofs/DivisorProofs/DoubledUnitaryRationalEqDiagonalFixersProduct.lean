@@ -12,21 +12,19 @@ namespace GlobalTheory.ThetaRatGen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective (R := 𝓞 F) (K := F))`.
+A detailed English derivation is pending.
 -/
 theorem inclR_inj : Function.Injective (inclR (F := F) (E := E) (AF F)) :=
   Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective (R := 𝓞 F) (K := F))
 
 /- English proof (translation)
-Simplify using `[cA, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cA_inclR (σ : E →ₐ[F] E) (e : E) : cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   simp [cA, inclR]
 
 /- English proof (translation)
-Use `haveI : Infinite F := Infinite.of_injective (Nat.cast : ℕ → F) Nat.cast_injective`. Establish `hinf : (Set.range (algebraMap F E)).Infinite` using `Set.infinite_range_of_injective (algebraMap F E).injective`. Take `⟨y, ⟨t, rfl⟩, hy⟩` from `hinf.exists_notMem_finset ψ.roots.toFinset`. Use `⟨t, fun h => hy ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.mem_toFinset, Polynomial.mem_roots hψ]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eval_ne (ψ : Polynomial E) (hψ : ψ ≠ 0) : ∃ t : F, ψ.eval (algebraMap F E t) ≠ 0 := by
   classical
@@ -38,7 +36,7 @@ theorem exists_eval_ne (ψ : Polynomial E) (hψ : ψ ≠ 0) : ∃ t : F, ψ.eval
   exact h
 
 /- English proof (translation)
-Introduce `ψ h`. Establish `hψ : ψ ≠ 0` using `by simpa using h E (RingHom.id E) (map_one _)`. Take `⟨t, ht⟩` from `exists_eval_ne (F := F) ψ hψ`. Conclude with `⟨t, by simpa using ht⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hyp1 : ∀ ψ : Polynomial E, (∀ (Ω : Type) [Field Ω] (φ : E →+* Ω), φ 1 = 1 → ψ.map φ ≠ 0) →
     ∃ t : F, IsUnit ((1 : E) * ψ.eval (algebraMap F E t) + (1 - 1)) := by
@@ -48,7 +46,7 @@ theorem hyp1 : ∀ ψ : Polynomial E, (∀ (Ω : Type) [Field Ω] (φ : E →+* 
   exact ⟨t, by simpa using ht⟩
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem invol {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -56,13 +54,13 @@ theorem invol {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x 
   rw [h.2.2.2, h.2.2.2, star_star]
 
 /- English proof (translation)
-Establish `hne : σ ≠ AlgHom.id F E`. Introduce `hσ`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `h.2.1` as an intermediate fact. Apply `IsTotallyComplex.complexEmbedding_not_isReal τ` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Use `h.2.2.2 τ x` as an intermediate fact. Rewrite `this` using `[hσ]`. Simplify `this.symm` using `[ComplexEmbedding.conjugate_coe_eq]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, σ x ≠ x := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hne (AlgHom.ext hc)`. Use `⟨x - σ x, sub_ne_zero.mpr (Ne.symm hx), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_sub, invol h]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_anti {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ ρ : E, ρ ≠ 0 ∧ σ ρ = -ρ := by
   have hne : σ ≠ AlgHom.id F E := by
@@ -85,21 +83,21 @@ theorem exists_anti {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ ρ : E, ρ �
 
 variable (F) in
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 theorem incM_mul {m n k : Type} [Fintype n] (A : Matrix m n E) (B : Matrix n k E) :
     incM F (A * B) = incM F A * incM F B := Matrix.map_mul
 
 variable (F) in
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `cases i <;> cases j <;> simp [incM, dbl]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem incM_dbl {β : Type} (J : Matrix β β E) : incM F (dbl J) = dbl (incM F J) := by
   ext i j
   cases i <;> cases j <;> simp [incM, dbl]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM, cA_inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_map (σ : E →ₐ[F] E) {m n : Type} (A : Matrix m n E) : (incM F A).map (cA σ) = incM F (A.map σ) := by
   ext i j
@@ -113,7 +111,7 @@ theorem incM_transpose {m n : Type} (A : Matrix m n E) : (incM F A)ᵀ = incM F 
 
 variable (F) in
 /- English proof (translation)
-Simplify using `[incM, Matrix.fromRows_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem incM_diag {β : Type} [DecidableEq β] :
     incM F (Matrix.fromRows (1 : Matrix β β E) (1 : Matrix β β E)) = Matrix.fromRows (1 : Matrix β β (AE F E)) 1 := by
@@ -121,14 +119,14 @@ theorem incM_diag {β : Type} [DecidableEq β] :
 
 variable (F) in
 /- English proof (translation)
-Simplify using `[incM, Matrix.fromRows_map, Matrix.map_neg _ (map_neg (inclR (F := F) (E := E) (AF F)))]`.
+Simplify using the standard rewrite rules.
 -/
 theorem incM_nabla {β : Type} [DecidableEq β] :
     incM F (Matrix.fromRows (1 : Matrix β β E) (-1 : Matrix β β E)) = Matrix.fromRows (1 : Matrix β β (AE F E)) (-1) := by
   simp [incM, Matrix.fromRows_map, Matrix.map_neg _ (map_neg (inclR (F := F) (E := E) (AF F)))]
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `inclR_inj (congrFun (congrFun h i) j)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem incM_inj {m n : Type} {A B : Matrix m n E} (h : incM F A = incM F B) : A = B := by
   ext i j
@@ -141,20 +139,18 @@ def up (σ : E →ₐ[F] E) {b : ℕ} (JB : Matrix (Fin b) (Fin b) E) (p : UG σ
     rw [incM_map, ← incM_dbl, incM_transpose, ← incM_mul, ← incM_mul, hp]⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (map_mul _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem up_mul (σ : E →ₐ[F] E) {b : ℕ} (JB : Matrix (Fin b) (Fin b) E) (p q : UG σ (dbl JB)) :
     up σ JB (p * q) = up σ JB p * up σ JB q :=
   Subtype.ext (map_mul _ _ _)
 
 /- English proof (translation)
-Establish `hdet : IsUnit g₀.det`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Establish `hu : IsUnit (g.1 : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) (AE F E)).det` using `(Matrix.isUnit_iff_isUnit_det (g.1 : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) (AE F E))).mp (Units.isUnit _)`. Establish `e : (incM F g₀).det = inclR (F` using `F) (AF F) g₀.det := (RingHom.map_det _ _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hu` using `[hg, e, h0, map_zero, isUnit_zero_iff]`. Conclude with `zero_ne_one (inclR_inj (F := F) (E := E) (by rw [map_zero, map_one]; exact hu))`. Establish `hu : IsUnit g₀` using `(Matrix.isUnit_iff_isUnit_det _).mpr hdet`. Establish `hmem : hu.unit ∈ UG σ (dbl JB)` using `by show (hu.unit : Matrix _ _ E)ᵀ * dbl JB * (hu.unit : Matrix _ _ E).map σ = dbl JB`. Rewrite using `[IsUnit.unit_spec]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ((g : GL (Fin b ⊕ Fin b) (AE F E)) : Matrix _ _ (AE F E))ᵀ * dbl (incM F JB) * ((g : GL (Fin b ⊕ Fin b) (AE F E)) : Matrix _ _ (AE F E)).map (cA σ) = dbl (incM F JB)` using `g.2`. Rewrite `h2` using `[hg, incM_map, ← incM_dbl, incM_transpose, ← incM_mul, ← incM_mul]`. Conclude with `incM_inj h2`. Use `⟨⟨hu.unit, hmem⟩, IsUnit.unit_spec hu, Subtype.ext (Units.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[hg]`.
-
-Conclude with `(congrArg (incM F) (IsUnit.unit_spec hu)).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem down (σ : E →ₐ[F] E) {b : ℕ} (JB : Matrix (Fin b) (Fin b) E) (g : UG (cA σ) (dbl (incM F JB)))
     (g₀ : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) E)
@@ -185,27 +181,21 @@ end GlobalTheory.ThetaRatGen
 namespace GlobalTheory.ThetaRatGen
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ b JB ε hJ hdet g g₀ hg`. Use `haveI : Invertible (2 : E) := invertibleOfNonzero two_ne_zero`. Take `⟨g₁, -, rfl⟩` from `down σ JB g g₀ hg`. Use `set G : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) E := (g₁.1 : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) E) with hG`. Use `set H : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) E := ((g₁.1⁻¹ : GL (Fin b ⊕ Fin b) E) : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) E) with hH`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set Nt : Matrix (Fin b) (Fin b ⊕ Fin b) E := Matrix.fromCols 1 (-1) with hNt`. Use `set N : Matrix (Fin b ⊕ Fin b) (Fin b) E := Matrix.fromRows 1 (-1) with hN`. Use `set Dt : Matrix (Fin b) (Fin b ⊕ Fin b) E := Matrix.fromCols 1 1 with hDt`. Use `set Δ : Matrix (Fin b ⊕ Fin b) (Fin b) E := Matrix.fromRows 1 1 with hΔ`. Establish `hGH : G * H = 1` using `by rw [hG, hH, ← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Establish `hNN : Nt * N = (2 : E) • 1`. Rewrite using `[hNt, hN, Matrix.fromCols_mul_fromRows]`. Simplify using `[two_smul]`. Establish `e2' : Δ * Dt + N * Nt = (2 : E) • 1` using `GlobalTheory.BigCell.e2`. Establish `hPQ : (Nt * G * N) * ((4 : E)⁻¹ • (Nt * H * N)) + (Nt * G * Δ) * ((4 : E)⁻¹ • (Dt * H * N)) = 1`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, smul_add, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Use `_ = 1 := by`. Rewrite using `[e2']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, smul_smul]`. Rewrite using `[show Nt * G * H * N = Nt * N by rw [Matrix.mul_assoc Nt G H, hGH, Matrix.mul_one], hNN, smul_smul]`. Evaluate the numerical expressions. Take `⟨x₀, hx₀⟩` from `GlobalTheory.T.exists_corner_unit_of_right_inverse' (F := F) (1 : E) (mul_one 1) hyp1 _ _ _ _ hPQ`. Take `⟨ρ, hρ0, hρ⟩` from `exists_anti hσ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hJ' : (JB.map (σ : E →+* E))ᵀ = ((ε : ℤ) : E) • JB`. Use extensionality with `i j`. Simplify using `[hJ]`. Take `⟨x, hxS, hx⟩` from `GlobalTheory.T.exists_conj_skew_det_unit_of_avoidance' (F := F) (σ : E →+* E) (invol hσ) (fun t => σ.commutes t) 1 hyp1 ρ (isUnit_iff_ne_zero.mpr hρ0) hρ JB ε hJ' (isUnit_iff_ne_zero.mpr hdet) _ _ x₀ hx₀`. Take `⟨p, hpΔ, hcorner⟩` from `GlobalTheory.T.siegelUnipotent_antidiagonal_corner (R₀ := F) σ JB x hxS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hunit : IsUnit (Matrix.fromCols (1 : Matrix (Fin b) (Fin b) E) (-1 : Matrix (Fin b) (Fin b) E) * (((g₁ * p : UG σ (dbl JB)) : GL (Fin b ⊕ Fin b) E) : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) E) * Matrix.fromRows (1 : Matrix (Fin b) (Fin b) E) (-1 : Matrix (Fin b) (Fin b) E)).det`. Rewrite using `[Subgroup.coe_mul, Units.val_mul, hcorner]`. Establish `hx' : IsUnit (Nt * G * N + Nt * G * Δ * x).det` using `by simpa using hx`. Conclude with `hx'`. Take `⟨p₀, q₀, t, s, hp₀, hq₀, hpq⟩` from `GlobalTheory.BigCell.bigCell_factor F E σ (Fin b) JB (g₁ * p) hunit`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hg₁ : g₁ = p₀ * q₀ * p⁻¹` using `eq_mul_inv_of_mul_eq hpq`. Establish `hpinv : ((p⁻¹ : UG σ (dbl JB)).1 : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) E) * (diagCols (Fin b) : Matrix (Fin b ⊕ Fin b) (Fin b) E) = (diagCols (Fin b) : Matrix (Fin b ⊕ Fin b) (Fin b) E)`. Establish `h1 : (p.1 : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) E) * (diagCols (Fin b) : Matrix (Fin b ⊕ Fin b) (Fin b) E) = (diagCols (Fin b) : Matrix (Fin b ⊕ Fin b) (Fin b) E)`. Conclude with `hpΔ.trans (Matrix.mul_one _)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← Matrix.mul_assoc, ← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel, Subgroup.coe_one, Units.val_one, Matrix.one_mul]`. Use `⟨up σ JB p₀, up σ JB q₀, up σ JB p⁻¹, p₀.1, q₀.1, (p⁻¹).1, Matrix.GeneralLinearGroup.map (inclR (F := F) (E := E) (AF F)) t, Matrix.GeneralLinearGroup.map (inclR (F := F) (E := E) (AF F)) s, 1, rfl, rfl, rfl, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (incM F) hp₀`. Rewrite `h` using `[incM_mul, incM_mul, incM_diag]`. Conclude with `h`.
-
-Establish `h` using `congrArg (incM F) hq₀`. Rewrite `h` using `[incM_mul, incM_mul, incM_nabla]`. Conclude with `h`. Establish `h` using `congrArg (incM F) hpinv`. Rewrite `h` using `[incM_mul, diagCols, incM_diag]`.
-
-Conclude with `h.trans (Matrix.mul_one _).symm`. Rewrite using `[hg₁, up_mul, up_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (b : ℕ) (JB : Matrix (Fin b) (Fin b) E) (ε : ℤˣ), (∀ i j, σ (JB j i) = ((ε : ℤ) : E) * JB i j) → JB.det ≠ 0 → ∀ (g : UG (cA σ) (dbl (incM F JB))) (g₀ : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) E), ((g : GL (Fin b ⊕ Fin b) (AE F E)) : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) (AE F E)) = incM F g₀ → ∃ (p q p' : UG (cA σ) (dbl (incM F JB))) (p₀ q₀ p₀' : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) E) (t s t' : GL (Fin b) (AE F E)), ((p : GL (Fin b ⊕ Fin b) (AE F E)) : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) (AE F E)) = incM F p₀ ∧ ((q : GL (Fin b ⊕ Fin b) (AE F E)) : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) (AE F E)) = incM F q₀ ∧ ((p' : GL (Fin b ⊕ Fin b) (AE F E)) : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) (AE F E)) = incM F p₀' ∧ ((p : GL (Fin b ⊕ Fin b) (AE F E)) : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) (AE F E)) * diagCols (Fin b) = diagCols (Fin b) * (t : Matrix (Fin b) (Fin b) (AE F E)) ∧ ((q : GL (Fin b ⊕ Fin b) (AE F E)) : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) (AE F E)) * Matrix.fromRows (1 : Matrix (Fin b) (Fin b) (AE F E)) (-1) = Matrix.fromRows (1 : Matrix (Fin b) (Fin b) (AE F E)) (-1) * (s : Matrix (Fin b) (Fin b) (AE F E)) ∧ ((p' : GL (Fin b ⊕ Fin b) (AE F E)) : Matrix (Fin b ⊕ Fin b) (Fin b ⊕ Fin b) (AE F E)) * diagCols (Fin b) = diagCols (Fin b) * (t' : Matrix (Fin b) (Fin b) (AE F E)) ∧ g = p * q * p' := by
   intro F E _ _ _ _ _ σ hσ b JB ε hJ hdet g g₀ hg

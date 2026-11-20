@@ -13,7 +13,7 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 namespace GlobalTheory.LamF.LetterEigen
 
 /- English proof (translation)
-The claim follows from `| 0, _, i, _ => i.elim0 | n + 1, u, i, h => by rw [List.ofFn_succ, List.prod_cons] refine Fin.cases (motive := fun i => (∀ j, j ≠ i → u j = 1) → u 0 * (List.ofFn fun k : Fin n => u k.succ).prod = u i) (fun h => ?_) (fun i h => ?_) i h · rw [List.prod_eq_one, _root_.mul_one] intro …`.
+A detailed English derivation is pending.
 -/
 theorem prod_ofFn_eq_single {M : Type*} [Monoid M] :
     ∀ {n : ℕ} (u : Fin n → M) (i : Fin n), (∀ j, j ≠ i → u j = 1) → (List.ofFn u).prod = u i
@@ -31,9 +31,9 @@ theorem prod_ofFn_eq_single {M : Type*} [Monoid M] :
         (fun j hj => h _ (fun e => hj (Fin.succ_injective _ e)))
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `hw`. Rewrite using `[prod_ofFn_eq_single u i, hu i, Pi.single_eq_same]`. Introduce `j hj`. Establish `h0` using `(LieMultiple.isLieComb_one_iff (0 : R) (v j) 1).1 ((LieMultiple.lieMultiple_calculus R G G (v j) 1 1 0 0).2.2.2.2.2 (hv j))`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hu j, Pi.single_eq_of_ne hj, h0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem left_eq_of_isLieComb_single {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {n : ℕ}
     {v : Fin n → (epsR R ⟶ G)} (hv : ∀ i, IsTangent (v i)) (i : Fin n) (t : R) {w : epsR R ⟶ G}
@@ -47,7 +47,7 @@ theorem left_eq_of_isLieComb_single {R : Type} [CommRing R] {G : Over (Sp R)} [G
   rw [hu j, Pi.single_eq_of_ne hj, h0]
 
 /- English proof (translation)
-Establish `hc : IsLieComb ![t] ![w] (Chart.spMap (Chart.scaleD t) ≫ w)` using `(LieMultiple.isLieComb_one_iff_comp t w _).2 rfl`. Use `⟨_, hc, ?_⟩` and prove the remaining obligations. Establish `hF' : α.left ≫ F.left = F.left ≫ β.left`. Rewrite using `[← Over.comp_left, hF, Over.comp_left]`. Rewrite using `[(LieMultiple.isLieComb_one_iff t w _).1 hc, Category.assoc, hw, reassoc_of% hw, ← hF', reassoc_of% he, left_eq_of_isLieComb_single hv i t hw₁, Category.assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_scale_of_eigen {K : Type} [Field K] [NumberField K] {A B : Over (Sp (𝓞 K))} {A' B' : Over (Sp K)}
     [GrpObj A'] [GrpObj B'] {n : ℕ} {v : Fin n → (epsR K ⟶ A')} (hv : ∀ i, IsTangent (v i)) (i : Fin n) (t : K)
@@ -64,11 +64,11 @@ theorem exists_scale_of_eigen {K : Type} [Field K] [NumberField K] {A B : Over (
     left_eq_of_isLieComb_single hv i t hw₁, Category.assoc]
 
 /- English proof (translation)
-Introduce `E _ _ _ _ H l c nΨ n' f o La ho L hL b i w hw a`. Take `⟨-, -, -, -, -, -, -, -, -, hΨ, h', eΨ, e', -⟩` from `ho`. Establish `hb` using `hL.2.1 b i`. Unfold `LamLetters.IsLetter at hw`. Generalize the expression as in `L.src (L.e ⟨b, i⟩) = s at hb hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable.
 
-Break down `s with q | q` into its components or cases. Take `⟨w₁, h₁, h₂⟩` from `hΨ a q.2`. Take `⟨rfl, -⟩` from `hb`. Conclude with `exists_scale_of_eigen o.xΨ.basis.1 q.2 _ _ _ _ _ _ (eΨ q.1 a) h₁ h₂ hw`. Take `⟨w₁, h₁, h₂⟩` from `h' a q.2`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨rfl, -⟩` from `hb`. Conclude with `exists_scale_of_eigen o.x'.basis.1 q.2 _ _ _ _ _ _ (e' q.1 a) h₁ h₂ hw`.
+A detailed English derivation is pending.
 -/
 theorem letter_eigen : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [StarRing (𝓞 E)] (H : Host E) (l : Level H) (c : Coeff l) (nΨ n' f : ℕ) (o : LamObj c nΨ n') (La : ℝ), LamObjGood o f La → ∀ L : LamLetters o, L.IsGood → ∀ (b : E →+* ℂ) (i : Fin (L.m b)) (w : epsR o.K₁ ⟶ o.xB.P.A), L.IsLetter (L.e ⟨b, i⟩) w → ∀ a : 𝓞 E, ∃ w' : epsR o.K₁ ⟶ o.xB.P.A, IsLieComb ![labK c o.K₁ b (a : E)] ![w] w' ∧ w.left ≫ o.φB ≫ (o.oa.act a).left = w'.left ≫ o.φB := by
   intro E _ _ _ _ H l c nΨ n' f o La ho L hL b i w hw a

@@ -13,14 +13,14 @@ namespace GlobalTheory.CechCmp
 variable {R : Type} [CommRing R] {Z : Scheme.{0}} (s : Z ⟶ Sp R) {J : Type} (W : J → Z.Opens)
 
 /- English proof (translation)
-Conclude with `(Sec.res s h).commutes r`.
+A detailed English derivation is pending.
 -/
 theorem resG_secMap_lin {U V : Z.Opens} (h : V ≤ U) (r : R) :
     resG Z h ((secMap s U).hom r) = (secMap s V).hom r := by
   exact (Sec.res s h).commutes r
 
 /- English proof (translation)
-Rewrite using `[map_sub, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_mul, resG_secMap_lin]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem resG_sub_sum_lin {U V : Z.Opens} (h : V ≤ U) (x : Γ(Z, U)) {N : ℕ} (r : Fin N → R)
     (y : Fin N → Γ(Z, U)) :
@@ -32,7 +32,7 @@ theorem resG_sub_sum_lin {U V : Z.Opens} (h : V ≤ U) (x : Γ(Z, U)) {N : ℕ} 
   rw [map_mul, resG_secMap_lin]
 
 /- English proof (translation)
-Introduce `i i' i''`. Use `beta_reduce`. Rewrite using `[resG_sub_sum_lin, resG_sub_sum_lin, resG_sub_sum_lin]`. Simplify using `only [← hc i i' i'', ← he _ i i' i'', mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isCocycle_sub_sum_lin {c : ∀ i i' : J, Γ(Z, W i ⊓ W i')} (hc : IsCocycle W c) {N : ℕ}
     (r : Fin N → R) {e : Fin N → ∀ i i' : J, Γ(Z, W i ⊓ W i')} (he : ∀ k, IsCocycle W (e k)) :
@@ -45,7 +45,7 @@ theorem isCocycle_sub_sum_lin {c : ∀ i i' : J, Γ(Z, W i ⊓ W i')} (hc : IsCo
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `V V' a`. Simplify using `only [Pi.sub_apply, Finset.sum_apply, Pi.smul_apply]`. Simplify using `only [Algebra.smul_def]`. Conclude with `resG_sub_sum_lin s _ _ r _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fc_sub_sum_lin (c : ∀ i i' : J, Γ(Z, W i ⊓ W i')) {N : ℕ}
     (r : Fin N → R) (e : Fin N → ∀ i i' : J, Γ(Z, W i ⊓ W i')) :
@@ -57,9 +57,9 @@ theorem fc_sub_sum_lin (c : ∀ i i' : J, Γ(Z, W i ⊓ W i')) {N : ℕ}
   exact resG_sub_sum_lin s _ _ r _
 
 /- English proof (translation)
-Introduce `R _ Z s J W hW c hc N r e he`. Rewrite using `[cmp_of_isCocycle s W hW (isCocycle_sub_sum_lin s W hc r he), cmp_of_isCocycle s W hW hc]`. Simplify using `only [fun k ↦ cmp_of_isCocycle s W hW (he k), ← map_smul, ← map_sum, ← map_sub]`. Use `congr 2`. Use `Subtype.ext ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Submodule.coe_sub, Submodule.coe_sum, Submodule.coe_smul]`. Conclude with `fc_sub_sum_lin s W c r e`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cmp_sub_sum_lin : ∀ (R : Type) [CommRing R] (Z : Scheme.{0}) (s : Z ⟶ Sp R) (J : Type) (W : J → Z.Opens) (hW : ⨆ i, W i = ⊤) (c : ∀ i i' : J, Γ(Z, W i ⊓ W i')), GlobalTheory.CechCmp.IsCocycle W c → ∀ (N : ℕ) (r : Fin N → R) (e : Fin N → ∀ i i' : J, Γ(Z, W i ⊓ W i')), (∀ k, GlobalTheory.CechCmp.IsCocycle W (e k)) → GlobalTheory.CechCmp.cmp s W hW (fun i i' => c i i' - ∑ k, (GlobalTheory.CechDR.secMap s (W i ⊓ W i')).hom (r k) * e k i i') = GlobalTheory.CechCmp.cmp s W hW c - ∑ k, r k • GlobalTheory.CechCmp.cmp s W hW (e k) := by
   intro R _ Z s J W hW c hc N r e he

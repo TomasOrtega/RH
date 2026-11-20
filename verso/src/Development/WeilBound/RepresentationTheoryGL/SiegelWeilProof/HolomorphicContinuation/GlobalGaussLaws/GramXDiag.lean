@@ -14,18 +14,18 @@ variable {m n : ℕ}
 def sigR (ε : Fin m → Bool) (a : Fin m) : ℝ := if ε a then 1 else -1
 
 /- English proof (translation)
-Unfold `sgn sigR`. Apply the tactic sequence `by_cases h : ε a <;> simp [h]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_eq (ε : Fin m → Bool) (a : Fin m) : sgn ε a = ((sigR ε a : ℝ) : ℂ) := by
   unfold sgn sigR
   by_cases h : ε a <;> simp [h]
 
 /- English proof (translation)
-Simplify using `only [ftLoc, ftG]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Establish `key : ((of u)ᴴ * diagonal (sgn ε) * of y).trace.re = ∑ a, ∑ j, sigR ε a * ((starRingEnd ℂ) (u a j) * y a j).re`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, Complex.re_sum]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.diagonal_apply, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[sgn_eq, mul_comm (star (u a j)) _, mul_assoc, Complex.re_ofReal_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ftLoc_eq (ε : Fin m → Bool) (s : ℝ) (f : (Fin m → Fin n → ℂ) → ℂ) (u : Fin m → Fin n → ℂ) :
     ftLoc ε s f u = ftG (sigR ε) s f u := by
@@ -45,7 +45,7 @@ theorem ftLoc_eq (ε : Fin m → Bool) (s : ℝ) (f : (Fin m → Fin n → ℂ) 
   rw [key]
 
 /- English proof (translation)
-Simplify using `only [gramX, Qp, Qb, evX, map_sub, map_sum, map_mul, MvPolynomial.eval_X, if_true, Bool.false_eq_true, if_false, Finset.sum_filter]`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : ε a <;> simp [h, sigR, Complex.conj_mul']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gramX_diag (ε : Fin m → Bool) (u : Fin m → Fin n → ℂ) (j : Fin n) :
     gramX ε u j j = ∑ a, ((sigR ε a : ℝ) : ℂ) * ((‖u a j‖ ^ 2 : ℝ) : ℂ) := by
@@ -56,11 +56,11 @@ theorem gramX_diag (ε : Fin m → Bool) (u : Fin m → Fin n → ℂ) (j : Fin 
   by_cases h : ε a <;> simp [h, sigR, Complex.conj_mul']
 
 /- English proof (translation)
-Simplify using `only [chN, DG]`. Simplify using `only [← Complex.exp_sum]`. Rewrite using `[mul_left_comm, ← Complex.exp_add]`. Use `congr 2`. Establish `htr : (diagonal (fun j => (β j : ℂ)) * gramX ε u).trace = ∑ j, (β j : ℂ) * gramX ε u j j`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `[Matrix.trace, Matrix.diagonal_mul]`. Rewrite using `[htr]`. Repeatedly rewrite using `[gramX_diag, Finset.mul_sum]`. Use `conv_lhs => arg 1`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chN_DG (ε : Fin m → Bool) (t : ℝ) (β : Fin n → ℝ) (K : ℂ) (γ : Fin m → Fin n → ℂ) (u : Fin m → Fin n → ℂ) :
     chN ε t (diagonal fun j => (β j : ℂ)) u * DG K γ u =
@@ -81,7 +81,7 @@ theorem chN_DG (ε : Fin m → Bool) (t : ℝ) (β : Fin n → ℝ) (K : ℂ) (�
   ring
 
 /- English proof (translation)
-Simplify using `only [DG]`. Use `congr 1`. Rewrite using `[Finset.mul_sum, Complex.exp_sum]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Complex.exp_sum]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dg_const (K γ0 : ℂ) (v : Fin m → Fin n → ℂ) :
     DG K (fun _ _ => γ0) v = K * cexp (-γ0 * ∑ a, ∑ j, ((‖v a j‖ ^ 2 : ℝ) : ℂ)) := by
@@ -92,11 +92,11 @@ theorem dg_const (K γ0 : ℂ) (v : Fin m → Fin n → ℂ) :
   rw [Finset.mul_sum, Complex.exp_sum]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Rewrite using `[dg_const, one_mul]`. Simplify using `only [vac, gZf]`. Use `congr 1`. Establish `hsum : (gramB (epsT t ε) true y).trace + (gramB (epsT t ε) false y).trace = ∑ a, ∑ j, ((‖y a j‖ ^ 2 : ℝ) : ℂ)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `only [Matrix.trace, Matrix.diag, gramB, Qb, evX, map_sum, Finset.sum_filter]`. Rewrite using `[← Finset.sum_add_distrib, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `by_cases h : epsT t ε a <;> simp [h, Complex.conj_mul']`. Rewrite using `[smul_mul_assoc, one_mul, Matrix.conjTranspose_smul, Matrix.conjTranspose_one, smul_mul_assoc, one_mul, Matrix.trace_smul, Matrix.trace_smul]`. Simplify using `only [smul_eq_mul, Complex.star_def, Complex.conj_I]`. Take the linear combination `((c : ℂ) * ((gramB (epsT t ε) true y).trace + (gramB (epsT t ε) false y).trace)) * Complex.I_sq + (-(c : ℂ)) * hsum`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem vac_eq (ε : Fin m → Bool) (t c : ℝ) : vac (n := n) ε t c = DG 1 (fun _ _ => (c : ℂ)) := by
   funext y
@@ -118,11 +118,11 @@ theorem vac_eq (ε : Fin m → Bool) (t c : ℝ) : vac (n := n) ε t c = DG 1 (f
     Complex.I_sq + (-(c : ℂ)) * hsum
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Simplify using `only [levF, DG, Matrix.det_diagonal]`. Establish `hD : (∏ j, (δ j : ℂ)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun j _ => by exact_mod_cast (hδ j).ne'`. Establish `hs : star (∏ j, (δ j : ℂ)) = ∏ j, (δ j : ℂ)`. Rewrite using `[← Complex.ofReal_prod]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Complex.conj_ofReal _`. Rewrite using `[hs, ← zpow_add₀ hD, add_sub_cancel, zpow_natCast]`. Rewrite using `[← mul_assoc, mul_comm (_ ^ m) K]`. Use `congr 1`. Use `Finset.prod_congr rfl fun a _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [Matrix.mul_diagonal, Matrix.of_apply, norm_mul, Complex.norm_real, Real.norm_eq_abs, mul_pow, sq_abs]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem levF_diag (e : ℤ) (δ : Fin n → ℝ) (hδ : ∀ j, 0 < δ j) (K : ℂ) (γ : Fin m → Fin n → ℂ) :
     levF e (diagonal fun j => (δ j : ℂ)) (DG K γ) =

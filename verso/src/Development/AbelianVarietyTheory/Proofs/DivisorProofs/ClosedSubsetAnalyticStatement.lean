@@ -12,7 +12,7 @@ open scoped Classical
 open GlobalTheory.LieFilt
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LieFilt.exists_regular_blockUni_change` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FClosedSubsetAnalytic.lean&line=103#L103)
 -/

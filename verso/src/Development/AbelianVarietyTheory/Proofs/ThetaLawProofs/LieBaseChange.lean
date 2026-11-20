@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.KeyPBScale
 
 /- English proof (translation)
-The claim follows from `KeyVia.appLE_cst f p p' hφ h a`.
+A detailed English derivation is pending.
 -/
 theorem appLE_constFn {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {X Y : Scheme.{0}} {φ : Y ⟶ X}
     (p : X ⟶ Sp R) (p' : Y ⟶ Sp R') (hφ : φ ≫ p = p' ≫ spMap f) {U : X.Opens} {V : Y.Opens} (h : V ≤ φ ⁻¹ᵁ U)
@@ -22,14 +22,14 @@ theorem appLE_constFn {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') 
   KeyVia.appLE_cst f p p' hφ h a
 
 /- English proof (translation)
-The claim follows from `KeyVia.res_appLE (φ := p) (U := ⊤) (fun _ _ => trivial) h _`.
+A detailed English derivation is pending.
 -/
 theorem resG_constFn {R : Type} [CommRing R] {X : Scheme.{0}} (p : X ⟶ Sp R) {U V : X.Opens}
     (h : V ≤ U) (a : R) : resG X h (constFn p U a) = constFn p V a :=
   KeyVia.res_appLE (φ := p) (U := ⊤) (fun _ _ => trivial) h _
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `(lieComb_baseChange R R' f G G' φ h m v (v' i) (M i) u (u' i) huv (hv i)).2 (hu i)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem lie_baseChange {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {G : Over (Sp R)} [GrpObj G]
     {G' : Over (Sp R')} [GrpObj G'] {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G (spMap f) φ) {n m : ℕ}
@@ -42,9 +42,9 @@ theorem lie_baseChange {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R')
   exact (lieComb_baseChange R R' f G G' φ h m v (v' i) (M i) u (u' i) huv (hv i)).2 (hu i)
 
 /- English proof (translation)
-Introduce `R R' _ _ f P hg rig hr th hth v hv th' hth' v' hv' a M Q e hgQ rigQ hrQ s hs u hu s' hs' u' hu' h₁ h₂ h₃ h₄`. Introduce and unpack `⟨φ, he, w, hg', F, hp, hw, hrig, hsec, hF, hε, hlie⟩`. Apply the tactic sequence `have hF' : F = Chart.dualMapR f := KeyCancel.dualNumber_ringHom_ext (fun b => (hF b).trans (by ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl])) (hε.trans (by ext <;> simp [Chart.dualMapR]))`. Use `⟨φ, he, w, hg', F, hp, hw, hrig, fun j i h => ?_, hF, hε, ?_⟩` and prove the remaining obligations. Establish `k` using `hsec j i h dsimp only at k ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h₁, h₃, map_mul, map_mul, k, appLE_constFn f P.A.hom Q.A.hom hp.1.w, resG_constFn]`. Conclude with `mul_left_comm (G := Γ(Q.A.left, (P.L.pull φ).U j ⊓ Q.L.U i)) _ _ _`. Substitute `hF'` using the available equality. Conclude with `lie_baseChange f hp e M v v' u u' h₂ h₄ hlie`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem keyPB_scale : ∀ (R R' : Type) [CommRing R] [CommRing R'] (f : R →+* R') (P : Out.PolAV (Sp R)) (hg rig hr th hth v hv th' hth' v' hv') (a : R) (M : Matrix (Fin P.g) (Fin P.g) R) (Q : Out.PolAV (Sp R')) (e : Q.g = P.g) (hgQ rigQ hrQ s hs u hu s' hs' u' hu'), (∀ i, LB.Sec.f th' i = constFn P.A.hom _ a * LB.Sec.f th i) → (∀ i, IsLieComb (M i) v (v' i)) → (∀ i, LB.Sec.f s' i = constFn Q.A.hom _ (f a) * LB.Sec.f s i) → (∀ i : Fin Q.g, IsLieComb (fun j : Fin Q.g => f (M (i.cast e) (j.cast e))) u (u' i)) → KeyPB (⟨Q, hgQ, rigQ, hrQ, s, hs, u, hu⟩ : KeyIn R') (⟨P, hg, rig, hr, th, hth, v, hv⟩ : KeyIn R) f → KeyPB (⟨Q, hgQ, rigQ, hrQ, s', hs', u', hu'⟩ : KeyIn R') (⟨P, hg, rig, hr, th', hth', v', hv'⟩ : KeyIn R) f := by
   intro R R' _ _ f P hg rig hr th hth v hv th' hth' v' hv' a M Q e hgQ rigQ hrQ s hs u hu s' hs' u' hu' h₁ h₂ h₃ h₄

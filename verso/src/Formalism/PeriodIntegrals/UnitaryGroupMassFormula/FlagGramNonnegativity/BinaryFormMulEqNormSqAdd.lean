@@ -10,7 +10,7 @@ def gamma (r : ℕ) (T T' : ℝ) (s : ℂ) : Matrix (Fin r ⊕ Fin 2) (Fin r ⊕
   Matrix.fromBlocks ((-2 : ℂ) • (1 : Matrix (Fin r) (Fin r) ℂ)) 0 0 !![(-T : ℂ), s; conj s, (-T' : ℂ)]
 
 /- English proof (translation)
-Simplify using `only [Complex.normSq_apply, Complex.mul_re, Complex.mul_im, Complex.sub_re, Complex.sub_im, Complex.conj_re, Complex.conj_im, Complex.ofReal_re, Complex.ofReal_im]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem binaryForm_mul_eq_normSq_add (T T' : ℝ) (s x y : ℂ) :
     T * (T * Complex.normSq x + T' * Complex.normSq y - 2 * (conj x * s * y).re) =
@@ -20,7 +20,7 @@ theorem binaryForm_mul_eq_normSq_add (T T' : ℝ) (s x y : ℂ) :
   ring
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((starRingEnd ℂ) z * w).re = _`. Rewrite using `[Complex.mul_re, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem re_star_mul' (z w : ℂ) : (star z * w).re = z.re * w.re + z.im * w.im := by
   change ((starRingEnd ℂ) z * w).re = _
@@ -28,17 +28,17 @@ private theorem re_star_mul' (z w : ℂ) : (star z * w).re = z.re * w.re + z.im 
   ring
 
 /- English proof (translation)
-Establish `hinl : ∀ a, (gamma r T T' s *ᵥ c) (Sum.inl a) = -(c (Sum.inl a) + c (Sum.inl a))`. Introduce `a`. Use `first`. Consider the case `(rw [gamma, Matrix.fromBlocks_mulVec]`. Apply the tactic sequence `simp [Matrix.smul_mulVec_assoc, Matrix.one_mulVec] <;> ring1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Consider the case `(rw [gamma, Matrix.fromBlocks_mulVec]`. Apply the tactic sequence `simp [Matrix.smul_mulVec, Matrix.one_mulVec] <;> ring1)`. Consider the case `(simp [gamma, Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Matrix.one_apply, mul_ite, ite_mul, Finset.sum_ite_eq] <;> ring1)`. Consider the case `(simp [gamma, Matrix.mulVec, Matrix.dotProduct, Fintype.sum_sum_type, Matrix.one_apply, mul_ite, ite_mul, Finset.sum_ite_eq] <;> ring1)`. Establish `hinr0 : (gamma r T T' s *ᵥ c) (Sum.inr 0) = -(T : ℂ) * c (Sum.inr 0) + s * c (Sum.inr 1)`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gamma, Matrix.fromBlocks_mulVec]`. Simplify using `[dotProduct, Fin.sum_univ_two]`. Establish `hinr1 : (gamma r T T' s *ᵥ c) (Sum.inr 1) = conj s * c (Sum.inr 0) + -(T' : ℂ) * c (Sum.inr 1)`. Rewrite using `[gamma, Matrix.fromBlocks_mulVec]`. Simplify using `[dotProduct, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsplit : star c ⬝ᵥ (gamma r T T' s *ᵥ c) = ∑ a, star (c (Sum.inl a)) * (gamma r T T' s *ᵥ c) (Sum.inl a) + (star (c (Sum.inr 0)) * (gamma r T T' s *ᵥ c) (Sum.inr 0) + star (c (Sum.inr 1)) * (gamma r T T' s *ᵥ c) (Sum.inr 1))`. Simplify using `only [dotProduct, Fintype.sum_sum_type, Fin.sum_univ_two, Pi.star_apply]`. Establish `hsum : (∑ a, star (c (Sum.inl a)) * -(c (Sum.inl a) + c (Sum.inl a))).re = -2 * ∑ a, Complex.normSq (c (Sum.inl a))`. Rewrite using `[Complex.re_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[re_star_mul', Complex.neg_re, Complex.neg_im, Complex.add_re, Complex.add_im, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit]`. Simplify using `only [hinl, hinr0, hinr1]`. Simplify using `only [Complex.add_re, hsum, re_star_mul']`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.ofReal_re, Complex.ofReal_im, Complex.conj_re, Complex.conj_im, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gamma_form (r : ℕ) (T T' : ℝ) (s : ℂ) (c : Fin r ⊕ Fin 2 → ℂ) :
     (star c ⬝ᵥ (gamma r T T' s *ᵥ c)).re =
@@ -85,21 +85,19 @@ theorem gamma_form (r : ℕ) (T T' : ℝ) (s : ℂ) (c : Fin r ⊕ Fin 2 → ℂ
   ring
 
 /- English proof (translation)
-Rewrite using `[gamma_form]`. Establish `hS : 0 ≤ ∑ a, Complex.normSq (c (Sum.inl a))` using `Finset.sum_nonneg (fun a _ => Complex.normSq_nonneg _)`. Establish `hd : 0 < T * T' - Complex.normSq s` using `by linarith`. Establish `hq : ∀ x y : ℂ, 0 ≤ T * Complex.normSq x + T' * Complex.normSq y - 2 * (conj x * s * y).re`. Introduce `x y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `binaryForm_mul_eq_normSq_add T T' s x y`. Establish `h0 : 0 ≤ Complex.normSq ((T : ℂ) * x - s * y) + (T * T' - Complex.normSq s) * Complex.normSq y` using `add_nonneg (Complex.normSq_nonneg _) (mul_nonneg hd.le (Complex.normSq_nonneg _))`. Use the polynomial consequences of the given equalities and inequalities. Establish `hqpos : ∀ x y : ℂ, (x ≠ 0 ∨ y ≠ 0) → 0 < T * Complex.normSq x + T' * Complex.normSq y - 2 * (conj x * s * y).re`. Introduce `x y hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hy : y = 0`. Establish `hx : x ≠ 0` using `hxy.resolve_right (not_not.mpr hy)`. Establish `hnx : 0 < Complex.normSq x` using `Complex.normSq_pos.mpr hx`. Substitute `hy` using the available equality. Simplify using `only [mul_zero, sub_zero, add_zero, Complex.zero_re, Complex.normSq_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use polynomial arithmetic with `[mul_pos hT hnx]`. Establish `h` using `binaryForm_mul_eq_normSq_add T T' s x y`. Establish `hny : 0 < Complex.normSq y` using `Complex.normSq_pos.mpr hy`. Establish `h0 : 0 < Complex.normSq ((T : ℂ) * x - s * y) + (T * T' - Complex.normSq s) * Complex.normSq y` using `add_pos_of_nonneg_of_pos (Complex.normSq_nonneg _) (mul_pos hd hny)`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Distinguish the cases in `hin : ∀ a, c (Sum.inl a) = 0`. Establish `hxy : c (Sum.inr 0) ≠ 0 ∨ c (Sum.inr 1) ≠ 0`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hc`. Simplify using `only [Pi.zero_apply] at hi`. Break down `i with a | ⟨_ | _ | k, hk⟩` into its components or cases.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd (hin a) hi`. Conclude with `Or.inl hi`. Conclude with `Or.inr hi`. Use linear arithmetic over natural numbers and integers. Use `hqpos _ _ hxy` as an intermediate fact.
+Prove the first alternative. Prove the second alternative. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `push_neg at hin`. Take `⟨a, ha⟩` from `hin`. Establish `hpos : 0 < ∑ b, Complex.normSq (c (Sum.inl b))` using `Finset.sum_pos' (fun b _ => Complex.normSq_nonneg _) ⟨a, Finset.mem_univ _, Complex.normSq_pos.mpr ha⟩`. Use `hq (c (Sum.inr 0)) (c (Sum.inr 1))` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gamma_neg (r : ℕ) (T T' : ℝ) (hT : 0 < T) (hT' : 0 < T') (s : ℂ)
     (hs : Complex.normSq s < T * T') (c : Fin r ⊕ Fin 2 → ℂ) (hc : c ≠ 0) :

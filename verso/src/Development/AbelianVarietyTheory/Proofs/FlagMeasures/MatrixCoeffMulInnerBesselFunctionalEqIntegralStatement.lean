@@ -6,7 +6,7 @@ open MeasureTheory Matrix Formalism.QuantumDeterminants Formalism.MainNotions.S 
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SgInf.coef_mul_inner_Afun_eq_integral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FMatrixCoeffMulInnerBesselFunctionalEqIntegral.lean&line=11#L11)
 -/

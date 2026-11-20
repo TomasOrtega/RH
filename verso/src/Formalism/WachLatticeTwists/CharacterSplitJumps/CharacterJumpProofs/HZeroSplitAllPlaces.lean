@@ -10,11 +10,11 @@ namespace Formalism.RepresentationBoundsCohomology.JT
 open Formalism.NG Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic
 
 /- English proof (translation)
-Introduce `J`. Prove the components needed by the constructor for the conclusion. Simplify using `only [jumpsDualTwist, Multiset.mem_toFinset, Multiset.mem_map, not_iff_not]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `: u = -1` using `by omega`. Conclude with `this ▸ hu`. Introduce `h`. Conclude with `⟨-1, h, by norm_num⟩`. Rewrite using `[Finset.nonempty_iff_ne_empty]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[jumpsDualTwist]`.
+A detailed English derivation is pending.
 -/
 theorem jumps_of_dual_twist : JumpsOfDualTwist := by
   intro J

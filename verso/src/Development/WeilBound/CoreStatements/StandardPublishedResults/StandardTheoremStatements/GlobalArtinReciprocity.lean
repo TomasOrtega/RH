@@ -6,19 +6,19 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.PrincipalIde
 namespace PositivityTheory.Stage1.PM
 
 /- English proof (translation)
-The claim follows from `CompanionTheory.FamInh.globalArtin`.
+A detailed English derivation is pending.
 -/
 theorem globalArtinReciprocity : GlobalTheory.Published.GlobalArtinReciprocity :=
   CompanionTheory.FamInh.globalArtin
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.GlobalArtinReciprocity.rayClassFieldSt CompanionTheory.FamInh.globalArtin`.
+A detailed English derivation is pending.
 -/
 theorem rayClassFieldSt : GlobalTheory.Published.RayClassFieldSt :=
   GlobalTheory.Published.GlobalArtinReciprocity.rayClassFieldSt CompanionTheory.FamInh.globalArtin
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.GlobalArtinReciprocity.heckeLAdicCharacter CompanionTheory.FamInh.globalArtin`.
+A detailed English derivation is pending.
 -/
 theorem heckeLAdicCharacter : GlobalTheory.Published.HeckeLAdicCharacter :=
   GlobalTheory.Published.GlobalArtinReciprocity.heckeLAdicCharacter CompanionTheory.FamInh.globalArtin

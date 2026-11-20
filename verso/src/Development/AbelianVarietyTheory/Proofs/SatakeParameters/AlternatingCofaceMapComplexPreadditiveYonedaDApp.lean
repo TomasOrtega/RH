@@ -7,11 +7,9 @@ universe v u
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hd : ((AlgebraicTopology.alternatingCofaceMapComplex AddCommGrpCat.{v}).obj (X.rightOp ⋙ preadditiveYoneda.obj I)).d m (m+1) = AlgebraicTopology.AlternatingCofaceMapComplex.objD (X.rightOp ⋙ preadditiveYoneda.obj I) m`. Conclude with `CochainComplex.of_d (fun n => (X.rightOp ⋙ preadditiveYoneda.obj I).obj ⦋n⦌) (AlgebraicTopology.AlternatingCofaceMapComplex.objD (X.rightOp ⋙ preadditiveYoneda.obj I)) m`. Rewrite using `[hd]`. Set `φ : (((X.rightOp ⋙ preadditiveYoneda.obj I).obj ⦋m⦌) ⟶ ((X.rightOp ⋙ preadditiveYoneda.obj I).obj ⦋m+1⦌)) →+ ((X.rightOp ⋙ preadditiveYoneda.obj I).obj ⦋m+1⦌)` to `AddMonoidHom.mk' (fun f => f x) (fun f g => rfl)`. Express the relevant statement in the definitionally equal form `φ (AlgebraicTopology.AlternatingCofaceMapComplex.objD _ m) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `h2 : (AlgebraicTopology.AlternatingFaceMapComplex.objD X m ≫ (show X _⦋m⦌ ⟶ I from x)) = ∑ i : Fin (m+2), (-1 : ℤ) ^ (i : ℕ) • (X.δ i ≫ (show X _⦋m⦌ ⟶ I from x))`. Rewrite using `[AlgebraicTopology.AlternatingFaceMapComplex.objD, Preadditive.sum_comp]`. Conclude with `Finset.sum_congr rfl fun i _ => Preadditive.zsmul_comp _ _ _`. Use `Eq.trans ?_ h2.symm` and prove the remaining obligations. Simplify using `only [AlgebraicTopology.AlternatingCofaceMapComplex.objD, map_sum, map_zsmul]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem alternatingCofaceMapComplex_preadditiveYoneda_d_apply {C : Type u} [Category.{v} C] [Abelian C] (X : SimplicialObject C) (I : C) (m : ℕ)
   (x : ((AlgebraicTopology.alternatingCofaceMapComplex AddCommGrpCat.{v}).obj (X.rightOp ⋙ preadditiveYoneda.obj I)).X m) :
@@ -34,15 +32,15 @@ theorem alternatingCofaceMapComplex_preadditiveYoneda_d_apply {C : Type u} [Cate
   rfl
 
 /- English proof (translation)
-Introduce `C _ _ X I _ n h`. Rewrite `h` using `[HomologicalComplex.exactAt_iff' _ (n+2) (n+1) n (by simp) (by simp)]`. Rewrite using `[HomologicalComplex.exactAt_iff' _ n (n+1) (n+2) (by simp) (by simp), ShortComplex.ab_exact_iff]`. Introduce `x hx`. Set `S` to `((AlgebraicTopology.alternatingFaceMapComplex C).obj X).sc' (n+2) (n+1) n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hS1 : S.f = AlgebraicTopology.AlternatingFaceMapComplex.objD X (n+1)` using `AlgebraicTopology.AlternatingFaceMapComplex.obj_d_eq X (n+1)`. Establish `hS2 : S.g = AlgebraicTopology.AlternatingFaceMapComplex.objD X n` using `AlgebraicTopology.AlternatingFaceMapComplex.obj_d_eq X n`. Set `f : S.X₂ ⟶ I` to `x`. Establish `hf : S.f ≫ f = 0`. Establish `h1` using `alternatingCofaceMapComplex_preadditiveYoneda_d_apply X I (n+1) x`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hS1]`. Conclude with `h1.symm.trans hx`. Establish `hm : Mono (cokernel.desc S.f S.g S.zero)` using `h.mono_cokernelDesc`. Set `g : S.X₃ ⟶ I` to `@Injective.factorThru _ _ _ _ _ _ (cokernel.desc S.f f hf) (cokernel.desc S.f S.g S.zero) hm`. Use `⟨g, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((AlgebraicTopology.alternatingCofaceMapComplex AddCommGrpCat.{v}).obj (X.rightOp ⋙ preadditiveYoneda.obj I)).d n (n+1) g = x`. Use `(alternatingCofaceMapComplex_preadditiveYoneda_d_apply X I n g).trans ?_` and prove the remaining obligations. Rewrite using `[← hS2]`. Express the relevant statement in the definitionally equal form `S.g ≫ g = f`. Establish `e2 : cokernel.desc S.f S.g S.zero ≫ g = cokernel.desc S.f f hf` using `@Injective.comp_factorThru _ _ _ _ _ _ _ _ hm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cokernel.π_desc S.f S.g S.zero, Category.assoc, e2, cokernel.π_desc]`.
+A detailed English derivation is pending.
 -/
 theorem alternatingCofaceMapComplex_preadditiveYoneda_exactAt_succ : ∀ {C : Type u} [Category.{v} C] [Abelian C] (X : SimplicialObject C) (I : C) [Injective I] (n : ℕ), ((AlgebraicTopology.alternatingFaceMapComplex C).obj X).ExactAt (n + 1) → ((AlgebraicTopology.alternatingCofaceMapComplex AddCommGrpCat.{v}).obj (X.rightOp ⋙ preadditiveYoneda.obj I)).ExactAt (n + 1) := by
   intro C _ _ X I _ n h

@@ -21,20 +21,20 @@ open GlobalTheory.ZV
 namespace GlobalTheory.SeesawGlobal
 
 /- English proof (translation)
-The claim follows from `(IsPullback.of_hasPullback T.hom A.hom).flip`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_tensor {S : Scheme.{0}} (T A : Over S) :
     IsPullback (snd T A).left (fst T A).left A.hom T.hom :=
   (IsPullback.of_hasPullback T.hom A.hom).flip
 
 /- English proof (translation)
-Introduce `hL _ K _ _ P T N hN h0`. Establish `hproj : GlobalTheory.AbLaw.IsProjBy P.A.hom`. Take `⟨n, -, m, s, h₁, h₂⟩` from `GlobalTheory.AbLaw.polAV_veryAmpleBy hL.polBaseChange (Sp K) P K (𝟙 _) P.A.left (𝟙 _) P.A.hom (IsPullback.of_horiz_isIso ⟨by simp⟩)`. Conclude with `⟨_, h₁, m, s, h₂⟩`. Take `⟨H, j, hj, hH⟩` from `GlobalTheory.T.exists_closedSubscheme_locallyTrivial_product_lineBundle hL.globalFns K T P.A P.isAb hproj N hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨H.left, j.left, hj, fun T' h => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨t, ht⟩`. Take `⟨y, hy⟩` from `(hH T' h).1 fun p => ⟨⊤, trivial, GlobalTheory.TorsionFixedAut.exists_gen_pull _ t ht _⟩`. Conclude with `⟨y.left, congrArg (·.left) hy⟩`. Introduce and unpack `⟨u, hu⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `hw : u ≫ H.hom = T'.hom` using `by rw [← Over.w j, ← Category.assoc, hu, Over.w h]`. Establish `hloc` using `(hH T' h).2 ⟨Over.homMk u hw, Over.OverMorphism.ext hu⟩`. Use `GlobalTheory.exists_gen_of_local_of_section (T' ⊗ P.A).left T'.left (fst T' P.A).left (lift (𝟙 T') (1 : T' ⟶ P.A)).left _ (pull_isLB hN _) (congrArg (·.left) (lift_fst (𝟙 T') (1 : T' ⟶ P.A))) (GlobalTheory.BaseChangeFns.app_surjective hL.globalFns _ P.A P.isAb _ _ T'.hom _ _ (isP …` and prove the remaining obligations. Use `GlobalTheory.AbLaw.CubeOpen.triv_pull_pull _ _ (GlobalTheory.AbLaw.CubeOpen.triv_comp h.left ?_ h0)` and prove the remaining obligations. Establish `e : h ≫ lift (𝟙 T) (1 : T ⟶ P.A) = lift (𝟙 T') (1 : T' ⟶ P.A) ≫ h ▷ P.A`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply the tactic sequence `ext <;> simp`. Conclude with `congrArg (·.left) e`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_closed_triv :
     Out.Laws → Out.Laws2 → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (T : Over (Sp K)) (N : LB (T ⊗ P.A).left), N.IsLB → (∃ t : (N.pull (lift (𝟙 T) (1 : T ⟶ P.A)).left).Gen, t.IsGen) → ∃ (Z : Scheme.{0}) (i : Z ⟶ T.left), IsClosedImmersion i ∧ ∀ (T' : Over (Sp K)) (h : T' ⟶ T), (∃ t : (N.pull (h ▷ P.A).left).Gen, t.IsGen) ↔ ∃ u : T'.left ⟶ Z, u ≫ i = h.left := by

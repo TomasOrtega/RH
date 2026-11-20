@@ -19,15 +19,15 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `T io a n P₀ hP`. Use `haveI : CharZero T.Fr := charZero_of_injective_algebraMap (IsFractionRing.injective T.V T.Fr)`. Use `haveI : CharZero c.F := io.charZero`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Finset.sup_le fun m hm => le_of_eq ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl), Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_congr rfl fun i _ => hP.1.2.2 m hm σ i`. Take `⟨s, cf, Q, hcf, hQ, hs⟩` from `GlobalTheory.exists_integral_combination_of_mem_HaO (E →+* ℂ) Dw.mult n ℤ ℚ T.Fr (Rat.castHom T.Fr) (algebraMap T.V T.Fr).range (fun x => ⟨(x : T.V), by simp⟩) ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)) P₀ hP choose cf' hcf' using hcf`. Use `⟨s, cf', fun i => MvPolynomial.map (Rat.castHom c.F) (Q i), fun i => ?_, ?_⟩` and prove the remaining obligations. Take `⟨⟨h1, h2, h3⟩, h4⟩` from `hQ i`. Use `⟨⟨PullbackSections.harmK_map _ h1, PullbackSections.rowInv_map _ h2, PullbackSections.rowDeg_map _ h3⟩, fun m => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.coeff_map]`. Take `⟨z, hz⟩` from `h4 m`. Rewrite using `[← hz]`. Establish `: (Rat.castHom c.F) (algebraMap ℤ ℚ z) = (z : c.F)` using `by simp`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `intCast_mem _ z`. Rewrite using `[hs]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_map, hcf' i, MvPolynomial.smul_eq_C_mul, Subsingleton.elim (io.comp (Rat.castHom c.F)) (Rat.castHom T.Fr)]`.
+A detailed English derivation is pending.
 -/
 theorem totalDegree_le_and_exists_combination_of_mem_FFV :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (T : CDVR) (io : c.F →+* T.Fr) (a : ((E →+* ℂ) × ℕ → ℕ)) (n : ℕ), ∀ P₀ ∈ FFV (Dw := Dw) T a n, P₀.totalDegree ≤ DF Dw a ∧ ∃ (k : ℕ) (cf : Fin k → T.V) (Pi : Fin k → MvPolynomial (LtN Dw n) c.F), (∀ i, Pi i ∈ harmA c a n) ∧ P₀ = ∑ i, algebraMap T.V T.Fr (cf i) • MvPolynomial.map io (Pi i) := by

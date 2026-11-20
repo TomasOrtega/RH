@@ -10,7 +10,7 @@ open GlobalTheory.Mum GlobalTheory.Mum.Conj
 namespace GlobalTheory.Mum.Conj
 
 /- English proof (translation)
-Use `pullback.hom_ext (f := (TFK (R := R) (Kb R)).hom) (g := A.A.hom) ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(p ≫ (mTw A σ).left) ≫ (fst (TFK (R := R) (Kb R)) A.A).left = p' ≫ (fst (TFK (R := R) (Kb R)) A.A).left`. Rewrite using `[Category.assoc, mTw_fst_left, h₁]`. Express the relevant statement in the definitionally equal form `(p ≫ (mTw A σ).left) ≫ (snd (TFK (R := R) (Kb R)) A.A).left = p' ≫ (snd (TFK (R := R) (Kb R)) A.A).left`. Rewrite using `[Category.assoc, mTw_snd_left, h₂]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_mTw_left_eq {R : Type} [CommRing R] [IsDomain R] (A : PolAV (Sp (FractionRing R)))
     (σ : Kb R →ₐ[FractionRing R] Kb R) {Z : Scheme.{0}} {p p' : Z ⟶ (TFK (R := R) (Kb R) ⊗ A.A).left}
@@ -25,7 +25,7 @@ theorem comp_mTw_left_eq {R : Type} [CommRing R] [IsDomain R] (A : PolAV (Sp (Fr
     rw [Category.assoc, mTw_snd_left, h₂]
 
 /- English proof (translation)
-Introduce `Z p p' h₂ h₁ z J hJ`. Rewrite using `[← comp_mTw_left_eq A σ h₂ h₁]`. Conclude with `GlobalTheory.FieldBaseChange.sval_pullOver (mTw_fst_left A σ) (fun _ => (mTw_snd_left A σ).symm) t p hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secTw_isTwist (R : Type) [CommRing R] [IsDomain R] (A : PolAV (Sp (FractionRing R))) (N : ℕ)
     (σ : Kb R →ₐ[FractionRing R] Kb R) (t : SecK A.L (snd (TFK (R := R) (Kb R)) A.A).left N) :

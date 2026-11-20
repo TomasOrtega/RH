@@ -69,7 +69,7 @@ structure PELRep (D : Datum H) (a : J → 𝓞 E) (bas : (Fin (2 * g) → ℤ) �
     x ≫ s = y ≫ s → TMap t' t x → TMap t' t y → x = y
 
 /- English proof (translation)
-Take `⟨N, i, hi, -, rfl⟩` from `h`. Establish `: IsImmersion i` using `hi`. Unfold `PSpace.str`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isSeparated_of_isQProjOver {X : Scheme.{0}} {f : X ⟶ Sp o} (h : IsQProjOver f) : IsSeparated f := by
   obtain ⟨N, i, hi, -, rfl⟩ := h
@@ -78,32 +78,32 @@ theorem isSeparated_of_isQProjOver {X : Scheme.{0}} {f : X ⟶ Sp o} (h : IsQPro
   infer_instance
 
 /- English proof (translation)
-The claim follows from `isSeparated_of_isQProjOver F.qproj`.
+A detailed English derivation is pending.
 -/
 theorem SFam.isSeparated {h : ℕ} {ζ : o} (F : SFam h k ζ) : IsSeparated F.s := isSeparated_of_isQProjOver F.qproj
 
 /- English proof (translation)
-The claim follows from `F.inj (DualNumber K) x (constPt x) (x ≫ F.s) c hs h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem SFam.eq_constPt {h : ℕ} {ζ : o} (F : SFam h k ζ) (K : Type) [Field K] (x : Sp (DualNumber K) ⟶ F.X)
     (c : SiegPre h k ζ (x ≫ F.s)) (hs : x ≫ F.s = constPt x ≫ F.s) (h₁ : SiegPB c F.univ x)
     (h₂ : SiegPB c F.univ (constPt x)) : x = constPt x := F.inj (DualNumber K) x (constPt x) (x ≫ F.s) c hs h₁ h₂
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨F.isSeparated, fun S s' c hS hd hc => F.rep S s' c hS hd hc⟩`.
+Supply the required witnesses or components.
 -/
 theorem SFam.sRep {h p M : ℕ} (F : SFam h M (zetaZP p M))
     (sm : SmoothOfRelativeDimension (h * (h + 1) / 2) F.s) (qc : QuasiCompact F.s) (pr : F.univ.Principal) (pts unr) :
     SRep (⟨F.X, F.s, sm, qc, F.univ, pr, pts, unr⟩ : SiegelFamily h p M) := ⟨F.isSeparated, fun S s' c hS hd hc => F.rep S s' c hS hd hc⟩
 
 /- English proof (translation)
-The claim follows from `isSeparated_of_isQProjOver h.qproj`.
+A detailed English derivation is pending.
 -/
 theorem PELRep.isSeparated {D : Datum H} {a : J → 𝓞 E} {bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] D.La} {ρ : o}
     {t : TObj g k J b s} (h : PELRep D a bas ρ t) : IsSeparated s := isSeparated_of_isQProjOver h.qproj
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hadd, -⟩` from `h`. Establish `h0 : lev 0 * lev 0 = lev 0 * 1` using `by rw [← hadd, add_zero, _root_.mul_one]`. Conclude with `_root_.mul_left_cancel h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LevUnder.lev_zero {D : Datum H} {a : J → 𝓞 E} {bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] D.La} {t : TObj g k J b s}
     {τ : SAB H S} {lev : D.La → (𝟙_ (Over S) ⟶ τ.G)} (h : LevUnder D a bas t τ lev) : lev 0 = 1 := by
@@ -112,7 +112,7 @@ theorem LevUnder.lev_zero {D : Datum H} {a : J → 𝓞 E} {bas : (Fin (2 * g) �
   exact _root_.mul_left_cancel h0
 
 /- English proof (translation)
-Take `⟨φ, hφ, -, -, -, hpt⟩` from `h`. Use `haveI := hφ`. Establish `e : lev (bas (Pi.single i 1)) ≫ φ.hom = t.pt i` using `Over.OverMorphism.ext (hpt i)`. Apply `(cancel_mono φ.hom).1` to reduce the goal to its premises. Rewrite using `[MonObj.pow_comp, e, t.torsion i, MonObj.one_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LevUnder.lev_bas_pow {D : Datum H} {a : J → 𝓞 E} {bas : (Fin (2 * g) → ℤ) ≃ₗ[ℤ] D.La} {t : TObj g k J b s}
     {τ : SAB H S} {lev : D.La → (𝟙_ (Over S) ⟶ τ.G)} (h : LevUnder D a bas t τ lev) (i : Fin (2 * g)) :

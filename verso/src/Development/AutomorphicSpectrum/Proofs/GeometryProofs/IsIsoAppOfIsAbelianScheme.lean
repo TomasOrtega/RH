@@ -14,7 +14,7 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 namespace GlobalTheory.CompanionTheory.Ar.Approx
 
 /- English proof (translation)
-The claim follows from `{ comm := by have := hA.comm; infer_instance smooth := by have := hA.smooth; show Smooth (pullback.snd _ _); infer_instance proper := by have := hA.proper; show IsProper (pullback.snd _ _); infer_instance geomConnected := by have := hA.geomConnected; show GeometricallyConnected ( …`.
+A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_pullback {S S' : Scheme.{0}} (A : Over S) [GrpObj A]
     (hA : IsAbelianScheme A) (f : S' ⟶ S) : IsAbelianScheme ((Over.pullback f).obj A) :=
@@ -25,13 +25,13 @@ theorem isAbelianScheme_pullback {S S' : Scheme.{0}} (A : Over S) [GrpObj A]
       have := hA.geomConnected; show GeometricallyConnected (pullback.snd _ _); infer_instance }
 
 /- English proof (translation)
-Set `R : Type` to `Γ(V.toScheme, ⊤)`. Set `e : V.toScheme ≅ Sp R` to `V.toScheme.isoSpec`. Set `f : Sp R ⟶ S` to `e.inv ≫ V.ι`. Establish `hf : e.hom ≫ f = V.ι` using `by simp [f]`. Take `⟨S₀, B, _, φ, -, hfin, hB, hpb⟩` from `GlobalTheory.T.abelianScheme_spreads_out_finiteType_subring R ((Over.pullback f).obj A) ∅ (isAbelianScheme_pullback A hA f)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: IsNoetherianRing S₀` using `Algebra.FiniteType.isNoetherianRing ℤ S₀`. Use `hB.smooth` as an intermediate fact. Use `hB.proper` as an intermediate fact. Use `hB.geomConnected` as an intermediate fact. Establish `: GeometricallyIntegral B.hom` using `GlobalTheory.geometricallyIntegral_of_smooth_of_geometricallyConnected_fibres B.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w : (A.hom ⁻¹ᵁ V).ι ≫ A.hom = (A.hom ∣_ V ≫ e.hom) ≫ f`. Rewrite using `[Category.assoc, hf]`. Conclude with `(isPullback_morphismRestrict A.hom V).flip.w`. Establish `sq : IsPullback (pullback.lift _ _ w) (A.hom ∣_ V) (pullback.snd A.hom f) e.hom`. Use `IsPullback.of_right (h₁₂ := pullback.fst A.hom f) (v₁₃ := A.hom) (h₂₂ := f) ?_ (pullback.lift_snd _ _ _) (.of_hasPullback _ _)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pullback.lift_fst, hf]`. Conclude with `(isPullback_morphismRestrict A.hom V).flip`. Conclude with `GlobalTheory.ProperFunctions.isIso_appTop_baseChange (sq.paste_horiz hpb.1)`.
+A detailed English derivation is pending.
 -/
 theorem isIso_appTop_restrict {S : Scheme.{0}} (A : Over S) [GrpObj A]
     (hA : IsAbelianScheme A) (V : S.Opens) [IsAffine V.toScheme] :
@@ -59,7 +59,7 @@ theorem isIso_appTop_restrict {S : Scheme.{0}} (A : Over S) [GrpObj A]
   exact GlobalTheory.ProperFunctions.isIso_appTop_baseChange (sq.paste_horiz hpb.1)
 
 /- English proof (translation)
-The claim follows from `fun _ A _ hA U ↦ GlobalTheory.ProperFunctions.isIso_app_of_forall_affineOpens A.hom (fun V ↦ have : IsAffine V.1.toScheme := V.2 isIso_appTop_restrict A hA V.1) U`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIso_app_of_isAbelianScheme : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A],
     IsAbelianScheme A → ∀ U : S.Opens, IsIso (A.hom.app U) := fun _ A _ hA U ↦

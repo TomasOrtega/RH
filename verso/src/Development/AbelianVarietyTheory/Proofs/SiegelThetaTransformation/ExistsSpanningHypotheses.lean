@@ -31,19 +31,19 @@ open GlobalTheory.Dict
 namespace GlobalTheory.SpanInhab
 
 /- English proof (translation)
-Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Establish `key : ∀ z : ℂ, z ^ 2 = -(H.d : ℂ) → z.re = 0 ∧ z.im ≠ 0`. Introduce `z hz`. Establish `h1` using `congrArg Complex.re hz`. Establish `h2` using `congrArg Complex.im hz`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[sq] at h1 h2`. Establish `him : z.im ≠ 0`. Introduce `h`. Rewrite `h1` using `[h]`. Use polynomial arithmetic with `[mul_self_nonneg z.re]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `⟨?_, him⟩` and prove the remaining obligations. Establish `: z.re * z.im = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 this).resolve_right him`. Establish `hE : ((H.rt : E)) ^ 2 = -(H.d : E)`. Use `congrArg (fun z : 𝓞 E => (z : E)) H.rt_sq` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hcc : cc (H.rt : E) = -(H.rt : E)`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Establish `hk` using `key (τ (H.rt : E)) (by rw [← map_pow, hE, map_neg, map_natCast])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: τ (cc (H.rt : E)) = starRingEnd ℂ (τ (H.rt : E))` using `IsCMField.complexEmbedding_complexConj E τ _`. Rewrite using `[this, map_neg]`. Apply the tactic sequence `apply Complex.ext <;> simp [hk.1]`. Establish `h0 : (H.rt : E) ≠ 0`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hE` using `[h]`. Establish `: (H.d : E) = 0` using `by linear_combination hE`. Conclude with `H.d_prime.ne_zero (by exact_mod_cast this)`. Break down `lt_or_gt_of_ne (key _ H.sqrt_neg_disc_sq).2 with h | h` into its components or cases. Conclude with `⟨H.rt, hcc, h0, fun τ hτ => hτ ▸ h⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨-(H.rt : E), ?_, neg_ne_zero.2 h0, fun τ hτ => by rw [map_neg, hτ]; simpa using h⟩` and prove the remaining obligations. Establish `: cc (-(H.rt : E)) = -cc (H.rt : E)` using `by simp [cc]`. Rewrite using `[this, hcc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_imag_neg {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) :
     ∃ ξ : E, cc ξ = -ξ ∧ ξ ≠ 0 ∧ ∀ τ : E →+* ℂ, τ (H.rt : E) = H.rt0 → (τ ξ).im < 0 := by
@@ -80,9 +80,9 @@ theorem exists_imag_neg {E : Type} [Field E] [NumberField E] [IsCMField E] (H : 
     rw [this, hcc]
 
 /- English proof (translation)
-Take `⟨p, hp, hN, hm⟩` from `Nat.exists_prime_gt_modEq_one (k := 4 * d) N (by have := hd.pos; omega)`. Establish `h4 : p % 4 = 1` using `hm.of_mul_right d`. Establish `hpd : p ≡ 1 [MOD d]` using `hm.of_mul_left 4`. Establish `hodd : Odd p` using `Nat.odd_iff.2 (by omega)`. Use `⟨p, hN, hp, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[jacobiSym.neg _ hodd, ZMod.χ₄_nat_one_mod_four h4, _root_.one_mul, ← jacobiSym.quadratic_reciprocity_one_mod_four h4 hd, jacobiSym.mod_left' (a₂ := 1) (by exact_mod_cast hpd), jacobiSym.one_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_prime_jacobi_neg {d : ℕ} (hd : Odd d) (N : ℕ) :
     ∃ p : ℕ, N < p ∧ p.Prime ∧ jacobiSym (-(d : ℤ)) p = 1 := by
@@ -96,13 +96,13 @@ theorem exists_prime_jacobi_neg {d : ℕ} (hd : Odd d) (N : ℕ) :
     jacobiSym.mod_left' (a₂ := 1) (by exact_mod_cast hpd), jacobiSym.one_left]
 
 /- English proof (translation)
-Establish `hM` using `l.three_le`. Take `⟨p, hN, hp, hj⟩` from `exists_prime_jacobi_neg (d := H.d) (Nat.odd_iff.2 (by have := H.d_mod; omega)) l.M`. Establish `hco : p.Coprime l.M` using `(Nat.Prime.coprime_iff_not_dvd hp).2 fun h => by`. Use `Nat.le_of_dvd (by omega) h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨J, h1, h2, h3⟩` from `(GlobalTheory.exists_level_mul_split E H l).2 p hp (by omega) hj`. Take `⟨l₂, hd, hM₂, hMb, hA⟩` from `(GlobalTheory.exists_level_mul_split E H l).1 p J (hp.odd_of_ne_two (by omega)) hco h1 h2 h3`. Set `c₂ : Coeff l₂` to `LevelExist.minCoeff l₂`. Establish `hz : zeta l.M' ∈ c₂.F`. Take `⟨k, hk⟩` from `LevelExist.zeta_eq_pow_of_dvd (LevelExist.M'_pos l₂) (show l.M' ∣ l₂.M' from Nat.lcm_dvd (hd.1.trans (Nat.dvd_lcm_left _ _)) (hd.2.2.trans (Nat.dvd_lcm_right _ _)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hk]`. Conclude with `pow_mem c₂.zeta_mem k`. Establish `hle : KA l ≤ c₂.F`. Use `c₂.le` as an intermediate fact. Unfold `KA at this ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[hA]`. Then use the resulting hypothesis. Conclude with `⟨p, J, l₂, ⟨c₂.F, c₂.fin, c₂.conj, hz, hle⟩, c₂, hp, by omega, rfl, hd, hM₂, hco, hMb, h3, hA⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_split_cover {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Geo.Tor.Level H) :
     ∃ (pd : ℕ) (J : Ideal (𝓞 E)) (l₂ : Geo.Tor.Level H) (c : Coeff l) (c₂ : Coeff l₂), pd.Prime ∧ 3 < pd ∧

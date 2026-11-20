@@ -9,7 +9,7 @@ namespace GlobalTheory.HilbertThetaSeries.IsoP
 variable {F : Type} [Field F] {κ : Type} [Fintype κ] [DecidableEq κ]
 
 /- English proof (translation)
-Use `geom_sum_mul S p` as an intermediate fact. Rewrite `this` using `[h, zero_mul]`. Conclude with `(sub_eq_zero.mp this.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_eq_one {p : ℕ} {S : Matrix κ κ ℤ} (h : ∑ i ∈ Finset.range p, S ^ i = 0) : S ^ p = 1 := by
   have := geom_sum_mul S p
@@ -17,14 +17,14 @@ theorem pow_eq_one {p : ℕ} {S : Matrix κ κ ℤ} (h : ∑ i ∈ Finset.range 
   exact (sub_eq_zero.mp this.symm)
 
 /- English proof (translation)
-Use `show ((Int.castRingHom F).mapMatrix S) ^ n = (Int.castRingHom F).mapMatrix (S ^ n)`. Rewrite using `[map_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_pow_eq (S : Matrix κ κ ℤ) (n : ℕ) : (S.map (Int.cast : ℤ → F)) ^ n = (S ^ n).map (Int.cast : ℤ → F) := by
   show ((Int.castRingHom F).mapMatrix S) ^ n = (Int.castRingHom F).mapMatrix (S ^ n)
   rw [map_pow]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [Function.iterate_succ_apply', ih, pow_succ', Matrix.mulVec_mulVec]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iter_eq (A : Matrix κ κ F) (n : ℕ) (x : κ → F) : (fun x => A *ᵥ x)^[n] x = (A ^ n) *ᵥ x := by
   induction n with
@@ -32,13 +32,13 @@ theorem iter_eq (A : Matrix κ κ F) (n : ℕ) (x : κ → F) : (fun x => A *ᵥ
   | succ n ih => rw [Function.iterate_succ_apply', ih, pow_succ', Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Simplify using `[LL, AddSubgroup.mem_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_LL (x : κ → F) : x ∈ LL F κ ↔ ∀ i, x i ∈ integralClosure ℤ F := by
   simp [LL, AddSubgroup.mem_pi]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_LL]`. Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`. Conclude with `Subalgebra.sum_mem _ fun j _ => Subalgebra.mul_mem _ (Subalgebra.intCast_mem _ _) (hx j)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_LL (M : Matrix κ κ ℤ) {x : κ → F} (hx : x ∈ LL F κ) : (M.map (Int.cast : ℤ → F)) *ᵥ x ∈ LL F κ := by
   rw [mem_LL] at hx ⊢
@@ -47,7 +47,7 @@ theorem mulVec_LL (M : Matrix κ κ ℤ) {x : κ → F} (hx : x ∈ LL F κ) : (
   exact Subalgebra.sum_mem _ fun j _ => Subalgebra.mul_mem _ (Subalgebra.intCast_mem _ _) (hx j)
 
 /- English proof (translation)
-Simplify using `only [aL, AddSubgroup.mem_map] at hx ⊢`. Take `⟨y, hy, rfl⟩` from `hx`. Use `⟨_, mulVec_LL M hy, ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.mulVec_smul]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_aL (M : Matrix κ κ ℤ) (a : F) {x : κ → F} (hx : x ∈ aL κ a) : (M.map (Int.cast : ℤ → F)) *ᵥ x ∈ aL κ a := by
   simp only [aL, AddSubgroup.mem_map] at hx ⊢
@@ -56,7 +56,7 @@ theorem mulVec_aL (M : Matrix κ κ ℤ) (a : F) {x : κ → F} (hx : x ∈ aL �
   simp [Matrix.mulVec_smul]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, ← Matrix.mulVec_mulVec, hx, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pow_mulVec_fix (A : Matrix κ κ F) {x : κ → F} (hx : A *ᵥ x = x) (n : ℕ) : (A ^ n) *ᵥ x = x := by
   induction n with
@@ -64,9 +64,9 @@ theorem pow_mulVec_fix (A : Matrix κ κ F) {x : κ → F} (hx : A *ᵥ x = x) (
   | succ n ih => rw [pow_succ, ← Matrix.mulVec_mulVec, hx, ih]
 
 /- English proof (translation)
-Introduce `hd`. Establish `h2` using `Int.modEq_iff_dvd.mp h`. Establish `h3 : (p : ℤ) ∣ 1`. Establish `h4` using `dvd_add h2 (dvd_mul_of_dvd_right hd ((-1) ^ k))`. Simplify using `using h4`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h5 : p ∣ 1` using `by exact_mod_cast h3`. Conclude with `hp.not_dvd_one h5`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prime_not_dvd_of_neg_one_pow_mul_modEq_one {p : ℕ} (hp : p.Prime) {t : ℕ} {k : ℕ} (h : (-1) ^ k * (t : ℤ) ≡ 1 [ZMOD p]) : ¬ (p : ℤ) ∣ t := by
   intro hd
@@ -78,7 +78,7 @@ theorem prime_not_dvd_of_neg_one_pow_mul_modEq_one {p : ℕ} (hp : p.Prime) {t :
   exact hp.not_dvd_one h5
 
 /- English proof (translation)
-Simplify using `only [map_pow_eq]`. Establish `e` using `congrArg (Int.castRingHom F).mapMatrix cyc`. Rewrite `e` using `[map_sum, map_zero]`. Conclude with `e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_pow_map_intCast_eq_zero {F : Type} [Field F] {κ : Type} [Fintype κ] [DecidableEq κ]
     {p : ℕ} {S : Matrix κ κ ℤ} (cyc : ∑ i ∈ Finset.range p, S ^ i = 0) :
@@ -89,39 +89,37 @@ private theorem sum_pow_map_intCast_eq_zero {F : Type} [Field F] {κ : Type} [Fi
   exact e
 
 /- English proof (translation)
-Introduce `F _ _ p hp κ _ _ G S t hL`. Take `⟨_, _, iso, cyc, _, cong⟩` from `hL`. Establish `hφ : ∀ M : Matrix κ κ ℤ, M.map (Int.cast : ℤ → F) = (Int.castRingHom F).mapMatrix M` using `fun _ => rfl`. Establish `hsum0` using `sum_pow_map_intCast_eq_zero (F := F) cyc`. Use `set S' : Matrix κ κ F := S.map (Int.cast : ℤ → F) with hS'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow : S' ^ p = 1`. Rewrite using `[hS', map_pow_eq, pow_eq_one cyc]`. Simplify using the standard rewrite rules. Establish `hp1 : p - 1 + 1 = p` using `Nat.sub_add_cancel hp.one_lt.le`. Establish `hinv : ∀ y : κ → F, S' *ᵥ ((S ^ (p - 1)).map (Int.cast : ℤ → F) *ᵥ y) = y`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Rewrite using `[← map_pow_eq, Matrix.mulVec_mulVec, ← pow_succ', hp1, hpow, Matrix.one_mulVec]`. Establish `hinv' : ∀ y : κ → F, (S ^ (p - 1)).map (Int.cast : ℤ → F) *ᵥ (S' *ᵥ y) = y`. Introduce `y`. Rewrite using `[← map_pow_eq, Matrix.mulVec_mulVec, ← pow_succ, hp1, hpow, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : ∑ i ∈ Finset.range p, S' ^ i = 0` using `hsum0`. Establish `hBF : ∀ x y : κ → F, BF G (S' *ᵥ x) (S' *ᵥ y) = BF G x y`. Introduce `x y`. Establish `key : S'ᵀ * G.map (Int.cast : ℤ → F) * S' = G.map (Int.cast : ℤ → F)`. Rewrite using `[hS', ← Matrix.transpose_map]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hφ]`. Rewrite using `[← map_mul, ← map_mul, iso]`. Unfold `BF`. Rewrite using `[← Matrix.vecMul_transpose S' x, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, key]`. Establish `memD : ∀ y : κ → F, y ∈ dualL F G ↔ ∀ l ∈ LL F κ, ∃ n : ℤ, Algebra.trace ℚ F (BF G y l) = n` using `fun _ => Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x y => ⟨hBF x y, ?_⟩, fun x => ⟨?_, ?_, ?_, ?_⟩, ?_, prime_not_dvd_of_neg_one_pow_mul_modEq_one hp cong⟩` and prove the remaining obligations. Unfold `QF`. Rewrite using `[hBF]`. Rewrite using `[iter_eq, hpow, Matrix.one_mulVec]`. Introduce `hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : ∑ i ∈ Finset.range p, S' ^ i *ᵥ x = 0`. Rewrite using `[← Matrix.sum_mulVec, hsum, Matrix.zero_mulVec]`. Simplify using `only [pow_mulVec_fix S' hx, Finset.sum_const, Finset.card_range] at e`. Rewrite `e` using `[← Nat.cast_smul_eq_nsmul F]`. Establish `hp0 : (p : F) ≠ 0` using `Nat.cast_ne_zero.mpr hp.ne_zero`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(smul_eq_zero.mp e).resolve_left hp0`. Rewrite using `[memD, memD]`. Prove the components needed by the constructor for the conclusion. Introduce `h l hl`. Establish `h'` using `h _ (mulVec_LL S hl)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h'` using `[hBF]`. Then use the resulting hypothesis. Introduce `h l hl`. Establish `h'` using `h _ (mulVec_LL (S ^ (p - 1)) hl)`. Rewrite `h'` using `[← hBF, hinv]`. Then use the resulting hypothesis. Introduce `a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `mulVec_aL (S ^ (p - 1)) a h`. Rewrite `h'` using `[hinv']`. Then use the resulting hypothesis. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `mulVec_aL S a h`. Introduce `N x hN hcop hx hz`. Establish `hstep : ∀ i : ℕ, S' ^ i *ᵥ x - x ∈ aL κ (N : F)`. Introduce `i`. Proceed by induction on `i with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `succ i ih`. Establish `e : S' ^ (i + 1) *ᵥ x - x = S' *ᵥ (S' ^ i *ᵥ x - x) + (S' *ᵥ x - x)`. Rewrite using `[pow_succ', ← Matrix.mulVec_mulVec, Matrix.mulVec_sub]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `add_mem (mulVec_aL S _ ih) hz`. Establish `hpx : (p : F) • x ∈ aL κ (N : F)`. Establish `h0 : ∑ i ∈ Finset.range p, (S' ^ i *ᵥ x - x) = -((p : F) • x)`. Rewrite using `[Finset.sum_sub_distrib, ← Matrix.sum_mulVec, hsum, Matrix.zero_mulVec, Finset.sum_const, Finset.card_range, zero_sub, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `AddSubgroup.sum_mem (aL κ (N : F)) (t := Finset.range p) (fun i _ => hstep i)`. Rewrite `hs` using `[h0]`. Conclude with `neg_mem_iff.mp hs`. Establish `hN0 : (N : F) ≠ 0` using `Nat.cast_ne_zero.mpr hN.ne'`. Establish `hNx : (N : F) ^ 2 • x ∈ aL κ (N : F)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [aL, AddSubgroup.mem_map] at hx ⊢`. Take `⟨y, hy, rfl⟩` from `hx`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Simplify using `only [DistribMulAction.toAddMonoidHom_apply, smul_smul]`. Rewrite using `[pow_two, mul_assoc, mul_inv_cancel₀ hN0, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨u, v, huv⟩ : IsCoprime (p : ℤ) ((N : ℤ) ^ 2) := by`. Establish `hc : Nat.Coprime p (N ^ 2)` using `Nat.Coprime.pow_right 2 hcop.symm`. Conclude with `Nat.isCoprime_iff_coprime.mpr hc` after adjusting the coercions. Establish `hx' : x = u • ((p : F) • x) + v • ((N : F) ^ 2 • x)`. Rewrite using `[← Int.cast_smul_eq_zsmul F, ← Int.cast_smul_eq_zsmul F, smul_smul, smul_smul, ← add_smul]`.
-
-Establish `e : (u : F) * p + (v : F) * (N : F) ^ 2 = 1` using `by exact_mod_cast huv`. Rewrite using `[e, one_smul]`. Rewrite using `[hx']`. Conclude with `add_mem (zsmul_mem hpx u) (zsmul_mem hNx v)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isometry_order_p : ∀ (F : Type) [Field F] [NumberField F] (p : ℕ), p.Prime → ∀ (κ : Type) [Fintype κ] [DecidableEq κ] (G S : Matrix κ κ ℤ) (t : ℕ), LatD p G S t → (∀ x y : κ → F, BF G ((S.map (Int.cast : ℤ → F)) *ᵥ x) ((S.map (Int.cast : ℤ → F)) *ᵥ y) = BF G x y ∧ QF G ((S.map (Int.cast : ℤ → F)) *ᵥ x) = QF G x) ∧ (∀ x : κ → F, (fun x => (S.map (Int.cast : ℤ → F)) *ᵥ x)^[p] x = x ∧ ((S.map (Int.cast : ℤ → F)) *ᵥ x = x → x = 0) ∧ ((S.map (Int.cast : ℤ → F)) *ᵥ x ∈ dualL F G ↔ x ∈ dualL F G) ∧ ∀ a : F, ((S.map (Int.cast : ℤ → F)) *ᵥ x ∈ aL κ a ↔ x ∈ aL κ a)) ∧ (∀ (N : ℕ) (x : κ → F), 0 < N → N.Coprime p → x ∈ aL κ (N : F)⁻¹ → (S.map (Int.cast : ℤ → F)) *ᵥ x - x ∈ aL κ (N : F) → x ∈ aL κ (N : F)) ∧ ¬ (p : ℤ) ∣ t := by
   intro F _ _ p hp κ _ _ G S t hL
@@ -218,7 +216,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.IsoP.isometry_order_p | exact GlobalTheory.HilbertThetaSeries.IsoP.isometry_order_p | (intros; apply GlobalTheory.HilbertThetaSeries.IsoP.isometry_order_p <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.intMatrix_isometry_prime_order_lattice_stability : ∀ (F : Type) [Field F] [NumberField F] (p : ℕ), p.Prime → ∀ (κ : Type) [Fintype κ] [DecidableEq κ] (G S : Matrix κ κ ℤ) (t : ℕ), LatD p G S t → (∀ x y : κ → F, BF G ((S.map (Int.cast : ℤ → F)) *ᵥ x) ((S.map (Int.cast : ℤ → F)) *ᵥ y) = BF G x y ∧ QF G ((S.map (Int.cast : ℤ → F)) *ᵥ x) = QF G x) ∧ (∀ x : κ → F, (fun x => (S.map (Int.cast : ℤ → F)) *ᵥ x)^[p] x = x ∧ ((S.map (Int.cast : ℤ → F)) *ᵥ x = x → x = 0) ∧ ((S.map (Int.cast : ℤ → F)) *ᵥ x ∈ dualL F G ↔ x ∈ dualL F G) ∧ ∀ a : F, ((S.map (Int.cast : ℤ → F)) *ᵥ x ∈ aL κ a ↔ x ∈ aL κ a)) ∧ (∀ (N : ℕ) (x : κ → F), 0 < N → N.Coprime p → x ∈ aL κ (N : F)⁻¹ → (S.map (Int.cast : ℤ → F)) *ᵥ x - x ∈ aL κ (N : F) → x ∈ aL κ (N : F)) ∧ ¬ (p : ℤ) ∣ t := by
   first | exact @GlobalTheory.HilbertThetaSeries.IsoP.isometry_order_p | exact GlobalTheory.HilbertThetaSeries.IsoP.isometry_order_p | (intros; apply GlobalTheory.HilbertThetaSeries.IsoP.isometry_order_p <;> assumption)

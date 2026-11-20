@@ -3,13 +3,13 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `l _ k _ _ _`. Rewrite using `[pow_one]`. Set `_ : Algebra (ZMod l) k` to `ZMod.algebra k l`. Establish `hnd` using `traceForm_nondegenerate (ZMod l) k`. Set `b` to `Module.finBasis (ZMod l) k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `d` to `(Algebra.traceForm (ZMod l) k).dualBasis hnd b`. Use `⟨(Algebra.trace (ZMod l) k).toAddMonoidHom, ?_, Module.finrank (ZMod l) k, b, d, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Apply `hnd.1 x` to reduce the goal to its premises. Introduce `y`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Algebra.traceForm_apply, mul_comm]`. Conclude with `hx y`. Introduce `z conv_lhs => rw [← d.sum_repr z]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply, mul_comm z (b j)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.toAddMonoidHom_coe]`. Take `⟨c, hc⟩ : ∃ c, Algebra.trace (ZMod l) k (b j * z) = c` from `⟨_, rfl⟩`. Rewrite using `[hc]`. Use `conv_lhs => rw [← ZMod.natCast_zmod_val c]`. Rewrite using `[Nat.cast_smul_eq_nsmul, nsmul_eq_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteField_exists_traceForm_dualBases_pow_one :
     ∀ (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [Finite k] [CharP k l],

@@ -30,7 +30,7 @@ def inertiaGal (K : IntermediateField ℚ_[p] (PadicAlgCl p)) : Subgroup Gal(Pad
     exact hσ y hy
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_inertiaGal {K : IntermediateField ℚ_[p] (PadicAlgCl p)} {σ : Gal(PadicAlgCl p/K)} :
     σ ∈ inertiaGal K ↔ ∀ y : PadicAlgCl p, ‖y‖ ≤ 1 → ‖σ y - y‖ < 1 := Iff.rfl
@@ -40,13 +40,13 @@ namespace SenTateChar
 open SenTateChar
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Apply `hinf` to reduce the goal to its premises. Use `set U : Subgroup Gal(PadicAlgCl p/K) := (unitsOneAdd p 2).comap η`. Establish `hU : IsOpen (U : Set Gal(PadicAlgCl p/K))` using `(isOpen_unitsOneAdd 2).preimage hη`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hfin : Finite (Gal(PadicAlgCl p/K) ⧸ U)` using `Subgroup.quotient_finite_of_isOpen U hU`. Set `f : Gal(PadicAlgCl p/K) ⧸ U → ℤ_[p]ˣ` to `fun c => if h : ∃ τ ∈ inertiaGal K, (τ : Gal(PadicAlgCl p/K) ⧸ U) = c then η h.choose else 1`. Use `(Set.finite_range f).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨τ, hτ, rfl⟩`. Use `⟨(τ : Gal(PadicAlgCl p/K) ⧸ U), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h : ∃ τ' ∈ inertiaGal K, (τ' : Gal(PadicAlgCl p/K) ⧸ U) = τ` using `⟨τ, hτ, rfl⟩`. Simplify using `only [f, dif_pos h]`. Take `⟨hτ', hτ'U⟩` from `h.choose_spec`. Establish `hq : (h.choose)⁻¹ * τ ∈ U` using `QuotientGroup.eq.1 hτ'U`. Establish `hI : (h.choose)⁻¹ * τ ∈ inertiaGal K` using `mul_mem (inv_mem hτ') hτ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : η ((h.choose)⁻¹ * τ) = 1` using `hne _ hI hq`. Rewrite `h1` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_inertiaGal_unitsOneAdd_two (K : IntermediateField ℚ_[p] (PadicAlgCl p))
     (η : Gal(PadicAlgCl p/K) →* ℤ_[p]ˣ) (hη : Continuous η)
@@ -75,45 +75,39 @@ theorem exists_mem_inertiaGal_unitsOneAdd_two (K : IntermediateField ℚ_[p] (Pa
   exact h1
 
 /- English proof (translation)
-Use `set Ms : IntermediateField K (PadicAlgCl p) := ⨆ k, M k with hMs`. Use `set E : IntermediateField ℚ_[p] (PadicAlgCl p) := Ms.restrictScalars ℚ_[p] with hE`. Establish `hdir : Directed (· ≤ ·) M` using `hM.directed_le`. Establish `hmemE : ∀ {y : PadicAlgCl p}, y ∈ E → ∃ m, y ∈ M m` using `fun {y} hy => by`. Establish `h : y ∈ ((⨆ k, M k : IntermediateField K (PadicAlgCl p)) : Set (PadicAlgCl p))` using `(mem_restrictScalars _).1 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[coe_iSup_of_directed hdir, Set.mem_iUnion]`. Conclude with `h`. Establish `hME : ∀ {m} {y : PadicAlgCl p}, y ∈ M m → y ∈ E` using `fun {m} {y} hy => (mem_restrictScalars _).2 (le_iSup M m hy)`. Establish `hxc : x ∈ closureInCp E`. Establish `hfixed : ∀ σ ∈ Ms.fixingSubgroup, σ • x = x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `σ hσ`. Establish `h1 : η σ = 1` using `hker σ fun k => by`. Rewrite `hσ`, the goal using `[IntermediateField.mem_fixingSubgroup_iff]`. Conclude with `fun y hy => hσ y (le_iSup M k hy)`. Use `hx σ` as an intermediate fact.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h1, Units.val_one, PadicInt.coe_one, map_one, one_mul]`. Then use the resulting hypothesis. Establish `h` using `fixedPoints_closedSubgroup_eq_closure Ms.fixingSubgroup (InfiniteGalois.fixingSubgroup_isClosed Ms)`. Establish `hx' : x ∈ {x : ℂ_[p] | ∀ σ ∈ Ms.fixingSubgroup, σ • x = x}` using `hfixed`. Rewrite `hx'` using `[h, InfiniteGalois.fixedField_fixingSubgroup]`. Conclude with `hx'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hC1 : 1 ≤ C`. Establish `h` using `hbound n₁ le_rfl n₁ 1 (one_mem _)`. Rewrite `h` using `[normTrace_of_mem _ (one_mem _), norm_one, mul_one]`. Then use the resulting hypothesis. Establish `hC0 : 0 ≤ C` using `zero_le_one.trans hC1`. Establish `hadd : ∀ n, ∀ y ∈ E, ∀ z ∈ E, normTrace (M n) (y + z) = normTrace (M n) y + normTrace (M n) z` using `fun n y _ z _ => normTrace_add _ y z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbd : ∀ n, n₁ ≤ n → ∀ y ∈ E, ‖normTrace (M n) y‖ ≤ C * ‖y‖`. Introduce `n hn y hy`. Take `⟨m, hm⟩` from `hmemE hy`. Conclude with `hbound n hn m y hm`. Establish `hmapsE : ∀ (σ : Gal(PadicAlgCl p/K)), ∀ y ∈ E, σ y ∈ E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `σ y hy`. Take `⟨m, hm⟩` from `hmemE hy`. Conclude with `hME (hstab σ m y hm)`. Establish `hcomm : ∀ (σ : Gal(PadicAlgCl p/K)) (n : ℕ) (y : PadicAlgCl p), normTrace (M n) (σ y) = σ (normTrace (M n) y)`. Introduce `σ n y`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `normTrace_map_of_map_eq (M n) σ ?_ y` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `hstab σ n z hz`. Introduce `z hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨σ⁻¹ z, hstab σ⁻¹ n z hz, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `σ (σ⁻¹ z) = z`. Rewrite using `[← AlgEquiv.mul_apply, mul_inv_cancel, AlgEquiv.one_apply]`. Establish `hR : ∀ n, n₁ ≤ n → extendToClosure E (normTrace (M n)) x = 0`. Introduce `n hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set k' : IntermediateField ℚ_[p] (PadicAlgCl p) := (M n).restrictScalars ℚ_[p]`. Establish `: FiniteDimensional ℚ_[p] (M n)` using `Module.Finite.trans K (M n)`. Establish `: FiniteDimensional ℚ_[p] k'` using `(inferInstance : FiniteDimensional ℚ_[p] (M n))`. Establish `hkE : k' ≤ E` using `fun y hy => hME ((mem_restrictScalars _).1 hy)`. Establish `hmaps : ∀ y ∈ E, normTrace (M n) y ∈ k'` using `fun y _ => (mem_restrictScalars _).2 (normTrace_mem _ y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : ∀ a ∈ k', normTrace (M n) a = a` using `fun a ha => normTrace_of_mem _ ((mem_restrictScalars _).1 ha)`. Establish `hmul : ∀ a ∈ k', ∀ y ∈ E, normTrace (M n) (a * y) = a * normTrace (M n) y` using `fun a ha y _ => normTrace_mul_of_mem _ ((mem_restrictScalars _).1 ha) y`. Take `⟨γ, hγ, hγη⟩` from `hgen n hn`. Take `⟨b, hb, hbx⟩` from `extendToClosure_mem (hadd n) (hbd n hn) hmaps hxc`. Use `set q : ℚ_[p] := ((η γ : ℤ_[p]) : ℚ_[p])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq : algebraMap ℚ_[p] ℂ_[p] q = ((algebraMap ℚ_[p] (PadicAlgCl p) q : PadicAlgCl p) : ℂ_[p])`. Both sides reduce to the same expression. Establish `hqk : algebraMap ℚ_[p] (PadicAlgCl p) q ∈ k'` using `k'.algebraMap_mem q`. Establish `hγx : γ • x ∈ closureInCp E` using `smul_mem_closureInCp γ (hmapsE γ) hxc`. Establish `key : extendToClosure E (normTrace (M n)) x = algebraMap ℚ_[p] ℂ_[p] q * extendToClosure E (normTrace (M n)) x` using `by conv_lhs => rw [← hx γ]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hq, extendToClosure_mul (hadd n) (hbd n hn) hkE hmul hqk hγx, extendToClosure_smul (hadd n) (hbd n hn) γ (hmapsE γ) (fun y _ => hcomm γ n y) hxc, ← hbx, gal_smul_coe, (IntermediateField.mem_fixingSubgroup_iff _ _).1 hγ b ((mem_restrictScalars _).1 hb)]`. Establish `hq1 : algebraMap ℚ_[p] ℂ_[p] q ≠ 1`. Rewrite using `[Ne, ← map_one (algebraMap ℚ_[p] ℂ_[p]), (algebraMap ℚ_[p] ℂ_[p]).injective.eq_iff]`. Introduce `h`. Apply `hγη` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : (η γ : ℤ_[p]) = 1` using `Subtype.ext (by simpa [q] using h)`. Conclude with `Units.ext h'`. Establish `h2 : (algebraMap ℚ_[p] ℂ_[p] q - 1) * extendToClosure E (normTrace (M n)) x = 0`. Rewrite using `[sub_mul, one_mul, ← key, sub_self]`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hq1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbound' : ∀ ε > 0, ‖x‖ ≤ (1 + C) * ε`. Introduce `ε hε`. Take `⟨_, ⟨y, hy, rfl⟩, hxy⟩` from `Metric.mem_closure_iff.1 hxc ε hε`. Take `⟨m, hm⟩` from `hmemE hy`. Use `set m' := max m n₁`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hym : y ∈ M m'` using `hM (le_max_left _ _) hm`. Establish `hyc : (y : ℂ_[p]) ∈ closureInCp E` using `coe_mem_closureInCp hy`. Establish `hsub : (y : ℂ_[p]) - x ∈ closureInCp E` using `sub_mem_closureInCp hyc hxc`. Establish `hadd'` using `hadd m'`. Establish `hbd'` using `hbd m' (le_max_right _ _)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : extendToClosure E (normTrace (M m')) (y : ℂ_[p]) = extendToClosure E (normTrace (M m')) ((y : ℂ_[p]) - x) + extendToClosure E (normTrace (M m')) x`. Rewrite using `[extendToClosure_sub hadd' hbd' hyc hxc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[extendToClosure_coe hadd' hbd' hy, normTrace_of_mem _ hym, hR m' (le_max_right _ _), add_zero]`. Establish `h2 : ‖(y : ℂ_[p])‖ ≤ C * ε`.
-
-Rewrite using `[h1]`. Use `(norm_extendToClosure_le hadd' hbd' hsub).trans ?_` and prove the remaining obligations. Rewrite using `[← dist_eq_norm, dist_comm]`. Conclude with `mul_le_mul_of_nonneg_left hxy.le hC0`. Combine the equalities or inequalities in the displayed calculation.
-
-Assume the negation of the conclusion as `hx0`. Establish `hpos : 0 < ‖x‖` using `norm_pos_iff.2 hx0`. Establish `h` using `hbound' (‖x‖ / (2 * (1 + C))) (by positivity)`. Establish `h' : (1 + C) * (‖x‖ / (2 * (1 + C))) = ‖x‖ / 2`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite `h` using `[h']`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_tower (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] K]
     (η : Gal(PadicAlgCl p/K) →* ℤ_[p]ˣ)

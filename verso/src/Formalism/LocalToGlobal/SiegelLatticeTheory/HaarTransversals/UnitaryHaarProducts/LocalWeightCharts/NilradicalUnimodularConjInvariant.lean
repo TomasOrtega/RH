@@ -41,7 +41,7 @@ lemma conjE_val (a : Mx k r) (ha : IsUnit a.det) (h1 : ∀ g ∈ Nset k r, a⁻�
     (conjE a ha h1 h2 g).val = a⁻¹ * g.val * a := rfl
 
 /- English proof (translation)
-Rewrite using `[Grp.emb.isInducing.continuous_iff]`. Use `show Continuous fun g : GN k r => a⁻¹ * g.val * a`. Conclude with `(continuous_const.matrix_mul Grp.emb.continuous).matrix_mul continuous_const`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma conjE_cont (a : Mx k r) (ha : IsUnit a.det) (h1 : ∀ g ∈ Nset k r, a⁻¹ * g * a ∈ Nset k r)
     (h2 : ∀ g ∈ Nset k r, a * g * a⁻¹ ∈ Nset k r) : Continuous (conjE a ha h1 h2) := by
@@ -50,7 +50,7 @@ lemma conjE_cont (a : Mx k r) (ha : IsUnit a.det) (h1 : ∀ g ∈ Nset k r, a⁻
   exact (continuous_const.matrix_mul Grp.emb.continuous).matrix_mul continuous_const
 
 /- English proof (translation)
-Rewrite using `[Grp.emb.isInducing.continuous_iff]`. Use `show Continuous fun g : GN k r => a * g.val * a⁻¹`. Conclude with `(continuous_const.matrix_mul Grp.emb.continuous).matrix_mul continuous_const`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma conjE_symm_cont (a : Mx k r) (ha : IsUnit a.det) (h1 : ∀ g ∈ Nset k r, a⁻¹ * g * a ∈ Nset k r)
     (h2 : ∀ g ∈ Nset k r, a * g * a⁻¹ ∈ Nset k r) : Continuous (conjE a ha h1 h2).symm := by
@@ -59,9 +59,9 @@ lemma conjE_symm_cont (a : Mx k r) (ha : IsUnit a.det) (h1 : ∀ g ∈ Nset k r,
   exact (continuous_const.matrix_mul Grp.emb.continuous).matrix_mul continuous_const
 
 /- English proof (translation)
-Take `⟨K, hK, hKn⟩` from `exists_compact_mem_nhds (1 : GN k r)`. Establish `hK0 : (Measure.haar : Measure (GN k r)) K ≠ 0` using `(Measure.measure_pos_of_mem_nhds _ hKn).ne'`. Establish `hKt : (Measure.haar : Measure (GN k r)) K ≠ ∞` using `hK.measure_lt_top.ne`. Establish `e` using `congrArg (fun ν : Measure (GN k r) => ν K) h`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `ENNReal.coe_injective ((ENNReal.mul_left_inj hK0 hKt).mp e)`.
+A detailed English derivation is pending.
 -/
 lemma smul_cancel {a b : ℝ≥0} (h : a • (Measure.haar : Measure (GN k r)) = b • Measure.haar) : a = b := by
   obtain ⟨K, hK, hKn⟩ := exists_compact_mem_nhds (1 : GN k r)
@@ -72,7 +72,7 @@ lemma smul_cancel {a b : ℝ≥0} (h : a • (Measure.haar : Measure (GN k r)) =
   exact ENNReal.coe_injective ((ENNReal.mul_left_inj hK0 hKt).mp e)
 
 /- English proof (translation)
-Establish `e` using `Measure.modularCharacterFun_eq_haarScalarFactor (Measure.haar : Measure (GN k r)) g`. Express the relevant statement in the definitionally equal form `_ = Measure.modularCharacterFun g • _`. Rewrite using `[e]`. Conclude with `Measure.isMulLeftInvariant_eq_smul _ _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma map_rmul (g : GN k r) :
     Measure.map (· * g) (Measure.haar : Measure (GN k r)) =
@@ -83,7 +83,7 @@ lemma map_rmul (g : GN k r) :
   exact Measure.isMulLeftInvariant_eq_smul _ _
 
 /- English proof (translation)
-Establish `: (Measure.map e (Measure.haar : Measure (GN k r))).IsHaarMeasure` using `MulEquiv.isHaarMeasure_map _ e he hs`. Conclude with `⟨_, Measure.haarScalarFactor_pos_of_isHaarMeasure _ _, Measure.isMulLeftInvariant_eq_smul _ _⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 lemma auto_scalar (e : GN k r ≃* GN k r) (he : Continuous e) (hs : Continuous e.symm) :
     ∃ s : ℝ≥0, 0 < s ∧ Measure.map e (Measure.haar : Measure (GN k r)) = s • (Measure.haar : Measure (GN k r)) := by
@@ -92,11 +92,11 @@ lemma auto_scalar (e : GN k r ≃* GN k r) (he : Continuous e) (hs : Continuous 
   exact ⟨_, Measure.haarScalarFactor_pos_of_isHaarMeasure _ _, Measure.isMulLeftInvariant_eq_smul _ _⟩
 
 /- English proof (translation)
-Take `⟨s, hsp, hE⟩` from `auto_scalar e he hs`. Establish `hs0 : s ≠ 0` using `hsp.ne'`. Establish `key : Measure.map (· * e g) (Measure.map e (Measure.haar : Measure (GN k r))) = Measure.map e (Measure.map (· * g) (Measure.haar : Measure (GN k r)))`. Rewrite using `[Measure.map_map (measurable_mul_const _) he.measurable, Measure.map_map he.measurable (measurable_mul_const _)]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, map_mul]`. Rewrite `key` using `[hE, Measure.map_smul, map_rmul, map_rmul, Measure.map_smul, hE, smul_smul, smul_smul]`. Use `smul_cancel key` as an intermediate fact. Rewrite `this` using `[mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_right_cancel₀ hs0 this`.
+A detailed English derivation is pending.
 -/
 lemma mod_auto (e : GN k r ≃* GN k r) (he : Continuous e) (hs : Continuous e.symm) (g : GN k r) :
     Measure.modularCharacter (e g) = Measure.modularCharacter g := by
@@ -115,13 +115,13 @@ lemma mod_auto (e : GN k r ≃* GN k r) (he : Continuous e) (hs : Continuous e.s
   exact mul_right_cancel₀ hs0 this
 
 /- English proof (translation)
-Take `⟨K, hK, hKn⟩` from `exists_compact_mem_nhds (1 : GN k r)`. Establish `hK0 : (Measure.haar : Measure (GN k r)) K ≠ 0` using `(Measure.measure_pos_of_mem_nhds _ hKn).ne'`. Establish `hKt : (Measure.haar : Measure (GN k r)) K ≠ ∞` using `hK.measure_lt_top.ne`. Establish `hC : IsCompact (K * K⁻¹)` using `hK.mul hK.inv`. Establish `hCt : (Measure.haar : Measure (GN k r)) (K * K⁻¹) ≠ ∞` using `hC.measure_lt_top.ne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨K, hKn, ((Measure.haar : Measure (GN k r)) (K * K⁻¹)).toNNReal / ((Measure.haar : Measure (GN k r)) K).toNNReal, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun ν : Measure (GN k r) => ν K) (map_rmul g)`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at e`. Rewrite `e` using `[Measure.map_apply (measurable_mul_const g) hK.isClosed.measurableSet]`. Establish `hsub : (· * g) ⁻¹' K ⊆ K * K⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Conclude with `⟨x * g, hx, g⁻¹, Set.inv_mem_inv.mpr hg, by simp⟩`. Establish `hle : (Measure.modularCharacter g : ℝ≥0∞) * (Measure.haar : Measure (GN k r)) K ≤ (Measure.haar : Measure (GN k r)) (K * K⁻¹)` using `e ▸ measure_mono hsub`. Rewrite `hle` using `[← ENNReal.coe_toNNReal hKt, ← ENNReal.coe_toNNReal hCt, ← ENNReal.coe_mul, ENNReal.coe_le_coe]`. Establish `hpos : 0 < ((Measure.haar : Measure (GN k r)) K).toNNReal` using `ENNReal.toNNReal_pos hK0 hKt`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[le_div_iff₀ hpos]`. Conclude with `hle`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mod_bound : ∃ K : Set (GN k r), K ∈ 𝓝 (1 : GN k r) ∧ ∃ B : ℝ≥0, ∀ g ∈ K, Measure.modularCharacter g ≤ B := by
   obtain ⟨K, hK, hKn⟩ := exists_compact_mem_nhds (1 : GN k r)
@@ -152,7 +152,7 @@ def NWtUpper : Prop :=
     wt k r i ≤ wt k r j → m i j = if i = j then 1 else 0
 
 /- English proof (translation)
-Unfold `wt tau`. Simplify using `only`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma wt_tau (i : Fin (2 * r + k + 1)) : wt k r (tau k r i) = - wt k r i := by
   unfold wt tau
@@ -160,9 +160,9 @@ lemma wt_tau (i : Fin (2 * r + k + 1)) : wt k r (tau k r i) = - wt k r i := by
   split_ifs <;> omega
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul, hpk_row]`. Distinguish the cases in `hj : j = tau k r i`. Substitute `hj` using the available equality. Simplify using `only [Pi.star_apply, ite_true]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Take the linear combination `(sgn k r i) * ha i`. Simplify using `[hj]`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 -/
 lemma diag_uh (a : Fin (2 * r + k + 1) → ℂ) (ha : ∀ i, star (a i) * a (tau k r i) = 1) :
     (diagonal a)ᴴ * Hpk k r * diagonal a = Hpk k r := by
@@ -175,11 +175,11 @@ lemma diag_uh (a : Fin (2 * r + k + 1) → ℂ) (ha : ∀ i, star (a i) * a (tau
   · simp [hj]
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[nset_iff]`. Take `⟨hU, hc⟩` from `hg`. Establish `hU' : gᴴ * Hpk k r * g = Hpk k r` using `hU`. Use `⟨?_, fun i j hj hi => ?_⟩` and prove the remaining obligations. Use `show (diagonal a * g * diagonal b)ᴴ * Hpk k r * (diagonal a * g * diagonal b) = Hpk k r`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [diag_uh a ha, hU', diag_uh b hb]`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, hc i j hj hi]`. Distinguish the cases in `h : i = j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using `[hab]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma diag_conj_n (a b : Fin (2 * r + k + 1) → ℂ) (hab : ∀ i, a i * b i = 1)
     (ha : ∀ i, star (a i) * a (tau k r i) = 1) (hb : ∀ i, star (b i) * b (tau k r i) = 1)
@@ -203,25 +203,25 @@ def dv (k r : ℕ) (t : ℝ) (i : Fin (2 * r + k + 1)) : ℂ := ((t ^ wt k r i :
 def dvi (k r : ℕ) (t : ℝ) (i : Fin (2 * r + k + 1)) : ℂ := ((t ^ (- wt k r i) : ℝ) : ℂ)
 
 /- English proof (translation)
-Unfold `dv dvi`. Rewrite using `[← Complex.ofReal_mul, ← zpow_add₀ ht, neg_add_cancel, zpow_zero, Complex.ofReal_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma dvi_dv {t : ℝ} (ht : t ≠ 0) (i : Fin (2 * r + k + 1)) : dvi k r t i * dv k r t i = 1 := by
   unfold dv dvi
   rw [← Complex.ofReal_mul, ← zpow_add₀ ht, neg_add_cancel, zpow_zero, Complex.ofReal_one]
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `dvi_dv ht i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dv_dvi {t : ℝ} (ht : t ≠ 0) (i : Fin (2 * r + k + 1)) : dv k r t i * dvi k r t i = 1 := by
   rw [mul_comm]; exact dvi_dv ht i
 
 /- English proof (translation)
-The claim follows from `Complex.conj_ofReal x`.
+A detailed English derivation is pending.
 -/
 lemma star_ofReal' (x : ℝ) : star (x : ℂ) = x := Complex.conj_ofReal x
 
 /- English proof (translation)
-Unfold `dv`. Rewrite using `[star_ofReal', wt_tau, ← Complex.ofReal_mul, ← zpow_add₀ ht, add_neg_cancel, zpow_zero, Complex.ofReal_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma dv_form {t : ℝ} (ht : t ≠ 0) (i : Fin (2 * r + k + 1)) :
     star (dv k r t i) * dv k r t (tau k r i) = 1 := by
@@ -229,7 +229,7 @@ lemma dv_form {t : ℝ} (ht : t ≠ 0) (i : Fin (2 * r + k + 1)) :
   rw [star_ofReal', wt_tau, ← Complex.ofReal_mul, ← zpow_add₀ ht, add_neg_cancel, zpow_zero, Complex.ofReal_one]
 
 /- English proof (translation)
-Unfold `dvi`. Rewrite using `[star_ofReal', wt_tau, neg_neg, ← Complex.ofReal_mul, ← zpow_add₀ ht, neg_add_cancel, zpow_zero, Complex.ofReal_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma dvi_form {t : ℝ} (ht : t ≠ 0) (i : Fin (2 * r + k + 1)) :
     star (dvi k r t i) * dvi k r t (tau k r i) = 1 := by
@@ -238,7 +238,7 @@ lemma dvi_form {t : ℝ} (ht : t ≠ 0) (i : Fin (2 * r + k + 1)) :
     Complex.ofReal_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `dvi_dv ht i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 lemma dg_left_inv {t : ℝ} (ht : t ≠ 0) : diagonal (dvi k r t) * diagonal (dv k r t) = 1 := by
   rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -247,13 +247,13 @@ lemma dg_left_inv {t : ℝ} (ht : t ≠ 0) : diagonal (dvi k r t) * diagonal (dv
   exact dvi_dv ht i
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (dg_left_inv ht)`.
+A detailed English derivation is pending.
 -/
 lemma dg_inv {t : ℝ} (ht : t ≠ 0) : (diagonal (dv k r t))⁻¹ = diagonal (dvi k r t) :=
   Matrix.inv_eq_left_inv (dg_left_inv ht)
 
 /- English proof (translation)
-The claim follows from `Matrix.isUnit_det_of_left_inverse (dg_left_inv ht)`.
+A detailed English derivation is pending.
 -/
 lemma dg_unit {t : ℝ} (ht : t ≠ 0) : IsUnit (diagonal (dv k r t)).det :=
   Matrix.isUnit_det_of_left_inverse (dg_left_inv ht)
@@ -261,12 +261,12 @@ lemma dg_unit {t : ℝ} (ht : t ≠ 0) : IsUnit (diagonal (dv k r t)).det :=
 def tn (n : ℕ) : ℝ := (n : ℝ) + 1
 
 /- English proof (translation)
-Unfold `tn`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 lemma tn_ne (n : ℕ) : tn n ≠ 0 := by unfold tn; positivity
 
 /- English proof (translation)
-The claim follows from `tendsto_atTop_add_const_right _ 1 tendsto_natCast_atTop_atTop`.
+A detailed English derivation is pending.
 -/
 lemma tn_top : Tendsto tn atTop atTop :=
   tendsto_atTop_add_const_right _ 1 tendsto_natCast_atTop_atTop
@@ -281,36 +281,34 @@ def dE (k r : ℕ) (n : ℕ) : GN k r ≃* GN k r :=
       exact diag_conj_n _ _ (dv_dvi (tn_ne n)) (dv_form (tn_ne n)) (dvi_form (tn_ne n)) hg)
 
 /- English proof (translation)
-Rewrite using `[dE, conjE_val, dg_inv (tn_ne n)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma dE_val (n : ℕ) (g : GN k r) :
     (dE k r n g).val = diagonal (dvi k r (tn n)) * g.val * diagonal (dv k r (tn n)) := by
   rw [dE, conjE_val, dg_inv (tn_ne n)]
 
 /- English proof (translation)
-The claim follows from `conjE_cont _ _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma dE_cont (n : ℕ) : Continuous (dE k r n) := conjE_cont _ _ _ _
 
 /- English proof (translation)
-The claim follows from `conjE_symm_cont _ _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma dE_symm_cont (n : ℕ) : Continuous (dE k r n).symm := conjE_symm_cont _ _ _ _
 
 /- English proof (translation)
-Rewrite using `[Grp.emb.isInducing.tendsto_nhds_iff]`. Establish `hv : (Grp.val ∘ fun n => dE k r n g) = fun n => diagonal (dvi k r (tn n)) * g.val * diagonal (dv k r (tn n))`. Use function extensionality and compare the values at `n`. Conclude with `dE_val n g`. Rewrite using `[hv, Grp.val_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Establish `hent : ∀ n, (diagonal (dvi k r (tn n)) * g.val * diagonal (dv k r (tn n))) i j = g.val i j * ((tn n ^ (wt k r j - wt k r i) : ℝ) : ℂ)`. Introduce `n`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Unfold `dv dvi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← neg_add_eq_sub, zpow_add₀ (tn_ne n)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hent]`. Distinguish the cases in `hw : wt k r i ≤ wt k r j`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB k r g.val g.mem i j hw]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `only [sub_self, zpow_zero, Complex.ofReal_one, mul_one, Matrix.one_apply_eq]`. Conclude with `tendsto_const_nhds`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [if_neg h, zero_mul, Matrix.one_apply_ne h]`. Conclude with `tendsto_const_nhds`. Establish `h : i ≠ j`. Introduce `e`. Substitute `e` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hw le_rfl`. Rewrite using `[Matrix.one_apply_ne h]`. Establish `hlim : Tendsto (fun n => ((tn n ^ (wt k r j - wt k r i) : ℝ) : ℂ)) atTop (𝓝 0)`. Establish `h1` using `(tendsto_zpow_atTop_zero (by omega : wt k r j - wt k r i < 0)).comp tn_top`. Establish `h2` using `(Complex.continuous_ofReal.tendsto 0).comp h1`.
-
-Rewrite `h2` using `[Complex.ofReal_zero]`. Conclude with `h2`. Establish `h3` using `hlim.const_mul (g.val i j)`. Rewrite `h3` using `[mul_zero]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dE_tendsto (hB : NWtUpper) (g : GN k r) : Tendsto (fun n => dE k r n g) atTop (𝓝 1) := by
   rw [Grp.emb.isInducing.tendsto_nhds_iff]
@@ -350,13 +348,11 @@ lemma dE_tendsto (hB : NWtUpper) (g : GN k r) : Tendsto (fun n => dE k r n g) at
     exact h3
 
 /- English proof (translation)
-Take `⟨K, hK, B, hBd⟩` from `mod_bound (k := k) (r := r)`. Establish `hpow : ∀ x : GN k r, ∀ p : ℕ, Measure.modularCharacter x ^ p ≤ B`. Introduce `x p`. Take `⟨n, hn⟩` from `((dE_tendsto hB (x ^ p)).eventually hK).exists`. Establish `h1` using `hBd _ hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[mod_auto (dE k r n) (dE_cont n) (dE_symm_cont n), map_pow]`. Conclude with `h1`. Establish `hle : ∀ x : GN k r, Measure.modularCharacter x ≤ 1`. Introduce `x`. Assume the negation of the conclusion as `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `push Not at hx`. Take `⟨p, hp⟩` from `pow_unbounded_of_one_lt B hx`. Conclude with `absurd (hpow x p) (not_le.mpr hp)`. Establish `hprod : Measure.modularCharacter g * Measure.modularCharacter g⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel, map_one]`.
-
-Apply `le_antisymm (hle g)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mod_one (hB : NWtUpper) (g : GN k r) : Measure.modularCharacter g = 1 := by
   obtain ⟨K, hK, B, hBd⟩ := mod_bound (k := k) (r := r)
@@ -380,7 +376,7 @@ theorem mod_one (hB : NWtUpper) (g : GN k r) : Measure.modularCharacter g = 1 :=
     _ = Measure.modularCharacter g := mul_one _
 
 /- English proof (translation)
-Rewrite using `[map_rmul, mod_one hB, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem haar_right (hB : NWtUpper) (g : GN k r) :
     Measure.map (· * g) (Measure.haar : Measure (GN k r)) = Measure.haar := by
@@ -394,39 +390,37 @@ def conjW (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (hT : 0 < Tz k r z
       rwa [Matrix.nonsing_inv_nonsing_inv h (isUnit_of_uh hh.1)] at this)
 
 /- English proof (translation)
-The claim follows from `conjE_cont _ _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma conjW_cont (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (hT : 0 < Tz k r z) (h : Mx k r)
     (hh : h ∈ UWset k r z) : Continuous (conjW z hz hT h hh) := conjE_cont _ _ _ _
 
 /- English proof (translation)
-The claim follows from `conjE_symm_cont _ _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma conjW_symm_cont (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (hT : 0 < Tz k r z) (h : Mx k r)
     (hh : h ∈ UWset k r z) : Continuous (conjW z hz hT h hh).symm := conjE_symm_cont _ _ _ _
 
 /- English proof (translation)
-Establish `he` using `conjW_cont z hz hT h hh`. Establish `hs` using `conjW_symm_cont z hz hT h hh`. Take `⟨s, -, hEq⟩` from `auto_scalar (conjW z hz hT h hh) he hs`. Establish `hu` using `isUnit_of_uh hh.1`. Establish `hW` using `uw_clsub (k := k) (r := r) z`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨K, hK, hKn⟩` from `exists_compact_mem_nhds (1 : GN k r)`. Set `F : Mx k r × Mx k r → Mx k r` to `fun p => p.1 * p.2 * jinv p.1`. Establish `hF : Continuous F` using `(continuous_fst.matrix_mul continuous_snd).matrix_mul (jinv_cont.comp continuous_fst)`. Set `K' : Set (GN k r)` to `Grp.val ⁻¹' (F '' ((UWset k r z : Set (Mx k r)) ×ˢ (Grp.val '' K)))`. Establish `hK' : IsCompact K'` using `Grp.emb.isCompact_preimage (((compactW z hz hT).prod (hK.image Grp.emb.continuous)).image hF)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `memK' : ∀ y : GN k r, y ∈ K' ↔ ∃ h' ∈ UWset k r z, ∃ x ∈ K, y.val = h' * x.val * h'⁻¹`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h', v⟩, ⟨hh', x, hx, rfl⟩, hy⟩`. Use `⟨h', hh', x, hx, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[jinv_eq hh'.1]`. Conclude with `hy.symm`. Introduce and unpack `⟨h', hh', x, hx, hy⟩`. Use `⟨(h', x.val), ⟨hh', x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show h' * x.val * jinv h' = y.val`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← jinv_eq hh'.1, hy]`. Establish `hKK : K ⊆ K'`. Introduce `x hx`. Rewrite using `[memK']`. Use `⟨1, hW.one_mem, x, hx, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[inv_one, Matrix.one_mul, Matrix.mul_one]`. Establish `hpre : (conjW z hz hT h hh) ⁻¹' K' = K'`. Use extensionality with `g`. Rewrite using `[Set.mem_preimage, memK', memK']`. Establish `e1 : h * h⁻¹ = 1` using `Matrix.mul_nonsing_inv h hu`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h', hh', x, hx, hy⟩`. Establish `hy' : h⁻¹ * g.val * h = h' * x.val * h'⁻¹` using `hy`. Use `⟨h * h', hW.mul_mem _ hh _ hh', x, hx, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_inv_rev]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨h', hh', x, hx, hy⟩`. Use `⟨h⁻¹ * h', hW.mul_mem _ (hW.inv_mem h hh) _ hh', x, hx, ?_⟩` and prove the remaining obligations. Use `show h⁻¹ * g.val * h = h⁻¹ * h' * x.val * (h⁻¹ * h')⁻¹`. Rewrite using `[Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv h hu, hy]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc]`. Establish `hK0 : (Measure.haar : Measure (GN k r)) K' ≠ 0` using `(lt_of_lt_of_le (Measure.measure_pos_of_mem_nhds _ hKn) (measure_mono hKK)).ne'`. Establish `hKt : (Measure.haar : Measure (GN k r)) K' ≠ ∞` using `hK'.measure_lt_top.ne`. Establish `ev` using `congrArg (fun ν : Measure (GN k r) => ν K') hEq`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at ev`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ev` using `[Measure.map_apply he.measurable hK'.isClosed.measurableSet, hpre]`. Establish `hs1 : s = 1`. Establish `h2 : (s : ℝ≥0∞) * (Measure.haar : Measure (GN k r)) K' = 1 * (Measure.haar : Measure (GN k r)) K'`. Rewrite using `[one_mul]`. Conclude with `ev.symm`.
-
-Conclude with `ENNReal.coe_eq_one.mp ((ENNReal.mul_left_inj hK0 hKt).mp h2)`. Rewrite using `[hEq, hs1, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_conj (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (hT : 0 < Tz k r z) (h : Mx k r)
     (hh : h ∈ UWset k r z) :
@@ -489,11 +483,11 @@ theorem haar_conj (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) (hT : 0 < 
   rw [hEq, hs1, one_smul]
 
 /- English proof (translation)
-Take `⟨c, -, -, hμ⟩` from `n_unique μN hN`. Establish `hΦ : Measurable (fun x : Mt k r => fun i j => (h⁻¹ * Matrix.of x * h * m₀) i j)`. Establish `: Continuous (fun x : Mt k r => fun i j => (h⁻¹ * Matrix.of x * h * m₀) i j)` using `by show Continuous fun x : Mt k r => (h⁻¹ * Matrix.of x * h * m₀ : Mx k r)`. Conclude with `((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).matrix_mul continuous_const`. Conclude with `this.measurable`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `conjW_cont z hz hT h hh`. Establish `hcomp : (fun x : Mt k r => fun i j => (h⁻¹ * Matrix.of x * h * m₀) i j) ∘ Grp.vt = Grp.vt ∘ (fun g : GN k r => conjW z hz hT h hh g * Grp.mk m₀ hm₀)`. Use function extensionality and compare the values at `g`. Both sides reduce to the same expression. Establish `hψ : Measurable (fun g : GN k r => conjW z hz hT h hh g * Grp.mk m₀ hm₀)` using `he.measurable.mul_const _`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsplit : (fun g : GN k r => conjW z hz hT h hh g * Grp.mk m₀ hm₀) = (· * Grp.mk m₀ hm₀) ∘ conjW z hz hT h hh` using `rfl`. Rewrite using `[hμ, haarNm_eq, Measure.map_smul, Measure.map_map hΦ Grp.embt.continuous.measurable, hcomp, ← Measure.map_map Grp.embt.continuous.measurable hψ, hsplit, ← Measure.map_map (measurable_mul_const _) he.measurable, haar_conj z hz hT h hh, haar_right hB]`.
+A detailed English derivation is pending.
 -/
 theorem nUnimod_core (hB : NWtUpper) (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (μN : Measure (Mt k r))
     (hz : inWb k r z) (hT : 0 < Tz k r z) (hN : IsHaarOn (Nset k r) μN)
@@ -520,14 +514,14 @@ theorem nUnimod_core (hB : NWtUpper) (k r : ℕ) (z : Fin (2 * r + k + 1) → �
     ← Measure.map_map (measurable_mul_const _) he.measurable, haar_conj z hz hT h hh, haar_right hB]
 
 /- English proof (translation)
-Unfold `wt NB.wt`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma wt_eq (i : Fin (2 * r + k + 1)) : wt k r i = NB.wt k r i := by
   unfold wt NB.wt
   split_ifs <;> push_cast <;> ring
 
 /- English proof (translation)
-Introduce `k r m hm i j hw`. Establish `h` using `NB.nset_upper hm i j (by rw [← wt_eq, ← wt_eq]; omega)`. Rewrite `h` using `[Matrix.sub_apply, Matrix.one_apply, sub_eq_zero]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nilradical_weight_upper_block : NWtUpper := by
   intro k r m hm i j hw
@@ -540,7 +534,7 @@ end WlocSk.HM
 namespace WlocSk
 
 /- English proof (translation)
-Introduce `k r z μN hz hT hN hNc h hh m₀ hm₀` and use `HM.nUnimod_core HM.nilradical_weight_upper_block k r z μN hz hT hN hNc h hh m₀ hm₀`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nilradical_unimodular_conj_invariant : NUnimod := fun k r z μN hz hT hN hNc h hh m₀ hm₀ =>
   HM.nUnimod_core HM.nilradical_weight_upper_block k r z μN hz hT hN hNc h hh m₀ hm₀

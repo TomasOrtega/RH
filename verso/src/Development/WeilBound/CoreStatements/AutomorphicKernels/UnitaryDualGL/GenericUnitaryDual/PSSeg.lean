@@ -15,11 +15,9 @@ namespace PositivityTheory.Gud.Symm.Pf
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hc : ∀ x : IrrGL k, x.IsCusp → (Zc.dualCl x).IsCusp` using `fun x hx => (GlobalTheory.T.dual_class_cuspidal hA x hx).1`. Use `Segment.ext_first ?_ ?_` and prove the remaining obligations. Use `show (Zc.segDual (Δ.nu s)).first = (Zc.segDual Δ).first.nu (-s)`. Rewrite using `[GlobalTheory.CompanionTheory.SegDualPrec.first_segDual hc, GlobalTheory.CompanionTheory.SegDualPrec.first_segDual hc]`. Use `show (Zc.dualCl (Δ.first.nu s)).nu (1 - ((Δ.len : ℕ) : ℂ)) = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[GlobalTheory.T.dual_class_twist_neg hA, IrrGL.nu_nu, IrrGL.nu_nu]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `show (Zc.segDual (Δ.nu s)).len = (Zc.segDual Δ).len`. Rewrite using `[GlobalTheory.CompanionTheory.SegDualPrec.len_segDual hc, GlobalTheory.CompanionTheory.SegDualPrec.len_segDual hc]`.
-
-Both sides reduce to the same expression.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem segDual_nu (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k) (s : ℂ) :
     Zc.segDual (Δ.nu s) = (Zc.segDual Δ).nu (-s) := by
@@ -36,7 +34,7 @@ theorem segDual_nu (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : S
     rfl
 
 /- English proof (translation)
-Establish `hc : ∀ x : IrrGL k, x.IsCusp → (Zc.dualCl x).IsCusp` using `fun x hx => (GlobalTheory.CompanionTheory.DualCusp.dualCl_isCusp hA x hx).1`. Apply `GlobalTheory.SmGL.Segment.ext_first` to reduce the goal to its premises. Rewrite using `[GlobalTheory.CompanionTheory.SegDualPrec.first_segDual hc, GlobalTheory.CompanionTheory.SegDualPrec.first_segDual hc, GlobalTheory.CompanionTheory.SegDualPrec.len_segDual hc, GlobalTheory.CompanionTheory.ZcDual.dualCl_nu hA, GlobalTheory.CompanionTheory.Zcore.dualCl_dualCl hA, G …`. Rewrite using `[GlobalTheory.CompanionTheory.SegDualPrec.len_segDual hc, GlobalTheory.CompanionTheory.SegDualPrec.len_segDual hc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem segDual_segDual (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k) :
     Zc.segDual (Zc.segDual Δ) = Δ := by
@@ -51,17 +49,15 @@ theorem segDual_segDual (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (�
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `gk : Zc.Cos.GKLocal k`. Introduce `N V _ _ π hs hi`. Conclude with `GlobalTheory.GelfandKazhdan.equiv_contra k N V π (hA k N V π hs hi) hi`. Establish `hc : ∀ x : IrrGL k, x.IsCusp → (Zc.dualCl x).IsCusp` using `fun x hx => (GlobalTheory.CompanionTheory.DualCusp.dualCl_isCusp hA x hx).1`. Take `⟨hd, cos⟩` from `hL`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlen : Δ.len = (Zc.segDual Δ).len` using `(GlobalTheory.CompanionTheory.SegDualPrec.len_segDual hc Δ).symm`. Take `⟨hd1, ⟨e1⟩⟩` from `GlobalTheory.CompanionTheory.ThetaProd.prodIrr_comp_thetaW hA gk Δ.term hd`. Take `⟨hdQ, ⟨e2⟩⟩` from `GlobalTheory.CompanionTheory.SegIncDual.exists_equiv_prodIrr_of_cast hlen (fun a => Zc.dualCl (Δ.term a.rev)) (Zc.segDual Δ).term (by`. Introduce `a`. Rewrite using `[GlobalTheory.CompanionTheory.SegIncDual.dualCl_term hA Δ hlen]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `show (Zc.segDual Δ).term (Fin.cast hlen a.rev).rev = _`. Use `congr 1`. Use `ext`. Simplify using `[Fin.val_rev]`. Use the proof step `omega) hd1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `c1 : IsCosocle δ.rep (MonoidHom.comp (MonoidHom.comp (prodIrr Δ.term hd) (Zc.Cos.thetaW k _)) (Zc.Cos.thetaW k _))`. Rewrite using `[GlobalTheory.CompanionTheory.LSocle.comp_thetaW_thetaW]`. Conclude with `cos`. Establish `c2` using `GlobalTheory.CompanionTheory.LSocle.isCosocle_comp_thetaW c1`. Take `⟨e3⟩` from `GlobalTheory.CompanionTheory.ThetaW.comp_thetaW_equiv_contra gk _ δ.rep δ.snd.rep.smooth δ.snd.rep.irr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `c3 : IsCosocle (contra δ.rep) (prodIrr (Zc.segDual Δ).term hdQ)` using `GlobalTheory.LocGL.IsCosocle.of_equiv c2 e3 (e1.trans e2)`. Establish `key : ∀ (hs : IsSmooth (contra δ.rep)) (hi : (contra δ.rep).IsIrreducible), IsLSeg (Zc.segDual Δ) (IrrGL.of (contra δ.rep) hs hi).rep`. Introduce `hs hi`. Take `⟨e4⟩` from `GlobalTheory.SmGL.IrrRep.nonempty_equiv_rep (⟨_, contra δ.rep, hs, hi⟩ : IrrRep (GL (Fin δ.fst) k))`. Conclude with `⟨hdQ, GlobalTheory.LocGL.IsCosocle.of_equiv c3 e4.symm (Representation.Equiv.refl _)⟩`.
-
-Rewrite using `[GlobalTheory.CompanionTheory.ZcDual.dualCl_eq hA]`. Conclude with `key _ _`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLSeg_dualCl (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {Δ : Segment k} {δ : IrrGL k} (hL : IsLSeg Δ δ.rep) :
     IsLSeg (Zc.segDual Δ) (Zc.dualCl δ).rep := by

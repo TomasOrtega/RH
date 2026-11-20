@@ -15,20 +15,18 @@ noncomputable section
 namespace GlobalTheory.NfEx
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, Fin.sum_univ_two, hX, hY, hZ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem up2 {k : Type} [Field k] (X Y Z : Matrix (Fin 2) (Fin 2) k) (hX : X 1 0 = 0) (hY : Y 1 0 = 0) (hZ : Z 1 0 = 0) :
     (X * Y * Z) 1 0 = 0 ∧ (X * Y * Z) 0 0 = X 0 0 * Y 0 0 * Z 0 0 := by
   simp [Matrix.mul_apply, Fin.sum_univ_two, hX, hY, hZ]
 
 /- English proof (translation)
-Establish `key : ∀ i j, ∑ x, (B : Matrix (Fin 2) (Fin 2) k) i x * ((B⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) x j = (1 : Matrix (Fin 2) (Fin 2) k) i j` using `fun i j => by`. Rewrite using `[← Matrix.mul_apply, B.mul_inv]`. Establish `e10` using `key 1 0`. Establish `e11` using `key 1 1`. Establish `e00` using `key 0 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e10`, `e11` using `[Fin.sum_univ_two, hB, zero_mul, zero_add]`. Rewrite `e00` using `[Fin.sum_univ_two]`. Rewrite `e10` using `[Matrix.one_apply_ne (show (1 : Fin 2) ≠ 0 by decide)]`. Rewrite `e11`, `e00` using `[Matrix.one_apply_eq]`. Establish `hN : ((B⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) 1 0 = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `mul_eq_zero.1 e10 with h | h` into its components or cases. Rewrite `e11` using `[h, zero_mul]`. Conclude with `absurd e11 zero_ne_one`. Conclude with `h`. Use `⟨hN, ?_⟩` and prove the remaining obligations.
-
-Rewrite `e00` using `[hN, mul_zero, add_zero]`. Conclude with `e00`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_up {k : Type} [Field k] (B : GL (Fin 2) k) (hB : (B : Matrix (Fin 2) (Fin 2) k) 1 0 = 0) :
     ((B⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) 1 0 = 0 ∧
@@ -53,31 +51,29 @@ theorem inv_up {k : Type} [Field k] (B : GL (Fin 2) k) (hB : (B : Matrix (Fin 2)
   exact e00
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ ι e W hl he hW hne`. Take `⟨A, χ, κ, hA, hχ, hfl, -, hIne⟩` from `hW.flag`. Take `⟨g, hg⟩` from `hfl`. Take `⟨M, hM, hMa⟩` from `hW.away`. Take `⟨S, hSa, hSu⟩` from `GlobalTheory.T.unramified_of_levelAway_inertia_characters l Ω W M hM hMa`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `r : G ℚ Ω →* GL (Fin 2) (Qbar l)` to `(MulAut.conj g).toMonoidHom.comp W`. Establish `hrc : Continuous r` using `by show Continuous fun s => g * W s * g⁻¹`. Conclude with `(continuous_const.mul hW.cont).mul continuous_const`. Take `⟨E, hE, hEm⟩` from `GlobalTheory.CompactRepField.exists_finiteDimensional_entries_mem l (G ℚ Ω) 2 r (fun i j => ((Units.continuous_val.comp hrc).matrix_elem i j))`. Take `⟨B, hB10, hBint⟩` from `GlobalTheory.T.exists_upperTriangular_conj_integral_compact l (G ℚ Ω) E r hE hrc hEm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `GlobalTheory.T.exists_coefficientRing_finiteExtension_padic l E hE`. Set `h : GL (Fin 2) (Qbar l)` to `B * g`. Set `W' : R2 Ω l` to `(MulAut.conj h).toMonoidHom.comp W`. Establish `hW' : ∀ s, W' s = B * r s * B⁻¹` using `fun s => by show h * W s * h⁻¹ = B * (g * W s * g⁻¹) * B⁻¹`. Simplify using `only [h, mul_inv_rev]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `group`. Establish `hiso : RepIso W W'` using `⟨h, fun s => rfl⟩`. Establish `hdt : dt W' = dt W`. Use extensionality with `s`. Rewrite using `[GlobalTheory.Ord2.TwDet.dt_coe, GlobalTheory.Ord2.TwDet.dt_conj W h s]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hker : ∀ s, W' s = 1 ↔ W s = 1` using `fun s => by show h * W s * h⁻¹ = 1 ↔ W s = 1`. Prove the components needed by the constructor for the conclusion. Introduce `hh`. Rewrite `hh` using `[mul_inv_eq_one, mul_eq_left]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hh`. Introduce `hh`. Rewrite using `[hh]`. Simplify using the standard rewrite rules. Establish `hinv` using `inv_up B hB10`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hup : ∀ (s : G ℚ Ω) (hs : s ∈ Dec (F` using `ℚ) A), mat W' s 1 0 = 0 ∧ mat W' s 0 0 = (κ 0 ⟨s, hs⟩ : Qbar l) := by`. Introduce `s hs`. Establish `h1` using `(hg ⟨s, hs⟩).1 1 0 (by decide)`. Establish `h2` using `(hg ⟨s, hs⟩).2 0`. Use `up2 (B : Matrix (Fin 2) (Fin 2) (Qbar l)) ((r s : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l)) ((B⁻¹ : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l)) hB10 h1 hinv.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : mat W' s = (B : Matrix (Fin 2) (Fin 2) (Qbar l)) * ((r s : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l)) * ((B⁻¹ : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l))`. Simplify using `only [mat, hW', Units.val_mul]`. Use `⟨by rw [e1]; exact this.1, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, this.2, ← h2]`. Express the relevant statement in the definitionally equal form `_ = ((r s : GL (Fin 2) (Qbar l)) : Matrix (Fin 2) (Fin 2) (Qbar l)) 0 0`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨S, A, W', hiso, ?_⟩` and prove the remaining obligations. Use `{ l_odd := hl e_pos := he cont := ?_ int := ⟨c, fun s i j => (hc _).2 ⟨?_, ?_⟩⟩ above := hSa unr := ?_ det2 := by rw [hdt]; exact hW.det2 odd := by rw [hdt]; exact hW.odd irr := GlobalTheory.T.irreducible_restriction_of_iso Ω l W W' hiso hW.irr atL := hA upper := fun s hs => (hup …` and prove the remaining obligations. Use `show Continuous fun s => h * W s * h⁻¹`. Conclude with `(continuous_const.mul hW.cont).mul continuous_const`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hBint s i j).1` as an intermediate fact. Simplify `this` using `only [mat, hW']`. Use `(hBint s i j).2` as an intermediate fact. Simplify `this` using `only [mat, hW']`. Introduce `w hw B' hB' s hs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hker s).2 (hSu w hw B' hB' hs)`. Use `⟨l - 1, ?_, fun s hs => ?_⟩` and prove the remaining obligations. Use `(Fact.out : l.Prime).two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hd : s ∈ Dec (F` using `ℚ) A := Ine_le_Dec A hs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(hup s hd).2, (hIne ⟨s, hd⟩ hs).1]`. Establish `hχ1` using `GlobalTheory.T.character_pow_pred_eq_one_of_killsPrimeRoots Ω l _ χ s hχ`. Simplify using `only [Units.val_mul, Units.val_zpow_eq_zpow_val, zpow_natCast, mul_pow, eps]`. Rewrite using `[← Units.val_pow_eq_pow_val (χ s), hχ1, Units.val_one, mul_one, Units.val_pow_eq_pow_val, ← pow_mul]`. Take `⟨s, hs⟩` from `hne A κ hA ⟨g, hg⟩`.
-
-Use `⟨s, s.2, ?_⟩` and prove the remaining obligations. Rewrite using `[(hup s s.2).2]`. Introduce `hh`. Conclude with `hs (Units.ext hh)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_nf : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ι : Qbar l ≃+* ℂ) (e : ℕ) (W : R2 Ω l), l ≠ 2 → 1 ≤ e → admitted ι e W → (∀ (A : ValuationSubring Ω) (κ : Fin 2 → ↥(Dec (F := ℚ) A) →* (Qbar l)ˣ), OverL l A → IsFlagOn W (Dec (F := ℚ) A) κ → ∃ s : ↥(Dec (F := ℚ) A), κ 0 s ≠ cycBar ℚ Ω l s) → ∃ (S : Finset Pl) (A : ValuationSubring Ω) (W' : R2 Ω l), RepIso W W' ∧ Nf e S A W' := by
   intro l _ Ω _ _ _ ι e W hl he hW hne

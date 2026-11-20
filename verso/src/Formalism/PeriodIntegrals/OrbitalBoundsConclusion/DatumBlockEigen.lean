@@ -3,6 +3,6 @@ import Formalism.PeriodIntegrals.DatumBlockEigen
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.BlockEigenvalues.PhiUZero
 
 /- English proof (translation)
-The claim follows from `PI.DatumBlockEigen.Main.main`.
+A detailed English derivation is pending.
 -/
 theorem datum_block_eigenvalues : PI.DatumBlockEigen := PI.DatumBlockEigen.Main.main

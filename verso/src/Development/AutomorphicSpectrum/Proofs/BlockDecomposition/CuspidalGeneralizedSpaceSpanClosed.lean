@@ -10,13 +10,13 @@ open NumberField GlobalTheory.CuspRep MeasureTheory PositivityTheory.Affgl
 namespace GlobalTheory.CompanionTheory.CuspSubspace
 
 /- English proof (translation)
-Introduce `E _ _ _ a L W _ _ ρ J φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x h => exact h`. Consider the case `zero`. Use `⟨(GlobalTheory.CompanionTheory.AffglAssembly.genSub L ρ J).zero_mem, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `r hr hr' inst1 inst2 μ 𝓕 hμ hF g`. Express the relevant statement in the definitionally equal form `∫ _ in 𝓕, (0 : ℂ) ∂μ = 0`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Use `⟨(GlobalTheory.CompanionTheory.AffglAssembly.genSub L ρ J).add_mem hx.1 hy.1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `r hr hr' inst1 inst2 μ 𝓕 hμ hF g`. Establish `ix` using `(GlobalTheory.CompanionTheory.ConstTerm.integrableOn_fundamentalDomain E a r x hx.1.1.left hx.1.1.level μ 𝓕 hμ hF).2 g`. Establish `iy` using `(GlobalTheory.CompanionTheory.ConstTerm.integrableOn_fundamentalDomain E a r y hy.1.1.left hy.1.1.level μ 𝓕 hμ hF).2 g`. Establish `e : ∫ u in 𝓕, (x + y).1 (unip u * g) ∂μ = (∫ u in 𝓕, x.1 (unip u * g) ∂μ) + ∫ u in 𝓕, y.1 (unip u * g) ∂μ` using `integral_add ix iy`. Rewrite using `[e, hx.2 r hr hr' μ 𝓕 hμ hF g, hy.2 r hr hr' μ 𝓕 hμ hF g, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c x _ hx`. Use `⟨(GlobalTheory.CompanionTheory.AffglAssembly.genSub L ρ J).smul_mem c hx.1, ?_⟩` and prove the remaining obligations. Introduce `r hr hr' inst1 inst2 μ 𝓕 hμ hF g`. Establish `e : ∫ u in 𝓕, (c • x).1 (unip u * g) ∂μ = c • ∫ u in 𝓕, x.1 (unip u * g) ∂μ` using `integral_smul c _`. Rewrite using `[e, hx.2 r hr hr' μ 𝓕 hμ hF g, smul_zero]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_of_mem_span_cuspForms :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (L : Subgroup (GL (Fin a) (Af E)))

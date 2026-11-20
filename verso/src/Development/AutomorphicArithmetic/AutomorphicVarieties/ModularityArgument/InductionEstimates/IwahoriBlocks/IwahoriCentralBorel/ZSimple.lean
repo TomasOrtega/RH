@@ -17,19 +17,19 @@ open GlobalTheory.PRep GlobalTheory.SmGL Formalism.BasicNotions GlobalTheory.Cus
 open scoped TensorProduct Classical
 
 /- English proof (translation)
-Introduce `K _ _ _ μ₂ _ τ₁ τ₂ κ e κ₂ p₁ p₂ k₀ hP hA r w ι hw hι`. Establish `hz` using `(zMem μ₂ τ₁ τ₂ κ e hA.idem).2 w ι hw hι`. Use `⟨fun g v hv => (hz v hv).2 g, fun Q hQ hst => ?_⟩` and prove the remaining obligations. Take `⟨ι₂, hι₂⟩` from `(embEx 2 w hw).1`. Establish `hm` using `evMem μ₂ τ₁ τ₂ κ e κ₂ p₁ p₂ k₀ hP hA w ι₂ ι hw hι₂ hι`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hi` using `evInj μ₂ τ₁ τ₂ κ e κ₂ p₁ p₂ k₀ hA w ι hw hι`. Establish `hc1 : CuspIrr μ₂ τ₁` using `hP.1`. Establish `hc2 : CuspIrr μ₂ τ₂` using `hP.2`. Distinguish the cases in `hQ0 : Q = ⊥`. Conclude with `Or.inl hQ0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Use `right`. Take `⟨q, hq, hq0⟩` from `(Submodule.ne_bot_iff _).1 hQ0`. Establish `hX : tensFn (Xs μ₂ τ₁ κ₂ p₁ (im w)) (Xs μ₂ τ₂ κ₂ p₂ (im w)) ≠ ⊥`. Introduce `h`. Use `hq0 (hi q (hQ hq) ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Use `(hm q (hQ hq)).1.1 g` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `this`. Establish `h12` using `x12 μ₂ τ₁ τ₂ κ₂ p₁ p₂ hc1 hc2 hA.rank₁ hA.rank₂ w ι₂ hw hι₂`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS` using `indAmb (fun i => PW (w i)) (xS ι₂) _ h12.1 h12.2 (exists_local_subrep_of_isotypic_tensor_ne_bot μ₂ τ₁ τ₂ κ₂ p₁ p₂ hc1 hc2 hA.rank₁.1 hA.rank₂.1 w ι₂ hw hι₂ hX)`. Establish `hint : ∀ g φ, ev ι k₀ (rS ι g φ) = rightReg ℂ _ _ g (ev ι k₀ φ)`. Introduce `g φ`. Use function extensionality and compare the values at `x m`. Express the relevant statement in the definitionally equal form `φ (lv m.1 m.2 0 * arc1 k₀ * fin1 (ι x) * fin1 (ι g)) = φ (lv m.1 m.2 0 * arc1 k₀ * fin1 (ι (x * g)))`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [fin1, map_mul, mul_assoc]`. Break down `hS.2 (Q.map (ev ι k₀)) (by rintro _ ⟨φ, hφ, rfl⟩; exact hm φ (hQ hφ)) (by rintro g _ ⟨φ, hφ, rfl⟩; exact ⟨_, hst g φ hφ, hint g φ⟩) with h | h` into its components or cases. Conclude with `absurd (hi q (hQ hq) (by have := Submodule.mem_map_of_mem (f := ev ι k₀) hq; rw [h] at this; exact this)) hq0`. Use `le_antisymm hQ fun φ hφ => ?_` and prove the remaining obligations. Use `hm φ hφ` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[← h]`. Take `⟨ψ, hψ, e⟩` from `this`. Establish `: φ - ψ = 0` using `hi _ (Submodule.sub_mem _ hφ (hQ hψ)) (by rw [map_sub, e, sub_self])`. Rewrite using `[sub_eq_zero.1 this]`. Conclude with `hψ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.zSimple :
     ∀ {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (τ₁ τ₂ : Submodule ℂ (L2 μ₂)) (κ : Measure (archCompact K (2 + 2))) (e : archCompact K (2 + 2) → ℂ) κ₂ p₁ p₂ k₀, Pair μ₂ τ₁ τ₂ → ArchLine τ₁ τ₂ κ e κ₂ p₁ p₂ k₀ →

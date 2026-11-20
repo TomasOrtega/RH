@@ -9,9 +9,9 @@ namespace PositivityTheory.Rg.BcB.G3.SuppP
 end PositivityTheory.Rg.BcB.G3.SuppP
 
 /- English proof (translation)
-Introduce `G _ _ θ K y f h`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Apply `h` to reduce the goal to its premises. Unfold `twOrb avg`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [hne, finsum_zero, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Rg.BcB.G3.supp_pf : PositivityTheory.Rg.BcB.G3.Supp := by
   intro G _ _ θ K y f h

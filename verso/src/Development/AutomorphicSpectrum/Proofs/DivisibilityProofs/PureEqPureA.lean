@@ -44,11 +44,11 @@ def img (R : RealMaps F a a') (Rf : FinMaps F a a') (T : Finset (Pl F)) (f : SIn
   R.p f ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ fun v : T => Rf.p v (φ v)
 
 /- English proof (translation)
-Use `⟨fun x => ∏ᶠ v, φ v fun i => evFin F v (x i), fun x z hz => ?_, fun f => rfl⟩` and prove the remaining obligations. Establish `h2 : ∀ i, (z i).2 = 0` using `fun i => by`. Set `u : AF F` to `(0, 1)`. Establish `h0 : evI F u = 0` using `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Establish `h : u * z i = 0` using `congrFun (hz u h0) i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : (1 : Af F) * (z i).2 = 0` using `congrArg Prod.snd h`. Simplify using `using h'`. Establish `e : ∀ (v : Pl F) i, evFin F v ((x + z) i) = evFin F v (x i)` using `fun v i => by`. Establish `h3 : evFin F v (z i) = 0` using `by show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (sndA F (z i)) = 0`. Establish `: sndA F (z i) = 0` using `h2 i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, map_zero]`. Rewrite using `[Pi.add_apply, map_add, h3, add_zero]`. Simplify using `only [e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pure_arch {n d : ℕ} (φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ) :
     ∃ r : (Fin n × Fin d → AF F) → ℂ, (∀ x z, At (evI F) z → r (x + z) = r x) ∧
@@ -72,7 +72,7 @@ section Model
 variable {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} (M : Model σ Y W) (ψ : AddChar (AF F) ℂ)
 
 /- English proof (translation)
-The claim follows from `(h2.and hM.std).mono fun _ h => h.1.trans h.2`.
+A detailed English derivation is pending.
 -/
 theorem std_of_cof (hM : M.IsGood ψ) {φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ}
     (h2 : ∀ᶠ v in cofinite, φ v = M.vac v) :
@@ -80,7 +80,7 @@ theorem std_of_cof (hM : M.IsGood ψ) {φ : ∀ v : Pl F, (Fin n × Fin d → Fv
   (h2.and hM.std).mono fun _ h => h.1.trans h.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, ⟨GlobalTheory.WeilM.isLocallyConstant_finprod_evalV φ h1 (std_of_cof M ψ hM h2), GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ h1 (std_of_cof M ψ hM h2)⟩, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem pure_eq_pureA (hM : M.IsGood ψ) (φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ) (h1 : ∀ v, φ v ∈ GlobalTheory.WeilM.SB _)
     (h2 : ∀ᶠ v in cofinite, φ v = M.vac v) :
@@ -89,9 +89,9 @@ theorem pure_eq_pureA (hM : M.IsGood ψ) (φ : ∀ v : Pl F, (Fin n × Fin d →
     GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ h1 (std_of_cof M ψ hM h2)⟩, fun _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨r, hr, e⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ (std_of_cof M ψ hM h2)`. Use `⟨r, hr, fun φ₂ h => ?_⟩` and prove the remaining obligations. Establish `: φ₂ = Function.update φ v (φ₂ v)`. Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w = v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne hw, h w hw]`. Rewrite using `[e (φ₂ v), ← this]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pure_at (hM : M.IsGood ψ) (φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ)
     (h2 : ∀ᶠ v in cofinite, φ v = M.vac v) (f : SInf F (Fin n × Fin d)) (v : Pl F) :
@@ -113,14 +113,14 @@ end Model
 variable {B : Base F E} {Γ : Geo σ a a'} {X : Chars F E} {om : Rep σ Γ.V Γ.W} {om' : Rep σ Γ.V' Γ.W}
 
 /- English proof (translation)
-The claim follows from `(ht.weil.isUSplitting).pres p Φ hΦ`.
+A detailed English derivation is pending.
 -/
 theorem om_schA (ht : IsTriple B Γ X om om') (p : UA σ Γ.V.J × UA σ Γ.W.J)
     {Φ : (Fin a × Fin (a + a') → AF F) → ℂ} (hΦ : Φ ∈ schA F _) : om p Φ ∈ schA F _ :=
   (ht.weil.isUSplitting).pres p Φ hΦ
 
 /- English proof (translation)
-Simplify using `only [theta, map_add]`. Conclude with `thetaSum_add F (om_schA ht _ hΦ) (om_schA ht _ hΨ)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theta_add (ht : IsTriple B Γ X om om') {Φ Ψ : (Fin a × Fin (a + a') → AF F) → ℂ} (hΦ : Φ ∈ schA F _) (hΨ : Ψ ∈ schA F _)
     (g : UA σ Γ.V.J) (h : UA σ Γ.W.J) : theta om (Φ + Ψ) g h = theta om Φ g h + theta om Ψ g h := by
@@ -128,7 +128,7 @@ theorem theta_add (ht : IsTriple B Γ X om om') {Φ Ψ : (Fin a × Fin (a + a') 
   exact thetaSum_add F (om_schA ht _ hΦ) (om_schA ht _ hΨ)
 
 /- English proof (translation)
-Simplify using `only [theta, map_smul]`. Conclude with `thetaSum_smul F c _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theta_smul (c : ℂ) (Φ : (Fin a × Fin (a + a') → AF F) → ℂ) (g : UA σ Γ.V.J) (h : UA σ Γ.W.J) :
     theta om (c • Φ) g h = c * theta om Φ g h := by
@@ -136,11 +136,11 @@ theorem theta_smul (c : ℂ) (Φ : (Fin a × Fin (a + a') → AF F) → ℂ) (g 
   exact thetaSum_smul F c _
 
 /- English proof (translation)
-Establish `hconv` using `(hK.1 F E σ B a a' Γ X om om' ht).1.1`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use function extensionality and compare the values at `h`. Simplify using `[Model.I, theta, thetaSum]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `insert i s hi ih`. Establish `hs : ∀ j ∈ s, Φ j ∈ schA F _` using `fun j hj => hΦ j (Finset.mem_insert_of_mem hj)`. Establish `h1 : c i • Φ i ∈ schA F _` using `Submodule.smul_mem _ _ (hΦ i (Finset.mem_insert_self _ _))`. Establish `h2 : ∑ j ∈ s, c j • Φ j ∈ schA F _` using `Submodule.sum_mem _ fun j hj => Submodule.smul_mem _ _ (hs j hj)`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, ← ih hs]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `h`. Simplify using `only [Model.I, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Establish `e : ∀ g, theta om (c i • Φ i + ∑ j ∈ s, c j • Φ j) g h = c i * theta om (Φ i) g h + theta om (∑ j ∈ s, c j • Φ j) g h` using `fun g => by rw [theta_add ht h1 h2, theta_smul]`. Simplify using `only [e]`. Rewrite using `[integral_add ((hconv _ (hΦ i (Finset.mem_insert_self _ _)) h).const_mul _) (hconv _ h2 h), integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem I_sum (hK : ThetaIntegralsAgree) (ht : IsTriple B Γ X om om') {ι : Type} (s : Finset ι) (c : ι → ℂ)
     (Φ : ι → (Fin a × Fin (a + a') → AF F) → ℂ) (hΦ : ∀ i ∈ s, Φ i ∈ schA F _) :
@@ -166,7 +166,7 @@ theorem I_sum (hK : ThetaIntegralsAgree) (ht : IsTriple B Γ X om om') {ι : Typ
 variable {R : RealMaps F a a'} {Rf : FinMaps F a a'}
 
 /- English proof (translation)
-The claim follows from `Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => by by_contra h' exact hv (h.2.2 v h'))`.
+A detailed English derivation is pending.
 -/
 theorem IsDat.cof {T : Finset (Pl F)} {f : SInf F (Fin a × Fin (a + a'))}
     {φ : ∀ v : Pl F, (Fin a × Fin (a + a') → Fv F v) → ℂ} (h : IsDat B Γ T f φ) :
@@ -176,15 +176,13 @@ theorem IsDat.cof {T : Finset (Pl F)} {f : SInf F (Fin a × Fin (a + a'))}
     exact hv (h.2.2 v h'))
 
 /- English proof (translation)
-Take `⟨-, ⟨c, hc, -⟩, -⟩` from `((hK.1 F E σ B a a' Γ X om om' hm.triple).2 R Rf hm).1`. Establish `hM` using `hm.triple.geo.hM`. Set `e` to `s.equivFin`. Set `f' : Fin s.card → SInf F (Fin a × Fin (a + a'))` to `fun k => f (e.symm k).1`. Set `φ' : Fin s.card → ∀ v : Pl F, (Fin a × Fin (a + a') → Fv F v) → ℂ` to `fun k => φ (e.symm k).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hd' : ∀ k, IsDat B Γ T (f' k) (φ' k)` using `fun k => hd _ (e.symm k).2`. Use `choose g hg hgp using fun k => pure_eq_pureA Γ.M B.ψ hM (φ' k) (hd' k).2.1 (IsDat.cof (hd' k))`. Establish `es : ∀ {M' : Type} [AddCommMonoid M'] (u : ι → M'), ∑ k, u (e.symm k).1 = ∑ i ∈ s, u i` using `fun u => by`. Rewrite using `[← Finset.sum_coe_sort s u]`. Conclude with `Fintype.sum_equiv e.symm _ _ fun _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΦ : ∑ i ∈ s, pure (f i) (φ i) = ∑ k, pureA F (f' k) (g k)`. Rewrite using `[← es fun i => pure (f i) (φ i)]`. Conclude with `Finset.sum_congr rfl fun k _ => hgp k (f' k)`. Establish `hmatch : Match B Γ X R Rf (∑ i ∈ s, pure (f i) (φ i)) 0`. Use `⟨Submodule.zero_mem _, s.card, 0, g, f', fun _ => f', Fin.elim0, Fin.elim0, fun _ => Fin.elim0, fun i => ⟨hg i, tendsto_const_nhds⟩, fun j => j.elim0, hΦ, by simp, fun k => ⟨by simp, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨T, hT, s.card, 0, f', φ', Fin.elim0, Fin.elim0, hd', fun j => j.elim0, Finset.sum_congr rfl fun k _ => (hgp k (f' k)).symm, by simp, ?_⟩` and prove the remaining obligations. Use `es fun i => img R Rf T (f i) (φ i)` as an intermediate fact. Rewrite `this` using `[h0]`. Simplify `this` using `[img]`. Use function extensionality and compare the values at `h`.
-
-Rewrite using `[hc _ _ hmatch h]`. Simplify using `[Model.I, theta, thetaSum]`.
+Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vanish (hK : ThetaIntegralsAgree) (hm : IsMatched B Γ X om om' R Rf) {T : Finset (Pl F)} (hT : X.T ⊆ T)
     {ι : Type} (s : Finset ι) (f : ι → SInf F (Fin a × Fin (a + a'))) (φ : ι → ∀ v : Pl F, (Fin a × Fin (a + a') → Fv F v) → ℂ)
@@ -217,17 +215,15 @@ theorem vanish (hK : ThetaIntegralsAgree) (hm : IsMatched B Γ X om om' R Rf) {T
   simp [Model.I, theta, thetaSum]
 
 /- English proof (translation)
-Set `ext : (∀ v : T, X v) → ∀ v : T₁, X v` to `fun w v => if h : (v : ι) ∈ T then w ⟨v, h⟩ else s v`. Establish `hupd : ∀ (inst : DecidableEq T) (w : ∀ v : T, X v) (i : T) (z : X i),`. Use extensionality with `(@Function.update _ _ inst w i z) = Function.update (ext w) ⟨i.1, hT i.2⟩ z := by`. Introduce `inst w i z`. Use function extensionality and compare the values at `v`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hv : v = ⟨i.1, hT i.2⟩`. Substitute `hv` using the available equality. Simplify using `[ext]`. Rewrite using `[Function.update_of_ne hv]`. Distinguish the cases in `h : (v : ι) ∈ T`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hne : (⟨v, h⟩ : T) ≠ i` using `fun e => hv (Subtype.ext (show (v : ι) = i.1 by rw [← e]))`. Simplify using `only [ext, dif_pos h]`. Rewrite using `[Function.update_of_ne hne]`. Simplify using `only [ext, dif_neg h]`. Set `m : MultilinearMap ℂ (fun v : T => X v) (PiTensorProduct ℂ fun v : T₁ => X v)` to `{ toFun := fun w => PiTensorProduct.tprod ℂ (ext w) map_update_add' := fun {inst} w i x y => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `only [hupd inst]`. Conclude with `(PiTensorProduct.tprod ℂ).map_update_add _ _ _ _`. Use the proof step `map_update_smul' := fun {inst} w i c x => by`. Simplify using `only [hupd inst]`. Conclude with `(PiTensorProduct.tprod ℂ).map_update_smul _ _ _ _ }`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨PiTensorProduct.lift m, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[PiTensorProduct.lift.tprod]`. Use `show PiTensorProduct.tprod ℂ (ext fun v : T => u v) = _`. Use `congr 1`. Use function extensionality and compare the values at `v`.
-
-Distinguish the cases in `h : (v : ι) ∈ T`. Simplify using `[ext, h]`. Simplify using `only [ext, dif_neg h]`. Conclude with `(hu _ h).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ext {ι : Type} [DecidableEq ι] {X : ι → Type} [∀ i, AddCommGroup (X i)] [∀ i, Module ℂ (X i)]
     (T T₁ : Finset ι) (hT : T ⊆ T₁) (s : ∀ i, X i) :

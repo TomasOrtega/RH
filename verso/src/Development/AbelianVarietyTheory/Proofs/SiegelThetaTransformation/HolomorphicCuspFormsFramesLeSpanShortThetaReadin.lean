@@ -14,7 +14,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.
 namespace GlobalTheory.Dict
 
 /- English proof (translation)
-Take `⟨-, -, -, h4⟩` from `h`. Take `⟨hp, hq, -⟩` from `h4 j hj`. Rewrite using `[hp, hq]`. Take `⟨h1, h2⟩` from `hj`. Simplify using `only [Formalism.BasicNotions.Ranks.sigW, Formalism.BasicNotions.Ranks.r]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -28,11 +28,9 @@ theorem sig_add_of_pins {D : D7} (Q : Par D) (h : Q.Pins) {j : ℕ} (hj : InR D 
   omega
 
 /- English proof (translation)
-Unfold `Dom wtA`. Use `⟨fun τ => ?_, ka.n_even⟩` and prove the remaining obligations. Introduce `a b hab`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `t _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `add_le_add` to reduce the goal to its premises. Use `split_ifs with h`. Apply the tactic sequence `unfold Formalism.L2.Pj.ext0 split_ifs with h1 h2 <;> first | omega | exact Nat.zero_le _ | exact le_refl _ | exact ka.aPlus_antitone t (Fin.mk_le_mk.2 hab)`. Conclude with `le_refl _`. Use `split_ifs with h`.
-
-Apply the tactic sequence `unfold Formalism.L2.Pj.ext0 split_ifs with h1 h2 <;> first | omega | exact Nat.zero_le _ | exact le_refl _ | exact ka.aM_anti t (Fin.mk_le_mk.2 hab)`. Conclude with `le_refl _`.
+Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem dom_wtA_of_wt {D : D7} {j : ℕ} (ka : WeightFamilies.Wt D j) : Dom (wtA ka) ka.n := by
   unfold Dom wtA
@@ -51,7 +49,7 @@ private theorem dom_wtA_of_wt {D : D7} {j : ℕ} (ka : WeightFamilies.Wt D j) : 
     · exact le_refl _
 
 /- English proof (translation)
-Take `⟨-, hL, -⟩` from `h`. Unfold `Par.PinLevel at hL`. Conclude with `hL.2`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem par_l_A_eq_one_of_pins {D : D7} (Q : Par D) (h : Q.Pins) : Q.l.A = 1 := by
   obtain ⟨-, hL, -⟩ := h
@@ -59,21 +57,21 @@ private theorem par_l_A_eq_one_of_pins {D : D7} (Q : Par D) (h : Q.Pins) : Q.l.A
   exact hL.2
 
 /- English proof (translation)
-Introduce `hC D T hM hSh hG hb hX j hj ka hn`. Take `⟨-, dLev, dNab, dPd, dPhi, dRoot, shTot, -, -⟩` from `hSh`. Establish `hgood : GoodEmb T.Q.c T.σ₀` using `T.toCore.good_σ₀`. Establish `hpq : (T.Q.Dw j).p + (T.Q.Dw j).q = D.R.r` using `sig_add_of_pins T.Q hM.pins hj`. Establish `hr1 : 1 ≤ D.R.r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [Formalism.BasicNotions.Ranks.r]`. Use linear arithmetic over natural numbers and integers. Establish `hDom : Dom (wtA ka) ka.n` using `dom_wtA_of_wt ka`. Establish `hl : T.Q.l.A = 1` using `par_l_A_eq_one_of_pins T.Q hM.pins`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn' : 4 * (Module.finrank ℚ D.host.E * D.R.r) + 4 ≤ ka.n`. Rewrite using `[hostSize_finrank D]`. Combine the equalities or inequalities in the displayed calculation. Establish `hP3 : ¬ 3 ∣ (T.dδ j ka.n).pd`. Take `⟨p, hp, hpd⟩` from `dPd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hpd j hj ka.n]`. Establish `h15` using `D.host.pde_mod`. Apply the tactic sequence `rcases hp with rfl | rfl <;> omega`. Establish `hUnit : UnitC (T.dδ j ka.n)`. Take `⟨Cls, x, hF, δ, gdet, hCMP⟩` from `dRoot j hj ka.n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `unitC_of_finite_character _ _ _ _ _ _ _ _ Cls δ gdet (by rw [hpq]; exact hr1) hCMP`. Establish `hPhi : (T.Q.Dw j).p + (T.Q.Dw j).q ≤ ka.n → ∃ ph ψ x₀, (T.dδ j ka.n).PhiPin ph ψ x₀`. Introduce `h`. Take `⟨ph, ψ, x₀, -, hph, -⟩` from `dPhi j hj ka.n (hpq ▸ h)`. Conclude with `⟨ph, ψ, x₀, hph⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hPr : ∀ k, HasPrinc ((T.U j T.σ₀).X k) T.Q.l.M`. Introduce `k ga hga hcong`. Apply `hG j hj T.σ₀ hgood k ga hga` to reduce the goal to its premises. Introduce `x hx`. Take `⟨u, hu, he⟩` from `hcong x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[he, Nat.cast_smul_eq_nsmul]`. Normalize the expressions using the abelian group laws. Establish `hChi : ∀ k, ChiOne ((Formalism.L2.PjFree.Unf.ofPj (T.U j T.σ₀)).X k) (Formalism.L2.PjFree.laU (Formalism.L2.PjFree.Unf.ofPj (T.U j T.σ₀)) (wtA ka) ka.n k)`. Introduce `k γ hγ`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `erw [Formalism.L2.PjFree.laU_ofPj]`. Conclude with `hM.chiTriv j hj T.σ₀ hgood _ _ hDom k γ hγ`. Establish `key` using `GlobalTheory.T.cuspForms_vanishing_off_frames_le_span_shortTheta hC _ _ _ _ (T.Q.Xo j) T.Q.c ka.n (T.dδ j ka.n) T.σ₀ D.R.r (Formalism.L2.PjFree.Unf.ofPj (T.U j T.σ₀)) ((Formalism.L2.PjFree.goodEmb_iff _).2 hgood) ((Formalism.L2.PjFree.isUnf_ofPj _).2 (hM.unf j hj _ hgood)) hr1 hl …`. Apply the tactic sequence `convert key using 3 <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem holSub0_le_span_short_rec : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (T : Top D), LawsM T.toCore → LawsSh T → GamAt T.toCore → 0 < badN D → (∀ j, InR D j → ∀ k k', ((T.U j T.σ₀).X k).Gm = ((T.U j T.σ₀).X k').Gm ∧ ((T.U j T.σ₀).X k).ξ0 = ((T.U j T.σ₀).X k').ξ0) → ∀ (j : ℕ) (_hj : InR D j) (ka : WeightFamilies.Wt D j), 8 * D.R.f * D.R.r + 4 ≤ ka.n → GlobalTheory.Dict.holSub0 (T.U j T.σ₀).X (laU (T.U j T.σ₀) (wtA ka) ka.n) ≤ Submodule.span ℂ (rdU (T.U j T.σ₀) '' T.sh j ka) := by
   intro hC D T hM hSh hG hb hX j hj ka hn

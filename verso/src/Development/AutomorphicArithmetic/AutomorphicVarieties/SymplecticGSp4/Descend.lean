@@ -14,13 +14,11 @@ variable {O : Type} [CommRing O] [IsLocalRing O] {Γ Γ' ι : Type} [Group Γ] [
   [TopologicalSpace Γ'] [Fintype ι] [DecidableEq ι] {R : Type} [CommRing R] [Algebra O R] [IsCO O R]
 
 /- English proof (translation)
-Establish `hH : IsHausdorff (maximalIdeal R) R` using `(IsCO.complete (O := O) (R := R)).toIsHausdorff`. Establish `key : (ρ.hom.ker : Set Γ) = ⋂ a, ⋂ b, ⋂ N : ℕ, (fun g => Ideal.Quotient.mk (maximalIdeal R ^ N) (ρ.hom g a b)) ⁻¹' {Ideal.Quotient.mk (maximalIdeal R ^ N) ((1 : Matrix ι ι R) a b)}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_iInter, Set.mem_preimage, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h a b N`. Rewrite using `[h]`. Introduce `h`. Use extensionality with `a b`. Establish `hz : ρ.hom g a b - (1 : Matrix ι ι R) a b = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Apply `hH.haus` to reduce the goal to its premises. Introduce `n`. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top]`. Conclude with `Ideal.Quotient.eq.mp (h a b n)`. Conclude with `sub_eq_zero.mp hz`.
-
-Rewrite using `[key]`. Conclude with `isClosed_iInter fun a => isClosed_iInter fun b => isClosed_iInter fun N => (ρ.cont a b N).isClosed_fiber _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem closed_ker {rbar : Γ →* Matrix ι ι (ResidueField O)} (ρ : Lift O rbar R) :
     IsClosed (ρ.hom.ker : Set Γ) := by
@@ -46,11 +44,11 @@ private theorem closed_ker {rbar : Γ →* Matrix ι ι (ResidueField O)} (ρ : 
     (ρ.cont a b N).isClosed_fiber _
 
 /- English proof (translation)
-Use `⟨⟨h, fun a b N => ?_, fun g' a b => ?_⟩, rfl⟩` and prove the remaining obligations. Introduce `s`. Rewrite using `[← hφ.isOpen_preimage]`. Establish `e : (fun g' => Ideal.Quotient.mk (maximalIdeal R ^ N) (h g' a b)) ∘ φ = fun g => Ideal.Quotient.mk (maximalIdeal R ^ N) (ρ.hom g a b)`. Use function extensionality and compare the values at `g`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← hh]`. Both sides reduce to the same expression. Rewrite using `[← Set.preimage_comp, e]`. Conclude with `ρ.cont a b N s`. Substitute `hb` using the available equality.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `hφ.surjective g'`. Establish `hr` using `ρ.red g a b`. Rewrite `hr` using `[← hh]`. Conclude with `hr`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_down {rbar : Γ →* Matrix ι ι (ResidueField O)} {rb : Γ' →* Matrix ι ι (ResidueField O)}
     (φ : Γ →* Γ') (hφ : Topology.IsQuotientMap φ) (hb : rb.comp φ = rbar) (ρ : Lift O rbar R)
@@ -72,7 +70,7 @@ private theorem exists_down {rbar : Γ →* Matrix ι ι (ResidueField O)} {rb :
     exact hr
 
 /- English proof (translation)
-Substitute `hb` using the available equality. Conclude with `⟨⟨r.hom.comp φ, fun a b N => (r.cont a b N).comp_continuous hφ, fun g a b => r.red (φ g) a b⟩, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 private theorem exists_up {rbar : Γ →* Matrix ι ι (ResidueField O)} {rb : Γ' →* Matrix ι ι (ResidueField O)}
     (φ : Γ →* Γ') (hφ : Continuous φ) (hb : rb.comp φ = rbar) (r : Lift O rb R) :
@@ -87,32 +85,32 @@ section Form
 variable {O R : Type} [CommRing O] [CommRing R] [Algebra O R]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [FormData.JR, form, J4]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem JR_eq : (form O).JR R = J4 R := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [FormData.JR, form, J4]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [J4, adj, sgn, Matrix.mul_apply, Fin.sum_univ_four, Fin.rev] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem J_adj (X : M4 R) : J4 R * adj X = Xᵀ * J4 R := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [J4, adj, sgn, Matrix.mul_apply, Fin.sum_univ_four, Fin.rev] <;> ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [J4, Matrix.mul_apply, Fin.sum_univ_four]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem J_sq : -J4 R * J4 R = 1 := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [J4, Matrix.mul_apply, Fin.sum_univ_four]
 
 /- English proof (translation)
-Establish `hJ' : J4 R * -J4 R = 1` using `by rw [Matrix.mul_neg, ← Matrix.neg_mul, J_sq]`. Establish `hA : adj X = -J4 R * (Xᵀ * J4 R)`. Rewrite using `[← J_adj, ← Matrix.mul_assoc, J_sq, Matrix.one_mul]`. Establish `e1 : Xᵀ * J4 R * X = J4 R * (adj X * X)`. Rewrite using `[hA, show J4 R * (-J4 R * (Xᵀ * J4 R) * X) = (J4 R * -J4 R) * (Xᵀ * J4 R * X) by noncomm_ring, hJ', Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Unfold `IsGSp`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[e1, h, Matrix.mul_smul, Matrix.mul_one]`. Introduce `h`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem gsp_iff (ν : R) (X : M4 R) : IsGSp ν X ↔ Xᵀ * J4 R * X = ν • J4 R := by
   have hJ' : J4 R * -J4 R = 1 := by rw [Matrix.mul_neg, ← Matrix.neg_mul, J_sq]
@@ -131,13 +129,13 @@ private theorem gsp_iff (ν : R) (X : M4 R) : IsGSp ν X ↔ Xᵀ * J4 R * X = �
       _ = ν • 1 := by rw [h, Matrix.mul_smul, J_sq]
 
 /- English proof (translation)
-Establish `hs : ∀ i : Fin 4, sgn i * sgn i = 1`. Introduce `i`. Apply the tactic sequence `fin_cases i <;> simp [sgn]`. Establish `hA : adj (diagonal d) = diagonal (fun i => d i.rev)`. Use extensionality with `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[adj_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[hs, one_smul, diagonal_apply_eq, diagonal_apply_eq]`. Rewrite using `[diagonal_apply_ne _ hij, diagonal_apply_ne _ (fun e => hij (Fin.rev_injective e).symm), smul_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `IsGSp`. Rewrite using `[hA, diagonal_mul_diagonal, Matrix.smul_one_eq_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h i`.
+A detailed English derivation is pending.
 -/
 private theorem gsp_diag (ν : R) (d : Fin 4 → R) (h : ∀ i, d i * d i.rev = ν) : IsGSp ν (diagonal d) := by
   have hs : ∀ i : Fin 4, sgn i * sgn i = 1 := by
@@ -158,9 +156,9 @@ private theorem gsp_diag (ν : R) (d : Fin 4 → R) (h : ∀ i, d i * d i.rev = 
   exact h i
 
 /- English proof (translation)
-Use `⟨fun g => ?_, ⟨1, fun g a b _ => rfl⟩, fun g a b hab => ?_⟩` and prove the remaining obligations. Take `⟨ν, d, hd, hg⟩` from `h g`. Use `⟨ν, ?_⟩` and prove the remaining obligations. Rewrite using `[JR_eq, hg]`. Conclude with `(gsp_iff ν _).mp (gsp_diag ν d hd)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ν, d, hd, hg⟩` from `h g`. Rewrite using `[hg]`. Conclude with `diagonal_apply_ne _ (fun e => hab (by rw [e]))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem normalises {Γ : Type} [Group Γ] (ρ : Γ →* M4 R)
     (h : ∀ g, ∃ (ν : R) (d : Fin 4 → R), (∀ i, d i * d i.rev = ν) ∧ ρ g = diagonal d) : (form O).Normalises ρ := by
@@ -174,11 +172,11 @@ private theorem normalises {Γ : Type} [Group Γ] (ρ : Γ →* M4 R)
     exact diagonal_apply_ne _ (fun e => hab (by rw [e]))
 
 /- English proof (translation)
-Establish `e : (X * Y')ᵀ * J * (X * Y') = Y'ᵀ * (Xᵀ * J * X) * Y'`. Rewrite using `[Matrix.transpose_mul]`. Use `noncomm_ring`. Establish `t1 : Yᵀ * Y'ᵀ = 1` using `by rw [← Matrix.transpose_mul, h2, Matrix.transpose_one]`. Establish `t2 : Y'ᵀ * Yᵀ = 1` using `by rw [← Matrix.transpose_mul, h1, Matrix.transpose_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← hY]`. Prove the components needed by the constructor for the conclusion. Introduce `hc`. Combine the equalities or inequalities in the displayed calculation. Introduce `hc`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem pres_iff {J X Y Y' : M4 R} {ν : R} (h1 : Y * Y' = 1) (h2 : Y' * Y = 1) (hY : Yᵀ * J * Y = ν • J) :
     (X * Y')ᵀ * J * (X * Y') = J ↔ Xᵀ * J * X = ν • J := by
@@ -199,15 +197,15 @@ private theorem pres_iff {J X Y Y' : M4 R} {ν : R} (h1 : Y * Y' = 1) (h2 : Y' *
       _ = J := by rw [t2, h1, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hJ : (J4 O).map (algebraMap O R) = J4 R` using `JR_eq (O := O) (R := R)`. Establish `h1 : (r0.hom s).map (algebraMap O R) * (r0.hom s⁻¹).map (algebraMap O R) = 1`. Rewrite using `[← Matrix.map_mul, ← map_mul, mul_inv_cancel, map_one, Matrix.map_one _ (map_zero (algebraMap O R)) (map_one (algebraMap O R))]`. Establish `h2 : (r0.hom s⁻¹).map (algebraMap O R) * (r0.hom s).map (algebraMap O R) = 1`. Rewrite using `[← Matrix.map_mul, ← map_mul, inv_mul_cancel, map_one, Matrix.map_one _ (map_zero (algebraMap O R)) (map_one (algebraMap O R))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hY : ((r0.hom s).map (algebraMap O R))ᵀ * J4 R * (r0.hom s).map (algebraMap O R) = algebraMap O R ν • J4 R`. Establish `h0` using `congrArg (fun M => M.map (algebraMap O R)) ((gsp_iff ν (r0.hom s)).mp h)`. Rewrite `h0` using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, hJ, Matrix.map_smul' _ _ _ (fun a b => map_mul (algebraMap O R) a b), hJ]`. Conclude with `h0`. Establish `hC : (r.hom s * (r0.hom s⁻¹).map (algebraMap O R)).map (res O R) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (r.hom s).map (res O R) = rb s`. Use extensionality with `a b`. Conclude with `r.red s a b`. Establish `e2 : ((r0.hom s⁻¹).map (algebraMap O R)).map (res O R) = rb s⁻¹`. Use extensionality with `a b`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.map_apply]`. Rewrite using `[AlgHom.commutes, ← r0.red s⁻¹ a b]`. Conclude with `((res O O).commutes _).symm`. Rewrite using `[Matrix.map_mul, e1, e2, ← map_mul, mul_inv_cancel, map_one]`. Rewrite using `[gsp_iff, ← pres_iff (X := r.hom s) h1 h2 hY]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Unfold `FormData.HH`. Rewrite using `[JR_eq]`. Conclude with `⟨fun hh => hh.1, fun hh => ⟨hh, fun a b hab => absurd rfl hab, hC⟩⟩`.
+A detailed English derivation is pending.
 -/
 private theorem hh_iff [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] [IsCO O R]
     {Γ : Type} [Group Γ] [TopologicalSpace Γ] {rb : Γ →* M4 (ResidueField O)} (r0 : Lift O rb O) (r : Lift O rb R)
@@ -248,7 +246,7 @@ section Places
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c)
 
 /- English proof (translation)
-Establish `e : (algebraMap ℚ Ω) (((n : 𝓞 ℚ)) : ℚ) = (n : Ω)` using `by simp`. Rewrite using `[← e]`. Conclude with `hv _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_iff {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 ℚ)} (hv : IsPlaceOver A v) (n : ℕ) :
     A.valuation (n : Ω) < 1 ↔ ((n : ℕ) : 𝓞 ℚ) ∈ v.asIdeal := by
@@ -257,11 +255,11 @@ private theorem val_iff {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 �
   exact hv _
 
 /- English proof (translation)
-Unfold `NS`. Use `Subgroup.topologicalClosure_minimal _ ?_ hc` and prove the remaining obligations. Use `Subgroup.normalClosure_le_normal ?_` and prove the remaining obligations. Introduce `g hg`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, Set.mem_compl_iff, exists_prop] at hg`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨v, hv, A, hA, hgA⟩` from `hg`. Establish `hAw : Raw.Away D.S A`. Introduce `p hp hlt`. Apply `hv` to reduce the goal to its premises. Conclude with `⟨p, hp, (val_iff hA p).mp hlt⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 
-Conclude with `h A hAw hgA`.
+A detailed English derivation is pending.
 -/
 private theorem ns_le {M : Type} [Monoid M] (f : G ℚ Ω →* M) (hc : IsClosed (f.ker : Set (G ℚ Ω)))
     (h : ∀ A, Raw.Away D.S A → Ine (F := ℚ) A ≤ f.ker) : NS Ω D.SP ≤ f.ker := by
@@ -278,11 +276,11 @@ private theorem ns_le {M : Type} [Monoid M] (f : G ℚ Ω →* M) (hc : IsClosed
   exact h A hAw hgA
 
 /- English proof (translation)
-Use `show (QuotientGroup.mk' (NS Ω D.SP)) g = 1`. Rewrite using `[QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`. Distinguish the cases in `htop : A = ⊤`. Establish `h1` using `((places ℚ Ω l A).2.1 htop).1`. Rewrite `hg` using `[h1]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mem_bot.mp hg]`. Conclude with `one_mem _`. Take `⟨v, hv⟩` from `(places ℚ Ω l A).1 htop`. Establish `hvS : v ∉ D.SP`. Introduce and unpack `⟨p, hp, hpv⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hA p hp ((val_iff hv p).mpr hpv)`. Apply `Subgroup.le_topologicalClosure` to reduce the goal to its premises. Apply `Subgroup.subset_normalClosure` to reduce the goal to its premises. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, Set.mem_compl_iff, exists_prop]`. Conclude with `⟨v, hvS, A, hv, hg⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem toGS_ine {A : ValuationSubring Ω} (hA : Raw.Away D.S A) {g : G ℚ Ω} (hg : g ∈ Ine (F := ℚ) A) :
     toGS Ω D.SP g = 1 := by
@@ -304,13 +302,13 @@ private theorem toGS_ine {A : ValuationSubring Ω} (hA : Raw.Away D.S A) {g : G 
 
 omit [CharZero Ω] [IsAlgClosure ℚ Ω] in
 /- English proof (translation)
-Introduce `hn`. Establish `hb` using `Nat.gcd_eq_gcd_ab m n`. Rewrite `hb` using `[hc.gcd_eq_one, Nat.cast_one]`. Establish `hb' : (1 : Ω) = (m : Ω) * ((m.gcdA n : ℤ) : Ω) + (n : Ω) * ((m.gcdB n : ℤ) : Ω)`. Establish `h0` using `congrArg (fun z : ℤ => (z : Ω)) hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h0`. Conclude with `h0`. Establish `ha : A.valuation ((m.gcdA n : ℤ) : Ω) ≤ 1` using `(A.valuation_le_one_iff _).mpr (intCast_mem A _)`. Establish `hb2 : A.valuation ((m.gcdB n : ℤ) : Ω) ≤ 1` using `(A.valuation_le_one_iff _).mpr (intCast_mem A _)`. Establish `h1 : A.valuation ((m : Ω) * ((m.gcdA n : ℤ) : Ω)) < 1`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : A.valuation ((n : Ω) * ((m.gcdB n : ℤ) : Ω)) < 1`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h3 : A.valuation (1 : Ω) < 1`. Rewrite using `[hb']`. Conclude with `lt_of_le_of_lt (A.valuation.map_add _ _) (max_lt h1 h2)`. Rewrite `h3` using `[map_one]`. Conclude with `lt_irrefl _ h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem not_both (A : ValuationSubring Ω) {m n : ℕ} (hc : m.Coprime n)
     (hm : A.valuation (m : Ω) < 1) : ¬ A.valuation (n : Ω) < 1 := by
@@ -342,7 +340,7 @@ private theorem not_both (A : ValuationSubring Ω) {m n : ℕ} (hc : m.Coprime n
   exact lt_irrefl _ h3
 
 /- English proof (translation)
-Simplify using `only [Raw.T, Raw.Sb, Finset.mem_insert, Finset.mem_filter] at hp`. Break down `hp with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `hD.l_mem`. Conclude with `h.1`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem T_sub (hD : D.Good) {p : ℕ} (hp : p ∈ D.T) : p ∈ D.S := by
   simp only [Raw.T, Raw.Sb, Finset.mem_insert, Finset.mem_filter] at hp
@@ -352,17 +350,15 @@ private theorem T_sub (hD : D.Good) {p : ℕ} (hp : p ∈ D.T) : p ∈ D.S := by
   · exact h.1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hk A hA g hg hr show f (toGS Ω D.SP g) = 1`. Distinguish the cases in `hS : Raw.Away D.S A`. Rewrite using `[toGS_ine D hS hg, map_one]`. Unfold `Raw.Away at hS push_neg at hS`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Take `⟨p, hpS, hpA⟩` from `hS`. Establish `hpT : p ∉ D.T` using `fun hpT => hA p hpT hpA`. Establish `hpr : Nat.Prime p` using `hD.S_prime p hpS`. Take `⟨u, -, hu⟩` from `(Chr.placesQ Ω).2.2 p A (D.pl p) hpr hpA (hD.pl_over p hpr)`. Establish `hg'` using `hu g hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk'` using `hk p (Finset.mem_sdiff.mpr ⟨hpS, hpT⟩) (u⁻¹ * g * u) (Subgroup.mem_inf.mpr ⟨hg', by`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_mul, hr, mul_one, ← map_mul, inv_mul_cancel, map_one]⟩)`. Establish `e : toGS Ω D.SP g = toGS Ω D.SP u * toGS Ω D.SP (u⁻¹ * g * u) * (toGS Ω D.SP u)⁻¹`. Rewrite using `[map_mul, map_mul, map_inv]`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_mul, map_mul, hk', mul_one, ← map_mul, mul_inv_cancel, map_one]`. Introduce `hU q hq g hg`. Take `⟨hqS, hqT⟩` from `Finset.mem_sdiff.mp hq`. Establish `hqp : Nat.Prime q` using `hD.S_prime q hqS`. Establish `hAw : Raw.Away D.T (D.pl q)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hpT hpv`. Establish `hpp : Nat.Prime p` using `hD.S_prime p (T_sub D hD hpT)`. Establish `hne : p ≠ q` using `fun e => hqT (e ▸ hpT)`. Conclude with `not_both (D.pl q) ((Nat.coprime_primes hpp hqp).mpr hne) hpv (hD.pl_over q hqp)`. Take `⟨hg1, hg2⟩` from `Subgroup.mem_inf.mp hg`.
-
-Conclude with `hU (D.pl q) hAw g hg1 (MonoidHom.mem_ker.mp hg2)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem kill_iff (hD : D.Good) {M : Type} [Monoid M] (f : D.Gam →* M) :
     (∀ q ∈ D.S \ D.T, ∀ g ∈ D.Ip q ⊓ D.rbar.ker, f (toGS Ω D.SP g) = 1) ↔ D.UnrT (f.comp (toGS Ω D.SP)) 1 := by
@@ -401,43 +397,37 @@ end UpperTheory.V.GradeZeroInterpolatingElement.DescentNormaliser
 
 open UpperTheory.V.GradeZeroInterpolatingElement.DescentNormaliser in
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD`. Take `⟨-, -, -, -, -, hpsth, -, -, -, -, hcont, -, -, hunr⟩` from `facts D hD`. Establish `hdiag : ∀ g, D.r0 g = Matrix.diagonal (fun i => ((D.ps i g : (↥c.O)ˣ) : ↥c.O))` using `fun g => rfl`. Establish `hd : ∀ g (i : Fin 4), ((D.ps i g : (↥c.O)ˣ) : ↥c.O) * ((D.ps i.rev g : (↥c.O)ˣ) : ↥c.O) = ((D.th g : (↥c.O)ˣ) : ↥c.O)`. Introduce `g i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Units.val_mul, ← MonoidHom.mul_apply, hpsth i]`. Establish `hres : ∀ x : ↥c.O, res ↥c.O ↥c.O x = residue ↥c.O x` using `fun x => (res _ _).commutes x`. Establish `hc0 : ∀ a b : Fin 4, AdicCont (maximalIdeal ↥c.O) fun g => D.r0 g a b`. Introduce `a b`. Distinguish the cases in `hab : a = b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hab` using the available equality. Establish `e : (fun g => D.r0 g a a) = fun g => ((D.ps a g : (↥c.O)ˣ) : ↥c.O)`. Use function extensionality and compare the values at `g`. Rewrite using `[hdiag, Matrix.diagonal_apply_eq]`. Rewrite using `[e]`.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hcont a`. Introduce `N`. Establish `e : (fun g => Ideal.Quotient.mk (maximalIdeal ↥c.O ^ N) (D.r0 g a b)) = fun _ => 0`. Use function extensionality and compare the values at `g`. Rewrite using `[hdiag, Matrix.diagonal_apply_ne _ hab, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `IsLocallyConstant.const 0`. Set `r0L : Lift ↥c.O D.rbar ↥c.O` to `⟨D.r0, hc0, fun g a b => by rw [hres]; rfl⟩`. Establish `hIne : ∀ A, Raw.Away D.S A → Ine (F` using `ℚ) A ≤ D.r0.ker := by`. Introduce `A hA g hg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.mem_ker, hdiag]`. Establish `e : (fun i => ((D.ps i g : (↥c.O)ˣ) : ↥c.O)) = fun _ => 1`. Use function extensionality and compare the values at `i`. Rewrite using `[(MonoidHom.mem_ker).mp (hunr i A hA hg), Units.val_one]`. Rewrite using `[e, Matrix.diagonal_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hle0 : NS Ω D.SP ≤ D.r0.ker` using `ns_le D D.r0 (closed_ker r0L) hIne`. Set `r0b : D.Gam →* M4 ↥c.O` to `QuotientGroup.lift (NS Ω D.SP) D.r0 hle0`. Establish `hr0b : r0b.comp (toGS Ω D.SP) = D.r0` using `MonoidHom.ext fun g => rfl`. Set `rb : D.Gam →* M4 (ResidueField ↥c.O)` to `mapRep (residue ↥c.O) r0b`. Establish `hrb : rb.comp (toGS Ω D.SP) = D.rbar` using `MonoidHom.ext fun g => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : Topology.IsQuotientMap (toGS Ω D.SP)` using `QuotientGroup.isQuotientMap_mk (NS Ω D.SP)`. Establish `hcont' : Continuous (toGS Ω D.SP)` using `hq.continuous`. Take `⟨r0', hr0'⟩` from `exists_down (toGS Ω D.SP) hq hrb r0L r0b hr0b`. Establish `hnorm0 : (form ↥c.O).Normalises r0b`. Apply `normalises` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `s`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective s`. Conclude with `⟨((D.th g : (↥c.O)ˣ) : ↥c.O), fun i => ((D.ps i g : (↥c.O)ˣ) : ↥c.O), hd g, hdiag g⟩`. Establish `hnormb : (form ↥c.O).Normalises rb`. Apply `normalises` to reduce the goal to its premises.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `s`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective s`. Use `⟨residue ↥c.O ((D.th g : (↥c.O)ˣ) : ↥c.O), fun i => residue ↥c.O ((D.ps i g : (↥c.O)ˣ) : ↥c.O), fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, hd g i]`. Use `show (D.r0 g).map (residue ↥c.O) = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hdiag, Matrix.diagonal_map (map_zero _)]`. Use `⟨rb, r0', hrb, by rw [hr0']; exact hr0b, hnormb, by rw [hr0']; exact hnorm0, ?_⟩` and prove the remaining obligations. Introduce `R _ _ _`. Use `⟨fun r => ?_, fun ρ hρ => ?_⟩` and prove the remaining obligations. Take `⟨ρ, hρ⟩` from `exists_up (toGS Ω D.SP) hcont' hrb r`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨ρ, hρ, ?_, ?_⟩` and prove the remaining obligations. Establish `key : ∀ g : G ℚ Ω, (form ↥c.O).HH (r.hom (toGS Ω D.SP g) * (r0'.hom (toGS Ω D.SP g)⁻¹).map (algebraMap ↥c.O R)) ↔ IsGSp (algebraMap ↥c.O R ((D.th g : (↥c.O)ˣ) : ↥c.O)) (r.hom (toGS Ω D.SP g))`. Introduce `g`. Apply `hh_iff r0' r` to reduce the goal to its premises. Rewrite using `[hr0']`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use `show IsGSp _ (D.r0 g)`. Rewrite using `[hdiag]`. Conclude with `gsp_diag _ _ (hd g)`. Use `show (∀ s, (form ↥c.O).HH (r.hom s * (r0'.hom s⁻¹).map (algebraMap ↥c.O R))) ↔ ∀ g, IsGSp (algebraMap ↥c.O R ((D.th g : (↥c.O)ˣ) : ↥c.O)) (ρ.hom g)`. Rewrite using `[hρ]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h g`. Conclude with `(key g).mp (h _)`. Introduce `h s`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective s`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(key g).mpr (h g)`. Establish `hk` using `kill_iff D hD r.hom`. Rewrite using `[hρ, ← hk]`. Prove the components needed by the constructor for the conclusion. Introduce `h q hq g hg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hg1, -⟩` from `Subgroup.mem_inf.mp hg`. Establish `hgD : g ∈ D.Gp q` using `Ine_le_Dec _ hg1`. Conclude with `h ⟨q, hq⟩ ⟨g, hgD⟩ (Subgroup.mem_subgroupOf.mpr hg)`. Introduce `h q n hn`. Conclude with `h q.1 q.2 n.1 (Subgroup.mem_subgroupOf.mp hn)`.
-
-Establish `hle : NS Ω D.SP ≤ ρ.hom.ker`. Use `ns_le D ρ.hom (closed_ker ρ) ?_` and prove the remaining obligations. Introduce `A hA g hg`. Rewrite using `[MonoidHom.mem_ker]`. Use `hρ A (fun p hp => hA p (T_sub D hD hp)) g hg ?_` and prove the remaining obligations.
-
-Use `show (D.r0 g).map (residue ↥c.O) = 1`. Rewrite using `[MonoidHom.mem_ker.mp (hIne A hA hg)]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Set `h : D.Gam →* M4 R` to `QuotientGroup.lift (NS Ω D.SP) ρ.hom hle`. Take `⟨r, hr⟩` from `exists_down (toGS Ω D.SP) hq hrb ρ h (MonoidHom.ext fun g => rfl)`.
-
-Conclude with `⟨r, by rw [hr]; exact MonoidHom.ext fun g => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.descend :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∃ (rb : D.Gam →* M4 (ResidueField c.O)) (r0 : Lift c.O rb c.O), rb.comp (toGS Ω D.SP) = D.rbar ∧ r0.hom.comp (toGS Ω D.SP) = D.r0 ∧ (form c.O).Normalises rb ∧ (form c.O).Normalises r0.hom ∧ ∀ (R : Type) [CommRing R] [Algebra c.O R] [IsCO c.O R], (∀ r : Lift c.O rb R, ∃ ρ : Lift c.O D.rbar R, ρ.hom = r.hom.comp (toGS Ω D.SP) ∧ ((form c.O).InH r0.hom R r ↔ D.Mult ρ.hom) ∧ ((∀ q : D.frame.Q, killCond (rb.comp (D.frame.ψ q)) (D.frame.N q) R (r.comap (D.frame.ψ q) (D.frame.hψ q))) ↔ D.UnrT ρ.hom 1)) ∧ ∀ ρ : Lift c.O D.rbar R, D.UnrT ρ.hom 1 → ∃ r : Lift c.O rb R, ρ.hom = r.hom.comp (toGS Ω D.SP) := by

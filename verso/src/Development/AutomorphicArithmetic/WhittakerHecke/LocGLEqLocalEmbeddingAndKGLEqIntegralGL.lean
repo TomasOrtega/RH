@@ -7,13 +7,11 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalSpectrum UpperTheory.ConvolutionTheory UpperTheory.ConvolutionTheory.C
 
 /- English proof (translation)
-Introduce `E _ _ n w`. Use `⟨fun g => ?_, ?_⟩` and prove the remaining obligations. Take `⟨-, h1, h2, -⟩` from `UpperTheory.ConvolutionTheory.Tf.locEmb E n w`. Establish `key : ∀ v, Matrix.GeneralLinearGroup.map (GlobalTheory.CuspRep.pLoc E v) (GlobalTheory.CuspRep.locGL E n w g) = Matrix.GeneralLinearGroup.map (GlobalTheory.CuspRep.pLoc E v) (AdelicGLn.localEmbedding w g)` using `fun v => by`. Distinguish the cases in `h : v = w`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[GlobalTheory.CuspRep.pLoc_locGL]`. Conclude with `(h1 g).symm`. Rewrite using `[GlobalTheory.CuspRep.pLoc_locGL_of_ne h]`. Conclude with `(h2 v h g).symm`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Use `DFunLike.ext _ _ fun v => ?_` and prove the remaining obligations. Conclude with `congrArg (fun x : GL (Fin n) (v.adicCompletion E) => x.val i j) (key v)`. Establish `h : ∀ O : Subring (w.adicCompletion E), O = (ValuativeRel.valuation (w.adicCompletion E)).integer → Formalism.UG.GLint (Fin n) O = GLnLocal.integralGL (w.adicCompletion E) n`. Introduce and unpack `_ rfl`.
-
-Both sides reduce to the same expression. Conclude with `h _ (Subring.ext fun x => (GroundTheory.Global.mem_valuationInteger_iff w x).symm)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.locGL_eq_localEmbedding_and_KGL_eq_integralGL :
     ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (w : HeightOneSpectrum (𝓞 E)),

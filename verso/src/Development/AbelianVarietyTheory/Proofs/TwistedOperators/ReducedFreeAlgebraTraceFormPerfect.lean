@@ -6,11 +6,11 @@ open GlobalTheory.RegSS
 namespace GlobalTheory.RegSS
 
 /- English proof (translation)
-Establish `: IsArtinianRing L` using `IsArtinianRing.of_finite F L`. Establish `: IsSemisimpleRing L` using `IsArtinianRing.isSemisimpleRing_of_isReduced L`. Take `⟨e, he, hI⟩` from `IsSemisimpleRing.ideal_eq_span_idempotent (Ideal.span {x})`. Establish `hem : e ∈ Ideal.span {x}` using `hI ▸ Ideal.mem_span_singleton_self e`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 hem`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `htr : LinearMap.trace F L (Algebra.lmul F L e) = 0`. Rewrite using `[← Algebra.trace_apply, ← ha, mul_comm]`. Conclude with `hx a`. Establish `hidem : IsIdempotentElem (Algebra.lmul F L e)` using `he.map (Algebra.lmul F L)`. Establish `h0 : Algebra.lmul F L e = 0` using `LinearMap.IsIdempotentElem.eq_zero_of_trace_eq_zero hidem htr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he0 : e = 0`. Use `congrArg (fun f => f 1) h0` as an intermediate fact. Simplify using `using this`. Rewrite `hI` using `[he0]`. Conclude with `Ideal.span_singleton_eq_bot.1 (hI.trans (Ideal.span_singleton_eq_bot.2 rfl))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_trace_mul_eq_zero {F L : Type} [Field F] [CharZero F] [CommRing L]
     [Algebra F L] [Module.Finite F L] [IsReduced L] (x : L)
@@ -38,13 +38,13 @@ end GlobalTheory.RegSS
 namespace GlobalTheory.RegSS
 
 /- English proof (translation)
-Unfold `TracePerfect`. Introduce `F E L _ _ _ _ _ _ _ _ _ _ _ _`. Establish `: Module.Finite F L` using `Module.Finite.trans E L`. Establish `: IsArtinianRing E` using `IsArtinianRing.of_finite F E`. Establish `inj : Function.Injective (Algebra.traceForm E L)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x y hxy`. Establish `h : ∀ z : L, Algebra.trace F L ((x - y) * z) = 0`. Introduce `z`. Establish `hz` using `LinearMap.congr_fun hxy z`. Rewrite `hz` using `[Algebra.traceForm_apply, Algebra.traceForm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Algebra.trace_trace (S := E), sub_mul, map_sub, hz, sub_self, map_zero]`. Conclude with `sub_eq_zero.1 (eq_zero_of_trace_mul_eq_zero (F := F) _ h)`. Set `b` to `Module.Free.chooseBasis E L`. Set `g : L →ₗ[E] L` to `b.toDualEquiv.symm.toLinearMap ∘ₗ Algebra.traceForm E L`. Establish `ginj : Function.Injective g` using `b.toDualEquiv.symm.injective.comp inj`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨inj, fun f => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `(IsArtinian.bijective_of_injective_endomorphism g ginj).2 (b.toDualEquiv.symm f)`. Conclude with `⟨x, b.toDualEquiv.symm.injective hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tracePerfect : TracePerfect := by
   unfold TracePerfect

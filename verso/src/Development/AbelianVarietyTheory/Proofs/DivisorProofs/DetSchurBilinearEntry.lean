@@ -9,19 +9,19 @@ open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `e : Option B ≃ B ⊕ Unit` to `Equiv.optionEquivSumPUnit B`. Set `R` to `Matrix.reindex e e Q`. Establish `hR : R.det = Q.det` using `Matrix.det_reindex_self e Q`. Set `Pz : Matrix (B ⊕ Unit) (B ⊕ Unit) ℂ` to `Matrix.fromBlocks 1 0 (Matrix.of fun _ b => z b) 1`. Set `Pz' : Matrix (B ⊕ Unit) (B ⊕ Unit) ℂ` to `Matrix.fromBlocks 1 0 (Matrix.of fun _ b => z' b) 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hPz : Pz.det = 1` using `by simp [Pz, Matrix.det_fromBlocks_zero₁₂]`. Establish `hPz' : Pz'.det = 1` using `by simp [Pz', Matrix.det_fromBlocks_zero₁₂]`. Set `u : B → ℂ` to `fun a => ∑ c, Q (some a) c * Option.elim c 1 z'`. Set `v : B → ℂ` to `fun b => ∑ c, Option.elim c 1 z * Q c (some b)`. Set `D : Matrix Unit Unit ℂ` to `Matrix.of fun _ _ => q`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `M : Matrix (B ⊕ Unit) (B ⊕ Unit) ℂ` to `Matrix.fromBlocks (Matrix.of fun a b => Q (some a) (some b)) (Matrix.of fun a _ => u a) (Matrix.of fun _ b => v b) D`. Establish `hM : M = Pz * R * Pz'ᵀ`. Use extensionality with `i j`. Apply the tactic sequence `rcases i with a | ⟨⟩ <;> rcases j with b | ⟨⟩ <;>`. Simplify using `[M, Pz, Pz', R, e, u, v, D, hq, Matrix.mul_apply, Fintype.sum_sum_type, Fintype.sum_option, Matrix.one_apply, Finset.sum_add_distrib, Finset.mul_sum, Finset.sum_mul, mul_comm, mul_left_comm, mul_assoc, add_comm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Use `all_goals`. Simplify using `only [mul_add, Finset.mul_sum, Finset.sum_add_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : M.det = Q.det`. Rewrite using `[hM, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hPz, hPz', hR]`. Expand and normalize the polynomial expressions, which then agree. Use `letI : Invertible D := ⟨Matrix.of fun _ _ => q⁻¹, by ext; simp [D, Matrix.mul_apply, hq0], by ext; simp [D, Matrix.mul_apply, hq0]⟩`. Rewrite `hdet` using `[Matrix.det_fromBlocks₂₂]`.
+Expand and normalize the polynomial expressions, which then agree. Equip the data with the indicated structure. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hD : D.det = q` using `by simp [D, Matrix.det_unique]`. Rewrite `hdet` using `[hD]`. Establish `hS : (Matrix.of fun a b : B => Q (some a) (some b) / q - (∑ c, Q (some a) c * Option.elim c 1 z') * (∑ c, Option.elim c 1 z * Q c (some b)) / q ^ 2) = q⁻¹ • ((Matrix.of fun a b => Q (some a) (some b)) - (Matrix.of fun a (_ : Unit) => u a) * ⅟D * (Matrix.of fun (_ : Unit) b => v b …`. Use extensionality with `a b`. Simplify using `[u, v, D, Matrix.mul_apply, invOf_eq_inv]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hS, Matrix.det_smul, ← hdet, pow_succ, inv_pow]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem det_schur_bilinear_entry (B : Type) [Fintype B] [DecidableEq B]
     (Q : Matrix (Option B) (Option B) ℂ) (z z' : B → ℂ) (q : ℂ)

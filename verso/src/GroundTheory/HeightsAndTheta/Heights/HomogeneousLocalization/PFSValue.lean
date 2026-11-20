@@ -13,9 +13,9 @@ namespace SectionsLatticeFS
 open ProjScheme
 
 /- English proof (translation)
-Introduce `A _ N n ρ P hP x`. Establish `hj` using `rep_chartIndex_ne_zero x.1`. Establish `hc` using `h A N n ρ P hP x (CP.chartIndex x.1) hj`. Establish `hcoord : fsFrameCoord n ρ x ((self A N).evalGlobalSection (twistN A N n) x (polySection hP)) = evalAt ρ x.1.rep P / x.1.rep (CP.chartIndex x.1) ^ n` using `eq_div_of_mul_eq (pow_ne_zero _ hj) hc`. Establish `hpos : 0 < ‖x.1.rep (CP.chartIndex x.1)‖ ^ n` using `pow_pos (norm_pos_iff.mpr hj) n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[fsFibreNorm, hcoord, CP.fsNormPoly, MvPolynomial.eval_map, norm_div, norm_pow, div_mul_cancel₀ _ hpos.ne']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem FSValue.proof (h : FSCoord.Statement.{u}) : FSValue.Statement.{u} := by
   intro A _ N n ρ P hP x

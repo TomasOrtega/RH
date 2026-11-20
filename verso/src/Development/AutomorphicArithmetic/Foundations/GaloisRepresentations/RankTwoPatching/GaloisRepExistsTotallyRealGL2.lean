@@ -58,11 +58,11 @@ def GdOf : Prop :=
       Gd (rc (algNorm σ))
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem rowOf' (h : RowT) : RowT := h
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem gr2S' (h : GaloisRepExistsTotallyRealGL2) : GaloisRepExistsTotallyRealGL2 := h
 

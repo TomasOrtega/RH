@@ -15,17 +15,15 @@ open ReciprocityTheory.ChartRestriction.G.FD
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Use `⟨fun hj hτ => ?_, fun hj hτ hi => ?_⟩` and prove the remaining obligations. Unfold `perFr`. Rewrite using `[dif_pos hτ]`. Use `split_ifs with h`. Use `GlobalTheory.PurePer.inv_mulVec_eq_zero Y.p0_le _ (hx ⟨τ, hτ⟩).1 ?_ _ (by simp)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsp ⟨τ, hτ⟩, GlobalTheory.PurePer.emb_smul']`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨j, hj⟩, rfl⟩)`. Both sides reduce to the same expression. Unfold `perFr`. Rewrite using `[dif_neg hτ]`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs with h' h`. Establish `hm : FD.col (FD.mat x ⟨conjEmb τ, h'⟩) ⟨Y.p0 - 1 - i, h⟩ ∈ Submodule.span ℂ (Set.range fun a : Fin Y.p0 => FD.Data.emb (conjEmb τ) (lam (Fin.castLE Y.p0_le a)))`. Use `hsp ⟨conjEmb τ, h'⟩` as an intermediate fact. Simplify using `only at this`. Rewrite using `[← this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
-Conclude with `Submodule.subset_span ⟨⟨Y.p0 - 1 - i, by omega⟩, rfl⟩`. Rewrite using `[GlobalTheory.PurePer.emb_smul', FD.hermC_smul_right]`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Generalize the expression as in `FD.col (FD.mat x ⟨conjEmb τ, h'⟩) ⟨Y.p0 - 1 - i, h⟩ = w at hm`. Proceed by induction on `hm using Submodule.span_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mem w hw`. Take `⟨k, rfl⟩` from `hw`. Rewrite using `[FD.hermC_emb, ho _ j (by simpa using k.isLt) hj, map_zero]`. Consider the case `zero => exact FD.hermC_zero_left _ _ _`. Consider the case `add a b _ _ ha hb => rw [FD.hermC_add_left, ha, hb, add_zero]`.
-
-Consider the case `smul c a _ ha => rw [FD.hermC_smul_left, ha, mul_zero]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem perFr_pure_of_data (Y : FD.Data E r) (x : FD.Frame Y.Ψ r) (hx : x ∈ Y.dom) (lam : Fin r → Fin r → E)
     (ho : ∀ j k' : Fin r, (j : ℕ) < Y.p0 → Y.p0 ≤ (k' : ℕ) → FD.herm Y.Gm (lam j) (lam k') = 0)
@@ -66,59 +64,53 @@ theorem perFr_pure_of_data (Y : FD.Data E r) (x : FD.Frame Y.Ψ r) (hx : x ∈ Y
     · rfl
 
 /- English proof (translation)
-Establish `hpure` using `perFr_pure_of_data Y x₀.1 x₀.2 lam ho hsp`. Take `⟨G1, io, hioinj, -, -, hG1det, hEF1⟩` from `GlobalTheory.exists_herm_coord_of_datum E H D₁ Y.ξ0 Y.ξ0_im Y.ξ0_ne 1 (by omega)`. Set `lv : D₁.La →ₗ[𝓞 E] E` to `(LinearMap.proj (R := 𝓞 E) (φ := fun _ : Fin 1 => E) 0) ∘ₗ io`. Establish `hlv : ∀ x, lv x = io x 0` using `fun x => rfl`. Establish `hG0 : G1 0 0 ≠ 0` using `by simpa [Matrix.det_unique] using hG1det`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hform1 : ∀ x y, ((D₁.EF x y : ℤ) : ℚ) = Algebra.trace ℚ E (Y.ξ0 * G1 0 0 * lv x * FD.cc (lv y))`. Introduce `x y`. Rewrite using `[hEF1]`. Use `congr 1`. Simplify using `[FD.herm, hlv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1ne : (1 : Submodule (𝓞 E) E) ≠ ⊥` using `(Submodule.ne_bot_iff _).2 ⟨1, Submodule.mem_one.2 ⟨1, map_one _⟩, one_ne_zero⟩`. Take `⟨S, hS⟩` from `D₁.fin.fg_top`. Take `⟨N₀, hN₀, hc₀⟩` from `GlobalTheory.LamT.CMBasis.exists_nsmul_mem (1 : Submodule (𝓞 E) E) h1ne (fun s : S => lv s)`. Set `lv0 : D₁.La →ₗ[𝓞 E] E` to `(N₀ : 𝓞 E) • lv`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hlv0 : ∀ x, lv0 x = (N₀ : E) * lv x` using `fun x => by`. Simplify using `[lv0, Algebra.smul_def]`. Establish `hlv01 : ∀ x, lv0 x ∈ (1 : Submodule (𝓞 E) E)`. Establish `: (⊤ : Submodule (𝓞 E) D₁.La) ≤ (1 : Submodule (𝓞 E) E).comap lv0`. Rewrite using `[← hS, Submodule.span_le]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs`. Express the relevant statement in the definitionally equal form `lv0 s ∈ (1 : Submodule (𝓞 E) E)`. Rewrite using `[hlv0]`. Conclude with `hc₀ ⟨s, hs⟩`. Conclude with `fun x => this Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM, hcM⟩` from `GlobalTheory.LamT.CMBasis.exists_nsmul_mem (1 : Submodule (𝓞 E) E) h1ne (fun i : Fin r => (N₀ : E) ^ 2 * FD.herm Y.Gm (lam i) (lam i) / G1 0 0)`. Use `choose t ht using fun i => Submodule.mem_one.1 (hcM i)`. Set `lv' : D₁.La →ₗ[𝓞 E] E` to `(M : 𝓞 E) • lv0`. Establish `hlv' : ∀ x, lv' x = ((N₀ * M : ℕ) : E) * lv x` using `fun x => by`. Simplify using `only [lv', LinearMap.smul_apply, Algebra.smul_def, hlv0]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hlv'1 : ∀ x, lv' x ∈ (1 : Submodule (𝓞 E) E)` using `fun x => Submodule.smul_mem _ (M : 𝓞 E) (hlv01 x)`. Establish `hmem : ∀ x j, lv' x • lam j ∈ Y.Λ` using `fun x j => by`. Take `⟨u, hu⟩` from `Submodule.mem_one.1 (hlv'1 x)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← hu, algebraMap_smul]`. Conclude with `Y.Λ.smul_mem u (hL j)`. Set `m : Fin r → D₁.La →ₗ[𝓞 E] Y.Λ` to `fun j => { toFun := fun a => ⟨_, hmem a j⟩ map_add' := fun a b => Subtype.ext (by simp [add_smul]) map_smul' := fun c a => Subtype.ext (by simp [smul_assoc]) }`. Set `Dp : Bool → Datum H` to `fun b => match b with`. Consider the case `true => D₁`.
+Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Treat this case separately.
 
-Consider the case `false => oppDatum D₁`. Set `e : ∀ b, (Dp b).La ≃ₗ[𝓞 E] D₁.La` to `fun b => match b with`. Consider the case `true => LinearEquiv.refl _ _`. Consider the case `false => LinearEquiv.refl _ _`. Set `σ : Fin p ⊕ Fin q ≃ Fin r` to `(Equiv.sumComm _ _).trans (finSumFinEquiv.trans (finCongr (by omega)))`.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hσl : ∀ j, q ≤ (σ (.inl j) : ℕ)` using `fun j => by simp [σ]`. Establish `hσr : ∀ j, (σ (.inr j) : ℕ) < q` using `fun j => by simp [σ]`. Set `f : ∀ j : Fin p ⊕ Fin q, (Dp j.isLeft).La →ₗ[𝓞 E] D.La` to `fun j => φ.symm.toLinearMap ∘ₗ m (σ j) ∘ₗ (e _).toLinearMap`. Establish `hf : ∀ j a, (φ (f j a) : Fin r → E) = lv' (e _ a) • lam (σ j)` using `fun j a => by`. Simplify using `[f, m]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `hh : Fin p ⊕ Fin q → 𝓞 E` to `Sum.elim (fun j => -((M : 𝓞 E) * t (σ (.inl j)))) (fun j => (M : 𝓞 E) * t (σ (.inr j)))`. Establish `hhl : ∀ j, ((hh (.inl j) : 𝓞 E) : E) = -(((N₀ * M : ℕ) : E) ^ 2 * FD.herm Y.Gm (lam (σ (.inl j))) (lam (σ (.inl j))) / G1 0 0)`. Introduce `j`. Use `show ((-((M : 𝓞 E) * t (σ (.inl j))) : 𝓞 E) : E) = _`. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_neg, map_mul, ht, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hhr : ∀ j, ((hh (.inr j) : 𝓞 E) : E) = ((N₀ * M : ℕ) : E) ^ 2 * FD.herm Y.Gm (lam (σ (.inr j))) (lam (σ (.inr j))) / G1 0 0`. Introduce `j`. Use `show ((((M : 𝓞 E) * t (σ (.inr j))) : 𝓞 E) : E) = _`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RingOfIntegers.coe_eq_algebraMap, map_mul, ht, map_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hsq : ∀ τ : E →+* ℂ, τ (H.rt : E) = H.rt0 ∨ τ (H.rt : E) = -H.rt0` using `fun τ => by`. Use `sq_eq_sq_iff_eq_or_eq_neg.1 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, HostModel.coe_sq_eq_neg H.rt_sq, H.sqrt_neg_disc_sq, map_neg, map_natCast]`. Establish `h3 : ∀ (a b : E) (u : Fin r → E), FD.herm Y.Gm (a • u) (b • u) = a * FD.cc b * FD.herm Y.Gm u u` using `fun a b u => by`. Simplify using `only [FD.herm, FD.cc, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Establish `hccN : ∀ n : ℕ, FD.cc (n : E) = n` using `fun n => by simp [FD.cc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlvs : ∀ (c : 𝓞 E) x, lv (c • x) = (c : E) * lv x` using `fun c x => by`. Rewrite using `[map_smul, Algebra.smul_def]`. Use `⟨⟨Dp, ⟨hp1, hq1⟩, ⟨hq1, hp1⟩, f, ?_, hh, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `(j | j) a k hk`. Rewrite using `[pm, hf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hk' : ty k (H.rt : E) ≠ H.rt0` using `by simpa using hk`. Conclude with `(hpure _ _ _ _).2 (hp0 ▸ hσl j) (fun h => hk' ((hΨ _).1 h)) (hp0 ▸ hix k hk')`. Rewrite using `[pm, hf]`. Establish `hk' : ty k (H.rt : E) ≠ -H.rt0` using `by simpa using hk`. Conclude with `(hpure _ _ _ _).1 (hp0 ▸ hσr j) ((hΨ _).2 ((hsq _).resolve_right hk'))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `(j | j) a b`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[isom, hf, hf]`. Use `Eq.trans ?_ (hform1 (hh (.inl j) • a) b).symm` and prove the remaining obligations. Use `erw [hlvs]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Express the relevant statement in the definitionally equal form `-Y.ξ0 * FD.herm Y.Gm (lv' a • lam (σ (.inl j))) (lv' b • lam (σ (.inl j))) = _`. Rewrite using `[h3]`. Use `erw [hlv' a, hlv' b]`. Rewrite using `[hhl]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [FD.cc, map_mul, map_natCast]`. Clear the denominators using the available nonvanishing facts. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[isom, hf, hf]`. Use `Eq.trans ?_ (congrArg (fun z : ℚ => -z) (hform1 (hh (.inr j) • a) b)).symm |>.trans (by push_cast; rfl)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `erw [hlvs]`. Rewrite using `[← map_neg]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `-Y.ξ0 * FD.herm Y.Gm (lv' a • lam (σ (.inr j))) (lv' b • lam (σ (.inr j))) = _`. Rewrite using `[h3]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `erw [hlv' a, hlv' b]`. Rewrite using `[hhr]`. Simplify using `only [FD.cc, map_mul, map_natCast]`. Clear the denominators using the available nonvanishing facts. Use `haveI : Nonempty (Fin r) := ⟨⟨0, hr⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Set `B` to `basisOfLinearIndependentOfCardEqFinrank hli (by simp)`. Establish `hB : ∀ j, B j = lam j` using `fun j => by simp [B]`. Set `Nm : Submodule (𝓞 E) D.La` to `LinearMap.range (∑ j, f j ∘ₗ LinearMap.proj j)`. Establish `hN : ∀ a, a ∈ Nm ↔ ∃ x : ∀ j : Fin p ⊕ Fin q, (Dp j.isLeft).La, a = ∑ j, f j (x j)` using `fun a => by`. Simplify using `only [Nm, LinearMap.mem_range, LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.proj_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `exists_congr fun _ => eq_comm`. Establish `hnt : Nontrivial D₁.La` using `Module.nontrivial_of_finrank_pos (R := 𝓞 E) (by rw [D₁.rank, hp1, hq1]; exact one_pos)`. Take `⟨a₀, ha₀⟩` from `exists_ne (0 : D₁.La)`. Establish `hR : LinearMap.range lv' ≠ ⊥`. Use `(Submodule.ne_bot_iff _).2 ⟨lv' a₀, ⟨a₀, rfl⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hlv']`. Use `mul_ne_zero (by exact_mod_cast (Nat.mul_pos hN₀ hM).ne') fun h0 => ha₀ (hioinj ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0, map_zero]`. Conclude with `h0`.
-
-Take `⟨S', hS'⟩` from `D.fin.fg_top`. Take `⟨n, hn, hc⟩` from `GlobalTheory.LamT.CMBasis.exists_nsmul_mem (LinearMap.range lv') hR (fun i : S' × Fin r => B.repr (φ i.1 : Fin r → E) i.2)`. Use `choose y hy using fun i : S' × Fin r => LinearMap.mem_range.1 (hc i)`. Use `⟨n, hn, fun a => (hN _).1 ?_⟩` and prove the remaining obligations. Establish `: (⊤ : Submodule (𝓞 E) D.La) ≤ Nm.comap (n • LinearMap.id)`.
-
-Rewrite using `[← hS', Submodule.span_le]`. Introduce `a ha`. Use `(hN _).2 ⟨fun j => (e _).symm (y (⟨a, ha⟩, σ j)), φ.injective (Subtype.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[map_sum, AddSubmonoidClass.coe_finsetSum]`. Simplify using `only [hf, LinearEquiv.apply_symm_apply, hy]`.
-
-Rewrite using `[Equiv.sum_comp σ (fun j => ((n : E) * B.repr (φ a : Fin r → E) j) • lam j)]`. Simplify using `only [mul_smul, ← Finset.smul_sum, ← hB, B.sum_repr]`. Simplify using `[Nat.cast_smul_eq_nsmul]`. Conclude with `this Submodule.mem_top`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_cmLat_rankOne (H : Host E) {p q : ℕ} (Y : FD.Data E r) (x₀ : Y.dom)
     (hr : 0 < r) (hrk : r = p + q) (hp0 : Y.p0 = q) (hΨ : ∀ τ : E →+* ℂ, τ ∈ Y.Ψ ↔ τ (H.rt : E) = H.rt0)
@@ -286,7 +278,7 @@ theorem exists_cmLat_rankOne (H : Host E) {p q : ℕ} (Y : FD.Data E r) (x₀ : 
     exact this Submodule.mem_top
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U hU hr D₁ hp1 hq1 k x₀ W lam hL hli ho _ _ hsp`. Take `⟨h1, h2, -⟩` from `hU`. Use `exists_cmLat_rankOne H (U.X k) x₀ hr h1 (h2 k).1 (h2 k).2 _ W.per (W.φ k) (W.isom k) (fun j => (W.e j).2) (fun j hj => ?_) W.pm_eq D₁ hp1 hq1 lam hL hli ho hsp` and prove the remaining obligations. Conclude with `(W.e j).2.2.trans_eq (if_neg hj)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_cmLat_unfAt_rankOne : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (r : ℕ) (U : Formalism.L2.Pj.Unf Xo c c.F.val.toRingHom r), Formalism.L2.Pj.IsUnf U → 0 < r → ∀ (D₁ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H), D₁.p = 1 → D₁.q = 0 → ∀ (k : U.Comp) (x₀ : (U.X k).dom) (W : ReciprocityTheory.ChartRestriction.G.PullbackSections.UnfAt U k x₀) (lam : Fin r → Fin r → E), (∀ j, lam j ∈ (U.X k).Λ) → LinearIndependent E lam → (∀ j k' : Fin r, (j : ℕ) < (U.X k).p0 → (U.X k).p0 ≤ (k' : ℕ) → ReciprocityTheory.ChartRestriction.G.FD.herm (U.X k).Gm (lam j) (lam k') = 0) → (∀ j : Fin r, (j : ℕ) < (U.X k).p0 → ∀ τ : (U.X k).Ψ, 0 < (τ.1 (ReciprocityTheory.ChartRestriction.G.FD.herm (U.X k).Gm (lam j) (lam j))).re) → (∀ j : Fin r, (U.X k).p0 ≤ (j : ℕ) → ∀ τ : (U.X k).Ψ, (τ.1 (ReciprocityTheory.ChartRestriction.G.FD.herm (U.X k).Gm (lam j) (lam j))).re < 0) → (∀ τ : (U.X k).Ψ, Submodule.span ℂ (Set.range fun a : Fin (U.X k).p0 => ReciprocityTheory.ChartRestriction.G.FD.col (ReciprocityTheory.ChartRestriction.G.FD.mat x₀.1 τ) (Fin.castLE (U.X k).p0_le a)) = Submodule.span ℂ (Set.range fun a : Fin (U.X k).p0 => ReciprocityTheory.ChartRestriction.G.FD.Data.emb τ.1 (lam (Fin.castLE (U.X k).p0_le a)))) → Nonempty (GlobalTheory.CM.CMLat W.per Dw.p Dw.q) := by
   intro E _ _ _ H Dw l Xo c r U hU hr D₁ hp1 hq1 k x₀ W lam hL hli ho _ _ hsp

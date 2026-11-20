@@ -38,7 +38,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Cp.divRows3G_iff _).2 ((rowConditions_at_companion_from_readings _ _ _ _ _ _ _ _ _ x).2.2.2 ((GlobalTheory.T.divisionCompatible_at_readIdentifications hC D x.G x.Pl0 x.I0 x.T x.A3 _ x.R x.F x.cG ex.p0 x.Y x.Z x.C x.sEE Yd x.JM x.pins hH fun _ _ => x.div.grp).2 x.mjH …`.
+A detailed English derivation is pending.
 -/
 theorem divisionRows_pairing_vanishes_of_rational_pairing_law
     (hC : GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalTheory.Published.HarishChandraModules ∧ GlobalTheory.Published.CasselmanWallach ∧ GlobalTheory.Published.HarishChandraFinite ∧
@@ -57,7 +57,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Prm hL}
 
 /- English proof (translation)
-Use `GlobalTheory.Fc.Built.ind (R := R) (fun K β c b _ _ hl => ?_) hb` and prove the remaining obligations. Take `⟨q, b', ⟨w⟩, he⟩` from `hl`. Use `congrArg (fun s : Σ (D : D7) (O : Obj D), Bundle D O c => R s.1 s.2.1 c s.2.2) he` as an intermediate fact. Conclude with `cast this.symm (h K q c b' w)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem of_built {R : BdP Bundle} {Q : V4.Slot} {κ : Par}
     (h : ∀ (K : Ctx) (q : WPt p.s K) (c : ℝ) (b : Bundle (q.w.D q.Z) q.O c), BWit q b → R _ _ c b)
@@ -68,7 +68,7 @@ theorem of_built {R : BdP Bundle} {Q : V4.Slot} {κ : Par}
   exact cast this.symm (h K q c b' w)
 
 /- English proof (translation)
-Take `⟨S, hS, hA⟩` from `hA`. Use `⟨S, hS, Row.imp hA fun 𝒜 σ s H => ?_⟩` and prove the remaining obligations. Introduce `eps Fm hc x hx i`. Take `⟨κ, -, -, t⟩` from `s Fm hc`. Conclude with `of_built (R := fun D O c b => A D O c b → R D O c b) h (t x hx i).1 (H Fm hc x hx i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem at_atAll {A R : BdP Bundle}
     (h : ∀ (K : Ctx) (q : WPt p.s K) (c : ℝ) (b : Bundle (q.w.D q.Z) q.O c), BWit q b → A _ _ c b → R _ _ c b)
@@ -88,7 +88,7 @@ variable (hC : GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalTheory.Publi
 include hC
 
 /- English proof (translation)
-Establish `h : (fun r : RPk b.R b.S => (r.B.Q.Rl.toCx3 r.B.Q.F).MIstar2 (r.B.Q.F.eV (r.B.Q.Rl.toCx3 r.B.Q.F).zs) r.B.Q.sEE → GlobalTheory.Cp.DivRows3G r.P) (rpkX w.y.y)` using `fun hM => divisionRows_pairing_vanishes_of_rational_pairing_law hC w.x w.y.intersectionNumber_baseChange hB (GlobalTheory.Div.pairing_definite_base_vanish_of_miStar2 _ _ _ _ _ w.x.A3 _ w.x.R w.x.F 1 w.y.intersectionNumber_baseChange.ok w.y.intersectionNumber_baseChange.sep w.x.pi …`. Rewrite `h` using `[← w.y.eq]`. Conclude with `h hM`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_of_mi (w : BWit q b) (hB : R3.Rw.BkLaw (q.w.D q.Z))
     (hM : (b.B.Q.Rl.toCx3 b.B.Q.F).MIstar2 (b.B.Q.F.eV (b.B.Q.Rl.toCx3 b.B.Q.F).zs) b.B.Q.sEE) : R1.P_hDivG _ _ c b := by
@@ -103,7 +103,7 @@ theorem div_of_mi (w : BWit q b) (hB : R3.Rw.BkLaw (q.w.D q.Z))
 end Wit
 
 /- English proof (translation)
-The claim follows from `at_atAll (R := R1.P_hDivG) (fun K q _ _ w h => div_of_mi ⟨h1, h2, h3, h4, h5⟩ w (hB K q) h) hM`.
+A detailed English derivation is pending.
 -/
 theorem at_hDivG_of_mi (h1 : GlobalTheory.Published.DiscreteSeriesCover) (h2 : GlobalTheory.Published.HarishChandraModules) (h3 : GlobalTheory.Published.CasselmanWallach)
     (h4 : GlobalTheory.Published.HarishChandraFinite) (h5 : GlobalTheory.Published.CuspRapidDecay) (p : Prm hL)
@@ -113,7 +113,7 @@ theorem at_hDivG_of_mi (h1 : GlobalTheory.Published.DiscreteSeriesCover) (h2 : G
   at_atAll (R := R1.P_hDivG) (fun K q _ _ w h => div_of_mi ⟨h1, h2, h3, h4, h5⟩ w (hB K q) h) hM
 
 /- English proof (translation)
-Introduce `_ _ h3 h4 h5 h6 h7 _ _ _ _ hB hM` and use `at_hDivG_of_mi h5 h6 h7 h3 h4 _ hB hM`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_hDivG_main : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (S : SExt) (Γ : GeoP), (∀ (K : Ctx) (q : WPt (prmR N S Γ).s K), GlobalTheory.Mem.R3.Rw.BkLaw (q.w.D q.Z)) → RL.At (prmR N S Γ) (fun Q L => Row Q L (AtAll fun _ _ _ (b : Bundle _ _ _) => (b.B.Q.Rl.toCx3 b.B.Q.F).MIstar2 (b.B.Q.F.eV (b.B.Q.Rl.toCx3 b.B.Q.F).zs) b.B.Q.sEE)) → RL.At (prmR N S Γ) R1.DivisorConditionAtBundlePoints :=
   fun _ _ h3 h4 h5 h6 h7 _ _ _ _ hB hM => at_hDivG_of_mi h5 h6 h7 h3 h4 _ hB hM

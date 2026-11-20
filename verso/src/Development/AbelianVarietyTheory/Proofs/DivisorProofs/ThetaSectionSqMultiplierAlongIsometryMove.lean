@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.GeoLevel
 
 /- English proof (translation)
-Use `choose J hJ using hcov`. Establish `key : ∀ i, ∀ w ∈ W i, f' i w = f' (J w) w / f (J w) w * f i w` using `fun i w h => by`. Use `hn _ _ (hJ w)` as an intermediate fact. Rewrite using `[hc i (J w) w h (hJ w), hc' i (J w) w h (hJ w)]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, fun w => ?_, fun w => div_ne_zero (hn' _ _ (hJ w)) (hn _ _ (hJ w)), key⟩` and prove the remaining obligations. Use `(((hd' (J w)).mul ((hd (J w)).inv (hn _))).congr fun w' h => ?_).differentiableAt ((hW _).mem_nhds (hJ w))` and prove the remaining obligations. Conclude with `(eq_div_of_mul_eq (hn _ _ h) (key _ _ h).symm).trans (div_eq_mul_inv _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_entire_ratio {V ι : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] (W : ι → Set V)
     (hW : ∀ i, IsOpen (W i)) (hcov : ∀ w, ∃ i, w ∈ W i) (f f' : ι → V → ℂ) (c : ι → ι → V → ℂ)
@@ -41,15 +41,15 @@ theorem exists_entire_ratio {V ι : Type*} [NormedAddCommGroup V] [NormedSpace �
 open ReciprocityTheory.PTheta ReciprocityTheory.ChartRestriction.G.Key ReciprocityTheory.ChartRestriction.G.Key.Chi in
 
 /- English proof (translation)
-Take `⟨ga, hga, hgae, hτe, hhe, hde⟩` from `PeriodChange.period_change E H D g bas gam N P P' h h' τ τ' hbas hiso hN hP hn hn' hτ hτ' hu`. Establish `h8ga : ∀ i j, (8 : ℤ) ∣ ga (Sum.inl i) (Sum.inr j) ∧ (8 : ℤ) ∣ ga (Sum.inr i) (Sum.inl j)` using `fun i j => by`. Rewrite using `[hgae]`. Conclude with `h8 j i`. Establish `hχ : ((ZMod.χ₄ ((ga.toBlocks₂₂.det : ℤ) : ZMod 4) : ℤ) : ℂ) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ga.toBlocks₂₂.det = N.toBlocks₁₁.det`. Rewrite using `[hgae, Matrix.toBlocks_fromBlocks₂₂, Matrix.det_transpose]`. Establish `e' : ((ga.toBlocks₂₂.det : ℤ) : ZMod 4) = 1`. Establish `h4 : ((4 : ℕ) : ℤ) ∣ N.toBlocks₁₁.det - 1` using `hdet`. Use `(ZMod.intCast_zmod_eq_zero_iff_dvd _ 4).2 h4` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Int.cast_sub, Int.cast_one, sub_eq_zero]`. Rewrite using `[e, this]`. Rewrite using `[e', map_one, Int.cast_one]`. Establish `hl` using `GlobalTheory.theta_sq_transform_level_eight g ga hga h8ga`. Rewrite `hl` using `[hχ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `dl : Differentiable ℂ (fun w : Fin g → ℂ => h⁻¹ *ᵥ w)` using `(LinearMap.toContinuousLinearMap (Matrix.mulVecLin h⁻¹)).differentiable`. Establish `hκ2` using `ThetaRatio.ratio_sq_eq_det_jAut g ga hga h8ga hl c₁ c₂ h₁ h₂ τ hτ (fun w => ρ (h⁻¹ *ᵥ w)) κ (hρd.comp dl) (fun w => hρ0 _) (by simp only [Matrix.mulVec_zero, hρ1]) hκ (fun w => by`. Use `hrel (h⁻¹ *ᵥ w)` as an intermediate fact. Simplify using `only [Matrix.mulVec_mulVec] at this`. Rewrite `this` using `[hhe, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu, Matrix.mul_one, hτe]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this)`. Rewrite using `[hde, hκ2]`.
+A detailed English derivation is pending.
 -/
 theorem det_eq_sq_mul_of_theta_ratio (E : Type) [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] D.La)
@@ -100,45 +100,39 @@ theorem det_eq_sq_mul_of_theta_ratio (E : Type) [Field E] [NumberField E] [IsCMF
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ g e F r M k T b hb b' hb' κ κ' y z y' gam A ρ ν t hκ hκ' hy hz hiso hA hdA hPP hex hmv hbor`. Take `⟨O, ω, o1, o2, o3, o4, o5⟩` from `GlobalTheory.MoveValues.frMove_values E H Dw l Xo c σ ρ ν _ _ hmv`. Establish `hxρ : z.x = y.x ≫ ρ` using `hbor.1.symm.trans hmv.1`. Take `⟨hxx, -, hbc⟩` from `hbor`. Use `clear hmv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp` using `T.isPer _ hb`. Establish `hp'` using `T.isPer _ hb'`. Take `⟨hu, -, hv⟩` from `hy`. Take `⟨hu', -, hv'⟩` from `hz`. Take `⟨hdu, hsy, hpos, hn⟩` from `T.norm b hb`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hdu', hsy', hpos', hn'⟩` from `T.norm b' hb'`. Establish `hd : ∀ j, DifferentiableOn ℂ (fun w => T.fr j (b, w)) {w | ⊤ ≤ (F.ex k (T.Pf (T.co b)) w).left ⁻¹ᵁ Xo.univ.t.PP.L.U j}` using `fun j => (T.fr_hol j).comp (f := fun w => (b, w)) (by fun_prop) (fun w h => ⟨hb, h⟩)`. Establish `hd' : ∀ j, DifferentiableOn ℂ (fun w => T.fr j (b', w)) {w | ⊤ ≤ (F.ex k (T.Pf (T.co b')) w).left ⁻¹ᵁ Xo.univ.t.PP.L.U j}` using `fun j => (T.fr_hol j).comp (f := fun w => (b', w)) (by fun_prop) (fun w h => ⟨hb', h⟩)`. Establish `hne` using `fun j w => T.fr_ne j b w hb`. Establish `hne'` using `fun j w => T.fr_ne j b' w hb'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `fun j j' w => T.fr_coc j j' b w hb`. Establish `hc'` using `fun j j' w => T.fr_coc j j' b' w hb'`. Establish `h0` using `fun j => T.fr_rig j b hb`. Establish `h0'` using `fun j => T.fr_rig j b' hb'`. Generalize the expression as in `T.Pf (T.co b) = P at *`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `T.Pf (T.co b') = P' at *`. Establish `hcov2 : ∀ w, ∃ q : Xo.univ.t.PP.L.ι × Xo.univ.t.PP.L.ι, ⊤ ≤ (F.ex k P w).left ⁻¹ᵁ O q.1 q.2` using `fun w => by`. Take `⟨j, hj⟩` from `GlobalTheory.ThetaPtChg.exists_chart_point Xo.univ.t.PP.isLB (F.ex k P w).left`. Take `⟨j', hj'⟩` from `GlobalTheory.ThetaPtChg.exists_chart_point Xo.univ.t.PP.isLB ((F.ex k P w).left ≫ ν.φ)`. Conclude with `⟨(j', j), (o1 _ _ _).2 ⟨hj', hj⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `tr : ∀ j j' w, ⊤ ≤ (F.ex k P w).left ⁻¹ᵁ O j j' → ⊤ ≤ (F.ex k P' w).left ⁻¹ᵁ Xo.univ.t.PP.L.U j` using `fun j j' w hw => by`. Rewrite using `[hex]`. Conclude with `((o1 _ _ _).1 hw).1`. Establish `tr2 : ∀ j j' w, ⊤ ≤ (F.ex k P w).left ⁻¹ᵁ O j j' → ⊤ ≤ (F.ex k P w).left ⁻¹ᵁ Xo.univ.t.PP.L.U j'` using `fun j j' w hw => ((o1 _ _ _).1 hw).2`. Establish `hw0 : ∀ w, (F.ex k P w).left ≫ Xo.univ.t.G.hom = (y.x : Sp ℂ ⟶ Xo.X)` using `fun w => (Over.w (F.ex k P w)).trans hu.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw0' : ∀ w, (F.ex k P' w).left ≫ Xo.univ.t.G.hom = (z.x : Sp ℂ ⟶ Xo.X)` using `fun w => (Over.w (F.ex k P' w)).trans hu'.symm`. Establish `hz0 : (F.ex k P 0).left = (y.x : Sp ℂ ⟶ Xo.X) ≫ eSec Xo.univ.t.G`. Rewrite using `[(F.ex_ker k P hp 0).2 (zero_mem _), hu]`. Both sides reduce to the same expression. Take `⟨ρf, hρd, hρ0, hfr⟩` from `exists_entire_ratio (fun q : Xo.univ.t.PP.L.ι × Xo.univ.t.PP.L.ι => {w | ⊤ ≤ (F.ex k P w).left ⁻¹ᵁ O q.1 q.2}) (fun j => GlobalTheory.FamilyUnif_isOpen_ex F k P hp _) hcov2 (fun q w => valAt' (F.ex k P w).left (O q.1 q.2) (ω q.1 q.2) * T.fr q.2 (b, w)) (fun q w => T.fr q.1 (b', w …`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hc q.2 q'.2 w ((top_le_preimage_inf _ _ _).2 ⟨tr2 _ _ w h1, tr2 _ _ w h2⟩), ← mul_assoc, o3 _ _ _ _ _ h1 h2, mul_assoc])`. Use the proof step `(fun q q' w h1 h2 => by`. Establish `e2` using `hc' q.1 q'.1 w ((top_le_preimage_inf _ _ _).2 ⟨tr _ _ _ h1, tr _ _ _ h2⟩)`. Rewrite `e2` using `[hex]`. Conclude with `e2)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ1 : ρf 0 = 1`. Take `⟨q, hq⟩` from `hcov2 0`. Establish `e1` using `hfr q 0 hq`. Establish `e2 : T.fr q.1 (b', 0) = valAt' (F.ex k P 0).left (O q.1 q.2) (ω q.1 q.2) * T.fr q.2 (b, 0)`. Rewrite using `[h0 _ (tr2 _ _ 0 hq), h0' _ (tr _ _ 0 hq), ← hu', hxρ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(o4 _ _ _ _ hz0 hq).trans (congrArg (fun x : Sp ℂ ⟶ Xo.X => _ * valAt' x _ _) hu)`. Conclude with `(mul_eq_right₀ (mul_ne_zero (o2 _ _ _ hq) (hne _ 0 (tr2 _ _ 0 hq)))).1 (e1.symm.trans e2)`. Establish `hS : Out.SecTwistSt` using `GlobalTheory.abelianSchemeLaws_all.2.secTwist`. Establish `hid : spMap (RingHom.id ℂ) = 𝟙 _` using `by simp [spMap]`. Establish `hbc' : GlobalTheory.Frames.SecBC (RingHom.id ℂ) (Formalism.L2.PjFree.toC (t none : CAt σ)) z.x y'.x z.s y'.s`.
+Supply the required witnesses or components. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨pm, p1, p2, p3⟩` from `hbc`. Conclude with `⟨pm, p1, by rw [hid]; exact p2.trans (Category.comp_id _).symm, p3⟩`. Establish `ht0 : Formalism.L2.PjFree.toC (t none : CAt σ) ≠ 0` using `Units.ne_zero (M₀ := ℂ) (t none)`. Generalize the expression as in `Formalism.L2.PjFree.toC (t none : CAt σ) = t₀ at *`. Establish `hrel : ∀ w, thetaChar (T.ta b') T.c₁ T.c₂ (T.h b' *ᵥ w) * ρf w = κ / (t₀ * κ') * thetaChar (T.ta b) T.c₁ T.c₂ (T.h b *ᵥ w)` using `fun w => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨q, hq⟩` from `hcov2 w`. Set `p : Over.mk (y.x : Sp ℂ ⟶ Xo.X) ⟶ Xo.univ.t.G` to `Over.homMk (F.ex k P w).left (hw0 w)`. Establish `e1` using `congrArg CommaMorphism.left (CartesianMonoidalCategory.lift_snd (𝟙 _) p)`. Establish `e2` using `congrArg CommaMorphism.left (CartesianMonoidalCategory.lift_fst (𝟙 _) p)`. Establish `v1` using `hv q.2 w _ e1 e2 (tr2 _ _ w hq)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hval` using `GlobalTheory.ThetaPtChg.val_of_secBC hS (Xo := Xo) _ _ hxx _ _ _ hbc' (Over.homMk (F.ex k P' w).left (hw0' _)) q.1 _ _ (fun pt h1 h2 => hv' q.1 w pt h1 h2 (tr _ _ w hq)) (fun pt h1 h2 => o5 q.1 q.2 _ pt _ e1 e2 (h1.trans (hex w)) h2 hq)`. Establish `hval2 : valAt' (F.ex k P w).left (O q.1 q.2) (ω q.1 q.2) * (κ * thetaChar (T.ta b) T.c₁ T.c₂ (T.h b *ᵥ w) * T.fr q.2 (b, w)) = t₀ * (κ' * thetaChar (T.ta b') T.c₁ T.c₂ (T.h b' *ᵥ w) * T.fr q.1 (b', w))` using `(congrArg (valAt' (F.ex k P w).left (O q.1 q.2) (ω q.1 q.2) * ·) v1).symm.trans hval`. Establish `e3 : T.fr q.1 (b', w) = ρf w * (valAt' (F.ex k P w).left (O q.1 q.2) (ω q.1 q.2) * T.fr q.2 (b, w))` using `hfr q w hq`. Rewrite `hval2` using `[e3]`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff (mul_ne_zero ht0 hκ')]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `mul_right_cancel₀ (mul_ne_zero (o2 _ _ _ hq) (hne _ w (tr2 _ _ w hq)))` to reduce the goal to its premises. Take the linear combination `-hval2`. Establish `hAu : IsUnit A.det`. Break down `hdA with h | ⟨⟨m, hm, h⟩, -⟩` into its components or cases. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `isUnit_one`. Conclude with `IsUnit.of_pow_eq_one h hm.ne'`. Establish `hdA' : A⁻¹.det = 1 ∨ ((∃ m : ℕ, 0 < m ∧ A⁻¹.det ^ m = 1) ∧ 4 ∣ Module.finrank ℚ E)`. Rewrite using `[Matrix.det_nonsing_inv]`. Break down `hdA with h | ⟨⟨m, hm, h⟩, h4⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `left`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Use the proof step `right; exact ⟨⟨m, hm, by rw [Ring.inverse_eq_inv', inv_pow, h, inv_one]⟩, h4⟩`. Establish `hiso' : ∀ a a', (F.Di k).EF (gam.symm a) (gam.symm a') = (F.Di k).EF a a'` using `fun a a' => by`.
+By extensionality, compare the relevant components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hiso, gam.apply_symm_apply, gam.apply_symm_apply]`. Set `N : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ` to `Matrix.of fun u v => T.bas.symm (gam.symm (T.bas (Pi.single v 1))) u`. Take `⟨h8, hdet⟩` from `GlobalTheory.AdaptedDetSign.blocks_det_mod_four E H (F.Di k) g r T.bas gam.symm N ((M.X k).Λ.subtype ∘ₗ (M.φ k).toLinearMap) A⁻¹ T.adapt (Subtype.val_injective.comp (M.φ k).injective) (by`. Rewrite using `[← (M.X k).Λ_span]`. Use `congr 1`.
-
-Use extensionality with `v`. Conclude with `⟨fun ⟨a, ha⟩ => ha ▸ (M.φ k a).2, fun hv => ⟨(M.φ k).symm ⟨v, hv⟩, congrArg Subtype.val ((M.φ k).apply_symm_apply ⟨v, hv⟩)⟩⟩)`. Use the proof step `(fun a => by`. Use `hA (gam.symm a)` as an intermediate fact. Rewrite `this` using `[gam.apply_symm_apply]`.
-
-Use `show (M.φ k (gam.symm a) : Fin r → E) = A⁻¹ *ᵥ (M.φ k a : Fin r → E)`. Rewrite using `[this, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hAu, Matrix.one_mulVec])`. Use the proof step `hdA' (fun _ _ => rfl)`. Establish `hκ2` using `det_eq_sq_mul_of_theta_ratio E H (F.Di k) g T.bas gam.symm N P P' (T.h b) (T.h b') (T.ta b) (T.ta b') T.c₁ T.c₂ ρf _ T.sympl hiso' (fun _ _ => rfl) (fun a => by rw [← hPP, gam.apply_symm_apply]) hn hn' ⟨hsy, hpos⟩ ⟨hsy', hpos'⟩ hdu h8 hdet T.half₁ T.half₂ hρd hρ0 hρ1 (div_ne_zero …`. Rewrite using `[hκ2]`.
-
-Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem theta_move_sq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => Formalism.L2.PjFree.relab c σ (e j).1)) (r : ℕ) (M : ModelsOf F r) (k : Fin F.n) (T : ThetaData e F M k), ∀ b ∈ T.co ⁻¹' (M.X k).dom, ∀ b' ∈ T.co ⁻¹' (M.X k).dom, ∀ (κ κ' : ℂ) (y z y' : FrPt Xo c (CAt σ)) (gam : (F.Di k).La ≃ₗ[𝓞 E] (F.Di k).La) (A : Matrix (Fin r) (Fin r) E) (ρ : Xo.X ⟶ Xo.X) (ν : SABMap Xo.univ.t Xo.univ.t ρ) (t : Ix Dw → (CAt σ)ˣ), κ ≠ 0 → κ' ≠ 0 → IsThetaPt T b κ y → IsThetaPt T b' κ' z → (∀ a a', (F.Di k).EF (gam a) (gam a') = (F.Di k).EF a a') → (∀ a, (M.φ k (gam a) : Fin r → E) = A *ᵥ (M.φ k a : Fin r → E)) → (A.det = 1 ∨ ((∃ m : ℕ, 0 < m ∧ A.det ^ m = 1) ∧ 4 ∣ Module.finrank ℚ E)) → (∀ a, T.Pf (T.co b') (gam a) = T.Pf (T.co b) a) → (∀ w, (F.ex k (T.Pf (T.co b')) w).left = (F.ex k (T.Pf (T.co b)) w).left ≫ ν.φ) → FrMove ρ ν y y' → FrBor t z y' → Formalism.L2.PjFree.toC (t none : CAt σ) ^ 2 * (κ' ^ 2 * (T.h b).det) = κ ^ 2 * (T.h b').det := by
   intro E _ _ _ H Dw l Xo c σ g e F r M k T b hb b' hb' κ κ' y z y' gam A ρ ν t hκ hκ' hy hz hiso hA hdA hPP hex hmv hbor

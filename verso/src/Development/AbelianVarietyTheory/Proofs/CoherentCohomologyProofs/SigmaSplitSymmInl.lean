@@ -31,16 +31,16 @@ def EntriesBounded (M : Matrix n n K) (c : ℝ) : Prop :=
   ∀ i j, ‖M i j‖ ≤ c
 
 /- English proof (translation)
-Introduce `i j` and use `(h i j).trans hcd`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EntriesBounded.mono {M : Matrix n n K} {c d : ℝ} (h : EntriesBounded M c)
     (hcd : c ≤ d) : EntriesBounded M d :=
   fun i j => (h i j).trans hcd
 
 /- English proof (translation)
-Introduce `i j`. Establish `hc : 0 ≤ c` using `(norm_nonneg _).trans (hM i j)`. Establish `hd : 0 ≤ d` using `(norm_nonneg _).trans (hN i j)`. Rewrite using `[Matrix.mul_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg hc hd) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k _`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hM i k) (hN k j) (norm_nonneg _) hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EntriesBounded.mul [IsUltrametricDist K] [Fintype n] {M N : Matrix n n K} {c d : ℝ}
     (hM : EntriesBounded M c) (hN : EntriesBounded N d) :
@@ -91,13 +91,13 @@ def sigmaSplit (j : ι) : (Σ i, F i) ≃ F j ⊕ (Σ i : {i // i ≠ j}, F i.1)
     · simp [show ¬ i = j from hi]
 
 /- English proof (translation)
-The claim follows from `(Equiv.apply_eq_iff_eq_symm_apply _).2 rfl`.
+A detailed English derivation is pending.
 -/
 theorem sigmaSplit_self (j : ι) (x : F j) : sigmaSplit F j ⟨j, x⟩ = Sum.inl x :=
   (Equiv.apply_eq_iff_eq_symm_apply _).2 rfl
 
 /- English proof (translation)
-The claim follows from `(Equiv.apply_eq_iff_eq_symm_apply _).2 rfl`.
+A detailed English derivation is pending.
 -/
 theorem sigmaSplit_of_ne {i j : ι} (h : i ≠ j) (x : F i) :
     sigmaSplit F j ⟨i, x⟩ = Sum.inr ⟨⟨i, h⟩, x⟩ :=

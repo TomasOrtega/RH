@@ -21,11 +21,11 @@ open GlobalTheory.AllWt GlobalTheory.CompHS
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 end GlobalTheory.RefSum.JetsUb
 /- English proof (translation)
-Introduce `hS`. Use `Formalism.MainNotions.Closed.imp (Formalism.MainNotions.Closed.and (Formalism.MainNotions.Closed.and hS (_root_.GlobalTheory.T.weight_parameter_strict_antitone_alt hS)) (_root_.GlobalTheory.RefSum.NumPtAlt.numbers_at_point hS)) ?_` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨⟨⟨_, _, hA⟩, ⟨_, _, hB⟩⟩, ⟨_, _, hC⟩⟩`. Take `⟨x0, h⟩` from `_root_.GlobalTheory.CovTop.EventuallyAtAllPoints.and (_root_.GlobalTheory.CovTop.EventuallyAtAllPoints.and hA hB) hC`. Use `⟨0, le_rfl, x0, fun x hx hle ι p hp i hi => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨hA, hB⟩, hC⟩` from `h x hx hle ι p hp`. Take `⟨⟨u1, hu⟩, -⟩` from `(hA i).2.2.2.2.2.2 hi`. Take `⟨hp1, -, -, hq, hanti, -⟩` from `hB i hi`. Establish `j` using `(hC i hi u1 hu).1`. Rewrite `j` using `[hq u1 hu]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `j.of_le (GlobalTheory.RefSum.JetsUb.DF_ub_le _ _ hp1 fun τ => (hanti τ).1.antitone)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RefSum.JetsUb.jetNum_ub_alt : _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.LiftsCondition fun Fm x _ ι p i PP _ => (i : ℕ) + 1 < (Fm.D x ι).R.m → GlobalTheory.RefSum.JetNum (Fm.D x ι) (DF (dat p i) (GlobalTheory.RefSum.thA (dat p i) (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).ub (GlobalTheory.RefSum.nCol (dat p i)))) (1 / 2500) := by
   intro hS

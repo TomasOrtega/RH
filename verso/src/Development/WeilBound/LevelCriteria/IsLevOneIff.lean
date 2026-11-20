@@ -12,16 +12,16 @@ namespace GlobalTheory.PDA.Model
 def xd (n : ℕ) : ℚ[X] := monomial n ((n.factorial : ℚ)⁻¹)
 
 /- English proof (translation)
-Simplify using `[xd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xd_zero : xd 0 = 1 := by simp [xd]
 
 /- English proof (translation)
-Establish `h : (((m + n).choose m : ℕ) : ℚ[X]) = C (((m + n).choose m : ℕ) : ℚ)` using `by simp`. Rewrite using `[h, xd, xd, xd, monomial_mul_monomial, C_mul_monomial]`. Use `congr 1`. Establish `hm : (m.factorial : ℚ) ≠ 0` using `by exact_mod_cast m.factorial_ne_zero`. Establish `hn : (n.factorial : ℚ) ≠ 0` using `by exact_mod_cast n.factorial_ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmn : ((m + n).factorial : ℚ) ≠ 0` using `by exact_mod_cast (m + n).factorial_ne_zero`. Use `Nat.add_choose_mul_factorial_mul_factorial m n` as an intermediate fact. Rewrite `this` using `[← Nat.choose_symm_add]`. Establish `h2 : (((m + n).choose m : ℕ) : ℚ) * m.factorial * n.factorial = (m + n).factorial`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem xd_mul (m n : ℕ) : xd m * xd n = ((m + n).choose m : ℚ[X]) * xd (m + n) := by
   have h : (((m + n).choose m : ℕ) : ℚ[X]) = C (((m + n).choose m : ℕ) : ℚ) := by simp
@@ -38,9 +38,9 @@ theorem xd_mul (m n : ℕ) : xd m * xd n = ((m + n).choose m : ℚ[X]) * xd (m +
   linarith
 
 /- English proof (translation)
-Rewrite using `[linearIndependent_iff']`. Introduce `s g hg i hi`. Use `congrArg (fun p : ℚ[X] ↦ p.coeff i) hg` as an intermediate fact. Simplify using `only [finset_sum_coeff, xd, coeff_zero, coeff_smul, coeff_monomial] at this`. Rewrite `this` using `[Finset.sum_eq_single i (by intro j _ hj; simp [hj]) (by intro h; exact absurd hi h)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : (i.factorial : ℚ) ≠ 0` using `by exact_mod_cast i.factorial_ne_zero`. Simplify `this` using `[hm]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem xd_li : LinearIndependent ℤ xd := by
   rw [linearIndependent_iff']
@@ -71,17 +71,17 @@ def L : Subalgebra ℤ ℚ[X] :=
 def bL : Module.Basis ℕ ℤ L := Module.Basis.span xd_li
 
 /- English proof (translation)
-The claim follows from `Module.Basis.span_apply xd_li n ▸ rfl`.
+A detailed English derivation is pending.
 -/
 theorem bL_coe (n : ℕ) : (bL n : ℚ[X]) = xd n := Module.Basis.span_apply xd_li n ▸ rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by rw [bL_coe, xd_zero]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem bL_zero : bL 0 = 1 := Subtype.ext (by rw [bL_coe, xd_zero]; rfl)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simp [bL_coe, xd_mul])`.
+A detailed English derivation is pending.
 -/
 theorem bL_mul (m n : ℕ) : bL m * bL n = ((m + n).choose m : L) * bL (m + n) :=
   Subtype.ext (by simp [bL_coe, xd_mul])
@@ -97,7 +97,7 @@ def pdPoly (B : Type) [CommRing B] : PDPoly B where
 variable {B : Type} [CommRing B] {J : Ideal B}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [Q.e_zero]`. Consider the case `succ n ih`. Rewrite using `[pow_succ', ih, mul_left_comm, Q.e_mul, Nat.factorial_succ, add_comm 1 n]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -109,9 +109,9 @@ theorem e_one_pow (Q : PDPoly B) (n : ℕ) : Q.e 1 ^ n = (n.factorial : Q.P) * Q
     simp; ring
 
 /- English proof (translation)
-Use `letI : Algebra ℚ Q.P := ((algebraMap B Q.P).comp (algebraMap ℚ B)).toAlgebra`. Establish `key : ∀ (n : ℕ) (x y : Q.P), (n.factorial : Q.P) * x = n.factorial * y → x = y` using `fun n x y h ↦ (IsUnit.natCast_factorial_of_algebra (A := Q.P) ℚ n).mul_left_cancel h`. Establish `h1 : Q.e 1 ∈ Q.ext J` using `Ideal.mem_sup_right (Ideal.subset_span ⟨0, rfl⟩)`. Use `⟨RatAlgebra.dividedPowers _, ⟨le_sup_left, fun {n} a ha ↦ key n _ _ ?_⟩, fun n ↦ key n _ _ ?_⟩` and prove the remaining obligations. Establish `h2 : algebraMap B Q.P a ∈ Q.ext J` using `Ideal.mem_sup_left (Ideal.mem_map_of_mem _ ha)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[factorial_mul_dpow_eq_pow _ h2, ← map_pow, ← factorial_mul_dpow_eq_pow δ ha, map_mul, map_natCast]`. Rewrite using `[factorial_mul_dpow_eq_pow _ h1, e_one_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isStd [Algebra ℚ B] (Q : PDPoly B) (δ : DividedPowers J) :
     ∃ η : DividedPowers (Q.ext J), Q.IsStd δ η := by
@@ -127,15 +127,15 @@ theorem exists_isStd [Algebra ℚ B] (Q : PDPoly B) (δ : DividedPowers J) :
   · rw [factorial_mul_dpow_eq_pow _ h1, e_one_pow]
 
 /- English proof (translation)
-The claim follows from `(Ideal.eq_top_iff_one _).2 (Ideal.subset_span ⟨[], by simp⟩)`.
+A detailed English derivation is pending.
 -/
 theorem fil_zero (δ : DividedPowers J) : fil δ 0 = ⊤ :=
   (Ideal.eq_top_iff_one _).2 (Ideal.subset_span ⟨[], by simp⟩)
 
 /- English proof (translation)
-Use `le_antisymm (Ideal.span_le.2 ?_) fun x hx ↦ Ideal.subset_span ⟨[(1, x)], by simpa using hx, by simp, by simp [δ.dpow_one hx]⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, hs, rfl⟩`. Proceed by induction on `l with`. Consider the case `nil => simp at hs`. Consider the case `cons p l ih`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [List.map_cons, List.prod_cons, SetLike.mem_coe]`. Distinguish the cases in `h : p.1 = 0`. Use `J.mul_mem_left _ (ih (fun q hq ↦ hl q (by simp [hq])) ?_)` and prove the remaining obligations. Simplify `hs` using `[h]`. Conclude with `J.mul_mem_right _ (δ.dpow_mem h (hl p (by simp)))`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem fil_one (δ : DividedPowers J) : fil δ 1 = J := by
   refine le_antisymm (Ideal.span_le.2 ?_) fun x hx ↦
@@ -151,13 +151,13 @@ theorem fil_one (δ : DividedPowers J) : fil δ 1 = J := by
     · exact J.mul_mem_right _ (δ.dpow_mem h (hl p (by simp)))
 
 /- English proof (translation)
-Use `set δ := OfSquareZero.dividedPowers h2 with hδ`. Use `le_bot_iff.1 (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, hs, rfl⟩`. Proceed by induction on `l with`. Consider the case `nil => simp at hs`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `cons p l ih`. Simplify using `only [List.map_cons, List.prod_cons, SetLike.mem_coe, Ideal.mem_bot, List.sum_cons] at hs ih ⊢`. Establish `hl' : ∀ q ∈ l, q.2 ∈ J` using `fun q hq ↦ hl q (by simp [hq])`. Establish `hp : p.2 ∈ J` using `hl p (by simp)`. Break down `Nat.lt_trichotomy p.1 1 with h | h | h` into its components or cases.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih hl' (by omega), mul_zero]`. Establish `hm : (l.map fun p ↦ δ.dpow p.1 p.2).prod ∈ J` using `(fil_one δ).le (Ideal.subset_span ⟨l, hl', by omega, rfl⟩)`. Use `Ideal.mul_mem_mul (δ.dpow_mem (n := p.1) (by omega) hp) hm` as an intermediate fact. Rewrite `this` using `[← pow_two, h2]`. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `: δ.dpow p.1 p.2 = 0` using `OfSquareZero.dpow_of_two_le h2 h p.2`. Rewrite using `[this, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLev_two [DecidablePred (fun x ↦ x ∈ J)] (h2 : J ^ 2 = 0) :
     IsLev (OfSquareZero.dividedPowers h2) 2 := by
@@ -181,12 +181,12 @@ theorem isLev_two [DecidablePred (fun x ↦ x ∈ J)] (h2 : J ^ 2 = 0) :
       rw [this, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[IsLev, fil_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isLev_one_iff (δ : DividedPowers J) : IsLev δ 1 ↔ J = ⊥ := by rw [IsLev, fil_one]
 
 /- English proof (translation)
-Introduce `hN`. Establish `h1 : Q.e 1 ∈ Q.ext J` using `Ideal.mem_sup_right (Ideal.subset_span ⟨0, rfl⟩)`. Establish `: Q.e N ∈ fil η N` using `Ideal.subset_span ⟨[(N, Q.e 1)], by simpa using h1, by simp, by simp [h.var]⟩`. Rewrite `this` using `[hN]`. Conclude with `Q.e.ne_zero N this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_isLev [Nontrivial B] (Q : PDPoly B) (δ : DividedPowers J) (η : DividedPowers (Q.ext J))
     (h : Q.IsStd δ η) (N : ℕ) : ¬ IsLev η N := by

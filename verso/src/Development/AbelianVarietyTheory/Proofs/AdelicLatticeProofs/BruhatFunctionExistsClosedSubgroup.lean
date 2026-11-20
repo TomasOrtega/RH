@@ -7,59 +7,51 @@ namespace GlobalTheory
 
 open MeasureTheory Pointwise in
 /- English proof (translation)
-Take `⟨V₀, hV₀c, hV₀n⟩` from `exists_compact_mem_nhds (1 : G)`. Take `⟨V, hVc, hVn, hVinv⟩ : ∃ V : Set G, IsCompact V ∧ V ∈ nhds (1 : G) ∧ V⁻¹ = V` from `⟨V₀ ∩ V₀⁻¹, hV₀c.inter_right hV₀c.inv.isClosed, Filter.inter_mem hV₀n (inv_mem_nhds_one G hV₀n), by rw [Set.inter_inv, inv_inv, Set.inter_comm]⟩`. Establish `hPc : ∀ n : ℕ, IsCompact (V ^ n)`. Introduce `n`. Proceed by induction on `n with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => rw [pow_zero, ← Set.singleton_one]`. Conclude with `isCompact_singleton`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul hVc`. Establish `h1V : (1 : G) ∈ interior V` using `mem_interior_iff_mem_nhds.2 hVn`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPint : ∀ n : ℕ, V ^ n ⊆ interior (V ^ (n + 1))`. Introduce `n x hx`. Establish `hx' : x ∈ V ^ n * interior V` using `by simpa using Set.mul_mem_mul hx h1V`. Use `interior_maximal ?_ (isOpen_interior.mul_left) hx'` and prove the remaining obligations. Rewrite using `[pow_succ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Set.mul_subset_mul subset_rfl interior_subset`. Establish `hPinv : ∀ n : ℕ, (V ^ n)⁻¹ = V ^ n` using `fun n => by rw [← inv_pow, hVinv]`. Take `⟨Rel, hRel⟩ : ∃ Rel : G → G → Prop, ∀ y z, Rel y z ↔ ∃ n : ℕ, ∃ a ∈ V ^ n, ∃ h ∈ H, z = a * y * h` from `⟨_, fun _ _ => Iff.rfl⟩`. Establish `hrefl : ∀ y, Rel y y` using `fun y => (hRel y y).2 ⟨0, 1, by simp, 1, H.one_mem, by simp⟩`. Establish `hsymm : ∀ y z, Rel y z → Rel z y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y z hyz`. Take `⟨n, a, ha, h, hh, rfl⟩` from `(hRel y z).1 hyz`. Use `(hRel _ _).2 ⟨n, a⁻¹, ?_, h⁻¹, H.inv_mem hh, by group⟩` and prove the remaining obligations. Rewrite using `[← hPinv n]`. Conclude with `Set.inv_mem_inv.2 ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `htrans : ∀ y z w, Rel y z → Rel z w → Rel y w`. Introduce `y z w hyz hzw`. Take `⟨n, a, ha, h, hh, rfl⟩` from `(hRel y z).1 hyz`. Take `⟨m, b, hb, k, hk, rfl⟩` from `(hRel _ w).1 hzw`. Use `(hRel _ _).2 ⟨m + n, b * a, ?_, h * k, H.mul_mem hh hk, by group⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pow_add]`. Conclude with `Set.mul_mem_mul hb ha`. Set `σ : G → G` to `fun y => Classical.epsilon (Rel y)`. Establish `hσ : ∀ y, Rel y (σ y)` using `fun y => Classical.epsilon_spec ⟨y, hrefl y⟩`. Establish `hσeq : ∀ y z, Rel y z → σ z = σ y`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression.
 
-Introduce `y z hyz`. Express the relevant statement in the definitionally equal form `Classical.epsilon (Rel z) = Classical.epsilon (Rel y)`. Use `congr 1`. Use function extensionality and compare the values at `w`. Conclude with `propext ⟨fun h => htrans _ _ _ hyz h, fun h => htrans _ _ _ (hsymm _ _ hyz) h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Set `U : G → ℕ → Set G` to `fun r m => interior (V ^ (m + 1)) * {r} * (H : Set G)`. Establish `hUo : ∀ r m, IsOpen (U r m)` using `fun r m => isOpen_interior.mul_right.mul_right`. Establish `hUrel : ∀ r m z, z ∈ U r m → Rel r z`. Introduce and unpack `r m z ⟨_, ⟨a, ha, _, rfl, rfl⟩, h, hh, rfl⟩`. Conclude with `(hRel _ _).2 ⟨m + 1, a, interior_subset ha, h, hh, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hUH : ∀ r m z, z ∈ U r m → ∀ h ∈ H, z * h ∈ U r m`. Introduce and unpack `r m z ⟨x, hx, k, hk, rfl⟩ h hh`. Conclude with `⟨x, hx, k * h, H.mul_mem hk hh, by rw [mul_assoc]⟩`. Establish `hUsub : ∀ r m, U r m ⊆ V ^ (m + 1) * {r} * (H : Set G)` using `fun r m => Set.mul_subset_mul (Set.mul_subset_mul interior_subset subset_rfl) subset_rfl`. Establish `hexh : ∀ r z, Rel r z → ∃ m, z ∈ U r m`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `r z hz`. Take `⟨n, a, ha, h, hh, rfl⟩` from `(hRel r z).1 hz`. Conclude with `⟨n, Set.mul_mem_mul (Set.mul_mem_mul (hPint n ha) rfl) hh⟩`. Set `C : G → ℕ → Set G` to `fun r n => (V ^ (n + 1) * {r}) \ ⋃ k, ⋃ (_ : k < n), U r k`. Set `D : G → ℕ → Set G` to `fun r n => ⋃ k, ⋃ (_ : k < n), V ^ k * {r} * (H : Set G)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hCc : ∀ r n, IsCompact (C r n)` using `fun r n => ((hPc _).mul isCompact_singleton).diff (isOpen_iUnion fun k => isOpen_iUnion fun _ => hUo r k)`. Establish `hDc : ∀ r n, IsClosed (D r n)`. Introduce `r n`. Establish `: D r n = ⋃ k ∈ {k : ℕ | k < n}, V ^ k * {r} * (H : Set G)` using `rfl`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(Set.finite_lt_nat n).isClosed_biUnion fun k _ => hH.mul_left_of_isCompact ((hPc k).mul isCompact_singleton)`. Establish `hCD : ∀ r n, Disjoint (C r n) (D r n)`. Introduce `r n`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `x ⟨-, hxU⟩ hxD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [D, Set.mem_iUnion] at hxD`. Take `⟨k, hk, hx⟩` from `hxD`. Conclude with `hxU (Set.mem_iUnion.2 ⟨k, Set.mem_iUnion.2 ⟨hk, Set.mul_subset_mul (Set.mul_subset_mul (hPint k) subset_rfl) subset_rfl hx⟩⟩)`. Use `choose φ hφ1 hφ0 hφcs hφI using fun r n => exists_continuous_one_zero_of_isCompact (hCc r n) (hDc r n) (hCD r n)`. Establish `hDU : ∀ r m n, m + 2 ≤ n → U r m ⊆ D r n`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `r m n hmn z hz`. Conclude with `Set.mem_iUnion.2 ⟨m + 1, Set.mem_iUnion.2 ⟨by omega, hUsub r m hz⟩⟩`. Establish `hloc : ∀ r m z, z ∈ U r m → ∑ᶠ n, φ r n z = ∑ n ∈ Finset.range (m + 2), φ r n z`. Introduce `r m z hz`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n hn`. Assume the negation of the conclusion as `hn'`. Simplify using `only [Finset.coe_range, Set.mem_Iio, not_lt] at hn'`. Conclude with `hn (hφ0 r n (hDU r m n hn' hz))`. Establish `hσU : ∀ y m z, z ∈ U (σ y) m → σ z = σ y` using `fun y m z hz => (hσeq y z (htrans _ _ _ (hσ y) (hUrel _ m z hz)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hyU : ∀ y, ∃ m, y ∈ U (σ y) m` using `fun y => hexh _ _ (hsymm _ _ (hσ y))`. Establish `hfeq : ∀ y m z, z ∈ U (σ y) m → ∑ᶠ n, φ (σ z) n z = ∑ n ∈ Finset.range (m + 2), φ (σ y) n z`. Introduce `y m z hz`. Rewrite using `[hσU y m z hz]`. Conclude with `hloc _ m z hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun y => ∑ᶠ n, φ (σ y) n y, ?_, fun y => finsum_nonneg fun n => (hφI _ _ y).1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[continuous_iff_continuousAt]`. Introduce `y`. Take `⟨m, hm⟩` from `hyU y`. Establish `hc : Continuous fun z => ∑ n ∈ Finset.range (m + 2), φ (σ y) n z` using `continuous_finset_sum _ fun n _ => (φ (σ y) n).continuous`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `hc.continuousAt.congr ?_` and prove the remaining obligations. Use `filter_upwards [(hUo _ m).mem_nhds hm] with z hz`. Conclude with `(hfeq y m z hz).symm`. Establish `hloc' : ∀ y, ∃ O Q : Set G, IsOpen O ∧ y ∈ O ∧ (∀ z ∈ O, ∀ h ∈ H, z * h ∈ O) ∧ IsCompact Q ∧ tsupport (fun y => ∑ᶠ n, φ (σ y) n y) ∩ O ⊆ Q`. Introduce `y`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `hyU y`. Use `⟨U (σ y) m, ⋃ n ∈ Finset.range (m + 2), tsupport (φ (σ y) n), hUo _ m, hm, hUH _ m, (Finset.range (m + 2)).isCompact_biUnion fun n _ => hφcs _ n, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[Set.inter_comm]`. Use `closure_minimal ?_ ((Finset.range (m + 2)).isCompact_biUnion fun n _ => hφcs _ n).isClosed ((hUo _ m).inter_closure hx)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `z ⟨hzU, hz⟩`. Rewrite `hz` using `[Function.mem_support, hfeq y m z hzU]`. Take `⟨n, hn, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hz`. Conclude with `Set.mem_biUnion hn (subset_tsupport _ hne)`. Use `choose O Q hOo hyO hOH hQc hOQ using hloc'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `K hK`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun y : K => O y) (fun y => hOo y) fun y hy => Set.mem_iUnion.2 ⟨⟨y, hy⟩, hyO y⟩`. Use `((t.isCompact_biUnion fun i _ => hQc i)).of_isClosed_subset ((isClosed_tsupport _).inter (hH.mul_left_of_isCompact hK)) ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hxs, _, hk, h, hh, rfl⟩`. Take `⟨i, hi, hkO⟩` from `Set.mem_iUnion₂.1 (ht hk)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.mem_biUnion hi (hOQ i ⟨hxs, hOH i _ hkO h hh⟩)`. Introduce `y set r := σ y with hr`. Establish `hex : ∃ m, y ∈ U r m` using `hyU y`. Set `m` to `Nat.find hex`. Establish `hm : y ∈ U r m` using `Nat.find_spec hex`.
-
-Take `⟨_, ⟨a, ha, _, rfl, rfl⟩, h, hh, hya⟩` from `hm`. Use `⟨⟨h, hh⟩⁻¹, ?_⟩` and prove the remaining obligations. Establish `hz : y * ((⟨h, hh⟩ : H)⁻¹ : H) = a * r`. Rewrite using `[← hya]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[hz]`. Establish `hzU : a * r ∈ U r m` using `⟨a * r, Set.mul_mem_mul ha rfl, 1, H.one_mem, mul_one _⟩`. Establish `hzC : a * r ∈ C r m`. Use `⟨Set.mul_mem_mul (interior_subset ha) rfl, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion]`.
-
-Introduce and unpack `⟨k, hk, hkU⟩`. Conclude with `Nat.find_min hex hk (hya ▸ hUH r k _ hkU h hh)`. Express the relevant statement in the definitionally equal form `∑ᶠ n, φ (σ (a * r)) n (a * r) ≠ 0`. Rewrite using `[hfeq y m _ hzU]`. Use `(lt_of_lt_of_le ?_ (Finset.single_le_sum (fun n _ => (hφI _ n _).1) (Finset.mem_range.2 (by omega : m < m + 2)))).ne'` and prove the remaining obligations.
-
-Rewrite using `[hφ1 _ m hzC]`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 private lemma exists_nonneg_continuous_ne_zero_on_cosets {G : Type*} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
@@ -227,25 +219,23 @@ private lemma exists_nonneg_continuous_ne_zero_on_cosets {G : Type*} [Group G] [
 
 open MeasureTheory Pointwise in
 /- English proof (translation)
-Establish `hemb : Topology.IsClosedEmbedding ((↑) : H → G)` using `hH.isClosedEmbedding_subtypeVal`. Establish `hsupp : ∀ K : Set G, IsCompact K → ∃ S : Set H, IsCompact S ∧ ∀ x ∈ K, ∀ h : H, h ∉ S → f (x * h) = 0`. Introduce `K hK`. Use `⟨(↑) ⁻¹' (K⁻¹ * (tsupport f ∩ (K * (H : Set G)))), hemb.isCompact_preimage (hK.inv.mul (hfK K hK)), ?_⟩` and prove the remaining obligations. Introduce `x hx h hS`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Apply `hS` to reduce the goal to its premises. Use `⟨x⁻¹, by simpa using hx, x * h, ⟨subset_tsupport _ hne, x, hx, h, h.2, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hcont_h : ∀ x, Continuous fun h : H => f (x * h)` using `fun x => hf.comp (continuous_const.mul continuous_subtype_val)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcs : ∀ x, HasCompactSupport fun h : H => f (x * h)`. Introduce `x`. Take `⟨S, hS, hSf⟩` from `hsupp {x} isCompact_singleton`. Conclude with `HasCompactSupport.intro hS fun h hh => hSf x rfl h hh`. Use `set F : G → ℝ := fun x => ∫ h : H, f (x * h) ∂μ with hFdef`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hFpos : ∀ x, 0 < F x`. Introduce `x`. Take `⟨h, hh⟩` from `hpos x`. Conclude with `(hcont_h x).integral_pos_of_hasCompactSupport_nonneg_nonzero (hcs x) (fun h => hf0 _) hh`. Establish `hFinv : ∀ x (h : H), F (x * h) = F x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x h`. Simplify using `only [hFdef]`. Use `integral_mul_left_eq_self (μ := μ) (fun k : H => f (x * k)) h` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `k`. Simplify using `[mul_assoc]`. Establish `hFcont : Continuous F`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x₀`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨K, hK, hKn⟩` from `exists_compact_mem_nhds x₀`. Take `⟨S, hS, hSf⟩` from `hsupp K hK`. Establish `hc : ContinuousOn F K` using `continuousOn_integral_of_compact_support (f := fun x (h : H) => f (x * h)) hS (hf.comp (continuous_fst.mul (continuous_subtype_val.comp continuous_snd))).continuousOn fun x h hx hh => hSf x hx h hh`. Conclude with `hc.continuousAt hKn`. Use `⟨fun x => f x / F x, hf.div hFcont fun x => (hFpos x).ne', fun x => div_nonneg (hf0 x) (hFpos x).le, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `K hK`. Establish `hsub : tsupport (fun x => f x / F x) ⊆ tsupport f`. Apply `closure_mono` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Function.mem_support] at hx ⊢`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `h0`. Simplify using `[h0] at hx`. Use `((hfK K hK).inter_right (isClosed_tsupport (fun x => f x / F x))).of_isClosed_subset ((isClosed_tsupport _).inter (hH.mul_left_of_isCompact hK)) ?_` and prove the remaining obligations. Introduce and unpack `y ⟨hy1, hy2⟩`. Conclude with `⟨⟨hsub hy1, hy2⟩, hy1⟩`.
-
-Introduce `x`. Simplify using `only [hFinv]`. Rewrite using `[integral_div]`. Conclude with `div_self (hFpos x).ne'`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exists_bruhat_function_of_positive_on_cosets {G : Type*} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G] [MeasurableSpace G] [BorelSpace G]
@@ -319,7 +309,7 @@ private lemma exists_bruhat_function_of_positive_on_cosets {G : Type*} [Group G]
 open MeasureTheory Pointwise in
 
 /- English proof (translation)
-Unfold `_root_.HeckeCharacterZeroLocus.BruhatFunctionExistsVariant`. Introduce `G _ _ _ _ _ _ _ H hH μ _`. Take `⟨f, hf, hf0, hfK, hpos⟩` from `exists_nonneg_continuous_ne_zero_on_cosets H hH`. Conclude with `exists_bruhat_function_of_positive_on_cosets H hH μ f hf hf0 hfK hpos`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.bruhatFunctionExists_closedSubgroup : _root_.HeckeCharacterZeroLocus.BruhatFunctionExistsVariant.{u} := by
   unfold _root_.HeckeCharacterZeroLocus.BruhatFunctionExistsVariant

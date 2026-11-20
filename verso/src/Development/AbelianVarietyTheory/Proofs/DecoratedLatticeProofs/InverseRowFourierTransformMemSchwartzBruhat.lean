@@ -12,11 +12,11 @@ noncomputable section
 namespace GlobalTheory.KappaModel
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n _ _ ψk ν hψ hne hν C Φ hΦ`. Use `secondCountable k` as an intermediate fact. Use `t2Space k` as an intermediate fact. Take `⟨c, hc⟩` from `(GlobalTheory.SplitWeil.conductor_exists k).1 ψk hψ hne`. Set `e : (n → k) ≃ₜ Matrix Unit n k` to `{ toFun := fun η => Matrix.of fun _ r => η r invFun := fun M => M () left_inv := fun _ => rfl right_inv := fun M => by ext i j; rfl continuous_toFun := by fun_prop continuous_invFun := by fun_prop }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `e' : Matrix n Unit k ≃ₜ (n → k)` to `{ toFun := fun x r => x r () invFun := fun y => Matrix.of fun r _ => y r left_inv := fun M => by ext i j; rfl right_inv := fun _ => rfl continuous_toFun := by fun_prop continuous_invFun := by fun_prop }`. Establish `hf : (fun η : n → k => Φ (Matrix.of fun _ r => η r)) ∈ SB (n → k)` using `⟨hΦ.1.comp_continuous e.continuous, hΦ.2.comp_homeomorph e⟩`. Establish `hF` using `FourierPi.fourier_mem_SB (Measure.pi fun _ : n => ν) hc hf`. Establish `eq : finv ψk ν C Φ = fun x => C * (fun y : n → k => ∫ η, Φ (Matrix.of fun _ r => η r) * (ψk (η ⬝ᵥ y) : ℂ) ∂(Measure.pi fun _ : n => ν)) (e' x)`. Use function extensionality and compare the values at `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Rewrite using `[eq]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(hF.1.comp_continuous e'.continuous).comp (fun z => C * z)`. Conclude with `(hF.2.comp_homeomorph e').mul_left`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finv_mem_SB : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (ψk : AddChar k Circle) (ν : Measure k), Continuous ψk → ψk ≠ 1 → ν.IsAddHaarMeasure → ∀ (C : ℂ) (Φ : Matrix Unit n k → ℂ), Φ ∈ SB (Matrix Unit n k) → GlobalTheory.KappaModel.finv ψk ν C Φ ∈ SB (Matrix n Unit k) := by
   intro k _ _ _ _ _ _ n _ _ ψk ν hψ hne hν C Φ hΦ

@@ -19,7 +19,7 @@ variable {P : Formalism.BasicNotions.LocPrime l} (AI : Formalism.BasicNotions.Lo
 def zeta (n : ℕ) : 𝒪 := Formalism.Per6.intEquiv l (AI.ζ n)
 
 /- English proof (translation)
-Rewrite using `[zeta, ← map_pow, AI.ζ_succ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem zeta_succ (n : ℕ) : zeta AI (n + 1) ^ l = zeta AI n := by
   rw [zeta, ← map_pow, AI.ζ_succ]; rfl
@@ -27,7 +27,7 @@ theorem zeta_succ (n : ℕ) : zeta AI (n + 1) ^ l = zeta AI n := by
 def epsT : 𝒪♭ := IsPerfectoidField.ofCompatible l (zeta AI) (zeta_succ AI)
 
 /- English proof (translation)
-The claim follows from `IsPerfectoidField.preTilt_ext l fun n => by rw [epsT, IsPerfectoidField.coeff_ofCompatible, Formalism.Per6.tiltMap] show (Formalism.Per6.modPEquiv l) (PreTilt.coeff n AI.ε) = _ rw [AI.ε_coeff] rfl`.
+A detailed English derivation is pending.
 -/
 theorem tiltMap_eps : Formalism.Per6.tiltMap l AI.ε = epsT AI :=
   IsPerfectoidField.preTilt_ext l fun n => by
@@ -37,21 +37,21 @@ theorem tiltMap_eps : Formalism.Per6.tiltMap l AI.ε = epsT AI :=
     rfl
 
 /- English proof (translation)
-Rewrite using `[epsT, IsPerfectoidField.untilt_ofCompatible, zeta, AI.ζ_zero, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem untilt_epsT : PreTilt.untilt (epsT AI) = 1 := by
   rw [epsT, IsPerfectoidField.untilt_ofCompatible, zeta, AI.ζ_zero, map_one]
 
 /- English proof (translation)
-The claim follows from `map_pow (UniformSpace.Completion.coeRingHom (α := PadicAlgCl l)) x n`.
+A detailed English derivation is pending.
 -/
 theorem coe_pow' (x : PadicAlgCl l) (n : ℕ) : ((x ^ n : PadicAlgCl l) : ℂ_[l]) = (x : ℂ_[l]) ^ n :=
   map_pow (UniformSpace.Completion.coeRingHom (α := PadicAlgCl l)) x n
 
 /- English proof (translation)
-Establish `h : ‖((GlobalTheory.Pst.lRoot l m : PadicAlgCl l) : ℂ_[l])‖ ^ (l ^ m) = ‖(((l : PadicAlgCl l)) : ℂ_[l])‖`. Rewrite using `[← norm_pow, ← coe_pow', GlobalTheory.Pst.lRoot_pow l m]`. Establish `hl : ‖(((l : PadicAlgCl l)) : ℂ_[l])‖ ≤ 1`. Use `(IsPerfectoidField.norm_natCast_integer_lt_one (K := ℂ_[l]) (p := l)).le` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hl` using `[← h]`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Conclude with `absurd hl (not_le.2 (one_lt_pow₀ hlt (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)))`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem norm_lRoot_le (m : ℕ) : ‖((GlobalTheory.Pst.lRoot l m : PadicAlgCl l) : ℂ_[l])‖ ≤ 1 := by
   have h : ‖((GlobalTheory.Pst.lRoot l m : PadicAlgCl l) : ℂ_[l])‖ ^ (l ^ m) = ‖(((l : PadicAlgCl l)) : ℂ_[l])‖ := by
@@ -67,7 +67,7 @@ theorem norm_lRoot_le (m : ℕ) : ‖((GlobalTheory.Pst.lRoot l m : PadicAlgCl l
 def lRootInt (m : ℕ) : 𝒪 := ⟨((GlobalTheory.Pst.lRoot l m : PadicAlgCl l) : ℂ_[l]), mem_normInteger.2 (norm_lRoot_le m)⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by show ((GlobalTheory.Pst.lRoot l (m + 1) : PadicAlgCl l) : ℂ_[l]) ^ l = ((GlobalTheory.Pst.lRoot l m : PadicAlgCl l) : ℂ_[l]) rw [← GlobalTheory.Pst.lRoot_succ l m, coe_pow'])`.
+A detailed English derivation is pending.
 -/
 theorem lRootInt_succ (m : ℕ) : lRootInt (l := l) (m + 1) ^ l = lRootInt m :=
   Subtype.ext (by
@@ -79,14 +79,14 @@ variable (l) in
 def lFlat : 𝒪♭ := IsPerfectoidField.ofCompatible l lRootInt lRootInt_succ
 
 /- English proof (translation)
-Rewrite using `[lFlat, untilt_iterate_ofCompatible]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_untilt_iterate_lFlat (n : ℕ) :
     ((PreTilt.untilt (φi^[n] (lFlat l)) : 𝒪) : ℂ_[l]) = ((GlobalTheory.Pst.lRoot l n : PadicAlgCl l) : ℂ_[l]) := by
   rw [lFlat, untilt_iterate_ofCompatible]; rfl
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => simp only [Function.iterate_succ_apply', ih, map_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iterate_mul (n : ℕ) (x y : 𝒪♭) : φi^[n] (x * y) = φi^[n] x * φi^[n] y :=
   by
@@ -95,14 +95,14 @@ theorem iterate_mul (n : ℕ) (x y : 𝒪♭) : φi^[n] (x * y) = φi^[n] x * φ
   | succ n ih => simp only [Function.iterate_succ_apply', ih, map_mul]
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_untilt_mul (x y : 𝒪♭) :
     ((PreTilt.untilt (x * y) : 𝒪) : ℂ_[l]) = ((PreTilt.untilt x : 𝒪) : ℂ_[l]) * ((PreTilt.untilt y : 𝒪) : ℂ_[l]) := by
   rw [map_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[epsT, untilt_iterate_ofCompatible, zeta]`. Conclude with `AI.ζ_eq n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_untilt_iterate_epsT (n : ℕ) :
     ((PreTilt.untilt (φi^[n] (epsT AI)) : 𝒪) : ℂ_[l]) = ((P.ζQ n : PadicAlgCl l) : ℂ_[l]) := by
@@ -110,9 +110,9 @@ theorem coe_untilt_iterate_epsT (n : ℕ) :
   exact AI.ζ_eq n
 
 /- English proof (translation)
-Use `tilt_ext_untilt fun n => Subtype.ext ?_` and prove the remaining obligations. Use `show ((PreTilt.untilt (φi^[n] (tiltGal (Formalism.Per6.toBot g) (lFlat l))) : 𝒪) : ℂ_[l]) = ((PreTilt.untilt (φi^[n] (lFlat l * epsPow (untilt_epsT AI) (GlobalTheory.Pst.kummer P g))) : 𝒪) : ℂ_[l])`. Rewrite using `[coe_untilt_iterate_tiltGal, coe_untilt_iterate_lFlat, iterate_mul, coe_untilt_mul, coe_untilt_iterate_lFlat, untilt_iterate_epsPow, SubmonoidClass.coe_pow, coe_untilt_iterate_epsT, gal_smul_coe]`. Use `show (((g (GlobalTheory.Pst.lRoot l n) : PadicAlgCl l)) : ℂ_[l]) = _`. Rewrite using `[GlobalTheory.Pst.isKummer_kummer P g n, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Move the coercions through the operations in `[coe_pow']`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem tiltGal_lFlat (g : Formalism.BasicNotions.Loc.GQ l) :
     tiltGal (Formalism.Per6.toBot g) (lFlat l) = lFlat l * epsPow (untilt_epsT AI) (GlobalTheory.Pst.kummer P g) := by
@@ -129,7 +129,7 @@ theorem tiltGal_lFlat (g : Formalism.BasicNotions.Loc.GQ l) :
 local notation "ε₀" => epsilon l
 
 /- English proof (translation)
-Use `coe_untilt_iterate_lFlat (l := l) 0` as an intermediate fact. Rewrite `this` using `[Function.iterate_zero_apply]`. Rewrite using `[this, GlobalTheory.Pst.lRoot_zero]`. Use `norm_cast`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem untilt_lFlat : ((PreTilt.untilt (lFlat l) : 𝒪) : ℂ_[l]) = l := by
   have := coe_untilt_iterate_lFlat (l := l) 0
@@ -138,9 +138,9 @@ theorem untilt_lFlat : ((PreTilt.untilt (lFlat l) : 𝒪) : ℂ_[l]) = l := by
   norm_cast
 
 /- English proof (translation)
-Take `⟨η, hη⟩ : pFlat l ∣ lFlat l` from `preTilt_dvd_iff_norm_le.2 (le_of_eq (by rw [preTilt_norm_def, preTilt_norm_def, untilt_lFlat, coe_untilt_pFlat]))`. Establish `hη1 : PreTilt.untilt η = 1`. Establish `h` using `congrArg (fun y => ((PreTilt.untilt y : 𝒪) : ℂ_[l])) hη`. Rewrite `h` using `[coe_untilt_mul, untilt_lFlat, coe_untilt_pFlat]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[OneMemClass.coe_one]`. Conclude with `((mul_eq_left₀ natCast_p_ne_zero_cp).1 h.symm)`. Take `⟨b, hb⟩` from `exists_epsPow_eq untilt_epsilon untilt_frobeniusEquiv_symm_epsilon_ne_one hη1`. Conclude with `⟨b, by rw [hη, hb]⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lFlat_eq : ∃ b : ℤ_[l], lFlat l = pFlat l * epsPow untilt_epsilon b := by
   obtain ⟨η, hη⟩ : pFlat l ∣ lFlat l :=
@@ -155,21 +155,21 @@ theorem exists_lFlat_eq : ∃ b : ℤ_[l], lFlat l = pFlat l * epsPow untilt_eps
   exact ⟨b, by rw [hη, hb]⟩
 
 /- English proof (translation)
-The claim follows from `exists_epsPow_eq untilt_epsilon untilt_frobeniusEquiv_symm_epsilon_ne_one (untilt_epsT AI)`.
+A detailed English derivation is pending.
 -/
 theorem exists_epsT_eq : ∃ a : ℤ_[l], epsPow untilt_epsilon a = epsT AI :=
   exists_epsPow_eq untilt_epsilon untilt_frobeniusEquiv_symm_epsilon_ne_one (untilt_epsT AI)
 
 /- English proof (translation)
-Use `conv_rhs => rw [← Nat.mod_add_div k m, pow_add, pow_mul, h, one_pow, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem pow_mod_of_pow_eq_one {M : Type*} [Monoid M] {x : M} {m : ℕ} (h : x ^ m = 1) (k : ℕ) : x ^ (k % m) = x ^ k := by
   conv_rhs => rw [← Nat.mod_add_div k m, pow_add, pow_mul, h, one_pow, mul_one]
 
 /- English proof (translation)
-Use `tilt_ext_untilt fun n => ?_` and prove the remaining obligations. Establish `e1 : PreTilt.untilt (φi^[n] (epsT AI)) = PreTilt.untilt (φi^[n] (ε₀)) ^ (PadicInt.toZModPow n a).val`. Rewrite using `[← ha]`. Conclude with `untilt_iterate_epsPow _ a n`. Use `haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (PadicInt.toZModPow n (a * c)).val = (PadicInt.toZModPow n a).val * (PadicInt.toZModPow n c).val % (l ^ n)`. Rewrite using `[map_mul, ZMod.val_mul]`. Establish `L` using `untilt_iterate_epsPow (untilt_epsT AI) c n`. Establish `R` using `untilt_iterate_epsPow (untilt_epsilon (p := l)) (a * c) n`. Rewrite using `[L, R, e1, ← pow_mul, e2, pow_mod_of_pow_eq_one (untilt_iterate_pow_eq_one (untilt_epsilon (p := l)) n)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epsPow_epsPow {a : ℤ_[l]} (ha : epsPow untilt_epsilon a = epsT AI) (c : ℤ_[l]) :
     epsPow (untilt_epsT AI) c = epsPow untilt_epsilon (a * c) := by
@@ -185,9 +185,9 @@ theorem epsPow_epsPow {a : ℤ_[l]} (ha : epsPow untilt_epsilon a = epsT AI) (c 
   rw [L, R, e1, ← pow_mul, e2, pow_mod_of_pow_eq_one (untilt_iterate_pow_eq_one (untilt_epsilon (p := l)) n)]
 
 /- English proof (translation)
-Apply `epsPow_injective untilt_epsilon untilt_frobeniusEquiv_symm_epsilon_ne_one` to reduce the goal to its premises. Apply `tilt_mul_left_cancel (pFlat_ne_zero (p := l))` to reduce the goal to its premises. Establish `h1` using `tiltGal_lFlat AI g`. Establish `hp : tiltGal (Formalism.Per6.toBot g) (pFlat l) = pFlat l * kummerEta (Formalism.Per6.toBot g)` using `pFlat_mul_kummerEta (Formalism.Per6.toBot g)`. Rewrite `h1` using `[hb, map_mul, hp, tiltGal_epsPow, epsPow_epsPow AI ha, kummerEta_eq_epsPow untilt_epsilon untilt_frobeniusEquiv_symm_epsilon_ne_one, mul_assoc, mul_assoc, ← epsPow_add, ← epsPow_add]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem kummer_rel {a b : ℤ_[l]} (ha : epsPow untilt_epsilon a = epsT AI) (hb : lFlat l = pFlat l * epsPow untilt_epsilon b)
     (g : Formalism.BasicNotions.Loc.GQ l) :
@@ -204,14 +204,14 @@ theorem kummer_rel {a b : ℤ_[l]} (ha : epsPow untilt_epsilon a = epsT AI) (hb 
   exact h1
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem fontaineT_congr' {x y : 𝒪♭} (h : x = y) (hx : PreTilt.untilt x = 1) (hy : PreTilt.untilt y = 1) :
     fontaineT x hx = fontaineT y hy := by
   subst h; rfl
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_epsT_eq AI`. Take `⟨b, hb⟩` from `exists_lFlat_eq (l := l)`. Use `⟨a, b, ?_, kummer_rel AI ha hb⟩` and prove the remaining obligations. Rewrite using `[PositivityTheory.LocInh.tie_t T, ← fontaineT_epsPow, fontaineT_congr' ((tiltMap_eps AI).trans ha.symm) _ (untilt_epsPow _ a)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_rel (T : Formalism.BasicNotions.LocTied6 l P AI) : ∃ a b : ℤ_[l],
     T.eD (P.ιB P.tB) = algebraMap (Formalism.Per6.BdRp l) (Formalism.Per6.BdR l)

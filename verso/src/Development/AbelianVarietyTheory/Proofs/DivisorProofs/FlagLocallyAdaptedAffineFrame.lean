@@ -18,19 +18,19 @@ open GlobalTheory.QCoh (appLinear appLinear_apply injective_app_of_mono exact_ap
 namespace GlobalTheory.FlagZ.Loc
 
 /- English proof (translation)
-Introduce `V h`. Establish `hex` using `exact_app_of_exact_of_mono hS V`. Establish `hlc : ∀ c : Fin (m + 1) → Γ(X, V), Fintype.linearCombination Γ(X, V) (fun i => resM S.X₂ h ((Fin.snoc (fun i => S.f.app U (a i)) b : Fin (m + 1) → Γ(S.X₂, U)) i)) c = appLinear S.f V (Fintype.linearCombination Γ(X, V) (fun i => resM S.X₁ h (a i)) (fun i => c i.castSucc)) + c (Fin …`. Introduce `c`. Simplify using `only [Fintype.linearCombination_apply, Fin.sum_univ_castSucc, Fin.snoc_castSucc, Fin.snoc_last, map_sum, map_smul, appLinear_apply, app_resM]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hb1 : ∀ y : Γ(X, V), Fintype.linearCombination Γ(X, V) (fun i : Fin 1 => resM S.X₃ h ((fun _ : Fin 1 => S.g.app U b) i)) (fun _ => y) = appLinear S.g V (y • resM S.X₂ h b)`. Introduce `y`. Simplify using `[Fintype.linearCombination_apply, appLinear_apply, app_resM]`. Use `⟨(injective_iff_map_eq_zero _).2 fun c hc => ?_, fun s => ?_⟩` and prove the remaining obligations. Rewrite `hc` using `[hlc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `congrArg (appLinear S.g V) hc`. Rewrite `h1` using `[map_add, appLinear_apply S.f, appLinear_apply S.g, hex.apply_apply_eq_zero, zero_add, map_zero, ← hb1]`. Establish `h2 : (fun _ : Fin 1 => c (Fin.last m)) = 0` using `(injective_iff_map_eq_zero _).1 (hb V h).1 _ h1`. Establish `hl : c (Fin.last m) = 0` using `congrFun h2 0`. Rewrite `hc` using `[hl, zero_smul, add_zero, appLinear_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `(injective_iff_map_eq_zero _).1 (ha V h).1 _ (injective_app_of_mono S.f V (hc.trans (map_zero _).symm))`. Use function extensionality and compare the values at `i`. Use `Fin.lastCases hl (fun j => congrFun h3 j) i` and prove the remaining obligations. Take `⟨y, hy⟩` from `(hb V h).2 (S.g.app V s)`. Establish `hy' : Fintype.linearCombination Γ(X, V) (fun i : Fin 1 => resM S.X₃ h ((fun _ : Fin 1 => S.g.app U b) i)) (fun _ => y 0) = S.g.app V s`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hy]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Fin.fin_one_eq_zero i]`. Rewrite `hy'` using `[hb1, appLinear_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨x, hx⟩` from `(hex (s - y 0 • resM S.X₂ h b)).1 (by rw [map_sub, ← hy', sub_self])`. Take `⟨c, hc⟩` from `(ha V h).2 x`. Use `⟨Fin.snoc c (y 0), ?_⟩` and prove the remaining obligations. Rewrite using `[hlc]`. Simplify using `only [Fin.snoc_castSucc, Fin.snoc_last]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[show (fun i => c i) = c from rfl, hc, appLinear_apply, hx, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isFrame_snoc_of_exact {X : Scheme.{0}} {U : X.Opens}
     {S : ShortComplex X.Modules} (hS : S.Exact) [Mono S.f] {m : ℕ}
@@ -80,19 +80,17 @@ theorem isFrame_snoc_of_exact {X : Scheme.{0}} {U : X.Opens}
     rw [show (fun i => c i) = c from rfl, hc, appLinear_apply, hx, sub_add_cancel]
 
 /- English proof (translation)
-Proceed by induction on `k using Fin.induction with`. Consider the case `zero`. Take `⟨V, e, ht, he⟩` from `fl.isVB 0 t`. Use `⟨V, ht, e, he, fun l hl => ?_⟩` and prove the remaining obligations. Take `rfl : l = 0` from `Fin.ext (by simpa using hl)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e, he, fun j => rfl⟩`. Consider the case `succ i ih`. Take `⟨V, htV, u, hu, hs⟩` from `ih`. Take `⟨U', c, htU', hc⟩` from `fl.isVB_gr i t`. Take `⟨W, hW, htW, b, hb⟩` from `exists_app_eq_of_epi (fl.π i) (resM _ (inf_le_right : V ⊓ U' ≤ U') (c 0)) (show t ∈ V ⊓ U' from ⟨htV, htU'⟩)`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hWV : W ≤ V` using `hW.trans inf_le_left`. Set `S` to `ShortComplex.mk (fl.step i) (fl.π i) (Limits.cokernel.condition _)`. Establish `hS : S.Exact` using `ShortComplex.exact_cokernel (fl.step i)`. Establish `hbf : IsFrame fun _ : Fin 1 => S.g.app W b`. Use `hc.res (hW.trans inf_le_right) using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[Fin.fin_one_eq_zero j]`. Conclude with `hb.trans (resM_resM _ _ _)`. Establish `hstep : ∀ x, (fl.ι i.succ).app W ((fl.step i).app W x) = (fl.ι i.castSucc).app W x` using `fun x => (QCoh.app_app _ _ _ _).trans (by rw [fl.step_ι])`. Use `⟨W, htW, Fin.snoc (fun j => (fl.step i).app W (resM _ hWV (u j))) b, isFrame_snoc_of_exact (S := S) hS _ b (hu.res hWV) hbf, fun l hl => ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `heq : (l : ℕ) = i.succ`. Take `rfl : l = i.succ` from `Fin.ext heq`. Conclude with `⟨_, isFrame_snoc_of_exact (S := S) hS _ b (hu.res hWV) hbf, fun j => rfl⟩`. Establish `hl' : (l : ℕ) ≤ i.castSucc`. Simplify using `only [Fin.val_succ, Fin.val_castSucc] at hl heq ⊢`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨s, hsf, hsj⟩` from `hs l hl'`. Use `⟨fun j => resM _ hWV (s j), hsf.res hWV, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[app_resM (fl.ι l) hWV, hsj j, ← app_resM]`. Use `show _ = (fl.ι i.succ).app W ((Fin.snoc (fun j => (fl.step i).app W (resM _ hWV (u j))) b : Fin ((i.castSucc : ℕ) + 1) → Γ(fl.F i.succ, W)) (Fin.castSucc (Fin.castLE hl' j)))`.
-
-Rewrite using `[Fin.snoc_castSucc, hstep]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nested_frames {X : Scheme.{0}} {E : X.Modules} {N : ℕ} (fl : Vert.Flag E N)
     (t : X) (k : Fin (N + 1)) :
@@ -135,7 +133,7 @@ theorem exists_nested_frames {X : Scheme.{0}} {E : X.Modules} {N : ℕ} (fl : Ve
       rw [Fin.snoc_castSucc, hstep]
 
 /- English proof (translation)
-Use `haveI : (Taut.stdE N).IsQuasicoherent := (isVB_freeModule_fin (Sp ℤ) N).isQuasicoherent`. Use `((isFrame_freeFrame (Sp ℤ) (Fin N)).pullback g).res (by simp : V ≤ g ⁻¹ᵁ ⊤)` as an intermediate fact. Rewrite using `[show (fun i : Fin N => QCoh.pullbackSections g (Taut.stdE N) (by simp : V ≤ g ⁻¹ᵁ ⊤) (freeFrame (Sp ℤ) (Fin N) i)) = fun i => resM _ (by simp : V ≤ g ⁻¹ᵁ ⊤) (QCoh.pullbackSections g (Taut.stdE N) le_rfl (freeFrame (Sp ℤ) (Fin N) i)) from`. Use function extensionality and compare the values at `fun i => (QCoh.res_pullbackSections _ _ _ _ _).symm]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem isFrame_stdSec {N : ℕ} {T : Scheme.{0}} (g : T ⟶ Sp ℤ) (V : T.Opens) :
     IsFrame fun i : Fin N => QCoh.pullbackSections g (Taut.stdE N) (by simp : V ≤ g ⁻¹ᵁ ⊤)
@@ -149,9 +147,9 @@ theorem isFrame_stdSec {N : ℕ} {T : Scheme.{0}} (g : T ⟶ Sp ℤ) (V : T.Open
   exact this
 
 /- English proof (translation)
-Establish `he` using `isFrame_stdSec (N := N) g V`. Use `letI := (he.basis le_rfl).invertibleToMatrix (hv.basis le_rfl)`. Use `⟨unitOfInvertible ((he.basis le_rfl).toMatrix (hv.basis le_rfl)), fun j => ?_⟩` and prove the remaining obligations. Use `(he.basis le_rfl).sum_toMatrix_smul_self (hv.basis le_rfl) j` as an intermediate fact. Simplify using `only [IsFrame.basis_apply, resM_self] at this`.
+Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[val_unitOfInvertible]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_GL_colSecOn {N : ℕ} {T : Scheme.{0}} (g : T ⟶ Sp ℤ) (V : T.Opens)
     (v : Fin N → Γ((Scheme.Modules.pullback g).obj (Taut.stdE N), V)) (hv : IsFrame v) :
@@ -166,7 +164,7 @@ theorem exists_GL_colSecOn {N : ℕ} {T : Scheme.{0}} (g : T ⟶ Sp ℤ) (V : T.
   exact this
 
 /- English proof (translation)
-Simplify using `only [colSecOn, map_sum, resM_smul, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun i _ => congrArg _ ?_` and prove the remaining obligations. Conclude with `QCoh.res_pullbackSections _ _ _ _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem resM_colSecOn {N : ℕ} {T : Scheme.{0}} (g : T ⟶ Sp ℤ) {V W : T.Opens} (h : W ≤ V)
     (M : Matrix (Fin N) (Fin N) Γ(T, V)) (j : Fin N) :
@@ -176,13 +174,13 @@ theorem resM_colSecOn {N : ℕ} {T : Scheme.{0}} (g : T ⟶ Sp ℤ) {V W : T.Ope
   exact QCoh.res_pullbackSections _ _ _ _ _
 
 /- English proof (translation)
-Introduce `ι _ N T g fl' t`. Establish `one : ∀ a, ∃ V : T.Opens, t ∈ V ∧ ∃ G : GL (Fin N) Γ(T, V), ∀ l : Fin (N + 1), ∃ s : Fin l → Γ((fl' a).F l, V), IsFrame s ∧ ∀ j, ((fl' a).ι l).app V (s j) = colSecOn g V G.1 (Fin.castLE l.is_le j)`. Introduce `a`. Take `⟨V, htV, u, hu, hs⟩` from `exists_nested_frames (fl' a) t (Fin.last N)`. Take `⟨G, hG⟩` from `exists_GL_colSecOn g V (fun j => ((fl' a).ι (Fin.last N)).app V (u j)) (hu.map_iso _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨V, htV, G, fun l => ?_⟩` and prove the remaining obligations. Take `⟨s, hsf, hsj⟩` from `hs l l.is_le`. Conclude with `⟨s, hsf, fun j => (hsj j).trans (hG _).symm⟩`. Use `choose V htV G hG using one`. Establish `ht0 : t ∈ Finset.univ.inf V`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← SetLike.mem_coe, TopologicalSpace.Opens.coe_finset_inf]`. Simplify using `using htV`. Take `⟨W, hW, htW, hle⟩` from `QCoh.exists_affine_mem_le t ht0`. Establish `hWa (a : ι) : W ≤ V a` using `hle.trans (Finset.inf_le (Finset.mem_univ a))`. Use `⟨W, htW, hW, fun a => Units.map (RingHom.mapMatrix (resG T (hWa a))).toMonoidHom (G a), fun a l => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hsf, hsj⟩` from `hG a l`. Use `⟨fun j => resM _ (hWa a) (s j), hsf.res (hWa a), fun j => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[app_resM, hsj, resM_colSecOn]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_adapted : ∀ {ι : Type} [Fintype ι] {N : ℕ} {T : Scheme.{0}} (g : T ⟶ Sp ℤ)
     (fl' : ∀ _ : ι, Vert.Flag ((Scheme.Modules.pullback g).obj (Taut.stdE N)) N) (t : T),

@@ -15,7 +15,7 @@ open PI.OmFibreUniq PI.VolStabSW PI.VolStabSW.TensAllW
 open scoped TensorProduct
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun t _ ht x hx y hy => hi ((isTotallyDisconnected_of_totallyDisconnectedSpace _ _ (Set.subset_univ _) (ht.image e he.continuousOn)) ⟨x, hx, rfl⟩ ⟨y, hy, rfl⟩)⟩`.
+Supply the required witnesses or components.
 -/
 theorem td_of_inj {α β : Type} [TopologicalSpace α] [TopologicalSpace β]
     [TotallyDisconnectedSpace α] (e : β → α) (he : Continuous e) (hi : Function.Injective e) :
@@ -25,15 +25,15 @@ theorem td_of_inj {α β : Type} [TopologicalSpace α] [TopologicalSpace β]
       (ht.image e he.continuousOn)) ⟨x, hx, rfl⟩ ⟨y, hy, rfl⟩)⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J v a μ ν hν fib fib' h h'`. Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Use `secondCountable_Fv F v` as an intermediate fact. Use `locallyCompact_Fv F v` as an intermediate fact. Take `⟨ι, _, ⟨e⟩⟩` from `PI.AdicCompletionValuation.exists_homeomorph_tens (F := F) (E := E) (Fv F v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: TotallyDisconnectedSpace (Fv F v ⊗[F] E)` using `td_of_inj e e.continuous e.injective`. Establish `: LocallyCompactSpace (Fv F v ⊗[F] E)` using `e.isClosedEmbedding.locallyCompactSpace`. Establish `: T2Space (Fv F v ⊗[F] E)` using `e.isEmbedding.t2Space`. Establish `: BorelSpace (Fv F v ⊗[F] E)` using `⟨rfl⟩`. Establish `: BorelSpace (HermR (Fv F v) σ a)` using `⟨rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: LocallyCompactSpace (HermR (Fv F v) σ a)` using `(isClosed_HermR (Fv F v) σ a).isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: SecondCountableTopology (Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))` using `inferInstanceAs (SecondCountableTopology (Fin a → Fin a → Fv F v ⊗[F] E))`. Establish `: SecondCountableTopology (HermR (Fv F v) σ a)` using `Topology.IsInducing.subtypeVal.secondCountableTopology`. Use `hν` as an intermediate fact. Establish `hfree : IsOpen (IndepV (E` using `E) (n := n) v a) := isOpen_linIndep (Module.finBasis F E) (Fv F v) (isOpen_units_Fv F v) (lip_field _) (a := a) (M := n)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ∀ S : Set (HermR (Fv F v) σ a), MeasurableSet S → MeasurableSet (gramR (Fv F v) σ J ⁻¹' (Subtype.val '' S))`. Introduce `S hS`. Use `letI : MeasurableSpace (Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) := borel _`. Use `haveI : BorelSpace (Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) := ⟨rfl⟩`. Establish `hcl : IsClosedEmbedding (Subtype.val : HermR (Fv F v) σ a → Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))` using `(isClosed_HermR (Fv F v) σ a).isClosedEmbedding_subtypeVal`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hemb : MeasurableEmbedding (Subtype.val : HermR (Fv F v) σ a → Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))` using `hcl.measurableEmbedding`. Conclude with `(hemb.measurableSet_image.2 hS).preimage (continuous_gramR (Fv F v) σ J).measurable`. Conclude with `fib_unique μ ν (gramR (Fv F v) σ J) Subtype.val (IndepV (E := E) (n := n) v a) hA Subtype.val_injective hfree fib fib' h h'`.
+A detailed English derivation is pending.
 -/
 theorem gram_map_fibre_uniqueness : FibUniq := by
   intro F E _ _ _ _ _ σ n J v a μ ν hν fib fib' h h'
@@ -72,7 +72,7 @@ theorem gram_map_fibre_uniqueness : FibUniq := by
     Subtype.val_injective hfree fib fib' h h'
 
 /- English proof (translation)
-The claim follows from `omUnique_of σ J ψ v a h0 gram_map_fibre_existence gram_map_fibre_uniqueness`.
+A detailed English derivation is pending.
 -/
 theorem omUnique_of_sdEx (h0 : SdEx) {F E : Type} [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)

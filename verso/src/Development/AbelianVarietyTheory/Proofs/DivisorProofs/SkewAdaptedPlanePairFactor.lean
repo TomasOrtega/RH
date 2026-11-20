@@ -14,21 +14,19 @@ noncomputable section
 namespace GlobalTheory.MixUXScalar
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he hc`. Take `⟨Φ₀, hΦ₀, hne⟩` from `GlobalTheory.EvNonzero.exists_mem_schA_ev_ne_zero F E σ B n d n d₁ X W X W₁ M M₁ 1 H'.ι (iso0 n H') e hP.good hP₁.good he`. Establish `hpres : ∀ g, ∀ Φ ∈ schA F (Fin n × Fin d), om (g, 1) Φ ∈ schA F (Fin n × Fin d)` using `fun g Φ hΦ => (IsUWeilPair.isUSplitting hP.weil).pres (g, 1) Φ hΦ`. Establish `hinj : ∀ (g : UA σ X.J) (f : Fn F n d₁), om₁ (g, 1) f = 0 → f = 0`. Introduce `g f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : om₁ (g⁻¹, 1) (om₁ (g, 1) f) = f`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, inv_mul_cancel, mul_one, ← Prod.one_eq_mk, map_one, Module.End.one_apply]`. Rewrite using `[← h1, hf, map_zero]`. Use `choose c hc' using hc`. Establish `huniq : ∀ (g : UA σ X.J) (a b : ℂ), a • om₁ (g, 1) (e Φ₀) = b • om₁ (g, 1) (e Φ₀) → a = b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g a b hab`. Establish `h2 : (a - b) • om₁ (g, 1) (e Φ₀) = 0` using `by rw [sub_smul, hab, sub_self]`. Break down `smul_eq_zero.mp h2 with h | h` into its components or cases. Conclude with `sub_eq_zero.mp h`. Conclude with `absurd (hinj g _ h) hne`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hone : c 1 = 1`. Apply `huniq 1` to reduce the goal to its premises. Rewrite using `[← hc' 1 Φ₀ hΦ₀, one_smul, ← Prod.one_eq_mk, ← Prod.one_eq_mk, map_one, map_one, Module.End.one_apply, Module.End.one_apply]`. Establish `hmul : ∀ g h, c (g * h) = c g * c h`. Introduce `g h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `huniq (g * h)` to reduce the goal to its premises. Establish `e1 : om (g * h, 1) Φ₀ = om (g, 1) (om (h, 1) Φ₀)`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Establish `e2 : om₁ (g * h, 1) (e Φ₀) = om₁ (g, 1) (om₁ (h, 1) (e Φ₀))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Rewrite using `[← hc' (g * h) Φ₀ hΦ₀, e1, hc' g _ (hpres h Φ₀ hΦ₀), hc' h Φ₀ hΦ₀, map_smul, smul_smul, e2]`. Set `c₀ : UA σ X.J →* ℂ` to `{ toFun := c, map_one' := hone, map_mul' := hmul }`. Set `cu : UA σ X.J →* ℂˣ` to `c₀.toHomUnits`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcu : cu = 1` using `GlobalTheory.T.skew_adapted_plane_pair_extension hPr F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ e he cu (fun g Φ hΦ => hc' g Φ hΦ)`. Introduce `g Φ hΦ`. Establish `hg : c g = 1`. Use `congrArg (fun u : UA σ X.J →* ℂˣ => ((u g : ℂˣ) : ℂ)) hcu` as an intermediate fact. Simplify `this` using `[cu, c₀]`.
-
-Rewrite using `[hc' g Φ hΦ, hg, one_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalZero_scalar_one : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

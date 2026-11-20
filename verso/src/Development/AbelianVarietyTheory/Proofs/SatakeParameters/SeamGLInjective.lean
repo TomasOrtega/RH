@@ -21,7 +21,7 @@ def seamLE {n : ℕ} (g : GL (Fin n) D.host.E) : Sp X.E n ≃ₗ[X.E] Sp X.E n :
     (Matrix.GeneralLinearGroup.toLin (bc (s.iE.symm : D.host.E →+* X.E) g))
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[seamGL, seamLE, bc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem seamGL_seamLE {n : ℕ} (g : GL (Fin n) D.host.E) : seamGL s (seamLE s g) = g := by
   ext a b

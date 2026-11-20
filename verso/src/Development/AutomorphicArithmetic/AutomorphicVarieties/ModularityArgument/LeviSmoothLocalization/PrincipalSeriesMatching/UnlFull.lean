@@ -16,13 +16,11 @@ section Loc
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `GlobalTheory.PrinTwo.NoFix.exists_unif k`. Establish `hex : ∃ p : kˣ, valuation k (p : k) < 1 ∧ ∀ x : k, valuation k x < 1 → valuation k x ≤ valuation k (p : k)`. Use `⟨ϖ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hϖ]`. Conclude with `uniformizer_lt_one (R := k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite using `[hϖ]`. Conclude with `le_uniformizer_iff.mpr hx`. Establish `hs` using `Classical.epsilon_spec hex`. Unfold `unif`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `le_uniformizer_iff.mpr hs.1`. Rewrite using `[← hϖ]`. Use `hs.2 _ ?_` and prove the remaining obligations. Rewrite using `[hϖ]`.
-
-Conclude with `uniformizer_lt_one (R := k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unif_valuation : valuation k (unif k : k) = uniformizer k := by
   obtain ⟨ϖ, hϖ⟩ := GlobalTheory.PrinTwo.NoFix.exists_unif k
@@ -44,7 +42,7 @@ private theorem unif_valuation : valuation k (unif k : k) = uniformizer k := by
     exact uniformizer_lt_one (R := k)
 
 /- English proof (translation)
-Rewrite using `[val_absPow, GlobalTheory.LGrp.nabs_eq_zpow, ord_eq_one unif_valuation]`. Use `push_cast`. Rewrite using `[Complex.cpow_neg_one, zpow_neg_one, inv_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem absPow_neg_one_unif :
     (((absPow k (-1)) (unif k) : ℂˣ) : ℂ) = (GroundTheory.LocalField.residueCard k : ℂ) := by
@@ -54,11 +52,11 @@ private theorem absPow_neg_one_unif :
   rfl
 
 /- English proof (translation)
-Introduce `hj`. Establish `hi : ω i ∈ chars (Finset.univ.val.map fun i => IrrGL.ofChar (ω i) (hω i))` using `⟨hω i, Multiset.mem_map.mpr ⟨i, Finset.mem_univ_val i, rfl⟩⟩`. Establish `hj' : ω j ∈ chars (Finset.univ.val.map fun i => IrrGL.ofChar (ω i) (hω i))` using `⟨hω j, Multiset.mem_map.mpr ⟨j, Finset.mem_univ_val j, rfl⟩⟩`. Establish `h0 : absPow k (-1) * absPow k 1 = 1`. Rewrite using `[← absPow_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Simplify using `[val_absPow]`. Establish `hq : ω i * (ω j)⁻¹ = absPow k (-1)`. Rewrite using `[hj, mul_inv_rev, mul_left_comm, mul_inv_cancel, mul_one]`. Conclude with `(eq_inv_of_mul_eq_one_left h0).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h (ω i) hi (ω j) hj'` to reduce the goal to its premises. Rewrite using `[hq]`. Conclude with `isUnram_absPow k (-1)`. Rewrite using `[hq]`. Conclude with `absPow_neg_one_unif`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ne_mul_absPow {n : ℕ} (ω : Fin n → kˣ →* ℂˣ) (hω : ∀ i, IsSmoothChar (ω i))
     (h : Unl (GroundTheory.LocalField.residueCard k) (Finset.univ.val.map fun i => IrrGL.ofChar (ω i) (hω i)))
@@ -82,15 +80,13 @@ private theorem ne_mul_absPow {n : ℕ} (ω : Fin n → kˣ →* ℂˣ) (hω : �
     exact absPow_neg_one_unif
 
 /- English proof (translation)
-Establish `hd : ∑ a : Fin n, (IrrGL.ofChar (ω a) (hω a)).fst = n`. Simplify using `[IrrGL.ofChar]`. Establish `hirr : (prodIrr (fun a => IrrGL.ofChar (ω a) (hω a)) hd).IsIrreducible`. Use `GlobalTheory.RgGu.Holds.lUnlinkedIrr_holds k n n (fun i => Segment.single (IrrGL.ofChar (ω i) (hω i)) (IrrGL.isCusp_ofChar _ _)) _ hd ?_ ?_` and prove the remaining obligations. Introduce `i j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `GlobalTheory.CompanionTheory.BZPair.not_linked_single` to reduce the goal to its premises. Unfold `IrrGL.nu`. Rewrite using `[IrrGL.tw_ofChar]`. Introduce `he`. Conclude with `h i j (IrrGL.ofChar_inj.mp he)`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `IrrGL.nu`. Rewrite using `[IrrGL.tw_ofChar]`. Introduce `he`. Conclude with `h j i (IrrGL.ofChar_inj.mp he)`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(single_spec (IrrGL.isCusp_ofChar (ω i) (hω i))).2.1`. Set `e1` to `stdBlocks (fun a => (IrrGL.ofChar (ω a) (hω a)).fst) hd`. Establish `E1 : (prodIrr (fun a => IrrGL.ofChar (ω a) (hω a)) hd).Equiv (multiProd e1 fun a => detRep (Fin 1) (ω a))` using `multiProdEquiv e1 (fun a => (equivRep (IrrRep.det (Fin 1) (ω a) (hω a))).symm)`. Take `⟨E2⟩` from `(Placing.parInd_jac_placing k (Fin n) (Fin n) (fun _ => Fin 1) e1 (Equiv.sigmaUnique (Fin n) fun _ => Fin 1) _).1 (piTensor fun a => detRep (Fin 1) (ω a))`. Establish `hM : (multiProd (Equiv.sigmaUnique (Fin n) fun _ => Fin 1) fun a => detRep (Fin 1) (ω a)).IsIrreducible` using `GlobalTheory.Parabolic.isIrreducible_of_equiv (E1.trans E2) hirr`.
-
-Use `haveI := nontrivial_of_irreducible hM`. Use `haveI := nontrivial_of_isSubquotient (GlobalTheory.PermPrin.isSubquotient_multiProd_prinSeries (Equiv.sigmaUnique (Fin n) fun _ => Fin 1) ω)`. Take `⟨E3⟩` from `equiv_of_isSubquotient (GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd k n ω) hM`. Conclude with `GlobalTheory.Parabolic.isIrreducible_of_equiv E3 hM`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem prinSeries_irreducible {n : ℕ} (ω : Fin n → kˣ →* ℂˣ) (hω : ∀ i, IsSmoothChar (ω i))
     (h : ∀ i j, ω j ≠ ω i * absPow k 1) : (prinSeries ω).IsIrreducible := by
@@ -130,7 +126,7 @@ private theorem prinSeries_irreducible {n : ℕ} (ω : Fin n → kˣ →* ℂˣ)
 end Loc
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ n V _ _ π ω hω hs hu`. Take `⟨hi, hq⟩` from `(UpperTheory.Gal.LocD.ofSupport_holds k n V π ω hω).1 hs`. Take `⟨E⟩` from `hq.nonempty_equiv hi (prinSeries_irreducible ω hω (ne_mul_absPow ω hω hu))`. Conclude with `⟨E.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unlFull : UnlFull := by
   intro k _ _ _ _ _ n V _ _ π ω hω hs hu

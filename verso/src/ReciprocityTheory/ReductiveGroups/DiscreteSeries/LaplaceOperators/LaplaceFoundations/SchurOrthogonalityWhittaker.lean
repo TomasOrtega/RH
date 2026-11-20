@@ -13,7 +13,7 @@ open ReciprocityTheory.ChartRestriction.DS Formalism.QuantumDeterminants
 variable {k r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Conclude with `continuous_clm_apply.2 fun v => continuousOn_iff_continuous_domRestrict.1 (h v)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clm_continuousOn {X : Type*} [TopologicalSpace X] {V : Type*} [NormedAddCommGroup V]
     [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] (σ : X → (V →L[ℂ] V)) (s : Set X)
@@ -22,9 +22,9 @@ theorem clm_continuousOn {X : Type*} [TopologicalSpace X] {V : Type*} [NormedAdd
   exact continuous_clm_apply.2 fun v => continuousOn_iff_continuous_domRestrict.1 (h v)
 
 /- English proof (translation)
-Establish `hc : Continuous (fun x : Mt k r => (Matrix.of x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ))` using `continuous_id`. Establish `e : {x : Mt k r | Matrix.of x ∈ UWset k r (z0 k r)} = {x | (Matrix.of x)ᴴ * Hpk k r * Matrix.of x = Hpk k r} ∩ ((⋂ a : Fin r, ({x | Matrix.of x *ᵥ bvec (eI k r a) = bvec (eI k r a)} ∩ {x | Matrix.of x *ᵥ bvec (esI k r a) = bvec (esI k r a)})) ∩ {x | Matrix.of x *ᵥ z0 k r = z0 k r …`. Use extensionality with `x`. Simplify using `only [UWset, UH, Set.mem_ofPred_eq, Set.mem_inter_iff, Set.mem_iInter]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `IsClosed.inter (isClosed_eq ((hc.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul hc) continuous_const) (IsClosed.inter (isClosed_iInter fun a => IsClosed.inter ?_ ?_) ?_)` and prove the remaining obligations. Conclude with `isClosed_eq (hc.matrix_mulVec continuous_const) continuous_const`. Conclude with `isClosed_eq (hc.matrix_mulVec continuous_const) continuous_const`. Conclude with `isClosed_eq (hc.matrix_mulVec continuous_const) continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosed_UW : IsClosed {x : Mt k r | Matrix.of x ∈ UWset k r (z0 k r)} := by
   have hc : Continuous (fun x : Mt k r => (Matrix.of x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)) :=
@@ -44,16 +44,16 @@ theorem isClosed_UW : IsClosed {x : Mt k r | Matrix.of x ∈ UWset k r (z0 k r)}
   · exact isClosed_eq (hc.matrix_mulVec continuous_const) continuous_const
 
 /- English proof (translation)
-Use `continuous_pi fun q => continuous_pi fun q' => ?_` and prove the remaining obligations. Conclude with `(continuous_apply _).comp (continuous_apply _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem blk_cont : Continuous (fun x : Mt k r => StandardBasisEmbedding.blk (k := k) (r := r) (Matrix.of x)) := by
   refine continuous_pi fun q => continuous_pi fun q' => ?_
   exact (continuous_apply _).comp (continuous_apply _)
 
 /- English proof (translation)
-Establish `hu` using `StandardBasisEmbedding.blk_unitary hg`. Establish `h1 : g * Formalism.MainNotions.S.blockW k r (star (StandardBasisEmbedding.blk g)) = 1`. Establish `e` using `StandardBasisEmbedding.eq_blockW hg`. Rewrite using `[show g * Formalism.MainNotions.S.blockW k r (star (StandardBasisEmbedding.blk g)) = Formalism.MainNotions.S.blockW k r (StandardBasisEmbedding.blk g) * Formalism.MainNotions.S.blockW k r (star (StandardBasisEmbedding.blk g)) from by rw [← e]]`. Rewrite using `[← StandardBasisEmbedding.blockW_mul, Unitary.mul_star_self_of_mem hu, StandardBasisEmbedding.blockW_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Matrix.inv_eq_right_inv h1, ⟨⟨g, _, h1, mul_eq_one_comm.mp h1⟩, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem uw_inv {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g ∈ UWset k r (z0 k r)) :
     g⁻¹ = Formalism.MainNotions.S.blockW k r (star (StandardBasisEmbedding.blk g)) ∧ IsUnit g := by
@@ -66,39 +66,35 @@ theorem uw_inv {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg 
   exact ⟨Matrix.inv_eq_right_inv h1, ⟨⟨g, _, h1, mul_eq_one_comm.mp h1⟩, rfl⟩⟩
 
 /- English proof (translation)
-Use `set π' : Matrix (Fin k) (Fin k) ℂ → (Vp →L[ℂ] Vp) := fun h => π (Formalism.MainNotions.S.blockW k r h) with hπ'`. Establish `hε : ∀ a : Fin (2 * r + k + 1), a.val < k → ε a = true` using `fun a ha => cay_eps hP hW a ha`. Establish `hΛ' : ∀ q : Fin k, Λ (fI k r q) = Formalism.QuantumDeterminants.lowK (Formalism.MainNotions.S.allPos k) u q` using `fun q => hΛ q`. Establish `: FiniteDimensional ℂ Vp` using `hπ.2.1`. Establish `: Nontrivial Vp` using `hπ.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProbabilityMeasure μW` using `⟨hμ1⟩`. Take `⟨U, α, hint, hα⟩` from `lowestKType_intertwiner_exists T hε hΛ' π' hπ hξ`. Establish `hUR` using `hπ.2.2.1`. Establish `hπadj : ∀ h ∈ Matrix.unitaryGroup (Fin k) ℂ, ∀ a b : Vp, ⟪a, π' h b⟫_ℂ = ⟪π' (star h) a, b⟫_ℂ`. Introduce `h hh a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs : star h ∈ Matrix.unitaryGroup (Fin k) ℂ` using `Unitary.star_mem hh`. Establish `hinv : π' (star h) (π' h b) = b`. Use `hUR.1.2 _ (unit_uj hs) _ (unit_uj hh)` as an intermediate fact. Rewrite `this` using `[Unitary.star_mul_self_of_mem hh, hUR.1.1]`. Use `congrArg (fun A : Vp →L[ℂ] Vp => A b) this` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this.symm`. Set `Lm : Vp →ₗᵢ[ℂ] Vp` to `{ toLinearMap := (π' (star h) : Vp →ₗ[ℂ] Vp), norm_map' := hUR.2.1 _ (unit_uj hs) }`. Use `Lm.inner_map_map a (π' h b)` as an intermediate fact. Express the relevant statement in the definitionally equal form `⟪π' (star h) a, π' (star h) (π' h b)⟫_ℂ = _ at this`. Rewrite `this` using `[hinv]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.symm`. Establish `hα0 : α ≠ 0`. Introduce and unpack `rfl`. Rewrite `hα` using `[zero_smul]`. Establish `: U ξ = 0` using `Subtype.ext hα`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[LinearIsometryEquiv.map_eq_zero_iff]`. Rewrite `hξn` using `[this, norm_zero]`. Conclude with `zero_ne_one hξn`. Use `set η : Vp := α⁻¹ • ξ with hηdef`. Establish `hη : (U η : T.V) = T.w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hηdef, map_smul, Submodule.coe_smul, hα, smul_smul, inv_mul_cancel₀ hα0, one_smul]`. Use `set Y' : Vp := U.symm ((spanW (k := k) (r := r) T).orthogonalProjectionOnto Y) with hY'`. Establish `hproj : ∀ s : spanW (k` using `k) (r := r) T, ⟪(s : T.V), Y⟫_ℂ = ⟪s, (spanW (k := k) (r := r) T).orthogonalProjectionOnto Y⟫_ℂ := by`. Introduce `s`. Establish `h0 : ⟪(s : T.V), Y - ((spanW (k` using `k) (r := r) T).orthogonalProjectionOnto Y : T.V)⟫_ℂ = 0 := Submodule.inner_right_of_mem_orthogonal s.2 ((spanW (k := k) (r := r) T).sub_starProjection_mem_orthogonal Y)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h0` using `[inner_sub_right, sub_eq_zero]`. Rewrite using `[h0]`. Both sides reduce to the same expression. Establish `hUY : ∀ a : Vp, ⟪(U a : T.V), Y⟫_ℂ = ⟪a, Y'⟫_ℂ`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hproj, ← U.inner_map_map a Y', hY', U.apply_symm_apply]`. Establish `hae : ∀ᵐ x ∂μW, Matrix.of x ∈ UWset k r (z0 k r)`. Rewrite using `[ae_iff]`. Simplify using `using hμW.2.2.1`. Establish `hpt : ∀ᵐ x ∂μW, ⟪ξ, π (Matrix.of x)⁻¹ ξ⟫_ℂ * ⟪T.w, HW.torepSig T (P * Matrix.of x * P⁻¹) Y⟫_ℂ = ⟪η, π (Matrix.of x) Y'⟫_ℂ * ⟪π (Matrix.of x) ξ, ξ⟫_ℂ` using `hae.mono fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : StandardBasisEmbedding.blk (Matrix.of x) ∈ Matrix.unitaryGroup (Fin k) ℂ` using `StandardBasisEmbedding.blk_unitary hx`. Establish `hx' : Matrix.of x = Formalism.MainNotions.S.blockW k r (StandardBasisEmbedding.blk (Matrix.of x))` using `StandardBasisEmbedding.eq_blockW hx`. Establish `h1 : π (Matrix.of x)⁻¹ = π' (star (StandardBasisEmbedding.blk (Matrix.of x)))` using `by rw [(uw_inv hx).1]`. Establish `h2 : HW.torepSig T (P * Matrix.of x * P⁻¹) = rhoK (k` using `k) (r := r) T (StandardBasisEmbedding.blk (Matrix.of x)) := by`. Rewrite using `[rhoK, ← cay_kE hP hW, ← hx']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : π (Matrix.of x) = π' (StandardBasisEmbedding.blk (Matrix.of x))`. Rewrite using `[hπ']`. Conclude with `congrArg π hx'`. Rewrite using `[h1, h2, h3]`. Rewrite using `[rhoK_adj T hε hu, ← hη, hint _ (Unitary.star_mem hu), hUY, ← hπadj _ hu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hπadj _ (Unitary.star_mem hu), star_star, mul_comm]`. Rewrite using `[integral_congr_ae hpt]`. Establish `hmul : ∀ g ∈ UWset k r (z0 k r), ∀ h ∈ UWset k r (z0 k r), π (g * h) = π g * π h`. Introduce `g hg h hh`. Establish `e1` using `StandardBasisEmbedding.eq_blockW hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `StandardBasisEmbedding.eq_blockW hh`. Rewrite using `[e1, e2, ← StandardBasisEmbedding.blockW_mul]`. Conclude with `hUR.1.2 _ (unit_uj (StandardBasisEmbedding.blk_unitary hg)) _ (unit_uj (StandardBasisEmbedding.blk_unitary hh))`. Establish `hunit : ∀ g ∈ UWset k r (z0 k r), ∀ v, ‖π g v‖ = ‖v‖`. Introduce `g hg v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[StandardBasisEmbedding.eq_blockW hg]`. Conclude with `hUR.2.1 _ (unit_uj (StandardBasisEmbedding.blk_unitary hg)) v`. Establish `hirr : ∀ S : Submodule ℂ Vp, (∀ g ∈ UWset k r (z0 k r), ∀ v ∈ S, π g v ∈ S) → S = ⊥ ∨ S = ⊤`. Introduce `S hS`. Conclude with `hπ.2.2.2.2.2.1 S le_top (fun g hg v hv => hS _ (StandardBasisEmbedding.mem_UW hg.1) v hv)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmeas : AEStronglyMeasurable (fun x : Mt k r => π (Matrix.of x)) μW`. Establish `hc : ContinuousOn (fun x : Mt k r => π' (StandardBasisEmbedding.blk (Matrix.of x))) {x | Matrix.of x ∈ UWset k r (z0 k r)}` using `(clm_continuousOn π' _ hUR.2.2).comp blk_cont.continuousOn (fun x hx => unit_uj (StandardBasisEmbedding.blk_unitary hx))`. Establish `h1` using `hc.aestronglyMeasurable (μ := μW) isClosed_UW.measurableSet`. Rewrite `h1` using `[Measure.restrict_eq_self_of_ae_mem (s := {x : Mt k r | Matrix.of x ∈ UWset k r (z0 k r)}) hae]`. Conclude with `h1.congr (hae.mono fun x hx => (congrArg π (StandardBasisEmbedding.eq_blockW hx)).symm)`.
-
-Rewrite using `[schur_orthogonality_unitary_rep (UWset k r (z0 k r)) μW hμW.2.2.1 (fun g hg => (uw_inv hg).2) (fun g hg => hμW.2.2.2 g hg) π hmul hunit hirr hmeas Y' ξ ξ η]`. Establish `e1 : ⟪η, ξ⟫_ℂ = (starRingEnd ℂ) α⁻¹`. Rewrite using `[hηdef, inner_smul_left, inner_self_eq_norm_sq_to_K, hξn]`. Simplify using the standard rewrite rules. Establish `e2 : ⟪ξ, Y'⟫_ℂ = (starRingEnd ℂ) α * ⟪T.w, Y⟫_ℂ`.
-
-Rewrite using `[← hUY, hα, inner_smul_left]`. Rewrite using `[e1, e2, map_inv₀]`. Establish `hc0 : (starRingEnd ℂ) α ≠ 0` using `by simpa using hα0`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem schur_orthogonality_whittaker {ε : Fin (2 * r + k + 1) → Bool} {Λ : Fin (2 * r + k + 1) → ℝ} (T : S7.KType ε Λ)
     {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} {u : Fin k → ℝ}

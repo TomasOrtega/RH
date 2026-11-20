@@ -13,11 +13,11 @@ open GlobalTheory.Ex GlobalTheory.Mum.TensTor
 namespace GlobalTheory.Mum.TensTor
 
 /- English proof (translation)
-Introduce `F _ N N' r W φ e wv hT v' u' vs hv hu`. Take `⟨-, hφ, -, -, -, hw, -⟩` from `hT`. Take `⟨hv1, hv2⟩` from `hv`. Take `⟨hu1, hu2⟩` from `hu`. Establish `hb : v'.b = u'.b` using `hφ.1 (funext fun j => (hv1 j).trans (hu1 j).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `NumD.Gt.ext hb (funext fun χ' => ?_)` and prove the remaining obligations. Establish `h1` using `hv2 χ'`. Establish `h2` using `hu2 χ'`. Rewrite `h2` using `[← hb]`. Establish `hne : wv (N'.c χ') * wv v'.b ≠ 0` using `mul_ne_zero (hw _) (hw _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Apply `mul_right_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[← _root_.mul_assoc, ← _root_.mul_assoc, h1, h2]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem gtRelV_unique : ∀ (F : Type) [Field F] (N N' : NumD F) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (φ : N'.A → Fin r → N.A) (e : N'.X → Fin r → N.X) (wv : N'.A → F), TensFacts W φ e wv → ∀ (v' u' : N'.Gt) (vs : Fin r → N.Gt), GtRelV W φ e wv v' vs → GtRelV W φ e wv u' vs → v' = u' := by
   intro F _ N N' r W φ e wv hT v' u' vs hv hu

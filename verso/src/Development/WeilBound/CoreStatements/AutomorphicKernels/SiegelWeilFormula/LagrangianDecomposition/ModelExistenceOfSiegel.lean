@@ -6,7 +6,7 @@ noncomputable section
 namespace PositivityTheory.SiegelWeilFormula.Ald
 
 /- English proof (translation)
-The claim follows from `model_existence_of_siegel_small hG (smallS_of' chartFacts sliceFacts)`.
+A detailed English derivation is pending.
 -/
 theorem model_existence_of_siegel (hG : SiegelSmall) : ModelEx := model_existence_of_siegel_small hG (smallS_of' chartFacts sliceFacts)
 

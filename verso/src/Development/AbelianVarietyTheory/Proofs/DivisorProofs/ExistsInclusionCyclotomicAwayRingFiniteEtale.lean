@@ -11,9 +11,9 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.SiegelTor
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `h`. Establish `hn : n ≠ 0` using `left_ne_zero_of_mul hN`. Establish `hc : c ≠ 0` using `right_ne_zero_of_mul hN`. Establish `hn' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Establish `hc' : (c : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.mul_div_cancel_left _ (Nat.pos_of_ne_zero hn), zeta, zeta, ← Complex.exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem zeta_pow_div_of_dvd {n N : ℕ} (hN : N ≠ 0) (h : n ∣ N) : zeta N ^ (N / n) = zeta n := by
   obtain ⟨c, rfl⟩ := h
@@ -27,11 +27,9 @@ theorem zeta_pow_div_of_dvd {n N : ℕ} (hN : N ≠ 0) (h : n ∣ N) : zeta N ^ 
   field_simp
 
 /- English proof (translation)
-Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x (rfl | rfl)`. Rewrite using `[← zeta_pow_div_of_dvd hN h]`. Conclude with `pow_mem (zetaAway N).2 _`. Take `⟨c, rfl⟩` from `h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc' : (c : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (right_ne_zero_of_mul hN)`. Establish `e : (n : ℂ)⁻¹ = (c : ℂ) * ((n * c : ℕ) : ℂ)⁻¹`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
-
-Conclude with `mul_mem (natCast_mem _ _) (Subring.subset_closure (Or.inr rfl))`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycAway_le_of_dvd {n N : ℕ} (hN : N ≠ 0) (h : n ∣ N) : cycAway n ≤ cycAway N := by
   refine Subring.closure_le.2 ?_
@@ -47,25 +45,23 @@ theorem cycAway_le_of_dvd {n N : ℕ} (hN : N ≠ 0) (h : n ∣ N) : cycAway n �
     exact mul_mem (natCast_mem _ _) (Subring.subset_closure (Or.inr rfl))
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Complex.isPrimitiveRoot_exp N hN).pow_eq_one`.
+A detailed English derivation is pending.
 -/
 theorem zetaAway_pow_self {N : ℕ} (hN : N ≠ 0) : zetaAway N ^ N = 1 :=
   Subtype.ext (Complex.isPrimitiveRoot_exp N hN).pow_eq_one
 
 /- English proof (translation)
-Establish `hD : ∀ x : cycAway N, KaehlerDifferential.D R (cycAway N) x = 0`. Introduce and unpack `⟨x, hx⟩`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with rfl | rfl` into its components or cases.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h` using `congrArg (KaehlerDifferential.D R (cycAway N)) (zetaAway_pow_self hN)`. Rewrite `h` using `[Derivation.leibniz_pow, Derivation.map_one_eq_zero, ← Nat.cast_smul_eq_nsmul (cycAway N), smul_smul]`. Establish `hu : IsUnit ((N : cycAway N) * zetaAway N ^ (N - 1))` using `(isUnit_natCast hN).mul ((IsUnit.of_pow_eq_one (zetaAway_pow_self hN) hN).pow _)`. Conclude with `hu.smul_eq_zero.1 h`. Set `v : cycAway N` to `⟨(N : ℂ)⁻¹, Subring.subset_closure (Or.inr rfl)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hv : (N : cycAway N) * v = 1` using `Subtype.ext (by simpa [v] using mul_inv_cancel₀ (Nat.cast_ne_zero.2 hN : (N : ℂ) ≠ 0))`. Establish `h` using `congrArg (KaehlerDifferential.D R (cycAway N)) hv`. Rewrite `h` using `[Derivation.leibniz, Derivation.map_one_eq_zero, Derivation.map_natCast, smul_zero, add_zero]`. Conclude with `(isUnit_natCast hN).smul_eq_zero.1 h`. Consider the case `zero => exact map_zero _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `one => exact Derivation.map_one_eq_zero _`. Consider the case `add x y hx' hy' hx hy`. Use `map_add (KaehlerDifferential.D R (cycAway N)) ⟨x, hx'⟩ ⟨y, hy'⟩` as an intermediate fact. Rewrite `this` using `[hx, hy, add_zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `neg x hx' hx`. Use `map_neg (KaehlerDifferential.D R (cycAway N)) ⟨x, hx'⟩` as an intermediate fact. Rewrite `this` using `[hx, neg_zero]`. Conclude with `this`. Consider the case `mul x y hx' hy' hx hy`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(KaehlerDifferential.D R (cycAway N)).leibniz ⟨x, hx'⟩ ⟨y, hy'⟩` as an intermediate fact. Rewrite `this` using `[hx, hy, smul_zero, smul_zero, add_zero]`. Conclude with `this`. Use `⟨subsingleton_of_forall_eq 0 fun ω => ?_⟩` and prove the remaining obligations. Establish `hω : ω ∈ Submodule.span (cycAway N) (Set.range (KaehlerDifferential.D R (cycAway N)))`.
-
-Rewrite using `[KaehlerDifferential.span_range_derivation]`. Discharge the goal by the elementary cases of `trivial`. Use `(Submodule.mem_bot (cycAway N)).1 (Submodule.span_le.2 ?_ hω)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `(Submodule.mem_bot (cycAway N)).2 (hD x)`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem formallyUnramified_cycAway {N : ℕ} (hN : N ≠ 0) (R : Type) [CommRing R] [Algebra R (cycAway N)] :
     Algebra.FormallyUnramified R (cycAway N) := by
@@ -107,15 +103,15 @@ theorem formallyUnramified_cycAway {N : ℕ} (hN : N ≠ 0) (R : Type) [CommRing
   exact (Submodule.mem_bot (cycAway N)).2 (hD x)
 
 /- English proof (translation)
-Establish `hn : n ≠ 0` using `fun h0 => hN (by simpa [h0] using h)`. Introduce and unpack `⟨x, hx⟩`. Proceed by induction on `hx using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with rfl | rfl` into its components or cases.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨Polynomial.X ^ N - Polynomial.C 1, Polynomial.monic_X_pow_sub_C _ hN, by`. Simplify using `only [Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, map_one, Polynomial.eval₂_one]`. Conclude with `sub_eq_zero.2 (zetaAway_pow_self hN)⟩`. Take `⟨c, hc⟩` from `ha`. Set `v : cycAway n` to `⟨(n : ℂ)⁻¹, Subring.subset_closure (Or.inr rfl)⟩`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hn' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Establish `hN' : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hN`. Establish `hc' : (n : ℂ) ^ a = N * c` using `by exact_mod_cast hc`. Use `RingHom.isIntegralElem_map (Subring.inclusion (cycAway_le_of_dvd hN h)) (x := (c : cycAway n) * v ^ a)` and compare the differences between its conclusion and the goal. Use `Subtype.ext ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(N : ℂ)⁻¹ = (c : ℂ) * ((n : ℂ)⁻¹) ^ a`. Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[← _root_.mul_assoc, ← hc', ← mul_pow, mul_inv_cancel₀ hn', one_pow]`. Consider the case `zero => exact RingHom.isIntegralElem_zero _`. Consider the case `one => exact RingHom.isIntegralElem_one _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact hx.add _ hy`. Consider the case `neg x _ hx => exact hx.neg _`. Consider the case `mul x y _ _ hx hy => exact hx.mul _ hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isIntegral_inclusion_cycAway {n N a : ℕ} (hN : N ≠ 0) (h : n ∣ N) (ha : N ∣ n ^ a) :
     (Subring.inclusion (cycAway_le_of_dvd hN h)).IsIntegral := by
@@ -144,13 +140,13 @@ theorem isIntegral_inclusion_cycAway {n N a : ℕ} (hN : N ≠ 0) (h : n ∣ N) 
   | mul x y _ _ hx hy => exact hx.mul _ hy
 
 /- English proof (translation)
-Introduce `n N hN h`. Establish `hn : n ≠ 0` using `fun h0 => hN (by simpa [h0] using h)`. Set `j` to `Subring.inclusion (cycAway_le_of_dvd hN h)`. Establish `hj : Function.Injective j` using `Subring.inclusion_injective _`. Use `⟨j, hj, Subtype.ext (zeta_pow_div_of_dvd hN h).symm, fun ⟨a, ha⟩ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hint : j.IsIntegral` using `isIntegral_inclusion_cycAway hN h ha`. Use `letI := j.toAlgebra`. Establish `: IsDedekindDomain (cycAway n)` using `(arBase_cycAway n hn).1`. Establish `: Algebra.IsIntegral (cycAway n) (cycAway N)` using `⟨hint⟩`. Use `finiteType_cycAway N` as an intermediate fact.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.FiniteType (cycAway n) (cycAway N)` using `.of_restrictScalars_finiteType ℤ _ _`. Establish `hfin : Module.Finite (cycAway n) (cycAway N)` using `Algebra.IsIntegral.finite`. Establish `: FaithfulSMul (cycAway n) (cycAway N)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hj`. Establish `: Module.Flat (cycAway n) (cycAway N)` using `inferInstance`. Establish `: Algebra.FinitePresentation (cycAway n) (cycAway N)` using `Algebra.FinitePresentation.of_finiteType.1 inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `formallyUnramified_cycAway hN (cycAway n)` as an intermediate fact. Establish `het : Algebra.Etale (cycAway n) (cycAway N)` using `Algebra.Etale.of_formallyUnramified_of_flat`. Use `⟨(IsFinite.SpecMap_iff _).2 hfin, HasRingHomProperty.Spec_iff.2 het, ⟨?_⟩⟩` and prove the remaining obligations. Conclude with `hint.comap_surjective hj`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_inclusion_cycAway : ∀ n N : ℕ, N ≠ 0 → n ∣ N → ∃ j : cycAway n →+* cycAway N, Function.Injective j ∧
     j (zetaAway n) = zetaAway N ^ (N / n) ∧

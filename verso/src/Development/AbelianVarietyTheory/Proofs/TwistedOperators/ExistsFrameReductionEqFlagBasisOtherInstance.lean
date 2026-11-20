@@ -24,7 +24,7 @@ noncomputable section
 namespace GlobalTheory.SeeConjRead
 
 /- English proof (translation)
-Unfold `Formalism.UG.cT Formalism.UG.hform`. Simplify using `only [Matrix.mul_apply, Finset.sum_mul, Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `Finset.sum_comm`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cT_mul_entry {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (U J W : Matrix (Fin n) (Fin n) A) (a b : Fin n) :
     (Formalism.UG.cT σ U * J * W) a b = Formalism.UG.hform σ J (fun i => U i a) (fun i => W i b) := by
@@ -33,9 +33,9 @@ theorem cT_mul_entry {A : Type} [CommRing A] {n : ℕ} (σ : A →+* A) (U J W :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(hL.Pg Q).1 hQ`. Establish `hmem : ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ (Q.under (𝓞 D.host.K)).asIdeal`. Rewrite using `[show Q.under (𝓞 D.host.K) = R.C.P.pb k from hk]`. Conclude with `R.C.P.pb_over k`. Rewrite `hmem` using `[IsDedekindDomain.HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, map_natCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_mul]`. Use `fin_cases k`. Conclude with `Ideal.mul_mem_right _ _ hmem`. Conclude with `Ideal.mul_mem_left _ _ hmem`.
+A detailed English derivation is pending.
 -/
 theorem over_g {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type}
     [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (hL : R.toLevCh.Is A.μ0) {Q : Pl D.host.E}
@@ -51,17 +51,17 @@ theorem over_g {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : Fam
   · exact Ideal.mul_mem_left _ _ hmem
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F X h hL _`. Establish `hn : (Yc D 0).rank = 2 * D.R.rS + D.R.k + 1`. Rewrite using `[show (Yc D 0).rank = D.R.rankY 0 from D.sp.Y_rank 0 (Nat.zero_le _)]`. Establish `hm` using `D.R.m_even`. Establish `h2` using `D.R.two_le_m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.BasicNotions.Ranks.rankY Formalism.BasicNotions.Ranks.rS Formalism.BasicNotions.Ranks.r`. Take `⟨c, hc⟩` from `hm`. Use linear arithmetic over natural numbers and integers. Take `⟨β₀, hβ₀⟩` from `GlobalTheory.StdFrames.exists_base (Yc D 0)`. Establish `hG` using `(GlobalTheory.StdFrames.unimod_of_isSD (GlobalTheory.StdFrames.isSD_one hβ₀)).1`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hint` using `fun PP i j => GlobalTheory.T.flagPairingVectors_integral_inFrame X h β₀ hβ₀ PP i j`. Establish `hdet : ∀ Q ∈ R.Pg, Valued.v (GlobalTheory.StdFrames.cpt Q ((β₀⁻¹).val * colMat (flagAt X h Q)).det) = 1`. Introduce `Q hQ`. Establish `hg` using `over_g R hL hQ`. Use `GlobalTheory.T.standard_frame_integrality_conditions β₀ (GlobalTheory.IndefiniteRowSideFullHecke.ChainMatrices.ratM (Yc D 0).gram) (colMat (pairAt X h Q)) (colMat (flagAt X h Q)) Q (fun a => sgnD D.R.rS D.R.k a) hG (fun i j => (hint Q i j).2) (fun i j => (hint Q i j).1) ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a`. Unfold `sgnD`. Apply the tactic sequence `split_ifs <;> simp`. Introduce `a b`. Rewrite using `[cT_mul_entry]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `SmallAt Q (hY D (pairAt X h Q a) (flagAt X h Q b) - _)`. Distinguish the cases in `hc : GlobalTheory.StdFrames.cpt Q (ewT X h) = 1`. Rewrite using `[pairAt, flagAt, if_pos hc, if_pos hc]`. Conclude with `GlobalTheory.T.flagPairingTable_diagonal_modSmall (hY D) (SmallAt Q) D.R.rS D.R.k _ hn _ _ _ _ _ (GlobalTheory.T.flagPairingTable_idempotentComponent_one X h Q hg hc) a b`. Rewrite using `[pairAt, flagAt, if_neg hc, if_neg hc]`.
+Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.T.flagPairingTable_diagonal_modSmall (hY D) (SmallAt Q) D.R.rS D.R.k _ hn _ _ _ _ _ (GlobalTheory.T.flagPairingTable_idempotentComponent_ne_one X h Q hg hc) a b`. Take `⟨β, hβ, hred⟩` from `GlobalTheory.T.exists_frame_lifting_prescribed_reductions β₀ R.Pg (flagAt X h) (fun Q _ i j => (hint Q i j).1) hdet`. Use `⟨β, ?_, hred⟩` and prove the remaining obligations. Rewrite using `[hβ₀, ← hβ]`. Conclude with `GlobalTheory.StdFrames.isFrame_lat β`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_frame_redIs : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), R.toLevCh.Is A.μ0 → R.IsGrp F → ∃ β : GL (Fin (Yc D 0).rank) (EAf D), IsFrame β (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0) ∧ ∀ PP ∈ R.Pg, RedIs β PP (flagAt X h PP) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F X h hL _

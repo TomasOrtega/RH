@@ -19,7 +19,7 @@ open GlobalTheory.ZM
 namespace GlobalTheory.ZM
 
 /- English proof (translation)
-Take `⟨p, hp, hpm⟩` from `GlobalTheory.exists_prime_natCast_mem_of_finiteType_int 𝔪`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Take `⟨L, hL, y, hy, hyf⟩` from `GlobalTheory.exists_padic_point 𝔪 hpm hf`. Conclude with `⟨integralClosure ℤ_[p] L, L, inferInstance, inferInstance, inferInstance, GlobalTheory.DiscEval.isAdicComplete_integralClosure L, GlobalTheory.DiscEval.finite_residueField_integralClosure L, inferInstance, charZero_of_injective_algebraMap (algebraMap ℚ_[p] L).injective, inferInst …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_complete_dvr_point (R : Type) [CommRing R] [IsDomain R] [CharZero R]
     [Algebra.FiniteType ℤ R] (𝔪 : Ideal R) (h𝔪 : 𝔪.IsMaximal) (f : R) (hf : f ≠ 0) :
@@ -36,15 +36,13 @@ theorem exists_complete_dvr_point (R : Type) [CommRing R] [IsDomain R] [CharZero
     inferInstance, y, hy, hyf⟩
 
 /- English proof (translation)
-Introduce `L1 L2 o _ g N' J b Mat κ w w' _ R K _ _ _ _ _ _ _ β v t 𝔪 h𝔪 hth hsh hpr`. Use `haveI : IsNoetherianRing R := Algebra.FiniteType.isNoetherianRing ℤ R`. Take `⟨f, hf, t', ψ, -, -, hth', hsh', hpr'⟩` from `GlobalTheory.T.exists_spread_theta_level_abelian_scheme_away L1 L2 o g N' J b Mat κ w w' R K β v t hth hsh hpr`. Take `⟨V, F, i1, i2, i3, i4, i5, i6, i7, i8, i9, y, hy, hyf⟩` from `exists_complete_dvr_point R 𝔪 h𝔪 f hf`. Establish `hu : IsUnit (((algebraMap V F).comp y) f)` using `isUnit_iff_ne_zero.mpr fun h => hyf (IsFractionRing.injective V F (h.trans (map_zero _).symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `φ : Localization.Away f →+* F` to `IsLocalization.Away.lift f hu`. Establish `hφ : φ.comp (algebraMap R (Localization.Away f)) = (algebraMap V F).comp y` using `IsLocalization.Away.lift_comp f hu`. Establish `hsq : spMap φ ≫ spMap (algebraMap R (Localization.Away f)) ≫ spMap β = spMap (algebraMap V F) ≫ spMap (y.comp β)`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Rewrite using `[← RingHom.comp_assoc, hφ, RingHom.comp_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨tF, hm⟩` from `GlobalTheory.T.exists_thetaLevelAbelianScheme_pullback o g (N' ^ 2) J b _ _ _ _ (spMap φ) t' hsq`. Take `⟨h1, h2, -⟩` from `GlobalTheory.T.thetaLevel_shape_primitivity_pullback_descent o g (N' ^ 2) J b Mat κ w w' _ _ _ _ _ t' tF hm`. Use `⟨V, F, i1, i2, i3, i4, i5, i6, i7, i8, i9, y, tF, hy, h1 hsh', h2 hpr', ?_⟩` and prove the remaining obligations. Establish `h3` using `GlobalTheory.T.hasThetaConstants_ring_baseChange L2 o g N' J b _ _ t' _ _ φ _ _ hth'`. Use `(GlobalTheory.T.hasThetaConstants_iff_of_thetaLevelPullback o g N' J b _ _ t' _ _ tF _ F _ _ hm).mpr ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.id_comp]`. Rewrite `h3` using `[Category.comp_id]`. Establish `e : (fun a => algebraMap V F (y (v a))) = fun a => φ (algebraMap R (Localization.Away f) (v a))`. Use function extensionality and compare the values at `fun a => (RingHom.congr_fun hφ (v a)).symm`. Rewrite using `[e]`.
-
-Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_obj_over_complete_dvr : Out.Laws → Out.Laws2 → ∀ (o : Type) [CommRing o] (g N' : ℕ) (J : Type) (b : TBase o (N' ^ 2)) Mat κ (w w' : J) [Finite J] (R K : Type) [CommRing R] [IsDomain R] [CharZero R] [Algebra.FiniteType ℤ R] [Field K] [Algebra R K] [IsFractionRing R K] (β : o →+* R) (v : Ix g (N' ^ 2) → R) (t : TObj g (N' ^ 2) J b (spMap (algebraMap R K) ≫ spMap β)) (𝔪 : Ideal R), 𝔪.IsMaximal → t.HasTh (𝟙 _) (fun a => algebraMap R K (v a)) → t.Shape Mat κ → t.Prim w w' → ∃ (V F : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsDiscreteValuationRing V) (_ : IsAdicComplete (IsLocalRing.maximalIdeal V) V) (_ : Finite (IsLocalRing.ResidueField V)) (_ : Field F) (_ : CharZero F) (_ : Algebra V F) (_ : IsFractionRing V F) (y : R →+* V) (tF : TObj g (N' ^ 2) J b (spMap (algebraMap V F) ≫ spMap (y.comp β))), (IsLocalRing.maximalIdeal V).comap y = 𝔪 ∧ tF.Shape Mat κ ∧ tF.Prim w w' ∧ tF.HasTh (𝟙 _) (fun a => algebraMap V F (y (v a))) := by
   intro L1 L2 o _ g N' J b Mat κ w w' _ R K _ _ _ _ _ _ _ β v t 𝔪 h𝔪 hth hsh hpr

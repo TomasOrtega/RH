@@ -89,14 +89,14 @@ def Datum.Compact (D : Datum p) : Prop :=
   2 * D.a < Module.finrank ℚ D.F ∨ (D.IsDivision ∧ D.n < 2 * D.m)
 
 /- English proof (translation)
-Apply the tactic sequence `rintro (h | ⟨-, h⟩) <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Datum.not_compact_of_m_eq_one (D : Datum p) (hm : D.m = 1) (hn : 2 ≤ D.n)
     (ha : Module.finrank ℚ D.F ≤ 2 * D.a) : ¬ D.Compact := by
   rintro (h | ⟨-, h⟩) <;> omega
 
 /- English proof (translation)
-Use `left`. Rewrite using `[ha, mul_zero]`. Conclude with `Module.finrank_pos`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Datum.compact_of_a_eq_zero (D : Datum p) (ha : D.a = 0) : D.Compact := by
   left
@@ -104,7 +104,7 @@ theorem Datum.compact_of_a_eq_zero (D : Datum p) (ha : D.a = 0) : D.Compact := b
   exact Module.finrank_pos
 
 /- English proof (translation)
-Take `⟨-, hmn, hdiv⟩` from `h`. Establish `hm` using `D.m_pos`. Conclude with `Or.inr ⟨hdiv, by omega⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the second alternative.
 -/
 theorem Datum.IsSimple.compact {D : Datum p} (h : D.IsSimple) : D.Compact := by
   obtain ⟨-, hmn, hdiv⟩ := h

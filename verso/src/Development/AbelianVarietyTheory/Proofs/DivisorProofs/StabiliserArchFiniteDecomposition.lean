@@ -21,9 +21,9 @@ open GlobalTheory.ThK.ConeEuler
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `h1 : (eInf F).1 = 1` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_one]; exact evI_realAd_one)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * (1 - (eInf F).1) = 0`. Rewrite using `[h1, sub_self, mul_zero]`. Express the relevant statement in the definitionally equal form `u.2 * (1 - (eInf F).2) = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[show u.2 = 0 from hu, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_one_sub_eInf {u : AF F} (hu : sndA F u = 0) : u * (1 - eInf F) = 0 := by
   have h1 : (eInf F).1 = 1 :=
@@ -35,9 +35,9 @@ theorem mul_one_sub_eInf {u : AF F} (hu : sndA F u = 0) : u * (1 - eInf F) = 0 :
     rw [show u.2 = 0 from hu, zero_mul]
 
 /- English proof (translation)
-Establish `e : mat ((compArch σ J k)⁻¹ * k) = mat (compArch σ J k⁻¹) * mat k` using `by rw [map_inv]; rfl`. Establish `e' : mat k⁻¹ * mat k = 1`. Express the relevant statement in the definitionally equal form `mat (k⁻¹ * k) = 1`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e, mat_compArch, Matrix.add_mul, Matrix.smul_mul, Matrix.smul_mul, Matrix.one_mul, e', smul_sub, sub_smul, sub_smul, one_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem mat_inv_compArch_mul {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (k : UA σ J) :
     mat ((compArch σ J k)⁻¹ * k) - 1 = (1 - eInf F) • (mat k - 1) := by
@@ -50,7 +50,7 @@ theorem mat_inv_compArch_mul {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (k : UA σ
   abel
 
 /- English proof (translation)
-Introduce `k hk`. Establish `ha : compArch σ X.J k ∈ K` using `(StabComp.comp_mem_of_isStab F E σ B n X K hK k hk).2`. Use `⟨compArch σ X.J k, ⟨compArch_mem k, ((hK _).1 ha).1⟩, (compArch σ X.J k)⁻¹ * k, mul_mem (inv_mem ha) hk, fun u hu => ?_, (mul_inv_cancel_left _ _).symm⟩` and prove the remaining obligations. Rewrite using `[mat_inv_compArch_mul, smul_smul, mul_one_sub_eInf hu, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_kInf_mul_fin (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ) (X : Spc F E n) (K : Subgroup (UA σ X.J)) (hK : IsStab B K) :

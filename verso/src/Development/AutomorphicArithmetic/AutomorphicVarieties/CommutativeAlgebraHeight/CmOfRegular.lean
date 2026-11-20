@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RegularLocalRegularSequ
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.CA ReciprocityTheory.CA
 
 /- English proof (translation)
-Take `⟨xs, hspan, hlen, hreg⟩` from `PI.UnitaryGroupMassFormula.RLRS.IsRegularLocalRing.exists_isRegular_ofList_eq_maximalIdeal A`. Use `⟨inferInstance, xs.length, hlen.symm, xs, rfl, fun r hr => ?_, hreg⟩` and prove the remaining obligations. Rewrite using `[← hspan]`. Conclude with `Ideal.subset_span hr`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cm_of_regular (A : Type) [CommRing A] [IsRegularLocalRing A] : ReciprocityTheory.CA.IsCM A := by
   obtain ⟨xs, hspan, hlen, hreg⟩ :=
@@ -15,9 +15,9 @@ private theorem cm_of_regular (A : Type) [CommRing A] [IsRegularLocalRing A] : R
   exact Ideal.subset_span hr
 
 /- English proof (translation)
-Use `⟨fun O _ _ _ _ d => ⟨?_, ?_⟩, fun k _ d => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `haveI : IsRegularLocalRing (MvPowerSeries (Fin d) O) := GlobalTheory.FormalIsogeny.isRegularLocalRing_mvPowerSeries O (Fin d)`. Conclude with `cm_of_regular _`. Rewrite using `[GlobalTheory.FormalIsogeny.ringKrullDim_mvPowerSeries, IsDiscreteValuationRing.ringKrullDim_eq_one, Nat.card_eq_fintype_card, Fintype.card_fin, add_comm]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `haveI : IsRegularLocalRing (MvPowerSeries (Fin d) k) := GlobalTheory.FormalIsogeny.isRegularLocalRing_mvPowerSeries k (Fin d)`. Conclude with `cm_of_regular _`. Rewrite using `[GlobalTheory.FormalIsogeny.ringKrullDim_mvPowerSeries, ringKrullDim_eq_zero_of_field, Nat.card_eq_fintype_card, Fintype.card_fin, zero_add]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.cl_cm :
     (∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] (d : ℕ), IsCM (MvPowerSeries (Fin d) O) ∧ ringKrullDim (MvPowerSeries (Fin d) O) = (d + 1 : ℕ)) ∧ ∀ (k : Type) [Field k] (d : ℕ), IsCM (MvPowerSeries (Fin d) k) ∧ ringKrullDim (MvPowerSeries (Fin d) k) = d := by

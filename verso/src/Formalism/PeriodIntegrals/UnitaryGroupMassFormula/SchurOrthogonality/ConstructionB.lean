@@ -7,11 +7,9 @@ namespace PI.WSF
 open Formalism.BasicNotions MvPolynomial MeasureTheory Measure TopologicalSpace Matrix
 
 /- English proof (translation)
-Establish `hK : IsCompact (Set.univ.pi fun _ : Fin N => Set.univ.pi fun _ : Fin N => Metric.closedBall (0 : ℂ) 1)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall 0 1`. Use `hK.of_isClosed_subset ?_ ?_` and prove the remaining obligations. Establish `e : (Matrix.unitaryGroup (Fin N) ℂ : Set (Matrix (Fin N) (Fin N) ℂ)) = {A : Matrix (Fin N) (Fin N) ℂ | A * star A = 1}`. Use extensionality with `A`. Conclude with `Matrix.mem_unitaryGroup_iff`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `isClosed_eq (continuous_id.matrix_mul continuous_star) continuous_const`. Introduce `A hA`. Simplify using `only [Set.mem_pi, Set.mem_univ, true_implies, Metric.mem_closedBall, dist_zero_right]`. Introduce `i j`.
-
-Conclude with `entry_norm_bound_of_unitary hA i j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isCompact_unitaryGroup (N : ℕ) :
     IsCompact ((Matrix.unitaryGroup (Fin N) ℂ : Set (Matrix (Fin N) (Fin N) ℂ))) := by
@@ -33,13 +31,13 @@ instance compactSpace_unitaryGroup (N : ℕ) : CompactSpace (Matrix.unitaryGroup
   isCompact_iff_compactSpace.mp (isCompact_unitaryGroup N)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `g`. Use `haveI : (Measure.map (fun x => x * g) μ).IsHaarMeasure := Measure.isHaarMeasure_map_mul_right μ g`. Establish `huniv : Measure.map (fun x => x * g) μ Set.univ = μ Set.univ`. Rewrite using `[Measure.map_apply (measurable_mul_const g) MeasurableSet.univ, Set.preimage_univ]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin : μ Set.univ ≠ ⊤` using `measure_ne_top μ _`. Establish `hpos : μ Set.univ ≠ 0` using `(isOpen_univ.measure_pos μ Set.univ_nonempty).ne'`. Establish `hc : (Measure.map (fun x => x * g) μ).haarScalarFactor μ = 1`. Establish `h1` using `Measure.measure_isHaarMeasure_eq_smul_of_isOpen (Measure.map (fun x => x * g) μ) μ isOpen_univ`. Rewrite `h1` using `[huniv, ENNReal.smul_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ((((Measure.map (fun x => x * g) μ).haarScalarFactor μ : NNReal) : ENNReal)) = 1`. Establish `h3 : (((Measure.map (fun x => x * g) μ).haarScalarFactor μ : NNReal) : ENNReal) * μ Set.univ = 1 * μ Set.univ`. Rewrite using `[one_mul]`. Conclude with `h1.symm`. Conclude with `(ENNReal.mul_left_inj hpos hfin).mp h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2` after adjusting the coercions. Use `MeasureTheory.ext_of_generate_finite {s : Set G | IsOpen s} BorelSpace.measurable_eq isPiSystem_isOpen ?_ huniv` and prove the remaining obligations. Introduce `s hs`. Rewrite using `[Measure.measure_isHaarMeasure_eq_smul_of_isOpen _ μ hs, hc, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant_of_compact {G : Type*} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [CompactSpace G] [MeasurableSpace G] [BorelSpace G]
@@ -68,15 +66,15 @@ theorem isMulRightInvariant_of_compact {G : Type*} [Group G] [TopologicalSpace G
   rw [Measure.measure_isHaarMeasure_eq_smul_of_isOpen _ μ hs, hc, one_smul]
 
 /- English proof (translation)
-Introduce `N`. Use `haveI : CompactSpace (Matrix.unitaryGroup (Fin N) ℂ) := compactSpace_unitaryGroup N`. Set `μG : Measure (Matrix.unitaryGroup (Fin N) ℂ)` to `Measure.haarMeasure ⊤`. Use `haveI : μG.IsMulRightInvariant := isMulRightInvariant_of_compact μG`. Establish `hm : Measurable (Subtype.val : Matrix.unitaryGroup (Fin N) ℂ → Matrix (Fin N) (Fin N) ℂ)` using `measurable_subtype_coe`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Use `⟨Measure.map Subtype.val μG, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Rewrite using `[Measure.map_apply hm MeasurableSet.univ, Set.preimage_univ]`. Establish `h1` using `Measure.haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts (Matrix.unitaryGroup (Fin N) ℂ)))`. Simplify using `using h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmeas : MeasurableSet {x : Matrix (Fin N) (Fin N) ℂ | x ∈ Matrix.unitaryGroup (Fin N) ℂ}` using `(isCompact_unitaryGroup N).isClosed.measurableSet`. Rewrite using `[ae_map_iff hm.aemeasurable hmeas]`. Conclude with `Filter.Eventually.of_forall fun y => y.2`. Introduce `u hu f hf`. Establish `hs : AEStronglyMeasurable (fun x => f (x * u)) (Measure.map Subtype.val μG)` using `(hf.comp (continuous_mul_right u)).aestronglyMeasurable`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[integral_map hm.aemeasurable hs, integral_map hm.aemeasurable hf.aestronglyMeasurable]`. Establish `h1` using `integral_mul_right_eq_self (μ := μG) (fun y : Matrix.unitaryGroup (Fin N) ℂ => f (y : Matrix (Fin N) (Fin N) ℂ)) ⟨u, hu⟩`. Simplify using `using h1`. Introduce `u hu f hf`. Establish `hs : AEStronglyMeasurable (fun x => f (u * x)) (Measure.map Subtype.val μG)` using `(hf.comp (continuous_mul_left u)).aestronglyMeasurable`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[integral_map hm.aemeasurable hs, integral_map hm.aemeasurable hf.aestronglyMeasurable]`. Establish `h1` using `integral_mul_left_eq_self (μ := μG) (fun y : Matrix.unitaryGroup (Fin N) ℂ => f (y : Matrix (Fin N) (Fin N) ℂ)) ⟨u, hu⟩`. Simplify using `using h1`.
+A detailed English derivation is pending.
 -/
 theorem unitary_haar_measure : HaarU := by
   intro N

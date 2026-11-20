@@ -14,11 +14,11 @@ section SymExt
 variable {κ : Type} [CommRing κ]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[diagEmb_val]`. Use `show padM κ n h.1 i j = diagMat n (n + 1) h.1 i j`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i' => ?_) i <;> refine Fin.lastCases ?_ (fun j' => ?_) j`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[diagMat_of_not_left _ _ (by simp)]`. Simplify using `[padM]`. Rewrite using `[diagMat_of_not_left _ _ (by simp)]`. Simplify using `[padM, (Fin.castSucc_ne_last _).symm]`. Rewrite using `[diagMat_of_not_right _ _ (by simp)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[padM, Fin.castSucc_ne_last]`. Rewrite using `[diagMat_of_lt _ (show (Fin.castSucc i').val < n from i'.2) (show (Fin.castSucc j').val < n from j'.2)]`. Simplify using `[padM]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem symX_padM_eq {n : ℕ} (h : GL (Fin n) κ) : Units.map (padM κ n) h = diagEmb κ (Nat.le_succ n) h := by
   apply Units.ext
@@ -36,17 +36,15 @@ theorem symX_padM_eq {n : ℕ} (h : GL (Fin n) κ) : Units.map (padM κ n) h = d
     simp [padM]
 
 /- English proof (translation)
-Take `⟨hB, h0⟩` from `mem_HPar.mp hg`. Establish `hB' : diagEmb κ (Nat.le_succ n') g ∈ blockUT (n' + 1) κ r (List.replicate m t)`. Use `mem_btG.mpr fun i j hij => ?_` and prove the remaining obligations. Rewrite using `[diagEmb_val]`. Distinguish the cases in `hi : i.val < n'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hj : j.val < n'`. Rewrite using `[diagMat_of_lt _ hi hj]`. Conclude with `(mem_btG.mp hB) ⟨i.val, hi⟩ ⟨j.val, hj⟩ hij`. It suffices to derive a contradiction. Use `blkIdx_mono (r :: List.replicate m t) (show i.val ≤ j.val by omega)` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `coarse at hij`. Use linear arithmetic over natural numbers and integers. Rewrite using `[diagMat_of_not_left _ _ hi]`. Conclude with `Matrix.one_apply_ne (fun e => by rw [e] at hij; omega)`. Use `⟨mem_HPar.mpr ⟨hB', ?_⟩, ?_⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e : blk0 (n' + 1) κ hrN (List.replicate m t) ⟨diagEmb κ (Nat.le_succ n') g, hB'⟩ = blk0 n' κ hr (List.replicate m t) ⟨g, hB⟩`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Rewrite using `[blockZero_val, blockZero_val]`. Use `show (diagEmb κ (Nat.le_succ n') g : Matrix (Fin (n' + 1)) (Fin (n' + 1)) κ) (Fin.castLE hrN a) (Fin.castLE hrN b) = (g : Matrix (Fin n') (Fin n') κ) (Fin.castLE hr a) (Fin.castLE hr b)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[diagEmb_val, diagMat_of_lt _ (show (Fin.castLE hrN a).val < n' by simp; omega) (show (Fin.castLE hrN b).val < n' by simp; omega)]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `h0`. Introduce `i j hj`.
-
-Rewrite using `[diagEmb_val, diagMat_of_not_right _ _ (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diagEmb_mem_HXmsym {n' k r t m rS : ℕ} (hn : n' = r + m * t) (hr : r ≤ n') (hrN : r ≤ n' + 1) (g : GL (Fin n') κ)
     (hg : g ∈ HJsym κ n' k r t m rS hr) : diagEmb κ (Nat.le_succ n') g ∈ HXmsym κ (n' + 1) k r t m rS hrN := by
@@ -81,7 +79,7 @@ theorem diagEmb_mem_HXmsym {n' k r t m rS : ℕ} (hn : n' = r + m * t) (hr : r �
     rw [diagEmb_val, diagMat_of_not_right _ _ (by omega)]
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Use `diagEmb_mem_HXmsym hn hr hrN (g w) hg` as an intermediate fact. Rewrite `this` using `[← symX_padM_eq]`. Conclude with `this`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symX_ext_mem {E : Type} [Field E] [NumberField E] [StarRing E] {SG : Finset (HeightOneSpectrum (𝓞 E))} {N n : ℕ}
     (hN : N = n + 1) (k r t m rS : ℕ) (hn : n = r + m * t) (hr : r ≤ n) (hrN : r ≤ N) (g : GLG E n SG) (w : SG)

@@ -6,37 +6,33 @@ open Matrix GlobalTheory.RealBessel GlobalTheory.BesselMapOne Formalism.L2.Theta
 namespace UpperTheory.Lit.Bur.BesselRadical
 
 /- English proof (translation)
-Take `⟨hU, hcol, hmid⟩` from `hu`. Establish `hspan : ∀ y : Fin (2 * r + k + 1) → ℂ, (∀ i : Fin (2 * r + k + 1), r ≤ (i : ℕ) → y i = 0) → y = colE k r *ᵥ fun b => y (PI.UpqRep.eI k r b)`. Introduce `y hy`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, colE, ite_mul, one_mul, zero_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hi : (i : ℕ) < r`. Rewrite using `[Finset.sum_eq_single (⟨i, hi⟩ : Fin r)]`. Establish `h : i = PI.UpqRep.eI k r ⟨i, hi⟩` using `Fin.ext rfl`. Rewrite using `[if_pos h, ← h]`. Introduce `b _ hb`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hb (Fin.ext (congrArg Fin.val h).symm)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Rewrite using `[hy i (not_lt.mp hi)]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Rewrite using `[if_neg]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hi` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `b.isLt`. Establish `key : ∀ (x : Fin (2 * r + k + 1) → ℂ) (b : Fin r) (j : Fin (2 * r + k + 1)), (b : ℕ) + j = 2 * r + k → (((colE k r)ᴴ * Formalism.QuantumDeterminants.Hpk k r) *ᵥ x) b = x j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x b j hbj`. Rewrite using `[← Matrix.mulVec_mulVec]`. Establish `hc : ∀ w : Fin (2 * r + k + 1) → ℂ, ((colE k r)ᴴ *ᵥ w) b = w (PI.UpqRep.eI k r b)`. Introduce `w`. Simplify using `[Matrix.mulVec, dotProduct, colE, Matrix.conjTranspose_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hc]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Establish `hb` using `b.isLt`. Rewrite using `[Finset.sum_eq_single j]`. Establish `h1 : Formalism.QuantumDeterminants.Hpk k r (PI.UpqRep.eI k r b) j = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Formalism.QuantumDeterminants.Hpk, PI.UpqRep.eI, hbj, hb]`. Rewrite using `[h1, one_mul]`. Introduce `m _ hm`. Establish `hne : (b : ℕ) + m ≠ 2 * r + k` using `fun h => hm (Fin.ext (by omega))`. Establish `h0 : Formalism.QuantumDeterminants.Hpk k r (PI.UpqRep.eI k r b) m = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Formalism.QuantumDeterminants.Hpk, PI.UpqRep.eI, hne, not_le.mpr hb]`. Rewrite using `[h0, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Use `⟨hU, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i`. Establish `hy : ∀ m, ((u - 1) *ᵥ fun m => colE k r m i) m = u m (PI.UpqRep.eI k r i) - if m = PI.UpqRep.eI k r i then 1 else 0`. Introduce `m`. Simplify using `[Matrix.mulVec, dotProduct, colE, Matrix.sub_apply, Matrix.one_apply, sub_mul]`. Use `⟨fun b => ((u - 1) *ᵥ fun m => colE k r m i) (PI.UpqRep.eI k r b), ?_, hspan _ ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j hij show ((u - 1) *ᵥ fun m => colE k r m i) (PI.UpqRep.eI k r j) = 0`. Rewrite using `[hy]`. Conclude with `sub_eq_zero.mpr (hcol i _ hij)`. Introduce `m hm`. Rewrite using `[hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.mpr (hcol i m (le_trans (Nat.le_of_lt i.isLt) hm))`. Introduce `x hx`. Establish `hxz : ∀ j : Fin (2 * r + k + 1), r + k < (j : ℕ) → x j = 0`. Introduce `j hj`. Establish `hjN` using `j.isLt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : 2 * r + k - (j : ℕ) < r` using `by omega`. Establish `h` using `key x ⟨2 * r + k - j, hb⟩ j (by show 2 * r + k - (j : ℕ) + j = 2 * r + k; omega)`. Rewrite using `[← h, hx]`. Both sides reduce to the same expression. Use `⟨fun b => ((u - 1) *ᵥ x) (PI.UpqRep.eI k r b), hspan _ ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce `i hi`. Simplify using `only [Matrix.mulVec, dotProduct]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `j _`. Distinguish the cases in `hj : (j : ℕ) ≤ r + k`.
-
-Establish `h0 : (u - 1) i j = 0`. Rewrite using `[Matrix.sub_apply, Matrix.one_apply, sub_eq_zero]`. Distinguish the cases in `hjr : (j : ℕ) < r`. Conclude with `hcol ⟨j, hjr⟩ i (by show (j : ℕ) ≤ i; omega)`. Conclude with `hmid i j (not_lt.mp hjr) hj hi`.
-
-Rewrite using `[h0, zero_mul]`. Rewrite using `[hxz j (not_le.mp hj), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_unipRad_of_mem_Nset {k r : ℕ} {u : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hu : u ∈ Formalism.QuantumDeterminants.Nset k r) : u ∈ unipRad (Formalism.QuantumDeterminants.Hpk k r) (colE k r) := by
@@ -127,7 +123,7 @@ end UpperTheory.Lit.Bur.BesselRadical
 open Matrix GlobalTheory.RealBessel GlobalTheory.BesselMapOne Formalism.L2.Theta GlobalTheory.SmVec
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @UpperTheory.Lit.Bur.BesselRadical.mem_unipRad_of_mem_Nset | exact UpperTheory.Lit.Bur.BesselRadical.mem_unipRad_of_mem_Nset | (intros; apply UpperTheory.Lit.Bur.BesselRadical.mem_unipRad_of_mem_Nset <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.UpperTheory.Lit.Bur.mem_besselUnipotentRadical_of_mem_coordGroup : ∀ {k r : ℕ} {u : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hu : u ∈ Formalism.QuantumDeterminants.Nset k r), u ∈ unipRad (Formalism.QuantumDeterminants.Hpk k r) (colE k r) := by
   first | exact @UpperTheory.Lit.Bur.BesselRadical.mem_unipRad_of_mem_Nset | exact UpperTheory.Lit.Bur.BesselRadical.mem_unipRad_of_mem_Nset | (intros; apply UpperTheory.Lit.Bur.BesselRadical.mem_unipRad_of_mem_Nset <;> assumption)

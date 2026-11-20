@@ -15,9 +15,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UnitTheta
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `hx' : x = pushHom h (Over.mk a') x'` using `Over.OverMorphism.ext hx`. Establish `inj : Function.Injective (pushHom h (Over.mk a'))` using `fun y y' hy => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `h.1.hom_ext` to reduce the goal to its premises.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `congrArg (fun z => z.left) hy`. Rewrite using `[Over.w y, Over.w y']`. Establish `: x ^ m = pushHom h (Over.mk a') (x' ^ m)` using `by rw [map_pow]; exact congrArg (· ^ m) hx'`. Rewrite using `[this]`. Conclude with `(map_eq_one_iff _ inj).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_eq_one_iff_of_isGrpPullback {S S' X : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G']
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {a' : X ⟶ S'} {a : X ⟶ S} (e : a = a' ≫ f)
@@ -35,7 +35,7 @@ theorem pow_eq_one_iff_of_isGrpPullback {S S' X : Scheme.{0}} {G : Over S} {G' :
   exact (map_eq_one_iff _ inj).symm
 
 /- English proof (translation)
-Establish `: Flat (spMap i)`. Use `letI := i.toAlgebra`. Conclude with `HasRingHomProperty.Spec_iff.2 (inferInstance : Module.Flat K L)`. Establish `: Surjective (spMap i)` using `⟨fun x => ⟨(⊥ : PrimeSpectrum L), Subsingleton.elim (α := PrimeSpectrum K) _ _⟩⟩`. Conclude with `Flat.epi_of_flat_of_surjective _`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem epi_spMap_of_field {K L : Type} [Field K] [Field L] (i : K →+* L) : Epi (spMap i) := by
   have : Flat (spMap i) := by
@@ -45,23 +45,21 @@ theorem epi_spMap_of_field {K L : Type} [Field K] [Field L] (i : K →+* L) : Ep
   exact Flat.epi_of_flat_of_surjective _
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ S ρ p _ y₀ u m hm h hh`. Use `u.U.gen_hom` as an intermediate fact. Establish `hw : h.left ≫ u.G.hom = 𝟙 _` using `Over.w h`. Set `x : Sp (FractionRing u.V) ⟶ pullback u.G.hom (jK u.V)` to `pullback.lift (jK u.V ≫ h.left) (𝟙 _) (by rw [Category.assoc, hw]; simp)`. Establish `hx₁ : x ≫ pullback.fst _ _ = jK u.V ≫ h.left` using `pullback.lift_fst _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hx₂ : x ≫ pullback.snd _ _ = 𝟙 _` using `pullback.lift_snd _ _ _`. Set `i : Sp (PadicAlgCl p) ⟶ Sp (FractionRing u.V)` to `spMap (algebraMap (FractionRing u.V) (PadicAlgCl p))`. Establish `: Epi i` using `epi_spMap_of_field _`. Establish `hy : spMap y₀ = i ≫ spMap u.yK` using `(congrArg spMap u.fac).symm.trans (Spec.map_comp (CommRingCat.ofHom u.yK) (CommRingCat.ofHom _))`. Establish `hψ : IsGrpPullback ((Over.pullback (jK u.V)).obj u.G) ρ.P.A (spMap u.yK) (u.U.gen.hom.left ≫ u.φ)` using `((isGrpPullback_of_iso u.U.gen).comp u.cart).congr (Category.id_comp _) rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `x' : Over.mk i ⟶ (Over.pullback (jK u.V)).obj u.G` to `Over.homMk (i ≫ x) (by show (i ≫ x) ≫ pullback.snd _ _ = i`. Rewrite using `[Category.assoc, hx₂, Category.comp_id])`. Set `t : Over.mk (i ≫ jK u.V) ⟶ baseOver (Sp u.V)` to `Over.homMk (i ≫ jK u.V) (by simp)`. Establish `h₀ : (t ≫ h) ^ m = 1`. Use `(map_pow (preHom (G := u.G) t) h m).symm.trans ((congrArg _ hh).trans (map_one _))` as an intermediate fact.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `h₁ : x' ^ m = 1` using `(pow_eq_one_iff_of_isGrpPullback (isGrpPullback_pullback u.G (jK u.V)) rfl x' (t ≫ h) (by show (i ≫ jK u.V) ≫ h.left = (i ≫ x) ≫ pullback.fst _ _`. Rewrite using `[Category.assoc, Category.assoc, hx₁]) m).2 h₀`. Set `z : Over.mk (spMap y₀) ⟶ ρ.P.A` to `Over.homMk (x'.left ≫ u.U.gen.hom.left ≫ u.φ) (by show (x'.left ≫ u.U.gen.hom.left ≫ u.φ) ≫ ρ.P.A.hom = spMap y₀`. Rewrite using `[Category.assoc, hψ.1.w, ← Category.assoc, Over.w x', hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `rfl)`. Establish `h₂ : z ^ m = 1` using `(pow_eq_one_iff_of_isGrpPullback hψ hy x' z rfl m).1 h₁`. Establish `h₃ : z ^ (S.r * S.N) = 1`. Take `⟨c, hc⟩` from `hm`. Rewrite using `[hc, pow_mul, h₂, one_pow]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, hb, -⟩` from `ρ.pt_bij (PadicAlgCl p) (spMap y₀) z h₃`. Establish `h0 : ρ.pt 0 = 1`. Use `ρ.pt_add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `hp : ∀ (n : ℕ) b, ρ.pt (n • b) = ρ.pt b ^ n` using `fun n b => by`. Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, pow_zero, h0]`. Consider the case `succ n ih => rw [succ_nsmul, ρ.pt_add, ih, pow_succ]`. Use `⟨b, ?_, x, hx₁, hx₂, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(ρ.pt_bij (PadicAlgCl p) (spMap y₀) 1 (one_pow _)).unique ?_ ?_` and prove the remaining obligations. Rewrite using `[hp, ← h₂, ← hb]`. Conclude with `map_pow (preHom (G := ρ.P.A) _) _ m`. Rewrite using `[h0]`. Conclude with `map_one (preHom (G := ρ.P.A) _)`.
-
-Establish `e : spMap y₀ ≫ (ρ.pt b).left = (i ≫ x) ≫ u.U.gen.hom.left ≫ u.φ` using `congrArg (fun w => w.left) hb`. Rewrite using `[← cancel_epi i, ← Category.assoc i (spMap u.yK), ← hy, e, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_label_of_pow_eq_one : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (S : ThetaSys o Ω) (ρ : S.Real)
     (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (m : ℕ), m ∣ S.r * S.N →

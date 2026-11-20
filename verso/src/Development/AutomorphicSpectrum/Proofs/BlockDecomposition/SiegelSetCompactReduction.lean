@@ -28,13 +28,13 @@ def pureT {D : D7} (θ : InfFam D) {m n : ℕ} (f : SchwartzMap (D.what₂.Tau �
   f (fun τ i j => compAt θ τ x i j) * g (fun i j => finPart D (x i j))
 
 /- English proof (translation)
-Take `⟨C0, L, hL, h0⟩` from `GlobalTheory.T.theta_series_siegel_bound D θ hθ V n f g hg C₁ hC₁ 0`. Use `⟨L, hL, fun N => ?_⟩` and prove the remaining obligations. Take `⟨CN, LN, -, hN⟩` from `GlobalTheory.T.theta_series_siegel_bound D θ hθ V n f g hg C₁ hC₁ N`. Use `⟨CN, fun y hy x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hall : ∀ j : Fin n, (Matrix.of fun i' (_ : Fin 1) => finPart D (x i' j)) ∈ L`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `(hN y hy x).trans ?_ gcongr with j _` and prove the remaining obligations. Unfold `colMajorant`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Establish `h1 : Set.indicator L (fun _ => (1 : ℝ)) (Matrix.of fun i' (_ : Fin 1) => finPart D (x i' j)) = 1` using `Set.indicator_of_mem (hall j) _`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_trans ?_ (le_of_eq h1.symm)` and prove the remaining obligations. Conclude with `Set.indicator_le_self' (fun _ _ => zero_le_one) _ |>.trans le_rfl`. Use `push_neg at hall`. Take `⟨j, hj⟩` from `hall`. Establish `hz : ‖pureT θ f g (HMul.hMul (mt V y⁻¹) x : Matrix (Fin V.rank) (Fin n) (AE D))‖ₑ = 0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `le_antisymm ((h0 y hy x).trans (le_of_eq ?_)) bot_le` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ j), mul_zero]`. Rewrite using `[Set.indicator_of_notMem hj, mul_zero, ENNReal.ofReal_zero]`. Rewrite using `[hz]`. Conclude with `bot_le`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pure_le_colMajorant (D : D7) (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (n : ℕ)
     (f : SchwartzMap (D.what₂.Tau → Fin V.rank → Fin n → ℂ) ℂ)
@@ -69,13 +69,13 @@ theorem pure_le_colMajorant (D : D7) (θ : InfFam D) (hθ : IsInfFam θ) (V : HS
     exact bot_le
 
 /- English proof (translation)
-Take `⟨L, hL, hmaj⟩` from `pure_le_colMajorant D θ hθ V n f g hg C₁ hC₁`. Take `⟨N₀, hcount⟩` from `GlobalTheory.T.theta_rapid_decay_siegel_set D θ hθ V Xf Yf hW hc L hL`. Take `⟨C', hC'⟩` from `hcount N₀ le_rfl`. Take `⟨C, hC⟩` from `hmaj N₀`. Use `⟨max C 0 * max C' 0 ^ n, by positivity, fun y hy t ht a ha => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `GlobalTheory.CompanionTheory.ColProd.absTheta_le_pow_of_colProd D V (pureT θ f g) (colMajorant θ V.rank L N₀) (ENNReal.ofReal C) y (hC y hy) a`. Establish `hP : 0 ≤ ∏ i, t i ^ (2 * Module.finrank ℚ D.host.F)` using `Finset.prod_nonneg fun i _ => pow_nonneg (ht.1 i).le _`. Establish `h2 : ∑' ξ : Matrix (Fin V.rank) (Fin 1) D.host.E, colMajorant θ V.rank L N₀ (invPt V a ξ) ≤ ENNReal.ofReal (max C' 0 * ∏ i, t i ^ (2 * Module.finrank ℚ D.host.F))` using `(hC' t ht a ha).trans (ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_right (le_max_left _ _) hP))`. Establish `hpow : (∏ i, t i ^ (2 * Module.finrank ℚ D.host.F)) ^ n = ∏ i, t i ^ (Module.finrank ℚ D.host.F * (2 * n))`. Rewrite using `[← Finset.prod_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation.
 
-Conclude with `le_max_left _ _`. Use `_ = ENNReal.ofReal (max C 0 * max C' 0 ^ n * ∏ i, t i ^ (Module.finrank ℚ D.host.F * (2 * n))) := by`. Rewrite using `[← ENNReal.ofReal_pow (mul_nonneg (le_max_right _ _) hP), ← ENNReal.ofReal_mul (le_max_right _ _), mul_pow, hpow, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absTheta_pure_le (D : D7) (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) (n : ℕ)
     (f : SchwartzMap (D.what₂.Tau → Fin V.rank → Fin n → ℂ) ℂ)
@@ -118,11 +118,11 @@ theorem absTheta_pure_le (D : D7) (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D
           ← ENNReal.ofReal_mul (le_max_right _ _), mul_pow, hpow, mul_assoc]
 
 /- English proof (translation)
-Introduce `D θ hθ V n Φ hΦ r Xf Yf hW Ω C₀ K c hΩ hC₀ hK hc hsub`. Establish `hC₁ : IsCompact (C₀ * (K : Set (GA D V)))` using `hC₀.mul hK`. Take `⟨-, m, f, g, hg, hdom⟩` from `GlobalTheory.T.schwartz_bound_finite_infinite D θ hθ V.rank n Φ hΦ`. Establish `key` using `fun i => absTheta_pure_le D θ hθ V n (f i) (g i) (hg i) Xf Yf hW hc _ hC₁`. Use `choose Ci hCi0 hCi using key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ i, Ci i, fun p hp t ht a ha k hk => ?_⟩` and prove the remaining obligations. Establish `hy : a⁻¹ * p * a * k ∈ C₀ * (K : Set (GA D V))` using `Set.mul_mem_mul (hsub p hp t ht a ha) hk`. Establish `hsplit : p * a * k = a * (a⁻¹ * p * a * k)` using `by group`. Establish `hP : 0 ≤ ∏ i, t i ^ (Module.finrank ℚ D.host.F * (2 * n))` using `Finset.prod_nonneg fun i _ => pow_nonneg (ht.1 i).le _`. Rewrite using `[hsplit]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul, ENNReal.ofReal_sum_of_nonneg fun i _ => mul_nonneg (hCi0 i) hP]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absTheta_le_torus : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (n : ℕ) (Φ : Mx D V.rank n → ℂ), Φ ∈ schwartzA θ V.rank n → ∀ {r : ℕ} (Xf Yf : Matrix (Fin V.rank) (Fin r) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram Xf Yf → ∀ (Ω C₀ : Set (GA D V)) (K : Subgroup (GA D V)) (c : ℝ), IsCompact Ω → IsCompact C₀ → IsCompact (K : Set (GA D V)) → 0 < c → (∀ p ∈ Ω, ∀ t ∈ GlobalTheory.SiegelSet.cone r c, ∀ a, GlobalTheory.SiegelSet.IsTorusElt D.sp.cm.sig V.gram Xf Yf t a → a⁻¹ * p * a ∈ C₀) → ∃ C : ℝ, ∀ p ∈ Ω, ∀ t ∈ GlobalTheory.SiegelSet.cone r c, ∀ a, GlobalTheory.SiegelSet.IsTorusElt D.sp.cm.sig V.gram Xf Yf t a → ∀ k ∈ K, absTheta V Φ (p * a * k) ≤ ENNReal.ofReal (C * ∏ i, t i ^ (Module.finrank ℚ D.host.F * (2 * n))) := by
   intro D θ hθ V n Φ hΦ r Xf Yf hW Ω C₀ K c hΩ hC₀ hK hc hsub

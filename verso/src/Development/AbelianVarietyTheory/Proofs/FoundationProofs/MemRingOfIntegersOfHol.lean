@@ -37,9 +37,9 @@ def holSub (X : Tower Ω ε) : Subring X.K where
     exact ⟨-φ, h1.neg, by rw [map_neg, h2, Filter.Germ.coe_neg]⟩
 
 /- English proof (translation)
-Use `haveI : NeZero M := ⟨hM⟩`. Use `haveI : (CongruenceSubgroup.Gamma M).FiniteIndex := by show (Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M))).ker.FiniteIndex`. Conclude with `Subgroup.finiteIndex_ker _`. Use `(Set.finite_range fun q : SL(2, ℤ) ⧸ CongruenceSubgroup.Gamma M => X.sl (ofSL q.out⁻¹) f).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨δ, hδ⟩` from `QuotientGroup.mk_out_eq_mul (CongruenceSubgroup.Gamma M) γ⁻¹`. Use `⟨QuotientGroup.mk γ⁻¹, ?_⟩` and prove the remaining obligations. Use `show X.sl (ofSL _) f = X.sl (ofSL γ) f`. Rewrite using `[hδ, mul_inv_rev, inv_inv, map_mul, X.sl_mul, (mem_lev_iff X _ f).1 hf _ (inv_mem δ.2)]`.
+A detailed English derivation is pending.
 -/
 theorem finite_conj (X : Tower Ω ε) {M : ℕ} (hM : M ≠ 0) {f : X.K} (hf : f ∈ topL X M) :
     (Set.range fun γ : SL(2, ℤ) => X.sl (ofSL γ) f).Finite := by
@@ -55,23 +55,21 @@ theorem finite_conj (X : Tower Ω ε) {M : ℕ} (hM : M ≠ 0) {f : X.K} (hf : f
   rw [hδ, mul_inv_rev, inv_inv, map_mul, X.sl_mul, (mem_lev_iff X _ f).1 hf _ (inv_mem δ.2)]
 
 /- English proof (translation)
-Use `letI := algPoly X (CongruenceSubgroup.Gamma M)`. Use `set s : Finset X.K := (finite_conj X hM hf).toFinset with hs`. Establish `hmem : ∀ g, g ∈ s ↔ ∃ γ : SL(2, ℤ), X.sl (ofSL γ) f = g` using `fun g => by simp [hs]`. Use `set P : Polynomial X.K := ∏ g ∈ s, (Polynomial.X - C g) with hP`. Establish `hmon : P.Monic` using `monic_prod_of_monic _ _ fun g _ => monic_X_sub_C g`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhol : ∀ n, P.coeff n ∈ holSub X`. Establish `h1 : P ∈ Polynomial.liftsRing (holSub X).subtype`. Use `Subring.prod_mem _ fun g hg => ?_` and prove the remaining obligations. Take `⟨γ, rfl⟩` from `(hmem g).1 hg`. Conclude with `⟨Polynomial.X - C ⟨_, hh γ⟩, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `n`. Take `⟨y, hy⟩` from `(Polynomial.lifts_iff_coeff_lifts P).1 ((Polynomial.lifts_iff_liftsRing _ P).2 h1) n`. Rewrite using `[← hy]`. Conclude with `y.2`. Establish `hinv : ∀ (γ : SL(2, ℤ)) n, X.sl (ofSL γ) (P.coeff n) = P.coeff n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `γ n`. Establish `e : P.map (X.sl (ofSL γ) : X.K →+* X.K) = P`. Rewrite using `[hP, Polynomial.map_prod]`. Simplify using `only [Polynomial.map_sub, map_X, map_C]`. Use `Finset.prod_nbij (fun g => X.sl (ofSL γ) g) (fun g hg => ?_) (fun a _ b _ h => (X.sl (ofSL γ)).injective h) (fun g hg => ?_) (fun g _ => rfl)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨δ, rfl⟩` from `(hmem g).1 hg`. Conclude with `(hmem _).2 ⟨δ * γ, by rw [map_mul, X.sl_mul]⟩`. Take `⟨δ, rfl⟩` from `(hmem g).1 hg`. Use `⟨X.sl (ofSL (δ * γ⁻¹)) f, (hmem _).2 ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show X.sl (ofSL γ) _ = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← X.sl_mul, ← map_mul, inv_mul_cancel_right]`. Use `congrArg (fun Q => Polynomial.coeff Q n) e` as an intermediate fact. Simplify `this` using `only [Polynomial.coeff_map, RingHom.coe_coe]`. Set `A : (Polynomial Ω) →+* X.K` to `(Polynomial.aeval X.jK : (Polynomial Ω) →ₐ[Ω] X.K)`. Establish `hl : P ∈ Polynomial.lifts A`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Establish `h` using `GlobalTheory.T.slTwo_invariant_holomorphic_mem_adjoin_jInvariant ε X ε.injective (X.j_hol.imp fun _ h => h.symm) _ (fun γ => hinv γ n) (hhol n)`. Rewrite `h` using `[Algebra.adjoin_singleton_eq_range_aeval]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl hmon`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Apply `(topL X M).subtype.injective` to reduce the goal to its premises. Establish `eA : (topL X M).subtype.comp (algebraMap (Polynomial Ω) (topL X M)) = A` using `RingHom.ext fun p => coe_jPoly X _ p`. Rewrite using `[Polynomial.hom_eval₂, eA, map_zero, ← Polynomial.eval_map, hq, hP, Polynomial.eval_prod]`.
-
-Use `Finset.prod_eq_zero ((hmem f).2 ⟨1, by rw [map_one, X.sl_one]⟩) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_ringOfIntegers_of_hol [IsAlgClosure ℚ Ω] (X : Tower Ω ε) {M : ℕ} (hM : M ≠ 0) {f : X.K} (hf : f ∈ topL X M)
     (hh : ∀ γ : SL(2, ℤ), X.sl (ofSL γ) f ∈ holSub X) :
@@ -123,11 +121,11 @@ theorem mem_ringOfIntegers_of_hol [IsAlgClosure ℚ Ω] (X : Tower Ω ε) {M : �
   simp
 
 /- English proof (translation)
-Establish `hd : DifferentiableOn ℂ (sgC c y) Hs` using `UpperHalfPlane.mdifferentiable_iff.1 (GlobalTheory.Sieg.mdifferentiable_sg c y hy)`. Establish `hne : ∀ z, sgC c y z ≠ 0` using `fun z => GlobalTheory.Sieg.sg_ne_zero c y _ hy`. Establish `ha` using `SiegelMem.an_siegel_eq Ω ε X c y hy`. Use `⟨⟨_, hd, ha⟩, (sgC c y)⁻¹, hd.inv fun z _ => hne z, ?_⟩` and prove the remaining obligations. Establish `h1 : X.an (siegel X c y)⁻¹ * X.an (siegel X c y) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, inv_mul_cancel₀ (GlobalTheory.T.siegelUnitInTower_ne_zero Ω ε X c y hy), map_one]`. Establish `h2 : X.an (siegel X c y) * (((sgC c y)⁻¹ : ℂ → ℂ) : Mero) = 1`. Rewrite using `[ha, ← Filter.Germ.coe_mul, ← Filter.Germ.coe_one]`. Use `congr 1`. Use function extensionality and compare the values at `z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `mul_inv_cancel₀ (hne z)`. Rewrite using `[← mul_one (X.an _), ← h2, ← mul_assoc, h1, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem siegel_hol [IsAlgClosure ℚ Ω] (X : Tower Ω ε) {c : ℕ} {y : Fin 2 → ℚ} (hy : admitted c y) :
     siegel X c y ∈ holSub X ∧ (siegel X c y)⁻¹ ∈ holSub X := by
@@ -152,11 +150,9 @@ def IsTopUnit (X : Tower Ω ε) (M : ℕ) (f : X.K) : Prop :=
       (⟨f, hf⟩ : topL X M)⁻¹ ∈ FunctionField.ringOfIntegers Ω (topL X M)
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Establish `hM : 0 < M` using `lt_of_le_of_lt (Nat.zero_le a) ha`. Establish `hL : siegel X c ![(a : ℚ) / M, (b : ℚ) / M] ∈ topL X M` using `(mem_lev_iff X _ _).2 (GlobalTheory.T.siegel_invariant_principal_congruence Ω ε X c _ M hy hM ⟨a, b, by simp, by simp⟩)`. Establish `hconj : ∀ γ : SL(2, ℤ), X.sl (ofSL γ) (siegel X c ![(a : ℚ) / M, (b : ℚ) / M]) = _` using `fun γ => SiegelSL.sl_siegel Ω ε X c _ γ hy`. Use `⟨GlobalTheory.T.siegelUnitInTower_ne_zero Ω ε X c _ hy, (mem_mdl_iff X _ _ _).2 ⟨hL, fun s hs => ?_⟩, hL, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.T.galois_action_siegelUnitInTower Ω ε X c M a b 1 s hM ha (by rw [Nat.cast_one]; exact (mem_fixMu_iff s).1 hs _ (isPrimitiveRoot_eOm ε hM.ne').pow_eq_one) hy (by rw [one_mul]; exact hy)`. Rewrite `h` using `[one_mul]`. Then use the resulting hypothesis. Conclude with `mem_ringOfIntegers_of_hol X hM.ne' hL fun γ => by`. Rewrite using `[hconj]`. Conclude with `(siegel_hol X (SiegelMem.admissible_act_SL2 hy γ)).1`.
-
-Conclude with `mem_ringOfIntegers_of_hol X hM.ne' (inv_mem hL) fun γ => by`. Rewrite using `[map_inv₀, hconj]`. Conclude with `(siegel_hol X (SiegelMem.admissible_act_SL2 hy γ)).2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTopUnit_siegel [IsAlgClosure ℚ Ω] (X : Tower Ω ε) {c M a b : ℕ} (ha : a < M)
     (hy : admitted c ![(a : ℚ) / M, (b : ℚ) / M]) : IsTopUnit X M (siegel X c ![(a : ℚ) / M, (b : ℚ) / M]) := by
@@ -177,9 +173,9 @@ theorem isTopUnit_siegel [IsAlgClosure ℚ Ω] (X : Tower Ω ε) {c M a b : ℕ}
       rw [map_inv₀, hconj]; exact (siegel_hol X (SiegelMem.admissible_act_SL2 hy γ)).2
 
 /- English proof (translation)
-Introduce and unpack `⟨m, hm⟩`. Establish `hMq : (M : ℚ) ≠ 0` using `by exact_mod_cast hM`. Establish `e : ((c * a : ℕ) : ℤ) = (M : ℤ) * m`. Establish `: ((c * a : ℕ) : ℚ) = (M : ℚ) * m` using `by rw [hm]; push_cast; field_simp`. Conclude with `this` after adjusting the coercions.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : l ∣ c * a` using `hlM.trans (Int.natCast_dvd_natCast.1 ⟨m, e⟩)`. Conclude with `(hl.dvd_mul.1 h).elim hc ha`.
+A detailed English derivation is pending.
 -/
 theorem not_int {l c a M : ℕ} (hl : l.Prime) (hM : M ≠ 0) (hlM : l ∣ M) (hc : ¬ l ∣ c) (ha : ¬ l ∣ a) :
     (c : ℚ) * ((a : ℚ) / M) ∉ Set.range ((↑) : ℤ → ℚ) := by
@@ -192,19 +188,19 @@ theorem not_int {l c a M : ℕ} (hl : l.Prime) (hM : M ≠ 0) (hlM : l ∣ M) (h
   exact (hl.dvd_mul.1 h).elim hc ha
 
 /- English proof (translation)
-Establish `hM : l ^ s * N ≠ 0` using `mul_ne_zero (pow_ne_zero s hl.ne_zero) hN.ne'`. Establish `hls : l ∣ l ^ s` using `dvd_pow_self l (by omega)`. Establish `hlM : l ∣ l ^ s * N` using `hls.mul_right N`. Establish `hnd : ∀ {e : ℕ}, Nat.Coprime e (6 * l * N) → ¬ l ∣ e` using `fun {e} h => (hl.coprime_iff_not_dvd).1 (h.coprime_dvd_right ((dvd_mul_left l 6).mul_right N)).symm`. Establish `h6 : ∀ {e : ℕ}, Nat.Coprime e (6 * l * N) → Nat.Coprime e 6` using `fun {e} h => h.coprime_dvd_right ((dvd_mul_right 6 l).mul_right N)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlN' : ¬ l ∣ N` using `(hl.coprime_iff_not_dvd).1 hlN`. Establish `hlq : (l : ℚ) ≠ 0` using `by exact_mod_cast hl.ne_zero`. Establish `hNq : (N : ℚ) ≠ 0` using `by exact_mod_cast hN.ne'`. Prove the components needed by the constructor for the conclusion. Establish `e : (![1 / (l : ℚ) ^ s, (x.val : ℚ) * (topT l s N : ℚ) / N] : Fin 2 → ℚ) = ![(N : ℚ) / (l ^ s * N : ℕ), ((x.val * topT l s N * l ^ s : ℕ) : ℚ) / (l ^ s * N : ℕ)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Use `congr 1`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Clear the denominators using the available nonvanishing facts. Unfold `topU`. Rewrite using `[e]`. Use `isTopUnit_siegel X ?_ ⟨hc1, h6 hc, fun h => not_int hl hM hlM (hnd hc) hlN' h.1⟩` and prove the remaining obligations. Establish `: 1 < l ^ s` using `Nat.one_lt_pow (by omega) hl.one_lt`.
+Clear the denominators using the available nonvanishing facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `e : (![0, 1 / (l : ℚ) ^ s + (topT l s N : ℚ) / N] : Fin 2 → ℚ) = ![((0 : ℕ) : ℚ) / (l ^ s * N : ℕ), ((N + topT l s N * l ^ s : ℕ) : ℚ) / (l ^ s * N : ℕ)]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `congr 1`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Unfold `topV`. Rewrite using `[e]`. Use `isTopUnit_siegel X (Nat.pos_of_ne_zero hM) ⟨hd1, h6 hd, fun h => not_int hl hM hlM (hnd hd) (fun h' => hlN' ?_) h.2⟩` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Nat.dvd_add_left (hls.mul_left _)).1 h'`.
+A detailed English derivation is pending.
 -/
 theorem isTopUnit_topU_topV [IsAlgClosure ℚ Ω] (X : Tower Ω ε) {l s N c d : ℕ} (x : ZMod N) (hl : l.Prime) (hN : 0 < N)
     (hs : 1 ≤ s) (hlN : Nat.Coprime l N) (hc1 : 1 < c) (hd1 : 1 < d) (hc : Nat.Coprime c (6 * l * N))

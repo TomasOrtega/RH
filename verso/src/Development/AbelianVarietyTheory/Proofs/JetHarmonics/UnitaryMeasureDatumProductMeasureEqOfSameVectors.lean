@@ -10,7 +10,7 @@ open Matrix Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q MeasureThe
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Formalism.FourierDecayAlt.P.haar_measure_unique_up_to_scalar k r _ μ ν (Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z) hμ hν.conc hν.left hν.finite_compact`. Establish `h3` using `congrArg (fun m : Measure (Mt k r) => m Set.univ) hc`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, h1, h2, mul_one] at h3`. Establish `h4 : c = 1` using `by exact_mod_cast h3.symm`. Rewrite using `[hc, h4, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem haarOn_UW_eq_of_mass_one {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) (μ ν : Measure (Mt k r))
     (hμ : Formalism.FourierDecayAlt.B.IsHaarOn (UWset k r z) μ) (hν : Formalism.FourierDecayAlt.B.IsHaarOn (UWset k r z) ν)
@@ -22,7 +22,7 @@ theorem haarOn_UW_eq_of_mass_one {k r : ℕ} (z : Fin (2 * r + k + 1) → ℂ) (
   rw [hc, h4, one_smul]
 
 /- English proof (translation)
-Introduce `Wp _ _ _ Wq _ _ _ Wq' _ _ _ k r D D' hz hz' h1 h2 h3 h4 hN`. Establish `e1 : D'.μW = D.μW` using `haarOn_UW_eq_of_mass_one D.z _ _ D.haarW (hz ▸ D'.haarW) h1 h3`. Establish `e2 : D'.μW' = D.μW'` using `haarOn_UW_eq_of_mass_one D.z' _ _ D.haarW' (hz' ▸ D'.haarW') h2 h4`. Unfold `Formalism.FourierDecayAlt.B.RealPlaceData.μSS`. Rewrite using `[e1, e2, hN]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitaryMeasureDatum_productMeasure_eq_of_same_vectors : ∀ (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] (Wq : Type) [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (Wq' : Type) [NormedAddCommGroup Wq'] [InnerProductSpace ℂ Wq'] [FiniteDimensional ℂ Wq'] (k r : ℕ) (D : Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq) (D' : Formalism.FourierDecayAlt.B.RealPlaceData k r Wp Wq'), D'.z = D.z → D'.z' = D.z' → D.μW Set.univ = 1 → D.μW' Set.univ = 1 → D'.μW Set.univ = 1 → D'.μW' Set.univ = 1 → D'.μN = D.μN → D'.μSS = D.μSS := by
   intro Wp _ _ _ Wq _ _ _ Wq' _ _ _ k r D D' hz hz' h1 h2 h3 h4 hN

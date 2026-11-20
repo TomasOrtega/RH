@@ -3,15 +3,13 @@ import Development.AutomorphicArithmetic.BlowupCategories.SpanScale
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Pbf UpperTheory.Blow
 
 /- English proof (translation)
-Introduce `P A B C t l r u hw h`. Use `IsPullback.of_forall_isPullback_app (fun n => ?_)` and prove the remaining obligations. Use `IsPullback.of_forall_isPullback_app (fun T => ?_)` and prove the remaining obligations. Take `⟨⟨k⟩⟩` from `n`. Take `⟨T⟩` from `T`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hw' : ∀ x : Sx P k T, Sx.map r (Sx.map t x) = Sx.map u (Sx.map l x)`. Introduce `x`. Use `congrArg (fun f : P ⟶ C => (f.app (op ⟨k⟩)).app (op T) x) hw` as an intermediate fact. Simplify `this` using `[Sx.map]`. Rewrite using `[Types.isPullback_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `hw' x`. Introduce and unpack `x y ⟨h1, h2⟩`. Take `⟨z, -, hz⟩` from `h k T (Sx.map t (x : Sx P k T)) (Sx.map l (x : Sx P k T)) (hw' x)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx` using `hz x ⟨rfl, rfl⟩`. Establish `hy` using `hz y ⟨h1.symm, h2.symm⟩`. Conclude with `hx.trans hy.symm`. Introduce `a b hab`. Take `⟨z, ⟨h1, h2⟩, -⟩` from `h k T a b hab`.
-
-Conclude with `⟨z, h1, h2⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.isPullback_of_unique_simplices_pullback :
     ∀ {P A B C : Spc} (t : P ⟶ A) (l : P ⟶ B) (r : A ⟶ C) (u : B ⟶ C), t ≫ r = l ≫ u →

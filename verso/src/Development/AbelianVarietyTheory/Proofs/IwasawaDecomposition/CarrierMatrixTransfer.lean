@@ -21,17 +21,15 @@ section Lin
 variable {R K : Type} [CommRing R] [Field K] [Algebra R K]
 
 /- English proof (translation)
-Use `set φ := algebraMap R K with hφ`. Use `set c : Fin k → Fin n → K := fun l => φ ∘ fun i => a' i (Fin.castLE hk l) with hc`. Establish `hmap : a'.map φ * a.map φ = 1`. Rewrite using `[← Matrix.map_mul, h2, Matrix.map_one _ (map_zero φ) (map_one φ)]`. Establish `hmem : ∀ l, ξ l ∈ Submodule.span K (Set.range c)` using `fun l => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ξ l = ∑ j : Fin n, (∑ i, φ (a j i) * ξ l i) • (fun r => φ (a' r j))`. Use `Matrix.mulVec_mulVec (ξ l) (a'.map φ) (a.map φ)` as an intermediate fact. Rewrite `this` using `[hmap, Matrix.one_mulVec]`. Use `this.symm.trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `r`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Rewrite using `[e]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : k ≤ (j : ℕ)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Rewrite using `[h0 l j hj, zero_smul]`. Conclude with `Submodule.zero_mem _`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨j, not_le.1 hj⟩, ?_⟩)` and prove the remaining obligations. Both sides reduce to the same expression. Establish `hle : Submodule.span K (Set.range ξ) ≤ Submodule.span K (Set.range c)` using `Submodule.span_le.2 (Set.range_subset_iff.2 hmem)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hf : Module.finrank K (Submodule.span K (Set.range ξ)) = k`. Simplify using `using finrank_span_eq_card hξ`. Establish `hc' : Module.finrank K (Submodule.span K (Set.range c)) ≤ k`. Simplify `finrank_range_le_card (R := K) c` using `[Set.finrank]`. Establish `heq : Submodule.span K (Set.range ξ) = Submodule.span K (Set.range c)` using `Submodule.eq_of_le_of_finrank_le hle (hc'.trans hf.ge)`.
-
-Use `⟨linearIndependent_iff_card_eq_finrank_span.2 ?_, heq.symm⟩` and prove the remaining obligations. Rewrite using `[Set.finrank, ← heq, hf]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem span_cols {n k : ℕ} (hk : k ≤ n) (a a' : Matrix (Fin n) (Fin n) R) (h2 : a' * a = 1)
     (ξ : Fin k → Fin n → K) (hξ : LinearIndependent K ξ)
@@ -71,11 +69,11 @@ theorem span_cols {n k : ℕ} (hk : k ≤ n) (a a' : Matrix (Fin n) (Fin n) R) (
   simp
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.FlagEmb.CauchyBinet.lform_plk R M k (Fin k) (Fin n) (fun j r => (a * A') j r) (fun l : Fin k => A.mulVec fun i => a' i (Fin.castLE hk l)) (Fin.castLE hk) id`. Establish `hm : (Matrix.of fun l l' : Fin k => ∑ r, (a * A') (Fin.castLE hk l') r * (A.mulVec fun i => a' i (Fin.castLE hk (id l))) r) = 1`. Use extensionality with `l l'`. Establish `e : ∑ r, (a * A') (Fin.castLE hk l') r * (A.mulVec fun i => a' i (Fin.castLE hk (id l))) r = (a * a') (Fin.castLE hk l') (Fin.castLE hk l)`. Establish `: (a * A').mulVec (A.mulVec fun i => a' i (Fin.castLE hk (id l))) = a.mulVec fun i => a' i (Fin.castLE hk (id l))`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_assoc, hA, Matrix.mul_one]`. Conclude with `congrFun this (Fin.castLE hk l')`. Rewrite using `[Matrix.of_apply, e, h1, Matrix.one_apply, Matrix.one_apply]`. Distinguish the cases in `hl : l = l'`. Simplify using `[hl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun e => hl (Fin.castLE_injective hk e).symm), if_neg hl]`. Rewrite `h` using `[hm, Matrix.det_one]`. Rewrite using `[Ideal.eq_top_iff_one, ← h]`. Conclude with `Ideal.sum_mem _ fun q _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨q, rfl⟩)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unimod {M k n : ℕ} (hk : k ≤ n) (A : Matrix (Fin (M + 1)) (Fin n) R) (A' : Matrix (Fin n) (Fin (M + 1)) R)
     (hA : A' * A = 1) (a a' : Matrix (Fin n) (Fin n) R) (h1 : a * a' = 1) :
@@ -102,21 +100,21 @@ theorem unimod {M k n : ℕ} (hk : k ≤ n) (A : Matrix (Fin (M + 1)) (Fin n) R)
 end Lin
 
 /- English proof (translation)
-Introduce `O _ Z Z' s C N k Em f q hq R K _ _ _ z α hz n' a a' y hy ξ h1 h2 hyz hcar h0`. Establish `: Nontrivial R` using `(algebraMap R K).domain_nontrivial`. Take `rfl : n' = C.n α` from `by simpa using Matrix.square_of_invertible a a' h1 h2`. Take `⟨hli, hiff, -⟩` from `GlobalTheory.T.carrier_independent_span_iff O Z Z' C N k Em f q K y α hy ξ hcar`. Establish `hk : k ≤ C.n α` using `by simpa using hli.fintype_card_le_finrank`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨l1, l2⟩` from `span_cols hk a a' h2 ξ hli h0`. Take `⟨g, hv, e⟩` from `(hiff _).2 ⟨l1, l2⟩`. Take `⟨A', hA'⟩` from `Em.linv α`. Use `set φ := algebraMap R K with hφ`. Set `g₀ : O →+* R` to `(Spec.preimage (z ≫ s)).hom`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg₀ : spMap g₀ = z ≫ s` using `Spec.map_preimage (z ≫ s)`. Establish `hAz : A'.map (ev z _ hz) * (Em.A α).map (ev z _ hz) = 1`. Rewrite using `[← Matrix.map_mul, hA', Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hu` using `unimod hk _ _ hAz a a' h1`. Use `⟨pt g₀ _ hu, by rw [GlobalTheory.ProjSpace.pt_str, hg₀], ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hg : g = φ.comp g₀`. Establish `h5 : spMap (φ.comp g₀) = spMap φ ≫ spMap g₀`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Establish `h3 : spMap g = spMap (φ.comp g₀)`. Establish `h4` using `congrArg (· ≫ PSpace.str O _) e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc, GlobalTheory.ProjSpace.pt_str, hq] at h4`. Rewrite using `[← h4, ← Category.assoc, hyz, Category.assoc, h5, hg₀]`. Conclude with `congrArg (·.hom) (Spec.map_injective h3)`. Establish `hev : ev (y ≫ f) _ hy = φ.comp (ev z _ hz)` using `(GlobalTheory.FlagMod.ev_congr hyz _ hy (hyz ▸ hy)).trans (GlobalTheory.FlagMod.ev_spMap φ z _ hz _)`. Establish `hp : plk (fun l : Fin k => ((Em.A α).map (ev (y ≫ f) _ hy)).mulVec (φ ∘ fun i => a' i (Fin.castLE hk l))) id = φ ∘ plk (fun l : Fin k => ((Em.A α).map (ev z _ hz)).mulVec fun i => a' i (Fin.castLE hk l)) id`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[GlobalTheory.FlagEmb.map_plk]`. Use `congr 1`. Use function extensionality and compare the values at `l`. Use function extensionality and compare the values at `r`. Establish `hm : (Em.A α).map (φ.comp (ev z _ hz)) = ((Em.A α).map (ev z _ hz)).map φ`.
+Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Matrix.map_map]`. Both sides reduce to the same expression. Rewrite using `[hev, hm]`. Conclude with `(RingHom.map_mulVec φ ((Em.A α).map (ev z _ hz)) _ r).symm`. Establish `hpt : ∀ (c : O →+* K) (v w : Fin (plN N k + 1) → K) (hv : Ideal.span (Set.range v) = ⊤) (hw : Ideal.span (Set.range w) = ⊤), v = w → pt c v hv = pt c w hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `c v w hv hw rfl`. Both sides reduce to the same expression. Rewrite using `[e, GlobalTheory.ProjSpace.spMap_pt]`. Substitute `hg` using the available equality. Conclude with `hpt _ _ _ _ _ hp`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem main : ∀ (O : Type) [CommRing O] (Z Z' : Scheme.{0}) (s : Z ⟶ Sp O) (C : Coc Z) (N k : ℕ) (Em : C.Emb N) (f : Z' ⟶ Z) (q : Z' ⟶ PSpace O (plN N k)), q ≫ PSpace.str O _ = f ≫ s → ∀ (R K : Type) [CommRing R] [Field K] [Algebra R K] (z : Sp R ⟶ Z) (α : C.A) (_ : ⊤ ≤ z ⁻¹ᵁ C.B α) (n' : ℕ) (a : Matrix (Fin n') (Fin (C.n α)) R) (a' : Matrix (Fin (C.n α)) (Fin n') R) (y : Sp K ⟶ Z') (hy : ⊤ ≤ (y ≫ f) ⁻¹ᵁ C.B α) (ξ : Fin k → Fin (C.n α) → K), a * a' = 1 → a' * a = 1 → y ≫ f = spMap (algebraMap R K) ≫ z → Car Em f q y α hy ξ → (∀ (l : Fin k) (j : Fin n'), k ≤ (j : ℕ) → ∑ i, algebraMap R K (a j i) * ξ l i = 0) → ∃ y₀ : Sp R ⟶ PSpace O (plN N k), y₀ ≫ PSpace.str O _ = z ≫ s ∧ y ≫ q = spMap (algebraMap R K) ≫ y₀ := by
   intro O _ Z Z' s C N k Em f q hq R K _ _ _ z α hz n' a a' y hy ξ h1 h2 hyz hcar h0

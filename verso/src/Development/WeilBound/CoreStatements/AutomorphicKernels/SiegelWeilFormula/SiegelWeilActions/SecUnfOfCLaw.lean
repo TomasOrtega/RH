@@ -11,9 +11,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.Act
 
 /- English proof (translation)
-Introduce `hA hL F E _ _ _ _ _ σ d R L s₁ f hf he`. Take `⟨t, ht⟩` from `hA F E σ d L s₁ f hf he`. Use `⟨t, fun z hz nb lam 𝓖 hc hk uM ν 𝓤 hU hkU T T' hT nb' lam' 𝓖' hc' hk' => ?_⟩` and prove the remaining obligations. Take `⟨w₁, cM, κ, hlaw, hw, hwf, hcM, hκ, δ, hδ, hcf⟩` from `hL F E σ d R L`. Establish `h : C5.Hyp L nb uM nb' w₁ cM δ` using `{ nb := hc.1, uM := hU.1, nb' := hc'.1, wr := hw, wf := hwf, cf := hcf, δ0 := hδ }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨K, hK⟩` from `C5.unf R hf z hc hU hT hc' (fun x => ht z hz nb lam 𝓖 hc hk uM ν 𝓤 hU hkU T x) h hcM hκ`. Conclude with `⟨w₁, cM, κ, hlaw, K, fun x => hK x⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem secUnf_of_cLaw : AbsConv → CLawEx → SecUnf := by
   intro hA hL F E _ _ _ _ _ σ d R L s₁ f hf he
@@ -26,7 +26,7 @@ theorem secUnf_of_cLaw : AbsConv → CLawEx → SecUnf := by
   exact ⟨w₁, cM, κ, hlaw, K, fun x => hK x⟩
 
 /- English proof (translation)
-Introduce `hA` and use `secUnf_of_cLaw hA cLawEx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem secUnf_of : AbsConv → SecUnf := fun hA => secUnf_of_cLaw hA cLawEx
 

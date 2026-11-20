@@ -15,13 +15,11 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 variable {k : ℕ}
 
 /- English proof (translation)
-Take `⟨hFs, ⟨R, hR⟩, -⟩` from `hF`. Use `set n : ℝ := ((2 * r + k + 1 : ℕ) : ℝ) with hn`. Use `set A : ℝ := 9 * ((r : ℝ) + 1) * (n ^ 2 + 1) with hA`. Establish `hthr : JF.TransportedAlt k r A 0`. Unfold `JF.TransportedAlt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : (0 : ℝ) < 9 * ((r : ℝ) + 1)` using `by positivity`. Establish `e : (A - 6 * (r : ℝ) * ((0 : ℕ) : ℝ)) / (9 * ((r : ℝ) + 1)) = n ^ 2 + 1`. Rewrite using `[hA]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hn, e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcc : B.InCC A 0 F` using `JFxG.cptInCC_G hFs (PBE.isCompact_gN_le k r R) (fun g hg hgC => by`. Assume the negation of the conclusion as `h0`.
-
-Conclude with `hgC (hR g hg h0)) A 0`. Conclude with `(Formalism.FourierDecayAlt.P.bessel_integral_converges k r Wp Wq Bs A F hthr hcc).1 g hg`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem rhs_int {r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq)

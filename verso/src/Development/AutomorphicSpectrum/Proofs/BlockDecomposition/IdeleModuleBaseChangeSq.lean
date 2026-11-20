@@ -17,15 +17,15 @@ open scoped ENNReal NNReal NumberField.AdeleRing
 variable {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L]
 
 /- English proof (translation)
-Establish `hsm : Measurable fun y : 𝔸[K] ↦ a • y` using `(Homeomorph.smul a).continuous.measurable`. Establish `hmeas : Measurable fun x : Fin n → 𝔸[K] ↦ fun i ↦ a • x i` using `measurable_pi_lambda _ fun i ↦ hsm.comp (measurable_pi_apply i)`. Use `set c : ℝ≥0 := Real.toNNReal ((IdeleGroup.ideleModule K a : ℝ))⁻¹ with hcdef`. Establish `hmap : (adeleMeasure K).map (fun y ↦ a • y) = c • adeleMeasure K`. Rewrite using `[map_smul_adeleMeasure]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h1 : (Measure.pi fun _ : Fin n ↦ adeleMeasure K).map (fun x i ↦ a • x i) = Measure.pi fun _ : Fin n ↦ c • adeleMeasure K`. Use `(pi_eq fun s hs ↦ ?_).symm` and prove the remaining obligations. Rewrite using `[map_apply hmeas (MeasurableSet.univ_pi hs)]`. Establish `hpre : (fun x : Fin n → 𝔸[K] ↦ fun i ↦ a • x i) ⁻¹' Set.univ.pi s = Set.univ.pi fun i ↦ (fun y ↦ a • y) ⁻¹' s i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[hpre, pi_pi]`. Use `Finset.prod_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← hmap, map_apply hsm (hs i)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (Measure.pi fun _ : Fin n ↦ c • adeleMeasure K) = c ^ n • Measure.pi fun _ : Fin n ↦ adeleMeasure K`. Use `pi_eq fun s hs ↦ ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, pi_pi, ENNReal.smul_def, smul_eq_mul]`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ENNReal.coe_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem map_smul_pi (n : ℕ) (a : IdeleGroup K) :
     (Measure.pi fun _ : Fin n ↦ adeleMeasure K).map (fun x i ↦ a • x i) =
@@ -59,25 +59,23 @@ theorem map_smul_pi (n : ℕ) (a : IdeleGroup K) :
   rw [h1, h2]
 
 /- English proof (translation)
-Use `isModuleTopology_adeleRing (K := K) (L := L)` as an intermediate fact. Use `set n := Module.finrank K L with hn`. Set `e : 𝔸[L] ≃ₗ[𝔸[K]] (Fin n → 𝔸[K])` to `(adeleBasis (Module.finBasis K L)).equivFun`. Establish `hce : Continuous e` using `IsModuleTopology.continuous_of_linearMap e.toLinearMap`. Establish `hcs : Continuous e.symm` using `IsModuleTopology.continuous_of_linearMap e.symm.toLinearMap`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `h : 𝔸[L] ≃ₜ (Fin n → 𝔸[K])` to `{ toEquiv := e.toEquiv, continuous_toFun := hce, continuous_invFun := hcs }`. Use `set μ : Measure (Fin n → 𝔸[K]) := Measure.pi fun _ ↦ adeleMeasure K with hμ`. Use `set ν : Measure 𝔸[L] := μ.map e.symm with hν`. Establish `hms : Measurable e.symm` using `hcs.measurable`. Use `haveI : ν.IsAddHaarMeasure := isAddHaarMeasure_map _ e.symm.toLinearMap.toAddMonoidHom hcs e.symm.surjective h.symm.isClosedEmbedding.tendsto_cocompact`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set X := ideleEmbedding K L x with hX`. Establish `hcomp : (fun y : 𝔸[L] ↦ X • y) ∘ e.symm = e.symm ∘ (fun v i ↦ x • v i)`. Use function extensionality and compare the values at `v`. Establish `hv : (fun i ↦ x • v i) = (x : 𝔸[K]) • v`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Units.smul_def]`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hv, map_smul, Units.smul_def]`. Express the relevant statement in the definitionally equal form `(X : 𝔸[L]) * e.symm v = (x : 𝔸[K]) • e.symm v`. Rewrite using `[Algebra.smul_def (x : 𝔸[K]), algebraMap_adeleRing]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hsmL : Measurable fun y : 𝔸[L] ↦ X • y` using `(Homeomorph.smul X).continuous.measurable`. Establish `hsmK : Measurable fun v : Fin n → 𝔸[K] ↦ fun i ↦ x • v i` using `measurable_pi_lambda _ fun i ↦ (Homeomorph.smul x).continuous.measurable.comp (measurable_pi_apply i)`. Use `set c : ℝ≥0 := Real.toNNReal ((IdeleGroup.ideleModule K x : ℝ))⁻¹ with hcdef`. Establish `h1 : ν.map (fun y ↦ X • y) = c ^ n • ν`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hν, Measure.map_map hsmL hms, hcomp, ← Measure.map_map hms hsmK, hμ, map_smul_pi, Measure.map_smul]`. Establish `hc` using `isAddLeftInvariant_eq_smul ν (adeleMeasure L)`. Use `set C := ν.addHaarScalarFactor (adeleMeasure L)`. Establish `hC0 : (C : ℝ≥0∞) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: ν = 0` using `by rw [hc, ENNReal.coe_eq_zero.1 h0, zero_smul]`. Conclude with `(NeZero.ne ν) this`. Take `⟨S, hS, hS0⟩` from `exists_compact_mem_nhds (0 : 𝔸[L])`. Establish `hpos : adeleMeasure L S ≠ 0` using `(measure_pos_of_mem_nhds _ hS0).ne'`. Establish `htop : adeleMeasure L S ≠ ⊤` using `hS.measure_lt_top.ne`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hc, Measure.map_smul, map_smul_adeleMeasure]`. Establish `h2` using `congrArg (fun m : Measure 𝔸[L] ↦ m S) h1`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at h2`. Rewrite `h2` using `[mul_left_comm]`. Establish `hne : (C : ℝ≥0∞) * adeleMeasure L S ≠ 0` using `mul_ne_zero hC0 hpos`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hnt : (C : ℝ≥0∞) * adeleMeasure L S ≠ ⊤` using `ENNReal.mul_ne_top ENNReal.coe_ne_top htop`. Establish `h3` using `(ENNReal.mul_left_inj hne hnt).1 h2`. Establish `hK0 : (0 : ℝ) ≤ (IdeleGroup.ideleModule K x : ℝ)⁻¹` using `inv_nonneg.2 (IdeleGroup.ideleModule K x).2.le`. Establish `h4 : ((c ^ n : ℝ≥0) : ℝ≥0∞) = ENNReal.ofReal (((IdeleGroup.ideleModule K x : ℝ))⁻¹ ^ n)`. Rewrite using `[ENNReal.ofReal_pow hK0, ENNReal.coe_pow]`.
-
-Both sides reduce to the same expression. Rewrite `h3` using `[h4]`. Establish `h5` using `(ENNReal.ofReal_eq_ofReal_iff (inv_nonneg.2 (IdeleGroup.ideleModule L X).2.le) (pow_nonneg hK0 n)).1 h3`. Rewrite `h5` using `[inv_pow]`. Conclude with `inv_inj.1 h5`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideleModule_ideleEmbedding (x : IdeleGroup K) :
     (IdeleGroup.ideleModule L (ideleEmbedding K L x) : ℝ) =
@@ -150,7 +148,7 @@ open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberF
 open scoped TensorProduct ENNReal NNReal Matrix Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm a`. Establish `he : GroundTheory.BlockD.ThmBHecke.ideleEquiv F E (ofF a) = ideleEmbedding F E a` using `Units.ext (GroundTheory.BlockD.ThmBHecke.adeleEquiv_algebraMap (a : AF F))`. Rewrite using `[he, ideleModule_ideleEmbedding, hcm.2.2.1]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ideleModule_ideleEquiv_ofF : ∀ (F E : Type) [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ a : (AF F)ˣ,

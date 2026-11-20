@@ -14,13 +14,13 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {p : ℕ → Seminorm ℂ E}
 
 /- English proof (translation)
-Introduce `w hw`. Assume the negation of the conclusion as `hne`. Take `⟨i, hi⟩` from `hp.separating_of_T1 _ hne`. Take `⟨S, C, hS, hC⟩` from `hb i`. Establish `key : ∀ δ : ℝ, 0 < δ → p i (Φ w) ≤ |C| * δ`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `δ hδ`. Take `⟨v, hv, hd⟩` from `hD.2.2 w hw S hS δ hδ`. Establish `hvs : Sm ε σ v` using `hD.1 v hv`. Establish `hwv : Sm ε σ (w - v)` using `sm_iff.2 ((smooth (Jm ε) σ).sub_mem (sm_iff.1 hw) (sm_iff.1 hvs))`. Establish `e : Φ w = Φ (w - v)` using `by rw [hsub w v hw hvs, h0 v hv, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Establish `hpos : 0 < p i (Φ w)` using `lt_of_le_of_ne (apply_nonneg _ _) (Ne.symm hi)`. Use `set x := p i (Φ w) with hx`. Establish `h1` using `key (x / (2 * (|C| + 1))) (by positivity)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : |C| * (x / (2 * (|C| + 1))) < x`. Rewrite using `[mul_div_assoc', div_lt_iff₀ (by positivity)]`. Use polynomial arithmetic with `[abs_nonneg C]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem zero_on (hp : WithSeminorms p) (hD : Dens ε σ) (Φ : H → E)
     (hsub : ∀ x y, Sm ε σ x → Sm ε σ y → Φ (x - y) = Φ x - Φ y)
@@ -52,7 +52,7 @@ theorem zero_on (hp : WithSeminorms p) (hD : Dens ε σ) (Φ : H → E)
 end ZeroOnDense
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ hU hI E _ _ _ _ _ _ p π dπ hπ hD T hT h0`. Conclude with `ZeroOnDense.zero_on hπ.withSeminorms hD T (fun x y _ _ => map_sub T x y) hT h0`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem d0 : D0 := by
   intro n ε H _ _ _ σ hU hI E _ _ _ _ _ _ p π dπ hπ hD T hT h0

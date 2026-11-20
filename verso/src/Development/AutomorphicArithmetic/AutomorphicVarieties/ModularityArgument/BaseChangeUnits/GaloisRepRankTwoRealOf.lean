@@ -21,7 +21,7 @@ def QuadBC2 : Prop :=
       (∃ η : HChar F, IsQuadCharOf E η ∧ IsoTwist π η) ∨ ∃ P : CuspSub E 2, IsBC π P
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ _ l _ ι a _` and use `h F Ω l ι a`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem galoisRepRankTwoReal_of (h : GaloisRepReal) : GaloisRepRankTwoReal := fun F Ω _ _ _ _ _ _ l _ ι a _ => h F Ω l ι a
 

@@ -16,9 +16,9 @@ open ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨hA, hG, hN⟩` from `hg`. Use `⟨hA, h, hG, ?_⟩` and prove the remaining obligations. Establish `h1 : (1 + (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ)) ≤ max (3 * (n : ℝ) / 2) (1 + (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ))` using `le_max_right _ _`. Establish `h2 : 2 + max (3 * (n : ℝ) / 2) (1 + (n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ)) ≤ hNeed ε`. Unfold `hNeed`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `le_max_left _ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem stdGap_of_gapLap {ε : Fin n → Bool} {lam : Fin n → ℝ} {h : ℝ} (hg : GapLap ε lam h) :
     StdGap ε lam := by
@@ -32,9 +32,9 @@ theorem stdGap_of_gapLap {ε : Fin n → Bool} {lam : Fin n → ℝ} {h : ℝ} (
   linarith
 
 /- English proof (translation)
-Take `⟨_, hm⟩` from `hlam`. Use `choose m hm using hm`. Use `⟨fun a => m a + (n : ℤ) - 1 - ((a : ℕ) : ℤ), ?_⟩` and prove the remaining obligations. Introduce `a`. Establish `ha` using `hm a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ReciprocityTheory.ChartRestriction.DS.rho]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_isMu {lam : Fin n → ℝ} (hlam : S7.IsHCParam lam) : ∃ μ : Fin n → ℤ, S7.IsMu lam μ := by
   obtain ⟨_, hm⟩ := hlam
@@ -47,19 +47,19 @@ theorem exists_isMu {lam : Fin n → ℝ} (hlam : S7.IsHCParam lam) : ∃ μ : F
   linarith
 
 /- English proof (translation)
-Take `⟨H₂, _, _, _, σ₂, D₂, E₂, V₂, ι₂, hσ₂, hD₂, hV₂, hc₂, hVK₂, hco⟩` from `hPD n ε lam h T μ hlam hg.2.1 hg.2.2 hq hμ`. Take `⟨φ, hφK, hφI⟩` from `KTypeIsomorphism.exists_phi hσ hD hV hσ₂ hD₂ hV₂`. Take `⟨ψ, -, hψI⟩` from `KTypeIsomorphism.exists_phi hσ₂ hD₂ hV₂ hσ hD hV`. Use `hV.1` as an intermediate fact. Use `hV₂.1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφi : Function.Injective φ` using `(injective_iff_map_eq_zero φ).mpr fun v hv => by`. Establish `h1` using `hφI v v`. Rewrite `h1` using `[hv]`. Simplify using `using h1.symm`. Establish `hψi : Function.Injective ψ` using `(injective_iff_map_eq_zero ψ).mpr fun v hv => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1` using `hψI v v`. Rewrite `h1` using `[hv]`. Simplify using `using h1.symm`. Establish `hrk : Module.finrank ℂ V = Module.finrank ℂ V₂` using `le_antisymm (LinearMap.finrank_le_finrank_of_injective hφi) (LinearMap.finrank_le_finrank_of_injective hψi)`. Set `e : V ≃ₗ[ℂ] V₂` to `φ.linearEquivOfInjective hφi hrk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hU` using `rigid_universal hσ hD hV hc hVK hσ₂ hD₂ hV₂ hc₂ hVK₂ (stdGap_of_gapLap hg) φ hφK hφI`. Establish `h1J : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ UJset ε` using `by show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * Jm ε * 1 = Jm ε`. Simplify using the standard rewrite rules. Establish `hcoef : ∀ g ∈ UJset ε, ∀ v v' : V, ⟪((v' : D) : H), σ g ((v : D) : H)⟫_ℂ = ⟪(e.trans ι₂) v', S7.PsiM T μ g ((e.trans ι₂) v)⟫_ℂ` using `fun g hgm v v' => by`. Rewrite using `[← hU g hgm v v', hco g hgm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hiso : ∀ v v' : V, ⟪(e.trans ι₂) v', (e.trans ι₂) v⟫_ℂ = ⟪((v' : D) : H), ((v : D) : H)⟫_ℂ` using `fun v v' => by`. Use `hcoef 1 h1J v v'` as an intermediate fact. Rewrite `this` using `[hσ.1.1, S7.psiM_one]`. Conclude with `this.symm`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e.trans ι₂, hcoef, hiso, fun k v w hw => ?_⟩` and prove the remaining obligations. Establish `hk : S7.PsiM T μ (S7.toMK k) = T.op k`. Use `S7.psiM_equiv T μ k 1 (g := 1) h1J` as an intermediate fact. Rewrite `this` using `[S7.toMK_one', Matrix.mul_one, Matrix.mul_one, S7.psiM_one, S7.op_one', mul_one, mul_one]`. Then use the resulting hypothesis. Use `ext_inner_left ℂ fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨v', rfl⟩` from `(e.trans ι₂).surjective x`. Rewrite using `[hiso, hw, hcoef _ k.1.2, hk]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem datum_link (hPD : PsiDatumStatement) {ε : Fin n → Bool} {lam : Fin n → ℝ} {h : ℝ}
     {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]

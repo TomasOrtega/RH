@@ -108,7 +108,7 @@ structure URep (k r : ℕ) : Type 1 where
   rep : IsURepOn (GG k r) R.σ
 
 /- English proof (translation)
-Use `show (1 : Mx k r)ᴴ * _ * 1 = _`. Simplify using `mul_mem := fun a ha b hb => (PI.UnitaryGroupMassFormula.CapelliEig.unitary_Hecke_group k r a ha).2.2 b hb map_one := U.rep.1.1 map_mul := U.rep.1.2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem URep.repOn (U : URep k r) : RepOn (GG k r) U.R.σ where
   one_mem := by show (1 : Mx k r)ᴴ * _ * 1 = _; simp
@@ -134,14 +134,14 @@ def URep.dsig (U : URep k r) (X : Mx k r) : Module.End ℂ U.R.smSub :=
   else 0
 
 /- English proof (translation)
-Simplify using `only [URep.sig, dif_pos hg]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem URep.sig_coe (U : URep k r) {g : Mx k r} (hg : g ∈ GG k r) (v : U.R.smSub) :
     (U.sig g v : U.R.H) = U.R.σ g v := by
   simp only [URep.sig, dif_pos hg]; rfl
 
 /- English proof (translation)
-Simplify using `only [URep.dsig, dif_pos hX]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem URep.dsig_coe (U : URep k r) {X : Mx k r} (hX : InLieHpk k r X) (v : U.R.smSub) :
     (U.dsig X v : U.R.H) = PI.UpqRep.dsig (k := k) (r := r) U.R.σ X v := by

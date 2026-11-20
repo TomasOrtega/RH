@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.MeanSquareConj
 
 /- English proof (translation)
-Rewrite using `[AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, h, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_conj (Λ : AddSubgroup ℂ) (z : ℂ) :
     z ∈ Λ.map (starRingEnd ℂ).toAddMonoidHom ↔ (starRingEnd ℂ) z ∈ Λ := by
@@ -27,11 +27,11 @@ theorem mem_conj (Λ : AddSubgroup ℂ) (z : ℂ) :
     exact ⟨_, h, by simp⟩
 
 /- English proof (translation)
-Unfold `area`. Use `congr 1`. Use extensionality with `a`. Establish `e : ∀ x y : ℂ, |((starRingEnd ℂ) ((starRingEnd ℂ) x) * (starRingEnd ℂ) y).im| = |((starRingEnd ℂ) x * y).im|`. Introduce `x y`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_mul, Complex.conj_im, abs_neg]`. Simplify using `only [Set.mem_setOf_eq, mem_conj]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, x, hx, y, hy, rfl⟩`. Conclude with `⟨ha, _, hx, _, hy, (e x y).symm⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨ha, x, hx, y, hy, rfl⟩`. Conclude with `⟨ha, (starRingEnd ℂ) x, by simpa using hx, (starRingEnd ℂ) y, by simpa using hy, (e x y).symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem area_conj (Λ : AddSubgroup ℂ) : area (Λ.map (starRingEnd ℂ).toAddMonoidHom) = area Λ := by
   unfold area
@@ -49,9 +49,9 @@ theorem area_conj (Λ : AddSubgroup ℂ) : area (Λ.map (starRingEnd ℂ).toAddM
     exact ⟨ha, (starRingEnd ℂ) x, by simpa using hx, (starRingEnd ℂ) y, by simpa using hy, (e x y).symm⟩
 
 /- English proof (translation)
-Take `⟨w₁, w₂, hli, rfl⟩` from `hΛ`. Use `⟨(starRingEnd ℂ) w₁, (starRingEnd ℂ) w₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hli`, the goal using `[LinearIndependent.pair_iff]`. Introduce `s t h`. Use `hli s t ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (starRingEnd ℂ) h` as an intermediate fact. Simplify using `using this`. Rewrite using `[AddMonoidHom.map_closure, Set.image_pair]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lattice_conj (Λ : AddSubgroup ℂ)
     (hΛ : ∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ Λ = AddSubgroup.closure {w₁, w₂}) :
@@ -68,7 +68,7 @@ theorem lattice_conj (Λ : AddSubgroup ℂ)
     rfl
 
 /- English proof (translation)
-Unfold `U1`. Rewrite using `[area_conj, map_mul, ← Complex.exp_conj]`. Simplify using `only [map_add, map_sub, map_div₀, map_mul, map_neg, Complex.conj_ofReal, Complex.conj_conj, map_ofNat]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem thetaTranslate_conjugateLattice (Λ : AddSubgroup ℂ) (G : ℂ → ℂ) (t z : ℂ) :
     U1 (Λ.map (starRingEnd ℂ).toAddMonoidHom) t (fun z => (starRingEnd ℂ) (G ((starRingEnd ℂ) z))) z =
@@ -78,13 +78,13 @@ theorem thetaTranslate_conjugateLattice (Λ : AddSubgroup ℂ) (G : ℂ → ℂ)
   simp only [map_add, map_sub, map_div₀, map_mul, map_neg, Complex.conj_ofReal, Complex.conj_conj, map_ofNat]
 
 /- English proof (translation)
-Take `⟨⟨hd, h1, -, hU⟩, -⟩` from `GlobalTheory.OddTheta.sgStar_laws Λ hΛ`. Take `⟨-, -, huniq, -⟩` from `GlobalTheory.OddTheta.sgStar_laws _ (lattice_conj Λ hΛ)`. Establish `hder : ∀ z, HasDerivAt (fun z => (starRingEnd ℂ) (sgStar Λ ((starRingEnd ℂ) z))) ((starRingEnd ℂ) (deriv (sgStar Λ) ((starRingEnd ℂ) z))) z`. Introduce `z`. Use `(hd ((starRingEnd ℂ) z)).hasDerivAt.conj_conj` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[Complex.conj_conj]`. Conclude with `this`. Use function extensionality and compare the values at `z`. Use `huniq _ (fun z => (hder z).differentiableAt) (by` as an intermediate fact. Introduce `ω hω z`.
+Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[thetaTranslate_conjugateLattice, hU _ ((mem_conj Λ ω).1 hω), map_mul]`. Use `congr 1`. Establish `e : (starRingEnd ℂ) (ω / 2) = (starRingEnd ℂ) ω / 2`. Rewrite using `[map_div₀, map_ofNat]`. Simplify using `only [mem_conj, e]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp) z`. Rewrite `this` using `[(hder 0).deriv, map_zero, h1, map_one, one_mul]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sgStar_conj (Λ : AddSubgroup ℂ)
     (hΛ : ∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ Λ = AddSubgroup.closure {w₁, w₂}) :
@@ -111,7 +111,7 @@ theorem sgStar_conj (Λ : AddSubgroup ℂ)
   exact this.symm
 
 /- English proof (translation)
-Unfold `GL3Theta.th0`. Rewrite using `[sgStar_conj Λ hΛ, thetaTranslate_conjugateLattice, thetaTranslate_conjugateLattice, map_div₀, map_zero, Complex.conj_conj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem evenTheta_conjugateLattice (Λ : AddSubgroup ℂ)
     (hΛ : ∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ Λ = AddSubgroup.closure {w₁, w₂}) (t z : ℂ) :
@@ -121,9 +121,9 @@ theorem evenTheta_conjugateLattice (Λ : AddSubgroup ℂ)
   rw [sgStar_conj Λ hΛ, thetaTranslate_conjugateLattice, thetaTranslate_conjugateLattice, map_div₀, map_zero, Complex.conj_conj]
 
 /- English proof (translation)
-Take `⟨⟨-, -, -, hU⟩, -⟩` from `GlobalTheory.OddTheta.sgStar_laws Λ hΛ`. Establish `hper : ∀ z, ‖sgStar Λ (z + x)‖ ^ 2 * Real.exp (-Real.pi * ‖z + x‖ ^ 2 / area Λ) = ‖sgStar Λ z‖ ^ 2 * Real.exp (-Real.pi * ‖z‖ ^ 2 / area Λ)`. Introduce `z`. Rewrite using `[← GlobalTheory.GenusOneSup.thetaTranslation_weighted_normSq, hU x hx, norm_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Unfold `GL3Theta.th0`. Simplify using `only [norm_div, div_pow, div_mul_eq_mul_div]`. Rewrite using `[GlobalTheory.GenusOneSup.thetaTranslation_weighted_normSq, GlobalTheory.GenusOneSup.thetaTranslation_weighted_normSq, show x + z + t = z + t + x by ring, hper]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem evenTheta_weightedNormSq_periodic (Λ : AddSubgroup ℂ)
     (hΛ : ∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ Λ = AddSubgroup.closure {w₁, w₂}) (t : ℂ)
@@ -142,19 +142,17 @@ theorem evenTheta_weightedNormSq_periodic (Λ : AddSubgroup ℂ)
     show x + z + t = z + t + x by ring, hper]
 
 /- English proof (translation)
-Introduce `Λ hΛ t`. Establish `hex : ∀ A : AddSubgroup ℂ, (∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ A = AddSubgroup.closure {w₁, w₂}) → IsAddFundamentalDomain A (Classical.epsilon fun Fd : Set ℂ => IsAddFundamentalDomain A Fd volume) volume`. Introduce and unpack `A ⟨w₁, w₂, hli, rfl⟩`. Take `⟨F, hF, -⟩` from `GlobalTheory.GenusOneSup.exists_domain hli`. Conclude with `Classical.epsilon_spec (p := fun Fd : Set ℂ => IsAddFundamentalDomain _ Fd volume) ⟨F, hF⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hF` using `hex Λ hΛ`. Establish `hF'` using `hex _ (lattice_conj Λ hΛ)`. Establish `hcount : Countable Λ`. Take `⟨w₁, w₂, -, h⟩` from `hΛ`. Establish `: (Λ : Set ℂ) ⊆ Set.range (fun p : ℤ × ℤ => p.1 • w₁ + p.2 • w₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite `hx` using `[h]`. Take `⟨m, n, rfl⟩` from `AddSubgroup.mem_closure_pair.1 hx`. Conclude with `⟨(m, n), rfl⟩`. Conclude with `((Set.countable_range _).mono this).to_subtype`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `: VAddInvariantMeasure Λ ℂ volume` using `⟨fun γ s _ => measure_preimage_add volume (γ : ℂ) s⟩`. Unfold `nrm1Sq`. Simplify using `only`. Use `set F := Classical.epsilon fun Fd : Set ℂ => IsAddFundamentalDomain Λ Fd volume`. Use `set F' := Classical.epsilon fun Fd : Set ℂ => IsAddFundamentalDomain (Λ.map (starRingEnd ℂ).toAddMonoidHom) Fd volume`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmp : MeasurePreserving (starRingEnd ℂ) volume volume` using `Complex.conjLIE.measurePreserving`. Establish `hemb : MeasurableEmbedding (starRingEnd ℂ)` using `Complex.conjLIE.toHomeomorph.measurableEmbedding`. Establish `hF2 : IsAddFundamentalDomain Λ ((starRingEnd ℂ) ⁻¹' F') volume`. Use `hF'.preimage_of_equiv (f := starRingEnd ℂ) (e := fun y => (⟨(starRingEnd ℂ) y, (mem_conj Λ _).1 y.2⟩ : Λ)) hmp.quasiMeasurePreserving ⟨?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `x y h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Subtype.ext (star_injective (congrArg Subtype.val h))`. Introduce `x`. Conclude with `⟨⟨(starRingEnd ℂ) x, (mem_conj Λ _).2 (by simp)⟩, Subtype.ext (by simp)⟩`. Introduce `y x show (starRingEnd ℂ) ((starRingEnd ℂ) y + x) = (y : ℂ) + (starRingEnd ℂ) x`. Simplify using the standard rewrite rules.
-
-Rewrite using `[setAverage_eq, setAverage_eq, measureReal_def, measureReal_def, hF.measure_eq hF2, hF.setIntegral_eq hF2 (fun γ z => evenTheta_weightedNormSq_periodic Λ hΛ t γ γ.2 z), hmp.measure_preimage_emb hemb, ← hmp.setIntegral_preimage_emb hemb]`. Simplify using `only [evenTheta_conjugateLattice Λ hΛ, area_conj, Complex.conj_conj, Complex.norm_conj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nrm1Sq_th0_map_conj_eq : ∀ (Λ : AddSubgroup ℂ), (∃ w₁ w₂ : ℂ, LinearIndependent ℝ ![w₁, w₂] ∧ Λ = AddSubgroup.closure {w₁, w₂}) → ∀ t : ℂ, nrm1Sq (Λ.map (starRingEnd ℂ).toAddMonoidHom) (GL3Theta.th0 (Λ.map (starRingEnd ℂ).toAddMonoidHom) ((starRingEnd ℂ) t)) = nrm1Sq Λ (GL3Theta.th0 Λ t) := by
   intro Λ hΛ t

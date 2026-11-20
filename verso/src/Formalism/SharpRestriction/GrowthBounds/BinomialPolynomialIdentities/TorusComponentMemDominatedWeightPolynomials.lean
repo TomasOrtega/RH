@@ -32,17 +32,15 @@ def dominatedWeightPolynomials : Submodule R (MvPolynomial (ι × Fin n) R) wher
     exact hy k1 φ g0 g0inv h m (MvPolynomial.support_smul hm)
 
 /- English proof (translation)
-Introduce `k0 hk0 k1 _ φ g0 g0inv hg m hm`. Take `⟨h, h', hh1, hh2⟩` from `hh k1 φ`. Use `set ψ : k1 →+* LaurentPolynomial k1 := LaurentPolynomial.C with hψ`. Establish `hone : (h' * g0.map ψ) * (g0inv.map ψ * h) = 1`. Establish `: g0.map ψ * g0inv.map ψ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.map_mul, hg]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [this, Matrix.mul_one, hh1]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hy (LaurentPolynomial k1) (ψ.comp φ) (h' * g0.map ψ) (g0inv.map ψ * h) hone m ?_` and prove the remaining obligations. Rewrite using `[← matrixSubst_comp, hh2, map_sum]`. Establish `h1 : ∀ k, matrixSubst LL S (RingHom.id _) (g0inv.map ψ) (g0.map ψ) (C (LaurentPolynomial.T k) * MvPolynomial.map (ψ.comp φ) (yk k)) = C (LaurentPolynomial.T k) * MvPolynomial.map ψ (matrixSubst LL S φ g0inv g0 (yk k))`. Introduce `k`. Rewrite using `[map_mul, matrixSubst_C, RingHom.id_apply, matrixSubst_map, map_matrixSubst]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h1]`. Rewrite using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_sum]`. Introduce `h0`. Establish `h2` using `congrArg (fun f : LaurentPolynomial k1 => f.coeff k0) h0`. Simplify using `only [MvPolynomial.coeff_C_mul, MvPolynomial.coeff_map] at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : ∀ k, (LaurentPolynomial.T k * ψ (coeff m (matrixSubst LL S φ g0inv g0 (yk k)))) = AddMonoidAlgebra.single k (coeff m (matrixSubst LL S φ g0inv g0 (yk k)))`. Introduce `k`. Rewrite using `[LaurentPolynomial.single_eq_C_mul_T, mul_comm]`. Simplify using `only [h3, AddMonoidAlgebra.coeff_sum, AddMonoidAlgebra.coeff_single, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.single_apply, AddMonoidAlgebra.coeff_zero, Finsupp.coe_zero, Pi.zero_apply] at h2`. Rewrite `h2` using `[Finset.sum_ite_eq' K k0]`.
-
-Rewrite `h2` using `[if_pos hk0]`. Conclude with `(MvPolynomial.mem_support_iff.1 hm) h2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem laurentCoeff_mem_dominatedWeightPolynomials (y : MvPolynomial (ι × Fin n) R) (K : Finset ℤ) (yk : ℤ → MvPolynomial (ι × Fin n) R)
     (hh : ∀ (k1 : Type) [CommRing k1] (φ : R →+* k1), ∃ h h' : Matrix (Fin n) (Fin n) (LaurentPolynomial k1),
@@ -82,11 +80,11 @@ theorem laurentCoeff_mem_dominatedWeightPolynomials (y : MvPolynomial (ι × Fin
   exact (MvPolynomial.mem_support_iff.1 hm) h2
 
 /- English proof (translation)
-Use `laurentCoeff_mem_dominatedWeightPolynomials LL S Pr y ((Finset.range (y.totalDegree + k + 1)).map Nat.castEmbedding) (fun z => divPow R LL S a b z.toNat y) ?_ hy (k : ℤ) ?_` as an intermediate fact. Simplify using `using this`. Introduce `k1 _ φ`. Use `⟨Matrix.transvection a b (LaurentPolynomial.T 1), Matrix.transvection a b (-LaurentPolynomial.T 1), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.transvection_mul_transvection_same a b hab]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hT R (LaurentPolynomial k1) ι LL n S (LaurentPolynomial.C.comp φ) a b hab (LaurentPolynomial.T 1) y (y.totalDegree + k + 1) (by omega), Finset.sum_map]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[LaurentPolynomial.T_pow]`. Simplify using `only [Finset.mem_map, Finset.mem_range]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `⟨k, by omega, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem dividedPower_mem_dominatedWeightPolynomials (hT : TransvectionExpansion) (a b : Fin n) (hab : a ≠ b) (k : ℕ) (y : MvPolynomial (ι × Fin n) R)
     (hy : y ∈ dominatedWeightPolynomials LL S Pr) : divPow R LL S a b k y ∈ dominatedWeightPolynomials LL S Pr := by
@@ -105,17 +103,17 @@ theorem dividedPower_mem_dominatedWeightPolynomials (hT : TransvectionExpansion)
     exact ⟨k, by omega, rfl⟩
 
 /- English proof (translation)
-Distinguish the cases in `hw : w ∈ y.support.image (fun m => wtS LL S m a)`. Use `laurentCoeff_mem_dominatedWeightPolynomials LL S Pr y (y.support.image (fun m => wtS LL S m a)) (fun z => weightEntryComponent LL S a z y) ?_ hy w hw` and prove the remaining obligations. Introduce `k1 _ φ`. Use `set D : Fin n → (LaurentPolynomial k1)ˣ := fun c => if c = a then laurentUnit k1 else 1 with hD`. Use `⟨Matrix.diagonal fun c => ((D c : (LaurentPolynomial k1)ˣ) : LaurentPolynomial k1), Matrix.diagonal fun c => (((D c)⁻¹ : (LaurentPolynomial k1)ˣ) : LaurentPolynomial k1), ?_, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.diagonal_mul_diagonal]`. Simplify using the standard rewrite rules. Establish `hprod : ∀ m : ι × Fin n →₀ ℕ, ((∏ c, D c ^ (wtS LL S m c) : (LaurentPolynomial k1)ˣ) : LaurentPolynomial k1) = LaurentPolynomial.T (wtS LL S m a)`. Introduce `m`. Rewrite using `[← laurentUnit_zpow]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Finset.prod_eq_single a]`. Simplify using `[hD]`. Introduce `c _ hc`. Simplify using `[hD, hc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`. Use `conv_lhs => rw [y.as_sum, map_sum]`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (s := y.support) (t := y.support.image (fun m => wtS LL S m a)) (g := fun m => wtS LL S m a) (fun m hm => Finset.mem_image_of_mem _ hm)]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[weightEntryComponent, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[hTo R (LaurentPolynomial k1) ι LL n S (LaurentPolynomial.C.comp φ) D m (y.coeff m), hprod, (Finset.mem_filter.1 hm).2, MvPolynomial.map_monomial, MvPolynomial.C_mul_monomial, mul_comm]`. Establish `: weightEntryComponent LL S a w y = 0`. Rewrite using `[weightEntryComponent]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `m hm`. Conclude with `absurd (Finset.mem_image.2 ⟨m, (Finset.mem_filter.1 hm).1, (Finset.mem_filter.1 hm).2⟩) hw`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem torusComponent_mem_dominatedWeightPolynomials (hTo : TorusActsThroughWeight) (a : Fin n) (w : ℤ) (y : MvPolynomial (ι × Fin n) R)
     (hy : y ∈ dominatedWeightPolynomials LL S Pr) : weightEntryComponent LL S a w y ∈ dominatedWeightPolynomials LL S Pr := by
@@ -153,9 +151,9 @@ theorem torusComponent_mem_dominatedWeightPolynomials (hTo : TorusActsThroughWei
     rw [this]; exact Submodule.zero_mem _
 
 /- English proof (translation)
-Establish `: binomPol R LL S a k y = ∑ z ∈ y.support.image (fun m => wtS LL S m a), (((Ring.choose z k : ℤ) : R)) • weightEntryComponent LL S a z y` using `by conv_lhs => rw [y.as_sum, map_sum]`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (s := y.support) (t := y.support.image (fun m => wtS LL S m a)) (g := fun m => wtS LL S m a) (fun m hm => Finset.mem_image_of_mem _ hm)]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Rewrite using `[weightEntryComponent, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[binomialOperator_monomial, (Finset.mem_filter.1 hm).2, MvPolynomial.smul_monomial, smul_eq_mul, mul_comm]`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun z _ => Submodule.smul_mem _ _ (torusComponent_mem_dominatedWeightPolynomials LL S Pr hTo a z y hy)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem binomialPol_mem_dominatedWeightPolynomials (hTo : TorusActsThroughWeight) (a : Fin n) (k : ℕ) (y : MvPolynomial (ι × Fin n) R)
     (hy : y ∈ dominatedWeightPolynomials LL S Pr) : binomPol R LL S a k y ∈ dominatedWeightPolynomials LL S Pr := by
@@ -175,15 +173,13 @@ theorem binomialPol_mem_dominatedWeightPolynomials (hTo : TorusActsThroughWeight
 end fwd
 
 /- English proof (translation)
-Introduce `R _ ι _ LL n S Pr G hG`. Establish `hGN : G ∈ dominatedWeightPolynomials LL S Pr` using `hG`. Establish `hstab : ∀ u ∈ Submonoid.closure (polUZgens R LL S), ∀ y ∈ dominatedWeightPolynomials LL S Pr, u y ∈ dominatedWeightPolynomials LL S Pr`. Introduce `u hu`. Proceed by induction on `hu using Submonoid.closure_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem u hu`. Introduce `y hy`. Break down `hu with ⟨a, b, k, hab, rfl⟩ | ⟨a, k, rfl⟩` into its components or cases. Conclude with `dividedPower_mem_dominatedWeightPolynomials LL S Pr transvectionExpansion a b hab k y hy`. Conclude with `binomialPol_mem_dominatedWeightPolynomials LL S Pr torus_acts_through_weight a k y hy`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately.
 
-Consider the case `one => intro y hy`. Conclude with `hy`. Consider the case `mul u v _ _ hu hv => intro y hy`. Conclude with `hu _ (hv y hy)`. Establish `hW : polGenSub R LL S G ≤ dominatedWeightPolynomials LL S Pr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[polGenSub, Submodule.span_le]`. Introduce and unpack `x ⟨u, hu, rfl⟩`. Conclude with `hstab u hu G hGN`. Introduce and unpack `mu ⟨x, hx, hx0, hmu⟩`. Take `⟨m, hm⟩` from `MvPolynomial.support_nonempty.2 hx0`.
-
-Use `hW hx R (RingHom.id R) 1 1 (by simp) m (by rw [matrixSubst_one, MvPolynomial.map_id]; exact hm)` as an intermediate fact. Rewrite `this` using `[hmu m hm]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restFwd : RestFwd := by
   classical
@@ -210,13 +206,11 @@ theorem restFwd : RestFwd := by
   exact this
 
 /- English proof (translation)
-Introduce `R B' _ _ N n i LL φ m m' G`. Establish `: ((rename (iv N n) : MvPolynomial (Fin N × Fin n) B' →ₐ[B'] MvPolynomial (ℕ × Fin n) B').toRingHom.comp (matrixSubst LL {j : Fin N | j.val < i} φ m m')) = ((actI (isV LL) i m m').toRingHom.comp ((MvPolynomial.map φ).comp (rename (iv N n) : MvPolynomial (Fin N × Fin n) R →ₐ[R] Mv …`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `[matrixSubst_C, actI]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨l, a⟩`. Establish `hv : isV LL l.val = LL.vec l` using `by simp [isV, l.2]`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, matrixSubst_X, rename_X, map_X, actI, aeval_X, iv, Set.mem_ofPred_eq, hv]`. Distinguish the cases in `hS : l.val < i`. Distinguish the cases in `hvec : LL.vec l = true`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [if_pos hS, if_pos hvec, map_sum, map_mul, rename_C, rename_X, iv]`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`. Simplify using `only [if_pos hS, if_neg hvec, map_sum, map_mul, rename_C, rename_X, iv]`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`. Simplify using `only [if_neg hS, rename_X, iv]`.
-
-Conclude with `congrArg (fun f => f G) this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem restAct : RestAct := by
   classical
@@ -242,15 +236,15 @@ theorem restAct : RestAct := by
   exact congrArg (fun f => f G) this
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_mapDomain_index (h := fun x c => c • wtI (isV LL) i x) (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _)]`. Use function extensionality and compare the values at `a`. Rewrite using `[Finsupp.sum_fintype m (fun x c => c • wtI (isV LL) i (iv N n x)) (fun _ => zero_smul _ _), Finset.sum_apply, Fintype.sum_prod_type, wtS]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `hv : isV LL l.val = LL.vec l` using `by simp [isV, l.2]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Pi.smul_apply, wtI, iv, Set.mem_ofPred_eq, Formalism.InvariantFactorPaths.GelfandTsetlinBases.torusW, hv]`. Distinguish the cases in `hS : l.val < i`. Distinguish the cases in `hvec : LL.vec l = true`. Simplify using `only [if_pos hS, if_pos hvec]`. Rewrite using `[Finset.sum_eq_single a]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_pos hS, if_neg hvec]`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Ne.symm hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`. Simplify using `[if_neg hS]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem monomialWeight_eq_letterWeight {N n : ℕ} (LL : Letters (Fin N)) (i : ℕ) (m : Fin N × Fin n →₀ ℕ) :
     Finsupp.weight (wtI (isV LL) i) (m.mapDomain (iv N n)) = wtS LL {j : Fin N | j.val < i} m := by
@@ -278,17 +272,15 @@ theorem monomialWeight_eq_letterWeight {N n : ℕ} (LL : Letters (Fin N)) (i : �
   · simp [if_neg hS]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h2, fun j => ?_⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos j with rfl | hj` into its components or cases. Simplify using the standard rewrite rules.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hjn : j ≤ n`. Establish `e : (univ.filter fun m : Fin n => m.val < j) = univ.filter (· ≤ (⟨j - 1, by omega⟩ : Fin n))`. Use extensionality with `m`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.le_def]`. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[e]`. Conclude with `h1 _`. Establish `e : (univ.filter fun m : Fin n => m.val < j) = univ`. Use extensionality with `m`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, iff_true]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `m.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[e, h2]`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun a => ?_, h1⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (univ.filter (· ≤ a)) = univ.filter fun m : Fin n => m.val < a.val + 1`. Use extensionality with `m`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.le_def]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`.
-
-Conclude with `h2 _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dominanceOrder_iff {n : ℕ} (nu mu : Fin n → ℤ) : DomLE nu mu ↔ Formalism.InvariantFactorPaths.GelfandTsetlinBases.DomLe nu mu := by
   classical
@@ -320,9 +312,9 @@ theorem dominanceOrder_iff {n : ℕ} (nu mu : Fin n → ℤ) : DomLE nu mu ↔ F
     exact h2 _
 
 /- English proof (translation)
-Establish `hidx : Formalism.InvariantFactorPaths.GelfandTsetlinBases.IsIndex (pEnd P.mu) I` using `((restStd n N P.mu I).1 hI).1`. Establish `hidx' : Formalism.InvariantFactorPaths.GelfandTsetlinBases.IsIndex (ext P.mu N) I` using `by rw [ext_last]; exact hidx`. Establish `hpath` using `restPathTo n N LL B P`. Establish `h1` using `hW k1 n N i.val (isV LL) (Bn B) (ext P.mu) I g0inv g0 (mul_eq_one_comm.1 hg) hpath hidx' (Nat.lt_succ_iff.1 i.2) (m.mapDomain (iv N n)) ?_`. Rewrite `h1` using `[monomialWeight_eq_letterWeight, ext_val]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(dominanceOrder_iff _ _).2 h1`. Rewrite using `[← Formalism.InvariantFactorPaths.GelfandTsetlinBases.A3ev.map_psi φ hpath hidx', ← restPsi F n N LL B P I hidx, ← restAct F k1 N n i.val LL φ g0inv g0, MvPolynomial.mem_support_iff, MvPolynomial.coeff_rename_mapDomain _ (iv_inj N n)]`. Conclude with `MvPolynomial.mem_support_iff.1 hm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem standardWord_monomial_weight_dominated (hW : RestWord) (F : Type) [Field F] {N n : ℕ} {LL : Letters (Fin N)} {B : Fin N → ℕ}
     (i : Fin (N + 1)) (P : PPath n N LL B) (I : ℤ → Finset (Fin n)) (hI : IsSt P.mu I)
@@ -344,25 +336,21 @@ theorem standardWord_monomial_weight_dominated (hW : RestWord) (F : Type) [Field
     exact MvPolynomial.mem_support_iff.1 hm
 
 /- English proof (translation)
-Introduce `F _ N n LL B i pi hpi G hG`. Establish `hLow : LowerC pi` using `fun μ hμ ν hν hd => hpi.2 μ hμ ν hν ((dominanceOrder_iff ν μ).2 hd)`. Prove the components needed by the constructor for the conclusion. Introduce `hGs mu hmu hdom`. Establish `key` using `restFwd F (Fin N) LL n {j : Fin N | j.val < i.val} (fun mu => ∃ ν ∈ pi, DomLE mu ν) G ?_ mu hmu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨ν, hν, hd⟩` from `key`. Conclude with `hpi.2 ν hν mu hdom hd`. Introduce `k1 _ φ g0 g0inv hg`. Use `Submodule.span_induction (p := fun x _ => ∀ m ∈ (matrixSubst LL {j : Fin N | j.val < i.val} φ g0inv g0 x).support, ∃ ν ∈ pi, DomLE (wtS LL {j : Fin N | j.val < i.val} m) ν) ?_ ?_ ?_ ?_ hGs` and prove the remaining obligations. Introduce and unpack `x ⟨P, I, hI, hPi, rfl⟩ m hm`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨P.mu i, hPi, standardWord_monomial_weight_dominated hW F i P I hI k1 φ g0 g0inv hg m hm⟩`. Introduce `m hm`. Simplify using `at hm`. Introduce `x y _ _ hx hy m hm`. Rewrite `hm` using `[map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Finset.mem_union.1 (MvPolynomial.support_add hm) with h1 | h1` into its components or cases. Conclude with `hx m h1`. Conclude with `hy m h1`. Introduce `c x _ hx m hm`. Rewrite `hm` using `[MvPolynomial.smul_eq_C_mul, map_mul, matrixSubst_C, ← MvPolynomial.smul_eq_C_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx m (MvPolynomial.support_smul hm)`. Introduce `H`. Establish `hGood : GoodC F (isV LL) i.val pi (rename (iv N n) G)`. Introduce `e he hanti`. Rewrite `he` using `[← restAct F (Formalism.InvariantFactorPaths.GelfandTsetlinBases.GenField F n) N n i.val LL (algebraMap F (Formalism.InvariantFactorPaths.GelfandTsetlinBases.GenField F n)) (Formalism.InvariantFactorPaths.GelfandTsetlinBases.genMat F n) (Formalism.InvariantFactorPaths.GelfandTset …`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, hm, rfl⟩` from `Finset.mem_image.1 he`. Rewrite `hanti`, the goal using `[monomialWeight_eq_letterWeight]`. Establish `hm'` using `generic_monomials_specialise F (Fin N) LL n {j : Fin N | j.val < i.val} (Formalism.InvariantFactorPaths.GelfandTsetlinBases.GenField F n) (algebraMap F (Formalism.InvariantFactorPaths.GelfandTsetlinBases.GenField F n)) (Formalism.InvariantFactorPaths.GelfandTsetlinBases.genMat F …`. Conclude with `H _ (generic_translate_weights_mem LL _ transvectionExpansion torus_acts_through_weight binomial_stable_contains_components G m hm') hanti`. Establish `hmem : rename (iv N n) G ∈ Formalism.InvariantFactorPaths.GelfandTsetlinBases.polB F n N (Bn B)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← restPol F n N B]`. Conclude with `Submodule.mem_map_of_mem hG`. Establish `h1` using `hO F n N i.val (isV LL) (Bn B) pi (rename (iv N n) G) hLow (Nat.lt_succ_iff.1 i.2) hmem hGood`. Use `set f : MvPolynomial (Fin N × Fin n) F →ₗ[F] MvPolynomial (ℕ × Fin n) F := (rename (iv N n) : MvPolynomial (Fin N × Fin n) F →ₐ[F] MvPolynomial (ℕ × Fin n) F).toLinearMap with hf`. Establish `hinj : Function.Injective f` using `rename_injective _ (iv_inj N n)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `set T : Set (MvPolynomial (Fin N × Fin n) F) := {H | ∃ P : PPath n N LL B, ∃ I : ℤ → Finset (Fin n), IsSt P.mu I ∧ P.mu i ∈ pi ∧ H = Psi F P.mu I} with hT`. Establish `hle : Submodule.span F (Formalism.InvariantFactorPaths.GelfandTsetlinBases.psiFam F n N (isV LL) (Bn B) '' {x | x.1.1 i.val ∈ pi}) ≤ (Submodule.span F T).map f`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Take `⟨x, rfl⟩` from `(e17 restPathTo restPathFrom restStd n N LL B).surjective y`.
-
-Use `⟨Psi F x.1.1.mu x.1.2, Submodule.subset_span ⟨x.1.1, x.1.2, x.2, ?_, rfl⟩, rename_Psi restPathTo restPathFrom restStd restPsi F x⟩` and prove the remaining obligations. Establish `hy' : ext x.1.1.mu i.val ∈ pi` using `hy`. Rewrite `hy'` using `[ext_val]`. Then use the resulting hypothesis. Take `⟨G', hG', hGG⟩` from `hle h1`. Rewrite using `[← hinj hGG]`.
-
-Conclude with `hG'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem firstLettersLowerSet_of_restWord_restOne (D : Formalism.BasicNotions.D7) (hW : RestWord) (hO : RestOne) : Formalism.MainNotions.CovariantDegrees.FirstLettersLowerSet D := by
   classical

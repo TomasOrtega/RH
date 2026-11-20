@@ -9,7 +9,7 @@ namespace GlobalTheory.LatPresc
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `a ha`. Take `⟨h1, h2⟩` from `Submodule.mem_inf.1 ha`. Use `Submodule.mem_inf.2 ⟨h1, (Submodule.mem_iInf _).2 fun w => ?_⟩` and prove the remaining obligations. Conclude with `(Submodule.mem_iInf _).1 h2 ⟨w.1, fun hw => w.2 (hPQ _ hw)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem idAt_mono {P Q : Pl D → Prop} (hPQ : ∀ w, P w → Q w) : idAt D P ≤ idAt D Q := by
   intro a ha
@@ -18,15 +18,15 @@ theorem idAt_mono {P Q : Pl D → Prop} (hPQ : ∀ w, P w → Q w) : idAt D P �
   exact (Submodule.mem_iInf _).1 h2 ⟨w.1, fun hw => w.2 (hPQ _ hw)⟩
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨⟨ε, -, -, hεint, hεat, -⟩, hSv⟩` from `GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = v)`. Establish `hyv` using `((hSv S).2.2.2 L y hL).1 hy`. Establish `hoff` using `((GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· ≠ v₀)).2 S).2.2.2`. Establish `hy₀ : y ∈ latV S L (· ≠ v₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hoff L y hL]`. Use `⟨fun i => idAt_mono (fun w hw => hw ▸ hv) (hyv.1 i), fun u _ e he => ?_⟩` and prove the remaining obligations. Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality. Conclude with `hyv.2 u rfl e he`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨εu, -, -, -, hεuat, hεuoff⟩, -⟩` from `GlobalTheory.T.adelicPoint_components_atPlaces_lattices_vacua D (· = u)`. Establish `hz : e • y = 0`. Use function extensionality and compare the values at `i`. Establish `hyi : y i ∈ idOff D (· = u)` using `(Submodule.mem_iInf _).2 fun w => (Submodule.mem_iInf _).1 (Submodule.mem_inf.1 (hyv.1 i)).2 ⟨w.1, fun hw => huv (w.2.symm.trans hw)⟩`. Express the relevant statement in the definitionally equal form `e * y i = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (hεuat e).1 he.1, mul_comm εu e, mul_assoc, (hεuoff (y i)).1 hyi, mul_zero]`. Rewrite using `[hz]`. Conclude with `zero_mem _`. Rewrite `hy₀` using `[h]`. Establish `h2` using `((hoff L' y hL').1 hy₀).2 v hv ε hεint`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hεy : ε • y = y` using `funext fun i => (hεat (y i)).1 (hyv.1 i)`. Rewrite `h2` using `[hεy]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem latV_le_of_off {S : HSp D} {L L' : Lat S} (hL : Submodule.IsLattice D.host.E L)
     (hL' : Submodule.IsLattice D.host.E L') {v₀ v : Pl D} (hv : v ≠ v₀)
@@ -57,7 +57,7 @@ theorem latV_le_of_off {S : HSp D} {L L' : Lat S} (hL : Submodule.IsLattice D.ho
   rwa [hεy] at h2
 
 /- English proof (translation)
-The claim follows from `le_antisymm (latV_le_of_off hL hL' hv h) (latV_le_of_off hL' hL hv h.symm)`.
+A detailed English derivation is pending.
 -/
 theorem latV_eq_of_off {S : HSp D} {L L' : Lat S} (hL : Submodule.IsLattice D.host.E L)
     (hL' : Submodule.IsLattice D.host.E L') {v₀ v : Pl D} (hv : v ≠ v₀)
@@ -67,7 +67,7 @@ theorem latV_eq_of_off {S : HSp D} {L L' : Lat S} (hL : Submodule.IsLattice D.ho
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Unfold `Frame.IsLat`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLat_congr {p : SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [DecidableEq n] (β : Frame p S n)
     {L L' : Lat S} (h : latV S L (· = p.v) = latV S L' (· = p.v)) (Λ : Submodule 𝒪[k] (n → k)) :
@@ -76,11 +76,9 @@ theorem isLat_congr {p : SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [Decida
   rw [h]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact ⟨L, hL, by simp, fun _ _ => rfl⟩`. Consider the case `cons i l ih`. Take `⟨M, hM, h1, h2⟩` from `ih`. Take `⟨M', hM', h3, h4⟩` from `GlobalTheory.T.exists_selfDual_lattice_with_prescribed_splitComponent D k (p i) S n (β i) M (Λ i) hM (hΛ i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨M', hM', fun i' hi' => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : i' = i`. Substitute `e` using the available equality. Conclude with `h3`. Establish `hne : (p i').v ≠ (p i).v` using `fun e' => e (hp e')`.
-
-Conclude with `(isLat_congr (β i') (latV_eq_of_off hM'.1 hM.1 hne h4) (Λ i')).2 (h1 i' ((List.mem_cons.1 hi').resolve_left e))`. Conclude with `(latV_eq_of_off hM'.1 hM.1 (hv i (List.mem_cons_self ..)) h4).trans (h2 v fun i' hi' => hv i' (List.mem_cons_of_mem _ hi'))`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_modify {ι : Type} {p : ι → SplitPt D k} (hp : Function.Injective fun i => (p i).v) {S : HSp D} {n : Type}
     [Fintype n] [DecidableEq n] (β : ∀ i, Frame (p i) S n) (Λ : ι → Submodule 𝒪[k] (n → k)) (hΛ : ∀ i, (Λ i).IsLattice k)
@@ -101,7 +99,7 @@ theorem exists_modify {ι : Type} {p : ι → SplitPt D k} (hp : Function.Inject
         (h2 v fun i' hi' => hv i' (List.mem_cons_of_mem _ hi'))
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ ι p I P hP n _ _ S α L hL Λ hΛ`. Take `⟨M, hM, h1, h2⟩` from `exists_modify hP.inj α Λ hΛ hL I`. Conclude with `⟨M, hM, fun i => h1 i (hP.all i), fun x hx => h2 x fun i _ e => hx ((hP.mem x).2 ⟨i, e⟩)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem latAll : ∀ D : D7, LatAll D := by
   intro D k _ _ _ _ ι p I P hP n _ _ S α L hL Λ hΛ

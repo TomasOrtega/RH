@@ -20,9 +20,9 @@ namespace GlobalTheory.CompanionTheory.LocGrStep
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C}
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simpa using rep_zero (a := a) (b := b) (z := fun s => 0) (fun s => Ideal.zero_mem _)`. Consider the case `insert i S hi ih`. Establish `h1` using `rep_add (h i (Finset.mem_insert_self i S)) (ih fun k hk => h k (Finset.mem_insert_of_mem hk))`. Rewrite using `[Finset.sum_insert hi]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `h1` using `only [Finset.sum_insert hi]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rep_sum {A : C ⥤ CommAlgCat.{0} R} {a b : IdF A} {j : ℕ} {ι : Type} (S : Finset ι)
     (z : ι → ∀ s : ComposableArrows C j, A.obj (s.obj (Fin.last j))) (c : ι → CH.H (sq a b) j)
@@ -36,7 +36,7 @@ theorem rep_sum {A : C ⥤ CommAlgCat.{0} R} {a b : IdF A} {j : ℕ} {ι : Type}
     simpa only [Finset.sum_insert hi] using h1
 
 /- English proof (translation)
-Introduce `T b`. Use `(h T b).trans (forall_congr' fun k => ?_)` and prove the remaining obligations. Establish `e : r + 1 - (k : ℤ) = r - k + 1` using `by ring`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem crit_shift (Q : Poly Φ) {Fil : ℤ → IdF Φ.A} {r : ℤ} (h : Q.Crit Fil (r + 1)) :
     Q.Crit (fun r => Fil (r + 1)) r := by
@@ -54,7 +54,7 @@ def rho (Q : Poly Φ) (Fil : ℤ → IdF Φ.A) {E : Frame Φ (d + 1)} (σ : ∀ 
   (CH.Mor.restrict (gr (Fl Fil E) r) (Cut.Pσ Q σ)).pull n
 
 /- English proof (translation)
-The claim follows from `CrystallineSemistableComparison.P.adj _ (Cut.Pσ Q σ) (Cut.U E) (Cut.adjPσ Q σ) n`.
+A detailed English derivation is pending.
 -/
 theorem rho_bij (Q : Poly Φ) (Fil : ℤ → IdF Φ.A) {E : Frame Φ (d + 1)} (σ : ∀ T : C, E.D ⟶ T) (r : ℤ) (n : ℕ) :
     Function.Bijective (rho Q Fil σ r n) :=
@@ -71,14 +71,14 @@ example (Fil : ℤ → IdF Φ.A) (E : Frame Φ (d + 1)) (r : ℤ) : gr (Fl Fil E
 
 universe w in
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cls_congr {K : Cx.{w} R} {n : ℕ} {x y : K.X n} (h : x = y) (hx : K.d n x = 0)
     (hy : K.d n y = 0) : K.cls x hx = K.cls y hy := by
   subst h; rfl
 
 /- English proof (translation)
-Take `⟨f, hf, rfl, hv⟩` from `ha`. Take `⟨g, hg, rfl, hv'⟩` from `hb`. Establish `key` using `GlobalTheory.CompanionTheory.GrPull.gr_pull Q hF E σ hc j q r hr I x hx f g hv hv'`. Conclude with `(CrystallineSemistableComparison.P.mapH_cls _ j _ hg (CrystallineSemistableComparison.CechClassBoundaries.cyc _ _ hg)).trans ((cls_congr key.symm _ _).trans (CrystallineSemistableComparison.P.mapH_cls _ j _ hf (CrystallineSemistableComparison.CechClassBoundaries.cyc _ _ hf)).symm …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pull_form (Q : Poly Φ) {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) (E : Frame Φ (d + 1)) (σ : ∀ T : C, E.D ⟶ T)
     (hc : E.GrConst Fil) (j q : ℕ) (r : ℤ) (hr : r = j + q) (I : Fin j → Fin d) (x : Φ.A.obj E.D)
@@ -93,14 +93,14 @@ theorem pull_form (Q : Poly Φ) {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) (E 
     ((cls_congr key.symm _ _).trans (CrystallineSemistableComparison.P.mapH_cls _ j _ hf (CrystallineSemistableComparison.CechClassBoundaries.cyc _ _ hf)).symm)
 
 /- English proof (translation)
-Apply the tactic sequence `cases n <;> simp [Finsupp.single_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coef {M : Type} [AddCommMonoid M] (u v : M) (n : ℕ) :
     (Finsupp.single 0 v : ℕ →₀ M) n = (Finsupp.single 0 u + Finsupp.single 1 v : ℕ →₀ M) (n + 1) := by
   cases n <;> simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Rewrite using `[map_add, GlobalTheory.CompanionTheory.PolySes.ev_single, GlobalTheory.CompanionTheory.PolySes.ev_single, Φ.dp_zero (Q.X_mem T), Φ.dp_one (Q.X_mem T), map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem val_ev (Q : Poly Φ) (T : C) (u f : Φ.A.obj T) :
     (Q.X T + (Φ.A.map (Q.j T)).hom u) * (Φ.A.map (Q.j T)).hom f =
@@ -109,11 +109,11 @@ theorem val_ev (Q : Poly Φ) (T : C) (u f : Φ.A.obj T) :
   ring
 
 /- English proof (translation)
-Establish `hm : ∀ s : ComposableArrows C k, (Q.X (s.obj (Fin.last k)) + (Φ.A.map (Q.j _)).hom (E.a σ 0 (s.map (homOfLE (Fin.zero_le (Fin.last k)))))) * (Φ.A.map (Q.j _)).hom (E.form σ (Fin.succ ∘ I) x s) ∈ (Fil r).S (Q.P (s.obj (Fin.last k)))`. Introduce `s`. Establish `h1` using `GlobalTheory.CompanionTheory.GrDelta.Bv_mem Q E σ hF s 0`. Establish `h2` using `(Fil _).map_mem (Q.j _) (GlobalTheory.CompanionTheory.FormMem.form_mem hF E σ k q (Fin.succ ∘ I) x hx s)`. Establish `h3` using `hF.mul 1 (k + q) _ h1 h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ((1 + (k + q) : ℕ) : ℤ) = r` using `by rw [hr]; push_cast; ring`. Rewrite `h3` using `[e]`. Conclude with `h3`. Use `⟨fun s => sqMk (Fil r) (Fil (r + 1)) _ (hm s), fun s => rfl, funext fun s => ?_⟩` and prove the remaining obligations. Use `hform ((Pt.Sσ σ).obj (s.obj (Fin.last k))) (Finsupp.single 0 (E.a σ 0 (s.map (homOfLE (Fin.zero_le (Fin.last k)))) * E.form σ (Fin.succ ∘ I) x s) + Finsupp.single 1 (E.form σ (Fin.succ ∘ I) x s)) (Finsupp.single 0 (E.form σ (Fin.succ ∘ I) x s)) _ _ (fun n => coef _ _ n) (congrArg …` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(GlobalTheory.CompanionTheory.PolySes.sqMap_val (Fil (r - 1)) (Fil (r - 1 + 1)) (Q.j (s.obj (Fin.last k))) (g s) _ (hg s)).trans ?_` and prove the remaining obligations. Conclude with `congrArg (Ideal.Quotient.mk _) (GlobalTheory.CompanionTheory.PolySes.ev_single_zero Q _).symm`.
+A detailed English derivation is pending.
 -/
 theorem lift_form (Q : Poly Φ) {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) (E : Frame Φ (d + 1)) (σ : ∀ T : C, E.D ⟶ T)
     {r : ℤ} (k q : ℕ) (hr : r = k + 1 + q) (I : Fin k → Fin d) (x : Φ.A.obj E.D) (hx : x ∈ (Fil q).S E.D)
@@ -150,11 +150,11 @@ theorem lift_form (Q : Poly Φ) {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) (E 
   exact congrArg (Ideal.Quotient.mk _) (GlobalTheory.CompanionTheory.PolySes.ev_single_zero Q _).symm
 
 /- English proof (translation)
-Take `⟨f, hf, rfl, hv⟩` from `ha`. Take `⟨wc, hwc, rfl, hwv⟩` from `hw`. Establish `hr' : r - 1 = k + q` using `by rw [hr]; ring`. Take `⟨c, g, hg, -, hgv⟩` from `GlobalTheory.CompanionTheory.CocProd.rep_form hF E σ hc k q (r - 1) hr' (Fin.succ ∘ I) x hx`. Establish `key` using `GlobalTheory.CompanionTheory.GrPull.gr_pull Q hF E σ hc k q (r - 1) hr' I x hx f g hv hgv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy, hβ⟩` from `lift_form Q hF E σ k q hr I x hx β hform g hgv`. Establish `hd` using `GlobalTheory.CompanionTheory.GrDelta.gr_delta Q hF E σ hc k q r hr I x hx y wc hy hwv`. Establish `hz : (CH.cx (Cut.Pσ Q σ ⋙ Cut.U E ⋙ gr Fil (r - 1))).d k ((CH.Mor.ofNatTrans (Functor.whiskerLeft (Pt.Sσ σ) β)).hom.f k y) = 0`. Establish `e : (CH.Mor.ofNatTrans (Functor.whiskerLeft (Pt.Sσ σ) β)).hom.f k y = (CH.Mor.restrict (gr (Fl Fil E) (r - 1)) (Cut.Pσ Q σ)).hom.f k f` using `hβ.trans key.symm`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `CrystallineSemistableComparison.CechClassBoundaries.cyc _ _ hf`. Establish `e1 : rho Q Fil σ (r - 1) k ((CH.cx _).cls f hf) = (CH.cx (Cut.Pσ Q σ ⋙ Cut.U E ⋙ gr Fil (r - 1))).cls ((CH.Mor.ofNatTrans (Functor.whiskerLeft (Pt.Sσ σ) β)).hom.f k y) hz` using `(CrystallineSemistableComparison.P.mapH_cls _ k _ hf (CrystallineSemistableComparison.CechClassBoundaries.cyc _ _ hf)).trans (cls_congr (key.trans hβ.symm) _ _)`. Rewrite using `[e1]`. Conclude with `hδ k y (-wc) hz (by rw [map_neg, hwc, neg_zero]) (by rw [map_neg]; exact hd.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem delta_form (Q : Poly Φ) {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) (E : Frame Φ (d + 1)) (σ : ∀ T : C, E.D ⟶ T)
     (hc : E.GrConst Fil) {r : ℤ} (k q : ℕ) (hr : r = k + 1 + q) (I : Fin k → Fin d) (x : Φ.A.obj E.D)
@@ -214,23 +214,23 @@ structure Pack (Fil : ℤ → IdF Φ.A) (E : Frame Φ (d + 1)) (σ : ∀ T : C, 
       Rep (Fil r) (Fil (r + 1)) (E.form σ (Fin.cons 0 (Fin.succ ∘ I)) x) w → ε k a = -w
 
 /- English proof (translation)
-Establish `c1` using `hQ r (by omega)`. Establish `c0` using `hQ (r - 1) (by omega)`. Establish `c2` using `hQ (r + 1) le_rfl`. Establish `c1' : Q.Crit Fil (r - 1 + 1)` using `by simpa using c1`. Take `⟨β, hi, he, hs, hf⟩` from `GlobalTheory.CompanionTheory.PolySes.ses Q E Fil (fun r => Fil (r + 1)) r (fun r' T => hF.anti (by omega) T) c1 c0 (crit_shift Q c2) (crit_shift Q c1')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `βσ : Cut.Pσ Q σ ⋙ Cut.U E ⋙ gr Fil r ⟶ Cut.Pσ Q σ ⋙ Cut.U E ⋙ gr Fil (r - 1)` to `Functor.whiskerLeft (Pt.Sσ σ) β`. Take `⟨s1, s2, s3⟩` from `CrystallineSemistableComparison.P.ses_cochains (alpha Q Fil σ r) βσ (fun T => hi _) (fun T => he _) (fun T => hs _)`. Take `⟨δ, hδ, h0, e1, e2, e3⟩` from `CrystallineSemistableComparison.P.les _ _ s1 s2 s3`. Set `e` to `fun (r : ℤ) (n : ℕ) => LinearEquiv.ofBijective (rho Q Fil σ r n) (rho_bij Q Fil σ r n)`. Set `fH` to `fun n => (CH.Mor.ofNatTrans (alpha Q Fil σ r)).hom.mapH n`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `gH` to `fun n => (CH.Mor.ofNatTrans βσ).hom.mapH n`. Use `⟨fun n => (e r n).symm.toLinearMap ∘ₗ fH n, fun n => δ n ∘ₗ (e (r - 1) n).toLinearMap, fun n => (e (r - 1) n).symm.toLinearMap ∘ₗ gH n ∘ₗ (e r n).toLinearMap, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `fun a b h => h0 ((e r 0).symm.injective h)`. Introduce `n b`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Establish `h' : fH (n + 1) b = 0` using `(e r (n + 1)).symm.map_eq_zero_iff.1 h`. Take `⟨m, rfl⟩` from `(e3 n b).1 h'`. Use `⟨(e (r - 1) n).symm m, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `δ n (e (r - 1) n ((e (r - 1) n).symm m)) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[LinearEquiv.apply_symm_apply]`. Introduce and unpack `⟨a, rfl⟩`. Express the relevant statement in the definitionally equal form `(e r (n + 1)).symm (fH (n + 1) (δ n (e (r - 1) n a))) = 0`. Rewrite using `[(e3 n _).2 ⟨_, rfl⟩, map_zero]`. Introduce `n a`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨m, hm⟩` from `(e2 n _).1 h`. Use `⟨(e r n).symm m, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(e (r - 1) n).symm (gH n (e r n ((e r n).symm m))) = a`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `(LinearEquiv.symm_apply_eq _).2 hm`. Introduce and unpack `⟨b, rfl⟩`. Express the relevant statement in the definitionally equal form `δ n (e (r - 1) n ((e (r - 1) n).symm (gH n (e r n b)))) = 0`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(e2 n _).2 ⟨_, rfl⟩`. Introduce `n b`. Express the relevant statement in the definitionally equal form `(e (r - 1) n).symm (gH n (e r n ((e r n).symm (fH n b)))) = 0`. Rewrite using `[LinearEquiv.apply_symm_apply, (e1 n _).2 ⟨b, rfl⟩, map_zero]`. Introduce `j q hr I x hx a b ha hb`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `(e r j).symm (fH j b) = a`. Conclude with `(LinearEquiv.symm_apply_eq _).2 (pull_form Q hF E σ hc j q r hr I x hx a b ha hb)`. Introduce `k q hr I x hx a w ha hw`. Conclude with `delta_form Q hF E σ hc k q hr I x hx β hf δ hδ a w ha hw`.
+A detailed English derivation is pending.
 -/
 theorem pack (Q : Poly Φ) {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) (E : Frame Φ (d + 1)) (σ : ∀ T : C, E.D ⟶ T)
     (hc : E.GrConst Fil) (r : ℤ) (hQ : ∀ r' ≤ r + 1, Q.Crit Fil r') : ∃ π ε θ, Pack Fil E σ r π ε θ := by
@@ -283,7 +283,7 @@ theorem pack (Q : Poly Φ) {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) (E : Fra
     exact delta_form Q hF E σ hc k q hr I x hx β hf δ hδ a w ha hw
 
 /- English proof (translation)
-Use `choose c hc' using fun i => GlobalTheory.CompanionTheory.CocProd.rep_form hF E σ hc j q r hr (J i) (x i) (hx i)`. Conclude with `⟨_, rep_sum Finset.univ _ c fun i _ => hc' i⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ex_rep {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) {d : ℕ} (E : Frame Φ d) (σ : ∀ T : C, E.D ⟶ T)
     (hc : E.GrConst Fil) (j q : ℕ) (r : ℤ) (hr : r = j + q) {ι : Type} [Fintype ι]
@@ -300,9 +300,9 @@ variable {Fil : ℤ → IdF Φ.A} {E : Frame Φ (d + 1)} {σ : ∀ T : C, E.D �
   {θ : ∀ n, CH.H (gr (Fl Fil E) r) n →ₗ[R] CH.H (gr (Fl Fil E) (r - 1)) n}
 
 /- English proof (translation)
-Establish `hF1` using `Cut.isFil_1 (E := E) hF`. Establish `hc1` using `Cut.grConst_1 hc`. Use `choose a' ha' using fun I : Idx j d => GlobalTheory.CompanionTheory.CocProd.rep_form hF1 (Cut.E1 E) Cut.can hc1 j q r hr I.1 (x I) (hx I)`. Use `choose b' hb' using fun I : Idx j d => GlobalTheory.CompanionTheory.CocProd.rep_form hF E σ hc j q r hr (Fin.succ ∘ I.1) (x I) (hx I)`. Establish `e1 : a = ∑ I, a' I` using `rep_unique ha (rep_sum Finset.univ _ a' fun I _ => ha' I)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : b = ∑ I, b' I` using `rep_unique hb (rep_sum Finset.univ _ b' fun I _ => hb' I)`. Rewrite using `[e1, e2, map_sum]`. Conclude with `Finset.sum_congr rfl fun I _ => P.pull j q hr I.1 (x I) (hx I) _ _ (ha' I) (hb' I)`.
+A detailed English derivation is pending.
 -/
 theorem sum_pull (hF : IsFil Φ Fil) (hc : E.GrConst Fil) (P : Pack Fil E σ r π ε θ) {j q : ℕ} (hr : r = j + q)
     (x : Idx j d → Φ.A.obj E.D) (hx : ∀ I, x I ∈ (Fil q).S E.D) (a : CH.H (gr (Fl Fil E) r) j) (b : CH.H (gr Fil r) j)
@@ -318,9 +318,9 @@ theorem sum_pull (hF : IsFil Φ Fil) (hc : E.GrConst Fil) (P : Pack Fil E σ r �
   exact Finset.sum_congr rfl fun I _ => P.pull j q hr I.1 (x I) (hx I) _ _ (ha' I) (hb' I)
 
 /- English proof (translation)
-Establish `hF1` using `Cut.isFil_1 (E := E) hF`. Establish `hc1` using `Cut.grConst_1 hc`. Establish `hr' : r - 1 = k + q` using `by rw [hr]; ring`. Establish `hr'' : r = ((k + 1 : ℕ) : ℤ) + q` using `by rw [hr]; push_cast; ring`. Use `choose a' ha' using fun I : Idx k d => GlobalTheory.CompanionTheory.CocProd.rep_form hF1 (Cut.E1 E) Cut.can hc1 k q (r - 1) hr' I.1 (x I) (hx I)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose w' hw' using fun I : Idx k d => GlobalTheory.CompanionTheory.CocProd.rep_form hF E σ hc (k + 1) q r hr'' (Fin.cons 0 (Fin.succ ∘ I.1)) (x I) (hx I)`. Establish `e1 : a = ∑ I, a' I` using `rep_unique ha (rep_sum Finset.univ _ a' fun I _ => ha' I)`. Establish `e2 : w = ∑ I, w' I` using `rep_unique hw (rep_sum Finset.univ _ w' fun I _ => hw' I)`. Rewrite using `[e1, e2, map_sum, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun I _ => P.delta k q hr I.1 (x I) (hx I) _ _ (ha' I) (hw' I)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_delta (hF : IsFil Φ Fil) (hc : E.GrConst Fil) (P : Pack Fil E σ r π ε θ) {k q : ℕ} (hr : r = k + 1 + q)
     (x : Idx k d → Φ.A.obj E.D) (hx : ∀ I, x I ∈ (Fil q).S E.D) (a : CH.H (gr (Fl Fil E) (r - 1)) k)
@@ -362,26 +362,22 @@ def ib (I : Idx k d) : Idx (k + 1) (d + 1) := ⟨Fin.cons 0 (Fin.succ ∘ I.1), 
     | succ b => simpa using I.2 (Fin.succ_lt_succ_iff.1 hab)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ => Subtype.ext (funext fun i => i.elim0), fun J => ⟨⟨Fin.elim0, fun a => a.elim0⟩, Subtype.ext (funext fun i => i.elim0)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem index_zero_extend_bijective : Function.Bijective (ia : Idx 0 d → Idx 0 (d + 1)) :=
   ⟨fun _ _ _ => Subtype.ext (funext fun i => i.elim0),
     fun J => ⟨⟨Fin.elim0, fun a => a.elim0⟩, Subtype.ext (funext fun i => i.elim0)⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `(I | I) (I' | I') h`. Establish `h' : ia I = ia I'` using `h`. Conclude with `congrArg Sum.inl (Subtype.ext (funext fun i => Fin.succ_injective _ (congrFun (congrArg Subtype.val h') i)))`. Establish `h' : ia I = ib I'` using `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (congrFun (congrArg Subtype.val h') 0) (by simp [ia, ib])`. Establish `h' : ib I = ia I'` using `h`. Conclude with `absurd (congrFun (congrArg Subtype.val h') 0) (by`. Simplify using `only [ia, ib, Function.comp, Fin.cons_zero]`. Conclude with `(Fin.succ_ne_zero _).symm)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : ib I = ib I'` using `h`. Use `congrArg Sum.inr (Subtype.ext (funext fun i => Fin.succ_injective _ ?_))` and prove the remaining obligations. Simplify `congrFun (congrArg Subtype.val h') i.succ` using `[ib]`. Introduce `J`. Distinguish the cases in `h : J.1 0 = 0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hn : ∀ i : Fin k, J.1 i.succ ≠ 0` using `fun i e => by`. Use `J.2 (Fin.succ_pos i)` as an intermediate fact. Rewrite `this` using `[h, e]`. Conclude with `lt_irrefl _ this`. Use `⟨Sum.inr ⟨fun i => (J.1 i.succ).pred (hn i), fun a b hab => ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `Fin.pred_lt_pred_iff.2 (J.2 (Fin.succ_lt_succ_iff.2 hab))`. Use `Subtype.ext (funext fun i => ?_)` and prove the remaining obligations. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simpa [ib] using h.symm`. Consider the case `succ i => simp [ib]`.
-
-Establish `hn : ∀ i : Fin (k + 1), J.1 i ≠ 0` using `fun i e => by`. Establish `h1` using `J.2.monotone (Fin.zero_le i)`. Rewrite `h1` using `[e]`. Conclude with `h (Fin.le_zero_iff.1 h1)`. Use `⟨Sum.inl ⟨fun i => (J.1 i).pred (hn i), fun a b hab => ?_⟩, ?_⟩` and prove the remaining obligations.
-
-Conclude with `Fin.pred_lt_pred_iff.2 (J.2 hab)`. Conclude with `Subtype.ext (funext fun i => by simp [ia])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem split_bij : Function.Bijective (Sum.elim (ia (j := k + 1) (d := d)) (ib (k := k))) := by
   constructor
@@ -418,14 +414,14 @@ theorem split_bij : Function.Bijective (Sum.elim (ia (j := k + 1) (d := d)) (ib 
       · exact Subtype.ext (funext fun i => by simp [ia])
 
 /- English proof (translation)
-The claim follows from `(Fintype.sum_bijective _ split_bij _ _ fun _ => rfl).symm.trans (Fintype.sum_sum_type _)`.
+A detailed English derivation is pending.
 -/
 theorem sum_split {M : Type*} [AddCommMonoid M] (f : Idx (k + 1) (d + 1) → M) :
     ∑ J, f J = ∑ I : Idx (k + 1) d, f (ia I) + ∑ I : Idx k d, f (ib I) :=
   (Fintype.sum_bijective _ split_bij _ _ fun _ => rfl).symm.trans (Fintype.sum_sum_type _)
 
 /- English proof (translation)
-The claim follows from `(Fintype.sum_bijective _ index_zero_extend_bijective _ _ fun _ => rfl).symm`.
+A detailed English derivation is pending.
 -/
 theorem sum_zero {M : Type*} [AddCommMonoid M] (f : Idx 0 (d + 1) → M) : ∑ J, f J = ∑ I : Idx 0 d, f (ia I) :=
   (Fintype.sum_bijective _ index_zero_extend_bijective _ _ fun _ => rfl).symm
@@ -449,9 +445,9 @@ variable {Fil : ℤ → IdF Φ.A} {E : Frame Φ (d + 1)} {σ : ∀ T : C, E.D �
   {θ : ∀ n, CH.H (gr (Fl Fil E) r) n →ₗ[R] CH.H (gr (Fl Fil E) (r - 1)) n}
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `zero => exact GlobalTheory.CompanionTheory.LocGr.H_zero_subsingleton hF (by simpa using hr)`. Consider the case `succ k`. Establish `key : ∀ c : CH.H (gr Fil r) (k + 1), c = 0`. Introduce `c`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `s0` using `(h0 (k + 1)).1 hr`. Take `⟨m, rfl⟩` from `(P.ex1 k c).1 (Subsingleton.elim _ _)`. Establish `s1` using `(h1 k).1 (by push_cast at hr; omega)`. Rewrite using `[Subsingleton.elim m 0, map_zero]`. Conclude with `⟨fun a b => by rw [key a, key b]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem van_step (hF : IsFil Φ Fil) (P : Pack Fil E σ r π ε θ)
     (h0 : ∀ j, LG (Fl Fil E) (Cut.E1 E) Cut.can r j) (h1 : ∀ j, LG (Fl Fil E) (Cut.E1 E) Cut.can (r - 1) j)
@@ -468,7 +464,7 @@ theorem van_step (hF : IsFil Φ Fil) (P : Pack Fil E σ r π ε θ)
     exact ⟨fun a b => by rw [key a, key b]⟩
 
 /- English proof (translation)
-Take `⟨x, hx, hrep⟩` from `((h0 j).2 q hr).1 (π j c)`. Take `⟨b, hb⟩` from `ex_rep hF E σ hc j q r hr (fun I : Idx j d => Fin.succ ∘ I.1) x hx`. Conclude with `⟨x, b, hx, hb, by rw [map_sub, sum_pull hF hc P hr x hx _ _ hrep hb, sub_self]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exA (hF : IsFil Φ Fil) (hc : E.GrConst Fil) (P : Pack Fil E σ r π ε θ)
     (h0 : ∀ j, LG (Fl Fil E) (Cut.E1 E) Cut.can r j) {j q : ℕ} (hr : r = j + q) (c : CH.H (gr Fil r) j) :
@@ -479,9 +475,9 @@ theorem exA (hF : IsFil Φ Fil) (hc : E.GrConst Fil) (P : Pack Fil E σ r π ε 
   exact ⟨x, b, hx, hb, by rw [map_sub, sum_pull hF hc P hr x hx _ _ hrep hb, sub_self]⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `ex_rep (Cut.isFil_1 (E := E) hF) (Cut.E1 E) Cut.can (Cut.grConst_1 hc) j q r hr (fun I : Idx j d => I.1) x hx`. Establish `e` using `sum_pull hF hc P hr x hx a b ha hb`. Rewrite `e` using `[hπ]`. Rewrite `ha` using `[← e]`. Establish `hx'` using `((h0 j).2 q hr).2 x hx ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hx', rep_unique hb (rep_zero fun s => ?_)⟩` and prove the remaining obligations. Use `Ideal.sum_mem _ fun I _ => ?_` and prove the remaining obligations. Establish `h` using `GlobalTheory.CompanionTheory.FormMem.form_mem hF E σ j (q + 1) (Fin.succ ∘ I.1) (x I) (by push_cast; exact hx' I) s`. Establish `e' : (((j + (q + 1) : ℕ)) : ℤ) = r + 1` using `by rw [hr]; push_cast; ring`. Rewrite `h` using `[e']`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unA (hF : IsFil Φ Fil) (hc : E.GrConst Fil) (P : Pack Fil E σ r π ε θ)
     (h0 : ∀ j, LG (Fl Fil E) (Cut.E1 E) Cut.can r j) {j q : ℕ} (hr : r = j + q)
@@ -501,9 +497,9 @@ theorem unA (hF : IsFil Φ Fil) (hc : E.GrConst Fil) (P : Pack Fil E σ r π ε 
   rwa [e'] at h
 
 /- English proof (translation)
-Establish `hr'' : r = ((k + 1 : ℕ) : ℤ) + q` using `by rw [hr]; push_cast; ring`. Establish `hr' : r - 1 = k + q` using `by rw [hr]; ring`. Take `⟨xa, b, hxa, hb, hz⟩` from `exA hF hc P h0 hr'' c`. Take `⟨m, hm⟩` from `(P.ex1 k _).1 hz`. Take `⟨xb, hxb, hrep⟩` from `((h1 k).2 q hr').1 (-m)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `ex_rep hF E σ hc (k + 1) q r hr'' (fun I : Idx k d => Fin.cons 0 (Fin.succ ∘ I.1)) xb hxb`. Establish `e` using `sum_delta hF hc P hr xb hxb _ w hrep hw`. Rewrite `e` using `[map_neg, hm, neg_inj]`. Establish `e' : c = b + w` using `by rw [← e]; abel`. Conclude with `⟨xa, xb, hxa, hxb, e' ▸ rep_add hb hw⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ex_step (hF : IsFil Φ Fil) (hc : E.GrConst Fil) (P : Pack Fil E σ r π ε θ)
     (h0 : ∀ j, LG (Fl Fil E) (Cut.E1 E) Cut.can r j) (h1 : ∀ j, LG (Fl Fil E) (Cut.E1 E) Cut.can (r - 1) j)
@@ -524,13 +520,13 @@ theorem ex_step (hF : IsFil Φ Fil) (hc : E.GrConst Fil) (P : Pack Fil E σ r π
   exact ⟨xa, xb, hxa, hxb, e' ▸ rep_add hb hw⟩
 
 /- English proof (translation)
-Establish `hr'' : r = ((k + 1 : ℕ) : ℤ) + q` using `by rw [hr]; push_cast; ring`. Establish `hr' : r - 1 = k + q` using `by rw [hr]; ring`. Establish `hr3 : r = (k : ℤ) + ((q + 1 : ℕ) : ℤ)` using `by rw [hr]; push_cast; ring`. Take `⟨b, hb⟩` from `ex_rep hF E σ hc (k + 1) q r hr'' (fun I : Idx (k + 1) d => Fin.succ ∘ I.1) xa hxa`. Take `⟨w, hw⟩` from `ex_rep hF E σ hc (k + 1) q r hr'' (fun I : Idx k d => Fin.cons 0 (Fin.succ ∘ I.1)) xb hxb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hs : b + w = 0` using `rep_unique (rep_add hb hw) h`. Take `⟨a, ha⟩` from `ex_rep (Cut.isFil_1 (E := E) hF) (Cut.E1 E) Cut.can (Cut.grConst_1 hc) k q (r - 1) hr' (fun I : Idx k d => I.1) xb hxb`. Establish `e` using `sum_delta hF hc P hr xb hxb a w ha hw`. Establish `eb : b = ε k a` using `by rw [e]; exact eq_neg_of_add_eq_zero_left hs`. Establish `hπ : π (k + 1) b = 0` using `(P.ex1 k b).2 ⟨a, eb.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hxa', hb0⟩` from `unA hF hc P h0 hr'' xa hxa b hb hπ`. Use `⟨hxa', ?_⟩` and prove the remaining obligations. Establish `ea : ε k a = 0` using `by rw [← eb, hb0]`. Take `⟨a₂, rfl⟩` from `(P.ex2 k a).1 ea`. Take `⟨xc, hxc, hrep⟩` from `((h0 k).2 (q + 1) hr3).1 a₂`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b₂, hb₂⟩` from `ex_rep hF E σ hc k (q + 1) r hr3 (fun I : Idx k d => Fin.succ ∘ I.1) xc hxc`. Establish `e2` using `sum_pull hF hc P hr3 xc hxc _ _ hrep hb₂`. Rewrite `ha` using `[← e2, P.ex3]`. Conclude with `((h1 k).2 q hr').2 xb hxb ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem un_step (hF : IsFil Φ Fil) (hc : E.GrConst Fil) (P : Pack Fil E σ r π ε θ)
     (h0 : ∀ j, LG (Fl Fil E) (Cut.E1 E) Cut.can r j) (h1 : ∀ j, LG (Fl Fil E) (Cut.E1 E) Cut.can (r - 1) j)
@@ -563,7 +559,7 @@ theorem un_step (hF : IsFil Φ Fil) (hc : E.GrConst Fil) (P : Pack Fil E σ r π
 end Step
 
 /- English proof (translation)
-The claim follows from `(funext e : z = z') ▸ h`.
+A detailed English derivation is pending.
 -/
 theorem rep_eq {A : C ⥤ CommAlgCat.{0} R} {a b : IdF A} {j : ℕ}
     {z z' : ∀ s : ComposableArrows C j, A.obj (s.obj (Fin.last j))} {c : CH.H (sq a b) j}
@@ -571,23 +567,21 @@ theorem rep_eq {A : C ⥤ CommAlgCat.{0} R} {a b : IdF A} {j : ℕ}
   (funext e : z = z') ▸ h
 
 /- English proof (translation)
-Take `⟨π, ε, θ, P⟩` from `pack Q hF E σ hc r hQ`. Use `⟨van_step hF P h0 h1 j, fun q hq => ?_⟩` and prove the remaining obligations. Consider the cases of `j with`. Consider the case `zero`. Use `⟨fun c => ?_, fun x hx h I => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, b, hx, hb, hz⟩` from `exA hF hc P h0 hq c`. Establish `e : c = b` using `sub_eq_zero.1 (P.inj0 (hz.trans (map_zero _).symm))`. Set `e0 : Idx 0 d ≃ Idx 0 (d + 1)` to `Equiv.ofBijective _ index_zero_extend_bijective`. Use `⟨fun J => x (e0.symm J), fun I => hx _, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `rep_eq hb fun s => ?_` and prove the remaining obligations. Rewrite using `[sum_zero]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Establish `e1 : e0.symm (ia I) = I` using `e0.symm_apply_apply I`. Express the relevant statement in the definitionally equal form `_ = E.form σ (Fin.succ ∘ I.1) (x (e0.symm (ia I))) s`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e1]`. Take `⟨I, rfl⟩` from `index_zero_extend_bijective.2 I`. Conclude with `(unA hF hc P h0 hq (fun I => x (ia I)) (fun I => hx _) 0 (rep_eq h fun s => sum_zero _) (map_zero _)).1 I`. Consider the case `succ k`. Establish `hr : r = k + 1 + q` using `by rw [hq]; push_cast; ring`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun c => ?_, fun x hx h J => ?_⟩` and prove the remaining obligations. Take `⟨xa, xb, hxa, hxb, hrep⟩` from `ex_step hF hc P h0 h1 hr c`. Set `e0 : Idx (k + 1) d ⊕ Idx k d ≃ Idx (k + 1) (d + 1)` to `Equiv.ofBijective _ split_bij`. Use `⟨fun J => Sum.elim xa xb (e0.symm J), fun J => ?_, rep_eq hrep fun s => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Sum.elim xa xb (e0.symm J) ∈ _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `e0.symm J with I | I` into its components or cases. Conclude with `hxa I`. Conclude with `hxb I`. Rewrite using `[sum_split]`. Use `congrArg₂ (· + ·) (Finset.sum_congr rfl fun I _ => ?_) (Finset.sum_congr rfl fun I _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : e0.symm (ia I) = Sum.inl I` using `e0.symm_apply_apply (Sum.inl I)`. Express the relevant statement in the definitionally equal form `_ = E.form σ (Fin.succ ∘ I.1) (Sum.elim xa xb (e0.symm (ia I))) s`. Rewrite using `[e1]`. Both sides reduce to the same expression. Establish `e1 : e0.symm (ib I) = Sum.inr I` using `e0.symm_apply_apply (Sum.inr I)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `_ = E.form σ (Fin.cons 0 (Fin.succ ∘ I.1)) (Sum.elim xa xb (e0.symm (ib I))) s`. Rewrite using `[e1]`. Both sides reduce to the same expression. Take `⟨ha, hb⟩` from `un_step hF hc P h0 h1 hr (fun I => x (ia I)) (fun I => x (ib I)) (fun I => hx _) (fun I => hx _) (rep_eq h fun s => sum_split _)`. Take `⟨I | I, rfl⟩` from `split_bij.2 J`.
-
-Conclude with `ha I`. Conclude with `hb I`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem step (Q : Poly Φ) {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) (E : Frame Φ (d + 1)) (σ : ∀ T : C, E.D ⟶ T)
     (hc : E.GrConst Fil) (r : ℤ) (hQ : ∀ r' ≤ r + 1, Q.Crit Fil r')
@@ -639,9 +633,9 @@ theorem step (Q : Poly Φ) {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) (E : Fra
       · exact hb I
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero`. Introduce `R _ C _ Φ Q Fil hF E σ hc r hQ j`. Conclude with `GlobalTheory.CompanionTheory.LocGr.gr_zero hF E σ r j`. Consider the case `succ d ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `R _ C _ Φ Q Fil hF E σ hc r hQ j`. Establish `hh : ∀ r' ≤ r, ∀ j, LG (Fl Fil E) (Cut.E1 E) Cut.can r' j` using `fun r' hr' j => ih (Cut.Q1 Q) (Cut.isFil_1 hF) (Cut.E1 E) Cut.can (Cut.grConst_1 hc) r' (fun r'' h => Cut.criterion_truncation Q (hQ r'' (by omega))) j`. Conclude with `step Q hF E σ hc r hQ (hh r le_rfl) (hh (r - 1) (by omega)) j`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main (d : ℕ) : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {Φ : PDF R C} (Q : Poly Φ)
     {Fil : ℤ → IdF Φ.A} (hF : IsFil Φ Fil) (E : Frame Φ d) (σ : ∀ T : C, E.D ⟶ T) (hc : E.GrConst Fil) (r : ℤ)
@@ -658,7 +652,7 @@ theorem main (d : ℕ) : ∀ {R : Type} [CommRing R] {C : Type 1} [Category.{0} 
     exact step Q hF E σ hc r hQ (hh r le_rfl) (hh (r - 1) (by omega)) j
 
 /- English proof (translation)
-Introduce `R _ C _ Φ Q Fil hF d E σ hc r hQ j`. Conclude with `main d Q hF E σ hc r hQ j`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem loc_gr : KH.LocGr := by
   intro R _ C _ Φ Q Fil hF d E σ hc r hQ j

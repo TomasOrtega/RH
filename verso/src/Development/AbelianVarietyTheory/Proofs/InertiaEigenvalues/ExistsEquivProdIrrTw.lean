@@ -14,7 +14,7 @@ section General
 variable {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Take `⟨hi, f, hf, hS⟩` from `h`. Use `⟨isIrreducible_twist hi χ, twistMap f χ, hf, fun S hS' => ?_⟩` and prove the remaining obligations. Establish `hA : IsAtom (subrepTwist π χ S)` using `((subrepTwist π χ).isAtom_iff S).2 hS'`. Establish `hE` using `congrArg Subrepresentation.toSubmodule (hS _ hA)`. Conclude with `Subrepresentation.ext hE`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsSocle.twist {σ : Representation ℂ G W} {π : Representation ℂ G V} (h : IsSocle σ π) (χ : G →* ℂˣ) :
     IsSocle (SmGL.twist σ χ) (SmGL.twist π χ) := by
@@ -25,7 +25,7 @@ theorem IsSocle.twist {σ : Representation ℂ G W} {π : Representation ℂ G V
   exact Subrepresentation.ext hE
 
 /- English proof (translation)
-Take `⟨hi, f, hf, hS⟩` from `h`. Use `⟨isIrreducible_twist hi χ, twistMap f χ, hf, fun S hS' => ?_⟩` and prove the remaining obligations. Establish `hA : IsCoatom (subrepTwist π χ S)` using `((subrepTwist π χ).isCoatom_iff S).2 hS'`. Establish `hE` using `congrArg Subrepresentation.toSubmodule (hS _ hA)`. Conclude with `Subrepresentation.ext hE`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsCosocle.twist {σ : Representation ℂ G W} {π : Representation ℂ G V} (h : IsCosocle σ π) (χ : G →* ℂˣ) :
     IsCosocle (SmGL.twist σ χ) (SmGL.twist π χ) := by
@@ -36,9 +36,9 @@ theorem IsCosocle.twist {σ : Representation ℂ G W} {π : Representation ℂ G
   exact Subrepresentation.ext hE
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h`. Use `⟨(subrepTwist π χ).symm S, ⟨f.toLinearMap, fun g => ?_⟩, hf⟩` and prove the remaining obligations. Use extensionality with `v`. Use `f.isIntertwining _ _ g v` as an intermediate fact. Express the relevant statement in the definitionally equal form `f ((χ g : ℂ) • (S.toRepresentation g v)) = (χ g : ℂ) • σ g (f v)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_smul, this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isSubquotient_twist {σ : Representation ℂ G W} {π : Representation ℂ G V} (h : IsSubquotient σ π)
     (χ : G →* ℂˣ) : IsSubquotient (twist σ χ) (twist π χ) := by
@@ -119,7 +119,7 @@ def prodIrrTwistEquiv {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 =
   (multiProdTwistEquiv _ _ hχ).trans (multiProdEquiv _ fun a => (x a).twEquiv χ hχ)
 
 /- English proof (translation)
-Take `rfl : y = fun a => (x a).tw χ hχ` from `funext hy`. Conclude with `⟨hd, ⟨prodIrrTwistEquiv x hd χ hχ⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_equiv_prodIrr_tw {h N : ℕ} {x y : Fin h → IrrGL k} (hd : ∑ a, (x a).1 = N) {χ : kˣ →* ℂˣ}
     {hχ : IsSmoothChar χ} (hy : ∀ a, y a = (x a).tw χ hχ) :
@@ -128,9 +128,9 @@ theorem exists_equiv_prodIrr_tw {h N : ℕ} {x y : Fin h → IrrGL k} (hd : ∑ 
   exact ⟨hd, ⟨prodIrrTwistEquiv x hd χ hχ⟩⟩
 
 /- English proof (translation)
-Take `⟨h', x, hx, hi, hc, e, hsq⟩` from `h`. Use `⟨h', fun a => (x a).tw χ hχ, ?_, isIrreducible_twist hi _, fun a => ?_, e, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx, Multiset.map_map]`. Both sides reduce to the same expression. Establish `hcu : (x a).IsCusp` using `⟨(hc a).1, (hc a).2.2⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `⟨(hcu.tw χ hχ).1, ((x a).tw χ hχ).2.rep.irr, (hcu.tw χ hχ).2⟩`. Establish `E` using `(multiProdTwistEquiv e (fun a => (x a).rep) hχ).trans (multiProdEquiv e fun a => (x a).twEquiv χ hχ)`. Conclude with `(isSubquotient_twist hsq _).trans (IsSubquotient.of_injective E.toIntertwiningMap E.toLinearEquiv.injective)`.
+Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem HasSupport.tw {n : Type} [Fintype n] [DecidableEq n] {π : Representation ℂ (GL n k) V}
     {s : Multiset (IrrGL k)} (h : HasSupport π s) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
@@ -146,7 +146,7 @@ theorem HasSupport.tw {n : Type} [Fintype n] [DecidableEq n] {π : Representatio
       E.toLinearEquiv.injective)
 
 /- English proof (translation)
-Unfold `nu`. Rewrite using `[tw_tw, tw_tw]`. Use `congr 1`. Conclude with `mul_comm _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem IrrGL.tw_nu (x : IrrGL k) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) (s : ℂ) :
     (x.tw χ hχ).nu s = (x.nu s).tw χ hχ := by
@@ -156,7 +156,7 @@ theorem IrrGL.tw_nu (x : IrrGL k) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) 
   exact mul_comm _ _
 
 /- English proof (translation)
-Establish `key : ∀ (ψ : kˣ →* ℂˣ) (hψ : IsSmoothChar ψ), ψ = 1 → x.tw ψ hψ = x`. Introduce and unpack `ψ hψ rfl`. Conclude with `tw_one x hψ`. Rewrite using `[tw_tw]`. Conclude with `key _ _ (mul_inv_cancel χ)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IrrGL.tw_tw_inv (x : IrrGL k) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) : (x.tw χ hχ).tw χ⁻¹ hχ.inv = x := by
   have key : ∀ (ψ : kˣ →* ℂˣ) (hψ : IsSmoothChar ψ), ψ = 1 → x.tw ψ hψ = x := by
@@ -166,7 +166,7 @@ theorem IrrGL.tw_tw_inv (x : IrrGL k) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar 
   exact key _ _ (mul_inv_cancel χ)
 
 /- English proof (translation)
-Introduce `x y h`. Establish `h' : x.tw χ hχ = y.tw χ hχ` using `h`. Rewrite using `[← tw_tw_inv x χ hχ, h', tw_tw_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem IrrGL.tw_injective (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     Function.Injective fun x : IrrGL k => x.tw χ hχ := by
@@ -175,7 +175,7 @@ theorem IrrGL.tw_injective (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
   rw [← tw_tw_inv x χ hχ, h', tw_tw_inv]
 
 /- English proof (translation)
-The claim follows from `Segment.first_ofFirst _ _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem segment_tw_first (Δ : Segment k) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     (Δ.tw χ hχ).first = Δ.first.tw χ hχ :=
@@ -190,7 +190,7 @@ open GlobalTheory.LocGL
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Unfold `term`. Rewrite using `[segment_tw_first]`. Conclude with `IrrGL.tw_nu _ _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_tw (Δ : Segment k) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) (a : Fin Δ.len) :
     (Δ.tw χ hχ).term a = (Δ.term a).tw χ hχ := by
@@ -199,7 +199,7 @@ theorem term_tw (Δ : Segment k) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) (
   exact IrrGL.tw_nu _ _ _ _
 
 /- English proof (translation)
-Unfold `carrier`. Rewrite using `[← Set.range_comp]`. Conclude with `congrArg Set.range (funext fun a => term_tw Δ χ hχ a)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem carrier_tw (Δ : Segment k) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     (Δ.tw χ hχ).carrier = (fun x => x.tw χ hχ) '' Δ.carrier := by
@@ -208,7 +208,7 @@ theorem carrier_tw (Δ : Segment k) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ
   exact congrArg Set.range (funext fun a => term_tw Δ χ hχ a)
 
 /- English proof (translation)
-Apply `ext_first` to reduce the goal to its premises. Rewrite using `[segment_tw_first, segment_tw_first, IrrGL.tw_tw_inv]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tw_tw_inv (Δ : Segment k) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) : (Δ.tw χ hχ).tw χ⁻¹ hχ.inv = Δ := by
   apply ext_first
@@ -216,9 +216,9 @@ theorem tw_tw_inv (Δ : Segment k) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ)
   · rfl
 
 /- English proof (translation)
-Take `⟨⟨Γ, hΓ⟩, h1, h2⟩` from `h`. Establish `hinj` using `IrrGL.tw_injective χ hχ`. Use `⟨⟨Γ.tw χ hχ, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[carrier_tw, carrier_tw, carrier_tw, hΓ, Set.image_union]`. Rewrite using `[carrier_tw, carrier_tw, Set.image_subset_image_iff hinj]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[carrier_tw, carrier_tw, Set.image_subset_image_iff hinj]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem Linked.tw {Δ Δ' : Segment k} (h : Linked Δ Δ') (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     Linked (Δ.tw χ hχ) (Δ'.tw χ hχ) := by
@@ -230,7 +230,7 @@ theorem Linked.tw {Δ Δ' : Segment k} (h : Linked Δ Δ') (χ : kˣ →* ℂˣ)
   · rwa [carrier_tw, carrier_tw, Set.image_subset_image_iff hinj]
 
 /- English proof (translation)
-Take `⟨hl, j, hj, he⟩` from `h`. Use `⟨hl.tw χ hχ, j, hj, ?_⟩` and prove the remaining obligations. Rewrite using `[segment_tw_first, segment_tw_first, he, IrrGL.tw_nu]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Precedes.tw {Δ Δ' : Segment k} (h : Precedes Δ Δ') (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     Precedes (Δ.tw χ hχ) (Δ'.tw χ hχ) := by
@@ -239,7 +239,7 @@ theorem Precedes.tw {Δ Δ' : Segment k} (h : Precedes Δ Δ') (χ : kˣ →* �
   rw [segment_tw_first, segment_tw_first, he, IrrGL.tw_nu]
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => h.tw χ hχ⟩` and prove the remaining obligations. Use `h.tw χ⁻¹ hχ.inv` as an intermediate fact. Rewrite `this` using `[tw_tw_inv, tw_tw_inv]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem linked_tw_iff {Δ Δ' : Segment k} (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     Linked (Δ.tw χ hχ) (Δ'.tw χ hχ) ↔ Linked Δ Δ' := by
@@ -248,7 +248,7 @@ theorem linked_tw_iff {Δ Δ' : Segment k} (χ : kˣ →* ℂˣ) (hχ : IsSmooth
   rwa [tw_tw_inv, tw_tw_inv] at this
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => h.tw χ hχ⟩` and prove the remaining obligations. Use `h.tw χ⁻¹ hχ.inv` as an intermediate fact. Rewrite `this` using `[tw_tw_inv, tw_tw_inv]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem precedes_tw_iff {Δ Δ' : Segment k} (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     Precedes (Δ.tw χ hχ) (Δ'.tw χ hχ) ↔ Precedes Δ Δ' := by
@@ -268,7 +268,7 @@ section Classifications
 variable {π : Representation ℂ (GL (Fin N) k) V} {Δ : Segment k} {𝔪 : Multiset (Segment k)}
 
 /- English proof (translation)
-Take `⟨hd, hs⟩` from `h`. Take `⟨hd', ⟨E⟩⟩` from `exists_equiv_prodIrr_tw (y := (Δ.tw χ hχ).term) hd (hχ := hχ) (fun a => Segment.term_tw Δ χ hχ a)`. Conclude with `⟨hd', (hs.twist _).of_equiv (.refl _) E⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsZSeg.tw (h : IsZSeg Δ π) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     IsZSeg (Δ.tw χ hχ) (twist π (detChar (Fin N) χ)) := by
@@ -278,7 +278,7 @@ theorem IsZSeg.tw (h : IsZSeg Δ π) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar �
   exact ⟨hd', (hs.twist _).of_equiv (.refl _) E⟩
 
 /- English proof (translation)
-Take `⟨hd, hs⟩` from `h`. Take `⟨hd', ⟨E⟩⟩` from `exists_equiv_prodIrr_tw (y := (Δ.tw χ hχ).term) hd (hχ := hχ) (fun a => Segment.term_tw Δ χ hχ a)`. Conclude with `⟨hd', (hs.twist _).of_equiv (.refl _) E⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsLSeg.tw (h : IsLSeg Δ π) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     IsLSeg (Δ.tw χ hχ) (twist π (detChar (Fin N) χ)) := by
@@ -288,9 +288,9 @@ theorem IsLSeg.tw (h : IsLSeg Δ π) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar �
   exact ⟨hd', (hs.twist _).of_equiv (.refl _) E⟩
 
 /- English proof (translation)
-Take `⟨hm, hp⟩` from `H`. Use `⟨?_, fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[← hm, Multiset.map_map]`. Both sides reduce to the same expression. Rewrite using `[Segment.precedes_tw_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp i j hij`.
+A detailed English derivation is pending.
 -/
 theorem IsOrderedForm.tw {h : ℕ} {Δ : Fin h → Segment k} (H : IsOrderedForm Δ 𝔪) (χ : kˣ →* ℂˣ)
     (hχ : IsSmoothChar χ) : IsOrderedForm (fun i => (Δ i).tw χ hχ) (𝔪.map (·.tw χ hχ)) := by
@@ -300,7 +300,7 @@ theorem IsOrderedForm.tw {h : ℕ} {Δ : Fin h → Segment k} (H : IsOrderedForm
   · rw [Segment.precedes_tw_iff]; exact hp i j hij
 
 /- English proof (translation)
-Take `⟨Δ, hΔ, hz⟩` from `H`. Conclude with `⟨fun i => (Δ i).tw χ hχ, hΔ.tw χ hχ, fun i => ((hz i).tw χ hχ).of_equiv ((x i).twEquiv χ hχ)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ZFactors.tw {h : ℕ} {x : Fin h → IrrGL k} (H : ZFactors 𝔪 x) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     ZFactors (𝔪.map (·.tw χ hχ)) fun a => (x a).tw χ hχ := by
@@ -308,7 +308,7 @@ theorem ZFactors.tw {h : ℕ} {x : Fin h → IrrGL k} (H : ZFactors 𝔪 x) (χ 
   exact ⟨fun i => (Δ i).tw χ hχ, hΔ.tw χ hχ, fun i => ((hz i).tw χ hχ).of_equiv ((x i).twEquiv χ hχ)⟩
 
 /- English proof (translation)
-Take `⟨Δ, hΔ, hz⟩` from `H`. Conclude with `⟨fun i => (Δ i).tw χ hχ, hΔ.tw χ hχ, fun i => ((hz i).tw χ hχ).of_equiv ((x i).twEquiv χ hχ)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LFactors.tw {h : ℕ} {x : Fin h → IrrGL k} (H : LFactors 𝔪 x) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     LFactors (𝔪.map (·.tw χ hχ)) fun a => (x a).tw χ hχ := by
@@ -316,7 +316,7 @@ theorem LFactors.tw {h : ℕ} {x : Fin h → IrrGL k} (H : LFactors 𝔪 x) (χ 
   exact ⟨fun i => (Δ i).tw χ hχ, hΔ.tw χ hχ, fun i => ((hz i).tw χ hχ).of_equiv ((x i).twEquiv χ hχ)⟩
 
 /- English proof (translation)
-Take `⟨h', x, hd, hz, hs⟩` from `h`. Conclude with `⟨h', fun a => (x a).tw χ hχ, hd, hz.tw χ hχ, (hs.twist _).of_equiv (.refl _) (prodIrrTwistEquiv x hd χ hχ)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsZ.tw (h : IsZ 𝔪 π) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     IsZ (𝔪.map (·.tw χ hχ)) (twist π (detChar (Fin N) χ)) := by
@@ -325,7 +325,7 @@ theorem IsZ.tw (h : IsZ 𝔪 π) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     (hs.twist _).of_equiv (.refl _) (prodIrrTwistEquiv x hd χ hχ)⟩
 
 /- English proof (translation)
-Take `⟨h', x, hd, hz, hs⟩` from `h`. Conclude with `⟨h', fun a => (x a).tw χ hχ, hd, hz.tw χ hχ, (hs.twist _).of_equiv (.refl _) (prodIrrTwistEquiv x hd χ hχ)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsL.tw (h : IsL 𝔪 π) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     IsL (𝔪.map (·.tw χ hχ)) (twist π (detChar (Fin N) χ)) := by
@@ -334,7 +334,7 @@ theorem IsL.tw (h : IsL 𝔪 π) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     (hs.twist _).of_equiv (.refl _) (prodIrrTwistEquiv x hd χ hχ)⟩
 
 /- English proof (translation)
-Take `⟨hd, hs⟩` from `h`. Take `⟨hd', ⟨E⟩⟩` from `exists_equiv_prodIrr_tw (y := spehFactor (x.tw χ hχ) d) hd (hχ := hχ) (fun a => IrrGL.tw_nu x χ hχ _)`. Conclude with `⟨hd', (hs.twist _).of_equiv (.refl _) E⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsSpeh.tw {x : IrrGL k} {d : ℕ} (h : IsSpeh x d π) (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     IsSpeh (x.tw χ hχ) d (twist π (detChar (Fin N) χ)) := by
@@ -346,41 +346,39 @@ theorem IsSpeh.tw {x : IrrGL k} {d : ℕ} (h : IsSpeh x d π) (χ : kˣ →* ℂ
 end Classifications
 
 /- English proof (translation)
-Establish `e0 : ∀ i : Fin (d 0), stdBlocks d hd ⟨0, i⟩ = two (stdSum (rfl : d 0 + d 1 = d 0 + d 1)) ⟨false, i⟩`. Introduce `i`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[stdBlocks_val, two_false, stdSum_inl, Finset.sum_eq_zero (fun b _ => absurd b.2 (by simp)), zero_add]`. Establish `e1 : ∀ j : Fin (d 1), stdBlocks d hd ⟨1, j⟩ = two (stdSum (rfl : d 0 + d 1 = d 0 + d 1)) ⟨true, j⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `j`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[stdBlocks_val, two_true, stdSum_inr, Finset.sum_eq_single (⟨0, by simp⟩ : Fin (1 : Fin 2))]`. Both sides reduce to the same expression. Introduce `b _ hb`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Fin.ext (by simpa using b.2)) hb`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `e0' : ∀ (h : 0 < 2) (i : Fin (d ⟨0, h⟩)), stdBlocks d hd ⟨⟨0, h⟩, i⟩ = two (stdSum (rfl : d 0 + d 1 = d 0 + d 1)) ⟨false, i⟩` using `fun _ i => e0 i`. Establish `e1' : ∀ (h : 1 < 2) (i : Fin (d ⟨1, h⟩)), stdBlocks d hd ⟨⟨1, h⟩, i⟩ = two (stdSum (rfl : d 0 + d 1 = d 0 + d 1)) ⟨true, i⟩` using `fun _ i => e1 i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQP : parab k (stdBlocks d hd) ≤ parab k (two (stdSum (rfl : d 0 + d 1 = d 0 + d 1)))`. Introduce `g hg`. Rewrite `hg`, the goal using `[mem_parab_iff]`. Introduce `a b i j hab`. Apply the tactic sequence `cases a <;> cases b`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `absurd hab (by decide)`. Conclude with `absurd hab (by decide)`. Use `hg 1 0 i j (by decide)` as an intermediate fact. Rewrite `this` using `[e1, e0]`. Then use the resulting hypothesis. Conclude with `absurd hab (by decide)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hPQ : parab k (two (stdSum (rfl : d 0 + d 1 = d 0 + d 1))) ≤ parab k (stdBlocks d hd)`. Introduce `g hg`. Rewrite `hg`, the goal using `[mem_parab_iff]`. Introduce `a b i j hab`. Take `⟨a, ha⟩` from `a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `b`. Establish `hab' : b < a` using `hab`. Take `rfl : a = 1` from `by omega`. Take `rfl : b = 0` from `by omega`. Use `hg true false i j (by decide)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1' ha i, e0' hb j]`. Conclude with `this`. Establish `b0 : ∀ q : parab k (stdBlocks d hd), leviProj k (stdBlocks d hd) q 0 = (leviProj k (two (stdSum (rfl : d 0 + d 1 = d 0 + d 1))) ⟨q, hQP q.2⟩ false : GL (Fin (d 0)) k)`. Introduce `q`. Use extensionality with `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [leviProj_apply, e0]`. Establish `b1 : ∀ q : parab k (stdBlocks d hd), leviProj k (stdBlocks d hd) q 1 = (leviProj k (two (stdSum (rfl : d 0 + d 1 = d 0 + d 1))) ⟨q, hQP q.2⟩ true : GL (Fin (d 1)) k)`. Introduce `q`. Use extensionality with `i j`. Simplify using `only [leviProj_apply, e1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `m0 : modExp (fun a : Fin 2 => Fin (d a)) 0 = d 1`. Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_two]`. Establish `m1 : modExp (fun a : Fin 2 => Fin (d a)) 1 = -(d 0 : ℤ)`. Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_two]`. Establish `hδ : ∀ q : parab k (stdBlocks d hd), deltaHalf k (fun a : Fin 2 => Fin (d a)) (leviProj k (stdBlocks d hd) q) = deltaHalf k (Two (Fin (d 0)) (Fin (d 1))) (leviProj k (two (stdSum (rfl : d 0 + d 1 = d 0 + d 1))) ⟨q, hQP q.2⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `q`. Rewrite using `[← (leviTwo k (Fin (d 0)) (Fin (d 1))).apply_symm_apply (leviProj k (two (stdSum (rfl : d 0 + d 1 = d 0 + d 1))) ⟨q, hQP q.2⟩), deltaHalf_two, deltaHalf_apply, Fin.prod_univ_two, m0, m1, b0 q, b1 q]`. Simplify using `only [Fintype.card_fin, Int.cast_neg, Int.cast_natCast]`. Both sides reduce to the same expression. Set `L : X 0 ⊗[ℂ] X 1 ≃ₗ[ℂ] ⨂[ℂ] i, X i` to `(TensorProduct.congr (LinearEquiv.refl ℂ (X 0)) (PiTensorProduct.subsingletonEquiv (R := ℂ) (s := fun j : Fin 1 => X j.succ) 0).symm).trans (MultiIrr.tensorCons X)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hL : ∀ (x : X 0) (y : X 1), L (x ⊗ₜ y) = PiTensorProduct.tprod ℂ (Fin.cons x fun i => Function.update (0 : ∀ j : Fin 1, X j.succ) 0 y i)`. Introduce `x y`. Simplify using `only [L, LinearEquiv.trans_apply, TensorProduct.congr_tmul, LinearEquiv.refl_apply]`. Rewrite using `[PiTensorProduct.subsingletonEquiv_symm_apply]`. Use `erw [MultiIrr.tensorCons_tmul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the argument to an intermediate assertion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Reduce the equality to equality of the corresponding arguments. Use function extensionality and compare the values at `i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `only [Function.update_self]`. It suffices to establish `hc : ∀ (q : parab k (stdBlocks d hd)) (v : X 0 ⊗[ℂ] X 1), (twist (piTensor π) (deltaHalf k fun a : Fin 2 => Fin (d a))).comp (leviProj k (stdBlocks d hd)) q (L v) = ((1 : GL (Fin (d 0 + d 1)) k →* ℂˣ) q : ℂ) • L ((twist ((extTensor (π 0) (π 1)).comp (leviTwo k (Fin (d 0)) (Fin (d …`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Establish `key` using `smIndTwistEquiv hQP hPQ isSmoothChar_one L hc`. Rewrite `key` using `[twist_one]`. Conclude with `⟨key⟩`. Introduce `q v`. Rewrite using `[MonoidHom.one_apply, Units.val_one, one_smul]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`. Consider the case `tmul x y`. Rewrite using `[hL]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [MonoidHom.comp_apply, twist_apply]`. Rewrite using `[map_smul, ← hδ q]`. Use `congr 1`. Rewrite using `[piTensor_tprod, extTensor_tmul, hL]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Rewrite using `[b0 q]`. Both sides reduce to the same expression.
-
-Take `rfl : j = 0` from `Subsingleton.elim _ _`. Simplify using `only [Fin.cons_succ, Function.update_self]`. Use `show π 1 (leviProj k (stdBlocks d hd) q 1) y = _`. Rewrite using `[b1 q]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem nonempty_prod₂_equiv_multiProd {d : Fin 2 → ℕ} (hd : ∑ a, d a = d 0 + d 1) {X : Fin 2 → Type}
     [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (π : ∀ a, Representation ℂ (GL (Fin (d a)) k) (X a)) :
@@ -494,14 +492,14 @@ theorem nonempty_prod₂_equiv_multiProd {d : Fin 2 → ℕ} (hd : ∑ a, d a = 
       rfl
 
 /- English proof (translation)
-The claim follows from `nonempty_prod₂_equiv_multiProd hd fun a => (x a).rep`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_prod₂_equiv_prodIrr_rep (x : Fin 2 → IrrGL k) (hd : ∑ a, (x a).1 = (x 0).1 + (x 1).1) :
     Nonempty ((prod₂ (x 0).rep (x 1).rep).Equiv (prodIrr x hd)) :=
   nonempty_prod₂_equiv_multiProd hd fun a => (x a).rep
 
 /- English proof (translation)
-The claim follows from `nonempty_prod₂_equiv_prodIrr_rep ![y, z] hd`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_prod₂_equiv_prodIrr_pair (y z : IrrGL k) (hd : ∑ a, (![y, z] a).1 = y.1 + z.1) :
     Nonempty ((prod₂ y.rep z.rep).Equiv (prodIrr ![y, z] hd)) :=
@@ -518,7 +516,7 @@ def prod₂Equiv {r t : ℕ} {V' W' : Type} [AddCommGroup V'] [Module ℂ V'] [A
         (φ₂.toIntertwiningMap.isIntertwining _ _ g.2 w)) _)
 
 /- English proof (translation)
-Take `⟨E⟩` from `nonempty_prod₂_equiv_prodIrr_pair (IrrGL.of π₁ s₁ i₁) (IrrGL.of π₂ s₂ i₂) hd`. Conclude with `⟨(prod₂Equiv (IrrGL.equivOf π₁ s₁ i₁) (IrrGL.equivOf π₂ s₂ i₂)).trans E⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_prod₂_equiv_prodIrr {r t : ℕ} (π₁ : Representation ℂ (GL (Fin r) k) V) (s₁ : IsSmooth π₁)
     (i₁ : π₁.IsIrreducible) (π₂ : Representation ℂ (GL (Fin t) k) W) (s₂ : IsSmooth π₂) (i₂ : π₂.IsIrreducible)

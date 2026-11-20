@@ -197,7 +197,7 @@ abbrev SplitAt {W : Type} [CommRing W] [IsLocalRing W] (t : SAB H (Sp W)) : Prop
   GlobalTheory.LN.SplitOver t.G (IsLocalRing.maximalIdeal W)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem splitAt_iff {W : Type} [CommRing W] [IsLocalRing W] (t : SAB H (Sp W)) : SplitAt t ↔
     ∃ S : SplitExt (Sp (IsLocalRing.ResidueField W)),
@@ -206,9 +206,9 @@ theorem splitAt_iff {W : Type} [CommRing W] [IsLocalRing W] (t : SAB H (Sp W)) :
 def IsPol {K : Type} [Field K] (t : SAB H (Sp K)) : Prop := IsProper t.G.hom ∧ RelAmple t.G t.PP.L ∧ KTriv t.G t.PP.L
 
 /- English proof (translation)
-Establish `h` using `isGrpPullback_pullback t.G (𝟙 (Sp K))`. Establish `hL` using `t.PP.isLB`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h₁, h₂, h₃⟩`. Conclude with `⟨inferInstance, amplePt _ K _ _ _ _ h _ _ hL (pull_isLB hL _) (lbIso_refl (pull_isLB hL _)) h₂ h₃⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h₁, h₂, h₃⟩ haveI : IsMonHom (Iso.refl t.G).hom := inferInstanceAs (IsMonHom (𝟙 t.G))`. Take `⟨e, he, hφ⟩` from `grpPullback_iso (isGrpPullback_of_iso (Iso.refl t.G)) h`. Establish `h'` using `isGrpPullback_of_iso e`. Use `⟨MorphismProperty.of_isPullback (P := @IsProper) h'.1 h₁, amplePt _ K _ _ _ _ h' _ _ (pull_isLB hL _) hL ?_ h₂ h₃⟩` and prove the remaining obligations. Conclude with `(lbIso_refl (pull_isLB hL _)).chartPull (chartPullSec _ _ e.hom.left hφ) (Geo.Tor.chartPullPull _ _ _ rfl)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isPol_iff_polAt {K : Type} [Field K] (t : SAB H (Sp K)) : IsPol t ↔ GlobalTheory.LN.PolAt t (𝟙 _) := by
   have h := isGrpPullback_pullback t.G (𝟙 (Sp K))
@@ -226,14 +226,14 @@ theorem isPol_iff_polAt {K : Type} [Field K] (t : SAB H (Sp K)) : IsPol t ↔ Gl
       (Geo.Tor.chartPullPull _ _ _ rfl)
 
 /- English proof (translation)
-The claim follows from `NumD.Gt.ext (ν.eA.injective (h.1.trans h'.1.symm)) (funext fun χ => Units.ext ((h.2 χ).trans (h'.2 χ).symm))`.
+A detailed English derivation is pending.
 -/
 theorem NumOf.pt_unique {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F]
     {N : NumD F} (ν : NumOf D F N) {g : GtPtF D F} {v v' : N.Gt} (h : ν.Pt g v) (h' : ν.Pt g v') : v = v' :=
   NumD.Gt.ext (ν.eA.injective (h.1.trans h'.1.symm)) (funext fun χ => Units.ext ((h.2 χ).trans (h'.2 χ).symm))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨MonoidHom.id _, fun _ => 1, rfl, fun _ _ _ => by simp, fun _ => by simp, 1, fun _ => by simp, AddEquiv.refl _, fun _ => rfl, fun _ => by simp⟩, rfl, fun _ _ => rfl, fun _ _ => rfl, fun n a _ => ⟨A.q n a, rfl, ⟨rfl, fun _ => by simp⟩, (A.N.qEq_equivalence n).refl _⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem ArcF.over_refl {D : Datum H} {R : Type} [CommRing R]
     [IsDomain R] {F : Type} [Field F] [Algebra (FractionRing R) F] (A : ArcF D R F) : A.Over (RingHom.id F) A :=
@@ -242,20 +242,20 @@ theorem ArcF.over_refl {D : Datum H} {R : Type} [CommRing R]
     fun n a _ => ⟨A.q n a, rfl, ⟨rfl, fun _ => by simp⟩, (A.N.qEq_equivalence n).refl _⟩⟩
 
 /- English proof (translation)
-Use `h.2 1 j one_pos hj` as an intermediate fact. Rewrite `this` using `[_root_.one_mul, h.1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Roots.pow {C : Type} [Field C] {u : Cˣ} {r : ℕ → Cˣ} (h : Roots u r) {j : ℕ} (hj : 0 < j) : r j ^ j = u := by
   have := h.2 1 j one_pos hj
   rwa [_root_.one_mul, h.1] at this
 
 /- English proof (translation)
-Establish `hp : p.1.2 ^ j = N.io p.1.1.toAdd` using `p.2`. Establish `h'` using `N.twG_pow β r p.1.2 (fun z => β.be p.1.1.toAdd z) (fun _ _ => map_add _ _ _) j`. Set `G : (N.twist β r).Gt` to `N.twG β r p.1.2 (fun z => β.be p.1.1.toAdd z) (fun _ _ => map_add _ _ _)`. Set `g : (N.twist β u).Gt` to `⟨G.b, G.s, G.mult⟩`. Establish `e : ∀ n : ℕ, (g ^ n).b = (G ^ n).b ∧ (g ^ n).s = (G ^ n).s` using `fun n => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨rfl, rfl⟩`. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ]`. Use `⟨congrArg (· * G.b) ih.1, funext fun z => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(g ^ n).s z * G.s z / N.θ (N.c z) (g ^ n).b G.b = (G ^ n).s z * G.s z / N.θ (N.c z) (G ^ n).b G.b`. Rewrite using `[ih.1, ih.2]`. Use `⟨⟨(p.1.1, g), ?_⟩, ⟨rfl, rfl, fun _ => rfl⟩, fun q hq => Subtype.ext (Prod.ext hq.1 (NumD.Gt.ext hq.2.1 (funext hq.2.2)))⟩` and prove the remaining obligations. Use `NumD.Gt.ext ((e j).1.trans (h'.1.trans (by rw [hp]; rfl))) ((e j).2.trans (funext fun (z : N.X) => (h'.2 z).trans ?_))` and prove the remaining obligations. Rewrite using `[hp, mul_comm (β.be _ _), zpow_mul, zpow_natCast, h]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(N.twist_τ β u _ z).symm`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_twRel {O : Type} [CommRing O] {N : NumD O} {k : ℕ} (β : N.Form k) (u r : Oˣ) {j : ℕ} (h : r ^ j = u)
     (p : N.QT j) : ∃! p' : (N.twist β u).QT j, TwRel β u r p p' := by
@@ -281,11 +281,11 @@ theorem existsUnique_twRel {O : Type} [CommRing O] {N : NumD O} {k : ℕ} (β : 
 open ReciprocityTheory.ChartRestriction.G.Out.InhTate GlobalTheory.ToricData in
 
 /- English proof (translation)
-Use `and_congr_right fun _ => and_congr_right fun _ => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨th, s1, α, τ, U, s2, h1, h2, h3, h4, h5, h6, h7⟩`. Conclude with `⟨th, s1, α, τ, U, s2, v, 1, h1, h2, h3, h4, h5, h6, h7, fun i => (_root_.one_mul _).symm⟩`. Introduce and unpack `⟨th, s1, α, τ, U, s2, w, u, h1, h2, h3, h4, h5, h6, h7, h8⟩`.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨th, s1, α, ⟨fun j => τ.s j * gv u⁻¹ _⟩, U, s2, h1, h2, fun i j => ?_, h4, h5, h6, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, h3 i j, res_gv, res_gv, _root_.mul_assoc]`. Rewrite using `[h7 i j, h8 i, map_mul]`. Establish `e : (T.left.presheaf.map (homOfLE (le_top : LB.wchart P.L (fun _ : Fin 1 => (1 : T ⟶ P.A).left) j ≤ ⊤)).op).hom u.val * (T.left.presheaf.map (homOfLE (le_top : LB.wchart P.L (fun _ : Fin 1 => (1 : T ⟶ P.A).left) j ≤ ⊤)).op).hom (u⁻¹).val = 1` using `by rw [← map_mul, Units.mul_inv, map_one]`. Establish `key : ∀ {A : Type} [CommRing A] (a b c d : A), a * b = 1 → c * d = a * c * (d * b)` using `fun a b c d h => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `(-(c * d)) * h`. Conclude with `key _ _ _ _ e`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isCoordPt_one_iff {S : Scheme.{0}} (P : PolAV S) (k : ℕ) {T : Over S} {I : Type} (x : I → (T ⟶ P.A))
     (v : I → Γ(T.left, ⊤)) :
@@ -306,12 +306,12 @@ theorem isCoordPt_one_iff {S : Scheme.{0}} (P : PolAV S) (k : ℕ) {T : Over S} 
       exact key _ _ _ _ e
 
 /- English proof (translation)
-Introduce `_ h` and use `h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem compat_self (H : Host E) (n : ℕ) : Compat H n (zeta n) H.rt0 := fun _ h => h
 
 /- English proof (translation)
-The claim follows from `charZero_of_inj_zero fun n hn => by by_contra h0 haveI : NeZero n := ⟨h0⟩ exact (IsPrimitiveRoot.coe_units_iff.2 (h n (Nat.pos_of_ne_zero h0))).neZero'.out hn`.
+A detailed English derivation is pending.
 -/
 theorem charZero_of_isPrimitiveRoot {K : Type} [Field K] {ζ : ℕ → Kˣ} (h : ∀ n, 0 < n → IsPrimitiveRoot (ζ n) n) :
     CharZero K :=
@@ -321,20 +321,20 @@ theorem charZero_of_isPrimitiveRoot {K : Type} [Field K] {ζ : ℕ → Kˣ} (h :
     exact (IsPrimitiveRoot.coe_units_iff.2 (h n (Nat.pos_of_ne_zero h0))).neZero'.out hn
 
 /- English proof (translation)
-The claim follows from `charZero_of_isPrimitiveRoot o.I.ζ_prim`.
+A detailed English derivation is pending.
 -/
 theorem Full.charZero {D : Datum H} {K : Type} [Field K] (o : Full D K) : CharZero K :=
   charZero_of_isPrimitiveRoot o.I.ζ_prim
 
 /- English proof (translation)
-The claim follows from `charZero_of_isPrimitiveRoot A.I.ζ_prim`.
+A detailed English derivation is pending.
 -/
 theorem ArcF.charZero {D : Datum H} {R : Type} [CommRing R] [IsDomain R] {F : Type} [Field F] [Algebra (FractionRing R) F]
     (A : ArcF D R F) : CharZero F :=
   charZero_of_isPrimitiveRoot A.I.ζ_prim
 
 /- English proof (translation)
-Use `(IsUnit.mk0 (m : K) hm).map (Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_natCast_sp {K : Type} [Field K] {m : ℕ} (hm : (m : K) ≠ 0) :
     IsUnit (m : Γ((baseOver (Sp K)).left, ⊤)) := by
@@ -342,9 +342,9 @@ theorem isUnit_natCast_sp {K : Type} [Field K] {m : ℕ} (hm : (m : K) ≠ 0) :
   rwa [map_natCast] at this
 
 /- English proof (translation)
-Use `letI := H.starRing`. Take `⟨hdet, I, hζ, -⟩` from `o.geom K (𝟙 _) β (Category.id_comp _)`. Set `oa : (objPolAV o).OAct (𝓞 E)` to `{ o.t.act.toRingAct with rosati := fun a _ => ⟨⊤, trivial, by`. Take `⟨u, hu⟩` from `GlobalTheory.NormRos.exists_gen_rosati o.t.PP.isLB _ _ (o.t.adj a)`. Conclude with `⟨_, DVR.pullGen_isGen _ _ _ _ hu _⟩⟩ }`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨objPolAV o, oa, o.t.prim, β b.ρ, by rw [← map_pow, b.ρ_sq, map_neg, map_natCast], hdet, I, ‹_›⟩, rfl, rfl, hζ⟩`.
+Supply the required witnesses or components.
 -/
 theorem Full.exists_of_obj {D : Datum H} {l : Geo.Tor.Level H} {B : Type} [CommRing B] {b : Base l B} {K : Type} [Field K]
     [IsAlgClosed K] (β : B →+* K) (o : Obj D l b (spMap β)) :
@@ -359,7 +359,7 @@ theorem Full.exists_of_obj {D : Datum H} {l : Geo.Tor.Level H} {B : Type} [CommR
   exact ⟨⟨objPolAV o, oa, o.t.prim, β b.ρ, by rw [← map_pow, b.ρ_sq, map_neg, map_natCast], hdet, I, ‹_›⟩, rfl, rfl, hζ⟩
 
 /- English proof (translation)
-Take `⟨o', -⟩` from `obj_pull E H D l B B b b (RingHom.id B) S _ s (spMap β) x rfl rfl (hx.trans ((Category.comp_id _).symm.trans (congrArg (spMap β ≫ ·) (Spec.map_id _).symm))) o`. Take `⟨f, h, h'⟩` from `Full.exists_of_obj β o'`. Conclude with `⟨f, by rw [h]; rfl, h'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Full.exists_of_point {D : Datum H} {l : Geo.Tor.Level H} {B : Type} [CommRing B] {b : Base l B} {S : Scheme.{0}}
     {s : S ⟶ Sp B} (o : Obj D l b s) {K : Type} [Field K] [IsAlgClosed K] (β : B →+* K) (x : Sp K ⟶ S)
@@ -374,11 +374,11 @@ namespace ValInh
 open ReciprocityTheory.ChartRestriction.G.Out.InhTate GlobalTheory.ToricData
 
 /- English proof (translation)
-Establish `h : ⊤ ≤ r ⁻¹ᵁ LB.wchart (Inh.trivLB X) φ (fun k => J (r ≫ φ k))` using `by rw [wchart_triv]; exact le_rfl`. Unfold `vF valF`. Rewrite using `[dif_pos h]`. Use `erw [ht]`. Establish `e : (r.appLE _ ⊤ h).hom (gv a (LB.wchart (Inh.trivLB X) φ fun k => J (r ≫ φ k))).val = (pullTop r a).val`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [gv, res, pullTop, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Use `(congrArg _ e).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu]`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of F)).inv_hom_id_apply _`.
+A detailed English derivation is pending.
 -/
 theorem vF_const {F : Type} [Field F] {X Y : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {t : LB.Gen (LB.LinComb (Inh.trivLB X) φ ε)} {a : Γ(Y, ⊤)ˣ} (ht : IsConst t a) (r : Sp F ⟶ Y)
@@ -396,7 +396,7 @@ theorem vF_const {F : Type} [Field F] {X Y : Scheme.{0}} {K : Type} [Fintype K] 
   exact (Scheme.ΓSpecIso (CommRingCat.of F)).inv_hom_id_apply _
 
 /- English proof (translation)
-The claim follows from `vF_const (cg_isConst _ _ _) r J 1 ((map_one _).trans unitOn_one.symm)`.
+A detailed English derivation is pending.
 -/
 theorem vF_one {F : Type} [Field F] {X Y : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (r : Sp F ⟶ Y) (J : (Sp F ⟶ X) → (Inh.trivLB X).ι) : vF (cg φ ε 1) r J = 1 :=
@@ -457,7 +457,7 @@ def toricNumOf : NumOf (toricPre K X q) F (toricNum q he hb F) where
     exact _root_.mul_one _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨toUnit_unique _ _, fun χ => (vF_const (pt_isConst q F t χ) _ _ _ (by ext; simp [pullTop]; rfl)).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem pt_toric (t : Multiplicative X →* Fˣ) :
     (toricNumOf q he hb F).Pt (pt q F t) ((toricNum q he hb F).tor t) :=
@@ -465,9 +465,9 @@ theorem pt_toric (t : Multiplicative X →* Fˣ) :
     ext; simp [pullTop]; rfl)).symm⟩
 
 /- English proof (translation)
-Introduce `x`. Use `⟨spMap (((algebraMap (FractionRing K) F).comp (algebraMap K _)).codRestrict S.toSubring hS), ?_, le_rfl⟩` and prove the remaining obligations. Establish `h : x.left = (TF (R` using `K) F).hom := (Category.comp_id _).symm.trans (Over.w x)`. Rewrite using `[h]`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toric_integral (S : ValuationSubring F) (hS : ∀ r : K, algebraMap (FractionRing K) F (algebraMap K _ r) ∈ S) :
     (toricNumOf q he hb F).Integral S := by
@@ -519,7 +519,7 @@ def hypArc : ArcF (hypDatum H) K F where
   closed := ‹_›
 
 /- English proof (translation)
-Rewrite using `[hypForm_apply, zpow_sub]`. Express the relevant statement in the definitionally equal form `ζ n ^ toDual H a.2 b.1 * (∏ _i ∈ Finset.range n, 1) / (ζ n ^ toDual H b.2 a.1 * ∏ _i ∈ Finset.range n, 1) = _`. Simplify using `[div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem hypArc_wp (n : ℕ) (a b : HypLattice H) :
     (hypArc H K ρ hρ ζ hp hc).N.wp ((hypArc H K ρ hρ ζ hp hc).q n a) ((hypArc H K ρ hρ ζ hp hc).q n b) =
@@ -535,14 +535,14 @@ def hypBe (k : ℕ) (hk : 0 < k) : (hypArc H K ρ hρ ζ hp hc).N.Form k where
   dvd (y z : 𝓞 E) := ⟨trForm H y z, rfl⟩
 
 /- English proof (translation)
-Introduce `a (y z : 𝓞 E)` and use `congrArg ((2 * k : ℤ) * ·) (trForm_adj H a y z)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hypBe_bal (k : ℕ) (hk : 0 < k) : (hypArc H K ρ hρ ζ hp hc).Bal (hypBe H K ρ hρ ζ hp hc k hk) :=
   fun a (y z : 𝓞 E) => congrArg ((2 * k : ℤ) * ·) (trForm_adj H a y z)
 end ThetaShiftProofs
 
 /- English proof (translation)
-Use `⟨⟨fun _ => 1⟩, fun i j => ?_⟩` and prove the remaining obligations. Establish `e : (LB.div M L).g i j = 1` using `by simp only [LB.div, hL, hM, map_one, inv_one, _root_.mul_one]; rfl`. Rewrite using `[e, map_one, map_one, _root_.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lbIso_of_g_one {X : Scheme.{0}} {L M : LB X} (hL : ∀ i j, L.g i j = 1) (hM : ∀ i j, M.g i j = 1) : LBIso L M := by
   refine ⟨⟨fun _ => 1⟩, fun i j => ?_⟩
@@ -579,15 +579,15 @@ def zeroFull (H : Host E) {K : Type} [Field K] [IsAlgClosed K] (ρ : K) (hρ : �
 def zetaU (n : ℕ) : ℂˣ := Units.mk0 (zeta n) (Complex.exp_ne_zero _)
 
 /- English proof (translation)
-The claim follows from `IsPrimitiveRoot.coe_units_iff.1 (Complex.isPrimitiveRoot_exp n hn.ne')`.
+A detailed English derivation is pending.
 -/
 theorem zetaU_prim (n : ℕ) (hn : 0 < n) : IsPrimitiveRoot (zetaU n) n :=
   IsPrimitiveRoot.coe_units_iff.1 (Complex.isPrimitiveRoot_exp n hn.ne')
 
 /- English proof (translation)
-Use `ext`. Establish `: (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `: (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Simplify using `only [zetaU, Units.val_pow_eq_pow_val, Units.val_mk0, zeta, ← Complex.exp_nat_mul]`. Use `congr 1`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem zetaU_pow (n m : ℕ) (hn : 0 < n) (hm : 0 < m) : zetaU (n * m) ^ m = zetaU n := by
   ext
@@ -599,9 +599,9 @@ theorem zetaU_pow (n m : ℕ) (hn : 0 < n) (hm : 0 < m) : zetaU (n * m) ^ m = ze
   field_simp
 
 /- English proof (translation)
-Introduce `h`. Establish `hm` using `h.1`. Establish `hu` using `isUnit_natCast_sp (K := ℂ) (Nat.cast_ne_zero.2 hm.pos.ne')`. Use `h.2.2 (zeroFull H H.rt0 H.sqrt_neg_disc_sq zetaU zetaU_prim zetaU_pow) rfl rfl (fun _ => 1) (by` as an intermediate fact. Establish `e : (fun _ : (Test.zeroDatum H).La => fnOf (1 : ℂ)) = fun _ => 1` using `funext fun _ => map_one _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Full.Theta`. Rewrite using `[e]`. Conclude with `GlobalTheory.ThetaPtDet.isThetaPt_zero _ m hm hu _)`. Simplify using `at this`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_vanishC_X (H : Host E) (m : ℕ) : ¬ VanishC (Test.zeroDatum H) m (MvPolynomial.X 0) := by
   intro h
@@ -615,13 +615,13 @@ theorem not_vanishC_X (H : Host E) (m : ℕ) : ¬ VanishC (Test.zeroDatum H) m (
   simp at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hm, ⟨0, MvPolynomial.isHomogeneous_zero _ _ _⟩, fun _ _ _ _ _ => MvPolynomial.eval₂_zero _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem vanishC_zero (D : Datum H) {m : ℕ} (hm : Odd m) : VanishC D m 0 :=
   ⟨hm, ⟨0, MvPolynomial.isHomogeneous_zero _ _ _⟩, fun _ _ _ _ _ => MvPolynomial.eval₂_zero _ _⟩
 
 /- English proof (translation)
-Use `letI : Algebra (FractionRing ℤ) ℂ := (IsFractionRing.lift (A := ℤ) (K := FractionRing ℤ) (g := Int.castRingHom ℂ) Int.cast_injective).toAlgebra`. Conclude with `⟨_, _, _, _, GlobalTheory.HostModel.host, _, _, hypArc _ ℤ _ (Host.sqrt_neg_disc_sq _) zetaU zetaU_prim zetaU_pow, hypBe _ _ _ _ _ _ _ 1 one_pos, rfl, rfl, inferInstanceAs (Nontrivial (𝓞 _)), hypBe_bal _ _ _ _ _ _ _ _ _, rfl⟩`.
+Equip the data with the indicated structure. Supply the required witnesses or components.
 -/
 theorem exists_arcF : ∃ (E : Type) (_ : Field E) (_ : NumberField E) (_ : IsCMField E) (H : Host E) (D : Datum H)
     (_ : Algebra (FractionRing ℤ) ℂ) (A : ArcF D ℤ ℂ) (β : A.N.Form 1), D.p = 1 ∧ D.q = 1 ∧ Nontrivial A.N.X ∧ A.Bal β ∧
@@ -671,15 +671,13 @@ def zeroArc : ArcF (Test.zeroDatum H) K ℂ :=
     closed := inferInstance }
 
 /- English proof (translation)
-Use `haveI : Unique ((zeroArc H K).N.twist β u).X := inferInstanceAs (Unique PUnit)`. Use `haveI : Finite ((zeroArc H K).N.twist β u).X := inferInstance`. Establish `hs : ∀ (g : ((zeroArc H K).N.twist β u).Gt) χ, g.s χ = 1` using `fun g χ => by`. Rewrite using `[Subsingleton.elim χ 0, NumD.Gt.s_zero]`. Establish `hψ : ∀ χ, ((zeroArc H K).N.twist β u).ψ χ = 1` using `fun χ => by rw [Subsingleton.elim χ 0, NumD.ψ_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθ : ((zeroArc H K).N.twist β u).θ = fun _ _ _ => 1` using `rfl`. Establish `hσ : ((zeroArc H K).N.twist β u).σ = fun _ => 1` using `rfl`. Establish `ht : ((zeroArc H K).N.twist β u).th = fun _ => 1` using `rfl`. Establish `e : (fun _ : (Test.zeroDatum H).La => fnOf (1 : ℂ)) = fun _ => 1` using `funext fun _ => map_one _`. Use `⟨hr, rfl, fun _ _ => rfl, fun m hm p _ => ⟨fun _ => .of_finite, ?_, fun j _ b q _ => ⟨fun _ => .of_finite, ?_⟩⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `isUnit_natCast_sp (K := ℂ) (Nat.cast_ne_zero.2 hm.pos.ne')`. Establish `: ∀ a, ((zeroArc H K).N.twist β u).tx m (p a) = 1` using `fun a => by`. Simplify using `[NumD.tx, NumD.txT, NumD.vt, NumD.wQ, NumB.wS, mulq, dbl, cubN, hs, hψ, hθ, hσ, ht]`. Unfold `Full.Theta`. Simplify using `only [this]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `GlobalTheory.ThetaPtDet.isThetaPt_zero _ m hm hu _`. Establish `: ∀ a, ((zeroArc H K).N.twist β u).ev m (p a) q.1.2 = 1` using `fun a => by`. Simplify using `[NumD.ev, NumD.evT, NumD.vt, NumD.wQ, NumB.wS, mulq, dbl, cubN, hs, hψ, hθ, hσ, ht]`. Unfold `Full.Coord`.
-
-Simplify using `only [this]`. Rewrite using `[e]`. Conclude with `(isCoordPt_one_iff _ _ _ _).2 ⟨hm, isUnit_natCast_sp (Nat.cast_ne_zero.2 hm.pos.ne'), GlobalTheory.ThetaDeform.zero_isThetaPtOver _ _ _ _⟩`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realises_zero {k : ℕ} (β : (zeroArc H K).N.Form k) (u : ℂˣ) (r : ℕ → ℂˣ) (hr : Roots u r) :
     Realises (zeroFull H H.rt0 H.sqrt_neg_disc_sq zetaU zetaU_prim zetaU_pow) (zeroArc H K) β u r := by

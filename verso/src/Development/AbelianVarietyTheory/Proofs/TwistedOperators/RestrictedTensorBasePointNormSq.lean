@@ -56,25 +56,25 @@ theorem onHalfAdj_eq_pull {v : FinPl D} (φ : SplitProj D v) (S T : HSp D) (BS :
     onHalfAdj φ S T BS BT e = pull (cA D e) (adjCo φ S T BS BT) := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `cases p <;> simp [gAt]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gAt_one (V : HSp D) (p : Place D) : gAt V p 1 = 1 := by
   cases p <;> simp [gAt]
 
 /- English proof (translation)
-Apply the tactic sequence `cases p <;> simp [gAt]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gAt_mul (V : HSp D) (p : Place D) (g g' : GA D V) : gAt V p (g * g') = gAt V p g * gAt V p g' := by
   cases p <;> simp [gAt]
 
 /- English proof (translation)
-Apply the tactic sequence `cases p <;> simp [gAt]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gAt_inv (V : HSp D) (p : Place D) (g : GA D V) : gAt V p g⁻¹ = (gAt V p g)⁻¹ := by
   cases p <;> simp [gAt]
 
 /- English proof (translation)
-Unfold `latO`. Use `AddSubgroup.closure_mono ?_` and prove the remaining obligations. Introduce and unpack `w ⟨α, hα, hv, rest⟩`. Conclude with `⟨α, hα, fun v hQ => hv v fun hP => hQ (h v hP), rest⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem latO_mono {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (Fin T.rank → D.host.E)}
     {P Q : FinPl D → Prop} (h : ∀ v, P v → Q v) : latO S T LS LT P ≤ latO S T LS LT Q := by
@@ -84,7 +84,7 @@ theorem latO_mono {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Set (
   exact ⟨α, hα, fun v hQ => hv v fun hP => hQ (h v hP), rest⟩
 
 /- English proof (translation)
-Unfold `IsLatVac at hf ⊢`. Conclude with `⟨fun u hu => hf.1 u (h hu), fun e he u hu hh => hf.2 e he u (h hu) hh⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem isLatVac_mono {m n : ℕ} {hs : Mx D m n → (Mx D m n → ℂ) → (Mx D m n → ℂ)} {Λ Λ' : AddSubgroup (Mx D m n)}
     (h : Λ ≤ Λ') {f : Mx D m n → ℂ} (hf : IsLatVac hs Λ' f) : IsLatVac hs Λ f := by
@@ -99,7 +99,7 @@ variable {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
   {f f₀ : WO S T → ℂ}
 
 /- English proof (translation)
-Break down `q with v | τ` into its components or cases. Conclude with `isLatVac_mono (latO_mono fun u hu => hu ▸ hq) h.2.1`. Conclude with `h.2.2 τ hq`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem vacAt_of_isLocal {p q : Place D} (h : IsLocal ψ θ S T sS sT ΛS ΛT p f) (hq : q ≠ p) :
     VacAt ψ θ S T sS sT ΛS ΛT q f := by
@@ -108,32 +108,32 @@ theorem vacAt_of_isLocal {p q : Place D} (h : IsLocal ψ θ S T sS sT ΛS ΛT p 
   · exact h.2.2 τ hq
 
 /- English proof (translation)
-Conclude with `h.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem base_std (h : IsBase ψ θ S T sS sT ΛS ΛT f₀) : IsStdChar D ψ (-1) := by
   exact h.2.2.2.2.1
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.2.inf`.
+A detailed English derivation is pending.
 -/
 theorem base_inf (h : IsBase ψ θ S T sS sT ΛS ΛT f₀) : IsInfFam θ :=
   h.2.2.2.2.2.inf
 
 /- English proof (translation)
-The claim follows from `h.2.2.2.2.2.theta`.
+A detailed English derivation is pending.
 -/
 theorem base_theta (h : IsBase ψ θ S T sS sT ΛS ΛT f₀) : IsThetaFunO ψ S T f₀ :=
   h.2.2.2.2.2.theta
 
 /- English proof (translation)
-Conclude with `h.2.2.2.2.2.norm.2 (μ, 𝓕) hμ`.
+A detailed English derivation is pending.
 -/
 theorem restrictedTensorBasePoint_norm_sq (h : IsBase ψ θ S T sS sT ΛS ΛT f₀) {μ : Measure (WO S T)} {𝓕 : Set (WO S T)}
     (hμ : IsCovolOne (ratL T S) μ 𝓕) : nrm2 μ 𝓕 f₀ = 1 := by
   exact h.2.2.2.2.2.norm.2 (μ, 𝓕) hμ
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Take `⟨⟨μ, 𝓕⟩, hq⟩` from `h.2.2.2.2.2.norm.1`. Establish `h1` using `restrictedTensorBasePoint_norm_sq h hq`. Simplify using `[nrm2] at h1`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem base_ne_zero (h : IsBase ψ θ S T sS sT ΛS ΛT f₀) : f₀ ≠ 0 := by
   rintro rfl
@@ -142,14 +142,14 @@ theorem base_ne_zero (h : IsBase ψ θ S T sS sT ΛS ΛT f₀) : f₀ ≠ 0 := b
   simp [nrm2] at h1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.2.2.2.2.2.theta, isLatVac_mono (latO_mono fun _ _ => trivial) h.2.2.2.2.2.lat, fun τ _ => h.2.2.2.2.2.fock τ⟩`.
+Supply the required witnesses or components.
 -/
 theorem base_isLocal (h : IsBase ψ θ S T sS sT ΛS ΛT f₀) (p : Place D) : IsLocal ψ θ S T sS sT ΛS ΛT p f₀ :=
   ⟨h.2.2.2.2.2.theta, isLatVac_mono (latO_mono fun _ _ => trivial) h.2.2.2.2.2.lat,
     fun τ _ => h.2.2.2.2.2.fock τ⟩
 
 /- English proof (translation)
-Break down `p with v | τ` into its components or cases. Conclude with `isLatVac_mono (latO_mono fun _ _ => trivial) h.2.2.2.2.2.lat`. Conclude with `h.2.2.2.2.2.fock τ`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem base_vacAt (h : IsBase ψ θ S T sS sT ΛS ΛT f₀) (p : Place D) : VacAt ψ θ S T sS sT ΛS ΛT p f₀ := by
   rcases p with v | τ

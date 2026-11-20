@@ -10,7 +10,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Jmat, Matrix.mul_apply, Fin.sum_univ_two, Matrix.transpose_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem pol2 {Q : Type} [CommRing Q] (x y z : Q) :
     (!![z, 0; y, x] : Matrix (Fin 2) (Fin 2) Q) = Jmat Q 2 * (!![x, 0; y, z])ᵀ * Jmat Q 2 := by
@@ -19,9 +19,9 @@ private theorem pol2 {Q : Type} [CommRing Q] (x y z : Q) :
     simp [Jmat, Matrix.mul_apply, Fin.sum_univ_two, Matrix.transpose_apply]
 
 /- English proof (translation)
-Establish `e : ∀ i : Fin 2, List.ofFn (fun i => r (g i) - ψ i (g i) • (1 : Matrix (Fin 2) (Fin 2) Q)) = [r (g 0) - ψ 0 (g 0) • 1, r (g 1) - ψ 1 (g 1) • 1]` using `fun _ => by`. Simplify using `[List.ofFn_succ]`. Unfold `ordProd`. Rewrite using `[e 0, h, h]`. Use extensionality with `i j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ord2 {H Q : Type} [CommRing Q] (r : H → Matrix (Fin 2) (Fin 2) Q) (ψ : Fin 2 → H → Q) (γ : Q)
     (h : ∀ s, r s = !![ψ 0 s, 0; (ψ 0 s - ψ 1 s) * γ, ψ 1 s]) (g : Fin 2 → H) : ordProd r ψ g = 0 := by
@@ -35,9 +35,9 @@ private theorem ord2 {H Q : Type} [CommRing Q] (r : H → Matrix (Fin 2) (Fin 2)
     simp [Matrix.mul_apply, Fin.sum_univ_two] <;> ring
 
 /- English proof (translation)
-Use `⟨{ toFun := fun g => !![p g, 0; a g, q g], map_one' := ?_, map_mul' := ?_ }, fun g => rfl⟩` and prove the remaining obligations. Simplify using `only [map_one, a0]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`. Introduce `g g'`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [h]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two, map_mul] <;> ring`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem hom_ex {G Q : Type} [Group G] [CommRing Q] (p q : G →* Q) (a : G → Q) (a0 : a 1 = 0)
     (h : ∀ g g', a (g * g') = a g * p g' + q g * a g') :
@@ -54,11 +54,11 @@ private theorem hom_ex {G Q : Type} [Group G] [CommRing Q] (p q : G →* Q) (a :
       simp [Matrix.mul_apply, Fin.sum_univ_two, map_mul] <;> ring
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_isOpen_fiber_apply]`. Introduce `g`. Establish `hK : IsOpen ((fun h : F.G0 => ((g⁻¹ * h : F.G0) : F.Γ)) ⁻¹' (F.Ψ.ker : Set F.Γ))` using `hΨ.preimage (continuous_subtype_val.comp (continuous_const.mul continuous_id))`. Use `hK using 1` and compare the differences between its conclusion and the goal. Use extensionality with `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, SetLike.mem_coe, MonoidHom.mem_ker, Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Rewrite using `[e, inv_mul_cancel]`. Introduce `e`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(inv_mul_eq_one.mp e).symm`.
+A detailed English derivation is pending.
 -/
 private theorem isLocallyConstant_psi_restrict_of_isOpen_ker {l : ℕ} [Fact l.Prime] {k : Type} [Field k] {F : Frame l k}
     (hΨ : IsOpen (F.Ψ.ker : Set F.Γ)) : IsLocallyConstant fun g : F.G0 => F.Ψ (g : F.Γ) := by
@@ -77,31 +77,27 @@ private theorem isLocallyConstant_psi_restrict_of_isOpen_ker {l : ℕ} [Fact l.P
     exact (inv_mul_eq_one.mp e).symm
 
 /- English proof (translation)
-Take `⟨hlc, hmul, hstar, hloc⟩` from `ha`. Set `φ : F.G0 →* kˣ` to `F.Ψ.comp F.del.ker.subtype`. Set `p : F.G0 →* Q` to `(algebraMap k Q).toMonoidHom.comp ((Units.coeHom k).comp φ)`. Set `q : F.G0 →* Q` to `(algebraMap k Q).toMonoidHom.comp ((Units.coeHom k).comp φ⁻¹)`. Establish `hp : ∀ g, p g = algebraMap k Q (F.Ψ (g : F.Γ) : k)` using `fun g => rfl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hq : ∀ g, q g = algebraMap k Q ((F.Ψ (g : F.Γ))⁻¹ : kˣ)` using `fun g => rfl`. Establish `hΨstar : ∀ g : F.G0, F.Ψ ((F.star g : F.G0) : F.Γ) = (F.Ψ (g : F.Γ))⁻¹`. Introduce `g`. Simplify using `only [Frame.star, Frame.conj, MulEquiv.coe_toMonoidHom, MulAut.conjNormal_apply, map_mul, map_inv, Subgroup.coe_inv]`. Rewrite using `[mul_comm, ← mul_assoc, inv_mul_cancel, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `a0 : a 1 = 0`. Establish `h1` using `hmul 1 1`. Simplify using `only [mul_one, map_one, Units.val_one, one_smul, inv_one] at h1`. Simplify using `using h1`. Establish `hmul' : ∀ g g', a (g * g') = a g * p g' + q g * a g'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `g g'`. Rewrite using `[hmul, hp, hq, Algebra.smul_def, Algebra.smul_def, mul_comm (algebraMap k Q _) (a g)]`. Take `⟨r, hr⟩` from `hom_ex p q a a0 hmul'`. Set `χ : (v : F.V) → F.Gv v →* Qˣ` to `fun v => (Units.map (algebraMap k Q).toMonoidHom).comp (F.Ψ.comp (F.loc v))`. Establish `hpstar : ∀ g, p (F.star g) = q g` using `fun g => by rw [hp, hq, hΨstar]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hqstar : ∀ g, q (F.star g) = p g` using `fun g => by rw [hp, hq, hΨstar, inv_inv]`. Set `ρ : NRep F 2 Q` to `{ r := r ψ := fun v => ![χ v, (χ v)⁻¹] pol := by`. Introduce `g`. Rewrite using `[hr, hr, hpstar, hqstar, hstar]`. Conclude with `pol2 _ _ _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `diag := by`. Introduce `i j hij`. Rewrite using `[hr, hr]`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `absurd rfl hij`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Simplify using `[hstar]`. Conclude with `absurd rfl hij`. Use `ord := by`. Introduce `v g`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ, hγ⟩` from `hloc v`. Use `ord2 _ _ γ (fun s => ?_) g` and prove the remaining obligations. Rewrite using `[hr, hγ]`. Simplify using `[χ, hp, hq, Algebra.smul_def, Frame.loc] }`. Use `⟨ρ, ⟨?_, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `g i show r g i i = _`. Rewrite using `[hr]`. Apply the tactic sequence `fin_cases i <;> simp [w, hp, hq]`. Apply the tactic sequence `intro v i g fin_cases i <;> simp [ρ, χ, w]`. Apply `Ideal.span_eq_bot.mpr` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `_ ⟨g, i, j, hij, rfl⟩`. Use `show r g i j = 0`. Rewrite using `[hr]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp at hij ⊢`. Establish `hl : IsLocallyConstant fun g : F.G0 => F.Ψ (g : F.Γ)` using `isLocallyConstant_psi_restrict_of_isOpen_ker hF.Ψ_open`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `i j`. Use `show IsLocallyConstant fun g => r g i j`. Simplify using `only [hr]`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `hl.comp fun z => algebraMap k Q (z : k)`.
-
-Conclude with `IsLocallyConstant.const _`. Conclude with `hlc`. Conclude with `hl.comp fun z => algebraMap k Q ((z⁻¹ : kˣ) : k)`. Introduce `g show r g 1 0 = a g`. Rewrite using `[hr]`.
-
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem rep_ex {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ : ℕ}
     (hF : F.Ok C₀) (Q : Type) [CommRing Q] [Algebra k Q] {a : F.G0 → Q} (ha : a ∈ F.strS Q) :
@@ -184,11 +180,11 @@ variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscre
 include hF
 
 /- English proof (translation)
-Use `haveI : CharP (ResidueField O) l := IsCoef.char`. Take `⟨ρ, hbar, htri, hlc, h10⟩` from `rep_ex hF Q h`. Take `⟨ξ, hξ, hmap⟩` from `UpperTheory.smoothHom_weight_sum_neg hF (Or.inl rfl) S Q ρ hbar htri hlc`. Use `⟨ξ, hξ, ?_, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[NRep.triM, Ideal.span_le]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨g, i, j, hij, rfl⟩`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker]`. Establish `hm : ρ.r g i j ∈ ρ.triM` using `Ideal.subset_span ⟨g, i, j, hij, rfl⟩`. Rewrite `hm` using `[htri, Ideal.mem_bot]`. Rewrite using `[← hm, ← hmap, NRep.map_r]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h10, ← hmap, NRep.map_r]`.
+A detailed English derivation is pending.
 -/
 private theorem pt_ex (Q : Type) [CommRing Q] [Nontrivial Q] [Algebra (ResidueField O) Q] {a : F.G0 → Q}
     (h : a ∈ F.strS Q) : ∃ ξ : S.A →+* Q, S.FPt ξ ∧ S.u.triM ≤ RingHom.ker ξ ∧ ∀ g, ξ (S.u.r g 1 0) = a g := by
@@ -205,11 +201,11 @@ private theorem pt_ex (Q : Type) [CommRing Q] [Nontrivial Q] [Algebra (ResidueFi
   · rw [← h10, ← hmap, NRep.map_r]
 
 /- English proof (translation)
-Establish `H` using `UpperTheory.smoothCharacter_extends_to_open_subgroup hF (Or.inl rfl) S Q ξ h`. Establish `H'` using `UpperTheory.smoothCharacter_extends_to_open_subgroup hF (Or.inl rfl) S Q ξ' h'`. Use `H.2.2 ξ' h' (fun g i j => ?_)` and prove the remaining obligations. Establish `z : ∀ {ζ : S.A →+* Q}, S.u.triM ≤ RingHom.ker ζ → ζ (S.u.r g 0 1) = 0` using `fun hz => RingHom.mem_ker.mp (hz (Ideal.subset_span ⟨g, 0, 1, by decide, rfl⟩))`. Establish `d : ∀ i : Fin 2, ξ' (S.u.r g i i) = ξ (S.u.r g i i)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Establish `d1` using `H.1.1 g i`. Establish `d2` using `H'.1.1 g i`. Rewrite `d1`, `d2` using `[NRep.map_r]`. Rewrite using `[d1, d2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `d 0`. Conclude with `(z t').trans (z t).symm`. Conclude with `e g`. Conclude with `d 1`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem pt_uniq {Q : Type} [CommRing Q] [Algebra (ResidueField O) Q] {ξ ξ' : S.A →+* Q}
     (h : S.FPt ξ) (h' : S.FPt ξ') (t : S.u.triM ≤ RingHom.ker ξ) (t' : S.u.triM ≤ RingHom.ker ξ')
@@ -232,9 +228,9 @@ private theorem pt_uniq {Q : Type} [CommRing Q] [Algebra (ResidueField O) Q] {ξ
   · exact d 1
 
 /- English proof (translation)
-Establish `H` using `UpperTheory.smoothCharacter_extends_to_open_subgroup hF (Or.inl rfl) S Q ξ h`. Use `haveI : CharP (ResidueField O) l := IsCoef.char`. Establish `htri : (NRep.map ξ S.u).triM = ⊥`. Apply `Ideal.span_eq_bot.mpr` to reduce the goal to its premises. Introduce and unpack `_ ⟨g, i, j, hij, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[NRep.map_r]`. Conclude with `RingHom.mem_ker.mp (t (Ideal.subset_span ⟨g, i, j, hij, rfl⟩))`. Establish `h2` using `framePoint_fiber_nonempty hF Q (NRep.map ξ S.u) H.1 htri H.2.1`. Simplify `h2` using `only [NRep.map_r]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem pt_mem {Q : Type} [CommRing Q] [Algebra (ResidueField O) Q] {ξ : S.A →+* Q}
     (h : S.FPt ξ) (t : S.u.triM ≤ RingHom.ker ξ) : (fun g => ξ (S.u.r g 1 0)) ∈ F.strS Q := by
@@ -249,11 +245,11 @@ private theorem pt_mem {Q : Type} [CommRing Q] [Algebra (ResidueField O) Q] {ξ 
   simpa only [NRep.map_r] using h2
 
 /- English proof (translation)
-Take `⟨ξA, hA, tA, vA⟩` from `pt_ex hF S (Polynomial K) h`. Use `⟨⟨RingHom.ker ξA, RingHom.ker_isPrime ξA⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Ideal.le_comap_map.trans (Ideal.comap_mono hA.x0)`. Introduce `c ξ hξ tξ vξ`. Set `φ : Polynomial K →ₐ[ResidueField O] K` to `(Polynomial.aeval c).restrictScalars (ResidueField O)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : S.FPt ((φ : Polynomial K →+* K).comp ξA)` using `hA.comp φ`. Establish `tφ : S.u.triM ≤ RingHom.ker ((φ : Polynomial K →+* K).comp ξA)` using `fun x hx => by`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, RingHom.mem_ker.mp (tA hx), map_zero]`. Establish `heq : (φ : Polynomial K →+* K).comp ξA = ξ` using `pt_uniq hF S hξ hφ tξ tφ (fun g => by`. Rewrite using `[RingHom.comp_apply, vA g, ← vξ g]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[φ, Polynomial.coe_aeval_eq_eval])`. Introduce `x hx`. Rewrite using `[RingHom.mem_ker, ← heq, RingHom.comp_apply, RingHom.mem_ker.mp hx, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem line {K : Type} [Field K] [Algebra (ResidueField O) K] {A : F.G0 → Polynomial K}
     (h : A ∈ F.strS (Polynomial K)) :
@@ -277,27 +273,23 @@ private theorem line {K : Type} [Field K] [Algebra (ResidueField O) K] {A : F.G0
 end
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ F C₀ hF S`. Use `haveI : CharP (ResidueField O) l := IsCoef.char`. Take `⟨b, hb, hb0⟩` from `UpperTheory.exists_mem_strS_ne_zero_of_frameOk hF`. Take `⟨ξb, hbF, hbt, hbv⟩` from `pt_ex hF S (ResidueField O) hb`. Set `qb : PrimeSpectrum S.A` to `⟨RingHom.ker ξb, RingHom.ker_isPrime ξb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hnz : ∃ g, b g ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hb0 (funext hc)`. Take `⟨g1, hg1⟩` from `hnz`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hqb : qb ∈ S.BB`. Use `⟨Ideal.le_comap_map.trans (Ideal.comap_mono hbF.x0), fun hle => hg1 ?_⟩` and prove the remaining obligations. Establish `hm : S.u.r g1 1 0 ∈ S.u.triP` using `Ideal.subset_span ⟨g1, 1, 0, by decide, rfl⟩`. Rewrite using `[← hbv g1]`. Conclude with `RingHom.mem_ker.mp (hle hm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `isPreconnected_of_forall qb (fun p hp => ?_)` and prove the remaining obligations. Take `⟨K, _, _, ξ, hker, hξ, tξ⟩` from `UpperTheory.smoothDual_exact hF (Or.inl rfl) S p hp`. Establish `ha` using `pt_mem hF S hξ tξ`. Set `bK : F.G0 → K` to `fun g => algebraMap (ResidueField O) K (b g)`. Establish `hbK : bK ∈ F.strS K` using `F.strS_map (Algebra.linearMap (ResidueField O) K) hb`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `Lin : K →ₗ[ResidueField O] Polynomial K` to `(Algebra.linearMap K (Polynomial K)).restrictScalars (ResidueField O)`. Set `A : F.G0 → Polynomial K` to `fun g => (1 - Polynomial.X) * Lin (ξ (S.u.r g 1 0)) + Polynomial.X * Lin (bK g)`. Establish `hAmem : A ∈ F.strS (Polynomial K)` using `Submodule.add_mem _ (F.strS_mul _ (F.strS_map Lin ha)) (F.strS_mul _ (F.strS_map Lin hbK))`. Take `⟨η, hηB, hη⟩` from `line hF S hAmem`. Establish `hη0 : η.asIdeal ≤ p.asIdeal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hker]`. Conclude with `hη 0 ξ hξ tξ (fun g => by simp [A, Lin])`. Set `ι : ResidueField O →ₐ[ResidueField O] K` to `Algebra.ofId _ _`. Establish `tb' : S.u.triM ≤ RingHom.ker ((ι : ResidueField O →+* K).comp ξb)` using `fun x hx => by`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, RingHom.mem_ker.mp (hbt hx), map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hη1 : η.asIdeal ≤ qb.asIdeal`. Establish `h1` using `hη 1 ((ι : ResidueField O →+* K).comp ξb) (hbF.comp ι) tb' (fun g => by simp [A, Lin, bK, hbv, ι])`. Introduce `x hx`. Establish `hx1` using `h1 hx`. Rewrite `hx1` using `[RingHom.mem_ker, RingHom.comp_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `RingHom.mem_ker.mpr ((ι : ResidueField O →+* K).injective (by rw [hx1, map_zero]))`. Establish `hηBB : η ∈ S.BB` using `⟨hηB, fun hle => hp.2 (hle.trans hη0)⟩`. Use `⟨{η, p, qb}, ?_, by simp, by simp, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hz`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hz with rfl | rfl | rfl` into its components or cases. Conclude with `hηBB`. Conclude with `hp`. Conclude with `hqb`. Use `(isPreconnected_singleton (x := η)).subset_closure (by simp) ?_` and prove the remaining obligations.
-
-Introduce `z hz`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hz`. Rewrite using `[← PrimeSpectrum.le_iff_mem_closure]`. Break down `hz with rfl | rfl | rfl` into its components or cases. Conclude with `le_rfl`.
-
-Conclude with `hη0`. Conclude with `hη1`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.preconnected_rank_two :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ}, F.Ok C₀ → ∀ S : Space O F 2, IsPreconnected S.BB := by

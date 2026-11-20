@@ -11,9 +11,9 @@ namespace Formalism.MainNotions.G.ColumnFamilies
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees Formalism.MainNotions.G.GLWeightTheory Formalism.MainNotions.G.Joints Formalism.MainNotions.LemmaBAlt
 
 /- English proof (translation)
-Establish `hidx' : Formalism.InvariantFactorPaths.GelfandTsetlinBases.IsIndex (ext P.mu N) I` using `by rw [ext_last]; exact hidx`. Establish `hpath` using `restPathTo n N LL B P`. Establish `h1` using `restWord k1 n N i.val (isV LL) (Bn B) (ext P.mu) I g0inv g0 (mul_eq_one_comm.1 hg) hpath hidx' (Nat.lt_succ_iff.1 i.2) (m.mapDomain (iv N n)) ?_`. Rewrite `h1` using `[monomialWeight_eq_letterWeight, ext_val]`. Conclude with `(dominanceOrder_iff _ _).2 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Formalism.InvariantFactorPaths.GelfandTsetlinBases.A3ev.map_psi φ hpath hidx', ← restPsi F n N LL B P I hidx, ← restAct F k1 N n i.val LL φ g0inv g0, MvPolynomial.mem_support_iff, MvPolynomial.coeff_rename_mapDomain _ (iv_inj N n)]`. Conclude with `MvPolynomial.mem_support_iff.1 hm`.
+A detailed English derivation is pending.
 -/
 theorem word_support_dominated (F : Type) [Field F] {N n : ℕ} {LL : Letters (Fin N)} {B : Fin N → ℕ}
     (i : Fin (N + 1)) (P : PPath n N LL B) (I : ℤ → Finset (Fin n)) (hidx : Formalism.InvariantFactorPaths.GelfandTsetlinBases.IsIndex (pEnd P.mu) I)
@@ -34,17 +34,15 @@ theorem word_support_dominated (F : Type) [Field F] {N n : ℕ} {LL : Letters (F
     exact MvPolynomial.mem_support_iff.1 hm
 
 /- English proof (translation)
-Introduce `F _ _ N n LL B P I i`. Use `set I' : ℤ → Finset (Fin n) := fun c => if c ∈ colRange P.mu then I c else ∅ with hI'`. Establish `hPsi : Psi F P.mu I = Psi F P.mu I'`. Unfold `Psi`. Conclude with `Finset.prod_congr rfl fun c hc => by simp only [hI', if_pos hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hPsi]`. Distinguish the cases in `hidx : Formalism.InvariantFactorPaths.GelfandTsetlinBases.IsIndex (pEnd P.mu) I'`. Use `(restTypes D F N LL n _ _ (prin_lower (P.mu i)) _).2 ?_` and prove the remaining obligations. Introduce `mu hmu hdom`. Conclude with `⟨hdom, restFwd F (Fin N) LL n _ (fun mu => DomLE mu (P.mu i)) _ (fun k1 _ φ g0 g0inv hg m hm => word_support_dominated F i P I' hidx k1 φ g0 g0inv hg m hm) mu hmu⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h0 : Psi F P.mu I' = 0`. Unfold `Formalism.InvariantFactorPaths.GelfandTsetlinBases.IsIndex at hidx`. Use `push Not at hidx`. Take `⟨c, hc⟩` from `hidx`. Distinguish the cases in `hcr : c ∈ colRange P.mu`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. It suffices to derive a contradiction.
 
-Unfold `Psi`. Apply `Finset.prod_eq_zero hcr` to reduce the goal to its premises. Conclude with `column_kernel_support_degree F P c N (Nat.lt_succ_self N) (I' c) hc`. It suffices to derive a contradiction. Apply `hc` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `colH_off P.mu hcr (Fin.last N)`. Establish `h2 : Formalism.InvariantFactorPaths.GelfandTsetlinBases.colHeight (pEnd P.mu) c = colH (P.mu (Fin.last N)) c` using `rfl`. Simplify using `only [hI', if_neg hcr, Finset.card_empty]`. Rewrite using `[h2, h1]`. Apply the tactic sequence `split_ifs <;> omega`.
-
-Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adm_twelve (D : Formalism.BasicNotions.D7) : NestedTypeBound D := by
   classical

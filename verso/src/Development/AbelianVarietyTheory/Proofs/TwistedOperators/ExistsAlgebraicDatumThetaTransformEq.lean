@@ -24,11 +24,11 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 namespace GlobalTheory.VacDatum
 
 /- English proof (translation)
-Introduce `D ψ θ hθ ε S X A B d e Bs hBs hψ Vs Ws r s r' s' hJ hJW hV hW hcart M hM cS hcS f hf`. Take `⟨ξ, JB, co, hJB, hrat, hiff⟩` from `GlobalTheory.T.exists_rational_darboux_orientedPair_transport D ψ θ hθ ε S X A B e Bs hBs hψ Vs Ws r s r' s' hJ hJW hV hW hcart M hM cS hcS`. Establish `hstd : IsStdChar D ψ (-1)` using `GlobalTheory.StdCharFromIsStd.isStdChar_of_isStd D ψ (hψ ▸ hBs.std)`. Take `⟨-, -, hon⟩` from `GlobalTheory.ThetaTransform.thetaTr_bij (S := sgn ε S) (T := X) co hstd rfl hJB hrat`. Take `⟨Φ, hΦ, hΦf⟩` from `(hon f).1 hf.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hD : IsDatum M ψ cS Φ f` using `(hiff Φ f).2 ⟨hΦ, hΦf⟩`. Establish `hG` using `GlobalTheory.T.fockVacuumEquations_transfer_schroedingerDatum D ψ θ hθ ε S X A B e Bs hBs hψ Vs Ws r s r' s' hJ hJW hV hW hcart M hM cS hcS f Φ hf hD`. Establish `hsp` using `GlobalTheory.T.mem_gaussianVacuaSpan_of_vacuumEquations M Bs.ψ Bs.emb hBs.std Φ hΦ hG`. Use `⟨Φ, Submodule.span_le.2 ?_ hsp, hD⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨g, h, hg, hh, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `GlobalTheory.T.fockPolynomial_tmul_schwartzBruhat_mem_algebraicData M Bs.ψ Bs.emb hM g hg h hh`.
+A detailed English derivation is pending.
 -/
 theorem vacDatum_exists : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
     ∀ (ε : Bool) (S X : HSp D) (A : Fr S) (B : Fr X) {d : ℕ} (e : Fin X.rank ≃ Fin d)

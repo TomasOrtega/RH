@@ -9,11 +9,11 @@ open scoped Classical
 namespace GlobalTheory.ChernWeilLine
 
 /- English proof (translation)
-Introduce `e X _ A ι _ P Q t hQ hP j y hy`. Establish `h0 : A.Smooth (0 : X → ℝ)` using `fun k => contDiffOn_const`. Establish `hpot` using `InhabCalc.isPotential_combPot A Q hQ t 0 h0`. Establish `hψ` using `potSmoothAt A _ hpot ((A.chart j).symm y) j ⟨hy, (InhabCalc.combPot Q t 0).mem_U _⟩`. Establish `hL` using `LeviFormCombination.GlobalTheory.CompanionTheory.LeviComb.leviAt_combPot e X A ι Q t 0 hQ h0 j y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.T.hessian_eq_of_levi_form_eq hψ fun w => ?_` and prove the remaining obligations. Establish `hz : leviAt A (LocPot.ofFun (0 : X → ℝ)) j y w = 0`. Simplify using `[leviAt, LocPot.ofFun, levi]`. Use `hL w` as an intermediate fact. Rewrite `this` using `[hz, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hP j y hy w).trans this.symm`.
+A detailed English derivation is pending.
 -/
 theorem sameForm_combPot_of_levi : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) {ι : Type} [Fintype ι]
     (P : LocPot X) (Q : ι → LocPot X) (t : ι → ℝ), (∀ i, IsPotential A (Q i)) →

@@ -10,11 +10,11 @@ open CategoryTheory Limits TensorProduct
 namespace LateralTheory.E.EtStagePf
 
 /- English proof (translation)
-Set `_` to `f.hom.toAlgebra`. Establish `h : Algebra.Etale A T` using `hf`. Take `⟨A₀, B₀, _, _, hfg, het, ⟨e⟩⟩` from `Algebra.Etale.exists_subalgebra_fg ℤ A T`. Establish `hft : Algebra.FiniteType ℤ A₀` using `(Subalgebra.fg_iff_finiteType A₀).mp hfg`. Establish `hfp : Algebra.FinitePresentation ℤ A₀` using `Algebra.FinitePresentation.of_finiteType.mp hft`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨CommRingCat.of A₀, CommRingCat.of B₀, CommRingCat.ofHom (algebraMap A₀ A), CommRingCat.ofHom (algebraMap A₀ B₀), CommRingCat.ofHom (e.symm.toRingHom.comp Algebra.TensorProduct.includeRight.toRingHom), ?_, ?_, ?_⟩` and prove the remaining obligations. Use `RingHom.finitePresentation_algebraMap.mpr hfp` as an intermediate fact. Rewrite `this` using `[RingHom.ext_int (algebraMap ℤ A₀) (Int.castRingHom A₀)]`. Then use the resulting hypothesis. Conclude with `RingHom.etale_algebraMap.mpr het`. Use `(CommRingCat.isPushout_tensorProduct A₀ A B₀).of_iso (Iso.refl _) (Iso.refl _) (Iso.refl _) e.symm.toRingEquiv.toCommRingCatIso (by simp) (by simp) ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Conclude with `e.symm.commutes x`. Use extensionality with `x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_model {A T : CommRingCat.{0}} (f : A ⟶ T) (hf : f.hom.Etale) :
     ∃ (A₀ B₀ : CommRingCat.{0}) (a : A₀ ⟶ A) (f₀ : A₀ ⟶ B₀) (b : B₀ ⟶ T),
@@ -38,11 +38,11 @@ theorem exists_model {A T : CommRingCat.{0}} (f : A ⟶ T) (hf : f.hom.Etale) :
       rfl
 
 /- English proof (translation)
-Introduce `J _ _ D c hc _ _ T _ f _ _ _ hf`. Take `⟨A₀, B₀, a, f₀, b, hfp, het, hP⟩` from `exists_model f hf`. Set `α : (Functor.const J).obj (CommRingCat.of ℤ) ⟶ D` to `{ app := fun i => CommRingCat.ofHom (Int.castRingHom _) naturality := fun _ _ _ => CommRingCat.hom_ext (RingHom.ext_int _ _) }`. Take `⟨k, a', -, ha⟩` from `RingHom.EssFiniteType.exists_eq_comp_ι_app_of_isColimit (CommRingCat.of ℤ) D α (CommRingCat.ofHom (Int.castRingHom A₀)) c hc hfp a (fun _ => CommRingCat.hom_ext (RingHom.ext_int _ _))`. Substitute `ha` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Establish `hQ` using `IsPushout.of_hasPushout a' f₀`. Establish `hw : a' ≫ c.ι.app k ≫ f = f₀ ≫ b` using `by rw [← hP.w, Category.assoc]`. Use `⟨k, pushout a' f₀, pushout.inl a' f₀, pushout.desc (c.ι.app k ≫ f) b hw, ?_, ?_⟩` and prove the remaining obligations. Use `IsPushout.of_left ?_ (pushout.inl_desc _ _ _).symm hQ` and prove the remaining obligations. Rewrite using `[pushout.inr_desc]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hP`. Use `(RingHom.isStableUnderCobaseChange_toMorphismProperty_iff (P := @RingHom.Etale)).mpr RingHom.Etale.isStableUnderBaseChange` as an intermediate fact. Conclude with `this.of_isPushout hQ het`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem EtStage_of : LateralTheory.E.SpreadPf.Cut.EtStage := by
   intro J _ _ D c hc _ _ T _ f _ _ _ hf

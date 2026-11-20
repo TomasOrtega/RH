@@ -17,7 +17,7 @@ def ballSub (s : kˣ) : AddSubgroup k where
   neg_mem' := neg_mem_cball
 
 /- English proof (translation)
-Use `show valuation k (x * y) ≤ valuation k (s : k)`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mul_mem_ball {s : kˣ} (hs : valuation k (s : k) ≤ 1) {x y : k} (hx : x ∈ cball s)
     (hy : y ∈ cball s) : x * y ∈ cball s := by
@@ -31,9 +31,9 @@ def NearOne (s : kˣ) {m : ℕ} (A : Matrix (Fin m) (Fin m) k) : Prop :=
   ∀ a b, A a b - (1 : Matrix (Fin m) (Fin m) k) a b ∈ cball s
 
 /- English proof (translation)
-Introduce `a b`. Establish `e : (A * B) a b - (1 : Matrix (Fin m) (Fin m) k) a b = ((A - 1) * (B - 1)) a b + (A a b - (1 : Matrix (Fin m) (Fin m) k) a b) + (B a b - (1 : Matrix (Fin m) (Fin m) k) a b)`. Establish `: A * B - 1 = (A - 1) * (B - 1) + (A - 1) + (B - 1)` using `by noncomm_ring`. Conclude with `congrFun (congrFun this a) b`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_mem_cball (add_mem_cball ?_ (hA a b)) (hB a b)` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `(ballSub s).sum_mem fun l _ => mul_mem_ball hs (hA a l) (hB l b)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem NearOne.mul {s : kˣ} (hs : valuation k (s : k) ≤ 1) {m : ℕ}
     {A B : Matrix (Fin m) (Fin m) k} (hA : NearOne s A) (hB : NearOne s B) : NearOne s (A * B) := by

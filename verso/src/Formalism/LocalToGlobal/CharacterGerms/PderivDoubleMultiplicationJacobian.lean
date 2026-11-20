@@ -20,30 +20,30 @@ abbrev P0 : Pt C 2 dd := pt C (n := 2) dd 0
 abbrev P1 : Pt C 2 dd := pt C (n := 2) dd 1
 
 /- English proof (translation)
-Introduce `j` and use `z0_pt 0 j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem z0P0 : ∀ j, constantCoeff ((P0 : Pt C 2 dd) j) = 0 := fun j => z0_pt 0 j
 
 /- English proof (translation)
-Introduce `j` and use `z0_pt 1 j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem z0P1 : ∀ j, constantCoeff ((P1 : Pt C 2 dd) j) = 0 := fun j => z0_pt 1 j
 
 /- English proof (translation)
-The claim follows from `ev_ev ha (z0_1 _ z0P0) f`.
+A detailed English derivation is pending.
 -/
 theorem lift_eval_two_points {m : ℕ} {a : Fin m → Pt C 1 dd} (ha : Z0 a) (f : PS C m dd) :
     ev ![(P0 : Pt C 2 dd)] (ev a f) = ev (fun k j => ev ![(P0 : Pt C 2 dd)] (a k j)) f :=
   ev_ev ha (z0_1 _ z0P0) f
 
 /- English proof (translation)
-The claim follows from `ev_X (z0_1 _ z0P0) 0 j`.
+A detailed English derivation is pending.
 -/
 theorem eval_lifted_coordinate (j : Fin dd) : ev ![(P0 : Pt C 2 dd)] (pt C (n := 1) dd 0 j) = (P0 : Pt C 2 dd) j :=
   ev_X (z0_1 _ z0P0) 0 j
 
 /- English proof (translation)
-Use `show ev ![(P0 : Pt C 2 dd)] (0 : PS C 1 dd) = 0`. Conclude with `ev_zero (z0_1 _ z0P0)`.
+A detailed English derivation is pending.
 -/
 theorem lift_eval_zero (j : Fin dd) : ev ![(P0 : Pt C 2 dd)] ((0 : Pt C 1 dd) j) = 0 := by
   show ev ![(P0 : Pt C 2 dd)] (0 : PS C 1 dd) = 0
@@ -52,9 +52,7 @@ theorem lift_eval_zero (j : Fin dd) : ev ![(P0 : Pt C 2 dd)] ((0 : Pt C 1 dd) j)
 def J2 (G : FGLaw C dd) (k i : Fin dd) : PS C 2 dd := ev ![(P0 : Pt C 2 dd)] (JF G k i)
 
 /- English proof (translation)
-Unfold `J2 JF`. Rewrite using `[lift_eval_two_points constant_zero_first_then_zero]`. Use `congr 1`. Use function extensionality and compare the values at `k' j`. Use `fin_cases k'`.
-
-Conclude with `eval_lifted_coordinate j`. Conclude with `lift_eval_zero j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem group_law_jacobian_eq (G : FGLaw C dd) (k i : Fin dd) :
     J2 G k i = ev (n := 2) ![P0, 0] (pderiv C ((1 : Fin 2), i) (G.F k)) := by
@@ -67,9 +65,9 @@ theorem group_law_jacobian_eq (G : FGLaw C dd) (k i : Fin dd) :
   · exact lift_eval_zero j
 
 /- English proof (translation)
-Establish `h` using `congrArg (ev ![(P0 : Pt C 2 dd)]) (formalGroupLaw_ev_x_zero G k)`. Rewrite `h` using `[lift_eval_two_points constant_zero_first_then_zero, ev_X (z0_1 _ z0P0) 0 k]`. Rewrite using `[show (P0 : Pt C 2 dd) k = (![(P0 : Pt C 2 dd)] : Fin 1 → Pt C 2 dd) 0 k from rfl, ← h]`. Use `congr 1`. Use function extensionality and compare the values at `k' j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `fin_cases k'`. Conclude with `(eval_lifted_coordinate j).symm`. Conclude with `(lift_eval_zero j).symm`.
+A detailed English derivation is pending.
 -/
 theorem group_law_zero_two_points (G : FGLaw C dd) (k : Fin dd) : ev (n := 2) ![P0, 0] (G.F k) = (P0 : Pt C 2 dd) k := by
   have h := congrArg (ev ![(P0 : Pt C 2 dd)]) (formalGroupLaw_ev_x_zero G k)
@@ -85,11 +83,9 @@ def logJacobianTwoPoints {V : VF C} {O : Type} [CommRing O] [StarRing O] (Y : FB
   ev ![(P0 : Pt C 2 dd)] (Jac Y.lg k i)
 
 /- English proof (translation)
-Establish `h1 : JF Y.B.G * Jac Y.lg = 1` using `mul_eq_one_comm.1 (JL_JF Y)`. Establish `h` using `congrFun (congrFun h1 k) i`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `h2` using `congrArg (ev ![(P0 : Pt C 2 dd)]) h`. Rewrite `h2` using `[ev_sum (z0_1 _ z0P0)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [ev_mul (z0_1 _ z0P0)] at h2`. Unfold `J2 logJacobianTwoPoints`. Rewrite using `[h2]`. Use `split_ifs`. Conclude with `ev_one _`.
-
-Conclude with `ev_zero (z0_1 _ z0P0)`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jacobian_mul_log_jacobian {V : VF C} {O : Type} [CommRing O] [StarRing O] (Y : FBChart C V O dd) (k i : Fin dd) :
     ∑ m, J2 Y.B.G k m * logJacobianTwoPoints Y m i = if k = i then 1 else 0 := by
@@ -117,7 +113,7 @@ def Pm (Y : FBChart C V O dd) (m : Fin dd) : PS C 2 dd :=
   ev (n := 2) ![P0, 0, P1] (pderiv C ((1 : Fin 3), m) Y.B.ph1)
 
 /- English proof (translation)
-Introduce `k j` and use `by fin_cases k · exact hP j · exact z0_pt 2 j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem constant_zero_point_third (P : Pt C 3 dd) (hP : ∀ j, constantCoeff (P j) = 0) :
     Z0 (![P, pt C (n := 3) dd 2] : Fin 2 → Pt C 3 dd) := fun k j => by
@@ -126,7 +122,7 @@ theorem constant_zero_point_third (P : Pt C 3 dd) (hP : ∀ j, constantCoeff (P 
   · exact z0_pt 2 j
 
 /- English proof (translation)
-Introduce `k j` and use `by fin_cases k · exact z0P0 j · exact map_zero _ · exact z0P1 j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem constant_zero_lift_triple : Z0 (![P0, 0, P1] : Fin 3 → Pt C 2 dd) := fun k j => by
   fin_cases k
@@ -135,14 +131,14 @@ theorem constant_zero_lift_triple : Z0 (![P0, 0, P1] : Fin 3 → Pt C 2 dd) := f
   · exact z0P1 j
 
 /- English proof (translation)
-Rewrite using `[pderiv_pt, if_neg (fun h' => h (congrArg Prod.fst h'))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_pt_ne {n : ℕ} (q : Fin n × Fin dd) (k : Fin n) (j : Fin dd) (h : k ≠ q.1) :
     pderiv C q (pt C dd k j) = 0 := by
   rw [pderiv_pt, if_neg (fun h' => h (congrArg Prod.fst h'))]
 
 /- English proof (translation)
-Rewrite using `[pderiv_pt]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun h' => h (Prod.mk.inj h').2), if_neg h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_pt_same {n : ℕ} (k : Fin n) (j i : Fin dd) :
     pderiv C (k, i) (pt C dd k j) = if j = i then 1 else 0 := by
@@ -152,39 +148,33 @@ theorem pderiv_pt_same {n : ℕ} (k : Fin n) (j i : Fin dd) :
   · rw [if_neg (fun h' => h (Prod.mk.inj h').2), if_neg h]
 
 /- English proof (translation)
-Establish `hph : Y.B.ph1 = FB.expS C (ev (n` using `3) ![pt C dd 0, pt C dd 2] Y.h + ev (n := 3) ![pt C dd 1, pt C dd 2] Y.h - ev (n := 3) ![addOf Y.B.G.F (pt C dd 0) (pt C dd 1), pt C dd 2] Y.h) := by`. Use `Y.gauge.ph1` as an intermediate fact. Rewrite `this` using `[toK_self, FK_self]`. Then use the resulting hypothesis. Establish `hA : Z0 (![pt C (n` using `3) dd 0, pt C dd 2] : Fin 2 → Pt C 3 dd) := z0_pp 0 2`. Establish `hB : Z0 (![pt C (n` using `3) dd 1, pt C dd 2] : Fin 2 → Pt C 3 dd) := z0_pp 1 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPP : Z0 (![pt C (n` using `3) dd 0, pt C dd 1] : Fin 2 → Pt C 3 dd) := z0_pp 0 1`. Establish `hadd : ∀ j, constantCoeff (addOf Y.B.G.F (pt C (n` using `3) dd 0) (pt C dd 1) j) = 0 := fun j => const_ev hPP (Y.B.G.const j)`. Establish `hC : Z0 (![addOf Y.B.G.F (pt C (n` using `3) dd 0) (pt C dd 1), pt C dd 2] : Fin 2 → Pt C 3 dd) := constant_zero_point_third _ hadd`. Establish `hE0 : constantCoeff (ev (n` using `3) ![pt C dd 0, pt C dd 2] Y.h + ev (n := 3) ![pt C dd 1, pt C dd 2] Y.h - ev (n := 3) ![addOf Y.B.G.F (pt C dd 0) (pt C dd 1), pt C dd 2] Y.h) = 0 := by`. Rewrite using `[map_sub, map_add, const_ev hA (h_const Y), const_ev hB (h_const Y), const_ev hC (h_const Y)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `dA : pderiv C ((1 : Fin 3), m) (ev (n` using `3) ![pt C dd 0, pt C dd 2] Y.h) = 0 := by`. Rewrite using `[pderiv_eval_pair hA]`. Use `(congrArg₂ (· + ·) (Finset.sum_eq_zero fun j _ => ?_) (Finset.sum_eq_zero fun j _ => ?_)).trans (add_zero 0)` and prove the remaining obligations. Use `show _ * pderiv C _ (pt C (n := 3) dd 0 j) = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pderiv_pt_ne _ _ _ (by decide : (0 : Fin 3) ≠ 1), mul_zero]`. Use `show _ * pderiv C _ (pt C (n := 3) dd 2 j) = 0`. Rewrite using `[pderiv_pt_ne _ _ _ (by decide : (2 : Fin 3) ≠ 1), mul_zero]`. Establish `dB : pderiv C ((1 : Fin 3), m) (ev (n` using `3) ![pt C dd 1, pt C dd 2] Y.h) = ev (n := 3) ![pt C dd 1, pt C dd 2] (gk Y m) := by`. Rewrite using `[pderiv_eval_pair hB]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `(congrArg₂ (· + ·) ?_ (Finset.sum_eq_zero fun j _ => ?_)).trans (add_zero _)` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single m (fun j _ hj => by show _ * pderiv C _ (pt C (n := 3) dd 1 j) = 0`. Rewrite using `[pderiv_pt_same, if_neg hj, mul_zero]) (fun h => absurd (Finset.mem_univ m) h)]`. Use `show _ * pderiv C _ (pt C (n := 3) dd 1 m) = _`. Rewrite using `[pderiv_pt_same, if_pos rfl, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `show _ * pderiv C _ (pt C (n := 3) dd 2 j) = 0`. Rewrite using `[pderiv_pt_ne _ _ _ (by decide : (2 : Fin 3) ≠ 1), mul_zero]`. Establish `dQ : ∀ k, pderiv C ((1 : Fin 3), m) (addOf Y.B.G.F (pt C (n` using `3) dd 0) (pt C dd 1) k) = ev (n := 3) ![pt C dd 0, pt C dd 1] (pderiv C ((1 : Fin 2), m) (Y.B.G.F k)) := by`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `show pderiv C ((1 : Fin 3), m) (ev (n := 3) ![pt C dd 0, pt C dd 1] (Y.B.G.F k)) = _`. Rewrite using `[pderiv_eval_pair hPP]`. Use `(congrArg₂ (· + ·) (Finset.sum_eq_zero fun j _ => ?_) ?_).trans (zero_add _)` and prove the remaining obligations. Use `show _ * pderiv C _ (pt C (n := 3) dd 0 j) = 0`. Rewrite using `[pderiv_pt_ne _ _ _ (by decide : (0 : Fin 3) ≠ 1), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_eq_single m (fun j _ hj => by show _ * pderiv C _ (pt C (n := 3) dd 1 j) = 0`. Rewrite using `[pderiv_pt_same, if_neg hj, mul_zero]) (fun h => absurd (Finset.mem_univ m) h)]`. Use `show _ * pderiv C _ (pt C (n := 3) dd 1 m) = _`. Rewrite using `[pderiv_pt_same, if_pos rfl, mul_one]`. Establish `dC : pderiv C ((1 : Fin 3), m) (ev (n` using `3) ![addOf Y.B.G.F (pt C dd 0) (pt C dd 1), pt C dd 2] Y.h) = ∑ k, ev (n := 3) ![addOf Y.B.G.F (pt C dd 0) (pt C dd 1), pt C dd 2] (gk Y k) * ev (n := 3) ![pt C dd 0, pt C dd 1] (pderiv C ((1 : Fin 2), m) (Y.B.G.F k)) := by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pderiv_eval_pair hC]`. Use `(congrArg₂ (· + ·) (Finset.sum_congr rfl fun k _ => ?_) (Finset.sum_eq_zero fun j _ => ?_)).trans (add_zero _)` and prove the remaining obligations. Use `show _ * pderiv C _ (addOf Y.B.G.F (pt C (n := 3) dd 0) (pt C dd 1) k) = _`. Rewrite using `[dQ k]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `show _ * pderiv C _ (pt C (n := 3) dd 2 j) = 0`. Rewrite using `[pderiv_pt_ne _ _ _ (by decide : (2 : Fin 3) ≠ 1), mul_zero]`. Establish `hS` using `constant_zero_lift_triple (C := C) (dd := dd)`. Establish `sB : ∀ f : PS C 2 dd, ev (n` using `2) ![P0, 0, P1] (ev (n := 3) ![pt C dd 1, pt C dd 2] f) = ev (n := 2) ![0, P1] f := by`. Introduce `f`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[ev_ev hB hS]`. Use `congr 1`. Use function extensionality and compare the values at `k j`. Use `fin_cases k`. Conclude with `ev_X hS 1 j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ev_X hS 2 j`. Establish `sP : ∀ f : PS C 2 dd, ev (n` using `2) ![P0, 0, P1] (ev (n := 3) ![pt C dd 0, pt C dd 1] f) = ev (n := 2) ![P0, 0] f := by`. Introduce `f`. Rewrite using `[ev_ev hPP hS]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `k j`. Use `fin_cases k`. Conclude with `ev_X hS 0 j`. Conclude with `ev_X hS 1 j`. Establish `sC : ∀ f : PS C 2 dd, ev (n` using `2) ![P0, 0, P1] (ev (n := 3) ![addOf Y.B.G.F (pt C dd 0) (pt C dd 1), pt C dd 2] f) = f := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `f`. Rewrite using `[ev_ev hC hS]`. Establish `e : (fun k j => ev (n` using `2) ![P0, 0, P1] ((![addOf Y.B.G.F (pt C (n := 3) dd 0) (pt C dd 1), pt C dd 2] : Fin 2 → Pt C 3 dd) k j)) = ![P0, P1] := by`. Use function extensionality and compare the values at `k j`. Use `fin_cases k`.
-
-Use `show ev (n := 2) ![P0, 0, P1] (ev (n := 3) ![pt C dd 0, pt C dd 1] (Y.B.G.F j)) = (P0 : Pt C 2 dd) j`. Rewrite using `[sP, group_law_zero_two_points]`. Conclude with `ev_X hS 2 j`. Rewrite using `[e]`. Conclude with `PartialDerivEval.eval_points_two f`.
-
-Establish `hPm : Pm Y m = ev (n` using `2) ![0, P1] (gk Y m) - ∑ k, gk Y k * J2 Y.B.G k m := by`. Unfold `Pm`. Rewrite using `[hph, pderiv_expS hE0, ← hph, ev_mul hS, Y.B.cocycleLeft_zero_snd, one_mul, map_sub, map_add, dA, dB, dC, zero_add, ev_sub hS, sB, ev_sum hS]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[ev_mul hS, sC, sP, group_law_jacobian_eq]`. Rewrite using `[hPm]`. Unfold `Dh Az`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem dh_eq (Y : FBChart C V O dd) (m : Fin dd) : Dh Y m = Az Y m - Pm Y m := by
   have hph : Y.B.ph1 = FB.expS C (ev (n := 3) ![pt C dd 0, pt C dd 2] Y.h +
@@ -295,14 +285,12 @@ theorem dh_eq (Y : FBChart C V O dd) (m : Fin dd) : Dh Y m = Az Y m - Pm Y m := 
 abbrev evl (Y : FBChart C V O dd) (n : ℕ) (f : PS C 2 dd) : PS C 2 dd := ev (n := 2) ![mm2 Y.B.G n, P1] f
 
 /- English proof (translation)
-The claim follows from `constant_zero_double_multiplication_pair Y n`.
+A detailed English derivation is pending.
 -/
 theorem constant_zero_double_multiplication (Y : FBChart C V O dd) (n : ℕ) : Z0 (![mm2 Y.B.G n, P1] : Fin 2 → Pt C 2 dd) := constant_zero_double_multiplication_pair Y n
 
 /- English proof (translation)
-Unfold `evl J2`. Rewrite using `[ev_ev (z0_1 _ z0P0) (constant_zero_double_multiplication Y n)]`. Use `congr 1`. Use function extensionality and compare the values at `k' j`. Use `fin_cases k'`.
-
-Conclude with `ev_X (constant_zero_double_multiplication Y n) 0 j`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem eval_multiplication_jacobian (Y : FBChart C V O dd) (n : ℕ) (k m : Fin dd) :
     evl Y n (J2 Y.B.G k m) = ev ![mm2 Y.B.G n] (JF Y.B.G k m) := by
@@ -314,7 +302,7 @@ theorem eval_multiplication_jacobian (Y : FBChart C V O dd) (n : ℕ) (k m : Fin
   exact ev_X (constant_zero_double_multiplication Y n) 0 j
 
 /- English proof (translation)
-Rewrite using `[ev_ev (z0_1 _ (multiplication_constantCoeff_zero Y.B.G n)) (z0_1 _ z0P0)]`. Use `congr 1`. Use function extensionality and compare the values at `k' j`. Use `fin_cases k'`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lift_eval_multiplication (Y : FBChart C V O dd) (n : ℕ) (f : PS C 1 dd) :
     ev ![(P0 : Pt C 2 dd)] (ev ![mulL Y.B.G.F n] f) = ev ![mm2 Y.B.G n] f := by
@@ -325,9 +313,9 @@ theorem lift_eval_multiplication (Y : FBChart C V O dd) (n : ℕ) (f : PS C 1 dd
   rfl
 
 /- English proof (translation)
-Unfold `evl Az`. Establish `h0 : Z0 (![(0 : Pt C 2 dd), P1] : Fin 2 → Pt C 2 dd)` using `fun k j => by fin_cases k`. Conclude with `map_zero _`. Conclude with `z0P1 j`. Rewrite using `[ev_ev h0 (constant_zero_double_multiplication Y n)]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `k' j`. Use `fin_cases k'`. Conclude with `ev_zero (constant_zero_double_multiplication Y n)`. Conclude with `ev_X (constant_zero_double_multiplication Y n) 1 j`.
+A detailed English derivation is pending.
 -/
 theorem evl_Az (Y : FBChart C V O dd) (n : ℕ) (m : Fin dd) : evl Y n (Az Y m) = Az Y m := by
   unfold evl Az
@@ -343,9 +331,7 @@ theorem evl_Az (Y : FBChart C V O dd) (n : ℕ) (m : Fin dd) : evl Y n (Az Y m) 
   · exact ev_X (constant_zero_double_multiplication Y n) 1 j
 
 /- English proof (translation)
-Use `show pderiv C ((0 : Fin 2), i) (ev ![(P0 : Pt C 2 dd)] (mulL Y.B.G.F n k)) = _`. Rewrite using `[pderiv_eval_single (P := (P0 : Pt C 2 dd)) z0P0, Finset.sum_eq_single i (fun j _ hj => by show _ * pderiv C _ (pt C (n := 2) dd 0 j) = 0`. Rewrite using `[pderiv_pt_same, if_neg hj, mul_zero]) (fun h => absurd (Finset.mem_univ i) h)]`. Use `show _ * pderiv C _ (pt C (n := 2) dd 0 i) = _`. Rewrite using `[pderiv_pt_same, if_pos rfl, mul_one]`.
-
-Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pderiv_double_multiplication_jacobian (Y : FBChart C V O dd) (n : ℕ) (k i : Fin dd) :
     pderiv C ((0 : Fin 2), i) (mm2 Y.B.G n k) = ev ![(P0 : Pt C 2 dd)] (Jac (mulL Y.B.G.F n) k i) := by
@@ -358,9 +344,9 @@ theorem pderiv_double_multiplication_jacobian (Y : FBChart C V O dd) (n : ℕ) (
   rfl
 
 /- English proof (translation)
-Rewrite using `[pderiv_double_multiplication_jacobian, jac_l, Matrix.smul_apply, Matrix.mul_apply, ev_eq_alg (z0_1 _ z0P0), map_nsmul, ← ev_eq_alg (z0_1 _ z0P0), ev_sum (z0_1 _ z0P0), nsmul_eq_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[ev_mul (z0_1 _ z0P0), eval_multiplication_jacobian]`. Unfold `MulLFrob.cmp logJacobianTwoPoints`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[lift_eval_multiplication]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_double_multiplication (Y : FBChart C V O dd) (n : ℕ) (k i : Fin dd) :
     pderiv C ((0 : Fin 2), i) (mm2 Y.B.G n k) = (n : PS C 2 dd) * ∑ m, evl Y n (J2 Y.B.G k m) * logJacobianTwoPoints Y m i := by
@@ -373,7 +359,7 @@ theorem pderiv_double_multiplication (Y : FBChart C V O dd) (n : ℕ) (k i : Fin
   rw [lift_eval_multiplication]
 
 /- English proof (translation)
-Unfold `Dh`. Simplify using `only [Finset.sum_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.mul_sum, jacobian_mul_log_jacobian]`. Rewrite using `[Finset.sum_eq_single i (fun k _ hk => by rw [if_neg hk, mul_zero]) (fun h => absurd (Finset.mem_univ i) h), if_pos rfl, mul_one]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gk_eq (Y : FBChart C V O dd) (i : Fin dd) : gk Y i = ∑ m, Dh Y m * logJacobianTwoPoints Y m i := by
   unfold Dh
@@ -384,17 +370,17 @@ theorem gk_eq (Y : FBChart C V O dd) (i : Fin dd) : gk Y i = ∑ m, Dh Y m * log
     if_pos rfl, mul_one]
 
 /- English proof (translation)
-Establish `h1 : pderiv C ((0 : Fin 2), i) (evl Y V.l Y.h) = (V.l : PS C 2 dd) * ∑ m, evl Y V.l (Dh Y m) * logJacobianTwoPoints Y m i`. Unfold `evl`. Rewrite using `[pderiv_eval_pair (constant_zero_double_multiplication Y V.l)]`. Rewrite using `[(Finset.sum_eq_zero fun k _ => by show _ * pderiv C _ (pt C (n := 2) dd 1 k) = 0`. Rewrite using `[pderiv_pt_ne _ _ _ (by decide : (1 : Fin 2) ≠ 0), mul_zero] :`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `∑ k, ev (n := 2) ![mm2 Y.B.G V.l, P1] (pderiv C ((1 : Fin 2), k) Y.h) * pderiv C ((0 : Fin 2), i) ((![mm2 Y.B.G V.l, P1] : Fin 2 → Pt C 2 dd) 1 k) = 0), add_zero]`. Establish `e : ∀ k, ev (n` using `2) ![mm2 Y.B.G V.l, P1] (pderiv C ((0 : Fin 2), k) Y.h) * pderiv C ((0 : Fin 2), i) ((![mm2 Y.B.G V.l, P1] : Fin 2 → Pt C 2 dd) 0 k) = (V.l : PS C 2 dd) * ∑ m, evl Y V.l (gk Y k) * evl Y V.l (J2 Y.B.G k m) * logJacobianTwoPoints Y m i := by`. Introduce `k`. Use `show _ * pderiv C ((0 : Fin 2), i) (mm2 Y.B.G V.l k) = _`. Rewrite using `[pderiv_double_multiplication, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Unfold `gk evl`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun k _ => e k, ← Finset.mul_sum, Finset.sum_comm]`. Use `congr 1`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Unfold `Dh evl`. Rewrite using `[ev_sum (constant_zero_double_multiplication Y V.l), Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[ev_mul (constant_zero_double_multiplication Y V.l)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : pderiv C ((0 : Fin 2), i) ((V.l : C) • Y.h) = (V.l : PS C 2 dd) * ∑ m, Dh Y m * logJacobianTwoPoints Y m i`. Rewrite using `[Nat.cast_smul_eq_nsmul, map_nsmul, nsmul_eq_mul, ← gk_eq]`. Both sides reduce to the same expression. Rewrite using `[map_sub, h1, h2, ← mul_sub, ← Finset.sum_sub_distrib]`. Use `congr 1`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_mul, dh_eq, evl, ev_sub (constant_zero_double_multiplication Y V.l), ← evl, ← evl, evl_Az]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dE (Y : FBChart C V O dd) (i : Fin dd) :
     pderiv C ((0 : Fin 2), i) (evl Y V.l Y.h - (V.l : C) • Y.h) =
@@ -440,25 +426,19 @@ namespace Formalism.L2.FormalSeriesBounds
 open LiftedCoordinateEvaluation MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y μ hμ`. Take `⟨i, hi⟩` from `hμ`. Establish `hu : Y.u1 = FB.expS C (evl Y V.l Y.h - (V.l : C) • Y.h)` using `rfl`. Establish `hE0 : constantCoeff (evl Y V.l Y.h - (V.l : C) • Y.h) = 0`. Rewrite using `[map_sub, show (V.l : C) • Y.h = ((V.l : ℕ) : PS C 2 dd) * Y.h by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_smul_eq_nsmul, nsmul_eq_mul], map_mul, PartialDerivEval.h_const, mul_zero, sub_zero]`. Conclude with `FirstUnitSeriesIntegrality.height_multiple_constantCoeff Y V.l`. Establish `hd : pderiv C ((0 : Fin 2), i) Y.u1 = (V.l : PS C 2 dd) * (Y.u1 * ∑ m, (Pm Y m - evl Y V.l (Pm Y m)) * logJacobianTwoPoints Y m i)`. Rewrite using `[hu, PartialDerivEval.pderiv_expS hE0, dE, ← hu]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hint : IntS V (Y.u1 * ∑ m, (Pm Y m - evl Y V.l (Pm Y m)) * logJacobianTwoPoints Y m i)`. Use `PartialDerivEval.intS_mul (first_unit_series_integral C V O dd Y) (PartialDerivEval.intS_sum _ fun m _ => PartialDerivEval.intS_mul ?_ ?_)` and prove the remaining obligations. Establish `hP : IntS V (Pm Y m)`. Use `PartialDerivEval.intS_ev constant_zero_lift_triple (fun k j => ?_) (PartialDerivEval.intS_pderiv Y.intPh1 _)` and prove the remaining obligations. Use `fin_cases k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `PartialDerivEval.intS_X _`. Conclude with `PartialDerivEval.intS_zero`. Conclude with `PartialDerivEval.intS_X _`. Establish `hP' : IntS V (evl Y V.l (Pm Y m))`. Use `PartialDerivEval.intS_ev (constant_zero_double_multiplication Y V.l) (fun k j => ?_) hP` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `fin_cases k`. Conclude with `FirstUnitSeriesIntegrality.double_multiplication_integral Y.B.G Y.intF V.l j`. Conclude with `PartialDerivEval.intS_X _`. Rewrite using `[sub_eq_add_neg]`. Conclude with `PartialDerivEval.intS_add hP (PartialDerivEval.intS_neg hP')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `PartialDerivEval.intS_ev (PartialDerivEval.z0_1 _ z0P0) (fun k j => ?_) (MulLFrob.JL_int Y m i) fin_cases k` and prove the remaining obligations. Conclude with `PartialDerivEval.intS_X _`. Establish `hmms : MaximalIdealCongruence.MMS V (pderiv C ((0 : Fin 2), i) Y.u1)`. Rewrite using `[hd]`. Conclude with `MaximalIdealCongruence.mms_l_mul hint`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hm0 : μ ((0 : Fin 2), i) ≠ 0` using `fun h => hi (h ▸ dvd_zero _)`. Use `set ν := μ - Finsupp.single ((0 : Fin 2), i) 1 with hν`. Establish `hνμ : ν + Finsupp.single ((0 : Fin 2), i) 1 = μ`. Rewrite using `[hν]`. Use `tsub_add_cancel_of_le ?_` and prove the remaining obligations.
-
-Rewrite using `[Finsupp.single_le_iff]`. Use linear arithmetic over natural numbers and integers. Establish `hνi : ν ((0 : Fin 2), i) + 1 = μ ((0 : Fin 2), i)`. Rewrite using `[← hνμ, Finsupp.add_apply, Finsupp.single_eq_same]`. Establish `hc` using `hmms ν`.
-
-Rewrite `hc` using `[coeff_pderiv, hνμ]`. Establish `hmC : ((ν ((0 : Fin 2), i) : C) + 1) = ((μ ((0 : Fin 2), i) : ℕ) : C)`. Rewrite using `[← hνi]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite `hc` using `[hmC, mul_comm]`. Conclude with `MaximalIdealCongruence.mm_of_natCast_mul hi (first_unit_series_integral C V O dd Y μ) hc`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem first_unit_series_frobenius : FirstUnitSeriesFrobenius := by
   intro C _ _ V O _ _ dd Y μ hμ

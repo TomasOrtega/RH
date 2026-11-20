@@ -6,17 +6,17 @@ open scoped ENNReal NNReal MatrixGroups Kronecker
 namespace GlobalTheory.CompanionTheory.SW.ThW
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7⟩` from `h`. Establish `hb : ∀ w, (B.map (ρ w)).det ≠ 0`. Introduce `w`. Establish `e : (B.map (ρ w)).det = ρ w B.det` using `((ρ w).map_det B).symm`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_ne_zero _).2 h4`. Establish `hd : ∀ w, (gi w).det ≠ 0`. Introduce `w h0`. Establish `e` using `congrArg Matrix.det (hg w)`. Rewrite `e` using `[Matrix.det_mul, Matrix.det_mul, h0, mul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hb w e.symm`. Use `⟨h1, h2, h3, h4, h5, ?_, ?_⟩` and prove the remaining obligations. Introduce `w`. Establish `hinj : Function.Injective (gi w).mulVec` using `Matrix.mulVec_injective_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 (hd w)))`. Use `(h6 w).conjTranspose_mul_mul_same hinj` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `this` using `[Matrix.conjTranspose_eq_transpose_of_trivial]`. Introduce `w set g := gi w with hgdef set b := B.map (ρ w) with hbdef`. Establish `hbu : IsUnit b.det` using `isUnit_iff_ne_zero.2 (hb w)`. Establish `hgw : gᵀ * b * g = b` using `hg w`. Establish `e1 : (b⁻¹ * gᵀ * b) * g = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc b⁻¹ gᵀ b, Matrix.mul_assoc b⁻¹, hgw, Matrix.nonsing_inv_mul _ hbu]`. Establish `e2 : g * (b⁻¹ * gᵀ * b) = 1` using `mul_eq_one_comm.1 e1`. Establish `e3 : (g * b⁻¹ * gᵀ) * b = 1`. Rewrite using `[← e2]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `e4 : g * b⁻¹ * gᵀ = b⁻¹` using `(Matrix.inv_eq_left_inv e3).symm`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem qsetup_conj_majorant (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι] [DecidableEq ι]
     (M : ℕ) (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ)

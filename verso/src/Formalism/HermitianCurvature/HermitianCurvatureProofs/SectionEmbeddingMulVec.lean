@@ -12,13 +12,11 @@ noncomputable section
 open Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Qr Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-Establish `hB' : IsFrameOf k r [z'] Bs` using `Qx8.frame_sub h (by simp)`. Establish `l'` using `QrD.frame_lie hB' a b`. Establish `l` using `QrD.frame_lie hgB a b`. Use `show A (QrD.ecOp π' _ v) = QrD.ecOp π _ (A v)`. Rewrite using `[← QrD.ecRep_eq hR'.1 hR'.2 l'.1 l'.2, ← QrD.ecRep_eq hR.1 hR.2 l.1 l.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hU` using `Qx8.frame_InU h (z := z') (by simp) a b`. Establish `hky` using `Qx8.hpart_kill Bs a b (Qx8.frame_orth h (v := y) (by simp))`. Establish `hc` using `Qx8.hpart_conj Bs a b hg`. Use `show A (dRep π' _ v + Complex.I • dRep π' _ v) = dRep π _ (A v) + Complex.I • dRep π _ (A v)`. Rewrite using `[map_add, map_smul, hc.1, hc.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Qx8.dRep_intertwine A (Qx8.rep_hasDeriv hR'.1 hR'.2 hU.1 v) fun t => ?_` and prove the remaining obligations. Rewrite using `[Qx8.exp_conj_uh hg]`. Conclude with `hint _ (hU.1 t) (Qx8.exp_fix hky.1 t) v`. Use `congr 1`.
-
-Use `Qx8.dRep_intertwine A (Qx8.rep_hasDeriv hR'.1 hR'.2 hU.2 v) fun t => ?_` and prove the remaining obligations. Rewrite using `[Qx8.exp_conj_uh hg]`. Conclude with `hint _ (hU.2 t) (Qx8.exp_fix hky.2 t) v`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eb_intertwine {k r m : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] [FiniteDimensional ℂ Wp]
     [NormedAddCommGroup Wq] [NormedSpace ℂ Wq] [FiniteDimensional ℂ Wq]
@@ -47,11 +45,11 @@ theorem eb_intertwine {k r m : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [Norm
     exact hint _ (hU.2 t) (Qx8.exp_fix hky.2 t) v
 
 /- English proof (translation)
-Take `⟨hnt, hrep, hcont, -, hirr, hcap⟩` from `hty`. Establish `hR : IsRepW (n + 1) r z π` using `⟨hrep, hcont⟩`. Establish `hB₁` using `FrameExtension.frame_snoc hB₀ he hez hee`. Use `set Bs₁ : Fin (n + 1) → Fin (2 * r + (n + 1) + 1) → ℂ := Fin.snoc (α := fun _ => Fin (2 * r + (n + 1) + 1) → ℂ) Bs₀ e with hBs₁`. Take `⟨hgl, hq⟩` from `frame_general_linear W (n + 1) r (n + 1) z π Bs₁ hR hB₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hgl, ⟨hnt, fun S hS => hirr S (lie_stabilizer W (n + 1) r z π Bs₁ hz hT hR hB₁ S hS)⟩, hL, ?_⟩` and prove the remaining obligations. Introduce `w v`. Rewrite using `[← hq w v, hcap Bs₁ hB₁ w v, FrameExtension.prod_Icc_fin]`. Use `congr 1`. Unfold `cpol shf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[← hu j]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hyp_snoc {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [FiniteDimensional ℂ W] {n r : ℕ}
     {z e : Fin (2 * r + (n + 1) + 1) → ℂ} {π : Mx (n + 1) r → (W →L[ℂ] W)} {u : ℕ → ℝ} {β : ℂ}
@@ -77,21 +75,19 @@ theorem hyp_snoc {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [FiniteDi
   ring
 
 /- English proof (translation)
-Establish `hmem : ∀ j : Fin n, (j : ℕ) + 1 ∈ Finset.Icc 1 ((⟨n + 1, r, T, T', u, u'⟩ : M.Par).k - 1)` using `fun j => Finset.mem_Icc.2 ⟨by omega, by show (j : ℕ) + 1 ≤ n + 1 - 1; omega⟩`. Establish `hI` using `types_interlace _ hOK ρ`. Establish `hI' : ∀ j : Fin n, M.rho ⟨n + 1, r, T, T', u, u'⟩ ρ ((j : ℕ) + 1) + 1 / 2 ≤ u ((j : ℕ) + 1) ∧ M.rho ⟨n + 1, r, T, T', u, u'⟩ ρ ((j : ℕ) + 1) + 1 / 2 ≤ u' ((j : ℕ) + 1) ∧ u ((j : ℕ) + 1 + 1) + 1 / 2 ≤ M.rho ⟨n + 1, r, T, T', u, u'⟩ ρ ((j : ℕ) + 1) ∧ u' ((j : ℕ) + 1 + 1) + 1 / 2 ≤ …` using `fun j => hI _ (hmem j)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hL j.succ`. Establish `h2` using `hL j.castSucc`. Simplify using `only [Fin.val_succ, Fin.val_castSucc] at h1 h2`. Establish `h3` using `hI' j`. Establish `h4` using `hlab j`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Establish `: (L j.succ : ℝ) < (lab j : ℝ)` using `by linarith`. Conclude with `this` after adjusting the coercions. Establish `: (lab j : ℝ) ≤ (L j.castSucc : ℝ)` using `by linarith`. Conclude with `this` after adjusting the coercions.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j`. Establish `h1` using `hL' j.succ`. Establish `h2` using `hL' j.castSucc`. Simplify using `only [Fin.val_succ, Fin.val_castSucc] at h1 h2`. Establish `h3` using `hI' j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `h4` using `hlab j`. Prove the components needed by the constructor for the conclusion. Establish `: (L' j.succ : ℝ) < (lab j : ℝ)` using `by linarith`. Conclude with `this` after adjusting the coercions. Establish `: (lab j : ℝ) ≤ (L' j.castSucc : ℝ)` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Introduce `Y`. Unfold `M.xC cpol`. Rewrite using `[show (⟨n + 1, r, T, T', u, u'⟩ : M.Par).k - 1 = n from rfl, ProductIntervalFrames.prod_Icc_one]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Establish `h4 : (lab j : ℂ) = (M.rho ⟨n + 1, r, T, T', u, u'⟩ ρ ((j : ℕ) + 1) : ℂ) - (u 1 : ℂ) + 1 / 2`. Use `congrArg (fun x : ℝ => (x : ℂ)) (hlab j)` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Simplify using `only [shf]`.
-
-Rewrite using `[h4]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem labels2 {n r : ℕ} {T T' : ℝ} {u u' : ℕ → ℝ} (hOK : (⟨n + 1, r, T, T', u, u'⟩ : M.Par).OK)
     (ρ : M.Ty ⟨n + 1, r, T, T', u, u'⟩) (L L' : Fin (n + 1) → ℤ)
@@ -148,11 +144,11 @@ section io
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use `set ν := SSn.nu0' k r z z' μsec ζ with hν`. Set `f : (Fin (2 * r + k + 1) → ℂ) →ₗ[ℂ] (Fin (2 * r + k + 1) → ℂ)` to `{ toFun := fun v => NF.muZ k r μsec ζ *ᵥ (SSn.prWv k r z' v - herm (Hpk k r) (SSn.prWv k r z' v) ν • ν) map_add' := fun x y => by`. Rewrite using `[← Matrix.mulVec_add, TF.prWv_add, DU.hadd_l, add_smul]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `map_smul' := fun c x => by`. Rewrite using `[TF.prWv_smul, DU.hsmul_l, RingHom.id_apply, ← Matrix.mulVec_smul, smul_sub, smul_smul] }`. Establish `e : SSn.io0 k r z z' μsec ζ = LinearMap.toMatrix' f`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix'_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e, ← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem section_embedding_mul_vec (z z' : Fin (2 * r + k + 1) → ℂ) (μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (ζ : ℂ)
     (v : Fin (2 * r + k + 1) → ℂ) :

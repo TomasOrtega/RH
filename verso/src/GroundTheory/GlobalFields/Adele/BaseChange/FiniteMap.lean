@@ -29,7 +29,7 @@ instance liesOver_below (w : HeightOneSpectrum (𝓞 L)) :
 omit [NumberField K] [NumberField L] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl infer_instance`. Introduce `h`. Conclude with `HeightOneSpectrum.ext h.over.symm`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem below_eq_iff (w : HeightOneSpectrum (𝓞 L)) (v : HeightOneSpectrum (𝓞 K)) :
     below K w = v ↔ w.asIdeal.LiesOver v.asIdeal := by
@@ -40,7 +40,7 @@ theorem below_eq_iff (w : HeightOneSpectrum (𝓞 L)) (v : HeightOneSpectrum (�
     exact HeightOneSpectrum.ext h.over.symm
 
 /- English proof (translation)
-The claim follows from `Filter.Tendsto.cofinite_of_finite_preimage_singleton fun v ↦ ((Set.finite_range (Subtype.val : PlacesOver L v → HeightOneSpectrum (𝓞 L))).subset fun w hw ↦ ⟨⟨w, (below_eq_iff w v).1 hw⟩, rfl⟩).to_subtype`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_below : Tendsto (below K (L := L)) cofinite cofinite :=
   Filter.Tendsto.cofinite_of_finite_preimage_singleton fun v ↦
@@ -48,7 +48,7 @@ theorem tendsto_below : Tendsto (below K (L := L)) cofinite cofinite :=
       fun w hw ↦ ⟨⟨w, (below_eq_iff w v).1 hw⟩, rfl⟩).to_subtype
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem completionMap_congr {v v' : HeightOneSpectrum (𝓞 K)} (h : v = v')
     (w : HeightOneSpectrum (𝓞 L)) [w.asIdeal.LiesOver v.asIdeal] [w.asIdeal.LiesOver v'.asIdeal]
@@ -58,7 +58,7 @@ theorem completionMap_congr {v v' : HeightOneSpectrum (𝓞 K)} (h : v = v')
   rfl
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx`, the goal using `[SetLike.mem_coe, HeightOneSpectrum.mem_adicCompletionIntegers]`. Rewrite using `[valued_completionMap]`. Conclude with `pow_le_one' hx _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapsTo_completionMap (v : HeightOneSpectrum (𝓞 K)) (w : HeightOneSpectrum (𝓞 L))
     [w.asIdeal.LiesOver v.asIdeal] :
@@ -86,14 +86,14 @@ theorem finiteAdeleMap_apply (x : FiniteAdeleRing (𝓞 K) K) (w : HeightOneSpec
   rfl
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.mapAlong_continuous _ _ (below K) tendsto_below _ (.of_forall fun w ↦ mapsTo_completionMap (below K w) w) fun w ↦ continuous_completionMap (below K w) w`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finiteAdeleMap : Continuous (finiteAdeleMap K L) :=
   RestrictedProduct.mapAlong_continuous _ _ (below K) tendsto_below _
     (.of_forall fun w ↦ mapsTo_completionMap (below K w) w) fun w ↦ continuous_completionMap (below K w) w
 
 /- English proof (translation)
-Use `FiniteAdeleRing.ext (K := L) fun w ↦ ?_` and prove the remaining obligations. Conclude with `(completionMap_algebraMap (below K w) w k).trans (IsScalarTower.algebraMap_apply K L (w.adicCompletion L) k)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finiteAdeleMap_algebraMap (k : K) :
     finiteAdeleMap K L (algebraMap K _ k) = algebraMap L _ (algebraMap K L k) := by

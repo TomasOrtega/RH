@@ -9,11 +9,11 @@ open scoped ComplexOrder
 namespace GlobalTheory.Core.Ht2.AAUnitS
 
 /- English proof (translation)
-Introduce `CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ h B P hP`. Establish `hcond` using `h.1.pr_cond`. Take `⟨⟨-, -, -, hcc, -, -, -, -, -, hPr, -⟩, -, -, -, hmu, -⟩` from `h`. Substitute `hmu` using the available equality. Take `⟨l, hl, hlP, hd⟩` from `GlobalTheory.ColNormsUnit.exists_prime hPr sel u P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Rewrite `hd` using `[hcond]`. Use `GlobalTheory.AAUnitAway.locP_AA D X s _ dl B χ cD P l hl ?_ ?_ hlP ?_` and prove the remaining obligations. Introduce `hs`. Conclude with `hd (((Nat.dvd_of_mem_primeFactors hs).mul_right _).mul_right _)`. Introduce and unpack `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hd ((dvd_mul_left _ _).mul_right _)`. Rewrite using `[hcc, Ideal.absNorm_top]`. Conclude with `Nat.coprime_one_left _`.
+A detailed English derivation is pending.
 -/
 theorem aaUnit_bad_sharp : ∀ (CY : ℝ) (D : D7) (N : NumDatum) (X : Fields) (s : Seam D X) (Pr : Primes X) (W : Wts X Pr.Word N.R) (Ch : Chars X Pr N.R.m) (G : ChGlob X N.R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ) (mu : Tup X.F X.E X.K Sg) (cst : LocCst X (rowSG Pr sel mu)) (I : ChIdx X Pr N.R (QE sel (mu : Chr X.F X.E X.K))) (dl : ℂ) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (pl : RPl N.R ≃ X.Tau) (u : Pr.Word) (δ : Code N), HypS CY N s W Ch G sel mu cst I dl χ cD pl u δ → ∀ B : Base D D.host.ccK dl, (ambOf s B χ cD).AAUnit (Sall sel mu u) := by
   intro CY D N X s Pr W Ch G sel Sg mu cst I dl χ cD pl u δ h B P hP

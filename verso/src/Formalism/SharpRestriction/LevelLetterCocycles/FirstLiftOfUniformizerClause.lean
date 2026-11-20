@@ -16,7 +16,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `first_lift_of_hypotheses W hV h9 hRN (rToolMod_dStab W hP9) hD hEx hER hK hFD hB hE hC hQ`.
+A detailed English derivation is pending.
 -/
 theorem first_lift_of_uniformizer_clause [NeZero n] (W : LocWach PD LL O v n) (hV : Formalism.MainNotions.WachCoordinates.Br.ValRing O v)
     (h9 : Formalism.MainNotions.LiftingTheory.P9π₀ W) (hRN : Formalism.MainNotions.LiftingTheory.CaseA W → Formalism.MainNotions.CrystallineLiftingInputs.RToolNum W)

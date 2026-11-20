@@ -17,9 +17,9 @@ variable {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E] [Alge
 variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `h1 : (((archEmbed h v γ : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) = (LinearMap.toMatrix v v ((γ : W ≃ₗ[E] W) : W →ₗ[E] W)).map w.embedding`. Rewrite using `[← unitaryGroupEquivMatrix_apply]`. Both sides reduce to the same expression. Establish `h2` using `LinearMap.toMatrix_mulVec_repr v v ((γ : W ≃ₗ[E] W) : W →ₗ[E] W) x`. Rewrite `h2` using `[LinearEquiv.coe_coe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1]`. Use extensionality with `i`. Simplify using `only [vecAt]`. Rewrite using `[← h2, RingHom.map_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem vecAt_unitary (h : HermitianForm F E W) (v : Basis ι E W) (γ : h.unitaryGroup) (x : W)
     (w : InfinitePlace E) :
@@ -39,7 +39,7 @@ theorem vecAt_unitary (h : HermitianForm F E W) (v : Basis ι E W) (γ : h.unita
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [invApply, vecAt_unitary, Subgroup.coe_mul, Subgroup.coe_inv, Pi.mul_apply, Pi.inv_apply, Matrix.mulVec_mulVec]`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem invApply_archEmbed_mul (h : HermitianForm F E W) (v : Basis ι E W) (γ : h.unitaryGroup)
     (g : archUnitary h v) (x : W) :
@@ -50,21 +50,19 @@ theorem invApply_archEmbed_mul (h : HermitianForm F E W) (v : Basis ι E W) (γ 
   rw [_root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `M D t ht`. Take `⟨n, C, hC⟩` from `hB M D t ht`. Set `P : Set (AddSubgroup W × (Fin n → W))` to `{p | IsDIntegral h D p.1 ∧ AddSubgroup.closure (Set.range p.2) = p.1 ∧ ∃ g : archUnitary h v, ∀ a, M.len (invApply g (vecAt v (p.2 a))) ≤ C}`. Set `gr : (Fin n → W) → Matrix (Fin n) (Fin n) E` to `fun e a b => h.toSesq (e a) (e b)`. Set `T : Set (Matrix (Fin n) (Fin n) E)` to `(fun p => gr p.2) '' P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hT : T.Finite`. Use `(Set.Finite.pi (t := fun _ : Fin n => Set.pi Set.univ fun _ : Fin n => {x : E | IsIntegral ℤ x ∧ ∀ φ : E →+* ℂ, ‖φ x‖ ≤ C * C}) fun _ => Set.Finite.pi fun _ => Embeddings.finite_of_norm_le E ℂ (C * C)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, ⟨hD, hcl, g, hg⟩, rfl⟩`. Introduce `a _ b _`. Establish `hmem : ∀ c, p.2 c ∈ p.1` using `fun c => hcl ▸ AddSubgroup.subset_closure ⟨c, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Set.mem_ofPred.2 ⟨(mem_integralClosure_iff ℤ E).1 (hD.integral _ (hmem a) _ (hmem b)), fun φ => ?_⟩` and prove the remaining obligations. Establish `h1` using `hCS M g (p.2 a) (p.2 b) (InfinitePlace.mk φ)`. Rewrite `h1` using `[InfinitePlace.norm_embedding_eq, InfinitePlace.apply]`. Conclude with `h1.trans (mul_le_mul (hg a) (hg b) (Real.sqrt_nonneg _) ((Real.sqrt_nonneg _).trans (hg a)))`. Establish `hrep : ∀ H ∈ T, ∃ p ∈ P, gr p.2 = H` using `fun H ⟨p, hp, hH⟩ => ⟨p, hp, hH⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose! rep hrepP hrepG using hrep`. Set `Kset : (Fin n → W) → Set (archUnitary h v)` to `fun e => {g | ∀ a, M.len (invApply g (vecAt v (e a))) ≤ C}`. Use `⟨(fun H => (rep H).1) '' T, hT.image _, ⋃ H ∈ T, Kset (rep H).2, hT.isCompact_biUnion fun H hH => hK M n (rep H).2 ?_ C, ?_⟩` and prove the remaining obligations. Take `⟨hD, hcl, -⟩` from `hrepP H hH`. Establish `hsp` using `hD.isLattice.span_eq_top`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hsp` using `[← hcl]`. Rewrite using `[eq_top_iff, ← hsp]`. Use `Submodule.span_le.2 fun x hx => ?_` and prove the remaining obligations. Conclude with `(AddSubgroup.closure_le (Submodule.span E (Set.range (rep H).2)).toAddSubgroup).2 Submodule.subset_span hx`. Introduce `La g hLa hmin`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, heC⟩` from `hC La g hLa hmin`. Establish `hH : gr e ∈ T` using `⟨(La, e), ⟨hLa, he, g, heC⟩, rfl⟩`. Take `⟨hD', hcl', -⟩` from `hrepP _ hH`. Establish `hgr` using `hrepG _ hH`. Take `⟨γ, hγ⟩` from `hG n e (rep (gr e)).2 (he ▸ hLa.isLattice) (hcl' ▸ hD'.isLattice) fun a b => (congrFun (congrFun hgr a) b).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨γ, ⟨gr e, hH, ?_⟩, Set.mem_biUnion hH fun a => ?_⟩` and prove the remaining obligations. Use `show (rep (gr e)).1 = γ • La`. Rewrite using `[← hcl', ← he, Subgroup.smul_def, AddSubgroup.pointwise_smul_def]`. Use `erw [AddMonoidHom.map_closure]`. Rewrite using `[← Set.range_comp]`.
-
-Conclude with `congrArg (fun s => AddSubgroup.closure (Set.range s)) (funext fun a => (hγ a).symm)`. Use `show M.len (invApply (archEmbed h v γ * g) (vecAt v ((rep (gr e)).2 a))) ≤ C`. Rewrite using `[← hγ a, invApply_archEmbed_mul]`. Conclude with `heC a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MahlerCompactness.proof (h : HermitianForm F E W) (v : Basis ι E W)
     (hB : BoundedGenerators.Statement h v) (hCS : LenCauchySchwarz.Statement h v)

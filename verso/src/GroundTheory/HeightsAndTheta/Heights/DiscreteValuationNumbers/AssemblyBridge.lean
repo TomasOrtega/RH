@@ -15,7 +15,7 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 universe u
 
 /- English proof (translation)
-The claim follows from `IntNumIsFieldIntersection.proof VocabMultiHomog.proof (VocabMultiHomogIdeal.proof VocabMultiHomog.proof) VocabDivCycle.proof (IntNumPoint.proof hBase) (IntNumRatSection.proof hCut)`.
+A detailed English derivation is pending.
 -/
 theorem IntNumIsFieldIntersection.of_intNumBase_cutRational
     (hBase : FieldNumbers.IntNumBase.Statement.{u})

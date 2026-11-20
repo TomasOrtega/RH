@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.ParOfPoint
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Establish `h` using `((D.naut.unr_iff_ine (D.naut.lpZero w)).1 (D.naut.lpZero_unr w)).2 σ hσ`. Rewrite `h` using `[D.naut.lpDim_zero, pow_zero]`. Simplify using `using h`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `cons k l ih`. Simplify using `only [List.foldr_cons, List.length_cons]`. Rewrite using `[D.naut.inePol_sum, D.naut.inePol_tw _ _ σ hσ, ih, pow_succ, mul_comm]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem inePol_foldr (D : D7) {w : PlE D.host} (x : D.naut.LP w) {α : Type} (c : α → ℝ) (l : List α)
     (σ : GE D.nd) (hσ : σ ∈ Ine (F := D.host.E) (D.nd.plOm.1 w)) :
@@ -27,11 +27,11 @@ theorem inePol_foldr (D : D7) {w : PlE D.host} (x : D.naut.LP w) {α : Type} (c 
     rw [D.naut.inePol_sum, D.naut.inePol_tw _ _ σ hσ, ih, pow_succ, mul_comm]
 
 /- English proof (translation)
-Establish `hd : D.naut.lpDim (D.naut.locG D.naut.etaTinv w) = 1` using `D.naut.locG_dim _ w`. Establish `hu : D.naut.inePol (D.naut.locG D.naut.etaTinv w) σ = X - C 1`. Establish `h` using `((D.naut.unr_iff_ine _).1 (D.naut.etaTinv_def w).1).2 σ hσ`. Rewrite `h` using `[hd, pow_one]`. Rewrite using `[h, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hpart : ∀ {a : ℕ} (π : D.naut.CG a), D.naut.inePol (D.naut.locG (D.naut.tw π D.naut.etaTinv) w) σ = D.naut.inePol (D.naut.locG π w) σ`. Introduce `a π`. Rewrite using `[D.naut.locG_tw, ((hT w (D.naut.locG π w) (D.naut.locG π w) _ _ 0 hd hd).2.2.2.2.2 σ hσ).2 1 hu, Polynomial.scaleRoots_one]`. Proceed by induction on `L with`. Consider the case `nil => rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `cons p L ih => show D.naut.inePol (D.naut.lpSum (spehLoc D.nd D.naut ⟨p.a, D.naut.tw p.π D.naut.etaTinv, p.d⟩ w) (isoLoc D.nd D.naut (twistIso D.nd D.naut L D.naut.etaTinv) w)) σ = D.naut.inePol (D.naut.lpSum (spehLoc D.nd D.naut p w) (isoLoc D.nd D.naut L w)) σ`. Rewrite using `[D.naut.inePol_sum, D.naut.inePol_sum, ih]`. Unfold `spehLoc`. Rewrite using `[inePol_foldr D _ _ _ σ hσ, inePol_foldr D _ _ _ σ hσ, hpart]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem inePol_twistIso (D : D7) (hT : SumRepresentations.At.TieLP D.nd D.naut) (L : List (Part D.naut.CG)) (w : PlE D.host)
     (σ : GE D.nd) (hσ : σ ∈ Ine (F := D.host.E) (D.nd.plOm.1 w)) :
@@ -58,7 +58,7 @@ theorem inePol_twistIso (D : D7) (hT : SumRepresentations.At.TieLP D.nd D.naut) 
     rw [inePol_foldr D _ _ _ σ hσ, inePol_foldr D _ _ _ σ hσ, hpart]
 
 /- English proof (translation)
-Establish `hdvd : A ∣ (X - C 1) ^ n` using `by rw [map_one, ← h]; exact dvd_mul_right A B`. Take `⟨j, -, hj⟩` from `(dvd_prime_pow (Polynomial.prime_X_sub_C (1 : ℂ)) n).1 hdvd`. Establish `e` using `Polynomial.eq_of_monic_of_associated hA ((monic_X_sub_C (1 : ℂ)).pow j) hj`. Rewrite using `[e, (monic_X_sub_C (1 : ℂ)).natDegree_pow, natDegree_X_sub_C, mul_one, map_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_pow_of_mul_eq (A B : ℂ[X]) (n : ℕ) (hA : A.Monic) (hB : B.Monic) (h : A * B = (X - 1) ^ n) :
     A = (X - 1) ^ A.natDegree := by
@@ -68,11 +68,9 @@ theorem eq_pow_of_mul_eq (A B : ℂ[X]) (n : ℕ) (hA : A.Monic) (hB : B.Monic) 
   rw [e, (monic_X_sub_C (1 : ℂ)).natDegree_pow, natDegree_X_sub_C, mul_one, map_one]
 
 /- English proof (translation)
-Establish `hsing : ∀ (π' : D.naut.CG a) w, isoLoc D.nd D.naut [⟨a, π', 1⟩] w = D.naut.locG π' w`. Introduce `π' w`. Use `show D.naut.lpSum (spehLoc D.nd D.naut ⟨a, π', 1⟩ w) (D.naut.lpZero w) = _`. Rewrite using `[D.naut.lpSum_zero]`. Unfold `spehLoc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `[D.naut.lpSum_zero, D.naut.lpTw_zero]`. Establish `h` using `hAN [⟨a, D.naut.tw (D.naut.tw π D.naut.etaTinv) D.naut.etaT, 1⟩] [⟨a, π, 1⟩] (by simp [ha]) (by simp [ha]) (Filter.Eventually.of_forall fun w => by`. Rewrite using `[hsing, hsing, D.naut.locG_tw, D.naut.locG_tw]`. Conclude with `(GlobalTheory.RowThetaParam.lpChar_eta_inv D.nd D.naut hT _).2)`. Rewrite `h` using `[List.singleton_perm_singleton]`.
-
-Use `injection h with _ h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tw_back (D : D7) (hT : SumRepresentations.At.TieLP D.nd D.naut)
     (hAN : ∀ Pa Pa' : List (Part D.naut.CG), (∀ p ∈ Pa, 1 ≤ p.a ∧ p.d = 1) → (∀ p ∈ Pa', 1 ≤ p.a ∧ p.d = 1) →
@@ -92,29 +90,27 @@ theorem tw_back (D : D7) (hT : SumRepresentations.At.TieLP D.nd D.naut)
   injection h with _ h2
 
 /- English proof (translation)
-Introduce `D hPar h0 h5 hsplit hLab hDZ i x Sig hX`. Take `⟨P, -, hB⟩` from `hX`. Establish `hT : SumRepresentations.At.TieLP D.nd D.naut` using `h0.1`. Establish `hAN` using `h5.1`. Use `set χ := D.naut.etaTinv with hχ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htw : twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) χ = twistIso D.nd D.naut Sig χ ++ twistIso D.nd D.naut [muPart D.nd D.naut i] χ` using `List.map_append`. Establish `hparts : ∀ p ∈ Sig, 1 ≤ p.a ∧ 1 ≤ p.d ∧ D.naut.csd p.π`. Introduce `p hp`. Establish `hm : (⟨p.a, D.naut.tw p.π χ, p.d⟩ : Part D.naut.CG) ∈ twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) χ`. Rewrite using `[htw]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `List.mem_append_left _ (List.mem_map.2 ⟨p, hp, rfl⟩)`. Take `⟨ha, hd, hc⟩` from `hB.1 _ hm`. Use `⟨ha, hd, ?_⟩` and prove the remaining obligations. Establish `e` using `tw_back D hT hAN ha p.π`. Rewrite using `[← e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `D.naut.csd_tw _ _ h0.2.1.1.1 hc`. Establish `hnodup : (Sig.map fun p => ((⟨p.a, p.π⟩ : Σ a, D.naut.CG a), p.d)).Nodup`. Establish `h2` using `hB.2.1`. Rewrite `h2` using `[htw, List.map_append]`. Establish `h3` using `(List.nodup_append.1 h2).1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (twistIso D.nd D.naut Sig χ).map (fun p => ((⟨p.a, p.π⟩ : Σ a, D.naut.CG a), p.d)) = (Sig.map fun p => ((⟨p.a, p.π⟩ : Σ a, D.naut.CG a), p.d)).map (fun q => ((⟨q.1.1, D.naut.tw q.1.2 χ⟩ : Σ a, D.naut.CG a), q.2))`. Unfold `twistIso`. Rewrite using `[List.map_map, List.map_map]`. Both sides reduce to the same expression. Rewrite `h3` using `[e]`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h3.of_map _`. Establish `hrank : rankIso D.nd D.naut Sig = D.R.r`. Establish `hr` using `hB.2.2.1`. Establish `e1 : rankIso D.nd D.naut (twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) χ) = rankIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i])`. Unfold `rankIso twistIso`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[List.map_map]`. Both sides reduce to the same expression. Rewrite `hr` using `[e1]`. Unfold `rankIso at hr ⊢`. Rewrite `hr` using `[List.map_append, List.sum_append]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Simplify using `only [muPart, List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, one_mul, add_zero] at hr`. Establish `: D.R.nV = D.R.r + D.R.t` using `rfl`. Use linear arithmetic over natural numbers and integers. Establish `hlab : ∀ (k : Fin 2) (v : D.nd.PlG k), (D.naut.items₂ k (D.naut.plGw k v) (isoLoc D.nd D.naut Sig (D.naut.plGw k v))).Monic ∧ (D.naut.items₂ k (D.naut.plGw k v) (isoLoc D.nd D.naut Sig (D.naut.plGw k v))).natDegree = D.R.r`. Introduce `k v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `set w := D.naut.plGw k v with hw`. Establish `hover` using `D.naut.plGw_over k v`. Take `⟨hmon, hiff⟩` from `hLab k w hover (isoLoc D.nd D.naut Sig w)`. Use `⟨hmon, ?_⟩` and prove the remaining obligations. Rewrite using `[← hrank, ← lpDim_isoLoc]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hiff.2` to reduce the goal to its premises. Introduce `σ hσ hwild`. Establish `hloc` using `hB.2.2.2.1 w (hsplit k v)`. Establish `htame` using `hDZ i P k w hover σ hσ hwild`. Rewrite `htame` using `[← hloc, inePol_twistIso D hT _ w σ hσ, GlobalTheory.RowThetaParam.isoLoc_append, D.naut.inePol_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd1 : D.naut.lpDim (D.naut.locG D.naut.etaT w) = 1` using `D.naut.locG_dim _ w`. Establish `hm1` using `((hT w (isoLoc D.nd D.naut Sig w) (isoLoc D.nd D.naut Sig w) _ _ 0 hd1 hd1).2.2.2.2.2 σ hσ).1`. Establish `hm2` using `((hT w (isoLoc D.nd D.naut [muPart D.nd D.naut i] w) (isoLoc D.nd D.naut [muPart D.nd D.naut i] w) _ _ 0 hd1 hd1).2.2.2.2.2 σ hσ).1`. Establish `e` using `eq_pow_of_mul_eq _ _ _ hm1.1 hm2.1 htame`. Rewrite using `[e, hm1.2]`.
-
-Conclude with `hPar ⟨Sig, hparts, hnodup, hrank, hlab⟩`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ D : D7, (∀ S : Formalism.L2.ParC D, ∃ σ' : D.ntypes.Par, ∀ w, D.ntypes.locPar σ' w = isoLoc D.nd D.naut S.1 w) → SumRepresentations.tie0 D → SumRepresentations.adm5 D → (∀ (k : Fin 2) (v : D.nd.PlG k), IsSplitPl D.host (D.naut.plGw k v)) → LabDepth D → DepthZ D → ParSurj D := by
   intro D hPar h0 h5 hsplit hLab hDZ i x Sig hX

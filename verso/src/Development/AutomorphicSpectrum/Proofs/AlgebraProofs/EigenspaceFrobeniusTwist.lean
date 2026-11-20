@@ -8,7 +8,7 @@ open GlobalTheory.CompanionTheory.Ar.Crv
 namespace GlobalTheory.CompanionTheory.Ar.Crv
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.HtPt.Ci.eig_frob`.
+A detailed English derivation is pending.
 -/
 theorem eig_frobenius_twist : ∀ (K : Type) [Field K] (p : ℕ) [Fact p.Prime] [CharP K p] (d : ℕ) (O : Type) (ρ : O → Matrix (Fin d) (Fin d) K) (χ : O → K), eig (fun a => Matrix.toLin' ((ρ a).map (· ^ p))) (fun a => χ a ^ p) = frobSub p (eig (fun a => Matrix.toLin' (ρ a)) χ) :=
   PositivityTheory.HtPt.Ci.eig_frob

@@ -8,9 +8,9 @@ noncomputable section
 namespace Formalism.RepresentationBoundsCohomology.TorsionBoundCyclotomic
 
 /- English proof (translation)
-Introduce `ℓ _ R _ _ Xm _ _ _ _ ϖ z z' hzz hc hz g B hinj hsur`. Take `⟨S, hS1, hS2⟩` from `inverse_operator_from_injectivity R Xm g z hinj hsur`. Take `⟨h1, _, h3⟩` from `t3 R Xm ϖ z hc hz g S B hS1 hS2`. Use `⟨h1, fun x => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `h3 (z' • x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy, smul_smul, hzz, algebraMap_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_congruence_gives_perturbation : AdicPerturbationFixedFreeAndCoboundary := by
   intro ℓ _ R _ _ Xm _ _ _ _ ϖ z z' hzz hc hz g B hinj hsur
@@ -22,7 +22,7 @@ theorem unit_congruence_gives_perturbation : AdicPerturbationFixedFreeAndCobound
   rw [← hy, smul_smul, hzz, algebraMap_smul]
 
 /- English proof (translation)
-Introduce `O _ _ hO HT HD' HV HV' _ _ _ _ _ _ _ _ _ _ _ _ jT pr pair pT Hf Hf' hann hcomp a`. Rewrite using `[← bkSubspace O (FractionRing O) hO HV HV' pair Hf Hf' hann (jT a)]`. Use `forall₂_congr fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hcomp, Submodule.Quotient.mk_eq_zero, Submodule.mem_one]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bkb : StatBKb := by
   intro O _ _ hO HT HD' HV HV' _ _ _ _ _ _ _ _ _ _ _ _ jT pr pair pT Hf Hf' hann hcomp a
@@ -32,11 +32,11 @@ theorem bkb : StatBKb := by
   rfl
 
 /- English proof (translation)
-Introduce `ℓ _ w m hm h2 hw U h0U hne D hP hUn hFl hLES hInv O _ _ _ d _ N φ`. Establish `hk` using `h0 ℓ w m hm h2 hw U h0U hne D hP hUn hFl hLES hInv`. Apply `Formalism.RepresentationBoundsCohomology.submoduleLengthBound_statement O d N ℓ (c0 ℓ m U)` to reduce the goal to its premises. Introduce `x hx`. Establish `h1 : (ℓ ^ c0 ℓ m U) • φ.symm ⟨x, hx⟩ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hk (φ.symm ⟨x, hx⟩)` as an intermediate fact. Rewrite `this` using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Conclude with `this`. Establish `h3 : (ℓ ^ c0 ℓ m U) • (⟨x, hx⟩ : N) = 0`. Use `congrArg φ h1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[map_nsmul, AddEquiv.apply_symm_apply, map_zero]`. Then use the resulting hypothesis. Establish `h4 : (ℓ ^ c0 ℓ m U) • x = 0` using `congrArg Subtype.val h3`. Rewrite using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Conclude with `h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem H0_length_bound_holds : InvariantsLengthBound := by
   intro ℓ _ w m hm h2 hw U h0U hne D hP hUn hFl hLES hInv O _ _ _ d _ N φ

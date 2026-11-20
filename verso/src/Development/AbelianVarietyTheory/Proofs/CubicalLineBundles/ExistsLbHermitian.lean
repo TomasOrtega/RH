@@ -20,7 +20,7 @@ section Pairing
 variable {S : Scheme.{0}} {G A T : Over S} [GrpObj G] [GrpObj A]
 
 /- English proof (translation)
-Simplify using `only [lam, map_sum, Finset.sum_add_distrib, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lam_sum {I : Type} (s : Finset I) (c : I → Pic A.left) (x y : T ⟶ A) :
     lam (∑ i ∈ s, c i) x y = ∑ i ∈ s, lam (c i) x y := by
@@ -30,14 +30,14 @@ variable [IsCommMonObj G] {L : LB G.left} (hL : L.IsLB) (hΘ : ∃ t : LB.Gen (T
 include hΘ
 
 /- English proof (translation)
-Rewrite using `[lam_comm, lam_mul_left hL hΘ, lam_comm _ y, lam_comm _ z]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_mul_right (x y z : T ⟶ G) :
     lam (cls L hL) x (y * z) = lam (cls L hL) x y + lam (cls L hL) x z := by
   rw [lam_comm, lam_mul_left hL hΘ, lam_comm _ y, lam_comm _ z]
 
 /- English proof (translation)
-Rewrite using `[lam.eq_1 (lam (cls L hL) u v)]`. Simplify using `only [pull_lam, MonObj.mul_comp, MonObj.one_comp, lam_one_left, lam_mul_left hL hΘ, lam_mul_right hL hΘ]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem lam_lam (u v : A ⟶ G) [IsMonHom u] [IsMonHom v] (x y : T ⟶ A) :
     lam (lam (cls L hL) u v) x y =
@@ -50,11 +50,11 @@ theorem lam_lam (u v : A ⟶ G) [IsMonHom u] [IsMonHom v] (x y : T ⟶ A) :
 end Pairing
 
 /- English proof (translation)
-Establish `hx : ∀ m : M, m = ∑ i, P.incl m i • P.proj (Pi.single i 1)` using `fun m => by`. Establish `e : P.proj (P.incl m) = m` using `congr($(P.proj_incl) m)`. Simplify using `only [← map_smul, ← map_sum]`. Rewrite using `[← pi_eq_sum_univ', e]`. Establish `lin : ∀ m n : M, h m n = ∑ i, P.incl m i * h (P.proj (Pi.single i 1)) n` using `fun m n => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `f : M →+ O` to `AddMonoidHom.mk' (fun m => h m n) fun a b => hadd a b n`. Establish `: f m = f (∑ i, P.incl m i • P.proj (Pi.single i 1))` using `congrArg f (hx m)`. Rewrite `this` using `[map_sum]`. Conclude with `this.trans (Finset.sum_congr rfl fun i _ => hsmul _ _ _)`. Rewrite using `[lin]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hsym n, lin n, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← hsym, _root_.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_expand {O : Type} [CommRing O] (bar : O →+* O) {M : Type} [AddCommGroup M] [Module O M]
     (h : M → M → O) (hadd : ∀ m m' n, h (m + m') n = h m n + h m' n)
@@ -78,27 +78,27 @@ theorem herm_expand {O : Type} [CommRing O] (bar : O →+* O) {M : Type} [AddCom
   rw [map_mul, ← hsym, _root_.mul_assoc]
 
 /- English proof (translation)
-Introduce `S G _ _ L O _ bar M _ _ h _ _ A _ _ a b t w hL hΘ hadj ⟨hbar, hadd, hsmul, hsym⟩ hw`. Set `P` to `Summand.choose O M`. Set `e : Fin P.n → M` to `fun i => P.proj (Pi.single i 1)`. Set `p : Fin P.n → (A ⟶ G)` to `fun i => t.mapLeft (IsTensor.self a) (LinearMap.proj i ∘ₗ P.incl)`. Establish `hp : ∀ m i, t.tmul m ≫ p i = a.act (P.incl m i)` using `fun m i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[p]`. Establish `pm : ∀ i, IsMonHom (p i)` using `fun i => IsTensor.isMonHom_mapLeft _ _ _`. Establish `am` using `a.hom`. Establish `adj : ∀ {T : Over S} (x y : T ⟶ G) (c : O), lam (cls L hL) (x ≫ a.act c) y = lam (cls L hL) x (y ≫ a.act (bar c))`. Introduce `T x y c`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h₀` using `(cls_eq_iff (LB.isLB_linComb hL _ _) (LB.isLB_linComb hL _ _)).2 (hadj c)`. Establish `h'` using `congrArg (pull (lift x y).left) ((cls_cube_two hL _ _ _).symm.trans (h₀.trans (cls_cube_two hL _ _ _)))`. Simplify `h'` using `only [pull_lam, lift_fst, lift_snd, lift_fst_assoc, lift_snd_assoc]`. Take `⟨N, hN, hc⟩` from `cls_surj (∑ i, ∑ j, lam (cls L hL) (p i ≫ a.act (h (e i) (e j))) (p j ≫ a.act w))`. Establish `key : ∀ {T : Over S} (x y : T ⟶ A), lam (cls N hN) x y = ∑ i, ∑ j, (lam (cls L hL) (x ≫ p i ≫ a.act (h (e i) (e j))) (y ≫ p j ≫ a.act w) + lam (cls L hL) (y ≫ p i ≫ a.act (h (e i) (e j))) (x ≫ p j ≫ a.act w))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `T x y`. Rewrite using `[hc, lam_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[lam_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => lam_lam hL hΘ _ _ x y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N, hN, ?_, fun m n => ?_⟩` and prove the remaining obligations. Use `(cls_eq_zero_iff (N := Theta A N) (LB.isLB_linComb hN _ _)).1 ?_` and prove the remaining obligations. Use `(cls_cube_three hN (fst _ _) (snd _ _ ≫ fst _ _) (snd A (A ⊗ A) ≫ snd _ _) (LB.isLB_linComb hN _ _)).trans ?_` and prove the remaining obligations. Rewrite using `[sub_sub, sub_eq_zero, key, key, key]`. Simplify using `only [← Finset.sum_add_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[MonObj.mul_comp, MonObj.mul_comp, lam_mul_left hL hΘ, lam_mul_right hL hΘ]`. Normalize the expressions using the abelian group laws. Use `(cls_eq_iff (LB.isLB_linComb hN _ _) (LB.isLB_linComb hL _ _)).1 ?_` and prove the remaining obligations. Use `(cls_cube_two hN _ _ _).trans (Eq.trans ?_ (cls_cube_two hL _ _ _).symm)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `φ : O →+ Pic (G ⊗ G).left` to `AddMonoidHom.mk' (fun c => lam (cls L hL) (fst G G ≫ a.act c) (snd G G)) fun c d => by`. Simplify using `only [a.add, MonObj.comp_mul, lam_mul_left hL hΘ]`. Establish `hφ : ∀ c d, lam (cls L hL) (fst G G ≫ a.act c) (snd G G ≫ a.act d) = φ (c * bar d)`. Introduce `c d`. Use `adj (fst G G ≫ a.act c) (snd G G) (bar d)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hbar, Category.assoc, ← a.mul]`. Conclude with `this.symm`. Establish `hq : ∀ m i c, t.tmul m ≫ p i ≫ a.act c = a.act (P.incl m i * c)` using `fun m i c => by`. Rewrite using `[← Category.assoc, hp, a.mul]`. Rewrite using `[key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [Category.assoc, hq, lam_comm _ (snd G G ≫ _), hφ, ← map_add, ← map_sum]`. Express the relevant statement in the definitionally equal form `_ = φ (h m n)`. Use `congr 1`. Establish `E` using `herm_expand bar h hadd hsmul hsym P m n`. Simplify using `only [Finset.sum_add_distrib]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm (f := fun i j => P.incl m j * w * bar (P.incl n i * h (e i) (e j))), ← _root_.mul_one (h m n), ← hw, mul_add, add_comm, E]`. Simplify using `only [Finset.sum_mul, map_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hsym]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_lb_hermitian : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (O : Type) [CommRing O] (bar : O →+* O) (M : Type) [AddCommGroup M] [Module O M] (h : M → M → O) [Module.Finite O M] [Module.Projective O M] (A : Over S) [GrpObj A] [IsCommMonObj A] (a : OAct O G) (b : OAct O A) (t : IsTensor A b G a M) (w : O), L.IsLB → (∃ tθ : LB.Gen (Theta G L), tθ.IsGen) → (∀ c, LBIso (cubeLB G ![fst G G ≫ a.act c, snd G G] L) (cubeLB G ![fst G G, snd G G ≫ a.act (bar c)] L)) → ((∀ c, bar (bar c) = c) ∧ (∀ m m' n, h (m + m') n = h m n + h m' n) ∧ (∀ (c : O) m n, h (c • m) n = c * h m n) ∧ ∀ m n, h n m = bar (h m n)) → w + bar w = 1 → ∃ N : LB A.left, N.IsLB ∧ (∃ tθ : LB.Gen (Theta A N), tθ.IsGen) ∧ (∀ m n, LBIso (cubeLB A ![fst G G ≫ t.tmul m, snd G G ≫ t.tmul n] N) (cubeLB G ![fst G G ≫ a.act (h m n), snd G G] L)) := by
   intro S G _ _ L O _ bar M _ _ h _ _ A _ _ a b t w hL hΘ hadj ⟨hbar, hadd, hsmul, hsym⟩ hw

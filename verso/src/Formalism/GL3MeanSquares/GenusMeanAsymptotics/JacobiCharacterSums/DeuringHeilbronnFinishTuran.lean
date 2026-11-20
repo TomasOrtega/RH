@@ -12,49 +12,47 @@ open Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds Formalism.ZeroFre
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `hTur hIneq hPrime`. Take `⟨CT, a, hCT, ha, hT2⟩` from `hTur`. Take `⟨CF, hCF, hF⟩` from `hIneq`. Take `⟨CP, hCP, hP⟩` from `hPrime`. Take `⟨cS, hcS, hE⟩` from `excBound (1 / 2) (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨cZ, hcZ, hG⟩` from `DHF.region_gap`. Establish `hD0 : 0 ≤ Real.log (max CT 1)` using `Real.log_nonneg (le_max_right _ _)`. Take `⟨c₁, hc₁pos, hc₁Z, hc₁20⟩ : ∃ c : ℝ, 0 < c ∧ c ≤ cZ / 4 ∧ c ≤ 1 / 20` from `⟨min (cZ / 4) (1 / 20), lt_min (by linarith) (by norm_num), min_le_left _ _, min_le_right _ _⟩`. Establish `hrr : 16 < TuranPowerSumBounds.rr a` using `TuranPowerSumBounds.rr_gt a`. Choose the witnesses or unpack the hypotheses as in `⟨c₂, hc₂pos, hc₂k, hc₂t, hc₂K⟩ : ∃ c : ℝ, 0 < c ∧ c ≤ TuranPowerSumBounds.kap a (Real.log (max CT 1)) / (25 * CF) ∧ c ≤ TuranPowerSumBounds.th a / (2 * Real.exp 1 * CP * TuranPowerSumBounds.rr a) ∧ c * (2 * (|TuranPowerSumBounds.K0 a (Real.log (max CT 1)) CP cZ cS c₁| + 1)) ≤ cZ …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hk` using `div_pos (TuranPowerSumBounds.kap_pos a ha _ hD0) (by positivity : (0 : ℝ) < 25 * CF)`. Establish `ht` using `div_pos (TuranPowerSumBounds.th_pos a) (by positivity : (0 : ℝ) < 2 * Real.exp 1 * CP * TuranPowerSumBounds.rr a)`. Establish `hq : (0 : ℝ) < 2 * (|TuranPowerSumBounds.K0 a (Real.log (max CT 1)) CP cZ cS c₁| + 1)` using `by positivity`. Use `⟨min (min (TuranPowerSumBounds.kap a (Real.log (max CT 1)) / (25 * CF)) (TuranPowerSumBounds.th a / (2 * Real.exp 1 * CP * TuranPowerSumBounds.rr a))) (cZ / (2 * (|TuranPowerSumBounds.K0 a (Real.log (max CT 1)) CP cZ cS c₁| + 1))), lt_min (lt_min hk ht) (div_pos hcZ hq), (min_le_ …` and prove the remaining obligations. Rewrite using `[← le_div_iff₀ hq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `min_le_right _ _`. Establish `hc0pos : 0 < TuranPowerSumBounds.c0 a`. Use `TuranPowerSumBounds.twentyFive_mul_smallConstant a` as an intermediate fact. Establish `: 0 < 1 / TuranPowerSumBounds.rr a` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hc0 : TuranPowerSumBounds.c0 a ≤ 1 / 25`. Use `TuranPowerSumBounds.twentyFive_mul_smallConstant a` as an intermediate fact. Establish `h1 : 1 / TuranPowerSumBounds.rr a ≤ 1`. Rewrite using `[div_le_one (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨TuranPowerSumBounds.c0 a, c₁, c₂, 3, hc0pos, hc₁pos, hc₂pos, ?_⟩` and prove the remaining obligations. Introduce `M _ χ₁ χ β₁ T ρ hM hT hsq hne1 hL hβ hβ1 hρ hre hIm hne`. Establish `hL1 : 1 ≤ Real.log ((M : ℝ) * T)` using `DHF.logMT_ge_one M T hM hT`. Establish `hLpos : 0 < Real.log ((M : ℝ) * T)` using `by linarith`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM3 : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hMpos : (0 : ℝ) < M` using `by linarith`. Establish `hgap` using `hG M χ₁ χ β₁ T c₁ ρ hM hT hne1 hL hc₁pos (by linarith) hβ hρ hIm hne`. Establish `hη : 0 < 1 - ρ.re`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `push_neg at h`. Use the polynomial consequences of the given equalities and inequalities. Establish `hηZ : cZ / (2 * Real.log ((M : ℝ) * T)) ≤ 1 - ρ.re`. Rewrite using `[div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hηc0 : 1 - ρ.re ≤ TuranPowerSumBounds.c0 a` using `by linarith`. Establish `hlam : 0 < 1 - β₁` using `by linarith`. Establish `hEx` using `hE M χ₁ β₁ hsq hne1 hL`. Establish `hs : 0 < √(M : ℝ)` using `Real.sqrt_pos.mpr hMpos`. Establish `hmm : √(M : ℝ) * √(M : ℝ) = M` using `Real.mul_self_sqrt hMpos.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsqrt : (M : ℝ) ^ (-(1 / 2 : ℝ)) = 1 / √(M : ℝ)`. Rewrite using `[Real.rpow_neg hMpos.le, ← Real.sqrt_eq_rpow, one_div]`. Establish `hcs : cS ≤ (1 - β₁) * √(M : ℝ)`. Rewrite `hEx` using `[hsqrt]`. Establish `h1 : cS * (1 / √(M : ℝ)) ≤ 1 - β₁` using `by linarith`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[mul_one_div, div_le_iff₀ hs]`. Conclude with `h1`. Establish `hℓ0 : 0 ≤ Real.log (3 * (M : ℝ))` using `Real.log_nonneg (by linarith)`. Establish `hℓpos : 0 < Real.log (3 * (M : ℝ))` using `Real.log_pos (by linarith)`. Establish `hℓL : Real.log (3 * (M : ℝ)) ≤ 2 * Real.log ((M : ℝ) * T)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hT4 : (4 : ℝ) ≤ T ^ 2` using `by nlinarith`. Establish `h3 : 3 * (M : ℝ) ≤ ((M : ℝ) * T) ^ 2`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hT4 (sq_nonneg (M : ℝ))]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_pow]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hℓM : Real.log (3 * (M : ℝ)) ^ 2 / (M : ℝ) ≤ 32 * (1 - β₁) / cS`. Rewrite using `[div_le_div_iff₀ hMpos hcS]`. Establish `hls` using `TuranPowerSumBounds.log_sq_bound (M : ℝ) (by linarith)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_le_iff₀ hLpos]`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hKK0 : TuranPowerSumBounds.K0 a (Real.log (max CT 1)) CP cZ cS c₁ < Real.log (c₁ / ((1 - β₁) * Real.log ((M : ℝ) * T) ^ 3))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h1 : c₂ * Real.log (c₁ / ((1 - β₁) * Real.log ((M : ℝ) * T) ^ 3)) ≤ c₂ * (|TuranPowerSumBounds.K0 a (Real.log (max CT 1)) CP cZ cS c₁| + 1)` using `mul_le_mul_of_nonneg_left (by linarith [le_abs_self (TuranPowerSumBounds.K0 a (Real.log (max CT 1)) CP cZ cS c₁)]) hc₂pos.le`. Establish `h3 : c₂ * (|TuranPowerSumBounds.K0 a (Real.log (max CT 1)) CP cZ cS c₁| + 1) ≤ cZ / 2`. Establish `e : c₂ * (2 * (|TuranPowerSumBounds.K0 a (Real.log (max CT 1)) CP cZ cS c₁| + 1)) = 2 * (c₂ * (|TuranPowerSumBounds.K0 a (Real.log (max CT 1)) CP cZ cS c₁| + 1))` using `by ring`.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpos : 0 < c₁ / ((1 - β₁) * Real.log ((M : ℝ) * T) ^ 3)` using `by positivity`. Establish `hexp : (1 - β₁) * Real.log ((M : ℝ) * T) ^ 3 = c₁ * Real.exp (-Real.log (c₁ / ((1 - β₁) * Real.log ((M : ℝ) * T) ^ 3)))`. Rewrite using `[Real.exp_neg, Real.exp_log hpos]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Establish `hρre : (22 / 25 : ℝ) ≤ ρ.re` using `by linarith`. Establish `hβ20 : (19 / 20 : ℝ) ≤ β₁`. Establish `: c₁ / Real.log ((M : ℝ) * T) ≤ 1 / 20`. Rewrite using `[div_le_iff₀ hLpos]`.
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨N, w, hwre, hwex, hwsum, hwj⟩` from `hF M χ₁ χ β₁ T (1 - ρ.re) ρ hM hT hsq hne1 hL hβ20 hβ1 hρ hρre hIm hne hη (by linarith)`. Establish `hβP : 1 - 1 / Real.log (3 * (M : ℝ)) ≤ β₁`. Establish `: c₁ / Real.log ((M : ℝ) * T) ≤ 1 / Real.log (3 * (M : ℝ))`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[div_le_div_iff₀ hLpos hℓpos]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Use `TuranPowerSumBounds.core2 CT a hCT ha hT2 CF CP cZ cS c₁ c₂ hCF hCP hcZ hcS hc₁pos hc₁Z hc₂pos hc₂k hc₂t (Real.log ((M : ℝ) * T)) (Real.log (3 * (M : ℝ))) (1 - β₁) (1 - ρ.re) (M : ℝ) (Real.log (c₁ / ((1 - β₁) * Real.log ((M : ℝ) * T) ^ 3))) hL1 hℓ0 hℓL hlam hηZ hηc0 hcon hMpos hℓ …` and prove the remaining obligations. Introduce `j hj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Establish `h1` using `hwj (i + 1) hj`. Establish `h2` using `hP M χ₁ β₁ (1 + (1 - ρ.re)) i hM hsq hne1 hL hβP hβ1 (by linarith) (by linarith)`. Simplify using `only [Nat.add_sub_cancel] at h1 ⊢`. Establish `e1 : (1 + (1 - ρ.re)) - 1 = 1 - ρ.re` using `by ring`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Establish an intermediate fact.
 
-Rewrite `h2` using `[e1]`. Establish `hA : CP * (1 - β₁) * Real.log (3 * (M : ℝ)) ^ 2 * ((i : ℝ) + 2) ^ 2 / (1 - ρ.re) ^ (i + 2) = CP * (1 - β₁) * Real.log (3 * (M : ℝ)) ^ 2 * (((i + 1 : ℕ) : ℝ) + 1) ^ 2 / (1 - ρ.re) ^ (i + 1 + 1)`. Use `push_cast`. Put the polynomial expressions in normal form. Establish `hC : CP * ((i : ℝ) + 2) * Real.log (3 * (M : ℝ)) ^ 2 / ((M : ℝ) * (1 - ρ.re) ^ (i + 1)) = CP * (((i + 1 : ℕ) : ℝ) + 1) * Real.log (3 * (M : ℝ)) ^ 2 / ((M : ℝ) * (1 - ρ.re) ^ (i + 1))`.
-
-Use `push_cast`. Put the polynomial expressions in normal form. Rewrite `h2` using `[hA, hC]`. Conclude with `h1.trans (add_le_add (add_le_add h2 le_rfl) le_rfl)`.
+Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deuring_heilbronn_finish_turan : DHFinish2Of := by
   intro hTur hIneq hPrime

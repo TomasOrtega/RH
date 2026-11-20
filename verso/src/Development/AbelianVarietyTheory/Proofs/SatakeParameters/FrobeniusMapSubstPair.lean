@@ -22,9 +22,9 @@ def lK {ι : Type} (p : ℕ) [Fact p.Prime] (i : ι) : MvPowerSeries ι (FormalG
   PowerSeries.subst (X i : MvPowerSeries ι (FormalGroupSystem.K0 p)) (FormalGroupSystem.logF p)
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Unfold `FormalGroupSystem.logF`. Rewrite using `[PowerSeries.coeff_mk]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(pow_pos hp.out.pos _).ne`.
+A detailed English derivation is pending.
 -/
 theorem cc_logK : PowerSeries.constantCoeff (FormalGroupSystem.logF p) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply]
@@ -35,19 +35,19 @@ theorem cc_logK : PowerSeries.constantCoeff (FormalGroupSystem.logF p) = 0 := by
   exact (pow_pos hp.out.pos _).ne
 
 /- English proof (translation)
-The claim follows from `PowerSeries.constantCoeff_subst_eq_zero (constantCoeff_X i) _ cc_logK`.
+A detailed English derivation is pending.
 -/
 theorem cc_lK {ι : Type} (i : ι) : constantCoeff (lK (ι := ι) p i) = 0 :=
   PowerSeries.constantCoeff_subst_eq_zero (constantCoeff_X i) _ cc_logK
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero cc_lK`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_lK {ι : Type} [Finite ι] : HasSubst (lK (ι := ι) p) :=
   hasSubst_of_constantCoeff_zero cc_lK
 
 /- English proof (translation)
-Unfold `lK GlobalTheory.ThBe0.lg`. Rewrite using `[PowerSeries.map_subst (PowerSeries.HasSubst.of_constantCoeff_zero (constantCoeff_X i)), map_X, Formalism.L2.G.Pend.logF_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_lK {ι : Type} (i : ι) : map φ (lK (ι := ι) p i) = GlobalTheory.ThBe0.lg i := by
   unfold lK GlobalTheory.ThBe0.lg
@@ -60,9 +60,9 @@ Both sides reduce to the same expression.
 theorem inParam_eq {ι : Type} (f : MvPowerSeries ι (FormalGroupSystem.K0 p)) : inParam p f = subst (lK p) f := rfl
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_map]`. Use `show φ (expS p f n) = Formalism.MainNotions.TaylorLogMetric.expMv (map φ f) n`. Unfold `expS Formalism.MainNotions.TaylorLogMetric.expMv`. Rewrite using `[map_sum]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : n.degree = n.sum fun _ k => k` using `rfl`. Rewrite using `[hd]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← map_pow, coeff_map, map_mul, map_inv₀, map_natCast, div_eq_inv_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_expS {ι : Type} (f : MvPowerSeries ι (FormalGroupSystem.K0 p)) :
     map φ (expS p f) = Formalism.MainNotions.TaylorLogMetric.expMv (map φ f) := by
@@ -77,11 +77,11 @@ theorem map_expS {ι : Type} (f : MvPowerSeries ι (FormalGroupSystem.K0 p)) :
   rw [← map_pow, coeff_map, map_mul, map_inv₀, map_natCast, div_eq_inv_mul]
 
 /- English proof (translation)
-Take `⟨h0, w, -, hw⟩` from `h`. Establish `hs : map φ (inParam p f) - map φ (inParam p g) = map φ (inParam p (f - g))`. Rewrite using `[inParam_eq, inParam_eq, inParam_eq, subst_sub hasSubst_lK, map_sub]`. Establish `hc : constantCoeff (inParam p (f - g)) = 0` using `constantCoeff_subst_eq_zero hasSubst_lK cc_lK h0`. Unfold `Formalism.MainNotions.GL3Theta.SimeqW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hs]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `congrArg (φ) hc` as an intermediate fact. Rewrite `this` using `[map_zero]`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Rewrite using `[← map_expS, hw]`. Use `(Formalism.L2.G.Pend.integralW_iff _).2 ⟨1 + w, ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Simplify using `[coeff_map, Formalism.L2.G.Pend.witt_fraction_to_Cp_algebraMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem simeqW_of_simeq {ι : Type} [Finite ι] {f g : MvPowerSeries ι (FormalGroupSystem.K0 p)} (h : FormalGroupSystem.Simeq p f g) :
     Formalism.MainNotions.GL3Theta.SimeqW (map φ (inParam p f)) (map φ (inParam p g)) := by
@@ -105,28 +105,28 @@ theorem simeqW_of_simeq {ι : Type} [Finite ι] {f g : MvPowerSeries ι (FormalG
 def mI {ι : Type} (f : MvPowerSeries ι (FormalGroupSystem.K0 p)) : MvPowerSeries ι ℂ_[p] := map φ (inParam p f)
 
 /- English proof (translation)
-Unfold `mI`. Rewrite using `[inParam_eq, subst_X hasSubst_lK, map_lK]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mI_X {ι : Type} [Finite ι] (i : ι) : mI (X i : MvPowerSeries ι (FormalGroupSystem.K0 p)) = GlobalTheory.ThBe0.lg i := by
   unfold mI
   rw [inParam_eq, subst_X hasSubst_lK, map_lK]
 
 /- English proof (translation)
-Unfold `mI`. Rewrite using `[inParam_eq, inParam_eq, inParam_eq, subst_add hasSubst_lK, map_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mI_add {ι : Type} [Finite ι] (f g : MvPowerSeries ι (FormalGroupSystem.K0 p)) : mI (f + g) = mI f + mI g := by
   unfold mI
   rw [inParam_eq, inParam_eq, inParam_eq, subst_add hasSubst_lK, map_add]
 
 /- English proof (translation)
-Unfold `mI`. Rewrite using `[inParam_eq, inParam_eq, inParam_eq, subst_sub hasSubst_lK, map_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mI_sub {ι : Type} [Finite ι] (f g : MvPowerSeries ι (FormalGroupSystem.K0 p)) : mI (f - g) = mI f - mI g := by
   unfold mI
   rw [inParam_eq, inParam_eq, inParam_eq, subst_sub hasSubst_lK, map_sub]
 
 /- English proof (translation)
-Unfold `mI`. Rewrite using `[inParam_eq, inParam_eq, ← smul_eq_C_mul, subst_smul hasSubst_lK, smul_eq_C_mul, map_mul, map_C]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mI_C_mul {ι : Type} [Finite ι] (a : FormalGroupSystem.K0 p) (f : MvPowerSeries ι (FormalGroupSystem.K0 p)) :
     mI (C a * f) = C (φ a) * mI f := by
@@ -134,16 +134,16 @@ theorem mI_C_mul {ι : Type} [Finite ι] (a : FormalGroupSystem.K0 p) (f : MvPow
   rw [inParam_eq, inParam_eq, ← smul_eq_C_mul, subst_smul hasSubst_lK, smul_eq_C_mul, map_mul, map_C]
 
 /- English proof (translation)
-Use `mI_sub (0 : MvPowerSeries ι (FormalGroupSystem.K0 p)) 0` as an intermediate fact. Rewrite `this` using `[sub_zero, sub_self]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mI_zero {ι : Type} [Finite ι] : mI (0 : MvPowerSeries ι (FormalGroupSystem.K0 p)) = 0 := by
   have := mI_sub (0 : MvPowerSeries ι (FormalGroupSystem.K0 p)) 0
   rwa [sub_zero, sub_self] at this
 
 /- English proof (translation)
-Apply the tactic sequence `have ha : HasSubst (![x, y] : Fin 2 → MvPowerSeries κ (FormalGroupSystem.K0 p)) := hasSubst_of_constantCoeff_zero fun i => by fin_cases i <;> simp [hx, hy]`. Apply the tactic sequence `have hb : HasSubst (fun i : Fin 2 => subst (lK (ι := κ) p) ((![x, y] : Fin 2 → MvPowerSeries κ (FormalGroupSystem.K0 p)) i)) := hasSubst_of_constantCoeff_zero fun i => constantCoeff_subst_eq_zero hasSubst_lK cc_lK (by fin_cases i <;> simp [hx, hy])`. Unfold `mI sub2 GlobalTheory.ThBe0.at2`. Rewrite using `[inParam_eq, subst_comp_subst_apply ha hasSubst_lK, map_subst hb]`. Use `congr 1`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [inParam_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem frobenius_map_subst_pair {κ : Type} [Finite κ] (be : MvPowerSeries (Fin 2) (FormalGroupSystem.K0 p)) {x y : MvPowerSeries κ (FormalGroupSystem.K0 p)}
     (hx : constantCoeff x = 0) (hy : constantCoeff y = 0) :
@@ -159,7 +159,7 @@ theorem frobenius_map_subst_pair {κ : Type} [Finite κ] (be : MvPowerSeries (Fi
   fin_cases i <;> simp [inParam_eq]
 
 /- English proof (translation)
-Establish `e : a - (b + c) = a - b - c - 0` using `by ring`. Unfold `Formalism.MainNotions.GL3Theta.SimeqW at h ⊢`. Rewrite using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem simeqW_add {κ : Type} {a b c : MvPowerSeries κ ℂ_[p]} (h : Formalism.MainNotions.GL3Theta.SimeqW (a - b - c) 0) :
     Formalism.MainNotions.GL3Theta.SimeqW a (b + c) := by
@@ -169,17 +169,17 @@ theorem simeqW_add {κ : Type} {a b c : MvPowerSeries κ ℂ_[p]} (h : Formalism
   exact h
 
 /- English proof (translation)
-Introduce `p _ σ _ hs be hbe`. Establish `cX : ∀ {κ : Type} (i : κ), constantCoeff (X i : MvPowerSeries κ (FormalGroupSystem.K0 p)) = 0` using `fun i => constantCoeff_X i`. Use `⟨(Formalism.L2.G.Pend.coefWf_iff _).2 ⟨be, rfl⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `n hn`. Establish `h0 : coeff n be ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Apply `hn` to reduce the goal to its premises. Rewrite using `[coeff_map, h, map_zero]`. Take `⟨h1, h2⟩` from `hbe.ab n h0`. Conclude with `⟨by omega, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h` using `simeqW_of_simeq hbe.add1`. Apply `simeqW_add` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GL3Theta.SimeqW (mI _) (mI _) at h`. Rewrite `h` using `[mI_zero, mI_sub, mI_sub, frobenius_map_subst_pair be (by simp) (cX 2), frobenius_map_subst_pair be (cX 0) (cX 2), frobenius_map_subst_pair be (cX 1) (cX 2), mI_add, mI_X, mI_X, mI_X]`. Conclude with `h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `simeqW_of_simeq hbe.add2`. Apply `simeqW_add` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GL3Theta.SimeqW (mI _) (mI _) at h`. Rewrite `h` using `[mI_zero, mI_sub, mI_sub, frobenius_map_subst_pair be (cX 0) (by simp), frobenius_map_subst_pair be (cX 0) (cX 1), frobenius_map_subst_pair be (cX 0) (cX 2), mI_add, mI_X, mI_X, mI_X]`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `α hα h2`. Take `⟨x, rfl⟩` from `(Formalism.L2.G.Pend.mem_Wp_iff p α).1 hα`. Establish `hx : (sigW p)^[2] x = x`. Apply `Formalism.L2.G.Pend.wToC_injective p` to reduce the goal to its premises. Rewrite using `[← h2, hs x, hs (sigW p x)]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `h` using `simeqW_of_simeq (hbe.conj x hx)`. Express the relevant statement in the definitionally equal form `Formalism.MainNotions.GL3Theta.SimeqW (mI _) (mI _) at h`. Rewrite `h` using `[frobenius_map_subst_pair be (by simp) (cX 1), frobenius_map_subst_pair be (cX 0) (by simp), mI_C_mul, mI_C_mul, mI_X, mI_X, Formalism.L2.G.Pend.witt_fraction_to_Cp_algebraMap, Formalism.L2.G.Pend.witt_fraction_to_Cp_algebraMap, ← hs x]`. Conclude with `h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBe0_map : ∀ (p : ℕ) [Fact p.Prime] (σ : ℂ_[p] →+* ℂ_[p]), GlobalTheory.ThBe0.IsFrob σ →
     (∀ x : FormalGroupSystem.WW p, σ (Formalism.L2.G.Pend.wToC p x) = Formalism.L2.G.Pend.wToC p (sigW p x)) →

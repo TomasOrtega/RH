@@ -22,14 +22,14 @@ noncomputable def ev (θ : C →+* R) (φ : Multiplicative X →* Rˣ) : AddMono
   AddMonoidAlgebra.liftNCRingHom θ ((Units.coeHom R).comp φ) fun _ _ => Commute.all _ _
 
 /- English proof (translation)
-Simplify using `[ev, AddMonoidAlgebra.liftNCRingHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ev_single (θ : C →+* R) (φ : Multiplicative X →* Rˣ) (x : X) (c : C) :
     ev θ φ (AddMonoidAlgebra.single x c) = θ c * (φ (Multiplicative.ofAdd x)).val := by
   simp [ev, AddMonoidAlgebra.liftNCRingHom]
 
 /- English proof (translation)
-Apply the tactic sequence `apply AddMonoidAlgebra.ringHom_ext <;> intro a <;> simp [ev_single]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem comp_ev (f : R →+* R') (θ : C →+* R) (φ : Multiplicative X →* Rˣ) :
     f.comp (ev θ φ) = ev (f.comp θ) ((Units.map f.toMonoidHom).comp φ) := by
@@ -56,20 +56,20 @@ Both sides reduce to the same expression.
 theorem cst_apply (c : C) : cst X C c = AddMonoidAlgebra.single 0 c := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `apply AddMonoidAlgebra.ringHom_ext <;> intro a <;>`. Simplify using `[ev_single, univ_val, AddMonoidAlgebra.single_mul_single]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem ev_univ : ev (cst X C) (univ X C) = RingHom.id _ := by
   apply AddMonoidAlgebra.ringHom_ext <;> intro a <;>
     simp [ev_single, univ_val, AddMonoidAlgebra.single_mul_single]
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[ev_single]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ev_comp_cst (θ : C →+* R) (φ : Multiplicative X →* Rˣ) : (ev θ φ).comp (cst X C) = θ := by
   ext a; simp [ev_single]
 
 /- English proof (translation)
-Use extensionality with `x`. Express the relevant statement in the definitionally equal form `ev θ φ (univ X C (Multiplicative.ofAdd x)).val = _`. Simplify using `[univ_val, ev_single]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem ev_comp_univ (θ : C →+* R) (φ : Multiplicative X →* Rˣ) :
     (Units.map (ev θ φ).toMonoidHom).comp (univ X C) = φ := by
@@ -78,11 +78,11 @@ theorem ev_comp_univ (θ : C →+* R) (φ : Multiplicative X →* Rˣ) :
   simp [univ_val, ev_single]
 
 /- English proof (translation)
-Proceed by induction on `f using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f g hf hg => simp only [map_add, AddMonoidAlgebra.coeff_add, Finsupp.add_apply, hf, hg, add_mul]`. Consider the case `single y c`. Rewrite using `[ev_single]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(AddMonoidAlgebra.single 0 (δ c) * (AddMonoidAlgebra.single y 1 * AddMonoidAlgebra.single 0 (ψ (Multiplicative.ofAdd y)).val)).coeff x = _`. Simplify using `only [AddMonoidAlgebra.single_mul_single, zero_add, add_zero, _root_.one_mul, AddMonoidAlgebra.coeff_single]`. Distinguish the cases in `h : y = x`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Finsupp.single_eq_of_ne' h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeff_ev (δ : C →+* R) (ψ : Multiplicative X →* Rˣ) (f : AddMonoidAlgebra C X) (x : X) :
     (ev ((cst X R).comp δ) (univ X R * (Units.map (cst X R).toMonoidHom).comp ψ) f).coeff x =
@@ -111,11 +111,11 @@ def IsTorsorOn (α : A →+* C) (ρ : C →+* AddMonoidAlgebra C X) : Prop :=
   (∀ θ θ' : C →+* R, θ.comp α = θ'.comp α → ∃ φ : Multiplicative X →* Rˣ, θ' = (ev θ φ).comp ρ)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Establish `inj : ∀ {T : Type} [CommRing T] {a b : T →+* R}, e.toRingHom.comp a = e.toRingHom.comp b → a = b` using `fun h => RingHom.ext fun x => e.injective (RingHom.congr_fun h x)`. Establish `nat : ∀ (θ : C →+* R) (φ : Multiplicative X →* Rˣ), e.toRingHom.comp ((ev θ φ).comp ρ) = (ev (e.toRingHom.comp θ) ((Units.map e.toRingHom.toMonoidHom).comp φ)).comp ρ` using `fun θ φ => by rw [← RingHom.comp_assoc, comp_ev]`. Use `⟨fun θ φ φ' => inj ?_, fun θ φ => inj ?_, fun θ φ φ' h => ?_, fun θ θ' h => ?_⟩` and prove the remaining obligations. Rewrite using `[nat, nat, nat, ← h1, MonoidHom.comp_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← RingHom.comp_assoc, nat, h2, RingHom.comp_assoc]`. Use `h3 _ _ _ ((nat θ φ).symm.trans ((congrArg _ h).trans (nat θ φ')))` as an intermediate fact. Use extensionality with `x`. Conclude with `e.injective (congrArg Units.val (DFunLike.congr_fun this x))`. Take `⟨φ, hφ⟩` from `h4 (e.toRingHom.comp θ) (e.toRingHom.comp θ') (by rw [RingHom.comp_assoc, h, RingHom.comp_assoc])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(Units.map e.symm.toRingHom.toMonoidHom).comp φ, inj ?_⟩` and prove the remaining obligations. Rewrite using `[nat, hφ]`. Use `congr 2`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsTorsorOn.of_equiv {α : A →+* C} {ρ : C →+* AddMonoidAlgebra C X} (e : R ≃+* R')
     (h : IsTorsorOn R' α ρ) : IsTorsorOn R α ρ := by
@@ -141,9 +141,9 @@ theorem IsTorsorOn.of_equiv {α : A →+* C} {ρ : C →+* AddMonoidAlgebra C X}
     simp
 
 /- English proof (translation)
-Establish `h1` using `RingHom.congr_fun (h.1 ((cst X _).comp (cst X C)) (univ X _) ((Units.map (cst X _).toMonoidHom).comp (univ X C))) c`. Rewrite `h1` using `[← comp_ev, ev_univ, RingHom.comp_id]`. Establish `h2` using `congrArg (fun f => AddMonoidAlgebra.coeff f x) h1`. Establish `h3` using `coeff_ev ρ 1 (ρ c) x`. Simplify using `only [RingHom.comp_apply] at h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[coeff_ev, univ_val, cst_apply, AddMonoidAlgebra.single_mul_single]`. Rewrite `h3` using `[MonoidHom.comp_one, _root_.mul_one, ← h2]`. Simplify using `using h3.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coaction_coeff {α : A →+* C} {ρ : C →+* AddMonoidAlgebra C X}
     (h : IsTorsorOn (AddMonoidAlgebra (AddMonoidAlgebra C X) X) α ρ) (c : C) (x : X) :
@@ -159,29 +159,27 @@ theorem coaction_coeff {α : A →+* C} {ρ : C →+* AddMonoidAlgebra C X}
   simpa using h3.symm
 
 /- English proof (translation)
-Use `letI : Algebra A C := α.toAlgebra`. Use `haveI : Module.FaithfullyFlat A C := hα`. Establish `hco` using `coaction_coeff (h _)`. Take `⟨φ, hφ⟩` from `(h (C ⊗[A] C)).2.2.2 (Algebra.TensorProduct.includeRight : C →ₐ[A] C ⊗[A] C).toRingHom Algebra.TensorProduct.includeLeftRingHom (Algebra.TensorProduct.includeLeftRingHom_comp_algebraMap (R := A) (A := C) (B := C)).symm`. Establish `h0 : ∀ c : C, ρ c = AddMonoidAlgebra.single 0 c → ∃ a, α a = c`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Establish `h1` using `RingHom.congr_fun hφ c`. Rewrite `h1` using `[RingHom.comp_apply, hc, ev_single]`. Use `(Algebra.IsEffective.of_faithfullyFlat A C c).1 ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.includeLeftSubRight_apply, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1`. Establish `hρα : ∀ a, ρ (α a) = AddMonoidAlgebra.single 0 (α a)`. Introduce `a`. Use `RingHom.congr_fun ((h _).2.1 (cst X C) (univ X C)) a` as an intermediate fact. Rewrite `this` using `[ev_univ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Set `ρ' : C →ₐ[A] AddMonoidAlgebra C X` to `{ ρ with commutes' := hρα }`. Set `κ : C →ₐ[A] AddMonoidAlgebra C X` to `{ cst X C with commutes' := fun _ => rfl }`. Set `Φ : C ⊗[A] C →ₐ[A] AddMonoidAlgebra C X` to `Algebra.TensorProduct.lift ρ' κ fun _ _ => Commute.all _ _`. Establish `hΦ : ∀ c c' : C, Φ (c ⊗ₜ c') = ρ c * AddMonoidAlgebra.single 0 c'` using `fun _ _ => rfl`. Establish `hu : (Units.map Φ.toRingHom.toMonoidHom).comp φ = univ X C`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(h _).2.2.1 (cst X C)` to reduce the goal to its premises. Establish `h1` using `congrArg (Φ.toRingHom.comp ·) hφ`. Simplify using `only [← RingHom.comp_assoc, comp_ev] at h1`. Establish `h2 : Φ.toRingHom.comp (Algebra.TensorProduct.includeRight : C →ₐ[A] C ⊗[A] C).toRingHom = cst X C`. Use `RingHom.ext fun c => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Φ (1 ⊗ₜ c) = _`. Rewrite using `[hΦ, map_one, _root_.one_mul, cst_apply]`. Rewrite `h1` using `[h2]`. Rewrite using `[← h1, ev_univ]`. Use `RingHom.ext fun c => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Φ (c ⊗ₜ 1) = ρ c`. Rewrite using `[hΦ, ← AddMonoidAlgebra.one_def, _root_.mul_one]`. Establish `hχ : Φ (φ (Multiplicative.ofAdd χ)).val = AddMonoidAlgebra.single χ 1` using `congrArg Units.val (DFunLike.congr_fun hu (Multiplicative.ofAdd χ))`. Use `by_contra! hcon`. Establish `key : ∀ e : C ⊗[A] C, ∃ a ∈ p, α a = (ρ ((Φ e).coeff χ)).coeff 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `e`. Proceed by induction on `e using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, p.zero_mem, by simp⟩`. Consider the case `add e e' he he'`. Take `⟨a, ha, h1⟩` from `he`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a', ha', h1'⟩` from `he'`. Conclude with `⟨a + a', p.add_mem ha ha', by simp [h1, h1']⟩`. Consider the case `tmul c c'`. Establish `h1 : (Φ (c ⊗ₜ c')).coeff χ = (ρ c).coeff χ * c'`. Rewrite using `[hΦ]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h2 : (ρ ((ρ c).coeff χ * c')).coeff 0 = (ρ c).coeff χ * (ρ c').coeff (-χ)`. Rewrite using `[map_mul, hco]`. Simplify using the standard rewrite rules. Take `⟨a, ha⟩` from `h0 ((ρ c).coeff χ * (ρ c').coeff (-χ)) (by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, hco, hco, AddMonoidAlgebra.single_mul_single, add_neg_cancel])`. Use `⟨a, ?_, by rw [h1, h2, ha]⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hap`. Conclude with `hcon a hap _ _ ha.symm (hco c χ)`. Take `⟨a, ha, h1⟩` from `key (φ (Multiplicative.ofAdd χ)).val`.
-
-Rewrite `h1` using `[hχ]`. Establish `h2 : α a = α 1` using `by simpa [AddMonoidAlgebra.one_def] using h1`. Conclude with `hp ((Ideal.eq_top_iff_one p).2 (hα.injective h2 ▸ ha))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_homogeneous {α : A →+* C} (hα : α.FaithfullyFlat) {ρ : C →+* AddMonoidAlgebra C X}
     (h : ∀ (R : Type) [CommRing R], IsTorsorOn R α ρ) (χ : X) (p : Ideal A) (hp : p ≠ ⊤) :
@@ -259,7 +257,7 @@ noncomputable def pt (hU : IsAffineOpen U) (θ : Γ(Y, U) →+* Γ(Z, ⊤)) : Z 
   Z.toSpecΓ ≫ Spec.map (CommRingCat.ofHom θ) ≫ hU.fromSpec
 
 /- English proof (translation)
-Use `SplitTorusPoints.ΓSpecIso_inv_comp_specMap Z.toSpecΓ (CommRingCat.ofHom θ)` as an intermediate fact. Rewrite `this` using `[Scheme.toSpecΓ_appTop, Iso.inv_hom_id, Category.comp_id]`. Conclude with `congrArg CommRingCat.Hom.hom this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toSpec_appTop {R : CommRingCat.{0}} (θ : R →+* Γ(Z, ⊤)) :
     (Z.toSpecΓ ≫ Spec.map (CommRingCat.ofHom θ)).appTop.hom.comp (Scheme.ΓSpecIso R).inv.hom =
@@ -269,7 +267,7 @@ theorem toSpec_appTop {R : CommRingCat.{0}} (θ : R →+* Γ(Z, ⊤)) :
   exact congrArg CommRingCat.Hom.hom this
 
 /- English proof (translation)
-Rewrite using `[pt, pt, Scheme.toSpecΓ_naturality_assoc, ← Spec.map_comp_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comp_pt (hU : IsAffineOpen U) (f : Z' ⟶ Z) (θ : Γ(Y, U) →+* Γ(Z, ⊤)) :
     f ≫ pt hU θ = pt hU (f.appTop.hom.comp θ) := by
@@ -277,7 +275,7 @@ theorem comp_pt (hU : IsAffineOpen U) (f : Z' ⟶ Z) (θ : Γ(Y, U) →+* Γ(Z, 
   rfl
 
 /- English proof (translation)
-Rewrite using `[pt, pt, Category.assoc, Category.assoc, ← hV.SpecMap_appLE_fromSpec q hU e, ← Spec.map_comp_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pt_comp {B : Scheme.{0}} {V : B.Opens} (hU : IsAffineOpen U) (hV : IsAffineOpen V)
     (q : Y ⟶ B) (e : U ≤ q ⁻¹ᵁ V) (θ : Γ(Y, U) →+* Γ(Z, ⊤)) :
@@ -287,7 +285,7 @@ theorem pt_comp {B : Scheme.{0}} {V : B.Opens} (hU : IsAffineOpen U) (hV : IsAff
   rfl
 
 /- English proof (translation)
-Rewrite using `[pt, Scheme.Hom.comp_preimage, Scheme.Hom.comp_preimage, hU.fromSpec_preimage_self]`. Conclude with `le_rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_pt_preimage (hU : IsAffineOpen U) (θ : Γ(Y, U) →+* Γ(Z, ⊤)) :
     ⊤ ≤ pt hU θ ⁻¹ᵁ U := by
@@ -295,9 +293,9 @@ theorem le_pt_preimage (hU : IsAffineOpen U) (θ : Γ(Y, U) →+* Γ(Z, ⊤)) :
   exact le_rfl
 
 /- English proof (translation)
-Establish `h1 : hU.fromSpec.appLE U ⊤ hU.fromSpec_preimage_self.ge = (Scheme.ΓSpecIso Γ(Y, U)).inv`. Rewrite using `[Scheme.Hom.appLE, hU.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Conclude with `(congrArg (_ ≫ ·) ((congrArg _ (Subsingleton.elim _ _)).trans (CategoryTheory.Functor.map_id _ _))).trans (Category.comp_id _)`. Establish `h2` using `Scheme.Hom.appLE_comp_appLE (Z.toSpecΓ ≫ Spec.map (CommRingCat.ofHom θ)) hU.fromSpec U ⊤ ⊤ hU.fromSpec_preimage_self.ge le_rfl`. Rewrite `h2` using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (Z.toSpecΓ ≫ Spec.map (CommRingCat.ofHom θ)).appLE ⊤ ⊤ le_rfl = (Z.toSpecΓ ≫ Spec.map (CommRingCat.ofHom θ)).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite `h2` using `[h3]`. Conclude with `(congrArg CommRingCat.Hom.hom h2).symm.trans (toSpec_appTop θ)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_appLE (hU : IsAffineOpen U) (θ : Γ(Y, U) →+* Γ(Z, ⊤)) (e : ⊤ ≤ pt hU θ ⁻¹ᵁ U) :
     ((pt hU θ).appLE U ⊤ e).hom = θ := by
@@ -315,7 +313,7 @@ theorem pt_appLE (hU : IsAffineOpen U) (θ : Γ(Y, U) →+* Γ(Z, ⊤)) (e : ⊤
   exact (congrArg CommRingCat.Hom.hom h2).symm.trans (toSpec_appTop θ)
 
 /- English proof (translation)
-Establish `h1` using `pt_appLE hU θ (le_pt_preimage hU θ)`. Establish `h2` using `pt_appLE hU θ' (le_pt_preimage hU θ')`. Rewrite using `[← h1, ← h2]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem pt_injective (hU : IsAffineOpen U) {θ θ' : Γ(Y, U) →+* Γ(Z, ⊤)} (h : pt hU θ = pt hU θ') :
     θ = θ' := by
@@ -325,9 +323,9 @@ theorem pt_injective (hU : IsAffineOpen U) {θ θ' : Γ(Y, U) →+* Γ(Z, ⊤)} 
   congr 2
 
 /- English proof (translation)
-Establish `hr : Set.range g ⊆ Set.range hU.fromSpec`. Rewrite using `[hU.range_fromSpec]`. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `e trivial`. Set `l` to `IsOpenImmersion.lift hU.fromSpec g hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨((Scheme.ΓSpecIso _).inv ≫ l.appTop).hom, ?_⟩` and prove the remaining obligations. Rewrite using `[pt, CommRingCat.ofHom_hom, Spec.map_comp, Category.assoc, ← Scheme.toSpecΓ_naturality_assoc, ← SpecMap_ΓSpecIso_hom, ← Spec.map_comp_assoc, Iso.inv_hom_id, Spec.map_id]`. Conclude with `(IsOpenImmersion.lift_fac _ _ hr).symm.trans (congrArg (l ≫ ·) (Category.id_comp _).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_pt (hU : IsAffineOpen U) (g : Z ⟶ Y) (e : ⊤ ≤ g ⁻¹ᵁ U) :
     ∃ θ, g = pt hU θ := by
@@ -352,7 +350,7 @@ variable {S : Scheme.{0}} {X : Type} [AddCommGroup X] {G B : Over S} [GrpObj G] 
 open SplitTorusPoints
 
 /- English proof (translation)
-Use extensionality with `x`. Express the relevant statement in the definitionally equal form `(toHom (f ≫ t) (Multiplicative.ofAdd x)).val = f.left.appTop.hom (toHom t (Multiplicative.ofAdd x)).val`. Rewrite using `[toHom_val, toHom_val, coord_single, coord_single, Over.comp_left, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toHom_comp {Z Z' : Over S} (f : Z' ⟶ Z) (t : Z ⟶ splitTorus S X) :
     toHom (f ≫ t) = (Units.map f.left.appTop.hom.toMonoidHom).comp (toHom t) := by
@@ -363,7 +361,7 @@ theorem toHom_comp {Z Z' : Over S} (f : Z' ⟶ Z) (t : Z ⟶ splitTorus S X) :
   rfl
 
 /- English proof (translation)
-Establish `: (t ≫ i) ≫ q = 1`. Rewrite using `[Category.assoc, hi.w, ← Category.assoc, Hom.one_def]`. Use `congr 1`. Conclude with `toUnit_unique _ _`. Rewrite using `[MonObj.mul_comp, this, _root_.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_comp [IsMonHom q] (hi : IsPullback i (toUnit _) q η[B]) {Z : Over S}
     (t : Z ⟶ splitTorus S X) (g : Z ⟶ G) : ((t ≫ i) * g) ≫ q = g ≫ q := by
@@ -374,19 +372,19 @@ theorem act_comp [IsMonHom q] (hi : IsPullback i (toUnit _) q η[B]) {Z : Over S
   rw [MonObj.mul_comp, this, _root_.one_mul]
 
 /- English proof (translation)
-Set `C` to `Γ(G.left, q.left ⁻¹ᵁ V)`. Set `D : CommRingCat.{0}` to `.of (AddMonoidAlgebra C X)`. Set `j : AddMonoidAlgebra C X →+* Γ(Spec D, ⊤)` to `(Scheme.ΓSpecIso D).inv.hom`. Set `Z₀ : Over S` to `Over.mk (pt hU (j.comp (cst X C)) ≫ G.hom)`. Set `g₀ : Z₀ ⟶ G` to `Over.homMk (pt hU (j.comp (cst X C))) rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨t₀, ht₀⟩` from `(toHom_bijective (Z := Z₀) (X := X)).2 ((Units.map j.toMonoidHom).comp (univ X C))`. Establish `e : ⊤ ≤ ((t₀ ≫ i) * g₀).left ⁻¹ᵁ q.left ⁻¹ᵁ V`. Rewrite using `[← Scheme.Hom.comp_preimage, ← Over.comp_left, act_comp hi, Over.comp_left, Scheme.Hom.comp_preimage]`. Conclude with `le_pt_preimage hU _`. Take `⟨ρ₀, hρ₀⟩` from `exists_eq_pt hU _ e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(Scheme.ΓSpecIso D).hom.hom.comp ρ₀, fun Z t g θ hg => ?_⟩` and prove the remaining obligations. Set `π₀ : Z.left ⟶ Spec D` to `Z.left.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (ev θ (toHom t)))`. Establish `hπ : π₀.appTop.hom.comp j = ev θ (toHom t)` using `toSpec_appTop (R := D) _`. Establish `h1 : π₀ ≫ g₀.left = g.left`. Use `(comp_pt hU π₀ _).trans ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← RingHom.comp_assoc, hπ, ev_comp_cst, hg]`. Set `π : Z ⟶ Z₀` to `Over.homMk π₀ (by`. Rewrite using `[← Over.w g, ← h1, Category.assoc]`. Use the proof step `rfl)`. Establish `h2 : π ≫ g₀ = g` using `Over.OverMorphism.ext h1`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h3 : π ≫ t₀ = t`. Apply `toHom_bijective.1` to reduce the goal to its premises. Rewrite using `[toHom_comp, ht₀, ← ev_comp_univ θ (toHom t), ← hπ]`. Both sides reduce to the same expression. Establish `h4 : (t ≫ i) * g = π ≫ ((t₀ ≫ i) * g₀)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonObj.comp_mul, h2, ← Category.assoc, h3]`. Rewrite using `[h4, Over.comp_left, hρ₀]`. Use `(comp_pt hU π₀ _).trans ?_` and prove the remaining obligations. Rewrite using `[← hπ]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `RingHom.ext fun c => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `π₀.appTop.hom (ρ₀ c) = π₀.appTop.hom (((Scheme.ΓSpecIso D).hom ≫ (Scheme.ΓSpecIso D).inv).hom (ρ₀ c))`. Rewrite using `[Iso.hom_inv_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_coaction [IsMonHom q] (hi : IsPullback i (toUnit _) q η[B]) {V : B.left.Opens}
     (hU : IsAffineOpen (q.left ⁻¹ᵁ V)) :
@@ -431,17 +429,17 @@ theorem exists_coaction [IsMonHom q] (hi : IsPullback i (toUnit _) q η[B]) {V :
   rfl
 
 /- English proof (translation)
-Set `FinalForm : (Γ(G.left, q.left ⁻¹ᵁ V) →+* Γ(Z, ⊤)) → Over S` to `fun θ => Over.mk (pt hU θ ≫ G.hom)`. Set `g : ∀ θ, FinalForm θ ⟶ G` to `fun θ => Over.homMk (pt hU θ) rfl`. Establish `ex : ∀ θ (φ : Multiplicative X →* Γ(Z, ⊤)ˣ), ∃ t : FinalForm θ ⟶ splitTorus S X, toHom t = φ` using `fun θ φ => (toHom_bijective (Z := FinalForm θ) (X := X)).2 φ`. Use `⟨fun θ φ φ' => ?_, fun θ φ => ?_, fun θ φ φ' h => ?_, fun θ θ' h => ?_⟩` and prove the remaining obligations. Take `⟨t, rfl⟩` from `ex θ φ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨t', rfl⟩` from `ex θ φ'`. Establish `h1` using `hρ _ (t * t') (g θ) θ rfl`. Establish `h2` using `hρ _ t _ _ (hρ _ t' (g θ) θ rfl)`. Rewrite `h1` using `[toHom_mul, MonObj.mul_comp, _root_.mul_assoc, h2]`. Conclude with `(pt_injective hU h1).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨t, rfl⟩` from `ex θ φ`. Establish `h1` using `congrArg Over.Hom.left (act_comp hi t (g θ))`. Rewrite `h1` using `[Over.comp_left, Over.comp_left, hρ _ t (g θ) θ rfl]`. Conclude with `pt_injective hV ((pt_comp hU hV q.left le_rfl _).symm.trans (h1.trans (pt_comp hU hV q.left le_rfl _)))`. Take `⟨t, rfl⟩` from `ex θ φ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t', rfl⟩` from `ex θ φ'`. Establish `h1 : (t ≫ i) * g θ = (t' ≫ i) * g θ` using `Over.OverMorphism.ext ((hρ _ t (g θ) θ rfl).trans ((congrArg (pt hU) h).trans (hρ _ t' (g θ) θ rfl).symm))`. Rewrite using `[hi.hom_ext (mul_right_cancel h1) (toUnit_unique _ _)]`. Establish `h1 : pt hU θ' ≫ q.left = pt hU θ ≫ q.left`. Rewrite using `[pt_comp hU hV q.left le_rfl, pt_comp hU hV q.left le_rfl, h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Set `g' : FinalForm θ ⟶ G` to `Over.homMk (pt hU θ') (by`. Express the relevant statement in the definitionally equal form `_ = pt hU θ ≫ G.hom`. Rewrite using `[← Over.w q, ← Category.assoc, h1, Category.assoc])`. Establish `h2 : g' ≫ q = g θ ≫ q` using `Over.OverMorphism.ext h1`. Establish `h3 : (g' * (g θ)⁻¹) ≫ q = toUnit _ ≫ η[B]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MonObj.mul_comp, GrpObj.inv_comp, h2, mul_inv_cancel, Hom.one_def]`. Use `⟨toHom (hi.lift _ _ h3), pt_injective hU ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (hρ _ (hi.lift _ _ h3) (g θ) θ rfl)` and prove the remaining obligations. Rewrite using `[hi.lift_fst, inv_mul_cancel_right]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isTorsorOn [IsMonHom q] [IsMonHom i] (hi : IsPullback i (toUnit _) q η[B])
     {V : B.left.Opens} (hV : IsAffineOpen V) (hU : IsAffineOpen (q.left ⁻¹ᵁ V))
@@ -486,9 +484,9 @@ theorem isTorsorOn [IsMonHom q] [IsMonHom i] (hi : IsPullback i (toUnit _) q η[
 end Action
 
 /- English proof (translation)
-Rewrite using `[RingHom.FaithfullyFlat.iff_flat_and_comap_surjective]`. Use `⟨HasRingHomProperty.appLE @Flat q inferInstance ⟨V, hV⟩ ⟨_, hU⟩ le_rfl, fun p => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `q.surjective (hV.fromSpec p)`. Establish `hyU : y ∈ q ⁻¹ᵁ V`. Express the relevant statement in the definitionally equal form `q y ∈ V`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hy]`. Conclude with `hV.range_fromSpec.le ⟨p, rfl⟩`. Take `⟨P, rfl⟩` from `hU.range_fromSpec.ge hyU`. Use `⟨P, hV.fromSpec.isOpenEmbedding.injective ?_⟩` and prove the remaining obligations. Conclude with `(congr($(hV.SpecMap_appLE_fromSpec q hU le_rfl) P)).trans hy`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem faithfullyFlat_appLE {Y B : Scheme.{0}} (q : Y ⟶ B) [Flat q] [Surjective q] {V : B.Opens}
     (hV : IsAffineOpen V) (hU : IsAffineOpen (q ⁻¹ᵁ V)) :
@@ -509,17 +507,17 @@ end TorsorUnit
 open TorsorUnit SplitTorusPoints in
 
 /- English proof (translation)
-Introduce `S X _ G B _ _ q i _ _ _ _ _ hi _ χ b`. Take `⟨V, hV, hbV, -⟩` from `exists_isAffineOpen_mem_and_subset (x := b) (U := ⊤) trivial`. Establish `hU : IsAffineOpen (q.left ⁻¹ᵁ V)` using `hV.preimage q.left`. Take `⟨ρ, hρ⟩` from `exists_coaction hi hU`. Establish `htor : ∀ (R : Type) [CommRing R], IsTorsorOn R (q.left.appLE V _ le_rfl).hom ρ` using `fun R _ => (isTorsorOn hi hV hU hρ (Spec (.of R))).of_equiv (Scheme.ΓSpecIso (.of R)).symm.commRingCatIsoToRingEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, rfl⟩` from `hV.range_fromSpec.ge hbV`. Take `⟨a, ha, c, c', hcc, hc⟩` from `exists_homogeneous (faithfullyFlat_appLE q.left hV hU) htor χ p.asIdeal p.isPrime.ne_top`. Establish `hle : q.left ⁻¹ᵁ B.left.basicOpen a ≤ q.left ⁻¹ᵁ V` using `fun _ hx => B.left.basicOpen_le a hx`. Set `r` to `(G.left.presheaf.map (homOfLE hle).op).hom`. Establish `hunit : IsUnit (r c)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply `isUnit_of_mul_isUnit_left (y := r c')` to reduce the goal to its premises. Rewrite using `[← map_mul, hcc]`. Establish `h1` using `(B.left.toRingedSpace.isUnit_res_basicOpen a).map (q.left.app (B.left.basicOpen a)).hom`. Establish `h2` using `q.left.appLE_map (U := V) le_rfl (homOfLE hle).op`. Establish `h3` using `q.left.map_appLE (V := q.left ⁻¹ᵁ B.left.basicOpen a) le_rfl (homOfLE (B.left.basicOpen_le a)).op`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `congr($(h2.trans h3.symm).hom a)`. Rewrite `h1` using `[Scheme.Hom.app_eq_appLE]`. Conclude with `h4 ▸ h1`. Establish `hr : ∀ {Z : Scheme.{0}} (g : Z ⟶ G.left) (θ) (_ : g = pt hU θ) (h : ⊤ ≤ g ⁻¹ᵁ q.left ⁻¹ᵁ B.left.basicOpen a), (g.appLE _ ⊤ h).hom (r c) = θ c`. Introduce and unpack `Z g θ rfl h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1` using `congr($((pt hU θ).map_appLE h (homOfLE hle).op).hom c)`. Rewrite `h1` using `[pt_appLE]`. Conclude with `h1`. Use `⟨B.left.basicOpen a, ?_, hunit.unit, fun Z t g h₁ h₂ => ?_⟩` and prove the remaining obligations. Establish `: p ∈ hV.fromSpec ⁻¹ᵁ B.left.basicOpen a`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hV.fromSpec_preimage_basicOpen]`. Conclude with `ha`. Conclude with `this`. Take `⟨θ, hθ⟩` from `exists_eq_pt hU g.left (h₂.trans fun _ hx => hle hx)`. Rewrite using `[IsUnit.unit_spec, hr _ _ (hρ Z t g θ hθ), hr _ _ hθ, RingHom.comp_apply, hc, ev_single, toHom_val, coord_single, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local_unit_of_weight :
     ∀ (S : Scheme.{0}) (X : Type) [AddCommGroup X] (G B : Over S) [GrpObj G] [GrpObj B] (q : G ⟶ B) (i : splitTorus S X ⟶ G), IsMonHom q → IsMonHom i → Flat q.left → Surjective q.left → QuasiCompact q.left → IsPullback i (toUnit _) q (η[B]) → IsAffineHom q.left → ∀ (χ : X) (b : B.left), ∃ (V : B.left.Opens) (_ : b ∈ V) (u : Γ(G.left, q.left ⁻¹ᵁ V)ˣ), ∀ (Z : Over S) (t : Z ⟶ splitTorus S X) (g : Z ⟶ G) (h₁ : ⊤ ≤ ((t ≫ i) * g).left ⁻¹ᵁ (q.left ⁻¹ᵁ V)) (h₂ : ⊤ ≤ g.left ⁻¹ᵁ (q.left ⁻¹ᵁ V)), (((t ≫ i) * g).left.appLE _ ⊤ h₁).hom u.val = t.left.appTop.hom (charUnit S X χ).val * (g.left.appLE _ ⊤ h₂).hom u.val := by

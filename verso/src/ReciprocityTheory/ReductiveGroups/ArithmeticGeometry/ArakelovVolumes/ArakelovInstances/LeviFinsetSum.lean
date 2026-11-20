@@ -11,9 +11,9 @@ open Matrix NumberField ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheor
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Unfold `Data.nfac`. Establish `hpos : ∀ τ (i : Fin r), 0 < ‖dmin X.Gm x τ i.succ / dmin X.Gm x τ i.castSucc‖` using `fun τ i => norm_pos_iff.2 (div_ne_zero (hx _ _) (hx _ _))`. Rewrite using `[Real.log_prod (fun τ _ => (Finset.prod_pos fun i _ => Real.rpow_pos_of_pos (hpos τ i) _).ne'), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_prod (fun i _ => (Real.rpow_pos_of_pos (hpos τ i) _).ne'), Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Real.log_rpow (hpos τ i), norm_div, Real.log_div (norm_ne_zero_iff.2 (hx _ _)) (norm_ne_zero_iff.2 (hx _ _))]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem neg2log_nfac (la : Wt X.Ψ r) (x : Frame X.Ψ r) (hx : ∀ τ i, dmin X.Gm x τ i ≠ 0) :
     -2 * Real.log (X.nfac la x) = ∑ τ, ∑ i : Fin r, (la τ i : ℝ) *
@@ -30,9 +30,9 @@ theorem neg2log_nfac (la : Wt X.Ψ r) (x : Frame X.Ψ r) (hx : ∀ τ i, dmin X.
   ring
 
 /- English proof (translation)
-Unfold `levi`. Establish `h : (fderiv ℝ fun _ : ι → ℂ => c) = fun _ => 0`. Use function extensionality and compare the values at `x`. Conclude with `fderiv_const_apply c`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem levi_const {ι : Type} [Fintype ι] (c : ℝ) (z w : ι → ℂ) : levi (fun _ => c) z w = 0 := by
   unfold levi
@@ -43,16 +43,16 @@ theorem levi_const {ι : Type} [Fintype ι] (c : ℝ) (z w : ι → ℂ) : levi 
   simp
 
 /- English proof (translation)
-Rewrite using `[levi_add_smul c contDiffAt_const hf, levi_const, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_affine {ι : Type} [Fintype ι] (K c : ℝ) (f : (ι → ℂ) → ℝ) (z w : ι → ℂ)
     (hf : ContDiffAt ℝ 2 f z) : levi (fun v => K + c * f v) z w = c * levi f z w := by
   rw [levi_add_smul c contDiffAt_const hf, levi_const, zero_add]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [levi_const]`. Consider the case `insert a s ha ih`. Establish `hs : ContDiffAt ℝ 2 (fun v => ∑ j ∈ s, F j v) z` using `ContDiffAt.sum fun j hj => hF j (Finset.mem_insert_of_mem hj)`. Establish `e : (fun v => ∑ j ∈ insert a s, F j v) = fun v => (∑ j ∈ s, F j v) + 1 * F a v`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `v`. Rewrite using `[Finset.sum_insert ha]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, levi_add_smul 1 hs (hF a (Finset.mem_insert_self a s)), ih fun j hj => hF j (Finset.mem_insert_of_mem hj), Finset.sum_insert ha]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem levi_finset_sum {ι κ : Type} [Fintype ι] (s : Finset κ) (F : κ → (ι → ℂ) → ℝ) (z w : ι → ℂ)
     (hF : ∀ j ∈ s, ContDiffAt ℝ 2 (F j) z) :
@@ -70,11 +70,9 @@ theorem levi_finset_sum {ι κ : Type} [Fintype ι] (s : Finset κ) (F : κ → 
     ring
 
 /- English proof (translation)
-Establish `htri : U.BlockTriangular id` using `fun a c h => hU a c h`. Establish `hdiag : ∀ a, U a a ≠ 0`. Introduce `a ha`. Apply `hd` to reduce the goal to its premises. Rewrite using `[Matrix.det_of_upperTriangular htri]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ a) ha`. Establish `htri2 : (U.submatrix (Fin.castLE hm) (Fin.castLE hm)).BlockTriangular id`. Introduce `a c h`. Conclude with `hU _ _ (Fin.lt_def.mpr (by simp only [Fin.coe_castLE]; exact Fin.lt_def.mp h))`. Rewrite using `[Matrix.det_of_upperTriangular htri2]`.
-
-Conclude with `Finset.prod_ne_zero_iff.mpr fun a _ => hdiag _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_lead_ne (U : Matrix (Fin r) (Fin r) ℂ) (hU : ∀ a c : Fin r, c < a → U a c = 0) (hd : U.det ≠ 0)
     {m : ℕ} (hm : m ≤ r) : (U.submatrix (Fin.castLE hm) (Fin.castLE hm)).det ≠ 0 := by
@@ -104,9 +102,9 @@ def cB (τ : X.Ψ) (k : Fin (r + 1)) : ℝ :=
 variable {X x0 b z u}
 
 /- English proof (translation)
-Rewrite using `[dmin_line X x0 b hb z u τ (hgram τ) (v 0) k, norm_mul, norm_mul, Complex.norm_conj, Complex.norm_conj]`. Establish `hg : (Gz (Nat.le_of_lt_succ k.isLt) (Dsg X) (Yd X b z u τ) (v 0)).det.im = 0`. Establish `h` using `congrArg Matrix.det (Gz_herm (Nat.le_of_lt_succ k.isLt) (Dsg X) (Yd X b z u τ) (v 0))`. Rewrite `h` using `[Matrix.det_conjTranspose]`. Conclude with `Complex.conj_eq_iff_im.1 h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : ‖(Gz (Nat.le_of_lt_succ k.isLt) (Dsg X) (Yd X b z u τ) (v 0)).det‖ = |fk X b z u τ k v|`. Unfold `fk fY`. Conclude with `(Complex.abs_re_eq_norm.2 hg).symm`. Rewrite using `[hn]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dmin_line_norm (hb : b ∈ Bor X.Ψ r) (hgram : ∀ τ, gram τ.1 X.Gm (mat (rmul (cpt X x0 z) b) τ) =
       diagonal fun a : Fin r => ((sgn X.p0 (a : ℕ) : ℝ) : ℂ)) (v : Fin 1 → ℂ) (τ : X.Ψ) (k : Fin (r + 1)) :

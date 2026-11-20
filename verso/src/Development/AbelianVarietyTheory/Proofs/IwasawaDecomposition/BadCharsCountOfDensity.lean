@@ -8,17 +8,15 @@ namespace GlobalTheory.FewBadChars
 open Formalism.HermitianLattices.GL2PrimeSums
 
 /- English proof (translation)
-Introduce `h`. Take `⟨c, hc⟩` from `h 1 one_pos`. Use `⟨|c| + 1, by positivity, fun Q hQ => ?_⟩` and prove the remaining obligations. Establish `hQ1 : (1 : ℝ) ≤ Q` using `by linarith`. Establish `hQ0 : (0 : ℝ) ≤ Q` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hc (1 - 1 / 400) Q Q (by norm_num) (by norm_num) hQ1 hQ1`. Use `set Z : Set ((Σ q : ℕ, DirichletCharacter ℂ (q + 1)) × ℂ) := {p | 1 ≤ p.1.1 ∧ ((p.1.1 + 1 : ℕ) : ℝ) ≤ Q ∧ p.1.2.IsPrimitive ∧ 1 - 1 / 400 ≤ p.2.re ∧ |p.2.im| ≤ Q ∧ DirichletCharacter.LFunction p.1.2 p.2 = 0} with hZ`. Establish `hsub : BadChars Q ⊆ insert (⟨0, 1⟩ : Σ q : ℕ, DirichletCharacter ℂ (q + 1)) (Prod.fst '' Z)`. Introduce and unpack `⟨q, χ⟩ ⟨h1, h2, -, h4⟩`. Unfold `GoodFor at h4`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Use `push Not at h4`. Take `⟨s, hs1, hs2, hs3⟩` from `h4`. Break down `Nat.eq_zero_or_pos q with rfl | hq` into its components or cases. Use `left`. Use `congr 1`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `DirichletCharacter.level_one χ`. Use `right`. Use `⟨(⟨q, χ⟩, s), ⟨hq, h1, h2, hs1.le, hs2, ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `hs3.2`. Establish `h1 : (BadChars Q).encard ≤ Z.encard + 1` using `(Set.encard_le_encard hsub).trans ((Set.encard_insert_le _ _).trans (add_le_add (Set.encard_image_le _ _) le_rfl))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hq4 : (1 : ℝ) ≤ Q ^ ((1 : ℝ) / 4)` using `Real.one_le_rpow hQ1 (by norm_num)`. Establish `h3 : (Q ^ 2 * Q) ^ (((2 : ℝ) + 1) * (1 - (1 - 1 / 400))) ≤ Q ^ ((1 : ℝ) / 4)`. Rewrite using `[← pow_succ, ← Real.rpow_natCast, ← Real.rpow_mul hQ0]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hQ1 (by norm_num)`. Establish `h4 : c * (Q ^ 2 * Q) ^ (((2 : ℝ) + 1) * (1 - (1 - 1 / 400))) ≤ |c| * Q ^ ((1 : ℝ) / 4)` using `mul_le_mul (le_abs_self c) h3 (by positivity) (abs_nonneg c)`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_add (by positivity) (by positivity)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem badChars_count_of_density : GlobalTheory.Mem.An.Jutila → ∃ C : ℝ, 0 < C ∧ ∀ Q : ℝ, 3 ≤ Q →
     (((Formalism.HermitianLattices.GL2PrimeSums.BadChars Q).encard : ℕ∞) : ENNReal) ≤ ENNReal.ofReal (C * Q ^ ((1 : ℝ) / 4)) := by

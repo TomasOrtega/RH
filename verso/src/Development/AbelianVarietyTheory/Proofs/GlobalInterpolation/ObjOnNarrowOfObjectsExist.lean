@@ -17,34 +17,34 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 variable {R : Ranks}
 
 /- English proof (translation)
-Unfold `condE`. Conclude with `lt_of_lt_of_le H.hyp.2.1.one_lt (Nat.le_mul_of_pos_left _ (Nat.mul_pos H.QS_pos H.hyp.1.pos))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem one_lt_condE (H : Host R) : 1 < condE H := by
   unfold condE
   exact lt_of_lt_of_le H.hyp.2.1.one_lt (Nat.le_mul_of_pos_left _ (Nat.mul_pos H.QS_pos H.hyp.1.pos))
 
 /- English proof (translation)
-The claim follows from `lt_of_lt_of_le (by norm_num) (Nat.le_of_dvd (Nat.lcm_pos (by norm_num) (one_lt_condE H).le) (Nat.dvd_lcm_left 15 _))`.
+A detailed English derivation is pending.
 -/
 private theorem one_lt_lcm (H : Host R) : 1 < Nat.lcm 15 (condE H) :=
   lt_of_lt_of_le (by norm_num) (Nat.le_of_dvd (Nat.lcm_pos (by norm_num) (one_lt_condE H).le) (Nat.dvd_lcm_left 15 _))
 
 /- English proof (translation)
-The claim follows from `((Dvd.dvd.trans ⟨2 ^ R.e, by ring⟩ H.tower_dvd : 4 ∣ H.QS).mul_right _).mul_right _`.
+A detailed English derivation is pending.
 -/
 private theorem four_dvd_cond (H : Host R) : 4 ∣ H.QS * H.q * H.d :=
   ((Dvd.dvd.trans ⟨2 ^ R.e, by ring⟩ H.tower_dvd : 4 ∣ H.QS).mul_right _).mul_right _
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 h1`. Establish `hyi : IsIntegral ℤ (a : H.E)` using `RingOfIntegers.isIntegral_coe a`. Establish `hπ : (π : H.E) = 1 + N * (a : H.E)`. Use `congrArg (fun z : 𝓞 H.E => (z : H.E)) ha` as an intermediate fact. Simplify using `only [map_mul, map_sub, map_one, map_natCast] at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `-this`. Establish `hci : IsIntegral ℤ (H.conj (a : H.E))` using `hyi.map ((H.conj : H.E →+* H.E).toIntAlgHom)`. Rewrite `hn` using `[hπ, map_add, map_mul, map_one, map_natCast]`. Use `set z : H.E := a + H.conj (a : H.E) + N * (a * H.conj (a : H.E)) with hz`. Establish `hzi : IsIntegral ℤ z` using `(hyi.add hci).add ((isIntegral_natCast (R := ℤ) (B := H.E) N).mul (hyi.mul hci))`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM0 : (N : ℚ) ≠ 0` using `by exact_mod_cast hN`. Establish `h4 : z = algebraMap ℚ H.E (((T : ℚ) - 1) / N)`. Establish `hM0' : (N : H.E) ≠ 0` using `by exact_mod_cast hN`. Rewrite using `[map_div₀, map_sub, map_one, map_natCast, map_natCast, eq_div_iff hM0', hz]`. Take the linear combination `hn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hzi` using `[h4, isIntegral_algebraMap_iff (algebraMap ℚ H.E).injective]`. Take `⟨n, hn'⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hzi`. Establish `h5 : (((T : ℤ) - ((1 : ℕ) : ℤ) : ℤ) : ℚ) = ((N * n : ℤ) : ℚ)`. Establish `: (n : ℚ) = ((T : ℚ) - 1) / N` using `by simpa using hn'`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts. Conclude with `(Nat.modEq_iff_dvd.2 ⟨n, by exact_mod_cast h5⟩).symm`.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem norm_modEq (H : Host R) (π : 𝓞 H.E) {T N : ℕ} (hN : N ≠ 0)
     (hn : (π : H.E) * H.conj (π : H.E) = (T : H.E)) (h1 : π - 1 ∈ Ideal.span {((N : ℕ) : 𝓞 H.E)}) :
@@ -75,16 +75,14 @@ theorem norm_modEq (H : Host R) (π : 𝓞 H.E) {T N : ℕ} (hN : N ≠ 0)
   exact (Nat.modEq_iff_dvd.2 ⟨n, by exact_mod_cast h5⟩).symm
 
 /- English proof (translation)
-Unfold `Nat.ModEq`. Rewrite using `[Nat.mod_eq_of_lt hN]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem modEq_one_iff {a N : ℕ} (hN : 1 < N) : a ≡ 1 [MOD N] ↔ a % N = 1 := by
   unfold Nat.ModEq
   rw [Nat.mod_eq_of_lt hN]
 
 /- English proof (translation)
-Establish `hm : ∀ p ∈ H.levelPrimes, p % (H.QS * H.q * H.d) = 1` using `fun p hp => (modEq_one_iff (one_lt_condE H)).1 (hl p hp).2`. Use `⟨hg, fun i => hm _ (H.g_level i), ⟨?_, ?_⟩, fun p hp => (GlobalTheory.HostSplit.split_of_one_mod R H p (hl p hp).1 (hm p hp)).2⟩` and prove the remaining obligations. Rewrite using `[← GlobalTheory.HostSplit.ncard_placesOver H.E H.pde_prime]`. Conclude with `(GlobalTheory.HostSplit.split_of_one_mod R H _ H.pde_prime (hm _ H.pde_level.1)).1`. Rewrite using `[← GlobalTheory.HostSplit.ncard_placesOver H.E H.pde'_prime]`.
-
-Conclude with `(GlobalTheory.HostSplit.split_of_one_mod R H _ H.pde'_prime (hm _ H.pde_level.2)).1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hostArith_of (H : Host R)
     (hg : ∀ i, ∃ π : 𝓞 H.E, (π : H.E) ∈ H.K ∧ (π : H.E) * H.conj (π : H.E) = (H.g i : H.E))
@@ -98,7 +96,7 @@ theorem hostArith_of (H : Host R)
     exact (GlobalTheory.HostSplit.split_of_one_mod R H _ H.pde'_prime (hm _ H.pde_level.2)).1
 
 /- English proof (translation)
-Take `⟨π, -, h2, h3⟩` from `D.T_norm u`. Establish `h0 : condE D.host * (D.host.g 0 * D.host.g 1) ^ 2 ≠ 0` using `Nat.mul_ne_zero (by have := one_lt_condE D.host; omega) (pow_ne_zero _ (Nat.mul_ne_zero (D.host.g_prime 0).ne_zero (D.host.g_prime 1).ne_zero))`. Conclude with `(norm_modEq D.host π h0 h2 h3).of_mul_right _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem T_modEq (D : D7) (u : D.what₂.Word) : (D.mem u).A.T ≡ 1 [MOD condE D.host] := by
   obtain ⟨π, -, h2, h3⟩ := D.T_norm u
@@ -108,13 +106,13 @@ theorem T_modEq (D : D7) (u : D.what₂.Word) : (D.mem u).A.T ≡ 1 [MOD condE D
   exact (norm_modEq D.host π h0 h2 h3).of_mul_right _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem frob_dlog_eq (H : Host R) : (∀ p, hPH H p = frobH H p) ∧ GlobalTheory.EX.dlogH H = GlobalTheory.IndefiniteRowSideFullHecke.FewBadPrimes.dlogH H :=
   ⟨fun _ => rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h t => GlobalTheory.Refill.bsH_orb h t, fun h t => GlobalTheory.Refill.bsH_step h t⟩`.
+Supply the required witnesses or components.
 -/
 theorem isOrigins_bsH (φ : Formalism.HC.Frame) : IsOrigins (φ := φ) Arith.bsH :=
   ⟨fun h t => GlobalTheory.Refill.bsH_orb h t, fun h t => GlobalTheory.Refill.bsH_step h t⟩
@@ -123,9 +121,9 @@ def LeastPrimeCong (H : Host R) (q0 : ℕ) : Prop :=
   ∃ r' : ℕ, IsLeast {l : ℕ | l.Prime ∧ ¬ l ∣ condE H * (H.pde - 1) * (H.pde' - 1)} r' ∧ q0 ≡ 1 [MOD r' * condE H]
 
 /- English proof (translation)
-Take `⟨r', ⟨⟨-, hr⟩, -⟩, hq⟩` from `h`. Establish `h1 : q0 ≡ 1 [MOD r']` using `hq.of_mul_right _`. Use `⟨hq.of_mul_left _, fun e => hr ?_, fun e => hr ?_⟩` and prove the remaining obligations. Rewrite `h1` using `[e]`. Conclude with `Dvd.dvd.mul_right (Dvd.dvd.mul_left ((Nat.modEq_iff_dvd' H.pde_prime.one_le).1 h1.symm) _) _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e]`. Conclude with `Dvd.dvd.mul_left ((Nat.modEq_iff_dvd' H.pde'_prime.one_le).1 h1.symm) _`.
+A detailed English derivation is pending.
 -/
 theorem LeastPrimeCong.facts {H : Host R} {q0 : ℕ} (h : LeastPrimeCong H q0) :
     q0 ≡ 1 [MOD condE H] ∧ q0 ≠ H.pde ∧ q0 ≠ H.pde' := by
@@ -138,17 +136,17 @@ theorem LeastPrimeCong.facts {H : Host R} {q0 : ℕ} (h : LeastPrimeCong H q0) :
     exact Dvd.dvd.mul_left ((Nat.modEq_iff_dvd' H.pde'_prime.one_le).1 h1.symm) _
 
 /- English proof (translation)
-Establish `hy : 1 ≤ s.x ^ (s.eps / 3)` using `Real.one_le_rpow s.one_lt_alt.le (by linarith [s.eps_pos])`. Use `set y := s.x ^ (s.eps / 3) with hyd`. Establish `hX : s.X' = Real.exp y` using `rfl`. Establish `hX1 : 1 < s.X'` using `by rw [hX]; exact Real.one_lt_exp_iff.2 (by linarith)`. Take `⟨N, hN⟩ : ∃ N, ⌈s.X'⌉₊ = N + 1` from `Nat.exists_eq_succ_of_ne_zero (Nat.ceil_pos.2 (by linarith)).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hNX : (N : ℝ) < s.X'` using `Nat.lt_ceil.1 (by omega)`. Establish `hlog : ∀ n : ℕ, n ≤ N → Real.log n ≤ y`. Introduce `n hn`. Break down `Nat.eq_zero_or_pos n with rfl | h0` into its components or cases. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0' : (0 : ℝ) < n` using `by exact_mod_cast h0`. Establish `h1 : (n : ℝ) ≤ N` using `by exact_mod_cast hn`. Rewrite using `[Real.log_le_iff_le_exp h0', ← hX]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN, Finset.sum_range_succ']`. Establish `h1 : ∑ k ∈ Finset.range N, Real.log ((k + 1 : ℕ) : ℝ) / ((k + 1 : ℕ) : ℝ) ≤ y * (harmonic N : ℝ)`. Unfold `harmonic`. Use `push_cast`. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum fun k hk => ?_` and prove the remaining obligations. Use `hlog (k + 1) (Finset.mem_range.1 hk)` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[div_eq_mul_inv]`. Conclude with `mul_le_mul_of_nonneg_right this (by positivity)`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `harmonic_le_one_add_log N`. Establish `h3` using `hlog N le_rfl`. Establish `h4 : y * (harmonic N : ℝ) ≤ y * (y + y)` using `mul_le_mul_of_nonneg_left (by linarith) (by linarith)`. Simplify using `only [Nat.cast_zero, div_zero, add_zero]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sum_log_div_le (s : Scale) :
     ∑ n ∈ Finset.range ⌈s.X'⌉₊, Real.log n / n ≤ 2 * (s.x ^ (s.eps / 3)) ^ 2 := by
@@ -183,25 +181,23 @@ theorem sum_log_div_le (s : Scale) :
   nlinarith
 
 /- English proof (translation)
-Use `⟨(16 * |Cb|) ^ (3 / eps), fun s R H hs hx hT hB => ?_⟩` and prove the remaining obligations. Substitute `hs` using the available equality. Establish `hx0 : 0 < s.x` using `by linarith [s.one_lt_alt]`. Establish `hy : 16 * |Cb| ≤ s.x ^ (s.eps / 3)`. Establish `h1 : ((16 * |Cb|) ^ (3 / s.eps)) ^ (s.eps / 3) ≤ s.x ^ (s.eps / 3)` using `Real.rpow_le_rpow (by positivity) hx (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← Real.rpow_mul (by positivity), show 3 / s.eps * (s.eps / 3) = 1 by field_simp, Real.rpow_one]`. Then use the resulting hypothesis. Establish `hS` using `sum_log_div_le s`. Establish `hxe : s.x ^ (-2 + s.eps) = s.x ^ (-2 : ℝ) * (s.x ^ (s.eps / 3)) ^ 3`. Rewrite using `[Real.rpow_add hx0, ← Real.rpow_natCast, ← Real.rpow_mul hx0.le]`. Use `congr 2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `set y := s.x ^ (s.eps / 3) with hyd`. Establish `hy0 : 0 < y` using `Real.rpow_pos_of_pos hx0 _`. Unfold `FewBad`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `BadOK at hB`. Simplify using `only at hB`. Use `set PR := (Finset.range ⌈s.X'⌉₊).filter (fun p => p.Prime ∧ H.cls p = PrimeClass.inertClass ∧ s.x ^ (s.eps / 4) ≤ (addOrderOf (frobH H p) : ℝ)) with hPR`. Establish `hB' : ∑ p ∈ PR, Real.log p / p * ((H.TT.filter (fun t => ¬ GoodH H s p (Arith.bsH (frobH H p) t))).card : ℝ) ≤ 4 * (Cb * s.x ^ (-2 : ℝ)) * s.delta1 * R.n * ∑ p ∈ PR, Real.log p / p`. Use `le_trans (le_of_eq ?_) hB` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hc : H.cls p = PrimeClass.inertClass` using `(Finset.mem_filter.1 hp).2.2.1`. Establish `hst : Arith.Loc.stepP (baseOf s 0 0 H) (hPH H p) p = frobH H p`. Unfold `Arith.Loc.stepP`. Rewrite using `[if_neg]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Introduce `h`. Establish `h' : H.cls p = PrimeClass.signal` using `h`. Rewrite `h'` using `[hc]`. Consider the cases of `h'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hst]`. Both sides reduce to the same expression. Establish `hn : ∀ n : ℕ, 0 ≤ Real.log n / n` using `fun n => div_nonneg (Real.log_natCast_nonneg n) (Nat.cast_nonneg n)`. Establish `hS0 : 0 ≤ ∑ p ∈ PR, Real.log p / p` using `Finset.sum_nonneg fun n _ => hn n`. Establish `hS1 : ∑ p ∈ PR, Real.log p / p ≤ 2 * y ^ 2` using `(Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _) fun n _ _ => hn n).trans hS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : 0 < s.x ^ (-2 : ℝ)` using `Real.rpow_pos_of_pos hx0 _`. Establish `hd : 0 ≤ s.delta1 * R.n` using `by unfold Scale.delta1; positivity`. Use `le_trans (le_of_eq (by congr)) (hB'.trans ?_)` and prove the remaining obligations. Rewrite using `[hxe]`. Use `set S := ∑ p ∈ PR, Real.log p / p`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `set z := s.x ^ (-2 : ℝ)`. Use `set τ := (H.TT.card : ℝ)`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Use `(mul_le_mul_of_nonneg_right (le_abs_self Cb) (mul_nonneg hd hS0)).trans ?_` and prove the remaining obligations.
-
-Use `mul_le_mul_of_nonneg_left ?_ (abs_nonneg _)` and prove the remaining obligations. Conclude with `mul_le_mul (by linarith) hS1 hS0 (by linarith)`. Use `_ = τ * (z * y ^ 2) * (16 * |Cb|) := by ring`. Use `_ ≤ τ * (z * y ^ 2) * y := mul_le_mul_of_nonneg_left hy (mul_nonneg (by linarith) (by positivity))`. Use `_ = τ * (z * y ^ 3) := by ring`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fewBad_of_badOK (eps Cb : ℝ) (he : 0 < eps) : ∃ x0 : ℝ, ∀ (s : Scale) (R : Ranks) (H : Host R), s.eps = eps → x0 ≤ s.x →
     s.delta1 * R.n / 2 ≤ (H.TT.card : ℝ) → BadOK s Cb H → FewBad H s Arith.bsH := by
@@ -263,11 +259,11 @@ theorem fewBad_of_badOK (eps Cb : ℝ) (he : 0 < eps) : ∃ x0 : ℝ, ∀ (s : S
     _ = τ * (z * y ^ 3) := by ring
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, hπ, -, ⟨hp, hp'⟩, ⟨hq, -, -, hr⟩, hl⟩` from `h`. Establish `hg : ∀ i, (H.g i).Prime ∧ H.g i ≡ 1 [MOD condE H]` using `fun i => by`. Take `⟨π, -, h2, h3⟩` from `hπ i`. Conclude with `⟨H.g_prime i, norm_modEq H π (by have := one_lt_condE H; omega) h2 h3⟩`. Introduce `p hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hm` using `[hl]`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hm`. Break down `hm with rfl | rfl | rfl | rfl | rfl` into its components or cases. Conclude with `hg 0`. Conclude with `hg 1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨H.pde_prime, hp.of_dvd (Nat.dvd_lcm_right _ _)⟩`. Conclude with `⟨H.pde'_prime, hp'.of_dvd (Nat.dvd_lcm_right _ _)⟩`. Conclude with `⟨hq, (LeastPrimeCong.facts hr).1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem level_of_arithData {C : FC} {s : Scale} {H : Host R} {q0 : ℕ}
     {bs : R.A → R.A → R.A} (h : ArithData C s H q0 bs) :
@@ -287,9 +283,9 @@ theorem level_of_arithData {C : FC} {s : Scale} {H : Host R} {q0 : ℕ}
   · exact ⟨hq, (LeastPrimeCong.facts hr).1⟩
 
 /- English proof (translation)
-Establish `hlv` using `level_of_arithData h`. Take `⟨hv, hT, hbox, hdl, hqd, hc, -, -, hπ, hdis, ⟨hp, hp'⟩, ⟨hq, -, hq8, hr⟩, hl⟩` from `h`. Establish `h1` using `one_lt_condE H`. Establish `hf` using `LeastPrimeCong.facts hr`. Use `⟨hT, ⟨hv, hostArith_of H (fun i => ?_) hlv, h2, hc, hqd, hbox, hdl, h6, hb, hdis, hπ, ⟨(modEq_one_iff (one_lt_lcm H)).1 hp, (modEq_one_iff (one_lt_lcm H)).1 hp'⟩, ⟨hq, (modEq_one_iff h1).1 hf.1, ?_, hf.2.1, hf.2.2⟩, hl⟩, hr⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨π, a1, a2, -⟩` from `hπ i`. Conclude with `⟨π, a1, a2⟩`. Unfold `condE at hq8`. Conclude with `hq8` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 -/
 theorem hostGood_of_arithData {C : FC} {s : Scale} {H : Host R} {q0 : ℕ} {c6 Cb : ℝ}
     {bs : R.A → R.A → R.A} (h : ArithData C s H q0 bs)
@@ -308,9 +304,9 @@ theorem hostGood_of_arithData {C : FC} {s : Scale} {H : Host R} {q0 : ℕ} {c6 C
     exact_mod_cast hq8
 
 /- English proof (translation)
-Take `⟨hv, -, -, hc, hqd, hbox, hdl, -, -, hdis, hπ, ⟨hp, hp'⟩, ⟨hq, hm, hq8, -, -⟩, hl⟩` from `h`. Establish `h1` using `one_lt_condE H`. Use `⟨hv, hT, hbox, hdl, hqd, hc, isOrigins_bsH _, hF, hπ, hdis, ⟨(modEq_one_iff (one_lt_lcm H)).2 hp, (modEq_one_iff (one_lt_lcm H)).2 hp'⟩, ⟨hq, ?_, ?_, hr⟩, hl⟩` and prove the remaining obligations. Establish `h4 : 4 ∣ H.QS * H.q * H.d` using `four_dvd_cond H`. Establish `h5 : q0 % 4 = 1` using `by rw [← Nat.mod_mod_of_dvd q0 h4, hm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hq.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Unfold `condE`. Conclude with `hq8` after adjusting the coercions.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 -/
 theorem arithData_of_hostGood {C : FC} {s : Scale} {H : Host R} {q0 : ℕ} {c6 Cb : ℝ} (hT : H.CT2 = C.CT2)
     (h : HostGood s C.P.Cpde 4 c6 Cb H q0) (hr : LeastPrimeCong H q0) (hF : FewBad H s Arith.bsH) :
@@ -328,7 +324,7 @@ theorem arithData_of_hostGood {C : FC} {s : Scale} {H : Host R} {q0 : ℕ} {c6 C
     exact_mod_cast hq8
 
 /- English proof (translation)
-Take `⟨x0, h0⟩` from `fewBad_of_badOK eps Cb he`. Use `⟨x0, fun C s R H q0 hs hx => ⟨fun ⟨hT, h, hr⟩ => ?_, fun ⟨h, h2, h6, hb⟩ => hostGood_of_arithData h h2 h6 hb⟩⟩` and prove the remaining obligations. Establish `hb` using `h.2.2.2.2.2.2.2.2.1`. Conclude with `⟨arithData_of_hostGood hT h hr (h0 s R H hs hx h.1.2.1.1 hb), h.2.2.1, h.2.2.2.2.2.2.2.1, hb⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem hyp_iff (eps c6 Cb : ℝ) (he : 0 < eps) : ∃ x0 : ℝ, ∀ (C : FC) (s : Scale) (R : Ranks) (H : Host R) (q0 : ℕ),
     s.eps = eps → x0 ≤ s.x →
@@ -340,7 +336,7 @@ theorem hyp_iff (eps c6 Cb : ℝ) (he : 0 < eps) : ∃ x0 : ℝ, ∀ (C : FC) (s
   exact ⟨arithData_of_hostGood hT h hr (h0 s R H hs hx h.1.2.1.1 hb), h.2.2.1, h.2.2.2.2.2.2.2.1, hb⟩
 
 /- English proof (translation)
-Unfold `Win WinOK bTop`. Simplify using `only [Finset.mem_image, forall_exists_index, and_imp, forall_apply_eq_imp_iff₂]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem win_iff (C : FC) (s : Scale) (H : Host R) (a b : ℕ → ℤ) :
     Win s R.k (H.TT.image Formalism.HC.Frame.A.val) (bTop C s R) a b ↔ WinOK s C.GK H (fun t => a t.val) (fun t => b t.val) := by
@@ -348,7 +344,7 @@ theorem win_iff (C : FC) (s : Scale) (H : Host R) (a b : ℕ → ℤ) :
   simp only [Finset.mem_image, forall_exists_index, and_imp, forall_apply_eq_imp_iff₂]
 
 /- English proof (translation)
-Rewrite using `[win_iff]`. Simplify using `only [Formalism.HC.Frame.ofNat_val]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem winOK_iff (C : FC) (s : Scale) (H : Host R) (a b : R.A → ℤ) :
     WinOK s C.GK H a b ↔ Win s R.k (H.TT.image Formalism.HC.Frame.A.val) (bTop C s R) (fun n => a (R.ofNat n)) (fun n => b (R.ofNat n)) := by
@@ -364,7 +360,7 @@ theorem numWords_eq (C : FC) (s : Scale) (R : Ranks) :
 def codeOf {M : ℕ} {W : Type} (c : Fin M → W) (hc : Function.Injective c) : Finset W := Finset.univ.map ⟨c, hc⟩
 
 /- English proof (translation)
-Simplify using `[codeOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem card_codeOf {M : ℕ} {W : Type} (c : Fin M → W) (hc : Function.Injective c) : (codeOf c hc).card = M := by
   simp [codeOf]
@@ -376,16 +372,16 @@ def codeEquiv {M : ℕ} {W : Type} (c : Fin M → W) (hc : Function.Injective c)
       exact ⟨i, Subtype.ext hi⟩⟩
 
 /- English proof (translation)
-The claim follows from `congrArg Subtype.val ((codeEquiv c hc).apply_symm_apply w)`.
+A detailed English derivation is pending.
 -/
 theorem codeEquiv_symm {M : ℕ} {W : Type} (c : Fin M → W) (hc : Function.Injective c) (w : codeOf c hc) :
     c ((codeEquiv c hc).symm w) = w.1 :=
   congrArg Subtype.val ((codeEquiv c hc).apply_symm_apply w)
 
 /- English proof (translation)
-Use `⟨fun i => (code.equivFin.symm i).1, fun i j h => code.equivFin.symm.injective (Subtype.ext h), ?_⟩` and prove the remaining obligations. Use extensionality with `w`. Use `⟨fun h => ?_, fun h => Finset.mem_map.2 ⟨code.equivFin ⟨w, h⟩, Finset.mem_univ _, ?_⟩⟩` and prove the remaining obligations. Take `⟨i, -, hi⟩` from `Finset.mem_map.1 h`. Rewrite using `[← hi]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(code.equivFin.symm i).2`. Conclude with `congrArg Subtype.val (code.equivFin.symm_apply_apply ⟨w, h⟩)`.
+A detailed English derivation is pending.
 -/
 theorem exists_codeOf {W : Type} (code : Finset W) :
     ∃ (c : Fin code.card → W) (hc : Function.Injective c), codeOf c hc = code := by
@@ -398,13 +394,13 @@ theorem exists_codeOf {W : Type} (code : Finset W) :
   · exact congrArg Subtype.val (code.equivFin.symm_apply_apply ⟨w, h⟩)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(D.mem u).A.T_prime, (D.T_win u).1, (D.T_win u).2, D.T_norm u, (D.T_ne_pde u).1, (D.T_ne_pde u).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem level_primes_admissible {D : D7} (L : SizeData₂ D) (u : D.what₂.Word) : L.AdmT u (D.mem u).A.T :=
   ⟨(D.mem u).A.T_prime, (D.T_win u).1, (D.T_win u).2, D.T_norm u, (D.T_ne_pde u).1, (D.T_ne_pde u).2⟩
 
 /- English proof (translation)
-Establish `h25 : C.CTu = 25` using `hC.2.2.2.2.2.2.2.2.2.2.1`. Establish `key : ∀ u, Real.log ((D.mem u).A.T : ℝ) ≤ C.CTu * D.R.m * L.sc.L ↔ ((D.mem u).A.T : ℝ) ≤ L.sc.b ^ (25 * (D.R.m : ℝ))` using `fun u => by`. Establish `h0 : (0 : ℝ) < (D.mem u).A.T` using `by exact_mod_cast (D.mem u).A.T_prime.pos`. Rewrite using `[Real.log_le_iff_le_exp h0, h25, Scale.b, ← Real.exp_mul, mul_comm L.sc.L]`. Conclude with `⟨fun h u => ⟨h.1 u, (key u).1 (h.2 u)⟩, fun h => ⟨fun u => (h u).1, fun u => (key u).2 (h u).2⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem range_iff {C : FC} (hC : Std C) {D : D7} (L : SizeData₂ D) :
     (L.TuGe ∧ ∀ u, Real.log ((D.mem u).A.T : ℝ) ≤ C.CTu * D.R.m * L.sc.L) ↔
@@ -423,22 +419,20 @@ def OffCanon : PtProp := fun D L _ X _ _ _ _ _ =>
     X.off j (false, t) = if t ∈ D.host.TT then L.sc.b' / L.sc.x else L.sc.w'' D.R.n
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem canonInst_iff {C : FC} (p : Pt C) : CanonInst p.ta.Gx ↔ BsCanon p ∧ p.Has OffCanon := Iff.rfl
 
 /- English proof (translation)
-Take `⟨⟨hcp, hh⟩, hs, hbs, hoff, hw, e, he, hT⟩` from `h`. Establish `hR : p.D.R = R` using `congrArg Sigma.fst hh`. Substitute `hR` using the available equality. Establish `hD : p.D.host = hostAt H hH.ccK_eq u0 (Finset.univ.image T) hcp` using `eq_of_heq (Sigma.mk.inj hh).2`. Establish `hmod` using `T_modEq p.D`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hs, ?_, ⟨rfl, by rw [hD]; rfl, by rw [hD]; rfl, by rw [hD]; rfl, by rw [hD]; rfl, by rw [hD]; rfl, by rw [hD]; rfl, by rw [hD]; rfl, by rw [hD]; exact Finset.subset_union_left, by rw [hD]; rfl, fun l => ?_, fun t t' ht => ?_, ⟨e.trans (codeEquiv c hc).symm, fun u l => ?_⟩, by rw …` and prove the remaining obligations. Rewrite `hmod`, the goal using `[hD]`. Use `hostArith_of _ (fun i => ?_) fun l hl => ?_` and prove the remaining obligations. Take `⟨π, a1, a2, -⟩` from `hH.2.2.2.2.2.2.2.2.1 i`. Conclude with `⟨π, a1, a2⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Break down `Finset.mem_union.1 hl with hl | hl` into its components or cases. Conclude with `level_of_arithData hH l hl`. Take `⟨w, -, rfl⟩` from `Finset.mem_image.1 hl`. Take `⟨u, rfl⟩` from `e.surjective w`. Rewrite using `[← hT u]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨(p.D.mem u).A.T_prime, hmod u⟩`. Use `show (frobH p.D.host l).val = _`. Rewrite using `[hD]`. Both sides reduce to the same expression. Use `hw t` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[ht]`. Simplify `this` using `only [Formalism.HC.Frame.ofNat_val]`. Use `split_ifs with hl`. Rewrite using `[Equiv.trans_apply, codeEquiv_symm c hc]`. Conclude with `he u ⟨l, hl⟩`.
-
-Conclude with `dif_neg hl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem from_of_over {C : FC} {s : Scale} {H : Host R} {q0 : ℕ} (hH : ArithData C s H q0 Arith.bsH)
     (a b : R.A → ℤ) {M : ℕ} (c : Fin M → Fin (R.k - 2) → Bool) (hc : Function.Injective c)
@@ -477,11 +471,11 @@ theorem from_of_over {C : FC} {s : Scale} {H : Host R} {q0 : ℕ} (hH : ArithDat
     · exact dif_neg hl
 
 /- English proof (translation)
-Take `⟨hR, -, -, -, -, -, -, -, -, -, -, hw, ⟨eW, he⟩, -⟩` from `hF`. Substitute `hR` using the available equality. Use `set e := eW.trans (codeEquiv c hc) with hedef`. Use `⟨fun w => (p.D.mem (e.symm w)).A.T, ?_, hs, fun h t h' t' e1 e2 => ?_, hoff, fun t => hw t _ rfl, e, fun u l => ?_, fun u => congrArg (fun v => (p.D.mem v).A.T) (e.symm_apply_apply u).symm⟩` and prove the remaining obligations. Establish `: S = Finset.univ.image (fun w => (p.D.mem (e.symm w)).A.T)`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `l`. Rewrite using `[hS, Finset.mem_image]`. Conclude with `⟨fun ⟨u, hu⟩ => ⟨e u, Finset.mem_univ _, by rw [e.symm_apply_apply, hu]⟩, fun ⟨w, _, hw⟩ => ⟨_, hw⟩⟩`. Rewrite using `[← this]`. Conclude with `⟨hcp, hh⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB, Formalism.HC.Frame.A.val_injective _ e1, Formalism.HC.Frame.A.val_injective _ e2]`. Rewrite using `[he u l.1, dif_pos l.2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem over_of_from {C : FC} {s : Scale} {H : Host R} (hK : H.ccK = ⊤)
     (a b : ℕ → ℤ) {M : ℕ} (c : Fin M → Fin (R.k - 2) → Bool) (hc : Function.Injective c)
@@ -531,9 +525,9 @@ def Common (Q : PtProp) : Prop :=
           FactDGam p.D Cdg
 
 /- English proof (translation)
-Take `⟨ε0, h0, h⟩` from `h`. Use `⟨ε0, h0, fun eps C8 c6 Cb h1 h2 h3 h4 => ?_⟩` and prove the remaining obligations. Take `⟨K0, h⟩` from `h eps C8 4 c6 Cb h1 h2 h3 h4`. Use `⟨K0, fun C hC h8 hL => ?_⟩` and prove the remaining obligations. Take `⟨c1, h⟩` from `h C hC h8 hL`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨Cdg, x0, h⟩` from `h ch hch`. Conclude with `⟨Cdg, x0, fun s R H q0 a b M c u0 hs hx hR hT hH _ hw hM hc hu => h s R H q0 a b M c u0 hs hx hR hT hH hw hM hc hu⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem narrow_of_objEx {Q : PtProp} (h : ObjEx Q) : ObjExNarrow Q := by
   obtain ⟨ε0, h0, h⟩ := h
@@ -548,11 +542,11 @@ theorem narrow_of_objEx {Q : PtProp} (h : ObjEx Q) : ObjExNarrow Q := by
   exact ⟨Cdg, x0, fun s R H q0 a b M c u0 hs hx hR hT hH _ hw hM hc hu => h s R H q0 a b M c u0 hs hx hR hT hH hw hM hc hu⟩
 
 /- English proof (translation)
-Take `⟨ε0, h0, h⟩` from `h`. Use `⟨ε0, h0, fun eps C8 c6 Cb h1 h2 h3 h4 => ?_⟩` and prove the remaining obligations. Take `⟨K0, h⟩` from `h eps C8 c6 Cb h1 h2 h3 h4`. Use `⟨K0, fun C hC h8 hL => ?_⟩` and prove the remaining obligations. Take `⟨c1, h⟩` from `h C hC h8 hL`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨Cdg, x0, h⟩` from `h ch hch`. Use `⟨Cdg, x0, fun s R H q0 a b M c hs hx hR hT hH hr hw hM hc => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨off, h⟩` from `h s R H q0 a b M c hs hx hR hT hH hr hw hM hc`. Use `⟨off, fun u0 hu => ?_⟩` and prove the remaining obligations. Take `⟨p, a1, a2, a3, a4, a5, a6, a7, a8⟩` from `h u0 hu`. Conclude with `⟨p, a1, a2, a3, a4, a5, a6, hQ C p a7, a8⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Common.imp {Q Q' : PtProp} (h : Common Q) (hQ : ∀ (C : FC) (p : Pt C), p.Has Q → p.Has Q') : Common Q' := by
   obtain ⟨ε0, h0, h⟩ := h
@@ -571,15 +565,15 @@ theorem Common.imp {Q Q' : PtProp} (h : Common Q) (hQ : ∀ (C : FC) (p : Pt C),
   exact ⟨p, a1, a2, a3, a4, a5, a6, hQ C p a7, a8⟩
 
 /- English proof (translation)
-Use `⟨fun ⟨ε0, h0, h⟩ => ⟨ε0, h0, fun eps C8 c6 Cb h1 h2 h3 h4 => ?_⟩, fun ⟨ε0, h0, h⟩ => ⟨ε0, h0, fun eps C8 c6 Cb h1 h2 h3 h4 => ?_⟩⟩` and prove the remaining obligations. Use `all_goals`. Take `⟨K0, h⟩` from `h eps C8 c6 Cb h1 h2 h3 h4`. Use `⟨K0, fun C hC h8 hL => ?_⟩` and prove the remaining obligations. Take `⟨c1, h⟩` from `h C hC h8 hL`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨Cdg, x0, h⟩` from `h ch hch`. Use `⟨Cdg, x0, fun s R H q0 a b M c hs hx hR hT hH hr hw hM hc => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hn : 0 < R.n` using `R.ord_pos`. Take `⟨p0, b1, b2, -, b4, b5, -⟩` from `h s R H q0 a b M c 0 hs hx hR hT hH hr hw hM hc hn`. Use `⟨fun j n => p0.ta.Gx.off j (false, (p0.D.R.ofNat n : G.HH p0.D)), fun u0 hu => ?_⟩` and prove the remaining obligations. Take `⟨p, a1, a2, a3, a4, a5, a6, a7⟩` from `h s R H q0 a b M c u0 hs hx hR hT hH hr hw hM hc hu`. Use `⟨p, a1, a2, a3, a4, a5.1, fun j t => ?_, ⟨a6, a5.2⟩, a7⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hS` using `GlobalTheory.EX.TieSame.same_of_from C cD ch p p0 R H a b M c u0 0 (a1.trans b1.symm) a2 b2 a4 b4 a5 b5`. Use `hS.2.2.2.2.2.2.2.2.2.2.2.2.1 j t _ (Formalism.HC.Frame.val_ofNat_of_lt _ ?_).symm` and prove the remaining obligations. Rewrite using `[← hS.1]`. Conclude with `Formalism.HC.Frame.A.val_lt t`. Use `⟨Cdg, x0, fun s R H q0 a b M c u0 hs hx hR hT hH hr hw hM hc hu => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨off, h⟩` from `h s R H q0 a b M c hs hx hR hT hH hr hw hM hc`. Take `⟨p, a1, a2, a3, a4, a5, -, a7, a8⟩` from `h u0 hu`. Conclude with `⟨p, a1, a2, a3, a4, ⟨a5, a7.2⟩, a7.1, a8⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem narrow_iff_common (Q : PtProp) : ObjExNarrow Q ↔ Common (Q.and OffCanon) := by
   refine ⟨fun ⟨ε0, h0, h⟩ => ⟨ε0, h0, fun eps C8 c6 Cb h1 h2 h3 h4 => ?_⟩,
@@ -608,21 +602,21 @@ theorem narrow_iff_common (Q : PtProp) : ObjExNarrow Q ↔ Common (Q.and OffCano
     exact ⟨p, a1, a2, a3, a4, ⟨a5, a7.2⟩, a7.1, a8⟩
 
 /- English proof (translation)
-The claim follows from `((narrow_iff_common Q).1 (narrow_of_objEx h)).imp fun _ _ hp => hp.1`.
+A detailed English derivation is pending.
 -/
 theorem common_of_objEx {Q : PtProp} (h : ObjEx Q) : Common Q :=
   ((narrow_iff_common Q).1 (narrow_of_objEx h)).imp fun _ _ hp => hp.1
 
 /- English proof (translation)
-Take `⟨Cdg, -, h⟩` from `h`. Use `⟨1, one_pos, fun eps C8 c6 Cb h1 _ h3 h4 => ?_⟩` and prove the remaining obligations. Take `⟨K0, h⟩` from `h eps h1 h3 C8 h4`. Use `⟨K0, fun C hC h8 hL => ?_⟩` and prove the remaining obligations. Substitute `h8` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Take `⟨c1, h⟩` from `h C hC rfl hL`. Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨x0, h⟩` from `h ch hch`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x1, hx1⟩` from `hyp_iff eps c6 Cb h1`. Use `⟨Cdg, max x0 x1, fun s R H q0 a b M c hs hx hR hT hH hr hw hM hc => ?_⟩` and prove the remaining obligations. Establish `hA` using `((hx1 C s R H q0 hs ((le_max_right _ _).trans hx)).1 ⟨hT, hH, hr⟩).1`. Take `⟨off, h⟩` from `h s hs ((le_max_left _ _).trans hx) R hR H q0 _ hA _ _ ((winOK_iff C s H a b).1 hw) (codeOf c hc) ((card_codeOf c hc).trans hM)`. Use `⟨off, fun u0 hu => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T, p, hO, -, hV, hQ, hP, hTr, hD⟩` from `h (R.ofNat u0)`. Take `⟨a1, a2, a3, a4, a5, a6⟩` from `from_of_over hA a b c hc hO`. Rewrite `a3` using `[Formalism.HC.Frame.val_ofNat_of_lt R.toFrame hu]`. Establish `hrg` using `(range_iff hC p.L).2 fun u => by`. Take `⟨w, hw⟩` from `a6 u`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hw, a1, a3.1]`. Conclude with `hTr w`. Conclude with `⟨p, a1, hV, a2, a3, a4, a5, hQ, hP, hrg.1, hrg.2, hD⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem common_of_objectsExist {Q : PtProp} (h : ObjectsExist Q) : Common Q := by
   obtain ⟨Cdg, -, h⟩ := h
@@ -651,7 +645,7 @@ theorem common_of_objectsExist {Q : PtProp} (h : ObjectsExist Q) : Common Q := b
   exact ⟨p, a1, hV, a2, a3, a4, a5, hQ, hP, hrg.1, hrg.2, hD⟩
 
 /- English proof (translation)
-The claim follows from `(narrow_iff_common Q).2 (common_of_objectsExist h)`.
+A detailed English derivation is pending.
 -/
 theorem narrow_of_objectsExist {Q : PtProp} (h : ObjectsExist (Q.and OffCanon)) : ObjExNarrow Q :=
   (narrow_iff_common Q).2 (common_of_objectsExist h)
@@ -659,13 +653,11 @@ theorem narrow_of_objectsExist {Q : PtProp} (h : ObjectsExist (Q.and OffCanon)) 
 def EpsLe (δ : ℝ) : PtProp := fun _ L _ _ _ _ _ _ _ => L.sc.eps ≤ δ
 
 /- English proof (translation)
-Use `⟨fun ⟨ε0, h0, h⟩ => ⟨min ε0 δ, lt_min h0 hδ, fun eps C8 C5 c6 Cb h1 h2 h3 h4 => ?_⟩, fun ⟨ε0, h0, h⟩ => ⟨ε0, h0, fun eps C8 C5 c6 Cb h1 h2 h3 h4 => ?_⟩⟩` and prove the remaining obligations. Use `on_goal 1 => obtain ⟨K0, h⟩ := h eps C8 C5 c6 Cb h1 (h2.trans (min_le_left _ _)) h3 h4`. Use `on_goal 2 => obtain ⟨K0, h⟩ := h eps C8 C5 c6 Cb h1 h2 h3 h4`. Use `all_goals`. Use `⟨K0, fun C hC h8 hL => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c1, h⟩` from `h C hC h8 hL`. Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨Cdg, x0, h⟩` from `h ch hch`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Cdg, x0, fun s R H q0 a b M c u0 hs hx hR hT hH hw hM hc hu => ?_⟩` and prove the remaining obligations. Take `⟨p, a1, a2, a3, a4, a5, a6, a7⟩` from `h s R H q0 a b M c u0 hs hx hR hT hH hw hM hc hu`. Use `⟨p, a1, a2, a3, a4, a5, ⟨a6, ?_, a5⟩, a7⟩ show p.L.sc.eps ≤ δ` and prove the remaining obligations. Rewrite using `[a1, hs]`. Conclude with `h2.trans (min_le_right _ _)`.
-
-Conclude with `⟨p, a1, a2, a3, a4, a5, a6.1, a7⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem objEx_and_iff (Q : PtProp) {δ : ℝ} (hδ : 0 < δ) :
     ObjEx Q ↔ ObjEx (Q.and ((EpsLe δ).and fun _ _ _ X _ _ _ _ _ => CanonInst X)) := by
@@ -689,11 +681,11 @@ theorem objEx_and_iff (Q : PtProp) {δ : ℝ} (hδ : 0 < δ) :
   · exact ⟨p, a1, a2, a3, a4, a5, a6.1, a7⟩
 
 /- English proof (translation)
-Introduce `C8 h8`. Take `⟨Cdg, -, h⟩` from `h`. Take `⟨K0, h⟩` from `h eps h1 h2 C8 h8`. Use `⟨K0, fun C hC hP hL => ?_⟩` and prove the remaining obligations. Take `⟨c1, h⟩` from `h C hC hP hL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c2, h⟩` from `h c1 le_rfl`. Take `⟨x0, h⟩` from `h c2 le_rfl`. Use `⟨x0, fun s hs hx R hR H q0 bs hH a b hw code hc => ?_⟩` and prove the remaining obligations. Take `⟨off, h⟩` from `h s hs hx R hR H q0 bs hH a b hw code hc`. Take `⟨T, p, hO, -, -, hQ, -⟩` from `h 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h4 : p.L.sc.eps ≤ δ` using `hQ.2`. Rewrite `h4` using `[hO.2.1, hs]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem no_choices_of_objectsExist {Q : PtProp} {δ : ℝ} (h : ObjectsExist (Q.and (EpsLe δ))) (eps : ℝ) (h1 : 0 < eps)
     (h2 : eps < 1 / 52) (h3 : δ < eps) : ∀ C8 : ℝ, 1 ≤ C8 → ∃ K0 : TransportedAlt, ∀ C : FC, Std C → C.P.Cpde = C8 → C.Large K0 C.P.CF → ∃ x0 : ℝ,
@@ -719,28 +711,26 @@ def HostExNarrow : Prop :=
   HostExP fun _ s _ H q0 => QDq s.x s.eps 4 H.q H.d ∧ LeastPrimeCong H q0
 
 /- English proof (translation)
-The claim follows from `HostExP.hostEx h`.
+A detailed English derivation is pending.
 -/
 theorem hostEx_of_narrow (h : HostExNarrow) : HostEx := HostExP.hostEx h
 
 /- English proof (translation)
-Take `⟨ε0, hε0, hObj⟩` from `hObj`. Take `⟨la, hla, hHost⟩` from `hHost`. Use `⟨la, hla, ε0, hε0, fun eps he he0 he1 => ?_⟩` and prove the remaining obligations. Take `⟨CT2, C8, C5, c6, Cb, xH, h8, -, h6, hb, S, hHost⟩` from `hHost eps he he1`. Take `⟨KW, hWt⟩` from `hWt eps C8 he he1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨KO, hObj⟩` from `hObj eps C8 c6 Cb he he0 he1 h8`. Use `⟨CT2, C8, KW.sup KO, h8, fun C hC hT hP hL => ?_⟩` and prove the remaining obligations. Take `⟨hLW, hLO⟩` from `fc_large_of_sup hL`. Take `⟨c1, hObj⟩` from `hObj C hC hP hLO`. Use `⟨max c1 0, fun cD hcD => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c2, hObj⟩` from `hObj cD ((le_max_left _ _).trans hcD)`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨Cdg, xO, hObj⟩` from `hObj ch hch`. Take `⟨xW, hWt⟩` from `hWt C hC hLW cD ch ((le_max_right _ _).trans hcD)`. Establish `hmid` using `hC.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hG : 0 ≤ C.CGam` using `zero_le_one.trans (hmid _ (by simp [FC.cMid]))`. Establish `hF : 0 ≤ C.P.CF` using `zero_le_one.trans (hmid _ (by simp [FC.cMid]))`. Take `⟨xC, hCode⟩` from `exists_injective_words eps C.CGam C.P.CF he he1 hG hF`. Take `⟨xq, hq⟩` from `small_prime_lt eps C8 he h8`. Use `⟨4, c6, Cb, Cdg, max (max (max xH xO) xW) (max xC xq), by norm_num, h6, hb, S, fun s hs hx hS => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [max_le_iff] at hx`. Take `⟨⟨⟨hxH, hxO⟩, hxW⟩, hxC, hxq⟩` from `hx`. Take `⟨R, H, q0, hRV, hHT, hH5, h4, hr⟩` from `hHost s hs hxH hS`. Establish `hH : HostGood s C8 4 c6 Cb H q0` using `⟨hH5.1, hH5.2.1, hH5.2.2.1, hH5.2.2.2.1, h4, hH5.2.2.2.2.2⟩`. Take `⟨a, b, h0, hWin, hW⟩` from `hWt s R H hs hxW hRV hH.1`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, -⟩` from `hCode s R hs hxC hRV`. Establish `hHT' : H.CT2 = C.CT2` using `hHT.trans hT.symm`. Establish `hn : 0 < R.n` using `R.ord_pos`. Establish `hq0 : (q0 : ℝ) < s.X'`. Establish `hqp : (0 : ℝ) < H.q` using `by exact_mod_cast H.hyp.1.pos`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdp : (0 : ℝ) < H.d` using `by exact_mod_cast H.hyp.2.1.pos`. Establish `hQS : (0 : ℝ) < H.QS` using `by exact_mod_cast H.QS_pos`. Conclude with `hq s _ q0 hs hxq (by positivity) hH.1.log_cond_le hH.2.2.2.2.2.2.2.2.2.2.2.2.1.2.2.1`. Use `choose pt hsc hval har hfrom hcan hhas hpr htu hlog hdg using fun i : Fin R.n => hObj s R H q0 a b _ c i.1 hs hxO hRV hHT' hH hr hWin rfl hc i.2`. Use `choose eW heW using fun i => (hfrom i).words`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨Fin R.n, ⟨⟨0, hn⟩⟩, pt, hsc, hval, har, fun i i' => ?_, _, eW, fun i i' u u' h => ?_, fun i0 u0 hu => ?_⟩, fun i => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.EX.TieSame.same_of_from C cD ch (pt i) (pt i') R H a b _ c _ _ ((hsc i).trans (hsc i').symm) (hval i) (hval i') (hfrom i) (hfrom i') (hcan i) (hcan i')`. Use function extensionality and compare the values at `l`. Rewrite using `[heW i u l, heW i' u' l, h]`. Rewrite `hu` using `[(hfrom i0).1]`.
-
-Conclude with `⟨⟨u0, hu⟩, (hfrom ⟨u0, hu⟩).2.2.2.2.2.2.2.2.2.1⟩`. Conclude with `has_withDuty_and_chosen (C8 := C8) (q0 := q0) (pt i) hC hHT' (by rw [hsc i]; exact hH) (by rw [hsc i]; exact hq0) h0 (by rw [hsc i]; exact hW) (hval i) (hfrom i) (hcan i) (hhas i) (hpr i) (htu i) (hlog i) (hdg i)`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kitEx_of_narrow {Q : PtProp} (hHost : HostExNarrow) (hWt : WeightEx) (hObj : ObjExNarrow Q) : KitEx (withDuty Q) := by
   obtain ⟨ε0, hε0, hObj⟩ := hObj
@@ -885,7 +875,7 @@ def NarrowHost : HostProp := fun s _ H q0 => QDq s.x s.eps 4 H.q H.d ∧ LeastPr
 def OtherHost : HostProp := fun s R H q0 => ¬ NarrowHost s R H q0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10⟩ => ⟨⟨a1, a2, a4, a6, a7, a10⟩, a5, a3, a8, a9⟩, fun ⟨⟨a1, a2, a4, a6, a7, a10⟩, a5, a3, a8, a9⟩ => ⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem hostGood_iff (s : Scale) (C8 C5 c6 Cb : ℝ) (H : Host R) (q0 : ℕ) :
     HostGood s C8 C5 c6 Cb H q0 ↔
@@ -894,7 +884,7 @@ theorem hostGood_iff (s : Scale) (C8 C5 c6 Cb : ℝ) (H : Host R) (q0 : ℕ) :
     fun ⟨⟨a1, a2, a4, a6, a7, a10⟩, a5, a3, a8, a9⟩ => ⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10⟩⟩
 
 /- English proof (translation)
-Rewrite using `[hostGood_iff]`. Simplify using `only [Hyp, first, Bool.false_eq_true, if_false, if_true, false_imp_iff, true_imp_iff, true_and]`. Conclude with `⟨fun ⟨a1, a2, a3, a4, a5, a6, _, a8⟩ => ⟨⟨a1, a2, a3, a4, a5, a6⟩, a8⟩, fun ⟨⟨a1, a2, a3, a4, a5, a6⟩, a8⟩ => ⟨a1, a2, a3, a4, a5, a6, a8 ▸ isOrigins_bsH _, a8⟩⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem hyp_first_iff (C : FC) (C5 c6 Cb : ℝ) (s : Scale) (H : Host R) (q0 : ℕ)
     (bs : R.A → R.A → R.A) :
@@ -905,7 +895,7 @@ theorem hyp_first_iff (C : FC) (C5 c6 Cb : ℝ) (s : Scale) (H : Host R) (q0 : �
     fun ⟨⟨a1, a2, a3, a4, a5, a6⟩, a8⟩ => ⟨a1, a2, a3, a4, a5, a6, a8 ▸ isOrigins_bsH _, a8⟩⟩
 
 /- English proof (translation)
-Rewrite using `[hostGood_iff]`. Simplify using `only [Hyp, firstNarrow, first, if_true, true_imp_iff]`. Conclude with `⟨fun ⟨a1, a2, a3, a, a4, a5, a6, _, a8⟩ => ⟨⟨a1, ⟨a2, a3, a4, a5, a6⟩, a⟩, a8⟩, fun ⟨⟨a1, ⟨a2, a3, a4, a5, a6⟩, a⟩, a8⟩ => ⟨a1, a2, a3, a, a4, a5, a6, a8 ▸ isOrigins_bsH _, a8⟩⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem hyp_firstNarrow_iff (C : FC) (C5 c6 Cb : ℝ) (s : Scale) (H : Host R) (q0 : ℕ)
     (bs : R.A → R.A → R.A) :
@@ -917,13 +907,13 @@ theorem hyp_firstNarrow_iff (C : FC) (C5 c6 Cb : ℝ) (s : Scale) (H : Host R) (
     fun ⟨⟨a1, ⟨a2, a3, a4, a5, a6⟩, a⟩, a8⟩ => ⟨a1, a2, a3, a, a4, a5, a6, a8 ▸ isOrigins_bsH _, a8⟩⟩
 
 /- English proof (translation)
-Simplify using `only [Hyp, second, Bool.false_eq_true, if_false, if_true, false_imp_iff, true_imp_iff, true_and, and_true]`. Establish `h1` using `one_lt_condE H`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hT, ⟨hv, -, hc, hbox, hdl, hdis, hπ, ⟨hp, hp'⟩, ⟨hq, hm, hq8, -, -⟩, hl⟩, hqd, hr, hF, hO⟩`. Use `⟨hv, hT, hbox, hdl, hqd, hc, hO, hF, hπ, hdis, ⟨(modEq_one_iff (one_lt_lcm H)).2 hp, (modEq_one_iff (one_lt_lcm H)).2 hp'⟩, ⟨hq, ?_, ?_, hr⟩, hl⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4 : 4 ∣ H.QS * H.q * H.d` using `four_dvd_cond H`. Establish `h5 : q0 % 4 = 1` using `by rw [← Nat.mod_mod_of_dvd q0 h4, hm]`. Use `hq.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Unfold `condE`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Conclude with `hq8` after adjusting the coercions. Introduce `h`. Establish `hlv` using `level_of_arithData h`. Take `⟨hv, hT, hbox, hdl, hqd, hc, hO, hF, hπ, hdis, ⟨hp, hp'⟩, ⟨hq, -, hq8, hr⟩, hl⟩` from `h`. Establish `hf` using `LeastPrimeCong.facts hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hT, ⟨hv, hostArith_of H (fun i => ?_) hlv, hc, hbox, hdl, hdis, hπ, ⟨(modEq_one_iff (one_lt_lcm H)).1 hp, (modEq_one_iff (one_lt_lcm H)).1 hp'⟩, ⟨hq, (modEq_one_iff h1).1 hf.1, ?_, hf.2.1, hf.2.2⟩, hl⟩, hqd, hr, hF, hO⟩` and prove the remaining obligations. Take `⟨π, a1, a2, -⟩` from `hπ i`. Conclude with `⟨π, a1, a2⟩`. Unfold `condE at hq8`. Conclude with `hq8` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 -/
 theorem hyp_second_iff (C : FC) (C5 c6 Cb : ℝ) (s : Scale) (H : Host R) (q0 : ℕ)
     (bs : R.A → R.A → R.A) :
@@ -954,7 +944,7 @@ theorem hyp_second_iff (C : FC) (C5 c6 Cb : ℝ) (s : Scale) (H : Host R) (q0 : 
       exact_mod_cast hq8
 
 /- English proof (translation)
-Substitute `hR` using the available equality. Use `⟨fun h a t => Formalism.HC.Frame.A.val_injective _ (h a t a t rfl rfl), fun hB h t h' t' e1 e2 => ?_⟩` and prove the remaining obligations. Rewrite using `[hB, Formalism.HC.Frame.A.val_injective _ e1, Formalism.HC.Frame.A.val_injective _ e2]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem bsTie_bsH_iff {C : FC} (p : Pt C) (hR : p.D.R = R) : BsTie p (R := R) Arith.bsH ↔ BsCanon p := by
   subst hR
@@ -962,23 +952,21 @@ theorem bsTie_bsH_iff {C : FC} (p : Pt C) (hR : p.D.R = R) : BsTie p (R := R) Ar
   rw [hB, Formalism.HC.Frame.A.val_injective _ e1, Formalism.HC.Frame.A.val_injective _ e2]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨T, ⟨hcp, hh⟩, hs, hbs, hoff, hw, e, he, hT⟩`. Establish `hR : p.D.R = R` using `congrArg Sigma.fst hh`. Substitute `hR` using the available equality. Establish `hD : p.D.host = hostAt H hH.ccK_eq u0 (Finset.univ.image T) hcp` using `eq_of_heq (Sigma.mk.inj hh).2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hmod` using `T_modEq p.D`. Use `⟨hs, ?_, ⟨rfl, by rw [hD]; rfl, by rw [hD]; rfl, by rw [hD]; rfl, by rw [hD]; rfl, by rw [hD]; rfl, by rw [hD]; rfl, by rw [hD]; rfl, by rw [hD]; exact Finset.subset_union_left, by rw [hD]; rfl, fun l => ?_, fun t t' ht => ?_, ⟨e.trans (codeEquiv c hc).symm, fun u l => ?_⟩, by rw …` and prove the remaining obligations. Rewrite `hmod`, the goal using `[hD]`. Use `hostArith_of _ (fun i => ?_) fun l hl => ?_` and prove the remaining obligations. Take `⟨π, a1, a2, -⟩` from `hH.2.2.2.2.2.2.2.2.1 i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨π, a1, a2⟩`. Break down `Finset.mem_union.1 hl with hl | hl` into its components or cases. Conclude with `level_of_arithData hH l hl`. Take `⟨w, -, rfl⟩` from `Finset.mem_image.1 hl`. Take `⟨u, rfl⟩` from `e.surjective w`.
+Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hT u]`. Conclude with `⟨(p.D.mem u).A.T_prime, hmod u⟩`. Use `show (frobH p.D.host l).val = _`. Rewrite using `[hD]`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hw t` as an intermediate fact. Rewrite `this` using `[ht]`. Then use the resulting hypothesis. Use `split_ifs with hl`. Rewrite using `[Equiv.trans_apply, codeEquiv_symm c hc]`. Conclude with `he u ⟨l, hl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `dif_neg hl`. Rewrite using `[Finset.mem_image]`. Use `⟨fun ⟨w, _, hw⟩ => ?_, fun ⟨u, hu⟩ => ⟨e u, Finset.mem_univ _, by rw [← hT, hu]⟩⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `e.surjective w`. Conclude with `⟨u, by rw [hT, hw]⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Formalism.HC.Frame.ofNat_val]`. Conclude with `hh`. Introduce and unpack `⟨hs, -, ⟨hR, -, -, -, -, -, -, -, -, -, -, hw, ⟨eW, he⟩, -⟩, hB, hoff, hK, S, hcp, hS, hh⟩`. Rewrite `hh` using `[Formalism.HC.Frame.ofNat_val]`. Substitute `hR` using the available equality.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `set e := eW.trans (codeEquiv c hc) with hedef`. Use `⟨fun w => (p.D.mem (e.symm w)).A.T, ?_, hs, hB, hoff, fun t => hw t _ rfl, e, fun u l => ?_, fun u => congrArg (fun v => (p.D.mem v).A.T) (e.symm_apply_apply u).symm⟩` and prove the remaining obligations. Establish `: S = Finset.univ.image (fun w => (p.D.mem (e.symm w)).A.T)`. Use extensionality with `l`. Rewrite using `[hS, Finset.mem_image]`.
-
-Conclude with `⟨fun ⟨u, hu⟩ => ⟨e u, Finset.mem_univ _, by rw [e.symm_apply_apply, hu]⟩, fun ⟨w, _, hw⟩ => ⟨_, hw⟩⟩`. Rewrite using `[← this]`. Conclude with `⟨hcp, hh⟩`. Rewrite using `[he u l.1, dif_pos l.2]`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem over_iff {C : FC} {s : Scale} {H : Host R} {q0 : ℕ} {bs : R.A → R.A → R.A}
     (hH : ArithData C s H q0 bs) (a b : ℕ → ℤ) {M : ℕ} (c : Fin M → Fin (R.k - 2) → Bool) (hc : Function.Injective c)
@@ -1036,9 +1024,9 @@ theorem over_iff {C : FC} {s : Scale} {H : Host R} {q0 : ℕ} {bs : R.A → R.A 
       rfl
 
 /- English proof (translation)
-Take `⟨⟨hcp, hh⟩, hs, -, -, -, e, -, hT⟩` from `h`. Establish `hR : p.D.R = R` using `congrArg Sigma.fst hh`. Substitute `hR hs` using the available equality. Rewrite using `[range_iff hC p.L]`. Use `⟨fun h u => by rw [hT]; exact h _, fun h w => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, rfl⟩` from `e.surjective w`. Rewrite using `[← hT]`. Conclude with `h u`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_over_iff {C : FC} (hC : Std C) {s : Scale} {H : Host R} {hK : H.ccK = ⊤}
     {bs : R.A → R.A → R.A} {a b : ℕ → ℤ} {code : Finset (Fin (R.k - 2) → Bool)}
@@ -1055,13 +1043,13 @@ theorem range_over_iff {C : FC} (hC : Std C) {s : Scale} {H : Host R} {hK : H.cc
   exact h u
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h s R H q0 a b M c u0 hs hx hR hH hw hM hc hu`. Take `⟨off, h⟩` from `h s R H q0 _ a b M c hs hx hR ((hP _ _ _ _ _).2 ⟨hH, rfl⟩) hw hM hc`. Take `⟨p, a1, a2, a3, a4, a5, -, -, a7, a8⟩` from `h u0 hu`. Conclude with `⟨p, a1, a2, a3, a4, ⟨(bsTie_bsH_iff p a4.1).1 a5, a7 rfl⟩, a8⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `h s R H q0 bs a b M c hs hx hR hH hw hM hc`. Take `⟨hH', rfl⟩` from `(hP _ _ _ _ _).1 hH`. Establish `hn : 0 < R.n` using `R.ord_pos`. Take `⟨p0, b1, b2, -, b4, b5, -⟩` from `h s R H q0 a b M c 0 hs hx hR hH' hw hM hc hn`. Use `⟨fun j n => p0.ta.Gx.off j (false, (p0.D.R.ofNat n : G.HH p0.D)), fun u0 hu => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨p, a1, a2, a3, a4, a5, a6⟩` from `h s R H q0 a b M c u0 hs hx hR hH' hw hM hc hu`. Use `⟨p, a1, a2, a3, a4, (bsTie_bsH_iff p a4.1).2 a5.1, fun j t => ?_, fun h => absurd h (by simp), fun _ => a5.2, a6⟩` and prove the remaining obligations. Establish `hS` using `GlobalTheory.EX.TieSame.same_of_from C cD ch p p0 R H a b M c u0 0 (a1.trans b1.symm) a2 b2 a4 b4 a5 b5`. Use `hS.2.2.2.2.2.2.2.2.2.2.2.2.1 j t _ (Formalism.HC.Frame.val_ofNat_of_lt _ ?_).symm` and prove the remaining obligations. Rewrite using `[← hS.1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.HC.Frame.A.val_lt t`.
+A detailed English derivation is pending.
 -/
 theorem body_canon_iff {Hy : ∀ (_ : Scale) (R : Ranks) (_ : Host R) (_ : ℕ),
       (R.A → R.A → R.A) → Prop} {P : HostProp}
@@ -1091,15 +1079,15 @@ theorem body_canon_iff {Hy : ∀ (_ : Scale) (R : Ranks) (_ : Host R) (_ : ℕ),
     exact Formalism.HC.Frame.A.val_lt t
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ε0, h0, h⟩`. Use `⟨ε0, 1, h0, fun h => absurd h (by simp [first]), one_pos, fun eps h1 h2 h3 C8 h4 => ?_⟩` and prove the remaining obligations. Use `⟨(h eps C8 0 0 0 h1 h2 h3 h4).choose, fun C5 c6 Cb => ?_⟩` and prove the remaining obligations. Take `⟨K0, h⟩` from `h eps C8 C5 c6 Cb h1 h2 h3 h4`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨K0, fun h => absurd h (by simp [first]), fun C hC h8 hL => ?_⟩` and prove the remaining obligations. Substitute `h8` using the available equality. Take `⟨c1, h⟩` from `h C hC rfl hL`. Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨Cdg, x0, h⟩` from `h ch hch`. Conclude with `⟨Cdg, x0, fun h => absurd h (by simp [first]), (body_canon_iff (fun s _ H q0 bs => hyp_first_iff C C5 c6 Cb s H q0 bs) Q C eps cD ch Cdg x0).2 fun s R H q0 a b M c u0 hs hx hR hH => h s R H q0 a b M c u0 hs hx hR hH.1 hH.2⟩`. Introduce and unpack `⟨ε0, Ca, h0, -, -, h⟩`. Use `⟨ε0, h0, fun eps C8 C5 c6 Cb h1 h2 h3 h4 => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Ka, h⟩` from `h eps h1 h2 h3 C8 h4`. Take `⟨K0, -, h⟩` from `h C5 c6 Cb`. Use `⟨K0, fun C hC h8 hL => ?_⟩` and prove the remaining obligations. Substitute `h8` using the available equality. Take `⟨c1, h⟩` from `h C hC rfl hL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨Cdg, x0, -, h⟩` from `h ch hch`. Conclude with `⟨Cdg, x0, fun s R H q0 a b M c u0 hs hx hR hT hH => (body_canon_iff (fun s _ H q0 bs => hyp_first_iff C C5 c6 Cb s H q0 bs) Q C eps cD ch Cdg x0).1 h s R H q0 a b M c u0 hs hx hR ⟨hT, hH⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem objEx_iff_scheme (Q : PtProp) : ObjEx Q ↔ Scheme first Q := by
   constructor
@@ -1133,17 +1121,17 @@ theorem objEx_iff_scheme (Q : PtProp) : ObjEx Q ↔ Scheme first Q := by
         s R H q0 a b M c u0 hs hx hR ⟨hT, hH⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ε0, h0, h⟩`. Use `⟨ε0, 1, h0, fun h => absurd h (by simp [firstNarrow, first]), one_pos, fun eps h1 h2 h3 C8 h4 => ?_⟩` and prove the remaining obligations. Use `⟨(h eps C8 0 0 0 h1 h2 h3 h4).choose, fun C5 c6 Cb => ?_⟩` and prove the remaining obligations. Take `⟨K0, h⟩` from `h eps C8 4 c6 Cb h1 h2 h3 h4`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨K0, fun h => absurd h (by simp [firstNarrow, first]), fun C hC h8 hL => ?_⟩` and prove the remaining obligations. Substitute `h8` using the available equality. Take `⟨c1, h⟩` from `h C hC rfl hL`. Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨Cdg, x0, h⟩` from `h ch hch`. Conclude with `⟨Cdg, x0, fun h => absurd h (by simp [firstNarrow, first]), (body_canon_iff (fun s _ H q0 bs => hyp_firstNarrow_iff C C5 c6 Cb s H q0 bs) Q C eps cD ch Cdg x0).2 fun s R H q0 a b M c u0 hs hx hR hH => h s R H q0 a b M c u0 hs hx hR hH.1 hH.2.1 ⟨hH.2.1.2.2.2.2.1, hH.2.2⟩⟩`. Introduce and unpack `⟨ε0, Ca, h0, -, -, h⟩`. Use `⟨ε0, h0, fun eps C8 C5 c6 Cb h1 h2 h3 h4 => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Ka, h⟩` from `h eps h1 h2 h3 C8 h4`. Take `⟨K0, -, h⟩` from `h C5 c6 Cb`. Use `⟨K0, fun C hC h8 hL => ?_⟩` and prove the remaining obligations. Substitute `h8` using the available equality. Take `⟨c1, h⟩` from `h C hC rfl hL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨Cdg, x0, -, h⟩` from `h ch hch`. Use `⟨Cdg, x0, fun s R H q0 a b M c u0 hs hx hR hT hH hN => (body_canon_iff (fun s _ H q0 bs => hyp_firstNarrow_iff C C5 c6 Cb s H q0 bs) Q C eps cD ch Cdg x0).1 h s R H q0 a b M c u0 hs hx hR ⟨hT, ?_, hN.2⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a1, -, a3⟩` from `(hostGood_iff _ _ _ _ _ _ _).1 hH`. Conclude with `(hostGood_iff _ _ _ _ _ _ _).2 ⟨a1, hN.1, a3⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem objOn_narrow_iff_scheme (Q : PtProp) : ObjOn NarrowHost Q ↔ Scheme firstNarrow Q := by
   constructor
@@ -1179,21 +1167,21 @@ theorem objOn_narrow_iff_scheme (Q : PtProp) : ObjOn NarrowHost Q ↔ Scheme fir
     exact (hostGood_iff _ _ _ _ _ _ _).2 ⟨a1, hN.1, a3⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Cdg, h0, h⟩`. Use `⟨1 / 52, Cdg, by norm_num, fun _ => le_rfl, h0, fun eps h1 _ h3 C8 h4 => ?_⟩` and prove the remaining obligations. Take `⟨K0, h⟩` from `h eps h1 h3 C8 h4`. Use `⟨K0, fun C5 c6 Cb => ⟨K0, fun _ => rfl, fun C hC h8 hL => ?_⟩⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c1, h⟩` from `h C hC h8 hL`. Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨x0, h⟩` from `h ch hch`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨Cdg, x0, fun _ => rfl, fun s R H q0 bs a b M c hs hx hR hH hw hM hc => ?_⟩` and prove the remaining obligations. Establish `hA` using `(hyp_second_iff C C5 c6 Cb s H q0 bs).1 hH`. Take `⟨off, h⟩` from `h s hs hx R hR H q0 _ hA _ _ ((winOK_iff C s H a b).1 hw) (codeOf c hc) ((card_codeOf c hc).trans hM)`. Use `⟨off, fun u0 hu => ?_⟩` and prove the remaining obligations. Take `⟨T, p, hO, -, hV, hQ, hP, hTr, hD⟩` from `h (R.ofNat u0)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, a2, a3, a4, a5, a6⟩` from `(over_iff hA _ _ c hc off _ p).1 ⟨T, hO⟩`. Rewrite `a3`, `a6` using `[Formalism.HC.Frame.val_ofNat_of_lt R.toFrame hu]`. Simplify using `only [Formalism.HC.Frame.ofNat_val] at a3`. Establish `hrg` using `(range_over_iff hC hO).1 hTr`. Conclude with `⟨p, a1, hV, a2, a3, a4, a5, fun _ => a6, fun h => absurd h (by simp [second]), hQ, hP, hrg.1, hrg.2, hD⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce and unpack `⟨ε0, Cdg, -, he, h0, h⟩`. Use `⟨Cdg, h0, fun eps h1 h3 C8 h4 => ?_⟩` and prove the remaining obligations. Take `⟨K0, h⟩` from `h eps h1 (h3.le.trans (he rfl)) h3 C8 h4`. Use `⟨K0, fun C hC h8 hL => ?_⟩` and prove the remaining obligations. Take `⟨K1, hK, h⟩` from `h 0 0 0`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[hK rfl]`. Take `⟨c1, h⟩` from `h C hC h8 hL`. Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Cdg', x0, hd, h⟩` from `h ch hch`. Rewrite `h` using `[hd rfl]`. Use `⟨x0, fun s hs hx R hR H q0 bs hH a b hw code hM => ?_⟩` and prove the remaining obligations. Take `⟨M, c, hc, rfl⟩ : ∃ (M : ℕ) (c : Fin M → Fin (R.k - 2) → Bool) (hc : Function.Injective c), codeOf c hc = code` from `⟨_, exists_codeOf code⟩`. Take `⟨off, h⟩` from `h s R H q0 bs _ _ M c hs hx hR ((hyp_second_iff C 0 0 0 s H q0 bs).2 hH) ((win_iff C s H a b).1 hw) ((card_codeOf c hc).symm.trans hM) hc`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨off, fun u0 => ?_⟩` and prove the remaining obligations. Take `⟨p, a1, a2, a3, a4, a5, a6, a7, -, a9, a10, a11, a12, a13⟩` from `h u0.val (Formalism.HC.Frame.A.val_lt u0)`. Take `⟨T, hO⟩` from `(over_iff hH a b c hc off u0 p).2 ⟨a1, a3, a4, a5, a6, a7 rfl⟩`. Conclude with `⟨T, p, hO, level_primes_admissible p.L, a2, a9, a10, (range_over_iff hC hO).2 ⟨a11, a12⟩, a13⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem objectsExist_iff_scheme (Q : PtProp) : ObjectsExist Q ↔ Scheme second Q := by
   constructor
@@ -1239,11 +1227,9 @@ theorem objectsExist_iff_scheme (Q : PtProp) : ObjectsExist Q ↔ Scheme second 
     exact ⟨T, p, hO, level_primes_admissible p.L, a2, a9, a10, (range_over_iff hC hO).2 ⟨a11, a12⟩, a13⟩
 
 /- English proof (translation)
-Take `⟨x0, h0⟩` from `fewBad_of_badOK eps Cb he`. Take `⟨-, -, -, w4, w5, w6, w7, w8, w9, w10, -⟩` from `hw`. Use `⟨x0, fun C C5 c6 s R H q0 bs hs hx ⟨a1, a2, a3, a4, a5, a6, a7, a8, a9⟩ => ⟨a1, a2, ?_, fun h => a4 (w5 h), fun h => a5 (w6 h), fun h => a6 (w7 h), ?_, a8, fun h => a9 (w10 h)⟩⟩` and prove the remaining obligations. Use `split_ifs with h h'`. Rewrite `a3` using `[if_pos (w4 h)]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `a3` using `[if_pos h']`. Then use the resulting hypothesis. Rewrite `a3` using `[if_neg h']`. Then use the resulting hypothesis. Use `split_ifs with h`. Rewrite `a7` using `[if_pos (w8 h)]`. Then use the resulting hypothesis. Use `split_ifs at a7 with h'`.
-
-Rewrite using `[a9 ((w9 h').resolve_left h)]`. Conclude with `h0 s R H hs hx a2.1.2.1.1 a7`. Conclude with `a7`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hyp_of_covers {w w' : Switch} (hw : w.Covers w') (eps Cb : ℝ) (he : 0 < eps) :
     ∃ x0 : ℝ, ∀ (C : FC) (C5 c6 : ℝ) (s : Scale) (R : Ranks) (H : Host R) (q0 : ℕ)
@@ -1265,13 +1251,13 @@ theorem hyp_of_covers {w w' : Switch} (hw : w.Covers w') (eps Cb : ℝ) (he : 0 
       · exact a7
 
 /- English proof (translation)
-Take `⟨ε0, Ca, h0, he, hCa, h⟩` from `h`. Use `⟨ε0, Ca, h0, fun h => he (hw.1 h), hCa, fun eps h1 h2 h3 C8 h4 => ?_⟩` and prove the remaining obligations. Take `⟨Ka, h⟩` from `h eps h1 h2 h3 C8 h4`. Use `⟨Ka, fun C5 c6 Cb => ?_⟩` and prove the remaining obligations. Take `⟨K0, hK, h⟩` from `h (if w'.four then 4 else C5) c6 Cb`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨K0, fun h => hK (hw.2.2.1 h), fun C hC h8 hL => ?_⟩` and prove the remaining obligations. Take `⟨c1, h⟩` from `h C hC h8 hL`. Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Cdg, x0, hd, h⟩` from `h ch hch`. Take `⟨x1, hx1⟩` from `hyp_of_covers hw eps Cb h1`. Use `⟨Cdg, max x0 x1, fun h => hd (hw.2.1 h), fun s R H q0 bs a b M c hs hx hR hH hW hM hc => ?_⟩` and prove the remaining obligations. Take `⟨off, h⟩` from `h s R H q0 bs a b M c hs ((le_max_left _ _).trans hx) hR (hx1 C C5 c6 s R H q0 bs hs ((le_max_right _ _).trans hx) hH) hW hM hc`. Use `⟨off, fun u0 hu => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨p, a1, a2, a3, a4, a5, a6, a7, a8, a9⟩` from `h u0 hu`. Conclude with `⟨p, a1, a2, a3, a4, a5, a6, fun h => a7 (hw.2.2.2.2.2.2.2.2.2.2.1 h), fun h => a8 (hw.2.2.2.2.2.2.2.2.2.2.2 h), a9⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Scheme.of_covers {w w' : Switch} (hw : w.Covers w') {Q : PtProp} (h : Scheme w Q) : Scheme w' Q := by
   obtain ⟨ε0, Ca, h0, he, hCa, h⟩ := h
@@ -1294,11 +1280,11 @@ theorem Scheme.of_covers {w w' : Switch} (hw : w.Covers w') {Q : PtProp} (h : Sc
   exact ⟨p, a1, a2, a3, a4, a5, a6, fun h => a7 (hw.2.2.2.2.2.2.2.2.2.2.1 h), fun h => a8 (hw.2.2.2.2.2.2.2.2.2.2.2 h), a9⟩
 
 /- English proof (translation)
-Establish `key : ∀ Hy e C eps cD ch Cdg x0, Body Hy e true Q C eps cD ch Cdg x0 ↔ Body Hy e false (Q.and OffCanon) C eps cD ch Cdg x0`. Introduce `Hy e C eps cD ch Cdg x0`. Prove the components needed by the constructor for the conclusion. Use `all_goals`. Introduce `h s R H q0 bs a b M c hs hx hR hH hW hM hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨off, h⟩` from `h s R H q0 bs a b M c hs hx hR hH hW hM hc`. Use `⟨off, fun u0 hu => ?_⟩` and prove the remaining obligations. Take `⟨p, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10⟩` from `h u0 hu`. Conclude with `⟨p, a1, a2, a3, a4, a5, a6, a7, fun h => absurd h (by simp), ⟨a9, a8 rfl⟩, a10⟩`. Conclude with `⟨p, a1, a2, a3, a4, a5, a6, a7, fun _ => a9.2, a9.1, a10⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Replace the relevant objects with their definitions.
 
-Unfold `Scheme`. Simplify using `only [key]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem scheme_canonOff_iff (w : Switch) (Q : PtProp) :
     Scheme { w with canonOff := true } Q ↔ Scheme { w with canonOff := false } (Q.and OffCanon) := by
@@ -1318,21 +1304,19 @@ theorem scheme_canonOff_iff (w : Switch) (Q : PtProp) :
   rfl
 
 /- English proof (translation)
-Establish `one : ∀ P : HostProp, ObjEx Q → ObjOn P Q`. Introduce and unpack `P ⟨ε0, h0, h⟩`. Use `⟨ε0, h0, fun eps C8 C5 c6 Cb h1 h2 h3 h4 => ?_⟩` and prove the remaining obligations. Take `⟨K0, h⟩` from `h eps C8 C5 c6 Cb h1 h2 h3 h4`. Use `⟨K0, fun C hC h8 hL => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c1, h⟩` from `h C hC h8 hL`. Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨Cdg, x0, h⟩` from `h ch hch`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Cdg, x0, fun s R H q0 a b M c u0 hs hx hR hT hH _ => h s R H q0 a b M c u0 hs hx hR hT hH⟩`. Use `⟨fun h => ⟨one _ h, one _ h⟩, fun ⟨⟨ε0, h0, h⟩, ⟨ε0', h0', h'⟩⟩ => ⟨min ε0 ε0', lt_min h0 h0', fun eps C8 C5 c6 Cb h1 h2 h3 h4 => ?_⟩⟩` and prove the remaining obligations. Take `⟨K0, h⟩` from `h eps C8 C5 c6 Cb h1 (h2.trans (min_le_left _ _)) h3 h4`. Take `⟨K0', h'⟩` from `h' eps C8 C5 c6 Cb h1 (h2.trans (min_le_right _ _)) h3 h4`. Use `⟨K0.sup K0', fun C hC h8 hL => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hL, hL'⟩` from `fc_large_of_sup hL`. Take `⟨c1, h⟩` from `h C hC h8 hL`. Take `⟨c1', h'⟩` from `h' C hC h8 hL'`. Use `⟨max c1 c1', fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD ((le_max_left _ _).trans hcD)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c2', h'⟩` from `h' cD ((le_max_right _ _).trans hcD)`. Use `⟨max c2 c2', fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨Cdg, x0, h⟩` from `h ch ((le_max_left _ _).trans hch)`. Take `⟨Cdg', x0', h'⟩` from `h' ch ((le_max_right _ _).trans hch)`. Use `⟨max Cdg Cdg', max x0 x0', fun s R H q0 a b M c u0 hs hx hR hT hH hW hM hc hu => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `mono : ∀ (D : D7) {c c' : ℝ}, c ≤ c' → FactDGam D c → FactDGam D c'` using `fun D c c' hc h u => by`. Use `(h u).trans ?_` and prove the remaining obligations. Establish `h1 : 0 ≤ Real.log ((D.R.f : ℝ) * D.R.N D.R.m)`. Rewrite using `[← Nat.cast_mul]`. Conclude with `Real.log_natCast_nonneg _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `gcongr`. Distinguish the cases in `hP : P s R H q0`. Take `⟨p, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10⟩` from `h s R H q0 a b M c u0 hs ((le_max_left _ _).trans hx) hR hT hH hP hW hM hc hu`. Conclude with `⟨p, a1, a2, a3, a4, a5, a6, a7, a8, a9, mono _ (le_max_left _ _) a10⟩`. Take `⟨p, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10⟩` from `h' s R H q0 a b M c u0 hs ((le_max_right _ _).trans hx) hR hT hH hP hW hM hc hu`.
-
-Conclude with `⟨p, a1, a2, a3, a4, a5, a6, a7, a8, a9, mono _ (le_max_right _ _) a10⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem objEx_iff_split (P : HostProp) (Q : PtProp) :
     ObjEx Q ↔ ObjOn P Q ∧ ObjOn (fun s R H q0 => ¬ P s R H q0) Q := by
@@ -1377,7 +1361,7 @@ theorem objEx_iff_split (P : HostProp) (Q : PtProp) :
     exact ⟨p, a1, a2, a3, a4, a5, a6, a7, a8, a9, mono _ (le_max_right _ _) a10⟩
 
 /- English proof (translation)
-The claim follows from `(objOn_narrow_iff_scheme Q).2 (Scheme.of_covers (w := { second with canonOff := true }) (by simp [Switch.Covers, second, firstNarrow, first]) ((scheme_canonOff_iff second Q).2 ((objectsExist_iff_scheme _).1 h)))`.
+A detailed English derivation is pending.
 -/
 theorem objOn_narrow_of_objectsExist {Q : PtProp} (h : ObjectsExist (Q.and OffCanon)) : ObjOn NarrowHost Q :=
   (objOn_narrow_iff_scheme Q).2 (Scheme.of_covers (w := { second with canonOff := true })
@@ -1385,7 +1369,7 @@ theorem objOn_narrow_of_objectsExist {Q : PtProp} (h : ObjectsExist (Q.and OffCa
     ((scheme_canonOff_iff second Q).2 ((objectsExist_iff_scheme _).1 h)))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨objEx_iff_scheme Q, objectsExist_iff_scheme Q, fun _ _ hw h => h.of_covers hw, fun w => scheme_canonOff_iff w Q, objEx_iff_split NarrowHost Q, objOn_narrow_iff_scheme Q, objOn_narrow_of_objectsExist, fun h => (objEx_iff_split NarrowHost Q).trans (and_iff_right (objOn_narrow_of_o …`.
+Supply the required witnesses or components.
 -/
 theorem compare (Q : PtProp) :
     (ObjEx Q ↔ Scheme first Q) ∧ (ObjectsExist Q ↔ Scheme second Q) ∧

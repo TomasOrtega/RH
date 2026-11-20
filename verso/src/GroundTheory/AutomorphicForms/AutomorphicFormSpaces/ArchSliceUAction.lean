@@ -29,7 +29,7 @@ Both sides reduce to the same expression.
     (x : archGroup K n) : archSlice φ g x = φ (g * infEmb K n x) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `[mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem archSlice_mul (φ : AdelicGLn.AdelicGL K n → ℂ) (g : AdelicGLn.AdelicGL K n)
     (x : archGroup K n) : archSlice φ (g * infEmb K n x) = leftTranslate x (archSlice φ g) := by
@@ -48,7 +48,7 @@ def archSmooth : Submodule ℂ (AdelicGLn.AdelicGL K n → ℂ) where
   smul_mem' c _ hφ g := ((isExpLieAlgebra K n).smoothFuns (F := ℂ)).smul_mem c (hφ g)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_archSmooth {φ : AdelicGLn.AdelicGL K n → ℂ} : φ ∈ archSmooth K n ↔ IsArchSmooth φ :=
   Iff.rfl
@@ -67,7 +67,7 @@ Both sides reduce to the same expression.
       archSlice φ g := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (archSlice_mul (φ : AdelicGLn.AdelicGL K n → ℂ) g x)`.
+A detailed English derivation is pending.
 -/
 theorem sliceL_mul (g : AdelicGLn.AdelicGL K n) (x : archGroup K n) (φ : archSmooth K n) :
     sliceL (g * infEmb K n x) φ = (isExpLieAlgebra K n).leftTranslateEnd x (sliceL g φ) :=
@@ -77,7 +77,7 @@ def uActFun (u : UEnv K n) (φ : archSmooth K n) : AdelicGLn.AdelicGL K n → �
   fun g => ((isExpLieAlgebra K n).rightUAction u (sliceL g φ) : archGroup K n → ℂ) 1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [archSlice_apply, uActFun, sliceL_mul]`. Rewrite using `[(isExpLieAlgebra K n).rightUAction_leftTranslate_apply, mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem archSlice_uActFun (u : UEnv K n) (φ : archSmooth K n) (g : AdelicGLn.AdelicGL K n) :
     archSlice (uActFun u φ) g =
@@ -87,7 +87,7 @@ theorem archSlice_uActFun (u : UEnv K n) (φ : archSmooth K n) (g : AdelicGLn.Ad
   rw [(isExpLieAlgebra K n).rightUAction_leftTranslate_apply, mul_one]
 
 /- English proof (translation)
-Introduce `g`. Rewrite using `[archSlice_uActFun]`. Conclude with `((isExpLieAlgebra K n).rightUAction u (sliceL g φ)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uActFun_mem (u : UEnv K n) (φ : archSmooth K n) : uActFun u φ ∈ archSmooth K n := by
   intro g
@@ -130,7 +130,7 @@ theorem coe_uAction (u : UEnv K n) (φ : archSmooth K n) :
     ((uAction u φ : archSmooth K n) : AdelicGLn.AdelicGL K n → ℂ) = uActFun u φ := rfl
 
 /- English proof (translation)
-The claim follows from `archSlice_uActFun u φ g`.
+A detailed English derivation is pending.
 -/
 theorem archSlice_uAction (u : UEnv K n) (φ : archSmooth K n) (g : AdelicGLn.AdelicGL K n) :
     archSlice (uAction u φ : AdelicGLn.AdelicGL K n → ℂ) g =
@@ -138,7 +138,7 @@ theorem archSlice_uAction (u : UEnv K n) (φ : archSmooth K n) (g : AdelicGLn.Ad
   archSlice_uActFun u φ g
 
 /- English proof (translation)
-Rewrite using `[coe_uAction]`. Use `show ((isExpLieAlgebra K n).rightUAction (UniversalEnvelopingAlgebra.ι ℝ X) (sliceL g φ) : archGroup K n → ℂ) 1 = _`. Rewrite using `[(isExpLieAlgebra K n).rightUAction_ι]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem uAction_ι_apply (X : (isExpLieAlgebra K n).lieSubalgebra) (φ : archSmooth K n)
     (g : AdelicGLn.AdelicGL K n) :

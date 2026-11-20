@@ -15,7 +15,7 @@ namespace GlobalTheory.DualCon.Model
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
 /- English proof (translation)
-Establish `hM : (ev M (fst A T) (snd A T ≫ u)).IsLB` using `pull_isLB h.isLB _`. Use `⟨hM, (isAdditive_iff hM).2 fun Y a a' t ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [evc_ev h.isLB, lift_fst, lift_snd_assoc]`. Conclude with `(isAdditive_iff h.isLB).1 h.add Y a a' _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fam_ev {U T : Over S} {M : LB (A ⊗ U).left} (h : Fam A M) (u : T ⟶ U) :
     Fam A (ev M (fst A T) (snd A T ≫ u)) := by
@@ -25,7 +25,7 @@ theorem fam_ev {U T : Over S} {M : LB (A ⊗ U).left} (h : Fam A M) (u : T ⟶ U
   exact (isAdditive_iff h.isLB).1 h.add Y a a' _
 
 /- English proof (translation)
-Establish `hu` using `fam_ev h.fam u`. Conclude with `(h.univ Y (u ≫ b) _ hu).unique ⟨rfl, (cls_eq_iff hu.isLB hu.isLB).1 rfl⟩ ⟨hb.symm, e⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rep_ext {B S' Y : Over S} {b : B ⟶ S'} {P : LB (A ⊗ B).left} (h : Rep A b P) {u u' : Y ⟶ B}
     (hb : u ≫ b = u' ≫ b) (e : Same A P P u u') : u = u' := by
@@ -33,7 +33,7 @@ theorem rep_ext {B S' Y : Over S} {b : B ⟶ S'} {P : LB (A ⊗ B).left} (h : Re
   exact (h.univ Y (u ≫ b) _ hu).unique ⟨rfl, (cls_eq_iff hu.isLB hu.isLB).1 rfl⟩ ⟨hb.symm, e⟩
 
 /- English proof (translation)
-The claim follows from `h.fam inj _ _ _ e := rep_ext h (toUnit_unique _ _) e chart T N hN := ⟨⊤, fun Y y ↦ ⟨fun _ _ ↦ trivial, fun _ ↦ by obtain ⟨x, hx, -⟩ := h.univ Y (toUnit Y) _ (fam_ev hN y) exact ⟨x, hx.2⟩⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem isChart_of_rep {B : Over S} {P : LB (A ⊗ B).left} (h : Rep A (toUnit B) P) : IsChart A P where
   fam := h.fam
@@ -43,7 +43,7 @@ theorem isChart_of_rep {B : Over S} {P : LB (A ⊗ B).left} (h : Rep A (toUnit B
     exact ⟨x, hx.2⟩⟩⟩
 
 /- English proof (translation)
-The claim follows from `fam_ev h.fam _ univ T t N hN := by have hQ := (fam_ev h.fam (fst B S')).isLB have key : ∀ y : T ⟶ B ⊗ S', LBIso N (ev (ev P (fst A _) (snd A _ ≫ fst B S')) (fst A T) (snd A T ≫ y)) ↔ LBIso N (ev P (fst A T) (snd A T ≫ y ≫ fst B S')) := fun y ↦ by rw [← cls_eq_iff hN.isLB (pull_is …`.
+A detailed English derivation is pending.
 -/
 theorem rep_baseChange {B : Over S} {P : LB (A ⊗ B).left} (h : Rep A (toUnit B) P) (S' : Over S) :
     Rep A (snd B S') (ev P (fst A _) (snd A _ ≫ fst B S')) where
@@ -62,7 +62,7 @@ theorem rep_baseChange {B : Over S} {P : LB (A ⊗ B).left} (h : Rep A (toUnit B
     · rw [lift_snd, hy.1]
 
 /- English proof (translation)
-Use `⟨B, P, 𝟙 _, h, hg, Category.id_comp _, inferInstanceAs (IsOpenImmersion (𝟙 (B ⊗ S').left)), ⟨x, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[same_iff h.isLB (fam_ev h (fst B S')).isLB, evc_ev h.isLB, lift_fst, lift_snd_assoc, Category.comp_id]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem liftAt_baseChange {g : ℕ} {B : Over S} {P : LB (A ⊗ B).left} (h : Fam A P)
     (hg : SmoothOfRelativeDimension g B.hom) (S' : Over S) (x : (B ⊗ S').left) :
@@ -71,7 +71,7 @@ theorem liftAt_baseChange {g : ℕ} {B : Over S} {P : LB (A ⊗ B).left} (h : Fa
   rw [same_iff h.isLB (fam_ev h (fst B S')).isLB, evc_ev h.isLB, lift_fst, lift_snd_assoc, Category.comp_id]
 
 /- English proof (translation)
-Establish `H : IsPullback (fst B S').left (snd B S').left B.hom S'.hom` using `IsPullback.of_hasPullback _ _`. Use `smoothOfRelativeDimension_isStableUnderBaseChange g` as an intermediate fact. Conclude with `⟨MorphismProperty.of_isPullback (P := @IsProper) H h.proper, MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension g) H h.smooth, MorphismProperty.of_isPullback (P := @GeometricallyConnected) H h.conn⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem good_snd {g : ℕ} {B : Over S} (h : Good g B.hom) (S' : Over S) : Good g (snd B S').left := by
   have H : IsPullback (fst B S').left (snd B S').left B.hom S'.hom := IsPullback.of_hasPullback _ _
@@ -81,7 +81,7 @@ theorem good_snd {g : ℕ} {B : Over S} (h : Good g B.hom) (S' : Over S) : Good 
     MorphismProperty.of_isPullback (P := @GeometricallyConnected) H h.conn⟩
 
 /- English proof (translation)
-Take `⟨B, _, P, hB, hd, h, -⟩` from `H S A hA`. Conclude with `⟨_, _, _, rep_baseChange (Rep.of_isDual h) S', good_snd ⟨hB.proper, hd g hg, hB.geomConnected⟩ S'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasRep_of_dual (H : GlobalTheory.Published.DualAbelianScheme) (hA : IsAbelianScheme A) {g : ℕ}
     (hg : SmoothOfRelativeDimension g A.hom) (S' : Over S) : HasRep A g S' := by
@@ -89,9 +89,9 @@ theorem hasRep_of_dual (H : GlobalTheory.Published.DualAbelianScheme) (hA : IsAb
   exact ⟨_, _, _, rep_baseChange (Rep.of_isDual h) S', good_snd ⟨hB.proper, hd g hg, hB.geomConnected⟩ S'⟩
 
 /- English proof (translation)
-Establish `r` using `rep_baseChange (Rep.of_isDual (isDual_unit (S := S))) S'`. Establish `g : Good 0 (snd (𝟙_ (Over S)) S').left` using `good_snd (show Good 0 (𝟙 S) from ⟨inferInstance, inferInstance, inferInstance⟩) S'`. Use `⟨_, _, _, r, g, fun F ↦ ⟨⊤, ?_, fun _ _ ↦ trivial⟩⟩` and prove the remaining obligations. Establish `: IsIso (λ_ S').hom.left` using `(Over.forget _).map_isIso (λ_ S').hom`. Establish `: IsAffine (𝟙_ (Over S) ⊗ S').left` using `.of_isIso (λ_ S').hom.left`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isAffineOpen_top _`.
+A detailed English derivation is pending.
 -/
 theorem hasRepAF_unit (S' : Over S) [IsAffine S'.left] : HasRepAF (𝟙_ (Over S)) 0 S' := by
   have r := rep_baseChange (Rep.of_isDual (isDual_unit (S := S))) S'
@@ -103,9 +103,9 @@ theorem hasRepAF_unit (S' : Over S) [IsAffine S'.left] : HasRepAF (𝟙_ (Over S
   exact isAffineOpen_top _
 
 /- English proof (translation)
-Establish `z : ∀ (Y : Over S) (a : Y ⟶ 𝟙_ (Over S)) (u : Y ⟶ B), evc h.fam.isLB a u = 0` using `fun Y a u ↦ by`. Rewrite using `[toUnit_unique a 1]`. Conclude with `h.fam.add.evc_one h.fam.isLB u`. Take `⟨x, hx, -⟩` from `h.univ S' (𝟙 _) (LB.triv _) ⟨LB.isLB_triv _, (isAdditive_iff (LB.isLB_triv _)).2 fun _ _ _ _ ↦ by`. Establish `h0 : ∀ (Y : Over S) (a : Y ⟶ 𝟙_ (Over S)) (t : Y ⟶ S'), evc (LB.isLB_triv _) a t = 0` using `fun _ _ _ ↦ map_zero _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [h0, add_zero]⟩`. Use `⟨x, rep_ext h (by rw [Category.assoc, hx.1, Category.comp_id, Category.id_comp]) ?_, hx.1⟩` and prove the remaining obligations. Rewrite using `[same_iff h.fam.isLB h.fam.isLB, z, z]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_of_rep_unit {B S' : Over S} {b : B ⟶ S'} {P : LB (𝟙_ (Over S) ⊗ B).left}
     (h : Rep (𝟙_ (Over S)) b P) : IsIso b := by
@@ -121,9 +121,9 @@ theorem isIso_of_rep_unit {B S' : Over S} {b : B ⟶ S'} {P : LB (𝟙_ (Over S)
   rw [same_iff h.fam.isLB h.fam.isLB, z, z]
 
 /- English proof (translation)
-Take `⟨B, b, P, hr, hg⟩` from `h`. Use `isIso_of_rep_unit hr` as an intermediate fact. Establish `: IsIso b.left` using `(Over.forget _).map_isIso b`. Set `f : 𝟙_ (Over S'.left) ⟶ Over.mk b.left` to `Over.homMk (inv b.left) (IsIso.inv_hom_id _)`. Establish `: IsIso ((Over.forget _).map f)` using `inferInstanceAs (IsIso (inv b.left))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(GlobalTheory.relDim_unique_of_iso_grp _ hS _ _ f (isIso_of_reflects_iso f (Over.forget _)) 0 g (inferInstanceAs (SmoothOfRelativeDimension 0 (𝟙 S'.left))) hg.smooth).symm`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_hasRep_unit {g : ℕ} {S' : Over S} (hS : Nonempty S'.left) (h : HasRep (𝟙_ (Over S)) g S') :
     g = 0 := by
@@ -136,7 +136,7 @@ theorem eq_zero_of_hasRep_unit {g : ℕ} {S' : Over S} (hS : Nonempty S'.left) (
     (inferInstanceAs (SmoothOfRelativeDimension 0 (𝟙 S'.left))) hg.smooth).symm
 
 /- English proof (translation)
-The claim follows from `fun Y u u' e ↦ by have hs : (swap P).IsLB := pull_isLB h.isLB _ have e' := (same_iff h.isLB h.isLB _ _).1 e have a := (isAdditive_iff hs).1 ha _ (snd A Y ≫ (u * u'⁻¹)) (snd A Y ≫ u') (fst A Y) rw [← MonObj.comp_mul, inv_mul_cancel_right, evc_swap h.isLB, evc_swap h.isLB, evc_swap …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inj_of_isPerfect {B : Over S} [GrpObj B] {P : LB (A ⊗ B).left} (h : IsPerfect A B P)
     (ha : IsAdditive (swap P)) : Inj A P := fun Y u u' e ↦ by
@@ -150,7 +150,7 @@ theorem inj_of_isPerfect {B : Over S} [GrpObj B] {P : LB (A ⊗ B).left} (h : Is
 omit [GrpObj A] in
 
 /- English proof (translation)
-The claim follows from `fun _ _ _ _ Y _ u u' e ↦ h Y u u' e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fibInj_of_inj {U : Over S} {M : LB (A ⊗ U).left} (h : Inj A M) : FibInj A M :=
   fun _ _ _ _ Y _ u u' e ↦ h Y u u' e
@@ -158,7 +158,7 @@ theorem fibInj_of_inj {U : Over S} {M : LB (A ⊗ U).left} (h : Inj A M) : FibIn
 omit [GrpObj A] in
 
 /- English proof (translation)
-The claim follows from `h Y u u' ((same_iff (LB.isLB_triv _) (LB.isLB_triv _) _ _).2 ((map_zero _).trans (map_zero _).symm))`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_inj_triv {U Y : Over S} (h : Inj A (LB.triv (A ⊗ U).left)) (u u' : Y ⟶ U) : u = u' :=
   h Y u u' ((same_iff (LB.isLB_triv _) (LB.isLB_triv _) _ _).2 ((map_zero _).trans (map_zero _).symm))
@@ -166,12 +166,12 @@ theorem eq_of_inj_triv {U Y : Over S} (h : Inj A (LB.triv (A ⊗ U).left)) (u u'
 omit [GrpObj A] in
 
 /- English proof (translation)
-The claim follows from `fun _ _ _ h ↦ h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dimLe_self : DimLe A A := fun _ _ _ h ↦ h
 
 /- English proof (translation)
-The claim follows from `(WeierstrassCurve.ellPolAV W).isAb.comm Fam (WeierstrassCurve.ellPolAV W).A (abelian₂ _ (WeierstrassCurve.ellPolAV W).L) ∧ Inj (WeierstrassCurve.ellPolAV W).A (abelian₂ _ (WeierstrassCurve.ellPolAV W).L) ∧ Good 1 (WeierstrassCurve.ellPolAV W).A.hom := by have hA := (WeierstrassCu …`.
+A detailed English derivation is pending.
 -/
 theorem ell {R : Type} [CommRing R] [IsNoetherianRing R] (W : WeierstrassCurve R) [W.IsElliptic] :
     haveI := (WeierstrassCurve.ellPolAV W).isAb.comm
@@ -185,7 +185,7 @@ theorem ell {R : Type} [CommRing R] [IsNoetherianRing R] (W : WeierstrassCurve R
     hA.proper, (WeierstrassCurve.ellPolAV W).smoothDim, hA.geomConnected⟩
 
 /- English proof (translation)
-The claim follows from `(WeierstrassCurve.ellPolAV W).isAb.comm Rep (WeierstrassCurve.ellPolAV W).A (toUnit _) (abelian₂ _ (WeierstrassCurve.ellPolAV W).L) ∧ IsChart (WeierstrassCurve.ellPolAV W).A (abelian₂ _ (WeierstrassCurve.ellPolAV W).L) := by have hA := (WeierstrassCurve.ellPolAV W).isAb have r := …`.
+A detailed English derivation is pending.
 -/
 theorem ell_rep (H : GlobalTheory.Published.DualAbelianScheme) {R : Type} [CommRing R] [IsNoetherianRing R]
     (W : WeierstrassCurve R) [W.IsElliptic] :
@@ -198,7 +198,7 @@ theorem ell_rep (H : GlobalTheory.Published.DualAbelianScheme) {R : Type} [CommR
   exact ⟨r, isChart_of_rep r⟩
 
 /- English proof (translation)
-Rewrite using `[same_iff hN.isLB hM.isLB, toUnit_unique (fst _ Y) 1, hN.add.evc_one hN.isLB, hM.add.evc_one hM.isLB]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem same_unit {T U Y : Over S} {N : LB (𝟙_ (Over S) ⊗ T).left} {M : LB (𝟙_ (Over S) ⊗ U).left}
     (hN : Fam (𝟙_ (Over S)) N) (hM : Fam (𝟙_ (Over S)) M) (y : Y ⟶ T) (u : Y ⟶ U) :
@@ -206,17 +206,17 @@ theorem same_unit {T U Y : Over S} {N : LB (𝟙_ (Over S) ⊗ T).left} {M : LB 
   rw [same_iff hN.isLB hM.isLB, toUnit_unique (fst _ Y) 1, hN.add.evc_one hN.isLB, hM.add.evc_one hM.isLB]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨W, hW⟩` from `h.chart (𝟙_ _) _ (Rep.of_isDual isDual_unit).fam`. Establish `F` using `(Rep.of_isDual (isDual_unit (S := S))).fam`. Take `⟨u, -⟩` from `(hW (Over.mk W.ι) (toUnit _)).2 fun z ↦ z.2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `m : ∀ z, U.hom z ∈ W` using `(hW U (toUnit _)).1 ⟨𝟙 _, same_unit F hM _ _⟩`. Set `W' : S.Opens` to `W`. Set `l : U.left ⟶ W'` to `IsOpenImmersion.lift W'.ι U.hom (by`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `m z)`. Establish `hl : l ≫ W'.ι = U.hom` using `IsOpenImmersion.lift_fac _ _ _`. Set `l' : U ⟶ Over.mk W'.ι` to `Over.homMk l hl`. Establish `e₁ : l' ≫ u = 𝟙 U` using `h.inj _ _ _ (same_unit hM hM _ _)`. Establish `e₂ : u.left ≫ l = 𝟙 _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono W'.ι, Category.assoc, hl, Over.w u]`. Conclude with `(Category.id_comp _).symm`. Establish `: IsIso l` using `⟨u.left, congrArg (fun q ↦ q.left) e₁, e₂⟩`. Rewrite using `[← hl]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `⟨hM, fun Y u u' _ ↦ Over.OverMorphism.ext ?_, fun T N hN ↦ ⟨T.hom ⁻¹ᵁ U.hom.opensRange, fun Y y ↦ ⟨?_, fun k ↦ ?_⟩⟩⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono U.hom, Over.w, Over.w]`. Introduce and unpack `⟨u, -⟩ z`. Use `⟨u.left z, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, Over.w, Over.w]`. Use `⟨Over.homMk (IsOpenImmersion.lift U.hom Y.hom ?_) (IsOpenImmersion.lift_fac _ _ _), same_unit hN hM _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Take `⟨w, hw⟩` from `k z`. Conclude with `⟨w, by rw [hw, ← Scheme.Hom.comp_apply, Over.w]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isChart_unit_iff {U : Over S} {M : LB (𝟙_ (Over S) ⊗ U).left} (hM : Fam (𝟙_ (Over S)) M) :
     IsChart (𝟙_ (Over S)) M ↔ IsOpenImmersion U.hom := by
@@ -252,23 +252,21 @@ theorem isChart_unit_iff {U : Over S} {M : LB (𝟙_ (Over S) ⊗ U).left} (hM :
       exact ⟨w, by rw [hw, ← Scheme.Hom.comp_apply, Over.w]⟩
 
 /- English proof (translation)
-Establish `hM` using `h.fam.isLB`. Establish `hV` using `fam_ev h.fam j`. Establish `key : ∀ {T Y : Over S} {N : LB (A ⊗ T).left} (_ : N.IsLB) (y : Y ⟶ T) (v : Y ⟶ V), Same A N (ev M (fst A V) (snd A V ≫ j)) y v ↔ Same A N M y (v ≫ j)` using `fun hN y v ↦ by`. Rewrite using `[same_iff hN hV.isLB, same_iff hN hM, evc_ev hM, lift_fst, lift_snd_assoc, Category.assoc]`. Establish `comp : ∀ {T Y Z : Over S} {N : LB (A ⊗ T).left} (_ : N.IsLB) {y : Y ⟶ T} {u : Y ⟶ U} (z : Z ⟶ Y), Same A N M y u → Same A N M (z ≫ y) (z ≫ u)` using `fun {T Y Z N} hN {y u} z e ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e'` using `congrArg (CechPic.pull (lift (fst A Z) (snd A Z ≫ z)).left) ((same_iff hN hM _ _).1 e)`. Rewrite `e'` using `[pull_evc, pull_evc, lift_fst, lift_snd_assoc, lift_snd_assoc, Category.assoc, Category.assoc]`. Conclude with `(same_iff hN hM _ _).2 e'`. Use `⟨hV, fun Y v v' e ↦ ?_, fun T N hN ↦ ?_⟩` and prove the remaining obligations. Establish `e'` using `(same_iff hV.isLB hM _ _).1 ((key hV.isLB _ _).1 e)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e'` using `[evc_ev hM, lift_fst, lift_snd_assoc, Category.assoc]`. Use `h.inj Y _ _ ((same_iff hM hM _ _).2 e')` as an intermediate fact. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono j.left, ← Over.comp_left, this, Over.comp_left]`. Take `⟨W, hW⟩` from `h.chart T N hN`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `w : Over.mk (W.ι ≫ T.hom) ⟶ T` to `Over.homMk W.ι rfl`. Take `⟨u₀, h₀⟩` from `(hW _ w).2 fun z ↦ z.2`. Establish `lf : ∀ (Y : Over S) (y : Y ⟶ T), (∀ z, y.left z ∈ W) → ∃ y' : Y ⟶ Over.mk (W.ι ≫ T.hom), y' ≫ w = y` using `fun Y y k ↦ by`. Establish `r : Set.range y.left ⊆ Set.range W.ι`. Introduce and unpack `_ ⟨z, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `k z`. Use `⟨Over.homMk (IsOpenImmersion.lift W.ι y.left r) ?_, Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Conclude with `(IsOpenImmersion.lift_fac_assoc _ _ _ _).trans (Over.w y)`. Conclude with `IsOpenImmersion.lift_fac _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨W.ι ''ᵁ (u₀.left ⁻¹ᵁ j.left.opensRange), fun Y y ↦ ⟨?_, fun k ↦ ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨v, hv⟩ z`. Establish `hv'` using `(key hN.isLB _ _).1 hv`. Take `⟨y', rfl⟩` from `lf Y y ((hW Y y).1 ⟨_, hv'⟩)`. Establish `e : v ≫ j = y' ≫ u₀` using `h.inj _ _ _ ((same_iff hM hM _ _).2 (((same_iff hN.isLB hM _ _).1 hv').symm.trans ((same_iff hN.isLB hM _ _).1 (comp hN.isLB y' h₀))))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨y'.left z, ⟨v.left z, ?_⟩, rfl⟩` and prove the remaining obligations. Conclude with `congrArg (fun q : Y ⟶ U ↦ q.left z) e`. Take `⟨y', rfl⟩` from `lf Y y fun z ↦ by`. Take `⟨p, -, hp⟩` from `k z`. Conclude with `hp ▸ p.2`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `r : Set.range (y' ≫ u₀).left ⊆ Set.range j.left`. Introduce and unpack `_ ⟨z, rfl⟩`. Take `⟨p, hp, e⟩` from `k z`. Take `rfl : p = y'.left z` from `W.ι.isOpenEmbedding.injective e`. Conclude with `hp`.
-
-Set `v : Y ⟶ V` to `Over.homMk (IsOpenImmersion.lift j.left _ r) (by`. Rewrite using `[← Over.w j, IsOpenImmersion.lift_fac_assoc, Over.w])`. Establish `hv : v ≫ j = y' ≫ u₀` using `Over.OverMorphism.ext (IsOpenImmersion.lift_fac _ _ _)`. Conclude with `⟨v, (key hN.isLB _ _).2 (hv ▸ comp hN.isLB y' h₀)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isChart_open {U V : Over S} {M : LB (A ⊗ U).left} (h : IsChart A M) (j : V ⟶ U) [IsOpenImmersion j.left] :
     IsChart A (ev M (fst A V) (snd A V ≫ j)) := by
@@ -320,7 +318,7 @@ theorem isChart_open {U V : Over S} {M : LB (A ⊗ U).left} (h : IsChart A M) (j
       exact ⟨v, (key hN.isLB _ _).2 (hv ▸ comp hN.isLB y' h₀)⟩
 
 /- English proof (translation)
-The claim follows from `fun h ↦ by have := smoothOfRelativeDimension_isStableUnderBaseChange 1 have k := h 1 _ (𝟙 _) (MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension 1) (IsPullback.of_hasPullback _ _) (WeierstrassCurve.ellPolAV W).smoothDim) refine one_ne_zero (eq_zero_of_hasRep_unit (S …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_dimLe_unit_ell {R : Type} [CommRing R] [Nontrivial R] (W : WeierstrassCurve R) [W.IsElliptic] :
     ¬ DimLe (WeierstrassCurve.ellPolAV W).A (𝟙_ _) := fun h ↦ by
@@ -334,7 +332,7 @@ theorem not_dimLe_unit_ell {R : Type} [CommRing R] [Nontrivial R] (W : Weierstra
   exact ⟨z.proper, k, z.conn⟩
 
 /- English proof (translation)
-The claim follows from `fun h ↦ by obtain ⟨hf, hi, hg⟩ := ell W obtain ⟨x, ⟨-, hx⟩, -⟩ := h.univ _ (toUnit _) _ hf have c := (cls_eq_iff hf.isLB (pull_isLB h.fam.isLB _)).2 hx have e : (𝟙 (WeierstrassCurve.ellPolAV W).A) = 1 := hi _ _ _ <| (same_iff hf.isLB hf.isLB _ _).2 <| by rw [evc, evc, c, cls_ev h …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_rep_ell_unit {R : Type} [CommRing R] [IsNoetherianRing R] [Nontrivial R] (W : WeierstrassCurve R)
     [W.IsElliptic] (P : LB ((WeierstrassCurve.ellPolAV W).A ⊗ 𝟙_ _).left) :

@@ -37,13 +37,13 @@ variable {D : D7}
 def pz (S : HSp D) (z x : Fin S.rank → D.host.E) : D.host.E := ∑ i, ∑ j, star (x i) * S.gram i j * z j
 
 /- English proof (translation)
-Simplify using `only [pz, Pi.add_apply, star_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pz_add (S : HSp D) (z x y : Fin S.rank → D.host.E) : pz S z (x + y) = pz S z x + pz S z y := by
   simp only [pz, Pi.add_apply, star_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [pz, Pi.smul_apply, smul_eq_mul, star_mul', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pz_smul (S : HSp D) (z x : Fin S.rank → D.host.E) (c : D.host.E) :
     pz S z (c • x) = star c * pz S z x := by
@@ -66,13 +66,13 @@ def valSub (S : HSp D) (M : Lat S) (z : Fin S.rank → D.host.E) : Submodule (�
     rw [e, pz_smul, hc', star_star, Algebra.smul_def]
 
 /- English proof (translation)
-Establish `hsp : Submodule.span D.host.E (M : Set (Fin S.rank → D.host.E)) = ⊤` using `hM.1.span_eq_top`. Establish `hz : z ∈ Submodule.span D.host.E (M : Set (Fin S.rank → D.host.E))` using `by rw [hsp]; trivial`. Take `⟨d, hd⟩` from `multiple_mem_span_of_mem_localization_span (𝓞 D.host.E)⁰ D.host.E (M : Set _) z hz`. Rewrite `hd` using `[Submodule.span_eq]`. Use `⟨d, d.2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨b, hb⟩` from `(hM.2 _).1 hd x hx`. Use `⟨b, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(b : D.host.E) = (d : 𝓞 D.host.E) • pz S z x`. Rewrite using `[hb, Algebra.smul_def]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [pz, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `e : (d • z) j = algebraMap (𝓞 D.host.E) D.host.E d * z j`. Express the relevant statement in the definitionally equal form `((d : 𝓞 D.host.E) • z) j = _`. Rewrite using `[Pi.smul_apply, Algebra.smul_def]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem valSub_isFractional (S : HSp D) (M : Lat S) (hM : IsSelfDualC S M) (z : Fin S.rank → D.host.E) :
     IsFractional (𝓞 D.host.E)⁰ (valSub S M z) := by
@@ -98,13 +98,13 @@ def valIdl (S : HSp D) (M : Lat S) (hM : IsSelfDualC S M) (z : Fin S.rank → D.
   ⟨valSub S M z, valSub_isFractional S M hM z⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_valIdl {S : HSp D} {M : Lat S} {hM : IsSelfDualC S M} {z : Fin S.rank → D.host.E} {a : D.host.E} :
     a ∈ valIdl S M hM z ↔ ∃ x ∈ M, pz S z x = a := Iff.rfl
 
 /- English proof (translation)
-Simplify using `only [hermAt, pz, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(pairA D.host.F 0 α ⊗ₜ[D.host.F] star (1 * x i)) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] S.gram i j) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] z j) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_one, one_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermAt_gen (S : HSp D) (z x : Fin S.rank → D.host.E) (α : Af D.host.F) :
     hermAt S (ratV z) (fun i => pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 * x i)) =
@@ -116,25 +116,25 @@ theorem hermAt_gen (S : HSp D) (z x : Fin S.rank → D.host.E) (α : Af D.host.F
   rw [Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, mul_one, one_mul]
 
 /- English proof (translation)
-Simplify using `only [hermAt, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermAt_add (S : HSp D) (w x y : Fin S.rank → AE D) : hermAt S w (x + y) = hermAt S w x + hermAt S w y := by
   simp only [hermAt, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[hermAt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermAt_zero (S : HSp D) (w : Fin S.rank → AE D) : hermAt S w 0 = 0 := by
   simp [hermAt]
 
 /- English proof (translation)
-Simplify using `[hermAt, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermAt_neg (S : HSp D) (w x : Fin S.rank → AE D) : hermAt S w (-x) = -hermAt S w x := by
   simp [hermAt, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Establish `hg : ∀ m l, cA D (gA S m l) = gA S l m` using `fun m l => congrFun (congrFun (adj_gA S) l) m`. Simplify using `only [map_sum, map_mul, cA_cA, hermAt, Finset.sum_mul, hg]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cA_sum_eq (S : HSp D) (Z y : Fin S.rank → AE D) :
     cA D (∑ l, (∑ m, cA D (Z m) * gA S m l) * y l) = hermAt S Z y := by
@@ -144,14 +144,14 @@ theorem cA_sum_eq (S : HSp D) (Z y : Fin S.rank → AE D) :
   ring
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_adele_supportedAt_place_not_integral D v`.
+A detailed English derivation is pending.
 -/
 theorem exists_not_intAt (v : Pl D) : ∃ u ∈ idAt D (· = v), u ∉ intAt D (· = v) := GlobalTheory.T.exists_adele_supportedAt_place_not_integral D v
 
 /- English proof (translation)
-Take `⟨x, hx, hg⟩` from `GlobalTheory.IdVGen.idV_gen D v 𝔠 h`. Take `⟨u, hu, hnu⟩` from `exists_not_intAt (D := D) v`. Establish `ht : incA D x * u ∈ idAt D (· = v)` using `Ideal.mul_mem_left _ _ hu`. Use `⟨incA D x * u, ht, fun hm => hnu ?_⟩` and prove the remaining obligations. Use `((hg _).1 hm).1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ hx, map_one, one_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_not_mem_idV (v : Pl D) {𝔠 : FI D} (h : 𝔠 ≠ 0) : ∃ t ∈ idAt D (· = v), t ∉ idV 𝔠 v := by
   obtain ⟨x, hx, hg⟩ := GlobalTheory.IdVGen.idV_gen D v 𝔠 h
@@ -162,29 +162,27 @@ theorem exists_not_mem_idV (v : Pl D) {𝔠 : FI D} (h : 𝔠 ≠ 0) : ∃ t ∈
   rwa [← mul_assoc, ← map_mul, inv_mul_cancel₀ hx, map_one, one_mul] at this
 
 /- English proof (translation)
-Introduce `D ψ hψ S A L o ζ M 𝔠 v hM hL h𝔠 g hg`. Take `⟨h1, h2, -⟩` from `GlobalTheory.T.fractionalIdealCompletion_properties_at_place D ψ hψ v`. Establish `hSD` using `GlobalTheory.IwaPlace.LocSD.isSDAt_latV D S M v hM`. Use `set z := vecB o ζ with hzdef`. Use `set 𝔦 : FI D := valIdl S M hM z with h𝔦def`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hval : ∀ x ∈ latV S M (· = v), hermAt S (ratV z) x ∈ idV 𝔦 v`. Introduce `x hx`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hαi, hα, a, ha, m, hm, rfl⟩` from `hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite `ha` using `[Set.mem_singleton_iff]`. Substitute `ha` using the available equality. Rewrite using `[hermAt_gen]`. Conclude with `AddSubgroup.subset_closure ⟨α, hαi, hα, _, mem_valIdl.2 ⟨m, hm, rfl⟩, rfl⟩`. Consider the case `zero => rw [hermAt_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [hermAt_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [hermAt_neg]`. Conclude with `neg_mem hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hkey : ∀ t ∈ idAt D (· = v), t ∈ idV 𝔠 v ↔ ∀ x ∈ latV S M (· = v), t * hermAt S (ratV z) x ∈ intAt D (· = v)`. Introduce `t ht`. Rewrite using `[← hL t ht, hSD.2.2 (t • ratV z) (fun i => Ideal.mul_mem_right _ _ ht)]`. Simplify using `only [GlobalTheory.IwaPlace.SDStable.hermAt_smul_left]`. Establish `h𝔦 : 𝔦 ≠ 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Take `⟨t, ht, htn⟩` from `exists_not_mem_idV v h𝔠`. Use `htn ((hkey t ht).2 fun x hx => ?_)` and prove the remaining obligations. Use `hval x hx` as an intermediate fact. Rewrite `this` using `[h0, idV_zero, AddSubgroup.mem_bot]`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, mul_zero]`. Conclude with `⟨zero_mem _, by rw [map_zero]; exact zero_mem _⟩`. Establish `hsub : ∀ a ∈ idV 𝔦⁻¹ v, a ∈ idV 𝔠 v`. Introduce `a ha`. Establish `haA` using `GlobalTheory.SeeSaw.LiftModel.idV_le_idAt _ _ a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(hkey a haA).2 fun x hx => ?_` and prove the remaining obligations. Establish `e` using `(h2 𝔦 1 h𝔦 one_ne_zero a haA).2 (by rwa [one_mul])`. Conclude with `(h1 _).1 (e _ (hval x hx))`. Establish `hgA` using `GlobalTheory.SeeSaw.LiftModel.idV_le_idAt _ _ g hg`. Establish `hg' : g ∈ idV 𝔦 v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `e` using `(h2 𝔦⁻¹ 1 (inv_ne_zero h𝔦) one_ne_zero g hgA).1 fun a ha => (h2 𝔠 1 h𝔠 one_ne_zero g hgA).2 (by rwa [one_mul]) a (hsub a ha)`. Rewrite `e` using `[one_mul, inv_inv]`. Then use the resulting hypothesis. Establish `honto : ∀ b ∈ idV 𝔦 v, ∃ y ∈ latV S M (· = v), hermAt S (ratV z) y = b`. Introduce `b hb`. Proceed by induction on `hb using AddSubgroup.closure_induction with`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem w hw`. Take `⟨α, hαi, hα, a, ha, rfl⟩` from `hw`. Take `⟨m, hm, rfl⟩` from `mem_valIdl.1 ha`. Conclude with `⟨_, AddSubgroup.subset_closure ⟨α, hαi, hα, 1, rfl, m, hm, rfl⟩, hermAt_gen S z m α⟩`. Consider the case `zero => exact ⟨0, zero_mem _, hermAt_zero S _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `add b b' _ _ hb hb'`. Take `⟨y, hy, e⟩` from `hb`. Take `⟨y', hy', e'⟩` from `hb'`. Conclude with `⟨y + y', add_mem hy hy', by rw [hermAt_add, e, e']⟩`. Consider the case `neg b _ hb`.
-
-Take `⟨y, hy, e⟩` from `hb`. Conclude with `⟨-y, neg_mem hy, by rw [hermAt_neg, e]⟩`. Take `⟨y, hy, e⟩` from `honto g hg'`. Conclude with `⟨y, hy, by rw [cA_sum_eq, e]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hz_onto : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S A L : HSp D) (o : OrthDec S A L)
     (ζ : Fin L.rank → D.host.E) (M : Lat S) (𝔠 : FI D) (v : Pl D), IsSelfDualC S M → LineId o ζ M 𝔠 v → 𝔠 ≠ 0 →

@@ -111,14 +111,14 @@ def KernelEntryIdealCondition (D : D7) (Dx : DivX D) (Tw : TwForms D) (E : KerEn
     ValLoss E X O ig w i ∧ (LatTie E O w i → LatTie E O w (i + 1) → FormLoss Tw X u μ ig w i)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, ⟨0, Fin.elim0, Fin.elim0, fun k => k.elim0, fun k => k.elim0, by simp⟩, fun y => by simp [evFr]⟩`.
+Supply the required witnesses or components.
 -/
 theorem valInt_zero (Tw : TwForms D) {u : D.what₂.Word} {μ : D.what₂.Tup} (O : LiftObj D (D.chTw u μ)) {p : ℕ}
     [Fact p.Prime] (lam : Qbar →+* ℂ_[p]) (i : ℕ) : ValInt Tw O lam i 0 :=
   ⟨0, ⟨0, Fin.elim0, Fin.elim0, fun k => k.elim0, fun k => k.elim0, by simp⟩, fun y => by simp [evFr]⟩
 
 /- English proof (translation)
-Introduce `x hx y hy`. Use `(h1 _).2 fun c' => ?_` and prove the remaining obligations. Use `h _ ((h0 x).1 hx) c'` as an intermediate fact. Rewrite using `[LinearMap.map_smulₛₗ, hy]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formLoss_of_valLoss {Dx : DivX D} {Tw : TwForms D} (E : KerEnt D Dx Tw) (X : ErrX D) {u : D.what₂.Word}
     {μ : D.what₂.Tup} (O : LiftObj D (D.chTw u μ)) (ig : Fin 2) (w : D.what₂.places.Pl) (i : ℕ)
@@ -130,9 +130,7 @@ theorem formLoss_of_valLoss {Dx : DivX D} {Tw : TwForms D} (E : KerEnt D Dx Tw) 
   exact this
 
 /- English proof (translation)
-Establish `h1 : D.R.N i ≤ D.R.N D.R.m`. Unfold `Ranks.N`. Conclude with `Nat.add_le_add_left (Nat.mul_le_mul_right _ hi.le) _`. Establish `h2 : D.R.N (i + 1) ≤ D.R.N D.R.m + D.R.t`. Unfold `Ranks.N`.
-
-Conclude with `le_trans (Nat.add_le_add_left (Nat.mul_le_mul_right _ hi) _) (Nat.le_add_right _ _)`. Conclude with `Nat.mul_le_mul (Nat.mul_le_mul_left _ h1) h2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem exp_le (D : D7) (i : ℕ) (hi : i < D.R.m) :
     D.R.f * D.R.N i * D.R.N (i + 1) ≤ D.R.f * D.R.N D.R.m * (D.R.N D.R.m + D.R.t) := by

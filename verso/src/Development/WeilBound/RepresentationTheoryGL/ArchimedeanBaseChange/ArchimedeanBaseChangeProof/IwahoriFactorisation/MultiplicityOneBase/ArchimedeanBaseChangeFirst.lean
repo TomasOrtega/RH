@@ -27,17 +27,17 @@ open NumberField IsDedekindDomain Matrix Polynomial Filter GlobalTheory.CuspRep 
 open scoped Classical TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ hE w hw n a b hab Q₁ Q₂ hm₁ hm₂ hd₁ hd₂ hsep hc₁ hc₂`. Take `⟨K, e, he1, he2, he3, he4⟩` from `GlobalTheory.T.exists_unramifiedQuadraticDatum_at_inertPlace E hE w hw`. Establish `hs₁ : Q₁.Separable` using `hsep.of_mul_left`. Establish `hs₂ : Q₂.Separable` using `hsep.of_mul_right`. Take `⟨B₁, hg₁, hP₁, hst₁⟩` from `GlobalTheory.T.inertPlace_stableTwistedOrbital_unit_eq_latticeSum E hE w hw K e he1 he2 he3 he4 a Q₁ hm₁ hd₁ hs₁ hc₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨B₂, hg₂, hP₂, hst₂⟩` from `GlobalTheory.T.inertPlace_stableTwistedOrbital_unit_eq_latticeSum E hE w hw K e he1 he2 he3 he4 b Q₂ hm₂ hd₂ hs₂ hc₂`. Establish `hk` using `GlobalTheory.T.inertPlace_kappaOrbital_unit_eq_signedLatticeSum E hE w hw K e he1 he2 he3 he4 n Q₁ Q₂ hm₁ hm₂ (by omega) hsep hc₁ hc₂ B₁ B₂ hg₁ hg₂ hP₁ hP₂`. Establish `hsepP : (B₁.P * B₂.P).Separable`. Rewrite using `[hP₁, hP₂, ← Polynomial.map_mul]`. Conclude with `hsep.map`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hid` using `GlobalTheory.T.unitLemma_unramified_product_unitary_groups K B₁ B₂ hg₁ hg₂ hsepP`. Unfold `GlobalTheory.UnitLemma.InvAlg.Identity at hid`. Establish `hv : GlobalTheory.UnitLemma.val K.O (resultant B₁.P B₂.P) = ordL (resultant Q₁ Q₂)`. Rewrite using `[he3, hP₁, hP₂]`. Establish `h1 : (Q₁.map e.symm.toRingHom).natDegree = Q₁.natDegree` using `Polynomial.natDegree_map_eq_of_injective e.symm.injective _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (Q₂.map e.symm.toRingHom).natDegree = Q₂.natDegree` using `Polynomial.natDegree_map_eq_of_injective e.symm.injective _`. Rewrite using `[h1, h2, Polynomial.resultant_map_map]`. Simplify using the standard rewrite rules. Rewrite using `[PositivityTheory.BcbA.Ties.unit_product_indicator_twist E hE a b w hw Q₁ Q₂ hs₁ hs₂, hst₁, hst₂, hk, ← Rat.cast_mul, ← hid, Rat.cast_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv]`. Unfold `delta absHalf`. Rewrite using `[if_neg hw, he4]`. Use `set v := ordL (resultant Q₁ Q₂)`. Establish `hq : Real.sqrt (((K.q ^ 2 : ℕ) : ℝ) ^ (-v)) = (K.q : ℝ) ^ (-v)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_pow, ← zpow_natCast, ← _root_.zpow_mul, mul_comm, _root_.zpow_mul, zpow_natCast]`. Conclude with `Real.sqrt_sq (zpow_nonneg (Nat.cast_nonneg _) _)`. Rewrite using `[hq]`. Use `push_cast`. Rewrite using `[neg_eq_neg_one_mul, mul_zpow, ← _root_.inv_zpow', inv_neg_one]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Rg.Bc.ArchbcB.B.archimedean_base_change_first : PositivityTheory.Rg.Bc.ArchbcB.B.M1 := by
   intro E _ _ _ hE w hw n a b hab Q₁ Q₂ hm₁ hm₂ hd₁ hd₂ hsep hc₁ hc₂
@@ -74,7 +74,7 @@ theorem PositivityTheory.Rg.Bc.ArchbcB.B.archimedean_base_change_first : Positiv
   rw [neg_eq_neg_one_mul, mul_zpow, ← _root_.inv_zpow', inv_neg_one]
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.Rg.Bc.ArchbcB.B.archimedean_base_change_first`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Rg.Bc.ArchbcB.B.m1 : PositivityTheory.Rg.Bc.ArchbcB.B.M1 :=
   PositivityTheory.Rg.Bc.ArchbcB.B.archimedean_base_change_first

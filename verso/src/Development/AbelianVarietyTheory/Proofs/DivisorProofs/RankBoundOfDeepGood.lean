@@ -30,9 +30,9 @@ open scoped TensorProduct
 namespace GlobalTheory.CovTop
 
 /- English proof (translation)
-Introduce `hX h1 h2 h3 hS hT hL h4 h5 h6 h7 h8`. Use `Formalism.MainNotions.Closed.imp (GlobalTheory.T.rank_growth_bound_small_scale hX h1 hS hT h2 h3 hL h4 h5 h6 h7 h8) ?_` and prove the remaining obligations. Introduce and unpack `_ Fm _ _ ⟨C, h0, a, h⟩`. Use `⟨C, h0, a, fun x hx hle ι p hp i hi Y hY => ?_⟩` and prove the remaining obligations. Establish `H` using `h x hx hle ι p hp i hi Y hY 1 le_rfl (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `H` using `[Nat.cast_one, one_mul]`. Use `H.trans (mul_le_mul_of_nonneg_right ?_ (Nat.cast_nonneg _))` and prove the remaining obligations. Conclude with `add_le_add le_rfl (min_le_right _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rk_of_steps : GlobalTheory.CovTop.HypothesesX → Hypotheses2 → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted →
     GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative →

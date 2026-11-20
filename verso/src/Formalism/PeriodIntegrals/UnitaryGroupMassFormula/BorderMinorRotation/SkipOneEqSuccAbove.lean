@@ -9,9 +9,9 @@ namespace PI.UnitaryGroupMassFormula.QmBorderFull
 open PI
 
 /- English proof (translation)
-Distinguish the cases in `h : (i : ℕ) < (p : ℕ)`. Rewrite using `[if_pos h] first`. Consider the case `exact congrArg Fin.val (Fin.succAbove_of_castSucc_lt p i h)`. Consider the case `(rw [Fin.succAbove_of_castSucc_lt p i (by simpa [Fin.lt_iff_val_lt_val] using h)]; simp)`. Rewrite using `[if_neg h] first`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `exact congrArg Fin.val (Fin.succAbove_of_le_castSucc p i (Nat.not_lt.mp h))`. Consider the case `(rw [Fin.succAbove_of_le_castSucc p i (by simp [Fin.le_iff_val_le_val]; omega)]; simp)`.
+Treat this case separately. Treat this case separately.
 -/
 theorem val_succAbove {t : ℕ} (p : Fin (t + 1)) (i : Fin t) :
     ((p.succAbove i : Fin (t + 1)) : ℕ) = if (i : ℕ) < (p : ℕ) then (i : ℕ) else (i : ℕ) + 1 := by
@@ -26,7 +26,7 @@ theorem val_succAbove {t : ℕ} (p : Fin (t + 1)) (i : Fin t) :
     | (rw [Fin.succAbove_of_le_castSucc p i (by simp [Fin.le_iff_val_le_val]; omega)]; simp)
 
 /- English proof (translation)
-Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[val_succAbove]`. Unfold `skip1`. Apply the tactic sequence `split_ifs with h1 h2 <;> first | rfl | (exact absurd h1 h2) | (exact absurd h2 h1) | omega`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem skip_one_eq_succAbove {t : ℕ} (p : Fin (t + 1)) (i : Fin t) : skip1 p i = p.succAbove i := by
   apply Fin.ext
@@ -35,7 +35,7 @@ theorem skip_one_eq_succAbove {t : ℕ} (p : Fin (t + 1)) (i : Fin t) : skip1 p 
   split_ifs with h1 h2 <;> first | rfl | (exact absurd h1 h2) | (exact absurd h2 h1) | omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `congrArg f (skip_one_eq_succAbove p i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem comp_skip1 {α : Type*} {t : ℕ} (f : Fin (t + 1) → α) (p : Fin (t + 1)) :
     f ∘ skip1 p = f ∘ p.succAbove := by
@@ -43,20 +43,20 @@ theorem comp_skip1 {α : Type*} {t : ℕ} (f : Fin (t + 1) → α) (p : Fin (t +
   exact congrArg f (skip_one_eq_succAbove p i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `first | simp [bS] | (simp only [Function.comp_apply, bS, Fin.snoc_castSucc])`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem bS_castSucc {n m : ℕ} (v : Fin m → Fin n) (es : Fin n) : bS v es ∘ Fin.castSucc = v := by
   funext i
   first | simp [bS] | (simp only [Function.comp_apply, bS, Fin.snoc_castSucc])
 
 /- English proof (translation)
-Apply the tactic sequence `first | simp [bS] | (simp only [bS, Fin.snoc_last])`.
+A detailed English derivation is pending.
 -/
 theorem bS_last {n m : ℕ} (v : Fin m → Fin n) (es : Fin n) : bS v es (Fin.last m) = es := by
   first | simp [bS] | (simp only [bS, Fin.snoc_last])
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [Fin.snoc_eq_cons_rotate]; funext i; simp [bE])`. Consider the case `(funext i; obtain ⟨j, rfl⟩ := (finRotate (k + 1)).surjective i; simp only [Function.comp_apply, Equiv.symm_apply_apply, bE]; induction j using Fin.lastCases <;> simp [finRotate_last, finRotate_succ_apply])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rot_cons {n k : ℕ} (e : Fin n) (W : Fin k → Fin n) :
     bE e W = Fin.snoc (α := fun _ => Fin n) W e ∘ (finRotate (k + 1)).symm := by
@@ -65,17 +65,17 @@ theorem rot_cons {n k : ℕ} (e : Fin n) (W : Fin k → Fin n) :
   | (funext i; obtain ⟨j, rfl⟩ := (finRotate (k + 1)).surjective i; simp only [Function.comp_apply, Equiv.symm_apply_apply, bE]; induction j using Fin.lastCases <;> simp [finRotate_last, finRotate_succ_apply])
 
 /- English proof (translation)
-Establish `hperm : ∀ (a : Fin (k + 1) → Fin n) (τ : Equiv.Perm (Fin (k + 1))), qminor E (a ∘ τ) v u = ((Equiv.Perm.sign τ : ℤ) : A) * qminor E a v u`. Introduce `a τ`. Unfold `qminor`. Rewrite using `[Finset.mul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft τ) _ _ (fun σ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hτ : ((Equiv.Perm.sign τ : ℤ) : A) * ((Equiv.Perm.sign τ : ℤ) : A) = 1`. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Simplify using `only [Equiv.coe_mulLeft, Equiv.Perm.mul_apply, Function.comp_apply, Equiv.Perm.sign_mul, Units.val_mul, Int.cast_mul]`. Rewrite using `[← mul_assoc, ← mul_assoc, hτ, one_mul]`. Establish `hs : ∀ x : Fin (k + 1), ((Equiv.Perm.sign (finRotate (k + 1)).symm : ℤ) : A) * (((-1 : ℤ) ^ (k + (x : ℕ)) : ℤ) : A) = (((-1 : ℤ) ^ (x : ℕ) : ℤ) : A)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[Equiv.Perm.sign_symm, sign_finRotate, ← Int.cast_mul, Units.val_pow_eq_pow_val, Units.val_neg, Units.val_one, ← pow_add]`. Use `congr 1`. Establish `hx : ∀ a : ℕ, a = 2 * k + (x : ℕ) → (-1 : ℤ) ^ a = (-1) ^ (x : ℕ)`. Introduce and unpack `a rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[pow_add, pow_mul, neg_one_sq, one_pow, one_mul]`. Conclude with `hx _ (by omega)`. Rewrite using `[rot_cons e W, hperm, hLR A n k E hE (Fin.snoc (α := fun _ => Fin n) W e) v u, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations. Establish `h1 : (Fin.snoc (α` using `fun _ => Fin n) W e ∘ Fin.castSucc) = W := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `h2 : Tm E u e (v x) = E e (v x)`. Unfold `Tm`. Rewrite using `[if_neg (fun h => he x h.symm), zero_add]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, hs x, h1, Fin.snoc_last, h2]`.
+A detailed English derivation is pending.
 -/
 theorem rowE (hLR : ExpLastRow) {A : Type} [Ring A] [Algebra ℂ A] {n k : ℕ} (E : Fin n → Fin n → A)
     (hE : GlRel E) (e : Fin n) (W : Fin k → Fin n) (v : Fin (k + 1) → Fin n) (he : ∀ x, v x ≠ e) (u : ℂ) :
@@ -113,7 +113,7 @@ theorem rowE (hLR : ExpLastRow) {A : Type} [Ring A] [Algebra ℂ A] {n k : ℕ} 
   rw [← mul_assoc, hs x, h1, Fin.snoc_last, h2]
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [bE]`. Consider the case `(show bE e (bS v es) ((w.castSucc.succ).succAbove 0) = e; rw [Fin.succ_succAbove_zero]; simp only [bE, Fin.cons_zero])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rw_zero {n k : ℕ} (e es : Fin n) (v : Fin (k + 1) → Fin n) (w : Fin (k + 1)) :
     (bE e (bS v es) ∘ (w.castSucc.succ).succAbove) 0 = e := by
@@ -122,7 +122,7 @@ theorem rw_zero {n k : ℕ} (e es : Fin n) (v : Fin (k + 1) → Fin n) (w : Fin 
   | (show bE e (bS v es) ((w.castSucc.succ).succAbove 0) = e; rw [Fin.succ_succAbove_zero]; simp only [bE, Fin.cons_zero])
 
 /- English proof (translation)
-Use `show bE e (bS v es) ((w.castSucc.succ).succAbove (Fin.last (k + 1))) = es`. Establish `hw` using `w.isLt`. Apply the tactic sequence `have h1 : (w.castSucc.succ).succAbove (Fin.last (k + 1)) = (Fin.last (k + 1)).succ := Fin.ext (by simp only [val_succAbove, Fin.val_succ, Fin.coe_castSucc, Fin.val_last]; split_ifs <;> omega)`. Rewrite using `[h1]`. Simplify using `only [bE, bS, Fin.cons_succ, Fin.snoc_last]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rw_last {n k : ℕ} (e es : Fin n) (v : Fin (k + 1) → Fin n) (w : Fin (k + 1)) :
     (bE e (bS v es) ∘ (w.castSucc.succ).succAbove) (Fin.last (k + 1)) = es := by
@@ -134,11 +134,11 @@ theorem rw_last {n k : ℕ} (e es : Fin n) (v : Fin (k + 1) → Fin n) (w : Fin 
   simp only [bE, bS, Fin.cons_succ, Fin.snoc_last]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply]`. Establish `hw` using `w.isLt`. Use `Fin.lastCases ?_ (fun j => ?_) j` and prove the remaining obligations. Apply the tactic sequence `have h1 : (w.castSucc.succ).succAbove (Fin.last k).succ = (Fin.last (k + 1)).succ := Fin.ext (by simp only [val_succAbove, Fin.val_succ, Fin.coe_castSucc, Fin.val_last]; split_ifs <;> omega)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[h1]`. Simplify using `only [bE, bS, Fin.cons_succ, Fin.snoc_last, Fin.cast_last]`. Establish `hj` using `j.isLt`. Apply the tactic sequence `have h2 : (w.castSucc.succ).succAbove (Fin.castSucc j).succ = (Fin.castSucc (w.succAbove j)).succ := Fin.ext (by simp only [val_succAbove, Fin.val_succ, Fin.coe_castSucc]; split_ifs <;> omega)`. Establish `h3 : Fin.cast h (Fin.castSucc j) = Fin.castSucc (Fin.cast (by omega) j : Fin (k + 1 - 1))` using `Fin.ext (by simp only [Fin.coe_cast, Fin.coe_castSucc])`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[h2, h3]`. Simplify using `only [bE, bS, Fin.cons_succ, Fin.snoc_castSucc, Function.comp_apply]`. Rewrite using `[skip_one_eq_succAbove]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rows_succ {n k : ℕ} (e es : Fin n) (v : Fin (k + 1) → Fin n) (w : Fin (k + 1))
     (h : k + 1 = k + 1 - 1 + 1) :
@@ -163,11 +163,11 @@ theorem rows_succ {n k : ℕ} (e es : Fin n) (v : Fin (k + 1) → Fin n) (w : Fi
     rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Establish `hw` using `w.isLt`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Establish `h0 : (Fin.last (k + 1)).succAbove 0 = 0` using `Fin.ext (by rw [val_succAbove]; simp)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h0, Fin.succ_succAbove_zero]`. Simplify using `only [bE, Fin.cons_zero]`. Simplify using `only [Function.comp_apply]`. Establish `hj` using `j.isLt`. Apply the tactic sequence `have h1 : (w.castSucc.succ).succAbove ((Fin.last (k + 1)).succAbove j.succ) = (Fin.castSucc (w.succAbove j)).succ := Fin.ext (by simp only [val_succAbove, Fin.val_succ, Fin.coe_castSucc, Fin.val_last]; split_ifs <;> omega)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[h1]`. Simplify using `only [bE, bS, Fin.cons_succ, Fin.snoc_castSucc, Function.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rows_last {n k : ℕ} (e es : Fin n) (v : Fin (k + 1) → Fin n) (w : Fin (k + 1)) :
     (bE e (bS v es) ∘ (w.castSucc.succ).succAbove) ∘ (Fin.last (k + 1)).succAbove = bE e (v ∘ w.succAbove) := by
@@ -186,25 +186,25 @@ theorem rows_last {n k : ℕ} (e es : Fin n) (v : Fin (k + 1) → Fin n) (w : Fi
     simp only [bE, bS, Fin.cons_succ, Fin.snoc_castSucc, Function.comp_apply]
 
 /- English proof (translation)
-Rewrite using `[← mul_assoc, ← mul_assoc, Int.cast_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cmul {A : Type*} [Ring A] (s : ℤ) (x y : A) : x * ((s : A) * y) = (s : A) * (x * y) := by
   rw [← mul_assoc, ← mul_assoc, Int.cast_comm]
 
 /- English proof (translation)
-Introduce `A _ _ n m E e es v hE hB u w`. Consider the cases of `m with`. Consider the case `zero => exact w.elim0`. Consider the case `succ k`. Establish `hv : ∀ x, v x ≠ e` using `hB.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hves : ∀ x, v x ≠ es` using `hB.2.2.2`. Establish `hL : bE e (bS v es) w.castSucc.succ = v w` using `by simp [bE, bS]`. Establish `hT : Tm E u (v w) e = E (v w) e` using `by simp [Tm, hv w]`. Rewrite using `[hL, show bE e (bS v es) 0 = e from rfl, hT, show bE e (bS v es) ∘ Fin.succ = bS v es from rfl]`. Rewrite using `[hLC A n (k + 1) E _ (bS v es) (u - 1), Fin.sum_univ_succ, Fin.sum_univ_castSucc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [bS_castSucc, bS_last]`. Rewrite using `[hX A n k E e es v hE hB u w]`. Simplify using `only [Fin.succAbove_zero, Fin.succ_last, rw_zero, rw_last, rows_last]`. Rewrite using `[rows_succ e es v w (by omega), rowE hLR E hE e (v ∘ w.succAbove) v hv (u - 1)]`. Simplify using `only [comp_skip1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hTe : Tm E (u - 1 - ((k + 1 : ℕ) : ℂ)) e es = E e es` using `by simp [Tm, hB.2.1]`. Establish `hu2 : u - 1 - 1 = u - 2` using `by ring`. Establish `hu3 : u - 1 - ((k + 1 : ℕ) : ℂ) = u - ((k + 1 : ℕ) : ℂ) - 1` using `by ring`. Rewrite using `[hTe, hu2, hu3]`. Establish `hcomm : ∀ x, E e (v x) * Tm E (u - ((k + 1 : ℕ) : ℂ) - 1) es es = Tm E (u - ((k + 1 : ℕ) : ℂ) - 1) es es * E e (v x)` using `fun x => (tm_comm_E E hE _ es e (v x) hB.2.1.symm (hves x)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he2 : ((-1 : ℤ) ^ (k + 1 + (k + 1))) = 1` using `Even.neg_one_pow ⟨k + 1, rfl⟩`. Establish `p0 : ∀ Q : A, (((-1 : ℤ) ^ ((w : ℕ) + 1) : ℤ) : A) * (E (v w) e * ((((-1 : ℤ) ^ (k + 1) : ℤ) : A) * (Q * E e es))) = (((-1 : ℤ) ^ ((w : ℕ) + 1 + (k + 1)) : ℤ) : A) * (E (v w) e * (Q * E e es))`. Introduce `Q`. Rewrite using `[cmul, ← mul_assoc, ← Int.cast_mul, ← pow_add]`. Establish `pm : ∀ S : A, (((-1 : ℤ) ^ ((w : ℕ) + 1) : ℤ) : A) * (E (v w) e * ((((-1 : ℤ) ^ (w : ℕ) : ℤ) : A) * S)) = -(E (v w) e * S)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `S`. Rewrite using `[cmul, ← mul_assoc, ← Int.cast_mul, ← pow_add, Odd.neg_one_pow ⟨w, by ring⟩, Int.cast_neg, Int.cast_one, neg_one_mul]`. Establish `pl : ∀ f : Fin (k + 1) → A, (((-1 : ℤ) ^ ((w : ℕ) + 1) : ℤ) : A) * (E (v w) e * ∑ x : Fin (k + 1), (((-1 : ℤ) ^ (x : ℕ) : ℤ) : A) * f x) = -∑ x : Fin (k + 1), (((-1 : ℤ) ^ ((w : ℕ) + (x : ℕ)) : ℤ) : A) * (E (v w) e * f x)`. Introduce `f`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_neg_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations. Rewrite using `[cmul, ← mul_assoc, ← Int.cast_mul, ← pow_add, show ((-1 : ℤ) ^ ((w : ℕ) + 1 + (x : ℕ))) = -(-1) ^ ((w : ℕ) + (x : ℕ)) by ring, Int.cast_neg, neg_mul]`. Simplify using `only [Fin.val_succ, Fin.val_castSucc, Fin.val_zero, Fin.val_last, add_zero, Nat.succ_eq_add_one, he2, Int.cast_one, one_mul, Finset.sum_mul, mul_assoc, hcomm, mul_add]`. Simplify using `only [p0, pm, pl]`. Simplify using `only [Finset.mul_sum, mul_ite, mul_zero, cmul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/

@@ -17,15 +17,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.HodgeWeil
 
 /- English proof (translation)
-Use `hA.comm` as an intermediate fact. Establish `h` using `hC S A hA L hL (G3 A) (x3 A 0) (x3 A 1) (x3 A 2)`. Establish `e` using `(CechPic.cls_eq_zero_iff (LB.isLB_linComb hL _ _)).2 h`. Rewrite `e` using `[CechPic.cls_linComb hL _ _ _, Fin.sum_univ_eight]`. Use `(CechPic.cls_eq_zero_iff (LB.isLB_linComb hL _ _)).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[CechPic.cls_linComb hL _ _ _, ← e, ← Equiv.ulift.symm.sum_comp]`. Establish `u : (Finset.univ : Finset (Finset (Fin 3))) = {{0, 1, 2}, {0, 1}, {0, 2}, {1, 2}, {0}, {1}, {2}, ∅}`. Evaluate the decidable proposition. Rewrite using `[u]`. Use `iterate 7 rw [Finset.sum_insert (by decide)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Evaluate the decidable proposition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_singleton]`. Establish `k0 : psum A (x3 A) {0, 1, 2} = x3 A 0 * x3 A 1 * x3 A 2` using `(show _ = x3 A 0 * (x3 A 1 * (x3 A 2 * 1)) from rfl).trans (by rw [_root_.mul_one, _root_.mul_assoc])`. Establish `k1 : psum A (x3 A) {0, 1} = x3 A 0 * x3 A 1` using `(show _ = x3 A 0 * (x3 A 1 * 1) from rfl).trans (by rw [_root_.mul_one])`. Establish `k2 : psum A (x3 A) {0, 2} = x3 A 0 * x3 A 2` using `(show _ = x3 A 0 * (x3 A 2 * 1) from rfl).trans (by rw [_root_.mul_one])`. Establish `k3 : psum A (x3 A) {1, 2} = x3 A 1 * x3 A 2` using `(show _ = x3 A 1 * (x3 A 2 * 1) from rfl).trans (by rw [_root_.mul_one])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k4 : psum A (x3 A) {0} = x3 A 0` using `_root_.mul_one (x3 A 0)`. Establish `k5 : psum A (x3 A) {1} = x3 A 1` using `_root_.mul_one (x3 A 1)`. Establish `k6 : psum A (x3 A) {2} = x3 A 2` using `_root_.mul_one (x3 A 2)`. Establish `k7 : psum A (x3 A) ∅ = 1` using `rfl`. Simplify using `only [Equiv.ulift_symm_down, k0, k1, k2, k3, k4, k5, k6, k7, ← add_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem triv_theta (hC : GlobalTheory.Published.CubeTheorem) {S : Scheme.{0}} {A : Over S} [GrpObj A] (hA : IsAbelianScheme A)
     {L : LB A.left} (hL : L.IsLB) : AbLaw.Triv (Theta A L) := by
@@ -56,11 +56,11 @@ theorem triv_theta (hC : GlobalTheory.Published.CubeTheorem) {S : Scheme.{0}} {A
   rfl
 
 /- English proof (translation)
-Establish `hAB` using `AbelianSchemeGerms.isAbelianScheme_tensor A B hA hB`. Use `hAB.comm` as an intermediate fact. Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : AbLaw.Triv (P.pull (eSec (A ⊗ B))) := by`. Establish `e` using `(AbDual.triv_ev_iff hP.isLB _ _).2 (AbDual.evc_one_right hP.isLB hP.zero (1 : 𝟙_ (Over (Sp R)) ⟶ A))`. Establish `e' : CartesianMonoidalCategory.lift (1 : 𝟙_ (Over (Sp R)) ⟶ A) (1 : 𝟙_ (Over (Sp R)) ⟶ B) = η[A ⊗ B]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `ext <;> simp [Hom.one_def]`. Rewrite `e` using `[AbDual.ev, e']`. Conclude with `e`. Set `M : RigLB (A ⊗ B)` to `⟨P, r, hP.isLB, hr⟩`. Take `⟨t, ht⟩` from `triv_theta hC hAB hP.isLB`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t', ht', hn'⟩` from `AbLaw.Cube.exists_normalised hP.isLB t ht`. Set `c` to `AbLaw.Cube.cubicalOfNormalised globalFns_holds hAB M t' ht' hn'`. Take `⟨w, hw⟩` from `WeilCube.exists_isRatio c n X Y hX hY`. Take `rfl` from `(WeilCube.weilIs_iff c globalFns_holds hAB hX hY hw _).1 h`. Conclude with `(WeilCube.weilIs_iff c globalFns_holds hAB (by rw [← MonObj.comp_pow, hX, MonObj.comp_one]) (by rw [← MonObj.comp_pow, hY, MonObj.comp_one]) (hw.comp c σ) _).2 rfl`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem weilIs_comp (hC : GlobalTheory.Published.CubeTheorem) {R : Type} [CommRing R] {A B : Over (Sp R)} [GrpObj A] [GrpObj B]
     (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {P : LB (A ⊗ B).left} (hP : IsDual A B P) {n : ℕ}
@@ -91,7 +91,7 @@ variable {R D : Type} [CommRing R] [CommRing D] [Bialgebra R D] [Module.Finite R
   [Coalgebra.IsCocomm R D]
 
 /- English proof (translation)
-Rewrite using `[cobOne_apply, sub_sub, sub_eq_zero, CartierDual.comul_eq_iff]`. Use `forall₂_congr fun x y ↦ ?_` and prove the remaining obligations. Rewrite using `[map_add, LinearMap.add_apply, CartierDual.pair_tmul_tmul, CartierDual.pair_tmul_tmul, CartierDual.one_apply, CartierDual.one_apply, eq_comm, add_comm, mul_comm (b x)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cobOne_eq_zero_iff (b : CartierDual R D) : cobOne R _ b = 0 ↔
     ∀ x y : D, b (x * y) = Coalgebra.counit (R := R) x * b y + Coalgebra.counit (R := R) y * b x := by
@@ -113,14 +113,14 @@ def epsPoint (b : CartierDual R D) (hb : cobOne R _ b = 0) : D →ₐ[R] DualNum
       · simp [TrivSqZeroExt.algebraMap_eq_inl, h, mul_comm])
 
 /- English proof (translation)
-Simplify using `[epsPoint, TrivSqZeroExt.algebraMap_eq_inl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fst_epsPoint (b : CartierDual R D) (hb : cobOne R _ b = 0) (a : D) :
     (epsPoint b hb a).fst = Coalgebra.counit (R := R) a := by
   simp [epsPoint, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Simplify using `[epsPoint, TrivSqZeroExt.algebraMap_eq_inl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem snd_epsPoint (b : CartierDual R D) (hb : cobOne R _ b = 0) (a : D) : (epsPoint b hb a).snd = b a := by
   simp [epsPoint, TrivSqZeroExt.algebraMap_eq_inl]
@@ -132,7 +132,7 @@ section Tower
 variable {p : ℕ} {R : Type} [CommRing R] {A B : Over (Sp R)} [GrpObj A] [GrpObj B] {𝒜 ℬ : PDivGroup p R}
 
 /- English proof (translation)
-Establish `h` using `(u.eq_one_iff 1 ((TrivSqZeroExt.fstHom R R R).comp (epsPoint b hb))).2 (fst_epsPoint b hb)`. Rewrite `h` using `[← spOver_comp, Category.assoc]`. Use `(congrArg Over.Hom.left h).trans ?_` and prove the remaining obligations. Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left]`. Conclude with `(congrArg (· ≫ η[B].left) (Cris.spMap_id R)).trans (Category.id_comp _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTangent_epsPoint (u : ℬ.TorsionTower B) (b : CartierDual R (ℬ.A 1)) (hb : cobOne R _ b = 0) :
     IsTangent (spOver (epsPoint b hb) ≫ u.y 1 : epsR R ⟶ B) := by
@@ -143,7 +143,7 @@ theorem isTangent_epsPoint (u : ℬ.TorsionTower B) (b : CartierDual R (ℬ.A 1)
   exact (congrArg (· ≫ η[B].left) (Cris.spMap_id R)).trans (Category.id_comp _)
 
 /- English proof (translation)
-Take `⟨ψ, h₁, h₂⟩` from `h.2 1`. Establish `e : ψ = (epsTo R (ModPow p R 1)).comp (epsPoint b hb)` using `u.inj 1 _ _ _ (by rw [h₁, ← spOver_comp, Category.assoc])`. Establish `k` using `h₂ z a ha`. Rewrite `k` using `[e, AlgHom.comp_apply, snd_epsTo, snd_epsPoint, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq, pow_one, hR, Ideal.mem_span_singleton, zero_dvd_iff, sub_eq_zero]`. Conclude with `k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieCorr_epsPoint [Nontrivial R] (hR : (p : R) = 0) (u : ℬ.TorsionTower B) (b : CartierDual R (ℬ.A 1))
     (hb : cobOne R _ b = 0) {x : ℬ.Lie} (h : u.LieCorr x (spOver (epsPoint b hb) ≫ u.y 1)) (z : ℬ.omega)
@@ -157,13 +157,13 @@ theorem lieCorr_epsPoint [Nontrivial R] (hR : (p : R) = 0) (u : ℬ.TorsionTower
   exact k
 
 /- English proof (translation)
-Take `⟨U, hU, hχ⟩` from `hw 1`. Set `f : 𝒜.A 1 ⊗[R] ℬ.A 1 →ₐ[R] DualNumber (𝒜.A 1)` to `Algebra.TensorProduct.lift (TrivSqZeroExt.inlAlgHom R _ _) ((EpsWeil.epsMap R (𝒜.A 1)).comp (epsPoint b hb)) fun _ _ ↦ .all _ _`. Apply the tactic sequence `have k := weilIs_comp hC hA hB hP (by ext1 <;> simp only [MonObj.pow_comp, MonObj.one_comp, lift_fst, lift_snd, one_pow, ← MonObj.comp_pow, t.y_pow, MonObj.comp_one]) (by ext1 <;> simp only [MonObj.pow_comp, MonObj.one_comp, lift_fst, lift_snd, one_pow, ← MonObj.comp_pow, u.y_pow …`. Establish `hf : ∀ z, (f z).fst = TensorProduct.rid R _ ((1 : CartierDual R (ℬ.A 1)).ofConv.lTensor _ z) ∧ (f z).snd = TensorProduct.rid R _ (b.ofConv.lTensor _ z)` using `fun z ↦ by`. Proceed by induction on `z with`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, TrivSqZeroExt.fst_add, TrivSqZeroExt.snd_add, hx, hy, and_self]`. Consider the case `tmul x y`. Simplify using `[f, EpsWeil.epsMap, DualNumber.lift_apply_apply, TrivSqZeroExt.algebraMap_eq_inl', fst_epsPoint, snd_epsPoint, Algebra.smul_def, mul_comm, CartierDual.one_apply]`. Establish `e₃ : Units.map (spOver f).left.appTop.hom.toMonoidHom (unitOn U) = unitOn (EpsWeil.epsUnit (w.app 1 b))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(EpsWeil.map_unitOn _ U).trans (congrArg unitOn (Units.ext (TrivSqZeroExt.ext ?_ ?_)))` and prove the remaining obligations. Use `(hf _).1.trans ((hχ 1).symm.trans ((map_one (w.app 1)).trans ?_))` and prove the remaining obligations. Simplify using `[EpsWeil.epsUnit]`. Use `(hf _).2.trans ((hχ b).symm.trans ?_)` and prove the remaining obligations. Simplify using `[EpsWeil.epsUnit]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `e₁ : f.comp Algebra.TensorProduct.includeLeft = TrivSqZeroExt.inlAlgHom R _ _` using `AlgHom.ext fun a ↦ by simp [f]`. Establish `e₂ : f.comp Algebra.TensorProduct.includeRight = (EpsWeil.epsMap R (𝒜.A 1)).comp (epsPoint b hb)` using `AlgHom.ext fun a ↦ by simp [f]`. Rewrite `k` using `[e₃, comp_lift, comp_lift, MonObj.comp_one, MonObj.comp_one, ← Category.assoc, ← Category.assoc, spOver_comp, spOver_comp, e₁, e₂, ← spOver_comp, Category.assoc, pow_one]`. Conclude with `k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairsTo_epsPoint [Fact p.Prime] (hC : GlobalTheory.Published.CubeTheorem) (hA : IsAbelianScheme A) (hB : IsAbelianScheme B)
     {P : LB (A ⊗ B).left} (hP : IsDual A B P) {t : 𝒜.TorsionTower A} {u : ℬ.TorsionTower B} {w : 𝒜 ⟶ ℬ.dual}
@@ -208,11 +208,11 @@ variable {p : ℕ} [Fact p.Prime] {K : Type} [Field K] {V : Type*} [AddCommGroup
   {w : 𝒜 ⟶ 𝒜.dual} {E : V ≃ₗ[K] 𝒜.RigExt} {β : V →ₗ[K] V →ₗ[K] K} {ε : ℤˣ}
 
 /- English proof (translation)
-Take `⟨c, k₁, k₄⟩` from `geo b (cobOne_eq_zero_of_connecting (G := 𝒜.dual) hy)`. Establish `k₂ : (𝒜.extChar hK (𝒜.rigToExt (E c))).1 = ε • w.app 1 b` using `(𝒜.extChar_eq_iff hK _ _).2 k₁`. Establish `k₃ : (𝒜.extChar hK (𝒜.rigToExt (rigExtMap w y))).1 = w.app 1 b`. Rewrite using `[rigToExt_rigExtMap, extChar_vecExtMap, (𝒜.dual.extChar_eq_iff hK _ _).2 hy]`. Establish `k₅ : 𝒜.rigToExt (E (E.symm (rigExtMap w y) - (ε : ℤ) • c)) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_sub, LinearEquiv.apply_symm_apply, map_zsmul, map_zsmul, sub_eq_zero]`. Use `(𝒜.extChar_bijective hK).1 (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[map_zsmul, k₃, Submodule.coe_smul_of_tower, k₂, ← Units.smul_def, smul_smul, Int.units_mul_self, one_smul]`. Establish `k₆` using `(lag _).1 k₅ z`. Rewrite `k₆` using `[map_sub, map_zsmul, LinearMap.sub_apply, sub_eq_zero, LinearMap.smul_apply, k₄ z a ha]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[k₆, Units.neg_smul, smul_neg, Units.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pairing_rigExtMap (hK : (p : K) = 0)
     (lag : ∀ s, 𝒜.rigToExt (E s) = 0 ↔ ∀ z, β s (E.symm (𝒜.rigOfOmega z)) = 0)
@@ -234,17 +234,17 @@ theorem pairing_rigExtMap (hK : (p : K) = 0)
   rw [k₆, Units.neg_smul, smul_neg, Units.smul_def]
 
 /- English proof (translation)
-Use `⟨(injective_iff_map_eq_zero _).2 fun x hx ↦ ?_, fun x ↦ ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `𝒜.dual.rigToExt_surjective x`. Take `⟨b, hy⟩` from `𝒜.dual.exists_connecting hK (𝒜.dual.rigToExt y)`. Establish `h₀ : b = 0` using `CartierDual.ext_apply fun a ↦ by`. Take `⟨z, hz⟩` from `𝒜.omegaLevel_surjective 1 (dUnit K a)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `k` using `key y b hy z a hz.symm`. Rewrite `k` using `[(lag _).1 (by rw [LinearEquiv.apply_symm_apply, rigToExt_rigExtMap, hx]) z, eq_comm, smul_eq_zero_iff_eq]`. Conclude with `k`. Conclude with `(map_eq_zero_iff _ (𝒜.dual.extChar_bijective hK).1).1 (Subtype.ext (((𝒜.dual.extChar_eq_iff hK _ _).2 hy).trans h₀))`. Take `⟨x, rfl⟩` from `𝒜.rigToExt_surjective x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `o` to `LinearEquiv.ofBijective _ (𝒜.omegaLevel_one_bijective hK)`. Set `l : Cot K (𝒜.A 1) →ₗ[K] K` to `(-ε) • (β (E.symm x) ∘ₗ E.symm.toLinearMap ∘ₗ 𝒜.rigOfOmega ∘ₗ o.symm.toLinearMap)`. Set `b : CartierDual K (𝒜.A 1)` to `WithConv.toConv (l ∘ₗ AugCot.d (Bialgebra.counitAlgHom K _))`. Establish `hb₀ : cobOne K _ b = 0` using `(cobOne_eq_zero_iff b).2 fun a a' ↦ by`. Express the relevant statement in the definitionally equal form `l (AugCot.d _ (a * a')) = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[AugCot.d_mul, map_add, map_smul, map_smul]`. Both sides reduce to the same expression. Take `⟨x', hx'⟩` from `exists_of_cobOne_eq_zero (G := 𝒜.dual) hb₀`. Take `⟨y, rfl⟩` from `𝒜.dual.rigToExt_surjective x'`. Use `⟨𝒜.dual.rigToExt y, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← rigToExt_rigExtMap, ← sub_eq_zero, ← map_sub, ← E.apply_symm_apply (_ - _), lag]`. Introduce `z`. Take `⟨a, ha⟩` from `AugCot.d_surjective _ (z.1 1)`. Establish `k : b a = (-ε) • β (E.symm x) (E.symm (𝒜.rigOfOmega z))`. Express the relevant statement in the definitionally equal form `l (AugCot.d _ a) = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, ← o.symm_apply_apply z]`. Conclude with `congrArg l (congrArg (fun u : 𝒜.omega ↦ u.1 1) (o.symm_apply_apply z))`. Rewrite using `[map_sub, map_sub, LinearMap.sub_apply, key y b hx' z a ha, k, smul_smul, Int.units_mul_self, one_smul, sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem vecExtMap_bijective (hK : (p : K) = 0)
     (lag : ∀ s, 𝒜.rigToExt (E s) = 0 ↔ ∀ z, β s (E.symm (𝒜.rigOfOmega z)) = 0)
@@ -288,9 +288,9 @@ theorem vecExtMap_bijective (hK : (p : K) = 0)
 omit [Fact p.Prime] in
 
 /- English proof (translation)
-Establish `F₁ : ∀ c, c ∈ F ↔ ∃ z, 𝒜.rigOfOmega z = E c` using `fun c ↦ by`. Rewrite using `[← LinearMap.mem_range, ← hF, Submodule.mem_map_equiv, LinearEquiv.symm_apply_apply]`. Rewrite using `[𝒜.exact_rigOfOmega_rigToExt, Set.mem_range, ← F₁, lag]`. Use `⟨fun h z ↦ h _ ((F₁ _).2 ⟨z, (E.apply_symm_apply _).symm⟩), fun h s' hs ↦ ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `(F₁ s').1 hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← E.symm_apply_apply s', ← hz, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rigToExt_eq_zero_iff {F : Submodule K V} (hF : F.map E.toLinearMap = LinearMap.range 𝒜.rigOfOmega)
     (lag : ∀ s, s ∈ F ↔ ∀ s' ∈ F, β s s' = 0) (s : V) :
@@ -305,11 +305,11 @@ theorem rigToExt_eq_zero_iff {F : Submodule K V} (hF : F.map E.toLinearMap = Lin
 end Linear
 
 /- English proof (translation)
-Introduce `hD hF hC p _ K _ hK A _ g hA hg P hd hs ψ β hψ hβ e ε eF eT eW hn 𝒜 t w hw`. Take `⟨-, hb, sk, lag, -⟩` from `SymmPoincare.skew_lagrangian hD hF p K hK A g hA hg P hd hs ψ β hψ hβ`. Establish `lag'` using `rigToExt_eq_zero_iff (β := β) (eF hn hA t) lag`. Establish `key` using `pairing_rigExtMap (w := w) (ε := ε) hK lag' fun b hb₀ ↦ by`. Take `⟨h', hh⟩` from `(hD.2.1 K A g hA hg).1.2 _ (isTangent_epsPoint t b hb₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hb.2 (-h')`. Establish `hc' : ∀ s, β c s = -h' s` using `fun s ↦ LinearMap.congr_fun hc s`. Use `⟨c, eW hK hA hA hg hg hd hψ t hh (pairsTo_epsPoint hC hA hA hd hw b hb₀) fun h _ ↦ ?_, fun z a ha ↦ (hc' _).trans (congrArg Neg.neg (lieCorr_epsPoint hK t b hb₀ ((eT hn hA t _ _).1 hh) z a ha))⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `hb.2 h`. Conclude with `(hβ s h').trans (((sk s c).trans ((congrArg Neg.neg (hc' s)).trans (neg_neg _))).symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨vecExtMap_bijective hK lag' key, key⟩`.
+A detailed English derivation is pending.
 -/
 theorem vecExtMap_bijective_and_pairing : GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.ConjugateFiltration → GlobalTheory.Published.CubeTheorem → ∀ (p : ℕ) [Fact p.Prime] (K : Type) [Field K] (hK : (p : K) = 0) (A : Over (Sp K)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A), SmoothOfRelativeDimension g A.hom → ∀ P : LB (A ⊗ A).left, IsDual A A P → LBIso (swap P) P → ∀ (ψ : HdR A →ₗ[K] HdR A →ₗ[K] K) (β : primDR A →ₗ[K] HdR A), IsCorrForm (dp0 K) (𝟙 _) A A P ψ → (∀ s y, ψ (β s) y = y s) → ∀ (e : GlobalTheory.Published.DeRhamVectorExtension.Family p) (ε : ℤˣ), e.Filtered → e.Tangent → GlobalTheory.Published.BarsottiTateDieudonne.WeilCompatible e ε → ∀ (hn : IsNilpotent (p : K)) (𝒜 : PDivGroup p K) (t : 𝒜.TorsionTower A) (w : 𝒜 ⟶ 𝒜.dual), IsWeilHom t t P w → Function.Bijective (vecExtMap w) ∧ ∀ (y : 𝒜.dual.RigExt) (b : CartierDual K (𝒜.A 1)), 𝒜.dual.IsConnecting (𝒜.dual.rigToExt y) b → ∀ (η' : 𝒜.omega) (a : 𝒜.A 1), dUnit K a = η'.1 1 → β ((e hn hA t).symm (rigExtMap w y)) ((e hn hA t).symm (𝒜.rigOfOmega η')) = (-ε) • b a := by
   intro hD hF hC p _ K _ hK A _ g hA hg P hd hs ψ β hψ hβ e ε eF eT eW hn 𝒜 t w hw

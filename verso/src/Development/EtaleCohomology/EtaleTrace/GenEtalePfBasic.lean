@@ -5,17 +5,15 @@ open CategoryTheory Limits AlgebraicGeometry
 namespace LateralTheory.EtaleTrace.Cov
 
 /- English proof (translation)
-Introduce `X P π U hU hU' a H`. Establish `hle : π ⁻¹ᵁ P.basicOpen a ≤ π ⁻¹ᵁ U` using `π.preimage_mono (P.basicOpen_le a)`. Establish `key : RingHom.Etale (π.app (P.basicOpen a)).hom`. Use `letI := (π.app U).hom.toAlgebra`. Use `letI : Algebra Γ(X, π ⁻¹ᵁ U) Γ(X, π ⁻¹ᵁ P.basicOpen a) := (X.presheaf.map (homOfLE hle).op).hom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Algebra Γ(P, P.basicOpen a) Γ(X, π ⁻¹ᵁ P.basicOpen a) := (π.app _).hom.toAlgebra`. Use `letI : Algebra Γ(P, U) Γ(X, π ⁻¹ᵁ P.basicOpen a) := (π.app U ≫ X.presheaf.map (homOfLE hle).op).hom.toAlgebra`. Use `haveI : IsScalarTower Γ(P, U) Γ(X, π ⁻¹ᵁ U) Γ(X, π ⁻¹ᵁ P.basicOpen a) := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : IsScalarTower Γ(P, U) Γ(P, P.basicOpen a) Γ(X, π ⁻¹ᵁ P.basicOpen a) := by`. Use `IsScalarTower.of_algebraMap_eq' ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show (π.app U ≫ X.presheaf.map (homOfLE hle).op).hom = (P.presheaf.map (homOfLE (P.basicOpen_le a)).op ≫ π.app (P.basicOpen a)).hom`. Rewrite using `[π.naturality]`. Both sides reduce to the same expression. Establish `hA : IsLocalization.Away a Γ(P, P.basicOpen a)` using `hU.isLocalization_basicOpen a`. Establish `gen : ∀ (W : X.Opens) (e : W ≤ π ⁻¹ᵁ U), W = X.basicOpen (π.app U a) → @IsLocalization.Away _ _ (π.app U a) Γ(X, W) _ (X.presheaf.map (homOfLE e).op).hom.toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `W e rfl`. Conclude with `hU'.isLocalization_basicOpen _`. Conclude with `H _ _ hA (gen _ hle (π.preimage_basicOpen a))`. Use `haveI : IsAffine (P.basicOpen a).toScheme := hU.basicOpen a`. Use `haveI : IsAffine (π ⁻¹ᵁ P.basicOpen a).toScheme := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Substitute using the available equality.
 
-Use `hU'.basicOpen (π.app U a)` as an intermediate fact. Rewrite `this` using `[← π.preimage_basicOpen a]`. Conclude with `this`. Rewrite using `[HasRingHomProperty.iff_of_isAffine (P := @Etale), morphismRestrict_appTop]`. Establish `hW : (P.basicOpen a).ι ''ᵁ ⊤ = P.basicOpen a` using `by simp`.
-
-Establish `gen2 : ∀ (W : P.Opens) (T : X.Opens) (h : T = π ⁻¹ᵁ W), W = P.basicOpen a → RingHom.Etale (π.app W ≫ X.presheaf.map (eqToHom h).op).hom`. Introduce and unpack `W T h rfl`. Substitute `h` using the available equality. Simplify using `using key`. Conclude with `gen2 _ _ _ hW`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem etaleOverBasic : EtaleOverBasic := by
   intro X P π U hU hU' a H

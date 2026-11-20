@@ -9,11 +9,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 /- English proof (translation)
-Use `GlobalTheory.ProjSpace.toProj_eq_of_locally hs₂ hs₁ fun z => ?_` and prove the remaining obligations. Take `⟨k, hk⟩ : ∃ k : PUnit → L.ι, z ∈ (L.pull (g ≫ h)).U k` from `GlobalTheory.ProjSpace.exists_chart_of_iSup_nonzeroLocus hs₂ z`. Set `l : ((L.pull h).pull g).ι` to `fun _ _ => k PUnit.unit`. Establish `hle : (L.pull (g ≫ h)).U k ≤ ((L.pull h).pull g).U l`. Rewrite using `[GlobalTheory.Cartier.pull_U L (g ≫ h) k, GlobalTheory.Cartier.pull_U (L.pull h) g l, GlobalTheory.Cartier.pull_U L h (fun _ => k PUnit.unit)]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun _ hy => hy`. Use `⟨_, hk, k, le_rfl, l, hle, 1, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[_root_.one_mul]`. Unfold `GlobalTheory.secPull`. Rewrite using `[GlobalTheory.chartSec_f, GlobalTheory.chartSec_f, GlobalTheory.chartSec_f (GlobalTheory.chartPullPull L (g ≫ h)) (s j) k]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ReciprocityTheory.ChartRestriction.G.Geo.Tor.resG, ← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE_assoc, Scheme.Hom.appLE_map]`. Rewrite using `[Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_map]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem GlobalTheory.Mum.toProj_secPull_secPull (R : Type) [CommRing R] (N : ℕ) (X Y Z : Scheme.{0}) (L : LB X)
     (s : Fin (N + 1) → L.Sec) (h : Y ⟶ X) (g : Z ⟶ Y) (f : Z ⟶ Sp R)

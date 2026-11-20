@@ -15,41 +15,37 @@ noncomputable section
 namespace GlobalTheory.ThKBoundW
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ hH' d₂ H hH V₁ M₁ e hV₁ hM₁ he μ 𝓕 hμ h𝓕 h1 Φ hΦ g`. Establish `hS` using `IsUWeilPair.isUSplitting hP.weil`. Establish `hpres : ∀ x, ∀ Φ ∈ schA F (Fin n × Fin d), om x Φ ∈ schA F (Fin n × Fin d)` using `fun x Φ hΦ => hS.pres x Φ hΦ`. Take `⟨K, hKc, hKsub, hKfd⟩` from `GlobalTheory.T.seesaw_pair_hyperbolic_plane hKP F E σ B n d X W M χX χW om r s r' s' hP d₂ H hH`. Take `⟨C, k, hCK⟩` from `GlobalTheory.T.seesaw_pair_plane_descent_twelfth hKP F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ hH' d₂ H hH V₁ M₁ e hV₁ hM₁ he Φ hΦ g K hKc hKsub`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `unif : ∀ u ∈ unip σ X H, ∀ h : UA σ W.J, Summable (fun w : Fin d → E => ‖thetaSum F (e (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (om (u, 1) (om (g, h) Φ))))‖) ∧ ∑' w : Fin d → E, ‖thetaSum F (e (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (om (u, 1) (om …`. Introduce `u hu h`. Take `⟨γ, hγ, hγu, hK⟩` from `hKfd u hu`. Establish `heq : (fun w : Fin d → E => ‖thetaSum F (e (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (om (u, 1) (om (g, h) Φ))))‖) = fun w => ‖thetaSum F (e (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (om (γ * u, 1) (om (g, h) Φ))))‖`. Use function extensionality and compare the values at `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e1 : ((γ * u, 1) : UA σ X.J × UA σ W.J) = (γ, 1) * (u, 1)` using `by simp`. Rewrite using `[e1, map_mul, Module.End.mul_apply]`. Conclude with `(GlobalTheory.T.seesaw_pair_plane_descent_eleventh hKP F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ hH' d₂ H hH V₁ M₁ e hV₁ hM₁ he γ hγ hγu _ (hpres _ _ (hpres _ _ hΦ)) w).symm`. Rewrite using `[heq]`. Conclude with `hCK _ hK h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC0 : ∀ h : UA σ W.J, 0 ≤ C * (ht h : ℝ) ^ k` using `fun h => (tsum_nonneg fun w => norm_nonneg _).trans (unif 1 (one_mem _) h).2`. Establish `integ : ∀ h : UA σ W.J, Summable (fun w : Fin d → E => ‖∫ u in 𝓕, thetaSum F (e (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (om (u.1, 1) (om (g, h) Φ)))) ∂μ‖) ∧ ∑' w : Fin d → E, ‖∫ u in 𝓕, thetaSum F (e (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (om (u …`. Introduce `h`. Use `set f : (Fin d → E) → unip σ X H → ℂ := fun w u => thetaSum F (e (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (om (u.1, 1) (om (g, h) Φ)))) with hf`. Use `set Bd := C * (ht h : ℝ) ^ k with hBd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpt : ∀ u : unip σ X H, ∀ s : Finset (Fin d → E), ∑ w ∈ s, ‖f w u‖ ≤ Bd` using `fun u s => ((unif u.1 u.2 h).1.sum_le_tsum s fun w _ => norm_nonneg _).trans (unif u.1 u.2 h).2`. Establish `hsum : ∀ s : Finset (Fin d → E), ∑ w ∈ s, ‖∫ u in 𝓕, f w u ∂μ‖ ≤ Bd`. Introduce `s`. Establish `h2 : ∀ w, ‖∫ u in 𝓕, f w u ∂μ‖ ≤ (∫⁻ u in 𝓕, ENNReal.ofReal ‖f w u‖ ∂μ).toReal` using `fun w => norm_integral_le_lintegral_norm _`. Establish `hlin : ∑ w ∈ s, ∫⁻ u in 𝓕, ENNReal.ofReal ‖f w u‖ ∂μ ≤ ∫⁻ u in 𝓕, ∑ w ∈ s, ENNReal.ofReal ‖f w u‖ ∂μ` using `by classical`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty]`. Conclude with `zero_le`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `(add_le_add le_rfl ih).trans ?_` and prove the remaining obligations. Use `(le_lintegral_add _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `u`. Rewrite using `[Finset.sum_insert ha]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hup : ∫⁻ u in 𝓕, ∑ w ∈ s, ENNReal.ofReal ‖f w u‖ ∂μ ≤ ENNReal.ofReal Bd`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun u => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_sum_of_nonneg fun w _ => norm_nonneg _]`. Conclude with `ENNReal.ofReal_le_ofReal (hpt u s)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `_ = ENNReal.ofReal Bd := by`. Rewrite using `[setLIntegral_const, h1, mul_one]`. Establish `hfin : ∀ w ∈ s, ∫⁻ u in 𝓕, ENNReal.ofReal ‖f w u‖ ∂μ ≠ ⊤`. Introduce `w hw`. Use `ne_top_of_le_ne_top (ENNReal.ofReal_ne_top (r := Bd)) ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `le_trans ?_ hup` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun w => ∫⁻ u in 𝓕, ENNReal.ofReal ‖f w u‖ ∂μ) (fun _ _ => zero_le) hw |>.trans hlin`. Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨summable_of_sum_le (fun w => norm_nonneg _) hsum, Real.tsum_le_of_sum_le (fun w => norm_nonneg _) hsum⟩`. Establish `reidx : ∀ γ ∈ ratU σ W.J, ∀ h : UA σ W.J, ∑' w : Fin d → E, ‖∫ u in 𝓕, thetaSum F (e (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (om (u.1, 1) (om (g, γ * h) Φ)))) ∂μ‖ = ∑' w : Fin d → E, ‖∫ u in 𝓕, thetaSum F (e (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w) …`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Introduce `γ hγ h`. Take `⟨γ₀, hγ₀⟩` from `(Subgroup.mem_subgroupOf.mp hγ)`. Establish `hmat : ∀ w : Fin d → E, mat γ *ᵥ incV F w = incV F ((γ₀ : Matrix (Fin d) (Fin d) E) *ᵥ w)`. Introduce `w`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Establish `: mat γ = (γ₀ : Matrix (Fin d) (Fin d) E).map (inclR (F` using `F) (AF F)) := by`. Simplify using `only [mat, ← hγ₀]`. Both sides reduce to the same expression. Rewrite using `[this]`. Simplify using `only [incV]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression. Set `ev : (Fin d → E) ≃ (Fin d → E)` to `{ toFun := fun w => (γ₀ : Matrix (Fin d) (Fin d) E) *ᵥ w invFun := fun w => ((γ₀⁻¹ : GL (Fin d) E) : Matrix (Fin d) (Fin d) E) *ᵥ w left_inv := fun w => by simp [Matrix.mulVec_mulVec] right_inv := fun w => by simp [Matrix.mulVec_mulVec] }`. Rewrite using `[← ev.tsum_eq]`. Use `tsum_congr fun w => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 2`. Use function extensionality and compare the values at `u`. Establish `hprod : ((u.1, 1) : UA σ X.J × UA σ W.J) * (g, γ * h) = (1, γ) * ((u.1, 1) * (g, h))`. Simplify using `[Prod.mk_mul_mk]`. Establish `e2 : om (u.1, 1) (om (g, γ * h) Φ) = om (1, γ) (om (u.1, 1) (om (g, h) Φ))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e2]`. Conclude with `GlobalTheory.T.seesaw_pair_plane_descent_fourth hKP F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ hH' d₂ H hH V₁ M₁ e hV₁ hM₁ he γ hγ w (ev w) (hmat w) _ (hpres _ _ (hpres _ _ hΦ))`. Use `⟨|C|, k, fun h => ⟨(integ h).1, ?_⟩⟩` and prove the remaining obligations. Establish `hle : ∀ γ : ratU σ W.J, ∑' w : Fin d → E, ‖∫ u in 𝓕, thetaSum F (e (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) (incV F w)) (om (u.1, 1) (om (g, h) Φ)))) ∂μ‖ ≤ |C| * (ht (γ.1 * h) : ℝ) ^ k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `γ`. Rewrite using `[← reidx γ.1 γ.2 h]`. Conclude with `(integ _).2.trans (mul_le_mul_of_nonneg_right (le_abs_self _) (by positivity))`. Set `c : ℝ≥0` to `⟨|C|, abs_nonneg C⟩`. Establish `hm : c * (⨅ γ : ratU σ W.J, ht (γ.1 * h)) ^ k = ⨅ γ : ratU σ W.J, c * ht (γ.1 * h) ^ k` using `Monotone.map_ciInf_of_continuousAt (f := fun t : ℝ≥0 => c * t ^ k) (by fun_prop) (fun a b hab => by dsimp only; gcongr) (OrderBot.bddBelow _)`.
-
-Establish `hR : |C| * (qht h : ℝ) ^ k = ((c * (⨅ γ : ratU σ W.J, ht (γ.1 * h)) ^ k : ℝ≥0) : ℝ)`. Simplify using `only [qht, NNReal.coe_mul, NNReal.coe_pow]`. Both sides reduce to the same expression. Rewrite using `[hR, hm, NNReal.coe_iInf]`. Conclude with `le_ciInf fun γ => by`.
-
-Simplify using `only [NNReal.coe_mul, NNReal.coe_pow]`. Conclude with `hle γ`.
+A detailed English derivation is pending.
 -/
 theorem bound : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ),

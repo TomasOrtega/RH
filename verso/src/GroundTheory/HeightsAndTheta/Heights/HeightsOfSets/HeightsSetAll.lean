@@ -10,42 +10,42 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-The claim follows from `heightLowerBound`.
+A detailed English derivation is pending.
 -/
 theorem HeightLowerBound.main : HeightLowerBound.Statement := heightLowerBound
 
 /- English proof (translation)
-The claim follows from `heightMetricChange`.
+A detailed English derivation is pending.
 -/
 theorem HeightMetricChange.main : HeightMetricChange.Statement := heightMetricChange
 
 /- English proof (translation)
-The claim follows from `heightLocalAgreement`.
+A detailed English derivation is pending.
 -/
 theorem HeightLocalAgreement.main : HeightLocalAgreement.Statement := heightLocalAgreement
 
 /- English proof (translation)
-The claim follows from `heightPullback`.
+A detailed English derivation is pending.
 -/
 theorem HeightPullback.main : HeightPullback.Statement := heightPullback
 
 /- English proof (translation)
-The claim follows from `heightComparison`.
+A detailed English derivation is pending.
 -/
 theorem HeightComparison.main : HeightComparison.Statement := heightComparison
 
 /- English proof (translation)
-The claim follows from `denseBoundedHeight`.
+A detailed English derivation is pending.
 -/
 theorem DenseBoundedHeight.main : DenseBoundedHeight.Statement := denseBoundedHeight
 
 /- English proof (translation)
-The claim follows from `slopeMaxExtension`.
+A detailed English derivation is pending.
 -/
 theorem SlopeMaxExtension.main : SlopeMaxExtension.Statement := slopeMaxExtension
 
 /- English proof (translation)
-The claim follows from `flagDegreeBound`.
+A detailed English derivation is pending.
 -/
 theorem FlagDegreeBound.main : FlagDegreeBound.Statement := flagDegreeBound
 

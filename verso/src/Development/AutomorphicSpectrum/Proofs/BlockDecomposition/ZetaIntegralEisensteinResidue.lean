@@ -24,7 +24,7 @@ namespace GlobalTheory.CompanionTheory.Eis
 variable {D : D7} {V : HSp D}
 
 /- English proof (translation)
-Use `laurentConst_of_tendsto ((h.tendsto.mono_left nhdsWithin_le_nhds).congr' ?_)` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with s hs`. Establish `: s - s₀ ≠ 0` using `sub_ne_zero.2 hs`. Simplify using `only [neg_neg, zpow_one, zero_add, pow_one]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem laurentCoeff_base {F : ℂ → ℂ} {s₀ : ℂ} (h : ContinuousAt F s₀) :
     LaurentCoeff (fun s => F s / (s - s₀) ^ (0 + 1)) s₀ (-1) (F s₀) := by
@@ -35,9 +35,9 @@ theorem laurentCoeff_base {F : ℂ → ℂ} {s₀ : ℂ} (h : ContinuousAt F s�
   field_simp
 
 /- English proof (translation)
-Establish `h1 : GlobalTheory.ThetaInner.LaurentConst (fun s => c * (s - s₀)⁻¹ ^ (k + 1)) s₀ 0` using `⟨Polynomial.monomial (k + 1) c, by simp [Polynomial.coeff_monomial], by simp [Polynomial.eval_monomial]⟩`. Establish `h2` using `laurentConst_add h1 hG`. Rewrite `h2` using `[zero_add]`. Use `laurentConst_congr h2 ?_` and prove the remaining obligations. Use `filter_upwards [hF, self_mem_nhdsWithin] with s h3 hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: s - s₀ ≠ 0` using `sub_ne_zero.2 hs`. Simplify using `only [neg_neg, zpow_one, h3, inv_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem laurentCoeff_step {F G : ℂ → ℂ} {s₀ c e : ℂ} {k : ℕ} (hF : ∀ᶠ s in 𝓝[≠] s₀, F s = c + (s - s₀) * G s)
     (hG : LaurentCoeff (fun s => G s / (s - s₀) ^ (k + 1)) s₀ (-1) e) :
@@ -54,13 +54,11 @@ theorem laurentCoeff_step {F G : ℂ → ℂ} {s₀ c e : ℂ} {k : ℕ} (hF : �
   ring
 
 /- English proof (translation)
-Take `⟨C, N, hb⟩` from `hB`. Take `⟨C', c, hio⟩` from `GlobalTheory.T.exists_height_doublingEmbedding_le_pow_mul_heights D V`. Take `⟨bound, hbi, hbd⟩` from `GlobalTheory.T.exists_integrable_bound_doubling_integrand_quotient D V μ m hm f₁ f₂ h₁ h₂ C' c hio C N`. Establish `hcont : ∀ s ∈ ball z r, Continuous (H s)` using `fun s hs => hc.comp_continuous (f := fun g => (s, g)) (by fun_prop) fun g => ⟨hs, trivial⟩`. Establish `hli : ∀ s ∈ ball z r, LeftInv ((GQ V).prod (GQ V)) (dblIntegrand V μ (H s) f₁ f₂)` using `fun s hs => leftInv_dblIntegrand hμ (hinv s hs) h₁.1 h₂.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmeas : ∀ s ∈ ball z r, AEStronglyMeasurable (dblIntegrandQ V μ (H s) f₁ f₂) ((autMeasure V m).prod (autMeasure V m))`. Introduce `s hs`. Establish `e' : dblIntegrandQ V μ (H s) f₁ f₂ = dblIntegrand V μ (H s) f₁ f₂ ∘ Prod.map (sec (GQ V)) (sec (GQ V))`. Use function extensionality and compare the values at `fun q => (congrArg _ (Prod.ext (mk_sec q.1) (mk_sec q.2)).symm).trans (dblIntegrandQ_mk (hli s hs) _ _)`. Rewrite using `[e']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((continuous_dblIntegrand hμ (hcont s hs) h₁.continuous h₂.continuous).measurable.comp (measurableEmbedding_sec.measurable.prodMap measurableEmbedding_sec.measurable)).aestronglyMeasurable`. Use `⟨fun s hs => ⟨hli s hs, hbi.mono' (hmeas s hs) (ae_of_all _ fun q => hbd (H s) (hinv s hs) (hb s hs) q)⟩, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.differentiableOn_integral_of_holomorphic_of_locally_dominated (μ := (autMeasure V m).prod (autMeasure V m)) (F := fun q s => dblIntegrandQ V μ (H s) f₁ f₂ q) (isOpen_ball (x := z) (ε := r)) hmeas (ae_of_all _ fun q => by` as an intermediate fact. Simplify using `only [dblIntegrandQ, dblIntegrand]`. Conclude with `(((hd _).mul_const _).mul_const _).mul_const _)`.
-
-Use `fun x hx => ⟨ball z r, isOpen_ball.mem_nhds hx, bound, hbi, ae_of_all _ fun q y hy => hbd (H y) (hinv y hy) (hb y hy) q⟩`. Conclude with `this.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dblInt_family {μ : (AE D)ˣ →* Circle} (hμ : IsHeckeChar D μ) {m : Measure (GA D V)} (hm : m.IsHaarMeasure)
     {f₁ f₂ : GA D V → ℂ} (h₁ : GlobalTheory.Grow.RapidDec V f₁) (h₂ : GlobalTheory.Grow.RapidDec V f₂)
@@ -99,15 +97,15 @@ theorem dblInt_family {μ : (AE D)ˣ →* Circle} (hμ : IsHeckeChar D μ) {m : 
   exact this.1
 
 /- English proof (translation)
-Take `⟨C, N, hb⟩` from `hB`. Establish `hs₀ : s₀ ∈ ball s₀ r` using `mem_ball_self hr`. Establish `hKd : ∀ g, DifferentiableOn ℂ (fun s => H s g - H s₀ g) (ball s₀ r)` using `fun g => (hd g).sub_const _`. Establish `hKc : ContinuousOn (fun p : ℂ × GA D (dblSp V) => H p.1 p.2 - H s₀ p.2) (ball s₀ r ×ˢ univ)` using `hc.sub (hc.comp (f := fun p : ℂ × GA D (dblSp V) => (s₀, p.2)) (by fun_prop) fun p _ => ⟨hs₀, trivial⟩)`. Establish `hKb : ∀ s ∈ ball s₀ r, ∀ g, ‖H s g - H s₀ g‖ ≤ 2 * C * GlobalTheory.Grow.height (dblSp V) g ^ N` using `fun s hs g => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `norm_sub_le (H s g) (H s₀ g)` as an intermediate fact. Combine the linear relations using `[hb s hs g, hb s₀ hs₀ g]`. Take `⟨h1, h2, h3⟩` from `dslope_family (H := fun s g => H s g - H s₀ g) (w := fun g => 2 * C * GlobalTheory.Grow.height (dblSp V) g ^ N) hr hKd hKc hKb (fun g => sub_self _)`. Use `⟨fun s g => dslope (fun z => H z g - H s₀ g) s₀ s, fun s hs γ hγ g => ?_, h1, h2, ⟨2 * C / r, N, fun s hs g => ?_⟩, fun s g => ?_⟩` and prove the remaining obligations. Establish `hK : ∀ z ∈ ball s₀ r, H z (γ * g) - H s₀ (γ * g) = H z g - H s₀ g` using `fun z hz => by`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hinv z hz γ hγ g, hinv s₀ hs₀ γ hγ g]`. Break down `eq_or_ne s s₀ with rfl | h0` into its components or cases. Simplify using `only [dslope_same]`. Use `Filter.EventuallyEq.deriv_eq ?_` and prove the remaining obligations. Use `filter_upwards [ball_mem_nhds s hr] with z hz using hK z hz`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [dslope_of_ne _ h0, slope_def_field, hK s (ball_subset_ball (by linarith) hs), sub_self]`. Use `h3 s hs g` as an intermediate fact. Rewrite `this` using `[mul_div_right_comm]`. Then use the resulting hypothesis. Break down `eq_or_ne s s₀ with rfl | h0` into its components or cases. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `sub_ne_zero.2 h0` as an intermediate fact. Simplify using `only [dslope_of_ne _ h0, slope_def_field, sub_self, sub_zero]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_div_family {H : ℂ → GA D (dblSp V) → ℂ} {s₀ : ℂ} {r : ℝ} (hr : 0 < r)
     (hinv : ∀ s ∈ ball s₀ r, LeftInv (GQ (dblSp V)) (H s))
@@ -149,9 +147,9 @@ theorem exists_div_family {H : ℂ → GA D (dblSp V) → ℂ} {s₀ : ℂ} {r :
       ring
 
 /- English proof (translation)
-Take `⟨hl, hi⟩` from `h`. Establish `e2 : dblIntegrand V μ (c • E) f₁ f₂ = fun q => c * dblIntegrand V μ E f₁ f₂ q`. Use function extensionality and compare the values at `fun q => by simp only [dblIntegrand, Pi.smul_apply, smul_eq_mul]; ring`. Establish `e3 : dblIntegrandQ V μ (c • E) f₁ f₂ = fun q => c * dblIntegrandQ V μ E f₁ f₂ q`. Use function extensionality and compare the values at `fun q => by simp only [dblIntegrandQ, e2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨fun γ hγ g => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e2]`. Conclude with `congrArg _ (hl γ hγ g)`. Rewrite using `[e3]`. Conclude with `hi.const_mul _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dblConv_smul {μ : (AE D)ˣ →* Circle} {m : Measure (GA D V)} {E : GA D (dblSp V) → ℂ} {f₁ f₂ : GA D V → ℂ}
     (h : DblConv V μ m E f₁ f₂) (c : ℂ) : DblConv V μ m (c • E) f₁ f₂ := by
@@ -165,13 +163,13 @@ theorem dblConv_smul {μ : (AE D)ˣ →* Circle} {m : Measure (GA D V)} {E : GA 
   · rw [e3]; exact hi.const_mul _
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `H r hr hinv hd hc hB`. Use `⟨H s₀, fun g => laurentCoeff_base ((hd g).continuousOn.continuousAt (ball_mem_nhds _ hr)), laurentCoeff_base (F := fun s => dblInt V μ m (H s) f₁ f₂) ?_⟩` and prove the remaining obligations. Conclude with `(dblInt_family hμ hm h₁ h₂ hinv hd hc hB).2.continuousOn.continuousAt (ball_mem_nhds _ hr)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Consider the case `succ k ih`. Introduce `H r hr hinv hd hc hB`. Take `⟨H', i1, i2, i3, i4, e⟩` from `exists_div_family hr hinv hd hc hB`. Take `⟨E, a, b⟩` from `ih H' (r / 2) (half_pos hr) i1 i2 i3 i4`. Use `⟨E, fun g => laurentCoeff_step (c := H s₀ g) (.of_forall fun s => e s g) (a g), laurentCoeff_step (c := dblInt V μ m (H s₀) f₁ f₂) ?_ b⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `c1` using `(dblInt_family (f₁ := f₁) (f₂ := f₂) hμ hm h₁ h₂ hinv hd hc hB).1`. Establish `c2` using `(dblInt_family (f₁ := f₁) (f₂ := f₂) hμ hm h₁ h₂ i1 i2 i3 i4).1`. Use `filter_upwards [mem_nhdsWithin_of_mem_nhds (ball_mem_nhds s₀ (half_pos hr))] with s hs`. Establish `e1 : H s = H s₀ + (s - s₀) • H' s` using `funext fun g => e s g`. Establish `e2` using `dblInt_smul (V := V) (μ := μ) (m := m) (E := H' s) (f₁ := f₁) (f₂ := f₂) (s - s₀) 1 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [one_smul, map_one, mul_one] at e2`. Rewrite using `[e1, dblInt_add (c1 s₀ (mem_ball_self hr)) (dblConv_smul (c2 s hs) _), e2]`.
+A detailed English derivation is pending.
 -/
 theorem exists_coeff_family {μ : (AE D)ˣ →* Circle} (hμ : IsHeckeChar D μ) {m : Measure (GA D V)} (hm : m.IsHaarMeasure)
     {f₁ f₂ : GA D V → ℂ} (h₁ : GlobalTheory.Grow.RapidDec V f₁) (h₂ : GlobalTheory.Grow.RapidDec V f₂) (s₀ : ℂ) (k : ℕ) :
@@ -203,9 +201,9 @@ theorem exists_coeff_family {μ : (AE D)ˣ →* Circle} (hμ : IsHeckeChar D μ)
     rw [e1, dblInt_add (c1 s₀ (mem_ball_self hr)) (dblConv_smul (c2 s hs) _), e2]
 
 /- English proof (translation)
-Introduce `s hs γ hγ g`. Break down `eq_or_ne s s₁ with rfl | h0` into its components or cases. Establish `t1` using `((hd (γ * g)).continuousOn.continuousAt (ball_mem_nhds _ hr)).tendsto.mono_left (nhdsWithin_le_nhds (s := {s}ᶜ))`. Establish `t2` using `((hd g).continuousOn.continuousAt (ball_mem_nhds _ hr)).tendsto.mono_left (nhdsWithin_le_nhds (s := {s}ᶜ))`. Use `tendsto_nhds_unique t1 (t2.congr' ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (ball_mem_nhds s hr)] with w h1 h2`. Rewrite using `[e w h2 h1, e w h2 h1, hinvE w γ hγ g]`. Rewrite using `[e s hs h0, e s hs h0, hinvE s γ hγ g]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leftInv_of_eq {Φ : ℂ → GA D (dblSp V) → ℂ} (hinvE : ∀ s, LeftInv (GQ (dblSp V)) (eisCont V Φ s))
     {H : ℂ → GA D (dblSp V) → ℂ} {s₁ : ℂ} {r : ℝ} {k : ℕ} (hr : 0 < r)
@@ -223,9 +221,9 @@ theorem leftInv_of_eq {Φ : ℂ → GA D (dblSp V) → ℂ} (hinvE : ∀ s, Left
   · rw [e s hs h0, e s hs h0, hinvE s γ hγ g]
 
 /- English proof (translation)
-Establish `e1 : eisCont V Φ w = ((w - s₁) ^ k)⁻¹ • H w`. Use function extensionality and compare the values at `g`. Rewrite using `[Pi.smul_apply, e w h2 h1 g, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ (sub_ne_zero.2 h1)), one_mul]`. Establish `e2` using `dblInt_smul (V := V) (μ := μ) (m := m) (E := H w) (f₁ := f₁) (f₂ := f₂) ((w - s₁) ^ k)⁻¹ 1 1`. Simplify using `only [one_smul, map_one, mul_one] at e2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2, div_eq_inv_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dblInt_eisCont_eq {μ : (AE D)ˣ →* Circle} {m : Measure (GA D V)} {f₁ f₂ : GA D V → ℂ}
     {Φ : ℂ → GA D (dblSp V) → ℂ} {H : ℂ → GA D (dblSp V) → ℂ} {s₁ w : ℂ} {r : ℝ} {k : ℕ}
@@ -240,11 +238,9 @@ theorem dblInt_eisCont_eq {μ : (AE D)ˣ →* Circle} {m : Measure (GA D V)} {f�
   rw [e1, e2, div_eq_inv_mul]
 
 /- English proof (translation)
-Establish `hinvE : ∀ s, LeftInv (GQ (dblSp V)) (eisCont V Φ s)` using `fun s => hE.1.leftInv_eisLaurent s 0`. Use `⟨isRightDomain_univ, fun s₁ _ => ?_, (V.rank : ℝ) / 2, fun s hs => ?_⟩` and prove the remaining obligations. Take `⟨k, r, H, hr, e, hd, hc, C, N, hb⟩` from `hreg s₁`. Establish `han : AnalyticAt ℂ (fun s => dblInt V μ m (H s) f₁ f₂) s₁` using `(dblInt_family hμ hm h₁ h₂ (leftInv_of_eq hinvE hr e hd) hd hc ⟨C, N, hb⟩).2.analyticAt (ball_mem_nhds _ hr)`. Establish `hm1 : MeromorphicAt (fun s => dblInt V μ m (H s) f₁ f₂ / (s - s₁) ^ k) s₁`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: MeromorphicAt (fun s : ℂ => s - s₁) s₁` using `(MeromorphicAt.id s₁).sub (MeromorphicAt.const _ _)`. Conclude with `han.meromorphicAt.fun_div (this.pow k)`. Use `hm1.congr ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (ball_mem_nhds s₁ hr)] with w h1 h2`. Conclude with `(dblInt_eisCont_eq e h2 h1).symm`.
-
-Establish `: eisCont V Φ s = eis V (Φ s)` using `funext fun g => eqOn_cont (ha g) hs`. Simplify using `only [zeta, this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMerExt_zeta {μ : (AE D)ˣ →* Circle} (hμ : IsHeckeChar D μ) {m : Measure (GA D V)} (hm : m.IsHaarMeasure)
     {Φ : ℂ → GA D (dblSp V) → ℂ} (hE : EisContinues V Φ)
@@ -266,13 +262,11 @@ theorem isMerExt_zeta {μ : (AE D)ˣ →* Circle} (hμ : IsHeckeChar D μ) {m : 
     simp only [zeta, this]
 
 /- English proof (translation)
-Introduce `D V μ hμ m hm Φ hE ha hreg f₁ f₂ h₁ h₂ hZ s₀ E₁ hcoef`. Establish `hinvE : ∀ s, LeftInv (GQ (dblSp V)) (eisCont V Φ s)` using `fun s => hE.1.leftInv_eisLaurent s 0`. Take `⟨k, hk⟩` from `hreg s₀`. Take `⟨r, H, hr, e, hd, hc, C, N, hb⟩` from `hk.succ`. Take `⟨E, a, b⟩` from `exists_coeff_family (m := m) (f₁ := f₁) (f₂ := f₂) hμ hm h₁ h₂ s₀ k H r hr (leftInv_of_eq hinvE hr e hd) hd hc ⟨C, N, hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hEE : E₁ = E` using `funext fun g => by`. Take `⟨G, hG⟩` from `hE.2 g`. Establish `hx` using `hG.isExtAt (s₀ := s₀) trivial`. Use `(hcoef.2 g).unique ⟨G, hx, (a g).congr ?_⟩` and prove the remaining obligations. Use `filter_upwards [hx.cont_eventuallyEq, self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (ball_mem_nhds s₀ hr)] with s h2 h3 h4`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (s - s₀) ^ (k + 1) ≠ 0` using `pow_ne_zero _ (sub_ne_zero.2 h3)`. Rewrite using `[e s h4 h3 g, ← h2, mul_div_cancel_left₀ _ this]`. Both sides reduce to the same expression. Rewrite using `[hEE]`. Use `⟨_, (isMerExt_zeta hμ hm hE ha hreg h₁ h₂).isExtAt trivial, b.congr ?_⟩` and prove the remaining obligations.
-
-Use `filter_upwards [self_mem_nhdsWithin, mem_nhdsWithin_of_mem_nhds (ball_mem_nhds s₀ hr)] with w h1 h2`. Conclude with `(dblInt_eisCont_eq e h2 h1).symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coeffAt_neg_one_zeta : ∀ (D : D7) (V : HSp D) (μ : (AE D)ˣ →* Circle), IsHeckeChar D μ → ∀ (m : Measure (GA D V)), m.IsHaarMeasure → ∀ (Φ : ℂ → GA D (dblSp V) → ℂ), GlobalTheory.Eis.EisContinues V Φ → (∀ g, AnalyticOnNhd ℂ (GlobalTheory.Eis.eisSer V Φ g) (rightOf (V.rank / 2))) → (∀ s₀, ∃ k, GlobalTheory.Eis.EisRegularAt V Φ s₀ k) → ∀ f₁ f₂ : GA D V → ℂ, GlobalTheory.Grow.RapidDec V f₁ → GlobalTheory.Grow.RapidDec V f₂ → GlobalTheory.Eis.IsZetaFamily V μ m Φ f₁ f₂ → ∀ (s₀ : ℂ) (E₁ : GA D (dblSp V) → ℂ), GlobalTheory.Eis.EisCoeffAt V Φ s₀ (-1) E₁ → CoeffAt (GlobalTheory.Eis.zeta V μ m Φ f₁ f₂) s₀ (-1) (GlobalTheory.Eis.dblInt V μ m E₁ f₁ f₂) := by
   intro D V μ hμ m hm Φ hE ha hreg f₁ f₂ h₁ h₂ hZ s₀ E₁ hcoef

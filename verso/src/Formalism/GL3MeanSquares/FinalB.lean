@@ -5,7 +5,7 @@ import Formalism.GL3MeanSquares.HookFormulaTorsion.HilbertSchmidtHalfBound
 namespace Formalism.HermitianLattices.Final
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.HermitianLattices.ModelCocycles.adjoint_from_norm, Formalism.HermitianLattices.ModelCocycles.adjoint_additive, Formalism.HermitianLattices.ModelCocycles.split_component_vanishes, Formalism.HermitianLattices.ModelCocycles.isotropic_vector_zero, Formalism.HermitianLattic …`.
+Supply the required witnesses or components.
 -/
 theorem model_cocycle_identities :
     Formalism.HermitianLattices.ModelCocycles.AdjointFromNorm ∧
@@ -36,7 +36,7 @@ theorem model_cocycle_identities :
    Formalism.HermitianLattices.ModelCocycles.model_cocycle_order_two⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.HermitianLattices.LatticeEstimates.moduli_minimum_bound, Formalism.HermitianLattices.LatticeEstimates.moduli_entry_bound, Formalism.HermitianLattices.LatticeEstimates.hadamard_inequality_bound, Formalism.HermitianLattices.LatticeEstimates.moduli_intermediate_bound, For …`.
+Supply the required witnesses or components.
 -/
 theorem lattice_and_zeta_arithmetic_estimates :
     Formalism.HermitianLattices.LatticeEstimates.Ms_min ∧
@@ -67,7 +67,7 @@ theorem lattice_and_zeta_arithmetic_estimates :
    Formalism.HermitianLattices.LatticeEstimates.column_other_entries⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.HermitianLattices.CumulantEstimateDefs.hecke_character_sums, Formalism.HermitianLattices.CumulantEstimateDefs.volume_eq_siegel_mass, Formalism.HermitianLattices.CumulantEstimateDefs.quadratic_form_lower_bound, Formalism.HermitianLattices.CumulantEstimateDefs.quadratic_ …`.
+Supply the required witnesses or components.
 -/
 theorem cumulant_and_partition_function_estimates :
     Formalism.HermitianLattices.CumulantEstimateDefs.SW_hecke_charsums ∧

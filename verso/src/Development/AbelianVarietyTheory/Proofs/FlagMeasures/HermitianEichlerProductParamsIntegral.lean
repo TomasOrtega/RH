@@ -16,7 +16,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 /- English proof (translation)
-Simplify using `only [eich, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `L.O.sub_mem (L.O.add_mem (hv j) (L.O.mul_mem (hf_int L hI hv hu) (hx j))) (L.O.mul_mem (hf_int L hI hv hx) (L.O.add_mem (hu j) (L.O.mul_mem hs (hx j))))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eich_int (L : LocE F E) {N : ℕ} {Hm : Matrix (Fin N) (Fin N) E}
     (hI : ∀ i j, Hm i j ∈ L.O) {x u v : Fin N → E} {s : E} (hx : ∀ j, x j ∈ L.O)
@@ -27,9 +27,9 @@ theorem eich_int (L : LocE F E) {N : ℕ} {Hm : Matrix (Fin N) (Fin N) E}
     (L.O.mul_mem (hf_int L hI hv hx) (L.O.add_mem (hu j) (L.O.mul_mem hs (hx j))))
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro _`. Simplify using the standard rewrite rules. Consider the case `cons g l ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `h`. Rewrite using `[List.prod_cons, LinearEquiv.mul_apply, ih (fun g' hg' => h g' (List.mem_cons_of_mem _ hg')), h g List.mem_cons_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_fix {N : ℕ} (y : Fin N → E) :
     ∀ l : List ((Fin N → E) ≃ₗ[E] (Fin N → E)), (∀ g ∈ l, g y = y) → l.prod y = y := by
@@ -42,27 +42,27 @@ theorem prod_fix {N : ℕ} (y : Fin N → E) :
       h g List.mem_cons_self]
 
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r with`. Consider the case `zero => intro X Y u s e _ _ _ _ _ _ _ _`. Conclude with `⟨fun i => i.elim0, fun i => i.elim0⟩`. Consider the case `succ r ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `X Y u s e hX hY hXY hXX hu hs he hn`. Use `set n' := (List.ofFn fun i : Fin r => e i.succ).prod with hn'def`. Establish `hprod : ∀ x, (List.ofFn e).prod x = e 0 (n' x)`. Introduce `x`. Rewrite using `[List.ofFn_succ, List.prod_cons, LinearEquiv.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfix : n' (Y 0) = Y 0`. Use `prod_fix (Y 0) _ fun g hg => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.mp hg`. Establish `h1 : hf L Hm (Y 0) (u i.succ) = 0`. Rewrite using `[← GlobalTheory.HL.Eichler.hf_cj L hH, (hu i.succ 0 (Fin.zero_le _)).2, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : hf L Hm (Y 0) (X i.succ) = 0`. Rewrite using `[← GlobalTheory.HL.Eichler.hf_cj L hH, hXY, if_neg (Fin.succ_ne_zero i), map_zero]`. Rewrite using `[he, eich, h1, h2]`. Simplify using the standard rewrite rules. Establish `h0 : e 0 (Y 0) = Y 0 - (u 0 + s 0 • X 0)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : hf L Hm (Y 0) (u 0) = 0`. Rewrite using `[← GlobalTheory.HL.Eichler.hf_cj L hH, (hu 0 0 le_rfl).2, map_zero]`. Establish `h2 : hf L Hm (Y 0) (X 0) = 1`. Rewrite using `[← GlobalTheory.HL.Eichler.hf_cj L hH, hXY, if_pos rfl, map_one]`. Rewrite using `[he, eich, h1, h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hnY : ∀ j, (List.ofFn e).prod (Y 0) j ∈ L.O` using `(hn (Y 0)).2 (hY 0)`. Rewrite `hnY` using `[hprod, hfix, h0]`. Establish `hw : ∀ j, (u 0 + s 0 • X 0) j ∈ L.O`. Introduce `j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `L.O.sub_mem (hY 0 j) (hnY j)` as an intermediate fact. Simplify using `using this`. Establish `hs0 : s 0 ∈ L.O`. Establish `h` using `hf_int L hI hw (hY 0)`. Rewrite `h` using `[GlobalTheory.HL.Eichler.hf_add_l, GlobalTheory.HL.Eichler.hf_smul_l, (hu 0 0 le_rfl).2, hXY, if_pos rfl, mul_one, zero_add]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hu0 : ∀ j, u 0 j ∈ L.O`. Introduce `j`. Establish `h` using `L.O.sub_mem (hw j) (L.O.mul_mem hs0 (hX 0 j))`. Simplify using `using h`. Establish `he0 : ∀ x, (∀ j, e 0 x j ∈ L.O) ↔ ∀ j, x j ∈ L.O`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `h j`. Establish `hinv` using `GlobalTheory.HL.Eichler.eich_inv L hH (X 0) (u 0) (s 0) (hXX 0 0) (hu 0 0 le_rfl).1 (hs 0) x`. Rewrite using `[← hinv, ← he]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `eich_int L hI (hX 0) (fun k => L.O.neg_mem (hu0 k)) (GlobalTheory.UnramOrder.cj_mem L hs0) h j`. Introduce `h j`. Rewrite using `[he]`. Conclude with `eich_int L hI (hX 0) hu0 hs0 h j`. Establish `hn2 : ∀ x : Fin N → E, (∀ j, (List.ofFn fun i : Fin r => e i.succ).prod x j ∈ L.O) ↔ ∀ j, x j ∈ L.O`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Rewrite using `[← hn x, hprod, ← hn'def]`. Conclude with `(he0 (n' x)).symm`. Take `⟨hU, hS⟩` from `ih (fun i => X i.succ) (fun i => Y i.succ) (fun i => u i.succ) (fun i => s i.succ) (fun i => e i.succ) (fun i => hX i.succ) (fun i => hY i.succ) (fun a b => by rw [hXY]; simp only [Fin.succ_inj]) (fun a b => hXX a.succ b.succ) (fun i j hj => hu i.succ j.succ (Fin.succ_le_succ_iff …`. Use `⟨fun i => Fin.cases hu0 (fun i => hU i) i, fun i => Fin.cases hs0 (fun i => hS i) i⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finiteRing_sq_sub_mul_sq_eq_of_card (L : LocE F E) (N : ℕ) (Hm : Matrix (Fin N) (Fin N) E) (hH : IsHerm L Hm)
     (hI : ∀ i j, Hm i j ∈ L.O) : ∀ (r : ℕ) (X Y u : Fin r → Fin N → E) (s : Fin r → E)
@@ -134,7 +134,7 @@ theorem finiteRing_sq_sub_mul_sq_eq_of_card (L : LocE F E) (N : ℕ) (Hm : Matri
     refine ⟨fun i => Fin.cases hu0 (fun i => hU i) i, fun i => Fin.cases hs0 (fun i => hS i) i⟩
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L N r Hm hH hI X Y u s e hX hY hXY hXX hu hs he hn`. Conclude with `finiteRing_sq_sub_mul_sq_eq_of_card L N Hm hH hI r X Y u s e hX hY hXY hXX hu hs he hn`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eich_prod_params_int : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E) (N r : ℕ) (Hm : Matrix (Fin N) (Fin N) E) (hH : IsHerm L Hm) (hI : ∀ i j, Hm i j ∈ L.O) (X Y u : Fin r → Fin N → E) (s : Fin r → E) (e : Fin r → (Fin N → E) ≃ₗ[E] (Fin N → E)) (hX : ∀ i j, X i j ∈ L.O) (hY : ∀ i j, Y i j ∈ L.O) (hXY : ∀ a b, hf L Hm (X a) (Y b) = if a = b then 1 else 0) (hXX : ∀ a b, hf L Hm (X a) (X b) = 0) (hu : ∀ i, ∀ j, j ≤ i → hf L Hm (u i) (X j) = 0 ∧ hf L Hm (u i) (Y j) = 0) (hs : ∀ i, s i + L.cj (s i) = hf L Hm (u i) (u i)) (he : ∀ i v, e i v = eich L Hm (X i) (u i) (s i) v) (hn : ∀ x : Fin N → E, (∀ j, (List.ofFn e).prod x j ∈ L.O) ↔ ∀ j, x j ∈ L.O), (∀ i j, u i j ∈ L.O) ∧ ∀ i, s i ∈ L.O := by
   intro F _ _ _ _ _ E _ _ _ L N r Hm hH hI X Y u s e hX hY hXY hXX hu hs he hn

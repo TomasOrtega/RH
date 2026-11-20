@@ -7,15 +7,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G H _ _ ι hι K' F hF hT x hfin`. Establish `key : ∀ g : G, F ((g : G ⧸ K').out) = F g`. Introduce `g`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K' g`. Rewrite using `[hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hF _ k.2 g`. Establish `hL : (ι ⁻¹' ((ι.range ⊓ K'.map (MulAut.conj x).toMonoidHom : Subgroup G) : Set G)).Finite` using `(Set.finite_coe_iff.mp hfin).preimage hι.injOn`. Use `Set.Finite.of_finite_fibers (fun h : H => ((x⁻¹ * ι h * x : G) : G ⧸ K')) (hT.subset ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h, hh, rfl⟩`. Simplify using `only [Set.mem_setOf_eq] at hh ⊢`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[key]` and apply the resulting hypothesis. Introduce and unpack `_ ⟨h0, -, rfl⟩`. Use `(hL.image (fun k => h0 * k)).subset ?_` and prove the remaining obligations. Introduce and unpack `h ⟨-, hh⟩`. Use `⟨h0⁻¹ * h, ?_, by simp⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff] at hh`. Establish `hk : (x⁻¹ * ι h0 * x)⁻¹ * (x⁻¹ * ι h * x) ∈ K'` using `QuotientGroup.eq.mp hh.symm`. Establish `hk' : x⁻¹ * ι (h0⁻¹ * h) * x ∈ K'`. Use `hk using 1` and compare the differences between its conclusion and the goal. Simplify using `[map_mul, map_inv, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_preimage, SetLike.mem_coe, Subgroup.mem_inf, MonoidHom.mem_range, exists_apply_eq_apply, true_and, Subgroup.mem_map]`. Use `⟨_, hk', ?_⟩` and prove the remaining obligations. Simplify using `[MulAut.conj_apply, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_support_conj_points : ∀ (G H : Type) [Group G] [Group H] (ι : H →* G), Function.Injective ι → ∀ (K' : Subgroup G) (F : G → ℂ), (∀ k ∈ K', ∀ x, F (x * k) = F x) → {q : G ⧸ K' | F q.out ≠ 0}.Finite → ∀ x : G, Finite (ι.range ⊓ K'.map (MulAut.conj x).toMonoidHom : Subgroup G) → {h : H | F (x⁻¹ * ι h * x) ≠ 0}.Finite := by
   intro G H _ _ ι hι K' F hF hT x hfin

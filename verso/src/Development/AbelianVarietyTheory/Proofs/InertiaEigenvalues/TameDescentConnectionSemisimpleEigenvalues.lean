@@ -8,23 +8,21 @@ open PowerSeries GlobalTheory.BK
 namespace GlobalTheory.LcSemisimple
 
 /- English proof (translation)
-Introduce `K V _ _ _ T F lam W W' a b J hab hstep hW hW' hWW' hb ha hJ`. Establish `hWq : ∀ (q : Polynomial K), ∀ w ∈ W, Polynomial.aeval T q w ∈ W`. Introduce `q`. Use `Polynomial.induction_on q (fun c w hw => ?_) (fun p q hp hq w hw => ?_) (fun n c ih w hw => ?_)` and prove the remaining obligations. Simplify `W.smul_mem c hw` using `[Algebra.algebraMap_eq_smul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using W.add_mem (hp w hw) (hq w hw)`. Establish `e1 : Polynomial.aeval T (Polynomial.C c * Polynomial.X ^ (n + 1)) w = Polynomial.aeval T (Polynomial.C c * Polynomial.X ^ n) (T w)`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, Polynomial.aeval_X, Module.End.mul_apply]`. Rewrite using `[e1]`. Conclude with `ih _ (hW w hw)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ n : ℕ, (n : ℤ) ≤ b - a → ∀ J' : Finset ℤ, (∀ j ∈ J, b - n ≤ j → j < b → j ∈ J') → ∀ x ∈ W' ⊓ F (b - n), Polynomial.aeval T (∏ j ∈ J', (Polynomial.X - Polynomial.C (lam j))) x ∈ W`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `_ J' _ x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Conclude with `hWq _ x (hb (by simpa using (Submodule.mem_inf.1 hx).2))`. Consider the case `succ n ih`. Introduce `hn J' hJ' x hx`. Take `⟨k, hk⟩ : ∃ k, k = b - ((n + 1 : ℕ) : ℤ)` from `⟨_, rfl⟩`. Rewrite `hx` using `[← hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk' : k = b - n - 1` using `by rw [hk]; push_cast; ring`. Establish `hk1 : k + 1 = b - n` using `by omega`. Take `⟨hx1, hx2⟩` from `Submodule.mem_inf.1 hx`. Distinguish the cases in `hkJ : k ∈ J'`. Rewrite using `[← Finset.prod_erase_mul J' _ hkJ, map_mul, Module.End.mul_apply]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : T x - lam k • x ∈ W' ⊓ F (b - n)` using `Submodule.mem_inf.2 ⟨W'.sub_mem (hW' x hx1) (W'.smul_mem _ hx1), hk1 ▸ hstep k x hx2⟩`. Establish `h2 : Polynomial.aeval T (Polynomial.X - Polynomial.C (lam k)) x = T x - lam k • x`. Simplify using `[Algebra.algebraMap_eq_smul_one]`. Rewrite using `[h2]`. Use `ih (by omega) (J'.erase k) (fun j hj h1 h3 => Finset.mem_erase.2 ⟨by omega, hJ' j hj (by push_cast; omega) h3⟩) _ hy` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkJ0 : k ∉ J` using `fun h => hkJ (hJ' k h (by push_cast; omega) (by omega))`. Establish `h1` using `hJ k (by push_cast at hn; omega) (by omega) hkJ0 (Submodule.mem_inf.2 ⟨hx1, hx2⟩)`. Take `⟨w, hw, f, hf, rfl⟩` from `Submodule.mem_sup.1 h1`. Rewrite using `[map_add]`. Establish `hf' : f ∈ W' ⊓ F (b - n)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Submodule.mem_inf.2 ⟨?_, hk1 ▸ hf⟩` and prove the remaining obligations. Simplify using `using W'.sub_mem hx1 (hWW' (Submodule.mem_inf.1 hw).1)`. Conclude with `W.add_mem (hWq _ w (Submodule.mem_inf.1 hw).1) (ih (by omega) J' (fun j hj h3 h4 => hJ' j hj (by push_cast; omega) h4) f hf')`. Introduce `x hx`. Use `key (b - a).toNat (by omega) J (fun j hj _ _ => hj) x (Submodule.mem_inf.2 ⟨hx, ?_⟩)` and prove the remaining obligations.
-
-Rewrite using `[show b - ((b - a).toNat : ℤ) = a by omega]`. Conclude with `ha hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chain_aeval_mem : ∀ {K V : Type} [Field K] [AddCommGroup V] [Module K V] (T : Module.End K V) (F : ℤ → Submodule K V) (lam : ℤ → K) (W W' : Submodule K V) (a b : ℤ) (J : Finset ℤ), a ≤ b → (∀ j, ∀ x ∈ F j, T x - lam j • x ∈ F (j + 1)) → (∀ x ∈ W, T x ∈ W) → (∀ x ∈ W', T x ∈ W') → W ≤ W' → F b ≤ W → W' ≤ F a → (∀ j, a ≤ j → j < b → j ∉ J → W' ⊓ F j ≤ W ⊓ F j ⊔ F (j + 1)) → ∀ x ∈ W', Polynomial.aeval T (∏ j ∈ J, (Polynomial.X - Polynomial.C (lam j))) x ∈ W := by
   intro K V _ _ _ T F lam W W' a b J hab hstep hW hW' hWW' hb ha hJ
@@ -79,9 +77,9 @@ theorem chain_aeval_mem : ∀ {K V : Type} [Field K] [AddCommGroup V] [Module K 
   exact ha hx
 
 /- English proof (translation)
-It suffices to establish `H : ∀ x, g (Polynomial.aeval f q x) = Polynomial.aeval f' q (g x) from H x`. Use `Polynomial.induction_on q (fun c x => ?_) (fun p q hp hq x => ?_) (fun n c ih x => ?_)` and prove the remaining obligations. Simplify using `[Algebra.algebraMap_eq_smul_one]`. Simplify using `[hp, hq]`. Establish `e1 : Polynomial.aeval f (Polynomial.C c * Polynomial.X ^ (n + 1)) x = Polynomial.aeval f (Polynomial.C c * Polynomial.X ^ n) (f x)`.
+Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[pow_succ, ← mul_assoc, map_mul, Polynomial.aeval_X, Module.End.mul_apply]`. Establish `e2 : Polynomial.aeval f' (Polynomial.C c * Polynomial.X ^ (n + 1)) (g x) = Polynomial.aeval f' (Polynomial.C c * Polynomial.X ^ n) (f' (g x))`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, Polynomial.aeval_X, Module.End.mul_apply]`. Rewrite using `[e1, e2, ih, h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_intertwine {K V V' : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup V']
     [Module K V'] (g : V →ₗ[K] V') (f : Module.End K V) (f' : Module.End K V')
@@ -97,9 +95,9 @@ theorem aeval_intertwine {K V V' : Type} [Field K] [AddCommGroup V] [Module K V]
     rw [e1, e2, ih, h]
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Conclude with `LinearMap.ker_id`. Introduce `a s ha ih`. Rewrite using `[Finset.prod_insert ha, ← Polynomial.sup_ker_aeval_eq_ker_aeval_mul_of_coprime, ih, Finset.iSup_insert]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Module.End.eigenspace_def, map_sub, Polynomial.aeval_X, Polynomial.aeval_C, Algebra.algebraMap_eq_smul_one]`. Conclude with `IsCoprime.prod_right fun i hi => (Polynomial.pairwise_coprime_X_sub_C hv) (fun h => ha (h ▸ hi))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_aeval_prod {K V : Type} [Field K] [AddCommGroup V] [Module K V]
     (f : Module.End K V) (v : ℤ → K) (hv : Function.Injective v) (s : Finset ℤ) :
@@ -116,9 +114,9 @@ theorem ker_aeval_prod {K V : Type} [Field K] [AddCommGroup V] [Module K V]
         (Polynomial.pairwise_coprime_X_sub_C hv) (fun h => ha (h ▸ hi))
 
 /- English proof (translation)
-Use `⟨Module.End.isSemisimple_of_squarefree_aeval_eq_zero ((Polynomial.separable_prod_X_sub_C_iff'.2 hv.injOn).squarefree) h, fun μ hμ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hμ.exists_hasEigenvector`. Establish `h1` using `Module.End.aeval_apply_of_hasEigenvector (p := ∏ n ∈ s, (Polynomial.X - Polynomial.C (v n))) hx`. Rewrite `h1` using `[h, LinearMap.zero_apply, eq_comm, smul_eq_zero]`. Break down `h1 with h1 | h1` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h1` using `[Polynomial.eval_prod, Finset.prod_eq_zero_iff]`. Take `⟨n, hn, h2⟩` from `h1`. Conclude with `⟨n, hn, by simpa [sub_eq_zero] using h2⟩`. Conclude with `absurd h1 hx.2`. Rewrite using `[← ker_aeval_prod f v hv s, h, LinearMap.ker_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem semisimple_of_aeval {K V : Type} [Field K] [AddCommGroup V] [Module K V]
     (f : Module.End K V) (s : Finset ℤ) (v : ℤ → K) (hv : Function.Injective v)
@@ -138,43 +136,37 @@ theorem semisimple_of_aeval {K V : Type} [Field K] [AddCommGroup V] [Module K V]
   · rw [← ker_aeval_prod f v hv s, h, LinearMap.ker_zero]
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D U hU`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (algebraMap ℚ_[l] K).injective`. Establish `hl0 : (l : ℤ) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `he0 : (e : ℤ) ≠ 0` using `by exact_mod_cast (NeZero.ne e)`. Use `set Lan := D.ext (Rpi O K l e) with hLan`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `F : ℤ → Submodule K (Vec K a ι)` to `fun j => (shiftE l e j Lan).restrictScalars K`. Set `lam : ℤ → K` to `fun j => ((-j * e * l : ℤ) : K)`. Set `J : Finset ℤ` to `(GlobalTheory.IndefiniteRowSideFullHecke.ImagePolynomialAction.shifts U η).image (fun n => -n)`. Establish `hp : ∏ j ∈ J, (Polynomial.X - Polynomial.C (lam j)) = ∏ n ∈ GlobalTheory.IndefiniteRowSideFullHecke.ImagePolynomialAction.shifts U η, (Polynomial.X - Polynomial.C (((n * e * l : ℤ) : K)))`. Rewrite using `[Finset.prod_image (fun x _ y _ h => neg_injective h)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[lam]`. Establish `hstep : ∀ j, ∀ x ∈ F j, D.EN x - lam j • x ∈ F (j + 1)`. Introduce `j x hx`. Establish `h1` using `GlobalTheory.T.eulerE_add_smul_mem_eisenstein_shift_graded O K l e a ι η H D j x hx`. Establish `h2 : D.EN x - lam j • x = D.EN x + ((j * e * l : ℤ) : K) • x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[sub_eq_add_neg, ← neg_smul]`. Use `congr 2`. Simplify using `only [lam]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Conclude with `h1`. Establish `hb : F η ≤ D.Man`. Introduce `x hx`. Establish `h1` using `D.smul_mem_Mext (A_le_Rpi l e) ((mem_shiftE).1 hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[smul_smul, E_pow_mul_Ezpow_neg, one_smul]`. Then use the resulting hypothesis. Establish `ha : divE l e η D.Man ≤ F (-((η : ℤ) + H))`. Introduce `x hx`. Establish `h1` using `D.smul_mem_ext_of_basis (c := E K l e ^ H) (fun i => D.lower _ (D.bas_mem_M i)) (A_le_Rpi l e) ((mem_divE).1 hx)`. Use `show Ezpow K l e (-(-((η : ℤ) + H))) • x ∈ Lan`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[neg_neg, Ezpow_add, Ezpow_natCast, Ezpow_natCast, mul_comm, mul_smul]` and apply the resulting hypothesis. Establish `hJ : ∀ j, -((η : ℤ) + H) ≤ j → j < η → j ∉ J → divE l e η D.Man ⊓ F j ≤ D.Man ⊓ F j ⊔ F (j + 1)`. Introduce `j _ _ hj x hx`. Take `⟨hx1, hx2⟩` from `Submodule.mem_inf.1 hx`. Establish `hx1' : E K l e ^ η • x ∈ D.Man` using `hx1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hx2' : Ezpow K l e (-j) • x ∈ Lan` using `hx2`. Establish `hnj : ∀ i, -j - η ≤ i → i ≤ -j - 1 → D.filL (i + 1) = D.filL i`. Introduce `i h1 h2`. Assume the negation of the conclusion as `hne`. Establish `hi : i ∈ U` using `hU (show i ∈ D.jumps from hne)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hj (Finset.mem_image.2 ⟨-j, GlobalTheory.IndefiniteRowSideFullHecke.ImagePolynomialAction.mem_shifts.2 ⟨i, hi, -j - i, ⟨by omega, by omega⟩, by ring⟩, neg_neg j⟩)`. Establish `hFA : ∀ i, D.filL (i + 1) = D.filL i → ∀ y, y ∈ (Lan ⊓ shiftE l e i (D.Mext (Rpi O K l e))) ⊔ shiftE l e 1 Lan → y ∈ (Lan ⊓ shiftE l e (i + 1) (D.Mext (Rpi O K l e))) ⊔ shiftE l e 1 Lan`. Introduce `i h y hy`. Rewrite `hy` using `[GlobalTheory.T.mem_analytic_filtration_iff_lattice_filtration_add O K l e a ι D.toPhiMod i y]`. Rewrite using `[GlobalTheory.T.mem_analytic_filtration_iff_lattice_filtration_add O K l e a ι D.toPhiMod (i + 1) y, h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hy`. Establish `hchain : ∀ k : ℕ, k ≤ η → ∀ y, y ∈ (Lan ⊓ shiftE l e (-j - η) (D.Mext (Rpi O K l e))) ⊔ shiftE l e 1 Lan → y ∈ (Lan ⊓ shiftE l e (-j - η + k) (D.Mext (Rpi O K l e))) ⊔ shiftE l e 1 Lan`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro _ y hy`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Simplify using `using hy`. Consider the case `succ k ih`. Introduce `hk y hy`. Establish `h1` using `hFA (-j - η + k) (hnj _ (by omega) (by omega)) y (ih (by omega) y hy)`. Rewrite `h1` using `[show -j - (η : ℤ) + k + 1 = -j - η + ((k + 1 : ℕ) : ℤ) by push_cast; ring]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set z := Ezpow K l e (-j) • x with hz`. Establish `hz1 : z ∈ (Lan ⊓ shiftE l e (-j - η) (D.Mext (Rpi O K l e))) ⊔ shiftE l e 1 Lan`. Use `Submodule.mem_sup_left (Submodule.mem_inf.2 ⟨hx2', ?_⟩)` and prove the remaining obligations. Rewrite using `[mem_shiftE, hz, smul_smul, ← Ezpow_add, show -(-j - (η : ℤ)) + -j = η by ring, Ezpow_natCast]`. Conclude with `hx1'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hz2` using `hchain η le_rfl z hz1`. Rewrite `hz2` using `[show -j - (η : ℤ) + η = -j by ring]`. Take `⟨w, hw, f, hf, hwf⟩` from `Submodule.mem_sup.1 hz2`. Take `⟨hw1, hw2⟩` from `Submodule.mem_inf.1 hw`. Establish `hxz : x = Ezpow K l e j • w + Ezpow K l e j • f`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← smul_add, hwf, hz, smul_smul, ← Ezpow_add, add_neg_cancel]`. Simplify using `[Ezpow]`. Rewrite using `[hxz]`. Use `Submodule.add_mem_sup (Submodule.mem_inf.2 ⟨?_, ?_⟩) ?_` and prove the remaining obligations. Establish `h1 : Ezpow K l e (-(-j)) • w ∈ D.Mext (Rpi O K l e)` using `(mem_shiftE).1 hw2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[neg_neg]`. Then use the resulting hypothesis. Use `show Ezpow K l e (-j) • Ezpow K l e j • w ∈ Lan`. Rewrite using `[smul_smul, Ezpow_neg_mul, one_smul]` and apply the resulting hypothesis. Use `show Ezpow K l e (-(j + 1)) • Ezpow K l e j • f ∈ Lan`. Rewrite using `[smul_smul, ← Ezpow_add, show -(j + 1) + j = -1 by ring]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mem_shiftE).1 hf`. Establish `key` using `chain_aeval_mem D.EN F lam D.Man (divE l e η D.Man) (-((η : ℤ) + H)) η J (by omega) hstep (fun x hx => D.EN_mem_Man hx) (fun x hx => D.EN_mem_divE hx) (fun x hx => (mem_divE).2 (D.smul_mem_Man (pow_mem (E_mem l e _) η) hx)) hb ha hJ`. Rewrite `key` using `[hp]`. Establish `hann : ∀ w ∈ D.PolEta η, Polynomial.aeval D.Lc (∏ n ∈ GlobalTheory.IndefiniteRowSideFullHecke.ImagePolynomialAction.shifts U η, (Polynomial.X - Polynomial.C (((n * e * l : ℤ) : K)))) w = 0`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
-
-Rewrite using `[← aeval_intertwine D.cls D.EN D.Lc (fun _ => rfl)]`. Conclude with `(D.cls_eq_zero_iff).2 (key y hy)`. Establish `hZ : Polynomial.aeval D.LcZ (∏ n ∈ GlobalTheory.IndefiniteRowSideFullHecke.ImagePolynomialAction.shifts U η, (Polynomial.X - Polynomial.C (((n * e * l : ℤ) : K)))) = 0`. Use extensionality with `w`. Establish `h1` using `aeval_intertwine D.Zl.subtype D.LcZ D.Lc (fun _ => rfl) (∏ n ∈ GlobalTheory.IndefiniteRowSideFullHecke.ImagePolynomialAction.shifts U η, (Polynomial.X - Polynomial.C (((n * e * l : ℤ) : K)))) w`.
-
-Simplify using `only [Submodule.subtype_apply] at h1`. Rewrite using `[LinearMap.zero_apply, Submodule.coe_zero, h1]`. Conclude with `hann _ (Submodule.mem_inf.1 w.2).1`. Establish `hinj : Function.Injective (fun n : ℤ => ((n * e * l : ℤ) : K))`. Introduce `m n h`.
-
-Establish `h1 : m * e * l = n * e * l` using `Int.cast_injective h`. Conclude with `mul_right_cancel₀ he0 (mul_right_cancel₀ hl0 h1)`. Conclude with `semisimple_of_aeval D.LcZ _ _ hinj hZ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lc_semisimple : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (η H : ℕ) (D : BKDat O K l e a ι η H), ∀ U : Finset ℤ, D.jumps ⊆ U → GlobalTheory.IndefiniteRowSideFullHecke.ImagePolynomialAction.Semisimple D U := by
   intro O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D U hU

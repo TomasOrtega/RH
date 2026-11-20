@@ -19,7 +19,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : 
 
 omit [CharZero Ω] [Fintype K] [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Establish `h : ((aeval fun _ : K => (1 : Ω)).restrictScalars ℤ).comp (mConeMap y) = aeval y` using `algHom_ext fun p => by simp [mConeMap]`. Rewrite using `[← h, AlgHom.comp_apply, show mConeMap y f = 0 from hf, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_eq_zero_of_mem {y : (Σ k, ι k) → Ω} {f : MRing ι} (hf : f ∈ mCoordIdeal y) : aeval y f = 0 := by
   have h : ((aeval fun _ : K => (1 : Ω)).restrictScalars ℤ).comp (mConeMap y) = aeval y :=
@@ -27,25 +27,23 @@ theorem aeval_eq_zero_of_mem {y : (Σ k, ι k) → Ω} {f : MRing ι} (hf : f �
   rw [← h, AlgHom.comp_apply, show mConeMap y f = 0 from hf, map_zero]
 
 /- English proof (translation)
-Take `⟨⟨α, γ, hf, hg, hd⟩, hfP, hgP, hU⟩` from `h`. Establish `hne : ∀ {s : MRing ι} {d : K → ℕ}, IsMultiHomog s d → s ∉ mCoordIdeal y → aeval y s ≠ 0` using `fun hs hP h0 => hP (by rw [mCoordIdeal, RingHom.mem_ker, ConeTrdeg.mConeMap_of_isMultiHomog y hs, h0, map_zero, zero_mul])`. Use `⟨aeval y f / aeval y g, div_ne_zero (hne hf hfP) (hne hg hgP), fun O _ => ?_⟩` and prove the remaining obligations. Establish `hex : ∀ k, ∃ c : ι k, ∀ i, O.valuation (y ⟨k, i⟩) ≤ O.valuation (y ⟨k, c⟩)` using `fun k => by`. Take `⟨i, -⟩` from `hy k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, -, hc⟩` from `Finset.exists_max_image Finset.univ (fun i => O.valuation (y ⟨k, i⟩)) ⟨i, Finset.mem_univ _⟩`. Conclude with `⟨c, fun i => hc i (Finset.mem_univ _)⟩`. Use `choose c hc using hex`. Establish `hc0 : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k h0 => by`. Take `⟨i, hi⟩` from `hy k`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hc k i` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`. Conclude with `hi ((Valuation.zero_iff _).1 (le_antisymm this zero_le))`. Establish `hO : ∀ k i, y ⟨k, i⟩ / y ⟨k, c k⟩ ∈ O` using `fun k i => by`. Rewrite using `[← O.valuation_le_one_iff, map_div₀, div_le_one₀ (zero_lt_iff.2 ((map_ne_zero _).2 (hc0 k)))]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `hc k i`. Set `w : (Σ k, ι k) → O` to `fun p => ⟨ratioPt y c p, hO p.1 p.2⟩`. Set `φ : MRing ι →+* O` to `eval₂Hom (Int.castRingHom O) w`. Establish `hφ : ∀ s, (φ s : Ω) = aeval (ratioPt y c) s` using `fun s => by`. Establish `: O.subtype.comp φ = (aeval (ratioPt y c) : MRing ι →ₐ[ℤ] Ω)` using `ringHom_ext (fun r => by simp) fun p => by simp [φ, w]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `DFunLike.congr_fun this s`. Establish `hP : ∀ s ∈ mCoordIdeal y, φ s = 0` using `fun s hs => Subtype.ext <| by`. Rewrite using `[hφ]`. Conclude with `aeval_eq_zero_of_mem (mCoordIdeal_ratioPt y c hc0 ▸ hs)`. Take `⟨u, v, hu, hv, huv⟩` from `hU ((IsLocalRing.maximalIdeal O).comap φ) (Ideal.comap_isPrime _ _) (fun s hs => by rw [Ideal.mem_comap, hP s hs]; exact zero_mem _) fun k => ⟨c k, fun h => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : φ (X ⟨k, c k⟩) = 1` using `Subtype.ext (by rw [hφ]; simp [ratioPt, hc0])`. Rewrite `h` using `[Ideal.mem_comap, e]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h)⟩`. Establish `h1 : ∀ s, s ∉ (IsLocalRing.maximalIdeal O).comap φ → O.valuation (φ s) = 1` using `fun s hs => (O.valuation_eq_one_iff _).1 (IsLocalRing.notMem_maximalIdeal.1 hs)`. Establish `h2 : O.valuation (aeval (ratioPt y c) f) = O.valuation (aeval (ratioPt y c) g)`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `e` using `congrArg (fun t : O => (t : Ω)) (hP _ huv)`. Simplify using `only [map_sub, map_mul] at e`. Move the coercions through the operations in `at e`. Establish `e'` using `congrArg O.valuation (sub_eq_zero.1 e)`. Rewrite `e'` using `[map_mul, map_mul, h1 u hu, h1 v hv, one_mul, one_mul, hφ, hφ]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ∀ {s : MRing ι} {d : K → ℕ}, IsMultiHomog s d → aeval y s = (∏ k, y ⟨k, c k⟩ ^ d k) * aeval (ratioPt y c) s` using `fun hs => by`. Rewrite using `[← HilbertSamuel.LiftBirationalNef.aeval_scale (fun k => y ⟨k, c k⟩) hs]`. Use `congr 2`. Use function extensionality and compare the values at `p`. Rewrite using `[ratioPt, mul_div_cancel₀ _ (hc0 _)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : O.valuation (aeval (ratioPt y c) g) ≠ 0`. Rewrite using `[map_ne_zero]`. Conclude with `right_ne_zero_of_mul (h3 hg ▸ hne hg hgP)`. Rewrite using `[UnitZ.vdeg_chart O y c hc0 hO, UnitZ.vdeg_chart O y c hc0 hO, h3 hf, h3 hg, map_div₀, map_mul, map_mul, h2, mul_div_mul_right _ _ h4, ← map_div₀, ← map_mul, ← Finset.prod_div_distrib, ← Finset.prod_mul_distrib]`. Use `congr 1`.
-
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_sub₀ (hc0 k), ← zpow_add₀ (hc0 k), hd, sub_add_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem valEq_of_lineIso {y : (Σ k, ι k) → Ω} (hy : ∀ k, ∃ i, y ⟨k, i⟩ ≠ 0) {a b : K → ℤ} {f g : MRing ι}
     (h : IsLineIso (mCoordIdeal y) a b f g) : ValEq ℚ y a y b := by
@@ -107,7 +105,7 @@ theorem valEq_of_lineIso {y : (Σ k, ι k) → Ω} (hy : ∀ k, ∃ i, y ⟨k, i
 variable {K₁ : Type} [Fintype K₁] {ι₁ : K₁ → Type} [∀ k, Fintype (ι₁ k)]
 
 /- English proof (translation)
-Use `⟨ratioField y c, inferInstance, inferInstance, algebraMap (ratioField y c) Ω, ratioPtL y c, fun _ => rfl, fun t => ?_, birational y c hc, mCoordIdeal_ratioPtL y c hc⟩` and prove the remaining obligations. Rewrite using `[← ratioField_eq_blockFnField y c hc]`. Conclude with `⟨fun h => ⟨⟨t, h⟩, rfl⟩, fun ⟨x, hx⟩ => hx ▸ x.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_ratio (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) :
     ∃ (L : Type) (_ : Field L) (_ : CharZero L) (φ : L →+* Ω) (z : (Σ k, ι k) → L), (∀ p, φ (z p) = y p / y ⟨p.1, c p.1⟩) ∧
@@ -120,13 +118,13 @@ theorem exists_ratio (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : ∀ k, y 
 variable {L : Type} [Field L] [CharZero L]
 
 /- English proof (translation)
-Establish `h1 : (fnField ℚ (z ∘ v)).map φ.toRatAlgHom = blockFnField (y ∘ v)`. Rewrite using `[fnField, IntermediateField.adjoin_map, blockFnField]`. Use `congr 1`. Establish `e : ∀ p q : Σ k, ι₁ k, p.1 = q.1 → φ.toRatAlgHom ((z ∘ v) p / (z ∘ v) q) = (y ∘ v) p / (y ∘ v) q` using `fun p q h => by`. Establish `h' : (⟨(v p).1, c (v p).1⟩ : Σ k, ι k) = ⟨(v q).1, c (v q).1⟩` using `congrArg (fun k => (⟨k, c k⟩ : Σ k, ι k)) ((hv.2.2.1 p).trans ((congrArg κ h).trans (hv.2.2.1 q).symm))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show φ (z (v p) / z (v q)) = y (v p) / y (v q)`. Rewrite using `[map_div₀, hφ, hφ, h', div_div_div_cancel_right₀ (hc _)]`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨p, q, h, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨p, q, h, e p q h⟩`. Introduce and unpack `⟨p, q, h, rfl⟩`. Conclude with `⟨_, ⟨p, q, h, rfl⟩, e p q h⟩`. Establish `h2 : (⊤ : IntermediateField ℚ L).map φ.toRatAlgHom = blockFnField y`. Use extensionality with `t`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr, IntermediateField.mem_map]`. Conclude with `⟨fun ⟨x, _, hx⟩ => ⟨x, hx⟩, fun ⟨x, hx⟩ => ⟨x, trivial, hx⟩⟩`. Rewrite using `[← h1, ← h2, IntermediateField.relfinrank_map_map, IntermediateField.relfinrank_top_right]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_ratio {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) {φ : L →+* Ω} {z : (Σ k, ι k) → L}
     (hφ : ∀ p, φ (z p) = y p / y ⟨p.1, c p.1⟩) (hr : ∀ t, t ∈ blockFnField y ↔ ∃ x, φ x = t) {κ : K₁ → K}
@@ -154,9 +152,9 @@ theorem finrank_ratio {y : (Σ k, ι k) → Ω} {c : ∀ k, ι k} (hc : ∀ k, y
 
 open Classical in
 /- English proof (translation)
-Establish `hzv : IsPt ℚ (z ∘ v) d`. Use `⟨fun b => ?_, Module.finite_of_finrank_pos (by rw [hf]; exact Nat.pos_of_ne_zero he), hz.2.2⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz.1 (κ b)`. Take `⟨⟨b', j⟩, hp⟩` from `hv.2.2.2 ⟨κ b, i⟩ ⟨b, rfl⟩`. Take `rfl : b' = b` from `hv.1 ((hv.2.2.1 ⟨b', j⟩).symm.trans (congrArg Sigma.fst hp))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨j, by rwa [Function.comp_apply, hp]⟩`. Establish `hI' : mCoordIdeal (z ∘ v) = mCoordIdeal (y ∘ v)`. Rewrite using `[← JoinBlock.imageZ_coord κ v _ hv.1 hv.2.2.1, ← JoinBlock.imageZ_coord κ v _ hv.1 hv.2.2.1, hI]`. Rewrite using `[hP ℚ _ _ _ _ _ κ v _ d a hv hz hzv, num, hf, inum, pointIdeal_rat, hI']`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem num_pull (hP : NumPull) {y : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → L} (hI : mCoordIdeal z = mCoordIdeal y) {κ : K₁ → K}
     {v : (Σ k, ι₁ k) → Σ k, ι k} (hv : IsBlockMap κ v) {d : ℕ} (hz : IsPt ℚ z d) {e : ℕ}
@@ -174,7 +172,7 @@ theorem num_pull (hP : NumPull) {y : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → 
   rw [hP ℚ _ _ _ _ _ κ v _ d a hv hz hzv, num, hf, inum, pointIdeal_rat, hI']
 
 /- English proof (translation)
-Establish `h0 : 0 < Module.finrank (RingHom.id L).fieldRange L`. Rewrite using `[show (RingHom.id L).fieldRange = ⊤ from RingHom.fieldRange_eq_top_iff.2 Function.surjective_id]`. Establish `: Module.Finite (⊤ : Subfield L) L` using `Module.Finite.of_surjective (Algebra.linearMap (⊤ : Subfield L) L) fun x => ⟨⟨x, trivial⟩, rfl⟩`. Conclude with `Module.finrank_pos`. Conclude with `(numMap L L (RingHom.id L) K ι z d hb hz h0).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPt_of_birational {z : (Σ k, ι k) → L} (hb : Birational z) {d : ℕ} (hz : IsArithVar (mCoordIdeal z) (d + 1)) :
     IsPt ℚ z d := by
@@ -188,9 +186,9 @@ theorem isPt_of_birational {z : (Σ k, ι k) → L} (hb : Birational z) {d : ℕ
 open Classical in
 
 /- English proof (translation)
-Use `choose c hc using ne_of_arith hy`. Take `⟨L, _, _, φ, z, hφ, hr, hb, hI⟩` from `exists_ratio y c hc`. Rewrite `hy`, `h` using `[← hI]`. Establish `hz : IsPt ℚ z d` using `isPt_of_birational hb hy`. Use `(num_pull hP hI h₁ hz (finrank_ratio hc hφ hr h₁) e₁ a₁).symm.trans (Eq.trans ?_ (num_pull hP hI h₂ hz (finrank_ratio hc hφ hr h₂) e₂ a₂))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `numEq ptDim hP (unitZero ptDim) ℚ L K ι K ι z z d _ _ hz hz fun j => ?_` and prove the remaining obligations. Take `⟨f, g, hfg⟩` from `h j`. Conclude with `valEq_of_lineIso hz.1 hfg`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem intNum_cmp (hP : NumPull) {K₂ : Type} [Fintype K₂] {ι₂ : K₂ → Type} [∀ k, Fintype (ι₂ k)] (y : (Σ k, ι k) → Ω)
     {κ₁ : K₁ → K} {v₁ : (Σ k, ι₁ k) → Σ k, ι k} {κ₂ : K₂ → K} {v₂ : (Σ k, ι₂ k) → Σ k, ι k} (h₁ : IsBlockMap κ₁ v₁)
@@ -215,7 +213,7 @@ theorem intNum_cmp (hP : NumPull) {K₂ : Type} [Fintype K₂] {ι₂ : K₂ →
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[← mInt_ref_eq Re w, ← ptsIntegral_one_eq_mInt hI.resExists resBridge Re.R Re.arith fun j => Re.ref_smooth _]`. Conclude with `Giv.degreeGeneric_of_degree hI.degree K ι P d _ Re.arith fun j => Re.ref_smooth _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degNum_eq (hI : PB.Inputs) {d : ℕ} {σ : Type} {S : PB.AnSys d σ} {P : Ideal (MRing ι)} (Re : PB.Realis S P)
     (w : Fin d → σ) :

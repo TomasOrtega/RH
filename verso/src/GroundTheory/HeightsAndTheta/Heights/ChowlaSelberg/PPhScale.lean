@@ -11,9 +11,9 @@ noncomputable section
 namespace PhScale
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (LinearMap.mulLeft ℤ c)` using `fun x y h ↦ mul_left_cancel₀ hc h`. Set `e` to `Submodule.equivMapOfInjective _ hinj Λ`. Unfold `eisensteinSum scaleLattice`. Use `(e.toEquiv.tsum_eq (fun l ↦ ((l : ℂ) ^ n)⁻¹)).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← tsum_mul_left]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[e, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eisensteinSum_scaleLattice (Λ : Submodule ℤ ℂ) {c : ℂ} (hc : c ≠ 0) (n : ℕ) :
     eisensteinSum (scaleLattice c Λ) n = (c ^ n)⁻¹ * eisensteinSum Λ n := by
@@ -28,7 +28,7 @@ theorem eisensteinSum_scaleLattice (Λ : Submodule ℤ ℂ) {c : ℂ} (hc : c �
   ring
 
 /- English proof (translation)
-Simplify using `only [latticeDiscr, latticeG₂, latticeG₃, eisensteinSum_scaleLattice Λ hc]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem latticeDiscr_scaleLattice (Λ : Submodule ℤ ℂ) {c : ℂ} (hc : c ≠ 0) :
     latticeDiscr (scaleLattice c Λ) = (c ^ 12)⁻¹ * latticeDiscr Λ := by
@@ -48,23 +48,23 @@ def scalePair (L : PeriodPair) {c : ℂ} (hc : c ≠ 0) : PeriodPair where
     exact (mul_eq_zero.1 hst').resolve_left hc
 
 /- English proof (translation)
-Simplify using `[PeriodPair.lattice, scaleLattice, Submodule.map_span, Set.image_pair, scalePair]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lattice_scalePair (L : PeriodPair) {c : ℂ} (hc : c ≠ 0) :
     (scalePair L hc).lattice = scaleLattice c L.lattice := by
   simp [PeriodPair.lattice, scaleLattice, Submodule.map_span, Set.image_pair, scalePair]
 
 /- English proof (translation)
-Rewrite using `[← Complex.normSq_eq_norm_sq, ← Algebra.norm_complex_apply, Algebra.norm_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_mulLeft (c : ℂ) : LinearMap.det (LinearMap.mulLeft ℝ c) = ‖c‖ ^ 2 := by
   rw [← Complex.normSq_eq_norm_sq, ← Algebra.norm_complex_apply, Algebra.norm_apply]
   rfl
 
 /- English proof (translation)
-Rewrite using `[← lattice_scalePair L hc]`. Unfold `latticeArea`. Rewrite using `[ZLattice.covolume_eq_det_mul_measureReal _ _ (scalePair L hc).latticeBasis Complex.basisOneI, ZLattice.covolume_eq_det_mul_measureReal _ _ L.latticeBasis Complex.basisOneI]`. Establish `hv : ((↑) ∘ (scalePair L hc).latticeBasis : Fin 2 → ℂ) = (LinearMap.mulLeft ℝ c) ∘ ((↑) ∘ L.latticeBasis)`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `fin_cases i <;> simp <;> rfl`. Rewrite using `[hv, Module.Basis.det_comp, abs_mul, det_mulLeft, abs_of_nonneg (by positivity), mul_assoc]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem latticeArea_scaleLattice (L : PeriodPair) {c : ℂ} (hc : c ≠ 0) :
     latticeArea (scaleLattice c L.lattice) = ‖c‖ ^ 2 * latticeArea L.lattice := by
@@ -79,11 +79,11 @@ theorem latticeArea_scaleLattice (L : PeriodPair) {c : ℂ} (hc : c ≠ 0) :
   rw [hv, Module.Basis.det_comp, abs_mul, det_mulLeft, abs_of_nonneg (by positivity), mul_assoc]
 
 /- English proof (translation)
-Introduce `L c hc`. Establish `hn : ‖c‖ ≠ 0` using `norm_ne_zero_iff.2 hc`. Establish `hA : 0 < latticeArea L.lattice` using `ZLattice.covolume_pos _ _`. Establish `hAπ : latticeArea L.lattice / Real.pi ≠ 0` using `(div_pos hA Real.pi_pos).ne'`. Establish `hD : ‖latticeDiscr L.lattice‖ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[latticeDiscr_lattice]`. Conclude with `norm_ne_zero_iff.2 (discr_ne_zero L)`. Unfold `logPeriod`. Rewrite using `[latticeArea_scaleLattice L hc, latticeDiscr_scaleLattice _ hc, norm_mul, norm_inv, norm_pow, mul_div_assoc, Real.log_mul (pow_ne_zero _ hn) hAπ, Real.log_mul (inv_ne_zero (pow_ne_zero _ hn)) hD, Real.log_inv, Real.log_pow, Real.log_pow]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem proof : PhScale.Statement := by
   intro L c hc

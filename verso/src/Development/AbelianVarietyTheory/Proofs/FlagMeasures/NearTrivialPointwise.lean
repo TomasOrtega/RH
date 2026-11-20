@@ -23,13 +23,13 @@ end General
 variable (I : AutInst)
 
 /- English proof (translation)
-Establish `h` using `Formalism.UG.P.global_lattice_isLattice_holds I.F I.E (Fin I.n) I.L (Module.Finite.iff_fg.2 I.L_fg) I.L_span (x.2 : GL (Fin I.n) (I.E ⊗[I.F] Af I.F))`. Establish `e1 : Formalism.UG.latS (F` using `I.F) (Af I.F) (IntAf I.F I.E) I.L = I.Lf := by`. Unfold `Formalism.UG.latS AutInst.Lf lamAf`. Use `congr 1`. Use extensionality with `y`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨⟨z, hz⟩, rfl⟩`. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨z, z.2, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `e : lamX I x = Formalism.UG.CS.globLat (x.2 : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)) I.L`. Use extensionality with `y`. Rewrite using `[GlobalTheory.Count.Test.mem_lamX, ← e1]`. Conclude with `Iff.rfl`. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem lamX_isLattice (x : I.GA) : Submodule.IsLattice I.E (lamX I x) := by
   have h := Formalism.UG.P.global_lattice_isLattice_holds I.F I.E (Fin I.n) I.L (Module.Finite.iff_fg.2 I.L_fg) I.L_span
@@ -48,9 +48,7 @@ theorem lamX_isLattice (x : I.GA) : Submodule.IsLattice I.E (lamX I x) := by
   rw [e]; exact h
 
 /- English proof (translation)
-Establish `h : ∀ v, IsUnit (I.P v * uMat (x.1 v))` using `fun v => (I.P_unit v).mul (Units.isUnit _)`. Rewrite using `[← Matrix.isUnit_iff_isUnit_det]`. Unfold `frm`. Use `split_ifs`. Conclude with `h _`.
-
-Conclude with `(h _).map (starRingEnd ℂ).mapMatrix`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem frm_isUnit (x : I.GA) (w : InfinitePlace I.E) : IsUnit (frm I x w).det := by
   have h : ∀ v, IsUnit (I.P v * uMat (x.1 v)) := fun v => (I.P_unit v).mul (Units.isUnit _)
@@ -61,7 +59,7 @@ theorem frm_isUnit (x : I.GA) (w : InfinitePlace I.E) : IsUnit (frm I x w).det :
   · exact (h _).map (starRingEnd ℂ).mapMatrix
 
 /- English proof (translation)
-Establish `: IsEmpty (Fin I.n)` using `by rw [hn]; infer_instance`. Use `⟨fun a b => Prod.ext (funext fun v => ?_) ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (Units.ext (Subsingleton.elim _ _))`. Conclude with `Subtype.ext (Units.ext (Subsingleton.elim _ _))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem subsingleton_GA (hn : I.n = 0) : Subsingleton I.GA := by
   have : IsEmpty (Fin I.n) := by rw [hn]; infer_instance

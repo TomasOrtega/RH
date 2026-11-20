@@ -10,7 +10,7 @@ namespace PositivityTheory.SiegelWeilFormula.KAway
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Conclude with `FaithfulSMul.algebraMap_injective (AF F) (AE F E)`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_AE_injective : Function.Injective (algebraMap (AF F) (AE F E)) := by
   exact FaithfulSMul.algebraMap_injective (AF F) (AE F E)
@@ -20,13 +20,13 @@ instance isIntegral_AE : Algebra.IsIntegral (AF F) (AE F E) := by
   infer_instance
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hI`. Take `⟨m, hm, hIm⟩` from `Ideal.exists_le_maximal _ hI`. Use `haveI := hm`. Establish `hker : RingHom.ker (algebraMap (AF F) (AE F E)) ≤ m`. Introduce `x hx`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[RingHom.mem_ker]`. Establish `hx0 : x = 0` using `algebraMap_AE_injective (by rw [hx, map_zero])`. Rewrite using `[hx0]`. Conclude with `m.zero_mem`. Take `⟨Q, hQ, hQm⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral m hker`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `haveI := hQ`. Use `letI : Field (AE F E ⧸ Q) := Ideal.Quotient.field Q`. Take `⟨g, hg, h1, h2⟩` from `exists_point hcm ε hε X hX (Ideal.Quotient.mk Q)`. Take `⟨a, ha⟩` from `nrm_exists hcm (X.toBlocks₁₁ - incM F g * X.toBlocks₂₁).det`. Establish `haI : a ∈ m` using `hIm (Ideal.subset_span ⟨g, hg, ha⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `haI` using `[← hQm]`. Establish `h0 : Ideal.Quotient.mk Q (algebraMap (AF F) (AE F E) a) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 haI`. Rewrite `h0` using `[ha, map_mul]`. Conclude with `mul_ne_zero h1 h2 h0`.
+A detailed English derivation is pending.
 -/
 theorem span_top' (hcm : IsCMExt F E σ) {n : ℕ} (ε : ℤ) (hε : ε * ε = 1)
     (X : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) (hX : IsUnit X.det) :

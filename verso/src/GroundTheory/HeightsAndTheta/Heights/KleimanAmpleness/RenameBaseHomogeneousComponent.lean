@@ -14,11 +14,11 @@ section
 variable {k : Type} [Field k] {N m : ℕ}
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun a : Fin (N + 1) => (⟨baseBlock, a⟩ : Σ c, graphIdx N m c))` using `fun a b h => eq_of_heq (Sigma.mk.inj h).2`. Use function extensionality and compare the values at `c`. Rewrite using `[← sum_block_eq_blockWeight]`. Break down `c with ⟨⟩ | ⟨⟩` into its components or cases. Simplify using `only [Sum.elim_inl]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finsupp.degree_eq_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Finsupp.mapDomain_apply hinj e a`. Simplify using `only [Sum.elim_inr]`. Use `Finset.sum_eq_zero fun b _ => Finsupp.mapDomain_of_notMem_range _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨a, ha⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `(Sigma.mk.inj ha).1`.
+A detailed English derivation is pending.
 -/
 theorem weight_mapDomain_base (e : Fin (N + 1) →₀ ℕ) :
     Finsupp.weight (NumbersDVR.blockWeight (graphIdx N m))
@@ -39,11 +39,11 @@ theorem weight_mapDomain_base (e : Fin (N + 1) →₀ ℕ) :
     cases (Sigma.mk.inj ha).1
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun a : Fin (N + 1) => (⟨baseBlock, a⟩ : Σ c, graphIdx N m c))` using `fun a b h => eq_of_heq (Sigma.mk.inj h).2`. Use extensionality with `e'`. Rewrite using `[coeff_weightedHomogeneousComponent]`. Distinguish the cases in `he : ∃ e, Finsupp.mapDomain (fun a : Fin (N + 1) => (⟨baseBlock, a⟩ : Σ c, graphIdx N m c)) e = e'`. Take `⟨e, rfl⟩` from `he`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[coeff_rename_mapDomain _ hinj, coeff_rename_mapDomain _ hinj, coeff_homogeneousComponent, weight_mapDomain_base]`. Distinguish the cases in `hd : e.degree = d`. Rewrite using `[if_pos hd, if_pos (by rw [hd])]`. Rewrite using `[if_neg hd, if_neg fun h => hd (congrFun h (Sum.inl ()))]`. Use `push Not at he`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_rename_eq_zero _ _ _ fun u hu => absurd hu (he u)]`. Use `split_ifs`. Rewrite using `[coeff_rename_eq_zero _ _ _ fun u hu => absurd hu (he u)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rename_base_homogeneousComponent (d : ℕ) (f : Kleiman.Poly k N) :
     rename (fun a : Fin (N + 1) => (⟨baseBlock, a⟩ : Σ c, graphIdx N m c)) (homogeneousComponent d f) =
@@ -70,17 +70,17 @@ theorem rename_base_homogeneousComponent (d : ℕ) (f : Kleiman.Poly k N) :
 end
 
 /- English proof (translation)
-Introduce `k _ N Ω _ _ x Q n m s hx hgen W hW hle e`. Use `hW.isPrime` as an intermediate fact. Take `⟨j, hj⟩` from `hW.relevant (Sum.inr ())`. Establish `hdim` using `hD k N m W hW.isPrime hW.multiHomog j hj fun b => by`. Take `⟨d, f, g, -, -, h1, h2⟩` from `hR k N Ω x Q n m s hx hgen W hW hle j b hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨f, g, h1, h2⟩`. Establish `hsub : Kleiman.IsSubvar x (W.comap (rename fun a : Fin (N + 1) => (⟨baseBlock, a⟩ : Σ c, graphIdx N m c))) e ↔ ringKrullDim (Kleiman.Poly k N ⧸ W.comap (rename fun a : Fin (N + 1) => (⟨baseBlock, a⟩ : Σ c, graphIdx N m c))) = ((e + 1 : ℕ) : WithBot ℕ∞)`. Use `⟨fun h => h.dim, fun h => ⟨Ideal.comap_isPrime _ _, fun f hf d => ?_, ?_, ?_, h⟩⟩` and prove the remaining obligations. Rewrite `hf`, the goal using `[Ideal.mem_comap]`. Rewrite using `[rename_base_homogeneousComponent]`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hW.multiHomog _ hf _`. Rewrite using `[← comap_mIdealOver_graph (S := k) x s]`. Conclude with `Ideal.comap_mono hle`. Take `⟨i, hi⟩` from `hW.relevant (Sum.inl ())`. Establish `hXi : rename (fun a : Fin (N + 1) => (⟨baseBlock, a⟩ : Σ c, graphIdx N m c)) (X i : Kleiman.Poly k N) = X ⟨baseBlock, i⟩` using `rename_X _ _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨i, by rw [Ideal.mem_comap, hXi]; exact hi⟩`. Rewrite using `[hsub, FieldNumbers.CutRegular.relDim_eq_natCast_iff, hdim, Fintype.card_sum, Fintype.card_unit]`. Generalize the expression as in `ringKrullDim (Kleiman.Poly k N ⧸ W.comap (rename fun a : Fin (N + 1) => (⟨baseBlock, a⟩ : Σ c, graphIdx N m c))) = D`. Proceed by induction on `D using WithBot.recBotCoe with`. Consider the case `bot`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[WithBot.bot_add]`. Conclude with `iff_of_false (WithBot.bot_ne_natCast _) (WithBot.bot_ne_natCast _)`. Consider the case `coe t`. Rewrite using `[← WithBot.coe_one, ← WithBot.coe_add, ← WithBot.coe_natCast, ← WithBot.coe_natCast, WithBot.coe_inj, WithBot.coe_inj]`. Proceed by induction on `t using ENat.recTopCoe with`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Put the expressions in a common number system so they can be compared.
 
-Consider the case `top => exact iff_of_false (by rw [top_add]; exact ENat.top_ne_natCast _) (ENat.top_ne_natCast _)`. Consider the case `coe t`. Use `norm_cast`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem CurveComap.proof (hR : SectionRatio.Statement) (hD : RatioDim.Statement) : CurveComap.Statement := by
   intro k _ N Ω _ _ x Q n m s hx hgen W hW hle e

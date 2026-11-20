@@ -6,9 +6,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.HeckeGal GlobalTheory.CuspRep UpperTheory.Gal.TP.Chr
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `x _`. Simplify using `[locChar]`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[pow_succ]`. Conclude with `UnrAt.mul ih h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chrUnr_pow {E : Type} [Field E] [NumberField E] [IsCMField E]
     {χ : Chr (maximalRealSubfield E) E} {w : HeightOneSpectrum (𝓞 E)} (h : UnrAt χ w) (k : ℕ) :
@@ -22,7 +22,7 @@ private theorem chrUnr_pow {E : Type} [Field E] [NumberField E] [IsCMField E]
     exact UnrAt.mul ih h
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [val_one]`. Consider the case `succ n ih => rw [pow_succ, val_mul, Units.val_mul, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem chrVal_pow {E : Type} [Field E] [NumberField E] [IsCMField E]
     (χ : Chr (maximalRealSubfield E) E) (w : HeightOneSpectrum (𝓞 E)) (k : ℕ) :
@@ -32,27 +32,27 @@ private theorem chrVal_pow {E : Type} [Field E] [NumberField E] [IsCMField E]
   | succ n ih => rw [pow_succ, val_mul, Units.val_mul, ih, pow_succ]
 
 /- English proof (translation)
-Introduce `hEx hTyp E _ _ _ hunr n t hn ht emb b w₀ _`. Take `⟨K, hKodd, hKb⟩ : ∃ K : ℕ, Odd K ∧ -(K : ℤ) ≤ b` from `⟨2 * b.natAbs + 1, ⟨b.natAbs, rfl⟩, by omega⟩`. Take `⟨χ, ψ, hχ0, hH, hV, hA, hInj⟩` from `hEx E hunr emb w₀ (fun _ => -1) (fun _ => ⟨-1, by norm_num⟩)`. Establish `hT` using `hTyp E emb`. Establish `hnorm : ∀ w : HeightOneSpectrum (𝓞 E), ((normV w : ℕ) : ℂ) = ((Ideal.absNorm w.asIdeal : ℕ) : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w`. Simplify using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Take `⟨a, ha⟩` from `hKodd`. Take `⟨c, hc⟩` from `ht`. Take `⟨r, hr⟩` from `hn`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ht0 : 0 < t` using `by omega`. Use `⟨ψ K t, typ emb (fun _ => ((t : ℤ) + (K : ℤ) * -1) / 2) (fun _ => ((t : ℤ) - (K : ℤ) * -1) / 2), fun j => χ ^ (2 * (j : ℕ)), fun j => χ ^ (K + 2 * (j : ℕ)), fun j _ => ((2 * (j : ℕ) : ℕ) : ℤ) * -1, fun j _ => ((K + 2 * (j : ℕ) : ℕ) : ℤ) * -1, fun j i => ψ (2 * (j : ℕ)) (2 * ((i : …` and prove the remaining obligations. Introduce `j`. Take `⟨h1, h2, h3⟩` from `hH (2 * (j : ℕ))`. Take `⟨h1', h2', h3'⟩` from `hH (K + 2 * (j : ℕ))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨h1, h1', h3 n (by omega), h3' (n + t) (by omega), h2, h2', ?_, ?_⟩` and prove the remaining obligations. Introduce `w`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Use `⟨fun i => hA _ _ ⟨((j : ℕ) : ℤ) + ((i : ℕ) : ℤ) - r - 2 * c, by push_cast; omega⟩, fun w => ?_, fun w => ?_, fun i w => ?_, fun i w => ?_, fun w hκ hψ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[(hT _ _ w).1]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Simplify using `only`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Simplify by unfolding definitions.
 
-Rewrite using `[(hT _ _ w).2]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Simplify using `only`. Rewrite using `[(hT _ _ w).1]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use linear arithmetic over natural numbers and integers. Simplify using `only`. Rewrite using `[(hT _ _ w).2]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only at hψ ⊢`. Establish `u0` using `(hV K t w).1.mp hκ`. Establish `ux` using `(hV (2 * (j : ℕ)) _ w).1.mp (hψ ⟨0, ht0⟩)`. Establish `hv : ((val χ w : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`.
+Use linear arithmetic over natural numbers and integers. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨ux, by rw [pow_add]; exact UnrAt.mul u0 ux, ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[(hV K t w).2, chrVal_pow, chrVal_pow, hnorm, pow_add, mul_inv_cancel_right₀ (pow_ne_zero _ hv)]`. Use `push_cast`. Rewrite using `[neg_div]`. Rewrite using `[(hV _ _ w).2, chrVal_pow, hnorm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `i i' h`. Use `hInj _ _ _ _ h` as an intermediate fact.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `at this`.
+Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Gal.TP.Chr.chrPairs :
     UpperTheory.Gal.TP.Chr.ChrEx → UpperTheory.Gal.TP.Chr.TypVal → UpperTheory.Gal.TP.Sub.ChrPairs := by

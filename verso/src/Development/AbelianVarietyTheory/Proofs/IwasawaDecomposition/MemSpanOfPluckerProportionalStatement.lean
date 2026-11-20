@@ -6,7 +6,7 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open Formalism.MainNotions.DIV.Cons (intO)
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.FlagEmb.mem_span_of_plk_eq_smul | exact GlobalTheory.FlagEmb.mem_span_of_plk_eq_smul | (intros; apply GlobalTheory.FlagEmb.mem_span_of_plk_eq_smul <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.mem_span_of_plucker_proportional : ∀ (K : Type) [Field K] (M k : ℕ) (c c' : Fin k → Fin (M + 1) → K) (a : K), plk c' id ≠ 0 → plk c' id = a • plk c id → ∀ l, c' l ∈ Submodule.span K (Set.range c) := by
   first | exact @GlobalTheory.FlagEmb.mem_span_of_plk_eq_smul | exact GlobalTheory.FlagEmb.mem_span_of_plk_eq_smul | (intros; apply GlobalTheory.FlagEmb.mem_span_of_plk_eq_smul <;> assumption)

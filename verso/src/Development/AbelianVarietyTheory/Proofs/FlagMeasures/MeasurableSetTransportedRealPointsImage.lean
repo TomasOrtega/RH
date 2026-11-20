@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.CovDom
 
 /- English proof (translation)
-Use `haveI : PolishSpace (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (PolishSpace (Fin n → Fin n → ℂ))`. Conclude with `(Formalism.REAL.isClosedEmbeddingMatrix n ε).1.polishSpace`.
+A detailed English derivation is pending.
 -/
 theorem measPolish_UJ (n : ℕ) (ε : Fin n → Bool) : PolishSpace (Formalism.REAL.UJ ε) := by
   haveI : PolishSpace (Matrix (Fin n) (Fin n) ℂ) := inferInstanceAs (PolishSpace (Fin n → Fin n → ℂ))
@@ -18,7 +18,7 @@ theorem measPolish_UJ (n : ℕ) (ε : Fin n → Bool) : PolishSpace (Formalism.R
 variable {D : D7}
 
 /- English proof (translation)
-Use `continuous_pi fun τ => ?_` and prove the remaining obligations. Use `show Continuous fun x : X.B.I.Ginf => C.Qi τ * Formalism.MainNotions.S.uMat (x (vOf X τ)) * C.Q τ`. Use `(continuous_const.matrix_mul ?_).matrix_mul continuous_const` and prove the remaining obligations. Conclude with `(Units.continuous_val.comp continuous_subtype_val).comp (continuous_apply _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measCont_trX (X : HidaSetting D) {θ : ℝ} (C : Choice X θ) : Continuous (trX X C) := by
   refine continuous_pi fun τ => ?_
@@ -27,9 +27,9 @@ theorem measCont_trX (X : HidaSetting D) {θ : ℝ} (C : Choice X θ) : Continuo
   exact (Units.continuous_val.comp continuous_subtype_val).comp (continuous_apply _)
 
 /- English proof (translation)
-Introduce `x y h`. Use function extensionality and compare the values at `v`. Take `⟨τ, rfl⟩ : ∃ τ, vOf X τ = v` from `⟨X.pl v, by simp [vOf]⟩`. Establish `h2 : C.Qi τ * Formalism.MainNotions.S.uMat (x (vOf X τ)) * C.Q τ = C.Qi τ * Formalism.MainNotions.S.uMat (y (vOf X τ)) * C.Q τ` using `congrFun h τ`. Take `⟨-, h1, -⟩` from `C.isT τ`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `congrArg (fun M => C.Q τ * M * C.Qi τ) h2`. Simplify using `only [Matrix.mul_assoc, h1, Matrix.mul_one] at h3`. Simplify using `only [← Matrix.mul_assoc, h1, Matrix.one_mul] at h3`. Conclude with `Subtype.ext (Units.ext h3)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measInj_trX (X : HidaSetting D) {θ : ℝ} (C : Choice X θ) : Function.Injective (trX X C) := by
   intro x y h
@@ -44,16 +44,16 @@ theorem measInj_trX (X : HidaSetting D) {θ : ℝ} (C : Choice X θ) : Function.
   exact Subtype.ext (Units.ext h3)
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.RealPlaces.existsUnique_place D _).unique (GlobalTheory.RealPlaces.existsUnique_place D _).exists.choose_spec rfl`.
+A detailed English derivation is pending.
 -/
 theorem measTauOf_mk (D : D7) (τ : D.what₂.Tau) : tauOf D (InfinitePlace.mk (embS D τ)) = τ :=
   (GlobalTheory.RealPlaces.existsUnique_place D _).unique
     (GlobalTheory.RealPlaces.existsUnique_place D _).exists.choose_spec rfl
 
 /- English proof (translation)
-Introduce `M N h`. Distinguish the cases in `hw : Direct D w`. Simplify `h` using `[cjw, hw]`. Simplify using `only [cjw, hw, if_false] at h`. Use function extensionality and compare the values at `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `using congrArg star (congrFun (congrFun h i) j)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem measInj_cjw (D : D7) (w : InfinitePlace D.host.E) : Function.Injective (cjw D w) := by
   intro M N h
@@ -64,9 +64,7 @@ theorem measInj_cjw (D : D7) (w : InfinitePlace D.host.E) : Function.Injective (
     simpa using congrArg star (congrFun (congrFun h i) j)
 
 /- English proof (translation)
-Use `continuous_pi fun w => ?_` and prove the remaining obligations. Distinguish the cases in `hw : Direct D w`. Simplify using `only [Gm, cjw, hw, if_true]`. Conclude with `continuous_apply _`. Simplify using `only [Gm, cjw, hw, if_false]`.
-
-Conclude with `continuous_pi fun i => continuous_pi fun j => continuous_star.comp ((continuous_apply j).comp ((continuous_apply i).comp (continuous_apply _)))`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measCont_Gm (D : D7) : Continuous (Gm D) := by
   refine continuous_pi fun w => ?_
@@ -78,7 +76,7 @@ theorem measCont_Gm (D : D7) : Continuous (Gm D) := by
       continuous_star.comp ((continuous_apply j).comp ((continuous_apply i).comp (continuous_apply _)))
 
 /- English proof (translation)
-Introduce `y z h`. Use function extensionality and compare the values at `τ`. Use `congrFun h (InfinitePlace.mk (embS D τ))` as an intermediate fact. Simplify using `only [Gm, measTauOf_mk] at this`. Conclude with `measInj_cjw D _ this`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measInj_Gm (D : D7) : Function.Injective (Gm D) := by
   intro y z h
@@ -88,7 +86,7 @@ theorem measInj_Gm (D : D7) : Function.Injective (Gm D) := by
   exact measInj_cjw D _ this
 
 /- English proof (translation)
-Introduce `D X θ C S hS`. Use `haveI : ∀ v, PolishSpace (Formalism.REAL.UJ (X.B.I.ε v)) := fun v => measPolish_UJ _ _`. Rewrite using `[Set.image_image]`. Conclude with `hS.image_of_continuousOn_injOn ((measCont_Gm D).comp (measCont_trX X C)).continuousOn ((measInj_Gm D).comp (measInj_trX X C)).injOn`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurableSet_Gm_trX_image : ∀ (D : D7) (X : HidaSetting D) (θ : ℝ) (C : Choice X θ) (S : Set X.B.I.Ginf),
     MeasurableSet S → MeasurableSet (Gm D '' (trX X C '' S)) := by

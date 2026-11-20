@@ -10,7 +10,7 @@ namespace GlobalTheory.Fc.AllAtMember
 section large₂
 variable {KP : ∀ B : GlobalTheory.Mem.Base, Fr B.toPre → Prop} {Q Q' : V4.Slot}
 /- English proof (translation)
-The claim follows from `RowL.and (KP := KP) (Q := Q) (Q' := Q') h h'`.
+A detailed English derivation is pending.
 -/
 theorem forall_linked_bundles_and_alt {Lk : LkT _root_.GlobalTheory.Fc.BundleCondition} {H H' : ∀ 𝒜 : FamClass, RawSel _root_.GlobalTheory.Fc.BundleCondition 𝒜 → Prop}
     (h : Lg1 KP Q Q' fun S => Row S Lk H) (h' : Lg1 KP Q Q' fun S => Row S Lk H') :

@@ -20,7 +20,7 @@ open GlobalTheory.Grid
 variable {D : D7}
 
 /- English proof (translation)
-Distinguish the cases in `hd : df`. Conclude with `⟨(h.1 hd).1.1, (h.1 hd).2⟩`. Conclude with `⟨(h.2 hd).1.1, (h.2 hd).2⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem MeasDat.haar_fd {N : Node D} {m : N.MeasDat} {df : Prop} {K : Subgroup (GL (Fin N.V.rank) (Lev.EAf D))}
     (h : m.Is df K) : m.ν.IsHaarMeasure ∧ IsFundamentalDomain (GQ N.V) m.fd m.ν := by
@@ -29,13 +29,11 @@ theorem MeasDat.haar_fd {N : Node D} {m : N.MeasDat} {df : Prop} {K : Subgroup (
   · exact ⟨(h.2 hd).1.1, (h.2 hd).2⟩
 
 /- English proof (translation)
-Establish `: BorelSpace (GA D S)` using `⟨rfl⟩`. Establish `hR : GlobalTheory.Grow.RapidDec S φ` using `GlobalTheory.Grow.rapidDec_of_cuspForm hP hθ hφ hc`. Establish `e : ∀ g, thetaKO ω g h Φ = thetaKO (ω.toSgn ε) ((ofSgn ε S).symm g) h Φ` using `fun g => by show ω (g, h) Φ 0 = ω (ofSgn ε S ((ofSgn ε S).symm g), h) Φ 0`. Rewrite using `[MulEquiv.apply_symm_apply]`. Establish `hcont : Continuous fun g => thetaKO ω g h Φ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [e]`. Conclude with `(hω.om_cont Φ hΦ 0).comp ((continuous_ofSgn_symm ε S).prodMk continuous_const)`. Establish `hinv : ∀ γ ∈ GQ S, ∀ g, thetaKO ω (γ * g) h Φ = thetaKO ω g h Φ` using `fun γ hγ g => by`. Rewrite using `[e, e, map_mul]`. Use `GlobalTheory.ChainOnto.ThetaFirstVar.thetaKO_left_fst hω hΦ h _ ?_ _` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.SgnIdent.mem_GQ_sgn, MulEquiv.apply_symm_apply]`. Conclude with `hγ`. Establish `hg : GlobalTheory.Grow.ModGrowth S fun g => thetaKO ω g h Φ`. Take `⟨C, A, hC⟩` from `GlobalTheory.ChainOnto.ThetaFirstVar.thetaKO_modGrowth_fst hθ hω hΦ h`. Conclude with `⟨C, A, fun g => by simp only [e]; exact hC _⟩`.
-
-Conclude with `hR.integrableOn_modGrowth_mul hν h𝓕 hg hinv hcont.measurable.aestronglyMeasurable`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem integrableOn_thetaKO_mul_cusp (hP : GlobalTheory.Published.CuspRapidDecay) {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
     (hθ : IsInfFam θ) (ε : Bool) {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {ω : WRep S T}

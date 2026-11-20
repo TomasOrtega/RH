@@ -14,11 +14,11 @@ variable {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpac
   {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸} (h : IsExpLieAlgebra G 𝔤)
 
 /- English proof (translation)
-Use `set L := ContinuousLinearMap.inl ℝ P Q`. Establish `hH : Continuous fun q : P × Q => ContinuousMultilinearMap.compContinuousLinearMapL (fun _ => L) (iteratedFDeriv ℝ k Φ q)` using `(ContinuousLinearMap.continuous _).comp (hΦ.continuous_iteratedFDeriv (by exact_mod_cast le_top))`. Use `hH using 2 with p` and compare the differences between its conclusion and the goal. Take `⟨Y, Z⟩` from `p`. Establish `e : (fun Y => Φ (Y, Z)) = (fun w => Φ (w + (0, Z))) ∘ L`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `Y`. Simplify using `[L]`. Establish `hZ : ContDiff ℝ ∞ fun w : P × Q => Φ (w + (0, Z))` using `hΦ.comp (contDiff_id.add contDiff_const)`. Simplify using `only`. Rewrite using `[e, L.iteratedFDeriv_comp_right hZ Y (by exact_mod_cast le_top), iteratedFDeriv_comp_add_right]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[L]`.
+A detailed English derivation is pending.
 -/
 private theorem partial_iter {P Q : Type*} [NormedAddCommGroup P] [NormedSpace ℝ P] [NormedAddCommGroup Q]
     [NormedSpace ℝ Q] {Φ : P × Q → ℂ} (hΦ : ContDiff ℝ ∞ Φ) (k : ℕ) :
@@ -37,7 +37,7 @@ private theorem partial_iter {P Q : Type*} [NormedAddCommGroup P] [NormedSpace �
   simp [L]
 
 /- English proof (translation)
-Use `letI := h.chartedSpace`. Use `haveI := h.lieGroup ∞`. Establish `hm : ContMDiff 𝓘(ℝ, 𝔤 × 𝔤 × 𝔤) 𝓘(ℝ, 𝔤) ∞ fun p : 𝔤 × 𝔤 × 𝔤 => q₀ * h.expG p.2.1 * h.expG p.1 * (r₀ * h.expG p.2.2)` using `((contMDiff_const.mul (h.contMDiff_expG_comp (contDiff_fst.comp contDiff_snd))).mul (h.contMDiff_expG_comp contDiff_fst)).mul (contMDiff_const.mul (h.contMDiff_expG_comp (contDiff_snd.comp contDiff_snd)))`. Conclude with `(ContMDiff.comp (I' := 𝓘(ℝ, 𝔤)) hf hm).contDiff`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem chart_form {f : G → ℂ} (hf : h.IsSmoothFun f) (q₀ r₀ : G) :
     ContDiff ℝ ∞ fun p : 𝔤 × 𝔤 × 𝔤 => f (q₀ * h.expG p.2.1 * h.expG p.1 * (r₀ * h.expG p.2.2)) := by
@@ -51,7 +51,7 @@ private theorem chart_form {f : G → ℂ} (hf : h.IsSmoothFun f) (q₀ r₀ : G
   exact (ContMDiff.comp (I' := 𝓘(ℝ, 𝔤)) hf hm).contDiff
 
 /- English proof (translation)
-Use `(chart_form h hf q r).comp (contDiff_id.prodMk (contDiff_const (c := ((0 : 𝔤), (0 : 𝔤)))))` as an intermediate fact. Simplify `this` using `[Function.comp_def, h.expG_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem smooth_slice {f : G → ℂ} (hf : h.IsSmoothFun f) (q r : G) :
     ContDiff ℝ ∞ fun Y : 𝔤 => f (q * h.expG Y * r) := by
@@ -59,9 +59,9 @@ private theorem smooth_slice {f : G → ℂ} (hf : h.IsSmoothFun f) (q r : G) :
   simpa [Function.comp_def, h.expG_zero] using this
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce and unpack `⟨Y₀, q₀, r₀⟩`. Use `letI := h.chartedSpace`. Establish `hq : q₀ ∈ (h.chart q₀).source` using `mem_chart_source 𝔤 q₀`. Establish `hr : r₀ ∈ (h.chart r₀).source` using `mem_chart_source 𝔤 r₀`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `partial_iter (chart_form h hf q₀ r₀) k`. Establish `hev : (fun p : 𝔤 × G × G => iteratedFDeriv ℝ k (fun Y => f (p.2.1 * h.expG Y * p.2.2)) p.1) =ᶠ[𝓝 (Y₀, q₀, r₀)] fun p => iteratedFDeriv ℝ k (fun Y => f (q₀ * h.expG (h.chart q₀ p.2.1) * h.expG Y * (r₀ * h.expG (h.chart r₀ p.2.2)))) p.1` using `by filter_upwards [prod_mem_nhds univ_mem (prod_mem_nhds ((h.chart q₀).open_source.mem_nhds hq) ((h.chart r₀).open_source.mem_nhds hr))] with p hp`. Rewrite using `[show q₀ * h.expG (h.chart q₀ p.2.1) = p.2.1 from (h.chart q₀).left_inv hp.2.1, show r₀ * h.expG (h.chart r₀ p.2.2) = p.2.2 from (h.chart r₀).left_inv hp.2.2]`. Use `ContinuousAt.congr ?_ hev.symm` and prove the remaining obligations. Conclude with `hc.continuousAt.comp (f := fun p : 𝔤 × G × G => (p.1, h.chart q₀ p.2.1, h.chart r₀ p.2.2)) (continuousAt_fst.prodMk ((((h.chart q₀).continuousAt hq).comp (continuousAt_fst.comp continuousAt_snd)).prodMk (((h.chart r₀).continuousAt hr).comp (continuousAt_snd.comp continuousAt_snd) …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem two_param {f : G → ℂ} (hf : h.IsSmoothFun f) (k : ℕ) :
     Continuous fun p : 𝔤 × G × G => iteratedFDeriv ℝ k (fun Y => f (p.2.1 * h.expG Y * p.2.2)) p.1 := by
@@ -84,15 +84,13 @@ private theorem two_param {f : G → ℂ} (hf : h.IsSmoothFun f) (k : ℕ) :
       (((h.chart r₀).continuousAt hr).comp (continuousAt_snd.comp continuousAt_snd))))
 
 /- English proof (translation)
-Rewrite using `[h.isSmoothFun_iff]`. Introduce `g`. Set `F : 𝔤 → S → ℂ` to `fun Y s => w s * f s (q s * (g * h.expG Y) * r s)`. Use `contDiff_integral_of_iteratedFDeriv F (fun s => ?_) (fun k => ?_) (fun Y₀ => ?_)` and prove the remaining obligations. Use `smooth_slice h (hf s) (q s * g) (r s)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `contDiff_const.mul (by simpa only [mul_assoc] using this)`. Rewrite using `[continuous_iff_continuousAt]`. Introduce and unpack `⟨Y₀, s₀⟩`. Take `⟨β, hβ, hev₀⟩` from `hl s₀`. Establish `hc` using `two_param h (hf s₀) k`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : (fun p : 𝔤 × S => ParamIntegral.iter F k p.1 p.2) =ᶠ[𝓝 (Y₀, s₀)] fun p => w p.2 • iteratedFDeriv ℝ k (fun Y => f s₀ (q p.2 * g * h.expG Y * (r p.2 * β p.2))) p.1` using `by filter_upwards [prod_mem_nhds univ_mem hev₀] with p hp`. Establish `hF : (fun Y => F Y p.2) = fun Y => w p.2 • f s₀ (q p.2 * g * h.expG Y * (r p.2 * β p.2))`. Use function extensionality and compare the values at `Y`. Simplify using `only [F, smul_eq_mul]`. Rewrite using `[hp.2]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc]`. Rewrite using `[ParamIntegral.iter, hF]`. Conclude with `iteratedFDeriv_const_smul_apply' ((smooth_slice h (hf s₀) _ _).contDiffAt.of_le (by exact_mod_cast le_top))`. Use `ContinuousAt.congr ?_ hev.symm` and prove the remaining obligations. Use `Continuous.continuousAt ?_` and prove the remaining obligations.
-
-Conclude with `(hw.comp continuous_snd).smul (hc.comp (continuous_fst.prodMk (((hq.comp continuous_snd).mul continuous_const).prodMk ((hr.comp continuous_snd).mul (hβ.comp continuous_snd)))))`. Conclude with `⟨univ, univ_mem, univ, isCompact_univ, fun _ _ _ h => absurd trivial h⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem smooth_family {S : Type*} [TopologicalSpace S] [T2Space S] [SecondCountableTopology S] [CompactSpace S]
     [MeasurableSpace S] [OpensMeasurableSpace S] (ρ : Measure S) [IsFiniteMeasure ρ] {f : S → G → ℂ}
@@ -140,18 +138,18 @@ section Adel
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Use `ext1`. Rewrite using `[coe_retractOne, (mem_normOneGL_iff_detModule).1 z.2, map_one, inv_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem retract_self (z : G1 K n) : retractOne (z : AdelicGLn.AdelicGL K n) = z := by
   ext1
   rw [coe_retractOne, (mem_normOneGL_iff_detModule).1 z.2, map_one, inv_one, mul_one]
 
 /- English proof (translation)
-Establish `hc : Continuous fun y : G1 K n => finPart K n ((y * x₀⁻¹ : G1 K n) : AdelicGLn.AdelicGL K n)` using `continuous_finPart.comp (continuous_subtype_val.comp (continuous_id.mul continuous_const))`. Establish `ho : IsOpen ((finOpenSubgroup U hU : OpenSubgroup _) : Set (AdelicGLn.FiniteAdelicGL K n))` using `(finOpenSubgroup U hU).isOpen`. Establish `h1 : (1 : AdelicGLn.FiniteAdelicGL K n) ∈ ((finOpenSubgroup U hU : OpenSubgroup _) : Set (AdelicGLn.FiniteAdelicGL K n))` using `(finOpenSubgroup U hU).one_mem`. Use `filter_upwards [(ho.preimage hc).mem_nhds (by simpa using h1)] with y hy`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu, e⟩ : ∃ u ∈ U, ((u : AdelicGLn.integralFiniteGL K n) : AdelicGLn.FiniteAdelicGL K n) = finPart K n ((y * x₀⁻¹ : G1 K n) : AdelicGLn.AdelicGL K n) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, e⟩` from `hy`. Conclude with `⟨u, hu, e⟩`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Use `set z : G1 K n := y * x₀⁻¹ with hz`. Establish `h2` using `retractOne_mul_finEmb (infEmb K n (infPart K n (z : AdelicGLn.AdelicGL K n))) u.2`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e' : infEmb K n (infPart K n (z : AdelicGLn.AdelicGL K n)) * finEmb K n (u : AdelicGLn.FiniteAdelicGL K n) = (z : AdelicGLn.AdelicGL K n)`. Rewrite using `[e, infEmb_infPart_mul_finEmb_finPart]`. Rewrite `h2` using `[e', retract_self, retract_infEmb]`. Rewrite using `[show archP K n (infPart K n (z : AdelicGLn.AdelicGL K n)) * finOne K n u = z from h2.symm, hz]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem dec_near (x₀ : G1 K n) (U : Subgroup (AdelicGLn.integralFiniteGL K n))
     (hU : IsOpen (U : Set (AdelicGLn.integralFiniteGL K n))) :
@@ -178,7 +176,7 @@ private theorem dec_near (x₀ : G1 K n) (U : Subgroup (AdelicGLn.integralFinite
   simp
 
 /- English proof (translation)
-Rewrite using `[map_mul, ← hinv u hu (archP K n B * archP K n β * x)]`. Use `congr 1`. Rewrite using `[archimedeanProjection_mul_finiteEmbedding_comm β u, mul_assoc (finOne K n u), ← mul_assoc (archP K n B), archimedeanProjection_mul_finiteEmbedding_comm B u]`. Simplify using `only [mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem slide {b : G1 K n → ℂ} {U : Subgroup (AdelicGLn.integralFiniteGL K n)}
     (hinv : ∀ u ∈ U, ∀ x, b (finOne K n u * x) = b x) (B β : archGroup K n) {u : AdelicGLn.integralFiniteGL K n}
@@ -190,9 +188,7 @@ private theorem slide {b : G1 K n → ℂ} {U : Subgroup (AdelicGLn.integralFini
   simp only [mul_assoc]
 
 /- English proof (translation)
-Take `⟨hsm, U, hU, hinv⟩` from `hb`. Use `smooth_family (isExpLieAlgebra K n) ρ (f := fun s A => b (archP K n A * y s)) (fun s => hsm (y s)) (fun s₀ => ?_) hw hq hr` and prove the remaining obligations. Use `⟨fun s => infPart K n ((y s * (y s₀)⁻¹ : G1 K n) : AdelicGLn.AdelicGL K n), continuous_infPart.comp (continuous_subtype_val.comp (hy.mul continuous_const)), ?_⟩` and prove the remaining obligations. Use `filter_upwards [hy.continuousAt.preimage_mem_nhds (dec_near (y s₀) U hU)] with s hs A`. Take `⟨u, hu, e⟩` from `hs`.
-
-Conclude with `(congrArg (fun t => b (archP K n A * t)) e).trans (slide hinv _ _ hu (y s₀))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem smooth_avg {S : Type*} [TopologicalSpace S] [T2Space S] [SecondCountableTopology S] [CompactSpace S]
     [MeasurableSpace S] [OpensMeasurableSpace S] (ρ : Measure S) [IsFiniteMeasure ρ] {b : G1 K n → ℂ}
@@ -212,7 +208,7 @@ end Adel
 section Gen
 
 /- English proof (translation)
-Establish `h` using `hF.continuousOn.integrableOn_compact (μ := ν) hU`. Rewrite `h` using `[IntegrableOn, Measure.restrict_eq_self_of_ae_mem hs]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem integ {X : Type*} [TopologicalSpace X] [T2Space X] [MeasurableSpace X] [OpensMeasurableSpace X]
     {U : Set X} (hU : IsCompact U) {ν : Measure X} [IsFiniteMeasure ν] (hs : ∀ᵐ k ∂ν, k ∈ U) {F : X → ℂ}
@@ -221,11 +217,11 @@ private theorem integ {X : Type*} [TopologicalSpace X] [T2Space X] [MeasurableSp
   rwa [IntegrableOn, Measure.restrict_eq_self_of_ae_mem hs] at h
 
 /- English proof (translation)
-Use `Measure.ext_of_lintegral _ fun φ hφ => ?_` and prove the remaining obligations. Rewrite using `[lintegral_map hφ measurable_inv]`. Establish `hm : Measurable fun p : G × G => φ (p.1⁻¹ * p.2)` using `hφ.comp (measurable_fst.inv.mul measurable_snd)`. Establish `a1 : ∫⁻ k, ∫⁻ x, φ (k⁻¹ * x) ∂ν ∂ν = ∫⁻ x, φ x ∂ν`. Rewrite using `[lintegral_congr_ae (g := fun _ => ∫⁻ x, φ x ∂ν) (hs.mono fun k hk => (hi _ (U.inv_mem hk)).lintegral_comp hφ)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `a2 : ∫⁻ x, ∫⁻ k, φ (k⁻¹ * x) ∂ν ∂ν = ∫⁻ k, φ k⁻¹ ∂ν`. Rewrite using `[lintegral_congr_ae (g := fun _ => ∫⁻ k, φ k⁻¹ ∂ν) (hs.mono fun x hx => ?_)]`. Simplify using the standard rewrite rules. Use `(hi _ hx).lintegral_comp (f := fun k => φ (k⁻¹ * x)) (hφ.comp (measurable_inv.mul_const x))` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Simplify using the standard rewrite rules. Rewrite using `[← a1, ← a2]`. Conclude with `(lintegral_lintegral_swap hm.aemeasurable).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inv_preserved {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [MeasurableInv G]
     (ν : Measure G) [IsProbabilityMeasure ν] (U : Subgroup G) (hs : ∀ᵐ k ∂ν, k ∈ U)
@@ -253,7 +249,7 @@ section Typ
 variable {K : Type} [Field K] [NumberField K] {n : ℕ} (D : TypeDat K n)
 
 /- English proof (translation)
-Use `haveI := D.prob`. Establish `h` using `integral_map_equiv (μ := D.ν) (MeasurableEquiv.inv (G1 K n)) φ`. Rewrite `h` using `[show Measure.map (MeasurableEquiv.inv (G1 K n)) D.ν = D.ν from inv_preserved D.ν D.U D.supp D.inv]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inv_int (φ : G1 K n → ℂ) : ∫ k, φ k⁻¹ ∂D.ν = ∫ k, φ k ∂D.ν := by
   haveI := D.prob
@@ -262,7 +258,7 @@ private theorem inv_int (φ : G1 K n → ℂ) : ∫ k, φ k⁻¹ ∂D.ν = ∫ k
   exact h.symm
 
 /- English proof (translation)
-Use `haveI := D.prob`. Establish `hU` using `(typeFin D).1`. Use `integ (hU.prod hU) ?_ hF` and prove the remaining obligations. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae D.supp, Measure.quasiMeasurePreserving_snd.ae D.supp] with z a b`. Conclude with `⟨a, b⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem integ₂ {F : G1 K n × G1 K n → ℂ} (hF : Continuous F) : Integrable F (D.ν.prod D.ν) := by
   haveI := D.prob
@@ -272,7 +268,7 @@ private theorem integ₂ {F : G1 K n × G1 K n → ℂ} (hF : Continuous F) : In
   exact ⟨a, b⟩
 
 /- English proof (translation)
-Use `haveI := D.prob`. Use `continuous_parametric_integral_of_continuous (μ := D.ν) hΦ (typeFin D).1` as an intermediate fact. Rewrite `this` using `[Measure.restrict_eq_self_of_ae_mem D.supp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem cont_int {Φ : G1 K n → G1 K n → ℂ} (hΦ : Continuous (Function.uncurry Φ)) :
     Continuous fun x => ∫ k, Φ x k ∂D.ν := by
@@ -281,14 +277,14 @@ private theorem cont_int {Φ : G1 K n → G1 K n → ℂ} (hΦ : Continuous (Fun
   rwa [Measure.restrict_eq_self_of_ae_mem D.supp] at this
 
 /- English proof (translation)
-Rewrite using `[integral_subtype_comap (typeFin D).1.isClosed.measurableSet, Measure.restrict_eq_self_of_ae_mem D.supp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sub_int (f : G1 K n → ℂ) :
     ∫ k, f k ∂D.ν = ∫ s : (D.U : Set (G1 K n)), f s ∂(Measure.comap Subtype.val D.ν) := by
   rw [integral_subtype_comap (typeFin D).1.isClosed.measurableSet, Measure.restrict_eq_self_of_ae_mem D.supp]
 
 /- English proof (translation)
-Use `haveI := D.prob`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[(MeasurableEmbedding.subtype_coe (typeFin D).1.isClosed.measurableSet).comap_apply]`. Conclude with `measure_lt_top _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fin_comap : IsFiniteMeasure (Measure.comap (Subtype.val : ↥(D.U : Set (G1 K n)) → G1 K n) D.ν) := by
   haveI := D.prob
@@ -297,9 +293,9 @@ private theorem fin_comap : IsFiniteMeasure (Measure.comap (Subtype.val : ↥(D.
   exact measure_lt_top _ _
 
 /- English proof (translation)
-Use `haveI := D.prob`. Establish `h1 : ∀ᵐ h ∂D.ν, D.e h * ∫ k, D.e k * Φ (h * k) ∂D.ν = ∫ k, D.e h * (D.e (h⁻¹ * k) * Φ k) ∂D.ν` using `D.supp.mono fun h hh => by`. Use `(D.inv h hh).integral_comp (measurableEmbedding_mulLeft h) (fun k => D.e (h⁻¹ * k) * Φ k)` as an intermediate fact. Rewrite using `[integral_const_mul, ← this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[integral_congr_ae h1, integral_integral_swap (integ₂ D (F := Function.uncurry fun h k => D.e h * (D.e (h⁻¹ * k) * Φ k)) ((D.cont.comp continuous_fst).mul ((D.cont.comp (continuous_fst.inv.mul continuous_snd)).mul (hΦ.comp continuous_snd))))]`. Use `integral_congr_ae (D.supp.mono fun k hk => ?_)` and prove the remaining obligations. Simplify using `only [← mul_assoc]`. Rewrite using `[integral_mul_const, D.idem k hk]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem idem_int {Φ : G1 K n → ℂ} (hΦ : Continuous Φ) :
     ∫ h, D.e h * ∫ k, D.e k * Φ (h * k) ∂D.ν ∂D.ν = ∫ k, D.e k * Φ k ∂D.ν := by
@@ -325,9 +321,9 @@ open scoped Pointwise
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Use `set κ := infPart K n (m : AdelicGLn.AdelicGL K n) with hκ`. Establish `hA : ∀ a : archGroup K n, (archP K n a : AdelicGLn.AdelicGL K n) = infEmb K n a * (centralSection K n (detModule K n (infEmb K n a)))⁻¹` using `fun a => by`. Rewrite using `[← retract_infEmb, coe_retractOne]`. Establish `hd : detModule K n (infEmb K n (κ * A * κ⁻¹)) = detModule K n (infEmb K n A)`. Simplify using `only [map_mul, map_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `mul_inv_cancel_comm _ _`. Establish `hm : (m : AdelicGLn.AdelicGL K n) = infEmb K n κ * finEmb K n (finPart K n (m : AdelicGLn.AdelicGL K n))` using `(infEmb_infPart_mul_finEmb_finPart _).symm`. Establish `h1 : (m : AdelicGLn.AdelicGL K n) * infEmb K n A = infEmb K n (κ * A * κ⁻¹) * m` using `by conv_lhs => rw [hm, mul_assoc, ← infEmb_mul_finEmb_comm, ← mul_assoc, ← map_mul] conv_rhs => rw [hm, ← mul_assoc, ← map_mul, inv_mul_cancel_right]`. Use `ext1`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, hA, hA, hd, ← mul_assoc, h1, mul_assoc, ← centralSection_inv_mul_comm, ← mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conj_arch (m : G1 K n) (A : archGroup K n) :
     m * archP K n A = archP K n (infPart K n (m : AdelicGLn.AdelicGL K n) * A * (infPart K n (m : AdelicGLn.AdelicGL K n))⁻¹) * m := by
@@ -347,9 +343,9 @@ private theorem conj_arch (m : G1 K n) (A : archGroup K n) :
   rw [Subgroup.coe_mul, Subgroup.coe_mul, hA, hA, hd, ← mul_assoc, h1, mul_assoc, ← centralSection_inv_mul_comm, ← mul_assoc]
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩ : ∃ φ : AdelicGLn.integralFiniteGL K n, (φ : AdelicGLn.FiniteAdelicGL K n) = finPart K n (m : AdelicGLn.AdelicGL K n)` from `⟨⟨_, finPart_mem_integralFiniteGL hm⟩, rfl⟩`. Take `⟨κ, e⟩ : ∃ κ, (m : AdelicGLn.AdelicGL K n) = infEmb K n κ * finEmb K n (φ : AdelicGLn.FiniteAdelicGL K n)` from `⟨_, by rw [hφ, infEmb_infPart_mul_finEmb_finPart]⟩`. Use `⟨φ, ?_⟩` and prove the remaining obligations. Use `ext1`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, coe_finOne, coe_finOne, e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw` using `infEmb_mul_finEmb_comm κ ((φ * u * φ⁻¹ : AdelicGLn.integralFiniteGL K n) : AdelicGLn.FiniteAdelicGL K n)`. Rewrite using `[← mul_assoc (finEmb K n _), ← hw, mul_assoc, mul_assoc]`. Use `congr 1`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem fin_conj {m : G1 K n} (hm : (m : AdelicGLn.AdelicGL K n) ∈ (maxCompact : Subgroup (AdelicGLn.AdelicGL K n)))
     (u : AdelicGLn.integralFiniteGL K n) :
@@ -370,13 +366,13 @@ private theorem fin_conj {m : G1 K n} (hm : (m : AdelicGLn.AdelicGL K n) ∈ (ma
 variable (D : TypeDat K n)
 
 /- English proof (translation)
-Establish `hU` using `(typeFin D).1`. Establish `hc : Continuous fun g => ∫ k, f (g * k⁻¹) * D.e k ∂D.ν` using `cont_int D (Φ := fun g k => f (g * k⁻¹) * D.e k) ((f.continuous.comp (continuous_fst.mul continuous_snd.inv)).mul (D.cont.comp continuous_snd))`. Establish `hz : ∀ g, g ∉ tsupport f * (D.U : Set (G1 K n)) → ∫ k, f (g * k⁻¹) * D.e k ∂D.ν = 0` using `fun g hg => by`. Use `integral_eq_zero_of_ae (D.supp.mono fun k hk => ?_)` and prove the remaining obligations. Establish `: f (g * k⁻¹) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h0`. Conclude with `hg ⟨_, subset_tsupport _ h0, k, hk, by simp⟩`. Simplify using `[this]`. Use `⟨⟨⟨_, hc⟩, HasCompactSupport.intro (f.hasCompactSupport.isCompact.mul hU) hz⟩, fun _ => rfl, fun hf => ⟨fun x => ?_, ?_⟩⟩` and prove the remaining obligations. Use `haveI : CompactSpace (D.U : Set (G1 K n)) := isCompact_iff_compactSpace.1 hU haveI := fin_comap D`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `smooth_avg (Measure.comap Subtype.val D.ν) hf (w := fun s : (D.U : Set (G1 K n)) => D.e s) (D.cont.comp continuous_subtype_val) (q := fun _ => 1) (r := fun _ => 1) continuous_const continuous_const (y := fun s => x * (s : G1 K n)⁻¹) (continuous_const.mul continuous_subtype_val.in …` as an intermediate fact. Use `this using 2 with A` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `∫ k, f (archP K n A * x * k⁻¹) * D.e k ∂D.ν = _`. Rewrite using `[sub_int]`. Use `integral_congr_ae (Eventually.of_forall fun s => ?_)` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `[mul_comm (D.e _), mul_assoc]`. Take `⟨-, U, hUo, hinv⟩` from `hf`. Use `⟨U, hUo, fun u hu x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∫ k, f (finOne K n u * x * k⁻¹) * D.e k ∂D.ν = ∫ k, f (x * k⁻¹) * D.e k ∂D.ν`. Simplify using `only [mul_assoc, hinv u hu]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exR (f : CC K n) : ∃ b : CC K n, (∀ g, b g = ∫ k, f (g * k⁻¹) * D.e k ∂D.ν) ∧
     (UpperTheory.ConvolutionTheory.C.IsLeftSmooth f → UpperTheory.ConvolutionTheory.C.IsLeftSmooth b) := by
@@ -407,17 +403,17 @@ private theorem exR (f : CC K n) : ∃ b : CC K n, (∀ g, b g = ∫ k, f (g * k
     simp only [mul_assoc, hinv u hu]
 
 /- English proof (translation)
-Establish `hU` using `(typeFin D).1`. Establish `hc : Continuous fun g => ∫ k, D.e k * f (k⁻¹ * g) ∂D.ν` using `cont_int D (Φ := fun g k => D.e k * f (k⁻¹ * g)) ((D.cont.comp continuous_snd).mul (f.continuous.comp (continuous_snd.inv.mul continuous_fst)))`. Establish `hz : ∀ g, g ∉ (D.U : Set (G1 K n)) * tsupport f → ∫ k, D.e k * f (k⁻¹ * g) ∂D.ν = 0` using `fun g hg => by`. Use `integral_eq_zero_of_ae (D.supp.mono fun k hk => ?_)` and prove the remaining obligations. Establish `: f (k⁻¹ * g) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h0`. Conclude with `hg ⟨k, hk, _, subset_tsupport _ h0, by simp⟩`. Simplify using `[this]`. Use `⟨⟨⟨_, hc⟩, HasCompactSupport.intro (hU.mul f.hasCompactSupport.isCompact) hz⟩, fun _ => rfl, fun hf => ⟨fun x => ?_, ?_⟩⟩` and prove the remaining obligations. Use `haveI : CompactSpace (D.U : Set (G1 K n)) := isCompact_iff_compactSpace.1 hU haveI := fin_comap D`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `κ : ↥(D.U : Set (G1 K n)) → archGroup K n` to `fun s => infPart K n (((s : G1 K n)⁻¹ : G1 K n) : AdelicGLn.AdelicGL K n)`. Establish `hκ : Continuous κ` using `continuous_infPart.comp (continuous_subtype_val.comp continuous_subtype_val.inv)`. Use `smooth_avg (Measure.comap Subtype.val D.ν) hf (w := fun s : (D.U : Set (G1 K n)) => D.e s) (D.cont.comp continuous_subtype_val) (q := κ) (r := fun s => (κ s)⁻¹) hκ hκ.inv (y := fun s => (s : G1 K n)⁻¹ * x) (continuous_subtype_val.inv.mul continuous_const)` as an intermediate fact. Use `this using 2 with A` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `∫ k, D.e k * f (k⁻¹ * (archP K n A * x)) ∂D.ν = _`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sub_int]`. Use `integral_congr_ae (Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only [← mul_assoc]`. Rewrite using `[conj_arch]`. Take `⟨-, U, hUo, hinv⟩` from `hf`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨N, hN⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hUo U.one_mem`. Use `⟨N.toOpenSubgroup.toSubgroup, N.toOpenSubgroup.isOpen, fun u hu x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∫ k, D.e k * f (k⁻¹ * (finOne K n u * x)) ∂D.ν = ∫ k, D.e k * f (k⁻¹ * x) ∂D.ν`. Use `integral_congr_ae (D.supp.mono fun k hk => ?_)` and prove the remaining obligations. Establish `hk' : k⁻¹ ∈ KG K n` using `SetLike.le_def.1 (typeFin D).2.1 (D.U.inv_mem hk)`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hk'` using `[KG, Subgroup.mem_comap]`. Take `⟨φ, hφ⟩` from `fin_conj (m := k⁻¹) hk' u`. Use `beta_reduce`. Rewrite using `[← mul_assoc, hφ, mul_assoc, hinv _ (hN (N.isNormal'.conj_mem u hu φ))]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exL (f : CC K n) : ∃ c : CC K n, (∀ g, c g = ∫ k, D.e k * f (k⁻¹ * g) ∂D.ν) ∧
     (UpperTheory.ConvolutionTheory.C.IsLeftSmooth f → UpperTheory.ConvolutionTheory.C.IsLeftSmooth c) := by
@@ -459,25 +455,21 @@ private theorem exL (f : CC K n) : ∃ c : CC K n, (∀ g, c g = ∫ k, D.e k * 
 end Ops
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ D a₀ hst hsm`. Use `haveI := D.prob`. Take `⟨b, hb, hbs⟩` from `exR D a₀`. Take `⟨a, ha, has⟩` from `exL D b`. Establish `hform : ∀ g, a g = ∫ k, ∫ k', D.e k * a₀ (k⁻¹ * g * k'⁻¹) * D.e k' ∂D.ν ∂D.ν` using `fun g => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha]`. Use `integral_congr_ae (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hb, ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun k' => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [mul_assoc]`. Establish `hs₀ : ∀ y, conj (a₀ y) = a₀ y⁻¹` using `fun y => by`. Use `DFunLike.congr_fun hst y⁻¹` as an intermediate fact. Rewrite `this` using `[CuspidalProjection.ccStar_apply, inv_inv]`. Then use the resulting hypothesis. Establish `hTc : Continuous fun p : G1 K n × G1 K n => a₀ (p.1 * p.2)` using `a₀.continuous.comp (continuous_fst.mul continuous_snd)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `key : ∀ g, conj (a g⁻¹) = a g` using `fun g => by`. Set `T : G1 K n → G1 K n → ℂ` to `fun k k' => D.e k * a₀ (k⁻¹ * g * k'⁻¹) * D.e k'`. Establish `hT : Continuous (Function.uncurry fun k k' => T k' k)` using `((D.cont.comp continuous_snd).mul (a₀.continuous.comp ((continuous_snd.inv.mul continuous_const).mul continuous_fst.inv))).mul (D.cont.comp continuous_fst)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hform, ← integral_conj]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (D.supp.mono fun k hk => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[← integral_conj]`. Use `integral_congr_ae (D.supp.mono fun k' hk' => ?_)` and prove the remaining obligations. Simplify using `only [T, map_mul, ← D.star k hk, ← D.star k' hk', hs₀, mul_inv_rev, inv_inv, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫ k, ∫ k', T k' k⁻¹ ∂D.ν ∂D.ν := integral_congr_ae (Eventually.of_forall fun k => inv_int D fun k' => T k' k⁻¹)`. Use `_ = ∫ k, ∫ k', T k' k ∂D.ν ∂D.ν := inv_int D fun k => ∫ k', T k' k ∂D.ν`. Use `_ = ∫ k', ∫ k, T k' k ∂D.ν ∂D.ν := integral_integral_swap (integ₂ D hT)`. Use `_ = a g := (hform g).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : ∀ g, ∫ k, D.e k * a (k⁻¹ * g) ∂D.ν = a g` using `fun g => by`. Rewrite using `[ha g, ← idem_int D (Φ := fun k => b (k⁻¹ * g)) (b.continuous.comp (continuous_inv.mul continuous_const))]`. Use `integral_congr_ae (Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[ha]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_inv_rev, mul_assoc]`. Establish `hR : ∀ g, ∫ k, a (g * k⁻¹) * D.e k ∂D.ν = a g` using `fun g => by`. Establish `h2` using `inv_int D fun k => D.e k * a (k⁻¹ * g⁻¹)`. Simplify using `only [inv_inv] at h2`. Rewrite `h2` using `[hL]`.
-
-Rewrite using `[← key g, ← h2, ← integral_conj]`. Use `integral_congr_ae (D.supp.mono fun k hk => ?_)` and prove the remaining obligations. Simplify using `only [map_mul, D.star k hk, Complex.conj_conj]`. Rewrite using `[show k * g⁻¹ = (g * k⁻¹)⁻¹ by simp, key, mul_comm]`. Use `⟨a, fun g => ⟨hL g, hR g⟩, ?_, has (hbs hsm), hform⟩` and prove the remaining obligations.
-
-Use extensionality with `g`. Rewrite using `[CuspidalProjection.ccStar_apply, key]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.heckify :
     ∀ {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (D : TypeDat K n) (a₀ : CC K n), CuspidalProjection.ccStar a₀ = a₀ → UpperTheory.ConvolutionTheory.C.IsLeftSmooth a₀ →

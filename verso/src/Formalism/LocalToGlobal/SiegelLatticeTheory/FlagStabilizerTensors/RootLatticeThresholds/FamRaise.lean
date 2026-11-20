@@ -7,7 +7,7 @@ noncomputable section
 namespace Formalism.MainNotions
 
 /- English proof (translation)
-The claim follows from `lt_of_le_of_lt (le_max_left _ _) h`.
+A detailed English derivation is pending.
 -/
 theorem raise_lt {eps : ℝ} {Fm : FamP eps} {y x : ℝ} (h : max Fm.x1 y < x) : Fm.x1 < x :=
   lt_of_le_of_lt (le_max_left _ _) h
@@ -49,7 +49,7 @@ Both sides reduce to the same expression.
 @[simp] theorem raise_lower_endpoint {eps : ℝ} (Fm : FamP eps) (y : ℝ) : (Fm.raise y).x1 = max Fm.x1 y := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem ownEv_raise {eps : ℝ} (Fm : FamP eps) (y : ℝ) {P : ℝ → ℝ → ∀ x, Fm.Ix x → Prop} :
     Formalism.MainNotions.S.OwnEv (Fm.raise y) P ↔ Formalism.MainNotions.S.OwnEv Fm P := Iff.rfl

@@ -9,27 +9,25 @@ open scoped NNReal
 namespace GlobalTheory.PlaceNorm
 
 /- English proof (translation)
-Introduce `K _ _ la p _ T io e ho k kO hk a`. Take `⟨r, hr⟩` from `GlobalTheory.CompHt.exists_log_eq (PadicComplexInt.integers p) k kO hk`. Establish `hnorm : ∀ x : ℂ_[p], ((Valued.v x : ℝ≥0) : ℝ) = ‖x‖` using `GlobalTheory.FlatModel.coe_valued p`. Establish `hpne : (p : ℕ) ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `hp0 : (p : T.Fr) ≠ 0` using `Nat.cast_ne_zero.2 hpne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpv : 0 ≤ vV T.V (p : T.Fr)`. Establish `h1` using `(IsDiscreteValuationRing.maximalIdeal T.V).valuation_le_one (K := T.Fr) (p : T.V)`. Establish `h1' : valV T.V (p : T.Fr) ≤ 1`. Rewrite using `[← map_natCast (algebraMap T.V T.Fr)]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : valV T.V (p : T.Fr) ≠ 0` using `valV_ne_zero hp0`. Establish `h3` using `(WithZero.log_le_log h2 one_ne_zero).2 h1'`. Rewrite `h3` using `[WithZero.log_one]`. Simplify using `only [vV]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h1` using `hr (p : T.Fr) hp0`. Rewrite `h1` using `[map_natCast, hnorm]`. Establish `hpn : ‖(p : ℂ_[p])‖ < 1` using `GlobalTheory.RingBasics.norm_p_lt`. Establish `hpos : 0 < ‖(p : ℂ_[p])‖` using `norm_pos_iff.2 (Nat.cast_ne_zero.2 hpne)`. Establish `hl : Real.log ‖(p : ℂ_[p])‖ < 0` using `Real.log_neg hpos hpn`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr0 : r < 0`. Rewrite `hl` using `[h1]`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `: (0 : ℝ) ≤ (vV T.V (p : T.Fr) : ℝ) * r` using `mul_nonneg (by exact_mod_cast hpv) hc`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Establish `hx : io a ≠ 0` using `(map_ne_zero io).2 ha`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk0 : k (io a) ≠ 0` using `(map_ne_zero k).2 hx`. Establish `h2` using `hr (io a) hx`. Rewrite `h2` using `[hnorm, ho.2 a]`. Establish `hva : la.valuation K a ≠ 0` using `(la.valuation K).ne_zero_iff.2 ha`. Establish `he : (0 : ℝ) < e` using `by exact_mod_cast ho.1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Real.log_nonpos_iff (norm_nonneg _), h2, ← WithZero.log_le_log hva one_ne_zero, WithZero.log_one]`. Establish `hv : vLa la a = -WithZero.log (la.valuation K a)` using `rfl`. Use `push_cast`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Move the embeddings inside the algebraic operations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 0 ≤ (e : ℝ) * (vLa la a : ℝ)` using `by nlinarith`. Establish `h4 : (0 : ℝ) ≤ (vLa la a : ℝ)`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use the polynomial consequences of the given equalities and inequalities.
+Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h5 : (0 : ℤ) ≤ vLa la a` using `by exact_mod_cast h4`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Establish `h5 : (0 : ℤ) ≤ vLa la a` using `by omega`. Establish `h4 : (0 : ℝ) ≤ (vLa la a : ℝ)` using `by exact_mod_cast h5`.
-
-Establish `h3 : 0 ≤ (e : ℝ) * (vLa la a : ℝ)` using `mul_nonneg he.le h4`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem norm_le_one_iff_valuation_le_one :
     ∀ {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) (p : ℕ) [Fact p.Prime] (T : CDVR)

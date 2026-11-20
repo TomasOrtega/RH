@@ -18,13 +18,13 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hS : ∀ x, xiS H α vol SA SB (fun s => k * Φ (s - x)) e = fun w => k * xiS H α vol SA SB (fun s => Φ (s - x)) e w`. Introduce `x`. Use function extensionality and compare the values at `w`. Unfold `xiS Formalism.L2.Th1.H.sumU`. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Establish `: hatS H vol SA (fun s => k * Φ (s - x)) y = k * hatS H vol SA (fun s => Φ (s - x)) y`. Unfold `hatS`. Simplify using `only [mul_assoc, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `beta_reduce`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Unfold `xiL`. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[hS x]`. Simplify using `only [Formalism.L2.Th1.H.opU]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem xiL_scal {V : Type} [AddCommGroup V] [Module ℂ V] (H : Formalism.L2.Th1.H.Sesq V) (α : V → ℂ) (vol : ℝ)
     (SX SA SB : Finset V) (k : ℂ) (Φ e : V → ℂ) (z : V) :
@@ -50,9 +50,9 @@ theorem xiL_scal {V : Type} [AddCommGroup V] [Module ℂ V] (H : Formalism.L2.Th
   ring
 
 /- English proof (translation)
-Establish `hon : Formalism.L2.Ker.onV (fun τ => TaylorLogMetric.embT D τ) δ (fun x => k * Ξ x) = fun v => k * Formalism.L2.Ker.onV (fun τ => TaylorLogMetric.embT D τ) δ Ξ v`. Use function extensionality and compare the values at `v`. Unfold `Formalism.L2.Ker.onV`. Apply the tactic sequence `split_ifs <;> simp`. Unfold `kerTh thC xiV`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Rewrite using `[hon]`. Conclude with `xiL_scal _ _ _ _ _ _ _ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerTh_scal {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) {a b : ℕ}
     (SS : Finset (HeightOneSpectrum (𝓞 D.host.E))) (cl : ℕ) (N : Submodule (𝓞 D.host.E) (Fin a → D.host.E))
@@ -68,7 +68,7 @@ theorem kerTh_scal {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D 
   exact xiL_scal _ _ _ _ _ _ _ _ _ _
 
 /- English proof (translation)
-Rewrite using `[← kerTh_scal, ← kerTh_scal, funext h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kerTh_prop {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D cc δ) (χ : TaylorLogMetric.IdE D → ℂ) {a b : ℕ}
     (SS : Finset (HeightOneSpectrum (𝓞 D.host.E))) (cl : ℕ) (N : Submodule (𝓞 D.host.E) (Fin a → D.host.E))
@@ -80,11 +80,11 @@ theorem kerTh_prop {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} (B : Base D 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hP hA Xi muT law i hi c c' x x' γ hγ γ' hγ' κ κ' hx hx' z`. Take `⟨hδ, hLat, hVec, hEq⟩` from `GlobalTheory.T.kernelEntry_period_ne_zero_and_lattice_laws t`. Take `⟨hl, hSS⟩` from `GlobalTheory.T.finiteDatum_level_pos_badPrimes_no_conjugate_pair A dtU a hP hA`. Establish `hu` using `GlobalTheory.T.rationalIsometry_orthonormal_matrix_unitary A dtU a hP hA i (Nat.le_of_succ_le hi) γ hγ`. Establish `hu'` using `GlobalTheory.T.rationalIsometry_orthonormal_matrix_unitary A dtU a hP hA (i + 1) hi γ' hγ'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN` using `GlobalTheory.T.kernelLattice_translate_eq_image_classLattice A dtU a hP hA i (Nat.le_of_succ_le hi) c x γ hγ κ hx`. Establish `hN'` using `GlobalTheory.T.kernelLattice_translate_eq_image_classLattice A dtU a hP hA (i + 1) hi c' x' γ' hγ' κ' hx'`. Establish `hd` using `GlobalTheory.T.adelicDatum_rational_translates_vs_classes A dtU a hP hA Xi muT law i hi c c' x x' γ hγ γ' hγ' κ κ' hx hx' hu'`. Establish `hc` using `GlobalTheory.T.finiteDatum_pair_classes_has_level A dtU a hP hA Xi muT law i hi c c'`. Establish `hth` using `GlobalTheory.T.consecutiveClassesKernel_eq_kernelFunction_transported A dtU a hP hA Xi muT law i hi c c'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmv` using `GlobalTheory.TwU.KerMove.kerTh_move D t.cc t.δ t.B t.χ t.cc_ok t.δ_ok hδ t.χ_ok hLat hVec hEq (ssRec t u μ) (t.rd u μ).lev hl hSS _ _ _ _ _ (GlobalTheory.T.transportedLattices_two_classes_admissible t u μ i (i + 1) c c') hc _ _ hu hu'`. Rewrite using `[hth, ← hmv, hN, hN']`. Conclude with `kerTh_prop _ _ _ _ _ _ _ _ _ _ hd z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerTh_eq_pull : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => ∀ Xi muT, AdLawAt A dtU a Xi muT → ∀ i (hi : i + 1 ≤ D.R.m) c c' (x : UA D i (Nat.le_of_succ_le hi)) (x' : UA D (i + 1) hi), ∀ γ ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D i (Nat.le_of_succ_le hi)), ∀ γ' ∈ UJ (sigD D : D.host.E →+* D.host.E) (gramN D (i + 1) hi), ∀ (κ : ((St i (Nat.le_of_succ_le hi)).K ((St i (Nat.le_of_succ_le hi)).chOf c)).lev.U) (κ' : ((St (i + 1) hi).K ((St (i + 1) hi).chOf c')).lev.U), x.1 = ratA D.host.F γ * ((St i (Nat.le_of_succ_le hi)).y c).1 * κ.1 → x'.1 = ratA D.host.F γ' * ((St (i + 1) hi).y c').1 * κ'.1 → ∀ z, muT (i + 1) (Matrix.GeneralLinearGroup.det κ'.1) * ((((St i (Nat.le_of_succ_le hi)).K ((St i (Nat.le_of_succ_le hi)).chOf c)).lev.chi κ : ℂˣ) : ℂ) * kerTh t.B t.χ (ssRec t u μ) (t.rd u μ).lev (latK D.sp (gramN D i (Nat.le_of_succ_le hi)) a x.1 ((St i (Nat.le_of_succ_le hi)).K ((St i (Nat.le_of_succ_le hi)).chOf c)).lev.Lb) (latK D.sp (gramN D (i + 1) hi) a x'.1 ((St (i + 1) hi).K ((St (i + 1) hi).chOf c')).lev.Lb) (Xi i hi ((St i (Nat.le_of_succ_le hi)).chOf c) ((St (i + 1) hi).chOf c') x x') z = muT (i + 1) (Matrix.GeneralLinearGroup.det κ.1) * ((((St (i + 1) hi).K ((St (i + 1) hi).chOf c')).lev.chi κ' : ℂˣ) : ℂ) * TaylorLogMetric.pull D t.B.tor (LinearMap.toMatrix' ((toStdCo (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D i (Nat.le_of_succ_le hi)) (A.crd i (Nat.le_of_succ_le hi))).trans (stdG (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D i (Nat.le_of_succ_le hi)) γ)).toLinearMap) (LinearMap.toMatrix' ((toStdCo (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D (i + 1) hi) (A.crd (i + 1) hi)).trans (stdG (D.sp.cm.sig : D.host.E →+* D.host.E) (gramN D (i + 1) hi) γ')).toLinearMap) ((t.rd u μ).Th t.seam t.amb i c c') z) := by
   intro D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hP hA Xi muT law i hi c c' x x' γ hγ γ' hγ' κ κ' hx hx' z

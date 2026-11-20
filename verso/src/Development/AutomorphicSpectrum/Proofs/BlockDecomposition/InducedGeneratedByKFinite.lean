@@ -3,35 +3,31 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.CosetSum
 
 /- English proof (translation)
-Introduce `Γ J _ _ _ Q K K₁ π M Gf hle hidx hconj hdec htr hlawM hlaw hinv hb`. Set `H : Subgroup K` to `K₁.subgroupOf K`. Use `haveI hHn : H.Normal := ⟨fun n hn g => by`. Establish `hn' : (n : Γ) ∈ K₁` using `Subgroup.mem_subgroupOf.1 hn`. Use `Subgroup.mem_subgroupOf.2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hconj g g.2 n hn'⟩`. Use `haveI : H.FiniteIndex := ⟨hidx⟩`. Use `haveI : Fintype (K ⧸ H) := Fintype.ofFinite _`. Set `P : Γ → Prop` to `fun x => ∃ q : Q, ∃ b ∈ K₁, x = (q : Γ) * b`. Establish `hPmul : ∀ x, ∀ b ∈ K₁, P x → P (x * b)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `x b hb' ⟨q, c, hc, rfl⟩`. Conclude with `⟨q, c * b, K₁.mul_mem hc hb', by simp [mul_assoc]⟩`. Establish `hb2 : ∀ κ : K, ∃ φ ∈ M, (∀ (q : Q), ∀ b ∈ K₁, φ ((q : Γ) * b) = π q (Gf κ)) ∧ ∀ g : Γ, (¬ P g) → φ g = 0` using `fun κ => hb κ κ.2`. Use `choose φ hφM hφ1 hφ0 using hb2`. Establish `key : ∀ κ' κ : K, φ κ ((κ' : Γ) * (κ : Γ)⁻¹) = if P ((κ' : Γ) * (κ : Γ)⁻¹) then Gf κ' else 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `κ' κ`. Use `split_ifs with h`. Take `⟨q, b, hbm, e⟩` from `h`. Rewrite using `[e, hφ1 κ q b hbm, ← hlaw]`. Establish `hκ' : (κ' : Γ) = q * b * κ` using `by rw [← e]; group`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `e2 : (q : Γ) * κ = κ' * ((κ : Γ)⁻¹ * b⁻¹ * κ)` using `by rw [hκ']; group`. Establish `hm : (κ : Γ)⁻¹ * b⁻¹ * κ ∈ K₁`. Simplify using `using hconj _ (K.inv_mem κ.2) _ (K₁.inv_mem hbm)`. Rewrite using `[e2, hinv _ _ hm]`. Conclude with `hφ0 κ _ h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `r : K ⧸ H → K` to `Quotient.out`. Establish `hr : ∀ δ : K ⧸ H, ((r δ : K) : K ⧸ H) = δ` using `fun δ => QuotientGroup.out_eq' δ`. Establish `hPcl : ∀ x y : K, (x : K ⧸ H) = y → P x → P y`. Introduce `x y hxy hx`. Establish `hm : x⁻¹ * y ∈ H` using `QuotientGroup.eq.1 hxy`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hm' : (x : Γ)⁻¹ * y ∈ K₁` using `by simpa using Subgroup.mem_subgroupOf.1 hm`. Use `hPmul _ _ hm' hx` as an intermediate fact. Simplify using `using this`. Set `Pd : K ⧸ H → Prop` to `fun ε => P (r ε)`. Establish `hPd : ∀ x : K, P x ↔ Pd (x : K ⧸ H)` using `fun x => ⟨hPcl _ _ (hr _).symm, hPcl _ _ (hr _)⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `Φ : Γ → J` to `∑ δ : K ⧸ H, (fun g => φ (r δ) (g * ((r δ : K) : Γ)⁻¹))`. Establish `hΦM : Φ ∈ M` using `M.sum_mem fun δ _ => htr _ (hφM _) _`. Set `n : ℕ` to `(Finset.univ.filter Pd).card`. Establish `hΦ : ∀ κ' : K, Φ κ' = n • Gf κ'`. Introduce `κ'`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Φ κ' = ∑ δ : K ⧸ H, if Pd ((κ' : K ⧸ H) * δ⁻¹) then Gf κ' else 0`. Simplify using `only [Φ, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun δ _ => ?_` and prove the remaining obligations. Rewrite using `[key]`. Establish `hcl : (((κ' * (r δ)⁻¹ : K)) : K ⧸ H) = (κ' : K ⧸ H) * δ⁻¹`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[QuotientGroup.mk_mul, QuotientGroup.mk_inv, hr]`. Use `hPd (κ' * (r δ)⁻¹)` as an intermediate fact. Rewrite `this` using `[hcl]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv] at this`. Simplify using `only [this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Establish `h2` using `Equiv.sum_comp ((Equiv.inv (K ⧸ H)).trans (Equiv.mulLeft (κ' : K ⧸ H))) (fun ε => if Pd ε then Gf κ' else 0)`. Simplify using `only [Equiv.trans_apply, Equiv.inv_apply, Equiv.coe_mulLeft] at h2`. Rewrite using `[h2, ← Finset.sum_filter, Finset.sum_const]`. Establish `hn : n ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Pd 1`. Establish `: (r 1 : Γ) ∈ K₁`. Establish `: r 1 ∈ H` using `(QuotientGroup.eq_one_iff _).1 (hr 1)`. Conclude with `Subgroup.mem_subgroupOf.1 this`. Conclude with `⟨1, _, this, by simp⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Finset.card_pos.2 ⟨1, by simpa using h1⟩).ne'`. Establish `hnC : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Establish `hΨM : (n : ℂ)⁻¹ • Φ ∈ M` using `M.smul_mem _ hΦM`. Establish `hEq : (n : ℂ)⁻¹ • Φ = Gf`. Use function extensionality and compare the values at `g`.
-
-Take `⟨q, κ, hκ, rfl⟩` from `hdec g`. Establish `hK : ((n : ℂ)⁻¹ • Φ) κ = Gf κ`. Use `hΦ ⟨κ, hκ⟩` as an intermediate fact. Simplify using `only at this`. Rewrite using `[Pi.smul_apply, this, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hnC, one_smul]`.
-
-Rewrite using `[hlawM _ hΨM, hK, hlaw]`. Conclude with `hEq ▸ hΨM`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_translated_bumps : ∀ {Γ J : Type} [Group Γ] [AddCommGroup J] [Module ℂ J] (Q K K₁ : Subgroup Γ) (π : Representation ℂ Q J) (M : Submodule ℂ (Γ → J)) (Gf : Γ → J), K₁ ≤ K → K₁.relIndex K ≠ 0 → (∀ κ ∈ K, ∀ b ∈ K₁, κ * b * κ⁻¹ ∈ K₁) → (∀ g : Γ, ∃ q : Q, ∃ κ ∈ K, g = (q : Γ) * κ) → (∀ φ ∈ M, ∀ x : Γ, (fun g => φ (g * x)) ∈ M) → (∀ φ ∈ M, ∀ (q : Q) (g : Γ), φ ((q : Γ) * g) = π q (φ g)) → (∀ (q : Q) (g : Γ), Gf ((q : Γ) * g) = π q (Gf g)) → (∀ (g : Γ), ∀ b ∈ K₁, Gf (g * b) = Gf g) → (∀ κ ∈ K, ∃ φ ∈ M, (∀ (q : Q), ∀ b ∈ K₁, φ ((q : Γ) * b) = π q (Gf κ)) ∧ ∀ g : Γ, (¬ ∃ q : Q, ∃ b ∈ K₁, g = (q : Γ) * b) → φ g = 0) → Gf ∈ M := by
   intro Γ J _ _ _ Q K K₁ π M Gf hle hidx hconj hdec htr hlawM hlaw hinv hb

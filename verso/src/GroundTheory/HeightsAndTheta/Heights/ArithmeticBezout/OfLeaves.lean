@@ -16,37 +16,37 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-The claim follows from `sphereMeanLinear`.
+A detailed English derivation is pending.
 -/
 theorem SphereMeanLinear.full : SphereMeanLinear.Statement := sphereMeanLinear
 
 /- English proof (translation)
-The claim follows from `chowFormSwap`.
+A detailed English derivation is pending.
 -/
 theorem ChowFormSwap.full : ChowFormSwap.Statement := chowFormSwap
 
 /- English proof (translation)
-The claim follows from `gaussLemma`.
+A detailed English derivation is pending.
 -/
 theorem GaussLemma.full : GaussLemma.Statement := gaussLemma
 
 /- English proof (translation)
-The claim follows from `mahlerMul`.
+A detailed English derivation is pending.
 -/
 theorem MahlerMul.full : MahlerMul.Statement := mahlerMul
 
 /- English proof (translation)
-The claim follows from `chowHeightMul_of_mahlerMul mahlerMul`.
+A detailed English derivation is pending.
 -/
 theorem ChowHeightMul.full : ChowHeightMul.Statement := chowHeightMul_of_mahlerMul mahlerMul
 
 /- English proof (translation)
-The claim follows from `chowHeightConst`.
+A detailed English derivation is pending.
 -/
 theorem ChowHeightConst.full : ChowHeightConst.Statement := chowHeightConst
 
 /- English proof (translation)
-The claim follows from `ConeLogBound.proof hMass hFin hInt hNull`.
+A detailed English derivation is pending.
 -/
 theorem ConeLogBound.of_leaves (hMass : ConeIntegralMass.Statement) (hFin : ConeBallFinite.Statement)
     (hInt : ConeFsLogIntegrable.Statement) (hNull : ConeHyperplaneNull.Statement) :
@@ -54,7 +54,7 @@ theorem ConeLogBound.of_leaves (hMass : ConeIntegralMass.Statement) (hFin : Cone
   ConeLogBound.proof hMass hFin hInt hNull
 
 /- English proof (translation)
-The claim follows from `BaseChangeLogBound.proof hB hAv (ConeLogBound.proof hMass hFin hInt hNull)`.
+A detailed English derivation is pending.
 -/
 theorem BaseChangeLogBound.of_leaves (hB : ChowFormBaseChange.Statement)
     (hAv : BaseChangeAvoid.Statement) (hMass : ConeIntegralMass.Statement)
@@ -63,7 +63,7 @@ theorem BaseChangeLogBound.of_leaves (hB : ChowFormBaseChange.Statement)
   BaseChangeLogBound.proof hB hAv (ConeLogBound.proof hMass hFin hInt hNull)
 
 /- English proof (translation)
-The claim follows from `ChowHeightRecursion.proof hV hA hB hAv`.
+A detailed English derivation is pending.
 -/
 theorem ChowHeightRecursion.of_leaves (hV : ChowFormSectionVertical.Statement)
     (hA : MahlerSection.Statement) (hB : ChowFormBaseChange.Statement)
@@ -71,7 +71,7 @@ theorem ChowHeightRecursion.of_leaves (hV : ChowFormSectionVertical.Statement)
   ChowHeightRecursion.proof hV hA hB hAv
 
 /- English proof (translation)
-The claim follows from `chowHeightLowerBound_of (ChowHeightRecursion.proof hV hA hB hAv) hS (BaseChangeLogBound.of_leaves hB hAv hMass hFin hInt hNull) ChowHeightMul.full`.
+A detailed English derivation is pending.
 -/
 theorem ChowHeightLowerBound.of_leaves (hV : ChowFormSectionVertical.Statement)
     (hA : MahlerSection.Statement) (hS : ChowFormSection.Statement)
@@ -83,7 +83,7 @@ theorem ChowHeightLowerBound.of_leaves (hV : ChowFormSectionVertical.Statement)
     (BaseChangeLogBound.of_leaves hB hAv hMass hFin hInt hNull) ChowHeightMul.full
 
 /- English proof (translation)
-The claim follows from `ChowHeightCharacterised.proof (ChowHeightRecursion.proof hV hA hB hAv) hS ChowHeightMul.full hPt`.
+A detailed English derivation is pending.
 -/
 theorem ChowHeightCharacterised.of_leaves (hV : ChowFormSectionVertical.Statement)
     (hA : MahlerSection.Statement) (hS : ChowFormSection.Statement)

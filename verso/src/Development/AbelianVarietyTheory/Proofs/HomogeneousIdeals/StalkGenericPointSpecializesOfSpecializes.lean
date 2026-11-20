@@ -34,9 +34,9 @@ section ThetaShiftProofs
 open PowerSeries
 
 /- English proof (translation)
-Set `: WithIdeal O` to `⟨I⟩`. Establish `hI : IsAdic I` using `rfl`. Take `⟨h1, h2⟩` from `hI.isAdicComplete_iff.mp h`. Establish `ha : PowerSeries.HasEval π` using `WithIdeal.isTopologicallyNilpotent_of_mem hπ`. Use `⟨PowerSeries.aeval ha, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Polynomial.coe_X, PowerSeries.aeval_coe, Polynomial.aeval_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_algHom_powerSeries_apply_X_of_isAdicComplete {O : Type*} [CommRing O] (I : Ideal O)
     [h : IsAdicComplete I O] {π : O} (hπ : π ∈ I) : ∃ ev : O⟦X⟧ →ₐ[O] O, ev X = π := by

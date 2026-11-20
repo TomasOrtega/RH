@@ -12,15 +12,15 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.Per.LetterDim
 
 /- English proof (translation)
-Set `I : Ideal R` to `Ideal.span {1 - e}`. Establish `hI : ∀ x, x ∈ I ↔ e * x = 0`. Introduce `x`. Rewrite using `[Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨c, rfl⟩`. Take the linear combination `(-c) * he`. Introduce `hx`. Conclude with `⟨x, by linear_combination -hx⟩`. Use `haveI : Nontrivial (R ⧸ I) := Ideal.Quotient.nontrivial_iff.2 (by`.
+Assume the hypotheses and unpack their components. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hT`. Establish `: (1 : R) ∈ I` using `by rw [hT]; trivial`. Rewrite `this` using `[hI, mul_one]`. Conclude with `he0 this)`. Establish `hli : LinearIndependent (R ⧸ I) (fun i j => Ideal.Quotient.mk I (a i j))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Use `choose r hr using fun i => Ideal.Quotient.mk_surjective (g i)`. Rewrite using `[← hr, Ideal.Quotient.eq_zero_iff_mem, hI, ← he, mul_assoc]`. Use `h (fun i => e * r i) (fun j => ?_) i` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrFun hg j` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, ← hr, ← map_mul, ← map_sum] at this`. Rewrite `this` using `[Ideal.Quotient.eq_zero_iff_mem, hI, Finset.mul_sum]`. Simplify `this` using `only [mul_assoc]`. Simplify using `using hli.fintype_card_le_finrank`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem card_le_of_idem {R : Type} [CommRing R] {e : R} (he : e * e = e) (he0 : e ≠ 0)
     {ι κ : Type} [Fintype ι] [Fintype κ] (a : ι → κ → R)
@@ -68,11 +68,11 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
 open GlobalTheory.DRFil in
 
 /- English proof (translation)
-Use `haveI := nontrivial_dR PD`. Set `b` to `Module.finBasis LL ↥(DdRE PD ρ τ)`. Set `v` to `Module.finBasis LL V`. Establish `hli : LinearIndependent LL (fun i => (b i : V ⊗[Qp] F))` using `b.linearIndependent.map' (DdRE PD ρ τ).subtype (Submodule.ker_subtype _)`. Establish `h` using `indep_of_linearIndependent_DdRE PD ρ τ _ hF (fun i => (b i).2) hli`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `card_le_of_idem (idem_mul_idem (F := F) τ) (idem_ne_zero (F := F) τ) (fun i j => ext Qp F (v.coord j) (b i : V ⊗[Qp] F)) (fun r hr => h r (by` as an intermediate fact. Rewrite using `[eq_sum_basis v (∑ i, sm Qp F LL V (r i) (b i : V ⊗[Qp] F))]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Simplify using `only [ext_sm, sm_self]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr j, map_zero, LinearMap.zero_apply]))`. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem component_le [FiniteDimensional Qp K] [CharZero Qp] (hF : IsField F) (ρ : Representation LL G V)
     (τ : K →ₐ[Qp] LL) [FiniteDimensional LL ↥(DdRE PD ρ τ)] :
@@ -93,9 +93,9 @@ theorem component_le [FiniteDimensional Qp K] [CharZero Qp] (hF : IsField F) (ρ
   simpa using this
 
 /- English proof (translation)
-Use `haveI := PD.finK`. Use `haveI := (GlobalTheory.Per.FontaineBound.ddR_finite_le PD hF ρ).1`. Use `haveI : ∀ τ, FiniteDimensional LL ↥(DdRE PD ρ τ) := fun τ => Submodule.finiteDimensional_of_le (S₂ := DdR PD ρ) inf_le_left`. Rewrite `hc` using `[Nat.card_eq_fintype_card]`. Establish `hs` using `(GlobalTheory.DeRhamSplit.finrank_DdR PD ρ hc 0).1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `IsDR at h`. Use `(Finset.sum_eq_sum_iff_of_le (s := Finset.univ) (g := fun _ => finrank LL V) fun τ _ => component_le PD hF ρ τ).1 ?_ τ (Finset.mem_univ τ)` and prove the remaining obligations. Rewrite using `[← hs, h, Finset.sum_const, Finset.card_univ, hc, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem component_eq [CharZero Qp] (hF : IsField F) (ρ : Representation LL G V)
     (hc : Nat.card (K →ₐ[Qp] LL) = finrank Qp K) (h : IsDR PD ρ) (τ : K →ₐ[Qp] LL) :
@@ -114,9 +114,7 @@ theorem component_eq [CharZero Qp] (hF : IsField F) (ρ : Representation LL G V)
 omit [FiniteDimensional Qp LL] in
 
 /- English proof (translation)
-Use `haveI := PD.finK₀`. Break down `Nat.eq_zero_or_pos (finrank LL V) with h0 | h0` into its components or cases. Use `haveI : Subsingleton V := finrank_zero_iff.1 h0 infer_instance`. Conclude with `FiniteDimensional.of_finrank_pos (by`. Unfold `IsCrys at h`.
-
-Rewrite using `[h]`. Conclude with `Nat.mul_pos finrank_pos h0)`.
+Separate the alternatives or extract the components of the hypothesis. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_Dcris (ρ : Representation LL G V) (h : IsCrys PD ρ) : Module.Finite LL ↥(Dcris PD ρ) := by
   haveI := PD.finK₀
@@ -132,13 +130,13 @@ omit [FiniteDimensional Qp LL] in
 open GlobalTheory.RegularRing in
 
 /- English proof (translation)
-Use `haveI := PD.finK₀`. Use `haveI := finite_Dcris PD ρ h`. Establish `hle : ∀ (n : ℕ) (τ τ' : K₀ →ₐ[Qp] LL), (∀ c, τ' c = τ (PD.σ^[n] c)) → finrank LL ↥(DcrisL PD ρ τ') ≤ finrank LL ↥(DcrisL PD ρ τ)`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `zero`. Introduce `τ τ' h`. Rewrite using `[show τ' = τ from AlgHom.ext h]`. Consider the case `succ n ih`. Introduce `τ τ' h`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(ih (τ.comp PD.σ) τ' fun c => by rw [h, Function.iterate_succ_apply']; rfl).trans (letter_le PD ρ τ _ fun _ => rfl)`. Establish `heq : ∀ τ', finrank LL ↥(DcrisL PD ρ τ') = finrank LL ↥(DcrisL PD ρ τ)` using `fun τ' => by`. Take `⟨n, hn⟩` from `exists_pow_sigma PD LL hc τ τ'`. Take `⟨n', hn'⟩` from `exists_pow_sigma PD LL hc τ' τ`. Conclude with `le_antisymm (hle n _ _ hn) (hle n' _ _ hn')`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite `hc` using `[Nat.card_eq_fintype_card]`. Establish `hs : finrank LL ↥(Dcris PD ρ) = ∑ τ', finrank LL ↥(DcrisL PD ρ τ')` using `GlobalTheory.DeRhamSplit.finrank_eq_sum hc (GlobalTheory.DeRhamSplit.mulHom Qp K₀ B LL V) (Dcris PD ρ) fun a x hx => (GlobalTheory.FontCmp.mK PD ρ a ⟨x, hx⟩).2`. Simplify using `only [heq, Finset.sum_const, Finset.card_univ, smul_eq_mul, hc] at hs`. Unfold `IsCrys at h`. Conclude with `Nat.eq_of_mul_eq_mul_left finrank_pos (hs.symm.trans h)`.
+A detailed English derivation is pending.
 -/
 theorem letter_eq [IsDomain B] (ρ : Representation LL G V)
     (hc : Nat.card (K₀ →ₐ[Qp] LL) = finrank Qp K₀) (h : IsCrys PD ρ) (τ : K₀ →ₐ[Qp] LL) :
@@ -171,7 +169,7 @@ theorem letter_eq [IsDomain B] (ρ : Representation LL G V)
 end General
 
 /- English proof (translation)
-Introduce `l _ P AI T K LL V _ _ _ _ _ ρ`. Use `haveI := LL.2`. Use `haveI := GlobalTheory.RegularRing.isDomain_of_tied T K`. Conclude with `⟨letter_eq (P.PD K) ρ, component_eq (P.PD K) (GlobalTheory.RegularRing.isField_of_tied T) ρ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tied_letter_component_finrank : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K LL : FinExt l) (V : Type) [AddCommGroup V] [Module ↥LL.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] [FiniteDimensional ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V), (Nat.card (↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1) = Module.finrank ℚ_[l] ↥(K0 K) → IsCrys (P.PD K) ρ → ∀ τ, Module.finrank ↥LL.1 ↥(DcrisL (P.PD K) ρ τ) = Module.finrank ↥LL.1 V) ∧ (Nat.card (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) = Module.finrank ℚ_[l] ↥K.1 → IsDR (P.PD K) ρ → ∀ τ, Module.finrank ↥LL.1 ↥(DdRE (P.PD K) ρ τ) = Module.finrank ↥LL.1 V) := by
   intro l _ P AI T K LL V _ _ _ _ _ ρ

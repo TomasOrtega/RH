@@ -14,7 +14,7 @@ open CategoryTheory.Limits
 namespace GlobalTheory.FlagIrrFld
 
 /- English proof (translation)
-Introduce and unpack `u v hu hv ⟨y₁, -, hy₁⟩ ⟨y₂, -, hy₂⟩`. Take `⟨T, f, hT, ⟨t₁, rfl⟩, ⟨t₂, rfl⟩⟩` from `h y₁ y₂`. Take `⟨t, -, ht⟩` from `(IrreducibleSpace.isIrreducible_univ T).isPreirreducible _ _ (hu.preimage f.continuous) (hv.preimage f.continuous) ⟨t₁, trivial, hy₁⟩ ⟨t₂, trivial, hy₂⟩`. Conclude with `⟨f t, trivial, ht⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isPreirreducible_of_connect {Y : Scheme.{0}}
     (h : ∀ y₁ y₂ : Y, ∃ (T : Scheme.{0}) (f : T ⟶ Y), IrreducibleSpace T ∧ y₁ ∈ Set.range f ∧ y₂ ∈ Set.range f) :
@@ -26,7 +26,7 @@ theorem isPreirreducible_of_connect {Y : Scheme.{0}}
   exact ⟨f t, trivial, ht⟩
 
 /- English proof (translation)
-Establish `fl' : ∀ a, Vert.Flag ((Scheme.Modules.pullback (𝟙 (Spec (CommRingCat.of K)))).obj (E a)) (r a)` using `fun a => (GlobalTheory.T.vector_bundle_over_field_has_flag K _ (r a) ((hE a).pullback _)).some`. Take `⟨g', -, -⟩` from `hF _ (𝟙 _) fl'`. Take `⟨x⟩ : Nonempty (Spec (CommRingCat.of K))` from `inferInstance`. Conclude with `⟨g' x⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_of_field (K : Type) [Field K] (Y : Scheme.{0}) (π : Y ⟶ Spec (CommRingCat.of K)) (ι : Type)
     [Fintype ι] (E : ι → (Spec (CommRingCat.of K)).Modules) (r : ι → ℕ)
@@ -39,17 +39,15 @@ theorem nonempty_of_field (K : Type) [Field K] (Y : Scheme.{0}) (π : Y ⟶ Spec
   exact ⟨g' x⟩
 
 /- English proof (translation)
-Introduce `K _ Y π ι _ E r fl hE hF`. Use `haveI := nonempty_of_field K Y π ι E r fl hE hF`. Use `{ isPreirreducible_univ := isPreirreducible_of_connect fun y₁ y₂ => ?_, toNonempty := inferInstance }` and prove the remaining obligations. Use `set p₁ := Y.fromSpecResidueField y₁`. Use `set p₂ := Y.fromSpecResidueField y₂`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x₁⟩ : Nonempty (Spec (Y.residueField y₁))` from `inferInstance`. Take `⟨x₂⟩ : Nonempty (Spec (Y.residueField y₂))` from `inferInstance`. Take `⟨z, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := p₁ ≫ π) (g := p₂ ≫ π) x₁ x₂ (Subsingleton.elim _ _)`. Use `set P := pullback (p₁ ≫ π) (p₂ ≫ π)`. Set `L : Type` to `P.residueField z`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Set `u : Spec (CommRingCat.of L) ⟶ P` to `P.fromSpecResidueField z`. Establish `hq : (u ≫ pullback.fst _ _ ≫ p₁) ≫ π = (u ≫ pullback.snd _ _ ≫ p₂) ≫ π`. Simplify using `only [Category.assoc]`. Conclude with `congrArg (u ≫ ·) pullback.condition`. Take `⟨T, t₁, t₂, f, hT, h₁, h₂⟩` from `GlobalTheory.T.flag_bundle_points_irreducible_connected _ Y π ι E r fl hE hF L _ _ hq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w⟩ : Nonempty (Spec (CommRingCat.of L))` from `inferInstance`. Establish `m₁ : p₁ ((pullback.fst (p₁ ≫ π) (p₂ ≫ π)) (u w)) = y₁`. Use `Scheme.range_fromSpecResidueField y₁ ▸ Set.mem_range_self (f := p₁) ((pullback.fst (p₁ ≫ π) (p₂ ≫ π)) (u w))` as an intermediate fact. Conclude with `this`. Establish `m₂ : p₂ ((pullback.snd (p₁ ≫ π) (p₂ ≫ π)) (u w)) = y₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `Scheme.range_fromSpecResidueField y₂ ▸ Set.mem_range_self (f := p₂) ((pullback.snd (p₁ ≫ π) (p₂ ≫ π)) (u w))` as an intermediate fact. Conclude with `this`. Use `⟨T, f, hT, ⟨t₁ w, ?_⟩, ⟨t₂ w, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← m₁, ← Scheme.Hom.comp_apply, h₁]`. Both sides reduce to the same expression.
-
-Rewrite using `[← m₂, ← Scheme.Hom.comp_apply, h₂]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem irreducibleSpace_of_isFlagBundle : ∀ (K : Type) [Field K] (Y : Scheme.{0}) (π : Y ⟶ Spec (CommRingCat.of K)) (ι : Type) [Fintype ι]
     (E : ι → (Spec (CommRingCat.of K)).Modules) (r : ι → ℕ)

@@ -11,7 +11,7 @@ def shiftE {N : ℕ} (n : Fin N → ℕ) : Polynomial (MvPolynomial (Fin N) ℝ)
     Polynomial.C (C (((n c).factorial : ℝ)⁻¹)) * (Polynomial.X + Polynomial.C (X i)) ^ n c)
 
 /- English proof (translation)
-Unfold `shiftE`. Apply `Matrix.det_zero_of_column_eq h` to reduce the goal to its premises. Introduce `k`. Simplify using `[hn]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem shiftE_eq_zero {N : ℕ} (n : Fin N → ℕ) {c d : Fin N} (h : c ≠ d) (hn : n c = n d) :
     shiftE n = 0 := by
@@ -21,7 +21,7 @@ theorem shiftE_eq_zero {N : ℕ} (n : Fin N → ℕ) {c d : Fin N} (h : c ≠ d)
   simp [hn]
 
 /- English proof (translation)
-Unfold `shiftE detE`. Rewrite using `[← Polynomial.coe_evalRingHom, RingHom.map_det, AlgHom.map_det]`. Use `congr 1`. Use `ext1 i c`. Simplify using `[add_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_shiftE {N : ℕ} (n : Fin N → ℕ) (a : ℝ) :
     (shiftE n).eval (C a) =
@@ -33,16 +33,16 @@ theorem eval_shiftE {N : ℕ} (n : Fin N → ℕ) (a : ℝ) :
   simp [add_comm]
 
 /- English proof (translation)
-Use `eval_shiftE n 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eval_zero_shiftE {N : ℕ} (n : Fin N → ℕ) : (shiftE n).eval 0 = detE n := by
   have := eval_shiftE n 0
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[Polynomial.derivative_C_mul, Polynomial.derivative_X_add_C_pow, ← mul_assoc, ← map_mul]`. Use `congr 2`. Rewrite using `[← map_natCast (C : ℝ →+* MvPolynomial (Fin N) ℝ), ← map_mul]`. Use `congr 1`. Rewrite using `[Nat.factorial_succ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `: (m.factorial : ℝ) ≠ 0` using `by exact_mod_cast m.factorial_ne_zero`. Establish `h2 : ((m : ℝ) + 1) ≠ 0` using `by positivity`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem derivative_entry {N : ℕ} (m : ℕ) (i : Fin N) :
     Polynomial.derivative (Polynomial.C (C (((m + 1).factorial : ℝ)⁻¹)) *
@@ -59,13 +59,13 @@ theorem derivative_entry {N : ℕ} (m : ℕ) (i : Fin N) :
   field_simp
 
 /- English proof (translation)
-Unfold `shiftE`. Simplify using `only [Matrix.det_apply', Matrix.of_apply]`. Rewrite using `[Polynomial.derivative_sum]`. Simplify using `only [Polynomial.derivative_intCast_mul, Polynomial.derivative_prod_finset, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Simplify using `[h]`. Take `⟨m, hm⟩` from `Nat.exists_eq_succ_of_ne_zero h`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[← Finset.prod_erase_mul univ _ (mem_univ c)]`. Use `congr 1`. Use `Finset.prod_congr rfl fun b hb => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hb)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_self, hm, derivative_entry]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem derivative_shiftE {N : ℕ} (n : Fin N → ℕ) :
     Polynomial.derivative (shiftE n) =
@@ -89,11 +89,11 @@ theorem derivative_shiftE {N : ℕ} (n : Fin N → ℕ) :
       simp
 
 /- English proof (translation)
-Rewrite using `[derivative_shiftE]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Both sides reduce to the same expression. Simplify using `only [rho] at h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc : (c : ℕ) + 1 < N` using `by omega`. Establish `hne : (⟨c + 1, hc⟩ : Fin N) ≠ c`. Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `shiftE_eq_zero _ hne` to reduce the goal to its premises. Rewrite using `[Function.update_self, Function.update_of_ne hne]`. Simplify using `only [rho]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem derivative_shiftE_rho (N : ℕ) : Polynomial.derivative (shiftE (rho N)) = 0 := by
   rw [derivative_shiftE]
@@ -110,13 +110,13 @@ theorem derivative_shiftE_rho (N : ℕ) : Polynomial.derivative (shiftE (rho N))
     omega
 
 /- English proof (translation)
-Distinguish the cases in `hc : (c : ℕ) + 1 < N`. Use `left split_ifs with h`. Both sides reduce to the same expression. Establish `hne : (⟨c + 1, hc⟩ : Fin N) ≠ c`. Introduce `e`.
+Consider separately whether the proposition holds or fails. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Apply `shiftE_eq_zero _ hne` to reduce the goal to its premises. Rewrite using `[Function.update_self, Function.update_of_ne hne]`. Simplify using `only [hookRho]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> first | contradiction | omega`. Use `c.2` as an intermediate fact. Distinguish the cases in `h2 : (c : ℕ) < r`. Use `right`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `left`. Rewrite using `[if_pos]`. Simplify using `only [hookRho]`. Apply the tactic sequence `split_ifs <;> first | contradiction | omega`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem lower_hook_zero {N k r : ℕ} (c : Fin N) (h0 : (c : ℕ) ≠ 0) (hr : (c : ℕ) ≠ r) :
     (if hookRho N k r c = 0 then 0
@@ -141,25 +141,23 @@ theorem lower_hook_zero {N k r : ℕ} (c : Fin N) (h0 : (c : ℕ) ≠ 0) (hr : (
       split_ifs <;> first | contradiction | omega
 
 /- English proof (translation)
-Rewrite using `[derivative_shiftE]`. Establish `hN : 0 < N` using `by omega`. Establish `hrN : r < N` using `by omega`. Establish `e0 : (if hookRho N k r ⟨0, hN⟩ = 0 then 0 else shiftE (Function.update (hookRho N k r) ⟨0, hN⟩ (hookRho N k r ⟨0, hN⟩ - 1))) = shiftE (hookRho N (k - 1) r)`. Rewrite using `[if_neg (by simp only [hookRho]; simp; omega)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `c`. Distinguish the cases in `hc : c = ⟨0, hN⟩`. Substitute `hc` using the available equality. Rewrite using `[Function.update_self]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hookRho, if_true]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Function.update_of_ne hc]`. Establish `: (c : ℕ) ≠ 0` using `fun e => hc (Fin.ext e)`. Simplify using `[hookRho, this]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hz : ∀ c : Fin N, c ≠ ⟨0, hN⟩ → c ≠ ⟨r, hrN⟩ → (if hookRho N k r c = 0 then 0 else shiftE (Function.update (hookRho N k r) c (hookRho N k r c - 1))) = 0`. Introduce `c h0 h1`. Use `c.2` as an intermediate fact. Break down `lower_hook_zero (k := k) (r := r) c (fun e => h0 (Fin.ext e)) (fun e => h1 (Fin.ext e)) with h | h` into its components or cases. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Distinguish the cases in `h : r = 0`. Rewrite using `[if_pos h, add_zero, Finset.sum_eq_single ⟨0, hN⟩, e0]`. Introduce `c _ hc`. Conclude with `hz c hc (by subst h; exact hc)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg h, Finset.sum_eq_add (⟨0, hN⟩ : Fin N) ⟨r, hrN⟩, e0]`. Use `congr 1`. Rewrite using `[if_neg (by simp [hookRho, h])]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `c`. Distinguish the cases in `hc : c = ⟨r, hrN⟩`. Substitute `hc` using the available equality. Rewrite using `[Function.update_self]`. Simplify using `only [hookRho]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> first | contradiction | omega`. Rewrite using `[Function.update_of_ne hc]`. Establish `: (c : ℕ) ≠ r` using `fun e => hc (Fin.ext e)`. Simplify using `only [hookRho]`. Apply the tactic sequence `split_ifs <;> first | contradiction | omega`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Conclude with `h (congrArg Fin.val e).symm`. Introduce `c _ hc`. Conclude with `hz c hc.1 hc.2`. Simplify using the standard rewrite rules.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem derivative_shiftE_hook {N k r : ℕ} (hr : r < k) (hk : k ≤ N) :
     Polynomial.derivative (shiftE (hookRho N k r)) =
@@ -215,7 +213,7 @@ theorem derivative_shiftE_hook {N k r : ℕ} (hr : r < k) (hk : k ≤ N) :
     · simp
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [Finset.sum_range_succ, ih]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem telescope {R : Type} [CommRing R] (T : ℕ → R) (m : ℕ) :
     ∑ r ∈ range (m + 1), (-1 : R) ^ r * (T r + if r = 0 then 0 else T (r - 1)) =
@@ -225,11 +223,11 @@ theorem telescope {R : Type} [CommRing R] (T : ℕ → R) (m : ℕ) :
   | succ m ih => rw [Finset.sum_range_succ, ih]; simp; ring
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`. Rewrite using `[Polynomial.derivative_sum]`. Establish `: ∀ r ∈ range (m + 1), Polynomial.derivative ((-1) ^ r * shiftE (hookRho N (m + 1) r)) = (-1) ^ r * (shiftE (hookRho N m r) + if r = 0 then 0 else shiftE (hookRho N m (r - 1)))`. Introduce `r hr`. Rewrite using `[Polynomial.derivative_mul, derivative_shiftE_hook (mem_range.1 hr) hk]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Polynomial.derivative_pow]`. Rewrite using `[Finset.sum_congr rfl this, telescope (fun r => shiftE (hookRho N m r)) m]`. Establish `h01 : (⟨0, by omega⟩ : Fin N) ≠ ⟨1, by omega⟩` using `by simp`. Rewrite using `[shiftE_eq_zero _ h01, mul_zero]`. Simplify using `only [hookRho]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> first | contradiction | omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem derivative_shiftR {N k : ℕ} (h2 : 2 ≤ k) (hk : k ≤ N) :
     Polynomial.derivative (∑ r ∈ range k, (-1) ^ r * shiftE (hookRho N k r)) = 0 := by
@@ -247,7 +245,7 @@ theorem derivative_shiftR {N k : ℕ} (h2 : 2 ≤ k) (hk : k ≤ N) :
   split_ifs <;> first | contradiction | omega
 
 /- English proof (translation)
-Rewrite using `[Polynomial.eq_C_of_derivative_eq_zero h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eval_eq_of_derivative {N : ℕ} (P : Polynomial (MvPolynomial (Fin N) ℝ))
     (h : Polynomial.derivative P = 0) (b : MvPolynomial (Fin N) ℝ) : P.eval b = P.eval 0 := by
@@ -255,9 +253,9 @@ theorem eval_eq_of_derivative {N : ℕ} (P : Polynomial (MvPolynomial (Fin N) �
   simp
 
 /- English proof (translation)
-Introduce `N k a h2 hk`. Prove the components needed by the constructor for the conclusion. Use `eval_eq_of_derivative _ (derivative_shiftR h2 hk) (C a)` as an intermediate fact. Simplify using `only [Polynomial.eval_finset_sum, Polynomial.eval_mul, Polynomial.eval_pow, Polynomial.eval_neg, Polynomial.eval_one, eval_shiftE, eval_zero_shiftE] at this`. Simplify `this` using `[hookR, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← eval_shiftE, eval_eq_of_derivative _ (derivative_shiftE_rho N), eval_zero_shiftE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem shift_invariant : ∀ (N k : ℕ) (a : ℝ), 2 ≤ k → k ≤ N →
     aeval (fun i : Fin N => (X i + C a : MvPolynomial (Fin N) ℝ)) (hookR N k) = hookR N k ∧

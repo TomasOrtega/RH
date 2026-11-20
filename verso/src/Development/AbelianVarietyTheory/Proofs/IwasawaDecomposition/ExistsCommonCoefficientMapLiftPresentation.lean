@@ -21,21 +21,19 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.LiftPresStd
 
 /- English proof (translation)
-Introduce `E K _ _ _ _ _ ι _ emb n n' h lam lam' hl`. Substitute `h` using the available equality. Establish `hlam : lam = lam'`. Use function extensionality and compare the values at `τ`. Establish `h1` using `hl τ`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Break down `hw : lam τ with ⟨w, hw1⟩` into its components or cases. Break down `hw' : lam' τ with ⟨w', hw1'⟩` into its components or cases. Rewrite `h1` using `[hw, hw']`. Establish `: w = w'` using `funext fun a => by simpa using h1 a`. Substitute `this` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Both sides reduce to the same expression. Substitute `hlam` using the available equality. Establish `hN : ∀ N : Submodule (𝓞 E) (Fin n → E), N.map (LinearEquiv.funCongrLeft (𝓞 E) E (finCongr (rfl : n = n)).symm).toLinearMap = N`. Introduce `N`. Use extensionality with `x`.
+Both sides reduce to the same expression. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `only [Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Use `hy using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`. Use `⟨LinearEquiv.refl K _, fun g v => ?_, fun J x y => ?_, fun N => ?_, fun N => ?_, fun i j => ?_, fun W _ _ σ c0 h1 h2 => ⟨h1, h2⟩⟩` and prove the remaining obligations. Establish `: LiftBrg.castGL (rfl : n = n).symm g = g` using `by ext a b; simp [LiftBrg.castGL]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Both sides reduce to the same expression. Establish `: J.reindex (finCongr (rfl : n = n)) (finCongr (rfl : n = n)) = J` using `by ext a b; simp`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hN]`. Conclude with `Submodule.map_id _`. Rewrite using `[hN]`. Conclude with `Submodule.map_id _`. Use `show (bVV K lam).repr (bVV K lam i) j ∈ Formalism.DivisionValues.cmMax K`.
-
-Rewrite using `[Module.Basis.repr_self, Finsupp.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vv_cast_equiv : ∀ {E K : Type} [Field E] [NumberField E] [Field K] [NumberField K] [StarRing K] {ι : Type} [Fintype ι]
     (emb : ι → E →+* K) {n n' : ℕ} (h : n = n') (lam : ι → DomWeight n) (lam' : ι → DomWeight n'),
@@ -90,7 +88,7 @@ theorem vv_cast_equiv : ∀ {E K : Type} [Field E] [NumberField E] [Field K] [Nu
     · exact zero_mem _
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ hc n γ`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Simplify using `[Formalism.L2.Col.ufGL, Formalism.L2.Col.toGLm, Formalism.L2.Col.ratHom, Formalism.UG.glEquiv, Matrix.GeneralLinearGroup.toLin, LinearMap.GeneralLinearGroup.generalLinearEquiv]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ufGL_ratHom : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E]
     (hc : Formalism.BasicNotions.CMData F E) (n : ℕ) (γ : Formalism.L2.Col.URat hc n),
@@ -111,7 +109,7 @@ theorem formRho_colGl {X : Formalism.L2.Col.Fields} {n : ℕ} [NeZero n] {SG : F
         C.rho (Formalism.L2.Col.ratHom hc n γ) v := rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use extensionality with `a b`. Simplify using `[LiftBrg.castGL]`.
+Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem castGL_symm_castGL {R : Type} [CommRing R] {m n : ℕ} (h : m = n) (g : GL (Fin m) R) :
     LiftBrg.castGL h.symm (LiftBrg.castGL h g) = g := by
@@ -120,37 +118,33 @@ theorem castGL_symm_castGL {R : Type} [CommRing R] {m n : ℕ} (h : m = n) (g : 
   simp [LiftBrg.castGL]
 
 /- English proof (translation)
-Introduce `X px I hX U Xg tr L eG0 hI hV hL hG cV i c0L hcV hmap hin hβ hgram`. Take `⟨e0, he_rho, he_pair, he_nab, he_del, he_rat, he_li⟩` from `vv_cast_equiv X.B.fields.emb (LiftBrg.rkEq X i) (X.B.wts.lamV ((i : ℕ) + 1)) (fun τ => Bridge.lamLdef (D := X.toD7) (Vc X.toD7 i).rank ((i : ℕ) + 1) τ) (GlobalTheory.T.baseWeight_eq_forcedLiftWeight X i)`. Set `c : VV X.B.fields.K (X.B.wts.lamV ((i : ℕ) + 1)) →ₛₗ[X.B.embLL] (cV i).W` to `{ toFun := fun v => c0L (e0 v) map_add' := fun v w => by show c0L (e0 (v + w)) = c0L (e0 v) + c0L (e0 w); rw [map_add]; exact c0L.map_add _ _ map_smul' := fun a v => by show c0L (e0 (a • v)) = _; rw [LinearEquiv.map_smul]; exact c0L.map_smulₛₗ a (e0 v) }`. Establish `hc : ∀ v, c v = c0L (e0 v)` using `fun v => rfl`. Establish `hint : ∀ (γ : GQ (Vc X.toD7 i)) (γE : GL (Fin (Vc X.toD7 i).rank) X.toD7.host.E), Bridge.IsRatMat (Vc X.toD7 i) γ γE → ∀ v, c (rhoVr X.B.fields.emb (X.B.wts.lamV ((i : ℕ) + 1)) (LiftBrg.castGL (LiftBrg.rkEq X i).symm γE) v) = (cV i).coef.ρ γ (c v)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `γ γE h v`. Conclude with `(congrArg c0L (he_rho γE v)).trans (hmap.1 γ γE h (e0 v))`. Use `⟨c, hint, fun t => ?_⟩` and prove the remaining obligations. Take `⟨eG, eΓ, hchar, hι, hrat⟩` from `GlobalTheory.T.exists_unitaryGroups_equiv_unitForm_gram_one X i hgram`. Take `⟨hJ, hχ⟩` from `GlobalTheory.T.liftAdelicForm_level_type_eq_columnLevel X px I U L hI hV hL i t eG hchar`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `letI : Algebra X.toD7.host.F X.B.fields.E := inferInstanceAs (Algebra X.toD7.host.F X.toD7.host.E)`. Establish `hneg : X.toD7.sp.Vneg ((i : ℕ) + 1) = false` using `X.B.V_pos _ (by omega) i.2`. Establish `hgr : (if X.toD7.sp.Vneg ((i : ℕ) + 1) then -(Vc X.toD7 i).gram else (Vc X.toD7 i).gram) = (1 : Matrix (Fin X.B.R.nV) (Fin X.B.R.nV) X.toD7.host.E).reindex (finCongr (LiftBrg.rkEq X i)) (finCongr (LiftBrg.rkEq X i))`. Rewrite using `[hneg, if_neg (by simp), hgram]`. Use extensionality with `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply]`. Establish `hSG : Formalism.L2.Col.DecoPtSurj X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t)` using `Formalism.L2.Col.decoPtSurj_of _ _ _ _ (Formalism.L2.Col.unimodGenus_holds _ _) Formalism.L2.DIV.reduction_surjective_bis (by classical convert GlobalTheory.T.rowFormLevelPrimes_isSplitSet X px I U L hI hL t using 1; exact Finset.empty_union _) (Finset.disjoint_empty_left _)`. Set `o` to `Formalism.L2.Col.rf_onDeco (X := X.B.fields) (n := X.B.R.nV) (ST := ∅) (SG := LiftBrg.sgL X I U t) (Formalism.L2.Col.mtVal (Pr := X.B.primes px) X.B.wts ((i : ℕ) + 1) _) (Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1)).inv`. Establish `hmem : ∀ k : Bridge.colJ X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t) (Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1)).inv.grp, (eG.toMonoidHom.comp (Subgroup.subtype _)) k ∈ (levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).J` using `fun k => by`. Rewrite using `[hJ]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `Subgroup.mem_map_of_mem _ k.2`. Set `χc` to `(levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).χ.comp ((eG.toMonoidHom.comp (Subgroup.subtype _)).codRestrict _ hmem)`. Establish `hχc : ∀ k, ((χc k)⁻¹ : ℂˣ) = Units.map X.toD7.what₂.embLL.toMonoidHom ((Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1)).inv.chr (Formalism.L2.Col.redH X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t) _ ((Bridge.colJEquiv X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t) _).symm k) …` using `fun k => (hχ k (hmem k)).1`. Establish `hK1 : ∀ k : Bridge.colJ X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t) (Formalism.L2.Col.mtTyKK I.Ch I.sel t.1 ((i : ℕ) + 1)).inv.grp, (k : Formalism.L2.Col.UAd X.toD7.sp.cm X.B.R.nV) ∈ Bridge.principalCongruenceSubgroup X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t) → χc k = 1` using `fun k hk => (hχ k (hmem k)).2 hk`. Establish `hli` using `he_li (cV i).W X.toD7.what₂.embLL c0L hmap.2.1 hmap.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpair : ∀ x x', inner ℂ (c x) (c x') = X.toD7.what₂.embLL ((Formalism.L2.Col.mtKGSD X.B.wts I.Ch I.sel t.1 ((i : ℕ) + 1)).pair x x')`. Introduce `x x'`. Use `(hin (e0 x) (e0 x')).trans ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[hgr]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `he_pair 1 x x'`. Establish `hgl : ∀ (γ : Formalism.L2.Col.URat X.toD7.sp.cm X.B.R.nV) k (v : (Formalism.L2.Col.mtKGSD X.B.wts I.Ch I.sel t.1 ((i : ℕ) + 1)).V), c ((Formalism.L2.Col.mtKGSD X.B.wts I.Ch I.sel t.1 ((i : ℕ) + 1)).ρ (Bridge.colGl o (γ, k)) v) = ((χc k)⁻¹ : ℂˣ) • ((cV i).coef.ρ.comp eΓ.toMonoidHo …`. Introduce `γ k v`. Rewrite using `[show (Formalism.L2.Col.mtKGSD X.B.wts I.Ch I.sel t.1 ((i : ℕ) + 1)).ρ (Bridge.colGl o (γ, k)) v = _ from formRho_colGl (X := X.B.fields) X.toD7.sp.cm _ _ γ k v]`. Use `(c.map_smulₛₗ _ _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : (Formalism.L2.Col.mtVal (Pr` using `X.B.primes px) X.B.wts ((i : ℕ) + 1) (Formalism.L2.Col.rowSG (X.B.primes px) I.sel t.1)).rho (Formalism.L2.Col.ratHom X.toD7.sp.cm X.B.R.nV γ) v = rhoVr X.B.fields.emb (X.B.wts.lamV ((i : ℕ) + 1)) (LiftBrg.castGL (LiftBrg.rkEq X i).symm (LiftBrg.castGL (LiftBrg.rkEq X i) (γ : GL …`. Rewrite using `[ufGL_ratHom]`. Conclude with `congrArg (fun g => rhoVr X.B.fields.emb (X.B.wts.lamV ((i : ℕ) + 1)) g v) (castGL_symm_castGL (LiftBrg.rkEq X i) _).symm`. Establish `e2` using `hint (eΓ γ) _ (hrat γ) v`. Establish `e4` using `(congrArg c e3).trans e2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[hχc k, Units.smul_def]`. Use `erw [e4]`. Both sides reduce to the same expression. Set `A` to `Bridge.colAdPts o hSG`. Set `P0` to `Bridge.colClassPres (hc := X.toD7.sp.cm) o hSG (Formalism.L2.Col.mtKOk X.B.wts I.Ch I.sel t.1 hX ((i : ℕ) + 1)) X.toD7.what₂.embLL ((cV i).coef.ρ.comp eΓ.toMonoidHom) χc c hli.1 hli.2 hpair hK1 hgl`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `P : LiftBrg.PresL X I hX U Xg tr L cV i t` to `P0.transport eG eΓ hι (fun _ => rfl) hJ (fun k hk => rfl)`. Use `⟨P, ?_, fun v => rfl, e0, he_rat, fun x => rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `f g`. Establish `h5` using `GlobalTheory.T.transportedClassSetPresentation_reads_equivariant (ι' := Bridge.ratF (Vc X.toD7 i)) (ρ' := (cV i).coef.ρ) (J' := (levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).J) (χ' := (levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).χ) A (Formalism.L2.Col.mtKOk X.B.wts I.Ch I.sel t. …`. Use `h5.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hq : A.q (eG.symm g) = LiftBrg.ptL X I U i t 1 1 g` using `by show Formalism.L2.Col.decoPt X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t) (QuotientGroup.mk (eG.symm g)) = _`. Rewrite using `[Formalism.L2.Col.decoPt_mk]`. Unfold `LiftBrg.ptL`. Use `congr 1`. Use `hchar (eG.symm g)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[MulEquiv.apply_symm_apply]`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Use `erw [hq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x x'`. Rewrite using `[hgr]`. Conclude with `he_pair 1 x x'`. Introduce `cl`. Establish `h6` using `GlobalTheory.T.translatedStdLattice_eq_decoratedLattice_reindexed X i (L.ΛV i) (by rw [← hβ]; exact hL.is.βV i) (LiftBrg.sgL X I U t) eG hchar (A.y cl)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy` using `A.q_y cl`. Establish `hy' : Formalism.L2.Col.decoPt X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t) (QuotientGroup.mk (A.y cl)) = (Formalism.L2.Col.mtKGSD X.B.wts I.Ch I.sel t.1 ((i : ℕ) + 1)).outSec.rep cl` using `hy`. Use `Eq.trans ?_ (congrArg (nabAtr (labLL X.toD7) (fun τ => Bridge.lamLdef (D := X.toD7) (Vc X.toD7 i).rank ((i : ℕ) + 1) τ)) h6).symm` and prove the remaining obligations. Rewrite using `[hy']`. Conclude with `he_nab _`.
-
-Introduce `cl`. Establish `h6` using `GlobalTheory.T.translatedStdLattice_eq_decoratedLattice_reindexed X i (L.ΛV i) (by rw [← hβ]; exact hL.is.βV i) (LiftBrg.sgL X I U t) eG hchar (A.y cl)`. Establish `hy` using `A.q_y cl`. Establish `hy' : Formalism.L2.Col.decoPt X.toD7.sp.cm X.B.R.nV ∅ (LiftBrg.sgL X I U t) (QuotientGroup.mk (A.y cl)) = (Formalism.L2.Col.mtKGSD X.B.wts I.Ch I.sel t.1 ((i : ℕ) + 1)).outSec.rep cl` using `hy`. Use `Eq.trans ?_ (congrArg (delAtr (labLL X.toD7) (fun τ => Bridge.lamLdef (D := X.toD7) (Vc X.toD7 i).rank ((i : ℕ) + 1) τ)) h6).symm` and prove the remaining obligations.
-
-Rewrite using `[hy']`. Conclude with `he_del _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_oneCoef_presStd : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hX : X.B.fields.Ok) (U : Set I.ι) (Xg : Finset (Gc X.B px → X.B.LL)) (tr : TrI X.B px) (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (eG : Gc X.B px ≃* G0 L.Pg X.toD7.R.r), I.Ok → ValsIn I → LevOf X I U L → IsPlacewiseIdentity X (px := px) eG → ∀ (cV : ∀ i, CoefA (Vc X.toD7 i)) (i : Fin X.toD7.R.m)
     (c0L : VV X.toD7.what₂.LL (fun τ => Bridge.lamLdef (Vc X.toD7 i).rank ((i : ℕ) + 1) τ) →ₛₗ[X.toD7.what₂.embLL] (cV i).W),

@@ -8,7 +8,7 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `x y`. Simplify using `only [detc, Units.val_mul, Matrix.det_mul]`. Use `congr 2`. Rewrite using `[mul_comm _ (x : Matrix (Fin t) (Fin t) F).det, mul_assoc, ← Matrix.det_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.det_one, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 private theorem detc_isCl {F : Type} [Field F] (θ : AlgebraicClosure F →* ℂ) (t c : ℕ) :
     IsCl (detc θ t c) := by
@@ -19,9 +19,9 @@ private theorem detc_isCl {F : Type} [Field F] (θ : AlgebraicClosure F →* ℂ
     inv_mul_cancel, Units.val_one, Matrix.det_one, mul_one]
 
 /- English proof (translation)
-Unfold `detc`. Apply `pow_ne_zero` to reduce the goal to its premises. Establish `hx : (x : Matrix (Fin t) (Fin t) F).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp x.isUnit).ne_zero`. Establish `ha : algebraMap F (AlgebraicClosure F) (x : Matrix (Fin t) (Fin t) F).det ≠ 0` using `(_root_.map_ne_zero _).mpr hx`. Introduce `h`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : θ (algebraMap F (AlgebraicClosure F) (x : Matrix (Fin t) (Fin t) F).det * (algebraMap F (AlgebraicClosure F) (x : Matrix (Fin t) (Fin t) F).det)⁻¹) = 1`. Rewrite using `[mul_inv_cancel₀ ha, map_one]`. Rewrite `h1` using `[map_mul, h, zero_mul]`. Conclude with `zero_ne_one h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem detc_ne_zero {F : Type} [Field F] (θ : AlgebraicClosure F →* ℂ) (t c : ℕ)
     (x : GL (Fin t) F) : detc θ t c x ≠ 0 := by
@@ -39,7 +39,7 @@ private theorem detc_ne_zero {F : Type} [Field F] (θ : AlgebraicClosure F →* 
   exact zero_ne_one h1
 
 /- English proof (translation)
-Establish `h` using `congrArg Units.val (det_parab F (stdBlocks (fun _ : Fin t => 1) hd) p)`. Simplify using `only [Matrix.GeneralLinearGroup.val_det_apply, Units.coe_prod] at h`. Simplify using `only [detc, h, map_prod, Finset.prod_pow]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem detc_parab {F : Type} [Field F] (θ : AlgebraicClosure F →* ℂ) (t c : ℕ)
     (hd : ∑ _i : Fin t, 1 = t) (p : parab F (stdBlocks (fun _ : Fin t => 1) hd)) :
@@ -50,15 +50,15 @@ private theorem detc_parab {F : Type} [Field F] (θ : AlgebraicClosure F →* �
   simp only [detc, h, map_prod, Finset.prod_pow]
 
 /- English proof (translation)
-Introduce `hF hJ F _ _ θ t c`. Take `⟨hJD, hcusp, _⟩` from `hJ F θ`. Establish `hd : ∑ _i : Fin t, 1 = t` using `by simp`. Take `⟨c', hc', hfr⟩` from `hF F t (fun _ => 1) t hd`. Establish `hJt : J θ (List.replicate t (1, c)) t = hcL (List.ofFn fun _ : Fin t => (⟨1, detc θ 1 c⟩ : (m : ℕ) × (GL (Fin m) F → ℂ))) t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← JD_nil, hJD]`. Use `congr 1`. Simplify using `[hcusp, List.map_replicate, List.ofFn_const]`. Unfold `Pairs`. Rewrite using `[hJt, hfr _ _ (detc_isCl θ t c), mul_ne_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hc', ?_⟩` and prove the remaining obligations. Repeatedly rewrite using `[← detc_parab θ t c hd]`. Use `haveI : Fintype (parab F (stdBlocks (fun _ : Fin t => 1) hd)) := Fintype.ofFinite _`. Rewrite using `[finsum_eq_sum_of_fintype]`. Introduce `h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hre` using `congrArg Complex.re h0`. Rewrite `hre` using `[Complex.re_sum, Complex.zero_re]`. Establish `hpos : ∀ p : parab F (stdBlocks (fun _ : Fin t => 1) hd), 0 < (star (detc θ t c (p : GL (Fin t) F)) * detc θ t c (p : GL (Fin t) F)).re`. Introduce `p`. Rewrite using `[Complex.star_def, ← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Complex.normSq_pos.mpr (detc_ne_zero θ t c _)`. Establish `: 0 < ∑ p : parab F (stdBlocks (fun _ : Fin t => 1) hd), (star (detc θ t c (p : GL (Fin t) F)) * detc θ t c (p : GL (Fin t) F)).re` using `Finset.sum_pos (fun p _ => hpos p) ⟨1, Finset.mem_univ _⟩`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.detPair :
     FrobL → JDEq → DetPair := by

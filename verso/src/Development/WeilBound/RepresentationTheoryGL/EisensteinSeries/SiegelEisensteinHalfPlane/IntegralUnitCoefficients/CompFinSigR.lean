@@ -13,9 +13,9 @@ namespace PositivityTheory.Rg.Sw.Glob.GenFinLocHf
 open PositivityTheory.Rg.Sw.Glob.GenFinLocAH
 
 /- English proof (translation)
-Distinguish the cases in `hfix : 𝔪.comap σ = 𝔪`. Take `⟨I, hI⟩` from `caseA hF σ hσ 𝔪 hfix horb g hg hgu`. Use `⟨1, I, by simp, ?_⟩` and prove the remaining obligations. Establish `e : GlobalTheory.StdUnn.blk4 (1 : Matrix (Fin n) (Fin n) R) 0 0 (Formalism.UG.cT σ 1)⁻¹ = 1`. Rewrite using `[Formalism.UG.cT_one, inv_one, block_matrix_one]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Matrix.mul_one]` and apply the resulting hypothesis. Conclude with `caseB hS σ hσ 𝔪 hfix horb g hg hgu`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem locRing (hF : LocRedField) (hS : LocRedSplit) {R : Type} [CommRing R] {n : ℕ} (σ : R →+* R)
     (hσ : ∀ a, σ (σ a) = a) (𝔪 : Ideal R) (h𝔪 : 𝔪.IsMaximal)
@@ -34,9 +34,9 @@ theorem locRing (hF : LocRedField) (hS : LocRedSplit) {R : Type} [CommRing R] {n
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Apply `RingHom.ext` to reduce the goal to its premises. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, RingHom.map_zero]`. Consider the case `tmul a e => rfl`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [RingHom.map_add, RingHom.map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem compAt_eq (v : GlobalTheory.FinPl.Pl D) : GlobalTheory.FinPl.compAt D v = compFin D.host.F D.host.E v := by
   apply RingHom.ext
@@ -47,7 +47,7 @@ theorem compAt_eq (v : GlobalTheory.FinPl.Pl D) : GlobalTheory.FinPl.compAt D v 
   | add x y hx hy => rw [RingHom.map_add, RingHom.map_add, hx, hy]
 
 /- English proof (translation)
-Rewrite using `[compAt_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem proj_mat (k : G D n) (v : GlobalTheory.FinPl.Pl D) :
     ((matHom _ D.sp.cm.sig (Jst D n) (proj D.sp.cm.sig (Jst D n) v k)).1 :
@@ -55,13 +55,11 @@ theorem proj_mat (k : G D n) (v : GlobalTheory.FinPl.Pl D) :
   rw [compAt_eq]; rfl
 
 /- English proof (translation)
-Establish `hk' : k ∈ levelAll D.sp.cm.sig (Jst D n) (stdLattice D.host.E (n + n)) 1` using `hk`. Establish `h` using `(mem_levelAll.1 hk').1 v`. Establish `hy : (Pi.single j 1 : Fin (n + n) → Ev D v) ∈ latLoc D.host.F (stdLattice D.host.E (n + n)) v`. Rewrite using `[mem_latLoc_stdLattice]`. Introduce `i'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hij : i' = j`. Substitute `hij` using the available equality. Simplify using `only [Pi.single_eq_same]`. Conclude with `one_mem _`. Simplify using `only [Pi.single_eq_of_ne hij]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Establish `h2` using `(mem_stabLoc.1 h _).1 hy`. Rewrite `h2` using `[mem_latLoc_stdLattice]`. Establish `h3` using `h2 i`. Rewrite `h3` using `[proj_mat, Matrix.mulVec_single_one]`.
-
-Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_of_K (k : G D n) (hk : k ∈ K D n) (v : GlobalTheory.FinPl.Pl D) (i j : Fin (n + n)) :
     (mat k).map (GlobalTheory.FinPl.compAt D v) i j ∈ intLoc D.host.F D.host.E v := by
@@ -93,19 +91,19 @@ Both sides reduce to the same expression.
 theorem sig_apply (x : D.host.E) : D.sp.cm.sig x = star x := rfl
 
 /- English proof (translation)
-Rewrite using `[sig_apply, sig_apply, star_star]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_sig (x : D.host.E) : D.sp.cm.sig (D.sp.cm.sig x) = x := by
   rw [sig_apply, sig_apply, star_star]
 
 /- English proof (translation)
-Rewrite using `[sig_apply]`. Conclude with `D.sp.cm.fixed x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sig_fix (x : D.host.E) : D.sp.cm.sig x = x ↔ x ∈ (algebraMap D.host.F D.host.E).range := by
   rw [sig_apply]; exact D.sp.cm.fixed x
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, RingHom.map_zero, RingHom.map_zero]`. Consider the case `tmul a e => rfl`. Consider the case `add x y hx hy => rw [RingHom.map_add, RingHom.map_add, RingHom.map_add, RingHom.map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compFin_sigR (v : GlobalTheory.FinPl.Pl D) (x : AE D) :
     compFin D.host.F D.host.E v (sigR (AF D.host.F) D.sp.cm.sig x) = sigR (Fv D.host.F v) D.sp.cm.sig (compFin D.host.F D.host.E v x) := by
@@ -115,9 +113,9 @@ theorem compFin_sigR (v : GlobalTheory.FinPl.Pl D) (x : AE D) :
   | add x y hx hy => rw [RingHom.map_add, RingHom.map_add, RingHom.map_add, RingHom.map_add, hx, hy]
 
 /- English proof (translation)
-Establish `h1 : (JR (AF D.host.F) (Jst D n)).map (compFin D.host.F D.host.E v) = (Jst D n).map (inclR (Fv D.host.F v))`. Use extensionality with `i j`. Simplify using `only [JR, Matrix.map_apply]`. Use `show compFin D.host.F D.host.E v ((1 : AF D.host.F) ⊗ₜ[D.host.F] _) = (1 : Fv D.host.F v) ⊗ₜ[D.host.F] _`. Simplify using `[compFin]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Jst, block_matrix_map]`. Unfold `J2`. Rewrite using `[Matrix.map_zero _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _), Matrix.map_neg _ (map_neg _), Matrix.map_one _ (map_zero _) (map_one _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem JR_Jst_map (v : GlobalTheory.FinPl.Pl D) :
     (JR (AF D.host.F) (Jst D n)).map (compFin D.host.F D.host.E v) = J2 (Ev D v) n := by
@@ -132,9 +130,9 @@ theorem JR_Jst_map (v : GlobalTheory.FinPl.Pl D) :
     Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Establish `hk : Formalism.UG.cT (sigR (AF D.host.F) D.sp.cm.sig) (mat k) * JR (AF D.host.F) (Jst D n) * mat k = JR (AF D.host.F) (Jst D n)` using `k.2`. Establish `e` using `congrArg (fun M => M.map (compFin D.host.F D.host.E v)) hk`. Simplify using `only [Matrix.map_mul] at e`. Rewrite `e` using `[cT_map _ _ _ (compFin_sigR v), JR_Jst_map]`. Rewrite using `[compAt_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem uni_comp (k : G D n) (v : GlobalTheory.FinPl.Pl D) :
     Formalism.UG.cT (sigR (Fv D.host.F v) D.sp.cm.sig) ((mat k).map (GlobalTheory.FinPl.compAt D v)) * J2 (Ev D v) n *
@@ -153,24 +151,22 @@ namespace PositivityTheory.Rg.Sw.Glob.GenFinLocHf
 open PositivityTheory.Rg.Sw.Glob.GenFinLocAH
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hz`. Conclude with `⟨(u : O).2, _, (u⁻¹ : Oˣ).1.2, congrArg Subtype.val u.mul_inv⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unit_sub {S : Type} [CommRing S] (O : Subring S) (z : O) (hz : IsUnit z) : (z : S) ∈ O ∧ ∃ z' ∈ O, (z : S) * z' = 1 := by
   obtain ⟨u, rfl⟩ := hz
   exact ⟨(u : O).2, _, (u⁻¹ : Oˣ).1.2, congrArg Subtype.val u.mul_inv⟩
 
 /- English proof (translation)
-Take `⟨g, rfl⟩ : ∃ g : Matrix (Fin (n + n)) (Fin (n + n)) O, g.map O.subtype = M` from `⟨Matrix.of fun i j => ⟨M i j, hM i j⟩, by ext i j; rfl⟩`. Take `⟨g', rfl⟩ : ∃ g : Matrix (Fin (n + n)) (Fin (n + n)) O, g.map O.subtype = M'` from `⟨Matrix.of fun i j => ⟨M' i j, hM' i j⟩, by ext i j; rfl⟩`. Establish `hinj : Function.Injective (fun M : Matrix (Fin (n + n)) (Fin (n + n)) O => M.map O.subtype)` using `Matrix.map_injective Subtype.val_injective`. Establish `hUni : Uni σ g`. Apply `hinj` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `(Formalism.UG.cT σ g * J2 O n * g).map O.subtype = (J2 O n).map O.subtype`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, cT_map _ _ _ hc, standard_symplectic_matrix_map]`. Conclude with `hU`. Establish `hdet : IsUnit g.det`. Establish `e : g * g' = 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Use `show (g * g').map O.subtype = (1 : Matrix (Fin (n + n)) (Fin (n + n)) O).map O.subtype`. Rewrite using `[Matrix.map_mul, hMM, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e'` using `congrArg Matrix.det e`. Rewrite `e'` using `[Matrix.det_mul, Matrix.det_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨_, _, e', by rw [mul_comm]; exact e'⟩, rfl⟩`. Take `⟨a, I, ha, hδ⟩` from `locRing hF hS σ hσ 𝔪 h𝔪 horb g hUni hdet`. Establish `hca : IsUnit (Formalism.UG.cT σ a).det` using `by rw [det_cT]; exact ha.map _`. Use `⟨a.map O.subtype, I, fun i j => (a i j).2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← det_map O.subtype a]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `unit_sub O a.det ha`. Establish `e : blkDm (g.map O.subtype * GlobalTheory.StdUnn.blk4 (a.map O.subtype) 0 0 (((a.map O.subtype).map τ).transpose)⁻¹ * wIm I) = (blkDm (g * GlobalTheory.StdUnn.blk4 a 0 0 (Formalism.UG.cT σ a)⁻¹ * wIm I)).map O.subtype`. Rewrite using `[blkDm_map, Matrix.map_mul, Matrix.map_mul, block_matrix_map, wIm_map, map_nonsing_inv O.subtype _ hca, cT_map _ _ _ hc a, Matrix.map_zero _ (map_zero O.subtype)]`. Both sides reduce to the same expression. Rewrite using `[e, ← det_map O.subtype]`.
-
-Conclude with `unit_sub O _ hδ`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locSub (hF : LocRedField) (hS : LocRedSplit) {S : Type} [CommRing S] {n : ℕ} (O : Subring S) (τ : S →+* S) (σ : O →+* O)
     (hσ : ∀ a, σ (σ a) = a) (hc : ∀ x, O.subtype (σ x) = τ (O.subtype x)) (𝔪 : Ideal O) (h𝔪 : 𝔪.IsMaximal)

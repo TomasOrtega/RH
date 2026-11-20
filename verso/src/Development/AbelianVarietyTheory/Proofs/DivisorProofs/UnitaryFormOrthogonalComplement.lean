@@ -5,25 +5,25 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheo
 namespace GlobalTheory.SteepMult
 
 /- English proof (translation)
-Introduce `R S W _ _ _ actW B hB U hU`. Take `⟨_, hpos, hadj⟩` from `hB`. Prove the components needed by the constructor for the conclusion. Introduce `X hX x hx`. Use `GlobalTheory.TensorHW.kc_ind actW (U.orthogonalBilin B) x (fun a b hab => ?_) hX` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hx`, the goal using `[Submodule.mem_orthogonalBilin_iff]`. Introduce `n hn`. Establish `hba : sameBlock b a`. Apply the tactic sequence `cases a <;> cases b <;> simp_all [sameBlock]`. Establish `h` using `hadj b a hba n x`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `show B n (actW (Eab a b) x) = 0`. Rewrite using `[← h]`. Conclude with `hx _ (hU _ (GlobalTheory.TensorHW.isKC_Eab hba) n hn)`. Establish `hinf : U ⊓ U.orthogonalBilin B = ⊥`. Rewrite using `[eq_bot_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨hxU, hxo⟩` from `Submodule.mem_inf.mp hx`. Rewrite `hxo` using `[Submodule.mem_orthogonalBilin_iff]`. Establish `h0 : B x x = 0` using `hxo x hxU`. Rewrite using `[Submodule.mem_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `h` using `hpos x hne`. Rewrite `h` using `[h0]`. Simplify using `at h`. Set `b` to `Module.finBasis ℂ U`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ : W →ₗ[ℂ] (Fin (Module.finrank ℂ U) → ℂ)` to `LinearMap.pi (fun i => B (b i : W))`. Establish `hker : LinearMap.ker ψ ≤ U.orthogonalBilin B`. Introduce `x hx`. Rewrite `hx` using `[LinearMap.mem_ker]`. Rewrite using `[Submodule.mem_orthogonalBilin_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n hn`. Establish `hf : (B.flip x).comp U.subtype = 0`. Use `b.ext (fun i => ?_)` and prove the remaining obligations. Establish `h` using `congrFun hx i`. Simplify `h` using `[ψ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `LinearMap.congr_fun hf ⟨n, hn⟩`. Simplify using `using h`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker ψ`. Establish `h2 : Module.finrank ℂ (LinearMap.range ψ) ≤ Module.finrank ℂ U`. Establish `h` using `Submodule.finrank_le (LinearMap.range ψ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using h`. Establish `h3` using `Submodule.finrank_mono hker`. Establish `h4` using `Submodule.finrank_sup_add_finrank_inf_eq U (U.orthogonalBilin B)`. Rewrite `h4` using `[hinf, finrank_bot]`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers.
 
-Apply `le_antisymm (Submodule.finrank_le _)` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem orthogonal_kstable_compl : ∀ (R S : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (actW : Mat R S →ₗ[ℂ] Module.End ℂ W) (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ), IsUnitary actW B →

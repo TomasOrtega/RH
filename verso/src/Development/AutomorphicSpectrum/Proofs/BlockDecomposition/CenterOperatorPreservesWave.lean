@@ -23,7 +23,7 @@ variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 def Dt (U : ℝ → Mat n → V) : ℝ → Mat n → V := fun t x => deriv (fun s => U s x) t
 
 /- English proof (translation)
-Conclude with `hU.contDiffAt ((GlobalTheory.CompanionTheory.WaveMult.ZJoint.isOpen_dom n).mem_nhds ⟨Set.mem_univ t, hg⟩)`.
+A detailed English derivation is pending.
 -/
 theorem joint_contDiffAt {U : ℝ → Mat n → V}
     (hU : ContDiffOn ℝ ∞ (Function.uncurry U) (Set.univ ×ˢ GLs n)) (t : ℝ) {g : Mat n} (hg : g ∈ GLs n) :
@@ -31,14 +31,14 @@ theorem joint_contDiffAt {U : ℝ → Mat n → V}
   exact hU.contDiffAt ((GlobalTheory.CompanionTheory.WaveMult.ZJoint.isOpen_dom n).mem_nhds ⟨Set.mem_univ t, hg⟩)
 
 /- English proof (translation)
-Conclude with `(hasDerivAt_id t).prodMk (hasDerivAt_const t g)`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_line (t : ℝ) (g : Mat n) :
     HasDerivAt (fun s : ℝ => (s, g)) ((1 : ℝ), (0 : Mat n)) t := by
   exact (hasDerivAt_id t).prodMk (hasDerivAt_const t g)
 
 /- English proof (translation)
-Apply the tactic sequence `have hd : DifferentiableAt ℝ (Function.uncurry U) (t, g) := (GlobalTheory.CompanionTheory.WaveMult.WaveZ.joint_contDiffAt hU t hg).differentiableAt (by first | simp | exact WithTop.coe_ne_zero.2 ENat.top_ne_zero | decide)`. Conclude with `(hd.hasFDerivAt.comp_hasDerivAt t (GlobalTheory.CompanionTheory.WaveMult.WaveZ.hasDerivAt_line t g)).deriv`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dt_eq_fderiv {U : ℝ → Mat n → V}
     (hU : ContDiffOn ℝ ∞ (Function.uncurry U) (Set.univ ×ˢ GLs n)) {t : ℝ} {g : Mat n} (hg : g ∈ GLs n) :
@@ -48,7 +48,7 @@ theorem dt_eq_fderiv {U : ℝ → Mat n → V}
   exact (hd.hasFDerivAt.comp_hasDerivAt t (GlobalTheory.CompanionTheory.WaveMult.WaveZ.hasDerivAt_line t g)).deriv
 
 /- English proof (translation)
-Establish `hopen` using `GlobalTheory.CompanionTheory.WaveMult.ZJoint.isOpen_dom n`. Use `(((contDiffOn_infty_iff_fderiv_of_isOpen hopen).1 hU).2.clm_apply (contDiffOn_const : ContDiffOn ℝ ∞ (fun _ : ℝ × PositivityTheory.RgTw.Mat n => ((1 : ℝ), (0 : PositivityTheory.RgTw.Mat n))) _)).congr ?_` and prove the remaining obligations. Introduce and unpack `⟨t, g⟩ ⟨-, hg⟩`. Conclude with `GlobalTheory.CompanionTheory.WaveMult.WaveZ.dt_eq_fderiv hU hg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem dt_joint {U : ℝ → Mat n → V}
     (hU : ContDiffOn ℝ ∞ (Function.uncurry U) (Set.univ ×ˢ GLs n)) :
@@ -61,7 +61,7 @@ theorem dt_joint {U : ℝ → Mat n → V}
   exact GlobalTheory.CompanionTheory.WaveMult.WaveZ.dt_eq_fderiv hU hg
 
 /- English proof (translation)
-Apply the tactic sequence `have hd : DifferentiableAt ℝ (Function.uncurry U) (t, g) := (GlobalTheory.CompanionTheory.WaveMult.WaveZ.joint_contDiffAt hU t hg).differentiableAt (by first | simp | exact WithTop.coe_ne_zero.2 ENat.top_ne_zero | decide)`. Conclude with `(hd.hasFDerivAt.comp_hasDerivAt t (GlobalTheory.CompanionTheory.WaveMult.WaveZ.hasDerivAt_line t g)).differentiableAt`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem time_differentiableAt {U : ℝ → Mat n → V}
     (hU : ContDiffOn ℝ ∞ (Function.uncurry U) (Set.univ ×ˢ GLs n)) (t : ℝ) {g : Mat n} (hg : g ∈ GLs n) :
@@ -71,11 +71,11 @@ theorem time_differentiableAt {U : ℝ → Mat n → V}
   exact (hd.hasFDerivAt.comp_hasDerivAt t (GlobalTheory.CompanionTheory.WaveMult.WaveZ.hasDerivAt_line t g)).differentiableAt
 
 /- English proof (translation)
-Apply the tactic sequence `have h2 : ContDiffAt ℝ 2 Φ (t, g) := hc.of_le (by first | exact ENat.LEInfty.out | exact_mod_cast le_top | simp)`. Apply the tactic sequence `have hD1 : ContDiffAt ℝ 1 (fderiv ℝ Φ) (t, g) := h2.fderiv_right (by first | exact le_of_eq one_add_one_eq_two | norm_num)`. Establish `hDd : HasFDerivAt (fderiv ℝ Φ) (fderiv ℝ (fderiv ℝ Φ) (t, g)) (t, g)` using `(hD1.differentiableAt one_ne_zero).hasFDerivAt`. Apply the tactic sequence `have hsymm : IsSymmSndFDerivAt ℝ Φ (t, g) := h2.isSymmSndFDerivAt (by first | exact minSmoothness_of_isRCLikeNormedField.le | simp)`. Establish `hpath : HasDerivAt (fun s : ℝ => (s, g)) ((1 : ℝ), (0 : M)) t` using `(hasDerivAt_id t).prodMk (hasDerivAt_const t g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : HasDerivAt (fun s => fderiv ℝ Φ (s, g) ((0 : ℝ), y)) (fderiv ℝ (fderiv ℝ Φ) (t, g) ((1 : ℝ), (0 : M)) ((0 : ℝ), y)) t` using `(ContinuousLinearMap.apply ℝ W ((0 : ℝ), y)).hasFDerivAt.comp_hasDerivAt t (hDd.comp_hasDerivAt t hpath)`. Establish `hR : HasFDerivAt (fun x => fderiv ℝ Φ (t, x) ((1 : ℝ), (0 : M))) ((ContinuousLinearMap.apply ℝ W ((1 : ℝ), (0 : M))).comp ((fderiv ℝ (fderiv ℝ Φ) (t, g)).comp (ContinuousLinearMap.inr ℝ ℝ M))) g` using `(ContinuousLinearMap.apply ℝ W ((1 : ℝ), (0 : M))).hasFDerivAt.comp g (hDd.comp g (hasFDerivAt_prodMk_right t g))`. Rewrite using `[hR.fderiv]`. Use `hL using 1` and compare the differences between its conclusion and the goal. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply, ContinuousLinearMap.inr_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Conclude with `hsymm _ _`.
+A detailed English derivation is pending.
 -/
 theorem symm_mixed {M W : Type} [NormedAddCommGroup M] [NormedSpace ℝ M] [NormedAddCommGroup W] [NormedSpace ℝ W]
     {Φ : ℝ × M → W} {t : ℝ} {g : M} (hc : ContDiffAt ℝ ∞ Φ (t, g)) (y : M) :
@@ -107,9 +107,9 @@ theorem symm_mixed {M W : Type} [NormedAddCommGroup M] [NormedSpace ℝ M] [Norm
   exact hsymm _ _
 
 /- English proof (translation)
-Establish `hΦ` using `GlobalTheory.CompanionTheory.WaveMult.WaveZ.joint_contDiffAt hU t hg`. Establish `hL : (fun s => PositivityTheory.RgBcC.Rd X (U s) g) = fun s => fderiv ℝ (Function.uncurry U) (s, g) ((0 : ℝ), g * X)`. Use function extensionality and compare the values at `fun s => GlobalTheory.CompanionTheory.WaveMult.ZJoint.rd_eq_fderiv U hU hg X`. Establish `hev : GlobalTheory.CompanionTheory.WaveMult.WaveZ.Dt U t =ᶠ[nhds g] fun x => fderiv ℝ (Function.uncurry U) (t, x) ((1 : ℝ), (0 : PositivityTheory.RgTw.Mat n))` using `Filter.eventuallyEq_of_mem ((GlobalTheory.CompanionTheory.WaveMult.ZJoint.isOpen_GLs n).mem_nhds hg) fun x hx => GlobalTheory.CompanionTheory.WaveMult.WaveZ.dt_eq_fderiv hU hx`. Rewrite using `[hL]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((GlobalTheory.CompanionTheory.WaveMult.WaveZ.symm_mixed hΦ (g * X)).deriv).trans (congrArg (fun L => L (g * X)) (hev.fderiv_eq (𝕜 := ℝ)).symm)`.
+A detailed English derivation is pending.
 -/
 theorem dt_Rd (X : Mat n) {U : ℝ → Mat n → V}
     (hU : ContDiffOn ℝ ∞ (Function.uncurry U) (Set.univ ×ˢ GLs n)) (t : ℝ) {g : Mat n} (hg : g ∈ GLs n) :
@@ -132,7 +132,7 @@ def Good (Φ : (Mat n → V) → (Mat n → V)) : Prop :=
       ∀ (t : ℝ), ∀ g ∈ GLs n, deriv (fun s => Φ (U s) g) t = Φ (Dt U t) g
 
 /- English proof (translation)
-Conclude with `⟨GlobalTheory.CompanionTheory.WaveMult.ZJoint.pres_Rd X, fun F F' h x hx => GlobalTheory.CompanionTheory.WaveMult.Rd_agree_GLs X h x hx, fun U hU t g hg => GlobalTheory.CompanionTheory.WaveMult.WaveZ.dt_Rd X hU t hg⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_Rd (X : Mat n) : Good (V := V) (Rd X) := by
   exact ⟨GlobalTheory.CompanionTheory.WaveMult.ZJoint.pres_Rd X,
@@ -140,9 +140,9 @@ theorem good_Rd (X : Mat n) : Good (V := V) (Rd X) := by
     fun U hU t g hg => GlobalTheory.CompanionTheory.WaveMult.WaveZ.dt_Rd X hU t hg⟩
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `U hU`. Conclude with `hU`. Introduce `F F' h x hx`. Conclude with `h x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Introduce `U _ t g _`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem good_id : Good (V := V) (n := n) (fun f => f) := by
   refine ⟨?_, ?_, ?_⟩
@@ -154,9 +154,9 @@ theorem good_id : Good (V := V) (n := n) (fun f => f) := by
     rfl
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `U _`. Conclude with `(contDiffOn_const : ContDiffOn ℝ ∞ (fun _ : ℝ × PositivityTheory.RgTw.Mat n => (0 : V)) _)`. Introduce `F F' _ x _`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `U _ t g _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_zero : Good (V := V) (n := n) (fun _ => 0) := by
   refine ⟨?_, ?_, ?_⟩
@@ -168,11 +168,9 @@ theorem good_zero : Good (V := V) (n := n) (fun _ => 0) := by
     simp
 
 /- English proof (translation)
-Take `⟨s₁, c₁, d₁⟩` from `h`. Take `⟨s₂, c₂, d₂⟩` from `k`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `U hU`. Conclude with `(s₁ U hU).add (s₂ U hU)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F F' hF x hx show Φ F x + Ψ F x = Φ F' x + Ψ F' x`. Rewrite using `[c₁ F F' hF x hx, c₂ F F' hF x hx]`. Introduce `U hU t g hg`. Establish `e₁` using `GlobalTheory.CompanionTheory.WaveMult.WaveZ.time_differentiableAt (s₁ U hU) t hg`. Establish `e₂` using `GlobalTheory.CompanionTheory.WaveMult.WaveZ.time_differentiableAt (s₂ U hU) t hg`.
-
-Conclude with `((e₁.hasDerivAt.add e₂.hasDerivAt).deriv).trans (congrArg₂ (· + ·) (d₁ U hU t g hg) (d₂ U hU t g hg))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Good.add {Φ Ψ : (Mat n → V) → (Mat n → V)} (h : Good Φ) (k : Good Ψ) :
     Good (fun f => Φ f + Ψ f) := by
@@ -191,9 +189,9 @@ theorem Good.add {Φ Ψ : (Mat n → V) → (Mat n → V)} (h : Good Φ) (k : Go
       (congrArg₂ (· + ·) (d₁ U hU t g hg) (d₂ U hU t g hg))
 
 /- English proof (translation)
-Take `⟨s₁, c₁, d₁⟩` from `h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `U hU`. Conclude with `(s₁ U hU).const_smul c`. Introduce `F F' hF x hx show c • Φ F x = c • Φ F' x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[c₁ F F' hF x hx]`. Introduce `U hU t g hg`. Establish `e₁` using `GlobalTheory.CompanionTheory.WaveMult.WaveZ.time_differentiableAt (s₁ U hU) t hg`. Conclude with `((e₁.hasDerivAt.const_smul c).deriv).trans (congrArg (c • ·) (d₁ U hU t g hg))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Good.smul {Φ : (Mat n → V) → (Mat n → V)} (c : ℂ) (h : Good Φ) :
     Good (fun f => c • Φ f) := by
@@ -209,9 +207,9 @@ theorem Good.smul {Φ : (Mat n → V) → (Mat n → V)} (c : ℂ) (h : Good Φ)
     exact ((e₁.hasDerivAt.const_smul c).deriv).trans (congrArg (c • ·) (d₁ U hU t g hg))
 
 /- English proof (translation)
-Take `⟨s₁, c₁, d₁⟩` from `h`. Take `⟨s₂, c₂, d₂⟩` from `k`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `U hU`. Conclude with `s₁ _ (s₂ U hU)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F F' hF x hx`. Conclude with `c₁ (Ψ F) (Ψ F') (fun y hy => c₂ F F' hF y hy) x hx`. Introduce `U hU t g hg`. Conclude with `(d₁ (fun s => Ψ (U s)) (s₂ U hU) t g hg).trans (c₁ (GlobalTheory.CompanionTheory.WaveMult.WaveZ.Dt (fun s => Ψ (U s)) t) (Ψ (GlobalTheory.CompanionTheory.WaveMult.WaveZ.Dt U t)) (fun y hy => d₂ U hU t y hy) g hg)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Good.comp {Φ Ψ : (Mat n → V) → (Mat n → V)} (h : Good Φ) (k : Good Ψ) :
     Good (fun f => Φ (Ψ f)) := by
@@ -228,9 +226,7 @@ theorem Good.comp {Φ Ψ : (Mat n → V) → (Mat n → V)} (h : Good Φ) (k : G
         (fun y hy => d₂ U hU t y hy) g hg)
 
 /- English proof (translation)
-Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_empty]`. Conclude with `GlobalTheory.CompanionTheory.WaveMult.WaveZ.good_zero`. Introduce `a S ha ih`. Simplify using `only [Finset.sum_insert ha]`.
-
-Conclude with `GlobalTheory.CompanionTheory.WaveMult.WaveZ.Good.add (h a) ih`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_sum {ι : Type} (S : Finset ι) (Φ : ι → (Mat n → V) → (Mat n → V)) (h : ∀ i, Good (Φ i)) :
     Good (fun f => ∑ i ∈ S, Φ i f) := by
@@ -243,7 +239,7 @@ theorem good_sum {ι : Type} (S : Finset ι) (Φ : ι → (Mat n → V) → (Mat
     exact GlobalTheory.CompanionTheory.WaveMult.WaveZ.Good.add (h a) ih
 
 /- English proof (translation)
-Use `show GlobalTheory.CompanionTheory.WaveMult.WaveZ.Good (fun f : PositivityTheory.RgTw.Mat n → V => (1 / 2 : ℂ) • (PositivityTheory.RgBcC.Rd (Matrix.single a b 1) f + (if s = true then -Complex.I else Complex.I) • PositivityTheory.RgBcC.Rd (Matrix.single a b Complex.I) f))`. Conclude with `GlobalTheory.CompanionTheory.WaveMult.WaveZ.Good.smul _ (GlobalTheory.CompanionTheory.WaveMult.WaveZ.Good.add (GlobalTheory.CompanionTheory.WaveMult.WaveZ.good_Rd _) (GlobalTheory.CompanionTheory.WaveMult.WaveZ.Good.smul _ (GlobalTheory.CompanionTheory.WaveMult.WaveZ.good_Rd _)))`.
+A detailed English derivation is pending.
 -/
 theorem good_Eu (s : Bool) (a b : Fin n) : Good (V := V) (Eu s a b) := by
   show GlobalTheory.CompanionTheory.WaveMult.WaveZ.Good (fun f : PositivityTheory.RgTw.Mat n → V =>
@@ -254,11 +250,9 @@ theorem good_Eu (s : Bool) (a b : Fin n) : Good (V := V) (Eu s a b) := by
     (GlobalTheory.CompanionTheory.WaveMult.WaveZ.Good.smul _ (GlobalTheory.CompanionTheory.WaveMult.WaveZ.good_Rd _)))
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `a b`. Use `show GlobalTheory.CompanionTheory.WaveMult.WaveZ.Good (fun f : PositivityTheory.RgTw.Mat n → V => if a = b then f else 0)`. Distinguish the cases in `hab : a = b`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_pos hab]`. Conclude with `GlobalTheory.CompanionTheory.WaveMult.WaveZ.good_id`. Simplify using `only [if_neg hab]`. Conclude with `GlobalTheory.CompanionTheory.WaveMult.WaveZ.good_zero`. Consider the case `succ m ih`.
-
-Introduce `a b`. Use `show GlobalTheory.CompanionTheory.WaveMult.WaveZ.Good (fun f : PositivityTheory.RgTw.Mat n → V => ∑ c, PositivityTheory.RgBcC.Eu s a c (PositivityTheory.RgBcC.Epow s m c b f))`. Conclude with `GlobalTheory.CompanionTheory.WaveMult.WaveZ.good_sum _ _ fun c => GlobalTheory.CompanionTheory.WaveMult.WaveZ.Good.comp (GlobalTheory.CompanionTheory.WaveMult.WaveZ.good_Eu s a c) (ih c b)`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem good_Epow (s : Bool) (m : ℕ) : ∀ a b : Fin n, Good (V := V) (Epow s m a b) := by
   induction m with
@@ -278,7 +272,7 @@ theorem good_Epow (s : Bool) (m : ℕ) : ∀ a b : Fin n, Good (V := V) (Epow s 
       GlobalTheory.CompanionTheory.WaveMult.WaveZ.Good.comp (GlobalTheory.CompanionTheory.WaveMult.WaveZ.good_Eu s a c) (ih c b)
 
 /- English proof (translation)
-Use `show GlobalTheory.CompanionTheory.WaveMult.WaveZ.Good (fun f : PositivityTheory.RgTw.Mat n → V => ∑ a, PositivityTheory.RgBcC.Epow s m a a f)`. Conclude with `GlobalTheory.CompanionTheory.WaveMult.WaveZ.good_sum _ _ fun a => GlobalTheory.CompanionTheory.WaveMult.WaveZ.good_Epow s m a a`.
+A detailed English derivation is pending.
 -/
 theorem good_gel (s : Bool) (m : ℕ) : Good (V := V) (gel (n := n) s m) := by
   show GlobalTheory.CompanionTheory.WaveMult.WaveZ.Good (fun f : PositivityTheory.RgTw.Mat n → V =>
@@ -286,9 +280,7 @@ theorem good_gel (s : Bool) (m : ℕ) : Good (V := V) (gel (n := n) s m) := by
   exact GlobalTheory.CompanionTheory.WaveMult.WaveZ.good_sum _ _ fun a => GlobalTheory.CompanionTheory.WaveMult.WaveZ.good_Epow s m a a
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => show GlobalTheory.CompanionTheory.WaveMult.WaveZ.Good (fun f : PositivityTheory.RgTw.Mat n → V => f)`. Conclude with `GlobalTheory.CompanionTheory.WaveMult.WaveZ.good_id`. Consider the case `cons p w ih`. Take `⟨s, m⟩` from `p`.
-
-Use `show GlobalTheory.CompanionTheory.WaveMult.WaveZ.Good (fun f : PositivityTheory.RgTw.Mat n → V => PositivityTheory.RgBcC.gel s m (PositivityTheory.RgBcC.zOp w f))`. Conclude with `GlobalTheory.CompanionTheory.WaveMult.WaveZ.Good.comp (GlobalTheory.CompanionTheory.WaveMult.WaveZ.good_gel s m) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem good_zOp (w : List (Bool × ℕ)) : Good (V := V) (zOp (n := n) w) := by
   induction w with
@@ -302,9 +294,9 @@ theorem good_zOp (w : List (Bool × ℕ)) : Good (V := V) (zOp (n := n) w) := by
     exact GlobalTheory.CompanionTheory.WaveMult.WaveZ.Good.comp (GlobalTheory.CompanionTheory.WaveMult.WaveZ.good_gel s m) ih
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil`. Introduce `x _`. Both sides reduce to the same expression. Consider the case `cons p w ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Treat this case separately.
 
-Take `⟨s, m⟩` from `p`. Introduce `x hx`. Use `show PositivityTheory.RgBcC.gel s m (PositivityTheory.RgBcC.zOp w (f + f')) x = PositivityTheory.RgBcC.gel s m (PositivityTheory.RgBcC.zOp w f) x + PositivityTheory.RgBcC.gel s m (PositivityTheory.RgBcC.zOp w f') x`. Rewrite using `[GlobalTheory.CompanionTheory.WaveMult.gel_agree_GLs s m ih x hx]`. Conclude with `GlobalTheory.CompanionTheory.WaveMult.Swap.gel_add hR (GlobalTheory.CompanionTheory.WaveMult.Swap.zOp_smooth hR w hf) (GlobalTheory.CompanionTheory.WaveMult.Swap.zOp_smooth hR w hf') s m hx`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zOp_add (hR : RCalc) (w : List (Bool × ℕ)) {f f' : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n))
     (hf' : ContDiffOn ℝ ∞ f' (GLs n)) : Set.EqOn (zOp w (f + f')) (zOp w f + zOp w f') (GLs n) := by
@@ -323,9 +315,9 @@ theorem zOp_add (hR : RCalc) (w : List (Bool × ℕ)) {f f' : Mat n → V} (hf :
       (GlobalTheory.CompanionTheory.WaveMult.Swap.zOp_smooth hR w hf') s m hx
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil`. Introduce `x _`. Both sides reduce to the same expression. Consider the case `cons p w ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Treat this case separately.
 
-Take `⟨s, m⟩` from `p`. Introduce `x hx`. Use `show PositivityTheory.RgBcC.gel s m (PositivityTheory.RgBcC.zOp w (c • f)) x = c • PositivityTheory.RgBcC.gel s m (PositivityTheory.RgBcC.zOp w f) x`. Rewrite using `[GlobalTheory.CompanionTheory.WaveMult.gel_agree_GLs s m ih x hx]`. Conclude with `GlobalTheory.CompanionTheory.WaveMult.Swap.gel_csmul hR (GlobalTheory.CompanionTheory.WaveMult.Swap.zOp_smooth hR w hf) c s m hx`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zOp_csmul (hR : RCalc) (w : List (Bool × ℕ)) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (c : ℂ) :
     Set.EqOn (zOp w (c • f)) (c • zOp w f) (GLs n) := by
@@ -342,9 +334,9 @@ theorem zOp_csmul (hR : RCalc) (w : List (Bool × ℕ)) {f : Mat n → V} (hf : 
     exact GlobalTheory.CompanionTheory.WaveMult.Swap.gel_csmul hR (GlobalTheory.CompanionTheory.WaveMult.Swap.zOp_smooth hR w hf) c s m hx
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil`. Introduce `x _`. Both sides reduce to the same expression. Consider the case `cons p w ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Treat this case separately.
 
-Take `⟨s, m⟩` from `p`. Introduce `x hx`. Use `show PositivityTheory.RgBcC.gel s m (PositivityTheory.RgBcC.zOp w (0 : PositivityTheory.RgTw.Mat n → V)) x = 0`. Rewrite using `[GlobalTheory.CompanionTheory.WaveMult.gel_agree_GLs s m ih x hx]`. Conclude with `GlobalTheory.CompanionTheory.WaveMult.Swap.gel_zero hR s m hx`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zOp_zero (hR : RCalc) (w : List (Bool × ℕ)) : Set.EqOn (zOp w (0 : Mat n → V)) 0 (GLs n) := by
   induction w with
@@ -359,9 +351,9 @@ theorem zOp_zero (hR : RCalc) (w : List (Bool × ℕ)) : Set.EqOn (zOp w (0 : Ma
     exact GlobalTheory.CompanionTheory.WaveMult.Swap.gel_zero hR s m hx
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hA : ContDiffOn ℝ ∞ (PositivityTheory.RgBcC.gel true 2 f) (PositivityTheory.RgBcC.GLs n)` using `GlobalTheory.CompanionTheory.WaveMult.Swap.gel_smooth hR hf true 2`. Establish `hB : ContDiffOn ℝ ∞ (PositivityTheory.RgBcC.gel false 2 f) (PositivityTheory.RgBcC.GLs n)` using `GlobalTheory.CompanionTheory.WaveMult.Swap.gel_smooth hR hf false 2`. Establish `hAB : ContDiffOn ℝ ∞ (PositivityTheory.RgBcC.gel true 2 f + PositivityTheory.RgBcC.gel false 2 f) (PositivityTheory.RgBcC.GLs n)` using `hA.add hB`. Establish `e₁` using `GlobalTheory.CompanionTheory.WaveMult.WaveZ.zOp_csmul hR w hAB (2 : ℂ) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂` using `GlobalTheory.CompanionTheory.WaveMult.WaveZ.zOp_add hR w hA hB hx`. Establish `e₃` using `GlobalTheory.CompanionTheory.WaveMult.Swap.gel_zOp hR true 2 w hf hx`. Establish `e₄` using `GlobalTheory.CompanionTheory.WaveMult.Swap.gel_zOp hR false 2 w hf hx`. Use `show PositivityTheory.RgBcC.zOp w ((2 : ℂ) • (PositivityTheory.RgBcC.gel true 2 f + PositivityTheory.RgBcC.gel false 2 f)) x = (2 : ℂ) • (PositivityTheory.RgBcC.gel true 2 (PositivityTheory.RgBcC.zOp w f) x + PositivityTheory.RgBcC.gel false 2 (PositivityTheory.RgBcC.zOp w f) x)`. Rewrite using `[e₁, Pi.smul_apply, e₂, Pi.add_apply, e₃, e₄]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zOp_Om (hR : RCalc) (w : List (Bool × ℕ)) {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) :
     Set.EqOn (zOp w (Om f)) (Om (zOp w f)) (GLs n) := by
@@ -383,7 +375,7 @@ theorem zOp_Om (hR : RCalc) (w : List (Bool × ℕ)) {f : Mat n → V} (hf : Con
   rw [e₁, Pi.smul_apply, e₂, Pi.add_apply, e₃, e₄]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact hf`. Consider the case `cons p w ih`. Take `⟨s, m⟩` from `p`. Conclude with `(hR n).2.1 E _ ih s m`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem zOp_mem_CE (hR : RCalc) {E : KMod n} (w : List (Bool × ℕ)) {f : Mat n → E.V} (hf : f ∈ CE E) :
     zOp w f ∈ CE E := by
@@ -394,13 +386,11 @@ theorem zOp_mem_CE (hR : RCalc) {E : KMod n} (w : List (Bool × ℕ)) {f : Mat n
     exact (hR n).2.1 E _ ih s m
 
 /- English proof (translation)
-Introduce `hR n E u w hu`. Take `⟨h1, h2, h3, h4⟩` from `hu`. Establish `C` using `GlobalTheory.CompanionTheory.WaveMult.WaveZ.good_zOp (V := E.V) (n := n) w`. Use `⟨GlobalTheory.CompanionTheory.WaveMult.ZJoint.zOp_joint n u w h1, fun t => GlobalTheory.CompanionTheory.WaveMult.WaveZ.zOp_mem_CE hR w (h2 t), ?_, ?_⟩` and prove the remaining obligations. Introduce `t g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hderiv : deriv (fun s => PositivityTheory.RgBcC.zOp w (u s) g) = fun s => PositivityTheory.RgBcC.zOp w (GlobalTheory.CompanionTheory.WaveMult.WaveZ.Dt u s) g`. Use function extensionality and compare the values at `fun s => C.2.2 u h1 s g hg`. Establish `hsec : ∀ y ∈ PositivityTheory.RgBcC.GLs n, GlobalTheory.CompanionTheory.WaveMult.WaveZ.Dt (GlobalTheory.CompanionTheory.WaveMult.WaveZ.Dt u) t y = PositivityTheory.RgBcC.Om (u t) y`. Introduce `y hy`. Rewrite using `[← h3 t y hy, iteratedDeriv_succ, iteratedDeriv_succ, iteratedDeriv_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `show iteratedDeriv 2 (fun s => PositivityTheory.RgBcC.zOp w (u s) g) t = PositivityTheory.RgBcC.Om (PositivityTheory.RgBcC.zOp w (u t)) g`. Rewrite using `[iteratedDeriv_succ, iteratedDeriv_succ, iteratedDeriv_zero, hderiv, C.2.2 (GlobalTheory.CompanionTheory.WaveMult.WaveZ.Dt u) (GlobalTheory.CompanionTheory.WaveMult.WaveZ.dt_joint h1) t g hg, GlobalTheory.CompanionTheory.WaveMult.zOp_agree_GLs n w (GlobalTheory.CompanionTheory.Wa …`. Conclude with `GlobalTheory.CompanionTheory.WaveMult.WaveZ.zOp_Om hR w (h2 t).1 hg`. Introduce `g hg show deriv (fun s => PositivityTheory.RgBcC.zOp w (u s) g) 0 = 0`.
-
-Rewrite using `[C.2.2 u h1 0 g hg, GlobalTheory.CompanionTheory.WaveMult.zOp_agree_GLs n w (GlobalTheory.CompanionTheory.WaveMult.WaveZ.Dt u 0) 0 (fun y hy => h4 y hy) g hg]`. Conclude with `GlobalTheory.CompanionTheory.WaveMult.WaveZ.zOp_zero hR w hg`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWave_zOp : RCalc → ∀ (n : ℕ) (E : KMod n) (u : ℝ → Mat n → E.V) (w : List (Bool × ℕ)),
     IsWave E u → IsWave E (fun t => zOp w (u t)) := by

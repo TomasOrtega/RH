@@ -13,17 +13,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.V.Z.Win.Birth
 
 /- English proof (translation)
-Establish `hL : L ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h2`. Establish `ht : t ≠ 0` using `ht0.ne'`. Establish `e0 : L ^ 2 * t ^ (2 * m0) = 1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : t ^ (2 * m0) = (t ^ m0) ^ 2` using `by rw [two_mul, zpow_add₀ ht, sq]`. Rewrite using `[e, ← mul_pow, h2, one_pow]`. Establish `inj : ∀ a b : ℤ, L ^ 2 * t ^ a = 1 → L ^ 2 * t ^ b = 1 → a = b`. Introduce `a b ha hb`. Establish `e : t ^ a = t ^ b` using `mul_left_cancel₀ (pow_ne_zero 2 hL) (ha.trans hb.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `zpow_right_injective₀ ht0 ht1.ne e`. Break down `h4 with h4 | h4` into its components or cases. Substitute `h4` using the available equality. Establish `e : L ^ 2 * t ^ (s + 1) = 1`. Rewrite using `[h3]`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h1`. Use `inj _ _ e e0` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute `h4` using the available equality. Establish `e1 : t ^ (s + 1) = t ^ (s - 1) * t ^ 2`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show s + 1 = (s - 1) + 2 by ring, zpow_add₀ ht]`. Use `norm_cast`. Establish `e : L ^ 2 * t ^ (s - 1) = 1`. Rewrite `h1` using `[e1]`. Rewrite using `[h3]`.
+Put the expressions in a common number system so they can be compared. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h1`. Use `inj _ _ e e0` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem real_core (t L A B : ℝ) (m0 m1 s : ℤ) (ht0 : 0 < t) (ht1 : t < 1)
     (h1 : A * B * t ^ (s + 1) = 1) (h2 : L * t ^ m0 = 1) (h3 : L ^ 2 = t * A ^ 2)
@@ -58,11 +58,11 @@ private theorem real_core (t L A B : ℝ) (m0 m1 s : ℤ) (ht0 : 0 < t) (ht1 : t
     omega
 
 /- English proof (translation)
-Establish `e : normV w = Ideal.absNorm w.asIdeal` using `rfl`. Establish `h1 : 1 < normV w` using `NumberField.HeightOneSpectrum.one_lt_absNorm w`. Establish `hd : l ∣ normV w`. Establish `h2 : Ideal.absNorm w.asIdeal ∣ Ideal.absNorm (Ideal.span {((l : ℕ) : 𝓞 F)})` using `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).2 hw)`. Rewrite `h2` using `[Ideal.absNorm_span_natCast, ← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k, -, hk⟩` from `(Nat.dvd_prime_pow hl.out).1 h2`. Rewrite using `[hk]`. Use `dvd_pow_self l ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Simplify using `[hk] at h1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Use `⟨norm_pos_iff.2 (Nat.cast_ne_zero.2 (by omega)), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (Qbar l)), norm_algebraMap']`. Conclude with `Padic.norm_intCast_lt_one_iff.2 (Int.natCast_dvd_natCast.2 hd)` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_q {F : Type} [Field F] [NumberField F] {l : ℕ} [hl : Fact l.Prime] (w : Pl F)
     (hw : ((l : ℕ) : 𝓞 F) ∈ w.asIdeal) : 0 < ‖(normV w : Qbar l)‖ ∧ ‖(normV w : Qbar l)‖ < 1 := by
@@ -82,7 +82,7 @@ private theorem norm_q {F : Type} [Field F] [NumberField F] {l : ℕ} [hl : Fact
   exact_mod_cast Padic.norm_intCast_lt_one_iff.2 (Int.natCast_dvd_natCast.2 hd)
 
 /- English proof (translation)
-Establish `e : x = (x - a) + a` using `by ring`. Rewrite using `[e, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [ha]; exact h.ne), ha]`. Conclude with `max_eq_right h.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_of_near {K : Type} [NormedField K] [IsUltrametricDist K] {x a : K} (h : ‖x - a‖ < 1)
     (ha : ‖a‖ = 1) : ‖x‖ = 1 := by
@@ -96,35 +96,33 @@ Evaluate the decidable proposition.
 private theorem fin2 : ∀ i j : Fin 2, i ≠ j → (i = 0 ∧ j = 1) ∨ (i = 1 ∧ j = 0) := by decide
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ _ l _ ι ξ s c m a π r h v σ hσ`. Take `⟨ω, hω, -⟩` from `UpperTheory.V.Af.Rn.centChar F π`. Distinguish the cases in `hc : c v = 0`. Conclude with `Or.inr ((locTrans F π v).1 (h.sph v hc))`. Use `Or.inl ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the second alternative. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hU, hcent⟩` from `(locTrans F π v).2 σ hσ`. Establish `hcent'` using `hcent ω hω`. Take `⟨hN, hI⟩` from `detCent F Ω l ι ξ s π r h.att h.det h.ξ_open ω hω v`. Take `⟨A, hA⟩` from `exists_isPlaceOver Ω v`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : σ.V, x ≠ 0 := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, -⟩` from `hσ`. Take `⟨y, hy⟩` from `DFunLike.ne_iff.1 hf`. Use `⟨y, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Simplify using `at hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hq1 : 1 < normV v` using `NumberField.HeightOneSpectrum.one_lt_absNorm v`. Establish `hlam : ∃ lam : ℂ, HasU v (π.locRep v) (c v) lam ∧ lam ≠ 0 ∧ (((l : ℕ) : 𝓞 F) ∈ v.asIdeal → ‖ι.symm lam‖ * ‖(normV v : Qbar l)‖ ^ m v 0 = 1 ∧ m v 1 + 2 ≤ m v 0 ∧ m v 0 + m v 1 = s)`. Distinguish the cases in `hl : ((l : ℕ) : 𝓞 F) ∈ v.asIdeal`. Take `⟨hc1, h12, hs, ha, ⟨lam, hlU, hnear⟩, -⟩` from `h.above v hl`. Establish `e` using `norm_of_near hnear ha`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn : ‖ι.symm lam‖ * ‖(normV v : Qbar l)‖ ^ m v 0 = 1`. Rewrite using `[← norm_zpow, ← norm_mul]`. Conclude with `e`. Use `⟨lam, hc1 ▸ hlU, ?_, fun _ => ⟨hn, h12, hs⟩⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `at hn`. Take `⟨lam, hlU, hn⟩` from `h.away v hc hl`. Use `⟨lam, hlU, ?_, fun h' => absurd h' hl⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Simplify using `at hn`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨lam, hlU, hl0, hln⟩` from `hlam`. Take `⟨ψ, hsm, hsub, hun, hsq⟩` from `uLoc F v (c v) lam σ hc hl0 ((hU _ _) hlU)`. Establish `hprod : ∀ z, ψ 0 z * ψ 1 z = ω.loc v z`. Introduce `z`. Establish `e` using `(psCent F v σ ψ hsub z x).symm.trans (hcent' z x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Units.ext (smul_left_injective ℂ hx e)`. Use `psPlain F v σ ψ hsm hsub ?_` and prove the remaining obligations. Introduce and unpack `i j ⟨hu, hq⟩`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ((ψ i (atFin v (unif v)) : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Establish `e : ((normV v : ℕ) : ℂ) = 1` using `mul_left_cancel₀ h0 (by rw [hq, mul_one])`. Establish `e' : normV v = 1` using `by exact_mod_cast e`. Use linear arithmetic over natural numbers and integers. Establish `hu01 : ∀ y, IsUnitAt v y → ψ 1 y = 1`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `y hy`. Break down `fin2 i j hij with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Rewrite using `[← hu y hy, hun y hy]`. Rewrite using `[hu y hy, hun y hy]`. Distinguish the cases in `hl : ((l : ℕ) : 𝓞 F) ∈ v.asIdeal`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hn, h12, hs⟩` from `hln hl`. Take `⟨ht0, ht1⟩` from `norm_q (l := l) v hl`. Take `⟨N, hN0, hNe⟩` from `hN`. Establish `hnorm : ∀ z w : ℂ, ‖ι.symm (z * w)‖ = ‖ι.symm z‖ * ‖ι.symm w‖` using `fun z w => by`. Rewrite using `[map_mul, norm_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hqn : ‖ι.symm ((normV v : ℕ) : ℂ)‖ = ‖(normV v : Qbar l)‖` using `by rw [map_natCast]`. Use `(real_core ‖(normV v : Qbar l)‖ ‖ι.symm lam‖ ‖ι.symm ((ψ 0 (atFin v (unif v)) : ℂˣ) : ℂ)‖ ‖ι.symm ((ψ 1 (atFin v (unif v)) : ℂˣ) : ℂ)‖ (m v 0) (m v 1) s ht0 ht1 ?_ hn ?_ ?_ h12 hs).elim` and prove the remaining obligations. Establish `e` using `congrArg (fun z : ℂ => ‖ι.symm z‖) hNe`. Simplify using `only [map_pow, norm_pow, map_one, norm_one] at e`. Establish `e2` using `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hN0.ne').1 e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e2` using `[hnorm, ← hprod, Units.val_mul, hnorm, map_zpow₀, norm_zpow, hqn]`. Conclude with `e2`. Establish `e` using `congrArg (fun z : ℂ => ‖ι.symm z‖) hsq`. Simplify using `only [map_pow, norm_pow, map_mul, norm_mul, map_natCast] at e`. Conclude with `e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Establish `e` using `congrArg (fun z : ℂ => ‖ι.symm z‖) hq`. Simplify using `only [hnorm, hqn] at e`. Break down `fin2 i j hij with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Conclude with `Or.inl e`. Conclude with `Or.inr e`.
-
-Establish `hram : Ine (F` using `F) A ≤ ξ.ker := hI A hA (fun y hy => by`. Rewrite using `[← hprod, hun y hy, hu01 y hy, one_mul])`. Break down `(h.ram v A hA).1 hram with h0 | h0` into its components or cases. Conclude with `absurd h0 hc`. Conclude with `absurd h0 hl`.
+Prove the second alternative. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem ordPlain : OrdPlain := by
   intro F Ω _ _ _ _ _ _ l _ ι ξ s c m a π r h v σ hσ

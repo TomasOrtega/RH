@@ -16,15 +16,15 @@ def Inv (f : G → W) : Prop := ∀ g, ∀ k ∈ K, f (g * ι k) = f g
 
 open Classical in
 /- English proof (translation)
-Establish `hmul : ∀ h ∈ DoubleCoset.doubleCoset d (K : Set H) K, ∀ k ∈ K, h * k ∈ DoubleCoset.doubleCoset d (K : Set H) K` using `fun h hh k hk => by`. Take `⟨a, ha, b, hb, rfl⟩` from `DoubleCoset.mem_doubleCoset.1 hh`. Conclude with `DoubleCoset.mem_doubleCoset.2 ⟨a, ha, b * k, K.mul_mem hb hk, by group⟩`. Establish `heq : ∀ h h' : H, ((ι h : G) : G ⧸ J) = (ι h' : G) ↔ h⁻¹ * h' ∈ K` using `fun h h' => by`. Rewrite using `[QuotientGroup.eq, ← map_inv, ← map_mul, hJ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective fun c : H ⧸ K => ((ι c.out : G) : G ⧸ J)` using `fun c c' h => by`. Rewrite using `[← c.out_eq', ← c'.out_eq']`. Conclude with `QuotientGroup.eq.2 ((heq _ _).1 h)`. Rewrite using `[← finsum_mem_univ, finsum_mem_inter_support_eq _ _ (Set.range fun c : H ⧸ K => ((ι c.out : G) : G ⧸ J)), finsum_mem_range hinj]`. Use `finsum_congr fun c => ?_ split_ifs with hc` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h, hh, e⟩` from `(hD _).1 hc.choose_spec.1`. Establish `e2` using `hc.choose_spec.2`. Rewrite `e2`, the goal using `[← e]`. Establish `hk` using `(heq _ _).1 e2`. Establish `e3 : c.out = h * (h⁻¹ * c.out)` using `by group`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dosetInd, Set.indicator_of_mem (e3 ▸ hmul h hh _ hk), Pi.one_apply, one_smul, e3, map_mul, ← mul_assoc, hf _ _ hk]`. Rewrite using `[dosetInd, Set.indicator_of_notMem fun h => hc ⟨_, (hD _).2 ⟨_, h, rfl⟩, rfl⟩, zero_smul]`. Use extensionality with `c`. Simplify using `only [Set.mem_inter_iff, Set.mem_univ, true_and, iff_and_self, Function.mem_support]`. Introduce `hc`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx, rfl⟩ : ∃ x ∈ D, (x : G ⧸ J) = c := by`. Assume the negation of the conclusion as `h`. Conclude with `hc (dif_neg h)`. Take `⟨h, -, rfl⟩` from `(hD _).1 hx`. Conclude with `⟨(h : H ⧸ K), (heq _ _).2 (QuotientGroup.eq.1 (QuotientGroup.out_eq' _))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coset_sum_eq (J : Subgroup G) (hJ : ∀ h, ι h ∈ J ↔ h ∈ K) (d : H) {f : G → W} (hf : Inv ι K f) (g : G)
     {D : Set G} (hD : ∀ x, x ∈ D ↔ ∃ h ∈ DoubleCoset.doubleCoset d (K : Set H) K, ι h = x) :
@@ -62,7 +62,7 @@ theorem coset_sum_eq (J : Subgroup G) (hJ : ∀ h, ι h ∈ J ↔ h ∈ K) (d : 
 variable {K}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(finite_supp K hK φ hφ).toFinset, fun f g => finsum_eq_sum_of_support_subset _ fun c hc => by rw [Set.Finite.coe_toFinset] exact fun h => hc (by simp only [h, zero_smul])⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_sum (hK : IsCommensurated K) {φ : H → ℂ} (hφ : φ ∈ Hecke ℂ K) :
     ∃ S : Finset (H ⧸ K), ∀ (f : G → W) (g : G), op ι K φ f g = ∑ c ∈ S, φ c.out • f (g * ι c.out) :=
@@ -71,9 +71,9 @@ theorem exists_sum (hK : IsCommensurated K) {φ : H → ℂ} (hφ : φ ∈ Hecke
     exact fun h => hc (by simp only [h, zero_smul])⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Establish `hm : (fun h => f (g * ι h)) ∈ AMF ℂ (⊥ : Subgroup H) K (1 : Representation ℂ (⊥ : Subgroup H) W)`. Introduce and unpack `⟨γ, hγ⟩ h κ`. Rewrite `hγ` using `[Subgroup.mem_bot]`. Substitute `hγ` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Use `show f (g * ι (1 * h * κ)) = f (g * ι h)`. Rewrite using `[one_mul, map_mul, ← mul_assoc, hf _ _ κ.2]`. Establish `key : ∀ a b : H → ℂ, op ι K a (op ι K b f) g = hAct K a (hAct K b fun h => f (g * ι h)) 1` using `fun a b => by`. Simplify using `only [op, hAct, one_mul, map_mul, mul_assoc]`. Rewrite using `[key, key, ← hecke_act_mul H ⊥ K ℂ W 1 hK φ hφ ψ hψ _ hm, ← hecke_act_mul H ⊥ K ℂ W 1 hK ψ hψ φ hφ _ hm, hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem op_comm_same (hK : IsCommensurated K) {φ ψ : H → ℂ} (hφ : φ ∈ Hecke ℂ K) (hψ : ψ ∈ Hecke ℂ K)
     (hc : conv K φ ψ = conv K ψ φ) {f : G → W} (hf : Inv ι K f) : op ι K φ (op ι K ψ f) = op ι K ψ (op ι K φ f) := by
@@ -89,9 +89,9 @@ theorem op_comm_same (hK : IsCommensurated K) {φ ψ : H → ℂ} (hφ : φ ∈ 
   rw [key, key, ← hecke_act_mul H ⊥ K ℂ W 1 hK φ hφ ψ hψ _ hm, ← hecke_act_mul H ⊥ K ℂ W 1 hK ψ hψ φ hφ _ hm, hc]
 
 /- English proof (translation)
-Establish `h1 : op ι K φ f g = ∑ᶠ z : H ⧸ K, φ z.out • f (g * ι (u * z.out))`. Rewrite using `[op, ← finsum_out_mul K u (fun h => φ h • f (g * ι h)) fun h k => by`. Rewrite using `[map_mul, ← mul_assoc, hf _ _ k.2, show φ (h * k) = φ h by simpa using hφ 1 k h]]`. Conclude with `finsum_congr fun z => by rw [show φ (u * z.out) = φ z.out by simpa using hφ ⟨u, hu⟩ 1 z.out]`. Rewrite using `[h1, smul_finsum' c ((finite_supp K hfin φ hφ').subset fun z hz h => hz (by simp only [h, zero_smul])), op]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_congr fun z => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, show g * κ * ι z.out = g * (κ * ι z.out * κ⁻¹) * κ by group, hc, hκ, map_mul ι _ u⁻¹, ← mul_assoc, hf _ _ (K.inv_mem hu)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem op_conj {φ : H → ℂ} (hφ : IsBiInv K φ) {f : G → W} (hf : Inv ι K f) {κ : G} {u : H} (hu : u ∈ K) {c : ℂ}
     (hκ : ∀ h, κ * ι h * κ⁻¹ = ι (u * h * u⁻¹)) (hc : ∀ g, f (g * κ) = c • f g) (hfin : IsCommensurated K)
@@ -110,16 +110,16 @@ section FG
 variable {R : Type} [CommRing R] [Algebra R ℂ]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qn15.eval_fg h₀ P`.
+A detailed English derivation is pending.
 -/
 theorem eval_fg {σ : Type} {M₀ : Submodule R ℂ} (h₀ : M₀.FG) (P : MvPolynomial σ ℂ) :
     ∃ M : Submodule R ℂ, M.FG ∧ ∀ v : σ → ℂ, (∀ i, v i ∈ M₀) → MvPolynomial.eval v P ∈ M :=
   _root_.UpperTheory.Reformulated.B.Qn15.eval_fg h₀ P
 
 /- English proof (translation)
-Use `choose M h1 h2 using fun p : κ × κ => eval_fg h₀ (P p.1 p.2)`. Use `⟨⨆ p : κ × κ, (M p).map ((LinearMap.toSpanSingleton ℂ W (b.repr w p.2 • b p.1)).restrictScalars R), Submodule.fg_iSup _ fun p => (h1 p).map _, fun A v hv hA => ?_⟩` and prove the remaining obligations. Rewrite using `[← b.sum_repr (A w)]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[show b.repr (A w) i = ∑ j, LinearMap.toMatrix b b A i j * b.repr w j from (congrFun (LinearMap.toMatrix_mulVec_repr b b A w) i).symm, Finset.sum_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun j _ => Submodule.mem_iSup_of_mem (i, j) ⟨_, h2 (i, j) v hv, ?_⟩` and prove the remaining obligations. Rewrite using `[hA, mul_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem apply_fg [Module R W] [IsScalarTower R ℂ W] {σ κ : Type} [Fintype κ] [DecidableEq κ] (b : Module.Basis κ ℂ W)
     (P : κ → κ → MvPolynomial σ ℂ) {M₀ : Submodule R ℂ} (h₀ : M₀.FG) (w : W) :

@@ -13,7 +13,7 @@ section GenericPiece
 variable {O : Type*} [CommRing O] [IsDomain O] {K : Type*} [DecidableEq K] {ι : K → Type*}
 
 /- English proof (translation)
-Introduce `d hd`. Apply `h` to reduce the goal to its premises. Introduce `h0`. Rewrite `hd` using `[coeff_map, h0, map_zero]`. Conclude with `hd rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWeightedHomogeneous_map_coeff {R S σ M : Type*} [CommSemiring R] [CommSemiring S]
     [AddCommMonoid M] (f : R →+* S) {w : σ → M} {g : MvPolynomial σ R} {b : M}
@@ -25,7 +25,7 @@ theorem isWeightedHomogeneous_map_coeff {R S σ M : Type*} [CommSemiring R] [Com
   exact hd rfl
 
 /- English proof (translation)
-Introduce `d hd`. Apply `h` to reduce the goal to its premises. Rewrite using `[coeff_map]`. Conclude with `(map_ne_zero_iff f hf).mpr hd`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWeightedHomogeneous_of_map_coeff {R S σ M : Type*} [CommSemiring R] [CommSemiring S]
     [AddCommMonoid M] (f : R →+* S) (hf : Function.Injective f) {w : σ → M}
@@ -62,23 +62,23 @@ def genFibPiece (P : Ideal (MRing ι O)) (m : K → ℕ) :
   map_smul' c x := Subtype.ext ((genFibQuot P).toLinearMap.map_smul c x.1)
 
 /- English proof (translation)
-Rewrite using `[Module.End.isUnit_iff]`. Establish `hx : algebraMap O (FractionRing O) x ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors x.2`. Prove the components needed by the constructor for the conclusion. Introduce `y z h`. Establish `h' : algebraMap O (FractionRing O) x • y = algebraMap O (FractionRing O) x • z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `h` using `only [Module.algebraMap_end_apply, algebraMap_smul]`. Conclude with `smul_right_injective _ hx h'`. Introduce `y`. Use `⟨(algebraMap O (FractionRing O) x)⁻¹ • y, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.algebraMap_end_apply, ← algebraMap_smul (FractionRing O), smul_smul, mul_inv_cancel₀ hx, one_smul]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `surj y := by`. Take `⟨q, hq⟩` from `y`. Take `⟨F, hF, rfl⟩` from `Submodule.mem_map.mp hq`. Set `_` to `MvPolynomial.algebraMvPolynomial (σ := Σ k, ι k) (R := O) (S := FractionRing O)`. Take `⟨⟨g, c⟩, hgc⟩` from `IsLocalization.surj ((nonZeroDivisors O).map (C (σ := Σ k, ι k))) F`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨b, hb, hbc⟩` from `Submonoid.mem_map.mp c.2`. Simplify using `only [algebraMap_def, ← hbc, map_C] at hgc`. Establish `hFh : IsWeightedHomogeneous (blockWeight ι) F m` using `(mem_weightedHomogeneousSubmodule _ _ _ _).mp hF`. Establish `hmg : IsWeightedHomogeneous (blockWeight ι) (map (algebraMap O (FractionRing O)) g) m`. Rewrite using `[← hgc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `d hd`. Rewrite `hd` using `[mul_comm, coeff_C_mul]`. Conclude with `hFh (right_ne_zero_of_mul hd)`. Establish `hg : IsWeightedHomogeneous (blockWeight ι) g m` using `isWeightedHomogeneous_of_map_coeff _ (IsFractionRing.injective O (FractionRing O)) hmg`. Use `⟨(⟨Ideal.Quotient.mk P g, Submodule.mem_map.mpr ⟨g, (mem_weightedHomogeneousSubmodule _ _ _ _).mpr hg, rfl⟩⟩, ⟨b, hb⟩), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `b • (Ideal.Quotient.mkₐ (FractionRing O) (genFib P)) F = genFibQuot P (Ideal.Quotient.mk P g)`. Rewrite using `[genFibQuot_mk, ← hgc, ← algebraMap_smul (FractionRing O), ← map_smul, smul_eq_C_mul, mul_comm, Ideal.Quotient.mkₐ_eq_mk]`. Use `exists_of_eq {x₁ x₂} h := by`. Take `⟨q₁, hq₁⟩` from `x₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨q₂, hq₂⟩` from `x₂`. Take `⟨g₁, rfl⟩` from `Ideal.Quotient.mk_surjective q₁`. Take `⟨g₂, rfl⟩` from `Ideal.Quotient.mk_surjective q₂`. Establish `h₀ : genFibQuot P (Ideal.Quotient.mk P g₁) = genFibQuot P (Ideal.Quotient.mk P g₂)` using `congrArg Subtype.val h`. Rewrite `h₀` using `[genFibQuot_mk, genFibQuot_mk, Ideal.Quotient.eq, ← map_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `_` to `MvPolynomial.algebraMvPolynomial (σ := Σ k, ι k) (R := O) (S := FractionRing O)`. Rewrite `h₀` using `[genFib, ← algebraMap_def, IsLocalization.mem_map_algebraMap_iff ((nonZeroDivisors O).map (C (σ := Σ k, ι k))) (MRing ι (FractionRing O))]`. Take `⟨⟨⟨p, hp⟩, ⟨c, hc⟩⟩, hpc⟩` from `h₀`. Take `⟨b, hb, rfl⟩` from `Submonoid.mem_map.mp hc`. Simplify using `only [algebraMap_def, ← map_mul] at hpc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hp' : (g₁ - g₂) * C b = p` using `map_injective _ (IsFractionRing.injective O (FractionRing O)) hpc`. Use `⟨⟨b, hb⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `b • (Ideal.Quotient.mkₐ O P) g₁ = b • (Ideal.Quotient.mkₐ O P) g₂`. Rewrite using `[← map_smul, ← map_smul, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq, ← smul_sub, smul_eq_C_mul, mul_comm, hp']`. Conclude with `hp`.
+A detailed English derivation is pending.
 -/
 theorem isLocalizedModule_genFibPiece (P : Ideal (MRing ι O)) (m : K → ℕ) :
     IsLocalizedModule (nonZeroDivisors O) (genFibPiece P m) where
@@ -143,7 +143,7 @@ theorem isLocalizedModule_genFibPiece (P : Ideal (MRing ι O)) (m : K → ℕ) :
     exact hp
 
 /- English proof (translation)
-Introduce `O _ _ _ K _ _ ι _ P _ m`. Use `isLocalizedModule_genFibPiece P m` as an intermediate fact. Rewrite using `[IsFractionRing.finrank_right_eq O (FractionRing O), IsLocalizedModule.finrank_eq (p := nonZeroDivisors O) (f := genFibPiece P m) (hp := le_rfl)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem GenericPieceRank.proof : GenericPieceRank.Statement := by
   intro O _ _ _ K _ _ ι _ P _ m

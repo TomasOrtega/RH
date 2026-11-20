@@ -14,7 +14,7 @@ namespace PositivityTheory.Rg.Bc.ArchbcB.B.M4
 namespace Rig
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun hc i) j`. Simplify using `only [Matrix.mul_apply] at h`. Rewrite `h` using `[Finset.sum_eq_single i (fun k _ hk => by rw [hD i k (Ne.symm hk), zero_mul]) (by simp), Finset.sum_eq_single j (fun k _ hk => by rw [hD' k j hk, mul_zero]) (by simp)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem diag_comm_entry {L : Type*} [CommRing L] {n : ℕ} (D D' H : Matrix (Fin n) (Fin n) L)
     (hD : ∀ i j, i ≠ j → D i j = 0) (hD' : ∀ i j, i ≠ j → D' i j = 0) (hc : D * H = H * D') (i j : Fin n) :
@@ -25,15 +25,13 @@ theorem diag_comm_entry {L : Type*} [CommRing L] {n : ℕ} (D D' H : Matrix (Fin
     Finset.sum_eq_single j (fun k _ hk => by rw [hD' k j hk, mul_zero]) (by simp)] at h
 
 /- English proof (translation)
-Establish `key : ∀ i j, H i j ≠ 0 → e i = e' j`. Introduce `i j hij`. Establish `h1` using `congrFun (congrFun hc i) j`. Rewrite `h1` using `[diagonal_mul, mul_diagonal]`. Conclude with `mul_right_cancel₀ hij (by rw [h1, mul_comm])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `row : ∀ i, ∃ j, H i j ≠ 0`. Introduce `i`. Assume the negation of the conclusion as `hne`. Conclude with `hH (Matrix.det_eq_zero_of_row_eq_zero i fun j => by_contra fun h => hne ⟨j, h⟩)`. Use `choose f hf using row`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfe : ∀ i, e i = e' (f i)` using `fun i => key i (f i) (hf i)`. Establish `hmono : StrictMono f`. Introduce `i j hij`. Establish `h1 : (ν ∘ e) j < (ν ∘ e) i` using `he hij`. Simplify using `only [Function.comp_apply, hfe] at h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `lt_of_not_ge fun hge => absurd h1 (not_lt.mpr (he'.antitone hge))`. Establish `hid : ∀ i, f i = i` using `fun i => le_antisymm hmono.apply_le hmono.le_apply`. Establish `hee : e = e'` using `funext fun i => by rw [hfe i, hid i]`. Use `⟨hee, fun i j hij => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
-
-Establish `h2` using `key i j hne`. Rewrite `h2` using `[hee]`. Conclude with `hij (he'.injective (by simp only [Function.comp_apply, h2]))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rig_mat {L : Type*} [Field L] {n : ℕ} (ν : L → ℤ) (e e' : Fin n → L) (H : Matrix (Fin n) (Fin n) L)
     (hH : H.det ≠ 0) (hc : diagonal e * H = H * diagonal e')
@@ -64,9 +62,9 @@ theorem rig_mat {L : Type*} [Field L] {n : ℕ} (ν : L → ℤ) (e e' : Fin n �
   exact hij (he'.injective (by simp only [Function.comp_apply, h2]))
 
 /- English proof (translation)
-Establish `hc' : d * h = h * d'` using `by rw [← hc]; group`. Establish `hm : diagonal e * h.val = h.val * diagonal e'`. Rewrite using `[← hd, ← hd', ← Units.val_mul, ← Units.val_mul, hc']`. Establish `hdet : h.val.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp h.isUnit).ne_zero`. Take `⟨hee, hoff⟩` from `rig_mat ν e e' h.val hdet hm he he'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Units.ext (by rw [hd, hd', hee]), hoff⟩`.
+Supply the required witnesses or components.
 -/
 theorem rig_GL {L : Type*} [Field L] {n : ℕ} (ν : L → ℤ) (e e' : Fin n → L) (d d' h : GL (Fin n) L)
     (hd : d.val = diagonal e) (hd' : d'.val = diagonal e') (hc : h⁻¹ * d * h = d')
@@ -84,7 +82,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 omit [IsCMField E] in
 
 /- English proof (translation)
-Take `⟨hdd, hoff⟩` from `rig_GL (fun y : w.adicCompletion E => ordL y) (fun i => (e i : w.adicCompletion E)) (fun i => (e' i : w.adicCompletion E)) _ _ h (GlobalTheory.SmGL.val_diagT _ e) (GlobalTheory.SmGL.val_diagT _ e') hc he he'`. Use `⟨funext fun i => Units.ext ?_, hoff⟩` and prove the remaining obligations. Use `congrArg (fun g : GLw n w => g.val i i) hdd` as an intermediate fact. Simplify `this` using `[GlobalTheory.SmGL.val_diagT]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rig_diagT (w : Pl E) {n : ℕ} (e e' : Fin n → (w.adicCompletion E)ˣ) (h : GLw n w)
     (he : StrictAnti fun i => ordL (e i : w.adicCompletion E))
@@ -106,19 +104,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 omit [IsCMField E] in
 
 /- English proof (translation)
-Take `⟨hd0, hdv⟩` from `hd`. Take `⟨hd'0, hd'v⟩` from `hd'`. Establish `hc : d.val * h.val = h.val * d'.val`. Establish `hm : d * h = h * d'` using `by rw [← hh]; group`. Simplify using `using congrArg Units.val hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply the tactic sequence `have he := diag_comm_entry d.val d'.val h.val hd0 hd'0 hc`. Establish `hoff : ∀ i j : Fin n, i ≠ j → h.val i j = 0`. Introduce `i j hij`. Assume the negation of the conclusion as `hne`. Establish `hq : d.val i i = d'.val j j` using `mul_right_cancel₀ hne (by rw [he i j]; ring)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Apply `hij` to reduce the goal to its premises. Apply `hv` to reduce the goal to its premises. Rewrite using `[← hdv i, ← hd'v j, hq]`. Establish `hdiag : ∀ i, h.val i i ≠ 0`. Introduce `i h0`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (h.val * h⁻¹.val) i i = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[Matrix.mul_apply, Finset.sum_eq_zero]`. Conclude with `zero_ne_one h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _`. Distinguish the cases in `hk : i = k`. Substitute `hk` using the available equality. Rewrite using `[h0, zero_mul]`. Rewrite using `[hoff i k hk, zero_mul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hval : d.val = d'.val`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Establish `hq : d.val i i * h.val i i = d'.val i i * h.val i i` using `by rw [he i i]; ring`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_right_cancel₀ (hdiag i) hq`. Rewrite using `[hd0 i j hij, hd'0 i j hij]`. Conclude with `⟨Units.ext hval, hoff⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem diagonal_conj_distinct_valuations_eq (w : Pl E) (n : ℕ) (v : Fin n → ℤ) (hv : Function.Injective v) (d d' h : GLw n w)
     (hd : (∀ i j : Fin n, i ≠ j → d.val i j = 0) ∧ ∀ i, ordL (d.val i i) = v i)

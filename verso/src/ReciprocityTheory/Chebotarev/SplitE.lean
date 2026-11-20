@@ -7,7 +7,7 @@ open NumberField Filter Topology
 namespace ReciprocityTheory.Cheb
 
 /- English proof (translation)
-Use `⟨IntermediateField.fixedField (splitEH hirr χ), inferInstance, inferInstance, inferInstance, Module.finrank E (IntermediateField.fixedField (splitEH hirr χ)), splitE_two_le hirr χ hχ, ?_⟩` and prove the remaining obligations. Introduce `q hl hq`. Conclude with `splitE_count hirr χ q hl hq _ (fun x σ hσ => (IntermediateField.mem_fixedField_iff _ _).1 x.2 σ hσ)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem splitE_split_ext (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime]
     (hirr : Irreducible (Polynomial.cyclotomic l E)) (χ : DirichletCharacter ℂ l) (hχ : χ ≠ 1) :

@@ -9,7 +9,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `unramExt`.
+A detailed English derivation is pending.
 -/
 theorem unramExt_law : UnramExtSt := unramExt
 

@@ -11,17 +11,17 @@ namespace GlobalTheory.GoodCharacterTail
 open Formalism.HermitianLattices.GL2PrimeSums
 
 /- English proof (translation)
-Take `⟨I, hI, hG⟩` from `GlobalTheory.TailIntegralOfSummatory.tail_integral a S hS Z hZ`. Establish `hZ0 : (0 : ℝ) < Z` using `by linarith`. Establish `hZc : (Z : ℂ) ≠ 0` using `by exact_mod_cast hZ0.ne'`. Establish `h1 : Gchi a S Z = Z * (∑ n ∈ Icc 1 ⌊Z⌋₊, a n / (n : ℂ)) - psum a Z - Z * S`. Unfold `Gchi psum`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : S - ∑ n ∈ Icc 1 ⌊Z⌋₊, a n / (n : ℂ) = I - psum a Z / Z`. Rewrite `hG` using `[h1]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hG`. Establish `h3 : ‖I‖ ≤ B - ‖psum a Z‖ / Z`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `le_of_tendsto hI.norm ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop Z] with U hU`. Establish `h4` using `intervalIntegral.norm_integral_le_integral_norm (f := fun u : ℝ => psum a u / (u : ℂ) ^ 2) (μ := MeasureTheory.volume) hU`. Establish `h5 : (fun u : ℝ => ‖psum a u / (u : ℂ) ^ 2‖) = fun u : ℝ => ‖psum a u‖ / u ^ 2`. Use function extensionality and compare the values at `u`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_div, norm_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs]`. Rewrite `h4` using `[h5]`. Use `hB U hU` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h6` using `norm_sub_le I (psum a Z / Z)`. Rewrite `h6` using `[norm_div, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hZ0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tail_le (a : ℕ → ℂ) (S : ℂ)
     (hS : Tendsto (fun N : ℕ => ∑ n ∈ Icc 1 N, a n / (n : ℂ)) atTop (𝓝 S))
@@ -59,7 +59,7 @@ theorem tail_le (a : ℕ → ℂ) (S : ℂ)
   linarith
 
 /- English proof (translation)
-Establish `h` using `(isLittleO_log_rpow_atTop hδ).bound hk`. Use `filter_upwards [h, eventually_ge_atTop (0 : ℝ)] with x hx hx0`. Rewrite `hx` using `[Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg hx0 _)]`. Conclude with `(le_abs_self _).trans hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_log_le (k δ : ℝ) (hk : 0 < k) (hδ : 0 < δ) :
     ∀ᶠ x : ℝ in atTop, Real.log x ≤ k * x ^ δ := by
@@ -69,35 +69,35 @@ theorem eventually_log_le (k δ : ℝ) (hk : 0 < k) (hδ : 0 < δ) :
   exact (le_abs_self _).trans hx
 
 /- English proof (translation)
-Introduce `ε hε hε1 C₁ c₁ CM hC₁ hc₁ hCM`. Take `⟨C, c, hC, hc, hZ⟩` from `GlobalTheory.T.gl2a2_integral_bound_of_sums C₁ c₁ hC₁ hc₁`. Establish `e1` using `eventually_log_le (1 / 400) (ε / 4) (by norm_num) (by linarith)`. Establish `e2` using `eventually_log_le c (ε / 6) hc (by linarith)`. Establish `e3` using `(tendsto_rpow_atTop (show 0 < ε / 2 by linarith)).eventually_ge_atTop (5 * C)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4` using `(tendsto_rpow_atTop (show 0 < ε / 6 by linarith)).eventually_ge_atTop 2`. Establish `e5` using `Real.tendsto_log_atTop.eventually_ge_atTop 1`. Establish `e6` using `eventually_ge_atTop (2 : ℝ)`. Take `⟨x₀, hx₀⟩` from `eventually_atTop.1 (e1.and (e2.and (e3.and (e4.and (e5.and e6)))))`. Use `⟨x₀, 400 + CM + 1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx Q hQ hQ1 hQ2 a S hS hM H1 H2`. Take `⟨f1, f2, f3, f4, f5, f6⟩` from `hx₀ x hx`. Establish `hx0 : 0 < x` using `by linarith`. Establish `hx1 : 1 ≤ x` using `by linarith`. Establish `hQ3 : 3 ≤ Q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Real.add_one_le_exp (Real.log Q)`. Rewrite `h` using `[Real.exp_log hQ]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hz2 : 2 ≤ x ^ (400 : ℝ)`. Establish `: x ^ (1 : ℝ) ≤ x ^ (400 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le hx1 (by norm_num)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Real.rpow_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlz : Real.log (x ^ (400 : ℝ)) = 400 * Real.log x` using `Real.log_rpow hx0 _`. Establish `ht` using `tail_le a S hS (x ^ (400 : ℝ)) _ (by linarith) (fun U hU => hZ Q a hQ3 H1 H2 _ U hz2 hU)`. Establish `hp : (x ^ (400 : ℝ)) ^ (-(1 : ℝ) / 400) = x⁻¹`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_mul hx0.le, ← Real.rpow_neg_one]`. Evaluate the numerical expressions. Establish `hl : Real.log (x ^ (400 : ℝ) * Q) = 400 * Real.log x + Real.log Q`. Rewrite using `[Real.log_mul (by positivity) hQ.ne', hlz]`. Rewrite `ht` using `[hp, hl]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsq : x ^ (ε / 4) * x ^ (ε / 4) = x ^ (ε / 2)`. Rewrite using `[← Real.rpow_add hx0]`. Put the polynomial expressions in normal form. Establish `hsq2 : x ^ (ε / 2) * x ^ (ε / 2) = x ^ ε`. Rewrite using `[← Real.rpow_add hx0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Establish `hL : (400 * Real.log x + Real.log Q) ^ 2 ≤ 4 * x ^ (ε / 2)`. Establish `a1 : 0 ≤ 400 * Real.log x + Real.log Q` using `by linarith`. Establish `a2 : 400 * Real.log x + Real.log Q ≤ 2 * x ^ (ε / 4)` using `by linarith`. Use `pow_le_pow_left₀ a1 a2 2` as an intermediate fact.
+Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hQc : x * Q ^ (-c) ≤ 1`. Rewrite using `[Real.rpow_def_of_pos hQ]`. Use `nth_rewrite 1 [← Real.exp_log hx0]`. Rewrite using `[← Real.exp_add, Real.exp_le_one_iff]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left hQ1 hc.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1e : 1 ≤ x ^ (ε / 2)` using `Real.one_le_rpow hx1 (by linarith)`. Establish `key : x * ‖S - ∑ n ∈ Icc 1 ⌊x ^ (400 : ℝ)⌋₊, a n / (n : ℂ)‖ ≤ x ^ ε`. Establish `b1` using `mul_le_mul_of_nonneg_left ht hx0.le`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b2 : x * (C * (x⁻¹ * (400 * Real.log x + Real.log Q) ^ 2 + Q ^ (-c))) = C * ((400 * Real.log x + Real.log Q) ^ 2 + x * Q ^ (-c))`. Clear the denominators using the available nonvanishing facts. Rewrite `b1` using `[b2]`. Establish `b3 : C * ((400 * Real.log x + Real.log Q) ^ 2 + x * Q ^ (-c)) ≤ C * (5 * x ^ (ε / 2))` using `mul_le_mul_of_nonneg_left (by linarith) hC.le`. Establish `b4 : 5 * C * x ^ (ε / 2) ≤ x ^ (ε / 2) * x ^ (ε / 2)` using `mul_le_mul_of_nonneg_right f3 (by linarith)`.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hx0]`. Conclude with `key`. Establish `c1 : x ^ ε ≤ x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `: x ^ ε ≤ x ^ (1 : ℝ)` using `Real.rpow_le_rpow_of_exponent_le hx1 hε1.le`. Rewrite `this` using `[Real.rpow_one]`. Then use the resulting hypothesis. Establish `c2 : ‖S - ∑ n ∈ Icc 1 ⌊x ^ (400 : ℝ)⌋₊, a n / (n : ℂ)‖ ≤ 1`. Establish `: x * ‖S - ∑ n ∈ Icc 1 ⌊x ^ (400 : ℝ)⌋₊, a n / (n : ℂ)‖ ≤ x * 1` using `by linarith`. Conclude with `le_of_mul_le_mul_left this hx0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `c3 : ‖∑ n ∈ Icc 1 ⌊x ^ (400 : ℝ)⌋₊, a n / (n : ℂ)‖ ≤ 400 * Real.log x + CM`. Rewrite using `[← hlz]`. Use `le_trans ((norm_sum_le _ _).trans (le_of_eq ?_)) (hM _ (by linarith))` and prove the remaining obligations. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[norm_div, Complex.norm_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `c4` using `norm_add_le (S - ∑ n ∈ Icc 1 ⌊x ^ (400 : ℝ)⌋₊, a n / (n : ℂ)) (∑ n ∈ Icc 1 ⌊x ^ (400 : ℝ)⌋₊, a n / (n : ℂ))`. Rewrite `c4` using `[sub_add_cancel]`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem tail_and_sum_bound : Formalism.HermitianLattices.GL2PrimeSums.TailSumBound := by
   intro ε hε hε1 C₁ c₁ CM hC₁ hc₁ hCM

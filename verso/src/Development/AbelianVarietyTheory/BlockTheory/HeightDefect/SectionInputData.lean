@@ -22,7 +22,7 @@ theorem valZ_wtZ (h : GenFrEx Xo c) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ)
     valZ h (wtZ a n) f = valC h a n f := rfl
 
 /- English proof (translation)
-The claim follows from `mem_AG.2 ⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem valZ_mem (h : GenFrEx Xo c) (G : WTZ E) (f : Rul Xo c) (Z : Comp Xo c) : valZ h G f Z ∈ AG Z G :=
   mem_AG.2 ⟨_, rfl⟩
@@ -33,9 +33,9 @@ def IsSecZ (G : WTZ E) (f : Rul Xo c) : Prop :=
       f p y' = ((∏ i, t i ^ exZ Dw G i : (p.R)ˣ) : p.R) * f p y
 
 /- English proof (translation)
-Establish `key : ∀ (S : Type) [CommRing S] (t : Ix Dw → Sˣ), ((∏ i, t i ^ exZ Dw (wtZ a n) i : Sˣ) : S) = wchar (ex Dw a n) t`. Introduce `S _ t`. Rewrite using `[wchar, Units.coe_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases i <;> simp [exZ, wtZ, ex]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, fun p t y y' hb => by rw [← key]; exact h2 p t y y' hb⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, fun p t y y' hb => by rw [key]; exact h2 p t y y' hb⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isSecZ_wtZ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (f : Rul Xo c) :
     IsSecZ (wtZ a n) f ↔ f ∈ sec Xo c a n := by
@@ -52,7 +52,7 @@ theorem isSecZ_wtZ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (f : Rul Xo c) :
     exact ⟨h1, fun p t y y' hb => by rw [key]; exact h2 p t y y' hb⟩
 
 /- English proof (translation)
-Use `⟨fun p q φ y z _ => by simp, fun p t y y' _ => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `have : ∀ i, exZ Dw (0 : WTZ E) i = 0 := fun i => by cases i <;> rfl`. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem isSecZ_one : IsSecZ (0 : WTZ E) (1 : Rul Xo c) := by
   refine ⟨fun p q φ y z _ => by simp, fun p t y y' _ => ?_⟩
@@ -60,9 +60,9 @@ theorem isSecZ_one : IsSecZ (0 : WTZ E) (1 : Rul Xo c) := by
   simp [this]
 
 /- English proof (translation)
-Use `⟨fun p q φ y z h => ?_, fun p t y y' h => ?_⟩` and prove the remaining obligations. Use `show f q z * g q z = φ (f p y * g p y)`. Rewrite using `[hf.1 p q φ y z h, hg.1 p q φ y z h, map_mul]`. Use `show f p y' * g p y' = _ * (f p y * g p y)`. Rewrite using `[hf.2 p t y y' h, hg.2 p t y y' h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [exZ_add, zpow_add, Finset.prod_mul_distrib, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem IsSecZ.mul {G G' : WTZ E} {f g : Rul Xo c} (hf : IsSecZ G f) (hg : IsSecZ G' g) :
     IsSecZ (G + G') (f * g) := by
@@ -75,7 +75,7 @@ theorem IsSecZ.mul {G G' : WTZ E} {f g : Rul Xo c} (hf : IsSecZ G f) (hg : IsSec
     ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using isSecZ_one`. Consider the case `succ k ih => rw [succ_nsmul, pow_succ]`. Conclude with `ih.mul hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem IsSecZ.pow {G : WTZ E} {f : Rul Xo c} (hf : IsSecZ G f) (k : ℕ) : IsSecZ (k • G) (f ^ k) := by
   induction k with
@@ -235,14 +235,14 @@ def CBaseAll (h : GenFrEx Xo c) (yP : ∀ Z : Comp Xo c, ∀ P : Om Z →+* ℂ,
   ∀ Z, CBase h Z (yP Z)
 
 /- English proof (translation)
-Simplify using `[NeOnComps, valZ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem neOnComps_iff (h : GenFrEx Xo c) (G : WTZ E) (f : Rul Xo c) :
     NeOnComps h f ↔ ∀ Z, valZ h G f Z ≠ 0 := by
   simp [NeOnComps, valZ]
 
 /- English proof (translation)
-Introduce `Z`. Establish `: evC h Z (1 : Rul Xo c) = 1` using `evalAt_one _ _ _ (ht Z)`. Rewrite using `[this]`. Conclude with `one_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem neOnComps_one (h : GenFrEx Xo c) (ht : GenFromTest Xo c h) : NeOnComps h (1 : Rul Xo c) := by
   intro Z
@@ -269,23 +269,21 @@ Both sides reduce to the same expression.
 theorem toData_G₂ : (I.toData h δ fn yP).G2 = I.wG₂ := rfl
 
 /- English proof (translation)
-The claim follows from `valZ_mem h _ _ Z`.
+A detailed English derivation is pending.
 -/
 theorem toData_et_mem (Z : Comp Xo c) :
     (I.toData h δ fn yP).et Z ∈ AG Z ((I.toData h δ fn yP).n1 • (I.toData h δ fn yP).wde) := valZ_mem h _ _ Z
 
 /- English proof (translation)
-The claim follows from `valZ_mem h _ _ Z`.
+A detailed English derivation is pending.
 -/
 theorem toData_torsionSection_mem (Z : Comp Xo c) :
     (I.toData h δ fn yP).ta1 Z ∈ AG Z ((2 : ℕ) • (I.toData h δ fn yP).G1) := valZ_mem h _ _ Z
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨f, -, rfl⟩ := hx`. Conclude with `valZ_mem h _ f Z`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a x _ hx`. Establish `: (a • x) Z = algebraMap c.F (Om Z) (a : c.F) • x Z`. Rewrite using `[algebraMap_smul]`. Both sides reduce to the same expression. Rewrite using `[this]`.
-
-Conclude with `Submodule.smul_mem _ _ hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toData_M_mem (x : ∀ Z : Comp Xo c, AC Z) (hx : x ∈ (I.toData h δ fn yP).M) (Z : Comp Xo c) :
     x Z ∈ AG Z (I.toData h δ fn yP).ka := by
@@ -342,7 +340,7 @@ def ofSection (D T : ℕ) (L : WTZ E) (s : Rul Xo c) : Input Xo c where
   r := 1
 
 /- English proof (translation)
-Introduce and unpack `f rfl; exact (hs.pow _).mul (hs.pow _) w := fun _ => hs thp := fun _ => hs.pow _ th0 := fun _ => (hs.pow _).mul (hs.pow _) thk := fun _ => (hs.pow _).mul (hs.pow _) et := by simpa [Input.wet, ofSection] using hs ta1 := by simpa [Input.wG₁, ofSection] using (isSecZ_one (Xo := Xo) …`. Establish `: (ofSection D T L s).wG₂ = 0` using `sub_self _`. Rewrite using `[this]`. Conclude with `isSecZ_one`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofSection_weighted (D T : ℕ) {L : WTZ E} {s : Rul Xo c} (hs : IsSecZ L s) :
     (ofSection D T L s).Weighted where

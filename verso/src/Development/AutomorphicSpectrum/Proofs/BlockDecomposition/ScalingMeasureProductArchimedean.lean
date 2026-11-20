@@ -11,7 +11,7 @@ namespace GlobalTheory.CompanionTheory.Equi.InfScale
 open GlobalTheory.CompanionTheory.SW.LocInf
 
 /- English proof (translation)
-Establish `key : ((Pi.evalRingHom (fun _ : InfinitePlace F => ℝ) w).comp ((eInf F h).toRingHom.comp θ)) = RingHom.id ℝ` using `Subsingleton.elim _ _`. Conclude with `congrArg (fun f : ℝ →+* ℝ => f t) key`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eInf_theta {F : Type} [Field F] [NumberField F] (h : IsTotallyReal F) (θ : ℝ →+* Ainf F) (t : ℝ)
     (w : InfinitePlace F) : eInf F h (θ t) w = t := by
@@ -20,7 +20,7 @@ theorem eInf_theta {F : Type} [Field F] [NumberField F] (h : IsTotallyReal F) (�
   exact congrArg (fun f : ℝ →+* ℝ => f t) key
 
 /- English proof (translation)
-Use `haveI := h`. Rewrite using `[Module.finrank_fintype_fun_eq_card, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyReal.nrComplexPlaces_eq_zero, add_zero, IsTotallyReal.finrank]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_fun_places (F : Type) [Field F] [NumberField F] (h : IsTotallyReal F) :
     Module.finrank ℝ (InfinitePlace F → ℝ) = Module.finrank ℚ F := by
@@ -29,17 +29,15 @@ theorem finrank_fun_places (F : Type) [Field F] [NumberField F] (h : IsTotallyRe
     IsTotallyReal.nrComplexPlaces_eq_zero, add_zero, IsTotallyReal.finrank]
 
 /- English proof (translation)
-Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Establish `hc : Continuous (eInf F h)` using `continuous_eInf F h`. Establish `hcs : Continuous (eInf F h).symm` using `continuous_eInf_symm F h`. Establish `hm : Measurable (eInf F h)` using `hc.measurable`. Establish `hms : Measurable (eInf F h).symm` using `hcs.measurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : Measurable (fun x : InfinitePlace F → ℝ => ε • x)` using `(continuous_const_smul ε).measurable`. Establish `hθ : (fun y : Ainf F => θ ε * y) = (eInf F h).symm ∘ (fun x => ε • x) ∘ (eInf F h)`. Use function extensionality and compare the values at `y`. Apply `(eInf F h).injective` to reduce the goal to its premises. Simplify using `only [Function.comp_apply, RingEquiv.apply_symm_apply, map_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Rewrite using `[Pi.mul_apply, Pi.smul_apply, eInf_theta h θ ε w, smul_eq_mul]`. Use `haveI : (Measure.map (eInf F h) li).IsAddHaarMeasure := AddEquiv.isAddHaarMeasure_map li (eInf F h).toAddEquiv hc hcs`. Establish `hdet : LinearMap.det (ε • (LinearMap.id : (InfinitePlace F → ℝ) →ₗ[ℝ] (InfinitePlace F → ℝ))) ≠ 0`. Rewrite using `[LinearMap.det_smul, LinearMap.det_id, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `pow_ne_zero _ hε.ne'`. Establish `hmapL` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (Measure.map (eInf F h) li) hdet`. Rewrite `hmapL` using `[LinearMap.det_smul, LinearMap.det_id, mul_one, finrank_fun_places F h]`. Establish `hcoe : (⇑(ε • (LinearMap.id : (InfinitePlace F → ℝ) →ₗ[ℝ] (InfinitePlace F → ℝ)))) = fun x => ε • x`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite `hmapL` using `[hcoe]`. Establish `hid : (eInf F h).symm ∘ (eInf F h) = id`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
-
-Rewrite using `[hθ, ← Measure.map_map hms (hL.comp hm), ← Measure.map_map hL hm, hmapL, Measure.map_smul, Measure.map_map hms hm, hid, Measure.map_id, abs_of_pos (inv_pos.mpr (pow_pos hε _))]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_theta_mul {F : Type} [Field F] [NumberField F] (h : IsTotallyReal F) (θ : ℝ →+* Ainf F)
     (li : Measure (Ainf F)) [li.IsAddHaarMeasure] {ε : ℝ} (hε : 0 < ε) :
@@ -76,7 +74,7 @@ theorem map_theta_mul {F : Type} [Field F] [NumberField F] (h : IsTotallyReal F)
     Measure.map_map hms hm, hid, Measure.map_id, abs_of_pos (inv_pos.mpr (pow_pos hε _))]
 
 /- English proof (translation)
-Use `Measure.pi_eq fun s _ => ?_` and prove the remaining obligations. Simplify using `only [Measure.smul_apply, smul_eq_mul, Measure.pi_pi, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem pi_const_smul {X : Type} [MeasurableSpace X] (ι : Type) [Fintype ι] (μ : Measure X) [SigmaFinite μ]
     (c : ENNReal) [SigmaFinite (c • μ)] :
@@ -86,21 +84,19 @@ theorem pi_const_smul {X : Type} [MeasurableSpace X] (ι : Type) [Fintype ι] (�
     Finset.card_univ]
 
 /- English proof (translation)
-Introduce `F _ _ h θ _ li _ ι _ ε hε`. Use `haveI : BorelSpace (Ainf F) := ⟨rfl⟩`. Establish `h1` using `map_theta_mul h θ li hε`. Establish `hc : Continuous (eInf F h)` using `continuous_eInf F h`. Establish `hcs : Continuous (eInf F h).symm` using `continuous_eInf_symm F h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : Measurable (eInf F h)` using `hc.measurable`. Establish `hms : Measurable (eInf F h).symm` using `hcs.measurable`. Use `haveI : (Measure.map (eInf F h) li).IsAddHaarMeasure := AddEquiv.isAddHaarMeasure_map li (eInf F h).toAddEquiv hc hcs`. Use `haveI : SigmaFinite (Measure.map (eInf F h) li) := Measure.IsAddHaarMeasure.sigmaFinite _`. Set `me : (InfinitePlace F → ℝ) ≃ᵐ Ainf F` to `{ toEquiv := (eInf F h).symm.toEquiv measurable_toFun := hms measurable_invFun := hm }`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hme : (⇑me : (InfinitePlace F → ℝ) → Ainf F) = (eInf F h).symm` using `rfl`. Establish `hli : Measure.map me (Measure.map (eInf F h) li) = li`. Rewrite using `[Measure.map_map me.measurable hm, hme]`. Establish `hid : ((eInf F h).symm ∘ (eInf F h)) = id`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hid, Measure.map_id]`. Use `haveI : SigmaFinite li := by`. Rewrite using `[← hli]`. Conclude with `MeasurableEquiv.sigmaFinite_map me`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `haveI hsf : SigmaFinite (ENNReal.ofReal ((ε ^ Module.finrank ℚ F)⁻¹) • li) := by`. Establish `hle : ENNReal.ofReal ((ε ^ Module.finrank ℚ F)⁻¹) • li = ((ε ^ Module.finrank ℚ F)⁻¹).toNNReal • li` using `rfl`. Rewrite using `[hle]`. Use `infer_instance`. Establish `hmeas : Measurable (fun y : Ainf F => θ ε * y)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hθ' : (fun y : Ainf F => θ ε * y) = (eInf F h).symm ∘ (fun x => ε • x) ∘ (eInf F h)`. Use function extensionality and compare the values at `y`. Apply `(eInf F h).injective` to reduce the goal to its premises. Simplify using `only [Function.comp_apply, RingEquiv.apply_symm_apply, map_mul]`. Use function extensionality and compare the values at `w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.mul_apply, Pi.smul_apply, eInf_theta h θ ε w, smul_eq_mul]`. Rewrite using `[hθ']`. Conclude with `hms.comp ((continuous_const_smul ε).measurable.comp hm)`. Establish `h2` using `Measure.pi_map_pi (μ := fun _ : ι => li) (f := fun _ y => θ ε * y) (hμ := fun _ => by show SigmaFinite (Measure.map (fun y : Ainf F => θ ε * y) li)`. Rewrite using `[h1]`.
-
-Conclude with `hsf)`. Use the proof step `(fun _ => hmeas.aemeasurable)`. Rewrite using `[h2]`. Simplify using `only [h1]`. Rewrite using `[pi_const_smul ι li _, ← ENNReal.ofReal_pow (inv_nonneg.mpr (pow_nonneg hε.le _)), inv_pow, ← pow_mul]`.
+A detailed English derivation is pending.
 -/
 theorem map_theta_mul_pi : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∀ θ : ℝ →+* Ainf F, Continuous θ →
     ∀ li : Measure (Ainf F), li.IsAddHaarMeasure → ∀ (ι : Type) [Fintype ι] (ε : ℝ), 0 < ε →

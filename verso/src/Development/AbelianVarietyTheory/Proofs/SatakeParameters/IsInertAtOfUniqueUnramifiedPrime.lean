@@ -11,29 +11,27 @@ open IsDedekindDomain NumberField in
 open scoped TensorProduct Matrix in
 
 /- English proof (translation)
-Unfold `_root_.Formalism.UG.IsInertAt`. Establish `key : ∀ P' : Ideal (𝓞 E), P'.IsMaximal → Ideal.comap (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) P' = v.asIdeal → P' ≤ P.asIdeal`. Introduce `P' hP' hcomap z hz`. Distinguish the cases in `hz0 : z = 0`. Rewrite using `[hz0]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.asIdeal.zero_mem`. Rewrite using `[hP z hz0]`. Introduce `hmem`. Rewrite `hmem` using `[_root_.GlobalTheory.SelfDualGenus.mem_semiLoc_iff]`. Take `⟨t, ht, hint⟩` from `hmem`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hzE : (z : E) ≠ 0` using `by exact_mod_cast hz0`. Set `w : 𝓞 E` to `⟨_, hint⟩`. Establish `hzw : z * w = algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) t`. Apply `NumberField.RingOfIntegers.ext` to reduce the goal to its premises. Use `show (z : E) * (((algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) t : 𝓞 E) : E) * (z : E)⁻¹) = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Clear the denominators using the available nonvanishing facts. Reduce the claim to the hypotheses of an applicable result.
 
-Clear the denominators using the available nonvanishing facts. Apply `ht` to reduce the goal to its premises. Rewrite using `[← hcomap, Ideal.mem_comap, ← hzw]`. Conclude with `P'.mul_mem_right _ hz`. Establish `hker : RingHom.ker (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) ≤ v.asIdeal`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `a ha`. Rewrite `ha` using `[RingHom.mem_ker]`. Establish `ha0 : a = 0` using `FaithfulSMul.algebraMap_injective (𝓞 (maximalRealSubfield E)) (𝓞 E) (by rw [ha, map_zero])`. Rewrite using `[ha0]`. Conclude with `v.asIdeal.zero_mem`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P0, hP0, hP0c⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral v.asIdeal hker`. Establish `hP0P : P0 = P.asIdeal` using `hP0.eq_of_le P.isPrime.ne_top (key P0 hP0 hP0c)`. Establish `hcP : Ideal.comap (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) P.asIdeal = v.asIdeal`. Rewrite using `[← hP0P, hP0c]`. Establish `hQP : Ideal.map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) v.asIdeal ≤ P.asIdeal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Ideal.map_le_iff_le_comap, hcP]`. Take `⟨x, y, hyx, hyP, hyP2⟩` from `hx`. Establish `hyx' : y = algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E) x`. Apply `NumberField.RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hyx]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hxv : x ∈ v.asIdeal`. Rewrite using `[← hcP, Ideal.mem_comap, ← hyx']`. Conclude with `hyP`. Establish `hyQ : y ∈ Ideal.map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) v.asIdeal`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction.
 
-Rewrite using `[hyx']`. Conclude with `Ideal.mem_map_of_mem _ hxv`. Take `⟨J, hJ⟩` from `Ideal.dvd_iff_le.2 hQP`. Distinguish the cases in `hJtop : J = ⊤`. Rewrite using `[hJ, hJtop, Ideal.mul_top]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-It suffices to derive a contradiction. Take `⟨P'', hP'', hJP''⟩` from `Ideal.exists_le_maximal J hJtop`. Establish `hQP'' : Ideal.map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) v.asIdeal ≤ P''`. Rewrite using `[hJ]`. Conclude with `Ideal.mul_le_right.trans hJP''`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcP'' : Ideal.comap (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E)) P'' = v.asIdeal`. Use `(v.isMaximal.eq_of_le (Ideal.comap_ne_top _ hP''.ne_top) ?_).symm` and prove the remaining obligations. Rewrite using `[← Ideal.map_le_iff_le_comap]`. Conclude with `hQP''`. Establish `hJP : J ≤ P.asIdeal` using `hJP''.trans (key P'' hP'' hcP'')`.
-
-Apply `hyP2` to reduce the goal to its premises. Rewrite using `[pow_two]`. Use `hJ ▸ hyQ` as an intermediate fact. Conclude with `Ideal.mul_mono_right hJP this`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SelfDualGenus.isInertAt_of_unique_unramified (E : Type) [Field E] [NumberField E] [IsCMField E]
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))) (P : HeightOneSpectrum (𝓞 E))

@@ -13,11 +13,11 @@ section Col
 variable {W Qq : Type} [CommRing W] [Field Qq] [Algebra W Qq] {k : ℕ}
 
 /- English proof (translation)
-Unfold `colSpan`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, Algebra.smul_def, mul_comm]`. Introduce and unpack `⟨y, rfl⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, Algebra.smul_def, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_colSpan (G : Matrix (Fin k) (Fin k) Qq) (x : Fin k → Qq) :
     x ∈ colSpan W G ↔ ∃ y : Fin k → W, x = G.mulVec (fun c => algebraMap W Qq (y c)) := by
@@ -34,9 +34,9 @@ theorem mem_colSpan (G : Matrix (Fin k) (Fin k) Qq) (x : Fin k → Qq) :
     simp [Matrix.mulVec, dotProduct, Finset.sum_apply, Algebra.smul_def, mul_comm]
 
 /- English proof (translation)
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`. Rewrite using `[SetLike.mem_coe, mem_colSpan]`. Use `⟨fun b => M b c, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem colSpan_mul_le (G : Matrix (Fin k) (Fin k) Qq) (M : Matrix (Fin k) (Fin k) W) :
     colSpan W (G * M.map (algebraMap W Qq)) ≤ colSpan W G := by
@@ -48,7 +48,7 @@ theorem colSpan_mul_le (G : Matrix (Fin k) (Fin k) Qq) (M : Matrix (Fin k) (Fin 
   simp [Matrix.mul_apply, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Apply `le_antisymm (colSpan_mul_le G M)` to reduce the goal to its premises. Establish `h1 : G * M.map (algebraMap W Qq) * M'.map (algebraMap W Qq) = G`. Rewrite using `[Matrix.mul_assoc, ← Matrix.map_mul, h]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem colSpan_mul_unit (G : Matrix (Fin k) (Fin k) Qq) (M M' : Matrix (Fin k) (Fin k) W) (h : M * M' = 1) :
     colSpan W (G * M.map (algebraMap W Qq)) = colSpan W G := by
@@ -63,9 +63,9 @@ def dD (Qq : Type) [Field Qq] (p r k : ℕ) : Matrix (Fin k) (Fin k) Qq :=
   Matrix.diagonal fun c => if c.val < r then ((p : Qq))⁻¹ else 1
 
 /- English proof (translation)
-Use extensionality with `i j`. Unfold `dD`. Rewrite using `[Matrix.diagonal_mul, Matrix.map_apply]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Apply the tactic sequence `by_cases hi : i.val < r <;> simp [hi, hp]`. Simplify using `[Matrix.diagonal_apply_ne _ hij, Matrix.one_apply_ne hij]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem dD_mul (p r : ℕ) (hp : (p : Qq) ≠ 0) :
     dD Qq p r k * (Matrix.diagonal fun c : Fin k => if c.val < r then (p : W) else 1).map (algebraMap W Qq) = 1 := by
@@ -78,9 +78,9 @@ theorem dD_mul (p r : ℕ) (hp : (p : Qq) ≠ 0) :
   · simp [Matrix.diagonal_apply_ne _ hij, Matrix.one_apply_ne hij]
 
 /- English proof (translation)
-Use extensionality with `i j`. Unfold `dD`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Apply the tactic sequence `by_cases hi : i.val < r <;> simp [hi, hp]`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[Matrix.diagonal_apply_ne _ hij]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smul_dD (p r : ℕ) (hp : (p : Qq) ≠ 0) :
     (p : Qq) • dD Qq p r k =
@@ -93,7 +93,7 @@ theorem smul_dD (p r : ℕ) (hp : (p : Qq) ≠ 0) :
   · simp [Matrix.diagonal_apply_ne _ hij]
 
 /- English proof (translation)
-Establish `h1 : B * dD Qq p r k * (Matrix.diagonal fun c : Fin k => if c.val < r then (p : W) else 1).map (algebraMap W Qq) = B`. Rewrite using `[Matrix.mul_assoc, dD_mul (W := W) p r hp, Matrix.mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem src_le_tgt (p r : ℕ) (hp : (p : Qq) ≠ 0) (B : Matrix (Fin k) (Fin k) Qq) :
     colSpan W B ≤ colSpan W (B * dD Qq p r k) := by
@@ -105,9 +105,9 @@ theorem src_le_tgt (p r : ℕ) (hp : (p : Qq) ≠ 0) (B : Matrix (Fin k) (Fin k)
     _ ≤ colSpan W (B * dD Qq p r k) := colSpan_mul_le _ _
 
 /- English proof (translation)
-Rewrite `hx` using `[mem_colSpan]`. Take `⟨y, rfl⟩` from `hx`. Use `colSpan_mul_le (W := W) B (Matrix.diagonal fun c : Fin k => if c.val < r then (1 : W) else (p : W)) ?_` and prove the remaining obligations. Rewrite using `[mem_colSpan]`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← smul_dD (W := W) p r hp, Matrix.mul_smul]`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Algebra.smul_def, Finset.mul_sum, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem prime_smul_target_mem_source (p r : ℕ) (hp : (p : Qq) ≠ 0) (B : Matrix (Fin k) (Fin k) Qq) (x : Fin k → Qq)
     (hx : x ∈ colSpan W (B * dD Qq p r k)) : (p : W) • x ∈ colSpan W B := by
@@ -122,7 +122,7 @@ theorem prime_smul_target_mem_source (p r : ℕ) (hp : (p : Qq) ≠ 0) (B : Matr
   simp [Matrix.mulVec, dotProduct, Algebra.smul_def, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Establish `h2` using `congrArg (fun w => B⁻¹.mulVec w) h`. Simplify `h2` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hB]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mulVec_cancel (B : Matrix (Fin k) (Fin k) Qq) (hB : IsUnit B.det) {u v : Fin k → Qq}
     (h : B.mulVec u = B.mulVec v) : u = v := by
@@ -130,7 +130,7 @@ theorem mulVec_cancel (B : Matrix (Fin k) (Fin k) Qq) (hB : IsUnit B.det) {u v :
   simpa [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hB] using h2
 
 /- English proof (translation)
-Unfold `dD`. Rewrite using `[Matrix.det_diagonal, isUnit_iff_ne_zero, Finset.prod_ne_zero_iff]`. Introduce `c _`. Apply the tactic sequence `split_ifs <;> simp [hp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dD_det (p r : ℕ) (hp : (p : Qq) ≠ 0) : IsUnit (dD Qq p r k).det := by
   unfold dD
@@ -139,7 +139,7 @@ theorem dD_det (p r : ℕ) (hp : (p : Qq) ≠ 0) : IsUnit (dD Qq p r k).det := b
   split_ifs <;> simp [hp]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, Algebra.smul_def, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem sum_smul_col_lemma (G : Matrix (Fin k) (Fin k) Qq) (y : Fin k → W) :
     ∑ c, y c • (fun i => G i c) = G.mulVec (fun c => algebraMap W Qq (y c)) := by
@@ -147,17 +147,17 @@ private theorem sum_smul_col_lemma (G : Matrix (Fin k) (Fin k) Qq) (y : Fin k �
   simp [Matrix.mulVec, dotProduct, Finset.sum_apply, Algebra.smul_def, mul_comm]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap W Qq)` using `IsFractionRing.injective W Qq`. Establish `hpQ : (p : Qq) ≠ 0`. Rewrite using `[← map_natCast (algebraMap W Qq)]`. Conclude with `fun h => hp0 (hinj (by rw [h, map_zero]))`. Rewrite using `[mem_colSpan, ← Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩ c hc`. Establish `h1` using `congrFun (mulVec_cancel B hB hz) c`. Unfold `dD at h1`. Simplify using `only [Matrix.mulVec_diagonal, if_pos hc] at h1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[Ideal.mem_span_singleton]`. Use `⟨z c, hinj ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_natCast, ← h1, ← mul_assoc, mul_inv_cancel₀ hpQ, one_mul]`. Introduce `h`. Establish `hex : ∀ c : Fin k, ∃ w : W, (if c.val < r then ((p : Qq))⁻¹ else 1) * algebraMap W Qq (y c) = algebraMap W Qq w`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `c`. Distinguish the cases in `hc : c.val < r`. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton.mp (h c hc)`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[if_pos hc, hw, map_mul, map_natCast, ← mul_assoc, inv_mul_cancel₀ hpQ, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨y c, by rw [if_neg hc, one_mul]⟩`. Use `choose z hz using hex`. Use `⟨z, ?_⟩` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `c`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Unfold `dD`. Rewrite using `[Matrix.mulVec_diagonal]`. Conclude with `hz c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_src_iff_lemma_2 [IsDomain W] [IsFractionRing W Qq] (p r : ℕ) (hp0 : (p : W) ≠ 0)
     (B : Matrix (Fin k) (Fin k) Qq) (hB : IsUnit B.det) (y : Fin k → W) :
@@ -194,33 +194,29 @@ private theorem mem_src_iff_lemma_2 [IsDomain W] [IsFractionRing W Qq] (p r : �
     exact hz c
 
 /- English proof (translation)
-Take `⟨hBu, hs, ht⟩` from `hB`. Establish `hinj : Function.Injective (algebraMap W Qq)` using `IsFractionRing.injective W Qq`. Establish `hpQ : (p : Qq) ≠ 0`. Rewrite using `[← map_natCast (algebraMap W Qq)]`. Conclude with `fun h => hp0 (hinj (by rw [h, map_zero]))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `ht' : e.tgt = colSpan W (B * dD Qq p r k)` using `ht`. Take `⟨src, tgt⟩` from `e`. Simplify using `only at hs ht'`. Substitute `hs` using the available equality. Substitute `ht'` using the available equality.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Substitute using the available equality.
 
-Establish `hMu : IsUnit (B * dD Qq p r k).det`. Rewrite using `[Matrix.det_mul]`. Conclude with `hBu.mul (dD_det p r hpQ)`. Unfold `IsEdge IsLattice`. Use `⟨⟨B, hBu, rfl⟩, ⟨B * dD Qq p r k, hMu, rfl⟩, src_le_tgt p r hpQ B, fun x hx => prime_smul_target_mem_source p r hpQ B x hx, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show Nat.card (↥(colSpan W (B * dD Qq p r k)) ⧸ Submodule.comap (colSpan W (B * dD Qq p r k)).subtype (colSpan W B)) = p ^ (n' * r)`. Establish `hli : LinearIndependent W (fun c : Fin k => fun i => (B * dD Qq p r k) i c)`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `y hy`. Rewrite `hy` using `[sum_smul_col_lemma]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (B * dD Qq p r k).mulVec (fun c => algebraMap W Qq (y c)) = (B * dD Qq p r k).mulVec 0`. Rewrite using `[hy, Matrix.mulVec_zero]`. Establish `h2` using `mulVec_cancel _ hMu h0`. Introduce `c`. Conclude with `hinj (by simpa using congrFun h2 c)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `b : Module.Basis (Fin k) W ↥(colSpan W (B * dD Qq p r k))` to `Module.Basis.span hli`. Establish `hcoe : ∀ y : Fin k → W, ((b.equivFun.symm y : ↥(colSpan W (B * dD Qq p r k))) : Fin k → Qq) = (B * dD Qq p r k).mulVec (fun c => algebraMap W Qq (y c))`. Introduce `y`. Rewrite using `[Module.Basis.equivFun_symm_apply, Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul, b]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← sum_smul_col_lemma (B * dD Qq p r k) y]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Use `congr 1`. Conclude with `congrArg Subtype.val (Module.Basis.span_apply hli c)`. Establish `hP : (Submodule.comap (colSpan W (B * dD Qq p r k)).subtype (colSpan W B)).map (b.equivFun : ↥(colSpan W (B * dD Qq p r k)) →ₗ[W] (Fin k → W)) = Submodule.pi Set.univ (fun c : Fin k => (if c.val < r then Ideal.span {(p : W)} else ⊤ : Submodule W W))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `y`. Simplify using `only [Submodule.map_equiv_eq_comap_symm, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_subtype, LinearEquiv.coe_coe, hcoe, mem_src_iff_lemma_2 p r hp0 B hBu, Submodule.mem_pi, Set.mem_univ, true_implies]`. Prove the components needed by the constructor for the conclusion. Introduce `h c`. Distinguish the cases in `hc : c.val < r`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[if_pos hc]`. Conclude with `h c hc`. Rewrite using `[if_neg hc]`. Conclude with `Submodule.mem_top`. Introduce `h c hc`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h'` using `h c`. Rewrite `h'` using `[if_pos hc]`. Then use the resulting hypothesis. Establish `e1` using `Submodule.Quotient.equiv _ _ b.equivFun hP`. Rewrite using `[Nat.card_congr e1.toEquiv, Nat.card_congr (Submodule.quotientPi _).toEquiv, Nat.card_pi]`. Establish `hfac : ∀ c : Fin k, Nat.card (W ⧸ (if c.val < r then Ideal.span {(p : W)} else ⊤ : Submodule W W)) = if c.val < r then p ^ n' else 1`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `c`. Distinguish the cases in `hc : c.val < r`. Simplify using `only [hc, ↓reduceIte]`. Conclude with `hcard`. Simplify using `only [hc, ↓reduceIte]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Nat.card_unique`. Rewrite using `[Finset.prod_congr rfl (fun c _ => hfac c)]`. Establish `hcardF : (Finset.univ.filter fun c : Fin k => c.val < r).card = r`. Establish `hF : (Finset.univ.filter fun c : Fin k => c.val < r) = Finset.univ.map (Fin.castLEEmb hr)`. Use extensionality with `c`.
-
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_map, Fin.castLEEmb_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hc`. Conclude with `⟨⟨c.val, hc⟩, Fin.ext rfl⟩`. Introduce and unpack `⟨a, rfl⟩`.
-
-Conclude with `a.isLt`. Rewrite using `[hF, Finset.card_map, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[Finset.prod_ite, Finset.prod_const, Finset.prod_const_one, mul_one, ← pow_mul, hcardF]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEdge_of_basis [IsDomain W] [IsFractionRing W Qq] (p n' r : ℕ) (hp0 : (p : W) ≠ 0)
     (hcard : Nat.card (W ⧸ Ideal.span {(p : W)}) = p ^ n') (hr : r ≤ k) (e : Edge W Qq k)
@@ -314,7 +310,7 @@ def Ng (φ : WF p n' ≃+* W) (g : Matrix (Fin k) (Fin k) (WF p n')) : Matrix (F
   fun i c => φ (g⁻¹ c i)
 
 /- English proof (translation)
-Use extensionality with `a c`. Simplify using `[matQ, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem matQ_mul (φ : WF p n' ≃+* W) (g g' : Matrix (Fin k) (Fin k) (WF p n')) :
     matQ (Qq := Qq) φ (g * g') = matQ φ g * matQ φ g' := by
@@ -322,14 +318,14 @@ theorem matQ_mul (φ : WF p n' ≃+* W) (g g' : Matrix (Fin k) (Fin k) (WF p n')
   simp [matQ, Matrix.mul_apply]
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [matQ, Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem matQ_one (φ : WF p n' ≃+* W) : matQ (Qq := Qq) φ (1 : Matrix (Fin k) (Fin k) (WF p n')) = 1 := by
   ext a b
   by_cases h : a = b <;> simp [matQ, Matrix.one_apply, h]
 
 /- English proof (translation)
-Establish `h1 : matQ (Qq` using `Qq) φ g * matQ φ g⁻¹ = 1 := by`. Rewrite using `[← matQ_mul, Matrix.mul_nonsing_inv _ hg, matQ_one]`. Rewrite using `[Matrix.inv_eq_right_inv h1]`. Use extensionality with `i c`. Simplify using `[matQ, Ng]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem matQ_inv (φ : WF p n' ≃+* W) (g : Matrix (Fin k) (Fin k) (WF p n')) (hg : IsGLW g) :
     ((matQ (Qq := Qq) φ g)⁻¹).transpose = (Ng φ g).map (algebraMap W Qq) := by
@@ -343,9 +339,9 @@ def Ngi (φ : WF p n' ≃+* W) (g : Matrix (Fin k) (Fin k) (WF p n')) : Matrix (
   fun i c => φ (g c i)
 
 /- English proof (translation)
-Establish `e1 : Ng φ g = (g⁻¹.map (φ : WF p n' →+* W)).transpose`. Use extensionality with `i c`. Simplify using `[Ng]`. Establish `e2 : Ngi φ g = (g.map (φ : WF p n' →+* W)).transpose`. Use extensionality with `i c`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Ngi]`. Rewrite using `[e1, e2, ← Matrix.transpose_mul, ← Matrix.map_mul, Matrix.mul_nonsing_inv _ hg]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Ng_unit (φ : WF p n' ≃+* W) (g : Matrix (Fin k) (Fin k) (WF p n')) (hg : IsGLW g) :
     Ng φ g * Ngi φ g = 1 := by
@@ -359,7 +355,7 @@ theorem Ng_unit (φ : WF p n' ≃+* W) (g : Matrix (Fin k) (Fin k) (WF p n')) (h
   simp
 
 /- English proof (translation)
-Rewrite using `[matQ_inv φ g hg]`. Conclude with `colSpan_mul_unit h (Ng φ g) (Ngi φ g) (Ng_unit φ g hg)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem src_eq (φ : WF p n' ≃+* W) (g : Matrix (Fin k) (Fin k) (WF p n')) (hg : IsGLW g)
     (h : Matrix (Fin k) (Fin k) Qq) :
@@ -368,15 +364,15 @@ theorem src_eq (φ : WF p n' ≃+* W) (g : Matrix (Fin k) (Fin k) (WF p n')) (hg
   exact colSpan_mul_unit h (Ng φ g) (Ngi φ g) (Ng_unit φ g hg)
 
 /- English proof (translation)
-Establish `hR : (Set.range fun i : Fin k => if i.val < r then (fun c => WittVector.constantCoeff (g⁻¹ i c)) else 0) ⊆ (ratPlane p n' r g : Set (Fin k → GaloisField p n'))`. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `only`. Distinguish the cases in `hi : i.val < r`. Rewrite using `[if_pos hi]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨i, hi, rfl⟩`. Rewrite using `[if_neg hi]`. Conclude with `Submodule.zero_mem _`. Establish `hS : ratPlane p n' r g ≤ Submodule.span (GaloisField p n') (Set.range fun i : Fin k => if i.val < r then (fun c => WittVector.constantCoeff (g⁻¹ i c)) else 0)`.
+Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨i, if_pos hi⟩`. Establish `hEq` using `le_antisymm hS (Submodule.span_le.mpr hR)`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hEq, Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a, rfl⟩`. Introduce and unpack `⟨a, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨a, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_plane (r : ℕ) (g : Matrix (Fin k) (Fin k) (WF p n')) (x : Fin k → GaloisField p n') :
     x ∈ ratPlane p n' r g ↔ ∃ a : Fin k → GaloisField p n',
@@ -407,7 +403,7 @@ theorem mem_plane (r : ℕ) (g : Matrix (Fin k) (Fin k) (WF p n')) (x : Fin k �
     exact ⟨a, rfl⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem col_eq (h X : Matrix (Fin k) (Fin k) Qq) (c : Fin k) :
     (fun i => (h * X) i c) = h.mulVec (fun b => X b c) := by
@@ -415,18 +411,18 @@ theorem col_eq (h X : Matrix (Fin k) (Fin k) Qq) (c : Fin k) :
   simp [Matrix.mul_apply, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Rewrite using `[map_natCast]`. Conclude with `CharP.cast_eq_zero _ p`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_p : WittVector.constantCoeff ((p : ℕ) : WF p n') = 0 := by
   rw [map_natCast]
   exact CharP.cast_eq_zero _ p
 
 /- English proof (translation)
-Distinguish the cases in `h0 : x = 0`. Conclude with `⟨0, by rw [h0, mul_zero]⟩`. Take `⟨m, b, hb, hxb⟩` from `WittVector.exists_eq_pow_p_mul x h0`. Consider the cases of `m with`. Consider the case `zero`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-It suffices to derive a contradiction. Rewrite `hxb` using `[pow_zero, one_mul]`. Rewrite `hx` using `[hxb, WittVector.constantCoeff_apply]`. Conclude with `hb hx`. Consider the case `succ m`.
+It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Supply the required witnesses or components.
 
-Conclude with `⟨(p : WF p n') ^ m * b, by rw [hxb, pow_succ', mul_assoc]⟩`.
+A detailed English derivation is pending.
 -/
 private theorem dvd_of_cc_lemma_4 (x : WF p n') (hx : WittVector.constantCoeff x = 0) :
     ∃ w : WF p n', x = (p : WF p n') * w := by
@@ -443,15 +439,15 @@ private theorem dvd_of_cc_lemma_4 (x : WF p n') (hx : WittVector.constantCoeff x
     exact ⟨(p : WF p n') ^ m * b, by rw [hxb, pow_succ', mul_assoc]⟩
 
 /- English proof (translation)
-Establish `hmem : (fun j => WittVector.constantCoeff (g⁻¹ c j)) ∈ ratPlane p n' r g'`. Apply `hpl` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨c, hc, rfl⟩`. Take `⟨a, ha⟩` from `(mem_plane r g' _).mp hmem`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hrow : ∀ j, WittVector.constantCoeff (g⁻¹ c j) = ∑ l, a l * (if l.val < r then WittVector.constantCoeff (g'⁻¹ l j) else 0)`. Introduce `j`. Simplify `congrFun ha j` using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, ite_apply, Pi.zero_apply]`. Establish `hone : ∀ l : Fin k, l.val < r → ∑ j, WittVector.constantCoeff (g'⁻¹ l j) * WittVector.constantCoeff (g' j i) = 0`. Introduce `l hl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (g'⁻¹ * g') l i = 0`. Rewrite using `[Matrix.nonsing_inv_mul _ hg', Matrix.one_apply_ne]`. Introduce `hli`. Conclude with `hi (hli ▸ hl)`. Establish `h2` using `congrArg WittVector.constantCoeff h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Matrix.mul_apply, map_sum]`. Simplify `h2` using `[map_mul]`. Rewrite using `[Matrix.mul_apply, map_sum]`. Simplify using `only [map_mul, hrow, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero (fun l _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hl : l.val < r`. Simplify using `only [hl, if_true, mul_assoc, ← Finset.mul_sum, hone l hl, mul_zero]`. Simplify using `[hl]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cc_zero_lemma_3 (r : ℕ) (g g' : Matrix (Fin k) (Fin k) (WF p n')) (hg' : IsGLW g')
     (hpl : ratPlane p n' r g ≤ ratPlane p n' r g') (c i : Fin k) (hc : c.val < r) (hi : ¬ i.val < r) :
@@ -485,19 +481,19 @@ private theorem cc_zero_lemma_3 (r : ℕ) (g g' : Matrix (Fin k) (Fin k) (WF p n
   · simp [hl]
 
 /- English proof (translation)
-Establish `hZ : ∀ i c : Fin k, ¬ i.val < r → c.val < r → ∃ w : W, (Ngi φ g' * Ng φ g) i c = (p : W) * w`. Introduce `i c hi hc`. Take `⟨w, hw⟩` from `dvd_of_cc_lemma_4 _ (cc_zero_lemma_3 r g g' hg' hpl c i hc hi)`. Use `⟨φ w, ?_⟩` and prove the remaining obligations. Establish `hZe : (Ngi φ g' * Ng φ g) i c = φ ((g⁻¹ * g') c i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_apply, Ngi, Ng, map_sum, map_mul]`. Conclude with `Finset.sum_congr rfl (fun j _ => mul_comm _ _)`. Rewrite using `[hZe, hw, map_mul, map_natCast]`. Establish `hd : ∀ i c : Fin k, ∃ y : W, algebraMap W Qq ((Ngi φ g' * Ng φ g) i c) * (if c.val < r then ((p : Qq))⁻¹ else 1) = (if i.val < r then ((p : Qq))⁻¹ else 1) * algebraMap W Qq y`. Introduce `i c`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : i.val < r`. Distinguish the cases in `hc : c.val < r`. Conclude with `⟨(Ngi φ g' * Ng φ g) i c, by rw [if_pos hi, if_pos hc, mul_comm]⟩`. Use `⟨(p : W) * (Ngi φ g' * Ng φ g) i c, ?_⟩` and prove the remaining obligations. Rewrite using `[if_pos hi, if_neg hc, mul_one, map_mul, map_natCast, ← mul_assoc, inv_mul_cancel₀ hpQ, one_mul]`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hc : c.val < r`. Take `⟨w, hw⟩` from `hZ i c hi hc`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[if_neg hi, if_pos hc, one_mul, hw, map_mul, map_natCast, mul_comm, ← mul_assoc, inv_mul_cancel₀ hpQ, one_mul]`. Conclude with `⟨(Ngi φ g' * Ng φ g) i c, by rw [if_neg hi, if_neg hc, mul_one, one_mul]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose Y hY using hd`. Establish `hE : (Ngi φ g' * Ng φ g).map (algebraMap W Qq) * dD Qq p r k = dD Qq p r k * Matrix.map Y (algebraMap W Qq)`. Use extensionality with `i c`. Unfold `dD`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply]`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hY i c`. Establish `hinv : (Ng φ g').map (algebraMap W Qq) * (Ngi φ g').map (algebraMap W Qq) = 1`. Rewrite using `[← Matrix.map_mul, Ng_unit φ g' hg']`. Simplify using the standard rewrite rules. Establish `hM : h * (Ng φ g).map (algebraMap W Qq) * dD Qq p r k = h * (Ng φ g').map (algebraMap W Qq) * dD Qq p r k * Matrix.map Y (algebraMap W Qq)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc (h * (Ng φ g').map (algebraMap W Qq)) (dD Qq p r k), ← hE, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc ((Ng φ g').map (algebraMap W Qq)), hinv, Matrix.one_mul]`. Rewrite using `[hM]`. Conclude with `colSpan_mul_le _ Y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tgt_le_of_plane (φ : WF p n' ≃+* W) (r : ℕ) (hpQ : (p : Qq) ≠ 0)
     (g g' : Matrix (Fin k) (Fin k) (WF p n')) (hg : IsGLW g) (hg' : IsGLW g')
@@ -548,21 +544,21 @@ theorem tgt_le_of_plane (φ : WF p n' ≃+* W) (r : ℕ) (hpQ : (p : Qq) ≠ 0)
   exact colSpan_mul_le _ Y
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap W Qq)` using `IsFractionRing.injective W Qq`. Establish `hcol : ∀ c : Fin k, ∃ y : Fin k → W, (fun i => (h * (Ng φ g).map (algebraMap W Qq) * dD Qq p r k) i c) = (h * (Ng φ g').map (algebraMap W Qq) * dD Qq p r k).mulVec (fun b => algebraMap W Qq (y b))`. Introduce `c`. Establish `hc : (fun i => (h * (Ng φ g).map (algebraMap W Qq) * dD Qq p r k) i c) ∈ colSpan W (h * (Ng φ g).map (algebraMap W Qq) * dD Qq p r k)`. Unfold `colSpan`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Submodule.subset_span ⟨c, rfl⟩`. Conclude with `(mem_colSpan _ _).mp (hle hc)`. Use `choose Y hY using hcol`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, hc, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[SetLike.mem_coe, mem_plane]`. Use `⟨fun i => WittVector.constantCoeff (φ.symm (Y c i)), ?_⟩` and prove the remaining obligations. Establish `h1` using `hY c`. Rewrite `h1` using `[Matrix.mul_assoc h, Matrix.mul_assoc h, col_eq, ← Matrix.mulVec_mulVec]`. Establish `h2` using `mulVec_cancel h hh h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Establish `h3` using `congrFun h2 j`. Simplify using `only [dD, Matrix.mul_diagonal, Matrix.map_apply, Ng, Matrix.mulVec, dotProduct, if_pos hc] at h3`. Establish `h5 : algebraMap W Qq (φ (g⁻¹ c j)) = (∑ i, algebraMap W Qq (φ (g'⁻¹ i j)) * (if i.val < r then ((p : Qq))⁻¹ else 1) * algebraMap W Qq (Y c i)) * (p : Qq)`. Rewrite using `[← h3, mul_assoc, inv_mul_cancel₀ hpQ, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4 : algebraMap W Qq (φ (g⁻¹ c j)) = algebraMap W Qq (∑ i, φ (g'⁻¹ i j) * (if i.val < r then 1 else (p : W)) * Y c i)`. Rewrite using `[h5, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hi : i.val < r`. Simplify using `only [hi, if_true, map_mul, map_one, mul_one]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[mul_assoc, mul_assoc, mul_left_comm ((p : Qq))⁻¹, inv_mul_cancel₀ hpQ, mul_one]`. Simplify using `only [hi, if_false, map_mul, map_natCast, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `h6` using `hinj h4`. Establish `h7 : g⁻¹ c j = ∑ i, g'⁻¹ i j * (if i.val < r then 1 else (p : WF p n')) * φ.symm (Y c i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[← φ.symm_apply_apply (g⁻¹ c j), h6, map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `by_cases hi : i.val < r <;> simp [hi]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, ite_apply, Pi.zero_apply]`. Rewrite using `[h7, map_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hi : i.val < r`. Rewrite using `[if_pos hi, if_pos hi, mul_one, map_mul, mul_comm]`. Rewrite using `[if_neg hi, if_neg hi, mul_zero, map_mul, map_mul, cc_p, mul_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plane_le_of_tgt [IsDomain W] [IsFractionRing W Qq] (φ : WF p n' ≃+* W) (r : ℕ) (hpQ : (p : Qq) ≠ 0)
     (g g' : Matrix (Fin k) (Fin k) (WF p n'))
@@ -618,37 +614,35 @@ theorem plane_le_of_tgt [IsDomain W] [IsFractionRing W Qq] (φ : WF p n' ≃+* W
 end Witt
 
 /- English proof (translation)
-Introduce `p n' _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w hS φ _ m r h hh`. Use `hS.frac_alt` as an intermediate fact. Establish `hp0 : (p : W) ≠ 0` using `hS.p_unif.ne_zero`. Establish `hpQ : (p : Qq) ≠ 0`. Rewrite using `[← map_natCast (algebraMap W Qq)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => hp0 ((IsFractionRing.injective W Qq) (by rw [h, map_zero]))`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `e he hsrc`. Take `⟨ge, hge⟩` from `LatticeSystems.lc_main p n' r (m + 1) hS.p_unif hS.res_card (by have := hS.five_le; omega) (by have := hS.two_le; omega) e he`. Take `⟨hdet, hs, ht⟩` from `hge`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU⟩` from `LatticeSystems.la_factor (O := W) h ge (by rw [← hs, hsrc])`. Take `⟨U', hU'⟩` from `LatticeSystems.la_factor (O := W) ge h (by rw [← hs, hsrc])`. Establish `hUU : U * U' = 1`. Establish `h1 : h * (U * U').map (algebraMap W Qq) = h * 1`. Rewrite using `[Matrix.map_mul, ← Matrix.mul_assoc, ← hU, ← hU', Matrix.mul_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (U * U').map (algebraMap W Qq) = 1`. Establish `h3` using `congrArg (fun X => h⁻¹ * X) h1`. Simplify `h3` using `only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul h hh, Matrix.one_mul]`. Use extensionality with `a b`. Apply `IsFractionRing.injective W Qq` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h4` using `congrFun (congrFun h2 a) b`. Rewrite `h4` using `[Matrix.map_apply]`. Rewrite using `[h4, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Take `⟨g, hg⟩ : ∃ g : Matrix (Fin (m + 1)) (Fin (m + 1)) (WF p n'), g = fun a b => φ.symm (U' b a)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨gi, hgi⟩ : ∃ gi : Matrix (Fin (m + 1)) (Fin (m + 1)) (WF p n'), gi = fun a b => φ.symm (U b a)` from `⟨_, rfl⟩`. Establish `hggi : g * gi = 1`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[Matrix.mul_apply, map_sum, hg, hgi]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, RingEquiv.apply_symm_apply]`. Establish `h1` using `congrFun (congrFun hUU b) a`. Rewrite `h1` using `[Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hab : a = b`. Rewrite using `[if_pos hab, if_pos hab.symm, map_one]`. Rewrite using `[if_neg hab, if_neg (Ne.symm hab), map_zero]`. Establish `hgl : IsGLW g`. Unfold `IsGLW`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h1 : g.det * gi.det = 1` using `by rw [← Matrix.det_mul, hggi, Matrix.det_one]`. Conclude with `IsUnit.of_mul_eq_one _ h1`. Establish `hinv : g⁻¹ = gi` using `Matrix.inv_eq_right_inv hggi`. Establish `hN : (Ng φ g).map (algebraMap W Qq) = U.map (algebraMap W Qq)`. Use extensionality with `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_apply, Ng, hinv, hgi, RingEquiv.apply_symm_apply]`. Use `⟨g, hgl, ?_⟩` and prove the remaining obligations. Rewrite using `[matQ_inv φ g hgl, hN, ← hU]`. Conclude with `⟨hdet, hs, ht⟩`. Introduce `g e hg hr he`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨isEdge_of_basis p n' r hp0 hS.res_card hr e _ he, ?_⟩` and prove the remaining obligations. Rewrite using `[he.2.1]`. Conclude with `src_eq φ g hg h`. Introduce `g g' e e' hg hg' he he'`. Take `⟨-, hs, ht⟩` from `he`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨-, hs', ht'⟩` from `he'`. Rewrite `hs` using `[src_eq φ g hg h]`. Rewrite `hs'` using `[src_eq φ g' hg' h]`. Rewrite `ht` using `[matQ_inv φ g hg]`. Rewrite `ht'` using `[matQ_inv φ g' hg']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `e.tgt = colSpan W (h * (Ng φ g).map (algebraMap W Qq) * dD Qq p r (m + 1)) at ht`. Express the relevant statement in the definitionally equal form `e'.tgt = colSpan W (h * (Ng φ g').map (algebraMap W Qq) * dD Qq p r (m + 1)) at ht'`. Prove the components needed by the constructor for the conclusion. Introduce `hee`. Substitute `hee` using the available equality.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `plane_le_of_tgt φ r hpQ g g' h hh (by rw [← ht, ← ht'])`. Conclude with `plane_le_of_tgt φ r hpQ g' g h hh (by rw [← ht, ← ht'])`. Introduce `hpl`. Take `⟨s, t⟩` from `e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s', t'⟩` from `e'`. Simplify using `only at hs hs' ht ht'`. Rewrite using `[Edge.mk.injEq]`. Use `⟨by rw [hs, hs'], ?_⟩` and prove the remaining obligations. Rewrite using `[ht, ht']`.
-
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `tgt_le_of_plane φ r hpQ g g' hg hg' h hpl.le`. Conclude with `tgt_le_of_plane φ r hpQ g' g hg' hg h hpl.ge`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem edgePlane : EdgePlane := by
   intro p n' _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w hS φ _ m r h hh

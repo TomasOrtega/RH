@@ -28,19 +28,19 @@ noncomputable section
 namespace GlobalTheory.LineSumV'
 
 /- English proof (translation)
-Take `⟨γ, hγ, hγt⟩` from `GlobalTheory.KapXLine.exists_line D θ X τ Y hθ hY e Γ.W hJ`. Take `⟨Dop, hDP, hD⟩` from `(GlobalTheory.T.polynomial_datum_action_of_pair hP _ _ D.sp.cm.sig Bs _ _ Γ.V' Γ.W Γ.M' Xc.α (Xc.α / Xc.β) om' _ _ _ _ (GlobalTheory.ThK.RealUniq.isPair_V' hT)).2.2.1 γ hγ`. Establish `hfun : ∀ Φ : (Fin a' × Fin (a + a') → AF D.host.F) → ℂ, ∀ x, (fun t : ℝ => om' (1, kapX X e hJ (oneP θ X τ Y t)) Φ x) = fun t => om' (1, γ (Multiplicative.ofAdd t)) Φ x`. Introduce `Φ x`. Use function extensionality and compare the values at `t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hγt t]`. Introduce `ΦD hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `zero`. Use `⟨0, zero_mem _, fun x => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hasDerivAt_const (0 : ℝ) (0 : ℂ)`. Consider the case `add p q _ _ hp hq`. Take `⟨p', hp', hdp⟩` from `hp`. Take `⟨q', hq', hdq⟩` from `hq`. Use `⟨p' + q', add_mem hp' hq', fun x => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : (fun t : ℝ => om' (1, kapX X e hJ (oneP θ X τ Y t)) (p + q) x) = fun t => om' (1, kapX X e hJ (oneP θ X τ Y t)) p x + om' (1, kapX X e hJ (oneP θ X τ Y t)) q x`. Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules. Rewrite using `[e1]`. Conclude with `(hdp x).add (hdq x)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `smul c p _ hp`. Take `⟨p', hp', hdp⟩` from `hp`. Use `⟨c • p', Submodule.smul_mem _ c hp', fun x => ?_⟩` and prove the remaining obligations. Establish `e1 : (fun t : ℝ => om' (1, kapX X e hJ (oneP θ X τ Y t)) (c • p) x) = fun t => c * om' (1, kapX X e hJ (oneP θ X τ Y t)) p x`. Use function extensionality and compare the values at `t`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[e1]`. Simplify using `using (hdp x).const_mul c`. Consider the case `mem Φ hΦ`. Take `⟨f, φ, hf, hSB, hev, rfl⟩` from `hΦ`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers D.host.F} 1` using `(hev.and hT.geo.hM'.std).mono fun v hv => hv.1.trans hv.2`. Use `⟨GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (Dop f) φ, Submodule.subset_span ⟨Dop f, φ, hDP f hf, hSB, hev, rfl⟩, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hfun]`. Conclude with `((hD f hf (Dop f)).2 rfl) _ (GlobalTheory.ThK.EvUniqInf.rest_pure f φ hSB hstd) x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_deriv_factor (hP : GlobalTheory.FunPr.Hypotheses₂) (D : D7) (θ : InfFam D) (X : HSp D) {a a' : ℕ} (e : Fin X.rank ≃ Fin (a + a'))
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
@@ -87,25 +87,21 @@ theorem exists_deriv_factor (hP : GlobalTheory.FunPr.Hypotheses₂) (D : D7) (θ
     exact ((hD f hf (Dop f)).2 rfl) _ (GlobalTheory.ThK.EvUniqInf.rest_pure f φ hSB hstd) x
 
 /- English proof (translation)
-Introduce `hP D θ X a a' e Bs Γ Xc om om' hJ hθ hT l hl ΦD hΦD`. Establish `hex : ∀ (Φ : (Fin a' × Fin (a + a') → AF D.host.F) → ℂ), Φ ∈ algD Γ.M' Bs.ψ Bs.emb → ∀ i : Fin l.length, ∃ Ψ ∈ algD Γ.M' Bs.ψ Bs.emb, ∀ x, HasDerivAt (fun t : ℝ => om' (1, kapX X e hJ (oneP θ X (l.get i).1 (l.get i).2 t)) Φ x) (Ψ x) 0` using `fun Φ hΦ i => exists_deriv_factor hP D θ X e Bs Γ Xc om om' hJ hθ hT _ _ (hl _ (List.get_mem l i)) Φ hΦ`. Proceed by induction on `hΦD using Submodule.span_induction with`. Consider the case `zero`. Introduce `Ψ hΨ x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : ∀ i, Ψ i x = 0`. Introduce `i`. Use `((hΨ i).2 x).unique ?_` and prove the remaining obligations. Simplify using `using hasDerivAt_const (0 : ℝ) (0 : ℂ)`. Simplify using `only [h0, Finset.sum_const_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `using hasDerivAt_const (0 : ℝ) (0 : ℂ)`. Consider the case `add p q hp hq ihp ihq`. Introduce `Ψ hΨ x`. Use `choose Ψp hΨp hdp using hex p (Submodule.span_le.2 (fun _ h => Submodule.subset_span h) hp)`. Use `choose Ψq hΨq hdq using hex q (Submodule.span_le.2 (fun _ h => Submodule.subset_span h) hq)`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsplit : ∀ i, Ψ i x = Ψp i x + Ψq i x`. Introduce `i`. Use `((hΨ i).2 x).unique ?_` and prove the remaining obligations. Establish `e1 : (fun t : ℝ => om' (1, kapX X e hJ (oneP θ X (l.get i).1 (l.get i).2 t)) (p + q) x) = fun t => om' (1, kapX X e hJ (oneP θ X (l.get i).1 (l.get i).2 t)) p x + om' (1, kapX X e hJ (oneP θ X (l.get i).1 (l.get i).2 t)) q x`. Use function extensionality and compare the values at `t`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[e1]`. Conclude with `(hdp i x).add (hdq i x)`. Establish `e2 : (fun t : ℝ => om' (1, kapX X e hJ ((l.map fun q => oneP θ X q.1 q.2 t).prod)) (p + q) x) = fun t => om' (1, kapX X e hJ ((l.map fun q => oneP θ X q.1 q.2 t).prod)) p x + om' (1, kapX X e hJ ((l.map fun q => oneP θ X q.1 q.2 t).prod)) q x`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Simplify using the standard rewrite rules. Rewrite using `[e2, Finset.sum_congr rfl (fun i _ => hsplit i), Finset.sum_add_distrib]`. Conclude with `(ihp Ψp (fun i => ⟨hΨp i, hdp i⟩) x).add (ihq Ψq (fun i => ⟨hΨq i, hdq i⟩) x)`. Consider the case `smul c p hp ihp`. Introduce `Ψ hΨ x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose Ψp hΨp hdp using hex p (Submodule.span_le.2 (fun _ h => Submodule.subset_span h) hp)`. Establish `hsplit : ∀ i, Ψ i x = c * Ψp i x`. Introduce `i`. Use `((hΨ i).2 x).unique ?_` and prove the remaining obligations. Establish `e1 : (fun t : ℝ => om' (1, kapX X e hJ (oneP θ X (l.get i).1 (l.get i).2 t)) (c • p) x) = fun t => c * om' (1, kapX X e hJ (oneP θ X (l.get i).1 (l.get i).2 t)) p x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules. Rewrite using `[e1]`. Conclude with `(hdp i x).const_mul c`. Establish `e2 : (fun t : ℝ => om' (1, kapX X e hJ ((l.map fun q => oneP θ X q.1 q.2 t).prod)) (c • p) x) = fun t => c * om' (1, kapX X e hJ ((l.map fun q => oneP θ X q.1 q.2 t).prod)) p x`.
-
-Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules. Rewrite using `[e2, Finset.sum_congr rfl (fun i _ => hsplit i), ← Finset.mul_sum]`. Conclude with `(ihp Ψp (fun i => ⟨hΨp i, hdp i⟩) x).const_mul c`. Consider the case `mem Φ hΦ`.
-
-Take `⟨f, φ, hf, hSB, hev, rfl⟩` from `hΦ`. Conclude with `hpure hP D θ X e Bs Γ Xc om om' hJ hθ hT l hl f hf φ hSB hev`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem prodRule (hpure : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (θ : InfFam D) (X : HSp D) {a a' : ℕ} (e : Fin X.rank ≃ Fin (a + a'))
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')
@@ -182,9 +178,9 @@ theorem prodRule (hpure : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (θ 
     exact hpure hP D θ X e Bs Γ Xc om om' hJ hθ hT l hl f hf φ hSB hev
 
 /- English proof (translation)
-Introduce `hP D θ X a a' e Bs Γ Xc om om' hJ hθ hT l hl ΦD hΦD Φ₁D hΦ₁`. Establish `hex : ∀ i : Fin l.length, ∃ Ψ ∈ algD Γ.M' Bs.ψ Bs.emb, ∀ x, HasDerivAt (fun t : ℝ => om' (1, kapX X e hJ (oneP θ X (l.get i).1 (l.get i).2 t)) ΦD x) (Ψ x) 0` using `fun i => exists_deriv_factor hP D θ X e Bs Γ Xc om om' hJ hθ hT _ _ (hl _ (List.get_mem l i)) ΦD hΦD`. Use `choose Ψ hΨ hder using hex`. Use `⟨Ψ, fun i => ⟨hΨ i, hder i⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_apply]`. Conclude with `(hΦ₁ x).unique (prodRule GlobalTheory.T.seesaw_doubling_frame_model hP D θ X e Bs Γ Xc om om' hJ hθ hT l hl ΦD hΦD Ψ (fun i => ⟨hΨ i, hder i⟩) x)`.
+A detailed English derivation is pending.
 -/
 theorem derSum : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (θ : InfFam D) (X : HSp D) {a a' : ℕ} (e : Fin X.rank ≃ Fin (a + a'))
     (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo D.sp.cm.sig a a')

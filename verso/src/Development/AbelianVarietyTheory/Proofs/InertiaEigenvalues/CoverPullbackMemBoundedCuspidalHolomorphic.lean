@@ -21,7 +21,7 @@ open scoped ComplexConjugate
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Establish `h1 : ((1 : Matrix (Fin r) (Fin r) E).map τ) = 1` using `Matrix.map_one τ τ.map_zero τ.map_one`. Use `conv_rhs => rw [← Matrix.one_mulVec u, ← Matrix.one_mulVec w, ← h1]`. Rewrite using `[CompactEntryBounds.hermC_expand X, CompactEntryBounds.hermC_expand X₂]`. Simplify using `only [hγ, Matrix.one_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermC_move (X X₂ : Data E r) {γ : Matrix (Fin r) (Fin r) E}
     (hγ : ∀ v w, herm X.Gm (γ *ᵥ v) (γ *ᵥ w) = herm X₂.Gm v w) (τ : E →+* ℂ) (u w : Fin r → ℂ) :
@@ -32,14 +32,14 @@ theorem hermC_move (X X₂ : Data E r) {γ : Matrix (Fin r) (Fin r) E}
   simp only [hγ, Matrix.one_mulVec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem col_mul (A Y : Matrix (Fin r) (Fin r) ℂ) (c : Fin r) :
     ReciprocityTheory.ChartRestriction.G.FD.col (A * Y) c = A *ᵥ ReciprocityTheory.ChartRestriction.G.FD.col Y c := by
   funext i; simp [ReciprocityTheory.ChartRestriction.G.FD.col, Matrix.mul_apply, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.FD.gram, Matrix.of_apply]`. Rewrite using `[col_mul, col_mul, hermC_move X X₂ hγ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_move (X X₂ : Data E r) {γ : Matrix (Fin r) (Fin r) E}
     (hγ : ∀ v w, herm X.Gm (γ *ᵥ v) (γ *ᵥ w) = herm X₂.Gm v w) (τ : E →+* ℂ)
@@ -64,14 +64,14 @@ theorem maj_eq (X : Data E r) (x : Frame X.Ψ r) (τ : X.Ψ) (v : Fin r → ℂ)
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem majM_congr (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) {p q : ℕ} (hp : p ≤ r) (hq : q ≤ r) (h : p = q)
     (M : Matrix (Fin r) (Fin r) ℂ) (v : Fin r → ℂ) : majM τ G p hp M v = majM τ G q hq M v := by
   subst h; rfl
 
 /- English proof (translation)
-Unfold `majM`. Simplify using `only [col_mul, hermC_move X X₂ hγ, gram_move X X₂ hγ]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem majM_move (X X₂ : Data E r) {γ : Matrix (Fin r) (Fin r) E}
     (hγ : ∀ v w, herm X.Gm (γ *ᵥ v) (γ *ᵥ w) = herm X₂.Gm v w) (τ : E →+* ℂ) {p : ℕ} (hp : p ≤ r)
@@ -81,7 +81,7 @@ theorem majM_move (X X₂ : Data E r) {γ : Matrix (Fin r) (Fin r) E}
   simp only [col_mul, hermC_move X X₂ hγ, gram_move X X₂ hγ]
 
 /- English proof (translation)
-Rewrite using `[maj_eq, maj_eq, hrel, ← ReciprocityTheory.ChartRestriction.G.AR.Inst.emb_mulVec, majM_move X X₂ hγ]`. Conclude with `majM_congr _ _ _ _ hp _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maj_move (X X₂ : Data E r) {γ : Matrix (Fin r) (Fin r) E}
     (hγ : ∀ v w, herm X.Gm (γ *ᵥ v) (γ *ᵥ w) = herm X₂.Gm v w) (hp : X.p0 = X₂.p0)
@@ -92,7 +92,7 @@ theorem maj_move (X X₂ : Data E r) {γ : Matrix (Fin r) (Fin r) E}
   exact majM_congr _ _ _ _ hp _ _
 
 /- English proof (translation)
-Unfold `dmin`. Rewrite using `[hrel, gram_move X X₂ hγ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dmin_move (X X₂ : Data E r) {γ : Matrix (Fin r) (Fin r) E}
     (hγ : ∀ v w, herm X.Gm (γ *ᵥ v) (γ *ᵥ w) = herm X₂.Gm v w)
@@ -103,9 +103,9 @@ theorem dmin_move (X X₂ : Data E r) {γ : Matrix (Fin r) (Fin r) E}
   rw [hrel, gram_move X X₂ hγ]
 
 /- English proof (translation)
-Unfold `Data.pnorm`. Rewrite using `[hP, norm_mul, hu, one_mul]`. Use `congr 1`. Use `Fintype.prod_equiv (Equiv.subtypeEquivRight hΨ) _ _ (fun τ => ?_)` and prove the remaining obligations. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h₁ : τ.1 ∈ X.Ψ` using `(hΨ τ.1).1 τ.2`. Use `show _ = ‖dmin X.Gm x' ⟨τ.1, h₁⟩ i.succ / dmin X.Gm x' ⟨τ.1, h₁⟩ i.castSucc‖ ^ (-(la ⟨τ.1, h₁⟩ i : ℝ) / 2)`. Rewrite using `[dmin_move X X₂ hγ x x' τ.1 τ.2 h₁ (hrel τ.1 τ.2 h₁), dmin_move X X₂ hγ x x' τ.1 τ.2 h₁ (hrel τ.1 τ.2 h₁), ← hla τ.1 τ.2 h₁ i]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pnorm_move (X X₂ : Data E r) (hΨ : ∀ τ, τ ∈ X₂.Ψ ↔ τ ∈ X.Ψ) {γ : Matrix (Fin r) (Fin r) E}
     (hγ : ∀ v w, herm X.Gm (γ *ᵥ v) (γ *ᵥ w) = herm X₂.Gm v w) (la : Wt X.Ψ r) (la₂ : Wt X₂.Ψ r)
@@ -125,23 +125,21 @@ theorem pnorm_move (X X₂ : Data E r) (hΨ : ∀ τ, τ ∈ X₂.Ψ ↔ τ ∈ 
     ← hla τ.1 τ.2 h₁ i]
 
 /- English proof (translation)
-Use `set K : ℝ := 1 + ∑ τ : X₂.Ψ, X.c ⟨τ.1, (hΨ τ.1).1 τ.2⟩ / X₂.c τ with hKdef`. Establish `hc2 : ∀ τ : X₂.Ψ, 0 < X₂.c τ` using `fun τ => IsotropicThreshold.c_pos X₂ τ`. Establish `hKτ : ∀ τ : X₂.Ψ, X.c ⟨τ.1, (hΨ τ.1).1 τ.2⟩ ≤ K * X₂.c τ`. Introduce `τ`. Establish `h1 : X.c ⟨τ.1, (hΨ τ.1).1 τ.2⟩ / X₂.c τ ≤ K`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.single_le_sum (f := fun τ : X₂.Ψ => X.c ⟨τ.1, (hΨ τ.1).1 τ.2⟩ / X₂.c τ) (fun τ _ => (div_pos (IsotropicThreshold.c_pos X _) (hc2 τ)).le) (Finset.mem_univ τ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h1` using `[div_le_iff₀ (hc2 τ)]`. Then use the resulting hypothesis. Establish `hK : 0 < K`. Use `Finset.sum_nonneg (fun τ (_ : τ ∈ (Finset.univ : Finset X₂.Ψ)) => (div_pos (IsotropicThreshold.c_pos X ⟨τ.1, (hΨ τ.1).1 τ.2⟩) (hc2 τ)).le)` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨K, hK, fun x hx x' hx' hrel => ?_⟩` and prove the remaining obligations. Take `⟨w₀, hw₀, hw₀0⟩` from `ReciprocityTheory.ChartRestriction.G.AR.Inst.lam_ne X₂ hr`. Unfold `Data.firstMinimumSq`. Use `set S := {t | ∃ v ∈ X.Λ, v ≠ 0 ∧ t = ∑ τ, X.c τ * X.maj x' τ (Data.emb τ.1 v)} with hS`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `set S₂ := {t | ∃ v ∈ X₂.Λ, v ≠ 0 ∧ t = ∑ τ, X₂.c τ * X₂.maj x τ (Data.emb τ.1 v)} with hS₂`. Establish `hSb : BddBelow S` using `⟨0, by`. Introduce and unpack `_ ⟨v, -, hv0, rfl⟩`. Conclude with `Finset.sum_nonneg fun τ _ => mul_nonneg (IsotropicThreshold.c_pos X τ).le (X.maj_pos hx' τ (emb_ne_zero τ.1 hv0)).le⟩`. Establish `hS₂ne : S₂.Nonempty` using `⟨_, w₀, hw₀, hw₀0, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `key : sInf S / K ≤ sInf S₂`. Use `le_csInf hS₂ne ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, hw0, rfl⟩`. Rewrite using `[div_le_iff₀ hK]`. Establish `hγw : (γ : Matrix (Fin r) (Fin r) E) *ᵥ w ∈ X.Λ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `: (γ : Matrix (Fin r) (Fin r) E) *ᵥ w ∈ (X.Λ : Set (Fin r → E))`. Rewrite using `[hΛ]`. Conclude with `⟨w, hw, rfl⟩`. Conclude with `this`. Establish `hγw0 : (γ : Matrix (Fin r) (Fin r) E) *ᵥ w ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Apply `hw0` to reduce the goal to its premises. Establish `e : (((γ⁻¹ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E) *ᵥ ((γ : Matrix (Fin r) (Fin r) E) *ᵥ w)) = w`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[← e, h0, Matrix.mulVec_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(csInf_le hSb ⟨_, hγw, hγw0, rfl⟩).trans ?_` and prove the remaining obligations. Establish `hre : ∑ τ : X.Ψ, X.c τ * X.maj x' τ (Data.emb τ.1 ((γ : Matrix (Fin r) (Fin r) E) *ᵥ w)) = ∑ τ : X₂.Ψ, X.c ⟨τ.1, (hΨ τ.1).1 τ.2⟩ * X₂.maj x τ (Data.emb τ.1 w)`. Use `(Fintype.sum_equiv (Equiv.subtypeEquivRight hΨ) _ _ (fun τ => ?_)).symm` and prove the remaining obligations. Use `show X.c ⟨τ.1, (hΨ τ.1).1 τ.2⟩ * X₂.maj x τ (Data.emb τ.1 w) = X.c ⟨τ.1, (hΨ τ.1).1 τ.2⟩ * X.maj x' ⟨τ.1, (hΨ τ.1).1 τ.2⟩ (Data.emb τ.1 ((γ : Matrix (Fin r) (Fin r) E) *ᵥ w))`. Rewrite using `[maj_move X X₂ hγ hp x x' τ.1 τ.2 ((hΨ τ.1).1 τ.2) (hrel τ.1 τ.2 _)]`.
-
-Rewrite using `[hre, Finset.sum_mul]`. Use `Finset.sum_le_sum fun τ _ => ?_` and prove the remaining obligations. Establish `hm` using `(X₂.maj_pos hx τ (emb_ne_zero τ.1 hw0)).le`. Combine the equalities or inequalities in the displayed calculation. Rewrite `key` using `[div_le_iff₀ hK, mul_comm]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_firstMinimumSq_bound_of_rationalIsometry (X X₂ : Data E r) (hr : 0 < r) (hΨ : ∀ τ, τ ∈ X₂.Ψ ↔ τ ∈ X.Ψ) (γ : GL (Fin r) E)
     (hΛ : (X.Λ : Set (Fin r → E)) = (γ : Matrix (Fin r) (Fin r) E).mulVec '' (X₂.Λ : Set (Fin r → E)))
@@ -202,21 +200,21 @@ theorem exists_firstMinimumSq_bound_of_rationalIsometry (X X₂ : Data E r) (hr 
   rwa [div_le_iff₀ hK, mul_comm] at key
 
 /- English proof (translation)
-Introduce `D T hL j hj σ hσ C hC a n hDom f hf hfh f₂ hf₂ hP`. Use `Submodule.mem_inf.2 ⟨holCusp_mem_holSub _ _ (fun k₂ => ?_), rdU_mem_offZero _ _⟩` and prove the remaining obligations. Establish `hU₂ : IsUnf C.U₂` using `hC.2.2.2.1`. Establish `hU₁ : IsUnf (T.U j σ)` using `hL.unf j hj σ hσ`. Establish `hS` using `Formalism.L2.Pj.abelian₂.holSub_SS ReciprocityTheory.ChartRestriction.G.FD.siegelSpaceAlgebra_holds _ _ (Submodule.mem_inf.1 hfh).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, γ, hΛ, hh, -, u, hu1, hx⟩` from `GlobalTheory.CoverConst.cover_scalar_const D T hL j hj σ hσ C hC n k₂`. Take `⟨hΨ, hla⟩` from `GlobalTheory.CoverConst.psi_and_weight_eq D T hL j hj σ hσ C hC k₂ k`. Establish `hp : ((T.U j σ).X k).p0 = (C.U₂.X k₂).p0` using `((hU₁.2.1 k).1).trans ((hU₂.2.1 k₂).1).symm`. Set `G : Frame (C.U₂.X k₂).Ψ D.R.r → Frame ((T.U j σ).X k).Ψ D.R.r` to `fun x τ => ((γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).map τ.1 * mat x ⟨τ.1, (hΨ τ.1).2 τ.2⟩ : Matrix (Fin D.R.r) (Fin D.R.r) ℂ)`. Establish `hGrel : ∀ x (τ : D.host.E →+* ℂ) (h₂ : τ ∈ (C.U₂.X k₂).Ψ) (h₁ : τ ∈ ((T.U j σ).X k).Ψ), mat (G x) ⟨τ, h₁⟩ = (γ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).map τ * mat x ⟨τ, h₂⟩` using `fun _ _ _ _ => rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hG : ∀ x ∈ (C.U₂.X k₂).dom, G x ∈ ((T.U j σ).X k).dom ∧ rdU C.U₂ f₂ k₂ x = u * rdU (T.U j σ) f k (G x)` using `fun x hxd => ⟨(hx x (G x) hxd (hGrel x)).1, (hx x (G x) hxd (hGrel x)).2 a hDom f hf f₂ hf₂ hP⟩`. Establish `hpn : ∀ x ∈ (C.U₂.X k₂).dom, (C.U₂.X k₂).pnorm (laU C.U₂ a n k₂) (rdU C.U₂ f₂ k₂) x = ((T.U j σ).X k).pnorm (laU (T.U j σ) a n k) (rdU (T.U j σ) f k) (G x)` using `fun x hxd => pnorm_move _ _ hΨ hh _ _ (fun τ h₂ h₁ i => hla a n τ h₂ h₁ i) _ _ x (G x) (hGrel x) u hu1 (hG x hxd).2`. Establish `hsec` using `hU₂.2.2.2.2.1 a n hDom f₂ hf₂ k₂`. Take `⟨B, hB⟩` from `(hS k).1.2`. Establish `hbdd : (C.U₂.X k₂).IsBddSec (laU C.U₂ a n k₂) (rdU C.U₂ f₂ k₂)` using `⟨hsec, B, fun x hxd => (hpn x hxd).trans_le (hB _ (hG x hxd).1)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hr : 0 < D.R.r`. Take `⟨c₀, hc₀, hgt⟩` from `ReciprocityTheory.ChartRestriction.G.FD.spectralGap_holds D.R.r _ _ _ (hS k)`. Take `⟨C₁, hC₁⟩` from `ReciprocityTheory.ChartRestriction.G.FD.cuspidalDecay_holds D.R.r _ _ _ c₀ hc₀.le hgt`. Apply the tactic sequence `obtain ⟨K, hK, hle⟩ := exists_firstMinimumSq_bound_of_rationalIsometry _ _ hr hΨ γ hΛ hh hp`. Use `GlobalTheory.CuspUnif.mem_SS_of_decay _ hr _ _ hbdd (C := |C₁|) (c := 2 * Real.pi * c₀ / K) (by positivity) fun x hxd => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hGd` using `(hG x hxd).1`. Establish `hl : 0 < ((T.U j σ).X k).firstMinimumSq (G x)` using `Real.sqrt_pos.1 (ReciprocityTheory.ChartRestriction.G.AR.Inst.la1_pos_of_mem_dom _ hr hGd)`. Establish `hl₂ : 0 < (C.U₂.X k₂).firstMinimumSq x` using `Real.sqrt_pos.1 (ReciprocityTheory.ChartRestriction.G.AR.Inst.la1_pos_of_mem_dom _ hr hxd)`. Establish `hle'` using `hle x hxd (G x) hGd (hGrel x)`. Rewrite using `[hpn x hxd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(hC₁ (G x) hGd).trans ?_` and prove the remaining obligations. Use `mul_le_mul (le_abs_self _) (Real.exp_le_exp.2 ?_) (Real.exp_pos _).le (abs_nonneg _)` and prove the remaining obligations. Establish `hq : 2 * Real.pi * c₀ / K / (C.U₂.X k₂).firstMinimumSq x ≤ 2 * Real.pi * c₀ / ((T.U j σ).X k).firstMinimumSq (G x)`. Rewrite using `[div_div, div_le_div_iff₀ (by positivity) hl]`. Conclude with `mul_le_mul_of_nonneg_left hle' (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : -2 * Real.pi * c₀ / ((T.U j σ).X k).firstMinimumSq (G x) = -(2 * Real.pi * c₀ / ((T.U j σ).X k).firstMinimumSq (G x))` using `by ring`. Rewrite using `[e1, neg_div]`. Conclude with `neg_le_neg hq`. Use `⟨hbdd, fun ξ hξ x _ => ?_⟩` and prove the remaining obligations. It suffices to derive a contradiction.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `hξ.2.2` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Conclude with `absurd i.2 (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem cover_pull_holSub0 : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → ∀ C : Cover T j σ, C.IsUnif → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → ∀ f ∈ sec (T.Q.Xo j) T.Q.c a n, rdU (T.U j σ) f ∈ holSub0 (T.U j σ).X (laU (T.U j σ) a n) → ∀ f₂ ∈ sec C.d.Xo₂ C.d.c₂ a n, C.IsPull f f₂ → rdU C.U₂ f₂ ∈ holSub0 C.U₂.X (laU C.U₂ a n) := by
   intro D T hL j hj σ hσ C hC a n hDom f hf hfh f₂ hf₂ hP

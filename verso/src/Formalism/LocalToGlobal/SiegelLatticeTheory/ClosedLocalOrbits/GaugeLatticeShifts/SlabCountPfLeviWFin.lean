@@ -16,7 +16,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (u' : D.what₂.Word)
 
 /- English proof (translation)
-Use `show Submodule.span D.host.E (Set.range (X.Fu u').e) ≤ _`. Rewrite using `[X.Fu_e]`. Conclude with `Submodule.span_mono (Set.subset_union_of_subset_left Set.subset_union_left _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xsp_le_usp : Xsp (lf D (X.Fu u')) ≤ Usp X u' := by
   show Submodule.span D.host.E (Set.range (X.Fu u').e) ≤ _
@@ -24,13 +24,13 @@ theorem xsp_le_usp : Xsp (lf D (X.Fu u')) ≤ Usp X u' := by
   exact Submodule.span_mono (Set.subset_union_of_subset_left Set.subset_union_left _)
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.orth_anti (xsp_le_usp X u')`.
+A detailed English derivation is pending.
 -/
 theorem wsp_le_orth : Wsp X u' ≤ orth (VS D) (Xsp (lf D (X.Fu u'))) :=
   Formalism.L2.SG.Pf.orth_anti (xsp_le_usp X u')
 
 /- English proof (translation)
-Establish `h0 : ∀ x ∈ Usp X u', (VS D).hT x w = 0` using `Formalism.L2.SG.Pf.mem_orth_iff_bl.1 hw`. Establish `he : ∀ a, (VS D).hT (X.eX a) w = 0` using `fun a => h0 _ (Submodule.subset_span (Or.inl (Or.inl ⟨a, rfl⟩)))`. Establish `hf : ∀ a, (VS D).hT (X.fY a) w = 0` using `fun a => h0 _ (Submodule.subset_span (Or.inl (Or.inr ⟨a, rfl⟩)))`. Establish `hz : (VS D).hT (X.zu u') w = 0` using `h0 _ (Submodule.subset_span (Or.inr rfl))`. Simplify using `[piWL, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smulRight_apply, he, hf, hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem piWL_of_mem {w : (VS D).V} (hw : w ∈ Wsp X u') : piWL X u' w = w := by
   have h0 : ∀ x ∈ Usp X u', (VS D).hT x w = 0 := Formalism.L2.SG.Pf.mem_orth_iff_bl.1 hw
@@ -42,23 +42,21 @@ theorem piWL_of_mem {w : (VS D).V} (hw : w ∈ Wsp X u') : piWL X u' w = w := by
   simp [piWL, LinearMap.sub_apply, LinearMap.sum_apply, LinearMap.smulRight_apply, he, hf, hz]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x y => (VS D).herm.eq (x : (VS D).V) (y : (VS D).V)⟩`.
+Supply the required witnesses or components.
 -/
 theorem hW_symm : (hW X u').IsSymm :=
   ⟨fun x y => (VS D).herm.eq (x : (VS D).V) (y : (VS D).V)⟩
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Set `N : Submodule (𝓞 D.host.E) (VS D).V` to `(Λ ⊓ (orth (VS D) (Xsp (lf D (X.Fu u')))).restrictScalars (𝓞 D.host.E)).map ((piWL X u').restrictScalars (𝓞 D.host.E))`. Establish `hN : N.FG`. Use `Submodule.FG.map _ ?_` and prove the remaining obligations. Establish `: IsNoetherian (𝓞 D.host.E) Λ` using `isNoetherian_of_fg_of_noetherian Λ hΛ.fg`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(isNoetherian_submodule.1 this) _ inf_le_left`. Establish `hle : (LW X u' Λ).map ((Wsp X u').subtype.restrictScalars (𝓞 D.host.E)) ≤ N`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hx`. Establish `: IsNoetherian (𝓞 D.host.E) N` using `isNoetherian_of_fg_of_noetherian N hN`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.fg_of_fg_map_injective ((Wsp X u').subtype.restrictScalars (𝓞 D.host.E)) Subtype.val_injective ((isNoetherian_submodule.1 this) _ hle)`. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨w, hw⟩ -`. Take `⟨s, hs, hsw⟩` from `Formalism.L2.SG.Pf.exists_smul_mem Λ w`. Establish `hsW : s • w ∈ Wsp X u'` using `(Wsp X u').smul_of_tower_mem s hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmem : (⟨s • w, hsW⟩ : Wsp X u') ∈ LW X u' Λ` using `by show s • w ∈ ((Λ ⊓ (orth (VS D) (Xsp (lf D (X.Fu u')))).restrictScalars (𝓞 D.host.E)).map ((piWL X u').restrictScalars (𝓞 D.host.E)))`. Use `⟨s • w, ⟨hsw, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(orth (VS D) (Xsp (lf D (X.Fu u')))).smul_of_tower_mem s (wsp_le_orth X u' hw)`. Conclude with `piWL_of_mem X u' hsW`. Establish `hs' : (algebraMap (𝓞 D.host.E) D.host.E s) ≠ 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hs`. Establish `e : (⟨w, hw⟩ : Wsp X u') = (algebraMap (𝓞 D.host.E) D.host.E s)⁻¹ • (⟨s • w, hsW⟩ : Wsp X u')`. Use `ext`. Simplify using `only [Submodule.coe_smul]`. Rewrite using `[← algebraMap_smul D.host.E s w, smul_smul, inv_mul_cancel₀ hs', one_smul]`.
-
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lw_isLattice (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : Submodule.IsLattice D.host.E Λ) :
     Submodule.IsLattice D.host.E (LW X u' Λ) := by
@@ -99,7 +97,7 @@ theorem lw_isLattice (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : Submodule.
     exact Submodule.smul_mem _ _ (Submodule.subset_span hmem)
 
 /- English proof (translation)
-Introduce `D X Y u' Λ hΛ`. Establish `hlat : Submodule.IsLattice D.host.E Λ` using `(((Y.rowsOK u').1 Λ hΛ).1).1`. Use `Formalism.HermitianLatticesTheory.autFinite D.host.E (Wsp X u') (hW X u') (hW_symm X u') ?_ (LW X u' Λ) (lw_isLattice X u' Λ hlat)` and prove the remaining obligations. Introduce `x hx`. Conclude with `hP D X u' x x.2 (fun h => hx (Subtype.ext h))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem leviWFinC_of (hP : LeviPosC) : LeviWFinC := by
   intro D X Y u' Λ hΛ

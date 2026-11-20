@@ -17,9 +17,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {A : Places F E sig} {r k : ℕ} (G : GFrames A r k)
 
 /- English proof (translation)
-Unfold `GFrames.amp`. Rewrite using `[tsum_eq_sum (s := hT.toFinset)]`. Use `Finset.sum_congr rfl fun o ho => ?_` and prove the remaining obligations. Establish `: G.IsTerm d o.out` using `hT.mem_toFinset.1 ho`. Simplify using `only [this, true_and]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `o ho`. Establish `: ¬ G.IsTerm d o.out` using `fun h => ho (hT.mem_toFinset.2 h)`. Simplify using `only [this, false_and, if_false]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem amp_eq_finsum (d : G.Dat) (hT : {o : Quot G.LRel | G.IsTerm d o.out}.Finite) (Q : G.Lt → Prop) :
     G.amp d Q = ∑ o ∈ hT.toFinset, if Q o.out then (G.mu o.out : ℂ) * G.om d o.out else 0 := by
@@ -33,9 +33,9 @@ theorem amp_eq_finsum (d : G.Dat) (hT : {o : Quot G.LRel | G.IsTerm d o.out}.Fin
     simp only [this, false_and, if_false]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.FinprodProdMulIte.finprod_eq_prod_mul_finprod_ite`. Consider the case `exact _root_.GlobalTheory.FinprodProdMulIte.finprod_eq_prod_mul_finprod_ite`. Consider the case `(apply _root_.GlobalTheory.FinprodProdMulIte.finprod_eq_prod_mul_finprod_ite <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.FinprodProdMulIte.finprod_eq_prod_mul_finprod_ite <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.FinprodProdMulIte.finprod_eq_prod_mul_finprod_ite <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FinprodProdMulIte.finprod_eq_prod_mul_finprod_ite ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem finprod_split' {ι : Type} (S1 : Finset ι) (f g : ι → ℂ) (hf : (Function.mulSupport f).Finite)
     (hfg : ∀ p ∉ S1, f p = g p) :
@@ -49,7 +49,7 @@ theorem finprod_split' {ι : Type} (S1 : Finset ι) (f g : ι → ℂ) (hf : (Fu
   | (intros; exact _root_.GlobalTheory.FinprodProdMulIte.finprod_eq_prod_mul_finprod_ite ..)
 
 /- English proof (translation)
-Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := hg.toFinset) g (fun p hp => hg.mem_toFinset.2 hp), norm_prod]`. Conclude with `Finset.prod_eq_one fun p _ => h1 p`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_finprod_eq_one {ι : Type} (g : ι → ℂ) (hg : (Function.mulSupport g).Finite)
     (h1 : ∀ p, ‖g p‖ = 1) : ‖∏ᶠ p, g p‖ = 1 := by
@@ -61,7 +61,7 @@ def cond (d : G.Dat) (B : Finset (HeightOneSpectrum (𝓞 F))) (p : HeightOneSpe
   if p ∈ B then fun Λ => ¬ (G.S p).BBzero (d p) Λ else (G.S p).BBzero (d p)
 
 /- English proof (translation)
-Unfold `cond`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem amp_cond (d : G.Dat) (B : Finset (HeightOneSpectrum (𝓞 F))) (p : HeightOneSpectrum (𝓞 F)) :
     (G.S p).amp (d p) (cond G d B p) = if p ∈ B then (G.S p).amp (d p) (fun Λ => ¬ (G.S p).BBzero (d p) Λ)
@@ -70,7 +70,7 @@ theorem amp_cond (d : G.Dat) (B : Finset (HeightOneSpectrum (𝓞 F))) (p : Heig
   split_ifs <;> rfl
 
 /- English proof (translation)
-Unfold `cond`. Rewrite using `[if_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cond_pos (d : G.Dat) {B : Finset (HeightOneSpectrum (𝓞 F))} {p : HeightOneSpectrum (𝓞 F)} (h : p ∈ B)
     (Λ : Submodule (A.L p).O (G.S p).V) : cond G d B p Λ ↔ ¬ (G.S p).BBzero (d p) Λ := by
@@ -78,7 +78,7 @@ theorem cond_pos (d : G.Dat) {B : Finset (HeightOneSpectrum (𝓞 F))} {p : Heig
   rw [if_pos h]
 
 /- English proof (translation)
-Unfold `cond`. Rewrite using `[if_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cond_neg (d : G.Dat) {B : Finset (HeightOneSpectrum (𝓞 F))} {p : HeightOneSpectrum (𝓞 F)} (h : p ∉ B)
     (Λ : Submodule (A.L p).O (G.S p).V) : cond G d B p Λ ↔ (G.S p).BBzero (d p) Λ := by
@@ -90,45 +90,39 @@ end GlobalTheory.HL.DefectPhase
 namespace GlobalTheory.HL.DefectPhase
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ sig A r k G hk d hex S1 hS1`. Take `⟨Λ₀, hΛ₀⟩` from `hex`. Take `⟨-, -, -, -, hgood⟩` from `GlobalTheory.HL.BadPlaces.bad_places A r k G hk d Λ₀ hΛ₀`. Establish `hinv : ∀ p, ∀ h ∈ (G.S p).St, ∀ Λ, (G.S p).IsTerm (d p) Λ → ((G.S p).BBzero (d p) (h • Λ) ↔ (G.S p).BBzero (d p) Λ)`. Introduce `p h hh Λ hΛ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(A.loc p).lf` as an intermediate fact. Use `(A.loc p).char0` as an intermediate fact. Conclude with `(GlobalTheory.FrameAct.stabiliser_acts_on_terms _ r k (G.S p) (d p) Λ hΛ h hh).2.2.2.2.2.2.2.1`. Establish `hBB : ∀ p ∉ (S1 : Set _), ∀ Λ, (G.S p).IsTerm (d p) Λ → (G.S p).BBzero (d p) Λ` using `fun p hp Λ hΛ => (hgood p fun h => hp (hS1 h)).1 _ _ hΛ`. Establish `hprod : ∀ B : Finset (HeightOneSpectrum (𝓞 F)), B ⊆ S1 → G.amp d (fun Λ => ∀ p, cond G d B p (A.lat p Λ)) = ∏ᶠ p, (G.S p).amp (d p) (cond G d B p) ∧ {p | (G.S p).amp (d p) (cond G d B p) ≠ 1 ∨ (G.S p).mass (d p) (cond G d B p) ≠ 1}.Finite ∧ {o : Quot G.LRel | G.IsTerm d o.out}.Fi …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `B hB`. Establish `hI : ∀ p, ∀ h ∈ (G.S p).St, ∀ Λ, (G.S p).IsTerm (d p) Λ → cond G d B p Λ → cond G d B p (h • Λ)`. Introduce `p h hh Λ hΛ hP`. Distinguish the cases in `hp : p ∈ B`. Rewrite `hP`, the goal using `[cond_pos G d hp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hinv p h hh Λ hΛ]` and apply the resulting hypothesis. Rewrite `hP`, the goal using `[cond_neg G d hp]`. Rewrite using `[hinv p h hh Λ hΛ]` and apply the resulting hypothesis. Establish `hF : {p | ∃ Λ, (G.S p).IsTerm (d p) Λ ∧ ¬ cond G d B p Λ}.Finite`. Use `S1.finite_toSet.subset fun p ⟨Λ, hΛ, hP⟩ => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hp`. Establish `hpB : p ∉ B` using `fun h => hp (hB h)`. Rewrite `hP` using `[cond_neg G d hpB]`. Conclude with `hP (hBB p hp Λ hΛ)`. Take `⟨a1, -, a3, a4⟩` from `GlobalTheory.T.hermitian_amplitude_mass_product_structure A r k G hk d ⟨Λ₀, hΛ₀⟩ (cond G d B) hI hF`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨a1, a3, a4⟩`. Establish `hT` using `(hprod ∅ (Finset.empty_subset _)).2.2`. Use `set g : HeightOneSpectrum (𝓞 F) → ℂ := fun p => (G.S p).amp (d p) ((G.S p).BBzero (d p)) with hg`. Use `set c : ℂ := ∏ᶠ p, (if p ∈ S1 then 1 else g p) with hc`. Establish `hsupp : ∀ B : Finset (HeightOneSpectrum (𝓞 F)), B ⊆ S1 → (Function.mulSupport fun p => (G.S p).amp (d p) (cond G d B p)).Finite` using `fun B hB => (hprod B hB).2.1.subset fun p hp => Or.inl hp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsplit : ∀ B : Finset (HeightOneSpectrum (𝓞 F)), B ⊆ S1 → G.amp d (fun Λ => ∀ p, cond G d B p (A.lat p Λ)) = c * ∏ p ∈ S1, (if p ∈ B then (G.S p).amp (d p) (fun Λ => ¬ (G.S p).BBzero (d p) Λ) else (G.S p).amp (d p) ((G.S p).BBzero (d p)))`. Introduce `B hB`. Rewrite using `[(hprod B hB).1, finprod_split' S1 _ g (hsupp B hB), mul_comm]`. Rewrite using `[Finset.prod_congr rfl fun p _ => amp_cond G d B p]`. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpB : p ∉ B` using `fun h => hp (hB h)`. Rewrite using `[amp_cond, if_neg hpB]`. Establish `hc1 : ‖c‖ = 1`. Use `norm_finprod_eq_one _ ?_ fun p => ?_` and prove the remaining obligations. Use `(hsupp ∅ (Finset.empty_subset _)).subset fun p hp => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `h : p ∈ S1`. Conclude with `absurd (if_pos h) hp`. Express the relevant statement in the definitionally equal form `(G.S p).amp (d p) (cond G d ∅ p) ≠ 1`. Rewrite using `[amp_cond, if_neg (Finset.notMem_empty p)]`. Simplify `hp` using `[h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Distinguish the cases in `h : p ∈ S1`. Simplify using `[h]`. Simplify using `only [h, if_false, hg]`. Conclude with `((hgood p fun hp => h (hS1 hp)).2 (d p) ⟨A.lat p Λ₀, hΛ₀.2 p⟩).1`. Use `⟨c, hc1, fun Q => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsum : G.amp d (fun Λ => Q (¬ G.Gen d Λ)) = ∑ B ∈ S1.powerset.filter (fun B => Q B.Nonempty), G.amp d (fun Λ => ∀ p, cond G d B p (A.lat p Λ))`. Rewrite using `[amp_eq_finsum G d hT]`. Simplify using `only [amp_eq_finsum G d hT]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun o ho => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion.
 
-Establish `hto : ∀ p, (G.S p).IsTerm (d p) (A.lat p o.out)` using `(hT.mem_toFinset.1 ho).2`. Establish `hS : ∀ p, ¬ (G.S p).BBzero (d p) (A.lat p o.out) → p ∈ S1` using `fun p hn => by`. Assume the negation of the conclusion as `hp`. Conclude with `hn (hBB p hp _ (hto p))`. Use `set B₀ := S1.filter fun p => ¬ (G.S p).BBzero (d p) (A.lat p o.out) with hB₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hgen : (¬ G.Gen d o.out) = B₀.Nonempty`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨p, hp⟩` from `not_forall.1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨p, Finset.mem_filter.2 ⟨hS p hp, hp⟩⟩`. Introduce and unpack `⟨p, hp⟩ h`. Conclude with `(Finset.mem_filter.1 hp).2 (h p)`. Establish `heq : ∀ B ∈ S1.powerset.filter (fun B => Q B.Nonempty), (if ∀ p, cond G d B p (A.lat p o.out) then (G.mu o.out : ℂ) * G.om d o.out else 0) = if B₀ = B then (G.mu o.out : ℂ) * G.om d o.out else 0`. Introduce `B hB`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hBS : B ⊆ S1` using `Finset.mem_powerset.1 (Finset.mem_filter.1 hB).1`. Establish `hiff : (∀ p, cond G d B p (A.lat p o.out)) ↔ B₀ = B`. Prove the components needed by the constructor for the conclusion. Introduce `hQ`. Use extensionality with `p`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hp`. Assume the negation of the conclusion as `hpB`. Conclude with `(Finset.mem_filter.1 hp).2 ((cond_neg G d hpB _).1 (hQ p))`. Introduce `hp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Conclude with `Finset.mem_filter.2 ⟨hBS hp, (cond_pos G d hp _).1 (hQ p)⟩`. Introduce and unpack `rfl p`. Distinguish the cases in `hp : p ∈ B₀`. Conclude with `(cond_pos G d hp _).2 (Finset.mem_filter.1 hp).2`. Use `(cond_neg G d hp _).2 ?_` and prove the remaining obligations.
-
-Assume the negation of the conclusion as `hn`. Conclude with `hp (Finset.mem_filter.2 ⟨hS p hn, hn⟩)`. Simplify using `only [hiff]`. Rewrite using `[Finset.sum_congr rfl heq, Finset.sum_ite_eq, hgen]`. Establish `hmem : B₀ ∈ S1.powerset.filter (fun B => Q B.Nonempty) ↔ Q B₀.Nonempty`.
-
-Rewrite using `[Finset.mem_filter, Finset.mem_powerset]`. Conclude with `⟨fun h => h.2, fun h => ⟨Finset.filter_subset _ _, h⟩⟩`. Distinguish the cases in `hq : Q B₀.Nonempty`. Rewrite using `[if_pos hq, if_pos (hmem.2 hq)]`. Rewrite using `[if_neg hq, if_neg (fun h => hq (hmem.1 h))]`.
-
-Rewrite using `[hsum, Finset.sum_congr rfl fun B hB => hsplit B (Finset.mem_powerset.1 (Finset.mem_filter.1 hB).1), ← Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem amp_sum_defect_sets : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig), ∀ (r k : ℕ) (G : GFrames A r k), 4 * r + 7 ≤ k → ∀ d : G.Dat, (∃ Λ₀, G.IsTerm d Λ₀) → ∀ S1 : Finset (HeightOneSpectrum (𝓞 F)), G.Om ⊆ S1 → ∃ κ : ℂ, ‖κ‖ = 1 ∧ ∀ Q : Prop → Prop, G.amp d (fun Λ => Q (¬ G.Gen d Λ)) = κ * ∑ B ∈ S1.powerset.filter (fun B => Q B.Nonempty), ∏ p ∈ S1, (if p ∈ B then (G.S p).amp (d p) (fun Λ => ¬ (G.S p).BBzero (d p) Λ) else (G.S p).amp (d p) ((G.S p).BBzero (d p))) := by
   intro F E _ _ _ _ _ sig A r k G hk d hex S1 hS1

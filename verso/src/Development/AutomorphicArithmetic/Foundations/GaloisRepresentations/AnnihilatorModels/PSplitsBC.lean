@@ -4,17 +4,17 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `R R' S B _ _ _ _ _ _ _ _ _ I z hz`. Set `z' : I → (R' ⊗[R] S →ₐ[R'] B)` to `fun i => Algebra.TensorProduct.lift (Algebra.ofId R' B) (z i) (fun _ _ => Commute.all _ _)`. Establish `hz' : ∀ i (r : R') (s : S), z' i (r ⊗ₜ s) = algebraMap R' B r * z i s`. Introduce `i r s`. Simplify using `[z', Algebra.ofId_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨z', ?_, ?_⟩` and prove the remaining obligations. Establish `key : ∀ x, splitMap z' x = splitMap z (Algebra.TensorProduct.cancelBaseChange R R' B B S x)`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul b y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a c ha hc => simp only [tmul_add, map_add, ha, hc]`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul r s`. Use function extensionality and compare the values at `i`. Rewrite using `[splitMap_tmul, hz', Algebra.TensorProduct.cancelBaseChange_tmul, splitMap_tmul]`. Simplify using `[Algebra.smul_def, mul_assoc, mul_left_comm, mul_comm]`. Establish `hfun : (⇑(splitMap z') : B ⊗[R'] (R' ⊗[R] S) → (I → B)) = (splitMap z) ∘ (Algebra.TensorProduct.cancelBaseChange R R' B B S)` using `funext key`.
+Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `Splits`. Rewrite using `[hfun]`. Conclude with `hz.comp (AlgEquiv.bijective _)`. Introduce `i s`. Rewrite using `[hz']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.splitsBC_of :
     SplitsBC := by

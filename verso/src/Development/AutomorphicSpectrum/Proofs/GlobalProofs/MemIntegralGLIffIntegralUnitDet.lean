@@ -8,9 +8,9 @@ namespace GlobalTheory.CompanionTheory.QLDet
 variable {F : Type} [Field F]
 
 /- English proof (translation)
-Set `M' : Matrix (Fin n) (Fin n) O` to `fun a b => ⟨M a b, h a b⟩`. Establish `hM : M = O.subtype.mapMatrix M'`. Use extensionality with `a b`. Both sides reduce to the same expression. Rewrite using `[hM, ← RingHom.map_det]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(M'.det).2`.
+A detailed English derivation is pending.
 -/
 theorem det_mem_of_isInt (O : Subring F) {n : ℕ} {M : Matrix (Fin n) (Fin n) F} (h : IsInt O M) :
     M.det ∈ O := by
@@ -22,9 +22,9 @@ theorem det_mem_of_isInt (O : Subring F) {n : ℕ} {M : Matrix (Fin n) (Fin n) F
   exact (M'.det).2
 
 /- English proof (translation)
-Set `M' : Matrix (Fin n) (Fin n) O` to `fun a b => ⟨M a b, h a b⟩`. Establish `hM : M = O.subtype.mapMatrix M'`. Use extensionality with `a b`. Both sides reduce to the same expression. Introduce `a b`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hM, ← RingHom.map_adjugate]`. Conclude with `(M'.adjugate a b).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjugate_isInt (O : Subring F) {n : ℕ} {M : Matrix (Fin n) (Fin n) F} (h : IsInt O M) :
     IsInt O M.adjugate := by
@@ -37,15 +37,15 @@ theorem adjugate_isInt (O : Subring F) {n : ℕ} {M : Matrix (Fin n) (Fin n) F} 
   exact (M'.adjugate a b).2
 
 /- English proof (translation)
-Take `⟨-, -, hO, -, -, -, -⟩` from `GlobalTheory.T.localField_uniformizer_norm_properties hLF`. Establish `hdet : (g : Matrix (Fin n) (Fin n) F).det * ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).det = 1`. Rewrite using `[← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.det_one]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2⟩ : IsInt O (g : Matrix (Fin n) (Fin n) F) ∧ IsInt O ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)` from `hg`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `a1` using `(hO _).2 (det_mem_of_isInt O h1)`. Establish `a2` using `(hO _).2 (det_mem_of_isInt O h2)`. Establish `hm : nrm (g : Matrix (Fin n) (Fin n) F).det * nrm ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).det = 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, hdet, map_one]`. Establish `p1` using `nrm.nonneg (g : Matrix (Fin n) (Fin n) F).det`. Establish `p2` using `nrm.nonneg ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).det`. Use the polynomial consequences of the given equalities and inequalities. Introduce and unpack `⟨h1, h2⟩ show IsInt O (g : Matrix (Fin n) (Fin n) F) ∧ IsInt O ((g⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Assume the hypotheses and unpack their components.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Introduce `a b`. Rewrite using `[Matrix.coe_units_inv, Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, Ring.inverse_eq_inv']`. Apply `O.mul_mem` to reduce the goal to its premises. Apply `(hO _).1` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_inv₀, h2, inv_one]`. Conclude with `adjugate_isInt O h1 a b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_GLint_iff {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] {O : Subring F} {ϖ : F} {nrm : AbsoluteValue F ℝ} {q : ℕ}

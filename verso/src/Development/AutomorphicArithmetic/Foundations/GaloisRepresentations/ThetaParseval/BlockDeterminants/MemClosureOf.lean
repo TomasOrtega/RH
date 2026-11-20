@@ -21,14 +21,14 @@ section Dict
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `isCMExt_of_isCMField E`.
+A detailed English derivation is pending.
 -/
 private theorem cmE : IsCMExt (maximalRealSubfield E) E (cj E) := isCMExt_of_isCMField E
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_infiniteAdeleRing_of_numberField_field E`. Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField E`. Establish `key : ∀ k : maximalRealSubfield E, GlobalTheory.UnitaryBC.conjAd E (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap (maximalRealSubfield E) E (algebraMap _ _ k)) = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap (maximalReal …` using `fun k => by`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap_algebraMap, GlobalTheory.UnitaryBC.conjAd_algebraMap]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(IsCMField.complexConj E).commutes k`. Establish `cc` using `GlobalTheory.BCT.GlobLev.continuous_conj_ad (E := E)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `congrFun ((InfiniteAdeleRing.denseRange_algebraMap (maximalRealSubfield E)).equalizer (g := fun b => (GlobalTheory.UnitaryBC.conjAd E (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.infiniteAdeleMap (maximalRealSubfield E) E b, 0)).1) (h := GlobalTheory.Indefi …`. Conclude with `congrFun ((GlobalTheory.AdeleCharTwist.denseRange_fin (F := maximalRealSubfield E)).equalizer (g := fun b => (GlobalTheory.UnitaryBC.conjAd E (0, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteAdeleMap (maximalRealSubfield E) E b)).2) (h := GlobalTheory. …`.
+A detailed English derivation is pending.
 -/
 private theorem conjAd_adeleMap (a : AF (maximalRealSubfield E)) :
     GlobalTheory.UnitaryBC.conjAd E (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap (maximalRealSubfield E) E a) =
@@ -57,9 +57,9 @@ private theorem conjAd_adeleMap (a : AF (maximalRealSubfield E)) :
       (funext fun k => congrArg Prod.snd (key k))) a.2
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x`. Express the relevant statement in the definitionally equal form `toAdele _ E (a ⊗ₜ[maximalRealSubfield E] (IsCMField.complexConj E x)) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[GlobalTheory.UnitaryHeckeBaseChange.toAdele_tmul, GlobalTheory.UnitaryHeckeBaseChange.toAdele_tmul, map_mul, conjAd_adeleMap, GlobalTheory.UnitaryBC.conjAd_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem toAdele_cj (z : AE (maximalRealSubfield E) E) :
     toAdele _ E (cA (cj E) z) = GlobalTheory.UnitaryBC.conjAd E (toAdele _ E z) := by
@@ -78,9 +78,9 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Conclude with `congrFun (congrFun (h b hb) i) j`. Introduce `h u hu`. Establish `e : u * b = u` using `by linear_combination -hb' u hu`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `u • M i j = 0`. Rewrite using `[← e, mul_smul, h i j, smul_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem at_iff {R : Type} [Zero R] {ev : AF F → R} {m : ℕ} (b : AF F) (hb : ev b = 0)
     (hb' : ∀ u, ev u = 0 → u * (1 - b) = 0) (M : Matrix (Fin m) (Fin m) (AE F E)) :
@@ -95,7 +95,7 @@ private theorem at_iff {R : Type} [Zero R] {ev : AF F → R} {m : ℕ} (b : AF F
     rw [← e, mul_smul, h i j, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.UnitaryHeckeBaseChange.toAdele_algebraMap, ← map_mul, ← Algebra.smul_def]`. Conclude with `⟨fun e => by rw [e, map_zero], fun e => (GlobalTheory.UnitaryHeckeBaseChange.bijective_toAdele h).1 (e.trans (map_zero _).symm)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem smul_zero_iff (h : IsCMExt F E σ) (b : AF F) (z : AE F E) :
     b • z = 0 ↔ GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap F E b * toAdele F E z = 0 := by
@@ -104,9 +104,9 @@ private theorem smul_zero_iff (h : IsCMExt F E σ) (b : AF F) (z : AE F E) :
     fun e => (GlobalTheory.UnitaryHeckeBaseChange.bijective_toAdele h).1 (e.trans (map_zero _).symm)⟩
 
 /- English proof (translation)
-Set `b : AF F` to `((0, 1) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)`. Rewrite using `[at_iff (ev := evI F) b (map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F)) (fun u hu => ?_) M]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations. Rewrite using `[smul_zero_iff h]`. Establish `e : ∀ y : AdeleRing (𝓞 E) E, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap F E b * y = ((0, y.2) : InfiniteAdeleRing E × FiniteAdeleRing (𝓞 E) E)` using `fun y => Prod.ext ((congrArg (· * y.1) (map_zero (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.infiniteAdeleMap F E))).trans (zero_mul _)) ((congrArg (· * y.2) (map_one (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteAdeleMap F E))) …`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `⟨fun k => congrArg Prod.snd k, fun k => Prod.ext rfl k⟩`. Establish `h1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.1 hu`. Conclude with `Prod.ext ((congrArg (· * _) h1).trans (zero_mul _)) ((congrArg (u.2 * ·) (sub_self _)).trans (mul_zero _))`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem at_evI_iff (h : IsCMExt F E σ) {m : ℕ} (M : Matrix (Fin m) (Fin m) (AE F E)) :
     At (evI F) M ↔ ∀ i j, (toAdele F E (M i j)).2 = 0 := by
@@ -123,21 +123,19 @@ private theorem at_evI_iff (h : IsCMExt F E σ) {m : ℕ} (M : Matrix (Fin m) (F
     exact Prod.ext ((congrArg (· * _) h1).trans (zero_mul _)) ((congrArg (u.2 * ·) (sub_self _)).trans (mul_zero _))
 
 /- English proof (translation)
-Take `⟨ε, hε⟩` from `GlobalTheory.UnitaryHeckeBaseChange.exists_isIndicator v`. Establish `hc` using `GlobalTheory.UnitaryHeckeBaseChange.place_comp (E := E) ((GlobalTheory.UnitaryHeckeBaseChange.isPlaceIdem_iff v ε).2 hε)`. Establish `hv : evFin F v ε = 1` using `hε.2.1 v rfl`. Rewrite using `[at_iff (ev := evFin F v) (1 - ε) (by rw [map_sub, map_one, hv, sub_self]) (fun u hu => ?_) M]`. Use `forall₂_congr fun i j => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_zero_iff h, map_sub, map_one, ← GlobalTheory.UnitaryHeckeBaseChange.toAdele_algebraMap]`. Use `set a := toAdele F E (algebraMap (AF F) (AE F E) ε)`. Use `set y := toAdele F E (M i j)`. Prove the components needed by the constructor for the conclusion. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨?_, fun Q hQ => ?_⟩` and prove the remaining obligations. Use `congrArg Prod.fst k` as an intermediate fact. Rewrite `this` using `[GlobalTheory.UnitaryHeckeBaseChange.fst_mul, GlobalTheory.UnitaryHeckeBaseChange.fst_one_sub, hc.1, sub_zero, one_mul]`. Conclude with `this`. Use `congrArg (fun t : AdeleRing (𝓞 E) E => t.2 Q) k` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [GlobalTheory.UnitaryHeckeBaseChange.ev_mul, GlobalTheory.UnitaryHeckeBaseChange.ev_one_sub, hc.2.2 Q hQ, sub_zero, one_mul] at this`. Conclude with `this`. Introduce and unpack `⟨k1, k2⟩`. Use `Prod.ext ?_ (FiniteAdeleRing.ext _ fun Q => ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.UnitaryHeckeBaseChange.fst_mul, k1, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[GlobalTheory.UnitaryHeckeBaseChange.ev_mul, GlobalTheory.UnitaryHeckeBaseChange.ev_one_sub]`. Distinguish the cases in `hQ : Q.under (𝓞 F) = v`. Rewrite using `[hc.2.1 Q hQ, sub_self, zero_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[k2 Q hQ, mul_zero]`. Both sides reduce to the same expression. Establish `e : u * ε = 0`. Use `Prod.ext ((congrArg (u.1 * ·) hε.1).trans (mul_zero _)) (FiniteAdeleRing.ext _ fun Q => ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.UnitaryHeckeBaseChange.ev_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Distinguish the cases in `hQ : Q = v`. Substitute `hQ` using the available equality. Rewrite using `[show u.2 Q = 0 from hu, zero_mul]`. Both sides reduce to the same expression. Rewrite using `[hε.2.2 Q hQ, mul_zero]`.
-
-Both sides reduce to the same expression. Rewrite using `[sub_sub_cancel, e]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem at_evFin_iff (h : IsCMExt F E σ) (v : Pl F) {m : ℕ} (M : Matrix (Fin m) (Fin m) (AE F E)) :
     At (evFin F v) M ↔ ∀ i j, (toAdele F E (M i j)).1 = 0 ∧
@@ -176,11 +174,11 @@ private theorem at_evFin_iff (h : IsCMExt F E σ) (v : Pl F) {m : ℕ} (M : Matr
     rw [sub_sub_cancel, e]
 
 /- English proof (translation)
-Set `b : AF F` to `((1, 0) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)`. Establish `e : ∀ y : AdeleRing (𝓞 E) E, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap F E b * y = ((y.1, 0) : InfiniteAdeleRing E × FiniteAdeleRing (𝓞 E) E)` using `fun y => Prod.ext ((congrArg (· * y.1) (map_one (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.infiniteAdeleMap F E))).trans (one_mul _)) ((congrArg (· * y.2) (map_zero (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteAdeleMap F E))). …`. Establish `hw : ∀ w, compInf F E w (b • z) = compInf F E w z` using `fun w => by`. Rewrite using `[GlobalTheory.AwayFix.Chart.compInf_smul_away, show evInf F w b = 1 from rfl, one_smul]`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `k`. Establish `: b • z = 0` using `GlobalTheory.SWOpFin.tens_eq_zero_of_comp (fun v => by rw [GlobalTheory.AwayFix.Chart.compFin_smul_away, show evFin F v b = 0 from rfl, zero_smul]) (fun w => (hw w).trans (k w))`. Use `(smul_zero_iff h b z).1 this` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `congrArg Prod.fst this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k w`. Rewrite using `[← hw, (smul_zero_iff h b z).2 (by rw [e, k]; rfl), map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem compInf_iff (h : IsCMExt F E σ) (z : AE F E) :
     (∀ w, compInf F E w z = 0) ↔ (toAdele F E z).1 = 0 := by
@@ -207,7 +205,7 @@ section Read
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hc : Continuous (coord (E` using `E) τ.1) := GlobalTheory.CuspRep.InfType.continuous_coord τ.1`. Conclude with `congrFun ((InfiniteAdeleRing.denseRange_algebraMap F).equalizer (g := fun b => coord τ.1 (pInf E (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.infiniteAdeleMap F E b, 0))) (h := fun b => InfinitePlace.Completion.extensionEmbedding w (b w)) (hc.comp (GlobalTh …`. Establish `e : coord τ.1 (pInf E (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap F E (algebraMap F _ k))) = τ.1 (algebraMap F E k)`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap_algebraMap, GlobalTheory.CuspRep.coord_algebraMap]`. Conclude with `e.trans ((RingHom.congr_fun τ.2 k).trans (InfinitePlace.Completion.extensionEmbedding_coe w ((WithAbs.equiv w.1).symm k)).symm))) a.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coord_adeleMap [IsCMField E] {w : InfinitePlace F} (τ : EmbOver E w) (a : AF F) :
     coord τ.1 (pInf E (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap F E a)) = InfinitePlace.Completion.extensionEmbedding w (a.1 w) := by
@@ -224,7 +222,7 @@ private theorem coord_adeleMap [IsCMField E] {w : InfinitePlace F} (τ : EmbOver
         (InfinitePlace.Completion.extensionEmbedding_coe w ((WithAbs.equiv w.1).symm k)).symm))) a.1
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x`. Rewrite using `[GlobalTheory.UnitaryHeckeBaseChange.toAdele_tmul, map_mul, map_mul, coord_adeleMap, GlobalTheory.CuspRep.coord_algebraMap]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -238,7 +236,7 @@ private theorem piInf_eq [IsCMField E] {w : InfinitePlace F} (τ : EmbOver E w) 
     rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `GlobalTheory.CharTransport.locMap_eq F E w _`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem complMap_at {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (h : w.under (𝓞 F) = v) (a : Af F) :
     complMap h (a v) = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteCompletionMap F E w (a (w.under (𝓞 F))) := by
@@ -246,9 +244,9 @@ private theorem complMap_at {v : Pl F} {w : HeightOneSpectrum (𝓞 E)} (h : w.u
   exact GlobalTheory.CharTransport.locMap_eq F E w _
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x`. Establish `e : piW t (a ⊗ₜ[F] x) = a.2 v * t x` using `rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[e, map_mul, GlobalTheory.LFun.SplitTie.complMap_apply_emb t, complMap_at, GlobalTheory.UnitaryHeckeBaseChange.toAdele_tmul, map_mul, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem piW_eq {v : Pl F} (t : E →ₐ[F] Fv F v) (z : AE F E) :
     complMap (splitPrime_under t) (piW t z) = pLoc E (splitPrime t) (pFin E (toAdele F E z)) := by
@@ -265,13 +263,13 @@ end Read
 section Grp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `congrFun (congrFun h i) j` as an intermediate fact. Rewrite using `[Matrix.sub_apply, map_sub, sub_eq_zero]`. Use `this.trans ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne e]`. Introduce `h`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `h i j` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, map_sub, sub_eq_zero]`. Use `this.trans ?_` and prove the remaining obligations. Distinguish the cases in `e : i = j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne e]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem map_eq_one_iff {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {n : ℕ} (M : Matrix (Fin n) (Fin n) R) :
     M.map φ = 1 ↔ ∀ i j, φ ((M - 1 : Matrix (Fin n) (Fin n) R) i j) = 0 := by
@@ -293,14 +291,14 @@ private theorem map_eq_one_iff {R S : Type} [CommRing R] [CommRing S] (φ : R �
     · simp [Matrix.one_apply_ne e]
 
 /- English proof (translation)
-The claim follows from `Iff.trans ⟨fun h => congrArg Units.val h, fun h => Units.ext h⟩ (map_eq_one_iff φ g.1)`.
+A detailed English derivation is pending.
 -/
 private theorem gl_map_eq_one {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {n : ℕ} (g : GL (Fin n) R) :
     Matrix.GeneralLinearGroup.map φ g = 1 ↔ ∀ i j, φ ((g.1 - 1 : Matrix (Fin n) (Fin n) R) i j) = 0 :=
   Iff.trans ⟨fun h => congrArg Units.val h, fun h => Units.ext h⟩ (map_eq_one_iff φ g.1)
 
 /- English proof (translation)
-Establish `hS : S = (K.map e.toMonoidHom : Subgroup H)`. Use extensionality with `y`. Take `⟨x, rfl⟩` from `e.surjective y`. Rewrite using `[h, SetLike.mem_coe, Subgroup.mem_map_equiv (f := e), MulEquiv.symm_apply_apply]`. Rewrite using `[hS, Subgroup.closure_eq, Subgroup.mem_map_equiv (f := e), MulEquiv.symm_apply_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mem_closure_of {G H : Type} [Group G] [Group H] (e : G ≃* H) (K : Subgroup G) (S : Set H)
     (h : ∀ g, e g ∈ S ↔ g ∈ K) (g : G) : e g ∈ Subgroup.closure S ↔ g ∈ K := by
@@ -311,7 +309,7 @@ private theorem mem_closure_of {G H : Type} [Group G] [Group H] (e : G ≃* H) (
   rw [hS, Subgroup.closure_eq, Subgroup.mem_map_equiv (f := e), MulEquiv.symm_apply_apply]
 
 /- English proof (translation)
-The claim follows from `mem_closure_of e.toMulEquiv K S h g`.
+A detailed English derivation is pending.
 -/
 private theorem mem_closure_of' {G H : Type} [Group G] [Group H] [TopologicalSpace G] [TopologicalSpace H] (e : G ≃ₜ* H)
     (K : Subgroup G) (S : Set H) (h : ∀ g, e g ∈ S ↔ g ∈ K) (g : G) : e g ∈ Subgroup.closure S ↔ g ∈ K :=
@@ -327,7 +325,7 @@ Both sides reduce to the same expression.
 private theorem Θ_apply (z : AE (maximalRealSubfield E) E) : Θ z = toAdele _ E z := rfl
 
 /- English proof (translation)
-The claim follows from `Θ.apply_symm_apply y`.
+A detailed English derivation is pending.
 -/
 private theorem toAdele_symm (y : Ad E) : toAdele (maximalRealSubfield E) E (Θ.symm y) = y := Θ.apply_symm_apply y
 
@@ -338,39 +336,37 @@ private def ht (n : ℕ) : GL (Fin n) (AE (maximalRealSubfield E) E) →* GL (Fi
   Matrix.GeneralLinearGroup.map (Θ (E := E)).toRingHom
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun _ _ => Θ.apply_symm_apply _)`.
+A detailed English derivation is pending.
 -/
 private theorem ht_th (g : GL (Fin n) (Ad E)) : ht n (th n g) = g :=
   Units.ext (Matrix.ext fun _ _ => Θ.apply_symm_apply _)
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun _ _ => Θ.symm_apply_apply _)`.
+A detailed English derivation is pending.
 -/
 private theorem th_ht (g : GL (Fin n) (AE (maximalRealSubfield E) E)) : th n (ht n g) = g :=
   Units.ext (Matrix.ext fun _ _ => Θ.symm_apply_apply _)
 
 /- English proof (translation)
-Use `set M : Matrix (Fin n) (Fin n) (AE (maximalRealSubfield E) E) := (th n g).1 with hM`. Establish `hg : g.1 = M.map (Θ (E` using `E)).toRingHom := Matrix.ext fun _ _ => (Θ.apply_symm_apply _).symm`. Use `set N := M.map (cA (cj E)) with hN`. Use `set d := inclR (F := maximalRealSubfield E) (AF (maximalRealSubfield E)) δ with hd`. Establish `hdu : d * inclR (F` using `maximalRealSubfield E) (AF (maximalRealSubfield E)) δ⁻¹ = 1 := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[hd, ← map_mul, mul_inv_cancel₀ hδ, map_one]`. Establish `hinc : incM (maximalRealSubfield E) J = d • (1 : Matrix (Fin n) (Fin n) (AE (maximalRealSubfield E) E))`. Substitute `hJ` using the available equality. Use extensionality with `i j`. Distinguish the cases in `e : i = j`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `e` using the available equality. Simplify using `[incM, hd]`. Simplify using `[incM, Matrix.one_apply_ne e]`. Establish `e2 : th n g ∈ UG (cA (cj E)) (incM (maximalRealSubfield E) J) ↔ Mᵀ * N = 1`. Express the relevant statement in the definitionally equal form `Mᵀ * incM (maximalRealSubfield E) J * N = incM (maximalRealSubfield E) J ↔ _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hinc, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `k`. Use `congrArg (fun P => inclR (F := maximalRealSubfield E) (AF (maximalRealSubfield E)) δ⁻¹ • P) k` as an intermediate fact. Simplify `this` using `[smul_smul, mul_comm _ d, hdu]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[k]`. Establish `e1 : g ∈ GlobalTheory.UnitaryBC.UA E n ↔ (Nᵀ * M).map (Θ (E` using `E)).toRingHom = 1 := by`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (GlobalTheory.UnitaryBC.conjAd E) g.1 * 1 * g.1 = 1 ↔ _`. Establish `: Formalism.UG.cT (GlobalTheory.UnitaryBC.conjAd E) g.1 = (Nᵀ).map (Θ (E` using `E)).toRingHom := by`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg]`. Use extensionality with `i j`. Conclude with `(toAdele_cj _).symm`. Rewrite using `[this, Matrix.mul_one, hg, Matrix.map_mul]`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `k`. Establish `k2 : Nᵀ * M = 1`. Use extensionality with `i j`. Use `Θ.injective ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `congrFun (congrFun k i) j` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.one_apply_ne e]`. Use `congrArg Matrix.transpose k2` as an intermediate fact. Simplify `this` using `[Matrix.transpose_mul]`. Introduce `k`. Establish `k2 : Nᵀ * M = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `congrArg Matrix.transpose k` as an intermediate fact. Simplify `this` using `[Matrix.transpose_mul]`. Rewrite using `[k2]`. Use extensionality with `i j`. Distinguish the cases in `e : i = j`.
-
-Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne e]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mem_iff (J : Matrix (Fin n) (Fin n) E) (δ : E) (hδ : δ ≠ 0) (hJ : J = δ • 1) (g : GL (Fin n) (Ad E)) :
     g ∈ GlobalTheory.UnitaryBC.UA E n ↔ th n g ∈ UG (cA (cj E)) (incM (maximalRealSubfield E) J) := by
@@ -432,14 +428,14 @@ section Main
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `c` using `GlobalTheory.UnitaryHeckeBaseChange.continuous_adeleEquiv_symm (cmE (E := E))`. Conclude with `Units.continuous_iff.2 ⟨Units.continuous_val.matrix_map c, Units.continuous_coe_inv.matrix_map c⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem th_cont : Continuous (th (E := E) n) := by
   have c := GlobalTheory.UnitaryHeckeBaseChange.continuous_adeleEquiv_symm (cmE (E := E))
   exact Units.continuous_iff.2 ⟨Units.continuous_val.matrix_map c, Units.continuous_coe_inv.matrix_map c⟩
 
 /- English proof (translation)
-Establish `c : Continuous (Θ (E` using `E)) := GlobalTheory.UnitaryHeckeBaseChange.continuous_toAdele _ E`. Conclude with `Units.continuous_iff.2 ⟨Units.continuous_val.matrix_map c, Units.continuous_coe_inv.matrix_map c⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ht_cont : Continuous (ht (E := E) n) := by
   have c : Continuous (Θ (E := E)) := GlobalTheory.UnitaryHeckeBaseChange.continuous_toAdele _ E
@@ -463,9 +459,9 @@ Both sides reduce to the same expression.
 private theorem mat_brE (g : GlobalTheory.UnitaryBC.UA E n) (i j : Fin n) : mat (brE X δ hδ hJ g) i j = Θ.symm (g.1.1 i j) := rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, map_sub, mat_brE, toAdele_symm]`. Use `congr 1`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply_ne e]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem toAdele_brE (g : GlobalTheory.UnitaryBC.UA E n) (i j : Fin n) :
     toAdele _ E ((mat (brE X δ hδ hJ g) - 1 : Matrix (Fin n) (Fin n) (AE (maximalRealSubfield E) E)) i j) =
@@ -477,47 +473,47 @@ private theorem toAdele_brE (g : GlobalTheory.UnitaryBC.UA E n) (i j : Fin n) :
   · simp [Matrix.one_apply_ne e]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.CuspRep.infEq E).symm.map_eq_zero_iff`.
+A detailed English derivation is pending.
 -/
 private theorem pInf_zero (y : Ad E) : pInf E y = 0 ↔ y.1 = 0 := (GlobalTheory.CuspRep.infEq E).symm.map_eq_zero_iff
 
 /- English proof (translation)
-The claim follows from `(gl_map_eq_one (pInf E) g.1).trans (forall₂_congr fun _ _ => pInf_zero _)`.
+A detailed English derivation is pending.
 -/
 private theorem mem_finU (g : GlobalTheory.UnitaryBC.UA E n) :
     g ∈ GlobalTheory.UnitaryBC.finU E n ↔ ∀ i j, ((g.1.1 - 1 : Matrix (Fin n) (Fin n) (Ad E)) i j).1 = 0 :=
   (gl_map_eq_one (pInf E) g.1).trans (forall₂_congr fun _ _ => pInf_zero _)
 
 /- English proof (translation)
-The claim follows from `gl_map_eq_one (pFin E) g.1`.
+A detailed English derivation is pending.
 -/
 private theorem mem_infU (g : GlobalTheory.UnitaryBC.UA E n) :
     g ∈ GlobalTheory.UnitaryBC.infU E n ↔ ∀ i j, ((g.1.1 - 1 : Matrix (Fin n) (Fin n) (Ad E)) i j).2 = 0 :=
   gl_map_eq_one (pFin E) g.1
 
 /- English proof (translation)
-The claim follows from `gl_map_eq_one ((pLoc E u).comp (pFin E)) g.1`.
+A detailed English derivation is pending.
 -/
 private theorem mem_kerLoc (g : GlobalTheory.UnitaryBC.UA E n) (u : HeightOneSpectrum (𝓞 E)) :
     g ∈ (GlobalTheory.UnitaryBC.cLoc (n := n) u).ker ↔ ∀ i j, ((g.1.1 - 1 : Matrix (Fin n) (Fin n) (Ad E)) i j).2 u = 0 :=
   gl_map_eq_one ((pLoc E u).comp (pFin E)) g.1
 
 /- English proof (translation)
-Establish `hrat : ∀ γ : GL (Fin n) E, th n (GlobalTheory.CuspRep.ratGL E n γ) = Matrix.GeneralLinearGroup.map (inclR (F` using `maximalRealSubfield E) (AF (maximalRealSubfield E))) γ := fun γ => Units.ext (Matrix.ext fun a b => Θ.symm_apply_eq.2 (GlobalTheory.UnitaryHeckeBaseChange.toAdele_incA _).symm)`. Use `⟨fun g => ?_, fun g => ?_, fun g => ?_, fun w g => ?_, fun w τ g => ?_, fun v t g => ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ⟩`. Use `⟨γ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: th n (GlobalTheory.CuspRep.ratGL E n γ) = th n g.1` using `(hrat γ).trans hγ`. Conclude with `(ht_th _).symm.trans ((congrArg (ht n) this).trans (ht_th _))`. Introduce and unpack `⟨γ, hγ⟩`. Conclude with `⟨γ, (hrat γ).symm.trans (congrArg (th n) hγ)⟩`. Use `mem_closure_of' (brE X δ hδ hJ) _ _ (fun g => ?_) g` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(at_evI_iff cmE _).trans ((forall₂_congr fun i j => ?_).trans (mem_infU g).symm)` and prove the remaining obligations. Rewrite using `[toAdele_brE]`. Use `mem_closure_of' (brE X δ hδ hJ) _ _ (fun g => ?_) g` and prove the remaining obligations. Use `Iff.trans ?_ (mem_finU g).symm` and prove the remaining obligations. Use `Iff.trans ⟨fun h => h.1, fun h => ⟨h, fun _ hv => absurd hv (Finset.notMem_empty _)⟩⟩ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(forall_congr' fun w => map_eq_one_iff (compInf _ E w) _).trans ?_` and prove the remaining obligations. Use `⟨fun h i j => ?_, fun h w i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← toAdele_brE X δ hδ hJ g i j]`. Conclude with `(compInf_iff cmE _).1 fun w => h w i j`. Use `(compInf_iff cmE _).2 ?_ w` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[toAdele_brE]`. Conclude with `h i j`. Use `mem_closure_of' (brE X δ hδ hJ) _ _ (fun g => ?_) g` and prove the remaining obligations. Use `(at_evFin_iff cmE _ _).trans ?_` and prove the remaining obligations. Establish `hl : g ∈ GlobalTheory.UnitaryBC.locU n w ↔ g ∈ GlobalTheory.UnitaryBC.finU E n ∧ ∀ u : HeightOneSpectrum (𝓞 E), u.under (𝓞 (maximalRealSubfield E)) ≠ w.under (𝓞 (maximalRealSubfield E)) → g ∈ (GlobalTheory.UnitaryBC.cLoc (n` using `n) u).ker := by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `GlobalTheory.UnitaryBC.locU`. Rewrite using `[Subgroup.mem_inf]`. Simplify using `only [Subgroup.mem_iInf]`. Rewrite using `[hl]`. Simplify using `only [toAdele_brE, mem_finU, mem_kerLoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨fun h => ⟨fun i j => (h i j).1, fun u hu i j => (h i j).2 u hu⟩, fun h i j => ⟨h.1 i j, fun u hu => h.2 u hu i j⟩⟩`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `(piInf_eq τ _).trans ?_` and prove the remaining obligations. Rewrite using `[mat_brE, toAdele_symm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `(piW_eq t _).trans ?_` and prove the remaining obligations. Rewrite using `[mat_brE, toAdele_symm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem brE_isBr : IsBr X (brE X δ hδ hJ) := by
   have hrat : ∀ γ : GL (Fin n) E, th n (GlobalTheory.CuspRep.ratGL E n γ) =
@@ -569,7 +565,7 @@ end Main
 end UpperTheory.TP
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ X δ hδ hJ` and use `⟨UpperTheory.TP.brE X δ hδ hJ, UpperTheory.TP.brE_isBr X δ hδ hJ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.TP.brEx :
     UpperTheory.TP.BrEx := fun _ _ _ _ _ X δ hδ hJ => ⟨UpperTheory.TP.brE X δ hδ hJ, UpperTheory.TP.brE_isBr X δ hδ hJ⟩

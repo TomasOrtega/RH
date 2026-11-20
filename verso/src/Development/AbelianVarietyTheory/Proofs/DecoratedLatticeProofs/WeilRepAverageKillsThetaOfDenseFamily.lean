@@ -27,7 +27,7 @@ open scoped ENNReal
 namespace GlobalTheory.AvgKill
 
 /- English proof (translation)
-Take `⟨g, k⟩` from `q`. Rewrite using `[hom.om_heis g k w h hh]`. Simplify using `[heisO, symplOH, symplO, hO]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem om_heis_zero {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle} {om : WRep S T}
     (hom : IsWeilDatumO ψ S T χS χT om) (q : GA D S × GA D T) (w : WO S T) {h : WO S T → ℂ}
@@ -37,13 +37,13 @@ theorem om_heis_zero {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χ
   simp [heisO, symplOH, symplO, hO]
 
 /- English proof (translation)
-Simplify using `[actO]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actO_zero' {D : D7} (S T : HSp D) (g : GA D S) (h : GA D T) : actO S T g h 0 = 0 := by
   simp [actO]
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.LevelCompact.continuous_actO_inv S T).comp (((continuous_inv.comp (continuous_fst.comp continuous_fst)).prodMk (continuous_inv.comp (continuous_snd.comp continuous_fst))).prodMk continuous_snd)`. Simplify `h` using `[Function.comp_def, inv_inv]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem continuous_actO_pair {D : D7} (S T : HSp D) :
     Continuous fun z : (GA D S × GA D T) × WO S T => actO S T z.1.1 z.1.2 z.2 := by
@@ -53,11 +53,11 @@ theorem continuous_actO_pair {D : D7} (S T : HSp D) :
   simpa [Function.comp_def, inv_inv] using h
 
 /- English proof (translation)
-Establish `h` using `eLpNorm_le_eLpNorm_mul_rpow_measure_univ (p := 1) (q := 2) (by norm_num) hu`. Rewrite `h` using `[eLpNorm_one_eq_lintegral_enorm, eLpNorm_eq_lintegral_rpow_enorm (by norm_num) (by norm_num)]`. Simplify using `only [ENNReal.toReal_ofNat, ENNReal.toReal_one, ENNReal.rpow_two] at h`. Use `h.trans ?_` and prove the remaining obligations. Establish `e : (1 : ℝ) / 1 - 1 / 2 = 1 / 2` using `by norm_num`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.mul_rpow_of_nonneg _ _ (by norm_num)]`. Establish `e2 : (ENNReal.ofReal ε ^ 2) ^ (1 / (2 : ℝ)) = ENNReal.ofReal ε`. Rewrite using `[one_div, ← Nat.cast_ofNat (R := ℝ), ENNReal.pow_rpow_inv_natCast (by norm_num)]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, mul_comm _ (ENNReal.ofReal ε), mul_assoc, ← ENNReal.rpow_add_of_nonneg _ _ (by norm_num) (by norm_num)]`. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lintegral_enorm_le_of_sq {α : Type} [MeasurableSpace α] (m : Measure α) (u : α → ℂ)
     (hu : AEStronglyMeasurable u m) (ε : ℝ) (hε : 0 ≤ ε)
@@ -81,13 +81,11 @@ theorem lintegral_enorm_le_of_sq {α : Type} [MeasurableSpace α] (m : Measure �
         ring
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om hom X _ _ _ _ μ _ p c K hp hc hcb hK hpK f hf`. Take `⟨C, hC⟩` from `hcb`. Take `⟨-, -, i3, -, -, -⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : SecondCountableTopology (WO S T) := i3`. Use `haveI : FirstCountableTopology (WO S T) := TopologicalSpace.SecondCountableTopology.to_firstCountableTopology _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : Continuous fun z : (GA D S × GA D T) × WO S T => om z.1 f (actO S T z.1.1 z.1.2 z.2)` using `(GlobalTheory.Unf.jointCont_all D ψ S T χS χT om hom f hf).comp (continuous_fst.prodMk (continuous_actO_pair S T))`. Establish `hFc : ∀ w, Continuous fun x => c x * om (p x) f (actO S T (p x).1 (p x).2 w)` using `fun w => hc.mul (hG.comp (hp.prodMk continuous_const))`. Establish `hloc : ∀ N : Set (WO S T), IsCompact N → ∃ M : ℝ, ∀ w ∈ N, ∀ᵐ x ∂μ, ‖c x * om (p x) f (actO S T (p x).1 (p x).2 w)‖ ≤ C * M`. Introduce `N hN`. Take `⟨M, hM⟩` from `(hK.prod hN).exists_bound_of_continuousOn hG.continuousOn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨M, fun w hw => hpK.mono fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hC x) (hM (p x, w) ⟨hx, hw⟩) (norm_nonneg _) ((norm_nonneg _).trans (hC x))`. Use `⟨fun w => ?_, continuous_iff_continuousAt.2 fun w₀ => ?_⟩` and prove the remaining obligations. Take `⟨M, hM⟩` from `hloc {w} isCompact_singleton`.
-
-Conclude with `Integrable.of_bound (hFc w).aestronglyMeasurable (C * M) (hM w rfl)`. Take `⟨N, hNc, hN⟩` from `exists_compact_mem_nhds w₀`. Take `⟨M, hM⟩` from `hloc N hNc`. Conclude with `continuousAt_of_dominated (Filter.Eventually.of_forall fun w => (hFc w).aestronglyMeasurable) (Filter.mem_of_superset hN fun w hw => hM w hw) (integrable_const (C * M)) (Filter.Eventually.of_forall fun x => (continuous_const.mul (hG.comp (continuous_const.prodMk continuous_id))). …`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem integral_om_actO_continuous : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : WRep S T), IsWeilDatumO ψ S T χS χT om → ∀ (X : Type) [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X] [SecondCountableTopology X] (μ : Measure X) [IsFiniteMeasure μ] (p : X → GA D S × GA D T) (c : X → ℂ) (K : Set (GA D S × GA D T)), Continuous p → Continuous c → (∃ C : ℝ, ∀ x, ‖c x‖ ≤ C) → IsCompact K → (∀ᵐ x ∂μ, p x ∈ K) → ∀ f, IsThetaFunO ψ S T f → (∀ w, Integrable (fun x => c x * om (p x) f (actO S T (p x).1 (p x).2 w)) μ) ∧ Continuous (fun w => ∫ x, c x * om (p x) f (actO S T (p x).1 (p x).2 w) ∂μ) := by
   intro D ψ S T χS χT om hom X _ _ _ _ μ _ p c K hp hc hcb hK hpK f hf
@@ -117,25 +115,21 @@ theorem integral_om_actO_continuous : ∀ (D : D7) (ψ : AddChar (AF D.host.F) �
         (continuous_const.mul (hG.comp (continuous_const.prodMk continuous_id))).continuousAt)
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om hom ν hν K N hK hN`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : LocallyCompactSpace (WO S T) := i2`. Use `haveI : SecondCountableTopology (WO S T) := i3`. Use `haveI : T2Space (WO S T) := i4`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : DiscreteTopology (ratL T S) := i5`. Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Use `Formalism.IndefR.PHeisFC.countable_ratL T S` as an intermediate fact. Establish `: MeasurableConstVAdd (ratL T S) (WO S T)` using `⟨fun c => (continuous_const.add continuous_id).measurable⟩`. Establish `: VAddInvariantMeasure (ratL T S) (WO S T) ν` using `⟨fun c s _ => measure_preimage_add ν (c : WO S T) s⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hFD : IsAddFundamentalDomain (ratL T S) (Formalism.IndefR.PHeisFC.FD T S) ν` using `IsAddFundamentalDomain.mk' (Formalism.IndefR.PHeisFC.meas_FD T S).nullMeasurableSet (Formalism.IndefR.PHeisFC.exU T S)`. Establish `hfin : ν (Formalism.IndefR.PHeisFC.FD T S) < ⊤` using `(Formalism.IndefR.PHeisFC.finCovol T S).2 ν _ hν hFD`. Use `set K' := (fun z : (GA D S × GA D T) × WO S T => actO S T z.1.1 z.1.2 z.2) '' (K ×ˢ N) with hK'`. Establish `hK'c : IsCompact K'` using `(hK.prod hN).image (continuous_actO_pair S T)`. Take `⟨n, hn⟩` from `GlobalTheory.ThetaGrowth.lintegral_compact_le (ratL T S) ν hFD hK'c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨n * ν (Formalism.IndefR.PHeisFC.FD T S), ENNReal.mul_ne_top (ENNReal.natCast_ne_top n) hfin.ne, fun h hh ε hε q hq => ?_⟩` and prove the remaining obligations. Establish `hε0 : 0 ≤ ε` using `(norm_nonneg _).trans (hε 0)`. Use `set H := om q h with hHdef`. Establish `hH : IsThetaFunO ψ S T H` using `hom.om_pres q h hh`. Establish `hψ : ∀ a, ‖ψ a‖ = 1` using `hom.std.1.2.1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : Measurable (actO S T q.1 q.2)` using `(continuous_actO_pair S T).comp (continuous_const.prodMk continuous_id) |>.measurable`. Establish `hHm : Measurable fun w => ‖H w‖ₑ` using `hH.cont.enorm.measurable`. Establish `s1 : ∫⁻ w in N, ‖H (actO S T q.1 q.2 w)‖ₑ ∂ν ≤ ∫⁻ w in K', ‖H w‖ₑ ∂ν`. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_congr_fun hN.measurableSet (fun w hw => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Set.indicator_of_mem (Set.mem_image_of_mem (fun z : (GA D S × GA D T) × WO S T => actO S T z.1.1 z.1.2 z.2) (Set.mk_mem_prod hq hw))]`. Use `_ ≤ ∫⁻ w, K'.indicator (fun y => ‖H y‖ₑ) (actO S T q.1 q.2 w) ∂ν := setLIntegral_le_lintegral _ _`. Use `_ = ∫⁻ y, K'.indicator (fun y => ‖H y‖ₑ) y ∂(ν.map (actO S T q.1 q.2)) := (lintegral_map (hHm.indicator hK'c.measurableSet) ha).symm`. Use `_ = ∫⁻ y in K', ‖H y‖ₑ ∂ν := by`. Rewrite using `[GlobalTheory.actO_map_haar D S T q.1 q.2 ν hν, lintegral_indicator hK'c.measurableSet]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `s2 : ∫⁻ w in K', ‖H w‖ₑ ∂ν ≤ n * ∫⁻ w in Formalism.IndefR.PHeisFC.FD T S, ‖H w‖ₑ ∂ν`. Use `hn _ hHm (fun γ hγ w => ?_)` and prove the remaining obligations. Take `⟨ξ, rfl⟩` from `hγ`. Establish `e` using `hH.quasi ξ w`. Simplify using `only [ratW] at e`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[show ((incA D).toAddMonoidHom.mapMatrix ξ : WO S T) = ξ.map (incA D) from rfl, e, enorm_mul]`. Rewrite using `[← ofReal_norm_eq_enorm (ψ _), hψ, ENNReal.ofReal_one, one_mul]`. Establish `s3 : ∫⁻ w in Formalism.IndefR.PHeisFC.FD T S, ‖H w‖ₑ ∂ν ≤ ν (Formalism.IndefR.PHeisFC.FD T S) * ENNReal.ofReal ε`. Use `lintegral_enorm_le_of_sq (ν.restrict (Formalism.IndefR.PHeisFC.FD T S)) H hH.cont.aestronglyMeasurable ε hε0 ?_` as an intermediate fact. Simplify `this` using `[Measure.restrict_apply_univ]`.
-
-Rewrite using `[Measure.restrict_apply_univ, hom.om_unit ν _ hν hFD q h hh]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun w => ?_` and prove the remaining obligations. Use `gcongr`. Rewrite using `[← ofReal_norm_eq_enorm]`.
-
-Conclude with `ENNReal.ofReal_le_ofReal (hε w)`. Use `_ = _ := by rw [setLIntegral_const, mul_comm]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem lintegral_om_actO_le : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : WRep S T), IsWeilDatumO ψ S T χS χT om → ∀ (ν : Measure (WO S T)), ν.IsAddHaarMeasure → ∀ (K : Set (GA D S × GA D T)) (N : Set (WO S T)), IsCompact K → IsCompact N → ∃ B : ENNReal, B ≠ ⊤ ∧ ∀ h, IsThetaFunO ψ S T h → ∀ ε : ℝ, (∀ w, ‖h w‖ ≤ ε) → ∀ q ∈ K, ∫⁻ w in N, ‖om q h (actO S T q.1 q.2 w)‖ₑ ∂ν ≤ B * ENNReal.ofReal ε := by
   intro D ψ S T χS χT om hom ν hν K N hK hN
@@ -200,11 +194,11 @@ theorem lintegral_om_actO_le : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S 
     _ = _ := by ring
 
 /- English proof (translation)
-Take `⟨U, hU, hUf⟩` from `hf.level`. Take `⟨U', hU', hUg⟩` from `hg.level`. Use `⟨fun γ w => ?_, ⟨U ⊓ U', ?_, fun u hu h0 => ?_⟩, hf.cont.sub hg.cont, fun k L hL hL0 w => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, hf.quasi γ w, hg.quasi γ w, mul_sub]`. Rewrite using `[AddSubgroup.coe_inf]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hU.inter hU'`. Use function extensionality and compare the values at `w`. Establish `e1` using `congrFun (hUf u hu.1 h0) w`. Establish `e2` using `congrFun (hUg u hu.2 h0) w`. Simplify using `only [heisO, Pi.sub_apply] at e1 e2 ⊢`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_sub, e1, e2]`. Conclude with `(hf.smooth k L hL hL0 w).sub (hg.smooth k L hL hL0 w)`.
+A detailed English derivation is pending.
 -/
 theorem theta_sub' {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {f g : WO S T → ℂ}
     (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ S T g) : IsThetaFunO ψ S T (f - g) := by
@@ -221,35 +215,31 @@ theorem theta_sub' {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {f g 
   · exact (hf.smooth k L hL hL0 w).sub (hg.smooth k L hL hL0 w)
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om hom X _ _ _ _ μ _ p c K hp hc hcb hK hpK M hMt hMh hM0 f hf hfl`. Take `⟨i1, i2, i3, i4, -, -⟩` from `GlobalTheory.AdelicMatrixLattice.lattice D T S`. Use `haveI : LocallyCompactSpace (WO S T) := i2`. Use `haveI : SecondCountableTopology (WO S T) := i3`. Use `haveI : T2Space (WO S T) := i4`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : BorelSpace (WO S T) := ⟨rfl⟩`. Set `ν : Measure (WO S T)` to `Measure.addHaar`. Establish `hν : ν.IsAddHaarMeasure` using `by infer_instance`. Set `F : (WO S T → ℂ) → X → WO S T → ℂ` to `fun h x w => c x * om (p x) h (actO S T (p x).1 (p x).2 w)`. Set `Φ : WO S T → ℂ` to `fun w => ∫ x, F f x w ∂μ`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨hint, hcont⟩` from `integral_om_actO_continuous D ψ S T χS χT om hom X μ p c K hp hc hcb hK hpK f hf`. Establish `hΦ0 : ∫ x, c x * om (p x) f 0 ∂μ = Φ 0`. Simplify using `only [Φ, F, actO_zero']`. Take `⟨N, hNc, hN0⟩` from `exists_compact_mem_nhds (0 : WO S T)`. Take `⟨B, hBtop, hB⟩` from `lintegral_om_actO_le D ψ S T χS χT om hom ν hν K N hK hNc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨C, hC⟩` from `hcb`. Establish `hgz : ∀ g ∈ M, ∀ w, ∫ x, F g x w ∂μ = 0`. Introduce `g hg w`. Rewrite using `[← hM0 (heisO ψ S T w g) (hMh g hg w)]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [F]`. Rewrite using `[om_heis_zero hom (p x) w (hMt g hg)]`. Establish `hjc : ∀ h, IsThetaFunO ψ S T h → Continuous fun z : WO S T × X => om (p z.2) h (actO S T (p z.2).1 (p z.2).2 z.1)`. Introduce `h hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `j` using `GlobalTheory.Unf.jointCont_all D ψ S T χS χT om hom h hh`. Conclude with `j.comp ((hp.comp continuous_snd).prodMk ((continuous_actO_pair S T).comp ((hp.comp continuous_snd).prodMk continuous_fst)))`. Establish `hbound : ∀ ε : ℝ, 0 < ε → ∫⁻ w in N, ‖Φ w‖ₑ ∂ν ≤ ENNReal.ofReal C * μ Set.univ * B * ENNReal.ofReal ε`. Introduce `ε hε`. Take `⟨g, hgM, hfg⟩` from `hfl ε hε`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgt` using `hMt g hgM`. Establish `hht : IsThetaFunO ψ S T (f - g)` using `theta_sub' hf hgt`. Take `⟨hintg, -⟩` from `integral_om_actO_continuous D ψ S T χS χT om hom X μ p c K hp hc ⟨C, hC⟩ hK hpK g hgt`. Establish `hΦw : ∀ w, Φ w = ∫ x, F (f - g) x w ∂μ`. Introduce `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ x, F (f - g) x w = F f x w - F g x w`. Introduce `x`. Simplify using `only [F, map_sub, LinearMap.sub_apply, Pi.sub_apply, mul_sub]`. Repeatedly rewrite using `[e]`. Rewrite using `[integral_sub (hint w) (hintg w), hgz g hgM w, sub_zero]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `G : WO S T → X → ℝ≥0∞` to `fun w x => ENNReal.ofReal C * ‖om (p x) (f - g) (actO S T (p x).1 (p x).2 w)‖ₑ`. Establish `hpt : ∀ w, ‖Φ w‖ₑ ≤ ∫⁻ x, G w x ∂μ`. Introduce `w`. Rewrite using `[hΦw w]`. Use `(enorm_integral_le_lintegral_enorm _).trans (lintegral_mono fun x => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [F, G, enorm_mul]`. Use `gcongr`. Rewrite using `[← ofReal_norm_eq_enorm]`. Conclude with `ENNReal.ofReal_le_ofReal (hC x)`. Establish `hGm : AEMeasurable (Function.uncurry G) ((ν.restrict N).prod μ)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hjc _ hht).enorm` as an intermediate fact. Conclude with `(measurable_const.mul this.measurable).aemeasurable`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae (hpK.mono fun x hx => ?_)` and prove the remaining obligations. Simplify using `only [G]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `gcongr`. Conclude with `hB _ hht ε (fun w => by simpa using (hfg w)) _ hx`. Use `_ = _ := by rw [lintegral_const]; ring`. Establish `hzero : ∫⁻ w in N, ‖Φ w‖ₑ ∂ν = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hA : ENNReal.ofReal C * μ Set.univ * B ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (measure_ne_top μ _)) hBtop`. Establish `hT : Filter.Tendsto (fun δ : ℝ => ENNReal.ofReal C * μ Set.univ * B * ENNReal.ofReal δ) (nhdsWithin 0 (Set.Ioi 0)) (nhds (ENNReal.ofReal C * μ Set.univ * B * ENNReal.ofReal 0))` using `ENNReal.Tendsto.const_mul ((ENNReal.continuous_ofReal.tendsto 0).mono_left nhdsWithin_le_nhds) (Or.inr hA)`. Rewrite `hT` using `[ENNReal.ofReal_zero, mul_zero]`. Conclude with `le_antisymm (ge_of_tendsto hT (eventually_nhdsWithin_of_forall fun δ hδ => hbound δ hδ)) (zero_le)`. Establish `hae : ∀ᵐ w ∂(ν.restrict N), ‖Φ w‖ₑ = 0` using `(lintegral_eq_zero_iff' hcont.enorm.measurable.aemeasurable).1 hzero`.
-
-Rewrite using `[hΦ0]`. Assume the negation of the conclusion as `hne`. Establish `hU : IsOpen {w | Φ w ≠ 0}` using `isOpen_ne_fun hcont continuous_const`. Establish `hpos : 0 < ν ({w | Φ w ≠ 0} ∩ interior N)` using `(hU.inter isOpen_interior).measure_pos ν ⟨0, hne, mem_interior_iff_mem_nhds.2 hN0⟩`. Establish `hnull : ν.restrict N {w | ‖Φ w‖ₑ ≠ 0} = 0`.
-
-Rewrite `hae` using `[ae_iff]`. Simplify using `using hae`. Rewrite `hnull` using `[Measure.restrict_apply' hNc.measurableSet]`. Conclude with `hpos.ne' (measure_mono_null (Set.inter_subset_inter (fun w hw => by simpa using hw) interior_subset) hnull)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem average_kills_theta : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : WRep S T), IsWeilDatumO ψ S T χS χT om → ∀ (X : Type) [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X] [SecondCountableTopology X] (μ : Measure X) [IsFiniteMeasure μ] (p : X → GA D S × GA D T) (c : X → ℂ) (K : Set (GA D S × GA D T)), Continuous p → Continuous c → (∃ C : ℝ, ∀ x, ‖c x‖ ≤ C) → IsCompact K → (∀ᵐ x ∂μ, p x ∈ K) → ∀ M : Submodule ℂ (WO S T → ℂ), (∀ g ∈ M, IsThetaFunO ψ S T g) → (∀ g ∈ M, ∀ w, heisO ψ S T w g ∈ M) → (∀ g ∈ M, ∫ x, c x * om (p x) g 0 ∂μ = 0) → ∀ f, IsThetaFunO ψ S T f → GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.UnifLimit M f → ∫ x, c x * om (p x) f 0 ∂μ = 0 := by
   intro D ψ S T χS χT om hom X _ _ _ _ μ _ p c K hp hc hcb hK hpK M hMt hMh hM0 f hf hfl

@@ -11,15 +11,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.HensNbhd
 
 /- English proof (translation)
-Set `Aq` to `Localization.AtPrime q`. Use `haveI : IsLocalHom (algebraMap R Aq) := by`. Use `⟨fun r hr => ?_⟩` and prove the remaining obligations. Rewrite `hr` using `[IsScalarTower.algebraMap_apply R A Aq, IsLocalization.AtPrime.isUnit_to_map_iff Aq q]`. Rewrite using `[← IsLocalRing.notMem_maximalIdeal, ← hq]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hr`. Use `haveI : Algebra.FormallyUnramified R Aq := Algebra.FormallyUnramified.comp R A Aq`. Use `haveI : Algebra.EssFiniteType R Aq := Algebra.EssFiniteType.comp R A Aq`. Take `⟨R', _, _, hfin, het, hloc, ⟨ε⟩⟩` from `exists_etale_lift_of_isSeparable R (ResidueField Aq)`. Use `haveI : HenselianLocalRing R' := henselianLocalRing_of_finite R R'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsLocalHom (algebraMap R R') := ((local_hom_TFAE (algebraMap R R')).out 0 4).mpr (comap_eq_maximalIdeal_of_finite _)`. Set `g1 : A →ₐ[R] ResidueField Aq` to `(IsScalarTower.toAlgHom R Aq (ResidueField Aq)).comp (IsScalarTower.toAlgHom R A Aq)`. Set `g2 : ResidueField R ⊗[R] R' →ₐ[R] ResidueField R'` to `Algebra.TensorProduct.lift (IsScalarTower.toAlgHom R (ResidueField R) (ResidueField R')) (IsScalarTower.toAlgHom R R' (ResidueField R')) (fun _ _ => Commute.all _ _)`. Set `φ : A →ₐ[R] R' ⧸ maximalIdeal R'` to `(g2.comp (ε.symm.restrictScalars R).toAlgHom).comp g1`. Take `⟨ψ, -⟩` from `exists_algHom_lift_of_etale_of_isLocalRing (maximalIdeal R') φ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hm : (maximalIdeal R).map (algebraMap R R') = maximalIdeal R'` using `Algebra.FormallyUnramified.map_maximalIdeal`. Use `⟨R', inferInstance, inferInstance, algebraMap R R', inferInstance, RingHom.finite_algebraMap.mpr hfin, ?_, hm, ?_, fun hc => ?_, ψ.toRingHom, ψ.comp_algebraMap⟩` and prove the remaining obligations. Conclude with `RingHom.etale_algebraMap.mpr het`. Establish `h : (ResidueField.map (algebraMap R R')).toAlgebra = (inferInstance : Algebra (ResidueField R) (ResidueField R'))` using `Algebra.algebra_ext _ _ fun r => by`. Take `⟨x, rfl⟩` from `residue_surjective r`.
-
-Both sides reduce to the same expression. Conclude with `h ▸ (inferInstance : Algebra.IsSeparable (ResidueField R) (ResidueField R'))`. Use `isAdicComplete_map_of_finite (maximalIdeal R) R'` as an intermediate fact. Rewrite `this` using `[hm]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_finite_etale_of_etale (R : Type) [CommRing R] [HenselianLocalRing R]
     [IsNoetherianRing R] (A : Type) [CommRing A] [Algebra R A] [Algebra.Etale R A]
@@ -63,15 +61,15 @@ theorem exists_finite_etale_of_etale (R : Type) [CommRing R] [HenselianLocalRing
     rwa [hm] at this
 
 /- English proof (translation)
-Introduce `R _ _ _ U u hu ⟨s, hs⟩`. Take `⟨V, hV, hsV, -⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp U.isBasis_affineOpens) (show s ∈ (⊤ : U.Opens) from trivial)`. Establish `hV' : IsAffineOpen V` using `hV`. Take `⟨t, rfl⟩ : s ∈ Set.range hV'.fromSpec` from `by rw [hV'.range_fromSpec]; exact hsV`. Set `f` to `hV'.fromSpec ≫ u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hf : Etale f` using `inferInstance`. Set `φ` to `Spec.preimage f`. Establish `hφ : Spec.map φ = f` using `Spec.map_preimage f`. Establish `het : RingHom.Etale φ.hom`. Rewrite using `[← HasRingHomProperty.Spec_iff (P := @Etale), hφ]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf`. Use `letI := φ.hom.toAlgebra`. Use `haveI : Algebra.Etale R Γ(U, V) := het`. Establish `hq : t.asIdeal.comap (algebraMap R Γ(U, V)) = maximalIdeal R`. Establish `h1 : (Spec.map φ) t = closedPoint R`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hφ, ← hs]`. Both sides reduce to the same expression. Conclude with `congrArg PrimeSpectrum.asIdeal h1`. Use `haveI : t.asIdeal.IsPrime := t.isPrime`. Take `⟨R', i1, i2, ρ, i3, h1, h2, h3, h4, h5, ψ, hψ⟩` from `exists_finite_etale_of_etale R Γ(U, V) t.asIdeal hq`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨R', i1, i2, ρ, i3, h1, h2, h3, h4, h5, Spec.map (CommRingCat.ofHom ψ) ≫ hV'.fromSpec, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc]`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom ψ) ≫ f = _`. Rewrite using `[← hφ, ← Spec.map_comp, ← hψ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_finite_etale_section : ∀ (R : Type) [CommRing R] [HenselianLocalRing R] [IsNoetherianRing R] (U : Scheme.{0}) (u : U ⟶ Sp R),
     Etale u → closedPoint R ∈ Set.range u →

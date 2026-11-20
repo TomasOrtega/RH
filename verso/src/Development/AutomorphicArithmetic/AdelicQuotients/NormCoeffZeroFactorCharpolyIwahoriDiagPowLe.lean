@@ -7,20 +7,18 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Loc PositivityTheory.Rg.
 open scoped NumberField.AdeleRing
 
 /- English proof (translation)
-The claim follows from `norm_le_one_of_mem w ((mem_valuationInteger_iff w x).1 ((Valuation.mem_integer_iff _ _).2 h))`.
+A detailed English derivation is pending.
 -/
 private lemma nrm_le {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     (x : w.adicCompletion E) (h : ValuativeRel.valuation (w.adicCompletion E) x ≤ 1) : ‖x‖ ≤ 1 :=
   norm_le_one_of_mem w ((mem_valuationInteger_iff w x).1 ((Valuation.mem_integer_iff _ _).2 h))
 
 /- English proof (translation)
-Establish `key : ∀ a b : w.adicCompletion E, b ≠ 0 → ValuativeRel.valuation (w.adicCompletion E) a = ValuativeRel.valuation (w.adicCompletion E) b → ‖a‖ ≤ ‖b‖`. Introduce `a b hb hab`. Establish `hb' : ValuativeRel.valuation (w.adicCompletion E) b ≠ 0` using `(Valuation.ne_zero_iff _).2 hb`. Establish `h1 : ValuativeRel.valuation (w.adicCompletion E) (a / b) ≤ 1`. Rewrite using `[map_div₀, hab, div_self hb']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `nrm_le w _ h1`. Rewrite `h2` using `[norm_div]`. Conclude with `(div_le_one (norm_pos_iff.2 hb)).1 h2`. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hx : x = 0` using `(Valuation.zero_iff _).1 (by rw [h, map_zero])`. Rewrite using `[hx]`. Establish `hx : x ≠ 0`. Introduce `hx`. Conclude with `hy ((Valuation.zero_iff _).1 (by rw [← h, hx, map_zero]))`.
-
-Conclude with `le_antisymm (key x y hy h) (key y x hx h.symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma nrm_eq {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     {x y : w.adicCompletion E}
@@ -46,21 +44,19 @@ private lemma nrm_eq {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum
   exact le_antisymm (key x y hy h) (key y x hx h.symm)
 
 /- English proof (translation)
-Establish `hlt : ValuativeRel.valuation (w.adicCompletion E) ((GLnLocal.uniformizer (w.adicCompletion E) : _) : w.adicCompletion E) < 1` using `GLnLocal.valuation_uniformizer_lt_one _`. Establish `hne : ((GLnLocal.uniformizer (w.adicCompletion E) : _) : w.adicCompletion E) ≠ 0` using `GLnLocal.uniformizer_ne_zero _`. Generalize the expression as in `((GLnLocal.uniformizer (w.adicCompletion E) : _) : w.adicCompletion E) = x at hlt hne`. Establish `hv : Valued.v x < 1`. Assume the negation of the conclusion as `hge`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hge' : 1 ≤ Valued.v x` using `not_lt.1 hge`. Establish `hinv : Valued.v x⁻¹ ≤ 1`. Rewrite using `[map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ hge'`. Establish `hm : x⁻¹ ∈ HeightOneSpectrum.adicCompletionIntegers E w` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 hinv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(Valuation.mem_integer_iff _ _).1 ((mem_valuationInteger_iff w _).2 hm)`. Rewrite `h3` using `[map_inv₀]`. Establish `h0 : ValuativeRel.valuation (w.adicCompletion E) x ≠ 0` using `(Valuation.ne_zero_iff _).2 hne`. Conclude with `absurd h3 (not_le.2 ((one_lt_inv₀ (zero_lt_iff.2 h0)).2 hlt))`. Establish `hvne : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).2 hne`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : 1 < Ideal.absNorm w.asIdeal` using `HeightOneSpectrum.one_lt_absNorm w`. Establish `hN2 : (2 : ℝ) ≤ (Ideal.absNorm w.asIdeal : ℝ)` using `by exact_mod_cast hN`. Establish `h1 : (1 : NNReal) < (Ideal.absNorm w.asIdeal : NNReal)` using `by exact_mod_cast hN`. Establish `hlt1 : ‖x‖ < 1`. Rewrite using `[FinitePlace.norm_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Conclude with `(WithZeroMulInt.toNNReal_lt_one_iff h1).2 hv` after adjusting the coercions. Rewrite `hlt1`, the goal using `[FinitePlace.norm_def, WithZeroMulInt.toNNReal_neg_apply _ hvne]`. Generalize the expression as in `(WithZero.unzero hvne).toAdd = m at hlt1 ⊢`. Establish `hm : m ≤ -1`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0 : 0 ≤ m` using `by omega`. Establish `h5 : (1 : NNReal) ≤ (Ideal.absNorm w.asIdeal : NNReal) ^ m` using `one_le_zpow₀ h1.le hm0`. Establish `h6 : (1 : ℝ) ≤ (((Ideal.absNorm w.asIdeal : NNReal) ^ m : NNReal) : ℝ)` using `by exact_mod_cast h5`. Conclude with `absurd hlt1 (not_lt.2 h6)`. Establish `h6 : (Ideal.absNorm w.asIdeal : NNReal) ^ m ≤ (Ideal.absNorm w.asIdeal : NNReal) ^ (-1 : ℤ)` using `zpow_le_zpow_right₀ h1.le hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h7 : (((Ideal.absNorm w.asIdeal : NNReal) ^ m : NNReal) : ℝ) ≤ (Ideal.absNorm w.asIdeal : ℝ)⁻¹`. Use `NNReal.coe_le_coe.2 h6` as an intermediate fact. Simplify using `using this`. Use `h7.trans ?_` and prove the remaining obligations. Rewrite using `[one_div]`.
-
-Conclude with `inv_anti₀ (by norm_num) hN2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma nrm_unif {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) :
     ‖((GLnLocal.uniformizer (w.adicCompletion E) : _) : w.adicCompletion E)‖ ≤ 1 / 2 := by
@@ -106,7 +102,7 @@ private lemma nrm_unif {E : Type} [Field E] [NumberField E] (w : HeightOneSpectr
   exact inv_anti₀ (by norm_num) hN2
 
 /- English proof (translation)
-Proceed by induction on `J using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ hx]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private lemma prod_zp {n : ℕ} {K : Type} [Field K] (x : K) (hx : x ≠ 0) (e : Fin n → ℤ) (J : Finset (Fin n)) :
     ∏ i ∈ J, x ^ e i = x ^ ∑ i ∈ J, e i := by
@@ -116,9 +112,7 @@ private lemma prod_zp {n : ℕ} {K : Type} [Field K] (x : K) (hx : x ≠ 0) (e :
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ hx]
 
 /- English proof (translation)
-Establish `hr1 : r ≤ 1` using `by linarith`. Establish `ha : r ^ (j * m) ≤ r ^ j` using `pow_le_pow_of_le_one h0.le hr1 (Nat.le_mul_of_pos_right j hm)`. Establish `hb : r ^ j * 2 ^ j ≤ 1`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_one₀ (by positivity) (by linarith)`.
-
-Conclude with `(mul_le_mul_of_nonneg_right ha (by positivity)).trans hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma fin_real (r : ℝ) (h0 : 0 < r) (h1 : r ≤ 1 / 2) (j m : ℕ) (hm : 1 ≤ m) :
     r ^ (j * m) * 2 ^ j ≤ 1 := by
@@ -130,25 +124,23 @@ private lemma fin_real (r : ℝ) (h0 : 0 < r) (h1 : r ≤ 1 / 2) (j m : ℕ) (hm
   exact (mul_le_mul_of_nonneg_right ha (by positivity)).trans hb
 
 /- English proof (translation)
-Introduce `hA E _ _ w n ν hν hsum hJ j hj a ha b hb p₁ p₂ hm₁ hm₂ hd₁ hd₂ hp`. Establish `hϖ : ((GLnLocal.uniformizer (w.adicCompletion E) : _) : w.adicCompletion E) ≠ 0` using `GLnLocal.uniformizer_ne_zero _`. Establish `hr` using `nrm_unif w`. Establish `hdiag : ∀ J : Finset (Fin n), ∏ i ∈ J, ((Cartan.diagPow (w.adicCompletion E) n (fun i => (j : ℤ) * ν i) : GL (Fin n) (w.adicCompletion E)) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i i = ((GLnLocal.uniformizer (w.adicCompletion E) : _) : w.adicCompletion E) ^ ((j : ℤ) * ∑ i …`. Introduce `J`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.mul_sum, ← prod_zp _ hϖ]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Cartan.coe_diagPow, Matrix.diagonal_apply_eq]`. Generalize the expression as in `((GLnLocal.uniformizer (w.adicCompletion E) : _) : w.adicCompletion E) = ϖ at hϖ hr hdiag`. Establish `hr0 : 0 < ‖ϖ‖` using `norm_pos_iff.2 hϖ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (fun i => (j : ℤ) * ν i)` using `fun x y h => hν (mul_left_cancel₀ (by exact_mod_cast hj.ne') h)`. Take `⟨J, hJc, hJv⟩` from `hA (w.adicCompletion E) n _ hinj a ha b hb p₁ hm₁ ⟨p₂, hp.symm⟩`. Establish `hcp : (p₁ * p₂).natDegree = n`. Rewrite using `[hp, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Take `⟨J', hJ'c, hJ'v⟩` from `hA (w.adicCompletion E) n _ hinj a ha b hb (p₁ * p₂) (hm₁.mul hm₂) (hp ▸ dvd_rfl)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hJ'u : J' = Finset.univ`. Apply `Finset.eq_univ_of_card` to reduce the goal to its premises. Rewrite using `[hJ'c, hcp, Fintype.card_fin]`. Establish `hdeg : p₁.natDegree + p₂.natDegree = n`. Rewrite using `[← hm₁.natDegree_mul hm₂]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hcp`. Establish `hne : J.Nonempty` using `Finset.card_pos.1 (by omega)`. Establish `hnu : J ≠ Finset.univ`. Introduce `h`. Rewrite `hJc` using `[h, Finset.card_univ, Fintype.card_fin]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hs` using `hJ J hne hnu`. Establish `h1 : ‖p₁.coeff 0‖ = ‖ϖ‖ ^ ((j : ℤ) * ∑ i ∈ J, ν i)`. Rewrite using `[nrm_eq w (hJv.trans (by rw [hdiag])), norm_zpow]`. Establish `h2 : ‖p₁.coeff 0‖ * ‖p₂.coeff 0‖ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← norm_mul, ← mul_coeff_zero, nrm_eq w (hJ'v.trans (congrArg _ (hdiag J'))), hJ'u, hsum]`. Simplify using the standard rewrite rules. Generalize the expression as in `(∑ i ∈ J, ν i) = s at hs h1`. Break down `lt_or_gt_of_ne hs with hlt | hgt` into its components or cases. Use `right`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `Int.eq_ofNat_of_zero_le (by omega : 0 ≤ -s)`. Establish `hs' : s = -(m : ℤ)` using `by omega`. Establish `hm1 : 1 ≤ m` using `by omega`. Establish `h3 : ‖p₂.coeff 0‖ = ‖ϖ‖ ^ (j * m)`. Establish `h4 : ‖p₁.coeff 0‖ = (‖ϖ‖ ^ (j * m))⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1, hs', mul_neg, zpow_neg, ← Nat.cast_mul, zpow_natCast]`. Rewrite `h2` using `[h4]`. Conclude with `(inv_mul_eq_one₀ (pow_ne_zero _ hr0.ne')).1 h2 |>.symm`. Rewrite using `[h3]`. Conclude with `fin_real _ hr0 hr j m hm1`.
-
-Use `left`. Take `⟨m, hm⟩` from `Int.eq_ofNat_of_zero_le hgt.le`. Establish `hm1 : 1 ≤ m` using `by omega`. Rewrite using `[h1, hm, ← Nat.cast_mul, zpow_natCast]`. Conclude with `fin_real _ hr0 hr j m hm1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.norm_coeff_zero_factor_charpoly_iwahori_diagPow_le :
     A1 → ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) (ν : Fin n → ℤ), Function.Injective ν → ∑ i, ν i = 0 →

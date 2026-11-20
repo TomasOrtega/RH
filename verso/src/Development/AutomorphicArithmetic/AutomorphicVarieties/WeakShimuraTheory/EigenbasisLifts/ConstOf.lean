@@ -10,7 +10,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Loca
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Eb GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff, TrivSqZeroExt.isUnit_iff_isUnit_fst, isUnit_iff_ne_zero, not_not, TrivSqZeroExt.fst_sub, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem res_iff {K : Type} [Field K] (a b : DualNumber K) :
     residue (DualNumber K) a = residue (DualNumber K) b ↔ a.fst = b.fst := by
@@ -18,13 +18,11 @@ private theorem res_iff {K : Type} [Field K] (a b : DualNumber K) :
     TrivSqZeroExt.isUnit_iff_isUnit_fst, isUnit_iff_ne_zero, not_not, TrivSqZeroExt.fst_sub, sub_eq_zero]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h0`. Take `⟨g', hg'⟩` from `h1`. Set `ι : K →+* DualNumber K` to `algebraMap _ _`. Establish `hinf : Infinite (ResidueField (DualNumber K))` using `Infinite.of_injective _ ((residue (DualNumber K)).comp ι).injective`. Establish `e : ∀ s, GeneralLinearGroup.map ι g * Q⁻¹ * ρ' s * (GeneralLinearGroup.map ι g * Q⁻¹)⁻¹ = GeneralLinearGroup.map ι (g * ρ s * g⁻¹)` using `fun s => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hQ, map_mul, map_mul, map_inv]`. Use `show _ * (_ * GeneralLinearGroup.map ι (ρ s) * _) * _ = _`. Use `group`. Use `(AlgebraTools.flag_chars_unique ρ' ψ (fun i => W.pushCh ι (W.pushCh (dF K) (ψ i))) g' (GeneralLinearGroup.map ι g * Q⁻¹) ((Cardinal.natCast_lt_aleph0).le.trans (Cardinal.aleph0_le_mk _)) (fun a b hab => hinj (MonoidHom.ext fun t => Units.ext ((res_iff _ _).1 (DFunLike.congr_fun h …` as an intermediate fact. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Use `show ι ((g * ρ t * g⁻¹ : GL (Fin n) K) a b) = 0`. Rewrite using `[(hg t).1 a b hab, map_zero]`. Use `show ι ((g * ρ t * g⁻¹ : GL (Fin n) K) a a) = _`. Rewrite using `[(hg t).2 a]`.
-
-Use the proof step `rfl)).1`. Rewrite using `[congrFun this i]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem flag_const {K H : Type} [Field K] [Infinite K] [Group H] {n : ℕ} (ρ : H →* GL (Fin n) K)
     (ρ' : H →* GL (Fin n) (DualNumber K)) (Q : GL (Fin n) (DualNumber K))
@@ -56,13 +54,11 @@ private theorem flag_const {K H : Type} [Field K] [Infinite K] [Group H] {n : �
   rfl
 
 /- English proof (translation)
-Introduce `l hl F c n r B x' ρ ρ' Q hD hQ hinj h0 h1`. Take `⟨-, hfin, hlm, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l c.O`. Use `haveI : Finite (ResidueField c.O) := hfin`. Use `haveI : CharP (ResidueField c.O) l := by`. Use `(CharP.charP_iff_prime_eq_zero hl.out).2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_natCast (residue c.O), residue_eq_zero_iff]`. Conclude with `hlm`. Use `derZero c B.B x' _ (CA.exists_adjoin_coeff_character_sub_mem_maximalIdeal_pow r B) ?_` and prove the remaining obligations. Introduce and unpack `a (⟨i, g, -, -, rfl⟩ | ⟨v, i, g, rfl⟩)`. Establish `e1` using `(AlgebraTools.Det.mapApi B.u.D (x' : B.B →+* DualNumber (PadicAlgCl l))).2.2.1 i g`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2 : W.GDet.ofRep (W.mat ρ') = (W.GDet.ofRep (W.mat ρ)).map (algebraMap _ (DualNumber (PadicAlgCl l)))`. Rewrite using `[(AlgebraTools.Det.repApi _).2.2.2.2.2.1]`. Use `(AlgebraTools.Det.repApi _).2.2.2.2.2.2.2 _ Q⁻¹ fun y => ?_` and prove the remaining obligations. Establish `: Q⁻¹ * ρ' y = W.pushRep (algebraMap _ (DualNumber (PadicAlgCl l))) ρ y * Q⁻¹`. Rewrite using `[hQ]`.
-
-Use `group`. Conclude with `congrArg Units.val this`. Rewrite `e1` using `[hD, e2, (AlgebraTools.Det.mapApi _ _).2.2.1]`. Conclude with `(congrArg TrivSqZeroExt.snd e1).symm`. Conclude with `flag_const (ρ.comp (F.φ v)) (ρ'.comp (F.φ v)) Q (fun g => hQ _) (fun i => W.pushCh (x' : B.B →+* DualNumber (PadicAlgCl l)) (B.u.ψ v i)) (hinj v) (h0 v) (h1 v) i g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Eb.constOf :
     ∀ {l : ℕ} [Fact l.Prime] {F : W.GFrame l} {c : Coef l} {n : ℕ} {r : W.Resid F c.O n} (B : W.UniversalOrdinaryDeterminantRing r) (x' : B.B →ₐ[c.O] DualNumber (PadicAlgCl l)) (ρ : F.G₀ →* GL (Fin n) (PadicAlgCl l)) (ρ' : F.G₀ →* GL (Fin n) (DualNumber (PadicAlgCl l))) (Q : GL (Fin n) (DualNumber (PadicAlgCl l))), B.u.D.map (x' : B.B →+* DualNumber (PadicAlgCl l)) = W.GDet.ofRep (W.mat ρ') → (∀ g, ρ' g = Q * W.pushRep (algebraMap _ (DualNumber (PadicAlgCl l))) ρ g * Q⁻¹) →

@@ -17,17 +17,17 @@ noncomputable section
 namespace LevelTowerAlt
 
 /- English proof (translation)
-Set `J₁ : K ⊕ Unit → Type` to `Sum.elim J fun _ => Unit`. Use `letI : ∀ k, Fintype (J₁ k) := fun k => match k with`. Consider the case `.inl k => (inferInstance : Fintype (J k))`. Consider the case `.inr _ => (inferInstance : Fintype Unit)`. Set `s : (Σ k, J₁ k) → Ω'` to `fun q => match q with`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Consider the case `⟨.inl k, a⟩ => i (y ⟨k, a⟩)`. Consider the case `⟨.inr _, _⟩ => 1`. Establish `h1` using `GlobalTheory.T.coords_join_blocks X' Ω' ξ' K' J' y' (K ⊕ Unit) J₁ s hT' (by`. Introduce and unpack `(k | k) p`. Take `⟨hsp, hreg, -⟩` from `GlobalTheory.CompanionTheory.Ar.RegAtDom.regAt_dominates X Ω ξ X' Ω' ξ' g i hd p`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hT.cover ⟨g p.1, hsp⟩`. Use `⟨c k, (map_ne_zero i).2 (TiePrimes.ne_of_seg hc.1 k), fun a => ?_⟩` and prove the remaining obligations. Use `hreg _ (TiePrimes.ratio_mem hc ⟨k, a⟩)` as an intermediate fact. Rewrite `this` using `[map_div₀]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(), one_ne_zero, fun a => ?_⟩ show (1 : Ω') / 1 ∈ _` and prove the remaining obligations. Rewrite using `[div_one]`. Conclude with `one_mem _)`. Set `J₃ : K' ⊕ (K ⊕ Unit) → Type` to `Sum.elim J' J₁`. Set `y₃ : (Σ k, J₃ k) → Ω'` to `fun q => match q with`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Treat this case separately. Treat this case separately.
 
-Consider the case `⟨.inl k, a⟩ => y' ⟨k, a⟩`. Consider the case `⟨.inr k, a⟩ => s ⟨k, a⟩`. Use `⟨K' ⊕ (K ⊕ Unit), inferInstance, J₃, fun k => match k with` and prove the remaining obligations. Consider the case `.inl k => (inferInstance : Fintype (J' k))`. Consider the case `.inr k => (inferInstance : Fintype (J₁ k)), y₃, fun k => .inr (.inl k), fun k => Equiv.refl _,`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use the proof step `⟨.inr (.inr ())⟩, fun a b h => by simpa using h, fun _ _ => rfl, ?_⟩`. Establish `e : (fun c' : (k : K' ⊕ (K ⊕ Unit)) → J₃ k => ∏ k, y₃ ⟨k, c' k⟩) = fun c' : (k : K' ⊕ (K ⊕ Unit)) → Sum.elim J' J₁ k => (∏ k, y' ⟨k, c' (Sum.inl k)⟩) * ∏ k, s ⟨k, c' (Sum.inr k)⟩`. Use function extensionality and compare the values at `fun c' => Fintype.prod_sum_type _`. Rewrite using `[e]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_join {X X' : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω'] {ξ : Sp Ω ⟶ X} {ξ' : Sp Ω' ⟶ X'}
     {K K' : Type} [Fintype K] [Fintype K'] {J : K → Type} {J' : K' → Type}
@@ -79,17 +79,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
     HodgeCpt Y S y' := { B with tie := h }
 
 /- English proof (translation)
-Establish `hrk : ∀ s, labelRk D s = 0`. Introduce and unpack `(τ | τ)`. Use `show D.p = 0`. Use linear arithmetic over natural numbers and integers. Use `show D.q = 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `haveI : ∀ s, IsEmpty (Fin (labelRk D s)) := fun s => by rw [hrk s]; infer_instance`. Establish `hV : ∀ s, B.Vgen s = ⊥` using `fun s => by`. Take `⟨U, -, b, hb, -⟩` from `B.vb s ⟨_, specializes_rfl⟩ trivial`. Use `hb.symm.trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Set.range_eq_empty, Submodule.span_empty]`. Take `⟨Li₀, _, _, ⟨M₀⟩⟩` from `GlobalTheory.CompanionTheory.Ar.lieModel_exists Y.X Y.t.G B.Ω₀ B.ξ₀`. Take `⟨j, hj⟩` from `GlobalTheory.T.lie_model_pullback_map Y.X B.X B.Ω₀ Ω B.ξ₀ B.ξ B.f B.fn Y.t.G B.t.G B.m.φ Li₀ B.Li M₀ B.M B.fn_over B.m.cart`. Take `⟨hext, -, -⟩` from `GlobalTheory.T.lie_lattice_dominant_compat Y.X B.X B.Ω₀ Ω B.ξ₀ B.ξ B.f B.fn Y.t.G B.t.G B.m.φ Li₀ B.Li M₀ B.M j B.gen₀ B.tie.gen B.fn_over B.m.cart Y.t.semi.smooth hj`. Use `⟨{ b := fun _ => isEmptyElim, sub := fun s p _ => ?_, Li₀ := Li₀, M₀ := M₀, j := j, j_pt := hj, V₀ := fun _ => ⊥, V₀_mem := fun s e => ?_, deg := d, generic := ?_ }⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨U, hU, b, -, hb⟩` from `B.vb s p trivial`. Conclude with `⟨U, hU, b, fun _ => by rw [Subsingleton.elim b isEmptyElim], hb⟩`. Rewrite using `[hV, Submodule.mem_bot, Submodule.mem_bot]`. Use `⟨fun h => by rw [h, map_zero], fun h => by_contra fun hne => ?_⟩` and prove the remaining obligations. Use `hext.2 1 (fun _ => e) (linearIndependent_unique_iff.2 hne)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.ne_zero 0 h`. Use `letI := B.fn.toAlgebra`. Use `⟨fun _ => isEmptyElim, fun _ => 0, fun s => ⟨linearIndependent_empty_type, ?_⟩, hext.1, fun _ => linearIndependent_empty_type, fun _ => linearIndependent_empty_type, fun _ => isEmptyElim, fun _ => isEmptyElim, fun s i => congrArg (fun b => flagStep Ω b i) (Subsingleton.elim _ _), …` and prove the remaining obligations. Rewrite using `[Set.range_eq_empty, Submodule.span_empty]`. Use `haveI : IsEmpty (Σ σ : CMType H ⊕ CMType H, {lk : Fin (labelRk D σ) × Fin (labelRk D σ) // lk.2 < lk.1}) := ⟨fun q => isEmptyElim q.2.1.1⟩`.
-
-Conclude with `algebraicIndependent_empty_type`. Use `haveI : IsEmpty (Σ σ : CMType H ⊕ CMType H, Fin (labelRk D σ) × Fin (labelRk D σ)) := ⟨fun q => isEmptyElim q.2.1⟩`. Rewrite using `[Set.range_eq_empty, IntermediateField.adjoin_empty, IntermediateField.finrank_bot']`. Conclude with `hc.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flag_zero [∀ k, Fintype (J k)] (B : HodgeCpt Y S y) (d : ℕ) (hc : B.IsCover d) (h0 : D.p + D.q = 0) :
     Nonempty B.Flag := by

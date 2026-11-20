@@ -9,11 +9,11 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.StepIdeal
 open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Semi NumberField IsDedekindDomain Module Formalism.BasicNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.CompHt GlobalTheory.FlatCore GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.FlatDegreeCompare
 
 /- English proof (translation)
-Introduce `K O _ _ A _ _ act χ m x v hx hv hi`. Establish `tx : ∀ i, IsTangent (x i)` using `fun i => (hx.1 i).1`. Use `choose T hT _ using fun i => hx.2 (v i) (hv i)`. Set `T' : Matrix (Fin m) (Fin m) K` to `T`. Establish `hT' : ∀ i, IsLieComb (T' i) x (v i)` using `hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (fun c => Matrix.vecMul c T')` using `fun c c' h => sub_eq_zero.1 (hi.vecMul_eq_zero tx hT' _ (by rw [Matrix.sub_vecMul]; exact sub_eq_zero.2 h))`. Establish `hu : IsUnit T'` using `Matrix.vecMul_injective_iff_isUnit.1 hinj`. Use `⟨hv, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, -⟩` from `hx.2 w hw`. Take `⟨c, rfl⟩` from `Matrix.vecMul_surjective_iff_isUnit.2 hu c`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `(comb_comb tx hT' c w).2 hc`. Conclude with `⟨c, h, fun c' h' => hi.2 _ _ w h' h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.eigen_basis_of_independent_eigenvectors :
     ∀ (K O : Type) [Field K] [CommRing O] (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A] (act : OAct O A) (χ : O →+* K) (m : ℕ) (x v : Fin m → (epsR K ⟶ A)), EigenvectorLieDegree.IsEigBasis act χ x → (∀ i, EigenvectorLieDegree.IsEigVec act χ (v i)) → Indep v → EigenvectorLieDegree.IsEigBasis act χ v := by

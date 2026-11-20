@@ -17,17 +17,15 @@ open scoped Classical
 namespace GlobalTheory.RealLieFock
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm n d X W M ψ χX χW om hψ hX hXd hW hWd hrX hrW hhX hhW hwe τ hcX hcW γ hγ`. Use `choose T hT' using fun t : ℝ => GlobalTheory.T.exists_archimedeanOperator_weilRep_pureTensor F E σ hcm n d X W M ψ χX χW om hψ hX hXd hW hWd hrX hrW hhX hhW hwe (γ (Multiplicative.ofAdd t)) (hγ.2 _)`. Establish `hvac : ∀ f₀, M.IsGauss ψ τ f₀ → f₀ ∈ M.Pol ψ τ` using `fun f₀ h => Submodule.mem_sInf.2 fun N hN => hN.1 f₀ h`. Establish `hstab : ∀ u, At (evI F) u → ∀ f ∈ M.Pol ψ τ, ∀ f₁ : SInf F (Fin n × Fin d), ActsD (evI F) (M.heisLine ψ u) f f₁ → f₁ ∈ M.Pol ψ τ` using `fun u hu f hf f₁ h => Submodule.mem_sInf.2 fun N hN => hN.2 u hu f (Submodule.mem_sInf.1 hf N hN) f₁ h`. Set `N : Submodule ℂ (SInf F (Fin n × Fin d))` to `{ carrier := {f | f ∈ M.Pol ψ τ ∧ ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun p : ℝ × (Fin n × Fin d → mixedEmbedding.mixedSpace F) => T p.1 f p.2) ∧ ∃ f' ∈ M.Pol ψ τ, ∀ x, HasDerivAt (fun t => T t f x) (f' x) 0} zero_mem' := ⟨zero_mem _, by simpa using contDiff_const, 0, zero_mem _, …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `f g ⟨hf, hf1, f', hf', hf2⟩ ⟨hg, hg1, g', hg', hg2⟩`. Use `⟨add_mem hf hg, by simpa using hf1.add hg1, f' + g', add_mem hf' hg', fun x => ?_⟩` and prove the remaining obligations. Use `show HasDerivAt (fun t => T t (f + g) x) ((f' + g') x) 0`. Simplify using `only [map_add, SchwartzMap.add_apply]`. Conclude with `(hf2 x).add (hg2 x)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use the proof step `smul_mem' := by`. Introduce and unpack `c f ⟨hf, hf1, f', hf', hf2⟩`. Use `⟨Submodule.smul_mem _ c hf, by simpa using hf1.const_smul c, c • f', Submodule.smul_mem _ c hf', fun x => ?_⟩` and prove the remaining obligations. Simplify using `using (hf2 x).const_mul c }`. Establish `hPN : M.Pol ψ τ ≤ N`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `sInf_le ⟨fun f₀ h => ?_, fun u hu f hf f₁ h => ?_⟩` and prove the remaining obligations. Conclude with `⟨hvac f₀ h, GlobalTheory.T.weilOperator_oneParam_gaussianVacuum_smooth_pair F E σ hcm n d X W M ψ χX χW om hψ hX hXd hW hWd hrX hrW hhX hhW hwe τ hcX hcW γ hγ T hT' f₀ h⟩`. Take `⟨hf0, hf1, hf2⟩` from `hf`. Conclude with `⟨hstab u hu f hf0 f₁ h, GlobalTheory.T.smooth_weilOrbit_real_passes_to_heisenbergDerivatives F E σ hcm n d X W M ψ χX χW om hψ hX hXd hW hWd hrX hrW hhX hhW hwe τ hcX hcW γ hγ T hT' u hu f hf0 hf1 hf2 f₁ h⟩`. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨-, -, f', hf', hd⟩` from `hPN hf`. Establish `hA : ActsD (evI F) (fun t => om (1, γ (Multiplicative.ofAdd t))) f f'`. Introduce `r hr x`. Establish `h1 : ∀ t : ℝ, om (1, γ (Multiplicative.ofAdd t)) (tens (evI F) f r) = tens (evI F) (T t f) r` using `fun t => hT' t f r hr`. Simplify using `only [h1]`.
-
-Conclude with `(hd _).mul_const (r x)`. Use `⟨⟨f', hA⟩, fun f₁ h₁ => ?_⟩` and prove the remaining obligations. Establish `e : f₁ = f'` using `(GlobalTheory.RealLift.actsLaws F (Fin n × Fin d) f f₁ f').2.2.1 _ h₁ hA`. Rewrite using `[e]`. Conclude with `hf'`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_deriv_pol : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),

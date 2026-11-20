@@ -6,19 +6,17 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Introduce `l hl A _ D J hlJ n`. Establish `hl0 : 0 < l` using `hl.out.pos`. Proceed by induction on `n with`. Consider the case `zero => intro x _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Introduce `x hx`. Establish `key : x ∈ J ^ (n + 1 + 1) ∧ D.δ x ∈ J ^ (n + 1)`. Rewrite `hx` using `[pow_succ' J (n + 1)]`. Use `Submodule.mul_induction_on hx ?_ ?_` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a ha b hb`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ' J (n + 1)]`. Conclude with `Ideal.mul_mem_mul ha hb`. Rewrite using `[D.δ_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : a ^ l * D.δ b ∈ J ^ (n + 1)`. Rewrite using `[pow_succ']`. Conclude with `Ideal.mul_mem_mul (Ideal.pow_mem_of_mem J ha l hl0) (ih b hb)`. Establish `h2 : b ^ l * D.δ a ∈ J ^ (n + 1)` using `Ideal.mul_mem_right _ _ (Ideal.pow_mem_of_mem _ hb l hl0)`. Establish `h3 : (l : A) * D.δ a * D.δ b ∈ J ^ (n + 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[pow_succ']`. Conclude with `Ideal.mul_mem_mul (Ideal.mul_mem_right _ _ hlJ) (ih b hb)`. Conclude with `Ideal.add_mem _ (Ideal.add_mem _ h1 h2) h3`. Introduce and unpack `y z ⟨hy1, hy2⟩ ⟨hz1, hz2⟩`. Use `⟨Ideal.add_mem _ hy1 hz1, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[D.δ_add]`. Use `Ideal.sub_mem _ (Ideal.add_mem _ hy2 hz2) (Ideal.sum_mem _ fun k hk => ?_)` and prove the remaining obligations. Establish `hk0 : 0 < k` using `(Finset.mem_Ioo.1 hk).1`. Establish `hyk : y ^ k ∈ J ^ (n + 1)` using `Ideal.pow_le_pow_right (Nat.le_succ _) (Ideal.pow_mem_of_mem _ hy1 k hk0)`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ hyk)`.
-
-Conclude with `key.2`.
+A detailed English derivation is pending.
 -/
 theorem delta_pow_succ_mem_pow : ∀ (l : ℕ) [Fact l.Prime] (A : Type) [CommRing A] (D : Delta l A) (J : Ideal A),
     (l : A) ∈ J → ∀ (n : ℕ), ∀ x ∈ J ^ (n + 1), D.δ x ∈ J ^ n := by

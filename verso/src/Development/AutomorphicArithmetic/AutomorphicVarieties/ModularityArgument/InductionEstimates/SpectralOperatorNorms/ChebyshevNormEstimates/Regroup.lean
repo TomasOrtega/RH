@@ -8,13 +8,13 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg
 
 open Classical in
 /- English proof (translation)
-Repeatedly rewrite using `[Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `symm`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Establish `hinj : Set.InjOn (fun ζ : ℂ => (a i, ζ)) (S i)` using `fun z _ z' _ h => (Prod.ext_iff.1 h).2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_image hinj]`. Use `Finset.sum_congr rfl fun ζ hζ => ?_` and prove the remaining obligations. Rewrite using `[if_pos ⟨rfl, hζ⟩, mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by`. Use `Finset.sum_subset ?_ ?_` and prove the remaining obligations. Introduce `q hq`. Take `⟨ζ, hζ, rfl⟩` from `Finset.mem_image.1 hq`. Conclude with `hP i hi ζ hζ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `q _ hq`. Rewrite using `[if_neg, zero_mul]`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `hq (Finset.mem_image.2 ⟨q.2, h2, Prod.ext h1 rfl⟩)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private lemma regroup {T : Type} (s : Finset T) (a : T → ℝ) (S : T → Finset ℂ) (c : T → ℂ → ℂ) (w : T → ℂ) (P : Finset (ℝ × ℂ))
     (hP : ∀ i ∈ s, ∀ ζ ∈ S i, (a i, ζ) ∈ P) (f : ℝ × ℂ → ℂ) :
@@ -42,9 +42,9 @@ private lemma regroup {T : Type} (s : Finset T) (a : T → ℝ) (S : T → Finse
           exact hq (Finset.mem_image.2 ⟨q.2, h2, Prod.ext h1 rfl⟩)
 
 /- English proof (translation)
-Use `tendsto_atTop.2 fun M => ?_` and prove the remaining obligations. Use `filter_upwards [h 1, eventually_ge_atTop M.factorial] with j hj hM`. Assume the negation of the conclusion as `hlt`. Establish `h1 : (d j).factorial ≤ M.factorial` using `Nat.factorial_le (not_le.1 hlt).le`. Establish `h2 : ((d j).factorial : ℝ) ≤ j` using `by exact_mod_cast h1.trans hM`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `Real.add_one_le_exp (1 * (j : ℝ))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private lemma d_top (d : ℕ → ℕ) (h : ∀ B : ℝ, ∀ᶠ j : ℕ in atTop, Real.exp (B * j) ≤ (d j).factorial) :
     Tendsto d atTop atTop := by
@@ -57,7 +57,7 @@ private lemma d_top (d : ℕ → ℕ) (h : ∀ B : ℝ, ∀ᶠ j : ℕ in atTop,
   linarith
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `(Z.image fun ζ => -Real.log ‖ζ‖).bddAbove`. Use `⟨M, fun ζ hζ => ?_⟩` and prove the remaining obligations. Establish `h1 : -Real.log ‖ζ‖ ≤ M` using `hM (by simpa using ⟨ζ, hζ, rfl⟩)`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private lemma low_bd (Z : Finset ℂ) (hZ : ∀ ζ ∈ Z, ζ ≠ 0) : ∃ cq : ℝ, ∀ ζ ∈ Z, Real.exp (-cq) ≤ ‖ζ‖ := by
   obtain ⟨M, hM⟩ := (Z.image fun ζ => -Real.log ‖ζ‖).bddAbove
@@ -67,37 +67,29 @@ private lemma low_bd (Z : Finset ℂ) (hZ : ∀ ζ ∈ Z, ζ ≠ 0) : ∃ cq : �
     _ = ‖ζ‖ := Real.exp_log (norm_pos_iff.2 (hZ ζ hζ))
 
 /- English proof (translation)
-Introduce `T a τ act good x hx hx1 p hp d hd hfac hexp hfin H`. Use `choose! S c hS0 hτ using hexp`. Take `⟨cq, hcq⟩` from `low_bd (hfin.toFinset.biUnion S) (by`. Introduce `ζ hζ h0`. Take `⟨i, hi, hζ⟩` from `Finset.mem_biUnion.1 hζ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hi'` using `hfin.mem_toFinset.1 hi`. Conclude with `hS0 i hi'.1 (hi'.2 ▸ hx) (h0 ▸ hζ))`. Take `⟨N, hN⟩` from `exponents3 d hd hfac p hp cq x hx hx1`. Take `⟨c₁, H⟩` from `H N`. Take `⟨η, hη, hηx, hE⟩` from `hN c₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, u, u', k, hk, hs, hu, hgood, hbad, hest⟩` from `H η hη hηx`. Establish `hsp : ∀ i ∈ s, act i ∧ 0 < a i` using `fun i hi => ⟨((hs i).1 hi).2, hη.trans ((hs i).1 hi).1⟩`. Use `set P : Finset (ℝ × ℂ) := s.biUnion fun i => (S i).image fun ζ => (a i, ζ) with hPdef`. Establish `hP : ∀ i ∈ s, ∀ ζ ∈ S i, (a i, ζ) ∈ P` using `fun i hi ζ hζ => Finset.mem_biUnion.2 ⟨i, hi, Finset.mem_image.2 ⟨ζ, hζ, rfl⟩⟩`. Establish `hP' : ∀ q ∈ P, ∃ i ∈ s, a i = q.1 ∧ q.2 ∈ S i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `q hq`. Take `⟨i, hi, hq⟩` from `Finset.mem_biUnion.1 hq`. Take `⟨ζ, hζ, rfl⟩` from `Finset.mem_image.1 hq`. Conclude with `⟨i, hi, rfl, hζ⟩`. Establish `hall : ∀ᶠ j : ℕ in atTop, ∀ i ∈ s, τ i j = ∑ ζ ∈ S i, c i ζ * ζ ^ j` using `(Filter.eventually_all_finset s).2 fun i hi => hτ i (hsp i hi).1 (hsp i hi).2`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨J, hJ⟩` from `eventually_atTop.1 hall`. Set `C : (T → ℂ) → ℝ × ℂ → ℂ` to `fun w q => ∑ i ∈ s, if a i = q.1 ∧ q.2 ∈ S i then w i * c i q.2 else 0`. Establish `key` using `hE η hη le_rfl P (fun q => q.1.1) (fun q => q.1.2) (fun q => by`. Take `⟨i, hi, h1, -⟩` from `hP' q.1 q.2`. Conclude with `h1 ▸ ((hs i).1 hi).1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun q h0 => by`. Take `⟨i, hi, -, h2⟩` from `hP' q.1 q.2`. Conclude with `hS0 i (hsp i hi).1 (hsp i hi).2 (h0 ▸ h2))`. Use the proof step `(fun q q' h => Subtype.ext h)`. Use the proof step `(fun j q => C (fun i => u i (d j)) q.1) (fun q => C u' q.1)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun q => by`. Use `tendsto_finset_sum _ fun i hi => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `((hu i hi).comp (d_top d hfac)).mul_const _`. Conclude with `tendsto_const_nhds)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(fun s₀ => by`. Take `⟨K, hK⟩` from `hest s₀`. Use `⟨K, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hK, eventually_ge_atTop J] with j hj hjJ m hm m' hm'`. Use `le_of_eq_of_le ?_ (hj m hm m' hm')` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Establish `h1` using `regroup s a S c (fun i => u i (d j)) P hP (fun q => (q.1 : ℂ) ^ d j * (cheb η (j / p + m) q.1 : ℂ) * q.2 ^ (j + m'))`. Rewrite `h1` using `[← Finset.sum_coe_sort P]`. Use `Eq.trans (Finset.sum_congr rfl fun q _ => by simp only [C, mul_assoc]) (h1.trans ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hJ (j + m') (by omega) i hi, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ζ _ => ?_` and prove the remaining obligations. Use the proof step `ring)`. Use `filter_upwards [hall] with j hj`. Establish `h1` using `regroup s a S c u' P hP (fun q => if q.1 = x then q.2 ^ j else 0)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ∑ q ∈ P, C u' q * (if q.1 = x then q.2 ^ j else 0) = 0`. Use `Finset.sum_eq_zero fun q hq => ?_` and prove the remaining obligations. Use `split_ifs with hqx`. Take `⟨i, hi, h1, h2⟩` from `hP' q hq`. Use `key ⟨q, hq⟩ hqx.ge (hcq _ (Finset.mem_biUnion.2 ⟨i, hfin.mem_toFinset.2 ⟨(hsp i hi).1, h1.trans hqx⟩, h2⟩))` as an intermediate fact.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[this, zero_mul]`. Conclude with `mul_zero _`. Establish `h3 : k * ∑ i ∈ s.filter (fun i => good i ∧ a i = x), τ i j = 0`. Rewrite using `[← h2]`. Use `Eq.trans ?_ h1.symm` and prove the remaining obligations.
-
-Rewrite using `[Finset.mul_sum, Finset.sum_filter]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `hg : good i`. Distinguish the cases in `ha : a i = x`. Simplify using `only [hg, ha, and_self, if_true, hgood i hi hg ha, hj i hi]`.
-
-Simplify using `[ha]`. Simplify using `[hg, hbad i hi hg]`. Establish `h4 : {i | act i ∧ good i ∧ a i = x} = ↑(s.filter (fun i => good i ∧ a i = x))`. Use extensionality with `i`. Simplify using `only [Set.mem_setOf_eq, Finset.coe_filter]`.
-
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨(hs i).2 ⟨h3 ▸ hηx, h1⟩, h2, h3⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨(hsp i h1).1, h2⟩`.
-
-Use `show ∑ᶠ i ∈ {i | act i ∧ good i ∧ a i = x}, τ i j = 0`. Rewrite using `[h4, finsum_mem_coe_finset]`. Conclude with `(mul_eq_zero.1 h3).resolve_left hk`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.absX :
     ∀ (T : Type) (a : T → ℝ) (τ : T → ℕ → ℂ) (act good : T → Prop) (x : ℝ), 0 < x → x ≤ 1 → ∀ (p : ℕ), 0 < p → ∀ (d : ℕ → ℕ),

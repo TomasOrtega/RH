@@ -20,9 +20,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.DefiniteLevelMeasure
 
 /- English proof (translation)
-Introduce `D V K hV hK`. Establish `hd : ∀ ρ : D.what₂.Tau, (V.sig (tauE D ρ)).1 = 0 ∨ (V.sig (tauE D ρ)).2 = 0`. Introduce `ρ`. Apply the tactic sequence `rcases hV.2 (tauE D ρ) with h | h <;> rw [h] <;> simp`. Use `choose ν hν hg using fun ρ => GlobalTheory.Mem.DefiniteMeasure.exists_probHaar _ _ (hd ρ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨μ, hμ⟩` from `GlobalTheory.LevelMeasure.exists_isMeasLevW D V hV.1 K hK.1 hK.2 (fun _ m => m.IsHaarMeasure ∧ IsProbabilityMeasure m) ν hν (fun ρ => (hg ρ _).2 rfl) (fun ρ m h => (hg ρ m).1 h)`. Take `⟨𝓕, h𝓕⟩` from `GlobalTheory.FundDomDiscrete.exists_fundDom D V μ hμ.1`. Conclude with `⟨μ, 𝓕, hμ, h𝓕⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isMeasDef_openCompact : ∀ {D : D7} (V : HSp D) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D))), IsDefiniteSpace V → IsOpenCompactLevel V K →
   ∃ (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), Links.IsMeasDef V K μ 𝓕 := by

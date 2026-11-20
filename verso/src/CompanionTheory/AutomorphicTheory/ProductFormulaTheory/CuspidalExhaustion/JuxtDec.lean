@@ -18,7 +18,7 @@ def FineUniqP : Prop :=
     ∀ f : τ.IntertwiningMap (prodIrr (Zc.Seg.dec Δ) hd), Function.Injective f → IsLSeg Δ τ
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `rfl : x = y` from `funext fun i => by simpa using hxy i`. Conclude with `⟨hd, f, hf⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_emb_of_cast {h h' N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (τ : Representation ℂ (GL (Fin N) k) V) (e : h = h') (x : Fin h → IrrGL k) (y : Fin h' → IrrGL k)
@@ -30,14 +30,14 @@ theorem exists_emb_of_cast {h h' N : ℕ} {V : Type} [AddCommGroup V] [Module �
   exact ⟨hd, f, hf⟩
 
 /- English proof (translation)
-Conclude with `List.get_ofFn (fun a : Fin Γ.len => Γ.term (Fin.rev a)) i`.
+A detailed English derivation is pending.
 -/
 theorem decW_get_eq (Γ : Segment k) (e : (decW Γ).length = Γ.len) (i : Fin (decW Γ).length) :
     (decW Γ).get i = Zc.Seg.dec Γ (Fin.cast e i) := by
   exact List.get_ofFn (fun a : Fin Γ.len => Γ.term (Fin.rev a)) i
 
 /- English proof (translation)
-Introduce `Γ σ h`. Take `⟨hd, f, hf⟩` from `h`. Establish `e : (decW Γ).length = Γ.len` using `List.length_ofFn`. Take `⟨hd', g, hg⟩` from `exists_emb_of_cast σ.rep e (decW Γ).get (Zc.Seg.dec Γ) (decW_get_eq Γ e) hd f hf`. Conclude with `hF Γ hd' σ.rep σ.2.rep.smooth σ.2.rep.irr g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem decLP (hF : FineUniqP k) : DecLP k := by
   intro Γ σ h

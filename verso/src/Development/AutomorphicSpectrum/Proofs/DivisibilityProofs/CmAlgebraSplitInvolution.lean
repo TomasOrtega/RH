@@ -45,7 +45,7 @@ def splitAE : AE F E ≃ₐ[F] (Ainf F ⊗[F] E) × (Af F ⊗[F] E) :=
       (Algebra.TensorProduct.comm F E (Af F)))
 
 /- English proof (translation)
-Establish `h : (Algebra.TensorProduct.comm F (AF F) E) (a ⊗ₜ[F] e) = e ⊗ₜ[F] a` using `rfl`. Simplify using `only [splitAE, AlgEquiv.trans_apply, h, Algebra.TensorProduct.prodRight_tmul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem splitAE_tmul (a : AF F) (e : E) :
     splitAE F E (a ⊗ₜ[F] e) = (a.1 ⊗ₜ[F] e, a.2 ⊗ₜ[F] e) := by
@@ -54,9 +54,9 @@ theorem splitAE_tmul (a : AF F) (e : E) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Both sides reduce to the same expression. Consider the case `tmul a e`. Rewrite using `[TensorProduct.smul_tmul', splitAE_tmul, splitAE_tmul]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[TensorProduct.smul_tmul']`. Consider the case `add x y hx hy`. Rewrite using `[smul_add, map_add, hx, hy, map_add]`. Simplify using `[smul_add]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem splitAE_smul (u : AF F) (x : AE F E) :
     splitAE F E (u • x) = (u.1 • (splitAE F E x).1, u.2 • (splitAE F E x).2) := by
@@ -70,13 +70,13 @@ theorem splitAE_smul (u : AF F) (x : AE F E) :
     simp [smul_add]
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (IsArtinianRing ((v : InfinitePlace F) → v.Completion))`.
+A detailed English derivation is pending.
 -/
 theorem isArtinian_inf : IsArtinianRing (Ainf F) :=
   inferInstanceAs (IsArtinianRing ((v : InfinitePlace F) → v.Completion))
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by omega)`. Use `haveI : IsArtinianRing (Ainf F) := isArtinian_inf`. Conclude with `IsArtinianRing.of_finite (Ainf F) _`.
+A detailed English derivation is pending.
 -/
 theorem isArtinian_E₁ (h : Module.finrank F E = 2) : IsArtinianRing (Ainf F ⊗[F] E) := by
   haveI : Module.Finite F E := Module.finite_of_finrank_pos (by omega)
@@ -84,7 +84,7 @@ theorem isArtinian_E₁ (h : Module.finrank F E = 2) : IsArtinianRing (Ainf F �
   exact IsArtinianRing.of_finite (Ainf F) _
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_invol {σ : E →ₐ[F] E} (h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -92,11 +92,9 @@ theorem sigma_invol {σ : E →ₐ[F] E} (h : Formalism.MainNotions.GlobalTheory
   rw [h.2.2.2, h.2.2.2, star_star]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hr : ComplexEmbedding.IsReal τ`. Rewrite using `[ComplexEmbedding.isReal_iff]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Use `h.2.2.2 τ x` as an intermediate fact. Rewrite `this` using `[hc x]`. Conclude with `this.symm`. Establish `hR : (InfinitePlace.mk τ).IsReal` using `⟨τ, hr, rfl⟩`.
-
-Use `h.2.1.isComplex (InfinitePlace.mk τ)` as an intermediate fact. Conclude with `(InfinitePlace.not_isReal_iff_isComplex.mpr this) hR`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_moved {σ : E →ₐ[F] E} (h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) : ∃ x, σ x ≠ x := by
   by_contra hc
@@ -119,9 +117,9 @@ def c₂ (σ : E →ₐ[F] E) : Af F ⊗[F] E →ₐ[F] Af F ⊗[F] E :=
   Algebra.TensorProduct.map (AlgHom.id F (Af F)) σ
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Establish `h' : ∀ (a : Ainf F) (e : E), c₁ σ (a ⊗ₜ[F] e) = a ⊗ₜ[F] σ e` using `fun _ _ => rfl`. Rewrite using `[h', h', sigma_invol h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem c₁_invol {σ : E →ₐ[F] E} (h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt F E σ) (x : Ainf F ⊗[F] E) :
     c₁ σ (c₁ σ x) = x := by
@@ -133,13 +131,13 @@ theorem c₁_invol {σ : E →ₐ[F] E} (h : Formalism.MainNotions.GlobalTheoryT
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨u, hu1, hu2⟩ : ∃ u : AF F, u.1 = 0 ∧ u.2 = 1` from `⟨(0, 1), rfl, rfl⟩`. Establish `h0 : evI F u = 0` using `by show InfiniteAdeleRing.ringEquiv_mixedSpace F u.1 = 0`. Rewrite using `[hu1]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_zero _`. Establish `h2 : u • x = 0` using `hx _ h0`. Establish `h1` using `congrArg (splitAE F E) h2`. Rewrite `h1` using `[splitAE_smul, map_zero, hu2]`. Simplify using `using congrArg Prod.snd h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx u hu`. Establish `h0 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by`. Rewrite using `[map_zero]`. Conclude with `hu)`. Use `show u • x = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `(splitAE F E).injective` to reduce the goal to its premises. Rewrite using `[splitAE_smul, map_zero, h0, hx]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem at_iff (x : AE F E) : At (evI F) x ↔ (splitAE F E x).2 = 0 := by
   constructor

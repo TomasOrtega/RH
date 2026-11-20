@@ -11,7 +11,7 @@ open PI.Dv Formalism.BasicNotions
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G]
 
 /- English proof (translation)
-Take `⟨σ0, hσ0⟩` from `hS`. Apply `σ0.injective` to reduce the goal to its premises. Rewrite using `[hσ0, star_map_cf]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem star_cf (hS : StarIsConj K) (T : GoodSet K G) (g : G) : star (cf T g) = cf T g⁻¹ := by
   obtain ⟨σ0, hσ0⟩ := hS
@@ -19,37 +19,35 @@ theorem star_cf (hS : StarIsConj K) (T : GoodSet K G) (g : G) : star (cf T g) = 
   rw [hσ0, star_map_cf]
 
 /- English proof (translation)
-Introduce `σ`. Rewrite using `[star_cf hS, star_map_cf]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCM_cf (hS : StarIsConj K) (T : GoodSet K G) (g : G) : IsCM (cf T g) := by
   intro σ
   rw [star_cf hS, star_map_cf]
 
 /- English proof (translation)
-Introduce `σ`. Rewrite using `[star_add, map_add, map_add, star_add, ha σ, hb σ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCM_add {a b : K} (ha : IsCM a) (hb : IsCM b) : IsCM (a + b) := by
   intro σ
   rw [star_add, map_add, map_add, star_add, ha σ, hb σ]
 
 /- English proof (translation)
-Introduce `σ`. Rewrite using `[star_zero, map_zero, star_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCM_zero : IsCM (0 : K) := by
   intro σ
   rw [star_zero, map_zero, star_zero]
 
 /- English proof (translation)
-Introduce `σ`. Rewrite using `[star_mul', map_mul, map_mul, star_mul', ha σ, hb σ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCM_mul {a b : K} (ha : IsCM a) (hb : IsCM b) : IsCM (a * b) := by
   intro σ
   rw [star_mul', map_mul, map_mul, star_mul', ha σ, hb σ]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `isCM_zero`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`.
-
-Conclude with `isCM_add (hf a (Finset.mem_insert_self a s)) (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCM_sum {ι : Type} (s : Finset ι) (f : ι → K) (hf : ∀ i ∈ s, IsCM (f i)) :
     IsCM (∑ i ∈ s, f i) := by
@@ -62,13 +60,13 @@ theorem isCM_sum {ι : Type} (s : Finset ι) (f : ι → K) (hf : ∀ i ∈ s, I
       (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hH`. Use `⟨h1, h2, fun x y => ?_⟩` and prove the remaining obligations. Establish `hinv : ∀ g : G, h (ρ g x) y = h x (ρ g⁻¹ y)`. Introduce `g`. Use `h3 g x (ρ g⁻¹ y)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Then use the resulting hypothesis. Establish `hl : h ((ρ.asAlgebraHom (eG T)) x) y = ∑ g : G, star (cf T g) * h (ρ g x) y`. Rewrite using `[asAlgebraHom_eG, LinearMap.sum_apply, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : h x ((ρ.asAlgebraHom (eG T)) y) = ∑ g : G, cf T g * h x (ρ g y)`. Rewrite using `[asAlgebraHom_eG, LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, map_smul, smul_eq_mul]`. Rewrite using `[hl, hr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[star_cf hS, hinv]`. Use `_ = ∑ g : G, cf T g * h x (ρ g y) := Fintype.sum_equiv (Equiv.inv G) _ _ fun g => rfl`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHermE_of (T : GoodSet K G) (A : HLat K) (ρ : Representation K G A.V)
     (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) (hS : StarIsConj K) (hH : IsGHerm A ρ h) :
@@ -95,9 +93,9 @@ theorem isHermE_of (T : GoodSet K G) (A : HLat K) (ρ : Representation K G A.V)
         Fintype.sum_equiv (Equiv.inv G) _ _ fun g => rfl
 
 /- English proof (translation)
-Take `⟨c1, c2, c3⟩` from `hC`. Use `⟨c1, fun i j => ?_, c3⟩` and prove the remaining obligations. Establish `he : A.b.repr ((ρ.asAlgebraHom (eG T)) (A.b j)) i = ∑ g : G, cf T g * A.b.repr (ρ g (A.b j)) i`. Rewrite using `[asAlgebraHom_eG, LinearMap.sum_apply, map_sum, Finsupp.finsetSum_apply]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.smul_apply, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Rewrite using `[he]`. Conclude with `isCM_sum _ _ fun g _ => isCM_mul (isCM_cf hS T g) (c2 g i j)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCMFormE_of (T : GoodSet K G) (A : HLat K) (ρ : Representation K G A.V)
     (h : A.V →ₗ⋆[K] A.V →ₗ[K] K) (hS : StarIsConj K) (hC : IsCMForm A ρ h) :
@@ -113,7 +111,7 @@ theorem isCMFormE_of (T : GoodSet K G) (A : HLat K) (ρ : Representation K G A.V
   exact isCM_sum _ _ fun g _ => isCM_mul (isCM_cf hS T g) (c2 g i j)
 
 /- English proof (translation)
-Introduce `K _ _ _ _ G _ _ T A ρ h hS hH`. Conclude with `⟨isHermE_of T A ρ h hS hH, fun hC => isCMFormE_of T A ρ h hS hC⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem glatHerm : PI.Dv.GLatHerm := by
   intro K _ _ _ _ G _ _ T A ρ h hS hH

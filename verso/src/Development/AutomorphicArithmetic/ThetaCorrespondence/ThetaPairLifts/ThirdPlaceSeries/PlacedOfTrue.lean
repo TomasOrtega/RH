@@ -30,21 +30,17 @@ section Prim
 open GlobalTheory.FinPl
 end Prim
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha hT' row col hc`. Use `⟨a.k, a.fld, a.val, a.top, a.loc, a.ι, a.v, a.o, a.n, a.G, a.pl, hc, ha.vis, (ha.tie row col).1, ha.shape, ha.gpin, (ha.tie row col).2, ?_, ?_⟩` and prove the remaining obligations. Use `swap`. Introduce `p hp b hb`. Establish `hx` using `(hT'.pinX.xs B.R.m le_rfl).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTp : (((B.T u : ℕ) : ℤ) : 𝓞 (I.rec7 l Z).host.F) ∉ p.asIdeal`. Introduce `h`. Apply `hp` to reduce the goal to its premises. Rewrite using `[(ha.tie row col).1.tP p]`. Conclude with `h` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpos : 0 < B.R.N B.R.m` using `B.R.N_pos _`. Use `prim_std _ _ hx p _ (fun i => ?_) (Fin.cast (Formalism.L2.Forms.rankN (I.rec7 l Z) _ le_rfl).symm ⟨B.R.N B.R.m - 1, Nat.sub_lt hpos one_pos⟩) (B.host.conj (X.piT u : B.host.E)) (map_isIntegral_int (B.host.conj : B.host.E →+* B.host.E) (X.piT u).2) ((B.T u : ℕ) : ℤ) ?_ hTp b hb` and prove the remaining obligations. Use `(hT'.z0 i).symm ▸ ?_ show IsIntegral ℤ (TC.z0 X u _)` and prove the remaining obligations. Unfold `TC.z0`. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(X.piT u).2`. Conclude with `isIntegral_zero`. Establish `h0 : TC.z0 X u ⟨B.R.N B.R.m - 1, Nat.sub_lt hpos one_pos⟩ = (X.piT u : B.host.E)` using `if_pos (Nat.sub_add_cancel hpos)`. Establish `h1` using `(hT'.z0 (Fin.cast (Formalism.L2.Forms.rankN (I.rec7 l Z) _ le_rfl).symm ⟨B.R.N B.R.m - 1, Nat.sub_lt hpos one_pos⟩)).trans h0`. Establish `h2 : (X.piT u : B.host.E) * B.host.conj (X.piT u : B.host.E) = (((B.T u : ℕ) : ℤ) : B.host.E)`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Rewrite using `[Int.cast_natCast]`. Conclude with `X.piT_norm u`. Conclude with `(congrArg (fun t : B.host.E => t * B.host.conj (X.piT u : B.host.E)) h1).trans h2`. Use `letI : Field a.k := a.fld`. Use `letI : ValuativeRel a.k := a.val`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Use `letI : TopologicalSpace a.k := a.top`. Use `letI : IsNonarchimedeanLocalField a.k := a.loc`. Prove the components needed by the constructor for the conclusion. Conclude with `ha.bot.1`. Conclude with `ha.bot.2.2.1`.
-
-Use `⟨1, -(I.rec7 l Z).host.xi0 ^ ((I.rec7 l Z).R.m / 2), by simp, ?_, ?_⟩` and prove the remaining obligations. Introduce `r`. Rewrite using `[one_mul]`. Conclude with `ha.bot.2.2.2 r`. Conclude with `ha.norm.2`.
-
-Conclude with `fun i => (ha.stdG i).2.2`. Conclude with `_root_.GlobalTheory.Fam.lattice_eq_base_off_twist_alt W hA u a ha hT' row col hc`. Introduce `κ hκ y e`. Conclude with `⟨_root_.GlobalTheory.T.true_geometry_local_data_alt W hA u a ha hT' row col hc κ hκ y e, _root_.GlobalTheory.T.true_geometry_reduction_level_alt W hA u a ha hT' row col hc κ hκ y e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem placedP_of_allTrue : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex), _root_.GlobalTheory.Fam.AllFamilyConditions W → ∀ (u : B.Word) (a : _root_.GlobalTheory.Fam.GeometricFamily W u), a.Is → a.True → ∀ row col, (a.fam row col).c.Is → _root_.GlobalTheory.MiTop.PlacedConditions (a.fam row col) a.d.B := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha hT' row col hc

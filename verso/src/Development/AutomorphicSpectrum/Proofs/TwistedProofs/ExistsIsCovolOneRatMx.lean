@@ -10,7 +10,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.RatMxCovol
 
 /- English proof (translation)
-Introduce `D m n`. Take `⟨i1, i2, i3, i4, i5, K, hK, hc⟩` from `GlobalTheory.TowerRestrict.lattice_Mx D m n`. Establish `: BorelSpace (Mx D m n)` using `⟨rfl⟩`. Conclude with `GlobalTheory.CuspGeneric.exists_fundamentalDomain_mass_one (Mx D m n) (ratMx D m n) ⟨i5, K, hK, hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isCovolOne_ratMx : ∀ (D : D7) (m n : ℕ), ∃ (μ : Measure (Mx D m n)) (𝓕 : Set (Mx D m n)),
     IsCovolOne (ratMx D m n) μ 𝓕 := by

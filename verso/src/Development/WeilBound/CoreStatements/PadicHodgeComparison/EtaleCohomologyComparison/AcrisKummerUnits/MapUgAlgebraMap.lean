@@ -31,7 +31,7 @@ variable (l) in
 abbrev theta0 : Ainf l →+* OC l := WittVector.fontaineTheta (OC l) l
 
 /- English proof (translation)
-The claim follows from `IsPerfectoidField.ker_fontaineTheta_eq_span_p_sub_teichmuller untilt_pFlat`.
+A detailed English derivation is pending.
 -/
 theorem ker_theta0 : RingHom.ker (theta0 l) = Ideal.span {xi0 l} :=
   IsPerfectoidField.ker_fontaineTheta_eq_span_p_sub_teichmuller untilt_pFlat
@@ -49,39 +49,39 @@ def awayW (f : R →+* S) : WL l R →+* WL l S :=
     exact IsLocalization.Away.algebraMap_isUnit (l : WittVector l S))
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ x`.
+A detailed English derivation is pending.
 -/
 theorem awayW_algebraMap (f : R →+* S) (x : WittVector l R) :
     awayW f (algebraMap _ (WL l R) x) = algebraMap _ (WL l S) (WittVector.map f x) := IsLocalization.lift_eq _ x
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers (l : WittVector l R)) (RingHom.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem awayW_ext {B : Type} [CommRing B] {F G : WL l R →+* B}
     (h : ∀ x : WittVector l R, F (algebraMap _ (WL l R) x) = G (algebraMap _ (WL l R) x)) : F = G :=
   IsLocalization.ringHom_ext (Submonoid.powers (l : WittVector l R)) (RingHom.ext h)
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [WittVector.map_coeff, RingHom.comp_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem wmap_comp (f : R →+* S) (g : S →+* T) (x : WittVector l R) :
     WittVector.map (g.comp f) x = WittVector.map g (WittVector.map f x) := by
   ext i; simp only [WittVector.map_coeff, RingHom.comp_apply]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [WittVector.map_coeff, RingHom.id_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem wmap_id (x : WittVector l R) : WittVector.map (RingHom.id R) x = x := by
   ext i; simp only [WittVector.map_coeff, RingHom.id_apply]
 
 /- English proof (translation)
-The claim follows from `awayW_ext fun x => by rw [RingHom.comp_apply, awayW_algebraMap, awayW_algebraMap, awayW_algebraMap, wmap_comp]`.
+A detailed English derivation is pending.
 -/
 theorem awayW_comp (f : R →+* S) (g : S →+* T) : awayW (l := l) (g.comp f) = (awayW g).comp (awayW f) :=
   awayW_ext fun x => by rw [RingHom.comp_apply, awayW_algebraMap, awayW_algebraMap, awayW_algebraMap, wmap_comp]
 
 /- English proof (translation)
-The claim follows from `awayW_ext fun x => by rw [awayW_algebraMap, wmap_id]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem awayW_id : awayW (l := l) (RingHom.id R) = RingHom.id _ :=
   awayW_ext fun x => by rw [awayW_algebraMap, wmap_id]; rfl
@@ -90,7 +90,7 @@ def dpw (k : ℕ) (x : WittVector l R) : WL l R :=
   Ring.inverse (k.factorial : WL l R) * algebraMap _ (WL l R) x ^ k
 
 /- English proof (translation)
-Rewrite using `[dpw, dpw, map_mul, map_pow, awayW_algebraMap]`. Use `congr 1`. Establish `h' : IsUnit (k.factorial : WL l S)` using `by simpa using h.map (awayW f)`. Apply `h'.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[Ring.mul_inverse_cancel _ h', ← map_natCast (awayW f), ← map_mul, Ring.mul_inverse_cancel _ h, map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem awayW_dpw (f : R →+* S) (k : ℕ) (h : IsUnit (k.factorial : WL l R)) (x : WittVector l R) :
     awayW f (dpw k x) = dpw k (WittVector.map f x) := by
@@ -110,13 +110,13 @@ instance : Algebra (Ob l) A.A := A.s.toAlgebra
 instance : Algebra (Ainf l) A.W := A.sW.toAlgebra
 
 /- English proof (translation)
-Rewrite using `[← map_natCast A.s, CharP.cast_eq_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_l : (l : A.A) = 0 := by
   rw [← map_natCast A.s, CharP.cast_eq_zero, map_zero]
 
 /- English proof (translation)
-Simplify using `using (ACris.isUnit_natCast (K := ℂ_[l]) (p := l) hm).map (awayW A.s)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_natCast {m : ℕ} (hm : m ≠ 0) : IsUnit (m : WL l A.A) := by
   simpa using (ACris.isUnit_natCast (K := ℂ_[l]) (p := l) hm).map (awayW A.s)
@@ -138,13 +138,13 @@ def oC : OC l →+* A.U :=
     exact Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)⟩
 
 /- English proof (translation)
-The claim follows from `RingHom.liftOfSurjective_comp_apply _ _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem oC_theta0 (x : Ainf l) : A.oC (theta0 l x) = A.th (A.sW x) :=
   RingHom.liftOfSurjective_comp_apply _ _ _ x
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨k, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem dpw_xi_mem (k : ℕ) : dpw k A.xi ∈ A.Acr0 := Algebra.subset_adjoin ⟨k, rfl⟩
 
@@ -161,14 +161,14 @@ def Fil (n r : ℕ) : Ideal (A.Acr n) := Ideal.span {z | ∃ k, r ≤ k ∧ z = 
 def PFil (n : ℕ) : Ideal (A.Acr n) := Ideal.span {(l : A.Acr n)} ⊔ A.Fil n 1
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (A.mkAcr n), ← map_pow]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_l_acr (n : ℕ) : (l : A.Acr n) ^ n = 0 := by
   rw [← map_natCast (A.mkAcr n), ← map_pow]
   exact Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-The claim follows from `congrArg (A.mkAcr n) (Subtype.ext (by simp [dxi0, dpw]))`.
+A detailed English derivation is pending.
 -/
 theorem toAcr_xi (n : ℕ) : A.toAcr n A.xi = A.dxi n 1 :=
   congrArg (A.mkAcr n) (Subtype.ext (by simp [dxi0, dpw]))
@@ -195,11 +195,9 @@ Both sides reduce to the same expression.
 theorem red_mk {m n : ℕ} (h : n ≤ m) (x : A.Acr0) : A.red h (A.mkAcr m x) = A.mkAcr n x := rfl
 
 /- English proof (translation)
-Rewrite `hy` using `[ACris.acrisZero_eq_adjoin ker_theta0]`. Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨k, rfl⟩` from `hy`. Use `awayW_dpw A.s k (ACris.isUnit_natCast (K := ℂ_[l]) (p := l) k.factorial_ne_zero) (xi0 l)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `this ▸ A.dpw_xi_mem k`. Consider the case `algebraMap x => rw [awayW_algebraMap]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
-
-Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem awayW_s_mem {y : WL l (Ob l)} (hy : y ∈ ACris.ACrisZero ℂ_[l] l) : awayW A.s y ∈ A.Acr0 := by
   rw [ACris.acrisZero_eq_adjoin ker_theta0] at hy
@@ -229,14 +227,14 @@ def cris (n : ℕ) : Acris l →+* A.Acr n :=
     (AdicCompletion.evalₐ (Ideal.span {(l : Acris0 l)}) n).toRingHom
 
 /- English proof (translation)
-Simplify using `only [cris, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AdicCompletion.evalₐ_of, Ideal.Quotient.lift_mk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cris_of (n : ℕ) (y : Acris0 l) : A.cris n (AdicCompletion.of _ _ y) = A.mkAcr n (A.cris0 y) := by
   simp only [cris, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AdicCompletion.evalₐ_of,
     Ideal.Quotient.lift_mk]
 
 /- English proof (translation)
-Rewrite using `[AdicCompletion.algebraMap_apply, cris_of]`. Conclude with `congrArg (A.mkAcr n) (Subtype.ext (awayW_algebraMap A.s x))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cris_algebraMap (n : ℕ) (x : Ainf l) : A.cris n (algebraMap (Ainf l) (Acris l) x) = A.toAcr n (A.sW x) := by
   rw [AdicCompletion.algebraMap_apply, cris_of]
@@ -267,11 +265,9 @@ variable {A B C}
 def PdOk (f : A.A →+* B.A) : Prop := ∀ k, dpw k (WittVector.map f A.xi) ∈ B.Acr0
 
 /- English proof (translation)
-Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨k, rfl⟩` from `hy`. Use `awayW_dpw f k (A.isUnit_natCast k.factorial_ne_zero) A.xi` as an intermediate fact. Conclude with `this ▸ h k`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `algebraMap x => rw [awayW_algebraMap]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`.
-
-Conclude with `mul_mem hx hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem PdOk.mem {f : A.A →+* B.A} (h : PdOk f) {y : WL l A.A} (hy : y ∈ A.Acr0) : awayW f y ∈ B.Acr0 := by
   induction hy using Algebra.adjoin_induction with
@@ -298,14 +294,14 @@ theorem PdOk.acr_mk {f : A.A →+* B.A} (h : PdOk f) (n : ℕ) (y : A.Acr0) :
     h.acr n (A.mkAcr n y) = B.mkAcr n (h.acr0 y) := rfl
 
 /- English proof (translation)
-The claim follows from `congrArg (B.mkAcr n) (Subtype.ext (awayW_algebraMap f x))`.
+A detailed English derivation is pending.
 -/
 theorem PdOk.acr_toAcr {f : A.A →+* B.A} (h : PdOk f) (n : ℕ) (x : A.W) :
     h.acr n (A.toAcr n x) = B.toAcr n (WittVector.map f x) :=
   congrArg (B.mkAcr n) (Subtype.ext (awayW_algebraMap f x))
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `congrArg (C.mkAcr n) (Subtype.ext (RingHom.congr_fun (awayW_comp f g) y.1))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem PdOk.acr_comp {f : A.A →+* B.A} {g : B.A →+* C.A} (h : PdOk f) (h' : PdOk g) (h'' : PdOk (g.comp f)) (n : ℕ)
     (x : A.Acr n) : h''.acr n x = h'.acr n (h.acr n x) := by
@@ -313,14 +309,14 @@ theorem PdOk.acr_comp {f : A.A →+* B.A} {g : B.A →+* C.A} (h : PdOk f) (h' :
   exact congrArg (C.mkAcr n) (Subtype.ext (RingHom.congr_fun (awayW_comp f g) y.1))
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `congrArg (A.mkAcr n) (Subtype.ext (RingHom.congr_fun awayW_id y.1))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem PdOk.acr_id (h : PdOk (RingHom.id A.A)) (n : ℕ) (x : A.Acr n) : h.acr n x = x := by
   obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
   exact congrArg (A.mkAcr n) (Subtype.ext (RingHom.congr_fun awayW_id y.1))
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem PdOk.red_acr {f : A.A →+* B.A} (h : PdOk f) {m n : ℕ} (e : n ≤ m) (x : A.Acr m) :
     B.red e (h.acr m x) = h.acr n (A.red e x) := by
@@ -328,7 +324,7 @@ theorem PdOk.red_acr {f : A.A →+* B.A} (h : PdOk f) {m n : ℕ} (e : n ≤ m) 
   rfl
 
 /- English proof (translation)
-Introduce `k` and use `by have e : WittVector.map f A.xi = WittVector.map B.s (WittVector.map τ (xi0 l)) := by rw [← wmap_comp, ← hf, wmap_comp]; rfl rw [e, ← awayW_dpw B.s k (ACris.isUnit_natCast (K := ℂ_[l]) (p := l) k.factorial_ne_zero)] exact B.awayW_s_mem (hτ k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pdOk_of_over {f : A.A →+* B.A} {τ : Ob l →+* Ob l} (hf : f.comp A.s = B.s.comp τ)
     (hτ : ∀ k, ACris.dpow k (WittVector.map τ (xi0 l)) ∈ ACris.ACrisZero ℂ_[l] l) : PdOk f := fun k => by
@@ -338,7 +334,7 @@ theorem pdOk_of_over {f : A.A →+* B.A} {τ : Ob l →+* Ob l} (hf : f.comp A.s
   exact B.awayW_s_mem (hτ k)
 
 /- English proof (translation)
-Use `RingHom.congr_fun (ACris.ringHom_ext (F := (h.acr n).comp (A.cris n)) (G := (B.cris n).comp (ACris.extendEndo g)) fun y => ?_) a` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, ACris.extendEndo_of, cris_of, cris_of, acr_mk]`. Use `congrArg (B.mkAcr n) (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `awayW f (awayW A.s y.1) = awayW B.s (g y).1`. Rewrite using `[hg, ← RingHom.comp_apply, ← awayW_comp, hf, awayW_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -353,13 +349,13 @@ theorem PdOk.acr_cris {f : A.A →+* B.A} (h : PdOk f) {τ : Ob l →+* Ob l} (h
   rw [hg, ← RingHom.comp_apply, ← awayW_comp, hf, awayW_comp]; rfl
 
 /- English proof (translation)
-Rewrite using `[ker_theta0]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xi0_mem : xi0 l ∈ RingHom.ker (theta0 l) := by
   rw [ker_theta0]; exact Ideal.mem_span_singleton_self _
 
 /- English proof (translation)
-Introduce `k` and use `by have := mapW_xi f rw [mapW] at this rw [this]; exact B.dpw_xi_mem k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pdOk_hom (f : A ⟶ B) : PdOk (Hom.f f) := fun k => by
   have := mapW_xi f
@@ -369,31 +365,31 @@ theorem pdOk_hom (f : A ⟶ B) : PdOk (Hom.f f) := fun k => by
 def mapAcr (f : A ⟶ B) (n : ℕ) : A.Acr n →+* B.Acr n := (pdOk_hom f).acr n
 
 /- English proof (translation)
-Use `(pdOk_hom f).acr_cris (τ := RingHom.id _) (Hom.comm f) (RingHom.id _) (fun y => by rw [awayW_id]; rfl) n a` as an intermediate fact. Rewrite `this` using `[ACris.extendEndo_id]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mapAcr_cris (f : A ⟶ B) (n : ℕ) (a : Acris l) : mapAcr f n (A.cris n a) = B.cris n a := by
   have := (pdOk_hom f).acr_cris (τ := RingHom.id _) (Hom.comm f) (RingHom.id _) (fun y => by rw [awayW_id]; rfl) n a
   rwa [ACris.extendEndo_id] at this
 
 /- English proof (translation)
-The claim follows from `(pdOk_hom f).acr_toAcr n x`.
+A detailed English derivation is pending.
 -/
 theorem mapAcr_toAcr (f : A ⟶ B) (n : ℕ) (x : A.W) : mapAcr f n (A.toAcr n x) = B.toAcr n (mapW f x) :=
   (pdOk_hom f).acr_toAcr n x
 
 /- English proof (translation)
-The claim follows from `PdOk.acr_id _ n x`.
+A detailed English derivation is pending.
 -/
 theorem mapAcr_id (n : ℕ) (x : A.Acr n) : mapAcr (𝟙 A) n x = x := PdOk.acr_id _ n x
 
 /- English proof (translation)
-The claim follows from `PdOk.acr_comp _ _ _ n x`.
+A detailed English derivation is pending.
 -/
 theorem mapAcr_comp (f : A ⟶ B) (g : B ⟶ C) (n : ℕ) (x : A.Acr n) : mapAcr (f ≫ g) n x = mapAcr g n (mapAcr f n x) :=
   PdOk.acr_comp _ _ _ n x
 
 /- English proof (translation)
-Use `congrArg (B.mkAcr n) (Subtype.ext ?_)` and prove the remaining obligations. Use `awayW_dpw (Hom.f f) k (A.isUnit_natCast k.factorial_ne_zero) A.xi` as an intermediate fact. Conclude with `this.trans (congrArg (dpw k) (mapW_xi f))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mapAcr_dxi (f : A ⟶ B) (n k : ℕ) : mapAcr f n (A.dxi n k) = B.dxi n k := by
   refine congrArg (B.mkAcr n) (Subtype.ext ?_)
@@ -401,7 +397,7 @@ theorem mapAcr_dxi (f : A ⟶ B) (n k : ℕ) : mapAcr f n (A.dxi n k) = B.dxi n 
   exact this.trans (congrArg (dpw k) (mapW_xi f))
 
 /- English proof (translation)
-Rewrite using `[Fil, Ideal.span_le]`. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Conclude with `Ideal.subset_span ⟨k, hk, mapAcr_dxi f n k⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mapAcr_fil (f : A ⟶ B) (n r : ℕ) : A.Fil n r ≤ (B.Fil n r).comap (mapAcr f n) := by
   rw [Fil, Ideal.span_le]
@@ -416,25 +412,25 @@ Both sides reduce to the same expression.
 theorem mapU_th (f : A ⟶ B) (x : A.W) : mapU f (A.th x) = B.th (mapW f x) := rfl
 
 /- English proof (translation)
-Rewrite using `[mapW, sW, sW, ← wmap_comp, Hom.comm f]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mapW_sW (f : A ⟶ B) (x : Ainf l) : mapW f (A.sW x) = B.sW x := by
   rw [mapW, sW, sW, ← wmap_comp, Hom.comm f]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `IsPerfectoidField.surjective_fontaineTheta (K := ℂ_[l]) l x`. Rewrite using `[oC_theta0, oC_theta0, mapU_th, mapW_sW]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mapU_oC (f : A ⟶ B) (x : OC l) : mapU f (A.oC x) = B.oC x := by
   obtain ⟨y, rfl⟩ := IsPerfectoidField.surjective_fontaineTheta (K := ℂ_[l]) l x
   rw [oC_theta0, oC_theta0, mapU_th, mapW_sW]
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.ringHom_ext (RingHom.ext fun x => congrArg A.th (wmap_id x))`.
+A detailed English derivation is pending.
 -/
 theorem mapU_id : mapU (𝟙 A) = RingHom.id _ := Ideal.Quotient.ringHom_ext (RingHom.ext fun x => congrArg A.th (wmap_id x))
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.ringHom_ext (RingHom.ext fun x => congrArg C.th (wmap_comp (Hom.f f) (Hom.f g) x))`.
+A detailed English derivation is pending.
 -/
 theorem mapU_comp (f : A ⟶ B) (g : B ⟶ C) : mapU (f ≫ g) = (mapU g).comp (mapU f) :=
   Ideal.Quotient.ringHom_ext (RingHom.ext fun x => congrArg C.th (wmap_comp (Hom.f f) (Hom.f g) x))
@@ -445,7 +441,7 @@ def mapUg (f : A ⟶ B) : A.Ug →+* B.Ug :=
     exact IsLocalization.Away.algebraMap_isUnit (l : B.U))
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ x`.
+A detailed English derivation is pending.
 -/
 theorem mapUg_algebraMap (f : A ⟶ B) (x : A.U) : mapUg f (algebraMap _ _ x) = algebraMap _ _ (mapU f x) :=
   IsLocalization.lift_eq _ x
@@ -469,18 +465,18 @@ section Phi
 variable (A)
 
 /- English proof (translation)
-Use extensionality with `i`. Rewrite using `[WittVector.frobeniusEquiv_coeff, WittVector.map_coeff, frobenius_def]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem wmap_frobenius (x : Ainf l) : WittVector.map (frobenius (Ob l) l) x = WittVector.frobeniusEquiv l (Ob l) x := by
   ext i; rw [WittVector.frobeniusEquiv_coeff, WittVector.map_coeff, frobenius_def]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => (map_pow A.s x l).symm`.
+A detailed English derivation is pending.
 -/
 theorem frob_comp_s : A.frob.comp A.s = A.s.comp (frobenius (Ob l) l) := RingHom.ext fun x => (map_pow A.s x l).symm
 
 /- English proof (translation)
-The claim follows from `pdOk_of_over A.frob_comp_s fun k => by rw [wmap_frobenius]; exact ACris.dpow_frobenius_mem xi0_mem k`.
+A detailed English derivation is pending.
 -/
 theorem pdOk_frob : PdOk A.frob :=
   pdOk_of_over A.frob_comp_s fun k => by rw [wmap_frobenius]; exact ACris.dpow_frobenius_mem xi0_mem k
@@ -490,23 +486,23 @@ def phiW : A.W →+* A.W := WittVector.map A.frob
 def phi (n : ℕ) : A.Acr n →+* A.Acr n := A.pdOk_frob.acr n
 
 /- English proof (translation)
-The claim follows from `A.pdOk_frob.acr_cris A.frob_comp_s (ACris.phiZero ℂ_[l] l) (fun y => RingHom.congr_fun (f := ACris.phiAway ℂ_[l] l) (awayW_ext fun x => by rw [ACris.phiAway_algebraMap, awayW_algebraMap, wmap_frobenius]) y.1) n a`.
+A detailed English derivation is pending.
 -/
 theorem phi_cris (n : ℕ) (a : Acris l) : A.phi n (A.cris n a) = A.cris n (ACris.phi ℂ_[l] l a) :=
   A.pdOk_frob.acr_cris A.frob_comp_s (ACris.phiZero ℂ_[l] l) (fun y => RingHom.congr_fun (f := ACris.phiAway ℂ_[l] l)
     (awayW_ext fun x => by rw [ACris.phiAway_algebraMap, awayW_algebraMap, wmap_frobenius]) y.1) n a
 
 /- English proof (translation)
-The claim follows from `A.pdOk_frob.acr_toAcr n x`.
+A detailed English derivation is pending.
 -/
 theorem phi_toAcr (n : ℕ) (x : A.W) : A.phi n (A.toAcr n x) = A.toAcr n (A.phiW x) := A.pdOk_frob.acr_toAcr n x
 
 variable {A}
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Use `congrArg (B.mkAcr n) (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `awayW (Hom.f f) (awayW A.frob y.1) = awayW B.frob (awayW (Hom.f f) y.1)`. Rewrite using `[← RingHom.comp_apply, ← awayW_comp, ← RingHom.comp_apply, ← awayW_comp]`. Use `congr 2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `RingHom.ext fun x => map_pow (Hom.f f) x l`.
+A detailed English derivation is pending.
 -/
 theorem mapAcr_phi (f : A ⟶ B) (n : ℕ) (x : A.Acr n) : mapAcr f n (A.phi n x) = B.phi n (mapAcr f n x) := by
   obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x

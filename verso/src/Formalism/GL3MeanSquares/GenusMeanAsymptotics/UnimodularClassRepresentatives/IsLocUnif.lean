@@ -22,37 +22,37 @@ def Ent (S : Subring K) {m n : Type*} (M : Matrix m n K) : Prop := ∀ i j, M i 
 variable {S : Subring K} {m n o : Type*}
 
 /- English proof (translation)
-Conclude with `fun i j => S.add_mem (hM i j) (hN i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Ent.add {M N : Matrix m n K} (hM : Ent S M) (hN : Ent S N) : Ent S (M + N) := by
   exact fun i j => S.add_mem (hM i j) (hN i j)
 
 /- English proof (translation)
-Conclude with `fun i j => S.sub_mem (hM i j) (hN i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Ent.sub {M N : Matrix m n K} (hM : Ent S M) (hN : Ent S N) : Ent S (M - N) := by
   exact fun i j => S.sub_mem (hM i j) (hN i j)
 
 /- English proof (translation)
-Conclude with `fun i j => S.neg_mem (hM i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Ent.neg {M : Matrix m n K} (hM : Ent S M) : Ent S (-M) := by
   exact fun i j => S.neg_mem (hM i j)
 
 /- English proof (translation)
-Conclude with `fun _ _ => S.zero_mem`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Ent.zero : Ent S (0 : Matrix m n K) := by
   exact fun _ _ => S.zero_mem
 
 /- English proof (translation)
-Conclude with `fun i j => S.mul_mem ha (hM i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Ent.smul {a : K} (ha : a ∈ S) {M : Matrix m n K} (hM : Ent S M) : Ent S (a • M) := by
   exact fun i j => S.mul_mem ha (hM i j)
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun k _ => S.mul_mem (hM i k) (hN k j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ent.mul [Fintype n] {M : Matrix m n K} {N : Matrix n o K} (hM : Ent S M) (hN : Ent S N) :
     Ent S (M * N) := by
@@ -61,7 +61,7 @@ theorem Ent.mul [Fintype n] {M : Matrix m n K} {N : Matrix n o K} (hM : Ent S M)
   exact Subring.sum_mem _ fun k _ => S.mul_mem (hM i k) (hN k j)
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `S.one_mem`. Conclude with `S.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ent.one [DecidableEq n] : Ent S (1 : Matrix n n K) := by
   intro i j
@@ -71,13 +71,13 @@ theorem Ent.one [DecidableEq n] : Ent S (1 : Matrix n n K) := by
   · exact S.zero_mem
 
 /- English proof (translation)
-Conclude with `fun i j => hS _ (hM j i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Ent.conjTranspose (hS : ∀ a ∈ S, star a ∈ S) {M : Matrix m n K} (hM : Ent S M) : Ent S Mᴴ := by
   exact fun i j => hS _ (hM j i)
 
 /- English proof (translation)
-Use `⟨fun i j => ⟨M i j, hM i j⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem Ent.exists_map {M : Matrix m n K} (hM : Ent S M) :
     ∃ M₀ : Matrix m n S, M₀.map S.subtype = M := by
@@ -86,7 +86,7 @@ theorem Ent.exists_map {M : Matrix m n K} (hM : Ent S M) :
   rfl
 
 /- English proof (translation)
-Take `⟨M₀, rfl⟩` from `hM.exists_map`. Establish `h` using `RingHom.map_det S.subtype M₀`. Rewrite `h` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← h]`. Conclude with `(M₀.det).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ent.det [Fintype n] [DecidableEq n] {M : Matrix n n K} (hM : Ent S M) : M.det ∈ S := by
   obtain ⟨M₀, rfl⟩ := hM.exists_map
@@ -96,9 +96,9 @@ theorem Ent.det [Fintype n] [DecidableEq n] {M : Matrix n n K} (hM : Ent S M) : 
   exact (M₀.det).2
 
 /- English proof (translation)
-Take `⟨M₀, rfl⟩` from `hM.exists_map`. Establish `h` using `RingHom.map_adjugate S.subtype M₀`. Rewrite `h` using `[RingHom.mapMatrix_apply, RingHom.mapMatrix_apply]`. Rewrite using `[← h]`. Introduce `i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(M₀.adjugate i j).2`.
+A detailed English derivation is pending.
 -/
 theorem Ent.adjugate [Fintype n] [DecidableEq n] {M : Matrix n n K} (hM : Ent S M) :
     Ent S M.adjugate := by
@@ -110,7 +110,7 @@ theorem Ent.adjugate [Fintype n] [DecidableEq n] {M : Matrix n n K} (hM : Ent S 
   exact (M₀.adjugate i j).2
 
 /- English proof (translation)
-Conclude with `S.pow_mem hS.mem k`.
+A detailed English derivation is pending.
 -/
 theorem pow_mem {ϖ : K} (hS : IsLocUnif S ϖ) (k : ℕ) : ϖ ^ k ∈ S := by
   exact S.pow_mem hS.mem k

@@ -6,7 +6,7 @@ from pathlib import Path
 import re
 from urllib.parse import urlencode
 
-from proofs import COMMAND, DECLARATION_NAME, IMPORT, PLACEHOLDER, code, compact, extract_claims, mask_non_code
+from proofs import COMMAND, DECLARATION_NAME, IMPORT, PLACEHOLDER, compact, extract_claims, mask_non_code
 
 
 IDENTIFIER = r"[^\W\d][\w'’]*"
@@ -200,6 +200,6 @@ def citations(root, source, masked, claims):
             continue
         query = urlencode({"module": module.as_posix(), "line": line})
         yield claim.start, (
-            f"Apply {code(name)} to the given parameters and hypotheses. {reason}"
+            f"Apply the cited theorem to the given parameters and hypotheses. {reason}"
             f"\n\n[Source theorem](?{query}#L{line})"
         )

@@ -31,13 +31,13 @@ def gramMatrixInFamily (hA : HermMetric y W Xo χ) (z : (Σ k, ι k) → ℂ) (b
   else 0
 
 /- English proof (translation)
-Establish `hzP` using `hXo hz`. Establish `hex : ∃ l, InFrameDomain y (hA.chart l) (hA.fr l) z` using `⟨l, hd⟩`. Establish `hd0 : InFrameDomain y (hA.chart hex.choose) (hA.fr hex.choose) z` using `hex.choose_spec`. Take `⟨T, hT, hTe⟩` from `HermMetricEq.exists_coeff (hA.isFrame hex.choose) hzP hd0 (HermMetricEq.isFrameAt_of_isFrameOver (hA.isFrame l) hzP hd).1`. Establish `hbT : ∀ q, b q = ∑ p, (T * S) p q • hA.b hex.choose p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `q`. Rewrite using `[hb q]`. Simplify using `only [hTe, Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun r _ => Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm]`. Establish `hS' : ∃ S' : Matrix (Fin N) (Fin N) Ω, ∀ q, b q = ∑ p, S' p q • hA.b hex.choose p` using `⟨T * S, hbT⟩`. Establish `hchoose : hS'.choose = T * S` using `HermMetricEq.coeff_unique (hA.isFrame hex.choose).2.2.2.1 fun q => (hS'.choose_spec q).symm.trans (hbT q)`. Establish `hTS : HermMetricEq.valM y (T * S) z = HermMetricEq.valM y T z * HermMetricEq.valM y S z` using `HermMetricEq.valM_eq hzP (HermMetricEq.isValueAt_mul (fun p q => (hT p q).isValueAt hzP) (fun p q => (hS p q).isValueAt hzP))`. Establish `hcompat` using `hA.compat hex.choose l z hz hd0 hd T hTe (HermMetricEq.valM y T z) (fun p q => HermMetricEq.isValueAt_iff.2 ((hT p q).isValueAt hzP))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[gramMatrixInFamily, dif_pos hex, dif_pos hS', hchoose, hTS, hcompat]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gramMatrix_change_of_frame (hA : HermMetric y W Xo χ) (hXo : Xo ⊆ mcPts (mCoordIdeal y))
     {z : (Σ k, ι k) → ℂ} (hz : z ∈ Xo) {l : Fin hA.m} (hd : InFrameDomain y (hA.chart l) (hA.fr l) z)
@@ -75,9 +75,9 @@ def SmoothAlongHolo (hA : HermMetric y W Xo χ) : Prop :=
         ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun w' => hA.gram l (γ w') p q) w
 
 /- English proof (translation)
-Take `⟨v, d, g, h, hg, hh, hy, hyg, hz, hzg⟩` from `ha`. Establish `hcoord : ∀ p, AnalyticAt ℂ (fun w' => γ w' p) w` using `fun p => ((ContinuousLinearMap.proj p : ((Σ k, ι k) → ℂ) →L[ℂ] ℂ).analyticAt (γ w)).comp (hγ w hw)`. Establish `hG` using `analyticAt_eval_comp (F := γ) hcoord g`. Establish `hH` using `analyticAt_eval_comp (F := γ) hcoord h`. Establish `hF : AnalyticAt ℂ (fun w' => eval (γ w') (map (Int.castRingHom ℂ) g) / eval (γ w') (map (Int.castRingHom ℂ) h)) w` using `hG.div hH hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : (fun w' => IndefiniteRowSideFullHecke.LowerBoundFree.valAt y a (γ w')) =ᶠ[𝓝 w] fun w' => eval (γ w') (map (Int.castRingHom ℂ) g) / eval (γ w') (map (Int.castRingHom ℂ) h)`. Establish `h1 : ∀ᶠ w' in 𝓝 w, eval (γ w') (map (Int.castRingHom ℂ) h) ≠ 0` using `hH.continuousAt.eventually_ne hz`. Use `filter_upwards [h1, hO.mem_nhds hw] with w' h1 h2`. Conclude with `IndefiniteRowSideFullHecke.LowerBoundFree.valAt_eq (hU w' h2) ⟨d, g, h, hg, hh, hy, hyg, h1, by rw [div_mul_cancel₀ _ h1]⟩`. Conclude with `(hF.contDiffAt.restrict_scalars ℝ).congr_of_eventuallyEq hev`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_valAt {m : ℕ} {O : Set (Fin m → ℂ)} {γ : (Fin m → ℂ) → (Σ k, ι k) → ℂ}
     (hO : IsOpen O) (hγ : AnalyticOnNhd ℂ γ O) (hU : ∀ w ∈ O, γ w ∈ mcPts (mCoordIdeal y))
@@ -209,9 +209,9 @@ def toIndefiniteRowSideFullHecke (hA : HermMetric y W Xo χ) (hXo : Xo ⊆ mcPts
       ContDiffAt.mul (hcv _ (hS s p)) (hsm m O γ hO hγ hγU w hw l hd s r)) (hval _ (hS r q))
 
 /- English proof (translation)
-Establish `h1 : ∀ p q, IndefiniteRowSideFullHecke.LowerBoundFree.RegularAt y ((1 : Matrix (Fin N) (Fin N) Ω) p q) z` using `fun p q => ⟨_, HermMetricEq.isValueAt_one_matrix p q⟩`. Establish `hb : ∀ q, hA.b l q = ∑ p, (1 : Matrix (Fin N) (Fin N) Ω) p q • hA.b l p` using `fun q => by`. Simplify using `[Matrix.one_apply, ite_smul]`. Use `show hA.gramMatrixInFamily z (hA.b l) = _`. Rewrite using `[gramMatrix_change_of_frame hA hXo hz hd h1 hb, HermMetricEq.valM_eq (hXo hz) (HermMetricEq.isValueAt_one_matrix (y := y) (z := z))]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem metricOn_gram_eq (hA : HermMetric y W Xo χ) (hXo : Xo ⊆ mcPts (mCoordIdeal y))
     (hsm : hA.SmoothAlongHolo) (l : Fin hA.m) {z : (Σ k, ι k) → ℂ} (hz : z ∈ Xo)
@@ -231,7 +231,7 @@ end ToTwin
 section OfTwin
 
 /- English proof (translation)
-Take `⟨V, -, hV⟩` from `hopen`. Rewrite using `[hV]`. Conclude with `Set.inter_subset_left`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subset_of_open (hopen : ∃ V : Set ((Σ k, ι k) → ℂ), IsOpen V ∧ Xo = mcPts (mCoordIdeal y) ∩ V) :
     Xo ⊆ mcPts (mCoordIdeal y) := by
@@ -297,15 +297,13 @@ def split_model_to_place_model (hB : IndefiniteRowSideFullHecke.LowerBoundFree.H
   logBound := logBound
 
 /- English proof (translation)
-Introduce `a t₀ ht₀`. Take `⟨l, hd₀, ε, hε, c, hc, C, hC, hb⟩` from `hA.logBound a t₀ ht₀`. Use `⟨l, hd₀, ε, hε, c, hc, C, hC, fun t h1 h2 h3 h4 => ?_⟩` and prove the remaining obligations. Establish `hH` using `metricOn_gram_eq hA (subset_of_open hopen) hsm l h3 h4`. Take `⟨hb1, hb2, hb3⟩` from `hb t h1 h2 h3 h4`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨by rw [hH]; exact hb1, by rw [hH]; exact hb2, fun p q => ?_⟩` and prove the remaining obligations. Establish `ht : t ∈ Metric.ball (0 : Fin n → ℂ) 1` using `by rwa [mem_ball_zero_iff]`. Establish `hcont : ContinuousAt (χ a).γ t` using `((χ a).analytic t ht).continuousAt`. Take `⟨V, hV, hXoV⟩` from `id hopen`. Establish `hev : ∀ᶠ t' in 𝓝 t, (χ a).γ t' ∈ Xo ∧ InFrameDomain y (hA.chart l) (hA.fr l) ((χ a).γ t')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3'` using `h3`. Rewrite `h3'` using `[hXoV]`. Establish `hV' : ∀ᶠ t' in 𝓝 t, (χ a).γ t' ∈ V` using `hcont.preimage_mem_nhds (hV.mem_nhds h3'.2)`. Use `filter_upwards [hV', Metric.isOpen_ball.mem_nhds ht, HermMetricEq.eventually_inFrameDomain hcont h4] with t' h5 h6 h7`. Use `⟨?_, h7⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hXoV]`. Conclude with `⟨(χ a).mem t' h6, h5⟩`. Establish `hfeq : (fun t' => (hA.toIndefiniteRowSideFullHecke (subset_of_open hopen) hsm).H ((χ a).γ t') (hA.b l) p q) =ᶠ[𝓝 t] fun t' => hA.gram l ((χ a).γ t') p q` using `by filter_upwards [hev] with t' ht'`. Rewrite using `[metricOn_gram_eq hA _ hsm l ht'.1 ht'.2]`. Rewrite using `[hfeq.fderiv_eq]`.
-
-Conclude with `hb3 p q`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logBound_metricOn {n nc : ℕ} {Bd : Set ((Σ k, ι k) → ℂ)}
     {χ : Fin nc → SncChart (mCoordIdeal y) n Bd} (hA : HermMetric y W Xo χ)
@@ -362,7 +360,7 @@ namespace Example
 open Line
 
 /- English proof (translation)
-Introduce `m O γ _ _ _ w _ l _ p q`. Use `show ContDiffAt ℝ _ (fun _ => (1 : Matrix (Fin 2) (Fin 2) ℂ) p q) w`. Conclude with `contDiffAt_const`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lineMetric_smoothAlongHolo : lineMetric.SmoothAlongHolo := by
   intro m O γ _ _ _ w _ l _ p q
@@ -370,14 +368,14 @@ theorem lineMetric_smoothAlongHolo : lineMetric.SmoothAlongHolo := by
   exact contDiffAt_const
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Set.univ, isOpen_univ, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem lineXo_open : ∃ V : Set ((Σ _ : Unit, Fin 2) → ℂ), IsOpen V ∧
     mcPts (mCoordIdeal yLine) \ ∅ = mcPts (mCoordIdeal yLine) ∩ V :=
   ⟨Set.univ, isOpen_univ, by simp⟩
 
 /- English proof (translation)
-Introduce `z hz c hc`. Take `⟨i, hi⟩` from `mem_mcPts_line.1 hz.1`. Conclude with `⟨mem_mcPts_line.2 ⟨i, mul_ne_zero (hc ()) hi⟩, Set.notMem_empty _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lineXo_torus : ∀ z ∈ mcPts (mCoordIdeal yLine) \ ∅, ∀ c : Unit → ℂ, (∀ k, c k ≠ 0) →
     torusSmul c z ∈ mcPts (mCoordIdeal yLine) \ ∅ := by
@@ -386,7 +384,7 @@ theorem lineXo_torus : ∀ z ∈ mcPts (mCoordIdeal yLine) \ ∅, ∀ c : Unit �
   exact ⟨mem_mcPts_line.2 ⟨i, mul_ne_zero (hc ()) hi⟩, Set.notMem_empty _⟩
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨i, hi⟩` from `mem_mcPts_line.1 hz.1`. Conclude with `⟨mem_mcPts_line.2 ⟨i, (map_ne_zero _).2 hi⟩, Set.notMem_empty _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lineXo_conj : ∀ z ∈ mcPts (mCoordIdeal yLine) \ ∅,
     conjVec z ∈ mcPts (mCoordIdeal yLine) \ ∅ := by

@@ -70,27 +70,27 @@ def Q1 : Poly (Φ1 E) where
   span Y z := Q.span Y.T z
 
 /- English proof (translation)
-Introduce `Y b` and use `h Y.T b`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem criterion_truncation {a : ℤ → IdF Φ.A} {r : ℤ} (h : Q.Crit a r) : (Q1 Q).Crit (fun r => (a r).res (U E)) r :=
   fun Y b => h Y.T b
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun r' Y => h.le r' Y.T, fun r' hr => criterion_truncation Q (h.ca r' hr), fun r' hr => criterion_truncation Q (h.cb r' hr)⟩`.
+Supply the required witnesses or components.
 -/
 theorem ladder_truncation {a b : ℤ → IdF Φ.A} {r : ℤ} (h : Q.Ladder a b r) :
     (Q1 Q).Ladder (fun r => (a r).res (U E)) (fun r => (b r).res (U E)) r :=
   ⟨fun r' Y => h.le r' Y.T, fun r' hr => criterion_truncation Q (h.ca r' hr), fun r' hr => criterion_truncation Q (h.cb r' hr)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun r hr Y => h.top r hr Y.T, fun Y => h.one Y.T, fun hr Y => h.anti hr Y.T, fun r r' Y _ _ hx hy => h.mul r r' Y.T hx hy, fun k Y _ hx => h.dp_mem k Y.T hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFil_1 {Fil : ℤ → IdF Φ.A} (h : IsFil Φ Fil) : IsFil (Φ1 E) (fun r => (Fil r).res (U E)) :=
   ⟨fun r hr Y => h.top r hr Y.T, fun Y => h.one Y.T, fun hr Y => h.anti hr Y.T, fun r r' Y _ _ hx hy => h.mul r r' Y.T hx hy,
     fun k Y _ hx => h.dp_mem k Y.T hx⟩
 
 /- English proof (translation)
-Introduce `q Y σ σ' x hx` and use `h q σ.1 σ'.1 hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem grConst_1 {Fil : ℤ → IdF Φ.A} (h : E.GrConst Fil) : (E1 E).GrConst (fun r => (Fil r).res (U E)) :=
   fun q Y σ σ' x hx => h q σ.1 σ'.1 hx

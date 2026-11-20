@@ -11,9 +11,9 @@ local notation "ℚ̄" => AlgebraicClosure ℚ
 section GS
 
 /- English proof (translation)
-Use `haveI := hN`. Use `haveI := finite_quot_gs K S L hL`. Take `⟨inst, ρ, hρ, he⟩` from `QuotientActionGlobalEulerCharacteristic.quot_rep ℓ K S ιr L hL M hℓ htriv`. Rewrite using `[he]`. Conclude with `eq_one_of_forall_isCyclic (gsOpenSubgroup S hL) (gs_multKilled ℓ K S hS hSℓ ιr) (gs_posKilled ℓ K S hS hSℓ ιr) ρ (fun D hD' => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨L', hKL', hL', hW, hle, hcycW⟩` from `exists_field_of_cyclic ℓ K S ιr L hL D hD'`. Use `hcyc L' hL' hle hcycW` as an intermediate fact. Rewrite `this` using `[W_coinf_b.coind_eq_infl_funRep ℓ K S ιr L hL M ρ hρ D L' hL' hW]`. Conclude with `this)`.
+A detailed English derivation is pending.
 -/
 theorem ratio_eq_one_of_cyclic (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1))) (hS : S.Finite)
     (hSℓ : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)

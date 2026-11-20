@@ -13,7 +13,7 @@ namespace GlobalTheory.PDForm.FreeFin
 variable {R : Type} [CommRing R] {I : Ideal R} {κ : DividedPowers I} {X : Scheme.{0}} {t : X ⟶ Sp R}
 
 /- English proof (translation)
-Use `⟨hT, fun i ↦ i.elim0, fun S _ a c _ ↦ ⟨a, ⟨Category.id_comp a, fun i ↦ i.elim0⟩, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `g ⟨hg, -⟩`. Rewrite using `[← hg, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem isFree_id (n : ℕ) (T : Thick κ t) (hT : IsLev T.δ n) :
     IsFree n (𝟙 T) (Fin.elim0 : Fin 0 → T.B) := by
@@ -22,13 +22,13 @@ theorem isFree_id (n : ℕ) (T : Thick κ t) (hT : IsLev T.δ n) :
   rw [← hg, Category.id_comp]
 
 /- English proof (translation)
-Take `⟨-, hτ, hU⟩` from `hu`. Take `⟨hF', hτ', hU'⟩` from `hu'`. Use `⟨hF', fun i ↦ Fin.cases (hτ' ()) (fun j ↦ Thick.Hom.mem u' (hτ j)) i, ?_⟩` and prove the remaining obligations. Introduce `S hS a c hc`. Take `⟨g₁, ⟨hg₁a, hg₁c⟩, hg₁u⟩` from `hU S hS a (fun j ↦ c j.succ) (fun j ↦ hc j.succ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g, ⟨hga, hgc⟩, hgu⟩` from `hU' S hS g₁ (fun _ ↦ c 0) (fun _ ↦ hc 0)`. Use `⟨g, ⟨?_, fun i ↦ ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hga, hg₁a]`. Use `Fin.cases ?_ (fun j ↦ ?_) i` and prove the remaining obligations. Simplify using `using hgc ()`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Fin.cons_succ]`. Rewrite using `[← Thick.comp_φ, hga, hg₁c]`. Introduce and unpack `g' ⟨hg'a, hg'c⟩`. Establish `h1 : u' ≫ g' = g₁`. Use `hg₁u _ ⟨by rw [← Category.assoc, hg'a], fun j ↦ ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hg'c j.succ` as an intermediate fact. Simplify using `only [Fin.cons_succ] at this`. Rewrite using `[Thick.comp_φ, this]`. Use `hgu _ ⟨h1, fun _ ↦ ?_⟩` and prove the remaining obligations. Simplify using `using hg'c 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isFree_cons (n m : ℕ) {T F F' : Thick κ t} (u : T ⟶ F) (τ : Fin m → F.B) (hu : IsFree n u τ)
     (u' : F ⟶ F') (τ' : Unit → F'.B) (hu' : IsFree n u' τ') :
@@ -55,9 +55,9 @@ theorem isFree_cons (n m : ℕ) {T F F' : Thick κ t} (u : T ⟶ F) (τ : Fin m 
     simpa using hg'c 0
 
 /- English proof (translation)
-Introduce `R _ I κ X t n m T hT`. Proceed by induction on `m with`. Consider the case `zero => exact ⟨T, 𝟙 T, Fin.elim0, isFree_id _ T hT, QAtFormal.qAt_ident _ T⟩`. Consider the case `succ m ih`. Take `⟨F, u, τ, hu, hq⟩` from `ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨F', u', τ', hu', hq'⟩` from `GlobalTheory.T.exists_freeCrystallineThickening_oneElement_level R I κ X t n F hu.1`. Conclude with `⟨F', u ≫ u', _, isFree_cons (n + 1) m u τ hu u' τ' hu', QAtFormal.qAt_comp _ u u' hq hq'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_free : ∀ (R : Type) [CommRing R] (I : Ideal R) (κ : DividedPowers I) (X : Scheme.{0})
     (t : X ⟶ Sp R) (n m : ℕ) (T : Thick κ t), IsLev T.δ (n + 1) →

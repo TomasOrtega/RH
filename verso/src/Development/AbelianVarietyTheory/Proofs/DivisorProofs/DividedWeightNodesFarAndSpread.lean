@@ -8,23 +8,23 @@ open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions Form
 namespace GlobalTheory.MeanTop
 
 /- English proof (translation)
-Introduce `n`. Establish `hkp` using `H.kc_lt`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `(hd τ).1 i (by simpa using hi)`. Establish `h2` using `H.anchor τ i (by simpa using hi)`. Establish `h3 : ¬ W.p ≤ (i : ℕ)` using `by omega`. Simplify using `[h1, h2, h3]`. Consider the case `succ n ih`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `i hi`. Establish `hk` using `H.kc_pos`. Establish `hlt : (i : ℕ) - 1 < N` using `by omega`. Establish `hab : (i : ℕ) = ((⟨(i : ℕ) - 1, hlt⟩ : Fin N) : ℕ) + 1` using `by simp; omega`. Establish `ha : ((⟨(i : ℕ) - 1, hlt⟩ : Fin N) : ℕ) + 1 = W.kc + n` using `by simp; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `(⟨(i : ℕ) - 1, hlt⟩ : Fin N) = a at hab ha`. Establish `h1` using `ih a ha`. Establish `h2` using `(hd τ).2 a i hab`. Establish `hM : (0 : ℤ) < (W.T : ℤ) + W.Dd + 1` using `by positivity`. Generalize the expression as in `(W.T : ℤ) + W.Dd + 1 = M at h1 h2 hM ⊢`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Use `set x := (W.u τ a - W.u τ i + if (i : ℕ) = W.p then -W.c0 - (2 * (N : ℤ) - 2) else 2) with hx`. Establish `h3` using `Int.mul_ediv_add_emod x M`. Establish `h4` using `Int.emod_lt_of_pos x hM`. Rewrite `h3` using `[← h2]`. Establish `h5 : M * -W.u1 τ i = M * -W.u1 τ a + M * (W.u1 τ a - W.u1 τ i)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6 : ((n + 1 : ℕ) : ℤ) * M = n * M + M` using `by push_cast; ring`. Rewrite using `[h5, h6]`. Distinguish the cases in `hp : (i : ℕ) = W.p`. Establish `e1 : W.p ≤ (i : ℕ)` using `by omega`. Establish `e2 : ¬ W.p ≤ (a : ℕ)` using `by omega`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[if_pos hp]`. Rewrite `h1` using `[if_neg e2]`. Rewrite using `[if_pos e1]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hx` using `[if_neg hp]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `e1 : W.p ≤ (i : ℕ)`. Establish `e2 : W.p ≤ (a : ℕ)` using `by omega`. Rewrite `h1` using `[if_pos e2]`. Rewrite using `[if_pos e1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e2 : ¬ W.p ≤ (a : ℕ)` using `by omega`. Rewrite `h1` using `[if_neg e2]`. Rewrite using `[if_neg e1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem Wts.node_lower_int {ι : Type} {N : ℕ} (W : Wts ι N) (H : W.Hyp) (hd : W.IsDiv) (τ : ι) :
     ∀ (n : ℕ) (i : Fin N), (i : ℕ) + 1 = W.kc + n →
@@ -76,45 +76,43 @@ theorem Wts.node_lower_int {ι : Type} {N : ℕ} (W : Wts ι N) (H : W.Hyp) (hd 
         linarith
 
 /- English proof (translation)
-Introduce `ι _ N W H hd τ`. Establish `hk` using `H.kc_pos`. Establish `hkp` using `H.kc_lt`. Establish `hpN` using `H.p_lt`. Establish `hc0 : (0 : ℝ) ≤ W.c0` using `by exact_mod_cast H.weightConst_nonneg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : 4 * (W.Dd : ℝ) + 4 ≤ W.T` using `by exact_mod_cast H.h1`. Establish `hD : (0 : ℝ) ≤ W.Dd` using `by positivity`. Establish `hN : (0 : ℝ) ≤ N` using `by positivity`. Establish `hT0 : (0 : ℝ) < W.T` using `by linarith`. Establish `hw` using `H.h3w τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : 0 ≤ W.S`. Use `H.h3cloud τ ⟨0, by omega⟩ (by simp; omega)` as an intermediate fact. Establish `h0 : (0 : ℝ) ≤ W.u τ ⟨0, by omega⟩` using `by exact_mod_cast this.1`. Combine the linear relations using `[this.2]`. Establish `hr : 0 ≤ W.eta + W.S + N` using `(abs_nonneg _).trans (H.h3node τ ⟨W.p, hpN⟩ hkp.le)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hNT : 4 * (N : ℝ) ≤ N * W.T` using `by nlinarith`. Establish `hw0 : 0 ≤ W.w τ` using `by linarith`. Take `⟨q, hq⟩ : ∃ q : ℝ, q = W.w τ / W.T` from `⟨_, rfl⟩`. Establish `hqT : W.w τ = q * W.T` using `by rw [hq]; field_simp`. Establish `e2 : W.w τ / (2 * W.T) = q / 2` using `by rw [hq]; field_simp`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : W.w τ / (4 * W.T) = q / 4` using `by rw [hq]; field_simp`. Establish `e3 : 3 / 2 * W.w τ / W.T = 3 / 2 * q` using `by rw [hq]; field_simp`. Rewrite using `[e2, e4, e3]`. Establish `hq20 : 20 * (N : ℝ) ≤ q`. Establish `: 20 * (N : ℝ) * W.T ≤ q * W.T` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_of_mul_le_mul_right this hT0`. Establish `hq0 : 0 ≤ q` using `by linarith`. Take `⟨M, hM⟩ : ∃ M : ℝ, M = (W.T : ℝ) + W.Dd + 1` from `⟨_, rfl⟩`. Establish `hM0 : 0 < M` using `by linarith`. Establish `hM1 : M ≤ 5 / 4 * W.T` using `by linarith`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM2 : (W.T : ℝ) ≤ M` using `by linarith`. Establish `hu' : ∀ i : Fin N, (W.u1 τ i : ℝ) ≤ W.u' τ i ∧ (W.u' τ i : ℝ) ≤ W.u1 τ i + 3 * N ∧ ((i : ℕ) < W.kc → (W.u' τ i : ℝ) = W.u1 τ i)`. Introduce `i`. Unfold `Wts.u'`. Distinguish the cases in `h : (i : ℕ) < W.p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Simplify using `only [h, if_false]`. Use `push_cast`. Conclude with `⟨by linarith, le_rfl, fun h' => by omega⟩`. Establish `node : ∀ i : Fin N, W.kc ≤ (i : ℕ) → q / 2 ≤ -(W.u1 τ i : ℝ)`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Establish `h1` using `W.node_lower_int H hd τ ((i : ℕ) + 1 - W.kc) i (by omega)`. Establish `hn : (((i : ℕ) + 1 - W.kc : ℕ) : ℝ) ≤ N`. Establish `: (i : ℕ) + 1 - W.kc ≤ N` using `by omega`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `(i : ℕ) + 1 - W.kc = n at h1 hn`. Establish `h2 : -W.u τ i - (W.c0 + 2 * (N : ℤ)) - n * ((W.T : ℤ) + W.Dd + 1) ≤ ((W.T : ℤ) + W.Dd + 1) * (-W.u1 τ i)`. Use `H.weightConst_nonneg` as an intermediate fact. Use `split_ifs at h1`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (0 : ℤ) ≤ N` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : -(W.u τ i : ℝ) - (W.c0 + 2 * (N : ℝ)) - n * M ≤ M * (-(W.u1 τ i : ℝ))`. Rewrite using `[hM]`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `(abs_le.1 (H.h3node τ i hi)).2`. Establish `h5 : (n : ℝ) * M ≤ q / 10 * M` using `mul_le_mul_of_nonneg_right (by linarith) hM0.le`. Establish `h6 : q * M ≤ q * (5 / 4 * W.T)` using `mul_le_mul_of_nonneg_left hM1 hq0`. Establish `h7 : M * (q / 2) ≤ M * (-(W.u1 τ i : ℝ))` using `by nlinarith`. Conclude with `le_of_mul_le_mul_left h7 hM0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ent : ∀ i : Fin N, M * |(W.u1 τ i : ℝ)| ≤ |(W.u τ i : ℝ)| + W.c0 + 4 * N`. Introduce `i`. Rewrite using `[hM]`. Conclude with `(GlobalTheory.MeanTop.divided_entries ι N W H hd τ i).1` after adjusting the coercions. Use `⟨fun i hi => ⟨node i hi, ?_⟩, fun i l => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `node i hi`. Establish `h2` using `(hu' i).2.1`. Establish `h3` using `neg_le_abs (W.u' τ i : ℝ)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `up : M * (W.u' τ i : ℝ) ≤ W.S + W.c0 + 4 * N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hi : (i : ℕ) < W.kc`. Rewrite using `[(hu' i).2.2 hi]`. Establish `h1` using `ent i`. Establish `h2` using `H.h3cloud τ i hi`. Establish `h3 : (0 : ℝ) ≤ W.u τ i` using `by exact_mod_cast h2.1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h1` using `[abs_of_nonneg h3]`. Establish `h4` using `mul_le_mul_of_nonneg_left (le_abs_self (W.u1 τ i : ℝ)) hM0.le`. Combine the linear relations using `[h2.2]`. Establish `h1` using `node i (by omega)`. Establish `h2` using `(hu' i).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h3 : M * (W.u' τ i : ℝ) ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos hM0.le (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `lo : M * (-(W.u' τ l : ℝ)) ≤ W.w τ + (W.eta + W.S + N) + W.S + W.c0 + 4 * N`. Establish `h1` using `ent l`. Establish `h2 : -(W.u' τ l : ℝ) ≤ |(W.u1 τ l : ℝ)|`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[(hu' l).1, neg_le_abs (W.u1 τ l : ℝ)]`. Establish `h3` using `mul_le_mul_of_nonneg_left h2 hM0.le`. Establish `h4 : |(W.u τ l : ℝ)| ≤ W.w τ + (W.eta + W.S + N) + W.S`. Distinguish the cases in `hl : (l : ℕ) < W.kc`. Establish `h2` using `H.h3cloud τ l hl`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h3 : (0 : ℝ) ≤ W.u τ l` using `by exact_mod_cast h2.1`. Rewrite using `[abs_of_nonneg h3]`. Combine the linear relations using `[h2.2]`. Establish `h5` using `abs_le.1 (H.h3node τ l (by omega))`. Rewrite using `[abs_le]`.
-
-Apply the tactic sequence `constructor <;> linarith [h5.1, h5.2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h6 : q * W.T ≤ q * M` using `mul_le_mul_of_nonneg_left hM2 hq0`. Establish `h7 : M * ((W.u' τ i : ℝ) - W.u' τ l) ≤ M * (3 / 2 * q)` using `by nlinarith`. Conclude with `le_of_mul_le_mul_left h7 hM0`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nodes_far_and_spread : ∀ (ι : Type) [Fintype ι] (N : ℕ) (W : Wts ι N), W.Hyp → W.IsDiv → ∀ τ, (∀ i : Fin N, W.kc ≤ (i : ℕ) → W.w τ / (2 * W.T) ≤ -(W.u1 τ i : ℝ) ∧ W.w τ / (4 * W.T) ≤ |(W.u' τ i : ℝ)|) ∧ ∀ i l : Fin N, (W.u' τ i : ℝ) - W.u' τ l ≤ 3 / 2 * W.w τ / W.T := by
   intro ι _ N W H hd τ

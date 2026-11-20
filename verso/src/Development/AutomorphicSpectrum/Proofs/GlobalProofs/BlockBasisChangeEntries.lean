@@ -5,9 +5,9 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.IsometricMatrix
 
 /- English proof (translation)
-Establish `hC : N * Matrix.replicateCol (Fin 1) x = Matrix.replicateCol (Fin 1) x * (0 : Matrix (Fin 1) (Fin 1) ℂ)`. Use extensionality with `i j`. Establish `hi` using `congrFun hx i`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply] at hi`. Simplify `hi` using `[Matrix.mul_apply, Matrix.replicateCol]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hE` using `matrix_exp_mul_eq_mul_exp_of_intertwine N _ 0 hC`. Simplify using `only [NormedSpace.exp_zero, Matrix.mul_one] at hE`. Use extensionality with `i`. Establish `hi` using `congrFun (congrFun hE i) 0`. Simplify `hi` using `[Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.replicateCol]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exp_mulVec_of_mulVec_eq_zero {m : ℕ} (N : Matrix (Fin m) (Fin m) ℂ) (x : Fin m → ℂ)
     (hx : N *ᵥ x = 0) : NormedSpace.exp N *ᵥ x = x := by
@@ -23,15 +23,15 @@ theorem exp_mulVec_of_mulVec_eq_zero {m : ℕ} (N : Matrix (Fin m) (Fin m) ℂ) 
   simpa [Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.replicateCol] using hi
 
 /- English proof (translation)
-Establish `hJ' : Jᴴ * (H * J) = H'` using `by rw [← Matrix.mul_assoc]; exact hJ`. Establish `hPJ : H'⁻¹ * Jᴴ * H * J = 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hJ', Matrix.nonsing_inv_mul _ hd']`. Establish `hPs : (H'⁻¹ * Jᴴ * H)ᴴ = H * J * H'⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.conjTranspose_nonsing_inv, hH, hH', Matrix.mul_assoc]`. Use `⟨hPJ, fun Z => ?_, fun A hA => ?_, fun A t => ?_, fun A t x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_mul (J * Z) (H'⁻¹ * Jᴴ * H), hPs, Matrix.conjTranspose_mul J Z]`. Simplify using `only [Matrix.mul_assoc, Matrix.neg_mul, Matrix.mul_neg, Matrix.nonsing_inv_mul_cancel_left _ _ hd, Matrix.mul_nonsing_inv_cancel_left _ _ hd']`. Establish `key : H * J * H'⁻¹ * (Aᴴ * H' + H' * A) * (H'⁻¹ * Jᴴ * H) = (J * A * (H'⁻¹ * Jᴴ * H))ᴴ * H + H * (J * A * (H'⁻¹ * Jᴴ * H))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.conjTranspose_mul (J * A) (H'⁻¹ * Jᴴ * H), hPs, Matrix.conjTranspose_mul J A, Matrix.mul_add, Matrix.add_mul]`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hd', Matrix.mul_nonsing_inv_cancel_left _ _ hd']`. Rewrite using `[← key, hA, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hBJ : J * A * (H'⁻¹ * Jᴴ * H) * J = J * A`. Rewrite using `[Matrix.mul_assoc, hPJ, Matrix.mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `matrix_exp_smul_mul_eq_mul_exp_smul_of_intertwine n n' _ J A hBJ t`. Establish `hB : (J * A * (H'⁻¹ * Jᴴ * H)) *ᵥ x = 0`. Establish `hfac : J * A * (H'⁻¹ * Jᴴ * H) = (J * A * H'⁻¹) * (Jᴴ * H)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hfac, ← Matrix.mulVec_mulVec, hx, Matrix.mulVec_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `exp_mulVec_of_mulVec_eq_zero` to reduce the goal to its premises. Rewrite using `[Matrix.smul_mulVec, hB, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main {n n' : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (H' : Matrix (Fin n') (Fin n') ℂ)
     (J : Matrix (Fin n) (Fin n') ℂ)

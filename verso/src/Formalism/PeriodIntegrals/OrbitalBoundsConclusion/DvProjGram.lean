@@ -6,6 +6,6 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.DvIdxCalc
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ProjectionGramMatrices.DvProjGramOf
 
 /- English proof (translation)
-The claim follows from `PI.Dv.ProjGramW.dvProjGram_of projection_sandwich division_index_calc`.
+A detailed English derivation is pending.
 -/
 theorem projection_gram_det : PI.Dv.gram_det_kernel_base_level := PI.Dv.ProjGramW.dvProjGram_of projection_sandwich division_index_calc

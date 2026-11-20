@@ -18,13 +18,13 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundl
 open ReciprocityTheory.ChartRestriction.G.Geo (div_mem_chartRing)
 
 /- English proof (translation)
-Set `fR : Fin k → R` to `fun l => ⟨f l, hf l⟩`. Establish `htop : Ideal.span (Set.range fR) = ⊤`. Rewrite using `[Ideal.eq_top_iff_one, Ideal.mem_span_range_iff_exists_fun]`. Use `⟨fun l => ⟨c l, hc l⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[fR, hs]`. Establish `h2` using `Ideal.span_pow_eq_top _ htop n`. Rewrite `h2` using `[← Set.range_comp]`. Establish `h3 : (1 : R) ∈ Ideal.span (Set.range ((fun x : R => x ^ n) ∘ fR))`. Rewrite using `[h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Rewrite `h3` using `[Ideal.mem_span_range_iff_exists_fun]`. Take `⟨d, hd⟩` from `h3`. Use `⟨fun l => (d l : Ω), fun l => (d l).2, ?_⟩` and prove the remaining obligations. Use `congrArg (fun x : R => (x : Ω)) hd` as an intermediate fact.
+Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[fR]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem unit_lemma' {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R : Subalgebra o Ω)
     {k : ℕ} (f c : Fin k → Ω) (hf : ∀ l, f l ∈ R) (hc : ∀ l, c l ∈ R) (hs : ∑ l, c l * f l = 1)
@@ -47,11 +47,9 @@ private theorem unit_lemma' {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω]
   simpa [fR] using this
 
 /- English proof (translation)
-Use `choose n hn using ht`. Take `⟨d, hd, hsum⟩` from `unit_lemma' R f c hf hc hs (Finset.univ.sup n)`. Establish `key : t = ∑ l, d l * f l ^ (Finset.univ.sup n - n l) * (f l ^ n l * t)`. Combine the equalities or inequalities in the displayed calculation. Use `_ = _ := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_sub_mul_pow (f l) (Finset.le_sup (Finset.mem_univ l))]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`.
-
-Conclude with `Subalgebra.sum_mem _ fun l _ => Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (hd l) (Subalgebra.pow_mem _ (hf l) _)) (hn l)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_of_loc_lemma_2 {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R : Subalgebra o Ω)
     {k : ℕ} (f c : Fin k → Ω) (hf : ∀ l, f l ∈ R) (hc : ∀ l, c l ∈ R) (hs : ∑ l, c l * f l = 1)
@@ -70,25 +68,21 @@ private theorem mem_of_loc_lemma_2 {o Ω : Type} [CommRing o] [Field Ω] [Algebr
     Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (hd l) (Subalgebra.pow_mem _ (hf l) _)) (hn l)
 
 /- English proof (translation)
-Set `B : ∀ l, Module.Basis (Fin N) Ω E` to `fun l => Module.Basis.mk (hbli l) (hbsp l).ge`. Establish `hB : ∀ l q, B l q = b l q` using `fun l q => Module.Basis.mk_apply _ _ _`. Establish `hcoord : ∀ l (a : Fin N → Ω) q, (B l).repr (∑ q', a q' • b l q') q = a q`. Introduce `l a q`. Establish `h1 : (∑ q', a q' • b l q') = ∑ q', a q' • B l q'` using `by simp only [hB]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h1, Module.Basis.repr_sum_self]`. Establish `hloc : ∀ l, ∀ e ∈ L, ∀ q, ∃ n, f l ^ n * (B l).repr e q ∈ R`. Introduce `l e he q`. Take `⟨a, ha, he'⟩` from `(hbiff l e).1 ⟨0, by simpa using he⟩`. Rewrite using `[he', hcoord]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha q`. Establish `hgen : ∀ l' q', ∃ n, f l' ^ n • b l' q' ∈ L`. Introduce `l' q'`. Use `(hbiff l' (b l' q')).2 ⟨Pi.single q' 1, fun q => ⟨0, ?_⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : q = q'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `using R.one_mem`. Simplify using `[Pi.single_apply, h]`. Simplify using `[Pi.single_apply]`. Use `choose n₁ hn₁ using hgen`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h2 : ∀ l l' q' q, ∃ n, f l ^ n * (B l).repr (f l' ^ n₁ l' q' • b l' q') q ∈ R` using `fun l l' q' q => hloc l _ (hn₁ l' q') q`. Use `choose n₂ hn₂ using h2`. Set `m : Fin k → ℕ` to `fun l => Finset.univ.sup (fun p : Fin k × Fin N × Fin N => n₂ l p.1 p.2.1 p.2.2)`. Establish `hbound : ∀ l l' q' q, f l ^ m l * (B l).repr (f l' ^ n₁ l' q' • b l' q') q ∈ R`. Introduce `l l' q' q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : n₂ l l' q' q ≤ m l` using `Finset.le_sup (f := fun p : Fin k × Fin N × Fin N => n₂ l p.1 p.2.1 p.2.2) (Finset.mem_univ (l', q', q))`. Rewrite using `[← pow_sub_mul_pow (f l) hle, mul_assoc]`. Conclude with `Subalgebra.mul_mem _ (Subalgebra.pow_mem _ (hf l) _) (hn₂ l l' q' q)`. Use `⟨m l, fun e he q => ?_⟩` and prove the remaining obligations. Use `show f l ^ m l * (B l).repr e q ∈ R`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `mem_of_loc_lemma_2 R f c hf hc hs` to reduce the goal to its premises. Introduce `l'`. Take `⟨a, ha, he'⟩` from `(hbiff l' e).1 ⟨0, by simpa using he⟩`. Use `choose n₃ hn₃ using ha`. Use `⟨Finset.univ.sup n₃ + Finset.univ.sup (n₁ l'), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hexp : f l' ^ (Finset.univ.sup n₃ + Finset.univ.sup (n₁ l')) * (f l ^ m l * (B l).repr e q) = ∑ q', (f l' ^ (Finset.univ.sup n₃ - n₃ q') * (f l' ^ n₃ q' * a q')) * (f l' ^ (Finset.univ.sup (n₁ l') - n₁ l' q') * (f l ^ m l * (B l).repr (f l' ^ n₁ l' q' • b l' q') q))`. Rewrite using `[he']`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finset_sum, Finset.sum_apply, Finsupp.coe_smul, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q' _ => ?_` and prove the remaining obligations.
-
-Establish `e1` using `pow_sub_mul_pow (f l') (Finset.le_sup (f := n₃) (Finset.mem_univ q'))`. Establish `e2` using `pow_sub_mul_pow (f l') (Finset.le_sup (f := n₁ l') (Finset.mem_univ q'))`. Rewrite using `[pow_add, ← e1, ← e2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hexp]`.
-
-Conclude with `Subalgebra.sum_mem _ fun q' _ => Subalgebra.mul_mem _ (Subalgebra.mul_mem _ (Subalgebra.pow_mem _ (hf l') _) (hn₃ q')) (Subalgebra.mul_mem _ (Subalgebra.pow_mem _ (hf l') _) (hbound l l' q' q))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_pow_mul_basis_repr_mem {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R : Subalgebra o Ω)
     {E : Type} [AddCommGroup E] [Module Ω E] (N : ℕ) (L : AddSubgroup E)
@@ -154,33 +148,27 @@ private theorem exists_pow_mul_basis_repr_mem {o Ω : Type} [CommRing o] [Field 
     (Subalgebra.mul_mem _ (Subalgebra.pow_mem _ (hf l') _) (hbound l l' q' q))
 
 /- English proof (translation)
-Take `⟨hsm, k, f, c, hf, hc, hs, hch⟩` from `hL`. Use `choose b hbli hbsp hbiff using hch`. Use `⟨fun l v hv => ?_, fun ψ hψ => ?_⟩` and prove the remaining obligations. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, e, he, rfl⟩` from `hx`. Rewrite using `[map_smul, smul_eq_mul]`. Conclude with `R.mul_mem ha (hle _ (hφ.1 l e he))`. Consider the case `zero`. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `R.zero_mem`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `R.add_mem hx hy`. Consider the case `neg x _ hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_neg]`. Conclude with `R.neg_mem hx`. Establish `hψ0 : ∀ e ∈ L₀, ψ e ∈ R` using `fun e he => hψ e (AddSubgroup.subset_closure ⟨1, R.one_mem, e, he, (one_smul _ _).symm⟩)`. Establish `hchart : ∀ l, ∃ n : ℕ, ∃ u : Fin M → Ω, (∀ m, u m ∈ R) ∧ f l ^ n • ψ = ∑ m, u m • φ m`. Introduce `l`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `exists_pow_mul_basis_repr_mem R₀ N L₀ f c hf hc hs b hbli hbsp hbiff l`. Use `set B := Module.Basis.mk (hbli l) (hbsp l).ge with hBdef`. Establish `hB : ∀ q, B q = b l q` using `fun q => Module.Basis.mk_apply _ _ _`. Establish `hχ : ∀ q, ∃ u : Fin M → Ω, (∀ m', u m' ∈ R₀) ∧ f l ^ m • B.coord q = ∑ m', u m' • φ m'`. Introduce `q`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hφ.2 _ (fun v hv => by simpa [Module.Basis.coord_apply] using hm v hv q)`. Use `choose u hu hχeq using hχ`. Establish `hgen : ∀ q, ∃ n, f l ^ n • b l q ∈ L₀`. Introduce `q`. Use `(hbiff l (b l q)).2 ⟨Pi.single q 1, fun q' => ⟨0, ?_⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `h : q' = q`. Substitute `h` using the available equality. Simplify using `using R₀.one_mem`. Simplify using `[Pi.single_apply, h]`. Simplify using `[Pi.single_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `choose n₁ hn₁ using hgen`. Establish `hψb : ∀ q, f l ^ Finset.univ.sup n₁ * ψ (b l q) ∈ R`. Introduce `q`. Establish `h1` using `hψ0 _ (hn₁ q)`. Rewrite `h1` using `[map_smul, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← pow_sub_mul_pow (f l) (Finset.le_sup (f := n₁) (Finset.mem_univ q)), mul_assoc]`. Conclude with `R.mul_mem (R.pow_mem (hle _ (hf l)) _) h1`. Use `⟨m + Finset.univ.sup n₁, fun m' => ∑ q, f l ^ Finset.univ.sup n₁ * ψ (b l q) * u q m', fun m' => R.sum_mem fun q _ => R.mul_mem (hψb q) (hle _ (hu q m')), ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Establish `hχv : ∀ q, f l ^ m * B.repr v q = ∑ m', u q m' * φ m' v`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Introduce `q`. Use `congrArg (fun χ : Module.Dual Ω V => χ v) (hχeq q)` as an intermediate fact. Simplify `this` using `[Module.Basis.coord_apply]`. Establish `hv` using `B.sum_repr v`. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, smul_eq_mul, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← hv]`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, smul_eq_mul, hB]`. Rewrite using `[Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Use `_ = _ := by`. Rewrite using `[hχv q, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun m' _ => by ring`. Use `choose n u hu hueq using hchart`.
-
-Take `⟨d, hd, hsum⟩` from `unit_lemma' R₀ f c hf hc hs (Finset.univ.sup n)`. Use `⟨fun m' => ∑ l, d l * f l ^ (Finset.univ.sup n - n l) * u l m', fun m' => R.sum_mem fun l _ => R.mul_mem (R.mul_mem (hle _ (hd l)) (R.pow_mem (hle _ (hf l)) _)) (hu l m'), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `_ = ∑ l, (d l * f l ^ (Finset.univ.sup n - n l)) • (f l ^ n l • ψ) := by`. Rewrite using `[Finset.sum_smul]`.
-
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, mul_assoc, pow_sub_mul_pow (f l) (Finset.le_sup (Finset.mem_univ l))]`. Use `_ = _ := by`. Simplify using `only [hueq, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genDual_span {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R₀ R : Subalgebra o Ω)
     (hle : ∀ r ∈ R₀, r ∈ R) {V : Type} [AddCommGroup V] [Module Ω V] {N M : ℕ} (L₀ : AddSubgroup V)
@@ -261,7 +249,7 @@ theorem genDual_span {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R₀ 
       rw [Finset.sum_comm]
 
 /- English proof (translation)
-Unfold `flagMinor`. Establish `h : (Matrix.of fun (a b : Fin n) => ((fun l => c • φ l) (I a)) (w (Fin.castLE hn b))) = c • Matrix.of fun (a b : Fin n) => φ (I a) (w (Fin.castLE hn b))`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite using `[h, Matrix.det_smul, Fintype.card_fin]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem flagMinor_smul {Ω : Type} [Field Ω] {V : Type} [AddCommGroup V] [Module Ω V] {N M : ℕ}
     (φ : Fin M → Module.Dual Ω V) (w : Fin N → V) (c : Ω) (n : ℕ) (hn : n ≤ N) (I : Fin n → Fin M) :
@@ -274,18 +262,18 @@ theorem flagMinor_smul {Ω : Type} [Field Ω] {V : Type} [AddCommGroup V] [Modul
   rw [h, Matrix.det_smul, Fintype.card_fin]
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.1 hs k (Finset.mem_univ k)`.
+A detailed English derivation is pending.
 -/
 theorem ne_zero_of_mseg {Ω : Type} [Field Ω] {K : Type} [Fintype K] {ι : K → Type}
     (y : (Σ k, ι k) → Ω) (s : ∀ k, ι k) (hs : mseg y s ≠ 0) (k : K) : y ⟨k, s k⟩ ≠ 0 :=
   Finset.prod_ne_zero_iff.1 hs k (Finset.mem_univ k)
 
 /- English proof (translation)
-Establish `hall : ∀ k', y ⟨k', s k'⟩ ≠ 0` using `fun k' => ne_zero_of_mseg y s hs k'`. Establish `key : mseg y (Function.update s k i) / mseg y s = y ⟨k, i⟩ / y ⟨k, s k⟩`. Unfold `mseg`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ k), ← Finset.mul_prod_erase _ (fun k' => y ⟨k', s k'⟩) (Finset.mem_univ k)]`. Establish `hrest : ∏ x ∈ Finset.univ.erase k, y ⟨x, Function.update s k i x⟩ = ∏ x ∈ Finset.univ.erase k, y ⟨x, s x⟩` using `Finset.prod_congr rfl fun x hx => by rw [Function.update_of_ne (Finset.ne_of_mem_erase hx)]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : ∏ x ∈ Finset.univ.erase k, y ⟨x, s x⟩ ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun x _ => hall x`. Rewrite using `[hrest, Function.update_self]`. Establish `hk` using `hall k`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Algebra.subset_adjoin ⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ratio_mem {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] {K : Type} [Fintype K]
     {ι : K → Type} (y : (Σ k, ι k) → Ω) (s : ∀ k, ι k) (hs : mseg y s ≠ 0) (k : K) (i : ι k) :
@@ -308,9 +296,9 @@ theorem ratio_mem {O Ω : Type} [CommRing O] [Field Ω] [Algebra O Ω] {K : Type
   exact Algebra.subset_adjoin ⟨_, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_eq_single p]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ p) h`.
+A detailed English derivation is pending.
 -/
 theorem prod_zpow_single {Ω : Type} [Field Ω] {K : Type} [Fintype K] [DecidableEq K] (z : K → Ω)
     (p : K) : ∏ k, z k ^ (Pi.single p 1 : K → ℤ) k = z p := by
@@ -322,7 +310,7 @@ theorem prod_zpow_single {Ω : Type} [Field Ω] {K : Type} [Fintype K] [Decidabl
     exact absurd (Finset.mem_univ p) h
 
 /- English proof (translation)
-Simplify using `only [Pi.sub_apply]`. Rewrite using `[Finset.prod_congr rfl (fun k _ => zpow_sub₀ (hz k) _ _), Finset.prod_div_distrib, prod_zpow_single, prod_zpow_single]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_zpow_sub {Ω : Type} [Field Ω] {K : Type} [Fintype K] [DecidableEq K] (z : K → Ω)
     (hz : ∀ k, z k ≠ 0) (p q : K) :
@@ -334,35 +322,29 @@ theorem prod_zpow_sub {Ω : Type} [Field Ω] {K : Type} [Fintype K] [DecidableEq
 end PositivityTheory.Xgn.A_plucker_frame
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ _ ι _ x N V _ _ J _ _ E M a φ hE w j EB hpull`. Use `letI hfin : ∀ k, Fintype (Sum.elim ι (pluckerIdx N M) k) := fun k => match k with`. Consider the case `Sum.inl k => inferInstanceAs (Fintype (ι k))`. Consider the case `Sum.inr k => inferInstanceAs (Fintype (Fin (k.2 : ℕ) → Fin (M k.1)))`. Use `⟨fun c hc i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc' : mseg (joinCoord x (pluckerCoord φ w)) c ≠ 0` using `hc`. Use `set c0 : ∀ k, ι k := GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.restrictChart c with hc0def`. Establish `hx0 : ∀ k, x ⟨k, c0 k⟩ ≠ 0` using `fun k => PositivityTheory.Xgn.A_plucker_frame.ne_zero_of_mseg (joinCoord x (pluckerCoord φ w)) c hc' (Sum.inl k)`. Establish `hz0 : ∀ p : J × Fin (N + 1), (joinCoord x (pluckerCoord φ w)) ⟨Sum.inr p, c (Sum.inr p)⟩ ≠ 0` using `fun p => PositivityTheory.Xgn.A_plucker_frame.ne_zero_of_mseg (joinCoord x (pluckerCoord φ w)) c hc' (Sum.inr p)`. Establish `hc0 : mseg x c0 ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hx0 k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : ∀ r ∈ chartRing O (mseg x) c0, r ∈ chartRing O (mseg (joinCoord x (pluckerCoord φ w))) c`. Introduce `r hr`. Use `(Algebra.adjoin_le ?_) hr` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`. Set `t' : ∀ k, Sum.elim ι (pluckerIdx N M) k` to `fun k => Sum.rec (motive := fun k => Sum.elim ι (pluckerIdx N M) k) t (fun p => c (Sum.inr p)) k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hZ : ∏ p : J × Fin (N + 1), (joinCoord x (pluckerCoord φ w)) ⟨Sum.inr p, c (Sum.inr p)⟩ ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun p _ => hz0 p`. Establish `heq : mseg (joinCoord x (pluckerCoord φ w)) t' / mseg (joinCoord x (pluckerCoord φ w)) c = mseg x t / mseg x c0`. Unfold `mseg`. Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type]`. Use `show ((∏ k, x ⟨k, t k⟩) * ∏ p : J × Fin (N + 1), (joinCoord x (pluckerCoord φ w)) ⟨Sum.inr p, c (Sum.inr p)⟩) / ((∏ k, x ⟨k, c0 k⟩) * ∏ p : J × Fin (N + 1), (joinCoord x (pluckerCoord φ w)) ⟨Sum.inr p, c (Sum.inr p)⟩) = _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_div_mul_right _ _ hZ]`. Use `show mseg x t / mseg x c0 ∈ _`. Rewrite using `[← heq]`. Conclude with `Algebra.subset_adjoin ⟨t', rfl⟩`. Establish `hL0 : LocFree (chartRing O (mseg x) c0) N ((E j).lat c0)` using `((t_bundle_of_family O Ω K ι x N V).2 (E j)).2 c0 hc0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hL : LocFree (chartRing O (mseg (joinCoord x (pluckerCoord φ w))) c) N (EB.lat c)` using `((t_bundle_of_family O Ω (K ⊕ (J × Fin (N + 1))) (Sum.elim ι (pluckerIdx N M)) (joinCoord x (pluckerCoord φ w)) N V).2 EB).2 c hc'`. Use `set t : Ω := ∏ k, x ⟨k, c0 k⟩ ^ (-(a j k)) with ht`. Use `set P : Ω := ∏ k, x ⟨k, c0 k⟩ ^ (a j k) with hP`. Establish `htP : t * P = 1`. Rewrite using `[ht, hP, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_one fun k _ => by rw [zpow_neg, inv_mul_cancel₀ (zpow_ne_zero _ (hx0 k))]`. Establish `ht0 : t ≠ 0` using `left_ne_zero_of_mul_eq_one htP`. Establish `hgd0 : GenDual (chartRing O (mseg x) c0) ((E j).lat c0) (fun l => t • φ j l)`. Use `⟨fun l v hv => ?_, fun ψ hψ => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, hrv⟩` from `(hE j).sections c0 hc0 l v hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.smul_apply, hrv, smul_eq_mul]`. Use `show t * (r * P) ∈ _`. Rewrite using `[mul_left_comm, htP, mul_one]`. Conclude with `hr`. Take `⟨u, hu, hψeq⟩` from `(hE j).generate c0 hc0 ψ hψ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[hψeq]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Use `show _ = u l • t • φ j l`. Rewrite using `[smul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hgd : GenDual (chartRing O (mseg (joinCoord x (pluckerCoord φ w))) c) (EB.lat c) (fun l => t • φ j l)`. Rewrite using `[hpull c hc']`. Conclude with `PositivityTheory.Xgn.A_plucker_frame.genDual_span (chartRing O (mseg x) c0) (chartRing O (mseg (joinCoord x (pluckerCoord φ w))) c) hle ((E j).lat c0) hL0 _ hgd0`. Establish `hsm : ∀ (n : ℕ) (hn : n ≤ N) (I : Fin n → Fin (M j)), flagMinor (fun l => t • φ j l) w n hn I = t ^ n * flagMinor (φ j) w n hn I` using `fun n hn I => PositivityTheory.Xgn.A_plucker_frame.flagMinor_smul (φ j) w t n hn I`. Establish `hI` using `PositivityTheory.Xgn.A_plucker_frame.ne_zero_of_mseg (joinCoord x (pluckerCoord φ w)) c hc' (Sum.inr (j, i.castSucc))`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ` using `PositivityTheory.Xgn.A_plucker_frame.ne_zero_of_mseg (joinCoord x (pluckerCoord φ w)) c hc' (Sum.inr (j, i.succ))`. Establish `key` using `t_minor_graded (chartRing O (mseg (joinCoord x (pluckerCoord φ w))) c) N (M j) (EB.lat c) hL (fun l => t • φ j l) hgd w i (c (Sum.inr (j, i.castSucc)) : Fin (i : ℕ) → Fin (M j)) (c (Sum.inr (j, i.succ)) : Fin ((i : ℕ) + 1) → Fin (M j)) (by`. Rewrite using `[hsm (i : ℕ) _ (c (Sum.inr (j, i.castSucc)))]`. Conclude with `mul_ne_zero (pow_ne_zero _ ht0) hI)`. Use the proof step `(fun I' => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hsm _ _ I', hsm (i : ℕ) _ (c (Sum.inr (j, i.castSucc))), mul_div_mul_left _ _ (pow_ne_zero _ ht0)]`. Conclude with `PositivityTheory.Xgn.A_plucker_frame.ratio_mem (joinCoord x (pluckerCoord φ w)) c hc' (Sum.inr (j, i.castSucc)) I')`. Use the proof step `(by`. Rewrite using `[hsm ((i : ℕ) + 1) _ (c (Sum.inr (j, i.succ)))]`. Conclude with `mul_ne_zero (pow_ne_zero _ ht0) hJ)`.
-
-Use the proof step `(fun J' => by`. Rewrite using `[hsm _ _ J', hsm ((i : ℕ) + 1) _ (c (Sum.inr (j, i.succ))), mul_div_mul_left _ _ (pow_ne_zero _ ht0)]`. Conclude with `PositivityTheory.Xgn.A_plucker_frame.ratio_mem (joinCoord x (pluckerCoord φ w)) c hc' (Sum.inr (j, i.succ)) J')`. Rewrite using `[key]`. Unfold `degLat`.
-
-Establish `hQ : ∀ {A B : Ω}, A = B → ({s : Ω | ∃ r ∈ chartRing O (mseg (joinCoord x (pluckerCoord φ w))) c, s = r * A} = {s : Ω | ∃ r ∈ chartRing O (mseg (joinCoord x (pluckerCoord φ w))) c, s = r * B})` using `fun h => by rw [h]`. Apply `hQ` to reduce the goal to its premises. Rewrite using `[hsm (i : ℕ) _ (c (Sum.inr (j, i.castSucc))), hsm ((i : ℕ) + 1) _ (c (Sum.inr (j, i.succ))), Fintype.prod_sum_type]`. Simplify using `only [pluckerDeg, Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[PositivityTheory.Xgn.A_plucker_frame.prod_zpow_sub (fun p => (joinCoord x (pluckerCoord φ w)) ⟨Sum.inr p, c (Sum.inr p)⟩) hz0]`.
-
-Establish `hPt : P = t⁻¹` using `eq_inv_of_mul_eq_one_left (by rw [mul_comm]; exact htP)`. Use `show t ^ (i : ℕ) * (joinCoord x (pluckerCoord φ w)) ⟨Sum.inr (j, i.castSucc), c (Sum.inr (j, i.castSucc))⟩ / (t ^ ((i : ℕ) + 1) * (joinCoord x (pluckerCoord φ w)) ⟨Sum.inr (j, i.succ), c (Sum.inr (j, i.succ))⟩) = P * ((joinCoord x (pluckerCoord φ w)) ⟨Sum.inr (j, i.castSucc), c ( …`. Rewrite using `[hPt, pow_succ]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.t_plucker_frame : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (N : ℕ) (V : Type) [AddCommGroup V] [Module Ω V] (J : Type) [Fintype J] [DecidableEq J] (E : J → ChartBundle O (mseg x) N V) (M : J → ℕ) (a : J → K → ℤ) (φ : ∀ j, Fin (M j) → Module.Dual Ω V), (∀ j, IsTwistedDualGens x (E j) (a j) (φ j)) → ∀ (w : Module.Basis (Fin N) Ω V) (j : J) (EB : ChartBundle O (mseg (joinCoord x (pluckerCoord φ w))) N V), IsPull O x (pluckerCoord φ w) (E j) EB → IsFlagFrame (joinCoord x (pluckerCoord φ w)) EB w (pluckerDeg (a j) j) := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x N V _ _ J _ _ E M a φ hE w j EB hpull

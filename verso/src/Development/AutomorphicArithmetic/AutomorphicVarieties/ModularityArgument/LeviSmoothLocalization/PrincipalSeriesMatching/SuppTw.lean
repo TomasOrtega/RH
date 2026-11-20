@@ -17,9 +17,9 @@ section Loc
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hζ, e⟩`. Use `⟨ζ * χ⁻¹, hζ.mul hχ.inv, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← IrrGL.tw_ofChar ζ χ⁻¹ hζ hχ.inv, ← e, IrrGL.tw_tw_inv]`. Rewrite using `[inv_mul_cancel_right]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨ξ, hξ, rfl, rfl⟩`. Conclude with `⟨hξ.mul hχ, IrrGL.tw_ofChar _ _ _ _⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem tw_eq_iff (y : IrrGL k) (χ ζ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     (∃ hζ, y.tw χ hχ = IrrGL.ofChar ζ hζ) ↔ ∃ ξ hξ, y = IrrGL.ofChar ξ hξ ∧ ζ = ξ * χ := by
@@ -32,13 +32,13 @@ private theorem tw_eq_iff (y : IrrGL k) (χ ζ : kˣ →* ℂˣ) (hχ : IsSmooth
     exact ⟨hξ.mul hχ, IrrGL.tw_ofChar _ _ _ _⟩
 
 /- English proof (translation)
-Unfold `pol`. Rewrite using `[Multiset.map_map]`. Use `congrArg Multiset.prod (Multiset.map_congr rfl fun y _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Distinguish the cases in `h : ∃ ξ : kˣ →* ℂˣ, (∃ hξ, y = IrrGL.ofChar ξ hξ) ∧ IsUnram (ξ * (χ * θ))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Establish `h' : ∃ ζ : kˣ →* ℂˣ, (∃ hζ, y.tw χ hχ = IrrGL.ofChar ζ hζ) ∧ IsUnram (ζ * θ)`. Take `⟨ξ, ⟨hξ, e⟩, hu⟩` from `h`. Conclude with `⟨ξ * χ, (tw_eq_iff y χ _ hχ).2 ⟨ξ, hξ, e, rfl⟩, by rwa [mul_assoc]⟩`. Rewrite using `[dif_pos h, dif_pos h']`. Take `⟨ξ, hξ, e, e'⟩` from `(tw_eq_iff y χ _ hχ).1 h'.choose_spec.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hξ', e''⟩` from `h.choose_spec.1`. Establish `: ξ = h.choose` using `IrrGL.ofChar_inj.1 (e.symm.trans e'')`. Rewrite using `[e', this, mul_assoc]`. Establish `h' : ¬ ∃ ζ : kˣ →* ℂˣ, (∃ hζ, y.tw χ hχ = IrrGL.ofChar ζ hζ) ∧ IsUnram (ζ * θ)`. Introduce and unpack `⟨ζ, hζ, hu⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨ξ, hξ, e, rfl⟩` from `(tw_eq_iff y χ _ hχ).1 hζ`. Conclude with `h ⟨ξ, ⟨hξ, e⟩, by rwa [← mul_assoc]⟩`. Rewrite using `[dif_neg h, dif_neg h']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pol_tw (s : Multiset (IrrGL k)) (χ θ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     pol (s.map (·.tw χ hχ)) θ = pol s (χ * θ) := by
@@ -62,9 +62,9 @@ private theorem pol_tw (s : Multiset (IrrGL k)) (χ θ : kˣ →* ℂˣ) (hχ : 
     rw [dif_neg h, dif_neg h']
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hζ, hm⟩`. Take `⟨y, hy, e⟩` from `Multiset.mem_map.1 hm`. Take `⟨ξ, hξ, rfl, e'⟩` from `(tw_eq_iff y χ ζ hχ).1 ⟨hζ, e⟩`. Conclude with `⟨ξ, ⟨hξ, hy⟩, e'⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨ξ, ⟨hξ, hy⟩, rfl⟩`. Conclude with `⟨hξ.mul hχ, Multiset.mem_map.2 ⟨_, hy, IrrGL.tw_ofChar _ _ _ _⟩⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem chars_tw (s : Multiset (IrrGL k)) (χ ζ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) :
     ζ ∈ chars (s.map (·.tw χ hχ)) ↔ ∃ ξ ∈ chars s, ζ = ξ * χ := by
@@ -83,13 +83,13 @@ section Glob
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.HeckeComp.smooth_loc χ v`.
+A detailed English derivation is pending.
 -/
 private theorem smooth_loc (χ : HChar K) (v : HeightOneSpectrum (𝓞 K)) : IsSmoothChar (χ.loc v) :=
   GlobalTheory.HeckeComp.smooth_loc χ v
 
 /- English proof (translation)
-The claim follows from `h.tw (χ.loc v) (smooth_loc χ v)`.
+A detailed English derivation is pending.
 -/
 private theorem supp_twist [IsTotallyComplex K] {v : HeightOneSpectrum (𝓞 K)} {σ : SmIrr (GL (Fin n) (v.adicCompletion K))} (χ : HChar K)
     {s : Multiset (IrrGL (v.adicCompletion K))} (h : HasSupport σ.ρ s) :
@@ -103,7 +103,7 @@ end UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter
 
 open UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter in
 /- English proof (translation)
-Introduce and unpack `K _ _ _ n _ π v χ s ⟨σ, hσ, hs⟩`. Use `⟨_, ⟨_, hσ.twist χ, supp_twist χ hs⟩, fun θ => pol_tw s _ θ _, fun ζ => chars_tw s _ ζ _, ?_⟩` and prove the remaining obligations. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.suppTw :
     UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter.SuppTw := by

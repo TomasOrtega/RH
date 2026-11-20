@@ -16,7 +16,7 @@ open Formalism.MainNotions.ModuliIntegralCharts.H1
 variable {V : Type} [CommRing V] {d : ℕ}
 
 /- English proof (translation)
-Unfold `ev`. Use `congr 1`. Use function extensionality and compare the values at `p`. Rewrite using `[Matrix.cons_val_fin_one]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_one_eq {n : ℕ} (a : Pt V n d) (f : PS V 1 d) :
     ev ![a] f = MvPowerSeries.subst (fun p : Fin 1 × Fin d => a p.2) f := by
@@ -26,7 +26,7 @@ theorem ev_one_eq {n : ℕ} (a : Pt V n d) (f : PS V 1 d) :
   rw [Matrix.cons_val_fin_one]
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.constantCoeff_subst_eq_zero (a := fun p : Fin k × Fin d => a p.1 p.2) (MvPowerSeries.hasSubst_of_constantCoeff_zero fun p => ha p.1 p.2) (fun p => ha p.1 p.2) hf`.
+A detailed English derivation is pending.
 -/
 theorem cc_ev {k n : ℕ} (a : Fin k → Pt V n d) (ha : ∀ j i, MvPowerSeries.constantCoeff (a j i) = 0) (f : PS V k d)
     (hf : MvPowerSeries.constantCoeff f = 0) : MvPowerSeries.constantCoeff (ev a f) = 0 :=
@@ -34,14 +34,14 @@ theorem cc_ev {k n : ℕ} (a : Fin k → Pt V n d) (ha : ∀ j i, MvPowerSeries.
     (MvPowerSeries.hasSubst_of_constantCoeff_zero fun p => ha p.1 p.2) (fun p => ha p.1 p.2) hf
 
 /- English proof (translation)
-The claim follows from `cc_ev _ (fun j i => by rw [Matrix.cons_val_fin_one]; exact ha i) _ (hφ i)`.
+A detailed English derivation is pending.
 -/
 theorem cc_comp1 {n : ℕ} {φ : Pt V 1 d} {a : Pt V n d} (hφ : ∀ i, MvPowerSeries.constantCoeff (φ i) = 0)
     (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) (i : Fin d) : MvPowerSeries.constantCoeff (comp1 φ a i) = 0 :=
   cc_ev _ (fun j i => by rw [Matrix.cons_val_fin_one]; exact ha i) _ (hφ i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [comp1, ev_one_eq]`. Conclude with `MvPowerSeries.subst_comp_subst_apply (MvPowerSeries.hasSubst_of_constantCoeff_zero fun p : Fin 1 × Fin d => hφ p.2) (MvPowerSeries.hasSubst_of_constantCoeff_zero fun p : Fin 1 × Fin d => ha p.2) _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem germCompOne_assoc_of_constantCoeff_zero {n : ℕ} (ψ φ : Pt V 1 d) (a : Pt V n d) (hφ : ∀ i, MvPowerSeries.constantCoeff (φ i) = 0)
     (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) : comp1 (comp1 ψ φ) a = comp1 ψ (comp1 φ a) := by
@@ -52,7 +52,7 @@ theorem germCompOne_assoc_of_constantCoeff_zero {n : ℕ} (ψ φ : Pt V 1 d) (a 
     (MvPowerSeries.hasSubst_of_constantCoeff_zero fun p : Fin 1 × Fin d => ha p.2) _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [comp1, ev_one_eq, pt]`. Conclude with `MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero fun p : Fin 1 × Fin d => ha p.2) _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem germCompOne_identityPoint_left {n : ℕ} (a : Pt V n d) (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) :
     comp1 (pt V (n := 1) d 0) a = a := by
@@ -61,7 +61,7 @@ theorem germCompOne_identityPoint_left {n : ℕ} (a : Pt V n d) (ha : ∀ i, MvP
   exact MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero fun p : Fin 1 × Fin d => ha p.2) _
 
 /- English proof (translation)
-Rewrite using `[← e, ← germCompOne_assoc_of_constantCoeff_zero φi φ a h.1 ha, h.2.2.2, germCompOne_identityPoint_left a ha]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_comp1_inv {n : ℕ} {φ φi : Pt V 1 d} (h : IsInvPair φ φi) {a b : Pt V n d}
     (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) (e : comp1 φ a = b) : a = comp1 φi b := by
@@ -74,7 +74,7 @@ def sub1 (m : ℕ) {n : ℕ} (a : Pt V n d) : jOG (𝟙 (Sp V)) d m n ⟶ jOG (�
   Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetSubstPS (m := m) fun p : Fin 1 × Fin d => a p.2)
 
 /- English proof (translation)
-Rewrite using `[GermD.homAt_comp]`. Use `congr 1`. Apply `GermD.jet_hom_ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[AlgHom.comp_apply, ExpChartJet.jetSubstPS_mk m g hg, ExpChartJet.jetSubstPS_psJet m h hh, ExpChartJet.jetSubstPS_mk m _ (fun i => MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero hh) hh (hg i))]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_comp (m : ℕ) {κ κ' κ'' : Type} [Fintype κ'] [DecidableEq κ'] [Fintype κ''] [DecidableEq κ'']
     (g : κ → MvPowerSeries κ' V) (h : κ' → MvPowerSeries κ'' V) (hg : ∀ i, MvPowerSeries.constantCoeff (g i) = 0)
@@ -90,7 +90,7 @@ theorem hom_comp (m : ℕ) {κ κ' κ'' : Type} [Fintype κ'] [DecidableEq κ'] 
       (MvPowerSeries.hasSubst_of_constantCoeff_zero hh) hh (hg i))]
 
 /- English proof (translation)
-The claim follows from `hom_comp m _ _ (fun p => hb p.2) (fun p => ha p.1 p.2)`.
+A detailed English derivation is pending.
 -/
 theorem jetSchemeMap_pointFamily_comp_singlePoint (m : ℕ) {k n : ℕ} (a : Fin k → Pt V n d) (b : Pt V k d)
     (ha : ∀ j i, MvPowerSeries.constantCoeff (a j i) = 0) (hb : ∀ i, MvPowerSeries.constantCoeff (b i) = 0) :
@@ -98,7 +98,7 @@ theorem jetSchemeMap_pointFamily_comp_singlePoint (m : ℕ) {k n : ℕ} (a : Fin
   hom_comp m _ _ (fun p => hb p.2) (fun p => ha p.1 p.2)
 
 /- English proof (translation)
-Establish `e : sub1 m (comp1 φ a) = Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetSubstPS (m` using `m) fun p : Fin 1 × Fin d => MvPowerSeries.subst (fun q : Fin 1 × Fin d => a q.2) (φ p.2)) := by`. Simplify using `only [sub1, comp1, ev_one_eq]`. Rewrite using `[e]`. Conclude with `hom_comp m _ _ (fun p => hφ p.2) (fun p => ha p.2)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetSchemeMap_singlePoint_comp_singlePoint (m : ℕ) {n : ℕ} (a : Pt V n d) (φ : Pt V 1 d)
     (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) (hφ : ∀ i, MvPowerSeries.constantCoeff (φ i) = 0) :
@@ -110,11 +110,11 @@ theorem jetSchemeMap_singlePoint_comp_singlePoint (m : ℕ) {n : ℕ} (a : Pt V 
   exact hom_comp m _ _ (fun p => hφ p.2) (fun p => ha p.2)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `GermFun.psJet_inj fun m => ?_` and prove the remaining obligations. Establish `hk : RingHom.ker (jetAug : Jet V (Fin n × Fin d) m →ₐ[V] V) ^ (m + 1) = ⊥`. Establish `ea : (jetAug : Jet V (Fin n × Fin d) m →ₐ[V] V) = Chart.jetAug V _ m` using `Chart.jet_ext fun j => rfl`. Rewrite using `[ea]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Chart.ker_jetAug_pow _ m`. Establish `aa` using `ExpChartJet.aug_comp_jetSubstPS m (fun p : Fin 1 × Fin d => a p.2) (fun p => ha p.2)`. Establish `ab` using `ExpChartJet.aug_comp_jetSubstPS m (fun p : Fin 1 × Fin d => b p.2) (fun p => hb p.2)`. Establish `h1 : Formalism.L2.Pj.homAt (𝟙 (Sp V)) (jetAug : Jet V (Fin n × Fin d) m →ₐ[V] V) ≫ (sub1 m a ≫ x m) = 1`. Rewrite using `[sub1, ← Category.assoc, GermD.homAt_comp, aa]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hx.2.1 m`. Establish `e` using `(hx.2.2 _ jetAug m hk _ h1).unique ⟨aa, rfl⟩ ⟨ab, h m⟩`. Establish `e'` using `AlgHom.congr_fun e (Ideal.Quotient.mk _ (MvPolynomial.X ((0 : Fin 1), i)))`. Rewrite `e'` using `[ExpChartJet.jetSubstPS_mk m (fun p : Fin 1 × Fin d => a p.2) (fun p => ha p.2), ExpChartJet.jetSubstPS_mk m (fun p : Fin 1 × Fin d => b p.2) (fun p => hb p.2)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eq_of_jetSchemeMap_singlePoint_universal {G : Over (Sp V)} [GrpObj G] {x : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ G}
     (hx : GlobalTheory.PowGerm.IsUnivJ G (Fin 1 × Fin d) x) {n : ℕ} {a b : Pt V n d}
@@ -137,9 +137,9 @@ theorem eq_of_jetSchemeMap_singlePoint_universal {G : Over (Sp V)} [GrpObj G] {x
     ExpChartJet.jetSubstPS_mk m (fun p : Fin 1 × Fin d => b p.2) (fun p => hb p.2)] at e'
 
 /- English proof (translation)
-Establish `e : jetCopy (S` using `V) d m i = jetSubstPS (m := m) (fun p : Fin 1 × Fin d => pt V d i p.2) := by`. Apply `GermD.jet_hom_ext` to reduce the goal to its premises. Introduce `p`. Rewrite using `[ExpChartJet.jetSubstPS_mk m (fun p : Fin 1 × Fin d => pt V d i p.2) (fun _ => MvPowerSeries.constantCoeff_X _), jetCopy, GermD.jetMap_mk, MvPolynomial.aeval_X, pt, ← MvPolynomial.coe_X]`. Rewrite using `[psJet, FBIdJet.psTrunc_eq, FBIdJet.mk_trunc_coe]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[jptG, e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem jptG_eq {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (t : SAB H (Sp V))
     (x : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ t.G) (m : ℕ) {n : ℕ} (i : Fin n) :
@@ -158,15 +158,15 @@ end GlobalTheory.ChartCmp.CoordLaw
 open GlobalTheory.ChartCmp.CoordLaw in
 
 /- English proof (translation)
-Introduce `E _ _ _ H _ V _ t d B B' κ κ' _ _ tg tg' uv uv' x x' φ φi hc hc' hu hinv hrel`. Establish `hφ` using `hinv.1`. Establish `hr : ∀ m, x' m = sub1 m φ ≫ x m` using `hrel`. Establish `hpt : ∀ (j : Fin 2) i, MvPowerSeries.constantCoeff (pt V d j i) = 0` using `fun j i => MvPowerSeries.constantCoeff_X _`. Use `⟨?_, fun a => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `A : Fin 2 → Pt V 2 d` to `![comp1 φ (pt V (n := 2) d 0), comp1 φ (pt V (n := 2) d 1)]`. Establish `hA : ∀ j i, MvPowerSeries.constantCoeff (A j i) = 0`. Introduce `j i`. Apply the tactic sequence `fin_cases j <;> exact cc_comp1 hφ (hpt _) i`. Establish `hX : ∀ j, (fun i => ev A (pt V d j i)) = A j` using `fun j => funext fun i => MvPowerSeries.subst_X (MvPowerSeries.hasSubst_of_constantCoeff_zero fun p : Fin 2 × Fin d => hA p.1 p.2) (j, i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `key : comp1 φ B'.G.F = addOf B.G.F (comp1 φ (pt V (n` using `2) d 0)) (comp1 φ (pt V (n := 2) d 1)) := by`. Use `eq_of_jetSchemeMap_singlePoint_universal hu (cc_comp1 hφ B'.G.const) (fun i => cc_ev A hA _ (B.G.const i)) fun m => ?_` and prove the remaining obligations. Establish `l : sub1 m B.G.F ≫ x m = _` using `hc.law m`. Establish `l' : sub1 m B'.G.F ≫ x' m = _` using `hc'.law m`. Establish `l2` using `congrArg (fun f => sub m A ≫ f) l`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [jptG_eq, MonObj.comp_mul, ← Category.assoc, jetSchemeMap_pointFamily_comp_singlePoint m A _ hA B.G.const, jetSchemeMap_pointFamily_comp_singlePoint m A _ hA (hpt _), hX] at l2`. Simplify using `only [jptG_eq, hr m, ← Category.assoc, jetSchemeMap_singlePoint_comp_singlePoint m _ φ B'.G.const hφ, jetSchemeMap_singlePoint_comp_singlePoint m _ φ (hpt _) hφ] at l'`. Conclude with `l'.trans l2.symm`. Conclude with `fun i => congrFun (eq_comp1_inv hinv B'.G.const key) i`. Use `eq_comp1_inv hinv (B'.A.const a) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_of_jetSchemeMap_singlePoint_universal hu (cc_comp1 hφ (B'.A.const a)) (cc_comp1 (B.A.const a) hφ) fun m => ?_` and prove the remaining obligations. Establish `l : x m ≫ t.act.act a = sub1 m (B.A.act a) ≫ x m` using `hc.act m a`. Establish `l' : x' m ≫ t.act.act a = sub1 m (B'.A.act a) ≫ x' m` using `hc'.act m a`. Rewrite using `[← jetSchemeMap_singlePoint_comp_singlePoint m _ φ (B'.A.const a) hφ, ← jetSchemeMap_singlePoint_comp_singlePoint m φ _ hφ (B.A.const a), Category.assoc, Category.assoc, ← hr m, ← l', ← l, hr m, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ChartCmp.law_act_of_coordRel : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (V : Type) [CommRing V] (t : SAB H (Sp V)) (d : ℕ) (B B' : FB V d (𝓞 E)) (κ κ' : Type) [Fintype κ] [Fintype κ'] (tg : κ → (Sp (DualNumber V) ⟶ t.G.left)) (tg' : κ' → (Sp (DualNumber V) ⟶ t.G.left)) (uv : κ → Fin d → V) (uv' : κ' → Fin d → V) (x x' : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ t.G) (φ φi : Pt V 1 d), IsChartG t (𝟙 (Sp V)) d B.G.F B.A.act tg uv x → IsChartG t (𝟙 (Sp V)) d B'.G.F B'.A.act tg' uv' x' → GlobalTheory.PowGerm.IsUnivJ t.G (Fin 1 × Fin d) x → IsInvPair φ φi → CoordRel x x' φ → (∀ i, B'.G.F i = transF B.G.F φ φi i) ∧ ∀ a, B'.A.act a = comp1 φi (comp1 (B.A.act a) φ) := by
   intro E _ _ _ H _ V _ t d B B' κ κ' _ _ tg tg' uv uv' x x' φ φi hc hc' hu hinv hrel

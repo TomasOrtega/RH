@@ -16,32 +16,32 @@ variable {K : Type} [Field K] [NumberField K] {v : HeightOneSpectrum (𝓞 K)}
 local notation "𝒪" => HeightOneSpectrum.adicCompletionIntegers K v
 
 /- English proof (translation)
-Simplify using `[absV]`.
+Simplify using the standard rewrite rules.
 -/
 theorem absV_mul (x y : Cv v) : absV v (x * y) = absV v x * absV v y := by simp [absV]
 
 /- English proof (translation)
-The claim follows from `NNReal.coe_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem absV_nonneg (x : Cv v) : 0 ≤ absV v x := NNReal.coe_nonneg _
 
 /- English proof (translation)
-Simplify using `[absV]`.
+Simplify using the standard rewrite rules.
 -/
 theorem absV_one : absV v (1 : Cv v) = 1 := by simp [absV]
 
 /- English proof (translation)
-Simplify using `[absV]`.
+Simplify using the standard rewrite rules.
 -/
 theorem absV_pow (x : Cv v) (j : ℕ) : absV v (x ^ j) = absV v x ^ j := by simp [absV]
 
 /- English proof (translation)
-Simplify using `[absV]`.
+Simplify using the standard rewrite rules.
 -/
 theorem absV_inv (x : Cv v) : absV v x⁻¹ = (absV v x)⁻¹ := by simp [absV]
 
 /- English proof (translation)
-Unfold `absV`. Rewrite using `[h, WithZeroMulInt.toNNReal_neg_apply _ WithZero.coe_ne_zero, WithZero.unzero_coe, toAdd_ofAdd, _root_.zpow_neg_one, NNReal.coe_inv, NNReal.coe_natCast]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem absV_unif {ϖ : Cv v} (h : IsUnifV K v ϖ) : absV v ϖ = ((qV K v : ℝ))⁻¹ := by
   unfold absV
@@ -50,7 +50,7 @@ theorem absV_unif {ϖ : Cv v} (h : IsUnifV K v ϖ) : absV v ϖ = ((qV K v : ℝ)
   rfl
 
 /- English proof (translation)
-Establish `h : Valued.v (algebraMap 𝒪 (Cv v) u) = 1` using `(Valuation.Integers.one_of_isUnit (Valuation.valuationSubring.integers _) u.isUnit)`. Rewrite using `[absV, h, map_one, NNReal.coe_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem absV_unit (u : (𝒪)ˣ) : absV v (algebraMap 𝒪 (Cv v) u) = 1 := by
   have h : Valued.v (algebraMap 𝒪 (Cv v) u) = 1 :=
@@ -60,12 +60,12 @@ theorem absV_unit (u : (𝒪)ˣ) : absV v (algebraMap 𝒪 (Cv v) u) = 1 := by
 def wt (s : ℝ) {m : ℕ} (g : GL (Fin m) (Cv v)) : ℂ := ((absV v g.1.det ^ s : ℝ) : ℂ)
 
 /- English proof (translation)
-Simplify using `[wt, absV_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wt_one (s : ℝ) {m : ℕ} : wt s (1 : GL (Fin m) (Cv v)) = 1 := by simp [wt, absV_one]
 
 /- English proof (translation)
-Simplify using `only [wt, Units.val_mul, det_mul, absV_mul, Real.mul_rpow (absV_nonneg _) (absV_nonneg _), Complex.ofReal_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wt_mul (s : ℝ) {m : ℕ} (g h : GL (Fin m) (Cv v)) : wt s (g * h) = wt s g * wt s h := by
   simp only [wt, Units.val_mul, det_mul, absV_mul, Real.mul_rpow (absV_nonneg _) (absV_nonneg _),
@@ -104,7 +104,7 @@ theorem rT_apply {n c : ℕ} (z : GL (Fin n) (Cv v)) (Φ) (y) :
     rT v n c z Φ y = wt ((c : ℝ) / 2) z * Φ (z.1ᵀ * y) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [rS_apply, rT_apply, Matrix.mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rS_rT {n c : ℕ} (g : GL (Fin c) (Cv v)) (z : GL (Fin n) (Cv v)) (Φ) :
     rS v n c g (rT v n c z Φ) = rT v n c z (rS v n c g Φ) := by
@@ -118,7 +118,7 @@ def phi0 (n c : ℕ) : Matrix (Fin n) (Fin c) (Cv v) → ℂ :=
   Set.indicator {x | ∀ i j, Valued.v (x i j) ≤ 1} 1
 
 /- English proof (translation)
-The claim follows from `forall₂_congr fun _ _ => ⟨fun ⟨o, h⟩ => h ▸ o.2, fun h => ⟨⟨_, h⟩, rfl⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem intM_iff' {n c : ℕ} {y : Matrix (Fin n) (Fin c) (Cv v)} :
     IntM 𝒪 y ↔ ∀ i j, Valued.v (y i j) ≤ 1 :=
@@ -126,7 +126,7 @@ theorem intM_iff' {n c : ℕ} {y : Matrix (Fin n) (Fin c) (Cv v)} :
 
 open Classical in
 /- English proof (translation)
-Unfold `phi0`. Distinguish the cases in `h : IntM 𝒪 y`. Rewrite using `[if_pos h, Set.indicator_of_mem (show y ∈ {x | ∀ i j, Valued.v (x i j) ≤ 1} from intM_iff'.1 h)]`. Both sides reduce to the same expression. Rewrite using `[if_neg h, Set.indicator_of_notMem (show y ∉ {x | ∀ i j, Valued.v (x i j) ≤ 1} from fun h' => h (intM_iff'.2 h'))]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem characteristic_function_integral_apply {n c : ℕ} (y : Matrix (Fin n) (Fin c) (Cv v)) :
     phi0 v n c y = if IntM 𝒪 y then 1 else 0 := by
@@ -137,7 +137,7 @@ theorem characteristic_function_integral_apply {n c : ℕ} (y : Matrix (Fin n) (
       (show y ∉ {x | ∀ i j, Valued.v (x i j) ≤ 1} from fun h' => h (intM_iff'.2 h'))]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨intM_iff'.2 fun i j => P.cartan_entries_of_mem _ _ h i j, intM_iff'.2 fun i j => P.cartan_entries_of_mem _ _ (inv_mem h) i j⟩, fun h => P.cartan_mem_of_entries _ _ (intM_iff'.1 h.1) (intM_iff'.1 h.2)⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_KGL {m : ℕ} {g : GL (Fin m) (Cv v)} : g ∈ KGL v m ↔ GInt 𝒪 g :=
   ⟨fun h => ⟨intM_iff'.2 fun i j => P.cartan_entries_of_mem _ _ h i j,
@@ -145,21 +145,21 @@ theorem mem_KGL {m : ℕ} {g : GL (Fin m) (Cv v)} : g ∈ KGL v m ↔ GInt 𝒪 
     fun h => P.cartan_mem_of_entries _ _ (intM_iff'.1 h.1) (intM_iff'.1 h.2)⟩
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `(mem_KGL.1 h).det`. Rewrite using `[wt, hu, absV_unit, Real.one_rpow, Complex.ofReal_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem wt_of_mem (s : ℝ) {m : ℕ} {g : GL (Fin m) (Cv v)} (h : g ∈ KGL v m) : wt s g = 1 := by
   obtain ⟨u, hu⟩ := (mem_KGL.1 h).det
   rw [wt, hu, absV_unit, Real.one_rpow, Complex.ofReal_one]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun hy => by simpa [Matrix.mul_assoc] using hy.mul h.2, fun hy => hy.mul h.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem intM_mul_iff {n c : ℕ} {g : GL (Fin c) (Cv v)} (h : GInt 𝒪 g)
     (y : Matrix (Fin n) (Fin c) (Cv v)) : IntM 𝒪 (y * g.1) ↔ IntM 𝒪 y :=
   ⟨fun hy => by simpa [Matrix.mul_assoc] using hy.mul h.2, fun hy => hy.mul h.1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by simpa [Matrix.transpose_mul] using h.transpose, fun h => by simpa [Matrix.transpose_mul] using h.transpose⟩`.
+Supply the required witnesses or components.
 -/
 theorem intM_tr_iff {n c : ℕ} (z : Matrix (Fin n) (Fin n) (Cv v))
     (y : Matrix (Fin n) (Fin c) (Cv v)) : IntM 𝒪 (zᵀ * y) ↔ IntM 𝒪 (yᵀ * z) :=
@@ -167,14 +167,14 @@ theorem intM_tr_iff {n c : ℕ} (z : Matrix (Fin n) (Fin n) (Cv v))
     fun h => by simpa [Matrix.transpose_mul] using h.transpose⟩
 
 /- English proof (translation)
-The claim follows from `mem_fixed.2 fun k hk => funext fun y => by rw [rS_apply, wt_of_mem _ hk, one_mul, characteristic_function_integral_apply, characteristic_function_integral_apply, intM_mul_iff (mem_KGL.1 hk)]`.
+A detailed English derivation is pending.
 -/
 theorem sphericalVector_fixed_right (n c : ℕ) : phi0 v n c ∈ fixed (rS v n c) (KGL v c) :=
   mem_fixed.2 fun k hk => funext fun y => by
     rw [rS_apply, wt_of_mem _ hk, one_mul, characteristic_function_integral_apply, characteristic_function_integral_apply, intM_mul_iff (mem_KGL.1 hk)]
 
 /- English proof (translation)
-The claim follows from `mem_fixed.2 fun k hk => funext fun y => by rw [rT_apply, wt_of_mem _ hk, one_mul, characteristic_function_integral_apply, characteristic_function_integral_apply, intM_tr_iff, intM_mul_iff (mem_KGL.1 hk)] classical exact if_congr ⟨fun h => h.transpose, fun h => h.transpose⟩ rfl rf …`.
+A detailed English derivation is pending.
 -/
 theorem sphericalVector_fixed_left (n c : ℕ) : phi0 v n c ∈ fixed (rT v n c) (KGL v n) :=
   mem_fixed.2 fun k hk => funext fun y => by
@@ -184,7 +184,7 @@ theorem sphericalVector_fixed_left (n c : ℕ) : phi0 v n c ∈ fixed (rT v n c)
     exact if_congr ⟨fun h => h.transpose, fun h => h.transpose⟩ rfl rfl
 
 /- English proof (translation)
-The claim follows from `(LinearMap.proj (R := ℂ) (φ := fun _ : X => ℂ) y).toAddMonoidHom.map_finsum (finite_heckeVec hJ hh ρ Φ)`.
+A detailed English derivation is pending.
 -/
 theorem heckeVec_apply {G X : Type} [Group G] {J : Subgroup G} (hJ : IsCommensurated J)
     {h : G → ℂ} (hh : h ∈ Hecke ℂ J) (ρ : Representation ℂ G (X → ℂ)) (Φ : X → ℂ) (y : X) :
@@ -193,13 +193,11 @@ theorem heckeVec_apply {G X : Type} [Group G] {J : Subgroup G} (hJ : IsCommensur
     (finite_heckeVec hJ hh ρ Φ)
 
 /- English proof (translation)
-Use `⟨intM_iff'.2 fun a b => ?_, intM_iff'.2 fun a b => ?_, 1, ?_⟩` and prove the remaining obligations. Rewrite using `[tor_val, diagonal_apply] split_ifs`. Rewrite using `[zpow_one]`. Conclude with `p.2`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `Valued.v ((p : Cv v) * diagonal (fun i : Fin m => (p : Cv v) ^ (-(if (i : ℕ) < j then 1 else 0 : ℤ))) a b) ≤ 1`. Rewrite using `[diagonal_apply]`. Use `split_ifs`. Simplify using `[h0]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[neg_zero, zpow_zero, mul_one]`. Conclude with `p.2`. Simplify using the standard rewrite rules. Rewrite using `[tor_val, det_diagonal]`. Simplify using `only [apply_ite (fun e : ℤ => (p : Cv v) ^ e), zpow_one, zpow_zero]`.
-
-Rewrite using `[Finset.prod_ite, Finset.prod_const_one, mul_one, Finset.prod_const, Fin.card_filter_val_lt, min_eq_right hj]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hk_tor {p : 𝒪} (h0 : (p : Cv v) ≠ 0) {m j : ℕ} (hj : j ≤ m) :
     Hk 𝒪 p j (tor h0 fun i : Fin m => if (i : ℕ) < j then 1 else 0) := by
@@ -225,17 +223,15 @@ theorem hk_tor {p : 𝒪} (h0 : (p : Cv v) ≠ 0) {m j : ℕ} (hj : j ≤ m) :
 open Classical in
 
 /- English proof (translation)
-Establish `hK : IsCommensurated (KGL v m)` using `Final.GLintComm K v m`. Use `set α := tor h0 fun i : Fin m => if (i : ℕ) < j then (1 : ℤ) else 0`. Establish `hf` using `P.finite_support_cosets hK (Final.DosetIndMem _ (KGL v m) ℂ α).2`. Establish `hR : ∀ γ, γ ∈ hf.toFinset ↔ ∃ a ∈ KGL v m, ∃ b ∈ KGL v m, γ.out = a * α * b` using `fun γ => by`. Rewrite using `[Set.Finite.mem_toFinset]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun h => by_contra fun h' => h (dosetInd_of_not h'), fun h => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `dosetInd ℂ _ α γ.out ≠ 0`. Rewrite using `[dosetInd_of_mem h]`. Conclude with `one_ne_zero`. Use `⟨hf.toFinset, ⟨fun γ hγ => ?_, fun k₁ k₂ h₁ h₂ => ?_⟩, fun s ρ Φ y Q hQ => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha, b, hb, e⟩` from `(hR γ).1 hγ`. Conclude with `⟨a, b, mem_KGL.1 ha, mem_KGL.1 hb, e⟩`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (KGL v m) (k₁ * α * k₂)`. Use `⟨(k₁ * α * k₂ : GL (Fin m) (Cv v)), ⟨(hR _).2 ⟨k₁, mem_KGL.2 h₁, k₂ * k, mul_mem (mem_KGL.2 h₂) k.2, by rw [hk]; group⟩, mem_KGL.1 ?_⟩, fun γ hγ => ?_⟩` and prove the remaining obligations. Rewrite using `[hk]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (k₁ * α * k₂ * k)⁻¹ * (k₁ * α * k₂) = (k : GL (Fin m) (Cv v))⁻¹ by group]`. Conclude with `inv_mem k.2`. Rewrite using `[← γ.out_eq']`. Conclude with `QuotientGroup.eq.2 (mem_KGL.2 hγ.2)`. Rewrite using `[heckeVec_apply hK (Tj_mem_hecke hp j), Tj_eq h0, finsum_eq_sum_of_support_subset (s := hf.toFinset) _ fun γ hγ => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Set.Finite.coe_toFinset]`. Conclude with `left_ne_zero_of_mul hγ]`. Establish `e : ∀ γ ∈ hf.toFinset, dosetInd ℂ (KGL v m) α γ.out * ρ γ.out Φ y = ((((qV K v : ℝ)⁻¹ ^ j) ^ s : ℝ) : ℂ) * if Q γ.out then 1 else 0` using `fun γ hγ => by`. Take `⟨a, ha, b, hb, e⟩` from `(hR γ).1 hγ`. Take `⟨u, hu⟩` from `(hk_tor h0 hj).2.2`.
-
-Rewrite using `[dosetInd_of_mem ⟨a, ha, b, hb, e⟩, one_mul, hQ]`. Use `congr 1`. Rewrite using `[e, wt_mul, wt_mul, wt_of_mem _ ha, wt_of_mem _ hb, one_mul, mul_one, wt, hu, map_mul, absV_mul, absV_unit, mul_one, map_pow, absV_pow]`. Conclude with `congrArg (fun t : ℝ => (((t ^ j) ^ s : ℝ) : ℂ)) (absV_unif hp)`. Rewrite using `[Finset.sum_congr rfl e, ← Finset.mul_sum, Finset.sum_boole, Nat.subtype_card (hf.toFinset.filter fun γ => Q γ.out) (by simp)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tj_count {X : Type} {m j : ℕ} (hj : j ≤ m) {p : 𝒪} (hp : IsUnifV K v (p : Cv v))
     (h0 : (p : Cv v) ≠ 0) : ∃ R : Finset (GL (Fin m) (Cv v) ⧸ KGL v m),

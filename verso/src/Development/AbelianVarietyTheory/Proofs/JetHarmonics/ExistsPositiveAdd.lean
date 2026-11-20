@@ -10,23 +10,21 @@ set_option autoImplicit false in
 open NumberField NumberField.IsCMField TensorProduct in
 
 /- English proof (translation)
-Set `φ₀ : E →+* ℂ` to `(Classical.arbitrary (InfinitePlace E)).embedding`. Establish `inj` using `φ₀.injective`. Establish `hadd : ∀ a b, cj (a + b) = cj a + cj b` using `fun a b => inj (by rw [h, map_add, map_add, h, h, star_add])`. Establish `hmul : ∀ a b, cj (a * b) = cj a * cj b` using `fun a b => inj (by rw [h, map_mul, map_mul, h, h, star_mul'])`. Establish `hinv : ∀ z, cj (cj z) = z` using `fun z => inj (by rw [h, h, star_star])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e : E ≃+* E` to `{ toFun := cj, invFun := cj, left_inv := hinv, right_inv := hinv, map_mul' := hmul, map_add' := hadd }`. Set `σ : E ≃ₐ[ℚ] E` to `e.toRatAlgEquiv`. Establish `hσ : ∀ z, σ z = cj z` using `fun _ => rfl`. Establish `hsq : σ ^ 2 = 1` using `AlgEquiv.ext fun z => by`. Rewrite using `[pow_two, AlgEquiv.mul_apply, hσ, hσ, hinv, AlgEquiv.one_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne1 : σ ≠ 1`. Take `⟨z, hz⟩` from `hne`. Introduce `h1`. Conclude with `hz (by rw [← hσ, h1, AlgEquiv.one_apply])`. Establish `hord : orderOf σ = 2` using `orderOf_eq_prime hsq hne1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : ∀ x, x ∈ IntermediateField.fixedField (Subgroup.zpowers σ) ↔ cj x = x`. Introduce `x`. Rewrite using `[IntermediateField.mem_fixedField_iff]`. Use `⟨fun hx => hx σ (Subgroup.mem_zpowers σ), fun hx f hf => ?_⟩` and prove the remaining obligations. Take `⟨n, rfl⟩` from `Subgroup.mem_zpowers_iff.mp hf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `clear hf`. Establish `hσx : σ x = x` using `hx`. Establish `hσx' : σ⁻¹ x = x`. Combine the equalities or inequalities in the displayed calculation. Proceed by induction on `n using Int.induction_on with`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ k ih => rw [zpow_add_one, AlgEquiv.mul_apply, hσx, ih]`. Consider the case `pred k ih => rw [zpow_sub_one, AlgEquiv.mul_apply, hσx', ih]`. Establish `hS : maximalRealSubfield E = (IntermediateField.fixedField (Subgroup.zpowers σ)).toSubfield`. Use extensionality with `x`.
+Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[mem_maximalRealSubfield_iff, IntermediateField.mem_toSubfield, hfix]`. Conclude with `⟨fun hx => inj ((h φ₀ x).trans (hx φ₀)), fun hx φ => by rw [← h φ x, hx]⟩`. Establish `hfin : Module.finrank (maximalRealSubfield E) E = 2`. Rewrite using `[hS]`. Conclude with `(IntermediateField.finrank_fixedField_eq_card (Subgroup.zpowers σ)).trans (by rw [Nat.card_zpowers, hord])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `haveI : IsTotallyComplex E := ⟨fun v => InfinitePlace.not_isReal_iff_isComplex.mp fun hv => by`. Rewrite `hv` using `[InfinitePlace.isReal_iff, ComplexEmbedding.isReal_iff]`. Take `⟨z, hz⟩` from `hne`. Conclude with `hz (v.embedding.injective ((h _ z).trans (RingHom.congr_fun hv z)))⟩`. Use `haveI : Algebra.IsQuadraticExtension (maximalRealSubfield E) E := ⟨hfin⟩`.
-
-Conclude with `⟨⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LeastExponentCompare.isCMField_of_conj (E : Type) [Field E] [NumberField E] (cj : E → E)
     (h : ∀ (φ : E →+* ℂ) (z : E), φ (cj z) = star (φ z)) (hne : ∃ z : E, cj z ≠ z) :
@@ -84,9 +82,9 @@ set_option autoImplicit false in
 open NumberField NumberField.IsCMField TensorProduct in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hne⟩ haveI := _root_.GlobalTheory.LeastExponentCompare.isCMField_of_conj E cj h hne`. Use `⟨this, funext fun z => ?_⟩` and prove the remaining obligations. Set `φ₀ : E →+* ℂ` to `(Classical.arbitrary (InfinitePlace E)).embedding`. Conclude with `φ₀.injective (by rw [h, complexEmbedding_complexConj, RCLike.star_def])`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, rfl⟩`. Use `⟨fun φ z => by rw [complexEmbedding_complexConj, RCLike.star_def], ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Conclude with `complexConj_ne_one E (AlgEquiv.ext hall)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.LeastExponentCompare.conj_iff (E : Type) [Field E] [NumberField E]
     (cj : E → E) :

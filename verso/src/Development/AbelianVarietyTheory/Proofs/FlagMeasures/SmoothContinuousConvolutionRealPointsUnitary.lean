@@ -13,15 +13,15 @@ noncomputable section
 namespace GlobalTheory.SmoothConv
 
 /- English proof (translation)
-Take `⟨R, hR0, hR⟩` from `hK.isBounded.subset_closedBall_lt 0 0`. Set `χ : ContDiffBump (0 : E)` to `⟨R, R + 1, hR0, by linarith⟩`. Establish `hf' : Integrable (Function.extend e f 0) (μ.map e)`. Rewrite using `[he.integrable_map_iff]`. Establish `: Function.extend e f 0 ∘ e = f` using `Function.extend_comp he.injective _ _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]` and apply the resulting hypothesis. Establish `key` using `contDiffOn_convolution_right_with_param_comp (𝕜 := ℝ) (n := (⊤ : ℕ∞)) (ContinuousLinearMap.mul ℝ ℂ) (s := (Set.univ : Set P)) (v := fun _ => (0 : E)) contDiffOn_const (f := Function.extend e f 0) (μ := μ.map e) (g := fun p z => (χ (-z) : ℂ) * Φ (p, -z)) (k := Metric.closedBall 0 …`. Rewrite `key` using `[contDiffOn_univ]`. Use `key using 2 with p` and compare the differences between its conclusion and the goal. Rewrite using `[convolution_def, he.integral_map]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [he.injective.extend_apply, zero_sub, neg_neg, ContinuousLinearMap.mul_apply']`. Distinguish the cases in `hx : e x ∈ K`. Rewrite using `[χ.one_of_mem_closedBall (hR hx)]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hfK x hx]`. Introduce `p z _ hz`. Establish `: χ (-z) = 0`. Apply `χ.zero_of_le_dist` to reduce the goal to its premises. Simplify using `only [Metric.mem_closedBall, dist_zero_right, not_le] at hz`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify `hz.le` using `[χ]`. Simplify using `[this]`. Use `ContDiff.contDiffOn ?_` and prove the remaining obligations. Establish `h1 : ContDiff ℝ ∞ fun q : P × E => ((χ (-q.2) : ℝ) : ℂ)` using `Complex.ofRealCLM.contDiff.comp (χ.contDiff.comp contDiff_snd.neg)`. Conclude with `h1.mul (hΦ.comp (contDiff_fst.prodMk contDiff_snd.neg))`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_param_integral {X E P : Type} [MeasurableSpace X] (μ : Measure X) [NormedAddCommGroup E]
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] [NormedAddCommGroup P]
@@ -67,31 +67,31 @@ def EntrySmoothAt (f : P → Matrix (Fin n) (Fin n) ℂ) (x : P) : Prop :=
 variable {f g : P → Matrix (Fin n) (Fin n) ℂ} {x : P}
 
 /- English proof (translation)
-Introduce `_ _` and use `contDiffAt_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EntrySmoothAt.const (c : Matrix (Fin n) (Fin n) ℂ) : EntrySmoothAt (fun _ => c) x :=
   fun _ _ => contDiffAt_const
 
 /- English proof (translation)
-Introduce `i j` and use `(hf i j).add (hg i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EntrySmoothAt.add (hf : EntrySmoothAt f x) (hg : EntrySmoothAt g x) :
     EntrySmoothAt (fun y => f y + g y) x := fun i j => (hf i j).add (hg i j)
 
 /- English proof (translation)
-Introduce `i j` and use `(hf i j).sub (hg i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EntrySmoothAt.sub (hf : EntrySmoothAt f x) (hg : EntrySmoothAt g x) :
     EntrySmoothAt (fun y => f y - g y) x := fun i j => (hf i j).sub (hg i j)
 
 /- English proof (translation)
-Introduce `i j` and use `contDiffAt_const.mul (hf i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EntrySmoothAt.smul (c : ℂ) (hf : EntrySmoothAt f x) :
     EntrySmoothAt (fun y => c • f y) x := fun i j => contDiffAt_const.mul (hf i j)
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [Matrix.mul_apply] exact ContDiffAt.sum fun k _ => (hf i k).mul (hg k j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EntrySmoothAt.mul (hf : EntrySmoothAt f x) (hg : EntrySmoothAt g x) :
     EntrySmoothAt (fun y => f y * g y) x := fun i j => by
@@ -99,20 +99,20 @@ theorem EntrySmoothAt.mul (hf : EntrySmoothAt f x) (hg : EntrySmoothAt g x) :
   exact ContDiffAt.sum fun k _ => (hf i k).mul (hg k j)
 
 /- English proof (translation)
-Introduce `i j` and use `Complex.conjCLE.contDiff.contDiffAt.comp x (hf j i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EntrySmoothAt.conjTranspose (hf : EntrySmoothAt f x) : EntrySmoothAt (fun y => (f y)ᴴ) x :=
   fun i j => Complex.conjCLE.contDiff.contDiffAt.comp x (hf j i)
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Conclude with `ContDiffAt.sum fun σ _ => contDiffAt_const.mul (contDiffAt_prod fun i _ => hf _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem EntrySmoothAt.det (hf : EntrySmoothAt f x) : ContDiffAt ℝ ∞ (fun y => (f y).det) x := by
   simp only [Matrix.det_apply']
   exact ContDiffAt.sum fun σ _ => contDiffAt_const.mul (contDiffAt_prod fun i _ => hf _ _)
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul, Matrix.adjugate_apply] refine (hf.det.inv h).mul (EntrySmoothAt.det fun k l => ?_) by_cases hk : k = j · subst hk; simp only [Matrix.updateRow_self]; exact contDiffAt_const · simp only [Matrix.upd …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem EntrySmoothAt.inv (hf : EntrySmoothAt f x) (h : (f x).det ≠ 0) :
     EntrySmoothAt (fun y => (f y)⁻¹) x := fun i j => by
@@ -135,31 +135,31 @@ def cay (X : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ := (1 - X)
 def skew (X : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ := (2⁻¹ : ℂ) • (X - adj ε X)
 
 /- English proof (translation)
-Simplify using `only [adj, conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Jm ε) (Jm ε), Jm_mul_self, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_mul (X Y : Matrix (Fin n) (Fin n) ℂ) : adj ε (X * Y) = adj ε Y * adj ε X := by
   simp only [adj, conjTranspose_mul, Matrix.mul_assoc]
   rw [← Matrix.mul_assoc (Jm ε) (Jm ε), Jm_mul_self, Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `[adj, Jm_mul_self]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adj_one : adj ε 1 = 1 := by simp [adj, Jm_mul_self]
 
 /- English proof (translation)
-Simplify using `[adj, Matrix.mul_add, Matrix.add_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adj_add (X Y : Matrix (Fin n) (Fin n) ℂ) : adj ε (X + Y) = adj ε X + adj ε Y := by
   simp [adj, Matrix.mul_add, Matrix.add_mul]
 
 /- English proof (translation)
-Simplify using `[adj, Matrix.mul_sub, Matrix.sub_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adj_sub (X Y : Matrix (Fin n) (Fin n) ℂ) : adj ε (X - Y) = adj ε X - adj ε Y := by
   simp [adj, Matrix.mul_sub, Matrix.sub_mul]
 
 /- English proof (translation)
-Simplify using `only [adj, conjTranspose_mul, Matrix.mul_assoc, Jm_conjTranspose, conjTranspose_conjTranspose, Jm_mul_self, Matrix.mul_one]`. Rewrite using `[← Matrix.mul_assoc (Jm ε) (Jm ε), Jm_mul_self, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_adj (X : Matrix (Fin n) (Fin n) ℂ) : adj ε (adj ε X) = X := by
   simp only [adj, conjTranspose_mul, Matrix.mul_assoc, Jm_conjTranspose, conjTranspose_conjTranspose,
@@ -167,7 +167,7 @@ theorem adj_adj (X : Matrix (Fin n) (Fin n) ℂ) : adj ε (adj ε X) = X := by
   rw [← Matrix.mul_assoc (Jm ε) (Jm ε), Jm_mul_self, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `: adj ε (skew ε X) = (2⁻¹ : ℂ) • adj ε (X - adj ε X)`. Simplify using `only [skew, adj, conjTranspose_smul, Matrix.mul_smul, Matrix.smul_mul]`. Simplify using the standard rewrite rules. Rewrite using `[this, adj_sub, adj_adj, skew, ← smul_neg, neg_sub]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_skew (X : Matrix (Fin n) (Fin n) ℂ) : adj ε (skew ε X) = -skew ε X := by
   have : adj ε (skew ε X) = (2⁻¹ : ℂ) • adj ε (X - adj ε X) := by
@@ -176,9 +176,9 @@ theorem adj_skew (X : Matrix (Fin n) (Fin n) ℂ) : adj ε (skew ε X) = -skew �
   rw [this, adj_sub, adj_adj, skew, ← smul_neg, neg_sub]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `(uJInv n ε g h).2`. Introduce `h`. Use `congrArg (Jm ε * ·) h` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [adj, ← Matrix.mul_assoc, Jm_mul_self, Matrix.one_mul, Matrix.mul_one] at this`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem inUJ_iff (g : Matrix (Fin n) (Fin n) ℂ) : inUJ ε g ↔ adj ε g * g = 1 := by
   constructor
@@ -189,9 +189,9 @@ theorem inUJ_iff (g : Matrix (Fin n) (Fin n) ℂ) : inUJ ε g ↔ adj ε g * g =
     exact this
 
 /- English proof (translation)
-Establish `h1 : (1 + X) * (1 + X)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (Ne.isUnit h)`. Rewrite using `[inUJ_iff, cay]`. Generalize the expression as in `(1 + X)⁻¹ = W at h1`. Establish `h2` using `congrArg (adj ε) h1`. Rewrite `h2` using `[adj_mul, adj_add, adj_one, hX]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[adj_mul, adj_sub, adj_one, hX]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem inUJ_cay {X : Matrix (Fin n) (Fin n) ℂ} (hX : adj ε X = -X) (h : (1 + X).det ≠ 0) :
     inUJ ε (cay X) := by
@@ -205,11 +205,11 @@ theorem inUJ_cay {X : Matrix (Fin n) (Fin n) ℂ} (hX : adj ε X = -X) (h : (1 +
     _ = 1 := by rw [h1, h2, mul_one]
 
 /- English proof (translation)
-Establish `h1 : (1 + g) * (1 + g)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (Ne.isUnit h)`. Rewrite `hg` using `[inUJ_iff]`. Establish `: adj ε (cay g) = -cay g`. Rewrite using `[cay]`. Generalize the expression as in `(1 + g)⁻¹ = W at h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Establish `h2` using `congrArg (adj ε) h1`. Rewrite `h2` using `[adj_mul, adj_add, adj_one]`. Rewrite using `[adj_mul, adj_sub, adj_one]`. Establish `h3 : (1 + adj ε g) * (-((1 - g) * W)) = 1 - adj ε g`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← h3, ← mul_assoc, h2, one_mul]`. Rewrite using `[skew, this, sub_neg_eq_add, ← two_smul ℂ, smul_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem skew_cay {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (h : (1 + g).det ≠ 0) :
     skew ε (cay g) = cay g := by
@@ -230,13 +230,11 @@ theorem skew_cay {g : Matrix (Fin n) (Fin n) ℂ} (hg : inUJ ε g) (h : (1 + g).
   simp
 
 /- English proof (translation)
-Establish `h1 : (1 + g) * (1 + g)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (Ne.isUnit h)`. Establish `h2 : (1 + g)⁻¹ * (1 + g) = 1` using `Matrix.nonsing_inv_mul _ (Ne.isUnit h)`. Rewrite using `[cay, cay]`. Generalize the expression as in `(1 + g)⁻¹ = W at h1 h2`. Establish `h3 : 1 + (1 - g) * W = (2 : ℂ) • W`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Rewrite using `[two_smul]`. Use `nth_rewrite 1 [← h1]`. Use `noncomm_ring`. Establish `h4 : 1 - (1 - g) * W = (2 : ℂ) • (g * W)`. Rewrite using `[two_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `nth_rewrite 1 [← h1]`. Use `noncomm_ring`. Establish `h5 : ((2 : ℂ) • W)⁻¹ = (2⁻¹ : ℂ) • (1 + g)`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, h2]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[h3, h4, h5, Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_assoc, h2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cay_cay {g : Matrix (Fin n) (Fin n) ℂ} (h : (1 + g).det ≠ 0) : cay (cay g) = g := by
   have h1 : (1 + g) * (1 + g)⁻¹ = 1 := Matrix.mul_nonsing_inv _ (Ne.isUnit h)
@@ -255,19 +253,19 @@ theorem cay_cay {g : Matrix (Fin n) (Fin n) ℂ} (h : (1 + g).det ≠ 0) : cay (
 variable {P : Type} [NormedAddCommGroup P] [NormedSpace ℝ P] {f : P → Matrix (Fin n) (Fin n) ℂ} {x : P}
 
 /- English proof (translation)
-The claim follows from `((EntrySmoothAt.const _).mul hf.conjTranspose).mul (EntrySmoothAt.const _)`.
+A detailed English derivation is pending.
 -/
 theorem EntrySmoothAt.adj (hf : EntrySmoothAt f x) : EntrySmoothAt (fun y => adj ε (f y)) x :=
   ((EntrySmoothAt.const _).mul hf.conjTranspose).mul (EntrySmoothAt.const _)
 
 /- English proof (translation)
-The claim follows from `(hf.sub (hf.adj ε)).smul _`.
+A detailed English derivation is pending.
 -/
 theorem EntrySmoothAt.skew (hf : EntrySmoothAt f x) : EntrySmoothAt (fun y => skew ε (f y)) x :=
   (hf.sub (hf.adj ε)).smul _
 
 /- English proof (translation)
-The claim follows from `((EntrySmoothAt.const _).sub hf).mul (((EntrySmoothAt.const _).add hf).inv h)`.
+A detailed English derivation is pending.
 -/
 theorem EntrySmoothAt.cay (hf : EntrySmoothAt f x) (h : (1 + f x).det ≠ 0) :
     EntrySmoothAt (fun y => cay (f y)) x :=
@@ -276,9 +274,9 @@ theorem EntrySmoothAt.cay (hf : EntrySmoothAt f x) (h : (1 + f x).det ≠ 0) :
 end Cayley
 
 /- English proof (translation)
-Establish `h1 : adj ε (uMat g) * uMat g = 1` using `(inUJ_iff ε _).1 g.2`. Establish `h2 : uMat g * uMat g⁻¹ = 1`. Establish `: uMat g * uMat g⁻¹ = uMat (g * g⁻¹)` using `rfl`. Rewrite using `[this, mul_inv_cancel]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem uMat_inv {n : ℕ} {ε : Fin n → Bool} (g : UJ ε) : uMat g⁻¹ = adj ε (uMat g) := by
   have h1 : adj ε (uMat g) * uMat g = 1 := (inUJ_iff ε _).1 g.2
@@ -289,21 +287,21 @@ theorem uMat_inv {n : ℕ} {ε : Fin n → Bool} (g : UJ ε) : uMat g⁻¹ = adj
     _ = _ := by rw [mul_assoc, h2, mul_one]
 
 /- English proof (translation)
-Take `⟨hemb, hrange⟩` from `uJEmb n ε`. Set `t : (Fin n → Fin n → ℂ) → Matrix (Fin n) (Fin n) ℂ` to `fun Y => uMat x⁻¹ * Matrix.of Y`. Establish `ht : ∀ Y, EntrySmoothAt t Y` using `fun Y => (EntrySmoothAt.const _).mul fun i j => by simp only [Matrix.of_apply]; fun_prop`. Establish `htg : ∀ g : UJ ε, t (fun i j => uMat g i j) = uMat (x⁻¹ * g)` using `fun g => rfl`. Establish `htx : t (fun i j => uMat x i j) = 1` using `by rw [htg, inv_mul_cancel]; rfl`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1 : (1 + t (fun i j => uMat x i j)).det ≠ 0`. Rewrite using `[htx, ← two_smul ℂ, Matrix.det_smul]`. Simplify using the standard rewrite rules. Establish `hx2 : (1 + skew ε (cay (t (fun i j => uMat x i j)))).det ≠ 0`. Rewrite using `[htx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[cay, skew, adj]`. Establish `hev : ∀ᶠ Y in 𝓝 (fun i j => uMat x i j), (1 + t Y).det ≠ 0 ∧ (1 + skew ε (cay (t Y))).det ≠ 0` using `(((EntrySmoothAt.const 1).add (ht _)).det.continuousAt.eventually_ne hx1).and (((EntrySmoothAt.const 1).add (((ht _).cay hx1).skew ε)).det.continuousAt.eventually_ne hx2)`. Establish `hex : ∀ Y, (1 + skew ε (cay (t Y))).det ≠ 0 → ∃ u : UJ ε, uMat u = cay (skew ε (cay (t Y)))`. Introduce `Y hY`. Establish `: cay (skew ε (cay (t Y))) ∈ {g | inUJ ε g}` using `inUJ_cay ε (adj_skew ε _) hY`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[← hrange]`. Conclude with `this`. Set `r : (Fin n → Fin n → ℂ) → UJ ε` to `fun Y => if h : (1 + skew ε (cay (t Y))).det ≠ 0 then (hex Y h).choose else 1`. Establish `hr : ∀ Y, (1 + skew ε (cay (t Y))).det ≠ 0 → uMat (r Y) = cay (skew ε (cay (t Y)))`. Introduce `Y hY`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [r, dif_pos hY]`. Conclude with `(hex Y hY).choose_spec`. Use `⟨fun Y => x * r Y, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev.eventually_nhds] with Y hY`. Establish `hY0` using `hY.self_of_nhds`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Establish `h1 : EntrySmoothAt (fun Z => uMat x * cay (skew ε (cay (t Z)))) Y` using `(EntrySmoothAt.const _).mul (((((ht Y).cay hY0.1).skew ε)).cay hY0.2)`. Introduce `i j`. Use `(h1 i j).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hY] with Z hZ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← hr Z hZ.2]`. Both sides reduce to the same expression. Introduce and unpack `g rfl`. Establish `h1` using `hr _ hY0.2`. Establish `h2` using `hY0.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1`, `h2` using `[htg]`. Rewrite `h1` using `[skew_cay ε (x⁻¹ * g).2 h2, cay_cay h2]`. Establish `h3 : r (fun i j => uMat g i j) = x⁻¹ * g` using `hemb.injective h1`. Rewrite using `[h3, mul_inv_cancel_left]`.
+A detailed English derivation is pending.
 -/
 theorem exists_retraction {n : ℕ} {ε : Fin n → Bool} (x : UJ ε) :
     ∃ ρ : (Fin n → Fin n → ℂ) → UJ ε, ∀ᶠ Y in 𝓝 (fun i j => uMat x i j),
@@ -356,20 +354,20 @@ variable (I : AutInst)
 def emb (g : I.Ginf) : InfinitePlace I.F → Fin I.n → Fin I.n → ℂ := fun v i j => uMat (g v) i j
 
 /- English proof (translation)
-The claim follows from `Topology.IsClosedEmbedding.piMap (f := fun v (g : UJ (I.ε v)) => (fun i j => uMat g i j : Fin I.n → Fin I.n → ℂ)) fun v => (uJEmb I.n (I.ε v)).1`.
+A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_emb : Topology.IsClosedEmbedding (emb I) :=
   Topology.IsClosedEmbedding.piMap (f := fun v (g : UJ (I.ε v)) => (fun i j => uMat g i j : Fin I.n → Fin I.n → ℂ))
     fun v => (uJEmb I.n (I.ε v)).1
 
 /- English proof (translation)
-Establish `hemb` using `isClosedEmbedding_emb I`. Take `⟨A, hA, hAa⟩` from `GlobalTheory.exists_contDiff_extension_of_isClosed hemb.isClosed_range (Function.extend (emb I) a 0) (by`. Introduce and unpack `_ ⟨x, rfl⟩`. Use `choose ρ hρ using fun v => exists_retraction (x v)`. Establish `hev : ∀ᶠ Y in 𝓝 (emb I x), ∀ v, EntrySmoothAt (fun Z => uMat (ρ v Z)) (Y v) ∧ ∀ g : UJ (I.ε v), (fun i j => uMat g i j) = Y v → ρ v (Y v) = g` using `Filter.eventually_all.2 fun v => ((continuous_apply v).tendsto (emb I x)).eventually (hρ v)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hUo, hxU⟩` from `eventually_nhds_iff.1 hev`. Set `R : (InfinitePlace I.F → Fin I.n → Fin I.n → ℂ) → I.Ginf` to `fun Y v => ρ v (Y v)`. Use `⟨U, fun Y => a (R Y), hUo, hxU, fun Y hY => ContDiffAt.contDiffWithinAt ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ContDiffAt ℝ ∞ (fun Z => emb I (R Z)) Y`. Use `contDiffAt_pi.2 fun v => contDiffAt_pi.2 fun i => contDiffAt_pi.2 fun j => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `((hU Y hY v).1 i j).comp Y (contDiffAt_apply ℝ _ v Y)`. Establish `h2 : ContinuousAt R Y` using `hemb.isInducing.continuousAt_iff.2 h1.continuousAt`. Take `⟨F, hF, hFa⟩` from `ha (R Y)`. Conclude with `(ContDiffAt.comp (g := F) Y hF h1).congr_of_eventuallyEq (h2.eventually hFa)`. Introduce and unpack `_ hy ⟨g, rfl⟩`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hemb.injective.extend_apply]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Conclude with `((hU _ hy v).2 (g v) rfl).symm)`. Conclude with `⟨A, hA, fun g => by rw [hAa _ ⟨g, rfl⟩, hemb.injective.extend_apply]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_contDiff_extension {a : I.Ginf → ℂ} (ha : SmoothInf I a) :
     ∃ A : (InfinitePlace I.F → Fin I.n → Fin I.n → ℂ) → ℂ, ContDiff ℝ ∞ A ∧ ∀ g, A (emb I g) = a g := by
@@ -398,7 +396,7 @@ theorem exists_contDiff_extension {a : I.Ginf → ℂ} (ha : SmoothInf I a) :
   exact ⟨A, hA, fun g => by rw [hAa _ ⟨g, rfl⟩, hemb.injective.extend_apply]⟩
 
 /- English proof (translation)
-Take `⟨A, hA, hAa⟩` from `exists_contDiff_extension I ha`. Establish `: a = A ∘ emb I` using `funext fun g => (hAa g).symm`. Rewrite using `[this]`. Conclude with `hA.continuous.comp (isClosedEmbedding_emb I).continuous`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_smoothInf {a : I.Ginf → ℂ} (ha : SmoothInf I a) : Continuous a := by
   obtain ⟨A, hA, hAa⟩ := exists_contDiff_extension I ha
@@ -407,17 +405,17 @@ theorem continuous_of_smoothInf {a : I.Ginf → ℂ} (ha : SmoothInf I a) : Cont
   exact hA.continuous.comp (isClosedEmbedding_emb I).continuous
 
 /- English proof (translation)
-Introduce `x`. Establish `hemb` using `isClosedEmbedding_emb I`. Take `⟨A, hA, hAa⟩` from `exists_contDiff_extension I ha`. Take `⟨N, hN, hxN⟩` from `exists_compact_mem_nhds x`. Establish `hK : IsCompact ((fun p : I.Ginf × I.Ginf => p.1 * p.2) '' (N ×ˢ tsupport a))` using `(hN.prod hc).image continuous_mul`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set K := (fun p : I.Ginf × I.Ginf => p.1 * p.2) '' (N ×ˢ tsupport a) with hKdef`. Establish `hint : Integrable (K.indicator F) (muInf I)` using `(integrable_indicator_iff hK.isClosed.measurableSet).2 (hF.integrableOn_isCompact hK)`. Set `m : (InfinitePlace I.F → Fin I.n → Fin I.n → ℂ) × (InfinitePlace I.F → Fin I.n → Fin I.n → ℂ) → InfinitePlace I.F → Fin I.n → Fin I.n → ℂ` to `fun q v i j => (adj (I.ε v) (Matrix.of (q.1 v)) * Matrix.of (q.2 v)) i j`. Establish `hm : ContDiff ℝ ∞ m`. Use `contDiff_iff_contDiffAt.2 fun q => contDiffAt_pi.2 fun v => contDiffAt_pi.2 fun i => contDiffAt_pi.2 fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `refine EntrySmoothAt.mul (EntrySmoothAt.adj _ fun k l => ?_) (fun k l => ?_) i j <;>`. Simplify using `only [Matrix.of_apply]`. Use `fun_prop`. Establish `hmg : ∀ y g, m (emb I y, emb I g) = emb I (y⁻¹ * g)`. Introduce `y g`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Use function extensionality and compare the values at `v i j`. Express the relevant statement in the definitionally equal form `(adj (I.ε v) (uMat (y v)) * uMat (g v)) i j = (uMat (y v)⁻¹ * uMat (g v)) i j`. Rewrite using `[uMat_inv]`. Establish `key` using `contDiff_param_integral (muInf I) hemb.measurableEmbedding hint (hK.image hemb.continuous) (fun g hg => Set.indicator_of_notMem (fun h => hg ⟨g, h, rfl⟩) _) (hA.comp hm)`. Use `⟨_, key.contDiffAt, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `filter_upwards [hxN] with y hy`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `F g * a (y⁻¹ * g) = K.indicator F g * A (m (emb I y, emb I g))`. Rewrite using `[hmg, hAa]`. Distinguish the cases in `hg : g ∈ K`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[Set.indicator_of_mem hg]`. Establish `: a (y⁻¹ * g) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hg ⟨(y, y⁻¹ * g), ⟨hy, subset_tsupport _ h⟩, mul_inv_cancel_left y g⟩`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smoothInf_conv {a F : I.Ginf → ℂ} (ha : SmoothInf I a) (hc : HasCompactSupport a)
     (hF : LocallyIntegrable F (muInf I)) :
@@ -459,7 +457,7 @@ theorem smoothInf_conv {a F : I.Ginf → ℂ} (ha : SmoothInf I a) (hc : HasComp
     simp [this]
 
 /- English proof (translation)
-Introduce `I _ _ ha hc hF` and use `⟨smoothInf_conv I ha hc hF, continuous_of_smoothInf I (smoothInf_conv I ha hc hF)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem smooth_convolution : ∀ (I : AutInst) (a F : I.Ginf → ℂ), SmoothInf I a → HasCompactSupport a →
     LocallyIntegrable F (muInf I) → SmoothInf I (fun y => ∫ g, F g * a (y⁻¹ * g) ∂(muInf I)) ∧

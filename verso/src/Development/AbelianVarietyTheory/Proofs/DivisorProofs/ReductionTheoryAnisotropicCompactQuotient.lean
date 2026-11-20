@@ -12,9 +12,9 @@ namespace GlobalTheory.ThK.DefCocompact
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `hn` using `h.1`. Break down `Nat.min_eq_zero_iff.1 h0 with rfl | rfl` into its components or cases. Take `rfl : s = n` from `by omega`. Conclude with `Or.inr h`. Take `rfl : r = n` from `by omega`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Prove the second alternative. Extract witnesses or component facts from the available result.
 
-Conclude with `Or.inl h`.
+Prove the first alternative.
 -/
 theorem hasSig_definite {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M r s) (h0 : min r s = 0) :
     HasSig M n 0 ∨ HasSig M 0 n := by
@@ -26,9 +26,9 @@ theorem hasSig_definite {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasS
     exact Or.inl h
 
 /- English proof (translation)
-Establish `h1` using `congrArg τ hx`. Establish `hy : (fun i => τ (x i)) ⬝ᵥ (J.map τ) *ᵥ star (fun i => τ (x i)) = 0`. Rewrite `h1` using `[map_zero]`. Rewrite using `[← h1]`. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hcm.2.2.2, Matrix.map_apply, Pi.star_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2` using `GlobalTheory.DefiniteAniso.eq_zero_of_hasSig (hasSig_definite h h0) (fun i => τ (x i)) (by`. Rewrite using `[Matrix.smul_mulVec, dotProduct_smul, hy, smul_zero])`. Use function extensionality and compare the values at `i`. Simplify using `using congrFun h2 i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem aniso_of_smul (hcm : IsCMExt F E σ) {n r s : ℕ} (J : Matrix (Fin n) (Fin n) E) (τ : E →+* ℂ) (a : ℂ)
     (h : HasSig (a • J.map τ) r s) (h0 : min r s = 0) (x : Fin n → E) (hx : form σ J x x = 0) : x = 0 := by
@@ -43,11 +43,11 @@ theorem aniso_of_smul (hcm : IsCMExt F E σ) {n r s : ℕ} (J : Matrix (Fin n) (
   simpa using congrFun h2 i
 
 /- English proof (translation)
-Rewrite using `[one_smul]`. Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.map_apply]`. Rewrite using `[hX.herm i j]`. Establish `hmap : (X.J.map σ).det = σ X.J.det` using `GlobalTheory.ThK.SqIntHerm.det_map_ringHom (σ : E →+* E) X.J`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hmap]`. Introduce `h0`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `hM` using `GlobalTheory.ThK.SqIntHerm.det_ne_zero_of_hasSig (hX.sig w)`. Establish `hJ : X.J.det = 0` using `σ.toRingHom.injective (by simpa using h0)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hM` to reduce the goal to its premises. Rewrite using `[GlobalTheory.ThK.SqIntHerm.det_map_ringHom, hJ, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isHermND_one_smul_map {B : Base F E} {n r s : ℕ} {X : Spc F E n} (hX : X.IsHerm σ B r s) :
     IsHermND σ ((1 : E) • X.J.map σ) := by
@@ -65,9 +65,9 @@ theorem isHermND_one_smul_map {B : Base F E} {n r s : ℕ} {X : Spc F E n} (hX :
     rw [GlobalTheory.ThK.SqIntHerm.det_map_ringHom, hJ, map_zero]
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B hB`. Establish `hcm` using `hB.cm`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `⟨fun n r s' X hX h0 => ?_, fun d r₁ s₁ W hW h0 => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.ThK.DefDcoset.cocompact_of_aniso hKP.siegelSetUnitary hcm X.J one_ne_zero (isHermND_one_smul_map hX) (aniso_of_smul hcm X.J (B.emb w).1 1 (by rw [one_smul]; exact hX.sig w) h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `han` using `aniso_of_smul hcm W.J (B.emb w).1 Complex.I (hW.sig w) h0`. Take `⟨c, hc, hσc⟩` from `GlobalTheory.CMImag.exists_imag_ne_zero F E σ hcm`. Conclude with `⟨han, GlobalTheory.ThK.DefDcoset.cocompact_of_aniso hKP.siegelSetUnitary hcm W.J hc (GlobalTheory.ThK.SqIntHerm.isHermND_smul_map F E σ B _ W _ _ hW c hc hσc) han⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cocompact_of_definite : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E), B.IsGood σ →
     (∀ (n r s' : ℕ) (X : Spc F E n), X.IsHerm σ B r s' → min r s' = 0 →

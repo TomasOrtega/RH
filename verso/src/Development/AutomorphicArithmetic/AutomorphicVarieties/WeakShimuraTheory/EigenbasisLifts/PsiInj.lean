@@ -6,13 +6,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.C
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Eb GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ A w hA hw n κ m k hm hk h i i' e`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap L Ω).injective`. Take `⟨j, rfl⟩` from `(Loc.decEmb (F := L) (Ω := Ω) (v := l)).1 A w hA hw`. Take `⟨-, φ, b1, -, -, b4, b5, -⟩` from `(Loc.decEmb (F := L) (Ω := Ω) (v := l)).2 j`. Take `⟨-, _, ⟨⟨g, rfl⟩, hg⟩, h2⟩` from `(Loc.cycInertia l).2 φ.range b1.isOpen_range`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[b5]`. Establish `h3 : ¬ IsOfFinOrder (cycBar L Ω l (g : G L Ω))` using `fun hf => by`. Take `⟨N, hN, h1⟩` from `isOfFinOrder_iff_pow_eq_one.1 hf`. Use `h2 (isOfFinOrder_iff_pow_eq_one.2 ⟨N, hN, Units.ext (Subtype.ext ((algebraMap ℚ_[l] (PadicAlgCl l)).injective ?_))⟩)` and prove the remaining obligations. Establish `h4` using `congrArg Units.val h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[cycBar] at h4 ⊢`. Conclude with `h4`. Establish `a1` using `h i g ((b4 g).1 hg)`. Establish `a2` using `h i' g ((b4 g).1 hg)`. Rewrite `a2` using `[← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a3` using `a1.trans a2.symm`. Rewrite `a3` using `[mul_pow, mul_pow, mul_right_inj, ← zpow_natCast, ← zpow_natCast, ← _root_.zpow_mul, ← _root_.zpow_mul]`. Establish `a4` using `(injective_zpow_iff_not_isOfFinOrder.2 h3) a3`. Establish `a5 : (k : ℤ) ≠ 0` using `by exact_mod_cast hk.ne'`. Conclude with `hm (neg_injective (mul_right_cancel₀ a5 a4))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Eb.psiInj :
     ∀ {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 L)), IsPlaceOver A w → ((l : ℕ) : 𝓞 L) ∈ w.asIdeal →

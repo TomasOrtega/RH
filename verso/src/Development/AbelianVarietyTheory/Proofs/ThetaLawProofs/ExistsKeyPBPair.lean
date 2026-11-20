@@ -26,7 +26,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.KeyPow GlobalTheory.KeyKa
 
 /- English proof (translation)
-Take `⟨_, _, _, hg, _⟩` from `h`. Conclude with `hg`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem g_eq {R S : Type} [CommRing R] [CommRing S] {y : KeyIn S} {x : KeyIn R} {f : R →+* S} (h : KeyPB y x f) :
     y.P.g = x.P.g := by
@@ -34,7 +34,7 @@ theorem g_eq {R S : Type} [CommRing R] [CommRing S] {y : KeyIn S} {x : KeyIn R} 
   exact hg
 
 /- English proof (translation)
-Establish `key : ∀ (e : U ≤ p ⁻¹ᵁ ⊤) (e' : V ≤ p ⁻¹ᵁ ⊤) (z : Γ(Sp A, ⊤)), (X.presheaf.map (homOfLE h).op).hom ((p.appLE ⊤ U e).hom z) = (p.appLE ⊤ V e').hom z`. Introduce `e e' z`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.appLE_map]`. Conclude with `key _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma presheaf_map_constFn {A : Type} [CommRing A] {X : Scheme.{0}} (p : X ⟶ Sp A) {U V : X.Opens} (h : V ≤ U)
     (c : A) : (X.presheaf.map (homOfLE h).op).hom (constFn p U c) = constFn p V c := by
@@ -45,11 +45,11 @@ private lemma presheaf_map_constFn {A : Type} [CommRing A] {X : Scheme.{0}} (p :
   exact key _ _ _
 
 /- English proof (translation)
-Establish `key : ∀ (e : U ≤ p ⁻¹ᵁ ⊤) (e' : V ≤ q ⁻¹ᵁ ⊤) (z : Γ(Sp A, ⊤)), (φ.appLE U V h).hom ((p.appLE ⊤ U e).hom z) = (q.appLE ⊤ V e').hom ((spMap f).appTop.hom z)`. Introduce `e e' z`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, Scheme.Hom.appLE_comp_appLE]`. Use `generalize_proofs e₃`. Use `revert e₃`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsq]`. Introduce `e₃`. Rewrite using `[Scheme.Hom.comp_appLE, CommRingCat.hom_comp, RingHom.comp_apply]`. Both sides reduce to the same expression. Establish `hn` using `congrArg (fun g => g.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at hn`. Unfold `constFn`. Rewrite using `[hn]`. Conclude with `key _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma appLE_constFn_theta_law {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) {X Y : Scheme.{0}}
     (p : X ⟶ Sp A) (q : Y ⟶ Sp B) (φ : Y ⟶ X) (hsq : φ ≫ p = q ≫ spMap f) (U : X.Opens) (V : Y.Opens)
@@ -71,11 +71,11 @@ private lemma appLE_constFn_theta_law {A B : Type} [CommRing A] [CommRing B] (f 
   exact key _ _ _
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hna`. Take `⟨m, hm, ham⟩` from `Ideal.exists_le_maximal (Ideal.span {a}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Take `⟨x, hx, hxL⟩` from `hth' ⟨m, hm.isPrime⟩`. Unfold `Out.nonzeroLocus at hxL`. Rewrite `hxL` using `[TopologicalSpace.Opens.mem_iSup]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k, hk⟩` from `hxL`. Rewrite `hk` using `[ha, Scheme.basicOpen_mul]`. Establish `hk1` using `hk.1`. Unfold `constFn Scheme.Hom.appLE at hk1`. Rewrite `hk1` using `[CommRingCat.hom_comp, RingHom.comp_apply, Scheme.basicOpen_res, ← Scheme.preimage_basicOpen, basicOpen_eq_of_affine]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : P.A.hom x ∈ PrimeSpectrum.basicOpen a` using `hk1.2`. Rewrite `h2` using `[hx]`. Conclude with `(show a ∉ m from h2) (ham (Ideal.subset_span rfl))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma isUnit_of_sec_eq_const_mul_nonvanishing {A : Type} [CommRing A] (P : Out.PolAV (Sp A)) (th th' : P.L.Sec) (a : A)
     (ha : ∀ i, LB.Sec.f th' i = constFn P.A.hom _ a * LB.Sec.f th i)
@@ -96,7 +96,7 @@ private lemma isUnit_of_sec_eq_const_mul_nonvanishing {A : Type} [CommRing A] (P
   exact (show a ∉ m from h2) (ham (Ideal.subset_span rfl))
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `using hc`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma isLieComb_comp_cast' {A : Type} [CommRing A] {G : Over (Sp A)} [GrpObj G] {m n : ℕ} (h : m = n)
     {c : Fin n → A} {v : Fin n → (epsR A ⟶ G)} {w : epsR A ⟶ G} (hc : IsLieComb c v w) :
@@ -105,7 +105,7 @@ private lemma isLieComb_comp_cast' {A : Type} [CommRing A] {G : Over (Sp A)} [Gr
   simpa using hc
 
 /- English proof (translation)
-Substitute `h` using the available equality. Simplify using `using hv`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma isLieBasis_comp_cast {A : Type} [CommRing A] {G : Over (Sp A)} [GrpObj G] {m n : ℕ} (h : m = n)
     {v : Fin n → (epsR A ⟶ G)} (hv : IsLieBasis v) : IsLieBasis (fun k : Fin m => v (k.cast h)) := by
@@ -113,37 +113,33 @@ private lemma isLieBasis_comp_cast {A : Type} [CommRing A] {G : Over (Sp A)} [Gr
   simpa using hv
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `exists_keyPB_ring (⟨P, hg, rig, hr, th, hth, v, hv⟩ : KeyIn R) f`. Take `⟨y₂, hy₂⟩` from `exists_keyPB_ring (⟨P, hg, rig, hr, th', hth', v', hv'⟩ : KeyIn R) f`. Take `⟨φ, he, w, hgq, F, hpb, hwg, hrig, hth1, hF1, hFe, hv1⟩` from `id hy`. Take `⟨φ₂, -, -, hgq₂, F₂, hpb₂, -, -, -, hF₂1, hF₂e, hv₂⟩` from `hy₂`. Establish `hF : F = ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `GlobalTheory.KeyCancel.dualNumber_ringHom_ext` to reduce the goal to its premises. Introduce `c`. Rewrite using `[hF1]`. Establish `pr1 : ∀ c : R, ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f (algebraMap R _ c) = algebraMap R' _ (f c)` using `by clear * - f`. Introduce `c`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `ReciprocityTheory.ChartRestriction.G.Chart.dualMapR`. Apply the tactic sequence `apply TrivSqZeroExt.ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Conclude with `(pr1 c).symm`. Rewrite using `[hFe]`. Establish `pr2 : ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f DualNumber.eps = DualNumber.eps` using `by clear * - f`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `ReciprocityTheory.ChartRestriction.G.Chart.dualMapR`. Apply the tactic sequence `apply TrivSqZeroExt.ext <;> simp`. Conclude with `pr2.symm`. Establish `hF₂ : F₂ = F`. Apply `GlobalTheory.KeyCancel.dualNumber_ringHom_ext` to reduce the goal to its premises.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c`. Rewrite using `[hF₂1, hF1]`. Rewrite using `[hF₂e, hFe]`. Set `Mx₁ : Matrix (Fin y.P.g) (Fin y.P.g) R'` to `fun i k => f (Mx (i.cast hgq) (k.cast hgq))`. Establish `hov : ∀ (c : R') (k : Fin y.P.g), (spMap (epsScaleR c) ≫ (y.v k).left) ≫ y.P.A.hom = (epsR R').hom`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c k`. Rewrite using `[Category.assoc, Over.w (y.v k), GlobalTheory.LieCombBaseChange.epsScale_over]`. Set `u : Fin y.P.g → Fin y.P.g → (epsR R' ⟶ y.P.A)` to `fun i k => Over.homMk (spMap (epsScaleR (Mx₁ i k)) ≫ (y.v k).left) (hov _ k)`. Set `v₁' : Fin y.P.g → (epsR R' ⟶ y.P.A)` to `fun i => (List.ofFn (u i)).prod`. Establish `hcomb : ∀ i, IsLieComb (Mx₁ i) y.v (v₁' i)` using `fun i => ⟨u i, fun k => rfl, rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hover : ∀ i, (v₁' i).left ≫ φ = spMap F ≫ (v' (i.cast hgq)).left`. Introduce `i`. Rewrite using `[hF]`. Use `(GlobalTheory.lieComb_baseChange R R' f P.A y.P.A φ hpb y.P.g (fun k => v (k.cast hgq)) (v' (i.cast hgq)) (fun k => Mx (i.cast hgq) (k.cast hgq)) y.v (v₁' i) ?_ (isLieComb_comp_cast' hgq (hM _))).mpr (hcomb i)` and prove the remaining obligations. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0` using `hv1 k`. Rewrite `h0` using `[hF]`. Conclude with `h0`. Take `⟨e, he1, he2⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.grpPullback_iso hpb hpb₂`. Establish `hv₁' : IsLieBasis v₁'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `he1` as an intermediate fact. Apply `ReciprocityTheory.ChartRestriction.G.Chart.isLieBasis_iso e` to reduce the goal to its premises. Establish `hb` using `isLieBasis_comp_cast (hgq.trans hgq₂.symm) y₂.basis`. Establish `hfun : (fun i => v₁' i ≫ e.hom) = fun k => y₂.v (k.cast (hgq.trans hgq₂.symm))`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hpb₂.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc, he2, hover, hv₂, hF₂]`. Use `congr 3`. Rewrite using `[Over.w (v₁' i ≫ e.hom), Over.w (y₂.v _)]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[hfun]`. Conclude with `hb`. Establish `hfa : IsUnit (f a)` using `(isUnit_of_sec_eq_const_mul_nonvanishing P th th' a ha hth').map f`. Set `th₁' : y.P.L.Sec` to `⟨fun i => constFn y.P.A.hom _ (f a) * y.th.f i, fun i j => by`. Rewrite using `[map_mul, map_mul, y.th.compat i j, presheaf_map_constFn, presheaf_map_constFn]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use the proof step `ring⟩`. Establish `hcu : ∀ U, IsUnit (constFn y.P.A.hom U (f a))` using `fun U => by`. Unfold `constFn`. Conclude with `(hfa.map _).map _`. Establish `hnz : Out.nonzeroLocus th₁' = Out.nonzeroLocus y.th`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `Out.nonzeroLocus`. Use `iSup_congr fun k => ?_` and prove the remaining obligations. Use `show y.P.A.left.basicOpen (constFn y.P.A.hom _ (f a) * y.th.f k) = _`. Rewrite using `[Scheme.basicOpen_mul, Scheme.basicOpen_of_isUnit _ (hcu _), inf_eq_right.mpr (Scheme.basicOpen_le _ _)]`. Establish `hth₁' : ∀ s : Sp R', ∃ x : y.P.A.left, y.P.A.hom x = s ∧ x ∈ Out.nonzeroLocus th₁'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hnz]`. Conclude with `y.th_ne`. Establish `hsq : φ ≫ P.A.hom = y.P.A.hom ≫ spMap f` using `hpb.1.w`. Use `⟨y.P, y.g_pos, y.rig, y.rig_gen, y.th, y.th_ne, y.v, y.basis, th₁', hth₁', v₁', hv₁', Mx₁, hy, ⟨φ, he, w, hgq, F, hpb, hwg, hrig, ?_, hF1, hFe, hover⟩, fun i => rfl, hcomb, ?_⟩` and prove the remaining obligations. Introduce `j i h`.
-
-Rewrite using `[ha, map_mul, hth1 j i h]`. Use `show _ = _ * resG _ _ (constFn y.P.A.hom _ (f a) * y.th.f i)`. Rewrite using `[map_mul, appLE_constFn_theta_law f P.A.hom y.P.A.hom φ hsq, presheaf_map_constFn]`. Expand and normalize the polynomial expressions, which then agree. Use `show ((Mx.map f).submatrix (finCongr hgq) (finCongr hgq)).det = _`.
-
-Rewrite using `[Matrix.det_submatrix_equiv_self]`. Conclude with `(RingHom.map_det f Mx).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_keyPB_pair {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (P : Out.PolAV (Sp R))
     (hg rig hr th hth v hv th' hth' v' hv') (a : R) (Mx : Matrix (Fin P.g) (Fin P.g) R)
@@ -243,19 +239,19 @@ theorem exists_keyPB_pair {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* 
     exact (RingHom.map_det f Mx).symm
 
 /- English proof (translation)
-Distinguish the cases in `hx : x.P.g = g`. Use `swap`. Conclude with `⟨1, fun h => absurd h hx⟩`. Establish `: CharZero (AlgebraicClosure K)` using `charZero_of_injective_algebraMap (algebraMap K (AlgebraicClosure K)).injective`. Take `⟨xb, hxb⟩` from `exists_keyPB_ring x (algebraMap K (AlgebraicClosure K))`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hgb : xb.P.g = g` using `(g_eq hxb).trans hx`. Establish `key : ∀ (L : Type) [Field L] [CharZero L] [IsAlgClosed L] (e : AlgebraicClosure K →+* L) (xL : KeyIn L), KeyPB xL x (e.comp (algebraMap K (AlgebraicClosure K))) → (ka L xL : L) = e (ka (AlgebraicClosure K) xb)`. Introduce `L _ _ _ e xL hL`. Conclude with `hF _ _ e xb xL hgb (GlobalTheory.KeyCancel.keyPB_cancel _ _ _ x xb xL _ e hxb hL)`. Establish `hfix : ∀ σ : AlgebraicClosure K ≃ₐ[K] AlgebraicClosure K, σ (ka (AlgebraicClosure K) xb : AlgebraicClosure K) = ka (AlgebraicClosure K) xb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `σ`. Establish `hc : ((σ.symm : AlgebraicClosure K →ₐ[K] AlgebraicClosure K) : AlgebraicClosure K →+* AlgebraicClosure K).comp (algebraMap K (AlgebraicClosure K)) = algebraMap K (AlgebraicClosure K)`. Use extensionality with `a`. Simplify using the standard rewrite rules. Establish `h2` using `key _ ((σ.symm : AlgebraicClosure K →ₐ[K] AlgebraicClosure K) : AlgebraicClosure K →+* AlgebraicClosure K) xb (by rw [hc]; exact hxb)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3` using `congrArg σ h2`. Simplify using `using h3`. Take `⟨y₀, hy₀⟩` from `(InfiniteGalois.mem_range_algebraMap_iff_fixed (k := K) (ka (AlgebraicClosure K) xb : AlgebraicClosure K)).mpr hfix`. Establish `h0 : y₀ ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_zero] at hy₀`. Conclude with `(ka (AlgebraicClosure K) xb).ne_zero hy₀.symm`. Use `⟨Units.mk0 y₀ h0, fun _ L _ _ _ f xL hL => ?_⟩` and prove the remaining obligations. Set `_ : Algebra K L` to `f.toAlgebra`. Set `e : AlgebraicClosure K →ₐ[K] L` to `IsAlgClosed.lift`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : (e : AlgebraicClosure K →+* L).comp (algebraMap K (AlgebraicClosure K)) = f`. Use extensionality with `a`. Use `show e (algebraMap K _ a) = f a`. Rewrite using `[e.commutes]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1` using `key L (e : AlgebraicClosure K →+* L) xL (by rw [hc]; exact hL)`. Rewrite using `[h1, ← hy₀, Units.val_mk0]`. Use `show e (algebraMap K _ y₀) = f y₀`. Rewrite using `[e.commutes]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_descent (g : ℕ) (ka : ∀ (K : Type) [Field K] [CharZero K] [IsAlgClosed K], KeyIn K → Kˣ)
     (hF : ∀ (K K' : Type) [Field K] [CharZero K] [IsAlgClosed K] [Field K'] [CharZero K'] [IsAlgClosed K'] (f : K →+* K')
@@ -310,37 +306,37 @@ theorem exists_descent (g : ℕ) (ka : ∀ (K : Type) [Field K] [CharZero K] [Is
   rfl
 
 /- English proof (translation)
-Introduce `_ g c M ⟨ka, hS, hF, hI, hC⟩`. Set `kaK : ∀ (K : Type) [Field K] [CharZero K], KeyIn K → Kˣ` to `fun K _ _ x => Classical.choose (exists_descent g ka hF K x)`. Establish `hK : ∀ (K : Type) [Field K] [CharZero K] (x : KeyIn K), x.P.g = g → ∀ (L : Type) [Field L] [CharZero L] [IsAlgClosed L] (f : K →+* L) (xL : KeyIn L), KeyPB xL x f → (ka L xL : L) = f (kaK K x)` using `fun K _ _ x => Classical.choose_spec (exists_descent g ka hF K x)`. Use `⟨kaK, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `K _ _ P hg rig hr th hth v hv th' hth' v' hv' a Mx hPg ha hM`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: CharZero (AlgebraicClosure K)` using `charZero_of_injective_algebraMap (algebraMap K (AlgebraicClosure K)).injective`. Take `⟨Q, hg₁, rig₁, hr₁, th₁, hth₁, v₁, hv₁, th₁', hth₁', v₁', hv₁', Mx₁, h1, h2, ha₁, hM₁, hdet⟩` from `exists_keyPB_pair (algebraMap K (AlgebraicClosure K)) P hg rig hr th hth v hv th' hth' v' hv' a Mx ha hM`. Establish `hQ : Q.g = g` using `(g_eq h1).trans hPg`. Establish `e1` using `hK K ⟨P, hg, rig, hr, th, hth, v, hv⟩ hPg _ (algebraMap K _) _ h1`. Establish `e2` using `hK K ⟨P, hg, rig, hr, th', hth', v', hv'⟩ hPg _ (algebraMap K _) _ h2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `hS (AlgebraicClosure K) Q hg₁ rig₁ hr₁ th₁ hth₁ v₁ hv₁ th₁' hth₁' v₁' hv₁' (algebraMap K _ a) Mx₁ hQ ha₁ hM₁`. Apply `(algebraMap K (AlgebraicClosure K)).injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, map_pow, map_pow, ← e1, ← e2, ← hdet]`. Conclude with `e3`. Introduce `K K' _ _ _ _ f x x' hx hx'`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: CharZero (AlgebraicClosure K')` using `charZero_of_injective_algebraMap (algebraMap K' (AlgebraicClosure K')).injective`. Take `⟨xb, hxb⟩` from `exists_keyPB_ring x' (algebraMap K' (AlgebraicClosure K'))`. Establish `h1` using `hK K' x' ((g_eq hx').trans hx) _ (algebraMap K' _) xb hxb`. Establish `h2` using `hK K x hx _ ((algebraMap K' (AlgebraicClosure K')).comp f) xb (keyPB_trans _ _ _ x x' xb f _ hx' hxb)`. Apply `(algebraMap K' (AlgebraicClosure K')).injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, h2]`. Both sides reduce to the same expression. Introduce `R K _ _ _ _ _ _ _ x xK hx hMu hxK`. Establish `: CharZero R` using `RingHom.charZero (algebraMap R K)`. Take `⟨R', _, _, _, j, u, hj, hjl, hu⟩` from `hI R x hx hMu`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `fΩ : R' →+* AlgebraicClosure (FractionRing R')` to `(algebraMap (FractionRing R') (AlgebraicClosure (FractionRing R'))).comp (algebraMap R' (FractionRing R'))`. Establish `hfΩ : Function.Injective fΩ` using `(algebraMap (FractionRing R') (AlgebraicClosure (FractionRing R'))).injective.comp (IsFractionRing.injective R' (FractionRing R'))`. Establish `hinj : Function.Injective (fΩ.comp j)` using `hfΩ.comp hj`. Set `h : K →+* AlgebraicClosure (FractionRing R')` to `IsFractionRing.lift hinj`. Establish `hh : ∀ r : R, h (algebraMap R K r) = fΩ (j r)` using `fun r => IsFractionRing.lift_algebraMap hinj r`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CharZero (AlgebraicClosure (FractionRing R'))` using `charZero_of_injective_ringHom h.injective`. Take `⟨xΩ, hxΩ⟩` from `exists_keyPB_ring x (fΩ.comp j)`. Establish `hc : h.comp (algebraMap R K) = fΩ.comp j` using `RingHom.ext hh`. Establish `hxΩ' : KeyPB xΩ xK h` using `GlobalTheory.KeyCancel.keyPB_cancel _ _ _ x xK xΩ (algebraMap R K) h hxK (by rw [hc]; exact hxΩ)`. Establish `key : h (kaK K xK) = fΩ u` using `(hK K xK ((g_eq hxK).trans hx) _ h xΩ hxΩ').symm.trans (hu _ fΩ xΩ hxΩ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨u₀, hy₀, hju₀⟩ : ∃ u₀ : Rˣ, algebraMap R K u₀ = kaK K xK ∧ j u₀ = u := by`. Break down `ValuationRing.isInteger_or_isInteger R (kaK K xK : K) with ⟨r, hr⟩ | ⟨s, hs⟩` into its components or cases. Establish `hjr : j r = u` using `hfΩ (by rw [← hh, hr, key])`. Establish `hru : IsUnit r` using `isUnit_of_map_unit j r (hjr ▸ u.isUnit)`. Conclude with `⟨hru.unit, hr, hjr⟩`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hjs : j s = ((u⁻¹ : R'ˣ) : R')`. Apply `hfΩ` to reduce the goal to its premises. Rewrite using `[← hh, hs, map_inv₀, key]`. Conclude with `(map_units_inv fΩ u).symm`. Establish `hsu : IsUnit s` using `isUnit_of_map_unit j s (hjs ▸ (u⁻¹).isUnit)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hsu.unit⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_units_inv, IsUnit.unit_spec, hs, inv_inv]`. Establish `hw : Units.map (j : R →* R') hsu.unit = u⁻¹` using `Units.ext (by simpa using hjs)`. Establish `hw'` using `congrArg (fun w : R'ˣ => ((w⁻¹ : R'ˣ) : R')) hw`. Simplify using `using hw'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨u₀, hy₀.symm, ?_⟩` and prove the remaining obligations. Introduce `k _ _ r xk hr hxk`. Set `f' : R' →+* AlgebraicClosure (IsLocalRing.ResidueField R')` to `(algebraMap (IsLocalRing.ResidueField R') (AlgebraicClosure (IsLocalRing.ResidueField R'))).comp (IsLocalRing.residue R')`. Establish `hker : RingHom.ker r ≤ RingHom.ker (f'.comp j)`. Introduce `z hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hz`, the goal using `[RingHom.mem_ker]`. Establish `hzn : ¬ IsUnit z` using `fun hzu => by`. Use `hzu.map r` as an intermediate fact. Rewrite `this` using `[hz]`. Conclude with `not_isUnit_zero this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hjz : ¬ IsUnit (j z)` using `fun hu' => hzn (isUnit_of_map_unit j z hu')`. Establish `: IsLocalRing.residue R' (j z) = 0` using `(IsLocalRing.residue_eq_zero_iff _).mpr ((IsLocalRing.mem_maximalIdeal _).mpr hjz)`. Simplify using `only [f', RingHom.comp_apply, this, map_zero]`. Set `e : k →+* AlgebraicClosure (IsLocalRing.ResidueField R')` to `(r.liftOfSurjective hr) ⟨f'.comp j, hker⟩`. Establish `hcomp : e.comp r = f'.comp j` using `r.liftOfSurjective_comp hr ⟨f'.comp j, hker⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: CharZero (AlgebraicClosure (IsLocalRing.ResidueField R'))` using `charZero_of_injective_ringHom e.injective`. Take `⟨xΩ', hxΩ''⟩` from `exists_keyPB_ring x (f'.comp j)`. Establish `hxk' : KeyPB xΩ' xk e` using `GlobalTheory.KeyCancel.keyPB_cancel _ _ _ x xk xΩ' r e hxk (by rw [hcomp]; exact hxΩ'')`. Establish `e2` using `hK k xk ((g_eq hxk).trans hx) _ e xΩ' hxk'`. Establish `e1` using `hu _ f' xΩ' hxΩ''`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[← e2, e1, ← hju₀]`. Conclude with `(RingHom.congr_fun hcomp (u₀ : R)).symm`. Introduce `a b hab`. Take `⟨U, hU, hUx⟩` from `hC a b hab`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨U, hU, fun x h τ hN => ?_⟩` and prove the remaining obligations. Use `hK ℂ x h ℂ (RingHom.id ℂ) x (keyPB_id ℂ x)` as an intermediate fact. Rewrite using `[← hUx x h τ hN, this]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_kaRuleK : Out.PolBaseChangeSt → ∀ g c M : ℕ, KaRule g c M → ∃ ka, KaRuleK g c M ka := by
   intro _ g c M ⟨ka, hS, hF, hI, hC⟩

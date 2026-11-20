@@ -16,7 +16,7 @@ open GlobalTheory GlobalTheory.AbLaw
 namespace GlobalTheory.AbLaw
 
 /- English proof (translation)
-Rewrite using `[map_pow, map_prod]`. Simplify using `only [MvPolynomial.eval₂Hom_X']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eval₂Hom_xProd_pow {ι : Type} {R B : Type*} [CommRing R] [CommRing B] (c : R →+* B)
     (b : ι → B) (I : Finset ι) (k : ℕ) :
@@ -25,15 +25,15 @@ theorem eval₂Hom_xProd_pow {ι : Type} {R B : Type*} [CommRing R] [CommRing B]
   simp only [MvPolynomial.eval₂Hom_X']
 
 /- English proof (translation)
-Introduce `R _ Y f H m s M hH hM hv hx I`. Take `⟨hc, hq, -⟩` from `GlobalTheory.VeryAmpleCharts.compact_quasiSeparated_isAffineOpen R Y f H m s hH hv`. Take `⟨σ, hσ, hV⟩` from `GlobalTheory.exists_prod_sec_nonzeroLocus Y H _ s I hH`. Use `⟨fun t a ha => ?_, fun t y => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_pow_mul_twCoord_eq_zero Y H M _ σ _ t hH hM hV.symm hc ((SecOnR.of f _ ⊤).symm a) ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y', e, hy'⟩` from `exists_smul_of_twCoord R Y f H m s M hx ⊤ _ _ t _ ((SecOnR.of f _ ⊤).symm a) (xProd_pow_mem R I k) rfl`. Establish `h0 : y' = 0` using `SecOn.tw_ext fun p l => by`. Rewrite using `[hy', eval₂Hom_xProd_pow, map_pow]`. Use `hk p l` as an intermediate fact. Rewrite `this` using `[hσ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Use `⟨k, e.trans ?_⟩` and prove the remaining obligations. Rewrite using `[h0, map_zero, map_zero]`. Take `⟨k, a, hk⟩` from `exists_tw_extend_pow_mul Y H M _ σ _ t hH hM hV.symm hc hq ((SecOnR.of f _ _).symm y)`. Take `⟨y', e, hy'⟩` from `exists_smul_of_twCoord R Y f H m s M hx _ _ _ t _ ((SecOnR.of f _ _).symm y) (xProd_pow_mem R I k) rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : SecOn.restrict _ le_top a = y'` using `SecOn.tw_ext fun p l => by`. Rewrite using `[hy', eval₂Hom_xProd_pow, map_pow, SecOn.twCoord_restrict]`. Use `hk p l` as an intermediate fact. Rewrite `this` using `[hσ]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨k, _, SecOnR.of f _ ⊤ a, Eq.trans ?_ e.symm⟩` and prove the remaining obligations. Rewrite using `[← h0, SecOnR.restrict_of]`.
+A detailed English derivation is pending.
 -/
 theorem twisted_sections_localise : ∀ (R : Type) [CommRing R] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of R)) (H : LB Y) (m : ℕ) (s : Fin (m + 1) → LB.Sec H) (M : LB Y), H.IsLB → M.IsLB → VeryAmpleBy f H s → ∀ (hx : ∀ V : Y.Opens, OperatorsCommute (ι := Fin (m + 1)) (A := fun t => SecOnR f (tw M H t) V) fun i t => SecOnR.mulSec f M t (s i) V) (I : Finset (Fin (m + 1))), (∀ (t : ℤ) (a : SecOnR f (tw M H t) ⊤), SecOnR.restrict f _ (le_top : (⨅ i ∈ I, nonzeroLocus (s i)) ≤ ⊤) a = 0 → ∃ k : ℕ, xProd R I ^ k • GrSum.of (hx ⊤) t a = 0) ∧ ∀ (t : ℤ) (y : SecOnR f (tw M H t) (⨅ i ∈ I, nonzeroLocus (s i))), ∃ (k : ℕ) (t' : ℤ) (a : SecOnR f (tw M H t') ⊤), GrSum.of (hx _) t' (SecOnR.restrict f _ le_top a) = xProd R I ^ k • GrSum.of (hx _) t y := by
   intro R _ Y f H m s M hH hM hv hx I

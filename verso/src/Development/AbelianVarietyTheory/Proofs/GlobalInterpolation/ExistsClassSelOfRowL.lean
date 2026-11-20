@@ -21,7 +21,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 namespace GlobalTheory.Fc
 
 /- English proof (translation)
-Introduce `Fm hc` and use `by obtain ⟨κ, h1, h2, h3⟩ := s Fm hc refine ⟨κ, h1, h2, fun x hx i => ⟨?_, (h3 x hx i).2⟩⟩ obtain ⟨K, β, b, a0, a1, a2, a3⟩ := (h3 x hx i).1 exact ⟨K, β, b, a0, a1.1, a2, a3⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSel_of_sAnd {Bd : BdT} {Q R : V4.Slot} {Lk : LkT Bd} {E : Par → BdP Bd} {𝒜 : FamClass} {σ : RawSel Bd 𝒜}
     (s : IsSel (sAnd Q R) Lk E 𝒜 σ) : IsSel Q Lk E 𝒜 σ := fun Fm hc => by

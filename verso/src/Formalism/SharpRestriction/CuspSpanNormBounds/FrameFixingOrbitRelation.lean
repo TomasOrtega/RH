@@ -128,7 +128,7 @@ def CntTies (Z : TermLoc D X δ M u u') (O : CntOrb Z) : Prop :=
   TermInj D X u u' ∧ CntCoefOK Z O
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem massDef_iff (D : D7) (X : TermTie D) (Z : TermLocs D X) :
     MassDef D X Z ↔ ∀ δ M hA u u', ∃ F0 what₂, CntMassOK (Z δ M hA u u') F0 what₂ := Iff.rfl
@@ -189,7 +189,7 @@ section FromLoc
 open Formalism.MainNotions.S.LocalSplitGroups
 
 /- English proof (translation)
-Conclude with `(Z.G_pt γ).2 (by rw [h]; exact hw)`.
+A detailed English derivation is pending.
 -/
 theorem rel_of_at {D : D7} {X : TermTie D} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {u u' : D.what₂.Word} (Z : TermLoc D X δ M u u')
@@ -198,13 +198,13 @@ theorem rel_of_at {D : D7} {X : TermTie D} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
   exact (Z.G_pt γ).2 (by rw [h]; exact hw)
 
 /- English proof (translation)
-Introduce `δ M hA u u'` and use `(Z δ M hA u u').mass_def`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem massDef_of (D : D7) (X : TermTie D) (Z : TermLocs D X) : MassDef D X Z :=
   fun δ M hA u u' => (Z δ M hA u u').mass_def
 
 /- English proof (translation)
-The claim follows from `Z.term_inj`.
+A detailed English derivation is pending.
 -/
 theorem termInj_of {D : D7} {X : TermTie D} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} {u u' : D.what₂.Word} (Z : TermLoc D X δ M u u') :
@@ -226,7 +226,7 @@ def JtIrr (D : D7) (X : TermTie D) : Prop :=
   ∀ (u u' : D.what₂.Word) (t : D.s.Term u u'), ¬ D.s.relevant t → X.Jt t = 0
 
 /- English proof (translation)
-The claim follows from `hA u u' t (hJ u u' t h)`.
+A detailed English derivation is pending.
 -/
 theorem aTerm_irr {D : D7} {X : TermTie D} (hA : ATie D X) (hJ : JtIrr D X) (u u' : D.what₂.Word) (t : D.s.Term u u')
     (h : ¬ D.s.relevant t) : D.s.aTerm u u' t = 0 :=
@@ -287,7 +287,7 @@ def JtOrbOK (Y : LoopTie D large₂ X u u' Cw) : Prop := ∃ Rf : RealFr Y, JtOr
 def JtOrbOKN (Y : LoopTie D large₂ X u u' Cw) : Prop := ∃ Rf : RealFr Y, NVolOne Rf ∧ JtOrbTie Rf
 
 /- English proof (translation)
-Take `⟨Rf, -, hR⟩` from `h`. Conclude with `⟨Rf, hR⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem JtOrbOKN.ok {Y : LoopTie D large₂ X u u' Cw} (h : JtOrbOKN Y) : JtOrbOK Y := by
   obtain ⟨Rf, -, hR⟩ := h

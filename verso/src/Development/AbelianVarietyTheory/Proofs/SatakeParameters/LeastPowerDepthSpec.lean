@@ -6,11 +6,11 @@ open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D L P l hl`. Take `⟨j, hj, hjL⟩` from `P.Lw_j l hl`. Establish `hne : ({j : ℕ | LevelStarExponents.lA L ≤ ((l : ℝ) - 1) ^ j} : Set ℕ).Nonempty` using `⟨j, hj⟩`. Establish `hmem : LevelStarExponents.lA L ≤ ((l : ℝ) - 1) ^ depth L l` using `Nat.sInf_mem hne`. Establish `hle : depth L l ≤ j` using `Nat.sInf_le hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hmem, by omega, fun hlt => ?_⟩` and prove the remaining obligations. Establish `hl' : (11 : ℝ) ≤ l` using `by exact_mod_cast hl`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `interval_cases h : depth L l`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `at hmem`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `at hmem`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem depth_spec : ∀ {D : D7} (L : SizeData₂ D) (_ : ParameterChoice' D L) (l : ℕ), 11 ≤ l →
     LevelStarExponents.lA L ≤ ((l : ℝ) - 1) ^ depth L l ∧ 2 * depth L l + 2 ≤ D.host.Lw ∧

@@ -21,59 +21,55 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   {W : Type} [AddCommGroup W] [Module ℂ W] {σ : Representation ℂ (levi F n β) W}
 
 /- English proof (translation)
-Establish `hsm : IsSmooth σ` using `hσ.1`. Use `haveI bGL : ∀ m, BorelSpace (GL (Fin m) F) := fun m => borelSpace_GL_units m`. Use `haveI nz : ∀ a : ↑(Set.range β), NeZero (blockSize β a) := fun a => ⟨(blockSize_pos β a).ne'⟩`. Take `⟨e, he⟩ : ∃ e, e = leviEquivPi F β` from `⟨_, rfl⟩`. Take `⟨τ, hτ⟩ : ∃ τ, τ = twist (nnrealCharC κ) σ` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨E, hE⟩ : ∃ E, E = (prodPUnitEquiv.{_, 0} ((a : ↑(Set.range β)) → GL (Fin (blockSize β a)) F)).trans e.symm` from `⟨_, rfl⟩`. Take `⟨ρ, hρ⟩ : ∃ ρ : Representation ℂ (((a : ↑(Set.range β)) → GL (Fin (blockSize β a)) F) × PUnit.{1}) W, ρ = τ.comp E.toMonoidHom` from `⟨_, rfl⟩`. Establish `hEx : ∀ x, E (x, (1 : PUnit.{1})) = e.symm x` using `fun x => by subst hE; rfl`. Establish `hτm : ∀ m v, τ m v = nnrealCharC κ m • σ m v` using `fun m v => by subst hτ; rfl`. Establish `hρx : ∀ x v, ρ (x, (1 : PUnit.{1})) v = nnrealCharC κ (e.symm x) • σ (e.symm x) v` using `fun x v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hρ` using the available equality. Rewrite using `[← hτm, ← hEx]`. Both sides reduce to the same expression. Establish `hτA : IsAdmissible τ` using `hτ ▸ isAdmissible_twist κ hκ σ hσ`. Use `haveI hτI : Representation.IsIrreducible τ := hτ ▸ isIrreducible_twist κ σ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hρA : IsAdmissible ρ` using `hρ ▸ (isAdmissible_comp_iff E τ).2 hτA`. Use `haveI hρI : Representation.IsIrreducible ρ := hρ ▸ (isIrreducible_comp_iff E τ).2 hτI`. Establish `hℓ : ∀ ℓ, ℓ ∈ smoothVectors (Representation.dual ρ) ↔ ℓ ∈ smoothVectors σ.dual` using `fun ℓ => by`. Substitute `hρ hτ` using the available equality. Rewrite using `[mem_smoothVectors_dual_comp_iff, mem_smoothVectors_dual_twist_iff κ hκ]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI : Nontrivial W := nontrivial_of_isIrreducible σ`. Take `⟨ω, hω⟩` from `exists_blockChar (σ := τ) hτA.1`. Establish `hω0 : ∀ b, ω b ≠ 0`. Introduce `b h0`. Take `⟨v, hv⟩` from `exists_ne (0 : W)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hv` to reduce the goal to its premises. Establish `h1 : τ (blockUnif F b)⁻¹ (τ (blockUnif F b) v) = v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite using `[← h1, hω, h0, zero_smul, map_zero]`. Establish `hcent : ∀ (i : ↑(Set.range β)) (v : W), ρ (Pi.mulSingle i (centralUnif F (blockSize β i)), (1 : PUnit.{1})) v = ω i • v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `i v`. Rewrite using `[← hω, ← leviEquivPi_symm_mulSingle, ← he, ← hEx]`. Substitute `hρ` using the available equality. Both sides reduce to the same expression. Establish `hcpt : ∀ (v : W), ∀ ℓ ∈ smoothVectors (Representation.dual ρ), ∃ C, IsCompact C ∧ ∀ (x : (a : ↑(Set.range β)) → GL (Fin (blockSize β a)) F), ℓ (ρ (x, (1 : PUnit.{1})) v) ≠ 0 → ∃ j : ↑(Set.range β) → ℤ, (fun i => centralUnif F (blockSize β i) ^ j i) * x ∈ C`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `v ℓ hl`. Take `⟨C0, hC0, hC0m⟩` from `exists_compact_of_coeff hsm hc v ((hℓ ℓ).1 hl) (fun _ => 0) (fun a => (blockSize β a : ℤ) - 1)`. Use `⟨e '' C0, hC0.image e.continuous, fun x hx => ?_⟩` and prove the remaining obligations. Use `⟨fun a => -(ordDet (x a) / (blockSize β a : ℤ)), ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩ : ∃ y, y = (fun i => centralUnif F (blockSize β i) ^ (-(ordDet (x i) / (blockSize β i : ℤ)))) * x` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy]`. Use `⟨e.symm y, hC0m _ ?_ ?_, e.apply_symm_apply y⟩` and prove the remaining obligations. Establish `h1 : ρ (y, (1 : PUnit.{1})) v = (∏ i, ω i ^ (-(ordDet (x i) / (blockSize β i : ℤ)))) • ρ (x, (1 : PUnit.{1})) v`. Establish `hp : (y, (1 : PUnit.{1})) = ((fun i => centralUnif F (blockSize β i) ^ (-(ordDet (x i) / (blockSize β i : ℤ)))), (1 : PUnit.{1})) * (x, (1 : PUnit.{1}))` using `by rw [hy]; rfl`. Rewrite using `[hp, map_mul, Module.End.mul_apply, apply_centralPow ρ hω0 hcent]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Apply `hx` to reduce the goal to its premises. Establish `h2 : ℓ (ρ (y, (1 : PUnit.{1})) v) = 0` using `by rw [hρx, map_smul, h0, smul_zero]`. Rewrite `h2` using `[h1, map_smul, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 h2).resolve_left (Finset.prod_ne_zero_iff.2 fun i _ => zpow_ne_zero _ (hω0 i))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `b`. Rewrite using `[← ordDet_leviEquivPi, ← he, e.apply_symm_apply, hy]`. Simplify using `only [Pi.mul_apply, ordDet_centralUnif_zpow_mul]`. Establish `hd : (0:ℤ) < blockSize β b` using `by exact_mod_cast blockSize_pos β b`. Establish `h3` using `Int.emod_nonneg (ordDet (x b)) hd.ne'`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h4` using `Int.emod_lt_of_pos (ordDet (x b)) hd`. Establish `h5` using `Int.mul_ediv_add_emod (ordDet (x b)) (blockSize β b)`. Apply the tactic sequence `constructor <;> linarith`. Take `⟨μ', hμ'⟩ : ∃ μ' : (a : ↑(Set.range β)) → Measure (GL (Fin (blockSize β a)) F), μ' = fun _ => Measure.haar` from `⟨_, rfl⟩`. Use `haveI hμ'H : ∀ a, (μ' a).IsHaarMeasure := fun a => by subst hμ'; infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨γ, hγs, hγfe⟩` from `ldMulti_all (F := F) (W := W) hB hψ hψ1 (Fintype.card ↑(Set.range β)) ↑(Set.range β) rfl (fun a => blockSize β a) μ' PUnit.{1} ρ hρA hρI ω hω0 hcent hcpt`. Take `⟨s₁, hs₁⟩` from `exists_integrable_multi ρ hρA.1 hω0 hcent hcpt μ'`. Use `⟨γ, ?_, ?_⟩` and prove the remaining obligations. Use `hγs using 1` and compare the differences between its conclusion and the goal. Substitute `he` using the available equality.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `cntF`. Rewrite using `[Finset.sum_boole, Nat.cast_id]`. Use `congr 1`. Apply `Finset.filter_congr` to reduce the goal to its premises. Introduce `i _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `and_congr_right` to reduce the goal to its premises. Introduce `_`. Apply `forall₂_congr` to reduce the goal to its premises. Introduce `g hg`. Establish `hk : κ ((leviEquivPi F β).symm (Pi.mulSingle i g)) = 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `eq_one_of_mem_compact κ hκ (K := (integralGL F (blockSize β i)).map (((leviEquivPi F β).symm.toMonoidHom).comp (MonoidHom.mulSingle _ i))) ?_ (Subgroup.mem_map_of_mem _ hg)` and prove the remaining obligations. Rewrite using `[Subgroup.coe_map]`. Conclude with `(isCompact_integralGL F _).image (f := fun x => (leviEquivPi F β).symm (Pi.mulSingle i x)) ((leviEquivPi F β).symm.continuous.comp (continuous_mulSingle (A := fun a : ↑(Set.range β) => GL (Fin (blockSize β a)) F) i))`. Establish `hx : ρ (Pi.mulSingle i g, (1 : PUnit.{1})) = σ ((leviEquivPi F β).symm (Pi.mulSingle i g))`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hρx, nnrealCharC_apply, hk]`. Simplify using the standard rewrite rules. Rewrite using `[hx]`. Introduce `φ hφ w ℓ hl`. Establish `hlρ` using `(hℓ ℓ).2 hl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨Ψ, hΨ⟩ : ∃ Ψ : (a : ↑(Set.range β)) → Matrix (Fin (blockSize β a)) (Fin (blockSize β a)) F → ℂ, Ψ = fun a => blockTensor β φ a` from `⟨_, rfl⟩`. Establish `hΨs : ∀ a, IsSchwartzBruhat (Ψ a)` using `by subst hΨ; exact isSchwartzBruhat_blockTensor hφ`. Establish `hΨh : ∀ a, IsSchwartzBruhat (GJMatrix.localMatrixFourier ψ (Ψ a))` using `fun a => (hΨs a).localMatrixFourier hψ hψ1`. Establish `hA : ∀ s x, leviIntegrand σ κ (leviTensor β φ) w ℓ s (e.symm x) = multiA ρ Ψ w ℓ s x`. Introduce `s x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Substitute `he hΨ` using the available equality. Simplify using `only [leviIntegrand, multiA, leviTensor_leviEquivPi_symm, detPow_leviEquivPi_symm, hρx, map_smul, smul_eq_mul, nnrealCharC_apply, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree. Establish `hB2 : ∀ s x, leviIntegrandB σ κ (leviTensorHat β ψ φ) w ℓ s (e.symm x) = multiB ρ (fun a => GJMatrix.localMatrixFourier ψ (Ψ a)) w ℓ s x`. Introduce `s x`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `he hΨ` using the available equality. Establish `hd : ∀ a, detPow (x a) ((blockSize β a : ℂ) - s) = ((detModulusPow (x a) : ℝ) : ℂ) * detPow (x a) (-s)` using `fun a => by rw [sub_eq_add_neg, detPow_add, detPow_natCast]`. Simplify using `only [leviIntegrandB, multiB, leviTensorHat_leviEquivPi_symm, detPow_leviEquivPi_symm, leviModulus_leviEquivPi_symm, hρx, map_inv, map_smul, smul_eq_mul, nnrealCharC_apply, hd, Finset.prod_mul_distrib]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨em, hem⟩ : ∃ em : levi F n β ≃ᵐ ((a : ↑(Set.range β)) → GL (Fin (blockSize β a)) F), em = e.toHomeomorph.toMeasurableEquiv` from `⟨_, rfl⟩`. Establish `hemx : ∀ m, em m = e m` using `fun m => by subst hem; rfl`. Use `haveI : (μM.map em).IsHaarMeasure := by`. Substitute `hem` using the available equality. Conclude with `ContinuousMulEquiv.isHaarMeasure_map μM e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc⟩ : ∃ c : ℝ≥0, c = (μM.map em).haarScalarFactor (Measure.pi μ')` from `⟨_, rfl⟩`. Establish `hmap : μM.map em = (c : ℝ≥0∞) • Measure.pi μ'`. Rewrite using `[hc]`. Conclude with `isMulLeftInvariant_eq_smul _ _`. Establish `hcomp : ∀ g : levi F n β → ℂ, (fun x => g (e.symm x)) ∘ em = g` using `fun g => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `m`. Simplify using `only [Function.comp, hemx, ContinuousMulEquiv.symm_apply_apply]`. Establish `hint : ∀ g : levi F n β → ℂ, Integrable (fun x => g (e.symm x)) (Measure.pi μ') → Integrable g μM`. Introduce `g hg`. Use `hg.smul_measure (c := (c : ℝ≥0∞)) ENNReal.coe_ne_top` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[← hmap, em.measurableEmbedding.integrable_map_iff, hcomp]`. Conclude with `this`. Establish `hI : ∀ g : levi F n β → ℂ, ∫ m, g m ∂μM = (c : ℂ) * ∫ x, g (e.symm x) ∂(Measure.pi μ')`. Introduce `g`. Establish `h1` using `integral_map_equiv (μ := μM) em (fun x => g (e.symm x))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[hmap, integral_smul_measure]`. Simplify using `only [hemx, ContinuousMulEquiv.symm_apply_apply] at h1`. Rewrite using `[← h1]`. Simplify using `[Complex.real_smul]`. Use `⟨⟨s₁, fun s hs => hint _ ?_⟩, ⟨-s₁, fun s hs => hint _ ?_⟩, ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [hA]`. Conclude with `(hs₁ Ψ hΨs w ℓ hlρ).1 s hs`. Simplify using `only [hB2]`. Conclude with `(hs₁ _ hΨh w ℓ hlρ).2 s hs`. Use `((hγfe Ψ hΨs w ℓ hlρ).const_mul (c : ℂ)).congr ⟨0, fun s _ => ?_⟩ ⟨0, fun s _ => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hI]`. Simplify using `only [hA]`. Rewrite using `[hI]`. Simplify using `only [hB2]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_shape (hB : LdBlock) (hσ : IsAdmissible σ) [σ.IsIrreducible] (hc : IsCuspidal σ)
     (κ : levi F n β →* ℝ≥0) (hκ : Continuous κ) (μM : Measure (levi F n β)) [μM.IsHaarMeasure]
@@ -235,7 +231,7 @@ private theorem exists_shape (hB : LdBlock) (hσ : IsAdmissible σ) [σ.IsIrredu
 end UpperTheory.V.Z.Gam
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ n β W _ _ σ hσ hirr hc κ hκ μ _ ψ hψ hψ1 γ hγ`. Establish `hB : LdBlock` using `ldBlock_of UpperTheory.local_zeta_integral_laurent_expansion UpperTheory.local_zeta_integral_shell_mean UpperTheory.local_zeta_integral_tate_comparison`. Take `⟨γ₀, hshape, hfe⟩` from `UpperTheory.V.Z.Gam.exists_shape hB hσ hc κ hκ μ hψ hψ1`. Take `rfl` from `UpperTheory.local_zeta_functional_uniqueness F n β W σ hσ hirr κ hκ μ ψ γ γ₀ hγ hfe`. Conclude with `hshape`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Gam.leviDiv :
     UpperTheory.V.Z.Gam.LeviDiv := by

@@ -16,21 +16,19 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 namespace GlobalTheory.SpecChain
 
 /- English proof (translation)
-Set `C : Set X` to `{y | Relation.EqvGen (· ⤳ ·) x y}`. Establish `hsub : ∀ K ∈ irreducibleComponents X, (K ∩ C).Nonempty → K ⊆ C`. Introduce and unpack `K hK ⟨w, hwK, hwC⟩ v hv`. Establish `hI : IsIrreducible K` using `hK.1`. Establish `hcl : IsClosed K` using `isClosed_of_mem_irreducibleComponents K hK`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `hI.isGenericPoint_genericPoint hcl`. Establish `h1 : hI.genericPoint ⤳ w` using `hg.specializes hwK`. Establish `h2 : hI.genericPoint ⤳ v` using `hg.specializes hv`. Conclude with `Relation.EqvGen.trans _ _ _ (Relation.EqvGen.trans _ _ _ hwC (Relation.EqvGen.symm _ _ (Relation.EqvGen.rel _ _ h1))) (Relation.EqvGen.rel _ _ h2)`. Establish `hfin` using `TopologicalSpace.NoetherianSpace.finite_irreducibleComponents (α := X)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : C = ⋃ K ∈ {K ∈ irreducibleComponents X | (K ∩ C).Nonempty}, K`. Use extensionality with `v`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce `hv`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨irreducibleComponent v, ⟨irreducibleComponent_mem_irreducibleComponents v, ⟨v, mem_irreducibleComponent, hv⟩⟩, mem_irreducibleComponent⟩`. Introduce and unpack `⟨K, ⟨hK, hne⟩, hvK⟩`. Conclude with `hsub K hK hne hvK`. Establish `hCc : Cᶜ = ⋃ K ∈ {K ∈ irreducibleComponents X | ¬ (K ∩ C).Nonempty}, K`. Use extensionality with `v`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [Set.mem_compl_iff, Set.mem_iUnion, Set.mem_setOf_eq, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Use `⟨irreducibleComponent v, ⟨irreducibleComponent_mem_irreducibleComponents v, ?_⟩, mem_irreducibleComponent⟩` and prove the remaining obligations. Introduce `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hv (hsub _ (irreducibleComponent_mem_irreducibleComponents v) hne mem_irreducibleComponent)`. Introduce and unpack `⟨K, ⟨hK, hne⟩, hvK⟩ hv`. Conclude with `hne ⟨v, hvK, hv⟩`. Establish `hC1 : IsClosed C`. Rewrite using `[hC]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hfin.subset (Set.sep_subset _ _)).isClosed_biUnion fun K hK => isClosed_of_mem_irreducibleComponents K hK.1`. Establish `hC2 : IsClosed Cᶜ`. Rewrite using `[hCc]`. Conclude with `(hfin.subset (Set.sep_subset _ _)).isClosed_biUnion fun K hK => isClosed_of_mem_irreducibleComponents K hK.1`. Establish `hclo : IsClopen C` using `⟨hC1, isClosed_compl_iff.mp hC2⟩`.
-
-Establish `hx : x ∈ C` using `Relation.EqvGen.refl x`. Use `hclo.eq_univ ⟨x, hx⟩` as an intermediate fact. Establish `hy : y ∈ C` using `this ▸ Set.mem_univ y`. Conclude with `hy`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eqvGen_specializes {X : Type*} [TopologicalSpace X] [TopologicalSpace.NoetherianSpace X] [QuasiSober X]
     [PreconnectedSpace X] (x y : X) : Relation.EqvGen (· ⤳ ·) x y := by
@@ -78,11 +76,11 @@ theorem eqvGen_specializes {X : Type*} [TopologicalSpace X] [TopologicalSpace.No
   exact hy
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `T hT hTc`. Establish `hT' : IsIrreducible (((↑) : S → X) '' T)` using `hT.image _ continuous_subtype_val.continuousOn`. Establish `hξ` using `hT'.isGenericPoint_genericPoint_closure`. Take `⟨t, ht⟩` from `hT.nonempty`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hξt : hT'.genericPoint ⤳ (t : X)` using `hξ.specializes (subset_closure ⟨t, ht, rfl⟩)`. Establish `hξS : hT'.genericPoint ∈ S` using `hS _ t t.2 hξt (closure_mono (Subtype.coe_image_subset S T) hξ.mem)`. Use `⟨⟨hT'.genericPoint, hξS⟩, ?_⟩` and prove the remaining obligations. Use `show closure {(⟨hT'.genericPoint, hξS⟩ : S)} = T`. Rewrite using `[Topology.IsInducing.subtypeVal.closure_eq_preimage_closure_image, Set.image_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((↑) : S → X) ⁻¹' closure {hT'.genericPoint} = T`. Rewrite using `[hξ.def, ← Topology.IsInducing.subtypeVal.closure_eq_preimage_closure_image, hTc.closure_eq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quasiSober_of_generalization {X : Type*} [TopologicalSpace X] [QuasiSober X] (S : Set X)
     (hS : ∀ x s, s ∈ S → x ⤳ s → x ∈ closure S → x ∈ S) : QuasiSober S := by
@@ -101,11 +99,9 @@ theorem quasiSober_of_generalization {X : Type*} [TopologicalSpace X] [QuasiSobe
   rw [hξ.def, ← Topology.IsInducing.subtypeVal.closure_eq_preimage_closure_image, hTc.closure_eq]
 
 /- English proof (translation)
-Introduce `a ha b hb`. Use `haveI := quasiSober_of_generalization S hS`. Use `haveI : PreconnectedSpace S := Subtype.preconnectedSpace hc`. Establish `h` using `eqvGen_specializes (⟨a, ha⟩ : S) ⟨b, hb⟩`. Establish `key : ∀ u v : S, Relation.EqvGen (· ⤳ ·) u v → Relation.EqvGen (fun u v : X => u ∈ S ∧ v ∈ S ∧ u ⤳ v) u v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `u v huv`. Proceed by induction on `huv with`. Consider the case `rel p q hpq => exact Relation.EqvGen.rel _ _ ⟨p.2, q.2, hpq.map continuous_subtype_val⟩`. Consider the case `refl p => exact Relation.EqvGen.refl _`. Consider the case `symm p q _ ih => exact Relation.EqvGen.symm _ _ ih`.
-
-Consider the case `trans p q r _ _ ih1 ih2 => exact Relation.EqvGen.trans _ _ _ ih1 ih2`. Conclude with `key _ _ h`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eqvGen_of_isPreconnected {X : Type*} [TopologicalSpace X] [TopologicalSpace.NoetherianSpace X] [QuasiSober X]
     (S : Set X) (hc : IsPreconnected S) (hS : ∀ x s, s ∈ S → x ⤳ s → x ∈ closure S → x ∈ S) :
@@ -129,17 +125,13 @@ end GlobalTheory.SpecChain
 namespace GlobalTheory.SpecChain
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ z₁ Y πY hZH y y' hy hy'`. Take `⟨U₀, EE, -, -, -, hHom, hProp⟩` from `hZH`. Take `⟨U, hU, hiso⟩` from `GlobalTheory.T.exists_nonempty_isIso_morphismRestrict_of_isHom_id X₁.o₁ X₁.Ω₁ Y X₁.M πY hHom`. Use `haveI : IsDedekindDomain X₁.o₁ := X₁.ar.ded`. Use `haveI : IsLocallyNoetherian (Sp X₁.o₁) := inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of X₁.o₁)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Use `haveI := X₁.M.lft`. Use `haveI := Y.lft`. Use `haveI := Y.qc`. Use `haveI : IsLocallyNoetherian X₁.M.Z := LocallyOfFiniteType.isLocallyNoetherian X₁.M.s`. Use `haveI : IsLocallyNoetherian Y.Z := LocallyOfFiniteType.isLocallyNoetherian Y.s`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : CompactSpace Y.Z := by`. Prove the components needed by the constructor for the conclusion. Use `QuasiCompact.isCompact_preimage (f := Y.s) (U := Set.univ) isOpen_univ isCompact_univ` as an intermediate fact. Simplify using `using this`. Use `haveI : IsNoetherian Y.Z := {}`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsProper πY := hProp`. Establish `hN : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X₁.M.Z` using `(GlobalTheory.isNormalScheme_iff_pred _).1 X₁.normal`. Establish `hc` using `GlobalTheory.ZariskiConn.fibre_preconnected Y.Z X₁.M.Z πY hN U hU hiso z₁`. Establish `hS : ∀ x s, s ∈ πY.base ⁻¹' {z₁} → x ⤳ s → x ∈ closure (πY.base ⁻¹' {z₁}) → x ∈ πY.base ⁻¹' {z₁}`. Introduce `x s hs hxs hx`.
-
-Establish `h1 : πY.base x ⤳ z₁`. Use `hxs.map πY.base.hom.continuous` as an intermediate fact. Rewrite `this` using `[show πY.base s = z₁ from hs]`. Then use the resulting hypothesis. Establish `h2 : z₁ ⤳ πY.base x`. Rewrite using `[specializes_iff_mem_closure]`.
-
-Establish `hcont` using `πY.base.hom.continuous`. Establish `: closure (πY.base ⁻¹' {z₁}) ⊆ πY.base ⁻¹' closure {z₁}` using `closure_minimal (Set.preimage_mono subset_closure) (isClosed_closure.preimage hcont)`. Conclude with `this hx`. Conclude with `(h1.antisymm h2).eq`. Conclude with `eqvGen_of_isPreconnected _ hc hS y hy y' hy'`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fibre_chain : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (z₁ : X₁.M.Z) (Y : RatModel X₁.o₁ X₁.Ω₁) (πY : Y.Z ⟶ X₁.M.Z), Cmp.ZHAbove X₁ Y πY → ∀ y y' : Y.Z, πY y = z₁ → πY y' = z₁ → Relation.EqvGen (fun a b : Y.Z => πY a = z₁ ∧ πY b = z₁ ∧ a ⤳ b) y y' := by
   intro g n F W Z i X₁ z₁ Y πY hZH y y' hy hy'

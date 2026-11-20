@@ -13,7 +13,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField E] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec (prV (E := E) v) y.1 x i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem prVec_mulVec (v : HeightOneSpectrum (𝓞 F)) (y : GL (Fin n) (E ⊗[F] Ad F)) (x : Fin n → E ⊗[F] Ad F) :
     prVec v (y.1 *ᵥ x) = (bc (prV (E := E) v) y).1 *ᵥ prVec v x := by
@@ -22,7 +22,7 @@ theorem prVec_mulVec (v : HeightOneSpectrum (𝓞 F)) (y : GL (Fin n) (E ⊗[F] 
 
 omit [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `Formalism.UG.P.afsplit_prV_IE v (x i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem prVec_single_self (v : HeightOneSpectrum (𝓞 F)) (x : Fin n → E ⊗[F] v.adicCompletion F) :
     prVec v (fun i => Formalism.UG.P.afsplitIE v (x i)) = x := by
@@ -31,7 +31,7 @@ theorem prVec_single_self (v : HeightOneSpectrum (𝓞 F)) (x : Fin n → E ⊗[
 
 omit [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `Formalism.UG.P.afsplit_prV_IE_ne v w h (x i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem prVec_single_ne (v w : HeightOneSpectrum (𝓞 F)) (h : w ≠ v) (x : Fin n → E ⊗[F] v.adicCompletion F) :
     prVec w (fun i => Formalism.UG.P.afsplitIE v (x i)) = 0 := by
@@ -39,19 +39,17 @@ theorem prVec_single_ne (v w : HeightOneSpectrum (𝓞 F)) (h : w ≠ v) (x : Fi
   exact Formalism.UG.P.afsplit_prV_IE_ne v w h (x i)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n L M hL hM y`. Establish `lgL` using `GlobalTheory.T.mem_adelicSpanOfLattice_iff_forall_place F E n L hL`. Establish `lgM` using `GlobalTheory.T.mem_adelicSpanOfLattice_iff_forall_place F E n M hM`. Prove the components needed by the constructor for the conclusion. Introduce `h v x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `h (fun i => Formalism.UG.P.afsplitIE v (x i))`. Rewrite `h1` using `[lgL, lgM]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h2` using `h1.1 (fun w => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[prVec_single_self]`. Conclude with `hx`. Rewrite using `[prVec_single_ne v w hw]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `Submodule.zero_mem _) v`. Rewrite `h2` using `[prVec_mulVec, prVec_single_self]`. Then use the resulting hypothesis. Introduce `hx`. Establish `h2` using `h1.2 (fun w => by`. Rewrite using `[prVec_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[prVec_single_self]`. Conclude with `hx`. Rewrite using `[prVec_single_ne v w hw, Matrix.mulVec_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _) v`. Rewrite `h2` using `[prVec_single_self]`. Then use the resulting hypothesis. Introduce `h x`. Rewrite using `[lgL, lgM]`. Use `forall_congr' fun v => ?_` and prove the remaining obligations.
-
-Rewrite using `[prVec_mulVec]`. Conclude with `h v _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem carry_iff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (L M : Submodule (𝓞 E) (Fin n → E)), IsLat L → IsLat M → ∀ y : GL (Fin n) (E ⊗[F] Ad F), (∀ x, x ∈ hat F L ↔ y.1 *ᵥ x ∈ hat F M) ↔ ∀ v : HeightOneSpectrum (𝓞 F), ∀ x, x ∈ loc v L ↔ (bc (prV (E := E) v) y).1 *ᵥ x ∈ loc v M := by
   intro F E _ _ _ _ _ n L M hL hM y

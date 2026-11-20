@@ -17,7 +17,7 @@ namespace GlobalTheory.ExpImage.PosWeight
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [P.ζQ_zero]`. Consider the case `succ k ih => rw [pow_succ', pow_mul, P.ζQ_succ, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zeta_pow_self (P : LocPrime l) (m : ℕ) : P.ζQ m ^ (l ^ m) = 1 := by
   induction m with
@@ -25,14 +25,14 @@ theorem zeta_pow_self (P : LocPrime l) (m : ℕ) : P.ζQ m ^ (l ^ m) = 1 := by
   | succ k ih => rw [pow_succ', pow_mul, P.ζQ_succ, ih]
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap ℚ_[l] (Om l)), norm_algebraMap']`. Conclude with `Padic.norm_natCast_eq_one_iff.mpr ((Nat.Prime.coprime_iff_not_dvd Fact.out).mpr ha)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_nat_eq_one {a : ℕ} (ha : ¬ l ∣ a) : ‖(a : Om l)‖ = 1 := by
   rw [← map_natCast (algebraMap ℚ_[l] (Om l)), norm_algebraMap']
   exact Padic.norm_natCast_eq_one_iff.mpr ((Nat.Prime.coprime_iff_not_dvd Fact.out).mpr ha)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', AlgHom.mul_apply, (GlobalTheory.T.norm_frK_eq_and_exists_sub_pow_smul_frK_eq l P K).1, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem norm_frK_pow (P : LocPrime l) (K : FinExt l) (n : ℕ) (c : ↥(K0 K)) :
     ‖(((frK P K ^ n) c : ↥(K0 K)) : Om l)‖ = ‖(c : Om l)‖ := by
@@ -46,41 +46,39 @@ def co {K : FinExt l} (e : ℕ) (lam : ℕ → ↥(K0 K)) (i : ℕ × Bool) : �
 def ex (l s : ℕ) (i : ℕ × Bool) : ℕ := if i.2 then (1 + l ^ s) * i.1 else i.1
 
 /- English proof (translation)
-Introduce `LT l _ AI hT K s hs e he g hg hχ lam d hlam hd hrec`. Establish `hl : l.Prime` using `Fact.out`. Establish `hu : ¬ l ∣ 1 + l ^ s`. Introduce `h`. Establish `h1 : l ∣ l ^ s` using `dvd_pow_self l (by have := hs.1; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hl.one_lt.ne' (Nat.dvd_one.mp ((Nat.dvd_add_left h1).mp h))`. Establish `hmem : ∀ a ∈ primeTo l s, ¬ l ∣ a` using `fun a ha => (Finset.mem_filter.mp ha).2`. Establish `hne : ∀ a ∈ primeTo l s, (a : Om l) ≠ 0` using `fun a ha h => by`. Use `norm_nat_eq_one (hmem a ha)` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_ne_one this`. Establish `hne' : ∀ a ∈ primeTo l s, (a : ↥(K0 K)) ≠ 0` using `fun a ha h => hne a ha (by simpa using congrArg (fun x : ↥(K0 K) => (x : Om l)) h)`. Use `set T : Finset (ℕ × Bool) := primeTo l s ×ˢ Finset.univ with hTdef`. Establish `hc : ∀ i ∈ T, ‖(co e lam i : Om l)‖ ≤ 1 ∧ ¬ l ∣ ex l s i`. Introduce and unpack `⟨a, b⟩ hi`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : a ∈ primeTo l s` using `(Finset.mem_product.mp hi).1`. Establish `h1` using `norm_nat_eq_one (hmem a ha)`. Establish `h2 : ‖(lam a : Om l) * ((a : Om l) ^ e)⁻¹‖ ≤ 1`. Rewrite using `[norm_mul, norm_inv, norm_pow, h1]`. Simplify using `using hlam a`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the cases of `b`. Use `⟨?_, hmem a ha⟩` and prove the remaining obligations. Simplify `h2` using `[co, -norm_mul]`. Use `⟨by simpa [co, -norm_mul] using h2, ?_⟩` and prove the remaining obligations. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `(Nat.Prime.dvd_mul hl).mp h with h | h` into its components or cases. Conclude with `hu h`. Conclude with `hmem a ha h`. Establish `hall : ∀ j : ℕ, ∃ dj : ↥(K0 K), j ≤ e → (‖(dj : Om l)‖ ≤ 1 ∧ dj - (l : ↥(K0 K)) ^ j * frK (LT l) K dj = (frK (LT l) K ^ s) (∑ i ∈ T, co e lam i * (ex l s i : ↥(K0 K)) ^ j)) ∧ (j = e → dj = (((1 + l ^ s : ℕ) : ↥(K0 K)) ^ e - 1) * d)`. Introduce `j`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hje : j = e`. Substitute `hje` using the available equality. Use `⟨(((1 + l ^ s : ℕ) : ↥(K0 K)) ^ j - 1) * d, fun _ => ⟨⟨?_, ?_⟩, fun _ => rfl⟩⟩` and prove the remaining obligations. Establish `h1 : ‖((1 + l ^ s : ℕ) : Om l) ^ j - 1‖ ≤ 1`. Use `IsUltrametricDist.norm_intCast_le_one (Om l) (((1 + l ^ s : ℕ) : ℤ) ^ j - 1)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`. Establish `h2 : ((((((1 + l ^ s : ℕ) : ↥(K0 K)) ^ j - 1) * d : ↥(K0 K))) : Om l) = (((1 + l ^ s : ℕ) : Om l) ^ j - 1) * (d : Om l)` using `by simp`. Rewrite using `[h2, norm_mul]`. Conclude with `mul_le_one₀ h1 (norm_nonneg _) hd`. Establish `h3 : ∑ i ∈ T, co j lam i * (ex l s i : ↥(K0 K)) ^ j = (((1 + l ^ s : ℕ) : ↥(K0 K)) ^ j - 1) * ∑ a ∈ primeTo l s, lam a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hTdef, Finset.sum_product, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Use `hne' a ha` as an intermediate fact. Simplify using `only [Fintype.sum_bool, co, ex, if_true, Bool.false_eq_true, if_false, Nat.cast_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, map_mul, map_mul, ← hrec]`. Simplify using `only [map_sub, map_pow, map_natCast, map_one]`. Expand and normalize the polynomial expressions, which then agree. Break down `Nat.eq_zero_or_pos j with rfl | hj` into its components or cases.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨0, fun _ => ⟨⟨by simp, ?_⟩, fun h => absurd h hje⟩⟩` and prove the remaining obligations. Rewrite using `[hTdef, Finset.sum_product]`. Simplify using `[co]`. Take `⟨dj, h1, h2⟩` from `(GlobalTheory.T.norm_frK_eq_and_exists_sub_pow_smul_frK_eq l (LT l) K).2 j hj ((frK (LT l) K ^ s) (∑ i ∈ T, co e lam i * (ex l s i : ↥(K0 K)) ^ j)) (by`. Rewrite using `[norm_frK_pow, AddSubmonoidClass.coe_finset_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun i hi => ?_` and prove the remaining obligations. Establish `h2 : ((co e lam i * (ex l s i : ↥(K0 K)) ^ j : ↥(K0 K)) : Om l) = (co e lam i : Om l) * (ex l s i : Om l) ^ j` using `by simp`. Rewrite using `[h2, norm_mul, norm_pow, norm_nat_eq_one (hc i hi).2]`. Simplify using `using (hc i hi).1)`. Conclude with `⟨dj, fun _ => ⟨⟨h1, h2⟩, fun h => absurd h hje⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `choose D hD using hall`. Take `⟨z, hz, hE⟩` from `GlobalTheory.T.dualExp_teichmuller_power_sum_formula LT l AI hT K s hs e g hg hχ (ℕ × Bool) T (co e lam) (ex l s) D hc (fun j hj => (hD j hj).1)`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Establish `hlev : levSum (LT l) K s e T (co e lam) (ex l s) (D e) = (((1 + l ^ s : ℕ) : Om l) ^ e - 1) * cycVal (LT l) K s e lam d`. Rewrite using `[(hD e le_rfl).2 rfl]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Unfold `levSum cycVal`. Rewrite using `[mul_add, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Rewrite using `[hTdef, Finset.sum_product, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `h0` using `hne a ha`. Establish `hz : (LT l).ζQ s ^ ((1 + l ^ s) * a * l ^ i) = (LT l).ζQ s ^ (a * l ^ i)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[mul_assoc, add_mul, one_mul, pow_add, pow_mul _ (l ^ s), zeta_pow_self, one_pow, mul_one]`. Establish `hco : (((frK (LT l) K ^ i) (lam a * ((a : ↥(K0 K)) ^ e)⁻¹) : ↥(K0 K)) : Om l) = (((frK (LT l) K ^ i) (lam a) : ↥(K0 K)) : Om l) * ((a : Om l) ^ e)⁻¹`. Rewrite using `[map_mul, map_inv₀, map_pow, map_natCast]`. Simplify using the standard rewrite rules. Simplify using `only [Fintype.sum_bool, co, ex, if_true, Bool.false_eq_true, if_false, map_neg, NegMemClass.coe_neg, hco, hz, Nat.cast_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ((((((1 + l ^ s : ℕ) : ↥(K0 K)) ^ e - 1) * d : ↥(K0 K))) : Om l) = (((1 + l ^ s : ℕ) : Om l) ^ e - 1) * (d : Om l)` using `by simp`. Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite `hE` using `[hlev]`. Use `hE using 1` and compare the differences between its conclusion and the goal. Rewrite using `[div_eq_mul_inv, map_mul, map_sub, map_pow, map_natCast, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem formula_pos : ∀ (LT : LocTheory) (l : ℕ) [Fact l.Prime] (AI : LocAinf l (LT l)), LocTied l (LT l) AI → ∀ (K : FinExt l) (s : ℕ), Lev l s → ∀ (e : ℕ), 1 ≤ e → ∀ (g : GQ l), g ∈ Gj K s → ((LT l).χQ g : ℚ_[l]) = ((1 + l ^ s : ℕ) : ℚ_[l]) → ∀ (lam : ℕ → ↥(K0 K)) (d : ↥(K0 K)), (∀ a, ‖(lam a : Om l)‖ ≤ 1) → ‖(d : Om l)‖ ≤ 1 → d - (l : ↥(K0 K)) ^ e * frK (LT l) K d = (frK (LT l) K ^ s) (∑ a ∈ primeTo l s, lam a) → ∃ z : GQ l → ℚ_[l], (∀ σ ∈ Gj K s, ‖z σ‖ ≤ 1) ∧ ExpStar LT (Gj K s) e z (algebraMap ℚ_[l] (Om l) ((((1 + l ^ s : ℕ) : ℚ_[l]) ^ e - 1) / (logZl l ((1 + l ^ s : ℕ) : ℚ_[l]) * ((e.factorial : ℚ_[l]) * (l : ℚ_[l]) ^ (s * e)))) * cycVal (LT l) K s e lam d) := by
   intro LT l _ AI hT K s hs e he g hg hχ lam d hlam hd hrec

@@ -20,7 +20,7 @@ variable {X : Type} [NormedAddCommGroup X] [NormedSpace ℂ X] [FiniteDimensiona
 omit [FiniteDimensional ℂ X] in
 
 /- English proof (translation)
-Establish `h : HasDerivAt (fun s : ℂ => p + s • v) v 0`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).smul_const v).const_add p`. Conclude with `hf.hasFDerivAt.comp_hasDerivAt_of_eq 0 h (by simp)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem deriv_line {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {f : X → V} {p : X}
     (hf : DifferentiableAt ℂ f p) (v : X) :
@@ -30,9 +30,9 @@ theorem deriv_line {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {f : X 
   exact hf.hasFDerivAt.comp_hasDerivAt_of_eq 0 h (by simp)
 
 /- English proof (translation)
-Establish `h1 : DifferentiableAt ℂ (fderiv ℂ f) p` using `(SCV.analyticAt_of_differentiableOn hf (hU.mem_nhds hp)).fderiv.differentiableAt`. Establish `h2` using `(deriv_line h1 v).clm_apply (hasDerivAt_const (0 : ℂ) w)`. Establish `h3 : ∀ᶠ s : ℂ in 𝓝 0, p + s • v ∈ U`. Establish `: Continuous fun s : ℂ => p + s • v` using `by fun_prop`. Conclude with `this.continuousAt.eventually_mem (by simpa using hU.mem_nhds hp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (fun s : ℂ => deriv (fun t : ℂ => f (p + s • v + t • w)) 0) =ᶠ[𝓝 0] fun s => fderiv ℂ f (p + s • v) w` using `h3.mono fun s hs => (deriv_line (hf.differentiableAt (hU.mem_nhds hs)) w).deriv`. Rewrite using `[h4.deriv_eq, h2.deriv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deriv_two {f : X → ℂ} {U : Set X} (hU : IsOpen U) (hf : DifferentiableOn ℂ f U) {p : X}
     (hp : p ∈ U) (v w : X) :
@@ -55,7 +55,7 @@ end Lines
 variable {E : Type} [Field E] (Ψ : Finset (E →+* ℂ)) {n N : ℕ}
 
 /- English proof (translation)
-Unfold `imH IsHermitian`. Rewrite using `[conjTranspose_smul, conjTranspose_sub, conjTranspose_conjTranspose, ← neg_sub Z, smul_neg, ← neg_smul]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem imH_isHermitian (Z : Matrix (Fin N) (Fin N) ℂ) : (imH Z).IsHermitian := by
   unfold imH IsHermitian
@@ -65,7 +65,7 @@ theorem imH_isHermitian (Z : Matrix (Fin N) (Fin N) ℂ) : (imH Z).IsHermitian :
   simp
 
 /- English proof (translation)
-Use `Filter.eventually_all.2 fun τ => ReciprocityTheory.ChartRestriction.G.AR.Up.ExhB.posDef_eventually (fun q : CF Ψ N N × CF Ψ n N × CF Ψ n N => imH (q.1 τ) - (δ : ℂ) • (1 : Matrix (Fin N) (Fin N) ℂ)) (fun i j => ?_) (fun q => ?_) p (hp τ)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun q : CF Ψ N N × CF Ψ n N × CF Ψ n N => (2 * I)⁻¹ * (q.1 τ i j - star (q.1 τ j i)) - ((δ : ℂ) • (1 : Matrix (Fin N) (Fin N) ℂ)) i j fun_prop`. Use `(imH_isHermitian _).sub ?_` and prove the remaining obligations. Unfold `IsHermitian`. Rewrite using `[conjTranspose_smul, conjTranspose_one]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -85,7 +85,7 @@ theorem eventually_posDef (δ : ℝ) {p : CF Ψ N N × CF Ψ n N × CF Ψ n N}
     simp
 
 /- English proof (translation)
-Use `isOpen_iff_mem_nhds.2 fun p hp => ?_` and prove the remaining obligations. Use `eventually_posDef Ψ 0 (p := p) (fun τ => by simpa using hp τ)` as an intermediate fact. Use `filter_upwards [this] with q hq τ`. Simplify using `using hq τ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isOpen_dom : IsOpen {p : CF Ψ N N × CF Ψ n N × CF Ψ n N | (p.1 : CM Ψ N N) ∈ Hn Ψ N} := by
   refine isOpen_iff_mem_nhds.2 fun p hp => ?_
@@ -101,11 +101,11 @@ noncomputable def dir {m : ℕ} (τ : Ψ) (k : Fin m) (a : Fin N) : CF Ψ m N :=
 open Classical in
 
 /- English proof (translation)
-Establish `key : ∀ {m : ℕ} (x : CF Ψ m N) (τ : Ψ) (k : Fin m) (a : Fin N) (s : ℂ), x + s • dir Ψ τ k a = (fun σ => Matrix.of (x σ) + if σ = τ then Matrix.single k a s else 0 : CM Ψ m N)`. Introduce `m x τ k a s`. Use function extensionality and compare the values at `σ i j`. Express the relevant statement in the definitionally equal form `x σ i j + s * (if σ = τ ∧ k = i ∧ a = j then 1 else 0) = x σ i j + (if σ = τ then Matrix.single k a s else 0 : Matrix (Fin m) (Fin N) ℂ) i j`. Distinguish the cases in `h : σ = τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h, Matrix.single]`. Simplify using `[h]`. Establish `main : ∀ (Z : CF Ψ N N) (z z' : CF Ψ n N), (Z : CM Ψ N N) ∈ Hn Ψ N → ∀ (τ : Ψ) (a b : Fin N), (2 * Real.pi * I * fderiv ℂ (fun p : CF Ψ N N × CF Ψ n N × CF Ψ n N => D p.1 p.2.1 p.2.2) (Z, z, z') (dir Ψ τ a b, 0, 0) = ∑ k, fderiv ℂ (fderiv ℂ (fun p : CF Ψ N N × CF Ψ n N × CF Ψ n N …`. Introduce `Z z z' hZ τ a b`. Establish `hp : ((Z, z, z') : CF Ψ N N × CF Ψ n N × CF Ψ n N) ∈ {p : CF Ψ N N × CF Ψ n N × CF Ψ n N | (p.1 : CM Ψ N N) ∈ Hn Ψ N}` using `hZ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← (deriv_line (hD.differentiableAt ((isOpen_dom Ψ).mem_nhds hp)) _).deriv]`. Simplify using `only [← deriv_two (isOpen_dom Ψ) hD hp]`. Simplify using `only [Prod.smul_mk, Prod.mk_add_mk, smul_zero, add_zero]`. Simplify using `only [key]`. Conclude with `⟨fun h Z z z' hZ τ a b => (main Z z z' hZ τ a b).2 (h.2 Z hZ z z' τ a b), fun h => ⟨hD, fun Z hZ z z' τ a b => (main Z z z' hZ τ a b).1 (h Z z z' hZ τ a b)⟩⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem heat_iff {D : CM Ψ N N → CM Ψ n N → CM Ψ n N → ℂ}
     (hD : DifferentiableOn ℂ (fun p : CF Ψ N N × CF Ψ n N × CF Ψ n N => D p.1 p.2.1 p.2.2)
@@ -147,11 +147,11 @@ theorem heat_iff {D : CM Ψ N N → CM Ψ n N → CM Ψ n N → ℂ}
     fun h => ⟨hD, fun Z hZ z z' τ a b => (main Z z z' hZ τ a b).1 (h Z z z' hZ τ a b)⟩⟩
 
 /- English proof (translation)
-Establish `h0` using `SCV.hasSumLocallyUniformlyOn_of_locally_normal (F := fun i (q : CF Ψ N N × CF Ψ n N × CF Ψ n N) => D i q.1 q.2.1 q.2.2) (U := {p | (p.1 : CM Ψ N N) ∈ Hn Ψ N}) hle`. Establish `hd` using `SCV.differentiableOn_of_hasSumLocallyUniformlyOn (isOpen_dom Ψ) h0 fun i => (hD i).1`. Establish `h1` using `SCV.hasSumLocallyUniformlyOn_fderiv (isOpen_dom Ψ) h0 fun i => (hD i).1`. Establish `h2` using `SCV.hasSumLocallyUniformlyOn_fderiv (isOpen_dom Ψ) h1 fun i p hp => (SCV.analyticAt_of_differentiableOn (hD i).1 ((isOpen_dom Ψ).mem_nhds hp)).fderiv.differentiableAt.differentiableWithinAt`. Use `(heat_iff Ψ hd).2 fun Z z z' hZ τ a b => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp : ((Z, z, z') : CF Ψ N N × CF Ψ n N × CF Ψ n N) ∈ {p : CF Ψ N N × CF Ψ n N × CF Ψ n N | (p.1 : CM Ψ N N) ∈ Hn Ψ N}` using `hZ`. Establish `s1` using `fun v => (h1.hasSum hp).mapL (ContinuousLinearMap.apply ℂ ℂ v)`. Establish `s2` using `fun v w => ((h2.hasSum hp).mapL (ContinuousLinearMap.apply ℂ _ v)).mapL (ContinuousLinearMap.apply ℂ ℂ w)`. Simplify using `only [ContinuousLinearMap.apply_apply] at s1 s2`. Use `((s1 _).mul_left _).unique ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [fun i => (heat_iff Ψ (hD i).1).1 (hD i) Z z z' hZ τ a b]`. Conclude with `hasSum_sum fun k _ => s2 _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHeat_tsum {ι : Type} {D : ι → CM Ψ N N → CM Ψ n N → CM Ψ n N → ℂ}
     (hD : ∀ i, IsHeat Ψ (D i))
@@ -178,7 +178,7 @@ theorem isHeat_tsum {ι : Type} {D : ι → CM Ψ N N → CM Ψ n N → CM Ψ n 
   exact hasSum_sum fun k _ => s2 _ _
 
 /- English proof (translation)
-Use `⟨hD.1.const_mul c, fun Z hZ z z' τ a b => ?_⟩` and prove the remaining obligations. Simplify using `only [deriv_const_mul_field', deriv_const_mul_field]`. Rewrite using `[← Finset.mul_sum, ← hD.2 Z hZ z z' τ a b]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isHeat_const_mul {D : CM Ψ N N → CM Ψ n N → CM Ψ n N → ℂ} (hD : IsHeat Ψ D) (c : ℂ) :
     IsHeat Ψ fun Z z z' => c * D Z z z' := by
@@ -190,21 +190,21 @@ theorem isHeat_const_mul {D : CM Ψ N N → CM Ψ n N → CM Ψ n N → ℂ} (hD
 variable [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Take `⟨c, hc, hcmp⟩` from `norm_det_denom_compare N δ (B + B) hδ`. Use `⟨∏ _τ : Ψ, (c ^ n)⁻¹ * Real.exp (‖2 * (π : ℂ) * I‖ * ∑ _k : Fin n, ∑ _a : Fin N, B * ∑ _b : Fin N, δ⁻¹ * B), fun γ hγ Z hZ hZ' z z' hB hz hz' => ?_⟩` and prove the remaining obligations. Rewrite using `[EisTrans.hFac_zero, hFac, ← Finset.prod_inv_distrib, ← Finset.prod_inv_distrib, norm_prod, norm_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun τ _ => ?_` and prove the remaining obligations. Establish `hr` using `(HermComp.row_rel _ (HAct.map_mem τ.1 hγ)).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd` using `(((unitary_act_halfSpace E Ψ N γ hγ).2 Z hZ).1 τ).1`. Establish `hd0` using `(((unitary_act_halfSpace E Ψ N γ hγ).2 _ (Base.I_mem_Hn Ψ)).1 τ).1`. Rewrite using `[mul_inv, norm_mul, mul_right_comm (c ^ n)⁻¹]`. Use `mul_le_mul ?_ ?_ (norm_nonneg _) (by positivity)` and prove the remaining obligations. Unfold `hDen at hd hd0 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Express the relevant statement in the definitionally equal form `γ.toBlocks₂₂.map τ.1 * (γ.toBlocks₂₁.map τ.1)ᴴ = γ.toBlocks₂₁.map τ.1 * (γ.toBlocks₂₂.map τ.1)ᴴ at hr`. Generalize the expression as in `γ.toBlocks₂₁.map τ.1 = C at *`. Generalize the expression as in `γ.toBlocks₂₂.map τ.1 = D at *`. Establish `h1 : (C * Dᴴ).IsHermitian`. Unfold `IsHermitian`.
+Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[conjTranspose_mul, conjTranspose_conjTranspose, hr]`. Establish `h2 : (C * Cᴴ + D * Dᴴ).PosDef`. Establish `e : C * Cᴴ + D * Dᴴ = (C * (I • (1 : Matrix (Fin N) (Fin N) ℂ)) + D) * (C * (I • (1 : Matrix (Fin N) (Fin N) ℂ)) + D)ᴴ`. Simplify using `only [Matrix.mul_smul, Matrix.mul_one, conjTranspose_add, conjTranspose_smul, Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, hr, Complex.star_def, Complex.conj_I, smul_add, smul_smul, neg_smul, Matrix.mul_neg, smul_neg, I_mul_I, neg_neg, one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e]`. Conclude with `PosDef.mul_conjTranspose_self _ (Matrix.vecMul_injective_of_isUnit ((isUnit_iff_isUnit_det _).2 (Ne.isUnit hd0)))`. Establish `h3` using `(hcmp C D (Z τ) h1 h2 (hZ' τ) fun a b => (norm_add_le _ _).trans (add_le_add (hB τ a b) (by simpa using hB τ b a))).1`. Rewrite using `[norm_inv, norm_inv, norm_pow, norm_pow, ← mul_inv, ← mul_pow]`. Establish `h4` using `norm_pos_iff.2 hd0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_anti₀ (by positivity) (pow_le_pow_left₀ (by positivity) h3 n)`. Rewrite using `[← Complex.exp_neg]`. Use `(Complex.norm_exp_le_exp_norm _).trans (Real.exp_le_exp.2 ?_)` and prove the remaining obligations. Rewrite using `[norm_neg, norm_mul]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb` using `EisTrans.entry_bound hδ hr hd (hZ' τ)`. Use `norm_sum_le_of_le _ fun k _ => norm_sum_le_of_le _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `mul_le_mul (hz' τ k a) ?_ (norm_nonneg _) ((norm_nonneg _).trans (hz' τ k a))` and prove the remaining obligations. Rewrite using `[Matrix.mulVec, dotProduct]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `norm_sum_le_of_le _ fun b _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hb a b) (hz τ k b) (norm_nonneg _) (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem hFac_inv_bound (n N : ℕ) {δ : ℝ} (hδ : 0 < δ) (B : ℝ) :
     ∃ K : ℝ, ∀ γ ∈ UU E N, ∀ Z ∈ Hn Ψ N, Z ∈ HnGe Ψ N δ → ∀ z z' : CM Ψ n N,
@@ -264,15 +264,15 @@ end GlobalTheory.SW.EisHeat
 open GlobalTheory.SW.EisHeat in
 
 /- English proof (translation)
-Introduce and unpack `E _ _ _ Ψ hΨ n N hn hN φ ⟨R, hR, hφ⟩`. Use `isHeat_tsum Ψ (D := fun U : Lag E N => eisTerm Ψ U.2.choose φ) (fun U => isHeat_const_mul Ψ (isHeat_hFac_inv E Ψ n N _ U.2.choose_spec.1) _) fun p hp => ?_` and prove the remaining obligations. Take `⟨B, hB⟩` from `(GlobalTheory.T.schwartzBruhatInnerProduct_self_nonneg_bounds E _ _ R φ hR hφ).2.2.2.2.1`. Take `⟨δ₀, hδ₀, hI⟩` from `EisTrans.exists_mem_HnGe Ψ (Base.I_mem_Hn (N := N) Ψ)`. Take `⟨C, hC⟩` from `GlobalTheory.T.hermitianTheta_eisenstein_converge_bounded E Ψ hΨ n N hn hN R δ₀ hR hδ₀`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hs` using `(hC φ hφ B hB _ hI).1`. Take `⟨δ, hδ, hp'⟩` from `EisTrans.exists_mem_HnGe Ψ hp`. Establish `h1` using `eventually_posDef Ψ (δ / 2) (p := p) fun τ => by`. Establish `h : (((δ / 2 : ℝ) : ℂ) • (1 : Matrix (Fin N) (Fin N) ℂ)).PosDef` using `PosDef.one.smul (by exact_mod_cast half_pos hδ)`. Use `PosDef.posSemidef_add (hp' τ) h using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[sub_add, ← sub_smul]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨K, hK⟩` from `hFac_inv_bound Ψ n N (half_pos hδ) (‖p‖ + 1)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Establish `h2 : ∀ᶠ q : CF Ψ N N × CF Ψ n N × CF Ψ n N in 𝓝 p, ‖q‖ < ‖p‖ + 1` using `continuous_norm.continuousAt.eventually_lt_const (lt_add_one _)`. Use `⟨_, (h1.and h2).and ((isOpen_dom Ψ).mem_nhds hp), _, hs.mul_left K, fun U q hq => ?_⟩` and prove the remaining obligations. Take `⟨⟨q1, q2⟩, q3⟩` from `hq`. Establish `e : ∀ {m : ℕ} (x : CF Ψ m N), ‖x‖ ≤ ‖q‖ → ∀ τ a b, ‖x τ a b‖ ≤ ‖p‖ + 1` using `fun x hx τ a b => (norm_le_pi_norm _ b).trans <| (norm_le_pi_norm _ a).trans <| (norm_le_pi_norm x τ).trans <| hx.trans q2.le`. Simplify using `only [eisTerm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[norm_mul, norm_mul, mul_left_comm]`. Conclude with `mul_le_mul_of_nonneg_left (hK _ U.2.choose_spec.1 _ q3 (fun τ => (q1 τ).posSemidef) _ _ (e _ (norm_fst_le q)) (e _ ((norm_fst_le q.2).trans (norm_snd_le q))) (e _ ((norm_snd_le q.2).trans (norm_snd_le q)))) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SW.isHeat_eis : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ (n N : ℕ), Even n → 4 * N < n → ∀ φ : Matrix (Fin n) (Fin N) E → ℂ, IsSB φ → IsHeat Ψ (eis Ψ φ) := by
   rintro E _ _ _ Ψ hΨ n N hn hN φ ⟨R, hR, hφ⟩

@@ -4,35 +4,33 @@ open TensorProduct
 namespace GlobalTheory.CompanionTheory.RegularLocal
 
 /- English proof (translation)
-Introduce `R Q P _ _ _ _ _ _ _ _ _ d h`. Establish `hex : Function.Exact d (LinearMap.range d).mkQ` using `LinearMap.exact_map_mkQ_range d`. Establish `hsurj : Function.Surjective (LinearMap.range d).mkQ` using `Submodule.mkQ_surjective _`. Establish `hloc : ∀ (p : Ideal R) [p.IsMaximal], Module.Flat (Localization.AtPrime p) (Localization.AtPrime p ⊗[R] (P ⧸ LinearMap.range d))`. Introduce `p _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨r, hr⟩` from `h p`. Use `set A := Localization.AtPrime p`. Use `set dA := d.baseChange A with hdA`. Use `set πA := (LinearMap.range d).mkQ.baseChange A with hπA`. Establish `hexA : Function.Exact dA πA`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `lTensor_exact A hex hsurj` as an intermediate fact. Simplify `this` using `[hdA, hπA, LinearMap.baseChange_eq_ltensor]`. Establish `hsA : Function.Surjective πA`. Use `LinearMap.lTensor_surjective A hsurj` as an intermediate fact. Simplify `this` using `[hπA, LinearMap.baseChange_eq_ltensor]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Set `e : A ⊗[R] P →ₗ[A] A ⊗[R] P` to `LinearMap.id - dA ∘ₗ r`. Establish `he : ∀ x ∈ LinearMap.range dA, e x = 0`. Introduce and unpack `_ ⟨y, rfl⟩`. Use `LinearMap.congr_fun hr y` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[e, this]`. Set `s : A ⊗[R] (P ⧸ LinearMap.range d) →ₗ[A] A ⊗[R] P` to `((LinearMap.range dA).liftQ e (fun x hx => he x hx)) ∘ₗ (hexA.linearEquivOfSurjective hsA).symm.toLinearMap`. Establish `hs : ∀ x, s (πA x) = e x`. Introduce `x`. Establish `: (hexA.linearEquivOfSurjective hsA).symm (πA x) = (LinearMap.range dA).mkQ x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [s, LinearMap.comp_apply, LinearEquiv.coe_coe, this]`. Both sides reduce to the same expression. Establish `hsec : πA ∘ₗ s = LinearMap.id`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hsA z`. Rewrite using `[LinearMap.comp_apply, hs, LinearMap.id_apply]`. Establish `h0 : πA (dA (r x)) = 0` using `hexA.apply_apply_eq_zero (r x)`. Simplify using `[e, h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Module.Flat.of_retract s πA hsec`. Establish `hflat : Module.Flat R (P ⧸ LinearMap.range d)` using `Module.flat_of_isLocalized_maximal R (P ⧸ LinearMap.range d) (fun p _ => Localization.AtPrime p ⊗[R] (P ⧸ LinearMap.range d)) (fun p _ => TensorProduct.mk R (Localization.AtPrime p) (P ⧸ LinearMap.range d) 1) (fun p _ => by`. Use `hloc p` as an intermediate fact. Conclude with `Module.Flat.trans R (Localization.AtPrime p) _)`. Establish `hfp : Module.FinitePresentation R (P ⧸ LinearMap.range d)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Module.FinitePresentation R P` using `Module.finitePresentation_of_projective R P`. Use `Module.finitePresentation_of_surjective (LinearMap.range d).mkQ hsurj ?_` and prove the remaining obligations. Rewrite using `[Submodule.ker_mkQ]`. Conclude with `Module.Finite.iff_fg.mp inferInstance`. Establish `hproj : Module.Projective R (P ⧸ LinearMap.range d)` using `Module.Flat.projective_of_finitePresentation`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `Module.projective_lifting_property (LinearMap.range d).mkQ LinearMap.id hsurj`. Set `f : P →ₗ[R] P` to `LinearMap.id - s ∘ₗ (LinearMap.range d).mkQ`. Establish `hf : ∀ x, f x ∈ LinearMap.range d`. Introduce `x`. Rewrite using `[← Submodule.ker_mkQ (LinearMap.range d), LinearMap.mem_ker]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `LinearMap.congr_fun hs ((LinearMap.range d).mkQ x)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at this`. Simplify using `only [f, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, map_sub, this, sub_self]`. Set `g : P →ₗ[R] LinearMap.range d` to `f.codRestrict _ hf`. Establish `hg : ∀ y : LinearMap.range d, f y = y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨_, y, rfl⟩`. Establish `h0 : (LinearMap.range d).mkQ (d y) = 0` using `hex.apply_apply_eq_zero y`. Simplify using `only [f, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, h0, map_zero, sub_zero]`. Establish `hrp : Module.Projective R (LinearMap.range d)` using `Module.Projective.of_split (LinearMap.range d).subtype g (by`. Use extensionality with `y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `hg y)` using `[g]`. Take `⟨t, ht⟩` from `Module.projective_lifting_property d.rangeRestrict LinearMap.id d.surjective_rangeRestrict`. Use `⟨t ∘ₗ g, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Establish `h1 : g (d y) = d.rangeRestrict y`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify `hg (d.rangeRestrict y)` using `[g]`. Establish `h2` using `LinearMap.congr_fun ht (d.rangeRestrict y)`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h2`. Establish `h3 : d (t (d.rangeRestrict y)) = d y`.
-
-Use `congrArg Subtype.val h2` as an intermediate fact. Simplify using `using this`. Simplify using `[h1, h3]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem regular_of_regular_at_maximal : ∀ (R Q P : Type) [CommRing R] [AddCommGroup Q] [Module R Q] [AddCommGroup P] [Module R P] [Module.Finite R Q] [Module.Projective R Q] [Module.Finite R P] [Module.Projective R P] (d : Q →ₗ[R] P), (∀ (p : Ideal R) [p.IsMaximal], ∃ r : Localization.AtPrime p ⊗[R] P →ₗ[Localization.AtPrime p] Localization.AtPrime p ⊗[R] Q, d.baseChange (Localization.AtPrime p) ∘ₗ r ∘ₗ d.baseChange (Localization.AtPrime p) = d.baseChange (Localization.AtPrime p)) → ∃ r : P →ₗ[R] Q, d ∘ₗ r ∘ₗ d = d := by
   intro R Q P _ _ _ _ _ _ _ _ _ d h

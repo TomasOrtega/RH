@@ -29,40 +29,40 @@ namespace Formalism.FrobeniusOrbits.Final
 open Formalism.FrobeniusOrbits
 
 /- English proof (translation)
-The claim follows from `hostConj_of hostGalois hostGalSpec`.
+A detailed English derivation is pending.
 -/
 theorem conj : HostConj := hostConj_of hostGalois hostGalSpec
 /- English proof (translation)
-The claim follows from `hostReal_of hostGalois hostGalSpec conj`.
+A detailed English derivation is pending.
 -/
 theorem real : HostReal := hostReal_of hostGalois hostGalSpec conj
 /- English proof (translation)
-The claim follows from `real_subfield_of_galois_spec hostGalSpec`.
+A detailed English derivation is pending.
 -/
 theorem f1 : TwoPowerCyclotomicLayerRealSubfieldCharacterization := real_subfield_of_galois_spec hostGalSpec
 /- English proof (translation)
-The claim follows from `hostCMType_of hostGalois hostGalSpec`.
+A detailed English derivation is pending.
 -/
 theorem cmType : HostCMType := hostCMType_of hostGalois hostGalSpec
 /- English proof (translation)
-The claim follows from `hostFrob_of hostGalois hostGalSpec`.
+A detailed English derivation is pending.
 -/
 theorem frob : HostFrob := hostFrob_of hostGalois hostGalSpec
 /- English proof (translation)
-The claim follows from `hostSplitK_of (hostFrob_of hostGalois hostGalSpec)`.
+A detailed English derivation is pending.
 -/
 theorem splitK : HostSplitK := hostSplitK_of (hostFrob_of hostGalois hostGalSpec)
 /- English proof (translation)
-The claim follows from `hostEFGTwo_of hostInertia hostDecomp`.
+A detailed English derivation is pending.
 -/
 theorem efgTwo : HostEFGTwo := hostEFGTwo_of hostInertia hostDecomp
 /- English proof (translation)
-The claim follows from `hostRamified_of hostInertia`.
+A detailed English derivation is pending.
 -/
 theorem ramified : HostRamified := hostRamified_of hostInertia
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hostExample, hostGroup, hostOrders, hostRecip, hostFixed, hostGalois, hostGalSpec, conj, real, f1, hostMu, frob, hostInertia, hostUnramEF, hostDecomp, hostDecompConj, efgTwo, splitK, cmType⟩`.
+Supply the required witnesses or components.
 -/
 theorem host_field :
     HostExample ∧ HostGroup ∧ HostOrders ∧ HostRecip ∧ HostFixed ∧ HostGalois ∧ HostGalSpec ∧
@@ -72,7 +72,7 @@ theorem host_field :
     frob, hostInertia, hostUnramEF, hostDecomp, hostDecompConj, efgTwo, splitK, cmType⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hostThickOrbit, hostThickExists, hostTops, hostProG, hostStab, hostOrdinary, hostUnimodular, hostConductor, hostEta, hostOrbitCountSg⟩`.
+Supply the required witnesses or components.
 -/
 theorem host_places :
     HostThickOrbit ∧ HostThickExists ∧ HostTops ∧ HostProG ∧ HostStab ∧ HostOrdinary ∧ HostUnimodular ∧

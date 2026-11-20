@@ -179,7 +179,7 @@ def thW (σ : E →ₐ[F] E) (J : Matrix (Fin M) (Fin M) E) (μ : Measure (HA (A
 end Herm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_const, ⟨∅, isCompact_empty, fun _ _ => rfl⟩, fun _ => ⟨0, fun _ => by simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem decay_zero : Decay (fun _ : Fin N → AF F => (0 : ℂ)) :=
   ⟨continuous_const, ⟨∅, isCompact_empty, fun _ _ => rfl⟩, fun _ => ⟨0, fun _ => by simp⟩⟩

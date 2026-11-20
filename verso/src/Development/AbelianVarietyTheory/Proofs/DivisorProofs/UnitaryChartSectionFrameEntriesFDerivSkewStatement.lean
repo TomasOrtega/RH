@@ -6,7 +6,7 @@ open NumberField Matrix ReciprocityTheory.ChartRestriction.G.FD ReciprocityTheor
 open scoped ComplexConjugate ContDiff
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SUChartSection.dY_skew | exact GlobalTheory.SUChartSection.dY_skew | (intros; apply GlobalTheory.SUChartSection.dY_skew <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.unitaryChartSectionFrameEntriesFDeriv_skew : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) {x : Frame X.Ψ r}, IsOrth X x → ∀ (z : V (nd X)) (τ : X.Ψ) (a b : Fin r), dY X z τ b a * ((sgn X.p0 (b : ℕ) : ℝ) : ℂ) + ((sgn X.p0 (a : ℕ) : ℝ) : ℂ) * conj (dY X z τ a b) = 0 := by
   first | exact @GlobalTheory.SUChartSection.dY_skew | exact GlobalTheory.SUChartSection.dY_skew | (intros; apply GlobalTheory.SUChartSection.dY_skew <;> assumption)

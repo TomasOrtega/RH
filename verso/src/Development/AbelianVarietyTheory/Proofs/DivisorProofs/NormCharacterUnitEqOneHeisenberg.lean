@@ -9,18 +9,18 @@ namespace GlobalTheory.HeisUnit
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Simplify using `only [Valuation.mem_integer_iff, map_mul, hu, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_mem_integer_iff_of_valuation_eq_one {u : kˣ} (hu : valuation k (u : k) = 1) (y : k) :
     (u : k) * y ∈ 𝒪[k] ↔ y ∈ 𝒪[k] := by
   simp only [Valuation.mem_integer_iff, map_mul, hu, one_mul]
 
 /- English proof (translation)
-Establish `e : ∀ i j, ((diagAt u i0).valᵀ * Y) i j ∈ 𝒪[k] ↔ Y i j ∈ 𝒪[k]`. Introduce `i j`. Rewrite using `[diagAt_val, diagonal_transpose, diagonal_mul]`. Distinguish the cases in `hi : i = i0`. Rewrite using `[if_pos hi]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem_integer_iff_of_valuation_eq_one hu _`. Rewrite using `[if_neg hi, one_mul]`. Establish `hs : ((diagAt u i0).valᵀ * Y) ∈ {Y : Matrix (Fin n) (Fin d) k | ∀ i j, Y i j ∈ 𝒪[k]} ↔ Y ∈ {Y : Matrix (Fin n) (Fin d) k | ∀ i j, Y i j ∈ 𝒪[k]}`. Simplify using `only [Set.mem_setOf_eq]`. Conclude with `forall_congr' fun i => forall_congr' fun j => e i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Unfold `intInd`. Distinguish the cases in `h : Y ∈ {Y : Matrix (Fin n) (Fin d) k | ∀ i j, Y i j ∈ 𝒪[k]}`. Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem (hs.mpr h)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem (mt hs.mp h)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intInd_diagAt_mul {n d : ℕ} {u : kˣ} (hu : valuation k (u : k) = 1) (i0 : Fin n)
     (Y : Matrix (Fin n) (Fin d) k) : intInd k n d ((diagAt u i0).valᵀ * Y) = intInd k n d Y := by
@@ -40,11 +40,11 @@ theorem intInd_diagAt_mul {n d : ℕ} {u : kˣ} (hu : valuation k (u : k) = 1) (
   · rw [Set.indicator_of_notMem h, Set.indicator_of_notMem (mt hs.mp h)]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n d ι hinj S hS hiso χ hι φ0 hφ0 hι0 hfin i0 u hu`. Use `set g := diagAt u i0 with hg`. Establish `hmem : (χ u : ℂ) • φ0 ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → k)` using `Submodule.smul_mem _ _ hφ0`. Establish `heq : S g φ0 = (χ u : ℂ) • φ0`. Use `hinj (hS g φ0 hφ0) hmem ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hι g φ0 hφ0, map_smul, hι0, det_diagAt]`. Use function extensionality and compare the values at `Y`. Rewrite using `[intInd_diagAt_mul hu i0 Y]`. Both sides reduce to the same expression. Use `letI : MeasurableSpace (Fin n × Fin d → k) := borel _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (Fin n × Fin d → k) := ⟨rfl⟩`. Establish `hμ : Measure.IsAddHaarMeasure (Measure.addHaar : Measure (Fin n × Fin d → k))` using `inferInstance`. Establish `h` using `hiso g φ0 hφ0 Measure.addHaar hμ`. Rewrite `h` using `[heq]`. Conclude with `GlobalTheory.WeilM.norm_eq_one_of_lintegral_eq h (hfin _ hμ).1 (hfin _ hμ).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_char_unit_eq_one : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n d : ℕ},
     ∀ (ι : ((Fin n × Fin d → k) → ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) k → ℂ)),

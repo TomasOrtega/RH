@@ -6,9 +6,9 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.SubsingletonHypercoh
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Bc
 
 /- English proof (translation)
-Introduce `Q S hS hQ P hP f`. Establish `hsub` using `UpperTheory.subsingleton_hypercohomology_free_of_supp_of_sections_vanish Q S.X₃ hQ P hP 0`. Establish `hz : f ≫ S.g = 0`. Apply `(UpperTheory.bijective_cl_hypercohomology_singleton_zero _ _).1` to reduce the goal to its premises. Conclude with `Subsingleton.elim _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 
-Use `haveI := hS.mono_f`. Conclude with `⟨hS.exact.lift f hz, hS.exact.lift_f f hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_lift_free_to_kernel_of_shortExact_vanishing_sections :
     ∀ (Q : Scheme.{0} → Prop) (S : ShortComplex (Shv ℤ)), S.ShortExact → (∀ U : Scheme.{0}, Q U → Subsingleton (Sec S.X₃ U)) → ∀ P : PSh, Supp Q P → ∀ f : (free ℤ).obj P ⟶ S.X₂, ∃ h : (free ℤ).obj P ⟶ S.X₁, h ≫ S.f = f := by

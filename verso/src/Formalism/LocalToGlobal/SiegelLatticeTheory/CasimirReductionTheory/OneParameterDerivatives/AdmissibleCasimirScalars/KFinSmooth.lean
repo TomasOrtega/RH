@@ -13,23 +13,23 @@ set_option autoImplicit false
 namespace Formalism.L2.SG.Pf.admitted
 
 /- English proof (translation)
-The claim follows from `hcMultDS_of_all c0 c1 c2 c3 c4 c5 c6 c7`.
+A detailed English derivation is pending.
 -/
 theorem hcMultDS : Formalism.MainNotions.BridgeCPX.HCMultDS :=
   hcMultDS_of_all c0 c1 c2 c3 c4 c5 c6 c7
 
 /- English proof (translation)
-The claim follows from `hcAdmDS_of hcMultDS`.
+A detailed English derivation is pending.
 -/
 theorem hcAdmDS : Formalism.MainNotions.BridgeCPX.HCAdmDS := hcAdmDS_of hcMultDS
 
 /- English proof (translation)
-The claim follows from `kFinSmooth_of hcMultDS`.
+A detailed English derivation is pending.
 -/
 theorem kFinSmooth : Formalism.MainNotions.LowestKTypeMultiplicity.KFinSmooth := kFinSmooth_of hcMultDS
 
 /- English proof (translation)
-The claim follows from `kFinSmooth_of' hcMultDS`.
+A detailed English derivation is pending.
 -/
 theorem kFinSmooth' : Formalism.MainNotions.DiscreteSeriesInnerProducts.KFinSmooth := kFinSmooth_of' hcMultDS
 

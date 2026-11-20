@@ -8,7 +8,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k r κ h0 h1` and use `Formalism.MainNotions.BridgeCSB.haarLieN k r κ h0.ne' h1.ne`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem haarLie_isHaarOn_Nset : ∀ (k r : ℕ) (κ : ENNReal), 0 < κ → κ < ⊤ →
     IsHaarOn (Nset k r) (haarLie (Nset k r) κ) :=

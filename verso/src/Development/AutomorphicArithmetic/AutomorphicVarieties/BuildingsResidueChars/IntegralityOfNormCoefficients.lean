@@ -7,9 +7,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Ws UpperTheory.V.Sd UpperTheory.V.Sd.S3
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℚ_[l] x` using `Algebra.IsIntegral.isIntegral x`. Establish `h0 : ‖x‖ = spectralValue (minpoly ℚ_[l] x)` using `rfl`. Rewrite `h` using `[h0, spectralValue_le_one_iff (minpoly.monic hi)]`. Establish `hl' : minpoly ℚ_[l] x ∈ lifts (algebraMap ℤ_[l] ℚ_[l])` using `(lifts_iff_coeff_lifts _).mpr fun n => ⟨⟨_, h n⟩, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `lifts_and_degree_eq_and_monic hl' (minpoly.monic hi)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨q, hqm, by rw [← aeval_def, ← aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem int_of_norm {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) (h : ‖x‖ ≤ 1) : IsIntegral ℤ_[l] x := by
   have hi : IsIntegral ℚ_[l] x := Algebra.IsIntegral.isIntegral x
@@ -21,20 +21,18 @@ private theorem int_of_norm {l : ℕ} [Fact l.Prime] (x : PadicAlgCl l) (h : ‖
   exact ⟨q, hqm, by rw [← aeval_def, ← aeval_map_algebraMap ℚ_[l], hq, minpoly.aeval]⟩
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.CoefficientsOfField.coef_of_field K`.
+A detailed English derivation is pending.
 -/
 private theorem coef_of_field {l : ℕ} [Fact l.Prime] (K : IntermediateField ℚ_[l] (PadicAlgCl l)) [FiniteDimensional ℚ_[l] K] :
     ∃ c : Coef l, ∀ x ∈ K, ‖x‖ ≤ 1 → x ∈ c.O :=
   _root_.UpperTheory.Reformulated.B.CoefficientsOfField.coef_of_field K
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible c.O`. Establish `h1 : ‖(ϖ : PadicAlgCl l)‖ < 1` using `(UpperTheory.V.Fr.sc_norm l c ϖ).2.1 hϖ.not_isUnit`. Establish `h0 : 0 < ‖(ϖ : PadicAlgCl l)‖` using `norm_pos_iff.2 fun h => hϖ.ne_zero (Subtype.ext h)`. Use `⟨_, h0, h1, fun n x => ?_⟩` and prove the remaining obligations. Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[Subalgebra.coe_mul, Subalgebra.coe_pow, norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_right (by positivity) (UpperTheory.V.Fr.sc_norm l c y).1`. Introduce `hx`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_ne x 0 with rfl | hx0` into its components or cases. Conclude with `dvd_zero _`. Take `⟨k, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hx0 hϖ`. Establish `hu : ‖((u : c.O) : PadicAlgCl l)‖ = 1` using `le_antisymm (UpperTheory.V.Fr.sc_norm l c u).1 (not_lt.1 fun h => (UpperTheory.V.Fr.sc_norm l c u).2.2 h u.isUnit)`. Rewrite `hx` using `[Subalgebra.coe_mul, Subalgebra.coe_pow, norm_mul, norm_pow, hu, one_mul]`.
-
-Conclude with `(pow_dvd_pow ϖ ((pow_le_pow_iff_right_of_lt_one₀ h0 h1).1 hx)).mul_left _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_pow_iff {l : ℕ} [Fact l.Prime] (c : Coef l) : ∃ a : ℝ, 0 < a ∧ a < 1 ∧
     ∀ (n : ℕ) (x : c.O), x ∈ maximalIdeal c.O ^ n ↔ ‖(x : PadicAlgCl l)‖ ≤ a ^ n := by
@@ -57,15 +55,13 @@ private theorem mem_pow_iff {l : ℕ} [Fact l.Prime] (c : Coef l) : ∃ a : ℝ,
     exact (pow_dvd_pow ϖ ((pow_le_pow_iff_right_of_lt_one₀ h0 h1).1 hx)).mul_left _
 
 /- English proof (translation)
-Introduce `l _`. Use `⟨fun c E hE => ?_, fun c Γ _ f => ?_⟩` and prove the remaining obligations. Take `⟨c', hc'⟩` from `coef_of_field E`. Take `⟨c₁, h1, h2⟩` from `(UpperTheory.V.HV.coefSup l).1 c c'`. Conclude with `⟨c₁, h1, fun y hy h => h2 (hc' y hy h)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, h0, h1, ha⟩` from `mem_pow_iff c`. Prove the components needed by the constructor for the conclusion. Introduce `hf`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ContinuousAt, Metric.tendsto_nhds]`. Introduce `ε hε`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε h1`. Use `filter_upwards [(hf n).eventually_eq g₀] with g hg`. Rewrite using `[dist_eq_norm, ← Subalgebra.coe_sub]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `lt_of_le_of_lt ((ha n _).1 (Ideal.Quotient.eq.1 hg)) hn`. Introduce `hf n`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g₀`. Use `filter_upwards [Metric.tendsto_nhds.1 (hf.tendsto g₀) (a ^ n) (pow_pos h0 n)] with g hg`.
-
-Rewrite `hg` using `[dist_eq_norm, ← Subalgebra.coe_sub]`. Conclude with `Ideal.Quotient.eq.2 ((ha n _).2 hg.le)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.integrality_of_norm_coefficients :
     UpperTheory.V.Sd.S3.CoefEx := by

@@ -16,33 +16,25 @@ open scoped Pointwise
 namespace GlobalTheory.LocalNormalExt
 
 /- English proof (translation)
-Set `L` to `IntermediateField.normalClosure K K' (AlgebraicClosure K')`. Use `letI : Algebra R L := ((algebraMap K L).comp (algebraMap R K)).toAlgebra`. Use `haveI : IsScalarTower R K L := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : IsScalarTower R K' L := IsScalarTower.of_algebraMap_eq (fun r => by`. Rewrite using `[IsScalarTower.algebraMap_apply R K K', ← IsScalarTower.algebraMap_apply K K' L]`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use the proof step `rfl)`. Use `haveI : FiniteDimensional K L := inferInstance`. Use `haveI : IsGalois K L := inferInstance`. Use `haveI : IsScalarTower R R L := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Set `S` to `integralClosure R L`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `C` to `integralClosure R K'`. Use `haveI : IsFractionRing S L := integralClosure.isFractionRing_of_finite_extension K L`. Set `f : C →ₐ[R] S` to `((IsScalarTower.toAlgHom R K' L).comp C.val).codRestrict S (fun c => (c.2 : IsIntegral R (c : K')).map (IsScalarTower.toAlgHom R K' L))`. Establish `hfv : ∀ c : C, ((f c : S) : L) = algebraMap K' L (c : K')` using `fun _ => rfl`. Establish `hfinj : Function.Injective f`.
+Simplify using the standard rewrite rules. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `c d h`. Use `congrArg (fun u : S => (u : L)) h` as an intermediate fact. Simplify using `only [hfv] at this`. Conclude with `Subtype.ext ((algebraMap K' L).injective this)`. Use `letI : Algebra C S := f.toRingHom.toAlgebra`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `haveI : IsScalarTower R C S := IsScalarTower.of_algebraMap_eq (fun r => (f.commutes r).symm)`. Use `haveI : Algebra.IsIntegral C S := ⟨fun u => (Algebra.IsIntegral.isIntegral (R := R) u).tower_top⟩`. Take `⟨Q, hQmax, hQ⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := S) P (by rw [(RingHom.injective_iff_ker_eq_bot (algebraMap C S)).mp hfinj]; exact bot_le)`. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := R) x`. Establish `hb0 : algebraMap R K b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `J : Ideal S` to `{ carrier := {u | ∃ v : S, u * algebraMap R S a = algebraMap R S b * v} add_mem' := by`. Introduce and unpack `u₁ u₂ ⟨v₁, h₁⟩ ⟨v₂, h₂⟩`. Conclude with `⟨v₁ + v₂, by rw [add_mul, h₁, h₂, mul_add]⟩`. Use the proof step `zero_mem' := ⟨0, by simp⟩`. Use the proof step `smul_mem' := by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `c u ⟨v, h⟩`. Conclude with `⟨c * v, by rw [smul_eq_mul, _root_.mul_assoc, h, mul_left_comm]⟩ }`. Establish `hJg : ∀ (g : S ≃ₐ[R] S) (u : S), u ∈ J → g u ∈ J`. Introduce and unpack `g u ⟨v, h⟩`. Conclude with `⟨g v, by rw [← g.commutes a, ← g.commutes b, ← map_mul, h, map_mul]⟩`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `e1 : ∀ r : R, ((algebraMap R S r : S) : L) = algebraMap K L (algebraMap R K r)` using `fun _ => rfl`. Establish `hbL : algebraMap K L (algebraMap R K b) ≠ 0` using `(map_ne_zero _).mpr hb0`. Establish `htJ : f s ∈ J`. Use `⟨f ⟨_, hx⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (f s : L) * ((algebraMap R S a : S) : L) = ((algebraMap R S b : S) : L) * (f ⟨_, hx⟩ : L)`. Rewrite using `[hfv, hfv, e1, e1]`. Simplify using `only [map_mul]`. Rewrite using `[← IsScalarTower.algebraMap_apply K K' L, ← hab, map_div₀]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hmax : ∀ (I : Ideal S) [I.IsMaximal], I.under R = IsLocalRing.maximalIdeal R` using `fun I _ => IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal I)`. Establish `hJtop : J = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨N, hNmax, hJN⟩` from `Ideal.exists_le_maximal J hne`. Use `haveI : Finite (S ≃ₐ[R] S) := Finite.of_equiv _ (galRestrict R K L S).toEquiv`.
-
-Use `haveI : Algebra.IsInvariant R S (S ≃ₐ[R] S) := Algebra.isInvariant_of_isGalois' R K L S`. Take `⟨g, hg⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq (A := R) (B := S) (G := S ≃ₐ[R] S) Q N ((hmax Q).trans (hmax N).symm)`. Establish `h1 : g • f s ∈ g • Q`. Rewrite using `[← hg]`. Conclude with `hJN (hJg g _ htJ)`.
-
-Establish `h2 : f s ∈ Q` using `(Ideal.smul_mem_pointwise_smul_iff).mp h1`. Conclude with `hs (by rw [← hQ]; exact h2)`. Take `⟨v, hv⟩ : (1 : S) ∈ J` from `hJtop ▸ Submodule.mem_top`. Establish `hvL : (v : L) = algebraMap K L x`. Use `congrArg (fun u : S => (u : L)) hv` as an intermediate fact.
-
-Simplify using `only [_root_.one_mul, Subalgebra.coe_mul, e1] at this`. Rewrite using `[← hab, map_div₀, this]`. Clear the denominators using the available nonvanishing facts. Establish `hint : IsIntegral R (algebraMap K L x)` using `hvL ▸ v.2`. Establish `hxint : IsIntegral R x` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom R K L) (algebraMap K L).injective).mp hint`.
-
-Conclude with `IsIntegrallyClosed.isIntegral_iff.mp hxint`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_eq_of_mul_mem_integralClosure
     (R K K' : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsIntegrallyClosed R]
@@ -128,27 +120,19 @@ theorem exists_eq_of_mul_mem_integralClosure
   exact IsIntegrallyClosed.isIntegral_iff.mp hxint
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ _ K' _ _ _`. Set `K` to `FractionRing R`. Use `haveI : CharZero K := charZero_of_injective_algebraMap (IsFractionRing.injective R K)`. Use `letI : Algebra R K' := ((algebraMap K K').comp (algebraMap R K)).toAlgebra`. Use `haveI : IsScalarTower R K K' := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `C` to `integralClosure R K'`. Use `haveI : IsFractionRing C K' := integralClosure.isFractionRing_of_finite_extension K K'`. Use `haveI : IsIntegrallyClosed C := integralClosure.isIntegrallyClosedOfFiniteExtension K`. Use `haveI : IsNoetherianRing C := IsIntegralClosure.isNoetherianRing R K K' C`. Use `haveI : IsDomain C := inferInstance`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m', hm'⟩` from `Ideal.exists_maximal C`. Take `⟨R', _, _, _⟩ : ∃ (R' : Type) (_ : CommRing R') (_ : Algebra C R'), IsLocalization.AtPrime R' m'` from `⟨Localization.AtPrime m', inferInstance, inferInstance, inferInstance⟩`. Use `haveI : IsLocalRing R' := IsLocalization.AtPrime.isLocalRing R' m'`. Use `haveI : IsDomain R' := IsLocalization.isDomain_of_le_nonZeroDivisors (M := m'.primeCompl) (S := R') m'.primeCompl_le_nonZeroDivisors`. Use `haveI : IsNoetherianRing R' := IsLocalization.isNoetherianRing m'.primeCompl R' inferInstance`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : IsIntegrallyClosed R' := isIntegrallyClosed_of_isLocalization R' m'.primeCompl m'.primeCompl_le_nonZeroDivisors`. Use `letI : Algebra R' K' := (IsLocalization.lift (M := m'.primeCompl) (S := R') (g := algebraMap C K') (fun y => IsUnit.mk0 _ ((map_ne_zero_iff _ (IsFractionRing.injective C K')).mpr (fun h => y.2 (h ▸ m'.zero_mem))))).toAlgebra`. Use `haveI : IsScalarTower C R' K' := IsScalarTower.of_algebraMap_eq (fun c => (IsLocalization.lift_eq _ c).symm)`. Use `haveI : IsFractionRing R' K' := IsFractionRing.isFractionRing_of_isDomain_of_isLocalization m'.primeCompl R' K'`. Set `e : FractionRing R' ≃+* K'` to `(FractionRing.algEquiv R' K').toRingEquiv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `he : ∀ w : R', e (algebraMap R' _ w) = algebraMap R' K' w` using `fun w => (FractionRing.algEquiv R' K').commutes w`. Establish `hRC : ∀ r : R, algebraMap C K' (algebraMap R C r) = algebraMap K K' (algebraMap R K r)` using `fun _ => rfl`. Establish `hinjRC : Function.Injective (algebraMap R C)`. Introduce `a b h`. Use `congrArg (algebraMap C K') h` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[hRC, hRC]`. Conclude with `IsFractionRing.injective R K ((algebraMap K K').injective this)`. Establish `hinjCR' : Function.Injective (algebraMap C R')` using `IsLocalization.injective R' m'.primeCompl_le_nonZeroDivisors`. Establish `hcomap : m'.comap (algebraMap R C) = IsLocalRing.maximalIdeal R` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal m')`. Use `⟨R', inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, (algebraMap C R').comp (algebraMap R C), e, ?_, hinjCR'.comp hinjRC, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨fun r hr => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hnu`. Establish `h1 : algebraMap R C r ∈ m'`. Rewrite using `[← Ideal.mem_comap, hcomap]`. Conclude with `hnu`.
-
-Establish `h2 : algebraMap C R' (algebraMap R C r) ∈ IsLocalRing.maximalIdeal R'`. Rewrite using `[IsLocalization.AtPrime.to_map_mem_maximal_iff R' m']`. Conclude with `h1`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp h2 hr`. Introduce `r`.
-
-Rewrite using `[he]`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← IsScalarTower.algebraMap_apply C R' K', hRC]`. Introduce `x w hw`. Rewrite `hw` using `[he]`.
-
-Take `⟨⟨c, s⟩, rfl⟩` from `IsLocalization.mk'_surjective m'.primeCompl w`. Establish `hmul : algebraMap K K' x * (s : C) = (c : K')`. Rewrite using `[← hw]`. Use `congrArg (algebraMap R' K') (IsLocalization.mk'_spec R' c s)` as an intermediate fact. Rewrite `this` using `[map_mul, ← IsScalarTower.algebraMap_apply C R' K', ← IsScalarTower.algebraMap_apply C R' K']`.
-
-Conclude with `this`. Conclude with `exists_eq_of_mul_mem_integralClosure R K K' m' x (s : C) s.2 (hmul ▸ c.2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local_normal_domain_of_finite_extension : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [IsIntegrallyClosed R] [CharZero R] (K' : Type) [Field K'] [Algebra (FractionRing R) K'] [FiniteDimensional (FractionRing R) K'], ∃ (R' : Type) (_ : CommRing R') (_ : IsDomain R') (_ : IsLocalRing R') (_ : IsNoetherianRing R') (_ : IsIntegrallyClosed R') (ρ : R →+* R') (e : FractionRing R' ≃+* K'), IsLocalHom ρ ∧ Function.Injective ρ ∧ (∀ r, e (algebraMap R' _ (ρ r)) = algebraMap (FractionRing R) K' (algebraMap R _ r)) ∧ ∀ (x : FractionRing R) (w : R'), e (algebraMap R' _ w) = algebraMap (FractionRing R) K' x → ∃ r : R, algebraMap R _ r = x := by
   intro R _ _ _ _ _ _ K' _ _ _

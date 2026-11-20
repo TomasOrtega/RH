@@ -12,7 +12,7 @@ section LenEpsAux
 variable {O OO : Type*} [CommRing O] [Ring OO] [Algebra O OO]
 
 /- English proof (translation)
-Simplify using `[epsImg]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_epsImg_iff {M : Type*} [AddCommGroup M] [Module OO M] [Module O M]
     [IsScalarTower O OO M] (ε : OO) (x : M) :

@@ -52,7 +52,7 @@ theorem cH_mk (z : Z1 ρ') :
     cH ρ ρ' u hu he (Submodule.Quotient.mk z) = Submodule.Quotient.mk (cZ ρ ρ' u hu he z) := rfl
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem res_cH {H : Type} [Group H] [TopologicalSpace H] (φ : H →* G) (hφ : Continuous φ)
     (x : H1 ρ') :
@@ -62,7 +62,7 @@ theorem res_cH {H : Type} [Group H] [TopologicalSpace H] (φ : H →* G) (hφ : 
   rfl
 
 /- English proof (translation)
-Unfold `H1ur at hx ⊢`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Conclude with `(res_cH ρ ρ' u hu he J.subtype continuous_subtype_val x).trans ((congrArg _ hx).trans (map_zero _))`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cH_mem_H1ur (J : Subgroup G) (x : H1 ρ') (hx : x ∈ H1ur ρ' J) :
     cH ρ ρ' u hu he x ∈ H1ur ρ J := by
@@ -72,7 +72,7 @@ theorem cH_mem_H1ur (J : Subgroup G) (x : H1 ρ') (hx : x ∈ H1ur ρ' J) :
     ((congrArg _ hx).trans (map_zero _))
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_Sel]`. Introduce `v`. Rewrite using `[res_cH]`. Conclude with `h v _ (hx v)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cH_mem_Sel {I : Type} {Dc : I → Type} [∀ v, Group (Dc v)] [∀ v, TopologicalSpace (Dc v)]
     (φ : ∀ v, Dc v →* G) (hφ : ∀ v, Continuous (φ v)) (L : LocCond ρ φ) (L' : LocCond ρ' φ)
@@ -84,9 +84,9 @@ theorem cH_mem_Sel {I : Type} {Dc : I → Type} [∀ v, Group (Dc v)] [∀ v, To
   exact h v _ (hx v)
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Simplify using `only [cH_mk, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, mem_coboundaries1] at hx ⊢`. Use `choose m hm using hx`. Take `⟨m', hm'⟩` from `hb.2 m`. Use `⟨m', fun g => hb.1 (funext fun i => ?_)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hm i g` as an intermediate fact. Rewrite `this` using `[← congrFun hm' i]`. Use `show u i _ = u i _`. Rewrite using `[map_sub, he]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_cH {ι : Type} (u : ι → (M' →ₗ[R] M)) (hu : ∀ i, Continuous (u i))
     (he : ∀ i g m, u i (ρ' g m) = ρ g (u i m))
@@ -113,7 +113,7 @@ variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} {X : N
   (bkP : BKPh X) (i : X.Tw) (s : X.Sig i) (k k' : ℕ)
 
 /- English proof (translation)
-Simplify using `[Trep, twRep, matAct, Tmat, Finset.smul_sum, smul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trep_one_apply (g : Gen.GE N) (m : Fin D.R.r → KmodO (X.Ok i k)) (a : Fin D.R.r) :
     Trep i s k 1 g m a = ∑ j, phiK X i k (Tmat i s g a j) • m j := by
@@ -133,7 +133,7 @@ def bkGen (v : HeightOneSpectrum (𝓞 D.host.E)) (hv : v ∈ placesOver D.host.
 variable [Algebra (X.Ok i k) (X.Ok i k')] [IsScalarTower (X.O i) (X.Ok i k) (X.Ok i k')]
 
 /- English proof (translation)
-The claim follows from `IsScalarTower.algebraMap_apply (X.O i) (X.Ok i k) (X.Ok i k') _`.
+A detailed English derivation is pending.
 -/
 theorem phiK_eq (a : X.O0 i) :
     phiK X i k' a = algebraMap (X.Ok i k) (X.Ok i k') (phiK X i k a) :=
@@ -142,9 +142,9 @@ theorem phiK_eq (a : X.O0 i) :
 variable (p : KmodO (X.Ok i k') →ₗ[X.Ok i k] KmodO (X.Ok i k))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Use `show p (Trep i s k' 1 g m a) = _`. Rewrite using `[trep_one_apply, trep_one_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[phiK_eq i k k', algebraMap_smul, map_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem equivariant (g : Gen.GE N) (m : Fin D.R.r → KmodO (X.Ok i k')) :
     p.compLeft (Fin D.R.r) (Trep i s k' 1 g m) = Trep i s k 1 g (p.compLeft (Fin D.R.r) m) := by

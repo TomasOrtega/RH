@@ -5,17 +5,17 @@ namespace Formalism.FourierDecayAlt.P.ProductFactorBounds
 open Formalism.FourierDecayAlt.F7
 
 /- English proof (translation)
-Take `⟨p, t, f⟩` from `l`. Apply the tactic sequence `cases p <;> cases f`. Simplify using `[wFactor]`. Establish `h' : t - Y ≠ 1 ∧ t - Y ≠ 2` using `by simpa [OffPoles] using h`. Establish `h1 : t - Y - 1 ≠ 0` using `sub_ne_zero.2 h'.1`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : t - (Y + 1) ≠ 0`. Introduce `e`. Apply `h1` to reduce the goal to its premises. Rewrite using `[← e]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h3 : t - (Y + 1) - 1 ≠ 0`. Introduce `e`. Apply `h'.2` to reduce the goal to its premises. Take the linear combination `e`. Simplify using `only [wFactor, if_true, Bool.false_eq_true, if_false]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `[wFactor]`. Establish `h' : Y - t ≠ 0 ∧ Y - t ≠ -1` using `by simpa [OffPoles] using h`. Establish `h1 : Y - t + 1 ≠ 0`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `e`. Apply `h'.2` to reduce the goal to its premises. Take the linear combination `e`. Establish `h4 : Y - t ≠ 0` using `h'.1`. Simplify using `only [wFactor, if_true]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : Y + 1 - t = Y - t + 1` using `by ring`. Establish `e2 : Y + 1 - t - 1 = Y - t` using `by ring`. Rewrite using `[e2, e1]`. Conclude with `div_self (div_ne_zero h1 h4)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem letter_ratio {K : Type} [Field K] (l : WLetter K) (Y : K) (h : OffPoles l Y) :
     (if l.plus then (Y - l.pt + 1) / (Y - l.pt) else (l.pt - Y) / (l.pt - Y - 1)) /
@@ -46,11 +46,11 @@ theorem letter_ratio {K : Type} [Field K] (l : WLetter K) (Y : K) (h : OffPoles 
     exact div_self (div_ne_zero h1 h4)
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons f L ih`. Establish `hf` using `h f (by simp)`. Establish `hL` using `ih (fun g hg => h g (by simp [hg]))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ 1 - a` using `by linarith`. Establish `h1 : 0 ≤ (1 - a) ^ L.length` using `pow_nonneg h0 _`. Establish `h2 : 0 ≤ L.prod` using `le_trans h1 hL.1`. Establish `h3 : 0 ≤ f` using `le_trans h0 hf.1`. Simplify using `only [List.length_cons, List.prod_cons, pow_succ']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨mul_le_mul hf.1 hL.1 h1 h3, mul_le_mul hf.2 hL.2 h2 (by linarith)⟩`.
+Supply the required witnesses or components.
 -/
 theorem prod_bounds (a b : ℝ) (ha1 : a ≤ 1) (hb : 0 ≤ b) (L : List ℝ)
     (h : ∀ f ∈ L, 1 - a ≤ f ∧ f ≤ 1 + b) :
@@ -68,11 +68,11 @@ theorem prod_bounds (a b : ℝ) (ha1 : a ≤ 1) (hb : 0 ≤ b) (L : List ℝ)
     exact ⟨mul_le_mul hf.1 hL.1 h1 h3, mul_le_mul hf.2 hL.2 h2 (by linarith)⟩
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `hk' : (k : ℝ) * u ≤ 1`. Move the coercions through the operations in `at hk`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h` using `ih hk'`. Establish `hk0 : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Rewrite using `[pow_succ]`. Use `push_cast`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `h1 : (1 + u) ^ k * (1 + u) ≤ (1 + k * u + (k * u) ^ 2) * (1 + u)` using `mul_le_mul_of_nonneg_right h (by linarith)`. Establish `h2 : (k : ℝ) * u * (k * u ^ 2) ≤ 1 * (k * u ^ 2)` using `mul_le_mul_of_nonneg_right hk' (by positivity)`. Use polynomial arithmetic with `[sq_nonneg u]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem one_add_pow_le (u : ℝ) (hu : 0 ≤ u) (k : ℕ) (hk : (k : ℝ) * u ≤ 1) :
     (1 + u) ^ k ≤ 1 + k * u + (k * u) ^ 2 := by
@@ -92,29 +92,29 @@ theorem one_add_pow_le (u : ℝ) (hu : 0 ≤ u) (k : ℕ) (hk : (k : ℝ) * u �
     nlinarith [sq_nonneg u]
 
 /- English proof (translation)
-Take `⟨p, t, f⟩` from `l`. Establish `hN2 : 4 ≤ N ^ 2` using `by nlinarith`. Establish `hN2p : 0 < N ^ 2` using `by linarith`. Establish `hpos : 0 < N ^ 2 - 1` using `by linarith`. Establish `e1 : 0 ≤ 1 / N ^ 2` using `(one_div_pos.2 hN2p).le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : 0 ≤ 1 / (N ^ 2 - 1)` using `(one_div_pos.2 hpos).le`. Establish `e3 : 1 / N ^ 2 ≤ 1 / (N ^ 2 - 1)` using `one_div_le_one_div_of_le hpos (by linarith)`. Use `replace h : N ^ 2 ≤ |Y - t| := h`. Apply the tactic sequence `cases p <;> cases f <;> simp only [wFactor, if_true, Bool.false_eq_true, if_false]`. Break down `le_abs.1 h with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hx : 0 < Y - t + 1` using `by linarith`. Establish `hne : t - Y - 1 ≠ 0`. Introduce `e`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : (t - Y) / (t - Y - 1) = 1 - 1 / (Y - t + 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `b1 : 1 / (Y - t + 1) ≤ 1 / N ^ 2` using `one_div_le_one_div_of_le hN2p (by linarith)`. Establish `b2 : 0 ≤ 1 / (Y - t + 1)` using `(one_div_pos.2 hx).le`. Rewrite using `[e]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> linarith`. Establish `hx : 0 < t - Y - 1` using `by linarith`. Establish `e : (t - Y) / (t - Y - 1) = 1 + 1 / (t - Y - 1)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `b1 : 1 / (t - Y - 1) ≤ 1 / (N ^ 2 - 1)` using `one_div_le_one_div_of_le hpos (by linarith)`. Establish `b2 : 0 ≤ 1 / (t - Y - 1)` using `(one_div_pos.2 hx).le`. Rewrite using `[e]`. Apply the tactic sequence `constructor <;> linarith`. Establish `hsq : N ^ 2 ≤ (t - Y - 1) ^ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `le_abs.1 h with h | h` into its components or cases. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish `b1 : 1 / (t - Y - 1) ^ 2 ≤ 1 / N ^ 2` using `one_div_le_one_div_of_le hN2p hsq`. Establish `b2 : 0 ≤ 1 / (t - Y - 1) ^ 2` using `by positivity`.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> linarith`. Break down `le_abs.1 h with h | h` into its components or cases. Establish `hx : 0 < Y - t` using `by linarith`. Establish `e : (Y - t + 1) / (Y - t) = 1 + 1 / (Y - t)`. Clear the denominators using the available nonvanishing facts.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `b1 : 1 / (Y - t) ≤ 1 / N ^ 2` using `one_div_le_one_div_of_le hN2p h`. Establish `b2 : 0 ≤ 1 / (Y - t)` using `(one_div_pos.2 hx).le`. Rewrite using `[e]`. Apply the tactic sequence `constructor <;> linarith`. Establish `hx : 0 < t - Y` using `by linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : Y - t ≠ 0`. Introduce `e`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : (Y - t + 1) / (Y - t) = 1 - 1 / (t - Y)`. Clear the denominators using the available nonvanishing facts.
+Fix the arbitrary inputs or assume the hypotheses. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `b1 : 1 / (t - Y) ≤ 1 / N ^ 2` using `one_div_le_one_div_of_le hN2p (by linarith)`. Establish `b2 : 0 ≤ 1 / (t - Y)` using `(one_div_pos.2 hx).le`. Rewrite using `[e]`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> linarith`.
+A detailed English derivation is pending.
 -/
 theorem factor_bounds (N : ℝ) (hN : 2 ≤ N) (l : WLetter ℝ) (Y : ℝ) (h : N ^ 2 ≤ |Y - l.pt|) :
     1 - 1 / N ^ 2 ≤ wFactor l Y ∧ wFactor l Y ≤ 1 + 1 / (N ^ 2 - 1) := by
@@ -174,13 +174,13 @@ theorem factor_bounds (N : ℝ) (hN : 2 ≤ N) (l : WLetter ℝ) (Y : ℝ) (h : 
   · constructor <;> linarith
 
 /- English proof (translation)
-Take `⟨p, t, f⟩` from `l`. Establish `hN2 : 4 ≤ N ^ 2` using `by nlinarith`. Establish `hpos : 0 < N ^ 2 - 1` using `by linarith`. Establish `hpos2 : 0 < (N ^ 2 - 1) ^ 2` using `by positivity`. Establish `e1 : 0 ≤ 1 / (N ^ 2 - 1) ^ 2` using `(one_div_pos.2 hpos2).le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `replace h : N ^ 2 ≤ |Y - t| := h`. Use `replace hf : f = true := hf`. Substitute `hf` using the available equality. Apply the tactic sequence `cases p <;> simp only [wFactor, if_true, Bool.false_eq_true, if_false]`. Establish `hsq : (N ^ 2 - 1) ^ 2 ≤ (t - Y - 1) ^ 2`.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `le_abs.1 h with h | h` into its components or cases. Establish `: (t - Y - 1) ^ 2 = (Y - t + 1) ^ 2` using `by ring`. Rewrite using `[this]`. Conclude with `pow_le_pow_left₀ hpos.le (by linarith) 2`. Conclude with `pow_le_pow_left₀ hpos.le (by linarith) 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `b1 : 1 / (t - Y - 1) ^ 2 ≤ 1 / (N ^ 2 - 1) ^ 2` using `one_div_le_one_div_of_le hpos2 hsq`. Establish `b2 : 0 ≤ 1 / (t - Y - 1) ^ 2` using `by positivity`. Apply the tactic sequence `constructor <;> linarith`. Apply the tactic sequence `constructor <;> linarith`.
+A detailed English derivation is pending.
 -/
 theorem factor_bounds_first (N : ℝ) (hN : 2 ≤ N) (l : WLetter ℝ) (Y : ℝ)
     (h : N ^ 2 ≤ |Y - l.pt|) (hf : l.first = true) :
@@ -212,9 +212,9 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.F7 Formalism.FourierDecayAlt.P.ProductFactorBounds
 
 /- English proof (translation)
-Introduce `K _ q x w Y h`. Proceed by induction on `w with`. Consider the case `nil => simp [qW, xW]`. Consider the case `cons l w ih`. Establish `hl` using `letter_ratio l Y (h l (by simp))`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hw` using `ih (fun g hg => h g (by simp [hg]))`. Simplify using `only [qW, xW, List.map_cons, List.prod_cons]`. Rewrite using `[mul_div_mul_comm, hw, hl]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem word_weight_formula : Formalism.FourierDecayAlt.F7.WordWeight := by
   intro K _ q x w Y h
@@ -228,11 +228,11 @@ theorem word_weight_formula : Formalism.FourierDecayAlt.F7.WordWeight := by
     ring
 
 /- English proof (translation)
-Introduce `K _ q x w Y h hp`. Rewrite using `[word_weight_formula K q x w Y h]`. Use `congr 1`. Use `clear h`. Proceed by induction on `w with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Proceed by induction. Treat this case separately.
 
-Consider the case `nil => simp`. Consider the case `cons l w ih`. Establish `hw` using `ih (fun g hg => hp g (by simp [hg]))`. Establish `hl : l.first = true` using `hp l (by simp)`. Consider the cases of `hpl : l.plus`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Establish `e : wFactor l Y = 1 - 1 / (l.pt - Y - 1) ^ 2` using `by simp [wFactor, hpl, hl]`. Rewrite using `[List.map_cons, List.prod_cons, hw, e, List.filter_cons_of_pos (by simp [hpl]), List.map_cons, List.prod_cons]`. Establish `e : wFactor l Y = 1` using `by simp [wFactor, hpl, hl]`. Rewrite using `[List.map_cons, List.prod_cons, hw, e, one_mul, List.filter_cons_of_neg (by simp [hpl])]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem all_first_level_weight : Formalism.FourierDecayAlt.F7.AllFirstWeight := by
   intro K _ q x w Y h hp
@@ -252,25 +252,25 @@ theorem all_first_level_weight : Formalism.FourierDecayAlt.F7.AllFirstWeight := 
       rw [List.map_cons, List.prod_cons, hw, e, one_mul, List.filter_cons_of_neg (by simp [hpl])]
 
 /- English proof (translation)
-Introduce `N w Y hN hlen h`. Establish `hNr : (2 : ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `hN0 : (0 : ℝ) < N` using `by linarith`. Establish `hN2 : (4 : ℝ) ≤ (N : ℝ) ^ 2` using `by nlinarith`. Establish `hN2p : (0 : ℝ) < (N : ℝ) ^ 2` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : (0 : ℝ) < (N : ℝ) ^ 2 - 1` using `by linarith`. Establish `hlenr : (w.length : ℝ) ≤ N` using `by exact_mod_cast hlen`. Establish `a1 : 1 / (N : ℝ) ^ 2 ≤ 1`. Rewrite using `[div_le_one hN2p]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `a0 : 0 ≤ 1 / (N : ℝ) ^ 2` using `(one_div_pos.2 hN2p).le`. Establish `u0 : 0 ≤ 1 / ((N : ℝ) ^ 2 - 1)` using `(one_div_pos.2 hpos).le`. Take `⟨lo, hi⟩` from `prod_bounds (1 / (N : ℝ) ^ 2) (1 / ((N : ℝ) ^ 2 - 1)) a1 u0 (w.map fun l => wFactor l Y) (by`. Introduce `f hf`. Take `⟨l, hl, rfl⟩` from `List.mem_map.1 hf`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `factor_bounds N hNr l Y (h l hl))`. Rewrite `lo`, `hi` using `[List.length_map]`. Prove the components needed by the constructor for the conclusion. Use `le_trans ?_ lo` and prove the remaining obligations. Establish `hb` using `one_add_mul_le_pow (a := -(1 / (N : ℝ) ^ 2)) (by linarith) w.length`.
+Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (1 : ℝ) + -(1 / (N : ℝ) ^ 2) = 1 - 1 / (N : ℝ) ^ 2` using `by ring`. Rewrite `hb` using `[e]`. Use `le_trans ?_ hb` and prove the remaining obligations. Establish `h1 : (w.length : ℝ) * (1 / (N : ℝ) ^ 2) ≤ N * (1 / (N : ℝ) ^ 2)` using `mul_le_mul_of_nonneg_right hlenr a0`. Establish `h2 : (N : ℝ) * (1 / (N : ℝ) ^ 2) = 1 / N`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Use `le_trans hi ?_` and prove the remaining obligations. Establish `h1 : (1 + 1 / ((N : ℝ) ^ 2 - 1)) ^ w.length ≤ (1 + 1 / ((N : ℝ) ^ 2 - 1)) ^ N` using `pow_le_pow_right₀ (by linarith) hlen`. Use `le_trans h1 ?_` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `t1 : (N : ℝ) * (1 / ((N : ℝ) ^ 2 - 1)) ≤ 2 / 3`. Rewrite using `[mul_one_div, div_le_iff₀ hpos]`. Use the polynomial consequences of the given equalities and inequalities. Establish `t2 : (N : ℝ) * (1 / ((N : ℝ) ^ 2 - 1)) ≤ (4 / 3) / N`. Rewrite using `[mul_one_div, div_le_div_iff₀ hpos hN0]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `t0 : 0 ≤ (N : ℝ) * (1 / ((N : ℝ) ^ 2 - 1))` using `mul_nonneg hN0.le u0`. Establish `h2` using `one_add_pow_le (1 / ((N : ℝ) ^ 2 - 1)) u0 N (by linarith)`. Use `le_trans h2 ?_` and prove the remaining obligations. Establish `h3 : ((N : ℝ) * (1 / ((N : ℝ) ^ 2 - 1))) ^ 2 ≤ (2 / 3) * ((4 / 3) / N)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sq]`. Conclude with `mul_le_mul t1 t2 t0 (by norm_num)`. Establish `h4 : (3 : ℝ) / N = (4 / 3) / N + (2 / 3) * ((4 / 3) / N) + (7 / 9) / N`. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h5 : (0 : ℝ) ≤ (7 / 9) / N` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem word_weight_bounds : Formalism.FourierDecayAlt.F7.WeightBounds := by
   intro N w Y hN hlen h
@@ -322,17 +322,17 @@ theorem word_weight_bounds : Formalism.FourierDecayAlt.F7.WeightBounds := by
     linarith
 
 /- English proof (translation)
-Introduce `N w Y hN hlen h hfirst`. Establish `hNr : (2 : ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `hN0 : (0 : ℝ) < N` using `by linarith`. Establish `hN2 : (4 : ℝ) ≤ (N : ℝ) ^ 2` using `by nlinarith`. Establish `hpos : (0 : ℝ) < (N : ℝ) ^ 2 - 1` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos2 : (0 : ℝ) < ((N : ℝ) ^ 2 - 1) ^ 2` using `by positivity`. Establish `hlenr : (w.length : ℝ) ≤ N` using `by exact_mod_cast hlen`. Establish `a0 : 0 ≤ 1 / ((N : ℝ) ^ 2 - 1) ^ 2` using `(one_div_pos.2 hpos2).le`. Establish `a1 : 1 / ((N : ℝ) ^ 2 - 1) ^ 2 ≤ 1`. Rewrite using `[div_le_one hpos2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Take `⟨lo, hi⟩` from `prod_bounds (1 / ((N : ℝ) ^ 2 - 1) ^ 2) 0 a1 le_rfl (w.map fun l => wFactor l Y) (by`. Introduce `f hf`. Take `⟨l, hl, rfl⟩` from `List.mem_map.1 hf`. Conclude with `factor_bounds_first N hNr l Y (h l hl) (hfirst l hl))`.
+Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `lo`, `hi` using `[List.length_map]`. Prove the components needed by the constructor for the conclusion. Use `le_trans ?_ lo` and prove the remaining obligations. Establish `hb` using `one_add_mul_le_pow (a := -(1 / ((N : ℝ) ^ 2 - 1) ^ 2)) (by linarith) w.length`. Establish `e : (1 : ℝ) + -(1 / ((N : ℝ) ^ 2 - 1) ^ 2) = 1 - 1 / ((N : ℝ) ^ 2 - 1) ^ 2` using `by ring`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb` using `[e]`. Use `le_trans ?_ hb` and prove the remaining obligations. Establish `h1 : (w.length : ℝ) * (1 / ((N : ℝ) ^ 2 - 1) ^ 2) ≤ N * (1 / ((N : ℝ) ^ 2 - 1) ^ 2)` using `mul_le_mul_of_nonneg_right hlenr a0`. Establish `h2 : (N : ℝ) * (1 / ((N : ℝ) ^ 2 - 1) ^ 2) ≤ 2 / (N : ℝ) ^ 3`. Rewrite using `[mul_one_div, div_le_div_iff₀ hpos2 (by positivity)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hN2) (sub_nonneg.2 hN2)]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `using hi`.
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem all_first_level_bounds : Formalism.FourierDecayAlt.F7.AllFirstBounds := by
   intro N w Y hN hlen h hfirst

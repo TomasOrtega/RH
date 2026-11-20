@@ -5,9 +5,9 @@ namespace ReciprocityTheory.CA
 open IsLocalRing RingTheory.Sequence
 
 /- English proof (translation)
-Establish `hmem : ∀ r ∈ rs.map (algebraMap R (Localization.AtPrime P)), r ∈ IsLocalRing.maximalIdeal (Localization.AtPrime P)`. Introduce `r hr`. Take `⟨x, hx, rfl⟩` from `List.mem_map.1 hr`. Conclude with `(IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime P) P x).2 (hrs x hx)`. Use `⟨rs.map (algebraMap R (Localization.AtPrime P)), List.length_map _, hmem, reg.of_flat, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `hle : Ideal.ofList (rs.map (algebraMap R (Localization.AtPrime P))) ≤ IsLocalRing.maximalIdeal (Localization.AtPrime P)` using `Ideal.span_le.2 fun r hr => hmem r hr`. Rewrite `h` using `[Ideal.smul_eq_mul, Ideal.mul_top]`. Rewrite `hle` using `[← h]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal (Localization.AtPrime P)).ne_top (top_le_iff.1 hle)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem depthGE_localization_of_isWeaklyRegular {R : Type*} [CommRing R] (P : Ideal R) [P.IsPrime]
     {rs : List R} (hrs : ∀ x ∈ rs, x ∈ P) (reg : IsWeaklyRegular R rs) :
@@ -27,13 +27,13 @@ theorem depthGE_localization_of_isWeaklyRegular {R : Type*} [CommRing R] (P : Id
   exact (IsLocalRing.maximalIdeal.isMaximal (Localization.AtPrime P)).ne_top (top_le_iff.1 hle)
 
 /- English proof (translation)
-Take `⟨ss, hlen, hmem, hreg⟩` from `depthGE_localization_of_isWeaklyRegular Q hrs reg`. Establish `: IsNoetherianRing (Localization.AtPrime Q)` using `IsLocalization.isNoetherianRing Q.primeCompl _ inferInstance`. Establish `e` using `ringKrullDim_add_length_eq_ringKrullDim_of_isRegular ss hreg`. Rewrite `e` using `[IsLocalization.AtPrime.ringKrullDim_eq_height Q (Localization.AtPrime Q)]`. Establish `hne : Ideal.ofList ss ≠ ⊤`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `htop`. Establish `: Ideal.ofList ss ≤ maximalIdeal (Localization.AtPrime Q)`. Rewrite using `[Ideal.ofList, Ideal.span_le]`. Conclude with `fun x hx => hmem x hx`. Conclude with `(maximalIdeal.isMaximal _).ne_top (top_le_iff.mp (htop ▸ this))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `: Nontrivial (Localization.AtPrime Q ⧸ Ideal.ofList ss)` using `Ideal.Quotient.nontrivial_iff.mpr hne`. Establish `h0` using `ringKrullDim_nonneg_of_nontrivial (R := Localization.AtPrime Q ⧸ Ideal.ofList ss)`. Establish `: ((ss.length : ℕ) : WithBot ℕ∞) ≤ (Q.height : WithBot ℕ∞)`. Rewrite using `[← e]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hlen]`. Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem length_le_height_of_isWeaklyRegular {R : Type*} [CommRing R] [IsNoetherianRing R]
     (Q : Ideal R) [Q.IsPrime] {rs : List R} (hrs : ∀ x ∈ rs, x ∈ Q) (reg : IsWeaklyRegular R rs) :
@@ -61,7 +61,7 @@ theorem length_le_height_of_isWeaklyRegular {R : Type*} [CommRing R] [IsNoetheri
 variable {R : Type*} [CommRing R] [IsLocalRing R]
 
 /- English proof (translation)
-Take `⟨rs, hlen, hmem, hreg⟩` from `h.exists_isRegular_of_le_height (Ideal.IsPrime.ne_top ‹_›) hr`. Substitute `hlen` using the available equality. Conclude with `depthGE_localization_of_isWeaklyRegular P hmem hreg.1`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem IsCM.depthGE_localization_of_le_height (h : IsCM R) (P : Ideal R) [P.IsPrime] {r : ℕ}
     (hr : (r : ℕ∞) ≤ P.height) : DepthGE (Localization.AtPrime P) r := by
@@ -70,11 +70,11 @@ theorem IsCM.depthGE_localization_of_le_height (h : IsCM R) (P : Ideal R) [P.IsP
   exact depthGE_localization_of_isWeaklyRegular P hmem hreg.1
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing R := h.1`. Establish `hfin : P.height ≠ ⊤` using `by first`. Consider the case `exact Ideal.height_ne_top (Ideal.IsPrime.ne_top ‹_›)`. Consider the case `exact (Ideal.height_lt_top (Ideal.IsPrime.ne_top ‹_›)).ne`. Consider the case `exact Ideal.height_ne_top ‹_›`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [Ideal.IsPrime.height_eq_primeHeight]; exact (Ideal.primeHeight_lt_top P).ne)`. Consider the case `(rw [Ideal.height_eq_primeHeight P]; exact (Ideal.primeHeight_lt_top P).ne)`. Consider the case `exact (Ideal.primeHeight_lt_top P).ne`. Use `⟨inferInstance, P.height.toNat, ?_, h.depthGE_localization_of_le_height P (by rw [ENat.coe_toNat hfin])⟩` and prove the remaining obligations. Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height P (Localization.AtPrime P)]`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `conv_lhs => rw [← ENat.coe_toNat hfin]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem IsCM.localization_atPrime (h : IsCM R) (P : Ideal R) [P.IsPrime] :
     IsCM (Localization.AtPrime P) := by
@@ -94,17 +94,17 @@ theorem IsCM.localization_atPrime (h : IsCM R) (P : Ideal R) [P.IsPrime] :
   rfl
 
 /- English proof (translation)
-Establish `hN : IsNoetherianRing R` using `h.1`. Establish `hPt : P ≠ ⊤` using `Ideal.IsPrime.ne_top ‹_›`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp (P.height_ne_top hPt)`. Take `⟨rs, hlen, hmem, hreg⟩` from `h.exists_isRegular_of_le_height hPt hn.le`. Establish `hmax : ∀ x ∈ rs, x ∈ maximalIdeal R` using `fun x hx => le_maximalIdeal hPt (hmem x hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hJP : Ideal.ofList rs ≤ P`. Rewrite using `[Ideal.ofList, Ideal.span_le]`. Conclude with `fun x hx => hmem x hx`. Establish `hht : P.height ≤ (Ideal.ofList rs).height`. Rewrite using `[(Ideal.ofList rs).height_eq_inf_minimalPrimes]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `le_iInf₂ fun Q hQ => ?_` and prove the remaining obligations. Use `hQ.isPrime` as an intermediate fact. Rewrite using `[← hn, ← hlen]`. Conclude with `length_le_height_of_isWeaklyRegular Q (fun x hx => hQ.1.2 (Ideal.subset_span hx)) hreg.1`. Establish `hPmin : P ∈ (Ideal.ofList rs).minimalPrimes` using `Ideal.mem_minimalPrimes_of_height_le hJP hht`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCM : IsCMMod R (R ⧸ Ideal.ofList rs • (⊤ : Submodule R R))` using `(isCM_iff_isCMMod.mp h).quotient_ofList hmax hreg`. Establish `hJ : (Ideal.ofList rs • (⊤ : Submodule R R)) = Ideal.ofList rs` using `by simp`. Establish `hann : Module.annihilator R (R ⧸ Ideal.ofList rs • (⊤ : Submodule R R)) = Ideal.ofList rs`. Rewrite using `[hJ, Ideal.annihilator_quotient]`. Establish `hass : P ∈ associatedPrimes R (R ⧸ Ideal.ofList rs • (⊤ : Submodule R R))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hCM.associatedPrimes_eq_minimalPrimes, hann]`. Conclude with `hPmin`. Establish `e1` using `hCM.ringKrullDim_quotient_eq_supportDim hass`. Establish `e2` using `Module.supportDim_add_length_eq_supportDim_of_isRegular rs hreg`. Rewrite `e2` using `[Module.supportDim_self_eq_ringKrullDim]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e1, ← e2, ← hn, ← hlen, add_comm]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem IsCM.height_add_ringKrullDim_quotient (h : IsCM R) (P : Ideal R) [P.IsPrime] :
     (P.height : WithBot ℕ∞) + ringKrullDim (R ⧸ P) = ringKrullDim R := by

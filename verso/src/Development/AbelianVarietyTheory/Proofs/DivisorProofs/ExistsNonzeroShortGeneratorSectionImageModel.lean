@@ -13,11 +13,11 @@ open CategoryTheory AlgebraicGeometry
 namespace GlobalTheory.ImageModelGen
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a t ha ih`. Rewrite using `[Finset.sum_insert ha]`. Introduce `x hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxU : x ∈ U` using `X.basicOpen_le _ hx`. Rewrite `hx` using `[Scheme.mem_basicOpen _ _ _ hxU, map_add]`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add hx with h | h` into its components or cases. Establish `: x ∈ X.basicOpen (f a)` using `(Scheme.mem_basicOpen _ _ _ hxU).2 h`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨a, TopologicalSpace.Opens.mem_iSup.2 ⟨Finset.mem_insert_self a t, this⟩⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: x ∈ X.basicOpen (∑ j ∈ t, f j)` using `(Scheme.mem_basicOpen _ _ _ hxU).2 h`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 (ih this)`. Take `⟨hjt, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hj`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, TopologicalSpace.Opens.mem_iSup.2 ⟨Finset.mem_insert_of_mem hjt, hj⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem basicOpen_sum_le {X : Scheme.{0}} {U : X.Opens} {ι : Type} (t : Finset ι) (f : ι → Γ(X, U)) :
     X.basicOpen (∑ j ∈ t, f j) ≤ ⨆ j ∈ t, X.basicOpen (f j) := by
@@ -38,11 +38,11 @@ theorem basicOpen_sum_le {X : Scheme.{0}} {U : X.Opens} {ι : Type} (t : Finset 
       exact TopologicalSpace.Opens.mem_iSup.2 ⟨j, TopologicalSpace.Opens.mem_iSup.2 ⟨Finset.mem_insert_of_mem hjt, hj⟩⟩
 
 /- English proof (translation)
-Introduce `K V Ω _ _ _ _ _ _ _ _ Nm W ev D X _ p L ψ s hM hev n w abelian₂ hg x`. Establish `hx : x ∈ (⨆ v, ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (s v))` using `by rw [hM.bpf]; trivial`. Take `⟨v, hv⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Establish `hw : ∀ j, w j ∈ W` using `fun j => (hg.gen _).2 (Submodule.subset_span ⟨j, rfl⟩)`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 ((hg.gen (v : V)).1 v.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsum : (v : V) = ∑ j, ((c j : 𝓞 K)) • ((⟨w j, hw j⟩ : W) : V)`. Rewrite using `[← hc]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[Int.cast_smul_eq_zsmul]`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite `hk` using `[GlobalTheory.T.imageModel_sections_linear_ringOfIntegers K V Ω Nm W ev D X p L ψ s hM hev n (fun j => (c j : 𝓞 K)) (fun j => ⟨w j, hw j⟩) v hsum k]`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 (basicOpen_sum_le _ _ hk)`. Take `⟨-, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hj`. Rewrite `hj` using `[Scheme.basicOpen_mul]`. Conclude with `⟨j, hw j, TopologicalSpace.Opens.mem_iSup.2 ⟨k, hj.2⟩⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_mem_nonzeroLocus_of_isShortGen : ∀ (K V Ω : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Field Ω] [Algebra K Ω] (Nm : (K →+* ℂ) → V → ℝ) (W : Submodule (𝓞 K) V) (ev : V →ₗ[K] Ω) (D : ℕ) (X : AlgebraicGeometry.Scheme.{0}) [AlgebraicGeometry.IsIntegral X] (p : X ⟶ Sp (𝓞 K)) (L : GlobalTheory.HermLB p) (ψ : Ω →+* X.functionField) (s : W → L.B.Sec), GlobalTheory.ImageModel.IsModelOf Nm W ev D p L ψ s → ev ≠ 0 → ∀ (n : ℕ) (w : Fin n → V) (abelian₂ : ℝ), GlobalTheory.CompHt.IsShortGen Nm W w abelian₂ → ∀ x : X, ∃ (j : Fin n) (hj : w j ∈ W), x ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (s ⟨w j, hj⟩) := by
   intro K V Ω _ _ _ _ _ _ _ _ Nm W ev D X _ p L ψ s hM hev n w abelian₂ hg x

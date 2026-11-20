@@ -16,7 +16,7 @@ section Core
 variable {k r : ℕ}
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.k_finite_smooth k r ε lam H σ hds w (PI.UnitaryGroupMassFormula.LowSmooth.isKFinHpk_of_lowUnit hlow)`.
+A detailed English derivation is pending.
 -/
 theorem lowSmoothSK {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -25,13 +25,13 @@ theorem lowSmoothSK {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 
   Formalism.L2.SG.Pf.k_finite_smooth k r ε lam H σ hds w (PI.UnitaryGroupMassFormula.LowSmooth.isKFinHpk_of_lowUnit hlow)
 
 /- English proof (translation)
-Take `⟨B, hB, hWB⟩` from `hBW k r z c u lam ε h H σ hl hds hg hok hz hT hc Vp π hπ w hw μG μW μN ν hG hW hN hQ W hc1 he1 hr1 hl1 hl1'`. Take `⟨B0, hB0, hW0B⟩` from `hBW k r z c u lam ε h H σ hl hds hg hok hz hT hc Vp π hπ w hw μG μW μN ν hG hW hN hQ W0 hc2 he2 hr2 hl2 hl2'`. Rewrite `hB`, `hB0` using `[Formalism.L2.SG.LitS.psi_eq_psiGen]`. Take `⟨a, b, hab, hlin⟩` from `hM1 k r ε lam H σ z (fun _ => c) u Vp π hl hds hz hT (fun _ => hc) hπ B B0 hB hB0`. Establish `hsm : ∀ x ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), σ x w ∈ smoothVecs (k` using `k) (r := r) σ := fun x hx => Formalism.L2.SG.BesselSplit.smooth_translate_ds hds hws hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `ha : a = 0`. It suffices to derive a contradiction. Establish `hb : b ≠ 0` using `hab.resolve_left (not_not.2 ha)`. Take `⟨x0, hx0U, hx0W⟩` from `hx0`. Establish `h1` using `hlin (σ x0 w) (hsm x0 hx0U)`.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[ha, zero_smul, zero_add]`. Establish `h2 : B0 (σ x0 w) = 0` using `(smul_eq_zero.1 h1).resolve_left hb`. Conclude with `hx0W (by rw [hW0B x0 hx0U, h2])`. Use `⟨-(b / a), fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `hlin (σ x w) (hsm x hx)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hWB x hx, hW0B x hx]`. Establish `: a • B (σ x w) = -(b • B0 (σ x w))` using `eq_neg_of_add_eq_zero_left h1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this, smul_neg, smul_smul, neg_smul, div_eq_inv_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem besselUniq_core (hBW : Formalism.L2.SG.LocWSOf.BesselOfW) (hM1 : Formalism.L2.SG.LitS.BesselMultOne)
     {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {u : Fin k → ℝ} {lam : Fin (2 * r + k + 1) → ℝ}

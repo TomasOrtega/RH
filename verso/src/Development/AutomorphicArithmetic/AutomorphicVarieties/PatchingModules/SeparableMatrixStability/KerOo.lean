@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.QuotP
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
 /- English proof (translation)
-Rewrite using `[← (hf.isClosedMap.isQuotientMap hf hs).isOpen_preimage]`. Establish `: f ⁻¹' (V.map f : Set Z) = V`. Rewrite using `[← Subgroup.coe_comap, Subgroup.comap_map_eq_self hk]`. Rewrite using `[this]`. Conclude with `hV`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isOpen_map_of_ker_le {P Z : Type} [Group P] [TopologicalSpace P] [CompactSpace P]
     [Group Z] [TopologicalSpace Z] [T2Space Z] (f : P →* Z) (hf : Continuous f) (hs : Function.Surjective f)
@@ -16,29 +16,25 @@ private theorem isOpen_map_of_ker_le {P Z : Type} [Group P] [TopologicalSpace P]
   rw [this]; exact hV
 
 /- English proof (translation)
-Introduce `l _ L G0 T Λ hT x hx`. Use `set K := (Subgroup.normalClosure (Set.range fun j => (Λ.ta j : Λ.G.Γ))).topologicalClosure with hK`. Use `haveI : K.Normal := Subgroup.is_normal_topologicalClosure _`. Use `(totallyDisconnected_quot Λ.G.Γ K (Subgroup.isClosed_topologicalClosure _)).2 x fun O => ?_` and prove the remaining obligations. Use `haveI := O.isNormal'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set W : Subgroup Λ.G.Γ := K ⊔ O.toSubgroup with hW`. Use `haveI hWn : W.Normal := Subgroup.sup_normal _ _`. Establish `hWo : IsOpen (W : Set Λ.G.Γ)` using `Subgroup.isOpen_mono (le_sup_right : O.toSubgroup ≤ W) O.isOpen'`. Establish `hta : ∀ j, (Λ.ta j : Λ.G.Γ) ∈ W` using `fun j => Subgroup.mem_sup_left (Subgroup.le_topologicalClosure _ (Subgroup.subset_normalClosure ⟨j, rfl⟩))`. Set `V : OpenNormalSubgroup Λ.Ph` to `{ toSubgroup := W.comap Λ.πo, isOpen' := hWo.preimage Λ.πo_cont, isNormal' := hWn.comap _ }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hVn : V.toSubgroup.Normal` using `V.isNormal'`. Establish `hVo : IsOpen (V.toSubgroup : Set Λ.Ph)` using `V.isOpen'`. Establish `hko : Λ.πo.ker ≤ V.toSubgroup` using `fun g hg => by show Λ.πo g ∈ W`. Rewrite using `[MonoidHom.mem_ker.1 hg]`. Conclude with `W.one_mem`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPh : TopFG Λ.Ph`. Take `⟨s, hs⟩` from `Λ.fg`. Conclude with `⟨s, s.finite_toSet, (topGen_iff _).2 hs⟩`. Establish `hG0 : TopFG G0.Γ` using `(TopFG.subgroup_quot Λ.Ph hPh).2 G0.Γ (Λ.h.p.comp Λ.πo) (Λ.h.cont.comp Λ.πo_cont) (Λ.h.surj.comp Λ.πo_surj)`. Establish `hidx : V.toSubgroup.index ≠ 0` using `by haveI : Finite (Λ.Ph ⧸ V.toSubgroup) := Subgroup.quotient_finite_of_isOpen _ hVo`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `Subgroup.index_ne_zero_of_finite`. Establish `hfin` using `(finite_hom_of_topFG G0.Γ hG0).2.2 _ hidx`. Establish `hall : ∀ᶠ N in (Λ.U : Filter ℕ), ∀ A ∈ {H : Subgroup G0.Γ | IsOpen (H : Set G0.Γ) ∧ H.index = V.toSubgroup.index}, A.Normal → ∀ g, (T.h N).p (Λ.π N g) * (Λ.h.p (Λ.πo g))⁻¹ ∈ A`. Rewrite using `[hfin.eventually_all]`. Introduce `A hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hn : A.Normal`. Conclude with `(Λ.p_lim { toSubgroup := A, isOpen' := hA.1, isNormal' := hn }).mono fun N h _ => h`. Conclude with `Eventually.of_forall fun N h => absurd h hn`. Take `⟨N, h1, h2, h3⟩` from `((Λ.ker_lim V).and ((Λ.ta_lim V).and hall)).exists`. Establish `hkN : (Λ.π N).ker ≤ V.toSubgroup` using `le_sup_left.trans (h1.le.trans (sup_le hko le_rfl))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI hVNn : (V.toSubgroup.map (Λ.π N)).Normal := hVn.map _ (Λ.π_surj N)`. Establish `hVNo` using `isOpen_map_of_ker_le (Λ.π N) (Λ.π_cont N) (Λ.π_surj N) _ hVo hkN`. Establish `hkh : (T.h N).p.ker ≤ V.toSubgroup.map (Λ.π N)`. Use `(T.ker_le N).trans (Subgroup.topologicalClosure_minimal _ ?_ (Subgroup.isClosed_of_isOpen _ hVNo))` and prove the remaining obligations. Rewrite using `[hT.2 N, sup_bot_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `Subgroup.normalClosure_le_normal ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Take `⟨g, g', hg, hg', hgg⟩` from `h2 j`. Establish `hg'V : g' ∈ V.toSubgroup` using `by show Λ.πo g' ∈ W`. Rewrite using `[hg']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hta j`. Use `⟨g, ?_, hg⟩` and prove the remaining obligations. Use `mul_mem hg'V (inv_mem hgg)` as an intermediate fact. Simplify using `using this`. Set `f : Λ.Ph →* G0.Γ` to `(T.h N).p.comp (Λ.π N)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfs : Function.Surjective f` using `(T.h N).surj.comp (Λ.π_surj N)`. Establish `hfk : f.ker ≤ V.toSubgroup` using `fun g hg => by`. Rewrite using `[← Subgroup.comap_map_eq_self hkN]`. Conclude with `hkh hg`. Establish `hAo` using `isOpen_map_of_ker_le f ((T.h N).cont.comp (Λ.π_cont N)) hfs _ hVo hfk`.
-
-Establish `hAi : (V.toSubgroup.map f).index = V.toSubgroup.index`. Rewrite using `[← Subgroup.index_comap_of_surjective _ hfs, Subgroup.comap_map_eq_self hfk]`. Take `⟨g, rfl⟩` from `Λ.πo_surj x`. Establish `h4` using `h3 _ ⟨hAo, hAi⟩ (hVn.map _ hfs) g`. Rewrite `h4` using `[MonoidHom.mem_ker.1 hx, inv_one, mul_one]`.
-
-Establish `h5 : g ∈ (V.toSubgroup.map f).comap f` using `h4`. Rewrite `h5` using `[Subgroup.comap_map_eq_self hfk]`. Conclude with `h5`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.ker_oo :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Λ : Lim T), T.ProL → Λ.h.p.ker ≤ (Subgroup.normalClosure (Set.range fun j => (Λ.ta j : Λ.G.Γ))).topologicalClosure := by

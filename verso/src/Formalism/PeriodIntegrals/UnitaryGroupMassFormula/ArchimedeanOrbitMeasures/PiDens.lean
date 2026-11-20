@@ -9,11 +9,11 @@ open scoped ENNReal
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [Measure.pi_of_empty]`. Consider the case `succ n ih`. Establish `hmp` using `measurePreserving_piFinSuccAbove μ 0`. Establish `hg : Measurable fun y : (j : Fin n) → E (Fin.succAbove 0 j) => ∏ j, f (Fin.succAbove 0 j) (y j)` using `Finset.measurable_prod _ fun j _ => (hf _).comp (measurable_pi_apply j)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[Fin.prod_univ_succ]`. Apply the tactic sequence `(try simp only [Fin.succAbove_zero]) <;> rfl`.
+Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `_ = ∫⁻ z : E 0 × ((j : Fin n) → E (Fin.succAbove 0 j)), f 0 z.1 * ∏ j, f (Fin.succAbove 0 j) (z.2 j) ∂((μ 0).prod (Measure.pi fun j => μ (Fin.succAbove 0 j))) := hmp.lintegral_comp_emb (MeasurableEquiv.measurableEmbedding _) (fun z : E 0 × ((j : Fin n) → E (Fin.succAbove 0 j)) => …`. Use `_ = (∫⁻ a, f 0 a ∂μ 0) * ∫⁻ y, ∏ j, f (Fin.succAbove 0 j) (y j) ∂(Measure.pi fun j => μ (Fin.succAbove 0 j)) := lintegral_prod_mul (hf 0).aemeasurable hg.aemeasurable`. Use `_ = ∏ i, ∫⁻ x, f i x ∂(μ i) := by`. Rewrite using `[ih (fun j => f (Fin.succAbove 0 j)) (fun j => hf _), Fin.prod_univ_succ]`. Simplify using `[Fin.succAbove_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lintegral_fin_prod {n : ℕ} {E : Fin n → Type} {mE : ∀ i, MeasurableSpace (E i)}
     {μ : (i : Fin n) → Measure (E i)} [∀ i, SigmaFinite (μ i)] (f : (i : Fin n) → E i → ℝ≥0∞)
@@ -49,9 +49,9 @@ theorem lintegral_fin_prod {n : ℕ} {E : Fin n → Type} {mE : ∀ i, Measurabl
           simp [Fin.succAbove_zero]
 
 /- English proof (translation)
-Set `e : Fin (Fintype.card ι) ≃ ι` to `(Fintype.equivFin ι).symm`. Establish `hmp` using `measurePreserving_piCongrLeft μ e`. Rewrite using `[← hmp.lintegral_comp_emb (MeasurableEquiv.measurableEmbedding _) (fun x => ∏ i, f i (x i))]`. Establish `h1 : ∀ y : (i' : Fin (Fintype.card ι)) → E (e i'), ∏ i, f i ((MeasurableEquiv.piCongrLeft E e) y i) = ∏ i', f (e i') (y i')`. Introduce `y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Fintype.prod_equiv e (fun i' => f (e i') (y i')) _ (fun i' => by simp [MeasurableEquiv.piCongrLeft_apply_apply])).symm`. Repeatedly rewrite using `[h1]`. Rewrite using `[lintegral_fin_prod (fun i' => f (e i')) (fun i' => hf (e i'))]`. Conclude with `Fintype.prod_equiv e _ _ (fun _ => rfl)`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_fintype_prod {ι : Type} [Fintype ι] {E : ι → Type} {mE : ∀ i, MeasurableSpace (E i)}
     {μ : (i : ι) → Measure (E i)} [∀ i, SigmaFinite (μ i)] (f : (i : ι) → E i → ℝ≥0∞)
@@ -71,13 +71,11 @@ theorem lintegral_fintype_prod {ι : Type} [Fintype ι] {E : ι → Type} {mE : 
   exact Fintype.prod_equiv e _ _ (fun _ => rfl)
 
 /- English proof (translation)
-Use `haveI : ∀ i, SigmaFinite ((lam i).withDensity fun x => ENNReal.ofReal (D i x)) := fun i => SigmaFinite.withDensity_ofReal (D i)`. Use `(Measure.pi_eq fun s hs => ?_).symm` and prove the remaining obligations. Rewrite using `[withDensity_apply _ (MeasurableSet.univ_pi hs), ← lintegral_indicator (MeasurableSet.univ_pi hs)]`. Establish `h1 : (univ.pi s).indicator (fun z : (i : ι) → E i => ∏ i, ENNReal.ofReal (D i (z i))) = fun z => ∏ i, (s i).indicator (fun x => ENNReal.ofReal (D i x)) (z i)`. Use function extensionality and compare the values at `z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hz : z ∈ univ.pi s`. Rewrite using `[indicator_of_mem hz]`. Conclude with `Finset.prod_congr rfl fun i _ => (indicator_of_mem (hz i (mem_univ i)) (fun x => ENNReal.ofReal (D i x))).symm`. Simplify using `only [Set.mem_pi, mem_univ, true_implies, not_forall] at hz`. Take `⟨i, hi⟩` from `hz`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz' : z ∉ univ.pi s` using `fun h => hi (h i (mem_univ i))`. Rewrite using `[indicator_apply, if_neg hz']`. Conclude with `(Finset.prod_eq_zero (Finset.mem_univ i) (by rw [indicator_apply, if_neg hi])).symm`. Rewrite using `[h1, lintegral_fintype_prod (fun i => (s i).indicator (fun x => ENNReal.ofReal (D i x))) (fun i => (ENNReal.measurable_ofReal.comp (hD i)).indicator (hs i))]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[withDensity_apply _ (hs i), lintegral_indicator (hs i)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem withDensity_pi {ι : Type} [Fintype ι] {E : ι → Type} [∀ i, MeasurableSpace (E i)]
     (lam : (i : ι) → Measure (E i)) [∀ i, SigmaFinite (lam i)] (D : (i : ι) → E i → ℝ)
@@ -105,31 +103,27 @@ theorem withDensity_pi {ι : Type} [Fintype ι] {E : ι → Type} [∀ i, Measur
   rw [withDensity_apply _ (hs i), lintegral_indicator (hs i)]
 
 /- English proof (translation)
-Use `set Ψ : (∀ v, E v) → (∀ v, X v) := fun z v => Φ v (z v) with hΨ`. Establish `hΨm : Measurable Ψ` using `measurable_pi_lambda _ fun v => (hΦm v).comp (measurable_pi_apply v)`. Set `S : ∀ v, Set (X v)` to `fun v => Φ v '' U v`. Set `ν : ∀ v, Measure (E v)` to `fun v => (lam v).withDensity fun x => ENNReal.ofReal (D v x)`. Use `haveI : ∀ v, SigmaFinite (ν v) := fun v => SigmaFinite.withDensity_ofReal (D v)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hκ : ∀ v, ((ν v).restrict (U v)).map (Φ v) = (μ v).restrict (S v)`. Introduce `v`. Use extensionality with `C hC`. Rewrite using `[Measure.map_apply (hΦm v) hC, Measure.restrict_apply (hΦm v hC), Measure.restrict_apply hC]`. Establish `hsub : Φ v ⁻¹' C ∩ U v ⊆ U v` using `Set.inter_subset_right`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hme : MeasurableSet (Φ v ⁻¹' C ∩ U v)` using `(hΦm v hC).inter (hU v)`. Rewrite using `[show ν v (Φ v ⁻¹' C ∩ U v) = ∫⁻ z in Φ v ⁻¹' C ∩ U v, ENNReal.ofReal (D v z) ∂lam v from withDensity_apply _ hme, ← h v _ hsub hme]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨z, ⟨hzC, hzU⟩, rfl⟩`. Conclude with `⟨hzC, z, hzU, rfl⟩`. Introduce and unpack `⟨hxC, z, hzU, rfl⟩`. Conclude with `⟨z, ⟨hxC, hzU⟩, rfl⟩`. Establish `hrestr : (Measure.pi μ).restrict (univ.pi S) = Measure.pi fun v => (μ v).restrict (S v)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Measure.pi_eq fun B hB => ?_).symm` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply (MeasurableSet.univ_pi hB), ← Set.pi_inter_distrib, Measure.pi_pi]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply (hB v)]`. Establish `hrestr2 : (Measure.pi ν).restrict (univ.pi U) = Measure.pi fun v => (ν v).restrict (U v)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Measure.pi_eq fun B hB => ?_).symm` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply (MeasurableSet.univ_pi hB), ← Set.pi_inter_distrib, Measure.pi_pi]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply (hB v)]`. Establish `hmap : (Measure.pi fun v => (ν v).restrict (U v)).map Ψ = Measure.pi fun v => (μ v).restrict (S v)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Measure.pi_eq fun B hB => ?_).symm` and prove the remaining obligations. Rewrite using `[Measure.map_apply hΨm (MeasurableSet.univ_pi hB)]`. Establish `hpre : Ψ ⁻¹' univ.pi B = univ.pi fun v => Φ v ⁻¹' B v`. Use extensionality with `z`. Simplify using `[hΨ]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hpre, Measure.pi_pi]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← hκ v, Measure.map_apply (hΦm v) (hB v)]`. Establish `hΦA : Ψ '' A ⊆ univ.pi S`. Introduce and unpack `_ ⟨z, hz, rfl⟩ v -`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Chain the equalities or inequalities of the calculation.
 
-Conclude with `⟨z v, hAU hz v (mem_univ v), rfl⟩`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Measure.restrict_apply hAi, Set.inter_eq_left.2 hΦA]`. Use `_ = (Measure.pi fun v => (ν v).restrict (U v)).map Ψ (Ψ '' A) := by rw [hrestr, hmap]`. Use `_ = (Measure.pi fun v => (ν v).restrict (U v)) (Ψ ⁻¹' (Ψ '' A)) := Measure.map_apply hΨm hAi`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use `_ = (Measure.pi ν).restrict (univ.pi U) (Ψ ⁻¹' (Ψ '' A)) := by rw [hrestr2]`. Use `_ = Measure.pi ν A := by`. Rewrite using `[Measure.restrict_apply (hΨm hAi)]`. Use `congr 1`. Use extensionality with `z`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨z', hz', hzz⟩, hzU⟩`. Establish `hzz' : z' = z`. Use function extensionality and compare the values at `v`. Conclude with `hinj v (hAU hz' v (mem_univ v)) (hzU v (mem_univ v)) (congrFun hzz v)`.
-
-Rewrite using `[← hzz']`. Conclude with `hz'`. Introduce `hz`. Conclude with `⟨⟨z, hz, rfl⟩, hAU hz⟩`. Use `_ = ∫⁻ z in A, ∏ v, ENNReal.ofReal (D v (z v)) ∂Measure.pi lam := by`.
-
-Rewrite using `[← withDensity_apply _ hA, withDensity_pi lam D hD]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pi_chart_dens {V : Type} [Fintype V] {X E : V → Type} [∀ v, MeasurableSpace (X v)]
     [∀ v, MeasurableSpace (E v)] (μ : ∀ v, Measure (X v)) [∀ v, SigmaFinite (μ v)]

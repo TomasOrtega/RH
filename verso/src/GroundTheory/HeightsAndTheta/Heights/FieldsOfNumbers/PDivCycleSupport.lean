@@ -12,17 +12,15 @@ open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR
 universe u
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ P hP n hdim c f hf hfP W hW`. Establish `h : W ∈ (P ⊔ Ideal.span {f}).minimalPrimes ∧ IsRelevant W`. Assume the negation of the conclusion as `h`. Conclude with `hW (by rw [divCycle, dif_neg h])`. Take `⟨hmin, hrel⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hWh : IsMultiHomogIdeal W` using `(Bridge.isMultiHomogIdeal_iff W).mpr (ReciprocityTheory.ChartRestriction.G.AI.I1.cyc_isMultiHomogIdeal_of_mem_minimalPrimes ((Bridge.isMultiHomogIdeal_iff P).mp hP.multiHomog) ((Bridge.isMultiHomog_iff f c).mp hf) hmin)`. Use `⟨⟨hmin.1.1, hWh, hrel⟩, ?_⟩` and prove the remaining obligations. Use `hP.isPrime` as an intermediate fact. Establish `hPd : ringKrullDim (MRing ι F ⧸ P) = ((Fintype.card K + n + 1 : ℕ) : WithBot ℕ∞)`. Apply `relDim_map_injective (K := K)` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `relDim P = _`. Rewrite using `[hdim]`. Use `show (((n + 1 : ℕ) : ℤ) : WithBot (WithTop ℤ)) = ((((Fintype.card K + n + 1 : ℕ) : ℤ) - Fintype.card K : ℤ) : WithBot (WithTop ℤ))`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key : ringKrullDim (MRing ι F ⧸ W) + 1 = ringKrullDim (MRing ι F ⧸ P)` using `ReciprocityTheory.ChartRestriction.G.AI.I1.cyc_dim_quot_minimal_add_one hfP hmin (fun h => by`. Rewrite `h` using `[hPd]`. Conclude with `ENat.natCast_ne_top _ (WithBot.coe_injective h))`. Rewrite `key` using `[hPd]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hWd` using `ReciprocityTheory.ChartRestriction.G.AI.I1.cyc_withBot_eq_of_add_one key`. Rewrite using `[relDim_of_ringKrullDim_eq W _ hWd]`. Use `show ((((Fintype.card K + n : ℕ) : ℤ) - Fintype.card K : ℤ) : WithBot (WithTop ℤ)) = (((n : ℕ) : ℤ) : WithBot (WithTop ℤ))`. Use `congr 1`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem DivCycleSupport.proof : DivCycleSupport.Statement.{u} := by
   intro F _ K _ _ ι _ P hP n hdim c f hf hfP W hW

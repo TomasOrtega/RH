@@ -17,9 +17,9 @@ namespace GlobalTheory.CharCutoff
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Apply `h.eq_one` to reduce the goal to its premises. Use `show valuation k (∑ i, t i * y i) ≤ valuation k (c : k)`. Use `Valuation.map_sum_le (valuation k) fun i _ => ?_` and prove the remaining obligations. Establish `h2 : valuation k (t i * y i) ≤ valuation k (((c * R⁻¹ : kˣ) : k) * R)`. Rewrite using `[map_mul, map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `mul_le_mul' (ht i trivial) (hy i trivial)`. Rewrite `h2` using `[← Units.val_mul, inv_mul_cancel_right]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem dot_eq_one {ψ : AddChar k Circle} {c : kˣ} (h : HasConductor ψ c) {n : Type} [Fintype n]
     (R : kˣ) {t y : n → k} (ht : t ∈ box n (c * R⁻¹)) (hy : y ∈ box n R) : ψ (t ⬝ᵥ y) = 1 := by
@@ -32,11 +32,11 @@ theorem dot_eq_one {ψ : AddChar k Circle} {c : kˣ} (h : HasConductor ψ c) {n 
   rwa [← Units.val_mul, inv_mul_cancel_right] at h2
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, y i ∉ cball s := by`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Conclude with `hy fun i _ => hne i`. Establish `hcs : c * (c * s⁻¹)⁻¹ = s`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[_root_.mul_inv_rev, inv_inv, mul_comm s, mul_inv_cancel_left]`. Take `⟨t, ht, hne⟩` from `h.exists_ne_one (c * s⁻¹) (x := y i) (by rwa [hcs])`. Use `⟨Pi.single i t, fun j _ => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `using ht`. Simplify using `[Pi.single_eq_of_ne hj, cball]`. Rewrite using `[single_dotProduct]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_dot_ne_one {ψ : AddChar k Circle} {c : kˣ} (h : HasConductor ψ c) {n : Type} [Fintype n]
     (s : kˣ) {y : n → k} (hy : y ∉ box n s) : ∃ b ∈ box n (c * s⁻¹), ψ (b ⬝ᵥ y) ≠ 1 := by
@@ -55,11 +55,11 @@ theorem exists_dot_ne_one {ψ : AddChar k Circle} {c : kˣ} (h : HasConductor ψ
   · rwa [single_dotProduct]
 
 /- English proof (translation)
-Distinguish the cases in `hys : y ∈ box n s`. Rewrite using `[Set.indicator_of_mem hys, one_mul]`. Rewrite using `[Finset.sum_congr rfl fun b hb => by rw [dot_eq_one h s (hS b hb) hys, Circle.coe_one]]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem hys, zero_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, hne⟩` from `exists_dot_ne_one h s hys`. Establish `key` using `GlobalTheory.T.sum_integralScaledBoxPi_coset_reps_shift_invariant k n (c * R⁻¹) (c * s⁻¹) S hS hU (fun b => (ψ (b ⬝ᵥ y) : ℂ)) (fun t ht z => by`. Rewrite using `[add_dotProduct, AddChar.map_add_eq_mul, Circle.coe_mul, dot_eq_one h R ht hy, Circle.coe_one, mul_one]) a ha`. Simplify using `only [add_dotProduct, AddChar.map_add_eq_mul, Circle.coe_mul, ← Finset.mul_sum] at key`. Establish `h3 : (ψ (a ⬝ᵥ y) : ℂ) - 1 ≠ 0` using `fun h4 => hne (Circle.ext (by simpa using sub_eq_zero.mp h4))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(mul_eq_zero.mp ?_).resolve_left h3` and prove the remaining obligations. Rewrite using `[sub_mul, key, one_mul, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_char {ψ : AddChar k Circle} {c : kˣ} (h : HasConductor ψ c) {n : Type} [Fintype n]
     (s R : kˣ) (S : Finset (n → k)) (hS : ∀ b ∈ S, b ∈ box n (c * s⁻¹))
@@ -82,17 +82,15 @@ theorem sum_char {ψ : AddChar k Circle} {c : kˣ} (h : HasConductor ψ c) {n : 
     rw [sub_mul, key, one_mul, sub_self]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ hψ h1 I₀ I₁ I₂ _ _ _ M _ _ l hl Φ s`. Use `haveI := t2Space k`. Take `⟨c, hc⟩` from `exists_hasConductor_of_continuous ψ hψ h1`. Establish `hK : IsCompact ((fun x : (I₀ → k) × (I₁ → k) × (I₂ → k) => x.2.1) '' tsupport Φ.1)` using `Φ.2.2.image (by fun_prop)`. Take `⟨R, hsR, hKR⟩` from `GlobalTheory.T.exists_integralScaledBoxPi_superset_of_isCompact k I₁ _ hK s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hvr : valuation k ((c * R⁻¹ : kˣ) : k) ≤ valuation k ((c * s⁻¹ : kˣ) : k)`. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀]`. Conclude with `mul_le_mul' le_rfl (inv_anti₀ (by simp [zero_lt_iff]) hsR)`. Take `⟨S, hS, hU⟩` from `GlobalTheory.T.exists_finset_integralScaledBoxPi_coset_reps k I₁ (c * R⁻¹) (c * s⁻¹) hvr`. Establish `hmem : ∀ b : I₁ → k, (fun x : (I₀ → k) × (I₁ → k) × (I₂ → k) => (ψ (b ⬝ᵥ x.2.1) : ℂ) * Φ.1 x) ∈ SB ((I₀ → k) × (I₁ → k) × (I₂ → k))` using `fun b => by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous fun x : (I₀ → k) × (I₁ → k) × (I₂ → k) => b ⬝ᵥ x.2.1` using `continuous_const.dotProduct (continuous_fst.comp continuous_snd)`. Establish `h2 : IsLocallyConstant fun x : (I₀ → k) × (I₁ → k) × (I₂ → k) => (ψ (b ⬝ᵥ x.2.1) : ℂ)` using `(IsLocallyConstant.comp_continuous hc.isLocallyConstant hcont).comp (fun z : Circle => (z : ℂ))`. Conclude with `⟨IsLocallyConstant.mul h2 Φ.2.1, Φ.2.2.mul_left⟩`. Set `Φb : (I₁ → k) → SB ((I₀ → k) × (I₁ → k) × (I₂ → k))` to `fun b => ⟨_, hmem b⟩`. Establish `hlb : ∀ b, l (Φb b) = l Φ` using `fun b => hl b Φ (Φb b) (fun x => rfl)`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h0 : (0 : I₁ → k) ∈ box I₁ (c * s⁻¹)` using `fun i _ => by simp [cball]`. Take `⟨b0, ⟨hb0, _⟩, _⟩` from `hU 0 h0`. Establish `hcard : (S.card : ℂ) ≠ 0` using `by exact_mod_cast (Finset.card_pos.mpr ⟨b0, hb0⟩).ne'`. Use `⟨(S.card : ℂ)⁻¹ • ∑ b ∈ S, Φb b, fun x => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Submodule.coe_smul, Submodule.coe_sum, Pi.smul_apply, Finset.sum_apply, smul_eq_mul] show (S.card : ℂ)⁻¹ * ∑ b ∈ S, (ψ (b ⬝ᵥ x.2.1) : ℂ) * Φ.1 x = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← Finset.sum_mul]`. Distinguish the cases in `hx : x ∈ tsupport Φ.1`. Rewrite using `[sum_char hc s R S hS hU (hKR ⟨x, hx, rfl⟩), ← mul_assoc, mul_comm ((S.card : ℂ)⁻¹), mul_inv_cancel_right₀ hcard]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[map_smul, map_sum, Finset.sum_congr rfl fun b _ => hlb b, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hcard, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cutoff_of_char_invariant : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ (I₀ I₁ I₂ : Type) [Fintype I₀] [Fintype I₁] [Fintype I₂] (M : Type) [AddCommGroup M] [Module ℂ M] (l : SB ((I₀ → k) × (I₁ → k) × (I₂ → k)) →ₗ[ℂ] M), (∀ (b : I₁ → k) (Φ Φ' : SB ((I₀ → k) × (I₁ → k) × (I₂ → k))), (∀ x, Φ'.1 x = (ψ (b ⬝ᵥ x.2.1) : ℂ) * Φ.1 x) → l Φ' = l Φ) → ∀ (Φ : SB ((I₀ → k) × (I₁ → k) × (I₂ → k))) (s : kˣ), ∃ Φ' : SB ((I₀ → k) × (I₁ → k) × (I₂ → k)), (∀ x, Φ'.1 x = (box I₁ s).indicator (fun _ => (1 : ℂ)) x.2.1 * Φ.1 x) ∧ l Φ = l Φ' := by
   intro k _ _ _ _ ψ hψ h1 I₀ I₁ I₂ _ _ _ M _ _ l hl Φ s

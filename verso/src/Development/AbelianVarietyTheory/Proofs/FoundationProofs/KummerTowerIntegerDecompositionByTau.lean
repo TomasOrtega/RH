@@ -11,7 +11,7 @@ namespace GlobalTheory.K5.Decomp
 variable {p : ℕ} [hp : Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ', pow_mul, T.ζpow, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zeta_pow_eq_one' (T : Tower p Ω) (m : ℕ) : T.ζ (m + 1) ^ p ^ m = T.ζ 1 := by
   induction m with
@@ -19,15 +19,13 @@ theorem zeta_pow_eq_one' (T : Tower p Ω) (m : ℕ) : T.ζ (m + 1) ^ p ^ m = T.�
   | succ m ih => rw [pow_succ', pow_mul, T.ζpow, ih]
 
 /- English proof (translation)
-Establish `hN : N ≠ 0` using `by rintro rfl; simp at hjN; omega`. Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, by omega⟩`. Establish `hglt : Nat.gcd j (p ^ (M + 1)) < p ^ (M + 1)` using `lt_of_le_of_lt (Nat.le_of_dvd hj0 (Nat.gcd_dvd_left _ _)) hjN`. Take `⟨m, -, hm⟩` from `Nat.exists_mul_mod_eq_gcd hglt`. Take `⟨a, ha, hga⟩` from `(Nat.dvd_prime_pow hp.out).1 (Nat.gcd_dvd_right j (p ^ (M + 1)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `haM : a ≤ M`. Assume the negation of the conclusion as `h`. Establish `: a = M + 1` using `by omega`. Substitute `this` using the available equality. Establish `h2 : p ^ (M + 1) ∣ j` using `hga ▸ Nat.gcd_dvd_left _ _`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `absurd (Nat.le_of_dvd hj0 h2) (by omega)`. Take `⟨t, ht⟩ : Nat.gcd j (p ^ (M + 1)) ∣ p ^ M` from `hga ▸ pow_dvd_pow p haM`. Use `⟨m * t, ?_⟩` and prove the remaining obligations. Rewrite using `[← pow_mul, ← zeta_pow_eq_one' T M, Basic.zeta_pow_eq_iff]`. Establish `h1 : j * m ≡ Nat.gcd j (p ^ (M + 1)) [MOD p ^ (M + 1)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Nat.ModEq`. Rewrite using `[hm, Nat.mod_eq_of_lt hglt]`. Establish `h2` using `h1.mul_right t`. Rewrite `h2` using `[← ht]`. Rewrite using `[← mul_assoc]`.
-
-Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_zeta_one (T : Tower p Ω) (N j : ℕ) (hj0 : 0 < j) (hjN : j < p ^ N) :
     ∃ e : ℕ, (T.ζ N ^ j) ^ e = T.ζ 1 := by
@@ -53,14 +51,14 @@ theorem exists_pow_eq_zeta_one (T : Tower p Ω) (N j : ℕ) (hj0 : 0 < j) (hjN :
   rw [← mul_assoc]; exact h2
 
 /- English proof (translation)
-Use `IsIntegral.of_pow (pow_pos hp.out.pos N) ?_` and prove the remaining obligations. Rewrite using `[(T.prim N).pow_eq_one]`. Conclude with `isIntegral_one`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInt_zeta (T : Tower p Ω) (N : ℕ) : IsInt p (T.ζ N) := by
   refine IsIntegral.of_pow (pow_pos hp.out.pos N) ?_
   rw [(T.prim N).pow_eq_one]; exact isIntegral_one
 
 /- English proof (translation)
-Apply `hg` to reduce the goal to its premises. Use `⟨Polynomial.X ^ (p ^ N) - 1, Polynomial.X_pow_sub_C_ne_zero (pow_pos hp.out.pos N) 1, ?_⟩` and prove the remaining obligations. Simplify using `[(T.prim N).pow_eq_one]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem ggeo_zeta (T : Tower p Ω) (N : ℕ) {g : Gal p Ω} (hg : g ∈ Ggeo p Ω) : g (T.ζ N) = T.ζ N := by
   apply hg
@@ -74,16 +72,16 @@ namespace GlobalTheory.K5.Decomp
 variable {p : ℕ} [hp : Fact p.Prime] {Ω : Type} [Field Ω] [Algebra (O0 p) Ω]
 
 /- English proof (translation)
-Use `IsIntegral.of_pow (pow_pos hp.out.pos N) ?_` and prove the remaining obligations. Rewrite using `[Basic.qq_pow]`. Conclude with `isIntegral_algebraMap`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInt_qq (T : Tower p Ω) (N : ℕ) : IsInt p (T.qq N) := by
   refine IsIntegral.of_pow (pow_pos hp.out.pos N) ?_
   rw [Basic.qq_pow]; exact isIntegral_algebraMap
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_pow_eq_zeta_one T N j hj0 hjN`. Use `⟨∑ i ∈ Finset.range e, (T.ζ N ^ j) ^ i, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `IsIntegral.sum _ fun i _ => ((isInt_zeta T N).pow j).pow i`. Introduce `g hg`. Simplify using `only [map_sum, map_pow, ggeo_zeta T N hg]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[geom_sum_mul, he]`.
+A detailed English derivation is pending.
 -/
 theorem exists_mult (T : Tower p Ω) (N j : ℕ) (hj0 : 0 < j) (hjN : j < p ^ N) :
     ∃ s : Ω, IsInt p s ∧ (∀ g ∈ Ggeo p Ω, g s = s) ∧ s * (T.ζ N ^ j - 1) = T.ζ 1 - 1 := by
@@ -99,17 +97,17 @@ end GlobalTheory.K5.Decomp
 open GlobalTheory.K5.Decomp in
 
 /- English proof (translation)
-Introduce `p _ _ Ω _ _ hΩ T τ hτ hτq N y hy hfix`. Take `⟨c, hc, rfl⟩` from `GlobalTheory.T.exists_qRoot_poly_of_fixed_geometric_stabilizer p Ω hΩ T N y hfix`. Establish `hci` using `GlobalTheory.T.isIntegral_coeffs_of_geometric_fixed_qExpansion p Ω hΩ T N c hc hy`. Establish `hpos : 0 < p ^ N` using `pow_pos (Fact.out : p.Prime).pos N`. Establish `hs : ∀ j, ∃ s : Ω, IsInt p s ∧ (∀ g ∈ Ggeo p Ω, g s = s) ∧ (0 < j → j < p ^ N → s * (T.ζ N ^ j - 1) = T.ζ 1 - 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j`. Distinguish the cases in `h : 0 < j ∧ j < p ^ N`. Take `⟨s, h1, h2, h3⟩` from `exists_mult T N j h.1 h.2`. Conclude with `⟨s, h1, h2, fun _ _ => h3⟩`. Conclude with `⟨0, isIntegral_zero, fun g _ => map_zero g, fun a b => absurd ⟨a, b⟩ h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose s hsi hsg hse using hs`. Use `⟨c 0, ∑ j ∈ Finset.range (p ^ N), s j * c j * T.qq N ^ j, hci 0 hpos, hc 0, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `IsIntegral.sum _ fun j hj => ?_` and prove the remaining obligations. Conclude with `((hsi j).mul (hci j (Finset.mem_range.1 hj))).mul ((isInt_qq T N).pow j)`. Introduce `g hg`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg1` using `(Subgroup.mem_inf.1 hg).1`. Establish `hg2 : g (T.qq N) = T.qq N` using `(Subgroup.mem_inf.1 hg).2`. Simplify using `only [map_sum, map_mul, map_pow, hsg _ g hg1, hc _ g hg1, hg2]`. Take `⟨M, hM⟩ : ∃ M, p ^ N = M + 1` from `⟨p ^ N - 1, by omega⟩`. Establish `key : ∀ i < M, s (i + 1) * (T.ζ N ^ (i + 1) - 1) = T.ζ 1 - 1` using `fun i hi => hse (i + 1) (Nat.succ_pos i) (by omega)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, map_mul, map_pow, hsg _ τ hτ, hc _ τ hτ, hτq N]`. Rewrite using `[hM, Finset.sum_range_succ', Finset.sum_range_succ', Finset.sum_range_succ']`. Establish `: ∀ i ∈ Finset.range M, s (i + 1) * c (i + 1) * (T.ζ N * T.qq N) ^ (i + 1) = s (i + 1) * c (i + 1) * T.qq N ^ (i + 1) + (T.ζ 1 - 1) * (c (i + 1) * T.qq N ^ (i + 1))`. Introduce `i hi`. Rewrite using `[← key i (Finset.mem_range.1 hi)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl this, Finset.sum_add_distrib, ← Finset.mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.K5.Decomp.decomp : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
   ∀ (T : Tower p Ω) (τ : Gal p Ω), τ ∈ Ggeo p Ω → (∀ n, τ (T.qq n) = T.ζ n * T.qq n) →

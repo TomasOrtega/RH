@@ -12,11 +12,11 @@ namespace GlobalTheory
 namespace PDivGroup
 
 /- English proof (translation)
-Introduce `p _ k _ _ _ G H f hG hH hf`. Establish `hp : (p : k) = 0` using `CharP.cast_eq_zero k p`. Take `⟨hH1, -⟩` from `rigToLie_bijective_and_dual_rigOfOmega_bijective_of_isEt p k hp H hH`. Take `⟨-, hG2⟩` from `rigToLie_bijective_and_dual_rigOfOmega_bijective_of_isEt p k hp G hG`. Establish `hlie : ∀ y : H.dual.Lie, lieMap H.dual G.dual (dualHom G H f) y = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `y`. Take `⟨x, rfl⟩` from `hH1.2 y`. Rewrite using `[← rigToLie_rigExtMap hp f x, hf, LinearMap.zero_apply, map_zero]`. Establish `hom : ∀ w : G.dual.omega, omegaMap H.dual G.dual (dualHom G H f) w = 0`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Module.forall_dual_apply_eq_zero_iff k _).1 fun y => ?_` and prove the remaining obligations. Conclude with `LinearMap.congr_fun (hlie y) w`. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `hG2.2 z`. Rewrite using `[rigExtMap_rigOfOmega, hom, map_zero, LinearMap.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rigExtMap_dualHom_eq_zero_of_isEt :
     ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p]

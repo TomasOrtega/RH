@@ -15,9 +15,9 @@ namespace GlobalTheory.ThmECorA
 open Formalism.BasicNotions.Loc
 
 /- English proof (translation)
-Use `⟨Formalism.MainNotions.N.Ln03.localCorollaryConstant, fun D HW F Cm => ?_⟩` and prove the remaining obligations. Establish `hDdR` using `fun (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (h : CaseA K LL) => GlobalTheory.Per.DdREqDcris.record_caseA D l K LL h`. Establish `h9` using `GlobalTheory.Decompl.fontaine_and_decompletion D HW F`. Establish `hFont` using `GlobalTheory.T.fontaine_fullFaithful_exact_psi D HW F`. Establish `hUG : ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l) (h : CaseA K LL), 5 ≤ l → ∃ e, Formalism.MainNotions.WachCoordinates.Br.UnitGen ((HW l).W K 1 LL h.2.2) e` using `fun l _ K LL h _ => GlobalTheory.WachUnit.unitGen_exists D HW F l K 1 LL h.2.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `GlobalTheory.T.localLifting_theoremE_hypotheses_admitted hBK hTD hEC D HW F Cm`. Use `⟨(Formalism.MainNotions.N.Ln03.local_corollary_of_de_rham D HW F Cm 10 800 _ rfl le_rfl hDdR h9 hFont hUG hA).1, fun C₂ hC₂ => ?_⟩` and prove the remaining obligations. Conclude with `(Formalism.MainNotions.N.Ln03.local_corollary_of_de_rham D HW F Cm 10 800 C₂ rfl hC₂ hDdR h9 hFont hUG hA).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem closing (hBK : GlobalTheory.Published.BlochKatoLocal) (hTD : Formalism.GaloisCohomology.LocalTateDualityK)
     (hEC : Formalism.GaloisCohomology.LocalEulerCharK) :

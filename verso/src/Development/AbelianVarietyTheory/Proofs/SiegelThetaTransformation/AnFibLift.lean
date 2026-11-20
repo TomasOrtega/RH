@@ -26,21 +26,21 @@ section Val
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `valAt'_map x (homOfLE h).op u.val hV`.
+A detailed English derivation is pending.
 -/
 theorem val_res (x : Sp ℂ ⟶ X) {U V : X.Opens} (h : V ≤ U) (u : Γ(X, U)ˣ) (hV : ⊤ ≤ x ⁻¹ᵁ V) :
     valAt' x V (res h u).val = valAt' x U u.val :=
   valAt'_map x (homOfLE h).op u.val hV
 
 /- English proof (translation)
-The claim follows from `valAt'_comp x f U u.val`.
+A detailed English derivation is pending.
 -/
 theorem val_pullU (x : Sp ℂ ⟶ Y) (f : Y ⟶ X) (U : X.Opens) (u : Γ(X, U)ˣ) :
     valAt' x (f ⁻¹ᵁ U) (pullU f U u).val = valAt' (x ≫ f) U u.val :=
   valAt'_comp x f U u.val
 
 /- English proof (translation)
-Simplify using `only [top_le_preimage_comp, top_le_preimage_iff_mem]`. Conclude with `Set.mem_iInter`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_wchart (x : Sp ℂ ⟶ Y) (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (j : K → L.ι) :
     ⊤ ≤ x ⁻¹ᵁ LB.wchart L φ j ↔ ∀ k, ⊤ ≤ (x ≫ φ k) ⁻¹ᵁ L.U (j k) := by
@@ -48,7 +48,7 @@ theorem mem_wchart (x : Sp ℂ ⟶ Y) (L : LB X) {K : Type} [Fintype K] (φ : K 
   exact Set.mem_iInter
 
 /- English proof (translation)
-Establish `h : x (default : PrimeSpectrum ℂ) ∈ ⨆ i, L.U i` using `by rw [hL.cover]; trivial`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`. Conclude with `⟨j, (top_le_preimage_iff_mem x _).2 hj⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_chart (x : Sp ℂ ⟶ X) (L : LB X) (hL : L.IsLB) : ∃ j, ⊤ ≤ x ⁻¹ᵁ L.U j := by
   have h : x (default : PrimeSpectrum ℂ) ∈ ⨆ i, L.U i := by rw [hL.cover]; trivial
@@ -56,14 +56,14 @@ theorem exists_chart (x : Sp ℂ ⟶ X) (L : LB X) (hL : L.IsLB) : ∃ j, ⊤ �
   exact ⟨j, (top_le_preimage_iff_mem x _).2 hj⟩
 
 /- English proof (translation)
-Rewrite using `[← val_res x (le_inf le_rfl le_rfl : L.U j ≤ L.U j ⊓ L.U j) _ h, hL.g_self, Units.val_one, valAt'_one x h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_g_self (x : Sp ℂ ⟶ X) (L : LB X) (hL : L.IsLB) (j : L.ι) (h : ⊤ ≤ x ⁻¹ᵁ L.U j) :
     valAt' x (L.U j ⊓ L.U j) (L.g j j).val = 1 := by
   rw [← val_res x (le_inf le_rfl le_rfl : L.U j ≤ L.U j ⊓ L.U j) _ h, hL.g_self, Units.val_one, valAt'_one x h]
 
 /- English proof (translation)
-Use `(valAt'_units_prod x h _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_unique]`. Use `(valAt'_units_zpow x h _ 1).trans ?_` and prove the remaining obligations. Rewrite using `[zpow_one]`. Conclude with `(val_res x _ _ h).trans (val_pullU x φ (L.U a ⊓ L.U b) (L.g a b))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_pull_g (x : Sp ℂ ⟶ Y) (L : LB X) (φ : Y ⟶ X) (a b : L.ι)
     (h : ⊤ ≤ x ⁻¹ᵁ ((L.pull φ).U (fun _ => a) ⊓ (L.pull φ).U (fun _ => b))) :
@@ -76,7 +76,7 @@ theorem val_pull_g (x : Sp ℂ ⟶ Y) (L : LB X) (φ : Y ⟶ X) (a b : L.ι)
   exact (val_res x _ _ h).trans (val_pullU x φ (L.U a ⊓ L.U b) (L.g a b))
 
 /- English proof (translation)
-Use `(valAt'_units_prod x h _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_unique]`. Use `(valAt'_units_zpow x h _ 1).trans ?_` and prove the remaining obligations. Rewrite using `[zpow_one]`. Conclude with `(val_res x _ _ h).trans (val_pullU x φ (M.U a ⊓ L.U j) (w.s (a, j)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_linCombIso {L M : LB X} {K : Type} [Fintype K] [Unique K] (w : LB.Iso L M) (φ : Y ⟶ X)
     (x : Sp ℂ ⟶ Y) (a : M.ι) (j : L.ι)
@@ -95,7 +95,7 @@ noncomputable def wv {L : LB X} {L' : LB Y} {φ : Y ⟶ X} (w : LB.Iso L' (L.pul
   valAt' x ((L.pull φ).U (fun _ => a) ⊓ L'.U j) (w.s (fun _ => a, j)).val
 
 /- English proof (translation)
-The claim follows from `(top_le_preimage_inf _ _ _).2 ⟨(mem_wchart x L _ _).2 fun _ => ha, hj⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_both {L : LB X} {L' : LB Y} {φ : Y ⟶ X} {x : Sp ℂ ⟶ Y} {a : L.ι} {j : L'.ι}
     (ha : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ L.U a) (hj : ⊤ ≤ x ⁻¹ᵁ L'.U j) :
@@ -103,16 +103,16 @@ theorem mem_both {L : LB X} {L' : LB Y} {φ : Y ⟶ X} {x : Sp ℂ ⟶ Y} {a : L
   (top_le_preimage_inf _ _ _).2 ⟨(mem_wchart x L _ _).2 fun _ => ha, hj⟩
 
 /- English proof (translation)
-The claim follows from `valAt'_unit_ne_zero x (mem_both ha hj) _`.
+A detailed English derivation is pending.
 -/
 theorem wv_ne {L : LB X} {L' : LB Y} {φ : Y ⟶ X} (w : LB.Iso L' (L.pull φ)) {x : Sp ℂ ⟶ Y} {a : L.ι} {j : L'.ι}
     (ha : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ L.U a) (hj : ⊤ ≤ x ⁻¹ᵁ L'.U j) : wv w x a j ≠ 0 :=
   valAt'_unit_ne_zero x (mem_both ha hj) _
 
 /- English proof (translation)
-Establish `h : ⊤ ≤ x ⁻¹ᵁ (((L.pull φ).U (fun _ => a) ⊓ L'.U j) ⊓ ((L.pull φ).U (fun _ => b) ⊓ L'.U k))` using `(top_le_preimage_inf _ _ _).2 ⟨mem_both ha hj, mem_both hb hk⟩`. Establish `e` using `congrArg (fun u => valAt' x _ (Units.val u)) (hw (fun _ => a, j) (fun _ => b, k))`. Use `((val_res x _ _ h).symm.trans e).trans ?_` and prove the remaining obligations. Use `(valAt'_mul x _ _ _).trans (congrArg₂ (· * ·) ?_ (val_res x _ _ h))` and prove the remaining obligations. Use `(valAt'_mul x _ _ _).trans (congrArg₂ (· * ·) ?_ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(val_res x _ _ h).trans (val_pull_g x L φ a b ?_)` and prove the remaining obligations. Conclude with `(top_le_preimage_inf _ _ _).2 ⟨(mem_wchart x L _ _).2 fun _ => ha, (mem_wchart x L _ _).2 fun _ => hb⟩`. Conclude with `(valAt'_units_inv x h _).trans (congrArg (·⁻¹) (val_res x _ _ h))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem wv_change {L : LB X} {L' : LB Y} {φ : Y ⟶ X} {w : LB.Iso L' (L.pull φ)} (hw : w.IsGen) {x : Sp ℂ ⟶ Y}
     {a b : L.ι} {j k : L'.ι} (ha : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ L.U a) (hb : ⊤ ≤ (x ≫ φ) ⁻¹ᵁ L.U b)
@@ -130,15 +130,15 @@ theorem wv_change {L : LB X} {L' : LB Y} {φ : Y ⟶ X} {w : LB.Iso L' (L.pull �
   · exact (valAt'_units_inv x h _).trans (congrArg (·⁻¹) (val_res x _ _ h))
 
 /- English proof (translation)
-Use `choose ch hch using fun z => exists_chart (e z ≫ φ) L hL`. Establish `key : ∀ a j z, ⊤ ≤ (e z ≫ φ) ⁻¹ᵁ L.U a → ⊤ ≤ e z ⁻¹ᵁ L'.U j → fr a z = wv w (e z) a j * (fr (ch z) z / wv w (e z) (ch z) j)`. Introduce `a j z ha hj`. Establish `h1` using `wv_ne w (hch z) hj`. Rewrite using `[wv_change hw ha (hch z) hj hj, val_g_self _ L' hL' j hj, fr_g a (ch z) z ((top_le_preimage_inf _ _ _).2 ⟨ha, hch z⟩)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Use `⟨fun j z => fr (ch z) z / wv w (e z) (ch z) j, fun j z₀ hz₀ => ?_, fun j z hj => ?_, fun j j' z h => ?_, key⟩` and prove the remaining obligations. Establish `hN` using `(hol ((L.pull φ).U (fun _ => ch z₀) ⊓ L'.U j) (w.s (fun _ => ch z₀, j)).val)`. Establish `hm` using `hN.1.mem_nhds (x := z₀) ⟨trivial, mem_both (hch z₀) hz₀⟩`. Establish `hsub : ∀ z, ⊤ ≤ e z ⁻¹ᵁ ((L.pull φ).U (fun _ => ch z₀) ⊓ L'.U j) → ⊤ ≤ (e z ≫ φ) ⁻¹ᵁ L.U (ch z₀) ∧ ⊤ ≤ e z ⁻¹ᵁ L'.U j` using `fun z hz => ⟨(mem_wchart (e z) L _ _).1 ((top_le_preimage_inf _ _ _).1 hz).1 ⟨⟩, ((top_le_preimage_inf _ _ _).1 hz).2⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d1 : DifferentiableAt ℂ (fr (ch z₀)) z₀` using `(fr_hol (ch z₀)).differentiableAt (Filter.mem_of_superset hm fun z hz => (hsub z hz.2).1)`. Establish `d2 : DifferentiableAt ℂ (fun z => wv w (e z) (ch z₀) j) z₀` using `hN.2.differentiableAt hm`. Use `((d1.mul (d2.inv (wv_ne w (hch z₀) hz₀))).congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations. Use `filter_upwards [hm] with z hz`. Establish `h1` using `wv_ne w (hsub z hz.2).1 (hsub z hz.2).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.mul_apply, Pi.inv_apply]`. Rewrite using `[key (ch z₀) j z (hsub z hz.2).1 (hsub z hz.2).2, mul_comm (wv w (e z) (ch z₀) j), mul_inv_cancel_right₀ h1]`. Conclude with `div_ne_zero (fr_ne _ z (hch z)) (wv_ne w (hch z) hj)`. Take `⟨hj, hj'⟩` from `(top_le_preimage_inf _ _ _).1 h`. Establish `h1` using `wv_ne w (hch z) hj'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `valAt'_unit_ne_zero (e z) h (L'.g j j')`. Simplify using `only []`. Rewrite using `[wv_change hw (hch z) (hch z) hj hj', val_g_self _ L hL _ (hch z)]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_frame {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] {L : LB X} {L' : LB Y} (hL : L.IsLB)
     (hL' : L'.IsLB) {φ : Y ⟶ X} {w : LB.Iso L' (L.pull φ)} (hw : w.IsGen) (e : V → (Sp ℂ ⟶ Y))
@@ -190,13 +190,11 @@ section Grp
 variable {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G']
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Set `F : (Over.mk x' ⟶ G') → (Over.mk (x' ≫ f) ⟶ G)` to `fun a => Over.homMk (a.left ≫ φ) (by`. Express the relevant statement in the definitionally equal form `(a.left ≫ φ) ≫ G.hom = x' ≫ f`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w a]`. Use the proof step `rfl)`.
+Substitute using the available equality. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `I : (Over.mk (x' ≫ f) ⟶ G) → (Over.mk x' ⟶ G')` to `fun y => Over.homMk (h.1.lift y.left x' (Over.w y)) (h.1.lift_snd _ _ _)`. Establish `hF : ∀ x, (F x).left = x.left ≫ φ` using `fun _ => rfl`. Use `⟨⟨⟨F, I, fun x => ?_, fun y => ?_⟩, fun x y => ?_⟩, hF⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `h.1.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `h.1.lift_fst _ _ _`. Conclude with `(h.1.lift_snd _ _ _).trans (Over.w x).symm`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `h.1.lift_fst _ _ _`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
-
-Conclude with `(h.2 (Over.mk x') x y (F x) (F y) rfl rfl).symm`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_mulEquiv {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) {T : Scheme.{0}}
     (x' : T ⟶ S') (x : T ⟶ S) (hx : x' ≫ f = x) :
@@ -221,23 +219,21 @@ theorem exists_mulEquiv {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullb
     exact (h.2 (Over.mk x') x y (F x) (F y) rfl rfl).symm
 
 /- English proof (translation)
-Use `Over.w (toUnit (Over.mk x))` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toUnit_left {T : Scheme.{0}} (x : T ⟶ S) : (toUnit (Over.mk x)).left = x := by
   have := Over.w (toUnit (Over.mk x))
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Over.comp_left, toUnit_left]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem one_left {T : Scheme.{0}} (x : T ⟶ S) : (1 : Over.mk x ⟶ G).left = x ≫ eSec G := by
   rw [Hom.one_def, Over.comp_left, toUnit_left]
   rfl
 
 /- English proof (translation)
-Establish `h1 : ⊤ ≤ x' ⁻¹ᵁ LB.wchart (L.L.pull m.F) (fun _ : PUnit => eSec G') (fun _ _ => a)` using `(mem_wchart x' _ _ _).2 fun _ => (mem_wchart _ _ _ _).2 fun _ => ha`. Establish `h : ⊤ ≤ x' ⁻¹ᵁ (LB.wchart (L.L.pull m.F) (fun _ : PUnit => eSec G') (fun _ _ => a) ⊓ LB.wchart L'.L (fun _ : PUnit => eSec G') (fun _ => j))` using `(top_le_preimage_inf _ _ _).2 ⟨h1, (mem_wchart x' _ _ _).2 fun _ => hj⟩`. Establish `e` using `congrArg (fun u => valAt' x' _ (Units.val u)) (hw (fun _ _ => a, fun _ => j))`. Use `Eq.trans ?_ (e.trans ((valAt'_mul x' _ _ _).trans (congrArg₂ (· * ·) ?_ (val_res x' _ _ h))))` and prove the remaining obligations. Conclude with `((val_res x' _ _ h).trans ((val_res x' _ _ h1).trans (val_pullU x' m.e _ _))).symm`.
-
-Conclude with `val_linCombIso (K := PUnit) w (eSec G') x' (fun _ => a) j h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem val_rig [IsCommMonObj G] [IsCommMonObj G'] (m : CubeMap G' G) (L : RigLB G) (L' : RigLB G')
     (w : LB.Iso L'.L (L.L.pull m.F))
@@ -259,9 +255,7 @@ theorem val_rig [IsCommMonObj G] [IsCommMonObj G'] (m : CubeMap G' G) (L : RigLB
 end Grp
 
 /- English proof (translation)
-Establish `h1 : ⊤ ≤ x ⁻¹ᵁ LB.wchart (L.pull φ) (fun _ : Fin 1 => q) (fun _ _ => a)` using `(mem_wchart x _ _ _).2 fun _ => (mem_wchart _ _ _ _).2 fun _ => ha`. Establish `h : ⊤ ≤ x ⁻¹ᵁ (LB.wchart (L.pull φ) (fun _ : Fin 1 => q) (fun _ _ => a) ⊓ LB.wchart L' (fun _ : Fin 1 => q) (fun _ => j))` using `(top_le_preimage_inf _ _ _).2 ⟨h1, (mem_wchart x _ _ _).2 fun _ => hj⟩`. Establish `e` using `congrArg (valAt' x _) (hst (fun _ _ => a, fun _ => j))`. Use `Eq.trans ?_ (e.trans ((valAt'_mul x _ _ _).trans (congrArg₂ (· * ·) ?_ (valAt'_map x _ _ h))))` and prove the remaining obligations. Conclude with `(valAt'_map x _ _ h).symm`.
-
-Conclude with `val_linCombIso (K := Fin 1) w q x (fun _ => a) j h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem val_secMaps {X Y Z : Scheme.{0}} {L : LB X} {L' : LB Y} {φ : Y ⟶ X} (w : LB.Iso L' (L.pull φ)) (q : Z ⟶ Y)
     (s : LB.Sec (LB.LinComb L' (K := Fin 1) (fun _ => q) (fun _ => 1)))
@@ -281,55 +275,47 @@ theorem val_secMaps {X Y Z : Scheme.{0}} {L : LB X} {L' : LB Y} {φ : Y ⟶ X} (
   · exact val_linCombIso (K := Fin 1) w q x (fun _ => a) j h
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c n d _ _ _ hlev r g X bas idx e x L y A hsym hx hL y₂ hover mk hmk`. Take `⟨hb, hu, w, pm, t, hw, hrig, pm1, pm2, hst, hpm⟩` from `hover`. Take `⟨Φ, hΦ⟩` from `exists_mulEquiv d.m.cart y₂.x y.x hb`. Set `ex : (Fin g → ℂ) → (ptO d.Xo₂ y₂.x ⟶ d.Xo₂.univ.t.G)` to `fun z => Φ.symm (A.ex z)`. Establish `hex : ∀ z, (ex z).left ≫ d.m.φ = (A.ex z).left` using `fun z => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← hΦ]`. Conclude with `congrArg _ (Φ.apply_symm_apply _)`. Establish `hbase : ∀ z, (ex z).left ≫ d.Xo₂.univ.t.G.hom = y₂.x` using `fun z => Over.w (ex z)`. Establish `hol : IsHolTo Set.univ (fun z => (ex z).left)`. Use `HolFibre.isHolTo_of_isPullback d.m.cart.1 ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(funext hex).symm ▸ A.hol`. Conclude with `(funext hbase).symm ▸ HolFibre.isHolTo_const isOpen_univ _`. Take `⟨fr, fr_hol, fr_ne, fr_g, key⟩` from `exists_frame Xo.univ.t.PP.isLB d.Xo₂.univ.t.PP.isLB hw (fun z => (ex z).left) hol A.fr (by simpa only [hex] using A.fr_hol) (by simpa only [hex] using A.fr_ne) (by simpa only [hex] using A.fr_g)`. Establish `hch : ∀ z, ∃ a, ⊤ ≤ ((ex z).left ≫ d.m.φ) ⁻¹ᵁ Xo.univ.t.PP.L.U a` using `fun z => exists_chart _ _ Xo.univ.t.PP.isLB`. Establish `hadd : ∀ z z', ex (z + z') = ex z * ex z'` using `fun z z' => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ex, A.ex_add, map_mul]`. Establish `hker : ∀ z, ex z = 1 ↔ ∃ v ∈ L, z = pv X idx x v` using `fun z => by`. Rewrite using `[← A.ex_ker]`. Conclude with `Φ.symm.map_eq_one_iff`. Establish `hpv0 : (0 : Fin g → ℂ) = pv X idx x 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `(hx_laws E r X g bas idx 0 hsym Even.zero x hx).2.2.2.2.1 0 0` as an intermediate fact. Rewrite `this` using `[zero_smul]`. Rewrite using `[this]`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hex0 : (ex 0).left = y₂.x ≫ eSec d.Xo₂.univ.t.G`. Rewrite using `[(hker 0).2 ⟨0, L.zero_mem, hpv0⟩]`. Conclude with `one_left _`. Set `A₂ : AnFib X bas idx e x L y₂` to `{ ex := ex ex_add := hadd ex_onto := Φ.symm.surjective.comp A.ex_onto ex_ker := hker ex_lin := fun a z => by`. Apply `Φ.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hΦ, hΦ, hex, A.ex_lin, Over.comp_left, Over.comp_left, Category.assoc, d.m.act, ← Category.assoc, hex]`. Use `hol := hol`. Use `der := fun ℓ => by`. Take `⟨v, hv⟩` from `VerticalDeriv.exists_isDerivAt0 hol (Pi.single (e.symm ℓ) 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `FibreDeriv.isDerivAt0_comp hv d.m.φ`. Simplify using `only [hex] at h1`. Establish `h2` using `VerticalDeriv.isDerivAt0_unique h1 (A.der ℓ)`. Establish `h3` using `VerticalDeriv.isDerivAt0_vertical _ _ hbase hv`. Establish `: v = y₂.u ℓ.1 ℓ.2` using `d.m.cart.1.hom_ext (h2.trans (hu _ _).symm) (h3.trans (y₂.tan _ _).1.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `this ▸ hv`. Use `fr := fr`. Use `fr_hol := fr_hol`. Use `fr_ne := fr_ne`. Use `fr_g := fr_g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `fr_0 := fun j hj => by`. Take `⟨a, ha⟩` from `hch 0`. Establish `h1` using `key a j 0 ha hj`. Establish `h2` using `A.fr_0 a (hex 0 ▸ ha)`. Establish `h3` using `val_rig d.m.cm Xo.univ.t.PP d.Xo₂.univ.t.PP w hrig y₂.x a j (hex0 ▸ ha) (hex0 ▸ hj)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4 : y₂.x ≫ d.m.cm.e = y.x` using `by rw [d.m.base]; exact hb`. Establish `h5` using `wv_ne w ha hj`. Use `erw [h4, ← h2, h1, ← hex0] at h3`. Conclude with `mul_left_cancel₀ h5 h3`. Use `χ := A.χ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `χ_norm := A.χ_norm`. Use `fr_per := fun v hv j z hj => by`. Take `⟨a, ha⟩` from `hch z`. Establish `hz : ex (z + pv X idx x v) = ex z` using `by rw [hadd, (hker _).2 ⟨v, hv, rfl⟩, _root_.mul_one]`. Establish `h1` using `key a j z ha hj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `key a j (z + pv X idx x v) (hz ▸ ha) (hz ▸ hj)`. Establish `h3` using `A.fr_per v hv a z (hex z ▸ ha)`. Simplify using `only [hz] at h2`. Rewrite `h3` using `[h1, h2]`. Apply `mul_left_cancel₀ (wv_ne w ha hj)` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h3]`. Use `ring }`. Use `⟨A₂, fun θ hθ j z pt hp1 hp2 hj => ?_, ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hch z`. Establish `hp1' : pt ≫ (snd (Over.mk y₂.x) d.Xo₂.univ.t.G).left = (ex z).left` using `hp1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hq1 : (pt ≫ pm) ≫ gxFst y.x = (A.ex z).left`. Rewrite using `[Category.assoc, gxFst, pm1, ← Category.assoc, hp1', hex]`. Establish `hq2 : (pt ≫ pm) ≫ gxSnd y.x = 𝟙 _`. Rewrite using `[Category.assoc, gxSnd, pm2]`. Conclude with `hp2`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hθ a z (pt ≫ pm) hq1 hq2 (hex z ▸ ha)`. Establish `h2` using `val_secMaps w _ y₂.s t hst pt a j (hp1' ▸ ha) (hp1' ▸ hj)`. Establish `hle : (LB.LinComb (Xo.univ.t.PP.L.pull d.m.φ) (K` using `Fin 1) (fun _ => (snd (Over.mk y₂.x) d.Xo₂.univ.t.G).left) (fun _ => 1)).U (fun _ _ => a) ≤ pm ⁻¹ᵁ (PPx y.x).U (fun _ => a) := by`. Introduce `p hp`. Establish `h3 : ((snd (Over.mk y₂.x) d.Xo₂.univ.t.G).left ≫ d.m.φ) p ∈ Xo.univ.t.PP.L.U a` using `Set.mem_iInter.1 (Set.mem_iInter.1 hp 0) ⟨⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h3` using `[← pm1]`. Conclude with `Set.mem_iInter.2 fun _ => h3`. Establish `h3` using `hpm (fun _ => a) hle`. Establish `hm : ⊤ ≤ pt ⁻¹ᵁ LB.wchart (Xo.univ.t.PP.L.pull d.m.φ) (fun _ : Fin 1 => (snd (Over.mk y₂.x) d.Xo₂.univ.t.G).left) (fun _ _ => a)` using `(mem_wchart pt _ _ _).2 fun _ => (mem_wchart _ _ _ _).2 fun _ => hp1' ▸ ha`. Establish `h4` using `valAt'_appLE pt pm _ _ hle (y.s.f (fun _ => a)) hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h5` using `(h2.symm.trans ((congrArg (valAt' pt _) h3).symm.trans h4)).trans h1`. Rewrite `h5` using `[hp1', key a j z ha hj, zpow_one]`. Apply `mul_left_cancel₀ (wv_ne w ha hj)` to reduce the goal to its premises. Use `h5.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = _ * (θ z * fr j z ^ (1 : ℤ))`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[zpow_one]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨mk₂, h₁, h₂⟩` from `GlobalTheory.Dict.exists_mark E H Dw d.l₂ d.Xo₂ d.c₂ r g X bas idx e x L y₂ A₂ hsym hx hL`. Use `⟨mk₂, h₁, h₂, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨hdvd, hM, hcop, -, -, heta, -⟩` from `hlev`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨-, -, -, -, hsm, hinj, -⟩` from `hx_laws E r X g bas idx 0 hsym Even.zero x hx`. Establish `ha' : a ∈ Mfr l • (⊤ : Submodule (𝓞 E) Dw.La)` using `Submodule.smul_mono_left (Ideal.map_mono hdvd.2.1) ha`. Establish `hM0 : (l.M : E) ≠ 0` using `Nat.cast_ne_zero.2 (by have := l.three_le; omega)`. Establish `hp0 : (d.pd : E) ≠ 0` using `Nat.cast_ne_zero.2 (by`. Introduce `h0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `d.l₂.three_le` as an intermediate fact. Rewrite `this` using `[hM, h0]`. Use the proof step `omega)`. Establish `hpadd : ∀ u v, pv X idx x (u + v) = pv X idx x u + pv X idx x v` using `fun u v => by`. Rewrite using `[pv, per_add]`.
-
-Both sides reduce to the same expression. Establish `hpow : ∀ (k : ℕ) v, A.ex (pv X idx x ((k : E) • v)) = A.ex (pv X idx x v) ^ k` using `fun k v => by`. Proceed by induction on `k with`. Consider the case `zero => rw [Nat.cast_zero, zero_smul, pow_zero]`. Conclude with `(A.ex_ker _).2 ⟨0, L.zero_mem, rfl⟩`.
-
-Consider the case `succ k ih => rw [Nat.cast_succ, add_smul, one_smul, hpadd, A.ex_add, ih, pow_succ]`. Establish `e1 : Φ (levPt d.Xo₂ y₂.x a) ^ d.pd = levPt Xo y.x a`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← map_pow, hΦ, levPt, levPt, ← MonObj.comp_pow, Over.comp_left, Over.comp_left, Category.assoc, heta.1, toUnit_left, toUnit_left, ← hb]`. Conclude with `(Category.assoc _ _ _).symm`.
-
-Establish `e2 : Φ (levPt d.Xo₂ y₂.x a) = A.ex (pv X idx x (((d.l₂.M : E)⁻¹) • mk₂ a))`. Rewrite using `[h₂ a ha]`. Conclude with `Φ.apply_symm_apply _`. Rewrite `e1` using `[e2, ← hpow, hmk a ha', smul_smul, hM, Nat.cast_mul, mul_inv, mul_left_comm, mul_inv_cancel₀ hp0, _root_.mul_one]`. Establish `e3 : A.ex (pv X idx x ((l.M : E)⁻¹ • mk₂ a - (l.M : E)⁻¹ • mk a)) = 1`.
-
-Apply `mul_right_cancel (b := A.ex (pv X idx x ((l.M : E)⁻¹ • mk a)))` to reduce the goal to its premises. Rewrite using `[← A.ex_add, ← hpadd, sub_add_cancel, _root_.one_mul, e1]`. Take `⟨u, hu', e4⟩` from `(A.ex_ker _).1 e3`. Use `⟨u, hu', ?_⟩` and prove the remaining obligations. Rewrite using `[← hinj e4, ← Nat.cast_smul_eq_nsmul E, ← smul_sub, smul_smul, mul_inv_cancel₀ hM0, one_smul, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem anFib_lift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (n : ℕ) (d : DeltaDat Xo c n) [Algebra c.F ℂ] [Algebra d.c₂.F ℂ], (∀ t : c.F, algebraMap d.c₂.F ℂ (d.eF t) = algebraMap c.F ℂ t) → d.IsLev → ∀ (r g : ℕ) (X : Data E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (e : Fin g ≃ Lt1 Dw) (x : Frame X.Ψ r) (L : Lt E r) (y : FrPt Xo c ℂ) (A : AnFib X bas idx e x L y), IsSympl X bas → x ∈ X.dom → SelfD X L → ∀ y₂ : FrPt d.Xo₂ d.c₂ ℂ, FrOver d y₂ y → ∀ mk : Dw.La →ₗ[𝓞 E] (Fin r → E), A.Marked mk → ∃ A₂ : AnFib X bas idx e x L y₂, (∀ θ, A.Reads 1 y.s θ → A₂.Reads 1 y₂.s θ) ∧ ∃ mk₂ : Dw.La →ₗ[𝓞 E] (Fin r → E), IsMark d.l₂ L mk₂ ∧ A₂.Marked mk₂ ∧ MarkOver l d.l₂ L mk mk₂ := by
   intro E _ _ _ H Dw l Xo c n d _ _ _ hlev r g X bas idx e x L y A hsym hx hL y₂ hover mk hmk

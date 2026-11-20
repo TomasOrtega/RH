@@ -21,9 +21,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RealMove
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `h.1 g`. Take `⟨x', hx'⟩` from `h.1 g'`. Establish `hxx : IsDetRoot V (g * g') (x * x')`. Unfold `IsDetRoot at *`. Rewrite using `[map_mul, Units.val_mul, Units.val_mul, Matrix.det_mul, map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_mul_mul_comm, ← hx, ← hx']`. Rewrite using `[h.2 _ _ hxx, h.2 _ _ hx, h.2 _ _ hx', map_mul, Circle.coe_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem muVal_mul {D : D7} {V : HSp D} {χ : (AE D)ˣ →* Circle} {mu : GA D V → ℂ} (h : Formalism.L2.Pj.MuVal V χ mu)
     (g g' : GA D V) : mu (g * g') = mu g * mu g' := by
@@ -36,9 +36,9 @@ theorem muVal_mul {D : D7} {V : HSp D} {χ : (AE D)ˣ →* Circle} {mu : GA D V 
   rw [h.2 _ _ hxx, h.2 _ _ hx, h.2 _ _ hx', map_mul, Circle.coe_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `hτ : ∃ ρ, τ.1 = tauE D ρ` using `(hX.psi τ.1).1 τ.2`. Establish `e : realM θ (Formalism.L2.Theta.mt W (u * v)) τ.1 = realM θ (Formalism.L2.Theta.mt W u) τ.1 * realM θ (Formalism.L2.Theta.mt W v) τ.1`. Unfold `realM`. Rewrite using `[dif_pos hτ, dif_pos hτ, dif_pos hτ, GlobalTheory.UnitaryChar.compAt_mt_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show (Matrix.reindex (finCongr rfl) (finCongr rfl) (realM θ (Formalism.L2.Theta.mt W (u * v)) τ.1) * mat x τ : Matrix (Fin W.rank) (Fin W.rank) ℂ) = Matrix.reindex (finCongr rfl) (finCongr rfl) (realM θ (Formalism.L2.Theta.mt W u) τ.1) * (Matrix.reindex (finCongr rfl) (finCongr r …`. Rewrite using `[e, ← Matrix.mul_assoc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frMove_mul {D : D7} (θ : InfFam D) (W : HSp D) (X : Data D.host.E W.rank) (hX : IsMod W rfl X)
     (u v : GA D W) (x : Frame X.Ψ W.rank) :
@@ -57,33 +57,29 @@ theorem frMove_mul {D : D7} (θ : InfFam D) (W : HSp D) (X : Data D.host.E W.ran
   simp
 
 /- English proof (translation)
-Introduce `D ψ θ V W χV χW om hP mu hmu r g hr X bas idx hX hS x hx f φ hf hR`. Substitute `hr` using the available equality. Establish `hstd` using `hP.weil.std`. Take `⟨X', m, hq', hq, bas', idx', hs, -, -, -, -, -, -, hfr⟩` from `GlobalTheory.T.orthonormal_frame_reading_eq_conjugate_datum_theta D ψ θ V W g X bas idx hstd hP.inf hP.even hP.std hX hS`. Use `set C : GlobalTheory.Ker.Ctx V W := ⟨ψ, hstd, θ, hP.inf, X', m, g, X.p0, hq', bas', idx', hs, hP.even⟩ with hC`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨B, hB⟩, hBx⟩` from `hfr x hx`. Take `⟨hIsB, hinv, -, -, -, -, -, hmv, hTh⟩` from `hBx B hB`. Establish `hfe : f = C.Th (C.xB B) φ` using `(hTh f φ hR.1).1 ⟨hf, hR⟩`. Establish `hON : ∀ u, IsONFr X (frMove θ W rfl X u x)` using `fun u => (hmv u).1`. Establish `hpres : ∀ u : GA D W, IsThetaFunO ψ V W (om (1, u) f)` using `fun u => hP.weil.om_pres _ _ hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ u : GA D W, ∃ c : ℂ, u ∈ GinfC W → ‖c‖ = 1 ∧ Reads θ V W rfl X bas idx (om (1, u) f) (c • φ) (frMove θ W rfl X u x)`. Introduce `u`. Distinguish the cases in `hu : u ∈ GinfC W`. Use `swap`. Conclude with `⟨1, fun h => absurd h hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc1, hc⟩` from `GlobalTheory.Ker.RealScalar.om_real_Th D V W C om (GlobalTheory.Ker.isWeak_of_datum hP.weil) 1 (one_mem _) u hu B hIsB`. Use `⟨c, fun _ => ⟨hc1, ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `hc φ hR.1`. Rewrite `h1` using `[← hfe]`. Take `⟨-, -, -, -, -, -, -, -, hTh'⟩` from `(hfr _ (hON u)).2 _ (hmv u).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `((hTh' (C.Th (C.xB (C.mvB u B)) φ) φ hR.1).2 rfl).2`. Establish `h3` using `(GlobalTheory.T.thetaReading_linear_injective_at_orthonormal_frame D ψ θ V W W.rank g rfl X bas idx hstd hP.inf hP.std hP.even hX hS _ (hON u) _ _ _ _ h2 h2).1 c 0`. Rewrite `h3` using `[zero_smul, zero_smul, add_zero, add_zero]`. Rewrite using `[h1]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose c hc using hc`. Distinguish the cases in `hφ : φ = 0`. Introduce `u hu`. Use `(hc u hu).2` as an intermediate fact. Rewrite `this`, the goal using `[hφ, smul_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `this`. Take `⟨G, hG⟩` from `GlobalTheory.T.inner_thetaFunctions_reading_testFunction_frames D ψ θ V W W.rank g rfl X bas idx hstd hP.inf hP.std hP.even hX hS`. Take `⟨K, hK0, hK⟩` from `(hG x x hx hx).2.2 φ hR.1 hφ`. Take `⟨μ, 𝓕, hμ⟩` from `(GlobalTheory.Ker.ScalarProduct.ip_basic D V W C).1`. Establish `hmul : ∀ u ∈ GinfC W, ∀ v ∈ GinfC W, c (u * v) = c u * c v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u hu v hv`. Establish `h1` using `hK _ _ (hON (u * v)) (hON u) _ _ _ _ (hpres _) (hpres _) (hc _ (mul_mem hu hv)).2 (hc u hu).2 μ 𝓕 hμ`. Establish `hR1 : Reads θ V W rfl X bas idx f ((1 : ℂ) • φ) x` using `by rwa [one_smul]`. Establish `h2` using `hK _ _ (hON v) hx _ _ _ _ (hpres _) hf (hc v hv).2 hR1 μ 𝓕 hμ`. Establish `h3` using `GlobalTheory.WeilInner.om_inner D ψ V W χV χW om hP.weil μ 𝓕 hμ (1, u) _ _ (hpres v) hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : om (1, u * v) f = om (1, u) (om (1, v) f)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Rewrite `h1` using `[h4, h3, h2, frMove_mul θ W X hX, (hG _ _ (hON v) hx).2.1 u, map_one, mul_one]`. Establish `h5 : c v = c (u * v) * conj (c u)` using `mul_right_cancel₀ (mul_ne_zero hK0 (hG _ _ (hON v) hx).1) h1`. Establish `h6 : c u * conj (c u) = 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, (hc u hu).1]`. Simplify using the standard rewrite rules. Rewrite using `[h5]`. Take the linear combination `(-c (u * v)) * h6`. Establish `hmu0 : ∀ u, mu u ≠ 0` using `fun u h => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hmu.norm u` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`. Establish `hcart` using `(GlobalTheory.FrameCplx.cplx_of_frame D ψ θ V W W.rank g rfl X bas idx hstd hP.inf hP.std hP.even hX hS x _ hx hinv).1`. Establish `hone` using `GlobalTheory.UnitaryChar.char_eq_one D θ W hP.inf _ hcart (fun u => c u / mu u) (fun u hu v hv => by show c (u * v) / mu (u * v) = c u / mu u * (c v / mu v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hmul u hu v hv, muVal_mul hmu, mul_div_mul_comm])`. Use the proof step `(fun k hk hks => by`. Establish `h1` using `GlobalTheory.T.weilDatum_compact_vacuum_reads_det_character D ψ θ V W χV χW om hP mu hmu W.rank g rfl X bas idx hX hS x _ hx hinv f φ hf hR k hk hks`. Establish `h2` using `(GlobalTheory.T.thetaReading_linear_injective_at_orthonormal_frame D ψ θ V W W.rank g rfl X bas idx hstd hP.inf hP.std hP.even hX hS _ (hON k) _ _ _ _ (hc k hk).2 h1).2.1 rfl`. Establish `h3 : c k = mu k` using `smul_left_injective ℂ hφ h2`.
-
-Use `show c k / mu k = 1`. Rewrite using `[h3, div_self (hmu0 k)])`. Introduce `u hu`. Establish `h : c u = mu u` using `(div_eq_one_iff_eq (hmu0 u)).1 (hone u hu)`. Rewrite using `[← h]`.
-
-Conclude with `(hc u hu).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_real_reads : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsPair ψ θ V W χV χW om → ∀ mu : GA D W → ℂ, Formalism.L2.Pj.MuVal W χV mu → ∀ (r g : ℕ) (hr : W.rank = r) (X : Data D.host.E r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r), IsMod W hr X → IsSympl X bas → ∀ (x : Frame X.Ψ r), IsONFr X x → ∀ (f : WO V W → ℂ) (φ : TF V.rank g), IsThetaFunO ψ V W f → Reads θ V W hr X bas idx f φ x → ∀ u ∈ GinfC W, Reads θ V W hr X bas idx (om (1, u) f) (mu u • φ) (frMove θ W hr X u x) := by
   intro D ψ θ V W χV χW om hP mu hmu r g hr X bas idx hX hS x hx f φ hf hR

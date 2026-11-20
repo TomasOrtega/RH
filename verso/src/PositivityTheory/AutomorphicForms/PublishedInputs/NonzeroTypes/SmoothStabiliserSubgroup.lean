@@ -47,11 +47,9 @@ def stab {K : Type} [Group K] (φ : K → ℂ) : Subgroup K where
 end SmoothStabiliserSubgroup
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n G hKC h1 φ hφ`. Establish `hU : IsOpen ((Subtype.val : ↥(KO k (Fin n)) → GL (Fin n) k) ⁻¹' KC k n G.lev)` using `hKC.preimage continuous_subtype_val`. Establish `hsub : (Subtype.val : ↥(KO k (Fin n)) → GL (Fin n) k) ⁻¹' KC k n G.lev ⊆ (SmoothStabiliserSubgroup.stab φ : Set ↥(KO k (Fin n)))`. Introduce `u hu`. Use `show rightReg ℂ ↥(KO k (Fin n)) ℂ u φ = φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[SmoothStabiliserSubgroup.rightReg_apply']`. Conclude with `hφ.2 g u hu`. Establish `h1mem : (1 : ↥(KO k (Fin n))) ∈ (Subtype.val : ↥(KO k (Fin n)) → GL (Fin n) k) ⁻¹' KC k n G.lev` using `h1`. Establish `hn : (SmoothStabiliserSubgroup.stab φ : Set ↥(KO k (Fin n))) ∈ nhds (1 : ↥(KO k (Fin n)))` using `Filter.mem_of_superset (hU.mem_nhds h1mem) hsub`.
-
-Conclude with `(SmoothStabiliserSubgroup.stab φ).isOpen_of_mem_nhds hn`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smoothVectorsFixed_holds : SmoothVectorsFixedByCongruence := by
   intro k _ _ _ _ n G hKC h1 φ hφ

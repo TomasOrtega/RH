@@ -5,55 +5,47 @@ namespace GlobalTheory.IsoSep
 open Representation
 
 /- English proof (translation)
-Introduce `H V W _ _ _ _ _ ρ σ hσ hsum hiso v hv`. Use `haveI := hσ`. Set `e` to `Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := ρ)`. Establish `hatom : ∀ f : σ.IntertwiningMap ρ, f ≠ 0 → IsAtom f.range`. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hf` to reduce the goal to its premises. Use extensionality with `w`. Establish `hw : f w ∈ f.range` using `⟨w, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hw` using `[h]`. Conclude with `hw`. Introduce `U hU`. Set `U' : Subrepresentation σ` to `⟨U.toSubmodule.comap f.toLinearMap, fun g w hw => by show f (σ g w) ∈ U.toSubmodule`. Rewrite using `[f.isIntertwining]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `U.apply_mem_toSubmodule g hw⟩`. Break down `eq_bot_or_eq_top U' with h | h` into its components or cases. Use `le_antisymm (fun x hx => ?_) bot_le` and prove the remaining obligations. Take `⟨w, rfl⟩` from `hU.le hx`. Establish `hw : w ∈ U'.toSubmodule` using `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hw` using `[h]`. Establish `hw0 : w = 0` using `(Submodule.mem_bot ℂ).1 hw`. Use `show f w ∈ (⊥ : Submodule ℂ V)`. Rewrite using `[hw0, map_zero]`. Conclude with `zero_mem _`.
+It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Use `hU.ne (le_antisymm hU.le ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Establish `hw : w ∈ U'.toSubmodule` using `by rw [h]; trivial`. Conclude with `hw`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Establish `hss : IsSemisimpleModule (MonoidAlgebra ℂ H) ρ.asModule`. Apply `IsSemisimpleModule.of_sSup_simples_eq_top` to reduce the goal to its premises. Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Establish `hx : ρ.asModuleEquiv x ∈ (⨆ f : σ.IntertwiningMap ρ, LinearMap.range f.toLinearMap)`. Rewrite using `[hsum]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Discharge the goal by the elementary cases of `trivial`. Establish `key` using `Submodule.iSup_induction _ (motive := fun y : V => ρ.asModuleEquiv.symm y ∈ sSup {m : Submodule (MonoidAlgebra ℂ H) ρ.asModule | IsSimpleModule (MonoidAlgebra ℂ H) m}) hx (fun f y hy => by`. Distinguish the cases in `hf : f = 0`. Substitute `hf` using the available equality. Take `⟨w, rfl⟩` from `hy`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Use `le_sSup (a := e f.range) ?_ ?_` and prove the remaining obligations. Conclude with `isSimpleModule_iff_isAtom.2 ((e.isAtom_iff _).2 (hatom f hf))`. Conclude with `hy)`. Use the proof step `(by simp) (fun a b ha hb => by rw [map_add]; exact add_mem ha hb)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify using `using key`. Set `K : Submodule (MonoidAlgebra ℂ H) ρ.asModule` to `Submodule.span _ {ρ.asModuleEquiv.symm v}`. Establish `hK : K ≠ ⊥`. Introduce `h`. Apply `hv` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hm : ρ.asModuleEquiv.symm v ∈ K` using `Submodule.subset_span rfl`. Rewrite `hm` using `[h, Submodule.mem_bot]`. Simplify using `using hm`. Take `⟨N, hN, hNK⟩` from `(eq_bot_or_exists_atom_le K).resolve_left hK`. Take `⟨C, hC⟩` from `exists_isCompl N`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `N'` to `e.symm N`. Set `C'` to `e.symm C`. Establish `hC' : IsCompl N' C'` using `(e.isCompl_iff).2 (by`. Simplify using `only [N', C', OrderIso.apply_symm_apply]`. Conclude with `hC)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hN' : IsAtom N'` using `(e.isAtom_iff N').1 (by simp only [N', OrderIso.apply_symm_apply]; exact hN)`. Establish `hc : IsCompl N'.toSubmodule C'.toSubmodule`. Prove the components needed by the constructor for the conclusion. Rewrite using `[disjoint_iff]`. Conclude with `congrArg Subrepresentation.toSubmodule hC'.inf_eq_bot`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[codisjoint_iff]`. Conclude with `congrArg Subrepresentation.toSubmodule hC'.sup_eq_top`. Set `P` to `Submodule.projectionOnto N'.toSubmodule C'.toSubmodule hc`. Set `τ` to `N'.toRepresentation`. Set `p : ρ.IntertwiningMap τ` to `⟨P, fun g => LinearMap.ext fun x => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : x ∈ N'.toSubmodule ⊔ C'.toSubmodule` using `by rw [hc.sup_eq_top]; trivial`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx`. Establish `h1 : P (ρ g y) = ⟨ρ g y, N'.apply_mem_toSubmodule g hy⟩` using `Submodule.projectionOnto_apply_left hc ⟨ρ g y, N'.apply_mem_toSubmodule g hy⟩`. Establish `h2 : P (ρ g z) = 0` using `Submodule.projectionOnto_apply_right hc ⟨ρ g z, C'.apply_mem_toSubmodule g hz⟩`. Establish `h3 : P y = ⟨y, hy⟩` using `Submodule.projectionOnto_apply_left hc ⟨y, hy⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h4 : P z = 0` using `Submodule.projectionOnto_apply_right hc ⟨z, hz⟩`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, map_add, h1, h2, h3, h4, add_zero, map_zero]`. Use the proof step `rfl⟩`. Establish `hpv : p v ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hvC : v ∈ C'.toSubmodule` using `(Submodule.projectionOnto_apply_eq_zero_iff hc).1 h0`. Establish `hKC : K ≤ C`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ rfl`. Conclude with `hvC`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hNC : N ≤ N ⊓ C` using `le_inf le_rfl (hNK.trans hKC)`. Rewrite `hNC` using `[hC.inf_eq_bot]`. Conclude with `hN.1 (le_bot_iff.1 hNC)`. Establish `hN'0 : N'.toSubmodule ≠ ⊥` using `fun h => hN'.1 (Subrepresentation.toSubmodule_injective h)`. Take `⟨x0, hx0, hx00⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hN'0`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hτ : τ.IsIrreducible`. Use `{ exists_pair_ne := ⟨⊥, ⊤, fun h => ?_⟩, eq_bot_or_eq_top := fun U => ?_ }` and prove the remaining obligations. Establish `hm : (⟨x0, hx0⟩ : N'.toSubmodule) ∈ (⊤ : Subrepresentation τ).toSubmodule` using `trivial`. Rewrite `hm` using `[← h]`. Establish `: (⟨x0, hx0⟩ : N'.toSubmodule) = 0` using `(Submodule.mem_bot ℂ).1 hm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx00 (congrArg Subtype.val this)`. Set `U'' : Subrepresentation ρ` to `⟨U.toSubmodule.map N'.toSubmodule.subtype, fun g x hx => by`. Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `⟨τ g y, U.apply_mem_toSubmodule g hy, rfl⟩⟩`. Establish `hle : U'' ≤ N'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `y.2`. Break down `hN'.le_iff.1 hle with h | h` into its components or cases. Use `left`. Use `Subrepresentation.toSubmodule_injective (eq_bot_iff.2 fun y hy => ?_)` and prove the remaining obligations.
-
-Establish `hm : (y : V) ∈ U''.toSubmodule` using `⟨y, hy, rfl⟩`. Rewrite `hm` using `[h]`. Establish `h0 : (y : V) = 0` using `(Submodule.mem_bot ℂ).1 hm`. Conclude with `(Submodule.mem_bot ℂ).2 (Subtype.ext h0)`. Use `right`.
-
-Use `Subrepresentation.toSubmodule_injective (eq_top_iff.2 fun y _ => ?_)` and prove the remaining obligations. Establish `hm : (y : V) ∈ U''.toSubmodule` using `by rw [h]; exact y.2`. Take `⟨z, hz, hzy⟩` from `hm`. Establish `: z = y` using `Subtype.ext hzy`. Rewrite using `[← this]`.
-
-Conclude with `hz`. Set `f' : τ.IntertwiningMap ρ` to `⟨N'.toSubmodule.subtype, fun g => LinearMap.ext fun x => rfl⟩`. Establish `hf' : f' ≠ 0`. Introduce `h`. Use `congrArg (fun q : τ.IntertwiningMap ρ => q ⟨x0, hx0⟩) h` as an intermediate fact.
-
-Conclude with `hx00 this`. Take `⟨eqv⟩` from `hiso _ τ hτ f' hf'`. Use `⟨eqv.symm.toIntertwiningMap.comp p, fun h => hpv ?_⟩` and prove the remaining obligations. Use `congrArg eqv h` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem main : ∀ (H V W : Type) [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (ρ : Representation ℂ H V) (σ : Representation ℂ H W), σ.IsIrreducible → (⨆ f : σ.IntertwiningMap ρ, LinearMap.range f.toLinearMap) = ⊤ → (∀ (W' : Type) [AddCommGroup W'] [Module ℂ W'] (σ' : Representation ℂ H W'), σ'.IsIrreducible → ∀ f' : σ'.IntertwiningMap ρ, f' ≠ 0 → Nonempty (σ.Equiv σ')) → ∀ v : V, v ≠ 0 → ∃ p : ρ.IntertwiningMap σ, p v ≠ 0 := by
   intro H V W _ _ _ _ _ ρ σ hσ hsum hiso v hv

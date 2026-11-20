@@ -8,11 +8,9 @@ namespace GlobalTheory.TwV.Xc
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S _hD _hS j hj β v`. Use `⟨J.pl j hj β v, ?_⟩` and prove the remaining obligations. Establish `h` using `firstFactor_agree D.host.F D.host.E _ _ (((I.at' j hj).st.loc β).pl v).1 ((A0 J).pl v).1 (((I.at' j hj).st.loc β).eQ v) ((A0 J).eQ v) (((I.at' j hj).st.loc β).ph v) ((A0 J).ph v) (fun c => by show ((((I.at' j hj).st.loc β).spl v) ((1 : D.host.E) ⊗ₜ[D.host.F] c)).1 = c`. Rewrite using `[J.alg j hj β v c])`. Use the proof step `(fun c => by show (((A0 J).spl v) ((1 : D.host.E) ⊗ₜ[D.host.F] c)).1 = c`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[J.alg0 v c])`. Use the proof step `((H.core j hj β).int v) (J.one.int v)`. Use the proof step `(fun a => by`. Establish `h1` using `RingHom.congr_fun (J.iw j hj β v) a`. Conclude with `h1)`.
-
-Conclude with `h.2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chart_places_firstFactor_eq_zero :
     Sites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S =>

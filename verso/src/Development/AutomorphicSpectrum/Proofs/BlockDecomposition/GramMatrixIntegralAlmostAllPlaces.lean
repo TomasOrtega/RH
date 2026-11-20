@@ -13,7 +13,7 @@ namespace GlobalTheory.CompanionTheory.SiegelND.Coef
 open Formalism.L2.SG.LocVol Formalism.L2.SG.Pf.NcS.KfOrbPf Formalism.L2.SG.Pf.NcS.IntWittPf
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.basis_repr_tmul]`. Simplify using `[Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem tensorBasis_repr_tmul {F E R : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R]
     {d : ℕ} (b : Module.Basis (Fin d) F E) (c : R) (e : E) (m : Fin d) :
@@ -22,7 +22,7 @@ private theorem tensorBasis_repr_tmul {F E R : Type} [Field F] [Field E] [Algebr
   simp [Algebra.smul_def]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (Algebra.TensorProduct.basis R b).sum_repr z]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_sum_repr_tmul_basis {F E R : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R]
     {d : ℕ} (b : Module.Basis (Fin d) F E) (z : R ⊗[F] E) :
@@ -32,7 +32,7 @@ private theorem eq_sum_repr_tmul_basis {F E R : Type} [Field F] [Field E] [Algeb
   rw [Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Rewrite using `[map_sum, Finsupp.finsetSum_apply]`. Conclude with `O.sum_mem fun x hx => h x hx m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tensorBasis_repr_sum_mem_of_repr_mem {F E R : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R]
     {d : ℕ} (b : Module.Basis (Fin d) F E) (O : Subring R) {ι : Type} (s : Finset ι)
@@ -42,7 +42,7 @@ private theorem tensorBasis_repr_sum_mem_of_repr_mem {F E R : Type} [Field F] [F
   exact O.sum_mem fun x hx => h x hx m
 
 /- English proof (translation)
-Rewrite using `[tensorBasis_repr_tmul]`. Conclude with `O.mul_mem hc (he m)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tensorBasis_repr_tmul_mem_of_mem {F E R : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R]
     {d : ℕ} (b : Module.Basis (Fin d) F E) (O : Subring R) (c : R) (e : E) (hc : c ∈ O)
@@ -52,7 +52,7 @@ private theorem tensorBasis_repr_tmul_mem_of_mem {F E R : Type} [Field F] [Field
   exact O.mul_mem hc (he m)
 
 /- English proof (translation)
-Rewrite using `[eq_sum_repr_tmul_basis b z, eq_sum_repr_tmul_basis b w, Finset.sum_mul_sum]`. Use `tensorBasis_repr_sum_mem_of_repr_mem b O _ _ (fun k _ m' => tensorBasis_repr_sum_mem_of_repr_mem b O _ _ (fun l _ m'' => ?_) m') m` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Conclude with `tensorBasis_repr_tmul_mem_of_mem b O _ _ (O.mul_mem (hz k) (hw l)) (hb k l) m''`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tensorBasis_repr_mul_mem_of_repr_mem {F E R : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R]
     {d : ℕ} (b : Module.Basis (Fin d) F E) (O : Subring R)
@@ -66,7 +66,7 @@ private theorem tensorBasis_repr_mul_mem_of_repr_mem {F E R : Type} [Field F] [F
   exact tensorBasis_repr_tmul_mem_of_mem b O _ _ (O.mul_mem (hz k) (hw l)) (hb k l) m''
 
 /- English proof (translation)
-Rewrite using `[eq_sum_repr_tmul_basis b z, map_sum]`. Use `tensorBasis_repr_sum_mem_of_repr_mem b O _ _ (fun k _ m' => ?_) m` and prove the remaining obligations. Simplify using `only [sigR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Conclude with `tensorBasis_repr_tmul_mem_of_mem b O _ _ (hz k) (hs k) m'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem tensorBasis_repr_sigR_mem_of_repr_mem {F E R : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R]
     {d : ℕ} (b : Module.Basis (Fin d) F E) (O : Subring R) (σ : E →ₐ[F] E)
@@ -79,21 +79,19 @@ private theorem tensorBasis_repr_sigR_mem_of_repr_mem {F E R : Type} [Field F] [
   exact tensorBasis_repr_tmul_mem_of_mem b O _ _ (hz k) (hs k) m'
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ n hn d b T hT`. Establish `intF : ∀ t : F, ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, algebraMap F (Fv F v) t ∈ HeightOneSpectrum.adicCompletionIntegers F v`. Introduce `t`. Use `filter_upwards [GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.sub_qR_mem_integers F E σ hCM M J hJ d b t] with v hv`. Establish `h0` using `hv 0 (fun a i k => by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h0` using `[qR, hR, Formalism.UG.hform]`. Establish `hdiag` using `Filter.eventually_all.2 fun i : Fin n => GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.sub_qR_mem_integers F E σ hCM M J hJ d b ((1 / 2) * Algebra.trace F E (T i i))`. Establish `h1 : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ k l m, algebraMap F (Fv F v) (b.repr (b k * b l) m) ∈ HeightOneSpectrum.adicCompletionIntegers F v` using `Filter.eventually_all.2 fun k => Filter.eventually_all.2 fun l => Filter.eventually_all.2 fun m => intF _`. Establish `h2 : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ k m, algebraMap F (Fv F v) (b.repr (σ (b k)) m) ∈ HeightOneSpectrum.adicCompletionIntegers F v` using `Filter.eventually_all.2 fun k => Filter.eventually_all.2 fun m => intF _`. Establish `h3 : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ p q m, algebraMap F (Fv F v) (b.repr (J p q) m) ∈ HeightOneSpectrum.adicCompletionIntegers F v` using `Filter.eventually_all.2 fun p => Filter.eventually_all.2 fun q => Filter.eventually_all.2 fun m => intF _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, ∀ i j m, algebraMap F (Fv F v) (b.repr (T i j) m) ∈ HeightOneSpectrum.adicCompletionIntegers F v` using `Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => Filter.eventually_all.2 fun m => intF _`. Use `filter_upwards [hdiag, h1, h2, h3, h4] with v hd hb hs hJv hTv`. Introduce `X hX`. Use `clear intF hdiag h1 h2 h3 h4`. Use `haveI : FiniteDimensional F E := Module.Finite.of_basis b`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Unfold `latH gramH`. Use `⟨fun i => ?_, fun i j _ k => ?_⟩` and prove the remaining obligations. Establish `hX'` using `hd i (fun _ => X i) (fun _ a k => hX i a k)`. Use `hX' using 1` and compare the differences between its conclusion and the goal. Simplify using `only [AddSubgroup.coe_sub, Matrix.sub_apply, hermOf, gramR, qR, Matrix.map_apply, map_sub, mul_sub]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `congr 1`. Simplify using `only [inclR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply]`. Rewrite using `[GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.trace_one_tmul_len, map_mul]`. Set `O : Subring (Fv F v)` to `(HeightOneSpectrum.adicCompletionIntegers F v).toSubring`. Establish `gX : ∀ a p m, (Algebra.TensorProduct.basis (Fv F v) b).repr (X a p) m ∈ O` using `fun a p m => hX a p m`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `gI : ∀ e : E, (∀ m, algebraMap F (Fv F v) (b.repr e m) ∈ O) → ∀ m, (Algebra.TensorProduct.basis (Fv F v) b).repr (inclR (Fv F v) e) m ∈ O`. Introduce `e he m`. Simplify using `only [inclR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.includeRight_apply]`. Rewrite using `[tensorBasis_repr_tmul, one_mul]`. Conclude with `he m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `gH : ∀ m, (Algebra.TensorProduct.basis (Fv F v) b).repr (hR (Fv F v) σ J (X i) (X j)) m ∈ O`. Introduce `m`. Simplify using `only [hR, Formalism.UG.hform, JR, Matrix.map_apply]`. Conclude with `tensorBasis_repr_sum_mem_of_repr_mem b O _ _ (fun p _ m' => tensorBasis_repr_sum_mem_of_repr_mem b O _ _ (fun q _ m'' => tensorBasis_repr_mul_mem_of_repr_mem b O hb _ _ (fun m3 => tensorBasis_repr_mul_mem_of_repr_mem b O hb _ _ (tensorBasis_repr_sigR_mem_of_repr_mem b O σ hs _ (g …`. Establish `gT` using `gI (T i j) (hTv i j)`.
-
-Simplify using `only [AddSubgroup.coe_sub, Matrix.sub_apply, hermOf, gramR, Matrix.map_apply, map_sub, Finsupp.coe_sub, Pi.sub_apply]`. Conclude with `O.sub_mem (gT k) (gH k)`.
+A detailed English derivation is pending.
 -/
 theorem hermOf_sub_gramH_mem_latH : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J) (n : ℕ),

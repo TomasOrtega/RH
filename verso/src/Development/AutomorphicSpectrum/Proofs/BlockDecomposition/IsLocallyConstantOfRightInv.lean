@@ -13,11 +13,9 @@ section Top
 variable {B : Type} [Group B] [TopologicalSpace B] [IsTopologicalGroup B]
 
 /- English proof (translation)
-Introduce `s`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `y hy`. Establish `h1 : (fun z => y⁻¹ * z) ⁻¹' (V : Set B) ∈ nhds y`. Apply `(continuous_const.mul continuous_id).continuousAt.preimage_mem_nhds` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using hV.mem_nhds V.one_mem`. Use `filter_upwards [h1] with z hz`. Establish `h2` using `hf _ hz y`. Rewrite `h2` using `[mul_inv_cancel_left]`. Use `show f z ∈ s`.
-
-Rewrite using `[h2]`. Conclude with `hy`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_of_rightInv {X : Type} {V : Subgroup B} (hV : IsOpen (V : Set B)) {f : B → X}
     (hf : ∀ v ∈ V, ∀ y, f (y * v) = f y) : IsLocallyConstant f := by
@@ -37,41 +35,35 @@ theorem isLocallyConstant_of_rightInv {X : Type} {V : Subgroup B} (hV : IsOpen (
 variable [SecondCountableTopology B] [MeasurableSpace B] [BorelSpace B]
 
 /- English proof (translation)
-Use `set u : K → ℂ := fun k => f k with hu`. Use `set R := rStab u with hR`. Establish `hUR : U.subgroupOf K ≤ R`. Introduce `k hk x`. Conclude with `hf k hk x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hKc`. Establish `hRo : IsOpen (R : Set K)` using `Subgroup.isOpen_mono hUR (hU.preimage continuous_subtype_val)`. Use `haveI : Finite (K ⧸ R) := Subgroup.quotient_finite_of_isOpen R hRo`. Use `haveI := Fintype.ofFinite (K ⧸ R)`. Use `set R' : Subgroup B := R.map K.subtype with hR'`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hR'o : IsOpen (R' : Set B)`. Establish `: (R' : Set B) = Subtype.val '' (R : Set K)`. Use extensionality with `y`. Simplify using `[hR', Subgroup.mem_map]`. Rewrite using `[this]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hKo.isOpenMap_subtype_val _ hRo`. Establish `hR'K : (R' : Set B) ⊆ K`. Introduce and unpack `_ ⟨r, -, rfl⟩`. Conclude with `r.2`. Set `A : K ⧸ R → Set B` to `fun t => (fun y => ((t.out : K) : B)⁻¹ * y) ⁻¹' (R' : Set B)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hAm : ∀ t, MeasurableSet (A t)` using `fun t => (hR'o.preimage (continuous_const.mul continuous_id)).measurableSet`. Establish `hAmeas : ∀ t, β (A t) = β R'` using `fun t => measure_preimage_mul β _ _`. Establish `hAd : Pairwise (Function.onFun Disjoint A)`. Introduce `t t' htt`. Rewrite using `[Function.onFun, Set.disjoint_left]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `y ⟨r, hr, hry⟩ ⟨r', hr', hry'⟩`. Apply `htt` to reduce the goal to its premises. Establish `e1 : ((t.out : K) : B) * r = y`. Simplify using `only [Subgroup.coe_subtype] at hry`. Rewrite using `[hry]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Establish `e2 : ((t'.out : K) : B) * r' = y`. Simplify using `only [Subgroup.coe_subtype] at hry'`. Rewrite using `[hry']`. Use `group`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Establish `e3 : (t.out * r : K) = t'.out * r'` using `Subtype.ext (by simp [e1, e2])`. Establish `e4 : ((t.out : K) : K ⧸ R) = ((t'.out : K) : K ⧸ R)`. Rewrite using `[QuotientGroup.eq]`. Establish `: (t.out)⁻¹ * t'.out = r * r'⁻¹`. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, e3]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `group`. Rewrite using `[this]`. Conclude with `R.mul_mem hr (R.inv_mem hr')`. Simplify using `using e4`. Establish `hAU : ⋃ t, A t = (K : Set B)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use extensionality with `y`. Simplify using `only [Set.mem_iUnion, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩`. Establish `h1` using `hR'K ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `K.mul_mem (t.out).2 h1`. Simplify using `using h2`. Introduce `hy`. Use `⟨((⟨y, hy⟩ : K) : K ⧸ R), ?_⟩` and prove the remaining obligations. Use `set t : K ⧸ R := ((⟨y, hy⟩ : K) : K ⧸ R) with ht`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : ((t.out : K) : K ⧸ R) = ((⟨y, hy⟩ : K) : K ⧸ R)` using `by rw [QuotientGroup.out_eq']`. Rewrite `h1` using `[QuotientGroup.eq]`. Conclude with `⟨_, h1, by simp⟩`. Establish `key : ∀ (g : B → ℂ) (c : K ⧸ R → ℂ), (∀ t, ∀ y ∈ A t, g y = c t) → ∫ y in (K : Set B), g y ∂β = (β.real R' : ℂ) * ∑ t, c t`. Introduce `g c hg`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hfin : β R' ≠ ⊤` using `(lt_of_le_of_lt (measure_mono hR'K) hKc.measure_lt_top).ne`. Establish `hint : ∀ t, IntegrableOn g (A t) β`. Introduce `t`. Use `(integrableOn_const (C := c t) (by rw [hAmeas t]; exact hfin)).congr_fun ?_ (hAm t)` and prove the remaining obligations. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hg t y hy).symm`. Rewrite using `[← hAU, integral_iUnion_fintype hAm hAd hint, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[setIntegral_congr_fun (hAm t) (fun y hy => hg t y hy), setIntegral_const, Measure.real, Measure.real, hAmeas t]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `h1` using `key (fun _ => 1) (fun _ => 1) (fun _ _ _ => rfl)`. Establish `h2` using `key f (fun t => u t.out) (by`. Introduce and unpack `t y ⟨r, hr, hry⟩`. Establish `e1 : y = ((t.out : K) : B) * r`. Simplify using `only [Subgroup.coe_subtype] at hry`.
-
-Rewrite using `[hry]`. Use `group`. Rewrite using `[e1]`. Conclude with `hr t.out)`. Establish `hcard : ((Fintype.card (K ⧸ R) : ℕ) : ℂ) ≠ 0`.
-
-Establish `: Fintype.card (K ⧸ R) ≠ 0` using `Fintype.card_ne_zero`. Conclude with `this` after adjusting the coercions. Establish `hidx : R.index = Fintype.card (K ⧸ R)`. Rewrite using `[Subgroup.index, Nat.card_eq_fintype_card]`. Rewrite `h1` using `[setIntegral_const]`.
-
-Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one, Complex.real_smul] at h1`. Rewrite using `[h2, h1, avg, ← hR, hidx, finsum_eq_sum_of_fintype]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem setIntegral_subgroup (β : Measure B) [β.IsHaarMeasure] (K U : Subgroup B) (hKo : IsOpen (K : Set B))
     (hKc : IsCompact (K : Set B)) (hU : IsOpen (U : Set B)) (f : B → ℂ) (hf : ∀ u ∈ U, ∀ y, f (y * u) = f y) :
@@ -179,7 +171,7 @@ def rr (Γ' K : Subgroup B) (y : B) : ℝ≥0∞ :=
   if (oo Γ' K y)⁻¹ * y ∈ K then ((cc Γ' K (oo Γ' K y) : ℕ) : ℝ≥0∞)⁻¹ else 0
 
 /- English proof (translation)
-Establish `: DoubleCoset.mk Γ' K (y * k) = DoubleCoset.mk Γ' K y` using `((DoubleCoset.eq Γ' K y (y * k)).2 ⟨1, Γ'.one_mem, k, hk, by simp⟩).symm`. Simplify using `only [oo, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem oo_mul_right (Γ' K : Subgroup B) {k : B} (hk : k ∈ K) (y : B) : oo Γ' K (y * k) = oo Γ' K y := by
   have : DoubleCoset.mk Γ' K (y * k) = DoubleCoset.mk Γ' K y :=
@@ -187,7 +179,7 @@ theorem oo_mul_right (Γ' K : Subgroup B) {k : B} (hk : k ∈ K) (y : B) : oo Γ
   simp only [oo, this]
 
 /- English proof (translation)
-Establish `: DoubleCoset.mk Γ' K (h * y) = DoubleCoset.mk Γ' K y` using `((DoubleCoset.eq Γ' K y (h * y)).2 ⟨h, hh, 1, K.one_mem, by simp⟩).symm`. Simplify using `only [oo, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem oo_mul_left (Γ' K : Subgroup B) {h : B} (hh : h ∈ Γ') (y : B) : oo Γ' K (h * y) = oo Γ' K y := by
   have : DoubleCoset.mk Γ' K (h * y) = DoubleCoset.mk Γ' K y :=
@@ -195,7 +187,7 @@ theorem oo_mul_left (Γ' K : Subgroup B) {h : B} (hh : h ∈ Γ') (y : B) : oo �
   simp only [oo, this]
 
 /- English proof (translation)
-Establish `h1 : (oo Γ' K y)⁻¹ * (y * k) ∈ K ↔ (oo Γ' K y)⁻¹ * y ∈ K`. Rewrite using `[← mul_assoc]`. Conclude with `K.mul_mem_cancel_right hk`. Simplify using `only [rr, oo_mul_right Γ' K hk, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rr_mul_right (Γ' K : Subgroup B) {k : B} (hk : k ∈ K) (y : B) : rr Γ' K (y * k) = rr Γ' K y := by
   have h1 : (oo Γ' K y)⁻¹ * (y * k) ∈ K ↔ (oo Γ' K y)⁻¹ * y ∈ K := by
@@ -204,25 +196,21 @@ theorem rr_mul_right (Γ' K : Subgroup B) {k : B} (hk : k ∈ K) (y : B) : rr Γ
   simp only [rr, oo_mul_right Γ' K hk, h1]
 
 /- English proof (translation)
-Take `⟨h, k, hh, hk, ho⟩` from `DoubleCoset.mk_out_eq_mul Γ' K y`. Use `set o := oo Γ' K y with hodef`. Establish `ho' : o = h * y * k` using `ho`. Use `set D : Subgroup B := Γ' ⊓ K.map (MulAut.conj o).toMonoidHom with hD`. Use `haveI : Finite D := hfin o`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI := Fintype.ofFinite D`. Use `set c : ℝ≥0∞ := ((cc Γ' K o : ℕ) : ℝ≥0∞)⁻¹ with hc`. Establish `hterm : ∀ γ : Γ', rr Γ' K (((γ * ⟨h, hh⟩ : Γ') : B) * y) = (D : Set B).indicator (fun _ => c) (γ : B)`. Introduce `γ`. Establish `e1 : (((γ * ⟨h, hh⟩ : Γ') : B) * y) = γ * (h * y)` using `by simp [mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : oo Γ' K (((γ * ⟨h, hh⟩ : Γ') : B) * y) = o`. Rewrite using `[e1, oo_mul_left Γ' K γ.2, oo_mul_left Γ' K hh]`. Establish `e3 : h * y = o * k⁻¹` using `by rw [ho']; group`. Establish `e4 : o⁻¹ * (((γ * ⟨h, hh⟩ : Γ') : B) * y) ∈ K ↔ (γ : B) ∈ D`. Rewrite using `[e1, e3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Establish `e5 : o⁻¹ * ((γ : B) * (o * k⁻¹)) = (o⁻¹ * γ * o) * k⁻¹` using `by group`. Rewrite using `[e5, K.mul_mem_cancel_right (K.inv_mem hk), hD, Subgroup.mem_inf]`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Conclude with `⟨γ.2, ⟨_, hm, by simp [MulAut.conj_apply]; group⟩⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨-, x, hx, hxe⟩`. Establish `: (γ : B) = o * x * o⁻¹`. Rewrite using `[← hxe]`. Simplify using `[MulAut.conj_apply]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `e6 : o⁻¹ * (o * x * o⁻¹) * o = x` using `by group`. Rewrite using `[e6]`. Conclude with `hx`. Simplify using `only [rr, e2, e4]`. Distinguish the cases in `hm : (γ : B) ∈ D`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_pos hm, Set.indicator_of_mem (show (γ : B) ∈ (D : Set B) from hm)]`. Rewrite using `[if_neg hm, Set.indicator_of_notMem (show (γ : B) ∉ (D : Set B) from hm)]`. Establish `hle : (D : Set B) ⊆ Γ'` using `fun x hx => hx.1`. Combine the equalities or inequalities in the displayed calculation. Establish `e7` using `tsum_subtype (Γ' : Set B) (fun b => (D : Set B).indicator (fun _ => c) b)`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e8 : (Γ' : Set B).indicator (fun b => (D : Set B).indicator (fun _ => c) b) = (D : Set B).indicator (fun _ => c)`. Use function extensionality and compare the values at `b`. Distinguish the cases in `hb : b ∈ (Γ' : Set B)`. Rewrite using `[Set.indicator_of_mem hb]`. Rewrite using `[Set.indicator_of_notMem hb, Set.indicator_of_notMem (fun hd => hb (hle hd))]`.
-
-Conclude with `e7.trans (by rw [e8])`. Use `_ = ∑' d : D, c := (tsum_subtype (D : Set B) (fun _ => c)).symm`. Use `_ = 1 := by`. Rewrite using `[tsum_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, hc]`. Establish `e10 : cc Γ' K o = Fintype.card D`.
-
-Rewrite using `[cc, Nat.card_eq_fintype_card]`. Rewrite using `[e10]`. Conclude with `ENNReal.mul_inv_cancel (by exact_mod_cast Fintype.card_ne_zero) (by simp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_rr (Γ' K : Subgroup B)
     (hfin : ∀ x : B, Finite (Γ' ⊓ K.map (MulAut.conj x).toMonoidHom : Subgroup B)) (y : B) :
@@ -290,19 +278,19 @@ variable {B : Type} [Group B] [TopologicalSpace B] [IsTopologicalGroup B] [Secon
   [MeasurableSpace B] [BorelSpace B]
 
 /- English proof (translation)
-Introduce `s _` and use `(isLocallyConstant_of_rightInv hKo (fun _ hk y => rr_mul_right Γ' K hk y) s).measurableSet`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem measurable_rr (Γ' K : Subgroup B) (hKo : IsOpen (K : Set B)) : Measurable (rr Γ' K) := fun s _ =>
   (isLocallyConstant_of_rightInv hKo (fun _ hk y => rr_mul_right Γ' K hk y) s).measurableSet
 
 /- English proof (translation)
-Establish `hf : ∀ u ∈ U, ∀ y, F (q * (y * u)) = F (q * y)` using `fun u hu y => by`. Rewrite using `[← mul_assoc, hF u hu]`. Establish `hcont : Continuous fun z => F (q * z)` using `(isLocallyConstant_of_rightInv hU hf).continuous`. Establish `hKm : MeasurableSet (K : Set B)` using `hKo.measurableSet`. Establish `hI : IntegrableOn (fun z => F (q * z)) (K : Set B) β` using `hcont.continuousOn.integrableOn_compact' hKc hKm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : B → ℂ` to `fun z => (K : Set B).indicator (fun z => F (q * z)) z * c`. Establish `hg : Integrable g β` using `((integrable_indicator_iff hKm).2 hI).mul_const c`. Establish `he : (fun y => if q⁻¹ * y ∈ K then F y * c else 0) = fun y => g (q⁻¹ * y)`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : q⁻¹ * y ∈ K`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [g, if_pos hy, Set.indicator_of_mem (show q⁻¹ * y ∈ (K : Set B) from hy), mul_inv_cancel_left]`. Simplify using `only [g, if_neg hy, Set.indicator_of_notMem (show q⁻¹ * y ∉ (K : Set B) from hy), zero_mul]`. Rewrite using `[he]`. Use `⟨hg.comp_mul_left q⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_mul_left_eq_self g q⁻¹]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [g]`. Rewrite using `[integral_mul_const, integral_indicator hKm, setIntegral_subgroup β K U hKo hKc hU _ hf]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_term (β : Measure B) [β.IsHaarMeasure] (K U : Subgroup B) (hKo : IsOpen (K : Set B))
     (hKc : IsCompact (K : Set B)) (hU : IsOpen (U : Set B)) (F : B → ℂ) (hF : ∀ u ∈ U, ∀ y, F (y * u) = F y)
@@ -330,27 +318,25 @@ theorem integral_term (β : Measure B) [β.IsHaarMeasure] (K U : Subgroup B) (hK
   rw [integral_mul_const, integral_indicator hKm, setIntegral_subgroup β K U hKo hKc hU _ hf]
 
 /- English proof (translation)
-Use `set S := hS.toFinset with hSdef`. Set `c : DoubleCoset.Quotient (Γ' : Set B) (K : Set B) → ℂ` to `fun q => ((cc Γ' K (Quotient.out q) : ℕ) : ℂ)⁻¹`. Establish `hpt : ∀ y, F y * (((rr Γ' K y).toReal : ℝ) : ℂ) = ∑ q ∈ S, if (Quotient.out q)⁻¹ * y ∈ K then F y * c q else 0`. Introduce `y`. Use `set q₀ : DoubleCoset.Quotient (Γ' : Set B) (K : Set B) := DoubleCoset.mk Γ' K y with hq₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hoo : oo Γ' K y = Quotient.out q₀` using `rfl`. Establish `hne : ∀ q, q ≠ q₀ → ¬ (Quotient.out q)⁻¹ * y ∈ K`. Introduce `q hq hm`. Apply `hq` to reduce the goal to its premises. Establish `e1 : DoubleCoset.mk Γ' K (Quotient.out q) = q₀` using `(DoubleCoset.eq Γ' K _ y).2 ⟨1, Γ'.one_mem, (Quotient.out q)⁻¹ * y, hm, by group⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← e1]`. Conclude with `(DoubleCoset.out_eq' Γ' K q).symm`. Establish `hrr : (((rr Γ' K y).toReal : ℝ) : ℂ) = if (Quotient.out q₀)⁻¹ * y ∈ K then c q₀ else 0`. Simplify using `only [rr, hoo]`. Distinguish the cases in `hm : (Quotient.out q₀)⁻¹ * y ∈ K`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[if_pos hm, c, ENNReal.toReal_inv]`. Simplify using `[if_neg hm]`. Rewrite using `[hrr]`. Distinguish the cases in `hq : q₀ ∈ S`. Rewrite using `[Finset.sum_eq_single q₀ (fun q _ hq' => if_neg (hne q hq')) (fun h => absurd hq h)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hm : (Quotient.out q₀)⁻¹ * y ∈ K`. Simplify using `[if_pos hm]`. Simplify using `[if_neg hm]`. Rewrite using `[Finset.sum_eq_zero]`. Distinguish the cases in `hm : (Quotient.out q₀)⁻¹ * y ∈ K`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: F y = 0`. Assume the negation of the conclusion as `h0`. Apply `hq` to reduce the goal to its premises. Rewrite using `[hSdef, Set.Finite.mem_toFinset]`. Conclude with `⟨_, hm, by simpa using h0⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[this]`. Simplify using `[if_neg hm]`. Introduce `q hqS`. Establish `hqq : q ≠ q₀` using `fun h => hq (h ▸ hqS)`. Conclude with `if_neg (hne q hqq)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hterm` using `fun q => integral_term β K U hKo hKc hU F hF (Quotient.out q) (c q)`. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hpt), integral_finset_sum S (fun q _ => (hterm q).1), dcSum, finsum_eq_sum_of_support_subset (s := S), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[(hterm q).2]`. Simplify using `only [c, cc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[div_eq_mul_inv, mul_assoc]`. Introduce `q hq`. Assume the negation of the conclusion as `hqS`. Apply `hq` to reduce the goal to its premises. Establish `h0 : (fun k : K => F (Quotient.out q * k)) = fun _ => 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Assume the negation of the conclusion as `h0`. Apply `hqS` to reduce the goal to its premises. Rewrite using `[Finset.mem_coe, hSdef, Set.Finite.mem_toFinset]`. Conclude with `⟨k, k.2, h0⟩`.
-
-Simplify using `only [h0]`. Simplify using `[avg]`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_mul_rr (β : Measure B) [β.IsHaarMeasure] (Γ' K U : Subgroup B) (hKo : IsOpen (K : Set B))
     (hKc : IsCompact (K : Set B)) (hU : IsOpen (U : Set B)) (F : B → ℂ) (hF : ∀ u ∈ U, ∀ y, F (y * u) = F y)
@@ -416,23 +402,21 @@ theorem integral_mul_rr (β : Measure B) [β.IsHaarMeasure] (Γ' K U : Subgroup 
 end Main
 
 /- English proof (translation)
-Establish `hF₂ : Measurable F₂` using `fun s _ => (isLocallyConstant_of_rightInv hUo hr₂ s).measurableSet`. Establish `hrm` using `measurable_rr Γ' K hKo`. Establish `hmem : ∀ γ : Γ, (e (γ : G)).2 ∈ Γ'` using `fun γ => by`. Rewrite using `[← hΓ]`. Conclude with `⟨γ, γ.2, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Set `φ : Γ → Γ'` to `fun γ => ⟨(e (γ : G)).2, hmem γ⟩`. Establish `hφ : Function.Bijective φ`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Establish `h1 : (e ((a : G) * (b : G)⁻¹)).2 = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : (e (a : G)).2 = (e (b : G)).2` using `congrArg Subtype.val hab`. Simplify using `[map_mul, map_inv, Prod.snd_mul, Prod.snd_inv, h2]`. Establish `h3` using `hinj _ (Γ.mul_mem a.2 (Γ.inv_mem b.2)) h1`. Conclude with `Subtype.ext (mul_inv_eq_one.1 h3)`. Introduce and unpack `⟨y, hy⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[← hΓ]`. Take `⟨γ, hγ, rfl⟩` from `hy`. Conclude with `⟨⟨γ, hγ⟩, rfl⟩`. Establish `hρ : PositivityTheory.Rg.Tf.Loc.IsQuotNormaliser Γ Measure.count (fun x => rr Γ' K (e x).2)`. Use `⟨hrm.comp (measurable_snd.comp he), fun g => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_count]`. Establish `e1 : ∀ h : Γ, rr Γ' K (e ((h : G) * g)).2 = rr Γ' K (((φ h : Γ') : B) * (e g).2)` using `fun h => by`. Simplify using `[φ, map_mul, Prod.snd_mul]`. Rewrite using `[tsum_congr e1]`. Establish `e2` using `(Equiv.ofBijective φ hφ).tsum_eq fun γ : Γ' => rr Γ' K ((γ : B) * (e g).2)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Equiv.ofBijective_apply] at e2`. Rewrite using `[e2]`. Conclude with `tsum_rr Γ' K hfin _`. Establish `hFm : Measurable fun x => F₁ (e x).1 * F₂ (e x).2` using `(hF₁.comp (measurable_fst.comp he)).mul (hF₂.comp (measurable_snd.comp he))`. Establish `hFi : ∀ h ∈ Γ, ∀ g, F₁ (e (h * g)).1 * F₂ (e (h * g)).2 = F₁ (e g).1 * F₂ (e g).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h hh g`. Establish `hm : (e h).2 ∈ Γ'` using `hmem ⟨h, hh⟩`. Rewrite using `[map_mul, Prod.fst_mul, Prod.snd_mul, hl₁ h hh, hl₂ _ hm]`. Rewrite using `[hQ G μ Γ _ _ hFm hFi hρ]`. Set `R : B → ℂ` to `fun y => F₂ y * (((rr Γ' K y).toReal : ℝ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRm : Measurable R` using `hF₂.mul (Complex.measurable_ofReal.comp hrm.ennreal_toReal)`. Establish `hpm : Measurable fun p : A × B => F₁ p.1 * R p.2` using `(hF₁.comp measurable_fst).mul (hRm.comp measurable_snd)`. Establish `e3 : ∫ g, F₁ (e g).1 * F₂ (e g).2 * (((rr Γ' K (e g).2).toReal : ℝ) : ℂ) ∂μ = ∫ p, F₁ p.1 * R p.2 ∂(μ.map e)`. Rewrite using `[integral_map he.aemeasurable hpm.aestronglyMeasurable]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun g => by simp only [R, mul_assoc])`.
-
-Rewrite using `[e3, hmap, integral_prod_mul F₁ R, integral_mul_rr β Γ' K U hKo hKc hUo F₂ hr₂ hS]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem core (hQ : QIndep) {G A B : Type} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [MeasurableInv G]
     [MeasurableSingletonClass G] [Group A] [MeasurableSpace A] [Group B] [TopologicalSpace B] [IsTopologicalGroup B]
@@ -493,7 +477,7 @@ theorem core (hQ : QIndep) {G A B : Type} [Group G] [MeasurableSpace G] [Measura
   ring
 
 /- English proof (translation)
-Introduce `hQ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ _ _ α _ β _ _ e he hmap Γ _ Γ' K U hΓ hinj hKo hKc hUo F₁ F₂ hF₁ _ hl₁ hl₂ hr₂ hS hfin` and use `core hQ μ α β e he hmap Γ Γ' K U hΓ hinj hKo hKc hUo F₁ F₂ hF₁ hl₁ hl₂ hr₂ hS hfin`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem qSplitOf : QSplitOf :=
   fun hQ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ μ _ _ α _ β _ _ e he hmap Γ _ Γ' K U hΓ hinj hKo hKc hUo F₁ F₂ hF₁ _ hl₁ hl₂ hr₂

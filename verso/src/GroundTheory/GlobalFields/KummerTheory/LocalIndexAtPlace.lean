@@ -12,14 +12,14 @@ section FinitePlace
 variable {K : Type*} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K))
 
 /- English proof (translation)
-The claim follows from `(mem_valuationInteger_iff v (x : v.adicCompletion K)).1 x.2`.
+A detailed English derivation is pending.
 -/
 theorem coe_mem_adicCompletionIntegers (x : 𝒪[v.adicCompletion K]) :
     (x : v.adicCompletion K) ∈ v.adicCompletionIntegers K :=
   (mem_valuationInteger_iff v (x : v.adicCompletion K)).1 x.2
 
 /- English proof (translation)
-The claim follows from `(mem_valuationInteger_iff v (x : v.adicCompletion K)).2 x.2`.
+A detailed English derivation is pending.
 -/
 theorem coe_mem_valuationInteger (x : v.adicCompletionIntegers K) :
     (x : v.adicCompletion K) ∈ 𝒪[v.adicCompletion K] :=
@@ -44,7 +44,7 @@ theorem coe_integerEquivAdicCompletionIntegers (x : 𝒪[v.adicCompletion K]) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← natCard_residueField_adicCompletionIntegers v]`. Conclude with `Nat.card_congr (IsLocalRing.ResidueField.mapEquiv (integerEquivAdicCompletionIntegers v)).toEquiv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_residueField_adicCompletion :
     Nat.card 𝓀[v.adicCompletion K] = Ideal.absNorm v.asIdeal := by
@@ -53,15 +53,15 @@ theorem natCard_residueField_adicCompletion :
     (IsLocalRing.ResidueField.mapEquiv (integerEquivAdicCompletionIntegers v)).toEquiv
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[v.adicCompletion K]`. Use `set p := unitsEquivIntProd hϖ (Units.mk0 x hx)`. Establish `hxp : x = ((ϖ : v.adicCompletion K)) ^ (Multiplicative.toAdd p.1) * ((p.2 : 𝒪[v.adicCompletion K]) : v.adicCompletion K)`. Rewrite using `[← coe_unitsOfIntProd hϖ, ← unitsEquivIntProd_symm_apply hϖ, MulEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hord : Multiplicative.toAdd p.1 = ord x`. Rewrite using `[unitsEquivIntProd_fst hϖ]`. Both sides reduce to the same expression. Establish `hϖ' : Irreducible (integerEquivAdicCompletionIntegers v ϖ)` using `hϖ.map (integerEquivAdicCompletionIntegers v)`. Establish `hnϖ : ‖(ϖ : v.adicCompletion K)‖ = (Ideal.absNorm v.asIdeal : ℝ)⁻¹`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `normalizedAbv_of_irreducible v hϖ'`. Rewrite `h` using `[normalizedAbv_apply, coe_integerEquivAdicCompletionIntegers]`. Conclude with `h`. Establish `hu : ‖((p.2 : 𝒪[v.adicCompletion K]) : v.adicCompletion K)‖ = 1`. Establish `hunit : IsUnit (integerEquivAdicCompletionIntegers v p.2)` using `p.2.isUnit.map (integerEquivAdicCompletionIntegers v)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(adicCompletionIntegers.isUnit_iff_valued_eq_one).1 hunit`. Establish `h0 : ((p.2 : 𝒪[v.adicCompletion K]) : v.adicCompletion K) ≠ 0`. Conclude with `p.2.ne_zero` after adjusting the coercions. Rewrite using `[← normalizedAbv_apply, normalizedAbv_eq_zpow v h0]`. Rewrite `h1` using `[coe_integerEquivAdicCompletionIntegers]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Simplify using the standard rewrite rules. Use `conv_lhs => rw [hxp]`. Rewrite using `[norm_mul, norm_zpow, hnϖ, hu, mul_one, hord, inv_zpow']`.
+A detailed English derivation is pending.
 -/
 theorem norm_eq_absNorm_zpow_neg_ord {x : v.adicCompletion K} (hx : x ≠ 0) :
     ‖x‖ = (Ideal.absNorm v.asIdeal : ℝ) ^ (-ord x) := by
@@ -96,7 +96,7 @@ theorem norm_eq_absNorm_zpow_neg_ord {x : v.adicCompletion K} (hx : x ≠ 0) :
 variable {v}
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap K (v.adicCompletion K)), ne_eq, map_eq_zero_iff _ (algebraMap K (v.adicCompletion K)).injective]`. Conclude with `hn` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_ne_zero_adicCompletion {n : ℕ} (hn : n ≠ 0) :
     (n : v.adicCompletion K) ≠ 0 := by
@@ -107,7 +107,7 @@ theorem natCast_ne_zero_adicCompletion {n : ℕ} (hn : n ≠ 0) :
 variable (v)
 
 /- English proof (translation)
-Establish `hn'` using `natCast_ne_zero_adicCompletion (v := v) hn`. Rewrite using `[index_range_powMonoidHom hn', natCard_residueField_adicCompletion, norm_eq_absNorm_zpow_neg_ord v hn', zpow_neg, div_inv_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem index_range_powMonoidHom_adicCompletion {n : ℕ} (hn : n ≠ 0) :
     ((powMonoidHom n : (v.adicCompletion K)ˣ →* (v.adicCompletion K)ˣ).range.index : ℝ) =
@@ -117,7 +117,7 @@ theorem index_range_powMonoidHom_adicCompletion {n : ℕ} (hn : n ≠ 0) :
     norm_eq_absNorm_zpow_neg_ord v hn', zpow_neg, div_inv_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[index_range_powMonoidHom_adicCompletion v (NeZero.ne n), HasEnoughRootsOfUnity.natCard_rootsOfUnity, sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem index_range_powMonoidHom_adicCompletion_of_hasEnoughRootsOfUnity {n : ℕ} [NeZero n]
     [HasEnoughRootsOfUnity (v.adicCompletion K) n] :
@@ -127,7 +127,7 @@ theorem index_range_powMonoidHom_adicCompletion_of_hasEnoughRootsOfUnity {n : �
     HasEnoughRootsOfUnity.natCard_rootsOfUnity, sq]
 
 /- English proof (translation)
-The claim follows from `isOpen_range_powMonoidHom (natCast_ne_zero_adicCompletion hn)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_range_powMonoidHom_adicCompletion {n : ℕ} (hn : n ≠ 0) :
     IsOpen ((powMonoidHom n : (v.adicCompletion K)ˣ →* (v.adicCompletion K)ˣ).range :
@@ -139,16 +139,16 @@ end FinitePlace
 section Archimedean
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x ^ (n⁻¹ : ℝ), Real.rpow_pos_of_pos hx _, Real.rpow_inv_natCast_pow hx.le hn⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_pos_real_pow_eq {x : ℝ} (hx : 0 < x) {n : ℕ} (hn : n ≠ 0) :
     ∃ y : ℝ, 0 < y ∧ y ^ n = x :=
   ⟨x ^ (n⁻¹ : ℝ), Real.rpow_pos_of_pos hx _, Real.rpow_inv_natCast_pow hx.le hn⟩
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[powMonoidHom_apply, Units.val_pow_eq_pow_val]`. Conclude with `he.pow_pos y.ne_zero`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Take `⟨y, hy, hyx⟩` from `exists_pos_real_pow_eq hx hn`. Use `⟨Units.mk0 y hy.ne', ?_⟩` and prove the remaining obligations. Use `ext`. Rewrite using `[powMonoidHom_apply, Units.val_pow_eq_pow_val, Units.val_mk0, hyx]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_range_powMonoidHom_real_iff_of_even {n : ℕ} (hn : n ≠ 0) (he : Even n) (x : ℝˣ) :
     x ∈ (powMonoidHom n : ℝˣ →* ℝˣ).range ↔ 0 < (x : ℝ) := by
@@ -164,11 +164,11 @@ theorem mem_range_powMonoidHom_real_iff_of_even {n : ℕ} (hn : n ≠ 0) (he : E
     rw [powMonoidHom_apply, Units.val_pow_eq_pow_val, Units.val_mk0, hyx]
 
 /- English proof (translation)
-Establish `hn : n ≠ 0` using `by rintro rfl; simp at ho`. Use `eq_top_iff.2 fun x _ ↦ ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_range]`. Break down `lt_or_gt_of_ne x.ne_zero with hx | hx` into its components or cases. Take `⟨y, hy, hyx⟩` from `exists_pos_real_pow_eq (neg_pos.2 hx) hn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `⟨Units.mk0 (-y) (neg_ne_zero.2 hy.ne'), ?_⟩` and prove the remaining obligations. Use `ext`. Rewrite using `[powMonoidHom_apply, Units.val_pow_eq_pow_val, Units.val_mk0, ho.neg_pow, hyx, neg_neg]`. Take `⟨y, hy, hyx⟩` from `exists_pos_real_pow_eq hx hn`. Use `⟨Units.mk0 y hy.ne', ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext`. Rewrite using `[powMonoidHom_apply, Units.val_pow_eq_pow_val, Units.val_mk0, hyx]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem range_powMonoidHom_real_of_odd {n : ℕ} (ho : Odd n) :
     (powMonoidHom n : ℝˣ →* ℝˣ).range = ⊤ := by
@@ -186,9 +186,9 @@ theorem range_powMonoidHom_real_of_odd {n : ℕ} (ho : Odd n) :
     rw [powMonoidHom_apply, Units.val_pow_eq_pow_val, Units.val_mk0, hyx]
 
 /- English proof (translation)
-Rewrite using `[Subgroup.index_eq_two_iff]`. Use `⟨-1, fun b ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[mem_range_powMonoidHom_real_iff_of_even hn he, mem_range_powMonoidHom_real_iff_of_even hn he, Units.val_mul, Units.val_neg, Units.val_one, mul_neg_one]`. Break down `lt_or_gt_of_ne b.ne_zero with hb | hb` into its components or cases. Conclude with `Or.inl ⟨neg_pos.2 hb, hb.not_gt⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr ⟨hb, by linarith⟩`.
+Prove the second alternative.
 -/
 theorem index_range_powMonoidHom_real_of_even {n : ℕ} (hn : n ≠ 0) (he : Even n) :
     (powMonoidHom n : ℝˣ →* ℝˣ).range.index = 2 := by
@@ -201,14 +201,14 @@ theorem index_range_powMonoidHom_real_of_even {n : ℕ} (hn : n ≠ 0) (he : Eve
   · exact Or.inr ⟨hb, by linarith⟩
 
 /- English proof (translation)
-Rewrite using `[range_powMonoidHom_real_of_odd ho, Subgroup.index_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem index_range_powMonoidHom_real_of_odd {n : ℕ} (ho : Odd n) :
     (powMonoidHom n : ℝˣ →* ℝˣ).range.index = 1 := by
   rw [range_powMonoidHom_real_of_odd ho, Subgroup.index_top]
 
 /- English proof (translation)
-Use `split_ifs with he`. Conclude with `index_range_powMonoidHom_real_of_even hn he`. Conclude with `index_range_powMonoidHom_real_of_odd (Nat.not_even_iff_odd.1 he)`.
+A detailed English derivation is pending.
 -/
 theorem index_range_powMonoidHom_real {n : ℕ} (hn : n ≠ 0) :
     (powMonoidHom n : ℝˣ →* ℝˣ).range.index = if Even n then 2 else 1 := by
@@ -217,9 +217,9 @@ theorem index_range_powMonoidHom_real {n : ℕ} (hn : n ≠ 0) :
   · exact index_range_powMonoidHom_real_of_odd (Nat.not_even_iff_odd.1 he)
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun x _ ↦ ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (x : ℂ) (Nat.pos_of_ne_zero hn)`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz` using `[zero_pow hn]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `x.ne_zero hz.symm`. Use `⟨Units.mk0 z hz0, ?_⟩` and prove the remaining obligations. Use `ext`. Rewrite using `[powMonoidHom_apply, Units.val_pow_eq_pow_val, Units.val_mk0, hz]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_powMonoidHom_complex {n : ℕ} (hn : n ≠ 0) :
     (powMonoidHom n : ℂˣ →* ℂˣ).range = ⊤ := by
@@ -234,7 +234,7 @@ theorem range_powMonoidHom_complex {n : ℕ} (hn : n ≠ 0) :
   rw [powMonoidHom_apply, Units.val_pow_eq_pow_val, Units.val_mk0, hz]
 
 /- English proof (translation)
-Rewrite using `[range_powMonoidHom_complex hn, Subgroup.index_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem index_range_powMonoidHom_complex {n : ℕ} (hn : n ≠ 0) :
     (powMonoidHom n : ℂˣ →* ℂˣ).range.index = 1 := by

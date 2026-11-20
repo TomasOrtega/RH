@@ -12,21 +12,19 @@ namespace Formalism.L2.SG.BesselDiscreteSeries
 open Formalism.FourierDecayAlt.ThreeDimData
 
 /- English proof (translation)
-Establish `hp : (ReciprocityTheory.ChartRestriction.DS.pOf ε : ℝ) ≤ n`. Establish `: ReciprocityTheory.ChartRestriction.DS.pOf ε ≤ n`. Unfold `ReciprocityTheory.ChartRestriction.DS.pOf`. Combine the equalities or inequalities in the displayed calculation. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hq : (ReciprocityTheory.ChartRestriction.DS.qOf ε : ℝ) ≤ n`. Establish `: ReciprocityTheory.ChartRestriction.DS.qOf ε ≤ n`. Unfold `ReciprocityTheory.ChartRestriction.DS.qOf`. Combine the equalities or inequalities in the displayed calculation. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : (ReciprocityTheory.ChartRestriction.DS.S7.q0 ε : ℝ) ≤ n`. Establish `: ReciprocityTheory.ChartRestriction.DS.S7.q0 ε ≤ n`. Unfold `ReciprocityTheory.ChartRestriction.DS.S7.q0`. Conclude with `le_trans (min_le_right _ _) (by exact_mod_cast hq)`. Conclude with `this` after adjusting the coercions.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hp0 : (0 : ℝ) ≤ ReciprocityTheory.ChartRestriction.DS.pOf ε` using `Nat.cast_nonneg _`. Establish `hqq0 : (0 : ℝ) ≤ ReciprocityTheory.ChartRestriction.DS.qOf ε` using `Nat.cast_nonneg _`. Establish `hq00 : (0 : ℝ) ≤ ReciprocityTheory.ChartRestriction.DS.S7.q0 ε` using `Nat.cast_nonneg _`. Establish `hsq : Real.sqrt (2 * (ReciprocityTheory.ChartRestriction.DS.S7.q0 ε : ℝ)) ≤ 2 * n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.sqrt_le_left (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hnsq : (1 : ℝ) ≤ (n : ℝ) ^ 2` using `one_le_pow₀ hn1`. Establish `hn22 : (n : ℝ) ^ 2 ≤ (n : ℝ) ^ 3`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hn2 : (n : ℝ) ≤ (n : ℝ) ^ 3` using `by nlinarith`. Unfold `ReciprocityTheory.ChartRestriction.DS.thrStar`. Apply `max_le` to reduce the goal to its premises. Establish `: (n : ℝ) * ReciprocityTheory.ChartRestriction.DS.pOf ε * ReciprocityTheory.ChartRestriction.DS.qOf ε ≤ (n : ℝ) ^ 3`. Establish `h1 : (n : ℝ) * ReciprocityTheory.ChartRestriction.DS.pOf ε ≤ (n : ℝ) * n` using `mul_le_mul_of_nonneg_left hp (by positivity)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : 16 * (n : ℝ) * ReciprocityTheory.ChartRestriction.DS.S7.q0 ε ≤ 16 * (n : ℝ) ^ 3`. Establish `: (n : ℝ) * ReciprocityTheory.ChartRestriction.DS.S7.q0 ε ≤ (n : ℝ) ^ 2` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem thrStar_le {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) :
     ReciprocityTheory.ChartRestriction.DS.thrStar ε ≤ 32 * (n : ℝ) ^ 3 := by
@@ -74,29 +72,27 @@ theorem thrStar_le {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) :
     nlinarith
 
 /- English proof (translation)
-Introduce `k r ε lam h H _ _ _ σ hlam hσ hgap hok v0 hv0`. Take `⟨hk, h120, hA, -⟩` from `hok`. Establish `hn : 1 ≤ 2 * r + k + 1` using `by omega`. Use `set a : ℝ := aOf r h with ha_def`. Establish `hn3' : (0 : ℝ) < (((2 * r + k + 1 : ℕ) : ℝ)) ^ 3` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh0 : 0 < h` using `by linarith`. Establish `hsqrt : 1 ≤ Real.sqrt (2 * ((r : ℝ) + 1))`. Rewrite using `[Real.le_sqrt (by norm_num) (by positivity)]`. Establish `: (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `ha0 : 0 ≤ a`. Simplify using `only [ha_def, aOf]`. Check the signs of the components of the expression. Establish `ha8 : a ≤ h / 8`. Simplify using `only [ha_def, aOf]`.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_div_iff₀ (by positivity) (by norm_num)]`. Use the polynomial consequences of the given equalities and inequalities. Use `set m : ℕ := ⌈a - 1⌉₊ with hm_def`. Establish `hm_ge : a - 1 ≤ (m : ℝ)` using `Nat.le_ceil _`. Establish `hm_le : (m : ℝ) ≤ a`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `h1 : 0 ≤ a - 1`. Use `Nat.ceil_lt_add_one h1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: m = 0`. Simplify using `only [hm_def]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Nat.ceil_eq_zero.mpr (by linarith)`. Rewrite using `[this]`. Simplify using `using ha0`. Establish `hthr : ReciprocityTheory.ChartRestriction.DS.thrStar ε + m < h`. Establish `h1` using `thrStar_le hn ε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h120' : 120 * (((2 * r + k + 1 : ℕ) : ℝ)) ^ 3 ≤ h` using `h120`. Establish `hn3 : (0 : ℝ) < (((2 * r + k + 1 : ℕ) : ℝ)) ^ 3` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨C, Ws, hWs, hC⟩` from `ReciprocityTheory.ChartRestriction.DS.DecInf.decSm hlam hgap m hthr hσ`. Establish `hv0s : v0 ∈ PI.UpqRep.smoothVecs (k` using `k) (r := r) σ := (Formalism.L2.SG.LitS.kFinSmooth_pi Formalism.L2.SG.Pf.k_finite_smooth) k r ε lam H σ (by exact hlam) hσ v0 hv0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set ν0 : ℝ := (Ws.map fun W => ‖Formalism.MainNotions.S.dsigW (k := k) (r := r) σ W v0‖).sum with hν0`. Use `⟨C * ν0, Ws, fun W hW X hX => (hWs W hW).2 X hX, ?_⟩` and prove the remaining obligations. Introduce `w hw x hx`. Establish `hNI` using `(Formalism.FourierDecayAlt.P.norm_inverse_bound k r).2 x hx`. Establish `hg1 : 1 ≤ Formalism.FourierDecayAlt.B.gN x` using `hNI.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hgpos : 0 < Formalism.FourierDecayAlt.B.gN x` using `by linarith`. Establish `key` using `hC w hw v0 hv0s x hx`. Establish `hsumeq : (Ws.map fun W => ‖PI.UpqRep.dsigW (k` using `k) (r := r) σ W w‖).sum = (Ws.map fun W => ‖Formalism.MainNotions.S.dsigW (k := k) (r := r) σ W w‖).sum := by`. Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `W _`. Rewrite using `[Formalism.MainNotions.BridgeCS3d.dsigW_eq]`. Rewrite using `[hsumeq]`. Use `set νw : ℝ := (Ws.map fun W => ‖Formalism.MainNotions.S.dsigW (k := k) (r := r) σ W w‖).sum with hνw`. Use `set I : ℝ := ‖inner ℂ v0 (σ x w)‖ with hI`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hI0 : 0 ≤ I` using `norm_nonneg _`. Establish `hgm : 1 ≤ Formalism.FourierDecayAlt.B.gN x ^ m` using `one_le_pow₀ hg1`. Establish `hB : 0 ≤ C * νw * ν0` using `le_trans (mul_nonneg (by linarith) hI0) key`. Establish `hI1 : I ≤ C * νw * ν0 * (Formalism.FourierDecayAlt.B.gN x ^ m)⁻¹`. Rewrite using `[le_mul_inv_iff₀ (by positivity)]`.
-
-Combine the linear relations using `[mul_comm I (Formalism.FourierDecayAlt.B.gN x ^ m)]`. Establish `hpow : (Formalism.FourierDecayAlt.B.gN x ^ m)⁻¹ ≤ Formalism.FourierDecayAlt.B.gN x ^ (1 - a)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_neg hgpos.le]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hg1 (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem decInf : Formalism.FourierDecayAlt.ThreeDimData.DecInf := by
   intro k r ε lam h H _ _ _ σ hlam hσ hgap hok v0 hv0

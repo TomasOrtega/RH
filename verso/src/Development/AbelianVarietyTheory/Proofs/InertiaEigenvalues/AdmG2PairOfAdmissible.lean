@@ -9,7 +9,7 @@ open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.Bas
 namespace GlobalTheory.PointRepAboveL
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[← h x, h' x]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem place_unique {D : D7} {i : D.nd.Loc} {τ : D.host.E →+* Qbar (D.nd.l i)} {w w' : PlE D.host}
     (h : InducesW D.nd i τ w) (h' : InducesW D.nd i τ w') : w' = w := by
@@ -18,9 +18,9 @@ theorem place_unique {D : D7} {i : D.nd.Loc} {τ : D.host.E →+* Qbar (D.nd.l i
   rw [← h x, h' x]
 
 /- English proof (translation)
-Take `⟨ρ, hc, hs, hwd, hl⟩` from `GlobalTheory.GalIsoBC.galRep_isobaric D h0 h2 i P Pa hB`. Take `⟨Pm, hPm⟩` from `GlobalTheory.BaseChangeConj.rep_conj_of_baseChange D h5 i r hr x P Pa hP hB ρ hc hs (fun w _ => hwd w)`. Take `⟨-, hconj, -, -⟩` from `h0.2.2.2.2.2 i`. Take `⟨hdR, hWD, hJ⟩` from `hconj _ ρ _ hc Pm hPm`. Use `⟨(hdR w hw).2 (hl w hw).1, ?_, fun τ hτ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hWD w (Or.inr (hl w hw).1), hwd]`. Rewrite using `[hJ τ (fun w' h' => by rw [place_unique hτ h']; exact (hl w hw).1)]`. Apply `Multiset.map_injective (f := fun n : ℤ => (n : ℂ)) Int.cast_injective` to reduce the goal to its premises. Rewrite using `[(hl w hw).2 τ hτ, D.naut.locAut_hodgeTateWeightsLevelZero_def i τ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem compat_above (D : D7) (h0 : SumRepresentations.tie0 D) (h2 : SumRepresentations.adm2 D) (h5 : SumRepresentations.adm5 D) (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (hr : GoodR D.nd i r) (x : D.nd.X i)
@@ -43,19 +43,17 @@ theorem compat_above (D : D7) (h0 : SumRepresentations.tie0 D) (h2 : SumRepresen
     rw [(hl w hw).2 τ hτ, D.naut.locAut_hodgeTateWeightsLevelZero_def i τ]
 
 /- English proof (translation)
-Introduce `D h0 h1 h2 h5`. Establish `key : ∀ i x, ∃ P Pa, D.naut.ptV i P = some x ∧ IsBCV D.nd D.naut i P Pa` using `fun i x => by`. Take `⟨P, hP⟩` from `D.naut.pt_surj i x`. Take `⟨Pa, hPa⟩` from `h1 i P`. Conclude with `⟨P, Pa, hP, hPa⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨fun i r hr w hw => ?_, fun i r hr _ w hw x => ?_⟩` and prove the remaining obligations. Establish `hl : (D.nd.l i).Prime` using `Fact.out`. Use `⟨fun hl0 hl1 x => ?_, fun _ x hm => ?_⟩` and prove the remaining obligations. Take `⟨P, Pa, hP, hB⟩` from `key i x`. Establish `h` using `compat_above D h0 h2 h5 i r hr x P Pa hP hB w hw`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : SumRepresentations.At.ContQ D.nd i (mapRep (iotaOQ D.nd D.naut i) (r x))` using `SumRepresentations.contQ_of_continuous D.nd D.naut i (r x) (hr x).1`. Use `⟨(D.naut.wdOf_unrL i _ w hw hc h.1).1 ?_, h.2.2⟩` and prove the remaining obligations. Rewrite using `[h.2.1, D.naut.unr_tw]`. Distinguish the cases in `hs : IsSplitPl D.host w`. Rewrite using `[hB.2.2.2.1 w hs]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `D.naut.locV_unr i P w hs (fun hq => D.nd.SQ_l i w (Or.inr hq) hw) (fun k => ?_) ?_` and prove the remaining obligations. Establish `hk : D.nd.l i ≠ D.host.g k` using `by fin_cases k`. Conclude with `hl0`. Conclude with `hl1`. Conclude with `SumRepresentations.not_over_of_ne hl (D.host.g_prime k) hk hw`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `split_ifs with hpd`. Conclude with `SumRepresentations.not_over_of_ne hl D.host.pde'_prime (hpd ▸ D.host.pde_ne) hw`. Conclude with `SumRepresentations.not_over_of_ne hl D.host.pde_prime hpd hw`. Conclude with `(hB.2.2.2.2.1 w hs).1`. Take `⟨P, Pa, hP, hB⟩` from `key i x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `h` using `compat_above D h0 h2 h5 i r hr x P Pa hP hB w hw`. Establish `hc : SumRepresentations.At.ContQ D.nd i (mapRep (iotaOQ D.nd D.naut i) (r x))` using `SumRepresentations.contQ_of_continuous D.nd D.naut i (r x) (hr x).1`. Use `(D.naut.wdOf_mono0L i _ w hw hc h.1).1 ?_` and prove the remaining obligations. Rewrite using `[h.2.1, D.naut.monomial_twist_iff]`. Conclude with `hm P Pa hP hB`.
-
-Take `⟨P, Pa, hP, hB⟩` from `key i x`. Establish `h` using `compat_above D h0 h2 h5 i r hr x P Pa hP hB w hw`. Conclude with `⟨h.1, h.2.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ D : D7, SumRepresentations.tie0 D → SumRepresentations.adm1 D → SumRepresentations.adm2 D → SumRepresentations.adm5 D → AdmissibleParameterJ.DeRhamFamilyAway D ∧ AdmissibleParameterJ.DeRhamFamilyTypePrimes D := by
   intro D h0 h1 h2 h5

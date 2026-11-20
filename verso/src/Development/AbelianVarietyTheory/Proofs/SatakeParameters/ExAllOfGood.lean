@@ -20,15 +20,15 @@ namespace GlobalTheory.RoadU
 open UpperTheory.V.Af in
 
 /- English proof (translation)
-Introduce `A hA`. Use `⟨hunr A hA, fun σ hσ => ?_⟩` and prove the remaining obligations. Take `⟨w', hw', hA', hq⟩` from `GlobalTheory.PlaceNormDec.exists_place_normV_eq E Ω Q w A hA (hdec A hA)`. Take `⟨τ, rfl⟩` from `hdec A hA hσ.1`. Establish `hτ : IsFrob (F` using `↥Q.K) A (normV w') τ := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hq]`. Conclude with `⟨hσ.1, hσ.2⟩`. Establish `hl' : ((l : ℕ) : 𝓞 ↥Q.K) ∉ w'.asIdeal`. Introduce `h`. Apply `hl` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hw']`. Express the relevant statement in the definitionally equal form `((l : ℕ) : 𝓞 E) ∈ Ideal.comap (algebraMap (𝓞 E) (𝓞 ↥Q.K)) w'.asIdeal`. Simplify using `using h`. Establish `hB' : (CG.mk P).HasSat w' B`. Use `hP.sat w' 1 B (by rw [pow_one, hw', hq]) (by rw [hw']; exact hB)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `key` using `((hsph w' hw' hB' hl') A hA').2 τ hτ`. Take `⟨g, hg⟩` from `hiso`. Establish `e : ρ (Bc.res E Ω ↥Q.K τ)⁻¹ = g * r τ⁻¹ * g⁻¹`. Rewrite using `[← map_inv]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg τ⁻¹`. Rewrite using `[e, ← hq, ← key, Units.val_mul, Units.val_mul, Matrix.charpoly_mul_comm, ← mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobEig_of_dec {E Ω : Type} [Field E] [NumberField E]
     [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {a : ℕ}
@@ -66,25 +66,21 @@ theorem frobEig_of_dec {E Ω : Type} [Field E] [NumberField E]
 open UpperTheory.V.Af in
 
 /- English proof (translation)
-Introduce `hIn hEx hHolds E Ω _ _ _ _ _ _ l _ ι a ha π χ hsc`. Establish `hAF : GlobalTheory.Published.AutomorphicFormsFiniteGL` using `GlobalTheory.automorphicFormsFiniteGL`. Establish `hQL : QuadLift` using `GlobalTheory.QuadLiftBridge.quadLift hIn.ac hIn.js`. Take `⟨hreg, hpol, -⟩` from `hsc`. Set `S : Set (GlobalTheory.RealGal.QCM E Ω)` to `{Q | ∃ P : CuspSub ↥Q.K a, IsLift π P ∧ Good l P}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `fam` using `GlobalTheory.GalCut.infinite_qcm_split_good hAF E Ω l a π`. Establish `famS : ∀ (Q : GlobalTheory.RealGal.QCM E Ω), (∃ w : HeightOneSpectrum (𝓞 ↥Q.K), ¬ Algebra.IsUnramifiedAt (𝓞 E) w.asIdeal ∧ ∃ B, (CG.mk π).HasSat (w.under (𝓞 E)) B) → (∀ P : CuspSub ↥Q.K a, IsLift π P → Good l P) → Q ∈ S`. Introduce `Q hram hgood`. Take `⟨P, hP⟩` from `hQL E ↥Q.K Q.two a ha π hram`. Conclude with `⟨P, hP, hgood P hP⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Choose the witnesses or unpack the hypotheses as in `⟨v0⟩ : Nonempty (HeightOneSpectrum (𝓞 E)) := by`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (𝓞 E)`. Conclude with `⟨⟨m, hm.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField E)⟩⟩`. Establish `hS : S.Infinite` using `(fam v0).mono fun Q hQ => famS Q hQ.2.2.1 hQ.2.2.2`. Use `choose P hP using fun Q : ↥S => Q.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ Q : ↥S, ∃ (χ' : HChar (maximalRealSubfield ↥Q.1.K)) (r : G ↥Q.1.K Ω →* GL (Fin a) (Qbar l)), InScope .good l (P Q) χ' ∧ Weak (P Q) ι r` using `fun Q => by`. Take `⟨⟨χ', hχ'⟩, -⟩` from `GlobalTheory.LiftPolar.main hAF hIn.js hIn.gk E ↥Q.1.K l a ha π χ (P Q) (hP Q).1 ⟨hreg, hpol, trivial⟩`. Establish `hs : InScope .good l (P Q) χ'` using `⟨hχ'.1, hχ'.2.1, (hP Q).2⟩`. Take `⟨r, hr⟩` from `hEx ↥Q.1.K Ω l ι a ha (P Q) χ' hs`. Conclude with `⟨χ', r, hs, hr⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `choose χ' r hχ' hr using key`. Take `⟨ρ, hρc, hρs, hev⟩` from `GlobalTheory.CMBasePatch.main hAF E Ω l ι a π S hS P r fun Q => ⟨(hP Q).1, hr Q⟩`. Use `⟨ρ, hρc, hρs, ?_⟩` and prove the remaining obligations. Use `haveI : Infinite ↥S := hS.to_subtype`. Take `⟨Q0, hQ0⟩` from `hev.exists`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hunr` using `GlobalTheory.RealGal.ConjUnr.unr_of_conj_res E Ω Q0.1 l a ρ (r Q0) hQ0 ((hr Q0).2.2.mono fun w' hw' A hA => by`. Take `⟨B, -, hF⟩` from `hw'`. Conclude with `(hF A hA).1)`. Establish `hlf : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ((l : ℕ) : 𝓞 E) ∉ w.asIdeal`. Establish `h0 : Ideal.span {((l : ℕ) : 𝓞 E)} ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions. Conclude with `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.mpr (not_not.1 hv)`. Establish `hsat` using `GlobalTheory.CuspRep.UnrSat.eventually_hasSatGL_locRep hAF E a π`. Establish `hpick : ∀ w : HeightOneSpectrum (𝓞 E), ∃ Q : ↥S, (∀ A : ValuationSubring Ω, IsPlaceOver A w → Dec (F` using `E) A ≤ (Bc.res E Ω ↥Q.1.K).range) ∧ (∀ w' : HeightOneSpectrum (𝓞 ↥Q.1.K), w'.under (𝓞 E) = w → GlobalTheory.UnitaryBC.IsSplitAt w') ∧ RepIso (r Q) (ρ.comp (Bc.res E Ω ↥Q.1.K)) := by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `w`. Establish `hfin` using `(Filter.eventually_cofinite.1 hev).image Subtype.val`. Take `⟨Q, hQ, hQn⟩` from `((fam w).diff hfin).nonempty`. Establish `hQS : Q ∈ S` using `famS Q hQ.2.2.1 hQ.2.2.2`. Use `⟨⟨Q, hQS⟩, hQ.1, hQ.2.1, ?_⟩` and prove the remaining obligations.
-
-Assume the negation of the conclusion as `hc`. Conclude with `hQn ⟨⟨Q, hQS⟩, hc, rfl⟩`. Use `filter_upwards [hlf, hsat, hunr] with w hl hB hu`. Take `⟨B, hB⟩` from `hB`. Use `⟨B, hB, ?_⟩` and prove the remaining obligations.
-
-Take `⟨Q, hdec, hsplit, hiso⟩` from `hpick w`. Conclude with `frobEig_of_dec ι π Q.1 (P Q) (r Q) ρ w B hl hdec (fun w' hw' hB' => hHolds ↥Q.1.K Ω l ι a ha (P Q) (χ' Q) (hχ' Q) (r Q) (hr Q) w' (hsplit w' hw') B hB') (hP Q).1 hB hiso hu`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ex_all_of_good : Inputs → Ex .good → SphericalLevelCondition .good .unr → Ex .all := by
   intro hIn hEx hHolds E Ω _ _ _ _ _ _ l _ ι a ha π χ hsc

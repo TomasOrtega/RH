@@ -25,14 +25,14 @@ abbrev toF (F : Type) [Field F] [Algebra (FractionRing V₁) F] : V₁ →+* F :
   (algebraMap (FractionRing V₁) F).comp (algebraMap V₁ (FractionRing V₁))
 
 /- English proof (translation)
-Rewrite using `[jFK, jK, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tF_hom (F : Type) [Field F] [Algebra (FractionRing V₁) F] :
     jFK (R := V₁) F ≫ jK V₁ = Spec.map (CommRingCat.ofHom (toF (V₁ := V₁) F)) := by
   rw [jFK, jK, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Rewrite using `[← tF_hom]`. Conclude with `(Over.w (DegPre.prB D F)).trans (Over.w (fst (TF (R := V₁) F) D.P.A)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prB_hom' (D : DegPre V₁) (F : Type) [Field F] [Algebra (FractionRing V₁) F] :
     (DegPre.prB D F).left ≫ D.P.A.hom = famBase D F ≫ Spec.map (CommRingCat.ofHom (toF (V₁ := V₁) F)) := by
@@ -52,7 +52,7 @@ def pullTo (D : DegPre V₁) {R' : Type} [CommRing R'] (f : V₁ →+* R') :
     (Over.w (fst (Over.mk (Spec.map (CommRingCat.ofHom f))) D.P.A)).symm) (fun _ => rfl)
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem isPullSecLC_pullTo (D : DegPre V₁) {R' : Type} [CommRing R'] (f : V₁ →+* R')
     (θ : SecOver D.P.A.hom (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1))) :
@@ -65,7 +65,7 @@ abbrev OneBasisAt (D : DegPre V₁) {R' : Type} [CommRing R'] (f : V₁ →+* R'
   IsSecBasis (T := Over.mk (Spec.map (CommRingCat.ofHom f))) (A := D.P.A) _ (fun _ : Fin 1 => θ')
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing V₁ := hV.1`. Take `⟨m, b, hm, hb⟩` from `GlobalTheory.twistBaseChange V₁ D 1 le_rfl 0`. Take `rfl : m = 1` from `hm.trans (one_pow _)`. Use `⟨b 0, fun R' _ f θ' h => ?_⟩` and prove the remaining obligations. Conclude with `hb R' f (fun _ => θ') (fun i => by rw [Subsingleton.elim i 0]; exact h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_theta [IsLocalRing V₁] (hV : IsCN V₁) (D : DegPre V₁) :
     ∃ θ : SecOver D.P.A.hom (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1)),
@@ -79,9 +79,9 @@ theorem exists_theta [IsLocalRing V₁] (hV : IsCN V₁) (D : DegPre V₁) :
   exact hb R' f (fun _ => θ') (fun i => by rw [Subsingleton.elim i 0]; exact h)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨r, -, hu⟩` from `h θ'`. Establish `h1` using `hu (fun _ => 1) (fun j => by rw [Fin.sum_univ_one, map_one, map_one, _root_.one_mul])`. Establish `h0` using `hu (fun _ => 0) (fun j => by rw [Fin.sum_univ_one, map_zero, map_zero, MulZeroClass.zero_mul, hc j])`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e10` using `congrFun (h1.trans h0.symm) 0`. Use `congrArg (Scheme.ΓSpecIso (CommRingCat.of K)).commRingCatIsoToRingEquiv e10` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero (D : DegPre V₁) {K : Type} [Field K] (f : V₁ →+* K) θ' (h : OneBasisAt D f θ') :
     ∃ j, θ'.f j ≠ 0 := by
@@ -95,9 +95,7 @@ theorem exists_ne_zero (D : DegPre V₁) {K : Type} [Field K] (f : V₁ →+* K)
   simp at this
 
 /- English proof (translation)
-Establish `gen : ∀ (t : Spec (CommRingCat.of F) ⟶ Spec (CommRingCat.of V₁)), t = Spec.map (CommRingCat.ofHom (toF (V₁` using `V₁) F)) → ∀ (hp : (snd (Over.mk t) D.P.A).left ≫ D.P.A.hom = (fst (Over.mk t) D.P.A).left ≫ Spec.map (CommRingCat.ofHom (toF (V₁ := V₁) F))) (φ : Fin 4 → ((Over.mk t ⊗ D.P.A).left ⟶ D.P.A.left)) (hφ : ∀ i, φ i = (snd (Over.mk t) D.P.A).left ≫ D.famφB 0 i), IsSecBasis (T := Over.m …`. Introduce and unpack `t rfl hp φ hφ`. Take `rfl : φ = fun i => (snd (Over.mk (Spec.map (CommRingCat.ofHom (toF (V₁` from `V₁) F)))) D.P.A).left ≫ D.famφB 0 i :=`. Use function extensionality and compare the values at `hφ`. Conclude with `hθ F (toF F) _ (isPullSecLC_pullTo D _ θ)`.
-
-Conclude with `gen _ (tF_hom F) (prB_hom' D F) _ (famφ_prB D F 0)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem basis_BF (D : DegPre V₁) (θ : SecOver D.P.A.hom (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1)))
     (hθ : ∀ (R' : Type) [CommRing R'] (f : V₁ →+* R') θ',
@@ -120,11 +118,11 @@ theorem basis_BF (D : DegPre V₁) (θ : SecOver D.P.A.hom (LB.LinComb D.P.L (D.
   exact gen _ (tF_hom F) (prB_hom' D F) _ (famφ_prB D F 0)
 
 /- English proof (translation)
-Take `⟨r, hr, hu⟩` from `basis_BF D θ hθ F (th.s 0)`. Set `e` to `(Scheme.ΓSpecIso (CommRingCat.of F)).commRingCatIsoToRingEquiv`. Use `⟨e (r 0), SecOps.sec_ext fun j => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Use `(hr j).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_one]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = resTop _ ((famBase D F).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (e (r 0)))) * _`. Rewrite using `[show (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (e (r 0)) = r 0 from e.symm_apply_apply (r 0)]`. Both sides reduce to the same expression. Establish `h2` using `hu (fun _ => e.symm c) (fun j => by`. Rewrite using `[Fin.sum_univ_one]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (fun s : FamTerm D F 1 0 => LB.Sec.f s j) hc)`. Establish `h3` using `congrFun h2 0`. Rewrite using `[← h3]`. Conclude with `(e.apply_symm_apply c).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_scalar (D : DegPre V₁) (θ : SecOver D.P.A.hom (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1)))
     (hθ : ∀ (R' : Type) [CommRing R'] (f : V₁ →+* R') θ',
@@ -148,7 +146,7 @@ theorem existsUnique_scalar (D : DegPre V₁) (θ : SecOver D.P.A.hom (LB.LinCom
     exact (e.apply_symm_apply c).symm
 
 /- English proof (translation)
-Take `⟨u, hu, hc⟩` from `(gen_fe (D := D) (F := F) hG 1 mu 0).1`. Conclude with `⟨u, hu, hc, th.fe mu 0 u hu hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fe_from_zero (hG : GlobalFnsSt) (D : DegPre V₁) (F : Type) [Field F] [Algebra (FractionRing V₁) F]
     (th : Fam D F 1) (mu : D.X) :
@@ -161,9 +159,9 @@ theorem fe_from_zero (hG : GlobalFnsSt) (D : DegPre V₁) (F : Type) [Field F] [
   exact ⟨u, hu, hc, th.fe mu 0 u hu hc⟩
 
 /- English proof (translation)
-Use `fam_ext fun β => ?_` and prove the remaining obligations. Establish `key : ∀ x, x = 0 + 1 • β → ∀ j, (th.s x).f j = (th'.s x).f j`. Introduce and unpack `x rfl j`. Establish `hL` using `D.P.isLB`. Take `⟨u, hu, hc⟩` from `(gen_fe (D := D) (F := F) hG 1 β 0).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `sec_ext_val hL (fun y J hJ => ?_) j` and prove the remaining obligations. Rewrite using `[(secRel_iff hL _ _ _ _ _ _ _ _ _ u).1 (th.fe β 0 u hu hc) _ _ y J hJ, (secRel_iff hL _ _ _ _ _ _ _ _ _ u).1 (th'.fe β 0 u hu hc) _ _ y J hJ, h]`. Conclude with `key β (by rw [zero_add, one_smul])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_term_zero (hG : GlobalFnsSt) (D : DegPre V₁) (F : Type) [Field F] [Algebra (FractionRing V₁) F]
     {th th' : Fam D F 1} (h : th.s 0 = th'.s 0) : th = th' := by
@@ -178,7 +176,7 @@ theorem eq_of_term_zero (hG : GlobalFnsSt) (D : DegPre V₁) (F : Type) [Field F
   exact key β (by rw [zero_add, one_smul])
 
 /- English proof (translation)
-Establish `h` using `D.c_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.1 h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c_zero (D : DegPre V₁) : D.c 0 = (1 : 𝟙_ _ ⟶ D.P.A) := by
   have h := D.c_add 0 0
@@ -186,7 +184,7 @@ theorem c_zero (D : DegPre V₁) : D.c 0 = (1 : 𝟙_ _ ⟶ D.P.A) := by
   exact mul_eq_left.1 h.symm
 
 /- English proof (translation)
-Establish `hG : GlobalFnsSt` using `GlobalTheory.abelianSchemeLaws_all.1.globalFns`. Take `⟨θ, hθ⟩` from `exists_theta hV D`. Conclude with `⟨θ, hθ, fun K _ f => exists_ne_zero D f _ (hθ K f _ (isPullSecLC_pullTo D f θ)), fun F _ _ th => existsUnique_scalar D θ hθ F th, fun F _ _ th mu => fe_from_zero hG D F th mu, fun F _ _ _ _ h => eq_of_term_zero hG D F h⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem main [IsLocalRing V₁] (hV : IsCN V₁) (D : DegPre V₁) :
     ∃ θ : SecOver D.P.A.hom (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1)),

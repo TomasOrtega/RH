@@ -16,15 +16,15 @@ set_option maxHeartbeats 10000000
 namespace GlobalTheory.BKGal.CrisTensor
 
 /- English proof (translation)
-Establish `hl : ∀ n : ℕ, (l : ↥LL.1) ^ n ≠ 0` using `fun n => pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Establish `key : ∀ (b : TW (OB l ↥(OL LL)) T) (g : Gl l) (n : ℕ), β ((l : ↥(OL LL)) ^ n • (actB (sQ l) T g b - b)) = (l : ↥LL.1) ^ n • (actVB (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) T.ρ g (β b) - β b)`. Introduce `b g n`. Establish `e1` using `β.map_smul ((l : ↥(OL LL)) ^ n) (actB (sQ l) T g b - b)`. Establish `e2 : β (actB (sQ l) T g b - b) = actVB (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) T.ρ g (β b) - β b` using `(map_sub β _ _).trans (congrArg (· - β b) (h2 g b))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : (((l : ↥(OL LL)) ^ n : ↥(OL LL)) : ↥LL.1) = (l : ↥LL.1) ^ n` using `by simp`. Rewrite using `[← e3, ← e2]`. Conclude with `e1`. Establish `kx : ∀ (g : Gl l) (n : ℕ) (x : ↥T.L.T), (x : T.V) = (l : ↥LL.1) ^ n • c g → β ((1 : OB l ↥(OL LL)) ⊗ₜ[↥(OL LL)] x) = (l : ↥LL.1) ^ n • (c g ⊗ₜ[ℚ_[l]] (1 : Pl.R.B))`. Introduce `g n x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hx]`. Conclude with `(TensorProduct.smul_tmul' _ _ _).symm`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, y, hy⟩`. Take `⟨b, rfl⟩` from `β.surjective y`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨b, fun g n x hx => β.injective ?_⟩` and prove the remaining obligations. Conclude with `(kx g n x hx).trans ((congrArg (fun z => (l : ↥LL.1) ^ n • z) (hy g)).trans (key b g n).symm)`. Introduce and unpack `⟨b, hb⟩`. Use `⟨hc, β b, fun g => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `hpow (c g)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3` using `(kx g n ⟨_, hn⟩ rfl).symm.trans ((congrArg β (hb g n ⟨_, hn⟩ rfl)).trans (key b g n))`. Establish `h4` using `congrArg (fun z => ((l : ↥LL.1) ^ n)⁻¹ • z) h3`. Simplify `h4` using `only [inv_smul_smul₀ (hl n)]`.
+A detailed English derivation is pending.
 -/
 theorem mem_finiteCocycles_iff_bcrisTensor_coboundary {l : ℕ} [Fact l.Prime] {LL : FinExt l} (T : QLat LL) (Pl : LocPrime l)
     (hpow : ∀ v : T.V, ∃ n : ℕ, (l : ↥LL.1) ^ n • v ∈ T.L.T)
@@ -63,7 +63,7 @@ theorem mem_finiteCocycles_iff_bcrisTensor_coboundary {l : ℕ} [Fact l.Prime] {
     simpa only [inv_smul_smul₀ (hl n)] using h4
 
 /- English proof (translation)
-Introduce `l _ LL T Pl AI hS`. Take `⟨Ti⟩` from `hS`. Establish `hz : ∀ z : ℤ_[l], Ti.eB (algebraMap ℚ_[l] Pl.R.B (z : ℚ_[l])) = algebraMap ℤ_[l] (Per.Bcris l) z` using `fun z => (Ti.zB z).trans (GlobalTheory.RingIface.aB_zl l z).symm`. Conclude with `⟨linEquiv T Ti.eB hz, linEquiv_one T Ti.eB hz, linEquiv_act T Ti.eB hz Ti.actB, linEquiv_frob T Ti.eB hz Ti.frob, mem_finiteCocycles_iff_bcrisTensor_coboundary T Pl (exists_pow_smul_mem T) _ (linEquiv_one T Ti.eB hz) (linEquiv_act T Ti.eB hz Ti.actB)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_equiv : ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l) (T : QLat LL) (Pl : LocPrime l) (AI : LocAinf l Pl), IsStd Pl AI → ∃ β : TW (OB l ↥(OL LL)) T ≃ₗ[↥(OL LL)] T.V ⊗[ℚ_[l]] Pl.R.B, (∀ x : ↥T.L.T, β ((1 : OB l ↥(OL LL)) ⊗ₜ[↥(OL LL)] x) = (x : T.V) ⊗ₜ[ℚ_[l]] (1 : Pl.R.B)) ∧ (∀ g b, β (actB (sQ l) T g b) = actVB (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) T.ρ g (β b)) ∧ (∀ b, β (TWmap (frobOB l ↥(OL LL)) T b) = φVB (LL := ↥LL.1) (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) (β b)) ∧ ∀ c ∈ continuousCocycles T.ρ, (c ∈ finiteCocycles (Pl.PD (Formalism.MainNotions.ElementDenominator.qlExt l)) T.ρ ↔ ∃ b, IsCobOf (sQ l) T b c) := by
   intro l _ LL T Pl AI hS

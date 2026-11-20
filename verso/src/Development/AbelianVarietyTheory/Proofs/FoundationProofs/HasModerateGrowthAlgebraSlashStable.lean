@@ -7,9 +7,9 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Rewrite using `[← inv_pow]`. Establish `h1 : 0 < y ^ A` using `pow_pos hy A`. Establish `h2 : 0 < y⁻¹ ^ A` using `pow_pos (inv_pos.mpr hy) A`. Break down `le_total y y⁻¹ with h | h` into its components or cases. Rewrite using `[max_eq_right h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `: y ^ A ≤ y⁻¹ ^ A` using `pow_le_pow_left₀ hy.le h A`. Apply the tactic sequence `constructor <;> linarith`. Rewrite using `[max_eq_left h]`. Establish `: y⁻¹ ^ A ≤ y ^ A` using `pow_le_pow_left₀ (inv_pos.mpr hy).le h A`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem modGrowth_pow_bounds (y : ℝ) (hy : 0 < y) (A : ℕ) :
     max y y⁻¹ ^ A ≤ y ^ A + (y ^ A)⁻¹ ∧ y ^ A + (y ^ A)⁻¹ ≤ 2 * max y y⁻¹ ^ A := by
@@ -25,7 +25,7 @@ theorem modGrowth_pow_bounds (y : ℝ) (hy : 0 < y) (A : ℕ) :
     constructor <;> linarith
 
 /- English proof (translation)
-Break down `le_total 1 y with h | h` into its components or cases. Conclude with `le_max_of_le_left h`. Conclude with `le_max_of_le_right ((one_le_inv₀ hy).mpr h)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem one_le_max_inv (y : ℝ) (hy : 0 < y) : 1 ≤ max y y⁻¹ := by
   rcases le_total 1 y with h | h
@@ -33,7 +33,7 @@ theorem one_le_max_inv (y : ℝ) (hy : 0 < y) : 1 ≤ max y y⁻¹ := by
   · exact le_max_of_le_right ((one_le_inv₀ hy).mpr h)
 
 /- English proof (translation)
-Use `⟨max C 0, A, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨b1, _⟩` from `modGrowth_pow_bounds τ.im τ.im_pos A`. Establish `hM : 0 ≤ max τ.im τ.im⁻¹ ^ A` using `pow_nonneg (le_trans zero_le_one (one_le_max_inv _ τ.im_pos)) A`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem mod_of_bound (F : ℍ → ℂ) (C : ℝ) (A : ℕ) (h : ∀ τ : ℍ, ‖F τ‖ ≤ C * max τ.im τ.im⁻¹ ^ A) :
     Mod F := by
@@ -46,7 +46,7 @@ theorem mod_of_bound (F : ℍ → ℂ) (C : ℝ) (A : ℕ) (h : ∀ τ : ℍ, �
     _ ≤ _ := mul_le_mul_of_nonneg_left b1 (le_max_right _ _)
 
 /- English proof (translation)
-Take `⟨C, A, h⟩` from `hF`. Use `⟨2 * max C 0, A, by positivity, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨_, b2⟩` from `modGrowth_pow_bounds τ.im τ.im_pos A`. Establish `hh : 0 ≤ τ.im ^ A + (τ.im ^ A)⁻¹` using `add_nonneg (pow_pos τ.im_pos A).le (inv_pos.mpr (pow_pos τ.im_pos A)).le`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem bound_of_mod (F : ℍ → ℂ) (hF : Mod F) :
     ∃ (C : ℝ) (A : ℕ), 0 ≤ C ∧ ∀ τ : ℍ, ‖F τ‖ ≤ C * max τ.im τ.im⁻¹ ^ A := by
@@ -61,9 +61,9 @@ theorem bound_of_mod (F : ℍ → ℂ) (hF : Mod F) :
     _ = _ := by ring
 
 /- English proof (translation)
-Take `⟨C, A, hC, h1⟩` from `bound_of_mod F hF`. Take `⟨D, B, hD, h2⟩` from `bound_of_mod G hG`. Use `mod_of_bound _ (C + D) (A + B) fun τ => ?_` and prove the remaining obligations. Establish `hM` using `one_le_max_inv _ τ.im_pos`. Establish `eA : max τ.im τ.im⁻¹ ^ A ≤ max τ.im τ.im⁻¹ ^ (A + B)` using `pow_le_pow_right₀ hM (Nat.le_add_right A B)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eB : max τ.im τ.im⁻¹ ^ B ≤ max τ.im τ.im⁻¹ ^ (A + B)` using `pow_le_pow_right₀ hM (Nat.le_add_left B A)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem mod_add (F G : ℍ → ℂ) (hF : Mod F) (hG : Mod G) : Mod (fun τ => F τ + G τ) := by
   obtain ⟨C, A, hC, h1⟩ := bound_of_mod F hF
@@ -79,7 +79,7 @@ theorem mod_add (F G : ℍ → ℂ) (hF : Mod F) (hG : Mod G) : Mod (fun τ => F
     _ = _ := by ring
 
 /- English proof (translation)
-Take `⟨C, A, hC, h1⟩` from `bound_of_mod F hF`. Take `⟨D, B, hD, h2⟩` from `bound_of_mod G hG`. Use `mod_of_bound _ (C * D) (A + B) fun τ => ?_` and prove the remaining obligations. Establish `hM` using `le_trans zero_le_one (one_le_max_inv _ τ.im_pos)`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem mod_mul (F G : ℍ → ℂ) (hF : Mod F) (hG : Mod G) : Mod (fun τ => F τ * G τ) := by
   obtain ⟨C, A, hC, h1⟩ := bound_of_mod F hF
@@ -92,13 +92,13 @@ theorem mod_mul (F G : ℍ → ℂ) (hF : Mod F) (hG : Mod G) : Mod (fun τ => F
     _ = _ := by ring
 
 /- English proof (translation)
-The claim follows from `mod_of_bound _ ‖c‖ 0 fun τ => by simp`.
+A detailed English derivation is pending.
 -/
 theorem mod_const (c : ℂ) : Mod fun _ => c :=
   mod_of_bound _ ‖c‖ 0 fun τ => by simp
 
 /- English proof (translation)
-Rewrite using `[hc]`. Simplify using `[Complex.div_im]`. Break down `eq_or_ne ((δ 1 1 : ℤ) : ℝ) 0 with h | h` into its components or cases. Simplify using `[h]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem im_slz_arg (δ : M2) (hc : δ 1 0 = 0) (τ : ℍ) :
     (((((δ 0 0 : ℤ) : ℂ) * τ + ((δ 0 1 : ℤ) : ℂ)) / (((δ 1 0 : ℤ) : ℂ) * τ + ((δ 1 1 : ℤ) : ℂ)))).im
@@ -110,9 +110,7 @@ theorem im_slz_arg (δ : M2) (hc : δ 1 0 = 0) (τ : ℍ) :
   · field_simp
 
 /- English proof (translation)
-Establish `h1` using `one_le_max_inv r hr`. Establish `h2` using `one_le_max_inv y hy`. Rewrite using `[mul_inv]`. Apply `max_le` to reduce the goal to its premises. Conclude with `mul_le_mul (le_max_left _ _) (le_max_left _ _) hy.le (by linarith)`.
-
-Conclude with `mul_le_mul (le_max_right _ _) (le_max_right _ _) (inv_pos.mpr hy).le (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem max_inv_mul_le (r y : ℝ) (hr : 0 < r) (hy : 0 < y) :
     max (r * y) (r * y)⁻¹ ≤ max r r⁻¹ * max y y⁻¹ := by
@@ -124,21 +122,17 @@ theorem max_inv_mul_le (r y : ℝ) (hr : 0 < r) (hy : 0 < y) :
   · exact mul_le_mul (le_max_right _ _) (le_max_right _ _) (inv_pos.mpr hy).le (by linarith)
 
 /- English proof (translation)
-Take `⟨C, A, hC0, hC⟩` from `bound_of_mod F hF`. Establish `hdet' : δ.det = δ 0 0 * δ 1 1` using `by rw [Matrix.det_fin_two, hc]; ring`. Establish `had : (0 : ℝ) < (δ 0 0 : ℝ) * (δ 1 1 : ℝ)`. Establish `: (0 : ℤ) < δ 0 0 * δ 1 1` using `hdet' ▸ hdet`. Conclude with `this` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : (δ 1 1 : ℝ) ≠ 0`. Introduce `h`. Rewrite `had` using `[h, mul_zero]`. Conclude with `lt_irrefl _ had`. Establish `hrpos : (0 : ℝ) < (δ 0 0 : ℝ) / (δ 1 1 : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `: (δ 0 0 : ℝ) / (δ 1 1 : ℝ) = (δ 0 0 : ℝ) * δ 1 1 / ((δ 1 1 : ℝ) ^ 2)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]; exact div_pos had (by positivity)`. Use `set r : ℝ := (δ 0 0 : ℝ) / (δ 1 1 : ℝ) with hr`. Use `set K : ℝ := ‖((δ.det : ℤ) : ℂ) ^ (k - 1) * ((((δ 1 1 : ℤ) : ℂ)) ^ k)⁻¹‖ with hK`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set R : ℝ := max r r⁻¹ with hR`. Establish `hR1 : 1 ≤ R` using `one_le_max_inv r hrpos`. Use `mod_of_bound _ (K * (C * R ^ A)) A fun τ => ?_` and prove the remaining obligations. Establish `him` using `im_slz_arg δ hc τ`. Rewrite `him` using `[← hr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : 0 < (((((δ 0 0 : ℤ) : ℂ) * τ + ((δ 0 1 : ℤ) : ℂ)) / (((δ 1 0 : ℤ) : ℂ) * τ + ((δ 1 1 : ℤ) : ℂ)))).im`. Rewrite using `[him]`. Conclude with `mul_pos hrpos τ.im_pos`. Use `set w : ℍ := ofComplex ((((δ 0 0 : ℤ) : ℂ) * τ + ((δ 0 1 : ℤ) : ℂ)) / (((δ 1 0 : ℤ) : ℂ) * τ + ((δ 1 1 : ℤ) : ℂ))) with hw`. Establish `hwim : w.im = r * τ.im`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, ofComplex_apply_of_im_pos hz]`. Conclude with `him`. Establish `hMw : max w.im w.im⁻¹ ^ A ≤ R ^ A * max τ.im τ.im⁻¹ ^ A`. Rewrite using `[← mul_pow, hwim]`. Conclude with `pow_le_pow_left₀ (le_trans zero_le_one (one_le_max_inv _ (mul_pos hrpos τ.im_pos))) (max_inv_mul_le r τ.im hrpos τ.im_pos) A`.
-
-Establish `hslz : slz k δ F τ = (((δ.det : ℤ) : ℂ) ^ (k - 1) * ((((δ 1 1 : ℤ) : ℂ)) ^ k)⁻¹) * F w`. Rewrite using `[slz, hw]`. Simplify using `[hc]`. Rewrite using `[hslz, norm_mul, ← hK]`. Establish `hK0 : 0 ≤ K` using `norm_nonneg _`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mod_slz (F : ℍ → ℂ) (k : ℕ) (δ : M2) (hdet : 0 < δ.det) (hc : δ 1 0 = 0) (hF : Mod F) :
     Mod (slz k δ F) := by
@@ -179,7 +173,7 @@ theorem mod_slz (F : ℍ → ℂ) (k : ℕ) (δ : M2) (hdet : 0 < δ.det) (hc : 
     _ = _ := by ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun F G hF hG => ⟨mod_add F G hF hG, mod_mul F G hF hG⟩, mod_const, fun F k δ hdet hc hF => mod_slz F k δ hdet hc hF⟩`.
+Supply the required witnesses or components.
 -/
 theorem mod_algebra : (∀ F G : ℍ → ℂ, Mod F → Mod G → Mod (fun τ => F τ + G τ) ∧ Mod (fun τ => F τ * G τ)) ∧ (∀ c : ℂ, Mod fun _ => c) ∧ (∀ (F : ℍ → ℂ) (k : ℕ) (δ : M2), 0 < δ.det → δ 1 0 = 0 → Mod F → Mod (slz k δ F)) :=
   ⟨fun F G hF hG => ⟨mod_add F G hF hG, mod_mul F G hF hG⟩, mod_const,

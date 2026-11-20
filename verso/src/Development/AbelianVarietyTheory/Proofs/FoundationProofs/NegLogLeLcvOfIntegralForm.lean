@@ -16,19 +16,17 @@ open scoped Matrix ComplexOrder
 namespace GlobalTheory.TestLat
 
 /- English proof (translation)
-Establish `hmem : ∀ a, ∃ t ∈ ReductionFirst.Tw w, t • f a ∈ L`. Introduce `a`. Establish `h1 : f a ∈ Formalism.HermitianLatticesTheory.loc (K` using `K) w.asIdeal (Submodule.span (𝓞 K) (Set.range f)) := ⟨1, (Formalism.HermitianLatticesTheory.hcompl (K := K) w.asIdeal).one_mem, by`. Rewrite using `[one_smul]`. Conclude with `Submodule.subset_span ⟨a, rfl⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hf.2]`. Take `⟨t, ht, h⟩` from `h1`. Conclude with `⟨t, ReductionFirst.hcompl_le_Tw w ht, h⟩`. Use `choose t ht htL using hmem`. Establish `hT : (∏ a, t a) ∈ ReductionFirst.Tw w` using `Submonoid.prod_mem _ fun a _ => ht a`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTL : ∀ a, (∏ b, t b) • f a ∈ L`. Introduce `a`. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ a), mul_smul]`. Conclude with `L.smul_mem _ (htL a)`. Take `⟨T, hTdef⟩ : ∃ T, T = ∏ a, t a` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hT` using `[← hTdef]`. Simplify using `only [← hTdef] at hTL`. Use `choose Q hQ using fun a b => hint _ (hTL a) _ (hTL b)`. Establish `hmap : (Matrix.of Q).map (algebraMap (𝓞 K) K) = ((s : K) * (((cO K T : 𝓞 K) : K) * (T : K))) • (Matrix.of fun a b => star (f a) ⬝ᵥ Γ.mulVec (f b))`. Use extensionality with `a b`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_apply, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[hQ a b, ReductionFirst.smul_coe, ReductionFirst.smul_coe, star_smul, Matrix.mulVec_smul, smul_dotProduct, dotProduct_smul, ReductionFirst.cO_coe, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdet : algebraMap (𝓞 K) K (Matrix.of Q).det = ((s : K) * (((cO K T : 𝓞 K) : K) * (T : K))) ^ d * gramR Γ f`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hmap, Matrix.det_smul, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hnn : 0 ≤ vw w (((s : K) * (((cO K T : 𝓞 K) : K) * (T : K))) ^ d * gramR Γ f)`. Rewrite using `[← hdet]`. Conclude with `ReductionFirst.vw_int_nonneg w _`. Establish `hT0` using `ReductionFirst.Tw_ne_zero hT`.
-
-Establish `hT0'` using `ReductionFirst.Tw_ne_zero (ReductionFirst.cO_mem_Tw hT)`. Establish `hs0 : (s : K) ≠ 0` using `by exact_mod_cast hs.ne'`. Rewrite `hnn` using `[ReductionFirst.vw_mul w (pow_ne_zero _ (mul_ne_zero hs0 (mul_ne_zero hT0' hT0))) hG, ReductionFirst.vw_pow, ReductionFirst.vw_mul w hs0 (mul_ne_zero hT0' hT0), ReductionFirst.vw_mul w hT0' hT0, ReductionFirst.vw_unit w T hT.1, ReductionFirst.vw_unit w _ hT.2]`. Simplify using `using hnn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem vw_gramR_locBasis_ge {K : Type} [Field K] [NumberField K] [StarRing K] {d : ℕ}
     (Γ : Matrix (Fin d) (Fin d) K) (s : ℕ) (hs : 0 < s) (L : Submodule (𝓞 K) (Fin d → K))
@@ -77,31 +75,29 @@ theorem vw_gramR_locBasis_ge {K : Type} [Field K] [NumberField K] [StarRing K] {
   simpa using hnn
 
 /- English proof (translation)
-Introduce `K _ _ _ _ d X hX Γ s hs hΓ hle L hL hint`. Establish `hli : LinearIndependent K (fun i => (Pi.single i 1 : Fin d → K))`. Establish `: (fun i => (Pi.single i 1 : Fin d → K)) = ⇑(Pi.basisFun K (Fin d))`. Use function extensionality and compare the values at `i`. Simplify using `[Pi.basisFun_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `(Pi.basisFun K (Fin d)).linearIndependent`. Take `⟨hfin, hlcv⟩` from `covolume_via_basis K d X hX L hL _ hli`. Take `⟨hGfin, hGpf⟩` from `prod_formula' K _ hΓ`. Take `⟨hsfin, hspf⟩` from `Formalism.PairingDivisionLocalBalance.sum_valuation_nat K s`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨I, hI⟩ : ∃ I : HeightOneSpectrum (𝓞 K) → ℝ, I = fun w => lw w * (idx w (Submodule.span (𝓞 K) (Set.range (fun i => (Pi.single i 1 : Fin d → K)))) L : ℝ)` from `⟨_, rfl⟩`. Rewrite `hfin`, `hlcv` using `[← hI]`. Establish `hpos : ∀ v : InfinitePlace K, 0 < (gram X v (fun i => (Pi.single i 1 : Fin d → K))).det.re`. Introduce `v`. Rewrite using `[Rb.gramStd]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Rb.pos_real (Rb.metMat_posDef X v (hX v)).det_pos).2`. Establish `hpos' : ∀ v : InfinitePlace K, 0 < ‖v.embedding Γ.det‖` using `fun v => norm_pos_iff.mpr ((map_ne_zero _).mpr hΓ)`. Establish `hmean : ∑ v : InfinitePlace K, Real.log ‖v.embedding Γ.det‖ ≤ ∑ v, Real.log (gram X v (fun i => (Pi.single i 1 : Fin d → K))).det.re`. Rewrite using `[← Real.log_prod (fun v _ => (hpos' v).ne'), ← Real.log_prod (fun v _ => (hpos v).ne')]`. Conclude with `Real.log_le_log (Finset.prod_pos fun v _ => hpos' v) hle`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinf : ∑ᶠ w, lw w * (vw w Γ.det : ℝ) ≤ (2 / (Module.finrank ℚ K : ℝ)) * ∑ v, Real.log (gram X v (fun i => (Pi.single i 1 : Fin d → K))).det.re`. Rewrite using `[← hGpf]`. Conclude with `mul_le_mul_of_nonneg_left hmean (by positivity)`. Establish `hloc : ∀ w : HeightOneSpectrum (𝓞 K), 0 ≤ (d : ℝ) * (lw w * (vw w (s : K) : ℝ)) + lw w * (vw w Γ.det : ℝ) + I w + I (conjPl w)`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨hmul, hstar, hlw, -, -, -, -⟩` from `valuation_basic_properties K w`. Take `⟨f, hf⟩` from `semilocal_basis_exists K d L hL w`. Set `γ : Matrix (Fin d) (Fin d) K` to `Matrix.of fun k i => f i k`. Establish `hew : (fun i => ∑ k, γ k i • (Pi.single k (1 : K) : Fin d → K)) = f`. Use function extensionality and compare the values at `i j`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[γ, Finset.sum_apply, Pi.single_apply]`. Establish `hdet : γ.det ≠ 0`. Establish `hu : IsUnit (Matrix.of f)` using `Matrix.linearIndependent_rows_iff_isUnit.mp hf.1`. Establish `: γ = (Matrix.of f)ᵀ` using `by ext k i; rfl`. Rewrite using `[this, Matrix.det_transpose]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp hu).ne_zero`. Establish `hlb : IsLocBasis L w (fun i => ∑ k, γ k i • (Pi.single k (1 : K) : Fin d → K))`. Rewrite using `[hew]`. Conclude with `hf`. Take `⟨hi1, hi2⟩` from `index_change_formula K d L hL _ hli w γ hlb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hgc : gramR Γ f = star γ.det * γ.det * Γ.det`. Rewrite using `[← hew, ← Rb.gramR_std Γ]`. Conclude with `gram_matrix_change K d d _ _ γ`. Establish `hG : gramR Γ f ≠ 0`. Rewrite using `[hgc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `mul_ne_zero (mul_ne_zero (star_ne_zero.mpr hdet) hdet) hΓ`. Establish `h` using `vw_gramR_locBasis_ge Γ s hs L hint w f hf hG`. Rewrite `h` using `[hgc, hmul _ _ (mul_ne_zero (star_ne_zero.mpr hdet) hdet) hΓ, hmul _ _ (star_ne_zero.mpr hdet) hdet, hstar]`. Establish `h' : (0 : ℝ) ≤ (d : ℝ) * (vw w (s : K) : ℝ) + ((vw (conjPl w) γ.det : ℝ) + (vw w γ.det : ℝ) + (vw w Γ.det : ℝ))` using `by exact_mod_cast h`. Establish `hl0 : 0 ≤ lw w` using `div_nonneg (Real.log_natCast_nonneg _) (Nat.cast_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_nonneg hl0 h'` as an intermediate fact. Rewrite using `[hI]`. Simplify using `only`. Rewrite using `[hi1, hi2, hlw]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Function.Injective (conjPl : HeightOneSpectrum (𝓞 K) → HeightOneSpectrum (𝓞 K))` using `fun a b h => by rw [← ValuationRepresentative.conjPl_conjPl a, h, ValuationRepresentative.conjPl_conjPl b]`. Establish `hfc : (Function.support fun w => I (conjPl w)).Finite` using `hfin.preimage hinj.injOn`. Establish `hsfin' : (Function.support fun w : HeightOneSpectrum (𝓞 K) => (d : ℝ) * (lw w * (vw w (s : K) : ℝ))).Finite` using `hsfin.subset (Function.support_mul_subset_right _ _)`. Establish `h12` using `(hsfin'.union hGfin).subset (Function.support_add _ _)`. Establish `h123` using `(h12.union hfin).subset (Function.support_add _ _)`.
-
-Establish `htot` using `finsum_nonneg hloc`. Rewrite `htot` using `[finsum_add_distrib h123 hfc, finsum_add_distrib h12 hfin, finsum_add_distrib hsfin' hGfin, finite_sum_conjugation K I, ← mul_finsum' _ _ hsfin, hspf]`. Rewrite using `[hlcv]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem neg_log_le_lcv_of_integral_form :
     ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] (d : ℕ) (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ), (∀ v, IsUnit (X v).det) → ∀ (Γ : Matrix (Fin d) (Fin d) K) (s : ℕ), 0 < s → Γ.det ≠ 0 → (∏ v : InfinitePlace K, ‖v.embedding Γ.det‖ ≤ ∏ v : InfinitePlace K, (gram X v (fun i => (Pi.single i 1 : Fin d → K))).det.re) → ∀ L : Submodule (𝓞 K) (Fin d → K), Submodule.IsLattice K L → (∀ x ∈ L, ∀ y ∈ L, (s : K) * (star x ⬝ᵥ Γ *ᵥ y) ∈ (algebraMap (𝓞 K) K).range) → -((d : ℝ) * Real.log s) ≤ lcv X L := by

@@ -19,13 +19,13 @@ noncomputable section
 namespace GlobalTheory.ArLieBase
 
 /- English proof (translation)
-Introduce `F _ _ K _ _ χ`. Establish `hinj : Function.Injective χ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `ha0 : (a : F) ≠ 0` using `fun h => h0 (RingOfIntegers.coe_eq_zero_iff.1 h)`. Take `⟨y, hy0, hyi⟩` from `exists_integral_multiples ℤ ℚ ({((a : F))⁻¹} : Finset F)`. Set `b : 𝓞 F` to `⟨y • (a : F)⁻¹, hyi _ (Finset.mem_singleton_self _)⟩`. Establish `hb : ((y : ℤ) : 𝓞 F) = a * b`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show ((y : 𝓞 F) : F) = (a : F) * (y • (a : F)⁻¹)`. Rewrite using `[zsmul_eq_mul, mul_left_comm, mul_inv_cancel₀ ha0, mul_one]`. Use `push_cast`. Both sides reduce to the same expression. Establish `h2` using `congrArg χ hb`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[map_intCast, map_mul, ha, zero_mul]`. Conclude with `hy0 (Int.cast_eq_zero.1 h2)`. Conclude with `⟨IsFractionRing.lift hinj, RingHom.ext fun a => IsFractionRing.lift_algebraMap hinj a⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ext_of_ringOfIntegers : ∀ (F : Type) [Field F] [NumberField F] (K : Type) [Field K] [CharZero K]
     (χ : 𝓞 F →+* K), ∃ φ : F →+* K, φ.comp (algebraMap (𝓞 F) F) = χ := by
@@ -55,27 +55,25 @@ namespace GlobalTheory.ArLieBase
 open GlobalTheory.ShFam.Pad.Guard in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Z R _ x τ g e he`. Take `⟨ρ, hρ⟩` from `GlobalTheory.T.tangent_basis_integer_action E H Z.X Z.t R x g e he`. Set `κ : 𝓞 c.F →+* R` to `(Spec.preimage (x ≫ Z.s)).hom`. Establish `hκ : spMap κ = x ≫ Z.s` using `Spec.map_preimage _`. Take `⟨D, P, hD, hPP, hP⟩` from `GlobalTheory.T.exists_projector_eigen_decomposition E H l c R κ g ρ τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hb` using `fun {K : Type} [CommRing K] (ψ : R →+* K) => GlobalTheory.HTPres.isTanBasis_map Z.t he ψ`. Establish `hcomp : ∀ (K : Type) [CommRing K] (ψ : R →+* K) (φ : c.F →+* K), spMap ψ ≫ x ≫ Z.s = spMap (φ.comp (algebraMap (𝓞 c.F) c.F)) → ψ.comp κ = φ.comp (algebraMap (𝓞 c.F) c.F)`. Introduce `K _ ψ φ h`. Apply `GlobalTheory.ShFam.EigLoc.spMap_inj` to reduce the goal to its premises. Rewrite using `[← h, ← hκ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Spec.map_comp _ _`. Establish `heig : ∀ (K : Type) [CommRing K] (ψ : R →+* K) (φ : c.F →+* K), spMap ψ ≫ x ≫ Z.s = spMap (φ.comp (algebraMap (𝓞 c.F) c.F)) → ∀ (cf : Fin g → K) w, IsCombAtG Z.t (spMap ψ ≫ x) (fun i => spMap (dualMap ψ) ≫ e i) cf w → (IsEigTan Z φ (spMap ψ ≫ x) τ w ↔ (P.map ψ).mulVec cf = (D : K …`. Introduce `K _ ψ φ hφ cf w hw`. Rewrite using `[← hP K ψ φ (hcomp K ψ φ hφ) cf]`. Establish `hu` using `(hb ψ).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht` using `comb_tan hu hw`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hE⟩ a`. Establish `h1` using `hρ K ψ a cf w hw`. Establish `h2` using `comb_smul hu hw (φ (embK c τ a))`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← hE a]`. Conclude with `(he.2 K ψ _ (comb_tan hu h1)).unique h1 h2`. Introduce `h`. Use `⟨ht, fun a => ?_⟩` and prove the remaining obligations. Establish `h1` using `hρ K ψ a cf w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[h a]`. Conclude with `comb_unique hu h1 (comb_smul hu hw _)`. Use `⟨D, P, hD, ⟨hPP, heig⟩, ?_⟩` and prove the remaining obligations. Introduce `K _ _ ψ`. Take `⟨φ, hφ⟩` from `exists_ext_of_ringOfIntegers c.F K (ψ.comp κ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hφ' : spMap ψ ≫ x ≫ Z.s = spMap (φ.comp (algebraMap (𝓞 c.F) c.F))`. Rewrite using `[hφ, ← hκ]`. Conclude with `(Spec.map_comp _ _).symm`. Take `⟨V, hV, hVm⟩` from `GlobalTheory.T.tangent_basis_action_on_model E H Dw l Xo c Z R x τ g e he K ψ φ hφ'`. Establish `hDK : (D : K) ≠ 0` using `Nat.cast_ne_zero.2 hD`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hPK : P.map ψ * P.map ψ = (D : K) • P.map ψ`. Rewrite using `[← Matrix.map_mul, hPP]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hV' : V = LinearMap.range (P.map ψ).mulVecLin`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `cf`. Take `⟨w, -, hw⟩` from `exists_comb (hb ψ).1 cf`. Rewrite using `[← hVm cf w hw, heig K ψ φ hφ' cf w hw]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(D : K)⁻¹ • cf, ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.mulVec_smul, h, smul_smul, hDK]`. Introduce and unpack `⟨y, rfl⟩ show (P.map ψ).mulVec ((P.map ψ).mulVec y) = (D : K) • (P.map ψ).mulVec y`. Rewrite using `[Matrix.mulVec_mulVec, hPK]`. Apply the tactic sequence `first | exact Matrix.smul_mulVec _ _ _ | exact Matrix.smul_mulVec_assoc _ _ _ | simp [Matrix.smul_mulVec]`.
-
-Rewrite using `[Matrix.rank, ← hV', hV]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isEigProj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) (R : Type) [CommRing R] (x : Sp R ⟶ Z.X) (τ : E →+* ℂ) (g : ℕ) (e : Fin g → (Sp (DualNumber R) ⟶ Z.t.G.left)), GlobalTheory.LineNorm.IsTanBasis Z.t x e → ∃ (D : ℕ) (P : Matrix (Fin g) (Fin g) R), D ≠ 0 ∧ IsEigProj Z x τ e D P ∧ ∀ (K : Type) [Field K] [CharZero K] (ψ : R →+* K), (P.map ψ).rank = Dw.mult τ := by
   intro E _ _ _ H Dw l Xo c Z R _ x τ g e he

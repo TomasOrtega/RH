@@ -17,9 +17,9 @@ section Tri
 variable {S : Type} [CommRing S] {n : ℕ}
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : i < k`. Rewrite using `[hA i k hk, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB k j (lt_of_le_of_lt (not_lt.mp hk) hij), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lower_mul (A B : Matrix (Fin n) (Fin n) S) (hA : ∀ i j, i < j → A i j = 0)
     (hB : ∀ i j, i < j → B i j = 0) : ∀ i j, i < j → (A * B) i j = 0 := by
@@ -31,7 +31,7 @@ theorem lower_mul (A B : Matrix (Fin n) (Fin n) S) (hA : ∀ i j, i < j → A i 
   · rw [hB k j (lt_of_le_of_lt (not_lt.mp hk) hij), mul_zero]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun k _ hk => ?_) (fun h => absurd (Finset.mem_univ i) h)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hB k i h, mul_zero]`. Rewrite using `[hA i k h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lower_mul_diag (A B : Matrix (Fin n) (Fin n) S) (hA : ∀ i j, i < j → A i j = 0)
     (hB : ∀ i j, i < j → B i j = 0) (i : Fin n) : (A * B) i i = A i i * B i i := by
@@ -42,9 +42,9 @@ theorem lower_mul_diag (A B : Matrix (Fin n) (Fin n) S) (hA : ∀ i j, i < j →
   · rw [hA i k h, zero_mul]
 
 /- English proof (translation)
-Establish `h : A.BlockTriangular OrderDual.toDual` using `fun i j hij => hA i j hij`. Establish `hd : IsUnit A.det` using `Matrix.isUnit_det_of_left_inverse hB`. Use `letI := Matrix.invertibleOfIsUnitDet A hd`. Establish `h'` using `Matrix.blockTriangular_inv_of_blockTriangular h`. Rewrite `h'` using `[Matrix.inv_eq_left_inv hB]`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `fun i j hij => h' hij`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lower_of_mul_eq_one (A B : Matrix (Fin n) (Fin n) S) (hA : ∀ i j, i < j → A i j = 0)
     (hB : B * A = 1) : ∀ i j, i < j → B i j = 0 := by
@@ -63,9 +63,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l} {c : Coeff l} {S : Type} [CommRing S] [Algebra c.F S]
 
 /- English proof (translation)
-Use `⟨rfl, fun τ i => ?_, (Model.secBC_id_iff _ _ _ _).2 fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `Formalism.L2.PjFree.isCombAt_single (y.tan τ) i`. Establish `e : (1 : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S) i = Pi.single i 1`. Use function extensionality and compare the values at `j`. Rewrite using `[Matrix.one_apply, Pi.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [eq_comm]`. Rewrite `h` using `[← e]`. Conclude with `h`. Rewrite using `[Model.scal_one, _root_.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chg_refl (y : FrPt Xo c S) : FrChg (fun _ => 1) 1 y y := by
   refine ⟨rfl, fun τ i => ?_, (Model.secBC_id_iff _ _ _ _).2 fun i => ?_⟩
@@ -79,13 +79,13 @@ theorem chg_refl (y : FrPt Xo c S) : FrChg (fun _ => 1) 1 y y := by
   · rw [Model.scal_one, _root_.one_mul]
 
 /- English proof (translation)
-Take `⟨hx, hc, hs⟩` from `h`. Take `⟨hx', hc', hs'⟩` from `h'`. Take `⟨x', xo', u', t', e', b', s', gen'⟩` from `y'`. Take `⟨x'', xo'', u'', t'', e'', b'', s'', gen''⟩` from `y''`. Simplify using `only at hx hx' hc hc' hs hs'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Substitute `hx'` using the available equality. Substitute `hx` using the available equality. Use `⟨rfl, fun τ i => ?_, (Model.secBC_id_iff _ _ _ _).2 fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.TangentLinear.isCombAt_mulVec E H Dw l Xo S y.x (y.u τ) (y.tan τ) (u' τ) (g τ).transpose (g' τ i) (u'' τ i) (fun k => hc τ k) (hc' τ i)`. Establish `e : (g τ).transpose.mulVec (g' τ i) = (g' τ * g τ) i`.
+Substitute using the available equality. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.transpose_apply, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun k _ => _root_.mul_comm _ _`. Rewrite `h` using `[e]`. Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `(Model.secBC_id_iff _ _ _ _).1 hs i`. Establish `e2` using `(Model.secBC_id_iff _ _ _ _).1 hs' i`. Simplify using `only`. Rewrite using `[e2, e1, Model.scal_mul, _root_.mul_assoc]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chg_comp {g g' : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S} {a a' : S}
     {y y' y'' : FrPt Xo c S} (h : FrChg g a y y') (h' : FrChg g' a' y' y'') :
@@ -114,19 +114,17 @@ theorem chg_comp {g g' : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (D
 end Geo
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c S _ _`. Use `⟨fun y => ?_, fun t t' y y' y'' h h' => ?_, fun t y y' h => ?_, fun t t' y y' h h' => ?_⟩` and prove the remaining obligations. Use `(Model.frBor_iff _ _ _).2 ⟨fun _ => 1, fun τ i => ?_, fun τ i j hij => ?_, chg_refl y⟩` and prove the remaining obligations. Conclude with `Matrix.one_apply_eq i`. Conclude with `Matrix.one_apply_ne hij.ne`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hd, hz, hc⟩` from `(Model.frBor_iff _ _ _).1 h`. Take `⟨g', hd', hz', hc'⟩` from `(Model.frBor_iff _ _ _).1 h'`. Use `(Model.frBor_iff _ _ _).2 ⟨fun τ => g' τ * g τ, fun τ i => ?_, fun τ => lower_mul _ _ (hz' τ) (hz τ), ?_⟩` and prove the remaining obligations. Use `show (g' τ * g τ) i i = _`. Rewrite using `[lower_mul_diag _ _ (hz' τ) (hz τ), hd, hd', Pi.mul_apply, Units.val_mul, _root_.mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Pi.mul_apply, Units.val_mul, _root_.mul_comm]`. Conclude with `chg_comp hc hc'`. Take `⟨g, hd, hz, hc⟩` from `(Model.frBor_iff _ _ _).1 h`. Take `⟨g', a', hc'⟩` from `Model.exists_frChg y' y hc.1.symm`. Take `⟨e1, e2⟩` from `Model.frChg_unique (chg_comp hc hc') (chg_refl y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hinv : ∀ τ, g' τ * g τ = 1` using `fun τ => congrFun e1 τ`. Establish `hz' : ∀ τ i j, i < j → g' τ i j = 0` using `fun τ => lower_of_mul_eq_one _ _ (hz τ) (hinv τ)`. Use `(Model.frBor_iff _ _ _).2 ⟨g', fun τ i => ?_, hz', ?_⟩` and prove the remaining obligations. Establish `h2` using `lower_mul_diag _ _ (hz' τ) (hz τ) i`. Rewrite `h2` using `[hinv, Matrix.one_apply_eq, hd]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Pi.inv_apply]`. Conclude with `Units.eq_inv_of_mul_eq_one_right h2.symm`. Establish `: a' = ((t⁻¹ none : Sˣ) : S)`. Rewrite using `[Pi.inv_apply]`. Conclude with `Units.eq_inv_of_mul_eq_one_right e2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `this ▸ hc'`. Take `⟨g, hd, -, hc⟩` from `(Model.frBor_iff _ _ _).1 h`. Take `⟨g', hd', -, hc'⟩` from `(Model.frBor_iff _ _ _).1 h'`. Take `⟨e1, e2⟩` from `Model.frChg_unique hc hc'`. Use function extensionality and compare the values at `k`.
-
-Apply `Units.ext` to reduce the goal to its premises. Break down `k with _ | ⟨τ, i⟩` into its components or cases. Conclude with `e2`. Rewrite using `[← hd, ← hd', e1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frBor_groupoid : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (S : Type) [CommRing S] [Algebra c.F S], (∀ y : FrPt Xo c S, FrBor 1 y y) ∧ (∀ (t t' : Ix Dw → Sˣ) (y y' y'' : FrPt Xo c S), FrBor t y y' → FrBor t' y' y'' → FrBor (t * t') y y'') ∧ (∀ (t : Ix Dw → Sˣ) (y y' : FrPt Xo c S), FrBor t y y' → FrBor t⁻¹ y' y) ∧ ∀ (t t' : Ix Dw → Sˣ) (y y' : FrPt Xo c S), FrBor t y y' → FrBor t' y y' → t = t' := by
   intro E _ _ _ H Dw l Xo c S _ _

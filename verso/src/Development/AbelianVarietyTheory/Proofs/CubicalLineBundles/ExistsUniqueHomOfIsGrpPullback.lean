@@ -11,13 +11,11 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 namespace GlobalTheory.LamF
 
 /- English proof (translation)
-Introduce `S S' f G G₁ G' G₁' _ _ _ _ φ φ₁ h h₁ F`. Use `⟨⟨Over.homMk (h₁.1.lift (φ ≫ F.left) G'.hom ?_) (h₁.1.lift_snd _ _ _), h₁.1.lift_fst _ _ _, fun F' hF' => ?_⟩, fun F' hF' hF => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Over.w F]`. Conclude with `h.1.w`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h₁.1.hom_ext` to reduce the goal to its premises. Conclude with `hF'.trans (h₁.1.lift_fst _ _ _).symm`. Conclude with `(Over.w F').trans (h₁.1.lift_snd _ _ _).symm`. Use `GlobalTheory.Serre.isMonHom_of_mul_comp _ fun T x y => ?_` and prove the remaining obligations. Take `⟨Φ, hΦ⟩` from `exists_mulEquiv_points_of_isGrpPullback S S' f G G' φ h T`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨Φ₁, hΦ₁⟩` from `exists_mulEquiv_points_of_isGrpPullback S S' f G₁ G₁' φ₁ h₁ T`. Establish `key : ∀ z : T ⟶ G', Φ₁ (z ≫ F') = Φ z ≫ F` using `fun z => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hΦ₁, Over.comp_left, Over.comp_left, hΦ, Category.assoc, Category.assoc, hF']`. Apply `Φ₁.injective` to reduce the goal to its premises.
-
-Rewrite using `[map_mul, key, key, key, map_mul, MonObj.mul_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_hom_of_isGrpPullback :
     ∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (G G₁ : Over S) (G' G₁' : Over S') [GrpObj G] [GrpObj G'] [GrpObj G₁] [GrpObj G₁'] (φ : G'.left ⟶ G.left) (φ₁ : G₁'.left ⟶ G₁.left), IsGrpPullback G' G f φ → IsGrpPullback G₁' G₁ f φ₁ → ∀ F : G ⟶ G₁, (∃! F' : G' ⟶ G₁', F'.left ≫ φ₁ = φ ≫ F.left) ∧ ∀ F' : G' ⟶ G₁', F'.left ≫ φ₁ = φ ≫ F.left → IsMonHom F → IsMonHom F' := by

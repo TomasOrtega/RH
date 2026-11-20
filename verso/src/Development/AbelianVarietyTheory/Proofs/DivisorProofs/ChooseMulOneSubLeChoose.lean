@@ -6,21 +6,21 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k hk`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `hkD : k ≤ D` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `ih'` using `ih hkD`. Establish `hkM : k ≤ M` using `by omega`. Establish `hkN : k ≤ N` using `by omega`. Establish `eN : ((N.choose (k + 1) : ℕ) : ℝ) * ((k : ℝ) + 1) = ((N.choose k : ℕ) : ℝ) * ((N : ℝ) - k)`. Establish `h` using `Nat.choose_succ_right_eq N k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Nat.cast_sub hkN]`. Conclude with `h` after adjusting the coercions. Establish `eM : ((M.choose (k + 1) : ℕ) : ℝ) * ((k : ℝ) + 1) = ((M.choose k : ℕ) : ℝ) * ((M : ℝ) - k)`. Establish `h` using `Nat.choose_succ_right_eq M k`. Rewrite using `[← Nat.cast_sub hkM]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h` after adjusting the coercions. Establish `hk1 : (k : ℝ) + 1 ≤ D` using `by exact_mod_cast hk`. Establish `hMN' : (M : ℝ) ≤ N` using `by exact_mod_cast hMN`. Establish `hkM' : (k : ℝ) ≤ M` using `by exact_mod_cast hkM`. Establish `hA : (0 : ℝ) ≤ ((N.choose k : ℕ) : ℝ)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : (0 : ℝ) < (k : ℝ) + 1` using `by positivity`. Establish `hbr : (0 : ℝ) ≤ x * ((N : ℝ) - k) + x * k * ((N : ℝ) - M) - ((N : ℝ) - M)`. Establish `h1 : x * ((N : ℝ) - D + 1) ≤ x * ((N : ℝ) - k)`. Apply `mul_le_mul_of_nonneg_left _ hx` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 0 ≤ x * k * ((N : ℝ) - M)`. Establish `: (0 : ℝ) ≤ (N : ℝ) - M` using `by linarith`. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hstep : ((N.choose k : ℕ) : ℝ) * ((N : ℝ) - k) * (1 - ((k : ℝ) + 1) * x) ≤ ((M.choose k : ℕ) : ℝ) * ((M : ℝ) - k)`.
+Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ((N.choose k : ℕ) : ℝ) * (1 - k * x) * ((M : ℝ) - k) ≤ ((M.choose k : ℕ) : ℝ) * ((M : ℝ) - k)` using `mul_le_mul_of_nonneg_right ih' (by linarith)`. Establish `h4` using `mul_nonneg hA hbr`. Use polynomial arithmetic with `[h3, h4]`. Establish `goal' : ((N.choose (k + 1) : ℕ) : ℝ) * (1 - ((k : ℝ) + 1) * x) * ((k : ℝ) + 1) ≤ ((M.choose (k + 1) : ℕ) : ℝ) * ((k : ℝ) + 1)`. Rewrite using `[eM]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Move the embeddings inside the algebraic operations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `push_cast`. Conclude with `le_of_mul_le_mul_right goal' hpos`.
+A detailed English derivation is pending.
 -/
 theorem choose_mul_one_sub_le_choose (N M D : ℕ) (x : ℝ) (hx : 0 ≤ x) (hDM : D ≤ M) (hMN : M ≤ N)
     (h : (N : ℝ) - M ≤ x * ((N : ℝ) - D + 1)) :
@@ -73,19 +73,19 @@ theorem choose_mul_one_sub_le_choose (N M D : ℕ) (x : ℝ) (hx : 0 ≤ x) (hDM
     exact le_of_mul_le_mul_right goal' hpos
 
 /- English proof (translation)
-Introduce `D T a ρ δ d hD hDT hρ0 hρ hTa ha hδ hd0 hd`. Establish `hT1 : 1 ≤ T` using `by omega`. Establish `hT : (0 : ℝ) < T`. Establish `: (1 : ℝ) ≤ T` using `by exact_mod_cast hT1`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hTr : ((T - 1 : ℕ) : ℝ) = (T : ℝ) - 1`. Rewrite using `[Nat.cast_sub hT1]`. Simplify using the standard rewrite rules. Establish `hD2 : (2 : ℝ) ≤ D` using `by exact_mod_cast hD`. Establish `hTa' : (T : ℝ) + D + 3 ≤ a` using `by exact_mod_cast hTa`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxnn : 0 ≤ 4 * (D : ℝ) / T + ρ` using `by positivity`. Establish `key` using `choose_mul_one_sub_le_choose (a + D) (T - 1) D (4 * (D : ℝ) / T + ρ) hxnn (by omega) (by omega) (by`. Use `push_cast`. Rewrite using `[hTr]`. Establish `h1ρ : (0 : ℝ) < 1 - ρ` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hamul : (a : ℝ) * (1 - ρ) ≤ (T : ℝ) + D + 3` using `(le_div_iff₀ h1ρ).mp ha`. Establish `h4 : 4 * (D : ℝ) ≤ 4 * (D : ℝ) / T * ((a : ℝ) + 1)`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hT]`. Establish `: (0 : ℝ) ≤ 4 * D` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[h4, hamul, hρ0, hD2]) D le_rfl`. Establish `hc : 1 - 7 * ((D : ℝ) ^ 2 / T + D * ρ) ≤ 1 - (D : ℝ) * (4 * (D : ℝ) / T + ρ)`. Establish `e : (D : ℝ) * (4 * (D : ℝ) / T + ρ) = 4 * ((D : ℝ) ^ 2 / T) + D * ρ` using `by ring`. Establish `h1 : 0 ≤ (D : ℝ) ^ 2 / T` using `by positivity`. Establish `h2 : 0 ≤ (D : ℝ) * ρ` using `by positivity`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : (0 : ℝ) ≤ (((a + D).choose D : ℕ) : ℝ) * δ` using `by positivity`. Establish `hC : (0 : ℝ) ≤ (((T - 1).choose D : ℕ) : ℝ) * δ` using `by positivity`. Break down `le_or_gt (1 - 7 * ((D : ℝ) ^ 2 / T + D * ρ)) 0 with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `: (1 - 7 * ((D : ℝ) ^ 2 / T + D * ρ)) * d ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg h hd0`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 -/
 theorem share_bound_of_jet_count :
     ∀ (D T a : ℕ) (ρ δ d : ℝ), 2 ≤ D → D + 1 ≤ T → 0 ≤ ρ → ρ ≤ 1 / 2 → T + D + 3 ≤ a → (a : ℝ) ≤ ((T : ℝ) + D + 3) / (1 - ρ) → 0 ≤ δ → 0 ≤ d → d ≤ (((a + D).choose D : ℕ) : ℝ) * δ → (1 - 7 * ((D : ℝ) ^ 2 / T + D * ρ)) * d ≤ (((T - 1).choose D : ℕ) : ℝ) * δ := by

@@ -11,9 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Establish `h1 : ((Over.pullback (spMap (algebraMap K L))).map f.hom).left ≫ pullback.snd B.X.hom (spMap (algebraMap K L)) = pullback.snd A.X.hom (spMap (algebraMap K L))` using `Over.w ((Over.pullback (spMap (algebraMap K L))).map f.hom)`. Establish `h3 : ((Over.pullback (spMap (algebraMap K L))).map f.hom).left ≫ pullback.fst B.X.hom (spMap (algebraMap K L)) = pullback.fst A.X.hom (spMap (algebraMap K L)) ≫ f.hom.left` using `pullback.lift_fst _ _ _`. Establish `h2 : f.hom.left ≫ B.X.hom = A.X.hom` using `Over.w f.hom`. Establish `hout : IsPullback (pullback.fst A.X.hom (spMap (algebraMap K L))) (((Over.pullback (spMap (algebraMap K L))).map f.hom).left ≫ pullback.snd B.X.hom (spMap (algebraMap K L))) (f.hom.left ≫ B.X.hom) (spMap (algebraMap K L))`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsPullback.of_hasPullback A.X.hom (spMap (algebraMap K L))`. Conclude with `IsPullback.of_bot hout h3.symm (IsPullback.of_hasPullback B.X.hom (spMap (algebraMap K L)))`.
+A detailed English derivation is pending.
 -/
 theorem bcMap_isPullback (K : Type) [Field K] (L : Type) [Field L] [Algebra K L] {A B : AbVar K} (f : A ⟶ B) :
     IsPullback (pullback.fst A.X.hom (spMap (algebraMap K L))) (bcMap L f).hom.left f.hom.left
@@ -33,15 +33,13 @@ theorem bcMap_isPullback (K : Type) [Field K] (L : Type) [Field L] [Algebra K L]
   exact IsPullback.of_bot hout h3.symm (IsPullback.of_hasPullback B.X.hom (spMap (algebraMap K L)))
 
 /- English proof (translation)
-Introduce `K _ L _ _ A B f`. Use `GlobalTheory.LevelMap.isFinite_descendsAlong_fpqc` as an intermediate fact. Establish `sq` using `bcMap_isPullback K L f`. Establish `hB` using `IsPullback.of_hasPullback B.X.hom (spMap (algebraMap K L))`. Establish `hs : Surjective (spMap (algebraMap K L))` using `GlobalTheory.LevelMap.surjective_spMap _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : Flat (spMap (algebraMap K L))` using `GlobalTheory.LevelMap.flat_spMap _`. Establish `hq : QuasiCompact (spMap (algebraMap K L))` using `by unfold spMap; infer_instance`. Establish `hQ : (@Surjective ⊓ @Flat ⊓ @QuasiCompact : MorphismProperty Scheme.{0}) (pullback.fst B.X.hom (spMap (algebraMap K L)))`. Use `by`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `MorphismProperty.of_isPullback (P := @Surjective) hB.flip hs`. Conclude with `MorphismProperty.of_isPullback (P := @Flat) hB.flip hf`. Conclude with `MorphismProperty.of_isPullback (P := @QuasiCompact) hB.flip hq`. Establish `hiso : IsIsogeny (bcMap L f) ↔ IsIsogeny f` using `and_congr (MorphismProperty.iff_of_isPullback (P := @IsFinite) sq.flip hQ) (MorphismProperty.iff_of_isPullback (P := @Surjective) sq.flip hQ)`. Use `⟨hiso, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `h : IsIsogeny f`. Take `⟨-, hfl, -, hrk⟩` from `GlobalTheory.T.dim_eq_flat_finrank_eq_deg_of_isIsogeny K A B f h`. Establish `: IsFinite f.hom.left` using `h.1`. Establish `e : deg (bcMap L f) = (bcMap L f).hom.left.finrank (baseChange L B).origin` using `if_pos (hiso.2 h)`. Rewrite using `[e]`.
-
-Conclude with `(Scheme.Hom.finrank_of_isPullback _ _ _ _ sq (baseChange L B).origin).trans (hrk _)`. Establish `e1 : deg (bcMap L f) = 0` using `if_neg (fun h' => h (hiso.1 h'))`. Establish `e2 : deg f = 0` using `if_neg h`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIsogeny_bcMap_iff_and_deg_bcMap : ∀ (K : Type) [Field K] (L : Type) [Field L] [Algebra K L] (A B : AbVar K)
     (f : A ⟶ B), (IsIsogeny (bcMap L f) ↔ IsIsogeny f) ∧ deg (bcMap L f) = deg f := by

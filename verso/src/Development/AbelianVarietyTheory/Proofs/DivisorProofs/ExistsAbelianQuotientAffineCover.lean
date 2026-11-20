@@ -11,9 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbQuotientLocal
 
 /- English proof (translation)
-Establish `hN : IsLocallyNoetherian (Spec R)` using `isLocallyNoetherian_of_isOpenImmersion f`. Establish `: IsNoetherianRing R` using `(isLocallyNoetherian_Spec (R := R)).1 hN`. Establish `hA' : IsAbelianScheme ((Over.pullback f).obj A)` using `GlobalTheory.isAbelianScheme_pullback_obj f A hA`. Establish `hi' : IsMonHom ((Over.pullback f).map i)` using `inferInstance`. Establish `hm' : Mono ((Over.pullback f).map i)` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf' : IsFinite ((Over.pullback f).obj H).hom` using `by show IsFinite (pullback.snd H.hom f) infer_instance`. Establish `hfl' : Flat ((Over.pullback f).obj H).hom` using `by show Flat (pullback.snd H.hom f) infer_instance`. Take `⟨B, hB, q, -, h1, h2, h3, h4, h5, -, h6⟩` from `GlobalTheory.AbQuotientAny.exists_quotient_abelianScheme R ((Over.pullback f).obj A) ((Over.pullback f).obj H) ((Over.pullback f).map i) hA' hi' hm' hf' hfl'`. Conclude with `⟨B, hB, q, h1, h2, h3, h4, h5, h6⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_quotient_of_openImmersion (S : Scheme.{0}) [IsLocallyNoetherian S] (R : CommRingCat.{0})
     (f : Spec R ⟶ S) [IsOpenImmersion f] (A : Over S) [GrpObj A] (H : Over S) [GrpObj H] (i : H ⟶ A)
@@ -40,7 +40,7 @@ theorem exists_quotient_of_openImmersion (S : Scheme.{0}) [IsLocallyNoetherian S
   exact ⟨B, hB, q, h1, h2, h3, h4, h5, h6⟩
 
 /- English proof (translation)
-Introduce `S _ A _ H _ i hA hi hm hf hfl j`. Use `haveI : IsOpenImmersion (S.affineCover.f j) := S.affineCover.map_prop j`. Conclude with `@exists_quotient_of_openImmersion S _ _ (S.affineCover.f j) this A _ H _ i hA hi hm hf hfl`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_local_quotient : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (A : Over S) [GrpObj A] (H : Over S) [GrpObj H] (i : H ⟶ A),
     IsAbelianScheme A → IsMonHom i → Mono i → IsFinite H.hom → Flat H.hom → ∀ j : S.affineCover.I₀,

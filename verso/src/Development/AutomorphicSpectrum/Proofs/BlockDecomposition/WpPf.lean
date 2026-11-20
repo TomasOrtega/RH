@@ -9,25 +9,25 @@ open scoped LaurentPolynomial
 namespace GlobalTheory.CompanionTheory.PerfectRing
 
 /- English proof (translation)
-Introduce `p _ A _ B _ _ K _ _ n ι hW hA hB`. Take `⟨⟨FA, hFA⟩, -⟩` from `pf_facts p A hA`. Take `⟨⟨FB, hFB⟩, -⟩` from `pf_facts p B hB`. Establish `hchar : (p : K) = 0`. Use `congrArg (algebraMap A K) hA.char` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Take `⟨F, hF⟩` from `GlobalTheory.CompanionTheory.Frobenius.exists_ringHom_pow_prime_pow p K hchar 1`. Establish `hF' : ∀ x, F x = x ^ p` using `fun x => by rw [hF, pow_one]`. Establish `hcompat : ∀ i, (((ι i : B →+* K)).comp (FB.symm : B →+* B)).comp (algebraMap A B) = (algebraMap A K).comp (FA.symm : A →+* A)`. Introduce `i`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `a`. Take `⟨b, rfl⟩` from `FA.surjective a`. Establish `h1 : algebraMap A B (FA b) = FB (algebraMap A B b)`. Rewrite using `[hFA, hFB, map_pow]`. Simplify using `[h1]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨z, hz1, hz2⟩` from `hW.ex K ((algebraMap A K).comp (FA.symm : A →+* A)) (fun i => ((ι i : B →+* K)).comp (FB.symm : B →+* B)) hcompat`. Establish `hz1' : ∀ a, z (algebraMap A K a) = algebraMap A K (FA.symm a)` using `fun a => by`. Simplify using `using congrArg (fun f : A →+* K => f a) hz1`. Establish `hz2' : ∀ i b, z (ι i b) = ι i (FB.symm b)` using `fun i b => by`. Simplify using `using congrArg (fun f : B →+* K => f b) (hz2 i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hFa : ∀ a, F (algebraMap A K a) = algebraMap A K (FA a)` using `fun a => by`. Rewrite using `[hF', hFA, map_pow]`. Establish `hFb : ∀ i b, F (ι i b) = ι i (FB b)` using `fun i b => by`. Rewrite using `[hF', hFB, map_pow]`. Establish `hFz : F.comp z = RingHom.id K`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hW.uniq K` to reduce the goal to its premises. Use extensionality with `a`. Simplify using `[hz1', hFa]`. Introduce `i`. Use extensionality with `b`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `[hz2', hFb]`. Establish `hzF : z.comp F = RingHom.id K`. Apply `hW.uniq K` to reduce the goal to its premises. Use extensionality with `a`. Simplify using `[hz1', hFa]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `i`. Use extensionality with `b`. Simplify using `[hz2', hFb]`. Use `⟨hchar, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y hxy`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : F x = F y` using `by rw [hF', hF']; exact hxy`. Use `congrArg z h` as an intermediate fact. Establish `hx : ∀ w, z (F w) = w` using `fun w => by`. Simplify using `using congrArg (fun f : K →+* K => f w) hzF`. Rewrite `this` using `[hx, hx]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `y`. Use `⟨z y, ?_⟩` and prove the remaining obligations. Establish `: F (z y) = y` using `by simpa using congrArg (fun f : K →+* K => f y) hFz`. Simplify `this` using `[hF']`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem wp_pf : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A] (B : Type) [CommRing B] [Algebra A B]
     (K : Type) [CommRing K] [Algebra A K] (n : ℕ) (ι : Fin n → (B →ₐ[A] K)),

@@ -11,11 +11,11 @@ set_option autoImplicit false
 namespace GlobalTheory.CompanionTheory.ReadFn
 
 /- English proof (translation)
-Introduce `F _ _ Y e M I f hf σ y`. Take `⟨a, rfl⟩` from `I.ε.surjective σ`. Establish `hA` using `isAlgAtlas_tAtlas I a`. Establish `hs : (tAtlas (M.A a) (I.pt a)).Smooth (readFn I f (I.ε a))`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e₁ : readFn I f (I.ε a) ∘ ((tAtlas (M.A a) (I.pt a)).chart j).symm = f a ∘ ((M.A a).chart j).symm` using `funext fun v => by`. Rewrite using `[Function.comp_apply, tAtlas_symm, readFn_apply, Function.comp_apply]`. Establish `e₂ : ((tAtlas (M.A a) (I.pt a)).chart j).target ∩ ((tAtlas (M.A a) (I.pt a)).chart j).symm ⁻¹' Set.univ = ((M.A a).chart j).target ∩ ((M.A a).chart j).symm ⁻¹' Set.univ`. Simplify using `only [Set.preimage_univ, Set.inter_univ, tAtlas_target]`. Rewrite using `[e₁, e₂]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf a j`. Conclude with `(CxPts.cInfAt_iff_smoothOn hA.anRead isOpen_univ).2 ((hA.smooth_iff hA.anRead).1 hs) y (Set.mem_univ y)`.
+A detailed English derivation is pending.
 -/
 theorem cInfAt_readFn : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (e : ℕ) (M : Man e)
     (I : ManIs M Y) (f : M.Fun), M.Smooth f → ∀ σ y, CInfAt (readFn I f σ) y := by
@@ -45,7 +45,7 @@ section
 open CategoryTheory AlgebraicGeometry NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M
 open Formalism.BasicNotions GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.ArInt GlobalTheory.Mean4 GlobalTheory.Mean4O GlobalTheory.CxPts GlobalTheory.Mean4O.CombForm
 /- English proof (translation)
-Apply the tactic sequence `first | exact @ReadFunctionSmooth.GlobalTheory.CompanionTheory.ReadFn.cInfAt_readFn | exact ReadFunctionSmooth.GlobalTheory.CompanionTheory.ReadFn.cInfAt_readFn | (intros; apply ReadFunctionSmooth.GlobalTheory.CompanionTheory.ReadFn.cInfAt_readFn <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.Adopt.readFn_cInfAt_of_smooth : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (e : ℕ) (M : Man e) (I : ManIs M Y) (f : M.Fun), M.Smooth f → ∀ σ y, CInfAt (readFn I f σ) y := by
   first | exact @ReadFunctionSmooth.GlobalTheory.CompanionTheory.ReadFn.cInfAt_readFn | exact ReadFunctionSmooth.GlobalTheory.CompanionTheory.ReadFn.cInfAt_readFn | (intros; apply ReadFunctionSmooth.GlobalTheory.CompanionTheory.ReadFn.cInfAt_readFn <;> assumption)

@@ -29,11 +29,11 @@ namespace GlobalTheory.ChartHgt
 open GlobalTheory.Doubling in
 
 /- English proof (translation)
-Use `haveI : Submodule.IsLattice D.host.E Λ := hΛ.1`. Establish `hI` using `GlobalTheory.Core.Rk.IwSplit.hasIwasawa_of_algHom (GlobalTheory.AdelicU.isCMExt_host D) (gram_hdbl V) (isHermND_gram V) (isHermND_gram (dblSp V)) τ Λ (GlobalTheory.Core.Rk.IwSplit.isSelfDualAt_of_isSelfDualC hΛ v)`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtV`. Use `congr 1`. Establish `e1 : ioH (Fv D.host.F v) D.sp.cm.sig (gram_hdbl V) (k * g * k', 1) = (ioDiag (R` using `Fv D.host.F v) (gram_hdbl V) k : GlobalTheory.AdelicU.GLoc D.sp.cm.sig (dblSp V).gram v) * ioH (Fv D.host.F v) D.sp.cm.sig (gram_hdbl V) (g, 1) * ioH (Fv D.host.F v) D.sp.cm.sig (gram_hdbl V) (k', k⁻¹) := by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_ioDiag, ← map_mul, ← map_mul]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp [mul_assoc]`. Rewrite using `[e1]`. Use `(HasIwasawa.hgtH_right (continuous_absEv v) (isCompact_KFin v) hI _ ((ioH_mem_KFin (gram_hdbl V)).2 ⟨hk', inv_mem hk⟩)).trans ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(HasIwasawa.hgtH_left (continuous_absEv v) (isCompact_KFin v) hI _ _).trans ?_` and prove the remaining obligations. Rewrite using `[aH_ioDiag, abs_detH (absEv_conjUnit _ v) (isHermND_gram V).2, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hgtV_mul_stab (D : D7) (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (hΛ : IsSelfDualC V Λ)
     (v : HeightOneSpectrum (𝓞 D.host.F)) (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v)
@@ -60,7 +60,7 @@ theorem hgtV_mul_stab (D : D7) (V : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin 
 open ValuativeRel in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocalData.isLocalField v ‖(ϖ : Fv F v)‖₊ = ((GlobalTheory.SplitWeil.resCard (Fv F v) : ℕ) : ℝ≥0)⁻¹ := by letI := GlobalTheory.LocalData.complRel v haveI := GlobalTheory.LocalData.isLocalField v rw [GlobalTheory.LFun.SatBoundGL.resCard_completion] apply GlobalTheory.n …`.
+A detailed English derivation is pending.
 -/
 theorem nnnorm_unif (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (ϖ : (Fv F v)ˣ)
     (h : letI := GlobalTheory.LocalData.complRel v; valuation (Fv F v) (ϖ : Fv F v) = uniformizer (Fv F v)) :
@@ -88,7 +88,7 @@ theorem nnnorm_unif (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum 
   rw [this]; rfl
 
 /- English proof (translation)
-Substitute `hQ` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem hgtFin_ioH_eq {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (Q : Matrix (Fin (n + n)) (Fin (n + n)) E)
@@ -99,7 +99,7 @@ theorem hgtFin_ioH_eq {F E : Type} [Field F] [NumberField F] [Field E] [Algebra 
   subst hQ; rfl
 
 /- English proof (translation)
-Rewrite using `[_root_.inv_zpow', ← _root_.zpow_neg, neg_neg]`. Break down `le_total 0 m with hm | hm` into its components or cases. Rewrite using `[abs_of_nonneg hm, min_eq_left (zpow_le_zpow_right₀ hq (by omega))]`. Rewrite using `[abs_of_nonpos hm, neg_neg, min_eq_right (zpow_le_zpow_right₀ hq (by omega))]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem min_zpow_inv (q : ℝ≥0) (hq : 1 ≤ q) (m : ℤ) : min ((q⁻¹) ^ m) (((q⁻¹) ^ m)⁻¹) = q ^ (-|m|) := by
   rw [_root_.inv_zpow', ← _root_.zpow_neg, neg_neg]
@@ -108,7 +108,7 @@ theorem min_zpow_inv (q : ℝ≥0) (hq : 1 ≤ q) (m : ℤ) : min ((q⁻¹) ^ m)
   · rw [abs_of_nonpos hm, neg_neg, min_eq_right (zpow_le_zpow_right₀ hq (by omega))]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ hq]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_zpow_eq {ι : Type} (s : Finset ι) (q : ℝ≥0) (hq : q ≠ 0) (f : ι → ℤ) :
     ∏ i ∈ s, q ^ f i = q ^ (∑ i ∈ s, f i) := by
@@ -118,7 +118,7 @@ theorem prod_zpow_eq {ι : Type} (s : Finset ι) (q : ℝ≥0) (hq : q ≠ 0) (f
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, zpow_add₀ hq]
 
 /- English proof (translation)
-Introduce `D s k v φ ι _ hfr ⟨ε, _, hε⟩ e he`. Use `⟨_, _, ε, GlobalTheory.ChartStab.isSplitBasis_frCo hfr φ, fun y => ?_⟩` and prove the remaining obligations. Establish `h2` using `(hε y).2`. Rewrite `h2` using `[he y, GlobalTheory.ChartStab.grpCo_emb]`. Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bridge : ∀ (D : D7) (s : PiLocalization₂ D) (k : ℕ) (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : SplitProj D v)
     (ι : GL (Fin D.R.r ⊕ Blocks k D.R.t) (Fv D.host.F v) →* GA D s.V), IsSelfDualC s.V s.Λ →
@@ -134,19 +134,19 @@ theorem bridge : ∀ (D : D7) (s : PiLocalization₂ D) (k : ℕ) (v : HeightOne
   exact h2
 
 /- English proof (translation)
-Introduce `D s k v φ ι hΛ hβ hι e he x ϖ hϖ`. Take `⟨τ, β, ε, hB, hy⟩` from `bridge D s k v φ ι hΛ hβ hι e he`. Establish `hΨ : ∀ y, (GlobalTheory.AdelicU.splitEquivIn (GlobalTheory.AdelicU.isCMExt_host D) (GlobalTheory.Doubling.isHermND_gram s.V) τ β (e y)).1 = y.1.submatrix ε.symm ε.symm` using `fun y => by`. Rewrite using `[← hy y, Matrix.submatrix_submatrix]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hmul : ∀ a b, e (a * b) = e a * e b` using `fun a b => (GlobalTheory.AdelicU.splitEquivIn (GlobalTheory.AdelicU.isCMExt_host D) (GlobalTheory.Doubling.isHermND_gram s.V) τ β).injective (Units.ext (by rw [map_mul, Units.val_mul, hΨ, hΨ, hΨ, Units.val_mul, Matrix.submatrix_mul_equiv]))`. Establish `hK` using `GlobalTheory.ChartStab.chart_stab D s k v φ ι hΛ hβ hι e he`. Use `⟨fun κ hκ g => ⟨?_, ?_⟩, fun e' => ?_⟩` and prove the remaining obligations. Use `hgtV_mul_stab D s.V s.Λ hΛ v τ ((hK κ).2 hκ) (one_mem _) (e g)` as an intermediate fact. Rewrite `this` using `[mul_one, ← hmul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hgtV_mul_stab D s.V s.Λ hΛ v τ (one_mem _) ((hK κ).2 hκ) (e g)` as an intermediate fact. Rewrite `this` using `[one_mul, ← hmul]`. Then use the resulting hypothesis. Use `haveI := hΛ.1`. Establish `hsd` using `GlobalTheory.Core.Rk.IwSplit.isSelfDualAt_of_isSelfDualC hΛ v`. Take `⟨-, hval, -⟩` from `(GlobalTheory.GraphNorm.graphNormFinite D.host.F D.host.E D.sp.cm.sig (GlobalTheory.AdelicU.isCMExt_host D) s.V.rank s.V.gram (GlobalTheory.Doubling.isHermND_gram s.V) s.Λ v hsd).1 τ β hB (e (GlobalTheory.GLDoubling.torusElt (Fv D.host.F v) _ ϖ e'))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd : GlobalTheory.IndefiniteRowSideFullHecke.GraphHeightLattice.IsElemDiv (GlobalTheory.AdelicU.splitEquivIn (GlobalTheory.AdelicU.isCMExt_host D) (GlobalTheory.Doubling.isHermND_gram s.V) τ β (e (GlobalTheory.GLDoubling.torusElt (Fv D.host.F v) _ ϖ e'))) (fun i => ϖ ^ e' (ε.symm …`. Use `⟨1, one_mem _, 1, one_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[hΨ, GlobalTheory.GLDoubling.val_torusElt, Matrix.submatrix_diagonal_equiv]`. Simplify using the standard rewrite rules. Establish `h1` using `hval _ hd`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, hv⟩` from `hϖ`. Establish `hn` using `nnnorm_unif _ v ϖ hv`. Establish `hq : 1 ≤ ((GlobalTheory.SplitWeil.resCard (Fv D.host.F v) : ℕ) : ℝ≥0)`. Rewrite using `[GlobalTheory.LFun.SatBoundGL.resCard_completion]`. Conclude with `Nat.one_le_iff_ne_zero.2 (fun h0 => v.ne_bot ((Ideal.absNorm_eq_zero_iff).1 h0))` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e2 : GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtV s.V s.Λ v (e (GlobalTheory.GLDoubling.torusElt (Fv D.host.F v) _ ϖ e')) = (GlobalTheory.IndefiniteRowSideFullHecke.GraphHeightLattice.graphHgt D.sp.cm.sig s.V.gram s.Λ v (e (GlobalTheory.GLDoubling.torusElt (Fv …`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtV GlobalTheory.IndefiniteRowSideFullHecke.GraphHeightLattice.graphHgt`. Conclude with `congrArg _ (hgtFin_ioH_eq _ _ _ _ _ _ _)`. Use `e2.trans ?_` and prove the remaining obligations. Rewrite using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Units.val_zpow_eq_zpow_val, nnnorm_zpow, hn]`. Simplify using `only [min_zpow_inv _ hq]`. Rewrite using `[prod_zpow_eq _ _ (zero_lt_one.trans_le hq).ne', NNReal.coe_zpow, NNReal.coe_natCast, Finset.sum_neg_distrib]`. Use `congr 2`. Conclude with `Equiv.sum_comp ε.symm (fun a => |e' a|)`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isHgt_chart : ∀ (D : D7) (s : PiLocalization₂ D) (k : ℕ) (v : HeightOneSpectrum (𝓞 D.host.F)) (φ : SplitProj D v) (ι : GL (Fin D.R.r ⊕ Blocks k D.R.t) (Fv D.host.F v) →* GA D s.V), IsSelfDualC s.V s.Λ → Formalism.L2.DIV.IsFrame s.β s.Λ → IsChart s k φ ι → ∀ e : GL (Fin D.R.r ⊕ Blocks k D.R.t) (Fv D.host.F v) → GlobalTheory.FinZeta.Gv s.V v, (∀ y, ι y = GlobalTheory.AdelicU.emb D.sp.cm.sig s.V.gram v (e y)) → ∀ x ϖ, IsLocUnif φ x ϖ → GlobalTheory.ParHecke.IsHgt ϖ fun y => GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.hgtV s.V s.Λ v (e y) := by
   intro D s k v φ ι hΛ hβ hι e he x ϖ hϖ

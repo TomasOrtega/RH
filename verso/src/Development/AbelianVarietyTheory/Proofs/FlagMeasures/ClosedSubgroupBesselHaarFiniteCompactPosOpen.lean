@@ -12,7 +12,7 @@ namespace GlobalTheory.SgInf
 variable {k r : ℕ}
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : Hpk k r ⟨r + k, by omega⟩ ⟨r + k, by omega⟩ = -1`. Simplify using `[Hpk]`. Rewrite `h1` using `[h]`. Simplify using `at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Hpk_ne_zero' (k r : ℕ) : Hpk k r ≠ 0 := by
   intro h
@@ -22,9 +22,9 @@ theorem Hpk_ne_zero' (k r : ℕ) : Hpk k r ≠ 0 := by
   simp at h1
 
 /- English proof (translation)
-Distinguish the cases in `hd : IsUnit a.det`. Conclude with `Matrix.mul_nonsing_inv a hd`. It suffices to derive a contradiction. Establish `h0 : a⁻¹ = 0` using `Matrix.nonsing_inv_apply_not_isUnit a hd`. Establish `hm : a⁻¹ ∈ GG k r` using `hS.1 (hS.2.2.2.2 a ha)`.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[h0]`. Establish `: (0 : Mat k r)ᴴ * Hpk k r * 0 = Hpk k r` using `hm`. Simplify using `at this`. Conclude with `Hpk_ne_zero' k r this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsClosedSub.mul_inv {S : Set (Mat k r)} (hS : IsClosedSub k r S) {a : Mat k r} (ha : a ∈ S) :
     a * a⁻¹ = 1 := by
@@ -39,15 +39,15 @@ theorem IsClosedSub.mul_inv {S : Set (Mat k r)} (hS : IsClosedSub k r S) {a : Ma
     exact Hpk_ne_zero' k r this.symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hS.2.1, hS.2.2.1, hS.2.2.2.1, fun a ha => ⟨hS.2.2.2.2 a ha, hS.mul_inv ha⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsClosedSub.isMatGroup {S : Set (Mat k r)} (hS : IsClosedSub k r S) : PI.IsMatGroup S :=
   ⟨hS.2.1, hS.2.2.1, hS.2.2.2.1, fun a ha => ⟨hS.2.2.2.2 a ha, hS.mul_inv ha⟩⟩
 
 /- English proof (translation)
-Introduce `k r S μ hS hμ`. Establish `hμ' : PI.IsHaarOnM S μ` using `hμ`. Take `⟨-, hK, hU⟩` from `GlobalTheory.MatHaar.haar_unique_locFinite_openPos _ S μ hS.isMatGroup hμ'`. Use `⟨fun C hC => ?_, hU⟩` and prove the remaining obligations. Establish `hA : IsClosed {x : Mt k r | Matrix.of x ∈ S}` using `hS.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : μ C ≤ μ (C ∩ {x : Mt k r | Matrix.of x ∈ S}) + μ (C \ {x : Mt k r | Matrix.of x ∈ S})` using `measure_le_inter_add_sdiff μ C _`. Establish `h2 : μ (C \ {x : Mt k r | Matrix.of x ∈ S}) = 0` using `measure_mono_null (fun x hx => hx.2) hμ.2.2.1`. Establish `h3 : μ (C ∩ {x : Mt k r | Matrix.of x ∈ S}) < ⊤` using `hK _ (hC.inter_right hA) (fun x hx => hx.2)`. Rewrite `h1` using `[h2, add_zero]`. Conclude with `lt_of_le_of_lt h1 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haarOn_locFinite_openPos :
     ∀ (k r : ℕ) (S : Set (Mat k r)) (μ : Measure (Mt k r)), IsClosedSub k r S → IsHaarOn S μ →
@@ -68,7 +68,7 @@ theorem haarOn_locFinite_openPos :
   exact lt_of_le_of_lt h1 h3
 
 /- English proof (translation)
-The claim follows from `haarOn_locFinite_openPos`.
+A detailed English derivation is pending.
 -/
 example : ∀ (k r : ℕ) (S : Set (Mat k r)) (μ : Measure (Mt k r)), IsClosedSub k r S → IsHaarOn S μ →
     (∀ C : Set (Mt k r), IsCompact C → μ C < ⊤) ∧

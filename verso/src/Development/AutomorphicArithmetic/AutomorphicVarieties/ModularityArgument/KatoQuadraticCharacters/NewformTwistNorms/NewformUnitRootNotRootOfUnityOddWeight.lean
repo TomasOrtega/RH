@@ -9,7 +9,7 @@ open scoped Matrix
 namespace GlobalTheory.Ord2
 
 /- English proof (translation)
-Establish `h1 : ‖z‖ ^ n = 1` using `by rw [← norm_pow, h, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg z) hn.ne').1 h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_eq_one_of_pow_eq_one' {R : Type} [NormedDivisionRing R] {z : R} {n : ℕ} (hn : 0 < n)
     (h : z ^ n = 1) : ‖z‖ = 1 := by
@@ -17,7 +17,7 @@ theorem norm_eq_one_of_pow_eq_one' {R : Type} [NormedDivisionRing R] {z : R} {n 
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg z) hn.ne').1 h1
 
 /- English proof (translation)
-Use `haveI : NeZero M := ⟨hM.ne'⟩`. Use `⟨Fintype.card (ZMod M)ˣ, Fintype.card_pos, ?_⟩` and prove the remaining obligations. Rewrite using `[← ZMod.coe_unitOfCoprime l h, ← map_pow, ← Units.val_pow_eq_pow_val, pow_card_eq_one, Units.val_one, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dirichlet_pow_card_eq_one {M : ℕ} (hM : 0 < M) (χ : DirichletCharacter ℂ M) (l : ℕ) (h : l.Coprime M) :
     ∃ n : ℕ, 0 < n ∧ χ (l : ZMod M) ^ n = 1 := by
@@ -27,15 +27,15 @@ theorem dirichlet_pow_card_eq_one {M : ℕ} (hM : 0 < M) (χ : DirichletCharacte
     map_one]
 
 /- English proof (translation)
-Establish `hL0 : 0 < L` using `by linarith`. Use `set s := Real.sqrt L with hs`. Establish `hs0 : 0 ≤ s` using `Real.sqrt_nonneg L`. Establish `hss : s * s = L` using `Real.mul_self_sqrt hL0.le`. Establish `h1 : L ^ (((2 * e + 1 : ℕ) : ℝ) / 2) = L ^ e * s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, Real.sqrt_eq_rpow, ← Real.rpow_natCast L e, ← Real.rpow_add hL0]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : L ^ (((2 * e + 1 : ℕ) : ℝ) / 2 - 1) = L ^ e * s / L`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.rpow_sub hL0, Real.rpow_one, h1]`. Rewrite using `[h1, h2]`. Use `set N := L ^ e with hN`. Establish `hNL : L ≤ N`. Rewrite using `[hN]; calc L = L ^ 1 := (pow_one L).symm _ ≤ L ^ e := pow_le_pow_right₀ (by linarith) he`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsL : s < L - 1` using `by nlinarith`. Establish `key : N * s * (L + 1) < L * (N ^ 2 - 1)`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hNL) (show 0 ≤ L * (N + L) - (L + 1) * s by nlinarith), mul_pos (mul_pos (show (0:ℝ) < L + 1 by linarith) hL0) (show 0 < L - 1 - s by linarith)]`. Establish `: N * s + N * s / L = N * s * (L + 1) / L` using `by field_simp`. Rewrite using `[this, div_lt_iff₀ hL0]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: L ^ (2 * e) = N ^ 2` using `by rw [hN, ← pow_mul, mul_comm]`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem hecke_gap (L : ℝ) (hL : 3 ≤ L) (e : ℕ) (he : 1 ≤ e) :
     L ^ (((2 * e + 1 : ℕ) : ℝ) / 2) + L ^ (((2 * e + 1 : ℕ) : ℝ) / 2 - 1) < L ^ (2 * e) - 1 := by
@@ -63,7 +63,7 @@ theorem hecke_gap (L : ℝ) (hL : 3 ≤ L) (e : ℕ) (he : 1 ≤ e) :
   rw [this]; linarith
 
 /- English proof (translation)
-Use `h.eq_zero` as an intermediate fact. Simplify using `only [Newform.heckePoly, Polynomial.eval_add, Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_mul, Polynomial.eval_C] at this`. Take the linear combination `-this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem heckePoly_root_eq {k : ℕ} (g : Newform k) (p : ℕ) (α : ℂ) (h : (g.heckePoly p).IsRoot α) :
     g.a p * α = α ^ 2 + g.χ (p : ZMod g.M) * (p : ℂ) ^ (k - 1) := by
@@ -73,25 +73,23 @@ theorem heckePoly_root_eq {k : ℕ} (g : Newform k) (p : ℕ) (α : ℂ) (h : (g
   linear_combination -this
 
 /- English proof (translation)
-Introduce `l _ ι e g α hl2 he hdiv hroot hα`. Establish `hp : l.Prime` using `Fact.out`. Establish `hcop : l.Coprime g.M` using `(Nat.Prime.coprime_iff_not_dvd hp).2 hdiv`. Take `⟨n, hn, hχn⟩` from `dirichlet_pow_card_eq_one g.pos g.χ l hcop`. Establish `hrel` using `heckePoly_root_eq g l α hroot`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk : 2 * e + 1 - 1 = 2 * e` using `by omega`. Rewrite `hrel` using `[hk]`. Use `set c := g.χ (l : ZMod g.M) with hc`. Establish `hα0 : α ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `at hα`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hA0 : ι.symm α ≠ 0` using `by rw [Ne, map_eq_zero_iff _ ι.symm.injective]; exact hα0`. Establish `hrel' : ι.symm (g.a l) = ι.symm α + ι.symm c * (l : Qbar l) ^ (2 * e) / ι.symm α`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use `congrArg ι.symm hrel` as an intermediate fact. Simplify using `only [map_mul, map_add, map_pow, map_natCast] at this`. Take the linear combination `this`. Establish `hcn : ‖ι.symm c‖ = 1` using `norm_eq_one_of_pow_eq_one' hn (by rw [← map_pow, hχn, map_one])`. Establish `hln : ‖(l : Qbar l)‖ < 1`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (Qbar l) (l : ℚ_[l])` using `by simp`. Rewrite using `[h, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`. Establish `hB : ‖ι.symm c * (l : Qbar l) ^ (2 * e) / ι.symm α‖ < 1`. Rewrite using `[norm_div, norm_mul, norm_pow, hcn, hα, one_mul, div_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `pow_lt_one₀ (norm_nonneg _) hln (by omega)`. Rewrite using `[hrel', IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [hα]; exact hB.ne'), hα]`. Conclude with `max_eq_left hB.le`. Introduce `m hm hαm`. Establish `hαn : ‖α‖ = 1` using `norm_eq_one_of_pow_eq_one' hm hαm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcn : ‖c‖ = 1` using `norm_eq_one_of_pow_eq_one' hn hχn`. Establish `hb` using `hbd (2 * e + 1) g l hp hdiv`. Establish `ha : g.a l = α + c * (l : ℂ) ^ (2 * e) / α` using `by field_simp; linear_combination hrel`. Establish `hlow : (l : ℝ) ^ (2 * e) - 1 ≤ ‖g.a l‖`. Establish `h1 : ‖c * (l : ℂ) ^ (2 * e) / α‖ = (l : ℝ) ^ (2 * e)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_div, norm_mul, norm_pow, hcn, hαn, one_mul, div_one, Complex.norm_natCast]`. Establish `h2` using `norm_sub_norm_le (c * (l : ℂ) ^ (2 * e) / α) (-α)`. Rewrite `h2` using `[h1, norm_neg, hαn, sub_neg_eq_add, add_comm]`. Rewrite using `[ha]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hl3 : (3 : ℝ) ≤ l`. Use `hp.two_le` as an intermediate fact. Establish `: 3 ≤ l` using `by omega`. Conclude with `this` after adjusting the coercions. Use `hecke_gap (l : ℝ) hl3 e he` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem root_facts_of_bound
     (hbd : ∀ (k : ℕ) (g : Newform k) (p : ℕ), p.Prime → ¬ p ∣ g.M →
@@ -147,7 +145,7 @@ theorem root_facts_of_bound
     linarith
 
 /- English proof (translation)
-The claim follows from `root_facts_of_bound GlobalTheory.T.newform_norm_coeff_prime_le_of_not_dvd_level`.
+A detailed English derivation is pending.
 -/
 theorem root_facts :
     ∀ (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (e : ℕ) (g : Newform (2 * e + 1)) (α : ℂ), l ≠ 2 → 1 ≤ e → ¬ l ∣ g.M →
@@ -163,7 +161,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Ord2.root_facts | exact GlobalTheory.Ord2.root_facts | (intros; apply GlobalTheory.Ord2.root_facts <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.newform_unit_root_not_root_of_unity_odd_weight : ∀ (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (e : ℕ) (g : Newform (2 * e + 1)) (α : ℂ), l ≠ 2 → 1 ≤ e → ¬ l ∣ g.M → (g.heckePoly l).IsRoot α → ‖ι.symm α‖ = 1 → ‖ι.symm (g.a l)‖ = 1 ∧ ∀ m : ℕ, 1 ≤ m → α ^ m ≠ 1 := by
   first | exact @GlobalTheory.Ord2.root_facts | exact GlobalTheory.Ord2.root_facts | (intros; apply GlobalTheory.Ord2.root_facts <;> assumption)

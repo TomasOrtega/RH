@@ -9,9 +9,9 @@ section CosetMin
 variable {X : Type} [AddCommGroup X] {Bf : X →+ X →+ ℤ} {Q : X → ℤ}
 
 /- English proof (translation)
-Establish `h1` using `hQ (y + t • w)`. Establish `h2` using `hQ y`. Establish `h3` using `hQ w`. Establish `h4` using `hs w y`. Simplify using `only [map_add, map_zsmul, AddMonoidHom.add_apply, AddMonoidHom.smul_apply, smul_eq_mul] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h5 : 2 * Q (y + t • w) = 2 * (Q y + t * Bf y w + t ^ 2 * Q w)`. Take the linear combination `h1 - h2 + t * h4 - t ^ 2 * h3`. Conclude with `mul_left_cancel₀ two_ne_zero h5`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem quad_add_zsmul (hs : ∀ x y, Bf x y = Bf y x) (hQ : ∀ x, 2 * Q x = Bf x x)
     (y w : X) (t : ℤ) : Q (y + t • w) = Q y + t * Bf y w + t ^ 2 * Q w := by
@@ -25,7 +25,7 @@ theorem quad_add_zsmul (hs : ∀ x y, Bf x y = Bf y x) (hQ : ∀ x, 2 * Q x = Bf
   exact mul_left_cancel₀ two_ne_zero h5
 
 /- English proof (translation)
-Establish `h` using `hQ 0`. Simplify using `only [map_zero] at h`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem quad_zero (hQ : ∀ x, 2 * Q x = Bf x x) : Q 0 = 0 := by
   have h := hQ 0
@@ -33,7 +33,7 @@ theorem quad_zero (hQ : ∀ x, 2 * Q x = Bf x x) : Q 0 = 0 := by
   omega
 
 /- English proof (translation)
-Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Conclude with `(quad_zero hQ).ge`. Conclude with `le_trans zero_le_one (hp x hx)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem quad_nonneg (hQ : ∀ x, 2 * Q x = Bf x x) (hp : ∀ x, x ≠ 0 → 1 ≤ Q x) (x : X) :
     0 ≤ Q x := by
@@ -42,7 +42,7 @@ theorem quad_nonneg (hQ : ∀ x, 2 * Q x = Bf x x) (hp : ∀ x, x ≠ 0 → 1 �
   · exact le_trans zero_le_one (hp x hx)
 
 /- English proof (translation)
-Establish `hD : 0 < 2 * q * N` using `by positivity`. Establish `h1` using `Int.mul_ediv_add_emod (2 * q * a + B + N * q) (2 * q * N)`. Establish `h2` using `Int.emod_nonneg (2 * q * a + B + N * q) hD.ne'`. Establish `h3` using `Int.emod_lt_of_pos (2 * q * a + B + N * q) hD`. Use `⟨-((2 * q * a + B + N * q) / (2 * q * N)), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
 Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -57,15 +57,15 @@ private lemma exists_int_shift_within_bounds (q B N a : ℤ) (hq : 0 < q) (hN : 
   · linarith
 
 /- English proof (translation)
-Establish `key : ∀ t : ℤ, Q (y + t • w) = Q y + t * Bf y w + t ^ 2 * Q w` using `fun t => quad_add_zsmul hs hQ y w t`. Break down `hw.lt_or_eq with hq | hq` into its components or cases. Take `⟨m, hm1, hm2⟩` from `exists_int_shift_within_bounds (Q w) (Bf y w) N a hq hN`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[key]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `set t := a + N * m`. Establish `hsq : (2 * Q w * t + Bf y w) ^ 2 ≤ (N * Q w) ^ 2`. Use the polynomial consequences of the given equalities and inequalities. Establish `hmul : Q w * (4 * (t * Bf y w + t ^ 2 * Q w)) ≤ Q w * (N ^ 2 * Q w)`. Use polynomial arithmetic with `[sq_nonneg (Bf y w)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `le_of_mul_le_mul_left hmul hq` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hB : 0 ≤ Bf y w`. Use `⟨-|a|, ?_⟩` and prove the remaining obligations. Rewrite using `[key, ← hq]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : a + N * -|a| ≤ 0`. Use polynomial arithmetic with `[le_abs_self a, abs_nonneg a]`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨|a|, ?_⟩` and prove the remaining obligations. Rewrite using `[key, ← hq]`.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : 0 ≤ a + N * |a|`. Use polynomial arithmetic with `[neg_abs_le a, abs_nonneg a]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem quad_round_step (hs : ∀ x y, Bf x y = Bf y x) (hQ : ∀ x, 2 * Q x = Bf x x)
     (y w : X) (hw : 0 ≤ Q w) (N : ℤ) (hN : 0 < N) (a : ℤ) :
@@ -96,9 +96,9 @@ theorem quad_round_step (hs : ∀ x y, Bf x y = Bf y x) (hQ : ∀ x, 2 * Q x = B
       nlinarith
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by simp [quad_zero hQ]⟩`. Consider the case `insert i s hi ih`. Take `⟨m, hm⟩` from `ih`. Take `⟨m0, h0⟩` from `quad_round_step hs hQ (∑ j ∈ s, (a j + N * m j) • v j) (v i) (hv i) N hN (a i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Function.update m i m0, ?_⟩` and prove the remaining obligations. Establish `hs' : ∑ j ∈ s, (a j + N * Function.update m i m0 j) • v j = ∑ j ∈ s, (a j + N * m j) • v j`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne (fun h : j = i => hi (h ▸ hj))]`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, hs', Function.update_self, add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -121,15 +121,13 @@ theorem quad_round_sum (hs : ∀ x y, Bf x y = Bf y x) (hQ : ∀ x, 2 * Q x = Bf
     nlinarith
 
 /- English proof (translation)
-Establish `: Module.Free ℤ X` using `Module.Free.of_basis b`. Establish `: Module.Finite ℤ X` using `Module.Finite.of_basis b`. Use `set f : X →ₗ[ℤ] X := φ.toIntLinearMap with hf`. Use `set M := LinearMap.toMatrix b b f`. Establish `hinj : Function.Injective f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hφ` using `[hf, AddMonoidHom.coe_toIntLinearMap]`. Establish `hdet : M.det ≠ 0`. Introduce `h`. Rewrite `h` using `[LinearMap.det_toMatrix, LinearMap.det_eq_zero_iff_ker_ne_bot]`. Conclude with `h (LinearMap.ker_eq_bot.mpr hinj)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `e : Matrix.toLin b b M = f` using `Matrix.toLin_toMatrix b b f`. Establish `key : f.comp (Matrix.toLin b b M.adjugate) = M.det • LinearMap.id`. Combine the equalities or inequalities in the displayed calculation. Use `⟨M.det * M.det, mul_self_pos.mpr hdet, M.det • Matrix.toLin b b M.adjugate x, ?_⟩` and prove the remaining obligations. Establish `hx : f (Matrix.toLin b b M.adjugate x) = M.det • x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg (fun g => g x) key` as an intermediate fact. Simplify using `using this`. Establish `: φ (M.det • Matrix.toLin b b M.adjugate x) = M.det • f (Matrix.toLin b b M.adjugate x)`. Rewrite using `[map_zsmul]`. Both sides reduce to the same expression.
-
-Rewrite using `[this, hx, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pos_zsmul_mem_range {n : ℕ} (b : Module.Basis (Fin n) ℤ X) (φ : X →+ X)
     (hφ : Function.Injective φ) (x : X) : ∃ N : ℤ, 0 < N ∧ ∃ y, φ y = N • x := by
@@ -160,31 +158,29 @@ theorem exists_pos_zsmul_mem_range {n : ℕ} (b : Module.Basis (Fin n) ℤ X) (�
 end CosetMin
 
 /- English proof (translation)
-Introduce `X _ Bf Q hs hQ hp n b Cc hC φ g hg hφ x`. Establish `hQφ : ∀ z, Q (φ z) = g * Q z`. Introduce `z`. Establish `h : 2 * Q (φ z) = 2 * (g * Q z)`. Rewrite using `[hQ, hφ, ← hQ z]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_left_cancel₀ two_ne_zero h`. Establish `hinj : Function.Injective φ`. Introduce `u v huv`. Assume the negation of the conclusion as `hne`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h0 : φ (u - v) = 0` using `by rw [map_sub, huv, sub_self]`. Establish `h1` using `hp (u - v) (sub_ne_zero.mpr hne)`. Establish `h2` using `hQφ (u - v)`. Rewrite `h2` using `[h0, quad_zero hQ]`. Establish `: (1 : ℤ) ≤ g` using `by exact_mod_cast hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Take `⟨N, hN, y, hy⟩` from `exists_pos_zsmul_mem_range b φ hinj x`. Take `⟨m, hm⟩` from `quad_round_sum hs hQ (fun j => φ (b j)) (fun j => quad_nonneg hQ hp _) N hN (fun j => b.repr y j) Finset.univ`. Use `set χ0 : X := ∑ j, m j • b j with hχ0`. Establish `hNx : N • (x + φ χ0) = ∑ j, (b.repr y j + N * m j) • φ (b j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hyφ : φ y = ∑ j, b.repr y j • φ (b j)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_add, ← hy, hyφ, hχ0, map_sum, Finset.smul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, smul_smul, add_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsc : ∀ z : X, Q (N • z) = N ^ 2 * Q z`. Introduce `z`. Use `quad_add_zsmul hs hQ 0 z N` as an intermediate fact. Simplify using `only [zero_add, quad_zero hQ, map_zero, AddMonoidHom.zero_apply, mul_zero] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbound : 4 * Q (x + φ χ0) ≤ g * ∑ j, Q (b j)`. Establish `h1 : 4 * Q (N • (x + φ χ0)) ≤ N ^ 2 * ∑ j, Q (φ (b j))`. Rewrite using `[hNx]`. Conclude with `hm`. Rewrite `h1` using `[hsc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hQφ, ← Finset.mul_sum] at h1`. Establish `hN2 : 0 < N ^ 2` using `by positivity`. Establish `h2 : N ^ 2 * (4 * Q (x + φ χ0)) ≤ N ^ 2 * (g * ∑ j, Q (b j))` using `by linarith`. Conclude with `le_of_mul_le_mul_left h2 hN2`. Establish `hex : ∃ k : ℕ, ∃ χ : X, Q (x + φ χ) = k` using `⟨(Q (x + φ χ0)).toNat, χ0, (Int.toNat_of_nonneg (quad_nonneg hQ hp _)).symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨χ, hχ⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ χ' : X, Q (x + φ χ) ≤ Q (x + φ χ')`. Introduce `χ'`. Rewrite using `[hχ]`. Use `Nat.find_min' hex ⟨χ', (Int.toNat_of_nonneg (quad_nonneg hQ hp (x + φ χ'))).symm⟩` as an intermediate fact.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨χ, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : 4 * Q (x + φ χ) ≤ g * ∑ j, Q (b j)` using `by linarith [hmin χ0]`. Establish `h2 : (∑ j, (Q (b j) : ℝ)) ≤ n * Cc`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : 4 * (Q (x + φ χ) : ℝ) ≤ g * ∑ j, (Q (b j) : ℝ)` using `by exact_mod_cast h1`. Establish `hg' : (0 : ℝ) ≤ g` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Introduce `q z`. Establish `hz` using `hmin (χ + z)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[map_add, ← add_assoc]`. Establish `e1` using `quad_add_zsmul hs hQ (x + φ χ) (φ z) 1`. Establish `e2` using `quad_add_zsmul hs hQ (x + φ χ) (φ z) q`. Rewrite `e1` using `[one_smul]`. Rewrite `e2` using `[natCast_zsmul]`.
-
-Rewrite using `[e2]`. Establish `hq0 : (0 : ℤ) ≤ q` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_coset_minimiser :
     ∀ (X : Type) [AddCommGroup X] (Bf : X →+ X →+ ℤ) (Q : X → ℤ), (∀ x y, Bf x y = Bf y x) → (∀ x, 2 * Q x = Bf x x) → (∀ x, x ≠ 0 → 1 ≤ Q x) → ∀ (n : ℕ) (b : Module.Basis (Fin n) ℤ X) (Cc : ℝ), (∀ j, (Q (b j) : ℝ) ≤ Cc) → ∀ (φ : X →+ X) (g : ℕ), 1 ≤ g → (∀ x y, Bf (φ x) (φ y) = g * Bf x y) → ∀ x : X, ∃ χ : X, ((Q (x + φ χ) : ℝ) ≤ g * n * Cc / 4) ∧ ∀ (q : ℕ) (z : X), (q : ℤ) * (q - 1) * Q (φ z) ≤ Q (x + φ χ + q • φ z) - Q (x + φ χ) := by

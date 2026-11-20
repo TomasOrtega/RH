@@ -10,9 +10,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.FormalAlg
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.DenseClosedAffineSubsets.chow`. Consider the case `exact _root_.GlobalTheory.DenseClosedAffineSubsets.chow`. Consider the case `(apply _root_.GlobalTheory.DenseClosedAffineSubsets.chow <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.DenseClosedAffineSubsets.chow <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.DenseClosedAffineSubsets.chow <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.DenseClosedAffineSubsets.chow ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_isProper_isImmersion_isProjOver : ∀ (R : Type) [CommRing R] [IsNoetherianRing R], ∀ (W : Scheme.{0}) (f : W ⟶ Spec (CommRingCat.of R)), IsSeparated f → LocallyOfFiniteType f → QuasiCompact f → Nonempty W → ∃ (W' P : Scheme.{0}) (π : W' ⟶ W) (q : W' ⟶ P) (s : P ⟶ Spec (CommRingCat.of R)) (U : W.Opens), IsProper π ∧ (U : Set W).Nonempty ∧ IsIso (π ∣_ U) ∧ ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsProjOver s ∧ IsImmersion q ∧ q ≫ s = π ≫ f := by
   first

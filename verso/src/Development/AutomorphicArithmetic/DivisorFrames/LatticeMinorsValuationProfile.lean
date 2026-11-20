@@ -8,9 +8,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.RootFrame
 
 /- English proof (translation)
-Use `symm`. Rewrite using `[Matrix.mulVec, dotProduct]`. Use `Fintype.sum_of_injective (Fin.castLE i.2) (Fin.castLE_injective _) _ _ ?_ fun _ => rfl` and prove the remaining obligations. Introduce `l hl`. Rewrite using `[h l, mul_zero]`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hc`. Establish `: (l : ℕ) ≤ i` using `not_lt.1 hc`. Conclude with `hl ⟨⟨l, by omega⟩, rfl⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.mulVec_of_trailing_zeros {K : Type} [Field K] {n r : ℕ} (P : Matrix (Fin n) (Fin r) K) (i : Fin r)
     (cf : Fin r → K) (h : ∀ k, i < k → cf k = 0) (ρ : Fin n) :
@@ -25,15 +25,15 @@ private theorem UpperTheory.mulVec_of_trailing_zeros {K : Type} [Field K] {n r :
   exact hl ⟨⟨l, by omega⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hz : ∀ k : Fin r, i < k → (if hl : (k : ℕ) < (i : ℕ) + 1 then (-1) ^ ((i : ℕ) + (k : ℕ)) * (Matrix.of fun a b : Fin (i : ℕ) => P (σ a) (Fin.castLE i.2 ((⟨k, hl⟩ : Fin ((i : ℕ) + 1)).succAbove b))).det else (0 : K)) = 0`. Introduce `k hk`. Establish `: (i : ℕ) < k` using `hk`. Rewrite using `[dif_neg (by omega)]`. Use `⟨fun l => if hl : (l : ℕ) < (i : ℕ) + 1 then (-1) ^ ((i : ℕ) + (l : ℕ)) * (Matrix.of fun a b : Fin (i : ℕ) => P (σ a) (Fin.castLE i.2 ((⟨l, hl⟩ : Fin ((i : ℕ) + 1)).succAbove b))).det else 0, ?_, hz, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Nat.lt_succ_self, dif_pos]`. Rewrite using `[Even.neg_one_pow (Even.add_self _), _root_.one_mul]`. Unfold `colMinor`. Use `congr 1`. Use extensionality with `a l`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Establish `: (⟨i, Nat.lt_succ_self _⟩ : Fin ((i : ℕ) + 1)) = Fin.last _` using `rfl`. Simplify using `only [Matrix.of_apply, this, Fin.succAbove_last]`. Both sides reduce to the same expression. Introduce `ρ`. Rewrite using `[UpperTheory.mulVec_of_trailing_zeros P i _ hz]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Unfold `colMinor`. Rewrite using `[Matrix.det_succ_row _ (Fin.last (i : ℕ))]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hj : ((Fin.castLE i.2 j : Fin r) : ℕ) < (i : ℕ) + 1` using `j.2`. Establish `h : (Matrix.of fun a l : Fin ((i : ℕ) + 1) => P (Fin.snoc (α` using `fun _ => Fin n) σ ρ a) (Fin.castLE i.2 l)).submatrix (Fin.last (i : ℕ)).succAbove j.succAbove = Matrix.of fun a l : Fin (i : ℕ) => P (σ a) (Fin.castLE i.2 (j.succAbove l)) := by`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `a l`. Simplify using `only [Matrix.submatrix_apply, Matrix.of_apply, Fin.succAbove_last, Fin.snoc_castSucc]`. Rewrite using `[h, dif_pos hj]`. Simplify using `only [Matrix.of_apply, Fin.val_last, Fin.snoc_last, Fin.val_castLE, Fin.eta]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem UpperTheory.exists_vector_of_minor_cofactors {K : Type} [Field K] {n r : ℕ} (P : Matrix (Fin n) (Fin r) K) (i : Fin r)
     (σ : Fin (i : ℕ) → Fin n) : ∃ c : Fin r → K, c i = colMinor P i i.2.le σ ∧ (∀ k, i < k → c k = 0) ∧
@@ -72,13 +72,13 @@ private theorem UpperTheory.exists_vector_of_minor_cofactors {K : Type} [Field K
     ring
 
 /- English proof (translation)
-Use `set M : Matrix (Fin ((i : ℕ) + 1)) (Fin ((i : ℕ) + 1)) K := Matrix.of fun a l => P (σ a) (Fin.castLE i.2 l) with hM`. Establish `h1 : M *ᵥ (fun j => cf (Fin.castLE i.2 j)) = fun a => (P *ᵥ cf) (σ a)`. Use function extensionality and compare the values at `a`. Rewrite using `[UpperTheory.mulVec_of_trailing_zeros P i cf h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h2 : (M.adjugate *ᵥ (M *ᵥ (fun j => cf (Fin.castLE i.2 j)))) (Fin.last _) = M.det * cf i`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `M.det * cf i = _`. Rewrite using `[← h2, h1, Matrix.mulVec, dotProduct]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.adjugate_fin_succ_eq_det_submatrix]`. Use `congr 2`. Unfold `colMinor`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `b l`. Simplify using `only [hM, Matrix.submatrix_apply, Matrix.of_apply, Fin.succAbove_last]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.colMinor_cramer_expansion {K : Type} [Field K] {n r : ℕ} (P : Matrix (Fin n) (Fin r) K) (i : Fin r)
     (cf : Fin r → K) (h : ∀ k, i < k → cf k = 0) (σ : Fin ((i : ℕ) + 1) → Fin n) :
@@ -104,11 +104,9 @@ private theorem UpperTheory.colMinor_cramer_expansion {K : Type} [Field K] {n r 
   rfl
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro hk; exact ⟨Fin.elim0, by simp [colMinor]⟩`. Consider the case `succ k ih`. Introduce `hk`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨σ, hσ⟩` from `ih (by omega)`. Take `⟨c, h1, -, h3⟩` from `UpperTheory.exists_vector_of_minor_cofactors P ⟨k, hk⟩ σ`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `: c = 0` using `hP c (funext fun ρ => (h3 ρ).trans (hc _))`.
-
-Conclude with `hσ (by rw [← h1, this]; rfl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.exists_nonzero_colMinor_of_injective {K : Type} [Field K] {n r : ℕ} (P : Matrix (Fin n) (Fin r) K)
     (hP : ∀ cf, P *ᵥ cf = 0 → cf = 0) : ∀ k (hk : k ≤ r), ∃ σ, colMinor P k hk σ ≠ 0 := by
@@ -125,21 +123,21 @@ private theorem UpperTheory.exists_nonzero_colMinor_of_injective {K : Type} [Fie
     exact hσ (by rw [← h1, this]; rfl)
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t p _ x n r u P δ hδ hP hL`. Establish `hex : ∀ k, ∃ ν : ℝ, ∀ hk : k ≤ r, 0 < ν ∧ (∀ σ, ‖colMinor P k hk σ‖ ≤ ν) ∧ ∃ σ, ‖colMinor P k hk σ‖ = ν`. Introduce `k`. Distinguish the cases in `hk : k ≤ r`. Take `⟨σ₀, h₀⟩` from `UpperTheory.exists_nonzero_colMinor_of_injective P hP k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, -, hσ⟩` from `Finset.exists_max_image Finset.univ (fun σ => ‖colMinor P k hk σ‖) ⟨σ₀, Finset.mem_univ _⟩`. Conclude with `⟨_, fun _ => ⟨(norm_pos_iff.2 h₀).trans_le (hσ _ (Finset.mem_univ _)), fun σ' => hσ _ (Finset.mem_univ _), σ, rfl⟩⟩`. Conclude with `⟨0, fun h => absurd h hk⟩`. Use `choose ν hν using hex`. Use `⟨ν, fun k hk => (hν k hk).1, fun i => ?_, fun k hk => (hν k hk).2.1, fun k hk => (hν k hk).2.2⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨h0, hle0, σ0, he0⟩` from `hν i i.2.le`. Take `⟨h1, hle1, σ1, he1⟩` from `hν (i + 1) i.2`. Establish `hd : 0 < ‖δ‖` using `norm_pos_iff.2 hδ`. Establish `key : GlobalTheory.ShFam.Pad.grNorm t x (latHT t p x) u i = ν (i + 1) / (ν i * ‖δ‖)`. Unfold `GlobalTheory.ShFam.Pad.grNorm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `IsLeast.csInf_eq` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion. Take `⟨c, c1, c2, c3⟩` from `UpperTheory.exists_vector_of_minor_cofactors P i σ0`. Establish `hn : ‖((δ / colMinor P (i + 1) i.2 σ1) • c) i‖ = ‖δ‖ / ν (i + 1) * ν i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, norm_div, he1, c1, he0]`.
+Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(δ / colMinor P (i + 1) i.2 σ1) • c, ?_, fun k hk => ?_, (hL _).2 fun ρ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← norm_pos_iff, hn]`. Check the signs of the components of the expression. Rewrite using `[Pi.smul_apply, c2 k hk, smul_zero]`. Rewrite using `[Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, norm_mul, norm_div, he1, c3]`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hn]`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `_ ⟨cf, c1, c2, c3, rfl⟩`. Establish `c4` using `(hL cf).1 c3`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c5 : ν (i + 1) * ‖cf i‖ ≤ ν i * ‖δ‖`. Rewrite using `[← he1, ← norm_mul, UpperTheory.colMinor_cramer_expansion P i cf c2 σ1]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun a _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, norm_pow, norm_neg, norm_one, one_pow, _root_.one_mul]`. Conclude with `mul_le_mul (hle0 _) (c4 _) (norm_nonneg _) h0.le`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `c6 : 0 < ‖cf i‖` using `norm_pos_iff.2 c1`. Rewrite using `[div_le_iff₀ (by positivity), ← div_eq_inv_mul, le_div_iff₀ c6]`. Conclude with `c5`. Rewrite using `[key, Real.log_div h1.ne' (by positivity), Real.log_mul h0.ne' hd.ne']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.lattice_minors_valuation_profile :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (p : ℕ) [Fact p.Prime] (x : Sp ℂ_[p] ⟶ X) (n r : ℕ) (u : Fin r → (Sp (DualNumber ℂ_[p]) ⟶ t.G.left)) (P : Matrix (Fin n) (Fin r) ℂ_[p]) (δ : ℂ_[p]), δ ≠ 0 → (∀ cf, P *ᵥ cf = 0 → cf = 0) → (∀ cf, cf ∈ latCo t p x u ↔ ∀ k, ‖(P *ᵥ cf) k‖ ≤ ‖δ‖) → ∃ ν : ℕ → ℝ, (∀ k, k ≤ r → 0 < ν k) ∧ (∀ i : Fin r, Real.log (GlobalTheory.ShFam.Pad.grNorm t x (latHT t p x) u i) = Real.log (ν ((i : ℕ) + 1)) - Real.log (ν (i : ℕ)) - Real.log ‖δ‖) ∧ (∀ k (hk : k ≤ r) σ, ‖colMinor P k hk σ‖ ≤ ν k) ∧ ∀ k (hk : k ≤ r), ∃ σ, ‖colMinor P k hk σ‖ = ν k := by

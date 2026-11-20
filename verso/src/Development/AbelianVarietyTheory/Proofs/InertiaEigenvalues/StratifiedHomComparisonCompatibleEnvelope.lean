@@ -12,7 +12,7 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Establish `e1 : (Y.map (BK.hf g)).map σ.f = Y.map (BK.hf (σ.comp g))` using `rfl`. Establish `e2 : (Y.map (BK.hf f)).map σ.f = Y.map (BK.hf (σ.comp f))` using `rfl`. Establish `m1` using `Matrix.map_mul (L := S'.ε f g) (M := Y.map (BK.hf g)) (f := σ.f)`. Establish `m2` using `Matrix.map_mul (L := Y.map (BK.hf f)) (M := S.ε f g) (f := σ.f)`. Rewrite using `[Matrix.map_sub _ (map_sub σ.f), m1, m2, S'.ε_nat, S.ε_nat, e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem strat_defect_map {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K} {d d' : ℕ} (S : Strat bk d)
     (S' : Strat bk d') (Y : Matrix (Fin d') (Fin d) bk.S) {B C : Obj l ↥(OL K)} (σ : Hom B C)
@@ -27,7 +27,7 @@ theorem strat_defect_map {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K} {d 
   rw [Matrix.map_sub _ (map_sub σ.f), m1, m2, S'.ε_nat, S.ε_nat, e1, e2]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.matrix_phi_equation_to_family_equation C C (RingHom.id C) φ e e' he d d' a a' b P Q Q' hQ Δ h`.
+A detailed English derivation is pending.
 -/
 theorem matrix_phi_eq_family_self (C : Type) [CommRing C] (φ : C → C) (e e' : C) (he : Associated e e')
     (d d' a a' b : ℕ) (P : Matrix (Fin d') (Fin d') C) (Q Q' : Matrix (Fin d) (Fin d) C)
@@ -38,7 +38,7 @@ theorem matrix_phi_eq_family_self (C : Type) [CommRing C] (φ : C → C) (e e' :
   GlobalTheory.T.matrix_phi_equation_to_family_equation C C (RingHom.id C) φ e e' he d d' a a' b P Q Q' hQ Δ h
 
 /- English proof (translation)
-Use `B.complete.toIsHausdorff.haus _ fun n => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `hk n`. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, hy]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow (Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)) n)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem obj_eq_zero_of_pow_dvd {l : ℕ} [Fact l.Prime] {K : FinExt l} (B : Obj l ↥(OL K)) (x : B.A)
     (hk : ∀ k : ℕ, ((l : ℕ) : B.A) ^ k ∣ x) : x = 0 := by
@@ -49,7 +49,7 @@ theorem obj_eq_zero_of_pow_dvd {l : ℕ} [Fact l.Prime] {K : FinExt l} (B : Obj 
     (Ideal.pow_mem_pow (Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)) n)
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, S.A_mul]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem strat_map_A_mul {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K} {d : ℕ} (S : Strat bk d)
     {B : Obj l ↥(OL K)} (g : Hom bk.prism B) :
@@ -59,9 +59,9 @@ theorem strat_map_A_mul {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K} {d :
   by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
 
 /- English proof (translation)
-Establish `hass` using `(GlobalTheory.T.breuilKisin_two_homs_E_regular_associated l K bk En.Q En.inl En.inr).2.1`. Take `⟨h, c, hc⟩` from `matrix_phi_eq_family_self En.Q.A En.Q.D.φ _ _ hass d d' S.a S'.a S.b (S'.A.map (BK.hf En.inl)) _ _ (strat_map_A_mul S En.inr) Δ h1`. Use `Matrix.ext fun i j => obj_eq_zero_of_pow_dvd En.Q (Δ i j) fun k => ?_` and prove the remaining obligations. Use `GlobalTheory.T.breuilKisin_envelope_frobenius_solutions_pow_dvd l K bk En (Fin d' × Fin d) c h k (fun p => Δ p.1 p.2) hc ?_ (i, j)` and prove the remaining obligations. Introduce `g σ ha hb p`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : σ.f (Δ p.1 p.2) = 0` using `congrFun (congrFun (hσ g σ ha hb) p.1) p.2`. Conclude with `⟨0, h0.trans (mul_zero _).symm⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem env_matrix_eq_zero {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K}
     (En : Env bk bk.prism (bk.toP bk.E) (bk.toP X)) {d d' : ℕ} (S : Strat bk d) (S' : Strat bk d')
@@ -80,7 +80,7 @@ theorem env_matrix_eq_zero {l : ℕ} [Fact l.Prime] {K : FinExt l} {bk : BK K}
   exact ⟨0, h0.trans (mul_zero _).symm⟩
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.T.stratifiedHom_defect_frobenius_equation l K bk d d' S S' Y hφ En.Q En.inl En.inr`. Establish `hσ : ∀ (g : ↥(GK K)) (σ : Hom En.Q (ainfObj K)), σ.comp En.inl = bk.ι → σ.comp En.inr = (ainfHom K g).comp bk.ι → (S'.ε En.inl En.inr * Y.map (BK.hf En.inr) - Y.map (BK.hf En.inl) * S.ε En.inl En.inr).map σ.f = 0`. Introduce `g σ ha hb`. Rewrite using `[strat_defect_map, ha, hb, hg g, sub_self]`. Conclude with `sub_eq_zero.1 (env_matrix_eq_zero En S S' _ h1 hσ)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem strat_eps_compat_env (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K)
     (En : Env bk bk.prism (bk.toP bk.E) (bk.toP X)) (d d' : ℕ) (S : Strat bk d) (S' : Strat bk d')

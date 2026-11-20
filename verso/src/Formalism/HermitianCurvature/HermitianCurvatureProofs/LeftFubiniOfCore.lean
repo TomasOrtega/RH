@@ -13,13 +13,13 @@ namespace Formalism.FourierDecayAlt.P.LeftFubiniReduction
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ T hT j hj hj1 a ha`. Take `⟨hab, rfl⟩` from `ha`. Establish `e : D.ptSize a + (r - D.ptSize a) = r` using `by omega`. Establish `hd : ∀ q, D.ptDiag a q ≠ 0` using `fun q => Formalism.FourierDecayAlt.P.JCTx6.Link2.ptScal_ne a hab q q.2`. Take `⟨X, hX, μ, ℓ, sx, hsx, hmain⟩` from `hC k (D.ptSize a) (r - D.ptSize a) r e hj1 (D.ptPerm a) (D.ptDiag a) hd Wp Wq (T.bs (D.ptSize a)) T.base (T.z_lev _ hj) (T.z'_lev _ hj) (T.π'_lev _ hj) (hT _ hj).2.1 (Formalism.FourierDecayAlt.P.PBM.tower_haarW' T hT _ hj e) (hT _ hj).2.2 (hT 0 (Nat.zero_le r)).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨X, hX, μ, ℓ, sx, hsx, fun g hg H hH hR => ?_⟩` and prove the remaining obligations. Establish `hx : ∀ (h1 : D.ptSize a ≤ r) (h2 : r - D.ptSize a = r - D.ptSize a), LeftFubiniLemmas.levelZeroPointOver a h1 (D.castM h2 g) = D.castM e (U.mMap k (D.ptSize a) (r - D.ptSize a) (U.hMat (D.ptPerm a) (D.ptDiag a)) g)`. Introduce `h1 h2`. Unfold `LeftFubiniLemmas.levelZeroPointOver`. Rewrite using `[Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∀ h2 : r - D.ptSize a = r - D.ptSize a, D.castF h2 (D.sliceAt k r T.base.z T.base.z' H a) = U.PhiFun (s` using `0) k (r - D.ptSize a) (D.ptPerm a) (D.ptDiag a) (D.castV e.symm T.base.z) (D.castV e.symm T.base.z') (D.castF e H) (fun a => a.elim0) := by`. Introduce `h2`. Use function extensionality and compare the values at `y`. Unfold `D.castF`. Rewrite using `[Formalism.FourierDecayAlt.P.Dx2.MN.castM_rfl, D.sliceAt, dif_pos hj]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [hx, hs]`. Conclude with `hmain g hg H hH hR`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leftFubini_of_core (hC : LeftFubiniLemmas.CoreLF) : LeftFubiniLemmas.LeftFubini := by
   intro k r Wp Wq _ _ _ _ _ _ T hT j hj hj1 a ha

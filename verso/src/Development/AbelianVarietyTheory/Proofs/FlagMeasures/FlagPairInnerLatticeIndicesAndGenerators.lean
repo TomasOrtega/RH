@@ -18,9 +18,9 @@ section General
 variable {R W : Type} [CommRing R] [AddCommGroup W] [Module R W]
 
 /- English proof (translation)
-Unfold `idx AddSubgroup.relIndex AddSubgroup.index at *`. Use `haveI := Nat.finite_of_card_ne_zero hfin`. Use `choose f hf hρ using hex`. Use `Nat.card_le_card_of_injective (fun q => QuotientAddGroup.mk (⟨f q.out.1 q.out.2, hf _ _⟩ : B'.toAddSubgroup)) ?_` and prove the remaining obligations. Introduce `q q' h`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `QuotientAddGroup.eq.1 h`. Rewrite using `[← q.out_eq, ← q'.out_eq]`. Conclude with `QuotientAddGroup.eq.2 (hinj _ q.out.2 _ q'.out.2 _ _ (hρ _ _) (hρ _ _) h1)`.
+A detailed English derivation is pending.
 -/
 theorem idx_le_of_rel {A B A' B' : Submodule R W} (ρ : W → W → Prop) (hfin : idx B' A' ≠ 0)
     (hex : ∀ y ∈ B, ∃ z ∈ B', ρ y z)
@@ -37,18 +37,18 @@ theorem idx_le_of_rel {A B A' B' : Submodule R W} (ρ : W → W → Prop) (hfin 
   exact QuotientAddGroup.eq.2 (hinj _ q.out.2 _ q'.out.2 _ _ (hρ _ _) (hρ _ _) h1)
 
 /- English proof (translation)
-Establish `: idx B A = 1` using `AddSubgroup.relIndex_eq_one.2 h`. Simplify using `[gidx, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem gidx_of_le' {A B : Submodule R W} (h : B ≤ A) : gidx A B = idx A B := by
   have : idx B A = 1 := AddSubgroup.relIndex_eq_one.2 h
   simp [gidx, this]
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hN`. Establish `: ∀ x : s, ∃ y ∈ Y, ∃ i ∈ I, y + i = x` using `fun x => Submodule.mem_sup.1 (h (Submodule.subset_span x.2))`. Use `choose y hy i hi e using this`. Use `⟨Submodule.span R (Set.range y), Submodule.fg_span (Set.finite_range y), Submodule.span_le.2 (by rintro _ ⟨x, rfl⟩; exact hy x), le_antisymm ?_ ?_⟩` and prove the remaining obligations. Use `sup_le (Submodule.span_le.2 ?_) le_sup_right` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[eq_sub_of_add_eq (e x)]`. Conclude with `sub_mem (Submodule.mem_sup_left (Submodule.subset_span x.2)) (Submodule.mem_sup_right (hi x))`. Use `sup_le (Submodule.span_le.2 ?_) le_sup_right` and prove the remaining obligations. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `e ⟨x, hx⟩` as an intermediate fact. Simplify using `only at this`. Rewrite using `[← this]`. Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨_, rfl⟩) (hi _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fg_proj {N Y I : Submodule R W} (hN : N.FG) (h : N ≤ Y ⊔ I) :
     ∃ G : Submodule R W, G.FG ∧ G ≤ Y ∧ G ⊔ I = N ⊔ I := by
@@ -76,7 +76,7 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
 
 omit [StarRing K] [FiniteDimensional K V] in
 /- English proof (translation)
-Use `⟨?_, Compl.span_inf (hM.2 ▸ hT)⟩` and prove the remaining obligations. Take `⟨⟨N, hN, rfl⟩, -⟩` from `hM`. Use `⟨N ⊓ rs (𝓞 K) T, hN.of_le inf_le_left, ?_⟩` and prove the remaining obligations. Establish `hI' : rs (𝓞 K) I ≤ rs (𝓞 K) T` using `hI`. Rewrite using `[sup_comm, sup_inf_assoc_of_le _ hI', sup_comm]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem latMod_inf {M : Submodule (𝓞 K) V} {S I T : Submodule K V} (hM : IsLatMod M S I)
     (hI : I ≤ T) (hT : T ≤ S) : IsLatMod (M ⊓ rs (𝓞 K) T) T I := by
@@ -88,9 +88,9 @@ theorem latMod_inf {M : Submodule (𝓞 K) V} {S I T : Submodule K V} (hM : IsLa
 
 omit [NumberField K] [StarRing K] [FiniteDimensional K V] in
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨⟨N, hN, rfl⟩, -⟩` from `hM`. Take `⟨⟨N', hN', rfl⟩, -⟩` from `hM'`. Conclude with `⟨N ⊔ N', hN.sup hN', (sup_sup_distrib_right _ _ _).symm⟩`. Rewrite using `[← hM.2, ← hM'.2, ← Submodule.span_union]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_mono ?_)` and prove the remaining obligations. Introduce `x hx`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hx`. Conclude with `add_mem (Submodule.subset_span (Or.inl ha)) (Submodule.subset_span (Or.inr hb))`. Introduce and unpack `x (hx | hx) exacts [Submodule.mem_sup_left hx, Submodule.mem_sup_right hx]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem latMod_sup {M M' : Submodule (𝓞 K) V} {S S' I : Submodule K V} (hM : IsLatMod M S I)
     (hM' : IsLatMod M' S' I) : IsLatMod (M ⊔ M') (S ⊔ S') I := by
@@ -109,21 +109,19 @@ theorem latMod_sup {M M' : Submodule (𝓞 K) V} {S S' I : Submodule K V} (hM : 
 omit [StarRing K] in
 
 /- English proof (translation)
-Establish `hle` using `(DelScale.le_of_latMod hA).2`. Take `⟨⟨N, hN, rfl⟩, -⟩` from `hA`. Establish `h1 : N ≤ rs (𝓞 K) Y ⊔ rs (𝓞 K) I`. Introduce `x hx`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 (show x ∈ Y ⊔ I from hle (Submodule.mem_sup_left hx))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.add_mem_sup ha hb`. Take `⟨G, hG, hGY, e⟩` from `exists_fg_proj hN h1`. Rewrite `hAD`, `hD`, the goal using `[← e]`. Set `ι : Y →ₗ[𝓞 K] V` to `Y.subtype.restrictScalars (𝓞 K)`. Establish `hι : Function.Injective ι` using `Subtype.val_injective`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : (G.comap ι).map ι = G`. Rewrite using `[Submodule.map_comap_eq]`. Use `inf_eq_right.2 fun x hx => ⟨⟨x, hGY hx⟩, rfl⟩` and prove the remaining obligations. Establish `hfg : (G.comap ι).FG` using `Submodule.fg_of_fg_map_injective ι hι (hmap.symm ▸ hG)`. Take `⟨c, t, hc, htc, hct, hspan⟩` from `GlobalTheory.Mass.LatticeGens.exists_scaled_span K Y _ hfg`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn' : (n : K) ≠ 0` using `Nat.cast_ne_zero.2 hn`. Establish `hcan : ∀ x : V, (n : 𝓞 K) • ((n : K)⁻¹ • x) = x` using `fun x => by`. Rewrite using `[← IsScalarTower.algebraMap_smul K, map_natCast, smul_smul, mul_inv_cancel₀ hn', one_smul]`. Establish `hcan' : ∀ x : V, (n : K)⁻¹ • ((n : 𝓞 K) • x) = x` using `fun x => by`. Rewrite using `[← IsScalarTower.algebraMap_smul K (n : 𝓞 K), map_natCast, smul_smul, inv_mul_cancel₀ hn', one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `κ : Y →ₗ[𝓞 K] V` to `((n : K)⁻¹ • Y.subtype).restrictScalars (𝓞 K)`. Take `⟨t', h1, h2⟩` from `GlobalTheory.Mass.LatticeGens.exists_gens_of_between (G ⊔ rs (𝓞 K) I) (c * n) (mul_ne_zero hc (Nat.cast_ne_zero.2 hn)) (t.image κ) (by`. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.1 hx`. Rewrite using `[mul_smul]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mem_sup_left ?_` and prove the remaining obligations. Establish `: (n : 𝓞 K) • κ y = ι y` using `hcan _`. Rewrite using `[this, ← map_smul]`. Conclude with `hct y hy) D hAD (by`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 (hD x hx)`. Rewrite using `[← hcan' x, ← hab, smul_add, add_comm]`. Use `Submodule.add_mem_sup (Submodule.mem_sup_right (I.smul_mem _ hb)) ?_` and prove the remaining obligations. Rewrite using `[Finset.coe_image, ← Submodule.map_span]`. Conclude with `⟨⟨a, hGY ha⟩, hspan ha, rfl⟩)`.
-
-Conclude with `⟨t', h1.trans (Finset.card_image_le.trans htc), h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gens_of_torsion {A D : Submodule (𝓞 K) V} {Y I : Submodule K V} (hA : IsLatMod A (Y ⊔ I) I)
     (hAD : A ≤ D) {n : ℕ} (hn : n ≠ 0) (hD : ∀ x ∈ D, (n : 𝓞 K) • x ∈ A) :
@@ -175,7 +173,7 @@ variable (H : HermSpace K V) {X X' : Submodule K V} {Λ : Submodule (𝓞 K) V}
 
 omit [NumberField K] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Introduce `y hy` and use `(mem_perp_iff H S y).2 fun x hx => (mem_perp_iff H T y).1 hy x (h hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem perp_anti {S T : Submodule K V} (h : S ≤ T) : perp H T ≤ perp H S := fun y hy =>
   (mem_perp_iff H S y).2 fun x hx => (mem_perp_iff H T y).1 hy x (h hx)
@@ -184,11 +182,11 @@ omit [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 include hX hX' hr hr' in
 
 /- English proof (translation)
-Introduce `x hx`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hx`. Establish `h1 : a ∈ X'` using `hr a ha fun y hy => by`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify `h y (Submodule.mem_sup_right hy)` using `[hX' b hb y hy]`. Establish `h2 : b ∈ X` using `hr' b hb fun y hy => by`. Simplify `h y (Submodule.mem_sup_left hy)` using `[hX a ha y hy]`. Conclude with `⟨add_mem ha h2, add_mem h1 hb⟩`. Introduce and unpack `⟨h1, h2⟩ y hy`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hy`. Rewrite using `[map_add, hX x h1 a ha, hX' x h2 b hb, add_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem rad_sup : ∀ x ∈ X ⊔ X', (∀ y ∈ X ⊔ X', H.B x y = 0) ↔ x ∈ X ⊓ X' := by
   intro x hx
@@ -207,9 +205,7 @@ theorem rad_sup : ∀ x ∈ X ⊔ X', (∀ y ∈ X ⊔ X', H.B x y = 0) ↔ x �
 omit [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 
 /- English proof (translation)
-Introduce `x hx`. Prove the components needed by the constructor for the conclusion. Introduce `h1`. Conclude with `(h x (mem_of_perp_perp H U fun y hy => swap0 (h1 y hy))).1 ((mem_perp_iff H U x).1 hx)`. Introduce `h1 y hy`.
-
-Conclude with `swap0 ((mem_perp_iff H U y).1 hy x (hIU h1))`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rad_perp {U I : Submodule K V} (hIU : I ≤ U) (h : ∀ x ∈ U, (∀ y ∈ U, H.B x y = 0) ↔ x ∈ I) :
     ∀ x ∈ perp H U, (∀ y ∈ perp H U, H.B x y = 0) ↔ x ∈ I := by
@@ -223,9 +219,9 @@ theorem rad_perp {U I : Submodule K V} (hIU : I ≤ U) (h : ∀ x ∈ U, (∀ y 
 omit [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 include hX hr' in
 /- English proof (translation)
-Introduce `v hv`. Use `mem_of_perp_perp H _ fun w hw => ?_` and prove the remaining obligations. Rewrite `hw`, `hv` using `[mem_perp_iff]`. Establish `h1 : w ∈ X ⊔ X'` using `mem_of_perp_perp H _ fun x hx => swap0 (hw x (Submodule.mem_sup_left hx))`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2 : b ∈ X` using `hr' b hb fun y hy => by`. Simplify `hw y (Submodule.mem_sup_right hy)` using `[hX a ha y hy]`. Conclude with `swap0 (hv _ (add_mem ha h2))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem perp_le_sup : perp H X ≤ perp H (X ⊔ X') ⊔ X := by
   intro v hv
@@ -240,9 +236,9 @@ theorem perp_le_sup : perp H X ≤ perp H (X ⊔ X') ⊔ X := by
 omit [NumberField K] [FiniteDimensional K V] in
 
 /- English proof (translation)
-Use `le_antisymm ?_ (inf_le_inf_left _ (sup_le (sup_le (inf_le_left.trans le_sup_left) (le_trans (show rs (𝓞 K) I ≤ rs (𝓞 K) X from hIX) le_sup_right)) le_sup_right))` and prove the remaining obligations. Introduce and unpack `y ⟨hy, hy'⟩`. Use `⟨hy, ?_⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hy'`. Use `Submodule.add_mem_sup (Submodule.mem_sup_left ⟨ha, (mem_perp_iff H I a).2 fun i hi => ?_⟩) hb` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `(mem_perp_iff H U _).1 hy i (hIU hi)` using `[hI b hb i hi]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inf_sup_eq {U I : Submodule K V} (hIX : I ≤ X) (hIU : I ≤ U) (hI : ∀ x ∈ X, ∀ y ∈ I, H.B x y = 0) :
     rs (𝓞 K) (perp H U) ⊓ (Λ ⊔ rs (𝓞 K) X) =
@@ -258,21 +254,19 @@ theorem inf_sup_eq {U I : Submodule K V} (hIX : I ≤ X) (hIU : I ≤ U) (hI : �
 include hX hX' hr hr' in
 
 /- English proof (translation)
-Establish `hM` using `isUnimodMod_quot H hU hX`. Rewrite using `[inf_sup_eq H (I := X) le_rfl le_sup_left hX, sup_assoc, sup_idem]`. Generalize the expression as in `(Λ ⊓ rs (𝓞 K) (perp H X)) ⊔ rs (𝓞 K) X = M at hM`. Establish `hle` using `DelScale.le_of_latMod hM.1`. Establish `hdec : M ≤ rs (𝓞 K) (perp H (X ⊔ X')) ⊔ rs (𝓞 K) X`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 (perp_le_sup H hX hr' (hle.2 hx))`. Conclude with `Submodule.add_mem_sup ha hb`. Establish `hsp : Submodule.span K ((rs (𝓞 K) (perp H (X ⊔ X')) ⊓ M : Submodule (𝓞 K) V) : Set V) = perp H (X ⊔ X')`. Rewrite using `[inf_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Compl.span_inf (hM.1.2 ▸ perp_anti H le_sup_left)`. Use `⟨⟨?_, hsp⟩, ?_⟩` and prove the remaining obligations. Take `⟨N, hN, rfl⟩` from `hM.1.1`. Take `⟨G, hG, hGU, e⟩` from `exists_fg_proj hN (le_sup_left.trans hdec)`. Use `⟨G, hG, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← e, inf_comm, sup_inf_assoc_of_le _ hGU]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `(rad_sup H hX hX' hr hr' x (Submodule.mem_sup_left h1)).1 ((mem_perp_iff H _ x).1 h2)`. Introduce `h`. Conclude with `⟨h.1, (mem_perp_iff H _ x).2 ((rad_sup H hX hX' hr hr' x (Submodule.mem_sup_left h.1)).2 h)⟩`. Use extensionality with `y`. Rewrite using `[mem_dual_iff, hsp]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← hM.2, SetLike.mem_coe, mem_dual_iff, hM.1.2]`. Use `⟨perp_anti H le_sup_left h1, fun m hm => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 (hdec hm)`. Rewrite using `[map_add, (mem_perp_iff H _ y).1 h1 b (Submodule.mem_sup_left hb), add_zero]`. Conclude with `h2 a ⟨ha, by simpa using sub_mem hm (hle.1 hb)⟩`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun x hx => ?_⟩` and prove the remaining obligations.
-
-Rewrite `h2` using `[← hM.2, SetLike.mem_coe, mem_dual_iff]`. Conclude with `h2.2 x hx.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_unimod (hU : IsUnimod H Λ) :
     IsUnimodMod H (rs (𝓞 K) (perp H (X ⊔ X')) ⊓ (Λ ⊔ rs (𝓞 K) X)) (perp H (X ⊔ X')) (X ⊓ X') := by
@@ -319,7 +313,7 @@ theorem inner_unimod (hU : IsUnimod H Λ) :
 omit [NumberField K] [FiniteDimensional K V] in
 
 /- English proof (translation)
-Establish `h1 : rs (𝓞 K) I ≤ rs (𝓞 K) X` using `hIX`. Establish `h2 : rs (𝓞 K) X ≤ rs (𝓞 K) (perp H I)` using `fun x hx => (mem_perp_iff H I x).2 (hI x hx)`. Rewrite using `[sup_comm, sup_inf_assoc_of_le _ h1, sup_comm, inf_assoc, inf_eq_right.2 h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem quot_inf {I : Submodule K V} (hIX : I ≤ X) (hI : ∀ x ∈ X, ∀ y ∈ I, H.B x y = 0) :
     ((Λ ⊓ rs (𝓞 K) (perp H I)) ⊔ rs (𝓞 K) I) ⊓ rs (𝓞 K) X = (Λ ⊓ rs (𝓞 K) X) ⊔ rs (𝓞 K) I := by
@@ -330,13 +324,13 @@ theorem quot_inf {I : Submodule K V} (hIX : I ≤ X) (hI : ∀ x ∈ X, ∀ y �
 include hX hX' hr hr' in
 
 /- English proof (translation)
-Substitute `eU eI` using the available equality. Establish `e` using `inf_sup_eq H (Λ := Λ) (X := X) (U := X ⊔ X') (I := X ⊓ X') inf_le_left (inf_le_left.trans le_sup_left) (fun x hx y hy => hX x hx y hy.1)`. Rewrite `e` using `[← eM]`. Establish `hL` using `inner_unimod H hX hX' hr hr' hU`. Rewrite `hL` using `[e]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hM` using `isUnimodMod_quot H hU (I := X ⊓ X') fun x hx y hy => hX x hx.1 y hy.1`. Rewrite `hM` using `[← eM]`. Establish `hIU : X ⊓ X' ≤ X ⊔ X'` using `inf_le_left.trans le_sup_left`. Establish `hrad` using `rad_sup H hX hX' hr hr'`. Establish `hIP : X ⊓ X' ≤ perp H (X ⊔ X')` using `fun x hx => (mem_perp_iff H _ x).2 ((hrad x (hIU hx)).2 hx)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, h2, h3, -⟩` from `DelScale.main K V H hK _ _ _ _ hIP (rad_perp H hIU hrad) hL.1 (latMod_inf hM.1 hIP (perp_anti H hIU))`. Establish `hle : M ⊓ rs (𝓞 K) (perp H (X ⊔ X')) ≤ rs (𝓞 K) (perp H (X ⊔ X')) ⊓ (M ⊔ rs (𝓞 K) X)` using `le_inf inf_le_right (inf_le_left.trans le_sup_left)`. Rewrite `h2`, `h3` using `[gidx_of_le' hle]`. Establish `h4 : del H (rs (𝓞 K) (perp H (X ⊔ X')) ⊓ (M ⊔ rs (𝓞 K) X)) = 1`. Simplify using `[del, gidx, idx, hL.2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨e, by exact_mod_cast h2.ne', by rw [h3, h4, mul_one]⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem idx_eq_del (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hU : IsUnimod H Λ) {U I : Submodule K V}
     (eU : U = X ⊔ X') (eI : I = X ⊓ X') {M : Submodule (𝓞 K) V}
@@ -368,33 +362,31 @@ theorem idx_eq_del (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hU : Is
 include hX hX' hr hr' in
 
 /- English proof (translation)
-Take `⟨a1, a2, a3⟩` from `idx_eq_del H hX hX' hr hr' hK hU rfl rfl eM`. Take `⟨b1, b2, b3⟩` from `idx_eq_del H hX' hX hr' hr hK hU (sup_comm X X') (inf_comm X X') eM`. Rewrite `eL` using `[a1]`. Rewrite `eL'` using `[b1]`. Rewrite `a2`, `a3` using `[← eL, ← e1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b2`, `b3` using `[← eL', ← e1]`. Establish `hXI : ∀ x ∈ X, ∀ y ∈ X ⊓ X', H.B x y = 0` using `fun x hx y hy => hX x hx y hy.1`. Establish `hXI' : ∀ x ∈ X', ∀ y ∈ X ⊓ X', H.B x y = 0` using `fun x hx y hy => hX' x hx y hy.2`. Rewrite `eA` using `[← quot_inf H inf_le_left hXI, ← eM]`. Rewrite `eA'` using `[← quot_inf H inf_le_right hXI', ← eM]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hM` using `isUnimodMod_quot H hU (I := X ⊓ X') fun x hx y hy => hX x hx.1 y hy.1`. Rewrite `hM` using `[← eM]`. Establish `hIM` using `(DelScale.le_of_latMod hM.1).1`. Establish `hIU : X ⊓ X' ≤ X ⊔ X'` using `inf_le_left.trans le_sup_left`. Establish `hrad` using `rad_sup H hX hX' hr hr'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXP : X ≤ perp H (X ⊓ X')` using `fun x hx => (mem_perp_iff H _ x).2 (hXI x hx)`. Establish `hXP' : X' ≤ perp H (X ⊓ X')` using `fun x hx => (mem_perp_iff H _ x).2 (hXI' x hx)`. Establish `hA : IsLatMod A X (X ⊓ X')` using `eA ▸ latMod_inf hM.1 inf_le_left hXP`. Establish `hA' : IsLatMod A' X' (X ⊓ X')` using `eA' ▸ latMod_inf hM.1 inf_le_right hXP'`. Take `⟨-, c2, c3, -⟩` from `DelScale.main K V H hK _ _ _ _ hIU hrad (latMod_inf hM.1 hIU (sup_le hXP hXP')) (latMod_sup hA hA')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hle : A ⊔ A' ≤ M ⊓ rs (𝓞 K) (X ⊔ X')`. Rewrite using `[eA, eA']`. Conclude with `sup_le (inf_le_inf_left _ (show rs (𝓞 K) X ≤ rs (𝓞 K) (X ⊔ X') from le_sup_left (a := X))) (inf_le_inf_left _ (show rs (𝓞 K) X' ≤ rs (𝓞 K) (X ⊔ X') from le_sup_right (a := X)))`. Rewrite `c2`, `c3` using `[gidx_of_le' hle]`. Establish `hradI : ∀ x ∈ perp H (X ⊓ X'), (∀ y ∈ perp H (X ⊓ X'), H.B x y = 0) ↔ x ∈ X ⊓ X'` using `rad_perp H le_rfl fun x hx => ⟨fun _ => hx, fun _ => hXI x hx.1⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d` using `(Compl.main K V H hK M _ _ _ hIU (sup_le hXP hXP') hradI hrad hM).1`. Rewrite `d` using `[inf_eq_right.2 (perp_anti H hIU), ← e1]`. Use `⟨by rw [c3, d, a3, mul_comm], by exact_mod_cast b3.trans a3.symm, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, eL, eL']`. Conclude with `le_inf (le_inf inf_le_right (inf_le_left.trans le_sup_left)) (le_inf inf_le_right (inf_le_left.trans le_sup_left))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `idx_le_of_rel (fun y z => ∃ x ∈ X, ∃ x' ∈ X', y - x ∈ M ∧ y - x' ∈ M ∧ z = x - x') (by exact_mod_cast c2.ne') ?_ ?_` and prove the remaining obligations. Rewrite using `[eL, eL']`. Introduce and unpack `y ⟨⟨-, h1⟩, -, h2⟩`. Take `⟨m, hm, x, hx, e⟩` from `Submodule.mem_sup.1 h1`. Take `⟨m', hm', x', hx', e'⟩` from `Submodule.mem_sup.1 h2`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f : y - x ∈ M` using `by rw [← e]; simpa using hm`. Establish `f' : y - x' ∈ M` using `by rw [← e']; simpa using hm'`. Use `⟨x - x', ⟨?_, sub_mem (Submodule.mem_sup_left (S := X) hx) (Submodule.mem_sup_right (T := X') hx')⟩, x, hx, x', hx', f, f', rfl⟩` and prove the remaining obligations. Use `sub_mem f' f` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[eL, eL', e1, eA, eA']`. Introduce and unpack `y ⟨⟨hy, -⟩, -⟩ w ⟨⟨hw, -⟩, -⟩ _ _ ⟨x, hx, x', hx', f, -, rfl⟩ ⟨u, hu, u', hu', g, -, rfl⟩ h`. Take `⟨a, ha, b, hb, e⟩` from `Submodule.mem_sup.1 h`. Use `⟨?_, add_mem (neg_mem hy) hw⟩` and prove the remaining obligations. Establish `h1 : u - x - a ∈ X` using `sub_mem (sub_mem hu hx) ha.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : u - x - a ∈ X'`. Establish `: u - x - a = b + (u' - x')`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Conclude with `add_mem hb.2 (sub_mem hu' hx')`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h3 : -y + w = (w - u) - (y - x) + (u - x - a) + a` using `by abel`. Rewrite using `[SetLike.mem_coe, h3]`. Conclude with `add_mem (add_mem (sub_mem g f) (hIM ⟨h1, h2⟩)) ha.1`. Take `⟨t, h1, h2⟩` from `gens_of_torsion (D := rs (𝓞 K) X ⊓ (M ⊔ rs (𝓞 K) (perp H (X ⊔ X')))) (Y := Y) (I := X ⊓ X') (A := A) (by rw [← hY]; exact hA) (by rw [eA]; exact le_inf inf_le_right (inf_le_left.trans le_sup_left)) a2 (by`. Introduce and unpack `x ⟨hx, hx'⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm, u, hu, e⟩` from `Submodule.mem_sup.1 hx'`. Establish `hL : u ∈ L`. Rewrite using `[eL]`. Use `⟨hu, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_sub_of_add_eq' e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_mem (Submodule.mem_sup_right hx) (Submodule.mem_sup_left hm)`. Establish `h3` using `GlobalTheory.Mass.LatticeGens.idxN_smul_mem Λ₁ L hL`. Rewrite using `[eA]`. Use `⟨?_, Submodule.smul_mem _ _ hx⟩` and prove the remaining obligations. Rewrite using `[← e, smul_add]`.
-
-Conclude with `add_mem (M.smul_mem _ hm) ((e1.le.trans inf_le_left) h3))`. Rewrite `h2` using `[eA]`. Take `⟨t', h3, h4⟩` from `Compl.gen_glue M _ _ t h2`. Conclude with `⟨t', h3.trans h1, by rw [eL, e1, h4]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem core (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hU : IsUnimod H Λ) {Y : Submodule K V} (hY : X = Y ⊔ X ⊓ X')
     {M L L' Λ₁ A A' : Submodule (𝓞 K) V}
@@ -495,9 +487,9 @@ variable {H : HermSpace K V} {r : ℕ}
 omit [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 
 /- English proof (translation)
-Introduce `x hx h0`. Take `⟨y, hy, i, -, hi, rfl⟩` from `X_le F F' j h x hx`. Take `⟨c, -, rfl⟩` from `exists_coord F hj le_rfl hy`. Establish `: c = 0`. Use `Matrix.eq_zero_of_vecMul_eq_zero hD (funext fun b => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb` using `Xa_le F' j (e_mem F' hj b)`. Use `h0 _ hb` as an intermediate fact. Rewrite `this` using `[map_add, LinearMap.add_apply, iso_Xa F' hi hb, add_zero]`. Simplify `this` using `[Matrix.vecMul, dotProduct, Zhat]`. Simplify `hi` using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem flag_rad (F F' : FlagD H r) {j : ℕ} (hj : j ≤ r) (hD : Dl F F' j (hj.trans (Nat.le_succ r)) ≠ 0)
     (h : ∀ a : Fin r, j ≤ a.val → ∃ c : K, F.e a.castSucc = c • F'.e a.castSucc) :
@@ -515,9 +507,7 @@ theorem flag_rad (F F' : FlagD H r) {j : ℕ} (hj : j ≤ r) (hD : Dl F F' j (hj
 
 omit [NumberField K] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Establish `: F.Xa j = Submodule.span K (Set.range fun b : Fin j => F.e (Fin.castLE (hj.trans (Nat.le_succ r)) b))`. Use `le_antisymm (fun x hx => ?_) (Submodule.span_le.2 (by rintro _ ⟨b, rfl⟩; exact e_mem F hj b))` and prove the remaining obligations. Take `⟨c, -, rfl⟩` from `exists_coord F hj le_rfl hx`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩)`. Rewrite using `[this]`.
-
-Conclude with `(finrank_range_le_card (R := K) fun b : Fin j => F.e (Fin.castLE (hj.trans (Nat.le_succ r)) b)).trans (Fintype.card_fin j).le`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_Xa_le (F : FlagD H r) {j : ℕ} (hj : j ≤ r) : Module.finrank K (F.Xa j) ≤ j := by
   have : F.Xa j = Submodule.span K (Set.range fun b : Fin j => F.e (Fin.castLE (hj.trans (Nat.le_succ r)) b)) := by
@@ -531,11 +521,11 @@ theorem finrank_Xa_le (F : FlagD H r) {j : ℕ} (hj : j ≤ r) : Module.finrank 
 end Flags
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ H hK r N g Λ _ hT`. Establish `s' : ∀ a : Fin r, N.j ≤ a.val → ∃ c : K, N.F'.e a.castSucc = c • N.F.e a.castSucc` using `fun a ha => ⟨N.c, N.same a.castSucc ha⟩`. Establish `s : ∀ a : Fin r, N.j ≤ a.val → ∃ c : K, N.F.e a.castSucc = c • N.F'.e a.castSucc` using `fun a ha => ⟨N.c⁻¹, by rw [N.same a.castSucc ha, smul_smul, inv_mul_cancel₀ (Kill.c_ne N), one_smul]⟩`. Establish `hD' : Dl N.F' N.F N.j (N.j_le.trans (Nat.le_succ r)) ≠ 0`. Rewrite using `[FrameCramer.Dl_swap]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `star_ne_zero.2 (Kill.Dj_ne N)`. Establish `hY : N.F.X = N.F.Xa N.j ⊔ N.F.X ⊓ N.F'.X`. Use `le_antisymm (fun x hx => ?_) (sup_le (Kill.Xa_le _ _) inf_le_left)` and prove the remaining obligations. Take `⟨y, hy, i, hi, hi', rfl⟩` from `Kill.X_le N.F N.F' N.j s x hx`. Conclude with `Submodule.add_mem_sup hy ⟨hi, hi'⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Take `⟨h1, h2, h3, h4, t, h5, h6⟩` from `core H (Λ := Λ) (fun _ hx _ hy => Kill.iso_Xa N.F hx hy) (fun _ hx _ hy => Kill.iso_Xa N.F' hx hy) (flag_rad N.F N.F' N.j_le (Kill.Dj_ne N) s) (flag_rad N.F' N.F N.j_le hD' s') hK hT.1.1 hY (M := lamI N.F N.F' Λ) (L := latL N.F N.F' Λ) (L' := latL N.F' N.F Λ) (Λ₁ := lamOne N.F N. …`. Use `rfl rfl (by rw [latL, uPerp, sup_comm N.F'.X]; rfl) rfl rfl (by rw [latA0, II, inf_comm N.F'.X]; rfl)`. Conclude with `⟨h1, h2, h3, h4, t, h5.trans (finrank_Xa_le N.F N.j_le), h6⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ) (N : NF H r), ∀ (g : ℕ) (Λ : Submodule (𝓞 K) V), 1 ≤ g → N.IsTerm g Λ → (idx (latL N.F N.F' Λ) (lamOne N.F N.F' Λ) : ℝ) * cardB N.F N.F' Λ = delBar N.F N.F' Λ ∧ idx (latL N.F' N.F Λ) (lamOne N.F N.F' Λ) = idx (latL N.F N.F' Λ) (lamOne N.F N.F' Λ) ∧ lamOne N.F N.F' Λ ≤ latL N.F N.F' Λ ⊓ latL N.F' N.F Λ ∧ idx (latL N.F N.F' Λ ⊓ latL N.F' N.F Λ) (lamOne N.F N.F' Λ) ≤ cardB N.F N.F' Λ ∧ GenBy (latL N.F N.F' Λ) (lamOne N.F N.F' Λ) N.j := by
   intro K V _ _ _ _ _ _ _ _ H hK r N g Λ _ hT

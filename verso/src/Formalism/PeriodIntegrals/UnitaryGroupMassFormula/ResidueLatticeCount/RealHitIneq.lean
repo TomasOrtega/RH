@@ -9,9 +9,9 @@ noncomputable section
 namespace PI.Residue
 
 /- English proof (translation)
-Establish `hP : 0 < N ^ (s - 1)` using `Real.rpow_pos_of_pos hN _`. Establish `hPB : N ^ (s - 1) ≤ (2 * A) ^ (s - 1)` using `Real.rpow_le_rpow hN.le h (by linarith)`. Establish `hNs : N ^ s = N ^ (s - 1) * N`. Rewrite using `[← Real.rpow_add_one hN.ne']`. Put the polynomial expressions in normal form.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Rewrite using `[Real.rpow_neg hN.le, hNs]`. Establish `e : A * (2 * A) ^ (s - 1) * (N ^ (s - 1) * N)⁻¹ = A / N * ((2 * A) ^ (s - 1) / N ^ (s - 1))`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `le_mul_of_one_le_right (by positivity) ((one_le_div hP).2 hPB)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem real_hit_ineq (A N s : ℝ) (hA : 0 < A) (hN : 0 < N) (hs : 1 < s) (h : N ≤ 2 * A) :
     A / N ≤ A * (2 * A) ^ (s - 1) * N ^ (-s) := by
@@ -26,17 +26,17 @@ theorem real_hit_ineq (A N s : ℝ) (hA : 0 < A) (hN : 0 < N) (hs : 1 < s) (h : 
   exact le_mul_of_one_le_right (by positivity) ((one_le_div hP).2 hPB)
 
 /- English proof (translation)
-Introduce `K _ _ ρ s x hρ hs hx`. Establish `hpos : ∀ w, 0 < normAtPlace w x` using `fun w => lt_of_le_of_ne (normAtPlace_nonneg w x) (Ne.symm (mixedEmbedding.norm_ne_zero_iff.1 hx.ne' w))`. Establish `hhit : hit K ρ x = box K (fun w => ρ / normAtPlace w x)`. Use extensionality with `y`. Simplify using `only [hit, box, Set.mem_ofPred_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `forall_congr' fun w => (lt_div_iff₀ (hpos w)).symm`. Establish `hprod : ∏ w, (ρ / normAtPlace w x) ^ mult w = ρ ^ Module.finrank ℚ K / mixedEmbedding.norm x`. Repeatedly rewrite using `[div_pow]`. Rewrite using `[Finset.prod_div_distrib, Finset.prod_pow_eq_pow_sum, sum_mult_eq, mixedEmbedding.norm_apply]`. Establish `hA : 0 < ρ ^ Module.finrank ℚ K` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : mixedEmbedding.norm x ≤ 2 * ρ ^ Module.finrank ℚ K`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hhit, hbox K _ (fun w => div_pos hρ (hpos w)), hprod]`. Use `_ ≤ _ := by gcongr`. Conclude with `real_hit_ineq _ _ s hA hx hs h`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hempty : {y | 1 / 2 < mixedEmbedding.norm y} ∩ hit K ρ x = ∅`. Rewrite using `[Set.eq_empty_iff_forall_notMem]`. Introduce and unpack `y ⟨hy1, hy2⟩`. Rewrite `hy2` using `[hhit]`. Establish `hle : mixedEmbedding.norm y ≤ ρ ^ Module.finrank ℚ K / mixedEmbedding.norm x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hprod, mixedEmbedding.norm_apply]`. Conclude with `Finset.prod_le_prod (fun w _ => pow_nonneg (normAtPlace_nonneg w y) _) (fun w _ => pow_le_pow_left₀ (normAtPlace_nonneg w y) (hy2 w).le _)`. Establish `hhalf : ρ ^ Module.finrank ℚ K / mixedEmbedding.norm x ≤ 1 / 2`. Rewrite using `[div_le_iff₀ hx]`. Rewrite `h` using `[not_le]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hy1' : 1 / 2 < mixedEmbedding.norm y` using `hy1`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hempty, measure_empty]`. Conclude with `zero_le`.
+A detailed English derivation is pending.
 -/
 theorem hitBound_of (hbox : BoxVolume) : HitBound := by
   intro K _ _ ρ s x hρ hs hx

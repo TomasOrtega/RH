@@ -20,7 +20,7 @@ open GlobalTheory.UT
 namespace GlobalTheory.TorsionIso
 
 /- English proof (translation)
-Introduce `R _ _ _ I hI D A G _ _ hG U F _ _ _ k hk`. Take `⟨f, hf⟩` from `exists_tors_closed R I hI D A G hG U F k hk`. Use `⟨f, hf, fun p => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `U.toUnifPre.ext`. Conclude with `((hf.1 p (f p)).2 rfl w hw).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem torsion_clause :
     AllU fun {_} _ _ {_} {_} {_} {_} _ _ U => Cl.Torsion U := by

@@ -7,7 +7,7 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory.EisM.TermDiff
 
 /- English proof (translation)
-The claim follows from `|x ^ (-p) - y ^ (-p)| ≤ 8 * (y - x) / y := by have hx0 : 0 < x := by linarith have hy0 : 0 < y := by linarith set r := x / y with hr have hr0 : 0 < r := div_pos hx0 hy0 have hr1 : r ≤ 1 := (div_le_one hy0).2 hxy have hyr : y ^ (-p) = x ^ (-p) * r ^ p := by rw [hr, Real.div_rpow h …`.
+A detailed English derivation is pending.
 -/
 lemma rpow_neg_sub_le {x y p : ℝ} (hx : 1/2 ≤ x) (hxy : x ≤ y) (hp0 : 0 ≤ p) (hp2 : p ≤ 2) :
     |x ^ (-p) - y ^ (-p)| ≤ 8 * (y - x) / y := by
@@ -45,9 +45,9 @@ lemma rpow_neg_sub_le {x y p : ℝ} (hx : 1/2 ≤ x) (hxy : x ≤ y) (hp0 : 0 �
     _ = 8 * (y - x) / y := by rw [h1r']; ring
 
 /- English proof (translation)
-Rewrite using `[← geom_sum₂_mul, norm_mul]`. Use `gcongr`. Establish `hM : 0 ≤ M` using `(norm_nonneg z).trans hz`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Establish `hin : i ≤ n` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`. Rewrite using `[norm_mul, norm_pow, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = (n+1) * M ^ n := by simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma norm_pow_sub_pow_le (z w : ℂ) (n : ℕ) (M : ℝ) (hz : ‖z‖ ≤ M) (hw : ‖w‖ ≤ M) :
     ‖w ^ (n+1) - z ^ (n+1)‖ ≤ (n+1) * M ^ n * ‖w - z‖ := by
@@ -66,17 +66,15 @@ lemma norm_pow_sub_pow_le (z w : ℂ) (n : ℕ) (M : ℝ) (hz : ‖z‖ ≤ M) (
     _ = (n+1) * M ^ n := by simp
 
 /- English proof (translation)
-Establish `hW1 : ‖z‖ ≤ ‖w‖ + ‖w - z‖`. Use `norm_sub_le w (w - z)` as an intermediate fact. Simplify using `using this`. Establish `hW2 : ‖w‖ ≤ ‖z‖ + ‖w - z‖`. Use `norm_add_le z (w - z)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hWl : ‖z‖ / 2 ≤ ‖w‖` using `by linarith`. Establish `hW0 : 0 < ‖w‖` using `by linarith`. Establish `hz0 : z ≠ 0` using `norm_pos_iff.1 hz`. Establish `hw0 : w ≠ 0` using `norm_pos_iff.1 hW0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the cases of `j with`. Consider the case `zero => simp`. Consider the case `succ n`. Rewrite using `[inv_sub_inv (pow_ne_zero _ hz0) (pow_ne_zero _ hw0), norm_div, norm_mul, norm_pow, norm_pow]`. Establish `hM : ‖w‖ ≤ 2 * ‖z‖` using `by linarith`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnum` using `norm_pow_sub_pow_le z w n (2 * ‖z‖) (by linarith) hM`. Establish `hden : ‖z‖ ^ (n+1) * (‖z‖ / 2) ^ (n+1) ≤ ‖z‖ ^ (n+1) * ‖w‖ ^ (n+1)` using `by gcongr`. Establish `hdpos : 0 < ‖z‖ ^ (n+1) * (‖z‖ / 2) ^ (n+1)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_pow, mul_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ((n+1 : ℕ) : ℝ) * 4 ^ (n+1) * ‖w - z‖ / ‖z‖ ^ (n + 1 + 1) := by`. Use `push_cast`. Use `gcongr`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma inv_pow_sub_le (j : ℕ) (z w : ℂ) (hz : 0 < ‖z‖) (hwz : ‖w - z‖ ≤ ‖z‖ / 2) :
     ‖(z ^ j)⁻¹ - (w ^ j)⁻¹‖ ≤ j * 4 ^ j * ‖w - z‖ / ‖z‖ ^ (j + 1) := by
@@ -108,19 +106,19 @@ lemma inv_pow_sub_le (j : ℕ) (z w : ℂ) (hz : 0 < ‖z‖) (hwz : ‖w - z‖
             _ = 4 ^ (n+1) := by rw [show 2 * n + 2 = 2 * (n+1) by ring, pow_mul]; norm_num
 
 /- English proof (translation)
-Introduce `j`. Use `⟨j * 4 ^ j + 8 * 2 ^ j, ?_⟩` and prove the remaining obligations. Introduce `s z a hs0 hs1 hz ha`. Establish `hZ : 0 < ‖z‖` using `by linarith`. Establish `hwz : (z + a) - z = a` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ‖(z + a) - z‖ ≤ ‖z‖ / 2` using `by rw [hwz]; linarith`. Establish `hW1 : ‖z‖ ≤ ‖z + a‖ + ‖a‖`. Use `norm_sub_le (z + a) a` as an intermediate fact. Simplify using `using this`. Establish `hW2 : ‖z + a‖ ≤ ‖z‖ + ‖a‖` using `norm_add_le z a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hWl : ‖z‖ / 2 ≤ ‖z + a‖` using `by linarith`. Establish `hW0 : 0 < ‖z + a‖` using `by linarith`. Establish `hv : ‖((‖z‖ ^ (-2 * s) : ℝ) : ℂ)‖ ≤ 1`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (norm_nonneg _) _)]`. Conclude with `Real.rpow_le_one_of_one_le_of_nonpos hz (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdv : ‖((‖z‖ ^ (-2 * s) : ℝ) : ℂ) - ((‖z + a‖ ^ (-2 * s) : ℝ) : ℂ)‖ ≤ 8 * ‖a‖ / ‖z‖`. Rewrite using `[← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs, neg_mul]`. Break down `le_total ‖z‖ ‖z + a‖ with h | h` into its components or cases. Use `(rpow_neg_sub_le (by linarith) h (by linarith) (by linarith)).trans ?_` and prove the remaining obligations. Rewrite using `[div_le_div_iff₀ hW0 hZ]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[abs_sub_comm]`. Use `(rpow_neg_sub_le (by linarith) h (by linarith) (by linarith)).trans ?_` and prove the remaining obligations. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu' : ‖((z + a) ^ j)⁻¹‖ ≤ 2 ^ j / ‖z‖ ^ j`. Rewrite using `[norm_inv, norm_pow, ← one_div, div_le_div_iff₀ (by positivity) (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hdu` using `inv_pow_sub_le j z (z + a) hZ hA`. Rewrite `hdu` using `[hwz]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `trm`. Establish `e : (z ^ j)⁻¹ * ((‖z‖ ^ (-2 * s) : ℝ) : ℂ) - ((z + a) ^ j)⁻¹ * ((‖z + a‖ ^ (-2 * s) : ℝ) : ℂ) = ((z ^ j)⁻¹ - ((z + a) ^ j)⁻¹) * ((‖z‖ ^ (-2 * s) : ℝ) : ℂ) + ((z + a) ^ j)⁻¹ * (((‖z‖ ^ (-2 * s) : ℝ) : ℂ) - ((‖z + a‖ ^ (-2 * s) : ℝ) : ℂ))` using `by ring`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem first_diff : ∀ j : ℕ, ∃ C : ℝ, ∀ (s : ℝ) (z a : ℂ), 0 ≤ s → s ≤ 1 → 1 ≤ ‖z‖ → 2 * ‖a‖ ≤ ‖z‖ → ‖trm j s z - trm j s (z + a)‖ ≤ C * ‖a‖ / ‖z‖ ^ (j + 1) := by
   intro j

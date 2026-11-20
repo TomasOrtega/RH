@@ -19,7 +19,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 
 /- English proof (translation)
-Rewrite using `[add_smul]`. Conclude with `Matrix.exp_add_of_commute _ _ (((Commute.refl Z).smul_left s).smul_right t)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_smul_add {m : ℕ} (Z : Matrix (Fin m) (Fin m) ℂ) (s t : ℝ) :
     NormedSpace.exp ((s + t) • Z) = NormedSpace.exp (s • Z) * NormedSpace.exp (t • Z) := by
@@ -29,18 +29,16 @@ theorem exp_smul_add {m : ℕ} (Z : Matrix (Fin m) (Fin m) ℂ) (s t : ℝ) :
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 
 /- English proof (translation)
-The claim follows from `NormedSpace.exp_continuous.comp (continuous_id.smul continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_exp_smul {m : ℕ} (Z : Matrix (Fin m) (Fin m) ℂ) :
     Continuous fun t : ℝ => NormedSpace.exp (t • Z) :=
   NormedSpace.exp_continuous.comp (continuous_id.smul continuous_const)
 
 /- English proof (translation)
-Take `⟨w, τ, Z, -, hy⟩` from `hγ`. Use `choose y hy1 hy2 using hy`. Establish `inj : ∀ a b : GArch σ J w, GlobalTheory.Orb.archMat σ J τ a = GlobalTheory.Orb.archMat σ J τ b → a = b` using `fun a b e => by`. Rewrite `e` using `[GlobalTheory.Orb.archMat_eq_archEquiv J h, GlobalTheory.Orb.archMat_eq_archEquiv J h]`. Conclude with `(archEquiv J h τ).injective (Subtype.ext (Units.ext e))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hyadd : ∀ s t, y (s + t) = y s * y t` using `fun s t => inj _ _ (by rw [map_mul, hy2, hy2, hy2, exp_smul_add])`. Use `⟨fun s t => by rw [hy1, hy1, hy1, hyadd, map_mul], ?_⟩` and prove the remaining obligations. Establish `hyc : Continuous y` using `(GlobalTheory.Orb.isEmbedding_archMat _ h τ).continuous_iff.2 (by`. Express the relevant statement in the definitionally equal form `Continuous fun t => fun i j => GlobalTheory.Orb.archMat σ J τ (y t) i j`. Simplify using `only [hy2]`.
-
-Conclude with `continuous_pi fun i => continuous_pi fun j => (continuous_exp_smul Z).matrix_elem i j)`. Rewrite using `[show γ = fun t => embArch σ J w (y t) from funext hy1]`. Conclude with `(continuous_embArch σ J w).comp hyc`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realLine_hom (h : IsCMExt F E σ) {γ : ℝ → GAd σ J} (hγ : IsRealLine σ J γ) :
     (∀ s t, γ (s + t) = γ s * γ t) ∧ Continuous γ := by
@@ -60,9 +58,9 @@ theorem realLine_hom (h : IsCMExt F E σ) {γ : ℝ → GAd σ J} (hγ : IsRealL
   exact (continuous_embArch σ J w).comp hyc
 
 /- English proof (translation)
-Establish `h0 : HasDerivAt (fun u => f (g * γ t * γ u)) (lineDer γ f (g * γ t)) (t - t)`. Rewrite using `[sub_self]`. Conclude with `(GlobalTheory.WeakHolFamily.differentiable_line hf hγ (g * γ t) 0).hasDerivAt`. Establish `h1` using `HasDerivAt.comp_sub_const t t h0`. Establish `e : (fun u => f (g * γ u)) = fun x => f (g * γ t * γ (x - t))` using `funext fun u => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, ← hadd, add_sub_cancel]`. Rewrite using `[e]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_line {f : GAd σ J → ℂ} (hf : GlobalTheory.WeakHolFamily.SmoothLines σ J f) {γ : ℝ → GAd σ J}
     (hγ : IsRealLine σ J γ) (hadd : ∀ s t, γ (s + t) = γ s * γ t) (g : GAd σ J) (t : ℝ) :
@@ -76,23 +74,19 @@ theorem hasDerivAt_line {f : GAd σ J → ℂ} (hf : GlobalTheory.WeakHolFamily.
   exact h1
 
 /- English proof (translation)
-Take `⟨hadd, hγc⟩` from `realLine_hom h hγ`. Take `⟨N, C, hC⟩` from `hbd`. Establish `hγ0 : γ 0 = 1`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_eq_left.1 this.symm`. Establish `hmem : ∀ θ, circleMap s₀ r θ ∈ Metric.sphere s₀ r` using `fun θ => circleMap_mem_sphere s₀ hr.le θ`. Take `⟨Mc, hMc⟩` from `(isCompact_sphere s₀ r).exists_bound_of_continuousOn hc`. Establish `hMc0 : 0 ≤ Mc` using `(norm_nonneg _).trans (hMc _ (hmem 0))`. Establish `hht : Continuous fun t => (height σ J (γ t) : ℝ)` using `NNReal.continuous_coe.comp ((continuous_height_GAd σ J).comp hγc)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Hγ, hHγ⟩` from `(isCompact_closedBall (0 : ℝ) 1).exists_bound_of_continuousOn hht.continuousOn`. Use `set Y : ℝ := (height σ J g : ℝ) * |Hγ| with hY`. Establish `hdc : Continuous fun θ => deriv (circleMap s₀ r) θ`. Rewrite using `[show (fun θ => deriv (circleMap s₀ r) θ) = fun θ => circleMap 0 r θ * Complex.I from`. Use function extensionality and compare the values at `fun θ => deriv_circleMap s₀ r θ]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(continuous_circleMap 0 r).mul continuous_const`. Establish `hnd : ∀ θ, ‖deriv (circleMap s₀ r) θ‖ = |r|` using `fun θ => by`. Rewrite using `[deriv_circleMap, norm_mul, norm_circleMap_zero, Complex.norm_I, mul_one]`. Set `Fn : ℝ → ℝ → ℂ` to `fun t θ => deriv (circleMap s₀ r) θ • (c (circleMap s₀ r θ) * K (circleMap s₀ r θ) (g * γ t))`. Set `Fn' : ℝ → ℝ → ℂ` to `fun t θ => deriv (circleMap s₀ r) θ • (c (circleMap s₀ r θ) * lineDer γ (K (circleMap s₀ r θ)) (g * γ t))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : Continuous fun θ => c (circleMap s₀ r θ)` using `hc.comp_continuous (continuous_circleMap s₀ r) hmem`. Establish `hFc : ∀ t, Continuous (Fn t)` using `fun t => hdc.smul (hcc.mul ((hcont (g * γ t)).comp_continuous (continuous_circleMap s₀ r) hmem))`. Establish `hFc' : ∀ t, Continuous (Fn' t)` using `fun t => hdc.smul (hcc.mul ((hcont' (g * γ t)).comp_continuous (continuous_circleMap s₀ r) hmem))`. Establish `hL : ∀ w ∈ Metric.sphere s₀ r, ∀ t ∈ Metric.ball (0 : ℝ) 1, ‖lineDer γ (K w) (g * γ t)‖ ≤ |C| * Y ^ N`. Introduce `w hw t ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (height σ J (g * γ t) : ℝ) ≤ Y`. Establish `e1 : (height σ J (g * γ t) : ℝ) ≤ (height σ J g : ℝ) * (height σ J (γ t) : ℝ)`. Conclude with `height_mul_le σ J g (γ t)` after adjusting the coercions. Establish `e2 : (height σ J (γ t) : ℝ) ≤ |Hγ|`. Use `hHγ t (Metric.ball_subset_closedBall ht)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[Real.norm_eq_abs]`. Conclude with `(le_abs_self _).trans (this.trans (le_abs_self _))`. Conclude with `e1.trans (mul_le_mul_of_nonneg_left e2 (NNReal.coe_nonneg _))`. Use `(hC w hw _).trans ((mul_le_mul_of_nonneg_right (le_abs_self C) (pow_nonneg (NNReal.coe_nonneg _) N)).trans ?_)` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (NNReal.coe_nonneg _) h1 N) (abs_nonneg C)`.
-
-Establish `key` using `intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := volume) (a := 0) (b := 2 * Real.pi) (F := Fn) (F' := Fn') (x₀ := (0 : ℝ)) (bound := fun _ => |r| * (Mc * (|C| * Y ^ N))) (Metric.ball_mem_nhds (0 : ℝ) one_pos) (Filter.Eventually.of_forall fun t => (hFc t).ae …`. Simplify using `only [Fn', norm_smul, norm_mul, hnd]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul (hMc _ (hmem θ)) (hL _ (hmem θ) t ht) (norm_nonneg _) hMc0) (abs_nonneg r))`. Use `intervalIntegrable_const`. Use the proof step `(ae_of_all _ fun θ _ t _ => ((hasDerivAt_line (hK _ (hmem θ)) hγ hadd g t).const_mul (c (circleMap s₀ r θ))).const_smul (deriv (circleMap s₀ r) θ))`.
-
-Use `show deriv (fun t => ∫ θ in (0 : ℝ)..2 * Real.pi, Fn t θ) 0 = _`. Rewrite using `[key.2.deriv]`. Simplify using `only [Fn', hγ0, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lineDer_circleIntegral (h : IsCMExt F E σ) {K : ℂ → GAd σ J → ℂ} {c : ℂ → ℂ} {s₀ : ℂ} {r : ℝ} (hr : 0 < r)
     (hc : ContinuousOn c (Metric.sphere s₀ r))
@@ -165,7 +159,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-The claim follows from `| [], _, _ => rfl | γ :: l, hl, g => by have hl' : ∀ γ' ∈ l, IsRealLine σ J γ' := fun γ' h' => hl γ' (List.mem_cons_of_mem _ h') have hγ := hl γ List.mem_cons_self have ih := foldr_circleIntegral h H₀ s₀ r V hV hr hsub hH hμ j l hl' have hS : Metric.sphere s₀ r ⊆ V := Metric.sphe …`.
+A detailed English derivation is pending.
 -/
 theorem foldr_circleIntegral (h : IsCMExt F E σ) (H₀ : ℂ → GAd σ J → ℂ) (s₀ : ℂ) (r : ℝ) (V : Set ℂ)
     (hV : IsOpen V) (hr : 0 < r) (hsub : Metric.closedBall s₀ r ⊆ V) (hH : ∀ s ∈ V, IsSmoothModerate σ J (H₀ s))
@@ -192,9 +186,9 @@ theorem foldr_circleIntegral (h : IsCMExt F E σ) (H₀ : ℂ → GAd σ J → �
       Or.inl (sub_ne_zero.2 (Metric.ne_of_mem_sphere hw hr.ne'))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J _ H₀ s₀ r V hV hr hsub hH hμ j z hz g`. Establish `hS : Metric.sphere s₀ r ⊆ V` using `Metric.sphere_subset_closedBall.trans hsub`. Establish `hc : ContinuousOn (fun w : ℂ => (w - s₀) ^ j) (Metric.sphere s₀ r)` using `(continuousOn_id.sub continuousOn_const).zpow₀ j fun w hw => Or.inl (sub_ne_zero.2 (Metric.ne_of_mem_sphere hw hr.ne'))`. Establish `hint : ∀ l ∈ z.support, CircleIntegrable (fun w => z l * ((w - s₀) ^ j * l.foldr lineDer (H₀ w) g)) s₀ r` using `fun l hl => ContinuousOn.circleIntegrable hr.le (continuousOn_const.mul (hc.mul (((GlobalTheory.WeakHolFamily.word_holomorphic_and_uniform F E σ n J H₀ V (Metric.sphere s₀ r) hV (isCompact_sphere s₀ r) hS hH hμ l (hz l hl)).1 g).continuousOn.mono hS)))`. Simplify using `only [GlobalTheory.UAut.dop, Finsupp.sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[show (fun w => (w - s₀) ^ j * ∑ l ∈ z.support, z l * l.foldr lineDer (H₀ w) g) = fun w => ∑ l ∈ z.support, z l * ((w - s₀) ^ j * l.foldr lineDer (H₀ w) g) from`. Use function extensionality and compare the values at `fun w => by rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun _ _ => by ring]`. Rewrite using `[circleIntegral.integral_fun_sum hint]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[circleIntegral.integral_const_mul, foldr_circleIntegral h H₀ s₀ r V hV hr hsub hH hμ j l (hz l hl) g]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dop_circleIntegral : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (H₀ : ℂ → GAd σ J → ℂ) (s₀ : ℂ) (r : ℝ) (V : Set ℂ),

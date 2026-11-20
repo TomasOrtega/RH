@@ -5,9 +5,9 @@ open scoped TensorProduct
 namespace GlobalTheory.OneTensorSpanTop
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `tmul a o`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h : a ⊗ₜ[C] o = a • ((1 : k) ⊗ₜ[C] o)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨o, rfl⟩)`. Consider the case `add x y hx hy => exact Submodule.add_mem _ hx hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_one_tmul_eq_top (k : Type) [Field k] (C O : Type) [CommRing C] [Ring O]
     [Algebra C O] [Algebra C k] :

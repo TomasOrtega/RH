@@ -11,9 +11,9 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 open scoped ContDiff
 
 /- English proof (translation)
-Unfold `FB.expS`. Establish `ha : PowerSeries.HasSubst (0 : PS k n d)` using `PowerSeries.HasSubst.of_constantCoeff_zero (by simp)`. Establish `h0 : PowerSeries.constantCoeff (PowerSeries.exp k - 1) = 0`. Rewrite using `[map_sub, PowerSeries.constantCoeff_exp, map_one, sub_self]`. Establish `e : PowerSeries.exp k = 1 + (PowerSeries.exp k - 1)` using `by ring`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, ← PowerSeries.coe_substAlgHom ha, map_add, map_one, PowerSeries.coe_substAlgHom ha, PowerSeries.subst_zero_of_constantCoeff_zero h0, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem expS_zero' (k : Type) [CommRing k] [Algebra ℚ k] {n d : ℕ} : FB.expS k (0 : PS k n d) = 1 := by
   unfold FB.expS
@@ -26,7 +26,7 @@ theorem expS_zero' (k : Type) [CommRing k] [Algebra ℚ k] {n d : ℕ} : FB.expS
     PowerSeries.subst_zero_of_constantCoeff_zero h0, add_zero]
 
 /- English proof (translation)
-Unfold `FB.hL`. Unfold `ev`. Simplify using `[MvPowerSeries.subst, MvPowerSeries.eval₂]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem hL0_lemma {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : FB ℂ d O) (w0 : O) :
     B.hL ℂ 0 w0 = 0 := by
@@ -35,9 +35,9 @@ private theorem hL0_lemma {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : FB
   simp [MvPowerSeries.subst, MvPowerSeries.eval₂]
 
 /- English proof (translation)
-Establish `hL0 : B.hL ℂ 0 w0 = 0` using `hL0_lemma B w0`. Establish `hK : B.FK ℂ = addF ℂ d`. Use function extensionality and compare the values at `i`. Unfold `FB.FK`. Unfold `FGLaw.mapF`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Simplify using `[hF]`. Rewrite using `[FB.nabVal, hL0, smul_zero, expS_zero', mul_one, hK]`. Conclude with `constantCoeff_dpolyOf_tay hθ u P`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nabVal_additive {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : FB ℂ d O)
     (hF : ∀ i, B.G.F i = addF ℂ d i) (w0 : O) (m : ℕ) {θ : (Fin d → ℂ) → ℂ} (hθ : ContDiffAt ℂ ω θ 0)

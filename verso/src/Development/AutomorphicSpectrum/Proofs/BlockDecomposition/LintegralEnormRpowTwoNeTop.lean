@@ -8,7 +8,7 @@ open PositivityTheory.Rg.BcB.E1
 namespace GlobalTheory.CompanionTheory.SchurKernel
 
 /- English proof (translation)
-Establish `h` using `lintegral_rpow_enorm_lt_top_of_eLpNorm_lt_top (p := 2) (by norm_num) (by norm_num) hg.eLpNorm_lt_top`. Simplify using `using h.ne`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lintegral_enorm_rpow_two_ne_top {α : Type} [MeasurableSpace α] {ν : Measure α} {g : α → ℂ}
     (hg : MemLp g 2 ν) : ∫⁻ x, ‖g x‖ₑ ^ (2 : ℝ) ∂ν ≠ ⊤ := by
@@ -17,17 +17,17 @@ theorem lintegral_enorm_rpow_two_ne_top {α : Type} [MeasurableSpace α] {ν : M
   simpa using h.ne
 
 /- English proof (translation)
-Introduce `hS α _ ν _ k A hk hA hrow hcol g f hg hf`. Establish `hkm : AEStronglyMeasurable (fun p : α × α => k p.1 p.2) (ν.prod ν)` using `hk.aestronglyMeasurable`. Establish `hgm : AEStronglyMeasurable (fun p : α × α => g p.1) (ν.prod ν)` using `hg.1.comp_fst`. Establish `hfm : AEStronglyMeasurable (fun p : α × α => f p.2) (ν.prod ν)` using `hf.1.comp_snd`. Establish `hm : AEStronglyMeasurable (fun p : α × α => g p.1 * k p.1 p.2 * f p.2) (ν.prod ν)` using `(hgm.mul hkm).mul hfm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hm, ?_⟩` and prove the remaining obligations. Use `set K : α → α → ℝ≥0∞ := fun x y => ‖k x y‖ₑ with hK`. Establish `hKm : Measurable (Function.uncurry K)` using `hk.enorm`. Establish `hFm : AEMeasurable (fun y => ‖f y‖ₑ) ν` using `hf.1.aemeasurable.enorm`. Use `set h : α → ℝ≥0∞ := fun x => ∫⁻ y, K x y * ‖f y‖ₑ ∂ν with hh`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : AEMeasurable (fun p : α × α => K p.1 p.2 * ‖f p.2‖ₑ) (ν.prod ν)` using `hKm.aemeasurable.mul hfm.enorm`. Establish `hhm : AEMeasurable h ν` using `hprod.lintegral_prod_right'`. Establish `hsch : ∫⁻ x, h x ^ 2 ∂ν ≤ A ^ 2 * ∫⁻ y, ‖f y‖ₑ ^ 2 ∂ν` using `hS α ν K A (fun y => ‖f y‖ₑ) hKm hFm hrow hcol`. Establish `heq : ∫⁻ p, ‖g p.1 * k p.1 p.2 * f p.2‖ₑ ∂(ν.prod ν) = ∫⁻ x, ‖g x‖ₑ * h x ∂ν`. Rewrite using `[lintegral_prod _ hm.enorm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [hh, hK]`. Rewrite using `[← lintegral_const_mul' _ _ enorm_ne_top]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Simplify using `only [enorm_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhold` using `ENNReal.lintegral_mul_le_Lp_mul_Lq ν (Real.HolderConjugate.two_two) hg.1.aemeasurable.enorm hhm`. Establish `hG : ∫⁻ x, ‖g x‖ₑ ^ (2 : ℝ) ∂ν ≠ ⊤` using `lintegral_enorm_rpow_two_ne_top hg`. Establish `hF : ∫⁻ x, ‖f x‖ₑ ^ (2 : ℝ) ∂ν ≠ ⊤` using `lintegral_enorm_rpow_two_ne_top hf`. Establish `hH : ∫⁻ x, h x ^ (2 : ℝ) ∂ν ≠ ⊤`. Simplify using `only [ENNReal.rpow_two] at hF ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ne_top_of_le_ne_top (ENNReal.mul_ne_top (ENNReal.pow_ne_top hA) hF) hsch`. Rewrite using `[HasFiniteIntegral, heq]`. Use `lt_of_le_of_lt hhold (ENNReal.mul_lt_top ?_ ?_)` and prove the remaining obligations. Conclude with `ENNReal.rpow_lt_top_of_nonneg (by norm_num) hG`. Conclude with `ENNReal.rpow_lt_top_of_nonneg (by norm_num) hH`.
+A detailed English derivation is pending.
 -/
 theorem schurInt_of_schurL : SchurL → SchurInt := by
   intro hS α _ ν _ k A hk hA hrow hcol g f hg hf

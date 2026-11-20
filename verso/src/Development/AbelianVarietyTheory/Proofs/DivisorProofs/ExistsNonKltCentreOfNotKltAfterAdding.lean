@@ -14,11 +14,11 @@ namespace GlobalTheory.PairStep.Centre
 variable {k : Type} [Field k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k}
 
 /- English proof (translation)
-Use `⟨by rintro _ ⟨a, rfl⟩; exact h.1 a, ?_⟩` and prove the remaining obligations. Introduce and unpack `f ⟨a, ha⟩ h0`. Establish `hinv : ((f⁻¹ : X.functionFieldˣ) : X.functionField) ∈ E.ring` using `(E.ord_nonneg_iff f⁻¹).1 (by rw [E.ord_inv, h0]; simp)`. Establish `hu : IsUnit a`. Assume the negation of the conclusion as `hu`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1` using `(E.ring.coe_mem_nonunits_iff (a := ⟨_, h.1 a⟩)).mp (h.2 a hu)`. Use `h1 (IsUnit.of_mul_eq_one ⟨_, hinv⟩ (Subtype.ext ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap _ X.functionField a * _ = 1`. Rewrite using `[ha]`. Conclude with `f.mul_inv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, rfl⟩` from `hu`. Use `⟨((u⁻¹ : (X.presheaf.stalk z)ˣ) : X.presheaf.stalk z), ?_⟩` and prove the remaining obligations. Establish `e : algebraMap _ X.functionField ((u⁻¹ : (X.presheaf.stalk z)ˣ) : X.presheaf.stalk z) * (f : X.functionField) = 1`. Rewrite using `[← ha, ← map_mul, Units.inv_mul, map_one]`. Conclude with `(Units.inv_eq_of_mul_eq_one_left e).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem centreAt_of_dominatesStalk {E : DivOver p} {z : X} (h : DominatesStalk E.ring z) :
     CentreAt E z := by
@@ -41,7 +41,7 @@ theorem centreAt_of_dominatesStalk {E : DivOver p} {z : X} (h : DominatesStalk E
   exact (Units.inv_eq_of_mul_eq_one_left e).symm
 
 /- English proof (translation)
-The claim follows from `have ⟨z, hz, hd⟩ := exists_specializes_dominatesStalk_of_regAt X E.ring x h ⟨z, hz, centreAt_of_dominatesStalk hd⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_centreAt {E : DivOver p} {x : X} (h : E.Through x) :
     ∃ z, z ⤳ x ∧ CentreAt E z :=
@@ -49,11 +49,11 @@ theorem exists_centreAt {E : DivOver p} {x : X} (h : E.Through x) :
   ⟨z, hz, centreAt_of_dominatesStalk hd⟩
 
 /- English proof (translation)
-Take `⟨r, D₀, hr, -, rfl⟩` from `hD`. Take `⟨d, hd⟩` from `D₀.exists_isEqn x`. Take `⟨V, hV, hdV⟩` from `hd.exists_nhds`. Use `⟨m * r, g ^ r * d ^ m, Nat.mul_pos hm hr, fun z hz E hE => ?_⟩` and prove the remaining obligations. Establish `h1` using `(hdV z (hz.mem_open V.isOpen hV)).mult_eq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hE.ord_eq]`. Establish `h2` using `hg z hz E hE`. Establish `: (r : ℚ) ≠ 0` using `by exact_mod_cast hr.ne'`. Rewrite using `[E.ord_mul, E.ord_pow, E.ord_pow, Pi.add_apply, qWeil, h1]`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← h2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_isLogEqn_add [IsLocallyNoetherian X] {n : ℕ} {Δ D : X → ℚ} {η : RatForms p n}
     {x : X} {m : ℕ} {g : X.functionFieldˣ} (hD : IsQCart D) (hm : 0 < m)
@@ -74,9 +74,9 @@ theorem exists_isLogEqn_add [IsLocallyNoetherian X] {n : ℕ} {Δ D : X → ℚ}
   ring
 
 /- English proof (translation)
-Introduce `X _ _ _ p n hp hn Δ D x hD hk hnk`. Use `haveI : IsProper p := ((isProjOver_iff_isProper_and_exists_isAmpleLB p).1 hp).1`. Take `⟨η, m, g, hη, hm, hg, -⟩` from `hk`. Take `⟨m', g', hm', hg'⟩` from `exists_isLogEqn_add hD hm hg`. Rewrite `hnk` using `[hg'.kltAt_iff hn hη hm']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `push_neg at hnk`. Take `⟨E, hE, hd⟩` from `hnk`. Take `⟨z, hz, hc⟩` from `exists_centreAt hE`. Conclude with `⟨z, hz, E, η, m', g', hη, hm', fun w hw => hg' w (hw.trans hz), hc, hd⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isNkltCentre : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X]
     [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n →

@@ -15,7 +15,7 @@ def tn {X Y : Type} (M : Submodule R (X → C)) (M' : Submodule R (Y → C)) :
   Submodule.span R {F | ∃ g ∈ M, ∃ h ∈ M', F = fun z => g z.1 * h z.2}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨g, hg, h, hh, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_tn {X Y : Type} {M : Submodule R (X → C)} {M' : Submodule R (Y → C)} {g : X → C}
     {h : Y → C} (hg : g ∈ M) (hh : h ∈ M') : (fun z : X × Y => g z.1 * h z.2) ∈ tn M M' :=
@@ -25,7 +25,7 @@ def bil {X Y Z : Type} (a : Z → X) (b : Z → Y) : (X → C) →ₗ[R] (Y → 
   (LinearMap.mul R (Z → C)).compl₁₂ (LinearMap.funLeft R C a) (LinearMap.funLeft R C b)
 
 /- English proof (translation)
-Establish `h1 : Submodule.map₂ (bil (R` using `R) (C := C) a b) (Submodule.span R s) (Submodule.span R t) ≤ P := by`. Rewrite using `[Submodule.map₂_span_span, Submodule.span_le]`. Introduce and unpack `_ ⟨g, hg, h, hh, rfl⟩`. Conclude with `H g hg h hh`. Conclude with `h1 (Submodule.apply_mem_map₂ _ hg hh)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem bil_span {X Y Z : Type} (a : Z → X) (b : Z → Y) {s : Set (X → C)} {t : Set (Y → C)}
     {P : Submodule R (Z → C)} (H : ∀ g ∈ s, ∀ h ∈ t, (fun z => g (a z) * h (b z)) ∈ P)
@@ -39,9 +39,9 @@ theorem bil_span {X Y Z : Type} (a : Z → X) (b : Z → Y) {s : Set (X → C)} 
   exact h1 (Submodule.apply_mem_map₂ _ hg hh)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[tn, Submodule.span_le]`. Introduce and unpack `_ ⟨g, hg, h, hh, rfl⟩`. Use `bil_span Prod.fst Prod.snd ?_ hg hh` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩ _ ⟨j, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.subset_span ⟨(i, j), rfl⟩`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨⟨i, j⟩, rfl⟩`. Conclude with `mem_tn (g := fun x => B x i) (h := fun x => B' x j) (Submodule.subset_span ⟨i, rfl⟩) (Submodule.subset_span ⟨j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem tn_cols {X Y : Type} (B : Matrix X X C) (B' : Matrix Y Y C) :
     tn (Submodule.span R (Set.range fun j x => B x j))
@@ -59,7 +59,7 @@ theorem tn_cols {X Y : Type} (B : Matrix X X C) (B' : Matrix Y Y C) :
       (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Take `⟨B, rfl, rfl⟩` from `h`. Take `⟨B', rfl, rfl⟩` from `h'`. Conclude with `⟨B ⊗ₖ B', tn_cols B B', by rw [Matrix.det_kronecker, map_mul, map_pow, map_pow]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasColen_tn {v : Valuation C NNReal} {X Y : Type} [Fintype X] [DecidableEq X] [Fintype Y]
     [DecidableEq Y] {M : Submodule R (X → C)} {M' : Submodule R (Y → C)} {c c' : NNReal}
@@ -111,9 +111,9 @@ theorem hopfProd_carrier (A₁ : HopfOrder (C := C) R N₁) (A₂ : HopfOrder (C
     (hopfProd A₁ A₂).carrier = tn A₁.carrier A₂.carrier := rfl
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[tn, Submodule.map_span_le]`. Introduce and unpack `_ ⟨g, hg, h, hh, rfl⟩`. Take `⟨r, hr⟩` from `A₂.le_int hh 0`. Use `A₁.carrier.smul_mem r hg using 1` and compare the differences between its conclusion and the goal.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `x`. Simplify using `[Algebra.smul_def, hr, mul_comm]`. Introduce `g hg`. Conclude with `⟨_, mem_tn hg A₂.one_mem, by funext x; simp⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem tn_inl (A₁ : HopfOrder (C := C) R N₁) (A₂ : HopfOrder (C := C) R N₂) :
     (tn A₁.carrier A₂.carrier).map
@@ -129,9 +129,9 @@ theorem tn_inl (A₁ : HopfOrder (C := C) R N₁) (A₂ : HopfOrder (C := C) R N
     exact ⟨_, mem_tn hg A₂.one_mem, by funext x; simp⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[tn, Submodule.map_span_le]`. Introduce and unpack `_ ⟨g, hg, h, hh, rfl⟩`. Take `⟨r, hr⟩` from `A₁.le_int hg 0`. Use `A₂.carrier.smul_mem r hh using 1` and compare the differences between its conclusion and the goal.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `x`. Simplify using `[Algebra.smul_def, hr]`. Introduce `g hg`. Conclude with `⟨_, mem_tn A₁.one_mem hg, by funext x; simp⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem tn_inr (A₁ : HopfOrder (C := C) R N₁) (A₂ : HopfOrder (C := C) R N₂) :
     (tn A₁.carrier A₂.carrier).map
@@ -147,7 +147,7 @@ theorem tn_inr (A₁ : HopfOrder (C := C) R N₁) (A₂ : HopfOrder (C := C) R N
     exact ⟨_, mem_tn A₁.one_mem hg, by funext x; simp⟩
 
 /- English proof (translation)
-Introduce `g hg`. Establish `h` using `Submodule.mem_map_of_mem (f := LinearMap.funLeft R C (AddMonoidHom.inl N₁ N₂ : N₁ → N₁ × N₂)) hg`. Rewrite `h` using `[tn_inl]`. Use `mem_tn h A₂.one_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
 Simplify using the standard rewrite rules.
 -/
@@ -163,7 +163,7 @@ theorem tn_stab₁ (A₁ : HopfOrder (C := C) R N₁) (A₂ : HopfOrder (C := C)
   simp
 
 /- English proof (translation)
-Introduce `g hg`. Establish `h` using `Submodule.mem_map_of_mem (f := LinearMap.funLeft R C (AddMonoidHom.inr N₁ N₂ : N₂ → N₁ × N₂)) hg`. Rewrite `h` using `[tn_inr]`. Use `mem_tn A₁.one_mem h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
 Simplify using the standard rewrite rules.
 -/
@@ -179,15 +179,15 @@ theorem tn_stab₂ (A₁ : HopfOrder (C := C) R N₁) (A₂ : HopfOrder (C := C)
   simp
 
 /- English proof (translation)
-Establish `hadd : ∀ z : N₁ × N₂, e (z.1, 0) + e (0, z.2) = e z` using `fun z => by`. Rewrite using `[← map_add]`. Simplify using the standard rewrite rules. Establish `hs₂ : ∀ g ∈ AA.carrier, (fun x => g (e (0, (e.symm x).2))) ∈ AA.carrier`. Introduce `g hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(stabadd C R N N AA AA (AddMonoidHom.id N) (e.toAddMonoidHom.comp ((AddMonoidHom.inl N₁ N₂).comp ((AddMonoidHom.fst N₁ N₂).comp e.symm.toAddMonoidHom))) (fun g hg => hg) hs).2 g hg` as an intermediate fact. Use `this using 3 with x` and compare the differences between its conclusion and the goal. Establish `h` using `hadd (e.symm x)`. Rewrite `h` using `[e.apply_symm_apply]`. Conclude with `eq_sub_of_add_eq' h`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Establish `h : (tensorSpan R AA.carrier).map (LinearMap.funLeft R C (fun z : N₁ × N₂ => (e (z.1, 0), e (0, z.2)))) ≤ tn (AA.carrier.map (LinearMap.funLeft R C fun y : N₁ => e (y, 0))) (AA.carrier.map (LinearMap.funLeft R C fun y : N₂ => e (0, y)))`. Rewrite using `[tensorSpan, Submodule.map_span_le]`. Introduce and unpack `F ⟨u, hu, w, hw, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `mem_tn (Submodule.mem_map_of_mem hu) (Submodule.mem_map_of_mem hw)`. Use `h (Submodule.mem_map_of_mem (AA.comul g hg)) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`. Use `show g (e z) = g (e (z.1, 0) + e (0, z.2))`. Rewrite using `[hadd]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[tn, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨u, hu, rfl⟩, _, ⟨w, hw, rfl⟩, rfl⟩`. Use `⟨_, AA.mul_mem _ _ (hs u hu) (hs₂ w hw), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Simplify using `[LinearMap.funLeft_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tn_char {N : Type} [AddCommGroup N] [Fintype N] [DecidableEq N]
     (AA : HopfOrder (C := C) R N) {N₁ N₂ : Type} [AddCommGroup N₁] [AddCommGroup N₂]

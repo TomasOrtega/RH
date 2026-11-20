@@ -11,23 +11,23 @@ noncomputable section
 namespace GlobalTheory.Desc
 
 /- English proof (translation)
-Introduce `R _ _ f hf x S₁ B Z B₀ B₁ ξ' hξf hξs hξq pB pZ hpB hpZ φ₀ q₀ u₀ φ₁ q₁ u₁ h₀ h₁ hu₁ H`. Establish `hs : Flat ((Sp R).fromSpecStalk x)` using `GenericExt.flat_fromSpecStalk _ x`. Set `π : B₁ ⟶ pullback pB ((Sp R).fromSpecStalk x)` to `pullback.lift φ₁ (q₁ ≫ ξ') (by rw [h₁.w, Category.assoc])`. Establish `hπ₁ : π ≫ pullback.fst _ _ = φ₁` using `pullback.lift_fst _ _ _`. Establish `hπ₂ : π ≫ pullback.snd _ _ = q₁ ≫ ξ'` using `pullback.lift_snd _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : IsPullback π q₁ (pullback.snd pB ((Sp R).fromSpecStalk x)) ξ'`. Use `IsPullback.of_right ?_ hπ₂ (IsPullback.of_hasPullback pB ((Sp R).fromSpecStalk x))` and prove the remaining obligations. Rewrite using `[hπ₁]`. Conclude with `h₁`. Establish `: Flat π` using `MorphismProperty.of_isPullback hsq.flip hξf`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Surjective π` using `MorphismProperty.of_isPullback hsq.flip hξs`. Establish `: QuasiCompact π` using `MorphismProperty.of_isPullback hsq.flip hξq`. Establish `: Flat φ₁` using `by rw [← hπ₁]; infer_instance`. Establish `key : pullback.fst π π ≫ u₁ = pullback.snd π π ≫ u₁`. Set `g : pullback π π ⟶ Sp R` to `pullback.fst π π ≫ φ₁ ≫ pB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : Flat g` using `inferInstance`. Establish `hφ : pullback.fst π π ≫ φ₁ = pullback.snd π π ≫ φ₁`. Rewrite using `[← hπ₁, pullback.condition_assoc]`. Establish `hAf : IsSchemeTheoreticallyDominant (awayMap f)` using `schDom_spec_map _ (IsLocalization.injective (Localization.Away f) (powers_le_nonZeroDivisors_of_noZeroDivisors hf))`. Establish `hdom : IsSchemeTheoreticallyDominant (pullback.fst g (awayMap f))` using `IsSchemeTheoreticallyDominant.of_isPullback (IsPullback.of_hasPullback g (awayMap f)).flip`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext_of_schDom pZ ?_ (pullback.fst g (awayMap f)) ?_` and prove the remaining obligations. Simplify using `only [Category.assoc, hu₁]`. Conclude with `(reassoc_of% hφ) pB`. Set `t₀ : pullback g (awayMap f) ⟶ B₀` to `h₀.lift (pullback.fst g (awayMap f) ≫ pullback.fst π π ≫ φ₁) (pullback.snd g (awayMap f)) (by simpa [g] using pullback.condition (f := g) (g := awayMap f))`. Establish `ht₀ : t₀ ≫ φ₀ = pullback.fst g (awayMap f) ≫ pullback.fst π π ≫ φ₁` using `h₀.lift_fst _ _ _`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁` using `H _ t₀ (pullback.fst g (awayMap f) ≫ pullback.fst π π) (by rw [ht₀, Category.assoc])`. Establish `e₂` using `H _ t₀ (pullback.fst g (awayMap f) ≫ pullback.snd π π) (by rw [ht₀, Category.assoc, hφ])`. Simplify using `only [Category.assoc] at e₁ e₂`. Rewrite using `[← e₁, ← e₂]`. Establish `hE : EffectiveEpi π` using `by set_option synthInstance.maxHeartbeats 400000 in infer_instance`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `u` to `EffectiveEpi.desc π u₁ (fun a b hab => by`. Use `congrArg (pullback.lift a b hab ≫ ·) key` as an intermediate fact. Simplify `this)` using `only [pullback.lift_fst_assoc, pullback.lift_snd_assoc]`. Establish `hu : π ≫ u = u₁` using `EffectiveEpi.fac _ _ _`. Establish `: Epi π` using `Flat.epi_of_flat_of_surjective π`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_epi π, reassoc_of% hu, hu₁, reassoc_of% hπ₁]`. Introduce `T t₀ t ht`. Establish `: Epi (pullback.fst t π)` using `Flat.epi_of_flat_of_surjective _`. Rewrite using `[← cancel_epi (pullback.fst t π), pullback.condition_assoc, hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `H _ (pullback.fst t π ≫ t₀) (pullback.snd t π) (by` as an intermediate fact. Rewrite using `[Category.assoc, ht, pullback.condition_assoc, hπ₁])`. Simplify `this` using `only [Category.assoc]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_desc_specStalk : ∀ (R : Type) [CommRing R] [IsDomain R] (f : R), f ≠ 0 → ∀ (x : Sp R)
     (S₁ B Z B₀ B₁ : Scheme.{0}) (ξ' : S₁ ⟶ Spec ((Sp R).presheaf.stalk x)), Flat ξ' → Surjective ξ' →

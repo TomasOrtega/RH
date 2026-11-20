@@ -24,9 +24,9 @@ theorem colRep_apply (ρ : Γ →* GL (Fin a) k) (g : Γ) :
     colRep ρ g = Matrix.toLin' ((ρ g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k) := rfl
 
 /- English proof (translation)
-Use `⟨fun P => ?_⟩` and prove the remaining obligations. Take `⟨W', h1, h2⟩` from `h P.toSubmodule fun g v hv => P.apply_mem_toSubmodule g hv`. Use `⟨⟨W', fun g v hv => h1 g v hv⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[isCompl_iff, disjoint_iff, codisjoint_iff, ← Subrepresentation.toSubmodule_injective.eq_iff, ← Subrepresentation.toSubmodule_injective.eq_iff]`. Rewrite `h2` using `[isCompl_iff, disjoint_iff, codisjoint_iff]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem colRep_semisimple (ρ : Γ →* GL (Fin a) k) (h : Formalism.MainNotions.N.IsSSRep ρ) :
     (colRep ρ).IsSemisimpleRepresentation := by
@@ -39,11 +39,11 @@ theorem colRep_semisimple (ρ : Γ →* GL (Fin a) k) (h : Formalism.MainNotions
   exact h2
 
 /- English proof (translation)
-Introduce `Γ k _ _ _ a ρ ρ' hρ hρ' ht`. Take `⟨e, he⟩` from `GlobalTheory.TraceIso.exists_equiv_of_trace_eq (colRep ρ) (colRep ρ') (colRep_semisimple ρ hρ) (colRep_semisimple ρ' hρ') fun g => by`. Rewrite using `[colRep_apply, colRep_apply, Matrix.trace_toLin'_eq, Matrix.trace_toLin'_eq, ht]`. Set `h : GL (Fin a) k` to `⟨LinearMap.toMatrix' e.toLinearMap, LinearMap.toMatrix' e.symm.toLinearMap, by rw [← LinearMap.toMatrix'_comp]; simp, by rw [← LinearMap.toMatrix'_comp]; simp⟩`. Use `⟨h, fun g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eq_mul_inv_iff_mul_eq]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul]`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[Matrix.toLin'_mul, Matrix.toLin'_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hh : Matrix.toLin' (h : Matrix (Fin a) (Fin a) k) = e.toLinearMap` using `Matrix.toLin'_toMatrix' _`. Rewrite using `[hh]`. Conclude with `LinearMap.ext fun v => (he g v).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_of_trace_eq : ∀ (Γ k : Type) [Group Γ] [Field k] [CharZero k] (a : ℕ)
     (ρ ρ' : Γ →* GL (Fin a) k), Formalism.MainNotions.N.IsSSRep ρ → Formalism.MainNotions.N.IsSSRep ρ' →

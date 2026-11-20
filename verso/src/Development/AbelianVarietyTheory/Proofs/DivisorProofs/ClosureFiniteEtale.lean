@@ -40,7 +40,7 @@ def Good (A R D : Type) [CommRing A] [CommRing R] [Algebra A R] [CommRing D]
 end GlobalTheory.KeyOriginNoeth
 
 /- English proof (translation)
-Use `letI := (GlobalTheory.KeyOriginNoeth.baseHom A R (GlobalTheory.LocAcyc.GenFib A R)).toAlgebra`. Conclude with `isIntegral_algebraMap (R := R) (A := GlobalTheory.LocAcyc.GenFib A R) (x := r)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 example (A R : Type) [CommRing A] [CommRing R] [Algebra A R] (r : R) :
     GlobalTheory.KeyOriginNoeth.baseHom A R (GlobalTheory.LocAcyc.GenFib A R) r ∈

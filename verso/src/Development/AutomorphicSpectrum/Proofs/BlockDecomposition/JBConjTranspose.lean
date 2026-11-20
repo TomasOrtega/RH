@@ -26,7 +26,7 @@ def rB (m : Mat (n + 1)) : Mat n := m.submatrix Fin.castSucc Fin.castSucc
 def cB (m : Mat (n + 1)) : ℂ := m (Fin.last n) (Fin.last n)
 
 /- English proof (translation)
-Simplify using `only [jB, reindex_apply, submatrix_mul_equiv, fromBlocks_multiply]`. Use `congr 1`. Simplify using `[smul_smul, mul_comm]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem jB_mul (A B : Mat n) (c d : ℂ) : jB A c * jB B d = jB (A * B) (c * d) := by
   simp only [jB, reindex_apply, submatrix_mul_equiv, fromBlocks_multiply]
@@ -34,13 +34,13 @@ theorem jB_mul (A B : Mat n) (c d : ℂ) : jB A c * jB B d = jB (A * B) (c * d) 
   simp [smul_smul, mul_comm]
 
 /- English proof (translation)
-Simplify using `[jB, Matrix.fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jB_one : jB (1 : Mat n) 1 = 1 := by
   simp [jB, Matrix.fromBlocks_one]
 
 /- English proof (translation)
-Establish `h` using `(Matrix.reindexLinearEquiv ℂ ℂ (finSumFinEquiv (m := n) (n := 1)) finSumFinEquiv).map_add (fromBlocks A 0 0 (c • (1 : Matrix (Fin 1) (Fin 1) ℂ))) (fromBlocks B 0 0 (d • (1 : Matrix (Fin 1) (Fin 1) ℂ)))`. Simplify using `only [Matrix.coe_reindexLinearEquiv, fromBlocks_add, add_zero, ← add_smul] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jB_add (A B : Mat n) (c d : ℂ) : jB (A + B) (c + d) = jB A c + jB B d := by
   have h := (Matrix.reindexLinearEquiv ℂ ℂ (finSumFinEquiv (m := n) (n := 1)) finSumFinEquiv).map_add

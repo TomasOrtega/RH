@@ -8,9 +8,9 @@ open CategoryTheory AlgebraicGeometry Opposite CrystallineSemistableComparison C
 namespace GlobalTheory.CompanionTheory.RootPowLC
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.prod_empty, U.basicOpen_of_isUnit isUnit_one]`. Discharge the goal by the elementary cases of `trivial`. Consider the case `insert a t ha ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Treat this case separately.
 
-Rewrite using `[Finset.prod_insert ha, Scheme.basicOpen_mul]`. Conclude with `⟨h a (Finset.mem_insert_self a t), ih fun b hb => h b (Finset.mem_insert_of_mem hb)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_basicOpen_prod {U : Scheme.{0}} {ι : Type} (t : Finset ι) (s : ι → Γ(U, ⊤)) (u : U)
     (h : ∀ a ∈ t, u ∈ U.basicOpen (s a)) : u ∈ U.basicOpen (∏ a ∈ t, s a) := by
@@ -24,7 +24,7 @@ theorem mem_basicOpen_prod {U : Scheme.{0}} {ι : Type} (t : Finset ι) (s : ι 
     exact ⟨h a (Finset.mem_insert_self a t), ih fun b hb => h b (Finset.mem_insert_of_mem hb)⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hm` using `mem_basicOpen_prod t s u hc`. Rewrite `hm` using `[h, Scheme.basicOpen_zero]`. Conclude with `hm`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_notMem_basicOpen {U : Scheme.{0}} {ι : Type} (t : Finset ι) (s : ι → Γ(U, ⊤))
     (h : ∏ a ∈ t, s a = 0) (u : U) : ∃ a ∈ t, u ∉ U.basicOpen (s a) := by
@@ -35,9 +35,9 @@ theorem exists_notMem_basicOpen {U : Scheme.{0}} {ι : Type} (t : Finset ι) (s 
   exact hm
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[Scheme.mem_basicOpen_top]`. Establish `h1 : IsUnit (U.presheaf.germ ⊤ u trivial (x - y))` using `h.map _`. Rewrite `h1` using `[map_sub, sub_eq_add_neg]`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add h1 with h2 | h2` into its components or cases. Conclude with `absurd h2 hx`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h2.neg`.
+A detailed English derivation is pending.
 -/
 theorem mem_basicOpen_of_isUnit_sub {U : Scheme.{0}} (x y : Γ(U, ⊤)) (h : IsUnit (x - y)) (u : U)
     (hx : u ∉ U.basicOpen x) : u ∈ U.basicOpen y := by
@@ -49,9 +49,7 @@ theorem mem_basicOpen_of_isUnit_sub {U : Scheme.{0}} (x y : Γ(U, ⊤)) (h : IsU
   · simpa using h2.neg
 
 /- English proof (translation)
-Use `RingedSpace.isUnit_of_isUnit_germ V.toRingedSpace ⊤ _ fun v _ => ?_` and prove the remaining obligations. Establish `e : V.basicOpen (g.appTop.hom x) = g ⁻¹ᵁ U.basicOpen x` using `(Scheme.preimage_basicOpen g x).symm`. Establish `hv : v ∈ V.basicOpen (g.appTop.hom x)`. Rewrite using `[e]`. Conclude with `h v`.
-
-Conclude with `(Scheme.mem_basicOpen_top V (g.appTop.hom x) v).1 hv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_appTop_of_mem {V U : Scheme.{0}} (g : V ⟶ U) (x : Γ(U, ⊤))
     (h : ∀ v : V, g v ∈ U.basicOpen x) : IsUnit (g.appTop.hom x) := by
@@ -63,29 +61,25 @@ theorem isUnit_appTop_of_mem {V U : Scheme.{0}} (g : V ⟶ U) (x : Γ(U, ⊤))
   exact (Scheme.mem_basicOpen_top V (g.appTop.hom x) v).1 hv
 
 /- English proof (translation)
-Establish `hprod : ∏ a : ZMod q, (r - ζ.1 ^ a.val) = 0`. Rewrite using `[← (hP q _ ζ).2.2.1 r, hr, sub_self]`. Establish `hex : ∀ u : U, ∃ a : ZMod q, u ∉ U.basicOpen (r - ζ.1 ^ a.val)`. Introduce `u`. Take `⟨a, -, ha⟩` from `exists_notMem_basicOpen Finset.univ (fun a : ZMod q => r - ζ.1 ^ a.val) hprod u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, ha⟩`. Establish `huniq : ∀ (u : U) (a b : ZMod q), a ≠ b → u ∉ U.basicOpen (r - ζ.1 ^ a.val) → u ∈ U.basicOpen (r - ζ.1 ^ b.val)`. Introduce `u a b hab ha`. Apply `mem_basicOpen_of_isUnit_sub _ _ _ u ha` to reduce the goal to its premises. Establish `hd : (r - ζ.1 ^ a.val) - (r - ζ.1 ^ b.val) = ζ.1 ^ b.val - ζ.1 ^ a.val` using `by ring`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[hd]`. Conclude with `(hP q _ ζ).2.1 b a (Ne.symm hab)`. Take `⟨f0, hf0def⟩ : ∃ f0 : U → ZMod q, f0 = fun u => Classical.choose (hex u)` from `⟨_, rfl⟩`. Establish `hf0 : ∀ u, u ∉ U.basicOpen (r - ζ.1 ^ (f0 u).val)`. Introduce `u`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf0def]`. Conclude with `Classical.choose_spec (hex u)`. Establish `hf0_iff : ∀ u a, f0 u = a ↔ u ∉ U.basicOpen (r - ζ.1 ^ a.val)`. Introduce `u a`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `rfl`. Conclude with `hf0 u`. Introduce `ha`. Assume the negation of the conclusion as `hne`. Conclude with `(hf0 u) (huniq u a (f0 u) (Ne.symm hne) ha)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hloc : IsLocallyConstant f0`. Rewrite using `[IsLocallyConstant.iff_isOpen_fiber]`. Introduce `a`. Establish `hfib : f0 ⁻¹' {a} = ⋂ b ∈ (Finset.univ.erase a : Finset (ZMod q)), (U.basicOpen (r - ζ.1 ^ b.val) : Set U)`. Use extensionality with `u`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, Set.mem_iInter, Finset.mem_erase, Finset.mem_univ, and_true, SetLike.mem_coe]`. Rewrite using `[hf0_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `ha b hb`. Conclude with `huniq u a b (Ne.symm hb) ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h ha`. Take `⟨a', ha'⟩` from `hex u`. Distinguish the cases in `heq : a' = a`. Conclude with `ha' (heq ▸ ha)`. Conclude with `ha' (h a' heq)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hfib]`. Conclude with `isOpen_biInter_finset fun b _ => (U.basicOpen (r - ζ.1 ^ b.val)).isOpen`. Use `⟨⟨f0, hloc⟩, ?_, fun u a ha => (hf0_iff u a).mpr ha⟩` and prove the remaining obligations. Use `delta CrystallineSemistableComparison.E.IsPow`. Introduce `V g a hga`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hunitb : ∀ b : ZMod q, b ≠ a → IsUnit (g.appTop.hom (r - ζ.1 ^ b.val))` using `fun b hb => isUnit_appTop_of_mem g _ (fun v => huniq (g v) a b (Ne.symm hb) ((hf0_iff (g v) a).mp (hga v)))`. Establish `hprodV : ∏ b : ZMod q, (g.appTop.hom r - g.appTop.hom ζ.1 ^ b.val) = 0`. Establish `h0` using `congrArg g.appTop.hom hprod`. Rewrite `h0` using `[map_prod, map_zero]`. Simplify `h0` using `only [map_sub, map_pow]`.
-
-Rewrite `hprodV` using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ a)]`. Establish `hu : IsUnit (∏ b ∈ Finset.univ.erase a, (g.appTop.hom r - g.appTop.hom ζ.1 ^ b.val))`. Use `Finset.prod_induction _ IsUnit (fun x y hx hy => hx.mul hy) isUnit_one (fun b hb => ?_)` and prove the remaining obligations. Establish `h1` using `hunitb b (Finset.ne_of_mem_erase hb)`. Simplify `h1` using `only [map_sub, map_pow]`.
-
-Establish `h0 : g.appTop.hom r - g.appTop.hom ζ.1 ^ a.val = 0` using `hu.mul_left_eq_zero.mp hprodV`. Use `show g.appTop.hom r = (g.appTop.hom ζ.1) ^ a.val`. Conclude with `sub_eq_zero.mp h0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isPow (hP : PrimAlg) (q : ℕ) [NeZero q] (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤))
     (r : Γ(U, ⊤)) (hr : r ^ q = 1) :
@@ -155,23 +149,21 @@ theorem exists_isPow (hP : PrimAlg) (q : ℕ) [NeZero q] (U : Scheme.{0}) (ζ : 
   exact sub_eq_zero.mp h0
 
 /- English proof (translation)
-Introduce `hP q _ U ζ`. Use `⟨fun r hr => ?_, fun ξ => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, -⟩` from `exists_isPow hP q U ζ r hr`. Conclude with `⟨f, hf⟩`. Establish `hξq : ξ.1 ^ q = 1` using `(hP q _ ξ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨f, hf, hloc⟩` from `exists_isPow hP q U ζ ξ.1 hξq`. Use `⟨f, hf, fun u => ?_⟩` and prove the remaining obligations. Establish `hprod : ∏ a : ZMod q, (ξ.1 - ζ.1 ^ a.val) = 0`. Rewrite using `[← (hP q _ ζ).2.2.1 ξ.1, hξq, sub_self]`. Take `⟨a, -, ha⟩` from `exists_notMem_basicOpen Finset.univ (fun a : ZMod q => ξ.1 - ζ.1 ^ a.val) hprod u`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hloc u a ha]`. Assume the negation of the conclusion as `hna`. Use `set m := a.val with hm`. Establish `hq : 0 < q` using `Nat.pos_of_ne_zero (NeZero.ne q)`. Establish `ha' : a = (m : ZMod q)` using `(ZMod.natCast_zmod_val a).symm`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcop : ¬ m.Coprime q`. Introduce `hc`. Conclude with `hna (ha' ▸ (ZMod.isUnit_iff_coprime m q).2 hc)`. Use `set g := Nat.gcd m q with hgdef`. Establish `hg1 : g ≠ 1` using `hcop`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgpos : 0 < g` using `Nat.gcd_pos_of_pos_right m hq`. Establish `hgq : g ∣ q` using `Nat.gcd_dvd_right m q`. Establish `hgm : g ∣ m` using `Nat.gcd_dvd_left m q`. Use `set k := q / g with hkdef`. Establish `hkpos : 0 < k` using `Nat.div_pos (Nat.le_of_dvd hq hgq) hgpos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hklt : k < q` using `Nat.div_lt_self hq (by omega)`. Establish `hζq : ζ.1 ^ q = 1` using `(hP q _ ζ).1`. Establish `hζmk : (ζ.1 ^ m) ^ k = 1`. Take `⟨m', hm'⟩` from `hgm`. Establish `e1 : m * k = q * m'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hm', hkdef, mul_comm g m', mul_assoc, Nat.mul_div_cancel' hgq, mul_comm]`. Rewrite using `[← pow_mul, e1, pow_mul, hζq, one_pow]`. Establish `hunit : IsUnit (ξ.1 ^ k - 1)`. Establish `hne : ((k : ℕ) : ZMod q) ≠ 0`. Rewrite using `[Ne, ZMod.natCast_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `hd`. Conclude with `absurd (Nat.le_of_dvd hkpos hd) (by omega)`. Establish `hu` using `(hP q _ ξ).2.1 (k : ZMod q) 0 hne`. Rewrite `hu` using `[ZMod.val_natCast_of_lt hklt, ZMod.val_zero, pow_zero]`. Then use the resulting hypothesis. Establish `hdvd : ξ.1 - ζ.1 ^ m ∣ ξ.1 ^ k - 1`.
-
-Establish `hs` using `sub_dvd_pow_sub_pow ξ.1 (ζ.1 ^ m) k`. Rewrite `hs` using `[hζmk]`. Then use the resulting hypothesis. Apply `ha` to reduce the goal to its premises. Rewrite using `[Scheme.mem_basicOpen_top]`. Conclude with `isUnit_of_dvd_unit (map_dvd _ hdvd) (hunit.map _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootPow : CrystallineSemistableComparison.E.PrimAlg → CrystallineSemistableComparison.E.RootPow := by
   intro hP q _ U ζ

@@ -13,7 +13,7 @@ variable {m n : ℕ}
 def sw (k : Fin m × Fin n × Bool) : Fin m × Fin n × Bool := (k.1, k.2.1, !k.2.2)
 
 /- English proof (translation)
-Take `⟨a, i, b⟩` from `k`. Take `⟨a', i', b'⟩` from `k'`. Apply the tactic sequence `cases b <;> cases b' <;> simp [sw]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sw_inj {k k' : Fin m × Fin n × Bool} : sw k = sw k' ↔ k = k' := by
   obtain ⟨a, i, b⟩ := k
@@ -21,9 +21,9 @@ theorem sw_inj {k k' : Fin m × Fin n × Bool} : sw k = sw k' ↔ k = k' := by
   cases b <;> cases b' <;> simp [sw]
 
 /- English proof (translation)
-Establish `h : ⁅(pderiv (R` using `ℂ) i : Derivation ℂ (PX m n) (PX m n)), pderiv (R := ℂ) j⁆ = 0 := by`. Apply `MvPolynomial.derivation_ext` to reduce the goal to its premises. Introduce `k`. Rewrite using `[Derivation.commutator_apply, pderiv_X, pderiv_X]`. Apply the tactic sequence `by_cases hi : i = k <;> by_cases hj : j = k <;> simp [Pi.single_apply, hi, hj]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `congrArg (fun D : Derivation ℂ (PX m n) (PX m n) => D P) h` as an intermediate fact. Simplify `this` using `[Derivation.commutator_apply, sub_eq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pderiv_comm (i j : Fin m × Fin n × Bool) (P : PX m n) :
     pderiv i (pderiv j P) = pderiv j (pderiv i P) := by
@@ -37,7 +37,7 @@ theorem pderiv_comm (i j : Fin m × Fin n × Bool) (P : PX m n) :
   simpa [Derivation.commutator_apply, sub_eq_zero] using this
 
 /- English proof (translation)
-Take `⟨a, i, b⟩` from `k`. Apply the tactic sequence `cases b <;> simp [cr, sw]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cr_apply (c : ℝ) (k : Fin m × Fin n × Bool) (Q : PX m n) :
     cr c k Q = -(pderiv k Q) + (2 * c : ℂ) • ((X (sw k) : PX m n) * Q) := by
@@ -45,9 +45,9 @@ theorem cr_apply (c : ℝ) (k : Fin m × Fin n × Bool) (Q : PX m n) :
   cases b <;> simp [cr, sw]
 
 /- English proof (translation)
-Rewrite using `[cr_apply, cr_apply, map_add, map_neg, Derivation.map_smul, pderiv_mul, pderiv_X, pderiv_comm (sw k') k]`. Distinguish the cases in `h : k = k'`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: sw k' ≠ sw k` using `fun e => h (sw_inj.1 e).symm`. Simplify using `[h, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_cr (c : ℝ) (k k' : Fin m × Fin n × Bool) (Q : PX m n) :
     pderiv (sw k') (cr c k Q) = cr c k (pderiv (sw k') Q) + (if k = k' then (2 * c : ℂ) else 0) • Q := by
@@ -59,7 +59,7 @@ theorem pderiv_cr (c : ℝ) (k k' : Fin m × Fin n × Bool) (Q : PX m n) :
     simp [h, this]
 
 /- English proof (translation)
-Establish `h1 : (1 : PX m n) = monomial 0 1` using `rfl`. Unfold `fock`. Rewrite using `[h1, support_monomial, if_neg one_ne_zero, Finset.sum_singleton, coeff_monomial, if_pos rfl, one_smul]`. Simplify using `[fockMono]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fock_one (c : ℝ) : fock c (1 : PX m n) = 1 := by
   classical
@@ -69,18 +69,18 @@ theorem fock_one (c : ℝ) : fock c (1 : PX m n) = 1 := by
   simp [fockMono]
 
 /- English proof (translation)
-Establish `hL` using `(hB m n c hc).1`. Rewrite using `[show (C a : PX m n) = a • 1 by rw [smul_eq_C_mul, mul_one], hL.map_smul, fock_one, smul_eq_C_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_C (hB : FockBasic) (c : ℝ) (hc : 0 < c) (a : ℂ) : fock c (C a : PX m n) = C a := by
   have hL := (hB m n c hc).1
   rw [show (C a : PX m n) = a • 1 by rw [smul_eq_C_mul, mul_one], hL.map_smul, fock_one, smul_eq_C_mul, mul_one]
 
 /- English proof (translation)
-Establish `hL` using `(hB m n c hc).1`. Establish `hX` using `(hB m n c hc).2.2`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => rw [fock_C hB c hc]`. Simplify using `[hL.map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `add p q hp hq => rw [hL.map_add, map_add, hp, hq, map_add, hL.map_add, smul_add]`. Consider the case `mul_X p k0 hp`. Rewrite using `[mul_comm, hX, pderiv_cr, hp, map_smul, ← hX, pderiv_mul, pderiv_X, hL.map_add, smul_add]`. Distinguish the cases in `h : k0 = k`. Substitute `h` using the available equality.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Pi.single_eq_same, if_true, mul_comm (X k0) (pderiv k0 p)]`. Rewrite using `[one_mul, add_comm]`. Simplify using `only [Pi.single_apply, h, if_false, add_zero, zero_smul, mul_comm (X k0) (pderiv k p)]`. Rewrite using `[zero_mul, hL.map_zero, smul_zero, zero_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem der_fock (hB : FockBasic) (c : ℝ) (hc : 0 < c) (k : Fin m × Fin n × Bool) (p : PX m n) :
     pderiv (sw k) (fock c p) = (2 * c : ℂ) • fock c (pderiv k p) := by
@@ -100,7 +100,7 @@ theorem der_fock (hB : FockBasic) (c : ℝ) (hc : 0 < c) (k : Fin m × Fin n × 
       rw [zero_mul, hL.map_zero, smul_zero, zero_add]
 
 /- English proof (translation)
-Unfold `Qp Qb`. Rewrite using `[Finset.sum_filter, Finset.sum_filter, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases h : ε a <;> simp [sgn, h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem qp_sum (ε : Fin m → Bool) (i j : Fin n) :
     Qp ε i j = ∑ a, C (sgn ε a) * ((X (a, i, true) : PX m n) * X (a, j, false)) := by
@@ -110,15 +110,15 @@ theorem qp_sum (ε : Fin m → Bool) (i j : Fin n) :
   cases h : ε a <;> simp [sgn, h]
 
 /- English proof (translation)
-Establish `hd : (if i = j then (c : ℂ) * ∑ a, sgn ε a else 0) • P = ∑ a, (if i = j then (c : ℂ) * sgn ε a else 0) • P`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, Finset.mul_sum, Finset.sum_smul]`. Rewrite using `[hd, Finset.sum_filter, Finset.sum_filter, ← Finset.sum_sub_distrib]`. Unfold `mulQ lapS eulH eulA`. Rewrite using `[qp_sum, Finset.sum_mul, Finset.smul_sum, Finset.smul_sum, Finset.smul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib, ← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Consider the cases of `hε : ε a`. Simplify using `only [hε, Bool.false_eq_true, if_false, if_true, zero_sub, cr_apply, sw, Bool.not_true]`. Rewrite using `[pderiv_comm (a, j, true) (a, i, false)]`. Distinguish the cases in `hij : i = j`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using `[sgn, hε, pderiv_mul, pderiv_X, Pi.single_apply, smul_eq_C_mul, pderiv_C_mul, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Establish `hne : (a, j, false) ≠ (a, i, false)` using `by simp [Ne.symm hij]`. Simplify using `[sgn, hε, pderiv_mul, pderiv_X, Pi.single_apply, smul_eq_C_mul, pderiv_C_mul, hij, hne, map_ofNat]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hε, if_true, Bool.true_eq_false, if_false, sub_zero, cr_apply, sw, Bool.not_false]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[sgn, hε, pderiv_mul, pderiv_X, Pi.single_apply, smul_eq_C_mul, pderiv_C_mul, map_ofNat]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hne : (a, j, false) ≠ (a, i, false)` using `by simp [Ne.symm hij]`. Simplify using `[sgn, hε, pderiv_mul, pderiv_X, Pi.single_apply, smul_eq_C_mul, pderiv_C_mul, hij, hne, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem op_id (c : ℝ) (ε : Fin m → Bool) (i j : Fin n) (P : PX m n) :
     (∑ a ∈ Finset.univ.filter (fun a => ε a = true), cr c (a, i, false) (pderiv (a, j, true) P)) -
@@ -154,7 +154,7 @@ theorem op_id (c : ℝ) (ε : Fin m → Bool) (i j : Fin n) (P : PX m n) :
       ring
 
 /- English proof (translation)
-Simplify using `[KopL]`.
+Simplify using the standard rewrite rules.
 -/
 theorem kopL_apply (ε : Fin m → Bool) (i j : Fin n) (p : PX m n) :
     KopL ε i j p = ∑ a ∈ Finset.univ.filter (fun a => ε a = true), (X (a, i, false) : PX m n) * pderiv (a, j, false) p -
@@ -168,15 +168,15 @@ namespace PositivityTheory.Rg.Sw.LC
 open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.LC.FK
 
 /- English proof (translation)
-Introduce `m n ε c hc`. Establish `hc2 : (2 * c : ℂ) ≠ 0`. Establish `: (c : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`. Conclude with `mul_ne_zero two_ne_zero this`. Use `⟨(2 * c : ℂ)⁻¹ * (c : ℂ) ^ 2, -(2 * c : ℂ)⁻¹, -((2 * c : ℂ)⁻¹ * c), (2 * c : ℂ)⁻¹ * c, -((2 * c : ℂ)⁻¹ * ((c : ℂ) * ∑ a, sgn ε a)), fun i j p => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hL` using `(hB m n c hc).1`. Establish `hX` using `(hB m n c hc).2.2`. Set `L : PX m n →ₗ[ℂ] PX m n` to `hL.mk' (fock c)`. Establish `eL : ∀ x, fock c x = L x` using `fun x => rfl`. Establish `hd : ∀ k (q : PX m n), fock c (pderiv k q) = (2 * c : ℂ)⁻¹ • pderiv (sw k) (fock c q)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k q`. Rewrite using `[der_fock hB c hc, inv_smul_smul₀ hc2]`. Establish `key : fock c (KopL ε i j p) = (2 * c : ℂ)⁻¹ • ((∑ a ∈ Finset.univ.filter (fun a => ε a = true), cr c (a, i, false) (pderiv (a, j, true) (fock c p))) - ∑ a ∈ Finset.univ.filter (fun a => ε a = false), cr c (a, j, true) (pderiv (a, i, false) (fock c p)))`. Rewrite using `[kopL_apply, eL, map_sub, map_sum, map_sum, smul_sub, Finset.smul_sum, Finset.smul_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← eL, hX, hd, map_smul]`. Both sides reduce to the same expression. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← eL, hX, hd, map_smul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[key, op_id]`. Distinguish the cases in `hij : i = j`. Simplify using `only [hij, if_true] module`. Simplify using `only [hij, if_false, zero_smul, sub_zero, add_zero] module`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fockK_of (hB : FockBasic) : FockK := by
   intro m n ε c hc

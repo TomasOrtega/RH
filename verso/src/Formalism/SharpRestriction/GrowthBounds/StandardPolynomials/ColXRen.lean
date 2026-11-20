@@ -13,7 +13,7 @@ def renV {ι ι' : Type} {k k' : ℕ} (e : ι → ι') (hk : k = k') : ι × Fin
   fun v => (e v.1, Fin.cast hk v.2)
 
 /- English proof (translation)
-Introduce `a b h`. Simplify using `only [renV, Prod.mk.injEq] at h`. Conclude with `Prod.ext (he h.1) (Fin.cast_injective hk h.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem renV_injective {ι ι' : Type} {k k' : ℕ} (e : ι → ι') (he : Function.Injective e) (hk : k = k') :
     Function.Injective (renV e hk) := by
@@ -22,18 +22,18 @@ theorem renV_injective {ι ι' : Type} {k k' : ℕ} (e : ι → ι') (he : Funct
   exact Prod.ext (he h.1) (Fin.cast_injective hk h.2)
 
 /- English proof (translation)
-Simplify using `only [sigMat, sigPow, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigMat_congr_pos {k : ℕ} (g : Matrix (Fin k) (Fin k) (WF p f)) (s s' : ℤ)
     (h : s % (f : ℤ) = s' % (f : ℤ)) : sigMat p f O g s = sigMat p f O g s' := by
   simp only [sigMat, sigPow, h]
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Establish `hsub : g.submatrix (Fin.cast (rfl : k = k)) (Fin.cast rfl) = g`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Rewrite using `[hsub]`.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (liftSubst p f O w r LL' g).comp (rename (renV e (rfl : k = k))) = (rename (renV e (rfl : k = k))).comp (liftSubst p f O w r LL g)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i, a⟩`. Simplify using `only [AlgHom.comp_apply, rename_X, liftSubst, aeval_X, renV, Fin.cast_eq_self, hvec]`. Rewrite using `[sigMat_congr_pos g _ _ (hpos i)]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp [map_sum, map_mul, rename_X, rename_C, apply_ite, renV, Fin.cast_eq_self]`. Conclude with `AlgHom.congr_fun key F`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem liftSubst_rename (w : O) (r : ℕ) {ι ι' : Type} (LL : LiftLetters ι) (LL' : LiftLetters ι') (e : ι → ι')
     (hvec : ∀ i, LL'.vec (e i) = LL.vec i) (hpos : ∀ i, LL'.pos (e i) % (f : ℤ) = LL.pos i % (f : ℤ))
@@ -55,7 +55,7 @@ theorem liftSubst_rename (w : O) (r : ℕ) {ι ι' : Type} (LL : LiftLetters ι)
   exact AlgHom.congr_fun key F
 
 /- English proof (translation)
-Unfold `IsGLW at hg ⊢`. Rewrite using `[show (Fin.cast hk : Fin k → Fin k') = finCongr hk from rfl, Matrix.det_submatrix_equiv_self]`. Conclude with `hg`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGLW_submatrix_cast {k k' : ℕ} (hk : k = k') (g : Matrix (Fin k') (Fin k') (WF p f)) (hg : IsGLW g) :
     IsGLW (g.submatrix (Fin.cast hk) (Fin.cast hk)) := by
@@ -64,7 +64,7 @@ theorem isGLW_submatrix_cast {k k' : ℕ} (hk : k = k') (g : Matrix (Fin k') (Fi
   exact hg
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem one_submatrix_cast {k k' : ℕ} (hk : k = k') :
     (1 : Matrix (Fin k') (Fin k') (WF p f)).submatrix (Fin.cast hk) (Fin.cast hk) = 1 := by
@@ -72,11 +72,11 @@ theorem one_submatrix_cast {k k' : ℕ} (hk : k = k') :
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hP : rename φ P = ∑ u ∈ P.support, monomial (u.mapDomain φ) (P.coeff u)` using `by conv_lhs => rw [P.as_sum]`. Simplify using `only [map_sum, rename_monomial]`. Rewrite using `[hP]`. Use `Finset.sum_induction _ (fun Q : MvPolynomial τ (KK O) => ∀ m, ∃ c : O, Q.coeff m = algebraMap O (KK O) (a * c)) ?_ ?_ ?_` and prove the remaining obligations. Introduce `Q R hQ hR m`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c1, h1⟩` from `hQ m`. Take `⟨c2, h2⟩` from `hR m`. Conclude with `⟨c1 + c2, by rw [coeff_add, h1, h2, mul_add, map_add]⟩`. Introduce `m`. Conclude with `⟨0, by simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `u _ m`. Rewrite using `[coeff_monomial]`. Use `split_ifs`. Conclude with `h u`. Conclude with `⟨0, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem coeff_rename_mem_multiple_of_coeff {σ τ : Type} (φ : σ → τ) (a : O) (P : MvPolynomial σ (KK O))
     (h : ∀ m, ∃ c : O, P.coeff m = algebraMap O (KK O) (a * c)) :
@@ -101,7 +101,7 @@ private theorem coeff_rename_mem_multiple_of_coeff {σ τ : Type} (φ : σ → �
     · exact ⟨0, by simp⟩
 
 /- English proof (translation)
-Introduce `m`. Take `⟨c, hc⟩` from `h (m.mapDomain φ)`. Rewrite `hc` using `[coeff_rename_mapDomain φ hφ]`. Conclude with `⟨c, hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem coeff_mem_multiple_of_rename_injective {σ τ : Type} (φ : σ → τ) (hφ : Function.Injective φ) (a : O)
     (P : MvPolynomial σ (KK O))
@@ -113,23 +113,23 @@ private theorem coeff_mem_multiple_of_rename_injective {σ τ : Type} (φ : σ �
   exact ⟨c, hc⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨coeff_mem_multiple_of_rename_injective φ hφ _ P, coeff_rename_mem_multiple_of_coeff φ _ P⟩`.
+Supply the required witnesses or components.
 -/
 theorem inWj_rename_iff {σ τ : Type} (φ : σ → τ) (hφ : Function.Injective φ) (w : O)
     (P : MvPolynomial σ (KK O)) (j : ℕ) : InWj w (rename φ P) j ↔ InWj w P j :=
   ⟨coeff_mem_multiple_of_rename_injective φ hφ _ P, coeff_rename_mem_multiple_of_coeff φ _ P⟩
 
 /- English proof (translation)
-The claim follows from `coeff_rename_mem_multiple_of_coeff φ _ P h`.
+A detailed English derivation is pending.
 -/
 theorem inWj_rename {σ τ : Type} (φ : σ → τ) (w : O) (P : MvPolynomial σ (KK O)) (j : ℕ)
     (h : InWj w P j) : InWj w (rename φ P) j :=
   coeff_rename_mem_multiple_of_coeff φ _ P h
 
 /- English proof (translation)
-Establish `e : ∀ {ρ : Type} (Q : MvPolynomial ρ (KK O)), InA Q ↔ ∀ m, ∃ c : O, Q.coeff m = algebraMap O (KK O) (1 * c)`. Introduce `ρ Q`. Simplify using `only [one_mul]`. Both sides reduce to the same expression. Rewrite `h`, the goal using `[e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `coeff_rename_mem_multiple_of_coeff φ _ P h`.
+A detailed English derivation is pending.
 -/
 theorem inA_rename {σ τ : Type} (φ : σ → τ) (P : MvPolynomial σ (KK O)) (h : InA P) : InA (rename φ P) := by
   have e : ∀ {ρ : Type} (Q : MvPolynomial ρ (KK O)),
@@ -141,7 +141,7 @@ theorem inA_rename {σ τ : Type} (φ : σ → τ) (P : MvPolynomial σ (KK O)) 
   exact coeff_rename_mem_multiple_of_coeff φ _ P h
 
 /- English proof (translation)
-Unfold `InWjRg`. Rewrite using `[liftSubst_rename w r LL LL' e hvec hpos hk g F]`. Conclude with `inWj_rename_iff _ (renV_injective e he hk) _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inWjRg_rename (w : O) (r : ℕ) {ι ι' : Type} (LL : LiftLetters ι) (LL' : LiftLetters ι') (e : ι → ι')
     (he : Function.Injective e) (hvec : ∀ i, LL'.vec (e i) = LL.vec i)
@@ -155,17 +155,15 @@ theorem inWjRg_rename (w : O) (r : ℕ) {ι ι' : Type} (LL : LiftLetters ι) (L
 
 open Classical in
 /- English proof (translation)
-Substitute `hk` using the available equality. Unfold `Pol at hF ⊢`. Rewrite `hF`, the goal using `[MvPolynomial.mem_restrictSupport_iff]`. Rewrite using `[MvPolynomial.support_rename_of_injective (renV_injective e he rfl)]`. Introduce `m hm`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.coe_image, Set.mem_image, Finset.mem_coe] at hm`. Take `⟨u, hu, rfl⟩` from `hm`. Establish `hud` using `hF hu`. Introduce `l`. Unfold `multideg`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hl : ∃ i, e i = l`. Take `⟨i, rfl⟩` from `hl`. Establish `h1 : ∀ c, (Finsupp.mapDomain (renV e rfl) u) (e i, c) = u (i, c)`. Introduce `c`. Establish `h2` using `Finsupp.mapDomain_apply (renV_injective e he rfl) u (i, c)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `h2` using `[renV]`. Simplify using `only [h1]`. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [if_neg (fun h => hj (he h))]) (by simp), if_pos rfl]`. Conclude with `hud i`. Use `push_neg at hl`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : ∀ c, (Finsupp.mapDomain (renV e rfl) u) (l, c) = 0`. Introduce `c`. Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises. Introduce and unpack `⟨v, hv⟩`. Conclude with `hl v.1 (congrArg Prod.fst hv)`.
-
-Simplify using `[h0, hl]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_Pol_rename {R : Type} [CommRing R] {ι ι' : Type} [Fintype ι] {k k' : ℕ} (e : ι → ι')
     (he : Function.Injective e) (hk : k = k') (d : ι → ℕ) (F : MvPolynomial (ι × Fin k) R) (hF : F ∈ Pol R k d) :

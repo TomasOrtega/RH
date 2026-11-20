@@ -6,17 +6,17 @@ open MeasureTheory GlobalTheory.SmGL GlobalTheory.PRep PositivityTheory.Rg.BcN.F
 namespace GlobalTheory.CompanionTheory.HeckeFix
 
 /- English proof (translation)
-Introduce `F _ _ _ _ ι _ _ K e hE V _ _ ρ v hv`. Use `⟨?_, fun _ _ => trivial⟩` and prove the remaining obligations. Establish `hfix : ∀ c ∈ K, ρ c v = v`. Introduce `c hc`. Use `hv ⟨c, hc⟩` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hbi` using `hE.2.2.2`. Introduce `h`. Establish `hk' : (h : GL ι F) ∈ K` using `h.2`. Use `set k : GL ι F := (h : GL ι F) with hkdef`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (ρ k : V →ₗ[ℂ] V)`. Introduce `x y hxy`. Establish `h1 : ∀ z, ρ k⁻¹ (ρ k z) = z`. Introduce `z`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1 x, ← h1 y, hxy]`. Establish `hstep : ∀ q : GL ι F ⧸ K, ρ k (e q.out • ρ q.out v) = e (k • q).out • ρ (k • q).out v`. Introduce `q`. Establish `hq : k • q = QuotientGroup.mk (k * q.out)` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `QuotientGroup.mk_out_eq_mul K (k * q.out)`. Rewrite using `[hq, hc, hbi k hk' c c.2 q.out, map_smul, map_mul, Module.End.mul_apply, map_mul, Module.End.mul_apply, hfix c c.2]`. Establish `hsum : ρ k (hk ρ K e v) = hk ρ K e v`. Unfold `hk`. Establish `h1` using `AddMonoidHom.map_finsum_of_injective (ρ k : V →ₗ[ℂ] V).toAddMonoidHom hinj (fun q : GL ι F ⧸ K => e q.out • ρ q.out v)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.toAddMonoidHom_coe] at h1`. Rewrite using `[h1]`. Simplify using `only [hstep]`. Conclude with `finsum_comp_equiv (f := fun q : GL ι F ⧸ K => e q.out • ρ q.out v) (MulAction.toPerm k)`. Simplify using `using hsum`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hk_mem_fixed : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (ι : Type) [Fintype ι] [DecidableEq ι] (K : Subgroup (GL ι F)) (e : GL ι F → ℂ), IsHk K e → ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (GL ι F) V), ∀ v ∈ fixed ρ K, hk ρ K e v ∈ fixed ρ K ∧ ∀ g : GL ι F, (∀ q : GL ι F ⧸ K, e (g * q.out) = e q.out) → True := by
   intro F _ _ _ _ ι _ _ K e hE V _ _ ρ v hv

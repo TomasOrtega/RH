@@ -10,7 +10,7 @@ open scoped TensorProduct
 open GlobalTheory.FibreChart
 
 /- English proof (translation)
-Use `haveI := c.fin`. Use `haveI : NumberField c.F := {}`. Conclude with `⟨((genStr Y).appLE ⊤ W (fun _ _ => trivial)).hom.comp ((Scheme.ΓSpecIso (CommRingCat.of c.F)).inv.hom.comp (algebraMap ℚ c.F))⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_rat_hom (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H)
     (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (W : (gen Y).Opens) :
@@ -21,25 +21,21 @@ theorem exists_rat_hom (E : Type) [Field E] [NumberField E] [IsCMField E] (H : H
     ((Scheme.ΓSpecIso (CommRingCat.of c.F)).inv.hom.comp (algebraMap ℚ c.F))⟩
 
 /- English proof (translation)
-Introduce `HR E _ _ _ H D l Xo c X Z Y π e _ _ _ R _ _ _ ξ hCN hEt hFU`. Generalize the expression as in `e.hom ≫ genι Z ≫ π = g`. Introduce `v`. Use `set x : X.X := ξ (IsLocalRing.closedPoint (CommRingCat.of R)) with hx`. Take `⟨U, hU, hxU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := x) (U := ⊤) trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the chosen expression with an arbitrary variable. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpre : ξ ⁻¹ᵁ U = ⊤` using `Scheme.preimage_eq_top_of_closedPoint_mem ξ hxU`. Use `letI : Algebra Γ(X.X, U) R := (ξ.appLE U ⊤ hpre.ge ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom).hom.toAlgebra`. Establish `hξ : ξ = Spec.map (CommRingCat.ofHom (algebraMap Γ(X.X, U) R)) ≫ hU.fromSpec` using `factor X.X R ξ U hU hxU`. Establish `hwU : g (pullback.snd ξ g v) ∈ U`. Rewrite using `[← Scheme.Hom.comp_apply, ← pullback.condition, Scheme.Hom.comp_apply]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: pullback.fst ξ g v ∈ ξ ⁻¹ᵁ U` using `by rw [hpre]; trivial`. Conclude with `this`. Take `⟨W, hW, hwW, hWU'⟩` from `exists_isAffineOpen_mem_and_subset (U := g ⁻¹ᵁ U) hwU`. Establish `hWU : W ≤ g ⁻¹ᵁ U` using `hWU'`. Use `letI : Algebra Γ(X.X, U) Γ(gen Y, W) := (g.appLE U W hWU).hom.toAlgebra`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hWg : hW.fromSpec ≫ g = Spec.map (CommRingCat.ofHom (algebraMap Γ(X.X, U) Γ(gen Y, W))) ≫ hU.fromSpec` using `(IsAffineOpen.SpecMap_appLE_fromSpec g hU hW hWU).symm`. Take `⟨ι, hι, hvι⟩` from `chart X.X (gen Y) U hU W hW R g hWg ξ hξ v hwW`. Use `set A := X.X.presheaf.stalk x with hA`. Use `letI : Algebra Γ(X.X, U) A := (X.X.presheaf.germ U x hxU).hom.toAlgebra`. Use `letI : Algebra A R := (Scheme.stalkClosedPointTo ξ).hom.toAlgebra`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `haveI : IsScalarTower Γ(X.X, U) A R := IsScalarTower.of_algebraMap_eq fun a => by`. Establish `key : X.X.presheaf.germ U x hxU ≫ Scheme.stalkClosedPointTo ξ = ξ.appLE U ⊤ hpre.ge ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom`. Rewrite using `[Scheme.germ_stalkClosedPointTo]`. Simplify using `[Iso.trans_hom, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map_assoc]`. Conclude with `(congrArg (fun q => q.hom a) key).symm`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure.
 
-Take `⟨-, hAft⟩` from `GlobalTheory.GModStalk.charZero_essFiniteType_stalk E H D l Xo c X x`. Use `haveI := hAft`. Use `haveI : Algebra.EssFiniteType ℤ Γ(gen Y, W) := eft E H D l Xo c Y W hW`. Use `haveI : Algebra.EssFiniteType Γ(X.X, U) Γ(gen Y, W) := Algebra.EssFiniteType.of_comp ℤ _ _`. Set `C` to `A ⊗[Γ(X.X, U)] Γ(gen Y, W)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `haveI : Algebra.EssFiniteType A C := inferInstance`. Establish `hC : ∀ (P : Ideal C) [P.IsPrime], IsDomain (Localization.AtPrime P) ∧ IsIntegrallyClosed (Localization.AtPrime P) ∧ CharZero (Localization.AtPrime P)`. Introduce `P _`. Use `haveI : IsLocalization.AtPrime A (hU.primeIdealOf ⟨x, hxU⟩).asIdeal := hU.isLocalization_stalk ⟨x, hxU⟩`. Use `letI : Algebra Γ(gen Y, W) C := Algebra.TensorProduct.rightAlgebra`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsLocalization (Algebra.algebraMapSubmonoid Γ(gen Y, W) (hU.primeIdealOf ⟨x, hxU⟩).asIdeal.primeCompl) C := inferInstance`. Take `⟨h1, h2⟩` from `locnorm (gen Y) (GlobalTheory.GenFibre.gen_normal_reduced_noetherian E H D l Xo c Y).1 W hW (Algebra.algebraMapSubmonoid Γ(gen Y, W) (hU.primeIdealOf ⟨x, hxU⟩).asIdeal.primeCompl) C P`. Take `⟨φ⟩` from `exists_rat_hom E H D l Xo c Y W`. Set `ψ : ℚ →+* Localization.AtPrime P` to `(algebraMap C (Localization.AtPrime P)).comp ((algebraMap Γ(gen Y, W) C).comp φ)`. Conclude with `⟨h1, h2, ψ.charZero_iff ψ.injective |>.1 inferInstance⟩`.
-
-Establish `HC` using `HR A C R hC hCN hEt hFU`. Set `eR : C ⊗[A] R ≃+* R ⊗[Γ(X.X, U)] Γ(gen Y, W)` to `((Algebra.TensorProduct.comm A C R).trans (Algebra.TensorProduct.cancelBaseChange Γ(X.X, U) A A R Γ(gen Y, W))).toRingEquiv`. Set `eI : CommRingCat.of (R ⊗[Γ(X.X, U)] Γ(gen Y, W)) ≅ CommRingCat.of (C ⊗[A] R)` to `eR.symm.toCommRingCatIso`. Use `haveI := hι`. Use `stalk_of_chart (C ⊗[A] R) (Spec.map eI.hom ≫ ι) v ?_ HC` and prove the remaining obligations.
-
-Take `⟨t, rfl⟩` from `hvι`. Use `⟨Spec.map eI.inv t, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Category.assoc, ← Spec.map_comp, eI.hom_inv_id, Spec.map_id, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalks_of_ring_statement_charZero : (∀ (A C R : Type) [CommRing A] [IsLocalRing A] [Algebra.EssFiniteType ℤ A] [CommRing C] [Algebra A C] [Algebra.EssFiniteType A C] [CommRing R] [IsDomain R] [IsLocalRing R] [Algebra A R], (∀ (P : Ideal C) [P.IsPrime], IsDomain (Localization.AtPrime P) ∧ IsIntegrallyClosed (Localization.AtPrime P) ∧ CharZero (Localization.AtPrime P)) → IsCN R → IsEtaleCompletion (algebraMap A R) → ((residue R).comp (algebraMap A R)).FormallyUnramified → ∀ (Q : Ideal (TensorProduct A C R)) [Q.IsPrime], IsDomain (Localization.AtPrime Q) ∧ IsIntegrallyClosed (Localization.AtPrime Q) ∧ IsNoetherianRing (Localization.AtPrime Q)) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (X Z : GMod Xo c) (Y : Model Xo c (RingHom.id c.F)) (π : Z.X ⟶ X.X) (e : gen Y ≅ gen Z), Z.j ≫ π = X.j → π ≫ X.s = Z.s → Y.jQ ≫ e.hom = Z.jQ → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (ξ : Sp R ⟶ X.X), IsCN R → IsEtaleCompletion (Scheme.stalkClosedPointTo ξ).hom → ((residue R).comp (Scheme.stalkClosedPointTo ξ).hom).FormallyUnramified → ∀ v : ↥(pullback ξ (e.hom ≫ genι Z ≫ π) : Scheme.{0}), IsDomain ((pullback ξ (e.hom ≫ genι Z ≫ π)).presheaf.stalk v) ∧ IsIntegrallyClosed ((pullback ξ (e.hom ≫ genι Z ≫ π)).presheaf.stalk v) ∧ IsNoetherianRing ((pullback ξ (e.hom ≫ genι Z ≫ π)).presheaf.stalk v) := by
   intro HR E _ _ _ H D l Xo c X Z Y π e _ _ _ R _ _ _ ξ hCN hEt hFU

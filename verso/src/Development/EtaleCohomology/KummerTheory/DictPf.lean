@@ -31,19 +31,17 @@ def DictZero : Prop := ∀ (R : Type) [CommRing R] (I : Cx R) (X : Scheme.{0}) (
     (CohomologyClass.mk α = 0 ↔ ∃ b : Sec (I.X (n - 1)) X, Sec.map (I.d (n - 1) n) b = ev α.1 0 n (by simp) X (𝟙 X))
 
 /- English proof (translation)
-Introduce `R _ I X n`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Take `⟨α, h0, h1⟩` from `hE R I X n a ha`. Conclude with `⟨_, α, rfl, h0, h1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `x`. Take `⟨α, rfl⟩` from `x.mk_surjective`. Take `⟨α', e, h1⟩` from `hN R I X n α`. Conclude with `⟨_, α', e, rfl, h1⟩`. Introduce and unpack `x a ⟨α, rfl, h0, h1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Substitute `h0` using the available equality. Conclude with `hZ R I X n α h1`. Introduce and unpack `x x' a a' ⟨α, rfl, h0, h1⟩ ⟨α', rfl, h0', h1'⟩`. Use `⟨⟨α + α', CohomologyClass.mk_add _ _ |>.symm, ?_, ?_⟩, ⟨-α, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← h0, ← h0']`.
+Substitute using the available equality. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((hL R).1 α.1 α'.1 0 n _ X (𝟙 X)).1`. Introduce `p s h U y`. Rewrite using `[show ((α + α' : Cocycle _ _ n) : Cochain _ _ n) = α.1 + α'.1 from rfl, ((hL R).1 _ _ _ _ _ _ _).1, h1, h1', add_zero]`. Rewrite using `[← CohomologyClass.mk_neg]`. Rewrite using `[← h0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hL R).1 α.1 α.1 0 n _ X (𝟙 X)).2`. Introduce `p s h U y`. Rewrite using `[show ((-α : Cocycle _ _ n) : Cochain _ _ n) = -α.1 from rfl, ((hL R).1 α.1 α.1 _ _ _ _ _).2, h1, neg_zero]`. Introduce and unpack `Y f x a ⟨α, rfl, h0, h1⟩`. Use `⟨zcomp (Cocycle.ofHom ((chains R).map (sch.map f))) α (zero_add n), rfl, ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ev ((Cochain.ofHom ((chains R).map (sch.map f))).comp α.1 (zero_add n)) 0 n _ Y (𝟙 Y) = _`. Use `((hL R).2.2 (sch.map f) α.1 0 n _ Y (𝟙 Y)).trans ?_` and prove the remaining obligations. Rewrite using `[← h0]`. Conclude with `(((hL R).2.1 α.1 0 n _ Y X f (𝟙 X)).trans rfl).symm`. Introduce `p s h U y`.
-
-Express the relevant statement in the definitionally equal form `ev ((Cochain.ofHom ((chains R).map (sch.map f))).comp α.1 (zero_add n)) (p + 1) s h U y = 0`. Conclude with `((hL R).2.2 (sch.map f) α.1 _ _ _ _ _).trans (h1 _ _ _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem Dict_of (hL : EvLin) (hE : DictExist) (hN : DictNormal) (hZ : DictZero) : Dict := by
   intro R _ I X n

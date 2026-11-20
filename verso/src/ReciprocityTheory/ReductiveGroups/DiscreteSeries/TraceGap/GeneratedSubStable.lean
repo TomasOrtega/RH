@@ -17,18 +17,18 @@ section SlopeTestRemainingChoices
 variable {N : Type*} [AddCommGroup N] [Module ℂ N]
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sInf.2 fun T hT => hT.2 a b v (Submodule.mem_sInf.1 hv T hT)`.
+A detailed English derivation is pending.
 -/
 theorem generatedSub_stable (E : Fin n → Fin n → Module.End ℂ N) (V : Submodule ℂ N) (a b : Fin n) {v : N}
     (hv : v ∈ genSub E V) : E a b v ∈ genSub E V :=
   Submodule.mem_sInf.2 fun T hT => hT.2 a b v (Submodule.mem_sInf.1 hv T hT)
 
 /- English proof (translation)
-Set `T : Submodule ℂ N` to `LinearMap.ker (casimir E - c • (1 : Module.End ℂ N))`. Establish `hmem : ∀ v, v ∈ T ↔ casimir E v = c • v`. Introduce `v`. Simplify using `only [T, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Establish `hT : genSub E V ≤ T`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `sInf_le ⟨fun v hv => (hmem v).2 (hc v hv), fun a b v hv => ?_⟩` and prove the remaining obligations. Rewrite `hv`, the goal using `[hmem]`. Use `LinearMap.congr_fun (casimir_comm hE a b) v` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`. Rewrite using `[this, hv, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun v hv => (hmem v).1 (hT hv)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem casimir_scalar_on_generated {E : Fin n → Fin n → Module.End ℂ N} (hE : IsGlRep E) {V : Submodule ℂ N} {c : ℂ}
     (hc : ∀ v ∈ V, casimir E v = c • v) : ∀ v ∈ genSub E V, casimir E v = c • v := by
@@ -58,53 +58,47 @@ def tensorFormRight (w : TensorProduct ℂ M (Fock n)) : TensorProduct ℂ M (Fo
 end Form
 
 /- English proof (translation)
-Establish `hE : IsGlRep E` using `hD.glRep`. Establish `hU : IsInfUnitary ε E` using `isInfUnitary_of_isDerivedOn hσ hD`. Establish `e : (min (pOf ε) (qOf ε) : ℝ) = (S7.q0 ε : ℝ)` using `by simp [S7.q0, Nat.cast_min]`. Establish `hbig : max ((n : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ) + 1) (16 * (n : ℝ) * (min (pOf ε) (qOf ε) : ℝ) + 8 * Real.sqrt (2 * (min (pOf ε) (qOf ε) : ℝ))) < h`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hthr`. Establish `hstd : StdGap ε lam` using `⟨hanti, h, hgap, lt_of_le_of_lt (le_max_left _ _) hbig⟩`. Establish `hcone : ∀ (μ : Fin n → ℝ) (w : D), w ∈ genSub E V → w ≠ 0 → IsKHWVec ε E μ w → Lap.LemK.InRootCone (μ - lowK ε lam)` using `Lap.LemK.lowestKType_casimir_cone n ε lam h H σ D E V hσ hD hV hc hVK hint hanti hgap hbig hp hq`. Establish `hcas : ∀ v ∈ genSub E V, casimir E v = ((casVal lam : ℝ) : ℂ) • v` using `casimir_scalar_on_generated hE hc`. Establish `hlowK : ∀ w ∈ genSub E V, IsKHWVec ε E (lowK ε lam) w → w ∈ V` using `fun w hw hk => khw_lowK_mem hE hU hV hc hstd hw hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hzL, hz0⟩` from `line_exists hanti hE hV`. Establish `hzD` using `line_ker hE hU hV hc hzL`. Establish `hzdeg` using `line_deg hE hU hV hzL`. Take `⟨⟨hzK', hzT⟩, hzP⟩` from `hzL`. Establish `hzK` using `(mem_highestWeightSub_iff _ _ _ z).1 hzK'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVk : IsKStableSub ε E V` using `hV.2.1`. Establish `hGk : IsKStableSub ε E (genSub E V)` using `fun a b _ v hv => generatedSub_stable E V a b hv`. Establish `hVG : V ≤ genSub E V` using `fun v hv => Submodule.mem_sInf.2 fun T hT => hT.1 hv`. Establish `hK : ∀ a b c d, ε a = ε b → ε c = ε d → diagE ε (eT E) cpT cmT a b * diagE ε (eT E) cpT cmT c d - diagE ε (eT E) cpT cmT c d * diagE ε (eT E) cpT cmT a b = (if b = c then diagE ε (eT E) cpT cmT a d else 0) - (if d = a then diagE ε (eT E) cpT cmT c b else 0)` using `fun a b c d hab hcd => diagAction_commutator (eT_isGlRep hE) cpT_cmT_isCAR (eT_commutesCAR E) ε a b c d hab hcd`. Use `set A := diagE ε (eT E) cpT cmT with hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set KK := LinearMap.ker (dOp ε (eT E) cpT + dOp' ε (eT E) cmT) ⊓ tensFock (genSub E V) ⊓ physicalSubspace ε with hKK`. Establish `hKKs : IsKStableSub ε A KK`. Introduce `a b hab y hy`. Take `⟨⟨hyD, hyT⟩, hyP⟩` from `hy`. Use `⟨⟨?_, tensorFock_diagAction_stable ε hGk hab hyT⟩, (physSub_stable ε E).2.1 a b y hyP⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker] at hyD ⊢`. Establish `h1` using `LinearMap.congr_fun (dOp_comm_diagE (eT_isGlRep hE) cpT_cmT_isCAR (eT_commutesCAR E) ε a b hab) y`. Establish `h2` using `LinearMap.congr_fun (dOp'_comm_diagE (eT_isGlRep hE) cpT_cmT_isCAR (eT_commutesCAR E) ε a b hab) y`. Simplify using `only [Module.End.mul_apply] at h1 h2`. Rewrite using `[LinearMap.add_apply, h1, h2, ← map_add, ← LinearMap.add_apply, hyD, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzKK : z ∈ KK` using `⟨⟨hzD, tensorFock_mono hVG hzT⟩, hzP⟩`. Establish `hZs : IsKStableSub ε A (kLowSpan ε A z)` using `loweringSpan_kStable hK hzK`. Establish `hZKK : kLowSpan ε A z ≤ KK` using `kLowSpan_le hKKs hzKK`. Establish `huniq : ∀ y ∈ KK, ∀ μ, IsKHWVec ε A μ y → ∃ c : ℂ, y = c • z`. Introduce `y hy μ hyK`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨hyD, hyT⟩, hyP⟩` from `hy`. Conclude with `highestWeight_uniqueness hanti hE hU hV hcone hcas hlowK hyT hyP hyD hyK (tensorFock_mono hVG hzT) hzP hzD hz0 hzK`. Establish `hTVs : IsKStableSub ε A (tensFock V)` using `fun a b hab y hy => tensorFock_diagAction_stable ε hVk hab hy`. Establish `hZV : kLowSpan ε A z ≤ tensFock V` using `kLowSpan_le hTVs hzT`. Establish `hZfd : FiniteDimensional ℂ (kLowSpan ε A z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `tensorFock_finiteDimensional (n := n) hV.1` as an intermediate fact. Conclude with `Submodule.finiteDimensional_of_le hZV`. Establish `hfill : ∀ Y : Submodule ℂ (TensorProduct ℂ D (Fock n)), FiniteDimensional ℂ Y → IsKStableSub ε A Y → Y ≤ KK → kLowSpan ε A z ≤ Y → Y ≤ kLowSpan ε A z`. Introduce `Y hYfd hYs hYK hZY`. Set `Y' : Submodule ℂ (TensorProduct ℂ D (Fock n))` to `{ carrier := {y | y ∈ Y ∧ ∀ w ∈ kLowSpan ε A z, tform y w = 0} add_mem' := fun {x y} hx hy => ⟨Y.add_mem hx.1 hy.1, fun w hw => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[tform_add_left, hx.2 w hw, hy.2 w hw, add_zero]⟩`. Use the proof step `zero_mem' := ⟨Y.zero_mem, fun w _ => by simp [tform]⟩`. Use the proof step `smul_mem' := fun c x hx => ⟨Y.smul_mem c hx.1, fun w hw => by`. Rewrite using `[tensorForm_smul_left, hx.2 w hw, mul_zero]⟩ }`. Establish `hY'Y : Y' ≤ Y` using `fun y hy => hy.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hY's : IsKStableSub ε A Y'`. Introduce `a b hab y hy`. Use `⟨hYs a b hab y hy.1, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[tensorForm_diagAction_adjoint hU hab]`. Conclude with `hy.2 _ (hZs b a hab.symm w hw)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hY'0 : Y' = ⊥`. Assume the negation of the conclusion as `hne`. Establish `: FiniteDimensional ℂ Y'` using `Submodule.finiteDimensional_of_le hY'Y`. Take `⟨w, hw, hw0, μ, hwK⟩` from `exists_highestWeight_in_stable hE hU this hY's hne`. Take `⟨c, rfl⟩` from `huniq w (hYK hw.1) μ hwK`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `hw.2 _ (Submodule.smul_mem _ c (self_mem_kLowSpan z))`. Establish `hpos` using `tform_self_re_pos hw0`. Rewrite `hpos` using `[h0]`. Simplify using `at hpos`. Set `b` to `Module.finBasis ℂ (kLowSpan ε A z)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `f : Y →ₗ[ℂ] (Fin (Module.finrank ℂ (kLowSpan ε A z)) → ℂ)` to `LinearMap.pi fun i => (tensorFormRight ((b i : kLowSpan ε A z) : TensorProduct ℂ D (Fock n))).comp Y.subtype`. Establish `hf : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `y hy`. Rewrite `hy` using `[LinearMap.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hfi : ∀ i, tform ((b i : kLowSpan ε A z) : TensorProduct ℂ D (Fock n)) (y : TensorProduct ℂ D (Fock n)) = 0` using `fun i => congrFun hy i`. Establish `hyY' : (y : TensorProduct ℂ D (Fock n)) ∈ Y'`. Use `⟨y.2, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hw' : w = ∑ i, (b.repr ⟨w, hw⟩ i) • ((b i : kLowSpan ε A z) : TensorProduct ℂ D (Fock n))`. Use `congrArg Subtype.val (b.sum_repr ⟨w, hw⟩)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at this`. Conclude with `this.symm`. Establish `h1 : tform w (y : TensorProduct ℂ D (Fock n)) = 0`. Rewrite using `[hw', tform_sum_left]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sum_eq_zero fun i _ => by rw [tensorForm_smul_left, hfi i, mul_zero]`. Rewrite using `[← tform_conj, h1, star_zero]`. Rewrite `hyY'` using `[hY'0, Submodule.mem_bot]`. Conclude with `(Submodule.mem_bot ℂ).2 (Subtype.ext hyY')`. Establish `hle : Module.finrank ℂ Y ≤ Module.finrank ℂ (kLowSpan ε A z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `LinearMap.finrank_le_finrank_of_injective hf` as an intermediate fact. Simplify using `using this`. Conclude with `(Submodule.eq_of_le_of_finrank_le hZY hle).symm.le`. Establish `hKKle : KK ≤ kLowSpan ε A z`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxT : x ∈ tensFock (genSub E V)` using `hx.1.2`. Rewrite `hxT` using `[genSub_eq_iSup_layer hE hVk]`. Establish `hdir : Directed (· ≤ ·) (fun k => layer ε E V k)` using `fun i j => ⟨max i j, layer_mono (le_max_left i j), layer_mono (le_max_right i j)⟩`. Establish `hco : ∀ s, ∃ k, tcoef ((fockBasis n).coord s) x ∈ layer ε E V k` using `fun s => (Submodule.mem_iSup_of_directed _ hdir).1 (tcoef_mem hxT _)`. Use `choose j hj using hco`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set J := univ.sup j`. Establish `hxJ : x ∈ tensFock (layer ε E V J)` using `mem_tensorFock_of_coeffs fun s => layer_mono (le_sup (mem_univ s)) (hj s)`. Set `Y` to `tensFock (layer ε E V J) ⊓ KK`. Establish `hLs : IsKStableSub ε A (tensFock (layer ε E V J))` using `fun a b hab y hy => tensorFock_diagAction_stable ε (layer_kStable hE hVk J) hab hy`. Establish `hYs : IsKStableSub ε A Y` using `fun a b hab y hy => ⟨hLs a b hab y hy.1, hKKs a b hab y hy.2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hYfd : FiniteDimensional ℂ Y`. Use `tensorFock_finiteDimensional (n := n) (finiteDimensional_layer (ε := ε) (E := E) hV.1 J)` as an intermediate fact. Conclude with `Submodule.finiteDimensional_of_le inf_le_left`. Establish `hzY : z ∈ Y` using `⟨tensorFock_mono (layer_mono (Nat.zero_le J)) hzT, hzKK⟩`. Conclude with `hfill Y hYfd hYs inf_le_right (kLowSpan_le hYs hzY) ⟨hxJ, hx⟩`.
-
-Use `⟨z, hz0, hzT, hzK, hzdeg, le_antisymm hKKle hZKK, hZfd, hZs, ?_, z, self_mem_kLowSpan z, hz0, hzK⟩` and prove the remaining obligations. Introduce `S hSle hSs`. Distinguish the cases in `hS0 : S = ⊥`. Conclude with `Or.inl hS0`. Use `right`.
-
-Establish `: FiniteDimensional ℂ S` using `Submodule.finiteDimensional_of_le hSle`. Take `⟨w, hw, hw0, μ, hwK⟩` from `exists_highestWeight_in_stable hE hU this hSs hS0`. Take `⟨c, rfl⟩` from `huniq w (hZKK (hSle hw)) μ hwK`. Establish `hc0 : c ≠ 0` using `fun h0 => hw0 (by rw [h0, zero_smul])`. Establish `hzS : z ∈ S`.
-
-Use `S.smul_mem c⁻¹ hw` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Then use the resulting hypothesis. Conclude with `le_antisymm hSle (kLowSpan_le hSs hzS)`.
+A detailed English derivation is pending.
 -/
 theorem ker_D_eq_kLowSpan {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {ε : Fin n → Bool} {lam : Fin n → ℝ} {h : ℝ}

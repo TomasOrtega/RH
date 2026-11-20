@@ -8,15 +8,15 @@ open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `N χ μ s hS`. Establish `hterm : ∀ n : {n : ℕ // 0 < n ∧ n.Coprime N}, LSeries.term (bN N χ μ) s (n : ℕ) = μ n * ((χ.1 (pin n) : ℂˣ) : ℂ) * (n : ℂ) ^ (1 - s)`. Introduce and unpack `⟨n, hn, hc⟩`. Establish `hn0 : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Rewrite using `[LSeries.term_of_ne_zero hn.ne']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [bN, if_pos hc]`. Rewrite using `[Complex.cpow_sub _ _ hn0, Complex.cpow_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hzero : ∀ x ∉ Set.range (Subtype.val : {n : ℕ // 0 < n ∧ n.Coprime N} → ℕ), LSeries.term (bN N χ μ) s x = 0`. Introduce `x hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h0 : x = 0`. Rewrite using `[h0, LSeries.term_zero]`. Rewrite using `[LSeries.term_of_ne_zero h0]`. Establish `hc : ¬ x.Coprime N` using `fun hc => hx ⟨⟨x, Nat.pos_of_ne_zero h0, hc⟩, rfl⟩`. Simplify using `only [bN, if_neg hc, zero_div]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `heq : (LSeries.term (bN N χ μ) s) ∘ (Subtype.val : {n : ℕ // 0 < n ∧ n.Coprime N} → ℕ) = fun n : {n : ℕ // 0 < n ∧ n.Coprime N} => μ n * ((χ.1 (pin n) : ℂˣ) : ℂ) * (n : ℂ) ^ (1 - s)`. Use function extensionality and compare the values at `hterm`. Use `⟨(Subtype.val_injective.summable_iff hzero).1 (heq ▸ hS), ?_⟩` and prove the remaining obligations. Establish `hsupp : Function.support (LSeries.term (bN N χ μ) s) ⊆ Set.range (Subtype.val : {n : ℕ // 0 < n ∧ n.Coprime N} → ℕ)`. Introduce `x hx`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h`. Conclude with `hx (hzero x h)`. Rewrite using `[LSeries, ← Subtype.val_injective.tsum_eq hsupp]`. Conclude with `tsum_congr hterm`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.lseries_twisted_coeff_eq_tsum_coprime_of_summable :
     ∀ (N : ℕ) (χ : HChar ℚ) (μ : ℕ → ℂ) (s : ℂ),

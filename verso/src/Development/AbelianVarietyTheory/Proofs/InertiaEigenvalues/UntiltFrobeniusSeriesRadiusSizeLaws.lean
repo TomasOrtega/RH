@@ -7,7 +7,7 @@ open scoped Formalism.Per
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h` using `PadicComplex.norm_extends' l (l : ℚ_[l])`. Rewrite `h` using `[Padic.norm_p]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gam_norm_natCast_eq (l : ℕ) [Fact l.Prime] : ‖(l : ℂ_[l])‖ = (l : ℝ)⁻¹ := by
   have h := PadicComplex.norm_extends' l (l : ℚ_[l])
@@ -15,11 +15,11 @@ theorem gam_norm_natCast_eq (l : ℕ) [Fact l.Prime] : ‖(l : ℂ_[l])‖ = (l 
   simpa using h
 
 /- English proof (translation)
-Distinguish the cases in `hall : ∀ n, f n = 0`. Conclude with `⟨0, fun n => by rw [hall n, hall 0]⟩`. Use `push_neg at hall`. Take `⟨m, hm⟩` from `hall`. Establish `hmpos : 0 < f m` using `lt_of_le_of_ne (hf0 m) (Ne.symm hm)`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ n in Filter.cofinite, f n < f m` using `hf (Iio_mem_nhds hmpos)`. Establish `hfin : {n | ¬ f n < f m}.Finite` using `Filter.eventually_cofinite.mp hev`. Establish `hmem : m ∈ hfin.toFinset` using `by simp`. Take `⟨n₀, hn₀, hmax⟩` from `hfin.toFinset.exists_max_image f ⟨m, hmem⟩`. Use `⟨n₀, fun n => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hn : f n < f m`. Conclude with `hn.le.trans (hmax m hmem)`. Conclude with `hmax n (by simpa using hn)`.
+A detailed English derivation is pending.
 -/
 theorem gam_exists_max_of_tendsto (f : ℤ → ℝ) (hf0 : ∀ n, 0 ≤ f n)
     (hf : Filter.Tendsto f Filter.cofinite (nhds 0)) : ∃ n₀, ∀ n, f n ≤ f n₀ := by
@@ -38,27 +38,23 @@ theorem gam_exists_max_of_tendsto (f : ℤ → ℝ) (hf0 : ∀ n, 0 ≤ f n)
   · exact hmax n (by simpa using hn)
 
 /- English proof (translation)
-Introduce `l _ h j r h1 hr0 hr1`. Establish `hl : 1 < l` using `(Fact.out : l.Prime).one_lt`. Establish `hlR : (1 : ℝ) < l` using `by exact_mod_cast hl`. Establish `ha` using `gam_norm_natCast_eq l`. Use `set a := ‖(l : ℂ_[l])‖ with ha_def`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : 0 < a` using `by rw [ha]; positivity`. Establish `key : ∀ t : ℝ, 0 ≤ t → t < 1 → (∀ n : ℤ, a ^ (-n) * t ^ ((l : ℝ) ^ (n * h + j : ℤ)) ≤ gam l h j t) ∧ (∃ n : ℤ, gam l h j t = a ^ (-n) * t ^ ((l : ℝ) ^ (n * h + j : ℤ)))`. Introduce `t ht0 ht1`. Use `set f : ℤ → ℝ := fun n => a ^ (-n) * t ^ ((l : ℝ) ^ (n * h + j : ℤ)) with hf_def`. Establish `hf0 : ∀ n, 0 ≤ f n` using `fun n => mul_nonneg (zpow_nonneg ha0.le _) (Real.rpow_nonneg ht0 _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨n₀, hn₀⟩` from `gam_exists_max_of_tendsto f hf0 (GlobalTheory.T.tendsto_untiltFrobeniusSeries_term_norms_zero l h j t h1 ht0 ht1)`. Establish `hbdd : BddAbove (Set.range f)` using `⟨f n₀, by rintro _ ⟨n, rfl⟩; exact hn₀ n⟩`. Establish `hg : gam l h j t = ⨆ n, f n` using `rfl`. Use `⟨fun n => ?_, n₀, ?_⟩` and prove the remaining obligations. Rewrite using `[hg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `le_ciSup hbdd n`. Rewrite using `[hg]`. Conclude with `le_antisymm (ciSup_le hn₀) (le_ciSup hbdd n₀)`. Take `⟨hle, n₀, hn₀⟩` from `key r hr0 hr1`. Use `⟨hle, ⟨n₀, hn₀⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hn₀]`. Conclude with `mul_nonneg (zpow_nonneg ha0.le _) (Real.rpow_nonneg hr0 _)`. Introduce `hr`. Conclude with `lt_of_lt_of_le (mul_pos (zpow_pos ha0 _) (Real.rpow_pos_of_pos hr _)) (hle 0)`. Establish `hq0 : 0 ≤ r ^ l ^ h` using `pow_nonneg hr0 _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq1 : r ^ l ^ h < 1` using `pow_lt_one₀ hr0 hr1 (by positivity)`. Take `⟨hle', m₀, hm₀⟩` from `key (r ^ l ^ h) hq0 hq1`. Establish `shift : ∀ n : ℤ, a ^ (-n) * (r ^ l ^ h) ^ ((l : ℝ) ^ (n * h + j : ℤ)) = a * (a ^ (-(n + 1)) * r ^ ((l : ℝ) ^ ((n + 1) * h + j : ℤ)))`. Introduce `n`. Establish `e1 : (r ^ l ^ h) ^ ((l : ℝ) ^ (n * h + j : ℤ)) = r ^ ((l : ℝ) ^ ((n + 1) * h + j : ℤ))`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.rpow_natCast r (l ^ h), ← Real.rpow_mul hr0]`. Use `congr 1`. Establish `hl0 : (l : ℝ) ≠ 0` using `by positivity`. Rewrite using `[show ((n + 1) * h + j : ℤ) = (h : ℤ) + (n * h + j) by ring, zpow_add₀ hl0 (h : ℤ) (n * h + j), zpow_natCast, Nat.cast_pow]`. Establish `e2 : a ^ (-n) = a * a ^ (-(n + 1))`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show -n = 1 + (-(n + 1)) by ring, zpow_add₀ ha0.ne', zpow_one]`. Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[hm₀, shift]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_le_mul_of_nonneg_left (hle (m₀ + 1)) ha0.le`. Rewrite using `[hn₀]`. Use `hle' (n₀ - 1)` as an intermediate fact. Rewrite `this` using `[shift, show n₀ - 1 + 1 = n₀ by ring]`. Conclude with `this`.
-
-Introduce `s hrs hs1`. Establish `hs0 : 0 < s` using `lt_of_le_of_lt hr0 hrs`. Take `⟨hles, -⟩` from `key s hs0.le hs1`. Rewrite using `[hn₀]`. Use `lt_of_lt_of_le ?_ (hles n₀)` and prove the remaining obligations.
-
-Apply `mul_lt_mul_of_pos_left _ (zpow_pos ha0 _)` to reduce the goal to its premises. Conclude with `Real.rpow_lt_rpow hr0 hrs (zpow_pos (by positivity) _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem gam_laws : ∀ (l : ℕ) [Fact l.Prime] (h j : ℕ) (r : ℝ), 1 ≤ h → 0 ≤ r → r < 1 → (∀ n : ℤ, ‖(l : ℂ_[l])‖ ^ (-n) * r ^ ((l : ℝ) ^ (n * h + j : ℤ)) ≤ gam l h j r) ∧ (∃ n : ℤ, gam l h j r = ‖(l : ℂ_[l])‖ ^ (-n) * r ^ ((l : ℝ) ^ (n * h + j : ℤ))) ∧ 0 ≤ gam l h j r ∧ (0 < r → 0 < gam l h j r) ∧ gam l h j (r ^ l ^ h) = ‖(l : ℂ_[l])‖ * gam l h j r ∧ ∀ s : ℝ, r < s → s < 1 → gam l h j r < gam l h j s := by
   intro l _ h j r h1 hr0 hr1

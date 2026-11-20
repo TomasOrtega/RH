@@ -9,15 +9,15 @@ open GlobalTheory GlobalTheory.VB GlobalTheory.TangentOrigin GlobalTheory.Toroid
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ _ e C N τ M dual A fl i s kind Ro w hw hL hF hG k y hy`. Take `⟨ch, hch, had⟩` from `(UpperTheory.exists_adapted_flag_charts _ M _ fl).1 (N.j y)`. Take `⟨t₀, ht₀⟩` from `had i`. Establish `hfr` using `(UpperTheory.exists_adapted_flag_charts _ M _ fl).2 ch had i t₀ ht₀`. Establish `h1` using `hG.2 ch had (gen_le N.j hch) t₀ ht₀ hfr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φ, f, t, hT, hE⟩` from `C.gr_spec y`. Take `⟨φ', f', hf'⟩` from `hL.2 ch y hch`. Establish `hφ : φ = φ'` using `RingHom.ext fun a => toFn_injective y ((RingHom.congr_fun hT.2.1 a).symm.trans (RingHom.congr_fun hf'.1 a))`. Substitute `hφ` using the available equality. Take `⟨hu, h2⟩` from `(UpperTheory.chart_frame_divisor E H Dw l Xo c O β Z F e C τ _ N.j M dual A fl hL hF ch had y hch φ f f' t hT hf').2 i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Establish `hd : divOf C (expo Dw w) = (cond dual (-1) 1 : ℤ) • C.gr τ (pos dual i)`. Set `x : Letter Dw` to `⟨τ, pos dual i⟩`. Establish `h : letterOf Dw (.inl (τ, (pos dual i : ℕ))) = some x` using `dif_pos x.2.2`. Rewrite using `[hw, divOf, Finset.sum_eq_single x]`. Simplify using `[expo, h, x]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `y _ hy`. Simplify using `[expo, h, hy.symm]`. Simplify using the standard rewrite rules. Establish `h3` using `(hE τ (pos dual i)).zsmul (cond dual (-1) 1 : ℤ)`. Rewrite using `[hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `hG.1.germOf_eq (i := k) (j := fun _ => (⟨ch.U, _, hfr⟩ : Chart (fl.gr i) 1)) (x := y) hy (by`. Conclude with `Set.mem_iInter.2 fun _ => hch)`. Unfold `CartierDiv.IsEqn at h3 ⊢`. Rewrite using `[h3, ← h4, eq_comm, germOf_eq_iff, div_eq_mul_inv, ← eq_inv_of_mul_eq_one_right h1, mul_comm, h2]`. Conclude with `⟨_, hu, rfl⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.true_model_chart_divisor :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (C : FlagCpt Z e) (N : GlobalTheory.TrueGeo.Model C.Y) (τ : E →+* ℂ) (M : N.X.Modules) (dual : Bool) (A : Chart M (Dw.mult τ) → Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) C.Y.Fn) (fl : Vert.Flag M (Dw.mult τ)) (i : Fin (Dw.mult τ)) (s : ((fl.root i).pull N.j).ι → C.Y.Fnˣ) (kind : ℕ → Bool) (Ro : Option ℝ) (w : Pad.Sym E →₀ ℤ), w = Finsupp.single (kind, Ro, Sum.inl (τ, (pos dual i : ℕ))) (cond dual (-1) 1) → IsLie C.f0 τ N.j dual A → IsFlag (genericPt C.Y ≫ N.j) dual A fl → IsGrSec N.j dual A fl i s → ∀ k, ∀ y ∈ ((fl.root i).pull N.j).U k, (divOf C (expo Dw w)).IsEqn y (s k) := by

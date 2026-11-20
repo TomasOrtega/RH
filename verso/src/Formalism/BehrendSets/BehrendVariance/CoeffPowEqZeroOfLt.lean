@@ -17,13 +17,13 @@ end Formalism.BehrendSets.Level3
 namespace Formalism.BehrendSets.Level3
 
 /- English proof (translation)
-Use `set P : ℤ⟦X⟧ := X * (PowerSeries.mk 1) ^ Q with hP`. Establish `hP0 : constantCoeff P = 0` using `by simp [hP]`. Establish `hP1' : coeff 1 P = 1`. Rewrite using `[hP, show (1 : ℕ) = 0 + 1 from rfl, coeff_succ_X_mul, coeff_zero_eq_constantCoeff_apply, map_pow]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hP1 : IsUnit (coeff 1 P)` using `by rw [hP1']; exact isUnit_one`. Use `set y := P.substInvOfIsUnit hP1`. Establish `hy : HasSubst y` using `HasSubst.substInvOfIsUnit P hP1`. Establish `e1 : subst y P = X` using `subst_substInvOfIsUnit_right P hP0 hP1`. Use `set φ := substAlgHom (R := ℤ) hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hφ : ∀ f : ℤ⟦X⟧, subst y f = φ f` using `fun f => by rw [coe_substAlgHom]`. Rewrite `e1` using `[hφ, hP, map_mul, map_pow, ← hφ X, subst_X hy]`. Establish `e2 : φ (PowerSeries.mk 1) * (1 - y) = 1`. Use `congrArg φ (mk_one_mul_one_sub_eq_one ℤ)` as an intermediate fact. Rewrite `this` using `[map_mul, map_sub, map_one, ← hφ X, subst_X hy]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `⟨1 - y, ?_⟩` and prove the remaining obligations. Establish `: X * (1 - y) ^ Q = y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_D (Q : ℕ) : ∃ D : ℤ⟦X⟧, D + X * D ^ Q = 1 := by
   set P : ℤ⟦X⟧ := X * (PowerSeries.mk 1) ^ Q with hP

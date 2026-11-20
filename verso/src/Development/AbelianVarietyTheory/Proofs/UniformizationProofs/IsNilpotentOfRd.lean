@@ -13,19 +13,19 @@ variable {A : Type} [CommRing A] {X Y W : Type} [AddCommGroup X] [AddCommGroup Y
 abbrev mv (f : X →+ Y) : A[X] →+* A[Y] := mapDomainRingHom A f
 
 /- English proof (translation)
-Simplify using `[mv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mv_single (f : X →+ Y) (a : X) (r : A) : mv f (single a r) = single (f a) r := by
   simp [mv]
 
 /- English proof (translation)
-Simplify using `[mv, mapDomainRingHom_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mv_mv (g : Y →+ W) (f : X →+ Y) (u : A[X]) : mv g (mv f u) = mv (g.comp f) u := by
   simp [mv, mapDomainRingHom_comp]
 
 /- English proof (translation)
-Simplify using `[mv, mapDomainRingHom_id]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mv_id (u : A[X]) : mv (AddMonoidHom.id X) u = u := by
   simp [mv, mapDomainRingHom_id]
@@ -40,7 +40,7 @@ theorem coeff_avg (u : A[X × Y]) (y : Y) : (avg u).coeff y = u.coeff (0, y) := 
 
 open Classical in
 /- English proof (translation)
-Take `⟨a, b⟩` from `p`. Use extensionality with `y`. Rewrite using `[coeff_avg]`. Apply the tactic sequence `by_cases h : a = 0 <;> simp [h, Finsupp.single_apply]`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem avg_single (p : X × Y) (r : A) : avg (single p r) = if p.1 = 0 then single p.2 r else 0 := by
   obtain ⟨a, b⟩ := p
@@ -49,9 +49,9 @@ theorem avg_single (p : X × Y) (r : A) : avg (single p r) = if p.1 = 0 then sin
   by_cases h : a = 0 <;> simp [h, Finsupp.single_apply]
 
 /- English proof (translation)
-Proceed by induction on `u using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single p r`. Take `⟨a, b⟩` from `p`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mv_single, avg_single, avg_single, h₁]`. Use `split_ifs with h`. Take `rfl : a = 0` from `h`. Rewrite using `[h₂, mv_single]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem avg_mv_fst (f : X × W →+ X × Y) (φ : W →+ Y) (h₁ : ∀ p, (f p).1 = p.1) (h₂ : ∀ w, (f (0, w)).2 = φ w)
     (u : A[X × W]) : avg (mv f u) = mv φ (avg u) := by
@@ -67,7 +67,7 @@ theorem avg_mv_fst (f : X × W →+ X × Y) (φ : W →+ Y) (h₁ : ∀ p, (f p)
     · simp
 
 /- English proof (translation)
-Proceed by induction on `u using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single p r => rw [mv_single, avg_single, h, mv_single, if_pos rfl]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem avg_mv_inr (f : W →+ X × Y) (φ : W →+ Y) (h : ∀ w, f w = (0, φ w)) (u : A[W]) :
     avg (mv f u) = mv φ u := by
@@ -77,9 +77,9 @@ theorem avg_mv_inr (f : W →+ X × Y) (φ : W →+ Y) (h : ∀ w, f w = (0, φ 
   | single p r => rw [mv_single, avg_single, h, mv_single, if_pos rfl]
 
 /- English proof (translation)
-Proceed by induction on `u using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb, coeff_add, Finsupp.add_apply, single_add]`. Consider the case `single p r`. Rewrite using `[mv_single, avg_single, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hp`. Substitute `hp` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hp]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem avg_mv_one (f : X →+ X × Y) (h : ∀ a, (f a).1 = a) (u : A[X]) :
     avg (mv f u) = single 0 (u.coeff 0) := by
@@ -95,7 +95,7 @@ theorem avg_mv_one (f : X →+ X × Y) (h : ∀ a, (f a).1 = a) (u : A[X]) :
 abbrev tri (a b c : X →+ Y) : X × X × X →+ Y := a.coprod (b.coprod c)
 
 /- English proof (translation)
-Use `congrArg avg (h (.inl X Y) ((AddMonoidHom.inr X Y).comp a) ((AddMonoidHom.inr X Y).comp b) ((AddMonoidHom.inr X Y).comp w))` as an intermediate fact. Rewrite `this` using `[map_add, map_add, avg_mv_fst _ (b.coprod w) (by simp) (by simp), avg_mv_fst _ (a.coprod w) (by simp) (by simp), avg_mv_fst _ ((a + b).coprod w) (by simp) (by simp), avg_mv_inr _ (a.coprod (b.coprod w)) (by simp)]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_cocycle (u : A[X × X × W]) (a b : X →+ Y) (w : W →+ Y)
     (h : ∀ (a b c : X →+ X × Y) (w : W →+ X × Y), mv ((a + b).coprod (c.coprod w)) u + mv (a.coprod (b.coprod w)) u =
@@ -110,11 +110,11 @@ theorem eq_of_cocycle (u : A[X × X × W]) (a b : X →+ Y) (w : W →+ Y)
   exact this
 
 /- English proof (translation)
-Establish `e₁ : ∀ (Y : Type) [AddCommGroup Y] (a b c : X →+ Y), _` using `fun Y _ a b c => eq_of_cocycle u a b c (co _)`. Establish `e₂ : ∀ (Y : Type) [AddCommGroup Y] (a b : X →+ Y), mv (a.coprod b) (avg u) = mv (b.coprod a) (avg u)` using `fun Y _ a b => by`. Use `congrArg avg (s₂ _ (.inl X Y) ((AddMonoidHom.inr X Y).comp a) ((AddMonoidHom.inr X Y).comp b))` as an intermediate fact. Rewrite `this` using `[avg_mv_fst _ (a.coprod b) (by simp) (by simp), avg_mv_fst _ (b.coprod a) (by simp) (by simp)]`. Then use the resulting hypothesis. Establish `e₃ : ∀ (Y : Type) [AddCommGroup Y] (a b c : X →+ Y), mv ((a + b).coprod c) (avg u) + mv (a.coprod b) (avg u) = mv (a.coprod (b + c)) (avg u) + mv (b.coprod c) (avg u)` using `fun Y _ a b c => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `p` using `e₁ Y a b c`. Establish `q` using `e₁ Y b c a`. Establish `r : mv (tri a b c) u = mv (tri b c a) u` using `(s₁ Y a b c).trans (s₂ Y b a c)`. Take the linear combination `q - p - r + e₂ Y a b - e₂ Y c a - e₂ Y a (b + c)`. Establish `e₄ : ∀ a b : X →+ Y, mv b (avg (avg u)) + mv a (avg (avg u)) = mv (a + b) (avg (avg u)) + mv (a.coprod b) (avg u)` using `fun a b => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `congrArg avg (e₃ _ (.inl X Y) ((AddMonoidHom.inr X Y).comp a) ((AddMonoidHom.inr X Y).comp b))` as an intermediate fact. Rewrite `this` using `[map_add, map_add, avg_mv_fst _ b (by simp) (by simp), avg_mv_fst _ a (by simp) (by simp), avg_mv_fst _ (a + b) (by simp) (by simp), avg_mv_inr _ (a.coprod b) (by simp)]`. Then use the resulting hypothesis. Take the linear combination `-e₁ Y a b c - e₄ b c - e₄ a c + e₄ (a + b) c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem add_exists (u : A[X × X × X])
     (s₁ : ∀ (Y : Type) [AddCommGroup Y] (a b c : X →+ Y), mv (tri a b c) u = mv (tri b a c) u)
@@ -144,9 +144,9 @@ theorem add_exists (u : A[X × X × X])
   linear_combination -e₁ Y a b c - e₄ b c - e₄ a c + e₄ (a + b) c
 
 /- English proof (translation)
-Establish `e₁ : ∀ (Y : Type) [AddCommGroup Y] (b c : X →+ Y), mv b h + mv c h = mv (b + c) h` using `fun Y _ b c => by`. Use `congrArg avg (H _ (.inl X Y) ((AddMonoidHom.inr X Y).comp b) ((AddMonoidHom.inr X Y).comp c))` as an intermediate fact. Simplify using `only [map_add, map_sub, map_zero] at this`. Rewrite `this` using `[avg_mv_one _ (by simp), avg_mv_one _ (by simp), avg_mv_inr _ b (by simp), avg_mv_inr _ c (by simp), avg_mv_one _ (by simp), avg_mv_one _ (by simp), avg_mv_inr _ (b + c) (by simp)]`. Take the linear combination `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `congrArg avg (e₁ _ (.inl X X) (.inr X X))` as an intermediate fact. Rewrite `this` using `[map_add, avg_mv_one _ (by simp), avg_mv_inr _ (.id X) (by simp), avg_mv_one _ (by simp), mv_id]`. Take the linear combination `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem add_unique (h : A[X]) (H : ∀ (Y : Type) [AddCommGroup Y] (a b c : X →+ Y),
     mv (a + b + c) h + mv a h + mv b h + mv c h - mv (a + b) h - mv (a + c) h - mv (b + c) h = 0) : h = 0 := by
@@ -163,28 +163,28 @@ theorem add_unique (h : A[X]) (H : ∀ (Y : Type) [AddCommGroup Y] (a b c : X �
 abbrev rd (I : Ideal A) : A[X] →+* (A ⧸ I)[X] := mapRingHom X (Ideal.Quotient.mk I)
 
 /- English proof (translation)
-Rewrite using `[← coeff_inj, Finsupp.ext_iff]`. Simplify using `[Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rd_eq_zero {I : Ideal A} {u : A[X]} : rd I u = 0 ↔ ∀ x, u.coeff x ∈ I := by
   rw [← coeff_inj, Finsupp.ext_iff]
   simp [Ideal.Quotient.eq_zero_iff_mem]
 
 /- English proof (translation)
-The claim follows from `RingHom.congr_fun (mapRingHom_comp_mapDomainRingHom (Ideal.Quotient.mk I) f) u`.
+A detailed English derivation is pending.
 -/
 theorem rd_mv (I : Ideal A) (f : X →+ Y) (u : A[X]) : rd I (mv f u) = mv f (rd I u) :=
   RingHom.congr_fun (mapRingHom_comp_mapDomainRingHom (Ideal.Quotient.mk I) f) u
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `[coeff_avg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rd_avg (I : Ideal A) (u : A[X × Y]) : rd I (avg u) = avg (rd I u) := by
   ext y; simp [coeff_avg]
 
 /- English proof (translation)
-Rewrite `*` using `[rd_eq_zero]`. Introduce `x`. Rewrite using `[coeff_mul]`. Use `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => ?_` and prove the remaining obligations. Simplify using `only`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Use `split_ifs`. Conclude with `Ideal.mul_mem_mul (hu a) (hv b)`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem rd_mul {I I' : Ideal A} {u v : A[X]} (hu : rd I u = 0) (hv : rd I' v = 0) : rd (I * I') (u * v) = 0 := by
   classical
@@ -198,21 +198,21 @@ theorem rd_mul {I I' : Ideal A} {u v : A[X]} (hu : rd I u = 0) (hv : rd I' v = 0
   · exact zero_mem _
 
 /- English proof (translation)
-The claim follows from `rd_eq_zero.2 fun x => h (rd_eq_zero.1 hu x)`.
+A detailed English derivation is pending.
 -/
 theorem rd_mono {I I' : Ideal A} (h : I ≤ I') {u : A[X]} (hu : rd I u = 0) : rd I' u = 0 :=
   rd_eq_zero.2 fun x => h (rd_eq_zero.1 hu x)
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `rd_eq_zero.1 hu x`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_rd {u : A[X]} (hu : rd ⊥ u = 0) : u = 0 := by
   ext x; exact rd_eq_zero.1 hu x
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `hI`. Establish `: ∀ k : ℕ, rd (I ^ k) (u ^ k) = 0` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => exact rd_eq_zero.2 fun x => by simp`. Consider the case `succ k ih => rw [pow_succ, pow_succ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `rd_mul ih hu`. Conclude with `⟨n, eq_zero_of_rd (rd_mono hn.le (this n))⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isNilpotent_of_rd {I : Ideal A} (hI : IsNilpotent I) {u : A[X]} (hu : rd I u = 0) : IsNilpotent u := by
   obtain ⟨n, hn⟩ := hI
@@ -225,7 +225,7 @@ theorem isNilpotent_of_rd {I : Ideal A} (hI : IsNilpotent I) {u : A[X]} (hu : rd
 abbrev um (f : X →+ Y) : (A[X])ˣ →* (A[Y])ˣ := Units.map (mv f).toMonoidHom
 
 /- English proof (translation)
-The claim follows from `Units.ext (mv_mv g f u.val)`.
+A detailed English derivation is pending.
 -/
 theorem um_um (g : Y →+ W) (f : X →+ Y) (u : (A[X])ˣ) : um g (um f u) = um (g.comp f) u :=
   Units.ext (mv_mv g f u.val)
@@ -233,18 +233,18 @@ theorem um_um (g : Y →+ W) (f : X →+ Y) (u : (A[X])ˣ) : um g (um f u) = um 
 def cong (I : Ideal A) : Subgroup (A[X])ˣ := (Units.map (rd I).toMonoidHom).ker
 
 /- English proof (translation)
-The claim follows from `Units.ext_iff`.
+A detailed English derivation is pending.
 -/
 theorem mem_cong {I : Ideal A} {u : (A[X])ˣ} : u ∈ cong I ↔ rd I u.val = 1 := Units.ext_iff
 
 /- English proof (translation)
-Rewrite using `[mem_cong, map_sub, map_one, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_cong' {I : Ideal A} {u : (A[X])ˣ} : u ∈ cong I ↔ rd I (u.val - 1) = 0 := by
   rw [mem_cong, map_sub, map_one, sub_eq_zero]
 
 /- English proof (translation)
-The claim follows from `mem_cong.2 ((rd_mv I f u.val).trans (by rw [mem_cong.1 hu, map_one]))`.
+A detailed English derivation is pending.
 -/
 theorem um_mem {I : Ideal A} (f : X →+ Y) {u : (A[X])ˣ} (hu : u ∈ cong I) : um f u ∈ cong I :=
   mem_cong.2 ((rd_mv I f u.val).trans (by rw [mem_cong.1 hu, map_one]))
@@ -252,7 +252,7 @@ theorem um_mem {I : Ideal A} (f : X →+ Y) {u : (A[X])ˣ} (hu : u ∈ cong I) :
 def lin (I : Ideal A) (u : (A[X])ˣ) : (A ⧸ I * I)[X] := rd (I * I) (u.val - 1)
 
 /- English proof (translation)
-Use `rd_mul (mem_cong'.1 hu) (mem_cong'.1 hv)` as an intermediate fact. Simplify using `only [lin, Units.val_mul, map_sub, map_mul, map_one] at this ⊢`. Take the linear combination `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem lin_mul {I : Ideal A} {u v : (A[X])ˣ} (hu : u ∈ cong I) (hv : v ∈ cong I) :
     lin I (u * v) = lin I u + lin I v := by
@@ -261,14 +261,14 @@ theorem lin_mul {I : Ideal A} {u v : (A[X])ˣ} (hu : u ∈ cong I) (hv : v ∈ c
   linear_combination this
 
 /- English proof (translation)
-Rewrite using `[eq_sub_iff_add_eq, ← lin_mul (div_mem hu hv) hv, div_mul_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lin_div {I : Ideal A} {u v : (A[X])ˣ} (hu : u ∈ cong I) (hv : v ∈ cong I) :
     lin I (u / v) = lin I u - lin I v := by
   rw [eq_sub_iff_add_eq, ← lin_mul (div_mem hu hv) hv, div_mul_cancel]
 
 /- English proof (translation)
-Rewrite using `[lin, lin, ← rd_mv, map_sub (mv f), map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lin_um (I : Ideal A) (f : X →+ Y) (u : (A[X])ˣ) : lin I (um f u) = mv f (lin I u) := by
   rw [lin, lin, ← rd_mv, map_sub (mv f), map_one]; rfl
@@ -277,14 +277,14 @@ def del (g : (A[X])ˣ) (a b c : X →+ Y) : (A[Y])ˣ :=
   um (a + b + c) g * um a g * um b g * um c g / um (a + b) g / um (a + c) g / um (b + c) g
 
 /- English proof (translation)
-Simplify using `only [del, map_mul, map_div, um_um, AddMonoidHom.comp_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem um_del (f : Y →+ W) (g : (A[X])ˣ) (a b c : X →+ Y) :
     um f (del g a b c) = del g (f.comp a) (f.comp b) (f.comp c) := by
   simp only [del, map_mul, map_div, um_um, AddMonoidHom.comp_add]
 
 /- English proof (translation)
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [del, map_mul, ofMul_mul, ofMul_div]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem del_mul (g g' : (A[X])ˣ) (a b c : X →+ Y) : del (g * g') a b c = del g a b c * del g' a b c := by
   apply Additive.ofMul.injective
@@ -292,14 +292,14 @@ theorem del_mul (g g' : (A[X])ˣ) (a b c : X →+ Y) : del (g * g') a b c = del 
   abel
 
 /- English proof (translation)
-The claim follows from `div_mem (div_mem (div_mem (mul_mem (mul_mem (mul_mem (um_mem _ hg) (um_mem _ hg)) (um_mem _ hg)) (um_mem _ hg)) (um_mem _ hg)) (um_mem _ hg)) (um_mem _ hg)`.
+A detailed English derivation is pending.
 -/
 theorem del_mem {I : Ideal A} {g : (A[X])ˣ} (hg : g ∈ cong I) (a b c : X →+ Y) : del g a b c ∈ cong I :=
   div_mem (div_mem (div_mem (mul_mem (mul_mem (mul_mem (um_mem _ hg) (um_mem _ hg)) (um_mem _ hg)) (um_mem _ hg))
     (um_mem _ hg)) (um_mem _ hg)) (um_mem _ hg)
 
 /- English proof (translation)
-Establish `m : ∀ f : X →+ Y, um f g ∈ cong I` using `fun f => um_mem f hg`. Establish `m₄` using `mul_mem (mul_mem (mul_mem (m (a + b + c)) (m a)) (m b)) (m c)`. Rewrite using `[del, lin_div (div_mem (div_mem m₄ (m _)) (m _)) (m _), lin_div (div_mem m₄ (m _)) (m _), lin_div m₄ (m _), lin_mul (mul_mem (mul_mem (m _) (m _)) (m _)) (m _), lin_mul (mul_mem (m _) (m _)) (m _), lin_mul (m _) (m _)]`. Simplify using `only [lin_um]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lin_del {I : Ideal A} {g : (A[X])ˣ} (hg : g ∈ cong I) (a b c : X →+ Y) :
     lin I (del g a b c) = mv (a + b + c) (lin I g) + mv a (lin I g) + mv b (lin I g) + mv c (lin I g) -
@@ -317,24 +317,24 @@ abbrev p₂ : X →+ X × X × X := (AddMonoidHom.inr X (X × X)).comp (.inl X X
 abbrev p₃ : X →+ X × X × X := (AddMonoidHom.inr X (X × X)).comp (.inr X X)
 
 /- English proof (translation)
-Use `ext`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tri_p₁ (a b c : X →+ Y) : (tri a b c).comp p₁ = a := by ext; simp
 /- English proof (translation)
-Use `ext`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tri_p₂ (a b c : X →+ Y) : (tri a b c).comp p₂ = b := by ext; simp
 /- English proof (translation)
-Use `ext`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tri_p₃ (a b c : X →+ Y) : (tri a b c).comp p₃ = c := by ext; simp
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tri_p : tri (p₁ (X := X)) p₂ p₃ = .id _ := by ext <;> simp
 
 /- English proof (translation)
-Rewrite using `[um_del, tri_p₁, tri_p₂, tri_p₃]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem um_tri_del (g : (A[X])ˣ) (a b c : X →+ Y) : um (tri a b c) (del g p₁ p₂ p₃) = del g a b c := by
   rw [um_del, tri_p₁, tri_p₂, tri_p₃]
@@ -346,11 +346,11 @@ structure Cub (e : (A[X × X × X])ˣ) : Prop where
     um (tri (a + b) c d) e * um (tri a b d) e = um (tri a (b + c) d) e * um (tri b c d) e
 
 /- English proof (translation)
-Use `⟨fun Y _ a b c => ?_, fun Y _ a b c => ?_, fun Y _ a b c d => ?_⟩` and prove the remaining obligations. Rewrite using `[map_div, map_div, um_tri_del, um_tri_del, he.s₁, del, del, add_comm b a]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[map_div, map_div, um_tri_del, um_tri_del, he.s₂, del, del, add_comm c b, add_right_comm a c b]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div]`. Normalize the expressions using the abelian group laws. Use `congrArg Additive.ofMul (he.co Y a b c d)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Simplify using `only [map_div, um_tri_del]`. Simplify using `only [del, ← add_assoc]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_div] at this ⊢`. Take the linear combination `(norm := abel) this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem Cub.div_del {e : (A[X × X × X])ˣ} (he : Cub e) (g : (A[X])ˣ) : Cub (e / del g p₁ p₂ p₃) := by
   refine ⟨fun Y _ a b c => ?_, fun Y _ a b c => ?_, fun Y _ a b c d => ?_⟩
@@ -370,9 +370,9 @@ theorem Cub.div_del {e : (A[X × X × X])ˣ} (he : Cub e) (g : (A[X])ˣ) : Cub (
     linear_combination (norm := abel) this
 
 /- English proof (translation)
-Establish `h₀ : rd I (avg (avg (e.val - 1))) = 0` using `by rw [rd_avg, rd_avg, mem_cong'.1 h, map_zero, map_zero]`. Take `⟨g, hg⟩` from `(isNilpotent_of_rd hI h₀).isUnit_add_one`. Establish `hg' : g ∈ cong I` using `mem_cong'.2 (by rw [hg, add_sub_cancel_right, h₀])`. Establish `lg : lin I g = avg (avg (lin I e))` using `by rw [lin, lin, hg, add_sub_cancel_right, rd_avg, rd_avg]`. Use `⟨g, hg', mem_cong'.2 ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_exists (lin I e) (fun Y _ a b c => by rw [← lin_um, ← lin_um, he.s₁]) (fun Y _ a b c => by rw [← lin_um, ← lin_um, he.s₂]) (fun Y _ a b c d => by` as an intermediate fact. Simplify using `only [← lin_um]`. Rewrite using `[← lin_mul (um_mem _ h) (um_mem _ h), he.co, lin_mul (um_mem _ h) (um_mem _ h)]) p₁ p₂ p₃`. Rewrite `this` using `[tri_p, mv_id, ← lg, ← lin_del hg']`. Conclude with `(lin_div h (del_mem hg' _ _ _)).trans (sub_eq_zero.2 this)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Cub.step {e : (A[X × X × X])ˣ} (he : Cub e) {I : Ideal A} (hI : IsNilpotent I) (h : e ∈ cong I) :
     ∃ g ∈ cong I, e / del g p₁ p₂ p₃ ∈ cong (I * I) := by
@@ -389,13 +389,13 @@ theorem Cub.step {e : (A[X × X × X])ˣ} (he : Cub e) {I : Ideal A} (hI : IsNil
   exact (lin_div h (del_mem hg' _ _ _)).trans (sub_eq_zero.2 this)
 
 /- English proof (translation)
-The claim follows from `mem_cong'.2 (rd_mono h (mem_cong'.1 hu))`.
+A detailed English derivation is pending.
 -/
 theorem cong_mono {I I' : Ideal A} (h : I ≤ I') {u : (A[X])ˣ} (hu : u ∈ cong I) : u ∈ cong I' :=
   mem_cong'.2 (rd_mono h (mem_cong'.1 hu))
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `hJ`. Establish `: J ^ (n + 1) ≤ ⊥` using `by rw [pow_succ, hn]; simp`. Conclude with `⟨n, fun u hu => Units.ext (sub_eq_zero.1 (eq_zero_of_rd (mem_cong'.1 (cong_mono this hu))))⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_cong_pow {J : Ideal A} (hJ : IsNilpotent J) :
     ∃ n : ℕ, ∀ u : (A[X])ˣ, u ∈ cong (J ^ (n + 1)) → u = 1 := by
@@ -404,22 +404,22 @@ theorem exists_cong_pow {J : Ideal A} (hJ : IsNilpotent J) :
   exact ⟨n, fun u hu => Units.ext (sub_eq_zero.1 (eq_zero_of_rd (mem_cong'.1 (cong_mono this hu))))⟩
 
 /- English proof (translation)
-Rewrite using `[← pow_add]; exact Ideal.pow_le_pow_right (by omega)`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_mul_pow_le (J : Ideal A) (k : ℕ) : J ^ (k + 1) * J ^ (k + 1) ≤ J ^ (k + 1 + 1) := by
   rw [← pow_add]; exact Ideal.pow_le_pow_right (by omega)
 
 /- English proof (translation)
-Simplify using `only [del, map_one, mul_one, div_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem del_one (a b c : X →+ Y) : del (1 : (A[X])ˣ) a b c = 1 := by simp only [del, map_one, mul_one, div_one]
 
 /- English proof (translation)
-Establish `ind : ∀ k : ℕ, ∃ g ∈ cong J, e / del g p₁ p₂ p₃ ∈ cong (J ^ (k + 1))` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨1, one_mem _, by rwa [del_one, div_one, zero_add, pow_one]⟩`. Consider the case `succ k ih`. Take `⟨g, hg, hu⟩` from `ih`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨g', hg', hu'⟩` from `(he.div_del g).step (hJ.pow_succ k) hu`. Use `⟨g * g', mul_mem hg (cong_mono (Ideal.pow_le_self (by omega)) hg'), ?_⟩` and prove the remaining obligations. Rewrite using `[del_mul, ← div_div]`. Conclude with `cong_mono (pow_mul_pow_le J k) hu'`. Take `⟨n, hn⟩` from `exists_cong_pow (X := X × X × X) hJ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, e⟩` from `ind n`. Conclude with `⟨g, hg, div_eq_one.1 (hn _ e)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Cub.exists_del {e : (A[X × X × X])ˣ} (he : Cub e) {J : Ideal A} (hJ : IsNilpotent J) (h : e ∈ cong J) :
     ∃ g ∈ cong J, e = del g p₁ p₂ p₃ := by
@@ -437,9 +437,9 @@ theorem Cub.exists_del {e : (A[X × X × X])ˣ} (he : Cub e) {J : Ideal A} (hJ :
   exact ⟨g, hg, div_eq_one.1 (hn _ e)⟩
 
 /- English proof (translation)
-Establish `ind : ∀ k : ℕ, g ∈ cong (J ^ (k + 1))` using `fun k => by`. Proceed by induction on `k with`. Consider the case `zero => rwa [zero_add, pow_one]`. Consider the case `succ k ih`. Use `cong_mono (pow_mul_pow_le J k) (mem_cong'.2 (add_unique (lin _ g) fun Y _ a b c => ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← lin_del ih, ← um_tri_del, hg, map_one, lin, Units.val_one, sub_self, map_zero]`. Take `⟨n, hn⟩` from `exists_cong_pow (X := X) hJ`. Conclude with `hn g (ind n)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_one_of_del {g : (A[X])ˣ} {J : Ideal A} (hJ : IsNilpotent J) (h : g ∈ cong J)
     (hg : del g p₁ p₂ p₃ = 1) : g = 1 := by

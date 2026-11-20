@@ -4,9 +4,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace UpperTheory.Gal.Mod
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Use `Subtype.ext (funext fun k => (h k).1 ?_)` and prove the remaining obligations. Conclude with `congrArg (fun z : Hl l E n i => z.1 k) hxy`. Introduce `y choose g hg using fun k => (h k).2 (y.1 k)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨g, fun k => (h k).1 ?_⟩, Subtype.ext (funext hg)⟩` and prove the remaining obligations. Use `(pull_red _ _ f n i (g (k + 1))).trans ?_` and prove the remaining obligations. Use `(congrArg _ (hg (k + 1))).trans ?_` and prove the remaining obligations. Conclude with `(y.2 k).trans (hg k).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem pullHl_bijective (l : ℕ) [Fact l.Prime] {E E' : Spc} (f : E ⟶ E') (n i : ℤ)
     (h : ∀ k : ℕ, Function.Bijective (pull _ f (tw (l ^ k) i) n)) :
@@ -23,11 +23,11 @@ private theorem pullHl_bijective (l : ℕ) [Fact l.Prime] {E E' : Spc} (f : E �
     exact (y.2 k).trans (hg k).symm
 
 /- English proof (translation)
-Introduce `l _ E E' f n i h`. Set `e` to `LinearEquiv.ofBijective (pullHl l f n i) (pullHl_bijective l f n i h)`. Establish `h1 : (pullHl l f n i) ∘ₗ (e.symm : Hl l E n i →ₗ[ℤ_[l]] Hl l E' n i) = LinearMap.id` using `LinearMap.ext fun x => e.apply_symm_apply x`. Establish `h2 : (e.symm : Hl l E n i →ₗ[ℤ_[l]] Hl l E' n i) ∘ₗ (pullHl l f n i) = LinearMap.id` using `LinearMap.ext fun x => e.symm_apply_apply x`. Establish `k1 : (pullHQ l f n i) ∘ₗ ((e.symm : Hl l E n i →ₗ[ℤ_[l]] Hl l E' n i).baseChange ℚ_[l]) = LinearMap.id`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `pullHQ`. Rewrite using `[← LinearMap.baseChange_comp, h1, LinearMap.baseChange_id]`. Establish `k2 : ((e.symm : Hl l E n i →ₗ[ℤ_[l]] Hl l E' n i).baseChange ℚ_[l]) ∘ₗ (pullHQ l f n i) = LinearMap.id`. Unfold `pullHQ`. Rewrite using `[← LinearMap.baseChange_comp, h2, LinearMap.baseChange_id]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Function.bijective_iff_has_inverse.mpr ⟨_, fun x => LinearMap.congr_fun k2 x, fun x => LinearMap.congr_fun k1 x⟩`.
+A detailed English derivation is pending.
 -/
 theorem spHqBij : ∀ (l : ℕ) [Fact l.Prime] {E E' : Spc} (f : E ⟶ E') (n i : ℤ),
     (∀ k : ℕ, Function.Bijective (pull _ f (tw (l ^ k) i) n)) →

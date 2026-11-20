@@ -6,7 +6,7 @@ open scoped Formalism.Per NNReal
 open UpperTheory.Gal.ClosedPhiFromClosedTrace
 
 /- English proof (translation)
-Break down `le_total x y with hxy | hxy` into its components or cases. Establish `e : ((x : ℤ) - y).natAbs = y - x` using `by omega`. Rewrite using `[e, h, ← AlgHom.mul_apply, ← pow_add, Nat.sub_add_cancel hxy, h]`. Establish `e : ((x : ℤ) - y).natAbs = x - y` using `by omega`. Rewrite using `[e, ← AlgHom.mul_apply, ← pow_add, Nat.sub_add_cancel hxy, h]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fix_aux {A S : Type} [CommSemiring A] [Semiring S] [Algebra A S] (φ : S →ₐ[A] S) (x y : ℕ) (c : S)
     (h : (φ ^ y) c = (φ ^ x) c) : (φ ^ ((x : ℤ) - y).natAbs) ((φ ^ y) c) = (φ ^ y) c := by
@@ -17,11 +17,11 @@ private theorem fix_aux {A S : Type} [CommSemiring A] [Semiring S] [Algebra A S]
     rw [e, ← AlgHom.mul_apply, ← pow_add, Nat.sub_add_cancel hxy, h]
 
 /- English proof (translation)
-Introduce `l _ E Ω _ _ _ _ _ w A h O _ _ _ Bw hj g c hc`. Take `⟨a, b, hσ⟩` from `g.2`. Establish `hal : (alpha l g) = ((resDeg l w * a : ℕ) : ℤ) - ((resDeg l w * b : ℕ) : ℤ)`. Rewrite using `[alpha, deg_eq hσ]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨c', rfl⟩` from `(Algebra.IsAlgebraic.algHom_bijective (frobUr l ^ (resDeg l w * b))).2 c`. Establish `h1` using `weilToGK_frobUr hj g hσ c'`. Rewrite `h1` using `[mem_GK.mp (weilToGK Bw h g).2 _ hc]`. Rewrite using `[hal]`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fix_aux _ _ _ _ (Subtype.ext h1)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.ClosedPhiFromClosedTrace.fixOf_holds :
     FixOf := by

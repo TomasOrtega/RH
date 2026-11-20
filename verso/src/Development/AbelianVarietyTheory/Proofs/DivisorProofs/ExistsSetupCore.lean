@@ -11,9 +11,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.L2.G
 open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.CxPts GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.Mean4 GlobalTheory.Mean4O
 
 /- English proof (translation)
-Introduce `D`. Use `⟨fun O x => ?_, fun A N j h S κ s L Φ jC => ?_⟩` and prove the remaining obligations. Take `⟨P⟩` from `GlobalTheory.T.nonempty_polarization_data D _ _ _ _ _ O.s O.Φ (metsOf x O.Φ) (refMet x O.Φ)`. Conclude with `⟨P, GlobalTheory.T.exists_boundary_of_torus_data D _ _ _ _ _ O.s O.L x, O.coreWith_withCore x P _⟩`. Take `⟨x⟩ : Nonempty (ToroidalCompactificationData s)` from `nonempty_toroidal_boundary_data _ _ _ _ _ _ _ _ s.T.Z s.T.snc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨P⟩` from `GlobalTheory.T.nonempty_polarization_data D _ _ _ _ _ s Φ (metsOf x Φ) (refMet x Φ)`. Take `⟨B, hB⟩` from `GlobalTheory.T.exists_boundary_of_torus_data D _ _ _ _ _ s L x`. Set `pad` to `AsmCheck.padAny N j h.2.le s.Comp jC`. Set `k` to `KitEx.kitOf s L (cxSt D.what₂.LL) Φ (KitEx.key_nonempty s).some pad`. Conclude with `⟨_, { k with B := B, fl := flBetti s Φ L, Mb := mbarOf P }, .ofPkg pad, metTrue x Φ P, rfl, x, P, Setup.coreWith_ofKit h _ _ hB rfl rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.Mean4.exists_setup_core : ∀ D : D7, (∀ (O : Setup D) (x : ToroidalCompactificationData O.s), ∃ P h, (O.withCore x P h).CoreWith x P) ∧ ∀ (A : Amb D) (N j : ℕ) (h : 1 ≤ j ∧ j < N) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (L : CmList A) (Φ : s.Flag) (jC : ∀ (p : ℕ) [Fact p.Prime], PlL D p → (DV.KW p →+* ℂ)), ∃ (ng : NgPkg) (k : Kit s L (cxSt D.what₂.LL) jC ng) (adm : AdmSt D N j jC) (met : MetIn k.Φ), k.Φ = Φ ∧ (Setup.ofKit h k adm met).Core := by
   intro D

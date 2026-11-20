@@ -9,7 +9,7 @@ open MeasureTheory Matrix Filter Topology Formalism.BasicNotions Formalism.MainN
 open scoped ENNReal NNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ExpBallCompare.expBall_compare` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FUnitaryExpLieBallComparableEntryGauge.lean&line=109#L109)
 -/

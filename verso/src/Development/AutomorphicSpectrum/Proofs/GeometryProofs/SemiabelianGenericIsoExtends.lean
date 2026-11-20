@@ -19,9 +19,9 @@ variable (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Fie
   [IsFractionRing V K] {A B : Over (Sp V)} [GrpObj A] [GrpObj B] {GK : Over (Sp K)} [GrpObj GK]
 
 /- English proof (translation)
-Take `⟨io, -, hio⟩` from `grpPullback_iso (isGrpPullback_pullback A (spMap (algebraMap V K))) ha`. Establish `hmap : (Over.pullback (spMap (algebraMap V K))).map g₂ = (Over.pullback (spMap (algebraMap V K))).map g₁`. Establish `L : ∀ g : A ⟶ B, ((Over.pullback (spMap (algebraMap V K))).map g).left ≫ pullback.fst B.hom (spMap (algebraMap V K)) = pullback.fst A.hom (spMap (algebraMap V K)) ≫ g.left` using `fun g => pullback.lift_fst _ _ _`. Establish `R : ∀ g : A ⟶ B, ((Over.pullback (spMap (algebraMap V K))).map g).left ≫ pullback.snd B.hom (spMap (algebraMap V K)) = pullback.snd A.hom (spMap (algebraMap V K))` using `fun g => pullback.lift_snd _ _ _`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[L, L, ← hio, Category.assoc, Category.assoc, h]`. Rewrite using `[R, R]`. Take `⟨F, -, hu⟩` from `GlobalTheory.existsUnique_hom_extension_semiAbelian V K A B hA hB ((Over.pullback (spMap (algebraMap V K))).map g₁) inferInstance`. Conclude with `(hu g₁ ⟨inferInstance, rfl⟩).trans (hu g₂ ⟨inferInstance, hmap⟩).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hom_unique (hA : IsSemiAbelian A) (hB : IsSemiAbelian B) {a : GK.left ⟶ A.left}
     (ha : IsGrpPullback GK A (spMap (algebraMap V K)) a) (g₁ g₂ : A ⟶ B) [IsMonHom g₁] [IsMonHom g₂]
@@ -44,11 +44,11 @@ theorem hom_unique (hA : IsSemiAbelian A) (hB : IsSemiAbelian B) {a : GK.left �
   exact (hu g₁ ⟨inferInstance, rfl⟩).trans (hu g₂ ⟨inferInstance, hmap⟩).symm
 
 /- English proof (translation)
-Take `⟨io, hiom, hio⟩` from `grpPullback_iso (isGrpPullback_pullback A (spMap (algebraMap V K))) ha`. Take `⟨ko, -, hko⟩` from `grpPullback_iso ha (isGrpPullback_pullback A (spMap (algebraMap V K)))`. Take `⟨ko', hko'm, hko'⟩` from `grpPullback_iso hb (isGrpPullback_pullback B (spMap (algebraMap V K)))`. Use `hiom` as an intermediate fact. Use `hko'm` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨F, ⟨hFm, hF⟩, -⟩` from `GlobalTheory.existsUnique_hom_extension_semiAbelian V K A B hA hB (io.hom ≫ ko'.hom) inferInstance`. Establish `hkoio : ko.hom ≫ io.hom = 𝟙 _`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `ha.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc, hio, hko, Over.id_left, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.w, Over.id_left, Category.id_comp]`. Use `⟨F, hFm, ?_⟩` and prove the remaining obligations. Rewrite using `[← hko, Category.assoc]`. Establish `e : pullback.fst A.hom (spMap (algebraMap V K)) ≫ F.left = ((Over.pullback (spMap (algebraMap V K))).map F).left ≫ pullback.fst B.hom (spMap (algebraMap V K))` using `(pullback.lift_fst _ _ _).symm`. Rewrite using `[e, hF, ← Category.assoc, ← Over.comp_left, ← Category.assoc, hkoio, Category.id_comp, hko']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_exists (hA : IsSemiAbelian A) (hB : IsSemiAbelian B) {a : GK.left ⟶ A.left}
     {b : GK.left ⟶ B.left} (ha : IsGrpPullback GK A (spMap (algebraMap V K)) a)
@@ -75,9 +75,9 @@ theorem hom_exists (hA : IsSemiAbelian A) (hB : IsSemiAbelian B) {a : GK.left �
   rw [e, hF, ← Category.assoc, ← Over.comp_left, ← Category.assoc, hkoio, Category.id_comp, hko']
 
 /- English proof (translation)
-Take `⟨F, hFm, hF⟩` from `hom_exists V K hA hB ha hb`. Take `⟨F', hF'm, hF'⟩` from `hom_exists V K hB hA hb ha`. Use `hFm` as an intermediate fact. Use `hF'm` as an intermediate fact. Establish `h₁ : F ≫ F' = 𝟙 _` using `hom_unique V K hA hA ha _ _ (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Over.comp_left, ← Category.assoc, hF, hF', Over.id_left, Category.comp_id])`. Establish `h₂ : F' ≫ F = 𝟙 _` using `hom_unique V K hB hB hb _ _ (by`. Rewrite using `[Over.comp_left, ← Category.assoc, hF', hF, Over.id_left, Category.comp_id])`. Conclude with `⟨⟨F, F', h₁, h₂⟩, hFm, hF⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem iso_exists (hA : IsSemiAbelian A) (hB : IsSemiAbelian B) {a : GK.left ⟶ A.left}
     {b : GK.left ⟶ B.left} (ha : IsGrpPullback GK A (spMap (algebraMap V K)) a)
@@ -100,13 +100,13 @@ end GlobalTheory.CompanionTheory.Ar.CommonModel
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Introduce `V K _ _ _ _ _ _ X X' x x' G G' _ _ GK _ φ φ' hG hG' hφ hφ'`. Establish `pA` using `isGrpPullback_pullback G x`. Establish `pB` using `isGrpPullback_pullback G' x'`. Establish `sA : IsSemiAbelian ((Over.pullback x).obj G)` using `IsSemiAbelian.pullback x G hG`. Establish `sB : IsSemiAbelian ((Over.pullback x').obj G')` using `IsSemiAbelian.pullback x' G' hG'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lift : ∀ {Y : Scheme.{0}} (y : Sp V ⟶ Y) (H : Over Y) [GrpObj H] (θ : GK.left ⟶ H.left), IsGrpPullback GK H (spMap (algebraMap V K) ≫ y) θ → ∃ κ : GK.left ⟶ ((Over.pullback y).obj H).left, IsGrpPullback GK ((Over.pullback y).obj H) (spMap (algebraMap V K)) κ ∧ κ ≫ pullback.fst H. …`. Introduce `Y y H _ θ hθ`. Establish `hp` using `isGrpPullback_pullback H y`. Establish `w : (hp.1.lift θ (GK.hom ≫ spMap (algebraMap V K)) (by`. Rewrite using `[hθ.1.w, Category.assoc])) ≫ ((Over.pullback y).obj H).hom = GK.hom ≫ spMap (algebraMap V K) := hp.1.lift_snd _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `f : (hp.1.lift θ (GK.hom ≫ spMap (algebraMap V K)) (by`. Rewrite using `[hθ.1.w, Category.assoc])) ≫ pullback.fst H.hom y = θ := hp.1.lift_fst _ _ _`. Conclude with `⟨_, hp.cancel (by rw [f]; exact hθ) w, f⟩`. Take `⟨κ, hκ, hκφ⟩` from `lift x G φ hφ`. Take `⟨κ', hκ', hκφ'⟩` from `lift x' G' φ' hφ'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, hem, he⟩` from `CommonModel.iso_exists V K sA sB hκ hκ'`. Use `hem` as an intermediate fact. Use `⟨(Over.pullback x).obj G, inferInstance, pullback.fst G.hom x, e.hom.left ≫ pullback.fst G'.hom x', κ, pA, ?_, hκ, hκφ, ?_⟩` and prove the remaining obligations. Conclude with `((isGrpPullback_of_iso e).comp pB).congr (Category.id_comp _) rfl`. Rewrite using `[← Category.assoc, he, hκφ']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem semiAbelian_commonModel : ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [Algebra V K] [IsFractionRing V K] (X X' : Scheme.{0}) (x : Sp V ⟶ X) (x' : Sp V ⟶ X') (G : Over X) (G' : Over X') [GrpObj G] [GrpObj G'] (GK : Over (Sp K)) [GrpObj GK] (φ : GK.left ⟶ G.left) (φ' : GK.left ⟶ G'.left), IsSemiAbelian G → IsSemiAbelian G' → IsGrpPullback GK G (spMap (algebraMap V K) ≫ x) φ → IsGrpPullback GK G' (spMap (algebraMap V K) ≫ x') φ' → ∃ (G₀ : Over (Sp V)) (_ : GrpObj G₀) (ψ : G₀.left ⟶ G.left) (ψ' : G₀.left ⟶ G'.left) (κ : GK.left ⟶ G₀.left), IsGrpPullback G₀ G x ψ ∧ IsGrpPullback G₀ G' x' ψ' ∧ IsGrpPullback GK G₀ (spMap (algebraMap V K)) κ ∧ κ ≫ ψ = φ ∧ κ ≫ ψ' = φ' := by
   intro V K _ _ _ _ _ _ X X' x x' G G' _ _ GK _ φ φ' hG hG' hφ hφ'

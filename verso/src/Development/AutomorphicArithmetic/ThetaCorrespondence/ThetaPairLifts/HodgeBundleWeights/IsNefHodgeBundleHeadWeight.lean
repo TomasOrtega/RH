@@ -22,7 +22,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   (f : ∀ M : MChart Y, Fin M.n → Γ(Lie Y.t.G, M.U))
 end Step
 /- English proof (translation)
-Introduce `hS _ hN E _ _ _ H Dw l Xo c TF Z _ τ k hk`. Rewrite using `[NefStep.L₀_headWt TF.X Z τ k hk]`. Conclude with `isNef_stepEx hS hN.1 TF.X Z τ.1 (by rw [FlagMod.mult_of_mem τ]; exact hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNef_hodgeBundle_headWeight : GlobalTheory.Published.SemiAbelianLieSeminegative → _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.NefNumerics → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → ∀ (τ : Psi H) (k : ℕ), k < Dw.p → letI := algebraΓOfHom (str₀ TF.X Z); IsNef c.F (L₀ TF.X Z (GlobalTheory.NefWt.headWt τ k)) := by
   intro hS _ hN E _ _ _ H Dw l Xo c TF Z _ τ k hk
@@ -40,7 +40,7 @@ open GlobalTheory.AllWt (Psi)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.NefHodge.isNef_hodgeBundle_headWeight | exact _root_.GlobalTheory.NefHodge.isNef_hodgeBundle_headWeight | (intros; apply _root_.GlobalTheory.NefHodge.isNef_hodgeBundle_headWeight <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.hodgeBundle_headWeight_nef : GlobalTheory.Published.SemiAbelianLieSeminegative → _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.NefNumerics → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → ∀ (τ : Psi H) (k : ℕ), k < Dw.p → letI := algebraΓOfHom (str₀ TF.X Z); IsNef c.F (L₀ TF.X Z (GlobalTheory.NefWt.headWt τ k)) := by
   first | exact @_root_.GlobalTheory.NefHodge.isNef_hodgeBundle_headWeight | exact _root_.GlobalTheory.NefHodge.isNef_hodgeBundle_headWeight | (intros; apply _root_.GlobalTheory.NefHodge.isNef_hodgeBundle_headWeight <;> assumption)

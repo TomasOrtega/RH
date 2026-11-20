@@ -15,14 +15,14 @@ set_option linter.unusedSectionVars false
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Rewrite using `[eval_map, aeval_def, algebraMap_int_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_eq_eval_map (z : (Σ k, ι k) → ℂ) (g : MRing ι) :
     aeval z g = eval z (map (Int.castRingHom ℂ) g) := by
   rw [eval_map, aeval_def, algebraMap_int_eq]
 
 /- English proof (translation)
-Proceed by induction on `t using MvPolynomial.induction_on with`. Consider the case `C a => simpa using contDiff_const`. Consider the case `add p q hp hq => simpa using hp.add hq`. Consider the case `mul_X p v hp => simpa using hp.mul (contDiff_apply ℝ ℂ v)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem contDiff_evalMap (t : MRing ι) :
     ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun z : (Σ k, ι k) → ℂ => eval z (map (Int.castRingHom ℂ) t)) := by
@@ -34,7 +34,7 @@ theorem contDiff_evalMap (t : MRing ι) :
 def mdeg (d : (Σ k, ι k) →₀ ℕ) : K →₀ ℕ := Finsupp.mapDomain Sigma.fst d
 
 /- English proof (translation)
-Unfold `mdeg`. Rewrite using `[Finsupp.mapDomain, Finsupp.sum_apply, Finsupp.sum_fintype _ _ (by simp), Fintype.sum_sigma, Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `k' _ hk'`. Simplify using `[hk']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -49,7 +49,7 @@ theorem mdeg_apply (d : (Σ k, ι k) →₀ ℕ) (k : K) : mdeg d k = ∑ i, d �
   · simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h e he => Finsupp.ext fun k => by rw [mdeg_apply]; exact h e he k, fun h e he k => by rw [← mdeg_apply, h e he]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isMultiHomog_iff (g : MRing ι) (d : K →₀ ℕ) :
     IsMultiHomog g ⇑d ↔ ∀ e ∈ g.support, mdeg e = d :=
@@ -61,9 +61,9 @@ section Cone
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Establish `hX : (e.prod fun p n => (X p.1 : MvPolynomial K Ω) ^ n) = monomial (mdeg e) 1`. Establish `h` using `rename_monomial (R := Ω) (Sigma.fst : (Σ k, ι k) → K) e 1`. Rewrite `h` using `[monomial_eq, C_1, one_mul, map_finsuppProd]`. Simplify `h` using `[rename_X, mdeg]`. Simplify using `only [mConeMap, aeval_monomial, mul_pow, Finsupp.prod_mul, ← map_pow, ← map_finsuppProd, hX]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Rewrite using `[show ((algebraMap ℤ (MvPolynomial K Ω)) a) = C (a : Ω) by simp, ← mul_assoc, ← map_mul, C_mul_monomial, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mConeMap_monomial (y : (Σ k, ι k) → Ω) (e : (Σ k, ι k) →₀ ℕ) (a : ℤ) :
     mConeMap y (monomial e a) = monomial (mdeg e) ((a : Ω) * e.prod fun p n => y p ^ n) := by
@@ -77,7 +77,7 @@ theorem mConeMap_monomial (y : (Σ k, ι k) → Ω) (e : (Σ k, ι k) →₀ ℕ
     mul_one]
 
 /- English proof (translation)
-Use `conv_lhs => rw [u.as_sum]`. Rewrite using `[map_sum]`. Simplify using `only [mConeMap_monomial]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mConeMap_eq_sum (y : (Σ k, ι k) → Ω) (u : MRing ι) :
     mConeMap y u = ∑ e ∈ u.support, monomial (mdeg e) (((coeff e u : ℤ) : Ω) * e.prod fun p n => y p ^ n) := by
@@ -91,7 +91,7 @@ def comp (u : MRing ι) (m : K →₀ ℕ) : MRing ι :=
   ∑ e ∈ u.support.filter (fun e => mdeg e = m), monomial e (coeff e u)
 
 /- English proof (translation)
-Rewrite using `[comp, coeff_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Simplify using `only [Finset.mem_filter, mem_support_iff]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coeff_comp (u : MRing ι) (m : K →₀ ℕ) (e : (Σ k, ι k) →₀ ℕ) :
     coeff e (comp u m) = if mdeg e = m then coeff e u else 0 := by
@@ -103,7 +103,7 @@ theorem coeff_comp (u : MRing ι) (m : K →₀ ℕ) (e : (Σ k, ι k) →₀ �
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Rewrite using `[isMultiHomog_iff]`. Introduce `e he`. Rewrite `he` using `[mem_support_iff, coeff_comp]`. Assume the negation of the conclusion as `h`. Conclude with `he (if_neg h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_comp (u : MRing ι) (m : K →₀ ℕ) : IsMultiHomog (comp u m) ⇑m := by
   rw [isMultiHomog_iff]
@@ -113,7 +113,7 @@ theorem isMultiHomog_comp (u : MRing ι) (m : K →₀ ℕ) : IsMultiHomog (comp
   exact he (if_neg h)
 
 /- English proof (translation)
-Rewrite using `[mConeMap_eq_sum, coeff_sum, comp, map_sum]`. Simplify using `only [coeff_monomial, aeval_monomial, algebraMap_int_eq, eq_intCast]`. Rewrite using `[← Finset.sum_filter]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_comp (y : (Σ k, ι k) → Ω) (u : MRing ι) (m : K →₀ ℕ) :
     aeval y (comp u m) = coeff m (mConeMap y u) := by
@@ -123,7 +123,7 @@ theorem aeval_comp (y : (Σ k, ι k) → Ω) (u : MRing ι) (m : K →₀ ℕ) :
   rw [← Finset.sum_filter]
 
 /- English proof (translation)
-Rewrite `hg` using `[isMultiHomog_iff]`. Rewrite using `[mConeMap_eq_sum]`. Use `conv_rhs => rw [g.as_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun e he => ?_` and prove the remaining obligations. Rewrite using `[hg e he, aeval_monomial, algebraMap_int_eq, eq_intCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mConeMap_of_homog (y : (Σ k, ι k) → Ω) {g : MRing ι} {d : K →₀ ℕ} (hg : IsMultiHomog g ⇑d) :
     mConeMap y g = monomial d (aeval y g) := by
@@ -137,11 +137,11 @@ theorem mConeMap_of_homog (y : (Σ k, ι k) → Ω) {g : MRing ι} {d : K →₀
 end Cone
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[support_X_pow, Finset.mem_singleton]`. Substitute `hm` using the available equality. Take `⟨k0, i0⟩` from `q`. Distinguish the cases in `hk : k0 = k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `hk` using the available equality. Rewrite using `[Finset.sum_eq_single i0]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Simplify using `[hi]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[Ne.symm hk]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_X_pow [DecidableEq K] (q : Σ k, ι k) (n : ℕ) : IsMultiHomog (X q ^ n : MRing ι) (Pi.single q.1 n) := by
   classical
@@ -159,9 +159,9 @@ theorem isMultiHomog_X_pow [DecidableEq K] (q : Σ k, ι k) (n : ℕ) : IsMultiH
   · simp [Ne.symm hk]
 
 /- English proof (translation)
-Establish `h : ∀ s : Finset K, IsMultiHomog (∏ k ∈ s, (X ⟨k, c k⟩ : MRing ι) ^ e k) (∑ k ∈ s, Pi.single k (e k))`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using isMultiHomog_one (ι := ι)`. Consider the case `insert a s ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha]`. Conclude with `isMultiHomog_mul (isMultiHomog_X_pow _ _) ih`. Simplify `h Finset.univ` using `[Finset.univ_sum_single]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_prod_X_pow (c : (k : K) → ι k) (e : K → ℕ) :
     IsMultiHomog (∏ k, (X ⟨k, c k⟩ : MRing ι) ^ e k) e := by
@@ -177,9 +177,9 @@ theorem isMultiHomog_prod_X_pow (c : (k : K) → ι k) (e : K → ℕ) :
   simpa [Finset.univ_sum_single] using h Finset.univ
 
 /- English proof (translation)
-Rewrite using `[eval_eq', eval_eq', Finset.mul_sum, support_map_of_injective _ (Int.castRingHom ℂ).injective_int]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hdeg` using `hg m hm`. Establish `hc : ∏ p : Σ k, ι k, c p.1 ^ m p = ∏ k, c k ^ d k`. Rewrite using `[Fintype.prod_sigma]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ∏ i, c k ^ m ⟨k, i⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hdeg k]`. Simplify using `only [torusSmul, mul_pow, Finset.prod_mul_distrib, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eval_torusSmul {g : MRing ι} {d : K → ℕ} (hg : IsMultiHomog g d) (c : K → ℂ)
     (z : (Σ k, ι k) → ℂ) :
@@ -199,11 +199,11 @@ theorem eval_torusSmul {g : MRing ι} {d : K → ℕ} (hg : IsMultiHomog g d) (c
   ring
 
 /- English proof (translation)
-Take `⟨S, hS, hPS⟩` from `hP`. Use `⟨fun k => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz.1 k`. Conclude with `⟨i, mul_ne_zero (hc k) hi⟩`. Establish `hle : Ideal.span S ≤ RingHom.ker ((eval (torusSmul c z)).comp (map (Int.castRingHom ℂ)))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[Ideal.span_le]`. Introduce `s hs`. Take `⟨a, ha⟩` from `hS s hs`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, RingHom.comp_apply, eval_torusSmul ha, hz.2 s (hPS ▸ Ideal.subset_span hs), mul_zero]`. Rewrite `hg` using `[hPS]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hle hg` as an intermediate fact. Rewrite `this` using `[RingHom.mem_ker, RingHom.comp_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem torusSmul_mem_mcPts {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P) {z : (Σ k, ι k) → ℂ}
     (hz : z ∈ mcPts P) {c : K → ℂ} (hc : ∀ k, c k ≠ 0) : torusSmul c z ∈ mcPts P := by
@@ -227,27 +227,25 @@ variable {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] {Ω : Type} [Field �
   {E : Ψ → Type} [∀ τ, AddCommGroup (E τ)] [∀ τ, Module Ω (E τ)]
 
 /- English proof (translation)
-Establish `hV` using `D.vertical p hp`. Take `⟨bf, bg, hf, hg, hb⟩` from `hV.degrees`. Establish `hPW : mCoordIdeal D.y ≤ mCoordIdeal z`. Take `⟨S, hS, hPS⟩` from `D.arith.2.1.2.1`. Rewrite using `[hPS, Ideal.span_le]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs`. Take `⟨a, ha⟩` from `hS s hs`. Establish `hsP : s ∈ mCoordIdeal D.y` using `hPS ▸ Ideal.subset_span hs`. Establish `h0 : aeval z s = 0` using `by rw [aeval_eq_eval_map]; exact hz.2 s hsP`. Use `show mConeMap z s = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mConeMap_of_isMultiHomog z ha, h0, map_zero, zero_mul]`. Establish `hWprime : (mCoordIdeal z).IsPrime` using `RingHom.ker_isPrime _`. Establish `hrel : IsRelevant (mCoordIdeal z)`. Introduce `k`. Take `⟨i, hi⟩` from `hz.1 k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨i, fun h => hi ?_⟩` and prove the remaining obligations. Establish `h' : mConeMap z (X ⟨k, i⟩) = 0` using `h`. Simplify `h'` using `[mConeMap, X_ne_zero]`. Establish `hpW : (C (p : ℤ) : MRing ι) ∉ mCoordIdeal z`. Introduce `h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h' : mConeMap z (C (p : ℤ)) = 0` using `h`. Simplify using `[mConeMap] at h'`. Conclude with `(D.S_prime p hp).ne_zero h'`. Take `⟨u, v, hu, -, huv⟩` from `hV.unit_off_fibre _ hWprime hPW hrel hpW`. Establish `hu' : mConeMap z u ≠ 0` using `fun h => hu h`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `ne_zero_iff.1 hu'`. Use `set bf' : K →₀ ℕ := Finsupp.equivFunOnFinite.symm bf with hbf'`. Use `set bg' : K →₀ ℕ := Finsupp.equivFunOnFinite.symm bg with hbg'`. Establish `hf' : IsMultiHomog (D.vnum p) ⇑bf'` using `by simpa [bf'] using hf`. Establish `hg' : IsMultiHomog (D.vden p) ⇑bg'` using `by simpa [bg'] using hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : coeff (m + bf') (mConeMap D.y (u * D.vnum p - v * D.vden p)) = 0`. Establish `h0 : mConeMap D.y (u * D.vnum p - v * D.vden p) = 0` using `huv`. Rewrite using `[h0, coeff_zero]`. Rewrite `key` using `[map_sub, map_mul, map_mul, mConeMap_of_homog _ hf', mConeMap_of_homog _ hg', coeff_sub, coeff_mul_monomial, coeff_mul_monomial']`. Establish `hfy : aeval D.y (D.vnum p) ≠ 0` using `fun h => hV.num_not_mem (mem_mCoordIdeal_of_aeval_eq_zero _ hf h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hHz : eval z (map (Int.castRingHom ℂ) (comp u m)) ≠ 0`. Rewrite using `[← aeval_eq_eval_map, aeval_comp]` and apply the resulting hypothesis. Use `split_ifs at key with hle`. Use `⟨⇑(m + bf' - bg'), ⇑m, comp v (m + bf' - bg'), comp u m, isMultiHomog_comp _ _, isMultiHomog_comp _ _, ?_, ?_, hHz⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hb]`. Use `hle k` as an intermediate fact. Simplify using `only [bf', bg', Finsupp.coe_tsub, Finsupp.coe_add, Pi.sub_apply, Pi.add_apply, Finsupp.coe_equivFunOnFinite_symm] at this ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[aeval_comp, aeval_comp]`.
+Take a linear combination of the given relations to obtain the conclusion. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-key`. It suffices to derive a contradiction. Rewrite `key` using `[sub_zero]`. Establish `h0 : aeval D.y (comp u m) = 0`. Rewrite using `[aeval_comp]`.
-
-Conclude with `(mul_eq_zero.1 key).resolve_right hfy`. Conclude with `hHz (eval_eq_zero_of_mem_mcPts hz (mem_mCoordIdeal_of_aeval_eq_zero _ (isMultiHomog_comp u m) h0))`.
+A detailed English derivation is pending.
 -/
 theorem exists_forms (D : ComponentData II Ψ K ι Ω E) {p : ℕ} (hp : p ∈ D.S)
     {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal D.y)) :
@@ -313,27 +311,25 @@ theorem exists_forms (D : ComponentData II Ψ K ι Ω E) {p : ℕ} (hp : p ∈ D
     exact hHz (eval_eq_zero_of_mem_mcPts hz (mem_mCoordIdeal_of_aeval_eq_zero _ (isMultiHomog_comp u m) h0))
 
 /- English proof (translation)
-Establish `hc : ∃ c : (k : K) → ι k, ∀ k, w ⟨k, c k⟩ ≠ 0` using `⟨fun k => (hw.1 k).choose, fun k => (hw.1 k).choose_spec⟩`. Rewrite using `[ComponentData.vertFactor, dif_pos hc]`. Establish `hwc : ∀ k, w ⟨k, hc.choose k⟩ ≠ 0` using `hc.choose_spec`. Generalize the expression as in `hc.choose = c at hwc ⊢`. Use `set b := D.vdeg p with hbdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Take `⟨bf, bg, hf, hg, -⟩` from `(D.vertical p hp).degrees`. Use `set Mn : MRing ι := ∏ k, (X ⟨k, c k⟩ : MRing ι) ^ (-b k).toNat with hMn`. Use `set Mp : MRing ι := ∏ k, (X ⟨k, c k⟩ : MRing ι) ^ (b k).toNat with hMp`. Establish `hyc : ∀ k, D.y ⟨k, c k⟩ ≠ 0`. Introduce `k h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hwc k` to reduce the goal to its premises. Establish `hX` using `isMultiHomog_X_pow (ι := ι) ⟨k, c k⟩ 1`. Rewrite `hX` using `[pow_one]`. Use `eval_eq_zero_of_mem_mcPts hw (mem_mCoordIdeal_of_aeval_eq_zero D.y hX (by simpa using h))` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHy : aeval D.y H ≠ 0` using `fun h => hHw (eval_eq_zero_of_mem_mcPts hw (mem_mCoordIdeal_of_aeval_eq_zero D.y hH h))`. Establish `hgy : aeval D.y (D.vden p) ≠ 0` using `fun h => (D.vertical p hp).den_not_mem (mem_mCoordIdeal_of_aeval_eq_zero D.y hg h)`. Establish `hGy : aeval D.y G = aeval D.y (D.vnum p) * aeval D.y H / aeval D.y (D.vden p)`. Rewrite using `[eq_div_iff hgy, hrel]`. Establish `hmono : aeval D.y Mn = chartMono D.y c (-b) * aeval D.y Mp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hMn, hMp, chartMono, map_prod, map_pow, aeval_X, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_natCast, Pi.neg_apply, ← zpow_add₀ (hyc k)]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hZ : eval w (map (Int.castRingHom ℂ) Mn) * zMono w c b = eval w (map (Int.castRingHom ℂ) Mp)`. Simplify using `only [hMn, hMp, zMono, map_prod, map_pow, map_X, eval_X, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (hwc k)]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hMpw : eval w (map (Int.castRingHom ℂ) Mp) ≠ 0`. Simplify using `only [hMp, map_prod, map_pow, map_X, eval_X]`. Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hwc k)`. Establish `hval : IsValueAt D.y (aeval D.y (D.vnum p) / aeval D.y (D.vden p) * chartMono D.y c (-b)) w (eval w (map (Int.castRingHom ℂ) (G * Mn)) / eval w (map (Int.castRingHom ℂ) (H * Mp)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨dG + fun k => (-b k).toNat, G * Mn, H * Mp, isMultiHomog_mul hG (isMultiHomog_prod_X_pow c _), ?_, ?_, ?_, ?_, rfl⟩` and prove the remaining obligations. Establish `h` using `isMultiHomog_mul hH (isMultiHomog_prod_X_pow c fun k => (b k).toNat)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Use `congrFun hdeg k` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.add_apply] at this ⊢`. Use linear arithmetic over natural numbers and integers. Rewrite using `[map_mul]`. Use `mul_ne_zero hHy ?_` and prove the remaining obligations. Simplify using `only [hMp, map_prod, map_pow, aeval_X]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hyc k)`. Rewrite using `[map_mul, map_mul, hmono, hGy]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, map_mul]`. Conclude with `mul_ne_zero hHw hMpw`.
-
-Rewrite using `[valAt_eq hw hval, ← norm_mul]`. Use `congr 1`. Rewrite using `[map_mul, map_mul, map_mul, map_mul, div_mul_eq_mul_div, mul_assoc, hZ, mul_div_mul_right _ _ hMpw]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vertFactor_eq (D : ComponentData II Ψ K ι Ω E) {p : ℕ} (hp : p ∈ D.S) {w : (Σ k, ι k) → ℂ}
     (hw : w ∈ mcPts (mCoordIdeal D.y)) {dG dH : K → ℕ} {G H : MRing ι} (hG : IsMultiHomog G dG)
@@ -408,17 +404,15 @@ end VertFactorSmooth
 open VertFactorSmooth in
 
 /- English proof (translation)
-Introduce `II Ψ _ K _ ι _ Ω _ _ E _ _ D p hp`. Use `⟨fun z hz c hc => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨dG, dH, G, H, hG, hH, hdeg, hrel, hHz⟩` from `exists_forms D hp hz`. Establish `hcz` using `torusSmul_mem_mcPts D.arith.2.1.2.1 hz hc`. Establish `hprod : ∀ d : K → ℕ, ∏ k, c k ^ d k ≠ 0` using `fun d => Finset.prod_ne_zero_iff.2 fun k _ => pow_ne_zero _ (hc k)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[vertFactor_eq D hp hcz hG hH hdeg hrel (by rw [eval_torusSmul hH]; exact mul_ne_zero (hprod _) hHz), vertFactor_eq D hp hz hG hH hdeg hrel hHz, eval_torusSmul hG, eval_torusSmul hH, ← hdeg, mul_div_mul_comm, norm_mul, norm_div, norm_prod, norm_prod, ← Finset.prod_div_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_pow, norm_pow, zpow_sub₀ (norm_ne_zero_iff.2 (hc k)), zpow_natCast, zpow_natCast]`. Take `⟨dG, dH, G, H, hG, hH, hdeg, hrel, hHz⟩` from `exists_forms D hp hz`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hpos` using `hPos II Ψ K ι Ω E D p hp z hz`. Rewrite `hpos` using `[vertFactor_eq D hp hz hG hH hdeg hrel hHz]`. Establish `hGz : eval z (map (Int.castRingHom ℂ) G) ≠ 0`. Introduce `h`. Rewrite `hpos` using `[h, zero_div, norm_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ hpos`. Establish `hcG` using `contDiff_evalMap G`. Establish `hcH` using `contDiff_evalMap H`. Use `⟨{w | eval w (map (Int.castRingHom ℂ) H) ≠ 0 ∧ eval w (map (Int.castRingHom ℂ) G) ≠ 0}, ?_, fun w => ‖eval w (map (Int.castRingHom ℂ) G) / eval w (map (Int.castRingHom ℂ) H)‖, ?_, ?_⟩` and prove the remaining obligations. Use `IsOpen.mem_nhds ?_ ⟨hHz, hGz⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(isOpen_ne_fun hcH.continuous continuous_const).inter (isOpen_ne_fun hcG.continuous continuous_const)`. Introduce `w hw`. Establish `hd : ContDiffAt ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun w => eval w (map (Int.castRingHom ℂ) G) * (eval w (map (Int.castRingHom ℂ) H))⁻¹) w` using `hcG.contDiffAt.mul (hcH.contDiffAt.inv hw.1)`. Simplify using `only [← div_eq_mul_inv] at hd`. Conclude with `(hd.norm ℝ (div_ne_zero hw.2 hw.1)).contDiffWithinAt`.
-
-Introduce and unpack `w ⟨hw, hwS⟩`. Conclude with `vertFactor_eq D hp hwS hG hH hdeg hrel hw.1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem VertFactorSmooth.proof (hPos : VertFactorPos.Statement) : VertFactorSmooth.Statement := by
   intro II Ψ _ K _ ι _ Ω _ _ E _ _ D p hp

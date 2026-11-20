@@ -14,9 +14,9 @@ variable {S : Type u} [CommRing S] {Ω : Type w} [Field Ω] [Algebra S Ω] {N : 
   {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Rewrite using `[Submodule.mul_eq_span_mul_set]`. Express the relevant statement in the definitionally equal form `Submodule.span _ _ = _`. Use `congr 1`. Use extensionality with `z`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_mul, SetLike.mem_coe, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, hq, y, hy, rfl⟩`. Conclude with `⟨y, hy, q, hq, mul_comm _ _⟩`. Introduce and unpack `⟨y, hy, q, hq, rfl⟩`. Conclude with `⟨q, hq, y, hy, mul_comm _ _⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem AmpleCover.sub_twist (F Q : SubSystem S x Ω) (I : Chart x) :
     (F.twist Q).sub I = F.sub I * Q.sub I := by
@@ -30,9 +30,9 @@ theorem AmpleCover.sub_twist (F Q : SubSystem S x Ω) (I : Chart x) :
   · rintro ⟨y, hy, q, hq, rfl⟩; exact ⟨q, hq, y, hy, mul_comm _ _⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Take `⟨i, hi⟩` from `I.2.1`. Rewrite using `[pow_zero]`. Express the relevant statement in the definitionally equal form `twistMod S x 0 I = 1`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[twistMod_eq_span 0 I hi, zpow_zero, Submodule.one_eq_span]`. Consider the case `succ n ih`. Express the relevant statement in the definitionally equal form `((Q.pow n).twist Q).sub I = _`. Rewrite using `[AmpleCover.sub_twist, ih, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem AmpleCover.sub_pow (Q : SubSystem S x Ω) (n : ℕ) (I : Chart x) :
     (Q.pow n).sub I = Q.sub I ^ n := by
@@ -47,25 +47,21 @@ theorem AmpleCover.sub_pow (Q : SubSystem S x Ω) (n : ℕ) (I : Chart x) :
     rw [AmpleCover.sub_twist, ih, pow_succ]
 
 /- English proof (translation)
-Introduce `S _ Ω _ _ N x H A F hF I`. Use `set R := chartRing S x I`. Use `set G : Submodule R Ω := Submodule.span R (F.secs : Set Ω)`. Use `set P : Submodule R Ω := H.sub I`. Use `le_antisymm (Submodule.span_le.mpr fun z hz => ?_) fun y hy => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Submodule.mem_iInf _).mp hz I`. Take `⟨Q', hQ'⟩` from `H.invertible I`. Establish `hpow : ∀ n, (H.pow n).sub I = P ^ n` using `fun n => AmpleCover.sub_pow H.toSubSystem n I`. Establish `hone : ∀ n, P ^ n * Q' ^ n = 1` using `fun n => by rw [← mul_pow, hQ', one_pow]`. Use `set c : Ideal R := G.comap (LinearMap.toSpanSingleton R Ω y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set V : Submodule R Ω := Submodule.map (Algebra.linearMap R Ω) c.radical`. Establish `hkey : P ^ A.m * Q' ^ A.m ≤ V`. Rewrite using `[← hpow, ← A.generates I, Submodule.mul_le]`. Introduce `u hu w hw`. Establish `hmem : ∀ j, A.h j * w ∈ V`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j`. Establish `h1 : A.h j * w ∈ (1 : Submodule R Ω)`. Rewrite using `[← hone A.m, ← hpow]`. Conclude with `Submodule.mul_mem_mul (by rw [← A.generates I]; exact Submodule.subset_span ⟨j, rfl⟩) hw`. Take `⟨a, ha⟩` from `Submodule.mem_one.mp h1`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨e, he⟩` from `hF j I y hy`. Use `⟨a, ⟨e, ?_⟩, ha⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a ^ e • y ∈ G`. Establish `hw' : w ^ e ∈ Q' ^ (A.m * e)`. Rewrite using `[pow_mul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `Submodule.pow_mem_pow _ hw e`. Establish `h2 : (y * A.h j ^ e) * w ^ e ∈ G * P ^ (A.m * e) * Q' ^ (A.m * e)` using `Submodule.mul_mem_mul (by rw [← hpow]; exact he) hw'`. Rewrite `h2` using `[mul_assoc, hone, mul_one]`. Rewrite using `[Algebra.smul_def, map_pow]`. Express the relevant statement in the definitionally equal form `((a : Ω)) ^ e * y ∈ G`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (a : Ω) = A.h j * w` using `ha`. Rewrite using `[this]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `Submodule.span_induction (p := fun u _ => u * w ∈ V) ?_ ?_ ?_ ?_ hu` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hmem j`. Rewrite using `[zero_mul]`. Conclude with `V.zero_mem`. Introduce `a b _ _ ha hb`.
-
-Rewrite using `[add_mul]`. Conclude with `V.add_mem ha hb`. Introduce `r a _ ha`. Rewrite using `[smul_mul_assoc]`. Conclude with `V.smul_mem r ha`.
-
-Take `⟨b, ⟨n, hn⟩, hb⟩` from `hkey (by rw [hone]; exact Submodule.mem_one.mpr ⟨1, map_one _⟩)`. Establish `hb1 : (b : Ω) = 1` using `hb`. Establish `hbn : b ^ n • y ∈ G` using `hn`. Rewrite `hbn` using `[Algebra.smul_def, map_pow, show algebraMap R Ω b = 1 from hb1, one_pow, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem AmpleCover.proof : AmpleCover.Statement.{u, w} := by
   intro S _ Ω _ _ N x H A F hF I

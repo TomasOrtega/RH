@@ -8,41 +8,35 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbVarRedRes
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ _ L W _ _ _ _ _ _ _ _ h`. Establish `hWL : Function.Injective (algebraMap W L)` using `IsFractionRing.injective W L`. Establish `hRK : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`. Use `set V : Subring L := (algebraMap W L).range with hV`. Establish `memV : ∀ x : K, algebraMap K L x ∈ V ↔ x ∈ (algebraMap R K).range`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[← Subring.mem_comap, show V.comap (algebraMap K L) = (algebraMap R K).range from h]`. Set `e : W ≃+* V` to `RingEquiv.ofBijective (algebraMap W L).rangeRestrict ⟨fun a b hab => hWL (by simpa using congrArg Subtype.val hab), (algebraMap W L).rangeRestrict_surjective⟩`. Establish `he : ∀ v : V, algebraMap W L (e.symm v) = v`. Introduce `v`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg Subtype.val (e.apply_symm_apply v)` as an intermediate fact. Conclude with `this`. Set `ψ : R →+* V` to `((algebraMap K L).comp (algebraMap R K)).codRestrict V (fun r => (memV _).2 ⟨r, rfl⟩)`. Set `φ : R →+* W` to `e.symm.toRingHom.comp ψ`. Establish `hφ : ∀ r, algebraMap W L (φ r) = algebraMap K L (algebraMap R K r)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `r`. Conclude with `he (ψ r)`. Establish `hφinj : Function.Injective φ`. Introduce `a b hab`. Use `congrArg (algebraMap W L) hab` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[hφ, hφ]`. Conclude with `hRK ((algebraMap K L).injective this)`. Use `haveI : IsLocalHom φ := by`. Prove the components needed by the constructor for the conclusion. Introduce `r hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, hu⟩` from `hr`. Establish `hx : algebraMap W L (φ r) * algebraMap W L (u⁻¹ : Wˣ) = 1`. Rewrite using `[← map_mul, ← hu]`. Simplify using the standard rewrite rules. Rewrite `hx` using `[hφ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hx0 : algebraMap R K r ≠ 0`. Introduce `h0`. Rewrite `hx` using `[h0]`. Simplify using `at hx`. Establish `hinv : algebraMap K L (algebraMap R K r)⁻¹ = algebraMap W L (u⁻¹ : Wˣ)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Rewrite using `[map_inv₀]`. Conclude with `(eq_inv_of_mul_eq_one_right hx).symm`. Take `⟨s, hs⟩` from `(memV _).1 (by rw [hinv]; exact RingHom.mem_range_self _ _)`. Establish `h1 : r * s = 1` using `hRK (by rw [map_mul, hs, map_one, mul_inv_cancel₀ hx0])`. Conclude with `⟨⟨r, s, h1, by rw [mul_comm]; exact h1⟩, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Set `f` to `ResidueField.map φ`. Establish `hf : Function.Injective f` using `f.injective`. Use `⟨?_, fun m hm hW => hm (hf (by rw [map_natCast, map_zero]; exact hW))⟩` and prove the remaining obligations. Use `letI : Algebra (ResidueField R) (ResidueField W) := f.toAlgebra`. Use `letI := UniqueFactorizationMonoid.normalizationMonoid (α := R)`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `letI := UniqueFactorizationMonoid.toNormalizedGCDMonoid R`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Use `haveI : Algebra.IsAlgebraic (ResidueField R) (ResidueField W) := by`. Prove the components needed by the constructor for the conclusion. Introduce `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w, rfl⟩` from `residue_surjective y`. Establish `hint : IsIntegral K (algebraMap W L w)` using `Algebra.IsIntegral.isIntegral _`. Use `set p := minpoly K (algebraMap W L w)`. Take `⟨b, hb⟩` from `IsLocalization.integerNormalization_map_to_map (nonZeroDivisors R) p`. Use `set q := IsLocalization.integerNormalization (nonZeroDivisors R) p`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hp0 : p ≠ 0` using `minpoly.ne_zero hint`. Establish `hq0 : q ≠ 0`. Introduce `hq`. Rewrite `hb` using `[hq, Polynomial.map_zero]`. Establish `hb0 : (algebraMap R K (b : R)) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hb` using `[Algebra.smul_def, Polynomial.algebraMap_apply]`. Conclude with `hp0 ((mul_eq_zero.1 hb.symm).resolve_left (by simpa using hb0))`. Establish `hqw : Polynomial.eval₂ φ w q = 0`. Apply `hWL` to reduce the goal to its premises. Rewrite using `[map_zero, Polynomial.hom_eval₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (algebraMap W L).comp φ = (algebraMap K L).comp (algebraMap R K)` using `RingHom.ext hφ`. Rewrite using `[this, ← Polynomial.eval₂_map, hb]`. Rewrite using `[Algebra.smul_def, Polynomial.eval₂_mul]`. Establish `: Polynomial.eval₂ (algebraMap K L) (algebraMap W L w) p = 0` using `minpoly.aeval K _`. Rewrite using `[this, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set pp := q.primPart`. Establish `hpp : Polynomial.eval₂ φ w pp = 0`. Establish `hc : q.content ≠ 0` using `(Polynomial.content_eq_zero_iff).not.2 hq0`. Use `hqw` as an intermediate fact. Rewrite `this` using `[Polynomial.eq_C_content_mul_primPart q, Polynomial.eval₂_mul, Polynomial.eval₂_C]`.
-
-Conclude with `(mul_eq_zero.1 this).resolve_left (fun h0 => hc (hφinj (by rw [h0, map_zero])))`. Use `⟨pp.map (residue R), ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `hmem : pp ∈ RingHom.ker (Polynomial.mapRingHom (residue R))`. Simplify `h0` using `[RingHom.mem_ker]`.
-
-Rewrite `hmem` using `[Polynomial.ker_mapRingHom, ker_residue, hϖ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton]`. Conclude with `hϖ.not_isUnit (Polynomial.isPrimitive_primPart q ϖ hmem)`. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_map]`. Express the relevant statement in the definitionally equal form `Polynomial.eval₂ (f.comp (residue R)) _ _ = 0`. Rewrite using `[ResidueField.map_comp_residue, ← Polynomial.hom_eval₂, hpp, map_zero]`.
-
-Conclude with `Algebra.IsAlgebraic.perfectField (ResidueField R)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_perfect_and_char :
   ∀ (R K : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] [PerfectField (ResidueField R)] (L W : Type) [Field L] [Algebra K L] [FiniteDimensional K L] [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Algebra W L] [IsFractionRing W L], IsAbove R K (algebraMap W L).range → PerfectField (ResidueField W) ∧ ∀ m : ℕ, (m : ResidueField R) ≠ 0 → (m : ResidueField W) ≠ 0 := by

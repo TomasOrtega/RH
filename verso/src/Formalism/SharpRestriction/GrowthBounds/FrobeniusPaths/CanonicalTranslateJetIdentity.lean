@@ -9,7 +9,7 @@ open MvPolynomial Finset Formalism.MainNotions.G Formalism.MainNotions.Covariant
 namespace Formalism.MainNotions.LemmaBAlt
 
 /- English proof (translation)
-Introduce `p f _ O _ _ _ _ S hp5 hf hsq N r K _ _ _ LL B z hK hmono hz P g hg c hpos J`. Establish `H : ColOK LL P.mu c` using `colOK_of_path LL B hK P c`. Use `⟨column_kernel_components_integral p f LL g hg z P.mu c J, fun m hm i hi => lifted_column_multidegree p f LL g z P.mu c hmono hz J m hm i hi, fun g' hg' => lifted_column_order p f (frobCong p f hf) S hsq LL g g' hg hg' z P.mu c H hmono hz hpos J, ?_, column_order_le_two_power p ( …` and prove the remaining obligations. Conclude with `lifted_column_congruence p f S LL g hg z P.mu c hmono hz hpos (SgVanish_of LL P.mu c H) (fun J => plTanCol_eq_SgW O LL P.mu c H P.dom J) J`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem canonical_translate_jet_identity (D : Formalism.BasicNotions.D7) : CanonicalTranslateJetIdentity D := by
   intro p f _ O _ _ _ _ S hp5 hf hsq N r K _ _ _ LL B z hK hmono hz P g hg c hpos J

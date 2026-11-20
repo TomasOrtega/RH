@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GroundTheory.PAdicHodge Cr
 namespace GlobalTheory.CompanionTheory.EtChern
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `⟨⟨z, hz⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ x'`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem restrict_id_pull {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{0} R) (x : H (𝟭 C ⋙ F) 2) (x' : H F 2)
     (h : x = (Mor.restrict F (𝟭 C)).pull 2 x') : x = x' := by
@@ -15,11 +15,11 @@ theorem restrict_id_pull {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (
   rfl
 
 /- English proof (translation)
-Introduce `hL hG l _ H O _ X q κ D hE y y' hy hy'`. Take `⟨Λ⟩` from `(hL l H O X q κ (El (PX q κ)) (𝟭 _) D).2 hE`. Use function extensionality and compare the values at `n`. Take `⟨z, hz, hc, e⟩` from `hy (El (PX q κ)) (𝟭 _) Λ n`. Take `⟨z', hz', hc', e'⟩` from `hy' (El (PX q κ)) (𝟭 _) Λ n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hzz : z = z'`. Use function extensionality and compare the values at `s`. Conclude with `(hG l _ n).2.1 _ _ _ (hc s) (hc' s)`. Substitute `hzz` using the available equality. Establish `e1` using `restrict_id_pull _ _ _ e`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `restrict_id_pull _ _ _ e'`. Conclude with `e1.symm.trans e2`.
+A detailed English derivation is pending.
 -/
 theorem chern_class_unique_of_lift_and_log : CrystallineSemistableComparison.E.LiftEx → CrystallineSemistableComparison.E.LogEx → CrystallineSemistableComparison.E.FirstChernUniqueEtale := by
   intro hL hG l _ H O _ X q κ D hE y y' hy hy'

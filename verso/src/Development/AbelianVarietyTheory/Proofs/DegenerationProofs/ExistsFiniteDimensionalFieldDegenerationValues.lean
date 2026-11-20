@@ -13,21 +13,19 @@ namespace GlobalTheory.FiniteValues
 open GlobalTheory.TorusExt GlobalTheory.ArcExt
 
 /- English proof (translation)
-Take `⟨_, ⟨U, hU, rfl⟩, hpt, -⟩` from `B.left.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (p.left (IsLocalRing.closedPoint F))) isOpen_univ`. Establish `hU : IsAffineOpen U` using `hU`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Γ(B.left, U) ⟶ CommRingCat.of F, Spec.map f ≫ hU.fromSpec = p.left := by`. Use `⟨Spec.preimage (IsOpenImmersion.lift hU.fromSpec p.left ?_), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hU.range_fromSpec, Subsingleton.elim (α := PrimeSpectrum F) y (IsLocalRing.closedPoint F)]`. Conclude with `hpt`. Rewrite using `[Spec.map_preimage]`. Conclude with `IsOpenImmersion.lift_fac _ _ _`. Take `⟨g, hg⟩ : ∃ g : CommRingCat.of R ⟶ Γ(B.left, U), Spec.map g = hU.fromSpec ≫ B.hom` from `⟨Spec.preimage _, Spec.map_preimage _⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgf : g ≫ f = CommRingCat.ofHom (algebraMap R (FractionRing R)) ≫ CommRingCat.ofHom (algebraMap (FractionRing R) F)` using `Spec.map_injective (by`. Rewrite using `[Spec.map_comp, hg, ← Category.assoc, hf, Spec.map_comp]`. Conclude with `Over.w p)`. Establish `hV : ∀ r : R, f.hom (g.hom r) = algebraMap (FractionRing R) F (algebraMap R _ r)` using `fun r => congrArg (fun q => q.hom r) hgf`. Establish `hft : g.hom.FiniteType`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `: LocallyOfFiniteType (Spec.map g)` using `by rw [hg]; infer_instance`. Conclude with `HasRingHomProperty.Spec_iff.1 this`. Set `_ : Algebra R Γ(B.left, U)` to `g.hom.toAlgebra`. Take `⟨s, hs⟩` from `(show Algebra.FiniteType R Γ(B.left, U) from hft).out`. Use `⟨s.image f.hom, fun K hK => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `hr : ∀ a, f.hom a ∈ K` using `fun a => by`. Establish `ha : a ∈ Algebra.adjoin R (s : Set Γ(B.left, U))` using `hs ▸ Algebra.mem_top`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hK (Finset.mem_image_of_mem _ hx)`. Consider the case `algebraMap r => exact (hV r).symm ▸ K.algebraMap_mem _`.
+Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`. Set `f' : Γ(B.left, U) ⟶ CommRingCat.of K` to `CommRingCat.ofHom (f.hom.codRestrict K hr)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨Over.homMk (Spec.map f' ≫ hU.fromSpec) ?_, Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Spec.map f' ≫ hU.fromSpec) ≫ B.hom = Spec.map _ ≫ Spec.map _`. Rewrite using `[Category.assoc, ← hg, ← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `r`.
-
-Conclude with `hV r`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map f' ≫ hU.fromSpec = _`. Rewrite using `[← hf, ← Spec.map_comp_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_finset_point {R : Type} [CommRing R] [IsDomain R] {F : Type} [Field F] [Algebra (FractionRing R) F]
     (B : Over (Spec (CommRingCat.of R))) [LocallyOfFiniteType B.hom] (p : TF (R := R) F ⟶ B) :
@@ -77,23 +75,19 @@ theorem exists_finset_point {R : Type} [CommRing R] [IsDomain R] {F : Type} [Fie
     rfl
 
 /- English proof (translation)
-Introduce `R _ _ D F _ _ _ N ν T hT`. Use `haveI := D.P.isAb.proper`. Use `choose S hS using fun x : N.A => exists_finset_point D.P.A (ν.eA x)`. Set `s : Set F` to `⋃ x ∈ T, (S x : Set F)`. Use `haveI : Finite s := (hT.biUnion fun x _ => (S x).finite_toSet).to_subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `K` to `IntermediateField.adjoin (FractionRing R) s`. Set `f : K →+* F` to `algebraMap K F`. Establish `hf : f.comp (algebraMap (FractionRing R) K) = algebraMap (FractionRing R) F` using `rfl`. Set `Φ : (TF (R` to `R) K ⟶ D.P.A) →* N.A := MonoidHom.mk' (fun x => ν.eA.symm (extMap f hf ≫ x)) fun x y => by rw [MonObj.comp_mul, map_mul]`. Establish `hΦ : ∀ x, ν.eA (Φ x) = extMap f hf ≫ x` using `fun x => ν.eA.apply_symm_apply _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `J : (Sp K ⟶ D.P.A.left) → D.P.L.ι` to `fun ψ => ν.J (spMap f ≫ ψ)`. Establish `hJ : ∀ ψ, ⊤ ≤ ψ ⁻¹ᵁ D.P.L.U (J ψ)` using `fun ψ z _ => by`. Establish `h` using `ν.good (spMap f ≫ ψ) (Set.mem_univ (IsLocalRing.closedPoint F))`. Rewrite using `[Subsingleton.elim (α := PrimeSpectrum K) z (spMap f (IsLocalRing.closedPoint F))]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ' : ∀ ψ, ν.J (spMap f ≫ ψ) = J ψ` using `fun _ => rfl`. Establish `hm : ∀ a : K, f a ∈ K` using `fun a => a.2`. Establish `hv : ∀ {Y : Scheme.{0}} {I : Type} [Fintype I] {φ : I → (Y ⟶ D.P.A.left)} {ε : I → ℤ} (t : LB.Gen (LB.LinComb D.P.L φ ε)) (r : Sp K ⟶ Y), vF t (spMap f ≫ r) ν.J ∈ K` using `fun t r => by`. Rewrite using `[vF_ext f hJ hJ']`. Conclude with `hm _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw : ∀ {Y : Scheme.{0}} {I : Type} [Fintype I] {φ : I → (Y ⟶ D.P.A.left)} {ε : I → ℤ} (t : LB.Sec (LB.LinComb D.P.L φ ε)) (r : Sp K ⟶ Y), sF t (spMap f ≫ r) ν.J ∈ K` using `fun t r => by`. Rewrite using `[sF_ext f hJ hJ']`. Conclude with `hm _`. Establish `hrig : rigVal ν ∈ K`. Rewrite using `[rigVal, ← Over.w (extMap (R := R) f hf)]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv _ _`. Use `⟨K, Φ.range, IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral, fun x hx => ?_, fun χ => ?_, ?_, ?_, ?_, fun χ => ?_⟩` and prove the remaining obligations. Take `⟨l, hl⟩` from `hS x K ((Set.subset_biUnion_of_mem (u := fun x => (S x : Set F)) hx).trans (IntermediateField.subset_adjoin _ _))`. Conclude with `⟨l, ν.eA.injective ((hΦ l).trans hl)⟩`. Conclude with `⟨DegPre.cF D K (ν.eX χ), ν.eA.injective ((hΦ _).trans ((DVR.comp_cP D _ _).trans (ν.c_eq χ).symm))⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨x, rfl⟩ _ ⟨y, rfl⟩ _ ⟨u, rfl⟩`. Rewrite using `[ν.θ_eq, hΦ, hΦ, hΦ, ← comp_lift, ← comp_lift]`. Conclude with `hv _ _`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[ν.σ_eq, hΦ]`.
-
-Conclude with `hv _ _`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `h0 : rigVal ν ≠ 0` using `vF_ne_zero ν.good _ _`. Rewrite using `[eq_div_of_mul_eq h0 (ν.th_eq (Φ x)), hΦ]`. Conclude with `div_mem (hw _ _) hrig`.
-
-Rewrite using `[ν.ψ_eq]`. Use `mul_mem ?_ hrig` and prove the remaining obligations. Rewrite using `[← (extMap_jFK (R := R) f hf).trans (Category.id_comp _)]`. Conclude with `hv _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_field_of_values : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F] [Algebra (FractionRing R) F] [Algebra.IsAlgebraic (FractionRing R) F] (N : NumD F) (_ : NumOf D F N) (T : Set N.A), T.Finite → ∃ (K₁ : IntermediateField (FractionRing R) F) (A₀ : Subgroup N.A), FiniteDimensional (FractionRing R) K₁ ∧ (∀ x ∈ T, x ∈ A₀) ∧ (∀ χ, N.c χ ∈ A₀) ∧ (∀ x ∈ A₀, ∀ y ∈ A₀, ∀ u ∈ A₀, (N.θ x y u : F) ∈ K₁) ∧ (∀ x ∈ A₀, (N.σ x : F) ∈ K₁) ∧ (∀ x ∈ A₀, N.th x ∈ K₁) ∧ ∀ χ, (N.ψ χ : F) ∈ K₁ := by
   intro R _ _ D F _ _ _ N ν T hT

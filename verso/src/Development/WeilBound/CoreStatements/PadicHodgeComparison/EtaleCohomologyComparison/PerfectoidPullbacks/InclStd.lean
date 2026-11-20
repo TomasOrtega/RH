@@ -17,7 +17,7 @@ def stdI {b : Base} {L : b.Fun} (Q : ObjectProperty (Thick L)) (r : Option ℤ) 
     | some r => sFil Q r).sup (IdF.span _ c)
 
 /- English proof (translation)
-Introduce `T x hx`. Apply the tactic sequence `cases r <;> exact hx`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem incl_std {b : Base} {L : b.Fun} {Q Q' : ObjectProperty (Thick L)} (h : Q' ≤ Q) (r : Option ℤ) (c : b.R) :
     (incl h).Le (stdI Q r c) (stdI Q' r c) := by
@@ -25,7 +25,7 @@ theorem incl_std {b : Base} {L : b.Fun} {Q Q' : ObjectProperty (Thick L)} (h : Q
   cases r <;> exact hx
 
 /- English proof (translation)
-Introduce `T x hx`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem incl_fil {b : Base} {L : b.Fun} {Q Q' : ObjectProperty (Thick L)} (h : Q' ≤ Q) (r : ℤ) :
     (incl h).Le (sFil Q r) (sFil Q' r) := by

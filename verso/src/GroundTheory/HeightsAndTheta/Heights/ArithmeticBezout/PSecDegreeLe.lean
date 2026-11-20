@@ -10,17 +10,15 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Introduce `k E _ _ _ n e δ Q g y hQ hg hδ hfin hdom hsep hne`. Use `set QE := Q.map (MvPolynomial.map (algebraMap k E))`. Use `set A := Vertical.SecAlg QE y`. Establish `: Module.Finite E A` using `hfin`. Establish `: IsDomain A` using `hdom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Algebra.IsSeparable E A` using `hsep`. Establish `: Module.Free E A` using `Module.Free.of_divisionRing E A`. Use `set N := Vertical.normForm (R := E) A (Vertical.secCoord QE y)`. Use `set G := Vertical.specRest (algebraMap k E) g y`. Establish `hirr : Irreducible N` using `Vertical.NormFormIrreducible.full E A n (Vertical.secCoord QE y) (fun j => y (.inr j)) (Vertical.secCoord_adjoin _ _) (Vertical.secCoord_chart _ _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨m, -, hm⟩` from `Vertical.ChowSecDvd.full k E n e Q g y hQ hg`. Establish `hd` using `Vertical.NormFormDvd.full E A n (Vertical.secCoord QE y) (G ^ m) (by rwa [map_pow])`. Rewrite `hd` using `[← pow_mul]`. Establish `hNG : N ∣ G` using `hirr.prime.dvd_of_dvd_pow hd`. Set `b` to `Module.Free.chooseBasis E A`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hN : N.IsHomogeneous (Module.finrank E A)` using `by show (Vertical.normForm (R := E) A (Vertical.secCoord QE y)).IsHomogeneous _`. Rewrite using `[Vertical.normForm_eq_det b, Module.finrank_eq_card_chooseBasisIndex]`. Use `Vertical.isHomogeneous_det_linear _ fun i k' => ?_` and prove the remaining obligations. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul]`. Conclude with `IsHomogeneous.sum _ _ _ fun j _ => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `using (isHomogeneous_X E j).mul (isHomogeneous_C (Fin n) _)`. Establish `hN0 : N ≠ 0`. Introduce `h0`. Establish `hv` using `Vertical.NormFormEval.full E A n (Vertical.secCoord QE y) (fun j => y (.inr j))`. Express the relevant statement in the definitionally equal form `eval (fun j => y (.inr j)) N = _ at hv`.
-
-Rewrite `hv` using `[h0, map_zero, Vertical.secCoord_chart, map_one]`. Conclude with `zero_ne_one hv`. Establish `hG : G.IsHomogeneous δ` using `Vertical.isHomogeneous_specRest _ hδ y`. Rewrite using `[← hN.totalDegree hN0, ← hG.totalDegree hne]`. Conclude with `totalDegree_le_of_dvd_of_isDomain hNG hne`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SecDegreeLe.proof : SecDegreeLe.Statement := by
   intro k E _ _ _ n e δ Q g y hQ hg hδ hfin hdom hsep hne

@@ -5,7 +5,7 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI GlobalTheory.Shin Semidirect
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.Shin.J_gal) | (exact GlobalTheory.Shin.J_gal) | (intros; apply GlobalTheory.Shin.J_gal <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.harishChandraProductCuspidalGL_frobenius_pow : ∀ (F : Type) [Field F] [Finite F] (θ : AlgebraicClosure F →* ℂ) (t : F ≃+* F) (j : ℕ), (∀ x, t x = x ^ (ringChar F ^ j)) → ∀ (L : List (ℕ × ℕ)) (n : ℕ) (x : GL (Fin n) F), J θ L n (gal (t : F →+* F) n x) = J θ (L.map fun p => (p.1, p.2 * ringChar F ^ j)) n x := by
   first | (exact @GlobalTheory.Shin.J_gal) | (exact GlobalTheory.Shin.J_gal) | (intros; apply GlobalTheory.Shin.J_gal <;> assumption)

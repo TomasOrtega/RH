@@ -14,15 +14,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
 /- English proof (translation)
-Use `set b : v.adicCompletionIntegers F := ⟨β, hβ⟩`. Use `set g : v.adicCompletionIntegers F := ⟨γ, hγ⟩`. Use `set m : v.adicCompletionIntegers F := ⟨ν, hν⟩`. Establish `hg : g ∈ maximalIdeal (v.adicCompletionIntegers F)`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨w, hw⟩`. Establish `h1 : ((w⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F) * g = 1`. Rewrite using `[← hw]`. Simplify using the standard rewrite rules. Establish `h2 : ((((w⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F) : Fv F v)) * γ = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg (fun x : v.adicCompletionIntegers F => (x : Fv F v)) h1` as an intermediate fact. Simplify using `using this`. Establish `h3 : Valued.v ((((w⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F) : Fv F v)) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers (K := F) (v := v)).1 (Subtype.property _)`. Establish `h4` using `congrArg Valued.v h2`. Rewrite `h4` using `[map_mul, map_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: Valued.v ((((w⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F) : Fv F v)) * Valued.v γ < 1` using `lt_of_le_of_lt (mul_le_of_le_one_left' h3) hγm`. Rewrite `this` using `[h4]`. Conclude with `lt_irrefl _ this`. Establish `hu : IsUnit (1 - g * b)` using `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ ((maximalIdeal _).mul_mem_right b hg)`. Take `⟨s, hs⟩` from `PI.OmVf.quad_root (-(g * (1 - g * b) * m)) (1 - g * b) b (neg_mem ((maximalIdeal _).mul_mem_right m ((maximalIdeal _).mul_mem_right _ hg))) hu`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `⟨s, s.property, ?_⟩` and prove the remaining obligations. Use `congrArg (fun x : v.adicCompletionIntegers F => (x : Fv F v)) hs` as an intermediate fact. Simplify using `only [b, g, m] at this`. Move the coercions through the operations in `at this`. Take the linear combination `this`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_integral_root_of_quadratic (β γ ν : Fv F v) (hβ : β ∈ v.adicCompletionIntegers F) (hγ : γ ∈ v.adicCompletionIntegers F)
     (hγm : Valued.v γ < 1) (hν : ν ∈ v.adicCompletionIntegers F) :

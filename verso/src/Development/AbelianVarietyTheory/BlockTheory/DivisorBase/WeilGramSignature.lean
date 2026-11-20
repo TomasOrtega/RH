@@ -165,7 +165,7 @@ def GalLift : Prop :=
     (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (ph : Fin D.R.m → ℂ), GalLiftFor T R F κw v₀ O ph
 
 /- English proof (translation)
-Introduce `x _`. Conclude with `Eq.refl _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem overK_base : OverK (D := D) D.what₂.embLL := by
   intro x _

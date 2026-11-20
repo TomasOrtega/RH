@@ -23,7 +23,7 @@ noncomputable section
 namespace GlobalTheory.TestFibre
 
 /- English proof (translation)
-Introduce `h h₂ hT o Ω _ _ _ _ S ρ p _ y₀ u l _ x hx t`. Take `⟨x', h₁, hadd, -, hs⟩` from `utest_torsion_points o Ω S ρ p y₀ u`. Take `rfl : x = x'` from `funext fun a => Over.OverMorphism.ext (u.cart.1.hom_ext ((hx a).trans (h₁ a).symm) (by rw [Over.w, Over.w]))`. Take `⟨q, τ, a, b, c, d⟩` from `PerpCharacter.exists_torus_point_eStd (laws_all h h₂).1 hT o Ω S ρ p y₀ u l x h₁ hadd hs t t.2`. Conclude with `⟨τ, q, a, b, c, fun a β e => (d a β e).trans (by rw [map_pow, map_pow])⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem perp_torus_point : Laws → Laws2 → UTorsSt → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀) (l : u.Lab), (∀ a : o, ‖y₀ (algebraMap o S.R a)‖ ≤ 1) → ∀ (x : S.Gam → (TFK (R := u.V) (PadicAlgCl p) ⟶ u.A.A)), PtsOver u x → ∀ t : S.perp l.yy.ker, ∃ (τ : Multiplicative u.D.toPre.X →* (PadicAlgCl p)ˣ) (q : QkPt u.D.toPre (PadicAlgCl p) (S.r * S.N)), q.y = 0 ∧ IsTor τ q.g ∧ QkToAkU u.U.toUnifPre (PadicAlgCl p) (S.r * S.N) q (x t) ∧ ∀ a β, l.yy a = QuotientAddGroup.mk β → (τ (Multiplicative.ofAdd β) : PadicAlgCl p) = y₀ (algebraMap o S.R S.ζ) ^ (S.r * S.N * (eStd S.g _ (t : S.Gam) a).val) := by
   intro h h₂ hT o Ω _ _ _ _ S ρ p _ y₀ u l _ x hx t

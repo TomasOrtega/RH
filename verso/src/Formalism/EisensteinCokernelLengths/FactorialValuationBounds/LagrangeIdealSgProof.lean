@@ -5,44 +5,42 @@ import Formalism.WindowSums.PowerSeriesRelationList
 namespace Formalism.ZetaNonvanishing.LIFTV
 
 /- English proof (translation)
-Introduce `ℓ _ R _ _ sg S₁ S₂ c hd hc`. Conclude with `Formalism.LIFT.lift_LagrangeIdeal R (ℓ : R) ℤ S₁ S₂ c (fun a b => sg + padicValInt ℓ (a - b)) hd hc`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lagrangeIdealSg_proof : LagrangeIdealSg := by
   intro ℓ _ R _ _ sg S₁ S₂ c hd hc
   exact Formalism.LIFT.lift_LagrangeIdeal R (ℓ : R) ℤ S₁ S₂ c (fun a b => sg + padicValInt ℓ (a - b)) hd hc
 
 /- English proof (translation)
-Unfold `WindowDiff`. Introduce `ℓ hℓ a₀ y D S a hS hD`. Establish `hp : ℓ.Prime` using `hℓ.out`. Establish `hl1 : 1 < ℓ` using `hp.one_lt`. Establish `hlR : (1 : ℝ) < ℓ` using `by exact_mod_cast hl1`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set K := Nat.log ℓ D with hK`. Establish `hv : ∀ b ∈ S.erase a, padicValInt ℓ (a - b) = ((Finset.Icc 1 K).filter (fun k => (ℓ : ℤ) ^ k ∣ a - b)).card`. Introduce `b hb`. Establish `hne : a - b ≠ 0` using `sub_ne_zero.mpr (Finset.ne_of_mem_erase hb).symm`. Establish `hle : padicValInt ℓ (a - b) ≤ K`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (ℓ : ℤ) ^ padicValInt ℓ (a - b) ≤ |a - b|` using `Int.le_of_dvd (abs_pos.mpr hne) ((dvd_abs _ _).mpr (padicValInt_dvd (a - b)))`. Establish `h3 : ℓ ^ padicValInt ℓ (a - b) ≤ D`. Establish `h4` using `le_trans h1 (hD b (Finset.mem_of_mem_erase hb))`. Conclude with `h4` after adjusting the coercions. Conclude with `Nat.le_log_of_pow_le hl1 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hset : (Finset.Icc 1 K).filter (fun k => (ℓ : ℤ) ^ k ∣ a - b) = Finset.Icc 1 (padicValInt ℓ (a - b))`. Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc, padicValInt_dvd_iff, hne, false_or]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hset, Nat.card_Icc, Nat.add_sub_cancel]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hsum : ∑ b ∈ S.erase a, padicValInt ℓ (a - b) = ∑ k ∈ Finset.Icc 1 K, ((S.erase a).filter (fun b => (ℓ : ℤ) ^ k ∣ a - b)).card`. Rewrite using `[Finset.sum_congr rfl hv]`. Simplify using `only [Finset.card_filter]`. Conclude with `Finset.sum_comm`. Establish `hk : ∀ k ∈ Finset.Icc 1 K, ((((S.erase a).filter (fun b => (ℓ : ℤ) ^ k ∣ a - b)).card : ℕ) : ℝ) ≤ ((y : ℝ) + 1) / (ℓ : ℝ) ^ k + 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _`. Establish `hM : (0 : ℤ) < (ℓ : ℤ) ^ k` using `by positivity`. Establish `hsub : (S.erase a).filter (fun b => (ℓ : ℤ) ^ k ∣ a - b) ⊆ (Finset.Ico a₀ (a₀ + y + 1)).filter (fun x => x ≡ a [ZMOD (ℓ : ℤ) ^ k])`. Introduce `b hb`. Rewrite `hb`, the goal using `[Finset.mem_filter]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hbS` using `hS (Finset.mem_of_mem_erase hb.1)`. Rewrite `hbS` using `[Finset.mem_Icc]`. Conclude with `⟨Finset.mem_Ico.mpr ⟨hbS.1, by omega⟩, Int.modEq_iff_dvd.mpr hb.2⟩`. Establish `hcard` using `Int.Ico_filter_modEq_card a₀ (a₀ + y + 1) hM a`. Establish `hle` using `Finset.card_le_card hsub`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hMq : (0 : ℚ) < (ℓ : ℚ) ^ k` using `by positivity`. Establish `hq : ((((Finset.Ico a₀ (a₀ + y + 1)).filter (fun x => x ≡ a [ZMOD (ℓ : ℤ) ^ k])).card : ℤ) : ℚ) ≤ ((y : ℚ) + 1) / (ℓ : ℚ) ^ k + 1`. Rewrite using `[hcard]`. Use `push_cast`. Apply `max_le` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `Int.ceil_lt_add_one (((a₀ : ℚ) + y + 1 - a) / (ℓ : ℚ) ^ k)`. Establish `e2` using `Int.le_ceil (((a₀ : ℚ) - a) / (ℓ : ℚ) ^ k)`. Establish `e3 : ((a₀ : ℚ) + y + 1 - a) / (ℓ : ℚ) ^ k - ((a₀ : ℚ) - a) / (ℓ : ℚ) ^ k = ((y : ℚ) + 1) / (ℓ : ℚ) ^ k`. Rewrite using `[← sub_div]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Check the signs of the components of the expression. Establish `hq2 : ((((S.erase a).filter (fun b => (ℓ : ℤ) ^ k ∣ a - b)).card : ℕ) : ℚ) ≤ ((y : ℚ) + 1) / (ℓ : ℚ) ^ k + 1`. Establish `h5 : ((((S.erase a).filter (fun b => (ℓ : ℤ) ^ k ∣ a - b)).card : ℕ) : ℚ) ≤ ((((Finset.Ico a₀ (a₀ + y + 1)).filter (fun x => x ≡ a [ZMOD (ℓ : ℤ) ^ k])).card : ℤ) : ℚ)`. Conclude with `hle` after adjusting the coercions.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq3` using `(Rat.cast_le (K := ℝ)).mpr hq2`. Move the coercions through the operations in `at hq3`. Conclude with `hq3`. Establish `hgeo : ∑ k ∈ Finset.Icc 1 K, ((ℓ : ℝ)⁻¹) ^ k ≤ 1 / ((ℓ : ℝ) - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h0 : (0 : ℝ) ≤ (ℓ : ℝ)⁻¹` using `by positivity`. Establish `h1 : (ℓ : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hlR`. Establish `h2` using `geom_sum_Ico_le_of_lt_one (m := 1) (n := K + 1) h0 h1`. Establish `hI : Finset.Ico 1 (K + 1) = Finset.Icc 1 K`. Use extensionality with `j`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Finset.mem_Ico, Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers. Rewrite `h2` using `[hI]`. Establish `hl0 : (ℓ : ℝ) ≠ 0` using `by positivity`. Establish `hl1' : (ℓ : ℝ) - 1 ≠ 0` using `by linarith`.
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : (ℓ : ℝ)⁻¹ ^ 1 / (1 - (ℓ : ℝ)⁻¹) = 1 / ((ℓ : ℝ) - 1)`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsumk : ∑ k ∈ Finset.Icc 1 K, (((y : ℝ) + 1) / (ℓ : ℝ) ^ k + 1) = ((y : ℝ) + 1) * ∑ k ∈ Finset.Icc 1 K, ((ℓ : ℝ)⁻¹) ^ k + K`. Rewrite using `[Finset.sum_add_distrib, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation.
 
-Simplify using `[div_eq_mul_inv, inv_pow]`. Establish `hlog : (K : ℝ) ≤ Real.logb ℓ D` using `Real.natLog_le_logb D ℓ`. Establish `hy : (0 : ℝ) ≤ (y : ℝ) + 1` using `by positivity`. Rewrite using `[hsum]`. Use `push_cast`.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem windowDiff_proof : WindowDiff := by
   unfold WindowDiff

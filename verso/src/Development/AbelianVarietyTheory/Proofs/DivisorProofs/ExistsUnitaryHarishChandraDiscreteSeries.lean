@@ -22,7 +22,7 @@ def unitaryModule {p q : ℕ} {T : GrpData p q} (D : DSRep T) : UGKMod p q where
   adj Z x y := GlobalTheory.RealPar.DerivedAdjoint.derived_adjoint p q T D.U D.HK D.ι D.der Z x y
 
 /- English proof (translation)
-Introduce `_ _ _ D` and use `⟨unitaryModule D, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_unitary : ∀ (p q : ℕ) (T : GrpData p q) (D : DSRep T),
     ∃ M : UGKMod p q, M.M = D.HK :=

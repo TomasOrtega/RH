@@ -14,17 +14,17 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.FN
 
 /- English proof (translation)
-Introduce `Ω _ ε f hf`. Take `⟨N, w, hN, -, hq⟩` from `hf`. Take `⟨a, ha, hmem⟩` from `hq 1`. Use `choose b hb using fun n => (hmem n : a n ∈ ε.range)`. Establish `hg : HasQ N (fun τ => DD τ ^ w * f τ) (fun n => ε (b n))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Use `ha τ` as an intermediate fact. Simplify using `only [one_smul] at this`. Simplify `this` using `only [hb]`. Take `⟨hg', hexg, -, -⟩` from `GlobalTheory.T.exists_hahnSeries_isExp_of_hasQ Ω ε N _ b hN hg`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hD, hexD, hD0, -, -⟩` from `GlobalTheory.T.exists_cuspExpansion_discriminant_integer_leading_one Ω ε`. Take `⟨hring, -, hconst, -, hinv⟩` from `GlobalTheory.T.isCuspExpansionAtInfinity_properties Ω ε`. Establish `hDi` using `hinv DD hD hD0 hexD`. Establish `hpow : ∀ k : ℕ, IsExp ε (DD⁻¹ ^ k) (hD⁻¹ ^ k)`. Introduce `k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero`. Use `hconst 1` as an intermediate fact. Simplify using `only [map_one, HahnSeries.C_one] at this`. Rewrite using `[pow_zero, pow_zero]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `this`. Consider the case `succ k ih`. Simplify `(hring _ _ _ _ ih hDi).2.2` using `[pow_succ]`. Establish `hprod` using `(hring _ _ _ _ hexg (hpow w)).2.2`. Use `⟨hg' * hD⁻¹ ^ w, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `hprod using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `τ`. Use `ReciprocityTheory.ChartRestriction.L1.DD_ne_zero τ` as an intermediate fact. Simplify using `only [Pi.mul_apply, Pi.pow_apply, Pi.inv_apply]`. Rewrite using `[inv_pow, mul_comm (DD τ ^ w), mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ this), mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isExp : ∀ (Ω : Type) [Field Ω] (ε : Ω →+* ℂ) (f : ℍ → ℂ), InR ε.range f →
     ∃ h : HahnSeries ℚ Ω, IsExp ε f h := by

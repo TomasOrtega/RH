@@ -23,11 +23,11 @@ variable {l : ℕ} [hl : Fact l.Prime]
 end Norm
 
 /- English proof (translation)
-Establish `: Fact r.Prime` using `⟨hr⟩`. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed ℚ`. Establish `: NeZero (ordCompl[r] N)` using `⟨(Nat.ordCompl_pos r (NeZero.ne N)).ne'⟩`. Establish `hcop : (ordCompl[r] N).Coprime r` using `(Nat.coprime_ordCompl hr (NeZero.ne N)).symm`. Establish `hone : ∀ ζ : Ω, ζ ^ ordCompl[r] N = 1 → ζ ^ ((1 : (ZMod (ordCompl[r] N))ˣ) : ZMod (ordCompl[r] N)).val = ζ` using `fun ζ hζ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Units.val_one, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod 1 hζ, pow_one]`. Take `⟨w, hw⟩` from `KStar.TotallyRealRoots.redPow_surjective (l := r) (N.factorization r) (ZMod.unitsMap (Nat.ordProj_dvd N r) u)`. Take `⟨σ, hσ, hσw⟩` from `GlobalTheory.CycInertia.cycZ_Ine_surjective Ω r A hA w`. Use `⟨σ, hσ, (Chr.clsFacts ℚ Ω N).2.2.1 σ u ?_⟩` and prove the remaining obligations. Use `(LDataCardLeFinrank.classIff Ω r N σ.toRingEquiv u).2 ⟨fun ζ hζ => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MonoidHom.mem_ker.1 hu, hone ζ hζ]`. Conclude with `(LDataCardLeFinrank.ineFixRoots ℚ Ω r A hA _ hcop ζ hζ).2 σ hσ`. Establish `hc : cyclotomicCharacter Ω r σ.toRingEquiv = w` using `hσw`. Rewrite using `[hc, hw]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem primRam_lift (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (N : ℕ) [NeZero N] (r : ℕ) (hr : r.Prime)
     (A : ValuationSubring Ω) (hA : A.valuation (r : Ω) < 1) (u : (ZMod N)ˣ)
@@ -54,7 +54,7 @@ section Gal
 variable {l : ℕ} [hl : Fact l.Prime] {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω]
 
 /- English proof (translation)
-Introduce `hall` and use `by have hft : χ.FactorsThrough (ordCompl[p] N) := by refine (DirichletCharacter.factorsThrough_iff_ker_unitsMap (Nat.ordCompl_dvd N p)).2 fun u hu => ?_ obtain ⟨σ, hσ, rfl⟩ := primRam_lift Ω N p hp A hA u hu have h1 := congrArg Units.val (MonoidHom.mem_ker.1 (hall hσ)) refine Mon …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ram {N : ℕ} [NeZero N] {χ : DirichletCharacter ℂ N} (hχ : χ.IsPrimitive) (f : ℂ →+* Qbar l) {p : ℕ} (hp : p.Prime)
     (hpN : p ∣ N) {A : ValuationSubring Ω} (hA : A.valuation (p : Ω) < 1) :

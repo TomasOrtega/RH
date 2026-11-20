@@ -9,17 +9,17 @@ open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberFie
 namespace GlobalTheory.DifferentGalois
 
 /- English proof (translation)
-Introduce `E K _ _ _ _ _ i q w hq hm`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hd : (discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.mpr (discr_ne_zero E)`. Establish `h1` using `DefectSumCompare.vla_discAt i w`. Establish `h2` using `GlobalTheory.FlatLine.vla_span (K := K) (x := ((discr E).natAbs : ℕ)) (Nat.cast_ne_zero.2 hd) w`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `GlobalTheory.FlatLine.vAdd_natCast (K := K) hq hd hm`. Establish `h5 : ((Module.finrank ℚ E * ord_vw w (conjDifferent i) : ℕ) : ℤ) = padicValNat q (discr E).natAbs * vAdd w (q : K)`. Rewrite using `[← h1, ← h3]`. Conclude with `h2`. Establish `h7` using `congrArg (Int.cast : ℤ → ℝ) h5`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Int.cast_mul, Int.cast_natCast, Nat.cast_mul] at h7`. Establish `hE : (Module.finrank ℚ E : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr Module.finrank_pos.ne'`. Rewrite using `[different_vp]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd : (discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.mpr (discr_ne_zero E)`. Establish `hE : (Module.finrank ℚ E : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr Module.finrank_pos.ne'`. Establish `h1` using `DefectSumCompare.log_discr_eq E`. Establish `h2 : Real.log |((discr E : ℤ) : ℝ)| = Real.log ((discr E).natAbs : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_natAbs, Int.cast_abs]`. Rewrite `h1` using `[h2, Real.log_nat_eq_sum_factorization, Finsupp.sum, Nat.support_factorization]`. Establish `h3 : ∀ p ∈ (discr E).natAbs.primeFactors, ((different_vp E p : ℚ) : ℝ) * Real.log p = ((discr E).natAbs.factorization p * Real.log p) / (Module.finrank ℚ E : ℝ)`. Introduce `p hp`. Rewrite using `[different_vp, Nat.factorization_def _ (Nat.prime_of_mem_primeFactors hp)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl h3, ← Finset.sum_div, h1]`. Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem ord_conjDifferent_and_sum : ∀ (E K : Type) [Field E] [NumberField E] [IsGalois ℚ E] [Field K] [NumberField K] (i : E →+* K) (q : ℕ) (w : HeightOneSpectrum (𝓞 K)), q.Prime → ((q : ℕ) : 𝓞 K) ∈ w.asIdeal → (ord_vw w (conjDifferent i) : ℝ) = (different_vp E q : ℝ) * (vAdd w (q : K) : ℝ) ∧ ∑ p ∈ (discr E).natAbs.primeFactors, (different_vp E p : ℝ) * Real.log p = lrd E := by
   intro E K _ _ _ _ _ i q w hq hm

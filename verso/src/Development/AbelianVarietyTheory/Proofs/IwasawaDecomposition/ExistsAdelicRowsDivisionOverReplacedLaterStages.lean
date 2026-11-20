@@ -29,34 +29,34 @@ variable {B : Base} {C : Cols B} {a : Late B C} {G : Type} [Group G] [Fintype G]
   (u : Parts R)
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((HEq.refl Z.jW) :))`.
+A detailed English derivation is pending.
 -/
 theorem jWu_heq : HEq (jWu Z u) Z.jW := (by with_unfolding_all exact ((HEq.refl Z.jW) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((HEq.refl Z.eRR) :))`.
+A detailed English derivation is pending.
 -/
 theorem eRRu_heq : HEq (eRRu Z u) Z.eRR := (by with_unfolding_all exact ((HEq.refl Z.eRR) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((HEq.refl Z.eRR0) :))`.
+A detailed English derivation is pending.
 -/
 theorem eRR0u_heq : HEq (riemannRochSpaceCoordinateEquiv Z u) Z.eRR0 := (by with_unfolding_all exact ((HEq.refl Z.eRR0) :))
 
 variable (c : Refill a)
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((jWu_heq Z (partsB c R)) :))`.
+A detailed English derivation is pending.
 -/
 theorem readL_jW : HEq (letI := alg c.to iK; (readL c Z).jW) Z.jW := (by with_unfolding_all exact ((jWu_heq Z (partsB c R)) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((eRRu_heq Z (partsB c R)) :))`.
+A detailed English derivation is pending.
 -/
 theorem readL_eRR : HEq (letI := alg c.to iK; (readL c Z).eRR) Z.eRR := (by with_unfolding_all exact ((eRRu_heq Z (partsB c R)) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((eRR0u_heq Z (partsB c R)) :))`.
+A detailed English derivation is pending.
 -/
 theorem transportedReading_baseRowLatticeCoordinates : HEq (letI := alg c.to iK; (readL c Z).eRR0) Z.eRR0 := (by with_unfolding_all exact ((eRR0u_heq Z (partsB c R)) :))
 
@@ -65,13 +65,7 @@ end
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `B C a c px I hX T Wt ix p0 r`. Use `letI := r.z.alg`. Use `⟨⟨Mv.cpDat c.to c.same r.z, (by with_unfolding_all exact ((holds_tr c.to r.intersectionNumber_baseChange) :)), (by with_unfolding_all exact ((read c r.Y) :)), (by with_unfolding_all exact ((readL c r.Z) :)), (by with_unfolding_all exact (r.tup_ix :))⟩, rfl, ?_, ?_, ?_, ?_, ?_, ?_ …` and prove the remaining obligations. Use `kexactB (HEq.refl r.Y.tup)`. Conclude with `(by with_unfolding_all exact ((HEq.refl r.Y.tupT) :))`.
-
-Conclude with `(by with_unfolding_all exact ((HEq.refl r.Y.PY.ψ) :))`. Conclude with `(by with_unfolding_all exact ((HEq.refl (fun i => (r.Y.PW i).ψ)) :))`. Conclude with `(by with_unfolding_all exact ((heq_of_eq (funext fun π => (rep_eq c r.Y π).symm)) :))`. Use `kexactB (HEq.refl (fun x => (r.Y.Ish.jE x).1))`. Use `kexactB (HEq.refl (fun x => (r.Y.Iz.jE x).1))`.
-
-Conclude with `(by with_unfolding_all exact ((HEq.refl r.Y.eE) :))`. Conclude with `(by with_unfolding_all exact ((HEq.refl r.Y.jA) :))`. Conclude with `(by with_unfolding_all exact ((HEq.refl r.Y.jA0) :))`. Conclude with `(by with_unfolding_all exact ((HEq.refl r.Y.eMt) :))`. Conclude with `(by with_unfolding_all exact ((HEq.refl r.Y.mj.eW) :))`.
-
-Conclude with `(by with_unfolding_all exact ((readL_jW r.Z c) :))`. Conclude with `(by with_unfolding_all exact ((readL_eRR r.Z c) :))`. Conclude with `(by with_unfolding_all exact ((transportedReading_baseRowLatticeCoordinates r.Z c) :))`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rowsAre_refill : ∀ (B : Base) (C : Cols B) (a : Late B C) (c : Refill a) (px : PreX B.toPre) (I : ColIn B px) (hX : B.fields.Ok) (T : TwDat B) (Wt : Set B.places.Pl) (ix : C.Tup ≃ I.ι) (p0 : BaseLevelRowSide a.D) (r : RowsAre a.st I hX T Wt ix p0), ∃ r' : RowsAre c.to.st I hX T Wt ix (Tr.baseLevelRowSideTransport c p0), r'.z = Mv.cpDat c.to c.same r.z ∧ HEq r'.Y.tup r.Y.tup ∧ HEq r'.Y.tupT r.Y.tupT ∧ HEq r'.Y.PY.ψ r.Y.PY.ψ ∧ HEq (fun i => (r'.Y.PW i).ψ) (fun i => (r.Y.PW i).ψ) ∧ HEq (fun π => principalLevelFrame.rowRepR r'.z.R.θ (r'.Y.eFT π)) (fun π => principalLevelFrame.rowRepR r.z.R.θ (r.Y.eFT π)) ∧ HEq (fun x => (r'.Y.Ish.jE x).1) (fun x => (r.Y.Ish.jE x).1) ∧ HEq (fun x => (r'.Y.Iz.jE x).1) (fun x => (r.Y.Iz.jE x).1) ∧ HEq r'.Y.eE r.Y.eE ∧ HEq r'.Y.jA r.Y.jA ∧ HEq r'.Y.jA0 r.Y.jA0 ∧ HEq r'.Y.eMt r.Y.eMt ∧ HEq r'.Y.mj.eW r.Y.mj.eW ∧ HEq r'.Z.jW r.Z.jW ∧ HEq r'.Z.eRR r.Z.eRR ∧ HEq r'.Z.eRR0 r.Z.eRR0 := by
   intro B C a c px I hX T Wt ix p0 r

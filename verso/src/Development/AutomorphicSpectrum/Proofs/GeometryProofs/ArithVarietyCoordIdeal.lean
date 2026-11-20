@@ -15,13 +15,13 @@ section Chart
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {κ : Type} {x : κ → Ω}
 
 /- English proof (translation)
-Set `η : Cpt ξ` to `⟨genPt ξ, specializes_rfl⟩`. Take `⟨c, hc⟩` from `h.cover η`. Use `⟨c, hc.1, fun ω => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hmem⟩` from `h.affine c hc.1`. Establish `hη : genPt ξ ∈ U` using `(hmem _).2 ⟨specializes_rfl, hc⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ r : Γ(X, U), (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ U (genPt ξ) hη r) ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c)`. Introduce `r`. Use `(h.ring c hc.1 _).2 fun p hp => ?_` and prove the remaining obligations. Establish `hpU : p.1 ∈ U` using `(hmem p.1).2 ⟨p.2, hp⟩`. Conclude with `⟨X.presheaf.germ U p.1 hpU r, genMap_germ_eq_stalk_closed ξ p U hpU hη r⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 
-Take `⟨b, rfl⟩ : ∃ b : X.presheaf.stalk (genPt ξ), (Scheme.stalkClosedPointTo ξ).hom b = ω` from `h.gen.bij.2 ω`. Take `⟨r, t, hrt, hunit⟩` from `stalk_eq_germ_div_of_affine hU ⟨genPt ξ, hη⟩ b`. Use `replace hrt : b * X.presheaf.germ U (genPt ξ) hη t = X.presheaf.germ U (genPt ξ) hη r := hrt`. Use `replace hunit : IsUnit (X.presheaf.germ U (genPt ξ) hη t) := hunit`. Establish `hne : (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ U (genPt ξ) hη t) ≠ 0` using `(hunit.map (Scheme.stalkClosedPointTo ξ).hom).ne_zero`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, _, key r, key t, hne, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_div_iff hne]`. Conclude with `((Scheme.stalkClosedPointTo ξ).hom.map_mul _ _).symm.trans (congrArg (Scheme.stalkClosedPointTo ξ).hom hrt)`.
+A detailed English derivation is pending.
 -/
 theorem exists_chart_div (h : CoordTie ℤ ξ x) :
     ∃ c, x c ≠ 0 ∧ ∀ ω : Ω, ∃ a b : Ω, a ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c) ∧
@@ -49,9 +49,9 @@ theorem exists_chart_div (h : CoordTie ℤ ξ x) :
     (congrArg (Scheme.stalkClosedPointTo ξ).hom hrt)
 
 /- English proof (translation)
-Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem t ht => obtain ⟨j, rfl⟩ := ht`. Conclude with `h j`. Consider the case `algebraMap n => simpa using intCast_mem F n`. Consider the case `add s t _ _ hs ht => exact add_mem hs ht`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mul s t _ _ hs ht => exact mul_mem hs ht`.
+A detailed English derivation is pending.
 -/
 theorem adjoin_le_subfield (F : Subfield Ω) {c : κ} (h : ∀ j, x j / x c ∈ F) {a : Ω}
     (ha : a ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c)) : a ∈ F := by
@@ -62,7 +62,7 @@ theorem adjoin_le_subfield (F : Subfield Ω) {c : κ} (h : ∀ j, x j / x c ∈ 
   | mul s t _ _ hs ht => exact mul_mem hs ht
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun ω _ => ?_` and prove the remaining obligations. Take `⟨a, b, ha, hb, -, rfl⟩` from `hc ω`. Conclude with `div_mem (adjoin_le_subfield F h ha) (adjoin_le_subfield F h hb)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem subfield_eq_top {c : κ} (hc : ∀ ω : Ω, ∃ a b : Ω, a ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c) ∧
       b ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c) ∧ b ≠ 0 ∧ ω = a / b)
@@ -78,9 +78,9 @@ section Field
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Take `⟨-, -, hH, -⟩` from `h`. Use `charZero_of_inj_zero fun n hn => ?_` and prove the remaining obligations. Establish `hmem : (n : ℤ) ∈ (mCoordIdeal y).comap (C : ℤ →+* MRing J)`. Rewrite using `[Ideal.mem_comap, mCoordIdeal, RingHom.mem_ker]`. Establish `e : mConeMap y (C (n : ℤ)) = C (n : Ω)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[mConeMap, aeval_C]`. Rewrite using `[e, hn, map_zero]`. Rewrite `hmem` using `[show (mCoordIdeal y).comap (C : ℤ →+* MRing J) = ⊥ from hH]`. Simplify using `using hmem`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem charZero_of_isArithVar {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
     {y : (Σ k, J k) → Ω} {n : ℕ} (h : IsArithVar (mCoordIdeal y) n) : CharZero Ω := by
@@ -95,13 +95,11 @@ theorem charZero_of_isArithVar {K : Type} [Fintype K] {J : K → Type} [∀ k, F
   simpa using hmem
 
 /- English proof (translation)
-Set `L` to `algebraicClosure ℚ Ω`. Establish `hmem : ∀ a : A, algebraMap A Ω a ∈ L` using `fun a => mem_algebraicClosure_iff'.2 ((IsIntegralClosure.isIntegral_iff (A := A) (R := ℤ)).2 ⟨a, rfl⟩).tower_top`. Use `letI : Algebra A L := ((algebraMap A Ω).codRestrict L.toSubalgebra.toSubring hmem).toAlgebra`. Establish `hcoe : ∀ a : A, ((algebraMap A L a : L) : Ω) = algebraMap A Ω a` using `fun _ => rfl`. Use `haveI : IsScalarTower ℤ A L := inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : NumberField L := ⟨⟩`. Use `haveI : IsIntegralClosure A ℤ L := by`. Use `⟨fun a b hab => IsIntegralClosure.algebraMap_injective A ℤ Ω ?_, fun {v} => ?_⟩` and prove the remaining obligations. Rewrite using `[← hcoe, ← hcoe, hab]`. Rewrite using `[← isIntegral_algebraMap_iff (A := L) (B := Ω) (R := ℤ) (algebraMap L Ω).injective]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[IsIntegralClosure.isIntegral_iff (A := A) (R := ℤ) (B := Ω)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Conclude with `⟨a, Subtype.ext ha⟩`. Introduce and unpack `⟨a, rfl⟩`.
-
-Conclude with `⟨a, rfl⟩`. Use `haveI : IsDomain A := (IsIntegralClosure.algebraMap_injective A ℤ Ω).isDomain _`. Conclude with `⟨IsIntegralClosure.isDedekindDomain ℤ ℚ L A, IsIntegralClosure.finite ℤ ℚ L A⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dedekind_finite_of_finite [CharZero Ω] (hf : FiniteDimensional ℚ (algebraicClosure ℚ Ω))
     (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω] :
@@ -133,13 +131,13 @@ section Local
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Establish `hA` using `IsIntegralClosure.algebraMap_injective A ℤ Ω`. Establish `hs : ∀ s : m.primeCompl, algebraMap A Ω s ≠ 0` using `fun s h0 => s.2 (by rw [hA (h0.trans (map_zero _).symm)]; exact m.zero_mem)`. Use `isIntegrallyClosedIn_iff.2 ⟨?_, fun {w} hw => ?_⟩` and prove the remaining obligations. Use `(injective_iff_map_eq_zero _).2 fun o ho => ?_` and prove the remaining obligations. Take `⟨⟨a, s⟩, e⟩` from `IsLocalization.surj m.primeCompl o`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e'` using `congrArg (algebraMap O Ω) e`. Simplify using `only [map_mul, ho, zero_mul, ← IsScalarTower.algebraMap_apply] at e'`. Establish `ha : a = 0` using `hA (e'.symm.trans (map_zero _).symm)`. Rewrite `e` using `[ha, map_zero]`. Conclude with `(IsLocalization.map_units O s).mul_left_eq_zero.1 e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hsw⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization m.primeCompl w hw haveI : Algebra.IsIntegral ℤ A := IsIntegralClosure.isIntegral_algebra ℤ Ω`. Establish `hz : IsIntegral ℤ (s • w)` using `isIntegral_trans _ hsw`. Take `⟨a, ha⟩` from `(IsIntegralClosure.isIntegral_iff (A := A) (R := ℤ)).1 hz`. Use `⟨IsLocalization.mk' O a s, ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap O Ω (IsLocalization.mk' O a s) * algebraMap A Ω s = algebraMap A Ω a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_apply A O Ω s, ← map_mul, IsLocalization.mk'_spec, ← IsScalarTower.algebraMap_apply]`. Establish `h2 : algebraMap A Ω a = algebraMap A Ω s * w`. Rewrite using `[ha, Submonoid.smul_def, Algebra.smul_def]`. Conclude with `mul_right_cancel₀ (hs s) (by rw [h1, h2, mul_comm])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegrallyClosedIn_of_atPrime (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω]
     (m : Ideal A) [m.IsPrime] (O : Type) [CommRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω]
@@ -170,13 +168,11 @@ theorem isIntegrallyClosedIn_of_atPrime (A : Type) [CommRing A] [Algebra A Ω] [
 end Local
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hV A _ _ _`. Use `haveI : CharZero Ω := charZero_of_isArithVar hV`. Take `⟨c₀, -, hdiv⟩` from `exists_chart_div 𝔐.tie`. Establish `hfin : FiniteDimensional ℚ (algebraicClosure ℚ Ω)`. Use `GroundTheory.Heights₂.Heights.Inter.RelAlgClosureFinite.proof ℚ Ω (Finset.univ.image fun j : (k : K) → J k => (∏ k, y ⟨k, j k⟩) / ∏ k, y ⟨k, c₀ k⟩) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `htop` using `subfield_eq_top hdiv (IntermediateField.adjoin ℚ ((Finset.univ.image fun j : (k : K) → J k => (∏ k, y ⟨k, j k⟩) / ∏ k, y ⟨k, c₀ k⟩ : Finset Ω) : Set Ω)).toSubfield fun j => IntermediateField.subset_adjoin _ _ (by simp)`. Use `eq_top_iff.2 fun ω _ => ?_` and prove the remaining obligations. Establish `hω : ω ∈ (⊤ : Subfield Ω)` using `Subfield.mem_top ω`. Rewrite `hω` using `[← htop]`. Conclude with `hω`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hconst : HasConstants ℤ A y` using `fun c' hc' a => (𝔐.tie.ring c' hc' _).2 fun p _ => IntReg.mem_regAt_of_isIntegral_of_stalk _ _ _ _ 𝔐.tie.gen (𝔐.normal p.1).2 _ ((IsIntegralClosure.isIntegral_iff (A := A) (R := ℤ)).2 ⟨a, rfl⟩)`. Take `⟨hd, hfA⟩` from `dedekind_finite_of_finite hfin A`. Use `⟨hd, hfA, IsIntegralClosure.algebraMap_injective A ℤ Ω, hconst, ?_⟩` and prove the remaining obligations. Introduce `m _ O _ _ _ _ _ _ _`. Use `⟨isIntegrallyClosedIn_of_atPrime A m O, subfield_eq_top hdiv _ fun j => ?_⟩` and prove the remaining obligations.
-
-Use `show (∏ k, y ⟨k, j k⟩) / (∏ k, y ⟨k, c₀ k⟩) ∈ fnField O y`. Rewrite using `[← Finset.prod_div_distrib]`. Conclude with `prod_mem fun k _ => Subfield.subset_closure (Or.inr ⟨⟨k, j k, c₀ k⟩, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem const_closure : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (d : ℕ), IsArithVar (mCoordIdeal y) (d + 1) → ∀ (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω], IsDedekindDomain A ∧ Module.Finite ℤ A ∧ Function.Injective (algebraMap A Ω) ∧ HasConstants ℤ A y ∧ ∀ (m : Ideal A) [m.IsPrime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω], IsIntegrallyClosedIn O Ω ∧ fnField O y = ⊤ := by
   intro E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hV A _ _ _

@@ -26,9 +26,9 @@ variable {S R S₀ R₀ : Type} [CommRing S] [CommRing R] [CommRing S₀] [CommR
   [AddCommGroup P₀] [Module S₀ P₀] [AddCommGroup P₀'] [Module R₀ P₀']
 
 /- English proof (translation)
-Take `⟨n, f, g, -, -, h⟩` from `Module.Finite.exists_comp_eq_id_of_projective S P`. Use `⟨n, fun i ↦ f (Pi.single i 1), fun i ↦ LinearMap.proj i ∘ₗ g, fun c ↦ ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← LinearMap.id_apply (R := S) c, ← h, LinearMap.comp_apply, LinearMap.pi_apply_eq_sum_univ]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Establish `: (fun j ↦ if i = j then (1 : S) else 0) = Pi.single i 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `j`. Simplify using `[Pi.single_apply, eq_comm]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_frame [Module.Finite S P] [Module.Projective S P] :
     ∃ (n : ℕ) (p : Fin n → P) (l : Fin n → Dual S P), ∀ c, ∑ i, l i c • p i = c := by
@@ -43,9 +43,9 @@ theorem exists_frame [Module.Finite S P] [Module.Projective S P] :
   rfl
 
 /- English proof (translation)
-Establish `hc : c ∈ Submodule.span S (Set.range v)` using `hv ▸ Submodule.mem_top`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem _ hc => obtain ⟨c, rfl⟩ := hc`. Conclude with `h c`. Consider the case `zero => simp`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => simp [ha, hb]`. Consider the case `smul r a _ ha => simp [LinearMap.map_smulₛₗ, ha]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cor_of_span {σ : S →+* R} {Λ : Type*} {v : Λ → P} (hv : Submodule.span S (Set.range v) = ⊤)
     (f : P →ₛₗ[σ] P') {x : Dual S P} {x' : Dual R P'} (h : ∀ c, x' (f (v c)) = σ (x (v c))) (c : P) :
@@ -58,9 +58,9 @@ theorem cor_of_span {σ : S →+* R} {Λ : Type*} {v : Λ → P} (hv : Submodule
   | smul r a _ ha => simp [LinearMap.map_smulₛₗ, ha]
 
 /- English proof (translation)
-Establish `hc : c ∈ Submodule.span R (Set.range f)` using `hf ▸ Submodule.mem_top`. Proceed by induction on `hc using Submodule.span_induction with`. Consider the case `mem _ hc`. Take `⟨c, rfl⟩` from `hc`. Use `conv_rhs => rw [← hp c, map_sum]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `[hl, LinearMap.map_smulₛₗ]`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp only [map_add, add_smul, Finset.sum_add_distrib, ha, hb]`. Consider the case `smul r a _ ha => simp only [map_smul, smul_eq_mul, mul_smul, ← Finset.smul_sum, ha]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem frame_bc {σ : S →+* R} {n : ℕ} {p : Fin n → P} {l : Fin n → Dual S P}
     (hp : ∀ c, ∑ i, l i c • p i = c) (f : P →ₛₗ[σ] P') (hf : Submodule.span R (Set.range f) = ⊤)
@@ -77,7 +77,7 @@ theorem frame_bc {σ : S →+* R} {n : ℕ} {p : Fin n → P} {l : Fin n → Dua
   | smul r a _ ha => simp only [map_smul, smul_eq_mul, mul_smul, ← Finset.smul_sum, ha]
 
 /- English proof (translation)
-Use extensionality with `c`. Use `conv_rhs => rw [← hp c, map_sum]`. Simplify using `[mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dual_frame {n : ℕ} {p : Fin n → P} {l : Fin n → Dual S P}
     (hp : ∀ c, ∑ i, l i c • p i = c) (x : Dual S P) : ∑ i, x (p i) • l i = x := by
@@ -86,9 +86,9 @@ theorem dual_frame {n : ℕ} {p : Fin n → P} {l : Fin n → Dual S P}
   simp [mul_comm]
 
 /- English proof (translation)
-Use `choose l₁ hl₁ using fun i ↦ h₀' (l i)`. Establish `k : ∀ i c, l' i (f₁ c) = σ₁ (l₁ i c)` using `fun i ↦ cor_of_span h₀ f₁ fun c ↦ by rw [hc, hl, hl₁, hσ]`. Establish `fr` using `frame_bc hp f hf hl`. Use `⟨∑ i, (LinearMap.applyₗ (f₀ (p i))).smulRight (∑ j, b i j • l₁ j), fun x x' hx c ↦ ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← dual_frame fr x', ← fr (f₁ c)]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.smulRight_apply, LinearMap.applyₗ_apply_apply, smul_eq_mul, map_mul, hb, k, ← hx, hc, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ by ring` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_descent {τ : S →+* S₀} {σ₁ : S₀ →+* R} {σ : S →+* R} (hσ : ∀ a, σ₁ (τ a) = σ a)
     {n : ℕ} {p : Fin n → P} {l : Fin n → Dual S P} (hp : ∀ c, ∑ i, l i c • p i = c)
@@ -112,19 +112,19 @@ theorem exists_descent {τ : S →+* S₀} {σ₁ : S₀ →+* R} {σ : S →+* 
   refine Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ by ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨y', hy'⟩` from `ef₀ y`. Establish `m : y' ∈ W.dualAnnihilator`. Rewrite using `[Submodule.mem_dualAnnihilator, hW]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `c hc`. Use `(Submodule.span_le (p := LinearMap.ker y')).2 (fun c hc ↦ ?_) hc` and prove the remaining obligations. Take `⟨c, hc, rfl⟩` from `hc`. Conclude with `(hy' c).trans (by rw [(Submodule.mem_dualAnnihilator _).1 hy c hc, map_zero])`. Take `⟨_, ⟨w, rfl⟩, hx'⟩` from `(H y').1 m`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `letI : Algebra S S₀ := π₁.toAlgebra`. Set `t : P →ₗ[S] S₀` to `{ toFun c := y (r₁ c) map_add' := by simp map_smul' a c := by rw [LinearMap.map_smulₛₗ, map_smul]; rfl }`. Take `⟨x, hx⟩` from `Module.projective_lifting_property (Algebra.linearMap S S₀) t hπ₁`. Establish `hx : ∀ c, π₁ (x c) = y (r₁ c)` using `fun c ↦ LinearMap.congr_fun hx c`. Take `⟨x', hxx⟩` from `ef x`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `k : ∀ c, y' (r c) = π (x' c)` using `cor_of_span hf r fun c ↦ by rw [hc, hy', ← hx, hsq, hxx]`. Take `⟨n, p, l, hp⟩` from `exists_frame (S := R) (P := P')`. Establish `z : ∀ c, π (e (x' - e w) c) = 0` using `fun c ↦ by`. Rewrite using `[← dual_frame hp (x' - e w)]`. Simplify using `[← k, ← hx']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, ⟨x, rfl⟩, fun c ↦ hρ ?_⟩` and prove the remaining obligations. Use `z (f c)` as an intermediate fact. Rewrite `this` using `[map_sub, he, LinearMap.sub_apply, map_sub, sub_eq_zero]`. Rewrite using `[hsq, ← hee x x' hxx, this, ← hx', hc, hy']`. Introduce and unpack `⟨_, ⟨x, rfl⟩, hx⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hxx⟩` from `ef x`. Take `⟨y', hy'⟩` from `er (e x')`. Establish `m` using `(H y').2 ⟨_, ⟨x', rfl⟩, hy'⟩`. Establish `k : ∀ c, y' (f₀ c) = ρ (y c)` using `cor_of_span hr₁ f₀ fun c ↦ by`. Rewrite using `[← hc, hy', hee x x' hxx, hx, hsq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Submodule.mem_dualAnnihilator _).2 fun c hc ↦ hρ ?_` and prove the remaining obligations. Rewrite using `[← k, map_zero]`. Conclude with `(Submodule.mem_dualAnnihilator _).1 m _ (hW ▸ Submodule.subset_span ⟨c, hc, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_descent [Module.Projective S P] [Module.Finite R P'] [Module.Projective R P']
     {σ : S →+* R} {π₁ : S →+* S₀} {π : R →+* R₀} {ρ : S₀ →+* R₀} (hρ : Function.Injective ρ)
@@ -178,15 +178,15 @@ theorem red_descent [Module.Projective S P] [Module.Finite R P'] [Module.Project
     exact (Submodule.mem_dualAnnihilator _).1 m _ (hW ▸ Submodule.subset_span ⟨c, hc, rfl⟩)
 
 /- English proof (translation)
-Take `⟨n, p, l, hp⟩` from `exists_frame (S := S) (P := P)`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Set `q : P →ₗ[S] P` to `θ.toLinearMap ∘ₗ Submodule.projection _ _ hN.symm ∘ₗ θ.symm.toLinearMap`. Establish `m : ∀ i, l i ∘ₗ q ∈ LinearMap.range e₁` using `fun i ↦ (H _).2 fun c hc ↦ by`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[q, (Submodule.projection_apply_eq_zero_iff hN.symm).2 hc]`. Use `choose a ha using m`. Use `choose a' ha' using fun i ↦ ef (a i)`. Use `⟨∑ i, v (f (p i)) • a' i, LinearMap.ext_on_range hf fun c ↦ ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `θ.surjective c`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `z : v (f (θ (Submodule.projection _ _ hN c))) = 0`. Rewrite using `[← huv]`. Conclude with `(Submodule.mem_dualAnnihilator _).1 hu _ (hW ▸ Submodule.subset_span ⟨_, Submodule.projection_apply_mem hN c, rfl⟩)`. Establish `: v (f (θ c)) = v (f (q (θ c)))` using `by conv_lhs => rw [← Submodule.projection_add_projection_eq_self hN c, map_add, map_add, map_add, z, zero_add]`. Simplify using `[q]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Rewrite using `[this, ← hp (q (θ c))]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, hee _ _ (ha' _), ha, LinearMap.map_smulₛₗ, smul_eq_mul, LinearMap.comp_apply, mul_comm]`. Introduce and unpack `⟨w, rfl⟩ choose l' hl using fun i ↦ ef (l i)`. Rewrite using `[Submodule.mem_dualAnnihilator, hW]`. Introduce `c hc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Use `(Submodule.span_le (p := LinearMap.ker u)).2 (fun c hc ↦ ?_) hc` and prove the remaining obligations. Take `⟨c, hc, rfl⟩` from `hc`. Express the relevant statement in the definitionally equal form `u (g c) = 0`. Rewrite using `[huv, ← dual_frame (frame_bc hp f hf hl) w]`. Simplify using `[hee _ _ (hl _), (H _).1 ⟨_, rfl⟩ c hc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ann_bc {Q Q' : Type*} [AddCommGroup Q] [Module S Q] [AddCommGroup Q'] [Module R Q']
     [Module.Finite S P] [Module.Projective S P] {σ : S →+* R} (θ : Q ≃ₗ[S] P)
@@ -234,7 +234,7 @@ end Linear
 open scoped CategoryTheory.Obj in
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `p` using `isGrpPullback_pullback G f`. Establish `e₁` using `p.1.lift_fst φ (G''.hom ≫ k) (by rw [h.1.w, Category.assoc])`. Conclude with `⟨_, inferInstance, _, _, p, p.cancel (by rw [e₁]; exact h) (p.1.lift_snd _ _ _), e₁, PolPull.isAbelianScheme_of_isGrpPullback hG p, (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback p.1 hg⟩`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_factor {S S' S'' : Scheme.{0}} {G : Over S} [GrpObj G] {G'' : Over S''} [GrpObj G'']
     {f : S' ⟶ S} {k : S'' ⟶ S'} {t : S'' ⟶ S} {φ : G''.left ⟶ G.left} (h : IsGrpPullback G'' G t φ)
@@ -250,9 +250,9 @@ theorem exists_factor {S S' S'' : Scheme.{0}} {G : Over S} [GrpObj G] {G'' : Ove
     (smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback p.1 hg⟩
 
 /- English proof (translation)
-Use `letI : Algebra S R := σ.toAlgebra`. Take `⟨h₁, h₂⟩` from `P.2.2.1 S B g hB hg R A φ h`. Use `⟨top_le_iff.1 fun c _ ↦ ?_, h₁.exists, h₂⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `h₁.2 c`. Proceed by induction on `z with`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `add_mem (hx trivial) (hy trivial)`. Consider the case `tmul x c => rw [liftSemi_tmul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bc_facts (P : AbelianDeRham) {S R : Type} [CommRing S] [CommRing R] {σ : S →+* R} {g : ℕ}
     {B : Over (Sp S)} [GrpObj B] {A : Over (Sp R)} [GrpObj A] {φ : A.left ⟶ B.left}
@@ -270,11 +270,11 @@ theorem bc_facts (P : AbelianDeRham) {S R : Type} [CommRing S] [CommRing R] {σ 
   | tmul x c => rw [liftSemi_tmul]; exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)
 
 /- English proof (translation)
-Take `⟨S, B, _, φ, -, hS, hB, hgB, h⟩` from `GlobalTheory.T.abelianScheme_descends_to_finitelyGenerated_subring R g A ∅ hA hg`. Use `haveI : IsNoetherianRing S := Algebra.FiniteType.isNoetherianRing ℤ S`. Take `⟨hf, hp, -⟩` from `P.1.prim hB hgB`. Take `⟨n, p, l, hpl⟩` from `exists_frame (S := S) (P := primDR B)`. Take `⟨b₁, b₂, -⟩` from `bc_facts P h hB hgB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `choose l' hl using fun i ↦ b₂ (l i)`. Set `a : Fin n × Fin n → R` to `fun ij ↦ e (l' ij.1) ((redMor h).pull (p ij.2))`. Set `T` to `Algebra.adjoin S (Set.range a)`. Use `haveI : Algebra.FiniteType S T := Algebra.FiniteType.adjoin_of_finite (Set.finite_range a)`. Use `haveI : IsNoetherianRing T := Algebra.FiniteType.isNoetherianRing S T`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨C, _, ψ, χ, h₀, h₁, hc, hC, hgC⟩` from `exists_factor (f := spMap (algebraMap S T)) (k := spMap T.val.toRingHom) h (Cris.spMap_comp _ _).symm hB hgB`. Take `⟨c₁, c₂, -⟩` from `bc_facts P h₀ hB hgB`. Take `⟨e₁, he₁⟩` from `exists_descent (τ := algebraMap S T) (σ₁ := T.val.toRingHom) (fun _ ↦ rfl) hpl _ b₁ hl e (fun i j ↦ ⟨a (i, j), Algebra.subset_adjoin ⟨_, rfl⟩⟩) (fun _ _ ↦ rfl) _ c₁ c₂ (redMor h₁).pull (GrpMor.pull_pull _ _ _ (fun _ ↦ rfl) hc)`. Conclude with `⟨T, inferInstance, inferInstance, _, C, inferInstance, χ, h₁, e₁, Subtype.val_injective, hC, hgC, he₁⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_noeth_model (P : AbelianDeRham) {R : Type} [CommRing R] {g : ℕ} (A : Over (Sp R)) [GrpObj A]
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) (e : HdR A →ₗ[R] HdR A) :
@@ -302,23 +302,23 @@ theorem exists_noeth_model (P : AbelianDeRham) {R : Type} [CommRing R] {g : ℕ}
   exact ⟨T, inferInstance, inferInstance, _, C, inferInstance, χ, h₁, e₁, Subtype.val_injective, hC, hgC, he₁⟩
 
 /- English proof (translation)
-Introduce `g A₀ _ A' _ i' h' hA hg F ⟨⟨N, hN⟩, hF⟩`. Take `⟨e, he, rfl⟩ : ∃ e : HdR A' →ₗ[R] HdR A', (∀ x, e (e x) = e x) ∧ F = LinearMap.range e` from `⟨Submodule.projection _ _ hN, fun x ↦ Submodule.projection_apply_left hN ⟨_, Submodule.projection_apply_mem hN x⟩, (Submodule.range_projection hN).symm⟩`. Take `⟨S, _, _, σ, B, _, φ, h, e₁, hσ, hB, hgB, hee⟩` from `exists_noeth_model P A' hA hg e`. Set `J : Ideal S` to `RingHom.ker (π.comp σ)`. Establish `hJI : ∀ a ∈ J, σ a ∈ I` using `fun a ha ↦ hk ▸ ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hJ : J ^ 2 = 0`. Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`. Introduce `a ha b hb`. Use `Ideal.mul_mem_mul (hJI a ha) (hJI b hb)` as an intermediate fact. Rewrite `this` using `[← pow_two, hI, Ideal.zero_eq_bot, Ideal.mem_bot, ← map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hσ (this.trans (map_zero σ).symm)`. Set `π₁ : S →+* S ⧸ J` to `Ideal.Quotient.mk J`. Set `ρ : S ⧸ J →+* R₀` to `RingHom.kerLift (π.comp σ)`. Establish `hρ : Function.Injective ρ` using `RingHom.kerLift_injective _`. Establish `hsq : ∀ a, ρ (π₁ a) = π (σ a)` using `fun _ ↦ rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sq : spMap ρ ≫ spMap π₁ = spMap π ≫ spMap σ`. Rewrite using `[← Cris.spMap_comp, ← Cris.spMap_comp]`. Both sides reduce to the same expression. Take `⟨B₀, _, j, ψ, k, k₀, hj, hB₀, hgB₀⟩` from `exists_factor (h'.comp h) sq hB hgB`. Take `⟨b₁, b₂, -⟩` from `bc_facts P h hB hgB`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hf, hp, -⟩` from `P.1.prim hB hgB`. Establish `adm : IsAdmissible k (LinearMap.range e₁)`. Take `⟨hf', hp', -⟩` from `P.1.prim hA hg`. Take `⟨-, c₂, c₃⟩` from `bc_facts P k₀ hB₀ hgB₀`. Use `⟨⟨LinearMap.ker e₁, LinearMap.IsIdempotentElem.isCompl (LinearMap.ext fun x ↦ ?_)⟩, red_descent hρ Ideal.Quotient.mk_surjective hsq (redMor h).pull (redMor k).pull (redMor h').pull (redMor k₀).pull (fun c ↦ ?_) b₁ (bc_facts P k hB hgB).1 b₂ (bc_facts P h' hA hg).2.1 c₂ e he e₁ he …` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hx⟩` from `b₂ x`. Use `LinearMap.ext fun c ↦ hσ ?_` and prove the remaining obligations. Rewrite using `[← hee x x' hx, ← he]`. Conclude with `(hee _ _ (hee x x' hx) c).symm`. Conclude with `(GrpMor.pull_pull _ _ ((redMor h).comp (redMor h')) (fun _ ↦ rfl) rfl c).trans (GrpMor.pull_pull _ _ _ hsq hj c).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C, _, l, hl, hC, hgC, hfil⟩` from `(H S J hJ (S ⧸ J) π₁ Ideal.Quotient.mk_surjective Ideal.mk_ker).1 g B₀ B j k hB hgB _ adm`. Take `⟨A, _, χ, i, n, hi, hχ, hA₁, hg₁⟩` from `exists_factor (k₀.comp hl) sq.symm hC hgC`. Use `⟨A, inferInstance, i, hi, hA₁, hg₁, Submodule.ext fun d ↦ ?_⟩` and prove the remaining obligations. Set `α` to `LinearEquiv.ofBijective _ (P.2.2.2.1 S C g hC hgC J _ (isDPNilpotent_squareZero hJ) _ π₁ Ideal.Quotient.mk_surjective Ideal.mk_ker B₀ l hl)`. Set `β` to `LinearEquiv.ofBijective _ (P.2.2.2.1 S B g hB hgB J _ (isDPNilpotent_squareZero hJ) _ π₁ Ideal.Quotient.mk_surjective Ideal.mk_ker B₀ j k)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `m : GrpMor (divided₂ hJ) (spMap π₁) B₀ (divided₂ hI) (spMap π) A₀ σ (spMap ρ) ψ` using `GrpMor.of_isGrpPullback (isDPMorphism_sqDP hJ hI σ hJI) sq k₀`. Take `⟨-, ⟨M, hM⟩, -⟩` from `P.2.1 S C g hC hgC`. Use `ann_bc (α.trans β.symm) (redMor h).pull (redMor n).pull b₁ b₂ e e₁ hee _ M hM _ (bc_facts P n hC hgC).2.2 (fun x ↦ ?_) (crysToDR _ hi d) (crysToDR _ h' d) fun c ↦ ?_` and prove the remaining obligations. Use `SetLike.ext_iff.1 hfil (x ∘ₗ β.symm.toLinearMap)` as an intermediate fact. Establish `e₂ : crysToDR (divided₂ hJ) k (x ∘ₗ β.symm.toLinearMap) = x` using `LinearMap.ext fun c ↦ congrArg x (β.symm_apply_apply c)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[Submodule.mem_comap (f := crysToDR (divided₂ hJ) k), e₂]`. Conclude with `this.symm.trans (Submodule.mem_dualAnnihilator _)`. Establish `e₂ : (liftMor (divided₂ hJ) k).pull (β.symm (α c)) = (liftMor (divided₂ hJ) hl).pull c` using `β.apply_symm_apply _`. Use `congrArg d ?_` and prove the remaining obligations. Conclude with `(GrpMor.pull_pull (redMor n) (liftMor _ hi) ((liftMor (divided₂ hJ) hl).comp m) (fun _ ↦ rfl) hχ c).trans ((GrpMor.pull_pull (liftMor (divided₂ hJ) hl) m _ (fun _ ↦ rfl) rfl c).symm.trans ((congrArg m.pull e₂.symm).trans ((GrpMor.pull_pull (liftMor (divided₂ hJ) k) m ((liftMor (d …`.
+A detailed English derivation is pending.
 -/
 theorem liftObj_of_noetherian (P : AbelianDeRham)
     (H : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R) (hI : I ^ 2 = 0) (R₀ : Type) [CommRing R₀]

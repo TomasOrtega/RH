@@ -12,7 +12,7 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.ProdFL
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.parabolic_induction_finite_length k _ _ _ _ _ _ (isSmooth_piTensor fun a => (x a).2.rep.smooth) (hasFiniteLength_of_isIrreducible (GlobalTheory.CompanionTheory.FrobJm.piTensor_rep_isIrreducible hA x))`.
+A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_prodIrr {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {h N : ℕ} (x : Fin h → IrrGL k)
@@ -21,7 +21,7 @@ theorem hasFiniteLength_prodIrr {k : Type} [Field k] [ValuativeRel k] [Topologic
     (hasFiniteLength_of_isIrreducible (GlobalTheory.CompanionTheory.FrobJm.piTensor_rep_isIrreducible hA x))
 
 /- English proof (translation)
-Introduce `hA _ _ x hd` and use `hasFiniteLength_prodIrr hA x hd`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.Published.IrreducibleAdmissibleGL → ∀ {h N : ℕ} (x : Fin h → IrrGL k) (hd : ∑ a, (x a).1 = N),

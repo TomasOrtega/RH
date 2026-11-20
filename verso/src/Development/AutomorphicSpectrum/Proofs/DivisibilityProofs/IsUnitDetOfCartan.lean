@@ -38,9 +38,9 @@ open scoped NNReal
 namespace GlobalTheory.CompanionTheory.Ar.RT
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨v, hv, hMv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Establish `hx : star v ≠ 0` using `fun e => hv (by simpa using congrArg star e)`. Use `h.2.2 (star v) hx` as an intermediate fact. Rewrite `this` using `[star_star, hMv, dotProduct_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at this`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_ne_zero_of_cartan {n : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsCartan M θ) : M.det ≠ 0 := by
   intro h0
@@ -53,7 +53,7 @@ theorem det_ne_zero_of_cartan {n : ℕ} {M θ : Matrix (Fin n) (Fin n) ℂ} (h :
 open GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels in
 
 /- English proof (translation)
-Use `isUnit_iff_ne_zero.mpr fun h0 => det_ne_zero_of_cartan h ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_smul, show (J.map τ).det = τ J.det from (RingHom.map_det τ J).symm, h0, map_zero, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_det_of_cartan {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (τ : E →+* ℂ) (s : ℂ) (θ : Matrix (Fin n) (Fin n) ℂ)
@@ -64,7 +64,7 @@ theorem isUnit_det_of_cartan {F E : Type} [Field F] [NumberField F] [Field E] [N
 open GlobalTheory.WeilM GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a r hr => (h _ hr.2).symm.trans (a r hr), fun a r hr => (h _ hr.2).trans (a r hr)⟩`.
+Supply the required witnesses or components.
 -/
 theorem acts_congr {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] {T T' : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ}
     (h : ∀ Φ ∈ schA F κ, T Φ = T' Φ) {R : Type} [Zero R] {ev : AF F → R} {φ φ₁ : (κ → R) → ℂ} :

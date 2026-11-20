@@ -18,13 +18,13 @@ namespace MongeAmpereComparison
 def cutoff (t : ℝ) : ℝ := ∫ u in (0 : ℝ)..t, Real.smoothTransition u
 
 /- English proof (translation)
-The claim follows from `(Real.smoothTransition.continuous.integral_hasStrictDerivAt 0 t).hasDerivAt`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_cutoff (t : ℝ) : HasDerivAt cutoff (Real.smoothTransition t) t :=
   (Real.smoothTransition.continuous.integral_hasStrictDerivAt 0 t).hasDerivAt
 
 /- English proof (translation)
-Rewrite using `[contDiff_infty_iff_deriv]`. Use `⟨fun t => (hasDerivAt_cutoff t).differentiableAt, ?_⟩` and prove the remaining obligations. Establish `: deriv cutoff = Real.smoothTransition` using `funext fun t => (hasDerivAt_cutoff t).deriv`. Rewrite using `[this]`. Conclude with `Real.smoothTransition.contDiff (n := ⊤)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiff_cutoff : ContDiff ℝ ∞ cutoff := by
   rw [contDiff_infty_iff_deriv]
@@ -34,7 +34,7 @@ theorem contDiff_cutoff : ContDiff ℝ ∞ cutoff := by
   exact Real.smoothTransition.contDiff (n := ⊤)
 
 /- English proof (translation)
-Establish `: ∫ u in (0 : ℝ)..t, Real.smoothTransition u = ∫ _ in (0 : ℝ)..t, (0 : ℝ)` using `intervalIntegral.integral_congr fun u hu => by`. Rewrite `hu` using `[Set.uIcc_of_ge ht]`. Conclude with `Real.smoothTransition.zero_of_nonpos hu.2`. Rewrite using `[cutoff, this, intervalIntegral.integral_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cutoff_of_nonpos {t : ℝ} (ht : t ≤ 0) : cutoff t = 0 := by
   have : ∫ u in (0 : ℝ)..t, Real.smoothTransition u = ∫ _ in (0 : ℝ)..t, (0 : ℝ) :=
@@ -44,9 +44,9 @@ theorem cutoff_of_nonpos {t : ℝ} (ht : t ≤ 0) : cutoff t = 0 := by
   rw [cutoff, this, intervalIntegral.integral_zero]
 
 /- English proof (translation)
-Establish `hc` using `Real.smoothTransition.continuous`. Establish `h1 : ∫ u in (1 : ℝ)..t, Real.smoothTransition u = ∫ _ in (1 : ℝ)..t, (1 : ℝ)` using `intervalIntegral.integral_congr fun u hu => by`. Rewrite `hu` using `[Set.uIcc_of_le ht]`. Conclude with `Real.smoothTransition.one_of_one_le hu.1`. Establish `h2` using `intervalIntegral.integral_add_adjacent_intervals (hc.intervalIntegrable (μ := volume) 0 1) (hc.intervalIntegrable (μ := volume) 1 t)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1, intervalIntegral.integral_const, smul_eq_mul, mul_one]`. Unfold `cutoff`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cutoff_of_one_le {t : ℝ} (ht : 1 ≤ t) : cutoff t = t - (1 - cutoff 1) := by
   have hc := Real.smoothTransition.continuous
@@ -61,7 +61,7 @@ theorem cutoff_of_one_le {t : ℝ} (ht : 1 ≤ t) : cutoff t = t - (1 - cutoff 1
   linarith
 
 /- English proof (translation)
-Establish `: fderiv ℝ (fun y => f y + c) = fderiv ℝ f` using `funext fun _ => fderiv_add_const c`. Simplify using `only [levi, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem levi_add_const {ι : Type*} [Fintype ι] (f : (ι → ℂ) → ℝ) (c : ℝ) (z w : ι → ℂ) :
     levi (fun y => f y + c) z w = levi f z w := by
@@ -69,9 +69,9 @@ theorem levi_add_const {ι : Type*} [Fintype ι] (f : (ι → ℂ) → ℝ) (c :
   simp only [levi, this]
 
 /- English proof (translation)
-Establish `h1 : ∀ᶠ y in 𝓝 z, HasFDerivAt (ρ ∘ t) (ρ' (t y) • fderiv ℝ t y) y` using `by filter_upwards [ht.eventually (by simp)] with y hy`. Conclude with `(hρ (t y)).comp_hasFDerivAt y (hy.differentiableAt (by norm_num)).hasFDerivAt`. Establish `h1' : fderiv ℝ (ρ ∘ t) =ᶠ[𝓝 z] fun y => ρ' (t y) • fderiv ℝ t y` using `h1.mono fun y hy => hy.fderiv`. Establish `ht' : HasFDerivAt (fderiv ℝ t) (fderiv ℝ (fderiv ℝ t) z) z` using `((ht.fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)).hasFDerivAt`. Establish `h2 : HasFDerivAt (fun y => ρ' (t y) • fderiv ℝ t y) (ρ' (t z) • fderiv ℝ (fderiv ℝ t) z + (ρ'' • fderiv ℝ t z).smulRight (fderiv ℝ t z)) z` using `(hρ'.comp_hasFDerivAt z (ht.differentiableAt (by norm_num)).hasFDerivAt).smul ht'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : fderiv ℝ (fderiv ℝ (ρ ∘ t)) z = ρ' (t z) • fderiv ℝ (fderiv ℝ t) z + (ρ'' • fderiv ℝ t z).smulRight (fderiv ℝ t z)`. Rewrite using `[h1'.fderiv_eq]`. Conclude with `h2.fderiv`. Simplify using `only [levi, h3, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem levi_comp_real {ι : Type*} [Fintype ι] {ρ ρ' : ℝ → ℝ} {ρ'' : ℝ} {t : (ι → ℂ) → ℝ}
     {z : ι → ℂ} (hρ : ∀ u, HasDerivAt ρ (ρ' u) u) (hρ' : HasDerivAt ρ' ρ'' (t z))
@@ -97,7 +97,7 @@ theorem levi_comp_real {ι : Type*} [Fintype ι] {ρ ρ' : ℝ → ℝ} {ρ'' : 
   ring
 
 /- English proof (translation)
-Establish `: fderiv ℝ (fun y => f y + c) = fderiv ℝ f` using `funext fun _ => fderiv_add_const c`. Unfold `hessC`. Rewrite using `[this]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hessC_add_const {D : ℕ} (f : (Fin D → ℂ) → ℝ) (c : ℝ) (z : Fin D → ℂ) :
     hessC (fun y => f y + c) z = hessC f z := by
@@ -106,23 +106,21 @@ theorem hessC_add_const {D : ℕ} (f : (Fin D → ℂ) → ℝ) (c : ℝ) (z : F
   rw [this]
 
 /- English proof (translation)
-Introduce `x j y hy w`. Establish `hyP : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' P.U x` using `⟨hy.1, hy.2.1.1⟩`. Establish `hT : (A.chart j).target ∈ 𝓝 y` using `(A.chart j).open_target.mem_nhds hy.1`. Establish `sm : ∀ f : X → ℝ, A.Smooth f → ContDiffAt ℝ 2 (f ∘ (A.chart j).symm) y` using `fun f hf => by`. Use `hf j` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Set.preimage_univ, Set.inter_univ]`. Conclude with `(this.contDiffAt hT).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hφ` using `potSmoothAt A P hP x j hyP`. Establish `hα` using `sm a ha`. Establish `hβ` using `sm b hb`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : ContDiffAt ℝ 2 (fun z => b ((A.chart j).symm z) - a ((A.chart j).symm z) + k) y` using `(hβ.sub hα).add contDiffAt_const`. Establish `hsT : HasDerivAt Real.smoothTransition (deriv Real.smoothTransition (b ((A.chart j).symm y) - a ((A.chart j).symm y) + k)) (b ((A.chart j).symm y) - a ((A.chart j).symm y) + k)` using `((Real.smoothTransition.contDiffAt (n := 1)).differentiableAt (by simp)).hasDerivAt`. Establish `hc : ContDiffAt ℝ 2 (cutoff ∘ fun z => b ((A.chart j).symm z) - a ((A.chart j).symm z) + k) y` using `((contDiff_cutoff.of_le (WithTop.coe_le_coe.2 le_top)).contDiffAt).comp y ht`. Establish `hL1 : ∀ f : X → ℝ, A.Smooth f → levi (fun z => P.φ x ((A.chart j).symm z) + f ((A.chart j).symm z)) y w = levi (P.φ x ∘ (A.chart j).symm) y w + levi (f ∘ (A.chart j).symm) y w` using `fun f hf => by`. Use `levi_add_smul (f := P.φ x ∘ (A.chart j).symm) (g := f ∘ (A.chart j).symm) 1 hφ (sm f hf) w` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hPa0 : 0 ≤ levi (P.φ x ∘ (A.chart j).symm) y w + levi (a ∘ (A.chart j).symm) y w`. Rewrite using `[← hL1 a ha]`. Conclude with `hPa x j y ⟨hy.1, hy.2.1⟩ w`. Establish `hPb0 : 0 ≤ levi (P.φ x ∘ (A.chart j).symm) y w + levi (b ∘ (A.chart j).symm) y w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hL1 b hb]`. Conclude with `hPb x j y ⟨hy.1, hy.2.1⟩ w`. Establish `hLt : levi (fun z => b ((A.chart j).symm z) - a ((A.chart j).symm z) + k) y w = levi (b ∘ (A.chart j).symm) y w - levi (a ∘ (A.chart j).symm) y w`. Rewrite using `[levi_add_const (fun z => b ((A.chart j).symm z) - a ((A.chart j).symm z)) k]`. Use `levi_add_smul (f := b ∘ (A.chart j).symm) (g := a ∘ (A.chart j).symm) (-1) hβ hα w` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `e : (fun z => b ((A.chart j).symm z) - a ((A.chart j).symm z)) = fun z => (b ∘ (A.chart j).symm) z + -1 * (a ∘ (A.chart j).symm) z`. Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, this]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hF : ((P + LocPot.ofFun a) + LocPot.ofFun (fun x => cutoff (b x - a x + k))).φ x ∘ (A.chart j).symm = fun z => (P.φ x ((A.chart j).symm z) + a ((A.chart j).symm z)) + 1 * (cutoff ∘ fun z => b ((A.chart j).symm z) - a ((A.chart j).symm z) + k) z`. Use function extensionality and compare the values at `z`. Simplify using `only [Function.comp_apply, one_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hF, levi_add_smul (f := fun z => P.φ x ((A.chart j).symm z) + a ((A.chart j).symm z)) 1 (hφ.add hα) hc w, hL1 a ha, levi_comp_real hasDerivAt_cutoff hsT ht w, hLt]`. Establish `hs0` using `Real.smoothTransition.nonneg (b ((A.chart j).symm y) - a ((A.chart j).symm y) + k)`. Establish `hs1` using `Real.smoothTransition.le_one (b ((A.chart j).symm y) - a ((A.chart j).symm y) + k)`. Establish `hd : 0 ≤ deriv Real.smoothTransition (b ((A.chart j).symm y) - a ((A.chart j).symm y) + k)` using `Real.smoothTransition.monotone.deriv_nonneg`. Establish `hq : 0 ≤ (fderiv ℝ (fun z => b ((A.chart j).symm z) - a ((A.chart j).symm z) + k) y w) ^ 2 + (fderiv ℝ (fun z => b ((A.chart j).symm z) - a ((A.chart j).symm z) + k) y (Complex.I • w)) ^ 2` using `by positivity`.
-
-Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hs1) hPa0, mul_nonneg hs0 hPb0, mul_nonneg hd hq]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem isPsh_shift {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X)
     (P : LocPot X) (a b : X → ℝ) (k : ℝ) (hP : IsPotential A P) (ha : A.Smooth a)
@@ -185,11 +183,11 @@ theorem isPsh_shift {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e
   nlinarith [mul_nonneg (sub_nonneg.2 hs1) hPa0, mul_nonneg hs0 hPb0, mul_nonneg hd hq]
 
 /- English proof (translation)
-Distinguish the cases in `hne : Nonempty (ChartPartition A)`. Rewrite using `[maMeasure_eq_sum A Φ hne, maMeasure_eq_sum A Ψ hne]`. Simplify using `only [Measure.coe_finsetSum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Unfold `chartMeasure`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Establish `hTm` using `(A.chart j).open_target.measurableSet`. Establish `hsm : AEMeasurable (A.chart j).symm (volume.restrict (A.chart j).target)` using `(A.chart j).continuousOn_symm.aemeasurable hTm`. Rewrite using `[Measure.map_apply_of_aemeasurable (hsm.mono_ac (withDensity_absolutelyContinuous _ _)) hS.measurableSet, Measure.map_apply_of_aemeasurable (hsm.mono_ac (withDensity_absolutelyContinuous _ _)) hS.measurableSet, withDensity_apply', withDensity_apply', Measure.restrict_restrict' hT …`. Establish `hV : IsOpen ((A.chart j).symm ⁻¹' S ∩ (A.chart j).target)`. Rewrite using `[Set.inter_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(A.chart j).isOpen_inter_preimage_symm hS`. Use `setLIntegral_congr_fun hV.measurableSet fun y hy => ?_` and prove the remaining obligations. Simplify using `only [h j y hy.2 hy.1]`. Unfold `maMeasure`. Rewrite using `[dif_neg hne, dif_neg hne]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maMeasure_congr_open {e : ℕ} {X : Type} [TopologicalSpace X] [MeasurableSpace X]
     [BorelSpace X] (A : FinHolAtlas e X) (Φ Ψ : Fin e → LocPot X) {S : Set X} (hS : IsOpen S)
@@ -217,23 +215,23 @@ theorem maMeasure_congr_open {e : ℕ} {X : Type} [TopologicalSpace X] [Measurab
     rw [dif_neg hne, dif_neg hne]
 
 /- English proof (translation)
-Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Establish `hg : Measurable (K.indicator (1 : X → ℝ))` using `measurable_const.indicator hKm`. Establish `hw0 : ∀ j, ∀ y ∈ (A.chart j).target, 0 ≤ hne.some.χ j ((A.chart j).symm y) * locDens A Φ j y` using `fun j y hy => mul_nonneg (hne.some.nonneg j _) (locDens_nonneg_of_psh A Φ hΦ hPsh j hy)`. Establish `hj : ∀ j, chartMeasure A hne.some Φ j K = ENNReal.ofReal (∫ y in (A.chart j).target, K.indicator 1 ((A.chart j).symm y) * (hne.some.χ j ((A.chart j).symm y) * locDens A Φ j y))`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw : ContinuousOn (fun y => hne.some.χ j ((A.chart j).symm y) * locDens A Φ j y) (A.chart j).target` using `(chi_comp_continuousOn hne.some j).mul (locDensCont A Φ hΦ j)`. Establish `key` using `map_withDensity_integrable_integral (A.chart j).open_target (A.chart j).continuousOn_symm hw (hw0 j) hg`. Establish `hZ : IsCompact (K ∩ tsupport (hne.some.χ j))` using `hK.inter_right (isClosed_tsupport _)`. Establish `hZs : K ∩ tsupport (hne.some.χ j) ⊆ (A.chart j).source` using `fun x hx => hne.some.tsupport_subset j hx.2`. Establish `hC : IsCompact ((A.chart j) '' (K ∩ tsupport (hne.some.χ j)))` using `hZ.image_of_continuousOn ((A.chart j).continuousOn.mono hZs)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCT : (A.chart j) '' (K ∩ tsupport (hne.some.χ j)) ⊆ (A.chart j).target` using `Set.image_subset_iff.mpr fun x hx => (A.chart j).map_source (hZs hx)`. Establish `hCm : MeasurableSet ((A.chart j) '' (K ∩ tsupport (hne.some.χ j)))` using `hC.isClosed.measurableSet`. Establish `hint : IntegrableOn (fun y => K.indicator 1 ((A.chart j).symm y) * (hne.some.χ j ((A.chart j).symm y) * locDens A Φ j y)) (A.chart j).target`. Use `integrableOn_target_of_closed (A.chart j) (Z := K ∩ tsupport (hne.some.χ j)) ?_ ?_` and prove the remaining obligations. Introduce `y _ hyZ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hyK : (A.chart j).symm y ∈ K`. Establish `: (A.chart j).symm y ∉ tsupport (hne.some.χ j)` using `fun h => hyZ ⟨hyK, h⟩`. Simplify using `[image_eq_zero_of_notMem_tsupport this]`. Simplify using `[hyK]`. Establish `hwi : IntegrableOn (fun y => hne.some.χ j ((A.chart j).symm y) * locDens A Φ j y) ((A.chart j) '' (K ∩ tsupport (hne.some.χ j)))` using `(hw.mono hCT).integrableOn_compact hC`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs1 : AEMeasurable (A.chart j).symm (volume.restrict ((A.chart j) '' (K ∩ tsupport (hne.some.χ j))))` using `((A.chart j).continuousOn_symm.mono hCT).aemeasurable hCm`. Use `Integrable.mono' hwi ((hg.comp_aemeasurable hs1).mul ((hw.mono hCT).aemeasurable hCm)).aestronglyMeasurable (ae_restrict_of_forall_mem hCm fun y hy => ?_)` and prove the remaining obligations. Establish `hy0` using `hw0 j y (hCT hy)`. Establish `h1 : |K.indicator (1 : X → ℝ) ((A.chart j).symm y)| ≤ 1`. Apply the tactic sequence `by_cases h : (A.chart j).symm y ∈ K <;> simp [h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Real.norm_eq_abs, abs_mul, abs_of_nonneg hy0]`. Conclude with `mul_le_of_le_one_left hy0 h1`. Establish `hi : Integrable (K.indicator (1 : X → ℝ)) (chartMeasure A hne.some Φ j)` using `key.1.mpr hint`. Establish `e2 : ∫ x, K.indicator (1 : X → ℝ) x ∂chartMeasure A hne.some Φ j = ∫ y in (A.chart j).target, K.indicator 1 ((A.chart j).symm y) * (hne.some.χ j ((A.chart j).symm y) * locDens A Φ j y)` using `key.2`. Rewrite using `[← e2, ofReal_integral_eq_lintegral_ofReal hi (Filter.Eventually.of_forall fun x => Set.indicator_nonneg (fun _ _ => zero_le_one) x)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (fun x => ENNReal.ofReal (K.indicator (1 : X → ℝ) x)) = K.indicator 1`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases h : x ∈ K <;> simp [h]`. Rewrite using `[this, lintegral_indicator_one hKm]`. Rewrite using `[maMeasure_eq_sum A Φ hne]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Measure.coe_finsetSum, Finset.sum_apply, hj]`. Establish `hsum` using `ENNReal.ofReal_sum_of_nonneg (s := Finset.univ) (f := fun j => ∫ y in (A.chart j).target, K.indicator (1 : X → ℝ) ((A.chart j).symm y) * (hne.some.χ j ((A.chart j).symm y) * locDens A Φ j y)) fun j _ => setIntegral_nonneg (A.chart j).open_target.measurableSet fun y hy => mul_nonn …`. Rewrite using `[← hsum]`. Use `congr 1`. Rewrite using `[mInt_eq_integralWith A Φ hne]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `integralWith`. Use `Finset.sum_congr rfl fun j _ => integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem maMeasure_compact_eq {e : ℕ} {X : Type} [TopologicalSpace X] [T2Space X]
     [MeasurableSpace X] [BorelSpace X] (A : FinHolAtlas e X) (Φ : Fin e → LocPot X)
@@ -311,31 +309,29 @@ theorem maMeasure_compact_eq {e : ℕ} {X : Type} [TopologicalSpace X] [T2Space 
   ring
 
 /- English proof (translation)
-Introduce `e X _ _ _ _ A P a b hyp`. Take `⟨hP, ha, hb, hPa, hPb, hK⟩` from `hyp`. Distinguish the cases in `hne : Nonempty (ChartPartition A)`. Use `swap`. Unfold `maMeasure`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg hne, dif_neg hne]`. Establish `hac` using `projLine_continuous_of_smooth A ha`. Establish `hbc` using `projLine_continuous_of_smooth A hb`. Set `v : ℕ → X → ℝ` to `fun k x => cutoff (b x - a x + (k : ℝ))`. Set `S : ℕ → Set X` to `fun k => {x | -(k : ℝ) + 1 < b x - a x}`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `K : ℕ → Set X` to `fun k => {x | -(k : ℝ) ≤ b x - a x}`. Establish `hSo : ∀ k, IsOpen (S k)` using `fun k => isOpen_lt continuous_const (hbc.sub hac)`. Establish `hSK : ∀ k, S k ⊆ K k` using `fun k x hx => by`. Simplify using `only [S, K, Set.mem_ofPred_eq] at hx ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hSmono : Monotone S` using `fun k l hkl x hx => by`. Simplify using `only [S, Set.mem_ofPred_eq] at hx ⊢`. Establish `: (k : ℝ) ≤ l` using `by exact_mod_cast hkl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hSU : (⋃ k, S k) = Set.univ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.eq_univ_of_forall fun x => Set.mem_iUnion.2 ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_nat_gt (1 - (b x - a x))`. Conclude with `⟨k, by simp only [S, Set.mem_ofPred_eq]; linarith⟩`. Establish `hPa' : IsPotential A (P + LocPot.ofFun a)` using `isPotentialAdd A _ _ hP (isPotential_ofFun A a ha)`. Establish `hv : ∀ k, A.Smooth (v k)` using `fun k j => contDiff_cutoff.comp_contDiffOn (((hb j).sub (ha j)).add contDiffOn_const)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPk : ∀ k, IsPotential A ((P + LocPot.ofFun a) + LocPot.ofFun (v k))` using `fun k => isPotentialAdd A _ _ hPa' (isPotential_ofFun A _ (hv k))`. Establish `hPsk : ∀ k : ℕ, IsPsh A ((P + LocPot.ofFun a) + LocPot.ofFun (v k))` using `fun k => isPsh_shift A P a b k hP ha hb hPa hPb`. Establish `step : ∀ k : ℕ, maMeasure A (fun _ => P + LocPot.ofFun b) (S k) ≤ maMeasure A (fun _ => P + LocPot.ofFun a) Set.univ`. Introduce `k`. Establish `hKc : IsCompact (K k)` using `hK k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsupp : Function.support (v k) ⊆ K k`. Introduce `x hx`. Simplify using `only [Function.mem_support] at hx`. Simplify using `only [K, Set.mem_ofPred_eq]`. Assume the negation of the conclusion as `hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hx (cutoff_of_nonpos (by linarith [not_le.mp hlt]))`. Establish `htsupp : tsupport (v k) ⊆ K k` using `closure_minimal hsupp hKc.isClosed`. Establish `hcs : HasCompactSupport (v k)` using `hKc.of_isClosed_subset (isClosed_tsupport _) htsupp`. Establish `h2` using `h A (P + LocPot.ofFun a) (v k) (K k) ⟨hPa', hv k, hcs, hKc, htsupp⟩`. Establish `hloc : maMeasure A (fun _ => P + LocPot.ofFun b) (S k) = maMeasure A (fun _ => (P + LocPot.ofFun a) + LocPot.ofFun (v k)) (S k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `maMeasure_congr_open A _ _ (hSo k)` to reduce the goal to its premises. Introduce `j y hy hyS`. Unfold `locDens`. Apply `maDens_congr_hessC` to reduce the goal to its premises. Introduce `i`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' S k)` using `(A.chart j).isOpen_inter_preimage_symm (hSo k)`. Establish `hev : (fun y' => ((P + LocPot.ofFun a) + LocPot.ofFun (v k)).φ ((A.chart j).symm y) ((A.chart j).symm y')) =ᶠ[𝓝 y] fun y' => (P + LocPot.ofFun b).φ ((A.chart j).symm y) ((A.chart j).symm y') + ((k : ℝ) - (1 - cutoff 1))` using `by filter_upwards [hV.mem_nhds ⟨hy, hyS⟩] with y' hy'`. Establish `h1 : 1 ≤ b ((A.chart j).symm y') - a ((A.chart j).symm y') + k`. Use `hy'.2` as an intermediate fact. Simplify using `only [S, Set.mem_preimage, Set.mem_ofPred_eq] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `show (P.φ _ _ + a _) + cutoff (b _ - a _ + (k : ℝ)) = (P.φ _ _ + b _) + ((k : ℝ) - (1 - cutoff 1))`. Rewrite using `[cutoff_of_one_le h1]`. Expand and normalize the polynomial expressions, which then agree. Use `show hessC (fun y' => (P + LocPot.ofFun b).φ ((A.chart j).symm y) ((A.chart j).symm y')) y = hessC (fun y' => ((P + LocPot.ofFun a) + LocPot.ofFun (v k)).φ ((A.chart j).symm y) ((A.chart j).symm y')) y`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hessCGerm _ _ _ hev, hessC_add_const]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hSU]`. Conclude with `hSmono.measure_iUnion`.
-
-Use `_ ≤ maMeasure A (fun _ => P + LocPot.ofFun a) Set.univ := iSup_le step`.
+A detailed English derivation is pending.
 -/
 theorem proof (h : MongeAmpereCompactChange.Statement) : MongeAmpereComparison.Statement := by
   intro e X _ _ _ _ A P a b hyp

@@ -15,7 +15,7 @@ noncomputable def matrixEntriesEuclideanReal (n : ℕ) :
   right_inv _ := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `inner ℝ (WithLp.toLp 2 (fun p : Fin n × Fin n => Y p.1 p.2)) (WithLp.toLp 2 (fun p : Fin n × Fin n => X p.1 p.2)) = _`. Rewrite using `[PiLp.inner_apply]`. Simplify using `only [WithLp.ofLp_toLp, Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.conjTranspose_apply, Fintype.sum_prod_type, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[Complex.inner, mul_comm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem inner_matrixEntriesEuclideanReal (n : ℕ) (X Y : Matrix (Fin n) (Fin n) ℂ) :
     inner ℝ (matrixEntriesEuclideanReal n Y) (matrixEntriesEuclideanReal n X)
@@ -29,15 +29,15 @@ theorem inner_matrixEntriesEuclideanReal (n : ℕ) (X Y : Matrix (Fin n) (Fin n)
   simp [Complex.inner, mul_comm]
 
 /- English proof (translation)
-Use `set e := matrixEntriesEuclideanReal n`. Use `set V : Submodule ℝ (PiLp 2 (fun _ : Fin n × Fin n => ℂ)) := U.map e.toLinearMap`. Set `b` to `stdOrthonormalBasis ℝ V`. Use `⟨Module.finrank ℝ V, fun i => e.symm (b i : PiLp 2 (fun _ : Fin n × Fin n => ℂ)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i k`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `inner_matrixEntriesEuclideanReal n (e.symm (b i)) (e.symm (b k))`. Simplify using `only [e, LinearEquiv.apply_symm_apply] at h`. Rewrite using `[← h, ← Submodule.coe_inner, orthonormal_iff_ite.mp b.orthonormal k i]`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[hik, Ne.symm hik]`. Establish `hb : LinearIndependent ℝ (fun i => (b i : PiLp 2 (fun _ : Fin n × Fin n => ℂ)))` using `b.orthonormal.linearIndependent.map' V.subtype (Submodule.ker_subtype V)`. Conclude with `hb.map' e.symm.toLinearMap e.symm.ker`. Use `symm`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hrange : Set.range (fun i => e.symm (b i : PiLp 2 (fun _ : Fin n × Fin n => ℂ))) = e.symm.toLinearMap '' (V.subtype '' Set.range b)`. Use extensionality with `x`. Simplify using `[Set.mem_image, Set.mem_range]`. Establish `hspan : Submodule.span ℝ (Set.range b) = ⊤`. Simplify `b.toBasis.span_eq` using `[OrthonormalBasis.coe_toBasis]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hrange, Submodule.span_image, Submodule.span_image, hspan, Submodule.map_subtype_top]`. Use extensionality with `x`. Simplify using `[V]`.
+A detailed English derivation is pending.
 -/
 theorem exists_orthonormal_basis_re_trace_mul_conjTranspose (n : ℕ)
     (U : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ)) :

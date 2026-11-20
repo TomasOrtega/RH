@@ -13,9 +13,9 @@ def NonnegOn {n : ℕ} (ε : ℝ) (Z : Matrix (Fin n) (Fin n) ℂ) (S : Submodul
   ∀ w ∈ S, 0 ≤ ε * (star w ⬝ᵥ Z.mulVec w).re
 
 /- English proof (translation)
-Establish `hfun : a = fun x => (a x * b x) * star (b x)`. Use function extensionality and compare the values at `x`. Rewrite using `[mul_assoc, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, hb1]`. Simplify using the standard rewrite rules. Establish `hmeas : AEStronglyMeasurable a μ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hfun]`. Conclude with `hi.1.mul hb.star`. Use `hi.mono hmeas (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, hb1, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_of_mul_unimodular {α : Type} [MeasurableSpace α] (μ : Measure α) (a b : α → ℂ)
     (hi : Integrable (fun x => a x * b x) μ) (hb : AEStronglyMeasurable b μ) (hb1 : ∀ x, ‖b x‖ = 1) :
@@ -31,25 +31,23 @@ theorem integrable_of_mul_unimodular {α : Type} [MeasurableSpace α] (μ : Meas
   rw [norm_mul, hb1, mul_one]
 
 /- English proof (translation)
-Establish `hbd : ∀ z, ‖∫ v, J v * e v z ∂μ‖ ≤ ∫ v, ‖J v‖ ∂μ`. Introduce `z`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use extensionality with `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[norm_mul, hen, mul_one]`. Establish `hFc : Continuous fun z => ∫ v, J v * e v z ∂μ`. Use `continuous_of_dominated (F := fun z v => J v * e v z) (bound := fun v => ‖J v‖) (fun z => hJ.1.mul (he z).aestronglyMeasurable) (fun z => Filter.Eventually.of_forall fun v => by rw [norm_mul, hen, mul_one]) hJ.norm (Filter.Eventually.of_forall fun v => continuous_const.mul (he' v …` and prove the remaining obligations. Use `set F : X → ℂ := fun z => ∫ v, J v * e v z ∂μ with hFdef`. Establish `hzero : ∀ z₁ ∈ N, F z₁ = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z₁ hz₁`. Assume the negation of the conclusion as `hc`. Use `set c := F z₁ with hcdef`. Set `G : X → ℝ` to `fun z => (starRingEnd ℂ c * F z).re`. Establish `hGc : Continuous G` using `Complex.continuous_re.comp (continuous_const.mul hFc)`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hG1 : 0 < G z₁` using `by show 0 < (starRingEnd ℂ c * c).re`. Rewrite using `[← Complex.normSq_eq_conj_mul_self, Complex.ofReal_re]`. Conclude with `Complex.normSq_pos.mpr hc`. Establish `hN'o : IsOpen (N ∩ {z | 0 < G z})` using `hN.inter (isOpen_lt continuous_const hGc)`. Take `⟨Φ, hΦc, hΦi, hΦpos, hΦsupp, hΦ1, hint⟩` from `hb _ hN'o Set.inter_subset_left z₁ ⟨hz₁, hG1⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hint' : ∫ z, F z * Φ z ∂μ = 0` using `hint`. Establish `hFΦi : Integrable (fun z => F z * Φ z) μ`. Use `Integrable.mono (hΦi.norm.const_mul (∫ v, ‖J v‖ ∂μ)) (hFc.aestronglyMeasurable.mul hΦi.1) (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Real.norm_eq_abs, abs_mul, abs_norm, abs_of_nonneg (integral_nonneg fun _ => norm_nonneg _)]`. Conclude with `mul_le_mul_of_nonneg_right (hbd z) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `H : X → ℝ` to `fun z => (starRingEnd ℂ c * (F z * Φ z)).re`. Establish `hHeq : ∀ z, H z = G z * (Φ z).re`. Introduce `z`. Simplify using `only [H, G]`. Rewrite using `[← mul_assoc, Complex.mul_re, (hΦpos z).2, mul_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hHnn : ∀ z, 0 ≤ H z`. Introduce `z`. Rewrite using `[hHeq]`. Distinguish the cases in `hz : z ∈ N ∩ {z | 0 < G z}`. Conclude with `mul_nonneg hz.2.le (hΦpos z).1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hΦsupp z hz]`. Simplify using the standard rewrite rules. Establish `hHc : Continuous H` using `Complex.continuous_re.comp (continuous_const.mul (hFc.mul hΦc))`. Establish `hHi : Integrable H μ` using `(hFΦi.const_mul (starRingEnd ℂ c)).re`. Establish `hHpos : 0 < ∫ z, H z ∂μ`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[integral_pos_iff_support_of_nonneg (fun z => hHnn z) hHi]`. Apply `hHc.isOpen_support.measure_pos μ` to reduce the goal to its premises. Use `⟨z₁, ?_⟩` and prove the remaining obligations. Rewrite using `[Function.mem_support, hHeq]`. Conclude with `(mul_pos hG1 hΦ1).ne'`.
-
-Establish `hHzero : ∫ z, H z ∂μ = 0`. Establish `h : ∫ z, H z ∂μ = (∫ z, starRingEnd ℂ c * (F z * Φ z) ∂μ).re` using `integral_re (hFΦi.const_mul _)`. Rewrite using `[h, integral_const_mul, hint', mul_zero, Complex.zero_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `closure_minimal hzero (isClosed_eq hFc continuous_const) hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem vanish_abs {X : Type} [TopologicalSpace X] [FirstCountableTopology X] [MeasurableSpace X]
     [OpensMeasurableSpace X] (μ : Measure X) [μ.IsOpenPosMeasure] (e : X → X → ℂ)

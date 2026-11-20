@@ -12,27 +12,25 @@ namespace PositivityTheory.SiegelWeilFormula.Aeis
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} {Y : Spc F E n}
 
 /- English proof (translation)
-Establish `hSec : SecLaw` using `Hd.secLaw`. Establish `hWL : WallLaw` using `Hd.wallLaw_of Hd.secLaw`. Establish `hD : Dict` using `Hd.dict`. Establish `hDI : DictInf` using `Hd.dictInf`. Establish `hCM : CMGood` using `Hd.cmGood_of Hd.stdGood Hd.dict Hd.dictInf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGT : GrpTop` using `Hd.grpTop`. Establish `hBd : BdetLaw` using `Hd.bdetLaw`. Establish `hPar : ParLaw` using `Hd.parLaw_of Hd.bdetLaw Hd.extLaw Hd.grpTop`. Establish `hSg : SgAll` using `Hd.sgAll`. Take `⟨⟨ε, hε⟩, t₀, ht₀⟩` from `hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hb' : IsFrame2 σ Y b` using `⟨⟨ε, hε⟩, t₀, ht₀⟩`. Establish `hcm` using `hB.cm`. Establish `hunr` using `hB.unram`. Establish `hgood : (adCM σ χ).Good` using `hCM F E σ χ c hcm hunr hχ hres`. Take `⟨-, -, -, ht2', hlc', hsc', hKc⟩` from `hGT E (AE F E) (adCM σ χ) hgood (Fin n) ε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `Φ` to `frameEquiv (Y := Y) χ ε b hε`. Establish `hΓ : ∀ x, x ∈ rat2 σ Y ↔ Φ x ∈ (adCM σ χ).uΓ ε (Fin n)` using `rat_iff χ ε b hε`. Establish `hKK : ∀ x, x ∈ K ↔ Φ x ∈ (adCM σ χ).uK ε (Fin n)` using `fun x => GlobalTheory.T.standard_compact_frame_equiv F E σ n Y hD hDI hcm χ ε b hε B K hK x`. Establish `hIP : ∀ x, (∃ t, IsPar x t) ↔ Φ x ∈ (adCM σ χ).uQ ε (Set.univ : Set (Fin n))` using `GlobalTheory.T.parabolic_iff_frame_parabolic F E σ n Y χ ε b hε t₀ ht₀`. Establish `hPP : ∀ x, x ∈ par2 σ Y ↔ Φ x ∈ (adCM σ χ).uQ ε (Set.univ : Set (Fin n))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `: par2 σ Y ≤ ((adCM σ χ).uQ ε (Set.univ : Set (Fin n))).comap Φ.toMonoidHom` using `(Subgroup.closure_le _).2 fun p hp => (hIP p).1 hp`. Conclude with `this hx`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Conclude with `Subgroup.subset_closure ((hIP x).2 hx)`. Establish `hH` using `fun x => uH_eq hD hBd χ hgood ε b hε t₀ ht₀ K hKK a ha x`. Establish `hiwa : Iwa ((adCM σ χ).uQ ε (Set.univ : Set (Fin n))) ((adCM σ χ).uK ε (Fin n))`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨p, t, hp, k, hk, e⟩` from `ha.iwa (Φ.symm y)`. Use `⟨Φ p, (hIP p).1 ⟨t, hp⟩, Φ k, (hKK k).1 hk, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← e, MulEquiv.apply_symm_apply]`. Take `⟨-, hparU⟩` from `hPar E (AE F E) (adCM σ χ) hgood (Fin n) ε (Set.univ : Set (Fin n))`. Take `⟨hIP', hIH, -⟩` from `hparU (by rwa [inf_idem])`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hIP'` using `[inf_idem]`. Use `haveI := ht2'`. Use `haveI := hlc'`. Establish `hW` using `hSg F E σ χ c hcm hunr hχ hres ε (Fin n) (by simpa using hn) hiwa`. Take `⟨σ₀, hσ₀⟩` from `godement_sum_w hB hb' hK ha`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `eis_from_U hSec hWL Φ (continuous_frameEquiv χ ε b hε) _ _ _ ((adCM σ χ).uC ε (Fin n)) ((adCM σ χ).uH ε (Set.univ : Set (Fin n))) hKc hIP' hIH ?_ K a χ s₁ f hf hΓ hKK hPP hIP hH (continuous_frameEquiv_symm χ ε b hε) ?_ ⟨σ₀, fun σ' h => ?_⟩` and prove the remaining obligations. Simplify using `using hW`. Introduce `p t hp`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show (((adCM σ χ).χ (bdet (Sum.inl '' (Set.univ : Set (Fin n))) (frameEquiv χ ε b hε p).1) : Circle) : ℂ) = _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite using `[GlobalTheory.T.block_det_parabolic_frame F E σ n Y χ ε b hε t₀ ht₀ p t hp]`. Both sides reduce to the same expression. Use `ha.val p t hp 1 (one_mem _)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Take `⟨C, N, h⟩` from `hσ₀ σ' h`.
-
-Conclude with `⟨C, N, fun x => (h x).2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem siegelMult_w {B : Base F E} (hB : B.IsGood σ) (hn : 1 ≤ n) (χ : Chr F E) (hχ : IsHecke F E χ) (c : ℕ)
     (hres : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range χ c) {b : GL (Fin n ⊕ Fin n) E}

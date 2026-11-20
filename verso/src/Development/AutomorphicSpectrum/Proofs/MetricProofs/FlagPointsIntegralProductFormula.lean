@@ -19,16 +19,16 @@ section Words
 variable {σ : Type} [Fintype σ] [DecidableEq σ]
 
 /- English proof (translation)
-The claim follows from `(monomial_sum_one _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem prod_X_word {R : Type} [CommRing R] {n : ℕ} (w : Fin n → σ) :
     ∏ j, (X (w j) : MvPolynomial σ R) = monomial (∑ j, Finsupp.single (w j) 1) 1 :=
   (monomial_sum_one _ _).symm
 
 /- English proof (translation)
-Establish `count : ∀ (u : Fin n → σ) (s : σ), (∑ j, Finsupp.single (u j) 1 : σ →₀ ℕ) s = Fintype.card {j // u j = s}`. Introduce `u s`. Rewrite using `[Finsupp.finset_sum_apply, Fintype.card_subtype, Finset.card_filter]`. Conclude with `Finset.sum_congr rfl fun j _ => by simp [Finsupp.single_apply]`. Establish `hc : ∀ s, Fintype.card {j // v j = s} = Fintype.card {j // w j = s}` using `fun s => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← count, ← count, h]`. Use `⟨Equiv.ofFiberEquiv (f := v) (g := w) fun s => Fintype.equivOfCardEq (hc s), funext fun j => ?_⟩` and prove the remaining obligations. Conclude with `(Equiv.ofFiberEquiv_map _ j).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_perm_of_word_eq {n : ℕ} (v w : Fin n → σ)
     (h : (∑ j, Finsupp.single (v j) 1 : σ →₀ ℕ) = ∑ j, Finsupp.single (w j) 1) :
@@ -44,11 +44,11 @@ theorem exists_perm_of_word_eq {n : ℕ} (v w : Fin n → σ)
   exact (Equiv.ofFiberEquiv_map _ j).symm
 
 /- English proof (translation)
-Use `set m : σ →₀ ℕ := ∑ j, Finsupp.single (w₀ j) 1 with hm`. Use `set T := Finset.univ.filter fun w : Fin n → σ => (∑ j, Finsupp.single (w j) 1 : σ →₀ ℕ) = m with hT`. Establish `hco : ∀ c : (Fin n → σ) → ℝ, (∀ (π : Equiv.Perm (Fin n)) w, c (w ∘ π) = c w) → coeff m (PB.formPoly n c) = (T.card : ℝ) * c w₀`. Introduce `c hc`. Simplify using `only [PB.formPoly, coeff_sum, coeff_C_mul, prod_X_word, coeff_monomial, mul_ite, mul_one, mul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_filter, ← nsmul_eq_mul]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => c w₀), Finset.sum_const]`. Introduce `w hw`. Take `⟨π, rfl⟩` from `exists_perm_of_word_eq w w₀ (Finset.mem_filter.1 hw).2`. Conclude with `hc π w₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : (T.card : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.card_ne_zero.2 ⟨w₀, Finset.mem_filter.2 ⟨Finset.mem_univ _, rfl⟩⟩)`. Use `congrArg (coeff m) h` as an intermediate fact. Rewrite `this` using `[hco a ha, hco b hb]`. Conclude with `mul_left_cancel₀ hpos this`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_formPoly_eq {n : ℕ} {a b : (Fin n → σ) → ℝ}
     (ha : ∀ (π : Equiv.Perm (Fin n)) w, a (w ∘ π) = a w) (hb : ∀ (π : Equiv.Perm (Fin n)) w, b (w ∘ π) = b w)
@@ -71,7 +71,7 @@ theorem eq_of_formPoly_eq {n : ℕ} {a b : (Fin n → σ) → ℝ}
   exact mul_left_cancel₀ hpos this
 
 /- English proof (translation)
-Simplify using `[PB.formPoly, map_sum, map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_formPoly {n : ℕ} (a : (Fin n → σ) → ℝ) (l : σ → ℝ) :
     eval l (PB.formPoly n a) = ∑ w, a w * ∏ j, l (w j) := by
@@ -86,7 +86,7 @@ open GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundF
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ}
 
 /- English proof (translation)
-Introduce and unpack `⟨τ, i⟩ ⟨τ', i'⟩ h`. Simplify using `only [weylAct, Prod.mk.injEq] at h`. Take `⟨rfl, h⟩` from `h`. Rewrite using `[(u τ).injective h]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem weylAct_injective (u : Ψ → Equiv.Perm (Fin N)) : Function.Injective (weylAct Ψ N u) := by
   rintro ⟨τ, i⟩ ⟨τ', i'⟩ h
@@ -95,7 +95,7 @@ theorem weylAct_injective (u : Ψ → Equiv.Perm (Fin N)) : Function.Injective (
   rw [(u τ).injective h]
 
 /- English proof (translation)
-Use extensionality with `⟨τ, i⟩`. Establish `h : ((τ, i) : Ψ × Fin N) = weylAct Ψ N u (τ, (u τ)⁻¹ i)` using `by simp [weylAct]`. Rewrite using `[h, Finsupp.mapDomain_apply (weylAct_injective u)]`. Simplify using `[Top.permExp, rhoMono, weylAct]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mapDomain_permExp (u : Ψ → Equiv.Perm (Fin N)) :
     Finsupp.mapDomain (weylAct Ψ N u) (Top.permExp u) = rhoMono Ψ N := by
@@ -105,7 +105,7 @@ theorem mapDomain_permExp (u : Ψ → Equiv.Perm (Fin N)) :
   simp [Top.permExp, rhoMono, weylAct]
 
 /- English proof (translation)
-Unfold `flagInt GroundTheory.Heights₂.Heights.LowerBoundFree.antisym`. Rewrite using `[coeff_sum]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul, smul_eq_mul, ← mapDomain_permExp u, coeff_rename_mapDomain _ (weylAct_injective u)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem flagInt_eq_sum (P : RootPoly Ψ N) :
     flagInt Ψ N P = ∑ u, weylSign Ψ N u * coeff (Top.permExp u) P := by
@@ -115,7 +115,7 @@ theorem flagInt_eq_sum (P : RootPoly Ψ N) :
   rw [coeff_smul, smul_eq_mul, ← mapDomain_permExp u, coeff_rename_mapDomain _ (weylAct_injective u)]
 
 /- English proof (translation)
-Rewrite using `[flagInt_eq_sum, Rat.cast_sum]`. Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[prod_X_word, prod_X_word, coeff_monomial, coeff_monomial, weylSign]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem flagInt_word_cast {n : ℕ} (w : Fin n → Ψ × Fin N) :
     ((flagInt Ψ N (∏ r, X (w r)) : ℚ) : ℝ) =
@@ -127,11 +127,11 @@ theorem flagInt_word_cast {n : ℕ} (w : Fin n → Ψ × Fin N) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hS : (∑ x : Ψ × Fin N, C (l x) * X x : Top.RP Ψ N) ^ Top.dimFl Ψ N = ∑ w : Fin (Top.dimFl Ψ N) → Ψ × Fin N, C (∏ r, l (w r)) * ∏ r, X (w r)`. Rewrite using `[Fintype.sum_pow]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_mul_distrib, map_prod]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hneg : Top.linRoot (fun τ i => l (τ, i)) ^ Top.dimFl Ψ N = C ((-1) ^ Top.dimFl Ψ N) * (∑ x : Ψ × Fin N, C (l x) * X x : Top.RP Ψ N) ^ Top.dimFl Ψ N`. Rewrite using `[Top.linRoot, neg_pow, map_pow, map_neg, map_one]`. Rewrite using `[eval_formPoly, Top.flagDeg, Top.degFl, hneg, hS]`. Simplify using `only [coeff_C_mul, coeff_sum, flagInt_word_cast, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun w _ => Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Establish `h1 : ((-1 : ℝ) ^ Top.dimFl Ψ N) * (-1) ^ Top.dimFl Ψ N = 1`. Rewrite using `[← mul_pow]`. Simplify using the standard rewrite rules. Take the linear combination `((∏ τ, ((Equiv.Perm.sign (u τ) : ℤ) : ℝ)) * (∏ r, l (w r)) * (∏ r, X (w r) : Top.RP Ψ N).coeff (Top.permExp u)) * h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem flagDeg_eq_formPoly (n : ℕ) (hn : n = Top.dimFl Ψ N) (l : Ψ × Fin N → ℝ) :
     Top.flagDeg (fun τ i => l (τ, i)) =
@@ -155,9 +155,9 @@ theorem flagDeg_eq_formPoly (n : ℕ) (hn : n = Top.dimFl Ψ N) (l : Ψ × Fin N
     (∏ r, l (w r)) * (∏ r, X (w r) : Top.RP Ψ N).coeff (Top.permExp u)) * h1
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Use `eq_of_formPoly_eq (a := fun w => ptsIntegral (PFl Ψ N) (pot fun r => xLine Ψ N (w r)) fun _ => 1) (b := fun w => ((flagInt Ψ N (∏ r, X (w r)) : ℚ) : ℝ)) ?_ ?_ ?_ w` and prove the remaining obligations. Introduce `π v`. Conclude with `GroundTheory.Heights₂.Heights.Inter.ptsIntegral_comp_perm (PFl Ψ N) (pot fun r => xLine Ψ N (v r)) π _`. Introduce `π v`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: ∏ r, (X ((v ∘ π) r) : RootPoly Ψ N) = ∏ r, X (v r)` using `Equiv.prod_comp π fun r => (X (v r) : RootPoly Ψ N)`. Simplify using `only [this]`. Use `MvPolynomial.funext fun l => ?_` and prove the remaining obligations. Rewrite using `[← flagDeg_eq_formPoly _ hD l, ← h l]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ptsIntegral_word_eq (n : ℕ) (hn : n = antisymDegree Ψ N) (hD : n = Top.dimFl Ψ N)
     (h : ∀ l : Ψ × Fin N → ℝ, eval l (PB.degFlPoly Ψ N) = Top.flagDeg (fun τ i => l (τ, i)))
@@ -179,7 +179,7 @@ theorem ptsIntegral_word_eq (n : ℕ) (hn : n = antisymDegree Ψ N) (hD : n = To
 end Flag
 
 /- English proof (translation)
-Introduce and unpack `hI ⟨II, hII⟩ Ψ _ _ _ N w hN`. Use `ptsIntegral_word_eq _ ?_ rfl (fun l => ?_) w` and prove the remaining obligations. Simplify using `[Top.dimFl, GroundTheory.Heights₂.Heights.LowerBoundFree.dimFl, GroundTheory.Heights₂.Heights.antisymDegree, Nat.choose_two_right]`. Conclude with `GlobalTheory.T.flag_degree_polynomial_eval hI II hII Ψ N (fun τ i => l (τ, i)) hN`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem borel_word : GlobalTheory.CompanionTheory.Ar.PB.Inputs → ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] [Nonempty Ψ] (N : ℕ) (w : Fin (GroundTheory.Heights₂.Heights.LowerBoundFree.dimFl Ψ N) → Ψ × Fin N), 2 ≤ N → ptsIntegral (GroundTheory.Heights₂.Heights.LowerBoundFree.PFl Ψ N) (pot fun r => GroundTheory.Heights₂.Heights.LowerBoundFree.xLine Ψ N (w r)) (fun _ => 1) = ((GroundTheory.Heights₂.Heights.LowerBoundFree.flagInt Ψ N (∏ r, X (w r)) : ℚ) : ℝ) := by
   rintro hI ⟨II, hII⟩ Ψ _ _ _ N w hN

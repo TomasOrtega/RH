@@ -12,9 +12,9 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSNef
 
 /- English proof (translation)
-Introduce `hC k _ Y _ p D hX A B α β hle hnef hα hβ`. Take `⟨Φ, hΦ⟩` from `((hC.arExists k Y p D hX).2 (Fin 2) ![A, B]).1`. Establish `hpos` using `GlobalTheory.T.mixedArithIntersection_nonneg_of_small_section_diff hC k Y p D hX A B Φ hΦ hle`. Establish `hmono` using `GlobalTheory.monotone_form_along_segment D Φ fun x y => hpos x y (hnef x y)`. Establish `hd` using `((hC.arIso k Y p D hX).2 (Fin 2) _ Φ hΦ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : Φ (MvPolynomial.X 0 ^ (D + 1)) = α` using `HermLB.IsSelfInter.unique hX (hd 0) hα`. Establish `h1 : Φ (MvPolynomial.X 1 ^ (D + 1)) = β` using `HermLB.IsSelfInter.unique hX (hd 1) hβ`. Rewrite using `[← h0, ← h1]`. Conclude with `hmono`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem selfInter_mono : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (A B : HermLB p) (α β : ℝ), Le B A → (∀ x y : ℕ, HtNef ((A.pow x).tens (B.pow y)) D) → A.IsSelfInter α → B.IsSelfInter β → β ≤ α := by
   intro hC k _ Y _ p D hX A B α β hle hnef hα hβ

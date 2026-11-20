@@ -6,7 +6,7 @@ namespace GlobalTheory.UnipKill
 open ReciprocityTheory.ChartRestriction.G.FD NumberField
 
 /- English proof (translation)
-Use `⟨fun x y => ?_, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.coe_mul, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hg.1, hg'.1]`. Rewrite using `[Matrix.GeneralLinearGroup.coe_mul, ← Matrix.mulVec_mulVec, hg'.2, hg.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUStab_mul {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ}
     {G : Matrix (Fin N) (Fin N) E} {Λ : Submodule (𝓞 E) (Fin N → E)} {g g' : GL (Fin N) E}
@@ -17,7 +17,7 @@ theorem isUStab_mul {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ}
   · rw [Matrix.GeneralLinearGroup.coe_mul, ← Matrix.mulVec_mulVec, hg'.2, hg.2]
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨fun x y => ?_, fun x => ?_⟩ <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isUStab_one {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ}
     (G : Matrix (Fin N) (Fin N) E) (Λ : Submodule (𝓞 E) (Fin N → E)) :
@@ -25,7 +25,7 @@ theorem isUStab_one {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ}
   refine ⟨fun x y => ?_, fun x => ?_⟩ <;> simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using isUStab_one G Λ`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `isUStab_mul ih hg`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isUStab_pow {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ}
     {G : Matrix (Fin N) (Fin N) E} {Λ : Submodule (𝓞 E) (Fin N → E)} {g : GL (Fin N) E}
@@ -35,13 +35,13 @@ theorem isUStab_pow {E : Type} [Field E] [NumberField E] [IsCMField E] {N : ℕ}
   | succ n ih => rw [pow_succ]; exact isUStab_mul ih hg
 
 /- English proof (translation)
-Introduce `E _ _ _ N X g hg`. Take `⟨S, hS⟩` from `X.Γ_index`. Establish `h : ∀ n : ℕ, ∃ s : S, (s : GL (Fin N) E)⁻¹ * g ^ n ∈ X.Γ` using `fun n => by`. Take `⟨s, hs, hmem⟩` from `hS _ (isUStab_pow hg n)`. Conclude with `⟨⟨s, hs⟩, hmem⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose f hf using h`. Take `⟨a, b, hab, hfab⟩` from `Finite.exists_ne_map_eq_of_infinite f`. Establish `key : ∀ a b : ℕ, a < b → f a = f b → ∃ k : ℕ, 0 < k ∧ g ^ k ∈ X.Γ`. Introduce `a b hlt hf'`. Use `⟨b - a, Nat.sub_pos_of_lt hlt, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `X.Γ.mul_mem (X.Γ.inv_mem (hf a)) (hf b)`. Rewrite `h1` using `[hf']`. Establish `: ((f b : GL (Fin N) E)⁻¹ * g ^ a)⁻¹ * ((f b : GL (Fin N) E)⁻¹ * g ^ b) = g ^ (b - a)`. Rewrite using `[mul_inv_rev, inv_inv, mul_assoc, ← mul_assoc (f b : GL (Fin N) E), mul_inv_cancel, one_mul, ← Nat.add_sub_cancel' hlt.le, pow_add, ← mul_assoc, inv_mul_cancel, one_mul, Nat.add_sub_cancel_left]`. Rewrite `h1` using `[this]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_or_gt_of_ne hab with h | h` into its components or cases. Conclude with `key a b h hfab`. Conclude with `key b a h hfab.symm`.
+A detailed English derivation is pending.
 -/
 theorem pow_mem_of_isUStab : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ)
     (X : Data E N) (g : GL (Fin N) E), IsUStab X.Gm X.Λ g → ∃ k : ℕ, 0 < k ∧ g ^ k ∈ X.Γ := by

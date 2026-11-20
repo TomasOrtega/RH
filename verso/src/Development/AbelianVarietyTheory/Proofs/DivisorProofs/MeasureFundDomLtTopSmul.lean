@@ -15,9 +15,9 @@ namespace GlobalTheory.ThKOrthVInt
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : σ (J i j) = -J j i` using `hsk j i`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_mul, hcs, hσ, h1]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : (J.map σ).det = (σ : E →+* E) J.det` using `by rw [RingHom.map_det]; rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_smul, e]`. Conclude with `mul_ne_zero (pow_ne_zero _ hc) ((map_ne_zero _).2 hd)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHermND_smul_of_skew {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hsk : ∀ k l, σ (J l k) = -J k l) (hd : J.det ≠ 0) {c : E} (hc : c ≠ 0) (hcs : σ c = -c) :
@@ -31,17 +31,15 @@ theorem isHermND_smul_of_skew {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) 
     exact mul_ne_zero (pow_ne_zero _ hc) ((map_ne_zero _).2 hd)
 
 /- English proof (translation)
-Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hcm`. Establish `heq : UG (cA σ) (incM F J) = HR (AF F) σ (c • J.map σ)` using `GlobalTheory.SiegelSet.ug_eq_hr (F := F) (J := J) hσ hc`. Set `e : UA σ J ≃* GAd σ (c • J.map σ)` to `MulEquiv.subgroupCongr heq`. Establish `he : Continuous e` using `continuous_subtype_val.subtype_mk _`. Establish `he' : Continuous e.symm` using `continuous_subtype_val.subtype_mk _`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨S, hSc, hcov, -, hfin, -⟩` from `GlobalTheory.SiegelSet.exists_cover hP hcm hJ`. Use `haveI : BorelSpace (UA σ J) := ⟨rfl⟩`. Use `haveI : ContinuousMul (UA σ J) := ⟨by`. Establish `h3 : (fun p : UA σ J × UA σ J => p.1 * p.2) = fun p => e.symm (e p.1 * e p.2)`. Use function extensionality and compare the values at `fun p => by rw [← map_mul, MulEquiv.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h3]`. Conclude with `he'.comp ((he.comp continuous_fst).mul (he.comp continuous_snd))⟩`. Establish `hH : (μ.map e).IsHaarMeasure` using `MulEquiv.isHaarMeasure_map μ e he he'`. Establish `h1 : μ (e ⁻¹' S) < ⊤`. Establish `h2` using `hfin _ hH`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h2` using `[Measure.map_apply he.measurable hSc.measurableSet]`. Then use the resulting hypothesis. Use `haveI := GlobalTheory.UnitaryVol.countable_ratU σ J`. Use `haveI : MeasurableMul (UA σ J) := ⟨fun g => (continuous_const.mul continuous_id).measurable, fun g => (continuous_id.mul continuous_const).measurable⟩`. Use `haveI : MeasurableConstSMul (ratU σ J) (UA σ J) := ⟨fun γ => (continuous_const.mul continuous_id : Continuous fun x : UA σ J => γ.1 * x).measurable⟩`. Use `haveI : SMulInvariantMeasure (ratU σ J) (UA σ J) μ := ⟨fun γ A _ => measure_preimage_mul μ γ.1 A⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hcov' : D ⊆ ⋃ γ : ratU σ J, γ • (e ⁻¹' S) ∩ D`. Introduce `x hx`. Take `⟨γ, hγ, s, hs, hxs⟩` from `hcov (e x)`. Take `⟨u, -, hu⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hγ)`. Establish `hr : e.symm γ ∈ ratU σ J` using `Subgroup.mem_subgroupOf.2 ⟨u, hu⟩`.
-
-Use `Set.mem_iUnion.2 ⟨⟨e.symm γ, hr⟩, Set.mem_smul_set.2 ⟨e.symm s, show e (e.symm s) ∈ S by rw [MulEquiv.apply_symm_apply]; exact hs, ?_⟩, hx⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e.symm γ * e.symm s = x`. Rewrite using `[← map_mul, ← hxs, MulEquiv.symm_apply_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem measure_fundDom_lt_top_smul (hP : GlobalTheory.Published.SiegelSetUnitary) {σ : E →ₐ[F] E} (hcm : IsCMExt F E σ) {n : ℕ}
     {J : Matrix (Fin n) (Fin n) E} {c : E} (hc : c ≠ 0) (hJ : IsHermND σ (c • J.map σ)) {μ : Measure (UA σ J)}
@@ -82,11 +80,11 @@ theorem measure_fundDom_lt_top_smul (hP : GlobalTheory.Published.SiegelSetUnitar
     _ < ⊤ := h1
 
 /- English proof (translation)
-Set `M : ℝ≥0` to `⟨max C 0, le_max_right _ _⟩`. Establish `e1 : M * qht h ^ k = ⨅ γ : ratU σ J, M * ht (γ.1 * h) ^ k` using `Monotone.map_ciInf_of_continuousAt (f := fun x : ℝ≥0 => M * x ^ k) ((continuous_const.mul (continuous_pow k)).continuousAt) (fun x y hxy => mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) hxy k) (by positivity)) (OrderBot.bddBelow _)`. Establish `e2 : ‖g h‖₊ ≤ M * qht h ^ k`. Rewrite using `[e1]`. Use `le_ciInf fun γ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← NNReal.coe_le_coe, coe_nnnorm, ← hgi γ.1 γ.2 h]`. Use `(hC _).trans ?_` and prove the remaining obligations. Use `push_cast`. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)`. Establish `e3` using `NNReal.coe_le_coe.2 e2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at e3`. Conclude with `e3`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_qht_of_le_ht {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {g : UA σ J → ℂ}
     (hgi : ∀ γ ∈ ratU σ J, ∀ x, g (γ * x) = g x) {C : ℝ} {k : ℕ} (hC : ∀ h, ‖g h‖ ≤ C * (ht h : ℝ) ^ k) (h : UA σ J) :

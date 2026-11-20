@@ -22,9 +22,7 @@ section Pass
 variable (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
 /- English proof (translation)
-Establish `hc : c - ((0 : ℕ) : ZMod n) = c` using `by simp`. Use `haveI : FiniteDimensional LL ↥(Formalism.WeaklyAdmissibleFiltrations.FilCris PD T.ρ u ⊓ DcrisL PD T.ρ (W.emb (c - ((0 : ℕ) : ZMod n)))) := by`. Rewrite using `[hc]`. Conclude with `Submodule.finiteDimensional_of_le inf_le_right`. Unfold `Formalism.MainNotions.WachCoordinates.FilLev`.
-
-Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_filLev (c : ZMod n) (hfd : FiniteDimensional LL ↥(DcrisL PD T.ρ (W.emb c))) (u : ℤ) :
     FiniteDimensional LL ↥(Formalism.MainNotions.WachCoordinates.FilLev W T c 0 u) := by
@@ -37,17 +35,17 @@ theorem finiteDimensional_filLev (c : ZMod n) (hfd : FiniteDimensional LL ↥(Dc
   infer_instance
 
 /- English proof (translation)
-Take `⟨-, hdim⟩` from `hFD hA T hT c τ hτ`. Establish `h1` using `hdim k (k + 1) (by omega)`. Establish `hI : Finset.Ico k (k + 1) = {k}`. Use extensionality with `x`. Simplify using `only [Finset.mem_Ico, Finset.mem_singleton]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[hI, Finset.sum_singleton]`. Establish `hle : Formalism.MainNotions.WachCoordinates.FilLev W T c 0 (k + 1) ≤ Formalism.MainNotions.WachCoordinates.FilLev W T c 0 k`. Unfold `Formalism.MainNotions.WachCoordinates.FilLev`. Apply `Submodule.map_mono` to reduce the goal to its premises.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Submodule.map_mono` to reduce the goal to its premises. Apply `inf_le_inf_right` to reduce the goal to its premises. Unfold `Formalism.WeaklyAdmissibleFiltrations.FilCris`. Apply `inf_le_inf_left` to reduce the goal to its premises. Apply `Submodule.comap_mono` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Unfold `Formalism.WeaklyAdmissibleFiltrations.FilV`. Introduce `x hx`. Take `⟨y, rfl⟩` from `LinearMap.mem_range.mp hx`. Use `clear hx`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul v w`. Conclude with `LinearMap.mem_range.mpr ⟨v ⊗ₜ ⟨(w : BdR), PD.Fil_anti k w.2⟩, by simp⟩`. Consider the case `add y z hy hz`. Rewrite using `[map_add]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `add_mem hy hz`. Use `haveI := finiteDimensional_filLev W T c hfd k`. Establish `h2 : Module.finrank LL ↥(Formalism.MainNotions.WachCoordinates.FilLev W T c 0 (k + 1)) ≤ Module.finrank LL ↥(Formalism.MainNotions.WachCoordinates.FilLev W T c 0 k)` using `LinearMap.finrank_le_finrank_of_injective (f := Submodule.inclusion hle) (Submodule.inclusion_injective hle)`. Establish `h3 : ((Module.finrank LL ↥(Formalism.MainNotions.WachCoordinates.FilLev W T c 0 (k + 1)) : ℕ) : ℤ) ≤ Module.finrank LL ↥(Formalism.MainNotions.WachCoordinates.FilLev W T c 0 k)` using `by exact_mod_cast h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem multV_nonneg' [NeZero n] (hFD : Sh.FilDim W) (hA : Formalism.MainNotions.LiftingTheory.CaseA W)
     (hT : IsCrys PD T.ρ) (c : ZMod n) (τ : K →ₐ[Qp] LL) (hτ : Formalism.MainNotions.LiftingTheory.Over W τ c)
@@ -89,11 +87,11 @@ theorem multV_nonneg' [NeZero n] (hFD : Sh.FilDim W) (hA : Formalism.MainNotions
   linarith
 
 /- English proof (translation)
-Establish `hjump` using `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_jumps₂ W hE hC hQ hS c τ hτ`. Establish `hfd` using `Formalism.MainNotions.N.Pv.LocalLengthBound.rk_fd_letter₂ W hS c`. Establish `hT₂ : IsCrys PD T₂.ρ` using `hS.2.2.2.2.2.1.2.1`. Establish `hev : (c.val + d) % 2 = 0` using `by simpa [evens] using hc`. Rewrite using `[← Finset.sum_filter_of_ne (p := fun k => k ∈ Finset.Icc (-(η : ℤ)) η)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `k hk hne`. Establish `hj : IsJumpV PD T₂.ρ τ k`. Assume the negation of the conclusion as `hnj`. Conclude with `hne (Formalism.MainNotions.N.Pv.LocalLengthBound.rk_multV_of_not_jump PD T₂.ρ τ k hnj)`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hw` using `hjump k hj`. Simplify using `only [Formalism.MainNotions.RamifiedCoefficientChains.JumpWinS, hev, if_true, Set.mem_union, Set.mem_Icc] at hw`. Establish `hk'` using `Finset.mem_Ico.1 hk`. Simplify using `only [Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sum_multV_le [NeZero n] (hFD : Sh.FilDim W) {d : ℕ} {T₁ T₂ : LocLat G Qp LL O}
     {F : LatHom T₁.L T₂.L} {b : ZMod n → ℕ} {S η m : ℕ} (hS : SetCS W d T₁ T₂ F b S η m)
@@ -122,29 +120,27 @@ theorem sum_multV_le [NeZero n] (hFD : Sh.FilDim W) {d : ℕ} {T₁ T₂ : LocLa
     omega
 
 /- English proof (translation)
-Establish `hlev : W.lev c ζ (Formalism.MainNotions.LiftingTheory.qp W ^ a) ≠ 0`. Take `⟨⟨w, hw, hq⟩, -, -⟩` from `hER hA c ζ hζ`. Rewrite using `[map_pow, hq, mul_pow]`. Conclude with `mul_ne_zero (pow_ne_zero _ hw.ne_zero) (pow_ne_zero _ PowerSeries.X_ne_zero)`. Establish `R` using `hEx hA T hT c ζ hζ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∀ f, ∃! d, Sh.IsExp W T c ζ (u f) d` using `fun f => R.1 (u f) _ (hu f).2.1 hlev`. Use `choose ex hexs huniq using hex`. Establish `ex_add : ∀ f g, ex (f + g) = ex f + ex g` using `fun f g => (huniq (f + g) _ (by rw [map_add]; exact R.2.2.1 _ _ _ _ (hexs f) (hexs g))).symm`. Establish `ex_smul : ∀ (r : O) f, ex (r • f) = fun k => algebraMap O LL r • ex f k` using `fun r f => (huniq (r • f) _ (by rw [map_smul]; exact R.2.2.2.1 r _ _ (hexs f))).symm`. Use `set F0 := Formalism.MainNotions.WachCoordinates.FilLev W T c 0 0 with hF0`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set Fa := Formalism.MainNotions.WachCoordinates.FilLev W T c 0 (-(a : ℤ)) with hFa`. Set `φ : FF →+ (T.V ⊗[Qp] BdR) ⧸ F0` to `AddMonoidHom.mk' (fun f => Submodule.Quotient.mk (ex f 0)) (fun f g => by`. Simplify using `only [ex_add, Pi.add_apply, Submodule.Quotient.mk_add])`. Establish `hφ : ∀ (r : O) f, φ (r • f) = algebraMap O LL r • φ f`. Introduce `r f`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [φ, AddMonoidHom.mk'_apply, ex_smul, Submodule.Quotient.mk_smul]`. Establish `hLK : ∀ f, ex f 0 ∈ Fa ∧ (u f ∈ W.N T ↔ ex f 0 ∈ F0)`. Introduce `f`. Establish `hj : ∃ j : ℕ, ((PD.p : ℕ) : O) ^ j • (W.γ T (u f) - u f) ∈ W.N T`. Take `⟨y, hy, -, he⟩` from `(hu f).2.2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨0, by rw [pow_zero, one_smul, he]; exact (W.N T).smul_mem _ hy⟩`. Conclude with `(hK hA T hT c ζ hζ (u f) (ex f) (hu f).1 (hexs f) hj).2 a (hu f).2.1`. Establish `hker : ∀ f, φ f = 0 ↔ u f ∈ W.N T`. Introduce `f`. Rewrite using `[(hLK f).2]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.Quotient.mk_eq_zero _`. Use `finiteDimensional_filLev W T c hfd (-(a : ℤ))` as an intermediate fact. Use `finiteDimensional_filLev W T c hfd 0` as an intermediate fact. Set `Aq` to `Fa.map F0.mkQ`. Establish `hle : F0 ≤ Fa` using `Formalism.MainNotions.UnusedSlot80.LevR.filLev_anti W T c 0 (by omega : -(a : ℤ) ≤ 0)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hAq : finrank LL ↥Aq ≤ m`. Set `g` to `F0.mkQ ∘ₗ Fa.subtype`. Establish `hr : LinearMap.range g = Aq`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`. Establish `hk : LinearMap.ker g = F0.comap Fa.subtype`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[LinearMap.ker_comp, Submodule.ker_mkQ]`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker g`. Rewrite `h1` using `[hr, hk, (Submodule.comapSubtypeEquivOfLe hle).finrank_eq]`. Establish `h2` using `(hFD hA T hT c τ hτ).2 (-(a : ℤ)) 0 (by omega)`. Rewrite `h2` using `[← hF0, ← hFa]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hrange : ∀ f, φ f ∈ Aq` using `fun f => Submodule.mem_map_of_mem (hLK f).1`. Use `⟨fun lenO cc A => ?_, fun hm0 f => ?_⟩` and prove the remaining obligations. Set `φA : ↥A →+ (T.V ⊗[Qp] BdR) ⧸ F0` to `φ.comp A.subtype.toAddMonoidHom`. Establish `hφA : ∀ (r : O) (x : ↥A), φA (r • x) = algebraMap O LL r • φA x` using `fun r x => hφ r x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : finrank LL ↥(Submodule.span LL (Set.range φA)) ≤ m`. Establish `: FiniteDimensional LL ↥Aq` using `inferInstance`. Use `le_trans (Submodule.finrank_mono ?_) hAq` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Assume the hypotheses and unpack their components. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hrange x`. Use `⟨Formalism.MainNotions.N.Pv.LocalLengthBound.zeroSub A φA hφA, Formalism.MainNotions.N.Pv.LocalLengthBound.pchain_of_gen (Formalism.MainNotions.N.Pv.LocalLengthBound.pstep_rank A φA hφA hm), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `(hker _).1 hy`. Substitute `hm0` using the available equality.
-
-Establish `h0 : Aq = ⊥` using `Submodule.finrank_eq_zero.1 (by omega)`. Use `hrange f` as an intermediate fact. Rewrite `this` using `[h0, Submodule.mem_bot]`. Conclude with `(hker f).1 this`.
+A detailed English derivation is pending.
 -/
 theorem step1Pass_pass [NeZero n] (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (hT : IsCrys PD T.ρ) (ζ : LL)
     (hζ : IsPrimitiveRoot ζ PD.p) (hEx : Sh.ExpRules W) (hER : Sh.ExpRing W) (hK : Sh.LemK W)

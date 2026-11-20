@@ -17,14 +17,14 @@ variable {D : D7} {S : HSp D}
 def cv {n : ℕ} (y : Fin n → AE D) : Fin n → AE D := fun i => cA D (y i)
 
 /- English proof (translation)
-Unfold `hermAt cv`. Simplify using `only [dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hermAt_eq (x y : Fin S.rank → AE D) : hermAt S x y = cv y ⬝ᵥ (gA S *ᵥ x) := by
   unfold hermAt cv
   simp only [dotProduct, mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [cv, mulVec, vecMul, dotProduct, map_sum, map_mul, adj, transpose_apply, map_apply]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cv_mulVec {m : ℕ} (N : Matrix (Fin S.rank) (Fin m) (AE D)) (b : Fin m → AE D) :
     cv (N *ᵥ b) = vecMul (cv b) (adj N) := by
@@ -33,7 +33,7 @@ theorem cv_mulVec {m : ℕ} (N : Matrix (Fin S.rank) (Fin m) (AE D)) (b : Fin m 
   exact Finset.sum_congr rfl fun k _ => mul_comm _ _
 
 /- English proof (translation)
-Rewrite using `[hermAt_eq, cv_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hermAt_mulVec {m n : ℕ} (M : Matrix (Fin S.rank) (Fin m) (AE D)) (a : Fin m → AE D)
     (N : Matrix (Fin S.rank) (Fin n) (AE D)) (b : Fin n → AE D) :
@@ -41,7 +41,7 @@ theorem hermAt_mulVec {m n : ℕ} (M : Matrix (Fin S.rank) (Fin m) (AE D)) (a : 
   rw [hermAt_eq, cv_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Simplify using `[cv]`. Simplify using `[cv, Pi.single_eq_of_ne h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cv_single {n : ℕ} (i : Fin n) : cv (Pi.single i (1 : AE D)) = Pi.single i 1 := by
   funext k
@@ -50,30 +50,26 @@ theorem cv_single {n : ℕ} (i : Fin n) : cv (Pi.single i (1 : AE D)) = Pi.singl
   · simp [cv, Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Rewrite using `[mulVec_single_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mulVec_single_apply {m n : ℕ} (M : Matrix (Fin m) (Fin n) (AE D)) (i : Fin m) (j : Fin n) :
     (M *ᵥ Pi.single j (1 : AE D)) i = M i j := by
   rw [mulVec_single_one]; rfl
 
 /- English proof (translation)
-Introduce `D S v ε Λ β β' hεε hcε hε hact hΛ hβ hβ' h1 h2 hmem`. Establish `h0 : (0 : AE D) ∈ intAt D (· = v)` using `⟨zero_mem _, by rw [RingHom.map_zero]; exact zero_mem _⟩`. Establish `hcs : ∀ j k, (β *ᵥ Pi.single j (1 : AE D)) k ∈ idAt D (· = v)` using `fun j k => by`. Rewrite using `[mulVec_single_apply]`. Conclude with `hβ k j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcol : ∀ j, β *ᵥ Pi.single j (1 : AE D) ∈ Λ` using `fun j => (hmem _ (hcs j)).2 fun i => by`. Rewrite using `[mulVec_mulVec, mulVec_single_apply, h2, Matrix.smul_apply, smul_eq_mul, Matrix.one_apply]`. Use `split_ifs`. Rewrite using `[mul_one]`. Conclude with `hε`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_zero]`. Conclude with `h0`. Establish `hadj : adj β * adj β' = ε • (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D))`. Rewrite using `[← adj_mul, h2, adj_smul, adj_one, hcε]`. Establish `hz : adj β * (gA S * (giA S * adj β')) = ε • (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[gA_giA_cancel, hadj]`. Use `⟨fun i j => ?_, fun i j => ?_, β' * (giA S * adj β'), fun i j => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `(hΛ.2.2 _ (hcs j)).1 (hcol j) _ (hcol i)`. Rewrite `h` using `[hermAt_mulVec, cv_single, single_dotProduct, one_mul, mulVec_single_apply]`. Then use the resulting hypothesis. Establish `h : adj (adj β * (gA S * β)) = adj β * (gA S * β)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[adj_mul, adj_mul, adj_gA, adj_adj, Matrix.mul_assoc]`. Conclude with `congrFun (congrFun h j) i`. Establish `hs : ∀ k, ((giA S * adj β') *ᵥ Pi.single j (1 : AE D)) k ∈ idAt D (· = v)` using `fun k => by`. Rewrite using `[← mulVec_mulVec]`. Use `mulVec_mem_idAt _ (fun l => ?_) k` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mulVec_single_apply]`. Express the relevant statement in the definitionally equal form `cA D (β' j l) ∈ _`. Rewrite using `[← (hact _).1 (hβ' j l), RingHom.map_mul, hcε]`. Conclude with `Ideal.mul_mem_right _ _ hε.1`. Establish `hin : (giA S * adj β') *ᵥ Pi.single j (1 : AE D) ∈ Λ` using `(hΛ.2.2 _ hs).2 fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `⟨LocSD.hermAt_mem_idAt hs x, ?_⟩` and prove the remaining obligations. Establish `hw` using `(hmem x (hΛ.1 x hx)).1 hx j`. Establish `e : x = β *ᵥ (β' *ᵥ x)`. Rewrite using `[mulVec_mulVec, h1, smul_mulVec, one_mulVec]`. Use function extensionality and compare the values at `k`.
-
-Conclude with `((hact _).1 (hΛ.1 x hx k)).symm`. Rewrite using `[e, hermAt_mulVec, hz, smul_mulVec, one_mulVec, dotProduct_smul, dotProduct_single, mul_one, smul_eq_mul, RingHom.map_mul]`. Conclude with `FrameLat.mul_mem_intAE hε.2 ((FrameLat.cA_int_iff _).2 hw.2)`. Establish `h` using `(hmem _ hs).1 hin i`. Rewrite `h` using `[mulVec_mulVec, mulVec_single_apply]`. Then use the resulting hypothesis.
-
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc β, h1, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_smul, hz, smul_smul, hεε]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_basis : ∀ (D : D7) (S : HSp D) (v : Pl D) (ε : AE D) (Λ : AddSubgroup (Fin S.rank → AE D)) (β β' : Matrix (Fin S.rank) (Fin S.rank) (AE D)), ε * ε = ε → cA D ε = ε → ε ∈ intAt D (· = v) → (∀ a, a ∈ idAt D (· = v) ↔ ε * a = a) → IsSDAt S v Λ → (∀ i j, β i j ∈ idAt D (· = v)) → (∀ i j, β' i j ∈ idAt D (· = v)) → β * β' = ε • (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) → β' * β = ε • (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) → (∀ y : Fin S.rank → AE D, (∀ i, y i ∈ idAt D (· = v)) → (y ∈ Λ ↔ ∀ i, (β' *ᵥ y) i ∈ intAt D (· = v))) → (∀ i j, (adj β * (gA S * β)) i j ∈ intAt D (· = v)) ∧ (∀ i j, cA D ((adj β * (gA S * β)) i j) = (adj β * (gA S * β)) j i) ∧ ∃ H' : Matrix (Fin S.rank) (Fin S.rank) (AE D), (∀ i j, H' i j ∈ intAt D (· = v)) ∧ adj β * (gA S * β) * H' = ε • (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) := by
   intro D S v ε Λ β β' hεε hcε hε hact hΛ hβ hβ' h1 h2 hmem

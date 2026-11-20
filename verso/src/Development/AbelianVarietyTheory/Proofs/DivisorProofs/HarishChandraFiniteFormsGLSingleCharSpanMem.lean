@@ -11,7 +11,7 @@ namespace GlobalTheory.HCF.FormsSub
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-The claim follows from `rfl level := by have : {k | finRep E a k (0 : Sm E a) = 0} = Set.univ := Set.eq_univ_of_forall fun k => map_zero _ rw [this]; exact isOpen_univ kfin := by refine Submodule.finiteDimensional_of_le (S₂ := ⊥) (Submodule.span_le.2 ?_) rintro _ ⟨k, rfl⟩ simp zfin := by refine Submodul …`.
+A detailed English derivation is pending.
 -/
 theorem isAutForm_zero : IsAutForm (0 : Sm E a) where
   left γ g := rfl
@@ -29,19 +29,17 @@ theorem isAutForm_zero : IsAutForm (0 : Sm E a) where
   growth g := ⟨0, 0, fun y => by simp⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `φ.1 _ + ψ.1 _ = φ.1 _ + ψ.1 _`. Rewrite using `[hφ.left, hψ.left]`. Use `level := isOpen_stab_of_mem_nhds _ _ <| Filter.mem_of_superset ((hφ.level.inter hψ.level).mem_nhds ⟨by simp, by simp⟩) fun k hk => by`. Establish `h1 : finRep E a k φ = φ` using `hk.1`. Establish `h2 : finRep E a k ψ = ψ` using `hk.2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `finRep E a k (φ + ψ) = φ + ψ`. Rewrite using `[map_add, h1, h2]`. Use `kfin := by`. Use `hφ.kfin` as an intermediate fact. Use `hψ.kfin` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ (Set.range fun k => cptRep E a k φ) ⊔ Submodule.span ℂ (Set.range fun k => cptRep E a k ψ)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Simplify using `only [SetLike.mem_coe, map_add]`. Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨k, rfl⟩) (Submodule.subset_span ⟨k, rfl⟩)`. Use `zfin := by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `hφ.zfin` as an intermediate fact. Use `hψ.zfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a) ⊔ Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z ψ) '' Zalg E a)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Simplify using `only [SetLike.mem_coe, map_add]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨z, hz, rfl⟩) (Submodule.subset_span ⟨z, hz, rfl⟩)`. Use `growth g := by`. Take `⟨C1, N1, h1⟩` from `hφ.growth g`. Take `⟨C2, N2, h2⟩` from `hψ.growth g`. Use `⟨|C1| + |C2|, N1 + N2, fun y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hy` using `one_le_height y`. Establish `e1 : height y ^ N1 ≤ height y ^ (N1 + N2)` using `pow_le_pow_right₀ hy (by omega)`. Establish `e2 : height y ^ N2 ≤ height y ^ (N1 + N2)` using `pow_le_pow_right₀ hy (by omega)`. Establish `p1 : 0 ≤ height y ^ N1` using `by positivity`. Establish `p2 : 0 ≤ height y ^ N2` using `by positivity`.
-
-Express the relevant statement in the definitionally equal form `‖φ.1 _ + ψ.1 _‖ ≤ _`. Combine the equalities or inequalities in the displayed calculation. Conclude with `add_le_add ((mul_le_mul_of_nonneg_right (le_abs_self C1) p1).trans (mul_le_mul_of_nonneg_left e1 (abs_nonneg _))) ((mul_le_mul_of_nonneg_right (le_abs_self C2) p2).trans (mul_le_mul_of_nonneg_left e2 (abs_nonneg _)))`. Use `_ = _ := by ring`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isAutForm_add {φ ψ : Sm E a} (hφ : IsAutForm φ) (hψ : IsAutForm ψ) : IsAutForm (φ + ψ) where
   left γ g := by
@@ -90,15 +88,13 @@ theorem isAutForm_add {φ ψ : Sm E a} (hφ : IsAutForm φ) (hψ : IsAutForm ψ)
       _ = _ := by ring
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `c • φ.1 _ = c • φ.1 _`. Rewrite using `[hφ.left]`. Use `level := isOpen_stab_of_mem_nhds _ _ <| Filter.mem_of_superset (hφ.level.mem_nhds (by simp)) fun k hk => by`. Establish `h1 : finRep E a k φ = φ` using `hk`. Express the relevant statement in the definitionally equal form `finRep E a k (c • φ) = c • φ`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, h1]`. Use `kfin := by`. Use `hφ.kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ (Set.range fun k => cptRep E a k φ)) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [SetLike.mem_coe, map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Use `zfin := by`. Use `hφ.zfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ ((fun z : Module.End ℂ (Sm E a) => z φ) '' Zalg E a)) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Simplify using `only [SetLike.mem_coe, map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨z, hz, rfl⟩)`. Use `growth g := by`. Take `⟨C, N, h1⟩` from `hφ.growth g`.
-
-Use `⟨‖c‖ * C, N, fun y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖c • φ.1 _‖ ≤ _`. Rewrite using `[norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (h1 y) (norm_nonneg _)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAutForm_smul (c : ℂ) {φ : Sm E a} (hφ : IsAutForm φ) : IsAutForm (c • φ) where
   left γ g := by
@@ -131,9 +127,9 @@ theorem isAutForm_smul (c : ℂ) {φ : Sm E a} (hφ : IsAutForm φ) : IsAutForm 
     exact mul_le_mul_of_nonneg_left (h1 y) (norm_nonneg _)
 
 /- English proof (translation)
-Proceed by induction on `zs with`. Consider the case `nil => rfl`. Consider the case `cons z zs ih`. Simplify using `only [List.foldr_cons]`. Rewrite using `[ih, map_add, map_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem foldr_lin (χ : Module.End ℂ (Sm E a) → ℂ) (c : ℂ) (φ ψ : Sm E a) (zs : List (Module.End ℂ (Sm E a))) :
     zs.foldr (fun z f => z f - χ z • f) (c • φ + ψ) =
@@ -146,7 +142,7 @@ theorem foldr_lin (χ : Module.End ℂ (Sm E a) → ℂ) (c : ℂ) (φ ψ : Sm E
     module
 
 /- English proof (translation)
-Proceed by induction on `zs with`. Consider the case `nil => rfl`. Consider the case `cons z zs ih => simp only [List.foldr_cons, ih, map_zero, smul_zero, sub_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem foldr_zero (χ : Module.End ℂ (Sm E a) → ℂ) (zs : List (Module.End ℂ (Sm E a))) :
     zs.foldr (fun z f => z f - χ z • f) (0 : Sm E a) = 0 := by
@@ -159,21 +155,19 @@ end GlobalTheory.HCF.FormsSub
 open GlobalTheory.HCF.FormsSub in
 
 /- English proof (translation)
-Introduce `E _ _ _ a L W χ N`. Set `S : Submodule ℂ (Sm E a)` to `{ carrier := formsGL E a L W {χ} N zero_mem' := by`. Use `⟨isAutForm_zero, fun k _ => map_zero _, fun g => ?_, χ, rfl, fun zs _ _ => foldr_zero χ zs⟩` and prove the remaining obligations. Establish `: (fun k : Kinf E a => (cptRep E a k (0 : Sm E a)).1 g) = 0`. Use function extensionality and compare the values at `k`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `W.zero_mem`. Use the proof step `add_mem' := by`. Introduce and unpack `φ ψ ⟨a1, b1, c1, χ1, e1, d1⟩ ⟨a2, b2, c2, χ2, e2, d2⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1`, `e2` using `[Set.mem_singleton_iff]`. Rewrite `d1` using `[e1]`. Rewrite `d2` using `[e2]`. Use `⟨isAutForm_add a1 a2, fun k hk => by rw [map_add, b1 k hk, b2 k hk], fun g => ?_, χ, rfl, fun zs hl hz => ?_⟩` and prove the remaining obligations. Establish `: (fun k : Kinf E a => (cptRep E a k (φ + ψ)).1 g) = (fun k : Kinf E a => (cptRep E a k φ).1 g) + (fun k : Kinf E a => (cptRep E a k ψ).1 g)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `W.add_mem (c1 g) (c2 g)`. Use `foldr_lin χ 1 φ ψ zs` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `this` using `[one_smul, one_smul]`. Rewrite using `[this, d1 zs hl hz, d2 zs hl hz, add_zero]`. Use the proof step `smul_mem' := by`. Introduce and unpack `c φ ⟨a1, b1, c1, χ1, e1, d1⟩`. Rewrite `e1` using `[Set.mem_singleton_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `d1` using `[e1]`. Use `⟨isAutForm_smul c a1, fun k hk => by rw [map_smul, b1 k hk], fun g => ?_, χ, rfl, fun zs hl hz => ?_⟩` and prove the remaining obligations. Establish `: (fun k : Kinf E a => (cptRep E a k (c • φ)).1 g) = c • (fun k : Kinf E a => (cptRep E a k φ).1 g)`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `W.smul_mem c (c1 g)`. Use `foldr_lin χ c φ 0 zs` as an intermediate fact. Rewrite `this` using `[add_zero, foldr_zero, add_zero]`. Rewrite using `[this, d1 zs hl hz, smul_zero] }`.
-
-Introduce `φ hφ`. Conclude with `(Submodule.span_le (p := S)).2 le_rfl hφ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HCF.formsGL_single_span : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (L : Subgroup (GL (Fin a) (Af E))) (W : Submodule ℂ (Kinf E a → ℂ)) (χ : Module.End ℂ (Sm E a) → ℂ) (N : ℕ),

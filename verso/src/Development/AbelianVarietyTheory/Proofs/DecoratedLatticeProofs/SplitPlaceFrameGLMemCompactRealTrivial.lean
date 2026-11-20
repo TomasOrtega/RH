@@ -15,11 +15,11 @@ noncomputable section
 namespace GlobalTheory.FrameGfC
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p S n _ _ β g`. Establish `hg` using `β.gl_supp g`. Establish `he` using `p.split`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h : infPart D ((mt S (β.gl g) - 1) i j) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hg i j, RingHom.map_mul, RingHom.map_add, GlobalTheory.SplitScalar.infPart_splitIdem he, GlobalTheory.SplitScalar.infPart_splitIdem (GlobalTheory.SplitScalar.isSplitIdem_conj he), add_zero, zero_mul]`. Rewrite `h` using `[Matrix.sub_apply, RingHom.map_sub, sub_eq_zero]`. Use `show infPart D (mt S (β.gl g) i j) = (1 : Matrix _ _ _) i j`. Rewrite using `[h, Matrix.one_apply, Matrix.one_apply]`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_one]`. Rewrite using `[RingHom.map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem gl_mem_GfC : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (S : HSp D) (n : Type) [Fintype n] [DecidableEq n] (β : Frame p S n) (g : GL n k), β.gl g ∈ GfC S := by
   intro D k _ _ _ _ p S n _ _ β g

@@ -10,7 +10,7 @@ namespace GlobalTheory.Ord2
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Simplify using `[eps, cycBar]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem eps_eq_algebraMap (s : G ℚ Ω) :
     eps l s = algebraMap ℤ_[l] (Qbar l) ((cycZ ℚ Ω l s : ℤ_[l]ˣ) : ℤ_[l]) := by
@@ -18,13 +18,13 @@ theorem eps_eq_algebraMap (s : G ℚ Ω) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[eps_eq_algebraMap]`. Conclude with `c.O.algebraMap_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eps_mem (c : Coef l) (s : G ℚ Ω) : eps l s ∈ c.O := by
   rw [eps_eq_algebraMap]; exact c.O.algebraMap_mem _
 
 /- English proof (translation)
-Establish `h : Continuous fun s : G ℚ Ω => ((cycZ ℚ Ω l s : ℤ_[l]ˣ) : ℤ_[l])` using `Units.continuous_val.comp (continuous_cycZ ℚ Ω l)`. Establish `e : ∀ s : G ℚ Ω, eps l s = algebraMap ℚ_[l] (Qbar l) (((cycZ ℚ Ω l s : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l])` using `fun s => rfl`. Simplify using `only [e]`. Establish `hc : Continuous (fun x : ℤ_[l] => (x : ℚ_[l]))` using `continuous_subtype_val`. Conclude with `(continuous_algebraMap ℚ_[l] (Qbar l)).comp (hc.comp h)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_eps : Continuous (fun s : G ℚ Ω => eps l s) := by
   have h : Continuous fun s : G ℚ Ω => ((cycZ ℚ Ω l s : ℤ_[l]ˣ) : ℤ_[l]) :=
@@ -36,7 +36,7 @@ theorem continuous_eps : Continuous (fun s : G ℚ Ω => eps l s) := by
   exact (continuous_algebraMap ℚ_[l] (Qbar l)).comp (hc.comp h)
 
 /- English proof (translation)
-Establish `e : cycBar ℚ Ω l σ = cyc ℚ Ω l σ` using `(cyc_eq_map_cycZ ℚ Ω l σ).symm`. Simplify using `only [eps, e, cyc_eq_one_of_mem_Ine hl h hσ, Units.val_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem eps_eq_one_of_mem_Ine [IsAlgClosure ℚ Ω] {A : ValuationSubring Ω} {v : Pl}
     (hl : ((l : ℕ) : 𝓞 ℚ) ∉ v.asIdeal) (h : IsPlaceOver A v) {σ : G ℚ Ω} (hσ : σ ∈ Ine (F := ℚ) A) :
@@ -45,39 +45,39 @@ theorem eps_eq_one_of_mem_Ine [IsAlgClosure ℚ Ω] {A : ValuationSubring Ω} {v
   simp only [eps, e, cyc_eq_one_of_mem_Ine hl h hσ, Units.val_one]
 
 /- English proof (translation)
-Simplify using `[dt, mat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem val_dt (W : R2 Ω l) (s : G ℚ Ω) : ((dt W s : (Qbar l)ˣ) : Qbar l) = (mat W s).det := by
   simp [dt, mat]
 
 /- English proof (translation)
-Rewrite `h` using `[pow_two]`. Conclude with `inv_eq_of_mul_eq_one_right h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dt_inv_eq (W : R2 Ω l) (h : dt W ^ 2 = 1) : (dt W)⁻¹ = dt W := by
   rw [pow_two] at h; exact inv_eq_of_mul_eq_one_right h
 
 /- English proof (translation)
-Simplify using `[mat, dual1, tw_val, eps]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mat_dual1_eq (W : R2 Ω l) (s : G ℚ Ω) :
     mat (dual1 W) s = (eps l s * (((dt W)⁻¹ s : (Qbar l)ˣ) : Qbar l)) • mat W s := by
   simp [mat, dual1, tw_val, eps]
 
 /- English proof (translation)
-Rewrite using `[mat_dual1_eq, dt_inv_eq W h, val_dt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_dual1_eq' (W : R2 Ω l) (h : dt W ^ 2 = 1) (s : G ℚ Ω) :
     mat (dual1 W) s = (eps l s * (mat W s).det) • mat W s := by
   rw [mat_dual1_eq, dt_inv_eq W h, val_dt]
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp hW`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mat (W : R2 Ω l) (hW : Continuous W) : Continuous fun s => mat W s :=
   Units.continuous_val.comp hW
 
 /- English proof (translation)
-Simplify using `only [mat_dual1_eq' W h]`. Conclude with `(continuous_eps.mul (continuous_mat W hW).matrix_det).smul (continuous_mat W hW)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_mat_dual1 (W : R2 Ω l) (hW : Continuous W) (h : dt W ^ 2 = 1) :
     Continuous fun s => mat (dual1 W) s := by
@@ -85,19 +85,19 @@ theorem continuous_mat_dual1 (W : R2 Ω l) (hW : Continuous W) (h : dt W ^ 2 = 1
   exact (continuous_eps.mul (continuous_mat W hW).matrix_det).smul (continuous_mat W hW)
 
 /- English proof (translation)
-Simplify using `only [om, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem om_add_left (x x' y : Fin 2 → Qbar l) : om (x + x') y = om x y + om x' y := by
   simp only [om, Pi.add_apply]; ring
 
 /- English proof (translation)
-Simplify using `only [om, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem om_add_right (x y y' : Fin 2 → Qbar l) : om x (y + y') = om x y + om x y' := by
   simp only [om, Pi.add_apply]; ring
 
 /- English proof (translation)
-Simplify using `only [om, Matrix.mulVec, dotProduct, Fin.sum_univ_two, Matrix.det_fin_two, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem om_mulVec_smul (M : Matrix (Fin 2) (Fin 2) (Qbar l)) (c : Qbar l) (x y : Fin 2 → Qbar l) :
     om (M *ᵥ x) ((c • M) *ᵥ y) = c * M.det * om x y := by
@@ -105,7 +105,7 @@ theorem om_mulVec_smul (M : Matrix (Fin 2) (Fin 2) (Qbar l)) (c : Qbar l) (x y :
   ring
 
 /- English proof (translation)
-Rewrite using `[mat_dual1_eq, om_mulVec_smul, mul_assoc (eps l s), ← val_dt, ← Units.val_mul, show (dt W)⁻¹ s * dt W s = 1 by simp, Units.val_one, mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem om_pair (W : R2 Ω l) (s : G ℚ Ω) (x y : Fin 2 → Qbar l) :
     om (mat W s *ᵥ x) (mat (dual1 W) s *ᵥ y) = eps l s * om x y := by
@@ -113,7 +113,7 @@ theorem om_pair (W : R2 Ω l) (s : G ℚ Ω) (x y : Fin 2 → Qbar l) :
     show (dt W)⁻¹ s * dt W s = 1 by simp, Units.val_one, mul_one]
 
 /- English proof (translation)
-Simplify using `only [cup]`. Rewrite using `[cocycle_mulVec hb s t, cocycle_mulVec ha r s, mat_mul' (dual1 W) r s, ← Matrix.mulVec_mulVec, Matrix.mulVec_add, om_add_right, om_add_left, om_pair]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cup_cocycle (W : R2 Ω l) {a b : G ℚ Ω → Fin 2 → Qbar l} (ha : a ∈ Z1 (Loc.colRep W))
     (hb : b ∈ Z1 (Loc.colRep (dual1 W))) (r s t : G ℚ Ω) :
@@ -124,27 +124,27 @@ theorem cup_cocycle (W : R2 Ω l) {a b : G ℚ Ω → Fin 2 → Qbar l} (ha : a 
   ring
 
 /- English proof (translation)
-Simplify using `[Cg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cg_refl (n : ℕ) (x : Qbar l) : Cg n x x := by
   simp [Cg]
 
 /- English proof (translation)
-Establish `z1 : z 1 = 0`. Use `cocycle_mulVec hz 1 1` as an intermediate fact. Rewrite `this` using `[mul_one, mat_one', Matrix.one_mulVec]`. Simplify using `using this`. Set `K : Subgroup (G ℚ Ω)` to `{ carrier := {g | mat V g = 1 ∧ z g = 0} one_mem' := ⟨mat_one' V, z1⟩ mul_mem' := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Introduce and unpack `g h ⟨h1, h2⟩ ⟨h3, h4⟩`. Conclude with `⟨by rw [mat_mul', h1, h3, mul_one], by rw [cocycle_mulVec hz, h2, h4, Matrix.mulVec_zero, add_zero]⟩`. Use the proof step `inv_mem' := by`. Introduce and unpack `g ⟨h1, h2⟩`. Establish `hm : mat V g⁻¹ * mat V g = 1` using `by rw [← mat_mul', inv_mul_cancel, mat_one']`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[h1, mul_one]`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Use `cocycle_mulVec hz g⁻¹ g` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, z1, h2, Matrix.mulVec_zero, add_zero]`. Conclude with `this.symm }`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : K.Normal` using `⟨fun g ⟨h1, h2⟩ x => by`. Establish `hm : mat V (x * g * x⁻¹) = 1`. Rewrite using `[mat_mul', mat_mul', h1, mul_one, ← mat_mul', mul_inv_cancel, mat_one']`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[cob_conj hz x g 0 (by rw [h2, Matrix.mulVec_zero, sub_zero]), hm, Matrix.one_mulVec, sub_self]⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcl : IsClosed (K : Set (G ℚ Ω))` using `(isClosed_eq hV continuous_const).inter (isClosed_eq hz.1 continuous_const)`. Introduce `α hα`. Establish `hle : NS Ω (S : Set Pl) ≤ K`. Use `Subgroup.topologicalClosure_minimal _ (Subgroup.normalClosure_le_normal ?_) hcl` and prove the remaining obligations. Introduce `τ hτ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Set.mem_iUnion] at hτ`. Take `⟨v, hv, A, hA, hτ⟩` from `hτ`. Establish `hv' : v ∉ S` using `by simpa using hv`. Establish `hτ' : τ ∈ Ine (F` using `ℚ) A := hτ`. Establish `hm : mat V τ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : V τ = 1` using `hI v hv' A hA hτ'`. Simplify using `[mat, h1]`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Establish `hl : ((l : ℕ) : 𝓞 ℚ) ∉ v.asIdeal` using `fun h => hv' (hS v h)`. Take `⟨B0, hB0, x, hx⟩` from `hu v hl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x', hx'⟩` from `(place_indep l Ω V z hz v B0 A hB0 hA).1 ⟨x, hx⟩`. Rewrite using `[hx' τ hτ', hm, Matrix.one_mulVec, sub_self]`. Conclude with `hle hα`.
+A detailed English derivation is pending.
 -/
 theorem vanish_NS [IsAlgClosure ℚ Ω] {S : Finset Pl} (hS : ContainsAbove S l) (V : R2 Ω l)
     (hV : Continuous fun s => mat V s) {z : G ℚ Ω → Fin 2 → Qbar l} (hz : z ∈ Z1 (Loc.colRep V))
@@ -194,21 +194,19 @@ theorem vanish_NS [IsAlgClosure ℚ Ω] {S : Finset Pl} (hS : ContainsAbove S l)
   exact hle hα
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ c n S W a b hW hWi hdt hS hI ha hb hai hbi hua hub`. Establish `hWc` using `continuous_mat W hW`. Establish `hDc` using `continuous_mat_dual1 W hW hdt`. Establish `hDI : ∀ w, w ∉ S → ∀ B : ValuationSubring Ω, IsPlaceOver B w → Ine (F` using `ℚ) B ≤ (dual1 W).ker := by`. Introduce `w hw B hB σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : W σ = 1` using `hI w hw B hB hσ`. Establish `hm : mat W σ = 1` using `by simp [mat, h1]`. Establish `he : eps l σ = 1` using `eps_eq_one_of_mem_Ine (fun h => hw (hS w h)) hB hσ`. Use `show dual1 W σ = 1`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show mat (dual1 W) σ = 1`. Rewrite using `[mat_dual1_eq' W hdt, hm, he, Matrix.det_one, mul_one, one_smul]`. Establish `vW` using `vanish_NS hS W hWc ha hua hI`. Establish `vD` using `vanish_NS hS (dual1 W) hDc hb hub hDI`. Establish `hker : (toGS Ω (S : Set Pl)).ker = NS Ω (S : Set Pl)` using `QuotientGroup.ker_mk' _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hD : ∀ s i j, mat (dual1 W) s i j ∈ c.O`. Introduce `s i j`. Rewrite using `[mat_dual1_eq' W hdt, Matrix.smul_apply, smul_eq_mul, Matrix.det_fin_two]`. Conclude with `c.O.mul_mem (c.O.mul_mem (eps_mem c s) (c.O.sub_mem (c.O.mul_mem (hWi s 0 0) (hWi s 1 1)) (c.O.mul_mem (hWi s 0 1) (hWi s 1 0)))) (hWi s i j)`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : Continuous a` using `ha.1`. Establish `hb' : Continuous b` using `hb.1`. Establish `hA : ∀ i, Continuous fun p : G ℚ Ω × G ℚ Ω => a p.1 i` using `fun i => (continuous_apply i).comp (ha'.comp continuous_fst)`. Establish `hB : ∀ i, Continuous fun p : G ℚ Ω × G ℚ Ω => b p.2 i` using `fun i => (continuous_apply i).comp (hb'.comp continuous_snd)`. Establish `hM : ∀ i j, Continuous fun p : G ℚ Ω × G ℚ Ω => mat (dual1 W) p.1 i j` using `fun i j => (continuous_apply j).comp ((continuous_apply i).comp (hDc.comp continuous_fst))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [cup, om, Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Conclude with `((hA 0).mul (((hM 1 0).mul (hB 0)).add ((hM 1 1).mul (hB 1)))).sub ((hA 1).mul (((hM 0 0).mul (hB 0)).add ((hM 0 1).mul (hB 1))))`. Introduce `s t`. Simplify using `only [cup, om, Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Conclude with `c.O.sub_mem (c.O.mul_mem (hai s 0) (c.O.add_mem (c.O.mul_mem (hD s 1 0) (hbi t 0)) (c.O.mul_mem (hD s 1 1) (hbi t 1)))) (c.O.mul_mem (hai s 1) (c.O.add_mem (c.O.mul_mem (hD s 0 0) (hbi t 0)) (c.O.mul_mem (hD s 0 1) (hbi t 1))))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `r s t`. Rewrite using `[cup_cocycle W ha hb r s t]`. Conclude with `cg_refl n _`. Introduce `s t α hα β hβ`. Rewrite `hα`, `hβ` using `[hker]`.
-
-Establish `e : cup W a b (s * α) (t * β) = cup W a b s t`. Simplify using `only [cup]`. Rewrite using `[cocycle_mulVec ha s α, (vW α hα).2, Matrix.mulVec_zero, add_zero, cocycle_mulVec hb t β, (vD β hβ).2, Matrix.mulVec_zero, add_zero, mat_mul', (vD α hα).1, mul_one]`. Rewrite using `[e]`. Conclude with `cg_refl n _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cupProductDualTwist_isTwoCocycle_unramified_alt : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (c : Coef l) (n : ℕ)
     (S : Finset Pl) (W : R2 Ω l) (a b : G ℚ Ω → Fin 2 → Qbar l), Continuous W → (∀ s i j, mat W s i j ∈ c.O) →

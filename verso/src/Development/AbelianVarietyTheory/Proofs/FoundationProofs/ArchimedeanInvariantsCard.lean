@@ -8,11 +8,11 @@ open scoped Matrix
 namespace GlobalTheory.Ord2.GwIneq.Arch
 
 /- English proof (translation)
-Establish `hodd : Odd (l ^ n)` using `((Fact.out : l.Prime).odd_of_ne_two hl).pow`. Take `⟨k, hk⟩` from `hodd`. Establish `h0 : ((l ^ n : ℕ) : Qn c n) = 0`. Use `kill c n (1 : Qn c n)` as an intermediate fact. Rewrite `this` using `[nsmul_eq_mul, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e : (2 : Qn c n) * ((k + 1 : ℕ) : Qn c n) = ((l ^ n : ℕ) : Qn c n) + 1`. Rewrite using `[hk]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `e` using `[h0, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isUnit_iff_exists_inv.mpr ⟨_, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_two (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) (c : Coef l) (n : ℕ) : IsUnit (2 : Qn c n) := by
   have hodd : Odd (l ^ n) := ((Fact.out : l.Prime).odd_of_ne_two hl).pow
@@ -26,9 +26,9 @@ theorem isUnit_two (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) (c : Coef l) (n : ℕ
   exact isUnit_iff_exists_inv.mpr ⟨_, e⟩
 
 /- English proof (translation)
-Rewrite `hdet` using `[Matrix.det_fin_two]`. Rewrite using `[Matrix.trace_fin_two]`. Establish `e00` using `congrFun (congrFun hXX 0) 0`. Establish `e10` using `congrFun (congrFun hXX 1) 0`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two] at e00 e10`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `(X 0 0 - (X 0 0 + X 1 1)) * e00 + X 0 0 * hdet + X 0 1 * e10`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem trace_eq_zero {R : Type} [CommRing R] (X : Matrix (Fin 2) (Fin 2) R) (hXX : X * X = 1)
     (hdet : X.det = -1) : X.trace = 0 := by
@@ -40,15 +40,15 @@ theorem trace_eq_zero {R : Type} [CommRing R] (X : Matrix (Fin 2) (Fin 2) R) (hX
   linear_combination (X 0 0 - (X 0 0 + X 1 1)) * e00 + X 0 0 * hdet + X 0 1 * e10
 
 /- English proof (translation)
-Take `⟨j, hj, -⟩` from `hs`. Establish `hss : s * s = 1`. Use extensionality with `x`. Apply `j.injective` to reduce the goal to its premises. Use `show j (s (s x)) = j x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hj, hj]`. Simplify using the standard rewrite rules. Establish `hXX : matQ c n W hint s * matQ c n W hint s = 1`. Rewrite using `[← matQ_mul, hss, matQ_one]`. Establish `hd : (mat W s).det = -1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hW.odd s ⟨j, hj⟩`. Establish `h2 : ((dt W s : (Qbar l)ˣ) : Qbar l) = (mat W s).det`. Simplify using `[dt, mat, Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[← h2, h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdet : (matQ c n W hint s).det = -1`. Rewrite `hd`, the goal using `[Matrix.det_fin_two]`. Simplify using `only [matQ_apply]`. Rewrite using `[← map_mul, ← map_mul, ← map_sub, ← map_one (red c n), ← map_neg]`. Use `congr 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subalgebra.coe_sub, Subalgebra.coe_mul, Subalgebra.coe_neg, Subalgebra.coe_one]`. Conclude with `hd`. Conclude with `GlobalTheory.OddInvolution.card_fixed l (Qn c n) _ (isUnit_two l hW.l_odd c n) hXX hdet (trace_eq_zero _ hXX hdet)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_fixed_cc (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
     (e : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l) (hW : Nf e S A W) (c : Coef l)
@@ -79,9 +79,9 @@ theorem card_fixed_cc (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra �
     (trace_eq_zero _ hXX hdet)
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ e S A W hW c hint hN n _ cc hcc`. Unfold `archH0Card`. Establish `hfil : (Finset.univ.filter (fun w : InfinitePlace ℚ => w.IsReal)) = {Rat.infinitePlace}`. Use extensionality with `w`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun _ => Subsingleton.elim _ _, fun h => h ▸ Rat.isReal_infinitePlace⟩`. Rewrite using `[IsTotallyReal.nrComplexPlaces_eq_zero ℚ, pow_zero, mul_one]`. Use `Finset.prod_singleton (fun w : InfinitePlace ℚ => Nat.card {m : Mn c n // rhoS c n W hint S hN (toGS Ω _ (cc w)) m = m}) Rat.infinitePlace using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hfil]`. Conclude with `(card_fixed_cc l Ω e S A W hW c hint n _ _ (hcc _ Rat.isReal_infinitePlace)).symm`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archimedean_h0_card_eq : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (e : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l), Nf e S A W → ∀ (c : Coef l) (hint : ∀ s i j, mat W s i j ∈ c.O) (hN : ∀ a ∈ NS Ω (S : Set Pl), W a = 1) (n : ℕ), 1 ≤ n → ∀ cc : InfinitePlace ℚ → G ℚ Ω, (∀ w, w.IsReal → IsCCAt w (cc w)) → archH0Card S (rhoS c n W hint S hN) cc = Nat.card (Qn c n) := by
   intro l _ Ω _ _ _ e S A W hW c hint hN n _ cc hcc

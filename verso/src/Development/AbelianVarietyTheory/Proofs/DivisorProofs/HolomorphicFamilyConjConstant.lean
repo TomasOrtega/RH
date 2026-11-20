@@ -14,7 +14,7 @@ def unit (j : J) (p q : Fin (d j)) : Π i, Matrix (Fin (d i)) (Fin (d i)) ℂ :=
   Pi.single j (Matrix.single p q 1)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using `[Pi.single_apply, Ne.symm h]`. Simplify using `[Pi.single_apply, hk]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma pi_single_mul_ne {R : J → Type} [∀ i, MulZeroClass (R i)] {i j : J} (h : i ≠ j)
     (x : R i) (y : R j) : (Pi.single i x : Π k, R k) * Pi.single j y = 0 := by
@@ -24,28 +24,28 @@ lemma pi_single_mul_ne {R : J → Type} [∀ i, MulZeroClass (R i)] {i j : J} (h
   · simp [Pi.single_apply, hk]
 
 /- English proof (translation)
-The claim follows from `pi_single_mul_ne h _ _`.
+A detailed English derivation is pending.
 -/
 lemma unit_mul_ne_factor {j j' : J} (h : j ≠ j') (p q : Fin (d j)) (p' q' : Fin (d j')) :
     unit (d := d) j p q * unit j' p' q' = 0 :=
   pi_single_mul_ne h _ _
 
 /- English proof (translation)
-Simplify using `only [unit, ← Pi.single_mul, Matrix.single_mul_single_same, _root_.mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 lemma unit_mul_same (j : J) (p q r : Fin (d j)) :
     unit (d := d) j p q * unit j q r = unit j p r := by
   simp only [unit, ← Pi.single_mul, Matrix.single_mul_single_same, _root_.mul_one]
 
 /- English proof (translation)
-Simplify using `only [unit, ← Pi.single_mul, Matrix.single_mul_single_of_ne _ _ _ _ h, Pi.single_zero]`.
+Simplify using the standard rewrite rules.
 -/
 lemma unit_mul_ne (j : J) (p q p' r : Fin (d j)) (h : q ≠ p') :
     unit (d := d) j p q * unit j p' r = 0 := by
   simp only [unit, ← Pi.single_mul, Matrix.single_mul_single_of_ne _ _ _ _ h, Pi.single_zero]
 
 /- English proof (translation)
-The claim follows from `map_sum (AddMonoidHom.single R j) f s`.
+A detailed English derivation is pending.
 -/
 lemma pi_single_sum {R : J → Type} [∀ i, AddCommMonoid (R i)] {X : Type} (s : Finset X)
     (j : J) (f : X → R j) :
@@ -53,9 +53,9 @@ lemma pi_single_sum {R : J → Type} [∀ i, AddCommMonoid (R i)] {X : Type} (s 
   map_sum (AddMonoidHom.single R j) f s
 
 /- English proof (translation)
-Simplify using `only [unit]`. Establish `: ∀ j, ∑ k, (Pi.single j (Matrix.single k k (1:ℂ)) : Π i, Matrix (Fin (d i)) (Fin (d i)) ℂ) = Pi.single j 1`. Introduce `j`. Rewrite using `[← Matrix.sum_single_one, pi_single_sum]`. Simplify using `only [this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.univ_sum_single (fun j => (1 : Matrix (Fin (d j)) (Fin (d j)) ℂ))`.
+A detailed English derivation is pending.
 -/
 lemma sum_unit_diag : ∑ j, ∑ k, unit (d := d) j k k = 1 := by
   simp only [unit]
@@ -67,7 +67,7 @@ lemma sum_unit_diag : ∑ j, ∑ k, unit (d := d) j k k = 1 := by
   exact Finset.univ_sum_single (fun j => (1 : Matrix (Fin (d j)) (Fin (d j)) ℂ))
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Finset.univ_sum_single t]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [Matrix.matrix_eq_sum_single (t j)]`. Simplify using `only [unit, pi_single_sum, ← Pi.single_smul, Matrix.smul_single, smul_eq_mul, _root_.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma eq_sum_unit (t : Π i, Matrix (Fin (d i)) (Fin (d i)) ℂ) :
     t = ∑ j, ∑ p, ∑ q, t j p q • unit j p q := by
@@ -91,22 +91,22 @@ def conjMat (f g : (Π i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →ₐ[ℂ] A) : A
   ∑ j, ∑ k, f (unit j k 0) * g (unit j 0 k)
 
 /- English proof (translation)
-Simplify using `only [conjMat, ← map_mul, unit_mul_same, ← map_sum, sum_unit_diag, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 lemma conjMat_self (f : (Π i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →ₐ[ℂ] A) :
     conjMat f f = 1 := by
   simp only [conjMat, ← map_mul, unit_mul_same, ← map_sum, sum_unit_diag, map_one]
 
 /- English proof (translation)
-Establish `hL : f (unit j' p q) * conjMat f g = f (unit j' p 0) * g (unit j' 0 q)`. Simplify using `only [conjMat, Finset.mul_sum, ← _root_.mul_assoc, ← map_mul]`. Rewrite using `[Finset.sum_eq_single j']`. Rewrite using `[Finset.sum_eq_single q]`. Rewrite using `[unit_mul_same]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `k _ hk`. Rewrite using `[unit_mul_ne _ _ _ _ _ (Ne.symm hk), map_zero, zero_mul]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[unit_mul_ne_factor (Ne.symm hj), map_zero, zero_mul]`. Simplify using the standard rewrite rules. Establish `hR : conjMat f g * g (unit j' p q) = f (unit j' p 0) * g (unit j' 0 q)`. Simplify using `only [conjMat, Finset.sum_mul, _root_.mul_assoc, ← map_mul]`. Rewrite using `[Finset.sum_eq_single j']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single p]`. Rewrite using `[unit_mul_same]`. Introduce `k _ hk`. Rewrite using `[unit_mul_ne _ _ _ _ _ hk, map_zero, mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `j _ hj`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[unit_mul_ne_factor hj, map_zero, mul_zero]`. Simplify using the standard rewrite rules. Rewrite using `[hL, hR]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma conjMat_unit (f g : (Π i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →ₐ[ℂ] A)
     (j' : J) (p q : Fin (d j')) :
@@ -138,7 +138,7 @@ lemma conjMat_unit (f g : (Π i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →ₐ[ℂ]
   rw [hL, hR]
 
 /- English proof (translation)
-Rewrite using `[eq_sum_unit t]`. Simplify using `only [map_sum, map_smul, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc, mul_smul_comm, conjMat_unit]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma conjMat_intertwines (f g : (Π i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →ₐ[ℂ] A)
     (t : Π i, Matrix (Fin (d i)) (Fin (d i)) ℂ) :
@@ -150,13 +150,13 @@ lemma conjMat_intertwines (f g : (Π i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →�
 end HolConj
 
 /- English proof (translation)
-Introduce `S _ _ _ _ g m B b₀ F hB hb₀ hF`. Take `⟨n, d, hd, ⟨e⟩⟩` from `IsSemisimpleRing.exists_algEquiv_pi_matrix_of_isAlgClosed ℂ S`. Set `f : (Fin m → ℂ) → ((Π i, Matrix (Fin (d i)) (Fin (d i)) ℂ) →ₐ[ℂ] Matrix (Fin g) (Fin g) ℂ)` to `fun b => (F b).comp e.symm.toAlgHom`. Set `h : (Fin m → ℂ) → Matrix (Fin g) (Fin g) ℂ` to `fun b => HolConj.conjMat (f b) (f b₀)`. Establish `hdiff : ∀ i j, DifferentiableOn ℂ (fun b => h b i j) B`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `i j`. Simplify using `only [h, f, HolConj.conjMat, Matrix.sum_apply, Matrix.mul_apply, AlgHom.comp_apply]`. Use `DifferentiableOn.fun_sum fun _ _ => DifferentiableOn.fun_sum fun _ _ => DifferentiableOn.fun_sum fun _ _ => (hF _ _ _).mul_const _` and prove the remaining obligations. Establish `hc : ContinuousOn h B` using `continuousOn_pi.2 fun i => continuousOn_pi.2 fun j => (hdiff i j).continuousOn`. Establish `hdet : ContinuousOn (fun b => (h b).det) B` using `(continuous_id.matrix_det).comp_continuousOn hc`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₀ : h b₀ = 1` using `HolConj.conjMat_self _`. Use `⟨B ∩ (fun b => (h b).det) ⁻¹' {0}ᶜ, h, hdet.isOpen_inter_preimage hB isOpen_compl_singleton, ⟨hb₀, by simp [h₀]⟩, Set.inter_subset_left, h₀, fun i j => (hdiff i j).mono Set.inter_subset_left, ?_⟩` and prove the remaining obligations. Introduce and unpack `b ⟨-, hb⟩`. Use `⟨(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hb), fun a => ?_⟩` and prove the remaining obligations. Use `HolConj.conjMat_intertwines (f b) (f b₀) (e a)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[f]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem holFamily_conj_const : ∀ (S : Type) [Ring S] [Algebra ℂ S] [FiniteDimensional ℂ S] [IsSemisimpleRing S] (g m : ℕ) (B : Set (Fin m → ℂ)) (b₀ : Fin m → ℂ) (F : (Fin m → ℂ) → (S →ₐ[ℂ] Matrix (Fin g) (Fin g) ℂ)), IsOpen B → b₀ ∈ B → (∀ a i j, DifferentiableOn ℂ (fun b => F b a i j) B) → ∃ (B' : Set (Fin m → ℂ)) (h : (Fin m → ℂ) → Matrix (Fin g) (Fin g) ℂ), IsOpen B' ∧ b₀ ∈ B' ∧ B' ⊆ B ∧ h b₀ = 1 ∧ (∀ i j, DifferentiableOn ℂ (fun b => h b i j) B') ∧ ∀ b ∈ B', IsUnit (h b) ∧ ∀ a, F b a * h b = h b * F b₀ a := by
   intro S _ _ _ _ g m B b₀ F hB hb₀ hF

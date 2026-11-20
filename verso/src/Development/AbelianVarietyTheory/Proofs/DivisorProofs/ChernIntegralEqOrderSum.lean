@@ -25,11 +25,11 @@ namespace ChernMass
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
 
 /- English proof (translation)
-Introduce `h0`. Establish `hgi : genericPoint X ∈ L.U i` using `((genericPoint_spec X).mem_open_set_iff (L.U i).isOpen).2 ⟨x, trivial, hx⟩`. Take `⟨j, hj⟩` from `Opens.mem_iSup.1 hs`. Establish `hgj : genericPoint X ∈ L.U j` using `X.basicOpen_le _ hj`. Establish `hu` using `(X.mem_basicOpen (s.f j) _ hgj).1 hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : genericPoint X ∈ L.U j ⊓ L.U i` using `⟨hgj, hgi⟩`. Establish `e` using `s.compat j i`. Rewrite `e` using `[h0, map_zero, mul_zero]`. Rewrite `hu` using `[← Cartier.germ_resG (inf_le_left : L.U j ⊓ L.U i ≤ L.U j) _ hg]`. Establish `e' : resG X (inf_le_left : L.U j ⊓ L.U i ≤ L.U j) (s.f j) = 0` using `e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hu` using `[e', map_zero]`. Conclude with `not_isUnit_zero hu`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_f_ne_zero [IsIntegral X] {L : LB X} {s : L.Sec} (hs : genericPoint X ∈ nonzeroLocus s)
     {i : L.ι} {x : X} (hx : x ∈ L.U i) : s.f i ≠ 0 := by
@@ -48,11 +48,9 @@ theorem sec_f_ne_zero [IsIntegral X] {L : LB X} {s : L.Sec} (hs : genericPoint X
   exact not_isUnit_zero hu
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `R.cover x`. Use `set c := R.chart a`. Establish `hW : x.pt ∈ L.U (pick φ.isLB x)` using `mem_ptsIn.1 (mem_pick φ.isLB x)`. Take `⟨u, hu, hu0, he⟩` from `GlobalTheory.T.local_section_order_factorisation k X p hX σ c _ (s.f (pick φ.isLB x)) (sec_f_ne_zero hs hW) x ha hW`. Establish `hc : Tendsto (FinChart.toV 1) (𝓝 (c.finChart x)) (𝓝 (c.e x))` using `(FinChart.toV 1).continuous.tendsto' _ _ (c.toV_finChart x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c.finChart, R.isCompatChart_finAtlas c, ha, u ∘ (EuclideanSpace.equiv (Fin 1) ℂ).symm, ?_, hu0, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hc.eventually hu] with v hv`. Conclude with `DifferentiableAt.comp v hv (EuclideanSpace.equiv (Fin 1) ℂ).symm.differentiableAt`. Use `filter_upwards [hc.eventually he] with v hv`. Rewrite using `[secOrd_eq φ.isLB s hW]`.
-
-Conclude with `hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local_form [IsIntegral X] (hX : IsArithVar p 1) (R : AnRead p σ 1)
     [CompactSpace (CxPts p σ)] {L : LB X} (φ : Weight p σ L) (s : L.Sec)
@@ -81,23 +79,21 @@ end ChernMass
 open ChernMass in
 
 /- English proof (translation)
-Introduce `k _ X p _ hX σ ⟨R⟩ L φ hφ s hs`. Use `hX.compactSpace σ` as an intermediate fact. Use `CxPts.t2Space_cxPts_of_isProjOver σ hX.isProjOver` as an intermediate fact. Use `CxPts.secondCountableTopology_of_isProjOver σ hX.isProjOver` as an intermediate fact. Establish `hT : (ptsIn p σ (nonzeroLocus s))ᶜ.Finite` using `GlobalTheory.SurfacePoints.finite_compl_ptsIn k X p hX _ hs σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set F := hT.toFinset with hF`. Set `P : Fin F.card → CxPts p σ` to `fun j => (F.equivFin.symm j).1`. Establish `hP : Function.Injective P` using `fun a b h => F.equivFin.symm.injective (Subtype.ext h)`. Establish `hPr : ∀ y, y ∈ Set.range P ↔ y ∈ F` using `fun y => ⟨fun ⟨j, e⟩ => e ▸ (F.equivFin.symm j).2, fun h => ⟨F.equivFin ⟨y, h⟩, by simp [P]⟩⟩`. Set `m : Fin F.card → ℕ` to `fun j => secOrd φ.isLB s (P j).pt`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsnc : IsSNC R.finAtlas φ.locPot (φ.locSec (secVal p σ s)) m (fun j => {P j})`. Use `GlobalTheory.T.meromorphic_section_local_order _ R.finAtlas φ.locPot _ _ m P hP fun x => ?_` and prove the remaining obligations. Take `⟨ψ, hψ, hx, u, hu, hu0, he⟩` from `exists_local_form hX R φ s hs x`. Use `⟨ψ, hψ, hx, secOrd φ.isLB s x.pt, u, hu, hu0, he, fun j e => by simp [m, e], fun h => ?_⟩` and prove the remaining obligations. Use `secOrd_eq_zero φ.isLB (mem_ptsIn.1 ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h'`. Conclude with `h ((hPr x).2 (by simpa [hF] using h'))`. Establish `hsm : φ.IsSmooth R` using `(Weight.isCInf_iff_isSmooth R).1 hφ`. Establish `hpot : IsPotential R.finAtlas φ.locPot` using `Weight.isPotential_locPot hsm`. Establish `hpl` using `plCurve R.finAtlas φ.locPot _ m P hP hpot (Weight.isSection_locSec φ (R.secVal_mem_holSec s)) hsnc (fun _ => 1) (fun _ => contDiffOn_const)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : mInt R.finAtlas ![LocPot.ofFun fun _ => (1 : ℝ)] (logNormSec φ.locPot (φ.locSec (secVal p σ s))) = 0` using `mIntConstPot (e := 0) R.finAtlas 1 ![] _`. Establish `hi : MIntegrable R.finAtlas (fun _ => φ.locPot) (fun _ => (1 : ℝ))` using `mIntegrableCont _ _ (fun _ => hpot) _ continuous_const`. Establish `hc` using `Weight.chernInt_eq_mInt R hφ (g := fun _ => (1 : ℝ)) measurable_const`. Establish `hfun : (![φ.locPot] : Fin 1 → LocPot (CxPts p σ)) = fun _ => φ.locPot`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `fin_cases i`. Both sides reduce to the same expression. Rewrite `hpl` using `[h0, hfun]`. Rewrite using `[hc.2 (hc.1.2 hi)]`. Establish `hsum : ∑ᶠ y : CxPts p σ, (secOrd φ.isLB s y.pt : ℝ) = ∑ k, (m k : ℝ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[finsum_eq_sum_of_support_subset (s := F)]`. Rewrite using `[← Finset.sum_coe_sort F]`. Conclude with `(Fintype.sum_equiv F.equivFin _ _ fun y => by simp [m, P]).trans rfl`. Introduce `y hy`. Assume the negation of the conclusion as `h'`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Use `hy ?_` and prove the remaining obligations. Establish `: y ∈ ptsIn p σ (nonzeroLocus s)`. Assume the negation of the conclusion as `h''`. Conclude with `h' (by simpa [hF] using h'')`. Simplify using `[secOrd_eq_zero φ.isLB (mem_ptsIn.1 this)]`.
-
-Rewrite using `[hsum]`. Simplify using `only [mul_one] at hpl`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem chernInt_curve_eq_finsum_secOrd : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k)
     [IsIntegral X], IsArithVar p 1 → ∀ σ : k →+* ℂ, Nonempty (AnRead p σ 1) → ∀ (L : LB X)

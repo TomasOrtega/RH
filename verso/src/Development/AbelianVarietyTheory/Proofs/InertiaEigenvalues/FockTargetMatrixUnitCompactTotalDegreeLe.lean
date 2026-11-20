@@ -25,11 +25,11 @@ noncomputable section
 namespace GlobalTheory.LowestKType.DegBound
 
 /- English proof (translation)
-Use `conv_lhs => rw [P.as_sum, map_sum, Finset.mul_sum]`. Use `(MvPolynomial.totalDegree_finsetSum _ _).trans (Finset.sup_le fun s hs => ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.pderiv_monomial]`. Distinguish the cases in `h : s b = 0`. Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ (MvPolynomial.le_totalDegree hs)` and prove the remaining obligations. Rewrite using `[MvPolynomial.X, MvPolynomial.monomial_mul]`. Use `(MvPolynomial.totalDegree_monomial_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Establish `h1 : s = Finsupp.single b 1 + (s - Finsupp.single b 1)`. Rewrite using `[add_tsub_cancel_of_le]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 h)`. Use `conv_rhs => rw [h1]`. Rewrite using `[Finsupp.sum_add_index' (by simp) (by simp), Finsupp.sum_add_index' (by simp) (by simp)]`. Simplify using `[Function.id_def]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deg_X_mul_pderiv {σ : Type} (a b : σ) (P : MvPolynomial σ ℂ) :
     (MvPolynomial.X a * MvPolynomial.pderiv b P).totalDegree ≤ P.totalDegree := by
@@ -50,7 +50,7 @@ theorem deg_X_mul_pderiv {σ : Type} (a b : σ) (P : MvPolynomial σ ℂ) :
     simp [Function.id_def]
 
 /- English proof (translation)
-Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Use `(MvPolynomial.totalDegree_add _ _).trans (max_le (deg_X_mul_pderiv _ _ _) ?_)` and prove the remaining obligations. Rewrite using `[MvPolynomial.pderiv_X, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem deg_pderiv_X_mul {σ : Type} (a b : σ) (P : MvPolynomial σ ℂ) :
     (MvPolynomial.pderiv b (MvPolynomial.X a * P)).totalDegree ≤ P.totalDegree := by
@@ -67,7 +67,7 @@ def nonRaising (σ : Type) : Submodule ℂ (Module.End ℂ (MvPolynomial σ ℂ)
   smul_mem' c L h P := (MvPolynomial.totalDegree_smul_le _ _).trans (h P)
 
 /- English proof (translation)
-Introduce `_` and use `le_rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_mem_nonRaising (σ : Type) : (1 : Module.End ℂ (MvPolynomial σ ℂ)) ∈ nonRaising σ :=
   fun _ => le_rfl
@@ -79,17 +79,13 @@ namespace GlobalTheory.LowestKType
 open GlobalTheory.LowestKType.DegBound
 
 /- English proof (translation)
-Use `le_trans ?_ hP` and prove the remaining obligations. It suffices to establish `h : kop w τ a b ∈ nonRaising (FVar D m n) from h P`. Unfold `kop GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.fockT`. Use `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hil : i = a ∧ l = b`.
+Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨rfl, rfl⟩` from `hil`. Use `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun j _ => Submodule.add_mem _ ?_ ?_)` and prove the remaining obligations. Introduce `Q`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.raiO, GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.lowO, GlobalTheory.IndefiniteRowSideFullHecke.RaisingLoweringOperators.sgn, if_true, one_smul]`. Unfold `Cpt at hab`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hi : (i : ℕ) < w.p τ`. Establish `hl : (l : ℕ) < w.p τ` using `hab.1 hi`. Simplify using `only [hi, hl, decide_true, if_true, Module.End.mul_apply, LinearMap.mulLeft_apply]`. Conclude with `deg_X_mul_pderiv _ _ _`. Establish `hl : ¬ (l : ℕ) < w.p τ` using `fun h => hi (hab.2 h)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hi, hl, decide_false, Bool.false_eq_true, if_false, Module.End.mul_apply, LinearMap.mulLeft_apply, LinearMap.neg_apply, MvPolynomial.totalDegree_neg]`. Conclude with `deg_pderiv_X_mul _ _ _`. Use `split_ifs`. Conclude with `Submodule.smul_mem _ _ (one_mem_nonRaising _)`. Conclude with `Submodule.zero_mem _`.
-
-Establish `: Matrix.single a b (1 : ℂ) i l = 0`. Rewrite using `[Matrix.single_apply]`. Use `split_ifs with h`. Conclude with `absurd ⟨h.1.symm, h.2.symm⟩ hil`. Both sides reduce to the same expression.
-
-Rewrite using `[this, zero_smul]`. Conclude with `Submodule.zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kop_totalDegree_le (D : D7) (n m : ℕ) (w : GlobalTheory.ExportSeries.Weight D n) (τ : D.what₂.Tau) (a b : Fin m)
     (hab : Cpt w τ a b) (d : ℕ) (P : PolF D m n) (hP : P.totalDegree ≤ d) :

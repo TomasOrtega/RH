@@ -7,11 +7,11 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry
 namespace GlobalTheory.IdealSectionsFactorization
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Use `⟨pullback.lift g (g ≫ x) ?_, pullback.lift_fst _ _ _⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `[pullback.diagonal_fst, pullback.lift_fst]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `[pullback.diagonal_snd, pullback.lift_snd, hg]`. Introduce and unpack `⟨l, rfl⟩`. Establish `hc` using `pullback.condition (f := pullback.lift x y h) (g := pullback.diagonal p)`. Establish `h1` using `congrArg (· ≫ pullback.fst p p) hc`. Establish `h2` using `congrArg (· ≫ pullback.snd p p) hc`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Category.assoc, pullback.lift_fst, pullback.lift_snd, pullback.diagonal_fst, pullback.diagonal_snd, Category.comp_id] at h1 h2`. Rewrite using `[Category.assoc, Category.assoc, h1, h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_eq_iff_factors {S X B W : Scheme.{0}} (p : X ⟶ B) (x y : S ⟶ X)
     (h : x ≫ p = y ≫ p) (g : W ⟶ S) :
@@ -33,11 +33,11 @@ theorem comp_eq_iff_factors {S X B W : Scheme.{0}} (p : X ⟶ B) (x y : S ⟶ X)
     rw [Category.assoc, Category.assoc, h1, h2]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, hl⟩ r hr`. Take `⟨φ, rfl⟩` from `Spec.map_surjective l`. Rewrite `hl` using `[← Spec.map_comp]`. Establish `h` using `Spec.map_injective hl`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h' : φ.hom (Ideal.Quotient.mk I r) = ψ r` using `congrArg (fun k : CommRingCat.of R ⟶ CommRingCat.of T => k.hom r) h`. Rewrite using `[← h', Ideal.Quotient.eq_zero_iff_mem.mpr hr, map_zero]`. Introduce `h`. Use `⟨Spec.map (CommRingCat.ofHom (Ideal.Quotient.lift I ψ h)), ?_⟩` and prove the remaining obligations. Rewrite using `[← Spec.map_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments.
 -/
 theorem factors_iff_kills {R T : Type} [CommRing R] [CommRing T] (I : Ideal R) (ψ : R →+* T) :
     (∃ l : Spec (CommRingCat.of T) ⟶ Spec (CommRingCat.of (R ⧸ I)),
@@ -57,9 +57,9 @@ theorem factors_iff_kills {R T : Type} [CommRing R] [CommRing T] (I : Ideal R) (
     congr 1
 
 /- English proof (translation)
-Establish `h : x ≫ X.hom = y ≫ X.hom` using `hx.trans hy.symm`. Establish `hc : IsClosedImmersion (pullback.fst (pullback.lift x y h) (pullback.diagonal X.hom))` using `IsClosedImmersion.isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback _ _).flip hX.isClosedImmersion_diagonal`. Take `⟨I, e, he⟩` from `IsClosedImmersion.Spec_iff.mp hc`. Use `⟨I, fun T _ ψ => ?_⟩` and prove the remaining obligations. Rewrite using `[comp_eq_iff_factors X.hom x y h, ← factors_iff_kills I ψ, he]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, hl⟩`. Conclude with `⟨l ≫ e.hom, by rw [Category.assoc]; exact hl⟩`. Introduce and unpack `⟨l, hl⟩`. Conclude with `⟨l ≫ e.inv, by rw [Category.assoc, e.inv_hom_id_assoc]; exact hl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exists_ideal_sections_eq (R : Type) [CommRing R]
     (X : Over (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp R)) (hX : IsSeparated X.hom)

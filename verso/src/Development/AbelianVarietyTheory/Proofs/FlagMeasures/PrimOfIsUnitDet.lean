@@ -16,37 +16,37 @@ def sols (c : A →+* A) {m : ℕ} (n : ℕ) (G : Matrix (Fin m) (Fin m) A) :
 variable (c : A →+* A) {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [ip, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ip_add_left (x x' y : Fin n → A) : ip c (x + x') y = ip c x y + ip c x' y := by
   simp only [ip, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [ip, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ip_add_right (x y y' : Fin n → A) : ip c x (y + y') = ip c x y + ip c x y' := by
   simp only [ip, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [ip, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ip_sub_left (x x' y : Fin n → A) : ip c (x - x') y = ip c x y - ip c x' y := by
   simp only [ip, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `[ip]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ip_zero_left (y : Fin n → A) : ip c 0 y = 0 := by
   simp [ip]
 
 /- English proof (translation)
-Simplify using `[ip]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ip_zero_right (x : Fin n → A) : ip c x 0 = 0 := by
   simp [ip]
 
 /- English proof (translation)
-Unfold `ip`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ip_smul_left (a : A) (x y : Fin n → A) : ip c (a • x) y = a * ip c x y := by
   unfold ip
@@ -56,7 +56,7 @@ theorem ip_smul_left (a : A) (x y : Fin n → A) : ip c (a • x) y = a * ip c x
   ring
 
 /- English proof (translation)
-Unfold `ip`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ip_smul_right (a : A) (x y : Fin n → A) : ip c x (a • y) = c a * ip c x y := by
   unfold ip
@@ -66,7 +66,7 @@ theorem ip_smul_right (a : A) (x y : Fin n → A) : ip c x (a • y) = c a * ip 
   ring
 
 /- English proof (translation)
-Unfold `ip`. Simplify using `only [Finset.sum_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ip_sum_left {ι : Type} (s : Finset ι) (x : ι → Fin n → A) (y : Fin n → A) :
     ip c (∑ a ∈ s, x a) y = ∑ a ∈ s, ip c (x a) y := by
@@ -75,7 +75,7 @@ theorem ip_sum_left {ι : Type} (s : Finset ι) (x : ι → Fin n → A) (y : Fi
   exact Finset.sum_comm
 
 /- English proof (translation)
-Unfold `ip`. Simplify using `only [Finset.sum_apply, map_sum, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ip_sum_right {ι : Type} (s : Finset ι) (x : Fin n → A) (y : ι → Fin n → A) :
     ip c x (∑ a ∈ s, y a) = ∑ a ∈ s, ip c x (y a) := by
@@ -84,7 +84,7 @@ theorem ip_sum_right {ι : Type} (s : Finset ι) (x : Fin n → A) (y : ι → F
   exact Finset.sum_comm
 
 /- English proof (translation)
-Unfold `ip`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hc, mul_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cj_ip (hc : ∀ u, c (c u) = u) (x y : Fin n → A) : c (ip c x y) = ip c y x := by
   unfold ip
@@ -93,7 +93,7 @@ theorem cj_ip (hc : ∀ u, c (c u) = u) (x y : Fin n → A) : c (ip c x y) = ip 
   rw [map_mul, hc, mul_comm]
 
 /- English proof (translation)
-Unfold `ip`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hφ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_ip {B : Type} [CommRing B] (c' : B →+* B) (φ : A →+* B)
     (hφ : ∀ u, φ (c u) = c' (φ u)) (x y : Fin n → A) :
@@ -104,9 +104,9 @@ theorem map_ip {B : Type} [CommRing B] (c' : B →+* B) (φ : A →+* B)
   rw [map_mul, hφ]
 
 /- English proof (translation)
-Unfold `Prim`. Use `⟨fun b => ∑ k, c ((Matrix.of fun a b => ip c (x a) (y b))⁻¹ k b) • y k, fun a b => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun (Matrix.mul_nonsing_inv _ h) a) b`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.of_apply] at h1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ip_sum_right]`. Simplify using `only [ip_smul_right, hc]`. Rewrite using `[← h1]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prim_of_isUnit_det (hc : ∀ u, c (c u) = u) {m : ℕ} (x y : Fin m → Fin n → A)
     (h : IsUnit (Matrix.of fun a b => ip c (x a) (y b)).det) : Prim c x := by
@@ -123,11 +123,11 @@ theorem prim_of_isUnit_det (hc : ∀ u, c (c u) = u) {m : ℕ} (x y : Fin m → 
   exact Finset.sum_congr rfl fun k _ => mul_comm _ _
 
 /- English proof (translation)
-Apply `prim_of_isUnit_det c hc x y` to reduce the goal to its premises. Establish `hone : (Ideal.Quotient.mk I).mapMatrix (Matrix.of fun a b => ip c (x a) (y b)) = 1`. Use extensionality with `a b`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.one_apply]`. Establish `hab` using `h a b`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hab` using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, sub_eq_zero]`. Rewrite using `[hab]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `key : (Matrix.of fun a b => ip c (x a) (y b)).det - 1 ∈ I`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_one, RingHom.map_det, hone, Matrix.det_one, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hI _ key`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem prim_of_sub_mem (hc : ∀ u, c (c u) = u) (I : Ideal A) (hI : ∀ u ∈ I, IsUnit (1 + u))
     {m : ℕ} (x y : Fin m → Fin n → A)
@@ -147,9 +147,9 @@ theorem prim_of_sub_mem (hc : ∀ u, c (c u) = u) (I : Ideal A) (hI : ∀ u ∈ 
   simpa using hI _ key
 
 /- English proof (translation)
-Unfold `Prim at h ⊢`. Take `⟨y, hy⟩` from `h`. Use `⟨fun b i => φ (y b i), fun a b => ?_⟩` and prove the remaining obligations. Use `show ip c' (fun i => φ (x a i)) (fun i => φ (y b i)) = _`. Rewrite using `[← map_ip c c' φ hφ (x a) (y b), hy a b]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem Prim.map {B : Type} [CommRing B] (c' : B →+* B) (φ : A →+* B)
     (hφ : ∀ u, φ (c u) = c' (φ u)) {m : ℕ} {x : Fin m → Fin n → A} (h : Prim c x) :
@@ -162,9 +162,9 @@ theorem Prim.map {B : Type} [CommRing B] (c' : B →+* B) (φ : A →+* B)
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `Prim at h`. Take `⟨y', hy'⟩` from `h`. Use `choose y hy using fun b i => hs (y' b i)`. Apply `prim_of_sub_mem c hc (RingHom.ker φ) (fun u hu => hk u (RingHom.mem_ker.mp hu)) x y` to reduce the goal to its premises. Introduce `a b`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : ip c' (fun i => φ (x a i)) (y' b) = if a = b then 1 else 0` using `hy' a b`. Establish `e : (fun i => φ (y b i)) = y' b` using `funext (hy b)`. Rewrite using `[RingHom.mem_ker, map_sub, map_ip c c' φ hφ, e, h2]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem prim_of_map (hc : ∀ u, c (c u) = u) {B : Type} [CommRing B] (c' : B →+* B) (φ : A →+* B)
     (hφ : ∀ u, φ (c u) = c' (φ u)) (hs : Function.Surjective φ)
@@ -182,9 +182,9 @@ theorem prim_of_map (hc : ∀ u, c (c u) = u) {B : Type} [CommRing B] (c' : B �
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `Prim at h`. Take `⟨y, hy⟩` from `h`. Use function extensionality and compare the values at `b`. Establish `hb` using `congrArg (fun z => ip c z (y b)) hs`. Simplify using `only [ip_sum_left, ip_smul_left, hy, ip_zero_left] at hb`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using hb`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Prim.eq_zero {m : ℕ} {x : Fin m → Fin n → A} (h : Prim c x) (s : Fin m → A)
     (hs : ∑ a, s a • x a = 0) : s = 0 := by
@@ -197,11 +197,11 @@ theorem Prim.eq_zero {m : ℕ} {x : Fin m → Fin n → A} (h : Prim c x) (s : F
   simpa using hb
 
 /- English proof (translation)
-Take `⟨U, hU⟩` from `hω`. Establish `h1 : (ω - c ω) * ↑U⁻¹ = 1` using `by rw [← hU]; exact U.mul_inv`. Establish `h2 : (c ω - ω) * c ↑U⁻¹ = 1`. Establish `h3` using `congrArg c h1`. Rewrite `h3` using `[map_mul, map_sub, hc, map_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hv : c ↑U⁻¹ = -(↑U⁻¹ : A)`. Take the linear combination `(-(c ↑U⁻¹)) * h1 + (-(↑U⁻¹ : A)) * h2`. Use `⟨ω * ↑U⁻¹, ω - c ω, ?_, ⟨U, hU⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hv]`. Take the linear combination `h1`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[map_sub, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_trace_one (hc : ∀ u, c (c u) = u) {ω : A} (hω : IsUnit (ω - c ω)) :
     ∃ θ e : A, θ + c θ = 1 ∧ IsUnit e ∧ c e = -e := by
@@ -219,19 +219,19 @@ theorem exists_trace_one (hc : ∀ u, c (c u) = u) {ω : A} (hω : IsUnit (ω - 
     ring
 
 /- English proof (translation)
-Take `⟨U, hU⟩` from `hω`. Establish `h1 : (ω - c ω) * ↑U⁻¹ = 1` using `by rw [← hU]; exact U.mul_inv`. Establish `h2 : (c ω - ω) * c ↑U⁻¹ = 1`. Establish `h3` using `congrArg c h1`. Rewrite `h3` using `[map_mul, map_sub, hc, map_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hvn : c ↑U⁻¹ = -(↑U⁻¹ : A)`. Take the linear combination `(-(c ↑U⁻¹)) * h1 + (-(↑U⁻¹ : A)) * h2`. Take `⟨v, hv1, hv2⟩ : ∃ v : A, (ω - c ω) * v = 1 ∧ c v = -v` from `⟨_, h1, hvn⟩`. Establish `hu : c (ω - c ω) = -(ω - c ω)`. Rewrite using `[map_sub, hc]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hg : ∀ x, σ (v • (x - σ x)) = v • (x - σ x)`. Introduce `x`. Rewrite using `[hs, map_sub, hσ, hv2, neg_smul, ← smul_neg, neg_sub]`. Establish `hab : ω * v = c ω * v + 1` using `by linear_combination hv1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf : ∀ x, σ (x - ω • v • (x - σ x)) = x - ω • v • (x - σ x)`. Introduce `x`. Rewrite using `[map_sub, hs, hg, smul_smul, smul_smul, hab, add_smul, one_smul]`. Normalize the expressions using the abelian group laws. Establish `e : M ≃ {x : M // σ x = x} × {x : M // σ x = x}` using `{ toFun := fun x => (⟨x - ω • v • (x - σ x), hf x⟩, ⟨v • (x - σ x), hg x⟩) invFun := fun p => p.1.1 + ω • p.2.1 left_inv := fun x => sub_add_cancel _ _ right_inv := fun p => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Take `⟨⟨f, hf0⟩, ⟨g, hg0⟩⟩` from `p`. Establish `key : v • (f + ω • g - σ (f + ω • g)) = g`. Rewrite using `[map_add, hs, hf0, hg0, add_sub_add_left_eq_sub, ← sub_smul, smul_smul, mul_comm, hv1, one_smul]`. Use `Prod.ext (Subtype.ext ?_) (Subtype.ext ?_)` and prove the remaining obligations. Use `show f + ω • g - ω • v • (f + ω • g - σ (f + ω • g)) = f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, add_sub_cancel_right]`. Conclude with `key }`. Establish `e2 : {x : M // σ x = -x} ≃ {x : M // σ x = x}` using `{ toFun := fun x => ⟨v • x.1, by rw [hs, x.2, hv2, smul_neg, neg_smul, neg_neg]⟩ invFun := fun y => ⟨(ω - c ω) • y.1, by rw [hs, y.2, hu, neg_smul]⟩ left_inv := fun x => Subtype.ext (by show (ω - c ω) • v • x.1 = x.1`. Rewrite using `[smul_smul, hv1, one_smul])`. Use `right_inv := fun y => Subtype.ext (by show v • (ω - c ω) • y.1 = y.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, mul_comm, hv1, one_smul]) }`. Establish `hM : Nat.card M = Nat.card {x : M // σ x = x} ^ 2`. Rewrite using `[Nat.card_congr e, Nat.card_prod, sq]`. Conclude with `⟨hM.symm, by rw [Nat.card_congr e2, hM]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_fixed_sq (hc : ∀ u, c (c u) = u) {ω : A} (hω : IsUnit (ω - c ω))
     {M : Type} [AddCommGroup M] [Module A M] (σ : M →+ M) (hσ : ∀ x, σ (σ x) = x)

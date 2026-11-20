@@ -17,15 +17,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {sig : E →ₐ[F] E} in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨j, rfl⟩` from `hw`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[O.one_mem]`. Simplify using `[Pi.single_apply, h, O.zero_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Consider the case `zero => intro i`. Simplify using `using O.zero_mem`. Consider the case `add a b _ _ ha hb => intro i`. Simplify using `using O.add_mem (ha i) (hb i)`. Consider the case `smul c a _ ha => intro i`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Simplify `O.mul_mem c.2 (ha i)` using `[Subring.smul_def]`. Introduce `hv`. Establish `hsum : v = ∑ i, (⟨v i, hv i⟩ : O) • (Pi.single i 1 : Fin n → R)`. Use extensionality with `j`. Simplify using `[Subring.smul_def, Finset.sum_apply, Pi.single_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HL.Glue.mem_span_single_iff {R : Type} [CommRing R] (O : Subring R) (n : ℕ)
     (v : Fin n → R) :
@@ -55,7 +55,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {sig : E →ₐ[F] E} in
 
 /- English proof (translation)
-Rewrite using `[_root_.Formalism.MainNotions.S.Loc.LocE.O_def]`. Conclude with `(hx.map (A.loc p).ιE.toIntAlgHom).tower_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HL.Glue.ιE_mem (A : _root_.GlobalTheory.HL.Places F E sig)
     (p : HeightOneSpectrum (𝓞 F)) (x : E) (hx : IsIntegral ℤ x) :

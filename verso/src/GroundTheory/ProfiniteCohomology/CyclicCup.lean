@@ -16,20 +16,20 @@ noncomputable def reprIco (u : AddCircle (1 : ℚ)) : ℚ :=
   (AddCircle.equivIco 1 0 u : ℚ)
 
 /- English proof (translation)
-Unfold `reprIco`. Simplify using `using (AddCircle.equivIco (1 : ℚ) 0 u).2`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem reprIco_mem (u : AddCircle (1 : ℚ)) : reprIco u ∈ Set.Ico (0 : ℚ) 1 := by
   unfold reprIco
   simpa using (AddCircle.equivIco (1 : ℚ) 0 u).2
 
 /- English proof (translation)
-The claim follows from `(AddCircle.equivIco (1 : ℚ) 0).symm_apply_apply u`.
+A detailed English derivation is pending.
 -/
 theorem coe_reprIco (u : AddCircle (1 : ℚ)) : ((reprIco u : ℚ) : AddCircle (1 : ℚ)) = u :=
   (AddCircle.equivIco (1 : ℚ) 0).symm_apply_apply u
 
 /- English proof (translation)
-Unfold `reprIco`. Rewrite using `[AddCircle.equivIco_coe_eq (by simpa using hq)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem reprIco_coe {q : ℚ} (hq : q ∈ Set.Ico (0 : ℚ) 1) :
     reprIco (q : AddCircle (1 : ℚ)) = q := by
@@ -40,11 +40,11 @@ noncomputable def charCocycle (χ : Additive G →+ AddCircle (1 : ℚ)) (p : G 
   ⌊reprIco (χ (Additive.ofMul p.1)) + reprIco (χ (Additive.ofMul p.2))⌋
 
 /- English proof (translation)
-Establish `h1` using `reprIco_mem (χ (Additive.ofMul x))`. Establish `h2` using `reprIco_mem (χ (Additive.ofMul x'))`. Establish `h3` using `reprIco_mem (χ (Additive.ofMul (x * x')))`. Establish `hc : ((reprIco (χ (Additive.ofMul x)) + reprIco (χ (Additive.ofMul x')) - reprIco (χ (Additive.ofMul (x * x'))) : ℚ) : AddCircle (1 : ℚ)) = 0`. Rewrite using `[AddCircle.coe_sub, AddCircle.coe_add, coe_reprIco, coe_reprIco, coe_reprIco, ofMul_mul, map_add, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, hn⟩` from `(AddCircle.coe_eq_zero_iff _).1 hc`. Rewrite `hn` using `[zsmul_one]`. Establish `hfl : charCocycle χ (x, x') = n`. Unfold `charCocycle`. Rewrite using `[Int.floor_eq_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_Ico] at h1 h2 h3`. Apply the tactic sequence `constructor <;> linarith`. Rewrite using `[hfl, hn]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem charCocycle_cast (χ : Additive G →+ AddCircle (1 : ℚ)) (x x' : G) :
     (charCocycle χ (x, x') : ℚ) = reprIco (χ (Additive.ofMul x)) + reprIco (χ (Additive.ofMul x'))
@@ -68,7 +68,7 @@ theorem charCocycle_cast (χ : Additive G →+ AddCircle (1 : ℚ)) (x x' : G) :
 variable [Fintype G]
 
 /- English proof (translation)
-The claim follows from `h2IntAddEquiv_symm_apply_eq_H2_class G χ (fun g => reprIco (χ (Additive.ofMul g))) (fun _ => coe_reprIco _) (charCocycle χ) (fun g h => charCocycle_cast χ g h)`.
+A detailed English derivation is pending.
 -/
 theorem charCocycle_mem_and_eq (χ : Additive G →+ AddCircle (1 : ℚ)) :
     ∃ hc : charCocycle χ ∈ cocycles₂ (Rep.trivial ℤ G ℤ),
@@ -77,14 +77,14 @@ theorem charCocycle_mem_and_eq (χ : Additive G →+ AddCircle (1 : ℚ)) :
     (fun _ => coe_reprIco _) (charCocycle χ) (fun g h => charCocycle_cast χ g h)
 
 /- English proof (translation)
-The claim follows from `(charCocycle_mem_and_eq χ).1`.
+A detailed English derivation is pending.
 -/
 theorem charCocycle_mem (χ : Additive G →+ AddCircle (1 : ℚ)) :
     charCocycle χ ∈ cocycles₂ (Rep.trivial ℤ G ℤ) :=
   (charCocycle_mem_and_eq χ).1
 
 /- English proof (translation)
-The claim follows from `(charCocycle_mem_and_eq χ).2`.
+A detailed English derivation is pending.
 -/
 theorem charClass_eq_H2π (χ : Additive G →+ AddCircle (1 : ℚ)) :
     charClass χ = H2π (Rep.trivial ℤ G ℤ) ⟨charCocycle χ, charCocycle_mem χ⟩ :=
@@ -99,9 +99,9 @@ attribute [local instance 2000] Rep.hV2
 variable {G : Type} [Group G] {A : Rep ℤ G}
 
 /- English proof (translation)
-Rewrite using `[mem_cocycles₂_iff]`. Introduce `g h j`. Establish `hc` using `(mem_cocycles₂_iff c).1 c.2 g h j`. Establish `ha : A.ρ g (a : A) = a` using `a.2 g`. Express the relevant statement in the definitionally equal form `c (g * h, j) + c (g, h) = c (h, j) + c (g, h * j) at hc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_zsmul, ha, ← add_zsmul, ← add_zsmul, hc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_mem_cocycles₂ (c : cocycles₂ (Rep.trivial ℤ G ℤ)) (a : A.ρ.invariants) :
     (fun p => c p • (a : A)) ∈ cocycles₂ A := by
@@ -113,7 +113,7 @@ theorem smul_mem_cocycles₂ (c : cocycles₂ (Rep.trivial ℤ G ℤ)) (a : A.ρ
   rw [map_zsmul, ha, ← add_zsmul, ← add_zsmul, hc]
 
 /- English proof (translation)
-Establish `e : (cocyclesIso₀ A).inv ≫ π A 0 = (H0Iso A).inv`. Rewrite using `[Iso.inv_comp_eq, ← π_comp_H0Iso_hom, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Rewrite using `[← e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem H0Iso_inv_apply (a : A.ρ.invariants) :
     (H0Iso A).inv.hom a = (π A 0).hom ((cocyclesIso₀ A).inv.hom a) := by
@@ -123,11 +123,11 @@ theorem H0Iso_inv_apply (a : A.ρ.invariants) :
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(map (MonoidHom.id G) (ρ_ A).hom 2).hom (cupH (A := A) (B := 𝟙_ (Rep ℤ G)) (zero_add 2) ((H0Iso A).inv.hom a) (charClass χ)) = _`. Rewrite using `[H0Iso_inv_apply, hc]`. Express the relevant statement in the definitionally equal form `map (MonoidHom.id G) (ρ_ A).hom 2 (cupH (A := A) (B := 𝟙_ (Rep ℤ G)) (zero_add 2) (π A 0 ((cocyclesIso₀ A).inv a)) (π (𝟙_ (Rep ℤ G)) 2 ((isoCocycles₂ (𝟙_ (Rep ℤ G))).inv c))) = π A 2 ((isoCocycles₂ A).inv ⟨fun p => c p • (a : A), smul_mem_cocycles₂ c a⟩)`. Rewrite using `[cupH_π]`. Use `(GroundTheory.GroupCoh.map_π_apply _ _).trans ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Apply `cocycles_ext` to reduce the goal to its premises. Rewrite using `[iCocycles_cocyclesMap]`. Use function extensionality and compare the values at `v`. Use `erw [iCocycles_cupCocycles, cupCochain_apply]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isoCocycles₂_inv_comp_iCocycles_apply, isoCocycles₂_inv_comp_iCocycles_apply, cocyclesIso₀_inv_comp_iCocycles_apply]`. Use `erw [rightUnitor_hom_tmul]`. Simplify using `only [cochainsIso₀, cochainsIso₂]`. Conclude with `int_smul_eq_zsmul _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cupCharClass_apply (χ : Additive G →+ AddCircle (1 : ℚ))
     (c : cocycles₂ (Rep.trivial ℤ G ℤ)) (hc : charClass χ = H2π _ c) (a : A.ρ.invariants) :
@@ -161,13 +161,13 @@ attribute [local instance 2000] Rep.hV2 Submodule.module Submodule.Quotient.modu
 variable {G : Type} [Group G] {A : Rep ℤ G}
 
 /- English proof (translation)
-Simplify using `using reprIco_coe (q := 0) (by simp)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem reprIco_zero : reprIco 0 = 0 := by
   simpa using reprIco_coe (q := 0) (by simp)
 
 /- English proof (translation)
-Unfold `charCocycle`. Rewrite using `[ofMul_one, map_zero, reprIco_zero, add_zero, Int.floor_eq_zero_iff]`. Conclude with `reprIco_mem _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charCocycle_one_right (χ : Additive G →+ AddCircle (1 : ℚ)) (x : G) :
     charCocycle χ (x, 1) = 0 := by
@@ -176,7 +176,7 @@ theorem charCocycle_one_right (χ : Additive G →+ AddCircle (1 : ℚ)) (x : G)
   exact reprIco_mem _
 
 /- English proof (translation)
-Unfold `charCocycle`. Rewrite using `[ofMul_one, map_zero, reprIco_zero, zero_add, Int.floor_eq_zero_iff]`. Conclude with `reprIco_mem _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charCocycle_one_left (χ : Additive G →+ AddCircle (1 : ℚ)) (x : G) :
     charCocycle χ (1, x) = 0 := by
@@ -187,7 +187,7 @@ theorem charCocycle_one_left (χ : Additive G →+ AddCircle (1 : ℚ)) (x : G) 
 variable [Fintype G]
 
 /- English proof (translation)
-Establish `h` using `(mem_cocycles₂_iff _).1 (charCocycle_mem χ) x y w`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem charCocycle_cocycle (χ : Additive G →+ AddCircle (1 : ℚ)) (x y w : G) :
     charCocycle χ (x * y, w) + charCocycle χ (x, y) =
@@ -196,7 +196,7 @@ theorem charCocycle_cocycle (χ : Additive G →+ AddCircle (1 : ℚ)) (x y w : 
   exact h
 
 /- English proof (translation)
-Use `push_cast`. Repeatedly rewrite using `[charCocycle_cast]`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.sum_equiv (Equiv.mulRight g) (fun x => reprIco (χ (Additive.ofMul (x * g)))) (fun x => reprIco (χ (Additive.ofMul x))) (fun x => rfl)]`. Simplify using the standard rewrite rules.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_charCocycle_cast (χ : Additive G →+ AddCircle (1 : ℚ)) (g : G) :
     ((∑ x, charCocycle χ (x, g) : ℤ) : ℚ) =
@@ -213,11 +213,11 @@ noncomputable def normWeight (χ : Additive G →+ AddCircle (1 : ℚ)) (h x : G
 
 omit [Fintype G] in
 /- English proof (translation)
-Establish `h1` using `reprIco_mem (χ (Additive.ofMul h))`. Establish `h2` using `reprIco_mem (χ (Additive.ofMul x))`. Establish `h3` using `reprIco_mem (χ (Additive.ofMul (x⁻¹ * h)))`. Establish `hc : ((reprIco (χ (Additive.ofMul h)) - reprIco (χ (Additive.ofMul x)) - reprIco (χ (Additive.ofMul (x⁻¹ * h))) : ℚ) : AddCircle (1 : ℚ)) = 0`. Rewrite using `[AddCircle.coe_sub, AddCircle.coe_sub, coe_reprIco, coe_reprIco, coe_reprIco, ofMul_mul, ofMul_inv, map_add, map_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Take `⟨n, hn⟩` from `(AddCircle.coe_eq_zero_iff _).1 hc`. Rewrite `hn` using `[zsmul_one]`. Establish `hfl : ⌊reprIco (χ (Additive.ofMul h)) - reprIco (χ (Additive.ofMul x))⌋ = n`. Rewrite using `[Int.floor_eq_iff]`.
+Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_Ico] at h1 h2 h3`. Apply the tactic sequence `constructor <;> linarith`. Unfold `normWeight`. Rewrite using `[hfl]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -244,15 +244,15 @@ theorem normWeight_cast (χ : Additive G →+ AddCircle (1 : ℚ)) (h x : G) :
   linarith
 
 /- English proof (translation)
-Use `⟨fun x => ∑ h, normWeight χ h x • A.ρ h b, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨x, x'⟩`. Establish `hw : ∀ h : G, normWeight χ (x⁻¹ * h) x' - normWeight χ h (x * x') + normWeight χ h x = charCocycle χ (x, x')`. Introduce `h`. Establish `e` using `charCocycle_cast χ x x'`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1` using `normWeight_cast χ (x⁻¹ * h) x'`. Establish `e2` using `normWeight_cast χ h (x * x')`. Establish `e3` using `normWeight_cast χ h x`. Rewrite `e1` using `[← mul_assoc]`. Rewrite `e2` using `[mul_inv_rev]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: ((normWeight χ (x⁻¹ * h) x' - normWeight χ h (x * x') + normWeight χ h x : ℤ) : ℚ) = (charCocycle χ (x, x') : ℚ)`. Use `push_cast`. Rewrite using `[e, e1, e2, e3]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hshift : A.ρ x (∑ h, normWeight χ h x' • A.ρ h b) = ∑ h, normWeight χ (x⁻¹ * h) x' • A.ρ h b`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[map_zsmul, ← Module.End.mul_apply, ← map_mul]`. Conclude with `Fintype.sum_equiv (Equiv.mulLeft x) _ _ (fun h => by simp)`. Simplify using `only [d₁₂_hom_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hshift, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib, Representation.norm, LinearMap.sum_apply, ← Finset.sum_zsmul]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[← hw h, add_zsmul, sub_zsmul, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_norm_mem_coboundaries₂ (χ : Additive G →+ AddCircle (1 : ℚ)) (b : A) :
     (fun p => charCocycle χ p • A.ρ.norm b) ∈ coboundaries₂ A := by
@@ -285,9 +285,9 @@ theorem smul_norm_mem_coboundaries₂ (χ : Additive G →+ AddCircle (1 : ℚ))
   rw [← hw h, add_zsmul, sub_zsmul, sub_eq_add_neg]
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `h`. Use `⟨f g, ?_⟩` and prove the remaining obligations. Establish `e : ∀ x, A.ρ x (f g) - f (x * g) + f x = charCocycle χ (x, g) • a` using `fun x => congrFun hf (x, g)`. Establish `hs` using `Finset.sum_congr rfl (fun x (_ : x ∈ Finset.univ) => e x)`. Establish `hsum : ∑ x, charCocycle χ (x, g) • a = (∑ x, charCocycle χ (x, g)) • a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `map_sum (zmultiplesHom A a) (fun x => charCocycle χ (x, g)) Finset.univ` as an intermediate fact. Simplify using `only [zmultiplesHom_apply] at this`. Conclude with `this.symm`. Rewrite `hs` using `[Finset.sum_add_distrib, Finset.sum_sub_distrib, hsum, hg, one_zsmul, Fintype.sum_equiv (Equiv.mulRight g) (fun x => f (x * g)) f (fun x => rfl), sub_add_cancel]`. Rewrite using `[← hs, Representation.norm, LinearMap.sum_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_norm_eq_of_mem_coboundaries₂ (χ : Additive G →+ AddCircle (1 : ℚ)) (g : G)
     (hg : ∑ x, charCocycle χ (x, g) = 1) (a : A)
@@ -307,57 +307,51 @@ theorem exists_norm_eq_of_mem_coboundaries₂ (χ : Additive G →+ AddCircle (1
   rw [← hs, Representation.norm, LinearMap.sum_apply]
 
 /- English proof (translation)
-Use `set m := Fintype.card G with hm`. Use `set c := charCocycle χ with hcdef`. Establish `hz` using `(mem_cocycles₂_iff z).1 z.2`. Use `set a : A := ∑ x, z (x, g) with hadef`. Establish `ha : ∀ h, A.ρ h a = a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `e : ∀ x, A.ρ h (z (x, g)) = z (h * x, g) + z (h, x) - z (h, x * g)`. Introduce `x`. Rewrite using `[(hz h x g)]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite using `[hadef, map_sum, Finset.sum_congr rfl (fun x _ => e x), Finset.sum_sub_distrib, Finset.sum_add_distrib, Fintype.sum_equiv (Equiv.mulLeft h) (fun x => z (h * x, g)) (fun x => z (x, g)) (fun x => rfl), Fintype.sum_equiv (Equiv.mulRight g) (fun x => z (h, x * g)) (fun x => z (h, x)) …`. Normalize the expressions using the abelian group laws. Use `set φ : G → A := fun x => c (x, g) • a - z (x, g) with hφdef`. Establish `hsum : ∑ x, c (x, g) • a = (∑ x, c (x, g)) • a`. Use `map_sum (zmultiplesHom A a) (fun x => c (x, g)) Finset.univ` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [zmultiplesHom_apply] at this`. Conclude with `this.symm`. Establish `hφ : ∑ x, φ x = 0`. Rewrite using `[hφdef, Finset.sum_sub_distrib, hsum, hg, one_zsmul, hadef, sub_self]`. Establish `hmem : ∀ x, x ∈ Subgroup.zpowers g` using `fun x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨j, rfl⟩` from `hgen x`. Conclude with `Subgroup.npow_mem_zpowers g j`. Establish `hord : orderOf g = m`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hmem, Nat.card_eq_fintype_card]`. Establish `hsumpow : ∀ ψ : G → A, ∑ i ∈ Finset.range m, ψ (g ^ i) = ∑ x, ψ x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `ψ`. Use `Finset.sum_nbij (fun i => g ^ i) (fun _ _ => Finset.mem_univ _) ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `i hi j hj hij`. Rewrite `hi`, `hj` using `[Finset.coe_range, ← hord]`. Conclude with `pow_injOn_Iio_orderOf hi hj hij`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x _`. Take `⟨j, rfl⟩` from `hgen x`. Use `⟨j % m, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_range, Set.mem_Iio]`. Conclude with `Nat.mod_lt _ (Fintype.card_pos)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only`. Rewrite using `[← hord, pow_mod_orderOf]`. Use `set F : ℕ → A := fun j => z (1, 1) + ∑ i ∈ Finset.range j, φ (g ^ i) with hFdef`. Establish `hFsucc : ∀ j, F (j + 1) = F j + φ (g ^ j)`. Introduce `j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hFdef, Finset.sum_range_succ, add_assoc]`. Establish `hFper : ∀ j, F (j + m) = F j`. Introduce `j`. Establish `e : ∑ i ∈ Finset.range m, φ (g ^ (j + i)) = 0`. Use `hsumpow (fun x => φ (g ^ j * x))` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [← pow_add] at this`. Rewrite using `[this, Fintype.sum_equiv (Equiv.mulLeft (g ^ j)) (fun x => φ (g ^ j * x)) φ (fun x => rfl), hφ]`. Simplify using `only [hFdef, Finset.sum_range_add, e, add_zero]`. Establish `hFmod : ∀ j, F j = F (j % m)`. Establish `hk : ∀ k r, F (r + m * k) = F r`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro r`. Simplify using the standard rewrite rules. Consider the case `succ k ih => intro r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.mul_succ, ← add_assoc, hFper, ih]`. Introduce `j`. Use `conv_lhs => rw [← Nat.mod_add_div j m]`. Conclude with `hk _ _`. Use `set ind : G → ℕ := fun x => Classical.choose (hgen x) with hinddef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hind : ∀ x, g ^ ind x = x` using `fun x => Classical.choose_spec (hgen x)`. Use `set f : G → A := fun x => F (ind x) with hfdef`. Establish `hf : ∀ j, f (g ^ j) = F j`. Introduce `j`. Establish `e` using `hind (g ^ j)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[pow_inj_mod, hord]`. Simplify using `only [hfdef]`. Rewrite using `[hFmod (ind _), hFmod j, e]`. Establish `hf1 : f 1 = z (1, 1)`. Use `hf 0` as an intermediate fact.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[pow_zero]`. Rewrite using `[this]`. Simplify using `[hFdef]`. Establish `hfg : f g = 0`. Use `hf 1` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite `this` using `[pow_one]`. Rewrite using `[this, hFsucc, pow_zero, hFdef]`. Simplify using `only [Finset.range_zero, Finset.sum_empty, add_zero, hφdef, hcdef, charCocycle_one_left, zero_smul, cocycles₂_map_one_fst z g]`. Normalize the expressions using the abelian group laws. Establish `hfstep : ∀ x, f (x * g) = f x + φ x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Take `⟨j, rfl⟩` from `hgen x`. Rewrite using `[← pow_succ, hf, hf, hFsucc]`. Use `set z' : G × G → A := fun p => z p - (d₁₂ A).hom f p with hz'def`. Establish `hz'g : ∀ x, z' (x, g) = c (x, g) • a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `x`. Simplify using `only [hz'def, d₁₂_hom_apply, hfg, map_zero, hfstep, hφdef]`. Normalize the expressions using the abelian group laws. Establish `hz'1 : ∀ x, z' (x, 1) = 0`. Introduce `x`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using `only [hz'def, d₁₂_hom_apply, hf1, mul_one, cocycles₂_map_one_snd z x]`. Normalize the expressions using the abelian group laws. Establish `hdf` using `(mem_cocycles₂_iff ((d₁₂ A).hom f)).1 (d₁₂_apply_mem_cocycles₂ f)`. Establish `hz'coc : ∀ x y w, z' (x * y, w) + z' (x, y) = A.ρ x (z' (y, w)) + z' (x, y * w)`. Introduce `x y w`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hz x y w`. Establish `h2` using `hdf x y w`. Simplify using `only [hz'def, map_sub]`. Rewrite using `[show z (x * y, w) - (d₁₂ A).hom f (x * y, w) + (z (x, y) - (d₁₂ A).hom f (x, y)) = (z (x * y, w) + z (x, y)) - ((d₁₂ A).hom f (x * y, w) + (d₁₂ A).hom f (x, y)) by abel, h1, h2]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz'pow : ∀ j x, z' (x, g ^ j) = c (x, g ^ j) • a`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `x`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[pow_zero, hz'1, hcdef, charCocycle_one_right, zero_smul]`. Consider the case `succ j ih`. Introduce `x`. Establish `e1` using `hz'coc x (g ^ j) g`. Rewrite `e1` using `[hz'g, hz'g, ih, map_zsmul, ha]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `e2` using `charCocycle_cocycle χ x (g ^ j) g`. Rewrite using `[pow_succ]`. Establish `e3 : c (x, g ^ j * g) = c (x * g ^ j, g) + c (x, g ^ j) - c (g ^ j, g)`. Rewrite using `[hcdef]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Rewrite using `[e3, sub_zsmul, add_zsmul, e1]`. Normalize the expressions using the abelian group laws. Use `⟨a, ha, -f, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Take `⟨x, y⟩` from `p`.
-
-Take `⟨j, rfl⟩` from `hgen y`. Establish `e` using `hz'pow j x`. Simplify using `only [hz'def] at e`. Simplify using `only [map_neg, Pi.neg_apply, Pi.sub_apply]`. Rewrite using `[← e]`.
-
-Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_sub_mem_coboundaries₂ (χ : Additive G →+ AddCircle (1 : ℚ)) (g : G)
     (hgen : ∀ x, ∃ j : ℕ, g ^ j = x) (hg : ∑ x, charCocycle χ (x, g) = 1) (z : cocycles₂ A) :
@@ -499,25 +493,25 @@ theorem exists_sub_mem_coboundaries₂ (χ : Additive G →+ AddCircle (1 : ℚ)
   abel
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `IsCyclic.exists_generator (α := G)`. Use `set m := Fintype.card G with hmdef`. Establish `hordσ : orderOf σ = m`. Rewrite using `[orderOf_eq_card_of_forall_mem_zpowers hσ, Nat.card_eq_fintype_card]`. Establish `hu : addOrderOf (χ (Additive.ofMul σ)) = m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[addOrderOf_injective χ hχ, addOrderOf_ofMul_eq_orderOf, hordσ]`. Establish `hfin : IsOfFinAddOrder (χ (Additive.ofMul σ))`. Rewrite using `[← addOrderOf_pos_iff, hu]`. Use linear arithmetic over natural numbers and integers. Take `⟨r, hr, -, hre⟩` from `AddCircle.exists_gcd_eq_one_of_isOfFinAddOrder hfin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hr`, `hre` using `[hu]`. Establish `hbez : (r : ℤ) * Nat.gcdA r m + m * Nat.gcdB r m = 1`. Use `Nat.gcd_eq_gcd_ab r m` as an intermediate fact. Rewrite `this` using `[hr]`. Move the coercions through the operations in `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨s, hs⟩ : ∃ s : ℤ, s = Nat.gcdA r m` from `⟨_, rfl⟩`. Take `⟨t, ht⟩ : ∃ t : ℤ, t = Nat.gcdB r m` from `⟨_, rfl⟩`. Rewrite `hbez` using `[← hs, ← ht]`. Establish `hσm : σ ^ (m : ℤ) = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_natCast, ← hordσ, pow_orderOf_eq_one]`. Establish `hσeq : (σ ^ s) ^ (r : ℤ) = σ`. Rewrite using `[← zpow_mul, show s * (r : ℤ) = 1 + (m : ℤ) * (-t) by linarith, zpow_add, zpow_one, zpow_mul, hσm, one_zpow, mul_one]`. Use `⟨σ ^ s, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `Subgroup.mem_zpowers_iff.1 (hσ x)`. Establish `hx : σ ^ k ∈ Subgroup.zpowers (σ ^ s)` using `⟨(r : ℤ) * k, by`. Simplify using `only`. Rewrite using `[zpow_mul, hσeq]⟩`. Rewrite `hx` using `[← mem_powers_iff_mem_zpowers]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `hx`. Conclude with `⟨j, hj⟩`. Establish `hmpos : (0 : ℚ) < m` using `by exact_mod_cast (by omega : 0 < m)`. Establish `hbezQ : (r : ℚ) * s + m * t = 1` using `by exact_mod_cast hbez`. Establish `hχg : χ (Additive.ofMul (σ ^ s)) = (((1 : ℚ) / m : ℚ) : AddCircle (1 : ℚ))`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ofMul_zpow, map_zsmul, ← hre, ← AddCircle.coe_zsmul, ← sub_eq_zero, ← AddCircle.coe_sub, AddCircle.coe_eq_zero_iff]`. Use `⟨-t, ?_⟩` and prove the remaining obligations. Simplify using `only [zsmul_eq_mul, mul_one]`. Clear the denominators using the available nonvanishing facts. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hy : reprIco (χ (Additive.ofMul (σ ^ s))) = 1 / m`. Rewrite using `[hχg, reprIco_coe]`. Use `⟨by positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[div_lt_one hmpos]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(by omega : 1 < m)` after adjusting the coercions. Use `sum_charCocycle_cast χ (σ ^ s)` as an intermediate fact. Rewrite `this` using `[hy, mul_one_div_cancel hmpos.ne']`. Conclude with `this` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_generator_sum_charCocycle [IsCyclic G] (χ : Additive G →+ AddCircle (1 : ℚ))
     (hχ : Function.Injective χ) (hm : 2 ≤ Fintype.card G) :
@@ -577,7 +571,7 @@ theorem exists_generator_sum_charCocycle [IsCyclic G] (χ : Additive G →+ AddC
 omit [Fintype G] in
 
 /- English proof (translation)
-Use `⟨fun _ => z (1, 1), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `⟨x, y⟩`. Rewrite using `[Subsingleton.elim x 1, Subsingleton.elim y 1]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_coboundaries₂_of_subsingleton [Subsingleton G] (z : cocycles₂ A) :
     ⇑z ∈ coboundaries₂ A := by
@@ -587,7 +581,7 @@ theorem mem_coboundaries₂_of_subsingleton [Subsingleton G] (z : cocycles₂ A)
   simp
 
 /- English proof (translation)
-The claim follows from `cupCharClass_apply χ _ (charClass_eq_H2π χ) a`.
+A detailed English derivation is pending.
 -/
 theorem cupCharClass_apply_charCocycle (χ : Additive G →+ AddCircle (1 : ℚ))
     (a : A.ρ.invariants) :
@@ -596,7 +590,7 @@ theorem cupCharClass_apply_charCocycle (χ : Additive G →+ AddCircle (1 : ℚ)
   cupCharClass_apply χ _ (charClass_eq_H2π χ) a
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `(mem_normRangeInvariants_iff A a).1 ha`. Rewrite using `[cupCharClass_apply_charCocycle, H2π_eq_zero_iff]`. Express the relevant statement in the definitionally equal form `(fun p => charCocycle χ p • (a : A)) ∈ coboundaries₂ A`. Rewrite using `[← hb]`. Conclude with `smul_norm_mem_coboundaries₂ χ b`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cupCharClass_eq_zero_of_mem (χ : Additive G →+ AddCircle (1 : ℚ)) (a : A.ρ.invariants)
     (ha : a ∈ normRangeInvariants A) : (cupCharClass A χ).hom a = 0 := by
@@ -613,7 +607,7 @@ noncomputable def tateZeroToH2 (A : Rep ℤ G) (χ : Additive G →+ AddCircle (
       (fun a ha => cupCharClass_eq_zero_of_mem χ a ha))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((normRangeInvariants A).liftQ (cupCharClass A χ).hom (fun a ha => cupCharClass_eq_zero_of_mem χ a ha)) ((((tateCohomologyZeroIso ℤ G).app A).inv ≫ ((tateCohomologyZeroIso ℤ G).app A).hom).hom (Submodule.Quotient.mk a)) = _`. Rewrite using `[Iso.inv_hom_id]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tateZeroToH2_tateZeroClass (χ : Additive G →+ AddCircle (1 : ℚ)) (a : A.ρ.invariants) :
     (tateZeroToH2 A χ).hom (tateZeroClass A a) = (cupCharClass A χ).hom a := by
@@ -627,9 +621,9 @@ theorem tateZeroToH2_tateZeroClass (χ : Additive G →+ AddCircle (1 : ℚ)) (a
 variable [IsCyclic G]
 
 /- English proof (translation)
-Use `⟨fun h => ?_, cupCharClass_eq_zero_of_mem χ a⟩` and prove the remaining obligations. Rewrite using `[mem_normRangeInvariants_iff]`. Break down `Nat.lt_or_ge (Fintype.card G) 2 with hm | hm` into its components or cases. Establish `: Subsingleton G` using `Fintype.card_le_one_iff_subsingleton.1 (by omega)`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Representation.norm, LinearMap.sum_apply, Fintype.sum_subsingleton _ 1, map_one, Module.End.one_apply]`. Take `⟨g, -, hg⟩` from `exists_generator_sum_charCocycle χ hχ hm`. Rewrite `h` using `[cupCharClass_apply_charCocycle, H2π_eq_zero_iff]`. Conclude with `exists_norm_eq_of_mem_coboundaries₂ χ g hg (a : A) h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cupCharClass_eq_zero_iff (χ : Additive G →+ AddCircle (1 : ℚ)) (hχ : Function.Injective χ)
     (a : A.ρ.invariants) : (cupCharClass A χ).hom a = 0 ↔ a ∈ normRangeInvariants A := by
@@ -645,11 +639,11 @@ theorem cupCharClass_eq_zero_iff (χ : Additive G →+ AddCircle (1 : ℚ)) (hχ
     exact exists_norm_eq_of_mem_coboundaries₂ χ g hg (a : A) h
 
 /- English proof (translation)
-Introduce `y`. Proceed by induction on `y using H2_induction_on with`. Consider the case `h z`. Break down `Nat.lt_or_ge (Fintype.card G) 2 with hm | hm` into its components or cases. Establish `: Subsingleton G` using `Fintype.card_le_one_iff_subsingleton.1 (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, eq_comm, H2π_eq_zero_iff]`. Conclude with `mem_coboundaries₂_of_subsingleton z`. Take `⟨g, hgen, hg⟩` from `exists_generator_sum_charCocycle χ hχ hm`. Take `⟨a, ha, hmem⟩` from `exists_sub_mem_coboundaries₂ χ g hgen hg z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨a, ha⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[cupCharClass_apply_charCocycle, H2π_eq_iff]`. Conclude with `hmem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cupCharClass_surjective (χ : Additive G →+ AddCircle (1 : ℚ)) (hχ : Function.Injective χ) :
     Function.Surjective (cupCharClass A χ).hom := by
@@ -668,9 +662,9 @@ theorem cupCharClass_surjective (χ : Additive G →+ AddCircle (1 : ℚ)) (hχ 
       exact hmem
 
 /- English proof (translation)
-Use `⟨fun x y hxy => ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `tateZeroClass_surjective A x`. Take `⟨b, rfl⟩` from `tateZeroClass_surjective A y`. Rewrite `hxy` using `[tateZeroToH2_tateZeroClass, tateZeroToH2_tateZeroClass, ← sub_eq_zero, ← map_sub, cupCharClass_eq_zero_iff χ hχ]`. Rewrite using `[← sub_eq_zero, ← map_sub]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((tateCohomologyZeroIso ℤ G).app A).inv.hom (Submodule.Quotient.mk (a - b)) = 0`. Rewrite using `[(Submodule.Quotient.mk_eq_zero _).2 hxy]`. Conclude with `map_zero _`. Take `⟨a, rfl⟩` from `cupCharClass_surjective χ hχ y`. Conclude with `⟨tateZeroClass A a, tateZeroToH2_tateZeroClass χ a⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tateZeroToH2_bijective (χ : Additive G →+ AddCircle (1 : ℚ)) (hχ : Function.Injective χ) :
     Function.Bijective (tateZeroToH2 A χ).hom := by

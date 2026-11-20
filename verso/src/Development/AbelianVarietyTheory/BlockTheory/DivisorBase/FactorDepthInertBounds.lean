@@ -96,7 +96,7 @@ def FactorDepthBounds : Prop :=
     (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], FactorBounds Xo c
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Simplify using `[boundFine]`. Evaluate the numerical expressions using `[upperInert]`.
+Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 example : boundFine 3 1 0 1 1 = 1 ∧ upperInert 3 1 0 1 = 3 / 8 := by
   constructor

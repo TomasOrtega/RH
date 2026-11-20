@@ -5,29 +5,25 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `K _ n M s hcard hgen hann hdet`. Use `set L := AlgebraicClosure K`. Use `set f : K →+* L := algebraMap K L`. Establish `hf : Function.Injective f` using `f.injective`. Use `set M' : Matrix (Fin n) (Fin n) L := M.map f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hchar : M'.charpoly = M.charpoly.map f` using `Matrix.charpoly_map M f`. Establish `hpmap : (rootPol s).map f = (Multiset.map (fun a => Polynomial.X - Polynomial.C a) (s.map f)).prod`. Simplify using `[rootPol, Polynomial.map_multiset_prod, Multiset.map_map, Function.comp_def]`. Establish `hannL : Polynomial.aeval M' (rootPol s) = 0`. Establish `h1 : M' = (Algebra.ofId K L).mapMatrix M`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgHom.mapMatrix_apply]`. Both sides reduce to the same expression. Rewrite using `[h1, Polynomial.aeval_algHom_apply, hann, map_zero]`. Use `set R := M'.charpoly.roots`. Establish `hmem : ∀ r ∈ R, r ∈ s.map f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `r hr`. Establish `hroot : M'.charpoly.IsRoot r` using `(Polynomial.mem_roots (Matrix.charpoly_monic M').ne_zero).1 hr`. Establish `hsp : r ∈ spectrum L M'` using `Matrix.mem_spectrum_of_isRoot_charpoly hroot`. Establish `hev : Polynomial.eval r ((rootPol s).map f) ∈ spectrum L (Polynomial.aeval M' ((rootPol s).map f))` using `spectrum.subset_polynomial_aeval M' _ ⟨r, hsp, rfl⟩`. Establish `hz : Polynomial.aeval M' ((rootPol s).map f) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[Polynomial.aeval_map_algebraMap]`. Conclude with `hannL`. Rewrite `hev` using `[hz]`. Establish `h0 : Polynomial.eval r ((rootPol s).map f) = 0`. Assume the negation of the conclusion as `hne`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `(spectrum.mem_iff.1 hev) (by`. Simplify using `using (isUnit_iff_ne_zero.2 hne).map (algebraMap L (Matrix (Fin n) (Fin n) L)))`. Establish `hne0 : (rootPol s).map f ≠ 0`. Rewrite using `[hpmap]`. Conclude with `(Polynomial.monic_multiset_prod_of_monic _ _ (fun a _ => Polynomial.monic_X_sub_C a)).ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: r ∈ ((rootPol s).map f).roots` using `(Polynomial.mem_roots hne0).2 h0`. Rewrite `this` using `[hpmap, Polynomial.roots_multiset_prod_X_sub_C]`. Then use the resulting hypothesis. Use `set g := Function.invFun f`. Use `set t := R.map g`. Establish `htR : t.map f = R`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Multiset.map_map]`. Use `conv_rhs => rw [← Multiset.map_id R]`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `r hr`. Take `⟨a, -, ha⟩` from `Multiset.mem_map.1 (hmem r hr)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Function.invFun_eq ⟨a, ha⟩`. Establish `hRcard : R.card = n`. Rewrite using `[IsAlgClosed.card_roots_eq_natDegree, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `htcard : t.card = s.card` using `by simp [t, hRcard, hcard]`. Establish `htsub : ∀ x ∈ t, x ∈ s`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `: f x ∈ s.map f` using `hmem (f x) (by rw [← htR]; exact Multiset.mem_map_of_mem f hx)`. Take `⟨a, ha, hax⟩` from `Multiset.mem_map.1 this`. Rewrite using `[← hf hax]`. Conclude with `ha`.
-
-Establish `htprod : t.prod = s.prod`. Apply `hf` to reduce the goal to its premises. Rewrite using `[map_multiset_prod, htR, ← Matrix.det_eq_prod_roots_charpoly, ← hdet, RingHom.map_det]`. Both sides reduce to the same expression. Establish `hts : t = s` using `hgen t htcard htsub htprod`.
-
-Apply `Polynomial.map_injective f hf` to reduce the goal to its premises. Rewrite using `[← hchar, hpmap, ← hts, htR]`. Conclude with `(Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq (Matrix.charpoly_monic M') (by rw [IsAlgClosed.card_roots_eq_natDegree])).symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.charAnn_of :
     CharOfAnn := by

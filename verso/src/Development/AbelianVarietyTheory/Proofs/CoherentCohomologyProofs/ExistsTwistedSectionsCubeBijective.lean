@@ -25,7 +25,7 @@ noncomputable def twistedSumRestrict {V W : Y.Opens} (h : W ≤ V) :
     fun i _ a => (SecOn.mulSec_restrict (s i) h a).symm
 
 /- English proof (translation)
-The claim follows from `GrSum.map_of (hx V) (hx W) (fun t => SecOnR.restrict f (tw M H t) h) (fun i _ a => (SecOn.mulSec_restrict (s i) h a).symm) t a`.
+A detailed English derivation is pending.
 -/
 theorem twistedSumRestrict_of {V W : Y.Opens} (h : W ≤ V) (t : ℤ) (a : SecOnR f (tw M H t) V) :
     twistedSumRestrict hx h (GrSum.of (hx V) t a) =
@@ -34,7 +34,7 @@ theorem twistedSumRestrict_of {V W : Y.Opens} (h : W ≤ V) (t : ℤ) (a : SecOn
     (fun i _ a => (SecOn.mulSec_restrict (s i) h a).symm) t a
 
 /- English proof (translation)
-Establish `e : ((twistedSumRestrict hx h' ∘ₗ twistedSumRestrict hx h).restrictScalars R) = (twistedSumRestrict hx (h'.trans h)).restrictScalars R` using `GrSum.lhom_ext _ fun n a => by`. Simplify using `only [LinearMap.restrictScalars_apply, LinearMap.comp_apply, twistedSumRestrict_of, SecOnR.restrict_restrict]`. Conclude with `congr($e y)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twistedSumRestrict_comp {U V W : Y.Opens} (h : V ≤ U) (h' : W ≤ V) (y : GrSum (hx U)) :
     twistedSumRestrict hx h' (twistedSumRestrict hx h y) =
@@ -49,9 +49,9 @@ theorem twistedSumRestrict_comp {U V W : Y.Opens} (h : V ≤ U) (h' : W ≤ V) (
 end
 
 /- English proof (translation)
-Introduce `R _ Y f H m s M hH hM hva hx`. Establish `hloc` using `GlobalTheory.T.twistedSections_localise_to_charts R Y f H m s M hH hM hva hx`. Use `GlobalTheory.exists_grCube_hom_bijective (Fin (m + 1)) R (GrSum (hx ⊤)) (GrSum.grading (hx ⊤)) (fun t => secCube f (tw M H t) fun i => nonzeroLocus (s i)) (fun i t => secCubeMul f M _ t (s i)) (fun I => hx (⨅ i ∈ I, nonzeroLocus (s i))) (fun I => twistedSumRestrict hx (le_top : ( …` and prove the remaining obligations. Establish `h'` using `iInf_le_iInf_of_subset (fun i => nonzeroLocus (s i)) h`. Conclude with `(twistedSumRestrict_comp hx le_top h' y).symm.trans ((congrArg (twistedSumRestrict hx h') e).trans (twistedSumRestrict_of hx h' n a))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hy`. Use `(hloc I).1 n a (GrSum.of_injective (hx _) n ?_)` and prove the remaining obligations. Conclude with `((twistedSumRestrict_of hx le_top n a).symm.trans e).trans (map_zero _).symm`. Take `⟨k, t', b, hb⟩` from `(hloc I).2 t a`. Conclude with `⟨k, GrSum.of (hx ⊤) t' b, (twistedSumRestrict_of hx le_top t' b).trans hb⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_grCube_twistedSections_hom_secCube_bijective :
     ∀ (R : Type) [CommRing R] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of R)) (H : LB Y) (m : ℕ) (s : Fin (m + 1) → LB.Sec H) (M : LB Y), H.IsLB → M.IsLB → VeryAmpleBy f H s → ∀ (hx : ∀ V : Y.Opens, OperatorsCommute (ι := Fin (m + 1)) (A := fun t => SecOnR f (tw M H t) V) fun i t => SecOnR.mulSec f M t (s i) V) (t : ℤ), ∃ φ : grCube (Fin (m + 1)) (GrSum.grading (hx ⊤)) t ⟶ secCube f (tw M H t) (fun i => nonzeroLocus (s i)), ∀ I, Function.Bijective (φ.app I).hom := by

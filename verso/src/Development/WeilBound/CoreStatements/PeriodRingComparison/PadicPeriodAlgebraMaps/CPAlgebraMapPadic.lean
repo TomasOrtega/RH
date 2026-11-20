@@ -24,7 +24,7 @@ theorem cP_apply (y : Reformulated.AutPerF.BdRPlus l (OC l)) :
     cP l y = Reformulated.AutPerF.BdRPlus.map l (e l).toRingHom y := rfl
 
 /- English proof (translation)
-Rewrite using `[cP_apply, Reformulated.AutPerF.BdRPlus.map_algebraMap_ainf, ainfMap_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comparison_algebraMap_ainf (a : Reformulated.AutPerF.Ainf l (OC l)) :
     cP l (algebraMap _ (Reformulated.AutPerF.BdRPlus l (OC l)) a) = Formalism.Per6.aD l a := by
@@ -32,9 +32,9 @@ theorem comparison_algebraMap_ainf (a : Reformulated.AutPerF.Ainf l (OC l)) :
   rfl
 
 /- English proof (translation)
-Establish `h : (IsPerfectoidField.awayEquiv (K` using `ℂ_[l]) l).toRingEquiv.toRingHom.comp (Reformulated.AutPerF.awayMap l (e l).toRingHom) = (Reformulated.AutPerF.IsUnitBall.awayEquiv (PadicComplexInt l) l).toRingEquiv.toRingHom := by`. Use `IsLocalization.ringHom_ext (Submonoid.powers ((l : ℕ) : OC l)) (RingHom.ext fun x => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[Reformulated.AutPerF.awayMap_algebraMap]`. Express the relevant statement in the definitionally equal form `IsPerfectoidField.awayEquiv (K := ℂ_[l]) l (algebraMap (NC l) _ (e l x)) = Reformulated.AutPerF.IsUnitBall.awayEquiv (PadicComplexInt l) l (algebraMap (OC l) _ x)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[AlgEquiv.commutes, Reformulated.AutPerF.IsUnitBall.awayEquiv_algebraMap]`. Both sides reduce to the same expression. Conclude with `RingHom.congr_fun h z`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem awayEquiv_awayMap (z : Localization.Away ((l : ℕ) : OC l)) :
     IsPerfectoidField.awayEquiv (K := ℂ_[l]) l (Reformulated.AutPerF.awayMap l (e l).toRingHom z) =
@@ -52,7 +52,7 @@ theorem awayEquiv_awayMap (z : Localization.Away ((l : ℕ) : OC l)) :
   exact RingHom.congr_fun h z
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `IsPerfectoidField.awayEquiv (K := ℂ_[l]) l (Reformulated.AutPerF.BdRPlus.theta l (NC l) (Reformulated.AutPerF.BdRPlus.map l (e l).toRingHom y)) = _`. Rewrite using `[Reformulated.AutPerF.BdRPlus.theta_map, Reformulated.AutPerF.BdRPlus.thetaC_apply]`. Conclude with `awayEquiv_awayMap l _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem θD_cP (y : Reformulated.AutPerF.BdRPlus l (OC l)) :
     Formalism.Per6.θD l (cP l y) = Reformulated.AutPerF.BdRPlus.thetaC l (PadicComplexInt l) y := by

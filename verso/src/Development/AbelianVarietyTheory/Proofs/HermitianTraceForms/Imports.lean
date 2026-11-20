@@ -5,7 +5,7 @@ namespace GlobalTheory.IntSmulIntegral
 open NumberField
 
 /- English proof (translation)
-Establish `: Algebra.IsAlgebraic ℤ ℚ` using `IsLocalization.isAlgebraic ℚ (nonZeroDivisors ℤ)`. Establish `: Algebra.IsAlgebraic ℚ K` using `Algebra.IsAlgebraic.of_finite ℚ K`. Take `⟨m, hm, hint⟩` from `((Algebra.IsAlgebraic.isAlgebraic a : IsAlgebraic ℚ a).restrictScalars ℤ).exists_integral_multiple`. Conclude with `⟨m, ⟨m • a, hint⟩, hm, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_int_mul_integral {K : Type} [Field K] [NumberField K] (a : K) :
     ∃ (m : ℤ) (z : 𝓞 K), m ≠ 0 ∧ (z : K) = m • a := by
@@ -15,13 +15,13 @@ theorem exists_int_mul_integral {K : Type} [Field K] [NumberField K] (a : K) :
   exact ⟨m, ⟨m • a, hint⟩, hm, rfl⟩
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span K (Λ : Set (Fin r → K))` using `hΛ.2 ▸ Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by rwa [one_smul]⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact Λ.zero_mem⟩`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨n₁, hn₁, h₁⟩` from `hx`. Take `⟨n₂, hn₂, h₂⟩` from `hy`. Use `⟨n₁ * n₂, mul_ne_zero hn₁ hn₂, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, mul_comm, mul_smul, mul_comm, mul_smul]`. Conclude with `Λ.add_mem (Λ.toAddSubgroup.zsmul_mem h₁ n₂) (Λ.toAddSubgroup.zsmul_mem h₂ n₁)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `smul c x _ hx`. Take `⟨n, hn, h⟩` from `hx`. Take `⟨m, z, hm, hz⟩` from `exists_int_mul_integral c`. Use `⟨n * m, mul_ne_zero hn hm, ?_⟩` and prove the remaining obligations. Establish `e : (n * m) • (c • x) = z • (n • x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul, ← smul_assoc m c x, ← hz, smul_comm]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Λ.smul_mem z h`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_smul_mem {r : ℕ} {K : Type} [Field K] [NumberField K]
     {Λ : Submodule (𝓞 K) (Fin r → K)} (hΛ : ReciprocityTheory.MultiplicativeHeights.IsLattice Λ) (v : Fin r → K) :

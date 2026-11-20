@@ -12,7 +12,7 @@ open NumberField IsDedekindDomain MvPolynomial Formalism.BasicNotions Formalism.
 open scoped Matrix ComplexOrder
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.extNorm_eq_nat_log_le_bound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FPairingNormalisingConstantLogLeBound.lean&line=17#L17)
 -/

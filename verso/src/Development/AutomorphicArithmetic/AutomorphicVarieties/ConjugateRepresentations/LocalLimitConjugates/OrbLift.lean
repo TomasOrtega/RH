@@ -21,9 +21,9 @@ private def stab (ι : H →* G) (f : G → ℂ) : Subgroup H where
 variable [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G] (Γ : Subgroup G) [DiscreteTopology Γ]
 
 /- English proof (translation)
-Establish `hd : _root_.IsDiscrete (Γ : Set G)` using `⟨inferInstanceAs (DiscreteTopology Γ)⟩`. Establish `ht` using `Subgroup.tendsto_coe_cofinite_of_discrete Γ hd`. Establish `hK : IsCompact ((fun x => x * g⁻¹) '' tsupport u)` using `IsCompact.image hu (by fun_prop)`. Establish `hf` using `ht hK.compl_mem_cocompact`. Rewrite `hf` using `[Filter.mem_map, Filter.mem_cofinite]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `summable_of_finite_support (hf.subset fun γ hγ => ?_)` and prove the remaining obligations. Simplify using `only [Set.mem_compl_iff, Set.mem_preimage, not_not]`. Conclude with `⟨γ * g, subset_tsupport _ hγ, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem summ (u : G → ℂ) (hu : HasCompactSupport u) (g : G) : Summable fun γ : Γ => u (γ * g) := by
   have hd : _root_.IsDiscrete (Γ : Set G) := ⟨inferInstanceAs (DiscreteTopology Γ)⟩
@@ -36,11 +36,11 @@ private theorem summ (u : G → ℂ) (hu : HasCompactSupport u) (g : G) : Summab
   exact ⟨γ * g, subset_tsupport _ hγ, by simp⟩
 
 /- English proof (translation)
-Establish `hs` using `summ Γ u hu g`. Establish `h0 : ∀ x, 0 ≤ (u x).re` using `fun x => by`. Take `⟨t, ht, e⟩` from `hp x`. Rewrite using `[e, Complex.ofReal_re]`. Conclude with `ht`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : 0 < (u (γ * g)).re`. Take `⟨t, ht, e⟩` from `hp (γ * g)`. Rewrite `h`, the goal using `[e]`. Rewrite using `[Complex.ofReal_re]`. Conclude with `lt_of_le_of_ne ht fun e' => h (by rw [← e', Complex.ofReal_zero])`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hz`. Establish `h2` using `congrArg Complex.re hz`. Rewrite `h2` using `[GlobalTheory.AutomorphicL2Unitary.orbitSum, Complex.re_tsum hs, Complex.zero_re]`. Conclude with `(Summable.tsum_pos (Complex.hasSum_re hs.hasSum).summable (fun δ => h0 _) ⟨γ, hγ⟩ h1).ne' h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem orb_ne (u : G → ℂ) (hu : HasCompactSupport u) (hp : ∀ g, ∃ t : ℝ, 0 ≤ t ∧ u g = t) (g : G)
     (γ : G) (hγ : γ ∈ Γ) (h : u (γ * g) ≠ 0) : GlobalTheory.AutomorphicL2Unitary.orbitSum Γ u g ≠ 0 := by
@@ -61,7 +61,7 @@ private theorem orb_ne (u : G → ℂ) (hu : HasCompactSupport u) (hp : ∀ g, �
 end
 
 /- English proof (translation)
-Establish `: {k | act (.fin k) φ = φ} = (stab (finGL E a) φ.1 : Set (GL (Fin a) (Af E)))`. Use extensionality with `k`. Conclude with `⟨fun h g => congrFun (congrArg Subtype.val h) g, fun h => Subtype.ext (funext h)⟩`. Rewrite using `[HasLev, this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem lev_iff {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (φ : Sm E a) :
     HasLev φ ↔ IsOpen (stab (finGL E a) φ.1 : Set (GL (Fin a) (Af E))) := by
@@ -72,19 +72,19 @@ private theorem lev_iff {E : Type} [Field E] [NumberField E] [IsTotallyComplex E
 
 open scoped Pointwise in
 /- English proof (translation)
-Introduce `E _ _ _ a φ hφ hL C hC hs`. Take `⟨u, hu, hp, hne, -⟩` from `testBump E a C Set.univ hC isOpen_univ (Set.subset_univ _)`. Take `⟨w, hw, ew⟩` from `orbSm E a u hu`. Establish `hZ : IsClosed ((latticeGL E a : Set (GA E a)) * C)` using `IsClosed.mul_right_of_isCompact Subgroup.isClosed_of_discrete hC`. Establish `hwZ : ∀ g ∈ (latticeGL E a : Set (GA E a)) * C, w.1 g ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨γ, hγ, c, hc, rfl⟩`. Rewrite using `[ew]`. Use `orb_ne _ u.1 hu.1 hp _ γ⁻¹ (inv_mem hγ) ?_` and prove the remaining obligations. Rewrite using `[inv_mul_cancel_left]`. Conclude with `hne c hc`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφZ : ∀ g ∉ (latticeGL E a : Set (GA E a)) * C, φ.1 g = 0`. Introduce `g hg`. Assume the negation of the conclusion as `h`. Take `⟨γ, hγ, hc⟩` from `hs g h`. Conclude with `hg ⟨γ⁻¹, inv_mem hγ, γ * g, hc, inv_mul_cancel_left γ g⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `(smDiv E a φ u w).2 _ hZ hφZ hwZ`. Establish `hf` using `(smDiv E a ⟨_, hq⟩ u w).1`. Use `⟨⟨_, hf⟩, ⟨HasCompactSupport.mul_left hu.1, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[lev_iff]`. Use `Subgroup.isOpen_mono (H₁ := stab (finGL E a) φ.1 ⊓ (stab (finGL E a) w.1 ⊓ stab (finGL E a) u.1)) ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `k ⟨h1, h2, h3⟩ g show φ.1 _ / w.1 _ * u.1 _ = φ.1 _ / w.1 _ * u.1 _`. Rewrite using `[h1 g, h2 g, h3 g]`. Conclude with `((lev_iff φ).1 hφ).inter (((lev_iff w).1 hw).inter ((lev_iff u).1 hu.2))`. Use function extensionality and compare the values at `g`. Establish `hwL : GlobalTheory.AutomorphicL2Unitary.LeftInv (latticeGL E a) w.1` using `ew ▸ GlobalTheory.AutomorphicL2Unitary.leftInv_orbitSum u.1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : GlobalTheory.AutomorphicL2Unitary.orbitSum (latticeGL E a) (fun g => φ.1 g / w.1 g * u.1 g) g = φ.1 g / w.1 g * w.1 g` using `by conv_rhs => rw [congrFun ew g]`. Rewrite using `[GlobalTheory.AutomorphicL2Unitary.orbitSum, GlobalTheory.AutomorphicL2Unitary.orbitSum, ← tsum_mul_left]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Rewrite using `[hL γ γ.2, hwL γ γ.2, congrFun ew g, GlobalTheory.AutomorphicL2Unitary.orbitSum]`. Use `Eq.trans ?_ e.symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : g ∈ (latticeGL E a : Set (GA E a)) * C`. Rewrite using `[div_mul_cancel₀ _ (hwZ g h)]`. Rewrite using `[hφZ g h, zero_div, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.orbLift :
     UpperTheory.V.Cj.H.OrbLift := by

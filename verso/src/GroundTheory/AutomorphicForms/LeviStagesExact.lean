@@ -16,7 +16,7 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
 section Compact
 
 /- English proof (translation)
-Rewrite using `[leviUnipotent, Subgroup.coe_subgroupOf]`. Conclude with `isClosed_unipotentRadical.preimage continuous_subtype_val`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_leviUnipotent :
     IsClosed ((leviUnipotent F n β γ : Subgroup (levi F n β)) : Set (levi F n β)) := by
@@ -24,7 +24,7 @@ theorem isClosed_leviUnipotent :
   exact isClosed_unipotentRadical.preimage continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `isClosed_levi.isClosedEmbedding_subtypeVal.comp isClosed_leviUnipotent.isClosedEmbedding_subtypeVal`.
+A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_leviUnipotent :
     IsClosedEmbedding fun u : leviUnipotent F n β γ => ((u : levi F n β) : GL (Fin n) F) :=
@@ -42,7 +42,7 @@ def leviUnipotentToUnipotent : leviUnipotent F n β γ →* unipotentRadical F n
   map_mul' _ _ := rfl
 
 /- English proof (translation)
-Establish `hN : IsClosedEmbedding (Subtype.val : unipotentRadical F n γ → GL (Fin n) F)` using `isClosed_unipotentRadical.isClosedEmbedding_subtypeVal`. Conclude with `(hN.of_comp_iff).1 isClosedEmbedding_leviUnipotent`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosedEmbedding_leviUnipotentToUnipotent :
     IsClosedEmbedding (leviUnipotentToUnipotent F n β γ) := by
@@ -52,9 +52,9 @@ theorem isClosedEmbedding_leviUnipotentToUnipotent :
   exact (hN.of_comp_iff).1 isClosedEmbedding_leviUnipotent
 
 /- English proof (translation)
-Take `⟨K₀, hKc, hKo, hK⟩` from `exists_compactOpen_unipotentRadical (s.image (leviUnipotentToUnipotent F n β γ))`. Establish `he` using `isClosedEmbedding_leviUnipotentToUnipotent (F := F) (n := n) (β := β) (γ := γ)`. Use `⟨K₀.comap (leviUnipotentToUnipotent F n β γ), ?_, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_comap]`. Conclude with `he.isCompact_preimage hKc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_comap]`. Conclude with `hKo.preimage he.continuous`. Conclude with `Subgroup.mem_comap.2 (hK _ (Finset.mem_image_of_mem _ hx))`.
+A detailed English derivation is pending.
 -/
 theorem exists_compactOpen_leviUnipotent (s : Finset (leviUnipotent F n β γ)) :
     ∃ K : Subgroup (leviUnipotent F n β γ), IsCompact (K : Set (leviUnipotent F n β γ)) ∧
@@ -102,7 +102,7 @@ theorem leviJacquetMap_mk (h : Refines β γ) (f : Representation.IntertwiningMa
       Representation.Coinvariants.mk _ (f v) := rfl
 
 /- English proof (translation)
-The claim follows from `exact_coinvariantsMap exists_compactOpen_leviUnipotent (isSmooth_comp_subtype hσ' _) (isSmooth_comp_subtype hσ'' _) (restrictLeviUnipotent γ f) (restrictLeviUnipotent γ g) hfg`.
+A detailed English derivation is pending.
 -/
 theorem exact_leviJacquetMap (h : Refines β γ) (hσ' : IsSmooth σ') (hσ'' : IsSmooth σ'')
     (f : Representation.IntertwiningMap σ σ') (g : Representation.IntertwiningMap σ' σ'')

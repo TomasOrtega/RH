@@ -13,11 +13,11 @@ open scoped ComplexConjugate
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Introduce `c`. Unfold `holSub at hP`. Unfold `SiegelSpaceAlgebra at h5`. Establish `hs` using `(h5 r (X c) (la c) (la c) 0).1`. Proceed by induction on `hP using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem Q hQ`. Unfold `IsHolCusp at hQ`. Conclude with `hQ c`. Consider the case `zero => exact hs.1`. Consider the case `add Q R _ _ hQ hR => exact hs.2.1 _ hQ _ hR`.
+Treat this case separately. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a Q _ hQ => exact hs.2.2 a _ hQ`.
+A detailed English derivation is pending.
 -/
 theorem holSub_SS (h5 : SiegelSpaceAlgebra (E := E)) {Comp : Type} (X : Comp → Data E r) (la : ∀ c, Wt (X c).Ψ r)
     {P : FDSec X} (hP : P ∈ holSub X la) : ∀ c, P c ∈ (X c).SS (la c) := by
@@ -34,7 +34,7 @@ theorem holSub_SS (h5 : SiegelSpaceAlgebra (E := E)) {Comp : Type} (X : Comp →
   | smul a Q _ hQ => exact hs.2.2 a _ hQ
 
 /- English proof (translation)
-Unfold `supN`. Unfold `supE at hfin ⊢`. Rewrite using `[← ENNReal.ofReal_le_iff_le_toReal hfin]`. Conclude with `le_iSup_of_le ⟨c, ⟨x, hx⟩⟩ le_rfl`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pnorm_le_supN {Comp : Type} (X : Comp → Data E r) (la : ∀ c, Wt (X c).Ψ r) (P : FDSec X)
     (hfin : supE X la P ≠ ⊤) (c : Comp) (x : Frame (X c).Ψ r) (hx : x ∈ (X c).dom) :
@@ -45,9 +45,9 @@ theorem pnorm_le_supN {Comp : Type} (X : Comp → Data E r) (la : ∀ c, Wt (X c
   exact le_iSup_of_le ⟨c, ⟨x, hx⟩⟩ le_rfl
 
 /- English proof (translation)
-Establish `hE : supE X la P = ENNReal.ofReal (supN X la P)`. Unfold `supN`. Rewrite using `[ENNReal.ofReal_toReal hfin]`. Establish `h1 : ENNReal.ofReal (supN X la P / 2) < supE X la P`. Rewrite using `[hE]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ENNReal.ofReal_lt_ofReal_iff hpos).2 (half_lt_self hpos)`. Unfold `supE at h1`. Take `⟨p, hp⟩` from `lt_iSup_iff.1 h1`. Establish `h2 : supN X la P / 2 < (X p.1).pnorm (la p.1) (P p.1) p.2.1` using `(ENNReal.ofReal_lt_ofReal_iff_of_nonneg (by positivity)).1 hp`. Conclude with `⟨p.1, p.2.1, p.2.2, by linarith⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem half_max {Comp : Type} (X : Comp → Data E r) (la : ∀ c, Wt (X c).Ψ r) (P : FDSec X)
     (hpos : 0 < supN X la P) (hfin : supE X la P ≠ ⊤) :
@@ -65,11 +65,11 @@ theorem half_max {Comp : Type} (X : Comp → Data E r) (la : ∀ c, Wt (X c).Ψ 
   exact ⟨p.1, p.2.1, p.2.2, by linarith⟩
 
 /- English proof (translation)
-Establish `hmax` using `maxBound_holds r Xx la P M w hSS hM hw (by linarith) htr z0 hz0 hhalf hpos`. Establish `hfw : 0 < (fdeg E : ℝ) * w + 2`. Use `(Nat.cast_nonneg (fdeg E) : (0 : ℝ) ≤ fdeg E)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hep0 : 0 < epStar M (fdeg E) w Xx.k0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `lt_min one_pos (div_pos Real.pi_pos ?_)` and prove the remaining obligations. Use `Xx.minWeight_pos` as an intermediate fact. Establish `hl2 : 0 < Real.log 2` using `Real.log_pos one_lt_two`. Check the signs of the components of the expression. Establish `hep1 : epStar M (fdeg E) w Xx.k0 ≤ 1` using `min_le_left _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Use `Formalism.L2.Pj.FundamentalDomainD5.t41H_statement r Xx la P z0 (Real.sqrt (epStar M (fdeg E) w Xx.k0)) w hSS.1.1 hz0 hhalf hpos hw hw1 hr (Real.sqrt_pos.2 hep0) (Real.sqrt_le_one.2 hep1) ?_` and prove the remaining obligations. Introduce `v hv hv0`. Take `⟨τ, hτ⟩` from `hmax v hv hv0`. Rewrite using `[Real.sq_sqrt hep0.le]`. Conclude with `hτ.trans (Finset.single_le_sum (f := fun τ => Xx.maj z0 τ (Data.emb τ.1 v)) (fun τ _ => MajorantConjugateTransfer.maj_nonneg Xx.toData hz0 τ _) (Finset.mem_univ τ))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cm_frame (Xx : DataX E r) (la : Wt Xx.Ψ r) (P : Frame Xx.Ψ r → ℂ) (z0 : Frame Xx.Ψ r) (M w : ℝ)
     (hSS : P ∈ Xx.SS la) (hM : 0 < M) (hw : (∑ τ, Xx.spread la τ) ≤ w) (hw1 : 1 ≤ w) (hr : 0 < r)

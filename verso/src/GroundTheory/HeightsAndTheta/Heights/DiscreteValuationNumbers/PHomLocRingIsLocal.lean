@@ -11,29 +11,27 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Introduce `R _ K _ ι P W _ hW hPW`. Set `F` to `FractionRing (MRing ι R ⧸ P)`. Set `φ : MRing ι R →+* F` to `(algebraMap (MRing ι R ⧸ P) F).comp (Ideal.Quotient.mk P)`. Establish `hφ : ∀ a, φ a = 0 ↔ a ∈ P`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [φ, RingHom.comp_apply]`. Rewrite using `[IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hne : ∀ a, a ∉ W → φ a ≠ 0` using `fun a ha h0 => ha (hPW ((hφ a).1 h0))`. Establish `key : ∀ (b : K → ℕ) (f g : MRing ι R), IsMultiHomog f b → IsMultiHomog g b → g ∉ W → ∀ hz : φ f / φ g ∈ homLocRing P W, IsUnit (⟨_, hz⟩ : homLocRing P W) ↔ f ∉ W`. Introduce `b f g hf hg hgW hz`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu⟩ hfW`. Take `⟨b', f', g', -, -, hg'W, hw⟩` from `(h R K ι P W hW hPW ((u⁻¹ : (homLocRing P W)ˣ) : homLocRing P W)).1 (u⁻¹ : (homLocRing P W)ˣ).1.2`. Establish `h1 : (φ f / φ g) * (φ f' / φ g') = 1`. Establish `e` using `congrArg Subtype.val u.mul_inv`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[Subring.coe_mul, hu, Subring.coe_one]`. Rewrite using `[← e]`. Use `congr 1`. Conclude with `hw.symm`. Establish `h2 : φ (f * f' - g * g') = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[div_mul_div_comm, div_eq_one_iff_eq (mul_ne_zero (hne g hgW) (hne g' hg'W))]`. Rewrite using `[map_sub, map_mul, map_mul, h1, sub_self]`. Establish `h3 : f * f' - g * g' ∈ W` using `hPW ((hφ _).1 h2)`. Establish `h4 : g * g' ∈ W`. Use `W.sub_mem (W.mul_mem_right f' hfW) h3` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Break down `hW.mem_or_mem h4 with h5 | h5` into its components or cases. Use `exacts [hgW h5, hg'W h5]`. Introduce `hfW`. Establish `hgf : φ g / φ f ∈ homLocRing P W` using `Subring.subset_closure ⟨b, g, f, hg, hf, hfW, rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `IsUnit.of_mul_eq_one ⟨_, hgf⟩ ?_` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subring.coe_mul, Subring.coe_one]`. Rewrite using `[div_mul_div_comm, mul_comm (φ f) (φ g)]`. Conclude with `div_self (mul_ne_zero (hne g hgW) (hne f hfW))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, key⟩` and prove the remaining obligations. Establish `hnu : ∀ z : homLocRing P W, ¬ IsUnit z → ∃ (b : K → ℕ) (f g : MRing ι R), IsMultiHomog f b ∧ IsMultiHomog g b ∧ g ∉ W ∧ f ∈ W ∧ (z : F) = φ f / φ g`. Introduce `z hz`. Take `⟨b, f, g, hf, hg, hgW, hzfg⟩` from `(h R K ι P W hW hPW z).1 z.2`. Use `⟨b, f, g, hf, hg, hgW, ?_, hzfg⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hfW`. Establish `hmem : φ f / φ g ∈ homLocRing P W` using `hzfg ▸ z.2`. Establish `e : z = ⟨_, hmem⟩` using `Subtype.ext hzfg`. Conclude with `hz (e ▸ (key b f g hf hg hgW hmem).2 hfW)`. Use `IsLocalRing.of_nonunits_add ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x y hx hy`. Take `⟨b₁, f₁, g₁, hf₁, hg₁, hg₁W, hf₁W, hx'⟩` from `hnu x hx`. Take `⟨b₂, f₂, g₂, hf₂, hg₂, hg₂W, hf₂W, hy'⟩` from `hnu y hy`. Establish `hnum : IsMultiHomog (f₁ * g₂ + f₂ * g₁) (b₁ + b₂)` using `IsWeightedHomogeneous.add (IsWeightedHomogeneous.mul hf₁ hg₂) (by rw [add_comm]; exact IsWeightedHomogeneous.mul hf₂ hg₁)`. Establish `hden : IsMultiHomog (g₁ * g₂) (b₁ + b₂)` using `IsWeightedHomogeneous.mul hg₁ hg₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdenW : g₁ * g₂ ∉ W` using `fun h5 => (hW.mem_or_mem h5).elim hg₁W hg₂W`. Establish `hsum : ((x + y : homLocRing P W) : F) = φ (f₁ * g₂ + f₂ * g₁) / φ (g₁ * g₂)`. Rewrite using `[Subring.coe_add, hx', hy', div_add_div _ _ (hne g₁ hg₁W) (hne g₂ hg₂W), map_add, map_mul, map_mul, map_mul, mul_comm (φ g₁) (φ f₂)]`. Establish `hmem : φ (f₁ * g₂ + f₂ * g₁) / φ (g₁ * g₂) ∈ homLocRing P W` using `hsum ▸ (x + y).2`. Establish `e : x + y = ⟨_, hmem⟩` using `Subtype.ext hsum`.
-
-Rewrite using `[mem_nonunits_iff, e, key (b₁ + b₂) _ _ hnum hden hdenW hmem, not_not]`. Conclude with `W.add_mem (W.mul_mem_right _ hf₁W) (W.mul_mem_right _ hf₂W)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HomLocRingIsLocal.proof (h : HomLocRingMem.Statement.{u}) : HomLocRingIsLocal.Statement.{u} := by
   intro R _ K _ ι P W _ hW hPW

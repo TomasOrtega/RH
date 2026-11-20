@@ -7,21 +7,21 @@ namespace GlobalTheory.ZeroDetect
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory in
 
 /- English proof (translation)
-Repeatedly rewrite using `[Finset.sum_mul]`. Rewrite using `[Finset.sum_comm' (t' := Finset.Icc 1 D) (s' := fun d => (Finset.Ioc 0 X).filter (fun n => d ∣ n))]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `d hd`. Establish `hd1 : 0 < d` using `(Finset.mem_Icc.1 hd).1`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_bij' (fun n _ => n / d) (fun m _ => d * m) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `n hn`. Simplify using `only [Finset.mem_filter, Finset.mem_Ioc] at hn`. Take `⟨⟨h0, hX⟩, k, rfl⟩` from `hn`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hk : 0 < k` using `Nat.pos_of_mul_pos_left h0`. Rewrite using `[Nat.mul_div_cancel_left k hd1, Finset.mem_Icc]`. Conclude with `⟨hk, (Nat.le_div_iff_mul_le hd1).2 (by rw [mul_comm]; exact hX)⟩`. Introduce `m hm`. Rewrite `hm` using `[Finset.mem_Icc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_Ioc]`. Use `⟨⟨Nat.mul_pos hd1 hm.1, ?_⟩, dvd_mul_right d m⟩` and prove the remaining obligations. Use `(Nat.le_div_iff_mul_le hd1).1 hm.2` as an intermediate fact. Rewrite using `[mul_comm]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n hn`. Simplify using `only [Finset.mem_filter] at hn`. Conclude with `Nat.mul_div_cancel' hn.2`. Introduce `m _`. Conclude with `Nat.mul_div_cancel_left m hd1`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `n hn`. Simplify using `only [Finset.mem_filter, Finset.mem_Ioc] at hn`. Take `⟨⟨h0, _⟩, k, rfl⟩` from `hn`. Establish `hk : 0 < k` using `Nat.pos_of_mul_pos_left h0`. Rewrite using `[Nat.mul_div_cancel_left k hd1, hf d k hd1 hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `n d`. Simplify using `only [Finset.mem_Ioc, Finset.mem_filter, Nat.mem_divisors, Finset.mem_Icc]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h0, hX⟩, ⟨hdn, -⟩, hdD⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨⟨h0, hX⟩, hdn⟩, Nat.pos_of_dvd_of_pos hdn h0, hdD⟩`. Introduce and unpack `⟨⟨⟨h0, hX⟩, hdn⟩, -, hdD⟩`. Conclude with `⟨⟨h0, hX⟩, ⟨hdn, h0.ne'⟩, hdD⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ZeroDetect.sum_trunc_conv (a f : ℕ → ℂ)
     (hf : ∀ m n, 0 < m → 0 < n → f (m * n) = f m * f n)
@@ -70,11 +70,11 @@ theorem _root_.GlobalTheory.ZeroDetect.sum_trunc_conv (a f : ℕ → ℂ)
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory in
 
 /- English proof (translation)
-Establish `hsum : ∀ n, ∑ d ∈ n.divisors, (moebius d : ℤ) = if n = 1 then 1 else 0`. Introduce `n`. Rewrite using `[← coe_mul_zeta_apply, moebius_mul_coe_zeta, one_apply]`. Rewrite using `[Finset.sum_eq_single 1]`. Simplify using `[Finset.filter_singleton, hD]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `n hn hn1`. Establish `hfil : n.divisors.filter (fun d => d ≤ D) = n.divisors`. Apply `Finset.filter_true_of_mem` to reduce the goal to its premises. Introduce `d hd`. Conclude with `(Nat.divisor_le hd).trans (Finset.mem_Ioc.1 hn).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfil, hsum, if_neg hn1]`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd (Finset.mem_Ioc.2 ⟨zero_lt_one, hD⟩) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ZeroDetect.sum_initial (f : ℕ → ℂ) (D : ℕ) (hD : 1 ≤ D) :
     ∑ n ∈ Finset.Ioc 0 D,
@@ -96,15 +96,15 @@ theorem _root_.GlobalTheory.ZeroDetect.sum_initial (f : ℕ → ℂ) (D : ℕ) (
 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory in
 /- English proof (translation)
-Establish `hQ0 : 0 < Q` using `by linarith`. Establish `hQ6 : (2:ℝ) ^ 60 ≤ Q ^ 6`. Combine the equalities or inequalities in the displayed calculation. Establish `hy1 : 1 ≤ y` using `by nlinarith`. Establish `hy0 : 0 < y` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : 0 < 16 * Q ^ 5` using `by positivity`. Establish `key : 16 * Q ^ 5 ≤ y ^ ((11:ℝ) / 12)`. Establish `hpow : (y ^ ((11:ℝ) / 12)) ^ 12 = y ^ 11`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hy0.le]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `h12 : (16 * Q ^ 5) ^ 12 ≤ (y ^ ((11:ℝ) / 12)) ^ 12`. Rewrite using `[hpow]`. Establish `hyQ : Q ^ 6 / 2 ≤ y` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Establish `: (Q ^ 6) ^ 11 = Q ^ 6 * Q ^ 60` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[this]`. Establish `hQ60 : 0 < Q ^ 60` using `by positivity`. Rewrite using `[le_div_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Use `_ = (Q ^ 6 / 2) ^ 11 := by ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ y ^ 11 := pow_le_pow_left₀ (by positivity) hyQ 11`. Conclude with `le_of_pow_le_pow_left₀ (by norm_num) (by positivity) h12`. Rewrite using `[Real.rpow_neg hy0.le]`. Apply `inv_anti₀ h5` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ZeroDetect.rpow_bound {Q y σ : ℝ} (hQ : 1024 ≤ Q) (hy : Q ^ 6 ≤ 2 * y)
     (hσ : 11 / 12 ≤ σ) :
@@ -141,39 +141,35 @@ theorem _root_.GlobalTheory.ZeroDetect.rpow_bound {Q y σ : ℝ} (hQ : 1024 ≤ 
 open Complex DirichletCharacter ArithmeticFunction MeasureTheory in
 
 /- English proof (translation)
-Use `⟨1024, fun Q hQ q _ χ hχ hqQ ρ hre him hL => ?_⟩` and prove the remaining obligations. Establish `hσ : (11 / 12 : ℝ) ≤ ρ.re` using `by norm_num at hre; linarith`. Establish `hσ0 : 0 < ρ.re` using `by linarith`. Establish `hQR : (1024 : ℝ) ≤ Q` using `by exact_mod_cast hQ`. Establish `hQ0 : (0 : ℝ) < Q` using `by linarith`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqR : (q : ℝ) ≤ Q` using `by exact_mod_cast hqQ`. Establish `hD : Q ^ 3 ≤ Q ^ 6` using `Nat.pow_le_pow_right (by omega) (by norm_num)`. Establish `hQ3 : 2 ≤ Q ^ 3` using `le_trans (by omega) (Nat.le_self_pow (by norm_num) Q)`. Establish `hD2 : 2 * Q ^ 3 ≤ Q ^ 6`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `set f : ℕ → ℂ := fun n => χ (n : ZMod q) * (n : ℂ) ^ (-ρ) with hfdef`. Use `set a : ℕ → ℂ := fun d => ((moebius d : ℤ) : ℂ) with hadef`. Establish `hf : ∀ m n, 0 < m → 0 < n → f (m * n) = f m * f n`. Introduce `m n _ _`. Simplify using `only [f, Nat.cast_mul, map_mul, Complex.natCast_mul_natCast_cpow]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hS : ∀ Y : ℕ, ∑ n ∈ Finset.Ioc 0 Y, ((∑ d ∈ n.divisors.filter (fun d => d ≤ Q ^ 3), (moebius d : ℤ) : ℤ) : ℂ) * χ (n : ZMod q) * (n : ℂ) ^ (-ρ) = ∑ n ∈ Finset.Ioc 0 Y, (∑ d ∈ n.divisors.filter (fun d => d ≤ Q ^ 3), a d) * f n`. Introduce `Y`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [a, f]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hsplit` using `Finset.sum_Ioc_consecutive (fun n => ((∑ d ∈ n.divisors.filter (fun d => d ≤ Q ^ 3), (moebius d : ℤ) : ℤ) : ℂ) * χ (n : ZMod q) * (n : ℂ) ^ (-ρ)) (Nat.zero_le (Q ^ 3)) hD`. Establish `hinit : ∑ n ∈ Finset.Ioc 0 (Q ^ 3), ((∑ d ∈ n.divisors.filter (fun d => d ≤ Q ^ 3), (moebius d : ℤ) : ℤ) : ℂ) * χ (n : ZMod q) * (n : ℂ) ^ (-ρ) = 1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hmain : ∑ n ∈ Finset.Ioc 0 (Q ^ 6), ((∑ d ∈ n.divisors.filter (fun d => d ≤ Q ^ 3), (moebius d : ℤ) : ℤ) : ℂ) * χ (n : ZMod q) * (n : ℂ) ^ (-ρ) = ∑ d ∈ Finset.Icc 1 (Q ^ 3), a d * f d * ∑ m ∈ Finset.Icc 1 (Q ^ 6 / d), f m`. Rewrite using `[hS]`. Conclude with `_root_.GlobalTheory.ZeroDetect.sum_trunc_conv a f hf _ _`. Establish `hnorm : ‖ρ‖ / ρ.re ≤ 1 + 2 * Q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `Complex.norm_le_abs_re_add_abs_im ρ`. Rewrite `h1` using `[abs_of_pos hσ0]`. Rewrite using `[div_le_iff₀ hσ0]`. Use the polynomial consequences of the given equalities and inequalities. Use `set C : ℝ := 2 * (q : ℝ) * (1 + ‖ρ‖ / ρ.re) with hCdef`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hC0 : 0 ≤ C` using `by positivity`. Establish `hCle : C ≤ 8 * (Q : ℝ) ^ 2`. Establish `h4 : 1 + ‖ρ‖ / ρ.re ≤ 4 * Q` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul (by linarith) h4 (by positivity) (by positivity)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `_ = 8 * (Q : ℝ) ^ 2 := by ring`. Establish `hterm : ∀ d ∈ Finset.Icc 1 (Q ^ 3), ‖a d * f d * ∑ m ∈ Finset.Icc 1 (Q ^ 6 / d), f m‖ ≤ C * (16 * (Q : ℝ) ^ 5)⁻¹`. Introduce `d hd`. Take `⟨hd1, hdD⟩` from `Finset.mem_Icc.1 hd`. Establish `hN : 1 ≤ Q ^ 6 / d` using `(Nat.le_div_iff_mul_le hd1).2 (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hP : ‖∑ m ∈ Finset.Icc 1 (Q ^ 6 / d), f m‖ ≤ C * ((Q ^ 6 / d : ℕ) : ℝ) ^ (-ρ.re)`. Use `_root_.GlobalTheory.DirichletTail.norm_LFunction_sub_sum_le q χ hχ ρ hσ0 (Q ^ 6 / d) hN` as an intermediate fact. Rewrite `this` using `[hL, zero_sub, norm_neg]`. Conclude with `this`. Establish `ha : ‖a d‖ ≤ 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [a]`. Rewrite using `[Complex.norm_intCast]`. Conclude with `abs_moebius_le_one` after adjusting the coercions. Establish `hfd : ‖f d‖ ≤ (d : ℝ) ^ (-ρ.re)`. Simplify using `only [f]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, Complex.norm_natCast_cpow_of_pos hd1, Complex.neg_re]`. Conclude with `mul_le_of_le_one_left (by positivity) (DirichletCharacter.norm_le_one χ _)`. Establish `hyN : Q ^ 6 ≤ 2 * (d * (Q ^ 6 / d))`. Establish `h1` using `Nat.div_add_mod (Q ^ 6) d`. Establish `h2` using `Nat.mod_lt (Q ^ 6) hd1`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hy : (Q : ℝ) ^ 6 ≤ 2 * ((d : ℝ) * ((Q ^ 6 / d : ℕ) : ℝ))` using `by exact_mod_cast hyN`. Establish `hrp` using `_root_.GlobalTheory.ZeroDetect.rpow_bound hQR hy hσ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.mul_rpow (by positivity) (by positivity)]; ring`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `_ ≤ C * (16 * (Q : ℝ) ^ 5)⁻¹ := by gcongr`. Establish `hsum : ‖∑ d ∈ Finset.Icc 1 (Q ^ 3), a d * f d * ∑ m ∈ Finset.Icc 1 (Q ^ 6 / d), f m‖ ≤ 1 / 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Nat.card_Icc, nsmul_eq_mul]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `_ = C / (16 * (Q : ℝ) ^ 2) := by field_simp`. Use `_ ≤ 1 / 2 := by`. Rewrite using `[div_le_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `hT : ∑ n ∈ Finset.Ioc (Q ^ 3) (Q ^ 6), ((∑ d ∈ n.divisors.filter (fun d => d ≤ Q ^ 3), (moebius d : ℤ) : ℤ) : ℂ) * χ (n : ZMod q) * (n : ℂ) ^ (-ρ) = (∑ d ∈ Finset.Icc 1 (Q ^ 3), a d * f d * ∑ m ∈ Finset.Icc 1 (Q ^ 6 / d), f m) - 1`. Rewrite using `[← hmain, ← hsplit, hinit]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hT, norm_sub_rev]`. Establish `h1` using `norm_sub_norm_le (1 : ℂ) (∑ d ∈ Finset.Icc 1 (Q ^ 3), a d * f d * ∑ m ∈ Finset.Icc 1 (Q ^ 6 / d), f m)`.
-
-Rewrite `h1` using `[norm_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ZeroDetect.zero_detect : ∃ Q₀ : ℕ, ∀ Q : ℕ, Q₀ ≤ Q →
     ∀ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q), χ ≠ 1 → q ≤ Q → ∀ ρ : ℂ,

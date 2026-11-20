@@ -6,7 +6,7 @@ import Formalism.LocalRingCardinality.CoeNeZeroOfNotMem
 open Formalism.MainNotions Formalism.BasicNotions Formalism.MainNotions.G Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ShNums.size_rel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FScaleFamilySizeRelationsEventually.lean&line=96#L96)
 -/

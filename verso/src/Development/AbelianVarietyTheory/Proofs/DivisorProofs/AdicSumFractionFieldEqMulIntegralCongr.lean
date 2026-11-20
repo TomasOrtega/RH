@@ -10,9 +10,9 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 namespace GlobalTheory.Poinc.AdicTerm
 
 /- English proof (translation)
-Establish `hw : w ∈ N` using `Submodule.smul_le_right (h 0)`. Use `haveI : Module.Finite V N := Module.Finite.iff_fg.mpr hN`. Establish `hb` using `Ideal.iInf_pow_smul_eq_bot_of_isLocalRing (M := N) (maximalIdeal V) (maximalIdeal.isMaximal V).ne_top`. Establish `hm : (⟨w, hw⟩ : N) ∈ (⨅ n : ℕ, maximalIdeal V ^ n • ⊤ : Submodule V N)`. Rewrite using `[Submodule.mem_iInf]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Conclude with `(Submodule.mem_smul_top_iff _ N _).mpr (h n)`. Rewrite `hm` using `[hb, Submodule.mem_bot]`. Conclude with `congrArg Subtype.val hm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mem_pow_smul {V E : Type} [CommRing V] [IsLocalRing V] [IsNoetherianRing V]
     [AddCommGroup E] [Module V E] (N : Submodule V E) (hN : N.FG) (w : E)
@@ -29,15 +29,15 @@ theorem eq_zero_of_mem_pow_smul {V E : Type} [CommRing V] [IsLocalRing V] [IsNoe
   exact congrArg Subtype.val hm
 
 /- English proof (translation)
-Take `⟨N, hN, -, -, hS⟩` from `hs`. Set `P : Submodule V E` to `Submodule.map (LinearMap.toSpanSingleton V E k) (maximalIdeal V)`. Establish `key : P.mkQ (v - y i₀ • k) = 0`. Use `eq_zero_of_mem_pow_smul (N.map P.mkQ) (hN.map _) _ fun n => ?_` and prove the remaining obligations. Take `⟨S, hS⟩` from `hS n`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hS (insert i₀ S) (Finset.subset_insert _ _)`. Establish `h2 : P.mkQ (v - ∑ i ∈ insert i₀ S, x i) ∈ maximalIdeal V ^ n • N.map P.mkQ`. Rewrite using `[← Submodule.map_smul'']`. Conclude with `Submodule.mem_map_of_mem h1`. Establish `h3 : ∑ i ∈ (insert i₀ S).erase i₀, x i ∈ P`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun i hi => ?_` and prove the remaining obligations. Conclude with `⟨y i, hy i (Finset.ne_of_mem_erase hi), by simp [hx i]⟩`. Establish `h4 : P.mkQ (∑ i ∈ (insert i₀ S).erase i₀, x i) = 0` using `(Submodule.Quotient.mk_eq_zero P).mpr h3`. Establish `h5 : v - y i₀ • k = (v - ∑ i ∈ insert i₀ S, x i) + ∑ i ∈ (insert i₀ S).erase i₀, x i`. Rewrite using `[← Finset.add_sum_erase _ x (Finset.mem_insert_self i₀ S), hx i₀]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[h5, map_add, h4, add_zero]`. Conclude with `h2`. Take `⟨a, ha, hak⟩` from `(Submodule.Quotient.mk_eq_zero P).mp key`. Use `⟨y i₀ + a, ?_, by simpa using ha⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hak' : a • k = v - y i₀ • k` using `by simpa using hak`. Rewrite using `[add_smul, hak']`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem sumI_smul {V E : Type} [CommRing V] [IsLocalRing V] [IsNoetherianRing V]
     [AddCommGroup E] [Module V E] {Ix : Type} (i₀ : Ix) (x : Ix → E) (y : Ix → V) (k v : E)
@@ -72,7 +72,7 @@ theorem sumI_smul {V E : Type} [CommRing V] [IsLocalRing V] [IsNoetherianRing V]
   abel
 
 /- English proof (translation)
-Introduce `V _ _ _ _ Ix i₀ x y κ v hx hy hs`. Establish `h` using `@sumI_smul V (FractionRing V) _ _ _ _ (Module.compHom (FractionRing V) (algebraMap V (FractionRing V))) Ix i₀ x y κ v (fun i => (hx i).trans (mul_comm _ _)) hy hs`. Take `⟨S, h1, h2⟩` from `h`. Conclude with `⟨S, h1.trans (mul_comm _ _), h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sumF_mul : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] [IsNoetherianRing V] (Ix : Type) (i₀ : Ix) (x : Ix → FractionRing V) (y : Ix → V) (κ v : FractionRing V), (∀ i, x i = κ * algebraMap V (FractionRing V) (y i)) → (∀ i, i ≠ i₀ → y i ∈ maximalIdeal V) → SumF (maximalIdeal V) (FractionRing V) x v → ∃ S : V, v = κ * algebraMap V (FractionRing V) S ∧ S - y i₀ ∈ maximalIdeal V := by
   intro V _ _ _ _ Ix i₀ x y κ v hx hy hs

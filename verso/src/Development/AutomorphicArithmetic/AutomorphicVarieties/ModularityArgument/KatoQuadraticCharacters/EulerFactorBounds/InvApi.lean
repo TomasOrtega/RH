@@ -14,13 +14,13 @@ private def Fm (R : Type) [CommRing R] (w : ℕ) : Submodule R ((Fin 2 → R) �
   Submodule.span R {φ | ∃ i j : ℕ, i + j = w ∧ φ = fun u => u 0 ^ i * u 1 ^ j}
 
 /- English proof (translation)
-Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [add_mul]`. Conclude with `add_mem hx hy`. Consider the case `smul k x _ hx => rw [smul_mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.smul_mem _ _ hx`. Consider the case `mem x hx`. Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [mul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `smul k x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`. Consider the case `mem y hy`. Take `⟨i, j, rfl, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Take `⟨i', j', rfl, rfl⟩` from `hy`. Use `Submodule.subset_span ⟨i + i', j + j', by omega, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `u`. Simplify using `only [Pi.mul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem fm_mul {R : Type} [CommRing R] {a b : ℕ} {φ ψ : (Fin 2 → R) → R} (hφ : φ ∈ Fm R a) (hψ : ψ ∈ Fm R b) :
     φ * ψ ∈ Fm R (a + b) := by
@@ -42,7 +42,7 @@ private theorem fm_mul {R : Type} [CommRing R] {a b : ℕ} {φ ψ : (Fin 2 → R
       ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact Submodule.subset_span ⟨0, 0, rfl, by funext u; simp⟩`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `fm_mul ih hφ`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem fm_pow {R : Type} [CommRing R] {φ : (Fin 2 → R) → R} (hφ : φ ∈ Fm R 1) (k : ℕ) : φ ^ k ∈ Fm R k := by
   induction k with
@@ -50,9 +50,9 @@ private theorem fm_pow {R : Type} [CommRing R] {φ : (Fin 2 → R) → R} (hφ :
   | succ k ih => rw [pow_succ]; exact fm_mul ih hφ
 
 /- English proof (translation)
-Establish `h0 : (fun u : Fin 2 → R => u 0 ^ 1 * u 1 ^ 0) ∈ Fm R 1` using `Submodule.subset_span ⟨1, 0, rfl, rfl⟩`. Establish `h1 : (fun u : Fin 2 → R => u 0 ^ 0 * u 1 ^ 1) ∈ Fm R 1` using `Submodule.subset_span ⟨0, 1, rfl, rfl⟩`. Establish `h` using `add_mem (Submodule.smul_mem _ (m i 0) h0) (Submodule.smul_mem _ (m i 1) h1)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Matrix.mulVec, dotProduct, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem fm_lin {R : Type} [CommRing R] (m : Matrix (Fin 2) (Fin 2) R) (i : Fin 2) :
     (fun u => (m *ᵥ u) i) ∈ Fm R 1 := by
@@ -66,7 +66,7 @@ private theorem fm_lin {R : Type} [CommRing R] (m : Matrix (Fin 2) (Fin 2) R) (i
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, h, -⟩` from `sSlD Ω ε X 1 one_pos`. Proceed by induction on `j with`. Consider the case `zero => simpa using (h m).1`. Consider the case `succ j ih => rw [pow_succ]`. Conclude with `((h m).2 _ ih _ hf).1`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem un_pow (X : Tower Ω ε) (m : ℕ) (f : X.Kˣ) (hf : f ∈ X.Un m) (j : ℕ) : f ^ j ∈ X.Un m := by
   obtain ⟨-, -, -, -, -, -, h, -⟩ := sSlD Ω ε X 1 one_pos
@@ -106,17 +106,15 @@ private def Pm (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (w n : ℕ) : Submodul
     exact Finset.sum_congr rfl fun i _ => smul_comm _ _ _
 
 /- English proof (translation)
-Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `zero`. Use `(Pm X l w n).zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `add x y _ _ hx hy`. Use `(Pm X l w n).add_mem hx hy using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Simplify using `[add_smul]`. Consider the case `smul k x _ hx`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `(Pm X l w n).smul_mem k hx using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Simplify using `[mul_smul]`. Consider the case `mem x hx`. Take `⟨i, j, rfl, rfl⟩` from `hx`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨Pi.single ⟨i, by omega⟩ c, fun k => ?_, fun u => ?_⟩` and prove the remaining obligations. Use `show Pi.single (M := fun _ => X.Khat l) _ c k ∈ Cf X l n`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `zero_mem _`. Rewrite using `[Finset.sum_eq_single (⟨i, by omega⟩ : Fin (i + j + 1))]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[Pi.single_eq_of_ne hb, smul_zero]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pm_fm (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (w n : ℕ) (c : X.Khat l) (hc : c ∈ Cf X l n)
     (φ : (Fin 2 → ℤ_[l]) → ℤ_[l]) (hφ : φ ∈ Fm ℤ_[l] w) : (fun u => φ u • c) ∈ Pm X l w n := by
@@ -145,13 +143,11 @@ private theorem pm_fm (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (w n : ℕ) (c 
       · simp
 
 /- English proof (translation)
-Take `⟨c, hc, ht⟩` from `ht`. Establish `key : ∀ i : Fin (w + 1), (fun u => (((fun u => (mZl l m *ᵥ u) 0) ^ (i : ℕ) * (fun u => (mZl l m *ᵥ u) 1) ^ (w - (i : ℕ)) : (Fin 2 → ℤ_[l]) → ℤ_[l]) u) • X.kmap l (X.sl (toGQ m)).toRingEquiv (c i)) ∈ Pm X l w n`. Introduce `i`. Apply `pm_fm` to reduce the goal to its premises. Take `⟨f, hf, hr⟩` from `hc i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, h, -⟩` from `sSlD Ω ε X 1 one_pos`. Take `⟨-, -, -, -, h', -⟩` from `sCls Ω ε X l n`. Conclude with `⟨slU X (toGQ m) f, h _ _ f hf, h' (X.sl (toGQ m)).toRingEquiv f _ hr⟩`. Use `fm_mul (fm_pow (fm_lin (mZl l m) 0) i) (fm_pow (fm_lin (mZl l m) 1) (w - i))` as an intermediate fact. Rewrite `this` using `[show (i : ℕ) + (w - i) = w by omega]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `(Pm X l w n).sum_mem fun i (_ : i ∈ Finset.univ) => key i`. Use `show X.act l m t ∈ Pm X l w n`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `u`. Use `show X.kmap l _ (t _) = _`.
-
-Rewrite using `[ht, map_sum, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [map_smul]; rfl`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pm_act (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (w n : ℕ) (m : Matrix (Fin 2) (Fin 2) ℤ) (t : X.Fn l)
     (ht : PolMod X l w n t) : PolMod X l w n (X.act l m t) := by
@@ -175,9 +171,9 @@ private theorem pm_act (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (w n : ℕ) (m
   exact Finset.sum_congr rfl fun i _ => by rw [map_smul]; rfl
 
 /- English proof (translation)
-Take `⟨c, hc, ht⟩` from `ht`. Use `⟨c, fun i => ?_, ht⟩` and prove the remaining obligations. Take `⟨f, hf, hr⟩` from `hc i`. Take `⟨-, -, -, -, -, h, -⟩` from `sCls Ω ε X l n`. Use `⟨f, fun W hW => ?_, h _ _ hr⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg⟩` from `hf W hW`. Use `⟨g ^ l, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, ← pow_mul, ← pow_succ']`. Conclude with `hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pm_down (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (w n : ℕ) (t : X.Fn l)
     (ht : PolMod X l w (n + 1) t) : PolMod X l w n t := by
@@ -215,11 +211,11 @@ private def Im (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (N w n : ℕ) : Submod
       exact this
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X l _ N w n`. Use `⟨(Im X l N w n).zero_mem, fun a b ha hb => ⟨(Im X l N w n).add_mem ha hb, (Im X l N w n).sub_mem ha hb⟩, fun k a ha => (Im X l N w n).smul_mem k ha, ?_, fun ι S a h => (Im X l N w n).sum_mem h, ?_, ?_, fun m t _ ht => pm_act X l w n m t ht⟩` and prove the remaining obligations. Introduce and unpack `a b hab ⟨⟨t, ht, hbt⟩, hb, x, hx, hxb⟩`. Take `⟨he, -, hs, -, -, hm, -⟩` from `sApi Ω ε X l n`. Use `⟨⟨t, ht, he.trans hab hbt⟩, fun γ hγ => he.trans (hm _ _ _ hab) (he.trans (hb γ hγ) (he.symm hab)), x, hx, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `he.trans (x := x) (y := (l : ℤ_[l]) ^ cL X l N w • b) hxb (hs _ _ _ (he.symm hab))`. Introduce and unpack `a ⟨⟨t, ht, hat⟩, ha, x, hx, hxa⟩`. Take `⟨-, -, -, -, -, -, -, h, -⟩` from `sApi Ω ε X l n`. Conclude with `⟨⟨t, pm_down X l w n t ht, h _ _ hat⟩, fun γ hγ => h _ _ (ha γ hγ), x, hx, h x ((l : ℤ_[l]) ^ cL X l N w • a) hxa⟩`. Introduce `a`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, -, -, -, -, h, -⟩` from `sApi Ω ε X l n`. Conclude with `⟨⟨0, (Pm X l w 0).zero_mem, h _ _⟩, fun γ _ => h _ _, 0, zero_mem _, h 0 ((l : ℤ_[l]) ^ cL X l N w • a)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem main : SInvApi := by
   intro Ω _ _ _ ε X l _ N w n
@@ -241,7 +237,7 @@ private theorem main : SInvApi := by
 end UpperTheory.V.Z.Kato.Nb.InverseLimitApi
 
 /- English proof (translation)
-The claim follows from `UpperTheory.V.Z.Kato.Nb.InverseLimitApi.main`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Nb.sInvApi :
     UpperTheory.V.Z.Kato.Nb.SInvApi :=

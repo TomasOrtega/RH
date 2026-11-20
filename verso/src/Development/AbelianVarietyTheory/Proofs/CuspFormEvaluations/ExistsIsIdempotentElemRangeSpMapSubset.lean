@@ -17,7 +17,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `isUnit_one`. Introduce `h`. Conclude with `h.mul_left_cancel (by rw [hu.eq, _root_.mul_one])`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem eq_one_iff_isUnit_of_isIdempotentElem {R : Type} [CommRing R] {u : R} (hu : IsIdempotentElem u) :
     u = 1 ↔ IsUnit u := by
@@ -28,9 +28,9 @@ private theorem eq_one_iff_isUnit_of_isIdempotentElem {R : Type} [CommRing R] {u
     exact h.mul_left_cancel (by rw [hu.eq, _root_.mul_one])
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h q hq`. Conclude with `q.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hq h)`. Introduce `h`. Assume the negation of the conclusion as `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨I, hI, hxI⟩` from `exists_max_ideal_of_mem_nonunits (mem_nonunits_iff.mpr hx)`. Conclude with `h ⟨I, hI.isPrime⟩ hxI`.
+A detailed English derivation is pending.
 -/
 private theorem isUnit_iff_forall_primeSpectrum_notMem {R : Type} [CommRing R] (x : R) :
     IsUnit x ↔ ∀ q : PrimeSpectrum R, x ∉ q.asIdeal := by
@@ -43,11 +43,11 @@ private theorem isUnit_iff_forall_primeSpectrum_notMem {R : Type} [CommRing R] (
     exact h ⟨I, hI.isPrime⟩ hxI
 
 /- English proof (translation)
-Set `s : TopologicalSpace.Clopens (PrimeSpectrum B)` to `⟨U, hU⟩`. Establish `he : IsIdempotentElem (PrimeSpectrum.isIdempotentElemEquivClopens.symm s).1` using `(PrimeSpectrum.isIdempotentElemEquivClopens.symm s).2`. Establish `hmem : ∀ p : PrimeSpectrum B, p ∈ U ↔ (PrimeSpectrum.isIdempotentElemEquivClopens.symm s).1 ∉ p.asIdeal`. Introduce `p`. Establish `h` using `congrArg (fun o : TopologicalSpace.Opens (PrimeSpectrum B) => p ∈ o) (PrimeSpectrum.basicOpen_isIdempotentElemEquivClopens_symm s)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [eq_iff_iff] at h`. Rewrite `h` using `[PrimeSpectrum.mem_basicOpen]`. Conclude with `h.symm`. Use `⟨_, he, fun T _ χ => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_one_iff_isUnit_of_isIdempotentElem (he.map χ), isUnit_iff_forall_primeSpectrum_notMem]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨q, rfl⟩`. Conclude with `(hmem _).2 (h q)`. Introduce `h q`. Conclude with `(hmem _).1 (h ⟨q, rfl⟩)`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_isIdempotentElem_range_spMap_subset {B : Type} [CommRing B] {U : Set (Sp B)} (hU : IsClopen U) :
     ∃ e : B, IsIdempotentElem e ∧ ∀ (T : Type) [CommRing T] (χ : B →+* T), χ e = 1 ↔ Set.range (spMap χ) ⊆ U := by
@@ -72,15 +72,15 @@ theorem exists_isIdempotentElem_range_spMap_subset {B : Type} [CommRing B] {U : 
     exact (hmem _).1 (h ⟨q, rfl⟩)
 
 /- English proof (translation)
-Introduce `_ E _ _ _ H Dw l Xo B _ x0 k hk a b ha hb`. Take `⟨-, -, hunit, hab, -⟩` from `moduli_univ_polAV E H Dw l Xo`. Take `⟨Z, et, hZf, hZe, hadd, hpow, huniv⟩` from `exists_finiteEtale_latticeTorsionHom Xo.X Xo.univ.t.G k ℤ hab (hunit k hk)`. Establish `R : LevCover.RepTors Xo.univ.t.G k ℤ Z et` using `⟨hZf, hZe, hadd, hpow, huniv⟩`. Establish `hz : ∀ c : ptO Xo x0 ⟶ Xo.univ.t.G, c ^ k = 1 → ∀ m : ℤ, (c ^ m) ^ k = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c hc m`. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hc, one_zpow]`. Take `⟨U, hUc, hU⟩` from `R.clopenCond (T := ptO Xo x0) (fun m => a ^ m) (fun m => b ^ m) (fun m c => zpow_add a m c) (hz a ha) (fun m c => zpow_add b m c) (hz b hb)`. Set `V : Set (Sp B)` to `(U : Set (ptO Xo x0).left)`. Take `⟨e, he, hE⟩` from `exists_isIdempotentElem_range_spMap_subset (B := B) (U := V) ⟨hUc, U.isOpen⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `⟨e, he, fun T _ χ => ?_⟩` and prove the remaining obligations. Rewrite using `[hE T χ]`. Set `h : Over.mk (spMap χ ≫ x0) ⟶ ptO Xo x0` to `Over.homMk (spMap χ) rfl`. Establish `hh : Set.range (spMap χ) ⊆ V ↔ Set.range h.left ⊆ U` using `Iff.rfl`. Rewrite using `[hh, ← hU _ h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GrpObj.comp_zpow]`. Prove the components needed by the constructor for the conclusion. Introduce `hm`. Establish `h1 : h ≫ a = h ≫ b` using `by simpa using hm 1`. Simplify `congrArg CommaMorphism.left h1` using `[h]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hl m`. Establish `h1 : h ≫ a = h ≫ b` using `Over.OverMorphism.ext (by simpa [h] using hl)`. Rewrite using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isIdempotentElem_torsion_eq :
     Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (B : Type) [CommRing B] (x0 : Sp B ⟶ Xo.X) (k : ℕ), 0 < k → ∀ (a b : ptO Xo x0 ⟶ Xo.univ.t.G), a ^ k = 1 → b ^ k = 1 → ∃ e : B, IsIdempotentElem e ∧ ∀ (T : Type) [CommRing T] (χ : B →+* T), χ e = 1 ↔ spMap χ ≫ a.left = spMap χ ≫ b.left := by

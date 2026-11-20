@@ -13,7 +13,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Semilin
 
 open MvPolynomial in
 /- English proof (translation)
-Simplify using `[Formalism.GradedWeylDivisibility.dualWeyl, Submodule.mem_iInf, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_dw_iff {R : Type} [CommRing R] (r n : ℕ) (ν : Fin n → ℕ) (f : MvPolynomial (Fin r × Fin n) R) :
     f ∈ Formalism.GradedWeylDivisibility.dualWeyl R r n ν ↔ IsWeightedHomogeneous (Formalism.GradedWeylDivisibility.colW r n) f ν ∧
@@ -22,7 +22,7 @@ private theorem mem_dw_iff {R : Type} [CommRing R] (r n : ℕ) (ν : Fin n → �
 
 open MvPolynomial in
 /- English proof (translation)
-Rewrite using `[mem_dw_iff, mem_dw_iff]`. Take `⟨h1, h2⟩` from `UpperTheory.aeval_map_eq_rename_map_iff R S φ hφ _ _ (Formalism.GradedWeylDivisibility.colW r n) ν f`. Use `and_congr h1 (forall_congr' fun l => forall_congr' fun j => forall_congr' fun _ => ?_)` and prove the remaining obligations. Use `h2 _ _ _ some fun v => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem map_mem_dw_iff {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (hφ : Function.Injective φ)
     (r n : ℕ) (ν : Fin n → ℕ) (f : MvPolynomial (Fin r × Fin n) R) :
@@ -34,9 +34,9 @@ private theorem map_mem_dw_iff {R S : Type} [CommRing R] [CommRing S] (φ : R �
   split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨c, x, hx, rfl⟩` from `hx`. Conclude with `AddSubgroup.subset_closure ⟨a * c, x, hx, by rw [map_mul, mul_smul]⟩`. Consider the case `zero => rw [smul_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem smul_mem_latN {l : ℕ} [Fact l.Prime] {ι : Type} {n : ℕ} (F : GlobalTheory.ExpFrame.Frame l ι n) (lamW : ι → ℕ → ℕ)
     (a : F.O) (y : Formalism.CohomologicalDescent.DepthNonnegative.NablaT (PadicAlgCl l) n lamW) (hy : y ∈ F.latN lamW) : F.emb a • y ∈ F.latN lamW := by
@@ -49,7 +49,7 @@ private theorem smul_mem_latN {l : ℕ} [Fact l.Prime] {ι : Type} {n : ℕ} (F 
   | neg x _ hx => rw [smul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Unfold `GlobalTheory.FrameRead.detPol`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `a s : 2`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem map_detPol {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (n : ℕ) :
     MvPolynomial.map φ (GlobalTheory.FrameRead.detPol R n) = GlobalTheory.FrameRead.detPol S n := by
@@ -60,19 +60,17 @@ private theorem map_detPol {R S : Type} [CommRing R] [CommRing S] (φ : R →+* 
   simp
 
 /- English proof (translation)
-Introduce `K _ _ l _ w e0 ι _ _ n lam lamW c F Φ hw hinj hrange _ hΦ v hv`. Take `⟨s, hs, hv⟩` from `hv`. Establish `hint : ∀ r : NumberField.RingOfIntegers K, e0 (algebraMap _ K r) ∈ Set.range F.emb` using `fun r => hrange _ (UpperTheory.norm_integers_le_one K l e0 r)`. Establish `hs1 : 1 ≤ ‖e0 (algebraMap _ K s)‖` using `not_lt.1 fun h => hs ((hw s).2 h)`. Establish `hs0 : algebraMap _ K s ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hs1` using `[h, map_zero, norm_zero]`. Conclude with `absurd hs1 (by norm_num)`. Use `UpperTheory.semilinear_lattice_mem _ K _ _ _ e0 _ Φ (Set.range F.emb) (F.latN lamW) _ ?_ hint ?_ s hs0 ?_ v hv` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩ y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Conclude with `smul_mem_latN F lamW a y hy`. Introduce and unpack `_ ⟨x, hx, rfl⟩ choose x0 hx0 hxe using hx`. Establish `hxe' : ∀ τ, MvPolynomial.map (algebraMap (NumberField.RingOfIntegers K) K) (x0 τ) = x τ` using `hxe`. Establish `hxK : ∀ τ, x τ ∈ Formalism.BasicNotions.nablaSq K n (lam τ)` using `fun τ => by`. Rewrite using `[← hxe' τ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(map_mem_dw_iff _ (IsFractionRing.injective _ K) _ _ _ _).2 (hx0 τ)`. Establish `hU : Formalism.L2.DIV.ten x ∈ Formalism.L2.DIV.VV K lam` using `Submodule.subset_span ⟨x, hxK, rfl⟩`. Use `⟨hU, ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hΦv⟩` from `hΦ x ⟨_, hU⟩ hxK rfl`. Set `φ : NumberField.RingOfIntegers K →+* F.O` to `((RingEquiv.ofBijective F.emb.rangeRestrict ⟨fun a b h => hinj (congrArg Subtype.val h), F.emb.rangeRestrict_surjective⟩).symm.toRingHom).comp ((e0.comp (algebraMap _ K)).codRestrict F.emb.range hint)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφ : F.emb.comp φ = e0.comp (algebraMap _ K)`. Use extensionality with `r`. Conclude with `congrArg Subtype.val ((RingEquiv.ofBijective F.emb.rangeRestrict ⟨fun a b h => hinj (congrArg Subtype.val h), F.emb.rangeRestrict_surjective⟩).apply_symm_apply _)`. Use `AddSubgroup.subset_closure ⟨1, y, fun τ => ?_, ?_⟩` and prove the remaining obligations. Establish `he : MvPolynomial.map F.emb (GlobalTheory.FrameRead.liftPol φ (lamW τ (n - 1)) (x0 τ)) = y τ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy τ, ← hxe' τ]`. Simplify using `only [GlobalTheory.FrameRead.liftPol, map_mul, map_pow, map_detPol, MvPolynomial.map_map, hφ]`. Use `⟨_, (map_mem_dw_iff F.emb hinj _ _ _ _).1 ?_, he⟩` and prove the remaining obligations. Rewrite using `[he]`. Conclude with `(y τ).2`.
-
-Rewrite using `[map_one, one_smul]`. Conclude with `hΦv`. Use `hrange _ ?_` and prove the remaining obligations. Rewrite using `[map_inv₀, norm_inv]`. Conclude with `inv_le_one_of_one_le₀ hs1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Ga11.lift_nabStd_mem_latN :
     ∀ (K : Type) [inst : Field K] [inst_1 : NumberField K] (l : ℕ)

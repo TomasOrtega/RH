@@ -14,7 +14,7 @@ open scoped Pointwise
 namespace GlobalTheory.TypePlaces
 
 /- English proof (translation)
-Apply `D.host.φ₀.injective` to reduce the goal to its premises. Use `letI := D.host.isCMField_hostE`. Use `show D.host.φ₀ (IsCMField.complexConj D.host.E x) = _`. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_eq_conj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
   apply D.host.φ₀.injective
@@ -23,19 +23,17 @@ theorem star_eq_conj (D : D7) (x : D.host.E) : star x = D.host.conj x := by
   rw [NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]
 
 /- English proof (translation)
-Introduce `D Pb Pg hPg PP hP PP' hP' hc`. Take `⟨k, hk⟩` from `(hPg PP).1 hP`. Take `⟨k', hk'⟩` from `(hPg PP').1 hP'`. Establish `hle : D.host.conj • PP.asIdeal ≤ PP'.asIdeal`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hy` using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Take `⟨z, hzv, hz⟩` from `hc _ hy`. Establish `e : z = y` using `RingOfIntegers.ext ((hz.trans (star_eq_conj D _)).trans (D.host.conj.apply_symm_apply (y : D.host.E)))`. Conclude with `e ▸ hzv`. Establish `hmax : (D.host.conj • PP.asIdeal).IsMaximal`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `PP.isPrime` as an intermediate fact. Use `Ideal.IsPrime.isMaximal inferInstance fun h0 => PP.ne_bot ?_` and prove the remaining obligations. Use `congrArg (fun I : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • I) h0` as an intermediate fact. Simplify using `using this`. Establish `heq : D.host.conj • PP.asIdeal = PP'.asIdeal` using `hmax.eq_of_le PP'.isPrime.ne_top hle`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ho, hm⟩` from `(GlobalTheory.Mem.Chr.splitsC_main D.R D.host (D.host.g k) (D.host.g_prime k) (D.nd.g_split k) PP (Pb.overP hk)).2.2.2 (Pb.pb k) (Pb.pb_over k) PP' ((GlobalTheory.Mem.Chr.conjPl_iff_smul D.host.conj PP PP').2 heq)`. Establish `hkk : k ≠ k'`. Introduce and unpack `rfl`. Conclude with `hm.1 hk hk'`. Establish `ho'` using `Pb.overP hk'`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : D.host.g k ≠ D.host.g k'`. Use `D.host.g_ne` as an intermediate fact. Apply the tactic sequence `fin_cases k <;> fin_cases k'`. Conclude with `absurd rfl hkk`. Conclude with `this`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.symm`. Conclude with `absurd rfl hkk`. Establish `hco : IsCoprime ((D.host.g k : ℕ) : 𝓞 D.host.E) ((D.host.g k' : ℕ) : 𝓞 D.host.E)` using `Nat.Coprime.cast ((Nat.coprime_primes (D.host.g_prime k) (D.host.g_prime k')).2 hne)`. Take `⟨a, b, hab⟩` from `hco`. Apply `PP'.isPrime.ne_top` to reduce the goal to its premises.
-
-Rewrite using `[Ideal.eq_top_iff_one, ← hab]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ ho) (Ideal.mul_mem_left _ _ ho')`.
+A detailed English derivation is pending.
 -/
 theorem not_isConjPl : ∀ {D : D7} (Pb : Formalism.L2.Host.PiBar D.host) (Pg : Finset (Pl D.host.E)), (∀ PP, PP ∈ Pg ↔ ∃ k, Pb.Div k PP) → ∀ PP ∈ Pg, ∀ PP' ∈ Pg, ¬ IsConjPl PP PP' := by
   intro D Pb Pg hPg PP hP PP' hP' hc

@@ -9,11 +9,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.V.Z.Sym.Al
 
 /- English proof (translation)
-Introduce `L _ _ _ n w hw`. Take `⟨e, he⟩` from `GlobalTheory.T.splitPlace_unitaryLocalPoints_equiv_GL L n w hw`. Establish `hs : ∀ y, cLoc w (e.symm y : UA L n) = y` using `fun y => by rw [← he, e.apply_symm_apply]`. Establish `h : ∃ j : GL (Fin n) (Kw w) →* UA L n, (∀ g, j g ∈ locU n w) ∧ ∀ g, cLoc w (j g) = g` using `⟨(locU n w).subtype.comp e.symm.toMulEquiv.toMonoidHom, fun g => (e.symm g).2, hs⟩`. Establish `h1 : (∀ g, secW n w g ∈ locU n w) ∧ ∀ g, cLoc w (secW n w g) = g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `secW`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`. Establish `h2 : ∀ g, secW n w g = (e.symm g : UA L n)` using `fun g => by`. Establish `: e ⟨_, h1.1 g⟩ = g` using `by rw [he]; exact h1.2 g`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg Subtype.val ((e.symm_apply_eq.2 this.symm) : e.symm g = ⟨_, h1.1 g⟩)).symm`. Use `⟨h1.1, h1.2, fun x hx => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, ← he ⟨x, hx⟩, e.symm_apply_apply]`. Rewrite using `[show (secW n w : _ → _) = fun g => (e.symm g : UA L n) from funext h2]`. Conclude with `continuous_subtype_val.comp e.symm.continuous`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Al.secSpec :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (w : Plc L), IsSplitAt w →

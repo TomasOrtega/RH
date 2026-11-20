@@ -14,9 +14,9 @@ section Algebra
 variable {F E : Type*} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hf e`. Establish `h0 : ∏ i, (y - algebraMap F (ι → F) (y i)) = 0`. Use function extensionality and compare the values at `j`. Rewrite using `[Finset.prod_apply]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ j) (by simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∏ i, (f y - algebraMap F E (y i)) = 0`. Simplify `congrArg f h0` using `[map_prod, map_sub, AlgHom.commutes]`. Take `⟨i, -, hi⟩` from `Finset.prod_eq_zero_iff.mp h1`. Conclude with `⟨y i, (sub_eq_zero.mp hi).symm⟩`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_algebraMap_of_surjective_pi {ι : Type*} [Fintype ι]
     (f : (ι → F) →ₐ[F] E) (hf : Function.Surjective f) (e : E) :
@@ -32,7 +32,7 @@ theorem mem_range_algebraMap_of_surjective_pi {ι : Type*} [Fintype ι]
   exact ⟨y i, (sub_eq_zero.mp hi).symm⟩
 
 /- English proof (translation)
-Rewrite using `[← Subalgebra.bot_eq_top_iff_finrank_eq_one]`. Conclude with `eq_top_iff.2 fun e _ ↦ Algebra.mem_bot.2 (mem_range_algebraMap_of_surjective_pi f hf e)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_eq_one_of_surjective_pi {ι : Type*} [Fintype ι]
     (f : (ι → F) →ₐ[F] E) (hf : Function.Surjective f) : finrank F E = 1 := by
@@ -43,9 +43,9 @@ def algEquivOfFinrankEqOne (h : finrank F E = 1) : F ≃ₐ[F] E :=
   AlgEquiv.ofBijective (Algebra.ofId F E) (Algebra.finrank_eq_one_iff_bijective_algebraMap.1 h)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i`. Take `⟨n, ⟨e⟩⟩` from `Algebra.IsFiniteSplit.nonempty_algEquiv_fun F (∀ i, E i)`. Use `finrank_eq_one_of_surjective_pi ((Pi.evalAlgHom F E i).comp e.symm.toAlgHom) ?_` and prove the remaining obligations. Conclude with `(Function.surjective_eval i).comp e.symm.surjective`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `.of_algEquiv (AlgEquiv.piCongrRight fun i ↦ algEquivOfFinrankEqOne (h i))`.
+A detailed English derivation is pending.
 -/
 theorem isFiniteSplit_pi_iff {ι : Type*} [Finite ι] {E : ι → Type*} [∀ i, Field (E i)]
     [∀ i, Algebra F (E i)] :
@@ -73,9 +73,9 @@ def SplitsCompletely (v : HeightOneSpectrum (𝓞 K)) : Prop :=
 variable {L} (v : HeightOneSpectrum (𝓞 K))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h w`. Take `⟨h1, h2⟩` from `h w.1 w.2`. Rewrite using `[finrank_eq_ramificationIdx_mul_inertiaDeg L v w.1, h1, h2]`. Introduce `h w hw`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h ⟨w, hw⟩` as an intermediate fact. Rewrite `this` using `[finrank_eq_ramificationIdx_mul_inertiaDeg L v w]`. Conclude with `mul_eq_one.mp this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitsCompletely_iff_forall_finrank :
     SplitsCompletely L v ↔
@@ -90,7 +90,7 @@ theorem splitsCompletely_iff_forall_finrank :
     exact mul_eq_one.mp this
 
 /- English proof (translation)
-Rewrite using `[splitsCompletely_iff_forall_finrank, ← isFiniteSplit_pi_iff]`. Conclude with `⟨fun h ↦ .of_algEquiv (tensorEquiv L v).symm, fun h ↦ .of_algEquiv (tensorEquiv L v)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem splitsCompletely_iff_isFiniteSplit :
     SplitsCompletely L v ↔
@@ -101,7 +101,7 @@ theorem splitsCompletely_iff_isFiniteSplit :
 variable (L) in
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nonempty_iff]`. Use `sum_finrank_eq L v` as an intermediate fact. Rewrite `this` using `[Finset.univ_eq_empty, Finset.sum_empty]`. Conclude with `(Module.finrank_pos (R := K) (M := L)).ne this`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_placesOver : Nonempty (PlacesOver L v) := by
   by_contra h
@@ -111,7 +111,7 @@ theorem nonempty_placesOver : Nonempty (PlacesOver L v) := by
   exact (Module.finrank_pos (R := K) (M := L)).ne this
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `MulAction.exists_smul_eq (L ≃ₐ[K] L) w w'`. Conclude with `(galEquiv v σ w.1 w'.1 (congrArg Subtype.val hσ.symm)).toLinearEquiv.finrank_eq`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finrank_eq_of_isGalois [IsGalois K L] (w w' : PlacesOver L v) :
     finrank (v.adicCompletion K) (w.1.adicCompletion L) =
@@ -120,7 +120,7 @@ theorem finrank_eq_of_isGalois [IsGalois K L] (w w' : PlacesOver L v) :
   exact (galEquiv v σ w.1 w'.1 (congrArg Subtype.val hσ.symm)).toLinearEquiv.finrank_eq
 
 /- English proof (translation)
-Rewrite using `[splitsCompletely_iff_forall_finrank]`. Use `⟨fun h ↦ ?_, fun ⟨w, hw⟩ w' ↦ (finrank_eq_of_isGalois v w w').symm.trans hw⟩` and prove the remaining obligations. Take `⟨w⟩` from `nonempty_placesOver L v`. Conclude with `⟨w, h w⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem splitsCompletely_iff_exists_finrank [IsGalois K L] :
     SplitsCompletely L v ↔

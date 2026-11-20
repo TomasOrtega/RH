@@ -8,7 +8,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SesquilinearRowSplittin
 namespace PI.SRW
 
 /- English proof (translation)
-The claim follows from `splitRow_of (coreStep_of frame_reduction hi assembly_reduction) adjoint_action_reduction trace_reduction`.
+A detailed English derivation is pending.
 -/
 theorem splitRow_of_iso (hi : IsoStep) : PI.SplitRow.SplitRow :=
   splitRow_of (coreStep_of frame_reduction hi assembly_reduction) adjoint_action_reduction trace_reduction

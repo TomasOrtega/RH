@@ -10,13 +10,13 @@ namespace GlobalTheory.CompanionTheory.Ar.Lines.Coords
 variable {R : Type*} [CommRing R] [IsDomain R] {M : Type*} [AddCommGroup M] [Module R M]
 
 /- English proof (translation)
-Establish `hnot : ¬ LinearIndependent R (Fin.cons x f : Fin (i + 1) → M)` using `fun hli => by`. Use `hli.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Take `⟨g, hg, k, hk⟩` from `Fintype.not_linearIndependent_iff.mp hnot`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Rewrite `hg` using `[Fin.sum_univ_succ]`. Simplify using `only [Fin.cons_zero, Fin.cons_succ] at hg`. Establish `h0 : g 0 ≠ 0`. Introduce `h0`. Rewrite `hg` using `[h0, zero_smul, zero_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz` using `Fintype.linearIndependent_iff.mp hf _ hg`. Apply `hk` to reduce the goal to its premises. Proceed by induction on `k using Fin.cases with`. Consider the case `zero => exact h0`. Consider the case `succ j => exact hz j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `⟨g 0, fun j => -g j.succ, h0, ?_⟩` and prove the remaining obligations. Simplify using `only [neg_smul, Finset.sum_neg_distrib]`. Conclude with `eq_neg_of_add_eq_zero_left hg`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_relation [Module.Finite R M] {i : ℕ} {f : Fin i → M}
     (hf : LinearIndependent R f) (hi : i = Module.finrank R M) (x : M) :
@@ -42,7 +42,7 @@ theorem exists_relation [Module.Finite R M] {i : ℕ} {f : Fin i → M}
   exact eq_neg_of_add_eq_zero_left hg
 
 /- English proof (translation)
-Establish `key : ∑ j, (D' * a j - D * a' j) • f j = 0`. Simplify using `only [sub_smul, mul_smul, Finset.sum_sub_distrib, ← Finset.smul_sum, ← h, ← h']`. Rewrite using `[smul_comm D' D x, sub_self]`. Conclude with `sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hf _ key j)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relation_cross {i : ℕ} {f : Fin i → M} (hf : LinearIndependent R f) {x : M}
     {D D' : R} {a a' : Fin i → R} (h : D • x = ∑ j, a j • f j)
@@ -53,7 +53,7 @@ theorem relation_cross {i : ℕ} {f : Fin i → M} (hf : LinearIndependent R f) 
   exact sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hf _ key j)
 
 /- English proof (translation)
-Establish `hne : ∀ {E : R}, E ≠ 0 → algebraMap R K E ≠ 0` using `fun hE h0 => hE (IsFractionRing.injective R K (by rw [h0, map_zero]))`. Rewrite using `[div_eq_div_iff (hne hD) (hne hD'), ← map_mul, ← map_mul, mul_comm (a j), relation_cross hf h h' j, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem coord_lemma (K : Type*) [Field K] [Algebra R K] [IsFractionRing R K] {i : ℕ}
     {f : Fin i → M} (hf : LinearIndependent R f) {x : M} {D D' : R} {a a' : Fin i → R}
@@ -66,25 +66,23 @@ private theorem coord_lemma (K : Type*) [Field K] [Algebra R K] [IsFractionRing 
     relation_cross hf h h' j, mul_comm]
 
 /- English proof (translation)
-Use `choose Dx ax hDx hax using fun x => exists_relation hf hi x`. Establish `hne : ∀ {D : R}, D ≠ 0 → algebraMap R K D ≠ 0` using `fun hD h0 => hD (IsFractionRing.injective R K (by rw [h0, map_zero]))`. Establish `key : ∀ x (D : R) (a : Fin i → R), D ≠ 0 → D • x = ∑ j, a j • f j → ∀ j, algebraMap R K (ax x j) / algebraMap R K (Dx x) = algebraMap R K (a j) / algebraMap R K D` using `fun x D a hD h j => coord_lemma K hf (hDx x) hD (hax x) h j`. Set `c : M →ₗ[R] (Fin i → K)` to `{ toFun := fun x j => algebraMap R K (ax x j) / algebraMap R K (Dx x) map_add' := fun x y => by`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hrel : (Dx x * Dx y) • (x + y) = ∑ j, (Dx y * ax x j + Dx x * ax y j) • f j`. Rewrite using `[smul_add, mul_smul, mul_smul, smul_comm (Dx x) (Dx y) x, hax x, hax y, Finset.smul_sum, Finset.smul_sum, ← Finset.sum_add_distrib]`. Simplify using `only [add_smul, mul_smul]`. Simplify using `only [Pi.add_apply]`. Rewrite using `[key (x + y) _ _ (mul_ne_zero (hDx x) (hDx y)) hrel j, div_add_div _ _ (hne (hDx x)) (hne (hDx y))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_smul' := fun r x => by`. Use function extensionality and compare the values at `j`. Establish `hrel : Dx x • (r • x) = ∑ j, (r * ax x j) • f j`.
+Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[smul_comm, hax x, Finset.smul_sum]`. Simplify using `only [mul_smul]`. Simplify using `only [Pi.smul_apply, RingHom.id_apply]`. Rewrite using `[key (r • x) _ _ (hDx x) hrel j, Algebra.smul_def, map_mul]`. Use `ring }`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : ∀ x j, c x j = algebraMap R K (ax x j) / algebraMap R K (Dx x)` using `fun _ _ => rfl`. Use `⟨c, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `ha : ∀ j, ax x j = 0` using `fun j => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrFun hx j` as an intermediate fact. Rewrite `this` using `[hc, Pi.zero_apply, div_eq_zero_iff]`. Break down `this with h | h` into its components or cases. Conclude with `IsFractionRing.injective R K (by rw [h, map_zero])`. Conclude with `absurd h (hne (hDx x))`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : Dx x • x = 0`. Rewrite using `[hax x]`. Simplify using `[ha]`. Conclude with `(smul_eq_zero_iff_right (hDx x)).mp h0`. Introduce `j`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Establish `hrel : (1 : R) • f j = ∑ l, (Pi.single j (1 : R) : Fin i → R) l • f l`. Rewrite using `[one_smul]`. Simplify using `[Pi.single_apply]`. Rewrite using `[hc, key (f j) 1 _ one_ne_zero hrel k]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hk]`. Introduce `x`.
-
-Conclude with `⟨Dx x, ax x, hDx x, hax x, fun j => by`. Rewrite using `[hc]`. Conclude with `mul_div_cancel₀ _ (hne (hDx x))⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coordinates (K : Type*) [Field K] [Algebra R K] [IsFractionRing R K]
     [Module.Finite R M] [Module.IsTorsionFree R M] {i : ℕ} {f : Fin i → M}
@@ -151,7 +149,7 @@ theorem exists_coordinates (K : Type*) [Field K] [Algebra R K] [IsFractionRing R
       exact mul_div_cancel₀ _ (hne (hDx x))⟩
 
 /- English proof (translation)
-Take `⟨c, h1, h2, h3⟩` from `exists_coordinates L hf hi`. Conclude with `⟨c, h1, h2, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coordinates_of_maximal_independent (L : Type) [Field L] [NumberField L] (M : Type)
     [AddCommGroup M] [Module (𝓞 L) M] [Module.Finite (𝓞 L) M] [Module.IsTorsionFree (𝓞 L) M]

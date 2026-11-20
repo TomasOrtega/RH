@@ -20,7 +20,7 @@ section
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type} [Field F] [Algebra (FractionRing R) F] {k : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty]`. Both sides reduce to the same expression. Consider the case `insert i A hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, DVR.add_f, DVR.smul_f, ih]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem sum_smul_f {I : Type} (A : Finset I) (a : I → F) (s : I → Fam D F k) (α : D.X) (j) :
     ((∑ i ∈ A, a i • s i).s α).f j = ∑ i ∈ A, resTop _ (gF D F (a i)) * ((s i).s α).f j := by
@@ -30,9 +30,9 @@ theorem sum_smul_f {I : Type} (A : Finset I) (a : I → F) (s : I → Fam D F k)
   | insert i A hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, DVR.add_f, DVR.smul_f, ih]
 
 /- English proof (translation)
-Use `SecOps.sec_ext fun j => ?_` and prove the remaining obligations. Rewrite using `[sum_smul_f, sum_smul_f, ← Finset.sum_subtype (Finset.univ.filter p) (by simp) (fun i => resTop _ (gF D F (a i)) * ((s i).s α).f j), Finset.sum_filter]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with hi`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h i hi j, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem sum_smul_subtype {I : Type} [Fintype I] (p : I → Prop) [Fintype {i // p i}] (a : I → F) (s : I → Fam D F k)
     (α : D.X) (h : ∀ i, ¬ p i → ∀ j, ((s i).s α).f j = 0) :
@@ -47,7 +47,7 @@ theorem sum_smul_subtype {I : Type} [Fintype I] (p : I → Prop) [Fintype {i // 
   · rw [h i hi j, mul_zero]
 
 /- English proof (translation)
-Use `sec_ext_val (s' := SecOps.secZero) D.P.isLB (fun y J hJ => ?_) j` and prove the remaining obligations. Rewrite using `[← SectionScalarValuation.secScal_sval (hs α) _ y hJ, UUA.sval_zero_of h _ y J (hJ.mem _ _), UUA.sval_zero_of (s := SecOps.secZero) (fun _ => rfl) _ y J (hJ.mem _ _)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem zero_of_famOf {s : Fam D F k} {f : ∀ α, D.SecB k α} (hs : FamOf D F f s) {α : D.X}
     (h : ∀ j, (f α).f j = 0) (j) : (s.s α).f j = 0 := by
@@ -56,7 +56,7 @@ theorem zero_of_famOf {s : Fam D F k} {f : ∀ α, D.SecB k α} (hs : FamOf D F 
     UUA.sval_zero_of (s := SecOps.secZero) (fun _ => rfl) _ y J (hJ.mem _ _)]
 
 /- English proof (translation)
-Substitute `hψ` using the available equality. Establish `e : t = fun i => DVR.pullSec D.P.L (D.famφB α) (DegPre.famε k) (β i) π` using `funext fun i => SecOps.sec_ext fun j => sec_ext_val D.P.isLB (fun y J hJ => (SectionScalarValuation.secScal_sval (ht i) _ y hJ).symm.trans (SectionScalarValuation.sval_pullSec _ _ _ _ _ y hJ).symm) j`. Rewrite using `[e]`. Conclude with `BasisBaseChange.basis_pullback hT R D k hk α R' φ B pB π H I β hβ b`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basis_of_eq (hT : TwistBaseChangeStatement) [IsLocalRing R] [IsNoetherianRing R] (hk : 1 ≤ k) {α : D.X}
     {R' : Type} [CommRing R'] (φ : R →+* R') {B : Scheme.{0}} {pB : B ⟶ Sp R'} {π : B ⟶ D.P.A.left}
@@ -73,9 +73,9 @@ theorem basis_of_eq (hT : TwistBaseChangeStatement) [IsLocalRing R] [IsNoetheria
   exact BasisBaseChange.basis_pullback hT R D k hk α R' φ B pB π H I β hβ b
 
 /- English proof (translation)
-Set `f : R →+* F` to `(algebraMap (FractionRing R) F).comp (algebraMap R (FractionRing R))`. Establish `hTF : jFK (R` using `R) F ≫ jK R = spMap f := by show Spec.map (CommRingCat.ofHom (algebraMap (FractionRing R) F)) ≫ Spec.map (CommRingCat.ofHom (algebraMap R (FractionRing R))) = _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `H : IsPullback (DegPre.prB D F).left (fst (TF (R` using `R) F) D.P.A).left D.P.A.hom (spMap f) := by`. Rewrite using `[← hTF]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsPullback.of_hasPullback (jFK (R := R) F ≫ jK R) D.P.A.hom).flip`. Establish `h` using `basis_of_eq hT hk f H hβ (DegPre.famφ D F α) (funext fun i => GC.famφ_eq D F α i) (fun i => (s i).s α) hs b`. Use `(existsUnique_congr fun a => ?_).1 h` and prove the remaining obligations. Conclude with `⟨fun h => SecOps.sec_ext fun j => (h j).trans (sum_smul_f _ a s α j).symm, fun h j => (congrArg (fun x => x.f j) h).trans (sum_smul_f _ a s α j)⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem component_basis (hT : TwistBaseChangeStatement) [IsLocalRing R] [IsNoetherianRing R] (hk : 1 ≤ k) {α : D.X}
     {I : Type} [Fintype I] {β : I → D.SecB k α} (hβ : IsBasisB D β) (s : I → Fam D F k)
@@ -105,9 +105,9 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
   {k : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨b, hb, e⟩` from `GlobalTheory.TermSize.exists_comb hϖ hv hβ s hs h`. Rewrite using `[(component_basis hT hk hβ s hs _).unique rfl e]`. Conclude with `hb`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Set `e` to `(Fintype.equivFin I).symm`. Use `⟨_, fun i => a (e i), fun i => β (e i), fun i => (s (e i)).s α, fun i => hs _, fun i => h _, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[sum_smul_f]`. Conclude with `(Equiv.sum_comp e _).symm`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vge_comb_iff (hT : TwistBaseChangeStatement) (hϖ : Irreducible ϖ) (hv : ValOver ϖ F v) (hk : 1 ≤ k)
     {α : D.toPre.X} {I : Type} [Fintype I] {β : I → D.toPre.SecB k α} (hβ : IsBasisB D.toPre β)
@@ -129,21 +129,21 @@ theorem vge_comb_iff (hT : TwistBaseChangeStatement) (hϖ : Irreducible ϖ) (hv 
 end
 
 /- English proof (translation)
-Introduce `hLL _ _ _ _ V _ _ _ _ _ ϖ hϖ D Q hQ F _ _ _ v hv k hk r cls mu f s hA hs`. Take `⟨⟨hshort, hcls, hcov, -⟩, -, hzero, hbas⟩` from `hA`. Establish `hG` using `hLL.1.globalFns`. Establish `hT : TwistBaseChangeStatement` using `GlobalTheory.twistBaseChange_of_finrank_sections_one fun K _ _ P => (hLL.1.globalSectionsRank K P 1 le_rfl).trans (one_pow _)`. Establish `hsub : ∀ (a : Fin r → F) i₀, (∑ i, a i • s i).s (cls i₀) = (∑ i : {i // cls i = cls i₀}, a i • s i).s (cls i₀)` using `fun a i₀ => sum_smul_subtype (fun i => cls i = cls i₀) a s _ fun i hi => zero_of_famOf (hs i) (hzero i _ fun z hz => hi (hcls i₀ i ⟨z, hz⟩).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `fun i₀ => component_basis (F := F) hT hk (hbas i₀) (fun i => s i) (fun i => hs i _)`. Establish `hV : ∀ (a : Fin r → F) (q : ℚ) i₀, VGe D F v k (cls i₀) ((∑ i, a i • s i).s (cls i₀)) q ↔ ∀ i : {i // cls i = cls i₀}, (q : WithTop ℚ) ≤ v (a i)` using `fun a q i₀ => by`. Rewrite using `[hsub]`. Conclude with `vge_comb_iff hT hϖ hv hk (hbas i₀) (fun i => s i) (fun i => hs i _) (fun i => a i) q`. Use `⟨fun s' => ?_, fun a q => ⟨?_, ⟨fun h i => (hV a q i).1 (h _) ⟨i, rfl⟩, fun h α => ?_⟩, fun i h => (hV a q i).1 h ⟨i, rfl⟩⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ex : ∀ α, ∃ c : {i // cls i = α} → F, (∃ i₀, cls i₀ = α) → s'.s α = (∑ i : {i // cls i = α}, c i • s i).s α` using `fun α => by`. Distinguish the cases in `h : ∃ i₀, cls i₀ = α`. Take `⟨i₀, rfl⟩` from `h`. Take `⟨c, hc⟩` from `(hB i₀ (s'.s (cls i₀))).exists`. Conclude with `⟨c, fun _ => by convert hc⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun h' => absurd h' h⟩`. Use `choose c hc using ex`. Use `existsUnique_of_exists_of_unique ⟨fun i => c (cls i) ⟨i, rfl⟩, fam_ext fun α j => ?_⟩ fun a a' ha ha' => ?_` and prove the remaining obligations. Take `⟨i₀, z, rfl⟩` from `hcov α`. Use `congrArg (fun x => x.f j) (GlobalTheory.FamFree.eq_of_eq_add_nsmul hG _ _ ⟨z, rfl⟩ ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsub, hc _ ⟨i₀, rfl⟩]`. Establish `e : ∀ α (i : {i // cls i = α}), c α i = c (cls i) ⟨i, rfl⟩` using `by rintro _ ⟨i, rfl⟩; rfl`. Simplify using `only [← e]`. Use function extensionality and compare the values at `i`. Establish `h` using `(hB i (s'.s (cls i))).unique (y₁ := fun i' => a i') (y₂ := fun i' => a' i') (by rw [ha, hsub]) (by rw [ha', hsub])`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `congrFun h ⟨i, rfl⟩`. Rewrite using `[n1a V ϖ hϖ D Q hQ F v hv k hk (Finset.univ.image cls) (fun χ => by`. Take `⟨i, hi⟩` from `hcov χ`. Conclude with `⟨cls i, Finset.mem_image_of_mem _ (Finset.mem_univ i), hi⟩) _ q]`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, forall_exists_index, forall_apply_eq_imp_iff, hV]`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨fun h i => h i ⟨i, rfl⟩, fun h i₀ i => by have := h i; rwa [i.2] at this⟩`. Take `⟨i₀, z, rfl⟩` from `hcov α`. Use `(SectionScalarValuation.fe_move hϖ hQ hv k z (cls i₀) _ ((hV a q i₀).2 fun i => h i)).mono ?_` and prove the remaining obligations. Establish `h1` using `hshort i₀ z`. Rewrite `h1` using `[q_shift hϖ hQ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2 : (0 : ℤ) ≤ k * Q z + QForm.bOf D.toPre Q z (cls i₀)` using `nonneg_of_mul_nonneg_right (a := (k : ℤ)) (by linarith) (by omega)`. Establish `h3 : (0 : ℚ) ≤ ((k * Q z + QForm.bOf D.toPre Q z (cls i₀) : ℤ) : ℚ)` using `by exact_mod_cast h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem norms_of_adapted : LL → TwistBCSpanStatement → TWM.VRatioGtStatement → TWStatement → UUStatement → AllDV fun {V} _ _ _ {ϖ} hϖ D Q {F} _ _ {v} hv => ∀ k : ℕ, 1 ≤ k → ∀ (r : ℕ) (cls : Fin r → D.toPre.X) (mu : ℕ) (f : Fin r → ∀ α, D.toPre.SecB k α) (s : Fin r → Fam D.toPre F k), AdFam D Q k cls mu f → (∀ i, GlobalTheory.ZH.FamOf D.toPre F (f i) (s i)) → Norms D Q v k cls s := by
   intro hLL _ _ _ _ V _ _ _ _ _ ϖ hϖ D Q hQ F _ _ _ v hv k hk r cls mu f s hA hs

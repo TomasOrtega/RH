@@ -14,11 +14,9 @@ open Formalism.CyclotomicNorms
 variable {g : ℕ} [Fact g.Prime]
 
 /- English proof (translation)
-Use `haveI : NeZero g := ⟨(Fact.out : g.Prime).ne_zero⟩`. Establish `hi : IsIntegral (ZMod g) x` using `Algebra.IsIntegral.isIntegral x`. Use `haveI := IntermediateField.adjoin.finiteDimensional hi`. Use `haveI : Finite (IntermediateField.adjoin (ZMod g) {x}) := Module.finite_of_finite (ZMod g)`. Set `y : IntermediateField.adjoin (ZMod g) {x}` to `⟨x, IntermediateField.mem_adjoin_simple_self _ x⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hy : y ≠ 0` using `fun h => hx (congrArg Subtype.val h)`. Establish `h1 : IsOfFinOrder (Units.mk0 y hy)` using `isOfFinOrder_of_finite _`. Take `⟨n, hn, h2⟩` from `isOfFinOrder_iff_pow_eq_one.1 h1`. Use `isOfFinOrder_iff_pow_eq_one.2 ⟨n, hn, ?_⟩` and prove the remaining obligations. Establish `h3 : y ^ n = 1` using `by simpa using congrArg Units.val h2`.
-
-Simplify `congrArg Subtype.val h3` using `[y]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finOrder {x : Fbar g} (hx : x ≠ 0) : IsOfFinOrder x := by
   haveI : NeZero g := ⟨(Fact.out : g.Prime).ne_zero⟩
@@ -34,9 +32,9 @@ theorem finOrder {x : Fbar g} (hx : x ≠ 0) : IsOfFinOrder x := by
   simpa [y] using congrArg Subtype.val h3
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `h1 : ∀ x, L.teich x = 1` using `fun x => by`. Establish `h2 : L.teich 0 * L.teich x = L.teich 0 * 1` using `by rw [← map_mul, zero_mul, mul_one]`. Conclude with `mul_left_cancel₀ h h2`. Take `⟨x, hx⟩` from `Infinite.exists_notMem_finset ({0, 1} : Finset (Fbar g))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at hx`. Conclude with `hx.2 (L.teich_inj x 1 hx.1 one_ne_zero (by rw [h1, h1]))`.
+A detailed English derivation is pending.
 -/
 theorem teich_zero (L : LabelDatum g) : L.teich 0 = 0 := by
   by_contra h
@@ -48,7 +46,7 @@ theorem teich_zero (L : LabelDatum g) : L.teich 0 = 0 := by
   exact hx.2 (L.teich_inj x 1 hx.1 one_ne_zero (by rw [h1, h1]))
 
 /- English proof (translation)
-Introduce `h`. Establish `h2 : L.teich x * L.teich x⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel₀ hx, map_one]`. Rewrite `h2` using `[h, zero_mul]`. Conclude with `zero_ne_one h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem teich_ne_zero (L : LabelDatum g) {x : Fbar g} (hx : x ≠ 0) : L.teich x ≠ 0 := by
   intro h
@@ -57,9 +55,9 @@ theorem teich_ne_zero (L : LabelDatum g) {x : Fbar g} (hx : x ≠ 0) : L.teich x
   exact zero_ne_one h2
 
 /- English proof (translation)
-Introduce `x y h`. Distinguish the cases in `hx : x = 0`. Distinguish the cases in `hy : y = 0`. Rewrite using `[hx, hy]`. Conclude with `absurd (by rw [← h, hx, teich_zero]) (teich_ne_zero L hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hy : y = 0`. Conclude with `absurd (by rw [h, hy, teich_zero]) (teich_ne_zero L hx)`. Conclude with `L.teich_inj x y hx hy h`.
+A detailed English derivation is pending.
 -/
 theorem teich_injective (L : LabelDatum g) : Function.Injective L.teich := by
   intro x y h
@@ -72,7 +70,7 @@ theorem teich_injective (L : LabelDatum g) : Function.Injective L.teich := by
     · exact L.teich_inj x y hx hy h
 
 /- English proof (translation)
-Use `haveI : NeZero (orderOf x) := ⟨hx.orderOf_pos.ne'⟩`. Establish `h1 : s x ^ orderOf x = 1` using `by rw [← map_pow, pow_orderOf_eq_one, map_one]`. Take `⟨a, -, ha⟩` from `(IsPrimitiveRoot.orderOf x).eq_pow_of_pow_eq_one h1`. Conclude with `⟨a, ha.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_eq_pow {R : Type} [CommRing R] [IsDomain R] (s : R →* R) {x : R} (hx : IsOfFinOrder x) :
     ∃ a : ℕ, s x = x ^ a := by
@@ -85,9 +83,9 @@ def phi (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (x : Fbar g) : Fbar g :=
   Function.invFun L.teich (τ (L.teich x))
 
 /- English proof (translation)
-Establish `h : ∃ a : ℕ, τ (L.teich x) = L.teich (x ^ a)`. Distinguish the cases in `hx : x = 0`. Conclude with `⟨1, by rw [hx, pow_one, teich_zero, map_zero]⟩`. Take `⟨a, ha⟩` from `map_eq_pow (τ : ℂ →* ℂ) (L.teich.isOfFinOrder (finOrder hx))`. Conclude with `⟨a, by rw [map_pow]; exact ha⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha⟩` from `h`. Conclude with `⟨a, by rw [phi, ha]; exact Function.leftInverse_invFun (teich_injective L) _, ha⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem phi_pow (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (x : Fbar g) :
     ∃ a : ℕ, phi L τ x = x ^ a ∧ τ (L.teich x) = L.teich (x ^ a) := by
@@ -100,7 +98,7 @@ theorem phi_pow (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (x : Fbar g) :
   exact ⟨a, by rw [phi, ha]; exact Function.leftInverse_invFun (teich_injective L) _, ha⟩
 
 /- English proof (translation)
-Take `⟨a, h1, h2⟩` from `phi_pow L τ x`. Rewrite using `[h1, h2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem teich_phi (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (x : Fbar g) :
     L.teich (phi L τ x) = τ (L.teich x) := by
@@ -108,33 +106,33 @@ theorem teich_phi (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (x : Fbar g) :
   rw [h1, h2]
 
 /- English proof (translation)
-The claim follows from `teich_injective L (by rw [teich_phi, teich_phi, RingEquiv.symm_apply_apply])`.
+A detailed English derivation is pending.
 -/
 theorem phi_symm (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (x : Fbar g) : phi L τ.symm (phi L τ x) = x :=
   teich_injective L (by rw [teich_phi, teich_phi, RingEquiv.symm_apply_apply])
 
 /- English proof (translation)
-The claim follows from `Function.LeftInverse.injective (phi_symm L τ)`.
+A detailed English derivation is pending.
 -/
 theorem phi_injective (L : LabelDatum g) (τ : ℂ ≃+* ℂ) : Function.Injective (phi L τ) :=
   Function.LeftInverse.injective (phi_symm L τ)
 
 /- English proof (translation)
-The claim follows from `teich_injective L (by rw [teich_phi, teich_zero, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem phi_zero (L : LabelDatum g) (τ : ℂ ≃+* ℂ) : phi L τ 0 = 0 :=
   teich_injective L (by rw [teich_phi, teich_zero, map_zero])
 
 /- English proof (translation)
-The claim follows from `teich_injective L (by rw [teich_phi, map_pow, map_pow, map_pow, teich_phi])`.
+A detailed English derivation is pending.
 -/
 theorem phi_pow' (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (x : Fbar g) (n : ℕ) : phi L τ (x ^ n) = phi L τ x ^ n :=
   teich_injective L (by rw [teich_phi, map_pow, map_pow, map_pow, teich_phi])
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Rewrite using `[hx, map_zero, phi_zero, map_zero]`. Take `⟨b, hb⟩` from `map_eq_pow (s : Fbar g →* Fbar g) (finOrder hx)`. Establish `hb' : s x = x ^ b` using `hb`. Take `⟨a, ha, -⟩` from `phi_pow L τ x`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hb', phi_pow', ha, map_pow, hb', ← pow_mul, ← pow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_gal (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (s : Fbar g ≃ₐ[ZMod g] Fbar g) (x : Fbar g) :
     phi L τ (s x) = s (phi L τ x) := by
@@ -146,7 +144,7 @@ theorem phi_gal (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (s : Fbar g ≃ₐ[ZMod 
     rw [hb', phi_pow', ha, map_pow, hb', ← pow_mul, ← pow_mul, mul_comm]
 
 /- English proof (translation)
-Use `mem_aroots (p := f) (S := Fbar g) (a := x)` as an intermediate fact. Rewrite `this` using `[aroots_def]`. Rewrite using `[rootsBar, this]`. Conclude with `⟨fun h => h.2, fun h => ⟨hf, h⟩⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_rootsBar {f : (ZMod g)[X]} (hf : f ≠ 0) {x : Fbar g} : x ∈ rootsBar f ↔ aeval x f = 0 := by
   have := mem_aroots (p := f) (S := Fbar g) (a := x)
@@ -155,9 +153,9 @@ theorem mem_rootsBar {f : (ZMod g)[X]} (hf : f ≠ 0) {x : Fbar g} : x ∈ roots
   exact ⟨fun h => h.2, fun h => ⟨hf, h⟩⟩
 
 /- English proof (translation)
-Establish `hi : IsIntegral (ZMod g) x` using `Algebra.IsIntegral.isIntegral x`. Rewrite using `[mem_rootsBar (minpoly.ne_zero hi)]`. Prove the components needed by the constructor for the conclusion. Conclude with `minpoly.exists_algEquiv_of_root' hi.isAlgebraic`. Introduce and unpack `⟨s, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aeval_algHom_apply, minpoly.aeval, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem mem_roots_minpoly {x y : Fbar g} :
     y ∈ rootsBar (minpoly (ZMod g) x) ↔ ∃ s : Fbar g ≃ₐ[ZMod g] Fbar g, s x = y := by
@@ -169,7 +167,7 @@ theorem mem_roots_minpoly {x y : Fbar g} :
     rw [aeval_algHom_apply, minpoly.aeval, map_zero]
 
 /- English proof (translation)
-Establish `hi : IsIntegral (ZMod g) x` using `Algebra.IsIntegral.isIntegral x`. Use `haveI : NeZero g := ⟨(Fact.out : g.Prime).ne_zero⟩`. Conclude with `nodup_roots (PerfectField.separable_of_irreducible (minpoly.irreducible hi)).map`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nodup_minpoly (x : Fbar g) : (rootsBar (minpoly (ZMod g) x)).Nodup := by
   have hi : IsIntegral (ZMod g) x := Algebra.IsIntegral.isIntegral x
@@ -177,9 +175,9 @@ theorem nodup_minpoly (x : Fbar g) : (rootsBar (minpoly (ZMod g) x)).Nodup := by
   exact nodup_roots (PerfectField.separable_of_irreducible (minpoly.irreducible hi)).map
 
 /- English proof (translation)
-Rewrite using `[Multiset.Nodup.ext (nodup_minpoly _) ((nodup_minpoly x).map (phi_injective L τ))]`. Introduce `y`. Rewrite using `[mem_roots_minpoly, Multiset.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨s x, mem_roots_minpoly.2 ⟨s, rfl⟩, phi_gal L τ s x⟩`. Introduce and unpack `⟨z, hz, rfl⟩`. Take `⟨s, rfl⟩` from `mem_roots_minpoly.1 hz`. Conclude with `⟨s, (phi_gal L τ s x).symm⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem roots_minpoly_phi (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (x : Fbar g) :
     rootsBar (minpoly (ZMod g) (phi L τ x)) = (rootsBar (minpoly (ZMod g) x)).map (phi L τ) := by
@@ -194,7 +192,7 @@ theorem roots_minpoly_phi (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (x : Fbar g) :
     exact ⟨s, (phi_gal L τ s x).symm⟩
 
 /- English proof (translation)
-Rewrite using `[rootsBar, rootsBar, rootsBar, Polynomial.map_mul, roots_mul]`. Conclude with `mul_ne_zero (Polynomial.map_ne_zero hf) (Polynomial.map_ne_zero hh)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootsBar_mul {f h : (ZMod g)[X]} (hf : f ≠ 0) (hh : h ≠ 0) :
     rootsBar (f * h) = rootsBar f + rootsBar h := by
@@ -202,7 +200,7 @@ theorem rootsBar_mul {f h : (ZMod g)[X]} (hf : f ≠ 0) (hh : h ≠ 0) :
   exact mul_ne_zero (Polynomial.map_ne_zero hf) (Polynomial.map_ne_zero hh)
 
 /- English proof (translation)
-Apply `Polynomial.map_injective (algebraMap (ZMod g) (Fbar g)) (algebraMap (ZMod g) (Fbar g)).injective` to reduce the goal to its premises. Rewrite using `[(IsAlgClosed.splits (f.map _)).eq_prod_roots_of_monic (hf.map _), (IsAlgClosed.splits (h.map _)).eq_prod_roots_of_monic (hh.map _)]`. Conclude with `congrArg (fun m : Multiset (Fbar g) => (m.map fun a => X - C a).prod) e`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_rootsBar {f h : (ZMod g)[X]} (hf : f.Monic) (hh : h.Monic) (e : rootsBar f = rootsBar h) :
     f = h := by
@@ -212,13 +210,13 @@ theorem eq_of_rootsBar {f h : (ZMod g)[X]} (hf : f.Monic) (hh : h.Monic) (e : ro
   exact congrArg (fun m : Multiset (Fbar g) => (m.map fun a => X - C a).prod) e
 
 /- English proof (translation)
-Rewrite using `[rootsBar, ← (IsAlgClosed.splits (f.map _)).natDegree_eq_card_roots, natDegree_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_rootsBar (f : (ZMod g)[X]) : (rootsBar f).card = f.natDegree := by
   rw [rootsBar, ← (IsAlgClosed.splits (f.map _)).natDegree_eq_card_roots, natDegree_map]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `IsAlgClosed.exists_aeval_eq_zero (Fbar g) P (degree_pos_of_irreducible hP).ne'`. Conclude with `⟨x, minpoly.eq_of_irreducible_of_monic hP hx hm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_minpoly {P : (ZMod g)[X]} (hm : P.Monic) (hP : Irreducible P) :
     ∃ x : Fbar g, P = minpoly (ZMod g) x := by
@@ -229,7 +227,7 @@ def Rel (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (f f' : (ZMod g)[X]) : Prop :=
   f'.Monic ∧ rootsBar f' = (rootsBar f).map (phi L τ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h1.1.mul h2.1, by rw [rootsBar_mul h1.1.ne_zero h2.1.ne_zero, rootsBar_mul hf hh, h1.2, h2.2, Multiset.map_add]⟩`.
+Supply the required witnesses or components.
 -/
 theorem Rel.mul {L : LabelDatum g} {τ : ℂ ≃+* ℂ} {f f' h h' : (ZMod g)[X]} (hf : f ≠ 0) (hh : h ≠ 0)
     (h1 : Rel L τ f f') (h2 : Rel L τ h h') : Rel L τ (f * h) (f' * h') :=
@@ -237,38 +235,38 @@ theorem Rel.mul {L : LabelDatum g} {τ : ℂ ≃+* ℂ} {f f' h h' : (ZMod g)[X]
     rw [rootsBar_mul h1.1.ne_zero h2.1.ne_zero, rootsBar_mul hf hh, h1.2, h2.2, Multiset.map_add]⟩
 
 /- English proof (translation)
-The claim follows from `eq_of_rootsBar h1.1 h2.1 (h1.2.trans h2.2.symm)`.
+A detailed English derivation is pending.
 -/
 theorem Rel.unique {L : LabelDatum g} {τ : ℂ ≃+* ℂ} {f f' f'' : (ZMod g)[X]}
     (h1 : Rel L τ f f') (h2 : Rel L τ f f'') : f' = f'' :=
   eq_of_rootsBar h1.1 h2.1 (h1.2.trans h2.2.symm)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf, by rw [h1.2, Multiset.map_map]; simp [phi_symm]⟩`.
+Supply the required witnesses or components.
 -/
 theorem Rel.symm {L : LabelDatum g} {τ : ℂ ≃+* ℂ} {f f' : (ZMod g)[X]} (hf : f.Monic)
     (h1 : Rel L τ f f') : Rel L τ.symm f' f :=
   ⟨hf, by rw [h1.2, Multiset.map_map]; simp [phi_symm]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨minpoly.monic (Algebra.IsIntegral.isIntegral _), roots_minpoly_phi L τ x⟩`.
+Supply the required witnesses or components.
 -/
 theorem rel_minpoly (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (x : Fbar g) :
     Rel L τ (minpoly (ZMod g) x) (minpoly (ZMod g) (phi L τ x)) :=
   ⟨minpoly.monic (Algebra.IsIntegral.isIntegral _), roots_minpoly_phi L τ x⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨monic_one, by simp [rootsBar]⟩`.
+Supply the required witnesses or components.
 -/
 theorem rel_one (L : LabelDatum g) (τ : ℂ ≃+* ℂ) : Rel L τ 1 1 :=
   ⟨monic_one, by simp [rootsBar]⟩
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `f hf hn`. Distinguish the cases in `h1 : f = 1`. Conclude with `⟨1, h1 ▸ rel_one L τ⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Establish `hu : ¬ IsUnit f` using `fun hu => h1 (hf.isUnit_iff.1 hu)`. Take `⟨P, hPm, hP, h, rfl⟩` from `exists_monic_irreducible_factor f hu`. Establish `hh : h.Monic` using `hPm.of_mul_monic_left hf`. Establish `hd : h.natDegree < n`. Rewrite using `[← hn, hPm.natDegree_mul hh]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hP.natDegree_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨h', hh'⟩` from `ih _ hd h hh rfl`. Take `⟨x, rfl⟩` from `exists_minpoly hPm hP`. Conclude with `⟨_, (rel_minpoly L τ x).mul hPm.ne_zero hh.ne_zero hh'⟩`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rel (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (n : ℕ) :
     ∀ f : (ZMod g)[X], f.Monic → f.natDegree = n → ∃ f', Rel L τ f f' := by
@@ -289,7 +287,7 @@ theorem exists_rel (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (n : ℕ) :
       exact ⟨_, (rel_minpoly L τ x).mul hPm.ne_zero hh.ne_zero hh'⟩
 
 /- English proof (translation)
-Unfold `thetaOf`. Use `split_ifs with h`. Rewrite using `[teich_phi, map_pow]`. Rewrite using `[map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_phi (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (d : ℕ) (x z : Fbar g) :
     thetaOf L d (phi L τ x) z = τ (thetaOf L d x z) := by
@@ -299,13 +297,13 @@ theorem theta_phi (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (d : ℕ) (x z : Fbar 
   · rw [map_zero]
 
 /- English proof (translation)
-Take `⟨⟨hm, hi, h0, hd⟩, hc, hv⟩` from `h`. Take `⟨x, rfl⟩` from `exists_minpoly hm hi`. Establish `hr` using `rel_minpoly L τ x`. Establish `hint : IsIntegral (ZMod g) (phi L τ x)` using `Algebra.IsIntegral.isIntegral _`. Use `⟨_, hr, ⟨hr.1, minpoly.irreducible hint, ?_, ?_⟩, (GlobalTheory.T.complexFieldAut_acts_harishChandra_characters g τ).2.2 d χ hc, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Establish `h2 : (0 : Fbar g) ∈ rootsBar (minpoly (ZMod g) (phi L τ x))`. Rewrite using `[mem_rootsBar hr.1.ne_zero, ← coeff_zero_eq_aeval_zero', h, map_zero]`. Rewrite `h2` using `[hr.2, Multiset.mem_map]`. Take `⟨y, hy, hy0⟩` from `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hy1 : y = 0` using `phi_injective L τ (hy0.trans (phi_zero L τ).symm)`. Rewrite `hy` using `[hy1, mem_rootsBar hm.ne_zero, ← coeff_zero_eq_aeval_zero']`. Conclude with `h0 ((map_eq_zero _).1 hy)`. Rewrite using `[← card_rootsBar, hr.2, Multiset.card_map, card_rootsBar, hd]`. Introduce `x' hx' y hy z hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx'` using `[hr.2, Multiset.mem_map]`. Take `⟨w, hw, rfl⟩` from `hx'`. Rewrite using `[Function.comp_apply, hv w hw y hy z hz]`. Simplify using `only [theta_phi, map_mul, map_pow, map_neg, map_one, map_sum]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isCuspOf_map (L : LabelDatum g) (τ : ℂ ≃+* ℂ) {P : (ZMod g)[X]} {d : ℕ} {χ : Gn g d → ℂ}
     (h : IsCuspOf L P χ) : ∃ P', Rel L τ P P' ∧ IsCuspOf L P' (τ ∘ χ) := by
@@ -330,13 +328,11 @@ theorem isCuspOf_map (L : LabelDatum g) (τ : ℂ ≃+* ℂ) {P : (ZMod g)[X]} {
     simp only [theta_phi, map_mul, map_pow, map_neg, map_one, map_sum]
 
 /- English proof (translation)
-Proceed by induction on `Q with`. Consider the case `nil => exact ⟨[], by simp, rfl, monic_one, rel_one L τ⟩`. Consider the case `cons p Q ih`. Take `⟨Q', h1, h2, h3, h4⟩` from `ih (fun q hq => hQ q (List.mem_cons_of_mem _ hq))`. Establish `hp` using `hQ p List.mem_cons_self`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨P', hP1, hP2⟩` from `isCuspOf_map L τ hp`. Use `⟨(P', ⟨p.2.1, τ ∘ p.2.2⟩) :: Q', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Break down `List.mem_cons.1 hq with rfl | hq` into its components or cases. Conclude with `hP2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Conclude with `h1 q hq`. Simplify using `only [List.map_cons, h2]`. Simplify using `only [List.map_cons, List.prod_cons]`. Conclude with `hp.1.1.mul h3`. Simplify using `only [List.map_cons, List.prod_cons]`.
-
-Conclude with `hP1.mul hp.1.1.ne_zero h3.ne_zero h4`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem list_map (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (Q : List ((ZMod g)[X] × Pc g))
     (hQ : ∀ p ∈ Q, IsCuspOf L p.1 p.2.2) :
@@ -361,9 +357,9 @@ theorem list_map (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (Q : List ((ZMod g)[X] 
       exact hP1.mul hp.1.1.ne_zero h3.ne_zero h4
 
 /- English proof (translation)
-Take `⟨Q, hQ, hd, rfl, hip⟩` from `h`. Take `⟨Q', h1, h2, -, h4⟩` from `list_map L τ Q hQ`. Use `⟨Q', h1, ?_, hr.unique h4, ?_⟩` and prove the remaining obligations. Rewrite using `[h2, ← hd, degL, degL, List.map_map]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h2, (GlobalTheory.T.complexFieldAut_acts_harishChandra_characters g τ).2.1, ((GlobalTheory.T.complexFieldAut_acts_harishChandra_characters g τ).1 _ χ).2.2]`. Conclude with `fun h => hip ((map_eq_zero τ).1 h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasLabel_map (L : LabelDatum g) (τ : ℂ ≃+* ℂ) {n : ℕ} {χ : Gn g n → ℂ} {f f' : (ZMod g)[X]}
     (hr : Rel L τ f f') (h : HasLabel L χ f) : HasLabel L (τ ∘ χ) f' := by
@@ -376,15 +372,15 @@ theorem hasLabel_map (L : LabelDatum g) (τ : ℂ ≃+* ℂ) {n : ℕ} {χ : Gn 
     exact fun h => hip ((map_eq_zero τ).1 h)
 
 /- English proof (translation)
-Establish `hset : {χ : Gn g n → ℂ | IsIrr χ ∧ HasLabel L χ f'} = (fun χ : Gn g n → ℂ => τ ∘ χ) '' {χ : Gn g n → ℂ | IsIrr χ ∧ HasLabel L χ f}`. Use extensionality with `χ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨τ.symm ∘ χ, ⟨((GlobalTheory.T.complexFieldAut_acts_harishChandra_characters g τ.symm).1 _ χ).1 h1, hasLabel_map L τ.symm (hr.symm hf) h2⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Introduce and unpack `⟨χ, ⟨h1, h2⟩, rfl⟩`. Conclude with `⟨((GlobalTheory.T.complexFieldAut_acts_harishChandra_characters g τ).1 _ χ).1 h1, hasLabel_map L τ hr h2⟩`. Set `E` to `MonoidAlgebra.mapAddEquiv (Gn g n) τ.toAddEquiv`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `hE : ∀ a : MonoidAlgebra ℂ (Gn g n), (E a).coeff = a.coeff.mapRange τ (map_zero τ)` using `fun a => by`. Use extensionality with `x`. Rewrite using `[MonoidAlgebra.coeff_mapAddEquiv, Finsupp.mapRange_apply]`. Both sides reduce to the same expression. Establish `hz : ∀ χ : Gn g n → ℂ, E (zOf χ) = zOf (τ ∘ χ)` using `fun χ => by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use extensionality with `x`. Rewrite using `[hE, ((GlobalTheory.T.complexFieldAut_acts_harishChandra_characters g τ).1 _ χ).2.1]`. Rewrite using `[← hE, eSerC, eSerC, hset, finsum_mem_image (τ.injective.comp_left.injOn)]`. Use `congr 1`. Rewrite using `[E.map_finsum]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `finsum_congr fun χ => ?_` and prove the remaining obligations. Rewrite using `[E.map_finsum]`. Conclude with `finsum_congr fun _ => hz χ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eSerC_map (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (n : ℕ) {f f' : (ZMod g)[X]} (hf : f.Monic)
     (hr : Rel L τ f f') :
@@ -415,11 +411,9 @@ theorem eSerC_map (L : LabelDatum g) (τ : ℂ ≃+* ℂ) (n : ℕ) {f f' : (ZMo
   exact finsum_congr fun _ => hz χ
 
 /- English proof (translation)
-Introduce `_ D hD τ k f hf`. Use `haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩`. Take `⟨L, hL, he⟩` from `hD k`. Rewrite using `[he, he]`. Apply `eSerC_map L τ _ hf.1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h` using `Classical.epsilon_spec (exists_rel L τ _ f hf.1 rfl)`. Establish `e : labAct D τ k f = Classical.epsilon (Rel L τ f)`. Unfold `labAct Rel phi`. Rewrite using `[hL]`. Rewrite using `[e]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eSer_galois : Green → ∀ D : Formalism.BasicNotions.D7, ESerTie D → ∀ (τ : ℂ ≃+* ℂ) (k : Fin 2) (f : (ZMod (D.host.g k))[X]), IsLabel D k f → (D.ntypes.eSer k f).coeff.mapRange τ (map_zero τ) = (D.ntypes.eSer k (labAct D τ k f)).coeff := by
   intro _ D hD τ k f hf

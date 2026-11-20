@@ -37,19 +37,19 @@ def liftPair (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) : Fv F v × Fv F v �
   (singleTens E v).comp ((splitAlgEquiv h τ).symm : Fv F v × Fv F v →ₙ+* Fv F v ⊗[F] E)
 
 /- English proof (translation)
-The claim follows from `compInf_singleTens w v _`.
+A detailed English derivation is pending.
 -/
 theorem compInf_liftPair (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (w : InfinitePlace F) (p : Fv F v × Fv F v) :
     compInf F E w (liftPair h τ p) = 0 := compInf_singleTens w v _
 
 /- English proof (translation)
-The claim follows from `compFin_singleTens_ne hu _`.
+A detailed English derivation is pending.
 -/
 theorem compFin_liftPair_ne (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) {u : HeightOneSpectrum (𝓞 F)} (hu : u ≠ v)
     (p : Fv F v × Fv F v) : compFin F E u (liftPair h τ p) = 0 := compFin_singleTens_ne hu _
 
 /- English proof (translation)
-Use `show splitProj τ (compFin F E v (singleTens E v _)) = p.1`. Rewrite using `[compFin_singleTens_self]`. Conclude with `splitProj_symm h τ p`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piW_liftPair (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (p : Fv F v × Fv F v) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW τ (liftPair h τ p) = p.1 := by
@@ -58,7 +58,7 @@ theorem piW_liftPair (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (p : Fv F v 
   exact splitProj_symm h τ p
 
 /- English proof (translation)
-Use `show splitProj (τ.comp σ) (compFin F E v (singleTens E v _)) = p.2`. Rewrite using `[compFin_singleTens_self]`. Conclude with `splitProj_comp_symm h τ p`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piW_comp_liftPair (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (p : Fv F v × Fv F v) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW (τ.comp σ) (liftPair h τ p) = p.2 := by
@@ -67,9 +67,9 @@ theorem piW_comp_liftPair (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (p : Fv
   exact splitProj_comp_symm h τ p
 
 /- English proof (translation)
-Use `show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ (singleTens E v _) = singleTens E v _`. Rewrite using `[sigR_singleTens]`. Use `congr 1`. Apply `(splitAlgEquiv h τ).injective` to reduce the goal to its premises. Rewrite using `[splitAlgEquiv_sigR]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((splitAlgEquiv h τ) ((splitAlgEquiv h τ).symm p)).swap = (splitAlgEquiv h τ) ((splitAlgEquiv h τ).symm p.swap)`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cA_liftPair (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (p : Fv F v × Fv F v) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ (liftPair h τ p) = liftPair h τ p.swap := by
@@ -83,9 +83,9 @@ theorem cA_liftPair (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (p : Fv F v �
   simp
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite using `[Algebra.smul_def, mul_comm]`. Express the relevant statement in the definitionally equal form `singleTens E v _ * _ = 0`. Rewrite using `[singleTens_mul]`. Establish `: compFin F E v (algebraMap (AF F) (AF F ⊗[F] E) u) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(evFin F v u) ⊗ₜ[F] (1 : E) = 0`. Rewrite using `[hu, TensorProduct.zero_tmul]`. Rewrite using `[this, mul_zero, map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_liftPair (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (p : Fv F v × Fv F v) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) (liftPair h τ p) := by
@@ -131,7 +131,7 @@ theorem liftMat_apply (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (p : Matrix
     (i j : n) : liftMat h τ p i j = liftPair h τ (p.1 i j, p.2 i j) := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, map_add, liftMat_apply, hf, add_zero]`. Apply the tactic sequence `by_cases e : i = j <;> simp [Matrix.one_apply, e]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_one_add_of_zero {R : Type} [CommRing R] (f : AF F ⊗[F] E →+* R) (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v)
     (hf : ∀ q, f (liftPair h τ q) = 0) (p : Matrix n n (Fv F v) × Matrix n n (Fv F v)) :
@@ -141,7 +141,7 @@ theorem map_one_add_of_zero {R : Type} [CommRing R] (f : AF F ⊗[F] E →+* R) 
   by_cases e : i = j <;> simp [Matrix.one_apply, e]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, map_add, liftMat_apply, piW_liftPair]`. Apply the tactic sequence `by_cases e : i = j <;> simp [Matrix.one_apply, e]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_one_add_piW (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (p : Matrix n n (Fv F v) × Matrix n n (Fv F v)) :
     (1 + liftMat h τ p).map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW τ) = 1 + p.1 := by
@@ -150,7 +150,7 @@ theorem map_one_add_piW (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (p : Matr
   by_cases e : i = j <;> simp [Matrix.one_apply, e]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, map_add, liftMat_apply, piW_comp_liftPair]`. Apply the tactic sequence `by_cases e : i = j <;> simp [Matrix.one_apply, e]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_one_add_piW_comp (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v)
     (p : Matrix n n (Fv F v) × Matrix n n (Fv F v)) :
@@ -160,7 +160,7 @@ theorem map_one_add_piW_comp (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v)
   by_cases e : i = j <;> simp [Matrix.one_apply, e]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, map_add, liftMat_apply, cA_liftPair, Prod.swap_prod_mk, Prod.fst_swap, Prod.snd_swap]`. Apply the tactic sequence `by_cases e : i = j <;> simp [Matrix.one_apply, e]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_one_add_cA (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (p : Matrix n n (Fv F v) × Matrix n n (Fv F v)) :
     (1 + liftMat h τ p).map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) = 1 + liftMat h τ p.swap := by
@@ -170,7 +170,7 @@ theorem map_one_add_cA (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (p : Matri
   by_cases e : i = j <;> simp [Matrix.one_apply, e]
 
 /- English proof (translation)
-Introduce `u hu`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, liftMat_apply]`. Conclude with `at_liftPair h τ _ u hu`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_liftMat (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (p : Matrix n n (Fv F v) × Matrix n n (Fv F v)) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) (liftMat h τ p) := by
@@ -180,7 +180,7 @@ theorem at_liftMat (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (p : Matrix n 
   exact at_liftPair h τ _ u hu
 
 /- English proof (translation)
-Use `show splitProj τ (compFin F E v ((1 : AF F) ⊗ₜ[F] x)) = τ x`. Rewrite using `[compFin_one_tmul, splitProj_tmul, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piW_inclR (τ : E →ₐ[F] Fv F v) (x : E) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW τ (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (AF F) x) = τ x := by
@@ -188,9 +188,7 @@ theorem piW_inclR (τ : E →ₐ[F] Fv F v) (x : E) :
   rw [compFin_one_tmul, splitProj_tmul, one_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `adTens_ext (fun w => congrFun (congrFun (hinf w) i) j) fun u => ?_` and prove the remaining obligations. Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Conclude with `split_ext h τ (congrFun (congrFun h1 i) j) (congrFun (congrFun h2 i) j)`.
-
-Conclude with `congrFun (congrFun (hfin u e) i) j`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mat_ext (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) {M M' : Matrix n n (AF F ⊗[F] E)}
     (hinf : ∀ w, M.map (compInf F E w) = M'.map (compInf F E w))
@@ -236,19 +234,17 @@ def oneAdd {R S : Type} [Ring R] [Ring S] (Φ : R →ₙ+* S) : R →* S where
     noncomm_ring
 
 /- English proof (translation)
-Use `set p := pairHom (J.map τ) hJ g - 1 with hp`. Establish `hN : oneAdd (liftMat h τ) (pairHom (J.map τ) hJ g) = 1 + liftMat h τ p` using `rfl`. Rewrite using `[hN, map_one_add_cA]`. Establish `tr : ∀ {R : Type} [CommRing R] (f : AF F ⊗[F] E →+* R) (A B C : Matrix n n (AF F ⊗[F] E)), (Aᵀ * B * C).map f = (A.map f)ᵀ * B.map f * C.map f` using `fun f A B C => by`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : J.map τ * (J.map τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hJ`. Establish `gi : ((g⁻¹ : GL n (Fv F v)) : Matrix n n (Fv F v)) * (g : Matrix n n (Fv F v)) = 1` using `Units.inv_mul g`. Apply `mat_ext h τ` to reduce the goal to its premises. Introduce `w`. Rewrite using `[tr, map_one_add_of_zero _ h τ (compInf_liftPair h τ w), map_one_add_of_zero _ h τ (compInf_liftPair h τ w)]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `u hu`. Rewrite using `[tr, map_one_add_of_zero _ h τ (compFin_liftPair_ne h τ hu), map_one_add_of_zero _ h τ (compFin_liftPair_ne h τ hu)]`. Simplify using the standard rewrite rules. Rewrite using `[tr, map_one_add_piW, map_one_add_piW, Matrix.map_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hJm : J.map (⇑(GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW τ) ∘ ⇑(Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F` using `F) (AF F))) = J.map τ := by`. Conclude with `Matrix.ext fun i j => piW_inclR τ (J i j)`. Rewrite using `[hJm]`. Simplify using `only [hp, Prod.fst_sub, Prod.snd_sub, Prod.swap, Prod.fst_one, Prod.snd_one, add_sub_cancel]`. Use `show (g : Matrix n n (Fv F v))ᵀ * J.map τ * ((J.map τ)⁻¹ * ((g⁻¹ : GL n (Fv F v)) : Matrix n n (Fv F v))ᵀ * J.map τ) = J.map τ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_assoc _ (J.map τ), e, Matrix.mul_one, ← Matrix.transpose_mul, gi, Matrix.transpose_one, Matrix.one_mul]`. Rewrite using `[tr, map_one_add_piW_comp, map_one_add_piW_comp, Matrix.map_map]`. Establish `hJm : J.map (⇑(GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piW (τ.comp σ)) ∘ ⇑(Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F` using `F) (AF F))) = (J.map τ)ᵀ := by`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Function.comp_apply, Matrix.transpose_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[piW_inclR, AlgHom.comp_apply, herm]`. Rewrite using `[hJm]`. Simplify using `only [hp, Prod.fst_sub, Prod.snd_sub, Prod.swap, Prod.fst_one, Prod.snd_one, add_sub_cancel]`. Use `show ((J.map τ)⁻¹ * ((g⁻¹ : GL n (Fv F v)) : Matrix n n (Fv F v))ᵀ * J.map τ)ᵀ * (J.map τ)ᵀ * (g : Matrix n n (Fv F v)) = (J.map τ)ᵀ`. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose]`.
-
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc ((J.map τ)⁻¹)ᵀ, ← Matrix.transpose_mul, e, Matrix.transpose_one, Matrix.one_mul, gi, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitary (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (J : Matrix n n E) (herm : ∀ i j, σ (J j i) = J i j)
     (hJ : IsUnit (J.map τ).det) (g : GL n (Fv F v)) :
@@ -300,21 +296,17 @@ end GlobalTheory.SplitGLLift
 open GlobalTheory.SplitGLLift in
 
 /- English proof (translation)
-Introduce `D T L sc G W t i j M e Bs Γ X om om' h hTr`. Establish `hcm : IsCMExt D.host.F D.host.E D.sp.cm.sig` using `hTr.base.cm`. Establish `herm : ∀ a b, D.sp.cm.sig (Γ.V'.J b a) = Γ.V'.J a b` using `hTr.geo.hV'.herm`. Establish `hJ : IsUnit (Γ.V'.J.map Bs.τ₁).det`. Rewrite using `[isUnit_iff_ne_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (Γ.V'.J.map Bs.τ₁).det = Bs.τ₁ Γ.V'.J.det`. Rewrite using `[AlgHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[e1, h.JW₁, Matrix.det_smul]`. Rewrite using `[map_ne_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (pow_ne_zero _ (by norm_num)) (Formalism.L2.Theta.gram_det_ne _)`. Set `N₀ : GL (Fin (G.V (.grid i j)).rank) (Fv D.host.F Bs.v₁) →* Matrix (Fin (G.V (.grid i j)).rank) (Fin (G.V (.grid i j)).rank) (AF D.host.F ⊗[D.host.F] D.host.E)` to `(oneAdd (liftMat hcm Bs.τ₁)).comp (pairHom (Γ.V'.J.map Bs.τ₁) hJ)`. Set `N : GL (Fin (G.V (.grid i j)).rank) (Fv D.host.F Bs.v₁) →* GL (Fin (G.V (.grid i j)).rank) (AF D.host.F ⊗[D.host.F] D.host.E)` to `(Matrix.GeneralLinearGroup.map (Formalism.L2.Theta.cA D)).comp N₀.toHomUnits`. Establish `hU` using `fun g => unitary hcm Bs.τ₁ Γ.V'.J herm hJ g`. Establish `hcc : ∀ g, ((N₀ g).map (Formalism.L2.Theta.cA D)).map (Formalism.L2.Theta.cA D) = N₀ g` using `fun g => Matrix.ext fun a b => Formalism.L2.Theta.cA_cA _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mem : ∀ g, N g ∈ Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HR (AF D.host.F) D.sp.cm.sig (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.spW₁ G i j).gram`. Introduce `g`. Establish `hU' : (N₀ g)ᵀ * Γ.V'.J.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F` using `D.host.F) (AF D.host.F)) * (N₀ g).map (Formalism.L2.Theta.cA D) = Γ.V'.J.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := D.host.F) (AF D.host.F)) := hU g`. Establish `hJi : Γ.V'.J.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F` using `D.host.F) (AF D.host.F)) = -GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.spW₁ G i j).gram := by show GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM Γ.V'.J = _`. Rewrite using `[h.JW₁, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM_smul, map_neg, map_one, neg_one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hU'` using `[hJi, Matrix.mul_neg, Matrix.neg_mul, neg_inj]`. Use `show (((N₀ g).map (Formalism.L2.Theta.cA D)).map (Formalism.L2.Theta.cA D))ᵀ * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.spW₁ G i j).gram * (N₀ g).map (Formalism.L2.Theta.cA D) = GlobalTheory.Indefi …`. Rewrite using `[hcc]`. Conclude with `hU'`. Use `⟨N.codRestrict _ mem, fun g => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmat : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU _ (-1) h.JW₁ (N.codRestrict _ mem g)) = N₀ g` using `hcc g`. Establish `hN₀ : N₀ g = 1 + liftMat hcm Bs.τ₁ (pairHom (Γ.V'.J.map Bs.τ₁) hJ g - 1)` using `rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin D.host.F Bs.v₁) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat _ - 1) erw [hmat]`. Rewrite using `[hN₀, add_sub_cancel_left]`.
-
-Conclude with `at_liftMat hcm Bs.τ₁ _`. Use `erw [hmat]`. Rewrite using `[hN₀, map_one_add_piW]`. Conclude with `add_sub_cancel _ _`. Use `erw [hmat]`.
-
-Rewrite using `[hN₀, map_one_add_piW_comp]`. Conclude with `add_sub_cancel _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SplitGLLift.exists_hom_supp_split : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (t : T) (i j : Fin D.R.m) (M : Vol G)
     (e : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Num G i j) (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.Geo G i j)

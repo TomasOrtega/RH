@@ -12,7 +12,7 @@ def OrbitChartRing.Statement : Prop :=
       Algebra.FiniteType ℤ (chartRing x c) ∧ IsFractionRing (chartRing x c) (ratioField x)
 
 /- English proof (translation)
-The claim follows from `fun _ ↦ by simp [samplePoint]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ∀ k, samplePoint k ((fun _ ↦ 0) k) ≠ 0 := fun _ ↦ by simp [samplePoint]
 

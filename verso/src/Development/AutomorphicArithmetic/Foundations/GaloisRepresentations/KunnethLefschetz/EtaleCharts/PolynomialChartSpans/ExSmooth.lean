@@ -11,9 +11,9 @@ open CategoryTheory Limits AlgebraicGeometry UpperTheory.Gal.DifferentialFormSec
 namespace UpperTheory.Gal.KunnethLefschetz.G
 
 /- English proof (translation)
-Establish `h0 : (algebraMap A (MvPolynomial (Fin d) A)).IsStandardSmoothOfRelativeDimension d` using `(RingHom.isStandardSmoothOfRelativeDimension_algebraMap (n := d)).mpr (GlobalTheory.CompanionTheory.Ar.LieInh.stdSmooth_mvPolynomial A d)`. Set `e₁ : MvPolynomial (Fin d) A ≃+* MvPolynomial σ A` to `(MvPolynomial.renameEquiv A (Fintype.equivFinOfCardEq hd).symm).toRingEquiv`. Set `e₂ : MvPolynomial σ A ≃+* B` to `RingEquiv.ofBijective _ hb`. Establish `hφ : φ = (e₁.trans e₂).toRingHom.comp (algebraMap A (MvPolynomial (Fin d) A))`. Use extensionality with `a`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[e₁, e₂, MvPolynomial.algebraMap_eq]`. Rewrite using `[hφ]`. Conclude with `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.1 _ _ h0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem stdSmooth_of_bijective {A B σ : Type} [CommRing A] [CommRing B] [Fintype σ] {d : ℕ}
     (hd : Fintype.card σ = d) (φ : A →+* B) (y : σ → B)
@@ -32,9 +32,9 @@ private theorem stdSmooth_of_bijective {A B σ : Type} [CommRing A] [CommRing B]
   exact RingHom.isStandardSmoothOfRelativeDimension_respectsIso.1 _ _ h0
 
 /- English proof (translation)
-Set `e : MvPolynomial σ A ≃+* B` to `RingEquiv.ofBijective _ hb`. Set `ρ : B →+* A` to `(MvPolynomial.eval₂Hom (RingHom.id A) fun _ => 0).comp e.symm.toRingHom`. Establish `hρ : ρ.comp φ = RingHom.id A`. Use extensionality with `a`. Establish `: e.symm (φ a) = MvPolynomial.C a` using `e.symm_apply_eq.2 (by simp [e])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `[ρ, this]`. Introduce `p`. Use `⟨PrimeSpectrum.comap ρ p, ?_⟩` and prove the remaining obligations. Rewrite using `[← PrimeSpectrum.comap_comp_apply, hρ, PrimeSpectrum.comap_id]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem comap_surjective_of_bijective {A B σ : Type} [CommRing A] [CommRing B]
     (φ : A →+* B) (y : σ → B) (hb : Function.Bijective (MvPolynomial.eval₂Hom φ y)) :
@@ -51,9 +51,9 @@ private theorem comap_surjective_of_bijective {A B σ : Type} [CommRing A] [Comm
   rw [← PrimeSpectrum.comap_comp_apply, hρ, PrimeSpectrum.comap_id]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨p, rfl⟩ : y ∈ Set.range hU.fromSpec := by`. Rewrite using `[hU.range_fromSpec]`. Conclude with `hy`. Take `⟨q, rfl⟩` from `hs p`. Use `⟨hV.fromSpec q, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `congr($(IsAffineOpen.SpecMap_appLE_fromSpec f hU hV e) q)`. Simplify using `only [Scheme.Hom.comp_apply] at h`. Conclude with `h.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_apply_eq {X Y : Scheme.{0}} (f : X ⟶ Y) {U : Y.Opens} (hU : IsAffineOpen U)
     {V : X.Opens} (hV : IsAffineOpen V) (e : V ≤ f ⁻¹ᵁ U)
@@ -69,14 +69,14 @@ private theorem exists_apply_eq {X Y : Scheme.{0}} (f : X ⟶ Y) {U : Y.Opens} (
   exact h.symm
 
 /- English proof (translation)
-The claim follows from `haveI := hf; inferInstance`.
+A detailed English derivation is pending.
 -/
 private theorem isProper_snd {X Y S : Scheme.{0}} (f : X ⟶ S) (g : Y ⟶ S) (hf : IsProper f) :
     IsProper (pullback.snd f g) :=
   haveI := hf; inferInstance
 
 /- English proof (translation)
-Take `⟨U, u, hz, hc⟩` from `coordEx R Z (d + 1) z`. Take `⟨c, -, -, hN⟩` from `(dChartEx R Z (d + 1)).1 U u hc z hz`. Conclude with `⟨c, (blChart R π hπ (d + 1) c).some, hN⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_chart {R : Type} [CommRing R] {Z W : Sch R} (d : ℕ) [IsSeparated Z.hom]
     [SmoothOfRelativeDimension (d + 1) Z.hom] (π : W ⟶ XX Z) (hπ : IsBl π) (z : Z.left) :
@@ -86,13 +86,13 @@ private theorem exists_chart {R : Type} [CommRing R] {Z W : Sch R} (d : ℕ) [Is
   exact ⟨c, (blChart R π hπ (d + 1) c).some, hN⟩
 
 /- English proof (translation)
-Introduce `R _ _ Z W d _ _ π hπ`. Use `haveI : Smooth Z.hom := SmoothOfRelativeDimension.smooth (d + 1) Z.hom`. Use `⟨⟨fun x => ?_⟩, ?_, ⟨fun z => ?_⟩⟩` and prove the remaining obligations. Take `⟨c, b, hN⟩` from `exists_chart d π hπ ((exG π).left x)`. Establish `e : (exI π).left ≫ π.left = (exG π).left ≫ (dg Z).left` using `pullback.condition`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW : (exI π).left x ∈ π.left ⁻¹ᵁ c.N`. Establish `h` using `congr($e x)`. Simplify using `only [Scheme.Hom.comp_apply] at h`. Express the relevant statement in the definitionally equal form `π.left ((exI π).left x) ∈ c.N`. Rewrite using `[h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hN`. Rewrite `hW` using `[← b.cov]`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 hW`. Take `⟨hA, hB, -, h, hbij⟩` from `exChart R π (d + 1) c b j`. Conclude with `⟨_, hA, _, hB, hj, h, stdSmooth_of_bijective (by simp [Fintype.card_subtype_compl]) _ _ hbij⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `isProper_snd π.left (dg Z).left (blOff R π hπ).1`. Take `⟨c, b, hN⟩` from `exists_chart d π hπ z`. Take `⟨hA, hB, -, h, hbij⟩` from `exChart R π (d + 1) c b 0`. Conclude with `exists_apply_eq _ hA hB h (comap_surjective_of_bijective _ _ hbij) hN`.
+A detailed English derivation is pending.
 -/
 theorem exSmooth : ExSmooth := by
   intro R _ _ Z W d _ _ π hπ

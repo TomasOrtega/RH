@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.Core
 
 /- English proof (translation)
-The claim follows from `MvPolynomial.map_injective s s.injective (Formalism.L2.Col.fnOf_injective G sh 1 (fun _ => by simp) (⟨fun _ => 1, fun _ => by simp⟩ : {y : ι → Matrix (Fin n) (Fin n) ℂ // ∀ τ, IsUnit (y τ).det}) h)`.
+A detailed English derivation is pending.
 -/
 theorem fnOf_map_injective {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ} (G : ι → Matrix (Fin n) (Fin n) ℂ)
     (sh : ι → ℤ) (s : K →+* ℂ) {F F' : MvPolynomial (ι × Fin n × Fin n) K}
@@ -28,7 +28,7 @@ theorem fnOf_map_injective {K : Type} [Field K] {ι : Type} [Fintype ι] {n : �
       (⟨fun _ => 1, fun _ => by simp⟩ : {y : ι → Matrix (Fin n) (Fin n) ℂ // ∀ τ, IsUnit (y τ).det}) h)
 
 /- English proof (translation)
-Take `⟨P, hP, hv⟩` from `((W.rat _).1 ⟨x, rfl⟩).2 c`. Establish `e : Formalism.L2.Col.RatSpanG D.what₂.embLL (sgT u) = Formalism.L2.Col.RatSpanG D.what₂.embLL (D.fm u).sg` using `Formalism.L2.Col.RatSpanG_shW D.what₂.embLL (D.fm u).sg (fun _ => ((D.R.m * (D.R.t + 1) / 2 : ℕ) : ℤ))`. Establish `hP' : P ∈ Formalism.L2.Col.RatSpanG D.what₂.embLL (sgT u)` using `by rw [e]; exact hP`. Take `⟨F, hF, rfl⟩` from `Formalism.L2.Col.exists_VV_of_mem_RatSpanG _ _ hP'`. Conclude with `⟨⟨F, hF⟩, hv⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ptVal_at (D : D7) (u : D.what₂.Word) (K : ClsPTied u) (W : ValPTied u K) (x : (D.fm u).ptLat.V)
     (c : (D.fm u).clsP) : ∃ F : VV D.what₂.LL (sgT u),
@@ -41,11 +41,11 @@ theorem exists_ptVal_at (D : D7) (u : D.what₂.Word) (K : ClsPTied u) (W : ValP
   exact ⟨⟨F, hF⟩, hv⟩
 
 /- English proof (translation)
-Introduce `D u K W`. Use `choose val hval using exists_ptVal_at D u K W`. Use `⟨{ toFun := val, map_add' := fun x y => ?_, map_smul' := fun a x => ?_ }, hval⟩` and prove the remaining obligations. Use function extensionality and compare the values at `c`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `fnOf_map_injective (gramC (gramP D) (embT D)) (shiftOf (sgT u)) D.what₂.embLL ?_` and prove the remaining obligations. Rewrite using `[← hval, Pi.add_apply, Submodule.coe_add, map_add, map_add, map_add, map_add, ← hval, ← hval, Pi.add_apply]`. Use function extensionality and compare the values at `c`. Apply `Subtype.ext` to reduce the goal to its premises. Use `fnOf_map_injective (gramC (gramP D) (embT D)) (shiftOf (sgT u)) D.what₂.embLL ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : MvPolynomial.map D.what₂.embLL (a • (val x c).1) = D.what₂.embLL a • MvPolynomial.map D.what₂.embLL (val x c).1`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul]`. Rewrite using `[← hval, RingHom.id_apply, Pi.smul_apply, Submodule.coe_smul, e, LinearMap.map_smul, ← hval, LinearMap.map_smulₛₗ, LinearEquiv.map_smul, Pi.smul_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ptVal : ∀ (D : D7) (u : D.what₂.Word) (K : ClsPTied u) (W : ValPTied u K), ∃ val : (D.fm u).ptLat.V →ₗ[D.what₂.LL] ((D.fm u).clsP → VV D.what₂.LL (sgT u)), (∀ x c, W.eW ((D.fm u).ptEmb x) c = fnOf _ (shiftOf (sgT u)) 1 (MvPolynomial.map D.what₂.embLL (val x c).1)) := by
   intro D u K W

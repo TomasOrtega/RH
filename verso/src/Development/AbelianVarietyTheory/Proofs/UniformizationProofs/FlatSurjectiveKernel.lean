@@ -33,14 +33,14 @@ variable {Y W W' Z : Scheme.{0}} {L : LB Y} {K : Type} [Fintype K] {ψ : K → (
   {ε ε' : K → ℤ} {r : Z ⟶ W} {r' : Z ⟶ W'}
 
 /- English proof (translation)
-The claim follows from `Finset.prod_congr rfl fun k _ => by rw [h k]`.
+A detailed English derivation is pending.
 -/
 theorem trF_congr (h : ∀ k, r ≫ ψ k = r' ≫ ψ' k) (ε : K → ℤ) (z : Z) (j j' : K → L.ι) :
     trF ψ ε r z j j' = trF ψ' ε r' z j j' :=
   Finset.prod_congr rfl fun k _ => by rw [h k]
 
 /- English proof (translation)
-Rewrite using `[trF_congr h, trF, trF, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun k _ => by rw [hε, zpow_neg, mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trF_cancel (h : ∀ k, r ≫ ψ k = r' ≫ ψ' k) (hε : ∀ k, ε' k = -ε k) (z : Z) (j j' : K → L.ι) :
     trF ψ ε r z j j' * trF ψ' ε' r' z j j' = 1 := by
@@ -48,21 +48,21 @@ theorem trF_cancel (h : ∀ k, r ≫ ψ k = r' ≫ ψ' k) (hε : ∀ k, ε' k = 
   exact Finset.prod_eq_one fun k _ => by rw [hε, zpow_neg, mul_inv_cancel]
 
 /- English proof (translation)
-The claim follows from `Set.mem_iInter.2 fun k => (congrArg (fun f => f z ∈ L.U (j k)) (h k)).mp (Set.mem_iInter.1 hz k)`.
+A detailed English derivation is pending.
 -/
 theorem mem_congr (h : ∀ k, r ≫ ψ k = r' ≫ ψ' k) {z : Z} {j : K → L.ι} (hz : r z ∈ LB.wchart L ψ j) :
     r' z ∈ LB.wchart L ψ' j :=
   Set.mem_iInter.2 fun k => (congrArg (fun f => f z ∈ L.U (j k)) (h k)).mp (Set.mem_iInter.1 hz k)
 
 /- English proof (translation)
-Use `choose j hj using fun k => exists_chart hL (ψ k w)`. Conclude with `⟨j, Set.mem_iInter.2 hj⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_wchart (hL : L.IsLB) (ψ : K → (W ⟶ Y)) (w : W) : ∃ j, w ∈ LB.wchart L ψ j := by
   choose j hj using fun k => exists_chart hL (ψ k w)
   exact ⟨j, Set.mem_iInter.2 hj⟩
 
 /- English proof (translation)
-Rewrite using `[val_of x r' z J (fun k => J (r ≫ ψ k)) (fun k => by rw [h k]), sec_trans s r z hj (hJ.mem ψ r), gen_trans hx r' z (mem_congr h hj) (mem_congr h (hJ.mem ψ r)), Units.val_mul, _root_.mul_mul_mul_comm, ← Units.val_mul, trF_cancel h hε, Units.val_one, _root_.one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sval_mul_val (s : LB.Sec (LB.LinComb L ψ ε)) {x : LB.Gen (LB.LinComb L ψ' ε')} (hx : x.IsGen)
     (hε : ∀ k, ε' k = -ε k) (h : ∀ k, r ≫ ψ k = r' ≫ ψ' k) {z : Z} {J} (hJ : Good L z J) {j : K → L.ι}
@@ -76,7 +76,7 @@ theorem sval_mul_val (s : LB.Sec (LB.LinComb L ψ ε)) {x : LB.Gen (LB.LinComb L
 def toTop (U : W.Opens) : Γ(W, U) →+* Γ(U.toScheme, ⊤) := (U.ι.appLE U ⊤ U.ι_preimage_self.ge).hom
 
 /- English proof (translation)
-Establish `e : U.ι.appLE U ⊤ U.ι_preimage_self.ge = U.topIso.inv`. Rewrite using `[Scheme.Opens.ι_appLE, Scheme.Opens.topIso_inv]`. Both sides reduce to the same expression. Rewrite using `[toTop, e]`. Conclude with `ConcreteCategory.bijective_of_isIso U.topIso.inv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toTop_bijective (U : W.Opens) : Function.Bijective (toTop U) := by
   have e : U.ι.appLE U ⊤ U.ι_preimage_self.ge = U.topIso.inv := by
@@ -85,19 +85,19 @@ theorem toTop_bijective (U : W.Opens) : Function.Bijective (toTop U) := by
   exact ConcreteCategory.bijective_of_isIso U.topIso.inv
 
 /- English proof (translation)
-The claim follows from `gs_appLE U.ι U ⊤ _ r z trivial a`.
+A detailed English derivation is pending.
 -/
 theorem gs_toTop (U : W.Opens) (r : Z ⟶ U.toScheme) (z : Z) (a : Γ(W, U)) :
     gs r z ⊤ (toTop U a) = gs (r ≫ U.ι) z U a := gs_appLE U.ι U ⊤ _ r z trivial a
 
 /- English proof (translation)
-The claim follows from `(toTop_bijective U).1 (fn_ext fun y _ => by rw [gs_toTop, gs_toTop, Category.id_comp, h])`.
+A detailed English derivation is pending.
 -/
 theorem ext_open {U : W.Opens} {a b : Γ(W, U)} (h : ∀ y : U.toScheme, gs U.ι y U a = gs U.ι y U b) : a = b :=
   (toTop_bijective U).1 (fn_ext fun y _ => by rw [gs_toTop, gs_toTop, Category.id_comp, h])
 
 /- English proof (translation)
-The claim follows from `FunDescent.app_injective q U (fn_ext fun y hy => by rw [gs_pull (𝟙 _) q y U hy, gs_pull (𝟙 _) q y U hy, Category.id_comp]; exact h y hy)`.
+A detailed English derivation is pending.
 -/
 theorem ext_pull (q : W' ⟶ W) [Flat q] [Surjective q] {U : W.Opens} {a b : Γ(W, U)}
     (h : ∀ y, q y ∈ U → gs q y U a = gs q y U b) : a = b :=
@@ -105,7 +105,7 @@ theorem ext_pull (q : W' ⟶ W) [Flat q] [Surjective q] {U : W.Opens} {a b : Γ(
     rw [gs_pull (𝟙 _) q y U hy, gs_pull (𝟙 _) q y U hy, Category.id_comp]; exact h y hy)
 
 /- English proof (translation)
-Rewrite using `[gs_eq r z U h, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_zero' (r : Z ⟶ W) (z : Z) (U : W.Opens) (h : r z ∈ U) : gs r z U 0 = 0 := by
   rw [gs_eq r z U h, map_zero, map_zero]
@@ -127,22 +127,22 @@ variable {q} {x : LB.Gen (LB.LinComb L φ' ε')} {V : B.Opens}
 
 omit [Fintype K] in
 /- English proof (translation)
-Rewrite using `[hφ, reassoc_of% e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_φ (hφ : ∀ k, φ' k = q ≫ φ k) {Z : Scheme.{0}} {r : Z ⟶ V.toScheme} {g : Z ⟶ G} (e : r ≫ V.ι = g ≫ q)
     (k : K) : r ≫ V.ι ≫ φ k = g ≫ φ' k := by
   rw [hφ, reassoc_of% e]
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun f => f z ∈ V) e).mp (r z).2`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_comp {Z : Scheme.{0}} {r : Z ⟶ V.toScheme} {g : Z ⟶ G} (e : r ≫ V.ι = g ≫ q) (z : Z) :
     g z ∈ q ⁻¹ᵁ V := (congrArg (fun f => f z ∈ V) e).mp (r z).2
 
 /- English proof (translation)
-Establish `f : ∀ {Z : Scheme.{0}} (l : Z ⟶ (q ⁻¹ᵁ V).toScheme) (z : Z) (J), Good L z J → sval (fnSec L (toTop _ a)) l z J = gs (l ≫ (q ⁻¹ᵁ V).ι) z _ a` using `fun l z J hJ => (gs_res l z le_top (hJ.mem PEmpty.elim l) _).trans (gs_toTop _ l z a)`. Establish `p` using `isPullback_morphismRestrict q V`. Take `⟨h₁, h₂⟩` from `secRel_iff hL _ _ (fnSec L (toTop _ a)) _ _ s (q ∣_ V) _ _ (LB.pullGen L _ _ x (q ⁻¹ᵁ V).ι)`. Use `⟨fun H Z r g e z j hj => ?_, fun H => h₂ fun y J hJ => ?_⟩` and prove the remaining obligations. Take `⟨J, hJ⟩` from `TorusCoord.exists_good' hL z`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `E` using `h₁ H Z (p.lift r g e) z J hJ`. Rewrite `E` using `[f _ z J hJ, val_pull hJ, p.lift_fst, p.lift_snd]`. Conclude with `E.trans (sval_mul_val s hx hε (comp_φ hφ e) hJ hj)`. Rewrite using `[f _ y J hJ, val_pull hJ, Category.id_comp, Category.id_comp]`. Conclude with `H _ _ _ p.w y _ (hJ.mem _ _) |>.trans (sval_mul_val s hx hε (comp_φ hφ p.w) hJ (hJ.mem _ _)).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secRel_iff_img (hL : L.IsLB) (hx : x.IsGen) (hε : ∀ k, ε' k = -ε k) (hφ : ∀ k, φ' k = q ≫ φ k)
     (s : LB.Sec (LB.LinComb L (fun k => V.ι ≫ φ k) ε)) (a : Γ(G, q ⁻¹ᵁ V)) :
@@ -161,9 +161,9 @@ theorem secRel_iff_img (hL : L.IsLB) (hx : x.IsGen) (hε : ∀ k, ε' k = -ε k)
     exact H _ _ _ p.w y _ (hJ.mem _ _) |>.trans (sval_mul_val s hx hε (comp_φ hφ p.w) hJ (hJ.mem _ _)).symm
 
 /- English proof (translation)
-Establish `p` using `isPullback_morphismRestrict q V`. Establish `: Flat (q ∣_ V)` using `MorphismProperty.of_isPullback (P := @Flat) p.flip ‹_›`. Establish `: Surjective (q ∣_ V)` using `MorphismProperty.of_isPullback (P := @Surjective) p.flip ‹_›`. Use `ext_pull (q ∣_ V) fun y hy => ?_` and prove the remaining obligations. Establish `E` using `H _ _ _ p.w y j hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `E` using `[gs_zero' _ y _ (mem_of_comp p.w y)]`. Conclude with `((Units.mul_left_eq_zero _).1 E.symm).trans (gs_zero' _ y _ hy).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Img.eq_zero [Flat q] [Surjective q] {s : LB.Sec (LB.LinComb L (fun k => V.ι ≫ φ k) ε)} (H : Img q x V s 0)
     (j : K → L.ι) : s.f j = 0 := by
@@ -176,7 +176,7 @@ theorem Img.eq_zero [Flat q] [Surjective q] {s : LB.Sec (LB.LinComb L (fun k => 
   exact ((Units.mul_left_eq_zero _).1 E.symm).trans (gs_zero' _ y _ hy).symm
 
 /- English proof (translation)
-Introduce `y hy` and use `mem_congr (r := q) (r' := 𝟙 G) (fun k => by rw [hφ, Category.id_comp]) (h hy)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem preimage_le (hφ : ∀ k, φ' k = q ≫ φ k) {j : K → L.ι} (h : V ≤ LB.wchart L φ j) :
     q ⁻¹ᵁ V ≤ LB.wchart L φ' j := fun y hy =>
@@ -186,22 +186,22 @@ def locU (hφ : ∀ k, φ' k = q ≫ φ k) (x : LB.Gen (LB.LinComb L φ' ε')) {
     Γ(G, q ⁻¹ᵁ V)ˣ := res (preimage_le hφ h) (x.s j)
 
 /- English proof (translation)
-The claim follows from `gm_res g z _ m _`.
+A detailed English derivation is pending.
 -/
 theorem gm_locU (hφ : ∀ k, φ' k = q ≫ φ k) (x : LB.Gen (LB.LinComb L φ' ε')) {j : K → L.ι} (h : V ≤ LB.wchart L φ j)
     {Z : Scheme.{0}} (g : Z ⟶ G) (z : Z) (m : g z ∈ q ⁻¹ᵁ V) :
     gm g z (q ⁻¹ᵁ V) (locU hφ x h) = gm g z (LB.wchart L φ' j) (x.s j) := gm_res g z _ m _
 
 /- English proof (translation)
-The claim follows from `Set.mem_iInter.2 fun k => Set.mem_iInter.1 (h y.2) k`.
+A detailed English derivation is pending.
 -/
 theorem mem_wchart_ι {j : K → L.ι} (h : V ≤ LB.wchart L φ j) (y : V.toScheme) :
     y ∈ LB.wchart L (fun k => V.ι ≫ φ k) j := Set.mem_iInter.2 fun k => Set.mem_iInter.1 (h y.2) k
 
 /- English proof (translation)
-Establish `p` using `isPullback_morphismRestrict q V`. Take `⟨c, hc⟩` from `(toTop_bijective V).2 ((V.toScheme.presheaf.map (homOfLE (fun y _ => mem_wchart_ι h y : ⊤ ≤ LB.wchart L (fun k => V.ι ≫ φ k) j)).op).hom (s.f j))`. Use `⟨c, ext_open fun y => ?_⟩` and prove the remaining obligations. Establish `m` using `mem_of_comp p.w y`. Rewrite using `[H _ _ _ p.w y j (mem_wchart_ι h _), gs_mul _ y _ m, gs_pull _ q y V m, gs_unit _ y _ m, gm_locU _ _ _ _ y m, ← p.w, ← gs_toTop, hc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (· * _) (gs_res (q ∣_ V) y (V := ⊤) _ trivial _).symm`.
+A detailed English derivation is pending.
 -/
 theorem Img.exists_fn (hφ : ∀ k, φ' k = q ≫ φ k) {s : LB.Sec (LB.LinComb L (fun k => V.ι ≫ φ k) ε)}
     {a : Γ(G, q ⁻¹ᵁ V)} (H : Img q x V s a) {j : K → L.ι} (h : V ≤ LB.wchart L φ j) :
@@ -216,11 +216,11 @@ theorem Img.exists_fn (hφ : ∀ k, φ' k = q ≫ φ k) {s : LB.Sec (LB.LinComb 
   exact congrArg (· * _) (gs_res (q ∣_ V) y (V := ⊤) _ trivial _).symm
 
 /- English proof (translation)
-Take `⟨f, hf⟩ : ∃ f : ∀ j, Γ(V.toScheme, LB.wchart L (fun k => V.ι ≫ φ k) j), ∀ (Z : Scheme.{0}) (r : Z ⟶ V.toScheme) (z : Z) j, r z ∈ LB.wchart L (fun k => V.ι ≫ φ k) j → gs r z _ (f j) = (trF (fun k => V.ι ≫ φ k) ε r z j j₀).val * gs (r ≫ V.ι) z V c` from `⟨fun j => (res (V := LB.wchart L (fun k => V.ι ≫ φ k) j) (le_inf le_rfl fun y _ => mem_wchart_ι h y) ((LB.LinComb L (fun k => V.ι ≫ φ k) ε).g j j₀)).val * (V.ι.appLE V _ (fun y _ => y.2)).hom c, fun Z r z j hj => (gs_mul r z _ hj _ _).trans (congrArg₂ (· * ·) ((gs_unit r z _ hj _ …`. Use `⟨⟨f, fun j j' => fn_ext fun y hy => ?_⟩, fun Z r g e z j hj => ?_, fun h0 => ext_open fun y => ?_⟩` and prove the remaining obligations. Use `((gs_res (𝟙 _) y _ hy _).trans (hf _ _ y j hy.1)).trans (Eq.trans ?_ ((gs_mul (𝟙 _) y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_unit (𝟙 _) y _ hy _).trans (congrArg Units.val (gm_linComb L _ ε (𝟙 _) y j j' hy.1 hy.2))) ((gs_res (𝟙 _) y _ hy _).trans (hf _ _ y j' hy.2)))).symm)` and prove the remaining obligations. Rewrite using `[← trF_trans hL _ ε (𝟙 _) y hy.1 hy.2 (mem_wchart_ι h _), Units.val_mul, _root_.mul_assoc]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `m` using `mem_of_comp e z`. Use `Eq.trans ?_ (congrArg (· * _) (hf Z r z j hj)).symm` and prove the remaining obligations. Rewrite using `[gs_mul _ z _ m, gs_pull _ q z V m, gs_unit _ z _ m, gm_locU _ _ _ _ z m, gen_trans hx g z (mem_congr (comp_φ hφ e) hj) (preimage_le hφ h m), Units.val_mul, mul_comm _ (gs (r ≫ _) z V c), _root_.mul_assoc, ← _root_.mul_assoc (Units.val _), ← Units.val_mul, trF_cancel (comp_φ hφ e …`. Establish `E` using `hf _ (𝟙 _) y j₀ (mem_wchart_ι h _)`. Establish `h0' : f j₀ = 0` using `h0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `E` using `[h0', gs_zero' _ y _ (mem_wchart_ι h _), Category.id_comp]`. Conclude with `((Units.mul_right_eq_zero _).1 E.symm).trans (gs_zero' V.ι y V y.2).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_img_of_fn (hL : L.IsLB) (hx : x.IsGen) (hε : ∀ k, ε' k = -ε k) (hφ : ∀ k, φ' k = q ≫ φ k)
     {j₀ : K → L.ι} (h : V ≤ LB.wchart L φ j₀) (c : Γ(B, V)) :
@@ -264,7 +264,7 @@ def WtGen (i : splitTorus S X ⟶ G) {φ' : K → (G.left ⟶ Y)} (x : LB.Gen (L
     val x ((t ≫ i) * g).left z J = gm t.left z ⊤ (charUnit S X χ) * val x g.left z J
 
 /- English proof (translation)
-Establish `e : ((t ≫ i) * g) ≫ q = g ≫ q`. Rewrite using `[MonObj.mul_comp, Category.assoc, hi, ← Category.assoc, comp_toUnit, ← Hom.one_def, _root_.one_mul]`. Conclude with `congrArg (fun f => f.left) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_comp [IsMonHom q] (hi : i ≫ q = toUnit _ ≫ η[B]) {Z : Over S} (t : Z ⟶ splitTorus S X) (g : Z ⟶ G) :
     ((t ≫ i) * g).left ≫ q.left = g.left ≫ q.left := by
@@ -273,14 +273,14 @@ theorem act_comp [IsMonHom q] (hi : i ≫ q = toUnit _ ≫ η[B]) {Z : Over S} (
   exact congrArg (fun f => f.left) e
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun f => f z ∈ W) (act_comp hi t g)).mpr h`.
+A detailed English derivation is pending.
 -/
 theorem act_mem [IsMonHom q] (hi : i ≫ q = toUnit _ ≫ η[B]) {Z : Over S} (t : Z ⟶ splitTorus S X) (g : Z ⟶ G)
     (z : Z.left) {W : B.left.Opens} (h : g.left z ∈ q.left ⁻¹ᵁ W) : ((t ≫ i) * g).left z ∈ q.left ⁻¹ᵁ W :=
   (congrArg (fun f => f z ∈ W) (act_comp hi t g)).mpr h
 
 /- English proof (translation)
-Introduce `Z t g h₁ h₂` and use `fn_ext fun z hz => by rw [gs_mul _ z _ hz, gs_appLE _ _ _ _ _ z hz, gs_appLE _ _ _ _ _ z hz, Category.id_comp, Category.id_comp, h Z t g h₂ z] congr 1 refine ((gs_pull (𝟙 _) t.left z ⊤ trivial _).trans ?_).symm rw [Category.id_comp, gs_unit _ z ⊤ trivial]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isWt_of_gs {V : G.left.Opens} {a : Γ(G.left, V)} {χ : X}
     (h : ∀ (Z : Over S) (t : Z ⟶ splitTorus S X) (g : Z ⟶ G), ⊤ ≤ g.left ⁻¹ᵁ V → ∀ z : Z.left,
@@ -293,7 +293,7 @@ theorem isWt_of_gs {V : G.left.Opens} {a : Γ(G.left, V)} {χ : X}
     rw [Category.id_comp, gs_unit _ z ⊤ trivial]
 
 /- English proof (translation)
-The claim follows from `isWt_of_gs fun Z t g h z => by rw [gs_pull _ _ z W (act_mem hi t g z (h trivial)), gs_pull _ _ z W (h trivial), act_comp hi, gm_charUnit, chV_zero, map_one, Units.val_one, _root_.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem isWt_app [IsMonHom q] (hi : i ≫ q = toUnit _ ≫ η[B]) (W : B.left.Opens) (c : Γ(B.left, W)) :
     IsWt i (q.left ⁻¹ᵁ W) ((q.left.app W).hom c) 0 := isWt_of_gs fun Z t g h z => by
@@ -307,9 +307,9 @@ variable [IsMonHom q] (hi : i ≫ q = toUnit _ ≫ η[B]) (hL : L.IsLB) {φ : K 
 include hi hL hφ hx hw
 
 /- English proof (translation)
-Establish `e : ∀ k, g.left ≫ φ' k = ((t ≫ i) * g).left ≫ φ' k` using `fun k => by`. Rewrite using `[hφ, reassoc_of% (act_comp hi t g)]`. Take `⟨J, hJ⟩` from `TorusCoord.exists_good' hL z`. Establish `v` using `hw Z t g z J hJ`. Rewrite `v` using `[val_of x _ z J (fun k => J (g.left ≫ φ' k)) (fun k => by rw [e k])]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[gen_trans hx _ z (mem_congr e hj) (mem_congr e (hJ.mem φ' g.left)), gen_trans hx _ z hj (hJ.mem φ' g.left), v, ← trF_congr e, mul_left_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gm_wt {Z : Over S} (t : Z ⟶ splitTorus S X) (g : Z ⟶ G) (z : Z.left) {j : K → L.ι}
     (hj : g.left z ∈ LB.wchart L φ' j) : gm ((t ≫ i) * g).left z (LB.wchart L φ' j) (x.s j) =
@@ -324,7 +324,7 @@ theorem gm_wt {Z : Over S} (t : Z ⟶ splitTorus S X) (g : Z ⟶ G) (z : Z.left)
   rfl
 
 /- English proof (translation)
-The claim follows from `isWt_of_gm _ _ fun Z t g z hz => by rw [gm_locU _ _ _ _ z hz, gm_locU _ _ _ _ z (act_mem hi t g z hz)] exact gm_wt hi hL hφ hx hw t g z (preimage_le hφ h hz)`.
+A detailed English derivation is pending.
 -/
 theorem isWt_locU {V : B.left.Opens} {j : K → L.ι} (h : V ≤ LB.wchart L φ j) : IsWt i _ (locU hφ x h).val χ :=
   isWt_of_gm _ _ fun Z t g z hz => by
@@ -332,7 +332,7 @@ theorem isWt_locU {V : B.left.Opens} {j : K → L.ι} (h : V ≤ LB.wchart L φ 
     exact gm_wt hi hL hφ hx hw t g z (preimage_le hφ h hz)
 
 /- English proof (translation)
-The claim follows from `isWt_of_gs fun Z t g h z => by obtain ⟨r, e⟩ : ∃ r, r ≫ V.ι = g.left ≫ q.left := ⟨_, IsOpenImmersion.lift_fac V.ι (g.left ≫ q.left) (by rintro _ ⟨w, rfl⟩ rw [Scheme.Opens.range_ι] exact h (Set.mem_univ w))⟩ obtain ⟨j, hj⟩ := exists_wchart hL (fun k => V.ι ≫ φ k) (r z) rw [H _ r _ …`.
+A detailed English derivation is pending.
 -/
 theorem Img.isWt {V : B.left.Opens} {s : LB.Sec (LB.LinComb L (fun k => V.ι ≫ φ k) ε)} {a : Γ(G.left, q.left ⁻¹ᵁ V)}
     (H : Img q.left x V s a) : IsWt i _ a χ := isWt_of_gs fun Z t g h z => by
@@ -346,13 +346,13 @@ theorem Img.isWt {V : B.left.Opens} {s : LB.Sec (LB.LinComb L (fun k => V.ι ≫
 
 omit hi in
 /- English proof (translation)
-Establish `ex : ∀ j, ∃ c : Γ(B.left, V ⊓ LB.wchart L φ j), (q.left.app _).hom c = (G.left.presheaf.map (homOfLE (q.left.preimage_mono inf_le_left)).op).hom a * ((locU hφ x (inf_le_right : V ⊓ LB.wchart L φ j ≤ _))⁻¹).val` using `fun j => (invariant_functions_descend S G B _ q i ‹_› ‹_› ‹_› ‹_› ‹_› hk _).2.2 _ fun Z t g h₁ h₂ => by`. Use `(ha.res (q.left.preimage_mono (inf_le_left : V ⊓ LB.wchart L φ j ≤ V))).mul (isWt_locU hk.w hL hφ hx hw (inf_le_right : V ⊓ LB.wchart L φ j ≤ _)).inv` as an intermediate fact. Rewrite using `[this Z t g h₁ h₂, add_neg_cancel, ← chV_val, chV_zero, Units.val_one, _root_.one_mul]`. Use `choose c hc using ex`. Establish `le : ∀ j, LB.wchart L (fun k => V.ι ≫ φ k) j ≤ V.ι ⁻¹ᵁ (V ⊓ LB.wchart L φ j)` using `fun j y hy => ⟨y.2, Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (Z : Scheme.{0}) (r : Z ⟶ V.toScheme) (g : Z ⟶ G.left), r ≫ V.ι = g ≫ q.left → ∀ (z : Z) j, r z ∈ LB.wchart L (fun k => V.ι ≫ φ k) j → gs r z _ ((V.ι.appLE _ _ (le j)).hom (c j)) = gs g z (q.left ⁻¹ᵁ V) a * ((gm g z (LB.wchart L φ' j) (x.s j))⁻¹).val` using `fun Z r g e z j hj => by`. Establish `m : g z ∈ q.left ⁻¹ᵁ (V ⊓ LB.wchart L φ j)` using `(congrArg (fun f => f z ∈ V ⊓ LB.wchart L φ j) e).mp (le j hj)`. Rewrite using `[gs_appLE _ _ _ _ r z hj, e, ← gs_pull g q.left z _ m, hc, gs_mul g z _ m, gs_res g z _ m, gs_unit g z _ m, map_inv, gm_locU _ _ _ g z m]`. Establish `p` using `isPullback_morphismRestrict q.left V`. Establish `: Flat (q.left ∣_ V)` using `MorphismProperty.of_isPullback (P := @Flat) p.flip ‹_›`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Surjective (q.left ∣_ V)` using `MorphismProperty.of_isPullback (P := @Surjective) p.flip ‹_›`. Use `⟨⟨fun j => (V.ι.appLE _ _ (le j)).hom (c j), fun j j' => ext_pull (q.left ∣_ V) fun y hy => ?_⟩, fun Z r g e z j hj => ?_⟩` and prove the remaining obligations. Use `((gs_res _ y _ hy _).trans (key _ _ _ p.w y j hy.1)).trans (Eq.trans ?_ ((gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_unit _ y _ hy _).trans (congrArg Units.val (gm_linComb L _ ε (q.left ∣_ V) y j j' hy.1 hy.2))) ((gs_res _ y _ hy _).trans (key _ _ _ p.w y j' hy.2)))).symm …` and prove the remaining obligations. Rewrite using `[gen_trans hx _ y (mem_congr (comp_φ hφ p.w) hy.1) (mem_congr (comp_φ hφ p.w) hy.2), mul_inv, ← eq_inv_of_mul_eq_one_left (trF_cancel (comp_φ hφ p.w) hε y j j'), Units.val_mul, mul_left_comm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (congrArg (· * _) (key Z r g e z j hj)).symm` and prove the remaining obligations. Rewrite using `[_root_.mul_assoc, Units.inv_mul, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_img [IsMonHom i] [Flat q.left] [Surjective q.left] [QuasiCompact q.left]
     (hk : IsPullback i (toUnit _) q η[B]) (hε : ∀ k, ε' k = -ε k) {V : B.left.Opens}
@@ -393,13 +393,11 @@ theorem exists_img [IsMonHom i] [Flat q.left] [Surjective q.left] [QuasiCompact 
 end One
 
 /- English proof (translation)
-Set `m : Multiplicative X →* Γ(G.left, V)ˣ` to `AddMonoidHom.toMultiplicativeLeft (b.constr ℤ (fun k => Additive.ofMul (u k))).toAddMonoidHom`. Establish `hm : ∀ k, m (Multiplicative.ofAdd (b k)) = u k` using `fun k => congrArg Additive.toMul (b.constr_basis ℤ (fun k => Additive.ofMul (u k)) k)`. Use `⟨m, fun χ => ?_⟩` and prove the remaining obligations. Establish `hχ : χ ∈ AddSubgroup.closure (Set.range b)`. Rewrite using `[← Submodule.span_int_eq_addSubgroupClosure, b.span_eq]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Use `AddSubgroup.closure_induction (p := fun x _ => IsWt i V (m (Multiplicative.ofAdd x)).val x) ?_ ?_ ?_ ?_ hχ` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Rewrite using `[hm]`. Conclude with `hu k`.
+Check the elementary cases of the proposition. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ofAdd_zero, map_one]`. Conclude with `isWt_one`. Introduce `x y _ _ hx hy`. Rewrite using `[ofAdd_add, map_mul]`. Conclude with `hx.mul hy`.
-
-Introduce `x _ hx`. Rewrite using `[ofAdd_neg, map_inv]`. Conclude with `hx.inv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWt_monomial {κ : Type} (b : Module.Basis κ ℤ X) {V : G.left.Opens} (u : κ → Γ(G.left, V)ˣ)
     (hu : ∀ k, IsWt i V (u k).val (b k)) :
@@ -428,7 +426,7 @@ variable [IsMonHom q] [IsMonHom i] [IsAffineHom q.left] (hL : L.IsLB) (hε : ∀
 include hL hε hφ hx hw
 
 /- English proof (translation)
-Take `⟨a, ha, e⟩` from `(functions_graded_by_weights S G X i ‹_› (q.left ⁻¹ᵁ V) (hV.preimage q.left) (fun z hz => act_mem hk.w (fst _ _) (snd _ _) z hz)).1 f`. Use `choose s hs using fun χ => exists_img hL (hφ χ) (hx χ) (hw χ) hk hε (ha χ)`. Conclude with `⟨a.support, s, a, hs, e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sum_img [Flat q.left] [Surjective q.left] (hk : IsPullback i (toUnit _) q η[B]) {V : B.left.Opens}
     (hV : IsAffineOpen V) (f : Γ(G.left, q.left ⁻¹ᵁ V)) :
@@ -442,9 +440,9 @@ theorem exists_sum_img [Flat q.left] [Surjective q.left] (hk : IsPullback i (toU
 omit hL hε hφ hx hw [IsMonHom i] in
 
 /- English proof (translation)
-Use `TorusGrading.eq_zero_of_sum_isWt (i := i) (hV.preimage q.left) (fun z hz => act_mem hi (fst _ _) (snd _ _) z hz) (s := F) (a := fun χ => if χ ∈ F then a χ else 0) (fun χ => by` as an intermediate fact. Distinguish the cases in `h : χ ∈ F`. Rewrite using `[if_pos h]`. Conclude with `H χ h`. Rewrite using `[if_neg h]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `isWt_zero χ)`. Use the proof step `((Finset.sum_congr rfl fun χ h => if_pos h).trans e) hχ`. Rewrite `this` using `[if_pos hχ]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sum_isWt (hi : i ≫ q = toUnit _ ≫ η[B]) {V : B.left.Opens} (hV : IsAffineOpen V) {F : Finset X}
     {a : X → Γ(G.left, q.left ⁻¹ᵁ V)}
@@ -460,25 +458,19 @@ theorem eq_zero_of_sum_isWt (hi : i ≫ q = toUnit _ ≫ η[B]) {V : B.left.Open
   rwa [if_pos hχ] at this
 
 /- English proof (translation)
-Take `⟨mono, fl, su, -, fib⟩` from `LocTriv.main S X G B i q ‹_› ‹_› fun y => by`. Set `b` to `Module.Free.chooseBasis ℤ X`. Use `choose j hj using fun χ => exists_wchart hL (φ χ) y`. Take `⟨V, hV, hy, le⟩` from `exists_isAffineOpen_mem_and_subset (x := y) (U := LB.wchart L (φ 0) (j 0) ⊓ ⨅ k, LB.wchart L (φ (b k)) (j (b k))) ⟨hj 0, (TopologicalSpace.Opens.coe_iInf _).ge (Set.mem_iInter.2 fun k => hj (b k))⟩`. Establish `le₀ : V ≤ LB.wchart L (φ 0) (j 0)` using `fun _ h => (le h).1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `le₁ : ∀ k, V ≤ LB.wchart L (φ (b k)) (j (b k))` using `fun k _ h => iInf_le (fun k => LB.wchart L (φ (b k)) (j (b k))) k (le h).2`. Use `⟨V, hy, hV, fun a => ⟨fun ha => ?_, ?_⟩, (injective_iff_map_eq_zero _).2 fun c hc => ?_, fun z hz => act_mem hi (fst _ _) (snd _ _) z hz, isWt_monomial b _ fun k => isWt_locU hi hL (hφ _) (hx _) (hw _) (le₁ k)⟩` and prove the remaining obligations. Take `⟨F, s, d, hd, e⟩` from `span V hV (a * (locU (hφ 0) (x 0) le₀).val)`. Establish `w` using `ha.mul (isWt_locU hi hL (hφ _) (hx _) (hw _) le₀)`. Rewrite `w` using `[add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `hf : a * (locU (hφ 0) (x 0) le₀).val = f at e w`. Establish `z` using `eq_zero_of_sum_isWt hi hV (F := insert 0 F) (a := fun χ => (if χ ∈ F then d χ else 0) - if χ = 0 then f else 0) (fun χ _ Z t g h₁ h₂ => by`. Establish `a₁ : IsWt i _ (if χ ∈ F then d χ else 0) χ`. Distinguish the cases in `h : χ ∈ F`. Rewrite using `[if_pos h]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hd χ h).isWt hi hL (hφ χ) (hx χ) (hw χ)`. Rewrite using `[if_neg h]`. Conclude with `isWt_zero χ`. Establish `a₂ : IsWt i _ (if χ = 0 then f else 0) χ`. Distinguish the cases in `h : χ = 0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h, h]`. Conclude with `w`. Rewrite using `[if_neg h]`. Conclude with `isWt_zero χ`. Rewrite using `[map_sub, map_sub, a₁ Z t g h₁ h₂, a₂ Z t g h₁ h₂, mul_sub])`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use the proof step `(by`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_ite_mem, Finset.sum_ite_eq', if_pos (Finset.mem_insert_self _ _), Finset.inter_eq_right.2 (Finset.subset_insert _ _), ← e, sub_self])`. Use the proof step `(Finset.mem_insert_self _ _)`. Rewrite `z` using `[if_pos rfl, sub_eq_zero]`. Distinguish the cases in `h : (0 : X) ∈ F`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite `z` using `[if_pos h]`. Take `⟨c, hc⟩` from `(hd 0 h).exists_fn (hφ 0) le₀`. Conclude with `⟨c, (Units.mul_left_inj _).1 (hc.symm.trans (z.trans hf.symm))⟩`. Rewrite `z` using `[if_neg h]`. Conclude with `⟨0, (map_zero _).trans ((Units.mul_left_eq_zero _).1 (hf.trans z.symm)).symm⟩`.
-
-Introduce and unpack `⟨c, rfl⟩`. Conclude with `isWt_app hi V c`. Take `⟨s, hs, h0⟩` from `exists_img_of_fn hL (hx 0) hε (hφ 0) le₀ c`. Rewrite `hs` using `[hc, zero_mul]`. Conclude with `h0 (indep V hV s hs _)`.
-
-Use `⟨fl, su, ⟨hi⟩, ⟨PullbackCone.IsLimit.mk _ (fun c => ((fib _ 1 c.fst).1 (by` and prove the remaining obligations. Rewrite using `[MonObj.one_comp, c.condition, Hom.one_def, toUnit_unique c.snd])).choose) (fun c => ?_)`. Use the proof step `(fun c => toUnit_unique _ _) fun c m h _ => ?_⟩⟩`. Conclude with `(_root_.mul_one _).symm.trans (Exists.choose_spec (p := fun t => c.fst = (t ≫ i) * 1) _).symm`. Rewrite using `[← cancel_mono i, h]`.
-
-Conclude with `(Exists.choose_spec (p := fun t => c.fst = (t ≫ i) * 1) _).trans (_root_.mul_one _)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_surjective_kernel [Module.Free ℤ X] [Module.Finite ℤ X] (hi : i ≫ q = toUnit _ ≫ η[B])
     (span : ∀ V : B.left.Opens, IsAffineOpen V → ∀ f : Γ(G.left, q.left ⁻¹ᵁ V),

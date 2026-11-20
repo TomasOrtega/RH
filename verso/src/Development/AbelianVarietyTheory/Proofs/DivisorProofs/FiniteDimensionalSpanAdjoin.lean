@@ -10,7 +10,7 @@ namespace GlobalTheory.CycSpanFin
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `hp.add_left hq`. Consider the case `monomial n a => rw [aeval_monomial]`. Conclude with `(Algebra.commute_algebraMap_left a y).mul_left (h.pow_left n)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem commute_aeval_left {x y : Module.End ℂ V} (h : Commute x y) (p : ℂ[X]) : Commute (aeval x p) y := by
   induction p using Polynomial.induction_on' with
@@ -18,13 +18,13 @@ theorem commute_aeval_left {x y : Module.End ℂ V} (h : Commute x y) (p : ℂ[X
   | monomial n a => rw [aeval_monomial]; exact (Algebra.commute_algebraMap_left a y).mul_left (h.pow_left n)
 
 /- English proof (translation)
-Rewrite using `[← Subspace.forall_mem_dualAnnihilator_apply_eq_zero_iff]`. Introduce `φ hφ`. Use `set Q : ℂ[X] := ∑ j ∈ Finset.range (n + 1), monomial j (φ (a j)) with hQdef`. Establish `hev : ∀ u, Q.eval u = φ (p u)`. Introduce `u`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp, map_sum]`. Simplify using `only [Q, eval_finset_sum, eval_monomial]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [map_smul, smul_eq_mul, mul_comm]`. Establish `hdeg : Q.natDegree ≤ n`. Apply `natDegree_sum_le_of_forall_le` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j hj`. Conclude with `(natDegree_monomial_le _).trans (Nat.lt_succ_iff.1 (Finset.mem_range.1 hj))`. Establish `h0 : Q = 0`. Use `Polynomial.eq_zero_of_natDegree_lt_card_of_eval_eq_zero Q (f := fun j : Fin (n + 1) => ((j : ℕ) : ℂ)) (Nat.cast_injective.comp Fin.val_injective) ?_ ?_` and prove the remaining obligations. Introduce `j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hev]`. Conclude with `(Submodule.mem_dualAnnihilator φ).1 hφ _ (Submodule.subset_span ⟨j, rfl⟩)`. Simplify using `using Nat.lt_succ_of_le hdeg`. Use `congrArg (fun P : Polynomial ℂ => P.coeff i) h0` as an intermediate fact. Simplify `this` using `[Q, Polynomial.finset_sum_coeff, Polynomial.coeff_monomial, hi, Nat.lt_succ_iff.1 hi]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coeff_mem_span_fin {M : Type} [AddCommGroup M] [Module ℂ M] {n : ℕ} {a : ℕ → M} {p : ℂ → M}
     (hp : ∀ u, p u = ∑ i ∈ Finset.range (n + 1), u ^ i • a i) {i : ℕ} (hi : i < n + 1) :
@@ -63,26 +63,24 @@ def ext (T : Module.End ℂ V) (d : ℕ) (N : Submodule ℂ V) : Submodule ℂ V
   ⨆ k : Fin (d + 1), N.map (T ^ (k : ℕ))
 
 /- English proof (translation)
-Introduce `v hv` and use `Submodule.mem_iSup_of_mem (0 : Fin (d + 1)) ⟨v, hv, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_ext (T : Module.End ℂ V) (d : ℕ) (N : Submodule ℂ V) : N ≤ ext T d N := fun v hv =>
   Submodule.mem_iSup_of_mem (0 : Fin (d + 1)) ⟨v, hv, by simp⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_iSup_of_mem (⟨k, by omega⟩ : Fin (d + 1)) (Submodule.mem_map_of_mem hv)`.
+A detailed English derivation is pending.
 -/
 theorem pow_mem_ext (T : Module.End ℂ V) {d k : ℕ} (hk : k ≤ d) {N : Submodule ℂ V} {v : V} (hv : v ∈ N) :
     (T ^ k) v ∈ ext T d N :=
   Submodule.mem_iSup_of_mem (⟨k, by omega⟩ : Fin (d + 1)) (Submodule.mem_map_of_mem hv)
 
 /- English proof (translation)
-Use `set Q' := Q * C Q.leadingCoeff⁻¹ with hQ'`. Establish `hm : Q'.Monic` using `monic_mul_leadingCoeff_inv hQ`. Establish `hdeg : Q'.natDegree = Q.natDegree`. Rewrite using `[hQ', natDegree_mul_C (inv_ne_zero (leadingCoeff_ne_zero.2 hQ))]`. Establish `hQ'v : aeval T Q' v = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQ', mul_comm, map_mul, Module.End.mul_apply, hN v hv, map_zero]`. Establish `hsplit : p = p %ₘ Q' + (p /ₘ Q') * Q'`. Rewrite using `[mul_comm]`. Conclude with `(modByMonic_add_div p Q').symm`. Rewrite using `[hsplit, map_add, LinearMap.add_apply, map_mul, Module.End.mul_apply, hQ'v, map_zero, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : (p %ₘ Q').natDegree < Q.natDegree + 1`. Use `natDegree_modByMonic_le p hm` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[aeval_eq_sum_range' hlt, LinearMap.sum_apply]`. Use `Submodule.sum_mem _ fun i hi => ?_` and prove the remaining obligations.
-
-Rewrite using `[LinearMap.smul_apply]`. Conclude with `Submodule.smul_mem _ _ (pow_mem_ext T (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)) hv)`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_mem_ext (T : Module.End ℂ V) {Q : ℂ[X]} (hQ : Q ≠ 0) {N : Submodule ℂ V}
     (hN : ∀ v ∈ N, aeval T Q v = 0) (p : ℂ[X]) {v : V} (hv : v ∈ N) : aeval T p v ∈ ext T Q.natDegree N := by
@@ -104,9 +102,9 @@ theorem aeval_mem_ext (T : Module.End ℂ V) {Q : ℂ[X]} (hQ : Q ≠ 0) {N : Su
   exact Submodule.smul_mem _ _ (pow_mem_ext T (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)) hv)
 
 /- English proof (translation)
-Establish `: ext T Q.natDegree N ≤ (ext T Q.natDegree N).comap T`. Unfold `ext`. Use `iSup_le fun k => ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hy`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.mem_comap]`. Express the relevant statement in the definitionally equal form `T ((T ^ (k : ℕ)) x) ∈ ext T Q.natDegree N`. Use `aeval_mem_ext T hQ hN (X ^ ((k : ℕ) + 1)) hx` as an intermediate fact. Rewrite `this` using `[map_pow, aeval_X, pow_succ', Module.End.mul_apply]`. Then use the resulting hypothesis. Conclude with `fun v hv => this hv`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ext_stable (T : Module.End ℂ V) {Q : ℂ[X]} (hQ : Q ≠ 0) {N : Submodule ℂ V}
     (hN : ∀ v ∈ N, aeval T Q v = 0) : ∀ v ∈ ext T Q.natDegree N, T v ∈ ext T Q.natDegree N := by
@@ -122,11 +120,11 @@ theorem ext_stable (T : Module.End ℂ V) {Q : ℂ[X]} (hQ : Q ≠ 0) {N : Submo
   exact fun v hv => this hv
 
 /- English proof (translation)
-Establish `: ext T d N ≤ (ext T d N).comap S`. Unfold `ext`. Use `iSup_le fun k => ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hy`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.mem_comap]`. Express the relevant statement in the definitionally equal form `S ((T ^ (k : ℕ)) x) ∈ ext T d N`. Establish `h` using `congrArg (fun F : Module.End ℂ V => F x) (hST.pow_right (k : ℕ)).eq`. Simplify using `only [Module.End.mul_apply] at h`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_mem_ext T (Nat.lt_succ_iff.1 k.2) (hS x hx)`. Conclude with `fun v hv => this hv`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem ext_stable_comm (T S : Module.End ℂ V) (d : ℕ) (hST : Commute S T) {N : Submodule ℂ V}
     (hS : ∀ v ∈ N, S v ∈ N) : ∀ v ∈ ext T d N, S v ∈ ext T d N := by
@@ -144,9 +142,9 @@ theorem ext_stable_comm (T S : Module.End ℂ V) (d : ℕ) (hST : Commute S T) {
   exact fun v hv => this hv
 
 /- English proof (translation)
-Establish `: ext T d N ≤ LinearMap.ker R`. Unfold `ext`. Use `iSup_le fun k => ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 hy`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[LinearMap.mem_ker]`. Establish `h` using `congrArg (fun F : Module.End ℂ V => F x) (hRT.pow_right (k : ℕ)).eq`. Simplify using `only [Module.End.mul_apply] at h`. Rewrite using `[h, hN x hx, map_zero]`. Conclude with `fun v hv => this hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ext_kill (T R : Module.End ℂ V) (d : ℕ) (hRT : Commute R T) {N : Submodule ℂ V}
     (hN : ∀ v ∈ N, R v = 0) : ∀ v ∈ ext T d N, R v = 0 := by
@@ -162,7 +160,7 @@ theorem ext_kill (T R : Module.End ℂ V) (d : ℕ) (hRT : Commute R T) {N : Sub
   exact fun v hv => this hv
 
 /- English proof (translation)
-The claim follows from `| 0 => ⟨Submodule.span ℂ {w}, inferInstance, Submodule.mem_span_singleton_self w, by simp, fun j v hv => by obtain ⟨r, rfl⟩ := Submodule.mem_span_singleton.1 hv rw [map_smul, hw, smul_zero]⟩ | m + 1 => by obtain ⟨N, hf, hwN, hst, hk⟩ := exists_stable a Q hc hQ w hw m haveI := hf …`.
+A detailed English derivation is pending.
 -/
 theorem exists_stable (a : ℕ → Module.End ℂ V) (Q : ℕ → ℂ[X]) (hc : ∀ i j, Commute (a i) (a j))
     (hQ : ∀ j, Q j ≠ 0) (w : V) (hw : ∀ j, aeval (a j) (Q j) w = 0) : ∀ m : ℕ, ∃ N : Submodule ℂ V,
@@ -183,11 +181,9 @@ theorem exists_stable (a : ℕ → Module.End ℂ V) (Q : ℕ → ℂ[X]) (hc : 
         exact ext_kill (a m) _ _ (commute_aeval_left (hc j m) _) (hk j)
 
 /- English proof (translation)
-Introduce `V _ _ n c g hg hc w P hP hw`. Take `⟨N, hf, hwN, hst, -⟩` from `exists_stable (fun j : ℕ => g (j : ℂ)) (fun j => P (j : ℂ)) (fun i j => hc _ _) (fun j => hP _) w (fun j => hw _) (n + 1)`. Use `haveI := hf`. Establish `hgS : ∀ u, g u ∈ stabAlg N`. Introduce `u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hspan : Submodule.span ℂ (Set.range fun j : Fin (n + 1) => g ((j : ℕ) : ℂ)) ≤ Subalgebra.toSubmodule (stabAlg N)` using `Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact fun v hv => hst j j.2 v hv)`. Apply `hspan` to reduce the goal to its premises. Rewrite using `[hg u]`. Conclude with `Submodule.sum_mem _ fun i hi => Submodule.smul_mem _ _ (coeff_mem_span_fin hg (Finset.mem_range.1 hi))`. Establish `hA : Algebra.adjoin ℂ (Set.range g) ≤ stabAlg N` using `Algebra.adjoin_le (by rintro _ ⟨u, rfl⟩; exact hgS u)`.
-
-Establish `hle : Submodule.span ℂ {y | ∃ b ∈ Algebra.adjoin ℂ (Set.range g), y = b w} ≤ N` using `Submodule.span_le.2 (by rintro _ ⟨b, hb, rfl⟩; exact hA hb w hwN)`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_span_adjoin : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (n : ℕ) (c : ℕ → Module.End ℂ V)
     (g : ℂ → Module.End ℂ V), (∀ u, g u = ∑ i ∈ Finset.range (n + 1), u ^ i • c i) → (∀ u u', Commute (g u) (g u')) →

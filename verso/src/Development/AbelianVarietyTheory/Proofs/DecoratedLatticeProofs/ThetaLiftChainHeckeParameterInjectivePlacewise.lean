@@ -8,9 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ChainOnto
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa [chainPar] using h`. Consider the case `succ k ih`. Apply `ih` to reduce the goal to its premises. Rewrite `h` using `[chainPar_succ, chainPar_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [stepPar] at h`. Establish `h2` using `add_right_cancel h`. Conclude with `Multiset.map_injective (mul_right_injective _) h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chainPar_inj_at (D : D7) (c : Com D) (k : ℕ) (B B' : GlobalTheory.LFun.Fam D.host.E)
     (w : HeightOneSpectrum (𝓞 D.host.E)) (h : chainPar c B k w = chainPar c B' k w) : B w = B' w := by
@@ -24,7 +24,7 @@ theorem chainPar_inj_at (D : D7) (c : Com D) (k : ℕ) (B B' : GlobalTheory.LFun
     exact Multiset.map_injective (mul_right_injective _) h2
 
 /- English proof (translation)
-The claim follows from `chainPar_inj_at`.
+A detailed English derivation is pending.
 -/
 theorem chainPar_inj : ∀ (D : D7) (c : Com D) (k : ℕ) (B B' : GlobalTheory.LFun.Fam D.host.E) (w : HeightOneSpectrum (𝓞 D.host.E)),
     chainPar c B k w = chainPar c B' k w → B w = B' w :=

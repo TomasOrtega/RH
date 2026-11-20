@@ -9,7 +9,7 @@ namespace GlobalTheory.FinGL.MultSharpObj
 open GlobalTheory.FinGL Formalism.L2.DIV
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ r V _ _ _ b σ hσ ρ k hk hr hq`. Rewrite using `[GlobalTheory.T.symmetricPositionCharMultiplicity_parabolicInduction F ψ hψ r V b σ hσ ρ k hr]`. Conclude with `sum_numBlockSets_mul_gamma_two_sided_bounds r k (Fintype.card F) b hk (by omega) hq Fintype.one_lt_card`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem placeBound : MultSharpPf.PlaceBound := by
   intro F _ _ ψ hψ r V _ _ _ b σ hσ ρ k hk hr hq
@@ -17,7 +17,7 @@ theorem placeBound : MultSharpPf.PlaceBound := by
   exact sum_numBlockSets_mul_gamma_two_sided_bounds r k (Fintype.card F) b hk (by omega) hq Fintype.one_lt_card
 
 /- English proof (translation)
-The claim follows from `MultSharpPf.multSharp_of_placeBound placeBound`.
+A detailed English derivation is pending.
 -/
 theorem multSharp : GlobalTheory.IndefiniteRowSideFullHecke.CuspidalProductMultiplicity.MultSharp := MultSharpPf.multSharp_of_placeBound placeBound
 

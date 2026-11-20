@@ -9,7 +9,7 @@ open MvPolynomial Filter Topology
 noncomputable section
 
 /- English proof (translation)
-Rewrite using `[Polynomial.eval_eq_sum_range' (lt_of_le_of_lt (Polynomial.natDegree_map_le) (Nat.lt_succ_self _))]`. Simplify using `[Polynomial.coeff_map]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eval_map_eval_eq_sum {d : ℕ} (p : Polynomial (MvPolynomial (Fin d) ℂ)) (w : Fin d → ℂ) (s : ℂ) :
     (p.map (MvPolynomial.eval w)).eval s =
@@ -18,9 +18,9 @@ theorem eval_map_eval_eq_sum {d : ℕ} (p : Polynomial (MvPolynomial (Fin d) ℂ
   simp [Polynomial.coeff_map]
 
 /- English proof (translation)
-Establish `h : (fun v : (Fin d → ℂ) × ℂ => (p.map (MvPolynomial.eval v.1)).eval v.2) = fun v => ∑ i ∈ Finset.range (p.natDegree + 1), MvPolynomial.eval v.1 (p.coeff i) * v.2 ^ i`. Use function extensionality and compare the values at `v`. Conclude with `eval_map_eval_eq_sum p v.1 v.2`. Rewrite using `[h]`. Use `Finset.analyticAt_fun_sum (𝕜 := ℂ) _ fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `AnalyticAt.mul ?_ (analyticAt_snd.pow i)` and prove the remaining obligations. Conclude with `(AnalyticOnNhd.eval_mvPolynomial (p.coeff i) v.1 trivial).comp analyticAt_fst`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_eval_map {d : ℕ} (p : Polynomial (MvPolynomial (Fin d) ℂ)) (v : (Fin d → ℂ) × ℂ) :
     AnalyticAt ℂ (fun v : (Fin d → ℂ) × ℂ => (p.map (MvPolynomial.eval v.1)).eval v.2) v := by
@@ -33,17 +33,15 @@ theorem analyticAt_eval_map {d : ℕ} (p : Polynomial (MvPolynomial (Fin d) ℂ)
   exact (AnalyticOnNhd.eval_mvPolynomial (p.coeff i) v.1 trivial).comp analyticAt_fst
 
 /- English proof (translation)
-Introduce `d p y τ hroot hder`. Use `set F : (Fin d → ℂ) × ℂ → ℂ := fun v => (p.map (MvPolynomial.eval v.1)).eval v.2 with hFdef`. Establish `hcd : ContDiffAt ℂ 1 F (y, τ)` using `(analyticAt_eval_map p (y, τ)).contDiffAt`. Establish `hpart : fderiv ℂ F (y, τ) ∘L ContinuousLinearMap.inr ℂ (Fin d → ℂ) ℂ = (1 : ℂ →L[ℂ] ℂ).smulRight ((p.map (MvPolynomial.eval y)).derivative.eval τ)`. Establish `h1 : HasFDerivAt (fun s : ℂ => F (y, s)) (fderiv ℂ F (y, τ) ∘L ContinuousLinearMap.inr ℂ (Fin d → ℂ) ℂ) τ` using `((analyticAt_eval_map p (y, τ)).differentiableAt.hasFDerivAt).comp τ ((hasFDerivAt_const y τ).prodMk (hasFDerivAt_id τ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.unique ((p.map (MvPolynomial.eval y)).hasDerivAt τ).hasFDerivAt`. Establish `hinv : (fderiv ℂ F (y, τ) ∘L ContinuousLinearMap.inr ℂ (Fin d → ℂ) ℂ).IsInvertible`. Rewrite using `[hpart]`. Use `⟨ContinuousLinearEquiv.unitsEquivAut ℂ (Units.mk0 _ hder), ?_⟩` and prove the remaining obligations. Use `ext`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use `set ψ := hcd.implicitFunction one_ne_zero hinv with hψdef`. Establish `hψy : ψ y = τ` using `hcd.implicitFunction_apply_self one_ne_zero hinv`. Establish `hFu : F (y, τ) = 0` using `hroot`. Take `⟨U₀, hU₀, B₀, hB₀, hsub⟩` from `mem_nhds_prod_iff.mp (hcd.eventually_apply_eq_iff_implicitFunction one_ne_zero hinv)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨B, hBsub, hBo, hτB⟩` from `mem_nhds_iff.mp hB₀`. Establish `hψcd : ContDiffAt ℂ 1 ψ y` using `hcd.contDiffAt_implicitFunction one_ne_zero hinv`. Establish `hψB : ∀ᶠ w in 𝓝 y, ψ w ∈ B` using `hψcd.continuousAt.preimage_mem_nhds (by rw [hψy]; exact hBo.mem_nhds hτB)`. Take `⟨U, hUsub, hUo, hyU⟩` from `eventually_nhds_iff.mp (((show ∀ᶠ w in 𝓝 y, w ∈ U₀ from hU₀).and (hψcd.eventually (by simp))).and hψB)`. Use `⟨U, B, ψ, hUo, hyU, hBo, hτB, fun w hw => ?_, hψy, fun w hw => ⟨(hUsub w hw).2, ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `((hUsub w hw).1.2.differentiableAt one_ne_zero).differentiableWithinAt`. Introduce `s hs`. Establish `h` using `hsub (Set.mk_mem_prod (hUsub w hw).1.1 (hBsub hs))`. Simplify using `only [Set.mem_ofPred_eq, hFu] at h`. Rewrite using `[Polynomial.IsRoot.def]`.
-
-Conclude with `h.trans eq_comm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SimpleRootBranch.proof : SimpleRootBranch.Statement := by
   intro d p y τ hroot hder

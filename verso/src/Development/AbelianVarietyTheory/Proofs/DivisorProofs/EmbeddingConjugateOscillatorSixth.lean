@@ -26,27 +26,25 @@ open Formalism.L2.JoinChr Formalism.L2.Host
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨ev, hev⟩ : ∃ ev : ∀ Q : HeightOneSpectrum (𝓞 D.host.E), AE D →+* Q.adicCompletion D.host.E, ∀ Q z, ev Q z = ι (finPart D z) Q` from `⟨fun Q => ((GlobalTheory.CharLocProd.evalAt Q).comp ι.toRingHom).comp (finPart D), fun _ _ => rfl⟩`. Set `φ : ∀ Q : HeightOneSpectrum (𝓞 D.host.E), (AE D)ˣ →* (WithZero (Multiplicative ℤ))ˣ` to `fun Q => (Units.map (Valued.v : Valuation (Q.adicCompletion D.host.E) _).toMonoidHom).comp (Units.map (ev Q).toMonoidHom)`. Establish `hφ : ∀ Q (w : (AE D)ˣ), ((φ Q w : (WithZero (Multiplicative ℤ))ˣ) : WithZero (Multiplicative ℤ)) = Valued.v (ι (finPart D (w : AE D)) Q)` using `fun Q w => show Valued.v (ev Q (w : AE D)) = _ by rw [hev]`. Set `ψ` to `Units.map (infPart D).toMonoidHom`. Set `u : (AE D)ˣ` to `x * ∏ Q ∈ P, xs Q ^ (-δ Q)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hinc : ∀ (Q : HeightOneSpectrum (𝓞 D.host.E)) (k : D.host.E), ev Q (incA D k) = algebraMap D.host.E _ k` using `fun Q k => by`. Rewrite using `[hev]`. Conclude with `congrArg (fun w : FiniteAdeleRing (𝓞 D.host.E) D.host.E => w Q) (h1 k)`. Establish `hψ : ∀ Q ∈ P, ψ (xs Q) = 1` using `fun Q hQ => Units.ext (by`. Take `⟨a, b⟩` from `hes Q hQ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `p` using `GlobalTheory.HeckeTensorRead.isPlIdem_parts D ι h1 h2 a`. Use `show infPart D ((xs Q : (AE D)ˣ) : AE D) = 1`. Rewrite using `[b]`. Unfold `locE`. Rewrite using `[GlobalTheory.HeckeTensorRead.map_loc (infPart D) (es Q) _, p.1, zero_mul, add_zero])`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψx : ψ x = 1` using `Units.ext hx`. Establish `hu : ψ u = 1`. Simplify using `only [u, map_mul, map_prod, map_zpow, hψx, one_mul]`. Conclude with `Finset.prod_eq_one fun Q hQ => by rw [hψ Q hQ, _root_.one_zpow]`. Establish `hφ0 : ∀ Q' ∈ P, ∀ Q, Q ≠ Q' → φ Q (xs Q') = 1` using `fun Q' hQ' Q hne => Units.ext (by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, b⟩` from `hes Q' hQ'`. Establish `p` using `GlobalTheory.HeckeTensorRead.isPlIdem_parts D ι h1 h2 a`. Rewrite using `[hφ, ← hev, b]`. Unfold `locE`. Rewrite using `[GlobalTheory.HeckeTensorRead.map_loc (ev Q) (es Q') _, hev Q (es Q'), p.2.2 Q hne]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `simp)`. Establish `hφ1 : ∀ Q ∈ P, ((φ Q (xs Q) : (WithZero (Multiplicative ℤ))ˣ) : WithZero (Multiplicative ℤ)) = WithZero.exp (-1 : ℤ)` using `fun Q hQ => by`. Take `⟨a, b⟩` from `hes Q hQ`. Establish `p` using `GlobalTheory.HeckeTensorRead.isPlIdem_parts D ι h1 h2 a`. Rewrite using `[hφ, ← hev, b]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Unfold `locE`. Rewrite using `[GlobalTheory.HeckeTensorRead.map_loc (ev Q) (es Q) _, hev Q (es Q), p.2.1, hinc, one_mul, add_sub_cancel]`. Conclude with `(GlobalTheory.CharLocProd.val_algebraMap Q _).trans (GlobalTheory.EtaConjLocal.val_unif Q)`. Establish `hφu : ∀ Q, φ Q u = 1` using `fun Q => by`. Simplify using `only [u, map_mul, map_prod, map_zpow]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hQ : Q ∈ P`. Rewrite using `[Finset.prod_eq_single_of_mem Q hQ fun Q' h' hne => by rw [hφ0 Q' h' Q hne.symm, _root_.one_zpow]]`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, hφ1 Q hQ, hφ, hv Q hQ, Units.val_one, ← WithZero.exp_zsmul, ← WithZero.exp_add]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_eq_one fun Q' h' => by rw [hφ0 Q' h' Q fun e => hQ (e ▸ h'), _root_.one_zpow], mul_one]`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[hφ, hoff Q hQ]`. Simplify using the standard rewrite rules. Establish `hint : ∀ w : (AE D)ˣ, (∀ Q, φ Q w = 1) → finPart D (w : AE D) ∈ intAE D` using `fun w hw => (h2 _).2 fun Q => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hφ, hw, Units.val_one]`. Establish `h` using `hη u (congrArg Units.val hu) (hint u hφu) (hint u⁻¹ fun Q => by rw [map_inv, hφu, inv_one])`. Simplify using `only [u, map_mul, map_prod, map_zpow] at h`. Rewrite `h` using `[mul_eq_one_iff_eq_inv, ← Finset.prod_inv_distrib]`. Rewrite using `[h]`.
-
-Conclude with `Finset.prod_congr rfl fun Q _ => by rw [_root_.zpow_neg, inv_inv]`.
+A detailed English derivation is pending.
 -/
 theorem unram_eq_prod (ι : (Af D.host.F ⊗[D.host.F] D.host.E) ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E)
     (h1 : ∀ x : D.host.E, ι ((1 : Af D.host.F) ⊗ₜ[D.host.F] x) = algebraMap D.host.E (FiniteAdeleRing (𝓞 D.host.E) D.host.E) x)
@@ -117,11 +115,11 @@ theorem unram_eq_prod (ι : (Af D.host.F ⊗[D.host.F] D.host.E) ≃+* FiniteAde
   exact Finset.prod_congr rfl fun Q _ => by rw [_root_.zpow_neg, inv_inv]
 
 /- English proof (translation)
-Establish `e : (GlobalTheory.IdemSupport.cP Q).asIdeal = Q.asIdeal.map (GlobalTheory.IdemSupport.cO D).toRingHom`. Use extensionality with `x`. Rewrite using `[GlobalTheory.IdemSupport.mem_cP]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Ideal.mem_map_of_mem (GlobalTheory.IdemSupport.cO D).toRingHom h` as an intermediate fact. Rewrite `this` using `[show (GlobalTheory.IdemSupport.cO D).toRingHom (GlobalTheory.IdemSupport.cO D x) = x from GlobalTheory.IdemSupport.cO_cO x]`. Then use the resulting hypothesis. Introduce `h`. Take `⟨y, hy, rfl⟩` from `(Ideal.mem_map_of_equiv (GlobalTheory.IdemSupport.cO D) x).1 h`. Rewrite using `[GlobalTheory.IdemSupport.cO_cO]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[e]`. Conclude with `GlobalTheory.absNorm_map_ringEquiv_self _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_cP (Q : HeightOneSpectrum (𝓞 D.host.E)) :
     Ideal.absNorm (GlobalTheory.IdemSupport.cP Q).asIdeal = Ideal.absNorm Q.asIdeal := by
@@ -139,15 +137,13 @@ theorem absNorm_cP (Q : HeightOneSpectrum (𝓞 D.host.E)) :
   exact GlobalTheory.absNorm_map_ringEquiv_self _ _
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (GlobalTheory.IdemSupport.cP (D` using `D)) := Function.Involutive.injective GlobalTheory.ClassScalarValue.cP_cP`. Establish `hne : (cc : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 c0`. Establish `hf` using `FractionalIdeal.finprod_heightOneSpectrum_factorization' (K := D.host.E) hne`. Rewrite `hf` using `[finprod_eq_prod_of_mulSupport_subset _ (s := P ∪ P.image GlobalTheory.IdemSupport.cP)]`. Establish `h1` using `congrArg FractionalIdeal.absNorm hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[FractionalIdeal.coeIdeal_absNorm, map_prod, Finset.prod_union, Finset.prod_image fun a _ b _ h => hinj h, ← Finset.prod_mul_distrib]`. Rewrite using `[← h1]`. Use `Finset.prod_congr rfl fun Q _ => ?_` and prove the remaining obligations. Rewrite using `[hI, hI, hδ, map_zpow₀, map_zpow₀, FractionalIdeal.coeIdeal_absNorm, FractionalIdeal.coeIdeal_absNorm, absNorm_cP, ← zpow_add₀, ← zpow_natCast]`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `(Ideal.absNorm_eq_zero_iff.not.2 Q.ne_bot)` after adjusting the coercions. Use `Finset.disjoint_left.2 fun Q h1 h2 => ?_` and prove the remaining obligations. Take `⟨Q', h3, rfl⟩` from `Finset.mem_image.1 h2`. Conclude with `hP Q' h3 h1`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `Q hQ`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[Finset.mem_coe, Finset.mem_union, not_or]`. Use `hQ ?_` and prove the remaining obligations. Use `h0 Q hn.1 fun h => hn.2 (Finset.mem_image.2 ⟨_, h, GlobalTheory.ClassScalarValue.cP_cP Q⟩)` as an intermediate fact.
-
-Simplify using `only [hI, this, max_self, zpow_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem absNorm_eq_prod (cc : Ideal (𝓞 D.host.E)) (c0 : cc ≠ ⊥) (δ : HeightOneSpectrum (𝓞 D.host.E) → ℤ)
     (hI : ∀ Q, FractionalIdeal.count D.host.E Q (cc : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) = max (δ Q) 0)
@@ -180,7 +176,7 @@ theorem absNorm_eq_prod (cc : Ideal (𝓞 D.host.E)) (c0 : cc ≠ ⊥) (δ : Hei
     simp only [hI, this, max_self, zpow_zero]
 
 /- English proof (translation)
-Rewrite using `[mul_zpow, _root_.inv_zpow', neg_neg, ← pow_two, ← pow_mul, mul_assoc, ← zpow_natCast s (2 * m), ← zpow_add₀ hs, ← zpow_natCast s d.natAbs]`. Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pow_factor {a s : ℂ} (hs : s ≠ 0) (ha : a ≠ 0) (d : ℤ) (m : ℕ) (h : 2 * (m : ℤ) = d.natAbs - d) :
     (a * s⁻¹) ^ (-d) * (s * s) ^ m = a ^ (-d) * s ^ d.natAbs := by
@@ -190,15 +186,15 @@ theorem pow_factor {a s : ℂ} (hs : s ≠ 0) (ha : a ≠ 0) (d : ℤ) (m : ℕ)
   omega
 
 /- English proof (translation)
-Establish `hN' : (N : ℝ) = ∏ Q ∈ P, (Ideal.absNorm Q.asIdeal : ℝ) ^ (δ Q).natAbs`. Use `congrArg (fun q : ℚ => (q : ℝ)) hN` as an intermediate fact. Simplify using `using this`. Establish `hsq : Real.sqrt (N : ℝ) = ∏ Q ∈ P, Real.sqrt (Ideal.absNorm Q.asIdeal : ℝ) ^ (δ Q).natAbs`. Establish `h0 : 0 ≤ ∏ Q ∈ P, Real.sqrt (Ideal.absNorm Q.asIdeal : ℝ) ^ (δ Q).natAbs` using `Finset.prod_nonneg fun _ _ => pow_nonneg (Real.sqrt_nonneg _) _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.sqrt_mul_self h0, ← Finset.prod_mul_distrib, hN']`. Use `congr 1`. Use `Finset.prod_congr rfl fun Q _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_pow, Real.mul_self_sqrt (Nat.cast_nonneg _)]`. Rewrite using `[map_prod, hsq, hc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hcoe : (((∏ Q ∈ P, c (xs Q) ^ δ Q : Circle)) : ℂ)⁻¹ = ∏ Q ∈ P, ((c (xs Q) : Circle) : ℂ) ^ (-δ Q)`. Rewrite using `[← Circle.coe_inv, ← Finset.prod_inv_distrib]`. Use `(map_prod Circle.coeHom (fun Q => (c (xs Q) ^ δ Q)⁻¹) P).trans (Finset.prod_congr rfl fun Q _ => ?_)` and prove the remaining obligations. Use `show (((c (xs Q) ^ δ Q)⁻¹ : Circle) : ℂ) = _`. Rewrite using `[Circle.coe_inv, Circle.coe_zpow, _root_.zpow_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcoe, Complex.ofReal_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun Q hQ => ?_` and prove the remaining obligations. Establish `hp : Ideal.absNorm Q.asIdeal ≠ 0` using `Ideal.absNorm_eq_zero_iff.not.2 Q.ne_bot`. Establish `hs : ((Real.sqrt (Ideal.absNorm Q.asIdeal : ℝ) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (Real.sqrt_ne_zero'.2 (by exact_mod_cast Nat.pos_of_ne_zero hp))`. Establish `hn : ((Ideal.absNorm Q.asIdeal : ℕ) : ℂ) = ((Real.sqrt (Ideal.absNorm Q.asIdeal : ℝ) : ℝ) : ℂ) * ((Real.sqrt (Ideal.absNorm Q.asIdeal : ℝ) : ℝ) : ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg _), Complex.ofReal_natCast]`. Establish `hm : 2 * (((((δ Q).natAbs : ℤ) - δ Q) / 2).toNat : ℤ) = (δ Q).natAbs - δ Q`. Use linear arithmetic over natural numbers and integers. Rewrite using `[map_mul, map_zpow₀, map_pow, map_natCast, hy Q hQ, hn, Complex.ofReal_inv, pow_factor hs (Circle.coe_ne_zero _) _ _ hm, Complex.ofReal_pow]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefficientField_reading_at_embedding_prod {LL : Type} [Field LL] (f : LL →+* ℂ) (c : (AE D)ˣ →* Circle) (x : (AE D)ˣ)
     (P : Finset (HeightOneSpectrum (𝓞 D.host.E))) (xs : HeightOneSpectrum (𝓞 D.host.E) → (AE D)ˣ)
@@ -238,37 +234,35 @@ theorem coefficientField_reading_at_embedding_prod {LL : Type} [Field LL] (f : L
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨ι, h1, h2, h3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Establish `h4` using `GlobalTheory.PlaceIdem.exists_isPlIdem D ι h1 h2 h3`. Take `⟨hid, hcj⟩` from `GlobalTheory.T.placeIdempotent_components_conj_valuation D ι h1 h2 h4`. Take `⟨ev, hev⟩ : ∃ ev : ∀ Q : HeightOneSpectrum (𝓞 D.host.E), AE D →+* Q.adicCompletion D.host.E, ∀ Q z, ev Q z = ι (finPart D z) Q` from `⟨fun Q => ((GlobalTheory.CharLocProd.evalAt Q).comp ι.toRingHom).comp (finPart D), fun _ _ => rfl⟩`. Simplify using `only [← hev] at hid hcj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨⟨es, hes, hsum⟩, horth⟩` from `he`. Establish `e0 : infPart D e = 0`. Rewrite using `[hsum, map_sum]`. Conclude with `Finset.sum_eq_zero fun Q hQ => (hid _ _ (hes Q hQ)).1`. Establish `e1 : ∀ Q ∈ P, ev Q e = 1` using `fun Q hQ => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum, map_sum, Finset.sum_eq_single Q (fun Q' h' hne => (hid _ _ (hes Q' h')).2.2 Q hne.symm) (fun h' => absurd hQ h'), (hid _ _ (hes Q hQ)).2.1]`. Establish `e2 : ∀ Q, Q ∉ P → ev Q e = 0` using `fun Q hQ => by`. Rewrite using `[hsum, map_sum]`. Conclude with `Finset.sum_eq_zero fun Q' h' => (hid _ _ (hes Q' h')).2.2 Q fun hh => hQ (hh ▸ h')`. Establish `hP : ∀ Q ∈ P, GlobalTheory.IdemSupport.cP Q ∉ P` using `fun Q hQ hQ' => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a` using `congrArg (ev (GlobalTheory.IdemSupport.cP Q)) horth`. Rewrite `a` using `[map_mul, e1 _ hQ', one_mul, map_zero]`. Establish `a'` using `hcj e Q`. Rewrite `a'` using `[a, e1 Q hQ, map_zero, map_one]`. Conclude with `zero_ne_one a'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d, hd⟩ : ∃ d, d = (Formalism.L2.Theta.mt V h).det` from `⟨_, rfl⟩`. Establish `d1 : ∀ Q, Q ∉ P → GlobalTheory.IdemSupport.cP Q ∉ P → ev Q d = 1` using `fun Q hQ hQ' => by`. Rewrite using `[hd]`. Use `GlobalTheory.ClassScalarValue.det_supp (ev Q) hs ?_` and prove the remaining obligations. Establish `a` using `hcj e (GlobalTheory.IdemSupport.cP Q)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `a` using `[e2 _ hQ', map_zero, GlobalTheory.ClassScalarValue.cP_cP, map_eq_zero]`. Rewrite using `[map_add, e2 Q hQ, a, add_zero]`. Establish `d2 : ∀ Q, Valued.v (ev Q d) * Valued.v (ev (GlobalTheory.IdemSupport.cP Q) d) = 1` using `fun Q => by`. Rewrite using `[← hcj, ← map_mul, ← map_mul, hd, GlobalTheory.ClassScalarValue.det_unitary V hg h, map_one, map_one]`. Establish `d3 : ∀ Q, Valued.v (ev Q d) ≠ 0` using `fun Q => left_ne_zero_of_mul_eq_one (d2 Q)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨δ, hδ⟩ : ∃ δ : HeightOneSpectrum (𝓞 D.host.E) → ℤ, ∀ Q, Valued.v (ev Q d) = WithZero.exp (-δ Q)` from `⟨fun Q => -WithZero.log (Valued.v (ev Q d)), fun Q => by rw [neg_neg, WithZero.exp_log (d3 Q)]⟩`. Establish `δ0 : ∀ Q, Q ∉ P → GlobalTheory.IdemSupport.cP Q ∉ P → δ Q = 0` using `fun Q hQ hQ' => by`. Establish `a` using `hδ Q`. Rewrite `a` using `[d1 Q hQ hQ', map_one, ← WithZero.exp_zero, WithZero.exp_inj]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `δ1 : ∀ Q, δ (GlobalTheory.IdemSupport.cP Q) = -δ Q` using `fun Q => by`. Establish `a` using `d2 Q`. Rewrite `a` using `[hδ, hδ, ← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_inj]`. Use linear arithmetic over natural numbers and integers. Establish `hbc : ∀ Q : HeightOneSpectrum (𝓞 D.host.E), (b : 𝓞 D.host.E) ∈ (GlobalTheory.IdemSupport.cP Q).asIdeal ↔ (b : 𝓞 D.host.E) ∈ Q.asIdeal` using `fun Q => by rw [GlobalTheory.IdemSupport.mem_cP, map_natCast]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hfin : (Function.support δ).Finite`. Use `(P ∪ P.image GlobalTheory.IdemSupport.cP).finite_toSet.subset fun Q hQ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[Finset.mem_coe, Finset.mem_union, not_or]`. Conclude with `hQ (δ0 Q hn.1 fun h => hn.2 (Finset.mem_image.2 ⟨_, h, GlobalTheory.ClassScalarValue.cP_cP Q⟩))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨cc, c0, c1, c2, c3, c4⟩` from `GlobalTheory.T.exists_numeratorIdeal_of_antiInvariant_divisor D.host.E (GlobalTheory.IdemSupport.cO D) GlobalTheory.IdemSupport.cP GlobalTheory.IdemSupport.cO_cO GlobalTheory.IdemSupport.mem_cP δ hfin δ1`. Establish `hy' : (y : AE D) = e * d + (1 - e)` using `hd ▸ hy`. Establish `y0 : infPart D (y : AE D) = 1`. Rewrite using `[hy', RingHom.map_add, RingHom.map_mul, RingHom.map_sub, e0, RingHom.map_one, zero_mul, zero_add, sub_zero]`. Establish `y1 : ∀ Q ∈ P, Valued.v (ι (finPart D (y : AE D)) Q) = WithZero.exp (-δ Q)` using `fun Q hQ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hev, ← hδ, hy', RingHom.map_add, RingHom.map_mul, RingHom.map_sub, e1 Q hQ, RingHom.map_one, one_mul, sub_self, add_zero]`. Establish `y2 : ∀ Q, Q ∉ P → ι (finPart D (y : AE D)) Q = 1` using `fun Q hQ => by`. Rewrite using `[← hev, hy', RingHom.map_add, RingHom.map_mul, RingHom.map_sub, e2 Q hQ, RingHom.map_one, zero_mul, zero_add, sub_zero]`. Use `⟨cc, c0, c1, c3 _ fun Q hQ hm => ?_, c4 _ fun x => ?_, ?_, ?_, y0⟩` and prove the remaining obligations. Conclude with `hQ (δ0 Q (fun h' => hb Q h' hm) fun h' => hb _ h' ((hbc Q).2 hm))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.T.mem_span_detSet_iff_adelicLattice_valuation D.host.E _ _ _ (GlobalTheory.ClassScalarValue.mem_hLat ι h1 h2 V hL (FWT.fin V h)) x]`. Use `forall_congr' fun Q => ?_` and prove the remaining obligations. Rewrite using `[← hδ, hev, hd]`. Establish `a : ι (finPart D (Formalism.L2.Theta.mt V h).det) = (Matrix.GeneralLinearGroup.map ι.toRingHom (FWT.fin V h).1).1.det` using `RingHom.map_det (ι.toRingHom.comp (finPart D)) _`. Rewrite using `[a]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : ∀ (k : D.host.E) (Q : HeightOneSpectrum (𝓞 D.host.E)), (GlobalTheory.IdemSupport.cP Q).valuation D.host.E (star k) = Q.valuation D.host.E k` using `fun k Q => by`. Establish `a : ∀ (Q : HeightOneSpectrum (𝓞 D.host.E)) (k : D.host.E), Valued.v (ev Q (incA D k)) = Q.valuation D.host.E k` using `fun Q k => by`. Rewrite using `[hev]`. Conclude with `(congrArg (fun w : FiniteAdeleRing (𝓞 D.host.E) D.host.E => Valued.v (w Q)) (h1 k)).trans (GlobalTheory.CharLocProd.val_algebraMap Q k)`. Rewrite using `[← a, ← a Q, ← hcj _ Q, GlobalTheory.IdemSupport.cA_incA]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.ClassScalarValue.onId_eq χ _ δ c2 P hP δ0 δ1 fun Q hQ => GlobalTheory.ClassScalarValue.val_mul_val hv χ (fun a => hP Q hQ (a.symm ▸ hQ)) (hr Q fun a => hP Q hQ (a.symm ▸ hQ)) (hu Q (hb Q hQ)) (hu _ fun a => hb Q hQ ((hbc Q).1 a))]`. Conclude with `GlobalTheory.T.idelicCharacter_eq_prod_unramifiedValue_zpow D ι h1 h2 h4 c χ hc y y0 P δ (fun Q hQ => ⟨hu Q (hb Q hQ), y1 Q hQ⟩) y2`. Take `⟨es', hes'⟩ : ∃ es' : HeightOneSpectrum (𝓞 D.host.E) → AE D, ∀ Q, IsPlIdem D (es' Q) Q` from `⟨fun Q => (h4 Q).choose, fun Q => (h4 Q).choose_spec.1⟩`. Set `xs : HeightOneSpectrum (𝓞 D.host.E) → (AE D)ˣ` to `fun Q => locU (hes' Q).1 (unif Q)`. Establish `hxs : ∀ Q ∈ P, IsPlIdem D (es' Q) Q ∧ ((xs Q : (AE D)ˣ) : AE D) = locE D (es' Q) ((unif Q : D.host.Eˣ) : D.host.E)` using `fun Q _ => ⟨hes' Q, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hcard : ∀ Q : HeightOneSpectrum (𝓞 D.host.E), Nat.card (kP Q) = Ideal.absNorm Q.asIdeal` using `fun Q => by`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hconj : ∀ Q, ConjVal σ (((η (xs Q) : Circle) : ℂ) * (((Real.sqrt (Ideal.absNorm Q.asIdeal : ℝ))⁻¹ : ℝ) : ℂ)) (((η' (xs Q) : Circle) : ℂ) * (((Real.sqrt (Ideal.absNorm Q.asIdeal : ℝ))⁻¹ : ℝ) : ℂ))` using `fun Q => by`. Use `hC.2.2 Q (es' Q) (hes' Q) (xs Q) rfl` as an intermediate fact. Rewrite `this` using `[hcard]`. Then use the resulting hypothesis.
-
-Use `choose yq hy1 hy2 using hconj`. Establish `hN` using `absNorm_eq_prod cc c0 δ c2 P hP δ0 δ1`. Conclude with `⟨_, coefficientField_reading_at_embedding_prod D.what₂.embLL η y P xs δ (unram_eq_prod ι h1 h2 η hη P es' xs hxs δ y y0 y1 y2) yq (fun Q _ => hy1 Q) _ hN, coefficientField_reading_at_embedding_prod σ η' y P xs δ (unram_eq_prod ι h1 h2 η' hC.2.1 P es' xs hxs δ y y0 y1 y2) yq (fun …`.
+A detailed English derivation is pending.
 -/
 theorem exists_ideal_conj (V : HSp D) (hg : V.gram = 1) (hL : Bridge.hLat V 1 = Formalism.L2.Pj.stdLat D.host.E V.rank) (h : GA D V)
     (e : AE D) (P : Finset (HeightOneSpectrum (𝓞 D.host.E))) (y : (AE D)ˣ) (he : Formalism.IndefR.Datum.IsIdemSum e P)

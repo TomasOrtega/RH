@@ -12,7 +12,7 @@ section CM
 variable (I : AutInst)
 
 /- English proof (translation)
-Take `⟨hcm, -, -, -⟩` from `I.cm`. Unfold `Formalism.HermitianLatticesTheory.IsCMUnram at hcm`. Conclude with `hcm.2.1 (I.φ v) x`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem emb_star (v : InfinitePlace I.F) (x : I.E) : I.φ v (star x) = starRingEnd ℂ (I.φ v x) := by
   obtain ⟨hcm, -, -, -⟩ := I.cm
@@ -26,7 +26,7 @@ section Form
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Formalism.UG.hform.eq_1]`. Simplify using `[dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hform_eq (J : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) :
     Formalism.UG.hform (starRingEnd ℂ) J x y = star x ⬝ᵥ (J *ᵥ y) := by
@@ -57,9 +57,9 @@ def URad (J' : Matrix (Fin n) (Fin n) ℂ) (U : Submodule ℂ (Fin n → ℂ)) (
 variable {J' : Matrix (Fin n) (Fin n) ℂ} {U : Submodule ℂ (Fin n → ℂ)}
 
 /- English proof (translation)
-Simplify using `only [UPerp, Set.mem_setOf_eq] at hy hy' ⊢`. Introduce `x hx`. Establish `h1` using `hy x hx`. Establish `h2` using `hy' x hx`. Rewrite `h1`, `h2`, the goal using `[hform_eq]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_add, dotProduct_add, h1, h2, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem uperp_add {y y' : Fin n → ℂ} (hy : y ∈ UPerp J' U) (hy' : y' ∈ UPerp J' U) : y + y' ∈ UPerp J' U := by
   simp only [UPerp, Set.mem_setOf_eq] at hy hy' ⊢
@@ -70,7 +70,7 @@ theorem uperp_add {y y' : Fin n → ℂ} (hy : y ∈ UPerp J' U) (hy' : y' ∈ U
   rw [mulVec_add, dotProduct_add, h1, h2, add_zero]
 
 /- English proof (translation)
-Simplify using `only [UPerp, Set.mem_setOf_eq] at hy ⊢`. Introduce `x hx`. Establish `h1` using `hy x hx`. Rewrite `h1`, the goal using `[hform_eq]`. Rewrite using `[mulVec_neg, dotProduct_neg, h1, neg_zero]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem uperp_neg {y : Fin n → ℂ} (hy : y ∈ UPerp J' U) : -y ∈ UPerp J' U := by
   simp only [UPerp, Set.mem_setOf_eq] at hy ⊢
@@ -80,7 +80,7 @@ theorem uperp_neg {y : Fin n → ℂ} (hy : y ∈ UPerp J' U) : -y ∈ UPerp J' 
   rw [mulVec_neg, dotProduct_neg, h1, neg_zero]
 
 /- English proof (translation)
-Simplify using `only [UPerp, Set.mem_setOf_eq]`. Introduce `x _`. Rewrite using `[hform_eq, mulVec_zero, dotProduct_zero]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem uperp_zero : (0 : Fin n → ℂ) ∈ UPerp J' U := by
   simp only [UPerp, Set.mem_setOf_eq]
@@ -88,7 +88,7 @@ theorem uperp_zero : (0 : Fin n → ℂ) ∈ UPerp J' U := by
   rw [hform_eq, mulVec_zero, dotProduct_zero]
 
 /- English proof (translation)
-Unfold `URad`. Use `⟨fun x _ => by simp, fun y _ => by simp, fun y => ?_⟩` and prove the remaining obligations. Simplify using `using (uperp_zero : (0 : Fin n → ℂ) ∈ UPerp J' U)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem urad_one : URad J' U 1 := by
   unfold URad
@@ -96,11 +96,11 @@ theorem urad_one : URad J' U 1 := by
   simpa using (uperp_zero : (0 : Fin n → ℂ) ∈ UPerp J' U)
 
 /- English proof (translation)
-Unfold `URad at hA hB ⊢`. Take `⟨a1, a2, a3⟩` from `hA`. Take `⟨b1, b2, b3⟩` from `hB`. Establish `key : ∀ v, (A * B - 1) *ᵥ v = (A - 1) *ᵥ v + (A - 1) *ᵥ ((B - 1) *ᵥ v) + (B - 1) *ᵥ v`. Introduce `v`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [sub_mulVec, one_mulVec, mulVec_sub, ← mulVec_mulVec]`. Normalize the expressions using the abelian group laws. Use `⟨fun x hx => ?_, fun y hy => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[key, a1 x hx, b1 x hx, mulVec_zero, add_zero, add_zero]`. Rewrite using `[key, a1 _ (b2 y hy), add_zero]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `U.add_mem (a2 y hy) (b2 y hy)`. Rewrite using `[key]`. Conclude with `uperp_add (uperp_add (a3 y) (a3 _)) (b3 y)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem urad_mul {A B : Matrix (Fin n) (Fin n) ℂ} (hA : URad J' U A) (hB : URad J' U B) : URad J' U (A * B) := by
   unfold URad at hA hB ⊢
@@ -118,19 +118,17 @@ theorem urad_mul {A B : Matrix (Fin n) (Fin n) ℂ} (hA : URad J' U A) (hB : URa
     exact uperp_add (uperp_add (a3 y) (a3 _)) (b3 y)
 
 /- English proof (translation)
-Unfold `URad at hA ⊢`. Take `⟨a1, a2, a3⟩` from `hA`. Establish `key : ∀ v, (A' - 1) *ᵥ v = -(A' *ᵥ ((A - 1) *ᵥ v))`. Introduce `v`. Simplify using `only [sub_mulVec, one_mulVec, mulVec_sub, mulVec_mulVec, h1]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Establish `fixA : ∀ x ∈ U, A *ᵥ x = x`. Introduce `x hx`. Use `a1 x hx` as an intermediate fact. Rewrite `this` using `[sub_mulVec, one_mulVec, sub_eq_zero]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hA'A : ∀ z, A' *ᵥ (A *ᵥ z) = z`. Introduce `z`. Rewrite using `[mulVec_mulVec, h1, one_mulVec]`. Establish `hAA' : ∀ z, A *ᵥ (A' *ᵥ z) = z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Rewrite using `[mulVec_mulVec, h2, one_mulVec]`. Establish `fixU : ∀ x ∈ U, A' *ᵥ x = x`. Introduce `x hx`. Use `conv_lhs => rw [← fixA x hx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA'A x`. Use `⟨fun x hx => ?_, fun y hy => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[sub_mulVec, one_mulVec, fixU x hx, sub_self]`. Rewrite using `[key, fixU _ (a2 y hy)]`. Conclude with `U.neg_mem (a2 y hy)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[key]`. Apply `uperp_neg` to reduce the goal to its premises. Establish `hz` using `a3 y`. Simplify using `only [UPerp, Set.mem_setOf_eq] at hz ⊢`. Introduce `x hx`.
-
-Rewrite using `[← hu x (A' *ᵥ ((A - 1) *ᵥ y)), fixA x hx, hAA']`. Conclude with `hz x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem urad_inv {A A' : Matrix (Fin n) (Fin n) ℂ} (hA : URad J' U A) (h1 : A' * A = 1) (h2 : A * A' = 1)
     (hu : ∀ a b, Formalism.UG.hform (starRingEnd ℂ) J' (A *ᵥ a) (A *ᵥ b) = Formalism.UG.hform (starRingEnd ℂ) J' a b) :
@@ -175,9 +173,9 @@ section Sub
 variable {n : ℕ} (ε : Fin n → Bool) {P J' : Matrix (Fin n) (Fin n) ℂ}
 
 /- English proof (translation)
-Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP`. Establish `hPP : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hd`. Apply the tactic sequence `have hm : uMat (g * h) = uMat g * uMat h := by first | rfl | simp [uMat]`. Rewrite using `[hm]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc P⁻¹ P, hPP, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mat_mul (hP : IsUnit P) (g h : Formalism.REAL.UJ ε) :
     P * uMat (g * h) * P⁻¹ = (P * uMat g * P⁻¹) * (P * uMat h * P⁻¹) := by
@@ -189,7 +187,7 @@ theorem conj_mat_mul (hP : IsUnit P) (g h : Formalism.REAL.UJ ε) :
   rw [← Matrix.mul_assoc P⁻¹ P, hPP, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP`. Apply the tactic sequence `have h1 : uMat (1 : Formalism.REAL.UJ ε) = 1 := by first | rfl | simp [uMat]`. Rewrite using `[h1, Matrix.mul_one, Matrix.mul_nonsing_inv P hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mat_one (hP : IsUnit P) : P * uMat (1 : Formalism.REAL.UJ ε) * P⁻¹ = 1 := by
   have hd : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det P).mp hP
@@ -197,11 +195,11 @@ theorem conj_mat_one (hP : IsUnit P) : P * uMat (1 : Formalism.REAL.UJ ε) * P�
   rw [h1, Matrix.mul_one, Matrix.mul_nonsing_inv P hd]
 
 /- English proof (translation)
-Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).mp hP`. Establish `hPi : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hd`. Establish `hPiH : (P⁻¹)ᴴ * Pᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hPi, Matrix.conjTranspose_one]`. Establish `hg : (uMat g)ᴴ * Formalism.REAL.Jm ε * uMat g = Formalism.REAL.Jm ε` using `by first`. Consider the case `exact g.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `(have h := g.prop; rw [Formalism.REAL.UJ.eq_1] at h; exact h)`. Use `set Q := P * uMat g * P⁻¹ with hQdef`. Establish `hQ : Qᴴ * J' * Q = J'`. Rewrite using `[hQdef, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [hform_eq, Matrix.star_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, hQ]`.
+A detailed English derivation is pending.
 -/
 theorem conj_mat_unitary (hP : IsUnit P) (hJ : Pᴴ * J' * P = Formalism.REAL.Jm ε) (g : Formalism.REAL.UJ ε) (a b : Fin n → ℂ) :
     Formalism.UG.hform (starRingEnd ℂ) J' ((P * uMat g * P⁻¹) *ᵥ a) ((P * uMat g * P⁻¹) *ᵥ b) =

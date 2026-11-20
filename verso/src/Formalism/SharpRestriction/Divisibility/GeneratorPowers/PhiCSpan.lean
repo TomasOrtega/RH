@@ -14,11 +14,11 @@ variable {E : Type} [Field E] [NumberField E] {cj : E → E} {Y : Type} [AddComm
   [Module (𝓞 E) Y]
 
 /- English proof (translation)
-Take `⟨w', hw'⟩` from `hcj w₀`. Establish `mem : (∀ a d : Y, (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a d = (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) d a) ∧ ∀ (c c' : 𝓞 E), (c' : E) = cj c → ∀ (a d : Y), (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (c • a) d = (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a (c' • d)` using `γ.2`. Establish `h1 : w₀ + w' = 1`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `first`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Treat this case separately.
 
-Consider the case `(push_cast; rw [hw', hw])`. Consider the case `simp [hw', hw]`. Establish `h2 : (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (w₀ • a) a = (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (w' • a) a`. Rewrite using `[mem.2 w₀ w' hw' a a, mem.1]`. Establish `h3 : (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) ((w₀ + w') • a) a = (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a a`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, one_smul]`. Rewrite `h3` using `[add_smul, map_add, LinearMap.add_apply, ← h2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem two_mul_form_half_unit (hcj : ∀ c : 𝓞 E, ∃ c' : 𝓞 E, (c' : E) = cj c) (w₀ : 𝓞 E)
     (hw : (w₀ : E) + cj w₀ = 1) (γ : SymB cj Y) (a : Y) :
@@ -42,11 +42,11 @@ theorem two_mul_form_half_unit (hcj : ∀ c : 𝓞 E, ∃ c' : 𝓞 E, (c' : E) 
 end
 
 /- English proof (translation)
-Establish `key : ∀ n : ℤ, 0 ≤ (n : ℝ) * γ a y + (n : ℝ) * γ a y + γ y y`. Introduce `n`. Establish `h` using `hpsd (n • a + y)`. Simplify using `only [map_add, map_zsmul, LinearMap.add_apply, LinearMap.smul_apply, zsmul_eq_mul, ha, hsym y a, mul_zero, zero_add] at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Assume the negation of the conclusion as `hs`. Take `⟨N, hN⟩` from `exists_nat_gt (γ y y / (2 * |γ a y|))`. Break down `lt_or_gt_of_ne hs with hneg | hpos` into its components or cases. Establish `h` using `key N`. Rewrite `hN` using `[abs_of_neg hneg, div_lt_iff₀ (by linarith)]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `at h`. Use the polynomial consequences of the given equalities and inequalities. Establish `h` using `key (-(N : ℤ))`. Rewrite `hN` using `[abs_of_pos hpos, div_lt_iff₀ (by linarith)]`. Move the coercions through the operations in `at h`.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -72,31 +72,27 @@ theorem bil_rad {Y : Type} [AddCommGroup Y] (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] �
     nlinarith
 
 /- English proof (translation)
-Introduce `E _ _ cj hcj Y _ _ w₀ hw β hβ k x hx`. Unfold `phiC`. Set `l : SymB cj Y →ₗ[ℝ] ℝ` to `{ toFun := fun γ => ∑ i, (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (w₀ • x i) (x i) map_add' := fun γ γ' => by simp [Finset.sum_add_distrib] map_smul' := fun r γ => by simp [Finset.mul_sum] }`. Apply `csInf_le` to reduce the goal to its premises. Use `⟨0, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `a ⟨l', -, hpos, he⟩`. Distinguish the cases in `h0 : β = 0`. Rewrite using `[he, h0, map_zero]`. Rewrite using `[he]`. Conclude with `(hpos β hβ h0).le`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨l, ?_, ?_, rfl⟩` and prove the remaining obligations. Introduce `γ hγ choose z hz using fun i => hγ (w₀ • x i) (x i)`. Use `⟨∑ i, z i, ?_⟩` and prove the remaining obligations. Use `show ∑ i, (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (w₀ • x i) (x i) = ((∑ i, z i : ℤ) : ℝ)`. Rewrite using `[Int.cast_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun i _ => hz i`. Introduce `γ hγ hne`. Establish `mem : (∀ a d : Y, (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a d = (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) d a) ∧ ∀ (c c' : 𝓞 E), (c' : E) = cj c → ∀ (a d : Y), (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (c • a) d = (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a (c' • d)` using `γ.2`. Establish `hsum : ∀ i, 2 * (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (w₀ • x i) (x i) = (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (x i) (x i)` using `fun i => two_mul_form_half_unit hcj w₀ hw γ (x i)`. Establish `hnn : ∀ i, 0 ≤ (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (w₀ • x i) (x i)` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis.
 
-Use `hγ (x i)` as an intermediate fact. Combine the linear relations using `[hsum i]`. Use `show 0 < ∑ i, (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (w₀ • x i) (x i)`. Break down `(Finset.sum_nonneg fun i _ => hnn i).lt_or_eq with hlt | heq` into its components or cases. Conclude with `hlt`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises. Establish `hz : ∀ i, (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (x i) (x i) = 0`. Introduce `i`. Use `(Finset.sum_eq_zero_iff_of_nonneg fun i _ => hnn i).mp heq.symm i (Finset.mem_univ i)` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Combine the linear relations using `[hsum i]`. Establish `hrad : ∀ i y, (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (x i) y = 0` using `fun i y => bil_rad _ mem.1 hγ (x i) (hz i) y`. Establish `hspan : ∀ u ∈ Submodule.span (𝓞 E) (Set.range x), ∀ y, (γ : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) u y = 0`. Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mem u hu`. Take `⟨i, rfl⟩` from `hu`. Conclude with `hrad i`. Consider the case `zero => intro y`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add u v _ _ hu hv => intro y`. Simplify using `[hu y, hv y]`. Consider the case `smul c u _ hu`. Introduce `y`. Take `⟨c', hc'⟩` from `hcj c`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem.2 c c' hc' u y]`. Conclude with `hu _`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `z`. Take `⟨n, hn, hny⟩` from `hx y`. Establish `h1` using `hspan _ hny z`. Simplify using `only [map_nsmul, map_zsmul, LinearMap.smul_apply, nsmul_eq_mul, zsmul_eq_mul] at h1`.
-
-Rewrite using `[show ((0 : SymB cj Y) : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) = 0 from rfl, LinearMap.zero_apply, LinearMap.zero_apply]`. Break down `mul_eq_zero.mp h1 with h | h` into its components or cases. Use `first`. Consider the case `exact absurd h (Nat.cast_ne_zero.mpr hn.ne')`. Consider the case `exact absurd h (Int.cast_ne_zero.mpr hn.ne')`.
-
-Conclude with `h`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem phiCSpan_holds : PhiCSpanStatement := by
   intro E _ _ cj hcj Y _ _ w₀ hw β hβ k x hx

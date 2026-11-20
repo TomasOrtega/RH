@@ -6,43 +6,39 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V.W (Plc Lp resP)
 
 /- English proof (translation)
-Introduce `Γ k _ _ _ n ρ hss g htr`. Set `σ : Γ →* Module.End k (Fin n → k)` to `(Matrix.toLinAlgEquiv' (R := k) (n := Fin n)).toRingEquiv.toMonoidHom.comp ((Units.coeHom (Matrix (Fin n) (Fin n) k)).comp ρ)`. Establish `hσ : ∀ h, σ h = Matrix.toLin' (ρ h : Matrix (Fin n) (Fin n) k)` using `fun h => rfl`. Set `A : Subalgebra k (Module.End k (Fin n → k))` to `Algebra.adjoin k (Set.range σ)`. Establish `hspan : ∀ a ∈ A, a ∈ Submodule.span k (Set.range σ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a ha`. Establish `h1 : a ∈ Subalgebra.toSubmodule A` using `ha`. Rewrite `h1` using `[Algebra.adjoin_eq_span, ← MonoidHom.coe_mrange, Submonoid.closure_eq]`. Conclude with `h1`. Establish `hinv : ∀ W : Submodule k (Fin n → k), Formalism.MainNotions.N.IsInv ρ W → ∀ a ∈ A, ∀ v ∈ W, a v ∈ W`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W hW a ha v hv`. It suffices to establish `H : ∀ b ∈ Submodule.span k (Set.range σ), b v ∈ W from H a (hspan a ha)`. Introduce `b hb`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem b' hb'`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨h, rfl⟩` from `hb'`. Rewrite using `[hσ, Matrix.toLin'_apply]`. Conclude with `hW h v hv`. Consider the case `zero => simpa using W.zero_mem`. Consider the case `add b c _ _ hb hc => simpa using W.add_mem hb hc`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `smul c b _ hb => simpa using W.smul_mem c hb`. Establish `hssA : IsSemisimpleModule A (Fin n → k)`. Use `{ exists_isCompl := fun W => ?_ }` and prove the remaining obligations. Establish `hW : Formalism.MainNotions.N.IsInv ρ (W.restrictScalars k)`. Introduce `h v hv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : σ h ∈ A` using `Algebra.subset_adjoin ⟨h, rfl⟩`. Use `W.smul_mem (⟨σ h, hmem⟩ : A) hv` as an intermediate fact. Conclude with `this`. Take `⟨W', hW'inv, hc⟩` from `hss _ hW`. Set `W'' : Submodule A (Fin n → k)` to `{ carrier := W' add_mem' := W'.add_mem zero_mem' := W'.zero_mem smul_mem' := fun a v hv => hinv W' hW'inv a a.2 v hv }`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨W'', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`. Introduce `v hv hv'`. Conclude with `(Submodule.disjoint_def.mp hc.disjoint) v hv hv'`. Rewrite using `[codisjoint_iff, Submodule.eq_top_iff']`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Introduce `v`. Establish `hv : v ∈ W.restrictScalars k ⊔ W'` using `by rw [hc.sup_eq_top]; trivial`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.mp hv`. Conclude with `Submodule.add_mem_sup hy hz`. Set `φ : A →ₗ[A] (Fin n → (Fin n → k))` to `{ toFun := fun a i => (a : Module.End k (Fin n → k)) (Pi.single i 1) map_add' := fun a b => by ext i j; simp map_smul' := fun a b => by ext i j; rfl }`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφ : Function.Injective φ`. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `(Pi.basisFun k (Fin n)).ext` to reduce the goal to its premises. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Pi.basisFun_apply]`. Conclude with `congrFun hab i`. Establish `hssAA : IsSemisimpleModule A A` using `IsSemisimpleModule.of_injective φ hφ`. Establish `hgA : σ g ∈ A` using `Algebra.subset_adjoin ⟨g, rfl⟩`. Establish `hxA : σ g - 1 ∈ A` using `A.sub_mem hgA A.one_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `htrace : ∀ a ∈ A, LinearMap.trace k (Fin n → k) (a * (σ g - 1)) = 0`. Introduce `a ha`. It suffices to establish `H : ∀ b ∈ Submodule.span k (Set.range σ), LinearMap.trace k (Fin n → k) (b * (σ g - 1)) = 0 from H a (hspan a ha)`. Introduce `b hb`. Proceed by induction on `hb using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mem b' hb'`. Take `⟨h, rfl⟩` from `hb'`. Rewrite using `[mul_sub, mul_one, ← map_mul, map_sub, hσ, hσ, Matrix.trace_toLin'_eq, Matrix.trace_toLin'_eq, htr, sub_self]`. Consider the case `zero => simp`. Consider the case `add b c _ _ hb hc => rw [add_mul, map_add, hb, hc, add_zero]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `smul c b _ hb => rw [smul_mul_assoc, map_smul, hb, smul_zero]`. Set `x' : A` to `⟨σ g - 1, hxA⟩`. Take `⟨L', hL⟩` from `exists_isCompl (Submodule.span A {x'})`. Establish `h1 : (1 : A) ∈ Submodule.span A {x'} ⊔ L'` using `by rw [hL.sup_eq_top]; trivial`. Take `⟨e, he, e', he', hee⟩` from `Submodule.mem_sup.mp h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he'eq : e' = 1 - e` using `by rw [← hee]; abel`. Establish `key : ∀ l ∈ Submodule.span A {x'}, l * e = l`. Introduce `l hl`. Establish `h2 : l * e' ∈ L'` using `L'.smul_mem l he'`. Establish `h5 : l * e' = l - l * e` using `by rw [he'eq, mul_sub, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h3 : l * e' ∈ Submodule.span A {x'}`. Rewrite using `[h5]`. Conclude with `Submodule.sub_mem _ hl (Submodule.smul_mem _ l he)`. Establish `h4` using `(Submodule.disjoint_def.mp hL.disjoint) _ h3 h2`. Rewrite `h4` using `[h5, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Conclude with `h4.symm`. Establish `hidem : e * e = e` using `key e he`. Take `⟨y, hy⟩` from `Submodule.mem_span_singleton.mp he`. Establish `htr_e : LinearMap.trace k (Fin n → k) (e : Module.End k (Fin n → k)) = 0`. Rewrite using `[← hy]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `htrace _ y.2`. Establish `hI : IsIdempotentElem (e : Module.End k (Fin n → k))` using `congrArg Subtype.val hidem`. Establish `he0 : (e : Module.End k (Fin n → k)) = 0` using `by first`. Consider the case `exact (LinearMap.IsIdempotentElem.trace_eq_zero_iff hI).mp htr_e`. Consider the case `exact (IsIdempotentElem.trace_eq_zero_iff hI).mp htr_e`.
-
-Establish `he0' : e = 0` using `Subtype.ext he0`. Establish `hx0 : x' = 0`. Rewrite using `[← key x' (Submodule.mem_span_singleton_self x'), he0', mul_zero]`. Establish `hx1 : σ g - 1 = 0` using `congrArg Subtype.val hx0`. Apply `Units.ext` to reduce the goal to its premises.
-
-Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Rewrite using `[Units.val_one, Matrix.toLin'_one, ← hσ]`. Conclude with `sub_eq_zero.mp hx1`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.eq_one_of_trace_translation_invariant_semisimple :
     ∀ (Γ k : Type) [Group Γ] [Field k] [CharZero k] (n : ℕ) (ρ : Γ →* GL (Fin n) k), Formalism.MainNotions.N.IsSSRep ρ → ∀ g : Γ, (∀ h : Γ, (ρ (h * g) : Matrix (Fin n) (Fin n) k).trace = (ρ h : Matrix (Fin n) (Fin n) k).trace) → ρ g = 1 := by

@@ -8,13 +8,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.ConsGeo
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hq`. Take `⟨r, hr, hr0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hq`. Take `⟨d, hd, hd'⟩` from `GlobalTheory.exists_ringKrullDim_eq_and_trdeg_eq k A`. Take `⟨e, he, he'⟩` from `GlobalTheory.exists_ringKrullDim_eq_and_trdeg_eq k (A ⧸ q)`. Establish `hlt` using `ringKrullDim_succ_le_of_surjective (Ideal.Quotient.mk q) Ideal.Quotient.mk_surjective (r := r) (mem_nonZeroDivisors_of_ne_zero hr0) (Ideal.Quotient.eq_zero_iff_mem.2 hr)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hlt` using `[hd, he]`. Establish `hlt' : e + 1 ≤ d` using `by exact_mod_cast hlt`. Use `letI : Algebra q.ResidueField k' := ψ.toAlgebra`. Use `haveI : IsScalarTower k q.ResidueField k' := IsScalarTower.of_algebraMap_eq fun a => by`. Rewrite using `[← hc, IsScalarTower.algebraMap_apply k A q.ResidueField]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `haveI : Algebra.IsIntegral q.ResidueField k' := ⟨hψ⟩`. Use `haveI : Algebra.IsAlgebraic (A ⧸ q) q.ResidueField := IsLocalization.isAlgebraic _ (nonZeroDivisors _)`. Use `haveI : FaithfulSMul k (A ⧸ q) := (faithfulSMul_iff_algebraMap_injective _ _).2 (algebraMap k (A ⧸ q)).injective`. Use `haveI : FaithfulSMul (A ⧸ q) q.ResidueField := (faithfulSMul_iff_algebraMap_injective _ _).2 (IsFractionRing.injective _ _)`.
-
-Rewrite `h` using `[GlobalTheory.trdeg_eq_of_isAlgebraic_top k q.ResidueField k', GlobalTheory.trdeg_eq_of_isAlgebraic_top k (A ⧸ q) q.ResidueField, hd', he']`. Establish `: d ≤ e` using `by exact_mod_cast h`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem eq_bot_of_trdeg_le (k A k' : Type) [Field k] [CommRing A] [IsDomain A] [Algebra k A]
     [Algebra.FiniteType k A] [Field k'] [Algebra k k'] (q : Ideal A) [q.IsPrime]
@@ -47,9 +45,9 @@ private theorem eq_bot_of_trdeg_le (k A k' : Type) [Field k] [CommRing A] [IsDom
   omega
 
 /- English proof (translation)
-Take `⟨A, _, _, _, _, _, j, _, -, -, hA⟩` from `GlobalTheory.exists_affine_chart_trdeg_eq f (genericPoint X)`. Take `⟨e, he⟩` from `GlobalTheory.exists_trdeg_eq_natCast k (A := A)`. Rewrite `he` using `[hA]`. Establish `h1` using `GlobalTheory.topologicalKrullDim_preimage_genericPoint_eq f he`. Establish `h2 : (f ⁻¹' {genericPoint (Spec (CommRingCat.of k))} : Set X) = Set.univ` using `Set.eq_univ_of_forall fun x => Subsingleton.elim _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2, IsHomeomorph.topologicalKrullDim_eq _ (Homeomorph.Set.univ X).isHomeomorph, hd]`. Take `rfl : d = e` from `by exact_mod_cast h1`. Conclude with `he`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem trdeg_functionField_eq (k : Type) [Field k] (X : Scheme.{0}) [IsIntegral X]
     (f : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType f] (d : ℕ)
@@ -67,17 +65,17 @@ private theorem trdeg_functionField_eq (k : Type) [Field k] (X : Scheme.{0}) [Is
   exact he
 
 /- English proof (translation)
-Introduce `k _ X Y _ _ sX sY _ _ d hX hY x k' _ ψ θ hψ h`. Establish `tX` using `trdeg_functionField_eq k X sX d hX`. Establish `tY` using `trdeg_functionField_eq k Y sY d hY`. Take `⟨A, _, _, _, _, _, j, _, ⟨q, rfl⟩, hj, hA⟩` from `GlobalTheory.exists_affine_chart_trdeg_eq sX x`. Rewrite `hA` using `[tX]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : q.asIdeal.IsPrime := PrimeSpectrum.isPrime q`. Set `φ` to `Spec.preimage (Y.fromSpecStalk (genericPoint Y) ≫ sY)`. Use `letI : Algebra k Y.functionField := φ.hom.toAlgebra`. Use `letI : Algebra k k' := (θ.comp φ.hom).toAlgebra`. Set `θ' : Y.functionField →ₐ[k] k'` to `{ θ with commutes' := fun _ => rfl }`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hle : Algebra.trdeg k Y.functionField ≤ Algebra.trdeg k k'` using `trdeg_le_of_injective θ' θ.injective`. Rewrite `hle` using `[tY, ← hA]`. Set `e : CommRingCat.of q.asIdeal.ResidueField ≅ X.residueField (j q)` to `(asIso (j.residueFieldMap q) ≪≫ Scheme.Spec.residueFieldIso (CommRingCat.of A) q).symm`. Establish `he : Spec.map e.hom ≫ Spec.map (CommRingCat.ofHom (algebraMap A q.asIdeal.ResidueField)) ≫ j = X.fromSpecResidueField (j q)`. Rewrite using `[← cancel_epi (Spec.map (j.residueFieldMap q)), Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField, ← Scheme.Spec.map_residueFieldIso_inv_eq_fromSpecResidueField, ← Spec.map_comp_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[e]`. Establish `hq : q.asIdeal = ⊥`. Use `eq_bot_of_trdeg_le k A k' q.asIdeal (ψ.comp e.hom.hom) (RingHom.IsIntegral.trans _ _ (RingHom.isIntegral_of_surjective _ (ConcreteCategory.bijective_of_isIso e.hom).2) hψ) ?_ hle` and prove the remaining obligations. Set `ψ₀ : X.residueField (j q) ⟶ CommRingCat.of k'` to `CommRingCat.ofHom ψ`. Set `θ₀ : Y.presheaf.stalk (genericPoint Y) ⟶ CommRingCat.of k'` to `CommRingCat.ofHom θ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h' : Spec.map (CommRingCat.ofHom (algebraMap k A) ≫ CommRingCat.ofHom (algebraMap A q.asIdeal.ResidueField) ≫ e.hom ≫ ψ₀) = Spec.map (φ ≫ θ₀)`. Simplify using `only [Spec.map_comp, Category.assoc]`. Rewrite using `[← hj, reassoc_of% he, Spec.map_preimage]`. Conclude with `h`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h')`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hq' : q = genericPoint (Spec (CommRingCat.of A))`. Rewrite using `[genericPoint_eq_bot_of_affine]`. Conclude with `PrimeSpectrum.ext hq`. Rewrite using `[hq']`. Conclude with `genericPoint_eq_of_isOpenImmersion j`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.eq_genericPoint_of_integral_dim :
     ∀ (k : Type) [Field k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (sX : X ⟶ Sp k) (sY : Y ⟶ Sp k) [LocallyOfFiniteType sX] [LocallyOfFiniteType sY] (d : ℕ), topologicalKrullDim X = d → topologicalKrullDim Y = d → ∀ (x : X) (k' : Type) [Field k'] (ψ : X.residueField x →+* k') (θ : Y.functionField →+* k'), ψ.IsIntegral → spMap ψ ≫ X.fromSpecResidueField x ≫ sX = spMap θ ≫ gpt Y ≫ sY → x = genericPoint X := by

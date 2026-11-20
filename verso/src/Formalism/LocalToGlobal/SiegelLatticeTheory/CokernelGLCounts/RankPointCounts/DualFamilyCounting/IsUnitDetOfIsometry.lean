@@ -19,7 +19,7 @@ def SA {m : ℕ} (S : Matrix (Fin m) (Fin m) E) : Matrix (Fin m) (Fin m) (E ⊗[
   S.map (PI.UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F))
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e r => simp [PI.UnitaryApproxDefs.sigR, hσ]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_sigR (hσ : ∀ e, σ (σ e) = e) (x : E ⊗[F] v.adicCompletion F) :
     PI.UnitaryApproxDefs.sigR σ _ (PI.UnitaryApproxDefs.sigR σ _ x) = x := by

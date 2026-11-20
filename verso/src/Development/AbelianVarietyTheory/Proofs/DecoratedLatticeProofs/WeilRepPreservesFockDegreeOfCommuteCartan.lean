@@ -14,17 +14,15 @@ open GlobalTheory.Core.Rk.IP
 namespace GlobalTheory.CartanFockDeg
 
 /- English proof (translation)
-Establish `hψ` using `hW.std`. Establish `hm1 : Formalism.L2.Theta.mt T (1 : GA D T) = 1`. Unfold `Formalism.L2.Theta.mt`. Rewrite using `[map_one, Units.val_one]`. Establish `h1 : compAt θ τ (Formalism.L2.Theta.mt T (1 : GA D T)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hm1]`. Conclude with `Matrix.map_one _ (((θ τ).comp (infPart D)).map_zero) (((θ τ).comp (infPart D)).map_one)`. Establish `hinv : compAt θ τ (Formalism.L2.Theta.mt S k⁻¹) * sS τ = sS τ * compAt θ τ (Formalism.L2.Theta.mt S k⁻¹)`. Establish `a` using `GlobalTheory.OrientedHeis.compAt_mt_mul_inv (θ := θ) τ k`. Establish `b : compAt θ τ (Formalism.L2.Theta.mt S k⁻¹) * compAt θ τ (Formalism.L2.Theta.mt S k) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.OrientedHeis.compAt_mt_mul_inv (θ := θ) τ k⁻¹` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[a, Matrix.mul_one]`. Use `_ = compAt θ τ (Formalism.L2.Theta.mt S k⁻¹) * (compAt θ τ (Formalism.L2.Theta.mt S k) * sS τ) * compAt θ τ (Formalism.L2.Theta.mt S k⁻¹) := by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hk τ]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = sS τ * compAt θ τ (Formalism.L2.Theta.mt S k⁻¹) := by`. Rewrite using `[← Matrix.mul_assoc, b, Matrix.one_mul]`. Establish `hJ : cplxO (sS τ) (sT τ) (z * compAt θ τ (Formalism.L2.Theta.mt S k⁻¹)) = cplxO (sS τ) (sT τ) z * compAt θ τ (Formalism.L2.Theta.mt S k⁻¹)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `cplxO`. Rewrite using `[Matrix.smul_mul]`. Simplify using `only [Matrix.mul_assoc, hinv]`. Establish `e : ∀ w : Matrix (Fin T.rank) (Fin S.rank) ℂ, compAt θ τ (Formalism.L2.Theta.mt T (1 : GA D T)) * w * compAt θ τ (Formalism.L2.Theta.mt S k⁻¹) = w * compAt θ τ (Formalism.L2.Theta.mt S k⁻¹)` using `fun w => by rw [h1, Matrix.one_mul]`. Unfold `annih`.
-
-Rewrite using `[map_add, map_smul, GlobalTheory.OrientedHeis.om_dRho hW hθ k 1 τ z hf, GlobalTheory.OrientedHeis.om_dRho hW hθ k 1 τ _ hf, e, e, hJ]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_annih_move {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {χS χT : (AE D)ˣ →* Circle} {om : WRep S T} (sS : RealMat S) (sT : RealMat T)
@@ -63,13 +61,13 @@ theorem om_annih_move {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} 
   rw [map_add, map_smul, GlobalTheory.OrientedHeis.om_dRho hW hθ k 1 τ z hf, GlobalTheory.OrientedHeis.om_dRho hW hθ k 1 τ _ hf, e, e, hJ]
 
 /- English proof (translation)
-Introduce `D ψ θ S T χS χT om sS sT hW hθ k hk N f hf hl l hlen`. Establish `hψ` using `hW.std`. Establish `hth : ∀ (l : List (D.what₂.Tau × Matrix (Fin T.rank) (Fin S.rank) ℂ)) {g : WO S T → ℂ}, IsThetaFunO ψ S T g → IsThetaFunO ψ S T (l.foldr (fun p f => annih (heisO ψ S T) θ p.1 (cplxO (sS p.1) (sT p.1)) p.2 f) g)`. Introduce `l g hg`. Proceed by induction on `l with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `nil => exact hg`. Consider the case `cons p l ih => exact GlobalTheory.FockIndep.annih_theta hψ hθ p.1 _ p.2 ih`. Establish `key : ∀ l : List (D.what₂.Tau × Matrix (Fin T.rank) (Fin S.rank) ℂ), om (k, 1) (l.foldr (fun p f => annih (heisO ψ S T) θ p.1 (cplxO (sS p.1) (sT p.1)) p.2 f) f) = (l.map fun p => (p.1, p.2 * compAt θ p.1 (Formalism.L2.Theta.mt S k⁻¹))).foldr (fun p f => annih (heisO ψ S T) θ p.1 …`. Introduce `l`. Proceed by induction on `l with`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `nil => rfl`. Consider the case `cons p l ih`. Rewrite using `[List.foldr_cons, List.map_cons, List.foldr_cons, om_annih_move sS sT hW hθ k hk p.1 p.2 (hth l hf), ih]`. Set `l'` to `l.map fun p => (p.1, p.2 * compAt θ p.1 (Formalism.L2.Theta.mt S k))`. Establish `hl' : l = l'.map fun p => (p.1, p.2 * compAt θ p.1 (Formalism.L2.Theta.mt S k⁻¹))`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [l', List.map_map]`. Use `conv_lhs => rw [← List.map_id l]`. Use `List.map_congr_left fun p _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, id_eq, Matrix.mul_assoc, GlobalTheory.OrientedHeis.compAt_mt_mul_inv, Matrix.mul_one]`. Rewrite using `[hl', ← key, hl l' (by simp [l', hlen]), map_zero]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_keeps_fockDeg : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : WRep S T) (sS : RealMat S) (sT : RealMat T), IsWeilDatumO ψ S T χS χT om → IsInfFam θ → ∀ k : GA D S, (∀ τ, compAt θ τ (Formalism.L2.Theta.mt S k) * sS τ = sS τ * compAt θ τ (Formalism.L2.Theta.mt S k)) → ∀ (N : ℕ) (f : WO S T → ℂ), IsThetaFunO ψ S T f → (∀ l : List (D.what₂.Tau × Matrix (Fin T.rank) (Fin S.rank) ℂ), l.length = N → l.foldr (fun p f => annih (heisO ψ S T) θ p.1 (cplxO (sS p.1) (sT p.1)) p.2 f) f = 0) → ∀ l : List (D.what₂.Tau × Matrix (Fin T.rank) (Fin S.rank) ℂ), l.length = N → l.foldr (fun p f => annih (heisO ψ S T) θ p.1 (cplxO (sS p.1) (sT p.1)) p.2 f) (om (k, 1) f) = 0 := by
   intro D ψ θ S T χS χT om sS sT hW hθ k hk N f hf hl l hlen

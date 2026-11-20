@@ -18,14 +18,14 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LowDat
 
 /- English proof (translation)
-Establish `: IsPreimmersion (jK R)` using `IsPreimmersion.of_isLocalization (nonZeroDivisors R)`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mono_jK_of_domain (R : Type) [CommRing R] [IsDomain R] : Mono (jK R) := by
   have : IsPreimmersion (jK R) := IsPreimmersion.of_isLocalization (nonZeroDivisors R)
   infer_instance
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp_jFK {R : Type} [CommRing R] [IsDomain R] {F F' : Type} [Field F] [Algebra (FractionRing R) F]
     [Field F'] [Algebra (FractionRing R) F'] (σ : F →ₐ[FractionRing R] F') :
@@ -39,17 +39,17 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
 
 /- English proof (translation)
-Use `mono_jK_of_domain R` as an intermediate fact. Establish `w0 : C.P.U.gen.inv.left ≫ pullback.snd C.t.G.hom (jK R) = C.P.A.A.hom` using `Over.w C.P.U.gen.inv`. Establish `w : x.left ≫ C.P.A.A.hom = jFK (R` using `R) F := Over.w x`. Establish `w' : x'.left ≫ C.P.A.A.hom = jFK (R` using `R) F' := Over.w x'`. Establish `c1 : m1.φ ≫ C.t.G.hom = tK.G.hom ≫ jK R` using `m1.cart.1.w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ {T : Scheme.{0}} (p : T ⟶ tK.G.left) (z : T ⟶ C.P.A.A.left), p ≫ m1.φ = z ≫ C.P.U.gen.inv.left ≫ pullback.fst C.t.G.hom (jK R) → p ≫ tK.G.hom = z ≫ C.P.A.A.hom`. Introduce `T p z h`. Rewrite using `[← cancel_mono (jK R), Category.assoc, ← c1, ← Category.assoc, h, ← w0]`. Simplify using `only [Category.assoc, pullback.condition]`. Establish `e1 : g ≫ tK.G.hom = jFK (R` using `R) F := (key g _ h1).trans w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1' : g' ≫ tK.G.hom = jFK (R` using `R) F' := (key g' _ h1').trans w'`. Establish `e : g' = spMap σ.toRingHom ≫ g`. Use `m2.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Establish `q` using `congrArg (· ≫ C.y ≫ pullback.fst _ _ ≫ s.left) (spMap_comp_jFK σ)`. Conclude with `h2'.trans (q.symm.trans ((Category.assoc _ _ _).trans ((congrArg (spMap σ.toRingHom ≫ ·) h2.symm).trans (Category.assoc _ _ _).symm)))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, e1, e1', spMap_comp_jFK]`. Establish `e2 : x'.left ≫ C.P.U.gen.inv.left = spMap σ.toRingHom ≫ x.left ≫ C.P.U.gen.inv.left`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Rewrite using `[← h1, ← h1', e, Category.assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[w0, w, w', spMap_comp_jFK]`. Establish `hi : C.P.U.gen.inv.left ≫ C.P.U.gen.hom.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.inv_hom_id, Over.id_left]`. Establish `e3` using `congrArg (· ≫ C.P.U.gen.hom.left) e2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `e3` using `only [Category.assoc, hi, Category.comp_id]`.
+A detailed English derivation is pending.
 -/
 theorem left_eq_of_section (C : UChart.Fam Xo c R) (tK : SAB H (Sp (FractionRing R))) (m1 : SABMap tK C.t (jK R))
     (m2 : SABMap tK Xo.univ.t (C.y ≫ pullback.fst _ _)) {F F' : Type} [Field F] [Algebra (FractionRing R) F]
@@ -90,7 +90,7 @@ theorem left_eq_of_section (C : UChart.Fam Xo c R) (tK : SAB H (Sp (FractionRing
   simpa only [Category.assoc, hi, Category.comp_id] using e3
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `⟨I', hI⟩` from `(TateIsoFieldExt.tateIso_fieldExt abelianSchemeLaws_all.1 E H D S P act K Ω i x).1 I`. Conclude with `⟨I', fun n hn => ⟨(hI n hn).1, fun v => by rw [(hI n hn).2 v]; rfl⟩⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_tateIso_ext (D : Datum H) {S : Scheme.{0}} (P : Out.PolAV S) (act : 𝓞 E → (P.A ⟶ P.A))
     {K Ω : Type} [Field K] [Field Ω] [IsAlgClosed K] [IsAlgClosed Ω] [CharZero K] (i : K →+* Ω)
@@ -105,17 +105,15 @@ theorem exists_tateIso_ext (D : Datum H) {S : Scheme.{0}} (P : Out.PolAV S) (act
 end GlobalTheory.LowDat
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c R _ _ _ hR C tK m1 m2 F F' _ _ _ _ _ _ σ I I' hI hI' a x x' hx hx'`. Use `haveI : CharZero R := hR.2`. Use `haveI : CharZero (FractionRing R) := charZero_of_injective_algebraMap (IsFractionRing.injective R _)`. Use `haveI : CharZero F := charZero_of_injective_algebraMap (algebraMap (FractionRing R) F).injective`. Take `⟨J, hJζ, hJ⟩` from `GlobalTheory.T.exists_tateIso_generic_abelian_of_uniformisation Dw R hR C.t C.P F I`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨J', hJζ', hJ'⟩` from `GlobalTheory.T.exists_tateIso_generic_abelian_of_uniformisation Dw R hR C.t C.P F' I'`. Take `⟨J₂, h₂⟩` from `GlobalTheory.LowDat.exists_tateIso_ext Dw C.P.A _ σ.toRingHom _ _ (GlobalTheory.LowDat.spMap_comp_jFK σ) J`. Establish `hM : 0 < l.M` using `by have := l.three_le; omega`. Establish `hM' : 0 < l.M'` using `Nat.lcm_pos hM l.A_pos`. Establish `hT` using `GlobalTheory.T.linearUniformisation_torsionIsomorphism E H R _ hR.1 C.t C.P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `u : J₂.ev l.M' a = J'.ev l.M' a`. Use `GlobalTheory.T.tateIso_ev_eq_at_lcm_level Dw l F' _ _ _ (fun n _ p q d d' => GlobalTheory.weilIs_unique_fieldPoint _ _ _ C.P.A.isLB F' _ n p q d d') J₂ J' ?_ ?_ ?_ a` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[(h₂ _ hM').1, hJζ, hJζ', hI.1, hI'.1]`. Simplify using `[GlobalTheory.LowDat.toF]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `b`. Take `⟨g, g1, g2⟩` from `hI.2 _ b _ (Or.inl ⟨rfl, rfl⟩) _ (hJ _ l.A_pos b)`. Take `⟨g', g1', g2'⟩` from `hI'.2 _ b _ (Or.inl ⟨rfl, rfl⟩) _ (hJ' _ l.A_pos b)`. Conclude with `Over.OverMorphism.ext (((h₂ _ l.A_pos).2 b).trans (GlobalTheory.LowDat.left_eq_of_section C tK m1 m2 σ _ _ _ g g1 g2 g' g1' g2').symm)`. Introduce `b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, g1, g2⟩` from `hI.2 _ b _ (Or.inr ⟨rfl, hb, rfl⟩) _ (hJ _ hM b)`. Take `⟨g', g1', g2'⟩` from `hI'.2 _ b _ (Or.inr ⟨rfl, hb, rfl⟩) _ (hJ' _ hM b)`. Conclude with `Over.OverMorphism.ext (((h₂ _ hM).2 b).trans (GlobalTheory.LowDat.left_eq_of_section C tK m1 m2 σ _ _ _ g g1 g2 g' g1' g2').symm)`. Take `⟨f, hf, -⟩` from `hT F l.M' hM'`. Take `⟨f', hf', -⟩` from `hT F' l.M' hM'`.
-
-Establish `e : x = J.ev l.M' a` using `((hf _ _).1 hx).trans ((hf _ _).1 (hJ _ hM' a)).symm`. Establish `e' : x' = J'.ev l.M' a` using `((hf' _ _).1 hx').trans ((hf' _ _).1 (hJ' _ hM' a)).symm`. Rewrite using `[e, e', ← u]`. Conclude with `(h₂ _ hM').2 a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LowDat.level_points_compat : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} (Xo : Moduli Dw l)
   (c : Coeff l) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (C : GlobalTheory.UChart.Fam Xo c R)

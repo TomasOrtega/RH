@@ -7,9 +7,9 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.AdeleHaar
 
 /- English proof (translation)
-Introduce `F _ _`. Establish `: BorelSpace (Af F)` using `⟨rfl⟩`. Establish `hset : ({x | ∀ v, x v ∈ v.adicCompletionIntegers F} : Set (Af F)) = (GroundTheory.Global.integralFiniteAdelesPositiveCompacts F : Set (FiniteAdeleRing (𝓞 F) F))`. Use extensionality with `x`. Conclude with `GroundTheory.Global.mem_integralFiniteAdeles.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Measure.addHaarMeasure (GroundTheory.Global.integralFiniteAdelesPositiveCompacts F), inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[hset]`. Conclude with `Measure.addHaarMeasure_self`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_haar_integral_one : ∀ (F : Type) [Field F] [NumberField F],
     ∃ lf : Measure (Af F), lf.IsAddHaarMeasure ∧

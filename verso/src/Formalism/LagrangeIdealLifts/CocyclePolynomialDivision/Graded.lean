@@ -3,13 +3,13 @@ import Formalism.LagrangeIdealLifts.Statement
 namespace Formalism.LIFT
 
 /- English proof (translation)
-Introduce `ℓ _ A _ _ B M D _ _ _ _ W i n hn`. Take `⟨t, ht⟩` from `B.γX`. Take `⟨n', hn', hγ⟩` from `W.γ_N n hn`. Establish `hw : ∀ k : ℕ, ∃ r : A, (algebraMap ℤ_[ℓ] A (B.u : ℤ_[ℓ]) + B.X * t) ^ k = algebraMap ℤ_[ℓ] A ((B.u : ℤ_[ℓ]) ^ k) + B.X * r`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ k ih`. Take `⟨r, hr⟩` from `ih`. Use `⟨r * (algebraMap ℤ_[ℓ] A (B.u : ℤ_[ℓ]) + B.X * t) + algebraMap ℤ_[ℓ] A ((B.u : ℤ_[ℓ]) ^ k) * t, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_succ, hr, pow_succ, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨r, hr⟩` from `hw i`. Establish `hγn : W.γ n = n + B.X • n'` using `by rw [← hγ]; abel`. Use `⟨r • n + (algebraMap ℤ_[ℓ] A (B.u : ℤ_[ℓ]) + B.X * t) ^ i • n', ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `W.N.add_mem (W.N.smul_mem _ hn) (W.N.smul_mem _ hn')`. Rewrite using `[W.γ_smul, map_pow, ht, mul_pow, hγn, hr, ← algebraMap_smul A ((B.u : ℤ_[ℓ]) ^ i) (B.X ^ i • n)] module`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gammaGradedStep_holds : GradedStep := by
   intro ℓ _ A _ _ B M D _ _ _ _ W i n hn
@@ -34,13 +34,13 @@ theorem gammaGradedStep_holds : GradedStep := by
     module
 
 /- English proof (translation)
-Introduce `ℓ _ A _ _ B M D _ _ _ _ W K`. Proceed by induction on `K with`. Consider the case `zero`. Introduce `n hn`. Conclude with `⟨0, W.N.zero_mem, n, hn, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `succ K ih`. Introduce `n hn`. Take `⟨x, hx, n', hn', he⟩` from `ih n hn`. Take `⟨n'', hn'', hg⟩` from `h ℓ A B M D W (K + 1) n' hn'`. Use `⟨((B.u : ℤ_[ℓ]) ^ (K + 1) - 1) • x + B.X ^ K • n', ?_, -n'', W.N.neg_mem hn'', ?_⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `W.N.add_mem (Submodule.smul_of_tower_mem _ _ hx) (W.N.smul_mem _ hn')`. Rewrite using `[Finset.prod_Icc_succ_top (by omega), mul_comm, mul_smul, he]`. Establish `e1 : B.X • (((B.u : ℤ_[ℓ]) ^ (K + 1) - 1) • x + B.X ^ K • n') = ((B.u : ℤ_[ℓ]) ^ (K + 1) - 1) • (B.X • x) + B.X ^ (K + 1) • n'`. Rewrite using `[smul_add, smul_comm, ← mul_smul, ← pow_succ']`. Rewrite using `[e1, LinearMap.map_add, LinearMap.map_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : W.γ (B.X ^ (K + 1) • n') = ((B.u : ℤ_[ℓ]) ^ (K + 1)) • (B.X ^ (K + 1) • n') + B.X ^ (K + 1 + 1) • n''` using `by rw [← hg]; abel`. Rewrite using `[e2]`. Simplify using `only [sub_smul, one_smul, smul_add, smul_sub, smul_neg]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem uGraded_of (h : GradedStep) : UGraded := by
   intro ℓ _ A _ _ B M D _ _ _ _ W K
@@ -70,9 +70,9 @@ namespace GradedDegree
 variable {ℓ : ℕ} [Fact ℓ.Prime] {A : Type} [CommRing A] [Algebra ℤ_[ℓ] A] {B : Base ℓ A} {M : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `k generalizing x with`. Consider the case `zero => simpa using h`. Consider the case `succ k ih`. Apply `ih` to reduce the goal to its premises. Apply `W.X_inj` to reduce the goal to its premises.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← mul_smul, ← pow_succ']`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_pow_inj {D : Type} [AddCommGroup D] [Module A D] [Module ℤ_[ℓ] D]
     [IsScalarTower ℤ_[ℓ] A D] (W : WD B M D) (k : ℕ) (x : D) (h : B.X ^ k • x = 0) : x = 0 := by
@@ -85,16 +85,16 @@ theorem X_pow_inj {D : Type} [AddCommGroup D] [Module A D] [Module ℤ_[ℓ] D]
     exact h
 
 /- English proof (translation)
-Rewrite using `[map_mul, Polynomial.aeval_X]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_mul_X {D : Type} [AddCommGroup D] [Module ℤ_[ℓ] D] (g : D →ₗ[ℤ_[ℓ]] D)
     (p : Polynomial ℤ_[ℓ]) : Polynomial.aeval g (p * Polynomial.X) = Polynomial.aeval g p * g := by
   rw [map_mul, Polynomial.aeval_X]
 
 /- English proof (translation)
-Use `Polynomial.induction_on p ?_ ?_ ?_` and prove the remaining obligations. Introduce `c x hx`. Rewrite using `[Polynomial.aeval_C, Module.algebraMap_end_apply]`. Conclude with `hsmul c x hx`. Introduce `p q hp hq x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `hadd _ _ (hp x hx) (hq x hx)`. Introduce `k c h x hx`. Rewrite using `[pow_succ, ← mul_assoc, aeval_mul_X, Module.End.mul_apply]`. Conclude with `h _ (hg x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_mem {D : Type} [AddCommGroup D] [Module ℤ_[ℓ] D] (g : D →ₗ[ℤ_[ℓ]] D)
     (S : D → Prop) (hadd : ∀ x y, S x → S y → S (x + y))
@@ -112,9 +112,9 @@ theorem aeval_mem {D : Type} [AddCommGroup D] [Module ℤ_[ℓ] D] (g : D →ₗ
     exact h _ (hg x hx)
 
 /- English proof (translation)
-Use `Polynomial.induction_on p ?_ ?_ ?_` and prove the remaining obligations. Introduce `c x`. Rewrite using `[Polynomial.aeval_C, Polynomial.aeval_C, Module.algebraMap_end_apply, Module.algebraMap_end_apply, LinearMap.map_smul_of_tower]`. Introduce `p q hp hq x`. Rewrite using `[map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, map_add, hp, hq]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k c h x`. Rewrite using `[pow_succ, ← mul_assoc, aeval_mul_X, aeval_mul_X, Module.End.mul_apply, Module.End.mul_apply, h, f.γ_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_aeval {D D' : Type} [AddCommGroup D] [Module A D] [Module ℤ_[ℓ] D]
     [IsScalarTower ℤ_[ℓ] A D] [AddCommGroup D'] [Module A D'] [Module ℤ_[ℓ] D']
@@ -131,9 +131,9 @@ theorem hom_aeval {D D' : Type} [AddCommGroup D] [Module A D] [Module ℤ_[ℓ] 
       Module.End.mul_apply, h, f.γ_comm]
 
 /- English proof (translation)
-Proceed by induction on `j, hij using Nat.le_induction with`. Consider the case `base => intro m hm; exact ⟨m, hm, by simp⟩`. Consider the case `succ j hij ih`. Introduce `m hm`. Take `⟨m', hm', he⟩` from `ih m hm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m'', hm'', hg⟩` from `hG ℓ A B M D W j m' hm'`. Use `⟨m'', hm'', ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_Ico_succ_top hij, mul_comm, map_mul, Module.End.mul_apply, he, map_sub, Polynomial.aeval_X, Polynomial.aeval_C, LinearMap.sub_apply, Module.algebraMap_end_apply, hg]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem graded_prod (hG : GradedStep) {D : Type} [AddCommGroup D] [Module A D] [Module ℤ_[ℓ] D]
     [IsScalarTower ℤ_[ℓ] A D] (W : WD B M D) (i j : ℕ) (hij : i ≤ j) :
@@ -154,19 +154,19 @@ end GradedDegree
 
 open GradedDegree in
 /- English proof (translation)
-Introduce `ℓ _ A _ _ B M D₁ D₂ _ _ _ _ _ _ _ _ W₁ W₂ f s a hs hs2 hv hX n hn`. Take `⟨α, β, hαβ⟩` from `Ideal.mem_span_pair.mp (hL ℓ B.u s hs hs2 hv a)`. Set `S : D₂ → Prop` to `fun y => ∃ m ∈ W₁.N, y = f.f (B.X ^ a • m)`. Establish `hadd : ∀ x y, S x → S y → S (x + y)`. Introduce and unpack `x y ⟨m, hm, rfl⟩ ⟨m', hm', rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨m + m', W₁.N.add_mem hm hm', by rw [smul_add, map_add]⟩`. Establish `hsmul : ∀ (c : ℤ_[ℓ]) x, S x → S (c • x)`. Introduce and unpack `c x ⟨m, hm, rfl⟩`. Conclude with `⟨c • m, Submodule.smul_of_tower_mem _ _ hm, by rw [smul_comm (B.X ^ a) c m]; exact (LinearMap.map_smul_of_tower f.f c _).symm⟩`. Establish `hγS : ∀ x, S x → S (W₂.γ x)`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `x ⟨m, hm, rfl⟩`. Take `⟨m', hm', hg⟩` from `hG ℓ A B M D₁ W₁ a m hm`. Use `⟨((B.u : ℤ_[ℓ]) ^ a) • m + B.X • m', W₁.N.add_mem (Submodule.smul_of_tower_mem _ _ hm) (W₁.N.smul_mem _ hm'), ?_⟩` and prove the remaining obligations. Establish `e : W₁.γ (B.X ^ a • m) = ((B.u : ℤ_[ℓ]) ^ a) • (B.X ^ a • m) + B.X ^ (a + 1) • m'`. Rewrite using `[← hg]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[← f.γ_comm, e, smul_add, smul_comm (B.X ^ a) ((B.u : ℤ_[ℓ]) ^ a) m, ← mul_smul, ← pow_succ]`. Take `⟨m, hm, hfm⟩` from `hX n hn`. Establish `hP₁ : S (Polynomial.aeval W₂.γ (∏ i ∈ Finset.range a, (Polynomial.X - Polynomial.C ((B.u : ℤ_[ℓ]) ^ i))) (B.X ^ a • n))`. Take `⟨m₁, hm₁, h1⟩` from `graded_prod hG W₁ 0 a (Nat.zero_le a) m hm`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[← Finset.range_eq_Ico, pow_zero, one_smul]`. Conclude with `⟨m₁, hm₁, by rw [← hfm, ← hom_aeval, h1]⟩`. Establish `hP₂ : S (Polynomial.aeval W₂.γ (∏ i ∈ Finset.Ico a (2 * a), (Polynomial.X - Polynomial.C ((B.u : ℤ_[ℓ]) ^ i))) (B.X ^ a • n))`. Take `⟨n₂, hn₂, h2⟩` from `graded_prod hG W₂ a (2 * a) (by omega) n hn`. Take `⟨m₂, hm₂, hfm₂⟩` from `hX n₂ hn₂`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨m₂, hm₂, by rw [h2, LinearMap.map_smul, hfm₂, ← mul_smul, ← pow_add, two_mul]⟩`. Establish `key : S (Polynomial.aeval W₂.γ (Polynomial.C ((ℓ : ℤ_[ℓ]) ^ (2 * a * s + padicValNat ℓ (2 * a).factorial))) (B.X ^ a • n))`. Rewrite using `[← hαβ, map_add, map_mul, map_mul, LinearMap.add_apply, Module.End.mul_apply, Module.End.mul_apply]`. Conclude with `hadd _ _ (aeval_mem W₂.γ S hadd hsmul hγS α _ hP₁) (aeval_mem W₂.γ S hadd hsmul hγS β _ hP₂)`. Rewrite `key` using `[Polynomial.aeval_C, Module.algebraMap_end_apply]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m₃, hm₃, h3⟩` from `key`. Use `⟨m₃, hm₃, ?_⟩` and prove the remaining obligations. Establish `h0` using `X_pow_inj W₂ a (f.f m₃ - ((ℓ : ℤ_[ℓ]) ^ (2 * a * s + padicValNat ℓ (2 * a).factorial)) • n) (by rw [smul_sub, ← LinearMap.map_smul, smul_comm (B.X ^ a), ← h3, sub_self])`. Conclude with `sub_eq_zero.mp h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wBTail_of (hG : GradedStep) (hL : LagrangeIdealCyc) : WBTail := by
   intro ℓ _ A _ _ B M D₁ D₂ _ _ _ _ _ _ _ _ W₁ W₂ f s a hs hs2 hv hX n hn

@@ -11,13 +11,13 @@ namespace StrongApprox
 open NumberField IsDedekindDomain TensorProduct Topology ReciprocityTheory.ChartRestriction.G.SA
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ c h2 hc _ _`. Take `⟨-, -, ⟨δ, -, hδ⟩, -⟩` from `hT F E c h2 hc`. Establish `: ContinuousAdd (AE F E)` using `IsModuleTopology.toContinuousAdd (FiniteAdeleRing (𝓞 F) F) (AE F E)`. Set `φ : FiniteAdeleRing (𝓞 F) F × FiniteAdeleRing (𝓞 F) F → AE F E` to `fun p => p.1 • (1 : AE F E) + p.2 • inclA F E δ`. Establish `hφc : Continuous φ` using `by unfold φ; fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφs : Function.Surjective φ` using `fun a => by`. Take `⟨p, hp, -⟩` from `hδ a`. Conclude with `⟨p, hp.symm⟩`. Establish `hK : DenseRange (algebraMap F (FiniteAdeleRing (𝓞 F) F))` using `denseRange_finiteAdele (R := 𝓞 F) (K := F)`. Establish `hD : DenseRange (φ ∘ Prod.map (algebraMap F (FiniteAdeleRing (𝓞 F) F)) (algebraMap F (FiniteAdeleRing (𝓞 F) F)))` using `hφs.denseRange.comp (hK.prodMap hK) hφc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hD.mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨x, y⟩, rfl⟩`. Use `⟨algebraMap F E x + algebraMap F E y * δ, ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Prod.map_apply, φ, algebraMap_smul, map_add, map_mul]`. Establish `hinc : ∀ z : F, inclA F E (algebraMap F E z) = z • (1 : AE F E)` using `fun z => by`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Algebra.algebraMap_eq_smul_one]`. Conclude with `(Algebra.TensorProduct.includeRight : E →ₐ[F] AE F E).commutes z`. Rewrite using `[hinc, hinc, smul_one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EDenseInAE.proof (hT : AETopologicalRing.Statement) : EDenseInAE.Statement := by
   intro F E _ _ _ _ _ c h2 hc _ _

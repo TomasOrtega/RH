@@ -10,9 +10,9 @@ noncomputable section
 open NumberField GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrowth MeasureTheory GroundTheory.Global GroundTheory.Automorphic GroundTheory.Automorphic.Reduction
 
 /- English proof (translation)
-Introduce `hP E _ _ _ a φ hφ`. Set `ν : Measure (Lie E a)` to `Measure.addHaar`. Take `⟨C, N, hC⟩` from `hφ.growth 1`. Simplify using `only [one_mul] at hC`. Take `⟨α, hα, hconv⟩` from `GlobalTheory.T.automorphicForm_eq_own_realLieSmoothing hP E a ν φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨N, fun l => ?_⟩` and prove the remaining obligations. Take `⟨β, hβ, hw⟩` from `GlobalTheory.T.exists_test_word_eq_smoothing E a ν α hα φ hconv l`. Take `⟨C', hC'⟩` from `GlobalTheory.T.exists_smoothing_norm_le_height_pow E a ν β hβ φ.1 C N hC`. Conclude with `⟨C', fun y => by rw [hw]; exact hC' y⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.AutGrowth.uniform_growth_of_autForm : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (E : Type) [Field E]
     [NumberField E] [IsTotallyComplex E] (a : ℕ) (φ : Sm E a), IsAutForm φ → ∃ N : ℕ, ∀ l : List (Lie E a),

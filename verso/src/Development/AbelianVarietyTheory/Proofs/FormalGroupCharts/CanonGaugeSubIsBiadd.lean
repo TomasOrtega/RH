@@ -14,19 +14,19 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Reciprocity
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ d O _ _ k _ _ _ B h h' hh hh'`. Establish `hp : ∀ {n : ℕ} (j : Fin n), GP (pt k (n` using `n) d j) := fun j => gp_pt j`. Establish `hz : ∀ {n : ℕ}, GP (0 : Pt k n d)` using `gp_zero₂`. Establish `hF : ∀ i, constantCoeff (B.FK k i) = 0` using `fun i => by`. Simplify using `only [FB.FK, FGLaw.mapF, MvPowerSeries.constantCoeff_map, B.G.const i, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hA : ∀ a, GP (B.actK k a)` using `fun a i => by`. Simplify using `only [FB.actK, MvPowerSeries.constantCoeff_map, B.A.const a i, map_zero]`. Establish `h0 : constantCoeff h = 0`. Use `congrArg constantCoeff hh.ax0` as an intermediate fact. Rewrite `this` using `[gt_const_ev_eq _ (pair_points_zero_constant hz (hp 0)), map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h0' : constantCoeff h' = 0`. Use `congrArg constantCoeff hh'.ax0` as an intermediate fact. Rewrite `this` using `[gt_const_ev_eq _ (pair_points_zero_constant hz (hp 0)), map_zero]`. Then use the resulting hypothesis. Establish `inj : ∀ {n : ℕ} {a b : PS k n d}, constantCoeff a = 0 → constantCoeff b = 0 → FB.expS k a = FB.expS k b → a = b` using `fun ha hb e => exp_inj ha hb e`. Use `⟨?_, ?_, ?_, ?_, fun a => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[gt_ev_sub _ (pair_points_zero_constant hz (hp 0)), hh.ax0, hh'.ax0, sub_zero]`. Rewrite using `[gt_ev_sub _ (pair_points_zero_constant (hp 0) hz), hh.ax1, hh'.ax1, sub_zero]`. Establish `a1` using `pair_points_zero_constant (hp (n := 3) 0) (hp 2)`. Establish `a2` using `pair_points_zero_constant (hp (n := 3) 1) (hp 2)`. Establish `a3` using `pair_points_zero_constant (gp_addOf _ hF _ _ (hp (n := 3) 0) (hp 1)) (hp 2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `inj (by rw [map_sub, map_add, gt_const_ev _ a1 _ h0, gt_const_ev _ a2 _ h0, gt_const_ev _ a3 _ h0]; simp) (by rw [map_sub, map_add, gt_const_ev _ a1 _ h0', gt_const_ev _ a2 _ h0', gt_const_ev _ a3 _ h0']; simp) (hh.ph1.symm.trans hh'.ph1)`. Rewrite using `[gt_ev_sub _ a1, gt_ev_sub _ a2, gt_ev_sub _ a3]`. Take the linear combination `-e`. Establish `a1` using `pair_points_zero_constant (hp (n := 3) 0) (hp 1)`. Establish `a2` using `pair_points_zero_constant (hp (n := 3) 0) (hp 2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3` using `pair_points_zero_constant (hp (n := 3) 0) (gp_addOf _ hF _ _ (hp (n := 3) 1) (hp 2))`. Establish `e` using `inj (by rw [map_sub, map_add, gt_const_ev _ a1 _ h0, gt_const_ev _ a2 _ h0, gt_const_ev _ a3 _ h0]; simp) (by rw [map_sub, map_add, gt_const_ev _ a1 _ h0', gt_const_ev _ a2 _ h0', gt_const_ev _ a3 _ h0']; simp) (hh.ph2.symm.trans hh'.ph2)`. Rewrite using `[gt_ev_sub _ a1, gt_ev_sub _ a2, gt_ev_sub _ a3]`. Take the linear combination `-e`. Establish `a1` using `pair_points_zero_constant (gp_comp1 _ _ (hA a) (hp (n := 2) 0)) (hp 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `a2` using `pair_points_zero_constant (hp (n := 2) 0) (gp_comp1 _ _ (hA (star a)) (hp (n := 2) 1))`. Establish `e` using `inj (by rw [map_sub, gt_const_ev _ a1 _ h0, gt_const_ev _ a2 _ h0, sub_zero]) (by rw [map_sub, gt_const_ev _ a1 _ h0', gt_const_ev _ a2 _ h0', sub_zero]) ((hh.ad a).symm.trans (hh'.ad a))`. Rewrite using `[gt_ev_sub _ a1, gt_ev_sub _ a2]`. Take the linear combination `-e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem canonGauge_sub_isBiadd : G2.CanonicalGaugeDiffBiadditive := by
   intro R _ d O _ _ k _ _ _ B h h' hh hh'

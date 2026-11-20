@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.SumMul
 open GlobalTheory.PolFan GlobalTheory.LocM
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Poinc.MinSysTypeBal.finite_minimiser_systems_upTo_aut` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteMinimiserSystemsBalancedFormsUptoAut.lean&line=9#L9)
 -/

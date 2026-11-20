@@ -9,17 +9,15 @@ open Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Use `set Q : Matrix d d ℂ := ∑ k ∈ Finset.range (m + 1), (A ^ k)ᴴ * A ^ k with hQdef`. Establish `hQpd : Q.PosDef`. Rewrite using `[hQdef, Finset.sum_range_succ']`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [pow_zero, conjTranspose_one, one_mul]`. Rewrite using `[add_comm]`. Conclude with `(PosDef.one).add_posSemidef (posSemidef_sum _ fun k _ => posSemidef_conjTranspose_mul_self _)`. Establish `hAQ : Aᴴ * Q * A = Q`. Rewrite using `[hQdef, Finset.mul_sum, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ∀ k, Aᴴ * ((A ^ k)ᴴ * A ^ k) * A = (A ^ (k + 1))ᴴ * A ^ (k + 1)`. Introduce `k`. Rewrite using `[pow_succ, conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Simplify using `only [this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ F : ℕ → Matrix d d ℂ, F (m + 1) = F 0 → ∑ x ∈ Finset.range (m + 1), F (x + 1) = ∑ x ∈ Finset.range (m + 1), F x`. Introduce `F hF`. Rewrite using `[Finset.sum_range_succ, Finset.sum_range_succ' F, hF]`. Conclude with `key (fun k => (A ^ k)ᴴ * A ^ k) (by simp [hA])`. Establish `hAQ' : Aᴴ * Q = Q * A ^ m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Aᴴ * Q * A * A ^ m = Q * A ^ m` using `by rw [hAQ]`. Rewrite `h2` using `[Matrix.mul_assoc, ← pow_succ', hA, Matrix.mul_one]`. Conclude with `h2`. Establish `hU : IsUnit Q.det` using `(Matrix.isUnit_iff_isUnit_det Q).mp hQpd.isUnit`. Establish `hinv : Q * Q⁻¹ = 1` using `Matrix.mul_nonsing_inv Q hU`.
-
-Establish `hinv' : Q⁻¹ * Q = 1` using `Matrix.nonsing_inv_mul Q hU`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem star_trace_of_pow_eq_one {d : Type} [Fintype d] [DecidableEq d]
     (A : Matrix d d ℂ) (n : ℕ) (hn : 0 < n) (hA : A ^ n = 1) :
@@ -58,9 +56,9 @@ theorem star_trace_of_pow_eq_one {d : Type} [Fintype d] [DecidableEq d]
     _ = (A ^ m).trace := by rw [hAQ', ← Matrix.mul_assoc, hinv', Matrix.one_mul]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K W`. Take `⟨A, hAdef⟩ : ∃ A, LinearMap.toMatrix b b f = A` from `⟨_, rfl⟩`. Establish `hpow : ∀ k, LinearMap.toMatrix b b (f ^ k) = A ^ k` using `fun k => by`. Rewrite using `[← LinearMap.toMatrix_pow, hAdef]`. Establish `hmap : ∀ B : Matrix (Fin (Module.finrank K W)) (Fin (Module.finrank K W)) K, σ B.trace = (B.map σ).trace` using `fun B => AddMonoidHom.map_trace σ B`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmp : ∀ k, (A ^ k).map σ = (A.map σ) ^ k` using `fun k => RingHom.map_pow σ.mapMatrix A k`. Rewrite using `[LinearMap.trace_eq_matrix_trace K b, LinearMap.trace_eq_matrix_trace K b, hAdef, hpow, hmap, hmap, hmp]`. Use `star_trace_of_pow_eq_one (A.map σ) n hn ?_` and prove the remaining obligations. Rewrite using `[← hmp, ← hpow, hf, LinearMap.toMatrix_one]`. Conclude with `Matrix.map_one σ (map_zero σ) (map_one σ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_map_trace_of_pow_eq_one {K : Type} [Field K] {W : Type} [AddCommGroup W] [Module K W]
     [FiniteDimensional K W] (σ : K →+* ℂ) (f : Module.End K W) (n : ℕ) (hn : 0 < n) (hf : f ^ n = 1) :
@@ -80,9 +78,9 @@ theorem star_map_trace_of_pow_eq_one {K : Type} [Field K] {W : Type} [AddCommGro
   exact Matrix.map_one σ (map_zero σ) (map_one σ)
 
 /- English proof (translation)
-Establish `hn : 0 < Fintype.card G` using `Fintype.card_pos`. Rewrite using `[star_map_trace_of_pow_eq_one σ (τ g) (Fintype.card G) hn (by rw [← map_pow, pow_card_eq_one, map_one])]`. Use `congr 2`. Rewrite using `[← map_pow]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[eq_inv_iff_mul_eq_one, ← pow_succ, Nat.sub_add_cancel hn, pow_card_eq_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_map_trace_rep {K : Type} [Field K] {G : Type} [Group G] [Fintype G]
     {W : Type} [AddCommGroup W] [Module K W] [FiniteDimensional K W] (σ : K →+* ℂ)

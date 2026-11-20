@@ -21,15 +21,15 @@ open GlobalTheory.UU
 namespace GlobalTheory.ExpansionClause
 
 /- English proof (translation)
-Introduce `h1 h2 V _ _ _ hV D A G _ _ U U' hM k hk hFE hsurj`. Establish `hT : U'.SecK k = LB.Sec (LB.LinComb U.P.L.L (K` using `Fin 1) (fun _ => pullback.fst G.hom (jK V)) (fun _ => (k : ℤ))) := by`. Unfold `UnifPre.SecK`. Rewrite using `[hM.LG]`. Establish `hK` using `GlobalTheory.GenericFibreSections.sameK_bijective V _ D.toPre A G U k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu` using `GlobalTheory.T.fourierJacobiExpansion_overField_injective V hV D.toPre A G U (FractionRing V) k`. Establish `ht` using `GlobalTheory.T.exists_fourierJacobi_expansion_over_field h1 h2 V hV D.toPre A G U (FractionRing V) k hk`. Establish `e1` using `GlobalTheory.T.valueExpansion_of_chartExpansion V _ D A G U U' hM k`. Establish `e2` using `GlobalTheory.T.chartExpansion_of_valueExpansion V _ D A G U U' hM k`. Unfold `UnifPre.ExpBij`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `⟨fun σ => ?_, fun s => ?_⟩` and prove the remaining obligations. Take `⟨t, hσt, -⟩` from `hK.1 (cast hT σ)`. Take `⟨s, hs⟩` from `ht t`. Use `⟨⟨s, hFE t s hs⟩, e2 σ _ t _ (cast_heq hT σ).symm hσt hs, fun s' hs' => ?_⟩` and prove the remaining obligations. Establish `h` using `(hu t t s'.s s (e1 σ _ t s' (cast_heq hT σ).symm hσt hs') hs).1 rfl`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨s', fe⟩` from `s'`. Consider the cases of `h`. Both sides reduce to the same expression. Take `⟨t, hts⟩` from `hsurj s`. Take `⟨σ₀, hσt, huniq⟩` from `hK.2 t`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨cast hT.symm σ₀, e2 _ σ₀ t s (cast_heq hT.symm σ₀) hσt hts, fun σ hσ => ?_⟩` and prove the remaining obligations. Take `⟨t', hσt', -⟩` from `hK.1 (cast hT σ)`. Establish `h` using `(hu t' t s.s s.s (e1 σ _ t' s (cast_heq hT σ).symm hσt' hσ) hts).2 rfl`. Substitute `h` using the available equality. Rewrite using `[← huniq _ hσt']`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

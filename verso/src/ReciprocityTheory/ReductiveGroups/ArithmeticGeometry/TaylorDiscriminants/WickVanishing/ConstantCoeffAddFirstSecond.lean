@@ -13,7 +13,7 @@ section Gen
 variable {k : Type} [CommRing k] {d : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_pderiv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cc_pderiv' {n : ℕ} (f : PS k n d) (v : Fin n × Fin d) :
     constantCoeff (pderiv k v f) = coeff (Finsupp.single v 1) f := by
@@ -21,14 +21,14 @@ theorem cc_pderiv' {n : ℕ} (f : PS k n d) (v : Fin n × Fin d) :
   simp
 
 /- English proof (translation)
-Introduce `j i` and use `by simp [pt]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zero_constant_first_point : CZ (![pt k (n := 2) d 0] : Fin 1 → Pt k 2 d) := fun j i => by simp [pt]
 
 /- English proof (translation)
-Establish `hq : CZ (![p, pt k d 2] : Fin 2 → Pt k 3 d)` using `CZ.cons hp (CZ.cons (cc_pt 2) CZ.nil)`. Establish `hp' : CZ (![fun c => ev (n` using `2) ![pt k d 0, pt k d 1, 0] (p c)] : Fin 1 → Pt k 2 d) := CZ.cons (fun c => constantCoeff_ev czZ (hp c)) CZ.nil`. Rewrite using `[pderiv_ev hq, Fintype.sum_prod_type, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, hpz, mul_zero, Finset.sum_const_zero, zero_add, pderiv_pt, Prod.mk.injEq, true_and, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[ev_neg hp', neg_neg, ev_ev czZ hq, ev_ev hp' cz1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `j c`. Use `fin_cases j`. Simplify using `[pt_apply, ev_X hp']`. Simplify using `[pt_apply, ev_X czZ, ev_zero' hp']`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zp (h : PS k 2 d) (i : Fin d) (p : Pt k 3 d) (hp : ∀ c, constantCoeff (p c) = 0)
     (hpz : ∀ c, pderiv k ((2 : Fin 3), i) (p c) = 0) :
@@ -60,7 +60,7 @@ Both sides reduce to the same expression.
 theorem lawK_F (B : FB R d O) : (lawK k B).F = B.FK k := rfl
 
 /- English proof (translation)
-Establish `h0` using `congrArg constantCoeff hc.ax0`. Apply the tactic sequence `rw [cc_ev' (by intro j i; fin_cases j <;> simp [pt]), map_zero] at h0`. Conclude with `h0`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cc_h {B : FB R d O} {h : PS k 2 d} (hc : B.IsCanonGauge k h) : constantCoeff h = 0 := by
   have h0 := congrArg constantCoeff hc.ax0
@@ -68,7 +68,7 @@ theorem cc_h {B : FB R d O} {h : PS k 2 d} (hc : B.IsCanonGauge k h) : constantC
   exact h0
 
 /- English proof (translation)
-Establish `h` using `congrArg constantCoeff B.cocycleLeft_zero_fst`. Apply the tactic sequence `rw [cc_ev' (by intro j i; fin_cases j <;> simp [pt]), map_one] at h`. Conclude with `h`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem constantCoeff_first_factor (B : FB R d O) : constantCoeff B.ph1 = 1 := by
   have h := congrArg constantCoeff B.cocycleLeft_zero_fst
@@ -76,7 +76,7 @@ theorem constantCoeff_first_factor (B : FB R d O) : constantCoeff B.ph1 = 1 := b
   exact h
 
 /- English proof (translation)
-Unfold `addOf`. Apply the tactic sequence `rw [cc_ev' (by intro j i; fin_cases j <;> simp [pt])]`. Use `show constantCoeff (MvPowerSeries.map (algebraMap R k) (B.G.F l)) = 0`. Rewrite using `[MvPowerSeries.constantCoeff_map, B.G.const l, map_zero]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constantCoeff_add_first_second (B : FB R d O) (l : Fin d) :
     constantCoeff (addOf (B.FK k) (pt k (n := 3) d 0) (pt k d 1) l) = 0 := by
@@ -86,17 +86,17 @@ theorem constantCoeff_add_first_second (B : FB R d O) (l : Fin d) :
   rw [MvPowerSeries.constantCoeff_map, B.G.const l, map_zero]
 
 /- English proof (translation)
-Establish `c02 : CZ (![pt k (n` using `3) d 0, pt k d 2] : Fin 2 → Pt k 3 d) := CZ.cons (cc_pt 0) (CZ.cons (cc_pt 2) CZ.nil)`. Establish `c12 : CZ (![pt k (n` using `3) d 1, pt k d 2] : Fin 2 → Pt k 3 d) := CZ.cons (cc_pt 1) (CZ.cons (cc_pt 2) CZ.nil)`. Establish `cA : CZ (![addOf (B.FK k) (pt k (n` using `3) d 0) (pt k d 1), pt k d 2] : Fin 2 → Pt k 3 d) := CZ.cons (constantCoeff_add_first_second B) (CZ.cons (cc_pt 2) CZ.nil)`. Establish `hH0 : constantCoeff (ev (n` using `3) ![pt k d 0, pt k d 2] h + ev (n := 3) ![pt k d 1, pt k d 2] h - ev (n := 3) ![addOf (B.FK k) (pt k d 0) (pt k d 1), pt k d 2] h) = 0 := by`. Rewrite using `[map_sub, map_add, cc_ev' c02, cc_ev' c12, cc_ev' cA, cc_h hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hH` using `ig_dlog B.ph1 (constantCoeff_first_factor B) _ hH0 hc.ph1 ((2 : Fin 3), i)`. Establish `h2` using `ig_ev czZ integral_family_pair_zero hH`. Establish `z0 : ∀ c, pderiv k ((2 : Fin 3), i) (pt k (n` using `3) d 0 c) = 0 := fun c => by simp [pderiv_pt]`. Establish `z1 : ∀ c, pderiv k ((2 : Fin 3), i) (pt k (n` using `3) d 1 c) = 0 := fun c => by simp [pderiv_pt]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `have zA : ∀ c, pderiv k ((2 : Fin 3), i) (addOf (B.FK k) (pt k (n := 3) d 0) (pt k d 1) c) = 0 := fun c => pderiv_ev_zero cz01 _ _ (fun j l => by fin_cases j <;> simp [pderiv_pt])`. Rewrite `h2` using `[map_sub, map_add, ev_sub czZ, ev_add czZ, zp h i _ (cc_pt 0) z0, zp h i _ (cc_pt 1) z1, zp h i _ (constantCoeff_add_first_second B) zA]`. Establish `f0 : (fun c => ev (n` using `2) ![pt k d 0, pt k d 1, 0] (pt k (n := 3) d 0 c)) = pt k (n := 2) d 0 := by`. Use function extensionality and compare the values at `c`. Simplify using `[pt_apply, ev_X czZ]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `f1 : (fun c => ev (n` using `2) ![pt k d 0, pt k d 1, 0] (pt k (n := 3) d 1 c)) = pt k (n := 2) d 1 := by`. Use function extensionality and compare the values at `c`. Simplify using `[pt_apply, ev_X czZ]`. Establish `fA : (fun c => ev (n` using `2) ![pt k d 0, pt k d 1, 0] (addOf (B.FK k) (pt k (n := 3) d 0) (pt k d 1) c)) = (lawK k B).F := by`. Use function extensionality and compare the values at `c`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show ev (n := 2) ![pt k d 0, pt k d 1, 0] (ev (n := 3) ![pt k d 0, pt k d 1] (B.FK k c)) = B.FK k c`. Rewrite using `[ev_ev czZ cz01]`. Establish `: (fun j c => ev (n` using `2) ![pt k d 0, pt k d 1, 0] ((![pt k (n := 3) d 0, pt k d 1] : Fin 2 → Pt k 3 d) j c)) = fun j => pt k (n := 2) d j := by`. Apply the tactic sequence `funext j c; fin_cases j <;> simp [pt_apply, ev_X czZ]`. Rewrite using `[this, ev_pt]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `es : -ev (n` using `1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), i) h) = sgOf k h i := rfl`. Rewrite `h2` using `[f0, f1, fA, es]`. Establish `e : ev (n` using `2) ![(lawK k B).F] (sgOf k h i) - ev (n := 2) ![pt k d 0] (sgOf k h i) - ev (n := 2) ![pt k d 1] (sgOf k h i) = -ev (n := 2) ![pt k d 0] (sgOf k h i) + -ev (n := 2) ![pt k d 1] (sgOf k h i) - -ev (n := 2) ![(lawK k B).F] (sgOf k h i) := by ring`. Rewrite using `[e]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sig_add {B : FB R d O} {h : PS k 2 d} (hc : B.IsCanonGauge k h) (i : Fin d) :
     ev (n := 2) ![(lawK k B).F] (sgOf k h i) - ev (n := 2) ![pt k d 0] (sgOf k h i) -
@@ -140,7 +140,7 @@ theorem sig_add {B : FB R d O} {h : PS k 2 d} (hc : B.IsCanonGauge k h) (i : Fin
   exact h2
 
 /- English proof (translation)
-Establish `h3` using `ig_ev cz1 integral_family_point_zero (ig_pderiv (sig_add hc i) ((1 : Fin 2), b))`. Establish `d0 : pderiv k ((1 : Fin 2), b) (ev (n` using `2) ![pt k d 0] (sgOf k h i)) = 0 := pderiv_ev_zero zero_constant_first_point _ _ (fun j l => by fin_cases j; simp [pderiv_pt])`. Rewrite `h3` using `[map_sub, map_sub, d0, sub_zero, ev_sub cz1, d_F, d_y, ez_y, ev_sum cz1]`. Simplify using `only [ev_mul cz1, ezF, ez_dF, cc_pderiv'] at h3`. Conclude with `h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sig_lin {B : FB R d O} {h : PS k 2 d} (hc : B.IsCanonGauge k h) (i b : Fin d) :
     ∑ c, pderiv k ((0 : Fin 1), c) (sgOf k h i) * Jac (lawK k B) c b - C (sg1 k h i b) ∈ Ig R k (Fin 1 × Fin d) := by
@@ -152,11 +152,9 @@ theorem sig_lin {B : FB R d O} {h : PS k 2 d} (hc : B.IsCanonGauge k h) (i b : F
   exact h3
 
 /- English proof (translation)
-Establish `e1 : Dof (B.FK k) (fun j => algebraMap R k (u j)) (sgOf k h i) = ∑ b, C (algebraMap R k (u b)) * ∑ c, pderiv k ((0 : Fin 1), c) (sgOf k h i) * Jac (lawK k B) c b`. Simplify using `only [Dof, Jac, lawK_F, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => by ring`. Establish `e2 : (C (∑ j, sg1 k h i j * algebraMap R k (u j)) : PS k 1 d) = ∑ b, C (algebraMap R k (u b)) * C (sg1 k h i b)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_mul]`. Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`. Rewrite using `[e1, e2, ← Finset.sum_sub_distrib]`. Use `sum_mem fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_sub]`.
-
-Conclude with `mul_mem (ig_C _) (sig_lin hc i b)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dof_sig {B : FB R d O} {h : PS k 2 d} (hc : B.IsCanonGauge k h) (u : Fin d → R) (i : Fin d) :
     Dof (B.FK k) (fun j => algebraMap R k (u j)) (sgOf k h i) -

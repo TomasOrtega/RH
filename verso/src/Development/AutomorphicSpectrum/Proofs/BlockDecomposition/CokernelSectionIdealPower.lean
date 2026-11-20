@@ -10,7 +10,7 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 namespace GlobalTheory.CompanionTheory.GE.PowImage
 
 /- English proof (translation)
-Apply `biproduct.hom_ext'` to reduce the goal to its premises. Introduce `k`. Simplify using `only [idealSumMap, biproduct.ι_desc_assoc, biproduct.ι_map_assoc, smulHom_comp, biproduct.ι_desc]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 lemma idealSumMap_comp_natural {A : Type} [CommRing A] [IsNoetherianRing A] {Z : Scheme.{0}}
     [Z.Over (Spec (.of A))] {F G : Z.Modules} (g : F ⟶ G) (J : Ideal A) :
@@ -21,7 +21,7 @@ lemma idealSumMap_comp_natural {A : Type} [CommRing A] [IsNoetherianRing A] {Z :
     biproduct.ι_desc]
 
 /- English proof (translation)
-Apply `(cancel_epi (Abelian.factorThruImage (idealSumMap F (I ^ m)))).1` to reduce the goal to its premises. Establish `hfac : Abelian.factorThruImage (idealSumMap F (I ^ m)) ≫ kernel.ι (cokernel.π (idealSumMap F (I ^ m))) = idealSumMap F (I ^ m)` using `Abelian.image.fac _`. Rewrite using `[comp_zero, ← Category.assoc, hfac, ← Category.assoc, idealSumMap_comp_natural, Category.assoc, cokernel.condition, comp_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma idealPowι_comp_cokernel {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A)
     {Z : Scheme.{0}} [Z.Over (Spec (.of A))] {F G : Z.Modules} (g : F ⟶ G) (m : ℕ) :
@@ -34,15 +34,15 @@ lemma idealPowι_comp_cokernel {A : Type} [CommRing A] [IsNoetherianRing A] (I :
     Category.assoc, cokernel.condition, comp_zero]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hx`. Set `f` to `cokernel.π B.arrow ≫ cokernel.π (idealSumMap (cokernel B.arrow) (I ^ (n + 1)))`. Establish `hle : pullSys I φ E S n ≤ kernelSubobject f`. Rewrite using `[← hB]`. Use `sup_le ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `le_kernelSubobject` to reduce the goal to its premises. Rewrite using `[← Category.assoc, cokernel.condition, zero_comp]`. Apply `le_kernelSubobject` to reduce the goal to its premises. Rewrite using `[powSub, ← Subobject.underlyingIso_hom_comp_eq_mk, Category.assoc, idealPowι_comp_cokernel, comp_zero]`. Establish `hS : (Scheme.Modules.pullback φ).map (S n).arrow ≫ f = 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `le_sup_left.trans hle`. Rewrite using `[← imageSubobject_arrow_comp ((Scheme.Modules.pullback φ).map (S n).arrow), Category.assoc, ← Subobject.ofLE_arrow h1, Category.assoc, kernelSubobject_arrow_comp, comp_zero, comp_zero]`. Set `k` to `kernel.lift (cokernel.π (idealSumMap (cokernel B.arrow) (I ^ (n + 1)))) ((Scheme.Modules.pullback φ).map (S n).arrow ≫ cokernel.π B.arrow) (by rw [Category.assoc]; exact hS)`. Establish `hk : k ≫ idealPowι I (cokernel B.arrow) (n + 1) = (Scheme.Modules.pullback φ).map (S n).arrow ≫ cokernel.π B.arrow` using `kernel.lift_ι _ _ _`. Establish `hadj : (S n).arrow ≫ adjMap φ B = (Scheme.Modules.pullbackPushforwardAdjunction φ).unit.app _ ≫ (Scheme.Modules.pushforward φ).map (k ≫ idealPowι I (cokernel B.arrow) (n + 1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[adjMap, Adjunction.homEquiv_unit, hk, Functor.map_comp, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Conclude with `(Scheme.Modules.pullbackPushforwardAdjunction φ).unit.naturality (S n).arrow`. Use `⟨((Scheme.Modules.pushforward φ).map k).app V (((Scheme.Modules.pullbackPushforwardAdjunction φ).unit.app _).app V y), ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (fun g => g.app V y) hadj`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Scheme.Modules.Hom.comp_app, ConcreteCategory.comp_apply, Functor.map_comp] at h2`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem adjMap_app_mem_range_idealPowι {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A)
     {X Z : Scheme.{0}} [Z.Over (Spec (.of A))] (φ : Z ⟶ X) {E : X.Modules} (S : ℕ → Subobject E)

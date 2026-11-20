@@ -6,9 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC GroundThe
 open scoped TensorProduct
 
 /- English proof (translation)
-Use `letI : Field (R ⧸ m) := Ideal.Quotient.field m`. Use `haveI : Algebra.FiniteType k (R ⧸ m) := inferInstance`. Use `haveI : Module.Finite k (R ⧸ m) := finite_of_finite_type_of_isJacobsonRing k (R ⧸ m)`. Use `haveI : Algebra.IsIntegral k (R ⧸ m) := inferInstance`. Set `e : k ≃ₐ[k] (R ⧸ m)` to `AlgEquiv.ofBijective (Algebra.ofId k (R ⧸ m)) IsAlgClosed.algebraMap_bijective_of_isIntegral`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨e.symm.toAlgHom.comp (Ideal.Quotient.mkₐ k m), fun r hr => ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `h0 : e.symm (Ideal.Quotient.mk m r) = 0` using `hr`. Conclude with `(map_eq_zero_iff e.symm e.symm.injective).mp h0`.
+A detailed English derivation is pending.
 -/
 private theorem exists_point {k R : Type} [Field k] [IsAlgClosed k] [CommRing R] [Algebra k R]
     [Algebra.FiniteType k R] (m : Ideal R) [m.IsMaximal] :
@@ -25,17 +25,15 @@ private theorem exists_point {k R : Type} [Field k] [IsAlgClosed k] [CommRing R]
   exact (map_eq_zero_iff e.symm e.symm.injective).mp h0
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨⟨i0, hi0, ha⟩, ⟨j0, hj0, hb⟩⟩` from `hcon`. Use `haveI : IsJacobsonRing R := isJacobsonRing_of_finiteType (A := k)`. Establish `hab : a i0 * b j0 ≠ 0` using `mul_ne_zero ha hb`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjac : (⊥ : Ideal R).jacobson = ⊥` using `IsJacobsonRing.out inferInstance Ideal.isRadical_bot_of_noZeroDivisors`. Establish `hnot : a i0 * b j0 ∉ (⊥ : Ideal R).jacobson`. Rewrite using `[hjac]`. Simplify using `using hab`. Choose the witnesses or unpack the hypotheses as in `⟨m, hm, hnm⟩ : ∃ m : Ideal R, m.IsMaximal ∧ a i0 * b j0 ∉ m := by`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Apply `hnot` to reduce the goal to its premises. Rewrite using `[Ideal.jacobson, Submodule.mem_sInf]`. Introduce and unpack `J ⟨-, hJ⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hne J hJ`. Use `haveI := hm`. Take `⟨φ, hφ⟩` from `exists_point (k := k) m`. Establish `hφa : φ (a i0) ≠ 0` using `fun h0 => hnm (m.mul_mem_right _ (hφ _ h0))`. Establish `hφb : φ (b j0) ≠ 0` using `fun h0 => hnm (m.mul_mem_left _ (hφ _ h0))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `ψ : R ⊗[k] A →ₐ[k] A` to `Algebra.TensorProduct.lift ((Algebra.ofId k A).comp φ) (AlgHom.id k A) (fun _ _ => Commute.all _ _)`. Establish `hψ : ∀ (c : ι → R) (u : Finset ι), ψ (∑ i ∈ u, c i ⊗ₜ[k] e i) = ∑ i ∈ u, φ (c i) • e i`. Introduce `c u`. Simplify using `[ψ, map_sum, Algebra.TensorProduct.lift_tmul, Algebra.smul_def]`. Establish `h2` using `congrArg ψ h`.
-
-Rewrite `h2` using `[map_mul, hψ, hψ, map_zero]`. Break down `mul_eq_zero.mp h2 with h3 | h3` into its components or cases. Conclude with `hφa ((linearIndependent_iff'.mp e.linearIndependent) s (fun i => φ (a i)) h3 i0 hi0)`. Conclude with `hφb ((linearIndependent_iff'.mp e.linearIndependent) t (fun j => φ (b j)) h3 j0 hj0)`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem dom_fg {k R A ι : Type} [Field k] [IsAlgClosed k] [CommRing R] [IsDomain R] [Algebra k R]
     [Algebra.FiniteType k R] [CommRing A] [IsDomain A] [Algebra k A] (e : Module.Basis ι k A)
@@ -77,27 +75,23 @@ private theorem dom_fg {k R A ι : Type} [Field k] [IsAlgClosed k] [CommRing R] 
   · exact hφb ((linearIndependent_iff'.mp e.linearIndependent) t (fun j => φ (b j)) h3 j0 hj0)
 
 /- English proof (translation)
-Set `e` to `Module.Basis.ofVectorSpace k K`. Use `haveI : Nontrivial (L ⊗[k] K) := inferInstance`. It suffices to establish `hnz : NoZeroDivisors (L ⊗[k] K) from NoZeroDivisors.to_isDomain _`. Use `⟨fun {x y} hxy => ?_⟩` and prove the remaining obligations. Set `E` to `TensorProduct.equivFinsuppOfBasisRight (M := L) e`.
+Introduce a local definition for the expression. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hrep : ∀ z : L ⊗[k] K, z = ∑ i ∈ (E z).support, (E z) i ⊗ₜ[k] e i`. Introduce `z`. Use `conv_lhs => rw [← E.symm_apply_apply z]`. Rewrite using `[TensorProduct.equivFinsuppOfBasisRight_symm_apply, Finsupp.sum]`. Set `S : Finset L` to `(E x).support.image (E x) ∪ (E y).support.image (E y)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `R` to `Algebra.adjoin k (S : Set L)`. Use `haveI : Algebra.FiniteType k R := Subalgebra.fg_iff_finiteType R |>.mp (Subalgebra.fg_adjoin_finset S)`. Establish `hmem : ∀ (z : L ⊗[k] K), (z = x ∨ z = y) → ∀ i, (E z) i ∈ R`. Introduce and unpack `z hz i`. Distinguish the cases in `hi : i ∈ (E z).support`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Apply `Algebra.subset_adjoin` to reduce the goal to its premises. Break down `hz with rfl | rfl` into its components or cases. Conclude with `Finset.mem_union_left _ (Finset.mem_image_of_mem _ hi)`. Conclude with `Finset.mem_union_right _ (Finset.mem_image_of_mem _ hi)`. Rewrite using `[Finsupp.notMem_support_iff.mp hi]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `R.zero_mem`. Set `a : Module.Basis.ofVectorSpaceIndex k K → R` to `fun i => ⟨(E x) i, hmem x (Or.inl rfl) i⟩`. Set `b : Module.Basis.ofVectorSpaceIndex k K → R` to `fun i => ⟨(E y) i, hmem y (Or.inr rfl) i⟩`. Set `j : R ⊗[k] K →ₐ[k] L ⊗[k] K` to `Algebra.TensorProduct.map R.val (AlgHom.id k K)`. Establish `hj : Function.Injective j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `Module.Flat.rTensor_preserves_injective_linearMap (M := K) R.val.toLinearMap Subtype.val_injective` as an intermediate fact. Conclude with `this`. Establish `hja : j (∑ i ∈ (E x).support, a i ⊗ₜ[k] e i) = x`. Rewrite using `[map_sum]`. Use `conv_rhs => rw [hrep x]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[j, a]`. Establish `hjb : j (∑ i ∈ (E y).support, b i ⊗ₜ[k] e i) = y`. Rewrite using `[map_sum]`. Use `conv_rhs => rw [hrep y]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[j, b]`. Establish `hprod : (∑ i ∈ (E x).support, a i ⊗ₜ[k] e i) * (∑ i ∈ (E y).support, b i ⊗ₜ[k] e i) = 0`. Apply `hj` to reduce the goal to its premises. Rewrite using `[map_mul, hja, hjb, hxy, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Break down `dom_fg (k := k) e _ _ a b hprod with h0 | h0` into its components or cases. Use `left`. Rewrite using `[hrep x]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Use `congrArg Subtype.val (h0 i hi)` as an intermediate fact.
-
-Simplify using `only [a, ZeroMemClass.coe_zero] at this`. Rewrite using `[this, TensorProduct.zero_tmul]`. Use `right`. Rewrite using `[hrep y]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations.
-
-Use `congrArg Subtype.val (h0 i hi)` as an intermediate fact. Simplify using `only [b, ZeroMemClass.coe_zero] at this`. Rewrite using `[this, TensorProduct.zero_tmul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dom_tensor (k K L : Type) [Field k] [IsAlgClosed k] [Field K] [Field L] [Algebra k K]
     [Algebra k L] : IsDomain (L ⊗[k] K) := by
@@ -157,9 +151,7 @@ private theorem dom_tensor (k K L : Type) [Field k] [IsAlgClosed k] [Field K] [F
     rw [this, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[geometrically_iff_of_commRing]`. Introduce `K _ _ Y fst snd h`. Use `haveI := dom_tensor k K L`. Set `e : Y ≅ Spec (CommRingCat.of (L ⊗[k] K))` to `h.isoPullback ≪≫ pullbackSpecIso k L K`.
-
-Use `haveI : Nonempty Y := ⟨e.inv (Nonempty.some inferInstance)⟩`. Conclude with `isIntegral_of_isOpenImmersion e.hom`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 private theorem gi (k L : Type) [Field k] [IsAlgClosed k] [Field L] [Algebra k L] :
     GeometricallyIntegral (Spec.map (CommRingCat.ofHom (algebraMap k L))) := by
@@ -172,19 +164,13 @@ private theorem gi (k L : Type) [Field k] [IsAlgClosed k] [Field L] [Algebra k L
   exact isIntegral_of_isOpenImmersion e.hom
 
 /- English proof (translation)
-Introduce `k L _ _ _ _ C c hc`. Take `⟨h1, h2, h3⟩` from `hc`. Use `haveI := gi k L`. Use `set g := Spec.map (CommRingCat.ofHom (algebraMap k L)) with hg`. Use `set p := pullback.fst c g with hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : GeometricallyIrreducible p := inferInstance`. Use `haveI : GeometricallyReduced p := inferInstance`. Use `haveI : Flat p := inferInstance`. Use `haveI : Finite (irreducibleComponents C) := by`. Rewrite using `[irreducibleComponents_eq_singleton]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `infer_instance`. Use `haveI hred : IsReduced (pullback c g) := GeometricallyReduced.isReduced_of_flat_of_finite_irreducibleComponents p`. Establish `hgen : GeneralizingMap p` using `Flat.generalizingMap p`. Use `set η := genericPoint C`. Set `ξ : ↥(pullback c g)` to `p.fiberι η (genericPoint (p.fiber η))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hall : ∀ q : ↥(pullback c g), ξ ⤳ q`. Introduce `q`. Establish `h0 : η ⤳ p q` using `genericPoint_specializes _`. Take `⟨q', hq', hpq'⟩` from `hgen h0`. Establish `hmem : q' ∈ Set.range (p.fiberι η)`.
-
-Rewrite using `[p.range_fiberι]`. Conclude with `hpq'`. Take `⟨r, rfl⟩` from `hmem`. Conclude with `((genericPoint_specializes r).map (p.fiberι η).continuous).trans hq'`. Use `haveI hirr : IrreducibleSpace ↥(pullback c g) := by`.
-
-Rewrite using `[irreducibleSpace_def]`. Establish `hcl : closure ({ξ} : Set ↥(pullback c g)) = Set.univ` using `Set.eq_univ_of_forall fun q => specializes_iff_mem_closure.mp (hall q)`. Rewrite using `[Set.top_eq_univ, ← hcl]`. Conclude with `isIrreducible_singleton.closure`. Use `haveI := isSmoothOfRelativeDimension_isStableUnderBaseChange 1`.
-
-Use `⟨isIntegral_of_irreducibleSpace_of_isReduced _, inferInstance, ?_⟩` and prove the remaining obligations. Conclude with `MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension 1) (IsPullback.of_hasPullback c g) h3`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.isCurve_pullback_of_isCurve_baseChange :
     ∀ (k L : Type) [Field k] [IsAlgClosed k] [Field L] [Algebra k L] {C : Scheme.{0}} (c : C ⟶ Sp k), IsCurve c → IsCurve (pullback.snd c (Spec.map (CommRingCat.ofHom (algebraMap k L)))) := by

@@ -7,17 +7,17 @@ open MvPolynomial GlobalTheory.FlagPoly GlobalTheory.FlagForm GlobalTheory.FlagC
 namespace GlobalTheory.FlagCurve
 
 /- English proof (translation)
-Establish `h1 : ∑ s ∈ (crSet ι N j).filter (fun s => s.1 = τ), (X s : FormPol ι N) = ∑ a : Fin N, ∑ b : Fin N, if a < b ∧ (a : ℕ) < j ∧ j ≤ (b : ℕ) then X (τ, a, b) else 0`. Rewrite using `[crSet, Finset.filter_filter, Finset.sum_filter, Fintype.sum_prod_type, Finset.sum_eq_single τ]`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [and_true]`. Introduce `t _ ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[ht]`. Simplify using the standard rewrite rules. Rewrite using `[h1, toForm, pLow, map_sum, Finset.sum_filter]`. Simplify using `only [pow_one, aeval_X, rootForm]`. Establish `h2 : ∀ i : Fin N, (if (i : ℕ) < j then ((∑ a : Fin N, if a < i then X (τ, a, i) else 0) - ∑ b : Fin N, if i < b then X (τ, i, b) else 0 : FormPol ι N) else 0) = (∑ a : Fin N, if a < i ∧ (i : ℕ) < j then X (τ, a, i) else 0) - ∑ b : Fin N, if i < b ∧ (i : ℕ) < j then X (τ, i, b) el …`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i`. Apply the tactic sequence `by_cases h : (i : ℕ) < j <;> simp [h]`. Simplify using `only [h2]`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_comm, ← Finset.sum_sub_distrib, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_sub_distrib, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hab : a < b`. Establish `hab' : (a : ℕ) < b` using `hab`. Distinguish the cases in `hb : (b : ℕ) < j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `ha : (a : ℕ) < j` using `by omega`. Simplify using `[hab, hb, ha, not_le.mpr hb]`. Distinguish the cases in `ha : (a : ℕ) < j`. Simplify using `[hab, hb, ha, not_lt.mp hb]`. Simplify using `[hb, ha]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hab]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toForm_pLow_one (ι : Type) [Fintype ι] [DecidableEq ι] (N j : ℕ) (τ : ι) :
     (toForm (pLow j τ 1 : Pol ι N) : FormPol ι N) =

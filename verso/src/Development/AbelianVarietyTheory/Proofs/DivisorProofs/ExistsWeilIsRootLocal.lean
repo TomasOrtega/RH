@@ -18,15 +18,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.WeilRootLocal
 
 /- English proof (translation)
-Introduce `S A _ _ hA PP cub R _ _ t n g h hg hh`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.globalFns_holds`. Establish `loc : ∀ z : Over.mk t ⟶ A, z ^ n = 1 → ∀ p : (Over.mk t).left, ∃ V : (Over.mk t).left.Opens, p ∈ V ∧ ∃ θ : Out.ThetaGrp A PP.L (n : ℤ) (Out.overRes V), θ.pt = Out.overResι V ≫ z` using `fun z hz p => by`. Take `⟨θ, hθ⟩` from `TorsionThetaLocal.exists_theta_of_pow_eq_one S A PP cub R t n z hz`. Take `⟨θ', hθ'⟩` from `CommutatorPairing.exists_pull PP.isLB θ (Out.overResι ⊤)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⊤, trivial, θ', by rw [hθ', hθ]⟩`. Take `⟨c, hc⟩` from `CommutatorPairing.exists_weilIs hG hA PP.isLB (loc g hg) (loc h hh)`. Establish `pw : ∀ m : ℕ, Out.WeilIs A PP.L (n : ℤ) (g ^ (m + 1)) h (c ^ (m + 1))` using `fun m => by`. Proceed by induction on `m with`. Consider the case `zero => rw [zero_add, pow_one, pow_one]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Conclude with `hc`. Consider the case `succ m ih`. Rewrite using `[pow_succ g (m + 1), pow_succ c (m + 1)]`. Conclude with `DiagPairing.weilIs_mul_left hG hA PP.isLB ih hc`. Establish `e` using `pw n`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[pow_succ g, hg, _root_.one_mul]`. Establish `hcn` using `CommutatorPairing.weilIs_unique hG hA PP.isLB e hc`. Rewrite `hcn` using `[pow_succ, mul_eq_right]`. Take `⟨u, rfl⟩ : ∃ u : Rˣ, unitOn u = c` from `(Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv.toMulEquiv).surjective c`. Use `⟨u, unitOn_injective_of_commRing ?_, hc⟩` and prove the remaining obligations.
-
-Use `show unitOn (u ^ n) = unitOn 1`. Rewrite using `[unitOn, unitOn, map_pow, map_one]`. Conclude with `hcn`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_weilIs_root_local : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A],
     IsAbelianScheme A → ∀ (PP : RigLB A), CubicalStr A PP → ∀ (R : Type) [CommRing R] [IsLocalRing R]

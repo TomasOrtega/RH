@@ -17,7 +17,7 @@ noncomputable def UpperTheory.Reformulated.B.Qh28.Umon.{u_2, u_3} :
       Submonoid.closure (Set.range fun (ab : Fin n × Fin n) ↦ E ab.1 ab.2)
 
 /- English proof (translation)
-Introduce `K V _ _ _`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qh28.aux3.{u_1, u_2} :
     ∀ {K : Type u_1} {V : Type u_2} [inst : Field K] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module K V],
@@ -59,9 +59,9 @@ noncomputable def UpperTheory.Reformulated.B.Qh28.isoSub.{u_2, u_3} :
         {x : V | ∃ u ∈ UpperTheory.Reformulated.B.Qh28.Umon E, ∃ (v : V), UpperTheory.Reformulated.B.Qh28.IsHWV E lam v ∧ x = (u : V → V) v}
 
 /- English proof (translation)
-Introduce `n K V _ _ _ E mu a b x hx`. Unfold `UpperTheory.Reformulated.B.Qh28.isoSub at hx ⊢`. Use `(Submodule.span_le (p := Submodule.comap (E a b) (Submodule.span K _))).2 ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, v, hv, rfl⟩`. Use `Submodule.subset_span ⟨E a b * u, ?_, v, hv, rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submonoid.mul_mem _ (Submonoid.subset_closure ⟨(a, b), rfl⟩) hu`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qh28.isotypic_stable_operator.{u_1, u_2} :
     ∀ {n : ℕ} {K : Type u_1} {V : Type u_2} [inst : Field K] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module K V]

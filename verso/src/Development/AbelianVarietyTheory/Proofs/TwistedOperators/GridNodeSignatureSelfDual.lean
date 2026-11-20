@@ -14,7 +14,7 @@ open GlobalTheory.Grid GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle 
 namespace GlobalTheory.Grid.Vertex
 
 /- English proof (translation)
-Introduce `τ` and use `by have := h (tauE D τ) rw [hs] at this exact this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem negIdx_of_sig {D : D7} (V : HSp D) (q : ℕ) (h : V.SigOK) (hs : ∀ τ : D.host.E →+* ℂ, V.sig τ = (V.rank - q, q)) :
     NegIdx V q := fun τ => by

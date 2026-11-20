@@ -9,19 +9,17 @@ noncomputable section
 namespace GlobalTheory.TamUnf
 
 /- English proof (translation)
-Introduce `E _ _ _ r G`. Use `set F := maximalRealSubfield E`. Use `set c := IsCMField.complexConj E`. Establish `key : ∀ m : Matrix (Fin r) (Fin r) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E), Formalism.UG.cT (sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) c.toAlgHom) m * JR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) G …`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.UnRepCheck.isUnA_iff]`. Establish `hJ : JR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) Gᵀ = (GlobalTheory.UnRep.fm F G)ᵀ` using `rfl`. Establish `hs : Formalism.UG.cT (sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) c.toAlgHom) m = (m.map (sg (FiniteAdeleRing (𝓞 F) F) c))ᵀ` using `rfl`. Rewrite using `[hJ, hs]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Use `congrArg Matrix.transpose h` as an intermediate fact. Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc]`. Introduce `h`. Use `congrArg Matrix.transpose h` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc]`. Use `⟨fun k => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hmem : (HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) c.toAlgHom Gᵀ k.1) ∈ HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) c.toAlgHom Gᵀ` using `k.1.2`. Establish `hdet` using `mem_finSU.1 k.2`. Use `⟨⟨?_, (key _).1 hmem⟩, hdet⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `(HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) c.toAlgHom Gᵀ k.1).isUnit.map Matrix.detMonoidHom`. Take `⟨⟨hu, hinv⟩, hdet⟩` from `hg`. Set `u : GL (Fin r) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E)` to `((Matrix.isUnit_iff_isUnit_det g).2 hu).unit`. Establish `hum : (u : Matrix (Fin r) (Fin r) _) = g` using `rfl`. Establish `hmem : u ∈ HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) c.toAlgHom Gᵀ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `h2` using `(key g).2 hinv`. Rewrite `h2` using `[← hum]`. Conclude with `h2`. Set `h : HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) c.toAlgHom Gᵀ` to `(⟨u, hmem⟩ : HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) c.toAlgHom Gᵀ)`. Establish `hh : ((HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) c.toAlgHom Gᵀ h : GL (Fin r) _) : Matrix (Fin r) (Fin r) _) = g` using `rfl`.
-
-Use `⟨⟨h, mem_finSU.2 (by rw [hh]; exact hdet)⟩, hh⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finSU_mat_iff_isSA : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E),
     (∀ k : finSU (IsCMField.complexConj E).toAlgHom Gᵀ,

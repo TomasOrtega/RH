@@ -20,7 +20,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Unfold `hermC`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -34,9 +34,9 @@ theorem hermC_mul_left {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) 
   ring
 
 /- English proof (translation)
-Unfold `hermC`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermC_mul_right {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u v : Fin r → ℂ) (α : ℂ) :
     hermC τ G u (fun k => v k * α) = (starRingEnd ℂ) α * hermC τ G u v := by
@@ -49,7 +49,7 @@ theorem hermC_mul_right {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r)
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[col, Matrix.mul_diagonal]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem col_mul_diag {r : ℕ} (A : Matrix (Fin r) (Fin r) ℂ) (β : Fin r → ℝ) (c : Fin r) :
     col (A * Matrix.diagonal fun a => (β a : ℂ)) c = fun k => col A c k * (β c : ℂ) := by
@@ -57,7 +57,7 @@ theorem col_mul_diag {r : ℕ} (A : Matrix (Fin r) (Fin r) ℂ) (β : Fin r → 
   simp [col, Matrix.mul_diagonal]
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [gram, Matrix.of_apply, col_mul_diag, hermC_mul_left, hermC_mul_right, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gram_mul_diag {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (A : Matrix (Fin r) (Fin r) ℂ)
     (β : Fin r → ℝ) :
@@ -69,7 +69,7 @@ theorem gram_mul_diag {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E
   ring
 
 /- English proof (translation)
-Unfold `lminor`. Establish `e : (Matrix.diagonal β * M * Matrix.diagonal β).submatrix (Fin.castLE (Nat.le_of_lt_succ i.isLt)) (Fin.castLE (Nat.le_of_lt_succ i.isLt)) = Matrix.diagonal (fun a => β (Fin.castLE (Nat.le_of_lt_succ i.isLt) a)) * M.submatrix (Fin.castLE (Nat.le_of_lt_succ i.isLt)) (Fin.castLE (Na …`. Use extensionality with `a b`. Simplify using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Rewrite using `[e, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -105,7 +105,7 @@ theorem mat_unitF (x : Frame X.Ψ r) (τ : X.Ψ) :
     mat (unitF X x) τ = mat x τ * Matrix.diagonal (fun a => ((bt X x τ a : ℝ) : ℂ)) := rfl
 
 /- English proof (translation)
-Unfold `dmin`. Rewrite using `[mat_unitF, gram_mul_diag, lminor_diag]`. Use `push_cast`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem dmin_unitF (x : Frame X.Ψ r) (τ : X.Ψ) (i : Fin (r + 1)) :
     dmin X.Gm (unitF X x) τ i =
@@ -118,7 +118,7 @@ theorem dmin_unitF (x : Frame X.Ψ r) (τ : X.Ψ) (i : Fin (r + 1)) :
 variable {X}
 
 /- English proof (translation)
-Introduce `h`. Establish `hx' : ∀ τ : X.Ψ, (mat x τ).det ≠ 0 ∧ ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm x τ i).re` using `hx`. Use `(hx' τ).2 i` as an intermediate fact. Rewrite `this` using `[h, Complex.zero_re, mul_zero]`. Conclude with `lt_irrefl _ this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dmin_ne {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (i : Fin (r + 1)) : dmin X.Gm x τ i ≠ 0 := by
   intro h
@@ -128,19 +128,19 @@ theorem dmin_ne {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (i : Fin (r + 
   exact lt_irrefl _ this
 
 /- English proof (translation)
-The claim follows from `norm_pos_iff.2 (div_ne_zero (dmin_ne hx τ _) (dmin_ne hx τ _))`.
+A detailed English derivation is pending.
 -/
 theorem tq_pos {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (a : Fin r) : 0 < tq X x τ a :=
   norm_pos_iff.2 (div_ne_zero (dmin_ne hx τ _) (dmin_ne hx τ _))
 
 /- English proof (translation)
-The claim follows from `Real.rpow_pos_of_pos (tq_pos hx τ a) _`.
+A detailed English derivation is pending.
 -/
 theorem bt_pos {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (a : Fin r) : 0 < bt X x τ a :=
   Real.rpow_pos_of_pos (tq_pos hx τ a) _
 
 /- English proof (translation)
-Unfold `bt`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (tq_pos hx τ a).le]`. Evaluate the numerical expressions. Conclude with `Real.rpow_neg_one _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem bt_sq {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (a : Fin r) :
     bt X x τ a ^ 2 = (tq X x τ a)⁻¹ := by
@@ -152,7 +152,7 @@ theorem bt_sq {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (a : Fin r) :
 def gN (x : Frame X.Ψ r) (τ : X.Ψ) (m : ℕ) : ℝ := if h : m < r + 1 then ‖dmin X.Gm x τ ⟨m, h⟩‖ else 1
 
 /- English proof (translation)
-Unfold `gN`. Use `split_ifs with h`. Conclude with `norm_ne_zero_iff.2 (dmin_ne hx τ _)`. Conclude with `one_ne_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gN_ne {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (m : ℕ) : gN x τ m ≠ 0 := by
   unfold gN
@@ -161,7 +161,7 @@ theorem gN_ne {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (m : ℕ) : gN x
   · exact one_ne_zero
 
 /- English proof (translation)
-Unfold `gN`. Rewrite using `[dif_pos (Nat.succ_pos r)]`. Establish `: dmin X.Gm x τ ⟨0, Nat.succ_pos r⟩ = 1` using `Matrix.det_fin_zero`. Rewrite using `[this, norm_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gN_zero (x : Frame X.Ψ r) (τ : X.Ψ) : gN x τ 0 = 1 := by
   unfold gN
@@ -170,7 +170,7 @@ theorem gN_zero (x : Frame X.Ψ r) (τ : X.Ψ) : gN x τ 0 = 1 := by
   rw [this, norm_one]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [div_self (gN_ne hx τ 0)]`. Consider the case `succ n ih`. Rewrite using `[Finset.prod_range_succ, ih]`. Clear denominators, using `[gN_ne hx τ n, gN_ne hx τ (n + 1), gN_ne hx τ 0]` for the nonvanishing conditions.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem prod_gN {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (n : ℕ) :
     ∏ m ∈ Finset.range n, gN x τ m / gN x τ (m + 1) = gN x τ 0 / gN x τ n := by
@@ -181,7 +181,7 @@ theorem prod_gN {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (n : ℕ) :
     field_simp [gN_ne hx τ n, gN_ne hx τ (n + 1), gN_ne hx τ 0]
 
 /- English proof (translation)
-Unfold `tq gN`. Rewrite using `[dif_pos (by omega), dif_pos (by omega), norm_div]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tq_castLE {x : Frame X.Ψ r} (τ : X.Ψ) {i : ℕ} (hi : i ≤ r) (a : Fin i) :
     tq X x τ (Fin.castLE hi a) = gN x τ (a + 1) / gN x τ a := by
@@ -190,9 +190,9 @@ theorem tq_castLE {x : Frame X.Ψ r} (τ : X.Ψ) {i : ℕ} (hi : i ≤ r) (a : F
   rfl
 
 /- English proof (translation)
-Rewrite using `[dmin_unitF, norm_mul, Complex.norm_real, Real.norm_of_nonneg (by positivity), ← Finset.prod_pow]`. Establish `h1 : ∀ a : Fin i, bt X x τ (Fin.castLE (Nat.le_of_lt_succ i.isLt) a) ^ 2 = gN x τ (a : ℕ) / gN x τ ((a : ℕ) + 1)`. Introduce `a`. Rewrite using `[bt_sq hx, tq_castLE, inv_div]`. Repeatedly rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Fin.prod_univ_eq_prod_range (fun m => gN x τ m / gN x τ (m + 1)), prod_gN hx, gN_zero]`. Establish `h2 : gN x τ i = ‖dmin X.Gm x τ i‖`. Unfold `gN`. Rewrite using `[dif_pos i.isLt]`. Rewrite using `[h2, div_mul_cancel₀ _ (norm_ne_zero_iff.2 (dmin_ne hx τ i))]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_dmin_unitF {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (i : Fin (r + 1)) :
     ‖dmin X.Gm (unitF X x) τ i‖ = 1 := by
@@ -209,9 +209,7 @@ theorem norm_dmin_unitF {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (i : F
   rw [h2, div_mul_cancel₀ _ (norm_ne_zero_iff.2 (dmin_ne hx τ i))]
 
 /- English proof (translation)
-Introduce `τ`. Use `⟨?_, fun a c hca => ?_⟩` and prove the remaining obligations. Use `show (Matrix.diagonal fun a => ((bt X x τ a : ℝ) : ℂ)).det ≠ 0`. Rewrite using `[Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => Complex.ofReal_ne_zero.2 (bt_pos hx τ a).ne'`.
-
-Use `show Matrix.diagonal (fun a => ((bt X x τ a : ℝ) : ℂ)) a c = 0`. Conclude with `Matrix.diagonal_apply_ne _ (ne_of_gt hca)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitB_mem (x : Frame X.Ψ r) (hx : x ∈ X.dom) : unitB X x ∈ Bor X.Ψ r := by
   intro τ
@@ -223,9 +221,9 @@ theorem unitB_mem (x : Frame X.Ψ r) (hx : x ∈ X.dom) : unitB X x ∈ Bor X.Ψ
     exact Matrix.diagonal_apply_ne _ (ne_of_gt hca)
 
 /- English proof (translation)
-Establish `hx' : ∀ τ : X.Ψ, (mat x τ).det ≠ 0 ∧ ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm x τ i).re` using `hx`. Introduce `τ`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[mat_unitF, Matrix.det_mul, Matrix.det_diagonal]`. Conclude with `mul_ne_zero (hx' τ).1 (Finset.prod_ne_zero_iff.2 fun a _ => Complex.ofReal_ne_zero.2 (bt_pos hx τ a).ne')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dmin_unitF, Complex.re_ofReal_mul]`. Establish `hs : 0 < (∏ a : Fin i, bt X x τ (Fin.castLE (Nat.le_of_lt_succ i.isLt) a)) ^ 2` using `pow_pos (Finset.prod_pos fun a _ => bt_pos hx τ _) 2`. Use `(hx' τ).2 i` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem unitF_mem (x : Frame X.Ψ r) (hx : x ∈ X.dom) : unitF X x ∈ X.dom := by
   have hx' : ∀ τ : X.Ψ, (mat x τ).det ≠ 0 ∧ ∀ i : Fin (r + 1), 0 < psgn X.p0 i * (dmin X.Gm x τ i).re := hx
@@ -241,13 +239,13 @@ theorem unitF_mem (x : Frame X.Ψ r) (hx : x ∈ X.dom) : unitF X x ∈ X.dom :=
     nlinarith
 
 /- English proof (translation)
-Unfold `Data.pnorm`. Establish `h1 : ∀ τ (i : Fin r), ‖dmin X.Gm (unitF X x) τ i.succ / dmin X.Gm (unitF X x) τ i.castSucc‖ = 1`. Introduce `τ i`. Rewrite using `[norm_div, norm_dmin_unitF hx, norm_dmin_unitF hx, div_one]`. Repeatedly rewrite using `[h1, Real.one_rpow, Finset.prod_const_one, mul_one]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[show unitF X x = rmul x (unitB X x) from rfl, hB _ (unitB_mem x hx), norm_mul, mul_comm]`. Use `congr 1`. Unfold `bchar`. Simplify using `only [norm_prod, norm_zpow]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `show ‖(Matrix.diagonal (fun a => ((bt X x τ a : ℝ) : ℂ)) i i)‖ ^ la τ i = _`. Rewrite using `[Matrix.diagonal_apply_eq, Complex.norm_real, Real.norm_of_nonneg (bt_pos hx τ i).le]`. Unfold `bt`. Rewrite using `[← Real.rpow_intCast, ← Real.rpow_mul (tq_pos hx τ i).le]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `tq`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pnorm_unitF (x : Frame X.Ψ r) (hx : x ∈ X.dom) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ)
     (hB : ∀ b ∈ Bor X.Ψ r, P (rmul x b) = bchar la b * P x) :
@@ -272,9 +270,9 @@ theorem pnorm_unitF (x : Frame X.Ψ r) (hx : x ∈ X.dom) (la : Wt X.Ψ r) (P : 
   ring
 
 /- English proof (translation)
-Rewrite using `[← pnorm_unitF x hx la P (hP.2.1 x hx)]`. Unfold `Data.pnorm`. Establish `h1 : ∀ τ (i : Fin r), ‖dmin X.Gm (unitF X x) τ i.succ / dmin X.Gm (unitF X x) τ i.castSucc‖ = 1`. Introduce `τ i`. Rewrite using `[norm_div, norm_dmin_unitF hx, norm_dmin_unitF hx, div_one]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[h1, Real.one_rpow, Finset.prod_const_one, mul_one]`.
+Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem pnorm_eq_unitF (x : Frame X.Ψ r) (hx : x ∈ X.dom) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ)
     (hP : X.IsSec la P) : X.pnorm la P x = ‖P (unitF X x)‖ := by
@@ -286,7 +284,7 @@ theorem pnorm_eq_unitF (x : Frame X.Ψ r) (hx : x ∈ X.dom) (la : Wt X.Ψ r) (P
   simp_rw [h1, Real.one_rpow, Finset.prod_const_one, mul_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show ((1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat y τ = mat y τ`. Rewrite using `[Units.val_one, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lact_one' {Ψ : Finset (E →+* ℂ)} (y : Frame Ψ r) : lact (1 : GL (Fin r) E) y = y := by
   funext τ
@@ -300,13 +298,13 @@ namespace GlobalTheory.FrameNorm
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.FrameNorm GlobalTheory.Reg
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U _ hU`. Establish `h3` using `hU.2.2.1`. Establish `h4` using `hU.2.2.2.1`. Use `clear hU`. Set `uf : ∀ k, (U.X k).dom → (U.X k).dom` to `fun k x => ⟨UnitFr.unitF (U.X k) x.1, UnitFr.unitF_mem x.1 x.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `huf : ∀ k x, (uf k x).1 = FD.rmul x.1 (UnitFr.unitB (U.X k) x.1)` using `fun _ _ => rfl`. Establish `hun : ∀ k x, IsUnitFr (U.X k) (uf k x).1` using `fun k x τ i => UnitFr.norm_dmin_unitF x.2 τ i`. Establish `hpn : ∀ k (x : (U.X k).dom) (la : FD.Wt (U.X k).Ψ r) (P : FD.Frame (U.X k).Ψ r → ℂ), (U.X k).IsSec la P → (U.X k).pnorm la P x.1 = ‖P (uf k x).1‖` using `fun k x la P hP => UnitFr.pnorm_eq_unitF x.1 x.2 la P hP`. Use `clear_value uf`. Establish `key : ∀ k (x : (U.X k).dom), ∃ t : Ix Dw → (CAt σ)ˣ, FrBor t (U.un k (uf k x)) (U.un k x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `k x`. Take `⟨t, ht⟩` from `(h4 k k x (uf k x)).2 ⟨1, (U.X k).Γ.one_mem, UnitFr.unitB (U.X k) x.1, UnitFr.unitB_mem x.1 x.2, by`. Rewrite using `[UnitFr.lact_one', huf]⟩`. Conclude with `⟨t⁻¹, (GlobalTheory.Frames.frBor_calculus E H Dw l Xo c (CAt σ) (U.un k x) (U.un k (uf k x)) (U.un k x)).2.2.2 t ht⟩`. Use `⟨fun k x => ⟨uf k x, hun k x, ⟨_, UnitFr.unitB_mem x.1 x.2, huf k x⟩, key k x, hpn k x⟩, fun y => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, x, t, ht⟩` from `h3 y`. Take `⟨s, hs⟩` from `key k x`. Conclude with `⟨k, uf k x, t * s, hun k x, (GlobalTheory.Frames.frBor_calculus E H Dw l Xo c (CAt σ) (U.un k (uf k x)) (U.un k x) y).2.2.1 s t hs ht⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unitFr_frBor : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (σ : c.F →+* ℂ) (r : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ r), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → (∀ k (x : (U.X k).dom), ∃ x' : (U.X k).dom, IsUnitFr (U.X k) x'.1 ∧ (∃ b ∈ FD.Bor (U.X k).Ψ r, x'.1 = FD.rmul x.1 b) ∧ (∃ t : Ix Dw → (CAt σ)ˣ, FrBor t (U.un k x') (U.un k x)) ∧ ∀ (la : FD.Wt (U.X k).Ψ r) (P : FD.Frame (U.X k).Ψ r → ℂ), (U.X k).IsSec la P → (U.X k).pnorm la P x.1 = ‖P x'.1‖) ∧ ∀ y : FrPt Xo c (CAt σ), ∃ (k : U.Comp) (x : (U.X k).dom) (t : Ix Dw → (CAt σ)ˣ), IsUnitFr (U.X k) x.1 ∧ FrBor t (U.un k x) y := by
   intro E _ _ _ H Dw l Xo c σ r U _ hU

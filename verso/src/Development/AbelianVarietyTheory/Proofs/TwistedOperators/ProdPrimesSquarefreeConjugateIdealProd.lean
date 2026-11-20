@@ -11,11 +11,11 @@ open GlobalTheory.LiftLevel
 namespace GlobalTheory
 
 /- English proof (translation)
-Unfold `conjI`. Use `show _ = Ideal.span _`. Use `congr 1`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨b, hb, h⟩`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[h]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `⟨b, hb, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem primeProd_conjI_eq_map {E : Type} [Field E] [NumberField E] [IsCMField E] (I : Ideal (𝓞 E)) :
     conjI I = I.map (RingOfIntegers.mapRingHom ((IsCMField.complexConj E).toRingEquiv.toRingHom)) := by
@@ -33,15 +33,13 @@ theorem primeProd_conjI_eq_map {E : Type} [Field E] [NumberField E] [IsCMField E
     exact ⟨b, hb, rfl⟩
 
 /- English proof (translation)
-Introduce `D P`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hprod : (∏ PP ∈ P, PP.asIdeal) = (P.val.map (fun PP : Formalism.L2.DIV.Pl D.host.E => PP.asIdeal)).prod`. Rewrite using `[Finset.prod_eq_multiset_prod]`. Establish `hprime : ∀ p ∈ P.val.map (fun PP : Formalism.L2.DIV.Pl D.host.E => PP.asIdeal), Prime p`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p hp`. Take `⟨PP, -, rfl⟩` from `Multiset.mem_map.1 hp`. Conclude with `PP.prime`. Establish `hne : (∏ PP ∈ P, PP.asIdeal) ≠ 0`. Rewrite using `[Finset.prod_ne_zero_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `PP _`. Conclude with `PP.ne_bot`. Rewrite using `[UniqueFactorizationMonoid.squarefree_iff_nodup_normalizedFactors hne, hprod, UniqueFactorizationMonoid.normalizedFactors_prod_of_prime hprime]`. Conclude with `(Multiset.nodup_map_iff_of_injective (fun a b h => HeightOneSpectrum.ext h)).2 P.nodup`. Introduce `PP'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hle`. Take `⟨PP, hPP, hle'⟩` from `(Ideal.IsPrime.prod_le PP'.isPrime).1 hle`. Establish `: PP.asIdeal = PP'.asIdeal` using `PP.isMaximal.eq_of_le PP'.isPrime.ne_top hle'`. Establish `h2 : PP = PP'` using `HeightOneSpectrum.ext this`.
-
-Conclude with `h2 ▸ hPP`. Introduce `h`. Conclude with `Ideal.le_of_dvd (Finset.dvd_prod_of_mem _ h)`. Simplify using `only [primeProd_conjI_eq_map]`. Conclude with `map_prod (Ideal.mapHom _) _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem primeProd_squarefree_le_conj : ∀ (D : D7) (P : Finset (Formalism.L2.DIV.Pl D.host.E)), Squarefree (∏ PP ∈ P, PP.asIdeal) ∧ (∀ PP' : Formalism.L2.DIV.Pl D.host.E, (∏ PP ∈ P, PP.asIdeal) ≤ PP'.asIdeal ↔ PP' ∈ P) ∧ conjI (∏ PP ∈ P, PP.asIdeal) = ∏ PP ∈ P, conjI PP.asIdeal := by
   intro D P

@@ -11,9 +11,9 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk Formalism.MainNotions.Lnk Formalism.MainNotions.GlobalTheoryTheory Formalism.L2.GlobalTheoryTheory Formalism.MainNotions.RT Formalism.L2.Top3 Formalism.L2.Top4
 /- English proof (translation)
-Introduce `𝒜 sel _`. Use `Closed.of_class fun Fm _ hc => ?_` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `_root_.Formalism.L2.Top3.tied_families_of_choice_alt (sel Fm (d3_a hc))`. Use `Formalism.L2.linkEta_closed Fm ⟨max x0 (Fm.x1 + 1), fun x hx i => ?_⟩` and prove the remaining obligations. Establish `h1 : Fm.x1 < x` using `lt_of_lt_of_le (lt_add_one _) ((le_max_right _ _).trans hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨T⟩` from `hx0 x h1 ((le_max_left _ _).trans hx) i`. Conclude with `⟨T.n.gal.mt, T.n.cover, T.n.gal.hecke⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.Top.closed_linkEta_of_duty : ∀ (𝒜 : FamClass)
     (sel : _root_.Formalism.L2.TwistSelection 𝒜)

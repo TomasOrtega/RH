@@ -15,9 +15,9 @@ variable {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchi
   [IsMulCommutative (M ≃ₐ[k] M)]
 
 /- English proof (translation)
-Use `isAbelianGalois_of_isGalois (k := k) (M := M)` as an intermediate fact. Introduce `τ`. Take `⟨x, hx⟩` from `LocalField.surjective_localArtinMapOfField (K := k) (L := M) τ`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[← hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun f : kˣ →* (M ≃ₐ[k] M) ↦ f x) normResidueSymbol_eq_localArtinMapOfField`.
+A detailed English derivation is pending.
 -/
 theorem normResidueSymbol_surjective : Function.Surjective (normResidueSymbol k M) := by
   have := isAbelianGalois_of_isGalois (k := k) (M := M)
@@ -35,7 +35,7 @@ variable {K : Type*} [Field K] [NumberField K] {L : Type*} [Field L] [NumberFiel
   [IsGalois K L] [IsMulCommutative (L ≃ₐ[K] L)] (v : HeightOneSpectrum (𝓞 K))
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `normResidueSymbol_surjective (decompositionMulEquiv v w.1 ⟨τ, hτ⟩)`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[localSymbol_eq_symbolAt L v w]`. Express the relevant statement in the definitionally equal form `(((decompositionMulEquiv v w.1).symm (normResidueSymbol (v.adicCompletion K) (w.1.adicCompletion L) x)) : L ≃ₐ[K] L) = τ`. Rewrite using `[hx, MulEquiv.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_localSymbol_eq (w : PlacesOver L v) {τ : L ≃ₐ[K] L}
     (hτ : τ ∈ MulAction.stabilizer (L ≃ₐ[K] L) w.1.asIdeal) :
@@ -50,7 +50,7 @@ theorem exists_localSymbol_eq (w : PlacesOver L v) {τ : L ≃ₐ[K] L}
 omit [IsGalois K L] [IsMulCommutative (L ≃ₐ[K] L)] in
 
 /- English proof (translation)
-Rewrite using `[ideleClassNorm_mk, ideleNorm_finiteEmbedding]`. Take `⟨w, hw⟩` from `w`. Establish `h` using `(below_eq_iff w v).2 hw`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem mk_finiteEmbedding_normUnits (w : PlacesOver L v) (z : (w.1.adicCompletion L)ˣ) :
     IdeleClassGroup.mk K (finiteEmbedding v

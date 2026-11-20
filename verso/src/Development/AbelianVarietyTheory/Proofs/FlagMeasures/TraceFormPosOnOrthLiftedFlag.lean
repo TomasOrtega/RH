@@ -9,29 +9,29 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LoopC.PerpPos
 
 /- English proof (translation)
-Establish `hsym : ∀ a b : S.V, S.hT a b = 0 → S.hT b a = 0` using `fun a b h => by`. Rewrite using `[← S.herm.eq a b, h, map_zero]`. Establish `hx' : ∀ y ∈ F.Xplus, S.hT y x = 0` using `fun y hy => by`. Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker] at hx`. Conclude with `hx y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hzP : F.z ∈ F.Xplus` using `Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)`. Establish `hXP : ∀ y ∈ F.X, y ∈ F.Xplus` using `fun y hy => Submodule.mem_sup_left hy`. Establish `hspan : ∀ w : S.V, (∀ a, S.hT (F.e a) w = 0) → ∀ y ∈ F.X, S.hT y w = 0`. Introduce `w hw y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem y hy => obtain ⟨a, rfl⟩ := hy`. Conclude with `hw a`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add, LinearMap.add_apply, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [LinearMap.map_smulₛₗ, LinearMap.smul_apply, ha, smul_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXz : ∀ y ∈ F.X, S.hT y F.z = 0` using `hspan _ F.z_orth`. Establish `hXX : ∀ y ∈ F.X, ∀ y' ∈ F.X, S.hT y y' = 0` using `fun y hy y' hy' => hspan y' (fun a => hsym _ _ (hspan _ (fun b => F.e_iso b a) y' hy')) y hy`. Establish `hTne : (T : E) ≠ 0` using `Nat.cast_ne_zero.2 hT.ne'`. Establish `hzX : F.z ∉ F.X` using `fun h => by`. Use `hXz _ h` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[F.z_norm, neg_eq_zero]`. Conclude with `hTne this`. Establish `hxP : x ∉ F.Xplus` using `fun h => by`. Take `⟨ξ, hξ, w, hw, hsum⟩` from `Submodule.mem_sup.1 h`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h1` using `hx' _ hzP`. Rewrite `h1` using `[← hsum, map_add, map_smul, hsym _ _ (hXz _ hξ), F.z_norm, zero_add, smul_eq_mul, mul_eq_zero, neg_eq_zero]`. Break down `h1 with h1 | h1` into its components or cases. Apply `hxX` to reduce the goal to its premises. Rewrite using `[← hsum, h1, zero_smul, add_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `hξ`. Conclude with `hTne h1`. Establish `hdX : finrank E F.X = r`. Use `finrank_span_eq_card F.e_indep` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdP : finrank E F.Xplus = r + 1`. Use `Submodule.finrank_sup_span_singleton hzX` as an intermediate fact. Rewrite `this` using `[hdX]`. Then use the resulting hypothesis. Establish `hdU : finrank E (F.Xplus ⊔ Submodule.span E {x} : Submodule E S.V) = r + 2`. Use `Submodule.finrank_sup_span_singleton hxP` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[hdP]`. Then use the resulting hypothesis. Assume the negation of the conclusion as `hle`. Rewrite `hle` using `[not_lt]`. Use `hA.neg τ (F.Xplus ⊔ Submodule.span E {x}) (by` as an intermediate fact. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, hp, w, hw, rfl⟩` from `Submodule.mem_sup.1 hy`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hw`. Take `⟨ξ, hξ, w, hw, rfl⟩` from `Submodule.mem_sup.1 hp`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hw`. Establish `e : S.hT (ξ + a • F.z + c • x) (ξ + a • F.z + c • x) = (star a * a) * (-(T : E)) + (star c * c) * S.hT x x`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [map_add, LinearMap.add_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, hXX _ hξ _ hξ, hXz _ hξ, hsym _ _ (hXz _ hξ), hx' _ (hXP _ hξ), hsym _ _ (hx' _ (hXP _ hξ)), hx' _ hzP, hsym _ _ (hx' _ hzP), F.z_norm, starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `n : ∀ b : E, τ (star b * b) = (Complex.normSq (τ b) : ℂ)` using `fun b => by`. Rewrite using `[map_mul, hA.cm, Complex.normSq_eq_conj_mul_self]`. Rewrite using `[e, map_add, map_mul τ (star a * a), map_mul τ (star c * c), n, n, Complex.add_re, Complex.re_ofReal_mul, Complex.re_ofReal_mul, map_neg, map_natCast, Complex.neg_re, Complex.natCast_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `h1` using `Complex.normSq_nonneg (τ a)`. Establish `h2` using `Complex.normSq_nonneg (τ c)`. Establish `h3 : (0 : ℝ) ≤ T` using `Nat.cast_nonneg _`. Use polynomial arithmetic with `[mul_nonneg h1 h3, mul_nonneg h2 (neg_nonneg.2 hle)])`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem re_pos {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicNotions.HSpace E} {k r : ℕ}
     (hA : GlobalTheory.SA.Amb S k r) {T : ℕ} (hT : 0 < T) (F : FlagG S r (T : E)) {x : S.V}
@@ -104,9 +104,9 @@ theorem re_pos {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.
   omega
 
 /- English proof (translation)
-Establish `e` using `trace_eq_sum_embeddings ℂ (K := ℚ) (L := K) (x := y)`. Establish `e2 : ((Algebra.trace ℚ K y : ℚ) : ℝ) = ∑ σ : K →ₐ[ℚ] ℂ, (σ y).re`. Rewrite using `[← Complex.re_sum, ← e]`. Simplify using the standard rewrite rules. Establish `hne : Nonempty (K →ₐ[ℚ] ℂ)` using `⟨IsAlgClosed.lift⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) < ((Algebra.trace ℚ K y : ℚ) : ℝ)`. Rewrite using `[e2]`. Conclude with `Finset.sum_pos (fun σ _ => hp (σ : K →+* ℂ)) Finset.univ_nonempty`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_pos {K : Type} [Field K] [NumberField K] (y : K) (hp : ∀ τ : K →+* ℂ, 0 < (τ y).re) :
     0 < Algebra.trace ℚ K y := by
@@ -121,7 +121,7 @@ theorem trace_pos {K : Type} [Field K] [NumberField K] (y : K) (hp : ∀ τ : K 
   exact_mod_cast this
 
 /- English proof (translation)
-Introduce `D T' F' hT x hx hxX`. Establish `hA : GlobalTheory.SA.Amb (hS D) D.R.k D.R.rS` using `GlobalTheory.SA.AmbSig.amb_of_sig _ _ _ _ D.sp.cm.cmUnram.2.1 (D.sp.Y_sig 0) D.sp.baseSpace_signature_eq`. Conclude with `trace_pos _ (re_pos hA hT F'.fl hx hxX)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem trace_pos_perp : ∀ (D : D7) (T' : ℕ) (F' : Fg D ((T' : ℕ) : D.host.E)), 0 < T' →
     ∀ x ∈ orth (hS D) (Xplus F'), x ∉ Xsp F' → 0 < Algebra.trace ℚ D.host.E ((hS D).hT x x) := by

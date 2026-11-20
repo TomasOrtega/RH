@@ -24,7 +24,7 @@ def galS (M : Model l K) (g : K.fixingSubgroup) (n j : ℕ) : M.Hc false n j →
   B.galHc (B.schFn M.p) (okToOC l K) (IntermediateField.fixingSubgroupEquiv K g) (galOC_okToOC _) false n j
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem galQidApply {B : Type} [CommRing B] (J : Ideal B) (h : J ≤ J.comap (RingHom.id B)) (x : B ⧸ J) :
     Ideal.quotientMap J (RingHom.id B) h x = x := by
@@ -32,7 +32,7 @@ theorem galQidApply {B : Type} [CommRing B] (J : Ideal B) (h : J ≤ J.comap (Ri
   rfl
 
 /- English proof (translation)
-Establish `e : Ideal.quotientMap J (RingHom.id B) h = RingHom.id _`. Use extensionality with `x`. Both sides reduce to the same expression. Rewrite using `[e, CommRingCat.ofHom_id, Spec.map_id]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem galSpecQid {B : Type} [CommRing B] (J : Ideal B) (h : J ≤ J.comap (RingHom.id B)) :
     Spec.map (CommRingCat.ofHom (Ideal.quotientMap J (RingHom.id B) h)) = 𝟙 _ := by

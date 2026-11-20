@@ -21,11 +21,11 @@ namespace CyclotomicLayer
 section TotallyReal
 
 /- English proof (translation)
-Set `_ : Algebra (zhatLayer r).1 ℂ` to `φ.toAlgebra`. Establish `: Algebra.IsAlgebraic (zhatLayer r).1 ℚ̄` using `Algebra.IsAlgebraic.tower_top (K := ℚ) (zhatLayer r).1`. Set `ι : ℚ̄ →ₐ[(zhatLayer r).1] ℂ` to `IsAlgClosed.lift`. Take `⟨σ, hσ⟩` from `exists_algEquiv_conj ι.toRingHom`. Establish `hdeg : σ ∈ (degreeMod r).ker`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.mem_ker, degreeMod, MonoidHom.comp_apply, degree_of_isComplexConjugation ⟨_, hσ⟩, map_one]`. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `x`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Establish `hx : σ (x : ℚ̄) = x` using `(mem_fixedField_iff _ _).1 x.2 σ hdeg`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ι (x : ℚ̄) = φ x` using `ι.commutes x`. Establish `h2` using `hσ (x : ℚ̄)`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_coe, hx, h1] at h2`. Conclude with `h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isReal_zhatLayer (r : ℕ+) (φ : (zhatLayer r).1 →+* ℂ) : ComplexEmbedding.IsReal φ := by
   let _ : Algebra (zhatLayer r).1 ℂ := φ.toAlgebra
@@ -52,15 +52,13 @@ end TotallyReal
 section Order
 
 /- English proof (translation)
-Establish `hdvd : addOrderOf (PadicInt.toZModPow a x) ∣ q ^ a`. Use `addOrderOf_dvd_natCard (PadicInt.toZModPow a x)` as an intermediate fact. Rewrite `this` using `[Nat.card_zmod]`. Then use the resulting hypothesis. Take `⟨i, -, hieq⟩` from `(Nat.dvd_prime_pow hq.out).1 hdvd`. Rewrite using `[hieq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `Nat.pow_dvd_pow q (not_lt.1 fun hie => hx ?_)` and prove the remaining obligations. Establish `h0 : (q ^ (a - n)) • PadicInt.toZModPow a x = 0` using `addOrderOf_dvd_iff_nsmul_eq_zero.1 (hieq ▸ Nat.pow_dvd_pow q (by omega))`. Establish `h1 : PadicInt.toZModPow a ((q : ℤ_[q]) ^ (a - n) * x) = 0`. Rewrite `h0` using `[nsmul_eq_mul, Nat.cast_pow]`. Rewrite using `[map_mul, map_pow, map_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0`. Establish `h2 : (q : ℤ_[q]) ^ a ∣ (q : ℤ_[q]) ^ (a - n) * x`. Rewrite using `[← Ideal.mem_span_singleton, ← PadicInt.ker_toZModPow, RingHom.mem_ker]`. Conclude with `h1`. Establish `hsplit : (q : ℤ_[q]) ^ a = (q : ℤ_[q]) ^ (a - n) * (q : ℤ_[q]) ^ n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite `h2` using `[hsplit]`. Establish `h3 : (q : ℤ_[q]) ^ n ∣ x` using `(mul_dvd_mul_iff_left (pow_ne_zero _ (Nat.cast_ne_zero.2 hq.out.ne_zero))).1 h2`.
-
-Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZModPow, Ideal.mem_span_singleton]`. Conclude with `h3`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_dvd_addOrderOf_toZModPow {q : ℕ} [hq : Fact q.Prime] {n e a : ℕ} (hna : n + e ≤ a)
     {x : ℤ_[q]} (hx : PadicInt.toZModPow n x ≠ 0) :
@@ -91,9 +89,9 @@ theorem pow_dvd_addOrderOf_toZModPow {q : ℕ} [hq : Fact q.Prime] {n e a : ℕ}
   exact h3
 
 /- English proof (translation)
-Set `f : Multiplicative (ZMod r) →* Multiplicative (ZMod ((q : ℕ) ^ a))` to `AddMonoidHom.toMultiplicative (ZMod.castHom hqr (ZMod ((q : ℕ) ^ a))).toAddMonoidHom`. Use `dvd_trans ?_ (orderOf_map_dvd f _)` and prove the remaining obligations. Establish `hf : f (degreeMod r σ) = Multiplicative.ofAdd (PadicInt.toZModPow a (Multiplicative.toAdd (degreeComponent q σ)))`. Rewrite using `[← toPadicInt_degree, toZModPow_toPadicInt]`. Conclude with `congrArg Multiplicative.ofAdd (ProfiniteInteger.castHom_proj (m := primePowPNat (q : ℕ) a) hqr (Multiplicative.toAdd (degree σ)))`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, orderOf_ofAdd_eq_addOrderOf]`. Conclude with `pow_dvd_addOrderOf_toZModPow hna hσ`.
+A detailed English derivation is pending.
 -/
 theorem pow_dvd_orderOf_degreeMod (r : ℕ+) (q : Nat.Primes) {n e a : ℕ} (hqr : (q : ℕ) ^ a ∣ (r : ℕ))
     (hna : n + e ≤ a) {σ : Gal(ℚ̄/ℚ)}
@@ -111,9 +109,9 @@ theorem pow_dvd_orderOf_degreeMod (r : ℕ+) (q : Nat.Primes) {n e a : ℕ} (hqr
   exact pow_dvd_addOrderOf_toZModPow hna hσ
 
 /- English proof (translation)
-Establish `hA : Nat.card A ≠ 0` using `Nat.card_pos.ne'`. Use `(Nat.factorization_prime_le_iff_dvd hm hA).1 fun q hq => ?_` and prove the remaining obligations. Distinguish the cases in `hqm : q ∣ m`. Take `⟨y, hy, hdvd⟩` from `h q hq hqm`. Establish `h1 : orderOf y ∣ Nat.card A`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `orderOf_dvd_natCard (⟨y, hy⟩ : A)` as an intermediate fact. Rewrite `this` using `[Subgroup.orderOf_mk]`. Then use the resulting hypothesis. Conclude with `(hq.pow_dvd_iff_le_factorization hA).1 (hdvd.trans h1)`. Rewrite using `[Nat.factorization_eq_zero_of_not_dvd hqm]`. Conclude with `Nat.zero_le _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_natCard_of_forall_pow_dvd_orderOf {G : Type*} [Group G] [Finite G] (A : Subgroup G)
     {m : ℕ} (hm : m ≠ 0)
@@ -135,11 +133,11 @@ end Order
 section Primes
 
 /- English proof (translation)
-Set `_ : Algebra (𝓞 E.1) (𝓞 ℚ̄)` to `(ringOfIntegersIncl E.1).toAlgebra`. Establish `: IsScalarTower ℤ (𝓞 E.1) (𝓞 ℚ̄)` using `IsScalarTower.of_algebraMap_eq fun x => by simp`. Establish `: Algebra.IsIntegral ℤ (𝓞 ℚ̄)` using `⟨fun b => RingOfIntegers.isIntegral b⟩`. Establish `: Algebra.IsIntegral (𝓞 E.1) (𝓞 ℚ̄)` using `Algebra.IsIntegral.tower_top ℤ`. Establish `hinj : Function.Injective (ringOfIntegersIncl E.1)` using `fun a b h => RingOfIntegers.ext (Subtype.ext (congrArg (fun y : 𝓞 ℚ̄ => (y : ℚ̄)) h))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : (⊥ : Ideal (𝓞 ℚ̄)).comap (ringOfIntegersIncl E.1) = ⊥`. Rewrite using `[← RingHom.ker_eq_comap_bot]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 hinj`. Use `w.isPrime` as an intermediate fact. Take `⟨P, -, hP, hPw⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral w.asIdeal (⊥ : Ideal (𝓞 ℚ̄)) (hker.le.trans bot_le)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨P, hP, hPw⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_prime_comap_eq (E : FiniteSubfield) (w : HeightOneSpectrum (𝓞 E.1)) :
     ∃ P : Ideal (𝓞 ℚ̄), P.IsPrime ∧ P.comap (ringOfIntegersIncl E.1) = w.asIdeal := by
@@ -158,7 +156,7 @@ theorem exists_prime_comap_eq (E : FiniteSubfield) (w : HeightOneSpectrum (𝓞 
   exact ⟨P, hP, hPw⟩
 
 /- English proof (translation)
-Establish `h : ringOfIntegersIncl K.1 = (ringOfIntegersIncl E.1).comp (algebraMap (𝓞 K.1) (𝓞 E.1))` using `RingHom.ext fun _ => rfl`. Rewrite using `[h, ← Ideal.comap_comap, hP, Ideal.over_def w.asIdeal v.asIdeal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_eq_of_liesOver {K E : FiniteSubfield} [Fact (K ≤ E)] {v : HeightOneSpectrum (𝓞 K.1)}
     (w : HeightOneSpectrum (𝓞 E.1)) [w.asIdeal.LiesOver v.asIdeal] {P : Ideal (𝓞 ℚ̄)}
@@ -171,7 +169,7 @@ theorem comap_eq_of_liesOver {K E : FiniteSubfield} [Fact (K ≤ E)] {v : Height
 variable (K : FiniteSubfield) (r : ℕ+)
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[MulAction.mem_stabilizer_iff]`. Use extensionality with `x`. Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem, Ideal.mem_comap, Ideal.mem_comap, ← map_inv]`. Establish `hx : ringOfIntegersIncl (cyclotomicLayer K r).1 (restrictHom (E` using `cyclotomicLayer K r) g⁻¹ • x) = ((g : Gal(ℚ̄/ℚ)))⁻¹ • ringOfIntegersIncl (cyclotomicLayer K r).1 x := RingOfIntegers.ext rfl`. Rewrite using `[hx, ← Ideal.mem_pointwise_smul_iff_inv_smul_mem, hg]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictHom_mem_stabilizer (P : Ideal (𝓞 ℚ̄)) (g : K.1.fixingSubgroup)
     (hg : (g : Gal(ℚ̄/ℚ)) ∈ MulAction.stabilizer Gal(ℚ̄/ℚ) P) :
@@ -190,15 +188,13 @@ end Primes
 section Main
 
 /- English proof (translation)
-Use `choose n hn using fun (v : HeightOneSpectrum (𝓞 K.1)) (q : Nat.Primes) => exists_mem_stabilizer_toZModPow_degreeComponent_ne_zero (K := K) v q`. Set `N : ℕ` to `S.sup fun v => m.primeFactors.attach.sup fun q => n v ⟨q.1, Nat.prime_of_mem_primeFactors q.2⟩`. Take `⟨r, hr⟩ : ∃ r : ℕ+, (r : ℕ) = m ^ (N + 1)` from `⟨⟨m ^ (N + 1), pow_pos (Nat.pos_of_ne_zero hm) _⟩, rfl⟩`. Use `⟨r, fun v hv w => ?_⟩` and prove the remaining obligations. Rewrite using `[SemiLocal.finrank_eq_ramificationIdx_mul_inertiaDeg _ v w.1, ← card_decompositionGroup v w.1]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `dvd_trans ?_ (Subgroup.card_map_dvd _ (layerDegree K _))` and prove the remaining obligations. Use `dvd_natCard_of_forall_pow_dvd_orderOf _ hm fun q hq hqm => ?_` and prove the remaining obligations. Take `⟨P, hP, hPw⟩` from `exists_prime_comap_eq (cyclotomicLayer K _) w.1`. Establish `hPv : P.comap (ringOfIntegersIncl K.1) = v.asIdeal` using `comap_eq_of_liesOver w.1 hPw`. Take `⟨σ, hσP, hσK, hσ⟩` from `hn v ⟨q, hq⟩ P hP hPv`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨degreeMod _ σ, Subgroup.mem_map.2 ⟨restrictHom (E := cyclotomicLayer K _) ⟨σ, hσK⟩, ?_, layerDegree_restrictHom K _ _⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hPw]`. Conclude with `restrictHom_mem_stabilizer K _ P ⟨σ, hσK⟩ hσP`. Establish `hnN : n v ⟨q, hq⟩ ≤ N`. Establish `hqmem : q ∈ m.primeFactors` using `Nat.mem_primeFactors.2 ⟨hq, hqm, hm⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_trans ?_ (Finset.le_sup (f := fun v => m.primeFactors.attach.sup fun q => n v ⟨q.1, Nat.prime_of_mem_primeFactors q.2⟩) hv)` and prove the remaining obligations. Conclude with `Finset.le_sup (f := fun q : m.primeFactors => n v ⟨q.1, Nat.prime_of_mem_primeFactors q.2⟩) (Finset.mem_attach _ ⟨q, hqmem⟩)`. Establish `he : 1 ≤ m.factorization q` using `(hq.dvd_iff_one_le_factorization hm).1 hqm`. Establish `hqr : q ^ (N + m.factorization q) ∣ m ^ (N + 1)`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `pow_dvd_orderOf_degreeMod r ⟨q, hq⟩ (hr ▸ hqr) (by omega) hσ`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_dvd_finrank_cyclotomicLayer (K : FiniteSubfield) (S : Finset (HeightOneSpectrum (𝓞 K.1)))
     {m : ℕ} (hm : m ≠ 0) :
@@ -236,7 +232,7 @@ theorem exists_dvd_finrank_cyclotomicLayer (K : FiniteSubfield) (S : Finset (Hei
     exact pow_dvd_orderOf_degreeMod r ⟨q, hq⟩ (hr ▸ hqr) (by omega) hσ
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_dvd_finrank_cyclotomicLayer K S hm`. Conclude with `⟨cyclotomicLayer K r, inferInstance, inferInstance, inferInstance, cyclotomicLayer_le K r, hr⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cyclic_layer_dvd_localDegree (K : FiniteSubfield)
     (S : Finset (HeightOneSpectrum (𝓞 K.1))) {m : ℕ} (hm : m ≠ 0) :

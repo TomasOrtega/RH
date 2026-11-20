@@ -22,7 +22,7 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace DivisorReduction
 
 /- English proof (translation)
-The claim follows from `(AlgebraicGeometry.Scheme.IdealSheafData.ker_subschemeι D).ge.trans (AlgebraicGeometry.Scheme.Hom.le_ker_comp g _)`.
+A detailed English derivation is pending.
 -/
 private theorem le_ker_comp_subschemeι {X : Scheme.{u}} (D : X.IdealSheafData) {W : Scheme.{u}}
     (g : W ⟶ D.subscheme) : D ≤ AlgebraicGeometry.Scheme.Hom.ker (g ≫ D.subschemeι) :=
@@ -40,15 +40,13 @@ abbrev boundaryComponentsInOrderLocusOpens (T : MarkedIdealWithBoundary.{u}) (j 
   ⟨boundaryComponentsInOrderLocus T j hj, h⟩
 
 /- English proof (translation)
-The claim follows from `hV.one_le_mult`.
+A detailed English derivation is pending.
 -/
 theorem one_le_mult_of_isAdmissible (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) : 1 ≤ T.mult :=
   hV.one_le_mult
 
 /- English proof (translation)
-Establish `hmem : T.boundary.get ⟨j, hj⟩ ∈ T.boundary`. Simplify using `only [List.get_eq_getElem]`. Conclude with `List.getElem_mem hj`. Establish `hD : IsSmoothDivisor T.structMap (T.boundary.get ⟨j, hj⟩)` using `((inStrictNormalCrossingPosition_iff T.structMap T.boundary).1 hV.snc).1 _ hmem`. Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_zero]`.
-
-Conclude with `PrincipalizationIsoTransport.isSmoothDivisor_comap_iso T.structMap s.toSequenceOfBlowups.isoZero _ hD`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmoothDivisor_boundary_comap_isoObjZero (T : MarkedIdealWithBoundary.{u}) (hV : T.IsAdmissible) (j : ℕ)
     (hj : j < T.boundary.length) (s : T.SequenceOfBlowups) :
@@ -62,7 +60,7 @@ theorem isSmoothDivisor_boundary_comap_isoObjZero (T : MarkedIdealWithBoundary.{
   exact PrincipalizationIsoTransport.isSmoothDivisor_comap_iso T.structMap s.toSequenceOfBlowups.isoZero _ hD
 
 /- English proof (translation)
-The claim follows from `containedComponentsIdeal_eq_ker_ι_comp_subschemeι_of_isOpen T j hj h`.
+A detailed English derivation is pending.
 -/
 theorem containedComponentsIdeal_eq_ker_of_isOpen (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) (h : IsOpen (boundaryComponentsInOrderLocus T j hj)) :
@@ -72,7 +70,7 @@ theorem containedComponentsIdeal_eq_ker_of_isOpen (T : MarkedIdealWithBoundary.{
   containedComponentsIdeal_eq_ker_ι_comp_subschemeι_of_isOpen T j hj h
 
 /- English proof (translation)
-The claim follows from `containedComponentsIdeal_eq_top_of_not_isOpen_setOf_connectedComponent T j hj h`.
+A detailed English derivation is pending.
 -/
 theorem containedComponentsIdeal_eq_top_of_not_isOpen_locus (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) (h : ¬ IsOpen (boundaryComponentsInOrderLocus T j hj)) :
@@ -80,7 +78,7 @@ theorem containedComponentsIdeal_eq_top_of_not_isOpen_locus (T : MarkedIdealWith
   containedComponentsIdeal_eq_top_of_not_isOpen_setOf_connectedComponent T j hj h
 
 /- English proof (translation)
-Distinguish the cases in `h : IsOpen (boundaryComponentsInOrderLocus T j hj)`. Rewrite using `[containedComponentsIdeal_eq_ker_of_isOpen T j hj h]`. Conclude with `SetLike.coe_subset_coe.mpr (AlgebraicGeometry.Scheme.IdealSheafData.support_antitone (le_ker_comp_subschemeι (T.boundary.get ⟨j, hj⟩) (boundaryComponentsInOrderLocusOpens T j hj h).ι))`. Rewrite using `[containedComponentsIdeal_eq_top_of_not_isOpen_locus T j hj h, AlgebraicGeometry.Scheme.IdealSheafData.support_top, TopologicalSpace.Closeds.coe_bot]`. Conclude with `Set.empty_subset _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem support_containedComponentsIdeal_subset_support_boundary (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) :
@@ -104,7 +102,7 @@ def PreimageSupportEqComponentsInOrderLocus (T : MarkedIdealWithBoundary.{u}) (j
       boundaryComponentsInOrderLocus T j hj
 
 /- English proof (translation)
-Distinguish the cases in `h : IsOpen (boundaryComponentsInOrderLocus T j hj)`. Rewrite using `[containedComponentsIdeal_eq_ker_of_isOpen T j hj h, hc h]`. Conclude with `h`. Rewrite using `[containedComponentsIdeal_eq_top_of_not_isOpen_locus T j hj h, AlgebraicGeometry.Scheme.IdealSheafData.support_top, TopologicalSpace.Closeds.coe_bot, Set.preimage_empty]`. Conclude with `isOpen_empty`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_preimage_support_containedComponentsIdeal (T : MarkedIdealWithBoundary.{u}) (j : ℕ)
     (hj : j < T.boundary.length) (hc : PreimageSupportEqComponentsInOrderLocus T j hj) :

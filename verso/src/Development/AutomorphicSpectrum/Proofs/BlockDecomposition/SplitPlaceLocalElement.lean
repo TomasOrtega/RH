@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.NormSplit
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[GlobalTheory.ThetaPull.thetaGL_apply, GlobalTheory.ThetaPull.thetaGL_apply, ← map_inv]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem thetaGL_eq_id_map {R : Type} [CommRing R] (a : ℕ) (c : R →+* R) (g : GL (Fin a) R) :
     thetaGL a c g = thetaGL a (RingHom.id _) (GeneralLinearGroup.map c g) := by
@@ -21,9 +21,9 @@ theorem thetaGL_eq_id_map {R : Type} [CommRing R] (a : ℕ) (c : R →+* R) (g :
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ n w δ hs`. Unfold `locEl`. Rewrite using `[if_pos hs, map_mul]`. Use `congr 1`. Unfold `thE`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Rewrite using `[thetaGL_eq_id_map n (IsCMField.complexConj E).toRingEquiv.toRingHom δ]`. Conclude with `(GlobalTheory.ThetaPull.map_thetaGL (algebraMap E (w.adicCompletion E)) (RingHom.id _) (RingHom.id _) (fun _ => rfl) _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratW_mul_thetaGL : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E) (δ : GL (Fin n) E), IsSplitAt w →
     ratW n w δ * thetaGL n (RingHom.id _) (ratW n w (GeneralLinearGroup.map (IsCMField.complexConj E).toRingEquiv.toRingHom δ)) = locEl n w δ := by

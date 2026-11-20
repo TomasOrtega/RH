@@ -7,24 +7,22 @@ open NumberField IsDedekindDomain IntermediateField UpperTheory.V.Kum UpperTheor
 open scoped Pointwise
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qi16.rayPrime_span v p hp hv`.
+A detailed English derivation is pending.
 -/
 private theorem rayPrime_span (v : HeightOneSpectrum (𝓞 ℚ)) (p : ℕ) (hp : p.Prime)
     (hv : (p : 𝓞 ℚ) ∈ v.asIdeal) : v.asIdeal = Ideal.span {(p : 𝓞 ℚ)} :=
   _root_.UpperTheory.Reformulated.B.Qi16.rayPrime_span v p hp hv
 
 /- English proof (translation)
-Introduce `𝔪 v p hp hpv hmod`. Establish `hm : (p : 𝓞 ℚ) - 1 ∈ 𝔪.ideal`. Take `⟨c, hc⟩` from `(Nat.modEq_iff_dvd' hp.one_le).1 hmod.symm`. Establish `: (p : 𝓞 ℚ) - 1 = (Ideal.absNorm 𝔪.ideal : 𝓞 ℚ) * c`. Rewrite using `[← Nat.cast_mul, ← hc, Nat.cast_sub hp.one_le, Nat.cast_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)`. Establish `hv : ¬ v.asIdeal ∣ 𝔪.ideal`. Introduce `h`. Establish `h1` using `(Ideal.dvd_iff_le.1 h) hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `v.asIdeal.sub_mem hpv h1`. Rewrite `h2` using `[sub_sub_cancel]`. Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h2)`. Use `⟨hv, ?_⟩` and prove the remaining obligations. Establish `hp0 : (p : ℚ) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `GroundTheory.Global.Modulus.primeClass`. Rewrite using `[QuotientGroup.eq_one_iff, GroundTheory.Global.Modulus.mem_principalRay]`. Use `⟨Units.mk0 (p : ℚ) hp0, 𝔪.mem_rayUnits.2 ⟨fun w hw => ?_, fun w _ => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `e : ((Units.mk0 (p : ℚ) hp0 : ℚˣ) : ℚ) - 1 = algebraMap (𝓞 ℚ) ℚ ((p : 𝓞 ℚ) - 1)` using `by simp`. Rewrite using `[e, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_le_pow_iff_mem]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Ideal.dvd_iff_le.1 (𝔪.asIdeal_pow_exponent_dvd w) hm`. Simplify using `using hp.pos`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[coe_toPrincipalIdeal]`. Express the relevant statement in the definitionally equal form `_ = ((v.asIdeal : Ideal (𝓞 ℚ)) : FractionalIdeal (nonZeroDivisors (𝓞 ℚ)) ℚ)`.
-
-Rewrite using `[rayPrime_span v p hp hpv, FractionalIdeal.coeIdeal_span_singleton]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CF.rayPrime :
     ∀ (𝔪 : GroundTheory.Global.Modulus ℚ) (v : HeightOneSpectrum (𝓞 ℚ)) (p : ℕ), p.Prime → (p : 𝓞 ℚ) ∈ v.asIdeal → p ≡ 1 [MOD Ideal.absNorm 𝔪.ideal] → ∃ hv : ¬ v.asIdeal ∣ 𝔪.ideal, 𝔪.primeClass hv = 1 := by

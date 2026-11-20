@@ -11,9 +11,9 @@ noncomputable section
 variable {σ : Type*}
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (RingHom.ker (eval w : MvPolynomial σ ℂ →+* ℂ)).primeCompl y`. Use `⟨a, s, fun h ↦ s.2 (RingHom.mem_ker.2 h), ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (Ideal.Quotient.mk (I.map (algebraMap (MvPolynomial σ ℂ) (Localization.AtPrime (RingHom.ker (eval w : MvPolynomial σ ℂ →+* ℂ)))))) (IsLocalization.mk'_spec (Localization.AtPrime (RingHom.ker (eval w : MvPolynomial σ ℂ →+* ℂ))) a s)`. Rewrite `h` using `[map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem pointLocalRing_exists_mul_eq (I : Ideal (MvPolynomial σ ℂ)) (w : σ → ℂ) (x : pointLocalRing I w) :
     ∃ a s : MvPolynomial σ ℂ, eval w s ≠ 0 ∧
@@ -29,9 +29,9 @@ theorem pointLocalRing_exists_mul_eq (I : Ideal (MvPolynomial σ ℂ)) (w : σ �
   exact h
 
 /- English proof (translation)
-Use `set p := RingHom.ker (eval w : MvPolynomial σ ℂ →+* ℂ)`. Establish `hmem : algebraMap (MvPolynomial σ ℂ) (Localization.AtPrime p) g ∈ I.map (algebraMap (MvPolynomial σ ℂ) (Localization.AtPrime p))` using `Ideal.Quotient.eq_zero_iff_mem.1 hg`. Take `⟨⟨j, s⟩, hjs⟩` from `(IsLocalization.mem_map_algebraMap_iff p.primeCompl (Localization.AtPrime p)).1 hmem`. Use `⟨s, fun h ↦ s.2 (RingHom.mem_ker.2 h), ?_⟩` and prove the remaining obligations. Establish `hinj` using `IsLocalization.injective (Localization.AtPrime p) p.primeCompl_le_nonZeroDivisors`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (s : MvPolynomial σ ℂ) * g = j` using `hinj (by rw [map_mul, mul_comm]; exact hjs)`. Rewrite using `[this]`. Conclude with `j.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pointLocalRing_exists_mul_mem (I : Ideal (MvPolynomial σ ℂ)) (w : σ → ℂ) (g : MvPolynomial σ ℂ)
     (hg : algebraMap (MvPolynomial σ ℂ) (pointLocalRing I w) g = 0) :
@@ -48,13 +48,11 @@ theorem pointLocalRing_exists_mul_mem (I : Ideal (MvPolynomial σ ℂ)) (w : σ 
   exact j.2
 
 /- English proof (translation)
-Introduce `h0`. Use `set p := RingHom.ker (eval w : MvPolynomial σ ℂ →+* ℂ)`. Establish `hle : I.map (algebraMap (MvPolynomial σ ℂ) (Localization.AtPrime p)) ≤ IsLocalRing.maximalIdeal (Localization.AtPrime p)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap]`. Conclude with `(IsLocalization.AtPrime.to_map_mem_maximal_iff _ _ g).2 (RingHom.mem_ker.2 (hw g hg))`. Establish `hum : algebraMap (MvPolynomial σ ℂ) (Localization.AtPrime p) u ∈ IsLocalRing.maximalIdeal (Localization.AtPrime p)` using `(IsLocalization.AtPrime.to_map_mem_maximal_iff _ _ u).2 (RingHom.mem_ker.2 h0)`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective v`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv' : Ideal.Quotient.mk (I.map (algebraMap (MvPolynomial σ ℂ) (Localization.AtPrime p))) (algebraMap (MvPolynomial σ ℂ) (Localization.AtPrime p) u * z) = Ideal.Quotient.mk _ 1`. Rewrite using `[map_mul, map_one]`. Conclude with `hv`. Establish `hd` using `hle (Ideal.Quotient.eq.1 hv')`. Establish `h1 : (1 : Localization.AtPrime p) ∈ IsLocalRing.maximalIdeal (Localization.AtPrime p)`.
-
-Use `(IsLocalRing.maximalIdeal (Localization.AtPrime p)).sub_mem (Ideal.mul_mem_right z _ hum) hd` as an intermediate fact. Simplify using `at this`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal _).ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pointLocalRing_eval_ne_zero_of_isUnit (I : Ideal (MvPolynomial σ ℂ)) (w : σ → ℂ)
     (hw : w ∈ IndefiniteRowSideFullHecke.ComplexSets.zeroSetIn I) (u : MvPolynomial σ ℂ)
@@ -84,7 +82,7 @@ theorem pointLocalRing_eval_ne_zero_of_isUnit (I : Ideal (MvPolynomial σ ℂ)) 
   exact (IsLocalRing.maximalIdeal.isMaximal _).ne_top ((Ideal.eq_top_iff_one _).2 h1)
 
 /- English proof (translation)
-Rewrite using `[Ring.ord_zero]`. Assume the negation of the conclusion as `h`. Establish `hfin` using `Module.length_ne_top_iff.1 h`. Take `⟨_, _⟩` from `isFiniteLength_iff_isNoetherian_isArtinian.1 hfin`. Conclude with `IsDiscreteValuationRing.not_isField R (IsArtinianRing.isField_of_isDomain R)`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ord_zero_eq_top_of_dvr (R : Type*) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] :
     Ring.ord R 0 = ⊤ := by
@@ -95,7 +93,7 @@ theorem ord_zero_eq_top_of_dvr (R : Type*) [CommRing R] [IsDomain R] [IsDiscrete
   exact IsDiscreteValuationRing.not_isField R (IsArtinianRing.isField_of_isDomain R)
 
 /- English proof (translation)
-Rewrite using `[Ring.ord_pow (mem_nonZeroDivisors_of_ne_zero hϖ.ne_zero), Ring.ord_of_irreducible hϖ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ord_pow_irreducible_of_dvr {R : Type*} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     {ϖ : R} (hϖ : Irreducible ϖ) (e : ℕ) : Ring.ord R (ϖ ^ e) = e := by
@@ -103,9 +101,7 @@ theorem ord_pow_irreducible_of_dvr {R : Type*} [CommRing R] [IsDomain R] [IsDisc
   simp
 
 /- English proof (translation)
-Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [eval_add]`. Conclude with `hp.add hq`. Consider the case `mul_X p i hp => simp only [eval_mul, eval_X]`.
-
-Conclude with `hp.mul (differentiable_apply i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem differentiable_eval_pointLocal [Fintype σ] (q : MvPolynomial σ ℂ) :
     Differentiable ℂ fun z : σ → ℂ ↦ eval z q := by
@@ -115,9 +111,9 @@ theorem differentiable_eval_pointLocal [Fintype σ] (q : MvPolynomial σ ℂ) :
   | mul_X p i hp => simp only [eval_mul, eval_X]; exact hp.mul (differentiable_apply i)
 
 /- English proof (translation)
-Establish `hc : DifferentiableOn ℂ (fun τ : ℂ ↦ (fun _ : Fin 1 ↦ τ)) (Metric.ball 0 r)` using `(differentiable_pi.2 fun _ ↦ differentiable_id).differentiableOn`. Establish `hmaps : Set.MapsTo (fun τ : ℂ ↦ (fun _ : Fin 1 ↦ τ)) (Metric.ball 0 r) (Metric.ball 0 r)`. Introduce `τ hτ`. Rewrite `hτ`, the goal using `[mem_ball_zero_iff]`. Conclude with `lt_of_le_of_lt (pi_norm_const_le τ) hτ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : DifferentiableOn ℂ (fun τ : ℂ ↦ eval (φ fun _ ↦ τ) g) (Metric.ball 0 r)` using `(differentiable_eval_pointLocal g).comp_differentiableOn (hφ.comp hc hmaps)`. Conclude with `hd.analyticAt (Metric.ball_mem_nhds 0 hr)`.
+A detailed English derivation is pending.
 -/
 theorem analyticAt_eval_disc [Fintype σ] {r : ℝ} (hr : 0 < r) {φ : (Fin 1 → ℂ) → σ → ℂ}
     (hφ : DifferentiableOn ℂ φ (Metric.ball 0 r)) (g : MvPolynomial σ ℂ) :

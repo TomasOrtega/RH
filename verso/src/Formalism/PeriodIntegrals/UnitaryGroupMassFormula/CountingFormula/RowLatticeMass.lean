@@ -20,21 +20,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 /- English proof (translation)
-Introduce `D u u' _ F0 what₂ hrows`. Take `⟨hK, hF, -⟩` from `field_dictionary_holds D`. Take `⟨hd, hk⟩` from `anisotropic_complement_definite D u F0`. Establish `hGH : GlueHyp D.host.E D.host.F (hWb D F0) (zbar D F0) (D.mem u).A.T` using `⟨hK, hF, hWb_isSymm D F0, hWb_zbar D F0, (D.mem u).A.T_prime.pos, hd⟩`. Establish `hrl : ∀ Λ ∈ what₂, IsRowLat D F0 Λ` using `hrows.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Set.InjOn (Mof D F0) (what₂ : Set (Submodule (𝓞 D.host.E) (VS D).V))`. Introduce `Λ₁ h₁ Λ₂ h₂ he`. Take `⟨γ, hγ, hγe⟩` from `(row_class_holds D u F0 Λ₁ Λ₂ (hrl Λ₁ h₁) (hrl Λ₂ h₂)).2 ⟨1, one_mem_hz D _ _, by rw [gmap_one' D, he]⟩`. Take `⟨Λ', _, hu⟩` from `hrows.2 Λ₂ (hrl Λ₂ h₂)`. Establish `e1` using `hu Λ₁ ⟨h₁, γ, hγ, hγe⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2` using `hu Λ₂ ⟨h₂, 1, one_mem_stabF D F0, gmap_one' D Λ₂⟩`. Rewrite using `[e1, e2]`. Establish `hreps : IsHzReps (hWb D F0) (zbar D F0) (what₂.image (Mof D F0))`. Use `⟨fun M hM => ?_, fun M hM => ?_⟩` and prove the remaining obligations. Take `⟨Λ, hΛ, rfl⟩` from `Finset.mem_image.1 hM`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `row_lattice_mass_holds D u F0 Λ (hrl Λ hΛ)`. Take `⟨Λ, hΛ, rfl⟩` from `row_surjective D u F0 M hM`. Take `⟨Λ', ⟨hΛ'm, γ, hγ, hγΛ'⟩, hu⟩` from `hrows.2 Λ hΛ`. Take `⟨σ, hσ, hσM⟩` from `(row_class_holds D u F0 Λ' Λ (hrl Λ' hΛ'm) hΛ).1 ⟨γ, hγ, hγΛ'⟩`. Use `⟨Mof D F0 Λ', ⟨Finset.mem_image_of_mem _ hΛ'm, σ, hσ, hσM⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `M'' ⟨hM'', σ', hσ', hσ'M⟩`. Take `⟨Λ'', hΛ''m, rfl⟩` from `Finset.mem_image.1 hM''`. Take `⟨γ'', hγ'', hγ''Λ⟩` from `(row_class_holds D u F0 Λ'' Λ (hrl Λ'' hΛ''m) hΛ).2 ⟨σ', hσ', hσ'M⟩`. Rewrite using `[hu Λ'' ⟨hΛ''m, γ'', hγ'', hγ''Λ⟩]`. Establish `hk2 : 2 ≤ finrank D.host.E (wPerp (hWb D F0) (zbar D F0))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk]`. Use `D.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hne : ∃ M, IsGlueLat (hWb D F0) (zbar D F0) M` using `GluedLatticeMass.glued_exists hGH hk2 ⟨Mof D F0 (VS D).L0, RowMPf.Mof_isLattice D F0 _ (VS D).standardTuple_isLattice, RowMPf.Mof_unimod D F0 _ (VS D).standardTuple_isLattice (VS D).baseLattice_isUnimodular⟩`. Establish `e` using `GluedLatticeMass.glued_lattice_mass_formula hGH (by omega) hne hreps`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hk]`. Rewrite using `[← e, Finset.sum_image hinj]`. Unfold `Formalism.MainNotions.S.Cnt.massRows`. Use `Finset.sum_congr rfl fun Λ hΛ => ?_` and prove the remaining obligations. Unfold `wRow`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[row_weight_formula D u F0 Λ (hrl Λ hΛ)]`.
+A detailed English derivation is pending.
 -/
 theorem row_lattice_mass : RowsMass := by
   intro D u u' _ F0 what₂ hrows
@@ -82,6 +82,6 @@ end PI.UnitaryGroupMassFormula.CntFormula.RowsMassW
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.row_lattice_mass`.
+A detailed English derivation is pending.
 -/
 example : Formalism.L2.SG.Pf.Cnt.RowsMass := PI.UnitaryGroupMassFormula.CntFormula.RowsMassW.row_lattice_mass

@@ -20,7 +20,7 @@ def signEquiv {n : ℕ} (ε : Fin n → Bool) {p q : ℕ} (hp : (Finset.univ.fil
       (Fintype.equivFinOfCardEq (by rw [Fintype.card_subtype]; simpa using hq)))
 
 /- English proof (translation)
-Simplify using `only [signEquiv, Equiv.symm_trans_apply, Equiv.symm_symm, Equiv.sumCongr_symm, Equiv.sumCongr_apply, Sum.map_inl, Equiv.sumCompl_apply_inl]`. Generalize the expression as in `(Fintype.equivFinOfCardEq (α := {a // ε a = true}) _).symm i = x`. Conclude with `x.2`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. A detailed English derivation is pending.
 -/
 theorem signEquiv_inl {n : ℕ} {ε : Fin n → Bool} {p q : ℕ} (hp : (Finset.univ.filter fun a => ε a = true).card = p)
     (hq : (Finset.univ.filter fun a => ε a = false).card = q) (i : Fin p) : ε ((signEquiv ε hp hq).symm (Sum.inl i)) = true := by
@@ -30,7 +30,7 @@ theorem signEquiv_inl {n : ℕ} {ε : Fin n → Bool} {p q : ℕ} (hp : (Finset.
   exact x.2
 
 /- English proof (translation)
-Simplify using `only [signEquiv, Equiv.symm_trans_apply, Equiv.symm_symm, Equiv.sumCongr_symm, Equiv.sumCongr_apply, Sum.map_inr, Equiv.sumCompl_apply_inr]`. Generalize the expression as in `(Fintype.equivFinOfCardEq (α := {a // ¬ ε a = true}) _).symm i = x`. Simplify using `using x.2`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem signEquiv_inr {n : ℕ} {ε : Fin n → Bool} {p q : ℕ} (hp : (Finset.univ.filter fun a => ε a = true).card = p)
     (hq : (Finset.univ.filter fun a => ε a = false).card = q) (i : Fin q) : ε ((signEquiv ε hp hq).symm (Sum.inr i)) = false := by
@@ -40,7 +40,7 @@ theorem signEquiv_inr {n : ℕ} {ε : Fin n → Bool} {p q : ℕ} (hp : (Finset.
   simpa using x.2
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.TowerSplit.hasSignature_of_model M τ`. Rewrite `h1` using `[GlobalTheory.TowerSplit.signCard_of_isEnum (M.enum τ), GlobalTheory.TowerSplit.signCard_of_isEnum (M.enum τ)]`. Conclude with `(Formalism.UG.P.signature_unique _ _ _ _ _ _ h1 (hV (tauE D τ))).1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_true (M : DSModel V S) (hV : V.SigOK) (τ : D.what₂.Tau) :
     (Finset.univ.filter fun a => M.ε τ a = true).card = (V.sig (tauE D τ)).1 := by
@@ -49,7 +49,7 @@ theorem card_true (M : DSModel V S) (hV : V.SigOK) (τ : D.what₂.Tau) :
   exact (Formalism.UG.P.signature_unique _ _ _ _ _ _ h1 (hV (tauE D τ))).1
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.TowerSplit.hasSignature_of_model M τ`. Rewrite `h1` using `[GlobalTheory.TowerSplit.signCard_of_isEnum (M.enum τ), GlobalTheory.TowerSplit.signCard_of_isEnum (M.enum τ)]`. Conclude with `(Formalism.UG.P.signature_unique _ _ _ _ _ _ h1 (hV (tauE D τ))).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_false (M : DSModel V S) (hV : V.SigOK) (τ : D.what₂.Tau) :
     (Finset.univ.filter fun a => M.ε τ a = false).card = (V.sig (tauE D τ)).2 := by
@@ -61,13 +61,13 @@ def sortedFrame (M : DSModel V S) (hV : V.SigOK) : GlobalTheory.Mem.Th.CptF V :=
   (M.fr τ).submatrix (signEquiv (M.ε τ) (card_true M hV τ) (card_false M hV τ)).symm id
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [submatrix_apply, Formalism.REAL.Jm, diagonal_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[if_pos rfl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Break down `h1 : signEquiv ε hp hq a with i | i` into its components or cases. Use `signEquiv_inl hp hq i` as an intermediate fact. Rewrite `this` using `[← h1, Equiv.symm_apply_apply]`. Simplify using `[Formalism.UG.Jpq, this]`. Use `signEquiv_inr hp hq i` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[← h1, Equiv.symm_apply_apply]`. Simplify using `[Formalism.UG.Jpq, this]`. Establish `hne : signEquiv ε hp hq a ≠ signEquiv ε hp hq b` using `(signEquiv ε hp hq).injective.ne hab`. Rewrite using `[if_neg hab]`. Apply the tactic sequence `rcases h1 : signEquiv ε hp hq a with i | i <;> rcases h2 : signEquiv ε hp hq b with j | j <;> rw [h1, h2] at hne <;>`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[Formalism.UG.Jpq, Matrix.one_apply]`.
+Simplify the hypotheses and the goal together.
 -/
 theorem Jpq_submatrix {n : ℕ} {ε : Fin n → Bool} {p q : ℕ} (hp : (Finset.univ.filter fun a => ε a = true).card = p)
     (hq : (Finset.univ.filter fun a => ε a = false).card = q) :

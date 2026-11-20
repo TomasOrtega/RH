@@ -19,9 +19,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.OrVert.LieCmp
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Use `letI := i.toAlgebra`. Take `⟨j, hj, hl, hsp⟩` from `GlobalTheory.T.lie_model_base_change_map S G R R' x E E' M M'`. Establish `hbc` using `hsp hs`. Take `⟨m, ⟨b₁⟩⟩` from `GlobalTheory.T.lie_model_free_over_local_ring S G hs R x E M`.
+Substitute using the available equality. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨j, hj, ⟨hl, fun n b hb => LiePull.indep_of_bases b₁ j (fun m B => (hbc m B).1) b hb⟩, ?_⟩` and prove the remaining obligations. Use `top_le_iff.1 ((hbc m b₁).2.symm.le.trans (Submodule.span_mono ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exists_ext {S : Scheme.{0}} {G : Over S} [GrpObj G] (hs : Smooth G.hom) {R R' : Type} [Field R] [Field R']
     (i : R →+* R') (x : Sp R ⟶ S) (y : Sp R' ⟶ S) (hy : spMap i ≫ x = y) {E E' : Type} [AddCommGroup E] [Module R E]
@@ -41,9 +41,9 @@ theorem exists_ext {S : Scheme.{0}} {G : Over S} [GrpObj G] (hs : Smooth G.hom) 
 variable {Ω Ω₀ F F₀ : Type} [Field Ω] [Field Ω₀] [AddCommGroup F] [Module Ω F] [AddCommGroup F₀] [Module Ω₀ F₀]
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_le.2 fun x hx => ?_) (Submodule.span_mono Submodule.subset_span)` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span hx`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a x _ hx => exact Submodule.smul_mem _ (⟨(a : Ω), h _ a.2⟩ : W) hx`.
+Treat this case separately.
 -/
 theorem span_span (W A : Subring Ω) (h : ∀ a ∈ A, a ∈ W) (T : Set F) :
     Submodule.span W ((Submodule.span A T : Submodule A F) : Set F) = Submodule.span W T := by
@@ -55,7 +55,7 @@ theorem span_span (W A : Subring Ω) (h : ∀ a ∈ A, a ∈ W) (T : Set F) :
   | smul a x _ hx => exact Submodule.smul_mem _ (⟨(a : Ω), h _ a.2⟩ : W) hx
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.DYha5.main i ι hι W A h T`.
+A detailed English derivation is pending.
 -/
 theorem span_image_span (i : Ω₀ →+* Ω) (ι : F₀ →+ F) (hι : ∀ (a : Ω₀) (e : F₀), ι (a • e) = i a • ι e)
     (W : Subring Ω) (A : Subring Ω₀) (h : ∀ a ∈ A, i a ∈ W) (T : Set F₀) :
@@ -63,15 +63,15 @@ theorem span_image_span (i : Ω₀ →+* Ω) (ι : F₀ →+ F) (hι : ∀ (a : 
   _root_.UpperTheory.Reformulated.B.DYha5.main i ι hι W A h T
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S S₀ Ω Ω₀ _ _ K K₀ _ _ J J₀ y y₀ 𝔐 𝔐₀ Fl₀ i hh`. Establish `hs : Smooth Y.t.G.hom` using `Y.t.semi.smooth`. Take `⟨ι, hpt, hext, hspan⟩` from `exists_ext hs i (𝔐₀.ξ ≫ 𝔐₀.f) (𝔐.ξ ≫ 𝔐.f) hh.symm (LieMove.pushModel 𝔐₀.m.cart 𝔐₀.M) (LieMove.pushModel 𝔐.m.cart 𝔐.M)`. Establish `hpt' : ∀ e, (𝔐.M.pt (ι e)).left ≫ 𝔐.m.φ = spMap (dualMap i) ≫ (𝔐₀.M.pt e).left ≫ 𝔐₀.m.φ` using `hpt`. Establish `hd : GlobalTheory.CompanionTheory.Ar.Dominates 𝔐.ξ 𝔐₀.ξ₀ 𝔐.f (i.comp 𝔐₀.fn)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₀ : 𝔐₀.ξ ≫ 𝔐₀.f = Spec.map (CommRingCat.ofHom 𝔐₀.fn) ≫ 𝔐₀.ξ₀` using `𝔐₀.fn_over`. Use `show 𝔐.ξ ≫ 𝔐.f = _`. Rewrite using `[hh, h₀, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Establish `hj' : ∀ e, (𝔐.M.pt ((ι.comp Fl₀.j) e)).left ≫ 𝔐.m.φ = Spec.map (CommRingCat.ofHom (dualMap (i.comp 𝔐₀.fn))) ≫ (Fl₀.M₀.pt e).left`. Introduce `e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddMonoidHom.comp_apply, hpt', Fl₀.j_pt, ← LiePull.dualMap_comp, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Establish `m₀` using `(LiePull.main Y.X 𝔐₀.X 𝔐₀.Ω₀ Ω₀ 𝔐₀.ξ₀ 𝔐₀.ξ 𝔐₀.f 𝔐₀.fn Y.t.G 𝔐₀.t.G 𝔐₀.m.φ Fl₀.Li₀ 𝔐₀.Li Fl₀.M₀ 𝔐₀.M Fl₀.j 𝔐₀.gen₀ 𝔐₀.tie.gen 𝔐₀.fn_over 𝔐₀.m.cart hs Fl₀.j_pt).2.2`. Establish `m₁` using `(LiePull.main Y.X 𝔐.X 𝔐₀.Ω₀ Ω 𝔐₀.ξ₀ 𝔐.ξ 𝔐.f (i.comp 𝔐₀.fn) Y.t.G 𝔐.t.G 𝔐.m.φ Fl₀.Li₀ 𝔐.Li Fl₀.M₀ 𝔐.M (ι.comp Fl₀.j) 𝔐₀.gen₀ 𝔐.tie.gen hd 𝔐.m.cart hs hj').2.2`. Use `⟨ι, hext, hspan, fun e e' => ⟨fun h => ?_, ?_⟩, fun W q q₀ hq hq₀ hf => ?_⟩` and prove the remaining obligations. Conclude with `(LieMove.pushModel 𝔐.m.cart 𝔐.M).inj (Over.OverMorphism.ext (h.trans (hpt' e).symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hpt' e`. Establish `a₁` using `congrFun m₁ q`. Rewrite `a₁` using `[Lat.pull_apply _ hd]`. Establish `a₀` using `congrFun m₀ q₀`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `a₀` using `[Lat.pull_apply _ 𝔐₀.fn_over]`. Establish `es : (⟨𝔐.f q.1, hd.specializes q⟩ : Cpt 𝔐₀.ξ₀) = ⟨𝔐₀.f q₀.1, 𝔐₀.fn_over.specializes q₀⟩` using `Subtype.ext hf`. Rewrite using `[a₁, a₀, es, span_span W _ hq, span_image_span i ι hext.1 W _ hq₀, Set.image_image]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lie_cmp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S S₀ : Finset ℕ) (Ω Ω₀ : Type) [Field Ω] [Field Ω₀] (K K₀ : Type) [Fintype K] [Fintype K₀] (J : K → Type) (J₀ : K₀ → Type) (y : (Σ k, J k) → Ω) (y₀ : (Σ k, J₀ k) → Ω₀) (𝔐 : HodgeCpt Y S y) (𝔐₀ : HodgeCpt Y S₀ y₀) (Fl₀ : 𝔐₀.Flag) (i : Ω₀ →+* Ω), 𝔐.ξ ≫ 𝔐.f = spMap i ≫ 𝔐₀.ξ ≫ 𝔐₀.f → ∃ ι : 𝔐₀.Li →+ 𝔐.Li, IsExtOver i ι ∧ Submodule.span Ω (Set.range ι) = ⊤ ∧ (∀ (e : 𝔐₀.Li) (e' : 𝔐.Li), (𝔐.M.pt e').left ≫ 𝔐.m.φ = spMap (dualMap i) ≫ (𝔐₀.M.pt e).left ≫ 𝔐₀.m.φ ↔ e' = ι e) ∧ ∀ (W : Subring Ω) (q : Cpt 𝔐.ξ) (q₀ : Cpt 𝔐₀.ξ), (∀ a ∈ regAt 𝔐.ξ q, a ∈ W) → (∀ a ∈ regAt 𝔐₀.ξ q₀, i a ∈ W) → 𝔐.f q.1 = 𝔐₀.f q₀.1 → Submodule.span W ((𝔐.M.lat q : Set 𝔐.Li)) = Submodule.span W (ι '' (𝔐₀.M.lat q₀ : Set 𝔐₀.Li)) := by
   intro E _ _ _ H D l Xo c Y S S₀ Ω Ω₀ _ _ K K₀ _ _ J J₀ y y₀ 𝔐 𝔐₀ Fl₀ i hh

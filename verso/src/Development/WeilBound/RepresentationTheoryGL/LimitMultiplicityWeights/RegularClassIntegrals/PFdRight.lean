@@ -10,9 +10,9 @@ namespace MainStatements.WeightKernel.PFdRight
 end MainStatements.WeightKernel.PFdRight
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ Γ _ μ _ _ 𝓕 h𝓕 F hF g`. Establish `h2 : IsFundamentalDomain Γ ((fun x : G => x * g⁻¹) ⁻¹' 𝓕) μ` using `h𝓕.preimage_of_equiv (measurePreserving_mul_right μ g⁻¹).quasiMeasurePreserving Function.bijective_id (fun γ x => by simp [Subgroup.smul_def, mul_assoc])`. Establish `key : ∫ x in 𝓕, F (x * g) ∂μ = ∫ x in (fun x : G => x * g⁻¹) ⁻¹' 𝓕, F x ∂μ`. Rewrite using `[← Set.image_mul_right, (measurePreserving_mul_right μ g).setIntegral_image_emb (measurableEmbedding_mulRight g) F 𝓕]`. Rewrite using `[key]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2.setIntegral_eq h𝓕 (fun γ x => by rw [Subgroup.smul_def, smul_eq_mul]; exact hF γ γ.2 x)`.
+A detailed English derivation is pending.
 -/
 theorem MainStatements.WeightKernel.fdRight : MainStatements.WeightKernel.FDRight := by
   intro G _ _ _ _ _ _ Γ _ μ _ _ 𝓕 h𝓕 F hF g

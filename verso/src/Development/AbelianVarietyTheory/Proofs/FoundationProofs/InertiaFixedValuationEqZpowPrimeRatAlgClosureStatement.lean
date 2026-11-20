@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.ExistsDirichletC
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ GlobalTheory.Col
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.InertiaFixedValue.valuation_eq_zpow_of_ine_fixed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FInertiaFixedValuationEqZpowPrimeRatAlgClosure.lean&line=145#L145)
 -/

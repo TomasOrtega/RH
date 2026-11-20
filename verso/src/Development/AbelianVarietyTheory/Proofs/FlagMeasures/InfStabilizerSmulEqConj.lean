@@ -11,11 +11,11 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[Subgroup.mem_pointwise_smul_iff_inv_smul_mem]`. Simplify using `only [Subgroup.mem_inf, MulAction.mem_stabilizer_iff, MulAut.smul_def, MulAut.conj_inv_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨H.mul_mem (H.mul_mem (H.inv_mem hh) h1) hh, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, mul_smul, h2, inv_smul_smul]`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `H.mul_mem (H.mul_mem hh h1) (H.inv_mem hh)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[mul_assoc]`. Rewrite `h2` using `[mul_smul, mul_smul, inv_smul_eq_iff]`. Conclude with `h2`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_stabilizer_smul_eq_conj {G X : Type*} [Group G] [MulAction G X] (H : Subgroup G)
     {h : G} (hh : h ∈ H) (x : X) :
@@ -35,13 +35,13 @@ theorem inf_stabilizer_smul_eq_conj {G X : Type*} [Group G] [MulAction G X] (H :
       exact h2
 
 /- English proof (translation)
-Establish `e : ∀ A B : Subgroup G, (MulAut.conj g • A).relIndex (MulAut.conj g • B) = A.relIndex B` using `fun A B => Subgroup.relIndex_map_map_of_injective (f := (MulAut.conj g).toMonoidHom) A B (MulAut.conj g).injective`. Establish `hpos : 0 < invVol K (MulAut.conj g • A)`. Rewrite using `[h]`. Conclude with `(invVol_mul_pos_le_conj K A A hA hA' hA hA').2.1`. Establish `hAB : A.relIndex B ≠ 0` using `Subgroup.relIndex_ne_zero_trans hA' hB`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBA : B.relIndex A ≠ 0` using `Subgroup.relIndex_ne_zero_trans hB' hA`. Establish `c1 : K.relIndex (MulAut.conj g • A) ≠ 0`. Introduce `h0`. Simplify using `[invVol, h0] at hpos`. Establish `c2 : (MulAut.conj g • A).relIndex K ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Simplify using `[invVol, h0] at hpos`. Establish `c3 : K.relIndex (MulAut.conj g • B) ≠ 0` using `Subgroup.relIndex_ne_zero_trans c1 (by rw [e]; exact hAB)`. Establish `c4 : (MulAut.conj g • B).relIndex K ≠ 0` using `Subgroup.relIndex_ne_zero_trans (by rw [e]; exact hBA) c2`. Rewrite using `[(invVol_mul_pos_le_conj K _ _ c1 c2 c3 c4).1, (invVol_mul_pos_le_conj K A B hA hA' hB hB').1, h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[invVol, invVol, e, e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invVol_conj_of_invVol_conj {G : Type} [Group G] (K A B : Subgroup G) (g : G)
     (hA : K.relIndex A ≠ 0) (hA' : A.relIndex K ≠ 0) (hB : K.relIndex B ≠ 0) (hB' : B.relIndex K ≠ 0)
@@ -70,11 +70,11 @@ theorem invVol_conj_of_invVol_conj {G : Type} [Group G] (K A B : Subgroup G) (g 
   rw [invVol, invVol, e, e]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S d Λ hT`. Take `⟨hv, hd⟩` from `GlobalTheory.T.stabilizer_commensurable_invVolume_smul_complement L r k S`. Take `⟨d1, d2⟩` from `hd d Λ hT`. Establish `hSD` using `(GlobalTheory.T.hermitian_double_coset_term_basic_facts L r k S d Λ hT).1`. Take `⟨l1, l2, l3⟩` from `hv Λ hSD.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨(invVol_mul_pos_le_conj _ _ _ d1 d2 d1 d2).2.1, fun h hh => ?_⟩` and prove the remaining obligations. Use `l3 h hh` as an intermediate fact. Rewrite `this` using `[inf_stabilizer_smul_eq_conj _ hh]`. Unfold `Frames.nu`. Rewrite using `[inf_stabilizer_smul_eq_conj _ hh]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `invVol_conj_of_invVol_conj _ _ _ h l1 l2 d1 d2 this`.
+A detailed English derivation is pending.
 -/
 theorem Frames.nu_pos_and_smul : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ (d : S.Datum) (Λ : Submodule L.O S.V), S.IsTerm d Λ → 0 < S.nu d ∧ ∀ h ∈ S.H0, S.nu (h • d) = S.nu d := by
   intro F _ _ _ _ _ E _ _ _ L r k S d Λ hT

@@ -8,11 +8,11 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open Finset
 
 /- English proof (translation)
-Establish `key : ∀ i : Fin (n + 1), ∏ j ∈ Finset.Ioi i, (v i - v j) = ∏ j : Fin (n + 1), if i < j then v i - v j else 1`. Introduce `i`. Rewrite using `[← Finset.prod_filter, Finset.filter_lt_eq_Ioi]`. Unfold `vandermondeOf`. Simplify using `only [key]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fin.prod_univ_succ]`. Use `congr 1`. Rewrite using `[Fin.prod_univ_succ]`. Simplify using `[Fin.succ_pos]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.prod_univ_succ]`. Simplify using `only [Fin.succ_lt_succ_iff, Fin.not_lt_zero, if_false, one_mul]`. Rewrite using `[← Finset.prod_filter, Finset.filter_lt_eq_Ioi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem vandermondeOf_succ {R : Type*} [CommRing R] {n : ℕ} (v : Fin (n + 1) → R) :
     vandermondeOf v =
@@ -33,9 +33,9 @@ theorem vandermondeOf_succ {R : Type*} [CommRing R] {n : ℕ} (v : Fin (n + 1) �
     rw [← Finset.prod_filter, Finset.filter_lt_eq_Ioi]
 
 /- English proof (translation)
-Establish `hc : youngCells (fun _ : Fin m => (0 : ℕ)) = ∅`. Use extensionality with `c`. Simplify using `[youngCells]`. Establish `: IsEmpty (youngCells (fun _ : Fin m => (0 : ℕ)))` using `⟨fun p => by simpa [hc] using p.2⟩`. Establish `: IsEmpty (Fin (youngCells (fun _ : Fin m => (0 : ℕ))).card)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hc]`. Conclude with `Fin.isEmpty'`. Unfold `numStandardTable`. Rewrite using `[Nat.card_eq_one_iff_unique]`. Use `⟨⟨fun a b => Subtype.ext (Equiv.ext fun p => isEmptyElim p)⟩, ⟨⟨Equiv.equivOfIsEmpty _ _, fun p => isEmptyElim p⟩⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem numStandardTable_zero (m : ℕ) : numStandardTable (fun _ : Fin m => (0 : ℕ)) = 1 := by
   have hc : youngCells (fun _ : Fin m => (0 : ℕ)) = ∅ := by
@@ -52,7 +52,7 @@ theorem numStandardTable_zero (m : ℕ) : numStandardTable (fun _ : Fin m => (0 
     ⟨⟨Equiv.equivOfIsEmpty _ _, fun p => isEmptyElim p⟩⟩⟩
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `zero => simp`. Consider the case `succ l ih => rw [Finset.prod_range_succ, ih, Nat.descFactorial_succ, mul_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_range_sub_eq_descFactorial (n l : ℕ) :
     ∏ j ∈ Finset.range l, (n - j) = n.descFactorial l := by
@@ -61,9 +61,9 @@ theorem prod_range_sub_eq_descFactorial (n l : ℕ) :
   | succ l ih => rw [Finset.prod_range_succ, ih, Nat.descFactorial_succ, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_eq_prod_range (fun j => l - j) l, ← Finset.prod_range_reflect (fun j => l - j) l]`. Establish `: ∀ j ∈ Finset.range l, l - (l - 1 - j) = j + 1`. Introduce `j hj`. Use `Finset.mem_range.1 hj` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Finset.prod_congr rfl this, Finset.prod_range_add_one_eq_factorial]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_fin_sub_eq_factorial (l : ℕ) : ∏ j : Fin l, (l - (j : ℕ)) = l.factorial := by
   rw [Fin.prod_univ_eq_prod_range (fun j => l - j) l,
@@ -75,7 +75,7 @@ theorem prod_fin_sub_eq_factorial (l : ℕ) : ∏ j : Fin l, (l - (j : ℕ)) = l
   rw [Finset.prod_congr rfl this, Finset.prod_range_add_one_eq_factorial]
 
 /- English proof (translation)
-Unfold `vandermondeOf`. Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vandermondeOf_add_const {R : Type*} [CommRing R] {n : ℕ} (v : Fin n → R) (c : R) :
     vandermondeOf (fun j => v j + c) = vandermondeOf v := by
@@ -84,33 +84,31 @@ theorem vandermondeOf_add_const {R : Type*} [CommRing R] {n : ℕ} (v : Fin n �
   ring
 
 /- English proof (translation)
-Establish `hanti : Antitone (hookShape (l + 1) k l)`. Introduce `i j hij`. Establish `hij' : (i : ℕ) ≤ j` using `hij`. Unfold `hookShape`. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e0 : hookShape (l + 1) k l 0 + (l + 1 - 1 - ((0 : Fin (l + 1)) : ℕ)) = k`. Simplify using `[hookShape]`. Use linear arithmetic over natural numbers and integers. Establish `es : ∀ j : Fin l, hookShape (l + 1) k l j.succ + (l + 1 - 1 - ((j.succ : Fin (l + 1)) : ℕ)) = (0 + (l - 1 - (j : ℕ))) + 1`. Introduce `j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `j.isLt` as an intermediate fact. Unfold `hookShape`. Rewrite using `[Fin.val_succ, if_neg (by omega), if_pos (by omega)]`. Use linear arithmetic over natural numbers and integers. Establish `hsum : ∑ i, hookShape (l + 1) k l i = k`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[Fin.sum_univ_succ]`. Establish `hs1 : ∀ j : Fin l, hookShape (l + 1) k l j.succ = 1` using `fun j => by`. Establish `h1` using `es j`. Establish `h2` using `j.isLt`. Establish `h3 : ((j.succ : Fin (l + 1)) : ℕ) = j + 1` using `Fin.val_succ j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [hs1, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one]`. Use `e0` as an intermediate fact. Establish `hval : ((0 : Fin (l + 1)) : ℕ) = 0` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hf` using `h (l + 1) (hookShape (l + 1) k l) hanti`. Simplify using `only [vandermondeOf_succ, Fin.prod_univ_succ] at hf`. Rewrite `hf` using `[e0, hsum]`. Simplify using `only [es] at hf`. Establish `hz` using `h l (fun _ => 0) antitone_const`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `beta_reduce at hz`. Rewrite `hz` using `[numStandardTable_zero]`. Simplify using `only [Finset.sum_const_zero, Nat.factorial_zero, Nat.cast_one, one_mul] at hz`. Use `set V := vandermondeOf (fun j : Fin l => ((0 + (l - 1 - (j : ℕ)) : ℕ) : ℚ)) with hV`. Use `set P := ∏ j : Fin l, ((0 + (l - 1 - (j : ℕ))).factorial : ℚ) with hP`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `hP0 : P ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ => by positivity`. Establish `hVP : V = P`. Clear denominators, using `at hz` for the nonvanishing conditions. Conclude with `hz.symm`. Establish `hshift : vandermondeOf (fun j : Fin l => (((0 + (l - 1 - (j : ℕ))) + 1 : ℕ) : ℚ)) = V`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hV, ← vandermondeOf_add_const (fun j : Fin l => ((0 + (l - 1 - (j : ℕ)) : ℕ) : ℚ)) 1]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hnum : ∏ j : Fin l, ((k : ℚ) - (((0 + (l - 1 - (j : ℕ))) + 1 : ℕ) : ℚ)) = ((k - 1).descFactorial l : ℚ)`. Rewrite using `[← prod_range_sub_eq_descFactorial, Nat.cast_prod, ← Finset.prod_range_reflect (fun j => ((k - 1 - j : ℕ) : ℚ)) l, ← Fin.prod_univ_eq_prod_range (fun j => ((k - 1 - (l - 1 - j) : ℕ) : ℚ)) l]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `j.isLt` as an intermediate fact. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hden : ∏ j : Fin l, (((0 + (l - 1 - (j : ℕ))) + 1 : ℕ).factorial : ℚ) = (l.factorial : ℚ) * P`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP, ← prod_fin_sub_eq_factorial, Nat.cast_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `j.isLt` as an intermediate fact. Rewrite using `[Nat.factorial_succ, Nat.cast_mul]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `hf` using `[hnum, hshift, hden, hVP, Nat.descFactorial_eq_factorial_mul_choose]`. Establish `hk0 : ((k.factorial : ℕ) : ℚ) ≠ 0` using `by positivity`. Establish `hl0 : ((l.factorial : ℕ) : ℚ) ≠ 0` using `by positivity`. Establish `: (numStandardTable (hookShape (l + 1) k l) : ℚ) = ((k - 1).choose l : ℚ)`.
-
-Rewrite using `[hf]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem numStandardTable_hookShape_succ (h : FrobeniusDimensionFormula.Statement) {k l : ℕ}
     (hlk : l < k) : numStandardTable (hookShape (l + 1) k l) = Nat.choose (k - 1) l := by
@@ -190,7 +188,7 @@ theorem numStandardTable_hookShape_succ (h : FrobeniusDimensionFormula.Statement
   exact_mod_cast this
 
 /- English proof (translation)
-Introduce `r k l hlk hlr`. Rewrite using `[← YoungDiagramCombinatorics.numSYT_hookShape r k l hlr, YoungDiagramCombinatorics.numSYT_hookShape (l + 1) k l (by omega)]`. Conclude with `numStandardTable_hookShape_succ h hlk`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HookTableauCount.proof (h : FrobeniusDimensionFormula.Statement) :
     HookTableauCount.Statement := by

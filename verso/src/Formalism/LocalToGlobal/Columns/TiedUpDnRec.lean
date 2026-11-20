@@ -18,7 +18,7 @@ variable {d : ColDat} (a : ColArgs d) (hS : SpStd d.toColBase) (hH : HostHyp d) 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `v c z hz` and use `tud_up (Pr := d.Pr) d.W d.lev d.sp.cm d.hX d.hPr d.σ₀ d.star_cx u i (colDia (X := d.X) (Pr := d.Pr) d.R u i) (hP u i) (stepCrd a hS hH u i hi) W.eY hW v c z hz`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem upNatTied (W : CF.ValTied (D := d.colRec a) u (atTTied a hH u).eV i hi (classAgreement a hS hH hP u i hi))
     (hW : ∀ s, (W.eY s).1 = s.1) : CF.UpNatTie (levelAgreement a hS hH u i hi) (classAgreement a hS hH hP u i hi) W :=
@@ -28,7 +28,7 @@ theorem upNatTied (W : CF.ValTied (D := d.colRec a) u (atTTied a hH u).eV i hi (
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `v c g hg` and use `tud_dn (Pr := d.Pr) d.W d.lev d.sp.cm d.hX d.hPr d.σ₀ d.star_cx u i (colDia (X := d.X) (Pr := d.Pr) d.R u i) (hP u i) (stepCrd a hS hH u i hi) W.eY hW v c g hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dnNatTied (W : CF.ValTied (D := d.colRec a) u (atTTied a hH u).eV i hi (classAgreement a hS hH hP u i hi))
     (hW : ∀ s, (W.eY s).1 = s.1) : CF.DnNatTie (levelAgreement a hS hH u i hi) (classAgreement a hS hH hP u i hi) W :=
@@ -36,13 +36,13 @@ theorem dnNatTied (W : CF.ValTied (D := d.colRec a) u (atTTied a hH u).eV i hi (
     (stepCrd a hS hH u i hi) W.eY hW v c g hg
 
 /- English proof (translation)
-The claim follows from `upNatTied a hS hH hP u i hi _ fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem stepUpNatTied : CF.UpNatTie (levelAgreement a hS hH u i hi) (classAgreement a hS hH hP u i hi) (valuationAgreementConcrete a hS hH hP u i hi) :=
   upNatTied a hS hH hP u i hi _ fun _ => rfl
 
 /- English proof (translation)
-The claim follows from `dnNatTied a hS hH hP u i hi _ fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem stepDnNatTied : CF.DnNatTie (levelAgreement a hS hH u i hi) (classAgreement a hS hH hP u i hi) (valuationAgreementConcrete a hS hH hP u i hi) :=
   dnNatTied a hS hH hP u i hi _ fun _ => rfl

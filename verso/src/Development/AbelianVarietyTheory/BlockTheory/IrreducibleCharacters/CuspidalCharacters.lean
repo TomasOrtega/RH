@@ -6,9 +6,9 @@ namespace GlobalTheory.IndefiniteRowSideFullHecke.CuspidalCharacters
 open Matrix
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.UnimodularLatticeExistence.main`. Consider the case `exact _root_.GlobalTheory.UnimodularLatticeExistence.main`. Consider the case `(apply _root_.GlobalTheory.UnimodularLatticeExistence.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.UnimodularLatticeExistence.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.UnimodularLatticeExistence.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.UnimodularLatticeExistence.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isIrreducible_iff {G : Type*} [Group G] {V : Type*} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ G V) :
@@ -36,9 +36,9 @@ def InUpperRightBlock {F : Type*} [Field F] {d : ℕ} (a : ℕ) (N : Matrix (Fin
   ∀ i j : Fin d, ¬ ((i : ℕ) < a ∧ a ≤ (j : ℕ)) → N i j = 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : (k : ℕ) < a`. Rewrite using `[hM i k (by omega), zero_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN k j (by omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem InUpperRightBlock.mul_eq_zero {F : Type*} [Field F] {d a : ℕ}
     {M N : Matrix (Fin d) (Fin d) F} (hM : InUpperRightBlock a M) (hN : InUpperRightBlock a N) :

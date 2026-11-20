@@ -28,7 +28,7 @@ def pairConj (c : u.adicCompletion E ≃+* w.adicCompletion E) (k : GLw a u × G
   MulEquiv.trans (MulAut.conj k⁻¹) (pairInv c a b)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `GlobalTheory.ThetaPull.thetaA E a (finGL E a (locGL E a (GlobalTheory.ThetaSatake.cw u) g)) = finGL E a (locGL E a u _)`. Rewrite using `[GlobalTheory.ThetaPull.thetaA_finGL, GlobalTheory.ThetaSatake.theta_locGL, GlobalTheory.ThetaSatake.thetaGL_conj]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem embT_cw (a : ℕ) (u : Pl E) (g : GLw a (GlobalTheory.ThetaSatake.cw u)) :
     embT a (GlobalTheory.ThetaSatake.cw u) g =

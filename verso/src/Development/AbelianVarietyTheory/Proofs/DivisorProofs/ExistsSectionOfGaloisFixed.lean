@@ -10,19 +10,17 @@ noncomputable section
 namespace GlobalTheory.GaloisFixedSectionExtension
 
 /- English proof (translation)
-Use `haveI : IsAffine X := isAffine_of_isAffineHom p`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (g ≫ X.isoSpec.hom)`. Take `⟨π, hπ⟩` from `Spec.map_surjective (X.isoSpec.inv ≫ p)`. Establish `hfin : π.hom.Finite`. Rewrite using `[← IsFinite.SpecMap_iff, hπ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `hcomp : π ≫ φ = CommRingCat.ofHom (algebraMap V (FractionRing V))`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hφ, hπ, Category.assoc, Iso.hom_inv_id_assoc, hg]`. Establish `hc : ∀ v : V, φ.hom (π.hom v) = algebraMap V (FractionRing V) v` using `fun v => congrArg (fun f => f.hom v) hcomp`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : ∀ a, φ.hom a ∈ (algebraMap V (FractionRing V)).range`. Introduce `a`. Take `⟨q, hq, hqa⟩` from `hfin.to_isIntegral a`. Establish `hint : IsIntegral V (φ.hom a)`. Use `⟨q, hq, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `Polynomial.hom_eval₂ q π.hom φ.hom a`. Rewrite `h1` using `[hqa, map_zero]`. Establish `h2 : φ.hom.comp π.hom = algebraMap V (FractionRing V)` using `RingHom.ext hc`. Rewrite `h1` using `[h2]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `IsIntegrallyClosed.algebraMap_eq_of_integral hint`. Establish `hinj : Function.Injective (algebraMap V (FractionRing V))` using `IsFractionRing.injective V _`. Set `e` to `RingEquiv.ofBijective (algebraMap V (FractionRing V)).rangeRestrict ⟨fun a b h => hinj (congrArg Subtype.val h), (algebraMap V (FractionRing V)).rangeRestrict_surjective⟩`. Set `ψ : Γ(X, ⊤) →+* V` to `e.symm.toRingHom.comp (φ.hom.codRestrict _ hmem)`. Establish `hψ : ∀ a, algebraMap V (FractionRing V) (ψ a) = φ.hom a` using `fun a => congrArg Subtype.val (e.apply_symm_apply (φ.hom.codRestrict _ hmem a))`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hψφ : CommRingCat.ofHom ψ ≫ CommRingCat.ofHom (algebraMap V (FractionRing V)) = φ`. Use extensionality with `a`. Conclude with `hψ a`. Establish `hπψ : π ≫ CommRingCat.ofHom ψ = 𝟙 _`. Use extensionality with `v`.
-
-Conclude with `hinj ((hψ _).trans (hc v))`. Use `⟨Spec.map (CommRingCat.ofHom ψ) ≫ X.isoSpec.inv, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hπ, ← Spec.map_comp, hπψ, Spec.map_id]`. Rewrite using `[← Category.assoc, ← Spec.map_comp, hψφ, hφ, Category.assoc, Iso.hom_inv_id, Category.comp_id]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extend_section {V : Type} [CommRing V] [IsDomain V] [IsIntegrallyClosed V] (X : Scheme.{0})
     (p : X ⟶ Spec (CommRingCat.of V)) [IsFinite p] (g : Spec (CommRingCat.of (FractionRing V)) ⟶ X)
@@ -68,15 +66,13 @@ theorem extend_section {V : Type} [CommRing V] [IsDomain V] [IsIntegrallyClosed 
   · rw [← Category.assoc, ← Spec.map_comp, hψφ, hφ, Category.assoc, Iso.hom_inv_id, Category.comp_id]
 
 /- English proof (translation)
-Introduce `V _ _ _ hV N hN nb hfix`. Use `haveI := hV`. Use `haveI := hN`. Use `haveI : IsAffine N.left := isAffine_of_isAffineHom N.hom`. Take `⟨g, hg⟩` from `GlobalTheory.TorsDescent.descend_point (K := FractionRing V) N.left nb.left hfix`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg' : Spec.map (CommRingCat.ofHom (algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V)))) ≫ g = nb.left` using `hg`. Establish `hw : nb.left ≫ N.hom = Spec.map (CommRingCat.ofHom (algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V)))) ≫ Spec.map (CommRingCat.ofHom (algebraMap V (FractionRing V)))` using `Over.w nb`. Establish `hgp : g ≫ N.hom = Spec.map (CommRingCat.ofHom (algebraMap V (FractionRing V)))`. Take `⟨χ, hχ⟩` from `Spec.map_surjective (g ≫ N.hom)`. Rewrite using `[← hχ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr 1`. Establish `h1 : χ ≫ CommRingCat.ofHom (algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))) = CommRingCat.ofHom (algebraMap V (FractionRing V)) ≫ CommRingCat.ofHom (algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V)))`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, Spec.map_comp, hχ, ← hw, ← hg', Category.assoc]`. Use extensionality with `v`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).injective (congrArg (fun f => f.hom v) h1)`. Take `⟨s, hs, hsg⟩` from `extend_section N.left N.hom g hgp`. Use `⟨Over.homMk s hs, ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show nb.left = (Spec.map (CommRingCat.ofHom (algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V)))) ≫ Spec.map (CommRingCat.ofHom (algebraMap V (FractionRing V)))) ≫ s`.
-
-Rewrite using `[Category.assoc, hsg, hg']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section_of_galoisFixed : ∀ (V : Type) [inst : CommRing V] [inst_1 : IsDomain V] [CharZero V], IsIntegrallyClosed V → ∀ (N : CategoryTheory.Over (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp V)), AlgebraicGeometry.IsFinite (CategoryTheory.Over.hom N) → ∀ (nb : ReciprocityTheory.ChartRestriction.G.Out.TF (AlgebraicClosure (FractionRing V)) ⟶ N), (∀ (σ : Gal(AlgebraicClosure (FractionRing V)/FractionRing V)), CategoryTheory.CategoryStruct.comp (ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (AlgHom.toRingHom (↑σ : AlgebraicClosure (FractionRing V) →ₐ[FractionRing V] AlgebraicClosure (FractionRing V)))) (CategoryTheory.Over.Hom.left nb) = CategoryTheory.Over.Hom.left nb) → ∃ (s : CategoryTheory.MonoidalCategoryStruct.tensorUnit (CategoryTheory.Over (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp V)) ⟶ N), nb = CategoryTheory.CategoryStruct.comp (CategoryTheory.SemiCartesianMonoidalCategory.toUnit (ReciprocityTheory.ChartRestriction.G.Out.TF (AlgebraicClosure (FractionRing V)))) s := by
   intro V _ _ _ hV N hN nb hfix

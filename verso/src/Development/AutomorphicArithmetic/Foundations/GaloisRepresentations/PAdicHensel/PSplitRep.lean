@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTri
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `R _ tr nm ρ hρ hd u`. Take `⟨w, hw⟩` from `hd.exists_right_inv`. Use `⟨1 - ((tr : R) - ρ) * ((u - 1) * w), (u - 1) * w, ?_⟩` and prove the remaining obligations. Unfold `qf`. Take the linear combination `((u - 1) * w) ^ 2 * hρ + (u - 1) * hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem UpperTheory.Gal.G1.pSplitRep :
     SplitRep := by

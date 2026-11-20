@@ -11,7 +11,7 @@ open ReciprocityTheory.AnForm.M (FinHolAtlas LocPot IsPotential IsPsh mInt maMea
   mIntSymm mIntRsmul st_mInt_congr_phi)
 
 /- English proof (translation)
-Introduce `x j y hy w`. Rewrite using `[hφ]`. Conclude with `hP x j y ⟨hy.1, hU x hy.2⟩ w`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPsh_of_φ_eq {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas e X}
     {P Q : LocPot X} (hP : IsPsh A P) (hU : ∀ x, Q.U x ⊆ P.U x) (hφ : Q.φ = P.φ) : IsPsh A Q := by
@@ -20,11 +20,11 @@ theorem isPsh_of_φ_eq {e : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtla
   exact hP x j y ⟨hy.1, hU x hy.2⟩ w
 
 /- English proof (translation)
-Take `_ | n` from `e`. Conclude with `j.elim0`. Use `set q := Φ ∘ Equiv.swap 0 j with hq`. Establish `h1 : Function.update Φ j ((Φ j).rsmul c) ∘ Equiv.swap 0 j = Fin.cons ((q 0).rsmul c) (Fin.tail q)`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `[hq]`. Establish `hne : Equiv.swap 0 j i.succ ≠ j`. Introduce `h`. Rewrite `h` using `[Equiv.swap_apply_eq_iff, Equiv.swap_apply_right]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Conclude with `Fin.succ_ne_zero _ h`. Simplify using `only [Function.comp_apply, Fin.cons_succ, Fin.tail, hq, Function.update_of_ne hne]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem mInt_update_rsmul {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) (c : ℝ)
     (Φ : Fin e → LocPot X) (hΦ : ∀ i, IsPotential A (Φ i)) (j : Fin e) (g : X → ℝ) :
@@ -50,15 +50,15 @@ theorem mInt_update_rsmul {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolA
     _ = c * mInt A Φ g := by rw [Fin.cons_self_tail, hq, mIntSymm]
 
 /- English proof (translation)
-Establish `key : ∀ k ≤ e, mInt A (fun i : Fin e => if (i : ℕ) < k then (Φ i).rsmul c else Φ i) g = c ^ k * mInt A Φ g`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Introduce `hk`. Use `set Ψ : Fin e → LocPot X := fun i => if (i : ℕ) < k then (Φ i).rsmul c else Φ i with hΨ`. Establish `hΨp : ∀ i, IsPotential A (Ψ i)` using `fun i => by`. Simplify using `only [hΨ]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `split_ifs`. Conclude with `isPotentialRsmul A c _ (hΦ i)`. Conclude with `hΦ i`. Establish `h : (fun i : Fin e => if (i : ℕ) < k + 1 then (Φ i).rsmul c else Φ i) = Function.update Ψ ⟨k, hk⟩ ((Ψ ⟨k, hk⟩).rsmul c)`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hi : i = ⟨k, hk⟩`. Substitute `hi` using the available equality. Simplify using `[hΨ]`. Establish `hi' : (i : ℕ) ≠ k` using `fun h => hi (Fin.ext h)`. Rewrite using `[Function.update_of_ne hi, hΨ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Nat.lt_succ_iff_lt_or_eq, hi', or_false]`. Rewrite using `[h, mInt_update_rsmul A c Ψ hΨp, ih (Nat.le_of_succ_le hk), pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `using key e le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem mInt_rsmul_all {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) (c : ℝ)
     (Φ : Fin e → LocPot X) (hΦ : ∀ i, IsPotential A (Φ i)) (g : X → ℝ) :
@@ -88,21 +88,19 @@ theorem mInt_rsmul_all {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtla
   simpa using key e le_rfl
 
 /- English proof (translation)
-Introduce `D X _ _ _ A Om M v hM hv hpsh`. Set `_ : MeasurableSpace X` to `borel X`. Establish `_ : BorelSpace X` using `⟨rfl⟩`. Establish `hM0 : M ≠ 0` using `by positivity`. Establish `hP : ∀ i, IsPotential A (potForm Om.pot (v i))` using `fun i => isPotentialAdd A _ _ Om.isPot (isPotential_ofFun A _ (hv i))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW : ∀ i, IsPotential A (potForm Om.pot fun x => v i x / M)` using `fun i => isPotentialAdd A _ _ Om.isPot (isPotential_ofFun A _ fun j => (hv i j).div_const M)`. Establish `hQ` using `isPotentialRsmul A (M - 1) _ Om.isPot`. Establish `hQpsh` using `isPshRsmul A (M - 1) _ (by linarith) Om.isPot Om.isPsh`. Use `⟨fun i => ?_, fun g hg hg0 => ?_⟩` and prove the remaining obligations. Establish `h1` using `isPshRsmul A M⁻¹ _ (by positivity) (hP i) (hpsh i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `isPshRsmul A (1 - M⁻¹) _ (by rw [sub_nonneg]; exact inv_le_one_of_one_le₀ hM) Om.isPot Om.isPsh`. Use `isPsh_of_φ_eq (isPshAdd A _ _ (isPotentialRsmul A _ _ (hP i)) (isPotentialRsmul A _ _ Om.isPot) h1 h2) (fun x y hy => ⟨hy, hy.1⟩) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x y`. Use `show Om.pot.φ x y + v i y / M = M⁻¹ * (Om.pot.φ x y + v i y) + (1 - M⁻¹) * Om.pot.φ x y`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hmono` using `maMeasureMono A _ (fun _ => Om.pot.rsmul (M - 1)) hP hpsh (fun _ => hQ) (fun _ => hQpsh)`. Establish `hS : ∀ i, IsPotential A (potForm Om.pot (v i) + Om.pot.rsmul (M - 1))` using `fun i => isPotentialAdd A _ _ (hP i) hQ`. Establish `hSpsh : ∀ i, IsPsh A (potForm Om.pot (v i) + Om.pot.rsmul (M - 1))` using `fun i => isPshAdd A _ _ (hP i) hQ (hpsh i) hQpsh`. Take `⟨_, hT'⟩` from `maMeasure_thm A _ hP hpsh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, hS'⟩` from `maMeasure_thm A _ hS hSpsh`. Establish `hgm` using `hg.measurable`. Establish `e1` using `(hT' g hgm).2 (mIntegrableCont A _ hP g hg)`. Establish `e2` using `(hS' g hgm).2 (mIntegrableCont A _ hS g hg)`. Establish `hint` using `(hS' g hgm).1.1 (mIntegrableCont A _ hS g hg)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : mInt A (fun i => potForm Om.pot (v i)) g ≤ mInt A (fun i => potForm Om.pot (v i) + Om.pot.rsmul (M - 1)) g`. Rewrite using `[e1, e2]`. Conclude with `integral_mono_measure hmono (Filter.Eventually.of_forall hg0) hint`. Establish `e3 : mInt A (fun i => potForm Om.pot (v i) + Om.pot.rsmul (M - 1)) g = mInt A (fun i => (potForm Om.pot fun x => v i x / M).rsmul M) g`. Use `st_mInt_congr_phi A (fun i => ?_) g` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Clear the denominators using the available nonvanishing facts.
 
-Use function extensionality and compare the values at `x y`. Use `show Om.pot.φ x y + v i y + (M - 1) * Om.pot.φ x y = M * (Om.pot.φ x y + v i y / M)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `hle` using `[e3, mInt_rsmul_all A M _ hW]`.
-
-Conclude with `hle`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LemmaEScale.proof : LemmaEScale.Statement := by
   intro D X _ _ _ A Om M v hM hv hpsh

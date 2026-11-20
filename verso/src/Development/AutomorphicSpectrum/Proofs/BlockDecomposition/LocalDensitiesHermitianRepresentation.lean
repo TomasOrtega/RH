@@ -18,7 +18,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-The claim follows from `|(m (hermOf (Fv F v) σ T hT) (latV b v)).toReal - 1| ≤ C / (Ideal.absNorm v.asIdeal : ℝ) ^ 2 := by intro n induction n with | zero => intro M J hJ _ T hT _ d b refine ⟨0, Filter.Eventually.of_forall ?_⟩ intro v lam hl m hm haveI : BorelSpace (Fv F v) := ⟨rfl⟩ have h0 := GlobalThe …`.
+A detailed English derivation is pending.
 -/
 theorem key (hcm : IsCMExt F E σ) : ∀ (n M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J →
     n < M → ∀ (T : Matrix (Fin n) (Fin n) E) (hT : ∀ a b, σ (T b a) = T a b),

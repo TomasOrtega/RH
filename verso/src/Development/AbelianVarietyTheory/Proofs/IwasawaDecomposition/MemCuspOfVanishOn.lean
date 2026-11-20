@@ -46,9 +46,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data 
   {P : Frame X.Ψ r → ℂ}
 
 /- English proof (translation)
-Introduce `ε hε`. Take `⟨K, hK, hKd, hcov⟩` from `GlobalTheory.FlagMahler.mahler_compactness (E := E) r X ε hε`. Take `⟨C, hC⟩` from `(hK.image_of_continuousOn ((AR.Up.BigB.pnorm_contOn X la hP).mono hKd)).bddAbove`. Use `⟨C, fun x hx hl => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, b, hb, h⟩` from `hcov x hx hl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `hC ⟨_, h, rfl⟩` as an intermediate fact. Rewrite `this` using `[AR.Up.OW.pnorm_lact la hP hγ (AR.Up.OntoS.dom_rmul X hx hb), FrameDegreeData.pnorm_rmul X la P hP.2.1 x hx b hb]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem thickBdd (hP : X.IsSec la P) : ThickBdd X (X.pnorm la P) := by
   intro ε hε
@@ -60,13 +60,13 @@ theorem thickBdd (hP : X.IsSec la P) : ThickBdd X (X.pnorm la P) := by
   rwa [AR.Up.OW.pnorm_lact la hP hγ (AR.Up.OntoS.dom_rmul X hx hb), FrameDegreeData.pnorm_rmul X la P hP.2.1 x hx b hb] at this
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.koecher_principle_flagDomain_frequencies_nonneg (GlobalTheory.T.flowOrbitFirstMinimum_of_isotropicFlowMajorant GlobalTheory.T.isotropicFlow_majorant_cauchySchwarz) E r X la P hf hP (thickBdd X hP)`.
+A detailed English derivation is pending.
 -/
 theorem freqNonneg (hf : 1 < Module.finrank ℚ E / 2) (hP : X.IsSec la P) : FreqNonneg X la P :=
   GlobalTheory.T.koecher_principle_flagDomain_frequencies_nonneg (GlobalTheory.T.flowOrbitFirstMinimum_of_isotropicFlowMajorant GlobalTheory.T.isotropicFlow_majorant_cauchySchwarz) E r X la P hf hP (thickBdd X hP)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.moderate_growth_of_firstMinimum_and_flow_bounds GlobalTheory.T.isotropicFlow_majorant_cauchySchwarz E r X w _ hw (fun x _ => mul_nonneg (norm_nonneg _) (Formalism.L2.Pj.pnorm_fac_nonneg X la x)) (thickBdd X hP) (GlobalTheory.T.maximum_principle_isotropicFlow_rescal …`.
+A detailed English derivation is pending.
 -/
 theorem growth (hf : 1 < Module.finrank ℚ E / 2) (hP : X.IsSec la P) {w : ℝ} (hw : 0 ≤ w)
     (h : ∀ τ, X.spread la τ / 2 ≤ w) : ∃ C A : ℝ, ∀ x ∈ X.dom, X.pnorm la P x ≤ C * X.la1 x ^ (-(A * w)) :=
@@ -74,7 +74,7 @@ theorem growth (hf : 1 < Module.finrank ℚ E / 2) (hP : X.IsSec la P) {w : ℝ}
     (thickBdd X hP) (GlobalTheory.T.maximum_principle_isotropicFlow_rescaledBound E r X la P w hP (freqNonneg X hf hP) h)
 
 /- English proof (translation)
-Take `⟨C, A, h⟩` from `growth X hf hP (w := ∑ τ, |X.spread la τ / 2|) (Finset.sum_nonneg fun _ _ => abs_nonneg _) fun τ => (le_abs_self _).trans (Finset.single_le_sum (f := fun τ => |X.spread la τ / 2|) (fun _ _ => abs_nonneg _) (Finset.mem_univ τ))`. Conclude with `⟨C, _, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isModerate (hf : 1 < Module.finrank ℚ E / 2) (hP : X.IsSec la P) : X.IsModerate la P := by
   obtain ⟨C, A, h⟩ := growth X hf hP (w := ∑ τ, |X.spread la τ / 2|) (Finset.sum_nonneg fun _ _ => abs_nonneg _)
@@ -94,9 +94,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ} {U : Formalism.L2.PjFree.Unf Xo c σ r}
 
 /- English proof (translation)
-Use `letI := H.starRing`. Take `⟨hp, hq⟩` from `GlobalTheory.ArcCM.Exist.one_le_of_isIso hU hξ`. Take `⟨A, gam, ξ, jj, DB, tyB, eB, hO, hξ0, hrk, hdvd, -, hprim, -, hab, hDp, hDq⟩` from `GlobalTheory.T.exists_analytic_model_on_frame_orbit_isolating E H Dw l Xo c σ r U Uw k ξ' x 0 0 hσ hU hξ hx (fun m _ => ⟨0, by simp, by funext τ i; simp [Data.embV, Data.emb]⟩) (by simp [cc]) (by simp) (fun s _ _ => ⟨0, by simp⟩)`. Take `⟨B, ex, hex⟩` from `GlobalTheory.T.exists_principalCMTriple_exponential_of_period E H l DB _ tyB _ hab.2.1 hab.2.2.2.2`. Take `⟨aC, Λ, hA, h1, h2⟩` from `GlobalTheory.T.exists_complex_arc_of_analytic_model_on_flow_orbit E H Dw l Xo c σ r U Uw k ξ' x B hσ hU A gam ξ DB tyB eB ex hO hrk hdvd hprim hab hDp hDq hp hq hex`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Substitute `hA` using the available equality. Conclude with `⟨aC, GlobalTheory.T.arcs_on_flow_lines_of_analytic_model_on_orbit E H Dw l Xo c σ r U Uw k ξ' x aC Λ hσ hU hξ hx gam ξ hO hξ0 hrk h1 h2⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_input [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (Uw : UnfWit U)
     (hσ : Formalism.L2.PjFree.GoodEmb c σ) (hU : Formalism.L2.PjFree.IsUnf U) {k : U.Comp} {ξ' : Fin r → E}
@@ -116,11 +116,11 @@ theorem exists_input [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (Fracti
   exact ⟨aC, GlobalTheory.T.arcs_on_flow_lines_of_analytic_model_on_orbit E H Dw l Xo c σ r U Uw k ξ' x aC Λ hσ hU hξ hx gam ξ hO hξ0 hrk h1 h2⟩
 
 /- English proof (translation)
-Establish `hK` using `GlobalTheory.ArcCM.known_holds`. Take `⟨W, hW⟩` from `GlobalTheory.GlobalModelGuards.exists_place 2 Nat.prime_two`. Establish `hg : l.GoodAt 2`. Use `l.three_le` as an intermediate fact. Rewrite using `[Level.GoodAt, Nat.factorization_eq_zero_of_not_dvd l.odd.not_two_dvd_nat, pow_zero, Nat.div_one]` and apply the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `key : ∀ Xs : ∀ l' : Level H, Moduli Dw l', ∃ Y : Model (Xs l) c (c.V W).subtype, Y.N4 ∧ PushInvertible Y.t.G Y.t.PP.L`. Introduce `Xs`. Take `⟨Y, hY, -⟩` from `hK.models.2 E H Dw hr Xs`. Take `⟨h2, h4⟩` from `hY 2 W Nat.prime_two hW`. Conclude with `⟨Y 2 W Nat.prime_two hW ⟨l, c, hg⟩, (h4 _).2.2, (h2.1 ⟨l, c, hg⟩).2.2.1⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h` using `key (Function.update (fun l' => Classical.choice (hK.n1ab E H Dw l' hr)) l Xo)`. Rewrite `h` using `[Function.update_self]`. Conclude with `⟨W, h⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_model (Xo : Moduli Dw l) (c : Coeff l) (hr : 1 ≤ Dw.p + Dw.q) :
     ∃ (W : ValuationSubring ℂ) (Y : Model Xo c (c.V W).subtype), Y.N4 ∧ PushInvertible Y.t.G Y.t.PP.L := by
@@ -141,9 +141,9 @@ theorem exists_model (Xo : Moduli Dw l) (c : Coeff l) (hr : 1 ≤ Dw.p + Dw.q) :
   exact ⟨W, h⟩
 
 /- English proof (translation)
-Rewrite `hv` using `[PowerSeries.maximalIdeal_eq_span_X, Ideal.mem_span_singleton, PowerSeries.X_dvd_iff]`. Rewrite using `[LaurentSeries.coe_algebraMap, PowerSeries.coeff_coe]`. Use `split_ifs with h0`. Both sides reduce to the same expression. Take `rfl : j = 0` from `by omega`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hv`.
+A detailed English derivation is pending.
 -/
 theorem coeff_eq_zero {v : PowerSeries ℂ} (hv : v ∈ IsLocalRing.maximalIdeal (PowerSeries ℂ)) {j : ℤ} (hj : j ≤ 0) :
     (algebraMap (PowerSeries ℂ) ℂ⸨X⸩ v).coeff j = 0 := by

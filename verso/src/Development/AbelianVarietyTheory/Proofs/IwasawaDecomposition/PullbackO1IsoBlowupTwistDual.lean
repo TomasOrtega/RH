@@ -13,7 +13,7 @@ open GlobalTheory.ProjSpace GlobalTheory.Cartier
 namespace GlobalTheory.ProjBlowup
 
 /- English proof (translation)
-Simplify using `only [gm, pullU, dif_pos (show (𝟙 X) y ∈ V from hy)]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private theorem gm_id_val_eq_germ {X : Scheme.{0}} {V : X.Opens} (y : X) (hy : y ∈ V) (a : Γ(X, V)ˣ) :
     (gm (𝟙 X) y V a).val = X.presheaf.germ V y hy a.val := by
@@ -22,14 +22,14 @@ private theorem gm_id_val_eq_germ {X : Scheme.{0}} {V : X.Opens} (y : X) (hy : y
   rfl
 
 /- English proof (translation)
-Simplify using `[res]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem germ_res_val_eq_germ {X : Scheme.{0}} {V W : X.Opens} (h : W ≤ V) (y : X) (hy : y ∈ W)
     (a : Γ(X, V)ˣ) : X.presheaf.germ W y hy (res h a).val = X.presheaf.germ V y (h hy) a.val := by
   simp [res]
 
 /- English proof (translation)
-The claim follows from `hc g_self := by obtain ⟨idx, hle, hg⟩ := a intro i apply Units.ext refine TopCat.Presheaf.section_ext X.sheaf _ _ _ (fun y hy => ?_) have hy' : y ∈ B.U (idx i) := hle i hy change X.presheaf.germ (A.U i) y hy (res _ (A.g i i)).val = X.presheaf.germ (A.U i) y hy (1 : Γ(X, A.U i)ˣ). …`.
+A detailed English derivation is pending.
 -/
 theorem isLB_of_chartPull_id {X : Scheme.{0}} {A B : LB X} (hB : B.IsLB) (a : ChartPull A B (𝟙 X))
     (hc : ⨆ i, A.U i = ⊤) : A.IsLB where
@@ -70,7 +70,7 @@ theorem isLB_of_chartPull_id {X : Scheme.{0}} {A B : LB X} (hB : B.IsLB) (a : Ch
     exact hB3
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[gm_id_val_eq_germ y hy, gm_id_val_eq_germ y (h hy), germ_res_val_eq_germ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gm_id_res_eq {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) (y : X) (hy : y ∈ V)
     (a : Γ(X, U)ˣ) : gm (𝟙 X) y V (res h a) = gm (𝟙 X) y U a := by
@@ -78,14 +78,14 @@ private theorem gm_id_res_eq {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) (y :
   rw [gm_id_val_eq_germ y hy, gm_id_val_eq_germ y (h hy), germ_res_val_eq_germ]
 
 /- English proof (translation)
-The claim follows from `gs_res f y h hy a`.
+A detailed English derivation is pending.
 -/
 private theorem gs_resG_eq {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) {U V : X.Opens} (h : V ≤ U) (hy : f y ∈ V)
     (a : Γ(X, U)) : gs f y V (resG X h a) = gs f y U a :=
   gs_res f y h hy a
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul]`. Take the linear combination `(-1 : S) * E1 + E3 + (G : S) * E2 - ((G : S) * aq * fq) * h5 - ((G : S) * t' * aq) * E4`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem mul_eq_unit_mul_of_relations {S : Type _} [CommRing S] (G t t' : Sˣ) (ap aq fp fq sp sq : S)
     (h5 : (t' : S) * t = 1) (E1 : sp = ap * fp) (E2 : sq = aq * fq) (E3 : sp = G * sq) (E4 : fp = t * fq) :
@@ -94,41 +94,39 @@ private theorem mul_eq_unit_mul_of_relations {S : Type _} [CommRing S] (G t t' :
   linear_combination (-1 : S) * E1 + E3 + (G : S) * E2 - ((G : S) * aq * fq) * h5 - ((G : S) * t' * aq) * E4
 
 /- English proof (translation)
-Establish `hT : (GlobalTheory.CechPic.tens (L₀.pull g) (GlobalTheory.CechPic.dual D.lb)).IsLB` using `GlobalTheory.CechPic.isLB_tens (pull_isLB hL g) (GlobalTheory.CechPic.isLB_dual D.isLB_lb)`. Establish `hGA` using `generatesAlong_comap_of_generates X W J L₀ m σ g hJ`. Rewrite `hGA` using `[← hD]`. Establish `loc : ∀ (k : L₀.ι) (d : D.ι) (A : W.affineOpens) (hk : A.1 ≤ g ⁻¹ᵁ L₀.U k) (hd : A.1 ≤ D.U d), ∃ a c : Fin (m + 1) → Γ(W, A.1), (∀ j, (g.appLE (L₀.U k) A.1 hk).hom ((σ j).f k) = a j * resG W hd (D.f d)) ∧ ∑ j, c j * a j = 1`. Introduce `k d A hk hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `exists_quot_of_span_eq (D.regular d A.1 hd) ?_` and prove the remaining obligations. Rewrite using `[← D.ideal_idealSheaf A d hd, hGA.2 k A hk]`. Set `Idx` to `{p : L₀.ι × D.ι × W.affineOpens // p.2.2.1 ≤ g ⁻¹ᵁ L₀.U p.1 ∧ p.2.2.1 ≤ D.U p.2.1}`. Set `tI : Idx → (GlobalTheory.CechPic.tens (L₀.pull g) (GlobalTheory.CechPic.dual D.lb)).ι` to `fun p => (fun _ => p.1.1, p.1.2.1)`. Establish `hle : ∀ p : Idx, p.1.2.2.1 ≤ (GlobalTheory.CechPic.tens (L₀.pull g) (GlobalTheory.CechPic.dual D.lb)).U (tI p)` using `fun p y hy => ⟨mem_pull.2 (p.2.1 hy), p.2.2 hy⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `N : LB W` to `{ ι := Idx U := fun p => p.1.2.2.1 g := fun p q => res (inf_le_inf (hle p) (hle q)) ((GlobalTheory.CechPic.tens (L₀.pull g) (GlobalTheory.CechPic.dual D.lb)).g (tI p) (tI q)) }`. Set `cp : ChartPull N (GlobalTheory.CechPic.tens (L₀.pull g) (GlobalTheory.CechPic.dual D.lb)) (𝟙 W)` to `⟨tI, hle, fun y p q hp hq => gm_id_res_eq _ y (show y ∈ N.U p ⊓ N.U q from ⟨hp, hq⟩) _⟩`. Establish `hcov : ⨆ p, N.U p = ⊤`. Use `eq_top_iff.2 (fun y _ => ?_)` and prove the remaining obligations. Establish `hgy : g y ∈ ⨆ k, L₀.U k` using `by rw [hL.cover]; trivial`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hgy`. Take `⟨d, hd⟩` from `D.exists_mem y`. Take `⟨A, hyA, hA⟩` from `GlobalTheory.EffCartierData.exists_affine_le (X := W) (show y ∈ g ⁻¹ᵁ L₀.U k ⊓ D.U d from ⟨hk, hd⟩)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨(k, d, A), hA.trans inf_le_left, hA.trans inf_le_right⟩, hyA⟩`. Establish `hN : N.IsLB` using `isLB_of_chartPull_id hT cp hcov`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H2 : LBIso N (GlobalTheory.CechPic.tens (L₀.pull g) (GlobalTheory.CechPic.dual D.lb))` using `GlobalTheory.CechPic.iso_of_chart hT cp`. Use `choose af cf haf hcf using fun p : Idx => loc p.1.1 p.1.2.1 p.1.2.2 p.2.1 p.2.2`. Establish `hcomp : ∀ (j : Fin (m + 1)) (p q : Idx), resG W (inf_le_left : N.U p ⊓ N.U q ≤ N.U p) (af p j) = (N.g p q : Γ(W, N.U p ⊓ N.U q)) * resG W (inf_le_right : N.U p ⊓ N.U q ≤ N.U q) (af q j)`. Introduce `j p q`. Establish `hV : N.U p ⊓ N.U q ≤ D.U p.1.2.1` using `inf_le_left.trans p.2.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mul_cancel_right_mem_nonZeroDivisors (D.regular p.1.2.1 _ hV)).1 ?_` and prove the remaining obligations. Use `fn_ext (fun y hy => ?_)` and prove the remaining obligations. Establish `hyp : y ∈ p.1.2.2.1` using `hy.1`. Establish `hyq : y ∈ q.1.2.2.1` using `hy.2`. Rewrite using `[gs_mul (𝟙 W) y _ hy, gs_mul (𝟙 W) y _ hy, gs_mul (𝟙 W) y _ hy, gs_resG_eq _ y _ hy, gs_resG_eq _ y _ hy, gs_resG_eq _ y _ hy, gs_unit (𝟙 W) y _ hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = (gm (𝟙 W) y _ (res _ _)).val * _ * _`. Rewrite using `[gm_id_res_eq _ y hy, GlobalTheory.CechPic.gm_tens _ _ _ y _ _ (hle p hyp) (hle q hyq), gm_pull_g L₀ g (𝟙 W) y _ _ (hle p hyp).1 (hle q hyq).1]`. Establish `E1` using `congrArg (gs (𝟙 W) y (N.U p)) (haf p j)`. Rewrite `E1` using `[gs_appLE g _ _ _ (𝟙 W) y hyp, gs_mul _ _ _ hyp, gs_resG_eq _ _ _ hyp]`. Establish `E2` using `congrArg (gs (𝟙 W) y (N.U q)) (haf q j)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `E2` using `[gs_appLE g _ _ _ (𝟙 W) y hyq, gs_mul _ _ _ hyq, gs_resG_eq _ _ _ hyq]`. Establish `hk2 : (𝟙 W ≫ g) y ∈ L₀.U p.1.1 ⊓ L₀.U q.1.1` using `⟨p.2.1 hyp, q.2.1 hyq⟩`. Establish `E3` using `congrArg (gs (𝟙 W ≫ g) y (L₀.U p.1.1 ⊓ L₀.U q.1.1)) ((σ j).compat p.1.1 q.1.1)`. Rewrite `E3` using `[gs_res _ _ _ hk2, gs_mul _ _ _ hk2, gs_unit _ _ _ hk2, gs_res _ _ _ hk2]`. Establish `hd2 : (𝟙 W) y ∈ D.U p.1.2.1 ⊓ D.U q.1.2.1` using `⟨p.2.2 hyp, q.2.2 hyq⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `E4` using `congrArg (gs (𝟙 W) y (D.U p.1.2.1 ⊓ D.U q.1.2.1)) (D.trans_spec p.1.2.1 q.1.2.1)`. Rewrite `E4` using `[gs_resG_eq _ _ _ hd2, gs_mul _ _ _ hd2, gs_unit _ _ _ hd2, gs_resG_eq _ _ _ hd2]`. Establish `E5 : ((gm (𝟙 W) y ((GlobalTheory.CechPic.dual D.lb).U (tI p).2 ⊓ (GlobalTheory.CechPic.dual D.lb).U (tI q).2)) ((GlobalTheory.CechPic.dual D.lb).g (tI p).2 (tI q).2)).val * (gm (𝟙 W) y (D.U p.1.2.1 ⊓ D.U q.1.2.1) (D.trans p.1.2.1 q.1.2.1)).val = 1`. Express the relevant statement in the definitionally equal form `(gm (𝟙 W) y (D.U p.1.2.1 ⊓ D.U q.1.2.1) (D.trans p.1.2.1 q.1.2.1)⁻¹).val * (gm (𝟙 W) y (D.U p.1.2.1 ⊓ D.U q.1.2.1) (D.trans p.1.2.1 q.1.2.1)).val = 1`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `mul_eq_unit_mul_of_relations _ _ _ _ _ _ _ _ _ E5 E1 E2 E3 E4`. Set `t : Fin (m + 1) → N.Sec` to `fun j => { f := fun p => af p j, compat := fun p q => hcomp j p q }`. Establish `ht : ⨆ i, Out.nonzeroLocus (t i) = ⊤`. Use `eq_top_iff.2 (fun y _ => ?_)` and prove the remaining obligations. Establish `hy : y ∈ ⨆ p, N.U p` using `by rw [hcov]; trivial`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, hyp⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Take `⟨j, hj⟩` from `exists_mem_basicOpen_of_sum (hcf p) hyp`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, GlobalTheory.basicOpen_le_nonzeroLocus (t j) p hj⟩`. Establish `hch : ∀ y : W, ∃ i, y ∈ ψ ⁻¹ᵁ chart R m i`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `iSup_nonzeroLocus_secPull (iSup_nonzeroLocus_coord R m) ψ`. Establish `hy : y ∈ ⨆ i, Out.nonzeroLocus (secPull (coord R m i) ψ)` using `by rw [h]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Use `⟨i, ?_⟩` and prove the remaining obligations. Establish `e` using `toProj_preimage_chart (ψ ≫ PSpace.str R m) (fun i => secPull (coord R m i) ψ) (iSup_nonzeroLocus_secPull (iSup_nonzeroLocus_coord R m) ψ) i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e` using `[toProj_secPull_coord]`. Rewrite using `[e]`. Conclude with `hi`. Establish `hψ : ψ = toProj (ψ ≫ PSpace.str R m) t ht`. Use `eq_toProj_of_locally (s := t) ht rfl (fun y => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hy : y ∈ ⨆ p, N.U p` using `by rw [hcov]; trivial`. Take `⟨p, hyp⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Take `⟨i, hi⟩` from `hch y`. Use `⟨N.U p ⊓ ψ ⁻¹ᵁ chart R m i, ⟨hyp, hi⟩, p, inf_le_left, i, inf_le_right, resG W inf_le_left (af p i), fun j => ?_⟩` and prove the remaining obligations. Establish `hV : N.U p ⊓ ψ ⁻¹ᵁ chart R m i ≤ D.U p.1.2.1` using `inf_le_left.trans p.2.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk' : N.U p ⊓ ψ ⁻¹ᵁ chart R m i ≤ g ⁻¹ᵁ L₀.U p.1.1` using `inf_le_left.trans p.2.1`. Use `(mul_cancel_right_mem_nonZeroDivisors (D.regular p.1.2.1 _ hV)).1 ?_` and prove the remaining obligations. Use `fn_ext (fun z hz => ?_)` and prove the remaining obligations. Establish `hzp : z ∈ N.U p` using `hz.1`. Establish `Ej` using `congrArg (gs (𝟙 W) z (N.U p)) (haf p j)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `Ej` using `[gs_appLE g _ _ _ (𝟙 W) z hzp, gs_mul _ _ _ hzp, gs_resG_eq _ _ _ hzp]`. Establish `Ei` using `congrArg (gs (𝟙 W) z (N.U p)) (haf p i)`. Rewrite `Ei` using `[gs_appLE g _ _ _ (𝟙 W) z hzp, gs_mul _ _ _ hzp, gs_resG_eq _ _ _ hzp]`. Establish `Eh` using `congrArg (gs (𝟙 W) z _) (hP _ p.1.1 hk' i inf_le_right j)`. Rewrite `Eh` using `[gs_appLE g _ _ _ (𝟙 W) z hz, gs_mul _ _ _ hz, gs_appLE g _ _ _ (𝟙 W) z hz]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[gs_mul _ _ _ hz, gs_mul _ _ _ hz, gs_mul _ _ _ hz, gs_resG_eq _ _ _ hz, gs_resG_eq _ _ _ hz, gs_resG_eq _ _ _ hz]`. Take the linear combination `(-1 : W.presheaf.stalk z) * Ej + Eh + gs (𝟙 W) z _ (pullRatio ψ _ i inf_le_right j) * Ei`. Establish `H1 : LBIso ((O1 R m).pull ψ) N`. Establish `h` using `lbIso_pullback_O1_toProj (ψ ≫ PSpace.str R m) t ht`. Rewrite `h` using `[← hψ]`.
-
-Conclude with `h`. Conclude with `LBIso.trans (pull_isLB (O1_isLB R m) ψ) hN hT H1 H2`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_O1_of_proportional (R : Type) [CommRing R] (X W : Scheme.{0}) (J : X.IdealSheafData)
     (L₀ : LB X) (m : ℕ) (σ : Fin (m + 1) → L₀.Sec) (g : W ⟶ X) (ψ : W ⟶ PSpace R m) (D : GlobalTheory.EffCartierData W)

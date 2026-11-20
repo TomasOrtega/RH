@@ -12,19 +12,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SeeSaw
 
 /- English proof (translation)
-Introduce `D V R hR L hL Q`. Take `⟨⟨K, hK, hKc, hKo⟩, -⟩` from `(GlobalTheory.T.unitaryFiniteAdelicGroup_split_finitePlaceSet D V Q).2.2.2.2.2.2.2.2.1 L hL (· ∈ Q)`. Establish `hKG : ∀ g : GA D V, g ∈ K → g ∈ grpAt V (· ∈ Q)` using `fun g hg => ((hK g).1 hg).1`. Establish `h1 : InK V L (· ∈ Q) 1` using `(hK 1).1 K.one_mem`. Set `S : Set (grpAt V (· ∈ Q))` to `{g | InK V L (· ∈ Q) g.1}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hSe : S = ((K.subgroupOf (grpAt V (· ∈ Q)) : Subgroup _) : Set (grpAt V (· ∈ Q)))`. Use extensionality with `g`. Simplify using `[S, Subgroup.mem_subgroupOf, hK]`. Establish `hSo : IsOpen S` using `hSe ▸ hKo`. Establish `hSc : IsCompact S`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Topology.IsInducing.subtypeVal.isCompact_iff]`. Use `hKc using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `(hK _).2 hg`. Introduce `hx`. Conclude with `⟨⟨x, hKG x hx⟩, (hK x).1 hx, rfl⟩`. Set `T` to `R.subgroupOf (grpAt V (· ∈ Q))`. Set `S' : Set T` to `{g | InK V L (· ∈ Q) g.1.1}`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS'o : IsOpen S'` using `hSo.preimage continuous_subtype_val`. Establish `hS'c : IsCompact S'`. Rewrite using `[(Topology.IsInducing.subtypeVal.comp Topology.IsInducing.subtypeVal).isCompact_iff]`. Use `hKc.inter_right hR using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Conclude with `⟨(hK _).2 hg, Subgroup.mem_subgroupOf.1 g.2⟩`. Introduce and unpack `⟨hx, hxR⟩`. Conclude with `⟨⟨⟨x, hKG x hx⟩, Subgroup.mem_subgroupOf.2 hxR⟩, (hK x).1 hx, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `K₀ : TopologicalSpace.PositiveCompacts (grpAt V (· ∈ Q))` to `⟨⟨S, hSc⟩, by rw [hSo.interior_eq]; exact ⟨1, h1⟩⟩`. Set `K₁ : TopologicalSpace.PositiveCompacts T` to `⟨⟨S', hS'c⟩, by rw [hS'o.interior_eq]; exact ⟨1, h1⟩⟩`. Use `⟨Measure.haarMeasure K₁, Measure.haarMeasure K₀, inferInstance, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Measure.haarMeasure_self (K₀ := K₀)`. Conclude with `Measure.haarMeasure_self (K₀ := K₁)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem normAt_exists : ∀ (D : D7) (V : HSp D) (R : Subgroup (GA D V)), IsClosed (R : Set (GA D V)) → ∀ (L : Lat V),
     IsSelfDualC V L → ∀ Q : Finset (Pl D), ∃ ρ μ, IsNormAt V R L (· ∈ Q) ρ μ := by

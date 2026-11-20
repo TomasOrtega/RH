@@ -19,9 +19,9 @@ open GlobalTheory
 namespace GlobalTheory.CompanionTheory.MPDict.GenTop
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ Spec.map (X.residue x) ⁻¹ᵁ (X.fromSpecStalk x ⁻¹ᵁ U)` using `h`. Establish `e : X.fromSpecResidueField x = Spec.map (X.residue x) ≫ X.fromSpecStalk x` using `rfl`. Use `Scheme.Hom.appLE_comp_appLE (Spec.map (X.residue x)) (X.fromSpecStalk x) U (X.fromSpecStalk x ⁻¹ᵁ U) ⊤ le_rfl h'` as an intermediate fact. Rewrite using `[appLE_of_eq e U ⊤ h (h'.trans le_rfl), ← this, ← Scheme.Hom.app_eq_appLE, Scheme.fromSpecStalk_app hx]`. Simplify using `only [Category.assoc, Scheme.Hom.map_appLE]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Scheme.germ_residue, Category.assoc, Scheme.ΓSpecIso_inv_naturality]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem appLE_fromSpecResidueField {X : Scheme.{0}} {U : X.Opens} (x : X) (hx : x ∈ U)
     (h : ⊤ ≤ X.fromSpecResidueField x ⁻¹ᵁ U) :
@@ -35,9 +35,9 @@ theorem appLE_fromSpecResidueField {X : Scheme.{0}} {U : X.Opens} (x : X) (hx : 
   rfl
 
 /- English proof (translation)
-Establish `h1 : (isAffineOpen_chart ℤ N i).fromSpec.appLE (chart ℤ N i) ⊤ (isAffineOpen_chart ℤ N i).fromSpec_preimage_self.ge = (Scheme.ΓSpecIso _).inv`. Rewrite using `[Scheme.Hom.appLE, IsAffineOpen.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Conclude with `(congrArg _ (CategoryTheory.Functor.map_id _ _)).trans (Category.comp_id _)`. Establish `h3` using `Scheme.Hom.appLE_comp_appLE (Spec.map ψ) (isAffineOpen_chart ℤ N i).fromSpec (chart ℤ N i) ⊤ ⊤ (isAffineOpen_chart ℤ N i).fromSpec_preimage_self.ge le_rfl`. Unfold `pullRatio`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h3, h1]`. Use `congrArg (fun q => q.hom (ratio ℤ N i j)) (Scheme.ΓSpecIso_inv_naturality ψ)` as an intermediate fact. Conclude with `this.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pullRatio_SpecMap_fromSpec {N : ℕ} (i : Fin (N + 1)) {R : CommRingCat.{0}}
     (ψ : Γ(PSpace ℤ N, chart ℤ N i) ⟶ R)
@@ -56,13 +56,11 @@ theorem pullRatio_SpecMap_fromSpec {N : ℕ} (i : Fin (N + 1)) {R : CommRingCat.
   exact this.symm
 
 /- English proof (translation)
-Take `⟨⟨z, φ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField F X).symm.surjective G`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at h`. Establish `hz : z = x`. Establish `e` using `congrArg (fun f : Spec (X.residueField x) ⟶ X => f default) h`. Simplify using `only [Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply] at e`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `e`. Substitute `hz` using the available equality. Rewrite `h` using `[← Category.assoc, ← Spec.map_comp]`. Establish `h2 : Spec.map (φ ≫ ι) = Spec.map (𝟙 _)`. Rewrite using `[← cancel_mono (X.fromSpecResidueField _), Spec.map_id, Category.id_comp]`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `h3 : φ ≫ ι = 𝟙 _` using `Spec.map_injective h2`. Introduce `a`. Use `⟨φ.hom a, ?_⟩` and prove the remaining obligations. Use `congrArg (fun q => q.hom a) h3` as an intermediate fact.
-
-Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem surjective_of_factor {X : Scheme.{0}} (x : X) {F : Type} [Field F]
     (ι : CommRingCat.of F ⟶ X.residueField x) (G : Spec (.of F) ⟶ X)
@@ -85,21 +83,19 @@ theorem surjective_of_factor {X : Scheme.{0}} (x : X) {F : Type} [Field F]
   simpa using this
 
 /- English proof (translation)
-Establish `hone : ∀ k, ptCoord x ⟨k, ptChart x k⟩ = 1` using `fun k => by`. Simplify using `only [ptCoord, pullRatio_self, map_one]`. Establish `hmem : ∀ p, ptCoord x p ∈ blockFnField (ptCoord x)` using `fun p => IntermediateField.subset_adjoin _ _ ⟨p, ⟨p.1, ptChart x p.1⟩, rfl, by rw [hone, div_one]⟩`. Set `F` to `blockFnField (ptCoord x)`. Set `r : ∀ k, Fin (n k + 1) → F` to `fun k j => ⟨ptCoord x ⟨k, j⟩, hmem _⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hr : ∀ k, r k (ptChart x k) = 1` using `fun k => Subtype.ext (hone k)`. Set `ρ : ∀ k, Γ(PSpace ℤ (n k), chart ℤ (n k) (ptChart x k)) ⟶ CommRingCat.of F` to `fun k => CommRingCat.ofHom (R := Γ(PSpace ℤ (n k), chart ℤ (n k) (ptChart x k))) (S := F) (chartLift (ptChart x k) (Int.castRingHom F) (r k))`. Set `g : ∀ k, Spec (CommRingCat.of F) ⟶ projectiveSpace ℤ (n k)` to `fun k => Spec.map (ρ k) ≫ (isAffineOpen_chart ℤ (n k) (ptChart x k)).fromSpec`. Set `G : Spec (CommRingCat.of F) ⟶ MP ℤ m n` to `GroundTheory.Arith.SchemeCoh.ProjSpace.lift m n (Spec.map (CommRingCat.ofHom (Int.castRingHom F))) g (fun _ => specZIsTerminal.hom_ext _ _)`. Set `ι : CommRingCat.of F ⟶ (MP ℤ m n).residueField x` to `CommRingCat.ofHom F.val.toRingHom`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `key : Spec.map ι ≫ G = (MP ℤ m n).fromSpecResidueField x`. Use `GroundTheory.Arith.SchemeCoh.ProjSpace.hom_ext m n _ _ fun k => ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, GroundTheory.Arith.SchemeCoh.ProjSpace.lift_pr]`. Establish `hx` using `mem_ptChart x k`. Establish `h₂' : ⊤ ≤ (MP ℤ m n).fromSpecResidueField x ⁻¹ᵁ blockChart n k (ptChart x k)` using `fun s _ => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Hom.mem_preimage, Scheme.fromSpecResidueField_apply]`. Conclude with `hx`. Establish `e1 : Spec.map ι ≫ g k = Spec.map (ρ k ≫ ι) ≫ (isAffineOpen_chart ℤ (n k) (ptChart x k)).fromSpec`. Rewrite using `[Spec.map_comp, Category.assoc]`. Establish `h₁ : ⊤ ≤ (Spec.map (ρ k ≫ ι) ≫ (isAffineOpen_chart ℤ (n k) (ptChart x k)).fromSpec) ⁻¹ᵁ chart ℤ (n k) (ptChart x k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.comp_preimage, IsAffineOpen.fromSpec_preimage_self]`. Conclude with `le_top`. Rewrite using `[e1]`. Use `GlobalTheory.ProjSpace.hom_ext (specZIsTerminal.hom_ext _ _) fun _ => ⟨⊤, trivial, ptChart x k, h₁, by rw [Scheme.Hom.comp_preimage]; exact h₂', fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[pullRatio_SpecMap_fromSpec]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2` using `appLE_pullRatio (φ := prB n k) (W := blockChart n k (ptChart x k)) (i := ptChart x k) (hi := le_rfl) (j := j) ((MP ℤ m n).fromSpecResidueField x) h₂'`. Use `Eq.trans ?_ e2` and prove the remaining obligations. Rewrite using `[appLE_fromSpecResidueField x hx]`. Use `show _ = (Scheme.ΓSpecIso _).inv (ptCoord x ⟨k, j⟩)`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `show F.val (chartLift (ptChart x k) (Int.castRingHom F) (r k) (ratio ℤ (n k) (ptChart x k) j)) = _`. Rewrite using `[chartLift_ratio _ _ (hr k)]`. Both sides reduce to the same expression. Establish `hs` using `surjective_of_factor x ι G key`. Use `eq_top_iff.2 fun a _ => ?_` and prove the remaining obligations.
-
-Take `⟨b, rfl⟩` from `hs a`. Conclude with `b.2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem blockFnField_ptCoord_eq_top (m : ℕ) (n : Fin (m + 1) → ℕ) (x : MP ℤ m n)
     [CharZero ((MP ℤ m n).residueField x)] : blockFnField (ptCoord x) = ⊤ := by

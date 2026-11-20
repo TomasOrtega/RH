@@ -25,11 +25,9 @@ noncomputable section
 namespace GlobalTheory.SqStep
 
 /- English proof (translation)
-Take `⟨F₁, h₁⟩` from `h₁`. Take `⟨F₂, h₂⟩` from `h₂`. Take `⟨F₃, h₃⟩` from `h₃`. Use `⟨max F₁ (max F₂ F₃), fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C₁, x₁, k₁⟩` from `h₁ ε CF (le_trans (le_max_left _ _) hCF)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨C₂, x₂, k₂⟩` from `h₂ ε CF (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCF)`. Take `⟨C₃, x₃, k₃⟩` from `h₃ ε CF (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hCF)`. Use `⟨max C₁ (max C₂ C₃), max x₁ (max x₂ x₃), fun C hC D large₂ he hx hR T Lc μ₀ hL G => H G μ₀ C _ _ ?_ ?_ ?_⟩` and prove the remaining obligations. Conclude with `k₁ C (le_trans (le_max_left _ _) hC) D large₂ he (le_trans (le_max_left _ _) hx) hR T Lc μ₀ hL G`. Conclude with `k₂ C (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC) D large₂ he (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx) hR T Lc μ₀ hL G`.
-
-Conclude with `k₃ C (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hC) D large₂ he (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx) hR T Lc μ₀ hL G`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gbig_three {Q₁ Q₂ Q₃ Q : GP} (h₁ : GBig Q₁) (h₂ : GBig Q₂) (h₃ : GBig Q₃)
     (H : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (μ₀ : T) (C x b : ℝ),
@@ -49,17 +47,17 @@ theorem gbig_three {Q₁ Q₂ Q₃ Q : GP} (h₁ : GBig Q₁) (h₂ : GBig Q₂)
       (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx) hR T Lc μ₀ hL G
 
 /- English proof (translation)
-Introduce `hP hK hM`. Use `gbig_three (GlobalTheory.T.square_tower_stage_rank_factorization hP hK hM) GlobalTheory.T.thetaStepFactor_ratio_unit_gaussSumQuotient GlobalTheory.T.partialHeckeLFunction_square_eq_primitive ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b hk ha hl W S hψ hN i j p q A A' WW X lam e Lf hX hF he hLf`. Take `⟨B, B', WW₁, Y, c, hY, hc, hc0, H⟩` from `hk W S hψ hN i j p q A A' WW X lam e hX hF he`. Establish `he1 : 1 ≤ e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h1, h2, a1, a2, -⟩` from `hX`. Establish `e2 : rankV D (↑i + 1) (↑j + 1) = rankV D ↑i ↑j + D.R.t + sLen D` using `by simp only [rankV]; ring`. Establish `h3` using `D.R.three_m_lt_t`. Establish `hpp : pp D j ≤ D.R.m` using `by unfold pp; omega`. Establish `hqq : qq D j ≤ D.R.m` using `by unfold qq; omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hLeq : ∀ t, GlobalTheory.LFun.charL (chs G i j t).ν (G.pl.S0 : Set (HeightOneSpectrum (𝓞 D.host.F))) ((e + 1 : ℕ) : ℂ) = Lf t ((e + 1 : ℕ) : ℂ)` using `fun t => hl i j t (e + 1) (Lf t) (by omega) (hLf t)`. Use `⟨B, B', WW₁, Y, c, fun t => lam t * Lf t ((e + 1 : ℕ) : ℂ) / c t, hY, hc, fun t => ⟨?_, ?_⟩, fun t => ?_⟩` and prove the remaining obligations. Take `⟨Bs, e₁, e₂, s, 𝔟, 𝔠, -, -, -, hL0, -, -⟩` from `H t`. Rewrite `hL0` using `[hLeq t]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `div_ne_zero (mul_ne_zero (hF.1 t) hL0) (hc0 t)`. Rewrite using `[div_mul_cancel₀ _ (hc0 t)]`. Take `⟨Bs, e₁, e₂, s, 𝔟, 𝔠, hfit, hsf, hsf0, -, -, heq⟩` from `H t`. Rewrite `heq` using `[hLeq t, hLeq μ₀]`. Take `⟨bb, g, g', hb, hg, e3⟩` from `ha W S hψ hN i j t Bs e₁ e₂ s 𝔟 𝔠 (-(e : ℤ)) hfit hsf`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨bb, g, g', hb, hg, ?_⟩` and prove the remaining obligations. Establish `h0` using `hc0 μ₀`. Establish `ht` using `hc0 t`. Rewrite `heq` using `[e3]`. Establish `key` using `mul_right_cancel₀ hsf (show (lam t * Lf t ((e + 1 : ℕ) : ℂ) * c μ₀) * GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.stepFac Bs (chs G i j t) e₁ e₂ s 𝔟 𝔠 (-(e : ℤ)) = (D.what₂.embLL (bb * ∏ v ∈ G.pl.S0, ((g v : D.what₂.LL) / (g' v : D.what₂.LL))) * (lam μ₀ * Lf μ₀ ((e + …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `key`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem step_small : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →

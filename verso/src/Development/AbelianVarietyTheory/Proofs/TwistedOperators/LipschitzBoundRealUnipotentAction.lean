@@ -24,7 +24,7 @@ open Formalism.IndefR.Eqv
 variable {D : D7}
 
 /- English proof (translation)
-Establish `e : φ d - φ a = (φ d - φ c) + (φ c - φ b) + (φ b - φ a)` using `by ring`. Rewrite using `[e]`. Conclude with `norm_add₃_le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sub_three {G : Type*} (φ : G → ℂ) (a b c d : G) :
     ‖φ d - φ a‖ ≤ ‖φ d - φ c‖ + ‖φ c - φ b‖ + ‖φ b - φ a‖ := by
@@ -33,11 +33,11 @@ theorem norm_sub_three {G : Type*} (φ : G → ℂ) (a b c d : G) :
   exact norm_add₃_le
 
 /- English proof (translation)
-Proceed by induction on `l generalizing y with`. Consider the case `nil => simp`. Consider the case `cons i l ih`. Simplify using `only [List.map_cons, List.prod_cons, List.sum_cons]`. Establish `h1` using `hL y (τf i) (Xf i) (hX i) 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `hL (y * oneP θ V (τf i) (Xf i) 1) (τf i) (Yf i) (hY i) 1`. Establish `h3` using `ih (y * oneP θ V (τf i) (Xf i) 1 * oneP θ V (τf i) (Yf i) 1)`. Rewrite `h1`, `h2` using `[abs_one, mul_one]`. Rewrite using `[← mul_assoc, ← mul_assoc]`. Use `(norm_sub_three φ y (y * oneP θ V (τf i) (Xf i) 1) (y * oneP θ V (τf i) (Xf i) 1 * oneP θ V (τf i) (Yf i) 1) _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show ∀ a b s : ℝ, c * (a + b + s) = c * s + c * b + c * a from fun a b s => by ring]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lip_list {ι : Type*} (θ : InfFam D) {V : HSp D} (A : Fr V) (φ : GA D V → ℂ) (c : ℝ) (hL : Lip θ A φ c)
     (τf : ι → D.what₂.Tau) (Xf Yf : ι → Matrix (Fin V.rank) (Fin V.rank) ℂ)
@@ -60,9 +60,9 @@ theorem lip_list {ι : Type*} (θ : InfFam D) {V : HSp D} (A : Fr V) (φ : GA D 
     linarith
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ProdMapMulSingle.prod_map_mulSingle_apply`. Consider the case `exact _root_.GlobalTheory.ProdMapMulSingle.prod_map_mulSingle_apply`. Consider the case `(apply _root_.GlobalTheory.ProdMapMulSingle.prod_map_mulSingle_apply <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ProdMapMulSingle.prod_map_mulSingle_apply <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ProdMapMulSingle.prod_map_mulSingle_apply <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ProdMapMulSingle.prod_map_mulSingle_apply ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem list_prod_mulSingle {ι : Type*} [DecidableEq ι] {M : ι → Type*} [∀ i, Monoid (M i)] (x : ∀ i, M i)
     (l : List ι) (hl : l.Nodup) (w : ι) :
@@ -76,7 +76,7 @@ theorem list_prod_mulSingle {ι : Type*} [DecidableEq ι] {M : ι → Type*} [�
   | (intros; exact _root_.GlobalTheory.ProdMapMulSingle.prod_map_mulSingle_apply ..)
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 hP`. Establish `e` using `congrArg (fun Q => P⁻¹ * Q * P) h`. Simplify `e` using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hd, Matrix.nonsing_inv_mul _ hd, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conj_cancel {n : ℕ} {P M N : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (h : P * M * P⁻¹ = P * N * P⁻¹) :
     M = N := by
@@ -86,7 +86,7 @@ theorem conj_cancel {n : ℕ} {P M N : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit 
     Matrix.mul_one] using e
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 hQ`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv Q hd]`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hd, Matrix.mul_one, Matrix.mul_nonsing_inv_cancel_left _ _ hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_back {n : ℕ} (Q M : Matrix (Fin n) (Fin n) ℂ) (hQ : IsUnit Q) : Q * (Q⁻¹ * M * Q⁻¹⁻¹) * Q⁻¹ = M := by
   have hd := (Matrix.isUnit_iff_isUnit_det _).1 hQ
@@ -100,13 +100,13 @@ def expUJ {n : ℕ} {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX :
     simpa using h⟩
 
 /- English proof (translation)
-Take `⟨-, h2, -⟩` from `GlobalTheory.BridgeDict.bridge_dict D θ hθ V fr`. Establish `he : ∀ τ', infMat D.sp.cm.sig V.gram (θ τ') h = infMat D.sp.cm.sig V.gram (θ τ') h'` using `fun τ' => by`. Distinguish the cases in `e : τ' = τ`. Substitute `e` using the available equality. Rewrite using `[hh.2.1, hh'.2.1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh.2.2 τ' e, hh'.2.2 τ' e]`. Establish `hx : UI.brg fr ((UI.brg fr).symm h) = h` using `(UI.brg fr).apply_symm_apply h`. Establish `hx' : UI.brg fr ((UI.brg fr).symm h') = h'` using `(UI.brg fr).apply_symm_apply h'`. Establish `hxx : (UI.brg fr).symm h = (UI.brg fr).symm h'`. Use `Prod.ext (funext fun (v : InfinitePlace D.host.F) => ?_) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `a` using `h2 ((UI.brg fr).symm h) ((Formalism.L2.Host.tauPl D).symm v) _ rfl`. Establish `a'` using `h2 ((UI.brg fr).symm h') ((Formalism.L2.Host.tauPl D).symm v) _ rfl`. Rewrite `a`, `a'` using `[Equiv.apply_symm_apply]`. Rewrite `a` using `[hx]`. Rewrite `a'` using `[hx']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `a.symm.trans ((he _).trans a')`. Conclude with `Subtype.ext (Units.ext (conj_cancel (fr.unit v) e2))`. Rewrite using `[(brg_mem_GinfC fr _).1 (by rw [hx]; exact hh.1), (brg_mem_GinfC fr _).1 (by rw [hx']; exact hh'.1)]`. Rewrite using `[← hx, ← hx', hxx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAtTau_unique (θ : InfFam D) (hθ : IsInfFam θ) {V : HSp D} (fr : UI.Frames D V) {τ : D.what₂.Tau}
     {g : Matrix (Fin V.rank) (Fin V.rank) ℂ} {h h' : GA D V} (hh : IsAtTau θ V τ g h) (hh' : IsAtTau θ V τ g h') :
@@ -133,13 +133,11 @@ theorem isAtTau_unique (θ : InfFam D) (hθ : IsInfFam θ) {V : HSp D} (fr : UI.
 open Classical in
 
 /- English proof (translation)
-Take `⟨-, h2, -⟩` from `GlobalTheory.BridgeDict.bridge_dict D θ hθ V fr`. Establish `hs : ∀ w : InfinitePlace (UI.instV fr).F, w = v → Formalism.MainNotions.S.uMat ((Pi.mulSingle v a : (UI.instV fr).Ginf) w) = Formalism.MainNotions.S.uMat a`. Introduce and unpack `w rfl`. Conclude with `congrArg Formalism.MainNotions.S.uMat (Pi.mulSingle_eq_same (M := fun w : InfinitePlace (UI.instV fr).F => Formalism.REAL.UJ ((UI.instV fr).ε w)) w a)`. Establish `hn : ∀ w : InfinitePlace (UI.instV fr).F, w ≠ v → Formalism.MainNotions.S.uMat ((Pi.mulSingle v a : (UI.instV fr).Ginf) w) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Conclude with `(congrArg Formalism.MainNotions.S.uMat (Pi.mulSingle_eq_of_ne (M := fun w : InfinitePlace (UI.instV fr).F => Formalism.REAL.UJ ((UI.instV fr).ε w)) hw a)).trans rfl`. Use `⟨(brg_mem_GinfC fr _).2 rfl, ?_, fun τ' hτ' => ?_⟩` and prove the remaining obligations. Establish `e` using `h2 ((Pi.mulSingle v a : (UI.instV fr).Ginf), 1) ((Formalism.L2.Host.tauPl D).symm v) (Formalism.MainNotions.S.uMat a) (hs _ (Equiv.apply_symm_apply _ _)).symm`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Equiv.apply_symm_apply]`. Establish `hw : Formalism.L2.Host.tauPl D τ' ≠ v` using `fun hv => hτ' (by rw [← hv, Equiv.symm_apply_apply])`. Establish `e` using `h2 ((Pi.mulSingle v a : (UI.instV fr).Ginf), 1) τ' 1 (hn _ hw).symm`. Rewrite using `[e]`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (fr.unit (Formalism.L2.Host.tauPl D τ'))`.
-
-Rewrite using `[Matrix.mul_one, Matrix.mul_nonsing_inv _ hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAtTau_brg (θ : InfFam D) (hθ : IsInfFam θ) {V : HSp D} (fr : UI.Frames D V) (v : InfinitePlace D.host.F)
     (a : Formalism.REAL.UJ (fr.ε v)) :
@@ -169,9 +167,9 @@ theorem isAtTau_brg (θ : InfFam D) (hθ : IsInfFam θ) {V : HSp D} (fr : UI.Fra
 open Classical in
 
 /- English proof (translation)
-Establish `hc` using `isAtTau_brg θ hθ fr v a`. Rewrite `hc` using `[← ha, ← one_smul ℝ X]`. Establish `hex : ∃ x, IsAtTau θ V ((Formalism.L2.Host.tauPl D).symm v) (NormedSpace.exp ((1 : ℝ) • X)) x` using `⟨_, hc⟩`. Unfold `oneP atTau`. Rewrite using `[dif_pos hex]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isAtTau_unique θ hθ fr hex.choose_spec hc`.
+A detailed English derivation is pending.
 -/
 theorem oneP_eq_brg (θ : InfFam D) (hθ : IsInfFam θ) {V : HSp D} (fr : UI.Frames D V) (v : InfinitePlace D.host.F)
     (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) (a : Formalism.REAL.UJ (fr.ε v))
@@ -185,7 +183,7 @@ theorem oneP_eq_brg (θ : InfFam D) (hθ : IsInfFam θ) {V : HSp D} (fr : UI.Fra
   exact isAtTau_unique θ hθ fr hex.choose_spec hc
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons i l ih => simp [ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_prod_pairs {ι G H : Type*} [Monoid G] [Monoid H] (f : G →* H) (l : List ι) (a b : ι → G) :
     f (l.map fun i => a i * b i).prod = (l.map fun i => f (a i) * f (b i)).prod := by
@@ -194,13 +192,11 @@ theorem map_prod_pairs {ι G H : Type*} [Monoid G] [Monoid H] (f : G →* H) (l 
   | cons i l ih => simp [ih]
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (fr.unit v)`. Establish `e1 : ((fr.P v)⁻¹)ᴴ * (fr.P v)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hd, Matrix.conjTranspose_one]`. Establish `hG : gramAt D V ((Formalism.L2.Host.tauPl D).symm v) = ((fr.P v)⁻¹)ᴴ * Formalism.REAL.Jm (fr.ε v) * (fr.P v)⁻¹`. Rewrite using `[← fr.spec v]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul, Matrix.mul_one]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`. Establish `e2 : ∀ W : Matrix (Fin V.rank) (Fin V.rank) ℂ, (fr.P v)ᴴ * (((fr.P v)⁻¹)ᴴ * W) = W` using `fun W => by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, Matrix.nonsing_inv_mul _ hd, Matrix.conjTranspose_one, Matrix.one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : ∀ W : Matrix (Fin V.rank) (Fin V.rank) ℂ, (fr.P v)⁻¹ * (fr.P v * W) = W` using `fun W => Matrix.nonsing_inv_mul_cancel_left _ _ hd`. Use `show _ * _ + _ * _ = 0`. Rewrite using `[hG]`. Establish `key : (fr.P v * M * (fr.P v)⁻¹)ᴴ * (((fr.P v)⁻¹)ᴴ * Formalism.REAL.Jm (fr.ε v) * (fr.P v)⁻¹) + ((fr.P v)⁻¹)ᴴ * Formalism.REAL.Jm (fr.ε v) * (fr.P v)⁻¹ * (fr.P v * M * (fr.P v)⁻¹) = ((fr.P v)⁻¹)ᴴ * (Mᴴ * Formalism.REAL.Jm (fr.ε v) + Formalism.REAL.Jm (fr.ε v) * M) * (fr.P v)⁻¹`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc, e2, e3, Matrix.mul_add, Matrix.add_mul]`.
-
-Rewrite using `[key, show Mᴴ * Formalism.REAL.Jm (fr.ε v) + Formalism.REAL.Jm (fr.ε v) * M = 0 from hM, Matrix.mul_zero, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_lieAt {V : HSp D} (fr : UI.Frames D V) (v : InfinitePlace D.host.F)
     {M : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hM : Formalism.REAL.inG (fr.ε v) M) :
@@ -231,17 +227,17 @@ theorem conj_mem_lieAt {V : HSp D} (fr : UI.Frames D V) (v : InfinitePlace D.hos
 open Classical in
 
 /- English proof (translation)
-Introduce `D θ hθ V A fr hP φ c hc hL u Av Z hAZ hu y`. Establish `hX : ∀ v, fr.P v * Av v * (fr.P v)⁻¹ ∈ lieAt V ((Formalism.L2.Host.tauPl D).symm v)` using `fun v => conj_mem_lieAt fr v (hAZ v).1`. Establish `hY : ∀ v, fr.P v * Z v * (fr.P v)⁻¹ ∈ lieAt V ((Formalism.L2.Host.tauPl D).symm v)` using `fun v => conj_mem_lieAt fr v (hAZ v).2`. Establish `hXe : ∀ v, oneP θ V ((Formalism.L2.Host.tauPl D).symm v) (fr.P v * Av v * (fr.P v)⁻¹) 1 = UI.brg fr ((Pi.mulSingle v (expUJ (hAZ v).1) : (UI.instV fr).Ginf), 1)` using `fun v => oneP_eq_brg θ hθ fr v _ _ (Matrix.exp_conj _ _ (fr.unit v))`. Establish `hYe : ∀ v, oneP θ V ((Formalism.L2.Host.tauPl D).symm v) (fr.P v * Z v * (fr.P v)⁻¹) 1 = UI.brg fr ((Pi.mulSingle v (expUJ (hAZ v).2) : (UI.instV fr).Ginf), 1)` using `fun v => oneP_eq_brg θ hθ fr v _ _ (Matrix.exp_conj _ _ (fr.unit v))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : u = ((Finset.univ : Finset (InfinitePlace D.host.F)).toList.map fun v => (Pi.mulSingle v (expUJ (hAZ v).1) : (UI.instV fr).Ginf) * (Pi.mulSingle v (expUJ (hAZ v).2) : (UI.instV fr).Ginf)).prod`. Establish `e : ∀ v : InfinitePlace D.host.F, ((Pi.mulSingle v (expUJ (hAZ v).1) : (UI.instV fr).Ginf) * (Pi.mulSingle v (expUJ (hAZ v).2) : (UI.instV fr).Ginf)) = (Pi.mulSingle v (expUJ (hAZ v).1 * expUJ (hAZ v).2) : (UI.instV fr).Ginf)` using `fun v => (Pi.mulSingle_mul _ _ _).symm`. Use `Eq.trans ?_ (congrArg List.prod (List.map_congr_left fun v _ => e v)).symm` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Use `Eq.trans ?_ (list_prod_mulSingle (M := fun w : InfinitePlace (UI.instV fr).F => Formalism.REAL.UJ ((UI.instV fr).ε w)) (fun v => expUJ (hAZ v).1 * expUJ (hAZ v).2) _ (Finset.nodup_toList _) w).symm` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (if_pos (Finset.mem_toList.2 (Finset.mem_univ _))).symm` and prove the remaining obligations. Conclude with `Subtype.ext (Units.ext (hu w))`. Establish `hfac : UI.brg fr (u, 1) = ((Finset.univ : Finset (InfinitePlace D.host.F)).toList.map fun v => oneP θ V ((Formalism.L2.Host.tauPl D).symm v) (fr.P v * Av v * (fr.P v)⁻¹) 1 * oneP θ V ((Formalism.L2.Host.tauPl D).symm v) (fr.P v * Z v * (fr.P v)⁻¹) 1).prod`. Establish `e1 : ((u, 1) : (UI.instV fr).GA) = MonoidHom.inl (UI.instV fr).Ginf (UI.instV fr).Gf u` using `rfl`. Rewrite using `[e1, hu']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(map_prod_pairs ((UI.brg fr : (UI.instV fr).GA →* GA D V).comp (MonoidHom.inl _ _)) _ (fun v => (Pi.mulSingle v (expUJ (hAZ v).1) : (UI.instV fr).Ginf)) (fun v => (Pi.mulSingle v (expUJ (hAZ v).2) : (UI.instV fr).Ginf))).trans ?_` and prove the remaining obligations. Use `congrArg List.prod (List.map_congr_left fun v _ => ?_)` and prove the remaining obligations. Rewrite using `[hXe v, hYe v]`. Both sides reduce to the same expression. Rewrite using `[hfac]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(lip_list θ A φ c hL (fun v => (Formalism.L2.Host.tauPl D).symm v) (fun v => fr.P v * Av v * (fr.P v)⁻¹) (fun v => fr.P v * Z v * (fr.P v)⁻¹) hX hY _ y).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_map_toList]`. Use `congr 1`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `hPv : fr.P v = (A.fr ((Formalism.L2.Host.tauPl D).symm v))⁻¹`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hP ((Formalism.L2.Host.tauPl D).symm v)`. Rewrite `h` using `[Equiv.apply_symm_apply]`. Then use the resulting hypothesis. Simplify using `only [hPv, conj_back _ _ (A.fr_unit _)]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lip_move_real : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (A : Fr V) (fr : Formalism.IndefR.Eqv.UI.Frames D V), (∀ τ, fr.P (Formalism.L2.Host.tauPl D τ) = (A.fr τ)⁻¹) → ∀ (φ : GA D V → ℂ) (c : ℝ), 0 ≤ c → Lip θ A φ c → ∀ (u : (Formalism.IndefR.Eqv.UI.instV fr).Ginf) (Av Z : InfinitePlace D.host.F → Matrix (Fin V.rank) (Fin V.rank) ℂ), (∀ v, Formalism.REAL.inG (fr.ε v) (Av v) ∧ Formalism.REAL.inG (fr.ε v) (Z v)) → (∀ v, Formalism.MainNotions.S.uMat (u v) = NormedSpace.exp (Av v) * NormedSpace.exp (Z v)) → ∀ y : GA D V, ‖φ (y * Formalism.IndefR.Eqv.UI.brg fr (u, 1)) - φ y‖ ≤ c * ∑ v, (Real.sqrt (Formalism.REAL.hs (Av v)) + Real.sqrt (Formalism.REAL.hs (Z v))) := by
   intro D θ hθ V A fr hP φ c hc hL u Av Z hAZ hu y

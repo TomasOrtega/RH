@@ -14,21 +14,19 @@ noncomputable section
 namespace GlobalTheory.KeyOriginEnlarge
 
 /- English proof (translation)
-Introduce `T O _ _ _ _ _ _ _ _ P _ φ hφ hSH hP q hq A _ _ _ _ _ _ i EA _ _ _ _ _ QA _ jA ψA DA _ _ actA hFits ρ hRet A₁ _ _ _ _ _ _ j i₁ hj hi₁ hi₁l hij`. Use `haveI hφl : IsLocalHom φ := hSH.2.2.1`. Establish `hX : algebraMap (Polynomial T) O Polynomial.X ∈ maximalIdeal O`. Rewrite using `[← hφ, RingHom.comp_apply]`. Apply `map_nonunit φ` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime P) P _).2 ?_` and prove the remaining obligations. Rewrite using `[hP]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Establish `hTO : IsLocalHom (algebraMap T O)`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hna`. Establish `h1 : Polynomial.C a ∈ P`. Rewrite using `[hP]`. Conclude with `Ideal.mem_sup_left (Ideal.mem_map_of_mem _ ((IsLocalRing.mem_maximalIdeal _).2 hna))`. Use `(IsLocalization.AtPrime.isUnit_to_map_iff (Localization.AtPrime P) P (Polynomial.C a)).1 (isUnit_of_map_unit φ _ ?_) h1` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← RingHom.comp_apply, hφ]`. Rewrite `ha` using `[IsScalarTower.algebraMap_apply T (Polynomial T) O]`. Conclude with `ha`. Take `⟨hi, hil, hqu, hQA, hjA, hψA, htors⟩` from `hFits`. Take `⟨EA₁, _, _, _, _, _, QA₁, _, jA₁, γ₀, γ, ρ', hQA₁, hjA₁, hjγ, hγ₀, hγA, hρ'γ, hρ'id, hρ'X, hρ'c, hρ'k⟩` from `GlobalTheory.T.exists_baseChange_retract_alt T O hTO hX A i EA QA jA ρ hQA hjA hRet A₁ j i₁ hi₁ hi₁l hij`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Take `⟨ρ₁, hRet₁, hρ₁⟩` from `GlobalTheory.T.keyOrigin_retraction_localises T O A₁ EA₁ i₁ hi₁l hTO QA₁ jA₁ ρ' hX hρ'id hρ'X hρ'c hρ'k`. Establish `hjA₁c : jA₁.comp (algebraMap A₁ (Localization.AtPrime QA₁)) = (algebraMap T O).comp i₁`. Use extensionality with `a`. Establish `e1 : algebraMap A₁ (Localization.AtPrime QA₁) a = algebraMap (Polynomial A₁) (Localization.AtPrime QA₁) (Polynomial.C a)`. Rewrite using `[IsScalarTower.algebraMap_apply A₁ EA₁ (Localization.AtPrime QA₁), IsScalarTower.algebraMap_apply A₁ (Polynomial A₁) EA₁, IsScalarTower.algebraMap_apply (Polynomial A₁) EA₁ (Localization.AtPrime QA₁)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Rewrite using `[RingHom.comp_apply, e1, ← RingHom.comp_apply, hjA₁, RingHom.comp_apply, Polynomial.coe_mapRingHom, Polynomial.map_C, RingHom.comp_apply, IsScalarTower.algebraMap_apply T (Polynomial T) O]`. Both sides reduce to the same expression. Take `⟨ψA₁, β, hψA₁, hψβ, hβ⟩` from `GlobalTheory.T.generic_fibre_compatibility T O A A₁ _ _ j i₁ hj hi₁ jA jA₁ γ ψA hjA₁c hγA hjγ hψA`. Establish `hργ : ρ₁.comp γ = j.comp ρ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `IsLocalization.ringHom_ext QA.primeCompl` to reduce the goal to its premises. Rewrite using `[RingHom.comp_assoc, hγ₀, ← RingHom.comp_assoc, hρ₁, hρ'γ, RingHom.comp_assoc]`. Take `⟨DA₁, _, _, actA₁, h, htors₁, hh, hpt⟩` from `GlobalTheory.T.zmodTorsor_baseChange_transport_point A A₁ _ _ j γ ρ ρ₁ β hβ hRet₁.1 hργ q hq DA actA htors`. Use `⟨EA₁, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, QA₁, inferInstance, jA₁, ψA₁, DA₁, inferInstance, inferInstance, actA₁, ρ₁, ⟨hi₁, hi₁l, ?_, hQA₁, hjA₁, hψA₁, htors₁⟩, hRet₁, β, h, hψβ, hh, hpt⟩` and prove the remaining obligations. Use `hqu.map j` as an intermediate fact.
-
-Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_baseChange_fits : ∀ (T O : Type) [CommRing T] [IsDomain T] [IsLocalRing T] [CommRing O] [IsLocalRing O] [Algebra T O]
     [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O]

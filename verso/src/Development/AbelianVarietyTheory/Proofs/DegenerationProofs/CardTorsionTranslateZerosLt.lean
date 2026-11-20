@@ -19,7 +19,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.FewZeros
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Finite.of_injective _ (Subtype.impEmbedding p q h).injective, Nat.card_le_card_of_injective _ (Subtype.impEmbedding p q h).injective⟩`.
+Supply the required witnesses or components.
 -/
 theorem card_mono {α : Type} {p q : α → Prop} (hq : Finite {x // q x}) (h : ∀ x, p x → q x) :
     Finite {x // p x} ∧ Nat.card {x // p x} ≤ Nat.card {x // q x} :=
@@ -27,15 +27,13 @@ theorem card_mono {α : Type} {p q : α → Prop} (hq : Finite {x // q x}) (h : 
     Nat.card_le_card_of_injective _ (Subtype.impEmbedding p q h).injective⟩
 
 /- English proof (translation)
-Use `polAV_isIntegral_of_isAlgClosed K P` as an intermediate fact. Establish `: Etale P.A.hom` using `(Etale.iff_smoothOfRelativeDimension_zero _).2 (hg ▸ P.smoothDim)`. Set `e : Sp K ⟶ P.A.left` to `(1 : Out.baseOver (Sp K) ⟶ P.A).left`. Use `isOpenImmersion_of_section_of_etale P.A.hom e (Over.w _)` as an intermediate fact. Establish `: IsDominant e` using `⟨e.isOpenEmbedding.isOpen_range.dense ⟨_, (default : PrimeSpectrum K), rfl⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIso (snd (Out.baseOver (Sp K)) P.A).left` using `inferInstanceAs (IsIso (pullback.snd (𝟙 (Sp K)) P.A.hom))`. Set `z : Sp K ⟶ (Out.baseOver (Sp K) ⊗ P.A).left` to `(Out.ptSecT P.A (1 : Out.baseOver (Sp K) ⟶ P.A)).left`. Establish `hz : z = e ≫ inv (snd (Out.baseOver (Sp K)) P.A).left`. Rewrite using `[IsIso.eq_comp_inv]`. Conclude with `congrArg (·.left) (lift_snd (𝟙 _) (1 : Out.baseOver (Sp K) ⟶ P.A))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : IsDominant z` using `by rw [hz]; infer_instance`. Establish `: IsReduced (Out.baseOver (Sp K) ⊗ P.A).left` using `isReduced_of_isOpenImmersion (snd (Out.baseOver (Sp K)) P.A).left`. Assume the negation of the conclusion as `hne`. Establish `hb : ((Out.baseOver (Sp K) ⊗ P.A).left.basicOpen (s.f j) : Set (Out.baseOver (Sp K) ⊗ P.A).left).Nonempty`. Rewrite using `[Set.nonempty_iff_ne_empty]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun h => hne ((basicOpen_eq_bot_iff _).1 (TopologicalSpace.Opens.ext h))`. Take `⟨y, hy⟩` from `hd.denseRange.exists_mem_open (TopologicalSpace.Opens.isOpen _) hb`. Use `hs fun y' _ => ?_` and prove the remaining obligations. Establish `: y' = y` using `Subsingleton.elim (α := PrimeSpectrum K) _ _`. Substitute `this` using the available equality.
-
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, hy⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem sec_eq_zero_of_dim_zero {K : Type} [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (hg : P.g = 0)
     {M : LB (Out.baseOver (Sp K) ⊗ P.A).left} (s : M.Sec)
@@ -66,7 +64,7 @@ theorem sec_eq_zero_of_dim_zero {K : Type} [Field K] [IsAlgClosed K] (P : Out.Po
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨j, hy⟩
 
 /- English proof (translation)
-The claim follows from `Finite.of_equiv _ (e.toEquiv.subtypeEquiv (p := fun b => b ^ n = 1) (q := fun b => b ^ n = 1) fun b => (by rw [← map_pow, e.map_eq_one_iff] : e b ^ n = 1 ↔ _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem finite_torsion_of_mulEquiv {G G' : Type} [Monoid G] [Monoid G'] (e : G ≃* G') (n : ℕ)
     (h : Finite {x : G // x ^ n = 1}) : Finite {x : G' // x ^ n = 1} :=
@@ -74,9 +72,9 @@ theorem finite_torsion_of_mulEquiv {G G' : Type} [Monoid G] [Monoid G'] (e : G �
     (by rw [← map_pow, e.map_eq_one_iff] : e b ^ n = 1 ↔ _).symm)
 
 /- English proof (translation)
-Set `p` to `(eB.toMonoidHom.comp q).comp eG.symm.toMonoidHom`. Establish `hp : ∀ x, p (eG x) = eB (q x)` using `fun x => by simp [p]`. Use `⟨p, (eB.surjective.comp hq).comp eG.symm.surjective, fun x hx => ?_, fun hB => ?_, hp⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `eG.surjective x`. Rewrite `hx` using `[hp, eB.map_eq_one_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t, rfl⟩` from `hker x hx`. Take `⟨s, rfl⟩` from `hT t`. Conclude with `⟨eG (i s), by rw [hp, hqi, map_one], by rw [map_pow, map_pow]⟩`. Conclude with `finite_torsion_of_mulEquiv eG n (SemiAbTorsion.finite_pow_eq_one_of_extension i q hi hker n hT' (finite_torsion_of_mulEquiv eB.symm n hB))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_hom_of_extension {T G₀ B₀ G B : Type} [Group T] [CommGroup G₀] [Group B₀] [Group G] [Group B]
     (i : T →* G₀) (q : G₀ →* B₀) (eG : G₀ ≃* G) (eB : B₀ ≃* B) (n : ℕ) (hi : Function.Injective i)
@@ -96,19 +94,19 @@ theorem exists_hom_of_extension {T G₀ B₀ G B : Type} [Group T] [CommGroup G�
       (finite_torsion_of_mulEquiv eB.symm n hB))
 
 /- English proof (translation)
-Establish `lift : ∀ b : B, b ^ n = 1 → ∃ x : G, x ^ n = 1 ∧ p x = b` using `fun b hb => by`. Take `⟨x, rfl⟩` from `hp b`. Take `⟨y, hy, hyx⟩` from `hk (x ^ n) (by rw [map_pow, hb])`. Conclude with `⟨x * y⁻¹, by rw [mul_pow, inv_pow, hyx, mul_inv_cancel], by rw [map_mul, map_inv, hy, inv_one, _root_.mul_one]⟩`. Use `choose s hs hps using lift`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `T` to `{t : G // t ^ n = 1 ∧ p t = 1}`. Establish `key : ∀ W : B → Prop, Nat.card {x : G // x ^ n = 1 ∧ W (p x)} = Nat.card {b : B // b ^ n = 1 ∧ W b} * Nat.card T` using `fun W => by`. Rewrite using `[← Nat.card_prod]`. Use `(Nat.card_eq_of_bijective (fun a : {b : B // b ^ n = 1 ∧ W b} × T => (⟨s a.1.1 a.1.2.1 * a.2.1, by rw [mul_pow, hs, a.2.2.1, _root_.mul_one], by` and prove the remaining obligations. Rewrite using `[map_mul, hps, a.2.2.2, _root_.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `a.1.2.2⟩ : {x : G // x ^ n = 1 ∧ W (p x)})) ⟨?_, ?_⟩).symm`. Introduce and unpack `⟨⟨b, hb⟩, ⟨t, ht⟩⟩ ⟨⟨b', hb'⟩, ⟨t', ht'⟩⟩ e`. Establish `e₁ : s b hb.1 * t = s b' hb'.1 * t'` using `congrArg Subtype.val e`. Establish `e₂` using `congrArg p e₁`. Rewrite `e₂` using `[map_mul, map_mul, hps, hps, ht.2, ht'.2, _root_.mul_one, _root_.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Substitute `e₂` using the available equality. Take `rfl` from `mul_left_cancel e₁`. Both sides reduce to the same expression. Introduce and unpack `⟨x, hx, hW⟩`. Establish `hb : p x ^ n = 1` using `by rw [← map_pow, hx, map_one]`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨(⟨p x, hb, hW⟩, ⟨(s (p x) hb)⁻¹ * x, by rw [mul_pow, inv_pow, hs, hx, inv_one, _root_.mul_one], by`. Rewrite using `[map_mul, map_inv, hps, inv_mul_cancel]⟩), Subtype.ext (mul_inv_cancel_left _ _)⟩`. Establish `fin : ∀ W : G → Prop, Finite {x : G // x ^ n = 1 ∧ W x}` using `fun W => (card_mono hG fun _ h => h.1).1`. Use `fin fun t => p t = 1` as an intermediate fact. Establish `: Nonempty T` using `⟨⟨1, one_pow _, map_one _⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : 0 < Nat.card T` using `Nat.card_pos`. Establish `h₁` using `key fun _ => True`. Simplify using `only [and_true] at h₁`. Establish `h₂ : Nat.card {x : G // x ^ n = 1 ∧ Z x} ≤ Nat.card {x : G // x ^ n = 1 ∧ Z' (p x)}` using `(card_mono (fin fun x => Z' (p x)) fun _ h => ⟨h.1, hZ _ h.2⟩).2`. Rewrite `h₂` using `[key]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[h₁]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[_root_.mul_assoc]`. Conclude with `Nat.mul_le_mul_left _ h₂`. Use `_ < _ := Nat.mul_lt_mul_of_pos_right h hT`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_lt_of_quotient {G B : Type} [CommGroup G] [CommGroup B] (p : G →* B) (n m : ℕ)
     (hp : Function.Surjective p) (hk : ∀ x, p x = 1 → ∃ y, p y = 1 ∧ y ^ n = x)
@@ -154,11 +152,9 @@ theorem card_lt_of_quotient {G B : Type} [CommGroup G] [CommGroup B] (p : G →*
     _ < _ := Nat.mul_lt_mul_of_pos_right h hT
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_sec hL h (BoxSection.prodSec L φ fun _ => θ)`. Use `⟨s, fun y => ?_⟩` and prove the remaining obligations. Use `choose J hJ using fun χ : Y ⟶ X => exists_chart hL (χ y)`. Establish `hJ' : Good L y J` using `hJ`. Establish `e : y ∈ Out.nonzeroLocus s ↔ y ∈ Out.nonzeroLocus (BoxSection.prodSec L φ fun _ => θ)` using `(mem_nonzeroLocus_iff_pull s (𝟙 Y) y (hJ'.mem φ' (𝟙 Y))).trans ((congrArg IsUnit (hs _ (𝟙 Y) y J hJ')).to_iff.trans (mem_nonzeroLocus_iff_pull (BoxSection.prodSec L φ fun _ => θ) (𝟙 Y) y (hJ'.mem φ (𝟙 Y))).symm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `e.trans ⟨fun h i => ?_, BoxSection.mem_nonzeroLocus_prodSec L φ _ y⟩` and prove the remaining obligations. Take `⟨l, hl⟩` from `TopologicalSpace.Opens.mem_iSup.1 h`. Establish `hy : y ∈ LB.wchart L φ l` using `Y.basicOpen_le _ hl`. Establish `h₁` using `(Scheme.mem_basicOpen _ _ y hy).1 hl`. Use `erw [map_prod] at h₁`.
-
-Establish `h₂` using `(Scheme.mem_basicOpen _ _ y hy).2 (IsUnit.prod_univ_iff.1 h₁ i)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨l i, ((Scheme.basicOpen_appLE (φ i) _ _ (LB.wchart_le L φ l i) _).le h₂).2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_sec_prod {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) (θ : L.Sec) {K K' : Type} [Fintype K] [Fintype K']
     (φ : K → (Y ⟶ X)) {φ' : K' → (Y ⟶ X)} {ε' : K' → ℤ} (h : FormEq φ (fun _ => 1) φ' ε') :
@@ -180,9 +176,7 @@ theorem exists_sec_prod {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) (θ : L.Sec)
     ⟨l i, ((Scheme.basicOpen_appLE (φ i) _ _ (LB.wchart_le L φ l i) _).le h₂).2⟩
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_sec hL h t`. Take `⟨s', hs'⟩` from `exists_sec_nonzeroLocus_eq_of_lbIso hL (LB.isLB_linComb hL _ _) (lbIso_pull_id hL).symm s`. Use `⟨s', hs'.trans (TopologicalSpace.Opens.ext (Set.ext fun y => ?_))⟩` and prove the remaining obligations. Use `choose J hJ using fun χ : X ⟶ X => exists_chart hL (χ y)`. Establish `hJ' : Good L y J` using `hJ`.
-
-Conclude with `(mem_nonzeroLocus_iff_pull s (𝟙 X) y (hJ'.mem _ (𝟙 X))).trans ((congrArg IsUnit (hs _ (𝟙 X) y J hJ')).to_iff.trans (mem_nonzeroLocus_iff_pull t (𝟙 X) y (hJ'.mem φ (𝟙 X))).symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_sec_of_formEq_id {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K]
     {φ : K → (X ⟶ X)} {ε : K → ℤ} (h : FormEq φ ε (fun _ : PUnit => 𝟙 X) fun _ => 1) (t : (LB.LinComb L φ ε).Sec) :
@@ -196,25 +190,23 @@ theorem exists_sec_of_formEq_id {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : T
       (mem_nonzeroLocus_iff_pull t (𝟙 X) y (hJ'.mem φ (𝟙 X))).symm)
 
 /- English proof (translation)
-Establish `hn1 : 1 ≤ n` using `Nat.pos_of_ne_zero fun e => hn (by rw [e, Nat.cast_zero])`. Establish `hcard : Nat.card {b : Out.baseOver (Sp K) ⟶ P.A // b ^ n = 1} = n ^ (2 * P.g)` using `(h.mulN (Sp K) P n hn1).2.2.2.2 K (𝟙 _) hn`. Take `⟨M, rfl⟩ : ∃ M, N = M + 1` from `⟨N - 1, by omega⟩`. Take `⟨s, hs⟩ : ∃ s : LB.Sec (Out.twistLB P.A P.L ((M + 1) * 1) c), ∀ y, y ∈ Out.nonzeroLocus s ↔ ∀ i : Option (Fin M), (i.elim (Out.translPt P.A c).left fun _ => (snd (Out.baseOver (Sp K)) P.A).left) y ∈ Out.nonzeroLocus θ` from `exists_sec_prod P.isLB θ _ fun U _ f => by`. Simplify using `[Fintype.prod_option, Fin.prod_univ_two, _root_.mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hint` using `polAV_isIntegral_of_isAlgClosed K P`. Establish `i₁ : IsIso (snd (Out.baseOver (Sp K)) P.A).left` using `inferInstanceAs (IsIso (pullback.snd (𝟙 (Sp K)) P.A.hom))`. Establish `hsurj : Function.Surjective (Out.translPt P.A c).left` using `fun x => by`. Set `b : P.A ⟶ Out.baseOver (Sp K)` to `Over.homMk P.A.hom (Category.comp_id _)`. Establish `e : lift b ((b ≫ c)⁻¹ * 𝟙 P.A) ≫ Out.translPt P.A c = 𝟙 P.A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Out.translPt, comp_lift_assoc, lift_fst_assoc, lift_snd, ← Hom.mul_def, mul_inv_cancel_left]`. Conclude with `⟨(lift b ((b ≫ c)⁻¹ * 𝟙 P.A)).left x, congrArg (fun q : P.A ⟶ P.A => q.left x) e⟩`. Establish `hs0 : ∃ j, s.f j ≠ 0`. Take `⟨x, hx⟩` from `hθ`. Establish `: IrreducibleSpace (Out.baseOver (Sp K) ⊗ P.A).left` using `(snd (Out.baseOver (Sp K)) P.A).left.homeomorph.symm.surjective.irreducibleSpace (snd (Out.baseOver (Sp K)) P.A).left.homeomorph.symm.continuous`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y₁, rfl⟩` from `hsurj x`. Take `⟨y₂, hy₂⟩` from `(snd (Out.baseOver (Sp K)) P.A).left.homeomorph.surjective ((Out.translPt P.A c).left y₁)`. Take `⟨y, hy, hy'⟩` from `nonempty_preirreducible_inter ((Out.translPt P.A c).left ⁻¹ᵁ Out.nonzeroLocus θ).isOpen ((snd (Out.baseOver (Sp K)) P.A).left ⁻¹ᵁ Out.nonzeroLocus θ).isOpen ⟨y₁, hx⟩ ⟨y₂, show (snd (Out.baseOver (Sp K)) P.A).left.homeomorph y₂ ∈ Out.nonzeroLocus θ from hy₂ ▸ hx⟩`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 ((hs y).2 fun i => by`. Consider the cases of `i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Use `exacts [hy, hy'])`. Conclude with `⟨j, fun e => by rw [e, Scheme.basicOpen_zero] at hj; exact hj⟩`. Establish `hz : ∀ b : Out.baseOver (Sp K) ⟶ P.A, ¬ ⊤ ≤ (c * b).left ⁻¹ᵁ Out.nonzeroLocus θ → ¬ ⊤ ≤ (Out.ptSecT P.A b).left ⁻¹ᵁ Out.nonzeroLocus s` using `fun b hb hh => hb fun z _ => by`. Establish `e : Out.ptSecT P.A b ≫ Out.translPt P.A c = c * b`. Rewrite using `[Out.ptSecT, Out.translPt, comp_lift_assoc, lift_fst_assoc, lift_snd, Category.id_comp, Hom.mul_def]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `(hs _).1 (hh (Set.mem_univ z)) none`. Break down `Nat.eq_zero_or_pos P.g with h0 | h0` into its components or cases. Rewrite `hcard` using `[h0]`. Establish `hsub` using `(Nat.card_eq_one_iff_unique.1 hcard).1`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: IsEmpty {b : Out.baseOver (Sp K) ⟶ P.A // b ^ n = 1 ∧ ¬ ⊤ ≤ (c * b).left ⁻¹ᵁ Out.nonzeroLocus θ}`. Use `⟨fun ⟨b, hb₁, hb₂⟩ => ?_⟩` and prove the remaining obligations. Take `rfl : b = 1` from `congrArg Subtype.val (hsub.elim ⟨b, hb₁⟩ ⟨1, one_pow _⟩)`. Take `⟨j, hj⟩` from `hs0`. Conclude with `hj (sec_eq_zero_of_dim_zero P h0 s (hz 1 hb₂) j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Nat.card_of_isEmpty, hcard]`. Simplify using the standard rewrite rules. Establish `h₄` using `card_torsion_zeros_twist_le h h₂ K P (M + 1) 1 n c h0 hN le_rfl hn s hs0`. Establish `f₁ : Finite {b : Out.baseOver (Sp K) ⟶ P.A // b ^ n = 1}` using `Nat.finite_of_card_ne_zero (by rw [hcard]; positivity)`. Establish `h₅ : Nat.card {b : Out.baseOver (Sp K) ⟶ P.A // b ^ n = 1 ∧ ¬ ⊤ ≤ (c * b).left ⁻¹ᵁ Out.nonzeroLocus θ} ≤ _` using `(card_mono (card_mono f₁ fun _ h => h.1).1 fun _ h => ⟨h.1, hz _ h.2⟩).2.trans h₄`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : n ^ (2 * P.g) = n ^ 2 * n ^ (2 * P.g - 2)` using `by rw [← pow_add]; congr 1; omega`. Establish `h₇ : (M + 1) ^ P.g * P.g.factorial ≤ (M + 1) ^ g * g.factorial` using `Nat.mul_le_mul (Nat.pow_le_pow_right (by omega) hg) (Nat.factorial_le hg)`. Rewrite using `[hcard, e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[_root_.mul_assoc]`.
-
-Conclude with `Nat.mul_le_mul_left _ (h₅.trans (Nat.mul_le_mul_right _ (by rwa [_root_.mul_one])))`. Use `_ < _ := Nat.mul_lt_mul_of_pos_right hb (by positivity)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_lt_field (h : Out.Laws) (h₂ : Out.Laws2) {K : Type} [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K))
     (θ : P.L.Sec) (hθ : ∃ x, x ∈ Out.nonzeroLocus θ) {N n g m : ℕ} (hg : P.g ≤ g) (hN : 4 ≤ N) (hn : (n : K) ≠ 0)
@@ -284,17 +276,17 @@ theorem card_lt_field (h : Out.Laws) (h₂ : Out.Laws2) {K : Type} [Field K] [Is
     _ < _ := Nat.mul_lt_mul_of_pos_right hb (by positivity)
 
 /- English proof (translation)
-Take `⟨P', π, hπ, hg', hmul, w, hw⟩` from `h.polBaseChange S (Sp K) r P`. Take `⟨s₀, hs₀⟩ : ∃ s : (P.L.pull π).Sec, ∀ y, y ∈ Out.nonzeroLocus s ↔ ∀ _ : PUnit, π y ∈ Out.nonzeroLocus θ` from `exists_sec_prod P.isLB θ (fun _ : PUnit => π) fun _ _ _ => rfl`. Take `⟨s, hs⟩` from `exists_sec_nonzeroLocus_eq_of_lbIso P'.isLB (LB.isLB_linComb P.isLB _ _) (LBIso.symm ⟨w, hw⟩) s₀`. Establish `hs' : Out.nonzeroLocus s = π ⁻¹ᵁ Out.nonzeroLocus θ` using `hs.trans (TopologicalSpace.Opens.ext (Set.ext fun y => (hs₀ y).trans ⟨fun h => h ⟨⟩, fun h _ => h⟩))`. Set `φ : (Out.baseOver (Sp K) ⟶ P'.A) → (Over.mk r ⟶ P.A)` to `fun x => Over.homMk (x.left ≫ π) (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `(x.left ≫ π) ≫ P.A.hom = r`. Rewrite using `[Category.assoc, hπ.w, ← Category.assoc, Over.w x]`. Conclude with `Category.id_comp _)`. Establish `hφ : Function.Bijective φ`. Use `⟨fun x y e => Over.OverMorphism.ext (hπ.hom_ext (congrArg (·.left) e) ((Over.w x).trans (Over.w y).symm)), fun x => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `⟨Over.homMk (hπ.lift x.left (𝟙 _) ((Over.w x).trans (Category.id_comp _).symm)) (hπ.lift_snd _ _ _), Over.OverMorphism.ext (hπ.lift_fst _ _ _)⟩`. Establish `hmul' : ∀ x y, φ (x * y) = φ x * φ y` using `fun x y => by`. Set `u : Over.mk r ⟶ Over.mk ((Out.baseOver (Sp K)).hom ≫ r)` to `Over.homMk (𝟙 _) (by simp)`. Establish `e : ∀ x, φ x = u ≫ Out.toBase hπ.w x` using `fun x => Over.OverMorphism.ext (Category.id_comp _).symm`. Rewrite using `[e, e, e, hmul, MonObj.comp_mul]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `ψ : (Out.baseOver (Sp K) ⟶ P'.A) ≃* (Over.mk r ⟶ P.A)` to `MulEquiv.ofBijective (MonoidHom.mk' φ hmul') hφ`. Take `⟨c, rfl⟩` from `ψ.surjective c`. Establish `hp : ∀ b, ψ b ^ n = 1 ↔ b ^ n = 1` using `fun b => by rw [← map_pow, ψ.map_eq_one_iff]`. Establish `H` using `card_lt_field h h₂ P' s (by`. Take `⟨x, hx, z, hz⟩` from `hθ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, -⟩` from `Scheme.exists_preimage_of_isPullback hπ x z hz.symm`. Conclude with `⟨y, by rw [hs']; change π y ∈ Out.nonzeroLocus θ; rwa [show π y = x from hy]⟩) (hg'.trans_le hg) hN hn hb c`. Rewrite using `[← Nat.card_congr (ψ.toEquiv.subtypeEquiv (p := fun b => b ^ n = 1) (q := fun b => b ^ n = 1) fun b => (hp b).symm), ← Nat.card_congr (ψ.toEquiv.subtypeEquiv (p := fun b => b ^ n = 1 ∧ ¬ ⊤ ≤ (c * b).left ⁻¹ᵁ Out.nonzeroLocus s) (q := fun b => b ^ n = 1 ∧ ¬ ⊤ ≤ (ψ c * b).left ⁻¹ᵁ …`. Conclude with `H`. Use `and_congr (hp b).symm ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hs']`. Express the relevant statement in the definitionally equal form `_ ↔ ¬ ⊤ ≤ (ψ c * ψ b).left ⁻¹ᵁ Out.nonzeroLocus θ`. Rewrite using `[← map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem card_lt_fibre (h : Out.Laws) (h₂ : Out.Laws2) {S : Scheme.{0}} (P : Out.PolAV S) {K : Type} [Field K]
     [IsAlgClosed K] (r : Sp K ⟶ S) (θ : P.L.Sec) (hθ : ∃ x ∈ Out.nonzeroLocus θ, P.A.hom x ∈ Set.range r)
@@ -349,21 +341,19 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V] {D : DegData V (ma
   [IsCommMonObj G]
 
 /- English proof (translation)
-Use `U.smooth` as an intermediate fact. Take `⟨n, W, hW, dW⟩` from `H1.exists_dim G.hom (eSec G (closedPoint V))`. Establish `all : ∀ y : Sp V, eSec G y ∈ W` using `fun y => (congrArg (fun U => y ∈ U) (Scheme.preimage_eq_top_of_closedPoint_mem (eSec G) hW)).mpr trivial`. Establish `unit : ∀ {S' : Scheme.{0}} (b : S' ⟶ Sp V) (y : S'), pullback.fst G.hom b (eSec ((Over.pullback b).obj G) y) ∈ W` using `fun b y => (congrArg (fun g => g y ∈ W) (cubeMapOf (isGrpPullback_pullback G b)).e_comm).mpr (all _)`. Establish `g₁ : n = A.g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `A.smoothDim` as an intermediate fact. Establish `: IsIso U.gen.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map U.gen.hom))`. Establish `d : SmoothOfRelativeDimension (0 + A.g) (pullback.snd G.hom (jK V))`. Rewrite using `[show pullback.snd G.hom (jK V) = U.gen.hom.left ≫ A.A.hom from (Over.w U.gen.hom).symm]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(H1.dim_base (IsPullback.of_hasPullback _ _) dW d _ (unit (jK V) (default : PrimeSpectrum (FractionRing V)))).trans (zero_add _)`. Set `c` to `U.gt 0`. Use `c.q_hom` as an intermediate fact. Use `c.q_flat` as an intermediate fact. Use `c.q_surj` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `c.q_affine` as an intermediate fact. Establish `dT` using `H1.torus_dim (Spec (CommRingCat.of (V ⧸ maximalIdeal V ^ (0 + 1)))) D.toPre.X`. Establish `: Smooth c.q.left`. Use `dT.smooth` as an intermediate fact. Use `MorphismProperty.of_isPullback_of_descendsAlong (P := @Smooth) (Q := @Surjective ⊓ @Flat ⊓ @QuasiCompact) ((H1.torsor_pullback c.i c.q c.isKernel).map (Over.forget _)).flip ⟨⟨‹_›, ‹_›⟩, inferInstanceAs (QuasiCompact c.q.left)⟩ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `smooth_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback _ _) this`. Establish `: Nontrivial (V ⧸ maximalIdeal V ^ (0 + 1))` using `Ideal.Quotient.nontrivial_iff.2 (by rw [zero_add, pow_one]; exact (maximalIdeal.isMaximal V).ne_top)`. Take `⟨y⟩ : Nonempty (Spec (CommRingCat.of (V ⧸ maximalIdeal V ^ (0 + 1))))` from `inferInstanceAs (Nonempty (PrimeSpectrum _))`. Take `⟨m, W₁, hW₁, d₁⟩` from `H1.exists_dim c.q.left (eSec (thickObj V (maximalIdeal V) 0 G) y)`. Establish `dB : SmoothOfRelativeDimension D.toPre.P.g (thickObj V (maximalIdeal V) 0 D.toPre.P.A).hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) D.toPre.P.smoothDim`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `d₂ : SmoothOfRelativeDimension (m + D.toPre.P.g) (W₁.ι ≫ (thickObj V (maximalIdeal V) 0 G).hom)`. Rewrite using `[← Over.w c.q, ← Category.assoc]`. Use `infer_instance`. Establish `d₃ : SmoothOfRelativeDimension n ((pullback.fst G.hom (thick V (maximalIdeal V) 0) ⁻¹ᵁ W).ι ≫ (thickObj V (maximalIdeal V) 0 G).hom)` using `(smoothOfRelativeDimension_isStableUnderBaseChange n).of_isPullback ((isPullback_morphismRestrict _ W).paste_vert (IsPullback.of_hasPullback _ _)) dW`. Establish `g₃ : n = m + D.toPre.P.g`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `W₂` to `pullback.fst G.hom (thick V (maximalIdeal V) 0) ⁻¹ᵁ W`. Establish `e₁ : SmoothOfRelativeDimension (0 + n) ((W₂ ⊓ W₁).ι ≫ (thickObj V (maximalIdeal V) 0 G).hom)`. Rewrite using `[← Scheme.homOfLE_ι _ (inf_le_left : W₂ ⊓ W₁ ≤ W₂), Category.assoc]`. Use `infer_instance`. Establish `e₂ : SmoothOfRelativeDimension (0 + (m + D.toPre.P.g)) ((W₂ ⊓ W₁).ι ≫ (thickObj V (maximalIdeal V) 0 G).hom)`.
-
-Rewrite using `[← Scheme.homOfLE_ι _ (inf_le_right : W₂ ⊓ W₁ ≤ W₁), Category.assoc]`. Use `infer_instance`. Simplify using `using H1.dim_unique _ e₁ e₂ ⟨_, unit _ y, hW₁⟩`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem dim_le (U : UnifPre (maximalIdeal V) D A G) : D.toPre.P.g ≤ A.g := by
   have := U.smooth
@@ -417,17 +407,17 @@ theorem dim_le (U : UnifPre (maximalIdeal V) D A G) : D.toPre.P.g ≤ A.g := by
   omega
 
 /- English proof (translation)
-Establish `hp : pullback.fst G.hom (jK V) ≫ G.hom = pullback.snd G.hom (jK V) ≫ Spec.map (CommRingCat.ofHom (algebraMap V (FractionRing V)))` using `pullback.condition`. Establish `hφ : ∀ k : Fin 1, (fun _ : Fin 1 => pullback.fst G.hom (jK V)) k = pullback.fst G.hom (jK V) ≫ (fun _ : Fin 1 => 𝟙 G.left) k` using `fun _ => (Category.comp_id _).symm`. Set `ρ` to `FieldBaseChange.pullOver U.LG.L (fun _ : Fin 1 => ((1 : ℕ) : ℤ)) hp hφ`. Establish `hS` using `fun s₁ s₂ c => FieldBaseChange.secScal_iff hp hφ (ε := fun _ : Fin 1 => ((1 : ℕ) : ℤ)) U.LG.isLB s₁ s₂ (pullback.snd G.hom (jK V) ≫ jK V) (algebraMap V (FractionRing V)) rfl c`. Establish `one₁ : scal (pullback.snd G.hom (jK V) ≫ jK V) (1 : V) = 1` using `by rw [scal, map_one, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Ψ, hΨ, -⟩` from `(U.expand 1 le_rfl).1 (ρ σ)`. Take `⟨f, hE, hg⟩` from `IntegralExpansionLocal.main V _ le_rfl D A G U.toUnifPre 1 σ (ρ σ) (one₁ ▸ (hS _ _ 1).2 (by rw [map_one, one_smul])) Ψ hΨ`. Establish `hf : ∀ α, α ≠ 0 → ∃ a ∈ maximalIdeal V, ∃ g : D.toPre.SecB 1 α, SecIsMul D.toPre.P.A.hom a (f α) g` using `fun α hα => by`. Take `⟨a, ha, g, g', h₁, h₂⟩` from `ThetaUnit.exists_integral_term hG D Ψ (f 0) (hg 0) α hα`. Take `rfl : g = f α` from `ConstFam.resF_injective D.toPre (FractionRing V) 1 α (((ThetaUnit.secScal_one_iff D.toPre Ψ α _).1 h₂).trans ((ThetaUnit.secScal_one_iff D.toPre Ψ α _).1 (hg α)).symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, ha, g', h₁⟩`. Use `⟨f 0, fun y => ?_⟩` and prove the remaining obligations. Establish `hc' : pGl U.toUnifPre 0 ≫ D.toPre.P.A.hom = (thickObj V (maximalIdeal V) 0 G).hom ≫ spMap (Ideal.Quotient.mk (maximalIdeal V ^ (0 + 1)))` using `Over.w (U.gt 0).pG`. Take `⟨S, hS⟩` from `expandsAt_val U.toUnifPre 0 1 σ f (hE 0)`. Use `choose J hJ₀ using fun χ : (thickObj V (maximalIdeal V) 0 G).left ⟶ D.toPre.P.A.left => exists_chart D.toPre.P.isLB (χ y)`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hJ : Good D.toPre.P.L y J` using `hJ₀`. Take `⟨jL, hL⟩` from `exists_chart U.LG.isLB (fGl (maximalIdeal V) G 0 y)`. Take `⟨H₁, H₂⟩` from `hS _ (𝟙 _) y J hJ`. Establish `H` using `H₂ jL hL`. Simplify using `only [Category.id_comp] at H H₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single 0 (fun α _ hα => by`. Take `⟨a, ha, g, hg⟩` from `hf α hα`. Rewrite `H` using `[IndivisibleSection.sval_of_secIsMul hg _ y hJ, hc', cst_comp, Ideal.Quotient.eq_zero_iff_mem.2 (by simpa using ha), GermDiv.cst_zero, zero_mul, zero_mul]) (fun h => by rw [H₁ 0 h, zero_mul])]`. Establish `hm : fGl (maximalIdeal V) G 0 y ∈ LB.wchart U.LG.L (fun _ : Fin 1 => 𝟙 G.left) (fun _ => jL)` using `Set.mem_iInter.2 fun _ => hL`. Use `(mem_nonzeroLocus_iff_pull σ _ y hm).trans (Iff.trans ?_ (mem_nonzeroLocus_iff_pull (f 0) _ y (hJ.mem _ (pGl U.toUnifPre 0))).symm)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg IsUnit H` as an intermediate fact. Rewrite `this` using `[Units.isUnit_units_mul, Units.isUnit_mul_units]`. Conclude with `this.to_iff`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_weight_zero [IsNoetherianRing V] (hG : GlobalFnsSt) (U : Unif (maximalIdeal V) D A G)
     (σ : H0 U.LG.L 1) : ∃ f : D.toPre.SecB 1 0, ∀ y : (thickObj V (maximalIdeal V) 0 G).left,
@@ -474,23 +464,23 @@ theorem exists_weight_zero [IsNoetherianRing V] (hG : GlobalFnsSt) (U : Unif (ma
   exact this.to_iff
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨r₀, hr₀⟩ : ∃ r₀ : Sp K ⟶ Sp (V ⧸ maximalIdeal V ^ (0 + 1)), r₀ ≫ thick V (maximalIdeal V) 0 = r := by`. Take `⟨φ, rfl⟩` from `Spec.map_surjective r`. Establish `h₁ : PrimeSpectrum.comap φ.hom ⟨⊥, Ideal.isPrime_bot⟩ = closedPoint V` using `hr.le ⟨(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum K), rfl⟩`. Establish `h₂ : ∀ a ∈ maximalIdeal V ^ (0 + 1), φ.hom a = 0` using `fun a ha => by`. Rewrite `ha` using `[zero_add, pow_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: a ∈ (PrimeSpectrum.comap φ.hom ⟨⊥, Ideal.isPrime_bot⟩).asIdeal` using `by rw [h₁]; exact ha`. Conclude with `this`. Use `⟨Spec.map (CommRingCat.ofHom (Ideal.Quotient.lift _ φ.hom h₂)), ?_⟩` and prove the remaining obligations. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `c` to `U.gt 0`. Use `c.q_hom` as an intermediate fact. Use `c.i_hom` as an intermediate fact. Use `c.q_surj` as an intermediate fact. Use `U.smooth` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk` using `c.isKernel`. Set `T : Over (Sp (V ⧸ maximalIdeal V ^ (0 + 1)))` to `Over.mk r₀`. Set `eG` to `TorsionLift.ptsEquiv (thick V (maximalIdeal V) 0) G T r hr₀`. Set `eB` to `TorsionLift.ptsEquiv (thick V (maximalIdeal V) 0) D.toPre.P.A T r hr₀`. Set `q` to `IsMonHom.monoidHom c.q T`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `i` to `IsMonHom.monoidHom c.i T`. Set `e` to `splitTorusPointsEquiv _ D.toPre.X T`. Establish `hi : Function.Injective i` using `fun a b h => hk.hom_ext h (toUnit_unique _ _)`. Establish `hqi : ∀ t, q (i t) = 1` using `fun t => by`. Express the relevant statement in the definitionally equal form `(t ≫ c.i) ≫ c.q = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hk.w, ← Category.assoc, comp_toUnit]`. Both sides reduce to the same expression. Establish `hker : ∀ x, q x = 1 → ∃ t, i t = x` using `fun x hx => ⟨hk.lift x (toUnit _) (by rw [show x ≫ c.q = 1 from hx, Hom.one_def]), hk.lift_fst _ _ _⟩`. Establish `hq : Function.Surjective q` using `fun b => by`. Establish `: LocallyOfFiniteType (c.q.left ≫ (thickObj V (maximalIdeal V) 0 D.toPre.P.A).hom)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.w c.q]`. Conclude with `inferInstanceAs (LocallyOfFiniteType (pullback.snd G.hom (thick V (maximalIdeal V) 0)))`. Establish `: LocallyOfFiniteType c.q.left` using `locallyOfFiniteType_of_comp _ (thickObj V (maximalIdeal V) 0 D.toPre.P.A).hom`. Take `⟨x, hx⟩` from `GeomSurj.exists_lift_of_surjective c.q.left b.left`. Conclude with `⟨Over.homMk x (by rw [← Over.w c.q, ← Category.assoc, ← hx]; exact Over.w b), Over.OverMorphism.ext hx.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: IsDomain Γ(T.left, ⊤)` using `inferInstanceAs (IsDomain Γ(Sp K, ⊤))`. Take `⟨p, h₁, h₂, h₃, h₄⟩` from `exists_hom_of_extension i q eG eB n hi hqi hker hq (fun t => by`. Take `⟨g, hg⟩` from `TorsLift.exists_pow_eq_hom (M := Γ(T.left, ⊤)ˣ) n (TorsLift.exists_pow_eq_unit K n hn) (e t)`. Conclude with `⟨e.symm g, by rw [← map_pow, hg, e.symm_apply_apply]⟩)`. Use the proof step `(finite_torsion_of_mulEquiv e.symm n (SemiAbTorsion.finite_chars_pow_eq_one D.toPre.X Γ(T.left, ⊤) hn))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨p, h₁, h₂, h₃, fun x => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `eG.surjective x`. Use `⟨x.left, (TorsionLift.ptsEquiv_left _ _ _ _ _ x).symm, ?_⟩` and prove the remaining obligations. Rewrite using `[h₄]`. Conclude with `(Category.assoc _ _ _).symm.trans (TorsionLift.ptsEquiv_left _ _ _ _ _ (q x)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_points_hom (U : UnifPre (maximalIdeal V) D A G) {K : Type} [Field K] [IsAlgClosed K]
     (r : Sp K ⟶ Sp V) (hr : Set.range r = {closedPoint V}) {n : ℕ} (hn : 1 ≤ n) :
@@ -552,17 +542,15 @@ theorem exists_points_hom (U : UnifPre (maximalIdeal V) D A G) {K : Type} [Field
 end Unif
 
 /- English proof (translation)
-Introduce `h h₂ V _ _ _ _ D A G _ _ U L θ hL hiso hθ K _ _ r N n hr hN hn hb c`. Establish `hn1 : 1 ≤ n` using `Nat.pos_of_ne_zero fun e => hn (by rw [e, Nat.cast_zero])`. Take `⟨θ', hθ'⟩` from `exists_sec_nonzeroLocus_eq_of_lbIso U.LG.isLB hL hiso.symm θ`. Take `⟨σ, hσ⟩ : ∃ σ : Out.H0 U.LG.L 1, ∀ y, y ∈ Out.nonzeroLocus σ ↔ ∀ _ : PUnit, (𝟙 G.left : G.left ⟶ G.left) y ∈ Out.nonzeroLocus θ'` from `exists_sec_prod U.LG.isLB θ' (fun _ : PUnit => 𝟙 G.left) fun _ _ _ => by simp`. Take `⟨f, hf⟩` from `exists_weight_zero h.globalFns U σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `exists_sec_of_formEq_id D.toPre.P.isLB (fun U _ k => by`. Establish `e : toUnit D.toPre.P.A ≫ D.toPre.c 0 = 1` using `cPoint_zero (D := D.toPre) _`. Establish `e₁ : padd D.toPre.P.A (𝟙 D.toPre.P.A) 1 = 𝟙 D.toPre.P.A` using `_root_.mul_one (𝟙 D.toPre.P.A)`. Establish `e₂ : toUnit D.toPre.P.A ≫ η[D.toPre.P.A] = 1` using `rfl`. Simplify using `[Out.DegPre.famφB, Out.DegPre.famε, Fin.prod_univ_four, e, e₁, e₂]) f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ y, DVR.fGl (IsLocalRing.maximalIdeal V) G 0 y ∈ Out.nonzeroLocus θ ↔ DVR.pGl U.toUnifPre 0 y ∈ Out.nonzeroLocus s` using `fun y => by`. Rewrite using `[hs, ← hf, hσ, ← hθ']`. Conclude with `⟨fun h _ => h, fun h => h ⟨⟩⟩`. Take `⟨p, hp, hk, hfin, hy⟩` from `exists_points_hom U.toUnifPre r hr hn1`. Establish `H` using `card_lt_fibre h h₂ D.toPre.P r s (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx, hx'⟩` from `hθ`. Take `⟨y, rfl⟩` from `ThetaUnit.exists_thick_pt le_rfl 0 G x hx'`. Establish `hc : DVR.pGl U.toUnifPre 0 ≫ D.toPre.P.A.hom = DVR.fGl (IsLocalRing.maximalIdeal V) G 0 ≫ G.hom` using `(Over.w (U.gt 0).pG).trans (Over.w (Out.fstG _ 0 G)).symm`. Use `⟨_, (key y).1 hx, ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (fun q => q y) hc).trans hx') (dim_le U.toUnifPre) hN hn hb (p c)`. Use `card_lt_of_quotient p n 6 hp hk (hfin (Nat.finite_of_card_ne_zero (by omega))) _ (fun b => ¬ ⊤ ≤ (p c * b).left ⁻¹ᵁ Out.nonzeroLocus s) (fun x hx hh => hx fun z _ => ?_) H` and prove the remaining obligations. Take `⟨y, h₁, h₂⟩` from `hy (c * x)`. Rewrite `hh` using `[← map_mul, ← h₂]`. Rewrite using `[← h₁]`.
-
-Conclude with `(key (y z)).2 (hh (Set.mem_univ z))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_torsion_translate_zeros_lt :
     Out.Laws → Out.Laws2 → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V], IsAdicComplete (IsLocalRing.maximalIdeal V) V → ∀ (D : Out.DegData V (IsLocalRing.maximalIdeal V)) (A : Out.PolAV (Sp (FractionRing V))) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G] (U : Out.Unif (IsLocalRing.maximalIdeal V) D A G) (L : LB G.left) (θ : LB.Sec L), L.IsLB → LBIso L U.LG.L → (∃ x ∈ Out.nonzeroLocus θ, G.hom x = IsLocalRing.closedPoint V) → ∀ (K : Type) [Field K] [IsAlgClosed K] (r : Sp K ⟶ Sp V) (N n : ℕ), Set.range r = {IsLocalRing.closedPoint V} → 4 ≤ N → (n : K) ≠ 0 → 6 * (N ^ A.g * A.g.factorial) < n ^ 2 → ∀ c : Over.mk r ⟶ G, 6 * Nat.card {h : Over.mk r ⟶ G // h ^ n = 1 ∧ ¬ ⊤ ≤ (c * h).left ⁻¹ᵁ Out.nonzeroLocus θ} < Nat.card {h : Over.mk r ⟶ G // h ^ n = 1} := by

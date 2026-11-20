@@ -6,19 +6,17 @@ open scoped Classical
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Introduce `R _ _ ι s c d hj hcd`. Assume the negation of the conclusion as `hcon`. Establish `hbad : ∀ x : ℕ, ∃ i, i ∈ s ∧ ¬ IsUnit (c i + d i * x)`. Introduce `x`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hcon ⟨x, fun i hi => by`. Assume the negation of the conclusion as `h'`. Conclude with `h ⟨i, hi, h'⟩⟩`. Use `choose f hfs hf using hbad`. Establish `key : ∀ x y : ℕ, x < y → y ≤ s.card → f x = f y → False`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x y hxy hy he`. Establish `h1 : c (f x) + d (f x) * x ∈ IsLocalRing.maximalIdeal R` using `hf x`. Establish `h2 : c (f x) + d (f x) * y ∈ IsLocalRing.maximalIdeal R`. Rewrite using `[he]`. Conclude with `hf y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : IsUnit ((y - x : ℕ) : R)` using `hj _ (by omega) (by omega)`. Establish `h3 : d (f x) * ((y - x : ℕ) : R) ∈ IsLocalRing.maximalIdeal R`. Use `Ideal.sub_mem _ h2 h1` as an intermediate fact. Rewrite using `[Nat.cast_sub hxy.le]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h4 : d (f x) ∈ IsLocalRing.maximalIdeal R`. Introduce `hd`. Conclude with `h3 (hd.mul hu)`. Establish `h5 : c (f x) ∈ IsLocalRing.maximalIdeal R`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Ideal.sub_mem _ h1 (Ideal.mul_mem_right (x : R) _ h4)` as an intermediate fact. Simplify using `using this`. Break down `hcd _ (hfs x) with h | h` into its components or cases. Conclude with `h5 h`. Conclude with `h4 h`.
-
-Take `⟨x, hx, y, hy, hne, he⟩` from `Finset.exists_ne_map_eq_of_card_lt_of_maps_to (s := Finset.range (s.card + 1)) (t := s) (by simp) (f := f) (fun x _ => hfs x)`. Rewrite `hx`, `hy` using `[Finset.mem_range]`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Conclude with `key x y h (by omega) he`. Conclude with `key y x h (by omega) he.symm`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.cellLocal :
     ∀ (R : Type) [CommRing R] [IsLocalRing R] (ι : Type) (s : Finset ι) (c d : ι → R),

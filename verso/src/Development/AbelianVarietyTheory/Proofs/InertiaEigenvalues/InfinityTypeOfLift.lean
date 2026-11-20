@@ -34,7 +34,7 @@ def w0 (n : ℕ) : GL (Fin n) ℂ :=
     simp [PEquiv.toMatrix_apply, Matrix.one_apply]⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [w0, Units.val_mul, Units.val_one]`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul]`. Simplify using `[PEquiv.toMatrix_apply, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem longestWeylElementGL_mul_self (n : ℕ) : w0 n * w0 n = 1 := by
   ext i j
@@ -43,7 +43,7 @@ theorem longestWeylElementGL_mul_self (n : ℕ) : w0 n * w0 n = 1 := by
   simp [PEquiv.toMatrix_apply, Matrix.one_apply]
 
 /- English proof (translation)
-Simplify using `only [w0, Units.val_mul]`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem longestWeylElementGL_conj_apply_rev (X : GL (Fin n) ℂ) (i j : Fin n) :
     (w0 n * X * w0 n).val i j = X.val (Fin.rev i) (Fin.rev j) := by
@@ -57,13 +57,13 @@ def tinv (B : GL (Fin n) ℂ) : GL (Fin n) ℂ :=
 
 omit [NumberField L] [IsCMField L] in
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conj_conj (τ : L →+* ℂ) : ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ := by
   ext x; simp
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : ComplexEmbedding.IsReal τ` using `ComplexEmbedding.isReal_iff.2 h`. Establish `h2` using `IsTotallyComplex.isComplex (InfinitePlace.mk τ)`. Rewrite `h2` using `[← InfinitePlace.not_isReal_iff_isComplex, InfinitePlace.isReal_mk_iff]`. Conclude with `h2 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_ne (τ : L →+* ℂ) : ComplexEmbedding.conjugate τ ≠ τ := by
   intro h
@@ -73,11 +73,11 @@ theorem conj_ne (τ : L →+* ℂ) : ComplexEmbedding.conjugate τ ≠ τ := by
   exact h2 h1
 
 /- English proof (translation)
-Establish `hne` using `conj_ne τ`. Use function extensionality and compare the values at `p`. Break down `p with ⟨σ, i, j⟩` into its components or cases. Distinguish the cases in `h1 : σ = τ`. Substitute `h1` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[NG.evPt, tinv, Ne.symm hne]`. Distinguish the cases in `h2 : σ = ComplexEmbedding.conjugate τ`. Substitute `h2` using the available equality. Simplify using `[NG.evPt, tinv, hne]`. Establish `h3 : σ ≠ ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ)` using `by rwa [conj_conj]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[NG.evPt, h1, h2, h3]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evPt_eq_tinv (τ : L →+* ℂ) (B : GL (Fin n) ℂ) :
     evPt τ B = evPt (ComplexEmbedding.conjugate τ) (tinv B) := by
@@ -94,7 +94,7 @@ theorem evPt_eq_tinv (τ : L →+* ℂ) (B : GL (Fin n) ℂ) :
       simp [NG.evPt, h1, h2, h3]
 
 /- English proof (translation)
-Use `haveI : Invertible B.val := B.invertible`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hB`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_upper {B : GL (Fin n) ℂ} (hB : B.val.BlockTriangular id) : (B⁻¹).val.BlockTriangular id := by
   haveI : Invertible B.val := B.invertible
@@ -102,9 +102,9 @@ theorem inv_upper {B : GL (Fin n) ℂ} (hB : B.val.BlockTriangular id) : (B⁻¹
   exact Matrix.blockTriangular_inv_of_blockTriangular hB
 
 /- English proof (translation)
-Establish `hI` using `inv_upper hB`. Establish `e : ((B⁻¹).val * B.val) k k = 1` using `by rw [← Units.val_mul, inv_mul_cancel, Units.val_one, one_apply_eq]`. Rewrite `e` using `[Matrix.mul_apply, Finset.sum_eq_single k]`. Conclude with `eq_inv_of_mul_eq_one_left e`. Introduce `l _ hl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_or_gt_of_ne hl with h | h` into its components or cases. Rewrite using `[hI h, zero_mul]`. Rewrite using `[hB h, mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_diag {B : GL (Fin n) ℂ} (hB : B.val.BlockTriangular id) (k : Fin n) :
     (B⁻¹).val k k = (B.val k k)⁻¹ := by
@@ -119,17 +119,17 @@ theorem inv_diag {B : GL (Fin n) ℂ} (hB : B.val.BlockTriangular id) (k : Fin n
   · simp
 
 /- English proof (translation)
-Take `⟨ι, hι1, hι2, b, P, hP, v, hv0, hv⟩` from `h`. Establish `hR` using `GlobalTheory.T.isPolynomialRepGLComplex_algebraicWeight_evalPoint L n a ι b P hP (ComplexEmbedding.conjugate τ)`. Use `⟨ι, hι1, hι2, b, P, hP, evM P (evPt (ComplexEmbedding.conjugate τ) (w0 n)) *ᵥ v, ?_, fun B hB => ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hv0` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrArg (fun x => evM P (evPt (ComplexEmbedding.conjugate τ) (w0 n)) *ᵥ x) h0` as an intermediate fact. Simplify using `only [mulVec_mulVec, mulVec_zero] at this`. Rewrite `this` using `[← hR.mul, longestWeylElementGL_mul_self, hR.one, one_mulVec]`. Then use the resulting hypothesis. Use `set C : GL (Fin n) ℂ := w0 n * tinv B * w0 n with hCdef`. Establish `hBC : tinv B = w0 n * C * w0 n`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hCdef, ← mul_assoc, ← mul_assoc, longestWeylElementGL_mul_self, one_mul, mul_assoc, longestWeylElementGL_mul_self, mul_one]`. Establish `hCa : ∀ i j, C.val i j = (B⁻¹).val (Fin.rev j) (Fin.rev i)`. Introduce `i j`. Rewrite using `[hCdef, longestWeylElementGL_conj_apply_rev]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hC : C.val.BlockTriangular id`. Introduce `i j hij`. Rewrite using `[hCa]`. Conclude with `inv_upper hB (show Fin.rev i < Fin.rev j from Fin.rev_lt_rev.2 hij)`. Establish `hCd : ∀ i, C.val i i = (B.val (Fin.rev i) (Fin.rev i))⁻¹` using `fun i => by rw [hCa, inv_diag hB]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (Matrix.of fun i j => MvPolynomial.eval (evPt τ B) (P i j)) = evM P (evPt (ComplexEmbedding.conjugate τ) (tinv B))`. Rewrite using `[evPt_eq_tinv τ B]`. Both sides reduce to the same expression. Establish `hww : evM P (NG.evPt (ComplexEmbedding.conjugate τ) (w0 n)) *ᵥ (evM P (NG.evPt (ComplexEmbedding.conjugate τ) (w0 n)) *ᵥ v) = v`. Rewrite using `[mulVec_mulVec, ← hR.mul, longestWeylElementGL_mul_self, hR.one, one_mulVec]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvC : evM P (NG.evPt (ComplexEmbedding.conjugate τ) C) *ᵥ v = (∏ i, (C.val i i) ^ (lam' i)) • v` using `hv C hC`. Rewrite using `[e1, hBC, hR.mul, hR.mul, ← mulVec_mulVec, ← mulVec_mulVec, hww, hvC, mulVec_smul]`. Use `congr 1`. Rewrite using `[Finset.prod_congr rfl fun i _ => by rw [hCd i, _root_.inv_zpow']]`. Conclude with `Fintype.prod_equiv Fin.revPerm _ _ (fun i => by simp [Fin.rev_rev])`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hwAt_of_conj {a : AlgWt L n} {τ : L →+* ℂ} {lam' : Fin n → ℤ}
     (h : a.HWAt (ComplexEmbedding.conjugate τ) lam') : a.HWAt τ (fun i => -lam' (Fin.rev i)) := by
@@ -175,11 +175,11 @@ section Conj2
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 /- English proof (translation)
-Establish `e` using `(GlobalTheory.T.algWeight_highestWeight_exists_unique_antitone L n a τ).1.unique h (hwAt_of_conj h')`. Establish `hl : lam' = fun i => -lam (Fin.rev i)` using `by funext i; rw [e]; simp`. Substitute `hl` using the available equality. Unfold `infOf`. Rewrite using `[Multiset.map_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `conv_rhs => rw [← Multiset.map_univ_val_equiv Fin.revPerm, Multiset.map_map]`. Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Fin.revPerm_apply, Fin.val_rev]`. Establish `hi` using `i.isLt`. Rewrite using `[Nat.cast_sub (by omega)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem infOf_conj {a : AlgWt L n} {τ : L →+* ℂ} {lam lam' : Fin n → ℤ} (h : a.HWAt τ lam)
     (h' : a.HWAt (ComplexEmbedding.conjugate τ) lam') : infOf lam' = (infOf lam).map Neg.neg := by
@@ -199,7 +199,7 @@ theorem infOf_conj {a : AlgWt L n} {τ : L →+* ℂ} {lam lam' : Fin n → ℤ}
 end Conj2
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih => simp [ih, Multiset.singleton_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem sum_singletons {α : Type} (l : List α) (f : α → ℂ) : (l.map fun k => ({f k} : Multiset ℂ)).sum = ((l.map f : List ℂ) : Multiset ℂ) := by
   induction l with
@@ -207,13 +207,13 @@ theorem sum_singletons {α : Type} (l : List α) (f : α → ℂ) : (l.map fun k
   | cons a l ih => simp [ih, Multiset.singleton_add]
 
 /- English proof (translation)
-Simplify using `[List.map_eq_flatMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bindCast (t : ℕ) : ((List.range t >>= fun a => pure (a : ℂ)) : List ℂ) = (List.range t).map (fun a : ℕ => (a : ℂ)) := by
   simp [List.map_eq_flatMap]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun l : List ℕ => ((l.map f : List ℂ) : Multiset ℂ)) (List.reverse_range' (s := 0) (n := t))`. Simplify using `only [List.map_reverse, Multiset.coe_reverse, List.map_map] at h`. Rewrite `h` using `[← List.range_eq_range']`. Simplify `h.symm` using `[Multiset.range, Function.comp_def]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem range_rev (t : ℕ) (f : ℕ → ℂ) : (Multiset.range t).map (fun c => f (t - 1 - c)) = (Multiset.range t).map f := by
   have h := congrArg (fun l : List ℕ => ((l.map f : List ℂ) : Multiset ℂ)) (List.reverse_range' (s := 0) (n := t))
@@ -230,44 +230,44 @@ open GlobalTheory.LiftRef
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp, fun B f T _ _ _ _ => h B f T⟩`.
+Supply the required witnesses or components.
 -/
 theorem lg_of_forall {K : Ctx} {p : ∀ B : Base, Fr B.toPre → TwDat B → Prop} (h : ∀ B f T, p B f T) : large₂ K p :=
   ⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, by simp, by simp, fun B f T _ _ _ _ => h B f T⟩
 
 /- English proof (translation)
-The claim follows from `evLgG_of_evLg ⟨1, one_pos, fun _ _ _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ => ⟨0, fun _ _ => ⟨0, fun K _ _ _ _ _ => lg_of_forall (h K)⟩⟩⟩⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem evLgG_of_forall {p : Ctx → ∀ B : Base, Fr B.toPre → TwDat B → Prop} (h : ∀ K B f T, p K B f T) : EvLgG p :=
   evLgG_of_evLg ⟨1, one_pos, fun _ _ _ _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ => ⟨0,
     fun _ _ => ⟨0, fun K _ _ _ _ _ => lg_of_forall (h K)⟩⟩⟩⟩⟩
 
 /- English proof (translation)
-Use `set π := autOf (M D.what₂.mu0 (k + 1) h1 h2) S hS with hπ`. Take `⟨b, hd, -, -⟩` from `GlobalTheory.algWt_contragredient D.host.E D.R.nV π.toAlgWt`. Establish `hw` using `A.wt (k + 1) h1 h2 π b hd`. Take `⟨lam, hlam⟩` from `(GlobalTheory.T.algWeight_highestWeight_exists_unique_antitone D.host.E D.R.nV b (GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTau D τ)).1.exists`. Take `⟨lam', hlam'⟩` from `(GlobalTheory.T.algWeight_highestWeight_exists_unique_antitone D.host.E D.R.nV b (ComplexEmbedding.conjugate (GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTau D τ))).1.exists`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbar : GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTauBar D τ = ComplexEmbedding.conjugate (GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTau D τ)`. Use extensionality with `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTauBar, ComplexEmbedding.conjugate_coe_eq]`. Establish `hpar : NG.infOf lam = NG.paramV D.R (D.hc τ) ⟨k, by omega⟩ (1 / 2)` using `hIn.wt D.what₂.mu0 ⟨k, by omega⟩ τ b lam hd hlam`. Establish `hinf1` using `A.infW (k + 1) h1 h2 b _ lam hlam`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinf2` using `A.infW (k + 1) h1 h2 b _ lam' hlam'`. Establish `hconj` using `infOf_conj hlam hlam'`. Establish `he : (chr.e1 (D.naut.tw μ D.naut.etaTinv)).1 = cf.mu0 ⟨k, by omega⟩ * cf.eta⁻¹`. Rewrite using `[chr.tw, hμ, chr.etaTinv]`. Establish `hI : (chr.e1 (D.naut.tw μ D.naut.etaTinv)).1.HasInfQ (embPsi D.host) (fun g => -eExp D ⟨k, by omega⟩ g - 1 / 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Establish `h1'` using `(cf.isMu0 ⟨k, by omega⟩).inf`. Establish `h2' : (cf.eta⁻¹).HasInfQ (embPsi D.host) (-(fun _ => 1 / 2))` using `GlobalTheory.BlockCharInf.hasInfQ_inv' ⟨fun _ => 1, fun _ => by norm_num, cf.isEta.inf⟩`. Use `GlobalTheory.BlockCharInf.hasInfQ_mul' h1' h2' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, Pi.neg_apply]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨hg1, hg2⟩` from `chr.infG _ _ hI (D.eTau τ)`. Establish `hval : eExp D ⟨k, by omega⟩ (D.eTau τ) = (D.hc τ).e ⟨k, by omega⟩` using `by simp [eExp]`. Establish `hG1 : D.naut.infG (D.naut.tw μ D.naut.etaTinv) (GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTau D τ) = {(-((D.hc τ).e ⟨k, by omega⟩ : ℂ) - 1 / 2)}`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTau D τ = embPsi D.host (D.eTau τ) from rfl, hg1, hval]`. Use `push_cast`. Put the polynomial expressions in normal form. Establish `hG2 : D.naut.infG (D.naut.tw μ D.naut.etaTinv) (ComplexEmbedding.conjugate (GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTau D τ)) = {(((D.hc τ).e ⟨k, by omega⟩ : ℂ) + 1 / 2)}`. Rewrite using `[← hbar, show GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTauBar D τ = (starRingEnd ℂ).comp (embPsi D.host (D.eTau τ)) from rfl, hg2, hval]`.
+Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[hw, hinf1, hbar, hinf2, hconj, hpar]`. Prove the components needed by the constructor for the conclusion. Unfold `isoInf`.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero, hG1, Multiset.map_singleton, bindCast, List.map_map, Function.comp_def, sum_singletons]`. Unfold `NG.paramV GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.hcSigma`. Rewrite using `[Multiset.map_add, Multiset.map_map, Multiset.map_map, ← Multiset.map_coe, Multiset.coe_range]`. Use `congrArg₂ (· + ·) (congrArg₂ (· + ·) ?_ ?_) ?_` and prove the remaining obligations. Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply]`. Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Use `Multiset.map_congr rfl fun c _ => ?_ push_cast` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions.
 
-Unfold `isoInf`. Simplify using `only [List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero, hG2, Multiset.map_singleton, bindCast, List.map_map, Function.comp_def, sum_singletons]`. Unfold `NG.paramV GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.hcSigma`. Rewrite using `[Multiset.map_add, Multiset.map_add, Multiset.map_add, Multiset.map_map, Multiset.map_map, Multiset.map_map, Multiset.map_map, Multiset.map_map, ← Multiset.map_coe, Multiset.coe_range]`. Use `congrArg₂ (· + ·) (congrArg₂ (· + ·) ?_ ?_) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hf` using `range_rev D.R.t (fun c : ℕ => ((D.hc τ).e ⟨k, by omega⟩ : ℂ) + 1 / 2 - ((D.R.t : ℂ) - 1) / 2 + c)`. Use `(Multiset.map_congr rfl fun c _ => ?_).trans (hf.symm.trans (Multiset.map_congr rfl fun c hc => ?_))` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Use `push_cast`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hc'` using `Multiset.mem_range.1 hc`. Rewrite using `[Nat.cast_sub (show c ≤ D.R.t - 1 by omega), Nat.cast_sub (show 1 ≤ D.R.t by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem core (D : D7) (cf : CharFrame D) (A : AUSide D) (chr : CharSide D cf) (M : MtFam D)
     {tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E} {Q : D.what₂.places.Pl → Finset (PlE D.host)}
@@ -346,9 +346,9 @@ namespace GlobalTheory.LiftInfRef
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `_ hL`. Unfold `GlobalTheory.LiftRef.AtRows OverRows`. Use `evLgG_of_forall fun K B f T _ w _ Z Wt hX z p0 Y _ _ _ _ _ => ?_` and prove the remaining obligations. Introduce `Rw a M tup Q _ hIn j h1 h2 S hS μ hμ τ`. Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `core _ _ a.A a.chr M hIn k h1 h2 S hS μ (by simpa using hμ) τ`.
+A detailed English derivation is pending.
 -/
 theorem lift_inf : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, GlobalTheory.LiftRef.AtRows hL fun D cf _ _ a M => ∀ (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) (S : Submodule ℂ (Formalism.AUTREP.GAf D.host.E D.R.nV → (M D.what₂.mu0 j h1 h2).wt.W)) (hS : NG.IsIrrRep (M D.what₂.mu0 j h1 h2).wt.ρ S) (μ : D.naut.CG 1), (a.chr.e1 μ).1 = cf.mu0 ⟨j - 1, by omega⟩ → ∀ τ, D.nbc.infW j (D.nbc.wtAU j (a.A.cls j h1 h2 (GlobalTheory.LiftRef.autOf (M D.what₂.mu0 j h1 h2) S hS))) (GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTau D τ) = (GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.hcSigma (D.hc τ)).map (· - 1 / 2) + isoInf D.nd D.naut [⟨1, D.naut.tw μ D.naut.etaTinv, D.R.t⟩] (GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTau D τ) ∧ D.nbc.infW j (D.nbc.wtAU j (a.A.cls j h1 h2 (GlobalTheory.LiftRef.autOf (M D.what₂.mu0 j h1 h2) S hS))) (GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTauBar D τ) = (GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.hcSigma (D.hc τ)).map (fun y => -y + 1 / 2) + isoInf D.nd D.naut [⟨1, D.naut.tw μ D.naut.etaTinv, D.R.t⟩] (GlobalTheory.IndefiniteRowSideFullHecke.CMTypeEmbeddings.embTauBar D τ) := by
   intro _ hL

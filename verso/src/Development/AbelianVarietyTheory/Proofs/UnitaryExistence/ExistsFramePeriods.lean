@@ -19,15 +19,15 @@ open scoped Matrix nonZeroDivisors
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ g e F r M hg hb hn k`. Take `⟨⟨idx, hty, -, hper⟩, hp0, hr, hξ, hpos, hφ⟩` from `GlobalTheory.T.cmType_letter_frame_column_dictionary E H Dw l Xo c σ g e F r M hg hb hn k`. Set `φ : (F.Di k).La →ₗ[𝓞 E] (Fin r → E)` to `(M.X k).Λ.subtype ∘ₗ (M.φ k).toLinearMap`. Establish `hφa : ∀ a, φ a = (M.φ k a : Fin r → E)` using `fun a => rfl`. Take `⟨-, hφ'⟩` from `hφ φ hφa`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hemb : ∀ (τ : E →+* ℂ) (v w : Fin r → E), Data.emb τ (v + w) = Data.emb τ v + Data.emb τ w`. Introduce `τ v w`. Use function extensionality and compare the values at `a`. Simplify using `[Data.emb]`. Set `Pf : Frame (M.X k).Ψ r → ((F.Di k).La →+ (Fin g → ℂ))` to `fun x => AddMonoidHom.mk' (fun a j => perFr (M.X k) x (φ a) (relab c σ (e j).1) (e j).2) (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Introduce `a b`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.add_apply, hper, map_add, hemb]`. Use `split_ifs`. Simplify using `only [hermC, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_add, Pi.add_apply])`. Establish `hPf : IsPerFr e F M k Pf` using `fun x a j => rfl`. Establish `hPf' : ∀ x v j, Pf x v j = if ((idx j).2 : ℕ) < (F.Di k).q then hermC (idx j).1.1 (M.X k).Gm (col (mat x (idx j).1) (idx j).2) (Data.emb (idx j).1.1 (φ v)) else ((mat x (idx j).1)⁻¹ *ᵥ Data.emb (idx j).1.1 (φ v)) (idx j).2` using `fun x v j => (hPf x v j).trans (hper x _ j)`. Establish `hdom : (M.X k).dom = GG (M.X k).Ψ (M.X k).Gm (F.Di k).q` using `by rw [← hp0]`. Take `⟨h1, h2⟩` from `GlobalTheory.periods_eq_frame_periods E H Dw l Xo _ g _ F k r _ (M.X k).Gm φ (M.X k).Ψ idx Pf (hb.type k).2 hty hξ hpos hφ' hr hPf'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3` using `(GlobalTheory.per_move E H (F.Di k) r _ (M.X k).Gm φ (M.X k).Ψ (hb.type k).2 g idx _ hty hξ hpos hφ').1 Pf hPf'`. Rewrite using `[hdom]`. Use `⟨Pf, hPf, fun Pf' h' => ?_, fun x hx => (h1 x hx).1, h3, h2⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Conclude with `AddMonoidHom.ext fun a => funext fun j => (h' x a j).trans (hPf x a j).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exists_framePeriods : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (g : ℕ) (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ)) (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1)) (r : ℕ) (M : ModelsOf F r), GoodEmb c σ → ModelBase M → NegXi M → ∀ k, ∃ Pf, IsPerFr e F M k Pf ∧ (∀ Pf', IsPerFr e F M k Pf' → Pf' = Pf) ∧ (∀ x ∈ (M.X k).dom, IsPeriod (F.Di k) (fun j => relab c σ (e j).1) (Pf x)) ∧ (∀ a, DifferentiableOn ℂ (fun x => Pf x a) (M.X k).dom) ∧ ∀ P, IsPeriod (F.Di k) (fun j => relab c σ (e j).1) P → ∃ x ∈ (M.X k).dom, Pf x = P := by
   intro E _ _ _ H Dw l Xo c σ g e F r M hg hb hn k

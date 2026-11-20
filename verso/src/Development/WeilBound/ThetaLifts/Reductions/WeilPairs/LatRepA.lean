@@ -20,21 +20,19 @@ variable {nS nT : ℕ}
 set_option linter.unusedSectionVars false
 
 /- English proof (translation)
-Establish `: IsScalarTower (𝓞 F) (𝓞 E) (Matrix (Fin nT) (Fin nS) E)` using `inferInstance`. Set `M : Submodule (𝓞 F) (Matrix (Fin nT) (Fin nS) E)` to `Λ.restrictScalars (𝓞 F)`. Establish `hfin : Module.Finite (𝓞 F) M`. Establish `: Module.Finite (𝓞 E) Λ` using `Module.Finite.iff_fg.2 h.fg`. Establish `: Module.Finite (𝓞 F) Λ` using `Module.Finite.trans (𝓞 E) Λ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `htf : Module.IsTorsionFree (𝓞 F) (Matrix (Fin nT) (Fin nS) E)` using `inferInstanceAs (Module.IsTorsionFree (𝓞 F) (Fin nT → Fin nS → E))`. Establish `: Module.FinitePresentation (𝓞 F) M` using `Module.finitePresentation_of_finite _ _`. Take `⟨k, f, g, e⟩` from `Module.Flat.exists_factorization_of_finitePresentation (LinearMap.id (R := 𝓞 F) (M := M))`. Establish `hu : ∀ (V : Type) [AddCommGroup V] [Module F V] [Module (𝓞 F) V] [IsScalarTower (𝓞 F) F V] (s : nonZeroDivisors (𝓞 F)), IsUnit (algebraMap (𝓞 F) (Module.End (𝓞 F) V) s)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `V _ _ _ _ s`. Rewrite using `[Module.End.isUnit_iff]`. Establish `hs : ((s : 𝓞 F) : F) ≠ 0` using `by exact_mod_cast nonZeroDivisors.coe_ne_zero s`. Establish `e : ∀ v : V, algebraMap (𝓞 F) (Module.End (𝓞 F) V) s v = ((s : 𝓞 F) : F) • v` using `fun v => (algebraMap_smul F (s : 𝓞 F) v).symm`. Use `⟨fun a b hab => ?_, fun v => ⟨((s : 𝓞 F) : F)⁻¹ • v, by rw [e, smul_smul, mul_inv_cancel₀ hs, one_smul]⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hab` using `[e, e]`. Conclude with `smul_right_injective V hs hab`. Establish `hloc : IsLocalizedModule (nonZeroDivisors (𝓞 F)) M.subtype`. Use `⟨hu _, fun x => ?_, fun hx => ⟨1, by rw [Subtype.ext hx]⟩⟩` and prove the remaining obligations. Take `⟨m, hm, hx⟩` from `h.den x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(⟨_, hx⟩, ⟨(m : 𝓞 F), mem_nonZeroDivisors_of_ne_zero (Nat.cast_ne_zero.2 hm.ne')⟩), ?_⟩` and prove the remaining obligations. Use `show (m : 𝓞 F) • x = m • x`. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Set `l₀ : Fin k → Matrix (Fin nT) (Fin nS) E →ₗ[𝓞 F] F` to `fun j => IsLocalizedModule.lift (nonZeroDivisors (𝓞 F)) M.subtype ((Algebra.linearMap (𝓞 F) F) ∘ₗ (Finsupp.lapply j) ∘ₗ f) (hu F)`. Establish `hl₀ : ∀ j (x : M), l₀ j x = f x j` using `fun j x => IsLocalizedModule.lift_apply (nonZeroDivisors (𝓞 F)) M.subtype _ (hu F) x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `l : Fin k → Matrix (Fin nT) (Fin nS) E →ₗ[F] F` to `fun j => (l₀ j).extendScalarsOfIsLocalization (nonZeroDivisors (𝓞 F)) F`. Use `⟨k, fun j => (g (Finsupp.single j 1) : M), l, fun j => (g (Finsupp.single j 1)).2, fun j x hx => ⟨f ⟨x, hx⟩ j, hl₀ j ⟨x, hx⟩⟩, fun x => ?_⟩` and prove the remaining obligations. Establish `hM : ∀ x : M, (x : Matrix (Fin nT) (Fin nS) E) = ∑ j, l j x • ((g (Finsupp.single j 1) : M) : Matrix (Fin nT) (Fin nS) E)`. Introduce `x`. Establish `h1 : x = g (f x)` using `LinearMap.congr_fun e x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `conv_lhs => rw [h1, ← (f x).univ_sum_single, map_sum, Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show l j x = f x j from hl₀ j x, ← Finsupp.smul_single_one, map_smul, Submodule.coe_smul]`. Conclude with `(algebraMap_smul F _ _).symm`. Take `⟨m, hm, hx⟩` from `h.den x`.
-
-Establish `h2` using `hM ⟨_, hx⟩`. Establish `e2 : m • x = (m : F) • x` using `by rw [Nat.cast_smul_eq_nsmul]`. Simplify using `only [e2, map_smul, smul_eq_mul, mul_smul, ← Finset.smul_sum] at h2`. Conclude with `smul_right_injective _ (Nat.cast_ne_zero.2 hm.ne' : (m : F) ≠ 0) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_dualBasis {Λ : Submodule (𝓞 E) (Matrix (Fin nT) (Fin nS) E)} (h : GoodLat Λ) :
     ∃ (k : ℕ) (y : Fin k → Matrix (Fin nT) (Fin nS) E) (l : Fin k → Matrix (Fin nT) (Fin nS) E →ₗ[F] F),
@@ -95,7 +93,7 @@ def cE (f : E →ₗ[F] F) : R ⊗[F] E →ₗ[R] R :=
 variable {R}
 
 /- English proof (translation)
-Simplify using `[cE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cE_tmul (f : E →ₗ[F] F) (a : R) (e : E) : cE R f (a ⊗ₜ[F] e) = f e • a := by
   simp [cE]
@@ -104,7 +102,7 @@ def sngG {X : Type} [Zero X] (i : Fin nT) (k : Fin nS) (x : X) : Matrix (Fin nT)
   Matrix.of fun a b => if a = i ∧ b = k then x else 0
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[sngG, Matrix.sum_apply, ite_and]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sum_sngG {X : Type} [AddCommMonoid X] (z : Matrix (Fin nT) (Fin nS) X) :
     ∑ i, ∑ k, sngG i k (z i k) = z := by
@@ -112,7 +110,7 @@ theorem sum_sngG {X : Type} [AddCommMonoid X] (z : Matrix (Fin nT) (Fin nS) X) :
   simp [sngG, Matrix.sum_apply, ite_and]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [sngG, Matrix.of_apply, Matrix.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sngG_add {X : Type} [AddCommMonoid X] (i : Fin nT) (k : Fin nS) (x y : X) :
     sngG i k (x + y) = sngG i k x + sngG i k y := by
@@ -121,7 +119,7 @@ theorem sngG_add {X : Type} [AddCommMonoid X] (i : Fin nT) (k : Fin nS) (x y : X
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[sngG]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sngG_zero {X : Type} [AddCommMonoid X] (i : Fin nT) (k : Fin nS) : sngG i k (0 : X) = 0 := by
   ext a b
@@ -141,28 +139,28 @@ def tm (a : R) (γ : Matrix (Fin nT) (Fin nS) E) : Matrix (Fin nT) (Fin nS) (R �
   γ.map fun e => a ⊗ₜ[F] e
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `[tm, TensorProduct.add_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tm_add_left (a b : R) (γ : Matrix (Fin nT) (Fin nS) E) : tm F (a + b) γ = tm F a γ + tm F b γ := by
   ext i k
   simp [tm, TensorProduct.add_tmul]
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `[tm, TensorProduct.sub_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tm_sub_left (a b : R) (γ : Matrix (Fin nT) (Fin nS) E) : tm F (a - b) γ = tm F a γ - tm F b γ := by
   ext i k
   simp [tm, TensorProduct.sub_tmul]
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `[tm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tm_zero_left (γ : Matrix (Fin nT) (Fin nS) E) : tm F (0 : R) γ = 0 := by
   ext i k
   simp [tm]
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `[tm, Matrix.sum_apply, TensorProduct.tmul_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tm_sum_right {ι : Type} (s : Finset ι) (a : R) (γ : ι → Matrix (Fin nT) (Fin nS) E) :
     tm F a (∑ j ∈ s, γ j) = ∑ j ∈ s, tm F a (γ j) := by
@@ -170,14 +168,14 @@ theorem tm_sum_right {ι : Type} (s : Finset ι) (a : R) (γ : ι → Matrix (Fi
   simp [tm, Matrix.sum_apply, TensorProduct.tmul_sum]
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `[tm, TensorProduct.smul_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tm_smul_right (a : R) (c : F) (γ : Matrix (Fin nT) (Fin nS) E) : tm F a (c • γ) = tm F (c • a) γ := by
   ext i k
   simp [tm, TensorProduct.smul_tmul]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [tm_zero_left]`. Consider the case `succ n ih => rw [succ_nsmul, ih, succ_nsmul, tm_add_left]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem tm_nsmul (n : ℕ) (a : R) (γ : Matrix (Fin nT) (Fin nS) E) : n • tm F a γ = tm F (n • a) γ := by
   induction n with
@@ -190,29 +188,29 @@ def coordM (l : Matrix (Fin nT) (Fin nS) E →ₗ[F] F) (z : Matrix (Fin nT) (Fi
   ∑ i, ∑ k, cE R (l ∘ₗ sng i k) (z i k)
 
 /- English proof (translation)
-Simplify using `[coordM, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordM_add (l : Matrix (Fin nT) (Fin nS) E →ₗ[F] F) (x y : Matrix (Fin nT) (Fin nS) (R ⊗[F] E)) :
     coordM R l (x + y) = coordM R l x + coordM R l y := by
   simp [coordM, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[coordM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordM_zero (l : Matrix (Fin nT) (Fin nS) E →ₗ[F] F) : coordM R l 0 = 0 := by
   simp [coordM]
 
 /- English proof (translation)
-Simplify using `[coordM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordM_neg (l : Matrix (Fin nT) (Fin nS) E →ₗ[F] F) (x : Matrix (Fin nT) (Fin nS) (R ⊗[F] E)) :
     coordM R l (-x) = -coordM R l x := by
   simp [coordM]
 
 /- English proof (translation)
-Establish `h : l γ = ∑ i, ∑ k, l (sng (F` using `F) i k (γ i k)) := by conv_lhs => rw [← sum_sngG γ]`. Simplify using `only [map_sum]`. Both sides reduce to the same expression. Rewrite using `[h, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [tm, Matrix.map_apply, cE_tmul, LinearMap.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem coordM_tm (l : Matrix (Fin nT) (Fin nS) E →ₗ[F] F) (a : R) (γ : Matrix (Fin nT) (Fin nS) E) :
     coordM R l (tm F a γ) = l γ • a := by
@@ -227,11 +225,11 @@ theorem coordM_tm (l : Matrix (Fin nT) (Fin nS) E →ₗ[F] F) (a : R) (γ : Mat
   simp only [tm, Matrix.map_apply, cE_tmul, LinearMap.comp_apply]
 
 /- English proof (translation)
-Rewrite using `[← sum_sngG z]`. Use `Finset.sum_induction _ P h2 h0 fun i _ => Finset.sum_induction _ P h2 h0 fun k _ => ?_` and prove the remaining obligations. Proceed by induction on `z i k using TensorProduct.induction_on with`. Consider the case `zero => rw [sngG_zero]`. Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a e`. Use `h1 a (sngG i k e) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `p q`. Simplify using `only [sngG, tm, Matrix.of_apply, Matrix.map_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Consider the case `add a b ha hb => rw [sngG_add]`. Conclude with `h2 _ _ ha hb`.
+A detailed English derivation is pending.
 -/
 theorem mat_induction {P : Matrix (Fin nT) (Fin nS) (R ⊗[F] E) → Prop} (h0 : P 0)
     (h1 : ∀ (a : R) (γ : Matrix (Fin nT) (Fin nS) E), P (tm F a γ)) (h2 : ∀ x y, P x → P y → P (x + y))
@@ -248,9 +246,9 @@ theorem mat_induction {P : Matrix (Fin nT) (Fin nS) (R ⊗[F] E) → Prop} (h0 :
   | add a b ha hb => rw [sngG_add]; exact h2 _ _ ha hb
 
 /- English proof (translation)
-Proceed by induction on `z using mat_induction with`. Consider the case `h0 => simp [coordM_zero, tm_zero_left]`. Consider the case `h1 a x => conv_lhs => rw [h x, tm_sum_right]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[coordM_tm, tm_smul_right]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `h2 a b ha hb => conv_lhs => rw [ha, hb, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[coordM_add, tm_add_left]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_sum_coordM {m : ℕ} {y : Fin m → Matrix (Fin nT) (Fin nS) E} {l : Fin m → Matrix (Fin nT) (Fin nS) E →ₗ[F] F}
     (h : ∀ x, x = ∑ j, l j x • y j) (z : Matrix (Fin nT) (Fin nS) (R ⊗[F] E)) :
@@ -267,9 +265,9 @@ theorem eq_sum_coordM {m : ℕ} {y : Fin m → Matrix (Fin nT) (Fin nS) E} {l : 
     rw [coordM_add, tm_add_left]
 
 /- English proof (translation)
-Proceed by induction on `z using mat_induction with`. Consider the case `h0`. Rewrite using `[coordM_zero, map_zero, Matrix.map_zero _ (map_zero _), coordM_zero]`. Consider the case `h1 a γ`. Establish `: (tm F a γ).map (Algebra.TensorProduct.map f (AlgHom.id F E)) = tm F (f a) γ`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Use extensionality with `i k`. Simplify using `[tm]`. Rewrite using `[this, coordM_tm, coordM_tm, map_smul]`. Consider the case `h2 a b ha hb`. Rewrite using `[coordM_add, map_add, ha, hb, Matrix.map_add _ (map_add _), coordM_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_coordM {S : Type} [CommRing S] [Algebra F S] (f : R →ₐ[F] S) (l : Matrix (Fin nT) (Fin nS) E →ₗ[F] F)
     (z : Matrix (Fin nT) (Fin nS) (R ⊗[F] E)) :
@@ -288,7 +286,7 @@ theorem map_coordM {S : Type} [CommRing S] [Algebra F S] (f : R →ₐ[F] S) (l 
 end coord
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `[ratWF, tm, Matrix.smul_apply, Matrix.map_apply, incAF, inclR, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem smul_ratWF (c : AF F) (γ : Matrix (Fin nT) (Fin nS) E) :
     algebraMap (AF F) (AEF F E) c • ratWF (F := F) γ = tm F c γ := by
@@ -302,7 +300,7 @@ Both sides reduce to the same expression.
 theorem intAf_eq : Formalism.MainNotions.StandardLattice.intAf F = (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (Af F)) := rfl
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨β, hβ, γ, hγ, (smul_ratWF _ _).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem tm_mem_latOF {Λ : Submodule (𝓞 E) (Matrix (Fin nT) (Fin nS) E)} {β : Af F}
     (hβ : β ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 F) F) {γ : Matrix (Fin nT) (Fin nS) E} (hγ : γ ∈ Λ) :
@@ -310,7 +308,7 @@ theorem tm_mem_latOF {Λ : Submodule (𝓞 E) (Matrix (Fin nT) (Fin nS) E)} {β 
   AddSubgroup.subset_closure ⟨β, hβ, γ, hγ, (smul_ratWF _ _).symm⟩
 
 /- English proof (translation)
-Establish `h` using `map_coordM (fstA F) l u`. Establish `h' : u.map (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E)) = 0` using `hu`. Rewrite `h` using `[h', coordM_zero]`. Conclude with `Prod.ext h rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_coord {l : Matrix (Fin nT) (Fin nS) E →ₗ[F] F} {u : WOF F E nS nT} (hu : u.map (infPartF F E) = 0) :
     coordM (AF F) l u = pairA F 0 (coordM (AF F) l u).2 := by
@@ -320,12 +318,12 @@ theorem fin_coord {l : Matrix (Fin nT) (Fin nS) E →ₗ[F] F} {u : WOF F E nS n
   exact Prod.ext h rfl
 
 /- English proof (translation)
-The claim follows from `Prod.ext (add_zero 0) rfl`.
+A detailed English derivation is pending.
 -/
 theorem pair_add (a b : Af F) : pairA F 0 a + pairA F 0 b = pairA F 0 (a + b) := Prod.ext (add_zero 0) rfl
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp only [zero_nsmul]`. Both sides reduce to the same expression. Consider the case `succ n ih => rw [succ_nsmul, ih, pair_add, succ_nsmul]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem pair_nsmul (n : ℕ) (a : Af F) : n • pairA F 0 a = pairA F 0 (n • a) := by
   induction n with
@@ -333,34 +331,34 @@ theorem pair_nsmul (n : ℕ) (a : Af F) : n • pairA F 0 a = pairA F 0 (n • a
   | succ n ih => rw [succ_nsmul, ih, pair_add, succ_nsmul]
 
 /- English proof (translation)
-The claim follows from `Prod.ext (sub_zero 0) rfl`.
+A detailed English derivation is pending.
 -/
 theorem pair_sub (a b : Af F) : pairA F 0 a - pairA F 0 b = pairA F 0 (a - b) := Prod.ext (sub_zero 0) rfl
 
 /- English proof (translation)
-The claim follows from `Prod.ext neg_zero rfl`.
+A detailed English derivation is pending.
 -/
 theorem pair_neg (a : Af F) : -pairA F 0 a = pairA F 0 (-a) := Prod.ext neg_zero rfl
 
 /- English proof (translation)
-The claim follows from `Prod.ext (smul_zero c) (Algebra.smul_def c a)`.
+A detailed English derivation is pending.
 -/
 theorem smul_pair (c : F) (a : Af F) : c • pairA F 0 a = pairA F 0 (algebraMap F (Af F) c * a) :=
   Prod.ext (smul_zero c) (Algebra.smul_def c a)
 
 /- English proof (translation)
-Introduce `v` and use `HeightOneSpectrum.coe_algebraMap_mem (𝓞 F) F v o`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem algebraMap_int_mem (o : 𝓞 F) :
     algebraMap F (Af F) (o : F) ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 F) F :=
   fun v => HeightOneSpectrum.coe_algebraMap_mem (𝓞 F) F v o
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hα, γ, hγ, rfl⟩` from `hy`. Take `⟨o, ho⟩` from `hl γ hγ`. Use `⟨algebraMap F (Af F) (o : F) * α, Subring.mul_mem _ (algebraMap_int_mem o) hα, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_ratWF, coordM_tm, ho, smul_pair]`. Consider the case `zero => exact ⟨0, zero_mem _, by rw [coordM_zero]; rfl⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, ea⟩` from `hx`. Take `⟨b, hb, eb⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a + b, add_mem ha hb, by rw [coordM_add, ea, eb, pair_add]⟩`. Consider the case `neg x _ hx`. Take `⟨a, ha, ea⟩` from `hx`. Conclude with `⟨-a, neg_mem ha, by rw [coordM_neg, ea, pair_neg]⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coord_latOF {Λ : Submodule (𝓞 E) (Matrix (Fin nT) (Fin nS) E)} {l : Matrix (Fin nT) (Fin nS) E →ₗ[F] F}
     (hl : ∀ x ∈ Λ, ∃ o : 𝓞 F, l x = o) {z : WOF F E nS nT} (hz : z ∈ latOF F E nS nT Λ) :
@@ -381,9 +379,9 @@ theorem coord_latOF {Λ : Submodule (𝓞 E) (Matrix (Fin nT) (Fin nS) E)} {l : 
     exact ⟨-a, neg_mem ha, by rw [coordM_neg, ea, pair_neg]⟩
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `GroundTheory.Global.exists_sub_mem_integralFiniteAdeles (R := 𝓞 F) β`. Take `⟨m, hm, o, ho⟩` from `Formalism.IndefR.Fin.PDB.exists_nat_mul_mem f`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Establish `e : m • β = m • (β - algebraMap F (Af F) f) + algebraMap F (Af F) ((o : 𝓞 F) : F)`. Establish `: ((o : 𝓞 F) : F) = (m : F) * f` using `ho`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, map_mul, map_natCast, smul_sub, nsmul_eq_mul, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem (nsmul_mem hf m) (algebraMap_int_mem o)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nat_mul_mem (β : Af F) : ∃ N : ℕ, 0 < N ∧ N • β ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 F) F := by
   obtain ⟨f, hf⟩ := GroundTheory.Global.exists_sub_mem_integralFiniteAdeles (R := 𝓞 F) β
@@ -401,7 +399,7 @@ section topo
 attribute [local instance] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.topTens
 
 /- English proof (translation)
-Establish `: IsModuleTopology (AF F) (AEF F E)` using `⟨rfl⟩`. Use `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun k _ => ?_` and prove the remaining obligations. Conclude with `(IsModuleTopology.continuous_of_linearMap _).comp (continuous_id.matrix_elem i k)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cont_coord (l : Matrix (Fin nT) (Fin nS) E →ₗ[F] F) :
     Continuous fun u : WOF F E nS nT => coordM (AF F) l u := by
@@ -410,9 +408,9 @@ theorem cont_coord (l : Matrix (Fin nT) (Fin nS) E →ₗ[F] F) :
   exact (IsModuleTopology.continuous_of_linearMap _).comp (continuous_id.matrix_elem i k)
 
 /- English proof (translation)
-Establish `: IsModuleTopology (AF F) (AEF F E)` using `⟨rfl⟩`. Establish `: ContinuousAdd (AEF F E)` using `IsModuleTopology.toContinuousAdd (AF F) (AEF F E)`. Establish `: ContinuousSMul (AF F) (AEF F E)` using `IsModuleTopology.toContinuousSMul (AF F) (AEF F E)`. Use `continuous_finsetSum _ fun j _ => ?_` and prove the remaining obligations. Use `continuous_matrix fun i k => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Continuous fun a : Fin m → AF F => algebraMap (AF F) (AEF F E) (a j) * ratWF (F := F) (y j) i k`. Simplify using `only [← Algebra.smul_def]`. Conclude with `(continuous_apply j : Continuous fun a : Fin m → AF F => a j).smul (continuous_const : Continuous fun _ : Fin m → AF F => ratWF (F := F) (y j) i k)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cont_sum {m : ℕ} (y : Fin m → Matrix (Fin nT) (Fin nS) E) :
     Continuous fun a : Fin m → AF F => ∑ j, algebraMap (AF F) (AEF F E) (a j) • ratWF (F := F) (y j) := by
@@ -436,11 +434,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {nS nT : ℕ} {Λ : Submodule (𝓞 E) (Matrix (Fin nT) (Fin nS) E)}
 
 /- English proof (translation)
-Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨α, _, γ, _, rfl⟩` from `hz`. Rewrite using `[smul_ratWF]`. Use extensionality with `i k`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `show Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) ((pairA F 0 α) ⊗ₜ[F] γ i k) = 0`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Conclude with `TensorProduct.zero_tmul _ _`. Consider the case `zero => exact Matrix.map_zero _ (map_zero _)`. Consider the case `add x y _ _ hx hy => rw [Matrix.map_add _ (map_add _), hx, hy, add_zero]`.
-
-Consider the case `neg x _ hx => rw [Matrix.map_neg _ (map_neg _), hx, neg_zero]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lat_fin {u : WOF F E nS nT} (hu : u ∈ latOF F E nS nT Λ) : u.map (infPartF F E) = 0 := by
   induction hu using AddSubgroup.closure_induction with
@@ -456,9 +452,9 @@ theorem lat_fin {u : WOF F E nS nT} (hu : u ∈ latOF F E nS nT Λ) : u.map (inf
   | neg x _ hx => rw [Matrix.map_neg _ (map_neg _), hx, neg_zero]
 
 /- English proof (translation)
-Take `⟨m, y, l, hy, _, e⟩` from `exists_dualBasis (F := F) h`. Use `⟨⋂ j, (fun u : WOF F E nS nT => (coordM (AF F) (l j) u).2) ⁻¹' (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (Af F)), ?_, fun u hu hf => ?_⟩` and prove the remaining obligations. Use `IsOpen.mem_nhds (isOpen_iInter_of_finite fun j => GroundTheory.Global.isOpen_integralFiniteAdeles.preimage (continuous_snd.comp (cont_coord (l j)))) ?_` and prove the remaining obligations. Simplify using `only [Set.mem_iInter, Set.mem_preimage, coordM_zero]`. Conclude with `fun _ => zero_mem _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite `hu` using `[Set.mem_iInter]`. Rewrite using `[eq_sum_coordM e u]`. Use `AddSubgroup.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[fin_coord hf]`. Conclude with `tm_mem_latOF (hu j) (hy j)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_nhds (h : GoodLat Λ) :
     ∃ V ∈ 𝓝 (0 : WOF F E nS nT), ∀ u ∈ V, u.map (infPartF F E) = 0 → u ∈ latOF F E nS nT Λ := by
@@ -476,13 +472,11 @@ theorem lat_nhds (h : GoodLat Λ) :
     exact tm_mem_latOF (hu j) (hy j)
 
 /- English proof (translation)
-Take `⟨m, y, l, hy, hl, e⟩` from `exists_dualBasis (F := F) h`. Set `S : Set (AF F)` to `(fun β => pairA F 0 β) '' (GroundTheory.Global.integralFiniteAdeles (𝓞 F) F : Set (Af F))`. Establish `hS : IsCompact S` using `(GroundTheory.Global.isCompact_integralFiniteAdeles (K := F)).image (continuous_const.prodMk continuous_id)`. Establish `him : (latOF F E nS nT Λ : Set (WOF F E nS nT)) = (fun a : Fin m → AF F => ∑ j, algebraMap (AF F) (AEF F E) (a j) • ratWF (F` using `F) (y j)) '' Set.univ.pi fun _ => S := by`. Use extensionality with `z`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hz choose β hβ hβ' using fun j => coord_latOF (hl j) hz`. Use `⟨fun j => coordM (AF F) (l j) z, fun j _ => ⟨β j, hβ j, (hβ' j).symm⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [smul_ratWF]`. Conclude with `(eq_sum_coordM e z).symm`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a, ha, rfl⟩`. Use `AddSubgroup.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Take `⟨β, hβ, hβ'⟩` from `ha j trivial`. Rewrite using `[← hβ', smul_ratWF]`. Conclude with `tm_mem_latOF hβ (hy j)`.
-
-Rewrite using `[him]`. Conclude with `(isCompact_univ_pi fun _ => hS).image (cont_sum y)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_compact (h : GoodLat Λ) : IsCompact (latOF F E nS nT Λ : Set (WOF F E nS nT)) := by
   obtain ⟨m, y, l, hy, hl, e⟩ := exists_dualBasis (F := F) h
@@ -507,9 +501,9 @@ theorem lat_compact (h : GoodLat Λ) : IsCompact (latOF F E nS nT Λ : Set (WOF 
   exact (isCompact_univ_pi fun _ => hS).image (cont_sum y)
 
 /- English proof (translation)
-Take `⟨m, y, l, hy, _, e⟩` from `exists_dualBasis (F := F) h`. Use `choose N hN hN' using fun j => nat_mul_mem (coordM (AF F) (l j) x).2`. Use `⟨∏ j, N j, Finset.prod_pos fun j _ => hN j, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_sum_coordM e x, Finset.smul_sum]`. Use `AddSubgroup.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem N (Finset.mem_univ j)`. Rewrite using `[fin_coord hx, tm_nsmul, pair_nsmul, hc, mul_comm, mul_smul]`. Conclude with `tm_mem_latOF (nsmul_mem (hN' j) c) (hy j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_den (h : GoodLat Λ) (x : WOF F E nS nT) (hx : x.map (infPartF F E) = 0) :
     ∃ N : ℕ, 0 < N ∧ N • x ∈ latOF F E nS nT Λ := by
@@ -523,9 +517,9 @@ theorem lat_den (h : GoodLat Λ) (x : WOF F E nS nT) (hx : x.map (infPartF F E) 
   exact tm_mem_latOF (nsmul_mem (hN' j) c) (hy j)
 
 /- English proof (translation)
-Take `⟨m, y, l, hy, _, e⟩` from `exists_dualBasis (F := F) h`. Use `choose f hf using fun j => GroundTheory.Global.exists_sub_mem_integralFiniteAdeles (R := 𝓞 F) (coordM (AF F) (l j) x).2`. Use `⟨∑ j, f j • y j, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_ratWF, tm_sum_right]`. Use `nth_rewrite 1 [eq_sum_coordM e x]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_sub_distrib]`. Use `AddSubgroup.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[tm_smul_right, ← tm_sub_left, fin_coord hx, smul_pair, mul_one, pair_sub]`. Conclude with `tm_mem_latOF (hf j) (hy j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lat_approx (h : GoodLat Λ) (x : WOF F E nS nT) (hx : x.map (infPartF F E) = 0) :
     ∃ γ : Matrix (Fin nT) (Fin nS) E,

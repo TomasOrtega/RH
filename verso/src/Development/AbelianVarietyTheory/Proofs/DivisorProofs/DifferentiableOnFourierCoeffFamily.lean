@@ -8,11 +8,9 @@ open scoped Real ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ g U a hU hh n`. Establish `key` using `differentiableOn_setIntegral_of_holomorphic_of_continuousOn (μ := volume) (V := ℂ) (F := fun (x : Fin g → ℝ) (b : E) => a (b, fun i => (x i : ℂ)) * cexp (-(2 * π * I) * ∑ i, (n i : ℂ) * (x i : ℂ))) hU (S := Set.Icc (0 : Fin g → ℝ) 1) (K := Set.Icc (0 : Fin g → ℝ) 1) isCompact_Icc …`. Conclude with `key.1`. Establish `h1 : ContinuousOn (fun p : (Fin g → ℝ) × E => a (p.2, fun i => (p.1 i : ℂ))) (Set.Icc (0 : Fin g → ℝ) 1 ×ˢ U)`. Use `hh.continuousOn.comp (f := fun p : (Fin g → ℝ) × E => (p.2, fun i => (p.1 i : ℂ))) (by fun_prop) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Conclude with `⟨hp.2, Set.mem_univ _⟩`. Establish `h2 : Continuous (fun p : (Fin g → ℝ) × E => cexp (-(2 * π * I) * ∑ i, (n i : ℂ) * (p.1 i : ℂ)))` using `by fun_prop`. Conclude with `h1.mul h2.continuousOn`. Introduce `x _`.
-
-Establish `hm : DifferentiableOn ℂ (fun b : E => (b, fun i => (x i : ℂ))) U` using `(differentiable_id.prodMk (differentiable_const _)).differentiableOn`. Conclude with `(hh.comp hm (fun b hb => ⟨hb, Set.mem_univ _⟩)).mul_const _`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem differentiableOn_cf_fibre_of_holomorphic :
     ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {g : ℕ}

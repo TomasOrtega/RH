@@ -15,15 +15,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.MovedVac
 
 /- English proof (translation)
-Introduce `D S T g h e u hu`. Establish `hA : Formalism.L2.Theta.mt T h⁻¹ * Formalism.L2.Theta.mt T h = 1`. Simplify using `only [Formalism.L2.Theta.mt, map_inv]`. Conclude with `congrArg Units.val (inv_mul_cancel (matHom T h))`. Establish `hB : Formalism.L2.Theta.mt S g⁻¹ * Formalism.L2.Theta.mt S g = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.L2.Theta.mt, map_inv]`. Conclude with `congrArg Units.val (inv_mul_cancel (matHom S g))`. Establish `cancel : ∀ X : Matrix (Fin T.rank) (Fin S.rank) (AE D), HMul.hMul (HMul.hMul (Formalism.L2.Theta.mt T h⁻¹) (HMul.hMul (HMul.hMul (Formalism.L2.Theta.mt T h) X) (Formalism.L2.Theta.mt S g⁻¹))) (Formalism.L2.Theta.mt S g) = X`. Introduce `X`. Simplify using `only [Matrix.mul_assoc, hB, Matrix.mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc, hA, Matrix.one_mul]`. Establish `key : e • actO S T g h u = actO S T g h u`. Use extensionality with `i j`. Conclude with `hu i j`. Establish `key2 : e • u = u`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `congrArg (fun M : Matrix (Fin T.rank) (Fin S.rank) (AE D) => HMul.hMul (HMul.hMul (Formalism.L2.Theta.mt T h⁻¹) M) (Formalism.L2.Theta.mt S g)) key`. Simplify using `only [actO] at h1`. Rewrite `h1` using `[cancel u]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul] at h1`. Rewrite `h1` using `[cancel u]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Introduce `i j`. Use `congrFun (congrFun key2 i) j` as an intermediate fact. Rewrite `this` using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem halfBack : ∀ (D : D7) (S T : HSp D) (g : GA D S) (h : GA D T) (e : AE D) (u : WO S T),
     IsHalf e (actO S T g h u) → IsHalf e u := by
@@ -56,11 +56,11 @@ theorem halfBack : ∀ (D : D7) (S T : HSp D) (g : GA D S) (h : GA D T) (e : AE 
   exact this
 
 /- English proof (translation)
-Introduce `D ψ S T μ om hW f hf p m 𝓕 hm`. Establish `hU` using `hW.om_unit m 𝓕 hm.1 hm.2.1 p f hf`. Establish `hf'` using `hW.om_pres p f hf`. Use `haveI : OpensMeasurableSpace (WO S T) := ⟨le_rfl⟩`. Establish `key : ∀ F : WO S T → ℂ, Continuous F → nrm2 m 𝓕 F = (∫⁻ w in 𝓕, ‖F w‖ₑ ^ 2 ∂m).toReal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F hF`. Unfold `nrm2`. Establish `hc : Continuous fun w => ‖F w‖ ^ 2` using `by fun_prop`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (f := fun w => ‖F w‖ ^ 2) (Filter.Eventually.of_forall fun w => sq_nonneg ‖F w‖) hc.aestronglyMeasurable]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_congr fun w => ?_` and prove the remaining obligations. Rewrite using `[← ofReal_norm_eq_enorm, ← ENNReal.ofReal_pow (norm_nonneg _)]`. Rewrite using `[key _ hf'.cont, key _ hf.cont, hU]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_weilRepresentation_thetaFunction_preserved : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (μ : (AE D)ˣ →* Circle) (om : Om S T),
     IsWeilDatumO ψ S T μ μ om → ∀ f, IsThetaFunO ψ S T f → ∀ p (m : Measure (WO S T)) (𝓕 : Set (WO S T)),
@@ -81,7 +81,7 @@ theorem norm_weilRepresentation_thetaFunction_preserved : ∀ (D : D7) (ψ : Add
   rw [key _ hf'.cont, key _ hf.cont, hU]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.unitaryPair_maps_completedHomLattice_onto_translate`.
+A detailed English derivation is pending.
 -/
 theorem latMove : ∀ (D : D7) (S T : HSp D) (a b : ℕ) (hS : S.rank = a) (hT : T.rank = b), S.gram = 1 → T.gram = 1 →
     ∀ g ∈ GfC S, ∀ h ∈ GfC T, ∀ (N : Submodule (𝓞 D.host.E) (Fin a → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)),
@@ -90,7 +90,7 @@ theorem latMove : ∀ (D : D7) (S T : HSp D) (a b : ℕ) (hS : S.rank = a) (hT :
       ∃ u ∈ latO S T (intVec D _) (intVec D _) (fun _ => True), actO S T g h u = u' := GlobalTheory.T.unitaryPair_maps_completedHomLattice_onto_translate
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.heisenberg_fixes_latticeVacuum_periodLattice`.
+A detailed English derivation is pending.
 -/
 theorem latSign : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (a b : ℕ) (hS : S.rank = a)
     (hT : T.rank = b) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ g ∈ GfC S, ∀ h ∈ GfC T,
@@ -102,7 +102,7 @@ theorem latSign : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) 
     ∀ w, alV D.host.d sc (embH (tauE D) δ (toHom S T hS hT γ)) * heisO ψ S T v f w = f w := GlobalTheory.T.heisenberg_fixes_latticeVacuum_periodLattice
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_rationalMatrix_of_mem_periodLattice`.
+A detailed English derivation is pending.
 -/
 theorem lamPre : ∀ (D : D7) (S T : HSp D) (a b : ℕ) (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ)
     (N : Submodule (𝓞 D.host.E) (Fin a → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin b → D.host.E)),
@@ -112,9 +112,9 @@ theorem lamPre : ∀ (D : D7) (S T : HSp D) (a b : ℕ) (hS : S.rank = a) (hT : 
       embH (tauE D) δ (toHom S T hS hT γ) = x ∧ ∃ v, GlobalTheory.AdTh.IsFinOf S T γ v := GlobalTheory.T.exists_rationalMatrix_of_mem_periodLattice
 
 /- English proof (translation)
-Introduce `D ψ θ S T a b hS hT δ sc hP g hg h hh N N' hN hN' f hf hl x hx z`. Take `⟨γ, hγ, rfl, v, hv⟩` from `lamPre D S T a b hS hT δ N N' x hx`. Establish `hs` using `latSign D ψ θ S T a b hS hT δ sc hP g hg h hh N N' hN hN' f hf hl γ hγ v hv`. Establish `hu` using `GlobalTheory.T.gaussianReading_finiteRationalHeisenbergTranslate D ψ θ S T a b hS hT δ sc hP f hf γ v hv`. Rewrite using `[← hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [xiN]`. Rewrite using `[← hs]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fixedLine : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (a b : ℕ) (hS : S.rank = a)
     (hT : T.rank = b) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ g ∈ GfC S, ∀ h ∈ GfC T,
@@ -133,17 +133,17 @@ theorem fixedLine : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D
   ring
 
 /- English proof (translation)
-Introduce `D ψ θ S T a b hS hT δ sc hP μ om hW f hf g hg h hh N N' hN hN'`. Take `⟨hstd, hv⟩` from `hf`. Establish `hhol : IsHol θ S T ψ f` using `⟨hv.theta, hv.fock⟩`. Establish `hI` using `GlobalTheory.T.om_pureTensorO_comm D ψ θ S T a b hS hT δ sc hP μ om hW g hg h hh f hhol`. Establish `hth' : IsThetaFunO ψ S T (om (g, h) f)` using `hW.om_pres _ f hv.theta`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvac : IsVacO ψ θ S T (fun _ => 1) (fun _ => 1) (latFr S hS N) (latFr T hT N') (om (g, h) f)`. Use `⟨hstd, { inf := hv.inf, theta := hth', lat := ?_, fock := hI.1.2, norm := ?_ }⟩` and prove the remaining obligations. Use `⟨fun u' hu' => ?_, fun e he u' hu' hhalf => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, rfl⟩` from `latMove D S T a b hS hT hP.gS hP.gT g hg h hh N N' hN hN' u' hu'`. Establish `h2 : actO S T g h u + actO S T g h u = actO S T g h (u + u)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [actO, Matrix.mul_add, Matrix.add_mul]`. Establish `h3` using `hv.lat.1 u hu`. Rewrite `h3`, the goal using `[two_nsmul]`. Rewrite using `[h2, ← hW.om_heis g h _ f hv.theta, h3]`. Take `⟨u, hu, rfl⟩` from `latMove D S T a b hS hT hP.gS hP.gT g hg h hh N N' hN hN' u' hu'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hW.om_heis g h u f hv.theta, hv.lat.2 e he u hu (halfBack D S T g h e u hhalf)]`. Use `⟨hv.norm.1, fun p hp => ?_⟩ show nrm2 p.1 p.2 (om (g, h) f) = 1` and prove the remaining obligations. Rewrite using `[norm_weilRepresentation_thetaFunction_preserved D ψ S T μ om hW f hv.theta (g, h) p.1 p.2 hp]`. Conclude with `hv.norm.2 p hp`. Establish `hne : om (g, h) f ≠ 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Take `⟨p, hp⟩` from `hvac.2.norm.1`. Establish `h1` using `hvac.2.norm.2 p hp`. Rewrite `h1` using `[h0]`. Simplify using `[nrm2] at h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hII` using `GlobalTheory.T.gaussianTwistedRealReading_entire_and_injective D ψ θ S T a b hS hT δ sc hP`. Use `⟨hvac, ⟨GlobalTheory.SCV.analyticOnNhd_of_differentiable (hII.1 _ hI.1) _, fixedLine D ψ θ S T a b hS hT δ sc hP g hg h hh N N' hN hN' _ hth' hvac.2.lat⟩, fun h0 => hne (hII.2 _ hth' h0)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem vac_moved : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (a b : ℕ) (hS : S.rank = a) (hT : T.rank = b) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ (μ : (AE D)ˣ →* Circle) (om : Om S T), IsWeilDatumO ψ S T μ μ om → ∀ f, IsVacO ψ θ S T (fun _ => 1) (fun _ => 1) (intVec D _) (intVec D _) f → ∀ g ∈ GfC S, ∀ h ∈ GfC T, ∀ N N', Moves S hS g N → Moves T hT h N' → IsVacO ψ θ S T (fun _ => 1) (fun _ => 1) (latFr S hS N) (latFr T hT N') (om (g, h) f) ∧ xiN θ S T hS hT δ sc (om (g, h) f) ∈ Formalism.L2.Th1.H.Th (HV sc) (alV D.host.d sc) (LamC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') ∧ xiN θ S T hS hT δ sc (om (g, h) f) ≠ 0 := by
   intro D ψ θ S T a b hS hT δ sc hP μ om hW f hf g hg h hh N N' hN hN'

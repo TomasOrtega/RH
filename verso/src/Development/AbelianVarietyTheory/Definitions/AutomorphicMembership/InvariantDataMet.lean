@@ -11,7 +11,7 @@ namespace GlobalTheory.HodgeDomain
 variable {ι : Type} [Fintype ι] {p q : ℕ}
 
 /- English proof (translation)
-Unfold `SmoothOn at *`. Simplify using `only [Matrix.det_apply, Units.smul_def, zsmul_eq_mul]`. Conclude with `ContDiffOn.sum fun σ _ => contDiffOn_const.mul (contDiffOn_prod fun i _ => h _ _)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smoothOn_det {n : ℕ} {M : Pt ι p q → Matrix (Fin n) (Fin n) ℂ} (h : ∀ a b, SmoothOn fun z => M z a b) :
     SmoothOn fun z => (M z).det := by
@@ -20,9 +20,9 @@ theorem smoothOn_det {n : ℕ} {M : Pt ι p q → Matrix (Fin n) (Fin n) ℂ} (h
   exact ContDiffOn.sum fun σ _ => contDiffOn_const.mul (contDiffOn_prod fun i _ => h _ _)
 
 /- English proof (translation)
-Establish `hadj : SmoothOn fun z => (M z).adjugate a b`. Simplify using `only [adjugate_apply]`. Use `smoothOn_det fun i j => ?_` and prove the remaining obligations. Distinguish the cases in `e : i = b`. Simplify using `only [e, updateRow_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `contDiffOn_const`. Simplify using `only [updateRow_ne e]`. Conclude with `h i j`. Simplify using `only [Matrix.inv_def, Ring.inverse_eq_inv', Matrix.smul_apply, smul_eq_mul]`. Conclude with `ContDiffOn.mul (ContDiffOn.inv (smoothOn_det h) fun v hv => hd _ hv) hadj`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smoothOn_inv {n : ℕ} {M : Pt ι p q → Matrix (Fin n) (Fin n) ℂ} (h : ∀ a b, SmoothOn fun z => M z a b)
     (hd : ∀ z ∈ DomI ι p q, (M z).det ≠ 0) (a b : Fin n) : SmoothOn fun z => (M z)⁻¹ a b := by
@@ -36,19 +36,19 @@ theorem smoothOn_inv {n : ℕ} {M : Pt ι p q → Matrix (Fin n) (Fin n) ℂ} (h
   exact ContDiffOn.mul (ContDiffOn.inv (smoothOn_det h) fun v hv => hd _ hv) hadj
 
 /- English proof (translation)
-The claim follows from `(contDiff_apply ℝ ℂ (τ, a, b)).contDiffOn`.
+A detailed English derivation is pending.
 -/
 theorem smoothOn_coord (τ : ι) (a : Fin p) (b : Fin q) : SmoothOn fun z : Pt ι p q => z τ a b :=
   (contDiff_apply ℝ ℂ (τ, a, b)).contDiffOn
 
 /- English proof (translation)
-The claim follows from `Complex.conjCLE.contDiff.comp_contDiffOn h`.
+A detailed English derivation is pending.
 -/
 theorem smoothOn_star {f : Pt ι p q → ℂ} (h : SmoothOn f) : SmoothOn fun z => star (f z) :=
   Complex.conjCLE.contDiff.comp_contDiffOn h
 
 /- English proof (translation)
-Simplify using `only [hP, Matrix.sub_apply, Matrix.mul_apply, conjTranspose_apply]`. Conclude with `contDiffOn_const.sub (ContDiffOn.sum fun k _ => ContDiffOn.mul (smoothOn_coord τ a k) (smoothOn_star (smoothOn_coord τ b k)))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smoothOn_hP (τ : ι) (a b : Fin p) : SmoothOn fun z : Pt ι p q => hP (z τ) a b := by
   simp only [hP, Matrix.sub_apply, Matrix.mul_apply, conjTranspose_apply]
@@ -56,7 +56,7 @@ theorem smoothOn_hP (τ : ι) (a b : Fin p) : SmoothOn fun z : Pt ι p q => hP (
     ContDiffOn.mul (smoothOn_coord τ a k) (smoothOn_star (smoothOn_coord τ b k)))
 
 /- English proof (translation)
-Simplify using `only [hQ, Matrix.sub_apply, Matrix.mul_apply, conjTranspose_apply]`. Conclude with `contDiffOn_const.sub (ContDiffOn.sum fun k _ => ContDiffOn.mul (smoothOn_star (smoothOn_coord τ k a)) (smoothOn_coord τ k b))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smoothOn_hQ (τ : ι) (a b : Fin q) : SmoothOn fun z : Pt ι p q => hQ (z τ) a b := by
   simp only [hQ, Matrix.sub_apply, Matrix.mul_apply, conjTranspose_apply]
@@ -64,13 +64,13 @@ theorem smoothOn_hQ (τ : ι) (a b : Fin q) : SmoothOn fun z : Pt ι p q => hQ (
     ContDiffOn.mul (smoothOn_star (smoothOn_coord τ k a)) (smoothOn_coord τ k b))
 
 /- English proof (translation)
-The claim follows from `smoothOn_inv (smoothOn_hP τ) (fun _ hz => (hP_posDef (hz τ)).det_pos.ne') a b`.
+A detailed English derivation is pending.
 -/
 theorem smoothOn_hP_inv (τ : ι) (a b : Fin p) : SmoothOn fun z : Pt ι p q => (hP (z τ))⁻¹ a b :=
   smoothOn_inv (smoothOn_hP τ) (fun _ hz => (hP_posDef (hz τ)).det_pos.ne') a b
 
 /- English proof (translation)
-The claim follows from `smoothOn_inv (smoothOn_hQ τ) (fun z hz => (show (hQ (z τ)).PosDef from hz τ).det_pos.ne') a b`.
+A detailed English derivation is pending.
 -/
 theorem smoothOn_hQ_inv (τ : ι) (a b : Fin q) : SmoothOn fun z : Pt ι p q => (hQ (z τ))⁻¹ a b :=
   smoothOn_inv (smoothOn_hQ τ) (fun z hz => (show (hQ (z τ)).PosDef from hz τ).det_pos.ne') a b
@@ -90,13 +90,13 @@ theorem bergman_apply (z ξ η : Pt ι p q) :
     bergman z ξ η = ∑ τ, ((hP (z τ))⁻¹ * ξ τ * (hQ (z τ))⁻¹ * (η τ)ᴴ).trace := rfl
 
 /- English proof (translation)
-Use `open MatrixOrder in`. Take `⟨R, hR, rfl⟩` from `CStarAlgebra.isStrictlyPositive_iff_eq_star_mul_self.1 hA.isStrictlyPositive`. Use `open MatrixOrder in`. Take `⟨S, hS, rfl⟩` from `CStarAlgebra.isStrictlyPositive_iff_eq_mul_star_self.1 hB.isStrictlyPositive`. Establish `e : (star R * R * ξ * (S * star S) * ξᴴ).trace = ((R * ξ * S) * (R * ξ * S)ᴴ).trace`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [star_eq_conjTranspose, conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e]`. Establish `h0` using `(posSemidef_self_mul_conjTranspose (R * ξ * S)).trace_nonneg`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨h0, fun hξ => lt_of_le_of_ne h0 fun h => hξ ?_⟩` and prove the remaining obligations. Establish `h1` using `trace_mul_conjTranspose_self_eq_zero_iff.1 h.symm`. Establish `hR'` using `(isUnit_iff_isUnit_det _).1 hR`. Establish `hS'` using `(isUnit_iff_isUnit_det _).1 hS`. Establish `: R⁻¹ * (R * ξ * S) * S⁻¹ = ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc R, nonsing_inv_mul_cancel_left _ _ hR', mul_nonsing_inv_cancel_right _ _ hS']`. Rewrite using `[← this, h1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trace_pos {A : Matrix (Fin p) (Fin p) ℂ} {B : Matrix (Fin q) (Fin q) ℂ} (hA : A.PosDef) (hB : B.PosDef)
     (ξ : Matrix (Fin p) (Fin q) ℂ) : 0 ≤ (A * ξ * B * ξᴴ).trace ∧ (ξ ≠ 0 → 0 < (A * ξ * B * ξᴴ).trace) := by
@@ -119,9 +119,9 @@ theorem trace_pos {A : Matrix (Fin p) (Fin p) ℂ} {B : Matrix (Fin q) (Fin q) �
   rw [← this, h1]; simp
 
 /- English proof (translation)
-Rewrite using `[bergman_apply, bergman_apply]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `hu : g τ ∈ Upq p q` using `hg τ (Set.mem_univ _)`. Rewrite using `[← hP_inv_moeb hu (hz τ), ← hQ_moeb hu (hz τ), Matrix.mul_inv_rev, Matrix.mul_inv_rev]`. Simplify using `only [tanAct, conjTranspose_mul, Matrix.mul_assoc, conjTranspose_nonsing_inv, moebI]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[trace_mul_comm (jW (g τ) (z τ))ᴴ]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bergman_moeb {g : ι → GL (Fin p ⊕ Fin q) ℂ} (hg : g ∈ UpqI ι p q) {z : Pt ι p q} (hz : z ∈ DomI ι p q)
     (ξ η : Pt ι p q) :
@@ -179,7 +179,7 @@ def invariantData {Γ : Subgroup (ι → GL (Fin p ⊕ Fin q) ℂ)} (hΓ : Γ �
     rw [Matrix.mul_smul, Matrix.smul_mul, moebI, hQ_moeb (hΓ hγ τ (Set.mem_univ _)) (hz τ)]
 
 /- English proof (translation)
-Simplify using `[bergman_apply, hP, hQ]`.
+Simplify using the standard rewrite rules.
 -/
 example (ξ η : Pt ι p q) : bergman 0 ξ η = ∑ τ, (ξ τ * (η τ)ᴴ).trace := by
   simp [bergman_apply, hP, hQ]

@@ -7,19 +7,19 @@ open Formalism.MainNotions.N
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Γ k _ _ _ n ρ₀ ρ ρ' η₀ χ₁ χ₂ hρ hρ' hs hs' hno htr`. Take `⟨P, hP⟩` from `GlobalTheory.T.conj_on_inter_quadraticKernels_of_trace_eq Γ k n ρ ρ' χ₁ χ₂ hs hs' htr`. Establish `hzero : ∀ c : Γ →* ℤˣ, (c = χ₁ ∨ c = χ₂ ∨ c = χ₁ * χ₂) → ∀ X : Matrix (Fin n) (Fin n) k, (∀ g ∈ (⊤ : Subgroup Γ), ((ρ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * X = ((c g : ℤ) : k) • (X * ((ρ' g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))) → X = 0`. Introduce `c hc X hX`. Take `⟨A, B, hAB, hA, hB⟩` from `GlobalTheory.T.twistedIntertwiner_decomp_of_quadraticKernel' Γ k n ρ₀ ρ₀ ⊤ c η₀ X (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g hg h`. Use `hX g hg` as an intermediate fact. Rewrite using `[hρ g h, hρ' g h] at this)` and apply the resulting hypothesis. Establish `hA0 : A = 0` using `hno c (by tauto) A (fun g => hA g trivial)`. Apply the tactic sequence `have hB0 : B = 0 := hno (c * η₀) (by rcases hc with rfl | rfl | rfl <;> simp) B (fun g => hB g trivial)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hAB, hA0, hB0, add_zero]`. Take `⟨Y₁, Y₂, hY, hY₁, hY₂⟩` from `GlobalTheory.T.twistedIntertwiner_decomp_of_quadraticKernel' Γ k n ρ' ρ χ₂.ker 1 χ₁ (P : Matrix (Fin n) (Fin n) k) (by`. Introduce `g hg h`. Establish `h1 : ρ g * P = P * ρ' g` using `by rw [hP g h hg]; group`. Establish `h2` using `congrArg (fun x : GL (Fin n) k => (x : Matrix (Fin n) (Fin n) k)) h1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h2)`. Take `⟨A, B, hAB, hA, hB⟩` from `GlobalTheory.T.twistedIntertwiner_decomp_of_quadraticKernel' Γ k n ρ' ρ ⊤ 1 χ₂ Y₁ (fun g _ h => hY₁ g h)`. Take `⟨C, D, hCD, hC, hD⟩` from `GlobalTheory.T.twistedIntertwiner_decomp_of_quadraticKernel' Γ k n ρ' ρ ⊤ (1 * χ₁) χ₂ Y₂ (fun g _ h => hY₂ g h)`. Establish `hB0 : B = 0` using `hzero _ (by simp) B hB`. Establish `hC0 : C = 0` using `hzero _ (by simp) C hC`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD0 : D = 0` using `hzero _ (by simp) D hD`. Establish `hPA : (P : Matrix (Fin n) (Fin n) k) = A`. Rewrite using `[hY, hAB, hCD, hB0, hC0, hD0]`. Simplify using the standard rewrite rules. Introduce `g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ((ρ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * (P : Matrix (Fin n) (Fin n) k) = (P : Matrix (Fin n) (Fin n) k) * ((ρ' g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)`. Use `hA g trivial` as an intermediate fact. Rewrite `this` using `[← hPA]`. Simplify using `using this`. Establish `h2 : ((ρ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = (P : Matrix (Fin n) (Fin n) k) * ((ρ' g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * ((P⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← h1, mul_assoc, Units.mul_inv, mul_one]`. Rewrite using `[h2, Matrix.trace_mul_cycle, Units.inv_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_eq_of_agree_on_index_two_of_no_twisted_intertwiner : ∀ (Γ k : Type) [Group Γ] [Field k] [CharZero k] (n : ℕ) (ρ₀ ρ ρ' : Γ →* GL (Fin n) k) (η₀ χ₁ χ₂ : Γ →* ℤˣ), (∀ g, η₀ g = 1 → ρ g = ρ₀ g) → (∀ g, η₀ g = 1 → ρ' g = ρ₀ g) → IsSSRep ρ → IsSSRep ρ' → (∀ c : Γ →* ℤˣ, (c = χ₁ ∨ c = χ₂ ∨ c = χ₁ * χ₂ ∨ c = χ₁ * η₀ ∨ c = χ₂ * η₀ ∨ c = χ₁ * χ₂ * η₀) → ∀ X : Matrix (Fin n) (Fin n) k, (∀ g, ((ρ₀ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) * X = ((c g : ℤ) : k) • (X * ((ρ₀ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))) → X = 0) → (∀ g, χ₁ g = 1 → χ₂ g = 1 → ((ρ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace = ((ρ' g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace) → ∀ g, ((ρ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace = ((ρ' g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k).trace := by
   intro Γ k _ _ _ n ρ₀ ρ ρ' η₀ χ₁ χ₂ hρ hρ' hs hs' hno htr

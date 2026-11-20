@@ -5,7 +5,7 @@ import Formalism.SharpRestriction.GrowthBounds.StandardPolynomials.TCXNum
 namespace Formalism.MainNotions.ColumnSystems.Pf
 
 /- English proof (translation)
-The claim follows from `restTCore_of_seg (restSegCore_of_num restNumCore)`.
+A detailed English derivation is pending.
 -/
 theorem restTCore : RestTCore := restTCore_of_seg (restSegCore_of_num restNumCore)
 

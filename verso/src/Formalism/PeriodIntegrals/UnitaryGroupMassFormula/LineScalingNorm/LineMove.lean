@@ -9,29 +9,25 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC.MC.SR
 noncomputable section
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs μ' hμ' _hpl ζ _hζ h hh h' hh' he Pr hPr σ Y hY`. Take `⟨hYF, hYP⟩` from `hY`. Establish `hhi` using `Formalism.FourierDecayAlt.P.LieBracketMultiplication.uw_inv hh`. Establish `hh'i` using `Formalism.FourierDecayAlt.P.LieBracketMultiplication.uw_inv hh'`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p hp`. Take `⟨hp1, hp2, hpe⟩` from `hp`. Establish `hq1 : h⁻¹ * p.1 * h ∈ UWset P.k P.r Bs.z` using `Formalism.FourierDecayAlt.P.LieBracketMultiplication.uw_mul (Formalism.FourierDecayAlt.P.LieBracketMultiplication.uw_mul hhi hp1) hh`. Establish `hq2 : h' * p.2 * h'⁻¹ ∈ UWset P.k P.r Bs.z'` using `Formalism.FourierDecayAlt.P.LieBracketMultiplication.uw_mul (Formalism.FourierDecayAlt.P.LieBracketMultiplication.uw_mul hh' hp2) hh'i`. Establish `hback : NF.muZ P.k P.r μ' ζ = h⁻¹ * NF.muZ P.k P.r Bs.μsec ζ * h'⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[he, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Formalism.FourierDecayAlt.P.NFRadRedS.uw_inv_mul hh, Matrix.one_mul, Matrix.mul_assoc, Formalism.FourierDecayAlt.P.NFRadRedS.uw_mul_inv hh', Matrix.mul_one]`. Establish `hq : ((h⁻¹ * p.1 * h, h' * p.2 * h'⁻¹) : Q.Mx P.k P.r × Q.Mx P.k P.r) ∈ NF.Stab P.k P.r Bs.z Bs.z' μ' ζ`. Use `⟨hq1, hq2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `h⁻¹ * p.1 * h * NF.muZ P.k P.r μ' ζ * (h' * p.2 * h'⁻¹) = NF.muZ P.k P.r μ' ζ`. Establish `e : h⁻¹ * p.1 * h * NF.muZ P.k P.r μ' ζ * (h' * p.2 * h'⁻¹) = h⁻¹ * (p.1 * (h * NF.muZ P.k P.r μ' ζ * h') * p.2) * h'⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, ← he, hpe, ← hback]`. Establish `key : (Bs.π (h⁻¹ * p.1 * h)).comp (Y.comp (Bs.π' (h' * p.2 * h'⁻¹))) = Y` using `hYF _ hq`. Establish `e1 : (Bs.π p.1).comp (Bs.π h) = (Bs.π h).comp (Bs.π (h⁻¹ * p.1 * h))`. Rewrite using `[← Bs.π_rep.2 _ hp1 _ hh, ← Bs.π_rep.2 _ hh _ hq1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, Formalism.FourierDecayAlt.P.NFRadRedS.uw_mul_inv hh, Matrix.one_mul]`. Establish `e2 : (Bs.π' h').comp (Bs.π' p.2) = (Bs.π' (h' * p.2 * h'⁻¹)).comp (Bs.π' h')`. Rewrite using `[← Bs.π'_rep.2 _ hh' _ hp2, ← Bs.π'_rep.2 _ hq2 _ hh']`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Matrix.mul_assoc, Formalism.FourierDecayAlt.P.NFRadRedS.uw_inv_mul hh', Matrix.mul_one]`. Express the relevant statement in the definitionally equal form `(Bs.π p.1).comp (((Bs.π h).comp (Y.comp (Bs.π' h'))).comp (Bs.π' p.2)) = (Bs.π h).comp (Y.comp (Bs.π' h'))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [ContinuousLinearMap.comp_assoc]`. Use `_ = ((Bs.π h).comp (Bs.π (h⁻¹ * p.1 * h))).comp (Y.comp ((Bs.π' (h' * p.2 * h'⁻¹)).comp (Bs.π' h'))) := by`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Use `_ = (Bs.π h).comp (((Bs.π (h⁻¹ * p.1 * h)).comp (Y.comp (Bs.π' (h' * p.2 * h'⁻¹)))).comp (Bs.π' h')) := by`. Simplify using `only [ContinuousLinearMap.comp_assoc]`. Use `_ = (Bs.π h).comp (Y.comp (Bs.π' h')) := by rw [key]`. Use `set a := SSn.nu0 P.k P.r Bs.z Bs.z' μ' ζ with ha`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hYP' : (Pr σ a).comp Y = Y` using `hYP`. Establish `hν : SSn.nu0 P.k P.r Bs.z Bs.z' Bs.μsec ζ = h *ᵥ a`. Rewrite using `[ha]`. Unfold `SSn.nu0 SSn.unitH`. Rewrite using `[he, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hh'.2.2, Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.TF.prWv_uw Bs.z_mem Bs.T_pos hh, Formalism.FourierDecayAlt.P.Qx2.herm_uh hh.1, Matrix.mulVec_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e0 : (Bs.π h⁻¹).comp (Bs.π h) = 1`. Rewrite using `[← Bs.π_rep.2 _ hhi _ hh, Formalism.FourierDecayAlt.P.NFRadRedS.uw_inv_mul hh, Bs.π_rep.1]`. Establish `e0' : ∀ T : Wq →L[ℂ] Wp, (Bs.π h⁻¹).comp ((Bs.π h).comp T) = T`. Introduce `T`. Use extensionality with `v`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `k1` using `DFunLike.congr_fun e0 (T v)`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.one_apply] at k1 ⊢`. Conclude with `k1`. Express the relevant statement in the definitionally equal form `(Pr σ (SSn.nu0 P.k P.r Bs.z Bs.z' Bs.μsec ζ)).comp ((Bs.π h).comp (Y.comp (Bs.π' h'))) = (Bs.π h).comp (Y.comp (Bs.π' h'))`. Rewrite using `[hν, hPr.2.1 h hh σ a]`.
-
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [ContinuousLinearMap.comp_assoc]`. Use `_ = (Bs.π h).comp (((Pr σ a).comp Y).comp (Bs.π' h')) := by`. Rewrite using `[e0' (Y.comp (Bs.π' h'))]`. Simplify using `only [ContinuousLinearMap.comp_assoc]`.
-
-Use `_ = (Bs.π h).comp (Y.comp (Bs.π' h')) := by rw [hYP']`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem line_move_formula : LineMove := by
   intro Wp Wq _ _ _ _ _ _ P Bs μ' hμ' _hpl ζ _hζ h hh h' hh' he Pr hPr σ Y hY

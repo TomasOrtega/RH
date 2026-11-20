@@ -20,14 +20,14 @@ instance muW_neZero : NeZero H.w := ⟨H.w_pos.ne'⟩
 def muGen : H.E := H.exists_primitiveRoot_w.choose
 
 /- English proof (translation)
-The claim follows from `H.exists_primitiveRoot_w.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem muGen_prim : IsPrimitiveRoot H.muGen H.w := H.exists_primitiveRoot_w.choose_spec
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`. Conclude with `⟨_, H.muGen_prim.pow H.w_pos (hk.trans (mul_comm _ _))⟩`. Introduce and unpack `⟨ζ, hζ⟩`. Establish `: NeZero m` using `⟨hm.ne'⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `NumberField.Units.dvd_torsionOrder_of_isPrimitiveRoot hζ`.
+A detailed English derivation is pending.
 -/
 theorem dvd_w_iff {m : ℕ} (hm : 0 < m) : m ∣ H.w ↔ ∃ ζ : H.E, IsPrimitiveRoot ζ m := by
   constructor
@@ -38,9 +38,9 @@ theorem dvd_w_iff {m : ℕ} (hm : 0 < m) : m ∣ H.w ↔ ∃ ζ : H.E, IsPrimiti
     exact NumberField.Units.dvd_torsionOrder_of_isPrimitiveRoot hζ
 
 /- English proof (translation)
-Rewrite using `[isMu_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨k, -, hk⟩` from `H.muGen_prim.eq_pow_of_pow_eq_one h`. Conclude with `⟨k, hk.symm⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨k, rfl⟩`. Rewrite using `[← pow_mul, mul_comm, pow_mul, H.muGen_prim.pow_eq_one, one_pow]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem isMu_iff_pow (x : H.E) : H.IsMu x ↔ ∃ k : ℕ, x = H.muGen ^ k := by
   rw [isMu_iff]
@@ -62,17 +62,17 @@ abbrev IsRt (x : H.E) : Prop := H.IsMu x
 abbrev muW : ℕ := H.w
 
 /- English proof (translation)
-The claim follows from `H.dvd_w_iff hm`.
+A detailed English derivation is pending.
 -/
 theorem dvd_muW_iff {m : ℕ} (hm : 0 < m) : m ∣ H.muW ↔ ∃ ζ : H.E, IsPrimitiveRoot ζ m := H.dvd_w_iff hm
 
 /- English proof (translation)
-The claim follows from `H.isMu_iff x`.
+A detailed English derivation is pending.
 -/
 theorem isRt_iff (x : H.E) : H.IsRt x ↔ x ^ H.muW = 1 := H.isMu_iff x
 
 /- English proof (translation)
-The claim follows from `H.isMu_iff_pow x`.
+A detailed English derivation is pending.
 -/
 theorem isRt_iff_pow (x : H.E) : H.IsRt x ↔ ∃ k : ℕ, x = H.muGen ^ k := H.isMu_iff_pow x
 

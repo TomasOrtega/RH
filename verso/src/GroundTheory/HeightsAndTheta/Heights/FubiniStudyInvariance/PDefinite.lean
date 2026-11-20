@@ -14,13 +14,13 @@ namespace FSInv
 open CP
 
 /- English proof (translation)
-Introduce `N n P hP`. Prove the components needed by the constructor for the conclusion. Introduce `h0`. Establish `h1 : sectionL2NormSq (N` using `N) n P = 0 := by exact_mod_cast (hI N n P).symm.trans h0`. Establish `h2` using `hPar N n P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[fubiniStudy_l2Norm_sq_eq, h1]`. Assume the negation of the conclusion as `hne`. Take `⟨a, ha⟩ : P.support.Nonempty` from `Finset.nonempty_iff_ne_empty.mpr (mt MvPolynomial.support_eq_empty.mp hne)`. Establish `hpos : 0 < ∑ a ∈ P.support, ‖P.coeff a‖ ^ 2 * ((∏ i, ((a i).factorial : ℝ)) * N.factorial / (n + N).factorial)`. Use `Finset.sum_pos' (fun b _ => by positivity) ⟨a, ha, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : P.coeff a ≠ 0` using `MvPolynomial.mem_support_iff.mp ha`. Establish `: 0 < ‖P.coeff a‖` using `norm_pos_iff.mpr hc`. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Introduce and unpack `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hI]`. Simplify using `[sectionL2NormSq, fsNormPoly]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Definite.proof (hPar : Parseval.Statement) (hI : InnerSelf.Statement) :
     Definite.Statement := by

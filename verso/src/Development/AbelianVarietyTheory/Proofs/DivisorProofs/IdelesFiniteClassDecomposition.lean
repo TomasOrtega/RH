@@ -12,9 +12,7 @@ def toIdeles : (FiniteAdeleRing (𝓞 L) L)ˣ →* Neutral.B1.Ideles L :=
   Units.map (MonoidHom.inr (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L))
 
 /- English proof (translation)
-Take `⟨k, u, hu, he⟩` from `(ReciprocityTheory.Neutral.Bridge.HCFR.classOf_eq_one_iff L _).1 hc`. Use `⟨k, ⟨(u : AdeleRing (𝓞 L) L).2, ((u⁻¹ : Neutral.B1.Ideles L) : AdeleRing (𝓞 L) L).2, ?_, ?_⟩, fun P => (hu.2 P).1, ?_⟩` and prove the remaining obligations. Conclude with `congrArg Prod.snd u.mul_inv`. Conclude with `congrArg Prod.snd u.inv_mul`. Apply `Units.ext` to reduce the goal to its premises.
-
-Establish `h2 : ((toIdeles y : Neutral.B1.Ideles L) : AdeleRing (𝓞 L) L).2 = ((Neutral.B1.diagUnits L k * u : Neutral.B1.Ideles L) : AdeleRing (𝓞 L) L).2` using `by rw [he]`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_diag_mul_of_classOf (y : (FiniteAdeleRing (𝓞 L) L)ˣ)
     (hc : ReciprocityTheory.Neutral.Bridge.HCFR.classOf L (toIdeles y) = 1) :
@@ -32,17 +30,17 @@ theorem eq_diag_mul_of_classOf (y : (FiniteAdeleRing (𝓞 L) L)ˣ)
     exact h2
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hι`. Take `⟨a, u, hu, he⟩` from `eq_diag_mul_of_classOf _ hc`. Establish `hinv : ∀ P : HeightOneSpectrum (𝓞 L), Valued.v (((u⁻¹ : (FiniteAdeleRing (𝓞 L) L)ˣ) : FiniteAdeleRing (𝓞 L) L) P) = 1`. Introduce `P`. Establish `e : (((u⁻¹ : (FiniteAdeleRing (𝓞 L) L)ˣ) : FiniteAdeleRing (𝓞 L) L) P) * ((u : FiniteAdeleRing (𝓞 L) L) P) = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `congrArg (fun t : FiniteAdeleRing (𝓞 L) L => t P) (Units.inv_mul u)`. Establish `e2` using `congrArg Valued.v e`. Rewrite `e2` using `[map_mul, hu P, mul_one, map_one]`. Conclude with `e2`. Use `⟨a, Units.map ι.symm.toRingHom.toMonoidHom u, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[intU, Submonoid.mem_units_iff]`. Prove the components needed by the constructor for the conclusion. Use `show ι.symm (u : FiniteAdeleRing (𝓞 L) L) ∈ RInt ℚ L`. Rewrite using `[h2]`. Introduce `P`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[RingEquiv.apply_symm_apply, hu P]`. Use `show ι.symm ((u⁻¹ : (FiniteAdeleRing (𝓞 L) L)ˣ) : FiniteAdeleRing (𝓞 L) L) ∈ RInt ℚ L`. Rewrite using `[h2]`. Introduce `P`. Rewrite using `[RingEquiv.apply_symm_apply, hinv P]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `Units.ext` to reduce the goal to its premises. Apply `ι.injective` to reduce the goal to its premises. Establish `e` using `congrArg (fun t : (FiniteAdeleRing (𝓞 L) L)ˣ => (t : FiniteAdeleRing (𝓞 L) L)) he`. Simplify using `only [Units.val_mul, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe] at e`. Rewrite using `[e, Units.val_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, RingEquiv.apply_symm_apply]`. Use `congr 1`. Rewrite using `[ratId, Units.coe_map]`. Use `show _ = ι (inclE (F := ℚ) (E := L) (FiniteAdeleRing (𝓞 ℚ) ℚ) (a : L))`. Rewrite using `[inclE, Algebra.TensorProduct.includeLeftRingHom_apply, h1]`.
+A detailed English derivation is pending.
 -/
 theorem eq_ratId_mul_of_classOf (ι : AfE ℚ L ≃+* FiniteAdeleRing (𝓞 L) L) (hι : GlobalTheory.TwU.IsAdIso ι) (x : (AfE ℚ L)ˣ)
     (hc : ReciprocityTheory.Neutral.Bridge.HCFR.classOf L (toIdeles (Units.map ι.toRingHom.toMonoidHom x)) = 1) :
@@ -81,11 +79,11 @@ theorem eq_ratId_mul_of_classOf (ι : AfE ℚ L ≃+* FiniteAdeleRing (𝓞 L) L
     rw [inclE, Algebra.TensorProduct.includeLeftRingHom_apply, h1]
 
 /- English proof (translation)
-Introduce `L _ _`. Take `⟨ι, hι⟩` from `GlobalTheory.TwU.exists_isAdIso ℚ L`. Set `ψ : (AfE ℚ L)ˣ →* ClassGroup (𝓞 L)` to `(ReciprocityTheory.Neutral.Bridge.HCFR.classOf L).comp (toIdeles.comp (Units.map ι.toRingHom.toMonoidHom))`. Set `sel : ClassGroup (𝓞 L) → (AfE ℚ L)ˣ` to `fun c => if h : ∃ y, ψ y = c then h.choose else 1`. Establish `hsel : ∀ x, ψ (sel (ψ x)) = ψ x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x`. Establish `h : ∃ y, ψ y = ψ x` using `⟨x, rfl⟩`. Simplify using `only [sel, dif_pos h]`. Conclude with `h.choose_spec`. Use `⟨Finset.univ.image sel, fun x => ⟨sel (ψ x), Finset.mem_image_of_mem _ (Finset.mem_univ _), ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hk : ψ ((sel (ψ x))⁻¹ * x) = 1` using `by rw [map_mul, map_inv, hsel, inv_mul_cancel]`. Take `⟨a, k, hk, he⟩` from `eq_ratId_mul_of_classOf ι hι _ hk`. Use `⟨a, k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← he, mul_inv_cancel_left]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_cover : ∀ (L : Type) [Field L] [NumberField L],
     ∃ S : Finset (AfE ℚ L)ˣ, ∀ x : (AfE ℚ L)ˣ, ∃ s ∈ S, ∃ a : Lˣ, ∃ k ∈ intU ℚ L, x = s * ratId ℚ L a * k := by

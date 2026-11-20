@@ -19,9 +19,9 @@ open GlobalTheory.Twist (resM app_resM)
 namespace GlobalTheory.GrCl.Annih
 
 /- English proof (translation)
-Set `b₁` to `h₁.basis (inf_le_left : V₁ ⊓ V₂ ≤ V₁)`. Set `b₂` to `h₂.basis (inf_le_right : V₁ ⊓ V₂ ≤ V₂)`. Use `⟨(b₂.toMatrix b₁).transpose, (b₁.toMatrix b₂).transpose, ?_, ?_, fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.transpose_mul, Module.Basis.toMatrix_mul_toMatrix_flip, Matrix.transpose_one]`. Rewrite using `[← Matrix.transpose_mul, Module.Basis.toMatrix_mul_toMatrix_flip, Matrix.transpose_one]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `b₂.sum_toMatrix_smul_self b₁ l` as an intermediate fact. Simplify using `only [b₁, b₂, VB.IsFrame.basis_apply] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_trans {X : Scheme.{0}} {F : X.Modules} {V₁ V₂ : X.Opens} {n₁ n₂ : ℕ} {m₁ : Fin n₁ → Γ(F, V₁)}
     {m₂ : Fin n₂ → Γ(F, V₂)} (h₁ : VB.IsFrame m₁) (h₂ : VB.IsFrame m₂) :
@@ -40,9 +40,9 @@ theorem exists_trans {X : Scheme.{0}} {F : X.Modules} {V₁ V₂ : X.Opens} {n�
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
 
 /- English proof (translation)
-Set `L : Γ(GlobalTheory.LieVB.omega t.G, V₁ ⊓ V₂) →+ k` to `AddMonoidHom.mk' (tanEv t hv h) (tanEv_add t hv h)`. Establish `e₁ : tanEv t hv h₁ (θ.app V₁ s) = L (θ.app _ (resM F (inf_le_left : V₁ ⊓ V₂ ≤ V₁) s))`. Rewrite using `[app_resM]`. Conclude with `(tanEv_resM t hv h inf_le_left _).symm`. Rewrite using `[e₁, e, map_sum, map_sum]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Scheme.Modules.Hom.app_smul, app_resM]`. Use `(tanEv_smul t hv h _ _).trans ?_` and prove the remaining obligations. Rewrite using `[tanEv_resM t hv h inf_le_right]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tanEv_trans {X : Scheme.{0}} (t : SAB H X) {k : Type} [CommRing k] {x : Sp k ⟶ X}
     {v : Sp (DualNumber k) ⟶ t.G.left} (hv : IsTanAtG t x v) {F : X.Modules} (θ : F ⟶ GlobalTheory.LieVB.omega t.G)
@@ -62,21 +62,21 @@ theorem tanEv_trans {X : Scheme.{0}} (t : SAB H X) {k : Type} [CommRing k] {x : 
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ hp hW t Z g D hg hL Z₁ g₀ hg₀ ⟨_, g₁, hg₁, hH⟩ R K _ _ _ _ z α hα`. Take `rfl : g₁ = g₀ ≫ g` from `MapUniq.isMap_unique E H Dw Xo p W Y i₀ hp hW _ _ _ _ hg₁ (MapComp.isMap_comp hg₀ hg)`. Take `⟨U, hU, V₁, n', m₁, a₁, hx, hUV, hm₁, hA⟩` from `hH (z (IsLocalRing.closedPoint R))`. Establish `hzU : ⊤ ≤ z ⁻¹ᵁ U` using `(Scheme.preimage_eq_top_of_closedPoint_mem (R := .of R) z hx).ge`. Take `⟨V, m, hV, hm, hc⟩` from `hL α`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨T, T', hT, hT', hTm⟩` from `exists_trans hm₁ hm`. Establish `hz₁ : ⊤ ≤ (z ≫ g₀ ≫ g) ⁻¹ᵁ V₁` using `FlagMod.le_preimage_map _ hUV hzU`. Establish `hz₂ : ⊤ ≤ (z ≫ g₀ ≫ g) ⁻¹ᵁ V`. Rewrite using `[← Category.assoc]`. Conclude with `FlagMod.le_preimage_map _ hV hα`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz` using `FlagMod.le_preimage_inf hz₁ hz₂`. Use `⟨n', a₁.1.map (ev z U hzU) * T.map (ev _ _ hz), T'.map (ev _ _ hz) * (a₁⁻¹).1.map (ev z U hzU), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (T.map _), ← Matrix.map_mul, hT, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc ((a₁⁻¹).1.map _), ← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul, ← Matrix.map_mul, hT', Matrix.map_one _ (map_zero _) (map_one _)]`. Introduce `τ mu u hτ hu y ey hy v i hi hv j hj`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hyo : Set.range y ⊆ Z.opn`. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[ey, ← Category.assoc, Scheme.Hom.comp_apply]`. Conclude with `CommonMod.map_mem_opn hg₀ (MapComp.range_subset_opn Z₁ hu ⟨q, rfl⟩)`. Take `⟨τ₀, mu₀, -, hτ₀, e₀, -⟩` from `hg.2 K y hyo`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e₀' : (y ≫ Z.π) ≫ τ₀ = (y ≫ g) ≫ t.B.π` using `(Category.assoc _ _ _).trans e₀.symm`. Take `⟨v', ev'⟩` from `(pushE t.B.tMap (y ≫ g) rfl).surjective (pushE mu₀ _ e₀' v)`. Establish `hv' : (tv v').left ≫ t.B.tMap.φ = (tv v).left ≫ mu₀.φ` using `congrArg (fun q => (tv q).left) ev'`. Take `⟨mu', hmu'⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ mu₀ mu`. Establish `ew : spMap ((algebraMap R K).comp (ev z U hzU)) ≫ hU.fromSpec = spMap (algebraMap R K) ≫ z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← MapComp.sp_comp, Category.assoc, FlagMod.spMap_ev]`. Establish `eyg : y ≫ g = spMap (algebraMap R K) ≫ z ≫ g₀ ≫ g` using `by simp only [ey, Category.assoc]`. Establish `hyV : ⊤ ≤ (y ≫ g) ⁻¹ᵁ (V₁ ⊓ V)` using `eyg ▸ FlagMod.le_preimage_comp _ hz`. Establish `hy₁ : ⊤ ≤ (y ≫ g) ⁻¹ᵁ V₁` using `FlagMod.le_preimage_mono inf_le_left hyV`. Establish `hy₂ : ⊤ ≤ (y ≫ g) ⁻¹ᵁ V` using `FlagMod.le_preimage_mono inf_le_right hyV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `hA K ((algebraMap R K).comp (ev z U hzU)) (tv v').left`. Rewrite `key` using `[ew, Category.assoc, ← eyg]`. Use `replace key := key (isTan_tv v') hy₁ ⟨τ ≫ τ₀, mu', u, i, MapComp.isTrans_comp hg.1.1 hg₀.1.1 hτ₀ hτ mu' hmu', hu, hi, by rw [hv', hv, hmu', Category.assoc]⟩ j hj`. Establish `eev : ev (y ≫ g) _ hyV = (algebraMap R K).comp (ev _ _ hz)` using `(FlagMod.ev_congr eyg _ _ (FlagMod.le_preimage_comp _ hz)).trans (FlagMod.ev_spMap _ _ _ _ _)`. Rewrite using `[← key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hc τ₀ mu₀ hτ₀ K y hy hyo v _ (isTan_tv v') hy₂ hv', Matrix.mul_apply, map_sum, map_mul, Finset.sum_mul, Matrix.map_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[tanEv_trans t.B.t (isTan_tv v') t.L.N.incl (hTm l) hy₁ hy₂ hyV, eev, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_assoc _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem annih : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p), p.Prime → (p : ℂ) ∈ W.nonunits → ∀ (t : Step Y i₀) (Z : Mdl Y i₀) (g : Z.X ⟶ t.B.X) (D : LCrd (Y Z.i) Z.π), IsMap Z t.B g → IsLat t Z g D → ∀ (Z₁ : Mdl Y i₀) (g₀ : Z₁.X ⟶ Z.X), IsMap Z₁ Z g₀ → t.Holds Z₁ → ∀ (R K : Type) [CommRing R] [IsLocalRing R] [Field K] [Algebra R K] (z : Sp R ⟶ Z₁.X) (α : D.C.A), ⊤ ≤ (z ≫ g₀) ⁻¹ᵁ D.C.B α → ∃ (n' : ℕ) (a : Matrix (Fin n') (Fin (D.C.n α)) R) (a' : Matrix (Fin (D.C.n α)) (Fin n') R), a * a' = 1 ∧ a' * a = 1 ∧ ∀ (τ : (Y Z₁.i).X ⟶ (Y Z.i).X) (mu : SABMap (Y Z₁.i).t (Y Z.i).t τ) (u : Vecs Dw (Y Z₁.i).t K), LocM.IsTrans Z.i Z₁.i τ mu → Z₁.FlagAt (spMap (algebraMap R K) ≫ z) u → ∀ (y : Sp K ⟶ Z.X), y = spMap (algebraMap R K) ≫ z ≫ g₀ → ∀ (hy : ⊤ ≤ y ⁻¹ᵁ D.C.B α) (v : TanM (y ≫ Z.π) (Y Z.i).t.G) (i : Fin (Dw.mult t.σ)), (i : ℕ) < t.k → (tv v).left = u t.σ i ≫ mu.φ → ∀ j : Fin n', t.k ≤ (j : ℕ) → ∑ l, algebraMap R K (a j l) * D.crd α K y hy v l = 0 := by
   intro E _ _ _ H Dw Xo p W Y i₀ hp hW t Z g D hg hL Z₁ g₀ hg₀ ⟨_, g₁, hg₁, hH⟩ R K _ _ _ _ z α hα

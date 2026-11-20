@@ -10,43 +10,37 @@ local notation "ℚ̄" => AlgebraicClosure ℚ
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hUi : (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).index ≠ 0`. Rewrite using `[index_gsOpenSubgroup]`. Conclude with `Module.finrank_pos.ne'`. Establish `hUo : IsOpen (((gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) : Set (galUnramifiedOutside K.1 ℚ̄ S))` using `(gsOpenSubgroup S hL).isOpen`. Generalize the expression as in `(gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) = U at hN hle hcyc hUi hUo ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) = W at hle hcyc ⊢`. Use `haveI : U.FiniteIndex := ⟨hUi⟩`. Use `haveI : (U.subgroupOf W).FiniteIndex := inferInstance`. Use `haveI : Finite (W ⧸ U.subgroupOf W) := Subgroup.finite_quotient_of_finiteIndex`. Take `⟨g, hg⟩` from `hcyc.exists_generator`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm : ∀ x y : W ⧸ U.subgroupOf W, x * y = y * x` using `fun x y => (IsCyclic.commGroup (α := W ⧸ U.subgroupOf W)).mul_comm x y`. Take `⟨n, hndef⟩ : ∃ n, n = Nat.card (W ⧸ U.subgroupOf W)` from `⟨_, rfl⟩`. Establish `hn : n ≠ 0` using `hndef ▸ Nat.card_pos.ne'`. Establish `hog : orderOf g = n` using `hndef ▸ orderOf_eq_card_of_forall_mem_zpowers hg`. Take `⟨a, hadef⟩ : ∃ a, a = n.factorization ℓ` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdvd : ℓ ^ a ∣ n` using `hadef ▸ Nat.ordProj_dvd n ℓ`. Set `C : Subgroup (W ⧸ U.subgroupOf W)` to `Subgroup.zpowers (g ^ (ℓ ^ a))`. Establish `hCcard : Nat.card C = n / ℓ ^ a`. Rewrite using `[Nat.card_zpowers, orderOf_pow_of_dvd (pow_ne_zero _ (Fact.out : ℓ.Prime).ne_zero) (hog ▸ hdvd), hog]`. Establish `hCN : C.Normal` using `⟨fun c hc q => by rw [hcomm q c, mul_assoc, mul_inv_cancel, mul_one]; exact hc⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `clear_value C`. Set `D : Subgroup W` to `C.comap (QuotientGroup.mk' (U.subgroupOf W))`. Establish `hDN : D.Normal` using `hCN.comap _`. Set `V : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)` to `D.map W.subtype`. Establish `hUV : U ≤ V`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `u hu`. Use `⟨⟨u, hle hu⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show QuotientGroup.mk' (U.subgroupOf W) ⟨u, hle hu⟩ ∈ C`. Establish `h1 : QuotientGroup.mk' (U.subgroupOf W) ⟨u, hle hu⟩ = 1` using `(QuotientGroup.eq_one_iff (⟨u, hle hu⟩ : W)).2 hu`. Rewrite using `[h1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `C.one_mem`. Establish `hVW : V ≤ W` using `Subgroup.map_subtype_le D`. Establish `hVopen : IsOpen (V : Set (galUnramifiedOutside K.1 ℚ̄ S))` using `Subgroup.isOpen_mono hUV hUo`. Take `⟨K'', hK''f, hK'', hEq⟩` from `exists_gsOpenSubgroup_eq (K := K) (S := S) (V := ⟨V, hVopen⟩)`. Use `⟨K'', hK''f, hK'', ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hV : (gsOpenSubgroup S hK'' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) = V`. Rewrite using `[hEq]`. Rewrite using `[hV]`. Establish `hVD : V.subgroupOf W = D` using `Subgroup.comap_map_eq_self_of_injective (Subgroup.subtype_injective W) D`. Set `ψ0 : V →* W ⧸ U.subgroupOf W` to `(QuotientGroup.mk' (U.subgroupOf W)).comp (Subgroup.inclusion hVW)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ0 : ∀ v : V, ψ0 v ∈ C`. Introduce `v`. Take `⟨w, hw, hwv⟩` from `v.2`. Establish `h1 : Subgroup.inclusion hVW v = w` using `Subtype.ext hwv.symm`. Use `show QuotientGroup.mk' (U.subgroupOf W) (Subgroup.inclusion hVW v) ∈ C`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h1]`. Conclude with `hw`. Set `ψ : V →* C` to `ψ0.codRestrict C hψ0`. Establish `hψs : Function.Surjective ψ`. Introduce and unpack `⟨q, hq⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H w`. Use `⟨⟨w.1, ⟨w, hq, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hker : ψ.ker = U.subgroupOf V`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : ψ0 v = 1` using `congrArg Subtype.val (MonoidHom.mem_ker.1 h)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(QuotientGroup.eq_one_iff (Subgroup.inclusion hVW v)).1 h1`. Introduce `h`. Use `MonoidHom.mem_ker.2 (Subtype.ext ?_)` and prove the remaining obligations. Conclude with `(QuotientGroup.eq_one_iff (Subgroup.inclusion hVW v)).2 h`. Set `e : V ⧸ U.subgroupOf V ≃* C` to `(QuotientGroup.quotientMulEquivOfEq hker.symm).trans (QuotientGroup.quotientKerEquivOfSurjective ψ hψs)`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcardVU : Nat.card (V ⧸ U.subgroupOf V) = n / ℓ ^ a` using `(Nat.card_congr e.toEquiv).trans hCcard`. Use `⟨hUV, hVW, isCyclic_of_surjective e.symm.toMonoidHom e.symm.surjective, ?_, ?_⟩` and prove the remaining obligations. Use `show Nat.Coprime (Nat.card (V ⧸ U.subgroupOf V)) ℓ`. Rewrite using `[hcardVU]`. Rewrite using `[hadef]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Nat.coprime_ordCompl (Fact.out : ℓ.Prime) hn).symm`. Rewrite using `[hVD]`. Use `⟨hDN, ?_, a, ?_⟩` and prove the remaining obligations. Set `f : (W ⧸ U.subgroupOf W) →* W ⧸ D` to `QuotientGroup.map (U.subgroupOf W) D (MonoidHom.id W) (by`. Introduce `w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show QuotientGroup.mk' (U.subgroupOf W) w ∈ C`. Establish `h1 : QuotientGroup.mk' (U.subgroupOf W) w = 1` using `(QuotientGroup.eq_one_iff w).2 hw`. Rewrite using `[h1]`. Conclude with `C.one_mem)`. Use `isCyclic_of_surjective f ?_` and prove the remaining obligations.
-
-Introduce `x`. Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H w => exact ⟨QuotientGroup.mk w, rfl⟩`. Use `show D.index = ℓ ^ a`. Establish `h1 : D.index = C.index` using `Subgroup.index_comap_of_surjective _ (QuotientGroup.mk'_surjective _)`.
-
-Establish `h2 : Nat.card C * C.index = n` using `hndef ▸ Subgroup.card_mul_index C`. Establish `h3 : ℓ ^ a * (n / ℓ ^ a) = n` using `hadef ▸ Nat.ordProj_mul_ordCompl_eq_self n ℓ`. Establish `hpos : 0 < n / ℓ ^ a` using `Nat.div_pos (Nat.le_of_dvd (Nat.pos_of_ne_zero hn) hdvd) (pow_pos (Fact.out : ℓ.Prime).pos _)`. Rewrite `h2` using `[hCcard]`. Rewrite using `[h1]`.
-
-Establish `: (n / ℓ ^ a) * C.index = (n / ℓ ^ a) * ℓ ^ a` using `by rw [h2, mul_comm, h3]`. Conclude with `Nat.eq_of_mul_eq_mul_left hpos this`.
+A detailed English derivation is pending.
 -/
 theorem exists_prime_to_part (ℓ : ℕ) [Fact ℓ.Prime]
     (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))

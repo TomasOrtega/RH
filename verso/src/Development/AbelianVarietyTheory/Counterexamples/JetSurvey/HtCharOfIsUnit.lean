@@ -22,7 +22,7 @@ noncomputable def taut (p : ℕ) : Tv (GmO O) p where
 noncomputable def dlogT (x : LieG (GmO O)) : O := (unitOf x.1 : DualNumber O).snd
 
 /- English proof (translation)
-Establish `h` using `unitOf_mul (1 : specO O R ⟶ GmO O) 1`. Rewrite `h` using `[_root_.mul_one]`. Conclude with `left_eq_mul.mp h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitOf_one' {R : Type} [CommRing R] [Algebra O R] :
     unitOf (1 : specO O R ⟶ GmO O) = 1 := by
@@ -31,11 +31,11 @@ theorem unitOf_one' {R : Type} [CommRing R] [Algebra O R] :
   exact left_eq_mul.mp h
 
 /- English proof (translation)
-Establish `h4` using `unitOf_ptMap (TrivSqZeroExt.fstHom O O O) w`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h4` using `[h]`. Establish `h1 : unitOf (toUnit (specO O O) ≫ η[GmO O]) = 1` using `unitOf_one'`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h4` using `[h1]`. Conclude with `h4.symm`. Introduce `h`. Apply `(unitOf_bijective (O := O) (R := O)).1` to reduce the goal to its premises. Establish `h1 : unitOf (toUnit (specO O O) ≫ η[GmO O]) = 1` using `unitOf_one'`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Use `ext`. Rewrite using `[h4]`. Conclude with `h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_iff (w : specO O (DualNumber O) ⟶ GmO O) :
     ptMap (TrivSqZeroExt.fstHom O O O) ≫ w = toUnit (specO O O) ≫ η[GmO O] ↔
@@ -56,14 +56,14 @@ theorem lie_iff (w : specO O (DualNumber O) ⟶ GmO O) :
     exact h
 
 /- English proof (translation)
-The claim follows from `(lie_iff _).1 x.2`.
+A detailed English derivation is pending.
 -/
 theorem fst_eq (x : LieG (GmO O)) : (unitOf x.1 : DualNumber O).fst = 1 := (lie_iff _).1 x.2
 
 /- English proof (translation)
-Introduce `n R _ _ _ x w hw`. Establish `hw' : w ≫ (taut (O` using `O) p).χ n = _ := hw`. Rewrite using `[hw', unitOf_ptMap]`. Use `ext`. Simplify using `[dualBC_fst, fst_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[dualBC_snd, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isAl_taut (p : ℕ) : IsAl (taut (O := O) p) dlogT := by
   intro n R _ _ _ x w hw
@@ -75,9 +75,9 @@ theorem isAl_taut (p : ℕ) : IsAl (taut (O := O) p) dlogT := by
     rfl
 
 /- English proof (translation)
-Use `⟨fun x y h => ?_, fun a x h => ?_⟩` and prove the remaining obligations. Use `show (unitOf (x.1 * y.1) : DualNumber O).snd = _`. Rewrite using `[unitOf_mul, Units.val_mul, DualNumber.snd_mul, fst_eq, fst_eq, dlogT, dlogT]`. Expand and normalize the polynomial expressions, which then agree. Use `show (unitOf (ptMap (dualScale a) ≫ x.1) : DualNumber O).snd = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[unitOf_ptMap]`. Simplify using `[dualScale, dlogT]`.
+A detailed English derivation is pending.
 -/
 theorem dlogT_mem : dlogT ∈ omega (GmO O) := by
   refine ⟨fun x y h => ?_, fun a x h => ?_⟩
@@ -89,13 +89,11 @@ theorem dlogT_mem : dlogT ∈ omega (GmO O) := by
     simp [dualScale, dlogT]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `(unitOf_bijective (O := O) (R := DualNumber O)).1` to reduce the goal to its premises. Use `ext`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite using `[fst_eq, fst_eq]`. Conclude with `h`. Introduce `a`. Establish `hu : IsUnit (TrivSqZeroExt.inl 1 + TrivSqZeroExt.inr a : DualNumber O)`. Rewrite using `[TrivSqZeroExt.isUnit_iff_isUnit_fst]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨w, hw⟩` from `(unitOf_bijective (O := O) (R := DualNumber O)).2 hu.unit`. Use `⟨⟨w, (lie_iff w).2 (by rw [hw]; simp)⟩, ?_⟩` and prove the remaining obligations. Use `show (unitOf w : DualNumber O).snd = a`. Rewrite using `[hw]`.
-
-Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dlogT_bijective : Function.Bijective (dlogT (O := O)) := by
   constructor
@@ -114,11 +112,11 @@ theorem dlogT_bijective : Function.Bijective (dlogT (O := O)) := by
     rw [hw]; simp
 
 /- English proof (translation)
-Introduce `f hf`. Take `⟨e, he⟩` from `(dlogT_bijective (O := O)).2 1`. Rewrite using `[Submodule.mem_span_singleton]`. Use `⟨f e, funext fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : (unitOf (ptMap (dualScale (dlogT x)) ≫ e.1) : DualNumber O).fst = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[unitOf_ptMap]`. Simplify using `[dualScale, fst_eq]`. Establish `hm` using `(lie_iff _).2 h1`. Establish `hx : x = ⟨ptMap (dualScale (dlogT x)) ≫ e.1, hm⟩`. Apply `(dlogT_bijective (O := O)).1` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[dlogT_mem.2 _ e hm, he, _root_.mul_one]`. Use `hf.2 (dlogT x) e hm` as an intermediate fact. Rewrite `this` using `[← hx]`. Simplify using `[this, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem omega_le_span : omega (GmO O) ≤ Submodule.span O {dlogT} := by
   intro f hf
@@ -136,7 +134,7 @@ theorem omega_le_span : omega (GmO O) ≤ Submodule.span O {dlogT} := by
   simp [this, mul_comm]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_le.2 fun f hf => hf.1`. Conclude with `omega_le_span.trans (Submodule.span_mono (by`. Introduce and unpack `_ rfl`. Conclude with `⟨dlogT_mem, taut p, isAl_taut p⟩))`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem htSpan_gm (p : ℕ) : htSpan (GmO O) p = omega (GmO O) := by
   apply le_antisymm
@@ -146,9 +144,9 @@ theorem htSpan_gm (p : ℕ) : htSpan (GmO O) p = omega (GmO O) := by
       exact ⟨dlogT_mem, taut p, isAl_taut p⟩))
 
 /- English proof (translation)
-Use `⟨fun c _ f hf => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[htSpan_gm]`. Conclude with `Submodule.smul_mem _ _ hf`. Establish `h0 : dlogT (O` using `O) = 0 := by`. Use `dlogT_mem (O := O)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[h, Submodule.mem_bot]`. Then use the resulting hypothesis. Take `⟨e, he⟩` from `(dlogT_bijective (O := O)).2 1`. Rewrite `he` using `[h0]`. Conclude with `zero_ne_one he`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem htChar_gm (p : ℕ) {C : Type} [Field C] (v : Valuation C NNReal) [Algebra O C]
     [Nontrivial O] : HTChar p v (GmO O) ∧ omega (GmO O) ≠ ⊥ := by
@@ -161,9 +159,9 @@ theorem htChar_gm (p : ℕ) {C : Type} [Field C] (v : Valuation C NNReal) [Algeb
     exact zero_ne_one he
 
 /- English proof (translation)
-Introduce `h`. Take `⟨e, he⟩` from `(dlogT_bijective (O := O)).2 1`. Establish `h1` using `(isAl_iff _ _).1 h e 1 _ (pow_quot (O := O) 1)`. Establish `h2` using `(isAl_iff _ _).1 (isAl_taut (O := O) p) e 1 _ (pow_quot (O := O) 1)`. Rewrite `h2` using `[← h1, he, Pi.zero_apply, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq, sub_zero, pow_one, ← Ideal.eq_top_iff_one, Ideal.span_singleton_eq_top]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hp h2`.
+A detailed English derivation is pending.
 -/
 theorem not_isAl_zero (p : ℕ) (hp : ¬IsUnit (p : O)) : ¬IsAl (taut (O := O) p) 0 := by
   intro h
@@ -175,11 +173,11 @@ theorem not_isAl_zero (p : ℕ) (hp : ¬IsUnit (p : O)) : ¬IsAl (taut (O := O) 
   exact hp h2
 
 /- English proof (translation)
-Introduce `c _ f hf`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨hf, ⟨fun _ => 1, ?_, ?_⟩, ?_⟩)` and prove the remaining obligations. Introduce `n T x y z _`. Simplify using `only [MonObj.comp_one, _root_.mul_one]`. Introduce `n T x y _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [MonObj.comp_one]`. Introduce `n R _ _ hR x w _`. Establish `hu : IsUnit ((p : R) ^ n)`. Use `hp.map (algebraMap O R)` as an intermediate fact. Rewrite `this` using `[map_natCast]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.pow n`. Rewrite `hu` using `[hR, isUnit_zero_iff]`. Use `haveI : Subsingleton R := subsingleton_of_zero_eq_one hu`. Apply the tactic sequence `ext <;> exact Subsingleton.elim _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem htChar_of_isUnit (p : ℕ) (hp : IsUnit (p : O)) {C : Type} [Field C]
     (v : Valuation C NNReal) [Algebra O C] (G : Over (Spec (CommRingCat.of O))) [GrpObj G] :

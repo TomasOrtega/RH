@@ -10,7 +10,7 @@ namespace ReciprocityTheory.Cheb
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Unfold `Gs`. Rewrite using `[show -(s : ℂ) = ((-s : ℝ) : ℂ) by push_cast; ring, ← Complex.ofReal_cpow (mixedEmbedding.norm_nonneg x)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gs_eq_ofReal {l : ℕ} (χ : DirichletCharacter ℂ l) (s : ℝ) (x : mixedSpace E) :
     Gs χ s x = χ (rsgn x : ZMod l) * ((uphi x * (mixedEmbedding.norm x) ^ (-s) : ℝ) : ℂ) := by
@@ -20,7 +20,7 @@ theorem gs_eq_ofReal {l : ℕ} (χ : DirichletCharacter ℂ l) (s : ℝ) (x : mi
   push_cast; ring
 
 /- English proof (translation)
-Rewrite using `[gs_eq_ofReal, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (mul_nonneg (uphi_nonneg x) (Real.rpow_nonneg (mixedEmbedding.norm_nonneg x) _))]`. Conclude with `mul_le_of_le_one_left (mul_nonneg (uphi_nonneg x) (Real.rpow_nonneg (mixedEmbedding.norm_nonneg x) _)) (DirichletCharacter.norm_le_one χ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_gs_le {l : ℕ} (χ : DirichletCharacter ℂ l) (s : ℝ) (x : mixedSpace E) :
     ‖Gs χ s x‖ ≤ uphi x * (mixedEmbedding.norm x) ^ (-s) := by
@@ -30,11 +30,11 @@ theorem norm_gs_le {l : ℕ} (χ : DirichletCharacter ℂ l) (s : ℝ) (x : mixe
     (DirichletCharacter.norm_le_one χ _)
 
 /- English proof (translation)
-Use `(norm_gs_le χ s _).trans ?_` and prove the remaining obligations. Establish `h1 : (mixedEmbedding.norm (embZ α)) ^ (-s) ≤ 1`. Rewrite using `[norm_embZ]`. Distinguish the cases in `h0 : Algebra.norm ℤ α = 0`. Rewrite using `[h0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Int.cast_zero, abs_zero]`. Rewrite using `[Real.zero_rpow (by linarith)]; norm_num`. Apply `Real.rpow_le_one_of_one_le_of_nonpos _ (by linarith)` to reduce the goal to its premises. Establish `: (1 : ℤ) ≤ |Algebra.norm ℤ α|` using `Int.one_le_abs h0`. Conclude with `this` after adjusting the coercions.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem norm_gs_embZ_le {l : ℕ} (χ : DirichletCharacter ℂ l) {s : ℝ} (hs : 1 ≤ s) (α : 𝓞 E) :
     ‖Gs χ s (embZ α)‖ ≤ 1 := by
@@ -52,9 +52,7 @@ theorem norm_gs_embZ_le {l : ℕ} (χ : DirichletCharacter ℂ l) {s : ℝ} (hs 
     _ = 1 := one_mul 1
 
 /- English proof (translation)
-Repeatedly rewrite using `[gs_eq_ofReal]`. Distinguish the cases in `h : mixedEmbedding.norm x = 0`. Simplify using `only [uphi_of_norm_eq_zero h, zero_mul, Complex.ofReal_zero, mul_zero]`. Conclude with `continuous_const`. Use `continuous_const.mul (Complex.continuous_ofReal.comp (continuous_const.mul ?_))` and prove the remaining obligations.
-
-Conclude with `(Real.continuous_const_rpow h).comp continuous_neg`.
+Rewrite the conclusion repeatedly using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_gs {l : ℕ} (χ : DirichletCharacter ℂ l) (x : mixedSpace E) :
     Continuous fun s : ℝ => Gs χ s x := by
@@ -66,19 +64,17 @@ theorem continuous_gs {l : ℕ} (χ : DirichletCharacter ℂ l) (x : mixedSpace 
     exact (Real.continuous_const_rpow h).comp continuous_neg
 
 /- English proof (translation)
-Take `⟨c₀, hc₀, -, hb⟩` from `exists_support_bound (E := E)`. Use `set d := Module.finrank ℚ E`. Establish `hd : (1 : ℝ) ≤ d` using `by exact_mod_cast Module.finrank_pos`. Use `set r : ℝ := -((d : ℝ) * s)`. Establish `hr : r < -(Module.finrank ℤ Λ : ℝ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hΛ]`. Simplify using `only [r, neg_lt_neg_iff]`. Use the polynomial consequences of the given equalities and inequalities. Use `Summable.of_norm_bounded ((ZLattice.summable_norm_rpow Λ r hr).mul_left (c₀ ^ r)) fun x => ?_` and prove the remaining obligations. Use `(norm_gs_le χ s _).trans ?_` and prove the remaining obligations.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hpos : 0 ≤ c₀ ^ r * ‖x‖ ^ r` using `mul_nonneg (Real.rpow_nonneg hc₀.le _) (Real.rpow_nonneg (norm_nonneg _) _)`. Distinguish the cases in `hu : uphi (x : mixedSpace E) = 0`. Rewrite using `[hu, zero_mul]`. Conclude with `hpos`. Take `⟨-, hN⟩` from `hb _ hu`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hN0 : mixedEmbedding.norm (x : mixedSpace E) ≠ 0`. Introduce `h`. Conclude with `hu (uphi_of_norm_eq_zero h)`. Establish `hx0 : (x : mixedSpace E) ≠ 0`. Introduce and unpack `h`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hN0` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `mixedEmbedding.norm_eq_zero_iff.mpr ⟨Classical.arbitrary _, by simp⟩`. Establish `hxn : 0 < ‖(x : mixedSpace E)‖` using `norm_pos_iff.mpr hx0`. Establish `hcx : 0 < c₀ * ‖(x : mixedSpace E)‖` using `mul_pos hc₀ hxn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (mixedEmbedding.norm (x : mixedSpace E)) ^ (-s) ≤ (c₀ * ‖(x : mixedSpace E)‖) ^ r`. Establish `: (c₀ * ‖(x : mixedSpace E)‖) ^ r = ((c₀ * ‖(x : mixedSpace E)‖) ^ d) ^ (-s)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hcx.le]`. Simplify using `[r]`. Rewrite using `[this]`.
-
-Conclude with `Real.rpow_le_rpow_of_nonpos (pow_pos hcx _) (by rw [mul_pow]; exact hN) (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem summable_gs {l : ℕ} (χ : DirichletCharacter ℂ l) (Λ : Submodule ℤ (mixedSpace E)) [DiscreteTopology Λ]
     (hΛ : Module.finrank ℤ Λ = Module.finrank ℚ E) {s : ℝ} (hs : 1 < s) :

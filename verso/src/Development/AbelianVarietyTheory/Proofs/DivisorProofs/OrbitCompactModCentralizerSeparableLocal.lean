@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.OrbitCptW
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n w N hN C hC`. Use `letI : NontriviallyNormedField (w.adicCompletion E) := Valued.toNontriviallyNormedField _ _`. Take `⟨C', hC', hC'g⟩` from `GlobalTheory.OrbCpt.gl_orbit_cpt (k := w.adicCompletion E) N.val hN ((fun y : GLw n w => (y : Matrix (Fin n) (Fin n) (w.adicCompletion E))) '' C) (hC.image Units.continuous_val)`. Use `⟨(fun y => y⁻¹) '' C', hC'.image continuous_inv, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, t, ht, hxt⟩` from `hC'g x⁻¹ ⟨_, hx, by simp [mul_assoc]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨t⁻¹, ?_, c⁻¹, ⟨c, hc, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : t * N = N * t` using `Units.ext ht`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← _root_.mul_inv_rev, ← hxt, inv_inv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem orbit_cpt_w : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (w : Pl E) (N : GLw n w), N.val.charpoly.Separable → ∀ C : Set (GLw n w), IsCompact C → ∃ D : Set (GLw n w), IsCompact D ∧ ∀ x : GLw n w, x⁻¹ * N * x ∈ C → ∃ z : GLw n w, z * N = N * z ∧ ∃ d ∈ D, x = z * d := by
   intro E _ _ _ _ n w N hN C hC

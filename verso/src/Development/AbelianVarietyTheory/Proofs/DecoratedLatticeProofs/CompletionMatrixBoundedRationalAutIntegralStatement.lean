@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Definitions.LatticeFrames.IsGLExistsUniq
 open NumberField IsDedekindDomain MeasureTheory ValuativeRel Matrix Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.L2.Col GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData GlobalTheory.TwBridge
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TwBridge.isGL_int_of_bdd | exact GlobalTheory.TwBridge.isGL_int_of_bdd | (intros; apply GlobalTheory.TwBridge.isGL_int_of_bdd <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.completionMatrix_boundedRationalAut_integral : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ι : X.E →+* k) (ϖ : kˣ) (P : HeightOneSpectrum (𝓞 X.E)), P ∉ Pr.vGs →

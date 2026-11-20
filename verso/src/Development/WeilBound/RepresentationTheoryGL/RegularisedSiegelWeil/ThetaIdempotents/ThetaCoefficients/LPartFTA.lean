@@ -27,19 +27,17 @@ def SetW (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (χ : (
   IsCharAF D.host.F ψ ∧ IsHeckeChar D χ ∧ IsInfFam θ ∧ (∃ 𝓕, IsCovolOne (ratMx D V.rank n) μ 𝓕) ∧ IsWeilSch ψ χ θ V μ ω
 
 /- English proof (translation)
-Take `⟨-, hχ, -, -, hω⟩` from `hS`. Set `a' : GL (Fin n) (AE D)` to `Matrix.GeneralLinearGroup.map (incA D) a`. Establish `hdet : Matrix.GeneralLinearGroup.det a' = Units.map (incA D).toMonoidHom (Matrix.GeneralLinearGroup.det a)`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[a', Matrix.GeneralLinearGroup.map]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `(RingHom.map_det _ _).symm`. Establish `h1 : absA D (Matrix.GeneralLinearGroup.det a') = 1`. Rewrite using `[hdet]`. Conclude with `absE_inclR _`. Establish `h2 : χ (Matrix.GeneralLinearGroup.det a') = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hdet]`. Conclude with `hχ.2 _`. Establish `hinv : (a'⁻¹).1 = (a⁻¹).1.map (incA D)` using `by show ((Matrix.GeneralLinearGroup.map (incA D) a)⁻¹).1 = _`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg' : mat g = blk4 a'.1 0 0 (adj (a'⁻¹).1)`. Rewrite using `[hinv]`. Conclude with `hg`. Establish `hm : ∀ ξ : Matrix (Fin V.rank) (Fin n) D.host.E, (ω g Φ).1 (ξ.map (incA D)) = Φ.1 ((ξ * a.1).map (incA D))`. Introduce `ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hω.levi g a' hg' Φ, h1, h2]`. Establish `e : (HMul.hMul (ξ.map (incA D)) a'.1 : Mx D V.rank n) = (ξ * a.1).map (incA D)`. Rewrite using `[Matrix.map_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[npow]`. Set `e : Matrix (Fin V.rank) (Fin n) D.host.E ≃ Matrix (Fin V.rank) (Fin n) D.host.E` to `{ toFun := fun ξ => ξ * a.1 invFun := fun ξ => ξ * (a⁻¹).1 left_inv := fun ξ => by show ξ * a.1 * (a⁻¹).1 = ξ`. Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Use `right_inv := fun ξ => by show ξ * (a⁻¹).1 * a.1 = ξ`. Rewrite using `[Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one] }`.
-
-Repeatedly rewrite using `[hm]`. Conclude with `e.tsum_eq (fun ξ => Φ.1 (ξ.map (incA D)))`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_levi_w {D : D7} {n : ℕ} {V : HSp D} {ψ χ θ μ ω} (hS : SetW D n V ψ χ θ μ ω)
     (g : G D n) (a : GL (Fin n) D.host.E) (hg : mat g = blk4 (a.1.map (incA D)) 0 0 (adj ((a⁻¹).1.map (incA D))))
@@ -83,7 +81,7 @@ theorem theta_levi_w {D : D7} {n : ℕ} {V : HSp D} {ψ χ θ μ ω} (hS : SetW 
   exact e.tsum_eq (fun ξ => Φ.1 (ξ.map (incA D)))
 
 /- English proof (translation)
-Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Rewrite using `[hS.2.2.2.2.unip g (b.map (incA D)) hg Φ (ξ.map (incA D)), psi_unip_rat hS.1, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_unip_w {D : D7} {n : ℕ} {V : HSp D} {ψ χ θ μ ω} (hS : SetW D n V ψ χ θ μ ω)
     (g : G D n) (b : Matrix (Fin n) (Fin n) D.host.E) (hg : mat g = blk4 1 (b.map (incA D)) 0 1)
@@ -94,17 +92,15 @@ theorem theta_unip_w {D : D7} {n : ℕ} {V : HSp D} {ψ χ θ μ ω} (hS : SetW 
   rw [hS.2.2.2.2.unip g (b.map (incA D)) hg Φ (ξ.map (incA D)), psi_unip_rat hS.1, one_mul]
 
 /- English proof (translation)
-Take `⟨hψ, -, hθ, ⟨𝓕, hμ⟩, hω⟩` from `hS`. Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `lattice_Mx D V.rank n`. Use `haveI : BorelSpace (Mx D V.rank n) := ⟨rfl⟩`. Establish `hT` using `isHermND_gram V`. Take `⟨h1, h2⟩` from `GlobalTheory.T.rationalAdelicMatrices_self_annihilator D V.rank n V.gram hT ψ hψ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs` using `pairing_symm (n := n) hT ψ`. Establish `hval : ∀ x, (ω g Φ).1 x = ∫ y, Φ.1 y * GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.pairing V.gram ψ y x ∂μ` using `fun x => by`. Rewrite using `[hω.weyl g hg Φ x]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `beta_reduce`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs y x]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.pairing, GlobalTheory.SiegelWeilLitCompare.gramQ_eq]`. Both sides reduce to the same expression. Use `haveI := hμ.1`. Establish `key` using `poisson_translates (ratMx D V.rank n) K hK hKc (GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.pairing (n := n) V.gram ψ) (fun y => ?_) hs (fun x x' y => ?_) (fun x y => hψ.2.1 _) h1 h2 μ 𝓕 hμ.2.1 hμ.2.2 (f := Φ.1) ?_ (translates_bound hθ Φ) ?_`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← hval] at key`. Rewrite `key` using `[tsum_ratMx, tsum_ratMx (fun x => (ω g Φ).1 x)]`. Conclude with `key.symm`. Simplify using `only [hs _ y] haveI := isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F) haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Establish `ht : Continuous (GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.trA (D` using `D)) := IsModuleTopology.continuous_of_linearMap (Algebra.trace (AF D.host.F) (AE D))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hψ.1.comp (ht.comp (continuous_const.matrix_mul continuous_id).matrix_trace)`. Simplify using `only [hs _ y]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.pairing GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.trA GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.gramQ GlobalTheory.IndefiniteRowSideFullHecke.GramMatrixBlocks.mmul`. Rewrite using `[Matrix.mul_add, Matrix.trace_add, map_add, AddChar.map_add_eq_mul]`. Conclude with `(GlobalTheory.T.schwartzBruhatAdelicMatrix_continuous_le_majorant D θ hθ _ n Φ.1 (GlobalTheory.SchwartzPure.isSchwartzBruhat_of_mem_schwartzA D θ hθ _ n Φ.1 Φ.2)).1`.
-
-Simplify using `only [← hval]`. Conclude with `(ratEquiv D V.rank n).summable_iff.1 (GlobalTheory.SiegelWeilLitCompare.summable_rat hθ (ω g Φ))`.
+A detailed English derivation is pending.
 -/
 theorem theta_weyl_w {D : D7} {n : ℕ} {V : HSp D} {ψ χ θ μ ω} (hS : SetW D n V ψ χ θ μ ω)
     (g : G D n) (hg : mat g = blk4 0 1 (-1) 0) (Φ : schwartzA θ V.rank n) :
@@ -145,9 +141,9 @@ theorem theta_weyl_w {D : D7} {n : ℕ} {V : HSp D} {ψ χ θ μ ω} (hS : SetW 
     exact (ratEquiv D V.rank n).summable_iff.1 (GlobalTheory.SiegelWeilLitCompare.summable_rat hθ (ω g Φ))
 
 /- English proof (translation)
-Set `S : Subgroup (G D n)` to `{ carrier := {γ | ∀ Φ : schwartzA θ V.rank n, ∑' ξ : Matrix (Fin V.rank) (Fin n) D.host.E, (ω γ Φ).1 (ξ.map (incA D)) = ∑' ξ : Matrix (Fin V.rank) (Fin n) D.host.E, Φ.1 (ξ.map (incA D))} one_mem' := fun Φ => by simp mul_mem' := fun {g h} hg hh Φ => by`. Rewrite using `[map_mul, Module.End.mul_apply]`. Conclude with `(hg _).trans (hh Φ)`. Use the proof step `inv_mem' := fun {g} hg Φ => by`. Use `hg (ω g⁻¹ Φ)` as an intermediate fact.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Conclude with `this.symm }`. Establish `hle : GF D n ≤ S` using `GlobalTheory.T.rational_group_le_of_generators_mem D n S (fun g a hg Φ => theta_levi_w hS g a hg Φ) (fun g b hg Φ => theta_unip_w hS g b hg Φ) (fun g hg Φ => theta_weyl_w hS g hg Φ)`. Conclude with `hle hγ Φ`.
+A detailed English derivation is pending.
 -/
 theorem thetaInv_w {D : D7} {n : ℕ} {V : HSp D} {ψ χ θ μ ω} (hS : SetW D n V ψ χ θ μ ω)
     (Φ : schwartzA θ V.rank n) (γ : G D n) (hγ : γ ∈ GF D n) :
@@ -170,7 +166,7 @@ theorem thetaInv_w {D : D7} {n : ℕ} {V : HSp D} {ψ χ θ μ ω} (hS : SetW D 
   exact hle hγ Φ
 
 /- English proof (translation)
-Take `⟨-, -, -, ⟨𝓕, hC⟩, hW⟩` from `hS`. Establish `hF : FieldGen D.host.E (D.sp.cm.sig : D.host.E →+* D.host.E) n` using `FieldGenPf.fieldGen_of_bruhat GlobalTheory.CompanionTheory.BruhatCell.bruhat D.host.E _ (fun x => star_star x) two_ne_zero n`. Conclude with `Transfer.ratPts_transfer GlobalTheory.CompanionTheory.RatPtsUnn.ratPtsUnn D n hF (CovAt ψ V ω) (fun _ _ h₁ h₂ => covAt_mul h₁ h₂) (fun g a h => covAt_levi D n V ψ χ θ μ ω hW g a h) (fun g b hb h => covAt_unip D n V ψ χ θ μ ω hW g b hb h) (fun g h => covAt_weyl D n V ψ χ θ μ ω hW …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem covar_w {D : D7} {n : ℕ} {V : HSp D} {ψ χ θ μ ω} (hS : SetW D n V ψ χ θ μ ω)
     (γ : G D n) (hγ : γ ∈ GF D n) (v : Mx D V.rank (n + n)) (Φ Ψ : schwartzA θ V.rank n) (hΨ : Ψ.1 = Heisenberg₂ ψ V v Φ.1) :
@@ -184,11 +180,11 @@ theorem covar_w {D : D7} {n : ℕ} {V : HSp D} {ψ χ θ μ ω} (hS : SetW D n V
     (fun g h => covAt_weyl D n V ψ χ θ μ ω hW hC.1 g h) γ hγ v Φ Ψ hΨ
 
 /- English proof (translation)
-Take `⟨hψ, -, hθ, ⟨𝓕, hcov⟩, -⟩` from `id hS`. Establish `hinv : mat γ * mat γ⁻¹ = 1` using `mat_mul_inv' γ`. Rewrite using `[GlobalTheory.T.eisenstein_vanishing D ψ hψ θ hθ V n μ 𝓕 hcov (ω γ Φ).1 (ω γ Φ).2, ← GlobalTheory.T.eisenstein_unfolding_second_term D ψ hψ θ hθ V n r hr μ 𝓕 hcov μr hμr c a hc b Φ.1 Φ.2]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [← hmat]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hΨ` using `GlobalTheory.T.eisenstein_heisenberg_schwartz D ψ hψ θ hθ V n (HMul.hMul (zy y) (mat γ)) Φ.1 Φ.2`. Establish `h1` using `covar_w hS γ hγ (HMul.hMul (zy y) (mat γ)) Φ ⟨Heisenberg₂ ψ V (HMul.hMul (zy y) (mat γ)) Φ.1, hΨ⟩ rfl`. Establish `h2` using `thetaInv_w hS ⟨Heisenberg₂ ψ V (HMul.hMul (zy y) (mat γ)) Φ.1, hΨ⟩ γ hγ`. Establish `hv : HMul.hMul (HMul.hMul (zy y) (mat γ)) (mat γ⁻¹) = zy y`. Rewrite using `[Matrix.mul_assoc, hinv, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hv]`. Rewrite `h2` using `[h1]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partial_fourier_second_term {D : D7} {n : ℕ} {V : HSp D} {ψ χ θ μ ω} (hS : SetW D n V ψ χ θ μ ω)
     (Φ : schwartzA θ V.rank n) (r : ℕ) (hr : r ≤ n) (μr : Measure (Mx D V.rank r))

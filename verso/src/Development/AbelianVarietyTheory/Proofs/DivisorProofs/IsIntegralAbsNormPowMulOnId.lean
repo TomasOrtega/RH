@@ -30,17 +30,13 @@ namespace GlobalTheory.TameHeckeIntegral
 open Formalism.L2.Host GlobalTheory.IndefiniteRowSideFullHecke.CentralInvolutionRing GlobalTheory.ChiUnit
 
 /- English proof (translation)
-Establish `hb0 : (b : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.2 hb`. Establish `hfin : {w | ¬ ψ.UnrAt w}.Finite`. Use `(Ideal.finite_factors (I := Ideal.span {(b : 𝓞 E)}) (by simpa using hb0)).subset fun w hw => ?_` and prove the remaining obligations. Establish `hbw : (b : 𝓞 E) ∈ w.asIdeal`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hw (hu w h)`. Use `show w.asIdeal ∣ Ideal.span {(b : 𝓞 E)}`. Rewrite using `[Ideal.dvd_iff_le, Ideal.span_singleton_le_iff_mem]`. Conclude with `hbw`. Establish `hcc0 : cc ≠ 0` using `hcc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `HChar.onId`. Use `finprod_induction (fun u : ℂˣ => UnitOff (Ideal.absNorm cc) (u : ℂ)) (by simpa using unitOff_one _) (fun x y hx hy => by simpa [Units.val_mul] using unitOff_mul hx hy) fun v => ?_` and prove the remaining obligations. Use `show UnitOff _ (((ψ.val v ^ FractionalIdeal.count E v (cc : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : ℂˣ)) : ℂ)`. Rewrite using `[Units.val_zpow_eq_zpow_val]`. Distinguish the cases in `hdv : v.asIdeal ∣ cc`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : cc ≤ v.asIdeal` using `Ideal.le_of_dvd hdv`. Establish `hbv : (b : 𝓞 E) ∉ v.asIdeal` using `fun h => v.isPrime.ne_top (by`. Rewrite using `[eq_top_iff, ← hcop]`. Conclude with `sup_le hle (by rw [Ideal.span_singleton_le_iff_mem]; exact h))`. Establish `hq : ((Ideal.absNorm cc : ℕ) : 𝓞 E) ∈ v.asIdeal` using `hle (Ideal.absNorm_mem cc)`.
-
-Conclude with `unitOff_zpow (GlobalTheory.ValUnit.unitOff_val E ψ I φs n v _ hinf hfin ht (hu v hbv) hq) _`. Establish `h0 : FractionalIdeal.count E v (cc : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) = 0`. Rewrite using `[FractionalIdeal.count_coe E v hcc0, Nat.cast_eq_zero]`. Assume the negation of the conclusion as `h`. Conclude with `hdv ((Associates.count_ne_zero_iff_dvd hcc0 (HeightOneSpectrum.prime v).irreducible).1 h)`.
-
-Rewrite using `[h0, zpow_zero]`. Conclude with `unitOff_one _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitOff_onId (E : Type) [Field E] [NumberField E] (ψ : HChar E) (I : Type) [Fintype I] (φs : I → E →+* ℂ)
     (n : I → ℤ) (hinf : ψ.HasInf φs n) (ht : ∀ v, ψ.TameAt v) (b : ℕ) (hb : b ≠ 0)
@@ -78,7 +74,7 @@ theorem unitOff_onId (E : Type) [Field E] [NumberField E] (ψ : HChar E) (I : Ty
     exact unitOff_one _
 
 /- English proof (translation)
-Introduce `E _ _ ψ I _ φs n hinf ht b hb hu cc hcc hcop`. Take `⟨_, K, hK, _⟩` from `unitOff_onId E ψ I φs n hinf ht b hb hu cc hcc hcop`. Conclude with `⟨K, hK⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isIntegral_absNorm_pow_mul_onId : ∀ (E : Type) [Field E] [NumberField E] (ψ : Formalism.L2.Host.HChar E) (I : Type) [Fintype I] (φs : I → E →+* ℂ) (n : I → ℤ), ψ.HasInf φs n → (∀ v, ψ.TameAt v) → ∀ b : ℕ, b ≠ 0 → (∀ v : HeightOneSpectrum (𝓞 E), (b : 𝓞 E) ∉ v.asIdeal → ψ.UnrAt v) → ∀ cc : Ideal (𝓞 E), cc ≠ ⊥ → cc ⊔ Ideal.span {(b : 𝓞 E)} = ⊤ → ∃ K : ℕ, IsIntegral ℤ (((Ideal.absNorm cc : ℕ) : ℂ) ^ K * ((ψ.onId (cc : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : ℂˣ) : ℂ)) := by
   intro E _ _ ψ I _ φs n hinf ht b hb hu cc hcc hcop

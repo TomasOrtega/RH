@@ -14,37 +14,33 @@ open Filter Topology
 open scoped ContDiff
 
 /- English proof (translation)
-Introduce `e X _ A Om Z u M hM hZ hpot hpsh hsm hneg hlevi hcl`. Take `⟨m, hmC, hmconv, hmmono, hmb, hm1, hm2, hmtr⟩` from `GlobalTheory.RegularisedMaxTwo.exists_regMaxTwo (1 / 4) (by norm_num)`. Use `set c : ℝ := -M + 1 with hc`. Use `set G : ℝ → ℝ := fun t => m (t, c) - 0 with hG`. Take `⟨hGC, hG1, hG1', hG2⟩` from `GlobalTheory.QuasiPshTruncation.regMax_slice hmC hmconv hmmono hmtr c 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGC2 : ContDiff ℝ 2 G` using `hGC.of_le GlobalTheory.QuasiPshTruncation.two_le_inf'`. Establish `hGlow : ∀ t, t + 1 / 2 ≤ c → G t = c`. Introduce `t ht`. Simplify using `only [hG]`. Rewrite using `[hm2 t c (by linarith)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression.
 
-Expand and normalize the polynomial expressions, which then agree. Set `v : X → ℝ` to `fun x => if x ∈ Z then c else G (u x)`. Use `set K := closure {x | x ∈ Zᶜ ∧ -M ≤ u x} with hKdef`. Establish `hK : K ⊆ Zᶜ` using `hcl M`. Establish `hKc : IsOpen Kᶜ` using `isClosed_closure.isOpen_compl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hvK : ∀ x ∈ Kᶜ, v x = c`. Introduce `x hx`. Distinguish the cases in `hxZ : x ∈ Z`. Simplify using `[v, hxZ]`. Establish `hux : u x < -M`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hx (subset_closure ⟨hxZ, h⟩)`. Simplify using `only [v, hxZ, if_false]`. Conclude with `hGlow _ (by linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hvZ : ∀ x ∈ Zᶜ, v x = G (u x)`. Introduce `x hx`. Establish `hx' : x ∉ Z` using `hx`. Simplify using `[v, hx']`. Use `⟨v, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `j y hy`. Apply `ContDiffAt.contDiffWithinAt` to reduce the goal to its premises. Establish `hyt : y ∈ (A.chart j).target` using `hy.1`. Distinguish the cases in `hp : (A.chart j).symm y ∈ Z`. Establish `hO` using `(A.chart j).isOpen_inter_preimage_symm hKc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyO : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Kᶜ` using `⟨hyt, fun h => hK h hp⟩`. Establish `hev : (v ∘ (A.chart j).symm) =ᶠ[𝓝 y] fun _ => c` using `by filter_upwards [hO.mem_nhds hyO] with y' hy' using hvK _ hy'.2`. Conclude with `contDiffAt_const.congr_of_eventuallyEq hev`. Establish `hO` using `(A.chart j).isOpen_inter_preimage_symm hZ.isOpen_compl`. Establish `hyO : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Zᶜ` using `⟨hyt, hp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : ContDiffAt ℝ ∞ (u ∘ (A.chart j).symm) y` using `(hsm j).contDiffAt (hO.mem_nhds hyO)`. Establish `hev : (v ∘ (A.chart j).symm) =ᶠ[𝓝 y] G ∘ (u ∘ (A.chart j).symm)` using `by filter_upwards [hO.mem_nhds hyO] with y' hy' using hvZ _ hy'.2`. Conclude with `(hGC.contDiffAt.comp y hu).congr_of_eventuallyEq hev`. Introduce `x j y hy w`. Establish `hyt : y ∈ (A.chart j).target` using `hy.1`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyU : (A.chart j).symm y ∈ Om.U x` using `hy.2.1`. Establish `hOφ` using `(A.chart j).isOpen_inter_preimage_symm (Om.isOpen_U x)`. Establish `hφ : ContDiffAt ℝ 2 (Om.φ x ∘ (A.chart j).symm) y` using `((hpot.1 x j).contDiffAt (hOφ.mem_nhds ⟨hyt, hyU⟩)).of_le GlobalTheory.QuasiPshTruncation.two_le_inf'`. Establish `hφ0 : 0 ≤ levi (Om.φ x ∘ (A.chart j).symm) y w` using `hpsh x j y ⟨hyt, hyU⟩ w`. Use `show 0 ≤ levi ((fun z => Om.φ x z + v z) ∘ (A.chart j).symm) y w`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hp : (A.chart j).symm y ∈ Z`. Establish `hO` using `(A.chart j).isOpen_inter_preimage_symm hKc`. Establish `hyO : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Kᶜ` using `⟨hyt, fun h => hK h hp⟩`. Establish `hev : ((fun z => Om.φ x z + v z) ∘ (A.chart j).symm) =ᶠ[𝓝 y] fun z => (Om.φ x ∘ (A.chart j).symm) z + c` using `by filter_upwards [hO.mem_nhds hyO] with y' hy'`. Simplify using `only [Function.comp_apply, hvK _ hy'.2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[levi_congr hev, GlobalTheory.QuasiPshTruncation.levi_add_const]`. Conclude with `hφ0`. Establish `hO` using `(A.chart j).isOpen_inter_preimage_symm hZ.isOpen_compl`. Establish `hyO : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Zᶜ` using `⟨hyt, hp⟩`. Establish `hu : ContDiffAt ℝ 2 (u ∘ (A.chart j).symm) y` using `((hsm j).contDiffAt (hO.mem_nhds hyO)).of_le GlobalTheory.QuasiPshTruncation.two_le_inf'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hev : ((fun z => Om.φ x z + v z) ∘ (A.chart j).symm) =ᶠ[𝓝 y] fun z => (Om.φ x ∘ (A.chart j).symm) z + G ((u ∘ (A.chart j).symm) z)` using `by filter_upwards [hO.mem_nhds hyO] with y' hy'`. Simplify using `only [Function.comp_apply, hvZ _ hy'.2]`. Rewrite using `[levi_congr hev]`. Conclude with `GlobalTheory.QuasiPshTruncation.levi_nonneg_add_comp hφ hu hGC2 (hG1 _) (hG1' _) (hG2 _) hφ0 (hlevi x j y ⟨hyt, hyU, hp⟩ w)`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hvZ x hx]`. Simplify using `only [hG, sub_zero]`. Establish `hb` using `hmb (u x) c`. Establish `hu` using `hneg x hx`. Use `⟨le_trans (le_max_left _ _) hb.1, ?_⟩` and prove the remaining obligations.
-
-Distinguish the cases in `h : c + 2 * (1 / 4) ≤ u x`. Rewrite using `[hm1 (u x) c h]`. Conclude with `hu`. Use `push_neg at h`. Establish `: max (u x) c ≤ c + 1 / 2` using `max_le (by linarith) (by linarith)`.
-
-Combine the linear relations using `[hb.2]`. Introduce `x hx hux`. Rewrite using `[hvZ x hx]`. Simplify using `only [hG, sub_zero]`. Rewrite using `[hm1 (u x) c (by linarith)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_exact_truncation : ∀ (e : ℕ) (X : Type) [TopologicalSpace X]
     (A : FinHolAtlas e X) (Om : LocPot X) (Z : Set X) (u : X → ℝ) (M : ℝ), 2 ≤ M → IsClosed Z →
@@ -156,31 +152,27 @@ open Filter Topology
 open scoped ContDiff
 
 /- English proof (translation)
-Introduce `d X _ _ _ A m α Λ σ c h`. Take `⟨hα, hαpos, hΛ, hadm⟩` from `h`. Establish `hΛ' : ∀ i, IsPotential A (Λ i) ∧ IsSection A (Λ i) (σ i) ∧ ∀ y, normSec (Λ i) (σ i) y ≤ 1` using `fun i => ⟨(hΛ i).1, (hΛ i).2.1, (hΛ i).2.2.2⟩`. Take `⟨hZ, hsmu⟩` from `hsm d X A m Λ σ c hΛ'`. Use `set Z := boundary σ with hZdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set u : X → ℝ := fun y => pFun Λ σ c y / 2 with hu`. Establish `hc : 0 < c` using `hadm.1`. Establish `hlogr : ∀ i y, 0 ≤ Real.log (rFun (Λ i) (σ i) y)`. Introduce `i y`. Establish `h0 : 0 ≤ normSec (Λ i) (σ i) y` using `by unfold normSec; positivity`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : logNormSec (Λ i) (σ i) y ≤ 0` using `Real.log_nonpos h0 ((hΛ i).2.2.2 y)`. Establish `h2 : (1 : ℝ) ≤ rFun (Λ i) (σ i) y`. Unfold `rFun`. Combine the linear relations using `[Real.add_one_le_exp (1 : ℝ)]`. Conclude with `Real.log_nonneg h2`.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ∀ y, 0 ≤ ∑ i, Real.log (rFun (Λ i) (σ i) y)` using `fun y => Finset.sum_nonneg fun i _ => hlogr i y`. Establish `hneg : ∀ x ∈ Zᶜ, u x ≤ 0`. Introduce `x _`. Simplify using `only [hu, pFun]`. Use `hsum x` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `: 0 ≤ c * ∑ i, Real.log (rFun (Λ i) (σ i) x)` using `mul_nonneg hc.le this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpsh : IsPsh A α` using `fun x j y hy w => by`. Break down `eq_or_ne w 0 with rfl | hw` into its components or cases. Simplify using `[levi]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hαpos x j y hy w hw).le`. Establish `htr : ∀ R : ℕ, ∃ v : X → ℝ, A.Smooth v ∧ IsPsh A (α + LocPot.ofFun v) ∧ (∀ x ∈ Zᶜ, u x ≤ v x ∧ v x ≤ 0) ∧ ∀ x ∈ Zᶜ, -((R : ℝ) + 2) + 2 ≤ u x → v x = u x` using `fun R => exists_exact_truncation d X A α Z u ((R : ℝ) + 2) (by linarith [(Nat.cast_nonneg R : (0:ℝ) ≤ R)]) hZ hα hpsh hsmu hneg (hlv d X A m α Λ σ c ⟨hα, hαpos, hΛ, hadm⟩) (hbt d X A m α Λ σ c ⟨hα, hαpos, hΛ, hadm⟩)`. Use `choose w hw1 hw2 hw3 hw4 using htr`. Establish `hcont : ∀ x ∈ Zᶜ, ContinuousAt u x`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `A.cover x`. Establish `hO` using `(A.chart j).isOpen_inter_preimage_symm hZ.isOpen_compl`. Establish `hxO : A.chart j x ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Zᶜ` using `⟨(A.chart j).map_source hj, by simp only [Set.mem_preimage, (A.chart j).left_inv hj]; exact hx⟩`. Establish `h1 : ContinuousAt (u ∘ (A.chart j).symm) (A.chart j x)` using `((hsmu j).continuousOn.continuousAt (hO.mem_nhds hxO))`. Establish `h2 : ContinuousAt ((u ∘ (A.chart j).symm) ∘ A.chart j) x` using `h1.comp ((A.chart j).continuousAt hj)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `h2.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`. Simplify using `[(A.chart j).left_inv hy]`. Use `⟨w, c / 2, fun R => {x | x ∈ Zᶜ ∧ -(R : ℝ) < u x}, hw1, hw2, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `R x hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `hw3 R x hx`. Use `⟨?_, h3.2⟩` and prove the remaining obligations. Establish `e1 : u x = pFun Λ σ c x / 2` using `rfl`. Rewrite `h3` using `[e1]`. Unfold `pFun at h3`.
+Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Use `le_trans ?_ h3.1` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Introduce `R`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `filter_upwards [hZ.isOpen_compl.mem_nhds hx.1, (hcont x hx.1).eventually (lt_mem_nhds hx.2)] with y h1 h2`. Conclude with `⟨h1, h2⟩`. Introduce `R R' hRR' x hx`. Use `⟨hx.1, lt_of_le_of_lt ?_ hx.2⟩` and prove the remaining obligations. Establish `: (R : ℝ) ≤ R'` using `by exact_mod_cast hRR'`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `R x hx`. Conclude with `hx.1`. Introduce `x hx`. Take `⟨R, hR⟩` from `exists_nat_gt (-u x)`.
-
-Conclude with `⟨R, hx, by linarith⟩`. Introduce `R x hx`. Conclude with `hw4 R x hx.1 (by linarith [hx.2])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_trunc_of_parts (hsm : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas d X) (m : ℕ)
     (Λ : Fin m → LocPot X) (σ : Fin m → X → X → ℂ) (c : ℝ),
@@ -280,7 +272,7 @@ end GlobalTheory.PoincareTrunc
 namespace GlobalTheory.PoincareTrunc
 
 /- English proof (translation)
-The claim follows from `smooth_trunc_of_parts GlobalTheory.T.potential_boundary_smooth GlobalTheory.T.boundary_potential_psh GlobalTheory.T.boundary_sublevel_closure_complement`.
+A detailed English derivation is pending.
 -/
 theorem smoothTrunc : ∀ (d : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X]
     (A : FinHolAtlas d X) (m : ℕ) (α : LocPot X) (Λ : Fin m → LocPot X) (σ : Fin m → X → X → ℂ) (c : ℝ),

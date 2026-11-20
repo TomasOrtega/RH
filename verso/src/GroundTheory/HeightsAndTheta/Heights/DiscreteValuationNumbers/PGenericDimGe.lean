@@ -17,9 +17,9 @@ section Noetherian
 variable {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Establish `key : ∀ c : Ideal R, p ≤ c → (c.map (Ideal.Quotient.mk p)).comap (Ideal.Quotient.mk p) = c`. Introduce `c hc`. Rewrite using `[Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker]`. Conclude with `sup_eq_left.mpr hc`. Use `lt_of_le_of_ne (Ideal.map_mono hab.le) fun h => hab.ne ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key a ha, ← key b (ha.trans hab.le), h]`.
+A detailed English derivation is pending.
 -/
 theorem map_mk_lt {p a b : Ideal R} (ha : p ≤ a) (hab : a < b) :
     a.map (Ideal.Quotient.mk p) < b.map (Ideal.Quotient.mk p) := by
@@ -33,11 +33,9 @@ theorem map_mk_lt {p a b : Ideal R} (ha : p ≤ a) (hab : a < b) :
   rw [← key a ha, ← key b (ha.trans hab.le), h]
 
 /- English proof (translation)
-Establish `hk : ∀ c : Ideal R, p ≤ c → RingHom.ker (Ideal.Quotient.mk p) ≤ c` using `fun c hc => by`. Rewrite using `[Ideal.mk_ker]`. Conclude with `hc`. Use `Ideal.map_isPrime_of_surjective (I := p) Ideal.Quotient.mk_surjective (hk p le_rfl)` as an intermediate fact. Use `Ideal.map_isPrime_of_surjective (I := a) Ideal.Quotient.mk_surjective (hk a hpa.le)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Ideal.map_isPrime_of_surjective (I := b) Ideal.Quotient.mk_surjective (hk b (hpa.trans hab).le)` as an intermediate fact. Establish `h1` using `Ideal.height_add_one_le_of_lt_of_isPrime (map_mk_lt le_rfl hpa)`. Establish `h2` using `Ideal.height_add_one_le_of_lt_of_isPrime (map_mk_lt hpa.le hab)`. Establish `h3 : (1 : ℕ∞) ≤ (a.map (Ideal.Quotient.mk p)).height` using `le_trans le_add_self h1`. Establish `h4 : (1 : ℕ∞) + 1 ≤ (b.map (Ideal.Quotient.mk p)).height` using `le_trans (add_le_add h3 le_rfl) h2`.
-
-Conclude with `lt_of_lt_of_le (by norm_num) h4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_lt_height_map {p a b : Ideal R} [p.IsPrime] [a.IsPrime] [b.IsPrime] (hpa : p < a)
     (hab : a < b) : 1 < (b.map (Ideal.Quotient.mk p)).height := by
@@ -55,23 +53,19 @@ theorem one_lt_height_map {p a b : Ideal R} [p.IsPrime] [a.IsPrime] [b.IsPrime] 
   exact lt_of_lt_of_le (by norm_num) h4
 
 /- English proof (translation)
-Assume the negation of the conclusion as `H`. Use `push Not at H`. Establish `hM : (p ⊔ Ideal.span {x}).minimalPrimes.Finite` using `Ideal.finite_minimalPrimes_of_isNoetherianRing R _`. Set `s : Finset (Ideal R)` to `insert p (hM.toFinset.filter (· < r))`. Establish `hprime : ∀ t ∈ s, t.IsPrime`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Break down `Finset.mem_insert.1 ht with rfl | ht` into its components or cases. Use `infer_instance`. Conclude with `(hM.mem_toFinset.1 (Finset.mem_filter.1 ht).1).isPrime`. Establish `hlt : ∀ t ∈ s, t < r`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Introduce `t ht`. Break down `Finset.mem_insert.1 ht with rfl | ht` into its components or cases. Conclude with `hpq.trans hqr`. Conclude with `(Finset.mem_filter.1 ht).2`. Establish `hnot : ¬ ((r : Set R) ⊆ ⋃ t ∈ (↑s : Set (Ideal R)), ((fun t : Ideal R => t) t : Set R))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `h`. Take `⟨t, ht, hrt⟩` from `(Ideal.subset_union_prime (f := fun t : Ideal R => t) p p (fun t ht _ _ => hprime t ht)).1 h`. Conclude with `(hlt t ht).not_ge hrt`. Take `⟨y, hyr, hy⟩` from `Set.not_subset.1 hnot`. Simplify using `only [Set.mem_iUnion, not_exists] at hy`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyp : y ∉ p` using `fun h => hy p (Finset.mem_coe.2 (Finset.mem_insert_self _ _)) h`. Establish `hyt : ∀ t ∈ (p ⊔ Ideal.span {x}).minimalPrimes, t < r → y ∉ t` using `fun t ht htr h => hy t (Finset.mem_coe.2 (Finset.mem_insert_of_mem (Finset.mem_filter.2 ⟨hM.mem_toFinset.2 ht, htr⟩))) h`. Establish `hle : p ⊔ Ideal.span {y} ≤ r` using `sup_le (hpq.trans hqr).le (by rwa [Ideal.span_le, Set.singleton_subset_iff])`. Take `⟨t0, ht0, ht0r⟩` from `Ideal.exists_minimalPrimes_le hle`. Establish `: t0.IsPrime` using `ht0.isPrime`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hKrull` using `Ideal.map_height_le_one_of_mem_minimalPrimes ht0`. Establish `hyt0 : y ∈ t0` using `ht0.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self y))`. Establish `hpt0 : p < t0` using `lt_of_le_of_ne (le_sup_left.trans ht0.1.2) fun h => hyp (by rw [h]; exact hyt0)`. Establish `ht0r' : t0 < r`. Use `lt_of_le_of_ne ht0r fun h => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `one_lt_height_map hpq hqr`. Rewrite `h2` using `[← h]`. Conclude with `absurd hKrull (not_le.2 h2)`. Establish `hxt0 : x ∈ t0` using `H t0 inferInstance hpt0 ht0r'`. Establish `hle' : p ⊔ Ideal.span {x} ≤ t0` using `sup_le (le_sup_left.trans ht0.1.2) (by rwa [Ideal.span_le, Set.singleton_subset_iff])`.
-
-Take `⟨t', ht', ht't0⟩` from `Ideal.exists_minimalPrimes_le hle'`. Establish `: t'.IsPrime` using `ht'.isPrime`. Establish `hxt' : x ∈ t'` using `ht'.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self x))`. Establish `hpt' : p < t'` using `lt_of_le_of_ne (le_sup_left.trans ht'.1.2) fun h => hx (by rw [h]; exact hxt')`. Establish `ht'eq : t' = t0`.
-
-Assume the negation of the conclusion as `hne`. Conclude with `absurd hKrull (not_le.2 (one_lt_height_map hpt' (lt_of_le_of_ne ht't0 hne)))`. Conclude with `hyt t' ht' (ht'eq ▸ ht0r') (ht'eq ▸ hyt0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_isPrime_between_not_mem [IsNoetherianRing R] {p q r : Ideal R} [p.IsPrime]
     [q.IsPrime] [r.IsPrime] (hpq : p < q) (hqr : q < r) {x : R} (hx : x ∉ p) :
@@ -133,9 +127,9 @@ theorem exists_isPrime_between_not_mem [IsNoetherianRing R] {p q r : Ideal R} [p
 end Noetherian
 
 /- English proof (translation)
-Take `⟨p, hlast, hlen⟩` from `Order.exists_series_of_le_height a h`. Establish `hne : p.length ≠ 0` using `by omega`. Use `⟨p.eraseLast.last, hlast ▸ p.eraseLast_last_rel_last hne, ?_⟩` and prove the remaining obligations. Use `Order.length_le_height_last (p := p.eraseLast)` as an intermediate fact. Simplify using `only [RelSeries.eraseLast_length, hlen, Nat.add_sub_cancel] at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_lt_of_le_height {α : Type*} [Preorder α] {a : α} {n : ℕ}
     (h : ((n + 1 : ℕ) : ℕ∞) ≤ Order.height a) : ∃ b < a, (n : ℕ∞) ≤ Order.height b := by
@@ -147,9 +141,9 @@ theorem exists_lt_of_le_height {α : Type*} [Preorder α] {a : α} {n : ℕ}
   exact this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `: (Q.comap (C : O →+* MvPolynomial σ O)).IsMaximal` using `Ideal.IsPrime.isMaximal inferInstance hne`. Establish `hm` using `IsLocalRing.eq_maximalIdeal this`. Apply `h` to reduce the goal to its premises. Establish `: ϖ ∈ Q.comap (C : O →+* MvPolynomial σ O)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[hm]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).2 (mem_nonunits_iff.2 hϖ.not_isUnit)`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_C_eq_bot {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {σ : Type*} {ϖ : O} (hϖ : Irreducible ϖ) (Q : Ideal (MvPolynomial σ O)) [Q.IsPrime]
@@ -166,33 +160,31 @@ theorem comap_C_eq_bot {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuatio
 attribute [local instance] MvPolynomial.algebraMvPolynomial
 
 /- English proof (translation)
-Introduce `O _ _ _ K _ _ ι _ P hP hPC`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Set `M : Submonoid (MRing ι O)` to `(nonZeroDivisors O).map (C : O →+* MRing ι O)`. Establish `: IsLocalization M (MRing ι (FractionRing O))` using `MvPolynomial.isLocalization (nonZeroDivisors O) (FractionRing O)`. Rewrite using `[ringKrullDim_quotient, ringKrullDim_quotient]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `Z` to `PrimeSpectrum.zeroLocus (R := MRing ι O) (P : Set (MRing ι O))`. Set `Z'` to `PrimeSpectrum.zeroLocus (R := MRing ι (FractionRing O)) (genFib P : Set (MRing ι (FractionRing O)))`. Set `U` to `{q : Z // q.1.asIdeal.comap (C : O →+* MRing ι O) = ⊥}`. Establish `ltZ : ∀ a b : Z, a < b ↔ a.1.asIdeal < b.1.asIdeal` using `fun a b => Subtype.coe_lt_coe.symm.trans (PrimeSpectrum.asIdeal_lt_asIdeal _ _).symm`. Establish `ltU : ∀ a b : U, a < b ↔ a.1.1.asIdeal < b.1.1.asIdeal` using `fun a b => Subtype.coe_lt_coe.symm.trans (ltZ _ _)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `memZ : ∀ x : PrimeSpectrum (MRing ι O), x ∈ Z ↔ P ≤ x.asIdeal` using `fun x => PrimeSpectrum.mem_zeroLocus _ _`. Set `P0 : Z` to `⟨⟨P, hP⟩, (memZ _).2 le_rfl⟩`. Set `PU : U` to `⟨P0, hPC⟩`. Establish `hstep : ∀ n : ℕ, ∀ r : Z, ((n + 1 : ℕ) : ℕ∞) ≤ Order.height r → ∃ q : U, q.1.1.asIdeal < r.1.asIdeal ∧ (n : ℕ∞) ≤ Order.height q`. Introduce `n`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `r hr`. Take `⟨r0, hr0, -⟩` from `exists_lt_of_le_height hr`. Conclude with `⟨PU, lt_of_le_of_lt ((memZ _).1 r0.2) ((ltZ _ _).1 hr0), by simp⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `succ n ih`. Introduce `r hr`. Take `⟨r', hr'r, hr'⟩` from `exists_lt_of_le_height hr`. Take `⟨q, hqr', hq⟩` from `ih r' hr'`. Establish `hx : (C ϖ : MRing ι O) ∉ q.1.1.asIdeal` using `fun h => hϖ.ne_zero (by`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: ϖ ∈ q.1.1.asIdeal.comap (C : O →+* MRing ι O)` using `h`. Rewrite `this` using `[q.2]`. Conclude with `(Submodule.mem_bot _).1 this)`. Take `⟨q', hq'p, hqq', hq'r, hq'x⟩` from `exists_isPrime_between_not_mem hqr' ((ltZ _ _).1 hr'r) hx`. Set `qZ : Z` to `⟨⟨q', hq'p⟩, (memZ _).2 (((memZ _).1 q.1.2).trans hqq'.le)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `qU : U` to `⟨qZ, comap_C_eq_bot hϖ q' hq'x⟩`. Use `⟨qU, hq'r, ?_⟩` and prove the remaining obligations. Establish `hlt : q < qU` using `(ltU _ _).2 hqq'`. Combine the equalities or inequalities in the displayed calculation. Establish `hbound : ∀ r : Z, Order.height r ≤ (⨆ q : U, Order.height q) + 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r`. Use `ENat.forall_natCast_le_iff_le.1 fun m hm => ?_` and prove the remaining obligations. Consider the cases of `m with`. Consider the case `zero => simp`. Consider the case `succ m`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨q, -, hq⟩` from `hstep m r hm`. Use `push_cast`. Conclude with `add_le_add (hq.trans (le_iSup (fun q : U => Order.height q) q)) le_rfl`. Establish `hdisj : ∀ q : U, Disjoint (M : Set (MRing ι O)) (q.1.1.asIdeal : Set (MRing ι O))`. Introduce `q`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, rfl⟩ hmem`. Establish `: a ∈ q.1.1.asIdeal.comap (C : O →+* MRing ι O)` using `hmem`. Rewrite `this` using `[q.2]`. Conclude with `nonZeroDivisors.ne_zero ha ((Submodule.mem_bot _).1 this)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `Φ : U → Z'` to `fun q => ⟨⟨q.1.1.asIdeal.map (algebraMap (MRing ι O) (MRing ι (FractionRing O))), IsLocalization.isPrime_of_isPrime_disjoint M _ _ q.1.1.2 (hdisj q)⟩, by`. Rewrite using `[PrimeSpectrum.mem_zeroLocus]`. Conclude with `Ideal.map_mono ((memZ _).1 q.1.2)⟩`. Establish `hΦ : StrictMono Φ`. Introduce `a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hab` using `[ltU]`. Use `Subtype.coe_lt_coe.1 ((PrimeSpectrum.asIdeal_lt_asIdeal _ _).1 ?_)` and prove the remaining obligations. Use `lt_of_le_of_ne (Ideal.map_mono hab.le) fun h => hab.ne ?_` and prove the remaining obligations. Establish `ha` using `IsLocalization.under_map_of_isPrime_disjoint M (MRing ι (FractionRing O)) a.1.1.2 (hdisj a)`. Establish `hb` using `IsLocalization.under_map_of_isPrime_disjoint M (MRing ι (FractionRing O)) b.1.1.2 (hdisj b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← ha, ← hb]`. Conclude with `congrArg (Ideal.comap _) h`. Establish `: Nonempty Z` using `⟨P0⟩`. Establish `: Nonempty U` using `⟨PU⟩`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Order.krullDim_eq_iSup_height_of_nonempty (α := U)]`. Both sides reduce to the same expression. Use `_ ≤ Order.krullDim Z' + 1 := add_le_add (Order.krullDim_le_of_strictMono Φ hΦ) le_rfl`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem proof : Statement.{u} := by
   intro O _ _ _ K _ _ ι _ P hP hPC

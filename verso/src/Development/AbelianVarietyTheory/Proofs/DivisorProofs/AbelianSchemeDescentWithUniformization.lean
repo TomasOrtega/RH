@@ -41,15 +41,15 @@ def isPowGrpIso {S : Scheme.{0}} {G' G H : Over S} [GrpObj G'] [GrpObj G] [GrpOb
       rw [h, ← hmi, Category.assoc, Category.assoc, e.hom_inv_id, Category.comp_id])
 
 /- English proof (translation)
-Introduce `k _ σ A₀ _ A _ p L u hA₀ hd hp hL n`. Set `B₀ : Over (Sp k)` to `Out.powObj A₀ n`. Set `B : Over (Sp ℂ)` to `(Over.pullback (spMap σ)).obj B₀`. Establish `P` using `PowGrp.powers (Sp k) B₀ A₀ n (Out.powIsPowGrp A₀ n)`. Establish `hB₀ : IsAbelianScheme B₀` using `P.2.2.2.1 hA₀`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdB₀ : SmoothOfRelativeDimension n B₀.hom`. Use `P.2.2.1 1 hd` as an intermediate fact. Rewrite `this` using `[Nat.mul_one]`. Then use the resulting hypothesis. Establish `hB : IsAbelianScheme B` using `isAbelianScheme_pullback_obj (spMap σ) B₀ hB₀`. Establish `hdB : SmoothOfRelativeDimension n B.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SmoothOfRelativeDimension n (pullback.snd B₀.hom (spMap σ))` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_hasPullback _ _) hdB₀`. Conclude with `this`. Take `⟨p', -⟩` from `isPowGrp_baseChange (Sp k) (Sp ℂ) (spMap σ) B₀ A₀ n (Out.powIsPowGrp A₀ n)`. Take `⟨e, he, -⟩` from `grpPullback_iso (isGrpPullback_pullback A₀ (spMap σ)) hp`. Set `pw : Out.IsPowGrp B A n` to `isPowGrpIso p' e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `PolBaseChange.lbIso_refl (LB.isLB_linComb hL (fun i => (pw.pr i).left) (fun _ => (1 : ℤ)))`. Take `⟨v, hv, -, -⟩` from `PowUnif.exists_powUnif pw u hL (LB.isLB_linComb hL (fun i => (pw.pr i).left) (fun _ => (1 : ℤ))) w hw (Equiv.prodUnique (Fin n) (Fin 1))`. Use `⟨B₀, inferInstance, B, inferInstance, pullback.fst B₀.hom (spMap σ), _, v, hB₀, hdB₀, hB, hdB, isGrpPullback_pullback B₀ (spMap σ), fun z hz j => ?_⟩` and prove the remaining obligations. Use `(hv z).1 hz j` as an intermediate fact. Rewrite `this` using `[PowUnif.blockPr_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 2 with a` and compare the differences between its conclusion and the goal. Rewrite using `[Fin.fin_one_eq_zero a]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem main : ∀ (k : Type) [Field k] (σ : k →+* ℂ) (A₀ : Over (Sp k)) [GrpObj A₀] (A : Over (Sp ℂ)) [GrpObj A]
     (p : A.left ⟶ A₀.left) (L : LB A.left) (u : HolUnif A L 1), IsAbelianScheme A₀ → SmoothOfRelativeDimension 1 A₀.hom →

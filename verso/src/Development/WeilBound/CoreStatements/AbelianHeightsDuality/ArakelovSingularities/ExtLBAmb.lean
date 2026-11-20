@@ -14,7 +14,7 @@ open GroundTheory.Arith.SchemeCoh GroundTheory.Arith.SchemeCoh.ProjSpace
 namespace GlobalTheory.Amb
 
 /- English proof (translation)
-Establish `hs : IsSeparated (pr k m n 0 ≫ toSpecBase k (n 0))`. Rewrite using `[pr_toSpecBase]`. Use `infer_instance`. Conclude with `IsSeparated.of_comp _ (toSpecBase k (n 0))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSeparated_pr_zero (k : Type) [CommRing k] (m : ℕ) (n : Fin (m + 1) → ℕ) :
     IsSeparated (pr k m n 0) := by
@@ -24,9 +24,9 @@ theorem isSeparated_pr_zero (k : Type) [CommRing k] (m : ℕ) (n : Fin (m + 1) �
   exact IsSeparated.of_comp _ (toSpecBase k (n 0))
 
 /- English proof (translation)
-Establish `hA` using `LB.isLB_pull (O1_isLB k a) π₁`. Establish `hB` using `LB.isLB_pull (O1_isLB k b) π₀`. Establish `hT` using `isLB_tw hA hB (-(t : ℤ))`. Establish `hTi` using `LB.isLB_pull hT i`. Rewrite using `[← cls_eq_iff hTi hM, cls_pull hT i hTi]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hct : cls (tw ((O1 k a).pull π₁) ((O1 k b).pull π₀) (-(t : ℤ))) hT = cls ((O1 k a).pull π₁) hA - (-(-(t : ℤ))) • cls ((O1 k b).pull π₀) hB` using `by show cls (((O1 k a).pull π₁).div (AbLaw.pw ((O1 k b).pull π₀) (-(-(t : ℤ))))) hT = _`. Rewrite using `[cls_div hA (isLB_pw hB _) hT, EffBound.cls_pw hB]`. Rewrite using `[hct, map_sub, map_zsmul, cls_pull (O1_isLB k a) π₁ hA, cls_pull (O1_isLB k b) π₀ hB, ← pull_comp, ← pull_comp, hg, he]`. Rewrite `h` using `[cls_pull (O1_isLB k a) g, cls_pull (O1_isLB k b) e]`. Rewrite using `[h, neg_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/

@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.SchurTw
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N Polynomial GlobalTheory.CuspRep GlobalTheory.HeckeGal GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Bc UpperTheory.V.Published
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.H13.schur_twist_holds`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.schur_twist_holds :
     UpperTheory.V.Af.Bc.SchurTw :=

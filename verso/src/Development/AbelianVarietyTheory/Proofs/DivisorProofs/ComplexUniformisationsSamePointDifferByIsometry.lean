@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.PELU
 
 /- English proof (translation)
-Use `choose f hf using hr`. Use `⟨{ toFun := f, map_add' := ?_, map_smul' := ?_ }, hf⟩` and prove the remaining obligations. Introduce `x y`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_add, hf, hf, hf, map_add, map_add]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a x`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[RingHom.id_apply, hP', hf, hf, hP, hc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_linMap_of_periods {O : Type} [Ring O] {bar : O → O} {g : ℕ} (ρ : O →+* Matrix (Fin g) (Fin g) ℂ)
     (D₁ D₂ : PLat O bar) (P : D₁.La →+ (Fin g → ℂ)) (P' : D₂.La →+ (Fin g → ℂ))
@@ -31,11 +31,11 @@ theorem exists_linMap_of_periods {O : Type} [Ring O] {bar : O → O} {g : ℕ} (
     rw [RingHom.id_apply, hP', hf, hf, hP, hc]
 
 /- English proof (translation)
-Use `set k : ℕ := (n - m).natAbs + 1 with hkdef`. Establish `hk : 0 < k` using `Nat.succ_pos _`. Take `⟨j, hj⟩` from `Complex.exp_eq_exp_iff_exists_int.mp (H k hk)`. Establish `hpi : (2 * Real.pi * Complex.I : ℂ) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hkc : (k : ℂ) ≠ 0` using `by exact_mod_cast hk.ne'`. Establish `E : ((n - m : ℤ) : ℂ) = ((j * k : ℤ) : ℂ)`. Use `push_cast`. Clear denominators, using `at hj` for the nonvanishing conditions. Take the linear combination `hj`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `E' : n - m = j * k` using `by exact_mod_cast E`. Establish `hd : (k : ℤ) ∣ n - m` using `⟨j, by rw [E', mul_comm]⟩`. Establish `h0 : n - m = 0` using `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs hd (by rw [Int.natAbs_natCast]; omega)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem int_eq_of_exp_eq (m n : ℤ)
     (H : ∀ k : ℕ, 0 < k → Complex.exp (-(2 * Real.pi * Complex.I) * (m : ℂ) / k) =
@@ -56,29 +56,27 @@ theorem int_eq_of_exp_eq (m n : ℤ)
   omega
 
 /- English proof (translation)
-Introduce `O _ bar g ρ R _ σ Λ F N D' D'' t t' P P' y e e' hN U1 U2`. Take `⟨-, hper1, hexp1, hker1, hact1, hweil1, heta1⟩` from `U1`. Take `⟨-, hper2, hexp2, hker2, hact2, hweil2, heta2⟩` from `U2`. Establish `lift` using `fun (e₁ e₂ : (Fin g → ℂ) → (Over.mk y ⟶ F.A)) (α : F.A ⟶ F.A) (h1 : IsExp y e₁) (h2 : IsExp y e₂) (hα : IsMonHom α) => GlobalTheory.T.existsUnique_linear_lift_of_abelianEndomorphism F.X F.A g F.ab F.dim y e₁ e₂ α h1 h2 hα`. Take `⟨M, hM, -⟩` from `lift e e' (𝟙 _) hexp1 hexp2 inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨M', hM', -⟩` from `lift e' e (𝟙 _) hexp2 hexp1 inferInstance`. Simplify using `only [Category.comp_id] at hM hM'`. Establish `h1 : M'.comp M = LinearMap.id`. Take `⟨K, -, hK⟩` from `lift e e (𝟙 _) hexp1 hexp1 inferInstance`. Rewrite using `[hK (M'.comp M) (fun z => by simp [hM', hM]), hK LinearMap.id (fun z => by simp)]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : M.comp M' = LinearMap.id`. Take `⟨K, -, hK⟩` from `lift e' e' (𝟙 _) hexp2 hexp2 inferInstance`. Rewrite using `[hK (M.comp M') (fun z => by simp [hM', hM]), hK LinearMap.id (fun z => by simp)]`. Set `h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)` to `LinearEquiv.ofLinear M M' h2 h1`. Establish `hh : ∀ z, e' (h z) = e z` using `hM`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hrange : ∀ z, z ∈ P.range ↔ h z ∈ P'.range` using `fun z => by rw [← hker1, ← hker2, hh]`. Establish `hc : ∀ (a : O) z, h (ρ a *ᵥ z) = ρ a *ᵥ h z`. Introduce `a z`. Take `⟨K, -, hK⟩` from `lift e e' (F.act a) hexp1 hexp2 (F.hom a)`. Establish `k1` using `hK ((h : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)).comp (Matrix.mulVecLin (ρ a))) (fun z => by simp [hh, hact1])`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `k2` using `hK ((Matrix.mulVecLin (ρ a)).comp (h : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ))) (fun z => by simp [hact2, hh])`. Use `congrArg (fun f : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ) => f z) (k1.trans k2.symm)` as an intermediate fact. Simplify using `using this`. Establish `hc' : ∀ (a : O) z, h.symm (ρ a *ᵥ z) = ρ a *ᵥ h.symm z`. Introduce `a z`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `h.injective` to reduce the goal to its premises. Rewrite using `[hc, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]`. Take `⟨w₁, hw₁⟩` from `exists_linMap_of_periods ρ D' D'' P P' hper1.1 hper2.1 hper2.2.1 h (fun x => (AddMonoidHom.mem_range).mp ((hrange (P x)).mp ⟨x, rfl⟩)) hc`. Take `⟨w₂, hw₂⟩` from `exists_linMap_of_periods ρ D'' D' P' P hper2.1 hper1.1 hper1.2.1 h.symm (fun x => (AddMonoidHom.mem_range).mp ((hrange _).mpr (by rw [LinearEquiv.apply_symm_apply]; exact ⟨x, rfl⟩))) hc'`. Set `w : D'.La ≃ₗ[O] D''.La` to `LinearEquiv.ofLinear w₁ w₂ (LinearMap.ext fun x => hper2.2.1 (by simp [hw₁, hw₂])) (LinearMap.ext fun x => hper1.2.1 (by simp [hw₁, hw₂]))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hw : ∀ x, P' (w x) = h (P x)` using `hw₁`. Use `⟨w, h, ⟨?_, ?_⟩, hw, hh⟩` and prove the remaining obligations. Introduce `x x'`. Use `(int_eq_of_exp_eq _ _ fun k hk => ?_)` and prove the remaining obligations. Establish `H1` using `hweil1 k x x' (Units.mk0 _ (Complex.exp_ne_zero _)) hk rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `H2` using `hweil2 k (w x) (w x') (Units.mk0 _ (Complex.exp_ne_zero _)) hk rfl`. Rewrite `H2` using `[hw, hw, ← LinearEquiv.map_smul, ← LinearEquiv.map_smul, hh, hh]`. Use `GlobalTheory.T.weilPairing_complex_value_unique F.X F.A g F.ab F.dim F.L F.isLB y k _ _ _ _ H2 H1` as an intermediate fact. Simplify using `using congrArg Units.val this`. Introduce `a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e0 : e' 0 = 1` using `(hker2 0).mpr (zero_mem _)`. Use `set v := (N : ℂ)⁻¹ • P' (t' a)`. Use `set u := (N : ℂ)⁻¹ • P' (w (t a)) - v`. Establish `huv : e' (u + v) = e' v`. Rewrite using `[sub_add_cancel, hw, ← LinearEquiv.map_smul, hh, ← heta1, heta2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : e' u = 1`. Use `(hexp2.1 (u + v) (-v)).symm` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_right, huv, ← hexp2.1, add_neg_cancel, e0]`. Conclude with `this.symm`. Take `⟨x₀, hx₀⟩` from `(hker2 u).mp hu`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨x₀, ?_⟩` and prove the remaining obligations. Establish `hN' : (N : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`. Apply `hper2.2.1` to reduce the goal to its premises. Establish `: P' (w (t a)) - P' (t' a) = (N : ℂ) • u`. Simplify using `only [u, v, ← smul_sub, smul_smul, mul_inv_cancel₀ hN', one_smul]`.
-
-Rewrite using `[map_add, map_nsmul, ← Nat.cast_smul_eq_nsmul ℂ, hx₀, ← this]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem unifAt_cmp : ∀ (O : Type) [Ring O] (bar : O → O) (g : ℕ) (ρ : O →+* Matrix (Fin g) (Fin g) ℂ) (R : Type) [CommRing R] (σ : R →+* ℂ) (Λ : Type) (F : Fam R O Λ g) (N : ℕ) (D' D'' : PLat O bar) (t : Λ → D'.La) (t' : Λ → D''.La) P P' (y : Sp ℂ ⟶ F.X) e e', 0 < N → UnifAt F σ ρ N D' t P y e → UnifAt F σ ρ N D'' t' P' y e' → ∃ (w : D'.La ≃ₗ[O] D''.La) (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)), IsMarkedIsom N D' D'' t t' w ∧ (∀ x, P' (w x) = h (P x)) ∧ ∀ z, e' (h z) = e z := by
   intro O _ bar g ρ R _ σ Λ F N D' D'' t t' P P' y e e' hN U1 U2

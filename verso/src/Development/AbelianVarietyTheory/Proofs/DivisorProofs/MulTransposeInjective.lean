@@ -17,25 +17,25 @@ def hat {κ : Type} (w : (κ → F) × (κ → F)) : (κ → AF F) × (κ → AF
   (fun i => algebraMap F (AF F) (w.1 i), fun i => algebraMap F (AF F) (w.2 i))
 
 /- English proof (translation)
-Simplify using `only [hat, Prod.fst_add, Prod.snd_add, Pi.add_apply, map_add]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem hat_add {κ : Type} (a b : (κ → F) × (κ → F)) : hat (a + b) = hat a + hat b := by
   simp only [hat, Prod.fst_add, Prod.snd_add, Pi.add_apply, map_add]; rfl
 
 /- English proof (translation)
-Simplify using `only [hat, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, map_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem hat_smul {κ : Type} (c : F) (a : (κ → F) × (κ → F)) : hat (c • a) = algebraMap F (AF F) c • hat a := by
   simp only [hat, Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul, map_mul]; rfl
 
 /- English proof (translation)
-Simplify using `only [hat, Prod.fst_zero, Prod.snd_zero, Pi.zero_apply, map_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem hat_zero {κ : Type} : hat (0 : (κ → F) × (κ → F)) = 0 := by
   simp only [hat, Prod.fst_zero, Prod.snd_zero, Pi.zero_apply, map_zero]; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul, ← mul_assoc, ← AddChar.map_add_eq_mul, Prod.fst_add, Prod.snd_add, add_assoc, add_dotProduct, dotProduct_add]`. Use `congr 2`. Take the linear combination `(-(w.1 ⬝ᵥ w'.2)) * invOf_mul_self (2 : R)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem schr_comp {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (w w' : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) :
@@ -53,13 +53,13 @@ def IsMixed (M₁ : Model σ X W₁) (H' : Plane E d d₁) (m : Matrix (Fin n) (
     (M₁.co.e z).1 = 0 ∧ m = u + incM F (1 : Matrix (Fin n) (Fin n) E) * z * (incM F H'.ι)ᵀ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, ⟨0, by ext i j; simp [Matrix.vecMulVec_apply]⟩, 0, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isMixed_zero (M₁ : Model σ X W₁) (H' : Plane E d d₁) : IsMixed M₁ H' 0 :=
   ⟨0, ⟨0, by ext i j; simp [Matrix.vecMulVec_apply]⟩, 0, by simp, by simp⟩
 
 /- English proof (translation)
-Take `⟨u, ⟨y, rfl⟩, z, hz, rfl⟩` from `h`. Take `⟨u', ⟨y', rfl⟩, z', hz', rfl⟩` from `h'`. Use `⟨Matrix.vecMulVec (y + y') (incV F H'.x), ⟨y + y', rfl⟩, z + z', by simp [hz, hz'], ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_vecMulVec, Matrix.mul_add, Matrix.add_mul]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem IsMixed.add {M₁ : Model σ X W₁} {H' : Plane E d d₁} {m m' : Matrix (Fin n) (Fin d) (AE F E)}
     (h : IsMixed M₁ H' m) (h' : IsMixed M₁ H' m') : IsMixed M₁ H' (m + m') := by
@@ -70,7 +70,7 @@ theorem IsMixed.add {M₁ : Model σ X W₁} {H' : Plane E d d₁} {m m' : Matri
   abel
 
 /- English proof (translation)
-Take `⟨u, ⟨y, rfl⟩, z, hz, rfl⟩` from `h`. Use `⟨Matrix.vecMulVec (t • y) (incV F H'.x), ⟨t • y, rfl⟩, t • z, by simp [hz], ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, Matrix.smul_vecMulVec, Matrix.mul_smul, Matrix.smul_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsMixed.smul {M₁ : Model σ X W₁} {H' : Plane E d d₁} {m : Matrix (Fin n) (Fin d) (AE F E)}
     (h : IsMixed M₁ H' m) (t : AF F) : IsMixed M₁ H' (t • m) := by
@@ -89,15 +89,15 @@ def lagr (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) :
     exact ha.smul _
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_lagr {M : Model σ X W} {M₁ : Model σ X W₁} {H' : Plane E d d₁} {w} :
     w ∈ lagr M M₁ H' ↔ IsMixed M₁ H' (M.co.e.symm (hat w)) := Iff.rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ σ n d d₁ JW JW₁ ι hg hdet z z' h`. Simplify using `only at h`. Establish `h0 : (z - z') * JW₁ = 0`. Rewrite using `[← hg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.sub_mul, h, sub_self, Matrix.zero_mul, Matrix.zero_mul]`. Establish `h1 : z - z' = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (· * JW₁⁻¹) h0` as an intermediate fact. Simplify using `only [Matrix.zero_mul] at this`. Rewrite `this` using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hdet), Matrix.mul_one]`. Then use the resulting hypothesis. Conclude with `sub_eq_zero.mp h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mul_transpose_injective : ∀ (F E : Type) [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (n d d₁ : ℕ)
     (JW : Matrix (Fin d) (Fin d) E) (JW₁ : Matrix (Fin d₁) (Fin d₁) E) (ι : Matrix (Fin d) (Fin d₁) E),

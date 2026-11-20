@@ -5,17 +5,17 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set L := Localization.AtPrime P`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `a ha`. Take `⟨n, hn⟩` from `IsArtinianRing.isNilpotent_jacobson_bot (R := L)`. Establish `hJ : (⊥ : Ideal L).jacobson = IsLocalRing.maximalIdeal L` using `IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `han : a ^ n = 0`. Establish `: a ^ n ∈ (⊥ : Ideal L).jacobson ^ n` using `Ideal.pow_mem_pow (hJ ▸ ha) n`. Rewrite `this` using `[hn]`. Simplify using `using this`. Take `⟨⟨d, s⟩, rfl⟩` from `IsLocalization.mk'_surjective P.primeCompl a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only at han ⊢`. Rewrite `han` using `[← IsLocalization.mk'_pow, IsLocalization.mk'_eq_zero_iff]`. Take `⟨t, ht⟩` from `han`. Establish `hnil : IsNilpotent (Ideal.Quotient.mk (Ideal.span {x}) ((t : D) * d))`. Use `⟨n + 1, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, mul_pow, pow_succ d, ← mul_assoc, pow_succ (t : D), mul_assoc _ (t : D), ht]`. Simplify using the standard rewrite rules. Establish `hmem : (t : D) * d ∈ Ideal.span {x}` using `Ideal.Quotient.eq_zero_iff_mem.mp (hnil.eq_zero)`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp hmem`. Use `Ideal.mem_span_singleton'.mpr ⟨IsLocalization.mk' L c (t * s), ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocalization.mk'_eq_mul_mk'_one, IsLocalization.mk'_eq_mul_mk'_one d s, mul_right_comm, ← map_mul, hc, ← IsLocalization.mk'_eq_mul_mk'_one, ← IsLocalization.mk'_eq_mul_mk'_one, IsLocalization.mk'_eq_iff_eq]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(IsLocalRing.mem_maximalIdeal _).mpr fun hu => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `hx.map (algebraMap D L)`. Conclude with `not_isUnit_zero (hm ▸ hu.pow m)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem localization_maximalIdeal_eq_span_of_nilpotent
     (D : Type) [CommRing D] [IsArtinianRing D] (x : D) (hx : IsNilpotent x)

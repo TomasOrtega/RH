@@ -18,15 +18,15 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.RowTie GlobalTheory.SplitRead
 namespace GlobalTheory.TameType
 /- English proof (translation)
-Introduce `R H what₂ N A T S i w hw hTS hL hT hmu P`. Take `⟨htame, hram, hv⟩` from `hT`. Take `⟨v, hv0, hv⟩` from `hv P`. Establish `L` using `hL i w hw`. Establish `hs` using `(S i w hw).mu_ok.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨π₁, π₂, h1, h2, he⟩` from `hTS w _ _ _ _ v hs htame hram hv0 hv`. Set `c : Irr (w.adicCompletion H.E) 1` to `{ V := ℂ, π := detRep (Fin 1) (S i w hw).mu, smooth := (isSmooth_ofChar_iff _).2 hs.detChar, irr := isIrreducible_ofChar _ }`. Set `τ : Irr (w.adicCompletion H.E) R.t` to `{ V := π₂.V, π := GlobalTheory.SmGL.twist π₂.π (detChar (Fin R.t) (S i w hw).mu), smooth := isSmooth_twist π₂.smooth hs.detChar, irr := irreducible_twist π₂.irr _ }`. Establish `hc : Nonempty (c.π.Equiv (detRep (Fin 1) (S i w hw).mu))` using `⟨Representation.Equiv.refl _⟩`. Establish `e1` using `L.prod _ _ π₁ τ _ he`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `_root_.UpperTheory.One.M.RecLawsH.twist L _ _ c π₂ τ (UpperTheory.One.M.goodI_of_sph π₂ h2) hc ⟨Representation.Equiv.refl _⟩`. Establish `u1` using `(L.sph _ π₁).2 h1`. Establish `u2` using `(L.sph _ π₂).2 h2`. Establish `eV` using `(S i w hw).locV P`. Establish `eM` using `(S i w hw).locMu c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `eV` using `[e1, e2]`. Use `⟨?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[T.mono0, eV, WeilDeligne.WD.monomial_sum_iff, WeilDeligne.WD.monomial_char_iff _ _ (L.dim 1 c)]`. Conclude with `⟨weilDeligneParameter_monodromy_zero_of_unramified u1, weilDeligneParameter_monodromy_zero_of_unramified u2⟩`. Establish `hz` using `hmu σ hσ`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `hz` using `[T.inePol _ _ _ hσ, eM]`. Rewrite using `[T.inePol _ _ _ hσ, eV, WeilDeligne.WD.inePol_sum, inePol_of_unr u1 hσ, inePol_char_of_unr u2 (L.dim 1 c) hσ hz, L.dim, L.dim]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inertialType_of_tame_m_alt : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂) (A : NAut N) (T : WDTie N A) (S : Reading T) (i : N.Loc) (w : PlE H) (hw : IsSplitPl H w), TameSplitAll H.E → _root_.GlobalTheory.SplitRead.LawsAlt S → TypeTame S i w hw → (∀ σ ∈ Ine (F := H.E) (N.plOm.1 w), A.inePol (A.locG (A.muC i) w) σ = X - C (iotaO N A i (chi1 N i σ))) → ∀ P : A.AV i, A.mono0 (A.locV i P w) ∧ ∀ σ ∈ Ine (F := H.E) (N.plOm.1 w), A.inePol (A.locV i P w) σ = (X - 1) ^ R.r * (X - C (iotaO N A i (chi1 N i σ))) ^ R.t := by
   intro R H what₂ N A T S i w hw hTS hL hT hmu P
@@ -64,11 +64,11 @@ namespace GlobalTheory.DepthZeroAssembly
 open GlobalTheory.WeilDeligne (WD)
 open GlobalTheory.SplitRead.BlockParam (twistIrr)
 /- English proof (translation)
-Introduce `hL D hS hR k v χ hχ u π ρ f ht hlab hser hsq hnr hx`. Take `⟨π₁, π₂, hsph, e, y, hy1, hy2⟩` from `hS k v χ hχ u π ρ f ht hlab hser hnr hx`. Take `⟨hm1, hl1⟩` from `hR k v π₁ ρ f hser hsq ⟨y, hy1, hy2⟩`. Establish `L : _root_.UpperTheory.One.M.RecLawsH (_root_.GlobalTheory.NPin.weilDeligneOfLocalIrrep hL D (D.naut.plGw k v))` using `(_root_.GlobalTheory.CuspRep.ParLawsT.isRecT_locRecT hL (D.nd.plOm.2 (D.naut.plGw k v))).recLaws`. Establish `e' : Nonempty (π.π.Equiv (GlobalTheory.SmGL.prod₂ π₁.π (twistIrr π₂ χ hχ).π))` using `e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `L.prod D.R.r D.R.t π₁ (twistIrr π₂ χ hχ) π e'`. Establish `e2` using `_root_.UpperTheory.One.M.RecLawsH.twist L D.R.t χ (Irr.ofDet 1 χ hχ) π₂ (twistIrr π₂ χ hχ) (UpperTheory.One.M.goodI_of_sph π₂ hsph) ⟨.refl _⟩ ⟨.refl _⟩`. Establish `hu` using `(L.sph _ π₂).2 hsph`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, WD.monomial_sum_iff, e2, WD.monomial_char_iff _ _ (L.dim _ _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hm1, WD.unr_mono0 _ hu⟩`. Unfold `_root_.GlobalTheory.PendOf.localLabelPolynomial at hl1 hlab ⊢`. Rewrite using `[e1, WD.lab_lpSum, e2, lab_lpChar_of_unr _ _ _ _ hu (L.dim _ _) u hlab, hl1, L.dim]`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem locDZ_of_split_reg_m_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7), _root_.GlobalTheory.PendOf.SplitLocalCondition hL D → _root_.GlobalTheory.PendOf.RegularLocalCondition hL D → _root_.GlobalTheory.PendOf.LocalDatumCondition hL D := by
   intro hL D hS hR k v χ hχ u π ρ f ht hlab hser hsq hnr hx

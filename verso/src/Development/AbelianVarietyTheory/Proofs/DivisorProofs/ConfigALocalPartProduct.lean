@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.ArchWeilCont
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `banach_steinhaus (g := fun i => NormedSpace.inclusionInDoubleDual ℂ V (x i)) h`. Use `⟨C, fun i => NormedSpace.norm_le_dual_bound ℂ (x i) ((norm_nonneg _).trans (hC i)) fun f => ?_⟩` and prove the remaining obligations. Conclude with `((NormedSpace.inclusionInDoubleDual ℂ V (x i)).le_opNorm f).trans (mul_le_mul_of_nonneg_right (hC i) (norm_nonneg _))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem bounded_of_weakly_bounded {V : Type} [SeminormedAddCommGroup V] [NormedSpace ℂ V] {ι : Type} (x : ι → V)
     (h : ∀ T : V →L[ℂ] ℂ, ∃ C, ∀ i, ‖T (x i)‖ ≤ C) : ∃ C, ∀ i, ‖x i‖ ≤ C := by
@@ -23,7 +23,7 @@ theorem bounded_of_weakly_bounded {V : Type} [SeminormedAddCommGroup V] [NormedS
     (mul_le_mul_of_nonneg_right (hC i) (norm_nonneg _))
 
 /- English proof (translation)
-Use `letI : SeminormedAddCommGroup V := p.toAddGroupSeminorm.toSeminormedAddCommGroup`. Use `letI : NormedSpace ℂ V := ⟨fun a v => (map_smul_eq_mul p a v).le⟩`. Conclude with `bounded_of_weakly_bounded x fun T => h T.toLinearMap ‖T‖ (norm_nonneg _) fun v => T.le_opNorm v`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem seminorm_bounded {V : Type} [AddCommGroup V] [Module ℂ V] (p : Seminorm ℂ V) {ι : Type} (x : ι → V)
     (h : ∀ (T : V →ₗ[ℂ] ℂ) (c : ℝ), 0 ≤ c → (∀ v, ‖T v‖ ≤ c * p v) → ∃ C, ∀ i, ‖T (x i)‖ ≤ C) :
@@ -33,11 +33,9 @@ theorem seminorm_bounded {V : Type} [AddCommGroup V] [Module ℂ V] (p : Seminor
   exact bounded_of_weakly_bounded x fun T => h T.toLinearMap ‖T‖ (norm_nonneg _) fun v => T.le_opNorm v
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun x₀ => GlobalTheory.schwartz_continuousAt_of_pointwise_of_bounded Φ x₀ (fun v => ?_) ?_` and prove the remaining obligations. Conclude with `(h ((BoundedContinuousFunction.evalCLM ℂ v).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ V ℂ))).continuousAt`. Introduce `k n`. Take `⟨K, hK, hx⟩` from `exists_compact_mem_nhds x₀`. Take `⟨C, hC⟩` from `seminorm_bounded (SchwartzMap.seminorm ℂ k n) (fun i : K => Φ i) fun T c hc hT => by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `T' : SchwartzMap V ℂ →L[ℂ] ℂ` to `SchwartzMap.mkCLMtoNormedSpace (σ := RingHom.id ℂ) T (map_add T) (map_smul T) ⟨{(k, n)}, c, hc, fun f => by simpa using hT f⟩`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn (h T').continuousOn`. Conclude with `⟨C, fun i => hC i.1 i.2⟩`. Use `⟨C, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hx] with x hxK v`.
-
-Conclude with `(SchwartzMap.le_seminorm ℂ k n (Φ x) v).trans (hC ⟨x, hxK⟩)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_of_weak {X : Type} [TopologicalSpace X] [WeaklyLocallyCompactSpace X] {V : Type} [NormedAddCommGroup V]
     [NormedSpace ℝ V] [FiniteDimensional ℝ V] (Φ : X → SchwartzMap V ℂ)
@@ -62,9 +60,9 @@ def resInf : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → mixedEmbedding.mixedSp
   LinearMap.funLeft ℂ ℂ fun y i => GlobalTheory.HeisSchA.mk ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (y i)) 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Set `z : κ → AF F` to `fun i => GlobalTheory.HeisSchA.mk ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (y i)) 0`. Establish `hz : At (evI F) z` using `fun u hu => funext fun i => GlobalTheory.HeisSchA.at_mk _ u hu`. Establish `hy : (fun i => evI F (z i)) = y` using `funext fun i => (InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply _`. Establish `hrz : r z = r 0` using `by simpa using hr 0 z hz`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `tens (evI F) h r z = r 0 * h y`. Simplify using `only [tens, hy, hrz]`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem resInf_tens {r : (κ → AF F) → ℂ} (hr : ∀ x z, At (evI F) z → r (x + z) = r x)
     (h : (κ → mixedEmbedding.mixedSpace F) → ℂ) : resInf (tens (evI F) h r) = r 0 • h := by
@@ -78,11 +76,11 @@ theorem resInf_tens {r : (κ → AF F) → ℂ} (hr : ∀ x z, At (evI F) z → 
   ring
 
 /- English proof (translation)
-Set `c : SInf F κ →ₗ[ℂ] ((κ → mixedEmbedding.mixedSpace F) → ℂ)` to `{ toFun := fun f => f, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Take `⟨s, hs⟩` from `c.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 DFunLike.coe_injective)`. Establish `hs' : ∀ f : SInf F κ, s f = f` using `fun f => LinearMap.congr_fun hs f`. Establish `key : ∀ r : (κ → AF F) → ℂ, (∀ x z, At (evI F) z → r (x + z) = r x) → ∀ h : SInf F κ, (T.toLinearMap ∘ₗ s ∘ₗ resInf) (tens (evI F) h r) = r 0 * T h` using `fun r hr h => by`. Simplify using `only [LinearMap.comp_apply, resInf_tens hr, map_smul, hs', smul_eq_mul, ContinuousLinearMap.coe_coe]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨T.toLinearMap ∘ₗ s ∘ₗ resInf, fun g _ => ⟨g 0 • T, fun f => ?_⟩, key⟩` and prove the remaining obligations. Establish `e : resInf (pureA F f g) = g 0 • (f : _ → ℂ)`. Use function extensionality and compare the values at `y`. Express the relevant statement in the definitionally equal form `f (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (y i))) * g 0 = g 0 * f y`. Simplify using `only [RingEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [LinearMap.comp_apply, e, map_smul, hs', smul_eq_mul, ContinuousLinearMap.coe_coe, ContinuousLinearMap.smul_apply]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem exists_adm (T : SInf F κ →L[ℂ] ℂ) : ∃ l ∈ (adeleClass F).adm κ, ∀ r : (κ → AF F) → ℂ,
     (∀ x z, At (evI F) z → r (x + z) = r x) → ∀ h : SInf F κ, l (tens (evI F) h r) = r 0 * T h := by
@@ -108,11 +106,11 @@ variable {E : Type} [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 open Classical in
 
 /- English proof (translation)
-Take `⟨_, _, _, _⟩` from `GlobalTheory.UnipCT.topFacts σ X.J`. Use `haveI : LocallyCompactSpace (UAt σ X (evI F)) := (isClosed_UAtSub X (evI F)).locallyCompactSpace`. Rewrite using `[continuousOn_iff_continuous_restrict]`. Use `continuous_of_weak _ fun T => ?_` and prove the remaining obligations. Take `⟨r, h0, hr⟩` from `exists_rest_inf F (Fin n × Fin d)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl, hlT⟩` from `exists_adm T`. Establish `hc` using `(IsUWeilPair.isUSplitting hW).cont l hl _ (hr f).2`. Establish `h1 : Continuous fun x : UAt σ X (evI F) => ((x.1, 1) : UA σ X.J × UA σ W.J)` using `continuous_subtype_val.prodMk continuous_const`. Use `((hc.comp h1).const_mul (r 0)⁻¹).congr fun x => ?_` and prove the remaining obligations. Establish `ha` using `acts_locOpInf (GlobalTheory.ArchLocalityX.acts_arch_left hP F E σ n d X W M ψ χX χW om hcm hψ hW x.1 x.2 f) r (hr f)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(r 0)⁻¹ * l (om (x.1, 1) (tens (evI F) f r)) = T (locOpInf (om (x.1, 1)) f)`. Rewrite using `[ha, hlT r (hr f).1, inv_mul_cancel_left₀ h0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_locOpInf (hP : GlobalTheory.FunPr.Hypotheses₂) {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W)
     {ψ : AddChar (AF F) ℂ} {χX χW : Chr F E} {om : Rep σ X W} (hcm : IsCMExt F E σ) (hψ : IsStd ψ)
@@ -135,11 +133,11 @@ theorem continuousOn_locOpInf (hP : GlobalTheory.FunPr.Hypotheses₂) {n d : ℕ
 open GlobalTheory.ArchUniq Classical in
 
 /- English proof (translation)
-Establish `e : ∀ f : SInf F κ, locOpInf (co.rho ψ (partInf F u)) f = GlobalTheory.HeisSchA.archS f (locV (co.e u).2) (locV (co.e u).1) (trP F κ (locV (co.e u).1) (locV (co.e u).2) / 2)` using `fun f => by`. Use `DFunLike.coe_injective ?_` and prove the remaining obligations. Use `(locOpInf_rho co hψ u f).2.trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Rewrite using `[GlobalTheory.HeisSchA.archS_apply, GlobalTheory.Published.Metaplectic.eChar_apply, schrF, ContinuousLinearMap.neg_apply, GlobalTheory.HeisSchA.trL_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Simplify using `only [trP, dotProduct]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e, GlobalTheory.HeisSchA.archS]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Conclude with `(ContinuousLinearMap.continuous _).comp (ContinuousLinearMap.continuous _)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_locOpInf_rho {V : Type} [AddCommGroup V] [Module (AF F) V] {Bf : V → V → AF F} (co : Darboux Bf κ)
     {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (u : V) :
@@ -159,7 +157,7 @@ theorem continuous_locOpInf_rho {V : Type} [AddCommGroup V] [Module (AF F) V] {B
   exact (ContinuousLinearMap.continuous _).comp (ContinuousLinearMap.continuous _)
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B b a' G G₁ H H' _ e _ ei ev _ X om om' om₁ om₁' hT _ f`. Conclude with `(ei.continuous.comp (continuous_locOpInf_rho G.M.co hT.base.std (shiftA H H' 1))).comp_continuousOn (continuousOn_locOpInf hP G.M hT.base.cm hT.base.std hT.weil f)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem continuousOn_eval_shift : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ)
     (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

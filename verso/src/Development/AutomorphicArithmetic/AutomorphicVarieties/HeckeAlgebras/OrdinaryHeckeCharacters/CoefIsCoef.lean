@@ -24,7 +24,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Take `⟨hc, hf, hlm, -, -, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l c.O`. Use `⟨hc, hf, (CharP.charP_iff_prime_eq_zero hl.out).2 ?_⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (IsLocalRing.residue c.O), IsLocalRing.residue_eq_zero_iff]`. Conclude with `hlm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coef_isCoef (l : ℕ) [hl : Fact l.Prime] (c : Coef l) : Pa.IsCoef l c.O := by
   obtain ⟨hc, hf, hlm, -, -, -⟩ := UpperTheory.V.abelian₂.dvr_finite l c.O
@@ -33,7 +33,7 @@ private theorem coef_isCoef (l : ℕ) [hl : Fact l.Prime] (c : Coef l) : Pa.IsCo
   exact hlm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.LocLanglandsBridge.localLanglandsGL_of_depthZero_zelevinsky_bernstein P.loc.llc P.loc.conv P.loc.dzc P.loc.dzi P.loc.brauer P.loc.chev P.aut.art P.loc.exh P.loc.multi P.loc.cos P.loc.zel P.loc.geo P.loc.bz, P.loc.bz, P.loc.geo, GlobalTheory.Published.TameLocal_of_du …`.
+Supply the required witnesses or components.
 -/
 private theorem locP_of (P : GlobalTheory.Mem.LiteralAutomorphy.LitN) : Pa.LocP :=
   ⟨GlobalTheory.LocLanglandsBridge.localLanglandsGL_of_depthZero_zelevinsky_bernstein P.loc.llc P.loc.conv P.loc.dzc P.loc.dzi P.loc.brauer P.loc.chev P.aut.art

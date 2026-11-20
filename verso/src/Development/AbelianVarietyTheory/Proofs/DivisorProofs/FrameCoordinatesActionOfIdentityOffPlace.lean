@@ -13,7 +13,7 @@ namespace GlobalTheory.InertLocFrame
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {L : Type} [Field L]
 
 /- English proof (translation)
-Rewrite using `[Matrix.add_mul, Matrix.smul_mul, Matrix.one_mul]`. Use extensionality with `i j`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, sub_mul, one_mul, ← hmul, one_mul, sub_self, zero_add, Matrix.mul_apply, Matrix.map_apply, Matrix.mul_apply, map_sum]`. Simplify using `only [Matrix.map_apply, hmul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frame_mul_map (ι : L →+ AE F E) (hmul : ∀ x y, ι (x * y) = ι x * ι y) {m k : ℕ}
     (A : Matrix (Fin m) (Fin m) L) (Y : Matrix (Fin m) (Fin k) L) :
@@ -25,7 +25,7 @@ theorem frame_mul_map (ι : L →+ AE F E) (hmul : ∀ x y, ι (x * y) = ι x * 
   simp only [Matrix.map_apply, hmul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_one, Matrix.mul_add, Matrix.mul_smul, Matrix.mul_one]`. Use extensionality with `i j`. Rewrite using `[Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, sub_mul, one_mul, ← hmul, one_mul, sub_self, zero_add, Matrix.mul_apply, Matrix.map_apply, Matrix.mul_apply, map_sum]`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply, hmul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_mul_frame_transpose (ι : L →+ AE F E) (hmul : ∀ x y, ι (x * y) = ι x * ι y) {m k : ℕ}
     (C : Matrix (Fin k) (Fin k) L) (Y : Matrix (Fin m) (Fin k) L) :
@@ -37,7 +37,7 @@ theorem map_mul_frame_transpose (ι : L →+ AE F E) (hmul : ∀ x y, ι (x * y)
   simp only [Matrix.map_apply, Matrix.transpose_apply, hmul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `mat g * xm ι PV PW x * (mat h)ᵀ = _`. Rewrite using `[xm_apply, hg, hh, frame_mul_map ι hmul, map_mul_frame_transpose ι hmul]`. Simplify using `only [Matrix.mul_assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem actAB_xm_frame (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (L : Type) [Field L]
@@ -53,7 +53,7 @@ theorem actAB_xm_frame (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-The claim follows from `actAB_xm_frame`.
+A detailed English derivation is pending.
 -/
 example : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (L : Type) [Field L]
     (ι : L →+ AE F E), (∀ x y, ι (x * y) = ι x * ι y) →

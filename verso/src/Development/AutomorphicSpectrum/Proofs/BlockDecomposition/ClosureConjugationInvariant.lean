@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.PlaneSA.MemConj
 variable {F : Type} [Field F] [NumberField F] {d β : F}
 
 /- English proof (translation)
-Consider the cases of `u with`. Consider the case `inl w`. Conclude with `(Function.surjective_eval w).denseRange.comp (InfiniteAdeleRing.denseRange_algebraMap F) (continuous_apply w)`. Consider the case `inr v => exact HeightOneSpectrum.denseRange_algebraMap (K := F) v`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem denseRange_algebraMap_Kp (u : Pl F) : DenseRange (algebraMap F (Kp u)) := by
   cases u with
@@ -25,7 +25,7 @@ def qinv {K : Type} [Field K] [Algebra F K] (e : Q d β K) : Q d β K :=
   algebraMap K (Q d β K) (qn e)⁻¹ * star e
 
 /- English proof (translation)
-Establish `h1 : e * algebraMap K (Q d β K) (qn e)⁻¹ = algebraMap K (Q d β K) (qn e)⁻¹ * e` using `(Algebra.commutes _ _).symm`. Rewrite using `[qinv, ← mul_assoc, h1, mul_assoc, mul_star_eq, ← map_mul, inv_mul_cancel₀ h, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_qinv {K : Type} [Field K] [Algebra F K] {e : Q d β K} (h : qn e ≠ 0) :
     e * qinv e = 1 := by
@@ -34,14 +34,14 @@ theorem mul_qinv {K : Type} [Field K] [Algebra F K] {e : Q d β K} (h : qn e ≠
   rw [qinv, ← mul_assoc, h1, mul_assoc, mul_star_eq, ← map_mul, inv_mul_cancel₀ h, map_one]
 
 /- English proof (translation)
-Rewrite using `[qinv, mul_assoc, star_mul_eq, ← map_mul, inv_mul_cancel₀ h, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qinv_mul {K : Type} [Field K] [Algebra F K] {e : Q d β K} (h : qn e ≠ 0) :
     qinv e * e = 1 := by
   rw [qinv, mul_assoc, star_mul_eq, ← map_mul, inv_mul_cancel₀ h, map_one]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem qinv_unique {K : Type} [Field K] [Algebra F K] {e e' : Q d β K} (h : qn e ≠ 0)
     (h' : e' * e = 1) : qinv e = e' := by
@@ -49,7 +49,7 @@ theorem qinv_unique {K : Type} [Field K] [Algebra F K] {e e' : Q d β K} (h : qn
     _ = e' := by rw [mul_assoc, mul_qinv h, mul_one]
 
 /- English proof (translation)
-Use `⟨?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[qn_mul, qn_mul, hh.1, mul_one, ← qn_mul, hpq, qn_one]`. Rewrite using `[map_mul, map_mul, hh.2 u hu, mul_one, ← map_mul, hpq, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem_SuppAt {T : Set (Pl F)} {p q h : Q d β (AF F)} (hpq : p * q = 1)
     (hh : h ∈ SuppAt d β T) : p * h * q ∈ SuppAt d β T := by
@@ -58,9 +58,9 @@ theorem conj_mem_SuppAt {T : Set (Pl F)} {p q h : Q d β (AF F)} (hpq : p * q = 
   · rw [map_mul, map_mul, hh.2 u hu, mul_one, ← map_mul, hpq, map_one]
 
 /- English proof (translation)
-Take `⟨γ, hγ, h, hh, rfl⟩` from `hx`. Establish `r1 : (rat δ : Q d β (AF F)) * rat δ' = 1` using `by rw [← map_mul, h1, map_one]`. Establish `r2 : (rat δ' : Q d β (AF F)) * rat δ = 1` using `by rw [← map_mul, h2, map_one]`. Use `⟨δ * γ * δ', ?_, rat δ * h * rat δ', conj_mem_SuppAt r1 hh, ?_⟩` and prove the remaining obligations. Rewrite using `[qn_mul, qn_mul, hγ, mul_one, ← qn_mul, h1, qn_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[r2, mul_one]`. Simplify using `only [mul_assoc]`. Use `_ = rat δ * rat γ * rat δ' * (rat δ * h * rat δ') := by simp only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_mem_SAQ (s : Pl F) {δ δ' : Q d β F} (h1 : δ * δ' = 1) (h2 : δ' * δ = 1)
     {x : Q d β (AF F)} (hx : x ∈ SAQ d β s) :
@@ -77,7 +77,7 @@ theorem conj_mem_SAQ (s : Pl F) {δ δ' : Q d β F} (h1 : δ * δ' = 1) (h2 : δ
       _ = rat δ * rat γ * rat δ' * (rat δ * h * rat δ') := by simp only [mul_assoc]
 
 /- English proof (translation)
-Establish `hc : Continuous fun y : Q d β (AF F) => (rat δ : Q d β (AF F)) * y * rat δ'` using `(continuous_const.mul continuous_id).mul continuous_const`. Establish `hsub : closure (SAQ d β s) ⊆ (fun y : Q d β (AF F) => (rat δ : Q d β (AF F)) * y * rat δ') ⁻¹' closure (SAQ d β s)`. Use `closure_minimal (fun y hy => subset_closure ?_) (isClosed_closure.preimage hc)` and prove the remaining obligations. Conclude with `conj_mem_SAQ s h1 h2 hy`. Conclude with `hsub hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conj_mem_closure (s : Pl F) {δ δ' : Q d β F} (h1 : δ * δ' = 1) (h2 : δ' * δ = 1)
     {x : Q d β (AF F)} (hx : x ∈ closure (SAQ d β s)) :
@@ -94,9 +94,7 @@ def psi (w : Pl F) (y : Q d β (Kp w)) : Q d β (AF F) :=
   ⟨1 + inc w (y.re - 1), inc w y.imI, inc w y.imJ, inc w y.imK⟩
 
 /- English proof (translation)
-Rewrite using `[continuous_q_iff]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `continuous_const.add ((continuous_inc w).comp (continuous_re.sub continuous_const))`. Conclude with `(continuous_inc w).comp continuous_imI`. Conclude with `(continuous_inc w).comp continuous_imJ`.
-
-Conclude with `(continuous_inc w).comp continuous_imK`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_psi (w : Pl F) : Continuous (psi (d := d) (β := β) w) := by
   rw [continuous_q_iff]
@@ -107,17 +105,17 @@ theorem continuous_psi (w : Pl F) : Continuous (psi (d := d) (β := β) w) := by
   · exact (continuous_inc w).comp continuous_imK
 
 /- English proof (translation)
-Establish `key : ∀ u, u ≠ w → qmap (proj u) x = 1` using `fun u hu => hx.2 u (by simpa using hu)`. Use `ext`. Use `adele_ext fun u => ?_` and prove the remaining obligations. Distinguish the cases in `h : u = w`. Substitute `h` using the available equality.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[psi, qmap, proj_inc_same]`. Use `congrArg (fun z => z.re) (key u h)` as an intermediate fact. Simplify using `only [qmap] at this`. Simplify `this.symm` using `[psi, qmap, proj_inc_ne h]`. Use `adele_ext fun u => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : u = w`. Substitute `h` using the available equality. Simplify using `[psi, qmap, proj_inc_same]`. Use `congrArg (fun z => z.imI) (key u h)` as an intermediate fact. Simplify using `only [qmap] at this`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `this.symm` using `[psi, qmap, proj_inc_ne h]`. Use `adele_ext fun u => ?_` and prove the remaining obligations. Distinguish the cases in `h : u = w`. Substitute `h` using the available equality. Simplify using `[psi, qmap, proj_inc_same]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun z => z.imJ) (key u h)` as an intermediate fact. Simplify using `only [qmap] at this`. Simplify `this.symm` using `[psi, qmap, proj_inc_ne h]`. Use `adele_ext fun u => ?_` and prove the remaining obligations. Distinguish the cases in `h : u = w`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[psi, qmap, proj_inc_same]`. Use `congrArg (fun z => z.imK) (key u h)` as an intermediate fact. Simplify using `only [qmap] at this`. Simplify `this.symm` using `[psi, qmap, proj_inc_ne h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem psi_proj {w : Pl F} {x : Q d β (AF F)} (hx : x ∈ SuppAt d β {w}) :
     psi w (qmap (proj w) x) = x := by
@@ -149,16 +147,16 @@ theorem psi_proj {w : Pl F} {x : Q d β (AF F)} (hx : x ∈ SuppAt d β {w}) :
       simpa [psi, qmap, proj_inc_ne h] using this.symm
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [rat, qmap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem qmap_proj_rat (w : Pl F) (δ : Q d β F) :
     qmap (proj w) (rat δ : Q d β (AF F)) = rat δ := by
   ext <;> simp [rat, qmap]
 
 /- English proof (translation)
-Establish `h1` using `continuous_re (d := d) (β := β) (R := K)`. Establish `h2` using `continuous_imI (d := d) (β := β) (R := K)`. Establish `h3` using `continuous_imJ (d := d) (β := β) (R := K)`. Establish `h4` using `continuous_imK (d := d) (β := β) (R := K)`. Unfold `qn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem continuous_qn {K : Type} [CommRing K] [Algebra F K] [TopologicalSpace K]
     [IsTopologicalRing K] : Continuous (qn : Q d β K → K) := by
@@ -170,9 +168,9 @@ theorem continuous_qn {K : Type} [CommRing K] [Algebra F K] [TopologicalSpace K]
   fun_prop
 
 /- English proof (translation)
-Rewrite using `[continuous_q_iff]`. Simplify using `only [QuaternionAlgebra.re_star, QuaternionAlgebra.imI_star, QuaternionAlgebra.imJ_star, QuaternionAlgebra.imK_star]`. Establish `h1` using `continuous_re (d := d) (β := β) (R := K)`. Establish `h2` using `continuous_imI (d := d) (β := β) (R := K)`. Establish `h3` using `continuous_imJ (d := d) (β := β) (R := K)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `continuous_imK (d := d) (β := β) (R := K)`. Conclude with `⟨h1.add (continuous_const.mul h2), h2.neg, h3.neg, h4.neg⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem continuous_star_q {K : Type} [CommRing K] [Algebra F K] [TopologicalSpace K]
     [IsTopologicalRing K] : Continuous (star : Q d β K → Q d β K) := by
@@ -186,7 +184,7 @@ theorem continuous_star_q {K : Type} [CommRing K] [Algebra F K] [TopologicalSpac
   exact ⟨h1.add (continuous_const.mul h2), h2.neg, h3.neg, h4.neg⟩
 
 /- English proof (translation)
-Rewrite using `[continuous_q_iff]`. Simplify using `only [QuaternionAlgebra.algebraMap_eq]`. Conclude with `⟨continuous_id, continuous_const, continuous_const, continuous_const⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem continuous_algebraMap_q {K : Type} [CommRing K] [Algebra F K] [TopologicalSpace K]
     [IsTopologicalRing K] : Continuous (algebraMap K (Q d β K)) := by
@@ -195,7 +193,7 @@ theorem continuous_algebraMap_q {K : Type} [CommRing K] [Algebra F K] [Topologic
   exact ⟨continuous_id, continuous_const, continuous_const, continuous_const⟩
 
 /- English proof (translation)
-Establish `h1 : ContinuousAt (fun x : Q d β K => (qn x)⁻¹) e` using `continuous_qn.continuousAt.inv₀ h`. Establish `h2 : ContinuousAt (fun x : Q d β K => algebraMap K (Q d β K) (qn x)⁻¹) e` using `continuous_algebraMap_q.continuousAt.comp h1`. Conclude with `h2.mul continuous_star_q.continuousAt`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousAt_qinv {K : Type} [Field K] [Algebra F K] [TopologicalSpace K]
     [IsTopologicalDivisionRing K] {e : Q d β K} (h : qn e ≠ 0) : ContinuousAt qinv e := by
@@ -206,9 +204,9 @@ theorem continuousAt_qinv {K : Type} [Field K] [Algebra F K] [TopologicalSpace K
   exact h2.mul continuous_star_q.continuousAt
 
 /- English proof (translation)
-Establish `D` using `denseRange_algebraMap_Kp (F := F) w`. Establish `h` using `D.prodMap (D.prodMap (D.prodMap D))`. Establish `h2` using `((qHomeo (d := d) (β := β) (R := Kp w)).symm.surjective.denseRange).comp h (qHomeo (d := d) (β := β) (R := Kp w)).symm.continuous`. Use `Dense.mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨a, b, c, e⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨a, b, c, e⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem denseRange_rat (w : Pl F) : DenseRange (rat : Q d β F → Q d β (Kp w)) := by
   have D := denseRange_algebraMap_Kp (F := F) w
@@ -220,25 +218,23 @@ theorem denseRange_rat (w : Pl F) : DenseRange (rat : Q d β F → Q d β (Kp w)
   exact ⟨⟨a, b, c, e⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `F _ _ d β _ s w a ha c hc`. Establish `ha' : ((c⁻¹ : (Q d β (AF F))ˣ) : Q d β (AF F)) * a * (c : Q d β (AF F)) ∈ SuppAt d β {w}` using `conj_mem_SuppAt c.inv_mul ha`. Take `⟨a', ea'⟩ : ∃ a' : Q d β (AF F), a' = ((c⁻¹ : (Q d β (AF F))ˣ) : Q d β (AF F)) * a * (c : Q d β (AF F))` from `⟨_, rfl⟩`. Rewrite `ha'`, `hc` using `[← ea']`. Take `⟨y, ey⟩ : ∃ y : Q d β (Kp w), y = qmap (proj w) a'` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨cw, ecw⟩ : ∃ cw : Q d β (Kp w), cw = qmap (proj w) (c : Q d β (AF F))` from `⟨_, rfl⟩`. Take `⟨cw', ecw'⟩ : ∃ cw' : Q d β (Kp w), cw' = qmap (proj w) ((c⁻¹ : (Q d β (AF F))ˣ) : Q d β (AF F))` from `⟨_, rfl⟩`. Establish `h1 : cw * cw' = 1` using `by rw [ecw, ecw', ← map_mul, c.mul_inv, map_one]`. Establish `h2 : cw' * cw = 1` using `by rw [ecw, ecw', ← map_mul, c.inv_mul, map_one]`. Establish `hq : qn cw ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Use `congrArg qn h1` as an intermediate fact. Rewrite `this` using `[qn_mul, h0, zero_mul, qn_one]`. Conclude with `zero_ne_one this`. Establish `hinv : qinv cw = cw'` using `qinv_unique hq h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : y = cw' * qmap (proj w) a * cw` using `by rw [ey, ea', map_mul, map_mul, ecw, ecw']`. Establish `hga : psi w (cw * y * qinv cw) = a`. Establish `: cw * y * qinv cw = qmap (proj w) a`. Rewrite using `[hinv, hy]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, psi_proj ha]`. Establish `hcont : ContinuousAt (fun e : Q d β (Kp w) => psi w (e * y * qinv e)) cw` using `(continuous_psi w).continuousAt.comp ((continuousAt_id.mul continuousAt_const).mul (continuousAt_qinv hq))`. Establish `hcl : cw ∈ closure (Set.range (rat : Q d β F → Q d β (Kp w)))` using `denseRange_rat w cw`. Use `haveI : (𝓝[Set.range (rat : Q d β F → Q d β (Kp w))] cw).NeBot := mem_closure_iff_nhdsWithin_neBot.1 hcl`. Establish `htend : Filter.Tendsto (fun e : Q d β (Kp w) => psi w (e * y * qinv e)) (𝓝[Set.range (rat : Q d β F → Q d β (Kp w))] cw) (𝓝 a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hcont.tendsto` as an intermediate fact. Rewrite `this` using `[hga]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Establish `hopen : IsOpen {e : Q d β (Kp w) | qn e ≠ 0}` using `isOpen_ne.preimage continuous_qn`. Rewrite using `[← closure_closure]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `mem_closure_of_tendsto htend ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (hopen.mem_nhds hq)] with e he he0`. Take `⟨δ, rfl⟩` from `he`. Establish `hδ : qn δ ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `he0` to reduce the goal to its premises. Rewrite using `[rat, qn_qmap, h0, map_zero]`. Establish `i1 : δ * qinv δ = 1` using `mul_qinv hδ`. Establish `i2 : qinv δ * δ = 1` using `qinv_mul hδ`. Establish `r1 : (rat δ : Q d β (AF F)) * rat (qinv δ) = 1` using `by rw [← map_mul, i1, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem` using `conj_mem_closure s i1 i2 hc`. Establish `hsupp` using `conj_mem_SuppAt r1 ha'`. Establish `hw : (qinv (rat δ : Q d β (Kp w))) = rat (qinv δ)` using `qinv_unique he0 (by rw [← map_mul, i2, map_one])`. Establish `: psi w ((rat δ : Q d β (Kp w)) * y * qinv (rat δ : Q d β (Kp w))) = (rat δ : Q d β (AF F)) * a' * rat (qinv δ)`. Rewrite using `[hw, ey, ← qmap_proj_rat w δ, ← qmap_proj_rat w (qinv δ), ← map_mul, ← map_mul]`.
-
-Conclude with `psi_proj hsupp`. Rewrite using `[this]`. Conclude with `hmem`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_closure_of_conj_mem : ∀ {F : Type} [Field F] [NumberField F] (d β : F), (∀ x : Q d β F, qn x = 0 → x = 0) →
     ∀ s w : Pl F, ∀ a ∈ SuppAt d β {w}, ∀ c : (Q d β (AF F))ˣ,

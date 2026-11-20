@@ -6,7 +6,7 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-The claim follows from `top6 fTfact hG schDeriv (derivOne wtc) hId hC`.
+A detailed English derivation is pending.
 -/
 theorem top7 (hG : GenA) (hId : GIdil) (hC : PositivityTheory.PfSWUS.CoefND) :
     ∀ D n V ψ χ θ μ ω H l s ν Φ, PositivityTheory.PfSWUS.Std D n V ψ χ θ μ ω H l s ν Φ → PositivityTheory.PfSWUS.InRange V n → 1 ≤ n →

@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Ferr
 open UpperTheory.V.FW
 
 /- English proof (translation)
-Introduce `x hx hne`. Use `set n := ⌊x⌋₊ with hn`. Establish `h0 : (0 : ℝ) ≤ x - n` using `sub_nonneg.mpr (Nat.floor_le hx)`. Establish `h1 : x - n ≤ 1`. Use `Nat.lt_floor_add_one x` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs : 0 ≤ Real.sin (Real.pi * (x - n))` using `Real.sin_nonneg_of_nonneg_of_le_pi (mul_nonneg Real.pi_pos.le h0) (mul_le_of_le_one_right Real.pi_pos.le h1)`. Establish `he : Real.sin (Real.pi * x) = (-1) ^ n * Real.sin (Real.pi * (x - n))`. Rewrite using `[← Real.sin_add_nat_mul_pi]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hne`, the goal using `[he]`. Establish `hpos : 0 < Real.sin (Real.pi * (x - n))` using `lt_of_le_of_ne hs (fun h => hne (by rw [← h, mul_zero]))`. Break down `Nat.even_or_odd n with h | h` into its components or cases. Rewrite using `[h.neg_one_pow, one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun hlt => absurd hlt (not_lt.mpr hpos.le), fun ho => absurd ho (Nat.not_odd_iff_even.mpr h)⟩`. Rewrite using `[h.neg_one_pow]`. Conclude with `⟨fun _ => h, fun _ => by linarith⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.sinSign :
     ∀ x : ℝ, 0 ≤ x → Real.sin (Real.pi * x) ≠ 0 → (Real.sin (Real.pi * x) < 0 ↔ Odd ⌊x⌋₊) := by

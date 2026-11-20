@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `n a G hG`. Establish `ha : a ≤ n`. Establish `h` using `G.card_le_univ`. Rewrite `h` using `[Fintype.card_fin, hG]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : Fintype.card {x : Fin n // (x : ℕ) < a} = a`. Establish `e : Fin a ≃ {x : Fin n // (x : ℕ) < a}` using `{ toFun := fun i => ⟨Fin.castLE ha i, i.isLt⟩ invFun := fun x => ⟨x.1.1, x.2⟩ left_inv := fun i => rfl right_inv := fun x => rfl }`. Rewrite using `[← Fintype.card_congr e, Fintype.card_fin]`. Establish `hq : Fintype.card {x : Fin n // x ∈ G} = a`. Rewrite using `[Fintype.card_coe, hG]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `e : {x : Fin n // (x : ℕ) < a} ≃ {x : Fin n // x ∈ G}` to `Fintype.equivOfCardEq (hp.trans hq.symm)`. Use `⟨e.extendSubtype, fun j => ⟨fun h => e.extendSubtype_mem j h, fun h => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`. Conclude with `e.extendSubtype_not_mem j h' h`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.DYdc4.main :
     ∀ (n a : ℕ) (G : Finset (Fin n)),

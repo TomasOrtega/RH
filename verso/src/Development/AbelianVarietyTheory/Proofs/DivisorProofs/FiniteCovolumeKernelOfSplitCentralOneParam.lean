@@ -6,13 +6,13 @@ namespace GlobalTheory.KernelCovolume
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-The claim follows from `mul_left_cancel (a := c 0) (by rw [mul_one, ← hca, add_zero])`.
+A detailed English derivation is pending.
 -/
 lemma c_zero {c : ℝ → G} (hca : ∀ x y, c (x + y) = c x * c y) : c 0 = 1 :=
   mul_left_cancel (a := c 0) (by rw [mul_one, ← hca, add_zero])
 
 /- English proof (translation)
-The claim follows from `inv_eq_of_mul_eq_one_right (by rw [← hca, add_neg_cancel, c_zero hca])`.
+A detailed English derivation is pending.
 -/
 lemma c_neg {c : ℝ → G} (hca : ∀ x y, c (x + y) = c x * c y) (r : ℝ) : (c r)⁻¹ = c (-r) :=
   inv_eq_of_mul_eq_one_right (by rw [← hca, add_neg_cancel, c_zero hca])
@@ -23,7 +23,7 @@ def cHom (c : ℝ → G) (hca : ∀ x y, c (x + y) = c x * c y) : Multiplicative
   map_mul' x y := hca _ _
 
 /- English proof (translation)
-Establish `h` using `map_zpow (cHom c hca) (Multiplicative.ofAdd (1:ℝ)) n`. Rewrite `h` using `[← ofAdd_zsmul, zsmul_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma c_int {c : ℝ → G} (hca : ∀ x y, c (x + y) = c x * c y) (n : ℤ) : c n = c 1 ^ n := by
   have h := map_zpow (cHom c hca) (Multiplicative.ofAdd (1:ℝ)) n
@@ -31,7 +31,7 @@ lemma c_int {c : ℝ → G} (hca : ∀ x y, c (x + y) = c x * c y) (n : ℤ) : c
   exact h
 
 /- English proof (translation)
-Rewrite using `[hH, hsa, hsc]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma mem_of_split {H : Subgroup G} {s : G → ℝ} {c : ℝ → G}
     (hsa : ∀ g h, s (g * h) = s g + s h) (hsc : ∀ t, s (c t) = t) (hH : ∀ g, g ∈ H ↔ s g = 0)
@@ -64,49 +64,41 @@ open scoped Pointwise
 open GlobalTheory.KernelCovolume in
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ H Γ Λ s c hs hsa hc hca hcc hsc hH hΓ hΛ _hdisc hfin π D hπ hD`. Establish `hcl : IsClosed (H : Set G)`. Establish `: (H : Set G) = s ⁻¹' {0}` using `by ext g; exact hH g`. Rewrite using `[this]`. Conclude with `isClosed_singleton.preimage hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : LocallyCompactSpace H := hcl.locallyCompactSpace`. Use `haveI : SigmaCompactSpace H := hcl.sigmaCompactSpace`. Use `haveI : SigmaFinite π := inferInstance`. Use `set φ : H × ℝ ≃ₜ G := splitHomeo hs hsa hc hca hsc hH with hφdef`. Establish `hφ : ∀ p : H × ℝ, φ p = (p.1 : G) * c p.2` using `fun p => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set μ0 : Measure (H × ℝ) := π.prod volume with hμ0`. Use `set ν : Measure G := μ0.map φ with hνdef`. Establish `hνapp : ∀ A, ν A = μ0 (φ ⁻¹' A)` using `fun A => φ.toMeasurableEquiv.map_apply A`. Establish `hmulφ : ∀ (γ : H) (r : ℝ) (p : H × ℝ), (γ : G) * c r * φ p = φ (γ * p.1, r + p.2)`. Introduce `γ r p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hφ, Subgroup.coe_mul, hca, mul_assoc]`. Rewrite using `[← mul_assoc (c r) (p.1 : G), hcc r, mul_assoc]`. Use `haveI : (Subgroup.zpowers (c 1)).Normal := ⟨fun n hn g => by`. Take `⟨k, rfl⟩` from `Subgroup.mem_zpowers_iff.1 hn`. Establish `hcomm : Commute ((c 1) ^ k) g` using `(Commute.zpow_left (hcc 1 g) k)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[hcomm.symm.eq, mul_assoc, mul_inv_cancel, mul_one]`. Conclude with `Subgroup.zpow_mem_zpowers _ _⟩`. Establish `hdec : ∀ l ∈ Λ, ∃ γ ∈ Γ, ∃ n : ℤ, l = γ * c n`. Introduce `l hl`. Rewrite `hl` using `[hΛ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components.
 
-Take `⟨y, hy, z, hz, rfl⟩` from `Subgroup.mem_sup_of_normal_right.1 hl`. Take `⟨n, rfl⟩` from `Subgroup.mem_zpowers_iff.1 hz`. Conclude with `⟨y, hy, n, by rw [c_int hca]⟩`. Establish `hmemΛ : ∀ γ ∈ Γ, ∀ n : ℤ, γ * c n ∈ Λ`. Introduce `γ hγ n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hΛ, c_int hca]`. Conclude with `Subgroup.mul_mem _ (Subgroup.mem_sup_left hγ) (Subgroup.mem_sup_right (Subgroup.zpow_mem_zpowers _ _))`. Establish `hνHaar : ν.IsHaarMeasure` using `by haveI : IsFiniteMeasureOnCompacts ν := Measure.IsFiniteMeasureOnCompacts.map μ0 φ haveI : ν.IsOpenPosMeasure := φ.continuous.isOpenPosMeasure_map φ.surjective haveI : ν.IsMulLeftInvariant := ⟨fun g => by`. Take `⟨p0, rfl⟩` from `φ.surjective g`. Use extensionality with `A hA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[Measure.map_apply (measurable_const_mul _) hA, hνapp, hνapp]`. Establish `hpre : φ ⁻¹' ((fun x => φ p0 * x) ⁻¹' A) = (Prod.map (fun h : H => p0.1 * h) (fun t : ℝ => p0.2 + t)) ⁻¹' (φ ⁻¹' A)`. Use extensionality with `p`. Simplify using `only [Set.mem_preimage, Prod.map]`. Rewrite using `[show φ p0 = (p0.1 : G) * c p0.2 from rfl, hmulφ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hT : μ0.map (Prod.map (fun h : H => p0.1 * h) (fun t : ℝ => p0.2 + t)) = μ0`. Rewrite using `[hμ0, ← Measure.map_prod_map π volume (measurable_const_mul _) (measurable_const_add _), map_mul_left_eq_self, map_add_left_eq_self]`. Rewrite using `[hpre, ← Measure.map_apply ((measurable_const_mul _).prodMap (measurable_const_add _)) (φ.measurable hA), hT]⟩`. Conclude with `⟨⟩`. Use `set S : Set (H × ℝ) := D ×ˢ Set.Ico (0:ℝ) 1 with hS`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `set D' : Set G := φ.symm ⁻¹' S with hD'`. Establish `hφD' : φ ⁻¹' D' = S` using `by ext p; simp [hD']`. Establish `hsub : ∀ (l : Λ) (γ : G) (hγ : γ ∈ Γ) (n : ℤ), (l : G) = γ * c n → ∀ p : H × ℝ, φ p ∈ l • D' → (⟨γ, hΓ hγ⟩ : H)⁻¹ * p.1 ∈ D ∧ ((-n : ℤ) : ℝ) + p.2 ∈ Set.Ico (0:ℝ) 1`. Introduce `l γ hγ n e p hp`. Rewrite `hp` using `[Set.mem_smul_set_iff_inv_smul_mem]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : l⁻¹ • φ p = φ ((⟨γ, hΓ hγ⟩ : H)⁻¹ * p.1, ((-n : ℤ) : ℝ) + p.2)`. Rewrite using `[← hmulφ, Subgroup.smul_def, smul_eq_mul]`. Use `congr 1`. Simplify using `only [Subgroup.coe_inv, e, mul_inv_rev, c_neg hca, Int.cast_neg]`. Conclude with `hcc _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `hp` using `[hx]`. Simplify `hp` using `[hD', hS]`. Establish `hFD : IsFundamentalDomain Λ D' ν`. Use `{ nullMeasurableSet := ?_, ae_covers := ?_, aedisjoint := ?_ }` and prove the remaining obligations. Conclude with `(hD.nullMeasurableSet.prod measurableSet_Ico.nullMeasurableSet).preimage (φ.toMeasurableEquiv.quasiMeasurePreserving_symm μ0)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hνdef, show (⇑φ : H × ℝ → G) = ⇑φ.toMeasurableEquiv from rfl, φ.toMeasurableEquiv.measurableEmbedding.ae_map_iff] filter_upwards [Measure.quasiMeasurePreserving_fst.ae hD.ae_covers] with p hp`. Take `⟨γ, hγ⟩` from `hp`. Establish `hγΓ : ((γ : H) : G) ∈ Γ` using `Subgroup.mem_subgroupOf.1 γ.2`. Use `⟨⟨((γ : H) : G) * c ((-⌊p.2⌋ : ℤ) : ℝ), hmemΛ _ hγΓ _⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.smul_def, smul_eq_mul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Use `show _ ∈ φ.symm ⁻¹' S`. Rewrite using `[Set.mem_preimage, show (φ.toMeasurableEquiv p) = φ p from rfl, hmulφ, φ.symm_apply_apply]`. Establish `hfr : ((-⌊p.2⌋ : ℤ) : ℝ) + p.2 = Int.fract p.2`. Rewrite using `[Int.cast_neg, Int.fract]`. Expand and normalize the polynomial expressions, which then agree.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hfr]`. Conclude with `Set.mk_mem_prod hγ ⟨Int.fract_nonneg _, Int.fract_lt_one _⟩`. Introduce `l1 l2 hne`. Take `⟨γ1, hγ1, n1, e1⟩` from `hdec l1 l1.2`. Take `⟨γ2, hγ2, n2, e2⟩` from `hdec l2 l2.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ν ((l1 • D') ∩ (l2 • D')) = 0`. Rewrite using `[hνapp]`. Distinguish the cases in `hn : n1 = n2`. Substitute `hn` using the available equality. Establish `hγne : γ1 ≠ γ2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hne (Subtype.ext (e1.trans e2.symm))`. Set `g1 : Γ.subgroupOf H` to `⟨⟨γ1, hΓ hγ1⟩, Subgroup.mem_subgroupOf.2 hγ1⟩`. Set `g2 : Γ.subgroupOf H` to `⟨⟨γ2, hΓ hγ2⟩, Subgroup.mem_subgroupOf.2 hγ2⟩`. Establish `hg : g1 ≠ g2` using `fun h => hγne (congrArg (fun x : Γ.subgroupOf H => ((x : H) : G)) h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : π (g1 • D ∩ g2 • D) = 0` using `hD.aedisjoint hg`. Use `measure_mono_null (t := (g1 • D ∩ g2 • D) ×ˢ Set.univ) ?_ ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp1, hp2⟩`. Use `Set.mk_mem_prod ⟨?_, ?_⟩ (Set.mem_univ _)` and prove the remaining obligations. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`.
-
-Conclude with `(hsub l1 γ1 hγ1 n1 e1 p hp1).1`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Conclude with `(hsub l2 γ2 hγ2 n1 e2 p hp2).1`. Rewrite using `[hμ0, Measure.prod_prod, h0, zero_mul]`. Use `measure_mono_null (t := ∅) ?_ measure_empty` and prove the remaining obligations.
-
-Introduce and unpack `p ⟨hp1, hp2⟩`. Establish `a1` using `(hsub l1 γ1 hγ1 n1 e1 p hp1).2`. Establish `a2` using `(hsub l2 γ2 hγ2 n2 e2 p hp2).2`. Simplify using `only [Set.mem_Ico, Int.cast_neg] at a1 a2`. Establish `b1 : (n1 : ℝ) < n2 + 1` using `by linarith`.
-
-Establish `b2 : (n2 : ℝ) < n1 + 1` using `by linarith`. Establish `c1 : n1 < n2 + 1` using `by exact_mod_cast b1`. Establish `c2 : n2 < n1 + 1` using `by exact_mod_cast b2`. Conclude with `absurd (by omega : n1 = n2) hn`. Establish `hfinν` using `hfin ν D' hνHaar hFD`.
-
-Establish `hνD' : ν D' = π D`. Rewrite using `[hνapp, hφD', hS, hμ0, Measure.prod_prod, Real.volume_Ico, sub_zero, ENNReal.ofReal_one, mul_one]`. Rewrite `hfinν` using `[hνD']`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.finiteCovolume_kernel : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (H Γ Λ : Subgroup G) (s : G → ℝ) (c : ℝ → G), Continuous s → (∀ g h, s (g * h) = s g + s h) → Continuous c → (∀ x y, c (x + y) = c x * c y) → (∀ t g, c t * g = g * c t) → (∀ t, s (c t) = t) → (∀ g, g ∈ H ↔ s g = 0) → Γ ≤ H → Λ = Γ ⊔ Subgroup.zpowers (c 1) → DiscreteTopology Λ → (∀ (ν : Measure G) (D : Set G), ν.IsHaarMeasure → IsFundamentalDomain Λ D ν → ν D ≠ ⊤) → ∀ (π : Measure H) (D : Set H), π.IsHaarMeasure → IsFundamentalDomain (Γ.subgroupOf H) D π → π D ≠ ⊤ := by
   intro G _ _ _ _ _ _ _ _ H Γ Λ s c hs hsa hc hca hcc hsc hH hΓ hΛ _hdisc hfin π D hπ hD

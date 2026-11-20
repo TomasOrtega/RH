@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ProductFormulaHaar.Haar
 namespace PI.ProdFormulaE.HaarAlgP
 
 /- English proof (translation)
-Use `haarAlg_of ?_ ?_` and prove the remaining obligations. Introduce `K _ _ _ _ E _ _ _ _ _ _ n b μ _ i a ha`. Conclude with `PI.ProdFormulaE.HaarBox.scale_box b μ i a ha`. Introduce `K _ _ _ _ E _ _ _ _ n b t`. Conclude with `PI.ProdFormulaE.HaarBox.transvection_box b t`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem haarScaling : St.HaarAlg := by
   refine haarAlg_of ?_ ?_

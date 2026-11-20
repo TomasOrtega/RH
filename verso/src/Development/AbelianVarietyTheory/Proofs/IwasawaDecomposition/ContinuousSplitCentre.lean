@@ -17,9 +17,9 @@ namespace GlobalTheory.OneRep.SplitTwist
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Establish `e : splitCentre E a = fun t : ℝ => GeneralLinearGroup.scalar (Fin a) (infId E (expU fun _ : InfinitePlace E => (t : ℂ)))`. Use function extensionality and compare the values at `splitCentre_eq_scalar`. Rewrite using `[e]`. Use `Continuous.units_map _ ?_ |>.comp ((continuous_infId E).comp (continuous_expU.comp (continuous_pi fun _ => Complex.continuous_ofReal)))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun x : Ad E => Matrix.diagonal fun _ : Fin a => x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(continuous_pi fun _ => continuous_id).matrix_diagonal`.
+A detailed English derivation is pending.
 -/
 theorem continuous_splitCentre : Continuous (splitCentre E a) := by
   have e : splitCentre E a = fun t : ℝ =>

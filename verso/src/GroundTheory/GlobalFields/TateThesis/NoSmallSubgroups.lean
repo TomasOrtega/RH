@@ -8,9 +8,9 @@ def NoSmallSubgroups (G : Type*) [Group G] [TopologicalSpace G] : Prop :=
   ∃ U ∈ 𝓝 (1 : G), ∀ H : Subgroup G, (H : Set G) ⊆ U → H = ⊥
 
 /- English proof (translation)
-Establish `h1 : z ^ 2 - 1 = (z - 1) * (z + 1)` using `by ring`. Establish `h2 : (3 : ℝ) / 2 ≤ ‖z + 1‖`. Establish `: z + 1 = 2 - (1 - z)` using `by ring`. Establish `h3 : ‖(2 : ℂ)‖ = 2` using `by simp`. Establish `h4 : ‖1 - z‖ = ‖z - 1‖` using `norm_sub_rev _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, norm_mul]`. Use polynomial arithmetic with `[norm_nonneg (z - 1)]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_sq_sub_one_ge {z : ℂ} (hz : ‖z - 1‖ < 1 / 2) :
     3 / 2 * ‖z - 1‖ ≤ ‖z ^ 2 - 1‖ := by
@@ -26,11 +26,11 @@ theorem norm_sq_sub_one_ge {z : ℂ} (hz : ‖z - 1‖ < 1 / 2) :
   nlinarith [norm_nonneg (z - 1)]
 
 /- English proof (translation)
-Establish `key : ∀ k : ℕ, (3 / 2 : ℝ) ^ k * ‖z - 1‖ ≤ ‖z ^ (2 ^ k) - 1‖`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h` using `norm_sq_sub_one_ge (hz k)`. Rewrite `h` using `[← pow_mul, ← pow_succ]`. Combine the equalities or inequalities in the displayed calculation. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖z - 1‖` using `norm_pos_iff.2 (sub_ne_zero.2 hne)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (1 / (2 * ‖z - 1‖)) (by norm_num : (1 : ℝ) < 3 / 2)`. Establish `h1` using `lt_of_le_of_lt (key k) (hz k)`. Rewrite `hk` using `[div_lt_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem eq_one_of_forall_norm_pow_two_pow_sub_one_lt {z : ℂ}
     (hz : ∀ k : ℕ, ‖z ^ (2 ^ k) - 1‖ < 1 / 2) : z = 1 := by
@@ -52,9 +52,9 @@ theorem eq_one_of_forall_norm_pow_two_pow_sub_one_lt {z : ℂ}
   nlinarith
 
 /- English proof (translation)
-Use `eq_one_of_forall_norm_pow_two_pow_sub_one_lt fun k ↦ hs _ ?_` and prove the remaining obligations. Proceed by induction on `k with`. Consider the case `zero => simpa using hz`. Consider the case `succ k ih`. Rewrite using `[pow_succ, pow_mul]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hsq _ ih`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_sq_mem {s : Set ℂ} (hsq : ∀ z ∈ s, z ^ 2 ∈ s)
     (hs : ∀ z ∈ s, ‖z - 1‖ < 1 / 2) {z : ℂ} (hz : z ∈ s) : z = 1 := by
@@ -68,9 +68,9 @@ theorem eq_one_of_sq_mem {s : Set ℂ} (hsq : ∀ z ∈ s, z ^ 2 ∈ s)
 namespace Circle
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `z hz`. Rewrite using `[Subgroup.mem_bot, ← Circle.coe_eq_one]`. Use `eq_one_of_sq_mem (s := (↑) '' (H : Set Circle)) ?_ ?_ ⟨z, hz, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨w ^ 2, H.pow_mem hw 2, by simp⟩`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `hH w hw`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem subgroup_eq_bot_of_norm_sub_one_lt (H : Subgroup Circle)
     (hH : ∀ z ∈ H, ‖(z : ℂ) - 1‖ < 1 / 2) : H = ⊥ := by
@@ -84,7 +84,7 @@ theorem subgroup_eq_bot_of_norm_sub_one_lt (H : Subgroup Circle)
     exact hH w hw
 
 /- English proof (translation)
-Use `⟨{z : Circle | ‖(z : ℂ) - 1‖ < 1 / 2}, ?_, fun H hH ↦ subgroup_eq_bot_of_norm_sub_one_lt H fun z hz ↦ hH hz⟩` and prove the remaining obligations. Establish `hc : Continuous fun z : Circle ↦ ‖(z : ℂ) - 1‖` using `(continuous_subtype_val.sub continuous_const).norm`. Conclude with `(isOpen_lt hc continuous_const).mem_nhds (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem noSmallSubgroups : NoSmallSubgroups Circle := by
   refine ⟨{z : Circle | ‖(z : ℂ) - 1‖ < 1 / 2}, ?_, fun H hH ↦
@@ -98,9 +98,9 @@ end Circle
 namespace Complex
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `z hz`. Rewrite using `[Subgroup.mem_bot, ← Units.val_eq_one]`. Use `eq_one_of_sq_mem (s := (↑) '' (H : Set ℂˣ)) ?_ ?_ ⟨z, hz, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨w ^ 2, H.pow_mem hw 2, by simp⟩`. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `hH w hw`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem units_subgroup_eq_bot_of_norm_sub_one_lt (H : Subgroup ℂˣ)
     (hH : ∀ z ∈ H, ‖(z : ℂ) - 1‖ < 1 / 2) : H = ⊥ := by
@@ -114,7 +114,7 @@ theorem units_subgroup_eq_bot_of_norm_sub_one_lt (H : Subgroup ℂˣ)
     exact hH w hw
 
 /- English proof (translation)
-Use `⟨{z : ℂˣ | ‖(z : ℂ) - 1‖ < 1 / 2}, ?_, fun H hH ↦ units_subgroup_eq_bot_of_norm_sub_one_lt H fun z hz ↦ hH hz⟩` and prove the remaining obligations. Establish `hc : Continuous fun z : ℂˣ ↦ ‖(z : ℂ) - 1‖` using `(Units.continuous_val.sub continuous_const).norm`. Conclude with `(isOpen_lt hc continuous_const).mem_nhds (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem units_noSmallSubgroups : NoSmallSubgroups ℂˣ := by
   refine ⟨{z : ℂˣ | ‖(z : ℂ) - 1‖ < 1 / 2}, ?_, fun H hH ↦
@@ -131,9 +131,9 @@ variable {G H : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [Group H] [TopologicalSpace H]
 
 /- English proof (translation)
-Take `⟨U, hU, hsmall⟩` from `hH`. Establish `hW : f ⁻¹' U ∈ 𝓝 (1 : G)` using `hf.continuousAt.preimage_mem_nhds (by rwa [map_one])`. Take `⟨V, hV⟩` from `hG _ hW`. Establish `hmap : V.toSubgroup.map f = ⊥`. Use `hsmall _ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hV hx`. Use `Subgroup.isOpen_mono (H₁ := V.toSubgroup) ?_ V.isOpen` and prove the remaining obligations. Rewrite using `[← Subgroup.map_eq_bot_iff]` and apply the resulting hypothesis.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isOpen_ker_of_noSmallSubgroups
     (hG : ∀ W ∈ 𝓝 (1 : G), ∃ V : OpenSubgroup G, (V : Set G) ⊆ W) (hH : NoSmallSubgroups H)
@@ -149,7 +149,7 @@ theorem isOpen_ker_of_noSmallSubgroups
   rwa [← Subgroup.map_eq_bot_iff]
 
 /- English proof (translation)
-Take `⟨C, ⟨hC1, hCc⟩, hCW⟩` from `(nhds_basis_clopen (1 : G)).mem_iff.1 hW`. Take `⟨V, hV⟩` from `IsTopologicalGroup.exist_openSubgroup_sub_clopen_nhds_of_one hCc hC1`. Conclude with `⟨V, hV.trans hCW⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_openSubgroup_subset_of_profinite [CompactSpace G] [T2Space G]
     [TotallyDisconnectedSpace G] {W : Set G} (hW : W ∈ 𝓝 (1 : G)) :
@@ -161,14 +161,14 @@ theorem exists_openSubgroup_subset_of_profinite [CompactSpace G] [T2Space G]
 variable [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
 
 /- English proof (translation)
-The claim follows from `isOpen_ker_of_noSmallSubgroups (fun _ hW ↦ exists_openSubgroup_subset_of_profinite hW) hH f hf`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_ker_of_profinite (hH : NoSmallSubgroups H) (f : G →* H) (hf : Continuous f) :
     IsOpen (f.ker : Set G) :=
   isOpen_ker_of_noSmallSubgroups (fun _ hW ↦ exists_openSubgroup_subset_of_profinite hW) hH f hf
 
 /- English proof (translation)
-The claim follows from `have : Finite (G ⧸ f.ker) := Subgroup.quotient_finite_of_isOpen _ (isOpen_ker_of_profinite hH f hf) Finite.of_equiv _ (QuotientGroup.quotientKerEquivRange f).toEquiv`.
+A detailed English derivation is pending.
 -/
 theorem finite_range_of_profinite (hH : NoSmallSubgroups H) (f : G →* H) (hf : Continuous f) :
     Finite f.range :=
@@ -177,28 +177,28 @@ theorem finite_range_of_profinite (hH : NoSmallSubgroups H) (f : G →* H) (hf :
   Finite.of_equiv _ (QuotientGroup.quotientKerEquivRange f).toEquiv
 
 /- English proof (translation)
-The claim follows from `isOpen_ker_of_profinite Circle.noSmallSubgroups f hf`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_ker_of_profinite_circle (f : G →* Circle) (hf : Continuous f) :
     IsOpen (f.ker : Set G) :=
   isOpen_ker_of_profinite Circle.noSmallSubgroups f hf
 
 /- English proof (translation)
-The claim follows from `finite_range_of_profinite Circle.noSmallSubgroups f hf`.
+A detailed English derivation is pending.
 -/
 theorem finite_range_of_profinite_circle (f : G →* Circle) (hf : Continuous f) :
     Finite f.range :=
   finite_range_of_profinite Circle.noSmallSubgroups f hf
 
 /- English proof (translation)
-The claim follows from `isOpen_ker_of_profinite Complex.units_noSmallSubgroups f hf`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_ker_of_profinite_units_complex (f : G →* ℂˣ) (hf : Continuous f) :
     IsOpen (f.ker : Set G) :=
   isOpen_ker_of_profinite Complex.units_noSmallSubgroups f hf
 
 /- English proof (translation)
-The claim follows from `finite_range_of_profinite Complex.units_noSmallSubgroups f hf`.
+A detailed English derivation is pending.
 -/
 theorem finite_range_of_profinite_units_complex (f : G →* ℂˣ) (hf : Continuous f) :
     Finite f.range :=

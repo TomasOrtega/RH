@@ -7,9 +7,9 @@ open Matrix
 namespace UpperTheory.V.Pa.Det
 
 /- English proof (translation)
-Establish `h1` using `hz g hg h hh`. Simplify using `only [one_smul] at h1`. Establish `hinv : D.r g⁻¹ * D.r g = 1` using `by rw [← map_mul, inv_mul_cancel, map_one]`. Rewrite using `[h1, map_mul, add_mul]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Matrix.mul_assoc]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (D.r g⁻¹), hinv, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem der_mul {F G : Type} [Field F] [Group G] {n : ℕ} (D : DetFr F G n)
     (z : G → Matrix (Fin n) (Fin n) F) (hz : TwCoc (fun _ => 1) D.r D.G' z) {g h : G} (hg : g ∈ D.G') (hh : h ∈ D.G') :
@@ -24,17 +24,15 @@ private theorem der_mul {F G : Type} [Field F] [Group G] {n : ℕ} (D : DetFr F 
     rw [← Matrix.mul_assoc (D.r g⁻¹), hinv, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hsum : ∀ M : G → Matrix (Fin n) (Fin n) F, (Finsupp.mapDomain (fun g => u * g * v) c).sum (fun g x => x • M g) = c.sum (fun g x => x • M (u * g * v))`. Introduce `M`. Conclude with `Finsupp.sum_mapDomain_index (fun _ => zero_smul _ _) (fun _ _ _ => add_smul _ _ _)`. Establish `hsupp : ∀ g ∈ (Finsupp.mapDomain (fun g => u * g * v) c).support, g ∈ D.G'`. Introduce `g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk', rfl⟩` from `Finset.mem_image.mp (Finsupp.mapDomain_support hg)`. Conclude with `D.G'.mul_mem (D.G'.mul_mem hu (hc k hk')) hv`. Establish `hr : ∀ M : G → Matrix (Fin n) (Fin n) F, ∀ P Q : Matrix (Fin n) (Fin n) F, P * (c.sum fun g x => x • M g) * Q = c.sum fun g x => x • (P * M g * Q)`. Introduce `M P Q`. Simplify using `only [Finsupp.sum, Finset.mul_sum, Finset.sum_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0' : (Finsupp.mapDomain (fun g => u * g * v) c).sum (fun g x => x • D.r g) = 0`. Rewrite using `[hsum]`. Simplify using `only [map_mul]`. Rewrite using `[← hr, h0, Matrix.mul_zero, Matrix.zero_mul]`. Establish `key` using `hk _ hsupp h0'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[hsum]`. Establish `expand : ∀ g ∈ c.support, c g • (z (u * g * v) * D.r (u * g * v)) = c g • (z u * D.r u * D.r g * D.r v) + c g • (D.r u * (z g * D.r g) * D.r v) + c g • (D.r u * D.r g * (z v * D.r v))`. Introduce `g hg`. Rewrite using `[mul_assoc, der_mul D z hz hu (D.G'.mul_mem (hc g hg) hv), der_mul D z hz (hc g hg) hv, ← smul_add, ← smul_add]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_mul, Matrix.mul_add, Matrix.mul_assoc, add_assoc]`. Establish `eq : (c.sum fun g x => x • (z (u * g * v) * D.r (u * g * v))) = z u * D.r u * (c.sum fun g x => x • D.r g) * D.r v + D.r u * (c.sum fun g x => x • (z g * D.r g)) * D.r v + D.r u * (c.sum fun g x => x • D.r g) * (z v * D.r v)`. Rewrite using `[hr, hr, hr]`. Simplify using `only [Finsupp.sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl expand`.
-
-Rewrite `key` using `[eq, h0]`. Simplify using `using key`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem move_one {F G : Type} [Field F] [Group G] {n : ℕ} (D : DetFr F G n)
     (z : G → Matrix (Fin n) (Fin n) F) (i j : Fin n) (hz : TwCoc (fun _ => 1) D.r D.G' z) (hk : D.KillsRel z i j)
@@ -76,9 +74,9 @@ private theorem move_one {F G : Type} [Field F] [Group G] {n : ℕ} (D : DetFr F
   simpa using key
 
 /- English proof (translation)
-Introduce `p q`. Use `⟨fun _ => Submodule.mem_top, fun hpq => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_bot, Matrix.single_apply]`. Use `split_ifs with hh`. Take `⟨rfl, rfl⟩` from `hh`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Conclude with `absurd h hpq`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem single_mem {F : Type} [Field F] {n a : ℕ} (i i' : Fin n) (h : (i : ℕ) < a ↔ (i' : ℕ) < a) :
     Matrix.single i i' (1 : F) ∈ Ev F F n a := by
@@ -91,15 +89,15 @@ private theorem single_mem {F : Type} [Field F] {n a : ℕ} (i i' : Fin n) (h : 
   · rfl
 
 /- English proof (translation)
-Introduce `hz hk i' j' hi hj c hc h0`. Establish `hA : Matrix.single i i' (1 : F) ∈ Submodule.span F (D.r '' D.G')`. Rewrite using `[D.span]`. Conclude with `single_mem i i' hi`. Establish `hB : Matrix.single j' j (1 : F) ∈ Submodule.span F (D.r '' D.G')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[D.span]`. Conclude with `single_mem j' j hj.symm`. Establish `hgen : ∀ A ∈ Submodule.span F (D.r '' D.G'), ∀ B ∈ Submodule.span F (D.r '' D.G'), (A * (c.sum fun g x => x • (z g * D.r g)) * B) i j = 0`. Introduce `A hA' B hB'`. Proceed by induction on `hA' using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨u, hu, rfl⟩` from `hx`. Proceed by induction on `hB' using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨v, hv, rfl⟩` from `hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `move_one D z i j hz hk c hc h0 hu hv`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mul_add, Matrix.add_apply, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [Matrix.mul_smul, Matrix.smul_apply, hx, smul_zero]`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add x y _ _ hx hy => rw [Matrix.add_mul, Matrix.add_mul, Matrix.add_apply, hx, hy, add_zero]`. Consider the case `smul a x _ hx => rw [Matrix.smul_mul, Matrix.smul_mul, Matrix.smul_apply, hx, smul_zero]`. Use `hgen _ hA _ hB` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.single_apply]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem relMove {F G : Type} [Field F] [Group G] {n : ℕ} (D : DetFr F G n)
     (z : G → Matrix (Fin n) (Fin n) F) (i j : Fin n) :

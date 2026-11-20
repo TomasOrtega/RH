@@ -16,9 +16,9 @@ def Pres (S : Set (Fin N)) (Y : Matrix (Fin N) (Fin N) ℂ) : Prop :=
   ∀ c b : Fin N, b ∈ S → c ∉ S → Y c b = 0
 
 /- English proof (translation)
-Introduce `c b hb hc`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Distinguish the cases in `hm : m ∈ S`. Rewrite using `[hX c m hm hc, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hY m b hb hm, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pres_mul {S : Set (Fin N)} {X Y : Matrix (Fin N) (Fin N) ℂ} (hX : Pres S X) (hY : Pres S Y) :
     Pres S (X * Y) := by
@@ -30,9 +30,9 @@ theorem pres_mul {S : Set (Fin N)} {X Y : Matrix (Fin N) (Fin N) ℂ} (hX : Pres
   · rw [hY m b hb hm, mul_zero]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `c b hb hc`. Rewrite using `[pow_zero, Matrix.one_apply_ne]`. Introduce and unpack `rfl`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hc hb`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `pres_mul ih hY`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pres_pow {S : Set (Fin N)} {Y : Matrix (Fin N) (Fin N) ℂ} (hY : Pres S Y) (n : ℕ) :
     Pres S (Y ^ n) := by
@@ -44,7 +44,7 @@ theorem pres_pow {S : Set (Fin N)} {Y : Matrix (Fin N) (Fin N) ℂ} (hY : Pres S
   | succ n ih => rw [pow_succ]; exact pres_mul ih hY
 
 /- English proof (translation)
-Introduce `c b hb hc`. Rewrite using `[Matrix.smul_apply, hY c b hb hc, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem pres_smul {S : Set (Fin N)} {Y : Matrix (Fin N) (Fin N) ℂ} (hY : Pres S Y) (z : ℂ) :
     Pres S (z • Y) := by
@@ -52,7 +52,7 @@ theorem pres_smul {S : Set (Fin N)} {Y : Matrix (Fin N) (Fin N) ℂ} (hY : Pres 
   rw [Matrix.smul_apply, hY c b hb hc, smul_zero]
 
 /- English proof (translation)
-Introduce `c b hb hc`. Rewrite using `[Matrix.neg_apply, hY c b hb hc, neg_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem pres_neg {S : Set (Fin N)} {Y : Matrix (Fin N) (Fin N) ℂ} (hY : Pres S Y) : Pres S (-Y) := by
   intro c b hb hc
@@ -60,11 +60,9 @@ theorem pres_neg {S : Set (Fin N)} {Y : Matrix (Fin N) (Fin N) ℂ} (hY : Pres S
 
 open scoped Matrix.Norms.Operator in
 /- English proof (translation)
-Introduce `c b hb hc`. Establish `h` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) Y`. Establish `h1` using `Pi.hasSum.1 h c`. Establish `h2` using `Pi.hasSum.1 h1 b`. Establish `h3 : HasSum (fun n : ℕ => ((n.factorial : ℂ)⁻¹ • Y ^ n) c b) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (fun n : ℕ => ((n.factorial : ℂ)⁻¹ • Y ^ n) c b) = fun _ => 0`. Use function extensionality and compare the values at `n`. Rewrite using `[Matrix.smul_apply, pres_pow hY n c b hb hc, smul_zero]`. Rewrite using `[this]`. Conclude with `hasSum_zero`.
-
-Conclude with `h2.unique h3`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pres_exp {S : Set (Fin N)} {Y : Matrix (Fin N) (Fin N) ℂ} (hY : Pres S Y) :
     Pres S (NormedSpace.exp Y) := by
@@ -79,7 +77,7 @@ theorem pres_exp {S : Set (Fin N)} {Y : Matrix (Fin N) (Fin N) ℂ} (hY : Pres S
   exact h2.unique h3
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding .. | (apply GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding <;> assumption) | (intros; apply GlobalTheory.EmbeddingSum.sum_eq_sum_comp_embedding <;> assumption) | (apply @GlobalTheory.EmbeddingSum.sum_eq_sum_co …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_emb (e : Fin j ↪ Fin N) (f : Fin N → ℂ) (hf : ∀ c, c ∉ Set.range e → f c = 0) :
     ∑ c, f c = ∑ a, f (e a) := by
@@ -89,7 +87,7 @@ def sub (e : Fin j ↪ Fin N) (E : Matrix (Fin N) (Fin N) ℂ) : Matrix (Fin j) 
   Matrix.of fun a b => E (e a) (e b)
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.of_apply, Matrix.mul_apply, Matrix.mul_apply]`. Conclude with `sum_emb e _ fun c hc => by rw [hE c (e b) ⟨b, rfl⟩ hc, mul_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_right (e : Fin j ↪ Fin N) (row : Fin j → Fin N) (h E : Matrix (Fin N) (Fin N) ℂ)
     (hE : Pres (Set.range e) E) :
@@ -99,7 +97,7 @@ theorem sub_right (e : Fin j ↪ Fin N) (row : Fin j → Fin N) (h E : Matrix (F
   exact sum_emb e _ fun c hc => by rw [hE c (e b) ⟨b, rfl⟩ hc, mul_zero]
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.of_apply, Matrix.mul_apply, Matrix.mul_apply]`. Conclude with `sum_emb e _ fun c hc => by rw [hE (e a) c hc (fun h' => h' ⟨a, rfl⟩), zero_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_left (e : Fin j ↪ Fin N) (col : Fin j → Fin N) (h E : Matrix (Fin N) (Fin N) ℂ)
     (hE : Pres (Set.range e)ᶜ E) :
@@ -116,7 +114,7 @@ variable {n : Type} [Fintype n] [DecidableEq n]
 
 open scoped Matrix.Norms.Operator in
 /- English proof (translation)
-Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul] at h`. Set `L : Matrix n n ℂ →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)`. Conclude with `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_exp_entry (X : Matrix n n ℂ) (i j : n) :
     HasDerivAt (fun t : ℝ => (NormedSpace.exp (t • X)) i j) (X i j) 0 := by
@@ -126,7 +124,7 @@ theorem hasDerivAt_exp_entry (X : Matrix n n ℂ) (i j : n) :
   exact L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.b110.goal1 .. | (apply Bl.b110.goal1 <;> assumption) | (intros; apply Bl.b110.goal1 <;> assumption) | (apply @Bl.b110.goal1 <;> assumption) | (intros; apply @Bl.b110.goal1 <;> assumption) | (apply @Bl.b110.goal1 <;> first | assumption | infer_instance) | exact @B …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hasDerivAt_det_of_one (A : ℝ → Matrix n n ℂ) (A' : Matrix n n ℂ) (h0 : A 0 = 1)
     (h : ∀ i j, HasDerivAt (fun t => A t i j) (A' i j) 0) :
@@ -136,17 +134,15 @@ theorem hasDerivAt_det_of_one (A : ℝ → Matrix n n ℂ) (A' : Matrix n n ℂ)
 end DetExp
 
 /- English proof (translation)
-Establish `hd : ∀ t, HasDerivAt φ (φ t * c) t`. Introduce `t`. Establish `h1' : HasDerivAt (fun s => φ (s - t)) c t`. Establish `h00` using `h0`. Rewrite `h00` using `[← sub_self t]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h00.comp_sub_const t t`. Establish `h2` using `h1'.const_mul (φ t)`. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Use `show φ s = φ t * φ (s - t)`. Rewrite using `[← hmul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Set `ψ : ℝ → ℂ` to `fun t => φ t * Complex.exp (-((t : ℂ) * c))`. Establish `hψ : ∀ t, HasDerivAt ψ 0 t`. Introduce `t`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : HasDerivAt (fun t : ℝ => -((t : ℂ) * c)) (-(1 * c)) t`. Establish `h` using `((hasDerivAt_id t).ofReal_comp.mul_const c).fun_neg`. Simplify using `using h`. Establish `e1` using `e0.cexp`. Establish `h3` using `(hd t).fun_mul e1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : φ t * c * Complex.exp (-((t : ℂ) * c)) + φ t * (Complex.exp (-((t : ℂ) * c)) * -(1 * c)) = 0` using `by ring`. Rewrite `h3` using `[h4]`. Conclude with `h3`. Establish `hc` using `is_const_of_deriv_eq_zero (fun t => (hψ t).differentiableAt) (fun t => (hψ t).deriv) t 0`. Simplify using `only [ψ, h1, Complex.ofReal_zero, zero_mul, neg_zero, Complex.exp_zero, mul_one] at hc`.
-
-Rewrite `hc` using `[Complex.exp_neg]`. Conclude with `eq_of_mul_inv_eq_one hc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_hom_exp (φ : ℝ → ℂ) (c : ℂ) (hmul : ∀ s t, φ (s + t) = φ s * φ t) (h1 : φ 0 = 1)
     (h0 : HasDerivAt φ c 0) (t : ℝ) : φ t = Complex.exp (t * c) := by

@@ -19,7 +19,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TopVal
 
 /- English proof (translation)
-Introduce `_ _ e` and use `h.inj (smul_right_injective _ ha e) range := (LinearMap.range_smul j a ha).trans h.range eqv := fun τ g hg v w hw y y' hy => congrArg (a * ·) (h.eqv τ g hg v w hw y y' hy)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isJ_smul {D : D7} {u : D.what₂.Word} {S : D.what₂.Tau → SPar} {M : Formalism.IndefR.Mult.DSModel D.sp.X' S}
     {j : SmT M →ₗ[ℂ] (Formalism.L2.Forms.FrP D → ℂ)} (h : GlobalTheory.Core.Rk.Top.IsJ u M j) {a : ℂ} (ha : a ≠ 0) :
@@ -37,7 +37,7 @@ variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws
   {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex)
 
 /- English proof (translation)
-Establish `h1 : (pk W).cX.ρ g⁻¹ = 1` using `W.Q.charW.base.models.cX.1 _ (inv_mem hg)`. Use `show (pk W).prX ((pk W).cX.ρ g⁻¹ (pkAt W t x g)) v = _`. Rewrite using `[h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem toMap_fin (t : W.P.T) (x : W.P.A3.A.fam.amb.FR t) (g : GA (I.rec7 l Z) (I.rec7 l Z).sp.X') (hg : g ∈ GfC (I.rec7 l Z).sp.X')
     (v : SmT (pk W).MX) :
@@ -50,9 +50,9 @@ theorem toMap_fin (t : W.P.T) (x : W.P.A3.A.fam.amb.FR t) (g : GA (I.rec7 l Z) (
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨j₀, hj₀⟩` from `GlobalTheory.SeeSaw.exists_isJ_of_par (GlobalTheory.SeeSaw.sg_trueColumns I l Z u) (pk W).MX rfl`. Distinguish the cases in `h0 : cv = 0`. Use `⟨j₀, hj₀, fun t φ x hx d v => ?_⟩` and prove the remaining obligations. Establish `hz` using `hi t φ x hx (fun g y h1 h2 => (hP t φ x hx g y h1 h2).trans (by rw [h0]; rfl)) d`. Rewrite using `[hz, map_zero, map_zero, LinearMap.zero_apply]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `pairVal`. Rewrite using `[Submodule.coe_zero, map_zero, map_zero]`. Take `⟨a, ha, hJ⟩` from `GlobalTheory.T.unit_gram_family_property W hg u cv hE h0 j₀ hj₀`. Conclude with `⟨a • j₀, isJ_smul hj₀ ha, fun t φ x _ d v => hJ _ v⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_j (hg : Formalism.L2.Forms.gramP (I.rec7 l Z) = 1) (u : B.Word) (cv : Val B →ₛₗ[B.embLL] (pk W).cX.W) (hE : ValEqv W cv)
     (hP : PkVal W cv)
@@ -73,7 +73,7 @@ theorem exists_j (hg : Formalism.L2.Forms.gramP (I.rec7 l Z) = 1) (u : B.Word) (
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `reads_of_val W hC hW u j _ φ G hG _ fun g y pt v hy hp => ?_` and prove the remaining obligations. Use `(toMap_fin W t x g hy.1 v).trans ?_` and prove the remaining obligations. Rewrite using `[hP t φ x hx g y hy hp.uni, GlobalTheory.T.decoratedLatticeOfAdelicMatrix_eq_rowPoint I hOk _ y pt hp]`. Conclude with `hV _ v`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reads_pk (hOk : I.Ok) (hC : I.StdC l Z W.R.T.cols) (hW : GlobalTheory.AdForm.TwStd W) (u : B.Word)
     (cv : Val B →ₛₗ[B.embLL] (pk W).cX.W) (hP : PkVal W cv) (j : SmT (pk W).MX →ₗ[ℂ] (Formalism.L2.Forms.FrP (I.rec7 l Z) → ℂ))
@@ -89,7 +89,7 @@ theorem reads_pk (hOk : I.Ok) (hC : I.StdC l Z W.R.T.cols) (hW : GlobalTheory.Ad
 end True
 
 /- English proof (translation)
-Simplify using `only [LevG, inv_one, one_mul, mul_one]`. Conclude with `⟨h1, h2⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem levG_one {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Tau (D.hcW u)} {A : ColumnsAtT D.R C} {Pm : PeriodMap D.R C}
     {M : MemberForms D.what₂.LL D.what₂.embLL D.what₂.places D.what₂.Tau (D.hcW u) C A Pm} {bad} (K : Formalism.L2.Forms.ClassesAtPrimes M bad)
@@ -101,9 +101,9 @@ theorem levG_one {D : D7} {u : D.what₂.Word} {C : ColumnChain D.R D.what₂.Ta
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `hL p K q c b hW ⟨rx⟩ u`. Take `⟨hOk, ⟨hPins⟩, -, ⟨hC⟩, hTS⟩` from `GlobalTheory.Fam.colsStd_of_bWit q b hW`. Establish `hg` using `(GlobalTheory.T.trueColumn_spaces_standard_in_frameCoords q.w.I hOk hPins q.w.l q.Z).2.1`. Take `⟨cv, hE, hP⟩` from `GlobalTheory.T.exists_top_value_witness q b hW rx.std`. Take `⟨j, hJ, hV⟩` from `exists_j (I := q.w.I) (l := q.w.l) (Z := q.Z) (packB b) hg u cv hE hP (GlobalTheory.T.top_value_vanishing_uniform q b hW)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨j, hJ, one_mem _, fun t => ⟨⟨fun h => GlobalTheory.T.level_group_reference_tuple q b hW u t h, fun h => levG_one _ (GlobalTheory.T.mem_level_iff_twisted_class q b hW u t h) (GlobalTheory.T.level_character_twisted_class q b hW u t h)⟩, fun F F' hF => ?_⟩⟩` and prove the remaining obligations. Take `⟨φ, hφ, hR⟩` from `GlobalTheory.T.one_form_exists_heq q b hW ⟨rx⟩ t F F' hF`. Conclude with `reads_pk (I := q.w.I) (l := q.w.l) (Z := q.Z) (packB b) hOk hC hTS u cv hP j t φ _ hφ (hV t φ _ hφ) _ (hR u)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem topReadAt_of_bWit : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : Bundle (q.w.D q.Z) q.O c), Bl.BWit q b → Nonempty (Bl.RXs q.x.what₂) → ∀ u, ∃ j, TopReadAt (packB b) u j 1 := by
   intro hL p K q c b hW ⟨rx⟩ u

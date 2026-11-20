@@ -20,13 +20,13 @@ def LiftOnto : Prop :=
       ∃ X ∈ skSet K 𝔭 k a, ∃ Z : Matrix (Fin m) (Fin m) (𝓞 K ⧸ extP K 𝔭 ^ k), X - Y.1 = Z * diagQ K 𝔭 k a
 
 /- English proof (translation)
-Establish `hp0 : 𝔭 ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField h𝔭 (NumberField.RingOfIntegers.not_isField F)`. Establish `hpr : Prime 𝔭` using `Ideal.prime_of_isPrime hp0 h𝔭.isPrime`. Introduce `hxy`. Rewrite `hx`, `hx'`, `hy`, `hy'`, `hxy` using `[← Ideal.dvd_span_singleton]`. Take `⟨I, hI⟩` from `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨J, hJ⟩` from `hy`. Establish `hI' : ¬ 𝔭 ∣ I` using `fun h => hx' (by rw [hI, pow_succ]; exact mul_dvd_mul_left _ h)`. Establish `hJ' : ¬ 𝔭 ∣ J` using `fun h => hy' (by rw [hJ, pow_succ]; exact mul_dvd_mul_left _ h)`. Rewrite `hxy` using `[← Ideal.span_singleton_mul_span_singleton, hI, hJ]`. Establish `h : 𝔭 ^ (a + b) * 𝔭 ∣ 𝔭 ^ (a + b) * (I * J)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← pow_succ]`. Use `hxy using 1` and compare the differences between its conclusion and the goal. Rewrite using `[pow_add]`. Expand and normalize the polynomial expressions, which then agree. Break down `hpr.dvd_or_dvd ((mul_dvd_mul_iff_left (pow_ne_zero _ hp0)).mp h) with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis.
 
-Use `exacts [hI' h, hJ' h]`.
+A detailed English derivation is pending.
 -/
 private theorem mul_not_mem_pow_add_succ {F : Type} [Field F] [NumberField F] {𝔭 : Ideal (𝓞 F)}
     (h𝔭 : 𝔭.IsMaximal) {x y : 𝓞 F} {a b : ℕ} (hx : x ∈ 𝔭 ^ a) (hx' : x ∉ 𝔭 ^ (a + 1))
@@ -50,11 +50,9 @@ private theorem mul_not_mem_pow_add_succ {F : Type} [Field F] [NumberField F] {�
   exacts [hI' h, hJ' h]
 
 /- English proof (translation)
-Establish `key : ∀ t : Finset ι, ∏ i ∈ t, f i ∈ 𝔭 ^ (∑ i ∈ t, vF 𝔭 (f i)) ∧ ∏ i ∈ t, f i ∉ 𝔭 ^ (∑ i ∈ t, vF 𝔭 (f i) + 1)`. Introduce `t`. Use `Finset.induction_on t ?_ ?_` and prove the remaining obligations. Use `⟨by simp, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.prod_empty, Finset.sum_empty, zero_add, pow_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(Ideal.ne_top_iff_one 𝔭).mp h𝔭.ne_top`. Introduce `j t hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj]`. Use `⟨?_, mul_not_mem_pow_add_succ h𝔭 (mem_pow_vF h𝔭 (hf j)) (notMem_pow_vF h𝔭 (hf j)) ih.1 ih.2⟩` and prove the remaining obligations. Rewrite using `[pow_add]`.
-
-Conclude with `Ideal.mul_mem_mul (mem_pow_vF h𝔭 (hf j)) ih.1`. Conclude with `(key s).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_notMem {F : Type} [Field F] [NumberField F] {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal)
     {ι : Type} (s : Finset ι) (f : ι → 𝓞 F) (hf : ∀ i, f i ≠ 0) :
@@ -81,15 +79,15 @@ variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberFi
 local notation "ι" => algebraMap (𝓞 F) (𝓞 K)
 
 /- English proof (translation)
-Establish `hp0 : 𝔭 ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField h𝔭 (NumberField.RingOfIntegers.not_isField F)`. Establish `hJdef : extP K 𝔭 = 𝔭.map ι` using `rfl`. Rewrite `hA`, `hA'` using `[← Ideal.dvd_span_singleton]`. Take `⟨I, hI⟩` from `hA`. Establish `hI' : I ⊔ 𝔭 = ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Apply `hA'` to reduce the goal to its premises. Rewrite using `[hI, pow_succ]`. Apply `mul_dvd_mul_left` to reduce the goal to its premises. Rewrite using `[Ideal.dvd_iff_le]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_sup_left.trans (h𝔭.eq_of_le h le_sup_right).ge`. Establish `hJ0 : extP K 𝔭 ≠ ⊥`. Introduce `h`. Apply `hp0` to reduce the goal to its premises. Rewrite `h` using `[hJdef]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Ideal.map_eq_bot_iff_of_injective (FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 K))).mp h`. Establish `hspan : Ideal.span {ι A} = extP K 𝔭 ^ e * I.map ι`. Rewrite using `[hJdef, ← Ideal.map_pow, ← Ideal.map_mul, ← hI, Ideal.map_span, Set.image_singleton]`. Establish `hcop : I.map ι ⊔ extP K 𝔭 = ⊤`. Rewrite using `[hJdef, ← Ideal.map_sup, hI', Ideal.map_top]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hw` using `[← Ideal.dvd_span_singleton, ← Ideal.span_singleton_mul_span_singleton, hspan, pow_succ, mul_assoc]`. Establish `h1` using `(mul_dvd_mul_iff_left (pow_ne_zero e hJ0)).mp hw`. Rewrite `h1` using `[Ideal.dvd_iff_le]`. Rewrite using `[← Ideal.dvd_span_singleton, Ideal.dvd_iff_le]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem mem_extP_of_mul_mem_pow_succ {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {A : 𝓞 F} {e : ℕ}
     (hA : A ∈ 𝔭 ^ e) (hA' : A ∉ 𝔭 ^ (e + 1)) {w : 𝓞 K}
@@ -126,17 +124,15 @@ private theorem mem_extP_of_mul_mem_pow_succ {𝔭 : Ideal (𝓞 F)} (h𝔭 : �
     _ ≤ extP K 𝔭 := sup_le h1 (Ideal.mul_le_inf.trans inf_le_left)
 
 /- English proof (translation)
-Establish `hX0 : Xᴴ * diagQ K 𝔭 k a * X = diagQ K 𝔭 k a` using `hX`. Establish `hA0 : ∏ i, a i ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => ha i`. Establish `hdet : (diagQ K 𝔭 k a).det = Ideal.Quotient.mk (extP K 𝔭 ^ k) (ι (∏ i, a i))`. Unfold `diagQ`. Rewrite using `[Matrix.det_diagonal]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_prod]`. Establish `hd` using `congrArg Matrix.det hX0`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose, hdet]`. Take `⟨w, hw⟩` from `Ideal.Quotient.mk_surjective (1 - star X.det * X.det)`. Establish `hAw : ι (∏ i, a i) * w ∈ extP K 𝔭 ^ k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_mul, hw]`. Take the linear combination `-hd`. Establish `he : vF 𝔭 (∏ i, a i) ≤ vJof 𝔭 a`. Assume the negation of the conclusion as `h`. Establish `h2 : ∑ i, vF 𝔭 (a i) + 1 ≤ vF 𝔭 (∏ i, a i)`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Unfold `vJof at h`. Use linear arithmetic over natural numbers and integers. Conclude with `prod_notMem h𝔭 Finset.univ a ha (Ideal.pow_le_pow_right h2 (mem_pow_vF h𝔭 hA0))`. Establish `hwJ : w ∈ extP K 𝔭` using `mem_extP_of_mul_mem_pow_succ h𝔭 (mem_pow_vF h𝔭 hA0) (notMem_pow_vF h𝔭 hA0) (Ideal.pow_le_pow_right (by omega) hAw)`. Establish `hnil : IsNilpotent (1 - star X.det * X.det)`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[← hw, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.pow_mem_pow hwJ k`. Establish `h1 : IsUnit (star X.det * X.det)`. Establish `h` using `hnil.isUnit_one_sub`.
-
-Rewrite `h` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Conclude with `isUnit_of_mul_isUnit_right h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isUnit_det {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {a : Fin m → 𝓞 F} (ha : ∀ i, a i ≠ 0)
     {k : ℕ} (hk : vJof 𝔭 a + 1 ≤ k) {X : Matrix (Fin m) (Fin m) (𝓞 K ⧸ extP K 𝔭 ^ k)}
@@ -173,7 +169,7 @@ theorem isUnit_det {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {a : Fin m �
   exact isUnit_of_mul_isUnit_right h1
 
 /- English proof (translation)
-Establish `h1 : Xᴴ * diagQ K 𝔭 k a * X = diagQ K 𝔭 k a` using `hX`. Establish `h2 : X'ᴴ * diagQ K 𝔭 k a * X' = diagQ K 𝔭 k a` using `hX'`. Use `show (X * X')ᴴ * diagQ K 𝔭 k a * (X * X') = diagQ K 𝔭 k a`. Rewrite using `[conjTranspose_mul, show X'ᴴ * Xᴴ * diagQ K 𝔭 k a * (X * X') = X'ᴴ * (Xᴴ * diagQ K 𝔭 k a * X) * X' by`. Simplify using `only [Matrix.mul_assoc], h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_mem_skSet {𝔭 : Ideal (𝓞 F)} {k : ℕ} {a : Fin m → 𝓞 F}
     {X X' : Matrix (Fin m) (Fin m) (𝓞 K ⧸ extP K 𝔭 ^ k)} (hX : X ∈ skSet K 𝔭 k a)
@@ -185,9 +181,9 @@ theorem mul_mem_skSet {𝔭 : Ideal (𝓞 F)} {k : ℕ} {a : Fin m → 𝓞 F}
     simp only [Matrix.mul_assoc], h1, h2]
 
 /- English proof (translation)
-Establish `h1 : Xᴴ * diagQ K 𝔭 k a * X = diagQ K 𝔭 k a` using `hX`. Use `show (X⁻¹)ᴴ * diagQ K 𝔭 k a * X⁻¹ = diagQ K 𝔭 k a`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = diagQ K 𝔭 k a := by`. Rewrite using `[Matrix.mul_nonsing_inv _ hu, conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem inv_mem_skSet {𝔭 : Ideal (𝓞 F)} {k : ℕ} {a : Fin m → 𝓞 F}
     {X : Matrix (Fin m) (Fin m) (𝓞 K ⧸ extP K 𝔭 ^ k)} (hX : X ∈ skSet K 𝔭 k a)
@@ -219,7 +215,7 @@ def cls {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {a : Fin m → 𝓞 F} 
   Quotient.mk (udSetoid K 𝔭 k a) (toPre h𝔭 ha hk X)
 
 /- English proof (translation)
-The claim follows from `Quotient.eq`.
+A detailed English derivation is pending.
 -/
 theorem cls_eq_iff {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {a : Fin m → 𝓞 F} (ha : ∀ i, a i ≠ 0)
     {k : ℕ} (hk : vJof 𝔭 a + 1 ≤ k) (X X' : skSet K 𝔭 k a) :
@@ -227,7 +223,7 @@ theorem cls_eq_iff {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {a : Fin m �
   Quotient.eq
 
 /- English proof (translation)
-Take `⟨Z, hZ⟩` from `(cls_eq_iff h𝔭 ha hk S X).mp hSX`. Establish `hu` using `isUnit_det h𝔭 ha hk S.2`. Use `⟨mul_mem_skSet (inv_mem_skSet S.2 hu) X.2, -(S.1⁻¹ * Z), ?_⟩` and prove the remaining obligations. Establish `hX : X.1 = S.1 - Z * diagQ K 𝔭 k a` using `by rw [← hZ]; abel`. Rewrite using `[hX, Matrix.mul_sub, Matrix.nonsing_inv_mul _ hu, Matrix.neg_mul, Matrix.mul_assoc, sub_eq_add_neg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_kerSet_of_cls {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {a : Fin m → 𝓞 F}
     (ha : ∀ i, a i ≠ 0) {k : ℕ} (hk : vJof 𝔭 a + 1 ≤ k) {S X : skSet K 𝔭 k a}
@@ -240,7 +236,7 @@ theorem mem_kerSet_of_cls {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {a : 
     sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[cls_eq_iff]`. Take `⟨Y, hY⟩` from `T.2.2`. Use `⟨S.1 * Y, ?_⟩` and prove the remaining obligations. Use `show S.1 * T.1 - S.1 = S.1 * Y * diagQ K 𝔭 k a`. Rewrite using `[hY, Matrix.mul_add, Matrix.mul_one, add_sub_cancel_left, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_mul_ker {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {a : Fin m → 𝓞 F}
     (ha : ∀ i, a i ≠ 0) {k : ℕ} (hk : vJof 𝔭 a + 1 ≤ k) (S : skSet K 𝔭 k a) (T : kerSet K 𝔭 k a) :
@@ -252,13 +248,13 @@ theorem cls_mul_ker {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {a : Fin m 
   rw [hY, Matrix.mul_add, Matrix.mul_one, add_sub_cancel_left, Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `K F _ _ _ _ _ _ _ hK 𝔭 h𝔭 m a ha k hk`. Establish `hk' : vJof 𝔭 a + 1 ≤ k` using `by omega`. Establish `hs : ∀ q : udQ K 𝔭 k a, ∃ X : skSet K 𝔭 k a, cls h𝔭 ha hk' X = q`. Introduce `q`. Take `⟨Y, rfl⟩` from `Quotient.exists_rep q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨X, hX, Z, hZ⟩` from `hL K F hK 𝔭 h𝔭 m a ha k hk Y`. Conclude with `⟨⟨X, hX⟩, Quotient.sound ⟨Z, hZ⟩⟩`. Use `choose s hs using hs`. Establish `hu : ∀ X : skSet K 𝔭 k a, IsUnit X.1.det` using `fun X => isUnit_det h𝔭 ha hk' X.2`. Set `e : skSet K 𝔭 k a ≃ udQ K 𝔭 k a × kerSet K 𝔭 k a` to `{ toFun := fun X => (cls h𝔭 ha hk' X, ⟨(s (cls h𝔭 ha hk' X)).1⁻¹ * X.1, mem_kerSet_of_cls h𝔭 ha hk' (hs _)⟩) invFun := fun p => ⟨(s p.1).1 * p.2.1, mul_mem_skSet (s p.1).2 p.2.2.1⟩ left_inv := fun X => Subtype.ext (Matrix.mul_nonsing_inv_cancel_left _ _ (hu _)) right_inv := fun p …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨q, T⟩` from `p`. Establish `hc : cls h𝔭 ha hk' ⟨(s q).1 * T.1, mul_mem_skSet (s q).2 T.2.1⟩ = q`. Rewrite using `[cls_mul_ker, hs]`. Use `Prod.ext hc (Subtype.ext ?_)` and prove the remaining obligations. Use `show (s (cls h𝔭 ha hk' ⟨(s q).1 * T.1, _⟩)).1⁻¹ * ((s q).1 * T.1) = T.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `Matrix.nonsing_inv_mul_cancel_left _ _ (hu _) }`. Rewrite using `[Nat.card_congr e, Nat.card_prod]`.
+A detailed English derivation is pending.
 -/
 theorem orbitCount_of_lift (hL : LiftOnto) : OrbitCount := by
   intro K F _ _ _ _ _ _ _ hK 𝔭 h𝔭 m a ha k hk
@@ -288,7 +284,7 @@ theorem orbitCount_of_lift (hL : LiftOnto) : OrbitCount := by
   rw [Nat.card_congr e, Nat.card_prod]
 
 /- English proof (translation)
-The claim follows from `discOnto_of hU (orbitCount_of_lift hL)`.
+A detailed English derivation is pending.
 -/
 theorem discOnto_of_lift (hU : UDModel) (hL : LiftOnto) : DiscOnto :=
   discOnto_of hU (orbitCount_of_lift hL)

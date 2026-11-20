@@ -7,25 +7,25 @@ open Formalism.REAL Finset
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A _ _ m E hE u j l`. Use `set b : Fin (m + 1) → Fin (m + 1) := Fin.cons l (Fin.succAbove j) with hb`. Establish `hexp` using `PI.QmColExpWork.expFirst E id b u`. Establish `hbc : b ∘ Fin.succ = Fin.succAbove j`. Use function extensionality and compare the values at `k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[hb]`. Establish `hb0 : b 0 = l` using `by simp [hb]`. Rewrite `hexp` using `[hbc, hb0]`. Establish `hcast : ∀ (k : ℕ) (x : A), (((-1 : ℤ) ^ k : ℤ) : A) * x = ((-1 : ℂ) ^ k) • x`. Introduce `k x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def]`. Use `push_cast`. Simplify using the standard rewrite rules. Establish `hL : ∑ a : Fin (m + 1), ((-1 : ℂ) ^ ((a : ℕ) + (j : ℕ))) • (Tm E u a l * qminor E (Fin.succAbove a) (Fin.succAbove j) (u - 1)) = ((-1 : ℂ) ^ (j : ℕ)) • qminor E id b u`. Rewrite using `[hexp, Finset.smul_sum]`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[hcast, smul_smul, ← pow_add, add_comm (j : ℕ) (a : ℕ)]`. Both sides reduce to the same expression. Rewrite using `[hL]`. Distinguish the cases in `hlj : l = j`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hlj` using the available equality. Establish `hbcyc : b = id ∘ PI.QmColExpWork.cyc0 m l`. Use function extensionality and compare the values at `k`. Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations. Simplify using `[hb, PI.QmColExpWork.cycle_perm_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hb, PI.QmColExpWork.cycle_perm_succ]`. Rewrite using `[if_pos rfl, hbcyc, qSkewCol A (m + 1) (m + 1) E hE id id _ u, PI.QmColExpWork.sign_cycle_perm, Units.val_pow_eq_pow_val, Units.val_neg, Units.val_one, hcast, smul_smul, ← mul_pow]`. Simplify using `[qdet]`. Rewrite using `[if_neg hlj]`. Take `⟨k0, hk0⟩` from `Fin.exists_succAbove_eq hlj`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfix : b ∘ Equiv.swap (0 : Fin (m + 1)) k0.succ = b`. Use function extensionality and compare the values at `k`. Establish `h0 : b 0 = b k0.succ` using `by simp [hb, hk0]`. Simplify using `only [Function.comp, Equiv.swap_apply_def]`. Use `split_ifs with h1 h2`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h0]`. Rewrite using `[h2, h0]`. Both sides reduce to the same expression. Establish `hs` using `qSkewCol A (m + 1) (m + 1) E hE id b (Equiv.swap 0 k0.succ) u`. Rewrite `hs` using `[hfix, Equiv.Perm.sign_swap (Fin.succ_ne_zero k0).symm]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (2 : ℂ) • qminor E id b u = 0`. Rewrite using `[two_smul]`. Use `nth_rewrite 1 [hs]`. Simplify using the standard rewrite rules. Establish `hz : qminor E id b u = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `congrArg (fun x => (2 : ℂ)⁻¹ • x) h2`. Simplify `h3` using `[smul_smul]`. Rewrite using `[hz, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem capelli_left_comatrix :
     ∀ (A : Type) [Ring A] [Algebra ℂ A] (m : ℕ) (E : Fin (m + 1) → Fin (m + 1) → A), GlRel E →

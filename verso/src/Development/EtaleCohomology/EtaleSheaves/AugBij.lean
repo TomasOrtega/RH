@@ -15,9 +15,9 @@ def AugBij : Prop := ∀ (q : ℕ) (φ : ∀ T : Scheme.{0}, Sec (tw q 0) T →+
   ∀ T : Scheme.{0}, IsUnit (q : Γ(T, ⊤)) → Function.Bijective (φ T)
 
 /- English proof (translation)
-Introduce `q`. Take `⟨φ, hnat, hgen⟩` from `hA q`. Establish `hb` using `hB q φ hnat hgen`. Use `⟨fun T hT => (AddEquiv.ofBijective (φ T) (hb T hT)).symm, ?_⟩` and prove the remaining obligations. Introduce `V U g hV hU a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `(hb V hV).1` to reduce the goal to its premises. Establish `h1 : ∀ (T : Scheme.{0}) (hT : IsUnit (q : Γ(T, ⊤))) (b : LocallyConstant T (ZMod q)), φ T ((AddEquiv.ofBijective (φ T) (hb T hT)).symm b) = b` using `fun T hT b => (AddEquiv.ofBijective (φ T) (hb T hT)).apply_symm_apply b`. Rewrite using `[hnat, h1 U hU, h1 V hV]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Tw0_of (hA : Aug) (hB : AugBij) : LateralTheory.E.LCIsoPf.Tw0 := by
   intro q

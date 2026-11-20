@@ -7,15 +7,11 @@ open AlgebraicGeometry CategoryTheory IsLocalRing ReciprocityTheory.ChartRestric
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ _ _ hV K' _ σ hσ`. Use `letI : Algebra (FractionRing V) K' := σ.toAlgebra`. Use `letI : Algebra V K' := (σ.comp (algebraMap V (FractionRing V))).toAlgebra`. Use `haveI : IsScalarTower V (FractionRing V) K' := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : FiniteDimensional (FractionRing V) K' := hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI := hV`. Use `haveI : CharZero (FractionRing V) := IsFractionRing.charZero_of_isFractionRing V`. Set `B` to `integralClosure V K'`. Use `haveI : Module.Finite V B := IsIntegralClosure.finite V (FractionRing V) K' B`. Use `haveI hBd : IsDiscreteValuationRing B := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_dvr V (FractionRing V) K'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsFractionRing B K' := integralClosure.isFractionRing_of_finite_extension (FractionRing V) K'`. Establish `hinj : Function.Injective (algebraMap V B)`. Introduce `x y h`. Establish `h2` using `congrArg (algebraMap B K') h`. Rewrite `h2` using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`.
-
-Conclude with `(σ.injective.comp (IsFractionRing.injective V (FractionRing V))) h2`. Use `haveI : CharZero B := charZero_of_injective_algebraMap hinj`. Use `haveI : FaithfulSMul V B := (faithfulSMul_iff_algebraMap_injective V B).2 hinj`. Use `haveI : Algebra.IsIntegral V B := IsIntegralClosure.isIntegral_algebra V K'`. Use `haveI : IsLocalHom (algebraMap V B) := Algebra.IsIntegral.isLocalHom _ _`.
-
-Set `e : FractionRing B ≃ₐ[B] K'` to `IsLocalization.algEquiv (nonZeroDivisors B) (FractionRing B) K'`. Use `⟨B, inferInstance, inferInstance, hBd, inferInstance, algebraMap V B, e.symm.toRingHom, CompleteFiniteExtension.isAdicComplete_of_finite_local V B, hinj, inferInstance, ?_, fun a => ?_⟩` and prove the remaining obligations. Conclude with `(inferInstance : Module.Finite V B)`. Express the relevant statement in the definitionally equal form `e.symm (algebraMap B K' (algebraMap V B a)) = _`. Conclude with `e.symm.commutes _`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem exists_complete_dvr_of_finite_fractionRing_hom :
     ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V],

@@ -18,7 +18,7 @@ namespace GlobalTheory.UPel.HT.Hecke
 variable {S : Scheme.{0}} {G : Over S} [GrpObj G] [IsCommMonObj G] {L : LB G.left}
 
 /- English proof (translation)
-Use `congr 1`. Rewrite using `[transl, comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique (snd (𝟙_ (Over S)) G ≫ toUnit G) (fst (𝟙_ (Over S)) G), mul_comm]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem snd_transl (x : 𝟙_ (Over S) ⟶ G) :
     (snd (𝟙_ (Over S)) G ≫ transl x).left = (Out.translPt G x).left := by
@@ -28,9 +28,9 @@ theorem snd_transl (x : 𝟙_ (Over S) ⟶ G) :
   rfl
 
 /- English proof (translation)
-Take `⟨u, hu, hv⟩` from `exists_gen hL (K' := Fin 2) (φ' := ![(snd (𝟙_ (Over S)) G).left, (Out.translPt G x).left]) (ε' := ![1, -1]) (fun U _ h => by`. Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id]`. Rewrite using `[← Over.comp_left, snd_transl])`. Use the proof step `(LB.pullGen L _ _ φ (snd (𝟙_ (Over S)) G).left) (DVR.pullGen_isGen _ _ _ _ hφ _)`. Use `⟨⟨x, u, hu⟩, rfl, fun Z t a z J hJ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hv _ _ z J hJ).trans ((val_pull hJ _ _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[← Over.comp_left, lift_snd]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_theta (hL : L.IsLB) (x : 𝟙_ (Over S) ⟶ G)
     (φ : LB.Gen (LB.LinComb L (K := Fin 2) ![𝟙 G.left, (transl x).left] ![1, -1])) (hφ : φ.IsGen) :
@@ -46,11 +46,11 @@ theorem exists_theta (hL : L.IsLB) (x : 𝟙_ (Over S) ⟶ G)
   rw [← Over.comp_left, lift_snd]
 
 /- English proof (translation)
-Introduce `S G _ _ hA L hL x y φx φy hx hy hW`. Take `⟨θx, hθx, ex⟩` from `exists_theta hL x φx hx`. Take `⟨θy, hθy, ey⟩` from `exists_theta hL y φy hy`. Rewrite `hW` using `[← hθx, ← hθy]`. Establish `hC` using `(GlobalTheory.CommutatorPairing.commIsOf_iff hL θx θy 1).1 ((GlobalTheory.GlobalLift.weilIs_iff_commIsOf GlobalTheory.globalFns_holds hA hL θx θy 1).1 hW)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `corr_of_val hL fun g J hJ => ?_` and prove the remaining obligations. Establish `h` using `hC G (toUnit G) (𝟙 G) g J hJ`. Rewrite `h` using `[map_one, CommutatorPairing.commVal, mul_inv_eq_one, ex _ _ _ _ _ hJ, ex _ _ _ _ _ hJ, ey _ _ _ _ _ hJ, ey _ _ _ _ _ hJ]`. Rewrite using `[val_mul hJ, val_mul hJ, val_pull hJ, val_pull hJ, Category.id_comp, Category.id_comp]`. Rewrite `h` using `[hθx, hθy, show toUnit G ≫ x * 𝟙 G = transl x from mul_comm _ _, show toUnit G ≫ y * 𝟙 G = transl y from mul_comm _ _]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem gen_commute_of_weilIs : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G], IsAbelianScheme G →
     ∀ (L : LB G.left), L.IsLB → ∀ (x y : 𝟙_ (Over S) ⟶ G)

@@ -14,7 +14,7 @@ variable {K V ι : Type*} [Field K] [NumberField K] [StarRing K] [AddCommGroup V
   [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Unfold `majAt`. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem majBasic_majAt (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (v : InfinitePlace K) (x y : V) :

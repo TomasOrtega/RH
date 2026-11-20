@@ -18,9 +18,9 @@ Evaluate the numerical expressions.
 example : (1 : ℕ) ≤ 2 := by norm_num
 
 /- English proof (translation)
-Establish `hrho : rhoBlock Unit 2 1 = 0`. Use extensionality with `⟨u, i⟩`. Apply the tactic sequence `fin_cases i <;> simp [rhoBlock]`. Establish `h` using `Jint_line 1`. Unfold `Jint fib at h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h` using `[vandBlocks_line, map_one, one_mul, dimN_line]`. Rewrite using `[hrho, show (1 * (2 - 1) : ℕ) = 1 from rfl, monomial_zero', C_1, h]`. Simplify using `[grassDeg]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example : flagInt Unit 2 (muPoly Unit 2 1 ^ (1 * (2 - 1)) * monomial (rhoBlock Unit 2 1) 1) =
     (-1) ^ (1 * (2 - 1)) * grassDeg 1 (2 - 1) := by

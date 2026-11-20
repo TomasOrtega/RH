@@ -10,7 +10,7 @@ open scoped Classical
 open UpperTheory.Gal.InertialTypesAlt.G
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Conclude with `(ValuativeRel.isEquiv (ValuativeRel.valuation _) Valued.v).le_one_iff_le_one.1 ((Valuation.mem_integer_iff _ _).1 h)`.
+A detailed English derivation is pending.
 -/
 private theorem valued_le_one {F : Type} [Field F] [NumberField F] (v : Pl F) {x : v.adicCompletion F}
     (h : x ∈ (ValuativeRel.valuation (v.adicCompletion F)).integer) : Valued.v x ≤ 1 := by
@@ -20,11 +20,11 @@ private theorem valued_le_one {F : Type} [Field F] [NumberField F] (v : Pl F) {x
     ((Valuation.mem_integer_iff _ _).1 h)
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hg`. Establish `e : ((Matrix.GeneralLinearGroup.det (GLnLocal.integralGLHom (v.adicCompletion F) n u) : (v.adicCompletion F)ˣ) : v.adicCompletion F) = ((Matrix.GeneralLinearGroup.det u).val : v.adicCompletion F)` using `by show ((RingHom.mapMatrix (ValuativeRel.valuation (v.adicCompletion F)).integer.subtype) (u : Matrix (Fin n) (Fin n) _)).det = _`. Rewrite using `[← RingHom.map_det]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `Valued.v _ = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e]`. Generalize the expression as in `Matrix.GeneralLinearGroup.det u = d`. Establish `h1` using `valued_le_one v d.val.2`. Establish `h2` using `valued_le_one v (d⁻¹).val.2`. Establish `h3 : Valued.v (d.val : v.adicCompletion F) * Valued.v ((d⁻¹).val : v.adicCompletion F) = 1`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ← Subring.coe_mul, Units.mul_inv]`. Simplify using the standard rewrite rules. Conclude with `le_antisymm h1 (h3 ▸ mul_le_of_le_one_right' h2)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isUnitAt_det {F : Type} [Field F] [NumberField F] (v : Pl F) (n : ℕ)
     {g : GL (Fin n) (v.adicCompletion F)} (hg : g ∈ GLnLocal.integralGL (v.adicCompletion F) n) :
@@ -48,7 +48,7 @@ private theorem isUnitAt_det {F : Type} [Field F] [NumberField F] (v : Pl F) (n 
   exact le_antisymm h1 (h3 ▸ mul_le_of_le_one_right' h2)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ σ _ _ n _ v hv g hg η hη`. Conclude with `UpperTheory.ConvolutionTheory.Sph.normUnr F E η hη v hv _ (isUnitAt_det v n hg)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.G.normInt :
     UpperTheory.Gal.InertialTypesAlt.G.NormInt := by

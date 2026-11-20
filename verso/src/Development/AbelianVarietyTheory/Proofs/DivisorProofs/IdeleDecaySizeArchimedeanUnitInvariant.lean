@@ -11,7 +11,7 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.IdeleSizeUnit
 
 /- English proof (translation)
-The claim follows from `Module.Finite.of_restrictScalars_finite ℚ F E GlobalTheory.AdelicU.evInf F w (GlobalTheory.IdeleDecay.coord F E x i) = (Algebra.TensorProduct.basis w.Completion (Module.finBasis F E)).repr (GlobalTheory.AdelicU.compInf F E w x) i := by haveI : FiniteDimensional F E := Module.Fini …`.
+A detailed English derivation is pending.
 -/
 theorem coord_inf (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (w : InfinitePlace F) (x : AE F E) (i : Fin (Module.finrank F E)) :
@@ -29,13 +29,13 @@ theorem coord_inf (F E : Type) [Field F] [NumberField F] [Field E] [NumberField 
 end GlobalTheory.IdeleSizeUnit
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ b h hb`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Establish `hc : ∀ w, GlobalTheory.AdelicU.compInf F E w (b * h : (AE F E)ˣ).1 = GlobalTheory.AdelicU.compInf F E w h.1`. Introduce `w`. Use `congrArg Units.val (hb w)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.Doubling.unitInf, Units.coe_map, Units.val_one] at this`. Rewrite using `[Units.val_mul, map_mul]`. Use `erw [this, one_mul]`. Establish `hi : ∀ i, (GlobalTheory.IdeleDecay.coord F E (b * h : (AE F E)ˣ).1 i).1 = (GlobalTheory.IdeleDecay.coord F E h.1 i).1`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `w`. Use `GlobalTheory.IdeleSizeUnit.coord_inf F E w (b * h : (AE F E)ˣ).1 i` as an intermediate fact. Rewrite `this` using `[hc w, ← GlobalTheory.IdeleSizeUnit.coord_inf F E w h.1 i]`. Conclude with `this`. Unfold `GlobalTheory.IdeleDecay.size`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Unfold `evI`. Rewrite using `[hi i]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.IdeleSizeUnit.size_mul_of_unitInf_eq_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (b h : (AE F E)ˣ),
     (∀ w, GlobalTheory.Doubling.unitInf F E w b = 1) → GlobalTheory.IdeleDecay.size F E (b * h : (AE F E)ˣ).1 = GlobalTheory.IdeleDecay.size F E h.1 := by

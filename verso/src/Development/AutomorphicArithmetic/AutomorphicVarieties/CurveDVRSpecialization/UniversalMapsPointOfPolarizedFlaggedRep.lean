@@ -16,9 +16,9 @@ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr Uppe
 namespace UpperTheory.V.Pr
 
 /- English proof (translation)
-Establish `h1` using `((d_gmap D).2.2.1 f (MonoidAlgebra.single g 1)).2 1`. Rewrite `h1` using `[h, MonoidAlgebra.mapRingHom_single, map_one]`. Establish `h2` using `(repApi ρ).2.2.1 hn (MonoidAlgebra.single g 1)`. Rewrite `h2` using `[GDet.tr, h1]`. Rewrite using `[GDet.tr, h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `i j`. Simplify using `[GDet.repAlg]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem tr_single {n : ℕ} {A G K : Type} [CommRing A] [Group G] [CommRing K] (hn : 0 < n) (D : GDet n A G)
     (f : A →+* K) (ρ : G →* Matrix (Fin n) (Fin n) K) (h : D.map f = GDet.ofRep ρ) (g : G) :
@@ -32,7 +32,7 @@ private theorem tr_single {n : ℕ} {A G K : Type} [CommRing A] [Group G] [CommR
   ext i j; simp [GDet.repAlg]
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => by simp | m + 1, c, x => by rw [List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, Fin.prod_univ_succ, prod_smul (fun i => c i.succ) (fun i => x i.succ), smul_mul_smul_comm]`.
+A detailed English derivation is pending.
 -/
 private theorem prod_smul {K : Type} [CommRing K] {M : Type} [Ring M] [Algebra K M] :
     ∀ {m : ℕ} (c : Fin m → K) (x : Fin m → M), (List.ofFn fun i => c i • x i).prod = (∏ i, c i) • (List.ofFn x).prod
@@ -46,7 +46,7 @@ section Cont
 variable {Γ Γ' R R' : Type} [TopologicalSpace Γ] [TopologicalSpace Γ'] [CommRing R] [CommRing R']
 
 /- English proof (translation)
-Introduce `N` and use `by simp only [map_mul] exact (hf N).mul (hg N)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ac_mul {I : Ideal R} {f g : Γ → R} (hf : AdicCont I f) (hg : AdicCont I g) :
     AdicCont I fun x => f x * g x := fun N => by
@@ -54,13 +54,13 @@ private theorem ac_mul {I : Ideal R} {f g : Γ → R} (hf : AdicCont I f) (hg : 
   exact (hf N).mul (hg N)
 
 /- English proof (translation)
-Introduce `N` and use `(hf N).comp_continuous hu`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ac_comp {I : Ideal R} {f : Γ → R} (hf : AdicCont I f) {u : Γ' → Γ} (hu : Continuous u) :
     AdicCont I fun x => f (u x) := fun N => (hf N).comp_continuous hu
 
 /- English proof (translation)
-Introduce `N` and use `by have hle : maximalIdeal R ^ N ≤ (maximalIdeal R' ^ N).comap φ := le_trans (Ideal.pow_right_mono (fun y hy => map_nonunit φ y hy) N) (Ideal.le_comap_pow _ N) exact (hf N).comp (Ideal.quotientMap _ φ hle)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ac_map [IsLocalRing R] [IsLocalRing R'] (φ : R →+* R') [IsLocalHom φ] {f : Γ → R}
     (hf : AdicCont (maximalIdeal R) f) : AdicCont (maximalIdeal R') fun x => φ (f x) := fun N => by
@@ -69,7 +69,7 @@ private theorem ac_map [IsLocalRing R] [IsLocalRing R'] (φ : R →+* R') [IsLoc
   exact (hf N).comp (Ideal.quotientMap _ φ hle)
 
 /- English proof (translation)
-Introduce `N s` and use `hu.isOpen_preimage.1 (hf N s)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem ac_desc {I : Ideal R} {f : Γ → R} {u : Γ' → Γ} (hu : Topology.IsQuotientMap u)
     (hf : AdicCont I fun x => f (u x)) : AdicCont I f := fun N s =>
@@ -83,13 +83,13 @@ variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algeb
   {F : Frame l (ResidueField O)} {n : ℕ} {G : GFrame l} {r : Resid G O n} (L : TwLink F r)
 
 /- English proof (translation)
-The claim follows from `j.commutes _`.
+A detailed English derivation is pending.
 -/
 private theorem κ_map {C K : Type} [CommRing C] [Algebra O C] [CommRing K] [Algebra O K] (j : C →ₐ[O] K) (g : G.G₀) :
     j ((L.κA C g : Cˣ) : C) = (L.κA K g : Kˣ) := j.commutes _
 
 /- English proof (translation)
-Rewrite using `[← map_inv, ← map_inv, κ_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem κ_map_inv {C K : Type} [CommRing C] [Algebra O C] [CommRing K] [Algebra O K] (j : C →ₐ[O] K)
     (g : G.G₀) : j (((L.κA C g)⁻¹ : Cˣ) : C) = ((L.κA K g)⁻¹ : Kˣ) := by
@@ -100,7 +100,7 @@ variable {C : Type} [CommRing C] [Algebra O C] [IsCO O C] (p : Pair r C)
 private noncomputable def tt (g : G.G₀) : C := (((L.κA C g)⁻¹ : Cˣ) : C) * p.D.tr (MonoidAlgebra.single g 1)
 
 /- English proof (translation)
-Use `ac_map (algebraMap O C) (ac_comp L.κ_cont continuous_inv)` as an intermediate fact. Simplify using `only [← map_inv]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem κinv_cont : AdicCont (maximalIdeal C) fun g : G.G₀ => (((L.κA C g)⁻¹ : Cˣ) : C) := by
   have := ac_map (algebraMap O C) (ac_comp L.κ_cont continuous_inv)
@@ -108,12 +108,12 @@ private theorem κinv_cont : AdicCont (maximalIdeal C) fun g : G.G₀ => (((L.κ
   exact this
 
 /- English proof (translation)
-The claim follows from `ac_mul (κinv_cont L) (p.cont 1)`.
+A detailed English derivation is pending.
 -/
 private theorem tt_cont : AdicCont (maximalIdeal C) (tt L p) := ac_mul (κinv_cont L) (p.cont 1)
 
 /- English proof (translation)
-Rewrite using `[tt, map_mul, κ_map_inv, ← tr_single hn p.D _ r0 h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem tt_map (hn : 0 < n) {K : Type} [CommRing K] [Algebra O K] (j : C →ₐ[O] K)
     (r0 : G.G₀ →* Matrix (Fin n) (Fin n) K) (h : p.D.map (j : C →+* K) = GDet.ofRep r0) (g : G.G₀) :
@@ -122,9 +122,9 @@ private theorem tt_map (hn : 0 < n) {K : Type} [CommRing K] [Algebra O K] (j : C
   rfl
 
 /- English proof (translation)
-Rewrite using `[tt_map L p hn (res O C) _ p.red]`. Use `show _ * (diagonal _).trace = _`. Rewrite using `[trace_diagonal, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[L.chib, ← Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `show (L.κA _ g)⁻¹ * (_ * L.κA _ g) = _`. Rewrite using `[mul_comm _ (L.κA _ g), inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tt_res (hn : 0 < n) (g : G.G₀) :
     res O C (tt L p g) = ∑ i, ((F.Ψ (L.π g) ^ w n i : (ResidueField O)ˣ) : ResidueField O) := by
@@ -138,20 +138,18 @@ private theorem tt_res (hn : 0 < n) (g : G.G₀) :
   rw [mul_comm _ (L.κA _ g), inv_mul_cancel_left]
 
 /- English proof (translation)
-Use `haveI : CompactSpace G.G₀ := isCompact_iff_compactSpace.1 (G.η.ker.isClosed_of_isOpen G.η_open).isCompact`. Conclude with `L.π_cont.isClosedMap.isQuotientMap L.π_cont L.π_surj`.
+A detailed English derivation is pending.
 -/
 private theorem π_quot : Topology.IsQuotientMap L.π := by
   haveI : CompactSpace G.G₀ := isCompact_iff_compactSpace.1 (G.η.ker.isClosed_of_isOpen G.η_open).isCompact
   exact L.π_cont.isClosedMap.isQuotientMap L.π_cont L.π_surj
 
 /- English proof (translation)
-Establish `key : ∀ v : F.V, ∃ χ : Fin n → F.Gv v →* Cˣ, (∀ i, AdicCont (maximalIdeal C) (fun g => (χ i g : C)) ∧ ∀ g, res O C (χ i g) = ((F.Ψ (F.loc v g) ^ w n i : (ResidueField O)ˣ) : ResidueField O)) ∧ ∀ u (h : L.e u = v) i g, χ i (h ▸ L.lam u g) * L.κA C (G.φ u g) = p.ψ u i g` using `fun v => by`. Take `⟨u, rfl⟩` from `L.e.surjective v`. Use `⟨fun i => (p.ψ u i * ((L.κA C).comp (G.φ u))⁻¹).comp (L.lam u).symm.toMulEquiv.toMonoidHom, fun i => ⟨?_, fun g => ?_⟩, fun u' h i g => ?_⟩` and prove the remaining obligations. Conclude with `ac_comp (ac_mul (p.psi u i).cont (ac_comp (κinv_cont L) (G.φ_cont u))) (L.lam u).symm.continuous`. Take `⟨g, rfl⟩` from `(L.lam u).surjective g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (L.lam u).symm.toMulEquiv.toMonoidHom (L.lam u g) = g` using `(L.lam u).symm_apply_apply g`. Rewrite using `[MonoidHom.comp_apply, h1]`. Use `show res O C ((p.ψ u i g : Cˣ) * (((L.κA C (G.φ u g))⁻¹ : Cˣ) : C)) = _`. Rewrite using `[map_mul, κ_map_inv, (p.psi u i).red, L.psib, L.chib, ← Units.val_mul, ← L.lam_loc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `mul_inv_cancel_right _ _`. Take `rfl` from `L.e.injective h`. Establish `h1 : (L.lam u').symm.toMulEquiv.toMonoidHom (L.lam u' g) = g` using `(L.lam u').symm_apply_apply g`. Rewrite using `[MonoidHom.comp_apply, h1]`. Conclude with `inv_mul_cancel_right _ _`.
-
-Use `choose χ h1 h2 using key`. Conclude with `⟨χ, h1, fun v i g => h2 _ v rfl i g⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem chi_ex : ∃ χ : ∀ v, Fin n → F.Gv v →* Cˣ, IsPsi O F n (fun v i g => (χ v i g : C)) ∧
     ∀ v i g, χ (L.e v) i (L.lam v g) * L.κA C (G.φ v g) = p.ψ v i g := by
@@ -179,13 +177,13 @@ private theorem chi_ex : ∃ χ : ∀ v, Fin n → F.Gv v →* Cˣ, IsPsi O F n 
 end Tw
 
 /- English proof (translation)
-Introduce `W hW`. Establish `e : ∀ g, (h : Matrix (Fin n) (Fin n) K) * (r g : Matrix (Fin n) (Fin n) K) = a g * h` using `fun g => by`. Rewrite using `[H, Units.inv_mul_cancel_right]`. Both sides reduce to the same expression. Break down `hr.2.2 (W.comap (Matrix.toLin' (h : Matrix (Fin n) (Fin n) K))) le_top (fun g v hv => by` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hv`, the goal using `[Submodule.mem_comap, Matrix.toLin'_apply]`. Rewrite using `[Matrix.mulVec_mulVec, e, ← Matrix.mulVec_mulVec]`. Conclude with `hW g (Subgroup.mem_top g) _ hv) with h0 | h0`. Use `Or.inl (eq_bot_iff.2 fun v hv => ?_)` and prove the remaining obligations. Establish `h1 : ((h⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ v ∈ W.comap (Matrix.toLin' (h : Matrix (Fin n) (Fin n) K))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_comap, Matrix.toLin'_apply, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Conclude with `hv`. Rewrite `h1` using `[h0, Submodule.mem_bot]`. Establish `h2` using `congrArg ((h : Matrix (Fin n) (Fin n) K) *ᵥ ·) h1`. Simplify using `only [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec, Matrix.mulVec_zero] at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h2`. Use `Or.inr (eq_top_iff.2 fun v _ => ?_)` and prove the remaining obligations. Establish `h1 : ((h⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) *ᵥ v ∈ W.comap (Matrix.toLin' (h : Matrix (Fin n) (Fin n) K))` using `h0 ▸ Submodule.mem_top`. Rewrite `h1` using `[Submodule.mem_comap, Matrix.toLin'_apply, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem irr_conj {G K : Type} [Group G] [Field K] {n : ℕ} (r : G →* GL (Fin n) K)
     (a : G → Matrix (Fin n) (Fin n) K) (h : GL (Fin n) K) (H : ∀ g, a g = h * mat r g * h⁻¹) (hr : Af.IsIrr r) :
@@ -212,19 +210,17 @@ private theorem irr_conj {G K : Type} [Group G] [Field K] {n : ℕ} (r : G →* 
     rwa [Submodule.mem_comap, Matrix.toLin'_apply, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec] at h1
 
 /- English proof (translation)
-Establish `hn : 0 < n` using `by have := T.n23; omega`. Use `letI : Algebra C K := (j : C →+* K).toAlgebra`. Establish `hv : ∀ g, mat (Af.tw (r.comp T.K.π) (T.K.κA K)) g = ((T.K.κA K g : Kˣ) : K) • mat r (T.K.π g)` using `fun g => Af.tw_val _ _ g`. Take `⟨χ, hχ, hψ⟩` from `chi_ex T.K p`. Establish `hb : ∀ g, j (tt T.K p g) = (mat r (T.K.π g)).trace` using `fun g => by`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[tt_map T.K p hn j _ h0, hv, trace_smul, smul_eq_mul, Units.inv_mul_cancel_left]`. Set `t : F.G0 → C` to `fun x => tt T.K p (Function.surjInv T.K.π_surj x)`. Establish `ht0 : ∀ x, j (t x) = (mat r x).trace` using `fun x => by`. Use `hb (Function.surjInv T.K.π_surj x)` as an intermediate fact. Rewrite `this` using `[Function.surjInv_eq T.K.π_surj]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `ht : ∀ g, t (T.K.π g) = tt T.K p g` using `fun g => hj (by rw [ht0, hb])`. Establish `hψ' : ∀ v i g, j (p.ψ v i g : Cˣ) = (T.K.κA K (T.G.φ v g) : Kˣ) * j (χ (T.K.e v) i (T.K.lam v g) : Cˣ)` using `fun v i g => by`. Rewrite using `[← hψ, Units.val_mul, map_mul, mul_comm, ← κ_map T.K j]`. Use `Exists.elim (of_form T.ok T.n23 C K hj (mat r) Q t χ Q.isUnit hQ hform ⟨?_, fun x => ?_⟩ ht0 hχ (fun v g => ?_)) fun ρ H => ?_` and prove the remaining obligations. Use `ac_desc (π_quot T.K) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [ht]`. Conclude with `tt_cont T.K p`. Take `⟨g, rfl⟩` from `T.K.π_surj x`. Rewrite using `[ht, tt_res T.K p hn]`. Take `⟨u, rfl⟩` from `T.K.e.surjective v`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩ : ∃ g' : Fin n → T.G.Gv u, g = fun i => T.K.lam u (g' i)` from `⟨fun i => (T.K.lam u).symm (g i), funext fun i => ((T.K.lam u).apply_symm_apply _).symm⟩`. Establish `h1` using `(flagRel _ _ (hfl u)).2 g`. Establish `h2` using `prod_smul (fun i => ((T.K.κA K (T.G.φ u (g i)) : Kˣ) : K)) (fun i => mat r (F.loc0 _ (T.K.lam u (g i))) - j (χ (T.K.e u) i (T.K.lam u (g i)) : Cˣ) • (1 : Matrix (Fin n) (Fin n) K))`. Establish `h3` using `h2.symm.trans (Eq.trans (congrArg (fun f => (List.ofFn f).prod) (funext fun i => by`. Rewrite using `[smul_sub, T.K.lam_loc, ← hv, smul_smul, ← hψ']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use the proof step `rfl)) h1)`. Conclude with `(IsUnit.smul_eq_zero (IsUnit.mk0 _ (Finset.prod_ne_zero_iff.2 fun i _ => Units.ne_zero _))).1 h3`. Take `⟨h, H1, -, -⟩` from `H`. Use `⟨ρ, irr_conj r _ h H1 hirr, h0.trans ((repApi _).2.2.2.2.2.2.2 _ h fun g => ?_)⟩` and prove the remaining obligations. Use `show _ = (((T.K.κA K g : Kˣ) : K) • ρ.r (T.K.π g)) * _`.
-
-Rewrite using `[hv, H1, mul_smul_comm, smul_mul_assoc, Units.inv_mul_cancel_right]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem main {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsCoef l O] [Algebra ℤ_[l] O] {F : Frame l (ResidueField O)} {n : ℕ} (T : Setup F n)
@@ -283,11 +279,11 @@ open NumberField Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.
 open scoped Matrix
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ F n T K' _ _ _ x r ρ Q ψ hQ hform hρ hx hfl hirr`. Substitute `hρ` using the available equality. Use `haveI : Alg.IsCO O x.range := Alg.co_quot O _ _ x.rangeRestrict x.rangeRestrict_surjective`. Take `⟨p, hp⟩` from `W.exists_determinantPair_map_of_algHom l T.G O n T.r T.B.B x.range x.rangeRestrict T.B.u`. Establish `hD : p.D.map (x.range.val : x.range →+* K') = T.B.u.D.map (x : T.B.B →+* K')`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hp.1, (CA.d_gmap _).2.1]`. Both sides reduce to the same expression. Rewrite using `[← hD]`. Use `main T p x.range.val Subtype.val_injective r Q hQ hform (hD.trans hx.1) (fun v => ?_) hirr` and prove the remaining obligations. Establish `: (fun i => W.pushCh (x.range.val : x.range →+* K') (p.ψ v i)) = ψ v` using `funext fun i => by`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hp.2 v i, ← hx.2 v i]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hfl v`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.universalMaps_point_of_polarized_flagged_rep :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Fr.IsCoef l O] [Algebra ℤ_[l] O] {F : Fr.Frame l (ResidueField O)} {n : ℕ} (T : Setup F n) (K' : Type) [Field K'] [IsAlgClosed K'] [Algebra O K'] (x : T.B.B →ₐ[O] K') (r : F.G0 →* GL (Fin n) K') (ρ : T.G.G₀ →* GL (Fin n) K') (Q : GL (Fin n) K') (ψ : ∀ v, Fin n → T.G.Gv v →* K'ˣ), (Q : Matrix (Fin n) (Fin n) K')ᵀ = Q → (∀ g, (r g : Matrix (Fin n) (Fin n) K')ᵀ * (Q : Matrix (Fin n) (Fin n) K') * (r (F.conj g) : Matrix (Fin n) (Fin n) K') = Q) → ρ = tw (r.comp T.K.π) (T.K.κA K') → T.B.u.Maps (x : T.B.B →+* K') (W.GDet.ofRep (W.mat ρ)) ψ → (∀ v, W.HasFlag (ρ.comp (T.G.φ v)) (ψ v)) → IsIrr r → ∃ ρ' : Fr.NRep F n K', MatIrr ⊤ ρ'.r ∧ T.B.u.D.map (x : T.B.B →+* K') = W.GDet.ofRep (T.K.tw ρ') := by

@@ -8,14 +8,14 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.Locally
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker φ h`.
+A detailed English derivation is pending.
 -/
 private theorem lc_of_ker {G M : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group M]
     (φ : G →* M) (h : IsOpen (φ.ker : Set G)) : IsLocallyConstant φ :=
   _root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker φ h
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(GDet.repAlg ρ A[X] _).det = _`. Use `congr 1`. Rewrite using `[map_sub, MonoidAlgebra.mapRingHom_single]`. Simplify using `[GDet.repAlg]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem chi_ofRep {n : ℕ} {A G : Type} [CommRing A] [Group G] (ρ : G →* Matrix (Fin n) (Fin n) A) (g : G) :
     (GDet.ofRep ρ).chi (MonoidAlgebra.single g 1) =
@@ -26,11 +26,11 @@ private theorem chi_ofRep {n : ℕ} {A G : Type} [CommRing A] [Group G] (ρ : G 
   simp [GDet.repAlg]
 
 /- English proof (translation)
-Introduce `i N`. Establish `h1 : IsLocallyConstant fun g j => χ j g`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Use `fun j => (lc_of_ker (χ j) (h j)).eventually_eq x` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(Filter.eventually_all.2 this).mono fun y hy => funext hy`. Establish `h2` using `h1.comp fun v : Fin n → Aˣ => Ideal.Quotient.mk (I ^ N) ((-1) ^ i * (((X : A[X]) • (1 : Matrix (Fin n) (Fin n) A[X]) - (Matrix.diagonal fun j => (v j : A)).map (algebraMap A A[X])).det).coeff (n - i))`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `only [GDet.lam, GDet.ofChars, chi_ofRep]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem cont_ofChars {n : ℕ} {A G : Type} [CommRing A] [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (χ : Fin n → G →* Aˣ) (h : ∀ i, IsOpen ((χ i).ker : Set G)) (I : Ideal A) : (GDet.ofChars χ).IsCont I := by
@@ -49,15 +49,13 @@ private theorem cont_ofChars {n : ℕ} {A G : Type} [CommRing A] [Group G] [Topo
   rfl
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (residue k)` using `(residue k).injective`. Use `haveI : Finite (ResidueField k) := Finite.of_surjective _ residue_surjective`. Use `haveI : CharP (ResidueField k) l := charP_of_injective_ringHom hinj l`. Use `haveI : IsAdicComplete (maximalIdeal k) k := by`. Rewrite using `[maximalIdeal_eq_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `infer_instance`. Set `u : kˣ →* (ResidueField k)ˣ` to `Units.map (residue k).toMonoidHom`. Establish `hu : Function.Injective u` using `Units.map_injective hinj`. Set `χ' : Fin n → G →* (ResidueField k)ˣ` to `fun i => u.comp (χ i)`. Establish `ho' : ∀ i, IsOpen ((χ' i).ker : Set G)` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: (χ' i).ker = (χ i).ker` using `MonoidHom.ker_comp_of_injective _ _ hu`. Rewrite using `[this]`. Conclude with `ho i`. Establish `hi' : Function.Injective χ'` using `fun i j hij => hi (MonoidHom.ext fun g => hu (DFunLike.congr_fun hij g))`. Take `⟨h, hm⟩` from `exists_multFree_of_phiCond_of_injective_chars l χ' hP ho' hi'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Establish `hmap : (GDet.ofChars χ).map (residue k) = GDet.ofChars χ'`. Unfold `GDet.ofChars`. Rewrite using `[(d_gmap (GDet.ofRep (GDet.diagRep χ))).2.2.2]`. Use `congr 1`. Use extensionality with `g a b`.
-
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[GDet.diagRep, χ', u]`. Simplify using `[GDet.diagRep, hab]`. Conclude with `(finE (GDet.ofChars χ) χ' (cont_ofChars χ ho _) hmap hm ∅).2.1`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem fin_field (l : ℕ) [Fact l.Prime] {n : ℕ} {k G : Type} [Field k] [Finite k] [CharP k l] [Group G]
     [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] (χ : Fin n → G →* kˣ)
@@ -91,7 +89,7 @@ private theorem fin_field (l : ℕ) [Fact l.Prime] {n : ℕ} {k G : Type} [Field
   exact (finE (GDet.ofChars χ) χ' (cont_ofChars χ ho _) hmap hm ∅).2.1
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ _ n G _ _ _ _ _ χ hP ho hi`. Conclude with `univDet l O (GDet.ofChars χ) hP (cont_ofChars χ ho _) (fin_field l χ hP ho hi)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.univDet_mf :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] [Finite (ResidueField O)] [CharP (ResidueField O) l] {n : ℕ} {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] (χ : Fin n → G →* (ResidueField O)ˣ), PhiCond G l → (∀ i, IsOpen ((χ i).ker : Set G)) → Function.Injective χ → ∃ (R : Type) (_ : CommRing R) (_ : Algebra O R) (_ : IsCO O R) (D : GDet n R G), IsUnivDet O (GDet.ofChars χ) D := by

@@ -8,31 +8,29 @@ open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `N hN k hk hS ζ hζ hz y`. Establish `hi : ∀ v i j, Valued.v (H.cp v (k i j)) ≤ 1` using `fun v i j => hk.2 v i j`. Establish `hN1 : ∀ v : H.P ℚ, Valued.v (N : H.Kv v) ≤ 1` using `fun v => show (N : H.Kv v) ∈ v.adicCompletionIntegers ℚ from natCast_mem _ N`. Establish `hv : ∀ v : H.P ℚ, (Bad N v → Valued.v (N : H.Kv v) < 1) ∧ (¬ Bad N v → Valued.v (N : H.Kv v) = 1)` using `fun v => by`. Establish `h1` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := ℚ) v (N : 𝓞 ℚ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[HeightOneSpectrum.valuation_of_algebraMap]`. Establish `h2 : Valued.v (N : H.Kv v) = v.intValuation (N : 𝓞 ℚ)` using `by simpa using h1`. Rewrite using `[h2]`. Conclude with `⟨fun h => (v.intValuation_lt_one_iff_mem _).2 h, fun h => HeightOneSpectrum.intValuation_eq_one_iff.2 h⟩`. Establish `key : ∀ v : H.P ℚ, (Dv N v ((y : A ℚ) * (ζ : A ℚ) * k 1 0) ∧ Dv N v ((y : A ℚ) * (ζ : A ℚ) * k 1 1 - 1)) ↔ ((Bad N v → Dv N v ((y : A ℚ) - 1)) ∧ Valued.v (H.cp v (y : A ℚ)) ≤ 1)` using `fun v => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hd : H.cp v (k 0 0) * H.cp v (k 1 1) - H.cp v (k 0 1) * H.cp v (k 1 0) = 1`. Use `congrArg (H.cp v) ((Matrix.det_fin_two k.1).symm.trans k.2)` as an intermediate fact. Simplify using `using this`. Establish `hs` using `hS v`. Establish `hz'` using `hz v`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `hζ.2 v`. Establish `i00` using `hi v 0 0`. Establish `i01` using `hi v 0 1`. Establish `i10` using `hi v 1 0`. Establish `i11` using `hi v 1 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Dv, map_mul, map_sub, map_one] at hs hz' ⊢`. Generalize the expression as in `H.cp v (k 0 0) = a at *`. Generalize the expression as in `H.cp v (k 0 1) = b at *`. Generalize the expression as in `H.cp v (k 1 0) = c at *`. Generalize the expression as in `H.cp v (k 1 1) = d at *`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `H.cp v (y : A ℚ) = x at *`. Generalize the expression as in `H.cp v (ζ : A ℚ) = z at *`. Distinguish the cases in `hb : Bad N v`. Establish `h1` using `hz'.1 hb`. Establish `hlt` using `(hv v).1 hb`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Valued.v (z * d) = 1`. Use `Valuation.map_one_add_of_lt Valued.v (h1.trans_lt hlt)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h3⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h4 : Valued.v x ≤ 1`. Use `Valuation.map_one_add_of_lt Valued.v (h3.trans_lt hlt)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel, mul_assoc, map_mul, h2, mul_one]`. Conclude with `this.le`. Use `⟨fun _ => ?_, h4⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show x - 1 = (x * z * d - 1) - x * (z * d - 1) by ring]`. Conclude with `Valuation.map_sub_le _ h3 (by rw [map_mul]; exact (mul_le_mul' h4 h1).trans_eq (one_mul _))`. Introduce and unpack `⟨h3, h4⟩`. Use `⟨by rw [hu, mul_one]; exact (mul_le_mul' h4 hs).trans_eq (one_mul _), ?_⟩` and prove the remaining obligations. Rewrite using `[show x * z * d - 1 = (x - 1) * (z * d) + (z * d - 1) by ring]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Valuation.map_add_le _ (by rw [map_mul, h2, mul_one]; exact h3 hb) h1`. Take `rfl` from `hz'.2 hb`. Rewrite using `[(hv v).2 hb]`. Simplify using `only [map_one, mul_one]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h3, h4⟩`. Use `⟨fun h => absurd h hb, ?_⟩` and prove the remaining obligations. Rewrite using `[show x = a * ((x * d - 1) + 1) - b * (x * c) by linear_combination (-x) * hd]`. Use `Valuation.map_sub_le _ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `mul_le_one' i00 (Valuation.map_add_le _ h4 (map_one _).le)`. Rewrite using `[map_mul, map_mul]`. Conclude with `mul_le_one' i01 h3`. Introduce and unpack `⟨-, h4⟩`. Conclude with `⟨mul_le_one' h4 i10, Valuation.map_sub_le _ (by rw [map_mul]; exact mul_le_one' h4 i11) (map_one _).le⟩`.
-
-Simplify using `only [key, forall_and]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.bottomRow_congruence_iff_idele_congruence :
     ∀ N : ℕ, 0 < N → ∀ k ∈ KK ℚ, k ∈ SS N → ∀ ζ : (A ℚ)ˣ, ζ ∈ UU → (∀ v : H.P ℚ, (Bad N v → Dv N v ((ζ : A ℚ) * k 1 1 - 1)) ∧ (¬ Bad N v → H.cp v (ζ : A ℚ) = 1)) → ∀ y : (A ℚ)ˣ, (∀ v, Dv N v ((y : A ℚ) * (ζ : A ℚ) * k 1 0) ∧ Dv N v ((y : A ℚ) * (ζ : A ℚ) * k 1 1 - 1)) ↔ ((∀ v, Bad N v → Dv N v (((y : (A ℚ)ˣ) : A ℚ) - 1)) ∧ ∀ v : H.P ℚ, Valued.v (H.cp v ((y : (A ℚ)ˣ) : A ℚ)) ≤ 1) := by

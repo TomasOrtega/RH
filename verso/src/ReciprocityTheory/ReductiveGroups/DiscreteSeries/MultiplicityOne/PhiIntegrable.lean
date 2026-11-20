@@ -19,7 +19,7 @@ namespace MFix
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `nR`. Establish `: (2 : ℕ) ≤ 2 * r + k + 1` using `by omega`. Conclude with `this` after adjusting the coercions.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nR_ge (hk : 1 ≤ k) : (2 : ℝ) ≤ nR k r := by
   unfold nR
@@ -27,16 +27,16 @@ theorem nR_ge (hk : 1 ≤ k) : (2 : ℝ) ≤ nR k r := by
   exact_mod_cast this
 
 /- English proof (translation)
-Use `le_trans ?_ ha` and prove the remaining obligations. Unfold `aM nR`. Check the signs of the components of the expression.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem a_nonneg (X : SigData k r) (ha : aM k r ≤ X.a) : 0 ≤ X.a := by
   refine le_trans ?_ ha
   unfold aM nR; positivity
 
 /- English proof (translation)
-Establish `hn` using `nR_ge (r := r) hk`. Unfold `aM at ha`. Unfold `AS AG`. Rewrite using `[min_self]`. Establish `h2 : nR k r ^ 2 * 2 ≤ nR k r ^ 3` using `by nlinarith [sq_nonneg (nR k r)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (4 : ℝ) ≤ nR k r ^ 2` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem gap (hk : 1 ≤ k) (X : SigData k r) (ha : aM k r ≤ X.a) : AS k r + 1 ≤ min X.a X.a - AG k r - 1 := by
   have hn := nR_ge (r := r) hk
@@ -48,9 +48,9 @@ theorem gap (hk : 1 ≤ k) (X : SigData k r) (ha : aM k r ≤ X.a) : AS k r + 1 
   nlinarith
 
 /- English proof (translation)
-Use `⟨|X.Cw| * gN x⁻¹ ^ X.a, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[mc_sig_left X X.w X.w hg hx]`. Establish `h1` using `X.dec (g * x) (gv_mul hg hx)`. Establish `h2` using `pow_mul_le hGL hg hx (a_nonneg X ha)`. Establish `h3 : 0 ≤ gN (g * x) ^ (-X.a)` using `Real.rpow_nonneg (bc_gN_nonneg _) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem orbit_mem (hGL : GNLower) (X : SigData k r) (ha : aM k r ≤ X.a) {x : Mat k r} (hx : x ∈ GV k r) :
     X.σ x X.w ∈ VflA X X.a := by
@@ -70,18 +70,18 @@ def phi (X : SigData k r) (d : ℝ) (W' : Mat k r → Wp) (x : Mat k r) (y : Mt 
   ((d : ℂ) * star (mc X X.w X.w (x⁻¹ * Matrix.of y))) • W' (Matrix.of y)
 
 /- English proof (translation)
-Take `⟨⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hCG, -⟩, -⟩` from `id h`. Conclude with `hCG`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem closedG_of (h : UnitaryGroupStructuralFacts) : ClosedG := by
   obtain ⟨⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hCG, -⟩, -⟩ := id h
   exact hCG
 
 /- English proof (translation)
-Establish `cG : IsClosed {y : Mt k r | (Matrix.of y : Mat k r) ∈ GV k r}` using `(closedG_of h k r).closed`. Establish `c0 : Continuous (fun y : Mt k r => (x⁻¹ * Matrix.of y : Mat k r))` using `Continuous.matrix_mul continuous_const continuous_id`. Establish `c1 : ContinuousOn (fun y : Mt k r => X.σ (x⁻¹ * Matrix.of y) X.w) {y | (Matrix.of y : Mat k r) ∈ GV k r}` using `(X.rep.2.2 X.w).comp c0.continuousOn (fun y hy => gv_mul (gv_inv hx) hy)`. Establish `c2 : ContinuousOn (fun y : Mt k r => (d : ℂ) * star (mc X X.w X.w (x⁻¹ * Matrix.of y))) {y | (Matrix.of y : Mat k r) ∈ GV k r}` using `continuousOn_const.mul (continuousOn_const.inner c1).star`. Establish `hm` using `c2.aestronglyMeasurable (μ := D.μG) cG.measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ y ∂D.μG, y ∈ {y : Mt k r | (Matrix.of y : Mat k r) ∈ GV k r}` using `ae_mem_of_haarOn D.haarG`. Rewrite `hm` using `[Measure.restrict_eq_self_of_ae_mem hae]`. Use `(hI.const_mul (|d| * |X.Cw|)).mono' (hm.smul hWm) ?_` and prove the remaining obligations. Use `filter_upwards [ae_mem_of_haarOn D.haarG] with y hy`. Establish `h1` using `X.dec _ (gv_mul (gv_inv hx) hy)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 0 ≤ gN (x⁻¹ * Matrix.of y) ^ (-X.a)` using `Real.rpow_nonneg (bc_gN_nonneg _) _`. Establish `h4 : ‖mc X X.w X.w (x⁻¹ * Matrix.of y)‖ ≤ |X.Cw| * gN (x⁻¹ * Matrix.of y) ^ (-X.a)` using `h1.trans (mul_le_mul_of_nonneg_right (le_abs_self _) h3)`. Unfold `phi`. Rewrite using `[norm_smul, norm_mul, norm_star, Complex.norm_real, Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem phi_integrable (h : UnitaryGroupStructuralFacts) (D : RealPlaceData k r Wp Wp) (X : SigData k r) (d : ℝ) (W' : Mat k r → Wp)
     (hWm : AEStronglyMeasurable (fun y : Mt k r => W' (Matrix.of y)) D.μG) {x : Mat k r} (hx : x ∈ GV k r)
@@ -111,15 +111,15 @@ theorem phi_integrable (h : UnitaryGroupStructuralFacts) (D : RealPlaceData k r 
     _ = |d| * |X.Cw| * (gN (x⁻¹ * Matrix.of y) ^ (-X.a) * ‖W' (Matrix.of y)‖) := by ring
 
 /- English proof (translation)
-Establish `e0 : (Matrix.of (Fm p y) : Mat k r) = (Matrix.of p.2 * Matrix.of p.1 : Mat k r)⁻¹ * Matrix.of y` using `rfl`. Unfold `phi beInt`. Rewrite using `[e0]`. Take `⟨hh, hm⟩` from `hp`. Generalize the expression as in `(Matrix.of p.1 : Mat k r) = h0 at hh ⊢`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(Matrix.of p.2 : Mat k r) = m at hm ⊢`. Generalize the expression as in `(Matrix.of y : Mat k r) = t at hy ⊢`. Establish `hs : m * h0 ∈ GV k r` using `gv_mul hm.1 hh.1`. Establish `hsx : m * h0 * x ∈ GV k r` using `gv_mul hs hx`. Establish `e1 : star (mc X X.w X.w (x⁻¹ * ((m * h0)⁻¹ * t))) = mc X (X.σ x X.w) (X.σ t X.w) (m * h0)`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mc_sig_left X X.w (X.σ t X.w) hs hx]`. Unfold `mc`. Establish `e2 : x⁻¹ * ((m * h0)⁻¹ * t) = (m * h0 * x)⁻¹ * t`. Rewrite using `[Matrix.mul_inv_rev (m * h0) x, Matrix.mul_assoc]`. Rewrite using `[e2, X.rep.1.2 _ (gv_inv hsx) _ hy, ContinuousLinearMap.comp_apply, ← inner_sig_move X _ hsx (gv_inv hsx) (gv_mul_inv hsx)]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inner_conj_symm _ _`. Establish `e3` using `hW h0 hh m hm ((m * h0)⁻¹ * t) (gv_mul (gv_inv hs) hy)`. Rewrite `e3` using `[← Matrix.mul_assoc, gv_mul_inv hs, Matrix.one_mul]`. Establish `e4 : D.π h0⁻¹ (D.π h0 (W' ((m * h0)⁻¹ * t))) = W' ((m * h0)⁻¹ * t)`. Use `pi_cancel D (uw_inv hh) (W' ((m * h0)⁻¹ * t))` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[gv_inv_inv hh.1]`. Then use the resulting hypothesis. Establish `e5` using `psiD_star_mul D m`. Rewrite using `[e1, _root_.smul_apply, e3, ContinuousLinearMap.map_smul, e4, smul_smul, smul_smul]`. Use `congr 1`. Take the linear combination `(-((d : ℂ) * mc X (X.σ x X.w) (X.σ t X.w) (m * h0))) * e5`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem phi_Fm (D : RealPlaceData k r Wp Wp) (X : SigData k r) (d : ℝ) (W' : Mat k r → Wp)
     (hW : ∀ h ∈ UWset k r D.z, ∀ m ∈ Nset k r, ∀ x ∈ GV k r, W' (m * h * x) = psiD D m • D.π h (W' x))
@@ -158,19 +158,17 @@ end MFix
 
 open MFix in
 /- English proof (translation)
-Introduce `k r Wp _ _ _ D X hD hsq ha l hl d hd W' hWm hWeq hWint`. Establish `: CompleteSpace Wp` using `FiniteDimensional.complete ℂ Wp`. Establish `hGL` using `gnLower_of h`. Take `⟨b, -, -, hfold⟩` from `foldS h D hD`. Use `⟨∫ y : Mt k r, (b y : ℂ) * ((d : ℂ) * ⟪l (X.σ (Matrix.of y) X.w), W' (Matrix.of y)⟫_ℂ) ∂D.μG, fun x hx => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφ` using `phi_integrable h D X d W' hWm hx (hWint x hx)`. Establish `e1 : ∫ y : Mt k r, ((d : ℂ) * star (mc X X.w X.w (Matrix.of y))) • W' (x * Matrix.of y) ∂D.μG = ∫ y, phi X d W' x y ∂D.μG`. Establish `hm : AEStronglyMeasurable (phi X d W' x) (D.μG.map (lmulM x))`. Rewrite using `[D.haarG.left x hx]`. Conclude with `hφ.aestronglyMeasurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `integral_map (μ := D.μG) (φ := lmulM x) (measurable_lmul_mt x).aemeasurable hm`. Rewrite `e` using `[D.haarG.left x hx]`. Rewrite using `[e]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `e0 : (Matrix.of (lmulM x y) : Mat k r) = x * Matrix.of y` using `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [phi, e0]`. Rewrite using `[← Matrix.mul_assoc, gv_inv_mul hx, Matrix.one_mul]`. Rewrite using `[e1, (hfold _ hφ).2, ← integral_smul_const]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_mem_of_haarOn D.haarG] with y hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `orbit_mem hGL X ha hx`. Establish `hv` using `orbit_mem hGL X ha hy`. Establish `hI` using `stBeConv h k r Wp D X hD hsq _ (gap D.k_pos X ha) _ _ (stPairs h k r Wp D X hD hsq d hd X.a X.a _ hu _ hv)`. Establish `e2 : ∫ p, phi X d W' x (Fm p y) ∂(D.μW.prod D.μN) = (d : ℂ) • beOp D X (X.σ x X.w) (X.σ (Matrix.of y) X.w) (W' (Matrix.of y))`. Unfold `beOp`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ContinuousLinearMap.integral_apply hI, ← integral_smul]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_mem_S D] with p hp`. Conclude with `phi_Fm D X d W' hWeq hx hy hp`. Rewrite using `[e2, hl.2 _ hu _ hv]`.
-
-Simplify using `only [rk1, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, smul_smul]`. Rewrite using `[← Complex.coe_smul, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stMFix (h : UnitaryGroupStructuralFacts) : StMFix := by
   intro k r Wp _ _ _ D X hD hsq ha l hl d hd W' hWm hWeq hWint

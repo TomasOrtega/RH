@@ -18,19 +18,19 @@ def Iso (ρ : Representation ℂ G V) (σ : Representation ℂ G W) : Prop :=
   ∃ e : V ≃ₗ[ℂ] W, ∀ g x, e (ρ g x) = σ g (e x)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LinearEquiv.refl _ _, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem Iso.refl (ρ : Representation ℂ G V) : Iso ρ ρ := ⟨LinearEquiv.refl _ _, fun _ _ => rfl⟩
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `h`. Conclude with `⟨e.symm, fun g x => e.injective (by rw [he]; simp)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Iso.symm {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (h : Iso ρ σ) : Iso σ ρ := by
   obtain ⟨e, he⟩ := h
   exact ⟨e.symm, fun g x => e.injective (by rw [he]; simp)⟩
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `h`. Take `⟨e', he'⟩` from `h'`. Conclude with `⟨e.trans e', fun g x => by simp [he, he']⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Iso.trans {ρ : Representation ℂ G V} {σ : Representation ℂ G W} {τ : Representation ℂ G X} (h : Iso ρ σ)
     (h' : Iso σ τ) : Iso ρ τ := by
@@ -39,7 +39,7 @@ theorem Iso.trans {ρ : Representation ℂ G V} {σ : Representation ℂ G W} {�
   exact ⟨e.trans e', fun g x => by simp [he, he']⟩
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `h`. Conclude with `⟨e, fun g x => he (f g) x⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Iso.comp {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (h : Iso ρ σ) (f : H →* G) :
     Iso (ρ.comp f : Representation ℂ H V) (σ.comp f) := by
@@ -47,7 +47,7 @@ theorem Iso.comp {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (h 
   exact ⟨e, fun g x => he (f g) x⟩
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `h`. Use `⟨e, fun g x => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `e ((χ g : ℂ) • ρ g x) = (χ g : ℂ) • σ g (e x)`. Rewrite using `[map_smul, he]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem Iso.twist {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (h : Iso ρ σ) (χ : G →* ℂˣ) :
     Iso (twist χ ρ) (twist χ σ) := by
@@ -57,9 +57,9 @@ theorem Iso.twist {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (h
   rw [map_smul, he]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `h`. Take `⟨e', he'⟩` from `h'`. Use `⟨TensorProduct.congr e e', fun g x => ?_⟩` and prove the remaining obligations. Proceed by induction on `x with`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a b => simp [he, he']`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem Iso.tprod {V' W' : Type} [AddCommGroup V'] [Module ℂ V'] [AddCommGroup W'] [Module ℂ W']
     {ρ : Representation ℂ G V} {σ : Representation ℂ G W} {ρ' : Representation ℂ G V'} {σ' : Representation ℂ G W'}
@@ -73,7 +73,7 @@ theorem Iso.tprod {V' W' : Type} [AddCommGroup V'] [Module ℂ V'] [AddCommGroup
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Use `⟨TensorProduct.comm ℂ V W, fun g x => ?_⟩` and prove the remaining obligations. Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem Iso.tprod_comm (ρ : Representation ℂ G V) (σ : Representation ℂ G W) : Iso (ρ.tprod σ) (σ.tprod ρ) := by
   refine ⟨TensorProduct.comm ℂ V W, fun g x => ?_⟩
@@ -83,7 +83,7 @@ theorem Iso.tprod_comm (ρ : Representation ℂ G V) (σ : Representation ℂ G 
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `h.symm`. Use `⟨e.dualMap, fun g x => ?_⟩` and prove the remaining obligations. Use extensionality with `w`. Simplify using `[Module.Dual.transpose_apply, he]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Iso.dual {G : Type} [Group G] {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (h : Iso ρ σ) :
     Iso ρ.dual σ.dual := by
@@ -93,20 +93,20 @@ theorem Iso.dual {G : Type} [Group G] {ρ : Representation ℂ G V} {σ : Repres
   simp [Module.Dual.transpose_apply, he]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨e.toLinearEquiv, fun g x => e.toIntertwiningMap.isIntertwining _ _ g x⟩`.
+Supply the required witnesses or components.
 -/
 theorem Iso.of_equiv {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (e : ρ.Equiv σ) : Iso ρ σ :=
   ⟨e.toLinearEquiv, fun g x => e.toIntertwiningMap.isIntertwining _ _ g x⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_invFun {ρ : Representation ℂ G V} {l : Module.Dual ℂ V} : l ∈ invFun ρ ↔ ∀ g x, l (ρ g x) = l x := Iff.rfl
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `h.symm`. Use `⟨e.dualMap.ofSubmodules _ _ (le_antisymm ?_ fun l hl => ⟨e.symm.dualMap l, fun g x => ?_, ?_⟩)⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, rfl⟩ g x`. Express the relevant statement in the definitionally equal form `l (e (σ g x)) = l (e x)`. Rewrite using `[he, hl]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, rfl⟩` from `e.surjective x`. Express the relevant statement in the definitionally equal form `l (e.symm _) = l (e.symm _)`. Rewrite using `[← he, e.symm_apply_apply, e.symm_apply_apply, hl]`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Iso.nonempty_invFun_equiv {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (h : Iso ρ σ) :
     Nonempty (invFun ρ ≃ₗ[ℂ] invFun σ) := by
@@ -122,7 +122,7 @@ theorem Iso.nonempty_invFun_equiv {ρ : Representation ℂ G V} {σ : Representa
     simp
 
 /- English proof (translation)
-Take `⟨e⟩` from `h.nonempty_invFun_equiv`. Conclude with `e.finrank_eq`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Iso.finrank_invFun {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (h : Iso ρ σ) :
     Module.finrank ℂ (invFun ρ) = Module.finrank ℂ (invFun σ) := by
@@ -130,7 +130,7 @@ theorem Iso.finrank_invFun {ρ : Representation ℂ G V} {σ : Representation �
   exact e.finrank_eq
 
 /- English proof (translation)
-Take `⟨e⟩` from `h.nonempty_invFun_equiv`. Rewrite `h0`, the goal using `[← Submodule.subsingleton_iff_eq_bot]`. Conclude with `e.toEquiv.subsingleton`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Iso.invFun_eq_bot {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (h : Iso ρ σ) (h0 : invFun σ = ⊥) :
     invFun ρ = ⊥ := by
@@ -145,11 +145,11 @@ def Contracts {F : Type} [AddCommGroup F] [Module ℂ F] (φ : Representation �
     ∀ l : Module.Dual ℂ (F ⊗[ℂ] V), (∀ h f v, l (φ (h, 1) f ⊗ₜ σ h v) = l (f ⊗ₜ v)) → ∀ x, π x = 0 → l x = 0
 
 /- English proof (translation)
-Take `⟨π, hs, he, hk⟩` from `h`. Take `⟨e1, he1⟩` from `h1`. Take `⟨e2, he2⟩` from `h2`. Take `⟨e3, he3⟩` from `h3`. Use `⟨e3.toLinearMap ∘ₗ π ∘ₗ (TensorProduct.congr e1 e2).symm.toLinearMap, e3.surjective.comp (hs.comp (TensorProduct.congr e1 e2).symm.surjective), fun h g f v => ?_, fun l hl x hx => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨f, rfl⟩` from `e1.surjective f`. Take `⟨v, rfl⟩` from `e2.surjective v`. Simplify using `[← he1, ← he2, he, he3]`. Take `⟨x, rfl⟩` from `(TensorProduct.congr e1 e2).surjective x`. Use `hk (l ∘ₗ (TensorProduct.congr e1 e2).toLinearMap) (fun h f v => ?_) x ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[he1, he2, hl]`. Simplify using `using hx`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Contracts.congr {F F' V' W' : Type} [AddCommGroup F] [Module ℂ F] [AddCommGroup F'] [Module ℂ F']
     [AddCommGroup V'] [Module ℂ V'] [AddCommGroup W'] [Module ℂ W']
@@ -202,7 +202,7 @@ theorem outer₂_apply (ρ : ∀ τ, Representation ℂ (H × G) (V τ)) (h : ι
     outer₂ ρ (h, g) = PiTensorProduct.map fun τ => ρ τ (h τ, g τ) := rfl
 
 /- English proof (translation)
-Use `choose e he using h`. Use `⟨PiTensorProduct.congr e, fun g x => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c v => simp [outer_apply, he]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Iso.outer {ρ : ∀ τ, Representation ℂ G (V τ)} {σ : ∀ τ, Representation ℂ G (W τ)} (h : ∀ τ, Iso (ρ τ) (σ τ)) :
     Iso (outer ρ) (outer σ) := by

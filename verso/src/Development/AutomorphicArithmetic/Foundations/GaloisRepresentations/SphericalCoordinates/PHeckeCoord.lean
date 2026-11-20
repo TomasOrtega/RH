@@ -6,11 +6,11 @@ open scoped Matrix TensorProduct Classical
 open UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `hA hC p _ D G L gb N N' h hlev X X' c hX hL hX' hL' ρ hF D' t P x e hU B j h₁ M hpl hco hloc`. Take `⟨D'', t'', P'', e'', inc, d, hcls, hU'', hP, he, hd, hinc, f, nu, f'', nu'', hw, hw'', hf, hf'', hiff⟩` from `hA p D G L gb N N' h hlev X X' c hX hL hX' hL' ρ hF D' t P x e hU`. Take `⟨h3, hNp, h3', hNp', -, hK⟩` from `hlev`. Take `⟨j'', hj, hpl'', hco'', hloc''⟩` from `hC p D G L B N N' (by omega) hNp (by omega) hNp' h hK ρ D' t D'' t'' P P'' inc d hU.2.1 hU''.2.1 hP hd hinc f nu f'' nu'' hw hw'' hf hf'' hiff j h₁ M hpl hco hloc`. Use `⟨D'', t'', P'', e'', inc, j'', hcls, hU'', hP, he, ?_, hj, hpl'', hco'', hloc''⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u''`. Take `⟨u, hu⟩` from `hinc u''`. Use `⟨d, u, ?_, hu⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Establish `hp : p = 1` using `by simpa using hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(Fact.out : p.Prime).one_lt.ne' hp`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.heckeCoord_of :
     UpperTheory.Gal.W2.IsogAt → UpperTheory.Gal.W2.IsogCoord → UpperTheory.Gal.W2.HeckeCoord := by

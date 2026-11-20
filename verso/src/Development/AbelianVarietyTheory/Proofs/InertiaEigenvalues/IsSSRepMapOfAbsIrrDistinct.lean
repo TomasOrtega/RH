@@ -37,7 +37,7 @@ section Rep
 variable {k Γ : Type} [Field k] [Group Γ]
 
 /- English proof (translation)
-Use `⟨fun h => ⟨h.1, GlobalTheory.T.charpoly_eq_of_semisimplification s ρ h⟩, fun ⟨h1, h2⟩ => ?_⟩` and prove the remaining obligations. Take `⟨s', hs'⟩` from `GlobalTheory.T.exists_semisimplification' ρ`. Take `⟨e, he⟩` from `GlobalTheory.T.semisimplification_unique_up_to_conj hBN s s' h1 hs'.1 (fun g => (h2 g).trans (GlobalTheory.T.charpoly_eq_of_semisimplification s' ρ hs' g).symm)`. Conclude with `GlobalTheory.T.semisimplification_of_linear_equiv s s' ρ e he hs'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSemisimplificationOf_iff (hBN : BrauerNesbitt) {W V : Type} [AddCommGroup W] [Module k W]
     [FiniteDimensional k W] [AddCommGroup V] [Module k V] [FiniteDimensional k V]
@@ -50,16 +50,16 @@ theorem isSemisimplificationOf_iff (hBN : BrauerNesbitt) {W V : Type} [AddCommGr
   exact GlobalTheory.T.semisimplification_of_linear_equiv s s' ρ e he hs'
 
 /- English proof (translation)
-The claim follows from `Matrix.charpoly_toLin' (M g)`.
+A detailed English derivation is pending.
 -/
 theorem charpoly_matRep {a : ℕ} (M : Γ →* Matrix (Fin a) (Fin a) k) (g : Γ) :
     LinearMap.charpoly (matRep M g) = (M g).charpoly :=
   Matrix.charpoly_toLin' (M g)
 
 /- English proof (translation)
-Establish `h : IndefiniteRowSideFullHecke.SemisimplificationConstituents.blockSum ρ χ g = LinearMap.prodMap (matRep ρ g) (Matrix.toLin' (Matrix.diagonal fun c => ((χ c g : kˣ) : k)))`. Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Rewrite using `[IndefiniteRowSideFullHecke.SemisimplificationConstituents.blockSum_apply]`. Use `Prod.ext rfl (funext fun c => ?_)` and prove the remaining obligations. Simplify using `[Matrix.mulVec_diagonal]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, LinearMap.charpoly_prodMap, charpoly_matRep, Matrix.charpoly_toLin', Matrix.charpoly_diagonal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_blockSum {r t : ℕ} (ρ : Γ →* Matrix (Fin r) (Fin r) k) (χ : Fin t → (Γ →* kˣ)) (g : Γ) :
     LinearMap.charpoly (IndefiniteRowSideFullHecke.SemisimplificationConstituents.blockSum ρ χ g) =
@@ -73,7 +73,7 @@ theorem charpoly_blockSum {r t : ℕ} (ρ : Γ →* Matrix (Fin r) (Fin r) k) (�
   rw [h, LinearMap.charpoly_prodMap, charpoly_matRep, Matrix.charpoly_toLin', Matrix.charpoly_diagonal]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.irreducible_span_after_map _ ρ W hW.2.1 hW.1 (GlobalTheory.T.span_restrict_eq_top_of_simple _ h W hW.2.1 hW.1 hW.2.2)`.
+A detailed English derivation is pending.
 -/
 theorem absIrrSub_of_absIrrDistinct {a : ℕ} (ρ : Γ →* GL (Fin a) k)
     (h : AbsIrrDistinct (matRep ((Units.coeHom _).comp ρ))) (W : Submodule k (Fin a → k))
@@ -81,17 +81,15 @@ theorem absIrrSub_of_absIrrDistinct {a : ℕ} (ρ : Γ →* GL (Fin a) k)
   GlobalTheory.T.irreducible_span_after_map _ ρ W hW.2.1 hW.1 (GlobalTheory.T.span_restrict_eq_top_of_simple _ h W hW.2.1 hW.1 hW.2.2)
 
 /- English proof (translation)
-Take `⟨ι, _, _, Vs, hs, hint, hne, hsp, -⟩` from `h`. Establish `key` using `GlobalTheory.T.semisimple_of_simple_sSup (matRep ((Units.coeHom _).comp (mapRep f ρ))) (Set.range fun j => Submodule.span L ((fun v => f ∘ v) '' (Vs j : Set (Fin a → k)))) ?_ ?_`. Conclude with `key`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `(GlobalTheory.T.irreducible_span_after_map f ρ (Vs j) (hs j) (hne j) (hsp j)).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set U := sSup (Set.range fun j => Submodule.span L ((fun v => f ∘ v) '' (Vs j : Set (Fin a → k))))`. Establish `hall : ∀ v : Fin a → k, (f ∘ v) ∈ U`. Introduce `v`. Establish `hv : v ∈ ⨆ j, Vs j` using `by rw [hint.submodule_iSup_eq_top]; trivial`. Proceed by induction on `hv using Submodule.iSup_induction' with`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `mem j v hv => exact (le_sSup (Set.mem_range_self j) : _ ≤ U) (Submodule.subset_span ⟨v, hv, rfl⟩)`. Consider the case `zero`. Establish `: (f ∘ (0 : Fin a → k)) = 0` using `by funext j; simp`. Rewrite using `[this]`. Conclude with `U.zero_mem`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y _ _ hx hy`. Establish `: (f ∘ (x + y)) = f ∘ x + f ∘ y` using `by funext j; simp`. Rewrite using `[this]`. Conclude with `U.add_mem hx hy`. Rewrite using `[eq_top_iff, ← (Pi.basisFun L (Fin a)).span_eq, Submodule.span_le]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Establish `: (Pi.basisFun L (Fin a)) j = f ∘ (Pi.single j 1)`. Use function extensionality and compare the values at `j'`. Simplify using `[Pi.single_apply]`. Rewrite using `[this]`.
-
-Conclude with `hall _`.
+A detailed English derivation is pending.
 -/
 theorem isSSRep_map_of_absIrrDistinct {L : Type} [Field L] (f : k →+* L) {a : ℕ} (ρ : Γ →* GL (Fin a) k)
     (h : AbsIrrDistinct (matRep ((Units.coeHom _).comp ρ))) : IsSSRep (mapRep f ρ) := by
@@ -121,9 +119,9 @@ theorem isSSRep_map_of_absIrrDistinct {L : Type} [Field L] (f : k →+* L) {a : 
     rw [this]; exact hall _
 
 /- English proof (translation)
-Use `Polynomial.funext fun c => ?_` and prove the remaining obligations. Use `Continuous.ext_on hS (f := fun y => (Matrix.scalar (Fin a) c - M y).det) (g := fun y => (Matrix.scalar (Fin a) c - M' y).det) (continuous_const.sub hM).matrix_det (continuous_const.sub hM').matrix_det (fun y hy => by` as an intermediate fact. Simplify using `only [← Matrix.eval_charpoly]`. Rewrite using `[h y hy])`. Rewrite using `[Matrix.eval_charpoly, Matrix.eval_charpoly]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrFun this y`.
+A detailed English derivation is pending.
 -/
 theorem charpoly_eq_of_dense {Y L : Type} [TopologicalSpace Y] [Field L] [Infinite L] [TopologicalSpace L]
     [IsTopologicalRing L] [T2Space L] {a : ℕ} (M M' : Y → Matrix (Fin a) (Fin a) L) (hM : Continuous M)
@@ -149,7 +147,7 @@ def FrobDense : Prop :=
     IsPlaceOver (F := D.host.E) B w ∧ IsFrob (F := D.host.E) B (normV w) σ}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.embedding_integral_continuous (D.nd.l i) (D.nd.O_adic i) _ (D.naut.iotaQ_alg i)`.
+A detailed English derivation is pending.
 -/
 theorem iota_facts : (∀ a, ‖iotaOQ D.nd D.naut i a‖ ≤ 1) ∧
     (∀ a ∈ IsLocalRing.maximalIdeal (D.nd.O i), ‖iotaOQ D.nd D.naut i a‖ < 1) ∧
@@ -157,13 +155,13 @@ theorem iota_facts : (∀ a, ‖iotaOQ D.nd D.naut i a‖ ≤ 1) ∧
   GlobalTheory.T.embedding_integral_continuous (D.nd.l i) (D.nd.O_adic i) _ (D.naut.iotaQ_alg i)
 
 /- English proof (translation)
-The claim follows from `(D.naut.iotaQ i).injective.comp (IsFractionRing.injective (D.nd.O i) (FractionRing (D.nd.O i)))`.
+A detailed English derivation is pending.
 -/
 theorem iota_inj : Function.Injective (iotaOQ D.nd D.naut i) :=
   (D.naut.iotaQ i).injective.comp (IsFractionRing.injective (D.nd.O i) (FractionRing (D.nd.O i)))
 
 /- English proof (translation)
-The claim follows from `Matrix.charpoly_map ((ρ g : GL (Fin a) A) : Matrix (Fin a) (Fin a) A) f`.
+A detailed English derivation is pending.
 -/
 theorem cpol_mapRep {Γ A B : Type} [Group Γ] [CommRing A] [CommRing B] {a : ℕ} (f : A →+* B)
     (ρ : Γ →* GL (Fin a) A) (g : Γ) :
@@ -171,7 +169,7 @@ theorem cpol_mapRep {Γ A B : Type} [Group Γ] [CommRing A] [CommRing B] {a : �
   Matrix.charpoly_map ((ρ g : GL (Fin a) A) : Matrix (Fin a) (Fin a) A) f
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun _ => Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem mapRep_mapRep {Γ A B C : Type} [Group Γ] [CommRing A] [CommRing B] [CommRing C] {a : ℕ} (f : A →+* B)
     (f' : B →+* C) (ρ : Γ →* GL (Fin a) A) : mapRep f' (mapRep f ρ) = mapRep (f'.comp f) ρ :=
@@ -186,7 +184,7 @@ theorem coe_mapRep {Γ A B : Type} [Group Γ] [CommRing A] [CommRing B] {a : ℕ
 variable {D i}
 
 /- English proof (translation)
-The claim follows from `hr.1.matrix_map (iota_facts D i).2.2`.
+A detailed English derivation is pending.
 -/
 theorem cont_map {x : D.nd.X i} {r : GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)} (hr : IsHeckeGalois D.nd i x r) :
     Continuous fun g => ((mapRep (iotaOQ D.nd D.naut i) r g : GL _ _) :
@@ -194,7 +192,7 @@ theorem cont_map {x : D.nd.X i} {r : GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)} (h
   hr.1.matrix_map (iota_facts D i).2.2
 
 /- English proof (translation)
-Use `charpoly_eq_of_dense _ _ hρ.1 (cont_map hr) hd ?_ g` and prove the remaining obligations. Introduce and unpack `σ ⟨w, hw, B, hB, hσ⟩`. Use `(hρ.2.2 w hw B σ hB hσ).trans ?_` and prove the remaining obligations. Rewrite using `[← hr.2.2 w hw B σ hB hσ]`. Conclude with `(cpol_mapRep _ r σ).symm`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpol_bar (hd : FrobDense D i) {x : D.nd.X i} {r : GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)}
     (hr : IsHeckeGalois D.nd i x r) {ρ : GE D.nd →* GL (Fin D.R.nV) (Qbar (D.nd.l i))}
@@ -207,9 +205,9 @@ theorem cpol_bar (hd : FrobDense D i) {x : D.nd.X i} {r : GE D.nd →* GL (Fin D
   exact (cpol_mapRep _ r σ).symm
 
 /- English proof (translation)
-Apply `Polynomial.map_injective _ (iota_inj D i)` to reduce the goal to its premises. Rewrite using `[← cpol_mapRep, ← cpol_mapRep]`. Use `charpoly_eq_of_dense _ _ (cont_map hr) (cont_map hr') hd ?_ g` and prove the remaining obligations. Introduce and unpack `σ ⟨w, hw, B, hB, hσ⟩`. Use `(cpol_mapRep _ r σ).trans (Eq.trans ?_ (cpol_mapRep _ r' σ).symm)` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg _ ((hr.2.2 w hw B σ hB hσ).trans (hr'.2.2 w hw B σ hB hσ).symm)`.
+A detailed English derivation is pending.
 -/
 theorem cpol_point (hd : FrobDense D i) {x : D.nd.X i} {r r' : GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)}
     (hr : IsHeckeGalois D.nd i x r) (hr' : IsHeckeGalois D.nd i x r') (g : GE D.nd) :
@@ -222,14 +220,14 @@ theorem cpol_point (hd : FrobDense D i) {x : D.nd.X i} {r r' : GE D.nd →* GL (
   exact congrArg _ ((hr.2.2 w hw B σ hB hσ).trans (hr'.2.2 w hw B σ hB hσ).symm)
 
 /- English proof (translation)
-The claim follows from `charpoly_matRep _ g`.
+A detailed English derivation is pending.
 -/
 theorem charpoly_redK {a : ℕ} (ρ : GE D.nd →* GL (Fin a) (D.nd.O i)) (g : GE D.nd) :
     LinearMap.charpoly (IndefiniteRowSideFullHecke.SemisimplificationConstituents.redK D i ρ g) = IndefiniteRowSideFullHecke.ResidualConstituentShape.cpol (redRep D.nd i ρ) g :=
   charpoly_matRep _ g
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h`. Introduce `x y g`. Rewrite using `[← charpoly_redK, ← charpoly_redK, ← GlobalTheory.T.charpoly_eq_of_semisimplification _ _ (hs r hr x) g, ← GlobalTheory.T.charpoly_eq_of_semisimplification _ _ (hs r hr y) g]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem residualSame_of_common (h : IndefiniteRowSideFullHecke.SemisimplificationConstituents.ResidualCommon D i) (r : IndefiniteRowSideFullHecke.SemisimplificationConstituents.RepFam D i)
     (hr : GoodR D.nd i r) : IndefiniteRowSideFullHecke.ResidualConstituentShape.ResidualSame D.nd i r := by
@@ -238,9 +236,9 @@ theorem residualSame_of_common (h : IndefiniteRowSideFullHecke.Semisimplificatio
   rw [← charpoly_redK, ← charpoly_redK, ← GlobalTheory.T.charpoly_eq_of_semisimplification _ _ (hs r hr x) g, ← GlobalTheory.T.charpoly_eq_of_semisimplification _ _ (hs r hr y) g]
 
 /- English proof (translation)
-Use `⟨residualSame_of_common, fun h => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : ∃ r₀, GoodR D.nd i r₀`. Take `⟨r₀, hr₀⟩` from `h0`. Take `⟨x₀⟩ : Nonempty (D.nd.X i)` from `inferInstance`. Take `⟨s, hs⟩` from `GlobalTheory.T.exists_semisimplification' (IndefiniteRowSideFullHecke.SemisimplificationConstituents.redK D i (r₀ x₀))`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s, fun r hr x => (isSemisimplificationOf_iff hBN _ _).2 ⟨hs.1, fun g => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.charpoly_eq_of_semisimplification _ _ hs g, charpoly_redK, charpoly_redK, h r₀ hr₀ x₀ x g]`. Unfold `redRep`. Rewrite using `[cpol_mapRep, cpol_mapRep, cpol_point hd (hr₀ x) (hr x)]`. Conclude with `⟨1, fun r hr => absurd ⟨r, hr⟩ h0⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem residualCommon_iff (hBN : BrauerNesbitt) (hd : FrobDense D i) :
     IndefiniteRowSideFullHecke.SemisimplificationConstituents.ResidualCommon D i ↔
@@ -257,7 +255,7 @@ theorem residualCommon_iff (hBN : BrauerNesbitt) (hd : FrobDense D i) :
   · exact ⟨1, fun r hr => absurd ⟨r, hr⟩ h0⟩
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `h1`. Conclude with `⟨r, hr, fun x W hW => absIrrSub_of_absIrrDistinct (mapRep (toK D.nd i) (r x)) (h2 r hr x) W hW⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coeffLarge_of (h1 : IndefiniteRowSideFullHecke.SemisimplificationConstituents.Realised D i) (h2 : IndefiniteRowSideFullHecke.SemisimplificationConstituents.ConstituentsAbsIrrDistinct D i) :
     IndefiniteRowSideFullHecke.ResidualConstituentShape.CoeffLarge D.nd i := by
@@ -265,17 +263,17 @@ theorem coeffLarge_of (h1 : IndefiniteRowSideFullHecke.SemisimplificationConstit
   exact ⟨r, hr, fun x W hW => absIrrSub_of_absIrrDistinct (mapRep (toK D.nd i) (r x)) (h2 r hr x) W hW⟩
 
 /- English proof (translation)
-Introduce `ρ hρ`. Establish `hc : ∀ x g, IndefiniteRowSideFullHecke.ResidualConstituentShape.cpol (ρ x) g = (IndefiniteRowSideFullHecke.ResidualConstituentShape.cpol (r x) g).map (iotaOQ D.nd D.naut i)` using `fun x g => (cpol_bar hd (hr x) (hρ x) g).trans (cpol_mapRep _ _ g)`. Use `⟨?_, fun x y g n => ?_⟩` and prove the remaining obligations. Take `⟨L, hL, hmem⟩` from `GlobalTheory.T.image_finite_extension (D.nd.l i) (D.naut.iotaQ i) (D.naut.iotaQ_alg i)`. Use `⟨⟨L, hL⟩, fun a => (hmem _).2 ⟨a, rfl⟩, fun x => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `⟨f, hf, hfc⟩ : ∃ f : KK D.nd i →+* L, Function.Surjective f ∧ (algebraMap L (Qbar (D.nd.l i))).comp f = D.naut.iotaQ i := by`. Use `⟨(D.naut.iotaQ i).codRestrict L.toSubfield.toSubring (fun a => (hmem _).2 ⟨a, rfl⟩), ?_, RingHom.ext fun _ => rfl⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Take `⟨a, rfl⟩` from `(hmem y).1 hy`. Conclude with `⟨a, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hA` using `GlobalTheory.T.absIrrDistinct_map_surjective f hf _ (h.1 x).2`. Use `⟨mapRep f (mapRep (toK D.nd i) (r x)), ?_, ?_⟩` and prove the remaining obligations. Use `swap`. Rewrite using `[coe_mapRep, coe_mapRep]`. Conclude with `hA`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hss : IsSSRep (mapRep (D.naut.iotaQ i) (mapRep (toK D.nd i) (r x)))` using `isSSRep_map_of_absIrrDistinct _ _ (h.1 x).2`. Rewrite `hss` using `[mapRep_mapRep]`. Use `replace hss : IsSSRep (mapRep (iotaOQ D.nd D.naut i) (r x)) := hss`. Establish `hcp` using `fun g => cpol_bar hd (hr x) (hρ x) g`. Unfold `IndefiniteRowSideFullHecke.ResidualConstituentShape.cpol at hcp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨P, hP⟩` from `hBN (GE D.nd) (Qbar (D.nd.l i)) D.R.nV (ρ x) (mapRep (iotaOQ D.nd D.naut i) (r x)) (hρ x).2.1 hss hcp`. Use `⟨P, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← hP g, mapRep_mapRep f, hfc, mapRep_mapRep]`. Both sides reduce to the same expression. Rewrite using `[hc, hc, Polynomial.coeff_map, Polynomial.coeff_map, ← map_sub]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `⟨(iota_facts D i).1 _, (iota_facts D i).2.1 _ ?_⟩` and prove the remaining obligations. Use `congrArg (fun p => Polynomial.coeff p n) (h.2 x y g)` as an intermediate fact. Unfold `redRep at this`. Simplify using `only [cpol_mapRep, Polynomial.coeff_map] at this`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, this, sub_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem enlargement_of (hBN : BrauerNesbitt) (hd : FrobDense D i) (r : IndefiniteRowSideFullHecke.SemisimplificationConstituents.RepFam D i)
     (hr : GoodR D.nd i r) (h : IndefiniteRowSideFullHecke.ResidualConstituentShape.ConstituentsOver D.nd i r) :
@@ -317,9 +315,9 @@ theorem enlargement_of (hBN : BrauerNesbitt) (hd : FrobDense D i) (r : Indefinit
     rw [← IsLocalRing.residue_eq_zero_iff, map_sub, this, sub_self]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Establish `hover : ∀ r, GoodR D.nd i r → IndefiniteRowSideFullHecke.ResidualConstituentShape.ConstituentsOver D.nd i r` using `fun r hr => ⟨fun x => ⟨(hr x).2.1, h2 r hr x⟩, residualSame_of_common h3 r hr⟩`. Use `⟨coeffLarge_of h1 h2, ?_, fun _ => hover⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `h1`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `enlargement_of hBN hd r hr (hover r hr)`. Introduce and unpack `⟨hO, -, h⟩`. Establish `h` using `h hO`. Take `⟨r, hr, -⟩` from `hO`. Conclude with `⟨⟨r, hr⟩, fun r hr x => ((h r hr).1 x).2, (residualCommon_iff hBN hd).2 fun r hr => (h r hr).2⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem constituentsAt_iff (hBN : BrauerNesbitt) (hd : FrobDense D i) :
     IndefiniteRowSideFullHecke.SemisimplificationConstituents.ConstituentsAt D i ↔
@@ -339,9 +337,9 @@ theorem constituentsAt_iff (hBN : BrauerNesbitt) (hd : FrobDense D i) :
       (residualCommon_iff hBN hd).2 fun r hr => (h r hr).2⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, e, he⟩`. Conclude with `⟨e, fun g v => (he g v).trans (IndefiniteRowSideFullHecke.SemisimplificationConstituents.blockSum_apply _ _ _ _)⟩`. Introduce and unpack `⟨e, he⟩`. Use `⟨GlobalTheory.T.block_decomposition_fraction_field (D.nd.O_adic i) _ _ e h₀ (fun g v => congrArg Prod.fst (he g v)), e, fun g v => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IndefiniteRowSideFullHecke.SemisimplificationConstituents.blockSum_apply]`. Conclude with `he g v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem offBlock_iff {r₀ : GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)}
     (h₀ : Continuous fun g => ((r₀ g : GL _ _) : Matrix (Fin D.R.nV) (Fin D.R.nV) (D.nd.O i)))
@@ -356,7 +354,7 @@ theorem offBlock_iff {r₀ : GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)}
     exact he g v
 
 /- English proof (translation)
-Use `(charpoly_blockSum _ _ g).trans ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← Finset.Ico_add_one_right_eq_Icc, Finset.prod_Ico_eq_prod_range, Nat.add_sub_cancel, ← Fin.prod_univ_eq_prod_range (fun c => X - C (IsLocalRing.residue (D.nd.O i) ((D.nd.chi i (1 + c) g : (D.nd.O i)ˣ) : D.nd.O i)))]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[add_comm 1]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -374,9 +372,9 @@ theorem charpoly_residualBlockSum (ρ : GE D.nd →* GL (Fin D.R.r) (D.nd.O i)) 
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Establish `hirr : IndefiniteRowSideFullHecke.SemisimplificationConstituents.IsIrred (IndefiniteRowSideFullHecke.SemisimplificationConstituents.redK D i ρ)` using `GlobalTheory.T.isIrred_of_absIrr (redRep D.nd i ρ) h2`. Use `⟨⟨fun x => (isSemisimplificationOf_iff hBN _ _).2 ⟨GlobalTheory.T.block_sum_semisimple _ _ hirr, fun g => ?_⟩, hirr, h1⟩, h2⟩` and prove the remaining obligations. Rewrite using `[charpoly_residualBlockSum, charpoly_redK, h3 x g]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨⟨h1, -, h3⟩, h4⟩`. Use `⟨h3, h4, fun x g => ?_⟩` and prove the remaining obligations. Rewrite using `[← charpoly_residualBlockSum, ← charpoly_redK, GlobalTheory.T.charpoly_eq_of_semisimplification _ _ (h1 x) g]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem residualShape_iff (hBN : BrauerNesbitt) (r : IndefiniteRowSideFullHecke.SemisimplificationConstituents.RepFam D i)
     (ρ : GE D.nd →* GL (Fin D.R.r) (D.nd.O i)) :
@@ -394,7 +392,7 @@ theorem residualShape_iff (hBN : BrauerNesbitt) (r : IndefiniteRowSideFullHecke.
 end Loc
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.1, h.2, D.ntypes.BB_disj⟩, fun h => ⟨h.1, h.2.1⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem typeStanding_iff (D : D7) : IndefiniteRowSideFullHecke.SemisimplificationConstituents.TypeHypothesis D ↔ IndefiniteRowSideFullHecke.ResidualConstituentShape.TypePrimeSizes D :=
   ⟨fun h => ⟨h.1, h.2, D.ntypes.BB_disj⟩, fun h => ⟨h.1, h.2.1⟩⟩
@@ -410,7 +408,7 @@ def ResidualAbsIrr (D : D7) : Prop :=
     IndefiniteRowSideFullHecke.SemisimplificationConstituents.OffBlock D i (r x₀) ρ → AbsIrrSub (redRep D.nd i ρ) ⊤
 
 /- English proof (translation)
-Unfold `IndefiniteRowSideFullHecke.SemisimplificationConstituents.Constituents_at CoeffTie IndefiniteRowSideFullHecke.ResidualConstituentShape.Constituents_at`. Rewrite using `[← forall_and]`. Conclude with `forall_congr' fun i => constituentsAt_iff hBN (hd i)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constituents_iff (hBN : BrauerNesbitt) (D : D7) (hd : ∀ i, FrobDense D i) :
     IndefiniteRowSideFullHecke.SemisimplificationConstituents.Constituents_at D ↔ CoeffTie D ∧ IndefiniteRowSideFullHecke.ResidualConstituentShape.Constituents_at D := by
@@ -419,7 +417,7 @@ theorem constituents_iff (hBN : BrauerNesbitt) (D : D7) (hd : ∀ i, FrobDense D
   exact forall_congr' fun i => constituentsAt_iff hBN (hd i)
 
 /- English proof (translation)
-Introduce `hT i r hr x₀ hx₀`. Take `⟨⟨ρ, hρ⟩, h2⟩` from `h ((typeStanding_iff D).1 hT) i (hO i) r hr x₀ (hg i x₀ hx₀)`. Conclude with `⟨⟨ρ, (offBlock_iff (hr x₀).1 ρ).2 hρ⟩, fun ρ hρ => ((residualShape_iff hBN r ρ).1 (h2 ρ ((offBlock_iff (hr x₀).1 ρ).1 hρ))).1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem shape_second_of_first (hBN : BrauerNesbitt) (D : D7) (hO : CoeffTie D) (hg : LiftPointGood D)
     (h : IndefiniteRowSideFullHecke.ResidualConstituentShape.ResidualShape_at D) : IndefiniteRowSideFullHecke.SemisimplificationConstituents.ResidualShape_at D := by
@@ -429,16 +427,16 @@ theorem shape_second_of_first (hBN : BrauerNesbitt) (D : D7) (hO : CoeffTie D) (
     ((residualShape_iff hBN r ρ).1 (h2 ρ ((offBlock_iff (hr x₀).1 ρ).1 hρ))).1⟩
 
 /- English proof (translation)
-Introduce `hT i r hr x₀ hx₀ ρ hρ` and use `((h ((typeStanding_iff D).1 hT) i (hO i) r hr x₀ hx₀).2 ρ ((offBlock_iff (hr x₀).1 ρ).1 hρ)).2.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem residualAbsIrr_of_first (D : D7) (hO : CoeffTie D) (h : IndefiniteRowSideFullHecke.ResidualConstituentShape.ResidualShape_at D) :
     ResidualAbsIrr D := fun hT i r hr x₀ hx₀ ρ hρ =>
   ((h ((typeStanding_iff D).1 hT) i (hO i) r hr x₀ hx₀).2 ρ ((offBlock_iff (hr x₀).1 ρ).1 hρ)).2.1
 
 /- English proof (translation)
-Introduce `hT i _ r hr x₀ hx₀`. Establish `hT'` using `(typeStanding_iff D).2 hT`. Take `⟨⟨ρ, hρ⟩, h2⟩` from `h hT' i r hr x₀ (hg i x₀ hx₀)`. Use `⟨⟨ρ, (offBlock_iff (hr x₀).1 ρ).1 hρ⟩, fun ρ hρ => ?_⟩` and prove the remaining obligations. Establish `hρ'` using `(offBlock_iff (hr x₀).1 ρ).2 hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(residualShape_iff hBN r ρ).2 ⟨h2 ρ hρ', ha hT' i r hr x₀ hx₀ ρ hρ'⟩`.
+A detailed English derivation is pending.
 -/
 theorem shape_first_of_second (hBN : BrauerNesbitt) (D : D7) (hg : GoodPointLift D)
     (h : IndefiniteRowSideFullHecke.SemisimplificationConstituents.ResidualShape_at D) (ha : ResidualAbsIrr D) : IndefiniteRowSideFullHecke.ResidualConstituentShape.ResidualShape_at D := by
@@ -450,9 +448,9 @@ theorem shape_first_of_second (hBN : BrauerNesbitt) (D : D7) (hg : GoodPointLift
   exact (residualShape_iff hBN r ρ).2 ⟨h2 ρ hρ', ha hT' i r hr x₀ hx₀ ρ hρ'⟩
 
 /- English proof (translation)
-Establish `hc` using `constituents_iff hBN D (fun i => GlobalTheory.T.dense_frobenius_split_places hC D.nd i)`. Use `⟨typeStanding_iff D, hc, fun i r hr x ρ => offBlock_iff (hr x).1 ρ, fun i r ρ => residualShape_iff hBN r ρ, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `hg ⟨hO, h1, h2⟩`. Conclude with `⟨⟨hc.2 ⟨hO, h1⟩, shape_second_of_first hBN D hO hg h2⟩, residualAbsIrr_of_first D hO h2⟩`. Introduce and unpack `hg ⟨⟨h1, h2⟩, ha⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨(hc.1 h1).1, (hc.1 h1).2, shape_first_of_second hBN D hg h2 ha⟩`.
+Supply the required witnesses or components.
 -/
 theorem compare (hBN : BrauerNesbitt) (hC : GlobalTheory.TwSys.Cheb) (D : D7) :
     (IndefiniteRowSideFullHecke.SemisimplificationConstituents.TypeHypothesis D ↔ IndefiniteRowSideFullHecke.ResidualConstituentShape.TypePrimeSizes D) ∧
@@ -474,7 +472,7 @@ theorem compare (hBN : BrauerNesbitt) (hC : GlobalTheory.TwSys.Cheb) (D : D7) :
     exact ⟨(hc.1 h1).1, (hc.1 h1).2, shape_first_of_second hBN D hg h2 ha⟩
 
 /- English proof (translation)
-Use `exists_congr fun x0 => forall_congr' fun x => forall_congr' fun _ => forall_congr' fun j => ?_` and prove the remaining obligations. Take `⟨h1, h2, h3, h4⟩` from `h x j`. Take `⟨-, -, -, -, c1, c2⟩` from `compare hBN hC (Fm.D x j)`. Conclude with `⟨fun a => (c1 h2 ⟨h1, a⟩).1, fun b => (c2 h3 ⟨b, h4⟩).2⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem compare_family (hBN : BrauerNesbitt) (hC : GlobalTheory.TwSys.Cheb) {eps : ℝ} (Fm : FamP eps)
     (h : ∀ x (j : Fm.Ix x), CoeffTie (Fm.D x j) ∧ LiftPointGood (Fm.D x j) ∧ GoodPointLift (Fm.D x j) ∧

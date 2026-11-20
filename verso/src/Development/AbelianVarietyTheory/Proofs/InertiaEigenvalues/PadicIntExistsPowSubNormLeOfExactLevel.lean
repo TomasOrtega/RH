@@ -6,19 +6,19 @@ open scoped Formalism.Per
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `key : ∀ (x : ℤ_[l]) (n : ℕ), ‖x‖ ≤ ‖((l : ℕ) : ℤ_[l])‖ ^ n ↔ ((l : ℕ) : ℤ_[l]) ^ n ∣ x`. Introduce `x n`. Rewrite using `[← Ideal.mem_span_singleton, ← PadicInt.norm_le_pow_iff_mem_span_pow, PadicInt.norm_p, zpow_neg, zpow_natCast, inv_pow]`. Establish `hl0 : ‖((l : ℕ) : ℤ_[l])‖ ^ m ≠ 0`. Apply `pow_ne_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[norm_ne_zero_iff]`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions. Take `⟨a, ha⟩` from `(key _ _).1 hu.le`. Take `⟨b, hb⟩` from `(key _ _).1 hv`. Establish `ha1 : ‖a‖ = 1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu` using `[ha, norm_mul, norm_pow]`. Conclude with `mul_left_cancel₀ hl0 (by rw [hu, mul_one])`. Take `⟨a', ha'⟩` from `(PadicInt.isUnit_iff.2 ha1).exists_right_inv`. Use `⟨(a' * b).appr 1, (key _ _).2 ?_⟩` and prove the remaining obligations. Use `set i := (a' * b).appr 1 with hi`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hc` using `PadicInt.appr_spec 1 (a' * b)`. Rewrite `hc` using `[Ideal.mem_span_singleton, pow_one, ← hi]`. Take `⟨c, hc⟩` from `hc`. Establish `hu' : u = 1 + ((l : ℕ) : ℤ_[l]) ^ m * a` using `by rw [← ha]; ring`. Establish `hv' : v = 1 + ((l : ℕ) : ℤ_[l]) ^ m * b` using `by rw [← hb]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hpow : ∀ (x : ℤ_[l]) (n : ℕ), ∃ d, (1 + x) ^ n = 1 + n * x + x ^ 2 * d`. Introduce `x n`. Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ n ih`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `ih`. Conclude with `⟨d + n + x * d, by rw [pow_succ, hd]; push_cast; ring⟩`. Take `⟨d, hd⟩` from `hpow (((l : ℕ) : ℤ_[l]) ^ m * a) i`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Use `⟨-(a * c) + ((l : ℕ) : ℤ_[l]) ^ k * a ^ 2 * d, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hi' : (i : ℤ_[l]) = a' * b - ((l : ℕ) : ℤ_[l]) * c` using `by rw [← hc]; ring`. Rewrite using `[hu', hd, hv', hi']`. Take the linear combination `(((l : ℕ) : ℤ_[l]) ^ (1 + k) * b) * ha'`.
+A detailed English derivation is pending.
 -/
 theorem padicInt_exists_pow_sub_norm_le_of_exact_level (l : ℕ) [Fact l.Prime] (u v : ℤ_[l]) (m : ℕ)
     (hm : 1 ≤ m) (hu : ‖u - 1‖ = ‖((l : ℕ) : ℤ_[l])‖ ^ m)

@@ -9,7 +9,7 @@ section Lin
 variable {n : Type*} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Pi.star_apply, Complex.re_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `norm_cast`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem re_star_dot_self (u : n → ℂ) : (star u ⬝ᵥ u).re = ∑ i, ‖u i‖ ^ 2 := by
   simp only [dotProduct, Pi.star_apply, Complex.re_sum]
@@ -18,14 +18,14 @@ theorem re_star_dot_self (u : n → ℂ) : (star u ⬝ᵥ u).re = ∑ i, ‖u i�
   norm_cast
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_mulVec, dotProduct_mulVec, ← star_mulVec, re_star_dot_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem re_quad (A : Matrix n n ℂ) (v : n → ℂ) :
     (star v ⬝ᵥ ((Aᴴ * A) *ᵥ v)).re = ∑ i, ‖(A *ᵥ v) i‖ ^ 2 := by
   rw [← Matrix.mulVec_mulVec, dotProduct_mulVec, ← star_mulVec, re_star_dot_self]
 
 /- English proof (translation)
-Rewrite using `[← re_quad, ← re_star_dot_self]`. Establish `h : Uᴴ * U = 1`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `(mem_unitaryGroup_iff').1 hU`. Rewrite using `[h, one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_norm_unitary {U : Matrix n n ℂ} (hU : U ∈ unitaryGroup n ℂ) (u : n → ℂ) :
     ∑ i, ‖(U *ᵥ u) i‖ ^ 2 = ∑ i, ‖u i‖ ^ 2 := by
@@ -36,7 +36,7 @@ theorem sum_norm_unitary {U : Matrix n n ℂ} (hU : U ∈ unitaryGroup n ℂ) (u
   rw [h, one_mulVec]
 
 /- English proof (translation)
-The claim follows from `Finset.single_le_sum (f := fun j => ‖u j‖ ^ 2) (fun j _ => sq_nonneg _) (Finset.mem_univ i)`.
+A detailed English derivation is pending.
 -/
 theorem single_le_sum_sq (u : n → ℂ) (i : n) : ‖u i‖ ^ 2 ≤ ∑ j, ‖u j‖ ^ 2 :=
   Finset.single_le_sum (f := fun j => ‖u j‖ ^ 2) (fun j _ => sq_nonneg _) (Finset.mem_univ i)
@@ -48,7 +48,7 @@ section Tri
 variable {m : ℕ}
 
 /- English proof (translation)
-Rewrite using `[mulVec, dotProduct, Finset.sum_eq_single i]`. Introduce `j _ hji`. Break down `lt_or_gt_of_ne hji with h | h` into its components or cases. Rewrite using `[hQ (show id j < id i from h), zero_mul]`. Rewrite using `[hz j h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -62,7 +62,7 @@ theorem mulVec_upper {Q : Matrix (Fin m) (Fin m) ℂ} (hQ : Q.BlockTriangular id
   · simp
 
 /- English proof (translation)
-Rewrite using `[mulVec, dotProduct, Finset.sum_eq_single i]`. Introduce `j _ hji`. Break down `lt_or_gt_of_ne hji with h | h` into its components or cases. Rewrite using `[hz j h, mul_zero]`. Rewrite using `[hQ i j h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -76,7 +76,7 @@ theorem mulVec_lower {Q : Matrix (Fin m) (Fin m) ℂ} (hQ : ∀ a b : Fin m, a <
   · simp
 
 /- English proof (translation)
-Rewrite using `[mul_apply, Finset.sum_eq_single i]`. Introduce `j _ hji`. Break down `lt_or_gt_of_ne hji with h | h` into its components or cases. Rewrite using `[hA (show id j < id i from h), zero_mul]`. Rewrite using `[hB (show id i < id j from h), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -90,7 +90,7 @@ theorem mul_diag_upper {A B : Matrix (Fin m) (Fin m) ℂ} (hA : A.BlockTriangula
   · simp
 
 /- English proof (translation)
-Establish `: Invertible A` using `invertibleOfLeftInverse A B hBA`. Establish `hB : A⁻¹ = B` using `Matrix.inv_eq_left_inv hBA`. Establish `ht : B.BlockTriangular id` using `hB ▸ blockTriangular_inv_of_blockTriangular hA`. Use `⟨ht, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_diag_upper ht hA, hBA, one_apply_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_upper {A B : Matrix (Fin m) (Fin m) ℂ} (hA : A.BlockTriangular id) (hBA : B * A = 1) :
     B.BlockTriangular id ∧ ∀ i, B i i * A i i = 1 := by
@@ -105,23 +105,21 @@ end Tri
 section Tele
 
 /- English proof (translation)
-Use `set f : ℕ → ℝ := fun k => if h : k < N then s ⟨k, h⟩ else 0 with hf`. Establish `hfs : ∀ a : Fin N, f a = s a` using `fun a => by simp [hf, a.2]`. Establish `hW : (∑ a : Fin N, ∑ b : Fin N, if (b : ℕ) = a + 1 then |s a - s b| else 0) = ∑ k ∈ Finset.range N, if k + 1 < N then |f k - f (k + 1)| else 0`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun k => if k + 1 < N then |f k - f (k + 1)| else 0)]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ha : (a : ℕ) + 1 < N`. Rewrite using `[Finset.sum_eq_single ⟨(a : ℕ) + 1, ha⟩]`. Simplify using `[ha, hf, a.2]`. Introduce `b _ hb`. Rewrite using `[if_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Conclude with `hb (Fin.ext e)`. Simplify using the standard rewrite rules. Rewrite using `[if_neg ha]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Introduce `e`. Conclude with `ha (e ▸ b.2)`. Rewrite using `[hW, ← hfs i, ← hfs j]`. Establish `key : ∀ a b : ℕ, a ≤ b → b < N → |f a - f b| ≤ ∑ k ∈ Finset.range N, if k + 1 < N then |f k - f (k + 1)| else 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b hab hb`. Establish `htel : f a - f b = ∑ k ∈ Finset.Ico a b, (f k - f (k + 1))`. Rewrite using `[Finset.sum_Ico_eq_sum_range]`. Use `Finset.sum_range_sub' (fun k => f (a + k)) (b - a)` as an intermediate fact. Simplify using `only [add_zero] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[show a + (b - a) = b by omega]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [add_assoc]`. Rewrite using `[htel]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hsub : Finset.Ico a b ⊆ Finset.range N`. Introduce `k hk`. Simplify using `only [Finset.mem_Ico] at hk`. Simplify using `only [Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Apply the tactic sequence `refine (Finset.sum_le_sum fun k hk => ?_).trans (Finset.sum_le_sum_of_subset_of_nonneg hsub fun k _ _ => by split_ifs <;> simp)`. Simplify using `only [Finset.mem_Ico] at hk`. Rewrite using `[if_pos (by omega)]`. Break down `le_total (i : ℕ) j with h | h` into its components or cases. Conclude with `(le_abs_self _).trans (key i j h j.2)`.
-
-Use `le_trans ?_ (key j i h i.2)` and prove the remaining obligations. Rewrite using `[abs_sub_comm]`. Conclude with `le_abs_self _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_le_sum_abs_consecutive_diff {N : ℕ} (s : Fin N → ℝ) (i j : Fin N) :
     s i - s j ≤ ∑ a : Fin N, ∑ b : Fin N, if (b : ℕ) = a + 1 then |s a - s b| else 0 := by

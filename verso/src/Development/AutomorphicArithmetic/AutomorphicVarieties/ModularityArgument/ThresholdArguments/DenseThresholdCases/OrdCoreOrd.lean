@@ -19,13 +19,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.V.Z UpperTheory.V.Z.Ord
 set_option synthInstance.maxHeartbeats 200000
 /- English proof (translation)
-Introduce `hL L Ω _ _ _ _ _ l _ n c H hA A _ _ _ θ hθ ι P hP a K _ _ D ψ hU lam hlam y hy`. Set `x : A →ₐ[c.O] Qbar l` to `y.comp (IsScalarTower.toAlgHom c.O A (H.TK θ a K))`. Establish `hx : y.toRingHom.comp (algebraMap A _) = x.toRingHom` using `rfl`. Rewrite `hy` using `[hx]`. Take `⟨d, ξ, c0, sp, hsp⟩` from `UpperTheory.V.Hi.spec L Ω l n c H hA A θ hθ ι x lam hy`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Y, F, hY, hF0, hF, hop⟩` from `_root_.UpperTheory.V.Z.Ord.ordinary_pt_of_literal_automorphy_n hL L Ω l n c H hA A θ hθ ι P hP x lam d ξ c0 sp hsp hlam a K y hx`. Take `⟨hD, hch⟩` from `_root_.UpperTheory.V.Hi.core_eigen_of_weight_char_hecke_level hL L Ω l n c H hA A θ hθ ι a K D ψ hU y lam d ξ Y F hF.1 hF0 fun w j => hop _`. Use `⟨d, ξ, Y, hY, hD, fun v => ?_⟩` and prove the remaining obligations. Establish `hle : H.OrdAt θ ι x.toRingHom lam ξ K c0 ≤ H.ClAt θ ι x.toRingHom lam ξ K c0`. Unfold `HSet.OrdAt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `iSup_le fun _ => inf_le_left`. Establish `hC : F ∈ Y.Y ⊓ H.ClAt θ ι x.toRingHom lam ξ K c0` using `⟨hF.1, hle hF.2⟩`. Establish `hne : ∀ j : Fin n, ι (y (H.gen θ a K (.inr (v, j)))) ≠ 0` using `fun j => by`. Take `⟨s, hs⟩` from `(hA.art_spec v).surj (unif _)`. Rewrite using `[← hU.ψ_unif v j s (Subgroup.inclusion (Weil_le_Dec (H.ovr v)) s) rfl hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(map_ne_zero ι).2 ((Units.isUnit _).map y).ne_zero`. Take `⟨ω, hsm, hPS, hinv, hb⟩` from `_root_.UpperTheory.V.Z.Ord.ordinary_scalar_of_literal_automorphy_n hL L Ω l n c H hA A θ hθ ι x lam d ξ c0 sp hsp Y K c0 le_rfl F hC hF0 v (fun j => ι (y (H.gen θ a K (.inr (v, j))))) fun j => ⟨hne j, hop _⟩`. Conclude with `⟨ω, hPS, hch v ω hsm hinv hb⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Ord.core_ordinary_of_literal_automorphy_n :
     _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → _root_.UpperTheory.V.Z.Ord.CoreOrdAlt := by

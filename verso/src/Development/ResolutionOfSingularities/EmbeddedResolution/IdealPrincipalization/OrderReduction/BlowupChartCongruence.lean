@@ -21,7 +21,7 @@ variable {B A : Type u} [CommRing B] [CommRing A]
 def eqModIdealSet (f g : B →+* A) (J : Ideal A) : Set B := {b | f b - g b ∈ J}
 
 /- English proof (translation)
-Use `show f 1 - g 1 ∈ J`. Rewrite using `[map_one, map_one, sub_self]`. Conclude with `J.zero_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem one_mem_eqModIdealSet (f g : B →+* A) (J : Ideal A) :
     (1 : B) ∈ eqModIdealSet f g J := by
@@ -30,7 +30,7 @@ private theorem one_mem_eqModIdealSet (f g : B →+* A) (J : Ideal A) :
   exact J.zero_mem
 
 /- English proof (translation)
-Use `show f 0 - g 0 ∈ J`. Rewrite using `[map_zero, map_zero, sub_self]`. Conclude with `J.zero_mem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zero_mem_eqModIdealSet (f g : B →+* A) (J : Ideal A) :
     (0 : B) ∈ eqModIdealSet f g J := by
@@ -39,7 +39,7 @@ private theorem zero_mem_eqModIdealSet (f g : B →+* A) (J : Ideal A) :
   exact J.zero_mem
 
 /- English proof (translation)
-Use `show f (x + y) - g (x + y) ∈ J`. Rewrite using `[map_add, map_add]`. Establish `hrw : f x + f y - (g x + g y) = (f x - g x) + (f y - g y)` using `by ring`. Rewrite using `[hrw]`. Conclude with `J.add_mem hx hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem add_mem_eqModIdealSet (f g : B →+* A) (J : Ideal A) {x y : B}
     (hx : x ∈ eqModIdealSet f g J) (hy : y ∈ eqModIdealSet f g J) : x + y ∈ eqModIdealSet f g J := by
@@ -50,7 +50,7 @@ private theorem add_mem_eqModIdealSet (f g : B →+* A) (J : Ideal A) {x y : B}
   exact J.add_mem hx hy
 
 /- English proof (translation)
-Use `show f (-x) - g (-x) ∈ J`. Rewrite using `[map_neg, map_neg]`. Establish `hrw : -f x - -g x = -(f x - g x)` using `by ring`. Rewrite using `[hrw]`. Conclude with `J.neg_mem hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem neg_mem_eqModIdealSet (f g : B →+* A) (J : Ideal A) {x : B}
     (hx : x ∈ eqModIdealSet f g J) : -x ∈ eqModIdealSet f g J := by
@@ -61,7 +61,7 @@ private theorem neg_mem_eqModIdealSet (f g : B →+* A) (J : Ideal A) {x : B}
   exact J.neg_mem hx
 
 /- English proof (translation)
-Use `show f (x * y) - g (x * y) ∈ J`. Rewrite using `[map_mul, map_mul]`. Establish `hrw : f x * f y - g x * g y = f x * (f y - g y) + (f x - g x) * g y` using `by ring`. Rewrite using `[hrw]`. Conclude with `J.add_mem (J.mul_mem_left _ hy) (J.mul_mem_right _ hx)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mul_mem_eqModIdealSet (f g : B →+* A) (J : Ideal A) {x y : B}
     (hx : x ∈ eqModIdealSet f g J) (hy : y ∈ eqModIdealSet f g J) : x * y ∈ eqModIdealSet f g J := by
@@ -80,7 +80,7 @@ def eqModIdealSubring (f g : B →+* A) (J : Ideal A) : Subring B where
   mul_mem' := mul_mem_eqModIdealSet f g J
 
 /- English proof (translation)
-Establish `hsub : Subring.closure S ≤ eqModIdealSubring f g J` using `Subring.closure_le.mpr (fun x hx => hmem x hx)`. Rewrite `hsub` using `[hS]`. Conclude with `hsub (Subring.mem_top b)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_mem_ideal_of_subring_closure_eq_top (f g : B →+* A) (J : Ideal A) (S : Set B)
     (hS : Subring.closure S = ⊤) (hmem : ∀ b ∈ S, f b - g b ∈ J) (b : B) :
@@ -109,7 +109,7 @@ Expand and normalize the polynomial expressions, which then agree.
 private theorem self_sub_self_eq_zero {M : Type u} [CommRing M] (x : M) : x - x = 0 := by ring
 
 /- English proof (translation)
-Rewrite using `[Localization.mk_eq_mk_iff]`. Use `Localization.r_of_eq ?_` and prove the remaining obligations. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem localization_mk_eq_mk_one_of_eq_mul {M : Type u} [CommMonoid M] {S : Submonoid M}
     (x y d : M) (hd : d ∈ S) (h : x = d * y) :
@@ -123,7 +123,7 @@ section
 variable {R : Type u} [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[Blowup.chartRingHom_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem val_chartRingHom (I : Ideal R) (a : I) (t : R) :
     HomogeneousLocalization.val (Blowup.chartRingHom I a t)
@@ -133,17 +133,15 @@ private theorem val_chartRingHom (I : Ideal R) (a : I) (t : R) :
   rfl
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `HomogeneousLocalization.den_mem z`. Establish `hden : HomogeneousLocalization.den z = Blowup.reesGenerator I a ^ m` using `hm.symm`. Establish `hdencoe : ((HomogeneousLocalization.den z : ↥(reesAlgebra I)) : Polynomial R) = Polynomial.monomial m ((a : R) ^ m)`. Rewrite using `[hden, SubmonoidClass.coe_pow, Blowup.reesGenerator_coe, Polynomial.monomial_pow, one_mul]`. Establish `hpow : (Blowup.chartRingHom I a) ((a : R) ^ m) = (Blowup.chartRingHom I a) (a : R) ^ m` using `map_pow (Blowup.chartRingHom I a) (a : R) m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hdeg : HomogeneousLocalization.deg z = m`. Establish `hnum : HomogeneousLocalization.num z ∈ Blowup.reesGrading I m`. Rewrite using `[← hdeg]`. Conclude with `HomogeneousLocalization.num_mem_deg z`. Take `⟨s, hs, hseq⟩` from `(Blowup.mem_reesGrading_iff_monomial I m (HomogeneousLocalization.num z)).mp hnum`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m, s, hs, ?_⟩` and prove the remaining obligations. Establish `key : (HomogeneousLocalization.num z) * (↑(Blowup.reesDegreeZeroEquiv I ((a : R) ^ m)) : ↥(reesAlgebra I)) = (HomogeneousLocalization.den z) * (↑(Blowup.reesDegreeZeroEquiv I s) : ↥(reesAlgebra I))`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [MulMemClass.coe_mul, hseq, hdencoe, Blowup.reesDegreeZeroEquiv_coe_coe]`. Rewrite using `[mul_comm (Polynomial.monomial m s) (Polynomial.C ((a : R) ^ m)), Polynomial.C_mul_monomial, mul_comm (Polynomial.monomial m ((a : R) ^ m)) (Polynomial.C s), Polynomial.C_mul_monomial, mul_comm ((a : R) ^ m) s]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hpow]`. Apply `HomogeneousLocalization.val_injective (Submonoid.powers (Blowup.reesGenerator I a))` to reduce the goal to its premises. Rewrite using `[HomogeneousLocalization.val_mul, val_chartRingHom, val_chartRingHom, HomogeneousLocalization.eq_num_div_den z, Localization.mk_mul, mul_one]`. Conclude with `localization_mk_eq_mk_one_of_eq_mul _ _ _ _ key`. Establish `hzero : (a : R) ^ m = 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `(Blowup.mem_reesGrading_iff_coeff I (HomogeneousLocalization.deg z) (HomogeneousLocalization.den z)).mp (HomogeneousLocalization.den_mem_deg z) m (fun h => hdeg h.symm)`. Rewrite `h1` using `[hdencoe]`. Simplify using `using h1`. Use `⟨m, 0, Ideal.zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[← hpow, hzero, map_zero]`.
-
-Conclude with `mul_zero z`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_pow_mul_eq (I : Ideal R) (a : I)
     (z : HomogeneousLocalization.Away (Blowup.reesGrading I) (Blowup.reesGenerator I a)) :
@@ -188,13 +186,13 @@ private theorem exists_pow_mul_eq (I : Ideal R) (a : I)
     exact mul_zero z
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `r _`. Use `⟨Blowup.chartRingHom I a r, Subring.subset_closure (Or.inl ⟨r, rfl⟩), ?_⟩` and prove the remaining obligations. Conclude with `eq_mul_pow_zero (M := HomogeneousLocalization.Away (Blowup.reesGrading I) (Blowup.reesGenerator I a)) _ _`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `r hr`. Rewrite `hr` using `[pow_succ]`. Use `Submodule.mul_induction_on hr ?_ ?_` and prove the remaining obligations. Introduce `s hs b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, hweq⟩` from `ih s hs`. Establish `hbb : Blowup.chartRingHom I a b = Blowup.chartFraction I a ⟨b, hb⟩ * Blowup.chartRingHom I a (a : R)` using `Blowup.chartRingHom_coe_eq_chartFraction_mul I a ⟨b, hb⟩`. Use `⟨w * Blowup.chartFraction I a ⟨b, hb⟩, Subring.mul_mem _ hw (Subring.subset_closure (Or.inr ⟨⟨b, hb⟩, rfl⟩)), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hweq, hbb]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x y ⟨wx, hwx, hx⟩ ⟨wy, hwy, hy⟩`. Use `⟨wx + wy, Subring.add_mem _ hwx hwy, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hx, hy]`. Conclude with `mul_add_mul_eq_add_mul wx wy _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_mem_closure_chartRingHom_eq_mul_pow (I : Ideal R) (a : I) (n : ℕ) :
     ∀ r ∈ I ^ n, ∃ w ∈ Subring.closure
@@ -224,11 +222,11 @@ private theorem exists_mem_closure_chartRingHom_eq_mul_pow (I : Ideal R) (a : I)
       exact mul_add_mul_eq_add_mul wx wy _
 
 /- English proof (translation)
-Rewrite using `[Subring.eq_top_iff']`. Introduce `z`. Take `⟨n, r, hr, hz⟩` from `exists_pow_mul_eq I a z`. Take `⟨w, hw, hweq⟩` from `exists_mem_closure_chartRingHom_eq_mul_pow I a n r hr`. Establish `e1 : (z - w) * Blowup.chartRingHom I a (a : R) ^ n = z * Blowup.chartRingHom I a (a : R) ^ n - w * Blowup.chartRingHom I a (a : R) ^ n` using `sub_mul z w _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : (z - w) * Blowup.chartRingHom I a (a : R) ^ n = 0`. Rewrite using `[e1, hz, ← hweq]`. Conclude with `self_sub_self_eq_zero (M := HomogeneousLocalization.Away (Blowup.reesGrading I) (Blowup.reesGenerator I a)) _`. Establish `hnzd : Blowup.chartRingHom I a (a : R) ^ n ∈ nonZeroDivisors (HomogeneousLocalization.Away (Blowup.reesGrading I) (Blowup.reesGenerator I a))` using `pow_mem (Blowup.chartRingHom_mem_nonZeroDivisors I a) n`. Establish `hzw : z - w = 0` using `(mem_nonZeroDivisors_iff.mp hnzd).2 _ h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzeq : z = w` using `sub_eq_zero.mp hzw`. Rewrite using `[hzeq]`. Conclude with `hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closure_chartRingHom_union_chartFraction_eq_top (I : Ideal R) (a : I) :
     Subring.closure
@@ -253,15 +251,15 @@ theorem closure_chartRingHom_union_chartFraction_eq_top (I : Ideal R) (a : I) :
   exact hw
 
 /- English proof (translation)
-Take `⟨c, hc, hcEq⟩` from `Ideal.mem_span_singleton_mul.mp (hcongr (a : R))`. Take `⟨d, hd, hdEq⟩` from `Ideal.mem_span_singleton_mul.mp (hcongr (b : R))`. Establish `hone : (1 : A) - u ∈ 𝔟`. Establish `h1 : σ (a : R) - σ' (a : R) = σ (a : R) * c` using `hcEq.symm`. Rewrite `h1` using `[hu]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : ((1 : A) - u - c) * σ (a : R) = 0` using `by linear_combination h1`. Establish `h2` using `(mem_nonZeroDivisors_iff.mp hnzd).2 _ h0`. Establish `h3 : (1 : A) - u = c` using `by linear_combination h2`. Rewrite using `[h3]`. Conclude with `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb1 : σ (b : R) = φ (Blowup.chartFraction I a b) * σ (a : R)`. Rewrite using `[← hφ (b : R), ← hφ (a : R), ← map_mul, Blowup.chartRingHom_coe_eq_chartFraction_mul I a b]`. Establish `hb2 : σ' (b : R) = φ' (Blowup.chartFraction I a b) * σ' (a : R)`. Rewrite using `[← hφ' (b : R), ← hφ' (a : R), ← map_mul, Blowup.chartRingHom_coe_eq_chartFraction_mul I a b]`. Establish `h2 : σ (b : R) - σ' (b : R) = σ (a : R) * d` using `hdEq.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hb1, hb2, hu]`. Establish `h0 : (φ (Blowup.chartFraction I a b) - u * φ' (Blowup.chartFraction I a b) - d) * σ (a : R) = 0`. Take the linear combination `h2`. Establish `h3` using `(mem_nonZeroDivisors_iff.mp hnzd).2 _ h0`. Establish `hfin : φ (Blowup.chartFraction I a b) - φ' (Blowup.chartFraction I a b) = d - (1 - u) * φ' (Blowup.chartFraction I a b)` using `by linear_combination h3`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfin]`. Conclude with `𝔟.sub_mem hd (𝔟.mul_mem_right _ hone)`.
+A detailed English derivation is pending.
 -/
 theorem chartFraction_sub_mem_of_congr {A : Type u} [CommRing A] (I : Ideal R) (a : I)
     (φ φ' : HomogeneousLocalization.Away (Blowup.reesGrading I) (Blowup.reesGenerator I a) →+* A)
@@ -303,7 +301,7 @@ section
 variable {R : Type u} [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[Blowup.sectionsRingHom_apply, Blowup.sectionsRingHom_apply]`. Use `conv_rhs => rw [← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sectionsRingHom_comp {A : Type u} [CommRing A] {Z W : Scheme.{u}} (p : Z ⟶ W)
     (ρ : W ⟶ Spec (CommRingCat.of A)) (V : W.Opens) (V' : Z.Opens)
@@ -314,7 +312,7 @@ private theorem sectionsRingHom_comp {A : Type u} [CommRing A] {Z W : Scheme.{u}
   conv_rhs => rw [← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]
 
 /- English proof (translation)
-Rewrite `hx` using `[Scheme.IdealSheafData.subschemeι_app 𝔞 V, CommRingCat.comp_apply]`. Establish `h2` using `congrArg (CommRingCat.Hom.hom (𝔞.subschemeObjIso V).hom) hx`. Rewrite `h2` using `[← CommRingCat.comp_apply, Iso.inv_hom_id]`. Simplify `h2` using `[Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem mem_ideal_of_app_subschemeι_eq_zero {W : Scheme.{u}} (𝔞 : W.IdealSheafData) (V : W.affineOpens)
     (x : ↥(W.presheaf.obj (Opposite.op (V : W.Opens))))
@@ -326,7 +324,7 @@ private theorem mem_ideal_of_app_subschemeι_eq_zero {W : Scheme.{u}} (𝔞 : W.
   simpa [Ideal.Quotient.eq_zero_iff_mem] using h2
 
 /- English proof (translation)
-Rewrite using `[Scheme.IdealSheafData.subschemeι_app 𝔞 V, CommRingCat.comp_apply]`. Simplify using `[Ideal.Quotient.eq_zero_iff_mem.mpr hx]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem app_subschemeι_eq_zero_of_mem_ideal {W : Scheme.{u}} (𝔞 : W.IdealSheafData)
     (V : W.affineOpens) {x : ↥(W.presheaf.obj (Opposite.op (V : W.Opens)))}
@@ -336,7 +334,7 @@ private theorem app_subschemeι_eq_zero_of_mem_ideal {W : Scheme.{u}} (𝔞 : W.
   simp [Ideal.Quotient.eq_zero_iff_mem.mpr hx]
 
 /- English proof (translation)
-The claim follows from `Scheme.Hom.appLE_eq_app (f := f)`.
+A detailed English derivation is pending.
 -/
 private theorem appLE_top_top {X Y : Scheme.{u}} (f : X ⟶ Y)
     (e : (⊤ : X.Opens) ≤ (Opens.map f.base).obj ⊤) :
@@ -344,7 +342,7 @@ private theorem appLE_top_top {X Y : Scheme.{u}} (f : X ⟶ Y)
   Scheme.Hom.appLE_eq_app (f := f)
 
 /- English proof (translation)
-Substitute `hfg` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem appLE_congr_hom {X Y : Scheme.{u}} {f g : X ⟶ Y} (hfg : f = g)
     (U : Y.Opens) (V : X.Opens) (e : V ≤ (Opens.map f.base).obj U)
@@ -354,9 +352,9 @@ private theorem appLE_congr_hom {X Y : Scheme.{u}} {f g : X ⟶ Y} (hfg : f = g)
   rfl
 
 /- English proof (translation)
-Apply `mem_ideal_of_app_subschemeι_eq_zero` to reduce the goal to its premises. Establish `h1 : Blowup.sectionsRingHom (𝔞.subschemeι ≫ ρ) ((Opens.map 𝔞.subschemeι.base).obj (V : W.Opens)) r = Blowup.sectionsRingHom (𝔞.subschemeι ≫ ρ') ((Opens.map 𝔞.subschemeι.base).obj (V : W.Opens)) r`. Rewrite using `[hagree]`. Rewrite `h1` using `[sectionsRingHom_comp 𝔞.subschemeι ρ (V : W.Opens) _ le_rfl r, sectionsRingHom_comp 𝔞.subschemeι ρ' (V : W.Opens) _ le_rfl r]`. Rewrite using `[Scheme.Hom.app_eq_appLE, map_sub, h1]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_self _`.
+A detailed English derivation is pending.
 -/
 theorem sectionsRingHom_sub_mem_ideal {A : Type u} [CommRing A] {W : Scheme.{u}}
     (ρ ρ' : W ⟶ Spec (CommRingCat.of A)) (𝔞 : W.IdealSheafData)
@@ -375,11 +373,11 @@ theorem sectionsRingHom_sub_mem_ideal {A : Type u} [CommRing A] {W : Scheme.{u}}
   exact sub_self _
 
 /- English proof (translation)
-Establish `hchartle : (⊤ : (Spec (CommRingCat.of (HomogeneousLocalization.Away (Blowup.reesGrading I) (Blowup.reesGenerator I a)))).Opens) ≤ (Opens.map (Blowup.affineBlowupChart I a).base).obj ((Scheme.Hom.opensFunctor (Blowup.affineBlowupChart I a)).obj ⊤)` using `fun x _ => ⟨x, trivial, rfl⟩`. Establish `hsec : (CommRingCat.Hom.hom (Scheme.Hom.appLE (Blowup.affineBlowupChart I a) ((Scheme.Hom.opensFunctor (Blowup.affineBlowupChart I a)).obj ⊤) ⊤ hchartle)) ((CommRingCat.Hom.hom (Blowup.chartSectionsIso I a).hom) z) = (CommRingCat.Hom.hom (Scheme.ΓSpecIso (CommRingCat.of (Homogene …`. Rewrite using `[Blowup.chartSectionsIso_hom_apply, ← CommRingCat.comp_apply, show Scheme.Hom.appLE (Blowup.affineBlowupChart I a) ((Scheme.Hom.opensFunctor (Blowup.affineBlowupChart I a)).obj ⊤) ⊤ hchartle = (Scheme.Hom.appIso (Blowup.affineBlowupChart I a) ⊤).hom from (Scheme.Hom.appIso_hom' ( …`. Establish `hlift` using `IsOpenImmersion.lift_fac (Blowup.affineBlowupChart I a) (p ≫ k) hrange`. Establish `etop : (⊤ : T.Opens) ≤ (Opens.map (IsOpenImmersion.lift (Blowup.affineBlowupChart I a) (p ≫ k) hrange).base).obj ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hmain : Scheme.Hom.appLE (Blowup.affineBlowupChart I a) ((Scheme.Hom.opensFunctor (Blowup.affineBlowupChart I a)).obj ⊤) ⊤ hchartle ≫ Scheme.Hom.appLE (IsOpenImmersion.lift (Blowup.affineBlowupChart I a) (p ≫ k) hrange) ⊤ ⊤ etop = Scheme.Hom.appLE k ((Scheme.Hom.opensFunctor (Blo …`. Rewrite using `[Scheme.Hom.appLE_comp_appLE, Scheme.Hom.appLE_comp_appLE]`. Conclude with `appLE_congr_hom hlift _ _ _ _`. Rewrite `hmain` using `[appLE_top_top _ etop]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `happ` using `congrArg (fun m : _ ⟶ _ => (CommRingCat.Hom.hom m) ((CommRingCat.Hom.hom (Blowup.chartSectionsIso I a).hom) z)) hmain`. Simplify using `only [CommRingCat.comp_apply] at happ`. Rewrite `happ` using `[hsec, ← Blowup.chartSectionsRingHom_apply]`. Conclude with `happ`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem appTop_lift_affineBlowupChart_apply (I : Ideal R) {W : Scheme.{u}} (k : W ⟶ Blowup.affineBlowup I) (a : I)
     {T : Scheme.{u}} (p : T ⟶ W) (V : W.Opens)
@@ -429,21 +427,21 @@ private theorem appTop_lift_affineBlowupChart_apply (I : Ideal R) {W : Scheme.{u
   exact happ
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, ← Category.assoc]`. Establish `hψ : (⊤ : (Scheme.Opens.toScheme ((Opens.map 𝔟.subschemeι.base).obj (V : W.Opens))).Opens) ≤ (Opens.map (Scheme.Opens.ι ((Opens.map 𝔟.subschemeι.base).obj (V : W.Opens)) ≫ 𝔟.subschemeι).base).obj (V : W.Opens)`. Introduce `x _`. Simplify using the standard rewrite rules. Establish `hι : (⊤ : (Scheme.Opens.toScheme ((Opens.map 𝔟.subschemeι.base).obj (V : W.Opens))).Opens) ≤ (Opens.map (Scheme.Opens.ι ((Opens.map 𝔟.subschemeι.base).obj (V : W.Opens))).base).obj ((Opens.map 𝔟.subschemeι.base).obj (V : W.Opens))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x _`. Simplify using the standard rewrite rules. Establish `hrange : ∀ (k : W ⟶ Blowup.affineBlowup I), (V : W.Opens) ≤ (Opens.map k.base).obj ((Scheme.Hom.opensFunctor (Blowup.affineBlowupChart I a)).obj ⊤) → Set.range ⇑((Scheme.Opens.ι ((Opens.map 𝔟.subschemeι.base).obj (V : W.Opens)) ≫ 𝔟.subschemeι) ≫ k).base ⊆ Set.range ⇑(Blowup.affin …`. Introduce `k hk`. Introduce and unpack `y ⟨x, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Establish `h3 : k.base (𝔟.subschemeι.base x.1) ∈ Scheme.Hom.opensRange (Blowup.affineBlowupChart I a)`. Rewrite using `[← Scheme.Hom.image_top_eq_opensRange]`. Conclude with `hk x.2`. Take `⟨q, hq⟩` from `h3`. Conclude with `⟨q, hq⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hkill : ∀ x ∈ 𝔟.ideal V, (CommRingCat.Hom.hom (Scheme.Hom.appLE (Scheme.Opens.ι ((Opens.map 𝔟.subschemeι.base).obj (V : W.Opens)) ≫ 𝔟.subschemeι) (V : W.Opens) ⊤ hψ)) x = 0`. Introduce `x hx`. Establish `hcomp : Scheme.Hom.appLE 𝔟.subschemeι (V : W.Opens) ((Opens.map 𝔟.subschemeι.base).obj (V : W.Opens)) le_rfl ≫ Scheme.Hom.appLE (Scheme.Opens.ι ((Opens.map 𝔟.subschemeι.base).obj (V : W.Opens))) ((Opens.map 𝔟.subschemeι.base).obj (V : W.Opens)) ⊤ hι = Scheme.Hom.appLE (Scheme.Ope …`. Rewrite using `[Scheme.Hom.appLE_comp_appLE]`. Establish `h2` using `congrArg (fun m : _ ⟶ _ => (CommRingCat.Hom.hom m) x) hcomp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [CommRingCat.comp_apply] at h2`. Rewrite `h2` using `[Scheme.Hom.appLE_eq_app, app_subschemeι_eq_zero_of_mem_ideal 𝔟 V hx, map_zero]`. Conclude with `h2.symm`. Establish `happ : Scheme.Hom.appTop (IsOpenImmersion.lift (Blowup.affineBlowupChart I a) _ (hrange h hV)) = Scheme.Hom.appTop (IsOpenImmersion.lift (Blowup.affineBlowupChart I a) _ (hrange h' hV'))`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `RingHom.ext` to reduce the goal to its premises. Introduce `y`. Establish `hy : (CommRingCat.Hom.hom (Scheme.ΓSpecIso (CommRingCat.of (HomogeneousLocalization.Away (Blowup.reesGrading I) (Blowup.reesGenerator I a)))).inv) ((CommRingCat.Hom.hom (Scheme.ΓSpecIso (CommRingCat.of (HomogeneousLocalization.Away (Blowup.reesGrading I) (Blowup.reesGenerator I a …`. Rewrite using `[← CommRingCat.comp_apply, Iso.hom_inv_id, CommRingCat.id_apply]`. Take `⟨z, rfl⟩ : ∃ z, (CommRingCat.Hom.hom (Scheme.ΓSpecIso (CommRingCat.of (HomogeneousLocalization.Away (Blowup.reesGrading I) (Blowup.reesGenerator I a)))).inv) z = y` from `⟨_, hy⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[appTop_lift_affineBlowupChart_apply I h a (Scheme.Opens.ι ((Opens.map 𝔟.subschemeι.base).obj (V : W.Opens)) ≫ 𝔟.subschemeι) (V : W.Opens) hV hψ (hrange h hV) z, appTop_lift_affineBlowupChart_apply I h' a (Scheme.Opens.ι ((Opens.map 𝔟.subschemeι.base).obj (V : W.Opens)) ≫ 𝔟.subsc …`. Establish `hz` using `hkill _ (hcongr z)`. Rewrite `hz` using `[map_sub]`. Conclude with `sub_eq_zero.mp hz`. Establish `hfin : IsOpenImmersion.lift (Blowup.affineBlowupChart I a) _ (hrange h hV) = IsOpenImmersion.lift (Blowup.affineBlowupChart I a) _ (hrange h' hV')`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomp : IsOpenImmersion.lift (Blowup.affineBlowupChart I a) _ (hrange h hV) ≫ (Spec (CommRingCat.of (HomogeneousLocalization.Away (Blowup.reesGrading I) (Blowup.reesGenerator I a)))).toSpecΓ = IsOpenImmersion.lift (Blowup.affineBlowupChart I a) _ (hrange h' hV') ≫ (Spec (CommRing …`. Rewrite using `[Scheme.toSpecΓ_naturality, Scheme.toSpecΓ_naturality, happ]`. Conclude with `(cancel_mono _).mp hcomp`. Rewrite using `[← IsOpenImmersion.lift_fac (Blowup.affineBlowupChart I a) _ (hrange h hV), ← IsOpenImmersion.lift_fac (Blowup.affineBlowupChart I a) _ (hrange h' hV'), hfin]`.
+A detailed English derivation is pending.
 -/
 theorem comp_eq_of_chartSectionsRingHom_sub_mem (I : Ideal R) {W : Scheme.{u}}
     (h h' : W ⟶ Blowup.affineBlowup I) (a : I) (𝔟 : W.IdealSheafData) (V : W.affineOpens)
@@ -535,7 +533,7 @@ theorem comp_eq_of_chartSectionsRingHom_sub_mem (I : Ideal R) {W : Scheme.{u}}
     ← IsOpenImmersion.lift_fac (Blowup.affineBlowupChart I a) _ (hrange h' hV'), hfin]
 
 /- English proof (translation)
-Establish `h1` using `sectionsRingHom_sub_mem_ideal ρ ρ' 𝔞 hagree V r`. Rewrite `h1` using `[← hfac]`. Rewrite using `[← hspan]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sectionsRingHom_sub_mem_span_mul_of_agree (I : Ideal R) {W : Scheme.{u}}
     (ρ ρ' : W ⟶ Spec (CommRingCat.of R)) (𝔞 𝔟₁ : W.IdealSheafData) (V : W.affineOpens)
@@ -552,7 +550,7 @@ private theorem sectionsRingHom_sub_mem_span_mul_of_agree (I : Ideal R) {W : Sch
   exact h1
 
 /- English proof (translation)
-Use `sub_mem_ideal_of_subring_closure_eq_top (Blowup.chartSectionsRingHom I h a (V : W.Opens) hV) (Blowup.chartSectionsRingHom I h' a (V : W.Opens) hV') (𝔟₁.ideal V) (Set.range ⇑(Blowup.chartRingHom I a) ∪ Set.range (Blowup.chartFraction I a)) (closure_chartRingHom_union_chartFraction …` and prove the remaining obligations. Introduce and unpack `b (⟨r, rfl⟩ | ⟨b0, rfl⟩)`. Rewrite using `[Blowup.chartSectionsRingHom_chartRingHom, Blowup.chartSectionsRingHom_chartRingHom]`. Conclude with `(Ideal.mem_inf.mp (Ideal.mul_le_inf (hcongr r))).2`. Conclude with `chartFraction_sub_mem_of_congr I a (Blowup.chartSectionsRingHom I h a (V : W.Opens) hV) (Blowup.chartSectionsRingHom I h' a (V : W.Opens) hV') (Blowup.sectionsRingHom (h ≫ Blowup.AffineBlowup.toSpec I) (V : W.Opens)) (Blowup.sectionsRingHom (h' ≫ Blowup.AffineBlowup.toSpec I) (V …`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chartSectionsRingHom_sub_mem (I : Ideal R) {W : Scheme.{u}}
     (h h' : W ⟶ Blowup.affineBlowup I) (𝔟₁ : W.IdealSheafData) (a : I) (V : W.affineOpens)
@@ -588,9 +586,9 @@ private theorem chartSectionsRingHom_sub_mem (I : Ideal R) {W : Scheme.{u}}
       hcongr hnzd u hu b0
 
 /- English proof (translation)
-Establish `hmem : Blowup.sectionsRingHom (h' ≫ Blowup.AffineBlowup.toSpec I) (V : W.Opens) (a : R) ∈ Ideal.span {Blowup.sectionsRingHom (h ≫ Blowup.AffineBlowup.toSpec I) (V : W.Opens) (a : R)}`. Rewrite using `[← hspan, hpull, Blowup.comap_specIdealSheaf_ideal_eq_span I h' a V hV']`. Conclude with `Ideal.mem_span_singleton_self _`. Take `⟨u, hu⟩` from `Ideal.mem_span_singleton'.mp hmem`. Use `comp_eq_of_chartSectionsRingHom_sub_mem I h h' a 𝔟₁ V hV hV' (fun z => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `chartSectionsRingHom_sub_mem I h h' 𝔟₁ a V hV hV' hnzd u hu.symm (fun r => ?_) z` and prove the remaining obligations. Conclude with `sectionsRingHom_sub_mem_span_mul_of_agree I (h ≫ Blowup.AffineBlowup.toSpec I) (h' ≫ Blowup.AffineBlowup.toSpec I) 𝔞 𝔟₁ V hagree hfac (Blowup.sectionsRingHom (h ≫ Blowup.AffineBlowup.toSpec I) (V : W.Opens) (a : R)) hspan r`.
+A detailed English derivation is pending.
 -/
 theorem comp_eq_on_chart_of_mul_eq_of_agree (I : Ideal R) {W : Scheme.{u}}
     (h h' : W ⟶ Blowup.affineBlowup I) (𝔞 𝔟₁ : W.IdealSheafData) (a : I) (V : W.affineOpens)
@@ -620,21 +618,19 @@ theorem comp_eq_on_chart_of_mul_eq_of_agree (I : Ideal R) {W : Scheme.{u}}
     hagree hfac (Blowup.sectionsRingHom (h ≫ Blowup.AffineBlowup.toSpec I) (V : W.Opens) (a : R)) hspan r
 
 /- English proof (translation)
-Take `⟨a, V, hwV, hVchart, hnzdV⟩` from `Blowup.exists_chart_affineOpen_mem_nonZeroDivisors I h hcart w`. Establish `hspanV : ((Blowup.specIdealSheaf I).comap (h ≫ Blowup.AffineBlowup.toSpec I)).ideal V = Ideal.span {Blowup.sectionsRingHom (h ≫ Blowup.AffineBlowup.toSpec I) (V : W.Opens) (a : R)}` using `Blowup.comap_specIdealSheaf_ideal_eq_span I h a V hVchart`. Establish `hsub` using `sectionsRingHom_sub_mem_ideal (h ≫ Blowup.AffineBlowup.toSpec I) (h' ≫ Blowup.AffineBlowup.toSpec I) 𝔞 hagree V (a : R)`. Establish `hmul : ((Blowup.specIdealSheaf I).comap (h ≫ Blowup.AffineBlowup.toSpec I) * 𝔟₁).ideal V = ((Blowup.specIdealSheaf I).comap (h ≫ Blowup.AffineBlowup.toSpec I)).ideal V * 𝔟₁.ideal V` using `rfl`. Rewrite `hsub` using `[← hfac, hmul, hspanV]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc, hceq⟩` from `Ideal.mem_span_singleton_mul.mp hsub`. Use `set f : ↥(W.presheaf.obj (Opposite.op (V : W.Opens))) := 1 - c with hfdef`. Establish `hf'' : Blowup.sectionsRingHom (h' ≫ Blowup.AffineBlowup.toSpec I) (V : W.Opens) (a : R) = Blowup.sectionsRingHom (h ≫ Blowup.AffineBlowup.toSpec I) (V : W.Opens) (a : R) * f`. Rewrite using `[hfdef]`. Take the linear combination `hceq`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hle : W.basicOpen f ≤ (V : W.Opens)` using `W.basicOpen_le f`. Establish `haff : IsAffineOpen (W.basicOpen f)` using `V.2.basicOpen f`. Establish `hlechart : W.basicOpen f ≤ (Opens.map h.base).obj ((Scheme.Hom.opensFunctor (Blowup.affineBlowupChart I a)).obj ⊤)` using `le_trans hle hVchart`. Establish `hsp : ((Blowup.specIdealSheaf I).comap (h ≫ Blowup.AffineBlowup.toSpec I)).ideal ⟨W.basicOpen f, haff⟩ = Ideal.span {Blowup.sectionsRingHom (h ≫ Blowup.AffineBlowup.toSpec I) (W.basicOpen f) (a : R)}` using `Blowup.comap_specIdealSheaf_ideal_eq_span I h a ⟨W.basicOpen f, haff⟩ hlechart`. Establish `hresσ : Blowup.sectionsRingHom (h ≫ Blowup.AffineBlowup.toSpec I) (W.basicOpen f) (a : R) = (CommRingCat.Hom.hom (W.presheaf.map (homOfLE hle).op)) (Blowup.sectionsRingHom (h ≫ Blowup.AffineBlowup.toSpec I) (V : W.Opens) (a : R))` using `Blowup.sectionsRingHom_restrict (h ≫ Blowup.AffineBlowup.toSpec I) hle (a : R)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hresσ' : Blowup.sectionsRingHom (h' ≫ Blowup.AffineBlowup.toSpec I) (W.basicOpen f) (a : R) = (CommRingCat.Hom.hom (W.presheaf.map (homOfLE hle).op)) (Blowup.sectionsRingHom (h' ≫ Blowup.AffineBlowup.toSpec I) (V : W.Opens) (a : R))` using `Blowup.sectionsRingHom_restrict (h' ≫ Blowup.AffineBlowup.toSpec I) hle (a : R)`. Establish `hloc : IsLocalization.Away f ↥(W.presheaf.obj (Opposite.op (W.basicOpen f)))` using `V.2.isLocalization_basicOpen f`. Establish `hunit : IsUnit ((CommRingCat.Hom.hom (W.presheaf.map (homOfLE hle).op)) f)` using `IsLocalization.map_units (S := ↥(W.presheaf.obj (Opposite.op (W.basicOpen f)))) (M := Submonoid.powers f) ⟨f, Submonoid.mem_powers f⟩`. Establish `hnzdres : algebraMap ↥(W.presheaf.obj (Opposite.op (V : W.Opens))) ↥(W.presheaf.obj (Opposite.op (W.basicOpen f))) (Blowup.sectionsRingHom (h ≫ Blowup.AffineBlowup.toSpec I) (V : W.Opens) (a : R)) ∈ nonZeroDivisors ↥(W.presheaf.obj (Opposite.op (W.basicOpen f)))`. Establish `hcomap` using `IsLocalization.nonZeroDivisors_le_comap (M := Submonoid.powers f) (S := ↥(W.presheaf.obj (Opposite.op (W.basicOpen f))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hcomap hnzdV`. Establish `hnzdfinal : Blowup.sectionsRingHom (h ≫ Blowup.AffineBlowup.toSpec I) (W.basicOpen f) (a : R) ∈ nonZeroDivisors ↥(W.presheaf.obj (Opposite.op (W.basicOpen f)))`. Rewrite using `[hresσ]`. Conclude with `hnzdres`. Establish `hcart' : Blowup.IsLocallyGeneratedByNonZeroDivisor ((Blowup.specIdealSheaf I).comap (h' ≫ Blowup.AffineBlowup.toSpec I))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hpull]`. Conclude with `hcart`. Establish `hspanbo' : ((Blowup.specIdealSheaf I).comap (h' ≫ Blowup.AffineBlowup.toSpec I)).ideal ⟨W.basicOpen f, haff⟩ = Ideal.span {Blowup.sectionsRingHom (h' ≫ Blowup.AffineBlowup.toSpec I) (W.basicOpen f) (a : R)}`. Rewrite using `[← hpull, hsp, hresσ, hresσ', hf'', map_mul]`. Conclude with `(Ideal.span_singleton_mul_right_unit hunit _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hpre : (Opens.map 𝔟₁.subschemeι.base).obj (W.basicOpen f) = (Opens.map 𝔟₁.subschemeι.base).obj (V : W.Opens)`. Rewrite using `[Scheme.preimage_basicOpen]`. Establish `happ : (CategoryTheory.ConcreteCategory.hom (Scheme.Hom.app 𝔟₁.subschemeι (V : W.Opens))) f = 1` using `by show (CommRingCat.Hom.hom (Scheme.Hom.app 𝔟₁.subschemeι (V : W.Opens))) f = 1`. Rewrite using `[hfdef, map_sub, map_one, app_subschemeι_eq_zero_of_mem_ideal 𝔟₁ V hc, sub_zero]`. Rewrite using `[happ, Scheme.basicOpen_one]`.
-
-Use `⟨a, V, ⟨W.basicOpen f, haff⟩, hwV, hpre, hlechart, ?_, hnzdfinal, hsp⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hmemrange` using `Blowup.mem_opensRange_affineBlowupChart_of_ideal_eq_span I h' hcart' x a ⟨⟨W.basicOpen f, haff⟩, hx, hspanbo'⟩`. Rewrite `hmemrange` using `[← Scheme.Hom.image_top_eq_opensRange]`. Conclude with `hmemrange`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_common_chart_affineOpen (I : Ideal R) {W : Scheme.{u}}
     (h h' : W ⟶ Blowup.affineBlowup I) (𝔞 𝔟₁ : W.IdealSheafData)
@@ -730,11 +726,9 @@ theorem exists_common_chart_affineOpen (I : Ideal R) {W : Scheme.{u}}
   exact hmemrange
 
 /- English proof (translation)
-Substitute `hh` using the available equality. Substitute `hh'` using the available equality. Use `choose a V V' hw hpre hVh hVh' hn hs using exists_common_chart_affineOpen I h h' 𝔞 𝔟₁ hagree hpull hcart hfac`. Establish `hcov : ∀ z : ↥(𝔟₁.subscheme), ∃ (w : ↥W) (y : ↥((Opens.map 𝔟₁.subschemeι.base).obj ((V w : W.Opens)))), (Scheme.Opens.ι ((Opens.map 𝔟₁.subschemeι.base).obj ((V w : W.Opens)))).base y = z`. Introduce `z`.
+Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨𝔟₁.subschemeι.base z, ⟨z, hw (𝔟₁.subschemeι.base z)⟩, rfl⟩`. Use `Scheme.Cover.hom_ext (Scheme.Cover.mkOfCovers (↥W) (fun w => Scheme.Opens.toScheme ((Opens.map 𝔟₁.subschemeι.base).obj ((V w : W.Opens)))) (fun w => Scheme.Opens.ι ((Opens.map 𝔟₁.subschemeι.base).obj ((V w : W.Opens)))) hcov) _ _ ?_` and prove the remaining obligations. Introduce `w`. Use `show Scheme.Opens.ι ((Opens.map 𝔟₁.subschemeι.base).obj ((V w : W.Opens))) ≫ (𝔟₁.subschemeι ≫ h) = Scheme.Opens.ι ((Opens.map 𝔟₁.subschemeι.base).obj ((V w : W.Opens))) ≫ (𝔟₁.subschemeι ≫ h')`. Rewrite using `[← hpre w]`.
-
-Conclude with `comp_eq_on_chart_of_mul_eq_of_agree I h h' 𝔞 𝔟₁ (a w) (V' w) hagree hpull hfac (hVh w) (hVh' w) (hn w) (hs w)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subschemeι_comp_eq_of_affineBlowup_lifts (I : Ideal R) {W : Scheme.{u}}
     (ρ ρ' : W ⟶ Spec (CommRingCat.of R)) (𝔞 𝔟₁ : W.IdealSheafData)

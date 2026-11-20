@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped CategoryTheory.Obj
 
 /- English proof (translation)
-Use `(ConcreteCategory.isIso_iff_bijective _).2 ⟨RingHom.injective _, fun u => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `Z.residue_surjective _ u`. Take `⟨u, rfl⟩` from `i.stalkMap_surjective _ u`. Conclude with `⟨X.residue _ u, ConcreteCategory.congr_hom (Scheme.residue_residueFieldMap i _) u⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isIso_residueFieldMap {Z X : Scheme.{0}} (i : Z ⟶ X) [SurjectiveOnStalks i] (z : Z) :
     IsIso (i.residueFieldMap z) := by
@@ -21,11 +21,11 @@ theorem isIso_residueFieldMap {Z X : Scheme.{0}} (i : Z ⟶ X) [SurjectiveOnStal
   exact ⟨X.residue _ u, ConcreteCategory.congr_hom (Scheme.residue_residueFieldMap i _) u⟩
 
 /- English proof (translation)
-Take `⟨k, _, _, hfin, hsep, S, hS⟩` from `h`. Use `isIso_residueFieldMap i z` as an intermediate fact. Set `e : X.residueField (i z) ≃+* Z.residueField z` to `(asIso (i.residueFieldMap z)).commRingCatIsoToRingEquiv`. Set `_ : Algebra (Z.residueField z) k` to `((algebraMap (X.residueField (i z)) k).comp e.symm.toRingHom).toAlgebra`. Establish `he : (algebraMap (Z.residueField z) k).comp (e : _ →+* _) = ((RingEquiv.refl k : k ≃+* k) : k →+* k).comp (algebraMap (X.residueField (i z)) k)` using `RingHom.ext fun a => congrArg (algebraMap (X.residueField (i z)) k) (e.symm_apply_apply a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨k, inferInstance, inferInstance, Module.Finite.of_equiv_equiv e (RingEquiv.refl k) he, Algebra.IsSeparable.of_equiv_equiv e (RingEquiv.refl k) he, S, ?_⟩` and prove the remaining obligations. Establish `hc : i.residueFieldMap z ≫ CommRingCat.ofHom (algebraMap (Z.residueField z) k) = CommRingCat.ofHom (algebraMap (X.residueField (i z)) k)` using `CommRingCat.hom_ext he`. Establish `key : (Spec.map (CommRingCat.ofHom (algebraMap (Z.residueField z) k)) ≫ Z.fromSpecResidueField z) ≫ i = Spec.map (CommRingCat.ofHom (algebraMap (X.residueField (i z)) k)) ≫ X.fromSpecResidueField (i z)`. Rewrite using `[Category.assoc, ← Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField, ← hc]`. Conclude with `(Category.assoc _ _ _).symm.trans (congrArg (· ≫ X.fromSpecResidueField (i z)) (Spec.map_comp _ _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj, -⟩` from `grpPullback_iso (isGrpPullback_pullback G _) (((isGrpPullback_pullback G' _).comp hφ).congr key rfl)`. Conclude with `isGt_of_iso j hS`.
+A detailed English derivation is pending.
 -/
 theorem split_of_pullback {Z X : Scheme.{0}} (i : Z ⟶ X) [SurjectiveOnStalks i] {G : Over X} {G' : Over Z} [GrpObj G]
     [GrpObj G'] {φ : G'.left ⟶ G.left} (hφ : IsGrpPullback G' G i φ) (z : Z)
@@ -57,7 +57,7 @@ theorem split_of_pullback {Z X : Scheme.{0}} (i : Z ⟶ X) [SurjectiveOnStalks i
   exact isGt_of_iso j hS
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y O' _ β' b hb _ _ h x`. Conclude with `split_of_pullback (pullback.fst Y.s (spMap b)) (locMap Y b).cart x (h _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem locModel_splitFibres : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β)

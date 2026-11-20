@@ -28,7 +28,7 @@ section Place
 variable {D : D7} {v : Pl D.host.F} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem complMap_apply_under {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {v : Pl F} {w : Pl E} (h : w.under (𝓞 F) = v) (b : Af F) :
@@ -36,7 +36,7 @@ theorem complMap_apply_under {F E : Type} [Field F] [NumberField F] [Field E] [N
   subst h; rfl
 
 /- English proof (translation)
-Use `show splitProj τ (compFin D.host.F D.host.E v (b ⊗ₜ[D.host.F] x)) = _`. Rewrite using `[compFin, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem piW_tmul (b : AF D.host.F) (x : D.host.E) : piW τ (b ⊗ₜ[D.host.F] x) = evFin D.host.F v b * τ x := by
   show splitProj τ (compFin D.host.F D.host.E v (b ⊗ₜ[D.host.F] x)) = _
@@ -44,7 +44,7 @@ theorem piW_tmul (b : AF D.host.F) (x : D.host.E) : piW τ (b ⊗ₜ[D.host.F] x
   rfl
 
 /- English proof (translation)
-Establish `e : toEAf D (b ⊗ₜ[D.host.F] x) = x ⊗ₜ[D.host.F] b.2` using `rfl`. Rewrite using `[e]`. Use `show (toAd D (x ⊗ₜ[D.host.F] b.2)) w = _`. Rewrite using `[toAd_spec]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cpt_tmul (w : Pl D.host.E) (b : AF D.host.F) (x : D.host.E) :
     cpt (D := D) w (toEAf D (b ⊗ₜ[D.host.F] x)) =
@@ -56,9 +56,9 @@ theorem cpt_tmul (w : Pl D.host.E) (b : AF D.host.F) (x : D.host.E) :
   rfl
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero, map_zero]`. Consider the case `tmul b x`. Rewrite using `[piW_tmul, cpt_tmul, complEquiv_apply, map_mul, complMap_apply_emb, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `complMap_apply_under (splitPrime_under τ) b.2`. Consider the case `add x y hx hy`. Rewrite using `[RingHom.map_add (piW τ), RingEquiv.map_add, RingHom.map_add (toEAf D), RingHom.map_add (cpt _), hx, hy]`.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPlaceIso_complEquiv : IsPlaceIso τ (splitPrime τ) (complEquiv τ (splitPrime_under τ)) := by
   intro a
@@ -72,7 +72,7 @@ theorem isPlaceIso_complEquiv : IsPlaceIso τ (splitPrime τ) (complEquiv τ (sp
     rw [RingHom.map_add (piW τ), RingEquiv.map_add, RingHom.map_add (toEAf D), RingHom.map_add (cpt _), hx, hy]
 
 /- English proof (translation)
-The claim follows from `haveI : (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _ ValuativeRel.isEquiv _ _`.
+A detailed English derivation is pending.
 -/
 theorem isEquiv_Fv {F : Type} [Field F] [NumberField F] (v : Pl F) :
     (ValuativeRel.valuation (Fv F v)).IsEquiv (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))) :=
@@ -80,7 +80,7 @@ theorem isEquiv_Fv {F : Type} [Field F] [NumberField F] (v : Pl F) :
   ValuativeRel.isEquiv _ _
 
 /- English proof (translation)
-Use `conv_rhs => rw [← (complEquiv τ (splitPrime_under τ)).apply_symm_apply y]`. Rewrite using `[complEquiv_apply, SplitTie.valued_complMap]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_complEquiv_symm (y : Kw (D := D) (splitPrime τ)) :
     Valued.v ((complEquiv τ (splitPrime_under τ)).symm y) = Valued.v y := by
@@ -88,9 +88,9 @@ theorem valued_complEquiv_symm (y : Kw (D := D) (splitPrime τ)) :
   rw [complEquiv_apply, SplitTie.valued_complMap]
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_zero (complEquiv τ (splitPrime_under τ)).symm ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, (Valued.hasBasis_nhds_zero _ _).tendsto_right_iff]`. Introduce `γ _`. Establish `h0 : MonoidWithZeroHom.ValueGroup₀.embedding γ.1 ≠ 0` using `by simp`. Take `⟨k, hk⟩ : ∃ k : ℤ, MonoidWithZeroHom.ValueGroup₀.embedding γ.1 = WithZero.exp k` from `⟨_, (WithZero.exp_log h0).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [(GlobalTheory.Idele.isOpen_valued_le (K := D.host.E) (splitPrime τ) (-((k.natAbs + 1 : ℕ) : ℤ))).mem_nhds (by simp)] with a ha`. Rewrite using `[Valuation.restrict_lt_iff_lt_embedding, hk, valued_complEquiv_symm]`. Conclude with `ha.trans_lt (WithZero.exp_lt_exp.2 (by omega))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_complEquiv_symm : Continuous (complEquiv τ (splitPrime_under τ)).symm := by
   refine continuous_of_continuousAt_zero (complEquiv τ (splitPrime_under τ)).symm ?_
@@ -105,7 +105,7 @@ theorem continuous_complEquiv_symm : Continuous (complEquiv τ (splitPrime_under
   exact ha.trans_lt (WithZero.exp_lt_exp.2 (by omega))
 
 /- English proof (translation)
-Use `⟨SplitChart.continuous_complMap _, continuous_complEquiv_symm τ, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Valuation.mem_integer_iff, Valuation.mem_integer_iff, (Good.isEquiv_Kw (D := D) _).le_one_iff_le_one, (isEquiv_Fv v).le_one_iff_le_one, complEquiv_apply, SplitTie.valued_complMap]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLocIso_complEquiv : IsLocIso (complEquiv τ (splitPrime_under τ)) := by
   refine ⟨SplitChart.continuous_complMap _, continuous_complEquiv_symm τ, fun x => ?_⟩
@@ -119,9 +119,9 @@ section Chars
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Establish `e1 : X.ν = G.nu t i (j + 1)` using `by show X.α / X.β = _`. Rewrite using `[hα, hβ]`. Conclude with `mul_div_mul_right_eq_div _ _ _`. Establish `e2 : chrW X.ν τ x = locChar X.ν (splitPrime τ) (Units.map ((complEquiv τ (splitPrime_under τ) : Fv D.host.F v →* Kw (splitPrime τ))) x)` using `rfl`. Rewrite using `[e2, e1, locChar_eq_of_chrEq (SqNum.chrEq_nu G t i j hL)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hj : (j : ℕ) < D.R.m` using `j.2`. Simplify using `only [SqNum.nuH, Grid.nu, locGrid, muBase, dif_pos hj, MonoidHom.div_apply, Formalism.L2.Host.HChar.loc_mul, Formalism.L2.Host.HChar.loc_inv, div_eq_mul_inv]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chrW_nu {μ₀ : T} (hL : L.Is μ₀) (t : T) (i j : Fin D.R.m) (X : Chars D.host.F D.host.E)
     (hα : X.α = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j) (hβ : X.β = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.beta G i j)
@@ -147,11 +147,11 @@ section Psi
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Introduce `u hu`. Use `ae_ext ?_ fun Q => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, RingHom.map_mul, (atPl_spec _ y).1, mul_zero, map_zero]`. Rewrite using `[Algebra.smul_def, RingHom.map_mul, RingHom.map_mul, (atPl_spec _ y).2, map_zero, map_zero]`. Distinguish the cases in `h : Q = splitPrime τ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Establish `h1 : cpt (D` using `D) (splitPrime τ) (toEAf D (algebraMap (AF D.host.F) (AE D) u)) = GlobalTheory.AdeleBaseChange.locMap D.host.F (splitPrime τ) (u.2 ((splitPrime τ).under (𝓞 D.host.F))) := (comp_toAd D).base u (splitPrime τ)`. Rewrite using `[h1, ← complMap_apply_under (splitPrime_under τ)]`. Establish `h2 : u.2 v = 0` using `hu`. Rewrite using `[h2, map_zero, zero_mul]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne h, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem at_atPl {v : Pl D.host.F} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (y : Kw (D := D) (splitPrime τ)) :
     At (evFin D.host.F v) (atPl (splitPrime τ) y) := by
@@ -171,13 +171,11 @@ theorem at_atPl {v : Pl D.host.F} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v)
     · rw [Pi.single_eq_of_ne h, mul_zero]
 
 /- English proof (translation)
-Use `set w := splitPrime τ with hw`. Use `set jj := complEquiv τ (splitPrime_under τ) with hjj`. Establish `hξ : xiAt (D` using `D) w ≠ 0 := (map_ne_zero _).2 cmHost_imaginaryGenerator_ne_zero`. Establish `hz : incA D D.host.xi0 * atPl w ((xiAt w)⁻¹ * jj x) = atPl w (jj x)`. Rewrite using `[← Good.atPl_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← mul_assoc]`. Express the relevant statement in the definitionally equal form `xiAt w * (xiAt w)⁻¹ * jj x = jj x`. Rewrite using `[mul_inv_cancel₀ hξ, one_mul]`. Establish `hcm` using `isCMExt_host D`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp1 : piW τ (atPl w (jj x)) = x` using `jj.injective (by rw [isPlaceIso_complEquiv τ, (atPl_spec w _).2, Pi.single_eq_same])`. Establish `hp2 : piW (τ.comp D.sp.cm.sig) (atPl w (jj x)) = 0` using `(complEquiv (τ.comp D.sp.cm.sig) (splitPrime_under _)).injective (by`. Rewrite using `[isPlaceIso_complEquiv (τ.comp D.sp.cm.sig), (atPl_spec w _).2, Pi.single_eq_of_ne (splitPrime_comp_ne hcm τ), map_zero])`. Use `show psiLoc W.ψ v x = W.ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * atPl w ((xiAt w)⁻¹ * jj x)))`. Rewrite using `[hz, GlobalTheory.T.adelicTrace_supportedAtSplitPlace hcm v τ _ (at_atPl τ _), hp1, hp2, add_zero]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem psiLoc_eq_psiAt (W : G.Weil) {v : Pl D.host.F} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (x : Fv D.host.F v) :
     psiLoc W.ψ v x = psiAt W (splitPrime τ) ((xiAt (splitPrime τ))⁻¹ * complEquiv τ (splitPrime_under τ) x) := by
@@ -205,7 +203,7 @@ theorem psiLoc_eq_psiAt (W : G.Weil) {v : Pl D.host.F} (τ : D.host.E →ₐ[D.h
 end Psi
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W t i j X hα hβ v τ w hw`. Substitute `hw` using the available equality. Conclude with `⟨complEquiv τ (splitPrime_under τ), isPlaceIso_complEquiv τ, isLocIso_complEquiv τ, fun x => chrW_nu hL t i j X hα hβ τ x, fun x => psiLoc_eq_psiAt W τ x⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_placeIso_chars : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (t : T) (i j : Fin D.R.m) (X : Chars D.host.F D.host.E), X.α = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.alpha G t i j → X.β = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.beta G i j →
     ∀ {v : Pl D.host.F} (τ : D.host.E →ₐ[D.host.F] Fv D.host.F v) (w : Pl D.host.E), splitPrime τ = w →

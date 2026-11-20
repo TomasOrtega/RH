@@ -9,17 +9,17 @@ open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Au
 namespace GlobalTheory.CompanionTheory.Conc
 
 /- English proof (translation)
-Introduce `K _ _ n _ _ ν _ β f hβ hf`. Establish `hs : IsCompact (tsupport β)` using `hβ.cpt`. Use `set F : AdelicGLn.AdelicGL K n × archGroup K n → ℂ := fun p => (β p.2 : ℂ) * f (p.1 * infEmb K n p.2) with hFdef`. Establish `hF : Continuous F` using `(Complex.continuous_ofReal.comp (hβ.cont.comp continuous_snd)).mul (hf.comp (continuous_fst.mul (continuous_infEmb.comp continuous_snd)))`. Establish `hFx : ∀ x, Continuous fun y => F (x, y)` using `fun x => hF.comp (continuous_const.prodMk continuous_id)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ x, IntegrableOn (fun y => F (x, y)) (tsupport β) ν` using `fun x => (hFx x).continuousOn.integrableOn_compact hs`. Establish `e : ∀ x, sm ν β f x = ∫ y in tsupport β, F (x, y) ∂ν` using `fun x => (setIntegral_eq_integral_of_forall_compl_eq_zero fun y hy => by`. Simplify using `[hFdef, image_eq_zero_of_notMem_tsupport hy]).symm`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x₀`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Metric.continuousAt_iff']`. Introduce `ε hε`. Establish `hc : 0 ≤ ν.real (tsupport β)` using `measureReal_nonneg`. Use `set δ : ℝ := ε / (ν.real (tsupport β) + 1) with hδdef`. Establish `hδ : 0 < δ` using `div_pos hε (by linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hopen : IsOpen {p : AdelicGLn.AdelicGL K n × archGroup K n | dist (F p) (F (x₀, p.2)) < δ}` using `isOpen_lt (hF.dist (hF.comp (continuous_const.prodMk continuous_snd))) continuous_const`. Take `⟨u, v, hu, -, hxu, hsv, huv⟩` from `generalized_tube_lemma (isCompact_singleton (x := x₀)) hs hopen (by`. Introduce and unpack `⟨x, y⟩ ⟨hx, -⟩`. Take `rfl : x = x₀` from `hx`. Simplify using `using hδ)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `filter_upwards [hu.mem_nhds (hxu rfl)] with x hx`. Rewrite using `[e, e, dist_eq_norm, ← integral_sub (hint x) (hint x₀)]`. Establish `hb : ‖∫ y in tsupport β, (F (x, y) - F (x₀, y)) ∂ν‖ ≤ δ * ν.real (tsupport β)`. Use `norm_setIntegral_le_of_norm_le_const hs.measure_lt_top fun y hy => ?_` and prove the remaining obligations. Use `huv (Set.mk_mem_prod hx (hsv hy))` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_setOf_eq, dist_eq_norm] at this`. Conclude with `this.le`. Use `lt_of_le_of_lt hb ?_` and prove the remaining obligations. Rewrite using `[hδdef, div_mul_eq_mul_div, div_lt_iff₀ (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem continuous_sm_of_ker : ∀ (K : Type) [Field K] [NumberField K] (n : ℕ)
     [MeasurableSpace (archGroup K n)] [BorelSpace (archGroup K n)] (ν : Measure (archGroup K n))

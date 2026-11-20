@@ -44,7 +44,7 @@ theorem cvPt_succ (γ : Fin dd → PowerSeries C) (j : Fin m) (i : Fin dd) :
     cvPt γ m (j.succ, i) = X (some (j, i)) := rfl
 
 /- English proof (translation)
-Rewrite using `[inT, rename_eq_subst]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inT_eq_rename (σ : Type) (f : PowerSeries C) :
     inT σ f = rename (fun _ : Unit => (none : Option σ)) f := by
@@ -52,7 +52,7 @@ theorem inT_eq_rename (σ : Type) (f : PowerSeries C) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[inT_eq_rename, constantCoeff_rename]`. Conclude with `hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constantCoeff_inT (σ : Type) {f : PowerSeries C} (hf : PowerSeries.constantCoeff f = 0) :
     constantCoeff (inT σ f) = 0 := by
@@ -60,9 +60,7 @@ theorem constantCoeff_inT (σ : Type) {f : PowerSeries C} (hf : PowerSeries.cons
   exact hf
 
 /- English proof (translation)
-Take `⟨j, i⟩` from `p`. Proceed by induction on `j using Fin.cases with`. Consider the case `zero => rw [cvPt_zero]`. Conclude with `constantCoeff_inT _ (hγ i)`. Consider the case `succ j => rw [cvPt_succ]`.
-
-Conclude with `constantCoeff_X _`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cvPt_const {γ : Fin dd → PowerSeries C} (hγ : ∀ i, PowerSeries.constantCoeff (γ i) = 0)
     (p : Fin (m + 1) × Fin dd) : constantCoeff (cvPt γ m p) = 0 := by
@@ -72,13 +70,13 @@ theorem cvPt_const {γ : Fin dd → PowerSeries C} (hγ : ∀ i, PowerSeries.con
   | succ j => rw [cvPt_succ]; exact constantCoeff_X _
 
 /- English proof (translation)
-Use extensionality with `n μ`. Rewrite using `[coeff_coeff_optionEquivLeft, PowerSeries.coeff_map, coeff_C, inT_eq_rename]`. Use `split_ifs with hμ`. Substitute `hμ` using the available equality. Set `e : Unit ↪ Option σ` to `⟨fun _ => none, fun _ _ _ => rfl⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `he : Finsupp.optionElim n (0 : σ →₀ ℕ) = Finsupp.embDomain e (Finsupp.single () n)`. Rewrite using `[Finsupp.embDomain_single, Finsupp.optionElim_zero]`. Both sides reduce to the same expression. Rewrite using `[he]`. Conclude with `coeff_embDomain_rename e f (Finsupp.single () n)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Apply `coeff_rename_eq_zero` to reduce the goal to its premises. Introduce and unpack `⟨y, hy⟩`. Apply `hμ` to reduce the goal to its premises. Use extensionality with `s`. Establish `h1 : Finsupp.mapDomain (fun _ : Unit => (none : Option σ)) y (some s) = 0` using `Finsupp.mapDomain_of_notMem_range _ _ (by simp)`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h1` using `[hy, Finsupp.optionElim_apply_some]`. Simplify using `using h1`.
+A detailed English derivation is pending.
 -/
 theorem optionEquivLeft_inT (σ : Type) (f : PowerSeries C) :
     optionEquivLeft σ C (inT σ f) = PowerSeries.map (MvPowerSeries.C : C →+* MvPowerSeries σ C) f := by
@@ -103,13 +101,11 @@ theorem optionEquivLeft_inT (σ : Type) (f : PowerSeries C) :
     simpa using h1
 
 /- English proof (translation)
-Use extensionality with `n μ`. Rewrite using `[coeff_coeff_optionEquivLeft, PowerSeries.coeff_C]`. Use `split_ifs with hn`. Substitute `hn` using the available equality. Establish `he : Finsupp.optionElim 0 μ = Finsupp.embDomain (Function.Embedding.some) μ`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `t`. Apply the tactic sequence `cases t <;> simp`. Rewrite using `[he]`. Conclude with `coeff_embDomain_rename _ f μ`. Rewrite using `[map_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Apply `coeff_rename_eq_zero` to reduce the goal to its premises. Introduce and unpack `⟨y, hy⟩`. Apply `hn` to reduce the goal to its premises. Establish `h1 : Finsupp.mapDomain (some : σ → Option σ) y none = 0` using `Finsupp.mapDomain_of_notMem_range _ _ (by simp)`. Rewrite `h1` using `[hy, Finsupp.optionElim_apply_none]`.
-
-Conclude with `h1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem optionEquivLeft_rename_some {σ : Type} [Finite σ] (f : MvPowerSeries σ C) :
     optionEquivLeft σ C (rename (some : σ → Option σ) f) = PowerSeries.C f := by
@@ -132,9 +128,9 @@ theorem optionEquivLeft_rename_some {σ : Type} [Finite σ] (f : MvPowerSeries �
     exact h1
 
 /- English proof (translation)
-Use extensionality with `μ`. Rewrite using `[coeff_pderiv, coeff_coeff_optionEquivLeft, coeff_coeff_optionEquivLeft, coeff_pderiv]`. Establish `key : Finsupp.optionElim n (μ + Finsupp.single s 1) = Finsupp.optionElim n μ + Finsupp.single (some s) 1`. Use extensionality with `t`. Apply the tactic sequence `cases t <;> simp [Finsupp.single_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[key, Finsupp.optionElim_apply_some]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_coeff_optionEquivLeft {σ : Type} (f : MvPowerSeries (Option σ) C) (n : ℕ) (s : σ) :
     pderiv C s (PowerSeries.coeff n (optionEquivLeft σ C f)) =

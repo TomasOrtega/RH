@@ -7,11 +7,9 @@ import Development.AutomorphicArithmetic.DivisorFrames.ExistsIsOpenIsCompactSubg
 open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.PRep GlobalTheory.UnitaryBC GlobalTheory.DefU
 
 /- English proof (translation)
-Introduce `E _ _ _ n`. Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.t2Space_GA E n`. Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.locallyCompactSpace_GA E n`. Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.secondCountableTopology_GA E n`. Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.discreteTopology_latticeGL (E := E) (a := n)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨inferInstance, (GlobalTheory.DefU.LocAdm.isClosed_UA (E := E) (n := n)).isClosedEmbedding_subtypeVal.locallyCompactSpace, (Topology.IsEmbedding.subtypeVal (p := fun g : GA E n => g ∈ UA E n)).secondCountableTopology, ?_⟩` and prove the remaining obligations. Establish `hm : ∀ x : ratU E n, ((x : UA E n) : GA E n) ∈ latticeGL E n` using `fun x => by`. Take `⟨δ, hδ⟩` from `x.2`. Establish `h` using `GlobalTheory.CuspRep.CuspidalL2GL.ratGL_mem_latticeGL (E := E) δ`. Rewrite `h` using `[hδ]`.
-
-Conclude with `h`. Set `f : ratU E n → latticeGL E n` to `fun x => ⟨_, hm x⟩`. Establish `hf : Continuous f` using `(continuous_subtype_val.comp continuous_subtype_val).subtype_mk _`. Establish `hi : Function.Injective f` using `fun x y h => Subtype.ext (Subtype.ext (congrArg (fun z : latticeGL E n => (z : GA E n)) h))`. Conclude with `DiscreteTopology.of_continuous_injective hf hi`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.unitary_adelic_t2_locallyCompact_secondCountable :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ), T2Space (UA E n) ∧ LocallyCompactSpace (UA E n) ∧ SecondCountableTopology (UA E n) ∧ DiscreteTopology (ratU E n) := by

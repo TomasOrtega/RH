@@ -9,11 +9,11 @@ open scoped InnerProductSpace
 
 open GlobalTheory.SepReal.ProjSm in
 /- English proof (translation)
-Introduce `n e ε lam ε' mu B hpar H H' _ _ _ _ π σ hπ hσ T hT v hv`. Take `⟨-, -, -, -, -, -, hlie, hexp, -⟩` from `GlobalTheory.T.unitary_stabiliser_embedding_norm_laws n e ε ε' hpar.signs`. Introduce `k Xs hXs`. Establish `key : (fun t : Fin k → ℝ => σ ((List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod) (T v)) = fun t => T (π ((List.ofFn fun i => NormedSpace.exp (t i • embL e (Xs i))).prod) v)`. Use function extensionality and compare the values at `t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← hT _ (list_mem _ (by`. Introduce `x hx`. Take `⟨i, rfl⟩` from `List.mem_ofFn.mp hx`. Conclude with `exp_mem (hXs i) (t i))), embH_list, List.map_ofFn]`. Simplify using `only [Function.comp_def, hexp]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Conclude with `(T.restrictScalars ℝ).contDiff.comp (hv k (fun i => embL e (Xs i)) fun i => hlie _ (hXs i))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Branch.mapSmooth :
     MapSmooth := by

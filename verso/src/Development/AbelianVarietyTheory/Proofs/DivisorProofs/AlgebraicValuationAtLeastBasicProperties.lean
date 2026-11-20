@@ -15,16 +15,16 @@ namespace GlobalTheory.SzRules
 variable {l : ℕ} [hl : Fact l.Prime] {lam : algebraicClosure ℚ ℂ →+* ℂ_[l]}
 
 /- English proof (translation)
-Establish `h : (n : ℂ_[l]) = algebraMap ℚ_[l] ℂ_[l] (n : ℚ_[l])` using `by simp`. Rewrite using `[h, norm_algebraMap']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_natCast_eq (n : ℕ) : ‖(n : ℂ_[l])‖ = ‖(n : ℚ_[l])‖ := by
   have h : (n : ℂ_[l]) = algebraMap ℚ_[l] ℂ_[l] (n : ℚ_[l]) := by simp
   rw [h, norm_algebraMap']
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.IntegralNormAtMostOne.norm_le_one_of_isIntegral`. Consider the case `exact _root_.GlobalTheory.IntegralNormAtMostOne.norm_le_one_of_isIntegral`. Consider the case `(apply _root_.GlobalTheory.IntegralNormAtMostOne.norm_le_one_of_isIntegral <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.IntegralNormAtMostOne.norm_le_one_of_isIntegral <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.IntegralNormAtMostOne.norm_le_one_of_isIntegral <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.IntegralNormAtMostOne.norm_le_one_of_isIntegral ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral {y : ℂ_[l]} (hy : IsIntegral ℤ y) : ‖y‖ ≤ 1 := by
   first
@@ -36,7 +36,7 @@ theorem norm_le_one_of_isIntegral {y : ℂ_[l]} (hy : IsIntegral ℤ y) : ‖y�
   | (intros; exact _root_.GlobalTheory.IntegralNormAtMostOne.norm_le_one_of_isIntegral ..)
 
 /- English proof (translation)
-Establish `hn' : (n : ℂ) ≠ 0` using `by exact_mod_cast hn`. Use `div_mem h (natCast_mem (algebraicClosure ℚ ℂ) n)` as an intermediate fact. Rewrite `this` using `[mul_div_cancel_left₀ _ hn']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_of_natCast_mul {n : ℕ} (hn : n ≠ 0) {x : ℂ} (h : (n : ℂ) * x ∈ algebraicClosure ℚ ℂ) :
     x ∈ algebraicClosure ℚ ℂ := by
@@ -45,7 +45,7 @@ theorem mem_of_natCast_mul {n : ℕ} (hn : n ≠ 0) {x : ℂ} (h : (n : ℂ) * x
   rwa [mul_div_cancel_left₀ _ hn'] at this
 
 /- English proof (translation)
-Establish `: (⟨(n : ℂ) * x, h⟩ : algebraicClosure ℚ ℂ) = (n : algebraicClosure ℚ ℂ) * ⟨x, hx⟩` using `rfl`. Rewrite using `[this, map_mul, map_natCast, norm_mul, norm_natCast_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_natCast_mul (n : ℕ) {x : ℂ} (hx : x ∈ algebraicClosure ℚ ℂ) (h : (n : ℂ) * x ∈ algebraicClosure ℚ ℂ) :
     ‖lam ⟨(n : ℂ) * x, h⟩‖ = ‖(n : ℚ_[l])‖ * ‖lam ⟨x, hx⟩‖ := by
@@ -53,11 +53,11 @@ theorem norm_natCast_mul (n : ℕ) {x : ℂ} (hx : x ∈ algebraicClosure ℚ �
   rw [this, map_mul, map_natCast, norm_mul, norm_natCast_eq]
 
 /- English proof (translation)
-Establish `hn0 : n ≠ 0` using `by rintro rfl; exact hn (dvd_zero _)`. Establish `hm : (n : ℂ) * x ∈ algebraicClosure ℚ ℂ` using `mem_algebraicClosure_iff'.2 h.tower_top`. Establish `hx` using `mem_of_natCast_mul hn0 hm`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Establish `h1 : IsIntegral ℤ (⟨(n : ℂ) * x, hm⟩ : algebraicClosure ℚ ℂ)` using `(isIntegral_algHom_iff (algebraicClosure ℚ ℂ).val.toRingHom.toIntAlgHom Subtype.val_injective).1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : ‖lam ⟨(n : ℂ) * x, hm⟩‖ ≤ 1` using `norm_le_one_of_isIntegral (by convert map_isIntegral_int lam h1; exact Subsingleton.elim _ _)`. Establish `h3 : ‖(n : ℚ_[l])‖ = 1`. Rewrite using `[Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hl.out).2 hn`. Establish `h4` using `norm_natCast_mul (lam := lam) n hx hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[h3, one_mul]`. Rewrite using `[Real.rpow_zero, ← h4]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sz_of_isIntegral (n : ℕ) (x : ℂ) (hn : ¬ l ∣ n) (h : IsIntegral ℤ ((n : ℂ) * x)) : Sz l lam 0 x := by
   have hn0 : n ≠ 0 := by rintro rfl; exact hn (dvd_zero _)
@@ -77,9 +77,9 @@ theorem sz_of_isIntegral (n : ℕ) (x : ℂ) (hn : ¬ l ∣ n) (h : IsIntegral �
   exact h2
 
 /- English proof (translation)
-Take `⟨hx, hx'⟩` from `hx`. Take `⟨hy, hy'⟩` from `hy`. Use `⟨add_mem hx hy, ?_⟩` and prove the remaining obligations. Establish `: (⟨x + y, add_mem hx hy⟩ : algebraicClosure ℚ ℂ) = ⟨x, hx⟩ + ⟨y, hy⟩` using `rfl`. Rewrite using `[this, map_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx' hy')`.
+A detailed English derivation is pending.
 -/
 theorem sz_add {r : ℝ} {x y : ℂ} (hx : Sz l lam r x) (hy : Sz l lam r y) : Sz l lam r (x + y) := by
   obtain ⟨hx, hx'⟩ := hx
@@ -90,9 +90,9 @@ theorem sz_add {r : ℝ} {x y : ℂ} (hx : Sz l lam r x) (hy : Sz l lam r y) : S
   exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx' hy')
 
 /- English proof (translation)
-Take `⟨hx, hx'⟩` from `hx`. Take `⟨hy, hy'⟩` from `hy`. Use `⟨mul_mem hx hy, ?_⟩` and prove the remaining obligations. Establish `: (⟨x * y, mul_mem hx hy⟩ : algebraicClosure ℚ ℂ) = ⟨x, hx⟩ * ⟨y, hy⟩` using `rfl`. Rewrite using `[this, map_mul, norm_mul, Real.rpow_add (by exact_mod_cast hl.out.pos)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul hx' hy' (norm_nonneg _) (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem sz_mul {r₁ r₂ : ℝ} {x y : ℂ} (hx : Sz l lam r₁ x) (hy : Sz l lam r₂ y) :
     Sz l lam (r₁ + r₂) (x * y) := by
@@ -104,14 +104,14 @@ theorem sz_mul {r₁ r₂ : ℝ} {x y : ℂ} (hx : Sz l lam r₁ x) (hy : Sz l l
   exact mul_le_mul hx' hy' (norm_nonneg _) (by positivity)
 
 /- English proof (translation)
-Take `⟨hx, hx'⟩` from `hx`. Conclude with `⟨hx, hx'.trans (Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hl.out.one_lt.le) h)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sz_mono {r r' : ℝ} {x : ℂ} (h : r ≤ r') (hx : Sz l lam r x) : Sz l lam r' x := by
   obtain ⟨hx, hx'⟩ := hx
   exact ⟨hx, hx'.trans (Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hl.out.one_lt.le) h)⟩
 
 /- English proof (translation)
-Take `⟨hx, hx'⟩` from `hx`. Use `⟨neg_mem hx, ?_⟩` and prove the remaining obligations. Establish `: (⟨-x, neg_mem hx⟩ : algebraicClosure ℚ ℂ) = -⟨x, hx⟩` using `rfl`. Rewrite using `[this, map_neg, norm_neg]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem sz_neg {r : ℝ} {x : ℂ} (hx : Sz l lam r x) : Sz l lam r (-x) := by
   obtain ⟨hx, hx'⟩ := hx
@@ -120,11 +120,11 @@ theorem sz_neg {r : ℝ} {x : ℂ} (hx : Sz l lam r x) : Sz l lam r (-x) := by
   rwa [this, map_neg, norm_neg]
 
 /- English proof (translation)
-Establish `hl0 : (0 : ℝ) < l` using `by exact_mod_cast hl.out.pos`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, h'⟩`. Establish `hx` using `mem_of_natCast_mul hl.out.ne_zero h`. Use `⟨hx, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h'` using `[norm_natCast_mul l hx h, Padic.norm_p, inv_mul_le_iff₀ hl0]`. Rewrite using `[Real.rpow_add_one hl0.ne', mul_comm]`. Conclude with `h'`. Introduce and unpack `⟨hx, h'⟩`. Establish `h : (l : ℂ) * x ∈ algebraicClosure ℚ ℂ` using `mul_mem (natCast_mem _ l) hx`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_natCast_mul l hx h, Padic.norm_p, inv_mul_le_iff₀ hl0]`. Rewrite `h'` using `[Real.rpow_add_one hl0.ne', mul_comm]`. Conclude with `h'`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sz_prime_mul (r : ℝ) (x : ℂ) : Sz l lam r ((l : ℂ) * x) ↔ Sz l lam (r + 1) x := by
   have hl0 : (0 : ℝ) < l := by exact_mod_cast hl.out.pos
@@ -143,11 +143,11 @@ theorem sz_prime_mul (r : ℝ) (x : ℂ) : Sz l lam r ((l : ℂ) * x) ↔ Sz l l
     exact h'
 
 /- English proof (translation)
-Take `⟨h, h'⟩` from `h`. Establish `hl0 : (0 : ℝ) < l` using `by exact_mod_cast hl.out.pos`. Establish `hx : x ∈ algebraicClosure ℚ ℂ` using `mem_algebraicClosure_iff.2 (IsAlgebraic.of_pow (by norm_num : 0 < 2) (mem_algebraicClosure_iff.1 h))`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Establish `: (⟨x ^ 2, h⟩ : algebraicClosure ℚ ℂ) = ⟨x, hx⟩ ^ 2` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h'` using `[this, map_pow, norm_pow]`. Establish `e : (l : ℝ) ^ r = ((l : ℝ) ^ (r / 2)) ^ 2`. Rewrite using `[sq, ← Real.rpow_add hl0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h'` using `[e]`. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (by positivity) two_ne_zero).1 h'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sz_of_sq {r : ℝ} {x : ℂ} (h : Sz l lam r (x ^ 2)) : Sz l lam (r / 2) x := by
   obtain ⟨h, h'⟩ := h
@@ -163,7 +163,7 @@ theorem sz_of_sq {r : ℝ} {x : ℂ} (h : Sz l lam r (x ^ 2)) : Sz l lam (r / 2)
   exact (pow_le_pow_iff_left₀ (norm_nonneg _) (by positivity) two_ne_zero).1 h'
 
 /- English proof (translation)
-Introduce `_ _ _` and use `⟨sz_of_isIntegral, fun _ _ _ => sz_add, fun _ _ _ _ => sz_mul, fun _ _ _ => sz_mono, fun _ _ => sz_neg, sz_prime_mul, fun _ _ _ h e => e ▸ sz_of_sq h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]), (∀ (n : ℕ) (x : ℂ), ¬ l ∣ n → IsIntegral ℤ ((n : ℂ) * x) → Sz l lam 0 x) ∧ (∀ (r : ℝ) (x y : ℂ), Sz l lam r x → Sz l lam r y → Sz l lam r (x + y)) ∧ (∀ (r r' : ℝ) (x y : ℂ), Sz l lam r x → Sz l lam r' y → Sz l lam (r + r') (x * y)) ∧ (∀ (r r' : ℝ) (x : ℂ), r ≤ r' → Sz l lam r x → Sz l lam r' x) ∧ (∀ (r : ℝ) (x : ℂ), Sz l lam r x → Sz l lam r (-x)) ∧ (∀ (r : ℝ) (x : ℂ), Sz l lam r ((l : ℂ) * x) ↔ Sz l lam (r + 1) x) ∧ (∀ (r : ℝ) (x y : ℂ), Sz l lam r (x ^ 2) → y = x → Sz l lam (r / 2) y) :=
   fun _ _ _ => ⟨sz_of_isIntegral, fun _ _ _ => sz_add, fun _ _ _ _ => sz_mul, fun _ _ _ => sz_mono, fun _ _ => sz_neg,

@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.DecayCoord
 
 /- English proof (translation)
-Establish `h : infPart D (incA D x) = (1 : Ainf D.host.F) ⊗ₜ[D.host.F] x`. Simplify using `[infPart, incA, inclR, Algebra.TensorProduct.map_tmul]`. Rewrite using `[h]`. Conclude with `(hθ τ).1 x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_incA {D : D7} (θ : InfFam D) (hθ : IsInfFam θ) (τ : D.what₂.Tau) (x : D.host.E) :
     θ τ (infPart D (incA D x)) = tauE D τ x := by
@@ -22,9 +22,9 @@ theorem theta_incA {D : D7} (θ : InfFam D) (hθ : IsInfFam θ) (τ : D.what₂.
   exact (hθ τ).1 x
 
 /- English proof (translation)
-Establish `hm : ∀ {m n : ℕ} (M : Matrix (Fin m) (Fin n) (AE D)), compAt θ τ M = M.map ((θ τ).comp (infPart D))` using `fun M => rfl`. Establish `hE : ∀ {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E), (M.map (incA D)).map ((θ τ).comp (infPart D)) = M.map (tauE D τ)`. Introduce `m n M`. Use extensionality with `i j`. Simplify using `[theta_incA θ hθ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hm, hm, GlobalTheory.IsoMean.emb, Matrix.map_mul, Matrix.map_mul, hE, hE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem compAt_emb {D : D7} (θ : InfFam D) (hθ : IsInfFam θ) (τ : D.what₂.Tau) (V W : HSp D) {a b : ℕ}
     (P : Matrix (Fin W.rank) (Fin a) D.host.E) (Q : Matrix (Fin b) (Fin V.rank) D.host.E) (y : Mx D a b) :
@@ -37,11 +37,11 @@ theorem compAt_emb {D : D7} (θ : InfFam D) (hθ : IsInfFam θ) (τ : D.what₂.
   rw [hm, hm, GlobalTheory.IsoMean.emb, Matrix.map_mul, Matrix.map_mul, hE, hE]
 
 /- English proof (translation)
-Establish `hker : LinearMap.ker P.mulVecLin = ⊥`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker P.mulVecLin`. Rewrite `hP` using `[Matrix.rank]`. Rewrite `h1` using `[hP, Module.finrank_fin_fun]`. Conclude with `Submodule.finrank_eq_zero.1 (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective _ hker`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg LinearMap.toMatrix' hg`. Rewrite `h2` using `[LinearMap.toMatrix'_comp, LinearMap.toMatrix'_id]`. Establish `h3 : LinearMap.toMatrix' P.mulVecLin = P` using `LinearMap.toMatrix'_toLin' P`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_left_inv {K : Type*} [Field K] {n a : ℕ} (P : Matrix (Fin n) (Fin a) K) (hP : P.rank = a) :
     ∃ P' : Matrix (Fin a) (Fin n) K, P' * P = 1 := by
@@ -58,7 +58,7 @@ theorem exists_left_inv {K : Type*} [Field K] {n a : ℕ} (P : Matrix (Fin n) (F
   rwa [h3] at h2
 
 /- English proof (translation)
-Take `⟨R, hR⟩` from `exists_left_inv Qᵀ (by rw [Matrix.rank_transpose, hQ])`. Use `⟨Rᵀ, ?_⟩` and prove the remaining obligations. Use `congrArg Matrix.transpose hR` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_right_inv {K : Type*} [Field K] {n b : ℕ} (Q : Matrix (Fin b) (Fin n) K) (hQ : Q.rank = b) :
     ∃ Q' : Matrix (Fin n) (Fin b) K, Q * Q' = 1 := by
@@ -68,9 +68,9 @@ theorem exists_right_inv {K : Type*} [Field K] {n b : ℕ} (Q : Matrix (Fin b) (
   rwa [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_one] at this
 
 /- English proof (translation)
-Take `⟨j, -, hj⟩` from `Finset.exists_max_image Finset.univ u Finset.univ_nonempty`. Establish `h1 : ∑ k, u k ≤ Fintype.card κ * u j`. Use `Finset.sum_le_card_nsmul Finset.univ u (u j) (fun k _ => hj k (Finset.mem_univ _))` as an intermediate fact. Simplify `this` using `[nsmul_eq_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 
-Conclude with `Finset.single_le_sum (f := fun k => u k ^ N) (fun k _ => pow_nonneg (hu k) N) (Finset.mem_univ j)`.
+A detailed English derivation is pending.
 -/
 theorem sum_pow_le {κ : Type*} [Fintype κ] [Nonempty κ] (u : κ → ℝ) (hu : ∀ k, 0 ≤ u k) (N : ℕ) :
     (∑ k, u k) ^ N ≤ (Fintype.card κ : ℝ) ^ N * ∑ k, u k ^ N := by
@@ -86,9 +86,9 @@ theorem sum_pow_le {κ : Type*} [Fintype κ] [Nonempty κ] (u : κ → ℝ) (hu 
         exact Finset.single_le_sum (f := fun k => u k ^ N) (fun k _ => pow_nonneg (hu k) N) (Finset.mem_univ j)
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.single_apply, Matrix.conjTranspose_apply]`. Rewrite using `[Finset.sum_eq_single l, Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Ne.symm hj]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `i _ hi`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `j _`. Simplify using `[Ne.symm hi]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -103,9 +103,9 @@ theorem trace_single {a b : ℕ} (Y : Matrix (Fin a) (Fin b) ℂ) (k : Fin a) (l
   · simp
 
 /- English proof (translation)
-Establish `e1 : c * (star w * c⁻¹) = star w` using `by field_simp`. Establish `e2 : c * (star w * (Complex.I * c⁻¹)) = Complex.I * star w` using `by field_simp`. Rewrite using `[e1, e2]`. Use `Complex.norm_le_abs_re_add_abs_im w` as an intermediate fact. Simplify using `only [Complex.star_def, Complex.conj_re, Complex.mul_re, Complex.I_re, Complex.I_im, Complex.conj_im, abs_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Evaluate the numerical expressions. Combine the linear relations using `[abs_nonneg w.re, abs_nonneg w.im]`.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem norm_le_re (c w : ℂ) (hc : c ≠ 0) :
     ‖w‖ ≤ |2 * (c * (star w * c⁻¹)).re| + |2 * (c * (star w * (Complex.I * c⁻¹))).re| := by
@@ -122,7 +122,7 @@ end GlobalTheory.DecayCoord
 namespace GlobalTheory.DecayCoord
 
 /- English proof (translation)
-Unfold `gramAt`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero _).2 (GlobalTheory.StabCompact.det_gram_ne_zero V)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_gramAt_ne {D : D7} (V : HSp D) (τ : D.what₂.Tau) : (gramAt D V τ).det ≠ 0 := by
   unfold gramAt
@@ -130,11 +130,9 @@ theorem det_gramAt_ne {D : D7} (V : HSp D) (τ : D.what₂.Tau) : (gramAt D V τ
   exact (map_ne_zero _).2 (GlobalTheory.StabCompact.det_gram_ne_zero V)
 
 /- English proof (translation)
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.hermAt`. Use `set GV := gramAt D V τ`. Use `set GW := gramAt D W τ`. Establish `hW : GW * GW⁻¹ = 1` using `Matrix.mul_nonsing_inv GW (Ne.isUnit (det_gramAt_ne W τ))`. Establish `hV : GV * GV⁻¹ = 1` using `Matrix.mul_nonsing_inv GV (Ne.isUnit (det_gramAt_ne V τ))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP' : Pcᴴ * Plᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hP, Matrix.conjTranspose_one]`. Establish `hQ' : Qrᴴ * Qcᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hQ, Matrix.conjTranspose_one]`. Establish `e : GV⁻¹ * (Pc * Y * Qc)ᴴ * GW * (GW⁻¹ * Plᴴ * X * Qrᴴ * GV) = GV⁻¹ * ((Qcᴴ * Yᴴ * X * Qrᴴ) * GV)`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc GW GW⁻¹, hW, Matrix.one_mul, ← Matrix.mul_assoc Pcᴴ Plᴴ, hP', Matrix.one_mul]`.
-
-Rewrite using `[e, Matrix.trace_mul_comm, Matrix.mul_assoc _ GV, hV, Matrix.mul_one, Matrix.trace_mul_comm, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hQ', Matrix.one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_key {D : D7} (V W : HSp D) (τ : D.what₂.Tau) {a b : ℕ} (Pc : Matrix (Fin W.rank) (Fin a) ℂ)
     (Pl : Matrix (Fin a) (Fin W.rank) ℂ) (hP : Pl * Pc = 1) (Qc : Matrix (Fin b) (Fin V.rank) ℂ)
@@ -159,23 +157,21 @@ end GlobalTheory.DecayCoord
 namespace GlobalTheory.DecayCoord
 
 /- English proof (translation)
-Introduce `D V W a b P Q hP hQ θ hθ f hf N`. Take `⟨Pl, hPl⟩` from `exists_left_inv P hP`. Take `⟨Qr, hQr⟩` from `exists_right_inv Q hQ`. Establish `hPlτ : ∀ τ, Pl.map (tauE D τ) * P.map (tauE D τ) = 1` using `fun τ => by`. Rewrite using `[← Matrix.map_mul, hPl, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hQrτ : ∀ τ, Q.map (tauE D τ) * Qr.map (tauE D τ) = 1` using `fun τ => by`. Rewrite using `[← Matrix.map_mul, hQr, Matrix.map_one _ (map_zero _) (map_one _)]`. Set `c : D.what₂.Tau → ℂ` to `fun τ => tauE D τ D.host.xi0`. Establish `hc : ∀ τ, c τ ≠ 0` using `fun τ => (map_ne_zero _).2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D)`. Set `zOf : D.what₂.Tau → Matrix (Fin a) (Fin b) ℂ → Matrix (Fin W.rank) (Fin V.rank) ℂ` to `fun τ X => (gramAt D W τ)⁻¹ * (Pl.map (tauE D τ))ᴴ * X * (Qr.map (tauE D τ))ᴴ * gramAt D V τ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `zι : D.what₂.Tau × Fin a × Fin b × Bool → Matrix (Fin W.rank) (Fin V.rank) ℂ` to `fun i => zOf i.1 (Matrix.single i.2.1 i.2.2.1 (if i.2.2.2 then Complex.I * (c i.1)⁻¹ else (c i.1)⁻¹))`. Set `ℓ : D.what₂.Tau × Fin a × Fin b × Bool → Mx D a b → ℝ` to `fun i y => |GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.symplAt V W i.1 (zι i) (compAt θ i.1 (GlobalTheory.IsoMean.emb V W P Q y))|`. Establish `hterm : ∀ (y : Mx D a b) (τ : D.what₂.Tau) (k : Fin a) (l : Fin b), ‖θ τ (infPart D (y k l))‖ ≤ ∑ β : Bool, ℓ (τ, k, l, β) y`. Introduce `y τ k l`. Establish `hs : ∀ α : ℂ, GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.symplAt V W τ (zOf τ (Matrix.single k l α)) (compAt θ τ (GlobalTheory.IsoMean.emb V W P Q y)) = 2 * (c τ * (star (compAt θ τ y k l) * α)).re`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `α`. Rewrite using `[compAt_emb θ hθ τ V W P Q y]`. Use `show 2 * (c τ * GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.hermAt V W τ _ _).re = _`. Rewrite using `[herm_key V W τ _ _ (hPlτ τ) _ _ (hQrτ τ), trace_single]`. Rewrite using `[Fintype.sum_bool]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ℓ, zι, if_true, if_false, Bool.false_eq_true]`. Rewrite using `[hs, hs]`. Use `norm_le_re (c τ) (compAt θ τ y k l) (hc τ)` as an intermediate fact. Rewrite using `[add_comm]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS : ∀ y : Mx D a b, (∑ τ, ∑ i, ∑ j, ‖θ τ (infPart D (y i j))‖) ≤ ∑ i, ℓ i y`. Introduce `y`. Simplify using `only [Fintype.sum_prod_type]`. Use `gcongr with τ _ k _ l _`. Conclude with `hterm y τ k l`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Take `⟨τ0⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm 1⟩`. Take `⟨C0, hC0⟩` from `hf τ0 0 0`. Use `choose Cf hCf using fun i : D.what₂.Tau × Fin a × Fin b × Bool => hf i.1 (zι i) N`. Use `⟨(Fintype.card (Option (D.what₂.Tau × Fin a × Fin b × Bool)) : ℝ) ^ N * (C0 + ∑ i, Cf i), fun y => ?_⟩` and prove the remaining obligations. Set `u : Option (D.what₂.Tau × Fin a × Fin b × Bool) → ℝ` to `fun o => o.elim 1 fun i => ℓ i y`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `have hu : ∀ o, 0 ≤ u o := fun o => by cases o <;> simp [u, ℓ]`. Establish `hsum : ∑ o, u o = 1 + ∑ i, ℓ i y` using `by rw [Fintype.sum_option]; rfl`. Establish `hpow : ∑ o, u o ^ N = 1 + ∑ i, ℓ i y ^ N` using `by rw [Fintype.sum_option]; simp [u]`. Establish `hS0 : 0 ≤ ∑ τ, ∑ i, ∑ j, ‖θ τ (infPart D (y i j))‖` using `by positivity`. Establish `hf0 : 0 ≤ ‖f y‖` using `norm_nonneg _`.
-
-Establish `hC0' : ‖f y‖ ≤ C0` using `by simpa using hC0 y`. Establish `hCf' : ∑ i, ℓ i y ^ N * ‖f y‖ ≤ ∑ i, Cf i` using `Finset.sum_le_sum fun i _ => hCf i y`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem decay_real_coords : ∀ (D : D7) (V W : HSp D) (a b : ℕ) (P : Matrix (Fin W.rank) (Fin a) D.host.E) (Q : Matrix (Fin b) (Fin V.rank) D.host.E), P.rank = a → Q.rank = b → ∀ θ : InfFam D, IsInfFam θ → ∀ f : Mx D a b → ℂ, (∀ (τ : D.what₂.Tau) (z : Matrix (Fin W.rank) (Fin V.rank) ℂ) (m : ℕ), ∃ C : ℝ, ∀ y : Mx D a b, |GlobalTheory.IndefiniteRowSideFullHecke.HermitianSymplecticScalars.symplAt V W τ z (compAt θ τ (GlobalTheory.IsoMean.emb V W P Q y))| ^ m * ‖f y‖ ≤ C) → ∀ N : ℕ, ∃ C : ℝ, ∀ y : Mx D a b, (1 + ∑ τ, ∑ i, ∑ j, ‖θ τ (infPart D (y i j))‖) ^ N * ‖f y‖ ≤ C := by
   intro D V W a b P Q hP hQ θ hθ f hf N

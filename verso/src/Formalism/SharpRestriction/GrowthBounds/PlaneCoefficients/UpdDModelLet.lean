@@ -23,7 +23,7 @@ variable (Dt : SignedChainData p O r J) (d : TL J Dt.nL r → ℕ)
     (th : ∀ j, Fin (Dt.nch j) → ℝ) (thL : ZMod J → Fin r → ℝ) (h : ∀ j (m : Fin r), m.val + 2 ≤ r → 0 < thL j m)
 
 /- English proof (translation)
-Unfold `SignedChainData.modelLet`. Use `congr 1`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `cases x <;> rfl`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem updD_modelLet : (updD Dt d th thL h).modelLet = Dt.modelLet := by
   unfold SignedChainData.modelLet
@@ -32,7 +32,7 @@ theorem updD_modelLet : (updD Dt d th thL h).modelLet = Dt.modelLet := by
   cases x <;> rfl
 
 /- English proof (translation)
-Unfold `SignedChainData.trueLet`. Use `congr 1`. Use function extensionality and compare the values at `x`. Take `⟨j, s⟩` from `x`. Apply the tactic sequence `cases s <;> rfl`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem updD_trueLet : (updD Dt d th thL h).trueLet = Dt.trueLet := by
   unfold SignedChainData.trueLet
@@ -42,14 +42,14 @@ theorem updD_trueLet : (updD Dt d th thL h).trueLet = Dt.trueLet := by
   cases s <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Apply the tactic sequence `cases x <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem updD_levToML (j) : (updD Dt d th thL h).levToML j = Dt.levToML j := by
   funext x
   cases x <;> rfl
 
 /- English proof (translation)
-Unfold `SignedChainData.chainML`. Rewrite using `[updD_levToML]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem updD_chainML (j i) : (updD Dt d th thL h).chainML j i = Dt.chainML j i := by
   unfold SignedChainData.chainML
@@ -67,7 +67,7 @@ Both sides reduce to the same expression.
 theorem updD_digOK (rho) : (updD Dt d th thL h).digOK rho = Dt.digOK rho := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Take `⟨⟨j, s⟩, a⟩` from `x`. Apply the tactic sequence `cases s <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem updD_liftVar : (updD Dt d th thL h).liftVar = Dt.liftVar := by
   funext x
@@ -75,7 +75,7 @@ theorem updD_liftVar : (updD Dt d th thL h).liftVar = Dt.liftVar := by
   cases s <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `mo x`. Take `⟨⟨j, s⟩, a⟩` from `x`. Apply the tactic sequence `cases s <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem updD_liftExp : (updD Dt d th thL h).liftExp = Dt.liftExp := by
   funext mo x
@@ -83,7 +83,7 @@ theorem updD_liftExp : (updD Dt d th thL h).liftExp = Dt.liftExp := by
   cases s <;> rfl
 
 /- English proof (translation)
-Unfold `SignedChainData.Fdig`. Rewrite using `[updD_digOK, updD_liftVar, updD_liftExp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem updD_Fdig (rho F) : (updD Dt d th thL h).Fdig rho F = Dt.Fdig rho F := by
   unfold SignedChainData.Fdig
@@ -91,7 +91,7 @@ theorem updD_Fdig (rho F) : (updD Dt d th thL h).Fdig rho F = Dt.Fdig rho F := b
   rfl
 
 /- English proof (translation)
-Unfold `normE`. Rewrite using `[updD_trueLet]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem updD_normE (K : ℕ) [NeZero K] [NeZero J] : normE p K (updD Dt d th thL h) = normE p K Dt := by
   unfold normE
@@ -99,7 +99,7 @@ theorem updD_normE (K : ℕ) [NeZero K] [NeZero J] : normE p K (updD Dt d th thL
   rfl
 
 /- English proof (translation)
-Substitute `h1 h2 h3` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem valS_congr3' {Kf : Type} [Field Kf] {ι : Type} {r : ℕ} [NeZero r] {LL LL' : Letters ι} {S S' : Set ι}
     {F F' : MvPolynomial (ι × Fin r) Kf} (h1 : LL = LL') (h2 : S = S') (h3 : F = F') :
@@ -119,15 +119,15 @@ def XXg (Dt : SignedChainData p O r J) (d : TL J Dt.nL r → ℕ) (th : ∀ j, F
   ∀ (j : ZMod J) (m : Fin r), m.val + 2 ≤ r → geZ (valS Dt.trueLet (Dt.TSet j m) F) (thL j m)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem XX_iff (Dt : SignedChainData p O r J) (F : MvPolynomial (TL J Dt.nL r × Fin r) (KK O)) :
     Dt.XX F ↔ XXg Dt Dt.d Dt.th Dt.thL F := Iff.rfl
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hF`. Use `⟨h1, fun rho j i => ?_, fun j m hm => ?_⟩` and prove the remaining obligations. Establish `e : valS Dt.modelLet (Dt.chainML j i) (Dt.Fdig rho F) = valS (updD Dt d th thL h).modelLet ((updD Dt d th thL h).chainML j i) ((updD Dt d th thL h).Fdig rho F)` using `valS_congr3' (updD_modelLet Dt d th thL h).symm (updD_chainML Dt d th thL h j i).symm (updD_Fdig Dt d th thL h rho F).symm`. Rewrite using `[e]`. Conclude with `h2 rho j i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : valS Dt.trueLet (Dt.TSet j m) F = valS (updD Dt d th thL h).trueLet ((updD Dt d th thL h).TSet j m) F` using `valS_congr3' (updD_trueLet Dt d th thL h).symm (updD_TSet Dt d th thL h j m).symm rfl`. Rewrite using `[e]`. Conclude with `h3 j m hm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem updD_XX (Dt : SignedChainData p O r J) (d : TL J Dt.nL r → ℕ) (th : ∀ j, Fin (Dt.nch j) → ℝ) (thL : ZMod J → Fin r → ℝ)
     (h : ∀ j (m : Fin r), m.val + 2 ≤ r → 0 < thL j m) (F : MvPolynomial (TL J Dt.nL r × Fin r) (KK O))
@@ -183,9 +183,9 @@ def MemLev (sc sL : ℝ) (loss : ℤ → ℕ → ℝ) (p : ℕ) {n' r K m : ℕ}
         XXg Dt dPl th thL (planeCoeff nu (oneT e (levImg Fr p hk Dt.nL rho dPl dNo F)))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h J _ Dt hB dPl dNo ka th thL hpos hT rho e he nu`. Take `⟨b1, b2, b3, b4, b5, b6⟩` from `hB`. Conclude with `updD_XX Dt dPl th thL hpos _ (h J (updD Dt dPl th thL hpos) dPl dNo ka ⟨b1, b2, b3, rfl, b4, b5, b6, hT.1, hT.2⟩ rho e (by rw [updD_normE]; exact he) nu)`. Introduce `h J _ Dt dPl dNo ka hT rho e he nu`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t1, t2, t3, t4, t5, t6, t7, t8, t9⟩` from `hT`. Substitute `t4` using the available equality. Conclude with `h J Dt ⟨t1, t2, t3, t5, t6, t7⟩ Dt.d dNo ka Dt.th Dt.thL Dt.thL_pos ⟨t8, t9⟩ rho e he nu`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem memAtLe_iff (sc sL : ℝ) (loss : ℤ → ℕ → ℝ) (p : ℕ) {n' r K m : ℕ} [NeZero n'] [NeZero r] [NeZero K] (O : Type)
     [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (hk : m + 1 = r + K) (Fr : Frames n' r) (deg : Fin n' → ℕ)
@@ -209,7 +209,7 @@ variable {n' r : ℕ} [NeZero n'] (Fr : Frames n' r)
 def cost1 (s : Fin n') (jz : ℤ) (u : ℕ) : ℝ := if touchT Fr jz u s then 1 else 0
 
 /- English proof (translation)
-Unfold `opCost cost1`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem opCost_eq (s : Fin n') (jz : ℤ) (u : ℕ) : opCost Fr s jz u = cost1 Fr s jz u + cost1 Fr s jz u := by
   unfold opCost cost1

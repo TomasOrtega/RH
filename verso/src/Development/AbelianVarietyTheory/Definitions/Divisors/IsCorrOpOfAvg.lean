@@ -14,14 +14,14 @@ def pullTot {E E' : Spc} (f : E ⟶ E') : Htot l E' →ₗ[ℚ_[l]] Htot l E :=
   DirectSum.lmap fun n => pullHQ l f n 0
 
 /- English proof (translation)
-Simplify using `only [pullTot, pullHQ, pullHl_id, LinearMap.baseChange_id]`. Conclude with `DirectSum.lmap_id`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pullTot_id (E : Spc) : pullTot l (𝟙 E) = LinearMap.id := by
   simp only [pullTot, pullHQ, pullHl_id, LinearMap.baseChange_id]
   exact DirectSum.lmap_id
 
 /- English proof (translation)
-Simplify using `only [pullTot, pullHQ, pullHl_comp, LinearMap.baseChange_comp]`. Conclude with `DirectSum.lmap_comp _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pullTot_comp {E E' E'' : Spc} (f : E ⟶ E') (g : E' ⟶ E'') :
     pullTot l (f ≫ g) = pullTot l f ∘ₗ pullTot l g := by
@@ -33,9 +33,9 @@ def galTot {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Schem
   fun σ => pullTot l (sch.map (GlobalTheory.Et.galMap Ω p σ))
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.Et.galMap_fst, Category.id_comp]`. Rewrite using `[GlobalTheory.Et.galMap_snd, Category.id_comp]`. Establish `h1 : CommRingCat.ofHom ((1 : Ω ≃ₐ[k] Ω) : Ω →+* Ω) = 𝟙 _`. Use extensionality with `x`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Rewrite using `[h1, Spec.map_id, Category.comp_id]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem galMap_one' {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Scheme.{0}}
     (p : X ⟶ Spec (CommRingCat.of k)) : GlobalTheory.Et.galMap Ω p (1 : Ω ≃ₐ[k] Ω) = 𝟙 _ := by
@@ -47,7 +47,7 @@ private theorem galMap_one' {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra
     rw [h1, Spec.map_id, Category.comp_id]
 
 /- English proof (translation)
-Simplify using `only [galTot]`. Rewrite using `[galMap_one', CategoryTheory.Functor.map_id, pullTot_id]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem galTot_one {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) :
     galTot l Ω p 1 = LinearMap.id := by
@@ -55,9 +55,9 @@ theorem galTot_one {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X
   rw [galMap_one', CategoryTheory.Functor.map_id, pullTot_id]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.Et.galMap_fst, Category.assoc, GlobalTheory.Et.galMap_fst, GlobalTheory.Et.galMap_fst]`. Establish `h2 : CommRingCat.ofHom ((σ * τ : Ω ≃ₐ[k] Ω) : Ω →+* Ω) = CommRingCat.ofHom (τ : Ω →+* Ω) ≫ CommRingCat.ofHom (σ : Ω →+* Ω)`. Use extensionality with `x`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Rewrite using `[GlobalTheory.Et.galMap_snd, Category.assoc, GlobalTheory.Et.galMap_snd, GlobalTheory.Et.galMap_snd_assoc, h2, Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem galMap_mul' {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Scheme.{0}}
     (p : X ⟶ Spec (CommRingCat.of k)) (σ τ : Ω ≃ₐ[k] Ω) :
@@ -70,7 +70,7 @@ private theorem galMap_mul' {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra
     rw [GlobalTheory.Et.galMap_snd, Category.assoc, GlobalTheory.Et.galMap_snd, GlobalTheory.Et.galMap_snd_assoc, h2, Spec.map_comp]
 
 /- English proof (translation)
-Simplify using `only [galTot]`. Rewrite using `[galMap_mul', CategoryTheory.Functor.map_comp, pullTot_comp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem galTot_mul {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k))
     (σ τ : Ω ≃ₐ[k] Ω) : galTot l Ω p (σ * τ) = galTot l Ω p σ ∘ₗ galTot l Ω p τ := by
@@ -109,9 +109,9 @@ def genEig {H : Type*} [AddCommGroup H] [Module ℚ_[l] H] (L : Type*) [Field L]
 variable (l)
 
 /- English proof (translation)
-Use `⟨inferInstance, inferInstance, inferInstance, rfl, fun _ _ => (Category.comp_id _).symm, fun _ => Category.comp_id _, ?_⟩` and prove the remaining obligations. Establish `hd : IsIso (Sigma.desc (fun _ : Unit => 𝟙 X))` using `⟨⟨Sigma.ι (fun _ : Unit => X) (), by ext j; cases j; simp, by simp⟩⟩`. Use `(isIso_comp_right_iff _ (pullback.fst (𝟙 X) (𝟙 X))).mp ?_` and prove the remaining obligations. Use `hd using 1` and compare the differences between its conclusion and the goal. Use extensionality with `j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Conclude with `pullback.lift_fst _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isGalois_id (X : Scheme.{0}) : IsGalois (𝟙 X) Unit (fun _ => 𝟙 X) := by
   refine ⟨inferInstance, inferInstance, inferInstance, rfl, fun _ _ => (Category.comp_id _).symm,
@@ -125,9 +125,9 @@ theorem isGalois_id (X : Scheme.{0}) : IsGalois (𝟙 X) Unit (fun _ => 𝟙 X) 
   exact pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Use `⟨fun _ => by simp, ?_⟩` and prove the remaining obligations. Use `(isIso_comp_right_iff _ (pullback.fst (Sigma.desc fun _ : J => 𝟙 X) (𝟙 X))).mp ?_` and prove the remaining obligations. Use `(inferInstance : IsIso (𝟙 (∐ fun _ : J => X))) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `j`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem splits_fold (X : Scheme.{0}) (J : Type) :
     Splits (Sigma.desc fun _ : J => 𝟙 X) (𝟙 X) (Sigma.ι (fun _ : J => X)) := by
@@ -139,7 +139,7 @@ theorem splits_fold (X : Scheme.{0}) (J : Type) :
   exact pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Use `⟨X, 𝟙 X, Unit, inferInstance, inferInstance, fun _ => 𝟙 X, J, inferInstance, Sigma.ι (fun _ : J => X), isGalois_id X, splits_fold X J, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[CategoryTheory.Functor.map_id, pullTot_id, LinearMap.id_apply, LinearMap.sum_apply]`. Simplify using `only [Sigma.ι_desc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isCorrOp_fold {X Z' : Scheme.{0}} {J : Type} [Fintype J] (f : J → (X ⟶ Z')) :
     IsCorrOp l (Sigma.desc fun _ : J => 𝟙 X) (Sigma.desc f) (∑ j, pullTot l (sch.map (f j))) := by
@@ -149,7 +149,7 @@ theorem isCorrOp_fold {X Z' : Scheme.{0}} {J : Type} [Fintype J] (f : J → (X �
   simp only [Sigma.ι_desc]
 
 /- English proof (translation)
-Use `⟨X, 𝟙 X, Unit, inferInstance, inferInstance, fun _ => 𝟙 X, Unit, inferInstance, fun _ => 𝟙 X, isGalois_id X, ⟨fun _ => Category.id_comp _, ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(isGalois_id X).2.2.2.2.2.2`. Simplify using `[pullTot_id]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example (X : Scheme.{0}) : IsCorrOp l (𝟙 X) (𝟙 X) LinearMap.id := by
   refine ⟨X, 𝟙 X, Unit, inferInstance, inferInstance, fun _ => 𝟙 X, Unit, inferInstance, fun _ => 𝟙 X,
@@ -158,14 +158,14 @@ example (X : Scheme.{0}) : IsCorrOp l (𝟙 X) (𝟙 X) LinearMap.id := by
   · simp [pullTot_id]
 
 /- English proof (translation)
-Simplify `isCorrOp_fold l f` using `[Fin.sum_univ_two]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 example {X Z' : Scheme.{0}} (f : Fin 2 → (X ⟶ Z')) :
     IsCorrOp l (Sigma.desc fun _ : Fin 2 => 𝟙 X) (Sigma.desc f) (pullTot l (sch.map (f 0)) + pullTot l (sch.map (f 1))) := by
   simpa [Fin.sum_univ_two] using isCorrOp_fold l f
 
 /- English proof (translation)
-The claim follows from `map_one _`.
+A detailed English derivation is pending.
 -/
 example {k : Type} [Field k] (Ω : Type) [Field Ω] [Algebra k Ω] {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of k)) :
     galTotRep l Ω p 1 = LinearMap.id := map_one _

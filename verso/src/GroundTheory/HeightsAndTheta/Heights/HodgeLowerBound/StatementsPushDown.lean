@@ -40,7 +40,7 @@ abbrev botAlgBase (v : (Σ k, ι k) → (Σ k', ι' k')) : Algebra (MRing ι) (F
   ((algebraMap (MRing ι') (FractionRing (MRing ι'))).comp (rename v : MRing ι →ₐ[ℤ] MRing ι').toRingHom).toAlgebra
 
 /- English proof (translation)
-The claim follows from `(IsFractionRing.injective (MRing ι') (FractionRing (MRing ι'))).comp (rename_injective _ hv)`.
+A detailed English derivation is pending.
 -/
 theorem botAlgBase_injective {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : Function.Injective v) :
     Function.Injective (@algebraMap (MRing ι) (FractionRing (MRing ι')) _ _ (botAlgBase v)) :=
@@ -54,7 +54,7 @@ abbrev botAlg (v : (Σ k, ι k) → (Σ k', ι' k')) (hv : Function.Injective v)
   FractionRing.liftAlgebra _ _
 
 /- English proof (translation)
-Set `` to `botAlgBase v`. Establish `: FaithfulSMul (MRing ι) (FractionRing (MRing ι'))` using `(faithfulSMul_iff_algebraMap_injective _ _).mpr (botAlgBase_injective hv)`. Conclude with `IsFractionRing.lift_algebraMap (botAlgBase_injective hv) f`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem botAlg_algebraMap {v : (Σ k, ι k) → (Σ k', ι' k')} (hv : Function.Injective v) (f : MRing ι) :
     @algebraMap _ _ _ _ (botAlg v hv) (algebraMap (MRing ι) (FractionRing (MRing ι)) f) =

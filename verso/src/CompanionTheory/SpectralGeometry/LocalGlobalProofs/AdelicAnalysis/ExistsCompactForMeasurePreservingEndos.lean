@@ -6,23 +6,21 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.Adelic
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ _ _ _ μ _ htop Λ _ _ j C hC hcov`. Establish `hCfin : μ C < ⊤` using `hC.measure_lt_top`. Take `⟨K, -, hKc, hK⟩` from `isOpen_univ.exists_lt_isCompact (μ := μ) (r := μ C) (by rw [htop]; exact hCfin)`. Use `⟨(fun p : V × V => p.1 - p.2) '' (K ×ˢ K), (hKc.prod hKc).image (continuous_fst.sub continuous_snd), fun e he hμ => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hno`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hno`. Establish `hKm : MeasurableSet K` using `hKc.isClosed.measurableSet`. Establish `hem : Measurable e` using `he.measurable`. Establish `hAm : MeasurableSet (e ⁻¹' K)` using `hem hKm`. Establish `hμA : μ (e ⁻¹' K) = μ K`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Measure.map_apply (μ := μ) hem hKm`. Rewrite `h` using `[hμ]`. Conclude with `h.symm`. Set `S : Λ → Set V` to `fun l => ((fun x => x + j l) ⁻¹' (e ⁻¹' K)) ∩ C`. Establish `hCm : MeasurableSet C` using `hC.isClosed.measurableSet`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSm : ∀ l, MeasurableSet (S l)` using `fun l => (hAm.preimage (measurable_add_const (j l))).inter hCm`. Establish `hdisj : Pairwise (Function.onFun Disjoint S)`. Introduce `l l' hll`. Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hx, -⟩ ⟨hx', -⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne : l - l' ≠ 0` using `sub_ne_zero.2 hll`. Use `hno _ hne ?_` and prove the remaining obligations. Establish `hx1 : e (x + j l) ∈ K` using `hx`. Establish `hx2 : e (x + j l') ∈ K` using `hx'`. Establish `: e (j (l - l')) = e (x + j l) - e (x + j l')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← map_sub, map_sub j]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `⟨(e (x + j l), e (x + j l')), ⟨hx1, hx2⟩, rfl⟩`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcover : e ⁻¹' K ⊆ ⋃ l, (e ⁻¹' K) ∩ ((fun x => x - j l) ⁻¹' C)`. Introduce `y hy`. Take `⟨l, hl⟩` from `hcov y`. Conclude with `Set.mem_iUnion.2 ⟨l, hy, hl⟩`. Establish `hpiece : ∀ l, μ ((e ⁻¹' K) ∩ ((fun x => x - j l) ⁻¹' C)) = μ (S l)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `l`. Establish `hS : S l = (fun x => x + j l) ⁻¹' ((e ⁻¹' K) ∩ ((fun x => x - j l) ⁻¹' C))`. Use extensionality with `x`. Simplify using `[S]`. Rewrite using `[hS, measure_preimage_add_right]`.
-
-Establish `hle : μ K ≤ μ C`. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd hK (not_lt.2 hle)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lattice_pigeonhole_measure_preserving :
     ∀ (V : Type) [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V] [T2Space V]

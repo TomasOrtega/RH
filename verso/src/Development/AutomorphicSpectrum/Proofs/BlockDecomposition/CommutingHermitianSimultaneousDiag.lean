@@ -6,25 +6,23 @@ open Matrix Topology Filter
 namespace GlobalTheory.CompanionTheory.SimDiag
 
 /- English proof (translation)
-Set `L : Matrix (Fin n) (Fin n) ℂ → (EuclideanSpace ℂ (Fin n) →ₗ[ℂ] EuclideanSpace ℂ (Fin n))` to `fun M => Matrix.toEuclideanLin M`. Establish `hL : ∀ M v, L M v = WithLp.toLp 2 (M *ᵥ WithLp.ofLp v)` using `fun _ _ => rfl`. Take `⟨m, b, hb⟩` from `Formalism.IndefR.EigenDecomposition.exists_onb_of_commuting (L '' S) (by`. Introduce and unpack `_ ⟨M, hM, rfl⟩ _ ⟨N, hN, rfl⟩`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `L M (L N v) = L N (L M v)`. Simplify using `only [hL, Matrix.mulVec_mulVec, hC M hM N hN])`. Use the proof step `(by`. Introduce and unpack `_ ⟨M, hM, rfl⟩`. Use `⟨M, hM, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Matrix.toEuclideanLin M = LinearMap.adjoint (Matrix.toEuclideanLin M)`. Rewrite using `[← Matrix.toEuclideanLin_conjTranspose_eq_adjoint, hH M hM])`. Establish `hm : m = n`. Use `Module.finrank_eq_card_basis b.toBasis` as an intermediate fact. Simplify `this.symm` using `[finrank_euclideanSpace]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality.
 
-Substitute `hm` using the available equality. Establish `hinner : ∀ j k, ∑ i, star (WithLp.ofLp (b j) i) * WithLp.ofLp (b k) i = if j = k then 1 else 0`. Introduce `j k`. Use `orthonormal_iff_ite.1 b.orthonormal j k` as an intermediate fact. Rewrite `this` using `[PiLp.inner_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[RCLike.inner_apply, mul_comm]`. Set `U : Matrix (Fin m) (Fin m) ℂ` to `Matrix.of fun i k => WithLp.ofLp (b k) i`. Use `⟨U, ?_, fun A hA => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Use extensionality with `j k`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Matrix.star_apply, Matrix.one_apply, U, Matrix.of_apply]`. Conclude with `hinner j k`. Introduce `j k hjk`. Take `⟨μ, hμ⟩` from `hb k (L A) ⟨A, hA, rfl⟩`. Establish `hv : A *ᵥ WithLp.ofLp (b k) = μ • WithLp.ofLp (b k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg WithLp.ofLp hμ` as an intermediate fact. Simplify `this` using `[hL]`. Establish `hAU : ∀ i, (A * U) i k = μ * WithLp.ofLp (b k) i`. Introduce `i`. Use `congrFun hv i` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, U]`. Establish `h0` using `hinner j k`. Rewrite `h0` using `[if_neg hjk]`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_apply]`. Repeatedly rewrite using `[hAU]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.conjTranspose_apply, U, Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ = 0 := by rw [h0, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_unitary_isDiag {n : ℕ} (S : Set (Matrix (Fin n) (Fin n) ℂ))
     (hH : ∀ A ∈ S, Aᴴ = A) (hC : ∀ A ∈ S, ∀ B ∈ S, A * B = B * A) :

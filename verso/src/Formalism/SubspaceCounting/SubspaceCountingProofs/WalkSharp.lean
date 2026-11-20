@@ -16,13 +16,11 @@ def lp (y : Fin V → Module.End R X) (l : List (Fin V)) (e : Fin V → ℕ) : M
   (l.map fun u => y u ^ e u).prod
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [lp]`. Consider the case `cons u l ih`. Simplify using `only [lp, List.map_cons, List.prod_cons] at ih ⊢`. Rewrite using `[ih, pow_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomm : Commute (y u ^ e₂ u) ((l.map fun w => y w ^ e₁ w).prod)`. Apply `Commute.list_prod_right` to reduce the goal to its premises. Introduce `p hp`. Rewrite `hp` using `[List.mem_map]`. Take `⟨w, _, rfl⟩` from `hp`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(hc u w).pow_pow _ _`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = y u ^ e₁ u * ((l.map fun w => y w ^ e₁ w).prod * y u ^ e₂ u) * (l.map fun w => y w ^ e₂ w).prod := by`. Rewrite using `[hcomm.eq]`.
-
-Use `_ = y u ^ e₁ u * (l.map fun w => y w ^ e₁ w).prod * (y u ^ e₂ u * (l.map fun w => y w ^ e₂ w).prod) := by`. Simplify using `only [mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lp_add (y : Fin V → Module.End R X) (hc : ∀ v w, Commute (y v) (y w))
     (l : List (Fin V)) (e₁ e₂ : Fin V → ℕ) :
@@ -48,7 +46,7 @@ theorem lp_add (y : Fin V → Module.End R X) (hc : ∀ v w, Commute (y v) (y w)
           simp only [mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [lp]`. Consider the case `cons u l ih => simpa [lp] using ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem lp_zero (y : Fin V → Module.End R X) (l : List (Fin V)) :
     lp y l (fun _ => 0) = 1 := by
@@ -58,11 +56,11 @@ theorem lp_zero (y : Fin V → Module.End R X) (l : List (Fin V)) :
   | cons u l ih => simpa [lp] using ih
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [lp]`. Consider the case `cons u l ih`. Rewrite `hl` using `[List.nodup_cons]`. Establish `h2` using `ih hl.2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [lp] at h2 ⊢`. Rewrite using `[List.map_cons, List.prod_cons, h2]`. Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality. Simplify using `[hl.1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[huv, Ne.symm huv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lp_single (y : Fin V → Module.End R X) (v : Fin V) (l : List (Fin V)) (hl : l.Nodup) :
     lp y l (fun u => if u = v then 1 else 0) = if v ∈ l then y v else 1 := by
@@ -80,7 +78,7 @@ theorem lp_single (y : Fin V → Module.End R X) (v : Fin V) (l : List (Fin V)) 
     · simp [huv, Ne.symm huv]
 
 /- English proof (translation)
-Rewrite using `[lp_single y v _ (List.nodup_finRange V), if_pos (List.mem_finRange v)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lp_finRange_single (y : Fin V → Module.End R X) (v : Fin V) :
     lp y (List.finRange V) (fun u => if u = v then 1 else 0) = y v := by
@@ -88,13 +86,11 @@ theorem lp_finRange_single (y : Fin V → Module.End R X) (v : Fin V) :
   rw [lp_single y v _ (List.nodup_finRange V), if_pos (List.mem_finRange v)]
 
 /- English proof (translation)
-Establish `hpow : ∀ u (n : ℕ), ∀ x ∈ M, (y u ^ n) x ∈ M`. Introduce `u n`. Proceed by induction on `n with`. Consider the case `zero => intro x hx`. Rewrite using `[pow_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Consider the case `succ n ihn => intro x hx`. Rewrite using `[pow_succ]`. Conclude with `ihn _ (hM u x hx)`. Proceed by induction on `l with`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `nil => intro x hx`. Simplify `hx` using `[lp]`. Consider the case `cons u l ih`. Introduce `x hx`. Simplify using `only [lp, List.map_cons, List.prod_cons] at ih ⊢`.
-
-Conclude with `hpow u (e u) _ (ih x hx)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lp_mem (y : Fin V → Module.End R X) (M : Submodule R X) (hM : ∀ u, ∀ x ∈ M, y u x ∈ M)
     (l : List (Fin V)) (e : Fin V → ℕ) : ∀ x ∈ M, lp y l e x ∈ M := by
@@ -112,7 +108,7 @@ theorem lp_mem (y : Fin V → Module.End R X) (M : Submodule R X) (hM : ∀ u, �
     exact hpow u (e u) _ (ih x hx)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons u l ih`. Simplify using `only [List.map_cons, List.prod_cons, ih]`. Rewrite using `[smul_mul_assoc, mul_smul_comm, smul_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem list_prod_smul (l : List (Fin V)) (r : Fin V → R) (A : Fin V → Module.End R X) :
     (l.map fun u => r u • A u).prod = (l.map r).prod • (l.map A).prod := by
@@ -124,9 +120,9 @@ theorem list_prod_smul (l : List (Fin V)) (r : Fin V → R) (A : Fin V → Modul
     rw [smul_mul_assoc, mul_smul_comm, smul_smul]
 
 /- English proof (translation)
-Unfold `monoOp`. Rewrite using `[show ((List.finRange V).map fun v => if e v then y v ^ m else (π ^ S v) • (1 : Module.End R X)) = (List.finRange V).map (fun v => (π ^ (if e v then 0 else S v)) • (y v ^ (if e v then m else 0))) by`. Use `congr 1`. Use function extensionality and compare the values at `v`. Apply the tactic sequence `by_cases hv : e v <;> simp [hv]]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[list_prod_smul]`. Use `congrArg₂ (· • ·) ?_ rfl` and prove the remaining obligations. Rewrite using `[← Fin.prod_univ_def, Finset.prod_pow_eq_pow_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem monoOp_eq (π : R) (y : Fin V → Module.End R X) (m : ℕ) (S : Fin V → ℕ)
     (e : Fin V → Bool) :
@@ -148,12 +144,12 @@ end Ops
 def top {V : ℕ} (B : Finset (Fin V)) : ℕ := B.sup fun u => (u : ℕ)
 
 /- English proof (translation)
-The claim follows from `Finset.le_sup (f := fun u : Fin V => (u : ℕ)) h`.
+A detailed English derivation is pending.
 -/
 theorem le_top {V : ℕ} {B : Finset (Fin V)} {u : Fin V} (h : u ∈ B) : (u : ℕ) ≤ top B := Finset.le_sup (f := fun u : Fin V => (u : ℕ)) h
 
 /- English proof (translation)
-Take `⟨t, ht, he⟩` from `Finset.exists_mem_eq_sup B h (fun u : Fin V => (u : ℕ))`. Conclude with `⟨t, ht, he.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem top_mem {V : ℕ} {B : Finset (Fin V)} (h : B.Nonempty) : ∃ t ∈ B, (t : ℕ) = top B := by
 
@@ -161,9 +157,9 @@ theorem top_mem {V : ℕ} {B : Finset (Fin V)} (h : B.Nonempty) : ∃ t ∈ B, (
   exact ⟨t, ht, he.symm⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Apply `Finset.sup_le` to reduce the goal to its premises. Introduce `u hu`. Use `show (u : ℕ) ≤ top B + 1`. Break down `Finset.mem_insert.mp hu with h | h` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, hw]`. Use `le_top (Finset.mem_of_mem_erase h)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[← hw]`. Conclude with `le_top (Finset.mem_insert_self w _)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_move {V : ℕ} {B : Finset (Fin V)} {v w : Fin V} (hw : (w : ℕ) = top B + 1) :
     top (insert w (B.erase v)) = top B + 1 := by
@@ -180,17 +176,15 @@ theorem top_move {V : ℕ} {B : Finset (Fin V)} {v w : Fin V} (hw : (w : ℕ) = 
     exact le_top (Finset.mem_insert_self w _)
 
 /- English proof (translation)
-Take `⟨t, ht, htB⟩` from `top_mem ⟨v, hv⟩`. Rewrite using `[top_move hw]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hlt, hnot⟩`. Distinguish the cases in `huv : u = v`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inr huv`. Use `left`. Establish `hnB : u ∉ B` using `fun h => hnot (Finset.mem_insert_of_mem (Finset.mem_erase.mpr ⟨huv, h⟩))`. Use `⟨?_, hnB⟩` and prove the remaining obligations. Break down `Nat.lt_or_ge (u : ℕ) (top B) with h | h` into its components or cases.
+Prove the second alternative. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Conclude with `h`. It suffices to derive a contradiction. Establish `hut : u = t` using `Fin.ext (by omega)`. Conclude with `hnB (by rw [hut]; exact ht)`. Introduce and unpack `(⟨hlt, hnB⟩ | rfl)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨by omega, ?_⟩` and prove the remaining obligations. Introduce `h`. Break down `Finset.mem_insert.mp h with h | h` into its components or cases. Use `congrArg Fin.val h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hnB (Finset.mem_of_mem_erase h)`. Use `le_top hv` as an intermediate fact. Use `⟨by omega, ?_⟩` and prove the remaining obligations. Introduce `h`. Break down `Finset.mem_insert.mp h with h | h` into its components or cases.
-
-Use `congrArg Fin.val h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `(Finset.mem_erase.mp h).1 rfl`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem done_move {V : ℕ} {B : Finset (Fin V)} {v w u : Fin V} (hv : v ∈ B)
     (hw : (w : ℕ) = top B + 1) :
@@ -227,7 +221,7 @@ theorem done_move {V : ℕ} {B : Finset (Fin V)} {v w u : Fin V} (hv : v ∈ B)
       · exact (Finset.mem_erase.mp h).1 rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `[vertexLabel]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem vertexLabel_empty {V : ℕ} : vertexLabel (∅ : Finset (Fin V)) = fun _ => Slot.base := by
 
@@ -235,7 +229,7 @@ theorem vertexLabel_empty {V : ℕ} : vertexLabel (∅ : Finset (Fin V)) = fun _
   simp [vertexLabel]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality. Simplify using `[vertexLabel]`. Simplify using `[vertexLabel, Function.update_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem update_positionAt_dual {V : ℕ} (B : Finset (Fin V)) (v : Fin V) :
     Function.update (vertexLabel B) v Slot.dual = vertexLabel (insert v B) := by
@@ -247,7 +241,7 @@ theorem update_positionAt_dual {V : ℕ} (B : Finset (Fin V)) (v : Fin V) :
   · simp [vertexLabel, Function.update_apply, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality. Simplify using `[vertexLabel]`. Simplify using `[vertexLabel, Function.update_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem update_positionAt_base {V : ℕ} (B : Finset (Fin V)) (v : Fin V) :
     Function.update (vertexLabel B) v Slot.base = vertexLabel (B.erase v) := by
@@ -259,14 +253,14 @@ theorem update_positionAt_base {V : ℕ} (B : Finset (Fin V)) (v : Fin V) :
   · simp [vertexLabel, Function.update_apply, h]
 
 /- English proof (translation)
-Rewrite using `[update_positionAt_dual, Finset.insert_eq_of_mem hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem update_positionAt_dual_self {V : ℕ} {B : Finset (Fin V)} {v : Fin V} (hv : v ∈ B) :
     Function.update (vertexLabel B) v Slot.dual = vertexLabel B := by
   rw [update_positionAt_dual, Finset.insert_eq_of_mem hv]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality. Simplify using `[vertexLabel, hv]`. Simplify using `[Function.update_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem update_positionAt_base_self {V : ℕ} {B : Finset (Fin V)} {v : Fin V} (hv : v ∉ B) :
     Function.update (vertexLabel B) v Slot.base = vertexLabel B := by
@@ -277,7 +271,7 @@ theorem update_positionAt_base_self {V : ℕ} {B : Finset (Fin V)} {v : Fin V} (
   · simp [Function.update_apply, h]
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact le_of_eq (congrArg L vertexLabel_empty)`. Consider the case `@insert v T hvT ih`. Rewrite using `[← update_positionAt_dual]`. Conclude with `(hdb _ _).trans (by rw [update_positionAt_base_self hvT]; exact ih)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem L_sideAt_le {R X : Type} [CommRing R] [AddCommGroup X] [Module R X] {V : ℕ}
     (L : (Fin V → Slot) → Submodule R X)
@@ -291,9 +285,9 @@ theorem L_sideAt_le {R X : Type} [CommRing R] [AddCommGroup X] [Module R X] {V :
     exact (hdb _ _).trans (by rw [update_positionAt_base_self hvT]; exact ih)
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => intro x hx`. Simplify `hx` using `[vertexLabel_empty]`. Consider the case `@insert v T hvT ih`. Introduce `x hx`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_insert hvT, pow_add, mul_smul, ← update_positionAt_dual]`. Apply `henter` to reduce the goal to its premises. Rewrite using `[update_positionAt_base_self hvT]`. Conclude with `ih x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem enter_positionAt {R X : Type} [CommRing R] [AddCommGroup X] [Module R X] {V : ℕ}
     (L : (Fin V → Slot) → Submodule R X) (π : R) (b : Fin V → ℕ)
@@ -326,7 +320,7 @@ def idx {V : ℕ} (m : ℕ) (B : Finset (Fin V)) : Finset (Fin V → ℕ) :=
   Fintype.piFinset fun u => if u ∈ B then Finset.range m else {0}
 
 /- English proof (translation)
-Simplify using `only [idx, Fintype.mem_piFinset]`. Use `forall_congr' fun u => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : u ∈ B <;> simp [h]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_idx {V : ℕ} {m : ℕ} {B : Finset (Fin V)} {i : Fin V → ℕ} :
     i ∈ idx m B ↔ ∀ u, (u ∈ B → i u < m) ∧ (u ∉ B → i u = 0) := by
@@ -336,9 +330,9 @@ theorem mem_idx {V : ℕ} {m : ℕ} {B : Finset (Fin V)} {i : Fin V → ℕ} :
   by_cases h : u ∈ B <;> simp [h]
 
 /- English proof (translation)
-Unfold `idx`. Rewrite using `[Fintype.card_piFinset]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_congr rfl fun u _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `_ = ∏ u ∈ B, (if u ∈ B then m else 1) := (Finset.prod_subset (Finset.subset_univ B) fun u _ hu => if_neg hu).symm`. Use `_ = ∏ u ∈ B, m := Finset.prod_congr rfl fun u hu => if_pos hu`. Use `_ = m ^ B.card := Finset.prod_const m`.
+A detailed English derivation is pending.
 -/
 theorem card_idx {V : ℕ} (m : ℕ) (B : Finset (Fin V)) : (idx m B).card = m ^ B.card := by
 
@@ -353,7 +347,7 @@ theorem card_idx {V : ℕ} (m : ℕ) (B : Finset (Fin V)) : (idx m B).card = m ^
     _ = m ^ B.card := Finset.prod_const m
 
 /- English proof (translation)
-Simplify using `only [expo]`. Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality. Simplify using `[hv]`. Simplify using `[Function.update_apply, huv]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem expo_step {V : ℕ} (m : ℕ) {B : Finset (Fin V)} (i : Fin V → ℕ) {v : Fin V}
     (hv : v ∈ B) (u : Fin V) :
@@ -366,7 +360,7 @@ theorem expo_step {V : ℕ} (m : ℕ) {B : Finset (Fin V)} (i : Fin V → ℕ) {
   · simp [Function.update_apply, huv]
 
 /- English proof (translation)
-Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality. Apply the tactic sequence `simp [accT, hv] <;> ring`. Simplify using `[accT, Function.update_apply, huv]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem accT_step {V : ℕ} (a b c : Fin V → ℕ) (m c₀ : ℕ) {B : Finset (Fin V)}
     (i : Fin V → ℕ) {v : Fin V} (hv : v ∈ B) (u : Fin V) :
@@ -379,11 +373,11 @@ theorem accT_step {V : ℕ} (a b c : Fin V → ℕ) (m c₀ : ℕ) {B : Finset (
   · simp [accT, Function.update_apply, huv]
 
 /- English proof (translation)
-Simplify using `only [expo, done_move hv hw]`. Distinguish the cases in `huv : u = v`. Substitute `v` using the available equality. Establish `h1 : ¬((u : ℕ) < top B ∧ u ∉ B)` using `fun h => h.2 hv`. Simplify using `[h1, hv, hiv]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `huw : u = w`. Substitute `w` using the available equality. Establish `hwB : u ∉ B` using `fun h => by have := le_top h; omega`. Establish `h2 : ¬((u : ℕ) < top B)` using `by omega`. Simplify using `[huv, hwB, h2, hiw, Function.update_apply]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `huB : u ∈ B`. Simplify using `[huv, huw, huB, Function.update_apply]`. Simplify using `[huv, huw, huB, Function.update_apply]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem expo_move {V : ℕ} {m : ℕ} {B : Finset (Fin V)} {i : Fin V → ℕ} {v w : Fin V}
     (hv : v ∈ B) (hiv : i v + 1 = m) (hw : (w : ℕ) = top B + 1) (hiw : i w = 0) (u : Fin V) :
@@ -405,13 +399,13 @@ theorem expo_move {V : ℕ} {m : ℕ} {B : Finset (Fin V)} {i : Fin V → ℕ} {
       · simp [huv, huw, huB, Function.update_apply]
 
 /- English proof (translation)
-Simplify using `only [accT, done_move hv hw]`. Distinguish the cases in `huv : u = v`. Substitute `v` using the available equality. Establish `h1 : ¬((u : ℕ) < top B ∧ u ∉ B)` using `fun h => h.2 hv`. Establish `huw : u ≠ w`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Use `le_top hv` as an intermediate fact. Rewrite `this` using `[h]`. Use linear arithmetic over natural numbers and integers. Substitute `m` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Substitute using the available equality.
 
-Apply the tactic sequence `simp [h1, hv, huw] <;> ring`. Distinguish the cases in `huw : u = w`. Substitute `w` using the available equality. Establish `hwB : u ∉ B` using `fun h => by have := le_top h; omega`. Establish `h2 : ¬((u : ℕ) < top B)` using `by omega`.
+Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[huv, hwB, h2, hiw, Function.update_apply]`. Distinguish the cases in `huB : u ∈ B`. Simplify using `[huv, huw, huB, Function.update_apply]`. Simplify using `[huv, huw, huB, Function.update_apply]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem accT_move {V : ℕ} (a b c : Fin V → ℕ) {m c₀ : ℕ} {B : Finset (Fin V)}
     {i : Fin V → ℕ} {v w : Fin V}
@@ -440,9 +434,9 @@ theorem accT_move {V : ℕ} (a b c : Fin V → ℕ) {m c₀ : ℕ} {B : Finset (
       · simp [huv, huw, huB, Function.update_apply]
 
 /- English proof (translation)
-Simplify using `only [accT]`. Use `split_ifs with h1 h2`. Conclude with `le_rfl`. Use `hi u h2` as an intermediate fact. Establish `e1 : i u * c u ≤ (m - 1) * c u` using `Nat.mul_le_mul_right _ (by omega)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : i u * c₀ ≤ m * c₀` using `Nat.mul_le_mul_right _ (by omega)`. Rewrite using `[Nat.mul_add]`. Use linear arithmetic over natural numbers and integers. Conclude with `Nat.zero_le _`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem accT_le {V : ℕ} (a b c : Fin V → ℕ) (m c₀ : ℕ) {B : Finset (Fin V)}
     {i : Fin V → ℕ} (hi : ∀ u ∈ B, i u < m) (u : Fin V) :
@@ -459,11 +453,11 @@ theorem accT_le {V : ℕ} (a b c : Fin V → ℕ) (m c₀ : ℕ) {B : Finset (Fi
   · exact Nat.zero_le _
 
 /- English proof (translation)
-Distinguish the cases in `hut : u = t`. Substitute `t` using the available equality. Establish `h : accT a b c m c₀ B i u = b u + i u * (c u + c₀)` using `by simp [accT, ht]`. Use `hi u ht` as an intermediate fact. Establish `e1 : i u * c u ≤ (m - 1) * c u` using `Nat.mul_le_mul_right _ (by omega)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (i u + 1) * c₀ ≤ m * c₀` using `Nat.mul_le_mul_right _ (by omega)`. Rewrite `e2` using `[Nat.add_mul, one_mul]`. Rewrite using `[h, if_pos rfl, Nat.mul_add]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hut, add_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Conclude with `accT_le a b c m c₀ hi u`.
+A detailed English derivation is pending.
 -/
 theorem walkCostTerm_add_le {V : ℕ} (a b c : Fin V → ℕ) (m c₀ : ℕ) {B : Finset (Fin V)}
     {i : Fin V → ℕ} (hi : ∀ u ∈ B, i u < m) {t : Fin V} (ht : t ∈ B) (u : Fin V) :
@@ -482,9 +476,9 @@ theorem walkCostTerm_add_le {V : ℕ} (a b c : Fin V → ℕ) (m c₀ : ℕ) {B 
     exact accT_le a b c m c₀ hi u
 
 /- English proof (translation)
-Distinguish the cases in `huv : u = v`. Substitute `v` using the available equality. Establish `h : accT a b c m c₀ B i u = b u + i u * (c u + c₀)` using `by simp [accT, hv]`. Rewrite using `[h, if_pos rfl]`. Substitute `m` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[Nat.add_sub_cancel]`. Apply `le_of_eq` to reduce the goal to its premises. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg huv, add_zero]`. Conclude with `accT_le a b c m c₀ hi u`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem accT_stop_le {V : ℕ} (a b c : Fin V → ℕ) (m c₀ : ℕ) {B : Finset (Fin V)}
     {i : Fin V → ℕ} (hi : ∀ u ∈ B, i u < m) {v : Fin V} (hv : v ∈ B) (hiv : i v + 1 = m)
@@ -504,7 +498,7 @@ theorem accT_stop_le {V : ℕ} (a b c : Fin V → ℕ) (m c₀ : ℕ) {B : Finse
     exact accT_le a b c m c₀ hi u
 
 /- English proof (translation)
-Simplify using `[Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_add_ite {V : ℕ} (f : Fin V → ℕ) (t : Fin V) (K : ℕ) :
     ∑ u, (f u + if u = t then K else 0) = (∑ u, f u) + K := by
@@ -513,121 +507,111 @@ theorem sum_add_ite {V : ℕ} (f : Fin V → ℕ) (t : Fin V) (K : ℕ) :
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `R X _ _ _ V π L y m β c₀ S a b c Sv g G hm hc hbb hdb ha hb hcb hy hG hS`. Unfold `AllButLE`. Establish `hupd : ∀ u : Fin V, Function.update (fun _ : Fin V => Slot.base) u Slot.base = fun _ => Slot.base`. Introduce `u`. Use function extensionality and compare the values at `w`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `h : w = u`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_apply, h]`. Establish `hyM : ∀ u, ∀ x ∈ L (fun _ => Slot.base), y u x ∈ L (fun _ => Slot.base)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `u x hx`. Establish `h1 : x ∈ L (Function.update (fun _ => Slot.base) u Slot.base)`. Rewrite using `[hupd]`. Conclude with `hx`. Establish `h2` using `hdb _ u (hy _ u x (hbb _ u h1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hupd]`. Conclude with `h2`. Establish `hPmem : ∀ (e : Fin V → Bool), ∀ x ∈ L (fun _ => Slot.base), monoOp π y m Sv e x ∈ prodIdealMap π y m Sv (L fun _ => Slot.base)`. Introduce `e x hx`. Unfold `prodIdealMap`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.mem_iSup_of_mem e (Submodule.mem_map_of_mem hx)`. Establish `hP2 : ∀ x ∈ L (fun _ => Slot.base), π ^ (∑ v, Sv v) • x ∈ prodIdealMap π y m Sv (L fun _ => Slot.base)`. Introduce `x hx`. Establish `h2` using `hPmem (fun _ => false) x hx`. Rewrite `h2` using `[monoOp_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify `h2` using `[lp_zero]`. Use `⟨?_, ⟨∅, by simp, by simp, fun x hx => Submodule.mem_sup_left (hP2 x hx)⟩⟩` and prove the remaining obligations. Distinguish the cases in `hV : β + 1 ≤ V`. Use `swap`. Use `⟨∅, by simp, by simp, fun x hx => Submodule.mem_sup_left ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : ∑ v, Sv v ≤ ∑ v, (a v + b v + (m - 1) * c v + m * c₀) + β * S`. Establish `h1 : ∑ v, Sv v ≤ ∑ _v : Fin V, S` using `Finset.sum_le_sum fun v _ => hS v`. Rewrite `h1` using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Establish `h2 : V * S ≤ β * S` using `Nat.mul_le_mul_right _ (by omega)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le hle`. Rewrite using `[hk, pow_add, mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ (hP2 x hx)`. Take `⟨E, hE⟩ : ∃ E, E = ∑ v, (a v + b v + (m - 1) * c v + m * c₀) + β * S` from `⟨_, rfl⟩`. Rewrite using `[← hE]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C, hC⟩ : ∃ C : Finset X, C = (Finset.univ.powersetCard (β + 1)).biUnion fun B => (idx m B).biUnion fun i => (G B).image (lp y (List.finRange V) (expo m B i))` from `⟨_, rfl⟩`. Establish `hstateC : ∀ B : Finset (Fin V), B.card = β + 1 → ∀ i ∈ idx m B, ∀ x ∈ G B, lp y (List.finRange V) (expo m B i) x ∈ C`. Introduce `B hB i hi x hx`. Rewrite using `[hC, Finset.mem_biUnion]`. Use `⟨B, Finset.mem_powersetCard.mpr ⟨Finset.subset_univ B, hB⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.mem_biUnion]`. Conclude with `⟨i, hi, Finset.mem_image_of_mem _ hx⟩`. Establish `hCsub : (↑C : Set X) ⊆ L (fun _ => Slot.base)`. Introduce `x hx`. Rewrite `hx` using `[Finset.mem_coe, hC]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mem_biUnion, Finset.mem_image] at hx`. Take `⟨B, hBm, i, _, g0, hg0, rfl⟩` from `hx`. Establish `hB'` using `(Finset.mem_powersetCard.mp hBm).2`. Conclude with `lp_mem y _ hyM _ _ g0 (L_sideAt_le L hdb B ((hG B hB').1 hg0))`. Establish `hCcard : C.card ≤ ∑ B ∈ (Finset.univ : Finset (Fin V)).powersetCard (β + 1), m ^ (β + 1) * g B`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hC]`. Use `Finset.card_biUnion_le.trans (Finset.sum_le_sum fun B hB => ?_)` and prove the remaining obligations. Establish `hB'` using `(Finset.mem_powersetCard.mp hB).2`. Use `Finset.card_biUnion_le.trans ?_` and prove the remaining obligations. Use `le_trans (Finset.sum_le_sum fun i _ => Finset.card_image_le) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_const, card_idx, hB', smul_eq_mul]`. Conclude with `Nat.mul_le_mul_left _ (hG B hB').2.1`. Use `⟨C, hCsub, hCcard, ?_⟩` and prove the remaining obligations. Establish `hbnd : ∀ (B : Finset (Fin V)) (i : Fin V → ℕ), (∀ u ∈ B, i u < m) → acc a b c m c₀ B i ≤ ∑ u, (a u + b u + (m - 1) * c u + m * c₀)`. Introduce `B i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `acc`. Conclude with `Finset.sum_le_sum fun u _ => accT_le a b c m c₀ hi u`. Establish `hexpo_le : ∀ (B : Finset (Fin V)) (i : Fin V → ℕ), i ∈ idx m B → ∀ u, expo m B i u ≤ m`. Introduce `B i hi u`. Use `(mem_idx.mp hi u).1` as an intermediate fact.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Unfold `expo`. Use `split_ifs with h1 h2`. Conclude with `le_rfl`. Conclude with `(this h2).le`. Conclude with `Nat.zero_le _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. It suffices to derive a contradiction. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 
-Establish `hsumexpo : ∀ (B : Finset (Fin V)) (i : Fin V → ℕ), i ∈ idx m B → ∑ u, expo m B i u ≤ m * V`. Introduce `B i hi`. Combine the equalities or inequalities in the displayed calculation. Establish `claim : ∀ n : ℕ, ∀ (B : Finset (Fin V)) (i : Fin V → ℕ), B.card = β + 1 → i ∈ idx m B → m * V + 1 ≤ (∑ u, expo m B i u) + n → ∀ z ∈ L (vertexLabel B), π ^ (E - acc a b c m c₀ B i) • lp y (List.finRange V) (expo m B i) z ∈ prodIdealMap π y m Sv (L fun _ => Slot.base) ⊔ Submodule.s …`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `B i _ hi hn`. Use `hsumexpo B i hi` as an intermediate fact. It suffices to derive a contradiction.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `succ n ih`. Introduce `B i hB hi hn z hz`. Take `⟨-, -, hdec⟩` from `hG B hB`. Establish `hi' : ∀ u ∈ B, i u < m` using `fun u hu => (mem_idx.mp hi u).1 hu`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hBne : B.Nonempty` using `Finset.card_pos.mp (by omega)`. Take `⟨t, ht⟩` from `hBne`. Establish `hacc : acc a b c m c₀ B i + c₀ ≤ E`. Establish `h1 : acc a b c m c₀ B i + c₀ = ∑ u, (accT a b c m c₀ B i u + if u = t then c₀ else 0)`. Rewrite using `[sum_add_ite]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : ∑ u, (accT a b c m c₀ B i u + if u = t then c₀ else 0) ≤ ∑ u, (a u + b u + (m - 1) * c u + m * c₀)` using `Finset.sum_le_sum fun u _ => walkCostTerm_add_le a b c m c₀ hi' ht u`. Rewrite using `[hE]`. Use linear arithmetic over natural numbers and integers. Take `⟨k, hk⟩ : ∃ k, E - acc a b c m c₀ B i = k + c₀` from `⟨E - acc a b c m c₀ B i - c₀, by omega⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨Y, hY⟩ : ∃ Y, Y = lp y (List.finRange V) (expo m B i)` from `⟨_, rfl⟩`. Rewrite using `[← hY]`. Establish `hstep : ∀ v ∈ B, ∀ zv ∈ L (Function.update (vertexLabel B) v Slot.ball), π ^ k • Y (y v zv) ∈ prodIdealMap π y m Sv (L fun _ => Slot.base) ⊔ Submodule.span R (↑C : Set X)`. Introduce `v hv zv hzv`. Establish `hYy : ∀ e₂ : Fin V → ℕ, (∀ u, e₂ u = expo m B i u + if u = v then 1 else 0) → lp y (List.finRange V) e₂ = Y * y v`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `e₂ he`. Rewrite using `[show e₂ = _ from funext he, lp_add y hc, lp_finRange_single, hY]`. Distinguish the cases in `hlt : i v + 1 < m`. Establish `hi2 : Function.update i v (i v + 1) ∈ idx m B`. Rewrite using `[mem_idx]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `u`. Distinguish the cases in `huv : u = v`. Substitute `u` using the available equality. Use `⟨fun _ => ?_, fun h => absurd hv h⟩` and prove the remaining obligations. Rewrite using `[Function.update_apply, if_pos rfl]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `hlt`. Rewrite using `[Function.update_apply, if_neg huv]`. Conclude with `mem_idx.mp hi u`. Establish `hz2 : π ^ c v • zv ∈ L (vertexLabel B)`. Use `hcb _ v zv hzv` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[update_positionAt_dual_self hv]`. Then use the resulting hypothesis. Establish `hmu : ∑ u, expo m B (Function.update i v (i v + 1)) u = (∑ u, expo m B i u) + 1`. Simplify using `only [expo_step m i hv, sum_add_ite]`. Establish `hacc2 : acc a b c m c₀ B (Function.update i v (i v + 1)) = acc a b c m c₀ B i + (c v + c₀)`. Simplify using `only [acc, accT_step a b c m c₀ i hv, sum_add_ite]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle2 : acc a b c m c₀ B (Function.update i v (i v + 1)) ≤ E`. Use `hbnd B _ (fun u hu => (mem_idx.mp hi2 u).1 hu)` as an intermediate fact. Rewrite using `[hE]`. Use linear arithmetic over natural numbers and integers. Establish `IH` using `ih B _ hB hi2 (by omega) _ hz2`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `IH` using `[hYy _ (fun u => expo_step m i hv u), map_smul, smul_smul, ← pow_add]`. Establish `hk2 : E - acc a b c m c₀ B (Function.update i v (i v + 1)) + c v = k` using `by omega`. Rewrite `IH` using `[hk2]`. Conclude with `IH`. Establish `hiv : i v + 1 = m`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hi' v hv` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `htop : top B + 1 < V`. Take `⟨w, hw⟩ : ∃ w : Fin V, (w : ℕ) = top B + 1` from `⟨⟨top B + 1, htop⟩, rfl⟩`. Establish `hwB : w ∉ B` using `fun h => by`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `le_top h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hwB2 : w ∉ B.erase v` using `fun h => hwB (Finset.mem_of_mem_erase h)`. Establish `hiw : i w = 0` using `(mem_idx.mp hi w).2 hwB`. Establish `hB2 : (insert w (B.erase v)).card = β + 1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Finset.card_insert_eq_ite, if_neg hwB2, Finset.card_erase_of_mem hv, hB]`. Use linear arithmetic over natural numbers and integers. Establish `hi2 : Function.update i v 0 ∈ idx m (insert w (B.erase v))`. Rewrite using `[mem_idx]`. Introduce `u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `huv : u = v`. Substitute `u` using the available equality. Rewrite using `[Function.update_apply, if_pos rfl]`. Conclude with `⟨fun _ => by omega, fun _ => rfl⟩`. Rewrite using `[Function.update_apply, if_neg huv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Break down `Finset.mem_insert.mp h with h | h` into its components or cases. Rewrite using `[h, hiw]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hi' u (Finset.mem_of_mem_erase h)`. Introduce `h`. Establish `hnB : u ∉ B` using `fun hu => h (Finset.mem_insert_of_mem (Finset.mem_erase.mpr ⟨huv, hu⟩))`. Conclude with `(mem_idx.mp hi u).2 hnB`. Establish `hz2 : π ^ b w • π ^ a v • zv ∈ L (vertexLabel (insert w (B.erase v)))`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `ha _ v zv hzv`. Rewrite `h1` using `[update_positionAt_base]`. Establish `h2 : π ^ a v • zv ∈ L (Function.update (vertexLabel (B.erase v)) w Slot.base)`. Rewrite using `[update_positionAt_base_self hwB2]`. Conclude with `h1`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `h3` using `hb _ w _ h2`. Rewrite `h3` using `[update_positionAt_dual]`. Then use the resulting hypothesis. Establish `hmu : ∑ u, expo m (insert w (B.erase v)) (Function.update i v 0) u = (∑ u, expo m B i u) + 1`. Simplify using `only [expo_move hv hiv hw hiw, sum_add_ite]`. Establish `hacc2 : acc a b c m c₀ (insert w (B.erase v)) (Function.update i v 0) = acc a b c m c₀ B i + (a v + c₀) + b w`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only [acc, accT_move a b c hv hiv hw hiw, sum_add_ite]`. Establish `hle2 : acc a b c m c₀ (insert w (B.erase v)) (Function.update i v 0) ≤ E`. Use `hbnd _ _ (fun u hu => (mem_idx.mp hi2 u).1 hu)` as an intermediate fact. Rewrite using `[hE]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `IH` using `ih _ _ hB2 hi2 (by omega) _ hz2`. Rewrite `IH` using `[hYy _ (fun u => expo_move hv hiv hw hiw u), map_smul, map_smul, smul_smul, smul_smul, ← pow_add, ← pow_add]`. Establish `hk2 : E - acc a b c m c₀ (insert w (B.erase v)) (Function.update i v 0) + b w + a v = k`. Use linear arithmetic over natural numbers and integers. Rewrite `IH` using `[hk2]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `IH`. Establish `hD : ∀ u, (if decide (u ∉ B.erase v) = true then m else 0) + (if u ∈ B.erase v then i u else 0) = expo m B i u + if u = v then 1 else 0`. Introduce `u`. Distinguish the cases in `huv : u = v`. Substitute `u` using the available equality.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1 : ¬((v : ℕ) < top B ∧ v ∉ B)` using `fun h => h.2 hv`. Simplify using `[expo, h1, hv, hiv]`. Distinguish the cases in `huB : u ∈ B`. Establish `h1 : ¬((u : ℕ) < top B ∧ u ∉ B)` using `fun h => h.2 huB`. Simplify using `[expo, h1, huB, huv]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt2 : (u : ℕ) < top B`. Take `⟨t', ht', htt⟩` from `top_mem ⟨v, hv⟩`. Establish `h1 : (u : ℕ) ≠ top B` using `fun h => huB (by rw [show u = t' from Fin.ext (h.trans htt.symm)]; exact ht')`. Use `u.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[expo, hlt2, huB, huv]`. Establish `hprod : lp y (List.finRange V) (fun u => if decide (u ∉ B.erase v) = true then m else 0) * lp y (List.finRange V) (fun u => if u ∈ B.erase v then i u else 0) = Y * y v`. Rewrite using `[← lp_add y hc]`. Conclude with `hYy _ hD`. Establish `heq : (Y * y v) (π ^ a v • zv) = lp y (List.finRange V) (fun u => if decide (u ∉ B.erase v) = true then m else 0) (lp y (List.finRange V) (fun u => if u ∈ B.erase v then i u else 0) (π ^ a v • zv))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hprod]`. Both sides reduce to the same expression. Establish `hx' : lp y (List.finRange V) (fun u => if u ∈ B.erase v then i u else 0) (π ^ a v • zv) ∈ L (fun _ => Slot.base)`. Apply `lp_mem y _ hyM` to reduce the goal to its premises. Establish `h1` using `ha _ v zv hzv`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[update_positionAt_base]`. Conclude with `L_sideAt_le L hdb _ h1`. Establish `hmono` using `hPmem (fun u => decide (u ∉ B.erase v)) _ hx'`. Rewrite `hmono` using `[monoOp_eq, LinearMap.smul_apply, ← heq, map_smul, smul_smul, ← pow_add]`. Establish `hs : (∑ u, if decide (u ∉ B.erase v) = true then 0 else Sv u) ≤ β * S`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (∑ u, if decide (u ∉ B.erase v) = true then 0 else Sv u) = ∑ u ∈ B.erase v, Sv u`. Use `symm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.card_erase_of_mem hv, hB, smul_eq_mul, Nat.add_sub_cancel]`. Establish `hstop : acc a b c m c₀ B i + (a v + c₀) ≤ ∑ u, (a u + b u + (m - 1) * c u + m * c₀)`. Establish `h2 : ∑ u, (accT a b c m c₀ B i u + if u = v then a v + c₀ else 0) ≤ ∑ u, (a u + b u + (m - 1) * c u + m * c₀)` using `Finset.sum_le_sum fun u _ => accT_stop_le a b c m c₀ hi' hv hiv u`. Rewrite `h2` using `[sum_add_ite]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Take `⟨r, hr⟩ : ∃ r, k = r + ((∑ u, if decide (u ∉ B.erase v) = true then 0 else Sv u) + a v)` from `⟨k - ((∑ u, if decide (u ∉ B.erase v) = true then 0 else Sv u) + a v), by omega⟩`. Rewrite using `[hr, pow_add, mul_smul]`. Conclude with `Submodule.mem_sup_left (Submodule.smul_mem _ _ hmono)`. Establish `hle : (⨆ v ∈ B, (L (Function.update (vertexLabel B) v Slot.ball)).map (y v)) ⊔ Submodule.span R (↑(G B) : Set X) ≤ (prodIdealMap π y m Sv (L fun _ => Slot.base) ⊔ Submodule.span R (↑C : Set X)).comap (π ^ k • Y)`. Apply `sup_le` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Apply `iSup₂_le` to reduce the goal to its premises. Introduce `v hv`. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `zv hzv`. Rewrite using `[Submodule.mem_comap, Submodule.mem_comap, LinearMap.smul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `hstep v hv zv hzv`. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, LinearMap.smul_apply, hY]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_sup_right (Submodule.subset_span (hstateC B hB i hi x hx)))`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `hle (hdec z hz)`. Rewrite `h` using `[Submodule.mem_comap, LinearMap.smul_apply, map_smul, smul_smul, ← pow_add, ← hk]`. Conclude with `h`. Introduce `x hx`. Choose the witnesses or unpack the hypotheses as in `⟨B₀, hB₀card, hB₀⟩ : ∃ B₀ : Finset (Fin V), B₀.card = β + 1 ∧ ∀ u : Fin V, u ∈ B₀ ↔ (u : ℕ) < β + 1 := by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `⟨Finset.univ.map (Fin.castLEEmb hV), by simp, fun u => ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_map, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, rfl⟩`. Conclude with `p.isLt`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Introduce `h`. Conclude with `⟨⟨u, h⟩, Fin.ext rfl⟩`. Establish `hB₀top : top B₀ ≤ β`. Apply `Finset.sup_le` to reduce the goal to its premises. Introduce `u hu`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(hB₀ u).mp hu` as an intermediate fact. Use `show (u : ℕ) ≤ β`. Use linear arithmetic over natural numbers and integers. Establish `hi0 : (fun _ => 0) ∈ idx m B₀`. Rewrite using `[mem_idx]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u`. Conclude with `⟨fun _ => show 0 < m by omega, fun _ => rfl⟩`. Establish `hexpo0 : expo m B₀ (fun _ => 0) = fun _ => 0`. Use function extensionality and compare the values at `u`. Distinguish the cases in `hu : u ∈ B₀`.
-
-Establish `h1 : ¬((u : ℕ) < top B₀ ∧ u ∉ B₀)` using `fun h => h.2 hu`. Simplify using `[expo, h1, hu]`. Establish `h1 : ¬((u : ℕ) < top B₀)` using `fun h => hu ((hB₀ u).mpr (by omega))`. Simplify using `[expo, h1, hu]`. Establish `hacc0 : acc a b c m c₀ B₀ (fun _ => 0) = ∑ u ∈ B₀, b u`.
-
-Establish `h1 : ∀ u, accT a b c m c₀ B₀ (fun _ => 0) u = if u ∈ B₀ then b u else 0`. Introduce `u`. Distinguish the cases in `hu : u ∈ B₀`. Establish `h1 : ¬((u : ℕ) < top B₀ ∧ u ∉ B₀)` using `fun h => h.2 hu`. Simplify using `[accT, h1, hu]`.
-
-Establish `h1 : ¬((u : ℕ) < top B₀)` using `fun h => hu ((hB₀ u).mpr (by omega))`. Simplify using `[accT, h1, hu]`. Unfold `acc`. Rewrite using `[Finset.sum_congr rfl fun u _ => h1 u]`. Use `symm`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hle0 : ∑ u ∈ B₀, b u ≤ E`. Rewrite using `[← hacc0, hE]`. Use `hbnd B₀ (fun _ => 0) (fun u _ => show 0 < m by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Establish `hz0` using `enter_positionAt L π b hb B₀ x hx`. Establish `hmain` using `claim (m * V + 1) B₀ (fun _ => 0) hB₀card hi0 (by omega) _ hz0`. Establish `hone : ∀ w : X, (1 : Module.End R X) w = w` using `fun _ => rfl`. Rewrite `hmain` using `[hexpo0, lp_zero, hacc0, hone, smul_smul, ← pow_add, Nat.sub_add_cancel hle0]`. Conclude with `hmain`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : WalkSharp := by
 
@@ -973,7 +957,7 @@ theorem main : WalkSharp := by
 end WalkSharpP
 
 /- English proof (translation)
-The claim follows from `WalkSharpP.main`.
+A detailed English derivation is pending.
 -/
 theorem walkSharp_true : WalkSharp := WalkSharpP.main
 

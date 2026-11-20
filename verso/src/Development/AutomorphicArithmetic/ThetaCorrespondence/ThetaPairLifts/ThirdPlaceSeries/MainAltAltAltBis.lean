@@ -12,15 +12,15 @@ noncomputable section
 open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial
 namespace GlobalTheory.AlgCharFromGal
 /- English proof (translation)
-Introduce `D hA i π s z hz`. Take `⟨ρ, hc, h1, h2⟩` from `(_root_.UpperTheory.GalS.weak' hA i).2.2 π s (fun τ x hx => ⟨z τ, by`. Use `Multiset.mem_map_of_mem (fun y => y + (s : ℂ)) hx` as an intermediate fact. Rewrite using `[hz τ, Multiset.mem_singleton] at this⟩)` and apply the resulting hypothesis. Use `⟨ρ, hc, fun w hw hu B σ hB hσ => ?_, fun w hw => (h2 w hw).1, fun τ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu' : D.naut.unr (D.naut.wdOf i ρ w)`. Rewrite using `[h1 w hw]`. Conclude with `(D.naut.unr_tw _ _).2 hu`. Establish `e` using `D.naut.wdOf_frob i ρ w hw hc hu' B σ hB hσ`. Establish `hcard : Multiset.card (D.naut.frobEig (D.naut.wdOf i ρ w)) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[D.naut.frobEig_card _ hu', D.naut.wdOf_dim]`. Take `⟨α, hα⟩` from `Multiset.card_eq_one.1 hcard`. Rewrite `e` using `[hα, Multiset.map_singleton, Multiset.prod_singleton, charpoly_fin_one, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Rewrite using `[← h1 w hw, hα]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `e0` using `congrArg (fun p => p.coeff 0) e`. Simplify using `using e0.symm`. Take `⟨w, hw, hτ⟩` from `GlobalTheory.GaloisInputCompare.exists_inducesW D.nd i τ`. Apply `Multiset.map_injective (f := fun n : ℤ => (n : ℂ)) Int.cast_injective` to reduce the goal to its premises. Rewrite using `[(h2 w hw).2.2 τ hτ]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `hz ((D.naut.iotaQC i).toRingHom.comp τ)`. Rewrite using `[show (fun y : ℂ => -(y + (s : ℂ))) = (fun y => -y) ∘ (fun y => y + (s : ℂ)) from rfl, ← Multiset.map_map, e]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main_alt_alt_alt : ∀ D : D7, _root_.Formalism.MainNotions.SumRepresentations.adm2_alt D → GlobalTheory.JumpDictionaryFoundation.AlgebraicCharacter_at D := by
   intro D hA i π s z hz

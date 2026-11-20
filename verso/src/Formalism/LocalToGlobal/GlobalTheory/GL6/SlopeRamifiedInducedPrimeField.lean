@@ -15,9 +15,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K]
   [∀ i, DecidableEq (G i)]
 
 /- English proof (translation)
-Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hmaj]`. Simplify using `only [T2.kronMap_apply]`. Establish `hs` using `fun a : α => T2.sesq_sum_zsmul (isSesq_maj Wh.b Wh.X) v (fun b => t b a) F (fun c => t c a) F'`. Simplify using `only [hs]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, Matrix.mul_apply]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/
@@ -40,7 +40,7 @@ theorem majorant_kronecker_map (B Wh : HLat K) {α β : Type} [Fintype α] [Fint
   rfl
 
 /- English proof (translation)
-Establish `e` using `T2.kron_mu B Wh hB hW hW0 (Ψ ∘ₗ T2.kronMap K Wh.V (1 : Matrix α α ℤ)) (by rw [T2.kronMap_one]; exact hΨ) (1 * (1 : Matrix α α ℤ).transpose) (by simp) (majorant_kronecker_map B Wh Ψ hmaj 1)`. Rewrite `e` using `[T2.kronMap_one, LinearMap.comp_id, ← hL]`. Simplify using `using e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem slope_eq_of_isometric_sum (B Wh : HLat K) (hB : FrameOK B) (hW : Wh.Good) (hW0 : Wh.L ≠ ⊥)
     {α : Type} [Fintype α] [DecidableEq α] [Nonempty α]
@@ -55,17 +55,15 @@ theorem slope_eq_of_isometric_sum (B Wh : HLat K) (hB : FrameOK B) (hW : Wh.Good
   simpa using e
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional K Wh.V := Module.Finite.of_basis Wh.b`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F, hF, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL]`. Use `⟨T2.kronMap K Wh.V (T2.szVec G) F, fun a _ => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[T2.kronMap_apply]`. Conclude with `Submodule.sum_mem _ fun c _ => zsmul_mem (hF c (Set.mem_univ c)) _`. Use `show Ψ (T2.kronMap K Wh.V (T2.szVec G) F) ∈ U`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hU]`. Conclude with `Submodule.mem_map_of_mem (T2.kron_szVec_mem G F)`. Introduce and unpack `⟨hx, hxU⟩`. Rewrite `hx` using `[hL]`. Take `⟨F0, hF0, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxU' : Ψ F0 ∈ U` using `hxU`. Rewrite `hxU'` using `[hU]`. Take `⟨F1, hF1, he⟩` from `hxU'`. Establish `h01 : F1 = F0` using `hΨ he`. Substitute `h01` using the available equality.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hF1` using `[← T2.range_kron_szVec]`. Take `⟨F, hF⟩` from `hF1`. Use `⟨F, fun c _ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← T2.kron_szVec_pt (K := K) G F c, hF]`. Conclude with `hF0 _ (Set.mem_univ _)`.
-
-Use `show Ψ (T2.kronMap K Wh.V (T2.szVec G) F) = Ψ F1`. Rewrite using `[hF]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem induced_lattice_map_sz (B Wh : HLat K) (Ψ : ((∀ i, G i) → Wh.V) →ₗ[K] B.V) (hΨ : Function.Injective Ψ)
     (hL : B.L = (T2.piL (∀ i, G i) Wh.L).map (Ψ.restrictScalars (𝓞 K)))
@@ -101,9 +99,9 @@ theorem induced_lattice_map_sz (B Wh : HLat K) (Ψ : ((∀ i, G i) → Wh.V) →
       rw [hF]
 
 /- English proof (translation)
-Use `T2.nonempty_SzIdx G h2` as an intermediate fact. Use `haveI : Nonempty (∀ i, G i) := ⟨1⟩`. Establish `hinj : Function.Injective (Ψ ∘ₗ T2.kronMap K Wh.V (T2.szVec G))` using `hΨ.comp (T2.kron_szVec_injective G)`. Establish `e1` using `T2.kron_mu B Wh hB hW hW0 (Ψ ∘ₗ T2.kronMap K Wh.V (T2.szVec G)) hinj (T2.szVec G * (T2.szVec G).transpose) (by rw [T2.szVec_mul_transpose]; exact T2.det_szGram_pos G) (majorant_kronecker_map B Wh Ψ hmaj (T2.szVec G))`. Rewrite `e1` using `[induced_lattice_map_sz G B Wh Ψ hΨ hL U hU, T2.szVec_mul_transpose]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, slope_eq_of_isometric_sum B Wh hB hW hW0 Ψ hΨ hmaj hL]`.
+A detailed English derivation is pending.
 -/
 theorem slope_ramified_induced (B Wh : HLat K) (hB : FrameOK B) (hW : Wh.Good) (hW0 : Wh.L ≠ ⊥)
     (Ψ : ((∀ i, G i) → Wh.V) →ₗ[K] B.V) (hΨ : Function.Injective Ψ)
@@ -123,7 +121,7 @@ theorem slope_ramified_induced (B Wh : HLat K) (hB : FrameOK B) (hW : Wh.Good) (
   rw [e1, slope_eq_of_isometric_sum B Wh hB hW hW0 Ψ hΨ hmaj hL]
 
 /- English proof (translation)
-Rewrite using `[slope_ramified_induced G B Wh hB hW hW0 Ψ hΨ hmaj hL U hU (fun i => by rw [hG i]; omega), T2.log_det_szGram_div G q hq hG]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem slope_ramified_induced_prime_field (B Wh : HLat K) (hB : FrameOK B) (hW : Wh.Good) (hW0 : Wh.L ≠ ⊥)
     (Ψ : ((∀ i, G i) → Wh.V) →ₗ[K] B.V) (hΨ : Function.Injective Ψ)
@@ -149,7 +147,7 @@ def t2sPsi (B : HLat K) (ρ : (∀ i, G i) →* Module.End K B.V) (W : Submodule
   ∑ g, (ρ g).comp (W.subtype.comp (LinearMap.proj g))
 
 /- English proof (translation)
-Simplify using `[t2sPsi, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem t2sPsi_apply (B : HLat K) (ρ : (∀ i, G i) →* Module.End K B.V) (W : Submodule K B.V)
     (F : (∀ i, G i) → W) : t2sPsi B ρ W F = ∑ g, ρ g (F g : B.V) := by
@@ -159,9 +157,9 @@ def t2sNm (B : HLat K) (ρ : (∀ i, G i) →* Module.End K B.V) (i : ι) : Modu
   ∑ a : G i, ρ (Pi.mulSingle i a)
 
 /- English proof (translation)
-Rewrite using `[t2sPsi_apply, t2sPsi_apply, t2sNm, LinearMap.sum_apply]`. Simplify using `only [map_sum, Submodule.coe_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft (Pi.mulSingle i a)) (fun h => (ρ h) ((F ((Pi.mulSingle i a)⁻¹ * h) : W) : B.V))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft, inv_mul_cancel_left, map_mul, Module.End.mul_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_slice_map_sum (B : HLat K) (ρ : (∀ i, G i) →* Module.End K B.V) (W : Submodule K B.V) (i : ι)
     (F : (∀ i, G i) → W) :
@@ -177,9 +175,9 @@ theorem norm_slice_map_sum (B : HLat K) (ρ : (∀ i, G i) →* Module.End K B.V
   simp only [Equiv.coe_mulLeft, inv_mul_cancel_left, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Establish `e : ∀ h, ∑ a : G i, F ((Pi.mulSingle i a)⁻¹ * h) = ∑ a : G i, F (Pi.mulSingle i a * h)`. Introduce `h`. Rewrite using `[← Equiv.sum_comp (Equiv.inv (G i))]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `[Pi.mulSingle_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [e]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_inv_mulSingle_zero_iff (i : ι) {M : Type} [AddCommGroup M] (F : (∀ i, G i) → M) :
     (fun h => ∑ a : G i, F ((Pi.mulSingle i a)⁻¹ * h)) = 0 ↔
@@ -194,45 +192,41 @@ theorem sum_inv_mulSingle_zero_iff (i : ι) {M : Type} [AddCommGroup M] (F : (�
 variable [IsTotallyComplex K]
 
 /- English proof (translation)
-Use `haveI : Module.Finite K B.V := Module.Finite.of_basis B.b`. Establish `hsub : Function.Injective W.subtype` using `Subtype.val_injective`. Take `⟨hX, hm, -⟩` from `pull_spec1 B (Module.finBasis K W) W.subtype hB.1 hsub`. Use `set Ψ := t2sPsi B ρ W with hΨ`. Establish `hL : B.L = (T2.piL (∀ i, G i) (B.L.comap (W.subtype.restrictScalars (𝓞 K)))).map (Ψ.restrictScalars (𝓞 K))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨F, rfl⟩` from `hbij.2 x`. Conclude with `⟨F, fun g _ => (hLc F).1 hx g, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Introduce and unpack `⟨F, hF, rfl⟩`. Conclude with `(hLc F).2 fun g => hF g (Set.mem_univ g)`. Set `e` to `LinearEquiv.ofBijective Ψ hbij`. Set `π : B.V →ₗ[K] W` to `(LinearMap.proj (1 : ∀ i, G i)).comp e.symm.toLinearMap`. Establish `hπ : ∀ w : W, π (w : B.V) = w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Establish `h1 : Ψ (Pi.single 1 w) = (w : B.V)`. Rewrite using `[hΨ, t2sPsi_apply, Finset.sum_eq_single (1 : ∀ i, G i)]`. Simplify using the standard rewrite rules. Introduce `g _ hg`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hg]`. Simplify using the standard rewrite rules. Use `show (e.symm (w : B.V)) 1 = w`. Establish `h2 : e.symm (w : B.V) = Pi.single 1 w`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1.symm`. Rewrite using `[h2]`. Simplify using the standard rewrite rules. Establish `hπL : ∀ x ∈ B.L, π x ∈ B.L.comap (W.subtype.restrictScalars (𝓞 K))`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨F, rfl⟩` from `hbij.2 x`. Establish `h3 : π (Ψ F) = F 1` using `by show (e.symm (e F)) 1 = F 1`. Rewrite using `[LinearEquiv.symm_apply_apply]`. Rewrite using `[h3]`. Conclude with `(hLc F).1 hx 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨sub B W, ⟨hX, comap_fg W.subtype hsub hB.2.1, ?_⟩, ?_, Ψ, hbij.1, ?_, hL, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `w _`. Establish `hw : (w : B.V) ∈ Submodule.span K (B.L : Set B.V)` using `by rw [hB.2.2]; trivial`. Establish `h4` using `Submodule.mem_map_of_mem (f := π) hw`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h4` using `[Submodule.map_span, hπ]`. Use `Submodule.span_mono ?_ h4` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hπL x hx`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hB0` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite using `[Submodule.mem_bot]`. Take `⟨F, rfl⟩` from `hbij.2 x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hF : ∀ g, F g = 0`. Introduce `g`. Establish `h5 : (F g : B.V) ∈ B.L` using `(hLc F).1 hx g`. Establish `h6 : F g ∈ (sub B W).L` using `h5`. Rewrite `h6` using `[h0, Submodule.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h6`. Rewrite using `[t2sPsi_apply]`. Simplify using `[hF]`. Introduce `v F F'`. Rewrite using `[hΨ, t2sPsi_apply, t2sPsi_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs` using `T2.sesq_sum_zsmul (isSesq_maj B.b B.X) v (fun _ => (1 : ℤ)) (fun g => ρ g (F g : B.V)) (fun _ => (1 : ℤ)) (fun h => ρ h (F' h : B.V))`. Simplify using `only [one_smul, Int.cast_one, one_mul] at hs`. Rewrite using `[hs]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single g]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[horth, if_pos rfl, hm]`. Both sides reduce to the same expression. Introduce `h _ hgh`. Rewrite using `[horth, if_neg (Ne.symm hgh)]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨F, rfl⟩` from `hbij.2 x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨F, ?_, rfl⟩` and prove the remaining obligations. Simplify using `only [RamFun.ramFun, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `i`. Establish `h7` using `hx i`. Rewrite `h7` using `[norm_slice_map_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h8 : (fun h => ∑ a : G i, F ((Pi.mulSingle i a)⁻¹ * h)) = 0` using `hbij.1 (h7.trans (map_zero _).symm)`. Rewrite `h8` using `[sum_inv_mulSingle_zero_iff]`. Use function extensionality and compare the values at `h`. Use `congrFun h8 h` as an intermediate fact. Simplify using `only [RamFun.nmF, LinearMap.sum_apply, Finset.sum_apply, RamFun.trl_apply, Pi.zero_apply] at this ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Introduce and unpack `⟨F, hF, rfl⟩ i`. Simplify using `only [RamFun.ramFun, Submodule.mem_iInf, LinearMap.mem_ker] at hF`. Establish `h9` using `hF i`. Rewrite using `[norm_slice_map_sum]`.
-
-Establish `h10 : (fun h => ∑ a : G i, F (Pi.mulSingle i a * h)) = 0`. Use function extensionality and compare the values at `h`. Use `congrFun h9 h` as an intermediate fact. Simplify using `only [RamFun.nmF, LinearMap.sum_apply, Finset.sum_apply, RamFun.trl_apply, Pi.zero_apply] at this ⊢`. Conclude with `this`.
-
-Rewrite `h10` using `[← sum_inv_mulSingle_zero_iff]`. Use `show t2sPsi B ρ W (fun h => ∑ a : G i, F ((Pi.mulSingle i a)⁻¹ * h)) = 0`. Rewrite using `[h10, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem induced_of_slice (B : HLat K) (hB : B.Good) (hB0 : B.L ≠ ⊥)
     (ρ : (∀ i, G i) →* Module.End K B.V) (W : Submodule K B.V)
@@ -374,9 +368,9 @@ def InducedLattice : Prop :=
       (D.fm u).ramSub = (RamFun.ramFun D.what₂.LL (t2sG D u) Wh.V).map Ψ
 
 /- English proof (translation)
-Establish `h1` using `hS.1`. Establish `hf : 0 < D.R.f` using `by show 0 < 2 * D.R.n`. Establish `: 0 < D.R.n` using `by unfold Ranks.n; positivity`. Use linear arithmetic over natural numbers and integers. Establish `hN : 0 < D.R.N D.R.m` using `D.R.N_pos _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `: 1 ≤ D.R.f * D.R.N D.R.m` using `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero hf.ne' hN.ne')`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem three_le_level_prime (hS : Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u) : 3 ≤ (D.mem u).A.T := by
   have h1 := hS.1
@@ -389,9 +383,9 @@ theorem three_le_level_prime (hS : Formalism.MainNotions.product_first_zeroth_pa
   nlinarith
 
 /- English proof (translation)
-Take `⟨Wh, hW, hW0, Ψ, hΨ, hmaj, hL, hU⟩` from `h`. Establish `hB : FrameOK ((D.fm u).lat 0)` using `((D.fm u).lat_good 0).1`. Establish `hG : ∀ v, Fintype.card (t2sG D u v) = (D.mem u).A.T - 1` using `fun v => by`. Rewrite using `[Fintype.card_units, (D.mem u).A.card_Fv v]`. Establish `e` using `slope_ramified_induced_prime_field (t2sG D u) ((D.fm u).lat 0) Wh hB hW hW0 Ψ hΨ hmaj hL (D.fm u).ramSub hU (D.mem u).A.T (three_le_level_prime D u hS) hG`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[(D.mem u).A.card_vT]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slope_formula_of_induced (hS : Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u) (h : InducedLattice D u) : RamifiedSlopeFormula D u := by
   obtain ⟨Wh, hW, hW0, Ψ, hΨ, hmaj, hL, hU⟩ := h
@@ -412,9 +406,9 @@ variable (D : D7) (u : D.what₂.Word)
 open Classical
 
 /- English proof (translation)
-Rewrite using `[← (D.fm u).Fi_zero, ← ((D.fm u).emb_basis 0).2]`. Establish `hx` using `((D.fm u).lat 0).b.sum_repr x`. Rewrite using `[← hx, map_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem embedding_mem_forms_level_zero (x : ((D.fm u).lat 0).V) : (D.fm u).emb 0 x ∈ (D.mem u).A.Mu0 := by
   rw [← (D.fm u).Fi_zero, ← ((D.fm u).emb_basis 0).2]
@@ -425,11 +419,11 @@ theorem embedding_mem_forms_level_zero (x : ((D.fm u).lat 0).V) : (D.fm u).emb 0
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Establish `key : ∀ v x, (D.fm u).emb 0 (t2sNm ((D.fm u).lat 0) ρ v x) = (D.mem u).A.Nm v ((D.fm u).emb 0 x)`. Introduce `v x`. Simplify using `only [t2sNm, ColumnsAtT.Nm, LinearMap.sum_apply, map_sum, hρ]`. Use extensionality with `x`. Simplify using `only [MemberForms.ramSub, Submodule.mem_comap, ColumnsAtT.Mram, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩ v`. Apply `(D.fm u).emb_inj 0` to reduce the goal to its premises. Rewrite using `[key, h v, map_zero]`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨embedding_mem_forms_level_zero D u x, fun v => by rw [← key, h v, map_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem ramified_sub_eq_inf_norm_ker (ρ : (∀ v, t2sG D u v) →* Module.End D.what₂.LL ((D.fm u).lat 0).V)
     (hρ : ∀ v a x, (D.fm u).emb 0 (ρ (Pi.mulSingle v a) x) = (D.mem u).A.rhoT v a ((D.fm u).emb 0 x)) :
@@ -448,7 +442,7 @@ theorem ramified_sub_eq_inf_norm_ker (ρ : (∀ v, t2sG D u v) →* Module.End D
     exact ⟨embedding_mem_forms_level_zero D u x, fun v => by rw [← key, h v, map_zero]⟩
 
 /- English proof (translation)
-Take `⟨Wh, hW, hW0, Ψ, hΨ, hmaj, hL, hU⟩` from `induced_of_slice ((D.fm u).lat 0) ((D.fm u).lat_good 0) hL0 ρ W hbij horth hLc`. Conclude with `slope_formula_of_induced D u hS ⟨Wh, hW, hW0, Ψ, hΨ, hmaj, hL, (ramified_sub_eq_inf_norm_ker D u ρ hρ).trans hU⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem slope_formula_of_slice (hS : Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u)
     (ρ : (∀ v, t2sG D u v) →* Module.End D.what₂.LL ((D.fm u).lat 0).V)
@@ -483,7 +477,7 @@ def t2sDesc (e : V →ₛₗ[σ] Y) (he : Function.Injective e) (R : Y →ₗ[�
       map_smul])
 
 /- English proof (translation)
-The claim follows from `(hR x).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem t2sDesc_spec (e : V →ₛₗ[σ] Y) (he : Function.Injective e) (R : Y →ₗ[ℂ] Y) (hR : ∀ x, ∃ y, e y = R (e x))
     (x : V) : e (t2sDesc e he R hR x) = R (e x) := (hR x).choose_spec
@@ -497,11 +491,11 @@ variable {D : D7} {u : D.what₂.Word}
 open Classical Formalism.L2.Forms
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span D.what₂.LL (((D.fm u).lat 0).L : Set ((D.fm u).lat 0).V)`. Rewrite using `[((D.fm u).lat_good 0).2.2]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Take `⟨y, -, hy⟩` from `(D.fm u).rhoT_lat v a x hx`. Conclude with `⟨y, hy⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x x' _ _ hx hx'`. Take `⟨y, hy⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨y', hy'⟩` from `hx'`. Conclude with `⟨y + y', by rw [map_add, hy, hy', map_add, map_add]⟩`. Consider the case `smul c x _ hx`. Take `⟨y, hy⟩` from `hx`. Conclude with `⟨c • y, by rw [map_smulₛₗ, hy, map_smulₛₗ, map_smul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rho_preserves_rational_forms (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) (x : ((D.fm u).lat 0).V) :
     ∃ y, (D.fm u).emb 0 y = (D.mem u).A.rhoT v a ((D.fm u).emb 0 x) := by
@@ -533,22 +527,22 @@ def t2sRv (v : (D.mem u).A.vT) : ((D.mem u).A.Fv v)ˣ →* Module.End D.what₂.
     rw [t2sDesc_spec, map_mul, Module.End.mul_apply, Module.End.mul_apply, t2sDesc_spec, t2sDesc_spec]
 
 /- English proof (translation)
-The claim follows from `t2sDesc_spec _ ((D.fm u).emb_inj 0) _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem t2sRv_spec (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) (x : ((D.fm u).lat 0).V) :
     (D.fm u).emb 0 (t2sRv v a x) = (D.mem u).A.rhoT v a ((D.fm u).emb 0 x) :=
   t2sDesc_spec _ ((D.fm u).emb_inj 0) _ _ x
 
 /- English proof (translation)
-Rewrite using `[(D.fm u).Fi_zero]`. Conclude with `embedding_mem_forms_level_zero D u x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embedding_mem_forms (x : ((D.fm u).lat 0).V) : (D.fm u).emb 0 x ∈ (D.fm u).Fi 0 := by
   rw [(D.fm u).Fi_zero]; exact embedding_mem_forms_level_zero D u x
 
 /- English proof (translation)
-Introduce `v v' hvv a b`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Apply `(D.fm u).emb_inj 0` to reduce the goal to its premises. Use `show (D.fm u).emb 0 (t2sRv v a (t2sRv v' b x)) = (D.fm u).emb 0 (t2sRv v' b (t2sRv v a x))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[t2sRv_spec, t2sRv_spec, t2sRv_spec, t2sRv_spec]`. Use `diamond_comm_distinct_places Tf hE 0 (Nat.zero_le _) v' v (Ne.symm hvv) a b ((D.fm u).emb 0 x) (embedding_mem_forms x)` as an intermediate fact. Rewrite `this` using `[diamond_eq_rho, diamond_eq_rho, diamond_eq_rho, diamond_eq_rho]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem t2sRv_comm (Tf : FormsTied D u) (hE : DiamondElementsExist Tf) :
     Pairwise fun v v' => ∀ x y, Commute (t2sRv (D := D) (u := u) v x) (t2sRv v' y) := by
@@ -566,7 +560,7 @@ def t2sRho (Tf : FormsTied D u) (hE : DiamondElementsExist Tf) :
   MonoidHom.noncommPiCoprod t2sRv (t2sRv_comm Tf hE)
 
 /- English proof (translation)
-Rewrite using `[t2sRho, MonoidHom.noncommPiCoprod_mulSingle, t2sRv_spec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem t2sRho_single (Tf : FormsTied D u) (hE : DiamondElementsExist Tf) (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ)
     (x : ((D.fm u).lat 0).V) :
@@ -587,7 +581,7 @@ def t2sDv (v : (D.mem u).A.vT) : ((D.mem u).A.Fv v)ˣ →* Function.End ((D.mem 
   map_mul' a b := by funext c; exact (D.fm u).dil_mul 0 v a b c
 
 /- English proof (translation)
-Introduce `v v' hvv a b`. Use function extensionality and compare the values at `c`. Take `⟨ka, hka, δa, ha⟩` from `hE 0 (Nat.zero_le _) v a`. Take `⟨kb, hkb, δb, hb⟩` from `hE 0 (Nat.zero_le _) v' b`. Conclude with `dilation_commute_distinct Tf v v' hvv _ _ ka kb hka hkb δa δb ha hb c`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem t2sDv_comm (Tf : FormsTied D u) (hE : DiamondElementsExist Tf) :
     Pairwise fun v v' => ∀ x y, Commute (t2sDv (D := D) (u := u) v x) (t2sDv v' y) := by
@@ -601,7 +595,7 @@ def t2sAc (Tf : FormsTied D u) (hE : DiamondElementsExist Tf) : (∀ v, t2sG D u
   MonoidHom.noncommPiCoprod t2sDv (t2sDv_comm Tf hE)
 
 /- English proof (translation)
-Rewrite using `[t2sAc, MonoidHom.noncommPiCoprod_mulSingle]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem t2sAc_single (Tf : FormsTied D u) (hE : DiamondElementsExist Tf) (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ)
     (c : (D.mem u).C.cls 0) : t2sAc Tf hE (Pi.mulSingle v a) c = (D.fm u).dil 0 v a c := by
@@ -609,18 +603,18 @@ theorem t2sAc_single (Tf : FormsTied D u) (hE : DiamondElementsExist Tf) (v : (D
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem group_action_mul (Tf : FormsTied D u) (hE : DiamondElementsExist Tf) (g h : ∀ v, t2sG D u v) (c : (D.mem u).C.cls 0) :
     t2sAc Tf hE (g * h) c = t2sAc Tf hE g (t2sAc Tf hE h c) := by
   rw [map_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[← Finset.univ_prod_mulSingle g]`. Use `Finset.prod_induction (fun i => Pi.mulSingle i (g i)) (fun g : ∀ v, t2sG D u v => ∀ c : (D.mem u).C.cls 0, ∃ e : ((D.mem u).C.Y 0 → ℂ) ≃ₗ[ℂ] ((D.mem u).C.Y 0 → ℂ), ∀ x, (D.fm u).emb 0 (t2sRho Tf hE g x) c = e ((D.fm u).emb 0 x (t2sAc Tf hE g c))) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a b ha hb c`. Take `⟨ea, hea⟩` from `ha c`. Take `⟨eb, heb⟩` from `hb (t2sAc Tf hE a c)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨eb.trans ea, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Module.End.mul_apply, hea, heb, mul_comm a b, group_action_mul]`. Both sides reduce to the same expression. Introduce `c`. Use `⟨LinearEquiv.refl ℂ _, fun x => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_one, map_one]`. Both sides reduce to the same expression. Introduce `v _ c`. Use `⟨(D.fm u).dilT 0 v (g v) c, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[t2sRho_single, (D.fm u).rhoT_dil, t2sAc_single]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem group_rep_transport_value (Tf : FormsTied D u) (hE : DiamondElementsExist Tf) (g : ∀ v, t2sG D u v) :
     ∀ c : (D.mem u).C.cls 0, ∃ e : ((D.mem u).C.Y 0 → ℂ) ≃ₗ[ℂ] ((D.mem u).C.Y 0 → ℂ),
@@ -647,7 +641,7 @@ def t2sPc [Fact (D.mem u).A.T.Prime] : (∀ v, t2sG D u v) ≃* ((D.mem u).A.vT 
   MulEquiv.piCongrRight fun v => t2xU v
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [t2sPc, MulEquiv.piCongrRight_apply]`. Break down `eq_or_ne w v with rfl | h` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[Pi.mulSingle_eq_of_ne h]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem t2sPc_single [Fact (D.mem u).A.T.Prime] (v : (D.mem u).A.vT) (a : ((D.mem u).A.Fv v)ˣ) :
     t2sPc (D := D) (u := u) (Pi.mulSingle v a) = Pi.mulSingle v (t2xU v a) := by
@@ -658,9 +652,9 @@ theorem t2sPc_single [Fact (D.mem u).A.T.Prime] (v : (D.mem u).A.vT) (a : ((D.me
   · simp [Pi.mulSingle_eq_of_ne h]
 
 /- English proof (translation)
-Rewrite using `[← Finset.univ_prod_mulSingle g]`. Use `Finset.prod_induction (fun i => Pi.mulSingle i (g i)) (fun g : ∀ v, t2sG D u v => ∀ c, t2sAc Tf hE g c = t2xAc Tf hE (t2sPc g) c) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a b ha hb c`. Rewrite using `[group_action_mul, hb, ha, map_mul, map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `c`. Rewrite using `[map_one, map_one, map_one]`. Introduce `v _ c`. Rewrite using `[t2sAc_single, t2sPc_single, group_action_mulSingle_eq_dilation, MulEquiv.symm_apply_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem group_action_eq_unit_action [Fact (D.mem u).A.T.Prime] (Tf : FormsTied D u) (hE : DiamondElementsExist Tf) (g : ∀ v, t2sG D u v) :
     ∀ c, t2sAc Tf hE g c = t2xAc Tf hE (t2sPc g) c := by
@@ -676,7 +670,7 @@ theorem group_action_eq_unit_action [Fact (D.mem u).A.T.Prime] (Tf : FormsTied D
     rw [t2sAc_single, t2sPc_single, group_action_mulSingle_eq_dilation, MulEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Use `haveI : Fact (D.mem u).A.T.Prime := ⟨(D.mem u).A.T_prime⟩`. Establish `h1` using `group_acts_freely_classes Tf hS hE (t2sPc g) c (by rw [← group_action_eq_unit_action]; exact h)`. Conclude with `t2sPc.injective (h1.trans (map_one _).symm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem group_acts_freely_classes' (Tf : FormsTied D u) (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) (hE : DiamondElementsExist Tf) (g : ∀ v, t2sG D u v)
     (c : (D.mem u).C.cls 0) (h : t2sAc Tf hE g c = c) : g = 1 := by
@@ -693,13 +687,11 @@ variable {D : D7} {u : D.what₂.Word}
 open Classical Formalism.L2.Forms
 
 /- English proof (translation)
-Establish `hr` using `((Tf.val 0 (Nat.zero_le _)).rat ((D.fm u).emb 0 x)).1 ⟨x, rfl⟩`. Establish `h0 : (D.fm u).emb 0 x ∈ (D.mem u).A.Mu0` using `by rw [← (D.fm u).Fi_zero]; exact hr.1`. Rewrite `h0` using `[mem_forms_level_zero_iff Tf hS]`. Use `((Tf.val 0 (Nat.zero_le _)).rat _).2 ⟨?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[(D.fm u).Fi_zero, mem_forms_level_zero_iff Tf hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `c`. Distinguish the cases in `hc : S c`. Simplify using `only [hc, if_true]`. Conclude with `h0 c`. Simplify using `only [hc, if_false]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Conclude with `(levelZeroValues Tf).zero_mem`. Distinguish the cases in `hc : S c`. Simplify using `only [hc, if_true]`. Conclude with `hr.2 c`. Use `⟨0, zero_mem _, fun z => ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [hc, if_false, map_zero, Pi.zero_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem restriction_rational_form (Tf : FormsTied D u) (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) (x : ((D.fm u).lat 0).V)
     (S : (D.mem u).C.cls 0 → Prop) :
@@ -719,17 +711,17 @@ theorem restriction_rational_form (Tf : FormsTied D u) (hS : Formalism.MainNotio
       simp only [hc, if_false, map_zero, Pi.zero_apply]
 
 /- English proof (translation)
-Introduce `h0`. Establish `hV : ∀ x : ((D.fm u).lat 0).V, x = 0`. Introduce `x`. Establish `hx : x ∈ Submodule.span D.what₂.LL (((D.fm u).lat 0).L : Set ((D.fm u).lat 0).V)`. Rewrite using `[((D.fm u).lat_good 0).2.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Rewrite `hx` using `[h0, Submodule.bot_coe, Submodule.span_zero_singleton]`. Conclude with `(Submodule.mem_bot _).1 hx`. Take `⟨c0, -⟩` from `(Tf.cls 0 (Nat.zero_le _)).y_bij.2 (Quotient.mk'' 1)`. Take `⟨w, hw, hw0⟩` from `level_zero_values_ne_bot Tf`.
+Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : (Pi.single c0 w : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ) ∈ (D.mem u).A.Mu0`. Rewrite using `[mem_forms_level_zero_iff Tf hS]`. Introduce `c`. Distinguish the cases in `hc : c = c0`. Substitute `hc` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_same]`. Conclude with `hw`. Rewrite using `[Pi.single_eq_of_ne hc]`. Conclude with `(levelZeroValues Tf).zero_mem`. Rewrite `hmem` using `[← (D.fm u).Fi_zero, ← ((D.fm u).emb_basis 0).2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hsp : Submodule.span ℂ (Set.range fun a => (D.fm u).emb 0 (((D.fm u).lat 0).b a)) = ⊥`. Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨a, rfl⟩`. Use `show (D.fm u).emb 0 (((D.fm u).lat 0).b a) = 0`. Rewrite using `[hV (((D.fm u).lat 0).b a), map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hmem` using `[hsp, Submodule.mem_bot]`. Apply `hw0` to reduce the goal to its premises. Use `congrFun hmem c0` as an intermediate fact. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem lattice_level_zero_ne_bot (Tf : FormsTied D u) (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) : ((D.fm u).lat 0).L ≠ ⊥ := by
   intro h0
@@ -771,20 +763,20 @@ def t2sRep (c : (D.mem u).C.cls 0) : (D.mem u).C.cls 0 :=
   (Quotient.mk (t2sSetoid Tf hE) c).out
 
 /- English proof (translation)
-The claim follows from `Quotient.mk_out (s := t2sSetoid Tf hE) c`.
+A detailed English derivation is pending.
 -/
 theorem t2sRep_spec (c : (D.mem u).C.cls 0) : ∃ g, t2sAc Tf hE g c = t2sRep Tf hE c :=
   Quotient.mk_out (s := t2sSetoid Tf hE) c
 
 /- English proof (translation)
-Unfold `t2sRep`. Rewrite using `[Quotient.sound (s := t2sSetoid Tf hE) h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem t2sRep_eq {a b : (D.mem u).C.cls 0} (h : ∃ g, t2sAc Tf hE g b = a) : t2sRep Tf hE a = t2sRep Tf hE b := by
   unfold t2sRep
   rw [Quotient.sound (s := t2sSetoid Tf hE) h]
 
 /- English proof (translation)
-The claim follows from `t2sRep_eq Tf hE ⟨g, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem t2sRep_ac (g) (c : (D.mem u).C.cls 0) : t2sRep Tf hE (t2sAc Tf hE g c) = t2sRep Tf hE c :=
   t2sRep_eq Tf hE ⟨g, rfl⟩
@@ -792,15 +784,15 @@ theorem t2sRep_ac (g) (c : (D.mem u).C.cls 0) : t2sRep Tf hE (t2sAc Tf hE g c) =
 def t2sH (c : (D.mem u).C.cls 0) : ∀ v, t2sG D u v := (t2sRep_spec Tf hE c).choose
 
 /- English proof (translation)
-The claim follows from `(t2sRep_spec Tf hE c).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem class_rep_group_elem_spec (c : (D.mem u).C.cls 0) : t2sAc Tf hE (t2sH Tf hE c) c = t2sRep Tf hE c :=
   (t2sRep_spec Tf hE c).choose_spec
 
 /- English proof (translation)
-Establish `h1 : t2sAc Tf hE (g⁻¹ * g') c = c`. Rewrite using `[group_action_mul, ← h, ← group_action_mul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression. Establish `h2` using `group_acts_freely_classes' Tf hS hE _ c h1`. Rewrite `h2` using `[inv_mul_eq_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem group_action_injective (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) {g g' : ∀ v, t2sG D u v} {c : (D.mem u).C.cls 0}
     (h : t2sAc Tf hE g c = t2sAc Tf hE g' c) : g = g' := by
@@ -811,7 +803,7 @@ theorem group_action_injective (hS : Formalism.MainNotions.product_first_zeroth_
   exact h2
 
 /- English proof (translation)
-The claim follows from `group_action_injective Tf hE hS (h.trans (class_rep_group_elem_spec Tf hE c).symm)`.
+A detailed English derivation is pending.
 -/
 theorem class_rep_group_elem_unique (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) {g : ∀ v, t2sG D u v} {c : (D.mem u).C.cls 0}
     (h : t2sAc Tf hE g c = t2sRep Tf hE c) : g = t2sH Tf hE c :=
@@ -824,9 +816,9 @@ def t2sW : Submodule D.what₂.LL ((D.fm u).lat 0).V where
   smul_mem' r x hx c hc := by rw [map_smulₛₗ, Pi.smul_apply, hx c hc, smul_zero]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `group_rep_transport_value Tf hE g c`. Rewrite using `[he]`. Establish `hn : t2sRep Tf hE (t2sAc Tf hE g c) ≠ t2sAc Tf hE g c`. Introduce `h`. Rewrite `h` using `[t2sRep_ac]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hg (class_rep_group_elem_unique Tf hE hS h.symm)`. Rewrite using `[(F g).2 _ hn, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice_value_off_summand (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) (F : (∀ v, t2sG D u v) → t2sW Tf hE) (g : ∀ v, t2sG D u v)
     (c : (D.mem u).C.cls 0) (hg : g ≠ t2sH Tf hE c) :
@@ -840,7 +832,7 @@ theorem slice_value_off_summand (hS : Formalism.MainNotions.product_first_zeroth
   rw [(F g).2 _ hn, map_zero]
 
 /- English proof (translation)
-Rewrite using `[t2sPsi_apply, map_sum, Finset.sum_apply, Finset.sum_eq_single (t2sH Tf hE c)]`. Introduce `g _ hg`. Conclude with `slice_value_off_summand Tf hE hS F g c hg`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem slice_map_value_at_class (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) (F : (∀ v, t2sG D u v) → t2sW Tf hE) (c : (D.mem u).C.cls 0) :
     (D.fm u).emb 0 (t2sPsi ((D.fm u).lat 0) (t2sRho Tf hE) (t2sW Tf hE) F) c =
@@ -851,25 +843,21 @@ theorem slice_map_value_at_class (hS : Formalism.MainNotions.product_first_zerot
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `F F' hFF`. Establish `hz : ∀ F0 : (∀ v, t2sG D u v) → t2sW Tf hE, t2sPsi ((D.fm u).lat 0) (t2sRho Tf hE) (t2sW Tf hE) F0 = 0 → F0 = 0`. Introduce `F0 h0`. Use function extensionality and compare the values at `g`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `(D.fm u).emb_inj 0` to reduce the goal to its premises. Use function extensionality and compare the values at `r`. Use `show (D.fm u).emb 0 (F0 g : ((D.fm u).lat 0).V) r = (D.fm u).emb 0 0 r`. Rewrite using `[map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hr : t2sRep Tf hE r = r`. Use `set c := t2sAc Tf hE g⁻¹ r with hc`. Establish `hgc : t2sAc Tf hE g c = r`. Rewrite using `[hc, ← group_action_mul, mul_inv_cancel, map_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrep : t2sAc Tf hE g c = t2sRep Tf hE c`. Rewrite using `[hgc, hc, t2sRep_ac, hr]`. Establish `hH` using `class_rep_group_elem_unique Tf hE hS hrep`. Establish `h1` using `slice_map_value_at_class Tf hE hS F0 c`. Rewrite `h1` using `[h0, map_zero, ← hH]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨e, he⟩` from `group_rep_transport_value Tf hE g c`. Rewrite `h1` using `[he, hgc]`. Establish `h2` using `congrFun h1.symm`. Conclude with `(e.map_eq_zero_iff).1 (funext fun z => by simpa using congrFun h1.symm z)`. Conclude with `(F0 g).2 r hr`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hz (F - F') (by rw [map_sub, hFF, sub_self])` as an intermediate fact. Conclude with `sub_eq_zero.1 this`. Introduce `x`. Establish `hy` using `fun g : ∀ v, t2sG D u v => restriction_rational_form Tf hS x (fun c => t2sH Tf hE c = g)`. Use `choose y hy using hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : ∀ g, t2sRho Tf hE g⁻¹ (y g) ∈ t2sW Tf hE`. Introduce `g c hc`. Take `⟨e, he⟩` from `group_rep_transport_value Tf hE g⁻¹ c`. Rewrite using `[he, hy g]`. Establish `hne : t2sH Tf hE (t2sAc Tf hE g⁻¹ c) ≠ g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Establish `h1` using `class_rep_group_elem_spec Tf hE (t2sAc Tf hE g⁻¹ c)`. Rewrite `h1` using `[h, ← group_action_mul, mul_inv_cancel, map_one, t2sRep_ac]`. Conclude with `hc h1.symm`. Simplify using `only [hne, if_false, map_zero]`.
-
-Use `⟨fun g => ⟨_, hmem g⟩, ?_⟩` and prove the remaining obligations. Apply `(D.fm u).emb_inj 0` to reduce the goal to its premises. Use function extensionality and compare the values at `c`. Rewrite using `[slice_map_value_at_class Tf hE hS]`. Use `show (D.fm u).emb 0 (t2sRho Tf hE (t2sH Tf hE c) (t2sRho Tf hE (t2sH Tf hE c)⁻¹ (y (t2sH Tf hE c)))) c = _`.
-
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply, hy]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem slice_map_bijective (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) :
     Function.Bijective (t2sPsi ((D.fm u).lat 0) (t2sRho Tf hE) (t2sW Tf hE)) := by
@@ -922,11 +910,11 @@ theorem slice_map_bijective (hS : Formalism.MainNotions.product_first_zeroth_par
     simp
 
 /- English proof (translation)
-Rewrite using `[← Finset.univ_prod_mulSingle g]`. Use `Finset.prod_induction (fun i => Pi.mulSingle i (g i)) (fun g : ∀ v, t2sG D u v => ∀ x ∈ ((D.fm u).lat 0).L, t2sRho Tf hE g x ∈ ((D.fm u).lat 0).L) ?_ ?_ ?_` and prove the remaining obligations. Introduce `a b ha hb x hx`. Rewrite using `[map_mul, Module.End.mul_apply]`. Conclude with `ha _ (hb x hx)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite using `[map_one]`. Conclude with `hx`. Introduce `v _ x hx`. Take `⟨y, hyL, hy⟩` from `(D.fm u).rhoT_lat v (g v) x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: y = t2sRho Tf hE (Pi.mulSingle v (g v)) x` using `(D.fm u).emb_inj 0 (by rw [hy, t2sRho_single])`. Rewrite using `[← this]`. Conclude with `hyL`.
+A detailed English derivation is pending.
 -/
 theorem group_rep_preserves_lattice (g : ∀ v, t2sG D u v) : ∀ x ∈ ((D.fm u).lat 0).L, t2sRho Tf hE g x ∈ ((D.fm u).lat 0).L := by
   rw [← Finset.univ_prod_mulSingle g]
@@ -951,23 +939,23 @@ def t2sQ (c : (D.mem u).C.cls 0) (f : (D.mem u).C.Y 0 → ℂ) : Prop :=
         ((Tf.val 0 (Nat.zero_le _)).eY z)
 
 /- English proof (translation)
-Introduce `w B _` and use `⟨0, zero_mem _, fun z => by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem local_integral_zero (c : (D.mem u).C.cls 0) : t2sQ Tf c 0 := fun w B _ => ⟨0, zero_mem _, fun z => by simp⟩
 
 /- English proof (translation)
-Rewrite using `[(Tf.val 0 (Nat.zero_le _)).lat x]`. Conclude with `⟨fun h c w B hB => h w c B hB, fun h w c B hB => h c w B hB⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_lattice_iff_local (x : ((D.fm u).lat 0).V) : x ∈ ((D.fm u).lat 0).L ↔ ∀ c, t2sQ Tf c ((D.fm u).emb 0 x c) := by
   rw [(Tf.val 0 (Nat.zero_le _)).lat x]
   exact ⟨fun h c w B hB => h w c B hB, fun h w c B hB => h c w B hB⟩
 
 /- English proof (translation)
-Establish `hρ : ∀ g, (F g : ((D.fm u).lat 0).V) ∈ ((D.fm u).lat 0).L ↔ t2sRho Tf hE g (F g : ((D.fm u).lat 0).V) ∈ ((D.fm u).lat 0).L`. Introduce `g`. Use `⟨group_rep_preserves_lattice Tf hE g _, fun h => ?_⟩` and prove the remaining obligations. Use `group_rep_preserves_lattice Tf hE g⁻¹ _ h` as an intermediate fact. Rewrite `this` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [hρ, mem_lattice_iff_local Tf, slice_map_value_at_class Tf hE hS]`. Prove the components needed by the constructor for the conclusion. Introduce `h g c`. Distinguish the cases in `hg : g = t2sH Tf hE c`. Substitute `hg` using the available equality.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `h c`. Rewrite using `[slice_value_off_summand Tf hE hS F g c hg]`. Conclude with `local_integral_zero Tf c`. Introduce `h c`. Conclude with `h _ c`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem slice_mem_lattice_iff (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) (F : (∀ v, t2sG D u v) → t2sW Tf hE) :
     t2sPsi ((D.fm u).lat 0) (t2sRho Tf hE) (t2sW Tf hE) F ∈ ((D.fm u).lat 0).L ↔
@@ -996,7 +984,7 @@ variable (D : D7) (u : D.what₂.Word)
 open Classical Formalism.L2.Forms
 
 /- English proof (translation)
-The claim follows from `slope_formula_of_slice D u hS (t2sRho Tf hE) (fun v a x => t2sRho_single Tf hE v a x) W hbij horth hLc hL0`.
+A detailed English derivation is pending.
 -/
 theorem slope_formula_of_compatible_slice (hS : Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u) (Tf : FormsTied D u) (hE : DiamondElementsExist Tf)
     (W : Submodule D.what₂.LL ((D.fm u).lat 0).V)
@@ -1031,9 +1019,9 @@ def DiamondIsometry : Prop :=
 variable {D u}
 
 /- English proof (translation)
-Rewrite using `[← Finset.univ_prod_mulSingle g]`. Use `Finset.prod_induction (fun i => Pi.mulSingle i (g i)) (fun g : ∀ v, t2sG D u v => ∀ (v : InfinitePlace D.what₂.LL) (x y : ((D.fm u).lat 0).V), majAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v (t2sRho Tf hE g x) (t2sRho Tf hE g y) = majAt ((D.fm u).lat 0).b ((D.fm u).lat 0).X v x y) …` and prove the remaining obligations. Introduce `a b ha hb v x y`. Rewrite using `[map_mul, Module.End.mul_apply, Module.End.mul_apply, ha, hb]`. Introduce `v x y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_one]`. Both sides reduce to the same expression. Introduce `w _ v x y`. Rewrite using `[t2sRho, MonoidHom.noncommPiCoprod_mulSingle]`. Conclude with `hI v w (g w) x y`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem group_rep_majorant_isometry (hI : DiamondIsometry D u) (Tf : FormsTied D u) (hE : DiamondElementsExist Tf) (g : ∀ v, t2sG D u v) :
     ∀ (v : InfinitePlace D.what₂.LL) (x y : ((D.fm u).lat 0).V),
@@ -1053,11 +1041,9 @@ theorem group_rep_majorant_isometry (hI : DiamondIsometry D u) (Tf : FormsTied D
     exact hI v w (g w) x y
 
 /- English proof (translation)
-Introduce `v g h x y`. Distinguish the cases in `hgh : g = h`. Substitute `hgh` using the available equality. Apply the tactic sequence `rw [if_pos rfl, group_rep_majorant_isometry hI Tf hE]`. Rewrite using `[if_neg hgh]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hO` to reduce the goal to its premises. Introduce `c`. Distinguish the cases in `hc : g = t2sH Tf hE c`. Use `right`. Conclude with `slice_value_off_summand Tf hE hS (fun _ => y) h c (fun e => hgh (hc.trans e.symm))`.
-
-Use `left`. Conclude with `slice_value_off_summand Tf hE hS (fun _ => x) g c hc`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem slice_summands_orthogonal (hS : Formalism.MainNotions.product_first_zeroth_parts.admS D u) (hO : MetricOrthogonalClasses D u) (hI : DiamondIsometry D u) (Tf : FormsTied D u)
     (hE : DiamondElementsExist Tf) :
@@ -1079,7 +1065,7 @@ theorem slice_summands_orthogonal (hS : Formalism.MainNotions.product_first_zero
       exact slice_value_off_summand Tf hE hS (fun _ => x) g c hc
 
 /- English proof (translation)
-The claim follows from `slope_formula_of_compatible_slice D u hS Tf hE (t2sW Tf hE) (slice_map_bijective Tf hE hA) (slice_summands_orthogonal hA hO hI Tf hE) (slice_mem_lattice_iff Tf hE hA) (lattice_level_zero_ne_bot Tf hA)`.
+A detailed English derivation is pending.
 -/
 theorem slope_formula_of_diamonds (hS : Formalism.MainNotions.product_first_zeroth_parts.HidaSetting D u) (Tf : FormsTied D u) (hA : Formalism.MainNotions.product_first_zeroth_parts.admS D u) (hE : DiamondElementsExist Tf)
     (hO : MetricOrthogonalClasses D u) (hI : DiamondIsometry D u) : RamifiedSlopeFormula D u :=

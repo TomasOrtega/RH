@@ -8,11 +8,11 @@ open scoped TensorProduct
 universe u
 
 /- English proof (translation)
-Establish `hiso : ∀ {X Y : Over S} (e : X ≅ Y), Smooth Y.hom → Smooth X.hom`. Introduce `X Y e h`. Rewrite using `[← Over.w e.hom]`. Establish `: IsIso e.hom.left` using `inferInstanceAs (IsIso ((Over.forget S).mapIso e).hom)`. Use `infer_instance`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : ∀ (Y Z : Over S), Smooth Y.hom → Smooth Z.hom → Smooth (Y ⨯ Z).hom`. Introduce `Y Z hY hZ`. Rewrite using `[← Over.w (prod.snd (X := Y) (Y := Z)), ← Over.prodLeftIsoPullback_hom_snd]`. Use `infer_instance`. Proceed by induction on `k with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero`. Conclude with `hiso (((isLimitEquivIsTerminalOfIsEmpty _ _) (productIsProduct _)).uniqueUpToIso Over.mkIdTerminal) (by dsimp; infer_instance)`. Consider the case `succ k ih`. Conclude with `hiso ((productIsProduct _).conePointUniqueUpToIso (extendFanIsLimit _ (productIsProduct fun _ : Fin k => A) (prodIsProd _ _))) (hprod _ _ hA ih)`.
+A detailed English derivation is pending.
 -/
 private lemma smooth_pow_hom {S : Scheme.{0}} (A : Over S) (hA : Smooth A.hom) (k : ℕ) :
     Smooth (GlobalTheory.KS.pow A k).hom := by
@@ -34,9 +34,7 @@ private lemma smooth_pow_hom {S : Scheme.{0}} (A : Over S) (hA : Smooth A.hom) (
       (extendFanIsLimit _ (productIsProduct fun _ : Fin k => A) (prodIsProd _ _))) (hprod _ _ hA ih)
 
 /- English proof (translation)
-Introduce `hG p _ D R _ _ gb N X k`. Take `⟨hs, hsep, -, hproj⟩` from `hG p D R gb N X`. Use `haveI := hs`. Use `haveI := hsep`. Use `haveI : Smooth X.univ.A.hom := X.univ.ab.smooth`.
-
-Use `haveI : Smooth (GlobalTheory.KS.pow X.univ.A k).hom := smooth_pow_hom _ inferInstance k`. Use `haveI : IsProper (GlobalTheory.KS.pow X.univ.A k).hom := GlobalTheory.KS.Leray.isProper_pow_hom _ X.univ.ab.proper k`. Use `⟨inferInstance, inferInstance, fun hD => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.KS.isProjOver_pow R X.X X.s (hproj hD) X.univ.A X.univ.ab _ (LB.isLB_pull X.univ.isLB _) X.univ.ample k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pPowSm :
     GenSm → PowSm := by

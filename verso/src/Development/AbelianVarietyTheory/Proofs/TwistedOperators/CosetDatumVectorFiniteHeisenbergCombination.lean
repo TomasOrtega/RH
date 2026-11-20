@@ -29,9 +29,7 @@ namespace GlobalTheory.RowEx.FourierSelfDualModel
 open GlobalTheory.RowTest GlobalTheory.FunObj Formalism.IndefR.Datum
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hp.nodes`. Break down `p with ⟨i, j⟩ | ⟨t', i, j⟩ | i | ⟨t', j⟩` into its components or cases. Conclude with `⟨isSelfDualC_neg (N.selfDual h2), N.selfDual h1⟩`. Conclude with `hp.elim`. Conclude with `hp.elim`.
-
-Conclude with `⟨N.selfDual h1, N.selfDual h2⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stdSelfDual {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {U : Set T}
     (N : Std G U) {p : Pair T} (hp : DefPair D.R.m p) :
@@ -44,13 +42,13 @@ theorem stdSelfDual {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGr
   · exact ⟨N.selfDual h1, N.selfDual h2⟩
 
 /- English proof (translation)
-Establish `hl : ∀ (m : ℕ) (a b : WO S T), symplOH S T (m • a) b = m • symplOH S T a b` using `fun m a b => by`. Proceed by induction on `m with`. Consider the case `zero => simp [GlobalTheory.FinTranslate.symplOH_zero_left]`. Consider the case `succ m ih => rw [succ_nsmul, GlobalTheory.FinTranslate.symplOH_add_left, ih, succ_nsmul]`. Establish `hr : ∀ (m : ℕ) (a b : WO S T), symplOH S T a (m • b) = m • symplOH S T a b` using `fun m a b => by`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `m with`. Consider the case `zero => simp [GlobalTheory.FinTranslate.symplOH_zero_right]`. Consider the case `succ m ih => rw [succ_nsmul, GlobalTheory.FinTranslate.symplOH_add_right, ih, succ_nsmul]`. Establish `h2 : ∀ a b : WO S T, symplOH S T a b + symplOH S T a b = symplO S T a b` using `fun a b => by`. Unfold `symplOH`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← add_mul, ← map_add]`. Evaluate the numerical expressions. Establish `e1 : (2 * k * k) • symplOH S T x y = symplO S T (k • x) (k • y)`. Rewrite using `[← h2, hl, hr, ← two_nsmul, ← mul_nsmul, ← mul_nsmul]`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Rewrite using `[← AddChar.map_nsmul_eq_pow, e1]`. Conclude with `hLL _ hkx (isHalf_nsmul_of k hx) _ hky (isHalf_nsmul_of k hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_psi_eq_one {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (Λ : AddSubgroup (WO S T)) (e : AE D) (k : ℕ)
     (hLL : ∀ u ∈ Λ, IsHalf e u → ∀ y ∈ Λ, IsHalf (cA D e) y → ψ (symplO S T u y) = 1)
@@ -75,7 +73,7 @@ theorem pow_psi_eq_one {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (
   exact hLL _ hkx (isHalf_nsmul_of k hx) _ hky (isHalf_nsmul_of k hy)
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℚ z` using `IsIntegral.of_pow hN (by rw [h]; exact isIntegral_one)`. Conclude with `mem_algebraicClosure_iff.2 hi.isAlgebraic`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_qbar_of_pow {z : ℂ} {N : ℕ} (hN : 0 < N) (h : z ^ N = 1) : z ∈ Formalism.MainNotions.TaylorLogMetric.Qbar := by
   have hi : IsIntegral ℚ z := IsIntegral.of_pow hN (by rw [h]; exact isIntegral_one)
@@ -85,53 +83,51 @@ set_option maxHeartbeats 1600000 in
 open Classical in
 
 /- English proof (translation)
-Use `set Λ := latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) fun _ => True with hΛ`. Establish `hinf` using `GlobalTheory.PlaceDatum.infPart_idemSum he`. Establish `hinfc` using `GlobalTheory.PlaceDatum.infPart_cA hinf`. Establish `hLL : ∀ u ∈ Λ, IsHalf e u → ∀ y ∈ Λ, IsHalf (cA D e) y → ψ (symplO S T u y) = 1` using `fun u hu hu' y hy _ => ((GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T ΛS ΛT hψ hS hT).1 u (GlobalTheory.PlaceDatum.infPart_of_half hinf hu')).1 hu y hy`. Establish `hdual : ∀ x : WO S T, IsHalf e x → (∀ y ∈ Λ, IsHalf (cA D e) y → ψ (symplO S T x y) = 1) → x ∈ Λ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx h`. Use `((GlobalTheory.LatVac.latO_selfDual_approx_sign D ψ S T ΛS ΛT hψ hS hT).1 x (GlobalTheory.PlaceDatum.infPart_of_half hinf hx)).2 fun u hu => ?_` and prove the remaining obligations. Establish `hee` using `GlobalTheory.PlaceDatum.idemSum_mul_self he`. Establish `hec : cA D e * cA D e = cA D e` using `by rw [← map_mul, hee]`. Establish `hcu : IsHalf (cA D e) (cA D e • u)` using `fun i j => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_apply, smul_eq_mul, ← mul_assoc, hec]`. Use `h _ (GlobalTheory.SplitScalar.idem_smul_mem hec u hu) hcu` as an intermediate fact. Rewrite `this` using `[← GlobalTheory.PlaceModel.symplO_smul, show e • x = x from Matrix.ext fun i j => hx i j]`. Then use the resulting hypothesis. Take `⟨R, hR1, hR2, hRd⟩` from `GlobalTheory.T.exists_halfCosetRepresentatives_card_dvd S T ΛS ΛT hS hT e P he k hk`. Establish `hsum` using `GlobalTheory.T.halfLattice_charSum_detects_nsmul_multiple ψ S T Λ e k R hk hLL hdual hR1 hR2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : R.card ≠ 0`. Introduce `h0`. Rewrite `hRd` using `[h0, zero_dvd_iff]`. Conclude with `pow_ne_zero _ hk.ne' hRd`. Establish `hcardC : (R.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hcard`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set Ψ : WO S T → ℂ := (halfCoset e Λ k 0).indicator 1 with hΨdef`. Establish `hmem0 : ∀ t, t ∈ halfCoset e Λ k 0 ↔ ∃ u ∈ Λ, IsHalf e u ∧ t = k • u` using `fun t => by`. Simplify using `only [halfCoset, Set.mem_setOf_eq, zero_add]`. Establish `hΨ : Ψ = (R.card : ℂ)⁻¹ • ∑ r ∈ R, (fun t => ψ (symplO S T t r) * halfInd e Λ t)`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[Pi.smul_apply, Finset.sum_apply, smul_eq_mul]`. Distinguish the cases in `ht : t ∈ Λ ∧ IsHalf e t`. Establish `h1 : halfInd e Λ t = 1` using `if_pos ht`. Simplify using `only [h1, mul_one]`. Distinguish the cases in `hm : ∃ u ∈ Λ, IsHalf e u ∧ t = k • u`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hsum t ht.1 ht.2).1 hm, inv_mul_cancel₀ hcardC, hΨdef, Set.indicator_of_mem ((hmem0 t).2 hm)]`. Both sides reduce to the same expression. Rewrite using `[(hsum t ht.1 ht.2).2 hm, mul_zero, hΨdef, Set.indicator_of_notMem (fun h => hm ((hmem0 t).1 h))]`. Establish `h1 : halfInd e Λ t = 0` using `if_neg ht`. Simplify using `only [h1, mul_zero, Finset.sum_const_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hΨdef, Set.indicator_of_notMem]`. Introduce `h`. Take `⟨u, hu, hu', rfl⟩` from `(hmem0 t).1 h`. Conclude with `ht ⟨nsmul_mem hu k, isHalf_nsmul_of k hu'⟩`. Establish `hΨsb : IsSBHalf e Λ Ψ` using `isSBHalf_halfCoset_indicator hk (fun i j => mul_zero _) (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hind : (halfCoset e Λ k x₀).indicator (1 : WO S T → ℂ) = fun t => Ψ (t + -x₀)`. Use function extensionality and compare the values at `t`. Establish `hiff : t ∈ halfCoset e Λ k x₀ ↔ t + -x₀ ∈ halfCoset e Λ k 0`. Rewrite using `[hmem0]`. Simplify using `only [halfCoset, Set.mem_setOf_eq]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Use `exists_congr fun u => and_congr_right fun _ => and_congr_right fun _ => ⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Normalize the expressions using the abelian group laws. Rewrite using `[← h]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : t ∈ halfCoset e Λ k x₀`. Rewrite using `[Set.indicator_of_mem h, hΨdef, Set.indicator_of_mem (hiff.1 h)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem h, hΨdef, Set.indicator_of_notMem (fun h' => h (hiff.2 h'))]`. Establish `hvac : Tm (halfInd e Λ) = f₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hTm.vac` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis. Establish `hTΨ : Tm Ψ = (R.card : ℂ)⁻¹ • ∑ r ∈ R, heisO ψ S T r f₀`. Rewrite using `[hΨ, map_smul, map_sum]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun r hr => ?_` and prove the remaining obligations. Rewrite using `[hTm.modul _ (GlobalTheory.isSBHalf_halfInd e Λ) r (hR1 r hr).1, hvac]`. Establish `hnx : IsHalf e (-x₀)` using `fun i j => by rw [Matrix.neg_apply, mul_neg, hx₀ i j]`. Establish `hneg : k • -x₀ = -(k • x₀)`. Rewrite using `[eq_neg_iff_add_eq_zero, ← nsmul_add, neg_add_cancel, nsmul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hmain : Tm ((halfCoset e Λ k x₀).indicator 1) = ∑ r ∈ R, ((R.card : ℂ)⁻¹ * ψ (symplOH S T (-x₀) r)) • heisO ψ S T (-x₀ + r) f₀`. Rewrite using `[hind, hTm.trans Ψ hΨsb (-x₀) hnx, hTΨ]`. Establish `hlin : heisO ψ S T (-x₀) ((R.card : ℂ)⁻¹ • ∑ r ∈ R, heisO ψ S T r f₀) = (R.card : ℂ)⁻¹ • ∑ r ∈ R, heisO ψ S T (-x₀) (heisO ψ S T r f₀)`. Use function extensionality and compare the values at `t`. Simplify using `only [heisO, Pi.smul_apply, Finset.sum_apply, smul_eq_mul, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun r _ => by ring` and prove the remaining obligations. Rewrite using `[hlin, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FinTranslate.heisO_heisO, smul_smul]`. Establish `hroot : ∀ r ∈ R, ψ (symplOH S T (-x₀) r) ^ (2 * k * k) = 1` using `fun r hr => pow_psi_eq_one ψ S T Λ e k hLL hnx (by rw [hneg]; exact neg_mem hkx) (hR1 r hr).1 (hR1 r hr).2`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hN : 0 < 2 * k * k` using `by positivity`. Set `ζ : R → Formalism.MainNotions.TaylorLogMetric.Qbar` to `fun r => ⟨ψ (symplOH S T (-x₀) r.1), mem_qbar_of_pow hN (hroot r.1 r.2)⟩`. Establish `hζ : ∀ r, ζ r ^ (2 * k * k) = 1` using `fun r => Subtype.ext (by show (ψ (symplOH S T (-x₀) r.1)) ^ (2 * k * k) = 1`. Conclude with `hroot r.1 r.2)`. Set `cc : R → Formalism.MainNotions.TaylorLogMetric.Qbar` to `fun r => (R.card : Formalism.MainNotions.TaylorLogMetric.Qbar)⁻¹ * ζ r`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hcc : ∀ r, (cc r : ℂ) = (R.card : ℂ)⁻¹ * ψ (symplOH S T (-x₀) r.1)` using `fun r => by`. Simplify using `[cc, ζ]`. Take `⟨m, hm⟩` from `hRd`. Use `⟨R.card, fun i => cc (R.equivFin.symm i), fun i => -x₀ + (R.equivFin.symm i).1, fun i => ?_, fun i => ?_, fun i => ?_, fun ρ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[nsmul_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `add_mem ?_ (hR1 _ (R.equivFin.symm i).2).2` and prove the remaining obligations. Rewrite using `[hneg]`. Conclude with `neg_mem hkx`. Establish `h1` using `GlobalTheory.PlaceDatum.infPart_of_half hinf hnx`. Establish `h2` using `GlobalTheory.PlaceDatum.infPart_of_half hinfc (hR1 _ (R.equivFin.symm i).2).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `a b`. Establish `e1 : infPart D ((-x₀) a b) = 0`. Use `congrFun (congrFun h1 a) b` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply, Matrix.zero_apply]`. Then use the resulting hypothesis. Establish `e2 : infPart D ((R.equivFin.symm i).1 a b) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrFun (congrFun h2 a) b` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply, Matrix.zero_apply]`. Then use the resulting hypothesis. Rewrite using `[Matrix.map_apply]`. Simplify using `only`. Rewrite using `[Matrix.add_apply, RingHom.map_add, e1, e2, add_zero, Matrix.zero_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc0 : ((R.card : ℕ) : Formalism.MainNotions.TaylorLogMetric.Qbar) ≠ 0` using `Nat.cast_ne_zero.2 hcard`. Establish `e1 : (k : Formalism.MainNotions.TaylorLogMetric.Qbar) ^ (D.R.f * S.rank * T.rank) * cc (R.equivFin.symm i) = (m : Formalism.MainNotions.TaylorLogMetric.Qbar) * ζ (R.equivFin.symm i)`. Simplify using `only [cc]`. Rewrite using `[← Nat.cast_pow, hm, Nat.cast_mul, ← mul_assoc, mul_comm ((R.card : ℕ) : Formalism.MainNotions.TaylorLogMetric.Qbar), mul_assoc (m : Formalism.MainNotions.TaylorLogMetric.Qbar), mul_inv_cancel₀ hc0, mul_one]`. Rewrite using `[e1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hm' : IsIntegral ℤ ((m : ℕ) : Formalism.MainNotions.TaylorLogMetric.Qbar)`. Use `isIntegral_algebraMap (R := ℤ) (A := Formalism.MainNotions.TaylorLogMetric.Qbar) (x := (m : ℤ))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Conclude with `hm'.mul (IsIntegral.of_pow hN (by rw [hζ]; exact isIntegral_one))`. Establish `h1 : ∀ r, ‖ρ (cc r)‖ = (R.card : ℝ)⁻¹` using `fun r => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hρ : ρ (ζ r) ^ (2 * k * k) = 1` using `by rw [← map_pow, hζ, map_one]`. Simplify using `only [cc, map_mul, map_inv₀, map_natCast, norm_mul, norm_inv, Complex.norm_natCast, Complex.norm_eq_one_of_pow_eq_one hρ hN.ne', mul_one]`. Simplify using `only [h1, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Rewrite using `[mul_inv_cancel₀ (Nat.cast_ne_zero.2 hcard)]`. Rewrite using `[hmain, ← Finset.sum_coe_sort R, ← R.equivFin.symm.sum_comp]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hcc]`.
+A detailed English derivation is pending.
 -/
 theorem model_coset {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D)
     (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E))
@@ -281,15 +277,15 @@ end GlobalTheory.RowEx.FourierSelfDualModel
 open GlobalTheory.RowEx.FourierSelfDualModel in
 
 /- English proof (translation)
-Introduce `D T L sc G W S t p hp k d hk hc hz hP`. Take `⟨x₀, hx₀, hkx, hfn⟩` from `hc`. Establish `he : IsIdemSum d.e (locPl G t)` using `hP ▸ d.e_is`. Establish `hag` using `GlobalTheory.T.mem_gridPairWeilLattice_iff_standard_of_half S t p hp d.e he`. Establish `hcos : halfCoset d.e (pairLat G p) k x₀ = halfCoset d.e (latO (G.pS p) (G.pT p) (S.N.latS p : Set (Fin (G.pS p).rank → D.host.E)) (S.N.latT p : Set (Fin (G.pT p).rank → D.host.E)) fun _ => True) k x₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [halfCoset, Set.mem_setOf_eq]`. Conclude with `exists_congr fun u => ⟨fun ⟨h1, h2, h3⟩ => ⟨(hag u h2).1 h1, h2, h3⟩, fun ⟨h1, h2, h3⟩ => ⟨(hag u h2).2 h1, h2, h3⟩⟩`. Establish `hkx'` using `(hag _ (isHalf_nsmul_of k hx₀)).1 hkx`. Establish `hsb : IsSBHalf d.e (latO (G.pS p) (G.pT p) (S.N.latS p : Set (Fin (G.pS p).rank → D.host.E)) (S.N.latT p : Set (Fin (G.pT p).rank → D.host.E)) fun _ => True) d.fn`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfn, hcos]`. Conclude with `isSBHalf_halfCoset_indicator hk hx₀ hkx'`. Take `⟨hSd, hTd⟩` from `stdSelfDual S.N hp`. Establish `hv` using `S.Z.vac_is p hp`. Take `⟨f, hf⟩ : ∃ f, d.IsTheta W (S.N.latS p) (S.N.latT p) (S.Z.vac p) f` from `VecEx.exists_isThetaAt_of_vac hSd.1 hTd.1 hSd hTd d.e_is hv hsb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨Tm, hTm⟩, hall⟩` from `id hf`. Establish `hfT : f = Tm d.fn` using `hall Tm hTm`. Establish `hvec : S.Z.vec d = f`. Rewrite using `[Normal.vec, FinDatum.vec_eq W hf, hz, Prod.mk_one_one, map_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, c, w, h1, h2, h3, h4, h5⟩` from `model_coset W.ψ (G.pS p) (G.pT p) (S.N.latS p) (S.N.latT p) hv.1 hSd hTd d.e _ d.e_is (S.Z.vac p) Tm hTm k hk x₀ hx₀ hkx'`. Use `⟨n, c, w, h1, h2, h3, h4, ?_⟩` and prove the remaining obligations. Rewrite using `[hvec, hfT, hfn, hcos, h5]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RowEx.fourierVec : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {W : G.Weil} (S : GridChoice W Set.univ) (t : T) (p : Pair T), DefPair D.R.m p → ∀ (k : ℕ) (d : FinDatum G t p), 0 < k → IsCosetDatum k d → d.z = 1 → d.P = locPl G t → ∃ (n : ℕ) (c : Fin n → Formalism.MainNotions.TaylorLogMetric.Qbar) (w : Fin n → WO (G.pS p) (G.pT p)), (∀ i, k • w i ∈ latO (G.pS p) (G.pT p) (S.N.latS p : Set _) (S.N.latT p : Set _) fun _ => True) ∧ (∀ i, (w i).map (infPart D) = 0) ∧ (∀ i, IsIntegral ℤ ((k : Formalism.MainNotions.TaylorLogMetric.Qbar) ^ (D.R.f * (G.pS p).rank * (G.pT p).rank) * c i)) ∧ (∀ ρ : Formalism.MainNotions.TaylorLogMetric.Qbar →+* ℂ, ∑ i, ‖ρ (c i)‖ ≤ 1) ∧ S.Z.vec d = ∑ i, (c i : ℂ) • heisO W.ψ (G.pS p) (G.pT p) (w i) (S.Z.vac p) := by
   intro D T L sc G W S t p hp k d hk hc hz hP

@@ -18,19 +18,17 @@ noncomputable section
 namespace GlobalTheory.FibreDer
 
 /- English proof (translation)
-Introduce `Z Z' X X' p p' φ g H U U' hU D D' hD' O hO δ hδ`. Establish `P` using `(isIso_pushoutSection_iff H (US := U.1) (UT := U'.1) (UX := O.1) (UY := φ ⁻¹ᵁ O.1 ⊓ p' ⁻¹ᵁ U'.1) hU hO rfl).mp (isIso_pushoutSection_of_isAffineOpen H hU hO rfl U.2 U'.2 O.2)`. Use `set α := φ.appLE O.1 (φ ⁻¹ᵁ O.1 ⊓ p' ⁻¹ᵁ U'.1) inf_le_left with hα`. Use `set β := p'.appLE U'.1 (φ ⁻¹ᵁ O.1 ⊓ p' ⁻¹ᵁ U'.1) inf_le_right with hβ`. Apply the tactic sequence `let a : Γ(Z, O.1) →+* DualNumber Γ(Z', φ ⁻¹ᵁ O.1 ⊓ p' ⁻¹ᵁ U'.1) := { toFun := fun f => TrivSqZeroExt.inl (α.hom f) + TrivSqZeroExt.inr (α.hom (δ f)) map_one' := by ext <;> simp map_zero' := by ext <;> simp map_add' := fun x y => by ext <;> simp <;> ring map_mul' := fun x y => by …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `let b : Γ(X', U'.1) →+* DualNumber Γ(Z', φ ⁻¹ᵁ O.1 ⊓ p' ⁻¹ᵁ U'.1) := { toFun := fun r => TrivSqZeroExt.inl (β.hom r) + TrivSqZeroExt.inr (β.hom (D' r)) map_one' := by ext <;> simp map_zero' := by ext <;> simp map_add' := fun x y => by ext <;> simp <;> ring map_mul' := fun x y => …`. Establish `hw0 : ∀ s, α.hom ((p.appLE U.1 O.1 hO).hom s) = β.hom ((g.appLE U.1 U'.1 hU).hom s)` using `fun s => congr($(P.w).hom s)`. Establish `hw : p.appLE U.1 O.1 hO ≫ CommRingCat.ofHom a = g.appLE U.1 U'.1 hU ≫ CommRingCat.ofHom b`. Use extensionality with `s`. Simplify using `[a, b, hw0]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `[a, b, hδ, hD', hw0]`. Set `σ` to `P.desc (CommRingCat.ofHom a) (CommRingCat.ofHom b) hw`. Establish `hσl : ∀ f, σ.hom (α.hom f) = a f` using `fun f => congr($(P.inl_desc _ _ hw).hom f)`. Establish `hσr : ∀ r, σ.hom (β.hom r) = b r` using `fun r => congr($(P.inr_desc _ _ hw).hom r)`. Establish `hfst0 : σ ≫ CommRingCat.ofHom (TrivSqZeroExt.fstHom ℤ _ _).toRingHom = 𝟙 _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `P.hom_ext ?_ ?_` and prove the remaining obligations. Use extensionality with `f`. Simplify using `[hσl, a]`. Use extensionality with `r`. Simplify using `[hσr, b]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfst : ∀ x, (σ.hom x).fst = x` using `fun x => congr($(hfst0).hom x)`. Use `⟨Derivation.mk' (AddMonoidHom.toIntLinearMap { toFun := fun x => (σ.hom x).snd, map_zero' := by simp, map_add' := fun x y => by rw [map_add]; rfl }) fun x y => ?_, fun r => ?_, fun f => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(σ.hom (x * y)).snd = x • (σ.hom y).snd + y • (σ.hom x).snd`. Rewrite using `[map_mul, TrivSqZeroExt.snd_mul, hfst, hfst]`. Simplify using `[smul_eq_mul, mul_comm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(σ.hom (β.hom r)).snd = _`. Rewrite using `[hσr]`. Simplify using `[b]`. Express the relevant statement in the definitionally equal form `(σ.hom (α.hom f)).snd = _`. Rewrite using `[hσl]`.
-
-Simplify using `[a]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_der_fibre : ∀ (Z Z' X X' : Scheme.{0}) (p : Z ⟶ X) (p' : Z' ⟶ X') (φ : Z' ⟶ Z) (g : X' ⟶ X), IsPullback φ p' p g → ∀ (U : X.affineOpens) (U' : X'.affineOpens) (hU : U'.1 ≤ g ⁻¹ᵁ U.1) (D : Derivation ℤ Γ(X, U.1) Γ(X, U.1)) (D' : Derivation ℤ Γ(X', U'.1) Γ(X', U'.1)), (∀ r, D' ((g.appLE U.1 U'.1 hU).hom r) = (g.appLE U.1 U'.1 hU).hom (D r)) → ∀ (O : Z.affineOpens) (hO : O.1 ≤ p ⁻¹ᵁ U.1) (δ : Derivation ℤ Γ(Z, O.1) Γ(Z, O.1)), (∀ r, δ ((p.appLE U.1 O.1 hO).hom r) = (p.appLE U.1 O.1 hO).hom (D r)) → ∃ δ' : Derivation ℤ Γ(Z', φ ⁻¹ᵁ O.1 ⊓ p' ⁻¹ᵁ U'.1) Γ(Z', φ ⁻¹ᵁ O.1 ⊓ p' ⁻¹ᵁ U'.1), (∀ r, δ' ((p'.appLE U'.1 _ inf_le_right).hom r) = (p'.appLE U'.1 _ inf_le_right).hom (D' r)) ∧ ∀ f, δ' ((φ.appLE O.1 _ inf_le_left).hom f) = (φ.appLE O.1 _ inf_le_left).hom (δ f) := by
   intro Z Z' X X' p p' φ g H U U' hU D D' hD' O hO δ hδ

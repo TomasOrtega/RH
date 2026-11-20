@@ -5,17 +5,17 @@ universe u_1 u_2 u_3
 namespace Bl.general_b_fact_right_last
 
 /- English proof (translation)
-Establish `hadd : ∀ a b, f (a + b) = f a + f b`. Introduce `a b`. Establish `h0 : inner ℂ (f (a + b) - (f a + f b)) (f (a + b) - (f a + f b)) = 0`. Simplify using `only [inner_sub_left, inner_sub_right, inner_add_left, inner_add_right, h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `sub_eq_zero.mp (inner_self_eq_zero.mp h0)`. Establish `hsmul : ∀ (r : ℂ) a, f (r • a) = r • f a`. Introduce `r a`. Establish `h0 : inner ℂ (f (r • a) - r • f a) (f (r • a) - r • f a) = 0`. Simplify using `only [inner_sub_left, inner_sub_right, inner_smul_left, inner_smul_right, h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `sub_eq_zero.mp (inner_self_eq_zero.mp h0)`. Set `L : E →ₗ[ℂ] F` to `{ toFun := f, map_add' := hadd, map_smul' := fun r a => hsmul r a }`. Establish `hbd : ∀ a, ‖L a‖ ≤ Real.sqrt ‖c‖ * ‖a‖`. Introduce `a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ‖f a‖ ^ 2 ≤ ‖c‖ * ‖a‖ ^ 2`. Establish `e1 : ‖f a‖ ^ 2 = RCLike.re (inner ℂ (f a) (f a))` using `(inner_self_eq_norm_sq (𝕜 := ℂ) (f a)).symm`. Rewrite using `[e1, h a a]`. Combine the equalities or inequalities in the displayed calculation. Establish `hs` using `Real.sq_sqrt (norm_nonneg c)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs0` using `Real.sqrt_nonneg ‖c‖`. Rewrite `h2` using `[← hs]`. Use `show ‖f a‖ ≤ _`. Use polynomial arithmetic with `[norm_nonneg (f a), norm_nonneg a, mul_nonneg hs0 (norm_nonneg a)]`. Establish `hcont : Continuous L` using `AddMonoidHomClass.continuous_of_bound L _ hbd`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : IsClosed ((M.comap L : Submodule ℂ E) : Set E)` using `hM.preimage hcont`. Establish `h1 : Submodule.span ℂ B ≤ M.comap L` using `Submodule.span_le.mpr (fun b hb => Submodule.mem_comap.mpr (hBM b hb))`. Establish `h2` using `Submodule.topologicalClosure_minimal _ h1 hcl`. Rewrite `h2` using `[hB]`. Conclude with `Submodule.mem_comap.mp (h2 Submodule.mem_top)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma intersection_update_fsHerm_neg_one {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [NormedAddCommGroup F] [InnerProductSpace ℂ F] (f : E → F) (c : ℂ)
@@ -61,17 +61,17 @@ private lemma intersection_update_fsHerm_neg_one {E F : Type*} [NormedAddCommGro
   exact Submodule.mem_comap.mp (h2 Submodule.mem_top)
 
 /- English proof (translation)
-Introduce `ι _ _ H _ _ Hs _ _ tens htens M hM A hA hAM`. Establish `key : ∀ S : Finset ι, ∀ x : (i : ι) → H i, (∀ i, i ∉ S → x i ∈ A i) → tens x ∈ M`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intro x hx; exact hAM x (fun i => hx i (by simp))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `@insert j S hj ih`. Introduce `x hx`. Establish `hj' : ∀ v ∈ A j, tens (Function.update x j v) ∈ M`. Introduce `v hv`. Apply `ih` to reduce the goal to its premises.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i hi`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `using hv`. Rewrite using `[Function.update_of_ne hij]; exact hx i (by simp [hij, hi])`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Establish `hall` using `intersection_update_fsHerm_neg_one (fun v => tens (Function.update x j v)) (∏ i ∈ Finset.univ.erase j, inner ℂ (x i) (x i)) ?_ M hM (A j) (hA j) hj' (x j)`. Simplify using `using hall`. Introduce `a b`. Simplify using `only [htens]`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ j)]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.update_self]`. Rewrite using `[mul_comm]`. Use `congr 1`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `i hi`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hi), Function.update_of_ne (Finset.ne_of_mem_erase hi)]`. Introduce `x`. Conclude with `key Finset.univ x (fun i hi => absurd (Finset.mem_univ i) hi)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {ι : Type u_1} [inst : Fintype.{u_1} ι] [DecidableEq.{u_1 + 1} ι] {H : ι → Type u_2}

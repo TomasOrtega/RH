@@ -26,15 +26,13 @@ variable {R Ω : Type} [CommRing R] [CommRing Ω] [Algebra R Ω]
   {f : M →ₛₗ[algebraMap R Ω] M'} {f' : N →ₛₗ[algebraMap R Ω] N'}
 
 /- English proof (translation)
-Set `e` to `LinearEquiv.ofBijective _ hf'`. Use `haveI : Module.Finite Ω N' := Module.Finite.equiv e`. Use `haveI : Module.Projective Ω N' := Module.Projective.of_equiv e`. Set `π : N' →ₗ[Ω] Ω ⊗[R] (N ⧸ LinearMap.range θ)` to `(LinearMap.range θ).mkQ.baseChange Ω ∘ₗ e.symm.toLinearMap`. Establish `hπ : Function.Surjective π` using `(LinearMap.baseChange_surjective Ω (Submodule.mkQ_surjective _)).comp e.symm.surjective`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `θ' : Dual Ω M' →ₗ[Ω] N'` to `(Module.evalEquiv Ω N').symm.toLinearMap ∘ₗ φ'`. Establish `hθ' : Function.Surjective θ'` using `(Module.evalEquiv Ω N').symm.surjective.comp hφ`. Establish `k : π ∘ₗ θ' = 0`. Use `ext_corr hf fun x x' hx ↦ ?_` and prove the remaining obligations. Establish `e₁ : θ' x' = f' (θ x)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `(Module.evalEquiv Ω N').injective` to reduce the goal to its premises. Use `((Module.evalEquiv Ω N').apply_symm_apply _).trans (ext_corr hf' fun y y' hy ↦ ?_)` and prove the remaining obligations. Rewrite using `[h x y x' y' hx hy, ← hy]`. Both sides reduce to the same expression. Establish `e₂ : f' (θ x) = e (1 ⊗ₜ θ x)` using `(one_smul Ω (f' _)).symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[LinearMap.comp_apply, e₁, e₂]`. Simplify using `only [π, LinearMap.comp_apply, LinearEquiv.coe_coe, e.symm_apply_apply, LinearMap.baseChange_tmul, LinearMap.zero_apply, Submodule.mkQ_apply]`. Rewrite using `[(Submodule.Quotient.mk_eq_zero _).2 (LinearMap.mem_range_self θ x), tmul_zero]`. Use `⟨fun a b ↦ ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(hπ.comp hθ') a`.
-
-Take `⟨b, rfl⟩` from `(hπ.comp hθ') b`. Conclude with `(LinearMap.congr_fun k a).trans (LinearMap.congr_fun k b).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem subsingleton_coker₂ [Module.Finite R M] [Module.Projective R M] [Module.Finite R N]
     [Module.Projective R N] (hf : Function.Bijective (GlobalTheory.DeRham.liftSemi f))
@@ -75,15 +73,15 @@ end Algebra
 open Module
 
 /- English proof (translation)
-Introduce `R _ M N _ _ _ _ _ _ _ _ φ h`. Set `E` to `Module.evalEquiv R M`. Set `E'` to `Module.evalEquiv R N`. Establish `ev (z : Dual R (Dual R M)) (y : Dual R M) : y (E.symm z) = z y` using `LinearMap.congr_fun (E.apply_symm_apply z) y`. Establish `ev' (z : Dual R (Dual R N)) (y : Dual R N) : y (E'.symm z) = z y` using `LinearMap.congr_fun (E'.apply_symm_apply z) y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s₁ : Function.Surjective (E'.symm.toLinearMap ∘ₗ φ)`. Rewrite using `[← LinearMap.range_eq_top, ← Submodule.Quotient.subsingleton_iff]`. Use `GlobalTheory.PrincipalPolPairing.subsingleton_of_fibres (R := R) fun p ↦ ?_` and prove the remaining obligations. Take `⟨M', N', _, _, _, _, f, f', φ', hf, hf', hp, k⟩` from `h (AlgebraicClosure p.asIdeal.ResidueField)`. Conclude with `subsingleton_coker₂ hf hf' _ φ' hp.bijective_left.2 fun x y x' y' hx hy ↦ by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_coe, ev', k x x' y y' hx hy]`. Establish `s₂ : Function.Surjective (E.symm.toLinearMap ∘ₗ φ.flip)`. Rewrite using `[← LinearMap.range_eq_top, ← Submodule.Quotient.subsingleton_iff]`. Use `GlobalTheory.PrincipalPolPairing.subsingleton_of_fibres (R := R) fun p ↦ ?_` and prove the remaining obligations. Take `⟨M', N', _, _, _, _, f, f', φ', hf, hf', hp, k⟩` from `h (AlgebraicClosure p.asIdeal.ResidueField)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `subsingleton_coker₂ hf' hf _ φ'.flip hp.bijective_right.2 fun y x y' x' hy hx ↦ by`. Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_coe, ev, LinearMap.flip_apply, LinearMap.flip_apply, k x x' y y' hx hy]`. Use `LinearMap.IsPerfPair.of_bijective _ ⟨(injective_iff_map_eq_zero _).2 fun x hx ↦ ?_, fun z ↦ ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun c ↦ ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `s₂ c`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_coe, ev, LinearMap.flip_apply, hx]`. Both sides reduce to the same expression. Take `⟨x, hx⟩` from `s₁ (E'.symm z)`. Conclude with `⟨x, E'.symm.injective hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isPerfPair_of_fibres₂ : ∀ (R : Type) [CommRing R] (M N : Type 1) [AddCommGroup M] [Module R M] [Module.Finite R M] [Module.Projective R M] [AddCommGroup N] [Module R N] [Module.Finite R N] [Module.Projective R N] (φ : Module.Dual R M →ₗ[R] Module.Dual R N →ₗ[R] R), (∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra R Ω], ∃ (M' N' : Type 1) (_ : AddCommGroup M') (_ : Module Ω M') (_ : AddCommGroup N') (_ : Module Ω N') (f : M →ₛₗ[algebraMap R Ω] M') (f' : N →ₛₗ[algebraMap R Ω] N') (φ' : Module.Dual Ω M' →ₗ[Ω] Module.Dual Ω N' →ₗ[Ω] Ω), Function.Bijective (liftSemi f) ∧ Function.Bijective (liftSemi f') ∧ φ'.IsPerfPair ∧ ∀ (x : Module.Dual R M) (x' : Module.Dual Ω M') (y : Module.Dual R N) (y' : Module.Dual Ω N'), (∀ c, x' (f c) = algebraMap R Ω (x c)) → (∀ c, y' (f' c) = algebraMap R Ω (y c)) → φ' x' y' = algebraMap R Ω (φ x y)) → φ.IsPerfPair := by
   intro R _ M N _ _ _ _ _ _ _ _ φ h

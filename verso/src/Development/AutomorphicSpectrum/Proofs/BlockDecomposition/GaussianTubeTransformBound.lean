@@ -7,26 +7,26 @@ open MeasureTheory Filter Topology PositivityTheory.RgEis GlobalTheory.Companion
 namespace GlobalTheory.CompanionTheory.TubeFourier
 
 /- English proof (translation)
-Simplify using `using integrable_exp_neg_mul_sq (b := 1) one_pos`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem integrable_gauss_one : Integrable (fun s : ℝ => Real.exp (-s ^ 2)) := by
   simpa using integrable_exp_neg_mul_sq (b := 1) one_pos
 
 /- English proof (translation)
-Simplify using `using integral_gaussian 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem integral_gauss_one : ∫ s : ℝ, Real.exp (-s ^ 2) = Real.sqrt Real.pi := by
   simpa using integral_gaussian 1
 
 /- English proof (translation)
-The claim follows from `Integrable.mul_prod integrable_gauss_one integrable_gauss_one`.
+A detailed English derivation is pending.
 -/
 theorem integrable_gauss_prod :
     Integrable (fun y : ℝ × ℝ => Real.exp (-y.1 ^ 2) * Real.exp (-y.2 ^ 2)) :=
   Integrable.mul_prod integrable_gauss_one integrable_gauss_one
 
 /- English proof (translation)
-Rewrite using `[Measure.volume_eq_prod, integral_prod_mul (fun s : ℝ => Real.exp (-s ^ 2)) (fun s : ℝ => Real.exp (-s ^ 2)), integral_gauss_one, Real.mul_self_sqrt Real.pi_pos.le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_gauss_prod :
     ∫ y : ℝ × ℝ, Real.exp (-y.1 ^ 2) * Real.exp (-y.2 ^ 2) = Real.pi := by
@@ -34,15 +34,15 @@ theorem integral_gauss_prod :
     integral_gauss_one, Real.mul_self_sqrt Real.pi_pos.le]
 
 /- English proof (translation)
-Simplify using `[dot, pt, rdot, Complex.mul_re]`.
+Simplify using the standard rewrite rules.
 -/
 theorem re_dot_pt (x y t : ℝ × ℝ) : (dot (pt x y) t).re = rdot x t := by
   simp [dot, pt, rdot, Complex.mul_re]
 
 /- English proof (translation)
-Introduce `X _ _ G x M hG t`. Establish `hb : ∀ y : ℝ × ℝ, ‖Complex.exp (-dot (pt x y) t) • G (pt x y)‖ ≤ M * Real.exp (-rdot x t) * (Real.exp (-y.1 ^ 2) * Real.exp (-y.2 ^ 2))`. Introduce `y`. Rewrite using `[norm_smul, Complex.norm_exp, Complex.neg_re, re_dot_pt]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[neg_add, Real.exp_add]`. Expand and normalize the polynomial expressions, which then agree. Unfold `phi`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_const_mul, integral_gauss_prod]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

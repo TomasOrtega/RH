@@ -13,13 +13,13 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Set `M : Submonoid R` to `{ carrier := {d | (d : Ω) ≠ 0 ∧ (d : Ω)⁻¹ ∈ A} mul_mem' := fun {a b} ha hb => ⟨mul_ne_zero ha.1 hb.1, by`. Rewrite using `[Subalgebra.coe_mul, mul_inv]`. Conclude with `A.mul_mem ha.2 hb.2⟩`. Use the proof step `one_mem' := ⟨one_ne_zero, by rw [Subalgebra.coe_one, inv_one]; exact A.one_mem⟩ }`. Set `_ : Algebra R A` to `(Subalgebra.inclusion hRA).toAlgebra`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsScalarTower R A Ω` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: IsLocalization M A`. Use `(isLocalization_iff M A).mpr ⟨fun d => ?_, fun a => ?_, fun {a b} h => ⟨1, ?_⟩⟩` and prove the remaining obligations. Conclude with `⟨⟨_, ⟨_, d.2.2⟩, Subtype.ext (mul_inv_cancel₀ d.2.1), Subtype.ext (inv_mul_cancel₀ d.2.1)⟩, rfl⟩`. Take `⟨r, hr, d, hd, hd0, hdA, he⟩` from `hloc a a.2`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨(⟨r, hr⟩, ⟨⟨d, hd⟩, hd0, hdA⟩), Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(a : Ω) * d = r`. Rewrite using `[he, mul_assoc, inv_mul_cancel₀ hd0, mul_one]`. Establish `e : ((algebraMap R A a : A) : Ω) = (algebraMap R A b : A)` using `congrArg Subtype.val h`. Establish `e' : (a : Ω) = b` using `e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Subtype.ext e']`. Take `⟨⟨d, hd0, hdA⟩, hint⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (M := M) (Rₘ := A) x hx`. Conclude with `⟨d, d.2, hd0, hdA, hint⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mul_isIntegral_of_eq_mul_inv {F Ω : Type*} [Field F] [Field Ω] [Algebra F Ω]
     (R A : Subalgebra F Ω) (hRA : R ≤ A)
@@ -49,17 +49,17 @@ theorem exists_mul_isIntegral_of_eq_mul_inv {F Ω : Type*} [Field F] [Field Ω] 
 open IntermediateField.algebraAdjoinAdjoin in
 
 /- English proof (translation)
-Set `L'` to `IntermediateField.extendScalars hEL`. Set `_ : Algebra (Algebra.adjoin F S) L'` to `((algebraMap (IntermediateField.adjoin F S) L').comp (algebraMap (Algebra.adjoin F S) (IntermediateField.adjoin F S))).toAlgebra`. Establish `: IsScalarTower (Algebra.adjoin F S) (IntermediateField.adjoin F S) L'` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: Algebra.FiniteType F (Algebra.adjoin F S)` using `Algebra.FiniteType.adjoin_of_finite hS`. Take `⟨t, ht⟩` from `Module.finite_def.mp (hN F (Algebra.adjoin F S) (IntermediateField.adjoin F S) L')`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `ι₀ : L' →ₐ[Algebra.adjoin F S] Ω` to `{ L'.val.toRingHom with commutes' := fun _ => rfl }`. Establish `hι₀ : Function.Injective ι₀` using `Subtype.val_injective`. Set `_ : Algebra (Algebra.adjoin F S) A` to `(Subalgebra.inclusion hRA).toAlgebra`. Establish `: IsScalarTower (Algebra.adjoin F S) A Ω` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `⟨t.image fun y => ι₀ y.1, ?_, fun x hx hxA => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `e he`. Take `⟨y, -, rfl⟩` from `Finset.mem_image.mp he`. Conclude with `⟨(IntermediateField.mem_extendScalars hEL).mp y.1.2, ((isIntegral_algHom_iff ι₀ hι₀).mpr y.2).tower_top⟩`. Take `⟨d, hd, hd0, hdA, hint⟩` from `exists_mul_isIntegral_of_eq_mul_inv _ A hRA hloc hxA`. Set `z : integralClosure (Algebra.adjoin F S) L'` to `⟨⟨d * x, (IntermediateField.mem_extendScalars hEL).mpr (mul_mem (hEL (IntermediateField.algebra_adjoin_le_adjoin F S hd)) hx)⟩, (isIntegral_algHom_iff ι₀ hι₀).mp hint⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hz : ι₀ z ∈ Submodule.span (Algebra.adjoin F S) ((t.image fun y => ι₀ y.1 : Finset Ω) : Set Ω)`. Establish `hzt : z ∈ Submodule.span (Algebra.adjoin F S) (t : Set _)` using `ht ▸ Submodule.mem_top`. Use `Submodule.mem_map_of_mem (f := ι₀.toLinearMap.comp (integralClosure (Algebra.adjoin F S) L').val.toLinearMap) hzt` as an intermediate fact. Rewrite `this` using `[Submodule.map_span]`. Rewrite using `[Finset.coe_image]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `e : (⟨d⁻¹, hdA⟩ : A) • (d * x) = x`. Rewrite using `[Subalgebra.smul_def, smul_eq_mul, ← mul_assoc]`. Express the relevant statement in the definitionally equal form `d⁻¹ * d * x = x`. Rewrite using `[inv_mul_cancel₀ hd0, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.span_le_restrictScalars (Algebra.adjoin F S) A _ hz)`.
+A detailed English derivation is pending.
 -/
 theorem exists_finset_integral_span (hN : NoetherIntegralClosureFinite.Statement.{u})
     {F Ω : Type u} [Field F] [Field Ω] [Algebra F Ω] {S : Set Ω} (hS : S.Finite)
@@ -113,9 +113,9 @@ section Chart
 variable {F : Type u} [Field F] {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type}
 
 /- English proof (translation)
-Establish `hb : (∑ k, b k • blockWeight ι ⟨k, u k⟩) = b`. Use function extensionality and compare the values at `k`. Simplify using `[blockWeight, Finset.sum_apply, Pi.single_apply]`. Establish `h` using `IsWeightedHomogeneous.prod (w := blockWeight ι) Finset.univ (fun k => (X ⟨k, u k⟩ : MRing ι F) ^ b k) (fun k => b k • blockWeight ι ⟨k, u k⟩) fun k _ => (isWeightedHomogeneous_X F (blockWeight ι) ⟨k, u k⟩).pow (b k)`. Unfold `IsMultiHomog chartMonomial`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Conclude with `hb.symm`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_chartMonomial (u : ∀ k, ι k) (b : K → ℕ) :
     IsMultiHomog (chartMonomial (F := F) u b) b := by
@@ -132,24 +132,24 @@ theorem isMultiHomog_chartMonomial (u : ∀ k, ι k) (b : K → ℕ) :
 omit [DecidableEq K] in
 
 /- English proof (translation)
-The claim follows from `(Submonoid.prod_mem _ fun k _ => Submonoid.pow_mem _ (hu k) _ : chartMonomial u b ∈ W.primeCompl)`.
+A detailed English derivation is pending.
 -/
 theorem chartMonomial_not_mem_of_notMem (W : Ideal (MRing ι F)) [W.IsPrime] (u : ∀ k, ι k)
     (hu : ∀ k, (X ⟨k, u k⟩ : MRing ι F) ∉ W) (b : K → ℕ) : chartMonomial u b ∉ W :=
   (Submonoid.prod_mem _ fun k _ => Submonoid.pow_mem _ (hu k) _ : chartMonomial u b ∈ W.primeCompl)
 
 /- English proof (translation)
-Establish `huP : ∀ k, (X ⟨k, u k⟩ : MRing ι F) ∉ P` using `fun k h => hu k (hPW h)`. Establish `hW1 : ∀ W' ∈ ({W} : Set (Ideal (MRing ι F))), W'.IsPrime` using `fun W' h => by`. Rewrite using `[Set.mem_singleton_iff.mp h]`. Use `infer_instance`. Establish `hmem : ∀ p, φ (chartMap P u p) ∈ Algebra.adjoin F (Set.range fun v => φ (chartMap P u (X v)))` using `fun p => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← aeval_range]`. Use `⟨p, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `aeval _ p = (φ.comp (chartMap P u)) p`. Rewrite using `[chartMap, comp_aeval]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hq : ∀ g : MRing ι F, g ∉ P → algebraMap (MRing ι F ⧸ P) (FractionRing (MRing ι F ⧸ P)) (Ideal.Quotient.mk P g) ≠ 0` using `fun g hg => by`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hg`. Use `⟨Algebra.adjoin_le ?_, fun a ha => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Subalgebra.mem_map.mpr ⟨_, div_mem_degZeroLoc P {W} (b := blockWeight ι v) (isWeightedHomogeneous_X F _ v) (isWeightedHomogeneous_X F (blockWeight ι) ⟨v.1, u v.1⟩) (huP v.1) (fun W' h => by rw [Set.mem_singleton_iff.mp h]; exact hu v.1), ?_⟩` and prove the remaining obligations. Simplify using `[chartMap]`. Take `⟨a, haA, rfl⟩` from `Subalgebra.mem_map.mp ha`. Take `⟨b, f, g, hf, hg, hgP, hgW, rfl⟩` from `hQ F K ι P {W} hW1 a haA`. Establish `hm` using `chartMonomial_not_mem_of_notMem (F := F) W u hu b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0` using `hq _ fun h => hm (hPW h)`. Establish `hg0` using `hq g hgP`. Use `⟨φ (chartMap P u f), hmem f, φ (chartMap P u g), hmem g, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hD F K ι P u huP g b hg, map_ne_zero]`. Conclude with `div_ne_zero hg0 hm0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hD F K ι P u huP g b hg, ← map_inv₀, inv_div]`. Conclude with `Subalgebra.mem_map.mpr ⟨_, div_mem_degZeroLoc P {W} (isMultiHomog_chartMonomial u b) hg hgP (fun W' h => by rw [Set.mem_singleton_iff.mp h]; exact hgW W rfl), rfl⟩`. Rewrite using `[hD F K ι P u huP f b hf, hD F K ι P u huP g b hg, ← map_inv₀, ← map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem degZeroLoc_map_eq_mul_inv (hQ : DegZeroLocQuot.Statement.{u})
     (hD : MChartDehomog.Statement.{u}) (P W : Ideal (MRing ι F)) [P.IsPrime] [W.IsPrime]

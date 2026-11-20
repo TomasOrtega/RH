@@ -5,9 +5,9 @@ open NumberField IsDedekindDomain Polynomial Formalism.ConjugateSelfDual Recipro
 namespace GlobalTheory
 
 /- English proof (translation)
-Break down `eq_or_ne b 0 with rfl | hb` into its components or cases. Simplify using the standard rewrite rules. Establish `hb' : A.valuation b ≠ 0` using `by simpa using hb`. Establish `hsb : σ b ≠ 0` using `(map_ne_zero_iff _ σ.injective).mpr hb`. Establish `hsb' : A.valuation (σ b) ≠ 0` using `by simpa using hsb`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← div_lt_one₀ (zero_lt_iff.mpr hb'), ← div_lt_one₀ (zero_lt_iff.mpr hsb'), ← map_div₀, ← map_div₀, ← map_div₀, valuation_apply_lt_one_iff hσ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem krasner_val_lt_apply_iff {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     {A : ValuationSubring Ω} {σ : G E Ω} (hσ : σ ∈ Dec (F := E) A) (a b : Ω) :
@@ -21,13 +21,13 @@ theorem krasner_val_lt_apply_iff {E Ω : Type} [Field E] [NumberField E] [Field 
       ← map_div₀, ← map_div₀, ← map_div₀, valuation_apply_lt_one_iff hσ]
 
 /- English proof (translation)
-Introduce `σ hσ hfix`. Assume the negation of the conclusion as `hne`. Establish `hσi : σ⁻¹ ∈ Dec (F` using `E) A := (Dec (F := E) A).inv_mem hσ`. Establish `hne' : (σ⁻¹ : G E Ω) β ≠ β`. Introduce `he`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hne` to reduce the goal to its premises. Use `conv_lhs => rw [← he]`. Conclude with `mul_inv_apply β`. Establish `h1` using `h σ hσ hne`. Establish `h2` using `h σ⁻¹ hσi hne'`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[← krasner_val_lt_apply_iff hσ, map_sub σ, map_sub σ, mul_inv_apply, hfix]`. Establish `e : β - σ β = (β - β') + (β' - σ β)` using `by ring`. Establish `h3 : A.valuation (β - σ β) = A.valuation (σ β - β)` using `Valuation.map_sub_swap _ _ _`. Establish `h4 : A.valuation (β - β') = A.valuation (β' - β)` using `Valuation.map_sub_swap _ _ _`. Establish `key : A.valuation (β - σ β) < A.valuation (β - σ β)` using `by conv_lhs => rw [e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Valuation.map_add_lt _ ?_ h2` and prove the remaining obligations. Rewrite using `[h4, h3]`. Conclude with `h1`. Conclude with `lt_irrefl _ key`.
+A detailed English derivation is pending.
 -/
 theorem krasner_stabiliser (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
     (A : ValuationSubring Ω) (β β' : Ω)

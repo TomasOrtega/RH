@@ -12,13 +12,13 @@ open UpperTheory.Gal.Int.Div (CrysAt PhiKilled HTRichEx JumpsOcc VBase)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ ι dd ρ χ hρ hχ w c m h1 Q hQ P AI hT A hA O _ _ _ Bw hj τ LL' τ' hi`. Take `⟨J, hJ, hJQ⟩` from `hQ P AI hT A hA O Bw hj τ LL' τ' hi`. Take `⟨-, -, j1, -⟩` from `h1.2 P AI hT A hA O Bw hj`. Establish `e1 : (rk1 χ).comp (Dec (F` using `E) A).subtype = rk1 (χ.comp (Dec (F := E) A).subtype) := by`. Use extensionality with `g i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Establish `e2 : (tw ρ χ).comp (Dec (F` using `E) A).subtype = tw (ρ.comp (Dec (F := E) A).subtype) (χ.comp (Dec (F := E) A).subtype) := by`. Use extensionality with `g i j`. Simplify using `[UpperTheory.V.Af.tw_val]`. Establish `j2` using `j1 τ LL' τ' hi`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `j2` using `[e1]`. Establish `cs : Continuous (ρ.comp (Dec (F` using `E) A).subtype) := hρ.comp continuous_subtype_val`. Establish `cμ : Continuous (χ.comp (Dec (F` using `E) A).subtype) := hχ.comp continuous_subtype_val`. Use `⟨J.map (· + m (ι.toRingHom.comp τ)), ?_, fun j hj' => ?_⟩` and prove the remaining obligations. Rewrite using `[e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `UpperTheory.Gal.TP.Sub.twJumps_holds l P AI hT E Ω A O Bw dd _ _ cs cμ τ J _ hJ j2`. Conclude with `Multiset.mem_map.2 ⟨_, hJQ _ hj', by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.twJ :
     UpperTheory.Gal.Int.Geo.TwJ := by

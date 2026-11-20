@@ -6,7 +6,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FourierJacobiAverage (app HasTensor
 open GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum (IsCO rescale)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.PosOne.FJTarget.target_bilinear` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FFourierJacobiTargetBilinearFormIntegral.lean&line=85#L85)
 -/

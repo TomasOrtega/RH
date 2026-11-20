@@ -64,22 +64,20 @@ def mulLin {L D : LB Y} (s : LB.Sec D) : SecOnR f L ⊤ →ₗ[K] SecOnR f (tens
       exact _root_.mul_assoc _ _ _)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.VeryAmpleGrowth.top_linTop f _ _ _ a`.
+A detailed English derivation is pending.
 -/
 theorem top_mulLin {L D : LB Y} (s : LB.Sec D) (a : SecOnR f L ⊤) :
     SecOnR.topEquiv f (tens L D) (mulLin f s a) = mulSec s (SecOnR.topEquiv f L a) :=
   GlobalTheory.VeryAmpleGrowth.top_linTop f _ _ _ a
 
 /- English proof (translation)
-Take `⟨j₀, hj₀⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Establish `hxL : x ∈ ⨆ i, L.U i` using `by rw [hL.cover]; trivial`. Take `⟨i₀, hi₀⟩` from `TopologicalSpace.Opens.mem_iSup.1 hxL`. Set `W : Y.Opens` to `L.U i₀ ⊓ Y.basicOpen (s.f j₀)`. Establish `hWB : W ≤ Y.basicOpen (s.f j₀)` using `inf_le_right`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hBD : Y.basicOpen (s.f j₀) ≤ D.U j₀` using `Y.basicOpen_le _`. Establish `hWL : W ≤ L.U i₀` using `inf_le_left`. Establish `hWT : W ≤ L.U i₀ ⊓ D.U j₀` using `le_inf hWL (hWB.trans hBD)`. Use `haveI : Nonempty W := ⟨⟨x, hi₀, hj₀⟩⟩`. Establish `hu : IsUnit (rs Y (hWB.trans hBD) (s.f j₀))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← rs_rs hBD hWB]`. Conclude with `(Y.toRingedSpace.isUnit_res_basicOpen (s.f j₀)).map _`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `a ha`. Establish `h : (mulSec s (SecOnR.topEquiv f L a)).f (i₀, j₀) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `top_mulLin f s a`. Rewrite `e` using `[ha]`. Conclude with `(congrArg (fun σ : LB.Sec (tens L D) => σ.f (i₀, j₀)) e).symm.trans (GlobalTheory.VeryAmpleGrowth.top_zero f (M := tens L D) (i₀, j₀))`. Establish `h'` using `congrArg (rs Y hWT) h`. Express the relevant statement in the definitionally equal form `rs Y hWT (rs Y (inf_le_left : L.U i₀ ⊓ D.U j₀ ≤ L.U i₀) ((SecOnR.topEquiv f L a).f i₀) * rs Y (inf_le_right : L.U i₀ ⊓ D.U j₀ ≤ D.U j₀) (s.f j₀)) = rs Y hWT 0 at h'`.
-
-Rewrite `h'` using `[map_mul, map_zero, rs_rs, rs_rs, hu.mul_left_eq_zero]`. Conclude with `GlobalTheory.VeryAmpleGrowth.top_ext f fun k => (GlobalTheory.SecGrowth.sec_eq_zero (M := L) (SecOnR.topEquiv f L a) (k₀ := i₀) hWL h' k).trans (GlobalTheory.VeryAmpleGrowth.top_zero f k).symm`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulLin_injective [IsIntegral Y] {L D : LB Y} (hL : L.IsLB) (s : LB.Sec D) {x : Y}
     (hx : x ∈ Out.nonzeroLocus s) : Function.Injective (mulLin f (L := L) s) := by
@@ -113,7 +111,7 @@ theorem mulLin_injective [IsIntegral Y] {L D : LB Y} (hL : L.IsLB) (s : LB.Sec D
 end GlobalTheory.TensMul
 
 /- English proof (translation)
-Introduce `K _ Y _ f L D hL _ s x hx hfin`. Establish `hinj` using `GlobalTheory.TensMul.mulLin_injective f hL s hx`. Conclude with `⟨Module.Finite.of_injective _ hinj, LinearMap.finrank_le_finrank_of_injective hinj⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.TensMul.finite_finrank_le_tens : ∀ {K : Type} [Field K] {Y : Scheme.{0}} [IsIntegral Y] (f : Y ⟶ Spec (CommRingCat.of K)) {L D : LB Y}, L.IsLB → D.IsLB → ∀ (s : LB.Sec D) {x : Y}, x ∈ Out.nonzeroLocus s → Module.Finite K (SecOnR f (tens L D) ⊤) → Module.Finite K (SecOnR f L ⊤) ∧ Module.finrank K (SecOnR f L ⊤) ≤ Module.finrank K (SecOnR f (tens L D) ⊤) := by
   intro K _ Y _ f L D hL _ s x hx hfin

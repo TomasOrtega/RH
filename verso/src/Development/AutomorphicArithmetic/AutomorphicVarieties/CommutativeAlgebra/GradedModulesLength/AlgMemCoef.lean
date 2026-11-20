@@ -15,7 +15,7 @@ import Formalism.SharpRestriction.ValuationFrobeniusEpsilon.LeastPrimeTwists.Quo
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
 /- English proof (translation)
-The claim follows from `X.gra.toGradedMonoid.toGradedMul.mul_mem ha hx internal := DirectSum.Decomposition.isInternal X.𝒜 fin := Module.Finite.self X.R`.
+A detailed English derivation is pending.
 -/
 private theorem self_isGr {k : ℕ} (X : HidaSetting k) : (GMod.self X.𝒜).IsGr X.𝒜 where
   smul_mem ha hx := X.gra.toGradedMonoid.toGradedMul.mul_mem ha hx
@@ -23,13 +23,11 @@ private theorem self_isGr {k : ℕ} (X : HidaSetting k) : (GMod.self X.𝒜).IsG
   fin := Module.Finite.self X.R
 
 /- English proof (translation)
-Establish `hF : ((GMod.self X.𝒜).quo J).IsGr X.𝒜` using `((ruleGr k X _ (self_isGr X)).1 J hJ).2`. Establish `hA : admitted X.𝒜 (ts ++ [(0, a)]) ((GMod.self X.𝒜).quo J).Ann`. Take `⟨N, hN⟩` from `hadm`. Use `⟨N, hN.trans (sup_le_sup_right ?_ _)⟩` and prove the remaining obligations. Conclude with `(Ideal.annihilator_quotient (I := J)).ge`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `ruleNzd k X ts ((GMod.self X.𝒜).quo J) 0 a (by`. Introduce `x hx`. Take `⟨p, rfl⟩` from `Submodule.Quotient.mk_surjective J x`. Establish `h : Submodule.Quotient.mk (p` using `J) (a * p) = 0 := hx`. Conclude with `(Submodule.Quotient.mk_eq_zero J).2 (hn p ((Submodule.Quotient.mk_eq_zero J).1 h)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `euler_rule_two_of_graded_finite_iso ruleGr ruleFin ruleIso (euler_additivity_of_rules ruleGr ruleFin ruleIso) k X (ts ++ [(0, a)]) ((0, a) :: ts) _ hv (List.perm_append_singleton _ _) hF hA`. Establish `h3` using `ruleUB k X ts [(0, a)] _ hv hF hA`. Take `⟨iso⟩` from `qi_holds k X.B X.R X.𝒜 J ts`. Use `filter_upwards [h2, h3] with d h2 h3`. Rewrite using `[← h1, ← h2, ← ruleIso k X _ _ _ iso]`.
-
-Conclude with `h3`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chain {k : ℕ} (X : HidaSetting k) (ts : List (Deg k × X.R)) (J : Ideal X.R) (a : X.R)
     (hJ : (GMod.self X.𝒜).IsHomSub J) (hv : Valid X.𝒜 (ts ++ [(0, a)]))
@@ -55,9 +53,9 @@ private theorem chain {k : ℕ} (X : HidaSetting k) (ts : List (Deg k × X.R)) (
   exact h3
 
 /- English proof (translation)
-Establish `hJ' : J = Submodule.span R {x : R | x ∈ J ∧ ∃ m, x ∈ 𝒜 m}` using `hJ`. Use `show J ⊔ secs ts = Submodule.span R {x : R | x ∈ J ⊔ secs ts ∧ ∃ m, x ∈ 𝒜 m}`. Use `le_antisymm (sup_le ?_ ?_) (Submodule.span_le.2 fun x hx => hx.1)` and prove the remaining obligations. Conclude with `hJ'.le.trans (Submodule.span_mono fun x hx => ⟨Submodule.mem_sup_left hx.1, hx.2⟩)`. Use `Submodule.span_mono ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `x ⟨d, hd⟩`. Conclude with `⟨Submodule.mem_sup_right (Ideal.subset_span ⟨d, hd⟩), d, (hv _ hd).2⟩`.
+A detailed English derivation is pending.
 -/
 private theorem hom_sup {k : ℕ} {B R : Type} [CommRing B] [CommRing R] [Algebra B R] (𝒜 : Deg k → Submodule B R)
     (ts : List (Deg k × R)) (J : Ideal R) (hJ : (GMod.self 𝒜).IsHomSub J) (hv : Valid 𝒜 ts) :
@@ -75,9 +73,7 @@ section
 variable {B A : Type} [CommRing B] [CommRing A] [Algebra B A] {k : ℕ} (N : Fin k → Submodule B A)
 
 /- English proof (translation)
-Use `le_antisymm (fun p hp => ?_) (Submodule.span_le.2 fun x hx => hx.1)` and prove the remaining obligations. Rewrite using `[eq_sum_mono N p]`. Use `Submodule.sum_mem _ fun μ _ => Submodule.subset_span ⟨fun n => ?_, _, mono_mem N μ _ _⟩` and prove the remaining obligations. Use `show MvPolynomial.coeff n (MvPolynomial.monomial μ _) ∈ J`. Rewrite using `[MvPolynomial.coeff_monomial]`.
-
-Use `split_ifs`. Conclude with `hp μ`. Conclude with `J.zero_mem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coef_hom (J : Ideal A) : (GMod.self (reesGr N)).IsHomSub (coefIdeal N J) := by
   classical
@@ -91,7 +87,7 @@ private theorem coef_hom (J : Ideal A) : (GMod.self (reesGr N)).IsHomSub (coefId
   · exact J.zero_mem
 
 /- English proof (translation)
-Use `show MvPolynomial.coeff n (algebraMap B (MvPolynomial (Fin k) A) b * p.1) = _`. Rewrite using `[MvPolynomial.algebraMap_apply, MvPolynomial.coeff_C_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coeff_alg (b : B) (p : rees N) (n : Fin k →₀ ℕ) :
     MvPolynomial.coeff n (algebraMap B (rees N) b * p).1 = algebraMap B A b * MvPolynomial.coeff n p.1 := by
@@ -99,7 +95,7 @@ private theorem coeff_alg (b : B) (p : rees N) (n : Fin k →₀ ℕ) :
   rw [MvPolynomial.algebraMap_apply, MvPolynomial.coeff_C_mul]
 
 /- English proof (translation)
-Introduce `n` and use `by rw [← mul_one (algebraMap B (rees N) b), coeff_alg] exact J.mul_mem_right _ hb`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem alg_mem_coef (J : Ideal A) (b : B) (hb : algebraMap B A b ∈ J) :
     algebraMap B (rees N) b ∈ coefIdeal N J := fun n => by
@@ -109,7 +105,7 @@ private theorem alg_mem_coef (J : Ideal A) (b : B) (hb : algebraMap B A b ∈ J)
 end
 
 /- English proof (translation)
-Introduce `p hp`. Simplify using `only [ts, tsF, tsR, List.mem_append, List.mem_ofFn, List.mem_singleton] at hp`. Break down `hp with ⟨i, rfl⟩ | ((⟨i, rfl⟩ | ⟨i, rfl⟩) | ⟨i, rfl⟩) | rfl` into its components or cases. Use `exacts [⟨e_nonneg _, sec_mem _ _ _ (sq_mem_neg 𝒜 (Q.hF _))⟩, ⟨e_nonneg _, sec_mem _ _ _ (Q.hG i)⟩, ⟨e_nonneg _, sec_mem _ _ _ (sq_mem_pos 𝒜 (Q.hE i))⟩, ⟨e_nonneg _, sec_mem _ _ _ (Q.hE' i)⟩, ⟨e_nonneg _, sec_mem _ _ _ (Submodule.mem_sup_left (Submodule.mem_span_singleton_self _)) …`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem ts_valid {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {𝒜 : ℤ → Submodule O A} [GradedAlgebra 𝒜]
     {x : A →ₐ[O] O} {r s r' s' m : ℕ} (Q : Eqns 𝒜 x r s r' s' m) : Valid (mGr Q) (ts Q) := by
@@ -121,21 +117,17 @@ private theorem ts_valid {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {�
     ⟨e_nonneg _, sec_mem _ _ _ (Submodule.mem_sup_left (Submodule.mem_span_singleton_self _))⟩]
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ K _ _ _ _ v hv A _ _ 𝒜 _ _ x hW r s r' s' m Q τ _ wt φ hφ hZ hr hd ϖ hϖ y c hy hF s1 s2 m2 m3 m4 a m5 ha T hT`. Use `lift a to 𝒜 0 using m5.1`. Establish `hfg : ∀ i, (mN 𝒜 (Q.F (Fin.last r)) i).FG`. Establish `h` using `fg_holds O A 𝒜 x hW`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `fin_cases i`. Conclude with `h _`. Conclude with `h _`. Conclude with `(Submodule.fg_span_singleton _).sup (((h _).mul (h _)).mul (h _))`. Set `X : HidaSetting 3` to `{ B := 𝒜 0, R := mR Q, 𝒜 := mGr Q, std := std_holds _ _ _ _ hfg }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `set J : Ideal (mR Q) := coefIdeal _ (RingHom.ker φ) with hJ`. Establish `hZJ : ∀ i, algebraMap (𝒜 0) (mR Q) ⟨Q.Z i, (Q.hZ i).1⟩ ∈ J` using `fun i => alg_mem_coef _ _ _ (hZ i)`. Establish `hadm` using `admissibility_holds O K A 𝒜 x hW r s r' s' m Q s1 s2 m2 m3 a m5 J hZJ`. Establish `hval : Valid (mGr Q) (ts Q ++ [(0, algebraMap (𝒜 0) (mR Q) a)])`. Introduce `p hp`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `List.mem_append.1 hp with hp | hp` into its components or cases. Conclude with `ts_valid Q p hp`. Rewrite using `[List.mem_singleton.1 hp]`. Conclude with `⟨le_rfl, SetLike.algebraMap_mem_graded _ a⟩`. Establish `hn : ∀ p : mR Q, algebraMap (𝒜 0) (mR Q) a * p ∈ J → p ∈ J` using `fun p hp n => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h` using `hp n`. Rewrite `h` using `[coeff_alg, RingHom.mem_ker, map_mul]`. Conclude with `(mul_eq_zero.1 h).resolve_left ha`. Establish `hadm' : admitted (mGr Q) (ts Q) (J ⊔ Ideal.span {algebraMap (𝒜 0) (mR Q) a})`. Use `E2.admissible_tail_of_cons_mem (mGr Q) (d := 0) (s := algebraMap (𝒜 0) (mR Q) a) (J := J) ?_ le_sup_left (Submodule.mem_sup_right (Ideal.subset_span rfl))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨N, hN⟩` from `hadm`. Conclude with `⟨N, by rwa [E2.secs_perm (List.perm_append_singleton _ _)] at hN⟩`. Establish `h1` using `low_holds O A 𝒜 x hW r s r' s' m Q τ wt φ hφ hr hd ϖ hϖ y c hy hF a m5.2.1 hadm'`. Establish `h2` using `chain X (ts Q) J _ (coef_hom _ _) hval hn hadm`. Establish `h3` using `up_holds O K v hv A 𝒜 x hW r s r' s' m Q s1 s2 m2 m3 m4 a m5 T hT (J ⊔ secs (ts Q)) (hom_sup _ _ _ (coef_hom _ _) (ts_valid Q)) le_sup_right fun i => Submodule.mem_sup_left (hZJ i)`.
-
-Take `⟨d, h1, h2, h3⟩` from `(h1.and (h2.and h3)).exists`. Establish `h4 : ((((∑ i, c i : ℕ) : ℤ) * 2 ^ (r + r') : ℤ) : ℝ) ≤ 2 ^ (r + 1 + r') * ∑ ξ ∈ T, v (ξ a)` using `(Int.cast_le.2 (h1.trans h2)).trans h3`. Establish `h5 : (0 : ℝ) < 2 ^ (r + r')` using `by positivity`. Use `le_of_mul_le_mul_right ?_ h5` and prove the remaining obligations. Rewrite `h4` using `[Int.cast_mul, Int.cast_natCast, Int.cast_pow, Int.cast_ofNat]`.
-
-Use `h4.trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.core_holds :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]

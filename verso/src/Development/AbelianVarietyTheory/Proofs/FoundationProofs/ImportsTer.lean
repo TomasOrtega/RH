@@ -5,17 +5,15 @@ namespace GlobalTheory.SpanScalarMembership
 open NumberField
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨s, hs, hsy⟩` from `hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, htz⟩` from `hz`. Use `⟨s * t, mul_ne_zero hs ht, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `T.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `T.smul_mem t hsy`. Rewrite using `[mul_smul]`. Conclude with `T.smul_mem s htz`. Consider the case `smul a y _ hy`. Take `⟨s, hs, hsy⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, q, hq, rfl⟩` from `IsFractionRing.div_surjective (A := RingOfIntegers K) a`. Establish `hq0 : q ≠ 0` using `nonZeroDivisors.ne_zero hq`. Establish `hqK : algebraMap (RingOfIntegers K) K q ≠ 0`. Introduce `h`. Conclude with `hq0 ((IsFractionRing.injective (RingOfIntegers K) K) (by rw [h, map_zero]))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨s * q, mul_ne_zero hs hq0, ?_⟩` and prove the remaining obligations. Establish `key : (s * q) • ((algebraMap (RingOfIntegers K) K p / algebraMap (RingOfIntegers K) K q) • y) = p • (s • y)`. Rewrite using `[← algebraMap_smul K (s * q), ← algebraMap_smul K p, ← algebraMap_smul K s, smul_smul, smul_smul, map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[key]`. Conclude with `T.smul_mem p hsy`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_of_mem_span {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V]
     [Module K V] [Module (RingOfIntegers K) V] [IsScalarTower (RingOfIntegers K) K V]

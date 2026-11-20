@@ -11,7 +11,7 @@ def params {m N : ℕ} (h : m ≤ N) : Fin m → MvPowerSeries (Fin N) W := fun 
 def perFactor (m N n r : ℕ) (ε : Fin N → LinearMap.BilinForm ℤ (Fin r → ℤ)) (a b : Fin r → ℤ) : FractionRing (MvPowerSeries (Fin N) W) :=
   ∏ k, (algebraMap (MvPowerSeries (Fin N) W) (FractionRing (MvPowerSeries (Fin N) W)) (coordT W m N k)) ^ ((n : ℤ) * ε k a b)
 /- English proof (translation)
-Simplify using `[perFactor]`.
+Simplify using the standard rewrite rules.
 -/
 example : perFactor W 0 0 3 0 (fun k => k.elim0) 0 0 = 1 := by simp [perFactor]
 end GlobalTheory.PolDeg.Taut

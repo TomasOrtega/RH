@@ -32,7 +32,7 @@ theorem wordOp_succ {k : ℕ} (Y : Fin (k + 1) → 𝔤) (v : E) :
     h.wordOp π Y v = h.derivOp π (Y 0) (h.wordOp π (Fin.tail Y) v) := rfl
 
 /- English proof (translation)
-The claim follows from `| 0, _ => hv | _ + 1, Y => h.isSmoothVector_derivOp π (isSmoothVector_wordOp hv (Fin.tail Y)) (Y 0)`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothVector_wordOp {v : E} (hv : h.IsSmoothVector π v) :
     ∀ {k : ℕ} (Y : Fin k → 𝔤), h.IsSmoothVector π (h.wordOp π Y v)
@@ -40,7 +40,7 @@ theorem isSmoothVector_wordOp {v : E} (hv : h.IsSmoothVector π v) :
   | _ + 1, Y => h.isSmoothVector_derivOp π (isSmoothVector_wordOp hv (Fin.tail Y)) (Y 0)
 
 /- English proof (translation)
-The claim follows from `| 0, _ => rfl | _ + 1, Y => by rw [wordOp_succ, wordOp_add hv hw (Fin.tail Y), h.derivOp_add π (h.isSmoothVector_wordOp π hv _) (h.isSmoothVector_wordOp π hw _)] rfl`.
+A detailed English derivation is pending.
 -/
 theorem wordOp_add {v w : E} (hv : h.IsSmoothVector π v) (hw : h.IsSmoothVector π w) :
     ∀ {k : ℕ} (Y : Fin k → 𝔤), h.wordOp π Y (v + w) = h.wordOp π Y v + h.wordOp π Y w
@@ -51,7 +51,7 @@ theorem wordOp_add {v w : E} (hv : h.IsSmoothVector π v) (hw : h.IsSmoothVector
     rfl
 
 /- English proof (translation)
-The claim follows from `| 0, _ => rfl | _ + 1, Y => by rw [wordOp_succ, wordOp_smul hv c (Fin.tail Y), h.derivOp_smul π (h.isSmoothVector_wordOp π hv _)] rfl`.
+A detailed English derivation is pending.
 -/
 theorem wordOp_smul {v : E} (hv : h.IsSmoothVector π v) (c : ℂ) :
     ∀ {k : ℕ} (Y : Fin k → 𝔤), h.wordOp π Y (c • v) = c • h.wordOp π Y v
@@ -62,12 +62,12 @@ theorem wordOp_smul {v : E} (hv : h.IsSmoothVector π v) (c : ℂ) :
     rfl
 
 /- English proof (translation)
-The claim follows from `(h.smoothVectors π).zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothVector_zero : h.IsSmoothVector π (0 : E) := (h.smoothVectors π).zero_mem
 
 /- English proof (translation)
-Use `h.wordOp_smul π hv (-1) Y` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem wordOp_neg {v : E} (hv : h.IsSmoothVector π v) {k : ℕ} (Y : Fin k → 𝔤) :
     h.wordOp π Y (-v) = -h.wordOp π Y v := by
@@ -75,7 +75,7 @@ theorem wordOp_neg {v : E} (hv : h.IsSmoothVector π v) {k : ℕ} (Y : Fin k →
   simpa using this
 
 /- English proof (translation)
-Establish `hw' : h.IsSmoothVector π (-w)` using `(h.smoothVectors π).neg_mem hw`. Rewrite using `[sub_eq_add_neg, h.wordOp_add π hv hw', h.wordOp_neg π hw, ← sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem wordOp_sub {v w : E} (hv : h.IsSmoothVector π v) (hw : h.IsSmoothVector π w)
     {k : ℕ} (Y : Fin k → 𝔤) : h.wordOp π Y (v - w) = h.wordOp π Y v - h.wordOp π Y w := by
@@ -83,14 +83,14 @@ theorem wordOp_sub {v w : E} (hv : h.IsSmoothVector π v) (hw : h.IsSmoothVector
   rw [sub_eq_add_neg, h.wordOp_add π hv hw', h.wordOp_neg π hw, ← sub_eq_add_neg]
 
 /- English proof (translation)
-Use `h.Ad_inv_Ad g⁻¹ X` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Ad_Ad_inv (g : G) (X : 𝔤) : h.Ad g (h.Ad g⁻¹ X) = X := by
   have := h.Ad_inv_Ad g⁻¹ X
   rwa [inv_inv] at this
 
 /- English proof (translation)
-The claim follows from `| 0, _ => rfl | k + 1, Y => by rw [wordOp_succ, wordOp_map hv g (Fin.tail Y), wordOp_succ] have := h.derivOp_map π (h.isSmoothVector_wordOp π hv (fun i => h.Ad g⁻¹ (Fin.tail Y i))) g (h.Ad g⁻¹ (Y 0)) rw [Ad_Ad_inv] at this rw [this] rfl`.
+A detailed English derivation is pending.
 -/
 theorem wordOp_map {v : E} (hv : h.IsSmoothVector π v) (g : G) :
     ∀ {k : ℕ} (Y : Fin k → 𝔤),
@@ -122,11 +122,11 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (π : BanachRep 
 omit [NormedRing 𝔸] [NormedAlgebra ℝ 𝔸] [CompleteSpace 𝔸] [FiniteDimensional ℝ 𝔸] in
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℝ M`. Establish `key : ∀ Y : ι → M, f Y = ∑ r ∈ Fintype.piFinset (fun _ : ι => (Finset.univ : Finset (Fin (Module.finrank ℝ M)))), (∏ i, b.repr (Y i) (r i)) • f (fun i => b (r i))`. Introduce `Y`. Establish `hY : Y = fun i => ∑ j, b.repr (Y i) j • b j` using `funext fun i => (b.sum_repr (Y i)).symm`. Use `conv_lhs => rw [hY]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[f.map_sum_finset]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Conclude with `f.map_smul_univ (fun i => b.repr (Y i) (r i)) (fun i => b (r i))`. Establish `e : (f : (ι → M) → F) = fun Y => ∑ r ∈ Fintype.piFinset (fun _ : ι => (Finset.univ : Finset (Fin (Module.finrank ℝ M)))), (∏ i, b.repr (Y i) (r i)) • f (fun i => b (r i))` using `funext key`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_finsetSum _ fun r _ => ?_` and prove the remaining obligations. Use `(continuous_finsetProd _ fun i _ => ?_).smul continuous_const` and prove the remaining obligations. Conclude with `((b.coord (r i)).continuous_of_finiteDimensional).comp (continuous_apply i)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GroundTheory.Automorphic.continuous_multilinear_of_finiteDimensional {ι : Type*} [Fintype ι]
     [DecidableEq ι] {M : Type*} [NormedAddCommGroup M] [NormedSpace ℝ M] [FiniteDimensional ℝ M]
@@ -161,7 +161,7 @@ noncomputable def wordML {v : E} (hv : h.IsSmoothVector π v) :
           simp [h.derivOp_smul_left] }
 
 /- English proof (translation)
-The claim follows from `| 0, _ => rfl | k + 1, Y => by rw [wordML, LinearMap.uncurryLeft_apply] simp only [LinearMap.coe_mk, AddHom.coe_mk, LinearMap.compMultilinearMap_apply, LinearMap.coe_restrictScalars, coe_derivEnd] rw [coe_wordML hv k (Fin.tail Y)] rfl`.
+A detailed English derivation is pending.
 -/
 theorem coe_wordML {v : E} (hv : h.IsSmoothVector π v) :
     ∀ (k : ℕ) (Y : Fin k → 𝔤), ((h.wordML π hv k Y : h.smoothVectors π) : E) = h.wordOp π Y v
@@ -174,7 +174,7 @@ theorem coe_wordML {v : E} (hv : h.IsSmoothVector π v) :
     rfl
 
 /- English proof (translation)
-Set `M : MultilinearMap ℝ (fun _ : Fin k => 𝔤) E` to `((h.smoothVectors π).subtype.restrictScalars ℝ).compMultilinearMap (h.wordML π hv k)`. Use `⟨⟨M, continuous_multilinear_of_finiteDimensional M⟩, fun Y => ?_⟩` and prove the remaining obligations. Use `show ((h.wordML π hv k Y : h.smoothVectors π) : E) = _`. Conclude with `h.coe_wordML π hv k Y`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_wordOp_cml {v : E} (hv : h.IsSmoothVector π v) (k : ℕ) :
     ∃ Φ : ContinuousMultilinearMap ℝ (fun _ : Fin k => 𝔤) E, ∀ Y, Φ Y = h.wordOp π Y v := by
@@ -205,7 +205,7 @@ noncomputable def brSum (X : 𝔤) : {k : ℕ} → (Fin k → 𝔤) → E → E
       h.derivOp π (Y 0) (brSum X (Fin.tail Y) v)
 
 /- English proof (translation)
-The claim follows from `| 0, _ => h.isSmoothVector_zero π | _ + 1, Y => (h.smoothVectors π).add_mem (h.isSmoothVector_derivOp π (h.isSmoothVector_wordOp π hv _) _) (h.isSmoothVector_derivOp π (isSmoothVector_brSum hv X (Fin.tail Y)) _)`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothVector_brSum {v : E} (hv : h.IsSmoothVector π v) (X : 𝔤) :
     ∀ {k : ℕ} (Y : Fin k → 𝔤), h.IsSmoothVector π (h.brSum π X Y v)
@@ -215,7 +215,7 @@ theorem isSmoothVector_brSum {v : E} (hv : h.IsSmoothVector π v) (X : 𝔤) :
       (h.isSmoothVector_derivOp π (isSmoothVector_brSum hv X (Fin.tail Y)) _)
 
 /- English proof (translation)
-The claim follows from `| 0, _ => by simp [brSum] | k + 1, Y => by have hu := h.isSmoothVector_wordOp π hv (Fin.tail Y) have hb := h.derivOp_bracket π hu X (Y 0) rw [wordOp_succ, wordOp_succ, brSum] rw [eq_sub_iff_add_eq] at hb rw [← hb, derivOp_wordOp hv X (Fin.tail Y), h.derivOp_add π (h.isSmoothVecto …`.
+A detailed English derivation is pending.
 -/
 theorem derivOp_wordOp {v : E} (hv : h.IsSmoothVector π v) (X : 𝔤) :
     ∀ {k : ℕ} (Y : Fin k → 𝔤),
@@ -231,7 +231,7 @@ theorem derivOp_wordOp {v : E} (hv : h.IsSmoothVector π v) (X : 𝔤) :
         (h.isSmoothVector_wordOp π (h.isSmoothVector_derivOp π hv X) _), add_assoc]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `using h.derivOp_smul π (h.isSmoothVector_zero π) 0 X`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, h.derivOp_add π (hw a) ((h.smoothVectors π).sum_mem fun i _ => hw i), ih]`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem derivOp_sum {ι : Type*} (s : Finset ι) {w : ι → E} (hw : ∀ i, h.IsSmoothVector π (w i))
     (X : 𝔤) : h.derivOp π X (∑ i ∈ s, w i) = ∑ i ∈ s, h.derivOp π X (w i) := by
@@ -244,7 +244,7 @@ theorem derivOp_sum {ι : Type*} (s : Finset ι) {w : ι → E} (hw : ∀ i, h.I
       h.derivOp_add π (hw a) ((h.smoothVectors π).sum_mem fun i _ => hw i), ih]
 
 /- English proof (translation)
-The claim follows from `| 0, _ => by simp [brSum] | k + 1, Y => by rw [Fin.sum_univ_succ, brSum] congr 1 have e : ∀ j : Fin k, h.wordOp π (Function.update Y j.succ (h.bracket X (Y j.succ))) v = h.derivOp π (Y 0) (h.wordOp π (Function.update (Fin.tail Y) j (h.bracket X (Fin.tail Y j))) v) := by intro j r …`.
+A detailed English derivation is pending.
 -/
 theorem sum_wordOp_update {v : E} (hv : h.IsSmoothVector π v) (X : 𝔤) :
     ∀ {k : ℕ} (Y : Fin k → 𝔤),
@@ -265,17 +265,15 @@ theorem sum_wordOp_update {v : E} (hv : h.IsSmoothVector π v) (X : 𝔤) :
       sum_wordOp_update hv X (Fin.tail Y)]
 
 /- English proof (translation)
-Establish `hA` using `h.hasDerivAt_derivOp π hw0 X`. Establish `hB : HasDerivAt (fun t : ℝ => π (h.expG (t • X)) (w t - w 0)) w' 0`. Rewrite `hw`, the goal using `[hasDerivAt_iff_isLittleO]`. Establish `hc : Tendsto (fun t : ℝ => π (h.expG (t • X)) w') (𝓝 0) (𝓝 w')`. Establish `hcont : Continuous fun t : ℝ => π (h.expG (t • X)) w'` using `(π.continuous_orbit w').comp (h.continuous_expG.comp (continuous_id.smul continuous_const))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using hcont.tendsto 0`. Rewrite `hw`, the goal using `[isLittleO_iff]`. Introduce `c hc0`. Establish `h1` using `hw (half_pos hc0)`. Establish `h2 : ∀ᶠ t in 𝓝 (0 : ℝ), ‖π (h.expG (t • X)) w' - w'‖ ≤ c / 2`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(tendsto_iff_norm_sub_tendsto_zero.1 hc)` as an intermediate fact. Conclude with `(this.eventually (ge_mem_nhds (half_pos hc0))).mono fun t ht => ht`. Use `filter_upwards [h1, h2] with t ht1 ht2`. Simplify using `only [sub_zero, zero_smul, sub_self, map_zero] at ht1 ⊢`. Establish `e : π (h.expG (t • X)) (w t - w 0) - t • w' = π (h.expG (t • X)) (w t - w 0 - t • w') + t • (π (h.expG (t • X)) w' - w')`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [map_sub, ContinuousLinearMap.map_smul_of_tower, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_smul]`. Use `gcongr`. Use `_ ≤ c / 2 * ‖t‖ + ‖t‖ * (c / 2) := by gcongr`. Use `_ = c * ‖t‖ := by ring`. Use `hA.add hB` as an intermediate fact.
-
-Use `this.congr_of_eventuallyEq (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only [Pi.add_apply, map_sub]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_expG_apply (hπ : ∀ g, ‖π g‖ ≤ 1) {w : ℝ → E} {w' : E}
     (hw : HasDerivAt w w' 0) (hw0 : h.IsSmoothVector π (w 0)) (X : 𝔤) :
@@ -332,25 +330,23 @@ variable {G : Subgroup 𝔸ˣ} {𝔤 : Submodule ℝ 𝔸} (h : IsExpLieAlgebra 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (π : BanachRep G E)
 
 /- English proof (translation)
-Rewrite using `[← h.expG_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem expG_smul_inv (t : ℝ) (X : 𝔤) : (h.expG (t • X))⁻¹ = h.expG (-(t • X)) := by
   rw [← h.expG_neg]
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `h.exists_wordOp_cml π hv k`. Use `set c : ℝ → (Fin k → 𝔤) := fun t i => h.Ad (h.expG (-(t • X))) (Y i) with hcdef`. Establish `hfun : (fun t : ℝ => h.wordOp π Y (π (h.expG (t • X)) v)) = fun t => π (h.expG (t • X)) (Φ (c t))`. Use function extensionality and compare the values at `t`. Rewrite using `[h.wordOp_map π hv, hΦ, h.expG_smul_inv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc0 : c 0 = Y`. Use function extensionality and compare the values at `i`. Simplify using `[hcdef]`. Establish `hcd : HasDerivAt c (fun i => -(h.bracket X (Y i))) 0`. Rewrite using `[hasDerivAt_pi]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use `(h.hasDerivAt_Ad_expG X (Y i)).scomp_of_eq 0 (hasDerivAt_neg (0 : ℝ)) (by simp)` as an intermediate fact. Simplify `this` using `[hcdef, Function.comp_def]`. Establish `hΦc : HasDerivAt (fun t => Φ (c t)) (∑ i, Φ (Function.update Y i (-(h.bracket X (Y i))))) 0`. Set `_inst : NormedSpace ℝ (Fin k → 𝔤)` to `Pi.normedSpace`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hF` using `Φ.hasFDerivAt (c 0)`. Use `hF.comp_hasDerivAt (𝕜 := ℝ) (0 : ℝ) hcd` as an intermediate fact. Rewrite `this` using `[hc0, ContinuousMultilinearMap.linearDeriv_apply]`. Conclude with `this`. Establish `hsum : ∑ i, Φ (Function.update Y i (-(h.bracket X (Y i)))) = -h.brSum π X Y v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h.sum_wordOp_update π hv X Y, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hΦ, ← neg_one_smul ℝ (h.bracket X (Y i)), Φ.map_update_smul, neg_one_smul]`. Establish `hw0 : h.IsSmoothVector π (Φ (c 0))`. Rewrite using `[hc0, hΦ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.isSmoothVector_wordOp π hv Y`. Establish `hP` using `h.hasDerivAt_expG_apply π hπ hΦc hw0 X`. Rewrite using `[hfun]`. Use `hP using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hsum, hc0, hΦ, h.derivOp_wordOp π hv X Y]`.
-
-Normalize the expressions using the abelian group laws.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_wordOp_expG (hπ : ∀ g, ‖π g‖ ≤ 1) {v : E} (hv : h.IsSmoothVector π v)
     (X : 𝔤) {k : ℕ} (Y : Fin k → 𝔤) :
@@ -390,9 +386,9 @@ theorem hasDerivAt_wordOp_expG (hπ : ∀ g, ‖π g‖ ≤ 1) {v : E} (hv : h.I
   abel
 
 /- English proof (translation)
-Establish `e : (fun t : ℝ => h.wordOp π Y (π g (π (h.expG (t • X)) v))) = fun t => ((π g).restrictScalars ℝ) (h.wordOp π (fun i => h.Ad g⁻¹ (Y i)) (π (h.expG (t • X)) v))`. Use function extensionality and compare the values at `t`. Rewrite using `[h.wordOp_map π (h.isSmoothVector_map π hv _)]`. Both sides reduce to the same expression. Rewrite using `[e, h.wordOp_map π (h.isSmoothVector_derivOp π hv X)]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((π g).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (h.hasDerivAt_wordOp_expG π hπ hv X _)`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_wordOp_map_expG (hπ : ∀ g, ‖π g‖ ≤ 1) {v : E} (hv : h.IsSmoothVector π v)
     (X : 𝔤) (g : G) {k : ℕ} (Y : Fin k → 𝔤) :
@@ -409,7 +405,7 @@ theorem hasDerivAt_wordOp_map_expG (hπ : ∀ g, ‖π g‖ ≤ 1) {v : E} (hv :
     (h.hasDerivAt_wordOp_expG π hπ hv X _)
 
 /- English proof (translation)
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Establish `h1 : Continuous fun g : G => ((g : 𝔸ˣ) : 𝔸)` using `continuous_val_val G`. Establish `h2 : Continuous fun g : G => (((g⁻¹ : G) : 𝔸ˣ) : 𝔸)` using `h1.comp continuous_inv`. Conclude with `(h1.mul continuous_const).mul h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_Ad_apply (X : 𝔤) : Continuous fun g : G => h.Ad g X := by
   refine Continuous.subtype_mk ?_ _
@@ -418,11 +414,9 @@ theorem continuous_Ad_apply (X : 𝔤) : Continuous fun g : G => h.Ad g X := by
   exact (h1.mul continuous_const).mul h2
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x₀`. Rewrite using `[ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]`. Establish `h1 : Tendsto (fun x => ‖u x - u x₀‖) (𝓝 x₀) (𝓝 0)` using `tendsto_iff_norm_sub_tendsto_zero.1 (hu.tendsto x₀)`. Establish `h2 : Tendsto (fun x => ‖π (p x) (u x₀) - π (p x₀) (u x₀)‖) (𝓝 x₀) (𝓝 0)` using `tendsto_iff_norm_sub_tendsto_zero.1 (((π.continuous_orbit (u x₀)).comp hp).tendsto x₀)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `squeeze_zero (fun _ => norm_nonneg _) (fun x => ?_) (by simpa using h1.add h2)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sub]`. Apply the tactic sequence `try abel`. Use `_ ≤ ‖π (p x) (u x - u x₀)‖ + ‖π (p x) (u x₀) - π (p x₀) (u x₀)‖ := norm_add_le _ _`.
-
-Use `_ ≤ ‖u x - u x₀‖ + ‖π (p x) (u x₀) - π (p x₀) (u x₀)‖ := by gcongr`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem continuous_apply_apply (hπ : ∀ g, ‖π g‖ ≤ 1) {T : Type*} [TopologicalSpace T]
     {p : T → G} {u : T → E} (hp : Continuous p) (hu : Continuous u) :
@@ -446,9 +440,9 @@ theorem continuous_apply_apply (hπ : ∀ g, ‖π g‖ ≤ 1) {T : Type*} [Topo
           _ = _ := one_mul _
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `h.exists_wordOp_cml π hv k`. Establish `e : (fun g : G => h.wordOp π Y (π g v)) = fun g => π g (Φ (fun i => h.Ad g⁻¹ (Y i)))`. Use function extensionality and compare the values at `g`. Rewrite using `[h.wordOp_map π hv, hΦ]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `continuous_apply_apply π hπ continuous_id (Φ.cont.comp ?_)` and prove the remaining obligations. Conclude with `continuous_pi fun i => (h.continuous_Ad_apply (Y i)).comp continuous_inv`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_wordOp_map (hπ : ∀ g, ‖π g‖ ≤ 1) {v : E} (hv : h.IsSmoothVector π v)
     {k : ℕ} (Y : Fin k → 𝔤) : Continuous fun g : G => h.wordOp π Y (π g v) := by
@@ -461,9 +455,9 @@ theorem continuous_wordOp_map (hπ : ∀ g, ‖π g‖ ≤ 1) {v : E} (hv : h.Is
   exact continuous_pi fun i => (h.continuous_Ad_apply (Y i)).comp continuous_inv
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `h.exists_wordOp_cml π hv k`. Use `⟨‖Φ‖ * ∏ i, ‖Y i‖, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[h.wordOp_map π hv, ← hΦ]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(h.AdL g⁻¹).le_opNorm (Y i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (‖Φ‖ * ∏ i, ‖Y i‖) * ‖h.AdL g⁻¹‖ ^ k := by`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_norm_wordOp_map_le (hπ : ∀ g, ‖π g‖ ≤ 1) {v : E} (hv : h.IsSmoothVector π v)
     {k : ℕ} (Y : Fin k → 𝔤) : ∃ C, ∀ g : G, ‖h.wordOp π Y (π g v)‖ ≤ C * ‖h.AdL g⁻¹‖ ^ k := by

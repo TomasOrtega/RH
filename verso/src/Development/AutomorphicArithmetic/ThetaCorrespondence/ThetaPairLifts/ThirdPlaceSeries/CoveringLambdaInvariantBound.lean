@@ -19,11 +19,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 /- English proof (translation)
-Introduce `hP hG hM`. Establish `hc` using `_root_.UpperTheory.Lit.Tam.integral_cusp_slope_power_bound_alt_alt hP hG`. Establish `hH : _root_.GlobalTheory.CovTop.HostNAlt 1` using `_root_.GlobalTheory.CovTop.Sizes.hostN_alt 1`. Establish `hW : _root_.GlobalTheory.CovTop.LiftWeightNumerator` using `_root_.GlobalTheory.T.lift_weight_numerator`. Use `Closed.imp ((((hc.and hM).and hH).and hG).and hW) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `eps Fm CH _ h`. Take `⟨⟨⟨⟨⟨A1, hA1, hc⟩, ⟨Cm, hCm, hm⟩⟩, ⟨Ah, hAh, hh⟩⟩, ⟨Cg, -, hg⟩⟩, ⟨Cw, -, hw⟩⟩` from `h`. Use `⟨A1 + (Ah + 1) + (⌈2 * Cm⌉₊ : ℝ), by have := Nat.cast_nonneg (α := ℝ) ⌈2 * Cm⌉₊; linarith, ?_⟩` and prove the remaining obligations. Take `⟨x0, H⟩` from `(((hc.and hm).and hh).and hg).and hw`. Use `⟨x0, fun x hx hle ι p hp i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨⟨⟨a, b⟩, c⟩, d⟩, e⟩` from `H x hx hle ι p hp`. Establish `hH1` using `c i`. Establish `hX : 10 ≤ (Fm.L x ι).sc.x` using `hH1.big.2.1.trans hH1.big.2.2.1`. Establish `hb : 0 ≤ (Fm.L x ι).sc.b` using `le_trans (by positivity) hH1.room`. Conclude with `le_rpow_of_add hX hb hA1 (by linarith [hH1.poly.1]) hCm (unitE_le p i hH1 (e i)) ((slopeMax_all_le p i Cm (d i) (b i)).trans (by linarith [a i]))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem covering_lambda_all_places_alt : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.GramCondition → _root_.GlobalTheory.CovTop.MeasureCondition → _root_.GlobalTheory.CovTop.LiftLambdaBound := by
   intro hP hG hM
@@ -49,7 +49,7 @@ section
 open GlobalTheory.CovTop GlobalTheory.BigTop
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.LamAll.covering_lambda_all_places_alt | exact _root_.GlobalTheory.CovTop.LamAll.covering_lambda_all_places_alt | (intros; apply _root_.GlobalTheory.CovTop.LamAll.covering_lambda_all_places_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.liftLambdaBound_of_gram_meas : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.GramCondition → _root_.GlobalTheory.CovTop.MeasureCondition → _root_.GlobalTheory.CovTop.LiftLambdaBound := by
   first | exact @_root_.GlobalTheory.CovTop.LamAll.covering_lambda_all_places_alt | exact _root_.GlobalTheory.CovTop.LamAll.covering_lambda_all_places_alt | (intros; apply _root_.GlobalTheory.CovTop.LamAll.covering_lambda_all_places_alt <;> assumption)

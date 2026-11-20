@@ -11,7 +11,7 @@ namespace GlobalTheory.EtC
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use `congrArg (fun h => h.hom x) (f.hom.naturality g.op)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coindQ_map_res {F G : Shv R} (f : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sec F U) :
     Sec.map f (Sec.res g x) = Sec.res g (Sec.map f x) := by
@@ -19,7 +19,7 @@ theorem coindQ_map_res {F G : Shv R} (f : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶
   simpa using this
 
 /- English proof (translation)
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coindQ_res_res (F : Shv R) {W V U : Scheme.{0}} (g : W ⟶ V) (x : V ⟶ U) (s : Sec F U) :
     Sec.res g (Sec.res x s) = Sec.res (g ≫ x) s := by
@@ -36,13 +36,13 @@ namespace GlobalTheory.EtC
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Take `⟨hex, huniq, hres, -⟩` from `GlobalTheory.T.free_sections_ext_res_map R (yoneda.obj U) J`. Establish `key : ∀ (V : Scheme.{0}) (x : V ⟶ U), freeGen R (yoneda.obj U) V x = Sec.res x (freeGen R (yoneda.obj U) U (𝟙 U))`. Introduce `V x`. Rewrite using `[hres V U x (𝟙 U)]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `ψ ψ' h`. Apply `huniq` to reduce the goal to its premises. Introduce `V x`. Rewrite using `[key V x, coindQ_map_res, coindQ_map_res]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (Sec.res x) h`. Introduce `s`. Take `⟨ψ, hψ⟩` from `hex (fun V x => Sec.res x s) (fun W V g x => by`. Rewrite using `[coindQ_res_res]`. Use the proof step `rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ψ, ?_⟩` and prove the remaining obligations. Use `show Sec.map ψ (freeGen R (yoneda.obj U) U (𝟙 U)) = s`. Rewrite using `[hψ U (𝟙 U)]`. Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coindQ_gen_bijective (J : Shv R) (U : Scheme.{0}) : Function.Bijective (coindQ_gen J U) := by
   obtain ⟨hex, huniq, hres, -⟩ := GlobalTheory.T.free_sections_ext_res_map R (yoneda.obj U) J
@@ -66,7 +66,7 @@ theorem coindQ_gen_bijective (J : Shv R) (U : Scheme.{0}) : Function.Bijective (
     simp [Sec.res]
 
 /- English proof (translation)
-Use `hJ (yoneda.obj U)` as an intermediate fact. Establish `hI : Injective (ModuleCat.of (ULift.{1} R) ((free R).obj (yoneda.obj U) ⟶ J))` using `Module.injective_object_of_injective_module _ _`. Conclude with `Injective.of_iso (LinearEquiv.ofBijective (coindQ_gen J U) (coindQ_gen_bijective J U)).toModuleIso hI`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coindQ_injSec (J : Shv R) (hJ : ∀ P : PSh, Module.Injective (ULift.{1} R) ((free R).obj P ⟶ J))
     (U : Scheme.{0}) : Injective (J.obj.obj (op U)) := by
@@ -81,13 +81,13 @@ namespace GlobalTheory.EtC
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[HomologicalComplex.exactAt_iff' _ n (n + 1) (n + 2) (by simp) (by simp)]`. Rewrite using `[GlobalTheory.T.etaleSheaf_shortComplex_exact_iff_locally]`. Introduce `U b hb`. Use `coindQ_injSec J hJ U` as an intermediate fact. Set `b' : (scalarsRes φ).complex.X (n + 1) ⟶ J.obj.obj (op U)` to `b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hb' : (scalarsRes φ).complex.d (n + 2) (n + 1) ≫ b' = 0`. Establish `h2 : (coindCx φ J).d (n + 1) (n + 2) = (homSh J).map ((scalarsRes φ).complex.d (n + 2) (n + 1)).op` using `coindCx_d φ J (n + 1)`. Establish `hb2 : Sec.map ((coindCx φ J).d (n + 1) (n + 2)) b = 0` using `hb`. Rewrite `hb2` using `[h2]`. Conclude with `hb2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `a'` to `((scalarsRes φ).exact_succ n).descToInjective b' hb'`. Establish `ha' : (scalarsRes φ).complex.d (n + 1) n ≫ a' = b'` using `((scalarsRes φ).exact_succ n).comp_descToInjective b' hb'`. Use `⟨⊤, GrothendieckTopology.top_mem _ _, fun V g _ => ?_⟩` and prove the remaining obligations. Establish `h1 : (coindCx φ J).d n (n + 1) = (homSh J).map ((scalarsRes φ).complex.d (n + 1) n).op` using `coindCx_d φ J n`. Establish `key : Sec.map ((coindCx φ J).d n (n + 1)) (a' : Sec ((coindCx φ J).X n) U) = b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `ha'`. Conclude with `⟨Sec.res g (a' : Sec ((coindCx φ J).X n) U), (coindQ_map_res ((coindCx φ J).d n (n + 1)) g _).trans (congrArg (Sec.res g) key)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coindQ_exactAt_succ {S : Type} [CommRing S] (φ : R →+* S) (J : Shv R)
     (hJ : ∀ P : PSh, Module.Injective (ULift.{1} R) ((free R).obj P ⟶ J)) (n : ℕ) :
@@ -127,7 +127,7 @@ instance {S : Type} [CommRing S] (φ : R →+* S) : Epi (coindQ_p φ) := by
   exact epi_comp _ _
 
 /- English proof (translation)
-Use `show _ ≫ (_ ≫ _) = 0`. Rewrite using `[ProjectiveResolution.complex_d_comp_π_f_zero_assoc, zero_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coindQ_d_p {S : Type} [CommRing S] (φ : R →+* S) :
     (scalarsRes φ).complex.d 1 0 ≫ coindQ_p φ = 0 := by
@@ -148,7 +148,7 @@ theorem coindQ_sc_f_sec {S : Type} [CommRing S] (φ : R →+* S) (J : Shv R) (U 
       (coindQ_p φ ≫ homOfLin (ModuleCat.CoextendScalars.equiv (liftHom φ) _ a) : _ ⟶ J.obj.obj (op U)) := rfl
 
 /- English proof (translation)
-Introduce `a a' h`. Establish `h'` using `(coindQ_sc_f_sec φ J U a).symm.trans (h.trans (coindQ_sc_f_sec φ J U a'))`. Establish `h3` using `(cancel_epi (coindQ_p φ)).1 h'`. Apply `ModuleCat.CoextendScalars.ext` to reduce the goal to its premises. Conclude with `congrArg ModuleCat.Hom.hom h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem coindQ_sc_inj {S : Type} [CommRing S] (φ : R →+* S) (J : Shv R) (U : Scheme.{0}) :
     Function.Injective (Sec.map (coindQ_sc φ J).f (U := U)) := by
@@ -159,9 +159,7 @@ theorem coindQ_sc_inj {S : Type} [CommRing S] (φ : R →+* S) (J : Shv R) (U : 
   exact congrArg ModuleCat.Hom.hom h3
 
 /- English proof (translation)
-It suffices to establish `h : Mono (coindQ_sc φ J).f.hom from Sheaf.Hom.mono_of_presheaf_mono _ _ _`. Establish `hU : ∀ U, Mono ((coindQ_sc φ J).f.hom.app U)`. Introduce `U`. Rewrite using `[ModuleCat.mono_iff_injective]`. Conclude with `coindQ_sc_inj φ J U.unop`.
-
-Conclude with `NatTrans.mono_of_mono_app _`.
+Reduce the argument to an intermediate assertion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coindQ_sc_mono {S : Type} [CommRing S] (φ : R →+* S) (J : Shv R) : Mono (coindQ_sc φ J).f := by
   suffices h : Mono (coindQ_sc φ J).f.hom from Sheaf.Hom.mono_of_presheaf_mono _ _ _
@@ -172,11 +170,11 @@ theorem coindQ_sc_mono {S : Type} [CommRing S] (φ : R →+* S) (J : Shv R) : Mo
   exact NatTrans.mono_of_mono_app _
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.T.etaleSheaf_shortComplex_exact_iff_locally]`. Introduce `U b hb`. Set `b' : (scalarsRes φ).complex.X 0 ⟶ J.obj.obj (op U)` to `b`. Establish `hb' : (scalarsRes φ).complex.d 1 0 ≫ b' = 0` using `hb`. Take `⟨l, hl⟩` from `CokernelCofork.IsColimit.desc' (scalarsRes φ).isColimitCokernelCofork b' hb'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `c : scalarsMod φ ⟶ J.obj.obj (op U)` to `(HomologicalComplex.singleObjXSelf (ComplexShape.down ℕ) 0 (scalarsMod φ)).inv ≫ l`. Establish `hc : coindQ_p φ ≫ c = b'`. Simplify using `only [c, coindQ_p, Category.assoc, Iso.hom_inv_id_assoc]`. Conclude with `hl`. Set `a : Sec ((restr φ).obj ((coind φ).obj J)) U` to `(ModuleCat.CoextendScalars.equiv (liftHom φ) _).symm c.hom`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : Sec.map (coindQ_sc φ J).f a = b`. Rewrite using `[coindQ_sc_f_sec]`. Conclude with `hc`. Use `⟨⊤, GrothendieckTopology.top_mem _ _, fun V g _ => ⟨Sec.res g a, ?_⟩⟩` and prove the remaining obligations. Conclude with `(coindQ_map_res _ g _).trans (congrArg (Sec.res g) key)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coindQ_sc_exact {S : Type} [CommRing S] (φ : R →+* S) (J : Shv R) : (coindQ_sc φ J).Exact := by
   rw [GlobalTheory.T.etaleSheaf_shortComplex_exact_iff_locally]
@@ -202,13 +200,11 @@ namespace GlobalTheory.EtC
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Introduce `R S _ _ φ J hJ`. Rewrite using `[quasiIso_iff]`. Introduce `i`. Consider the cases of `i with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Rewrite using `[CochainComplex.quasiIsoAt₀_iff, ShortComplex.quasiIso_iff_of_zeros]`. Use `(ShortComplex.exact_and_mono_f_iff_of_iso ?_).2 ⟨coindQ_sc_exact φ J, coindQ_sc_mono φ J⟩` and prove the remaining obligations. Use `ShortComplex.isoMk (HomologicalComplex.singleObjXSelf (ComplexShape.up ℕ) 0 _) (Iso.refl _) (Iso.refl _) ?_ ?_` and prove the remaining obligations. Simplify using `only [Iso.refl_hom, Category.comp_id]`. Conclude with `(coindAug_f_zero φ J).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Iso.refl_hom, Category.comp_id, Category.id_comp]`. Conclude with `(coindCx_d φ J 0).symm`. Apply the tactic sequence `all_goals rfl`. Consider the case `succ n`. Rewrite using `[quasiIsoAt_iff_exactAt _ _ (CochainComplex.exactAt_succ_single_obj _ _)]`.
-
-Conclude with `coindQ_exactAt_succ φ J hJ n`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coindAug_quasiIso : ∀ (R S : Type) [CommRing R] [CommRing S] (φ : R →+* S) (J : Shv R),
     (∀ P : PSh, Module.Injective (ULift.{1} R) ((free R).obj P ⟶ J)) → QuasiIso (coindAug φ J) := by

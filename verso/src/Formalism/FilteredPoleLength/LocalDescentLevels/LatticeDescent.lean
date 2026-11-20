@@ -13,13 +13,11 @@ variable {O K V : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [F
   [IsFractionRing O K] [AddCommGroup V] [Module K V] [Module O V] [IsScalarTower O K V]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Conclude with `hx.2`. Introduce `v hv`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, hdv⟩` from `Formalism.LatticeIndexTer.LatticeIndexLength.exists_smul_mem_of_span (K := K) M hM.2 v`. Establish `hd' : (algebraMap O K d) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O K)).2 hd`. Establish `hmem : d • v ∈ (M ⊓ V'.restrictScalars O : Submodule O V)`. Use `⟨hdv, ?_⟩` and prove the remaining obligations. Use `show d • v ∈ V'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← algebraMap_smul K d v]`. Conclude with `V'.smul_mem _ hv`. Establish `hsp` using `Submodule.subset_span (R := K) hmem`. Establish `: v = (algebraMap O K d)⁻¹ • (d • v)`. Rewrite using `[← algebraMap_smul K d v, smul_smul, inv_mul_cancel₀ hd', one_smul]`.
-
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hsp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_inf_eq (M : Submodule O V) (hM : Formalism.LatticeIndexTer.IsLat O K V M) (V' : Submodule K V) :
     Submodule.span K ((M ⊓ V'.restrictScalars O : Submodule O V) : Set V) = V' := by
@@ -43,7 +41,7 @@ theorem span_inf_eq (M : Submodule O V) (hM : Formalism.LatticeIndexTer.IsLat O 
     exact Submodule.smul_mem _ _ hsp
 
 /- English proof (translation)
-Establish `: IsNoetherian O M` using `isNoetherian_of_fg_of_noetherian M hM.1`. Establish `h` using `IsNoetherian.noetherian (N.comap M.subtype)`. Use `h.map M.subtype` as an intermediate fact. Rewrite `this` using `[Submodule.map_comap_subtype]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem fg_inf (M : Submodule O V) (hM : Formalism.LatticeIndexTer.IsLat O K V M) (N : Submodule O V) :
     (M ⊓ N).FG := by
@@ -55,7 +53,7 @@ theorem fg_inf (M : Submodule O V) (hM : Formalism.LatticeIndexTer.IsLat O K V M
 end LatticeDescentAlt
 
 /- English proof (translation)
-Introduce `O O' K K' V V₁ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ j hj ϖ hϖ hϖ' M Θ V' hM hΘ d Y Z e h`. Rewrite `h` using `[h3 O O' K K' V V₁ j hj M V' hM, h3 O O' K K' V V₁ j hj Θ V' hΘ, h2 O O' K K' V V₁ j hj V', h4 O O' K K' V V₁ j hj ϖ hϖ hϖ' _ _ (LatticeDescentAlt.fg_inf M hM _) (LatticeDescentAlt.fg_inf Θ hΘ _) (by rw [LatticeDescentAlt.span_inf_eq M hM V', LatticeDescentAlt.span_inf_eq Θ hΘ V' …`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localStepDescent_of (h2 : FinrankSpanImage) (h3 : SpanImageInf) (h4 : RelIndexSpanImage) :
     LocalStepDescent := by

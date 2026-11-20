@@ -20,13 +20,13 @@ variable {p q n : ℕ}
 def ht : Ix p q → ℝ := Sum.elim (fun i => -(i : ℝ)) (fun j => -(j : ℝ))
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with i | i <;> rcases b with j | j <;> simp [posC] at h <;> simp [ht] <;> exact_mod_cast h`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ht_lt {a b : Ix p q} (h : posC a b) : ht b < ht a := by
   rcases a with i | i <;> rcases b with j | j <;> simp [posC] at h <;> simp [ht] <;> exact_mod_cast h
 
 /- English proof (translation)
-Establish `hr` using `ht_lt r.2`. Simplify using `only [drop_cons, mul_add, Finset.sum_add_distrib, mul_sub, mul_ite, mul_one, mul_zero, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem ht_drop_cons (r : PosRoot p q) (l : List (PosRoot p q)) :
     ∑ x, ht x * drop l x < ∑ x, ht x * drop (r :: l) x := by
@@ -36,7 +36,7 @@ theorem ht_drop_cons (r : PosRoot p q) (l : List (PosRoot p q)) :
   linarith
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [drop, cnt]`. Consider the case `cons r l ih => exact (lt_of_le_of_lt ih (ht_drop_cons r l)).le`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ht_drop_nonneg (l : List (PosRoot p q)) : 0 ≤ ∑ x, ht x * drop l x := by
   induction l with
@@ -44,19 +44,17 @@ theorem ht_drop_nonneg (l : List (PosRoot p q)) : 0 ≤ ∑ x, ht x * drop l x :
   | cons r l ih => exact (lt_of_le_of_lt ih (ht_drop_cons r l)).le
 
 /- English proof (translation)
-Set `m' : {l : List (PosRoot p q) // l ≠ []} → V` to `fun l => mono act v l.1`. Establish `hle : Submodule.span ℂ (Set.range (mono act v)) ≤ Submodule.span ℂ {v} ⊔ Submodule.span ℂ (Set.range m')`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨l, rfl⟩`. Consider the cases of `l with`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data.
 
-Consider the case `nil => exact Submodule.mem_sup_left (Submodule.mem_span_singleton_self v)`. Consider the case `cons r l`. Conclude with `Submodule.mem_sup_right (Submodule.subset_span ⟨⟨r :: l, List.cons_ne_nil r l⟩, rfl⟩)`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 (hle hw)`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hz0 : z ≠ 0` using `fun h0 => hne (by rw [h0, add_zero])`. Establish `hzw : ∀ a, act (Eab a a) z = ((μ a : ℚ) : ℂ) • z`. Introduce `a`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hwt a`. Rewrite `h1` using `[map_add, map_smul, hv a, smul_add, smul_comm c]`. Conclude with `add_left_cancel h1`. Take `⟨⟨l, hl0⟩, hl⟩` from `weight_of_mem_span (fun a => act (Eab a a)) m' (fun l a => ((((μ a : ℚ) : ℝ) - drop l.1 a : ℝ) : ℂ)) (fun l a => mono_weight h hv l.1 a) (fun a => ((μ a : ℚ) : ℂ)) z hz hz0 hzw`. Establish `hd : ∀ a, drop l a = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a`. Establish `h1 : ((((μ a : ℚ) : ℝ) - drop l a : ℝ) : ℂ) = (((μ a : ℚ) : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_ratCast]`. Conclude with `congrFun hl a`. Establish `h2` using `Complex.ofReal_injective h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨r, l', rfl⟩` from `List.exists_cons_of_ne_nil hl0`. Establish `h3` using `ht_drop_cons r l'`. Establish `h4` using `ht_drop_nonneg l'`. Simplify using `only [hd, mul_zero, Finset.sum_const_zero] at h3`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_smul_of_mem_span {V : Type*} [AddCommGroup V] [Module ℂ V] {act : Mat p q →ₗ[ℂ] Module.End ℂ V}
     (h : IsLieAct act) {μ : Ix p q → ℚ} {v : V} (hv : ∀ a, act (Eab a a) v = ((μ a : ℚ) : ℂ) • v) {w : V}
@@ -101,43 +99,41 @@ variable {e : Ix p q ≃ Fin n} {ε : Fin n → Bool} {T : GrpData p q} (R : DSR
   {σ : Matrix (Fin n) (Fin n) ℂ → (R.U.H →L[ℂ] R.U.H)}
 
 /- English proof (translation)
-Use `set W := Submodule.span ℂ (Set.range (mono R.HK.act v)) with hWdef`. Establish `hlie : IsLieAct R.HK.act` using `R.HK.lie`. Establish `hv0 : v ≠ 0` using `hv.1`. Take `⟨hvw, hvr⟩` from `(mem_hwSub R.HK.act μ v).1 hv.2`. Establish `hvW : v ∈ W` using `Submodule.subset_span ⟨[], rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWst : KStable R.HK.act W` using `mono_stable hlie hvw hvr`. Establish `hWle : ∀ W' : Submodule ℂ R.HK.V, v ∈ W' → KStable R.HK.act W' → W ≤ W'`. Introduce `W' hvW' hW'`. Rewrite using `[hWdef, Submodule.span_le]`. Introduce and unpack `_ ⟨l, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Proceed by induction on `l with`. Consider the case `nil => exact hvW'`. Consider the case `cons r l ih => exact hW' _ (HwGen.isKC_Eab r.2) _ ih`. Take `⟨W0, hW0f, hvW0, hW0s⟩` from `R.HK.kfin v`. Use `hW0f` as an intermediate fact.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWf : FiniteDimensional ℂ W` using `Submodule.finiteDimensional_of_le (hWle W0 hvW0 hW0s)`. Establish `hι : Function.Injective R.ι` using `R.ι_inj`. Establish `hKs : IsKStableOn ε σ (W.map R.ι)` using `isKStableOn_of_kStable p q n e ε T R σ h hσ W hWf hWst`. Use `⟨inferInstance, hKs, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `S' hS'le hS'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hS'f : FiniteDimensional ℂ S'` using `Submodule.finiteDimensional_of_le hS'le`. Establish `: CompleteSpace S'` using `FiniteDimensional.complete ℂ S'`. Establish `hCK : IsKStableOn ε σ (S'ᗮ ⊓ W.map R.ι)` using `fun g hg x hx => Submodule.mem_inf.2 ⟨kstable_orthogonal R h hσ hS' g hg x (Submodule.mem_inf.1 hx).1, hKs g hg x (Submodule.mem_inf.1 hx).2⟩`. Establish `hCf : FiniteDimensional ℂ ↥(S'ᗮ ⊓ W.map R.ι)` using `Submodule.finiteDimensional_of_le inf_le_right`. Take `⟨-, hS0map, hS0st⟩` from `comap_kstable R h hσ hS'f hS'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, hC0st⟩` from `comap_kstable R h hσ hCf hCK`. Establish `hdisj : ∀ x, x ∈ S'.comap R.ι → x ∈ (S'ᗮ ⊓ W.map R.ι).comap R.ι → x = 0`. Introduce `x hx1 hx2`. Apply `hι` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbot` using `Submodule.inf_orthogonal_eq_bot S'`. Rewrite `hbot` using `[Submodule.eq_bot_iff]`. Conclude with `hbot _ (Submodule.mem_inf.2 ⟨hx1, (Submodule.mem_inf.1 hx2).1⟩)`. Establish `hsup : S' ⊔ S'ᗮ ⊓ W.map R.ι = W.map R.ι` using `Submodule.sup_orthogonal_inf_of_hasOrthogonalProjection hS'le`. Establish `hιv : R.ι v ∈ S' ⊔ S'ᗮ ⊓ W.map R.ι` using `hsup.symm ▸ Submodule.mem_map_of_mem hvW`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s', hs', c', hc', hsc⟩` from `Submodule.mem_sup.1 hιv`. Take `⟨s, hsW, rfl⟩` from `Submodule.mem_map.1 (hS'le hs')`. Take `⟨t, -, rfl⟩` from `Submodule.mem_map.1 (Submodule.mem_inf.1 hc').2`. Establish `hs : s ∈ S'.comap R.ι` using `Submodule.mem_comap.2 hs'`. Establish `ht : t ∈ (S'ᗮ ⊓ W.map R.ι).comap R.ι` using `Submodule.mem_comap.2 hc'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvst : v = s + t` using `hι (by rw [map_add]; exact hsc.symm)`. Establish `hsw : ∀ a, R.HK.act (Eab a a) s = ((μ a : ℚ) : ℂ) • s`. Introduce `a`. Establish `hK : IsKC (Eab a a)` using `isKC_Eab ((h.sameBlock_iff a a).2 rfl)`. Establish `e1` using `hvw a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e1` using `[hvst, map_add, smul_add]`. Establish `hm1 : R.HK.act (Eab a a) s - ((μ a : ℚ) : ℂ) • s ∈ S'.comap R.ι` using `Submodule.sub_mem _ (hS0st _ hK _ hs) (Submodule.smul_mem _ _ hs)`. Establish `hm2 : R.HK.act (Eab a a) s - ((μ a : ℚ) : ℂ) • s ∈ (S'ᗮ ⊓ W.map R.ι).comap R.ι`. Establish `he : R.HK.act (Eab a a) s - ((μ a : ℚ) : ℂ) • s = ((μ a : ℚ) : ℂ) • t - R.HK.act (Eab a a) t`. Rewrite using `[sub_eq_sub_iff_add_eq_add, e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[he]`. Conclude with `Submodule.sub_mem _ (Submodule.smul_mem _ _ ht) (hC0st _ hK _ ht)`. Conclude with `sub_eq_zero.1 (hdisj _ hm1 hm2)`. Take `⟨c, hc⟩` from `eq_smul_of_mem_span hlie hvw hsW hsw`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hc0 : c = 0`. Use `left`. Establish `htv : t = v` using `by rw [hvst, ← hc, hc0, zero_smul, zero_add]`. Establish `hWC : W ≤ (S'ᗮ ⊓ W.map R.ι).comap R.ι` using `hWle _ (htv ▸ ht) hC0st`. Establish `hS0bot : S'.comap R.ι = ⊥`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.eq_bot_iff]`. Introduce `x hx`. Take `⟨y, hyW, hyx⟩` from `Submodule.mem_map.1 (hS'le (Submodule.mem_comap.1 hx))`. Take `rfl : y = x` from `hι hyx`. Conclude with `hdisj y hx (hWC hyW)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hS0map, hS0bot, Submodule.map_bot]`. Use `right`. Establish `hvS0 : v ∈ S'.comap R.ι`. Establish `hv' : v = c⁻¹ • s` using `by rw [← hc, smul_smul, inv_mul_cancel₀ hc0, one_smul]`. Rewrite using `[hv']`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.smul_mem _ _ hs`. Establish `hWS : W ≤ S'.comap R.ι` using `hWle _ hvS0 hS0st`. Use `le_antisymm hS'le ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `⟨R.ι v, Submodule.mem_map_of_mem hvW, fun h0 => hv0 (hι (by rw [h0, map_zero])), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(TorusWt.isWtOn_iff p q n e ε T R σ h hσ _ v).2 fun a => ?_` and prove the remaining obligations. Simplify using `only [hvw a, Equiv.symm_apply_apply, Complex.ofReal_ratCast]`. Introduce `ν x hx hx0 hxw`. Take `⟨w, hwW, rfl⟩` from `Submodule.mem_map.1 hx`. Establish `hw0 : w ≠ 0` using `fun h0 => hx0 (by rw [h0, map_zero])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hww` using `(TorusWt.isWtOn_iff p q n e ε T R σ h hσ ν w).1 hxw`. Take `⟨l, hl⟩` from `weight_of_mem_span (fun a => R.HK.act (Eab a a)) (mono R.HK.act v) (fun l a => ((((μ a : ℚ) : ℝ) - drop l a : ℝ) : ℂ)) (fun l a => mono_weight hlie hvw l a) (fun a => ((ν (e a) : ℝ) : ℂ)) w hwW hw0 hww`. Establish `hl' : ∀ a, ((μ a : ℚ) : ℝ) - drop l a = ν (e a)` using `fun a => Complex.ofReal_injective (congrFun hl a)`. Establish `key : ∀ x, ∑ i, ∑ j, (cnt l (e.symm i) (e.symm j) : ℝ) * Formalism.REAL.root i j (e x) = drop l x`. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Equiv.sum_comp e]`. Use `(Finset.sum_congr rfl fun a _ => (Equiv.sum_comp e _).symm).trans ?_` and prove the remaining obligations. Simplify using `only [Equiv.symm_apply_apply, root_apply e, drop]`. Use `⟨fun i j => cnt l (e.symm i) (e.symm j), fun i j hij => ?_, ?_⟩` and prove the remaining obligations. Use `(h.posC_iff _ _).1 (HwGen.posC_of_cnt l _ _ hij)` as an intermediate fact.
-
-Simplify using `using this`. Use function extensionality and compare the values at `k`. Take `⟨x, rfl⟩` from `e.surjective k`. Simplify using `only [Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Equiv.symm_apply_apply]`. Combine the linear relations using `[key x, hl' x]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isKTypeOf_span (h : BlockOrd e ε) (hσ : Factors R.U e σ) (μ : Ix p q → ℚ) {v : R.HK.V}
     (hv : Formalism.BasicNotions.TH.IsHW R.HK.act μ v) :
@@ -248,13 +244,13 @@ theorem isKTypeOf_span (h : BlockOrd e ε) (hσ : Factors R.U e σ) (μ : Ix p q
       linarith [key x, hl' x]
 
 /- English proof (translation)
-Introduce `p q n e ε T R σ h hσ μ hex huniq`. Take `⟨S, hS⟩` from `hex`. Take `⟨v, hv⟩` from `isHW_of_isKTypeOf R h hσ μ hS`. Establish `hlie : IsLieAct R.HK.act` using `R.HK.lie`. Take `⟨hvw, -⟩` from `(mem_hwSub R.HK.act μ v).1 hv.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[finrank_eq_one_iff_of_nonzero' (⟨v, hv.2⟩ : hwSub R.HK.act μ) (fun h0 => hv.1 (congrArg Subtype.val h0))]`. Introduce and unpack `⟨w, hw⟩`. Distinguish the cases in `hw0 : w = 0`. Conclude with `⟨0, Subtype.ext (by simp [hw0])⟩`. Establish `hwHW : Formalism.BasicNotions.TH.IsHW R.HK.act μ w` using `⟨hw0, hw⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨hww, -⟩` from `(mem_hwSub R.HK.act μ w).1 hw`. Establish `hEq` using `huniq _ _ (isKTypeOf_span R h hσ μ hv) (isKTypeOf_span R h hσ μ hwHW)`. Establish `hιw : R.ι w ∈ (Submodule.span ℂ (Set.range (mono R.HK.act v))).map R.ι`. Rewrite using `[hEq]`. Conclude with `Submodule.mem_map_of_mem (Submodule.subset_span ⟨[], rfl⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hyw⟩` from `Submodule.mem_map.1 hιw`. Take `rfl : y = w` from `R.ι_inj hyw`. Take `⟨c, hc⟩` from `eq_smul_of_mem_span hlie hvw hy hww`. Conclude with `⟨c, Subtype.ext hc⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finrank_hwSub_eq_one : ∀ (p q n : ℕ) (e : Ix p q ≃ Fin n) (ε : Fin n → Bool) (T : GrpData p q) (R : DSRep T) (σ : Matrix (Fin n) (Fin n) ℂ → (R.U.H →L[ℂ] R.U.H)), BlockOrd e ε → Factors R.U e σ → ∀ μ : Ix p q → ℚ, (∃ S, IsKTypeOf ε σ (fun i => (μ (e.symm i) : ℝ)) S) → (∀ S S', IsKTypeOf ε σ (fun i => (μ (e.symm i) : ℝ)) S → IsKTypeOf ε σ (fun i => (μ (e.symm i) : ℝ)) S' → S = S') → Module.finrank ℂ ↥(hwSub R.HK.act μ) = 1 := by
   intro p q n e ε T R σ h hσ μ hex huniq

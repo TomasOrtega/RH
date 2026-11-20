@@ -19,9 +19,9 @@ variable {I LL : Type} [Group I] [Field LL]
 open Classical in
 
 /- English proof (translation)
-Establish `h1 : LinearIndependent LL (fun b : S => fun g : I => ((b.1 g : LLˣ) : LL))`. Use `(linearIndependent_monoidHom I LL).comp (fun b : S => (Units.coeHom LL).comp b.1) ?_` and prove the remaining obligations. Introduce `b b' h`. Conclude with `Subtype.ext (MonoidHom.ext fun g => Units.ext (DFunLike.congr_fun h g))`. Establish `h2` using `span_flip_eq_top_iff_linearIndependent.2 h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 (h2 ▸ Submodule.mem_top : (fun b : S => if b.1 = a then (1 : LL) else 0) ∈ _)`. Use `⟨e, fun b hb => ?_⟩` and prove the remaining obligations. Use `congrFun he ⟨b, hb⟩` as an intermediate fact. Simplify `this` using `[Finsupp.sum, flip]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_separating (S : Finset (I →* LLˣ)) (a : I →* LLˣ) :
     ∃ e : I →₀ LL, ∀ b ∈ S, (e.sum fun g c => c * (b g : LL)) = if b = a then 1 else 0 := by
@@ -40,26 +40,24 @@ def eig {M : Type} [AddCommGroup M] [Module LL M] (T : I → M →ₗ[LL] M) (b 
   ⨅ g : I, LinearMap.ker (T g - ((b g : LLˣ) : LL) • LinearMap.id)
 
 /- English proof (translation)
-Simplify using `[eig, Submodule.mem_iInf, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eig {M : Type} [AddCommGroup M] [Module LL M] (T : I → M →ₗ[LL] M) (b : I →* LLˣ) (x : M) :
     x ∈ eig T b ↔ ∀ g, T g x = ((b g : LLˣ) : LL) • x := by
   simp [eig, Submodule.mem_iInf, sub_eq_zero]
 
 /- English proof (translation)
-Use `choose e he using exists_separating S`. Set `E : (I →* LLˣ) → M →ₗ[LL] M` to `fun a => (e a).sum fun g c => c • T g`. Set `E' : J → (I →* LLˣ) → N →ₗ[LL] N` to `fun j a => (e a).sum fun g c => c • T' j g`. Establish `h1 : ∀ j a x, f j (E a x) = E' j a (f j x)` using `fun j a x => by`. Simplify using `[E, E', Finsupp.sum, hf]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ∀ j a, ∀ b ∈ S, ∀ y ∈ eig (T' j) b, E' j a y = if b = a then y else 0`. Introduce `j a b hb y hy`. Establish `: E' j a y = ((e a).sum fun g c => c * (b g : LL)) • y`. Simplify using `[E', Finsupp.sum, (mem_eig _ _ _).1 hy, Finset.sum_smul, smul_smul]`. Rewrite using `[this, he a b hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `h3 : ∀ j, (⨆ b ∈ S, eig (T' j) b) ≤ LinearMap.ker (∑ a ∈ S, E' j a - LinearMap.id)` using `fun j => iSup₂_le fun b hb y hy => by`. Simplify using `[h2 j _ b hb y hy, hb]`. Establish `h4 : ∀ j a, (⨆ b ∈ S, eig (T' j) b) ≤ (eig (T' j) a).comap (E' j a)` using `fun j a => iSup₂_le fun b hb y hy => by`. Rewrite using `[Submodule.mem_comap, h2 j _ b hb y hy]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with h`. Conclude with `h ▸ hy`. Conclude with `Submodule.zero_mem _`. Introduce `x hx`. Establish `h5 : x = ∑ a ∈ S, E a x`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `symm`. Rewrite using `[← sub_eq_zero]`. Use `hsep _ fun j => ?_` and prove the remaining obligations. Simplify `h3 j (hS j x hx)` using `[h1]`. Rewrite using `[h5]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun a ha => Submodule.mem_iSup_of_mem a (Submodule.mem_iSup_of_mem ha ⟨?_, ?_⟩)` and prove the remaining obligations. Simplify using `only [E, Finsupp.sum, LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `D.sum_mem fun g _ => D.smul_mem _ (hD g x hx)`. Use `(mem_eig _ _ _).2 fun g => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`.
-
-Use `hsep _ fun j => ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, hf, h1, (mem_eig _ _ _).1 (h4 j a (hS j x hx)), sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_iSup_eig {M N J : Type} [AddCommGroup M] [Module LL M] [AddCommGroup N] [Module LL N]
     (S : Finset (I →* LLˣ)) (T : I → M →ₗ[LL] M) (D : Submodule LL M) (hD : ∀ g, ∀ x ∈ D, T g x ∈ D)
@@ -123,16 +121,16 @@ def pairB (m : V →ₗ[LL] U →ₗ[LL] W) : V ⊗[Qp] B →ₗ[LL] U ⊗[Qp] B
   (TensorProduct.mk LL _ _).compr₂ (tensorB (TensorProduct.lift m) ∘ₗ prodB)
 
 /- English proof (translation)
-Simplify using `[pairB, prodB_tmul, tensorB]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem pairB_tmul (m : V →ₗ[LL] U →ₗ[LL] W) (v : V) (u : U) (b c : B) :
     pairB Qp B m (v ⊗ₜ b) (u ⊗ₜ c) = m v u ⊗ₜ (b * c) := by
   simp [pairB, prodB_tmul, tensorB]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a c ha hc => simp only [map_add, LinearMap.add_apply, ha, hc]`. Consider the case `tmul v c`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add a c ha hc => simp only [map_add, ha, hc]`. Consider the case `tmul v' c' => simp [mul_left_comm]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem pairB_mB (m : V →ₗ[LL] U →ₗ[LL] W) (b : B) (x : V ⊗[Qp] B) (y : U ⊗[Qp] B) :
     pairB Qp B m x (mB LL b y) = mB LL b (pairB Qp B m x y) := by
@@ -146,9 +144,9 @@ theorem pairB_mB (m : V →ₗ[LL] U →ₗ[LL] W) (b : B) (x : V ⊗[Qp] B) (y 
     | tmul v' c' => simp [mul_left_comm]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a c ha hc => simp only [map_add, LinearMap.add_apply, ha, hc]`. Consider the case `tmul v c`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add a c ha hc => simp only [map_add, ha, hc]`. Consider the case `tmul v' c' => simp [actVB, hm]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem act_pairB {ρ : Representation LL G V} {σ : Representation LL G U} {τ : Representation LL G W}
     {m : V →ₗ[LL] U →ₗ[LL] W} (hm : ∀ g v u, m (ρ g v) (σ g u) = τ g (m v u)) (g : G)
@@ -164,13 +162,13 @@ theorem act_pairB {ρ : Representation LL G V} {σ : Representation LL G U} {τ 
     | tmul v' c' => simp [actVB, hm]
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `m.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hm)`. Set `u` to `Module.finBasis LL U`. Set `s : Fin (finrank LL U) → W →ₗ[LL] V` to `fun i => r ∘ₗ LinearMap.smulRightₗ (u.coord i)`. Establish `hs : ∀ v, ∑ i, s i (m v (u i)) = v`. Introduce `v`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∑ i, LinearMap.smulRightₗ (u.coord i) (m v (u i)) = m v`. Use `u.ext fun j => ?_` and prove the remaining obligations. Simplify using `[Finsupp.single_apply]`. Simplify using `only [s, LinearMap.comp_apply]`. Rewrite using `[← map_sum, h1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearMap.congr_fun hr v`. Establish `key : ∀ x : V ⊗[Qp] B, ∑ i, tensorB (s i) (pairB Qp B m x (u i ⊗ₜ 1)) = x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a c ha hc => simp only [map_add, LinearMap.add_apply, Finset.sum_add_distrib, ha, hc]`. Consider the case `tmul v c => simp [tensorB, ← TensorProduct.sum_tmul, hs]`. Rewrite using `[← key x]`. Simplify using `[hx]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairB_sep [FiniteDimensional LL U] {m : V →ₗ[LL] U →ₗ[LL] W} (hm : Function.Injective m)
     (x : V ⊗[Qp] B) (hx : ∀ y, pairB Qp B m x y = 0) : x = 0 := by
@@ -195,7 +193,7 @@ theorem pairB_sep [FiniteDimensional LL U] {m : V →ₗ[LL] U →ₗ[LL] W} (hm
   simp [hx]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a c ha hc => simp only [map_add, ha, hc]`. Consider the case `tmul v c => simp [actVB]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem actVB_mul (ρ : Representation LL G V) (g h : G) (x : V ⊗[Qp] B) :
     actVB PD ρ (g * h) x = actVB PD ρ g (actVB PD ρ h x) := by
@@ -205,9 +203,9 @@ theorem actVB_mul (ρ : Representation LL G V) (g h : G) (x : V ⊗[Qp] B) :
   | tmul v c => simp [actVB]
 
 /- English proof (translation)
-Use `subCrys PD LL hf _ (σ.dual.tprod τ) V ρ ((dualTensorHomEquiv LL U W).symm.toLinearMap ∘ₗ m) ?_ ((dualTensorHomEquiv LL U W).symm.injective.comp hi) (tensorCrys PD LL hf hu _ _ _ _ (dualCrys PD LL hf hu _ _ hσ) hτ)` and prove the remaining obligations. Introduce `g v`. Apply `(dualTensorHomEquiv LL U W).injective` to reduce the goal to its premises. Establish `h1` using `LinearMap.congr_fun (Representation.dualTensorHom_comm σ τ g) ((dualTensorHomEquiv LL U W).symm (m v))`. Establish `h2 : ∀ z, dualTensorHom LL U W z = dualTensorHomEquiv LL U W z` using `fun z => by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[dualTensorHomEquiv]`. Simplify using `only [LinearMap.comp_apply, h2, LinearEquiv.apply_symm_apply] at h1`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, Representation.tprod_apply, h1]`. Use extensionality with `u`. Simplify using `[Representation.linHom_apply, ← hm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem isCrys_of_pair [IsDomain B] [FiniteDimensional Qp LL] [FiniteDimensional LL V] [FiniteDimensional LL U]
     [FiniteDimensional LL W] (hf : FracInv PD) (hu : LineUnit PD)
@@ -229,7 +227,7 @@ theorem isCrys_of_pair [IsDomain B] [FiniteDimensional Qp LL] [FiniteDimensional
   simp [Representation.linHom_apply, ← hm]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a c ha hc => simp only [map_add, ha, hc]`. Consider the case `tmul v c`. Simplify using `[actVB, PD.t_act, WeaklyAdmissibleFiltrations.charRep, cycLL, ← Algebra.smul_def, smul_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem tate_twist_multiplication_intertwines (g : G) (x : LL ⊗[Qp] B) :
     actVB PD (Representation.trivial LL G LL) g (mB LL PD.t x) =
@@ -242,7 +240,7 @@ theorem tate_twist_multiplication_intertwines (g : G) (x : LL ⊗[Qp] B) :
 
 include PD in
 /- English proof (translation)
-Take `⟨s, hs⟩` from `PD.t_unit.exists_left_inv`. Introduce `x y h`. Rewrite using `[← mB_one (LL := LL) x, ← mB_one (LL := LL) y, ← hs, mB_mul, mB_mul, h]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem mB_t_injective : Function.Injective (mB LL PD.t : V ⊗[Qp] B → V ⊗[Qp] B) := by
   obtain ⟨s, hs⟩ := PD.t_unit.exists_left_inv
@@ -250,11 +248,11 @@ theorem mB_t_injective : Function.Injective (mB LL PD.t : V ⊗[Qp] B → V ⊗[
   rw [← mB_one (LL := LL) x, ← mB_one (LL := LL) y, ← hs, mB_mul, mB_mul, h]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `PD.t_unit.exists_right_inv`. Rewrite using `[isCrys_iff_span PD hf hu]`. Use `eq_top_of_tmul _ fun b v => ?_` and prove the remaining obligations. Establish `h1 : b ⊗ₜ[Qp] v = (b * PD.t) • (s ⊗ₜ[Qp] v)`. Rewrite using `[smul_tmul', smul_eq_mul, mul_assoc, hs, mul_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `v ⊗ₜ[Qp] s ∈ Dcris PD _`. Rewrite using `[mem_Dcris]`. Introduce `g`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `mB_t_injective PD (LL := LL)` to reduce the goal to its premises. Rewrite using `[← tate_twist_multiplication_intertwines, mB_tmul, hs]`. Simplify using `[actVB]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isCrys_cyc [IsDomain B] [FiniteDimensional Qp LL] (hf : FracInv PD) (hu : LineUnit PD) :
     IsCrys PD (WeaklyAdmissibleFiltrations.charRep (cycLL PD LL)) := by
@@ -293,7 +291,7 @@ variable {G : Type} [Group G] {Qp K₀ K K₀' K' : Type} [Field Qp] [Field K₀
     {W : Type} [AddCommGroup W] [Module LL W] [Module Qp W] [IsScalarTower Qp LL W]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a c ha hc => simp only [map_add, ha, hc]`. Consider the case `tmul v c => simp [actVB, PC.actB_eq, PotCrysData.resH]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem actVB_resH (ρ : Representation LL G V) (h : PC.H) (x : V ⊗[Qp] B) :
     actVB PC.PD' (PC.resH ρ) h x = actVB PC.PD ρ h x := by
@@ -303,16 +301,16 @@ theorem actVB_resH (ρ : Representation LL G V) (h : PC.H) (x : V ⊗[Qp] B) :
   | tmul v c => simp [actVB, PC.actB_eq, PotCrysData.resH]
 
 /- English proof (translation)
-Simplify using `only [PotCrysData.Dpcris, mem_Dcris, actVB_resH]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Dpcris (ρ : Representation LL G V) (x : V ⊗[Qp] B) :
     x ∈ PC.Dpcris ρ ↔ ∀ h : PC.H, actVB PC.PD ρ h x = x := by
   simp only [PotCrysData.Dpcris, mem_Dcris, actVB_resH]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_Dpcris]`. Introduce `h`. Establish `h1` using `hx ⟨g⁻¹ * h * g, PC.normal.conj_mem' _ h.2 g⟩`. Use `conv_rhs => rw [← h1]`. Rewrite using `[← actVB_mul, ← actVB_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem act_mem_Dpcris (ρ : Representation LL G V) (g : G) (x : V ⊗[Qp] B) (hx : x ∈ PC.Dpcris ρ) :
     actVB PC.PD ρ g x ∈ PC.Dpcris ρ := by
@@ -333,19 +331,19 @@ theorem Eig_eq (ρ : Representation LL G V) (a : PC.Iner →* LLˣ) :
 variable [IsDomain B] [FiniteDimensional Qp LL]
 
 /- English proof (translation)
-Use `⟨isCrys_of_pair PC.PD' hf hu (m := m) (fun g v u => hm g v u) hi hσ hτ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `b hb g hg`. Take `⟨w, hw, u, hu, rfl⟩` from `(hS b).1 hb`. Simplify using `[hW.1 w hw g hg, hU.1 u hu g hg]`. Introduce `b hb`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w, hw, u, hu, rfl⟩` from `(hS b).1 hb`. Use `Nat.Coprime.coprime_dvd_left (Commute.all w u⁻¹).orderOf_mul_dvd_mul_orderOf ?_` and prove the remaining obligations. Rewrite using `[orderOf_inv]`. Conclude with `Nat.Coprime.mul_left (hW.2.1 w hw) (hU.2.1 u hu)`. Use `le_antisymm ?_ (iSup₂_le fun _ _ => inf_le_left)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_iSup_eig (J := {p : (PC.Iner →* LLˣ) × (U ⊗[Qp] B) // p.1 ∈ SU ∧ p.2 ∈ PC.Eig σ PC.Iner p.1}) S (fun g : PC.Iner => actVB PC.PD ρ g) _ (fun g x hx => act_mem_Dpcris PC ρ g x hx) (fun j => (pairB Qp B m).flip j.1.2) (fun j g => (((j.1.1 g)⁻¹ : LLˣ) : LL) • actVB PC.PD τ g) ?_ ? …` and prove the remaining obligations. Introduce and unpack `⟨⟨a, y⟩, ha, hy⟩ g x`. Establish `h1` using `act_pairB PC.PD hm g x y`. Rewrite `h1` using `[(mem_eig _ _ _).1 hy.2 g, map_smul]`. Simplify using `only [LinearMap.flip_apply, LinearMap.smul_apply, ← h1, smul_smul, Units.inv_mul, one_smul]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨a, y⟩, ha, hy⟩ x hx`. Establish `h1 : pairB Qp B m x y ∈ PC.Dpcris τ`. Rewrite using `[mem_Dpcris]`. Introduce `h`. Rewrite using `[← act_pairB PC.PD hm, (mem_Dpcris PC _ _).1 hx, (mem_Dpcris PC _ _).1 hy.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hW.2.2]`. Use `SetLike.le_def.1 (iSup₂_le fun w hw z hz => ?_) h1` and prove the remaining obligations. Use `Submodule.mem_iSup_of_mem (w * a⁻¹) (Submodule.mem_iSup_of_mem ((hS _).2 ⟨w, hw, a, ha, rfl⟩) ?_)` and prove the remaining obligations. Use `(mem_eig _ _ _).2 fun g => ?_` and prove the remaining obligations. Establish `h2 : actVB PC.PD τ g z = _` using `(mem_eig _ _ _).1 hz.2 g`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h2, smul_smul, mul_comm]`. Introduce `x hx`. Establish `h1 : PC.Dpcris σ ≤ LinearMap.ker (pairB Qp B m x)`. Rewrite using `[hU.2.2]`. Conclude with `iSup₂_le fun a ha y hy => hx ⟨(a, y), ha, hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Use `pairB_sep hi x fun y => ?_` and prove the remaining obligations. Proceed by induction on `y using cmp_ind PC.PD' (comparison_bijective PC.PD' hf hu _ hσ) with`. Consider the case `h0 => simp`. Consider the case `hadd y y' h h' => rw [map_add, h, h', add_zero]`. Consider the case `hb b d => rw [pairB_mB, h1 d.2, map_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem inertia_of_pair [FiniteDimensional LL V] [FiniteDimensional LL U] [FiniteDimensional LL W]
     (hf : FracInv PC.PD') (hu : LineUnit PC.PD')
@@ -395,15 +393,15 @@ theorem inertia_of_pair [FiniteDimensional LL V] [FiniteDimensional LL U] [Finit
     | hb b d => rw [pairB_mB, h1 d.2, map_zero]
 
 /- English proof (translation)
-Establish `e : PC.resH (WeaklyAdmissibleFiltrations.charRep (cycLL PC.PD LL)) = WeaklyAdmissibleFiltrations.charRep (cycLL PC.PD' LL)`. Use extensionality with `h`. Simplify using `[PotCrysData.resH, WeaklyAdmissibleFiltrations.charRep, cycLL, PC.χ_eq]`. Use `⟨?_, by simp, by simp, le_antisymm (fun x hx => ?_) (iSup₂_le fun _ _ => inf_le_left)⟩` and prove the remaining obligations. Unfold `PotCrysData.IsPotCrys`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[e]`. Conclude with `isCrys_cyc PC.PD' hf hu`. Use `Submodule.mem_iSup_of_mem 1 (Submodule.mem_iSup_of_mem (Finset.mem_singleton_self _) ⟨hx, ?_⟩)` and prove the remaining obligations. Use `(mem_eig (fun g : PC.Iner => actVB PC.PD (WeaklyAdmissibleFiltrations.charRep (cycLL PC.PD LL)) g) 1 x).2 fun g => ?_` and prove the remaining obligations. Establish `h1 : mB LL PC.PD.t x ∈ Dcris PC.PD' (Representation.trivial LL PC.H LL)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_Dcris]`. Introduce `h`. Rewrite using `[← PC.t_eq, tate_twist_multiplication_intertwines, ← e, (mem_Dcris _ _ _).1 hx]`. Rewrite `h1` using `[unit_eq]`. Take `⟨y, hy⟩` from `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mB_t_injective PC.PD (LL := LL)` to reduce the goal to its premises. Rewrite using `[← tate_twist_multiplication_intertwines, MonoidHom.one_apply, Units.val_one, one_smul, ← hy]`. Use `clear hy`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add a c ha hc => simp only [map_add, ha, hc]`. Consider the case `tmul v c => simp [actVB, g.2 c]`.
+A detailed English derivation is pending.
 -/
 theorem inertia_cyc (hf : FracInv PC.PD') (hu : LineUnit PC.PD') :
     PC.IsPotCrys (WeaklyAdmissibleFiltrations.charRep (cycLL PC.PD LL)) ∧ PC.InertiaThrough (WeaklyAdmissibleFiltrations.charRep (cycLL PC.PD LL)) {1} := by
@@ -431,9 +429,9 @@ theorem inertia_cyc (hf : FracInv PC.PD') (hu : LineUnit PC.PD') :
   | tmul v c => simp [actVB, g.2 c]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `ht`. Use `inertia_of_pair _ hf hu (m := (LinearMap.lsmul LL V).flip ∘ₗ e.symm.toLinearMap) ?_ ?_ hχ hA hc hI fun b => by simpa using hs b` and prove the remaining obligations. Introduce `g v u`. Take `⟨v, rfl⟩` from `e.surjective v`. Simplify using `[he, WeaklyAdmissibleFiltrations.charRep, smul_smul, mul_comm, mul_left_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Introduce `v v' hv`. Simplify using `using LinearMap.congr_fun hv 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inertia_twist [FiniteDimensional LL V] [FiniteDimensional LL W]
     (hf : FracInv PC.PD') (hu : LineUnit PC.PD') {ρ : Representation LL G V} {ρ' : Representation LL G W}
@@ -451,7 +449,7 @@ theorem inertia_twist [FiniteDimensional LL V] [FiniteDimensional LL W]
     simpa using LinearMap.congr_fun hv 1
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `inertia_cyc (LL := LL) _ hf hu`. Use `inertia_of_pair _ hf hu (m := P.flip) (fun g v u => hP.1 g u v) ?_ hA h1 hI h2 fun b => by simpa using hs b` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Conclude with `fun y hy => hP.2.2.1 y fun x => LinearMap.congr_fun hy x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inertia_dual [FiniteDimensional LL V] [FiniteDimensional LL W]
     (hf : FracInv PC.PD') (hu : LineUnit PC.PD') {ρ : Representation LL G V} {ρ' : Representation LL G W}
@@ -467,11 +465,9 @@ theorem inertia_dual [FiniteDimensional LL V] [FiniteDimensional LL W]
 end Pot
 
 /- English proof (translation)
-Introduce `L AI hT l _ K K' LL h hN hF hS A A' Sig Sig' hA hI`. Take `⟨T⟩` from `hT l`. Take `⟨C, hfit⟩` from `GlobalTheory.MemLoc.FitsEx.exists_fits l (L l) (AI l) T`. Use `haveI := LL.2`. Use `haveI := isDomain_of_tied T K`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hf : FracInv (pc (L l) h hN hF hS).PD'` using `fun b b' hb hg => fracInv hfit (GlobalTheory.MemLoc.TensorInj.tensorInj l C) K' b b' hb fun g => by`. Take `⟨g, rfl⟩` from `(GKinEquiv h).surjective g`. Conclude with `hg g`. Establish `hu : LineUnit (pc (L l) h hN hF hS).PD'` using `fun b hb hg => lineUnit hfit (GlobalTheory.MemLoc.core_regular l C) K' b hb fun g => by`. Take `⟨g, rfl⟩` from `(GKinEquiv h).surjective g`.
-
-Conclude with `hg g`. Conclude with `⟨inertia_twist _ hf hu hA hI, inertia_dual _ hf hu hA hI⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pcrisTensorL_of_tied : ∀ (L : LocTheory) (A : ∀ (l : ℕ) [Fact l.Prime], LocAinf l (L l)),
     (∀ (l : ℕ) [Fact l.Prime], Nonempty (LocTied l (L l) (A l))) → PcrisTensorL L := by

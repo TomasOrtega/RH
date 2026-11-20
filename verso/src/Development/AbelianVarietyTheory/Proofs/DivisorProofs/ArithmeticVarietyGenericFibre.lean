@@ -35,9 +35,9 @@ namespace GlobalTheory.FibreProj
 variable {k : Type} [CommRing k] {B Y : Scheme.{0}} [IsIntegral B] {q : B ⟶ Sp k} {p : Y ⟶ Sp k} {d : ℕ}
 
 /- English proof (translation)
-Establish `hgen : genericPoint B ∉ closure ({b} : Set B)` using `fun h => hb ((genericPoint_specializes b).antisymm (specializes_iff_mem_closure.2 h)).eq.symm`. Establish `h1 : topologicalKrullDim (Set.univ : Set B) = (d + 1 : ℕ)` using `(topologicalKrullDim_eq_of_isEmbedding Topology.IsEmbedding.id Set.range_id).trans hB.dim_eq`. Establish `hup : topologicalKrullDim (closure ({b} : Set B)) + 1 ≤ (d + 1 : ℕ)` using `h1 ▸ topologicalKrullDim_add_one_le isClosed_closure isClosed_univ fun x _ => ⟨genericPoint B, trivial, hgen, genericPoint_specializes x⟩`. Assume the negation of the conclusion as `h`. Use `(add_le_add_left (not_lt.1 h) 1).trans hup` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Normalize the coercions in `at this`. Use linear arithmetic over natural numbers and integers.
+Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers.
 -/
 theorem dim_closure_lt (hB : IsArithVar q d) {b : B} (hb : b ≠ genericPoint B) :
     topologicalKrullDim (closure ({b} : Set B)) < ((d + 1 : ℕ) : WithBot ℕ∞) := by
@@ -54,9 +54,7 @@ theorem dim_closure_lt (hB : IsArithVar q d) {b : B} (hb : b ≠ genericPoint B)
   omega
 
 /- English proof (translation)
-Take `⟨-, h₂, -, h₄⟩` from `GlobalTheory.T.generic_fibre_preimmersion_integral B Y f G j s h`. Establish `: IsEmpty G` using `not_nonempty_iff.1 fun hG => by`. Take `⟨_, e⟩` from `h₄ hG`. Conclude with `hf (h₂.le ⟨_, e⟩)`. Use `letI := algebraΓOfHom s`.
-
-Conclude with `interNum_eq_zero_of_isZero _ (InterModel.isZero_of_isEmpty _) hP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem interNum_eq_zero_of_ne [IsIntegral Y] {f : Y ⟶ B} {G : Scheme.{0}} {j : G ⟶ Y} {s : G ⟶ Sp B.functionField}
     (h : IsPullback j s f (B.fromSpecStalk (genericPoint B))) (hf : f (genericPoint Y) ≠ genericPoint B)
@@ -70,7 +68,7 @@ theorem interNum_eq_zero_of_ne [IsIntegral Y] {f : Y ⟶ B} {G : Scheme.{0}} {j 
   exact interNum_eq_zero_of_isZero _ (InterModel.isZero_of_isEmpty _) hP
 
 /- English proof (translation)
-Introduce `e` and use `by have := hB.charZero have h₁ : genericPoint B ∈ B.basicOpen (l : Γ(B, ⊤)) := (unitAt_fnOf_iff (Opens.mem_top _) (Opens.mem_top _) _).1 (unitAt_genericPoint ((map_ne_zero_iff _ (fnOf_injective ⊤ (Opens.mem_top _))).2 (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero))) have h₂ : …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ne_genericPoint_of_vertical (hB : IsArithVar q d) {Z : Scheme.{0}} (g : Z ⟶ B) (l : ℕ) [Fact l.Prime]
     [Algebra (ZMod l) Γ(Z, ⊤)] (z : Z) : g z ≠ genericPoint B := fun e => by
@@ -84,7 +82,7 @@ theorem ne_genericPoint_of_vertical (hB : IsArithVar q d) {Z : Scheme.{0}} (g : 
   exact h₂
 
 /- English proof (translation)
-Take `⟨N, j, _, hj⟩` from `h.isProjOver`. Use `isProper_str k N` as an intermediate fact. Conclude with `hj ▸ inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isProper_of_isArithVar {D : ℕ} (h : IsArithVar p D) : IsProper p := by
   obtain ⟨N, j, _, hj⟩ := h.isProjOver
@@ -92,11 +90,11 @@ theorem isProper_of_isArithVar {D : ℕ} (h : IsArithVar p D) : IsProper p := by
   exact hj ▸ inferInstance
 
 /- English proof (translation)
-Distinguish the cases in `hf : f (genericPoint Y) = genericPoint B`. Take `⟨-, h₂, -, -⟩` from `GlobalTheory.T.generic_fibre_preimmersion_integral B Y f G j s h`. Take `⟨x, -⟩ : genericPoint Y ∈ Set.range j` from `h₂.ge hf`. Use `isProper_of_isArithVar hB` as an intermediate fact. Establish `: IsProper (f ≫ q)` using `w ▸ isProper_of_isArithVar hY`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper f` using `IsProper.of_comp f q`. Take `⟨h₃, h₄⟩` from `GlobalTheory.T.residue_degree_eq_euler_characteristic B Y f G j s h (GlobalTheory.T.generic_fibre_projective k B Y q p hB.isProjOver hY.isProjOver f w G j s h) (GlobalTheory.T.generic_fibre_dimension_le B Y (d + 1) 0 hB.dim_eq hY.dim_eq.le f G j s h) ⟨x⟩`. Use `letI := algebraΓOfHom s`. Rewrite using `[interNum_of_isEmpty, h₄]`. Conclude with `(H.arProj k B Y q p d hB hY f w hf h₃).2 κ A Φ hΦ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[interNum_eq_zero_of_ne h hf isEmptyElim, Int.cast_zero, zero_smul]`. Use `⟨fun n => ?_, fun _ _ _ _ => rfl⟩` and prove the remaining obligations. Take `⟨t, ht, e⟩` from `ProjDrop.isSelfInter_zero_of_dim_lt H k B Y q p d d hB hY f w (dim_closure_lt hB hf) (comb A n)`. Conclude with `⟨t, (H.arIso k Y p d hY).1 _ _ t (isometric_comb_pull A n f w).symm ht, e⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isArFun_pull (H : ArCalc) [IsIntegral Y] (hB : IsArithVar q d) (hY : IsArithVar p d) (f : Y ⟶ B) (w : f ≫ q = p)
     {G : Scheme.{0}} {j : G ⟶ Y} {s : G ⟶ Sp B.functionField}
@@ -123,7 +121,7 @@ theorem isArFun_pull (H : ArCalc) [IsIntegral Y] (hB : IsArithVar q d) (hY : IsA
 omit [IsIntegral B] in
 
 /- English proof (translation)
-The claim follows from `have R := L.refines_pull_pull f w i rfl h HermLB.isometric_of_chart _ R.le (fun x => R.g Z (𝟙 Z) x) fun σ c y hy => ((R.φ σ c y hy).trans (add_zero _)).symm`.
+A detailed English derivation is pending.
 -/
 theorem isometric_pull_pull {Z : Scheme.{0}} (L : HermLB q) (f : Y ⟶ B) (w : f ≫ q = p) (i : Z ⟶ Y)
     (h : (i ≫ f) ≫ q = i ≫ p) : ((L.pull f w).pull i rfl).Isometric (L.pull (i ≫ f) h) :=
@@ -131,11 +129,9 @@ theorem isometric_pull_pull {Z : Scheme.{0}} (L : HermLB q) (f : Y ⟶ B) (w : f
   HermLB.isometric_of_chart _ R.le (fun x => R.g Z (𝟙 Z) x) fun σ c y hy => ((R.φ σ c y hy).trans (add_zero _)).symm
 
 /- English proof (translation)
-Establish `hp : IsProjOver (strHom (ZMod l) Z)` using `GlobalTheory.T.closed_subscheme_mod_l_projective k Y p D hY Z i l`. Establish `h₁` using `GlobalTheory.T.intersection_number_zero_small_image (ZMod l) e (d + 1) Z B hp (hD ▸ hZ.le) (i ≫ f) (dim_closure_lt hB (ne_genericPoint_of_vertical hB _ l _)) (fun a => (L a).B.pull i) (fun a => LB.isLB_pull (L a).isLB i) (fun a => (A a).B) fun a => (A a).isLB`. Establish `h₂ : interNum (ZMod l) (structureModule Z) (fun a => ((Sum.elim L fun a => (A a).pull f w) a).B.pull i) = 0`. Use `(interNum_congr_lbIso _ _ (fun a => LB.isLB_pull (HermLB.isLB _) i) ?_ ?_).trans h₁` and prove the remaining obligations. Introduce and unpack `(a | a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `LB.isLB_pull (L a).isLB i`. Conclude with `LB.isLB_pull (A a).isLB _`. Introduce and unpack `(a | a)`. Conclude with `(CechPic.cls_eq_iff (LB.isLB_pull (L a).isLB i) (LB.isLB_pull (L a).isLB i)).1 rfl`. Conclude with `((A a).refines_pull_pull f w i rfl (by rw [Category.assoc, w])).lbIso`.
-
-Simplify using `only [fun n => (hh n).vertical Z i (ZMod l) D hZ]`. Rewrite using `[pol_mul_const, GlobalTheory.T.polynomial_top_self_intersection k Y p (ZMod l) Z hp _ D (by simpa using hD) hZ.le i, h₂]`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pol_vertical {D e : ℕ} (hB : IsArithVar q d) (hY : IsArithVar p D) (hD : e + (d + 1) = D) (f : Y ⟶ B) (w : f ≫ q = p)
     (L : Fin e → HermLB p) (A : Fin (d + 1) → HermLB q) {h : (Fin e ⊕ Fin (d + 1) → ℤ) → Y → ℝ}
@@ -160,27 +156,25 @@ theorem pol_vertical {D e : ℕ} (hB : IsArithVar q d) (hY : IsArithVar p D) (hD
   simp
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero`. Introduce `Y _ p hY f w G j s h L Ψ hΨ`. Establish `e` using `DFunLike.congr_fun (VertForm.FormEx.arFun_eq_rename H hY (isArFun_pull H hB hY f w h hΦ fun i => (L i).B.pull j) hΨ Sum.inr fun _ => rfl) (∏ a, X a)`. Simplify `e.symm` using `[Fintype.prod_sum_type]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ e ih`. Introduce `Y _ p hY f w G j s hG L Ψ hΨ`. Use `hY.isNoetherian` as an intermediate fact. Set `N : Fin e ⊕ Fin (d + 1) → HermLB p` to `Sum.elim (fun a => L a.succ) fun a => (A a).pull f w`. Establish `hc : Fintype.card (Fin e ⊕ Fin (d + 1)) = d + (e + 1)` using `by simp; omega`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨Φ', hΦ'⟩` from `((H.arExists k Y p _ hY).2 _ fun o : Option _ => o.elim (L 0) N).1`. Use `choose h hh using fun n => (H.arExists k Y p _ hY).1 (comb N n)`. Take `⟨r, hr⟩` from `exists_isRatSec (L 0).isLB`. Establish `hm` using `fun n => H.arMix k Y p _ hY _ (L 0) N Φ' hΦ' n (h n) (hh n) r hr`. Establish `ha` using `GlobalTheory.T.arch_integrable_polynomial_vanishing k B Y q p d _ hs hY f w _ _ (by simp) (fun a : Fin e => L a.succ) A (L 0) r hr fun n => (hm n).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key (z : Y) : ∃ c : ℤ, ((L 0).div hr).mult z ≠ 0 → pol (fun n => h n z) = (d + (e + 1)).factorial * (c * Φ (∏ a, X a)) ∧ ∃ (Z : Scheme.{0}) (i : Z ⟶ Y) (_ : IsClosedImmersion i) (_ : IsIntegral Z) (G' : Scheme.{0}) (j' : G' ⟶ Z) (s' : G' ⟶ Sp B.functionField), i (genericPoint Z) …` using `algebraΓOfHom s'; interNum B.functionField (structureModule G') (fun a : Fin e => ((L a.succ).B.pull i).pull j')) := by`. Take `⟨Z, i, _, _, rfl⟩` from `exists_isClosedImmersion_genericPoint z`. Establish `hP` using `IsPullback.of_hasPullback (i ≫ f) (B.fromSpecStalk (genericPoint B))`. Use `⟨_, fun hz => ⟨?_, Z, i, ‹_›, ‹_›, _, _, _, rfl, hP, rfl⟩⟩` and prove the remaining obligations. Establish `hZ` using `GlobalTheory.T.codim_one_integral_subscheme_dim k Y p _ hY Z i (CartierDiv.coheight_eq_one_of_mult_ne_zero hz)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hY.vertical_or_horizontal i with ⟨l, _, ⟨_⟩⟩ | ⟨hc0, -⟩` into its components or cases. Rewrite using `[pol_vertical hB hY (by omega) f w _ A hh i hZ l, interNum_eq_zero_of_ne hP (ne_genericPoint_of_vertical hB _ l _) fun a : Fin e => LB.isLB_pull (LB.isLB_pull (L a.succ).isLB i) _]`. Simplify using the standard rewrite rules. Establish `hZ' : IsArithVar (i ≫ p) (d + e)` using `hY.of_isClosedImmersion i hc0 hZ`. Establish `w' : (i ≫ f) ≫ q = i ≫ p` using `by rw [Category.assoc, w]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Ψ', hΨ'⟩` from `((H.arExists k Z _ _ hZ').2 _ fun o => (N o).pull i rfl).1`. Establish `e₁ (n) : h n (i (genericPoint Z)) = Ψ' (lin (fun o => (n o : ℝ)) ^ (d + (e + 1)))`. Take `⟨t, ht, e₂⟩` from `hΨ'.1 n`. Conclude with `((hh n).isSelfInter_restrict hY i rfl).unique hZ' ⟨t, (H.arIso k Z _ _ hZ').1 _ _ t (isometric_comb_pull N n i rfl) ht, e₂⟩`. Establish `hΨ''` using `((H.arIso k Z _ _ hZ').2 _ _ Ψ' hΨ').2.1 (Sum.elim (fun a : Fin e => (L a.succ).pull i rfl) fun a => (A a).pull (i ≫ f) w') (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `(a | a)`. Conclude with `.refl _`. Conclude with `isometric_pull_pull _ f w i w')`. Simplify using `only [e₁]`. Rewrite using `[pol_lin_pow Ψ' hc, ih Z _ hZ' _ w' _ _ _ hP _ Ψ' hΨ'']`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `choose γ hγ using key`. Establish `hg` using `GlobalTheory.T.generic_fibre_intersection_formula k B Y q p d e hB hY f w G j s hG (fun a => (L a).B) (fun a => (L a).isLB) r hr γ fun z hz => (hγ z hz).2`. Establish `hT` using `((L 0).div hr).finite_support_mult`. Establish `e₃ (u : Y → ℝ) : ∑ᶠ z, (((L 0).div hr).mult z : ℝ) * u z = ∑ z ∈ hT.toFinset, (((L 0).div hr).mult z : ℝ) * u z` using `finsum_eq_sum_of_support_subset _ fun z hz => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using left_ne_zero_of_mul hz`. Establish `e₄ : ∑ᶠ z, ((L 0).div hr).mult z * γ z = ∑ z ∈ hT.toFinset, ((L 0).div hr).mult z * γ z` using `finsum_eq_sum_of_support_subset _ fun z hz => by`. Simplify using `using left_ne_zero_of_mul hz`. Establish `e₅` using `pol_mix Φ' hc`. Simplify using `only [fun n => (hm n).2, e₃] at e₅`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[pol_sub, ha, sub_zero, pol_sum, Finset.sum_congr rfl fun z hz => by`. Rewrite `e₅` using `[pol_const_mul, (hγ z (by simpa using hz)).1]]`. Apply the tactic sequence `have e₆ := DFunLike.congr_fun (VertForm.FormEx.arFun_eq_rename H hY hΦ' hΨ (fun o => o.elim (.inl 0) (Sum.map Fin.succ id)) (by rintro (_ | a | a) <;> rfl)) (∏ o, X o)`. Establish `e₇ : Φ' (∏ o, X o) = Ψ (∏ o, X o)`. Simplify `e₆` using `[Fintype.prod_option, Fintype.prod_sum_type, Fin.prod_univ_succ, mul_assoc]`.
-
-Rewrite using `[hg, e₄, ← e₇]`. Use `mul_left_cancel₀ (a := ((d + (e + 1)).factorial : ℝ)) (by positivity) (e₅.symm.trans ?_)` and prove the remaining obligations. Use `push_cast`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun z _ => by ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arFun_prod (H : ArCalc) (hB : IsArithVar q d) (hs : GenSmooth q d) {A : Fin (d + 1) → HermLB q}
     {Φ : MvPolynomial (Fin (d + 1)) ℝ →ₗ[ℝ] ℝ} (hΦ : IsArFun A d Φ) (e : ℕ) :
@@ -262,9 +256,9 @@ theorem arFun_prod (H : ArCalc) (hB : IsArithVar q d) (hs : GenSmooth q d) {A : 
     exact Finset.sum_congr rfl fun z _ => by ring
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Establish `hl : m.toMultiset.toList.length = m.degree`. Rewrite using `[Multiset.length_toList, Finsupp.card_toMultiset]`. Both sides reduce to the same expression. Use `⟨fun a => m.toMultiset.toList.get (a.cast hl.symm), ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ ((finCongr hl.symm).prod_comp (fun a => (X (m.toMultiset.toList.get a) : MvPolynomial κ ℝ)) |>.trans (Fin.prod_univ_fun_getElem m.toMultiset.toList fun a => (X a : MvPolynomial κ ℝ))).symm` and prove the remaining obligations. Rewrite using `[Multiset.prod_map_toList, ← prod_X_pow_eq_monomial, Finsupp.toMultiset_map, Finsupp.prod_toMultiset, Finsupp.prod_mapDomain_index (by simp) (by simp [pow_add])]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_monomial_eq_prod {κ : Type} (n : ℕ) (m : κ →₀ ℕ) (hm : m.degree = n) :
     ∃ r : Fin n → κ, (monomial m 1 : MvPolynomial κ ℝ) = ∏ a, X (r a) := by
@@ -282,11 +276,11 @@ theorem exists_monomial_eq_prod {κ : Type} (n : ℕ) (m : κ →₀ ℕ) (hm : 
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `H k _ B Y _ _ q p d e hB hr hY f w G j s hG L κ _ A Φ Ψ hΦ hΨ P hP`. Rewrite using `[P.as_sum]`. Simplify using `only [map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Take `⟨r, e₀⟩` from `exists_monomial_eq_prod (d + 1) m (by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finsupp.degree_eq_weight_one]`. Conclude with `hP (mem_support_iff.1 hm))`. Take `⟨Φ', hΦ'⟩` from `((H.arExists k B q d hB).2 _ fun a => A (r a)).1`. Take `⟨Ψ', hΨ'⟩` from `((H.arExists k Y p _ hY).2 _ (Sum.elim L fun a => (A (r a)).pull f w)).1`. Establish `e₁` using `arFun_prod H hB (RegGenSmooth.genSmooth hB hr) hΦ' e Y p hY f w G j s hG L Ψ' hΨ'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [VertForm.FormEx.arFun_eq_rename H hB hΦ' hΦ r fun _ => rfl, VertForm.FormEx.arFun_eq_rename H hY hΨ' hΨ (Sum.map id r) (by rintro (a | a) <;> rfl)] at e₁`. Rewrite using `[show monomial m (coeff m P) = coeff m P • monomial m 1 by rw [smul_monomial, smul_eq_mul, mul_one], e₀, map_smul, mul_smul_comm, map_smul, map_smul, smul_eq_mul, smul_eq_mul, mul_left_comm]`. Use `congr 1`. Simplify `e₁` using `[Fintype.prod_sum_type]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem arFun_mul_pull : ArCalc → ∀ (k : Type) [CommRing k] (B Y : Scheme.{0}) [IsIntegral B] [IsIntegral Y] (q : B ⟶ Sp k) (p : Y ⟶ Sp k) (d e : ℕ), IsArithVar q d → (∀ b : B, IsRegularLocalRing (B.presheaf.stalk b)) → IsArithVar p (d + e) → ∀ (f : Y ⟶ B) (w : f ≫ q = p) (G : Scheme.{0}) (j : G ⟶ Y) (s : G ⟶ Sp B.functionField), IsPullback j s f (B.fromSpecStalk (genericPoint B)) → ∀ (L : Fin e → HermLB p) (κ : Type) [Fintype κ] (A : κ → HermLB q) (Φ : MvPolynomial κ ℝ →ₗ[ℝ] ℝ) (Ψ : MvPolynomial (Fin e ⊕ κ) ℝ →ₗ[ℝ] ℝ), IsArFun A d Φ → IsArFun (Sum.elim L fun a => (A a).pull f w) (d + e) Ψ → ∀ P : MvPolynomial κ ℝ, P.IsHomogeneous (d + 1) → Ψ ((∏ i : Fin e, MvPolynomial.X (Sum.inl i)) * rename Sum.inr P) = (letI := algebraΓOfHom s; (interNum B.functionField (structureModule G) (fun i => (L i).B.pull j) : ℝ)) * Φ P := by
   intro H k _ B Y _ _ q p d e hB hr hY f w G j s hG L κ _ A Φ Ψ hΦ hΨ P hP

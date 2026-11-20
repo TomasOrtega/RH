@@ -14,7 +14,7 @@ open GlobalTheory.AscFin
 namespace GlobalTheory.AscFin.BoxBF
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by rw [← mul_assoc, h i l]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHalf_mul {D : D7} {m n k : ℕ} {e : AE D} {u : Mx D m n} (h : IsHalf e u) (M : Mx D n k) : IsHalf e (u ⬝ M) := by
   intro i j
@@ -22,11 +22,11 @@ theorem isHalf_mul {D : D7} {m n k : ℕ} {e : AE D} {u : Mx D m n} (h : IsHalf 
   exact Finset.sum_congr rfl fun l _ => by rw [← mul_assoc, h i l]
 
 /- English proof (translation)
-Introduce `D hq T L μ0 hL sc G W M hM F hF ρ h Ξ₁ Ξ₂ h1 h2 h3`. Establish `hn : ∀ x, ‖W.ψ x‖ = 1` using `W.ψ_std.1.2.1`. Use `⟨(F.oB ρ h).isThetaFunO_boxS h1.1 h2, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Take `⟨w, hw, hw'⟩` from `GlobalTheory.T.besselStep_lineComponent_eq_kappa_lattice_point D hq T L μ0 hL sc G W M hM F hF ρ h u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[OrthDec.heisO_boxS, map_nsmul, Prod.smul_fst, Prod.smul_snd, h1.2.1 _ (GlobalTheory.T.besselStep_coreComponent_mem_depthLatticeGridCore D hq T L μ0 hL sc G W M hM F hF ρ h u hu), hw', (GlobalTheory.T.linked_line_hom_transport_lattice_vacua D W.ψ hn _ _ _ _ (F.line ρ) (F.lnk ρ) _ …`. Introduce `e he u hu hh`. Take `⟨w, hw, hw'⟩` from `GlobalTheory.T.besselStep_lineComponent_eq_kappa_lattice_point D hq T L μ0 hL sc G W M hM F hF ρ h u hu`. Establish `ha : IsHalf e ((F.oB ρ h).resS (G.V (.core (2 * ρ + 1))) u).1` using `isHalf_mul hh _`. Establish `hb : IsHalf e ((F.oB ρ h).resS (G.V (.core (2 * ρ + 1))) u).2` using `isHalf_mul hh _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[OrthDec.heisO_boxS, h1.2.2 e he _ (GlobalTheory.T.besselStep_coreComponent_mem_depthLatticeGridCore D hq T L μ0 hL sc G W M hM F hF ρ h u hu) ha, hw']`. Rewrite `hb` using `[hw']`. Rewrite using `[(GlobalTheory.T.linked_line_hom_transport_lattice_vacua D W.ψ hn _ _ _ _ (F.line ρ) (F.lnk ρ) _ Ξ₂ h3.2 w hw).2 e he hb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem main : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ Ξ₁ Ξ₂, VacG W.ψ _ _ (latCore G (2 * ρ + 1)) Ξ₁ → IsThetaFunO W.ψ _ _ Ξ₂ →
     VacG W.ψ _ _ (lineLat F ρ) (fun w => star (Ξ₂ ((F.lnk ρ).κ _ w))) → VacG W.ψ _ _ (pcBF W F ρ h).Γ₀ ((F.oB ρ h).boxS _ Ξ₁ Ξ₂) := by

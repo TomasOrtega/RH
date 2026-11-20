@@ -17,9 +17,9 @@ abbrev incl (s : ReciprocityTheory.Aut.SplitPlace L) : Os s →+* s.v.adicComple
   (s.v.adicCompletionIntegers (maximalRealSubfield L)).subtype
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `a c`. Rewrite using `[← h a c]`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `h a c`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isCompOf_iff (s : ReciprocityTheory.Aut.SplitPlace L) (κ : Formalism.AUTREP.GAf L n) (y : GL (Fin n) (Os s)) :
     IsCompOf s κ y ↔ s.loc n κ = Matrix.GeneralLinearGroup.map (incl s) y := by
@@ -33,7 +33,7 @@ theorem isCompOf_iff (s : ReciprocityTheory.Aut.SplitPlace L) (κ : Formalism.AU
     rfl
 
 /- English proof (translation)
-Rewrite `*` using `[isCompOf_iff]`. Rewrite using `[map_mul, map_mul, h, h']`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCompOf_mul {s : ReciprocityTheory.Aut.SplitPlace L} {κ κ' : Formalism.AUTREP.GAf L n} {y y' : GL (Fin n) (Os s)}
     (h : IsCompOf s κ y) (h' : IsCompOf s κ' y') : IsCompOf s (κ * κ') (y * y') := by
@@ -41,7 +41,7 @@ theorem isCompOf_mul {s : ReciprocityTheory.Aut.SplitPlace L} {κ κ' : Formalis
   rw [map_mul, map_mul, h, h']
 
 /- English proof (translation)
-Rewrite `*` using `[isCompOf_iff]`. Rewrite using `[map_inv, map_inv, h]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCompOf_inv {s : ReciprocityTheory.Aut.SplitPlace L} {κ : Formalism.AUTREP.GAf L n} {y : GL (Fin n) (Os s)}
     (h : IsCompOf s κ y) : IsCompOf s κ⁻¹ y⁻¹ := by
@@ -49,7 +49,7 @@ theorem isCompOf_inv {s : ReciprocityTheory.Aut.SplitPlace L} {κ : Formalism.AU
   rw [map_inv, map_inv, h]
 
 /- English proof (translation)
-Take `⟨x, hx, e⟩` from `GlobalTheory.SplitSec.exists_trivOutside_loc L n s (Matrix.GeneralLinearGroup.map (incl s) y)`. Conclude with `⟨x, hx, (isCompOf_iff s x y).2 e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_lift (s : ReciprocityTheory.Aut.SplitPlace L) (y : GL (Fin n) (Os s)) :
     ∃ κ : Formalism.AUTREP.GAf L n, ReciprocityTheory.Aut.TrivOutside {s.v} κ ∧ IsCompOf s κ y := by
@@ -57,9 +57,9 @@ theorem exists_lift (s : ReciprocityTheory.Aut.SplitPlace L) (y : GL (Fin n) (Os
   exact ⟨x, hx, (isCompOf_iff s x y).2 e⟩
 
 /- English proof (translation)
-Establish `h1 : Valued.v (x : s.v.adicCompletion (maximalRealSubfield L)) ≤ 1` using `x.2`. Establish `heq : Valued.v (x : s.v.adicCompletion (maximalRealSubfield L)) = 1` using `le_antisymm h1 (not_lt.1 hx)`. Establish `hx0 : (x : s.v.adicCompletion (maximalRealSubfield L)) ≠ 0`. Introduce `h`. Rewrite `heq` using `[h, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one heq`. Establish `hinv : (x : s.v.adicCompletion (maximalRealSubfield L))⁻¹ ∈ s.v.adicCompletionIntegers (maximalRealSubfield L)`. Express the relevant statement in the definitionally equal form `Valued.v ((x : s.v.adicCompletion (maximalRealSubfield L))⁻¹) ≤ 1`. Rewrite using `[map_inv₀, heq, inv_one]`. Apply the tactic sequence `refine ⟨⟨x, ⟨_, hinv⟩, ?_, ?_⟩, rfl⟩ <;> apply Subtype.ext <;> simp [hx0]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isUnit_of_not_lt (s : ReciprocityTheory.Aut.SplitPlace L) (x : Os s)
     (hx : ¬ Valued.v (x : s.v.adicCompletion (maximalRealSubfield L)) < 1) : IsUnit x := by
@@ -75,13 +75,11 @@ theorem isUnit_of_not_lt (s : ReciprocityTheory.Aut.SplitPlace L) (x : Os s)
   refine ⟨⟨x, ⟨_, hinv⟩, ?_, ?_⟩, rfl⟩ <;> apply Subtype.ext <;> simp [hx0]
 
 /- English proof (translation)
-Use `haveI : Nontrivial k := ⟨hk.exists_pair_ne⟩`. Use `choose g hg using hφ.surj`. Set `M : Matrix (Fin n) (Fin n) (Os s)` to `fun a c => g (h.val a c)`. Establish `hM : M.map φ = h.val`. Use extensionality with `a c`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hg _`. Establish `hdet : IsUnit M.det`. Apply `isUnit_of_not_lt` to reduce the goal to its premises. Introduce `hlt`. Establish `h0 : φ M.det = 0` using `(hφ.ker _).2 hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite `h0` using `[RingHom.map_det, RingHom.mapMatrix_apply, hM]`. Conclude with `(Matrix.isUnits_det_units h).ne_zero h0`. Use `⟨Matrix.nonsingInvUnit M hdet, ?_⟩` and prove the remaining obligations. Use extensionality with `a c`. Simplify using `[Matrix.GeneralLinearGroup.map, ← hM]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_gl_lift (s : ReciprocityTheory.Aut.SplitPlace L) {k : Type} [CommRing k] (φ : Os s →+* k) (hk : IsField k)
     (hφ : IsResidue s φ) (h : GL (Fin n) k) :
@@ -108,7 +106,7 @@ end GlobalTheory.ParaForce
 namespace GlobalTheory.ParaForce
 
 /- English proof (translation)
-Rewrite using `[Matrix.vecMulVec_eq Unit, Matrix.det_one_add_replicateCol_mul_replicateRow]`. Simplify using `[hw]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_one_add_vecMulVec_single {ι R : Type} [Fintype ι] [DecidableEq ι] [CommRing R] (w : ι → R) (m : ι)
     (hw : w m = 0) : (1 + Matrix.vecMulVec w (Pi.single m 1)).det = 1 := by
@@ -116,7 +114,7 @@ theorem det_one_add_vecMulVec_single {ι R : Type} [Fintype ι] [DecidableEq ι]
   simp [hw]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular (fun a c h => hlow a c h)]`. Simplify using `[hdiag]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_upperUnitri {R : Type} [CommRing R] {n : ℕ} (M : Matrix (Fin n) (Fin n) R)
     (hlow : ∀ a c : Fin n, c < a → M a c = 0) (hdiag : ∀ a, M a a = 1) : M.det = 1 := by
@@ -133,9 +131,9 @@ theorem map_incl_apply (s : ReciprocityTheory.Aut.SplitPlace L) (y : GL (Fin n) 
     (Matrix.GeneralLinearGroup.map (incl s) y).val a c = ((y.val a c : Os s) : s.v.adicCompletion (maximalRealSubfield L)) := rfl
 
 /- English proof (translation)
-Use `⟨⟨⟨y, rfl⟩, fun a c ha hc => ?_⟩, fun a c ha hc => ⟨fun hca => ?_, fun hac => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_incl_apply, hlow a c hc (by omega)]`. Simplify using the standard rewrite rules. Rewrite using `[map_incl_apply, hlow a c hc hca]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `hac` using the available equality. Rewrite using `[map_incl_apply, hdiag a ha]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem uniRT_of (s : ReciprocityTheory.Aut.SplitPlace L) (r : ℕ) (y : GL (Fin n) (Os s))
     (hlow : ∀ a c : Fin n, (c : ℕ) < r → (c : ℕ) < a → y.val a c = 0) (hdiag : ∀ a : Fin n, (a : ℕ) < r → y.val a a = 1) :
@@ -150,7 +148,7 @@ theorem uniRT_of (s : ReciprocityTheory.Aut.SplitPlace L) (r : ℕ) (y : GL (Fin
     simp
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem detDD_map (s : ReciprocityTheory.Aut.SplitPlace L) (r : ℕ) (y : GL (Fin n) (Os s)) :
     NG.detDD s r (Matrix.GeneralLinearGroup.map (incl s) y) =
@@ -164,9 +162,9 @@ end GlobalTheory.ParaForce
 namespace GlobalTheory.ParaForce
 
 /- English proof (translation)
-Simplify using `only [Matrix.transvection, Matrix.add_apply, Matrix.single_apply]`. Apply the tactic sequence `by_cases h1 : a = i <;> by_cases h2 : c = j`. Substitute `h1 h2` using the available equality. Simplify using the standard rewrite rules. Substitute `h1` using the available equality.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `[h2, Ne.symm h2]`. Substitute `h2` using the available equality. Simplify using `[h1, Ne.symm h1]`. Simplify using `[h1, h2, Ne.symm h1, Ne.symm h2]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem transvection_apply' {R : Type} [CommRing R] {n : ℕ} (i j a c : Fin n) (x : R) :
     Matrix.transvection i j x a c = (1 : Matrix (Fin n) (Fin n) R) a c + if a = i ∧ c = j then x else 0 := by
@@ -178,7 +176,7 @@ theorem transvection_apply' {R : Type} [CommRing R] {n : ℕ} (i j a c : Fin n) 
   · simp [h1, h2, Ne.symm h1, Ne.symm h2]
 
 /- English proof (translation)
-Rewrite using `[transvection_apply', map_add]`. Distinguish the cases in `h1 : a = c`. Substitute `h1` using the available equality. Simplify using `[Matrix.one_apply, apply_ite φ]`. Simplify using `[h1, Matrix.one_apply, apply_ite φ]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_transvection_entry {R k : Type} [CommRing R] [CommRing k] (φ : R →+* k) {n : ℕ} (i j a c : Fin n) (x : R) :
     φ ((1 : Matrix (Fin n) (Fin n) R) a c + if a = i ∧ c = j then x else 0) = Matrix.transvection i j (φ x) a c := by
@@ -192,83 +190,73 @@ end GlobalTheory.ParaForce
 namespace GlobalTheory.ParaForce
 
 /- English proof (translation)
-Introduce `L _ _ _ n r s k _ φ hk hφ hr hrn W _ _ f hf J χ ψ₀ ξ hψ hJ hfJ b hb`. Use `haveI : Nontrivial k := ⟨hk.exists_pair_ne⟩`. Establish `hker : ∀ (κ : Formalism.AUTREP.GAf L n) (y : GL (Fin n) (Os s)), ReciprocityTheory.Aut.TrivOutside {s.v} κ → IsCompOf s κ y → Matrix.GeneralLinearGroup.map φ y = 1 → ∀ x, f (x * κ) = f x`. Introduce `κ y hκ hy h1 x`. Use `hb κ y hκ hy ⟨n - 1, by omega⟩ 0 (by simp only; omega) rfl ?_ x` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, mul_one, mul_inv_cancel]`. Use extensionality with `a c`. Simplify using `[colMat]`. Establish `htr : ∀ (κ : Formalism.AUTREP.GAf L n) (y : GL (Fin n) (Os s)) (κ' : Formalism.AUTREP.GAf L n) (y' : GL (Fin n) (Os s)), ReciprocityTheory.Aut.TrivOutside {s.v} κ → IsCompOf s κ y → ReciprocityTheory.Aut.TrivOutside {s.v} κ' → IsCompOf s κ' y' → Matrix.GeneralLinearGroup.map φ y …`. Introduce `κ y κ' y' hκ hy hκ' hy' e hfix x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd` using `hker (κ⁻¹ * κ') (y⁻¹ * y') (GlobalTheory.HeckeStdFacts.triv_mul (GlobalTheory.HeckeStdFacts.triv_inv hκ) hκ') (isCompOf_mul (isCompOf_inv hy) hy') (by rw [map_mul, map_inv, e, inv_mul_cancel])`. Combine the equalities or inequalities in the displayed calculation. Establish `lift : ∀ h : GL (Fin n) k, ∃ κ : Formalism.AUTREP.GAf L n, ∃ y : GL (Fin n) (Os s), ReciprocityTheory.Aut.TrivOutside {s.v} κ ∧ IsCompOf s κ y ∧ Matrix.GeneralLinearGroup.map φ y = h`. Introduce `h`. Take `⟨y, hy⟩` from `exists_gl_lift s φ hk hφ h`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hκ, hc⟩` from `exists_lift s y`. Conclude with `⟨κ, y, hκ, hc, hy⟩`. Set `H : Subgroup (GL (Fin n) k)` to `{ carrier := {h | ∀ (κ : Formalism.AUTREP.GAf L n) (y : GL (Fin n) (Os s)), ReciprocityTheory.Aut.TrivOutside {s.v} κ → IsCompOf s κ y → Matrix.GeneralLinearGroup.map φ y = h → ∀ x, f (x * κ) = f x} mul_mem' := by`. Introduce `h1 h2 H1 H2 κ y hκ hy e`. Take `⟨κ1, y1, hκ1, hy1, e1⟩` from `lift h1`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨κ2, y2, hκ2, hy2, e2⟩` from `lift h2`. Use `htr (κ1 * κ2) (y1 * y2) κ y (GlobalTheory.HeckeStdFacts.triv_mul hκ1 hκ2) (isCompOf_mul hy1 hy2) hκ hy (by rw [map_mul, e1, e2, e]) ?_` and prove the remaining obligations. Introduce `x`. Rewrite using `[← mul_assoc, H2 κ2 y2 hκ2 hy2 e2, H1 κ1 y1 hκ1 hy1 e1]`. Use the proof step `one_mem' := fun κ y hκ hy e => hker κ y hκ hy e`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use the proof step `inv_mem' := by`. Introduce `h H1 κ y hκ hy e`. Take `⟨κ1, y1, hκ1, hy1, e1⟩` from `lift h`. Use `htr κ1⁻¹ y1⁻¹ κ y (GlobalTheory.HeckeStdFacts.triv_inv hκ1) (isCompOf_inv hy1) hκ hy (by rw [map_inv, e1, e]) ?_` and prove the remaining obligations. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `H1 κ1 y1 hκ1 hy1 e1 (x * κ1⁻¹)` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`. Conclude with `this.symm }`. Establish `hmem : ∀ (κ : Formalism.AUTREP.GAf L n) (y : GL (Fin n) (Os s)), ReciprocityTheory.Aut.TrivOutside {s.v} κ → IsCompOf s κ y → (∀ x, f (x * κ) = f x) → Matrix.GeneralLinearGroup.map φ y ∈ H` using `fun κ y hκ hy hfix κ' y' hκ' hy' e => htr κ y κ' y' hκ hy hκ' hy' e.symm hfix`. Establish `hJact : ∀ (κ : Formalism.AUTREP.GAf L n) (y : GL (Fin n) (Os s)), ReciprocityTheory.Aut.TrivOutside {s.v} κ → IsCompOf s κ y → NG.UniRT s r (Matrix.GeneralLinearGroup.map (incl s) y) → ∃ hJκ : κ ∈ J, ∀ u : (s.v.adicCompletion (maximalRealSubfield L))ˣ, (u : s.v.adicCompletion (ma …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `κ y hκ hy hU`. Rewrite `hy` using `[isCompOf_iff]`. Establish `hJκ : κ ∈ J` using `(hJ.mem κ hκ).2 (by rw [hy]; exact hU)`. Use `⟨hJκ, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite `hu`, the goal using `[← hy]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hJ.chr κ hJκ hκ u hu`. Establish `hnorm : ∀ u ∈ unip k n, ∀ h ∈ H, u * h * u⁻¹ ∈ H`. Introduce `u hu h hh`. Establish `hu1 : u.val.BlockTriangular fun a => (a : ℕ)` using `hu.1`. Establish `hu2 : ∀ a, u.val a a = 1` using `hu.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `choose g hg using hφ.surj`. Set `M : Matrix (Fin n) (Fin n) (Os s)` to `fun a c => if a < c then g (u.val a c) else if a = c then 1 else 0`. Establish `hlow : ∀ a c : Fin n, c < a → M a c = 0`. Introduce `a c hca`. Simplify using `[M, not_lt.2 hca.le, hca.ne']`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdiag : ∀ a, M a a = 1`. Introduce `a`. Simplify using `[M]`. Establish `hdet : M.det = 1` using `det_upperUnitri M hlow hdiag`. Set `yu : GL (Fin n) (Os s)` to `Matrix.nonsingInvUnit M (by rw [hdet]; exact isUnit_one)`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hyu : Matrix.GeneralLinearGroup.map φ yu = u`. Use extensionality with `a c`. Use `show φ (M a c) = u.val a c`. Break down `lt_trichotomy a c with hac | hac | hac` into its components or cases. Simplify using `[M, hac, hg]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Substitute `hac` using the available equality. Simplify using `[M, hu2 a]`. Rewrite using `[hlow a c hac, map_zero, hu1 (show (c : ℕ) < a from hac)]`. Take `⟨κu, hκu, hcu⟩` from `exists_lift s yu`. Establish `hUu : NG.UniRT s r (Matrix.GeneralLinearGroup.map (incl s) yu)` using `uniRT_of s r yu (fun a c _ hca => hlow a c hca) (fun a _ => hdiag a)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hJu, -⟩` from `hJact κu yu hκu hcu hUu`. Take `⟨κh, yh, hκh, hch, eh⟩` from `lift h`. Rewrite using `[← hyu, ← eh, ← map_inv, ← map_mul, ← map_mul]`. Use `hmem (κu * κh * κu⁻¹) (yu * yh * yu⁻¹) (GlobalTheory.HeckeStdFacts.triv_mul (GlobalTheory.HeckeStdFacts.triv_mul hκu hκh) (GlobalTheory.HeckeStdFacts.triv_inv hκu)) (isCompOf_mul (isCompOf_mul hcu hch) (isCompOf_inv hcu)) ?_` and prove the remaining obligations. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : f (x * κu * κh * κu⁻¹) = (((χ ⟨κu, hJu⟩)⁻¹ : ℂˣ) : ℂ) • f (x * κu * κh)`. Rewrite using `[← map_inv]`. Conclude with `hfJ ⟨κu, hJu⟩⁻¹ (x * κu * κh)`. Establish `h2 : f (x * κu) = ((χ ⟨κu, hJu⟩ : ℂˣ) : ℂ) • f x` using `hfJ ⟨κu, hJu⟩ x`. Establish `h3 : f (x * κu * κh) = f (x * κu)` using `hh κh yh hκh hch eh (x * κu)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show x * (κu * κh * κu⁻¹) = x * κu * κh * κu⁻¹ by simp only [mul_assoc], h1, h3, h2, smul_smul, Units.inv_mul, one_smul]`. Establish `hcol : ∀ (h : GL (Fin n) k) (m : Fin n) (v : Fin n → k), r ≤ (m : ℕ) → v m = 0 → h.val = colMat v m → h ∈ H`. Introduce `h m v hm hv e`. Use `choose g hg using hφ.surj`. Set `w : Fin n → Os s` to `fun a => if a = m then 0 else g (v a)`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hwm : w m = 0` using `by simp [w]`. Set `M : Matrix (Fin n) (Fin n) (Os s)` to `1 + Matrix.vecMulVec w (Pi.single m 1)`. Establish `hMe : ∀ a c, M a c = (1 : Matrix (Fin n) (Fin n) (Os s)) a c + if c = m then w a else 0`. Introduce `a c`. Simplify using `[M, Matrix.vecMulVec_apply, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `y : GL (Fin n) (Os s)` to `Matrix.nonsingInvUnit M (by rw [det_one_add_vecMulVec_single w m hwm]; exact isUnit_one)`. Establish `hy : Matrix.GeneralLinearGroup.map φ y = h`. Use extensionality with `a c`. Use `show φ (M a c) = h.val a c`. Rewrite using `[hMe, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [colMat, Matrix.add_apply, Matrix.vecMulVec_apply, Pi.single_apply]`. Apply the tactic sequence `by_cases hc : c = m <;> by_cases ha : a = m <;> simp [hc, ha, w, hg, hv, Matrix.one_apply]`. Take `⟨κ, hκ, hcκ⟩` from `exists_lift s y`. Establish `hU : NG.UniRT s r (Matrix.GeneralLinearGroup.map (incl s) y)`. Use `uniRT_of s r y (fun a c hc hca => ?_) (fun a ha => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h1 : c ≠ m` using `fun h => by subst h; omega`. Establish `h2 : a ≠ c` using `fun h => by subst h; omega`. Use `show M a c = 0`. Rewrite using `[hMe]`. Simplify using `[Matrix.one_apply, h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : a ≠ m` using `fun h => by subst h; omega show M a a = 1`. Rewrite using `[hMe]`. Simplify using `[h1]`. Take `⟨hJκ, hχ⟩` from `hJact κ y hκ hcκ hU`. Establish `hsup : NG.supDiag s r (Matrix.GeneralLinearGroup.map (incl s) y) = 0`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `NG.supDiag`. Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Use `split_ifs with hac`. Establish `h1 : c ≠ m` using `fun h => by subst h; omega`. Establish `h2 : a ≠ c` using `fun h => by subst h; omega`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_incl_apply]`. Use `show ((M a c : Os s) : s.v.adicCompletion (maximalRealSubfield L)) = 0`. Rewrite using `[hMe]`. Simplify using `[Matrix.one_apply, h1, h2]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hdd : NG.detDD s r (Matrix.GeneralLinearGroup.map (incl s) y) = 1`. Rewrite using `[detDD_map]`. Establish `hb' : (Matrix.of fun a b : {x : Fin n // r ≤ x.val} => y.val a.1 b.1) = 1 + Matrix.vecMulVec (fun a : {x : Fin n // r ≤ x.val} => w a.1) (Pi.single ⟨m, hm⟩ 1)`. Use `Matrix.ext fun a c => ?_` and prove the remaining obligations. Use `show M a.1 c.1 = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hMe]`. Simplify using `[Matrix.one_apply, Matrix.vecMulVec_apply, Pi.single_apply, Subtype.ext_iff]`. Rewrite using `[hb', det_one_add_vecMulVec_single (fun a : {x : Fin n // r ≤ x.val} => w a.1) ⟨m, hm⟩ hwm, map_one]`. Rewrite using `[← hy]`. Use `hmem κ y hκ hcκ fun x => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hfJ ⟨κ, hJκ⟩ x, hχ 1 (by rw [hdd]; rfl), hsup, AddChar.map_zero_eq_one, map_one, Units.val_one, one_mul, one_smul]`. Establish `hroot : ∀ i j : Fin n, (i : ℕ) + 1 = j → (j : ℕ) < r → ∃ (c : k) (h : GL (Fin n) k), h.val = Matrix.transvection i j c ∧ h ∉ H`. Introduce `i j hij hjr`. Take `⟨x0, hx0, hψx⟩` from `hψ.2`. Set `x' : Os s` to `⟨x0, hx0⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : i ≠ j` using `fun h => by subst h; omega`. Set `y : GL (Fin n) (Os s)` to `Matrix.nonsingInvUnit (Matrix.transvection i j x') (by rw [Matrix.det_transvection_of_ne _ _ hne]; exact isUnit_one)`. Establish `hent : ∀ a c, y.val a c = (1 : Matrix (Fin n) (Fin n) (Os s)) a c + if a = i ∧ c = j then x' else 0`. Introduce `a c`. Conclude with `transvection_apply' i j a c x'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨φ x', Matrix.GeneralLinearGroup.map φ y, ?_, ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun a c => ?_ show φ (y.val a c) = _` and prove the remaining obligations. Rewrite using `[hent]`. Apply the tactic sequence `exact map_transvection_entry φ i j a c x'`. Introduce `hmemH`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hκ, hcκ⟩` from `exists_lift s y`. Establish `hU : NG.UniRT s r (Matrix.GeneralLinearGroup.map (incl s) y)`. Use `uniRT_of s r y (fun a c hc hca => ?_) (fun a ha => ?_)` and prove the remaining obligations. Establish `h2 : a ≠ c` using `fun h => by subst h; omega`. Establish `h3 : ¬ (a = i ∧ c = j)` using `fun h => by obtain ⟨rfl, rfl⟩ := h; omega`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[hent]`. Simplify using `[Matrix.one_apply, h2, h3]`. Establish `h3 : ¬ (a = i ∧ a = j)` using `fun h => hne (h.1.symm.trans h.2)`. Rewrite using `[hent]`. Simplify using `[h3]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨hJκ, hχ⟩` from `hJact κ y hκ hcκ hU`. Establish `hterm : ∀ a c : Fin n, (if (a : ℕ) + 1 = c ∧ (c : ℕ) < r then (Matrix.GeneralLinearGroup.map (incl s) y).val a c else 0) = if a = i ∧ c = j then x0 else 0`. Introduce `a c`. Rewrite using `[map_incl_apply, hent]`. Distinguish the cases in `h1 : a = i ∧ c = j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨rfl, rfl⟩` from `h1`. Simplify using `[hij, hjr, Matrix.one_apply, hne, x']`. Rewrite using `[if_neg h1] split_ifs with h4`. Establish `h2 : a ≠ c` using `fun h => by subst h; omega`. Simplify using `[Matrix.one_apply, h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `hsup : NG.supDiag s r (Matrix.GeneralLinearGroup.map (incl s) y) = x0`. Unfold `NG.supDiag`. Simplify using `only [hterm]`. Rewrite using `[Finset.sum_eq_single i (fun a _ ha => by simp [ha]) (by simp)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Establish `hdd : NG.detDD s r (Matrix.GeneralLinearGroup.map (incl s) y) = 1`. Rewrite using `[detDD_map]`. Establish `hb' : (Matrix.of fun a b : {x : Fin n // r ≤ x.val} => y.val a.1 b.1) = 1`. Use `Matrix.ext fun a c => ?_` and prove the remaining obligations.
-
-Establish `h3 : ¬ (a.1 = i ∧ c.1 = j)` using `fun h => by have := a.2; rw [h.1] at this; omega`. Use `show y.val a.1 c.1 = _`. Rewrite using `[hent]`. Simplify using `[Matrix.one_apply, h3, Subtype.ext_iff]`. Rewrite using `[hb', Matrix.det_one, map_one]`.
-
-Establish `key : ∀ z, f z = ψ₀ x0 • f z`. Introduce `z`. Establish `h1` using `hmemH κ y hκ hcκ rfl z`. Establish `h2` using `hfJ ⟨κ, hJκ⟩ z`. Rewrite `h2` using `[hχ 1 (by rw [hdd]; rfl), hsup, map_one, Units.val_one, mul_one]`.
-
-Rewrite using `[← h2]`. Conclude with `h1.symm`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z, f z ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
-
-Conclude with `hf (funext hcon)`. Establish `h0 : (ψ₀ x0 - 1) • f z = 0` using `by rw [sub_smul, one_smul, ← key, sub_self]`. Break down `smul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `hψx (sub_eq_zero.1 h)`. Conclude with `hz h`.
-
-Conclude with `GlobalTheory.T.normalised_subgroup_column_matrices_entry_zero k hk n r hr hrn H b hnorm hcol (fun h m v hm hv e κ y hκ hy ey x => hb κ y hκ hy m v hm hv (by rw [ey]; exact e) x) hroot`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem para_of_colMat_fixed : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n r : ℕ) (s : ReciprocityTheory.Aut.SplitPlace L) (k : Type) [CommRing k] (φ : Os s →+* k), IsField k → IsResidue s φ → 2 ≤ r → r < n → ∀ (W : Type) [AddCommGroup W] [Module ℂ W] (f : Formalism.AUTREP.GAf L n → W), f ≠ 0 → ∀ (J : Subgroup (Formalism.AUTREP.GAf L n)) (χ : J →* ℂˣ) (ψ₀ : AddChar (s.v.adicCompletion (maximalRealSubfield L)) ℂ) (ξ : (s.v.adicCompletion (maximalRealSubfield L))ˣ →* ℂˣ), NG.IsPsi0 s ψ₀ → NG.LevelUni J χ s r ψ₀ ξ → (∀ (κ : J) (x : Formalism.AUTREP.GAf L n), f (x * κ) = ((χ κ : ℂˣ) : ℂ) • f x) → ∀ b : GL (Fin n) k, (∀ (κ : Formalism.AUTREP.GAf L n) (y : GL (Fin n) (Os s)), ReciprocityTheory.Aut.TrivOutside {s.v} κ → IsCompOf s κ y → ∀ (m : Fin n) (v : Fin n → k), r ≤ (m : ℕ) → v m = 0 → (b * Matrix.GeneralLinearGroup.map φ y * b⁻¹).val = colMat v m → ∀ x, f (x * κ) = f x) → ∀ a c : Fin n, r ≤ (a : ℕ) → (c : ℕ) < r → b.val a c = 0 := by
   intro L _ _ _ n r s k _ φ hk hφ hr hrn W _ _ f hf J χ ψ₀ ξ hψ hJ hfJ b hb

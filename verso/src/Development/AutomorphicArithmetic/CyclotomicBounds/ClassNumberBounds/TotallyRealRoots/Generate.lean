@@ -6,9 +6,9 @@ namespace KStar.TotallyRealRoots
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `htz : PadicInt.toZMod t ≠ 0` using `(ht.map PadicInt.toZMod).ne_zero`. Use `⟨(-(PadicInt.toZMod d) * (PadicInt.toZMod t)⁻¹ : ZMod l).val, ?_⟩` and prove the remaining obligations. Establish `hm : d + t * ((-(PadicInt.toZMod d) * (PadicInt.toZMod t)⁻¹ : ZMod l).val : ℤ_[l]) ∈ RingHom.ker (PadicInt.toZMod : ℤ_[l] →+* ZMod l)`. Rewrite using `[RingHom.mem_ker, map_add, map_mul, map_natCast, ZMod.natCast_zmod_val]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hm` using `[PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`. Conclude with `hm`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gen_exists_nat {t : ℤ_[l]} (ht : IsUnit t) (d : ℤ_[l]) :
     ∃ j : ℕ, (l : ℤ_[l]) ∣ d + t * j := by
@@ -23,11 +23,11 @@ private theorem gen_exists_nat {t : ℤ_[l]} (ht : IsUnit t) (d : ℤ_[l]) :
   exact hm
 
 /- English proof (translation)
-Establish `hlp : Prime l` using `Nat.prime_iff.mp Fact.out`. Establish `h1 : (l : ℤ_[l]) ∣ u - 1`. Use `pow_dvd_of_le_emultiplicity (k := 1) (a := (l : ℤ_[l])) (b := u - 1) (by rw [hu]; exact_mod_cast ha)` as an intermediate fact. Simplify using `using this`. Distinguish the cases in `hl : l = 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Establish `h2 : (l : ℤ_[l]) ^ 2 ∣ u - 1` using `pow_dvd_of_le_emultiplicity (by rw [hu]; exact_mod_cast ha2 hl)`. Rewrite using `[emultiplicity_pow_sub_one_sq h2, hu, emultiplicity_pow_self_of_prime hlp]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[emultiplicity_pow_sub_one_odd hl h1, hu, emultiplicity_pow_self_of_prime hlp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 private theorem gen_emult {a : ℕ} (ha : 1 ≤ a) (ha2 : l = 2 → 2 ≤ a) {u : ℤ_[l]}
     (hu : emultiplicity (l : ℤ_[l]) (u - 1) = a) (n : ℕ) :
@@ -48,7 +48,7 @@ private theorem gen_emult {a : ℕ} (ha : 1 ≤ a) (ha2 : l = 2 → 2 ≤ a) {u 
     rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hm : t ∈ IsLocalRing.maximalIdeal ℤ_[l]` using `hne`. Rewrite `hm` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`. Conclude with `h hm`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isUnit_padicInt_of_not_dvd {t : ℤ_[l]} (h : ¬ (l : ℤ_[l]) ∣ t) : IsUnit t := by
   by_contra hne
@@ -57,9 +57,9 @@ private theorem isUnit_padicInt_of_not_dvd {t : ℤ_[l]} (h : ¬ (l : ℤ_[l]) �
   exact h hm
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ j ih`. Take `⟨c, hc⟩` from `ih`. Use `⟨j + v * c, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Rewrite using `[pow_succ, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem exists_pow_eq_one_add_mul_sub_add_sq (v : ℤ_[l]) (j : ℕ) :
     ∃ c : ℤ_[l], v ^ j = 1 + (j : ℤ_[l]) * (v - 1) + (v - 1) ^ 2 * c := by
@@ -73,17 +73,17 @@ private theorem exists_pow_eq_one_add_mul_sub_add_sq (v : ℤ_[l]) (j : ℕ) :
     ring
 
 /- English proof (translation)
-Take `⟨a', rfl⟩ : ∃ a', a = a' + 1` from `⟨a - 1, by omega⟩`. Proceed by induction on `n with`. Consider the case `zero`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, add_zero]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: (1 : ℤ_[l]) - x = -(x - 1)` using `by ring`. Rewrite using `[this]`. Conclude with `(dvd_neg).mpr hx`. Consider the case `succ n ih`. Take `⟨k, hk⟩` from `ih`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `hk`. Use `set v := u ^ l ^ n with hvdef`. Establish `hv` using `gen_emult ha ha2 hu n`. Establish `hvd : (l : ℤ_[l]) ^ (a' + 1 + n) ∣ v - 1` using `pow_dvd_of_le_emultiplicity (le_of_eq hv.symm)`. Take `⟨t, ht⟩` from `hvd`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `htu : IsUnit t`. Apply `isUnit_padicInt_of_not_dvd` to reduce the goal to its premises. Introduce and unpack `⟨s, hs⟩`. Establish `hdv : (l : ℤ_[l]) ^ (a' + 1 + n + 1) ∣ v - 1` using `⟨s, by rw [ht, hs]; ring⟩`. Use `le_emultiplicity_of_pow_dvd hdv` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Rewrite `this` using `[hv]`. Normalize the coercions in `at this`. Use linear arithmetic over natural numbers and integers. Take `⟨j, e, he⟩` from `gen_exists_nat ((hunit.pow k).mul htu) d`. Take `⟨c, hc⟩` from `exists_pow_eq_one_add_mul_sub_add_sq v j`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨k + l ^ n * j, e + (l : ℤ_[l]) ^ (a' + n) * u ^ k * t ^ 2 * c, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, pow_mul, ← hvdef]`. Take the linear combination `u ^ k * hc + hd + ((u ^ k) * j + u ^ k * c * (v - 1 + (l : ℤ_[l]) ^ (a' + 1 + n) * t)) * ht + (l : ℤ_[l]) ^ (a' + 1 + n) * he`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem gen_dvd {a : ℕ} (ha : 1 ≤ a) (ha2 : l = 2 → 2 ≤ a) {u : ℤ_[l]} (hunit : IsUnit u)
     (hu : emultiplicity (l : ℤ_[l]) (u - 1) = a) {x : ℤ_[l]} (hx : (l : ℤ_[l]) ^ a ∣ x - 1)
@@ -120,9 +120,9 @@ private theorem gen_dvd {a : ℕ} (ha : 1 ≤ a) (ha2 : l = 2 → 2 ≤ a) {u : 
       (v - 1 + (l : ℤ_[l]) ^ (a' + 1 + n) * t)) * ht + (l : ℤ_[l]) ^ (a' + 1 + n) * he
 
 /- English proof (translation)
-Rewrite `hx` using `[mem_princ]`. Take `⟨k, hk⟩` from `gen_dvd ha ha2 u.isUnit hu hx b`. Use `⟨k, Units.ext ?_⟩` and prove the remaining obligations. Establish `hkb : (l : ℤ_[l]) ^ b ∣ (u : ℤ_[l]) ^ k - x` using `(pow_dvd_pow _ (Nat.le_add_left b a)).trans hk`. Establish `hm : (u : ℤ_[l]) ^ k - x ∈ RingHom.ker (PadicInt.toZModPow b : ℤ_[l] →+* ZMod (l ^ b))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[PadicInt.ker_toZModPow, Ideal.mem_span_singleton]`. Conclude with `hkb`. Rewrite `hm` using `[RingHom.mem_ker, map_sub, sub_eq_zero]`. Simplify `hm` using `[redPow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_pow_redPow_eq {a : ℕ} (ha : 1 ≤ a) (ha2 : l = 2 → 2 ≤ a) {u : ℤ_[l]ˣ}
     (hu : emultiplicity (l : ℤ_[l]) ((u : ℤ_[l]) - 1) = a) {x : ℤ_[l]ˣ} (hx : x ∈ princ l a) (b : ℕ) :
@@ -139,7 +139,7 @@ theorem exists_pow_redPow_eq {a : ℕ} (ha : 1 ≤ a) (ha2 : l = 2 → 2 ≤ a) 
   simpa [redPow] using hm
 
 /- English proof (translation)
-Introduce `x hx`. Use `mem_of_isClosed hU fun b => ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_pow_redPow_eq ha ha2 hu hx b`. Conclude with `⟨u ^ k, U.pow_mem huU k, hk⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem princ_le_of_isClosed {a : ℕ} (ha : 1 ≤ a) (ha2 : l = 2 → 2 ≤ a) {U : Subgroup ℤ_[l]ˣ}
     (hU : IsClosed (U : Set ℤ_[l]ˣ)) {u : ℤ_[l]ˣ} (huU : u ∈ U)

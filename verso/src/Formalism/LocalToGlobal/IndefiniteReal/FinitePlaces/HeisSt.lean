@@ -15,9 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hc : ∀ k, fstA D.host.F (Formalism.IndefR.PHeisFC.cE D.host.F D.host.E z k) = 0` using `fun k => by show (Formalism.IndefR.PHeisFC.cE D.host.F D.host.E z k).1 = 0`. Rewrite using `[← Formalism.IndefR.PHeisTh.repr_fst]`. Establish `: Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) z = 0` using `hz`. Rewrite using `[this, map_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← (Formalism.IndefR.PHeisFC.bA D.host.F D.host.E).sum_repr z, map_sum, map_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, map_mul]`. Establish `: (Formalism.IndefR.PHeisFC.bA D.host.F D.host.E).repr z k = Formalism.IndefR.PHeisFC.cE D.host.F D.host.E z k` using `rfl`. Rewrite using `[this, hc, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_fst_eq_zero (z : AE D) (hz : infPart D z = 0) :
     fstA D.host.F (Algebra.trace (AF D.host.F) (AE D) z) = 0 := by
@@ -33,9 +33,9 @@ theorem trace_fst_eq_zero (z : AE D) (hz : infPart D z = 0) :
   rw [this, hc, zero_mul]
 
 /- English proof (translation)
-Establish `hc : ∀ k, sndA D.host.F (Formalism.IndefR.PHeisFC.cE D.host.F D.host.E z k) = 0` using `fun k => by show (Formalism.IndefR.PHeisFC.cE D.host.F D.host.E z k).2 = 0`. Rewrite using `[← Formalism.IndefR.PHeisTh.repr_snd]`. Establish `: Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E) z = 0` using `hz`. Rewrite using `[this, map_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← (Formalism.IndefR.PHeisFC.bA D.host.F D.host.E).sum_repr z, map_sum, map_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, map_mul]`. Establish `: (Formalism.IndefR.PHeisFC.bA D.host.F D.host.E).repr z k = Formalism.IndefR.PHeisFC.cE D.host.F D.host.E z k` using `rfl`. Rewrite using `[this, hc, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_snd_eq_zero (z : AE D) (hz : finPart D z = 0) :
     sndA D.host.F (Algebra.trace (AF D.host.F) (AE D) z) = 0 := by
@@ -54,7 +54,7 @@ variable (S T : HSp D)
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Establish `h0 : ∀ d a, infPart D (u d a) = 0` using `fun d a => congrFun (congrFun hu d) a`. Unfold `hO`. Simplify using `only [map_sum (infPart D), map_mul (infPart D), h0, mul_zero, Finset.sum_const_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem infPart_hO (u w : MO S T) (hu : u.map (infPart D) = 0) : infPart D (hO S T u w) = 0 := by
   have h0 : ∀ d a, infPart D (u d a) = 0 := fun d a => congrFun (congrFun hu d) a
@@ -63,7 +63,7 @@ theorem infPart_hO (u w : MO S T) (hu : u.map (infPart D) = 0) : infPart D (hO S
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Establish `h0 : ∀ d a, finPart D (u d a) = 0` using `fun d a => congrFun (congrFun hu d) a`. Unfold `hO`. Simplify using `only [map_sum (finPart D), map_mul (finPart D), h0, mul_zero, Finset.sum_const_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem finPart_hO (u w : MO S T) (hu : u.map (finPart D) = 0) : finPart D (hO S T u w) = 0 := by
   have h0 : ∀ d a, finPart D (u d a) = 0 := fun d a => congrFun (congrFun hu d) a
@@ -72,7 +72,7 @@ theorem finPart_hO (u w : MO S T) (hu : u.map (finPart D) = 0) : finPart D (hO S
 
 set_option synthInstance.maxHeartbeats 200000 in
 /- English proof (translation)
-Unfold `symplO`. Use `trace_fst_eq_zero _ ?_` and prove the remaining obligations. Rewrite using `[map_mul (infPart D), infPart_hO S T u w hu, mul_zero]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_fst_eq_zero (u w : MO S T) (hu : u.map (infPart D) = 0) : fstA D.host.F (symplO S T u w) = 0 := by
   unfold symplO
@@ -81,7 +81,7 @@ theorem symplO_fst_eq_zero (u w : MO S T) (hu : u.map (infPart D) = 0) : fstA D.
 
 set_option synthInstance.maxHeartbeats 200000 in
 /- English proof (translation)
-Unfold `symplO`. Use `trace_snd_eq_zero _ ?_` and prove the remaining obligations. Rewrite using `[map_mul (finPart D), finPart_hO S T u w hu, mul_zero]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_snd_eq_zero (u w : MO S T) (hu : u.map (finPart D) = 0) : sndA D.host.F (symplO S T u w) = 0 := by
   unfold symplO
@@ -89,7 +89,7 @@ theorem symplO_snd_eq_zero (u w : MO S T) (hu : u.map (finPart D) = 0) : sndA D.
   rw [map_mul (finPart D), finPart_hO S T u w hu, mul_zero]
 
 /- English proof (translation)
-Unfold `symplOH`. Rewrite using `[map_mul, symplO_snd_eq_zero S T u w hu, mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_snd_eq_zero (u w : MO S T) (hu : u.map (finPart D) = 0) : sndA D.host.F (symplOH S T u w) = 0 := by
   unfold symplOH
@@ -101,23 +101,21 @@ def sndSympl (w : MO S T) : MO S T →+ Af D.host.F where
   map_add' u u' := by rw [symplO_add_left, map_add]
 
 /- English proof (translation)
-Introduce `ψ hψ S T w f hf`. Take `⟨G, hGo, -, hG⟩` from `Formalism.IndefR.PHeisTh.psiOpen D.host.F ψ hψ.1`. Take `⟨U, hUo, hU⟩` from `hf.level`. Set `H : AddSubgroup (WO S T)` to `AddSubgroup.comap (sndSympl S T w) G`. Establish `hHo : IsOpen (H : Set (WO S T))` using `hGo.preimage (continuous_snd.comp (cont_symplO_left S T w))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨fun γ z => ?_, ⟨U ⊓ H, ?_, fun u hu h0 => ?_⟩, cont_heis S T hψ hf w, fun k L hL hL0 x => ?_⟩` and prove the remaining obligations. Unfold `heisO`. Rewrite using `[show ratW T S γ + z + w = ratW T S γ + (z + w) by abel, hf.quasi γ (z + w), ← mul_assoc, ← AddChar.map_add_eq_mul, ← mul_assoc, ← AddChar.map_add_eq_mul]`. Establish `key : symplOH S T (ratW T S γ + z) w + -symplOH S T (ratW T S γ) (z + w) = -symplOH S T (ratW T S γ) z + symplOH S T z w`. Rewrite using `[symplOH_add_left, symplOH_add_right]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Rewrite using `[AddSubgroup.coe_inf]`. Conclude with `hUo.inter hHo`. Establish `hfu` using `hU u hu.1 h0`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ψ (symplO S T u w) = 1`. Establish `e : symplO S T u w = pairA D.host.F 0 (sndA D.host.F (symplO S T u w))`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Conclude with `symplO_fst_eq_zero S T u w h0`. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `hG _ hu.2`. Use function extensionality and compare the values at `z`. Establish `k1` using `congrFun hfu (z + w)`. Unfold `heisO at k1 ⊢`. Establish `hfz : f (z + w + u) = ψ (-(symplOH S T (z + w) u)) * f (z + w)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddChar.map_neg_eq_inv, ← k1]`. Clear denominators, using `[psi_ne hψ]` for the nonvanishing conditions. Rewrite using `[show z + u + w = z + w + u by abel, hfz, ← mul_assoc, ← mul_assoc, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`. Establish `key : symplOH S T z u + symplOH S T (z + u) w + -symplOH S T (z + w) u = symplOH S T z w + symplO S T u w`. Rewrite using `[symplOH_add_left, symplOH_add_left, symplOH_swap S T u w, ← symplOH_two]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, AddChar.map_add_eq_mul, hc, mul_one]`. Set `s : (Fin k → ℝ) →+ Ainf D.host.F` to `{ toFun := fun t => fstA D.host.F (symplOH S T (L t) w) map_zero' := by simp only [map_zero]; unfold symplOH; rw [symplO_zero_left, mul_zero, map_zero] map_add' := fun t t' => by simp only [map_add]; rw [symplOH_add_left, map_add] }`. Establish `hs : Continuous s` using `continuous_fst.comp ((cont_symplOH_left S T w).comp hL)`. Establish `e : (fun t => heisO ψ S T w f (x + L t)) = fun t => ψ (symplOH S T x w) * ψ (pairA D.host.F (s t) 0) * f (x + w + L t)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Unfold `heisO`. Establish `ep : symplOH S T (L t) w = pairA D.host.F (s t) 0` using `Prod.ext rfl (symplOH_snd_eq_zero S T (L t) w (hL0 t))`. Rewrite using `[symplOH_add_left, AddChar.map_add_eq_mul, ep, show x + L t + w = x + w + L t by abel]`. Rewrite using `[e]`.
-
-Conclude with `(contDiff_const.mul (Formalism.IndefR.PHeisTh.psiSmooth D ψ hψ k s hs)).mul (hf.smooth k L hL hL0 (x + w))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heisStable : HeisStable D := by
   intro ψ hψ S T w f hf
@@ -171,13 +169,13 @@ theorem heisStable : HeisStable D := by
     exact (contDiff_const.mul (Formalism.IndefR.PHeisTh.psiSmooth D ψ hψ k s hs)).mul (hf.smooth k L hL hL0 (x + w))
 
 /- English proof (translation)
-The claim follows from `svnSchurO_all_of hK h`.
+A detailed English derivation is pending.
 -/
 theorem svnSchurO_all_of_heis (hK : KernelId D) (h : HeisStable D) : SvNSchurOAll D :=
   svnSchurO_all_of hK h
 
 /- English proof (translation)
-The claim follows from `svnSchurO_all_of_heis (kernelId_of hC) heisStable`.
+A detailed English derivation is pending.
 -/
 theorem svnSchurO_all_of_char (hC : CharComplete D) : SvNSchurOAll D :=
   svnSchurO_all_of_heis (kernelId_of hC) heisStable

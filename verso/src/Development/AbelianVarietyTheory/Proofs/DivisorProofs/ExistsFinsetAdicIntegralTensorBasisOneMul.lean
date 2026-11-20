@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.AdicSpan
 
 /- English proof (translation)
-The claim follows from `isIntB_one_mul_eventually`.
+A detailed English derivation is pending.
 -/
 theorem isIntB_one_mul_cofinite : ∀ (C : Type) [Ring C] [Algebra ℚ C] [FiniteDimensional ℚ C] (κ : Type) (b : Module.Basis κ ℚ C),
     ∃ S : Finset (HeightOneSpectrum ℤ), ∀ v ∉ S,

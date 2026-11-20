@@ -29,11 +29,11 @@ open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.Invariant
 section SlopeTestRemainingChoices
 
 /- English proof (translation)
-Establish `hp' : MeasurePreserving θ.e.symm μ μ` using `θ.pres.symm θ.e.toHomeomorph.toMeasurableEquiv`. Establish `hg' : ∀ g, θ.e.symm g ∈ Gam K n ↔ g ∈ Gam K n` using `fun g => by`. Rewrite using `[← θ.mem_gam, θ.e.apply_symm_apply]`. Take `⟨h2, q2⟩` from `UpperTheory.ConvolutionTheory.K.qmapPres (Gam K n) μ θ.e.symm hg' hp'`. Establish `hs : ∀ g, θ.e.symm (θ.e.symm g) = g` using `fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `h (θ.e.symm (θ.e.symm g))` as an intermediate fact. Rewrite `this` using `[θ.e.apply_symm_apply, θ.e.apply_symm_apply]`. Conclude with `this.symm`. Use `Lp.ext ?_` and prove the remaining obligations. Use `filter_upwards [θ.U_spec (θ.U v), q2.quasiMeasurePreserving.ae_eq_comp (θ.U_spec v)] with y a b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp_apply] at b`. Rewrite using `[a, b, h2, hs]`. Use `congr 1`. Conclude with `Quotient.out_eq y`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem U_invol {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Measure (G1 K n)} [μ.IsHaarMeasure] (θ : Twist μ)
     (h : ∀ g, θ.e (θ.e g) = g) (v : L2 μ) : θ.U (θ.U v) = v := by
@@ -53,16 +53,16 @@ private theorem U_invol {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Mea
   exact Quotient.out_eq y
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.le, h.closed, h.ne_bot, fun g v hv => h.inv g v hv, fun ρ a b c => h.irred ρ a b c⟩`.
+Supply the required witnesses or components.
 -/
 private theorem irr_of {K : Type} [Field K] [NumberField K] {n : ℕ} {μ : Measure (G1 K n)} [μ.IsHaarMeasure]
     {V : Submodule ℂ (L2 μ)} (h : IsSummand μ V) : CuspIrr μ V :=
   ⟨h.le, h.closed, h.ne_bot, fun g v hv => h.inv g v hv, fun ρ a b c => h.irred ρ a b c⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨w, hl⟩`. Take `rfl : v = w.under (𝓞 K)` from `HeightOneSpectrum.ext hl.over`. Use `w.isMaximal` as an intermediate fact. Use `(w.under (𝓞 K)).isMaximal` as an intermediate fact. Establish `hs : Function.Surjective (completionMap (w.under (𝓞 K)) w)` using `h ⟨w, hl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : w.asIdeal.ramificationIdx (𝓞 K) * w.asIdeal.inertiaDeg (𝓞 K) = 1`. Rewrite using `[← finrank_eq_ramificationIdx_mul_inertiaDeg M (w.under (𝓞 K)) w]`. Establish `hb : Function.Bijective (Algebra.linearMap ((w.under (𝓞 K)).adicCompletion K) (w.adicCompletion M))` using `⟨(completionMap (w.under (𝓞 K)) w).injective, hs⟩`. Rewrite using `[← (LinearEquiv.ofBijective _ hb).finrank_eq, Module.finrank_self]`. Conclude with `Algebra.isUnramifiedAt_iff_of_isDedekindDomain.2 (Nat.eq_one_of_mul_eq_one_right h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unr_of_split {K M : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M]
     (v : Pl K) (h : GM.Split M v) : GM.Unr M v := by
@@ -79,9 +79,9 @@ private theorem unr_of_split {K M : Type} [Field K] [NumberField K] [Field M] [N
   exact Algebra.isUnramifiedAt_iff_of_isDedekindDomain.2 (Nat.eq_one_of_mul_eq_one_right h1)
 
 /- English proof (translation)
-Rewrite using `[Dp.sSatIff M n μ π V h w]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun hB => ⟨B, rfl, hB⟩`. Introduce and unpack `⟨B', e, hB⟩`. Rewrite using `[Multiset.map_injective Units.val_injective e]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hB`.
+A detailed English derivation is pending.
 -/
 private theorem sat_iff {M : Type} [Field M] [NumberField M] [IsTotallyComplex M] {n : ℕ} {μ : Measure (G1 M n)} [μ.IsHaarMeasure]
     {π : CuspSub M n} {V : Submodule ℂ (L2 μ)} (h : Dp.Carries μ π V) (w : Pl M) (B : Multiset ℂˣ) :
@@ -94,7 +94,7 @@ private theorem sat_iff {M : Type} [Field M] [NumberField M] [IsTotallyComplex M
     exact hB
 
 /- English proof (translation)
-Use `choose m hm using fun τ => ((Dp.parEx E n hn μ V hV).1 τ).exists`. Use `⟨m, fun w => if hw : ∃ B, SSat μ V w B then hw.choose else 0, hm, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hx` using `h w hw`. Simplify using `only [dif_pos hx]`. Conclude with `hx.choose_spec`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exAt {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ} (hn : 0 < n) {μ : Measure (G1 E n)}
     [μ.IsHaarMeasure] {V : Submodule ℂ (L2 μ)} (hV : IsSummand μ V) (S : Set (Pl E)) (h : ∀ w ∉ S, ∃ B, SSat μ V w B) :
@@ -106,7 +106,7 @@ private theorem exAt {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {
   exact hx.choose_spec
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qe21.emb_two h2 σ hσ τ τ' hne he`.
+A detailed English derivation is pending.
 -/
 private theorem emb_two {K M : Type} [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M] [IsGalois K M]
     (h2 : Module.finrank K M = 2) (σ : M ≃ₐ[K] M) (hσ : σ ≠ 1) (τ τ' : M →+* ℂ) (hne : τ ≠ τ')
@@ -116,45 +116,39 @@ private theorem emb_two {K M : Type} [Field K] [NumberField K] [Field M] [Number
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `hC K M _ _ _ _ _ _ _ _ h2 π hn hc hb`. Establish `hp : (Module.finrank K M).Prime` using `h2 ▸ Nat.prime_two`. Establish `hcard : Nat.card (M ≃ₐ[K] M) = 2` using `by rw [IsGalois.card_aut_eq_finrank, h2]`. Use `haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩`. Use `haveI : Nontrivial (M ≃ₐ[K] M) := Finite.one_lt_card_iff_nontrivial.1 (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨σ, hσ⟩` from `exists_ne (1 : M ≃ₐ[K] M)`. Establish `hgen : ∀ τ : M ≃ₐ[K] M, τ ∈ Subgroup.zpowers σ` using `fun τ => mem_zpowers_of_prime_card hcard hσ`. Take `⟨-, hAtE, -, -, -, θ, hθ, hst⟩` from `UpperTheory.ConvolutionTheory.T.carryLift K M σ hgen hp 2 two_pos (BW.mu1 M 2) (BW.mu1 K 2)`. Establish `hG` using `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.galLoc K M σ h2 hgen 2 two_pos (BW.mu1 M 2) θ`. Establish `hIsGal` using `hG.1.1 hθ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hinv, -, hspl⟩` from `hG.2 hθ`. Take `⟨τ₁, hτ₁⟩ : ∃ V, Dp.Carries (BW.mu1 M 2) π V` from `⟨_, (Dp.exSummand M 2 _ π _).2 ⟨(Dp.normIff M 2 π).1 hn, rfl⟩⟩`. Establish `hs₁` using `hτ₁.summand`. Take `⟨τ₂, hτ₂d⟩ : ∃ τ₂, τ₁.map (θ.U : L2 (BW.mu1 M 2) →ₗ[ℂ] L2 (BW.mu1 M 2)) = τ₂` from `⟨_, rfl⟩`. Establish `hs₂ : IsSummand (BW.mu1 M 2) τ₂` using `hτ₂d ▸ (Dp.twSummand M 2 _ θ τ₁).1 hs₁`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hback : τ₂.map (θ.U : L2 (BW.mu1 M 2) →ₗ[ℂ] L2 (BW.mu1 M 2)) = τ₁`. Rewrite using `[← hτ₂d]`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨u, hu, rfl⟩, rfl⟩ show θ.U (θ.U u) ∈ τ₁`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[U_invol θ hinv]` and apply the resulting hypothesis. Introduce `hv`. Conclude with `⟨θ.U v, ⟨v, hv, rfl⟩, U_invol θ hinv v⟩`. Establish `hne : τ₁ ≠ τ₂` using `fun e => hc σ hσ ((hst π τ₁ hτ₁).2 (hτ₂d.trans e.symm) σ)`. Establish `hPair : Pair (BW.mu1 M 2) τ₁ τ₂` using `⟨irr_of hs₁, irr_of hs₂, Dp.multiplicity_one_cuspidal_spectrum_normOneGL M 2 _ τ₁ τ₂ hs₁ hs₂ hne⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨π', hτ₂, -⟩` from `Dp.exCusp M 2 _ τ₂ hs₂`. Take `⟨hsI, hsS⟩` from `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.swapAt K M σ h2 hgen τ₁ τ₂ θ hPair hIsGal hτ₂d hback`. Take `⟨Λ₁, t₁, S₁, hfin, hAt₁⟩` from `hAtE τ₁ hs₁`. Set `S : Finset (Pl K)` to `(hfin.image fun w => w.under (𝓞 K)).toFinset.filter (GM.Split M)`. Establish `hS : ∀ v, v ∈ S ↔ GM.Split M v ∧ ∃ w ∈ S₁, w.under (𝓞 K) = v` using `fun v => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[S, and_comm]`. Establish `hSs : ∀ v ∈ S, GM.Split M v` using `fun v hv => ((hS v).1 hv).1`. Establish `hSu : ∀ v ∉ S, GM.Unr M v` using `fun v _ => by`. Distinguish the cases in `h : GM.Split M v`. Conclude with `unr_of_split v h`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(hb v h).1`. Establish `other : ∀ w : Pl M, GM.Split M (w.under (𝓞 K)) → ∃ w' : Pl M, w' ≠ w ∧ w'.under (𝓞 K) = w.under (𝓞 K)` using `fun w h => by`. Take `⟨e, -⟩` from `hspl _ h`. Use `haveI hl : w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal := ⟨rfl⟩`. Establish `hx : e (e.symm ⟨w, hl⟩ + 1) ≠ ⟨w, hl⟩` using `fun hh => by`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Evaluate the decidable proposition. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `e.injective (hh.trans (e.apply_symm_apply _).symm)` as an intermediate fact. Use `revert this`. Generalize the expression as in `e.symm _ = i`. Use `revert i`. Evaluate the decidable proposition.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨(e (e.symm ⟨w, hl⟩ + 1)).1, fun hh => hx (Subtype.ext hh), HeightOneSpectrum.ext (e _).2.over.symm⟩`. Establish `hSat₁ : ∀ w : Pl M, w.under (𝓞 K) ∉ S → ∃ B, SSat (BW.mu1 M 2) τ₁ w B` using `fun w hw => by`. Distinguish the cases in `h : GM.Split M (w.under (𝓞 K))`. Conclude with `⟨t₁ w, hAt₁.2 w fun hm => hw ((hS _).2 ⟨h, w, hm, rfl⟩)⟩`. Take `⟨B, hB⟩` from `(hb _ h).2 w rfl`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, (sat_iff hτ₁ w B).1 hB⟩`. Establish `hSat₂ : ∀ w : Pl M, w.under (𝓞 K) ∉ S → ∃ B, SSat (BW.mu1 M 2) τ₂ w B` using `fun w hw => by`. Distinguish the cases in `h : GM.Split M (w.under (𝓞 K))`. Take `⟨w', hne', hu⟩` from `other w h`. Take `⟨B, hB⟩` from `hSat₁ w' (hu ▸ hw)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨B, (hsS w w' hu.symm (Or.inl hne'.symm) B).2 hB⟩`. Take `⟨B, hB⟩` from `hSat₁ w hw`. Conclude with `⟨B, (hsS w w rfl (Or.inr h) B).2 hB⟩`. Take `⟨m₁, B₁, hA₁⟩` from `exAt two_pos hs₁ {w | w.under (𝓞 K) ∈ S} hSat₁`. Take `⟨m₂, B₂, hA₂⟩` from `exAt two_pos hs₂ {w | w.under (𝓞 K) ∈ S} hSat₂`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨V, Λ, t, hV, ⟨S₃, hf₃, hA₃⟩, hΛ, ht⟩` from `hC K M σ h2 hgen τ₁ τ₂ θ hPair hIsGal hτ₂d hback S hSs hSu m₁ m₂ B₁ B₂ hA₁ hA₂ (BW.mu1 K (2 + 2))`. Take `⟨P, hP, -⟩` from `Dp.exCusp K (2 + 2) _ V hV`. Use `⟨P, ?_, ?_⟩` and prove the remaining obligations. Use `sysOf K M h2 (CG.mk π) (CG.mk π') (CG.mk P) (fun w w' hu hor B => ?_) ?_` and prove the remaining obligations. Rewrite using `[sat_iff hτ₂, sat_iff hτ₁]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hsS w w' hu hor _`. Establish `hev : ∀ᶠ w : Pl M in cofinite, w.under (𝓞 K) ∉ S₃` using `(GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under K M).eventually hf₃.compl_mem_cofinite`. Establish `hev' : ∀ᶠ w : Pl M in cofinite, w.under (𝓞 K) ∉ S` using `(GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under K M).eventually S.finite_toSet.compl_mem_cofinite`. Use `filter_upwards [ht, hev, hev'] with w hw₁ hw₃ hwS f hf`. Take `⟨C₁, e₁, c₁⟩` from `(Dp.sSatIff M 2 _ π τ₁ hτ₁ w _).1 (hA₁.2 w hwS)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨C₂, e₂, c₂⟩` from `(Dp.sSatIff M 2 _ π' τ₂ hτ₂ w _).1 (hA₂.2 w hwS)`. Take `⟨C₃, e₃, c₃⟩` from `(Dp.sSatIff K (2 + 2) _ P V hP _ _).1 (hA₃.2 _ hw₃)`. Establish `hq : 1 < Formalism.ConjugateSelfDual.normV (w.under (𝓞 K))` using `NumberField.HeightOneSpectrum.one_lt_absNorm _`. Establish `hfr : f = resDeg K w`. Establish `hpl : Formalism.ConjugateSelfDual.normV w = Formalism.ConjugateSelfDual.normV (w.under (𝓞 K)) ^ resDeg K w` using `(UpperTheory.ConvolutionTheory.T.places K M hp).2.2.2.2.1 w`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Nat.pow_right_injective hq (hf.symm.trans hpl)`. Use `⟨C₃, c₃, ![C₁, C₂], ?_, ?_⟩` and prove the remaining obligations. Introduce `i fin_cases i`. Conclude with `c₁`. Conclude with `c₂`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Multiset.map_injective Units.val_injective` to reduce the goal to its premises. Rewrite using `[Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[Multiset.map_add, ← e₁, ← e₂, hw₁, bcSat, e₃, hfr]`. Simplify using `[Multiset.map_map, Function.comp_def]`.
-
-Introduce `τ τ' m m' hne' hk hm hm'`. Establish `e1 : m₁ τ = m` using `((Dp.parEx M 2 two_pos _ τ₁ hs₁).1 τ).unique (hA₁.1 τ) ((Dp.sInfIff M 2 _ π τ₁ hτ₁ τ m).2 hm)`. Establish `e2 : m₂ τ = m'`. Use `((Dp.parEx M 2 two_pos _ τ₂ hs₂).1 τ).unique (hA₂.1 τ) ((hsI τ m').2 ?_)` and prove the remaining obligations. Rewrite using `[emb_two h2 σ hσ τ τ' hne' hk]`.
-
-Conclude with `(Dp.sInfIff M 2 _ π τ₁ hτ₁ τ' m').2 hm'`. Establish `e3 : Λ (τ.comp (algebraMap K M)) = m + m'`. Use `congrFun hΛ τ` as an intermediate fact. Simplify using `only [bcInf] at this`. Rewrite using `[← this, e1, e2]`.
-
-Establish `h4` using `hA₃.1 (τ.comp (algebraMap K M))`. Rewrite `h4` using `[e3]`. Conclude with `(Dp.sInfIff K (2 + 2) _ P V hP _ _).1 h4`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.indNorm :
     CoreInd → IndNorm := by

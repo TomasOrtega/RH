@@ -26,7 +26,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField E] in
 
 /- English proof (translation)
-Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ {φ}) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, -, -, rfl⟩`. Conclude with `Submodule.mem_span_singleton.2 ⟨a * φ z, funext fun g => by simp [hφ, mul_assoc]⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem centreFinite_of_char (T : Finset (Fin r)) (hφ : ∀ g h, φ (g * h) = φ g * φ h) (a : ℂ) :
     FiniteDimensional ℂ (Submodule.span ℂ {f : GAd σ J → ℂ | ∃ z ∈ levi σ J X Y T,
@@ -36,7 +36,7 @@ theorem centreFinite_of_char (T : Finset (Fin r)) (hφ : ∀ g h, φ (g * h) = �
   exact Submodule.mem_span_singleton.2 ⟨a * φ z, funext fun g => by simp [hφ, mul_assoc]⟩
 
 /- English proof (translation)
-Take `⟨K, hK⟩` from `exists_isMaxCpt h hJ`. Use `⟨K, hK, isAutOn_const σ J X Y T K c, ?_⟩` and prove the remaining obligations. Establish `e : (fun _ => c) = c • fun _ : GAd σ J => (1 : ℂ)` using `funext fun _ => by simp`. Use `centreFinite_of_char (X := X) (Y := Y) (φ := fun _ : GAd σ J => (1 : ℂ)) T (by simp) c` as an intermediate fact. Rewrite `this` using `[← e]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 example (h : IsCMExt F E σ) (hJ : IsHermND σ J) (T : Finset (Fin r)) (c : ℂ) :
     ∃ K, IsMaxCpt σ J K ∧ IsAutOn σ J X Y T K (fun _ => c) ∧

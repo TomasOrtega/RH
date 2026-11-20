@@ -26,7 +26,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[RealDat3.adjoint_smul']`. Conclude with `⟨starRingEnd ℂ c • y, by simp⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem range_adjoint_smul_le {E E' : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
     [NormedAddCommGroup E'] [InnerProductSpace ℂ E'] [FiniteDimensional ℂ E'] (c : ℂ) (f : E →ₗ[ℂ] E') :
@@ -36,11 +36,11 @@ theorem range_adjoint_smul_le {E E' : Type} [NormedAddCommGroup E] [InnerProduct
   exact ⟨starRingEnd ℂ c • y, by simp⟩
 
 /- English proof (translation)
-Introduce `hP D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hL hOk hC hE hG`. Take `⟨h1, h2⟩` from `GlobalTheory.T.range_adjoint_le_span_jX_image_ZHg R F hL hOk hC hE (schurAll_of_cuspRapidDecay hP R.toRealDat) hG`. Establish `hM` using `hC.base.models`. Use `⟨fun t x hx => ?_, fun j t x hx => ?_⟩` and prove the remaining obligations. Establish `hB` using `Formalism.IndefR.Bridge.ClassPres.extBij_holds (R.B.R t).pres`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨hinj, hrange, -⟩` from `hM.HX t`. Establish `h` using `kForm_semi (R.jX t) (R.HX t).e (R.B.R t).pres.extL (fun x => hM.jX t x) hinj (hrange.trans hB.2.symm) (Formalism.L2.DIV.CSD.basis _) (Formalism.L2.DIV.CSD.basis _) hB.1`. Establish `hx' : R.jX t x ∈ LinearMap.range (LinearMap.adjoint (R.Th t))` using `(GlobalTheory.AdjBlock.mem_range_adjoint_tw (twAt D.what₂.embLL A3.A.v0) (R.Th t) (R.jX t x)).1 hx`. Conclude with `GlobalTheory.mem_of_semilinear_mem_complex_span D.what₂.embLL (R.jX t) (Formalism.L2.DIV.CSD.basis _) h.1 _ x (h1 t hx')`. Establish `hB` using `Formalism.IndefR.Bridge.ClassPres.extBij_holds (R.B.L j t).pres`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hinj, hrange, -⟩` from `hM.HV j t`. Establish `h` using `kForm_semi (R.jV j t) (R.HV j t).e (R.B.L j t).pres.extL (fun x => hM.jV j t x) hinj (hrange.trans hB.2.symm) (Formalism.L2.DIV.CSD.basis _) (Formalism.L2.DIV.CSD.basis _) hB.1`. Establish `hx1` using `range_adjoint_smul_le (R.phs j) (Tw.map (twAt D.what₂.embLL A3.A.v0) (R.thG j t)) hx`. Establish `hx' : R.jV j t x ∈ LinearMap.range (LinearMap.adjoint (R.thG j t))` using `(GlobalTheory.AdjBlock.mem_range_adjoint_tw (twAt D.what₂.embLL A3.A.v0) (R.thG j t) (R.jV j t x)).1 hx1`. Conclude with `GlobalTheory.mem_of_semilinear_mem_complex_span D.what₂.embLL (R.jV j t) (Formalism.L2.DIV.CSD.basis _) h.1 _ x (h2 j t hx')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inBlock_of_cuspRapidDecay : GlobalTheory.Published.CuspRapidDecay → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, GlobalTheory.Chain.LiftInteg D → A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → R.PGEquiv F → (R.toCx3 F).zs.InBlock := by
   intro hP D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hL hOk hC hE hG

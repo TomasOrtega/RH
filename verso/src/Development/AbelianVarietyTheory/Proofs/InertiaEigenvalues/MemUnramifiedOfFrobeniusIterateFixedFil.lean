@@ -21,7 +21,7 @@ theorem frobK0_apply (P : LocPrime l) (K : FinExt l) (x : ↥(K0 K)) :
     maxUnramifiedFrobenius P K x = (P.PD K).σ x := rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Conclude with `(P.PD K).not_mem_filtration_two (by rw [Subsingleton.elim ((P.PD K).t) 0, map_zero]; exact Submodule.zero_mem _)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nontrivial_B (P : LocPrime l) (K : FinExt l) : Nontrivial P.R.B := by
   by_contra h
@@ -29,7 +29,7 @@ theorem nontrivial_B (P : LocPrime l) (K : FinExt l) : Nontrivial P.R.B := by
   exact (P.PD K).not_mem_filtration_two (by rw [Subsingleton.elim ((P.PD K).t) 0, map_zero]; exact Submodule.zero_mem _)
 
 /- English proof (translation)
-Rewrite using `[← P.PD_ι K]`. Conclude with `(P.PD K).ι.commutes a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ιB_algebraMap (P : LocPrime l) (K : FinExt l) (a : ↥(K0 K)) :
     P.ιB (algebraMap ↥(K0 K) P.R.B a) = algebraMap ↥(K0 K) P.R.BdR a := by
@@ -37,13 +37,11 @@ theorem ιB_algebraMap (P : LocPrime l) (K : FinExt l) (a : ↥(K0 K)) :
   exact (P.PD K).ι.commutes a
 
 /- English proof (translation)
-Use `haveI := (P.PD K).finK₀`. Use `haveI := nontrivial_B P K`. Establish `hfix : IntermediateField.fixedField (Subgroup.zpowers (maxUnramifiedFrobenius P K)) = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hx` using `[IntermediateField.mem_fixedField_iff]`. Establish `hσ : (P.PD K).σ x = x` using `hx _ (Subgroup.mem_zpowers _)`. Take `⟨q, hq⟩` from `(P.PD K).fund (algebraMap ↥(K0 K) P.R.B x) (by rw [(P.PD K).φ_K₀, hσ]) (by`. Rewrite using `[(P.PD K).ι.commutes, Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_of_tower_mem _ x (P.PD K).one_mem)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IntermediateField.mem_bot]`. Use `⟨q, (algebraMap ↥(K0 K) P.R.B).injective ?_⟩` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `hq`. Establish `h` using `IntermediateField.finrank_fixedField_eq_card (Subgroup.zpowers (maxUnramifiedFrobenius P K))`.
-
-Rewrite `h` using `[hfix, IntermediateField.finrank_bot', Nat.card_zpowers]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderOf_frobK0 (P : LocPrime l) (K : FinExt l) :
     orderOf (maxUnramifiedFrobenius P K) = finrank ℚ_[l] ↥(K0 K) := by
@@ -68,7 +66,7 @@ theorem orderOf_frobK0 (P : LocPrime l) (K : FinExt l) :
   exact h.symm
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[Function.iterate_succ_apply', ih, map_mul, ← P.PD_φ K (algebraMap _ _ _), (P.PD K).φ_K₀, Function.iterate_succ_apply', pow_succ', AlgEquiv.mul_apply, frobK0_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem iterate_φB_mul (P : LocPrime l) (K : FinExt l) (j : ℕ) (b : ↥(K0 K)) (x : P.R.B) :
     (⇑P.φB)^[j] (algebraMap ↥(K0 K) P.R.B b * x) =
@@ -80,17 +78,17 @@ theorem iterate_φB_mul (P : LocPrime l) (K : FinExt l) (j : ℕ) (b : ↥(K0 K)
       Function.iterate_succ_apply', pow_succ', AlgEquiv.mul_apply, frobK0_apply]
 
 /- English proof (translation)
-Use `set τ := maxUnramifiedFrobenius P K`. Introduce `h`. Take `⟨u, hu0, hu⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Set `L : ↥(K0 K) →ₗ[ℚ_[l]] ↥(K0 K)` to `{ toFun := fun x => ∑ j : Fin (finrank ℚ_[l] ↥(K0 K)), u j * (τ ^ (j : ℕ)) x map_add' := by intro x y; simp [mul_add, Finset.sum_add_distrib] map_smul' := by`. Introduce `r x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.id_apply, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_smul_comm]`. Use `congr 1`. Conclude with `(τ ^ (j : ℕ)).toLinearEquiv.map_smul r x }`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hL : L = 0`. Use `bas.ext fun i => ?_` and prove the remaining obligations. Use `congrFun hu i` as an intermediate fact. Simplify `this` using `[L, Matrix.mulVec, dotProduct, mul_comm]`. Set `f : Fin (finrank ℚ_[l] ↥(K0 K)) → (↥(K0 K) →* ↥(K0 K))` to `fun j => ((τ ^ (j : ℕ)).toRingEquiv : _ ≃+* _).toMonoidHom`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf : Function.Injective f`. Introduce `i j hij`. Establish `h1 : τ ^ (i : ℕ) = τ ^ (j : ℕ)` using `AlgEquiv.ext fun x => DFunLike.congr_fun hij x`. Establish `hi : (i : ℕ) ∈ Set.Iio (orderOf τ)` using `by rw [orderOf_frobK0]; exact i.2`. Establish `hj : (j : ℕ) ∈ Set.Iio (orderOf τ)` using `by rw [orderOf_frobK0]; exact j.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Fin.ext (pow_injOn_Iio_orderOf hi hj h1)`. Establish `li` using `(linearIndependent_monoidHom ↥(K0 K) ↥(K0 K)).comp f hf`. Rewrite `li` using `[Fintype.linearIndependent_iff]`. Apply `hu0` to reduce the goal to its premises. Use function extensionality and compare the values at `j`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `li u ?_ j` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Use `LinearMap.congr_fun hL x` as an intermediate fact. Simplify `this` using `[L, f, Finset.sum_apply, smul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem det_ne_zero (P : LocPrime l) (K : FinExt l)
     (bas : Module.Basis (Fin (finrank ℚ_[l] ↥(K0 K))) ℚ_[l] ↥(K0 K)) :
@@ -129,21 +127,19 @@ theorem det_ne_zero (P : LocPrime l) (K : FinExt l)
   simpa [L, f, Finset.sum_apply, smul_eq_mul] using this
 
 /- English proof (translation)
-Introduce `l _ P _ _ K c hn hF`. Use `set n := finrank ℚ_[l] ↥(K0 K) with hn_def`. Use `haveI := (P.PD K).finK₀`. Use `set τ := maxUnramifiedFrobenius P K`. Establish `hord : orderOf τ = n` using `orderOf_frobK0 P K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hn0 : 0 < n` using `Module.finrank_pos`. Set `bas` to `Module.finBasisOfFinrankEq ℚ_[l] ↥(K0 K) hn_def.symm`. Set `A : Matrix (Fin n) (Fin n) ↥(K0 K)` to `Matrix.of fun i j => (τ ^ (j : ℕ)) (bas i)`. Establish `hdet : IsUnit A.det` using `isUnit_iff_ne_zero.2 (det_ne_zero P K bas)`. Establish `hs : ∀ b : ↥(K0 K), ∃ q : ℚ_[l], algebraMap ℚ_[l] P.R.B q = ∑ j ∈ Finset.range n, (⇑P.φB)^[j] (algebraMap ↥(K0 K) P.R.B b * c)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Apply `(P.PD K).fund` to reduce the goal to its premises. Rewrite using `[P.PD_φ, map_sum]`. Establish `e1 : ∀ j, P.φB ((⇑P.φB)^[j] (algebraMap ↥(K0 K) P.R.B b * c)) = (⇑P.φB)^[j + 1] (algebraMap ↥(K0 K) P.R.B b * c)` using `fun j => (Function.iterate_succ_apply' _ _ _).symm`. Repeatedly rewrite using `[e1]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfn : (⇑P.φB)^[n] (algebraMap ↥(K0 K) P.R.B b * c) = (⇑P.φB)^[0] (algebraMap ↥(K0 K) P.R.B b * c)`. Rewrite using `[iterate_φB_mul, hn, ← hord, pow_orderOf_eq_one, AlgEquiv.one_apply, Function.iterate_zero, id]`. Establish `h` using `Finset.sum_range_succ' (fun j => (⇑P.φB)^[j] (algebraMap ↥(K0 K) P.R.B b * c)) n`. Rewrite `h` using `[Finset.sum_range_succ, hfn]`. Conclude with `(add_right_cancel h).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[P.PD_ι, map_sum]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[iterate_φB_mul, map_mul, ιB_algebraMap, ← Algebra.smul_def]`. Conclude with `Submodule.smul_of_tower_mem _ _ (hF j)`. Use `choose q hq using fun i => hs (bas i)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Set `v : Fin n → P.R.B` to `fun j => (⇑P.φB)^[(j : ℕ)] c`. Establish `hAv : Matrix.mulVec (A.map (algebraMap ↥(K0 K) P.R.B)) v = fun i => algebraMap ↥(K0 K) P.R.B (algebraMap ℚ_[l] ↥(K0 K) (q i))`. Use function extensionality and compare the values at `i`. Rewrite using `[← IsScalarTower.algebraMap_apply, hq i, Finset.sum_range]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, A, v, Matrix.of_apply, iterate_φB_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Establish `hinv : (A⁻¹.map (algebraMap ↥(K0 K) P.R.B)) * (A.map (algebraMap ↥(K0 K) P.R.B)) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hdet, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hv : v = Matrix.mulVec (A⁻¹.map (algebraMap ↥(K0 K) P.R.B)) (fun i => algebraMap ↥(K0 K) P.R.B (algebraMap ℚ_[l] ↥(K0 K) (q i)))`. Rewrite using `[← hAv, Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`.
-
-Use `⟨∑ i, A⁻¹ ⟨0, hn0⟩ i * algebraMap ℚ_[l] ↥(K0 K) (q i), ?_⟩` and prove the remaining obligations. Establish `h0` using `congrFun hv ⟨0, hn0⟩`. Simplify using `only [v, Function.iterate_zero, id] at h0`. Rewrite using `[h0]`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_unramified_of_frobenius_iterate_fixed_fil_alt :
     ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI →

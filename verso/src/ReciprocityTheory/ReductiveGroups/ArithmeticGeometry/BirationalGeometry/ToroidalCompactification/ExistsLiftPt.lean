@@ -10,7 +10,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.DVR
 
 /- English proof (translation)
-Establish `: CompactSpace ↥(pullback f x)` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd f x)`. Take `⟨p, -⟩` from `(pullback.snd f x).surjective (default : PrimeSpectrum F)`. Take `⟨q, -, hq⟩` from `isClosed_univ.exists_closed_singleton (X := ↥(pullback f x)) ⟨p, trivial⟩`. Use `⟨pointOfClosedPoint (pullback.snd f x) q hq ≫ pullback.fst f x, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, pointOfClosedPoint_comp, Category.id_comp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift_pt {F : Type} [Field F] [IsAlgClosed F] {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f] [Surjective f]
     (x : Sp F ⟶ Y) : ∃ b : Sp F ⟶ X, b ≫ f = x := by
@@ -21,11 +21,9 @@ theorem exists_lift_pt {F : Type} [Field F] [IsAlgClosed F] {X Y : Scheme.{0}} (
   rw [Category.assoc, pullback.condition, ← Category.assoc, pointOfClosedPoint_comp, Category.id_comp]
 
 /- English proof (translation)
-Introduce `R _ _ _ D hB F _ _ _ n hn y`. Take `⟨h₁, -, h₂, -⟩` from `hM _ D.P n hn`. Take `⟨b, hb⟩` from `exists_lift_pt (mulA D.P.A n).left (cP D (TF (R := R) F) y).left`. Take `⟨J, hJ⟩` from `good_pt D.P.isLB (default : PrimeSpectrum F)`. Set `b' : TF (R` to `R) F ⟶ D.P.A := Over.homMk b (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[← Over.w (mulA D.P.A n), ← Category.assoc, hb]`. Conclude with `Over.w _)`. Take `⟨q, hq, -⟩` from `exists_qk_over (F := F) hJ hB hn y b' (Over.OverMorphism.ext (by`. Rewrite using `[← hb, ← Category.comp_id b', ← MonObj.comp_pow]`. Use the proof step `rfl))`.
-
-Conclude with `⟨q, hq⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem qkYOnto (hM : MulNSt) : QkYOntoSt := by
   intro R _ _ _ D hB F _ _ _ n hn y

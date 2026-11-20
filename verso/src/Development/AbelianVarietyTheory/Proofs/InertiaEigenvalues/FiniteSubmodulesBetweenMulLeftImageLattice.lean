@@ -5,9 +5,9 @@ open GlobalTheory.UnitLemma Polynomial
 namespace GlobalTheory.UnitLemma
 
 /- English proof (translation)
-Use `haveI : Finite (O ⧸ IsLocalRing.maximalIdeal O) := inferInstanceAs (Finite (IsLocalRing.ResidueField O))`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hc hϖ`. Establish `h1 : Ideal.span {c} = IsLocalRing.maximalIdeal O ^ n`. Rewrite using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, Ideal.span_singleton_pow, hu, Ideal.span_singleton_mul_left_unit u.isUnit]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `Ideal.finite_quotient_pow (IsNoetherian.noetherian _) n`.
+A detailed English derivation is pending.
 -/
 theorem finite_quot_span_of_ne_zero (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [Finite (IsLocalRing.ResidueField O)] (c : O) (hc : c ≠ 0) : Finite (O ⧸ Ideal.span {c}) := by
@@ -22,15 +22,13 @@ theorem finite_quot_span_of_ne_zero (O : Type) [CommRing O] [IsDomain O] [IsDisc
   exact Ideal.finite_quotient_pow (IsNoetherian.noetherian _) n
 
 /- English proof (translation)
-Use `haveI := finite_quot_span_of_ne_zero K.O c hc`. Use `haveI : Module.Finite K.O L := Module.Finite.iff_fg.mpr hL.1`. Establish `hfg : (⊤ : Submodule K.O L).FG` using `Module.Finite.fg_top`. Use `set S : Submodule K.O L := Ideal.span {c} • (⊤ : Submodule K.O L) with hS`. Use `haveI : Finite (L ⧸ S) := Submodule.finite_quotient_smul _ hfg`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Finite (Submodule K.O (L ⧸ S)) := Finite.of_injective (fun P : Submodule K.O (L ⧸ S) => (P : Set (L ⧸ S))) SetLike.coe_injective`. Set `f : Submodule K.O B.A → Submodule K.O (L ⧸ S)` to `fun M => (M.comap L.subtype).map S.mkQ`. Establish `hSle : ∀ M : Submodule K.O B.A, mulLat K.O (algebraMap K.O B.A c) L ≤ M → S ≤ M.comap L.subtype`. Introduce `M hM`. Rewrite using `[hS, Submodule.smul_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `r hr x _`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 hr`. Establish `hx : algebraMap K.O B.A c * (x : B.A) ∈ M` using `hM ⟨x, x.2, rfl⟩`. Establish `: ((a * c) • x : L) = (a • (algebraMap K.O B.A c * (x : B.A)) : B.A)`. Rewrite using `[Submodule.coe_smul, ← Algebra.smul_def, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_comap, Submodule.subtype_apply, this]`. Conclude with `M.smul_mem a hx`. Use `Set.Finite.of_finite_image (f := f) (Set.toFinite _) ?_` and prove the remaining obligations. Introduce `M₁ h₁ M₂ h₂ heq`. Establish `e1 : M₁.comap L.subtype = M₂.comap L.subtype`.
-
-Use `congrArg (Submodule.comap S.mkQ) heq` as an intermediate fact. Simplify using `only [f, Submodule.comap_map_mkQ] at this`. Rewrite `this` using `[sup_eq_right.2 (hSle M₁ h₁.1), sup_eq_right.2 (hSle M₂ h₂.1)]`. Then use the resulting hypothesis. Establish `e2` using `congrArg (Submodule.map L.subtype) e1`. Rewrite `e2` using `[Submodule.map_comap_subtype, Submodule.map_comap_subtype, inf_eq_right.2 h₁.2, inf_eq_right.2 h₂.2]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finite_between_mulLat (K : UQ) (B : InvAlg K) (L : Submodule K.O B.A) (hL : IsLat K.O K.E L)
     (c : K.O) (hc : c ≠ 0) :

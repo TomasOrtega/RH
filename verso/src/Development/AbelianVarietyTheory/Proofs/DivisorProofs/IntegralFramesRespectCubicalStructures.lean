@@ -27,9 +27,9 @@ namespace GlobalTheory.Poinc.IntCube
 open GlobalTheory.Poinc.IntEval GlobalTheory.WCub
 
 /- English proof (translation)
-Use `(Fintype.prod_equiv (Equiv.ulift : thK.{0} ≃ Finset (Fin 3)) _ (fun I => v I ^ ((-1 : ℤ) ^ (3 - I.card))) (fun I => rfl)).trans ?_` and prove the remaining obligations. Rewrite using `[show (Finset.univ : Finset (Finset (Fin 3))) = {∅, {0}, {1}, {2}, {0, 1}, {0, 2}, {1, 2}, {0, 1, 2}} by decide, Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset. …`. Establish `q₀ : (-1 : ℤ) ^ (3 - (∅ : Finset (Fin 3)).card) = -1` using `by decide`. Establish `q₁ : ∀ i : Fin 3, (-1 : ℤ) ^ (3 - ({i} : Finset (Fin 3)).card) = 1` using `by decide`. Establish `q₄ : (-1 : ℤ) ^ (3 - ({0, 1} : Finset (Fin 3)).card) = -1` using `by decide`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q₅ : (-1 : ℤ) ^ (3 - ({0, 2} : Finset (Fin 3)).card) = -1` using `by decide`. Establish `q₆ : (-1 : ℤ) ^ (3 - ({1, 2} : Finset (Fin 3)).card) = -1` using `by decide`. Establish `q₇ : (-1 : ℤ) ^ (3 - ({0, 1, 2} : Finset (Fin 3)).card) = 1` using `by decide`. Rewrite using `[q₀, q₁, q₁, q₁, q₄, q₅, q₆, q₇]`. Simplify using `only [zpow_neg, zpow_one, mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 The two sides agree by associativity and commutativity.
 -/
@@ -61,11 +61,9 @@ def IsCube (p : Finset (Fin 3) → (T ⟶ G)) : Prop :=
     p {0, 1, 2} = p {0} * p {1} * p {2}
 
 /- English proof (translation)
-Take `⟨h₀, h₁, h₂, h₃, h₄⟩` from `hp`. Apply the tactic sequence `have e : (lift (p {0}) (lift (p {1}) (p {2}))).left ≫ thφ G (x3 G) k = (psum G ![p {0}, p {1}, p {2}] k.down).left := congrArg (fun q => q.left) ((psum_hom (preHom (lift (p {0}) (lift (p {1}) (p {2})))) (x3 G) k.down).trans (congrArg (fun q => psum G q k.down) (funext fun i => by …`. Use `e.trans (congrArg (fun q : T ⟶ G => q.left) ?_)` and prove the remaining obligations. Establish `c : ∀ I : Finset (Fin 3), I = ∅ ∨ I = {0} ∨ I = {1} ∨ I = {2} ∨ I = {0, 1} ∨ I = {0, 2} ∨ I = {1, 2} ∨ I = {0, 1, 2}` using `by decide`. Generalize the expression as in `k.down = I`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Break down `c I with rfl | rfl | rfl | rfl | rfl | rfl | rfl | rfl` into its components or cases. Conclude with `h₀.symm`. Conclude with `_root_.mul_one _`. Conclude with `_root_.mul_one _`. Conclude with `_root_.mul_one _`.
-
-Conclude with `(congrArg (p {0} * ·) (_root_.mul_one (p {1}))).trans h₁.symm`. Conclude with `(congrArg (p {0} * ·) (_root_.mul_one (p {2}))).trans h₂.symm`. Conclude with `(congrArg (p {1} * ·) (_root_.mul_one (p {2}))).trans h₃.symm`. Conclude with `((congrArg (fun q => p {0} * (p {1} * q)) (_root_.mul_one (p {2}))).trans (_root_.mul_assoc _ _ _).symm).trans h₄.symm`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem IsCube.thφ_eq {p : Finset (Fin 3) → (T ⟶ G)} (hp : IsCube p) (k : thK.{0}) :
     (lift (p {0}) (lift (p {1}) (p {2}))).left ≫ thφ G (x3 G) k = (p k.down).left := by
@@ -90,11 +88,11 @@ theorem IsCube.thφ_eq {p : Finset (Fin 3) → (T ⟶ G)} (hp : IsCube p) (k : t
       (_root_.mul_assoc _ _ _).symm).trans h₄.symm
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `GlobalTheory.PsiScalUnit.exists_ratio L.isLB (u := LB.mulGen L.L _ _ _ _ (LB.mulGen L.L _ _ _ _ (LB.mulGen L.L _ _ _ _ (a {0, 1, 2}) (a {0})) (a {1})) (a {2})) (u' := LB.mulGen L.L _ _ _ _ (LB.pullGen L.L (thφ G (x3 G)) thε c.t (lift (p {0}) (lift (p {1}) (p {2}))).left) (LB.mulG …`. Take `⟨d, hd⟩` from `hφ U F`. Establish `e : ∏ k : thK.{0}, F ((lift (p {0}) (lift (p {1}) (p {2}))).left ≫ thφ G (x3 G) k) ^ thε k = _` using `(Finset.prod_congr rfl fun k _ => congrArg (fun q => F q ^ thε k) (hp.thφ_eq k)).trans (prod_alt (fun I => F (p I).left))`. Use `Eq.trans ?_ ((Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) e rfl)).symm` and prove the remaining obligations. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, hd]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Use the proof step `abel)`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (ha _) (ha _)) (ha _)) (ha _))`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ _ _ _ c.isGen _) (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (ha _) (ha _)) (ha _)) (ha _)))`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨u, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Use `hu Z r z J hJ` as an intermediate fact. Rewrite `this` using `[val_mul hJ, val_mul hJ, val_mul hJ]`. Use `this.trans (congrArg (_ * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_pull hJ _ _ _) ?_)))` and prove the remaining obligations. Rewrite using `[val_mul hJ, val_mul hJ, val_mul hJ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit {L : RigLB G} (c : CubicalStr G L) {p : Finset (Fin 3) → (T ⟶ G)} (hp : IsCube p)
     {K : Type} [Fintype K] {φ : Finset (Fin 3) → K → (T.left ⟶ G.left)} {ε : K → ℤ}
@@ -138,13 +136,13 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {G : Over (Sp R)} {D
   {A : PolAV (Sp (FractionRing R))} [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Use `(U.gt e).q_hom` as an intermediate fact. Use `GlobalTheory.TorsionTranslate.mono_fst (I := I) e G` as an intermediate fact. Set `x : Fin 3 → (𝟙_ (Over (Sp (R ⧸ I ^ (e + 1)))) ⟶ thickObj R I e G)` to `fun i => Over.homMk (hRed I (h {i}) e) (pullback.lift_snd _ _ _)`. Establish `l : ∀ {H : Over (Sp R)} (p : Finset (Fin 3) → (𝟙_ (Over (Sp R)) ⟶ H)) (i : Fin 3), (lift (p {0}) (lift (p {1}) (p {2}))).left ≫ (x3 H i).left = (p {i}).left` using `fun p i => by`. Apply the tactic sequence `have : lift (p {0}) (lift (p {1}) (p {2})) ≫ x3 _ i = p {i} := by fin_cases i <;> simp [x3]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `congrArg (fun q => q.left) this`. Establish `g₁ : tri (thick R I e) (fstG I e G) x = thick R I e ≫ (lift (h {0}) (lift (h {1}) (h {2}))).left` using `hom_ext_triple _ fun i => (tripleProductPoint_comp_projection _ _ _ i).trans ((hRed_fst (h {i}) e).trans ((congrArg (thick R I e ≫ ·) (l h i).symm).trans (Category.assoc _ _ _).symm))`. Establish `g₂ : tri (thick R I e) (U.gt e).pG x = thick R I e ≫ (lift (b {0}) (lift (b {1}) (b {2}))).left` using `hom_ext_triple _ fun i => (tripleProductPoint_comp_projection _ _ _ i).trans ((hb {i}).trans ((congrArg (thick R I e ≫ ·) (l b i).symm).trans (Category.assoc _ _ _).symm))`. Establish `f₃` using `tri_thφ (thick R I e) (fstG I e G) x (𝟙 _) (Category.id_comp _).symm`. Establish `f₄` using `tri_thφ (thick R I e) (U.gt e).pG x (U.gt e).q rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ps : ∀ k : thK.{0}, (psum (thickObj R I e G) x k.down).left = hRed I (h k.down) e` using `fun k => by`. Rewrite using `[← cancel_mono (fstG I e G).left]`. Conclude with `(f₃ k).symm.trans ((congrArg (· ≫ thφ G (x3 G) k) g₁).trans ((Category.assoc _ _ _).trans ((congrArg (thick R I e ≫ ·) (hh.thφ_eq k)).trans (hRed_fst _ e).symm)))`. Establish `key` using `GlobalTheory.PowUnif.w_cub_val U e _ x y hJ hN`. Use `(congrArg (fun q => val (L := D.toPre.P.L) (φ := thφ D.toPre.P.A (x3 D.toPre.P.A)) (ε := thε) D.toPre.cub.t q y J) g₂).symm.trans (key.trans (congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => congrArg (· ^ thε k) ?_) (congrArg (fun q => val (L := U.LG.L) (φ := thφ G (x3 G)) (ε …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[f₃, f₄, ps]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem level_cub (U : UnifPre I D A G) {h : Finset (Fin 3) → (𝟙_ (Over (Sp R)) ⟶ G)} (hh : IsCube h)
     {b : Finset (Fin 3) → (𝟙_ (Over (Sp R)) ⟶ D.toPre.P.A)} (e : ℕ)
@@ -192,11 +190,11 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {G : Over (Sp R)} {D
   {A : PolAV (Sp (FractionRing R))} [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `E` using `fun {p q : U} (e : p = q) => congrArg Additive.ofMul e`. Establish `a₁` using `E (h {0, 1, 2})`. Establish `a₂` using `E (h {0})`. Establish `a₃` using `E (h {1})`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₄` using `E (h {2})`. Establish `a₅` using `E (h {0, 1})`. Establish `a₆` using `E (h {0, 2})`. Establish `a₇` using `E (h {1, 2})`. Establish `a₈` using `E (h ∅)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b₁` using `E hf`. Establish `b₂` using `E ht`. Establish `b₃` using `E hc`. Simplify using `only [ofMul_mul, ofMul_inv] at a₁ a₂ a₃ a₄ a₅ a₆ a₇ a₈ b₁ b₂ b₃`. Take the linear combination `(norm := abel) a₁ + a₂ + a₃ + a₄ - a₅ - a₆ - a₇ - a₈ - b₁ + b₂ + b₃`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem alg_level {U : Type} [CommGroup U] (f t w : Finset (Fin 3) → U) (ρ u u' cG cD : U)
     (h : ∀ S, t S * w S * f S = ρ)
@@ -213,9 +211,9 @@ theorem alg_level {U : Type} [CommGroup U] (f t w : Finset (Fin 3) → U) (ρ u 
   linear_combination (norm := abel) a₁ + a₂ + a₃ + a₄ - a₅ - a₆ - a₇ - a₈ - b₁ + b₂ + b₃
 
 /- English proof (translation)
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `E` using `fun {p q : U} (e : p = q) => congrArg Additive.ofMul e`. Establish `b₁` using `E hf`. Establish `b₂` using `E ht`. Simplify using `only [ofMul_mul, ofMul_inv] at b₁ b₂ ⊢`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `(norm := abel) b₁ - b₂`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem alg_end {U : Type} [CommGroup U] {fp fm t₁ t₂ t₃ t₄ t₅ t₆ t₇ t₈ u cG cD : U}
     (hf : fp = u * (cG * fm))
@@ -228,13 +226,11 @@ theorem alg_end {U : Type} [CommGroup U] {fp fm t₁ t₂ t₃ t₄ t₅ t₆ t�
   linear_combination (norm := abel) b₁ - b₂
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `exists_unit U.cubG hh (K := Fin 1) (φ := fun S _ => (h S).left) (ε := fun _ => 1) (fun W _ F => ⟨1, fun S => by simp⟩) f hf`. Take `⟨u', hu'⟩` from `exists_unit D.toPre.cub hbc (K := Fin 2) (φ := fun S => ![(η[D.toPre.P.A]).left, (b S).left]) (ε := fun k => -DegPre.lineε 1 k) (fun W _ F => ⟨(F (η[D.toPre.P.A]).left)⁻¹, fun S => by`. Rewrite using `[Fin.prod_univ_two, mul_comm]`. Simplify using `[DegPre.lineε]⟩)`. Use the proof step `(fun S => LB.invGen D.toPre.P.L _ _ (t S)) (fun S => invGen_isGen _ _ _ _ (ht S))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hv : ∀ (Z : Scheme.{0}) (r : Z ⟶ (𝟙_ (Over (Sp R))).left) (z : Z) (J), Good D.toPre.P.L z J → (val (t {0, 1, 2}) r z J)⁻¹ * (val (t {0}) r z J)⁻¹ * (val (t {1}) r z J)⁻¹ * (val (t {2}) r z J)⁻¹ = gm r z ⊤ u' * (val (L` using `D.toPre.P.L) (φ := thφ D.toPre.P.A (x3 D.toPre.P.A)) (ε := thε) D.toPre.cub.t (r ≫ (lift (b {0}) (lift (b {1}) (b {2}))).left) z J * ((val (t {0, 1}) r z J)⁻¹ * (val (t {0, 2}) r z J)⁻¹ * (val (t {1, 2}) r z J)⁻¹ * (val (t ∅) r z J)⁻¹)) := fun Z r z J hJ => by`. Simplify using `only [← val_inv]`. Conclude with `hu' Z r z J hJ`. Establish `e : u = u'`. Use `Units.ext (GlobalTheory.CoordLinear.fn_eq_of_levels I ⊤ rfl _ _ fun e => appTop_eq_of_gm _ _ u u' fun y => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose J hJ using fun χ : Sp (R ⧸ I ^ (e + 1)) ⟶ D.toPre.P.A.left => exists_chart D.toPre.P.isLB (χ y)`. Use `choose N hN using fun χ : Sp (R ⧸ I ^ (e + 1)) ⟶ G.left => exists_chart U.LG.isLB (χ y)`. Use `alg_level (fun S => val (f S) (thick R I e) y N) (fun S => val (t S) (thick R I e) y J) (fun S => wv U e (hRed I (h S) e) y (J (hRed I (h S) e ≫ pGl U e)) (N (hRed I (h S) e ≫ fGl I G e))) (val (L := D.toPre.P.L) D.toPre.rig (thick R I e) y J) _ _ _ _ (fun S => ?_) (hu _ (thick R …` and prove the remaining obligations. Establish `k` using `hT S e _ (𝟙 _) y J N hJ hN`. Simplify using `only [Category.id_comp] at k`.
-
-Conclude with `k`. Substitute `e` using the available equality. Conclude with `alg_end (hu Z r z JG hJG) (hv Z r z JB hJB)`.
+Simplify using the standard rewrite rules. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem cube_of_tRel [IsHausdorff I R] (U : UnifPre I D A G) {h : Finset (Fin 3) → (𝟙_ (Over (Sp R)) ⟶ G)}
     (hh : IsCube h) {b : Finset (Fin 3) → (𝟙_ (Over (Sp R)) ⟶ D.toPre.P.A)} (hbc : IsCube b)
@@ -287,7 +283,7 @@ theorem cube_of_tRel [IsHausdorff I R] (U : UnifPre I D A G) {h : Finset (Fin 3)
 end Main
 
 /- English proof (translation)
-Introduce `V _ _ _ hV D A G _ _ _ U h g f t h₀ h₁ h₂ h₃ h₄ g₀ g₁ g₂ g₃ g₄ hF hf ht hT z JG JB hJG hJB`. Use `hV.2.2.1` as an intermediate fact. Establish `key` using `cube_of_tRel U.toUnifPre (h := h) ⟨h₀, h₁, h₂, h₃, h₄⟩ (b := fun S => (g S).b) ⟨g₀, g₁, g₂, g₃, g₄⟩ (fun S e => hRed_pGl (hF S) e) f t hf ht hT _ (toUnit (TF (R := V) (FractionRing V))).left z JG JB hJG hJB`. Conclude with `(congrArg₂ (· * ·) rfl ((val_cub D.toPre.cub _ hJB _ _ _).symm.trans (val_pull hJB _ _ _))).trans (key.trans (congrArg₂ (· * ·) (congrArg₂ (· * ·) ((val_pull hJG _ _ _).symm.trans (val_cub U.cubG _ hJG _ _ _)) rfl) rfl))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_cube : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], IsCN V → ∀ (D : DegData V (maximalIdeal V)) (A : PolAV (Sp (FractionRing V))) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal V) D A G), ∀ (h : Finset (Fin 3) → ((𝟙_ (Over (Sp V))) ⟶ G)) (g : Finset (Fin 3) → GtPt D.toPre (𝟙_ (Over (Sp V)))) (f : ∀ S, LB.Gen (LB.LinComb U.LG.L (K := Fin 1) (fun _ => (h S).left) (fun _ => 1))) (t : ∀ S, LB.Gen (LB.LinComb D.toPre.P.L ![(η[D.toPre.P.A]).left, ((g S).b).left] (DegPre.lineε 1))), h ∅ = 1 → h {0, 1} = h {0} * h {1} → h {0, 2} = h {0} * h {2} → h {1, 2} = h {1} * h {2} → h {0, 1, 2} = h {0} * h {1} * h {2} → (g ∅).b = 1 → (g {0, 1}).b = (g {0}).b * (g {1}).b → (g {0, 2}).b = (g {0}).b * (g {2}).b → (g {1, 2}).b = (g {1}).b * (g {2}).b → (g {0, 1, 2}).b = (g {0}).b * (g {1}).b * (g {2}).b → (∀ S, GlobalTheory.IndefiniteRowSideFullHecke.FlatIsoUnitGenerator.FormalEq U.toUnifPre (h S) (g S)) → (∀ S, (f S).IsGen) → (∀ S, (t S).IsGen) → (∀ S (e : ℕ), GlobalTheory.Poinc.IntEval.TRel U.toUnifPre (h S) (g S).b (f S) (t S) e) → ∀ (z : (TF (R := V) (FractionRing V)).left) (JG : ((TF (R := V) (FractionRing V)).left ⟶ G.left) → U.LG.L.ι) (JB : ((TF (R := V) (FractionRing V)).left ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι), Good U.LG.L z JG → Good D.toPre.P.L z JB → (val (f {0, 1, 2}) (toUnit (TF (R := V) (FractionRing V))).left z JG * val (f {0}) (toUnit (TF (R := V) (FractionRing V))).left z JG * val (f {1}) (toUnit (TF (R := V) (FractionRing V))).left z JG * val (f {2}) (toUnit (TF (R := V) (FractionRing V))).left z JG) * (val (t {0, 1, 2}) (toUnit (TF (R := V) (FractionRing V))).left z JB * val (t {0}) (toUnit (TF (R := V) (FractionRing V))).left z JB * val (t {1}) (toUnit (TF (R := V) (FractionRing V))).left z JB * val (t {2}) (toUnit (TF (R := V) (FractionRing V))).left z JB) * cubV D.toPre.cub z JB ((toUnit (TF (R := V) (FractionRing V))) ≫ (g {0}).b) ((toUnit (TF (R := V) (FractionRing V))) ≫ (g {1}).b) ((toUnit (TF (R := V) (FractionRing V))) ≫ (g {2}).b) = cubV U.cubG z JG ((toUnit (TF (R := V) (FractionRing V))) ≫ h {0}) ((toUnit (TF (R := V) (FractionRing V))) ≫ h {1}) ((toUnit (TF (R := V) (FractionRing V))) ≫ h {2}) * (val (f {0, 1}) (toUnit (TF (R := V) (FractionRing V))).left z JG * val (f {0, 2}) (toUnit (TF (R := V) (FractionRing V))).left z JG * val (f {1, 2}) (toUnit (TF (R := V) (FractionRing V))).left z JG * val (f ∅) (toUnit (TF (R := V) (FractionRing V))).left z JG) * (val (t {0, 1}) (toUnit (TF (R := V) (FractionRing V))).left z JB * val (t {0, 2}) (toUnit (TF (R := V) (FractionRing V))).left z JB * val (t {1, 2}) (toUnit (TF (R := V) (FractionRing V))).left z JB * val (t ∅) (toUnit (TF (R := V) (FractionRing V))).left z JB) := by
   intro V _ _ _ hV D A G _ _ _ U h g f t h₀ h₁ h₂ h₃ h₄ g₀ g₁ g₂ g₃ g₄ hF hf ht hT z JG JB hJG hJB

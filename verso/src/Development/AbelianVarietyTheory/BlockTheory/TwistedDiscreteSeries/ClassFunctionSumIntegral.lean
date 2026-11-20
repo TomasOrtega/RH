@@ -45,20 +45,20 @@ def ClassSumIntegral : Prop :=
 variable {V : HSp D} {K : Subgroup (GL (Fin V.rank) (Lev.EAf D))}
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, map_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_conj_inv {G H : Type} [Group G] [Group H] (f : G →* H) (a b : G) : f (a⁻¹ * b * a) = (f a)⁻¹ * f b * f a := by
   rw [map_mul, map_mul, map_inv]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_levelFin (w : GA D V) : (finHom V).rangeRestrict w ∈ levelFin V K ↔ Lev.finE V w ∈ K := Iff.rfl
 
 /- English proof (translation)
-Unfold `classGroupAt`. Rewrite using `[Bridge.mem_stab]`. Establish `e : ((finHom V).rangeRestrict z)⁻¹ * Bridge.ratF V γ * (finHom V).rangeRestrict z = (finHom V).rangeRestrict (z⁻¹ * (γ : GA D V) * z)`. Establish `e0 : Bridge.ratF V γ = (finHom V).rangeRestrict (γ : GA D V)`. Simplify using `only [Bridge.ratF, MonoidHom.comp_apply, Subgroup.coe_subtype]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e0]`. Conclude with `(map_conj_inv (finHom V).rangeRestrict z γ).symm`. Rewrite using `[e]`. Conclude with `mem_levelFin _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_classGroupAt (z : GA D V) (γ : GQ V) :
     γ ∈ classGroupAt V K ((finHom V).rangeRestrict z) ↔ Lev.finE V (z⁻¹ * (γ : GA D V) * z) ∈ K := by
@@ -74,13 +74,13 @@ theorem mem_classGroupAt (z : GA D V) (γ : GQ V) :
   exact mem_levelFin _
 
 /- English proof (translation)
-The claim follows from `(finHom V).rangeRestrict_surjective x`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift (x : Bridge.Gf V) : ∃ z : GA D V, (finHom V).rangeRestrict z = x :=
   (finHom V).rangeRestrict_surjective x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 example (c : ℂ) : IsClassFun V K fun _ => c := ⟨fun _ _ _ => rfl, fun _ _ _ => rfl, fun _ _ _ => rfl⟩
 

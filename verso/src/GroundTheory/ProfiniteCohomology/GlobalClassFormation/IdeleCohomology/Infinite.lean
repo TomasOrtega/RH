@@ -20,7 +20,7 @@ noncomputable def completionCongr {u u' : InfinitePlace M} (h : u = u') :
   h ▸ RingEquiv.refl _
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `continuous_id`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem continuous_completionCongr {u u' : InfinitePlace M} (h : u = u') :
     Continuous (completionCongr h) := by
@@ -28,7 +28,7 @@ theorem continuous_completionCongr {u u' : InfinitePlace M} (h : u = u') :
   exact continuous_id
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem completionCongr_algebraMap {u u' : InfinitePlace M} (h : u = u') (x : M) :
     completionCongr h (algebraMap M u.Completion x) = algebraMap M u'.Completion x := by
@@ -36,7 +36,7 @@ theorem completionCongr_algebraMap {u u' : InfinitePlace M} (h : u = u') (x : M)
   rfl
 
 /- English proof (translation)
-Set `_ : Algebra M M'` to `(τ : M →+* M').toAlgebra`. Conclude with `NumberField.LiesOver.continuous_completionMap`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem continuous_infiniteCompletionMap {M' : Type} [Field M'] [NumberField M] [NumberField M']
     (τ : M ≃+* M') (w' : InfinitePlace M') : Continuous (infiniteCompletionMap τ w') := by
@@ -57,7 +57,7 @@ noncomputable abbrev infiniteUnitsAboveRep :
   piUnitsRep
 
 /- English proof (translation)
-Take `rfl : u = ⟨w.1.comap ((σ : L ≃+* L) : L →+* L), comap_mem_placesOver v σ w⟩` from `Subtype.ext h`. Conclude with `infiniteUnitsAbove_smul_apply v σ y w`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem infiniteUnitsAbove_smul_apply_of_eq (σ : Gal(L/K))
     (y : (w : v.placesOver L) → (w.1.Completion)ˣ) (u w : v.placesOver L)
@@ -70,16 +70,16 @@ theorem infiniteUnitsAbove_smul_apply_of_eq (σ : Gal(L/K))
 
 omit [NumberField K] [NumberField L] in
 /- English proof (translation)
-Rewrite using `[comap_eq_inv_smul, InfinitePlace.coe_smul_placesOver, inv_smul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_smul_placesOver (σ : Gal(L/K)) (w : v.placesOver L) :
     w.1 = (σ • w).1.comap ((σ : L ≃+* L) : L →+* L) := by
   rw [comap_eq_inv_smul, InfinitePlace.coe_smul_placesOver, inv_smul_smul]
 
 /- English proof (translation)
-Introduce `σ f w hf`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(((σ • fun x => (f x).toMul) (σ • w) : ((σ • w).1.Completion)ˣ) : (σ • w).1.Completion) = 1`. Rewrite using `[infiniteUnitsAbove_smul_apply_of_eq v σ _ w (σ • w) (comap_smul_placesOver v σ w)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf]`. Express the relevant statement in the definitionally equal form `infiniteCompletionMap _ _ (completionCongr _ 1) = 1`. Rewrite using `[map_one, map_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem permutesFactors_infiniteUnitsAboveRep : PermutesFactors (infiniteUnitsAboveRep L v) := by
   intro σ f w hf
@@ -146,9 +146,9 @@ theorem infiniteEmbedAboveRep_hom_apply (y : ∀ w : v.placesOver L, Additive (w
   rfl
 
 /- English proof (translation)
-Apply `Rep.hom_ext` to reduce the goal to its premises. Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Use function extensionality and compare the values at `w`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `Additive.ofMul (infiniteProjAbove v (infiniteEmbedAbove v fun w => (y w).toMul) w) = y w`. Rewrite using `[infiniteProjAbove_infiniteEmbedAbove]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem infiniteEmbedAboveRep_comp_infiniteProjAboveRep :
     infiniteEmbedAboveRep (L := L) v ≫ infiniteProjAboveRep (L := L) v = 𝟙 _ := by
@@ -162,9 +162,9 @@ theorem infiniteEmbedAboveRep_comp_infiniteProjAboveRep :
   rfl
 
 /- English proof (translation)
-Apply `Rep.hom_ext` to reduce the goal to its premises. Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Use function extensionality and compare the values at `w`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `Additive.ofMul (infiniteProjAbove v' (infiniteEmbedAbove v fun w => (y w).toMul) w) = 0`. Rewrite using `[infiniteProjAbove_infiniteEmbedAbove_of_ne h]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem infiniteEmbedAboveRep_comp_infiniteProjAboveRep_of_ne {v v' : InfinitePlace K}
     (h : v' ≠ v) : infiniteEmbedAboveRep (L := L) v ≫ infiniteProjAboveRep (L := L) v' = 0 := by
@@ -178,9 +178,9 @@ theorem infiniteEmbedAboveRep_comp_infiniteProjAboveRep_of_ne {v v' : InfinitePl
   rfl
 
 /- English proof (translation)
-Apply `Rep.hom_ext` to reduce the goal to its premises. Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Use function extensionality and compare the values at `w`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `Additive.ofMul (finiteProjAbove v' (infiniteEmbedAbove v fun w => (y w).toMul) w) = 0`. Rewrite using `[finiteProjAbove_infiniteEmbedAbove]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem infiniteEmbedAboveRep_comp_finiteProjAboveRep (v' : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) :
     infiniteEmbedAboveRep (L := L) v ≫ finiteProjAboveRep (L := L) v' = 0 := by
@@ -194,9 +194,9 @@ theorem infiniteEmbedAboveRep_comp_finiteProjAboveRep (v' : IsDedekindDomain.Hei
   rfl
 
 /- English proof (translation)
-Apply `Rep.hom_ext` to reduce the goal to its premises. Apply `Representation.IntertwiningMap.ext` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Use function extensionality and compare the values at `w`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `Additive.ofMul (infiniteProjAbove v (finiteEmbedAbove v' fun w => (y w).toMul) w) = 0`. Rewrite using `[infiniteProjAbove_finiteEmbedAbove]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finiteEmbedAboveRep_comp_infiniteProjAboveRep (v' : IsDedekindDomain.HeightOneSpectrum (𝓞 K)) :
     finiteEmbedAboveRep (L := L) v' ≫ infiniteProjAboveRep (L := L) v = 0 := by
@@ -218,7 +218,7 @@ variable (w : v.placesOver L)
 omit [NumberField K] [NumberField L] in
 
 /- English proof (translation)
-Rewrite using `[MulAction.mem_stabilizer_iff, Subtype.ext_iff, InfinitePlace.coe_smul_placesOver]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_stabilizer_iff_smul_eq_infinite (σ : Gal(L/K)) :
     σ ∈ MulAction.stabilizer Gal(L/K) w.1 ↔ σ • w = w := by
@@ -227,9 +227,9 @@ theorem mem_stabilizer_iff_smul_eq_infinite (σ : Gal(L/K)) :
 omit [NumberField K] in
 
 /- English proof (translation)
-Rewrite using `[infiniteDecomposition_smul_def]`. Use `ringHom_ext_completion w.1 (f := (infiniteCompletionMap ((σ : Gal(L/K)) : L ≃+* L) w.1).comp (completionCongr h).toRingHom) ((continuous_infiniteCompletionMap _ _).comp (continuous_completionCongr h)) (continuous_completionRingHomOf σ.2) fun y => by` as an intermediate fact. Rewrite using `[completionRingHomOf_coe]`. Express the relevant statement in the definitionally equal form `infiniteCompletionMap _ w.1 (completionCongr h (algebraMap L w.1.Completion y.ofAbs)) = algebraMap L w.1.Completion (withAbsMapOf w.1 (σ : Gal(L/K)) y).ofAbs`. Rewrite using `[completionCongr_algebraMap, infiniteCompletionMap_algebraMap, ofAbs_withAbsMapOf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `congrFun (congrArg DFunLike.coe this) x`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem infiniteCompletionMap_eq_decomposition (σ : MulAction.stabilizer Gal(L/K) w.1)
     (h : w.1 = w.1.comap (((σ : Gal(L/K)) : L ≃+* L) : L →+* L)) (x : w.1.Completion) :
@@ -247,9 +247,9 @@ theorem infiniteCompletionMap_eq_decomposition (σ : MulAction.stabilizer Gal(L/
   exact congrFun (congrArg DFunLike.coe this) x
 
 /- English proof (translation)
-Rewrite using `[stabRep_apply]`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Establish `hw : w = (σ : Gal(L/K)) • w` using `((mem_stabilizer_iff_smul_eq_infinite v w σ).1 σ.2).symm`. Establish `h : w.1 = w.1.comap (((σ : Gal(L/K)) : L ≃+* L) : L →+* L)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h'` using `comap_smul_placesOver v (σ : Gal(L/K)) w`. Rewrite `h'` using `[← hw]`. Then use the resulting hypothesis. Simplify using `only [piUnitsRep_apply, toMul_ofMul]`. Rewrite using `[infiniteUnitsAbove_smul_apply_of_eq v (σ : Gal(L/K)) _ w w h, infiniteCompletionMap_eq_decomposition]`. Simplify using `only [Pi.single_eq_same]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/

@@ -11,9 +11,9 @@ section
 variable {H' H Y : Type} [Group H'] [Group H] [MulAction H Y] [MulAction H' Y]
 
 /- English proof (translation)
-Rewrite using `[Quotient.eq, orbitRel_apply, mem_orbit_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨φ a, Subgroup.mem_sup_left ⟨a, rfl⟩, (hφ a y').symm⟩`. Introduce and unpack `⟨c, hc, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨_, ⟨a, rfl⟩, z, hz, rfl⟩` from `Subgroup.mem_sup_of_normal_right.1 hc`. Conclude with `⟨a, by rw [hφ, mul_smul, h0 z hz]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem orb_iff (φ : H' →* H) (hφ : ∀ (a : H') (y : Y), a • y = φ a • y) (H₀ : Subgroup H) [H₀.Normal]
     (h0 : ∀ z ∈ H₀, ∀ y : Y, z • y = y) (y y' : Y) :
@@ -27,13 +27,13 @@ private theorem orb_iff (φ : H' →* H) (hφ : ∀ (a : H') (y : Y), a • y = 
     exact ⟨a, by rw [hφ, mul_smul, h0 z hz]⟩
 
 /- English proof (translation)
-Establish `hH₀S : H₀ ≤ stabilizer H y` using `fun z hz => h0 z hz y`. Establish `hS' : stabilizer H' y = (stabilizer H y).comap φ`. Use extensionality with `a`. Simplify using `[mem_stabilizer_iff, hφ]`. Establish `hdk : (φ.range ⊔ H₀) ⊓ stabilizer H y = (φ.range ⊓ stabilizer H y) ⊔ H₀`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Subgroup.mem_inf, Subgroup.mem_sup_of_normal_right]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨p, hp, z, hz, rfl⟩, hx⟩`. Use `⟨p, ⟨hp, ?_⟩, z, hz, rfl⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpz : p = (p * z) * z⁻¹` using `by group`. Rewrite using `[hpz]`. Conclude with `Subgroup.mul_mem _ hx (Subgroup.inv_mem _ (hH₀S hz))`. Introduce and unpack `⟨p, ⟨hp, hpS⟩, z, hz, rfl⟩`. Conclude with `⟨⟨p, hp, z, hz, rfl⟩, Subgroup.mul_mem _ hpS (hH₀S hz)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS', Subgroup.relIndex_comap, Subgroup.map_comap_eq, ← Subgroup.relIndex_sup_right (φ.range ⊓ stabilizer H y) H₀, ← hdk, ← Subgroup.inf_relIndex_right (φ.range ⊔ H₀) (stabilizer H y)]`. Conclude with `Subgroup.relIndex_mul_relIndex _ _ _ (le_inf le_sup_right hH₀S) inf_le_right`.
+A detailed English derivation is pending.
 -/
 private theorem w_mul (φ : H' →* H) (hφ : ∀ (a : H') (y : Y), a • y = φ a • y) (H₀ : Subgroup H) [H₀.Normal]
     (h0 : ∀ z ∈ H₀, ∀ y : Y, z • y = y) (y : Y) :
@@ -59,19 +59,19 @@ private theorem w_mul (φ : H' →* H) (hφ : ∀ (a : H') (y : Y), a • y = φ
   exact Subgroup.relIndex_mul_relIndex _ _ _ (le_inf le_sup_right hH₀S) inf_le_right
 
 /- English proof (translation)
-Set `f : stabilizer H y ⧸ K.subgroupOf (stabilizer H y) → H ⧸ K` to `Quotient.map' (fun s : stabilizer H y => g * (s : H)) (fun a b hab => by`. Rewrite `hab`, the goal using `[QuotientGroup.leftRel_apply]`. Rewrite `hab` using `[Subgroup.mem_subgroupOf]`. Simplify `hab)` using `[mul_assoc]`. Establish `hf : ∀ s : stabilizer H y, f (QuotientGroup.mk s) = QuotientGroup.mk (g * (s : H))` using `fun s => rfl`.
+Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective f`. Introduce `a b hab`. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective a`. Take `⟨b, rfl⟩` from `QuotientGroup.mk_surjective b`. Rewrite `hab` using `[hf, hf, QuotientGroup.eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify `hab` using `[mul_assoc]`. Establish `hrange : {x : H ⧸ K | ∃ c ∈ K, c • y = x.out⁻¹ • g • y} = Set.range f`. Use extensionality with `x`. Take `⟨h, rfl⟩` from `QuotientGroup.mk_surjective x`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Take `⟨k0, hout⟩` from `QuotientGroup.mk_out_eq_mul K h`. Simplify using `only [Set.mem_setOf_eq, Set.mem_range, hout]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, hcy⟩`. Establish `hs : g⁻¹ * (h * k0 * c) ∈ stabilizer H y`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[mem_stabilizer_iff, mul_smul, mul_smul, hcy, ← mul_smul, ← mul_smul]`. Simplify using `only [mul_inv_rev]`. Rewrite using `[← mul_smul, show g⁻¹ * (h * (k0 : H)) * ((k0 : H)⁻¹ * h⁻¹) * g = 1 by group, one_smul]`. Use `⟨QuotientGroup.mk ⟨g⁻¹ * (h * k0 * c), hs⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hf, QuotientGroup.eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : (c⁻¹ * (k0 : H)⁻¹) ∈ K` using `K.mul_mem (K.inv_mem hc) (K.inv_mem k0.2)`. Simplify `hm` using `[mul_assoc]`. Introduce and unpack `⟨q, hq⟩`. Take `⟨s, rfl⟩` from `QuotientGroup.mk_surjective q`. Rewrite `hq` using `[hf, QuotientGroup.eq]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨(h * k0)⁻¹ * (g * s), ?_, ?_⟩` and prove the remaining obligations. Establish `hm` using `K.mul_mem (K.inv_mem k0.2) (K.inv_mem hq)`. Simplify `hm` using `[mul_assoc]`. Rewrite using `[mul_smul, mul_smul, mem_stabilizer_iff.mp s.2]`. Rewrite using `[hrange, ← Nat.card_coe_set_eq, Nat.card_range_of_injective hinj]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -117,9 +117,9 @@ private theorem fib_card (K : Subgroup H) (g : H) (y : Y) :
   rfl
 
 /- English proof (translation)
-Establish `hmap : H₀.map (MulAut.conj g).toMonoidHom = H₀`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `hN.conj_mem a ha g`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Conclude with `⟨g⁻¹ * x * g, by simpa using hN.conj_mem x hx g⁻¹, by simp [mul_assoc]⟩`. Rewrite using `[stabilizer_smul_eq_stabilizer_map_conj]`. Use `conv_lhs => rw [← hmap]`. Conclude with `Subgroup.relIndex_map_map_of_injective _ _ (MulAut.conj g).injective`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem w_conj (H₀ : Subgroup H) [hN : H₀.Normal] (g : H) (y : Y) :
     H₀.relIndex (stabilizer H (g • y)) = H₀.relIndex (stabilizer H y) := by
@@ -135,47 +135,41 @@ private theorem w_conj (H₀ : Subgroup H) [hN : H₀.Normal] (g : H) (y : Y) :
   exact Subgroup.relIndex_map_map_of_injective _ _ (MulAut.conj g).injective
 
 /- English proof (translation)
-Use `haveI : (φ.range ⊔ H₀).FiniteIndex := ⟨hn⟩`. Use `letI : Fintype (H ⧸ (φ.range ⊔ H₀)) := Fintype.ofFinite _`. Take `⟨S0, hS0⟩` from `hS`. Set `π : orbitRel.Quotient H' Y → orbitRel.Quotient H Y` to `fun q' => Quotient.mk (orbitRel H Y) q'.out`. Set `T : orbitRel.Quotient H Y → ℂ` to `fun q => k q.out / (H₀.relIndex (stabilizer H q.out) : ℂ)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `T' : orbitRel.Quotient H' Y → ℂ` to `fun q' => k q'.out / ((H₀.comap φ).relIndex (stabilizer H' q'.out) : ℂ)`. Establish `hgq : gq H₀ k = ∑ᶠ q, T q` using `rfl`. Establish `hgq' : gq (H₀.comap φ) k = ∑ᶠ q', T' q'` using `rfl`. Establish `mkH_smul : ∀ (h : H) (y : Y), Quotient.mk (orbitRel H Y) (h • y) = Quotient.mk (orbitRel H Y) y`. Introduce `h y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Quotient.sound (orbitRel_apply.mpr ⟨h, rfl⟩)`. Establish `mkH_of : ∀ a b : Y, Quotient.mk (orbitRel H' Y) a = Quotient.mk (orbitRel H' Y) b → Quotient.mk (orbitRel H Y) a = Quotient.mk (orbitRel H Y) b`. Introduce `a b hab`. Take `⟨c, -, hc⟩` from `(orb_iff φ hφ H₀ h0 a b).mp hab`. Rewrite using `[← hc, mkH_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsame : ∀ q', ∃ h : H, (π q').out = h • q'.out`. Introduce `q'`. Establish `e : Quotient.mk (orbitRel H Y) (π q').out = Quotient.mk (orbitRel H Y) q'.out` using `Quotient.out_eq _`. Take `⟨h, hh⟩` from `mem_orbit_iff.mp (orbitRel_apply.mp (Quotient.exact e))`. Conclude with `⟨h, hh.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT' : ∀ q', T' q' = T (π q') * ((φ.range ⊔ H₀).relIndex (stabilizer H q'.out) : ℂ)`. Introduce `q'`. Take `⟨h, hh⟩` from `hsame q'`. Use `show k q'.out / ((H₀.comap φ).relIndex (stabilizer H' q'.out) : ℂ) = k (π q').out / (H₀.relIndex (stabilizer H (π q').out) : ℂ) * ((φ.range ⊔ H₀).relIndex (stabilizer H q'.out) : ℂ)`. Rewrite using `[hh, hk, w_conj]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hk0 : k q'.out = 0`. Simplify using `[hk0]`. Establish `hw0` using `hw _ hk0`. Establish `hm` using `w_mul φ hφ H₀ h0 q'.out`. Rewrite `hw0`, the goal using `[← hm]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `h1 : ((H₀.comap φ).relIndex (stabilizer H' q'.out) : ℂ) ≠ 0`. Conclude with `left_ne_zero_of_mul hw0` after adjusting the coercions. Establish `h2 : ((φ.range ⊔ H₀).relIndex (stabilizer H q'.out) : ℂ) ≠ 0`. Conclude with `right_ne_zero_of_mul hw0` after adjusting the coercions. Use `push_cast`.
+Clear the denominators using the available nonvanishing facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Clear the denominators using the available nonvanishing facts. Set `Q0 : Finset (orbitRel.Quotient H Y)` to `S0.image (fun s => Quotient.mk (orbitRel H Y) s)`. Set `Q0' : Finset (orbitRel.Quotient H' Y)` to `(S0 ×ˢ (Finset.univ : Finset (H ⧸ (φ.range ⊔ H₀)))).image (fun p => Quotient.mk (orbitRel H' Y) (p.2.out⁻¹ • p.1))`. Establish `inQ0' : ∀ s ∈ S0, ∀ h : H, Quotient.mk (orbitRel H' Y) (h • s) ∈ Q0'`. Introduce `s hs h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨l, hl⟩` from `QuotientGroup.mk_out_eq_mul (φ.range ⊔ H₀) h⁻¹`. Use `Finset.mem_image.mpr ⟨(s, QuotientGroup.mk h⁻¹), Finset.mem_product.mpr ⟨hs, Finset.mem_univ _⟩, ?_⟩` and prove the remaining obligations. Use `show Quotient.mk (orbitRel H' Y) ((QuotientGroup.mk h⁻¹ : H ⧸ (φ.range ⊔ H₀)).out⁻¹ • s) = Quotient.mk (orbitRel H' Y) (h • s)`. Rewrite using `[orb_iff φ hφ H₀ h0]`. Use `⟨(l : H)⁻¹, Subgroup.inv_mem _ l.2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hl, mul_inv_rev, inv_inv, mul_smul]`. Establish `hsuppT : Function.support T ⊆ ↑Q0`. Introduce `q hq`. Establish `hk0 : k q.out ≠ 0`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hq (by simp [T, h])`. Take `⟨h, x, hx, hxq⟩` from `hS0 _ hk0`. Use `Finset.mem_coe.mpr (Finset.mem_image.mpr ⟨x, hx, ?_⟩)` and prove the remaining obligations. Rewrite using `[← mkH_smul h x, ← hxq, Quotient.out_eq]`. Establish `hsuppT' : Function.support T' ⊆ ↑Q0'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `q' hq'`. Establish `hk0 : k q'.out ≠ 0`. Introduce `h`. Conclude with `hq' (by simp [T', h])`. Take `⟨h, x, hx, hxq⟩` from `hS0 _ hk0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `inQ0' x hx h` as an intermediate fact. Rewrite `this` using `[← hxq, Quotient.out_eq]`. Conclude with `Finset.mem_coe.mpr this`. Establish `hmaps : ∀ q' ∈ Q0', π q' ∈ Q0`. Introduce `q' hq'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨s, x⟩, hp, rfl⟩` from `Finset.mem_image.mp hq'`. Use `Finset.mem_image.mpr ⟨s, (Finset.mem_product.mp hp).1, ?_⟩` and prove the remaining obligations. Use `show Quotient.mk (orbitRel H Y) s = Quotient.mk (orbitRel H Y) (Quotient.mk (orbitRel H' Y) (x.out⁻¹ • s)).out`. Rewrite using `[mkH_of _ (x.out⁻¹ • s) (Quotient.out_eq _), mkH_smul]`. Establish `hfib : ∀ q ∈ Q0, ∑ q' ∈ Q0' with π q' = q, ((φ.range ⊔ H₀).relIndex (stabilizer H q'.out) : ℂ) = ((φ.range ⊔ H₀).index : ℂ)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q hq`. Take `⟨s, hs, hsq⟩` from `Finset.mem_image.mp hq`. Set `Φ : H ⧸ (φ.range ⊔ H₀) → orbitRel.Quotient H' Y` to `fun x => Quotient.mk (orbitRel H' Y) (x.out⁻¹ • q.out)`. Choose the witnesses or unpack the hypotheses as in `⟨h1, hh1⟩ : ∃ h1 : H, q.out = h1 • s := by`. Establish `e : Quotient.mk (orbitRel H Y) q.out = Quotient.mk (orbitRel H Y) s` using `by rw [Quotient.out_eq, hsq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h, hh⟩` from `mem_orbit_iff.mp (orbitRel_apply.mp (Quotient.exact e))`. Conclude with `⟨h, hh.symm⟩`. Establish `hΦ : Set.MapsTo Φ ↑(Finset.univ : Finset (H ⧸ (φ.range ⊔ H₀))) ↑(Q0'.filter (fun q' => π q' = q))`. Introduce `x _`. Use `Finset.mem_coe.mpr (Finset.mem_filter.mpr ⟨?_, ?_⟩)` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show Quotient.mk (orbitRel H' Y) (x.out⁻¹ • q.out) ∈ Q0'`. Rewrite using `[hh1, ← mul_smul]`. Conclude with `inQ0' s hs _`. Use `show Quotient.mk (orbitRel H Y) (Quotient.mk (orbitRel H' Y) (x.out⁻¹ • q.out)).out = q`. Rewrite using `[mkH_of _ (x.out⁻¹ • q.out) (Quotient.out_eq _), mkH_smul, Quotient.out_eq]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard` using `Finset.card_eq_sum_card_fiberwise hΦ`. Rewrite `hcard` using `[Finset.card_univ, ← Nat.card_eq_fintype_card, ← Subgroup.index_eq_card]`. Rewrite using `[hcard]`. Use `push_cast`. Use `Finset.sum_congr rfl fun q' hq' => ?_` and prove the remaining obligations.
-
-Establish `hπ : π q' = q` using `(Finset.mem_filter.mp hq').2`. Take `⟨g, hg⟩` from `hsame q'`. Rewrite `hg` using `[hπ]`. Establish `hset : ((Finset.univ.filter (fun x => Φ x = q') : Finset (H ⧸ (φ.range ⊔ H₀))) : Set (H ⧸ (φ.range ⊔ H₀))) = {x : H ⧸ (φ.range ⊔ H₀) | ∃ c ∈ φ.range ⊔ H₀, c • q'.out = x.out⁻¹ • g • q'.out}`. Use extensionality with `x`.
-
-Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq]`. Rewrite using `[← orb_iff φ hφ H₀ h0, Quotient.out_eq]`. Use `show Quotient.mk (orbitRel H' Y) (x.out⁻¹ • q.out) = q' ↔ _`. Rewrite using `[hg]`. Rewrite using `[← Set.ncard_coe_finset, hset, fib_card]`.
-
-Rewrite using `[hgq', hgq, finsum_eq_sum_of_support_subset T' hsuppT', finsum_eq_sum_of_support_subset T hsuppT, ← Finset.sum_fiberwise_of_maps_to hmaps, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl fun q' hq' => by rw [hT', (Finset.mem_filter.mp hq').2], ← Finset.mul_sum, hfib q hq, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gq_index (φ : H' →* H) (hφ : ∀ (a : H') (y : Y), a • y = φ a • y) (H₀ : Subgroup H) [H₀.Normal]
     (h0 : ∀ z ∈ H₀, ∀ y : Y, z • y = y) (k : Y → ℂ) (hn : (φ.range ⊔ H₀).index ≠ 0) (hk : ∀ (h : H) y, k (h • y) = k y)
@@ -303,7 +297,7 @@ private theorem gq_index (φ : H' →* H) (hφ : ∀ (a : H') (y : Y), a • y =
 end
 
 /- English proof (translation)
-Introduce `H' H G _ _ _ φ j H₀ U k hN h0 hn hk hS hw`. Use `letI : MulAction H (G ⧸ U) := MulAction.compHom _ j`. Use `letI : MulAction H' (G ⧸ U) := MulAction.compHom _ (j.comp φ)`. Conclude with `gq_index φ (fun _ _ => rfl) H₀ h0 k hn hk hS hw`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem gqIndex : GqIndex := by
   intro H' H G _ _ _ φ j H₀ U k hN h0 hn hk hS hw

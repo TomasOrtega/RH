@@ -7,9 +7,9 @@ namespace UpperTheory.Mu
 variable {R : Ranks} (H : Host R)
 
 /- English proof (translation)
-Establish `hw : Units.torsionOrder H.E ∣ H.QS` using `w_dvd_QS H`. Establish `hwle : Units.torsionOrder H.E ≤ H.QS` using `Nat.le_of_dvd H.QS_pos hw`. Establish `hq` using `H.q_prime.two_le`. Establish `hd` using `H.d_prime.two_le`. Establish `hle : H.QS * H.q * H.d ≤ p - 1` using `Nat.le_of_dvd (by omega) h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : H.QS * 4 ≤ H.QS * H.q * H.d`. Rewrite using `[mul_assoc]`. Conclude with `Nat.mul_le_mul_left _ (by nlinarith)`. Establish `hQ` using `H.QS_pos`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem w_add_one_lt_of_dvd {p : ℕ} (hp : 1 < p) (h : H.QS * H.q * H.d ∣ p - 1) : Units.torsionOrder H.E + 1 < p := by
   have hw : Units.torsionOrder H.E ∣ H.QS := w_dvd_QS H
@@ -24,7 +24,7 @@ theorem w_add_one_lt_of_dvd {p : ℕ} (hp : 1 < p) (h : H.QS * H.q * H.d ∣ p -
   omega
 
 /- English proof (translation)
-Apply `w_add_one_lt_of_dvd H hp` to reduce the goal to its premises. Establish `h1` using `Nat.dvd_sub_mod (n := r * (H.QS * H.q * H.d)) p`. Rewrite `h1` using `[h]`. Conclude with `dvd_trans (Dvd.intro_left r rfl) h1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem w_add_one_lt {p : ℕ} (hp : 1 < p) (r : ℕ) (h : p % (r * (H.QS * H.q * H.d)) = 1) :
     Units.torsionOrder H.E + 1 < p := by

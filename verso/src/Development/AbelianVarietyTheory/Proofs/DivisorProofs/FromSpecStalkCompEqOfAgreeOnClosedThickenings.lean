@@ -6,11 +6,11 @@ open ReciprocityTheory.ChartRestriction.G.Out
 namespace GlobalTheory.ThickStalkEq
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hna`. Take `⟨v, hv⟩` from `ha`. Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective (↑v⁻¹ : A ⧸ I)`. Establish `h1 : Ideal.Quotient.mk I (a * b - 1) = 0`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_mul, hb, ← hv]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[Ideal.Quotient.eq_zero_iff_mem]`. Establish `hm : a * b - 1 ∈ maximalIdeal A` using `le_maximalIdeal hI h1`. Establish `ha' : a * b ∈ maximalIdeal A` using `Ideal.mul_mem_right _ _ ((mem_maximalIdeal _).2 hna)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (1 : A) ∈ maximalIdeal A` using `by simpa using Ideal.sub_mem _ ha' hm`. Conclude with `(maximalIdeal.isMaximal A).ne_top ((Ideal.eq_top_iff_one _).2 h2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLocalHom_mk {A : Type} [CommRing A] [IsLocalRing A] (I : Ideal A) (hI : I ≠ ⊤) :
     IsLocalHom (Ideal.Quotient.mk I) := by
@@ -27,7 +27,7 @@ theorem isLocalHom_mk {A : Type} [CommRing A] [IsLocalRing A] (I : Ideal A) (hI 
   exact (maximalIdeal.isMaximal A).ne_top ((Ideal.eq_top_iff_one _).2 h2)
 
 /- English proof (translation)
-The claim follows from `ne_top_of_le_ne_top (maximalIdeal.isMaximal A).ne_top (Ideal.pow_le_self (Nat.succ_ne_zero e))`.
+A detailed English derivation is pending.
 -/
 theorem pow_succ_ne_top (A : Type) [CommRing A] [IsLocalRing A] (e : ℕ) :
     maximalIdeal A ^ (e + 1) ≠ ⊤ :=
@@ -46,17 +46,17 @@ instance (A : Type) [CommRing A] [IsLocalRing A] (e : ℕ) :
   isLocalHom_mk _ (pow_succ_ne_top A e)
 
 /- English proof (translation)
-Take `⟨⟨y, ψ, hψ⟩, rfl⟩` from `(SpecToEquivOfLocalRing X A).symm.surjective u`. Take `⟨⟨y', ψ', hψ'⟩, rfl⟩` from `(SpecToEquivOfLocalRing X A).symm.surjective u'`. Establish `key : ∀ e : ℕ, ∃ h₁ : y = y', ψ ≫ CommRingCat.ofHom (Ideal.Quotient.mk (maximalIdeal A ^ (e + 1))) = (X.presheaf.stalkCongr (by rw [h₁]; rfl)).hom ≫ ψ' ≫ CommRingCat.ofHom (Ideal.Quotient.mk (maximalIdeal A ^ (e + 1)))`. Introduce `e`. Establish `he` using `h e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [SpecToEquivOfLocalRing_symm_apply, ← Spec.map_comp_assoc] at he`. Establish `l1 : IsLocalHom (ψ ≫ CommRingCat.ofHom (Ideal.Quotient.mk (maximalIdeal A ^ (e + 1)))).hom`. Rewrite using `[CommRingCat.hom_comp, CommRingCat.hom_ofHom]`. Use `infer_instance`. Establish `l2 : IsLocalHom (ψ' ≫ CommRingCat.ofHom (Ideal.Quotient.mk (maximalIdeal A ^ (e + 1)))).hom`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CommRingCat.hom_comp, CommRingCat.hom_ofHom]`. Use `infer_instance`. Establish `hinj` using `(SpecToEquivOfLocalRing X (.of (A ⧸ maximalIdeal A ^ (e + 1)))).symm.injective (a₁ := ⟨y, ψ ≫ CommRingCat.ofHom (Ideal.Quotient.mk _), l1⟩) (a₂ := ⟨y', ψ' ≫ CommRingCat.ofHom (Ideal.Quotient.mk _), l2⟩) (by simpa only [SpecToEquivOfLocalRing_symm_apply] using he)`. Take `⟨h₁, h₂⟩` from `SpecToEquivOfLocalRing_eq_iff.mp hinj`. Conclude with `⟨h₁, h₂⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨rfl, -⟩` from `key 0`. Establish `hψψ : ψ = ψ'`. Use extensionality with `f`. Rewrite using `[← sub_eq_zero, ← Ideal.mem_bot, ← Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal A) (maximalIdeal.isMaximal A).ne_top, Ideal.mem_iInf]`. Introduce `n`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the cases of `n with`. Consider the case `zero => simp`. Consider the case `succ e`. Take `⟨_, h₂⟩` from `key e`. Simplify using `only [TopCat.Presheaf.stalkCongr_hom, TopCat.Presheaf.stalkSpecializes_refl, Category.id_comp] at h₂`.
+Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun g => g.hom f) h₂` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`. Conclude with `Ideal.Quotient.eq.mp this`. Substitute `hψψ` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eq_of_forall_pow {X : Scheme.{0}} (A : CommRingCat.{0}) [IsLocalRing A]
     [IsNoetherianRing A] (u u' : Spec A ⟶ X)
@@ -106,15 +106,15 @@ end GlobalTheory.ThickStalkEq
 namespace GlobalTheory.ThickStalkEq
 
 /- English proof (translation)
-Introduce `R _ _ _ G hG b b' hb x hx`. Use `haveI : IsLocallyNoetherian G.left := LocallyOfFiniteType.isLocallyNoetherian G.hom`. Set `A` to `G.left.presheaf.stalk x`. Set `φ : CommRingCat.of R ⟶ A` to `Spec.preimage (G.left.fromSpecStalk x ≫ G.hom)`. Establish `hφ : Spec.map φ = G.left.fromSpecStalk x ≫ G.hom` using `Spec.map_preimage _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (Spec.map φ) (closedPoint A) = closedPoint R`. Rewrite using `[hφ]`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans ((congrArg G.hom Scheme.fromSpecStalk_closedPoint).trans hx)`. Establish `hloc : ∀ r ∈ maximalIdeal R, φ.hom r ∈ maximalIdeal A`. Introduce `r hr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : PrimeSpectrum.comap φ.hom (closedPoint A) = closedPoint R` using `h1`. Establish `: r ∈ (PrimeSpectrum.comap φ.hom (closedPoint A)).asIdeal` using `by rw [hc]; exact hr`. Conclude with `this`. Use `eq_of_forall_pow A _ _ (fun e => ?_)` and prove the remaining obligations. Establish `hle : maximalIdeal R ^ (e + 1) ≤ (maximalIdeal A ^ (e + 1)).comap φ.hom`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.2 hloc) _`. Set `χ : R ⧸ maximalIdeal R ^ (e + 1) →+* A ⧸ maximalIdeal A ^ (e + 1)` to `Ideal.quotientMap _ φ.hom hle`. Establish `hw : (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (maximalIdeal A ^ (e + 1)))) ≫ G.left.fromSpecStalk x) ≫ G.hom = Spec.map (CommRingCat.ofHom χ) ≫ thick R (maximalIdeal R) e`. Rewrite using `[Category.assoc, ← hφ, thick, ← Spec.map_comp, ← Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congr 1`. Use `congrArg (fun g => pullback.lift _ _ hw ≫ g.left ≫ pullback.fst _ _) (hb e)` as an intermediate fact. Simplify using `only [Over.pullback_map_left] at this`. Rewrite `this` using `[pullback.lift_fst, pullback.lift_fst, pullback.lift_fst_assoc, pullback.lift_fst_assoc]`. Simplify `this` using `only [Category.assoc]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem fromSpecStalk_comp_eq : ∀ (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     (G : Over (Spec (CommRingCat.of R))), LocallyOfFiniteType G.hom → ∀ (b b' : G ⟶ G),

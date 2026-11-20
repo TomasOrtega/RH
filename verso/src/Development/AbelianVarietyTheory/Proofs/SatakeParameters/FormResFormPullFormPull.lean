@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.HodgeCoh
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `: homOfLE h = 𝟙 A` using `rfl`. Rewrite using `[this, op_id, X.presheaf.map_id]`. Use `infer_instance`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_map_homOfLE {X : Scheme.{0}} {A B : X.Opens} (h : A ≤ B) (e : A = B) :
     IsIso (X.presheaf.map (homOfLE h).op) := by
@@ -19,7 +19,7 @@ theorem isIso_map_homOfLE {X : Scheme.{0}} {A B : X.Opens} (h : A ≤ B) (e : A 
   infer_instance
 
 /- English proof (translation)
-Rewrite using `[Scheme.Opens.ι_app]`. Use `isIso_map_homOfLE _ ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Conclude with `inf_eq_right.2 h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_ι_app {X : Scheme.{0}} (V U : X.Opens) (h : U ≤ V) : IsIso (V.ι.app U) := by
   rw [Scheme.Opens.ι_app]
@@ -28,14 +28,14 @@ theorem isIso_ι_app {X : Scheme.{0}} (V U : X.Opens) (h : U ≤ V) : IsIso (V.�
   exact inf_eq_right.2 h
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem preimage_square {X Y Z W : Scheme.{0}} {a : Y ⟶ Z} {b : Z ⟶ X} {c : Y ⟶ W} {d : W ⟶ X}
     (e : a ≫ b = c ≫ d) (U : X.Opens) : c ⁻¹ᵁ (d ⁻¹ᵁ U) = a ⁻¹ᵁ (b ⁻¹ᵁ U) := by
   rw [← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, e]
 
 /- English proof (translation)
-Establish `m : b.app U ≫ a.app (b ⁻¹ᵁ U) ≫ Y.presheaf.map (homOfLE h).op = d.app U ≫ c.app (d ⁻¹ᵁ U)`. Simplify using `only [Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_map, Scheme.Hom.appLE_comp_appLE, e]`. Conclude with `ConcreteCategory.congr_hom m u`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem app_square {X Y Z W : Scheme.{0}} {a : Y ⟶ Z} {b : Z ⟶ X} {c : Y ⟶ W} {d : W ⟶ X}
     (e : a ≫ b = c ≫ d) (U : X.Opens) (h : c ⁻¹ᵁ (d ⁻¹ᵁ U) ≤ a ⁻¹ᵁ (b ⁻¹ᵁ U)) (u : Γ(X, U)) :
@@ -45,7 +45,7 @@ theorem app_square {X Y Z W : Scheme.{0}} {a : Y ⟶ Z} {b : Z ⟶ X} {c : Y ⟶
   exact ConcreteCategory.congr_hom m u
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `formRes_refl t _ _`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem formRes_formPull_congr {k : Type} [CommRing k] {X Y : Scheme.{0}} {s : X ⟶ Sp k}
     {t : Y ⟶ Sp k} {m m' : Y ⟶ X} (e : m = m') (hm : m ≫ s = t) (hm' : m' ≫ s = t)
@@ -55,7 +55,7 @@ theorem formRes_formPull_congr {k : Type} [CommRing k] {X Y : Scheme.{0}} {s : X
   exact formRes_refl t _ _
 
 /- English proof (translation)
-Establish `h1 : (a ≫ b) ≫ s = t` using `by rw [Category.assoc, hb, ha]`. Establish `h2 : (c ≫ d) ≫ s = t` using `by rw [Category.assoc, hd, hc]`. Rewrite using `[formPull_formPull hb ha h1 U j x, formPull_formPull hd hc h2 U j x]`. Conclude with `formRes_formPull_congr e h1 h2 U h j x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formRes_formPull_formPull {k : Type} [CommRing k] {X Y Z W : Scheme.{0}}
     {s : X ⟶ Sp k} {sZ : Z ⟶ Sp k} {sW : W ⟶ Sp k} {t : Y ⟶ Sp k} {a : Y ⟶ Z} {b : Z ⟶ X}
@@ -70,13 +70,13 @@ theorem formRes_formPull_formPull {k : Type} [CommRing k] {X Y Z W : Scheme.{0}}
   exact formRes_formPull_congr e h1 h2 U h j x
 
 /- English proof (translation)
-Use `Scheme.Modules.hom_ext _ _ fun U ↦ ?_` and prove the remaining obligations. Use extensionality with `x`. Use `section_ext_affine (F := F) (U := V.ι ⁻¹ᵁ U) fun W hW hWU ↦ ?_` and prove the remaining obligations. Establish `hW' : IsAffineOpen (V.ι ''ᵁ W)` using `hW.image_of_isOpenImmersion V.ι`. Establish `hWV : V.ι ''ᵁ W ≤ V`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(V.ι.image_le_image_iff W ⊤).2 le_top` as an intermediate fact. Rewrite `this` using `[Scheme.Opens.ι_image_top]`. Then use the resulting hypothesis. Establish `hWU' : V.ι ''ᵁ W ≤ U`. Use `((V.ι.image_le_image_iff W _).2 hWU).trans ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inf_le_right`. Establish `hW2 : W ≤ V.ι ⁻¹ᵁ (V.ι ''ᵁ W)` using `(V.ι.preimage_image_eq W).ge`. Establish `n : ∀ c : G ⟶ (Scheme.Modules.pushforward V.ι).obj F, F.presheaf.map (homOfLE hWU).op (c.app U x) = F.presheaf.map (homOfLE hW2).op (c.app (V.ι ''ᵁ W) (G.presheaf.map (homOfLE hWU').op x))` using `fun c ↦ by`. Establish `e1 : ((Scheme.Modules.pushforward V.ι).obj F).presheaf.map (homOfLE hWU').op (c.app U x) = c.app (V.ι ''ᵁ W) (G.presheaf.map (homOfLE hWU').op x)` using `(ConcreteCategory.congr_hom (c.mapPresheaf.naturality (homOfLE hWU').op) x).symm`. Rewrite using `[← e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = F.presheaf.map (homOfLE hW2).op (F.presheaf.map ((TopologicalSpace.Opens.map V.ι.base).map (homOfLE hWU')).op (c.app U x))`. Conclude with `ConcreteCategory.congr_hom (F.presheaf.map_comp _ _) _`. Rewrite using `[n a, n b, h _ hW' hWV]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_ext_ι {X : Scheme.{0}} (V : X.Opens) {G : X.Modules} {F : (V : Scheme.{0}).Modules}
     (a b : G ⟶ (Scheme.Modules.pushforward V.ι).obj F)
@@ -107,15 +107,11 @@ theorem hom_ext_ι {X : Scheme.{0}} (V : X.Opens) {G : X.Modules} {F : (V : Sche
   rw [n a, n b, h _ hW' hWV]
 
 /- English proof (translation)
-Establish `hw : (f ⁻¹ᵁ V).ι ≫ f = f ∣_ V ≫ V.ι` using `(morphismRestrict_ι f V).symm`. Use `letI := secAlg s s' f U`. Use `letI : Algebra (Sec s U) (Sec (V.ι ≫ s) (V.ι ⁻¹ᵁ U)) := (appSec s (V.ι ≫ s) V.ι U).toAlgebra`. Use `letI : Algebra (Sec s' (f ⁻¹ᵁ U)) (Sec ((f ⁻¹ᵁ V).ι ≫ s') ((f ∣_ V) ⁻¹ᵁ (V.ι ⁻¹ᵁ U))) := ((Sec.res ((f ⁻¹ᵁ V).ι ≫ s') h : _ →+* _).comp (appSec s' ((f ⁻¹ᵁ V).ι ≫ s') (f ⁻¹ᵁ V).ι (f ⁻¹ᵁ U))).toAlgebra`. Use `letI := secAlg (V.ι ≫ s) ((f ⁻¹ᵁ V).ι ≫ s') (f ∣_ V) (V.ι ⁻¹ᵁ U)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Algebra (Sec s U) (Sec ((f ⁻¹ᵁ V).ι ≫ s') ((f ∣_ V) ⁻¹ᵁ (V.ι ⁻¹ᵁ U))) := ((appSec (V.ι ≫ s) ((f ⁻¹ᵁ V).ι ≫ s') (f ∣_ V) (V.ι ⁻¹ᵁ U)).comp (appSec s (V.ι ≫ s) V.ι U)).toAlgebra`. Establish `hsq : ∀ b : Sec s U, appSec (V.ι ≫ s) ((f ⁻¹ᵁ V).ι ≫ s') (f ∣_ V) (V.ι ⁻¹ᵁ U) (appSec s (V.ι ≫ s) V.ι U b) = Sec.res ((f ⁻¹ᵁ V).ι ≫ s') h (appSec s' ((f ⁻¹ᵁ V).ι ≫ s') (f ⁻¹ᵁ V).ι (f ⁻¹ᵁ U) (appSec s s' f U b))` using `fun b ↦ (app_square hw U h b).symm`. Use `haveI : IsScalarTower (Sec s U) (Sec (V.ι ≫ s) (V.ι ⁻¹ᵁ U)) (Sec ((f ⁻¹ᵁ V).ι ≫ s') ((f ∣_ V) ⁻¹ᵁ (V.ι ⁻¹ᵁ U))) := .of_algebraMap_eq fun _ ↦ rfl`. Use `haveI : IsScalarTower (Sec s U) (Sec s' (f ⁻¹ᵁ U)) (Sec ((f ⁻¹ᵁ V).ι ≫ s') ((f ∣_ V) ⁻¹ᵁ (V.ι ⁻¹ᵁ U))) := .of_algebraMap_eq hsq`. Use `haveI : IsIso (CommRingCat.ofHom (algebraMap (Sec s U) (Sec (V.ι ≫ s) (V.ι ⁻¹ᵁ U)))) := isIso_ι_app V U hUV`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI : IsIso (CommRingCat.ofHom (algebraMap (Sec s' (f ⁻¹ᵁ U)) (Sec ((f ⁻¹ᵁ V).ι ≫ s') ((f ∣_ V) ⁻¹ᵁ (V.ι ⁻¹ᵁ U))))) := by`. Establish `: IsIso ((f ⁻¹ᵁ V).ι.app (f ⁻¹ᵁ U))` using `isIso_ι_app _ _ (f.preimage_mono hUV)`. Establish `: IsIso ((f ⁻¹ᵁ V : Scheme.{0}).presheaf.map (homOfLE h).op)` using `isIso_map_homOfLE h (preimage_square hw U)`. Express the relevant statement in the definitionally equal form `IsIso ((f ⁻¹ᵁ V).ι.app (f ⁻¹ᵁ U) ≫ (f ⁻¹ᵁ V : Scheme.{0}).presheaf.map (homOfLE h).op)`. Use `infer_instance`.
-
-Use `haveI : Algebra.IsPushout (Sec s U) (Sec s' (f ⁻¹ᵁ U)) (Sec (V.ι ≫ s) (V.ι ⁻¹ᵁ U)) (Sec ((f ⁻¹ᵁ V).ι ≫ s') ((f ∣_ V) ⁻¹ᵁ (V.ι ⁻¹ᵁ U))) := CommRingCat.isPushout_iff_isPushout.1 (IsPushout.of_vert_isIso ⟨by ext b; exact (hsq b).symm⟩)`. Use `haveI := this.symm`. Use `haveI := sec_finite (s := s) (s' := s') (f := f) hU`. Use `haveI := sec_etale (s := s) (s' := s') (f := f) hU`. Use `haveI := sec_finite (s := V.ι ≫ s) (s' := (f ⁻¹ᵁ V).ι ≫ s') (f := f ∣_ V) hU'`.
-
-Use `haveI := sec_etale (s := V.ι ≫ s) (s' := (f ⁻¹ᵁ V).ι ≫ s') (f := f ∣_ V) hU'`. Use `haveI := projective_of_etale (Sec s U) (Sec s' (f ⁻¹ᵁ U))`. Use `haveI := projective_of_etale (Sec (V.ι ≫ s) (V.ι ⁻¹ᵁ U)) (Sec ((f ⁻¹ᵁ V).ι ≫ s') ((f ∣_ V) ⁻¹ᵁ (V.ι ⁻¹ᵁ U)))`. Express the relevant statement in the definitionally equal form `algTrace (Sec (V.ι ≫ s) (V.ι ⁻¹ᵁ U)) (Sec ((f ⁻¹ᵁ V).ι ≫ s') ((f ∣_ V) ⁻¹ᵁ (V.ι ⁻¹ᵁ U))) (algebraMap (Sec s' (f ⁻¹ᵁ U)) (Sec ((f ⁻¹ᵁ V).ι ≫ s') ((f ∣_ V) ⁻¹ᵁ (V.ι ⁻¹ᵁ U))) b') = algebraMap (Sec s U) (Sec (V.ι ≫ s) (V.ι ⁻¹ᵁ U)) (algTrace (Sec s U) (Sec s' (f ⁻¹ᵁ U)) b')`. Conclude with `algTrace_of_isPushout (C := Sec (V.ι ≫ s) (V.ι ⁻¹ᵁ U)) (C' := Sec ((f ⁻¹ᵁ V).ι ≫ s') ((f ∣_ V) ⁻¹ᵁ (V.ι ⁻¹ᵁ U))) b'`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem secTrace_restrict {k : Type} [CommRing k] {X X' : Scheme.{0}} {s : X ⟶ Sp k}
     {s' : X' ⟶ Sp k} {f : X' ⟶ X} [IsFinite f] [Etale f] (V : X.Opens) {U : X.Opens}
@@ -169,7 +165,7 @@ theorem secTrace_restrict {k : Type} [CommRing k] {X X' : Scheme.{0}} {s : X ⟶
     (C' := Sec ((f ⁻¹ᵁ V).ι ≫ s') ((f ∣_ V) ⁻¹ᵁ (V.ι ⁻¹ᵁ U))) b'
 
 /- English proof (translation)
-Conclude with `formRes_formPull_formPull (morphismRestrict_ι f V).symm hf rfl rfl hg U h j x`.
+A detailed English derivation is pending.
 -/
 theorem formPull_restrict {k : Type} [CommRing k] {X X' : Scheme.{0}} {s : X ⟶ Sp k}
     {s' : X' ⟶ Sp k} {f : X' ⟶ X} (hf : f ≫ s = s') (V : X.Opens)
@@ -181,7 +177,7 @@ theorem formPull_restrict {k : Type} [CommRing k] {X X' : Scheme.{0}} {s : X ⟶
   exact formRes_formPull_formPull (morphismRestrict_ι f V).symm hf rfl rfl hg U h j x
 
 /- English proof (translation)
-Rewrite using `[formPull_smul rfl (f ⁻¹ᵁ U) b' (formPull hf U j x)]`. Use `(formRes_smul ((f ⁻¹ᵁ V).ι ≫ s') hle (appSec s' ((f ⁻¹ᵁ V).ι ≫ s') (f ⁻¹ᵁ V).ι (f ⁻¹ᵁ U) b') (formPull (f := (f ⁻¹ᵁ V).ι) (s' := (f ⁻¹ᵁ V).ι ≫ s') rfl (f ⁻¹ᵁ U) j (formPull hf U j x))).trans ?_` and prove the remaining obligations. Conclude with `congrArg (Sec.res ((f ⁻¹ᵁ V).ι ≫ s') hle (appSec s' ((f ⁻¹ᵁ V).ι ≫ s') (f ⁻¹ᵁ V).ι (f ⁻¹ᵁ U) b') • ·) (formPull_restrict hf V hg U hle j x)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem formRes_formPull_smul {k : Type} [CommRing k] {X X' : Scheme.{0}} {s : X ⟶ Sp k}
     {s' : X' ⟶ Sp k} {f : X' ⟶ X} (hf : f ≫ s = s') (V : X.Opens)
@@ -201,7 +197,7 @@ theorem formRes_formPull_smul {k : Type} [CommRing k] {X X' : Scheme.{0}} {s : X
     (appSec s' ((f ⁻¹ᵁ V).ι ≫ s') (f ⁻¹ᵁ V).ι (f ⁻¹ᵁ U) b') • ·) (formPull_restrict hf V hg U hle j x)
 
 /- English proof (translation)
-Apply `(cohOn.toH' H T n).injective` to reduce the goal to its premises. Rewrite using `[cohOn.toH'_pull, cohOn.toH'_pull, cohOn.toH'_pull]`. Conclude with `SheafPull.pull_pull.{0, 0, 0} b.base a.base _ _ n _ _ _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohOn_pull_pull {X Y Z : Scheme.{0}} {R : Type} [CommRing R] [Algebra R Γ(X, ⊤)]
     [Algebra R Γ(Y, ⊤)] [Algebra R Γ(Z, ⊤)] {b : Y ⟶ X} {a : Z ⟶ Y}
@@ -219,7 +215,7 @@ theorem cohOn_pull_pull {X Y Z : Scheme.{0}} {R : Type} [CommRing R] [Algebra R 
   exact SheafPull.pull_pull.{0, 0, 0} b.base a.base _ _ n _ _ _
 
 /- English proof (translation)
-Substitute `e` using the available equality. Establish `: (Scheme.Modules.pushforwardCongr (rfl : a = a)).hom.app G = 𝟙 _`. Use extensionality with `U : 1`. Conclude with `G.presheaf.map_id _`. Rewrite using `[this, Category.comp_id]`.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohOn_pull_congr {X Y : Scheme.{0}} {R : Type} [CommRing R] [Algebra R Γ(X, ⊤)]
     [Algebra R Γ(Y, ⊤)] {a b : Y ⟶ X} (e : a = b)
@@ -257,7 +253,7 @@ theorem pushRestrict_app {k : Type} [CommRing k] {X X' : Scheme.{0}} (s' : X' �
   rfl
 
 /- English proof (translation)
-Rewrite using `[Scheme.Modules.Hom.comp_app]`. Express the relevant statement in the definitionally equal form `(omegaPull (f := V.ι) (s' := V.ι ≫ s) rfl j).val.app (op U) ((omegaTrace hf j).app U (toOm s' j (f ⁻¹ᵁ U) (b' • formPull hf U j x))) = _`. Rewrite using `[omegaTrace_toOm_smul_formPull hf j hU, toOm_apply, omegaPull_toOmega, formPull_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem trace_pull_app_lhs {k : Type} [CommRing k] {X X' : Scheme.{0}} {s : X ⟶ Sp k}
     {s' : X' ⟶ Sp k} {f : X' ⟶ X} [IsFinite f] [Etale f] (hf : f ≫ s = s') (V : X.Opens) (j : ℕ)
@@ -273,7 +269,7 @@ theorem trace_pull_app_lhs {k : Type} [CommRing k] {X X' : Scheme.{0}} {s : X �
   rfl
 
 /- English proof (translation)
-Use `(pushRestrict_app s' f V j U hle _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Omega ((f ⁻¹ᵁ V).ι ≫ s') j).presheaf.map (homOfLE hle).op ((omegaPull (f := (f ⁻¹ᵁ V).ι) (s' := (f ⁻¹ᵁ V).ι ≫ s') rfl j).val.app (op (f ⁻¹ᵁ U)) ((toOmega s' j).app (op (f ⁻¹ᵁ U)) (b' • formPull hf U j x))) = _`. Rewrite using `[omegaPull_toOmega]`. Use `(res_toOm ((f ⁻¹ᵁ V).ι ≫ s') j hle (formPull (f := (f ⁻¹ᵁ V).ι) (s' := (f ⁻¹ᵁ V).ι ≫ s') rfl (f ⁻¹ᵁ U) j (b' • formPull hf U j x))).trans ?_` and prove the remaining obligations. Conclude with `congrArg (toOm ((f ⁻¹ᵁ V).ι ≫ s') j ((f ∣_ V) ⁻¹ᵁ (V.ι ⁻¹ᵁ U))) (formRes_formPull_smul hf V hg j U hle b' x)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pushRestrict_app_smul {k : Type} [CommRing k] {X X' : Scheme.{0}} {s : X ⟶ Sp k}
     {s' : X' ⟶ Sp k} {f : X' ⟶ X} (hf : f ≫ s = s') (V : X.Opens)
@@ -296,7 +292,7 @@ theorem pushRestrict_app_smul {k : Type} [CommRing k] {X X' : Scheme.{0}} {s : X
     (formRes_formPull_smul hf V hg j U hle b' x)
 
 /- English proof (translation)
-Rewrite using `[Scheme.Modules.Hom.comp_app]`. Express the relevant statement in the definitionally equal form `(omegaTrace hg j).app (V.ι ⁻¹ᵁ U) ((pushRestrict s' f V j).app U (toOm s' j (f ⁻¹ᵁ U) (b' • formPull hf U j x))) = _`. Rewrite using `[pushRestrict_app_smul hf V hg j U hle, omegaTrace_toOm_smul_formPull hg j hU']`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_pull_app_rhs {k : Type} [CommRing k] {X X' : Scheme.{0}} {s : X ⟶ Sp k}
     {s' : X' ⟶ Sp k} {f : X' ⟶ X} [IsFinite f] [Etale f] (hf : f ≫ s = s') (V : X.Opens)
@@ -316,9 +312,9 @@ theorem trace_pull_app_rhs {k : Type} [CommRing k] {X X' : Scheme.{0}} {s : X �
   rw [pushRestrict_app_smul hf V hg j U hle, omegaTrace_toOm_smul_formPull hg j hU']
 
 /- English proof (translation)
-Use `hom_ext_ι V _ _ fun U hU hUV y ↦ ?_` and prove the remaining obligations. Establish `hU' : IsAffineOpen (V.ι ⁻¹ᵁ U)` using `hU.preimage_of_isOpenImmersion V.ι (by rw [Scheme.Opens.opensRange_ι]; exact hUV)`. Establish `hle : (f ∣_ V) ⁻¹ᵁ (V.ι ⁻¹ᵁ U) ≤ (f ⁻¹ᵁ V).ι ⁻¹ᵁ (f ⁻¹ᵁ U)`. Rewrite using `[← Scheme.Hom.comp_preimage, ← Scheme.Hom.comp_preimage, morphismRestrict_ι]`. Take `⟨z, rfl⟩` from `toOm_surjective (s := s') (j := j) (hU.preimage f) y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `formOm_induction (P := fun z ↦ (omegaTrace hf j ≫ omegaPull (f := V.ι) (s' := V.ι ≫ s) rfl j).app U (toOm s' j (f ⁻¹ᵁ U) z) = (pushRestrict s' f V j ≫ (Scheme.Modules.pushforward V.ι).map (omegaTrace hg j)).app U (toOm s' j (f ⁻¹ᵁ U) z)) hf hU ?_ (fun y z hy hz ↦ ?_) (fun b' x ↦ …` and prove the remaining obligations. Use `erw [map_zero, map_zero, map_zero]`. Use `erw [map_add, map_add, map_add]`. Conclude with `congrArg₂ (· + ·) hy hz`. Rewrite using `[trace_pull_app_lhs hf V j hU, trace_pull_app_rhs hf V hg j hU' hle, secTrace_restrict V hU hUV hU' hle b']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omegaTrace_comp_omegaPull_ι {k : Type} [CommRing k] {X X' : Scheme.{0}} {s : X ⟶ Sp k}
     {s' : X' ⟶ Sp k} {f : X' ⟶ X} [IsFinite f] [Etale f] (hf : f ≫ s = s') (V : X.Opens)
@@ -342,17 +338,17 @@ theorem omegaTrace_comp_omegaPull_ι {k : Type} [CommRing k] {X X' : Scheme.{0}}
       secTrace_restrict V hU hUV hU' hle b']
 
 /- English proof (translation)
-Introduce `k _ X X' s s' f _ _ hf V j q x`. Use `letI := algΓ s`. Use `letI := algΓ s'`. Use `letI := algΓ (V.ι ≫ s)`. Use `letI := algΓ ((f ⁻¹ᵁ V).ι ≫ s')`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Establish `hg : f ∣_ V ≫ V.ι ≫ s = (f ⁻¹ᵁ V).ι ≫ s'`. Rewrite using `[← hf, ← Category.assoc, morphismRestrict_ι, Category.assoc]`. Take `⟨y, rfl⟩` from `(coh.pushforwardEquiv k (appTop_algebraMap hf) (Omega s' j) q).surjective x`. Establish `e1 : hodgeTrace hf j q (coh.pushforwardEquiv k (appTop_algebraMap hf) (Omega s' j) q y) = cohOn.map k (omegaTrace hf j) ⊤ q y` using `congrArg (cohOn.map k (omegaTrace hf j) ⊤ q) ((coh.pushforwardEquiv k (appTop_algebraMap hf) (Omega s' j) q).symm_apply_apply y)`. Establish `e4` using `cohOn.pull_map (σ := RingHom.id k) (appTop_algebraMap (f := V.ι) (s := s) rfl) (omegaPull rfl j) (omegaTrace hf j) (le_refl (V.ι ⁻¹ᵁ ⊤)) (n := q) y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e4` using `[omegaTrace_comp_omegaPull_ι hf V hg j]`. Establish `e5` using `cohOn.map_pull (σ := RingHom.id k) (appTop_algebraMap (f := V.ι) (s := s) rfl) (pushRestrict s' f V j) (omegaTrace hg j) (le_refl (V.ι ⁻¹ᵁ ⊤)) (n := q) y`. Rewrite using `[e1]`. Use `e4.trans (e5.symm.trans ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = cohOn.map k (omegaTrace hg j) ⊤ q ((coh.pushforwardEquiv k (appTop_algebraMap hg) (Omega ((f ⁻¹ᵁ V).ι ≫ s') j) q).symm _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `congr 1`. Use `((coh.pushforwardEquiv k (appTop_algebraMap hg) (Omega ((f ⁻¹ᵁ V).ι ≫ s') j) q).eq_symm_apply).2 ?_` and prove the remaining obligations. Establish `hw : (f ⁻¹ᵁ V).ι ≫ f = f ∣_ V ≫ V.ι` using `(morphismRestrict_ι f V).symm`. Establish `s1` using `cohOn_pull_pull (appTop_algebraMap (f := V.ι) (s := s) rfl) (appTop_algebraMap hg) (appTop_algebraMap (f := f ∣_ V ≫ V.ι) (s := s) (s' := (f ⁻¹ᵁ V).ι ≫ s') (by rw [Category.assoc, hg])) (pushRestrict s' f V j) (𝟙 _) (le_refl (V.ι ⁻¹ᵁ ⊤)) (le_refl _) (le_refl _) q y`. Establish `s2` using `cohOn_pull_pull (appTop_algebraMap hf) (appTop_algebraMap (f := (f ⁻¹ᵁ V).ι) (s := s') rfl) (appTop_algebraMap (f := (f ⁻¹ᵁ V).ι ≫ f) (s := s) (s' := (f ⁻¹ᵁ V).ι ≫ s') (by rw [Category.assoc, hf])) (𝟙 _) (omegaPull rfl j) (le_refl (f ⁻¹ᵁ ⊤)) (le_refl _) (le_refl _) q y`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s3` using `cohOn_pull_congr hw (appTop_algebraMap (f := (f ⁻¹ᵁ V).ι ≫ f) (s := s) (s' := (f ⁻¹ᵁ V).ι ≫ s') (by rw [Category.assoc, hf])) (appTop_algebraMap (f := f ∣_ V ≫ V.ι) (s := s) (s' := (f ⁻¹ᵁ V).ι ≫ s') (by rw [Category.assoc, hg])) (G := Omega ((f ⁻¹ᵁ V).ι ≫ s') j) (𝟙 ((Scheme.Modul …`. Establish `hm : pushRestrict s' f V j ≫ (Scheme.Modules.pushforward V.ι).map (𝟙 _) ≫ (Scheme.Modules.pushforwardComp (f ∣_ V) V.ι).hom.app _ = (𝟙 ((Scheme.Modules.pushforward f).obj (Omega s' j)) ≫ (Scheme.Modules.pushforward f).map (omegaPull (f` using `(f ⁻¹ᵁ V).ι) rfl j) ≫ (Scheme.Modules.pushforwardComp (f ⁻¹ᵁ V).ι f).hom.app _) ≫ (Scheme.Modules.pushforwardCongr hw).hom.app _ := by`. Simplify using `[pushRestrict]`. Use `Eq.trans (cohOn.pushforwardEquiv_apply k (appTop_algebraMap hg) _ ⊤ q _) (s1.trans ?_)` and prove the remaining obligations. Rewrite using `[hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `s3.symm.trans ?_` and prove the remaining obligations. Conclude with `s2.symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hodgePull_hodgeTrace_ι : ∀ {k : Type} [CommRing k] {X X' : Scheme.{0}} {s : X ⟶ Sp k} {s' : X' ⟶ Sp k} {f : X' ⟶ X} [IsFinite f] [Etale f] (hf : f ≫ s = s') (V : X.Opens) (j q : ℕ) (x : hodgeH s' j q), hodgePull (f := V.ι) (s' := V.ι ≫ s) rfl j q (hodgeTrace hf j q x) = hodgeTrace (f := f ∣_ V) (s := V.ι ≫ s) (s' := (f ⁻¹ᵁ V).ι ≫ s') (by rw [← hf, ← Category.assoc, morphismRestrict_ι, Category.assoc]) j q (hodgePull (f := (f ⁻¹ᵁ V).ι) rfl j q x) := by
   intro k _ X X' s s' f _ _ hf V j q x

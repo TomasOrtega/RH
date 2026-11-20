@@ -26,7 +26,7 @@ namespace GlobalTheory.CharKerSub
 def projS {R : Type} [Zero R] {κ : Type} (s : Set κ) (z : κ → R) : κ → R := fun i => if i ∈ s then z i else 0
 
 /- English proof (translation)
-Simplify using `only [dotProduct, projS]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem projS_dot {R : Type} [CommRing R] {κ : Type} [Fintype κ] (s : Set κ) (z y : κ → R) :
     projS s z ⬝ᵥ y = z ⬝ᵥ projS s y := by
@@ -45,7 +45,7 @@ Both sides reduce to the same expression.
 theorem projH_apply {R : Type} [AddCommGroup R] {κ : Type} (s : Set κ) (z : κ → R) : projH s z = projS s z := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [projS]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem projS_projS {R : Type} [Zero R] {κ : Type} (s : Set κ) (z : κ → R) : projS s (projS s z) = projS s z := by
   funext i
@@ -53,9 +53,7 @@ theorem projS_projS {R : Type} [Zero R] {κ : Type} (s : Set κ) (z : κ → R) 
   split_ifs <;> rfl
 
 /- English proof (translation)
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : i ∈ s`. Simplify using `only [projS, h, if_true]`. Conclude with `continuous_apply i`. Simplify using `only [projS, h, if_false]`.
-
-Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_projS {R : Type} [AddCommGroup R] [TopologicalSpace R] {κ : Type} (s : Set κ) :
     Continuous (projS (R := R) s) := by
@@ -67,41 +65,37 @@ theorem continuous_projS {R : Type} [AddCommGroup R] [TopologicalSpace R] {κ : 
     exact continuous_const
 
 /- English proof (translation)
-Take `⟨W, hW, hdec⟩` from `GlobalTheory.T.compact_open_schwartz_finite_decomposition F κ Φ hΦ`. Take `⟨U₀, hU₀o, hU₀c, hU₀W, -⟩` from `GlobalTheory.FinSepChar.finite_chars_separate F ψ hψ κ W hW`. Take `⟨U₁, hU₁o, -, hU₁U₀, hsep⟩` from `GlobalTheory.FinSepChar.finite_chars_separate F ψ hψ κ _ (hU₀o.mem_nhds U₀.zero_mem)`. Establish `hπc : Continuous (projH (R` using `Af F) s) := continuous_projS s`. Set `U : AddSubgroup (κ → Af F)` to `U₀ ⊓ U₁.comap (projH s)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hUo : IsOpen (U : Set (κ → Af F))` using `hU₀o.inter (hU₁o.preimage hπc)`. Establish `hUc : IsCompact (U : Set (κ → Af F))` using `hU₀c.inter_right ((AddSubgroup.isClosed_of_isOpen U₁ hU₁o).preimage hπc)`. Take `⟨T, G, hG, hΦeq⟩` from `hdec U hUo hUc fun x hx => hU₀W hx.1`. Rewrite using `[hΦeq, map_sum]`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq1` using `GlobalTheory.CharForm.cosetInd_mem_SB U hUo hUc q`. Distinguish the cases in `hq : projS s q.out ∈ U₁`. Take `⟨Tq, hTq⟩` from `hl _ hq1`. Establish `hmem : projS s q.out ∈ U` using `⟨hU₁U₀ hq, by show projH s (projS s q.out) ∈ U₁`. Rewrite using `[projH_apply, projS_projS]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hq⟩`. Establish `hcq : (((q.out - projS s q.out : κ → Af F)) : (κ → Af F) ⧸ U) = q` using `by conv_rhs => rw [← QuotientAddGroup.out_eq' q]`. Rewrite using `[QuotientAddGroup.eq_iff_sub_mem, sub_sub_cancel_left]`. Conclude with `U.neg_mem hmem`. Establish `hGq : ∀ X : κ → mixedEmbedding.mixedSpace F, (∀ i ∈ s, X i = 0) → G q X = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `X hX`. Rewrite using `[← hcq, hG _ X]`. Apply `h0` to reduce the goal to its premises. Introduce `i hi`. Establish `hc : (q.out - projS s q.out) i = 0` using `by simp [projS, hi]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hX i hi, map_zero, hc]`. Conclude with `GlobalTheory.FinSepChar.pairA_zero_zero`. Set `P : Submodule ℝ (κ → mixedEmbedding.mixedSpace F)` to `{ carrier := {X | ∀ i ∈ s, X i = 0} add_mem' := fun {a b} ha hb i hi => by simp [ha i hi, hb i hi] zero_mem' := fun i _ => rfl smul_mem' := fun r X hX i hi => by simp [hX i hi] }`. Establish `key` using `GlobalTheory.SchwartzHadamard.eq_of_eqOn P Tq ?_ (G q) 0 (fun p hp => by rw [hGq p hp, zero_apply])`. Rewrite using `[hTq, key, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `L hL f g hfg`. Rewrite using `[← hTq, ← hTq]`. Take `⟨Y, hY⟩` from `GlobalTheory.TraceDual.exists_trace_rep F κ (LinearMap.toContinuousLinearMap ((-(2 * Real.pi)) • L))`. Set `Y' : κ → mixedEmbedding.mixedSpace F` to `projS s Y`. Establish `hLY : ∀ X, L X = ∑ i, Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (X i * Y' i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `X`. Establish `hsplit : L X = L (projS s X)`. Establish `hm : X - projS s X ∈ P` using `fun i hi => by simp [projS, hi]`. Use `hL _ hm` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `this`. Establish `h2` using `hY (projS s X)`. Simplify using `only [LinearMap.coe_toContinuousLinearMap', LinearMap.smul_apply, smul_eq_mul] at h2`. Establish `hpi : -(2 * Real.pi) ≠ 0` using `by have := Real.pi_pos; linarith`. Rewrite using `[hsplit, mul_left_cancel₀ hpi h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [projS, Y']`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hv : ∀ i ∉ s, (fun i => pairA F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (Y' i)) 0) i = 0` using `fun i hi => by`. Simplify using `only [Y', projS, if_neg hi, map_zero]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hchar : ∀ x : κ → AF F, ψ (x ⬝ᵥ fun i => pairA F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (Y' i)) 0) = GlobalTheory.ArchSch.ech (L fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1)`. Introduce `x`. Rewrite using `[GlobalTheory.CharInvForm.psi_dot_inf hψ, hLY, GlobalTheory.ArchSch.ech]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hinv _ hv _ (GlobalTheory.CharInvForm.mem_schA f hq1)]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [pureA, hfg, hchar]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨y, hyU, hy⟩` from `hsep _ hq`. Establish `hv : ∀ i ∉ s, (fun i => pairA F 0 (projS s y i)) i = 0` using `fun i hi => by`. Simplify using `only [projS, if_neg hi]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.FinSepChar.pairA_zero_zero`. Establish `hmul : (fun x => ψ (x ⬝ᵥ fun i => pairA F 0 (projS s y i)) * pureA F (G q) (GlobalTheory.CharForm.cosetInd U q) x) = ψ (pairA F 0 (projS s q.out ⬝ᵥ y)) • pureA F (G q) (GlobalTheory.CharForm.cosetInd U q)`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.smul_apply, smul_eq_mul, pureA, GlobalTheory.CharForm.cosetInd]`. Use `split_ifs with hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : -q.out + (fun i => (x i).2) ∈ U`. Rewrite `hx` using `[← QuotientAddGroup.out_eq' q]`. Conclude with `QuotientAddGroup.eq.mp hx.symm`. Establish `hdot : (x ⬝ᵥ fun i => pairA F 0 (projS s y i)) = pairA F 0 (projS s q.out ⬝ᵥ y) + pairA F 0 (projS s (-q.out + fun i => (x i).2) ⬝ᵥ y)`. Establish `hadd : projS s q.out + projS s (-q.out + fun i => (x i).2) = projS s (fun i => (x i).2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(projH (R := Af F) s).map_add q.out (-q.out + fun i => (x i).2)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_left]`. Conclude with `this.symm`. Rewrite using `[← GlobalTheory.CharInvForm.pairA_zero_add, ← add_dotProduct, hadd, projS_dot, GlobalTheory.CharInvForm.dot_pairA_fin]`. Establish `h1 : ψ (pairA F 0 (projS s (-q.out + fun i => (x i).2) ⬝ᵥ y)) = 1` using `hyU _ hm.2`.
-
-Rewrite using `[hdot, AddChar.map_add_eq_mul, h1, mul_one]`. Simplify using the standard rewrite rules. Establish `e` using `hinv _ hv _ (GlobalTheory.CharInvForm.mem_schA (G q) hq1)`. Rewrite `e` using `[hmul, map_smul, smul_eq_mul]`. Establish `h3 : (ψ (pairA F 0 (projS s q.out ⬝ᵥ y)) - 1) * l (pureA F (G q) (GlobalTheory.CharForm.cosetInd U q)) = 0`.
-
-Rewrite using `[sub_mul, e, one_mul, sub_self]`. Conclude with `(mul_eq_zero.mp h3).resolve_left (sub_ne_zero.mpr hy)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (κ : Type) [Fintype κ]
     (s : Set κ) (l : ((κ → AF F) → ℂ) →ₗ[ℂ] ℂ) (hl : l ∈ (adeleClass F).adm κ)
@@ -211,7 +205,7 @@ theorem coord (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (h�
     exact (mul_eq_zero.mp h3).resolve_left (sub_ne_zero.mpr hy)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[schr]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem schr_zero_fst {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) {κ : Type} [Fintype κ]
     (w : κ → AF F) (φ : (κ → AF F) → ℂ) : schr ψ (0, w) φ = fun x => ψ (x ⬝ᵥ w) * φ x := by
@@ -219,25 +213,25 @@ theorem schr_zero_fst {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) 
   simp [schr]
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ Y₀ l hl hinv Φ hΦ h0`. Take `⟨P, hP, s, hrow, hspan⟩` from `GlobalTheory.T.subspace_adapted_basis_change_exists F κ Y₀`. Establish `h1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hP`. Establish `h2 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hP`. Set `Pm : Matrix κ κ (AF F)` to `P.map (algebraMap F (AF F))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Qm : Matrix κ κ (AF F)` to `P⁻¹.map (algebraMap F (AF F))`. Establish `e1 : Pm * Qm = 1`. Rewrite using `[← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e2 : Qm * Pm = 1`. Rewrite using `[← Matrix.map_mul, h2, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl' : l ∘ₗ GlobalTheory.AdelicSvNLevi.compM P ∈ (adeleClass F).adm κ`. Introduce `g hg`. Take `⟨T, hT⟩` from `hl _ ⟨hg.1.comp_continuous (GlobalTheory.AdelicSvNLevi.finHomeo P P⁻¹ h1 h2).continuous, hg.2.comp_homeomorph (GlobalTheory.AdelicSvNLevi.finHomeo P P⁻¹ h1 h2)⟩`. Use `⟨T.comp (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (GlobalTheory.AdelicSvNLevi.archEquiv P P⁻¹ h1 h2)), fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, GlobalTheory.AdelicSvNLevi.comp_pureA P P⁻¹ h1 h2, hT]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `key` using `coord F ψ hψ κ s _ hl' ?_ _ (GlobalTheory.AdelicSvNLevi.comp_mem P⁻¹ P h2 h1 Φ hΦ) ?_`. Establish `hc : GlobalTheory.AdelicSvNLevi.compM P (GlobalTheory.AdelicSvNLevi.compM P⁻¹ Φ) = Φ`. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `Φ (Qm *ᵥ (Pm *ᵥ x)) = Φ x`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Matrix.mulVec_mulVec, e2, Matrix.one_mulVec]`. Rewrite `key` using `[LinearMap.comp_apply, hc]`. Conclude with `key`. Introduce `v hv φ hφ`. Establish `hgood : ∀ φ ∈ schA F κ, l (schr ψ (0, ∑ i, v i • Pm i) φ) = l φ`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_induction (fun i => v i • Pm i) (fun w => ∀ φ ∈ schA F κ, l (schr ψ (0, w) φ) = l φ) (fun a b ha hb φ hφ => ?_) (fun φ _ => ?_) fun i _ φ hφ => ?_` and prove the remaining obligations. Establish `hs : schr ψ (0, a + b) φ = schr ψ (0, a) (schr ψ (0, b) φ)`. Use function extensionality and compare the values at `x`. Simplify using `only [schr_zero_fst, dotProduct_add, AddChar.map_add_eq_mul, mul_assoc]`. Rewrite using `[hs, ha _ (GlobalTheory.HeisSchA.schr_mem_schA ψ hψ _ φ hφ), hb φ hφ]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [schr_zero_fst, dotProduct_zero, AddChar.map_zero_eq_one, one_mul]`. Distinguish the cases in `hi : i ∈ s`. Conclude with `hinv (v i) (P i) (hrow i hi) φ hφ`. Simplify using `only [hv i hi, zero_smul, schr_zero_fst, dotProduct_zero, AddChar.map_zero_eq_one, one_mul]`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, ← hgood _ (GlobalTheory.AdelicSvNLevi.comp_mem P P⁻¹ h1 h2 φ hφ), schr_zero_fst]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `ψ ((Pm *ᵥ x) ⬝ᵥ v) * φ (Pm *ᵥ x) = ψ (x ⬝ᵥ ∑ i, v i • Pm i) * φ (Pm *ᵥ x)`. Establish `hs : ∑ i, v i • Pm i = v ᵥ* Pm` using `(Matrix.vecMul_eq_sum v Pm).symm`. Rewrite using `[hs, dotProduct_comm x, ← Matrix.dotProduct_mulVec, dotProduct_comm]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z hz`. Use `h0 (Qm *ᵥ z) fun y hy => ?_` and prove the remaining obligations. Take `⟨c, hc, rfl⟩` from `hspan y hy`. Establish `hm : (fun i => algebraMap F (AF F) ((c ᵥ* P) i)) = (fun i => algebraMap F (AF F) (c i)) ᵥ* Pm`. Use function extensionality and compare the values at `fun i => RingHom.map_vecMul _ _ _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hm, dotProduct_comm, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, e1, Matrix.one_mulVec]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i ∈ s`. Rewrite using `[hz i hi, mul_zero]`. Simplify using `only [hc i hi, map_zero, zero_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ] (Y₀ : Submodule F (κ → F)),
     ∀ l ∈ (adeleClass F).adm κ,

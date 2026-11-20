@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.Transl
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons γ l ih`. Rewrite using `[List.foldr_cons, ih, List.map_cons, List.foldr_cons]`. Use function extensionality and compare the values at `x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [lineDer]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Use `congr 1`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem foldr_lineDer_mul_right {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (b : GAd σ J) (l : List (ℝ → GAd σ J))
@@ -38,19 +38,15 @@ theorem foldr_lineDer_mul_right {F E : Type} [Field F] [NumberField F] [Field E]
 variable {D : D7}
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `hN : (GfC V).Normal` using `MonoidHom.normal_ker _`. Use `⟨fun γ hγ x => ?_, ?_, h.cont.comp (continuous_id.mul continuous_const), ?_, ?_⟩` and prove the remaining obligations. Use `show φ (γ * x * b) = φ (x * b)`. Rewrite using `[mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h.left γ hγ _`. Take `⟨A, hA, eA⟩` from `h.level`. Use `⟨A.comap (MulAut.conj b⁻¹).toMonoidHom, ?_, fun k hk hk' x => ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun y : GA D V => b⁻¹ * y * b⁻¹⁻¹` using `(continuous_const.mul continuous_id).mul continuous_const`. Conclude with `hA.preimage hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hk2 : b⁻¹ * k * b⁻¹⁻¹ ∈ A` using `hk`. Establish `hk3 : b⁻¹ * k * b⁻¹⁻¹ ∈ GfC V` using `hN.conj_mem k hk' b⁻¹`. Rewrite `hk2`, `hk3` using `[inv_inv]`. Use `show φ (x * k * b) = φ (x * b)`. Rewrite using `[← eA _ hk2 hk3 (x * b)]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`. Conclude with `GlobalTheory.UAut.isSm_mul_right_of_isCMExt _ _ (GlobalTheory.AdelicU.isCMExt_host D) φ b h.smooth`. Take `⟨N, hN'⟩` from `h.growth`. Use `⟨N, fun l hl => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `hN' (l.map fun γ t => b⁻¹ * γ t * b) (by`. Introduce `γ' hγ'`. Take `⟨γ, hγ, rfl⟩` from `List.mem_map.1 hγ'`. Conclude with `GlobalTheory.UAut.RightTranslate.isRealLine_conj (GlobalTheory.AdelicU.isCMExt_host D) (hl γ hγ) b)`. Use `⟨max C 0 * (height D.sp.cm.sig V.gram b : ℝ) ^ N, fun x => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[foldr_lineDer_mul_right]`. Establish `h1 : (height D.sp.cm.sig V.gram (x * b) : ℝ) ≤ (height D.sp.cm.sig V.gram x : ℝ) * (height D.sp.cm.sig V.gram b : ℝ)`. Conclude with `height_mul_le _ _ x b` after adjusting the coercions. Establish `h0 : (0 : ℝ) ≤ (height D.sp.cm.sig V.gram (x * b) : ℝ)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isSmModOn_mul_right (V : HSp D) {Γ : Set (GA D V)} {φ : GA D V → ℂ}
     (h : IsSmModOn D.sp.cm.sig V.gram Γ φ) (b : GA D V) :
@@ -98,7 +94,7 @@ theorem isSmModOn_mul_right (V : HSp D) {Γ : Set (GA D V)} {φ : GA D V → ℂ
 variable {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)}
 
 /- English proof (translation)
-Establish `rp` using `(GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V`. Establish `hm` using `rp.2.2.2.1`. Establish `h1 : infMat D.sp.cm.sig V.gram (θ τ) 1 = 1` using `rp.2.2.2.2.1 1 (one_mem _) τ`. Conclude with `⟨by rw [← hm, inv_mul_cancel, h1], by rw [← hm, mul_inv_cancel, h1]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem infMat_inv_mul (hθ : IsInfFam θ) (V : HSp D) (b : GA D V) (τ : D.what₂.Tau) :
     infMat D.sp.cm.sig V.gram (θ τ) b⁻¹ * infMat D.sp.cm.sig V.gram (θ τ) b = 1 ∧
@@ -109,9 +105,9 @@ theorem infMat_inv_mul (hθ : IsInfFam θ) (V : HSp D) (b : GA D V) (τ : D.what
   exact ⟨by rw [← hm, inv_mul_cancel, h1], by rw [← hm, mul_inv_cancel, h1]⟩
 
 /- English proof (translation)
-Take `⟨e1, e2⟩` from `infMat_inv_mul hθ V b τ`. Rewrite using `[Matrix.inv_eq_left_inv e1]`. Establish `hB : IsUnit (infMat D.sp.cm.sig V.gram (θ τ) b⁻¹)` using `⟨⟨_, _, e1, e2⟩, rfl⟩`. Use `⟨hP.mul hB, ?_⟩` and prove the remaining obligations. Establish `hu : (infMat D.sp.cm.sig V.gram (θ τ) b⁻¹)ᴴ * gramAt D V τ * infMat D.sp.cm.sig V.gram (θ τ) b⁻¹ = gramAt D V τ` using `GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V b⁻¹ τ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hu, ← h, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isFrame_mul_inv (hθ : IsInfFam θ) (V : HSp D) (b : GA D V) (τ : D.what₂.Tau) {e : Fin V.rank → Bool}
     {P : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm e * P = gramAt D V τ) :
@@ -128,11 +124,11 @@ theorem isFrame_mul_inv (hθ : IsInfFam θ) (V : HSp D) (b : GA D V) (τ : D.wha
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨hP', h'⟩` from `isFrame_mul_inv hθ V b τ hP h`. Establish `hx` using `isAtTau_kAt θ V hθ τ hP' h' k`. Establish `rp` using `(GlobalTheory.SmoothForms.RealPts.realPoints D).2 θ hθ V`. Establish `hm` using `rp.2.2.2.1`. Establish `hN : (GinfC V).Normal` using `MonoidHom.normal_ker _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Model.isAtTau_unique θ V hθ ⟨?_, ?_, fun τ' c => ?_⟩ (isAtTau_kAt θ V hθ τ hP h k)` and prove the remaining obligations. Use `hN.conj_mem _ hx.1 b⁻¹` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Take `⟨e1, e2⟩` from `infMat_inv_mul hθ V b τ`. Rewrite using `[hm, hm, hx.2.1, Matrix.inv_eq_left_inv e1, Matrix.mul_inv_rev, Matrix.inv_eq_left_inv e2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e1, Matrix.mul_one, ← Matrix.mul_assoc (infMat D.sp.cm.sig V.gram (θ τ) b⁻¹), e1, Matrix.one_mul]`. Take `⟨e1, -⟩` from `infMat_inv_mul hθ V b τ'`. Rewrite using `[hm, hm, hx.2.2 _ c, Matrix.mul_one, e1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mul_kAt_mul (hθ : IsInfFam θ) (V : HSp D) (b : GA D V) (τ : D.what₂.Tau) {e : Fin V.rank → Bool}
     {P : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm e * P = gramAt D V τ)
@@ -158,15 +154,15 @@ end GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.Transl
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.Transl
 
 /- English proof (translation)
-Introduce `D θ hθ V U ε fr hfr W _ _ ρ c m X Y T φ hφ b`. Take `⟨⟨f1, f2, f3, f4⟩, f5⟩` from `hφ`. Establish `hN : (GfC V).Normal` using `MonoidHom.normal_ker _`. Use `⟨⟨isSmModOn_mul_right V f1 b, fun u hu hu' g => ?_, fun τ x => ?_, fun τ k => ?_⟩, fun T' hT' => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, rfl⟩` from `Subgroup.mem_map.1 hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply] at hu' ⊢`. Establish `ha' : a ∈ GfC V`. Use `hN.conj_mem _ hu' b⁻¹` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Rewrite using `[← f2 a ha ha' (g * b)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [mul_assoc, inv_mul_cancel, mul_one]`. Establish `e : (fun k => φ (x * kAt θ V τ (ε τ) (fr τ * (infMat D.sp.cm.sig V.gram (θ τ) b)⁻¹) k * b)) = fun k => φ (x * b * kAt θ V τ (ε τ) (fr τ) k)` using `funext fun k => by`. Rewrite using `[← inv_mul_kAt_mul hθ V b τ (hfr τ).1 (hfr τ).2 k]`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show (fun k => φ (x * kAt θ V τ (ε τ) (fr τ * (infMat D.sp.cm.sig V.gram (θ τ) b)⁻¹) k * b)) ∈ coeffSpan (ρ τ)`. Rewrite using `[e]`. Conclude with `f3 τ (x * b)`. Use `GlobalTheory.RegSch.CentreRight.gelf_rTr_all hθ b τ k (GlobalTheory.SphSmooth.mem_smFun_of_isSm hθ f1.smooth) show gelf θ V τ k (rTr V b φ) = c τ k • rTr V b φ` as an intermediate fact. Rewrite using `[this, f4]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Introduce `μ 𝓕 hμ h𝓕 h1 g`. Use `f5 T' hT' μ 𝓕 hμ h𝓕 h1 (g * b)` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cuspOn_mul_right : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) (U : Subgroup (GA D V)) (ε : D.what₂.Tau → Fin V.rank → Bool) (fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ), IsFrameFam V ε fr → ∀ (W : D.what₂.Tau → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module ℂ (W τ)] (ρ : ∀ τ, Representation ℂ (Formalism.REAL.KG (ε τ)) (W τ)) (c : D.what₂.Tau → ℕ → ℂ) (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E) (T : Finset (Fin m)) (φ : GA D V → ℂ), φ ∈ cuspOn θ V X Y T U ε fr ρ c → ∀ b : GA D V, (fun x => φ (x * b)) ∈ cuspOn θ V X Y T (U.map (MulAut.conj b).toMonoidHom) ε (fun τ => fr τ * (infMat D.sp.cm.sig V.gram (θ τ) b)⁻¹) ρ c := by
   intro D θ hθ V U ε fr hfr W _ _ ρ c m X Y T φ hφ b

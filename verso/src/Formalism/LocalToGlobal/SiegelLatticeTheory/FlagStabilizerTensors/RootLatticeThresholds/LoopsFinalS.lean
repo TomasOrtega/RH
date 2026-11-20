@@ -23,7 +23,7 @@ variable {D : D7} (X : HidaSetting D) (Y : Full X) (hF : FinX Y) (hI : SIso D.s 
 def wOf : WittDat X := Classical.choice (Formalism.L2.SG.Pf.WittFlags.WittExists_holds D X)
 
 /- English proof (translation)
-The claim follows from `{ lat := Formalism.L2.SG.Pf.WittFlags.LatIso_holds D idG := fun u u' => identityCell_vanishes u u' atSome := fun u u' => Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds _ _ Y u u' autFin := fun u => Formalism.L2.SG.Pf.autFin_of (automorphism_lattice_finite D) (D.sp.Y_si …`.
+A detailed English derivation is pending.
 -/
 theorem hOf : TieHyp (wOf X) hI :=
   { lat := Formalism.L2.SG.Pf.WittFlags.LatIso_holds D
@@ -38,7 +38,7 @@ theorem hOf : TieHyp (wOf X) hI :=
 def aOf : AmpDat X := Classical.choose (Formalism.L2.SG.Pf.KernelOfEmbedding.pvalForm_holds (wOf X) hI hCT.2.2.2.2.1)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (Formalism.L2.SG.Pf.KernelOfEmbedding.pvalForm_holds (wOf X) hI hCT.2.2.2.2.1)`.
+A detailed English derivation is pending.
 -/
 theorem hvOf : PvalForm (wOf X) hI (aOf X Y hF hI hCT) :=
   Classical.choose_spec (Formalism.L2.SG.Pf.KernelOfEmbedding.pvalForm_holds (wOf X) hI hCT.2.2.2.2.1)
@@ -61,7 +61,7 @@ variable {D : D7} (X : HidaSetting D) (Y : Full X) (hF : FinX Y) (hI : SIso D.s 
 def aOfW : AmpDat X := Classical.choose (Formalism.L2.SG.Pf.KernelOfEmbedding.pvalForm_holds (wOf X) hI hWD)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (Formalism.L2.SG.Pf.KernelOfEmbedding.pvalForm_holds (wOf X) hI hWD)`.
+A detailed English derivation is pending.
 -/
 theorem hvOfW : PvalForm (wOf X) hI (aOfW X Y hF hI hWD) :=
   Classical.choose_spec (Formalism.L2.SG.Pf.KernelOfEmbedding.pvalForm_holds (wOf X) hI hWD)

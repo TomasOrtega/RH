@@ -12,7 +12,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Use `haveI : IsAlgClosure F Ω := ⟨IsAlgClosure.isAlgClosed ℚ, inferInstance⟩`. Conclude with `(galEmbTop ℚ F Ω).1.continuous`.
+A detailed English derivation is pending.
 -/
 private theorem cont_resQ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (F : IntermediateField ℚ Ω) [NumberField F] :
     Continuous (resQ F) := by
@@ -20,13 +20,13 @@ private theorem cont_resQ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ
   exact (galEmbTop ℚ F Ω).1.continuous
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl c D hD T hF k _ a _ _ P hS`. Establish `hOk : T.Ok` using `hF.1`. Establish `hP` using `hS.res.pair`. Use `choose g hg hgD hgI using fun v : T.ι => Rq.placeMove T.F l hl.out (T.pl v) (D.pl l) (T.ovl v) (hD.pl_over l hl.out)`. Establish `hν : ∀ x, IsUnit (a (D.th x))` using `fun x => (D.th x).isUnit.map _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ∀ x i, IsUnit (P.r x i i)` using `fun x i => by`. Rewrite using `[hS.res.res.diag]`. Conclude with `(Units.isUnit _).map _`. Establish `sh` using `fun v : T.ι => Rq.shapeQ _ _ _ (hS.supp (g v)) (hd (g v)) (hP.low ()) hS.flag`. Use `choose n hn hb using fun v : T.ι => Rq.luG k _ (P.r (g v)) (P.n ()) (hν (g v)) (hP.mult (g v)) (hP.low ()) (sh v).1.1 (sh v).1.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Q : PD T.ι (G T.F Ω) k` to `⟨P.r.comp (resQ T.F), n⟩`. Establish `key : ∀ v, ∀ s ∈ Dec (F` using `T.F) (T.pl v), IsUp (adj (Q.n v) * Q.r s * Q.n v) ∧ ∀ i, Q.ψ v i s = P.ψ () i ((g v)⁻¹ * resQ T.F s * g v) := fun v s hs => Rq.conjFlag _ _ (P.r (g v)) (P.r ((g v)⁻¹ * resQ T.F s * g v)) (P.r (resQ T.F s)) _ _ (hν (g v)) (hP.mult (g v)) (hP.low ()) (hn v) (hb v) (by rw [← map_mul …`. Establish `hconj : ∀ (χ : G ℚ Ω →* c.Oˣ) (x y : G ℚ Ω), χ (x⁻¹ * y * x) = χ y` using `fun χ x y => by`. Rewrite using `[map_mul, map_mul, map_inv, mul_comm, mul_inv_cancel_left]`. Establish `hch : ∀ v, ∀ s ∈ Dec (F` using `T.F) (T.pl v), ∀ i, Q.ψ v i s = a (chi D T.pr i (resQ T.F s)) := fun v s hs i => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(key v s hs).2, ← hconj (chi D T.pr i) (g v)]`. Conclude with `hS.res.res.char () _ (hgD v s hs) i`. Use `⟨Q, ⟨⟨fun x => hP.mult (resQ T.F x), Rq.killQ D hD T hOk _ _ _ P.r hP.kill, hP.nrm, hn, fun v s hs => (key v s hs).1, fun v s hs i => ?_⟩, ⟨fun x i => hS.res.res.diag (resQ T.F x) i, hch, Or.inl ⟨fun x => hS.supp _, fun v => (sh v).2 _ (hn v) (hb v)⟩⟩, fun i j N => (hS.res.cont i …` and prove the remaining obligations. Use `(hch v s hs.1 i).trans ?_` and prove the remaining obligations. Rewrite using `[chi, Rq.muPs D hD T hOk _ s hs, Units.val_one, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_residualRep_restriction_of_latticeShape :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ T : Tower D, T.Fit → ∀ (k : Type) [Field k] (a : c.O →+* k), (∀ x ∈ maximalIdeal c.O, a x = 0) → (T.fr ∅).Ok a → ∀ s : PD Unit (G ℚ Ω) k, LatShape D T.pr (resQ T.F T.g0) a s →

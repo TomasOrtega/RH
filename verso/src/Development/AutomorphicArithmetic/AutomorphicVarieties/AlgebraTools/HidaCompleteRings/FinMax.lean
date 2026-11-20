@@ -3,27 +3,23 @@ import Mathlib
 open IsLocalRing
 
 /- English proof (translation)
-Introduce `Λ T _ _ _ _ _`. Set `I : Ideal T` to `(maximalIdeal Λ).map (algebraMap Λ T)`. Establish `h1 : Module.Finite Λ (T ⧸ I)` using `Module.Finite.of_surjective (Ideal.Quotient.mkₐ Λ I).toLinearMap Ideal.Quotient.mk_surjective`. Establish `h2 : Module.Finite (Λ ⧸ maximalIdeal Λ) (T ⧸ I)` using `Module.Finite.of_restrictScalars_finite Λ _ _`. Establish `h0 : IsArtinianRing (Λ ⧸ maximalIdeal Λ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := Ideal.Quotient.field (maximalIdeal Λ)`. Use `infer_instance`. Establish `h3 : IsArtinianRing (T ⧸ I)` using `IsArtinianRing.of_finite (Λ ⧸ maximalIdeal Λ) (T ⧸ I)`. Establish `hcomap : ∀ m : Ideal T, m.IsMaximal → m.comap (algebraMap Λ T) = maximalIdeal Λ`. Introduce `m hm`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI := Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := Λ) m`. Conclude with `IsLocalRing.eq_maximalIdeal this`. Establish `hIm : ∀ m : Ideal T, m.IsMaximal → I ≤ m` using `fun m hm => Ideal.map_le_iff_le_comap.2 (hcomap m hm).ge`. Establish `hker : RingHom.ker (Ideal.Quotient.mk I) = I` using `Ideal.mk_ker`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `f : MaximalSpectrum (T ⧸ I) → MaximalSpectrum T` to `fun p => ⟨p.asIdeal.comap (Ideal.Quotient.mk I), Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective⟩`. Apply `Finite.of_surjective f` to reduce the goal to its premises. Introduce `m`. Establish `hcm : (m.asIdeal.map (Ideal.Quotient.mk I)).comap (Ideal.Quotient.mk I) = m.asIdeal`. Rewrite using `[Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, hker]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `sup_eq_left.2 (hIm _ m.isMaximal)`. Break down `Ideal.map_eq_top_or_isMaximal_of_surjective (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective m.isMaximal with h | h` into its components or cases. It suffices to derive a contradiction. Apply `m.isMaximal.ne_top` to reduce the goal to its premises. Rewrite using `[← hcm, h, Ideal.comap_top]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨_, h⟩, MaximalSpectrum.ext hcm⟩`. Introduce `m hm`. Use `⟨hcomap m hm, fun hk => ?_⟩` and prove the remaining obligations. Use `haveI : Finite (Λ ⧸ maximalIdeal Λ) := hk`. Use `haveI : Finite (T ⧸ I) := Module.finite_of_finite (Λ ⧸ maximalIdeal Λ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finite.of_surjective _ (Ideal.Quotient.factor_surjective (hIm m hm))`. Take `⟨n, hn⟩` from `IsArtinianRing.isNilpotent_jacobson_bot (R := T ⧸ I)`. Use `⟨n, ?_, ?_⟩` and prove the remaining obligations. Establish `hJ : (⊥ : Ideal T).jacobson.map (Ideal.Quotient.mk I) ≤ (⊥ : Ideal (T ⧸ I)).jacobson`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[Ideal.mem_comap, Ideal.mem_jacobson_bot]`. Introduce `y`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite using `[← map_mul, ← map_one (Ideal.Quotient.mk I), ← map_add]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Ideal.mem_jacobson_bot.1 hx y).map _`. Introduce `x hx`. Establish `hx' : Ideal.Quotient.mk I x ∈ ((⊥ : Ideal (T ⧸ I)).jacobson) ^ n`. Apply `Ideal.pow_right_mono hJ n` to reduce the goal to its premises. Rewrite using `[← Ideal.map_pow]`.
-
-Conclude with `Ideal.mem_map_of_mem _ hx`. Rewrite `hx'` using `[hn]`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hx'`. Rewrite using `[Ideal.jacobson]`.
-
-Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `m ⟨-, hm⟩`. Conclude with `hIm m hm`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.finMax :
     ∀ (Λ T : Type) [CommRing Λ] [IsLocalRing Λ] [CommRing T] [Algebra Λ T] [Module.Finite Λ T], Finite (MaximalSpectrum T) ∧ (∀ m : Ideal T, m.IsMaximal → m.comap (algebraMap Λ T) = maximalIdeal Λ ∧ (Finite (ResidueField Λ) → Finite (T ⧸ m))) ∧ ∃ n : ℕ, (⊥ : Ideal T).jacobson ^ n ≤ (maximalIdeal Λ).map (algebraMap Λ T) ∧ (maximalIdeal Λ).map (algebraMap Λ T) ≤ (⊥ : Ideal T).jacobson := by

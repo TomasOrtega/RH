@@ -12,9 +12,9 @@ open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.BT
 namespace PositivityTheory.HtPt.Htat.SectionCharValues
 
 /- English proof (translation)
-Introduce `R _ _ _ _ T _ _ Γ χ`. Establish `hA` using `PositivityTheory.HtPt.Htat.HopfOrderTop.btOrder_top_isHopfOrder hHenselian hBaseChange hRegular R T Γ`. Establish `hm` using `char_mem_hopfOrder R T _ hA χ`. Take `⟨s, hs⟩` from `(PositivityTheory.HtPt.Htat.ValuationInjectivePi.mem_btOrder_iff Γ _).mp hm 1`. Use `⟨s, fun t => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hs t _).trans (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem exists_section_hasValues_char (hHenselian : type_of% @GlobalTheory.T.exists_henselian_flat_over_prime) (hBaseChange : type_of% @GlobalTheory.T.exists_base_change_group) (hRegular : type_of% @GlobalTheory.T.regular_at_base_change) :
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R] (T : Type) [CommGroup T] [Finite T]
@@ -29,7 +29,7 @@ theorem exists_section_hasValues_char (hHenselian : type_of% @GlobalTheory.T.exi
 end PositivityTheory.HtPt.Htat.SectionCharValues
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.HtPt.Htat.SectionCharValues.exists_section_hasValues_char hHenselian hBaseChange hRegular`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.HtPt.Htat.ht_char_section_of (hHenselian : type_of% @GlobalTheory.T.exists_henselian_flat_over_prime) (hBaseChange : type_of% @GlobalTheory.T.exists_base_change_group) (hRegular : type_of% @GlobalTheory.T.regular_at_base_change) : ∀ (R : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [IsNoetherianRing R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (χ : T →* Rˣ), ∃ s : Γ(Γ.G.left, ⊤), Γ.HasValues s (fun t => ((χ t : Rˣ) : R)) :=
   @PositivityTheory.HtPt.Htat.SectionCharValues.exists_section_hasValues_char hHenselian hBaseChange hRegular

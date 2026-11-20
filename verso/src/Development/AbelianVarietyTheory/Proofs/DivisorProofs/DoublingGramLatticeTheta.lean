@@ -22,15 +22,11 @@ noncomputable section
 namespace GlobalTheory.DoublingUnfoldCusp
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d Xs W M χX χW om r s' r₁ s₁ hP hd W₂ hJ hL hθ i hi K hK hIw φ₀ hφ₀ hLI μ hμ`. Take `⟨R₁, hR₁⟩` from `GlobalTheory.T.doubling_gram_lattice_first hKP F E σ B n d Xs W M χX χW om r s' r₁ s₁ hP hd W₂ hJ hL hθ i hi K hK hIw φ₀ hφ₀ hLI μ hμ`. Take `⟨R₂, hR₂⟩` from `GlobalTheory.T.doubling_gram_lattice_second hKP F E σ B n d Xs W M χX χW om r s' r₁ s₁ hP hd W₂ hJ hL hθ i hi K hK hIw φ₀ hφ₀ hLI μ hμ`. Establish `hlaw` using `GlobalTheory.DoubledFlatDiag.flatOf_diag hKP F E σ B n d Xs W M χX χW om r s' r₁ s₁ hP hd W₂ hJ hL hθ i hi K hK hIw φ₀ hφ₀ hLI μ hμ`. Take `⟨hrat, hinj, hα1, hcnt⟩` from `GlobalTheory.DoublingRat.rat_open_classes hKP F E σ B n d Xs W M χX χW om r s' r₁ s₁ hP hd W₂ hJ hL hθ i hi K hK hIw φ₀ hφ₀ hLI μ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hic, hΦc, hwc⟩` from `GlobalTheory.DblUnfoldCont.continuity_pair hKP F E σ B n d Xs W M χX χW om r s' r₁ s₁ hP hd W₂ hJ hL hθ i hi K hK hIw φ₀ hφ₀ hLI μ hμ`. Establish `hvan` using `GlobalTheory.T.doubling_gram_lattice_third hKP F E σ B n d Xs W M χX χW om r s' r₁ s₁ hP hd W₂ hJ hL hθ i hi K hK hIw φ₀ hφ₀ hLI μ hμ`. Use `haveI := hμ`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : IsTopologicalRing (Matrix (Fin d) (Fin d) (AE F E)) := Matrix.topologicalRing`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsTopologicalRing (Matrix (Fin (d + d)) (Fin (d + d)) (AE F E)) := Matrix.topologicalRing`. Use `haveI : IsTopologicalGroup (GL (Fin d) (AE F E)) := inferInstance`. Use `haveI : IsTopologicalGroup (GL (Fin (d + d)) (AE F E)) := inferInstance`. Use `haveI : IsTopologicalGroup (UA σ W.J) := Subgroup.instIsTopologicalGroupSubtypeMem _`. Use `haveI : IsTopologicalGroup (UA σ W₂.J) := Subgroup.instIsTopologicalGroupSubtypeMem _`.
-
-Use `haveI : BorelSpace (UA σ W.J) := ⟨rfl⟩`. Use `haveI := hcnt`. Use `⟨max ((d : ℝ) / 2) (max R₁ R₂), le_max_left _ _, fun s hs => ?_⟩` and prove the remaining obligations. Establish `h0 : (d : ℝ) / 2 < s.re` using `lt_of_le_of_lt (le_max_left _ _) hs`. Establish `h1 : R₁ < s.re` using `lt_of_le_of_lt ((le_max_left _ _).trans (le_max_right _ _)) hs`.
-
-Establish `h2 : R₂ < s.re` using `lt_of_le_of_lt ((le_max_right _ _).trans (le_max_right _ _)) hs`. Use `⟨hR₁ s h1, fun 𝓕 h𝓕 f hf hfΓ hfd hcusp h => ?_⟩` and prove the remaining obligations. Establish `hfin` using `hR₂ s h2 𝓕 h𝓕 f hf hfΓ hfd h`. Conclude with `GlobalTheory.UnfoldPartial.unfold_of_nonopen_zero i _ _ (ratU σ W.J) μ 𝓕 _ f (fun g : UA σ W.J => (((χX (Matrix.GeneralLinearGroup.det g.1))⁻¹ : Circle) : ℂ)) (fun h : UA σ W.J => ((χX (Matrix.GeneralLinearGroup.det h.1) : Circle) : ℂ)) hic h𝓕 (hLI s h0).1 (hΦc s) hrat hinj (hLI …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unfold_cusp : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (Xs : Spc F E n) (W : Spc F E d) (M : Model σ Xs W) (χX χW : Chr F E) (om : Rep σ Xs W) (r s' r₁ s₁ : ℕ),
     IsPair B M χX χW om r s' r₁ s₁ → 1 ≤ d →

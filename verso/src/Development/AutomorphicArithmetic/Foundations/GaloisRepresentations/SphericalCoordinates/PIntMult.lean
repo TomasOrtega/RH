@@ -3,23 +3,21 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Spher
 namespace UpperTheory.Gal.W2
 
 /- English proof (translation)
-Unfold `IntMult`. Introduce `O _ bar D' ga r hr h`. Set `Iv : Ideal ℤ` to `Ideal.span {x | ∃ u u', D'.EF u u' = x}`. Establish `hval : ∀ u u', D'.EF u u' ∈ Iv` using `fun u u' => Ideal.subset_span ⟨u, u', rfl⟩`. Take `⟨c, hc⟩` from `(IsPrincipalIdealRing.principal Iv).principal`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc' : Iv = Ideal.span {c}` using `hc`. Establish `key : ∀ x ∈ Iv, ∃ y ∈ Iv, (y : ℚ) = r * x`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨u, u', rfl⟩` from `hx`. Conclude with `⟨_, hval (ga u) (ga u'), h u u'⟩`. Consider the case `zero => exact ⟨0, Iv.zero_mem, by simp⟩`. Consider the case `add a b _ _ iha ihb`. Take `⟨y, hy, e⟩` from `iha`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, e'⟩` from `ihb`. Conclude with `⟨y + z, Iv.add_mem hy hz, by push_cast; rw [e, e']; ring⟩`. Consider the case `smul a x _ ih`. Take `⟨y, hy, e⟩` from `ih`. Conclude with `⟨a * y, Iv.mul_mem_left a hy, by simp only [smul_eq_mul]; push_cast; rw [e]; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Distinguish the cases in `hc0 : c = 0`. Use `⟨1, one_pos, fun u u' => ?_⟩` and prove the remaining obligations. Establish `hz : ∀ u u', D'.EF u u' = 0` using `fun u u' => by`. Use `hval u u'` as an intermediate fact. Rewrite `this` using `[hc', hc0, Ideal.mem_span_singleton]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Rewrite using `[hz, hz, mul_zero]`. Establish `hcI : c ∈ Iv` using `by rw [hc']; exact Ideal.mem_span_singleton_self c`. Take `⟨y, hy, e⟩` from `key c hcI`. Rewrite `hy` using `[hc', Ideal.mem_span_singleton]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨m, rfl⟩` from `hy`. Establish `hcq : (c : ℚ) ≠ 0` using `by exact_mod_cast hc0`. Establish `hm : (m : ℚ) = r`. Move the coercions through the operations in `at e`. Establish `: (c : ℚ) * m = c * r` using `by rw [e]; ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Conclude with `mul_left_cancel₀ hcq this`. Use `⟨m, ?_, fun u u' => ?_⟩` and prove the remaining obligations. Establish `: (0 : ℚ) < m` using `hm ▸ hr`. Conclude with `this` after adjusting the coercions. Use `h u u'` as an intermediate fact.
-
-Rewrite `this` using `[← hm]`. Conclude with `this` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intMult_of : IntMult := by
   unfold IntMult

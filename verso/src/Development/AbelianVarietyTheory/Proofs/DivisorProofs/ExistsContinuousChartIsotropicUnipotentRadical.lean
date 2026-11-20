@@ -28,7 +28,7 @@ section Ring
 variable {R : Type} [CommRing R] (s : R →+* R) {n : ℕ} (A : Matrix (Fin n) (Fin n) R) {a b c : ℕ}
 
 /- English proof (translation)
-Simplify using `only [gr_add_left, gr_add_right, gr_mul_left, gr_mul_right, h11, h12, h13, h21, h22, h23, h31, h32, h33]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gram_comb (X₁ Y₁ : Matrix (Fin n) (Fin a) R) (X₂ Y₂ : Matrix (Fin n) (Fin b) R)
     (X₃ Y₃ : Matrix (Fin n) (Fin c) R) (R₁ : Matrix (Fin a) (Fin n) R) (R₂ : Matrix (Fin b) (Fin n) R)
@@ -41,7 +41,7 @@ theorem gram_comb (X₁ Y₁ : Matrix (Fin n) (Fin a) R) (X₂ Y₂ : Matrix (Fi
   simp only [gr_add_left, gr_add_right, gr_mul_left, gr_mul_right, h11, h12, h13, h21, h22, h23, h31, h32, h33]
 
 /- English proof (translation)
-Simplify using `only [Matrix.add_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comb_mul {p : ℕ} (Y₁ : Matrix (Fin n) (Fin a) R) (Y₂ : Matrix (Fin n) (Fin b) R)
     (Y₃ : Matrix (Fin n) (Fin c) R) (R₁ : Matrix (Fin a) (Fin n) R) (R₂ : Matrix (Fin b) (Fin n) R)
@@ -50,7 +50,7 @@ theorem comb_mul {p : ℕ} (Y₁ : Matrix (Fin n) (Fin a) R) (Y₂ : Matrix (Fin
   simp only [Matrix.add_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `i k`. Simplify using `[cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_smul' {p q : Type} (x : R) (M : Matrix p q R) : cT s (x • M) = s x • cT s M := by
   ext i k; simp [cT]
@@ -76,29 +76,29 @@ def uMat (b : Matrix (Fin j) (Fin m) (AF F ⊗[F] E)) (c : Matrix (Fin j) (Fin j
 variable {σ J C D Z J₀}
 
 /- English proof (translation)
-The claim follows from `(Matrix.map_mul).symm`.
+A detailed English derivation is pending.
 -/
 theorem adMat_mul' {p q r : ℕ} (X : Matrix (Fin p) (Fin q) E) (Y : Matrix (Fin q) (Fin r) E) :
     adMat F X * adMat F Y = adMat F (X * Y) := (Matrix.map_mul).symm
 
 /- English proof (translation)
-The claim follows from `(Matrix.map_add _ (map_add _) X Y).symm`.
+A detailed English derivation is pending.
 -/
 theorem adMat_add' {p q : ℕ} (X Y : Matrix (Fin p) (Fin q) E) : adMat F X + adMat F Y = adMat F (X + Y) :=
   (Matrix.map_add _ (map_add _) X Y).symm
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem adMat_one' {p : ℕ} : adMat F (1 : Matrix (Fin p) (Fin p) E) = 1 := Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_zero _ (map_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem adMat_zero' {p q : ℕ} : adMat F (0 : Matrix (Fin p) (Fin q) E) = 0 := Matrix.map_zero _ (map_zero _)
 
 /- English proof (translation)
-Establish `e1 : adMat F (cT (σ : E →+* E) D * J) * adMat F C = 1` using `by rw [adMat_mul', hF.dc, adMat_one']`. Establish `e2 : adMat F (J₀⁻¹ * (cT (σ : E →+* E) Z * J)) * adMat F C = 0`. Rewrite using `[adMat_mul', Matrix.mul_assoc, hF.zc, Matrix.mul_zero, adMat_zero']`. Establish `e3 : adMat F (cT (σ : E →+* E) C * J) * adMat F C = 0` using `by rw [adMat_mul', hF.cc, adMat_zero']`. Rewrite using `[uMat, comb_mul, e1, e2, e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -110,9 +110,9 @@ theorem uMat_mul_C (hF : Fr σ J C D Z J₀) (b c) : uMat σ J C D Z J₀ b c * 
   rw [uMat, comb_mul, e1, e2, e3]; simp
 
 /- English proof (translation)
-Establish `hu : IsUnit J₀.det` using `isUnit_iff_ne_zero.mpr hF.herm₀.2`. Establish `e1 : adMat F (cT (σ : E →+* E) D * J) * adMat F Z = 0` using `by rw [adMat_mul', hF.dz, adMat_zero']`. Establish `e2 : adMat F (J₀⁻¹ * (cT (σ : E →+* E) Z * J)) * adMat F Z = 1`. Rewrite using `[adMat_mul', Matrix.mul_assoc, hF.zz, Matrix.nonsing_inv_mul _ hu, adMat_one']`. Establish `e3 : adMat F (cT (σ : E →+* E) C * J) * adMat F Z = 0` using `by rw [adMat_mul', hF.cz, adMat_zero']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[uMat, comb_mul, e1, e2, e3]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem uMat_mul_Z (hF : Fr σ J C D Z J₀) (b c) :
     uMat σ J C D Z J₀ b c * adMat F Z = adMat F Z + adMat F C * b := by
@@ -124,7 +124,7 @@ theorem uMat_mul_Z (hF : Fr σ J C D Z J₀) (b c) :
   rw [uMat, comb_mul, e1, e2, e3]; simp
 
 /- English proof (translation)
-Establish `e1 : adMat F (cT (σ : E →+* E) D * J) * adMat F D = 0` using `by rw [adMat_mul', hF.dd, adMat_zero']`. Establish `e2 : adMat F (J₀⁻¹ * (cT (σ : E →+* E) Z * J)) * adMat F D = 0`. Rewrite using `[adMat_mul', Matrix.mul_assoc, hF.zd, Matrix.mul_zero, adMat_zero']`. Establish `e3 : adMat F (cT (σ : E →+* E) C * J) * adMat F D = 1` using `by rw [adMat_mul', hF.cd, adMat_one']`. Rewrite using `[uMat, comb_mul, e1, e2, e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -147,23 +147,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {J₀ : Matrix (Fin m) (Fin m) E}
 
 /- English proof (translation)
-Use `set s := sigR (AF F) σ with hs`. Use `set p := plus σ J₀ b with hp`. Establish `hu : IsUnit J₀.det` using `isUnit_iff_ne_zero.mpr hF.herm₀.2`. Establish `key : cT s p * adMat F J₀ = b`. Rewrite using `[hp, plus, Formalism.UG.cT_mul, cT_cT σ hF.cm, cT_adMat, cT_inv_herm σ J₀ hF.herm₀, Matrix.mul_assoc, adMat_mul', Matrix.nonsing_inv_mul _ hu, adMat_one', Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key2 : adMat F J₀ * p = cT s b`. Rewrite using `[hp, plus, ← Matrix.mul_assoc, adMat_mul', Matrix.mul_nonsing_inv _ hu, adMat_one', Matrix.one_mul]`. Establish `g0 : ∀ {p q : ℕ} (X : Matrix (Fin n) (Fin p) E) (Y : Matrix (Fin n) (Fin q) E), cT (σ : E →+* E) X * J * Y = 0 → gr s (adMat F J) (adMat F X) (adMat F Y) = 0`. Introduce `p q X Y h`. Rewrite using `[gr_adMat, h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `adMat_zero'`. Establish `g1 : ∀ (X Y : Matrix (Fin n) (Fin j) E), cT (σ : E →+* E) X * J * Y = 1 → gr s (adMat F J) (adMat F X) (adMat F Y) = 1`. Introduce `X Y h`. Rewrite using `[gr_adMat, h]`. Conclude with `adMat_one'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gzz : gr s (adMat F J) (adMat F Z) (adMat F Z) = adMat F J₀` using `by rw [gr_adMat, hF.zz]`. Establish `hcc` using `g0 C C hF.cc`. Establish `hdd` using `g0 D D hF.dd`. Establish `hcz` using `g0 C Z hF.cz`. Establish `hdz` using `g0 D Z hF.dz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzc` using `g0 Z C hF.zc`. Establish `hzd` using `g0 Z D hF.zd`. Establish `hcd` using `g1 C D hF.cd`. Establish `hdc` using `g1 D C hF.dc`. Establish `hsum : adMat F C * adMat F (cT (σ : E →+* E) D * J) + adMat F Z * adMat F (J₀⁻¹ * (cT (σ : E →+* E) Z * J)) + adMat F D * adMat F (cT (σ : E →+* E) C * J) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[adMat_mul', adMat_mul', adMat_mul', adMat_add', adMat_add', hF.sum, adMat_one']`. Use `gram_comb s (adMat F J) (adMat F C) (adMat F C) (adMat F Z) (adMat F Z + adMat F C * b) (adMat F D) (adMat F D - adMat F Z * p + adMat F C * c) (adMat F (cT (σ : E →+* E) D * J)) (adMat F (J₀⁻¹ * (cT (σ : E →+* E) Z * J))) (adMat F (cT (σ : E →+* E) C * J)) rfl (by simp only [gr_ …` as an intermediate fact. Simplify using `only [gr_add_right, gr_add_left, gr_sub_right, gr_mul_right, gr_mul_left, hcz, hcc, hzc, gzz, hzd, hcd]`. Simplify using `[key2])`. Use the proof step `(by simp only [gr_add_left, gr_sub_left, gr_mul_left, hcc, hzc, hdc]; simp)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use the proof step `(by`. Simplify using `only [gr_add_right, gr_add_left, gr_sub_left, gr_mul_right, gr_mul_left, hcz, hcc, hzc, gzz, hdz, hdc]`. Simplify using `[key])`. Use the proof step `(by`. Simplify using `only [gr_add_right, gr_add_left, gr_sub_left, gr_sub_right, gr_mul_right, gr_mul_left, hcz, hcc, hzc, gzz, hdz, hdc, hcd, hdd, hzd]`.
-
-Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, sub_zero, zero_add, add_zero, zero_sub, sub_neg_eq_add, key]`. Simplify using `only [Matrix.neg_mul, sub_neg_eq_add]`. Rewrite using `[← hc]`. Use the proof step `abel)`. Rewrite `this` using `[hsum]`.
-
-Simplify `this` using `[gr, uMat, hp, Formalism.UG.cT_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem uMat_unitary (hF : Fr σ J C D Z J₀) (b : Matrix (Fin j) (Fin m) (AF F ⊗[F] E))
     (c : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)) (hc : c + cT (sigR (AF F) σ) c + b * plus σ J₀ b = 0) :
@@ -230,7 +226,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {J₀ : Matrix (Fin m) (Fin m) E}
 
 /- English proof (translation)
-Establish `hu : IsUnit J.det` using `isUnit_iff_ne_zero.mpr hF.herm.2`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc _ (adMat F J), uMat_unitary hF b c hc, adMat_mul', Matrix.nonsing_inv_mul _ hu, adMat_one']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem uInv_mul (hF : Fr σ J C D Z J₀) (b c) (hc : c + cT (sigR (AF F) σ) c + b * plus σ J₀ b = 0) :
     (adMat F J⁻¹ * cT (sigR (AF F) σ) (uMat σ J C D Z J₀ b c) * adMat F J) * uMat σ J C D Z J₀ b c = 1 := by
@@ -260,7 +256,7 @@ theorem uPt_inv (hF : Fr σ J C D Z J₀) (b c) (hc : c + cT (sigR (AF F) σ) c 
       adMat F J⁻¹ * cT (sigR (AF F) σ) (uMat σ J C D Z J₀ b c) * adMat F J := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨uMat_mul_C hF b c, uMat_mul_Z hF b c, uMat_mul_D hF b c⟩`.
+Supply the required witnesses or components.
 -/
 theorem uPt_crd (hF : Fr σ J C D Z J₀) (b c) (hc : c + cT (sigR (AF F) σ) c + b * plus σ J₀ b = 0) :
     Crd σ J C D Z J₀ (uPt hF b c hc) b c :=
@@ -277,29 +273,29 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {J₀ : Matrix (Fin m) (Fin m) E}
 
 /- English proof (translation)
-Rewrite using `[Formalism.UG.cT_mul, plus, Formalism.UG.cT_mul, cT_cT σ hF.cm, cT_adMat, cT_inv_herm σ J₀ hF.herm₀, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cT_mul_plus (hF : Fr σ J C D Z J₀) (b : Matrix (Fin j) (Fin m) (AF F ⊗[F] E)) :
     cT (sigR (AF F) σ) (b * plus σ J₀ b) = b * plus σ J₀ b := by
   rw [Formalism.UG.cT_mul, plus, Formalism.UG.cT_mul, cT_cT σ hF.cm, cT_adMat, cT_inv_herm σ J₀ hF.herm₀, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `h : σ (2⁻¹ : E) = 2⁻¹` using `by rw [map_inv₀, map_ofNat]`. Simplify using `[sigR, inclR, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sigR_half : sigR (AF F) σ (inclR (F := F) (AF F) (2⁻¹ : E)) = inclR (F := F) (AF F) (2⁻¹ : E) := by
   have h : σ (2⁻¹ : E) = 2⁻¹ := by rw [map_inv₀, map_ofNat]
   simp [sigR, inclR, h]
 
 /- English proof (translation)
-Rewrite using `[← map_add, show (2⁻¹ : E) + 2⁻¹ = 1 by norm_num, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem half_add_half : inclR (F := F) (AF F) (2⁻¹ : E) + inclR (F := F) (AF F) (2⁻¹ : E) = 1 := by
   rw [← map_add, show (2⁻¹ : E) + 2⁻¹ = 1 by norm_num, map_one]
 
 /- English proof (translation)
-Establish `hs : (s : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)) + cT (sigR (AF F) σ) s = 0` using `mem_skewA.mp s.2`. Rewrite using `[cT_sub', cT_smul', cT_mul_plus hF, sigR_half]`. Establish `e : ∀ (S T X : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)) (h : AF F ⊗[F] E), S - h • X + (T - h • X) + X = (S + T) - (h + h) • X + X`. Introduce `S T X h`. Rewrite using `[add_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e, hs, half_add_half, one_smul]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem skew_crd (hF : Fr σ J C D Z J₀) (b : Matrix (Fin j) (Fin m) (AF F ⊗[F] E)) (s : skewA σ j) :
     ((s : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)) - inclR (F := F) (AF F) (2⁻¹ : E) • (b * plus σ J₀ b)) +
@@ -319,13 +315,13 @@ namespace GlobalTheory.ResidueEisenstein.ChartU
 open GlobalTheory.SphEis GlobalTheory.SphEis.UnipCrd
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J j m C D Z J₀ hF`. Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hsg : Continuous (sigR (AF F) σ)` using `GlobalTheory.AdelicUnitaryTop.continuous_sigR (AF F) σ`. Establish `hcT : ∀ {X : Type} [TopologicalSpace X] {p q : ℕ} {f : X → Matrix (Fin p) (Fin q) (AF F ⊗[F] E)}, Continuous f → Continuous fun x => cT (sigR (AF F) σ) (f x)` using `fun hf => (hf.matrix_map hsg).matrix_transpose`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `cF : Matrix (Fin j) (Fin m) (AF F ⊗[F] E) × skewA σ j → Matrix (Fin j) (Fin j) (AF F ⊗[F] E)` to `fun p => (p.2 : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)) - inclR (F := F) (AF F) (2⁻¹ : E) • (p.1 * plus σ J₀ p.1)`. Use `⟨fun p => uPt hF p.1 (cF p) (skew_crd hF p.1 p.2), ?_, fun b s => uPt_crd hF _ _ _⟩` and prove the remaining obligations. Establish `hb : Continuous fun p : Matrix (Fin j) (Fin m) (AF F ⊗[F] E) × skewA σ j => p.1` using `continuous_fst`. Establish `hpl : Continuous fun p : Matrix (Fin j) (Fin m) (AF F ⊗[F] E) × skewA σ j => plus σ J₀ p.1` using `continuous_const.matrix_mul (hcT hb)`. Establish `hbp : Continuous fun p : Matrix (Fin j) (Fin m) (AF F ⊗[F] E) × skewA σ j => p.1 * plus σ J₀ p.1` using `hb.matrix_mul hpl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh : Continuous fun p : Matrix (Fin j) (Fin m) (AF F ⊗[F] E) × skewA σ j => inclR (F` using `F) (AF F) (2⁻¹ : E) • (p.1 * plus σ J₀ p.1) := by`. Use `hbp.const_smul (inclR (F := F) (AF F) (2⁻¹ : E))` as an intermediate fact. Conclude with `this`. Establish `hs : Continuous fun p : Matrix (Fin j) (Fin m) (AF F ⊗[F] E) × skewA σ j => (p.2 : Matrix (Fin j) (Fin j) (AF F ⊗[F] E))` using `continuous_subtype_val.comp continuous_snd`. Establish `hc : Continuous cF` using `hs.sub hh`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hM : Continuous fun p : Matrix (Fin j) (Fin m) (AF F ⊗[F] E) × skewA σ j => uMat σ J C D Z J₀ p.1 (cF p)` using `((continuous_const.matrix_mul continuous_const).add ((continuous_const.add (continuous_const.matrix_mul hb)).matrix_mul continuous_const)).add (((continuous_const.sub (continuous_const.matrix_mul hpl)).add (continuous_const.matrix_mul hc)).matrix_mul continuous_const)`. Establish `hMi : Continuous fun p : Matrix (Fin j) (Fin m) (AF F ⊗[F] E) × skewA σ j => adMat F J⁻¹ * cT (sigR (AF F) σ) (uMat σ J C D Z J₀ p.1 (cF p)) * adMat F J` using `(continuous_const.matrix_mul (hcT hM)).matrix_mul continuous_const`. Rewrite using `[(isEmbedding_matHom (AF F) σ J).continuous_iff]`. Conclude with `Units.continuous_iff.mpr ⟨hM.congr fun p => (uPt_mat hF _ _ _).symm, hMi.congr fun p => (uPt_inv hF _ _ _).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem chart : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (j m : ℕ) (C D : Matrix (Fin n) (Fin j) E) (Z : Matrix (Fin n) (Fin m) E) (J₀ : Matrix (Fin m) (Fin m) E), GlobalTheory.SphEis.Fr σ J C D Z J₀ → ∃ φ : Matrix (Fin j) (Fin m) (AF F ⊗[F] E) × GlobalTheory.ResidueEisenstein.ModConj.skewA σ j → GAd σ J, Continuous φ ∧ ∀ b s, GlobalTheory.SphEis.Crd σ J C D Z J₀ (φ (b, s)) b ((s : Matrix (Fin j) (Fin j) (AF F ⊗[F] E)) - inclR (F := F) (AF F) (2⁻¹ : E) • (b * GlobalTheory.SphEis.plus σ J₀ b)) := by
   intro F E _ _ _ _ _ σ n J j m C D Z J₀ hF

@@ -55,7 +55,7 @@ def LocDensField : Prop :=
             (Module.finrank E V) (Fintype.card ι) 0
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ M hl hc V _ _ H Λ hΛ ϖ hϖ ι _ _ G₀ h1 h2 h3 h4`. Break down `h0 F E M.L with hE | hE` into its components or cases. Conclude with `⟨-1, Or.inr rfl, hF F E M hl hc hE V H Λ hΛ ϖ hϖ ι G₀ h1 h2 h3 h4⟩`. Conclude with `⟨1, Or.inl rfl, hS F E M hl hc hE V H Λ hΛ ϖ hϖ ι G₀ h1 h2 h3 h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem locDens_of (h0 : ETwo) (hS : LocDensSplit) (hF : LocDensField) : LocDens := by
   intro F E _ _ _ _ _ _ _ M hl hc V _ _ H Λ hΛ ϖ hϖ ι _ _ G₀ h1 h2 h3 h4
@@ -64,9 +64,9 @@ theorem locDens_of (h0 : ETwo) (hS : LocDensSplit) (hF : LocDensField) : LocDens
   · exact ⟨1, Or.inl rfl, hS F E M hl hc hE V H Λ hΛ ϖ hϖ ι G₀ h1 h2 h3 h4⟩
 
 /- English proof (translation)
-Rewrite using `[D.conjF_eq]`. Use `D.host.isCMField_hostE` as an intermediate fact. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `D.host.φ₀ (NumberField.IsCMField.complexConj D.host.E x) = D.host.φ₀ (D.host.conj x)`. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(D.host.toHostAx.conjE_apply D.host.φ₀ x).symm`.
+A detailed English derivation is pending.
 -/
 theorem star_eq_conjF (D : Formalism.BasicNotions.D7) (x : D.host.E) : star x = D.conjF x := by
   rw [D.conjF_eq]
@@ -77,7 +77,7 @@ theorem star_eq_conjF (D : Formalism.BasicNotions.D7) (x : D.host.E) : star x = 
   exact (D.host.toHostAx.conjE_apply D.host.φ₀ x).symm
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;>`. Apply the tactic sequence `simp [Ga, Matrix.fromBlocks, Matrix.conjTranspose_apply, and_comm] <;> split_ifs <;> simp [Tn]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ga_herm (D : Formalism.BasicNotions.D7) (u u' : D.what₂.Word) (Z : MatZ D) (a b) :
     Ga (Tn u) (Tn u') Z b a = star (Ga (Tn u) (Tn u') Z a b) := by
@@ -85,7 +85,7 @@ theorem ga_herm (D : Formalism.BasicNotions.D7) (u u' : D.what₂.Word) (Z : Mat
     simp [Ga, Matrix.fromBlocks, Matrix.conjTranspose_apply, and_comm] <;> split_ifs <;> simp [Tn]
 
 /- English proof (translation)
-Establish `hcj : (M p).L.cj = (D.s.atP p).cj` using `hA.2.2.1`. Simplify using `only [GaPlus, hs, GaLoc, Matrix.of_apply]`. Rewrite using `[map_mul, map_mul, hcj, (D.s.atP p).cj_ιE, ← star_eq_conjF, ← ga_herm, ← hcj, (M p).L.cj_cj]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gaPlus_herm (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (p : PlF D) (hA : Agree δ M p)
@@ -97,13 +97,13 @@ theorem gaPlus_herm (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.at
   ring
 
 /- English proof (translation)
-Take `⟨hs, hSD, hI, hdet⟩` from `hG`. Establish `hl : IsNonarchimedeanLocalField (D.s.atP p).Fp` using `(D.s.atP p).lf`. Establish `hc : CharZero (D.s.atP p).Fp` using `(D.s.atP p).char0`. Establish `hcard : Fintype.card (Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) = 2 * (D.R.rS + 1)`. Rewrite using `[Fintype.card_sum, Fintype.card_fin]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hr : Module.finrank (D.s.atP p).Ep (L.V p) = D.R.r` using `L.rank p`. Establish `hm : Fintype.card (Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) ≤ Module.finrank (D.s.atP p).Ep (L.V p)`. Rewrite using `[hcard, hr]`. Use `tuple_short D` as an intermediate fact.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hh` using `gaPlus_herm D δ M p (hA p) hs u u' Z`. Take `⟨η, hη, he⟩` from `h (D.s.atP p).Fp (D.s.atP p).Ep (M p) hl hc (L.V p) (L.H p) (lattice₂ L p (VS D).L0) hSD (ϖ p) (hϖ p) (Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) (GaPlus M δ p (Tn u) (Tn u') Z) hI hh hdet hm`. Use `⟨η, hη, ?_⟩` and prove the remaining obligations. Rewrite `he` using `[hr, hcard]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `he`.
+A detailed English derivation is pending.
 -/
 theorem densAtGood_at (h : LocDens) (D : Formalism.BasicNotions.D7) (δ : ∀ p : PlF D, (D.s.atP p).Fp)
     (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep) (hA : ∀ p, Agree δ M p) (L : LocSp D M)
@@ -129,13 +129,13 @@ theorem densAtGood_at (h : LocDens) (D : Formalism.BasicNotions.D7) (δ : ∀ p 
   exact he
 
 /- English proof (translation)
-Introduce `D δ M hA L u u' _ _ _ _ ϖ hϖ Z p hG` and use `densAtGood_at h D δ M hA L u u' ϖ hϖ Z p hG`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem densAtGood_of (h : LocDens) : DensAtGood :=
   fun D δ M hA L u u' _ _ _ _ ϖ hϖ Z p hG => densAtGood_at h D δ M hA L u u' ϖ hϖ Z p hG
 
 /- English proof (translation)
-The claim follows from `densAtGood_of (locDens_of h0 hS hF)`.
+A detailed English derivation is pending.
 -/
 theorem densAtGood_of' (h0 : ETwo) (hS : LocDensSplit) (hF : LocDensField) : DensAtGood :=
   densAtGood_of (locDens_of h0 hS hF)

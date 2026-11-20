@@ -9,23 +9,21 @@ open MeasureTheory NumberField NumberField.mixedEmbedding
 namespace Formalism.L2.SG.NGCut.SplitEmbedding
 
 /- English proof (translation)
-Use `set Λ' := Λ.addSubgroupOf L`. Establish `: Finite (L ⧸ Λ')` using `Λ'.finite_quotient_of_finiteIndex`. Establish `: Fintype (L ⧸ Λ')` using `Fintype.ofFinite _`. Set `rep : L ⧸ Λ' → L` to `fun q => q.out`. Set `G : Set V` to `⋃ q : L ⧸ Λ', (fun y => ((rep q : L) : V) + y) ⁻¹' FL`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨G, MeasurableSet.iUnion fun q => measurable_const_add _ hFL, fun v => ?_⟩` and prove the remaining obligations. Take `⟨l, hl, hlu⟩` from `hdL v`. Use `set q : L ⧸ Λ' := (l : L ⧸ Λ')`. Establish `hdiff : -(rep q) + l ∈ Λ'`. Establish `: ((rep q : L) : L ⧸ Λ') = q` using `QuotientAddGroup.out_eq' q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← QuotientAddGroup.eq]`. Conclude with `this`. Establish `hΛ : ((-(rep q) + l : L) : V) ∈ Λ`. Rewrite `hdiff` using `[AddSubgroup.mem_addSubgroupOf]`. Conclude with `hdiff`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨_, hΛ⟩, Set.mem_iUnion.2 ⟨q, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show ((rep q : L) : V) + (((-(rep q) + l : L) : V) + v) ∈ FL`. Simplify using `only [AddSubgroup.coe_add, AddSubgroup.coe_neg]`. Rewrite using `[← add_assoc, add_neg_cancel_left]`. Conclude with `hl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨a, ha⟩ haG`. Take `⟨q', hq'⟩` from `Set.mem_iUnion.1 haG`. Establish `hq'' : ((rep q' : L) : V) + (a + v) ∈ FL` using `hq'`. Establish `hmem : ((rep q' : V) + a) ∈ L` using `L.add_mem (rep q').2 (hle ha)`. Establish `h1 : (⟨(rep q' : V) + a, hmem⟩ : L) = l` using `hlu _ (by show (rep q' : V) + a + v ∈ FL; rw [add_assoc]; exact hq'')`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hqq : q' = q`. Establish `e : (rep q' : L) + ⟨a, hle ha⟩ = l`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using congrArg Subtype.val h1`. Establish `hmk : ((l : L) : L ⧸ Λ') = ((rep q' : L) : L ⧸ Λ')`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← e, QuotientAddGroup.eq]`. Simplify using `only [neg_add_rev, neg_add_cancel_right]`. Rewrite using `[AddSubgroup.mem_addSubgroupOf]`. Simplify using `using Λ.neg_mem ha`. Rewrite `hmk` using `[show ((rep q' : L) : L ⧸ Λ') = q' from QuotientAddGroup.out_eq' q']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmk.symm`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show a = ((-(rep q) + l : L) : V)`. Use `congrArg Subtype.val h1` as an intermediate fact. Simplify using `only at this`.
-
-Rewrite using `[← hqq]`. Simplify using `only [AddSubgroup.coe_add, AddSubgroup.coe_neg]`. Rewrite using `[← this]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem coset_fd {V : Type} [AddCommGroup V] [MeasurableSpace V] [MeasurableAdd V] (L Λ : AddSubgroup V)
     (hle : Λ ≤ L) (hfin : (Λ.addSubgroupOf L).FiniteIndex) (FL : Set V) (hFL : MeasurableSet FL)

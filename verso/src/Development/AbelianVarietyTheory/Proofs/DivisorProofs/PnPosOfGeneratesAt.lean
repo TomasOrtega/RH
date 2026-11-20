@@ -47,7 +47,7 @@ end Atlas
 variable {F : Type} [Field F] [NumberField F] {C : CxSt F} {Y : Var F}
 
 /- English proof (translation)
-Introduce `j` and use `by obtain ⟨c, hc⟩ := I.alg a j refine ⟨c, OpenPartialHomeomorph.ext _ _ (fun x => ?_) (fun x => ?_) ?_⟩ · change (M.A a).chart j ((I.pt a).symm x) = _ rw [hc]; simp · change I.pt a (((M.A a).chart j).symm x) = _ rw [hc]; simp · change (I.pt a).symm ⁻¹' ((M.A a).chart j).source = …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAlgAtlas_tAtlas {e : ℕ} {M : Man e} (I : ManIs M Y) (a : Fin (M.n + 1)) :
     IsAlgAtlas (tAtlas (M.A a) (I.pt a)) := fun j => by
@@ -64,14 +64,14 @@ def readFn {e : ℕ} {M : Man e} (I : ManIs M Y) (f : M.Fun) : ∀ σ : F →+* 
   I.ε.piCongrLeft (fun σ => Pts Y σ → ℝ) fun a y => f a ((I.pt a).symm y)
 
 /- English proof (translation)
-Rewrite using `[readFn, Equiv.piCongrLeft_apply_apply, Homeomorph.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem readFn_apply {e : ℕ} {M : Man e} (I : ManIs M Y) (f : M.Fun) (a : Fin (M.n + 1)) (x : M.X a) :
     readFn I f (I.ε a) (I.pt a x) = f a x := by
   rw [readFn, Equiv.piCongrLeft_apply_apply, Homeomorph.symm_apply_apply]
 
 /- English proof (translation)
-Rewrite using `[readFn, Equiv.piCongrLeft_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem readFn_apply' {e : ℕ} {M : Man e} (I : ManIs M Y) (f : M.Fun) (a : Fin (M.n + 1)) (y : Pts Y (I.ε a)) :
     readFn I f (I.ε a) y = f a ((I.pt a).symm y) := by
@@ -82,7 +82,7 @@ section Met
 variable {σ : F →+* ℂ} {Δ : Y.Dv}
 
 /- English proof (translation)
-Take `⟨a, ha, e⟩` from `exists_pn_eq (C := C) hf`. Rewrite using `[e m]`. Conclude with `mul_pos ha h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pn_pos_of_generatesAt {m : C.Met Y σ Δ} {f : Y.Fn} {y : Pts Y σ} (hf : Δ.GeneratesAt (under y) f)
     (h : PosAt m y) : 0 < C.pn Y σ Δ m (C.cx Y σ f) y := by
@@ -118,7 +118,7 @@ theorem metWeight_φ (m : C.Met Y σ Δ) (hm : ∀ y, PosAt m y) (c : (toLB Δ).
     (metWeight Δ m hm).φ c y = -Real.log (C.pn Y σ Δ m (C.cx Y σ (c.1.2 : Y.Fn)⁻¹) y) := rfl
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨f, hf⟩ := hQ (h.symm x) refine ⟨f, fun y hy => ?_⟩ have := hf (h.symm y) hy simpa [LocPot.pullback] using this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsPot.pullback_symm {X : Type} [TopologicalSpace X] {m : C.Met Y σ Δ} {h : X ≃ₜ Pts Y σ} {Q : LocPot X}
     (hQ : IsPot h m Q) : IsPot id m (Q.pullback h.symm h.symm.continuous) := fun x => by

@@ -10,31 +10,29 @@ noncomputable section
 namespace MainStatements.WeightKernel.Dec
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM n J hJ k C hC f hf hfs hV z g e he`. Use `GlobalTheory.UAut.locallyCompact_unipRad hCM hJ hC` as an intermediate fact. Establish `hc : GlobalTheory.Cusp.Cocompact (ratPts σ J) (unipRad σ J C)` using `GlobalTheory.UAut.cocompact_unipRad hCM hJ hC`. Establish `hcl : IsClosed (unipRad σ J C : Set (GAd σ J))` using `GlobalTheory.UAut.unipFlag_const (σ := σ) (J := J) C 0 ▸ GlobalTheory.UAut.isClosed_unipFlag hJ (sigma_sigma hCM) hC _`. Set `ν : Measure (unipRad σ J C)` to `Measure.haar`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h𝓕` using `GlobalTheory.AutomorphicL2Unitary.isFundamentalDomain_stdDom ((ratPts σ J).subgroupOf (unipRad σ J C)) ν`. Establish `hfin : ν (stdDom ((ratPts σ J).subgroupOf (unipRad σ J C))) ≠ ⊤` using `hc.measure_ne_top h𝓕`. Establish `hpos : ν (stdDom ((ratPts σ J).subgroupOf (unipRad σ J C))) ≠ 0` using `h𝓕.measure_ne_zero (NeZero.ne ν)`. Set `h : unipRad σ J C → ℂ` to `fun m => f (z * m * g)`. Establish `hcont : Continuous h` using `by fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `T` to `(Homeomorph.mulLeft z).trans (Homeomorph.mulRight g)`. Establish `hK : IsCompact (T ⁻¹' tsupport f)` using `T.isCompact_preimage.2 hfs`. Establish `hsupp : HasCompactSupport h` using `HasCompactSupport.intro' (hcl.isClosedEmbedding_subtypeVal.isCompact_preimage hK) ((isClosed_tsupport f).preimage (T.continuous.comp continuous_subtype_val)) fun x hx => image_eq_zero_of_notMem_tsupport (f := f) (x := z * (x : GAd σ J) * g) hx`. Establish `hint : Integrable h ν` using `hcont.integrable_of_hasCompactSupport hsupp`. Establish `hV0 : ∫ m, h m ∂ν = 0` using `hV ν z g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `F' : (ratPts σ J).subgroupOf (unipRad σ J C) → unipRad σ J C → ℂ` to `fun γ x => h (γ • x)`. Establish `hmeas : ∀ γ, AEStronglyMeasurable (F' γ) (ν.restrict (stdDom ((ratPts σ J).subgroupOf (unipRad σ J C))))` using `fun γ => (hcont.comp (continuous_const_smul γ)).aestronglyMeasurable`. Establish `hlin : ∑' γ, ∫⁻ x in stdDom ((ratPts σ J).subgroupOf (unipRad σ J C)), ‖F' γ x‖ₑ ∂ν ≠ ⊤`. Establish `hl : ∫⁻ x, ‖h x‖ₑ ∂ν = ∑' γ, ∫⁻ x in stdDom ((ratPts σ J).subgroupOf (unipRad σ J C)), ‖F' γ x‖ₑ ∂ν`. Rewrite using `[h𝓕.lintegral_eq_tsum' (fun x => ‖h x‖ₑ), ← (Equiv.inv _).tsum_eq]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[F']`. Rewrite using `[← hl]`. Conclude with `hint.2.ne`. Establish `e1 : ∫ m, h m ∂ν = ∑' γ, ∫ x in stdDom ((ratPts σ J).subgroupOf (unipRad σ J C)), F' γ x ∂ν`. Rewrite using `[h𝓕.integral_eq_tsum' h hint, ← (Equiv.inv _).tsum_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[F']`. Establish `e2` using `integral_tsum hmeas hlin`. Establish `hΨ : ∀ x : unipRad σ J C, ∑' γ, F' γ x = nsum (NF σ J C) f z ((x : GAd σ J) * g)` using `fun x => by`. Set `eq : (ratPts σ J).subgroupOf (unipRad σ J C) ≃ NF σ J C` to `{ toFun := fun γ => ⟨γ.1.1, γ.2, γ.1.2⟩, invFun := fun ν => ⟨⟨ν.1, ν.2.2⟩, ν.2.1⟩, left_inv := fun _ => rfl, right_inv := fun _ => rfl }`. Rewrite using `[nsum, ← eq.tsum_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `γ`. Use `show f (z * ((γ • x : unipRad σ J C) : GAd σ J) * g) = _`. Rewrite using `[Subgroup.smul_def]`. Simplify using `[eq, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hzero : ∫ x in stdDom ((ratPts σ J).subgroupOf (unipRad σ J C)), nsum (NF σ J C) f z ((x : GAd σ J) * g) ∂ν = 0`. Repeatedly rewrite using `[← hΨ]`. Rewrite using `[e2]`. Conclude with `e1.symm.trans hV0`. Establish `hae : ∀ᵐ x ∂(ν.restrict (stdDom ((ratPts σ J).subgroupOf (unipRad σ J C)))), HasSum (fun γ => F' γ x) (∑' γ, F' γ x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∫⁻ x in stdDom ((ratPts σ J).subgroupOf (unipRad σ J C)), ∑' γ, ‖F' γ x‖ₑ ∂ν ≠ ⊤`. Rewrite using `[lintegral_tsum (fun γ => (hmeas γ).enorm)]`. Conclude with `hlin`. Use `filter_upwards [ae_lt_top' (AEMeasurable.tsum fun γ => (hmeas γ).enorm) h1] with x hx`. Establish `hs : Summable fun γ => ‖F' γ x‖₊` using `ENNReal.tsum_coe_ne_top_iff_summable.1 (by simpa [enorm_eq_nnnorm] using hx.ne)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Summable.of_norm (NNReal.summable_coe.2 hs)).hasSum`. Establish `hΨm : AEStronglyMeasurable (fun x : unipRad σ J C => ∑' γ, F' γ x) (ν.restrict (stdDom ((ratPts σ J).subgroupOf (unipRad σ J C))))` using `aestronglyMeasurable_of_tendsto_ae atTop (fun s => by first`. Consider the case `exact Finset.aestronglyMeasurable_fun_sum s fun γ _ => hmeas γ`. Consider the case `exact Finset.aestronglyMeasurable_sum s fun γ _ => hmeas γ) hae`. Use `haveI : IsFiniteMeasure (ν.restrict (stdDom ((ratPts σ J).subgroupOf (unipRad σ J C)))) := isFiniteMeasure_restrict.2 hfin`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hΨi : IntegrableOn (fun x : unipRad σ J C => nsum (NF σ J C) f z ((x : GAd σ J) * g)) (stdDom ((ratPts σ J).subgroupOf (unipRad σ J C))) ν`. Use `Integrable.of_bound (C := e + ‖nsum (NF σ J C) f z g‖) ?_ (.of_forall fun x => ?_)` and prove the remaining obligations. Simplify `hΨm` using `only [hΨ]`. Use `he x x.2` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[sub_add_cancel]`. Use `_ ≤ _ := (norm_add_le _ _).trans (by linarith)`. Establish `key : ν.real (stdDom ((ratPts σ J).subgroupOf (unipRad σ J C))) • nsum (NF σ J C) f z g = ∫ x in stdDom ((ratPts σ J).subgroupOf (unipRad σ J C)), (nsum (NF σ J C) f z g - nsum (NF σ J C) f z ((x : GAd σ J) * g)) ∂ν`. Rewrite using `[integral_sub (integrable_const _) hΨi, hzero, setIntegral_const, sub_zero]`. Establish `hb` using `norm_setIntegral_le_of_norm_le_const (μ := ν) hfin.lt_top (f := fun x : unipRad σ J C => nsum (NF σ J C) f z g - nsum (NF σ J C) f z ((x : GAd σ J) * g)) (C := e) (fun x _ => by rw [norm_sub_rev]; exact he x x.2)`.
-
-Rewrite `hb` using `[← key, norm_smul, Real.norm_of_nonneg measureReal_nonneg]`. Establish `hp : 0 < ν.real (stdDom ((ratPts σ J).subgroupOf (unipRad σ J C)))` using `ENNReal.toReal_pos hpos hfin`. Use polynomial arithmetic with `[norm_nonneg (nsum (NF σ J C) f z g)]`.
+A detailed English derivation is pending.
 -/
 theorem variation : Variation := by
   intro F E _ _ _ _ _ σ hCM n J hJ k C hC f hf hfs hV z g e he

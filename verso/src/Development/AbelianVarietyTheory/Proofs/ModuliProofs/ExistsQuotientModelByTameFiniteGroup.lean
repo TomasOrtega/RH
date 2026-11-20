@@ -26,7 +26,7 @@ noncomputable section
 namespace GlobalTheory.QuotModel
 
 /- English proof (translation)
-Take `⟨-, -, hfr⟩` from `h`. Set `_` to `β.toAlgebra`. Conclude with `IsFractionRing.injective O F`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem injective_of_isDedFrac {O F : Type} [CommRing O] [Field F] {β : O →+* F} (h : IsDedFrac β) :
     Function.Injective β := by
@@ -35,9 +35,9 @@ theorem injective_of_isDedFrac {O F : Type} [CommRing O] [Field F] {β : O →+*
   exact IsFractionRing.injective O F
 
 /- English proof (translation)
-Take `⟨-, -, hfr⟩` from `h`. Set `_` to `β.toAlgebra`. Establish `: Epi (CommRingCat.ofHom β)` using `⟨fun {Z} g₁ g₂ hg => by`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Use `IsLocalization.ringHom_ext (nonZeroDivisors O) (j := g₁.hom) (k := g₂.hom) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `congrArg CommRingCat.Hom.hom hg`. Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom] at e`. Conclude with `e⟩`. Conclude with `Functor.map_mono Scheme.Spec (CommRingCat.ofHom β).op`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mono_spMap {O F : Type} [CommRing O] [Field F] {β : O →+* F} (h : IsDedFrac β) : Mono (spMap β) := by
   obtain ⟨-, -, hfr⟩ := h
@@ -51,11 +51,11 @@ theorem mono_spMap {O F : Type} [CommRing O] [Field F] {β : O →+* F} (h : IsD
   exact Functor.map_mono Scheme.Spec (CommRingCat.ofHom β).op
 
 /- English proof (translation)
-Establish `hk : RingHom.ker β = ⊥` using `(RingHom.injective_iff_ker_eq_bot β).mp h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, rfl⟩`. Use `q.isPrime` as an intermediate fact. Establish `hq : q.asIdeal = ⊥` using `Ideal.eq_bot_of_prime _`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show Ideal.comap β q.asIdeal = ⊥`. Rewrite using `[hq, ← RingHom.ker_eq_comap_bot, hk]`. Introduce `hp`. Use `⟨⟨⊥, Ideal.isPrime_bot⟩, ?_⟩` and prove the remaining obligations. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show Ideal.comap β ⊥ = p.asIdeal`. Rewrite using `[hp, ← RingHom.ker_eq_comap_bot, hk]`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_spMap {O F : Type} [CommRing O] [Field F] {β : O →+* F} (h : Function.Injective β) (p : Sp O) :
     p ∈ Set.range (spMap β) ↔ p.asIdeal = ⊥ := by
@@ -73,7 +73,7 @@ theorem mem_range_spMap {O F : Type} [CommRing O] [Field F] {β : O →+* F} (h 
     rw [hp, ← RingHom.ker_eq_comap_bot, hk]
 
 /- English proof (translation)
-Take `⟨⟨hdom, hded⟩, -, hfr⟩` from `h`. Set `_` to `β.toAlgebra`. Take `⟨hN, -, -, hpre, hfl, hdo, hqc⟩` from `GlobalTheory.genericPart_dense_proOpen O F X U s jQ h₁ h₂ h₃ h₄`. Take `⟨hg, hst, -⟩` from `GlobalTheory.densePart_basic X U _ hpre hfl hdo hqc`. Conclude with `⟨hN, hg, hst⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem densePart {O F : Type} [CommRing O] [Field F] {β : O →+* F} (h : IsDedFrac β) {X U : Scheme.{0}}
     (s : X ⟶ Sp O) (jQ : U ⟶ pullback s (spMap β)) (h₁ : Flat s) (h₂ : IsProjOver s) (h₃ : IsOpenImmersion jQ)
@@ -87,7 +87,7 @@ theorem densePart {O F : Type} [CommRing O] [Field F] {β : O →+* F} (h : IsDe
   exact ⟨hN, hg, hst⟩
 
 /- English proof (translation)
-Establish `: ∀ x : X, _root_.IsReduced (X.presheaf.stalk x)` using `fun x => by`. Use `(h x).1` as an intermediate fact. Use `infer_instance`. Conclude with `isReduced_of_isReduced_stalk X`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isReduced_of_isNormalScheme' (X : Scheme.{0}) (h : Geo.Tor.IsNormalScheme X) : IsReduced X := by
   have : ∀ x : X, _root_.IsReduced (X.presheaf.stalk x) := fun x => by
@@ -100,47 +100,41 @@ end GlobalTheory.QuotModel
 open GlobalTheory.QuotModel in
 
 /- English proof (translation)
-Introduce `E _ _ _ H U F O _ _ c t β U' F' O' _ _ c' t' β' Γ _ _ C b k r ν ρ₀ τ₀ ρ τ mu hβ hβ' hcomp hfin hrc hr hprop hmu hqp htame hin hgood hpush`. Establish `sq : ∀ {S S' : Scheme.{0}} {ta : SAB H S} {tb : SAB H S'} {f : S ⟶ S'} (m : SABMap ta tb f), m.φ ≫ tb.G.hom = ta.G.hom ≫ f` using `fun m => m.cart.1.w`. Establish `sqm : C.m.φ ≫ C.t.G.hom = t.G.hom ≫ C.j` using `sq C.m`. Take `⟨X', π, s', jQ, hπ, hπfin, hπs, hnorm, hproj, hflat, hjover, hjopen, hjdense, hjc, hgen⟩` from `GlobalTheory.exists_quotient_model_scheme E H U F O c t β Γ C U' F' O' c' β' b k r ρ₀ ρ hβ hβ' hcomp hfin hrc hr (fun g => (hmu g).2.1)`. Take `⟨hN', -, -⟩` from `densePart hβ' s' jQ hflat hproj hjopen hjdense`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hgenC, hstC⟩` from `densePart hβ C.s C.jQ C.flat C.proj C.jQ_open C.jQ_dense`. Establish `hredX : IsReduced C.X` using `isReduced_of_isNormalScheme' _ C.normal`. Establish `hgab : genericPoints C.X ⊆ abLocus C.t.G`. Introduce `x hx`. Take `⟨u, rfl⟩` from `hgenC hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hu : C.jQ u ∈ pullback.fst C.s (spMap β) ⁻¹' abLocus C.t.G`. Rewrite using `[C.ab_gen]`. Conclude with `⟨u, rfl⟩`. Conclude with `hu`. Take `⟨t₁, ν', hν'τ, hgood'⟩` from `GlobalTheory.T.exists_semiAbelian_descent_tame_quotient E H Γ O C.X X' ρ π C.t C.s τ mu hπ hπfin hqp ⟨hredX, hgab⟩ (fun g => (hmu g).1) htame hin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ ν' C.m`. Establish `key : ∀ (f : U ⟶ X') (n : SABMap t t₁ f), f = r ≫ jQ ≫ pullback.fst _ _ → ∃ n' : SABMap t t₁ (r ≫ jQ ≫ pullback.fst _ _), n'.φ = n.φ`. Introduce and unpack `f n rfl`. Conclude with `⟨n, rfl⟩`. Take `⟨n₂, hn₂⟩` from `key _ n hjc.symm`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hredU : IsReduced U`. Establish `: ∀ u : U, _root_.IsReduced (U.presheaf.stalk u)`. Introduce `u`. Establish `hI : IsIso ((C.jQ ≫ pullback.fst C.s (spMap β)).stalkMap u)` using `hstC u`. Conclude with `isReduced_of_injective (inv ((C.jQ ≫ pullback.fst C.s (spMap β)).stalkMap u)).hom (ConcreteCategory.bijective_of_isIso _).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isReduced_of_isReduced_stalk U`. Establish `hmono : Mono C.j`. Use `mono_spMap hβ` as an intermediate fact. Use `C.jQ_open` as an intermediate fact. Simplify using `only [Cpt.j]`.
+Establish an intermediate fact. Simplify by unfolding definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `infer_instance`. Establish `hτ : ∀ g, (τ₀ g).hom ≫ t.G.hom = t.G.hom ≫ (ρ₀ g).hom ∧ (τ₀ g).hom ≫ ν.φ = ν.φ ∧ (τ₀ g).hom ≫ n₂.φ = n₂.φ`. Introduce `g`. Take `⟨h1, h2, h3, h4⟩` from `hmu g`. Use `⟨(cancel_mono C.j).mp ?_, h4, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Category.assoc]`. Rewrite using `[← sqm]`. Use `_ = (C.m.φ ≫ (mu g).φ) ≫ C.t.G.hom := by rw [← h3, h1]`. Use `_ = C.m.φ ≫ C.t.G.hom ≫ (ρ g).hom := by simp only [Category.assoc]; rw [sq (mu g)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = t.G.hom ≫ C.j ≫ (ρ g).hom := by rw [← Category.assoc, sqm, Category.assoc]`. Use `_ = (t.G.hom ≫ (ρ₀ g).hom) ≫ C.j := by rw [h2, Category.assoc]`. Rewrite using `[hn₂, hn, ← Category.assoc, ← h3, Category.assoc, hν'τ g]`. Take `⟨m', hm'⟩` from `GlobalTheory.T.exists_cmTripleMap_descend_groupQuotient E H Γ U U' X' ρ₀ r t t' t₁ τ₀ ν _ n₂ hr hredU hprop hτ`. Establish `hπsurj : Function.Surjective π` using `(GlobalTheory.quotient_isIntegral_surjective_orbits Γ C.X X' ρ π hπ).2.1.surj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hrsurj : Function.Surjective r` using `(GlobalTheory.quotient_isIntegral_surjective_orbits Γ U U' ρ₀ r hr).2.1.surj`. Establish `habπ : ∀ x, π x ∈ abLocus t₁.G ↔ x ∈ abLocus C.t.G` using `fun x => abLocus_pullback abLocusOne t₁.semi ν'.cart.1 x`. Establish `hbint : ∀ p : Sp O, (spMap b p).asIdeal = ⊥ → p.asIdeal = ⊥`. Introduce `p hp`. Take `⟨⟨hdO, -⟩, -, -⟩` from `hβ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨hdO', -⟩, -, -⟩` from `hβ'`. Set `_` to `b.toAlgebra`. Establish `h2 : IsFinite (Spec.map (CommRingCat.ofHom b))` using `hfin`. Rewrite `h2` using `[IsFinite.SpecMap_iff]`. Establish `: Module.Finite O' O` using `h2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Establish `: Algebra.IsIntegral O' O` using `inferInstance`. Conclude with `Ideal.eq_bot_of_comap_eq_bot (R := O') hp`. Establish `hpre : Function.Injective (pullback.fst s' (spMap β'))`. Take `⟨-, -, hfr'⟩` from `hβ'`. Set `_` to `β'.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsPreimmersion (spMap β')` using `IsPreimmersion.of_isLocalization (nonZeroDivisors O')`. Conclude with `(pullback.fst s' (spMap β')).isEmbedding.injective`. Establish `hab : pullback.fst s' (spMap β') ⁻¹' abLocus t₁.G = Set.range jQ`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `hw`. Take `⟨x, hx⟩` from `hπsurj (pullback.fst s' (spMap β') w)`. Establish `hxab : x ∈ abLocus C.t.G` using `(habπ x).1 (by rw [hx]; exact hw)`. Establish `hs' : (s' (pullback.fst s' (spMap β') w)).asIdeal = ⊥`. Establish `e : s' (pullback.fst s' (spMap β') w) = spMap β' (pullback.snd s' (spMap β') w)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.comp_apply, pullback.condition, Scheme.Hom.comp_apply]`. Rewrite using `[e]`. Conclude with `(mem_range_spMap (injective_of_isDedFrac hβ') _).1 ⟨_, rfl⟩`. Establish `hsx : (C.s x).asIdeal = ⊥`. Apply `hbint` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `e : spMap b (C.s x) = s' (π x)`. Rewrite using `[← Scheme.Hom.comp_apply, ← hπs, Scheme.Hom.comp_apply]`. Rewrite using `[e, hx]`. Conclude with `hs'`. Take `⟨q, hq⟩` from `(mem_range_spMap (injective_of_isDedFrac hβ) (C.s x)).2 hsx`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨z, hz1, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := C.s) (g := spMap β) x q hq.symm`. Establish `hz : z ∈ Set.range C.jQ`. Rewrite using `[← C.ab_gen]`. Use `show pullback.fst C.s (spMap β) z ∈ abLocus C.t.G`. Rewrite using `[hz1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hxab`. Take `⟨u, rfl⟩` from `hz`. Take `⟨u', hu'⟩` from `(hgen x).2 ⟨u, hz1⟩`. Conclude with `⟨u', hpre (hu'.trans hx)⟩`. Introduce and unpack `⟨u', rfl⟩`.
-
-Take `⟨u, rfl⟩` from `hrsurj u'`. Establish `e : pullback.fst s' (spMap β') (jQ (r u)) = π (C.j u)`. Establish `h5` using `congrArg (fun f : U ⟶ X' => f u) hjc`. Simplify `h5` using `only [Scheme.Hom.comp_apply]`. Use `show pullback.fst s' (spMap β') (jQ (r u)) ∈ abLocus t₁.G`.
-
-Rewrite using `[e, habπ]`. Establish `hu : C.jQ u ∈ pullback.fst C.s (spMap β) ⁻¹' abLocus C.t.G`. Rewrite using `[C.ab_gen]`. Conclude with `⟨u, rfl⟩`. Conclude with `hu`.
-
-Use `⟨⟨X', s', hnorm, hproj, hflat, jQ, hjover, hjopen, hjdense, t₁, m', hab⟩, hgood' hgood hpush, ⟨⟨π, hπs, ?_, ν', hjc.symm, ?_⟩⟩⟩` and prove the remaining obligations. Use `MorphismProperty.of_postcomp (W := @IsFinite) (W' := @IsSeparated) _ (pullback.fst s' (spMap b)) inferInstance ?_` and prove the remaining obligations. Rewrite using `[pullback.lift_fst]`. Conclude with `hπfin`. Rewrite using `[hm', hn₂, hn]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Models.exists_quotient_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (U : Scheme.{0}) (F O : Type) [Field F] [CommRing O] (c : U ⟶ Sp F) (t : SAB H U) (β : O →+* F) (U' : Scheme.{0}) (F' O' : Type) [Field F'] [CommRing O'] (c' : U' ⟶ Sp F') (t' : SAB H U') (β' : O' →+* F') (Γ : Type) [Group Γ] [Finite Γ] (C : Cpt c t β) (b : O' →+* O) (k : F' →+* F) (r : U ⟶ U') (ν : SABMap t t' r) (ρ₀ : Γ →* Aut U) (τ₀ : Γ →* Aut t.G.left) (ρ : Γ →* Aut C.X) (τ : Γ →* Aut C.t.G.left) (mu : ∀ g, SABMap C.t C.t (ρ g).hom), IsDedFrac β → IsDedFrac β' → β.comp b = k.comp β' → IsFinite (spMap b) → r ≫ c' = c ≫ spMap k → (IsAffineHom r ∧ (∀ g, (ρ₀ g).hom ≫ r = r) ∧ ∀ V : U'.Opens, Function.Injective (r.app V).hom ∧ ∀ f : Γ(U, r ⁻¹ᵁ V), (∀ g (h : r ⁻¹ᵁ V ≤ (ρ₀ g).hom ⁻¹ᵁ (r ⁻¹ᵁ V)), ((ρ₀ g).hom.appLE _ _ h).hom f = f) → f ∈ Set.range (r.app V).hom) → IsProper t.G.hom → (∀ g, (mu g).φ = (τ g).hom ∧ C.j ≫ (ρ g).hom = (ρ₀ g).hom ≫ C.j ∧ C.m.φ ≫ (τ g).hom = (τ₀ g).hom ≫ C.m.φ ∧ (τ₀ g).hom ≫ ν.φ = ν.φ) → IsQProjOver (C.t.G.hom ≫ C.s) → (∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ C.X), (Nat.card {g // x ≫ (ρ g).hom = x} : k) ≠ 0) → (∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ C.X) g, x ≫ (ρ g).hom = x → pullback.fst C.t.G.hom x ≫ (τ g).hom = pullback.fst C.t.G.hom x) → Good C.t → PushInvertible C.t.G C.t.PP.L → ∃ C' : Cpt c' t' β', Good C'.t ∧ Nonempty (C.Above C' b r ν) := by
   intro E _ _ _ H U F O _ _ c t β U' F' O' _ _ c' t' β' Γ _ _ C b k r ν ρ₀ τ₀ ρ τ mu hβ hβ' hcomp hfin hrc hr hprop hmu hqp

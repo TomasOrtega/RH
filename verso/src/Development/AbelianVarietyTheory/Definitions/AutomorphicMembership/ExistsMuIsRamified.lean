@@ -17,17 +17,17 @@ namespace GlobalTheory.Mem.Top.Inh
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.FrobeniusOrbits Formalism.L2.Host Formalism.L2.GlobalTheoryTheory GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem NumberField IsDedekindDomain
 
 /- English proof (translation)
-Take `⟨x3, hx3⟩` from `rank_basic_bounds eps h0 h1`. Take `⟨x4, hx4⟩` from `GlobalTheory.scale_poly_comparison eps 4 1 h0 one_pos`. Use `⟨max x3 (max x4 10), fun s R g he hx hR hg => ?_⟩` and prove the remaining obligations. Simplify using `only [max_le_iff] at hx`. Take `⟨y3, y4, y5⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨hf, -⟩` from `hx3 s R he y3 hR`. Take `⟨-, -, hb, -⟩` from `hx4 s he y4`. Establish `hx0 : 0 < s.x` using `by linarith`. Establish `hX1 : 1 ≤ s.X'` using `Real.one_le_exp (by positivity)`. Establish `hk3` using `R.m_add_three_le_k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pw : ∀ n : ℕ, s.x ^ (n : ℝ) = s.x ^ n` using `fun n => Real.rpow_natCast _ _`. Establish `hf' : (R.f : ℝ) ≤ s.x ^ 3` using `by rw [← pw]; exact_mod_cast hf`. Establish `hb' : s.x ^ 4 ≤ s.b`. Rewrite `hb` using `[Real.rpow_one]`. Rewrite using `[← pw]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_trans (by exact_mod_cast le_mul_of_one_le_right (by positivity) hX1) hb`. Establish `h3 : 1 ≤ s.x ^ 3` using `one_le_pow₀ (by linarith)`. Establish `h4 : 10 * s.x ^ 3 ≤ s.b`. Combine the equalities or inequalities in the displayed calculation. Establish `hk1 : (1 : ℝ) ≤ R.k` using `by exact_mod_cast (by omega : 1 ≤ R.k)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : (R.k : ℝ) * s.b ≤ g` using `(le_self_pow₀ (one_le_mul_of_one_le_of_one_le hk1 (by linarith)) (by norm_num)).trans hg`. Establish `c3 : ((2 * R.f * R.k + 1 : ℕ) : ℝ) < g`. Establish `d1` using `mul_le_mul_of_nonneg_left h4 (show (0 : ℝ) ≤ R.k by positivity)`. Establish `d2` using `mul_le_mul_of_nonneg_left hf' (show (0 : ℝ) ≤ R.k by positivity)`. Establish `d3` using `one_le_mul_of_one_le_of_one_le hk1 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Establish `c4 : 2 * R.f * R.k + 1 < g` using `by exact_mod_cast c3`. Use linear arithmetic over natural numbers and integers.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem g_big (eps : ℝ) (h0 : 0 < eps) (h1 : eps < 1 / 52) : ∃ x0 : ℝ, ∀ (s : Scale) (R : Ranks) (g : ℕ), s.eps = eps → x0 ≤ s.x →
     RankVal s R → ((R.k : ℝ) * s.b) ^ 8 ≤ g → 2 * R.f * R.k < g - 1 := by
@@ -67,21 +67,21 @@ theorem g_big (eps : ℝ) (h0 : 0 < eps) (h1 : eps < 1 / 52) : ∃ x0 : ℝ, ∀
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce and unpack `⟨ε0, hε0, h⟩`. Establish `he : 0 < min ε0 (1 / 100)` using `lt_min hε0 (by norm_num)`. Establish `he52 : min ε0 (1 / 100) < 1 / 52` using `(min_le_right _ _).trans_lt (by norm_num)`. Establish `hle` using `min_le_left ε0 (1 / 100)`. Generalize the expression as in `min ε0 (1 / 100) = eps at he he52 hle`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨la, hla, hH⟩` from `hH`. Take `⟨CT2, C8, C5, c6, Cb, xH, h8, -, -, -, S, hH⟩` from `hH eps he he52`. Take `⟨K0, h⟩` from `h eps C8 he hle he52 h8`. Take `⟨C, hS, hCT, hCp, hL, -⟩` from `GlobalTheory.EX.exists_std_large K0 K0 CT2 C8 h8`. Take `⟨c1, h⟩` from `h C hS hCp hL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcD : 0 ≤ max c1 0` using `le_max_right _ _`. Take `⟨c2, h⟩` from `h _ (le_max_left c1 0)`. Generalize the expression as in `max c1 0 = cD at hcD h`. Take `⟨c2', hlow⟩` from `WinLow.window_lower h2b eps C he he52 hS cD hcD`. Take `⟨ch, a1, a2, a3⟩ : ∃ ch : ℝ, c2 ≤ ch ∧ c2' ≤ ch ∧ 402 ≤ ch` from `⟨max c2 (max c2' 402), by simp, by simp, by simp⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x0, h⟩` from `h ch a1`. Take `⟨x1, hlow⟩` from `hlow ch a2`. Establish `hmid` using `hS.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `hCF : (0 : ℝ) ≤ C.P.CF` using `zero_le_one.trans (hmid _ (by simp [FC.cMid]))`. Establish `hCG : (0 : ℝ) ≤ C.CGam` using `zero_le_one.trans (hmid _ (by simp [FC.cMid]))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨xw, hw⟩` from `exists_weights_in_windows eps C he he52 hS`. Take `⟨xc, hc⟩` from `exists_injective_words eps C.CGam C.P.CF he he52 hCG hCF`. Take `⟨x2, h2⟩` from `chOK_of_host hSP eps C5 c6 Cb cD ch C he he52 hS hcD a3`. Take `⟨x3, h3⟩` from `exists_levCh_of_levelPrime hLP eps 1 C he he52 one_pos hS`. Take `⟨x4, h4⟩` from `g_big eps he he52`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hx, hmem⟩` from `S.exists_mem hla.le he he52 (max x0 (max x1 (max x2 (max x3 (max x4 (max xH (max xw xc)))))))`. Simplify using `only [max_le_iff] at hx`. Take `⟨b0, b1, b2, b3, b4, bH, bw, bc⟩` from `hx`. Take `⟨R, H, q0, hRV, hHT, hHG, -⟩` from `hH s hs bH hmem`. Take `⟨a, b, hab⟩` from `hw s R H hs bw hRV`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hci, -⟩` from `hc s R hs bc hRV`. Take `⟨H', q1, hcW, w0, k1, k2, k3, k4, k5, k6, k7, k8, hCh, -⟩` from `h2 s R H q0 a b _ c 0 hs b2 hRV (hHT.trans hCT.symm) (hCp ▸ hHG) hab rfl hci R.ord_pos`. Use `choose du hpos hdu using fun u => DuInt.duStarOf_nat R H' (hcW u) (fun i => (k2 _ (H'.g_level i)).2) fun i => h4 s R _ hs b4 hRV (hCh.val.2.2.2.2.1 i).1`. Take `⟨hD, hDle⟩` from `DsLow.DsP_pos_and_lower (@PreCh.mk R H' k1 k2 k3 _ _ w0 hcW k4 k5 k6 k7 k8)`. Take `⟨Lv, l1, l2, l3⟩` from `h3 cD ch s _ q1 a b c du _ hs b3 hCh hpos hD fun u => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_mul]`. Conclude with `hlow s _ q1 a b c du _ hs b1 hCh hdu hDle u`. Conclude with `h ⟨s, C, cD, ch, _, q1, a, b, c, hS, hCh, Lv, fun u => by rw [l1]; exact hdu u, l2, l3⟩ rfl rfl rfl hs b0`.
+A detailed English derivation is pending.
 -/
 theorem not_ev_false (hH : DC.HostExQ) (hLP : LevelPrime) (hSP : SmallPrimeOne) (h2b : StandardLattice.SiegelMassRatioCM) : ¬ Ev fun _ => False := by
   rintro ⟨ε0, hε0, h⟩

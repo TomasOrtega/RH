@@ -8,11 +8,11 @@ namespace GlobalTheory.IntegerRingPowers
 open Formalism.BasicNotions
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Establish `hint : IsIntegral ℚ_[l] a` using `IsIntegral.of_finite ℚ_[l] a`. Take `⟨⟨m, hm⟩, hmi⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (nonZeroDivisors ℤ_[l]) a hint`. Establish `hm0 : m ≠ 0` using `nonZeroDivisors.ne_zero hm`. Use `⟨m.valuation, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Loc.OL, mem_integralClosure_iff]`. Establish `hmi' : IsIntegral ℤ_[l] (m • a)` using `hmi`. Establish `e` using `PadicInt.unitCoeff_spec hm0`. Use `set u := PadicInt.unitCoeff hm0`. Establish `key : (l : ↥LL.1) ^ m.valuation * a = ((u⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) • (m • a)` using `by conv_rhs => rw [e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, ← mul_assoc, Units.inv_mul, one_mul, Algebra.smul_def, map_pow, map_natCast]`. Rewrite using `[key]`. Conclude with `IsIntegral.smul _ hmi'`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem_OL {l : ℕ} [Fact (Nat.Prime l)] (LL : Loc.FinExt l) (a : ↥LL.1) :
     ∃ n : ℕ, (l : ↥LL.1) ^ n * a ∈ Loc.OL LL := by
@@ -33,9 +33,9 @@ theorem exists_pow_smul_mem_OL {l : ℕ} [Fact (Nat.Prime l)] (LL : Loc.FinExt l
   exact IsIntegral.smul _ hmi'
 
 /- English proof (translation)
-Establish `h` using `T.L.T.smul_mem (⟨c, hc⟩ : ↥(Loc.OL LL)) hw`. Establish `e` using `T.towO.smul_assoc (⟨c, hc⟩ : ↥(Loc.OL LL)) (1 : ↥LL.1) w`. Establish `e2 : ((⟨c, hc⟩ : ↥(Loc.OL LL)) • (1 : ↥LL.1)) = c`. Rewrite using `[Algebra.smul_def, mul_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `e` using `[e2, one_smul]`. Rewrite using `[e]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_of_mem_OL {l : ℕ} [Fact (Nat.Prime l)] {K LL : Loc.FinExt l}
     (T : LocLat ↥(Loc.GK K) ℚ_[l] ↥LL.1 ↥(Loc.OL LL)) {c : ↥LL.1} (hc : c ∈ Loc.OL LL)
@@ -48,14 +48,14 @@ theorem smul_mem_of_mem_OL {l : ℕ} [Fact (Nat.Prime l)] {K LL : Loc.FinExt l}
   rw [e]; exact h
 
 /- English proof (translation)
-The claim follows from `(Loc.OL LL).pow_mem ((Loc.OL LL).natCast_mem l) k`.
+A detailed English derivation is pending.
 -/
 theorem natCast_pow_mem_OL {l : ℕ} [Fact (Nat.Prime l)] (LL : Loc.FinExt l) (k : ℕ) :
     (l : ↥LL.1) ^ k ∈ Loc.OL LL :=
   (Loc.OL LL).pow_mem ((Loc.OL LL).natCast_mem l) k
 
 /- English proof (translation)
-Rewrite using `[pow_add, mul_smul, mul_smul]`. Use `congr 1`. Rewrite using `[← mul_smul, ← mul_smul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_smul_smul_eq {l : ℕ} [Fact (Nat.Prime l)] {K LL : Loc.FinExt l}
     (T : LocLat ↥(Loc.GK K) ℚ_[l] ↥LL.1 ↥(Loc.OL LL)) (a : ↥LL.1) (x : T.V) (k n : ℕ) :
@@ -65,15 +65,15 @@ theorem pow_smul_smul_eq {l : ℕ} [Fact (Nat.Prime l)] {K LL : Loc.FinExt l}
   rw [← mul_smul, ← mul_smul, mul_comm]
 
 /- English proof (translation)
-Introduce `l _ K LL T v`. Establish `hv : v ∈ Submodule.span ↥LL.1 (T.L.T : Set T.V)`. Rewrite using `[T.L.span]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hv using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction.
 
-Consider the case `mem x hx => exact ⟨0, by rw [pow_zero, one_smul]; exact hx⟩`. Consider the case `zero => exact ⟨0, by rw [smul_zero]; exact T.L.T.zero_mem⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨n, hn⟩` from `hx`. Take `⟨k, hk⟩` from `hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨n + k, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `T.L.T.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[add_comm, pow_add, mul_smul]`. Conclude with `smul_mem_of_mem_OL T (natCast_pow_mem_OL LL k) hn`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_add, mul_smul]`. Conclude with `smul_mem_of_mem_OL T (natCast_pow_mem_OL LL n) hk`. Consider the case `smul a x _ hx`. Take `⟨n, hn⟩` from `hx`. Take `⟨k, hk⟩` from `exists_pow_smul_mem_OL LL a`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨k + n, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_smul_smul_eq T a x k n]`. Conclude with `smul_mem_of_mem_OL T hk hn`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ {l : ℕ} [inst : Fact (Nat.Prime l)] (K LL : Formalism.BasicNotions.Loc.FinExt l)
     (T : Formalism.BasicNotions.LocLat ↥(Formalism.BasicNotions.Loc.GK K) ℚ_[l]

@@ -17,7 +17,7 @@ section Hom
 variable {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)}
 
 /- English proof (translation)
-Rewrite using `[← substAlgHom_apply ha, map_sum]`. Simplify using `only [map_smul, substAlgHom_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem subst_sum_smul {σ τ ι : Type} [Fintype ι] {a : σ → MvPowerSeries τ C} (ha : HasSubst a) (m : ι → C)
     (f : ι → MvPowerSeries σ C) : subst a (∑ i, m i • f i) = ∑ i, m i • (subst a (f i) : MvPowerSeries τ C) := by
@@ -25,9 +25,9 @@ theorem subst_sum_smul {σ τ ι : Type} [Fintype ι] {a : σ → MvPowerSeries 
   simp only [map_smul, substAlgHom_apply]
 
 /- English proof (translation)
-Take `⟨hφ0, hφi, hφl⟩` from `hφ`. Take `⟨hψ0, hψi, hψl⟩` from `hψ`. Establish `hφs : HasSubst φ` using `hasSubst_of_constantCoeff_zero hφ0`. Establish `hψs : HasSubst ψ` using `hasSubst_of_constantCoeff_zero hψ0`. Use `⟨fun b => constantCoeff_subst_eq_zero hφs hφ0 (hψ0 b), fun b => ?_, fun c => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ptIntSer_subst hφs (fun s => hφi s) (hψi b)`. Rewrite using `[← subst_comp_subst_apply hψs hφs, hψl c, subst_sum_smul hφs]`. Repeatedly rewrite using `[hφl, Matrix.mul_apply, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Conclude with `Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntHom_comp {d d' d'' : ℕ} {G : LogFGL v d} {G' : LogFGL v d'} {G'' : LogFGL v d''}
     {φ : Fin d' → MvPowerSeries (Fin d) C} {ψ : Fin d'' → MvPowerSeries (Fin d') C}
@@ -67,7 +67,7 @@ def embO (σ : E →+* ℂ) : 𝓞 E →+* X.O where
       (X.ints.exists_of_le_one (v_embX_le_one io X σ _)).choose_spec, map_add])
 
 /- English proof (translation)
-The claim follows from `(X.ints.exists_of_le_one (v_embX_le_one io X σ a)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_embO (σ : E →+* ℂ) (a : 𝓞 E) : algebraMap X.O X.C (embO io X σ a) = embX io X σ a :=
   (X.ints.exists_of_le_one (v_embX_le_one io X σ a)).choose_spec
@@ -75,21 +75,21 @@ theorem algebraMap_embO (σ : E →+* ℂ) (a : 𝓞 E) : algebraMap X.O X.C (em
 def red (σ : E →+* ℂ) : 𝓞 E →+* ResidueField X.O := (residue X.O).comp (embO io X σ)
 
 /- English proof (translation)
-Rewrite using `[residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff, X.ints.isUnit_iff_valuation_eq_one]`. Conclude with `⟨fun h => lt_of_le_of_ne (X.ints.map_le_one x) h, fun h => h.ne⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem residue_eq_zero_iff_v (x : X.O) : residue X.O x = 0 ↔ X.v (algebraMap X.O X.C x) < 1 := by
   rw [residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff, X.ints.isUnit_iff_valuation_eq_one]
   exact ⟨fun h => lt_of_le_of_ne (X.ints.map_le_one x) h, fun h => h.ne⟩
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff_v, map_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem residue_eq_iff_v (x y : X.O) :
     residue X.O x = residue X.O y ↔ X.v (algebraMap X.O X.C x - algebraMap X.O X.C y) < 1 := by
   rw [← sub_eq_zero, ← map_sub, residue_eq_zero_iff_v, map_sub]
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[RingHom.mem_ker]`. Use `show X.v (embX io X σ a) < 1 ↔ residue X.O (embO io X σ a) = 0`. Rewrite using `[residue_eq_zero_iff_v, algebraMap_embO]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primeBelow_eq_ker (σ : E →+* ℂ) : primeBelow io X σ = RingHom.ker (red io X σ) := by
   ext a
@@ -98,7 +98,7 @@ theorem primeBelow_eq_ker (σ : E →+* ℂ) : primeBelow io X σ = RingHom.ker 
   rw [residue_eq_zero_iff_v, algebraMap_embO]
 
 /- English proof (translation)
-Use `show residue X.O (embO io X σ' a) = residue X.O (embO io X σ a) ^ n ↔ _`. Rewrite using `[← map_pow, residue_eq_iff_v, map_pow, algebraMap_embO, algebraMap_embO]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_eq_pow_iff (σ σ' : E →+* ℂ) (a : 𝓞 E) (n : ℕ) :
     red io X σ' a = red io X σ a ^ n ↔ X.v (embX io X σ' a - embX io X σ a ^ n) < 1 := by
@@ -106,7 +106,7 @@ theorem red_eq_pow_iff (σ σ' : E →+* ℂ) (a : 𝓞 E) (n : ℕ) :
   rw [← map_pow, residue_eq_iff_v, map_pow, algebraMap_embO, algebraMap_embO]
 
 /- English proof (translation)
-Establish `h : ((p : ℕ) : ResidueField X.O) = 0`. Rewrite using `[← map_natCast (residue X.O), residue_eq_zero_iff]`. Conclude with `X.nonunit.out`. Conclude with `(CharP.charP_iff_prime_eq_zero Fact.out).2 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charP_residueField_of_irreducible : CharP (ResidueField X.O) p := by
   have h : ((p : ℕ) : ResidueField X.O) = 0 := by
@@ -115,17 +115,15 @@ theorem charP_residueField_of_irreducible : CharP (ResidueField X.O) p := by
   exact (CharP.charP_iff_prime_eq_zero Fact.out).2 h
 
 /- English proof (translation)
-Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Establish `hpO : ¬ IsUnit (p : X.O)` using `X.nonunit.out`. Establish `hp1 : X.v (p : X.C) < 1`. Establish `h` using `X.ints.map_le_one (p : X.O)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[map_natCast]`. Use `lt_of_le_of_ne h fun h1 => hpO ?_` and prove the remaining obligations. Apply `X.ints.isUnit_of_one'` to reduce the goal to its premises. Rewrite using `[map_natCast]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp0 : (0 : NNReal) < X.v (p : X.C)`. Rewrite using `[pos_iff_ne_zero, Valuation.ne_zero_iff]`. Conclude with `(Fact.out : p.Prime).ne_zero` after adjusting the coercions. Establish `hx0 : (0 : NNReal) < X.v x`. Rewrite using `[pos_iff_ne_zero, Valuation.ne_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hx`. Establish `hlp : Real.log (X.v (p : X.C) : ℝ) < 0` using `Real.log_neg (by exact_mod_cast hp0) (by exact_mod_cast hp1)`. Establish `hi : (Real.log (X.v (p : X.C) : ℝ))⁻¹ < 0` using `inv_lt_zero.mpr hlp`. Rewrite using `[vX_vp_apply X hx, show (0 : WithTop ℝ) = ((0 : ℝ) : WithTop ℝ) from rfl, WithTop.coe_lt_coe, mul_pos_iff]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `(⟨h1, _⟩ | ⟨_, h2⟩)`. Conclude with `absurd h1 (not_lt.mpr hi.le)`. Establish `h3` using `(Real.log_neg_iff (by exact_mod_cast hx0)).mp h2`. Conclude with `h3` after adjusting the coercions. Introduce `h right`.
-
-Conclude with `⟨hi, Real.log_neg (by exact_mod_cast hx0) (by exact_mod_cast h)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem vX_vp_pos_iff (x : X.C) : 0 < vX_vp X x ↔ X.v x < 1 := by
   rcases eq_or_ne x 0 with rfl | hx

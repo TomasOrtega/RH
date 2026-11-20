@@ -14,9 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FinZeta
 
 /- English proof (translation)
-Establish `hN : (1 : ℝ) < (Ideal.absNorm v.asIdeal : ℕ)` using `by exact_mod_cast one_lt_absNorm v`. Apply the tactic sequence `have hs : |quadSign D v| = 1 := by unfold quadSign; split_ifs <;> simp`. Rewrite using `[norm_neg, Real.norm_eq_abs, quadTerm, abs_div, abs_pow, abs_pow, hs, one_pow, abs_of_pos (by positivity : (0 : ℝ) < (Ideal.absNorm v.asIdeal : ℝ)), Real.rpow_neg (by positivity), Real.rpow_two]`. Establish `h2 : ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ 2 ≤ ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ i` using `pow_le_pow_right₀ hN.le hi`. Rewrite using `[one_div]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_anti₀ (by positivity) (by exact_mod_cast h2)`.
+A detailed English derivation is pending.
 -/
 theorem abs_quadTerm_le (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) {i : ℕ} (hi : 2 ≤ i) :
     ‖-quadTerm D v i‖ ≤ ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ (-(2 : ℝ)) := by
@@ -31,21 +31,19 @@ theorem abs_quadTerm_le (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) {i : �
   exact inv_anti₀ (by positivity) (by exact_mod_cast h2)
 
 /- English proof (translation)
-Establish `ht` using `D.R.rank_add_five_le`. Use `set f : {v : HeightOneSpectrum (𝓞 D.host.F) // v ∉ Sb} × Finset.Ioc D.R.t D.R.nV → ℝ := fun p => -quadTerm D p.1.1 p.2.1 with hf`. Establish `hsum0` using `summable_rpow (K := D.host.F) (Sb : Set _) (σ := 2) (by norm_num)`. Establish `hsum1 : Summable fun p : {v : HeightOneSpectrum (𝓞 D.host.F) // v ∉ Sb} × Finset.Ioc D.R.t D.R.nV => ((Ideal.absNorm p.1.1.asIdeal : ℕ) : ℝ) ^ (-(2 : ℝ)) * (1 : ℝ)`. Use `summable_mul_of_summable_norm (f := fun v : {v : HeightOneSpectrum (𝓞 D.host.F) // v ∉ Sb} => ((Ideal.absNorm v.1.asIdeal : ℕ) : ℝ) ^ (-(2 : ℝ))) (g := fun _ : Finset.Ioc D.R.t D.R.nV => (1 : ℝ)) ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `hsum0.congr fun v => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Conclude with `Summable.of_finite`. Establish `hsum : Summable fun p => ‖f p‖`. Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun p => ?_) hsum1` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_one]`. Use `(Finset.mem_Ioc.1 p.2.2).1` as an intermediate fact. Conclude with `abs_quadTerm_le D p.1.1 (by omega)`. Establish `hne : ∀ p, 1 + f p ≠ 0` using `fun p => by`. Establish `h1` using `abs_quadTerm_le D p.1.1 (i := p.2.1) (by have := (Finset.mem_Ioc.1 p.2.2).1; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hN : (1 : ℝ) < (Ideal.absNorm p.1.1.asIdeal : ℕ)` using `by exact_mod_cast one_lt_absNorm p.1.1`. Establish `h2 : ((Ideal.absNorm p.1.1.asIdeal : ℕ) : ℝ) ^ (-(2 : ℝ)) < 1` using `Real.rpow_lt_one_of_one_lt_of_neg hN (by norm_num)`. Introduce `h0`. Establish `: f p = -1` using `by linarith`. Rewrite `this` using `[hf]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only at this`. Rewrite `h1` using `[this, norm_neg, norm_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm` using `multipliable_one_add_of_summable hsum`. Establish `hz` using `tprod_one_add_ne_zero_of_summable hne hsum`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hinv : HasProd (fun p => (1 + f p)⁻¹) (∏' p, (1 + f p))⁻¹` using `hm.hasProd.inv₀ hz`. Establish `e1 : (fun p : {v : HeightOneSpectrum (𝓞 D.host.F) // v ∉ Sb} × Finset.Ioc D.R.t D.R.nV => (1 + f p)⁻¹) = fun p => (1 - quadTerm D p.1.1 p.2.1)⁻¹`. Use function extensionality and compare the values at `p`. Rewrite using `[hf]`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hinv` using `[e1]`. Establish `hd : dOff D Sb = (∏' p, (1 + f p))⁻¹` using `hinv.tprod_eq`. Use `⟨?_, hd ▸ inv_ne_zero hz⟩` and prove the remaining obligations. Rewrite using `[hd]`. Use `hinv.prod_fiberwise fun v => ?_` and prove the remaining obligations.
-
-Use `hasProd_fintype (fun c : Finset.Ioc D.R.t D.R.nV => (1 - quadTerm D v.1 c.1)⁻¹)` as an intermediate fact. Rewrite `this` using `[Finset.prod_coe_sort (Finset.Ioc D.R.t D.R.nV) (fun i => (1 - quadTerm D v.1 i)⁻¹)]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasProd_dLoc (D : D7) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) :
     HasProd (fun v : {v : HeightOneSpectrum (𝓞 D.host.F) // v ∉ Sb} => dLoc D v.1) (dOff D Sb) ∧ dOff D Sb ≠ 0 := by
@@ -92,9 +90,9 @@ theorem hasProd_dLoc (D : D7) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) 
   exact this
 
 /- English proof (translation)
-Introduce `D Sb B χ h`. Establish `h1 : HasProd (fun v : {v : HeightOneSpectrum (𝓞 D.host.F) // v ∉ Sb} => LvTw B (val χ) v.1 ((1 + (D.R.t : ℂ)) / 2)) (LSD D Sb B χ ((1 + (D.R.t : ℂ)) / 2))` using `hasProd_Lv h`. Take `⟨h2, h3⟩` from `hasProd_dLoc D Sb`. Establish `h4` using `(h2.map Complex.ofRealHom Complex.continuous_ofReal).inv₀ (by simpa using h3 : Complex.ofRealHom (dOff D Sb) ≠ 0)`. Establish `h5` using `h1.mul h4`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h5` using `[div_eq_mul_inv, Function.comp_def]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasProd_LvTw_div_dLoc : ∀ (D : D7) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) (B : Fam D.host.E) (χ : (AE D)ˣ →* Circle), Converges (above D.host.E (Sb : Set (HeightOneSpectrum (𝓞 D.host.F)))) (twist B (val χ)⁻¹) ((1 + (D.R.t : ℂ)) / 2) → HasProd (fun v : {v : HeightOneSpectrum (𝓞 D.host.F) // v ∉ Sb} => LvTw B (val χ) v.1 ((1 + (D.R.t : ℂ)) / 2) / (dLoc D v.1 : ℂ)) (LSD D Sb B χ ((1 + (D.R.t : ℂ)) / 2) / (dOff D Sb : ℂ)) := by
   intro D Sb B χ h

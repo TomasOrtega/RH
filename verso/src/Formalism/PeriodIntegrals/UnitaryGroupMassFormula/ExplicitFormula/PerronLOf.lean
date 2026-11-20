@@ -6,9 +6,9 @@ namespace PI.EF.PK
 open Complex MeasureTheory intervalIntegral Real ArithmeticFunction LSeries
 
 /- English proof (translation)
-Establish `h` using `DirichletCharacter.LSeries_twist_vonMangoldt_eq χ hs`. Establish `e : (fun n : ℕ => ((Λ n : ℝ) : ℂ) * χ (n : ZMod N)) = ((fun n : ℕ => χ (n : ZMod N)) * fun n : ℕ => ((Λ n : ℝ) : ℂ))`. Use function extensionality and compare the values at `n`. Simplify using `only [Pi.mul_apply]`. Conclude with `mul_comm _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hev : DirichletCharacter.LFunction χ =ᶠ[nhds s] LSeries (fun n : ℕ => χ (n : ZMod N))` using `by filter_upwards [(isOpen_lt continuous_const Complex.continuous_re).mem_nhds hs] with z hz`. Conclude with `DirichletCharacter.LFunction_eq_LSeries χ hz`. Rewrite using `[e, h, logDeriv_apply, hev.deriv_eq, hev.eq_of_nhds, neg_div]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma LSeries_twist_eq_neg_logDeriv {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) {s : ℂ}
     (hs : 1 < s.re) :
@@ -26,19 +26,19 @@ lemma LSeries_twist_eq_neg_logDeriv {N : ℕ} [NeZero N] (χ : DirichletCharacte
   rw [e, h, logDeriv_apply, hev.deriv_eq, hev.eq_of_nhds, neg_div]
 
 /- English proof (translation)
-Unfold `PerronL psiRaw vertInt Err`. Introduce `N _ χ u T T' hT hTu hTT' hT'`. Establish `hu : 2 ≤ u` using `le_trans hT hTu`. Establish `hc : 1 < cLine u`. Unfold `cLine`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hlog` using `Real.log_pos (show (1:ℝ) < u by linarith)`. Use `first`. Consider the case `(have := one_div_pos.mpr hlog; linarith)`. Consider the case `(norm_num; positivity)`. Consider the case `done`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hΛ : ∀ n : ℕ, ‖((Λ n : ℝ) : ℂ) * χ (n : ZMod N)‖ ≤ Λ n`. Introduce `n`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg ArithmeticFunction.vonMangoldt_nonneg]`. Conclude with `mul_le_of_le_one_right ArithmeticFunction.vonMangoldt_nonneg (DirichletCharacter.norm_le_one χ _)`. Establish `key` using `h (fun n : ℕ => ((Λ n : ℝ) : ℂ) * χ (n : ZMod N)) hΛ u T' hu (by linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hint : ∀ t : ℝ, LSeries (fun n : ℕ => ((Λ n : ℝ) : ℂ) * χ (n : ZMod N)) (↑(cLine u) + ↑t * I) = -logDeriv (DirichletCharacter.LFunction χ) (↑(cLine u) + ↑t * I)`. Introduce `t`. Apply `LSeries_twist_eq_neg_logDeriv` to reduce the goal to its premises. Simplify using `using hc`. Simplify using `only [hint] at key`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `key.trans ?_` and prove the remaining obligations. Establish `hN : (1:ℝ) ≤ N` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)`. Establish `hu0 : 0 < u` using `by linarith`. Establish `hT0 : 0 < T` using `by linarith`. Establish `hl0 : 0 ≤ Real.log u` using `Real.log_nonneg (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : u ≤ N * u` using `le_mul_of_one_le_left hu0.le hN`. Establish `h2 : N * u ≤ N * u * T` using `le_mul_of_one_le_right (by positivity) (by linarith)`. Establish `hl1 : Real.log u ≤ Real.log (N * u * T)` using `Real.log_le_log hu0 (h1.trans h2)`. Establish `hl2 : Real.log u ≤ Real.log (N * u)` using `Real.log_le_log hu0 h1`. Establish `hsq : Real.log u ^ 2 ≤ Real.log (N * u * T) ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hA : u * Real.log u ^ 2 / T' ≤ u * Real.log (N * u * T) ^ 2 / T`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_le_mul_of_nonneg_left (add_le_add hA hl2) hC`.
+A detailed English derivation is pending.
 -/
 theorem perronL_of {C : ℝ} (hC : 0 ≤ C) (h : PerronTrunc C) : PerronL C := by
   unfold PerronL psiRaw vertInt Err

@@ -16,9 +16,9 @@ variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Use `⟨fun γ _ _ => by simp, fun γ _ _ => by simp, fun γ _ _ v => ?_, fun γ _ _ => ?_, fun γ _ _ => ?_⟩` and prove the remaining obligations. Simplify using `only [mul_zero, pow_zero, one_mul, ContinuousLinearMap.adjoint_id, ContinuousLinearMap.id_apply]`. Use polynomial arithmetic with `[sq_nonneg ‖v‖]`. Rewrite using `[pow_zero]`. Conclude with `pow_le_one₀ (norm_nonneg _) ContinuousLinearMap.norm_id_le`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_zero]`. Conclude with `pow_le_one₀ (norm_nonneg _) ContinuousLinearMap.norm_id_le`.
+A detailed English derivation is pending.
 -/
 theorem amaps_id (p : KB.Pl P Wp Wq) (f : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (b : ℝ) :
     Amaps p f (fun _ => ContinuousLinearMap.id ℂ Wq) (fun _ => ContinuousLinearMap.id ℂ Wq)
@@ -36,11 +36,11 @@ end place
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
 /- English proof (translation)
-Take `⟨C₄, hC₄⟩` from `thmBpAt_of_leaves_dec hA C₃ CΛ C₀ Cκ hC₃ hCΛ hC₀`. Take `⟨c₃, hc₃⟩` from `limTopN_cut_of_inCC`. Take `⟨Cc, hCc⟩` from `limZeroN_of_formLimit Cb`. Use `⟨C₄, c₃, Cc, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f b Λ κ₀ A₀ p₀ χ nn Y K N hb hΛ hΛb hκ hκb hT hp₀ hK hKN hχ hnn hCb hf hfA hth1 hth2 hexp hWG hLG hI5 hE hB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hid : B.CkOn ⊤ (B.GV P.k P.r) (fun _ : B.Mat P.k P.r => ContinuousLinearMap.id ℂ Wq)` using `fun g₀ _ => ⟨Set.univ, fun _ => ContinuousLinearMap.id ℂ Wq, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`. Establish `hFd` using `inCC_fpm_id p p₀ hfA`. Establish `hFck` using `ckOn_fpm p p₀ hf hid`. Establish `hTN : ∀ ε : ℝ, 0 < ε → LimTopN p nn (D.cutF p.T.base χ (TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀) ε)` using `hc₃ Wp Wq P p nn χ _ _ hth1 hχ hFd hFck`. Establish `hZN : ∀ ε : ℝ, 0 < ε → LimZeroN p nn (D.cutF p.T.base χ (TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀) ε) Y N` using `fun ε hε => hCc Wp Wq P p _ χ ε _ N nn Y hCb hχ hε hFck hFd hth2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hC₄ Wp Wq P p f _ _ _ _ b Λ κ₀ 0 p₀ χ nn Y K N Cb hb hΛ hΛb hκ hκb hT (Nat.zero_le _) hp₀ hK hKN hχ hnn hCb hf hid hid (amaps_id p f b) hexp hWG hLG hI5 hI5 hTN hTN hZN hZN hE hE hB hB`.
+A detailed English derivation is pending.
 -/
 theorem thmBpAt_main (hA : P5.ThmPActual) (Cb C₃ CΛ C₀ Cκ : ℝ) (hC₃ : 0 ≤ C₃) (hCΛ : 0 ≤ CΛ) (hC₀ : 1 / 2 ≤ C₀) :
     ∃ C₄ c₃ Cc : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
@@ -82,7 +82,7 @@ theorem thmBpAt_main (hA : P5.ThmPActual) (Cb C₃ CΛ C₀ Cκ : ℝ) (hC₃ : 
     hCb hf hid hid (amaps_id p f b) hexp hWG hLG hI5 hI5 hTN hTN hZN hZN hE hE hB hB
 
 /- English proof (translation)
-Take `⟨C₄, c₃, Cc, h⟩` from `thmBpAt_main hA Cb C₃ CΛ C₀ 0 hC₃ hCΛ hC₀`. Use `⟨C₄, c₃, Cc, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f b Λ A₀ p₀ χ nn Y K N h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 h15 h16 h17 h18 hE`. Conclude with `h Wp Wq P p f b Λ 1 A₀ p₀ χ nn Y K N h1 h2 h3 one_pos (by simp) h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 h15 h16 h17 h18 hE (lemB_one p _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem thmBpAt_main1 (hA : P5.ThmPActual) (Cb C₃ CΛ C₀ : ℝ) (hC₃ : 0 ≤ C₃) (hCΛ : 0 ≤ CΛ) (hC₀ : 1 / 2 ≤ C₀) :
     ∃ C₄ c₃ Cc : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]

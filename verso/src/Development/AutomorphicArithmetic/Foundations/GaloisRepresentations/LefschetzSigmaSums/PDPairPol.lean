@@ -10,17 +10,15 @@ open scoped TensorProduct Classical
 namespace UpperTheory.Gal.LocalSmoothExtension
 
 /- English proof (translation)
-Use `set a : G.C := algebraMap ℚ G.C s with ha`. Establish `hcomm : ∀ x : G.C, a * x = x * a` using `fun x => Algebra.commutes s x`. Establish `hsh : sh G (u : G.C) = ((β⁻¹ : G.Cˣ) : G.C) * ((u⁻¹ : G.Cˣ) : G.C) * (a * β)`. Rewrite using `[← hy]`. Simplify using `[mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : sh G (u : G.C) * ((β⁻¹ : G.Cˣ) : G.C) * (u : G.C) = a * ((β⁻¹ : G.Cˣ) : G.C)`. Rewrite using `[hsh]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[mul_assoc]`. Use `_ = ((β⁻¹ : G.Cˣ) : G.C) * (((u⁻¹ : G.Cˣ) : G.C) * (u : G.C)) * a := by`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hcomm]`. Simplify using `only [mul_assoc]`. Use `_ = a * ((β⁻¹ : G.Cˣ) : G.C) := by`. Rewrite using `[hcomm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hpa : G.psi v a = (s : ℂ) • (1 : Matrix (Fin G.n) (Fin G.n) ℂ)`. Rewrite using `[ha, IsScalarTower.algebraMap_apply ℚ G.F G.C, G.psi_F]`. Use extensionality with `i j`. Simplify using `[Matrix.scalar_apply, Matrix.smul_apply, Matrix.one_apply, Matrix.diagonal_apply]`. Establish `hΓ : G.gram v * (G.gram v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr (G.gram_det v))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hUΓ : (G.psi v (u : G.C))ᴴ * G.gram v = G.gram v * G.psi v (sh G (u : G.C))`. Rewrite using `[show sh G (u : G.C) = MulOpposite.unop (G.star (u : G.C)) from rfl, G.psi_star]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hΓ, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_mul, ← Matrix.mul_assoc, hUΓ]`.
-
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = (s : ℂ) • (G.gram v * G.psi v ((β⁻¹ : G.Cˣ) : G.C)) := by`. Rewrite using `[key, map_mul, hpa, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sim_herm {p : ℕ} [Fact p.Prime] (G : HTGroup p) (v : InfinitePlace G.F) (β u : G.Cˣ) (s : ℚ)
     (hy : (u : G.C) * β * sh G u = algebraMap ℚ G.C s * β) :
@@ -57,13 +55,13 @@ private theorem sim_herm {p : ℕ} [Fact p.Prime] (G : HTGroup p) (v : InfiniteP
         rw [key, map_mul, hpa, Matrix.smul_mul, Matrix.one_mul, Matrix.mul_smul]
 
 /- English proof (translation)
-Introduce `h`. Establish `hint : IsIntegral F (g : A)` using `Algebra.IsIntegral.isIntegral _`. Take `⟨q, hq⟩` from `Polynomial.X_dvd_iff.mpr h`. Establish `hmon : (minpoly F (g : A)).Monic` using `minpoly.monic hint`. Establish `hqmon : q.Monic`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hmon` using `[hq]`. Conclude with `Polynomial.monic_X.of_mul_monic_left hmon`. Establish `haeval : Polynomial.aeval (g : A) q = 0`. Establish `h0` using `minpoly.aeval F (g : A)`. Rewrite `h0` using `[hq, map_mul, Polynomial.aeval_X]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (fun y => ((g⁻¹ : Aˣ) : A) * y) h0` as an intermediate fact. Simplify `this` using `[← mul_assoc]`. Establish `hle` using `minpoly.min F (g : A) hqmon haeval`. Rewrite `hle` using `[hq, Polynomial.degree_mul, Polynomial.degree_X]`. Establish `hq0 : q ≠ 0` using `hqmon.ne_zero`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hle` using `[Polynomial.degree_eq_natDegree hq0]`. Normalize the coercions in `at hle`. Use linear arithmetic over natural numbers and integers.
+Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem coeff_zero_ne {F A : Type} [Field F] [Ring A] [Algebra F A] [Algebra.IsIntegral F A] [Nontrivial A]
     (g : Aˣ) : (minpoly F (g : A)).coeff 0 ≠ 0 := by
@@ -87,13 +85,13 @@ private theorem coeff_zero_ne {F A : Type} [Field F] [Ring A] [Algebra F A] [Alg
   omega
 
 /- English proof (translation)
-Introduce `p _ G P v`. Use `⟨coeff_zero_ne (F := G.F) (A := G.C) P.γ, (P.c : ℚ), ?_⟩` and prove the remaining obligations. Introduce `z hz`. Establish `hint : IsIntegral G.F (P.γ : G.C)` using `Algebra.IsIntegral.isIntegral _`. Establish `hev : eval₂ v.embedding z (minpoly G.F (P.γ : G.C)) = 0` using `(Polynomial.mem_roots_map (minpoly.ne_zero hint)).mp hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx, hMx⟩` from `PolyArch.roots_eig_any p G v (P.γ : G.C) z hev`. Establish `hsim` using `sim_herm G v P.β P.γ (P.c : ℚ) P.sim`. Establish `hform` using `GlobalTheory.EigenvalueNormSignature.form_mulVec (G.psi v (P.γ : G.C)) (G.gram v * G.psi v ((P.β⁻¹ : G.Cˣ) : G.C)) x x`. Rewrite `hform` using `[hsim, hMx]`. Establish `hQ : star x ⬝ᵥ (G.gram v * G.psi v ((P.β⁻¹ : G.Cˣ) : G.C)) *ᵥ x ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Take `⟨h1, h2⟩` from `P.posR v x hx`. Rewrite `h1`, `h2` using `[h0]`. Simplify using `at h1 h2`. Conclude with `h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec_smul, Matrix.smul_mulVec, star_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul] at hform`. Apply `mul_right_cancel₀ hQ` to reduce the goal to its premises. Rewrite `hform` using `[Complex.star_def]`. Move the coercions through the operations in `at hform ⊢`. Take the linear combination `hform`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem dPairPol_of :
     DPairPol := by

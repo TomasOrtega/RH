@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Ω C _ _ _ _ φ hφ`. Use `letI : Algebra Ω C := φ.toAlgebra`. Use `haveI : Algebra.FiniteType Ω C := hφ`. Take `⟨m, hm⟩` from `Ideal.exists_maximal C`. Use `letI : Field (C ⧸ m) := Ideal.Quotient.field m`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI : Module.Finite Ω (C ⧸ m) := finite_of_finite_type_of_isJacobsonRing Ω (C ⧸ m)`. Set `f : (C ⧸ m) →ₐ[Ω] Ω` to `IsAlgClosed.lift`. Use `⟨(f.comp (Ideal.Quotient.mkₐ Ω m)).toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `(f.comp (Ideal.Quotient.mkₐ Ω m)).commutes x`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qh66.ring_sec :
     ∀ (Ω C : Type) [inst : Field Ω] [IsAlgClosed Ω]

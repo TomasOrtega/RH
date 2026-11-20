@@ -8,13 +8,13 @@ open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, rfl, fun v => by simp⟩`. Consider the case `insert w S hw ih`. Take `⟨ζ, h1, h2⟩` from `ih`. Take `⟨g1, g2⟩` from `localIdele_isSupportedAt ℚ w (u w)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨H.idl w (u w) * ζ, ?_, fun v => ?_⟩` and prove the remaining obligations. Use `show ((localIdele ℚ w (u w) : (A ℚ)ˣ) : A ℚ).1 * (ζ : A ℚ).1 = 1`. Rewrite using `[h1, mul_one]`. Use function extensionality and compare the values at `x`. Conclude with `g1 x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Units.val_mul, map_mul, h2 v]`. Distinguish the cases in `hv : v = w`. Substitute `hv` using the available equality. Establish `e : H.cp v ((H.idl v (u v) : (A ℚ)ˣ) : A ℚ) = u v` using `localIdele_snd_self ℚ v (u v)`. Rewrite using `[e, if_neg hw, if_pos (Finset.mem_insert_self _ _), mul_one]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : H.cp v ((H.idl w (u w) : (A ℚ)ˣ) : A ℚ) = 1` using `g2 v hv`. Rewrite using `[e, one_mul]`. Simplify using `[hv]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ex_idele (u : ∀ v : H.P ℚ, (H.Kv v)ˣ) (S : Finset (H.P ℚ)) :
     ∃ ζ : (A ℚ)ˣ, (ζ : A ℚ).1 = 1 ∧ ∀ v, H.cp v (ζ : A ℚ) = if v ∈ S then (u v : H.Kv v) else 1 := by
@@ -38,7 +38,7 @@ private theorem ex_idele (u : ∀ v : H.P ℚ, (H.Kv v)ˣ) (S : Finset (H.P ℚ)
         simp [hv]
 
 /- English proof (translation)
-Establish `e : (N : H.Kv v) = FinitePlace.embedding v (algebraMap (𝓞 ℚ) ℚ (N : 𝓞 ℚ))` using `by simp`. Rewrite using `[e]`. Use `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v (algebraMap (𝓞 ℚ) ℚ (N : 𝓞 ℚ))` as an intermediate fact. Use `lt_of_eq_of_lt this ?_` and prove the remaining obligations. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem v _).2 h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem val_bad {N : ℕ} {v : H.P ℚ} (h : Bad N v) : Valued.v (N : H.Kv v) < 1 := by
   have e : (N : H.Kv v) = FinitePlace.embedding v (algebraMap (𝓞 ℚ) ℚ (N : 𝓞 ℚ)) := by simp
@@ -48,11 +48,11 @@ private theorem val_bad {N : ℕ} {v : H.P ℚ} (h : Bad N v) : Valued.v (N : H.
   exact (HeightOneSpectrum.valuation_lt_one_iff_mem v _).2 h
 
 /- English proof (translation)
-Establish `hi : ∀ i j, Valued.v (H.cp v (k i j)) ≤ 1` using `fun i j => hk.2 v i j`. Establish `hd` using `k.det_coe`. Rewrite `hd` using `[Matrix.det_fin_two]`. Establish `h1 : H.cp v (k 0 0) * H.cp v (k 1 1) = 1 + H.cp v (k 0 1) * H.cp v (k 1 0)`. Use `congrArg (H.cp v) hd` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_sub, map_mul, map_mul, map_one]`. Conclude with `(sub_eq_iff_eq_add.1 this)`. Establish `h2 : Valued.v (H.cp v (k 0 1) * H.cp v (k 1 0)) < 1`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h3 : Valued.v (H.cp v (k 0 0)) * Valued.v (H.cp v (k 1 1)) = 1`. Rewrite using `[← map_mul, h1]`. Conclude with `Valuation.map_one_add_of_lt _ h2`. Use `le_antisymm (hi 1 1) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem val_unit {N : ℕ} {k : G1 ℚ} (hk : k ∈ KK ℚ) (hs : k ∈ SS N) {v : H.P ℚ} (h : Bad N v) :
     Valued.v (H.cp v (k 1 1)) = 1 := by
@@ -76,15 +76,15 @@ private theorem val_unit {N : ℕ} {k : G1 ℚ} (hk : k ∈ KK ℚ) (hs : k ∈ 
     _ = _ := one_mul _
 
 /- English proof (translation)
-Introduce `N hN k hk hs`. Establish `hfin : {v : H.P ℚ | Bad N v}.Finite`. Establish `h0 : Ideal.span {(N : 𝓞 ℚ)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hN.ne'` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Ideal.finite_factors h0).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.2 hv`. Establish `hne : ∀ v, Bad N v → H.cp v (k 1 1) ≠ 0` using `fun v hv h0 => by`. Use `val_unit hk hs hv` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `zero_ne_one this`. Take `⟨ζ, h1, h2⟩` from `ex_idele (fun v => if h : Bad N v then (Units.mk0 _ (hne v h))⁻¹ else 1) hfin.toFinset`. Establish `hb : ∀ v, Bad N v → H.cp v (ζ : A ℚ) = (H.cp v (k 1 1))⁻¹` using `fun v hv => by`. Rewrite using `[h2 v, if_pos (hfin.mem_toFinset.2 hv), dif_pos hv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg : ∀ v, ¬ Bad N v → H.cp v (ζ : A ℚ) = 1` using `fun v hv => by`. Rewrite using `[h2 v, if_neg (fun h => hv (hfin.mem_toFinset.1 h))]`. Use `⟨ζ, ⟨h1, fun v => ?_⟩, fun v => ⟨fun hv => ?_, hg v⟩⟩` and prove the remaining obligations. Distinguish the cases in `hv : Bad N v`. Rewrite using `[hb v hv, map_inv₀, val_unit hk hs hv, inv_one]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg v hv, map_one]`. Unfold `Dv`. Rewrite using `[map_sub, map_mul, map_one, hb v hv, inv_mul_cancel₀ (hne v hv), sub_self, map_zero]`. Conclude with `zero_le`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_idele_correcting_lowerRight_entry :
     ∀ N : ℕ, 0 < N → ∀ k ∈ KK ℚ, k ∈ SS N → ∃ ζ : (A ℚ)ˣ, ζ ∈ UU ∧ ∀ v : H.P ℚ, (Bad N v → Dv N v ((ζ : A ℚ) * k 1 1 - 1)) ∧ (¬ Bad N v → H.cp v (ζ : A ℚ) = 1) := by

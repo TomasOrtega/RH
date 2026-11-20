@@ -14,7 +14,7 @@ namespace CrystallineSemistableComparison.Onto
 open Pb HT
 
 /- English proof (translation)
-Use `letI := f.toAlgebra`. Use `haveI : IsLocalization.Away (0 : A) S := (isLocalization_iff _ _).mpr ⟨fun _ => isUnit_of_subsingleton _, fun z => ⟨(0, 1), Subsingleton.elim _ _⟩, fun {x y} _ => ⟨⟨0, 1, pow_one 0⟩, by simp⟩⟩`. Conclude with `Algebra.Etale.of_isLocalizationAway (0 : A)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem etale_of_subsingleton2 {A S : Type} [CommRing A] [CommRing S] [Subsingleton S] (f : A →+* S) : f.Etale := by
   letI := f.toAlgebra
@@ -24,16 +24,16 @@ theorem etale_of_subsingleton2 {A S : Type} [CommRing A] [CommRing S] [Subsingle
   exact Algebra.Etale.of_isLocalizationAway (0 : A)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨isAffineOpen_bot X, Fin.elim0, etale_of_subsingleton2 _⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem coord_empty_open {O : Type} [CommRing O] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) :
     Nonempty (Coord q ⊥ 0) :=
   ⟨⟨isAffineOpen_bot X, Fin.elim0, etale_of_subsingleton2 _⟩⟩
 
 /- English proof (translation)
-Use `⟨⟨hV', fun j => φ (c.t j), ?_⟩⟩` and prove the remaining obligations. Establish `e : (MvPolynomial.eval₂Hom (strV q' V') fun j => φ (c.t j)) = φ.comp (MvPolynomial.eval₂Hom (strV q V) c.t)`. Rewrite using `[← hs]`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.Etale.stableUnderComposition _ _ c.etale (RingHom.Etale.of_bijective hφ)`.
+A detailed English derivation is pending.
 -/
 theorem coord_transfer2 {O : Type} [CommRing O] {X X' : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)}
     {q' : X' ⟶ Spec (CommRingCat.of O)} {V : X.Opens} {V' : X'.Opens} {d : ℕ} (c : Coord q V d)
@@ -48,7 +48,7 @@ theorem coord_transfer2 {O : Type} [CommRing O] {X X' : Scheme.{0}} {q : X ⟶ S
   exact RingHom.Etale.stableUnderComposition _ _ c.etale (RingHom.Etale.of_bijective hφ)
 
 /- English proof (translation)
-Substitute `hU` using the available equality. Rewrite using `[← Scheme.Hom.appIso_hom']`. Conclude with `(f.appIso V).commRingCatIsoToRingEquiv.bijective`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_bij_of_image2 {X Y : Scheme.{0}} (f : X ⟶ Y) [IsOpenImmersion f] (U : Y.Opens) (V : X.Opens)
     (hU : f ''ᵁ V = U) (e : V ≤ f ⁻¹ᵁ U) : Function.Bijective (f.appLE U V e).hom := by
@@ -57,7 +57,7 @@ theorem appLE_bij_of_image2 {X Y : Scheme.{0}} (f : X ⟶ Y) [IsOpenImmersion f]
   exact (f.appIso V).commRingCatIsoToRingEquiv.bijective
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [← terminal.comp_from p]; infer_instance⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSeparated_of_over_field {K : Type} [Field K] {Y : Scheme.{0}} (p : Y ⟶ Spec (CommRingCat.of K)) [IsSeparated p] :
     Y.IsSeparated :=
@@ -75,20 +75,20 @@ def DGood2 (B : Blow q i π D d) (U : Y.Opens) (σ : (U : Scheme.{0}) ⟶ D.Y) :
       ∀ (a : ℕ) (ω : Om K (Sec (π ≫ q) V) a), (show Sec (π ≫ q) V from V.topIso.hom.hom (B.f (Y.homOfLE h ≫ σ))) • ω = 0 → ω = 0
 
 /- English proof (translation)
-Substitute `hfg` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem appLE_congr2 {X X' : Scheme.{0}} {f g : X ⟶ X'} (hfg : f = g) (U : X'.Opens) (V : X.Opens) (e e') :
     f.appLE U V e = g.appLE U V e' := by
   subst hfg; rfl
 
 /- English proof (translation)
-Use `haveI := B.iso`. Establish `hh : (π ∣_ B.U) ≫ B.U.ι = (π ⁻¹ᵁ B.U).ι ≫ π` using `morphismRestrict_ι π B.U`. Establish `hr : ((π ∣_ B.U) ≫ B.U.ι).opensRange = B.U`. Rewrite using `[Scheme.Hom.opensRange_comp_of_isIso, Scheme.Opens.opensRange_ι]`. Establish `hpre : ((π ∣_ B.U) ≫ B.U.ι) ⁻¹ᵁ A = (π ⁻¹ᵁ B.U).ι ⁻¹ᵁ (π ⁻¹ᵁ A)` using `congrArg (fun g => g ⁻¹ᵁ A) hh`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((π ∣_ B.U) ≫ B.U.ι) ''ᵁ ((π ⁻¹ᵁ B.U).ι ⁻¹ᵁ (π ⁻¹ᵁ A)) = A`. Rewrite using `[← hpre, Scheme.Hom.image_preimage_eq_opensRange_inf, hr, inf_eq_right.mpr hA]`. Establish `h2 : (π ⁻¹ᵁ B.U).ι ''ᵁ ((π ⁻¹ᵁ B.U).ι ⁻¹ᵁ (π ⁻¹ᵁ A)) = π ⁻¹ᵁ A`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι, inf_eq_right.mpr (fun x hx => hA hx)]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2]`. Use `(Scheme.Hom.isAffineOpen_iff_of_isOpenImmersion (π ⁻¹ᵁ B.U).ι).mpr ?_` and prove the remaining obligations. Use `(Scheme.Hom.isAffineOpen_iff_of_isOpenImmersion ((π ∣_ B.U) ≫ B.U.ι)).mp ?_` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `hAa`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1` using `appLE_bij_of_image2 ((π ∣_ B.U) ≫ B.U.ι) A _ h1 hpre.ge`. Establish `c2` using `appLE_bij_of_image2 (π ⁻¹ᵁ B.U).ι (π ⁻¹ᵁ A) _ h2 le_rfl`. Rewrite `c1` using `[appLE_congr2 hh A ((π ⁻¹ᵁ B.U).ι ⁻¹ᵁ (π ⁻¹ᵁ A)) _ le_rfl, ← Scheme.Hom.appLE_comp_appLE (π ⁻¹ᵁ B.U).ι π A (π ⁻¹ᵁ A) _ le_rfl le_rfl, CommRingCat.hom_comp, RingHom.coe_comp]`. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `(Function.Bijective.of_comp_iff' c2 _).mp c1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem off_centre2 (B : Blow q i π D d) (A : Z.Opens) (hA : A ≤ B.U) (hAa : IsAffineOpen A) :
     IsAffineOpen (π ⁻¹ᵁ A) ∧ Function.Bijective (π.app A).hom := by
@@ -117,13 +117,13 @@ theorem off_centre2 (B : Blow q i π D d) (A : Z.Opens) (hA : A ≤ B.U) (hAa : 
     exact (Function.Bijective.of_comp_iff' c2 _).mp c1
 
 /- English proof (translation)
-Use `⟨hσ, ha, fun V h hV => ?_⟩` and prove the remaining obligations. Establish `hVU : V ≤ π ⁻¹ᵁ B.U` using `h.trans hV'`. Establish `hbot : pullback.snd i π ⁻¹ᵁ V = ⊥`. Use `eq_bot_iff.mpr fun x hx => ?_` and prove the remaining obligations. Establish `h3 : π (pullback.snd i π x) ∈ (B.U : Set Z)` using `hVU hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h3` using `[B.U_eq]`. Conclude with `(h3 ⟨pullback.fst i π x, by simpa using congrArg (fun g : pullback i π ⟶ Z => g x) (pullback.condition (f := i) (g := π))⟩).elim`. Establish `hu : IsUnit (B.f (Y.homOfLE h ≫ σ'))` using `B.unit _ (by`. Introduce `x _`. Establish `e : (Y.homOfLE h ≫ σ') ≫ D.f ≫ π = V.ι ≫ π`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, Category.assoc (Y.homOfLE h), hσ, Scheme.homOfLE_ι]`. Rewrite using `[e]`. Conclude with `hVU x.2)`. Establish `hu' : IsUnit (V.topIso.hom.hom (B.f (Y.homOfLE h ≫ σ')))` using `hu.map _`. Use `haveI : Subsingleton Γ(pullback i π, pullback.snd i π ⁻¹ᵁ V) := by rw [hbot]; infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨?_, ⟨0, by rw [hbot]; exact coord_empty_open _⟩, ?_, fun a ω hω => (hu'.smul_eq_zero).mp hω⟩` and prove the remaining obligations. Take `⟨c', -⟩` from `coord_res c h hV`. Conclude with `⟨n, ⟨c'⟩⟩`. Rewrite using `[Ideal.span_singleton_eq_top.mpr hu']`. Conclude with `eq_top_iff.mpr fun x _ => (RingHom.mem_ker).mpr (Subsingleton.elim _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divisor_good_off_centre (B : Blow q i π D d) (V' : Y.Opens) (σ' : (V' : Scheme.{0}) ⟶ D.Y) (hσ : σ' ≫ D.f = V'.ι)
     (hV' : V' ≤ π ⁻¹ᵁ B.U) (ha : IsAffineOpen V') (n : ℕ) (c : Coord (π ≫ q) V' n) : DGood2 B V' σ' := by
@@ -149,13 +149,13 @@ theorem divisor_good_off_centre (B : Blow q i π D d) (V' : Y.Opens) (σ' : (V' 
     exact eq_top_iff.mpr fun x _ => (RingHom.mem_ker).mpr (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Take `⟨Cv⟩` from `(cov_ex q).1 inferInstance`. Establish `hz : π y ∈ (⨆ β, Cv.U β)` using `by rw [Cv.cover]; trivial`. Take `⟨β, hβ⟩` from `TopologicalSpace.Opens.mem_iSup.mp hz`. Take `⟨_, ⟨A, hAa, rfl⟩, hzA, hAle⟩` from `Z.isBasis_affineOpens.exists_subset_of_mem_open (show π y ∈ ((Cv.U β ⊓ B.U : Z.Opens) : Set Z) from ⟨hβ, hy⟩) (Cv.U β ⊓ B.U).2`. Establish `hA1 : A ≤ Cv.U β` using `fun x hx => (hAle hx).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA2 : A ≤ B.U` using `fun x hx => (hAle hx).2`. Take `⟨cA, -⟩` from `coord_res (Cv.c β) hA1 hAa`. Take `⟨hpa, hbij⟩` from `off_centre2 B A hA2 hAa`. Establish `hs : (π.app A).hom.comp (strV q A) = strV (π ≫ q) (π ⁻¹ᵁ A)`. Rewrite using `[strV, strV, ← CommRingCat.hom_comp, Category.assoc, Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨cP⟩` from `coord_transfer2 cA hpa (π.app A).hom hbij hs`. Establish `hy0 : y ∈ sSup (𝒱D D)` using `by rw [B.loc]; trivial`. Take `⟨V0, hV0, hyV0⟩` from `TopologicalSpace.Opens.mem_sSup.mp hy0`. Take `⟨σ0, hσ0⟩` from `hV0`. Take `⟨_, ⟨V', hV'a, rfl⟩, hyV', hV'le⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open (show y ∈ ((π ⁻¹ᵁ A ⊓ V0 : Y.Opens) : Set Y) from ⟨hzA, hyV0⟩) (π ⁻¹ᵁ A ⊓ V0).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hV'1 : V' ≤ π ⁻¹ᵁ A` using `fun x hx => (hV'le hx).1`. Establish `hV'2 : V' ≤ V0` using `fun x hx => (hV'le hx).2`. Take `⟨cV, -⟩` from `coord_res cP hV'1 hV'a`. Use `⟨V', Y.homOfLE hV'2 ≫ σ0, hyV', divisor_good_off_centre B V' _ ?_ (fun x hx => hA2 (hV'1 hx)) hV'a _ cV⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hσ0, Scheme.homOfLE_ι]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem good_open_off_centre [IsProper q] [Smooth q] (B : Blow q i π D d) (y : Y) (hy : π y ∈ B.U) :
     ∃ (V' : Y.Opens) (σ' : (V' : Scheme.{0}) ⟶ D.Y), y ∈ V' ∧ DGood2 B V' σ' := by
@@ -183,7 +183,7 @@ theorem good_open_off_centre [IsProper q] [Smooth q] (B : Blow q i π D d) (y : 
   rw [Category.assoc, hσ0, Scheme.homOfLE_ι]
 
 /- English proof (translation)
-Establish `key : π.appLE (B.V α) ((B.c α).C k) ((B.c α).C_le k) ≫ ((B.c α).C k).topIso.inv ≫ (Y.homOfLE h).appTop ≫ V.topIso.hom = π.appLE (B.V α) V (h.trans ((B.c α).C_le k))`. Simplify using `only [Scheme.Opens.topIso_inv, Scheme.Opens.topIso_hom, Scheme.homOfLE_appTop]`. Rewrite using `[← Functor.map_comp, ← Functor.map_comp, Scheme.Hom.appLE_map]`. Rewrite using `[B.f_nat, B.f_σ, ← key]`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem f_chart2 (B : Blow q i π D d) (α : B.ι) (k : Fin d) (V : Y.Opens) (h : V ≤ (B.c α).C k) :
     V.topIso.hom.hom (B.f (Y.homOfLE h ≫ B.σ α k)) =
@@ -196,9 +196,9 @@ theorem f_chart2 (B : Blow q i π D d) (α : B.ι) (k : Fin d) (V : Y.Opens) (h 
   simp only [CommRingCat.hom_comp, RingHom.comp_apply]
 
 /- English proof (translation)
-Use `haveI := B.closed`. Use `⟨B.σ_f α k, (B.c α).C_aff k, fun V h hV => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4⟩` from `(hCL K W Z Y q i π d (B.V α) (B.c α)).2.2.2 k V h hV`. Use `⟨⟨_, h1⟩, ⟨_, h2⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[f_chart2 B α k V h]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h3`. Introduce `a ω`. Rewrite using `[f_chart2 B α k V h]`. Conclude with `h4 a ω`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_chart2 (hCL : ChartLaws) (B : Blow q i π D d) (α : B.ι) (k : Fin d) :
     DGood2 B ((B.c α).C k) (B.σ α k) := by
@@ -214,15 +214,13 @@ theorem good_chart2 (hCL : ChartLaws) (B : Blow q i π D d) (α : B.ι) (k : Fin
 end
 
 /- English proof (translation)
-Introduce `K _ W Z Y q _ _ i π _ D d B`. Use `haveI := B.closed`. Use `haveI hsep : Y.IsSeparated := isSeparated_of_over_field (π ≫ q)`. Establish `hpt : ∀ y : Y, ∃ (V' : Y.Opens) (σ' : (V' : Scheme.{0}) ⟶ D.Y), y ∈ V' ∧ DGood2 B V' σ'`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hy : π y ∈ B.U`. Conclude with `good_open_off_centre B y hy`. Establish `hz : π y ∈ Set.range i`. Establish `h0 : π y ∉ (B.U : Set Z)` using `hy`. Rewrite `h0` using `[B.U_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using h0`. Take `⟨w, hw⟩` from `hz`. Establish `hw' : w ∈ i ⁻¹ᵁ (⨆ α, B.V α)` using `B.cover trivial`. Establish `h5 : π y ∈ ⨆ α, B.V α` using `by rw [← hw]; exact hw'`. Take `⟨α, hα⟩` from `TopologicalSpace.Opens.mem_iSup.mp h5`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h6 : y ∈ ⨆ k, (B.c α).C k` using `(B.c α).C_cover hα`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.mp h6`. Conclude with `⟨_, _, hk, good_chart2 hCL B α k⟩`. Use `choose V' σ' hyV hG using hpt`. Use `haveI : CompactSpace Y := QuasiCompact.compactSpace_of_compactSpace (π ≫ q)`.
-
-Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun y => (V' y : Set Y)) (fun y => (V' y).2) (fun y _ => Set.mem_iUnion.mpr ⟨y, hyV y⟩)`. Use `⟨t.card, fun α => V' (t.equivFin.symm α), fun α => σ' (t.equivFin.symm α), fun α => (hG _).1, ?_, fun α α' => ((hG _).2.1).inf (hG _).2.1, fun α V h hV => (hG _).2.2 V h hV⟩` and prove the remaining obligations. Use `eq_top_iff.mpr fun y _ => ?_` and prove the remaining obligations. Take `⟨x, hxt, hyx⟩` from `Set.mem_iUnion₂.mp (ht (Set.mem_univ y))`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨t.equivFin ⟨x, hxt⟩, by simpa using hyx⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem divisor_cover_of_chart_laws (hCL : ChartLaws) : DivCover := by
   intro K _ W Z Y q _ _ i π _ D d B

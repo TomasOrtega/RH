@@ -8,15 +8,15 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc ValuativeRel GroundTheory
 namespace GlobalTheory.PMon.Ram
 
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r with`. Consider the case `zero => intro m w _`. Simplify using the standard rewrite rules. Consider the case `succ r ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `m w hm`. Establish `hpm : (p : ℤ) ∣ m`. Assume the negation of the conclusion as `hnd`. Establish `hcop : IsCoprime (p : ℤ) m` using `(Irreducible.coprime_iff_not_dvd (Nat.prime_iff_prime_int.mp hp).irreducible).mpr hnd`. Take `⟨u, v, huv⟩` from `hcop`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Apply `hu` to reduce the goal to its premises. Establish `h1 : ((u * p + v * m : ℤ) : R) = 1` using `by rw [huv]; simp`. Move the coercions through the operations in `at h1`. Rewrite `h1` using `[hm]`. Use `isUnit_iff_exists_inv.mpr ⟨u + v * (p : R) ^ r * w, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h1]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨m', rfl⟩` from `hpm`. Establish `hm' : (m' : R) = (p : R) ^ r * w`. Move the coercions through the operations in `at hm`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Apply `mul_left_cancel₀ h0` to reduce the goal to its premises. Rewrite using `[hm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[pow_succ, mul_comm ((p : ℤ) ^ r)]`. Conclude with `mul_dvd_mul_left _ (ih m' w hm')`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_dvd_of_eq_pow_mul {R : Type} [CommRing R] [IsDomain R] {p : ℕ} (hp : p.Prime)
     (hu : ¬ IsUnit (p : R)) (h0 : (p : R) ≠ 0) :
@@ -46,19 +46,19 @@ theorem int_dvd_of_eq_pow_mul {R : Type} [CommRing R] [IsDomain R] {p : ℕ} (hp
     exact mul_dvd_mul_left _ (ih m' w hm')
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ _ _ _ _ _ _ _ p E r A x a hp hE hord hx σ hσ τ hτ`. Take `⟨zσ, hzσ, eσ⟩` from `hx σ hσ`. Take `⟨zτ, hzτ, eτ⟩` from `hx τ hτ`. Take `⟨zστ, hzστ, eστ⟩` from `hx (σ * τ) (A.mul_mem hσ hτ)`. Establish `hσz : σ zτ ∈ 𝒪[L]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(integerAlgEquiv K L σ ⟨zτ, hzτ⟩).2` as an intermediate fact. Simplify using `using this`. Set `w : 𝒪[L]` to `⟨σ zτ + zσ - zστ, Subring.sub_mem _ (Subring.add_mem _ hσz hzσ) hzστ⟩`. Establish `hmul : (σ * τ) x - x = σ (τ x - x) + (σ x - x)`. Rewrite using `[AlgEquiv.mul_apply, map_sub]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hστ : σ (τ x - x) = (a τ : L) + (p : L) ^ r * σ zτ`. Rewrite using `[eτ, map_add, map_mul, map_pow, map_intCast, map_natCast]`. Establish `key : (((a (σ * τ) - a σ - a τ : ℤ)) : 𝒪[L]) = (p : 𝒪[L]) ^ r * w`. Apply `Subtype.ext` to reduce the goal to its premises.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [w, Subring.coe_mul, Subring.coe_pow, Subring.coe_natCast, Subring.coe_intCast]`. Use `push_cast`. Rewrite `eστ` using `[hmul, hστ, eσ]`. Take the linear combination `-eστ`. Establish `hu : ¬ IsUnit (p : 𝒪[L])`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Introduce and unpack `⟨u, hu⟩`. Establish `h` using `IsDiscreteValuationRing.addVal_eq_zero_of_unit (R := 𝒪[L]) u`. Unfold `OrdIs at hord`. Rewrite `h` using `[hu, hord]`. Establish `: E = 0` using `by exact_mod_cast h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `h0 : (p : 𝒪[L]) ≠ 0`. Introduce `h`. Unfold `OrdIs at hord`. Rewrite `hord` using `[h, IsDiscreteValuationRing.addVal_zero]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ENat.top_ne_coe E hord`. Conclude with `int_dvd_of_eq_pow_mul hp hu h0 r _ w key`.
+A detailed English derivation is pending.
 -/
 theorem coboundary_int_additive_mod : ∀ (K L : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L] [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L] [IsGalois K L] (p E r : ℕ) (A : Subgroup (L ≃ₐ[K] L)) (x : L) (a : (L ≃ₐ[K] L) → ℤ), p.Prime → 0 < E → OrdIs L p E → (∀ σ ∈ A, ∃ z ∈ 𝒪[L], σ x - x = (a σ : L) + (p : L) ^ r * z) → ∀ σ ∈ A, ∀ τ ∈ A, (p : ℤ) ^ r ∣ a (σ * τ) - a σ - a τ := by
   intro K L _ _ _ _ _ _ _ _ _ _ _ _ p E r A x a hp hE hord hx σ hσ τ hτ

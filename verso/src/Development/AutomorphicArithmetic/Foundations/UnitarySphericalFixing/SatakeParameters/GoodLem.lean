@@ -14,7 +14,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def IsQg (k : Type) [Field k] [TopologicalSpace k] : Prop := ∃ (g : ℕ) (_ : Fact g.Prime) (i : ℚ_[g] ≃+* k), Continuous i
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{IrrGL.ofChar χ hχ}, hasSupport_self (IrrGL.isCusp_ofChar χ hχ), fun y hy => by rw [Multiset.mem_singleton.1 hy] exact Or.inl rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem good_ofChar (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) : Good (IrrGL.ofChar χ hχ) :=
   ⟨{IrrGL.ofChar χ hχ}, hasSupport_self (IrrGL.isCusp_ofChar χ hχ), fun y hy => by
@@ -22,7 +22,7 @@ theorem good_ofChar (χ : kˣ →* ℂˣ) (hχ : IsSmoothChar χ) : Good (IrrGL.
     exact Or.inl rfl⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨s, hs, h1⟩ := h ⟨s, hs, fun y hy => Or.inl (h1 y hy)⟩`.
+A detailed English derivation is pending.
 -/
 theorem good_of_toral {x : IrrGL k} (h : Toral x) : Good x :=
   let ⟨s, hs, h1⟩ := h
@@ -31,16 +31,16 @@ theorem good_of_toral {x : IrrGL k} (h : Toral x) : Good x :=
 variable [CharZero k]
 
 /- English proof (translation)
-Take `⟨χ, hχ, rfl⟩` from `((clBasic k x).2.2.2.2.1 h).2`. Conclude with `good_ofChar χ hχ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem good_of_one (x : IrrGL k) (h : x.1 = 1) : Good x := by
   obtain ⟨χ, hχ, rfl⟩ := ((clBasic k x).2.2.2.2.1 h).2
   exact good_ofChar χ hχ
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `GlobalTheory.LocGL.SupportRing.exists_hasSupport Pr.zel x`. Use `⟨s, hs, fun y hy => Or.inr ⟨hq, y, 1, isSmoothChar_one, ?_, ((clBasic k y).2.2.1 _).symm⟩⟩` and prove the remaining obligations. Take `⟨n, xs, hxs, hcs⟩` from `hs`. Establish `H` using `Pr.dzs _ x.1 (GlobalTheory.SplitRead.Irr.ofIrrRep x.2.rep) n (fun i => (xs i).1) (fun i => GlobalTheory.SplitRead.Irr.ofIrrRep (xs i).2.rep) hcs ((Submodule.ne_bot_iff _).1 hD)`. Rewrite `hy` using `[← hxs]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨i, -, rfl⟩` from `Multiset.mem_map.1 hy`. Take `⟨v, hv, hv0⟩` from `H i`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨v, hv, hv0⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem good_of_fixed (hq : IsQg k) (x : IrrGL k) (hD : fixed x.rep (KOne k (Fin x.1)) ≠ ⊥) : Good x := by
   obtain ⟨s, hs⟩ := GlobalTheory.LocGL.SupportRing.exists_hasSupport Pr.zel x
@@ -54,7 +54,7 @@ theorem good_of_fixed (hq : IsQg k) (x : IrrGL k) (hD : fixed x.rep (KOne k (Fin
   exact (Submodule.ne_bot_iff _).2 ⟨v, hv, hv0⟩
 
 /- English proof (translation)
-The claim follows from `good_of_fixed hq _ (fixed_ne_bot_of_equiv (IrrRep.nonempty_equiv_rep τ).some.symm hD)`.
+A detailed English derivation is pending.
 -/
 theorem good_cls_of_fixed (hq : IsQg k) {n : ℕ} (τ : IrrRep (GL (Fin n) k)) (hD : fixed τ.ρ (KOne k (Fin n)) ≠ ⊥) :
     Good (cls τ) :=
@@ -71,30 +71,30 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a} {ε : EpsFamily A} {rc : IrrGL (w.adicCompletion E) → WD h}
 
 /- English proof (translation)
-The claim follows from `charZero_of_injective_algebraMap (algebraMap E _).injective`.
+A detailed English derivation is pending.
 -/
 theorem charZero_compl (w : HeightOneSpectrum (𝓞 E)) : CharZero (w.adicCompletion E) :=
   charZero_of_injective_algebraMap (algebraMap E _).injective
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨a, ha, ε, hε, H⟩`.
+Supply the required witnesses or components.
 -/
 theorem Old.close (hε : IsDeligneEps ε) (H : Laws a ha ε rc) : IsRec h rc := ⟨a, ha, ε, hε, H⟩
 
 /- English proof (translation)
-The claim follows from `cls_of H`.
+A detailed English derivation is pending.
 -/
 theorem New.close (H : LawsM a ha ε rc) : IsRecT h rc := cls_of H
 
 /- English proof (translation)
-The claim follows from `let ⟨_, ⟨a, ha, _⟩, _⟩ := hL.1 E Ω A w h ⟨a, ha⟩`.
+A detailed English derivation is pending.
 -/
 theorem Old.artin (hL : LocalLanglandsGL) (h : IsPlaceOver A w) : ∃ a : Weil h →* (w.adicCompletion E)ˣ, IsLocalArtin h a :=
   let ⟨_, ⟨a, ha, _⟩, _⟩ := hL.1 E Ω A w h
   ⟨a, ha⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨_, a, ha, _⟩ := hL E Ω A w h ⟨a, ha⟩`.
+A detailed English derivation is pending.
 -/
 theorem New.artin (hL : RecTExists) (h : IsPlaceOver A w) : ∃ a : Weil h →* (w.adicCompletion E)ˣ, IsLocalArtin h a :=
   let ⟨_, a, ha, _⟩ := hL E Ω A w h

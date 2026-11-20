@@ -15,9 +15,9 @@ def glue (S : Finset (Pl F)) (c : F) (a : ∀ s : S, Kp s.1) : AF F :=
   algebraMap F (AF F) c + ∑ s : S, inc s.1 (a s - algebraMap F (Kp s.1) c)
 
 /- English proof (translation)
-Establish `h : proj u (∑ s : S, inc s.1 (a s - algebraMap F (Kp s.1) c)) = a ⟨u, hu⟩ - algebraMap F (Kp u) c`. Rewrite using `[map_sum, Finset.sum_eq_single (⟨u, hu⟩ : S)]`. Conclude with `proj_inc_same u _`. Introduce `b _ hb`. Conclude with `proj_inc_ne (fun e => hb (Subtype.ext e.symm)) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[glue, map_add, h, AlgHom.commutes, add_sub_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem proj_glue_mem (S : Finset (Pl F)) (c : F) (a : ∀ s : S, Kp s.1) {u : Pl F} (hu : u ∈ S) :
     proj u (glue S c a) = a ⟨u, hu⟩ := by
@@ -32,9 +32,9 @@ theorem proj_glue_mem (S : Finset (Pl F)) (c : F) (a : ∀ s : S, Kp s.1) {u : P
   rw [glue, map_add, h, AlgHom.commutes, add_sub_cancel]
 
 /- English proof (translation)
-Establish `h : proj u (∑ s : S, inc s.1 (a s - algebraMap F (Kp s.1) c)) = 0`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun b _ => proj_inc_ne (fun e => hu ?_) _` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `b.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[glue, map_add, h, AlgHom.commutes, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem proj_glue_notMem (S : Finset (Pl F)) (c : F) (a : ∀ s : S, Kp s.1) {u : Pl F}
     (hu : u ∉ S) : proj u (glue S c a) = algebraMap F (Kp u) c := by
@@ -46,7 +46,7 @@ theorem proj_glue_notMem (S : Finset (Pl F)) (c : F) (a : ∀ s : S, Kp s.1) {u 
   rw [glue, map_add, h, AlgHom.commutes, add_zero]
 
 /- English proof (translation)
-The claim follows from `continuous_const.add (continuous_finset_sum _ fun s _ => (continuous_inc s.1).comp ((hf s).sub continuous_const))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_glue {X : Type*} [TopologicalSpace X] (S : Finset (Pl F)) (c : F)
     {f : X → ∀ s : S, Kp s.1} (hf : ∀ s : S, Continuous fun x => f x s) :
@@ -59,7 +59,7 @@ def psi (d β : F) (S : Finset (Pl F)) (x : ∀ s : S, Q d β (Kp s.1)) : Q d β
     glue S 0 fun s => (x s).imK⟩
 
 /- English proof (translation)
-Rewrite using `[continuous_q_iff]`. Use `⟨continuous_glue S 1 fun s => continuous_re.comp (continuous_apply s), continuous_glue S 0 fun s => continuous_imI.comp (continuous_apply s), continuous_glue S 0 fun s => continuous_imJ.comp (continuous_apply s), continuous_glue S 0 fun s => continuous_imK.comp (continuous_apply …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem continuous_psi (d β : F) (S : Finset (Pl F)) : Continuous (psi d β S) := by
   rw [continuous_q_iff]
@@ -69,7 +69,7 @@ theorem continuous_psi (d β : F) (S : Finset (Pl F)) : Continuous (psi d β S) 
     continuous_glue S 0 fun s => continuous_imK.comp (continuous_apply s)⟩
 
 /- English proof (translation)
-Use `QuaternionAlgebra.ext ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `proj_glue_mem S 1 _ hu`. Conclude with `proj_glue_mem S 0 _ hu`. Conclude with `proj_glue_mem S 0 _ hu`. Conclude with `proj_glue_mem S 0 _ hu`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem qmap_psi_mem (d β : F) (S : Finset (Pl F)) (x : ∀ s : S, Q d β (Kp s.1)) {u : Pl F}
     (hu : u ∈ S) : qmap (proj u) (psi d β S x) = x ⟨u, hu⟩ := by
@@ -80,7 +80,7 @@ theorem qmap_psi_mem (d β : F) (S : Finset (Pl F)) (x : ∀ s : S, Q d β (Kp s
   · exact proj_glue_mem S 0 _ hu
 
 /- English proof (translation)
-Use `QuaternionAlgebra.ext ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `(proj_glue_notMem S 1 _ hu).trans (map_one _)`. Conclude with `(proj_glue_notMem S 0 _ hu).trans (map_zero _)`. Conclude with `(proj_glue_notMem S 0 _ hu).trans (map_zero _)`. Conclude with `(proj_glue_notMem S 0 _ hu).trans (map_zero _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem qmap_psi_notMem (d β : F) (S : Finset (Pl F)) (x : ∀ s : S, Q d β (Kp s.1)) {u : Pl F}
     (hu : u ∉ S) : qmap (proj u) (psi d β S x) = 1 := by
@@ -91,7 +91,7 @@ theorem qmap_psi_notMem (d β : F) (S : Finset (Pl F)) (x : ∀ s : S, Q d β (K
   · exact (proj_glue_notMem S 0 _ hu).trans (map_zero _)
 
 /- English proof (translation)
-Use `QuaternionAlgebra.ext ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `adele_ext fun u => congrArg (fun y : Q d β (Kp u) => y.re) (H u)`. Conclude with `adele_ext fun u => congrArg (fun y : Q d β (Kp u) => y.imI) (H u)`. Conclude with `adele_ext fun u => congrArg (fun y : Q d β (Kp u) => y.imJ) (H u)`. Conclude with `adele_ext fun u => congrArg (fun y : Q d β (Kp u) => y.imK) (H u)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem q_adele_ext {d β : F} {g h : Q d β (AF F)}
     (H : ∀ u : Pl F, qmap (proj u) g = qmap (proj u) h) : g = h := by
@@ -102,13 +102,13 @@ theorem q_adele_ext {d β : F} {g h : Q d β (AF F)}
   · exact adele_ext fun u => congrArg (fun y : Q d β (Kp u) => y.imK) (H u)
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg, hout⟩`. Use `⟨fun s => qmap (proj s.1) g, fun s _ => ?_, q_adele_ext fun u => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `qn (qmap (proj s.1) g) = 1`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[qn_qmap, hg, map_one]`. Distinguish the cases in `hu : u ∈ S`. Conclude with `qmap_psi_mem d β S _ hu`. Rewrite using `[qmap_psi_notMem d β S _ hu, hout u (by simpa using hu)]`. Introduce and unpack `⟨x, hx, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hout : ∀ u, u ∉ (S : Set (Pl F)) → qmap (proj u) (psi d β S x) = 1` using `fun u hu => qmap_psi_notMem d β S x (by simpa using hu)`. Use `⟨adele_ext fun u => ?_, hout⟩` and prove the remaining obligations. Rewrite using `[← qn_qmap, map_one]`. Distinguish the cases in `hu : u ∈ S`. Rewrite using `[qmap_psi_mem d β S x hu]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx ⟨u, hu⟩ (Set.mem_univ _)`. Rewrite using `[hout u (by simpa using hu), qn_one]`.
+A detailed English derivation is pending.
 -/
 theorem suppAt_eq_image (d β : F) (S : Finset (Pl F)) :
     SuppAt d β (S : Set (Pl F)) =
@@ -133,7 +133,7 @@ theorem suppAt_eq_image (d β : F) (S : Finset (Pl F)) :
     · rw [hout u (by simpa using hu), qn_one]
 
 /- English proof (translation)
-Rewrite using `[suppAt_eq_image]`. Conclude with `(isCompact_univ_pi fun s : S => h s.1 s.2).image (continuous_psi d β S)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_suppAt {F : Type} [Field F] [NumberField F] (d β : F) (S : Finset (Pl F))
     (h : ∀ s ∈ S, IsCompact {x : Q d β (Kp s) | qn x = 1}) :

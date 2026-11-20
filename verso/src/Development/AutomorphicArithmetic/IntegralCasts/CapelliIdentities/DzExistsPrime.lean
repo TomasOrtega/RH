@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `v n`. Proceed by induction on `n using Nat.recOnMul with`. Consider the case `zero => intro h`. Conclude with `absurd rfl h`. Consider the case `one`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `_ h`. Conclude with `absurd ((Ideal.eq_top_iff_one _).2 (by simpa using h)) v.isPrime.ne_top`. Consider the case `prime p hp => intro _ h`. Conclude with `⟨p, hp, dvd_rfl, h⟩`. Consider the case `mul a b iha ihb`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hab h`. Rewrite `h` using `[Nat.cast_mul]`. Break down `v.isPrime.mem_or_mem h with h | h` into its components or cases. Take `⟨p, hp, hd, hm⟩` from `iha (left_ne_zero_of_mul hab) h`. Conclude with `⟨p, hp, hd.mul_right _, hm⟩`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨p, hp, hd, hm⟩` from `ihb (right_ne_zero_of_mul hab) h`. Conclude with `⟨p, hp, hd.mul_left _, hm⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qk11.dz_exists_prime :
     ∀

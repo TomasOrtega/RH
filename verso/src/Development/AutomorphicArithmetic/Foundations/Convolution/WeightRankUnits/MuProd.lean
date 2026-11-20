@@ -7,7 +7,7 @@ open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `h : algebraMap E (u.adicCompletion E) (k : E) ≠ 0`. Simplify using `using k.ne_zero`. Rewrite using `[UpperTheory.ConvolutionTheory.G2.muAt, dif_pos h, HChar.locK, MonoidHom.comp_apply]`. Establish `hu : Units.mk0 (algebraMap E (u.adicCompletion E) (k : E)) h = atFin u k` using `Units.ext rfl`. Rewrite using `[hu]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem muAt_unit {E : Type} [Field E] [NumberField E] [IsCMField E] (μ : HChar E) (u : Pl E) (k : Eˣ) :
     UpperTheory.ConvolutionTheory.G2.muAt μ u (k : E) = ((μ.locK u k : ℂˣ) : ℂ) := by
@@ -18,11 +18,11 @@ private theorem muAt_unit {E : Type} [Field E] [NumberField E] [IsCMField E] (μ
   rw [hu]
 
 /- English proof (translation)
-Introduce `E _ _ _ μ e hμ R hR`. Take `⟨hf, hp⟩` from `GlobalTheory.HCharUnit.finprod_locK_mul_inf E μ (Units.mk0 R hR)`. Establish `hfun : (fun u : Pl E => UpperTheory.ConvolutionTheory.G2.muAt μ u R) = fun u : Pl E => (Units.coeHom ℂ) (μ.locK u (Units.mk0 R hR))`. Use function extensionality and compare the values at `fun u => muAt_unit μ u (Units.mk0 R hR)`. Establish `hsub : (Function.mulSupport fun u : Pl E => (Units.coeHom ℂ) (μ.locK u (Units.mk0 R hR))) ⊆ Function.mulSupport fun u : Pl E => μ.locK u (Units.mk0 R hR)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Introduce `u hu h1`. Conclude with `hu (by simp only [h1, map_one])`. Rewrite using `[hfun]`. Use `⟨hf.subset hsub, ?_⟩` and prove the remaining obligations. Rewrite using `[← MonoidHom.map_finprod _ hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinf` using `GlobalTheory.BCT.inf_mu_unit E μ e hμ (Units.mk0 R hR)`. Simplify using `only [Units.val_mk0] at hinf`. Rewrite using `[← hinf]`. Use `congrArg (Units.coeHom ℂ) hp` as an intermediate fact. Simplify using `using this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.G2.muProd :
     UpperTheory.ConvolutionTheory.G2.MuProd := by

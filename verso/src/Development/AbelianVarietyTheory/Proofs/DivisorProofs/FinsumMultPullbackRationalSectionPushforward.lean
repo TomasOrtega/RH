@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.PushDiv
 
 /- English proof (translation)
-Establish `hsub : closure ({x} : Set X) ⊆ closure {y}` using `specializes_iff_closure_subset.1 hxy`. Establish `hne' : closure ({x} : Set X) ≠ closure {y}` using `fun e => hne (inseparable_iff_closure_eq.2 e).eq`. Establish `h` using `topologicalKrullDim_add_one_le_of_ssubset X _ _ isClosed_closure isIrreducible_singleton.closure isIrreducible_singleton.closure (ssubset_of_subset_of_ne hsub hne')`. Rewrite `h` using `[show topologicalKrullDim (closure ({x} : Set X)) = d from hx, show topologicalKrullDim (closure ({y} : Set X)) = d' from hy]`. Establish `h' : ((d + 1 : ℕ) : WithBot ℕ∞) ≤ (d' : WithBot ℕ∞)` using `by exact_mod_cast h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h'' : d + 1 ≤ d'` using `by exact_mod_cast h'`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem hasDim_lt {X : Scheme.{0}} {x y : X} {d d' : ℕ} (hxy : y ⤳ x) (hne : x ≠ y)
     (hx : HasDim x d) (hy : HasDim y d') : d < d' := by
@@ -34,7 +34,7 @@ theorem hasDim_lt {X : Scheme.{0}} {x y : X} {d d' : ℕ} (hxy : y ⤳ x) (hne :
   omega
 
 /- English proof (translation)
-Rewrite using `[(D.isEqn_genericPoint 1).mult_eq]`. Conclude with `(unitAt_one _).ord_eq_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mult_genericPoint {Z : Scheme.{0}} [IsIntegral Z] [IsLocallyNoetherian Z] (D : CartierDiv Z) :
     D.mult (genericPoint Z) = 0 := by
@@ -46,7 +46,7 @@ variable {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsLocallyNoetherian X
   {r : B.ι → X.functionFieldˣ} (hr : IsRatSec B r)
 
 /- English proof (translation)
-Establish `hm : w ∈ (B.pull g).U (fun _ => i)` using `Set.mem_iInter.2 fun _ => hi`. Establish `h` using `(presents_divOfRatSec (LB.isLB_pull hB g) (MultPull.isRatSec_pull_map g hη' hr)).isEqn (fun _ => i) w hm`. Rewrite using `[h.mult_eq]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mult_pull_eq (w : Y) (i : B.ι) (hi : g w ∈ B.U i) :
     (divOfRatSec (LB.isLB_pull hB g) (MultPull.isRatSec_pull_map g hη' hr)).mult w =
@@ -59,14 +59,14 @@ theorem mult_pull_eq (w : Y) (i : B.ι) (hi : g w ∈ B.U i) :
   rfl
 
 /- English proof (translation)
-The claim follows from `((presents_divOfRatSec hB hr).isEqn i z hi).mult_eq`.
+A detailed English derivation is pending.
 -/
 theorem mult_eq_chart (z : X) (i : B.ι) (hi : z ∈ B.U i) :
     (divOfRatSec hB hr).mult z = Scheme.ord (r i : X.functionField) z :=
   ((presents_divOfRatSec hB hr).isEqn i z hi).mult_eq
 
 /- English proof (translation)
-Introduce `e`. Take `⟨i, hi⟩` from `exists_chart hB (g w)`. Apply `hw` to reduce the goal to its premises. Rewrite using `[mult_pull_eq g hη' hB hr w i hi]`. Conclude with `(FrameGlue.Pull.unitAt_fnMap g hη' (e ▸ unitAt_genericPoint (r i).ne_zero)).ord_eq_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_ne_genericPoint (w : Y)
     (hw : (divOfRatSec (LB.isLB_pull hB g) (MultPull.isRatSec_pull_map g hη' hr)).mult w ≠ 0) :
@@ -87,15 +87,15 @@ variable {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsLocallyNoetherian X
   {k : Type} [CommRing k] {p : X ⟶ Sp k} {q : Y ⟶ Sp k}
 
 /- English proof (translation)
-Establish `hw1` using `CartierDiv.coheight_eq_one_of_mult_ne_zero hw`. Establish `hgw` using `map_ne_genericPoint g hη' hB hr w hw`. Establish `hwY : w ≠ genericPoint Y` using `fun e => hw (e ▸ mult_genericPoint _)`. Establish `AY` using `GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k Y q hq`. Establish `AX` using `GlobalTheory.T.hasPointClosureDim_basic_projArithAmbient k X p hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨mY, hmY⟩` from `AY.1`. Take `⟨mX, hmX⟩` from `AX.1`. Take `⟨dY, -, hdY⟩` from `hmY (genericPoint Y)`. Take `⟨dw, -, hdw⟩` from `hmY w`. Establish `hlt : dw < dY` using `hasDim_lt (genericPoint_specializes w) hwY hdw hdY`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, rfl⟩ : ∃ e, dY = e + 1` from `⟨dY - 1, by omega⟩`. Establish `hYdim : topologicalKrullDim Y = ((e + 1 : ℕ) : WithBot ℕ∞)` using `(AY.2.2.2.2.2 Y (e + 1)).1 hdY`. Establish `hwe : HasDim w e` using `((GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k Y q hq e hYdim).1 w).1 hw1`. Take `⟨dgw, -, hdgw⟩` from `hmX (g w)`. Take `⟨dX, -, hdX⟩` from `hmX (genericPoint X)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `GlobalTheory.T.pointClosureDim_le_and_residueDegree_ne_zero_iff k X Y p q hp hq g hg w e dgw hwe hdgw`. Establish `hdX' : HasDim (g (genericPoint Y)) dX` using `by rw [hη]; exact hdX`. Establish `h2` using `GlobalTheory.T.pointClosureDim_le_and_residueDegree_ne_zero_iff k X Y p q hp hq g hg (genericPoint Y) (e + 1) dX hdY hdX'`. Establish `h3 : dgw < dX` using `hasDim_lt (genericPoint_specializes (g w)) hgw hdgw hdX`. Establish `he : e = dgw` using `h1.2.1 hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXe : dX = e + 1` using `by omega`. Use `⟨h2.2.2 hXe.symm, ?_⟩` and prove the remaining obligations. Establish `hXdim : topologicalKrullDim X = ((e + 1 : ℕ) : WithBot ℕ∞)` using `(AX.2.2.2.2.2 X (e + 1)).1 (hXe ▸ hdX)`. Conclude with `((GlobalTheory.T.coheight_one_iff_pointClosure_dim_projArith k X p hp e hXdim).1 (g w)).2 (he ▸ hdgw)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem degree_ne_zero_and_coheight (hp : IsAmb p) (hq : IsAmb q) (hg : g ≫ p = q)
     (hη : g (genericPoint Y) = genericPoint X) (w : Y)
@@ -140,19 +140,19 @@ variable {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsLocallyNoetherian X
 open Classical in
 
 /- English proof (translation)
-Distinguish the cases in `h : g.residueDegree (genericPoint Y) ≠ 0 ∧ Order.coheight z = 1`. Take `⟨i, hi⟩` from `exists_chart hB z`. Establish `H` using `GlobalTheory.T.sum_schemeOrd_pullback_residueDegree_codimOne k X Y p q hp hq g hg hη h.1 z h.2 (r i : X.functionField) (r i).ne_zero`. Establish `H2 : ∑ᶠ w ∈ g ⁻¹' {z}, (divOfRatSec (LB.isLB_pull hB g) (MultPull.isRatSec_pull_map g hη' hr)).mult w * (g.residueDegree w : ℤ) = (g.residueDegree (genericPoint Y) : ℤ) * (divOfRatSec hB hr).mult z`. Rewrite using `[mult_eq_chart hB hr z i hi, ← H]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `finsum_mem_congr rfl fun w hw => ?_` and prove the remaining obligations. Establish `hw' : g w = z` using `hw`. Rewrite using `[mult_pull_eq g hη' hB hr w i (by rw [hw']; exact hi)]`. Rewrite using `[← H2]`. Use `(finsum_mem_eq_sum_of_inter_support_eq _ ?_).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `w`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_singleton_iff, Finset.coe_filter, Set.Finite.mem_toFinset, Function.mem_support, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨left_ne_zero_of_mul h2, h1⟩, h2⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨-, h1⟩, h2⟩`. Conclude with `⟨h1, h2⟩`. Establish `hR : (g.residueDegree (genericPoint Y) : ℤ) * (divOfRatSec hB hr).mult z = 0`. Distinguish the cases in `hδ : g.residueDegree (genericPoint Y) = 0`. Rewrite using `[hδ, Nat.cast_zero, zero_mul]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : Order.coheight z ≠ 1` using `fun hz => h ⟨hδ, hz⟩`. Rewrite using `[show (divOfRatSec hB hr).mult z = 0 from`. Assume the negation of the conclusion as `fun h0 => hz (CartierDiv.coheight_eq_one_of_mult_ne_zero h0), mul_zero]`. Rewrite using `[hR]`. Use `Finset.sum_eq_zero fun w hw => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hwz : g w = z` using `(Finset.mem_filter.1 hw).2`. Assume the negation of the conclusion as `hne`. Establish `h1` using `left_ne_zero_of_mul hne`. Establish `h2 : g.residueDegree w ≠ 0` using `fun h0 => hne (by rw [h0, Nat.cast_zero, mul_zero])`. Take `⟨hδ, hc⟩` from `degree_ne_zero_and_coheight g hη' hB hr hp hq hg hη w h1 h2`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `h ⟨hδ, hwz ▸ hc⟩`.
+A detailed English derivation is pending.
 -/
 theorem fiber_sum (hp : IsAmb p) (hq : IsAmb q) (hg : g ≫ p = q)
     (hη : g (genericPoint Y) = genericPoint X) [CompactSpace Y] (z : X) :
@@ -200,17 +200,15 @@ end GlobalTheory.PushDiv
 namespace GlobalTheory.PushDiv
 
 /- English proof (translation)
-Introduce `k _ X Y _ _ _ _ p q hp hq g hg hη B hB r hr φ`. Use `haveI := hq.isNoetherian`. Use `haveI := hp.isNoetherian`. Use `set D' := divOfRatSec (LB.isLB_pull hB g) (MultPull.isRatSec_pull_map g (hη ▸ specializes_rfl : g (genericPoint Y) ⤳ genericPoint X) hr) with hD'`. Use `set D := divOfRatSec hB hr with hD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set S := D'.finite_support_mult.toFinset with hS`. Use `set T := S.image g ∪ D.finite_support_mult.toFinset with hT`. Establish `hL : ∑ᶠ w, (D'.mult w : ℝ) * ((g.residueDegree w : ℝ) * φ (g w)) = ∑ w ∈ S, (D'.mult w : ℝ) * ((g.residueDegree w : ℝ) * φ (g w))`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `w hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS, Set.Finite.coe_toFinset]`. Conclude with `fun h0 => hw (by simp only [h0, Int.cast_zero, zero_mul])`. Establish `hR : ∑ᶠ z, (D.mult z : ℝ) * φ z = ∑ z ∈ T, (D.mult z : ℝ) * φ z`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `z hz`.
+Prove the second alternative. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hT, Finset.coe_union, Set.Finite.coe_toFinset]`. Conclude with `Or.inr fun h0 => hz (by simp only [h0, Int.cast_zero, zero_mul])`. Rewrite using `[hL, hR, ← Finset.sum_fiberwise_of_maps_to (s := S) (t := T) (g := g) (fun w hw => Finset.mem_union_left _ (Finset.mem_image_of_mem g hw)), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Establish `hF` using `fiber_sum g (hη ▸ specializes_rfl : g (genericPoint Y) ⤳ genericPoint X) hB hr hp hq hg hη z`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Int.cast_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun w hw => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 hw).2]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ = (g.residueDegree (genericPoint Y) : ℝ) * ((D.mult z : ℝ) * φ z) := by`. Rewrite using `[hF]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem finsum_mult_pull : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] [IsLocallyNoetherian X] [IsLocallyNoetherian Y] (p : X ⟶ Sp k) (q : Y ⟶ Sp k), IsAmb p → IsAmb q → ∀ (g : Y ⟶ X) (hg : g ≫ p = q) (hη : g (genericPoint Y) = genericPoint X), ∀ (B : LB X) (hB : B.IsLB) (r : B.ι → X.functionFieldˣ) (hr : IsRatSec B r) (φ : X → ℝ), ∑ᶠ w, ((divOfRatSec (LB.isLB_pull hB g) (MultPull.isRatSec_pull_map g (hη ▸ specializes_rfl : g (genericPoint Y) ⤳ genericPoint X) hr)).mult w : ℝ) * ((g.residueDegree w : ℝ) * φ (g w)) = (g.residueDegree (genericPoint Y) : ℝ) * ∑ᶠ z, ((divOfRatSec hB hr).mult z : ℝ) * φ z := by
   intro k _ X Y _ _ _ _ p q hp hq g hg hη B hB r hr φ

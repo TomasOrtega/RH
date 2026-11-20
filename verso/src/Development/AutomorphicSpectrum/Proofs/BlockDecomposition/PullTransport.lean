@@ -14,7 +14,7 @@ namespace GlobalTheory.CompanionTheory.FirstChernComparison
 universe w w' u₁ v₁ u₂ v₂ u₃ v₃
 
 /- English proof (translation)
-Take `⟨c, hc, h, hp⟩` from `h`. Take `⟨hz, e⟩` from `pull_transport F F' m G x c hc h`. Conclude with `⟨_, hz, hP _ c (fun _ => rfl) hp, e⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pull_transport' {R : Type} [CommRing R] {Th : Type u₁} [Category.{v₁} Th] {Ec : Type u₂} [Category.{v₂} Ec]
     {C : Type u₃} [Category.{v₃} C]  (F : Th ⥤ ModuleCat.{w} R) (F' : Ec ⥤ ModuleCat.{w'} R) (m : CH.Mor F F' (RingHom.id R)) (G : C ⥤ Ec)
@@ -31,7 +31,7 @@ variable {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] {X : Scheme.{0}} {q : 
   {C : Type 1} [Category.{0} C] {G : C ⥤ El (PX q κ)} {D : E.LineData X} (k : Bool) (n : ℕ)
 
 /- English proof (translation)
-Establish `h` using `hx n C (gG k n G) (lam k n Λ)`. Conclude with `⟨_, h.choose, h.choose_spec, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem st1 (Λ : E.Lift G D) (x : ∀ n, Hc (schFn q) κ k n 2) (hx : IsFirstChernFamily q D κ k x) :
     ∃ (c : CH.Cn (gG k n G ⋙ OM _ ((PAlg.base l).cris n)) 2) (hz : CH.d _ 2 c = 0),
@@ -41,7 +41,7 @@ theorem st1 (Λ : E.Lift G D) (x : ∀ n, Hc (schFn q) κ k n 2) (hx : IsFirstCh
   exact ⟨_, h.choose, h.choose_spec, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[hy]`. Establish `h1 : (G.obj (s.obj (Fin.last 2))).1.obj.sharp (Λ.r s).val = 1` using `sharp_r Λ (s.map' 0 1) (s.map' 1 2) (s.map' 0 2) (by rw [← Functor.map_comp]; rfl)`. Conclude with `isLog_dlog k _ n _ h1 _ (lam_r k n Λ s)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem st2 (Λ : E.Lift G D) (s : ComposableArrows C 2) (y : (G.obj (s.obj (Fin.last 2))).1.obj.Acr n)
     (hy : y = dlog (DD k (G.obj (s.obj (Fin.last 2))).1.obj n) (l * n) ((lam k n Λ).r s).val) :
@@ -52,7 +52,7 @@ theorem st2 (Λ : E.Lift G D) (s : ComposableArrows C 2) (y : (G.obj (s.obj (Fin
   exact isLog_dlog k _ n _ h1 _ (lam_r k n Λ s)
 
 /- English proof (translation)
-The claim follows from `pull_transport' (Oc (schFn q) κ k n) (CH.modF (AcrEl ((schFn q).pt κ) n)) (βMor (schFn q) κ k n) G (x n) (st1 k n Λ x hx) (fun z => Λ.IsCoc n z) (fun z c hs hc s => st2 k n Λ s _ ((hs s).trans (congrArg _ (congrFun hc s))))`.
+A detailed English derivation is pending.
 -/
 theorem st3 (Λ : E.Lift G D) (x : ∀ n, Hc (schFn q) κ k n 2) (hx : IsFirstChernFamily q D κ k x) :
     ∃ (z : CH.Cn (G ⋙ CH.modF (AcrEl (PX q κ) n)) 2) (hz : CH.d _ 2 z = 0), Λ.IsCoc n z ∧
@@ -62,7 +62,7 @@ theorem st3 (Λ : E.Lift G D) (x : ∀ n, Hc (schFn q) κ k n 2) (hx : IsFirstCh
 end
 
 /- English proof (translation)
-Introduce `l _ O _ X q κ k D x hx C _ G Λ n`. Conclude with `st3 k n Λ x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime], FirstChernCompatible l := by
   intro l _ O _ X q κ k D x hx C _ G Λ n

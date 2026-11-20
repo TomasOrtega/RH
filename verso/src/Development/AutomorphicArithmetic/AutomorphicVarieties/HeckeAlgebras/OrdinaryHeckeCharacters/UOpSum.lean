@@ -2,23 +2,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeckeAlgebras.Cont
 open IsLocalRing Matrix UpperTheory.V.Hi
 
 /- English proof (translation)
-Introduce `G _ I A M _ _ _ π a ha`. Establish `hfin : Finite (I.N ⧸ (I.Nconj a).subgroupOf I.N)` using `Nat.finite_of_card_ne_zero (I.fin_N a ha)`. Use `letI : Fintype (I.N ⧸ (I.Nconj a).subgroupOf I.N) := Fintype.ofFinite _`. Establish `key : ∀ x y : I.N, (QuotientGroup.mk x : I.N ⧸ (I.Nconj a).subgroupOf I.N) = QuotientGroup.mk y ↔ (x : G)⁻¹ * y ∈ I.Nconj a`. Introduce `x y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using the standard rewrite rules. Use `⟨⟨Finset.univ.image (fun q : I.N ⧸ (I.Nconj a).subgroupOf I.N => ((q.out : I.N) : G)), ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `u hu`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hu`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `q.out.2`. Introduce `x hx`. Use `⟨((QuotientGroup.mk (⟨x, hx⟩ : I.N) : I.N ⧸ (I.Nconj a).subgroupOf I.N).out : I.N), ⟨Finset.mem_image.2 ⟨_, Finset.mem_univ _, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(key _ ⟨x, hx⟩).1 (QuotientGroup.out_eq' _)`. Introduce and unpack `u ⟨hu, hux⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hu`. Establish `h` using `(key q.out ⟨x, hx⟩).2 hux`. Rewrite `h` using `[QuotientGroup.out_eq']`. Rewrite using `[h]`. Introduce `s hs hu`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `i : ∀ u ∈ s, I.N ⧸ (I.Nconj a).subgroupOf I.N` to `fun u h => QuotientGroup.mk ⟨u, hs u h⟩`. Establish `inj : ∀ u₁ (h₁ : u₁ ∈ s) u₂ (h₂ : u₂ ∈ s), i u₁ h₁ = i u₂ h₂ → u₁ = u₂`. Introduce `u₁ h₁ u₂ h₂ h`. Establish `h'` using `(key ⟨u₁, hs _ h₁⟩ ⟨u₂, hs _ h₂⟩).1 h`. Conclude with `(hu u₂ (hs _ h₂)).unique ⟨h₁, h'⟩ ⟨h₂, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `surj : ∀ q ∈ (Finset.univ : Finset (I.N ⧸ (I.Nconj a).subgroupOf I.N)), ∃ u h, i u h = q`. Introduce `q _`. Take `⟨u, ⟨h, h'⟩, -⟩` from `hu q.out q.out.2`. Conclude with `⟨u, h, ((key ⟨u, hs u h⟩ q.out).2 h').trans (QuotientGroup.out_eq' q)⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.card_bij i (fun _ _ => Finset.mem_univ _) inj surj, Subgroup.relIndex, Subgroup.index, Nat.card_eq_fintype_card, Finset.card_univ]`. Introduce `v hv`. Rewrite using `[Iwa.uOp, finsum_eq_sum_of_fintype, LinearMap.sum_apply]`. Use `(Finset.sum_bij i (fun _ _ => Finset.mem_univ _) inj surj ?_).symm` and prove the remaining obligations. Introduce `u h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h'` using `(key ⟨u, hs u h⟩ (i u h).out).1 (QuotientGroup.out_eq' _).symm`. Take `⟨n, hn, e⟩` from `Subgroup.mem_map.1 h'`. Establish `e' : (((i u h).out : I.N) : G) * a = u * a * n`. Establish `e2 : a * n * a⁻¹ = u⁻¹ * (((i u h).out : I.N) : G)` using `e`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[e', map_mul π (u * a) n, Module.End.mul_apply, hv n hn]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.uOpSum :
     ∀ (G : Type) [Group G] (I : Iwa G) (A M : Type) [CommRing A] [AddCommGroup M] [Module A M] (π : Representation A G M) (a : G), a ∈ I.P → (∃ s : Finset G, (∀ u ∈ s, u ∈ I.N) ∧ ∀ x ∈ I.N, ∃! u, u ∈ s ∧ u⁻¹ * x ∈ I.Nconj a) ∧ ∀ s : Finset G, (∀ u ∈ s, u ∈ I.N) → (∀ x ∈ I.N, ∃! u, u ∈ s ∧ u⁻¹ * x ∈ I.Nconj a) → s.card = (I.Nconj a).relIndex I.N ∧ ∀ v ∈ fixd π I.N, I.uOp π a v = ∑ u ∈ s, π (u * a) v := by

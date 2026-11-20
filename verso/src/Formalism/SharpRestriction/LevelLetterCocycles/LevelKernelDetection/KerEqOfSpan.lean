@@ -12,39 +12,35 @@ abbrev GrQ {LL D : Type} [Field LL] [AddCommGroup D] [Module LL D] (F : ℤ → 
     ((Submodule.pi Set.univ fun k : ℤ => F (1 - k)).comap (Submodule.pi Set.univ fun k : ℤ => F (-k)).subtype)
 
 /- English proof (translation)
-Take `⟨hanti, ⟨lo, hlo⟩, ⟨b, hb⟩⟩` from `hF`. Use `set a : ℤ := min lo (b - 1) with ha_def`. Establish `hab : a < b` using `by omega`. Establish `htop : ∀ i, i ≤ a → F i = ⊤` using `fun i hi => top_unique (hlo ▸ hanti (le_trans hi (min_le_left _ _)))`. Establish `hbot : ∀ i, b ≤ i → F i = ⊥` using `fun i hi => eq_bot_iff.2 (hb ▸ hanti hi)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set N : ℕ := (b - a).toNat with hN`. Set `S : Finset ℤ` to `(Finset.range N).image fun j : ℕ => 1 - b + j`. Establish `hmemS : ∀ k : ℤ, k ∈ S ↔ 1 - b ≤ k ∧ k ≤ -a`. Introduce `k`. Simplify using `only [S, Finset.mem_image, Finset.mem_range]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj, rfl⟩`. Use linear arithmetic over natural numbers and integers. Introduce `h; exact ⟨(k - (1 - b)).toNat, by omega, by omega⟩`. Set `P0` to `Submodule.pi Set.univ fun k : ℤ => F (-k)`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `P1` to `Submodule.pi Set.univ fun k : ℤ => F (1 - k)`. Establish `memP0 : ∀ (x : P0) (k : ℤ), (x : ℤ → D) k ∈ F (-k)` using `fun x k => (Submodule.mem_pi.1 x.2) k (Set.mem_univ _)`. Set `Qk : ℤ → Type` to `fun k => ↥(F (-k)) ⧸ (F (1 - k)).comap (F (-k)).subtype`. Set `φ : P0 →ₗ[LL] ∀ k : S, Qk k` to `LinearMap.pi fun k => (Submodule.mkQ _) ∘ₗ ((LinearMap.proj (R := LL) (φ := fun _ : ℤ => D) (k : ℤ)) ∘ₗ P0.subtype).codRestrict (F (-(k : ℤ))) (fun x => memP0 x (k : ℤ))`. Establish `hφ : ∀ (x : P0) (k : S), φ x k = (Submodule.Quotient.mk (⟨(x : ℤ → D) k, memP0 x k⟩ : ↥(F (-(k : ℤ)))) : Qk k)` using `fun x k => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hker : LinearMap.ker φ = P1.comap P0.subtype`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, Submodule.mem_comap, Submodule.subtype_apply, Submodule.mem_pi]`. Prove the components needed by the constructor for the conclusion. Introduce `hx k _ show (x : ℤ → D) k ∈ F (1 - k)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hk : k ∈ S`. Use `congrFun hx ⟨k, hk⟩` as an intermediate fact. Rewrite `this` using `[hφ, Pi.zero_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`. Conclude with `this`. Rewrite `hk` using `[hmemS]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `not_and_or.1 hk with h | h` into its components or cases. Establish `h0 : (x : ℤ → D) k ∈ F (-k)` using `memP0 x k`. Rewrite `h0` using `[hbot (-k) (by omega)]`. Rewrite using `[(Submodule.mem_bot LL).1 h0]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[htop (1 - k) (by omega)]`. Conclude with `Submodule.mem_top`. Introduce `hx`. Use function extensionality and compare the values at `k`. Rewrite using `[hφ, Pi.zero_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx (k : ℤ) (Set.mem_univ _)`. Establish `hsurj : Function.Surjective φ`. Introduce `y`. Establish `hy : ∀ k : S, ∃ z : ↥(F (-(k : ℤ))), (Submodule.Quotient.mk z : Qk k) = y k` using `fun k => Submodule.Quotient.mk_surjective _ (y k)`. Use `choose z hz using hy`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨⟨fun k => if h : k ∈ S then (z ⟨k, h⟩ : D) else 0, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.mem_pi]`. Introduce `k _`. Distinguish the cases in `h : k ∈ S`. Simplify using `only [dif_pos h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Conclude with `(z ⟨k, h⟩).2`. Simplify using `only [dif_neg h]`. Conclude with `Submodule.zero_mem _`. Use function extensionality and compare the values at `k`. Rewrite using `[hφ, ← hz k]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[k.2]`. Set `e : GrQ F ≃ₗ[LL] ∀ k : S, Qk k` to `(Submodule.quotEquivOfEq _ _ hker.symm).trans (φ.quotKerEquivOfSurjective hsurj)`. Establish `hFD : FiniteDimensional LL (GrQ F)` using `LinearEquiv.finiteDimensional e.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hFD, ?_⟩` and prove the remaining obligations. Establish `hle : ∀ k : ℤ, F (1 - k) ≤ F (-k)` using `fun k => hanti (by omega)`. Establish `hQk : ∀ k : ℤ, (Module.finrank LL (Qk k) : ℤ) = (Module.finrank LL (F (-k)) : ℤ) - Module.finrank LL (F (1 - k))`. Introduce `k`. Establish `h1` using `Submodule.finrank_quotient_add_finrank ((F (1 - k)).comap (F (-k)).subtype)`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Module.finrank LL ((F (1 - k)).comap (F (-k)).subtype) = Module.finrank LL (F (1 - k))` using `(Submodule.comapSubtypeEquivOfLe (hle k)).finrank_eq`. Simplify using `only [Qk]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e.finrank_eq, Module.finrank_pi_fintype]`. Establish `hsum : ((∑ k : S, Module.finrank LL (Qk k) : ℕ) : ℤ) = Module.finrank LL D`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Rewrite using `[Finset.sum_coe_sort S (fun k => (Module.finrank LL (Qk k) : ℤ))]`. Simplify using `only [S]`. Rewrite using `[Finset.sum_image (fun i _ j _ h => by exact_mod_cast (add_left_cancel h : ((i : ℤ)) = j))]`. Simplify using `only [hQk]`.
-
-Establish `hrw : ∀ j : ℕ, ((Module.finrank LL (F (-(1 - b + (j : ℤ)))) : ℤ) - Module.finrank LL (F (1 - (1 - b + (j : ℤ))))) = (Module.finrank LL (F (b - ((j + 1 : ℕ) : ℤ))) : ℤ) - Module.finrank LL (F (b - ((j : ℕ) : ℤ)))`. Introduce `j`. Rewrite using `[show -(1 - b + (j : ℤ)) = b - ((j + 1 : ℕ) : ℤ) by push_cast; ring, show 1 - (1 - b + (j : ℤ)) = b - ((j : ℕ) : ℤ) by ring]`. Simplify using `only [hrw]`. Rewrite using `[Finset.sum_range_sub (fun j : ℕ => (Module.finrank LL (F (b - (j : ℤ))) : ℤ)) N]`.
-
-Establish `h1 : b - ((N : ℕ) : ℤ) = a` using `by omega`. Rewrite using `[h1, Nat.cast_zero, sub_zero, htop a le_rfl, hbot b le_rfl, finrank_top, finrank_bot]`. Both sides reduce to the same expression. Conclude with `hsum` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finrank_grQ {LL D : Type} [Field LL] [AddCommGroup D] [Module LL D] [FiniteDimensional LL D]
     (F : ℤ → Submodule LL D) (hF : IsFilt F) :

@@ -21,23 +21,21 @@ noncomputable section
 namespace GlobalTheory.GSep.TorTrans
 
 /- English proof (translation)
-Take `⟨hL, -, -, h4, h5⟩` from `GlobalTheory.firstFiveLaws`. Use `haveI := hR.1`. Take `⟨W, _, _, _, φ, hW, hφ, hc⟩` from `GlobalTheory.PrimeUnif.exists_cdvr R (maximalIdeal R)`. Establish `hloc : IsLocalHom φ` using `⟨fun r hr => by`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: r ∈ (maximalIdeal W).comap φ` using `hc.symm ▸ (mem_maximalIdeal r).2 h`. Conclude with `(mem_maximalIdeal _).1 this hr⟩`. Use `hW.1` as an intermediate fact. Establish `hW' : AdmBase W (maximalIdeal W)` using `⟨inferInstance, inferInstance, inferInstance, hW.2.1⟩`. Take `⟨D', hD, A', U', hP⟩` from `GlobalTheory.UT.EndBaseChange.exists_pull hL.polBaseChange h4.unifBaseChange h5.psiOnExists hR hW' φ hφ (Ideal.map_le_iff_le_comap.2 hc.ge) hG U`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hinj : Function.Injective ((algebraMap W (FractionRing W)).comp φ)` using `(IsFractionRing.injective W _).comp hφ`. Set `ga : FractionRing R →+* FractionRing W` to `IsFractionRing.lift hinj`. Establish `hga : ∀ r, ga (algebraMap R _ r) = algebraMap W _ (φ r)` using `fun r => IsFractionRing.lift_algebraMap hinj r`. Establish `hsq : jK W ≫ spMap φ = spMap ga ≫ jK R`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Use `ext1`. Conclude with `RingHom.ext fun r => (hga r).symm`. Establish `g₁` using `GlobalTheory.ThetaBaseChange.grp_generic U.toUnifPre`. Establish `g₂` using `((GlobalTheory.ThetaBaseChange.grp_generic U'.toUnifPre).comp (isGrpPullback_pullback G (spMap φ))).congr hsq rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `a : A'.A.left ⟶ A.A.left` to `g₁.1.lift _ (A'.A.hom ≫ spMap ga) (g₂.1.w.trans (Category.assoc _ _ _).symm)`. Establish `ha : a ≫ U.gen.inv.left ≫ pullback.fst G.hom (jK R) = _` using `g₁.1.lift_fst _ _ _`. Establish `hb : (Iso.refl ((Over.pullback (specOf φ)).obj G)).hom.left ≫ pullback.fst G.hom (specOf φ) = pullback.fst G.hom (specOf φ)` using `Category.id_comp _`. Establish `gp : IsGrpPullback A'.A A.A (spMap ga) a` using `g₁.cancel (g₂.congr rfl ha.symm) (g₁.1.lift_snd _ _ _)`. Use `letI : Algebra (FractionRing R) (AlgebraicClosure (FractionRing W)) := ((algebraMap (FractionRing W) (AlgebraicClosure (FractionRing W))).comp ga).toAlgebra`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨em⟩ : Nonempty (AlgebraicClosure (FractionRing R) →ₐ[FractionRing R] AlgebraicClosure (FractionRing W))` from `⟨IsAlgClosed.lift⟩`. Establish `hF : GlobalTheory.ArcPull.Compat φ (AlgebraicClosure (FractionRing W))` using `fun r => congrArg (algebraMap (FractionRing W) (AlgebraicClosure (FractionRing W))) (hga r)`. Use `⟨W, _, _, hW.1, hW.2.2, φ, ga, D', A', _, _, _, U', a, hD.xe, em.toRingHom, hW.2.1, hloc, hga, IsSemiAbelian.pullback _ G hG, gp, ?_, em.comp_algebraMap, fun k hk p x hpx => ?_⟩` and prove the remaining obligations. Establish `hgi : U.gen.inv.left ≫ U.gen.hom.left = 𝟙 _` using `by rw [← Over.comp_left, Iso.inv_hom_id, Over.id_left]`. Establish `hgi' : U'.gen.inv.left ≫ U'.gen.hom.left = 𝟙 _` using `by rw [← Over.comp_left, Iso.inv_hom_id, Over.id_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `H₀ : LBIso A.L (U.LG.L.pull (U.gen.inv.left ≫ pullback.fst G.hom (jK R)))` using `LBIso.chartPull (h := U.gen.inv.left) (chartPullSec A.L _ _ hgi) (chartPullSame U.LG.L _ (fun _ => pullback.fst G.hom (jK R)) _ _ fun _ => rfl) U.ext`. Establish `H₁ : LBIso A'.L (U'.LG.L.pull (U'.gen.inv.left ≫ pullback.fst _ (jK W)))` using `LBIso.chartPull (h := U'.gen.inv.left) (chartPullSec A'.L _ _ hgi') (chartPullSame U'.LG.L _ (fun _ => pullback.fst _ (jK W)) _ _ fun _ => rfl) U'.ext`. Establish `H₂ : LBIso (U'.LG.L.pull (U'.gen.inv.left ≫ pullback.fst _ (jK W))) (U.LG.L.pull (a ≫ U.gen.inv.left ≫ pullback.fst G.hom (jK R)))` using `LBIso.chartPull (Geo.Tor.chartPullPull _ _ _ rfl) (chartPullSame U.LG.L _ (fun _ => _) _ _ fun _ => ha.trans (congrArg (_ ≫ ·) hb.symm)) ⟨hP.lg.choose, hP.lg.choose_spec.1⟩`. Establish `H₃ : LBIso (A.L.pull a) (U.LG.L.pull (a ≫ U.gen.inv.left ≫ pullback.fst G.hom (jK R)))` using `LBIso.chartPull (Geo.Tor.chartPullPull _ _ _ rfl) (chartPullSame U.LG.L _ (fun _ => _) _ _ fun _ => rfl) H₀`. Conclude with `(H₁.trans A'.isLB (pull_isLB U'.LG.isLB _) (pull_isLB U.LG.isLB _) H₂).trans A'.isLB (pull_isLB U.LG.isLB _) (pull_isLB A.isLB _) H₃.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨⟨p₁, h₁⟩, hx, hgal⟩` from `GlobalTheory.UT.ClModel.galois_all R _ hR D A G hG U _ _ em k hk p`. Take `⟨x₁, hx₁⟩` from `hx x`. Establish `hw : x₁.left ≫ A.A.hom = jFK (R` using `W) (AlgebraicClosure (FractionRing W)) ≫ spMap ga := (Over.w x₁).trans (Spec.map_comp (CommRingCat.ofHom ga) (CommRingCat.ofHom (algebraMap _ _)))`. Set `x' : TFK (R` to `W) (AlgebraicClosure (FractionRing W)) ⟶ A'.A := Over.homMk (gp.1.lift x₁.left _ hw) (gp.1.lift_snd _ _ _)`. Establish `h₄ : x'.left ≫ a = x₁.left` using `gp.1.lift_fst _ _ _`.
-
-Take `⟨h₂, h₃⟩` from `(GlobalTheory.ArcPull.eq_pullQk_iff hD hL.globalFns hF D.tau_bimult D'.tau_bimult p₁ _).1 rfl`. Use `⟨_, x', h₂.trans (congrArg _ h₁.1), ?_, h₄.trans hx₁⟩` and prove the remaining obligations. Use `h5.qkBaseChange R W _ _ hR hW' φ D A G U _ (Iso.refl _) (by show IsMonHom (𝟙 _); infer_instance) A' D' hD U' hP _ hF k hk p₁ x₁ _ x' h₂ h₃ ?_ ((hgal p₁ x x₁ h₁ hx₁).1 hpx)` and prove the remaining obligations. Rewrite using `[← h₄, Category.assoc, ha, hb, Category.assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_trait_pull {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [CharZero R]
     (hR : AdmBase R (maximalIdeal R)) {D : DegData R (maximalIdeal R)} {A : PolAV (Sp (FractionRing R))}
@@ -118,27 +116,25 @@ theorem exists_trait_pull {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R] [
     rw [← h₄, Category.assoc, ha, hb, Category.assoc]
 
 /- English proof (translation)
-Use `haveI : CharZero V := 𝔪.cn.2.2.2`. Use `haveI := 𝔪.loc`. Establish `hA : AdmBase V (maximalIdeal V)` using `⟨𝔪.cn.1, inferInstance, 𝔪.cn.2.1, 𝔪.cn.2.2.1⟩`. Establish `hk : 1 ≤ X₁.S.r * X₁.S.N`. Use `X₁.S.r_pos` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `X₁.S.N_ge` as an intermediate fact. Conclude with `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega))`. Take `⟨T, _, _, _, _, φ, ga, D', A', G', _, _, U', α, xe, em, hc, hloc, hga, hG', gp, lb, hem, hmove⟩` from `exists_trait_pull hA 𝔪.semi 𝔪.U`. Set `ξ : Sp V ⟶ X₁.M.Z` to `spMap ev ≫ X₁.M.Z.fromSpecStalk z₁`. Establish `hx : ξ (closedPoint V) = z₁` using `by show X₁.M.Z.fromSpecStalk z₁ (spMap ev (closedPoint V)) = z₁`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show spMap ev (closedPoint V) = closedPoint _ from IsLocalRing.comap_closedPoint ev]`. Conclude with `Scheme.fromSpecStalk_closedPoint`. Establish `hU : IsUnit ((X₁.S.r * X₁.S.N : ℕ) : T)`. Use `(X₁.S.unit.map (Spec.preimage (ξ ≫ X₁.M.s)).hom).map φ` as an intermediate fact. Rewrite `this` using `[map_natCast, map_natCast]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : CharZero (FractionRing T) := charZero_of_injective_algebraMap (IsFractionRing.injective T (FractionRing T))`. Establish `cart : IsGrpPullback A'.A X₁.ρ.P.A (spMap (ga.comp 𝔪.yK)) (α ≫ 𝔪.φ)` using `(gp.comp 𝔪.cart).congr (Spec.map_comp (CommRingCat.ofHom 𝔪.yK) (CommRingCat.ofHom ga)).symm rfl`. Establish `lb' : LBIso A'.L (X₁.ρ.P.L.pull (α ≫ 𝔪.φ))` using `LBIso.trans A'.isLB (pull_isLB 𝔪.A.isLB _) (pull_isLB X₁.ρ.P.isLB _) lb (lbIso_pull_comp ⟨𝔪.wl, 𝔪.wl_gen⟩ α)`. Take `⟨s, v, hs, hsv, -, hcl⟩` from `GlobalTheory.Poinc.ScaleAtModel.scale_at_model _ _ X₁.S X₁.ρ T hc hU (ga.comp 𝔪.yK) A' _ cart lb' G' hG' D' U' (GlobalTheory.ThetaGeneric.exists_th_ne_zero GlobalTheory.firstFiveLaws.1 GlobalTheory.firstFiveLaws.2.1 _ _ _ X₁.ρ _ _)`. Establish `tr : ∀ a mu, 𝔪.YY a mu → (IsUnit (v a) → ∃ w, mu = (X₁.S.r * X₁.S.N) • w) ∧ ((∃ w, mu = (X₁.S.r * X₁.S.N) • w) → ∃ b : X₁.S.Gam, X₁.ρ.n • b = 0 ∧ IsUnit (v (a + b)))`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `a mu ⟨p, x, hp, hq, hxa⟩`. Take `⟨p', x', hp', hq', hx'⟩` from `hmove _ hk p x hq`. Take `⟨h₁, h₂⟩` from `hcl a p' x' hq' (by`. Rewrite using `[← Category.assoc, hx', Category.assoc, hxa, ← Category.assoc, ← RingHom.comp_assoc, ← hem, RingHom.comp_assoc]`. Conclude with `congrArg (· ≫ _) (Spec.map_comp (CommRingCat.ofHom _) (CommRingCat.ofHom em)).symm)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hp'` using `[hp]`. Use `⟨fun h => ?_, fun ⟨w, hw⟩ => h₂ ⟨xe.symm (𝔪.e₈ w), by rw [hp', hw, map_nsmul, map_nsmul]⟩⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `h₁ h`. Use `⟨𝔪.e₈.symm (xe z), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_nsmul, ← map_nsmul, ← hz, hp', AddEquiv.apply_symm_apply, AddEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsp : ∀ w, (jK V ≫ ξ) w ⤳ (jK V ≫ ξ) (closedPoint (FractionRing V))` using `fun w => by`. Rewrite using `[Subsingleton.elim w (closedPoint (FractionRing V))]`. Establish `hsx : ξ (closedPoint V) ⤳ z₁` using `hx ▸ specializes_rfl`. Set `wv : X₁.S.Gam → V` to `fun b => RatModel.valLoc ξ z₁ hsx ⟨X₁.S.th b / X₁.S.th x₀, hx₀.2 b⟩`. Establish `hw : ∀ b, φ (wv b) * v x₀ = v b` using `fun b => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : X₁.M.val (jK V ≫ ξ) (X₁.S.th b / X₁.S.th x₀) = algebraMap V (FractionRing V) (wv b)` using `RatModel.val_spMap_comp (algebraMap V (FractionRing V)) ξ hsx ⟨X₁.S.th b / X₁.S.th x₀, hx₀.2 b⟩`. Establish `e2` using `RatModel.val_mul hsp (RatModel.O_le_of_specializes (hx ▸ (IsLocalRing.specializes_closedPoint (jK V (closedPoint (FractionRing V)))).map ξ.continuous) (hx₀.2 b)) (𝔪.reg _ (X₁.S.th_mem x₀))`. Rewrite `e2` using `[div_mul_cancel₀ _ hx₀.1, e1]`. Establish `e3 : 𝔪.yK ⟨X₁.S.th b, X₁.S.th_mem b⟩ = algebraMap V (FractionRing V) (wv b) * 𝔪.yK ⟨X₁.S.th x₀, X₁.S.th_mem x₀⟩`. Rewrite using `[𝔪.yK_eq, 𝔪.yK_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e2`. Establish `e4` using `congrArg ga e3`. Rewrite `e4` using `[map_mul, hga]`. Establish `e5` using `hsv b`. Establish `e6` using `hsv x₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `e5`, `e6` using `[RingHom.comp_apply]`. Rewrite `e4` using `[e5, e6, ← _root_.mul_assoc, mul_comm _ s, _root_.mul_assoc, ← map_mul]`. Conclude with `IsFractionRing.injective T (FractionRing T) (mul_left_cancel₀ hs e4).symm`. Take `⟨b₀, -, hb₀⟩` from `(tr a₀ 0 ha₀).2 ⟨0, (nsmul_zero _).symm⟩`. Establish `hv0 : IsUnit (v x₀)` using `isUnit_of_mul_isUnit_right (show IsUnit (φ (wv (a₀ + b₀)) * v x₀) by rw [hw]; exact hb₀)`.
-
-Establish `hset : ∀ b, b ∈ X₁.S.supI X₁.M z₁ ↔ IsUnit (v b)` using `fun b => by show X₁.M.Div X₁.S.th b z₁ ↔ IsUnit (v b)`. Rewrite using `[hx₀.div_iff_isUnit b, ← RatModel.isUnit_valLoc_iff ξ hx, ← hw b, IsUnit.mul_iff, and_iff_left hv0, isUnit_map_iff φ]`. Simplify using `only [hset]`. Conclude with `tr a mu ha`.
+A detailed English derivation is pending.
 -/
 theorem div_and_translate {I : Type} {X₁ : GlobalTheory.GSep.GSet} {z₁ : X₁.M.Z} {act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)} {V : Type}
     [CommRing V] [IsDomain V] [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V} {X : Type} [AddCommGroup X]
@@ -211,7 +207,7 @@ theorem div_and_translate {I : Type} {X₁ : GlobalTheory.GSep.GSet} {z₁ : X�
   exact tr a mu ha
 
 /- English proof (translation)
-Introduce `I X₁ z₁ act V _ _ _ ev X _ t δ 𝔪 x₀ hx₀ a ha`. Conclude with `(div_and_translate 𝔪 hx₀ a ha a 0 ha).2 ⟨0, (nsmul_zero _).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_translate_mem_supI : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (t : X → V) (δ : I → X → X) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev X t δ) (x₀ : X₁.S.Gam), X₁.M.Div X₁.S.th x₀ z₁ → ∀ a, 𝔪.YY a 0 → ∃ b : X₁.S.Gam, X₁.ρ.n • b = 0 ∧ a + b ∈ X₁.S.supI X₁.M z₁ := by
   intro I X₁ z₁ act V _ _ _ ev X _ t δ 𝔪 x₀ hx₀ a ha

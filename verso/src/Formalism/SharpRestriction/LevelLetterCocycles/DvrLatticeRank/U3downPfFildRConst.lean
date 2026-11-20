@@ -15,21 +15,21 @@ section Series
 open PowerSeries
 
 /- English proof (translation)
-Use `set D := A - C x₀ * e ^ h with hD`. Establish `hXD : X ^ (h + m) ∣ D`. Rewrite using `[X_pow_dvd_iff]`. Introduce `i hi`. Rewrite using `[hD, map_sub, coeff_C_mul, hA i hi, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨D₁, hD₁⟩` from `hXD`. Establish `hA' : A = C x₀ * e ^ h + X ^ (h + m) * D₁` using `by rw [← hD₁, hD]; ring`. Establish `hR : rescale u (e ^ h) = X ^ h * (C (u ^ h) * (rescale u e₁) ^ h)`. Rewrite using `[map_pow, he, map_mul, rescale_X, mul_pow, mul_pow]`. Simplify using `only [map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hRC : rescale u (C x₀) = C x₀`. Use extensionality with `k`. Rewrite using `[coeff_rescale, coeff_C]`. Use `split_ifs with hk`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `hresc : rescale u A = C x₀ * rescale u (e ^ h) + X ^ (h + m) * (C (u ^ (h + m)) * rescale u D₁)`. Rewrite using `[hA', map_add, map_mul, map_mul, hRC, map_pow (rescale u) X (h + m), rescale_X, mul_pow]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [map_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : X ^ h * (C (u ^ h) * (rescale u e₁) ^ h * P * G) = X ^ h * (X ^ (h + m) * (e₁ ^ h * C (u ^ (h + m)) * rescale u D₁ - C (u ^ h) * (rescale u e₁) ^ h * D₁))`. Establish `h1` using `hrel`. Rewrite `h1` using `[hresc, hA', hR, he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `h1` using `[mul_pow]`. Take the linear combination `h1`. Establish `hX : (X : PowerSeries LL) ^ h ≠ 0` using `pow_ne_zero _ X_ne_zero`. Establish `key2` using `mul_left_cancel₀ hX key`. Establish `hV : IsUnit (C (u ^ h) * (rescale u e₁) ^ h * P)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[isUnit_iff_constantCoeff]`. Simplify using `only [map_mul, map_pow, constantCoeff_C]`. Establish `: constantCoeff (rescale u e₁) = constantCoeff e₁`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_rescale, pow_zero, one_mul, coeff_zero_eq_constantCoeff_apply]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mul_ne_zero (mul_ne_zero (pow_ne_zero _ hu) (pow_ne_zero _ he₁)) hP).isUnit`. Establish `hdvd : X ^ (h + m) ∣ C (u ^ h) * (rescale u e₁) ^ h * P * G` using `⟨_, key2⟩`. Establish `hG : X ^ (h + m) ∣ G` using `(hV.dvd_mul_left).1 hdvd`. Conclude with `(X_pow_dvd_iff.1 hG)`.
+A detailed English derivation is pending.
 -/
 theorem u3downPf_series {LL : Type} [Field LL] (e e₁ P G A : PowerSeries LL) (u x₀ : LL) (h m : ℕ)
     (he : e = X * e₁) (he₁ : constantCoeff e₁ ≠ 0) (hP : constantCoeff P ≠ 0) (hu : u ≠ 0)
@@ -86,11 +86,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ d : ℕ, FildR PD T.ρ τ (m - d) = FildR PD T.ρ τ m`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hn : ¬ IsJumpV PD T.ρ τ (m - ((d + 1 : ℕ) : ℤ))` using `fun hJ => by have := hj _ hJ; omega`. Establish `hn' : FildR PD T.ρ τ (m - ((d + 1 : ℕ) : ℤ) + 1) = FildR PD T.ρ τ (m - ((d + 1 : ℕ) : ℤ))`. Assume the negation of the conclusion as `hc`. Conclude with `hn hc`. Rewrite using `[← hn', show m - ((d + 1 : ℕ) : ℤ) + 1 = m - (d : ℤ) by push_cast; ring, ih]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Use `key (m - a).toNat` as an intermediate fact. Rewrite `this` using `[show m - ((m - a).toNat : ℤ) = a by omega]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem u3downPf_fildR_const (T : LocLat G Qp LL O) (τ : K →ₐ[Qp] LL) (m : ℤ)
     (hj : ∀ a, IsJumpV PD T.ρ τ a → m ≤ a) : ∀ a ≤ m, FildR PD T.ρ τ a = FildR PD T.ρ τ m := by
@@ -108,9 +108,9 @@ theorem u3downPf_fildR_const (T : LocLat G Qp LL O) (τ : K →ₐ[Qp] LL) (m : 
   rwa [show m - ((m - a).toNat : ℤ) = a by omega] at this
 
 /- English proof (translation)
-Establish `hc : Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T τ a = Formalism.MainNotions.DeltaInvariantLattices.FilC (PD := PD) T τ m := by`. Unfold `Formalism.MainNotions.DeltaInvariantLattices.FilC`. Rewrite using `[u3downPf_fildR_const T τ m hj a ha]`. Rewrite using `[hc]`. Break down `le_total k m with hkm | hkm` into its components or cases.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hk : Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T τ k = Formalism.MainNotions.DeltaInvariantLattices.FilC (PD := PD) T τ m := by`. Unfold `Formalism.MainNotions.DeltaInvariantLattices.FilC`. Rewrite using `[u3downPf_fildR_const T τ m hj k hkm]`. Rewrite using `[← hk]` and apply the resulting hypothesis. Conclude with `u3upPf_FilC_anti T τ hkm hz`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem u3downPf_filC_low (T : LocLat G Qp LL O) (τ : K →ₐ[Qp] LL) (m : ℤ)
     (hj : ∀ a, IsJumpV PD T.ρ τ a → m ≤ a) {a k : ℤ} (ha : a ≤ m) {z : T.V ⊗[Qp] BdR}
@@ -140,37 +140,33 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Take `⟨a, ha, hea, hΛ, -, hdn, g, hg, hγ⟩` from `hf`. Establish `hΛu : IsUnit (algebraMap (LetA O n) W.EE (Eπ ^ h'))` using `by rw [map_pow]; exact hEu.pow _`. Establish `hef : algebraMap (LetA O n) W.EE (letE c) * f = f`. Apply `hΛu.mul_left_cancel` to reduce the goal to its premises. Rewrite using `[← mul_assoc, mul_comm (algebraMap (LetA O n) W.EE (Eπ ^ h')), mul_assoc, hΛ, ← map_mul, hea]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hγe : W.γE W.gamK (algebraMap (LetA O n) W.EE (letE c)) = algebraMap (LetA O n) W.EE (letE c)`. Rewrite using `[show W.γE W.gamK (algebraMap (LetA O n) W.EE (letE c)) = algebraMap (LetA O n) W.EE (W.γA W.gamK (letE c)) from W.γE_ext _ _, Formalism.MainNotions.LiftingTheory.wmap_γA_letE]`. Establish `hegf : algebraMap (LetA O n) W.EE (letE c) * (W.γE W.gamK f - f) = W.γE W.gamK f - f`. Rewrite using `[mul_sub, hef]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `conv_rhs => rw [← hef]`. Rewrite using `[map_mul, hγe]`. Establish `heg : (letE c : LetA O n) * g = g`. Apply `W.EE_inj` to reduce the goal to its premises. Apply `hπu.mul_left_cancel` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = algebraMap (LetA O n) W.EE (letE c) * (algebraMap (LetA O n) W.EE (Eπ ^ h') * (W.γE W.gamK f - f)) := by`. Rewrite using `[hγ]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `_ = algebraMap (LetA O n) W.EE (Eπ ^ h') * (algebraMap (LetA O n) W.EE (letE c) * (W.γE W.gamK f - f)) := by`. Expand and normalize the polynomial expressions, which then agree. Use `_ = algebraMap (LetA O n) W.EE π' * algebraMap (LetA O n) W.EE g := by rw [hegf, hγ, map_mul]`. Establish `hA : W.γA W.gamK (Eπ ^ h') * (π' * g) = Eπ ^ h' * W.γA W.gamK a - W.γA W.gamK (Eπ ^ h') * a`. Apply `W.EE_inj` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : algebraMap (LetA O n) W.EE (W.γA W.gamK a) = W.γE W.gamK (algebraMap (LetA O n) W.EE (Eπ ^ h')) * W.γE W.gamK f`. Rewrite using `[← map_mul, hΛ]`. Conclude with `(W.γE_ext _ _).symm`. Establish `h2 : algebraMap (LetA O n) W.EE (W.γA W.gamK (Eπ ^ h')) = W.γE W.gamK (algebraMap (LetA O n) W.EE (Eπ ^ h'))` using `(W.γE_ext _ _).symm`. Establish `hγ' : algebraMap (LetA O n) W.EE π' * algebraMap (LetA O n) W.EE g = algebraMap (LetA O n) W.EE (Eπ ^ h') * (W.γE W.gamK f - f)` using `by rw [← map_mul, hγ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_mul, map_sub]`. Rewrite using `[h1, h2, hγ', ← hΛ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hG0 : ∀ τ ζ, Pt c ζ τ → ∀ k < h' + (b τ + S), PowerSeries.coeff k (W.lev c ζ g) = 0`. Introduce `τ ζ hpt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨e₁, he, he₁⟩` from `hE τ ζ hpt`. Take `⟨u, hu, hu2⟩` from `hΓ τ ζ hpt`. Take `⟨x₀, hx₀⟩` from `hdn τ ζ hpt (hdown τ ζ hpt)`. Establish `hl` using `congrArg (W.lev c ζ) hA`. Simplify using `only [map_mul, map_sub] at hl`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite `hl` using `[hu2, hu2, map_pow]`. Use `u3downPf_series (W.lev c ζ Eπ) e₁ (W.lev c ζ π') (W.lev c ζ g) (W.lev c ζ a) u x₀ h' (b τ + S) he he₁ (hP τ ζ hpt) hu (by linear_combination hl) (fun i hi => ?_)` and prove the remaining obligations. Rewrite using `[hx₀ i (by omega), map_pow]`. Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Unfold `LamLA`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Submodule.mem_comap, LinearMap.mem_range]`. Use `⟨⟨a, ha⟩ ⊗ₜ ⟨mkL W T π' c x hx, Submodule.mem_top⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [toLA, smulLA, TensorProduct.map_tmul, LinearMap.comp_apply, LinearMap.mulLeft_apply, LinearMap.id_apply, Submodule.subtype_apply]`. Rewrite using `[hΛ]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show algebraMap (LetA O n) W.EE ((letE c : LetA O n) * a) = _`. Rewrite using `[hea]`. Rewrite using `[Submodule.mem_comap]`. Establish `hsub : (γLA W T π' c - LinearMap.id : LA W T π' c →ₗ[O] LA W T π' c) (f ⊗ₜ mkL W T π' c x hx) = (W.γE W.gamK f - f) ⊗ₜ mkL W T π' c x hx`. Simplify using `[γLA, TensorProduct.sub_tmul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsub]`. Unfold `piNL`. Rewrite using `[Submodule.mem_map]`. Use `⟨((↑hπu.unit⁻¹ : W.EE) * (W.γE W.gamK f - f)) ⊗ₜ mkL W T π' c x hx, ?_, ?_⟩` and prove the remaining obligations. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `⟨1, fun _ => ⟨g, hg⟩, fun _ => x, ⟨fun _ => hx, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_one] show TensorProduct.map (LinearMap.mulLeft O (algebraMap (LetA O n) W.EE (Eπ ^ h'))) LinearMap.id (((↑hπu.unit⁻¹ : W.EE) * (W.γE W.gamK f - f)) ⊗ₜ mkL W T π' c x hx) = algebraMap (LetA O n) W.EE ((letE c : LetA O n) * g) ⊗ₜ mkL W T π' c x hx`. Rewrite using `[TensorProduct.map_tmul, LinearMap.mulLeft_apply, LinearMap.id_apply, heg, mul_left_comm, hγ, map_mul, ← mul_assoc, hπu.val_inv_mul, one_mul]`. Introduce `τ ζ hpt i show (∑ j : Fin 1, serC (W.lev c ζ g) (valAt W T c ζ x) i) ∈ _`. Rewrite using `[Fin.sum_univ_one]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Unfold `serC`. Use `split_ifs with hi`. Take `⟨k, rfl⟩` from `Int.eq_ofNat_of_zero_le hi`. Simplify using `only [Int.toNat_natCast]`. Distinguish the cases in `hk : k < h' + (b τ + S)`.
-
-Rewrite using `[hG0 τ ζ hpt k hk, zero_smul]`. Conclude with `Submodule.zero_mem _`. Apply `Submodule.smul_mem` to reduce the goal to its premises. Take `⟨k₀, hk₀⟩` from `hval x hx τ ζ hpt`. Conclude with `u3downPf_filC_low T τ _ (hjump τ ζ hpt) (by omega) hk₀`.
-
-Conclude with `Submodule.zero_mem _`. Use `show TensorProduct.map (LinearMap.mulLeft O (algebraMap (LetA O n) W.EE (π' ^ 1))) LinearMap.id (((↑hπu.unit⁻¹ : W.EE) * (W.γE W.gamK f - f)) ⊗ₜ mkL W T π' c x hx) = _`. Rewrite using `[TensorProduct.map_tmul, LinearMap.mulLeft_apply, LinearMap.id_apply, pow_one, ← mul_assoc, hπu.mul_val_inv, one_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem u3downPf_lemC (T : LocLat G Qp LL O) (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop)
     (π' Eπ : LetA O n) (h' S : ℕ) (up : (K →ₐ[Qp] LL) → Bool) (b : (K →ₐ[Qp] LL) → ℕ) (c : ZMod n)
@@ -292,7 +288,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg (fun z => PowerSeries.constantCoeff (W.lev c ζ z)) w.mul_inv`. Simplify using `only [map_mul, map_one, h, zero_mul] at h1`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem u3downPf_cc_unit (c : ZMod n) (ζ : LL) (w : (LetA O n)ˣ) :
     PowerSeries.constantCoeff (W.lev c ζ (w : LetA O n)) ≠ 0 := by
@@ -302,9 +298,9 @@ theorem u3downPf_cc_unit (c : ZMod n) (ζ : LL) (w : (LetA O n)ˣ) :
   exact zero_ne_one h1
 
 /- English proof (translation)
-Take `⟨E, hE0, -, hE⟩` from `W.lev_π c ζ ⟨1, by simpa using hζ⟩`. Establish `hζ1 : ζ ≠ 1` using `hζ.ne_one PD.hp.one_lt`. Use `congrArg PowerSeries.constantCoeff hE` as an intermediate fact. Rewrite `this` using `[map_add, map_one, map_mul, PowerSeries.constantCoeff_C, hE0, mul_one]`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[h0, add_zero]`. Conclude with `hζ1 this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem u3downPf_cc_π (c : ZMod n) (ζ : LL) (hζ : IsPrimitiveRoot ζ PD.p) :
     PowerSeries.constantCoeff (W.lev c ζ letπ) ≠ 0 := by
@@ -317,7 +313,7 @@ theorem u3downPf_cc_π (c : ZMod n) (ζ : LL) (hζ : IsPrimitiveRoot ζ PD.p) :
   exact hζ1 this.symm
 
 /- English proof (translation)
-Rewrite using `[hw, map_mul, map_pow, map_mul, map_pow]`. Conclude with `mul_ne_zero (u3downPf_cc_unit W c ζ w) (pow_ne_zero _ (u3downPf_cc_π W c ζ hζ))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem u3downPf_cc_π' (c : ZMod n) (ζ : LL) (hζ : IsPrimitiveRoot ζ PD.p) (π' : LetA O n) (s' : ℕ)
     (w : (LetA O n)ˣ) (hw : π' = (w : LetA O n) * letπ ^ s') :
@@ -326,9 +322,9 @@ theorem u3downPf_cc_π' (c : ZMod n) (ζ : LL) (hζ : IsPrimitiveRoot ζ PD.p) (
   exact mul_ne_zero (u3downPf_cc_unit W c ζ w) (pow_ne_zero _ (u3downPf_cc_π W c ζ hζ))
 
 /- English proof (translation)
-Take `⟨u, hu, hu0⟩` from `framepf_lev_q_simple W c ζ hζ`. Establish `hE : Eπ = ((w⁻¹ : (LetA O n)ˣ) : LetA O n) * W.q`. Rewrite using `[hw, ← mul_assoc, Units.inv_mul, one_mul]`. Use `⟨W.lev c ζ ((w⁻¹ : (LetA O n)ˣ) : LetA O n) * u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hE, map_mul, hu]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul]`. Conclude with `mul_ne_zero (u3downPf_cc_unit W c ζ w⁻¹) hu0`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem u3downPf_lev_E (c : ZMod n) (ζ : LL) (hζ : IsPrimitiveRoot ζ PD.p) (Eπ : LetA O n)
     (w : (LetA O n)ˣ) (hw : W.q = (w : LetA O n) * Eπ) :
@@ -342,11 +338,9 @@ theorem u3downPf_lev_E (c : ZMod n) (ζ : LL) (hζ : IsPrimitiveRoot ζ PD.p) (E
     exact mul_ne_zero (u3downPf_cc_unit W c ζ w⁻¹) hu0
 
 /- English proof (translation)
-Establish `key : ∀ (m : ℕ) (hm : W.Q ^ m • W.φD T x ∈ W.N T) (r : LL), ∃ k : ℤ, r • W.levN T c ζ ⟨_, hm⟩ (m : ℤ) ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T τ k := by`. Introduce `m hm r`. Use `⟨-(m : ℤ), Submodule.smul_mem _ _ ?_⟩` and prove the remaining obligations. Establish `hmem` using `h4 ⟨_, hm⟩ m`. Establish `heq : ((letE c : LetA O n) • (⟨_, hm⟩ : ↥(W.N T))) = ⟨_, hm⟩` using `Subtype.ext (by show (letE c : LetA O n) • (W.Q ^ m • W.φD T x) = W.Q ^ m • W.φD T x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_comm, ← φD_letE, ((mem_NcS W T (c - 1) x).1 hx).2.2])`. Rewrite `hmem` using `[heq]`. Conclude with `(Submodule.mem_inf.1 hmem).2`. Unfold `valAt`. Use `split_ifs with h`.
-
-Conclude with `key _ _ _`. Conclude with `⟨0, Submodule.zero_mem _⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem u3downPf_valAt_fil (T : LocLat G Qp LL O) (c : ZMod n) (ζ : LL) (τ : K →ₐ[Qp] LL)
     (h4 : ∀ (x' : ↥(W.N T)) (k : ℤ), W.levN T c ζ ((letE c : LetA O n) • x') k ∈

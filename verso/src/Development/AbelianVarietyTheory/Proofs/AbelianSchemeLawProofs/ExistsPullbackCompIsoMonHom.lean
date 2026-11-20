@@ -9,9 +9,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Substitute `hh` using the available equality. Set `m : (Over.pullback (f ≫ g)).mapMon.obj (Mon.mk G) ≅ (Over.pullback f).mapMon.obj ((Over.pullback g).mapMon.obj (Mon.mk G))` to `(Functor.mapMonNatIso (Over.pullbackComp f g) ≪≫ Functor.mapMonCompIso).app (Mon.mk G)`. Use `⟨(Mon.forget _).mapIso m, ?_, ?_⟩` and prove the remaining obligations. Use `show IsMonHom m.hom.hom infer_instance`. Express the relevant statement in the definitionally equal form `(((Over.pullbackComp f g).hom.app G).left ≫ 𝟙 _) ≫ pullback.fst _ _ ≫ pullback.fst _ _ = _`.
+Substitute using the available equality. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `[Over.pullbackComp, Over.mapComp, pullback.lift_fst_assoc, pullback.lift_fst]`.
+A detailed English derivation is pending.
 -/
 theorem exists_pullback_comp_iso_monHom {T S' S : Scheme.{0}} (f : S' ⟶ S) (g : S ⟶ T) (h : S' ⟶ T)
     (hh : h = f ≫ g) (G : Over T) [GrpObj G] :
@@ -30,7 +30,7 @@ theorem exists_pullback_comp_iso_monHom {T S' S : Scheme.{0}} (f : S' ⟶ S) (g 
     simp [Over.pullbackComp, Over.mapComp, pullback.lift_fst_assoc, pullback.lift_fst]
 
 /- English proof (translation)
-Establish `h : ∀ (Y : Scheme.{0}) (i : (⊤ : Y.Opens) ⟶ ⊤) (a : Γ(Y, ⊤)), (Y.presheaf.map i.op).hom a = a` using `fun Y i a => by`. Rewrite using `[Subsingleton.elim i (𝟙 _), op_id, Y.presheaf.map_id]`. Both sides reduce to the same expression. Conclude with `h _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem charUnit_val_eq_appTop (S : Scheme.{0}) (X : Type) [AddCommGroup X] (χ : X) :
     (charUnit S X χ).val = (pullback.fst (splitTorusAff ZU X).hom (toZ S)).appTop.hom
@@ -42,7 +42,7 @@ theorem charUnit_val_eq_appTop (S : Scheme.{0}) (X : Type) [AddCommGroup X] (χ 
   exact h _ _ _
 
 /- English proof (translation)
-Take `⟨e, he, hf⟩` from `exists_pullback_comp_iso_monHom f (toZ S) (toZ S') (specULiftZIsTerminal.hom_ext _ _) (splitTorusAff ZU X)`. Use `⟨e, he, fun χ => ?_⟩` and prove the remaining obligations. Rewrite using `[charUnit_val_eq_appTop, charUnit_val_eq_appTop, ← hf, ← Category.assoc]`. Simplify using `only [Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem splitTorus_baseChange (S S' : Scheme.{0}) (f : S' ⟶ S) (X : Type) [AddCommGroup X] :
     ∃ e : splitTorus S' X ≅ (Over.pullback f).obj (splitTorus S X), IsMonHom e.hom ∧

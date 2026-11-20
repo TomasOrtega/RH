@@ -13,31 +13,25 @@ open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal in
 
 /- English proof (translation)
-Unfold `_root_.Formalism.FourierDecayAlt.ThreeDimData.GrowthG`. Introduce `k r μG A hμ hA`. Establish `hW : _root_.Formalism.FourierDecayAlt.B.IsHaarOn (_root_.Formalism.FourierDecayAlt.B.GV k r) μG` using `(_root_.GlobalTheory.HaarNotions.isHaarOn_iff_groups k r μG).1.1 hμ`. Establish `hvol` using `_root_.Formalism.FourierDecayAlt.P.norm_ball_volume_sharp`. Unfold `_root_.Formalism.FourierDecayAlt.B2.VolSharp at hvol`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨C, hC⟩` from `hvol k r μG hW`. Establish `hU : ∀ᵐ x ∂μG, Matrix.of x ∈ _root_.Formalism.QuantumDeterminants.UH (_root_.Formalism.QuantumDeterminants.Hpk k r)`. Unfold `_root_.PI.BesselPeriodGGP.IsHaarOn at hμ`. Conclude with `ae_iff.2 hμ.2.2.1`. Use `set N : _root_.Formalism.QuantumDeterminants.Mt k r → ℝ := fun x ↦ _root_.Formalism.FourierDecayAlt.B.gN (Matrix.of x) with hNdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hNcont : Continuous N`. Simplify using `only [hNdef]`. Unfold `_root_.Formalism.FourierDecayAlt.B.gN`. Use `fun_prop`. Establish `hNm : Measurable N` using `hNcont.measurable`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ᵐ x ∂μG, 1 ≤ N x` using `hU.mono fun x hx ↦ _root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.gN_ge_one hx`. Establish `hd0 : (0:ℝ) ≤ 2 * ((k:ℝ) + r) * (r + 1)` using `by positivity`. Establish `hAd : 2 * ((k:ℝ) + r) * (r + 1) < A`. Establish `: _root_.Formalism.FourierDecayAlt.ThreeDimData.AG k r = 4 * ((k:ℝ) + r) * (r + 1)` using `by unfold _root_.Formalism.FourierDecayAlt.ThreeDimData.AG; ring`. Rewrite `hA` using `[this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set d : ℝ := 2 * ((k:ℝ) + r) * (r + 1) with hd`. Use `set C' : ℝ := max C 0 with hC'`. Use `set q : ℝ := (2:ℝ) ^ (d - A) with hq`. Establish `hq0 : 0 ≤ q` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hq1 : q < 1` using `Real.rpow_lt_one_of_one_lt_of_neg one_lt_two (by linarith)`. Establish `hS : ∀ n : ℕ, MeasurableSet {x | N x ≤ (2:ℝ) ^ (n + 1)}` using `fun n ↦ measurableSet_le hNm measurable_const`. Establish `hvolS : ∀ n : ℕ, μG {x | N x ≤ (2:ℝ) ^ (n + 1)} ≤ ENNReal.ofReal (C' * ((2:ℝ) ^ (n + 1)) ^ d)`. Introduce `n`. Use `(hC _ (one_le_pow₀ one_le_two)).trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `gcongr`. Conclude with `le_max_left _ _`. Establish `hkey : ∀ n : ℕ, ((2:ℝ) ^ n) ^ (-A) * (C' * ((2:ℝ) ^ (n + 1)) ^ d) = C' * 2 ^ d * q ^ n`. Introduce `n`. Rewrite using `[← Real.rpow_natCast_mul (by norm_num), ← Real.rpow_natCast_mul (by norm_num), hq, ← Real.rpow_mul_natCast (by norm_num)]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (2:ℝ) ^ ((n:ℝ) * -A) * (2:ℝ) ^ (((n + 1 : ℕ) : ℝ) * d) = 2 ^ d * 2 ^ ((d - A) * n)`. Rewrite using `[← Real.rpow_add two_pos, ← Real.rpow_add two_pos]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hsum : Summable fun n : ℕ ↦ C' * 2 ^ d * q ^ n` using `(summable_geometric_of_lt_one hq0 hq1).mul_left _`. Establish `hC'0 : 0 ≤ C'` using `le_max_right _ _`. Establish `hpt : ∀ᵐ x ∂μG, ENNReal.ofReal (N x ^ (-A)) ≤ ∑' n : ℕ, {y | N y ≤ (2:ℝ) ^ (n + 1)}.indicator (fun _ ↦ ENNReal.ofReal (((2:ℝ) ^ n) ^ (-A))) x` using `by filter_upwards [h1] with x hx`. Take `⟨n, hn1, hn2⟩` from `exists_nat_pow_near hx one_lt_two`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `le_trans ?_ (ENNReal.le_tsum n)` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem (show x ∈ {y | N y ≤ (2:ℝ) ^ (n + 1)} from hn2.le)]`. Conclude with `ENNReal.ofReal_le_ofReal (Real.rpow_le_rpow_of_nonpos (by positivity) hn1 (by linarith))`. Use `⟨(hNm.pow_const _).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Unfold `HasFiniteIntegral`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr fun x ↦ ?_` and prove the remaining obligations. Rewrite using `[Real.enorm_eq_ofReal (Real.rpow_nonneg (by unfold _root_.Formalism.FourierDecayAlt.B.gN; exact Real.sqrt_nonneg _) _)]`. Use `_ ≤ ∫⁻ x, ∑' n : ℕ, {y | N y ≤ (2:ℝ) ^ (n + 1)}.indicator (fun _ ↦ ENNReal.ofReal (((2:ℝ) ^ n) ^ (-A))) x ∂μG := lintegral_mono_ae hpt`. Use `_ = ∑' n : ℕ, ENNReal.ofReal (((2:ℝ) ^ n) ^ (-A)) * μG {y | N y ≤ (2:ℝ) ^ (n + 1)} := by`.
-
-Rewrite using `[lintegral_tsum fun n ↦ (measurable_const.indicator (hS n)).aemeasurable]`. Conclude with `tsum_congr fun n ↦ lintegral_indicator_const (hS n) _`. Use `_ ≤ ∑' n : ℕ, ENNReal.ofReal (C' * 2 ^ d * q ^ n) := by`. Use `ENNReal.tsum_le_tsum fun n ↦ ?_` and prove the remaining obligations. Rewrite using `[← hkey n, ENNReal.ofReal_mul (by positivity)]`.
-
-Use `gcongr`. Conclude with `hvolS n`. Use `_ = ENNReal.ofReal (∑' n : ℕ, C' * 2 ^ d * q ^ n) := (ENNReal.ofReal_tsum_of_nonneg (fun n ↦ by positivity) hsum).symm`. Use `_ < ⊤ := ENNReal.ofReal_lt_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.gN_rpow_neg_integrable_haar : _root_.Formalism.FourierDecayAlt.ThreeDimData.GrowthG := by
   unfold _root_.Formalism.FourierDecayAlt.ThreeDimData.GrowthG

@@ -13,21 +13,19 @@ namespace ReciprocityTheory.PGsh.Up
 open ReciprocityTheory.PGsh.L2
 
 /- English proof (translation)
-Take `⟨m, c, ⟨e⟩, hzc⟩` from `hz`. Establish `hx : HasLen v R ((t : Fin r) → R ⧸ Ideal.span {q}) (v (algebraMap R C q) ^ r)` using `⟨r, fun _ => q, ⟨LinearEquiv.refl R _⟩, by rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin]⟩`. Establish `hs : Submodule.span R (Set.range fun i : Fin m => (Pi.single i 1 : (j : Fin m) → R ⧸ Ideal.span {c j})) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show x = ∑ i, (Pi.single i (x i) : (j : Fin m) → R ⧸ Ideal.span {c j}) from (Finset.univ_sum_single x).symm]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (x i)`. Establish `hsi : (Pi.single i (x i) : (j : Fin m) → R ⧸ Ideal.span {c j}) = a • Pi.single i 1`. Rewrite using `[← ha]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Rewrite using `[Pi.smul_apply, Pi.single_eq_same, Pi.single_eq_same, Algebra.smul_def, mul_one, Ideal.Quotient.algebraMap_eq]`. Simplify using `[Pi.single_eq_of_ne hj]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsi]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hy : Submodule.span R (Set.range fun i : Fin m => π (e.symm (Pi.single i 1 : (j : Fin m) → R ⧸ Ideal.span {c j}))) = ⊤`. Establish `hr : (Set.range fun i : Fin m => π (e.symm (Pi.single i 1 : (j : Fin m) → R ⧸ Ideal.span {c j}))) = (π ∘ₗ e.symm.toLinearMap) '' Set.range fun i : Fin m => (Pi.single i 1 : (j : Fin m) → R ⧸ Ideal.span {c j})`. Rewrite using `[← Set.range_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hr, Submodule.span_image, hs, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `hπ.comp e.symm.surjective`. Establish `key` using `prod_le_of_gen hv hx _ hy c (fun i => ⟨0, ?_⟩)`. Rewrite using `[← hzc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `key`. Simplify using `only [Pi.zero_apply, ite_self, zero_smul, Finset.sum_const_zero]`. Establish `h0 : c i • (Pi.single i 1 : (j : Fin m) → R ⧸ Ideal.span {c j}) = 0`. Use extensionality with `j`. Distinguish the cases in `hj : j = i`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Substitute `hj` using the available equality. Simplify using `only [Pi.smul_apply, Pi.single_eq_same, Pi.zero_apply]`. Rewrite using `[Algebra.smul_def, mul_one, Ideal.Quotient.algebraMap_eq]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _)`. Simplify using `[Pi.single_eq_of_ne hj]`.
-
-Rewrite using `[← LinearMap.map_smul, ← LinearEquiv.map_smul, h0, map_zero, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasLen_le_of_surj {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R]
     [Algebra R C] (hv : v.Integers R) {M : Type} [AddCommGroup M] [Module R M] {z : NNReal}
@@ -86,16 +84,16 @@ variable {p : ℕ} [Fact p.Prime] {g : ℕ} {C : Type} [Field C] {v : Valuation 
   {X : Fin U.m → NNReal}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [monX, Finset.prod_apply, Pi.pow_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma monX_eq (D : Lifts H U X) (α : Nb p g) : monX D α = ∏ j, xL D j ^ (α j).val := by
   funext y
   simp only [monX, Finset.prod_apply, Pi.pow_apply]
 
 /- English proof (translation)
-Establish `hx : ∀ j, xL D j ∈ H.AA.carrier` using `fun j => (Submodule.mem_inf.mp (D.x_mem j)).1`. Establish `hpow : ∀ (f : Nb p g → C) (n : ℕ), f ∈ H.AA.carrier → f ^ n ∈ H.AA.carrier`. Introduce `f n hf`. Proceed by induction on `n with`. Consider the case `zero => simpa using H.AA.one_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih`. Rewrite using `[pow_succ]`. Conclude with `H.AA.mul_mem _ _ ih hf`. Rewrite using `[monX_eq]`. Conclude with `Finset.prod_induction _ (· ∈ H.AA.carrier) (fun a b ha hb => H.AA.mul_mem a b ha hb) H.AA.one_mem (fun j _ => hpow _ _ (hx j))`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma monX_mem (D : Lifts H U X) (α : Nb p g) : monX D α ∈ H.AA.carrier := by
   have hx : ∀ j, xL D j ∈ H.AA.carrier := fun j => (Submodule.mem_inf.mp (D.x_mem j)).1
@@ -111,9 +109,9 @@ lemma monX_mem (D : Lifts H U X) (α : Nb p g) : monX D α ∈ H.AA.carrier := b
     H.AA.one_mem (fun j _ => hpow _ _ (hx j))
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `Function.ne_iff.mp hα`. Establish `hj' : α j ≠ 0` using `hj`. Establish `h0 : xL D j 0 = 0` using `LinearMap.mem_ker.mp (Submodule.mem_inf.mp (D.x_mem j)).2`. Establish `hv : (α j).val ≠ 0` using `by rwa [Ne, ZMod.val_eq_zero]`. Simplify using `only [monX]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ j) (by rw [h0, zero_pow hv])`.
+A detailed English derivation is pending.
 -/
 lemma monX_zero_at (D : Lifts H U X) {α : Nb p g} (hα : α ≠ 0) : monX D α 0 = 0 := by
   obtain ⟨j, hj⟩ := Function.ne_iff.mp hα
@@ -124,16 +122,16 @@ lemma monX_zero_at (D : Lifts H U X) {α : Nb p g} (hα : α ≠ 0) : monX D α 
   exact Finset.prod_eq_zero (Finset.mem_univ j) (by rw [h0, zero_pow hv])
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_inf.mpr ⟨monX_mem D α, LinearMap.mem_ker.mpr (monX_zero_at D hα)⟩`.
+A detailed English derivation is pending.
 -/
 lemma monX_mem_aug (D : Lifts H U X) {α : Nb p g} (hα : α ≠ 0) :
     monX D α ∈ augIdeal H.AA.carrier :=
   Submodule.mem_inf.mpr ⟨monX_mem D α, LinearMap.mem_ker.mpr (monX_zero_at D hα)⟩
 
 /- English proof (translation)
-Rewrite using `[monX_eq, Finset.prod_eq_single k]`. Simplify using `[ZMod.val_one]`. Introduce `j _ hj`. Simplify using `[Pi.single_eq_of_ne hj]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ k) h`.
+A detailed English derivation is pending.
 -/
 lemma monX_single (D : Lifts H U X) (k : Ix g) : monX D (Pi.single k 1) = xL D k := by
   rw [monX_eq, Finset.prod_eq_single k]
@@ -144,16 +142,16 @@ lemma monX_single (D : Lifts H U X) (k : Ix g) : monX D (Pi.single k 1) = xL D k
     exact absurd (Finset.mem_univ k) h
 
 /- English proof (translation)
-Rewrite using `[monX_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma monX_zero (D : Lifts H U X) : monX D 0 = 1 := by
   rw [monX_eq]
   simp
 
 /- English proof (translation)
-Rewrite using `[monX_eq, monX_eq, ← Finset.mul_prod_erase _ _ (Finset.mem_univ j), ← Finset.mul_prod_erase _ _ (Finset.mem_univ j)]`. Establish `hrest : ∏ i ∈ Finset.univ.erase j, xL D i ^ (Function.update α j (α j - 1) i).val = ∏ i ∈ Finset.univ.erase j, xL D i ^ (α i).val` using `Finset.prod_congr rfl fun i hi => by simp [Function.update_apply, Finset.ne_of_mem_erase hi]`. Establish `hself : (Function.update α j (α j - 1) j) = α j - 1` using `by simp [Function.update_apply]`. Rewrite using `[hrest, hself]`. Establish `hv1 : 1 ≤ (α j).val` using `Nat.one_le_iff_ne_zero.mpr (by rwa [Ne, ZMod.val_eq_zero])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsub : (α j - 1).val = (α j).val - 1`. Rewrite using `[ZMod.val_sub (by rw [ZMod.val_one]; exact hv1), ZMod.val_one]`. Rewrite using `[hsub, ← mul_assoc, ← pow_succ', Nat.sub_add_cancel hv1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma monX_split (D : Lifts H U X) {α : Nb p g} {j : Ix g} (hj : α j ≠ 0) :
     monX D α = xL D j * monX D (Function.update α j (α j - 1)) := by
@@ -170,11 +168,11 @@ lemma monX_split (D : Lifts H U X) {α : Nb p g} {j : Ix g} (hj : α j ≠ 0) :
   rw [hsub, ← mul_assoc, ← pow_succ', Nat.sub_add_cancel hv1]
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `Function.ne_iff.mp h0`. Establish `hj' : α j ≠ 0` using `hj`. Establish `hβ : Function.update α j (α j - 1) ≠ 0`. Introduce `hz`. Apply `h1 j` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Rewrite using `[Pi.single_eq_same]`. Simplify `congrFun hz i` using `[Function.update_apply, sub_eq_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Pi.single_eq_of_ne hi]`. Simplify `congrFun hz i` using `[Function.update_apply, hi]`. Conclude with `Submodule.subset_span ⟨xL D j, D.x_mem j, monX D (Function.update α j (α j - 1)), monX_mem_aug D hβ, monX_split D hj'⟩`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma monX_mem_sq (D : Lifts H U X) {α : Nb p g} (h0 : α ≠ 0) (h1 : ∀ k, α ≠ Pi.single k 1) :
     monX D α ∈ sqIdeal (augIdeal H.AA.carrier) := by
@@ -194,29 +192,25 @@ lemma monX_mem_sq (D : Lifts H U X) {α : Nb p g} (h0 : α ≠ 0) (h1 : ∀ k, �
     monX_mem_aug D hβ, monX_split D hj'⟩
 
 /- English proof (translation)
-Establish `hfA : f ∈ Submodule.span R (Set.range fun α => monX D α)`. Establish `h` using `(Submodule.mem_inf.mp hf).1`. Rewrite `h` using `[hbasis]`. Conclude with `h`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun R).mp hfA`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf0 : f 0 = 0` using `LinearMap.mem_ker.mp (Submodule.mem_inf.mp hf).2`. Establish `hval : f = (valM D) *ᵥ (fun α => algebraMap R C (c α))`. Rewrite using `[← hc]`. Use function extensionality and compare the values at `y`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Algebra.smul_def, Matrix.mulVec, dotProduct, valM, Matrix.of_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun α _ => mul_comm _ _`. Establish `hcoef : coefX D f = fun α => algebraMap R C (c α)`. Rewrite using `[coefX, hval, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hdet), Matrix.one_mulVec]`. Use `⟨fun k => c (Pi.single k 1), fun k => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[linX, hcoef]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set P : Nb p g → Prop := fun α => α ≠ 0 ∧ ∀ k, α ≠ Pi.single k 1 with hP`. Establish `hw0 : algebraMap R C (c 0) = 0`. Establish `h` using `congrFun hval 0`. Rewrite `h` using `[hf0]`. Simplify using `only [Matrix.mulVec, dotProduct, valM, Matrix.of_apply] at h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h` using `[Finset.sum_eq_single 0 (fun α _ hα => by rw [monX_zero_at D hα, zero_mul]) (fun h => absurd (Finset.mem_univ 0) h), monX_zero]`. Simplify using `using h.symm`. Establish `hB : ∑ α, (if P α then 0 else c α • monX D α) = ∑ k, c (Pi.single k 1) • xL D k`. Establish `hsub : ∑ α, (if P α then 0 else c α • monX D α) = ∑ α ∈ Finset.univ.image (fun k : Ix g => (Pi.single k (1 : ZMod p) : Nb p g)), (if P α then 0 else c α • monX D α)`. Use `symm`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_subset (Finset.subset_univ _) fun α _ hα => ?_` and prove the remaining obligations. Distinguish the cases in `hPα : P α`. Simplify using `[hPα]`. Rewrite using `[if_neg hPα]`. Establish `h0 : α = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `h0`. Apply `hPα` to reduce the goal to its premises. Use `⟨h0, fun k hk => hα ?_⟩` and prove the remaining obligations. Conclude with `Finset.mem_image.mpr ⟨k, Finset.mem_univ k, hk.symm⟩`. Substitute `h0` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[monX_zero]`. Use function extensionality and compare the values at `y`. Simplify using `[Algebra.smul_def, hw0]`. Rewrite using `[hsub, Finset.sum_image (fun k _ k' _ h => by`. Assume the negation of the conclusion as `hne`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `congrFun h k`. Rewrite `h2` using `[Pi.single_eq_same, Pi.single_eq_of_ne hne]`. Conclude with `one_ne_zero h2)]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hnP : ¬ P (Pi.single k 1)` using `fun h => h.2 k rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hnP, monX_single]`. Establish `hA : ∀ α, (if P α then c α • monX D α else 0) ∈ sqIdeal (augIdeal H.AA.carrier)`. Introduce `α`. Use `split_ifs with h`. Conclude with `Submodule.smul_mem _ _ (monX_mem_sq D h.1 h.2)`.
-
-Conclude with `Submodule.zero_mem _`. Establish `hsum : f = ∑ α, (if P α then c α • monX D α else 0) + ∑ α, (if P α then 0 else c α • monX D α)`. Rewrite using `[← Finset.sum_add_distrib, ← hc]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
-
-Rewrite using `[← hB, hsum, add_sub_cancel_right]`. Conclude with `Submodule.sum_mem _ fun α _ => hA α`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sub_lin_mem_sq (hv : v.Integers R) (D : Lifts H U X) (hdet : (valM D).det ≠ 0)
     (hbasis : H.AA.carrier = Submodule.span R (Set.range fun (α : Nb p g) (y : Nb p g) =>

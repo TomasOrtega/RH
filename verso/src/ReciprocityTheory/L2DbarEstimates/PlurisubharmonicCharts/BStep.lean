@@ -12,25 +12,25 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Establish `hT1 : 1 ≤ T'` using `by omega`. Establish `hT2 : 2 ≤ T'` using `by omega`. Establish `hMo` using `isOpen_Mset A (De := De) hD`. Take `⟨H, hHol, hid, hbd⟩` from `bsD_skoda A hS hLSE hn hD hF hX hσ hpos T' hT f hf hint`. Establish `hint'` using `fun k => bsE_int A hD hF hσ hX T' hT1 H hHol k hbd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hex : ∀ k, ∃ G : ι → Y → ℂ, A.IsSec (mu0 + (T' - 1) • L) G ∧ ∀ i y, y ∈ A.Mset w0 s De → y ∈ (A.chart i).source → G i y = bsH (A.Mset w0 s De) (H k) σ w0 (T' - 1) i y` using `fun k => ext_Mset A hE hD hF _ _ (bsE_sec A hD hF hσ (H k) (hHol k) (T' - 1)) (bsE_loc A hD hF hσ hX T' hT2 (H k) (hHol k) (hint' k))`. Use `choose G hGs hGeq using hex`. Use `⟨G, fun k => ⟨hGs k, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hae : ∀ᵐ y ∂A.mu, y ∈ A.Mset w0 s De`. Rewrite using `[ae_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mu_compl_Mset A hN hD hF`. Rewrite using `[← Measure.restrict_eq_self_of_ae_mem hae]`. Use `lt_of_eq_of_lt (setLIntegral_congr_fun hMo.measurableSet fun y hy => ?_) (hint' k)` and prove the remaining obligations. Rewrite using `[Set.piecewise_eq_of_mem _ _ _ hy]`. Establish `: A.nsq (mu0 + (T' - 1) • L) (G k) y = A.nsq (mu0 + (T' - 1) • L) (bsH (A.Mset w0 s De) (H k) σ w0 (T' - 1)) y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `nsq`. Rewrite using `[hGeq k (A.pick y) y hy (A.mem_pick y)]`. Rewrite using `[this, mul_assoc]`. Both sides reduce to the same expression. Introduce `i y hy`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : ContinuousOn (fun y => ∑ k, s k i y * G k i y) (A.chart i).source` using `continuousOn_finsetSum _ fun k _ => (continuousOn_section_chart A (hD.sec_s k) i).mul (continuousOn_section_chart A (hGs k) i)`. Establish `hEq : Set.EqOn (f i) (fun y => ∑ k, s k i y * G k i y) ((A.chart i).source ∩ A.Mset w0 s De)`. Introduce `x hx`. Establish `hxM` using `hx.2`. Establish `hp` using `A.mem_pick x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : w0 i x ≠ 0` using `denominator_ne_zero_on_chart A hD hxM hx.1`. Establish `hσi : σ i x ≠ 0` using `bsA_ne_of_tr A hσ.1.2 hxM hx.1 hp (hσ.2 x hxM)`. Establish `hfM` using `bsA_isSecOn_mono A hf (Set.subset_univ (A.Mset w0 s De))`. Establish `hr1 : f i x / (σ i x * w0 i x ^ T') = f (A.pick x) x / (σ (A.pick x) x * w0 (A.pick x) x ^ T')` using `bsA_tr_ratio A hfM.2 (bsD_denom A hD hσ T').2 hxM hx.1 hp`. Establish `hr2 : ∀ k, s k (A.pick x) x / w0 (A.pick x) x = s k i x / w0 i x` using `fun k => (bsA_tr_ratio A (bsA_isSecOn_mono A (hD.sec_s k) (Set.subset_univ _)).2 (bsA_isSecOn_mono A hD.isSection_denom (Set.subset_univ _)).2 hxM hx.1 hp).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hid'` using `hid ⟨x, hxM⟩`. Simplify using `only at hid'`. Rewrite `hid'` using `[← hr1]`. Rewrite `hid'` using `[hr2]`. Establish `hG : ∀ k, G k i x = H k ⟨x, hxM⟩ * (σ i x * w0 i x ^ (T' - 1))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Rewrite using `[hGeq k i x hxM hx.1]`. Simplify using `only [bsH, bsE_ext_mem _ hxM]`. Establish `hpow : w0 i x ^ T' = w0 i x ^ (T' - 1) * w0 i x`. Rewrite using `[← pow_succ, Nat.sub_add_cancel hT1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : σ i x * w0 i x ^ T' ≠ 0` using `mul_ne_zero hσi (pow_ne_zero _ hw)`. Establish `e : f i x = (∑ k, s k i x / w0 i x * H k ⟨x, hxM⟩) * (σ i x * w0 i x ^ T')`. Rewrite using `[← hid', div_mul_cancel₀ _ hb]`. Simplify using `only`. Rewrite using `[e, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hG k, hpow]`. Clear the denominators using the available nonvanishing facts. Conclude with `hEq.of_subset_closure (continuousOn_section_chart A hf i) hcont Set.inter_subset_left ((dense_Mset A hD hF).open_subset_closure_inter (A.chart i).open_source) hy`.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem b_step {n : ℕ} {Y : Type u} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] {ι : Type*} {La : Type*} [AddCommGroup La] (A : WeightedAtlas n Y ι La) {L : La} {N : ℕ} {w : Fin N → ι → Y → ℂ} {w0 : ι → Y → ℂ} {s : Fin n → ι → Y → ℂ} {De : MvPolynomial (Fin n) ℂ} {mu0 : La} {σ : ι → Y → ℂ}
     (hS : SAll.{u} n) (hE : EXTStatement n) (hN : EXTNullStatement n) (hLSE : LSEAll.{u} n)

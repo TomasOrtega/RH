@@ -28,9 +28,9 @@ open ReciprocityTheory.AnForm (levi)
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.TopBase
 
 /- English proof (translation)
-Establish `e₁ : ∀ w : Spec (CommRingCat.of Ω), genPt ξ₁ = a w`. Introduce `w`. Rewrite using `[h₁, Scheme.Hom.comp_apply]`. Conclude with `congrArg ξ₁ (Subsingleton.elim (α := PrimeSpectrum Ω₁) _ _)`. Establish `e₂ : ∀ w : Spec (CommRingCat.of Ω), genPt ξ₂ = a w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Rewrite using `[h₂, Scheme.Hom.comp_apply]`. Conclude with `congrArg ξ₂ (Subsingleton.elim (α := PrimeSpectrum Ω₂) _ _)`. Conclude with `(e₁ (IsLocalRing.closedPoint Ω)).trans (e₂ (IsLocalRing.closedPoint Ω)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genPt_eq_of_factor {X : Scheme.{0}} {Ω Ω₁ Ω₂ : Type} [Field Ω] [Field Ω₁] [Field Ω₂]
     {a : Spec (CommRingCat.of Ω) ⟶ X} {ξ₁ : Spec (CommRingCat.of Ω₁) ⟶ X} {ξ₂ : Spec (CommRingCat.of Ω₂) ⟶ X}
@@ -48,25 +48,23 @@ theorem genPt_eq_of_factor {X : Scheme.{0}} {Ω Ω₁ Ω₂ : Type} [Field Ω] [
   exact (e₁ (IsLocalRing.closedPoint Ω)).trans (e₂ (IsLocalRing.closedPoint Ω)).symm
 
 /- English proof (translation)
-Introduce `Ch Cu hNine hWeil hAgr hProp hCmp hGiven hPts E _ _ _ _ H D Xo l c Y _ T o II hGlob hExtra hFull hp hq hqp hbad B hB a`. Take `⟨-, hne, -⟩` from `GlobalTheory.CompanionTheory.Ar.Top.HostNumbers.host_numbers E H`. Use `haveI := hne`. Establish `hf : 1 ≤ Fintype.card (CMType H)` using `Fintype.card_pos_iff.mpr hne`. Establish `hN2 : 2 ≤ D.p + D.q` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : 4 ≤ (D.p + D.q) ^ 2` using `by nlinarith`. Establish `hB16 : 16 * Fintype.card (CMType H) ≤ B` using `by nlinarith`. Establish `hB2 : 2 ≤ B` using `by omega`. Establish `hB4 : 4 * Fintype.card (CMType H) + 2 ≤ B` using `by omega`. Establish `hgen : genPt (o.Or B a).𝔐.ξ₀ = genPt (o.Fx a).ξf` using `genPt_eq_of_factor (o.Or B a).𝔐.fn_over (o.Or B a).g_over`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨S₁, hS₁⟩ : ∃ S₁ : Finset ℕ, ∀ r, r ∈ S₁ ↔ r.Prime ∧ r ≤ B ∧ r ∉ T.bad` from `⟨(Finset.range (B + 1)).filter (fun r => r.Prime ∧ r ∉ T.bad), by`. Introduce `r`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩; exact ⟨h2, by omega, h3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2, h3⟩; exact ⟨by omega, h1, h3⟩⟩`. Establish `hbadP : ∀ p ∈ T.bad, p.Prime` using `fun p hp => ((o.bad_iff p).1 hp).1`. Establish `hS₁P : ∀ p ∈ S₁, p.Prime` using `fun p hp => ((hS₁ p).1 hp).1`. Establish `hdisj : Disjoint S₁ T.bad` using `Finset.disjoint_left.2 fun p hp hp' => ((hS₁ p).1 hp).2.2 hp'`. Establish `hdisc : ∀ p : ℕ, p.Prime → (p : ℤ) ∣ discr E → p ∈ T.bad` using `fun p hp hd => (o.bad_iff p).2 ⟨hp, Dvd.dvd.mul_right (Dvd.dvd.mul_left hd 2) _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨K, _, J, _, Ω, _, _, W, _, _, Dc, Hd, Or, hgen', hS, hj, hbg, -, hHT⟩` from `GlobalTheory.T.full_intersection_generic_bound hGiven hWeil E H D Xo l c Y II hFull hGlob hp hq _ (o.Or B a).𝔐.ξ₀ (o.Or B a).𝔐.gen₀ T.bad S₁ false hbadP hS₁P hdisj hdisc`. Simplify using `only [Bool.false_eq_true, if_false] at hj hbg`. Establish `hsm : Or.sm = Sum.inr`. Break down `Or.side with ⟨-, h, -⟩ | ⟨h, -, -⟩` into its components or cases. Conclude with `h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (congrFun (hbg.symm.trans h) hne.some) Sum.inl_ne_inr`. Establish `hGood : Or.Good` using `⟨fun p hp => hHT p (Finset.mem_union_left _ hp), fun p hp => hHT p (Finset.mem_union_right _ (by rw [← hS]; exact hp))⟩`. Establish `hSc : ∀ r : ℕ, r ∈ Dc.S ↔ r.Prime ∧ r ≤ B ∧ r ∉ T.bad`. Introduce `r`. Rewrite using `[hS]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hS₁ r`. Establish `hN : Dc.N = D.p + D.q` using `Or.N_eq`. Establish `hAdm : admitted Xo l c Y Or B`. Use `⟨hGlob, hGood, o.bad_iff, ?_, ?_, hSc, ?_⟩` and prove the remaining obligations. Use `show T.bad.card ≤ 4 * Fintype.card (CMType H) * Dc.N ^ 2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hN]`. Conclude with `hbad`. Conclude with `hB4`. Use `show Dc.N - Dc.j ≤ Dc.j`. Rewrite using `[hN, hj]`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨U, M, S, S', hcw, hU0, hUt, hSt, hS't, hconj⟩` from `GlobalTheory.T.cusp_weight_regularisations_tied hGiven E H D Xo l c Y II K J Ω W Dc Hd T.bad Or`. Take `⟨hpos, hht, hmean⟩` from `hNine E H D Xo l c Y II K J Ω W Dc Hd T.bad Or B U M S' hFull hAdm hcw hS't`. Take `⟨X, hXH, hXU, hXrd, hXL, hX1, hX2, hX3, hX4, hX5⟩` from `GlobalTheory.T.corrected_weight_regularization K J II (CMType H) Ω W Dc Hd M U S S' (hostRd E) (hostLval H) Ch Cu hSt hS't hU0 hUt hpos hconj hht hmean`. Substitute `hXH` using the available equality.
-
-Take `⟨hdeg, hlim, hPP⟩` from `GlobalTheory.T.good_origin_intersection_tower hAgr hProp hCmp hGiven hPts E H D Xo l c Y T o II hGlob hExtra hFull hp hq B B a K J Ω W Dc ℤ (Fin 2 → ℤ) X Or hB2 le_rfl hqp hbg hsm hGood (hgen'.trans hgen) hSc`. Take `⟨-, -, hSemi, -, hResK, -, -, hGaga, -, hInputs, -, hAn, -, -⟩` from `hGiven`. Establish `hStk : Top.StokesAt X B` using `GlobalTheory.T.intersection_final_estimate hInputs hAn hResK hGaga hSemi E H D Xo l c Y II K J Ω W Dc X.H T.bad Or B U hFull hAdm hcw ℤ (Fin 2 → ℤ) X rfl hXU hX1 B hB4 hlim`. Conclude with `⟨K, inferInstance, J, inferInstance, Ω, inferInstance, inferInstance, W, inferInstance, inferInstance, Dc, ℤ, Fin 2 → ℤ, inferInstance, inferInstance, inferInstance, X, hN, hj.trans o.j_eq.symm, hXrd, hXL, hX1, hX2, hX3, hX4, hX5, hdeg, hlim, hStk, hPP⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem base_setting_of_good_origin : ∀ Ch Cu : ℝ, NineGeoU Ch Cu → Out.WeilSt → PB.AgreementPos → PB.Proportional → Cmp.CmpSt → Top.Given → PtsIntegrableStatement → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (T : Top.RootTower (CMType H) (D.p + D.q)) (o : Top.GoodOrigin Y T) (II : IntersectionSystem), Top.IsGlobal Xo l c Y → o.Extra → IsFullIntersectionSystem II → 1 ≤ D.p → 1 ≤ D.q → D.q ≤ D.p → T.bad.card ≤ 4 * Fintype.card (CMType H) * (D.p + D.q) ^ 2 → ∀ B : ℕ, 4 * Fintype.card (CMType H) * (D.p + D.q) ^ 2 ≤ B → ∀ a, T.HasBaseDegreeSettingStrict II Ch Cu (hostRd E) (hostLval H) B a := by
   intro Ch Cu hNine hWeil hAgr hProp hCmp hGiven hPts E _ _ _ _ H D Xo l c Y _ T o II hGlob hExtra hFull hp hq hqp

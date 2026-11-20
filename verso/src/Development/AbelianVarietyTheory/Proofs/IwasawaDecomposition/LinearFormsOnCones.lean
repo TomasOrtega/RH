@@ -14,17 +14,15 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.TorRef
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Z Cn ψ hℓ hC`. Set `Cn' : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] (m : ℕ), (Fin m → LinearMap.BilinForm ℤ X) → Prop` to `fun X _ _ _ m γ => Cn X m γ ∧ Module.Projective (𝓞 E) X ∧ Module.finrank (𝓞 E) X ≤ min D.p D.q`. Establish `hC' : HasCones Cn' Z`. Introduce `z`. Take `⟨R, i1, i2, i3, ξ, t, mt, P, m, γ, hCN, hz, hEt, hFU, hTI, hCn, hIn⟩` from `hC z`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨R, i1, i2, i3, ξ, t, mt, P, m, γ, hCN, hz, hEt, hFU, hTI, ⟨hCn, ?_, ?_⟩, hIn⟩` and prove the remaining obligations. Conclude with `GlobalTheory.Forms.projective_of_int (𝓞 E) P.D.toPre.X`. Conclude with `GlobalTheory.CharRank.finrank_le_min E H D l Xo c Z R ξ t mt P hCN hEt hFU hTI`. Establish `hLF : HasLinForms Cn' ψ`. Introduce `X _ _ _ m γ hX`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hCn, hP, hr⟩` from `hX`. Use `haveI := hP`. Take `⟨ℓ, hℓ'⟩` from `hℓ X hr m γ hCn`. Conclude with `⟨ℓ, fun be hs c hc he => ⟨(hℓ' be hs ⟨c, hc, he⟩).2, (hℓ' be hs ⟨c, hc, he⟩).1.symm⟩⟩`. Use `choose U hz f hreg hord using GlobalTheory.T.exists_regular_function_trait_order Z Cn' ψ hC' hLF`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Set `BD : GlobalTheory.EffCartierData Z.X` to `{ ι := Z.X U := U f := f cover := eq_top_iff.2 fun z _ => TopologicalSpace.Opens.mem_iSup.2 ⟨z, hz z⟩ regular := hreg assoc := fun i j => ((hreg i).resG _).associated_of_germ ((hreg j).resG _) fun x hx => by`. Rewrite using `[germ_resG, germ_resG]`. Take `⟨u, hu⟩` from `GlobalTheory.T.trait_order_compatible Z Cn' ψ hC' _ _ _ _ (hreg i) (hreg j) (hord i) (hord j) x hx.1 hx.2`. Rewrite using `[← hu]`. Conclude with `(Ideal.span_singleton_mul_right_unit u.isUnit _).symm }`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨BD, ?_⟩` and prove the remaining obligations. Introduce `W _ _ _ hW ϖ hϖ χ t m P hj be hbe hmon`. Take `⟨n, hn, e⟩` from `hord (χ (closedPoint W)) W hW ϖ hϖ χ t m P hj be hbe hmon (hz _)`. Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Rewrite using `[idlAlong, GlobalTheory.EffCartierData.stalkId_idealSheaf BD (χ (closedPoint W)) _ (hz _), Ideal.map_span, Set.image_singleton]`.
-
-Conclude with `Ideal.span_singleton_eq_span_singleton.2 e`.
+A detailed English derivation is pending.
 -/
 theorem exists_isPhiDiv_of_cones : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H)
     (Xo : Moduli D l) (c : Coeff l) (Z : GMod Xo c)

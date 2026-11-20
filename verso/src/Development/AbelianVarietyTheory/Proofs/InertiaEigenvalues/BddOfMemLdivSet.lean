@@ -12,7 +12,7 @@ namespace GlobalTheory.BK
 def frobSlice {K : Type} [Field K] (l i : ℕ) (z : K⟦X⟧) : K⟦X⟧ := PowerSeries.mk fun n => coeff (l * n + i) z
 
 /- English proof (translation)
-Simplify using `[frobSlice]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coeff_frobSlice {K : Type} [Field K] (l i : ℕ) (z : K⟦X⟧) (n : ℕ) :
     coeff n (frobSlice l i z) = coeff (l * n + i) z := by
@@ -33,9 +33,9 @@ def ldivSet (F : Hom P Q) (τ : ZMod a) : Set K⟦X⟧ :=
     (∃ c : ℝ, ∀ i j n, ‖coeff n (Y i j)‖ ≤ c) ∧ Y * F.mat τ = h • (1 : Matrix ι ι K⟦X⟧)}
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hf`. Take `⟨b, hb⟩` from `hg`. Establish `ha0 : 0 ≤ a` using `(norm_nonneg _).trans (ha 0)`. Establish `hb0 : 0 ≤ b` using `(norm_nonneg _).trans (hb 0)`. Conclude with `⟨a * b, fun n => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Simplify `ha) (by simpa using hb) n⟩` using `using norm_coeff_mul_le (w := fun _ => 1) (fun _ => zero_le_one) (fun _ _ => by simp) ha0 hb0 (f := f) (g := g) (by simpa`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bdd_mul {f g : K⟦X⟧} (hf : ∃ c : ℝ, ∀ n, ‖coeff n f‖ ≤ c) (hg : ∃ c : ℝ, ∀ n, ‖coeff n g‖ ≤ c) :
     ∃ c : ℝ, ∀ n, ‖coeff n (f * g)‖ ≤ c := by
@@ -48,7 +48,7 @@ theorem bdd_mul {f g : K⟦X⟧} (hf : ∃ c : ℝ, ∀ n, ‖coeff n f‖ ≤ c
       (f := f) (g := g) (by simpa using ha) (by simpa using hb) n⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hf`. Take `⟨b, hb⟩` from `hg`. Conclude with `⟨max a b, fun n => by`. Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max (ha n) (hb n))⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bdd_add {f g : K⟦X⟧} (hf : ∃ c : ℝ, ∀ n, ‖coeff n f‖ ≤ c) (hg : ∃ c : ℝ, ∀ n, ‖coeff n g‖ ≤ c) :
     ∃ c : ℝ, ∀ n, ‖coeff n (f + g)‖ ≤ c := by
@@ -59,9 +59,9 @@ theorem bdd_add {f g : K⟦X⟧} (hf : ∃ c : ℝ, ∀ n, ‖coeff n f‖ ≤ c
     exact (IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max (ha n) (hb n))⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hb`. Take `⟨c, hc⟩` from `hY`. Establish `ha0 : 0 ≤ a` using `(norm_nonneg _).trans (ha 0)`. Use `⟨a * max c 0, fun i j n => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify `ha) (fun m => by rw [mul_one]; exact (hc i j m).trans (le_max_left _ _)) n` using `using norm_coeff_mul_le (w := fun _ => 1) (fun _ => zero_le_one) (fun _ _ => by simp) ha0 (le_max_right c 0) (f := b) (g := Y i j) (by simpa`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bdd_smul_matrix {μ ν : Type} {b : K⟦X⟧} {Y : Matrix μ ν K⟦X⟧} (hb : ∃ c : ℝ, ∀ n, ‖coeff n b‖ ≤ c)
     (hY : ∃ c : ℝ, ∀ i j n, ‖coeff n (Y i j)‖ ≤ c) : ∃ c : ℝ, ∀ i j n, ‖coeff n ((b • Y) i j)‖ ≤ c := by
@@ -75,9 +75,9 @@ theorem bdd_smul_matrix {μ ν : Type} {b : K⟦X⟧} {Y : Matrix μ ν K⟦X⟧
     (fun m => by rw [mul_one]; exact (hc i j m).trans (le_max_left _ _)) n
 
 /- English proof (translation)
-Take `⟨hxb, Y₁, ⟨c₁, hc₁⟩, h₁⟩` from `hx`. Take `⟨hyb, Y₂, ⟨c₂, hc₂⟩, h₂⟩` from `hy`. Use `⟨bdd_add hxb hyb, Y₁ + Y₂, ⟨max c₁ c₂, fun i j n => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max (hc₁ i j n) (hc₂ i j n))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_add, h₁, h₂, add_smul]`.
+A detailed English derivation is pending.
 -/
 theorem rdivSet_add (F : Hom P Q) (τ : ZMod a) {x y : K⟦X⟧} (hx : x ∈ F.rdivSet τ) (hy : y ∈ F.rdivSet τ) :
     x + y ∈ F.rdivSet τ := by
@@ -89,9 +89,9 @@ theorem rdivSet_add (F : Hom P Q) (τ : ZMod a) {x y : K⟦X⟧} (hx : x ∈ F.r
   · rw [Matrix.mul_add, h₁, h₂, add_smul]
 
 /- English proof (translation)
-Take `⟨hxb, Y₁, ⟨c₁, hc₁⟩, h₁⟩` from `hx`. Take `⟨hyb, Y₂, ⟨c₂, hc₂⟩, h₂⟩` from `hy`. Use `⟨bdd_add hxb hyb, Y₁ + Y₂, ⟨max c₁ c₂, fun i j n => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le_max (hc₁ i j n) (hc₂ i j n))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.add_mul, h₁, h₂, add_smul]`.
+A detailed English derivation is pending.
 -/
 theorem ldivSet_add (F : Hom P Q) (τ : ZMod a) {x y : K⟦X⟧} (hx : x ∈ F.ldivSet τ) (hy : y ∈ F.ldivSet τ) :
     x + y ∈ F.ldivSet τ := by
@@ -103,7 +103,7 @@ theorem ldivSet_add (F : Hom P Q) (τ : ZMod a) {x y : K⟦X⟧} (hx : x ∈ F.l
   · rw [Matrix.add_mul, h₁, h₂, add_smul]
 
 /- English proof (translation)
-Take `⟨hxb, Y, hY, h⟩` from `hx`. Use `⟨bdd_mul hb hxb, b • Y, bdd_smul_matrix hb hY, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, h, smul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rdivSet_mul (F : Hom P Q) (τ : ZMod a) {x : K⟦X⟧} (hx : x ∈ F.rdivSet τ) (b : K⟦X⟧)
     (hb : ∃ c : ℝ, ∀ n, ‖coeff n b‖ ≤ c) : b * x ∈ F.rdivSet τ := by
@@ -112,7 +112,7 @@ theorem rdivSet_mul (F : Hom P Q) (τ : ZMod a) {x : K⟦X⟧} (hx : x ∈ F.rdi
   rw [Matrix.mul_smul, h, smul_smul]
 
 /- English proof (translation)
-Take `⟨hxb, Y, hY, h⟩` from `hx`. Use `⟨bdd_mul hb hxb, b • Y, bdd_smul_matrix hb hY, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, h, smul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ldivSet_mul (F : Hom P Q) (τ : ZMod a) {x : K⟦X⟧} (hx : x ∈ F.ldivSet τ) (b : K⟦X⟧)
     (hb : ∃ c : ℝ, ∀ n, ‖coeff n b‖ ≤ c) : b * x ∈ F.ldivSet τ := by

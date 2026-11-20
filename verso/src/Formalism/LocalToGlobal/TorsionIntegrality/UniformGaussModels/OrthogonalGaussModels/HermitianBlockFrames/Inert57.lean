@@ -3,7 +3,7 @@ import Formalism.LocalToGlobal.TorsionIntegrality.UniformGaussModels.OrthogonalG
 namespace Formalism.L2.Th1.Top.FrP.UnitaryGroupMassFormula.HermFrame
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by norm_num, ⟨0, rfl⟩, by norm_num, by norm_num⟩`.
+Supply the required witnesses or components.
 -/
 theorem cmOK_7 : Formalism.L2.Th1.Top.FrP.CmOK 1 1 2 7 := ⟨by norm_num, ⟨0, rfl⟩, by norm_num, by norm_num⟩
 

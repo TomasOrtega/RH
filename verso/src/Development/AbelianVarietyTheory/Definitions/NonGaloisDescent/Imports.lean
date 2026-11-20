@@ -20,7 +20,7 @@ def Rel {B : Obj l ↥(OL K)} (u : B.A) (f g : Hom bk.prism B)
       toDisc l u bk.ρ₀ (BK.hf f bk.E) ^ s.N • ht.bas.map Fg
 
 /- English proof (translation)
-Introduce `Ff Fg hf hg` and use `by rw [hf.unique hg, mul_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rel_one {B : Obj l ↥(OL K)} (u : B.A) (f : Hom bk.prism B) : ht.Rel u f f 1 := fun Ff Fg hf hg => by
   rw [hf.unique hg, mul_one]

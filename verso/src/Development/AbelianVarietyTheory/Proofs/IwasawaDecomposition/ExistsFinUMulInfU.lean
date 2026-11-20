@@ -7,9 +7,9 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.PRep 
 namespace GlobalTheory.DefU
 
 /- English proof (translation)
-Introduce `E _ _ _ n g`. Set `k : UA E n` to `⟨finGL E n (GeneralLinearGroup.map (pFin E) g.1), ClassFin.finGL_mem_UA _ (ClassFin.cT_pFin g)⟩`. Establish `hk : k ∈ finU E n` using `pInf_finGL _`. Use `⟨k, hk, k⁻¹ * g, ?_, (mul_inv_cancel_left k g).symm⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (pFin E) (k⁻¹ * g).1 = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h : GeneralLinearGroup.map (pFin E) k.1 = GeneralLinearGroup.map (pFin E) g.1` using `pFin_finGL _`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, map_mul, map_inv, h, inv_mul_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_finU_mul_infU : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (g : UA E n),
     ∃ k ∈ finU E n, ∃ x ∈ infU E n, g = k * x := by

@@ -9,11 +9,11 @@ noncomputable section
 namespace GlobalTheory.ConsCompare
 
 /- English proof (translation)
-Introduce `p _ A B _ _ _ _ _ _ _ φ a`. Establish `hp : (p : B) ∈ IsLocalRing.maximalIdeal B`. Establish `hm` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := ℤ_[p]) (IsLocalRing.maximalIdeal B)`. Establish `: (p : ℤ_[p]) ∈ (IsLocalRing.maximalIdeal B).comap (algebraMap ℤ_[p] B)`. Rewrite using `[IsLocalRing.eq_maximalIdeal hm, PadicInt.maximalIdeal_eq_span_p]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_span_singleton_self _`. Simplify using `using this`. Rewrite using `[← sub_eq_zero, ← Ideal.mem_bot, ← Ideal.iInf_pow_eq_bot_of_isLocalRing (IsLocalRing.maximalIdeal B) (IsLocalRing.maximalIdeal.isMaximal B).ne_top, Ideal.mem_iInf]`. Introduce `n`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 (PadicInt.appr_spec n a)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: a = y * (p : ℤ_[p]) ^ n + (a.appr n : ℤ_[p])` using `by rw [hy]; ring`. Rewrite using `[this]`. Simplify using `only [map_add, map_mul, map_pow, map_natCast, add_sub_add_right_eq_sub, ← sub_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow hp n)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_algebraMap_padic : ∀ (p : ℕ) [Fact p.Prime] (A B : Type) [CommRing A] [Algebra ℤ_[p] A] [CommRing B] [IsDomain B] [IsDiscreteValuationRing B] [Algebra ℤ_[p] B] [Module.Finite ℤ_[p] B] (φ : A →+* B) (a : ℤ_[p]), φ (algebraMap ℤ_[p] A a) = algebraMap ℤ_[p] B a := by
   intro p _ A B _ _ _ _ _ _ _ φ a
@@ -34,25 +34,23 @@ theorem map_algebraMap_padic : ∀ (p : ℕ) [Fact p.Prime] (A B : Type) [CommRi
   exact Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow hp n)
 
 /- English proof (translation)
-Introduce `E Ω Ω₁ _ _ _ _ _ _ _ _ σ`. Use `⟨?_, fun p _ g => ?_, fun A A₁ hA g hg => ?_⟩` and prove the remaining obligations. Apply `continuous_of_continuousAt_one (AlgEquiv.autCongr σ).toMonoidHom` to reduce the goal to its premises. Introduce `s hs`. Rewrite `hs` using `[map_one, krullTopology_mem_nhds_one_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨F, hF, hs⟩` from `hs`. Rewrite using `[Filter.mem_map, krullTopology_mem_nhds_one_iff]`. Use `⟨F.map σ.symm.toAlgHom, (IntermediateField.equivMap F σ.symm.toAlgHom).toLinearEquiv.finiteDimensional, fun g hg => hs ?_⟩` and prove the remaining obligations. Rewrite `hg`, the goal using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hg (σ.symm x) ⟨x, hx, rfl⟩` as an intermediate fact. Use `show σ (g (σ.symm x)) = x`. Rewrite using `[this, σ.apply_symm_apply]`. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed E`. Establish `: IsAlgClosed Ω₁` using `IsAlgClosure.isAlgClosed E`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap E Ω).injective`. Establish `: CharZero Ω₁` using `charZero_of_injective_algebraMap (algebraMap E Ω₁).injective`. Establish `: NeZero ((p : ℕ) : Ω)` using `⟨Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero⟩`. Establish `: NeZero ((p : ℕ) : Ω₁)` using `⟨Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero⟩`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `PadicInt.ext_of_toZModPow.mp fun n => ?_` and prove the remaining obligations. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (p ^ n)`. Establish `hζ' : IsPrimitiveRoot (σ ζ) (p ^ n)` using `hζ.map_of_injective σ.injective`. Establish `h1 : g ζ = ζ ^ (PadicInt.toZModPow n ((cycZ E Ω p g : ℤ_[p]ˣ) : ℤ_[p])).val` using `cyclotomicCharacter.spec (L := Ω) p (MulSemiringAction.toRingAut (G E Ω) Ω g) ζ hζ.pow_eq_one`. Establish `h2 : σ (g (σ.symm (σ ζ))) = σ ζ ^ (PadicInt.toZModPow n ((cycZ E Ω₁ p (AlgEquiv.autCongr σ g) : ℤ_[p]ˣ) : ℤ_[p])).val` using `cyclotomicCharacter.spec (L := Ω₁) p (MulSemiringAction.toRingAut (G E Ω₁) Ω₁ (AlgEquiv.autCongr σ g)) (σ ζ) hζ'.pow_eq_one`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[σ.symm_apply_apply, h1, map_pow]`. Apply `ZMod.val_injective` to reduce the goal to its premises. Conclude with `(hζ'.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h2).symm`. Establish `hv : ∀ y, A₁.valuation (σ y) < 1 ↔ A.valuation y < 1` using `fun y => by`. Rewrite using `[valuation_lt_one_iff', valuation_lt_one_iff', hA, ← map_inv₀, hA, map_eq_zero_iff _ σ.injective]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `show AlgEquiv.autCongr σ g ∈ Dec (F := E) A₁`. Rewrite using `[mem_Dec]`. Use extensionality with `y`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, rfl⟩` from `σ.surjective y`. Establish `: (AlgEquiv.autCongr σ g)⁻¹ • σ z = σ ((g⁻¹ : G E Ω) z)`. Rewrite using `[← map_inv]`. Use `show σ ((g⁻¹ : G E Ω) (σ.symm (σ z))) = _`. Rewrite using `[σ.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hA, hA]`. Conclude with `apply_mem_iff_of_mem_Dec ((Dec (F := E) A).inv_mem hg.1) z`. Take `⟨z, rfl⟩` from `σ.surjective x`. Establish `: (AlgEquiv.autCongr σ g) (σ z) - σ z = σ (g z - z)`. Rewrite using `[map_sub]`.
-
-Use `show σ (g (σ.symm (σ z))) - _ = _`. Rewrite using `[σ.symm_apply_apply]`. Rewrite using `[this, hv]`. Apply `hg.2` to reduce the goal to its premises. Rewrite `hx` using `[ValuationSubring.valuation_le_one_iff, hA, ← ValuationSubring.valuation_le_one_iff]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem autCongr_continuous_cyc_inertia : ∀ (E Ω Ω₁ : Type) [Field E] [NumberField E] [Field Ω] [Field Ω₁] [Algebra E Ω] [Algebra E Ω₁] [IsAlgClosure E Ω] [IsAlgClosure E Ω₁] (σ : Ω ≃ₐ[E] Ω₁), Continuous (fun g : G E Ω => (AlgEquiv.autCongr σ g : G E Ω₁)) ∧ (∀ (p : ℕ) [Fact p.Prime] (g : G E Ω), cycZ E Ω₁ p (AlgEquiv.autCongr σ g) = cycZ E Ω p g) ∧ ∀ (A : ValuationSubring Ω) (A₁ : ValuationSubring Ω₁), (∀ y, σ y ∈ A₁ ↔ y ∈ A) → ∀ g : G E Ω, g ∈ Ine (F := E) A → (AlgEquiv.autCongr σ g : G E Ω₁) ∈ Ine (F := E) A₁ := by
   intro E Ω Ω₁ _ _ _ _ _ _ _ _ σ
@@ -112,23 +110,21 @@ theorem autCongr_continuous_cyc_inertia : ∀ (E Ω Ω₁ : Type) [Field E] [Num
       rwa [ValuationSubring.valuation_le_one_iff, hA, ← ValuationSubring.valuation_le_one_iff] at hx
 
 /- English proof (translation)
-Introduce `O B X _ _ _ _ _ _ _ _ T T₁ hT hs`. Take `⟨x₀⟩` from `‹Nonempty X›`. Establish `h0 : ∀ f ∈ T, ∀ x, f x - f x₀ ∈ IsLocalRing.maximalIdeal O`. Introduce `f hf x`. Assume the negation of the conclusion as `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Set `u : T` to `⟨f, hf⟩ - algebraMap O T (f x₀)`. Set `v : T` to `algebraMap O T (f x) - ⟨f, hf⟩`. Establish `huv : IsUnit (u + v)`. Establish `: u + v = algebraMap O T (f x - f x₀)` using `by simp [u, v]`. Rewrite using `[this]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsLocalRing.notMem_maximalIdeal.1 hx).map _`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add huv with h | h` into its components or cases. Use `h.map ((Pi.evalRingHom (fun _ : X => O) x₀).comp T.val.toRingHom)` as an intermediate fact. Simplify using `[u] at this`. Use `h.map ((Pi.evalRingHom (fun _ : X => O) x).comp T.val.toRingHom)` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[v] at this`. Establish `h1 : ∀ f ∈ T₁, ∀ x, f x - f x₀ ∈ IsLocalRing.maximalIdeal B`. Introduce `f hf x`. Rewrite `hf` using `[← Subalgebra.mem_toSubmodule, hs]`. Proceed by induction on `hf using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem f hf`. Take `⟨g, hg, rfl⟩` from `hf`. Use `show algebraMap O B _ - algebraMap O B _ ∈ _`. Rewrite using `[← map_sub]`. Conclude with `IsLocalRing.map_maximalIdeal_le _ (Ideal.mem_map_of_mem _ (h0 g hg x))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `add f g _ _ hf hg`. Use `Ideal.add_mem _ hf hg` as an intermediate fact. Simplify using `only [Pi.add_apply]`. Rewrite `this` using `[← add_sub_add_comm]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `smul b f _ hf`. Use `Ideal.mul_mem_left _ b hf` as an intermediate fact. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite `this` using `[mul_sub]`. Then use the resulting hypothesis. Establish `hint : Algebra.IsIntegral T₁ (X → B)` using `Algebra.IsIntegral.tower_top (R := B)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl : IsLocalHom (algebraMap T₁ (X → B))` using `Algebra.IsIntegral.isLocalHom T₁ (X → B)`. Establish `hu : ∀ f : T₁, IsUnit ((f : X → B) x₀) → IsUnit f` using `fun f hf => by`. Use `hl.map_nonunit f (Pi.isUnit_iff.2 fun x => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hx`. Use `Ideal.sub_mem _ ((IsLocalRing.mem_maximalIdeal _).2 hx) (h1 f f.2 x)` as an intermediate fact.
-
-Conclude with `(IsLocalRing.mem_maximalIdeal _).1 (by simpa using this) hf`. Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun f => ?_` and prove the remaining obligations. Conclude with `(IsLocalRing.isUnit_or_isUnit_one_sub_self ((f : X → B) x₀)).imp (hu f) (hu (1 - f))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isLocalRing_span_image : ∀ (O B X : Type) [CommRing O] [IsLocalRing O] [CommRing B] [IsLocalRing B] [Algebra O B] [IsLocalHom (algebraMap O B)] [Finite X] [Nonempty X] (T : Subalgebra O (X → O)) (T₁ : Subalgebra B (X → B)), IsLocalRing T → Subalgebra.toSubmodule T₁ = Submodule.span B ((fun (f : X → O) (x : X) => algebraMap O B (f x)) '' (T : Set (X → O))) → IsLocalRing T₁ := by
   intro O B X _ _ _ _ _ _ _ _ T T₁ hT hs
@@ -176,31 +172,29 @@ theorem isLocalRing_span_image : ∀ (O B X : Type) [CommRing O] [IsLocalRing O]
   exact (IsLocalRing.isUnit_or_isUnit_one_sub_self ((f : X → B) x₀)).imp (hu f) (hu (1 - f))
 
 /- English proof (translation)
-Introduce `O B M _ _ _ _ _ _ _ κ hκ`. Set `F : FractionRing O →+ M →+ FractionRing B ⊗[B] (B ⊗[O] M)` to `{ toFun := fun k => { toFun := fun m => κ k ⊗ₜ (1 ⊗ₜ m), map_zero' := by simp map_add' := fun _ _ => by simp [tmul_add] } map_zero' := by ext; simp map_add' := fun _ _ => by ext; simp [add_tmul] }`. Establish `hsm : ∀ (a : O) (l : FractionRing B) (m : M), (l ⊗ₜ[B] ((1 : B) ⊗ₜ[O] (a • m)) : FractionRing B ⊗[B] (B ⊗[O] M)) = algebraMap O B a • l ⊗ₜ[B] ((1 : B) ⊗ₜ[O] m)` using `fun a l m => by`. Rewrite using `[tmul_smul a (1 : B) m, ← algebraMap_smul B a, tmul_smul]`. Set `ι₀` to `TensorProduct.liftAddHom (R := O) F fun a k m => by show κ (a • k) ⊗ₜ _ = κ k ⊗ₜ _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hsm, smul_tmul', Algebra.smul_def, Algebra.smul_def, map_mul, hκ]`. Establish `hι : ∀ k m, ι₀ (k ⊗ₜ m) = κ k ⊗ₜ (1 ⊗ₜ m)` using `fun _ _ => rfl`. Set `ι : (FractionRing O ⊗[O] M) →ₛₗ[κ] (FractionRing B ⊗[B] (B ⊗[O] M))` to `{ toFun := ι₀, map_add' := ι₀.map_add map_smul' := fun c z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul k m => rw [smul_tmul', hι, hι, smul_tmul', smul_eq_mul, smul_eq_mul, map_mul]`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, smul_add, hx, hy] }`. Establish `hι' : ∀ m, ι (1 ⊗ₜ m) = 1 ⊗ₜ (1 ⊗ₜ m)` using `fun m => (hι 1 m).trans (by rw [map_one])`. Use `⟨ι, fun S hS => ?_, fun S hS => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ z, ι z ∈ Submodule.span (FractionRing B) (ι '' S)` using `fun z => by`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hz : z ∈ Submodule.span (FractionRing O) S` using `hS ▸ Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz => exact Submodule.subset_span ⟨z, hz, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hx`. Rewrite using `[eq_top_iff]`. Introduce and unpack `z -`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `tmul l y`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [tmul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `tmul b m`. Establish `: (l ⊗ₜ[B] (b ⊗ₜ[O] m) : FractionRing B ⊗[B] (B ⊗[O] M)) = (b • l) • ι (1 ⊗ₜ m)`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hι', smul_tmul', smul_eq_mul, mul_one, smul_tmul, smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (h1 _)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨m, rfl⟩ : z ∈ LinearMap.range (TensorProduct.mk O (FractionRing O) M 1)` from `hS ▸ Submodule.subset_span hz`. Conclude with `⟨1 ⊗ₜ m, (hι' m).symm⟩`. Establish `h1 : ∀ z ∈ Submodule.span O S, ι z ∈ Submodule.span B (ι '' S)` using `fun z hz => by`. Proceed by induction on `hz using Submodule.span_induction with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mem z hz => exact Submodule.subset_span ⟨z, hz, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← algebraMap_smul (FractionRing O), map_smulₛₗ, hκ, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ hx`. Introduce and unpack `_ ⟨y, rfl⟩`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `tmul b m`. Establish `: TensorProduct.mk B (FractionRing B) (B ⊗[O] M) 1 (b ⊗ₜ[O] m) = b • ι (1 ⊗ₜ m)`. Rewrite using `[hι', ← tmul_smul, smul_tmul', smul_eq_mul, mul_one]`.
-
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (h1 _ (hS ▸ ⟨m, rfl⟩))`.
+A detailed English derivation is pending.
 -/
 theorem exists_semilinear_baseChange : ∀ (O B M : Type) [CommRing O] [IsDomain O] [CommRing B] [IsDomain B] [Algebra O B] [AddCommGroup M] [Module O M] (κ : FractionRing O →+* FractionRing B), (∀ a : O, κ (algebraMap O (FractionRing O) a) = algebraMap B (FractionRing B) (algebraMap O B a)) → ∃ ι : (FractionRing O ⊗[O] M) →ₛₗ[κ] (FractionRing B ⊗[B] (B ⊗[O] M)), (∀ S : Set (FractionRing O ⊗[O] M), Submodule.span (FractionRing O) S = ⊤ → Submodule.span (FractionRing B) (ι '' S) = ⊤) ∧ ∀ S : Set (FractionRing O ⊗[O] M), Submodule.span O S = LinearMap.range (TensorProduct.mk O (FractionRing O) M 1) → Submodule.span B (ι '' S) = LinearMap.range (TensorProduct.mk B (FractionRing B) (B ⊗[O] M) 1) := by
   intro O B M _ _ _ _ _ _ _ κ hκ
@@ -273,7 +267,7 @@ theorem exists_semilinear_baseChange : ∀ (O B M : Type) [CommRing O] [IsDomain
         exact Submodule.smul_mem _ _ (h1 _ (hS ▸ ⟨m, rfl⟩))
 
 /- English proof (translation)
-Establish `h1` using `(Module.Flat.rTensor_preserves_injective_linearMap (M := M) (Algebra.linearMap O B) h).comp (TensorProduct.lid O M).symm.injective`. Introduce `a b hab`. Apply `h1` to reduce the goal to its premises. Simplify using `using hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem one_tmul_injective (O B M : Type) [CommRing O] [CommRing B] [Algebra O B] [AddCommGroup M]
     [Module O M] [Module.Flat O M] (h : Function.Injective (algebraMap O B)) :
@@ -285,23 +279,23 @@ theorem one_tmul_injective (O B M : Type) [CommRing O] [CommRing B] [Algebra O B
   simpa using hab
 
 /- English proof (translation)
-Introduce `O B X M _ _ _ _ _ _ _ _ _ T T₁ act act₁ hinj hs hac x hx`. Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hx`. Take `⟨⟨m, s⟩, hms⟩` from `IsLocalizedModule.surj (nonZeroDivisors O) (TensorProduct.mk O (FractionRing O) M 1) v`. Establish `hs0 : algebraMap O (FractionRing O) (s : O) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors s.2`. Establish `hms' : algebraMap O (FractionRing O) (s : O) • v = TensorProduct.mk O (FractionRing O) M 1 m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[algebraMap_smul]`. Conclude with `hms`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Rewrite `hms'` using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hv0 ((smul_eq_zero.1 hms').resolve_left hs0)`. Establish `hm : ∀ f : T, act f m = (f : X → O) x • m` using `fun f => by`. Establish `h1` using `(Submodule.mem_iInf _).1 (hms' ▸ Submodule.smul_mem _ _ hv) f`. Rewrite `h1` using `[Module.End.mem_eigenspace_iff, algebraMap_smul]`. Apply `one_tmul_injective O (FractionRing O) M (IsFractionRing.injective O _)` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_smul, ← h1]`. Both sides reduce to the same expression. Establish `h1 : ∀ g (hg : g ∈ Submodule.span B ((fun (f : X → O) (x : X) => algebraMap O B (f x)) '' (T : Set (X → O)))) (hg' : g ∈ T₁), act₁ ⟨g, hg'⟩ (1 ⊗ₜ m) = g x • (1 ⊗ₜ m)` using `fun g hg => by`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem g hg`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f, hf, rfl⟩` from `hg`. Introduce `hg'`. Rewrite using `[hac ⟨f, hf⟩ _ fun _ => rfl, LinearMap.baseChange_tmul, hm, tmul_smul, algebraMap_smul]`. Consider the case `zero`. Introduce `hg'`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: (⟨0, hg'⟩ : T₁) = 0` using `rfl`. Simplify using `[this]`. Consider the case `add f g hf hg ihf ihg`. Introduce `hg'`. Rewrite `hf`, `hg` using `[← hs]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (⟨f + g, hg'⟩ : T₁) = ⟨f, hf⟩ + ⟨g, hg⟩` using `rfl`. Rewrite using `[this, map_add, LinearMap.add_apply, ihf, ihg, Pi.add_apply, add_smul]`. Consider the case `smul b f hf ih`. Introduce `hg'`. Rewrite `hf` using `[← hs]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (⟨b • f, hg'⟩ : T₁) = b • ⟨f, hf⟩` using `rfl`. Rewrite using `[this, map_smul, LinearMap.smul_apply, ih, Pi.smul_apply, smul_assoc]`. Use `(Submodule.ne_bot_iff _).2 ⟨1 ⊗ₜ (1 ⊗ₜ m), (Submodule.mem_iInf _).2 fun f => ?_, fun h => hm0 ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff, LinearMap.baseChange_tmul, h1 f.1 (hs ▸ f.2) f.2, tmul_smul, algebraMap_smul]`. Apply `one_tmul_injective O B M hinj` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `one_tmul_injective B (FractionRing B) _ (IsFractionRing.injective B _)` to reduce the goal to its premises. Simplify using `using h`.
+A detailed English derivation is pending.
 -/
 theorem heckeEig_baseChange_ne_bot : ∀ (O B X M : Type) [CommRing O] [IsDomain O] [CommRing B] [IsDomain B] [Algebra O B] [AddCommGroup M] [Module O M] [Module.Free O M] [Module.Finite O M] (T : Subalgebra O (X → O)) (T₁ : Subalgebra B (X → B)) (act : T →ₐ[O] Module.End O M) (act₁ : T₁ →ₐ[B] Module.End B (B ⊗[O] M)), Function.Injective (algebraMap O B) → Subalgebra.toSubmodule T₁ = Submodule.span B ((fun (f : X → O) (x : X) => algebraMap O B (f x)) '' (T : Set (X → O))) → (∀ (f : T) (f₁ : T₁), (∀ x, (f₁ : X → B) x = algebraMap O B ((f : X → O) x)) → act₁ f₁ = (act f).baseChange B) → ∀ x : X, heckeEig T act x ≠ ⊥ → heckeEig T₁ act₁ x ≠ ⊥ := by
   intro O B X M _ _ _ _ _ _ _ _ _ T T₁ act act₁ hinj hs hac x hx
@@ -350,31 +344,29 @@ theorem heckeEig_baseChange_ne_bot : ∀ (O B X M : Type) [CommRing O] [IsDomain
     simpa using h
 
 /- English proof (translation)
-Introduce `O B X M _ _ _ _ _ _ _ _ _ _ _ T T₁ act hinj hs hact`. Use `Fintype.ofFinite X` as an intermediate fact. Establish `: FaithfulSMul O B` using `(faithfulSMul_iff_algebraMap_injective O B).2 hinj`. Establish `: Module.Flat O B` using `inferInstance`. Set `g : T →ₐ[O] (X → B)` to `((Algebra.ofId O B).compLeft X).comp T.val`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `F : B ⊗[O] T →ₐ[B] (X → B)` to `Algebra.TensorProduct.lift (Algebra.ofId B _) g fun _ _ => Commute.all _ _`. Establish `hF : ∀ b f, F (b ⊗ₜ f) = b • fun x => algebraMap O B ((f : X → O) x)` using `fun b f => by`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Establish `hFi : Function.Injective F`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h1` using `(TensorProduct.piScalarRight O O B X).injective.comp (Module.Flat.lTensor_preserves_injective_linearMap (M := B) T.val.toLinearMap Subtype.val_injective)`. Establish `: ⇑F = ⇑(TensorProduct.piScalarRight O O B X) ∘ ⇑(T.val.toLinearMap.lTensor B)` using `funext fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [Function.comp_apply, map_add] at hx hy ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hx, hy]`. Consider the case `tmul b f`. Rewrite using `[hF]`. Use function extensionality and compare the values at `x`. Simplify using `[Algebra.smul_def, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]` and apply the resulting hypothesis. Establish `hFr : F.range = T₁`. Apply `Subalgebra.toSubmodule_injective` to reduce the goal to its premises. Rewrite using `[hs]`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ ⟨z, rfl⟩ show F z ∈ _`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul b f => rw [hF]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨f, f.2, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `⟨1 ⊗ₜ ⟨f, hf⟩, (hF 1 _).trans (one_smul _ _)⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `G : B ⊗[O] T →ₐ[B] Module.End B (B ⊗[O] M)` to `Algebra.TensorProduct.lift (Algebra.ofId B _) ((Module.End.baseChangeHom O B M).comp act) fun b _ => Algebra.commutes b _`. Establish `hG : ∀ b f, G (b ⊗ₜ f) = b • (act f).baseChange B` using `fun b f => by`. Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Establish `hGi : Function.Injective G`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e` to `Module.finBasis O M`. Set `Φ : T →ₗ[O] (Fin (Module.finrank O M) → M)` to `LinearMap.pi fun j => (LinearMap.applyₗ (e j)).comp act.toLinearMap`. Establish `hΦ : Function.Injective Φ` using `fun f f' h => hact (e.ext fun j => congrFun h j)`. Establish `h1` using `(TensorProduct.piRight O O B fun _ : Fin (Module.finrank O M) => M).injective.comp (Module.Flat.lTensor_preserves_injective_linearMap (M := B) Φ hΦ)`. Establish `h2 : ∀ z j, TensorProduct.piRight O O B (fun _ : Fin (Module.finrank O M) => M) (Φ.lTensor B z) j = G z (1 ⊗ₜ e j)` using `fun z j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, LinearMap.add_apply, hx, hy]`. Consider the case `tmul b f => simp [hG, Φ, smul_tmul']`. Introduce `z z' h`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `h1` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Simplify using `only [Function.comp_apply, h2, h]`. Set `e : B ⊗[O] T ≃ₐ[B] T₁` to `(AlgEquiv.ofInjective F hFi).trans (Subalgebra.equivOfEq _ _ hFr)`. Use `⟨G.comp e.symm.toAlgHom, hGi.comp e.symm.injective, fun f f₁ h => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: e.symm f₁ = 1 ⊗ₜ f`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show _ = F (1 ⊗ₜ f)`. Rewrite using `[hF, one_smul]`.
-
-Conclude with `funext h`. Use `show G (e.symm f₁) = _`. Rewrite using `[this, hG, one_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_act_baseChange : ∀ (O B X M : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CommRing B] [IsDomain B] [Algebra O B] [Finite X] [AddCommGroup M] [Module O M] [Module.Free O M] [Module.Finite O M] (T : Subalgebra O (X → O)) (T₁ : Subalgebra B (X → B)) (act : T →ₐ[O] Module.End O M), Function.Injective (algebraMap O B) → Subalgebra.toSubmodule T₁ = Submodule.span B ((fun (f : X → O) (x : X) => algebraMap O B (f x)) '' (T : Set (X → O))) → Function.Injective act → ∃ act₁ : T₁ →ₐ[B] Module.End B (B ⊗[O] M), Function.Injective act₁ ∧ ∀ (f : T) (f₁ : T₁), (∀ x, (f₁ : X → B) x = algebraMap O B ((f : X → O) x)) → act₁ f₁ = (act f).baseChange B := by
   intro O B X M _ _ _ _ _ _ _ _ _ _ _ T T₁ act hinj hs hact
@@ -457,7 +449,7 @@ variable (a : A) {M M' : Type} [AddCommGroup M] [Module k M] [Module A M] [IsSca
   [FiniteDimensional k M']
 
 /- English proof (translation)
-Unfold `cpOn`. Rewrite using `[← LinearEquiv.charpoly_conj (e.restrictScalars k)]`. Use `congr 1`. Use extensionality with `v`. Simplify using `[LinearEquiv.conj_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cpOn_congr (e : M ≃ₗ[A] M') : cpOn k a M = cpOn k a M' := by
   unfold cpOn
@@ -470,14 +462,14 @@ instance finiteDimensional_sub (N : Submodule A M) : FiniteDimensional k N :=
   inferInstanceAs (FiniteDimensional k (N.restrictScalars k))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CuspGL.charpoly_eq_restrict_mul_mapQ (N.restrictScalars k) (Algebra.lsmul k k M a) fun _ hx => N.smul_mem a hx`.
+A detailed English derivation is pending.
 -/
 theorem cpOn_sub_quot (N : Submodule A M) : cpOn k a M = cpOn k a N * cpOn k a (M ⧸ N) :=
   GlobalTheory.CuspGL.charpoly_eq_restrict_mul_mapQ (N.restrictScalars k) (Algebra.lsmul k k M a)
     fun _ hx => N.smul_mem a hx
 
 /- English proof (translation)
-The claim follows from `| 0, u, c, _ => by simp | n + 1, u, c, h => by have := last_eq_mul_prod n (fun j => u j.castSucc) (fun j => c j.castSucc) fun j => h j.castSucc rw [Fin.prod_univ_castSucc, ← Fin.succ_last, h, this, mul_assoc] rfl`.
+A detailed English derivation is pending.
 -/
 theorem last_eq_mul_prod {P : Type} [CommMonoid P] : ∀ (n : ℕ) (u : Fin (n + 1) → P) (c : Fin n → P),
     (∀ j, u j.succ = u j.castSucc * c j) → u (Fin.last n) = u 0 * ∏ j, c j
@@ -488,11 +480,9 @@ theorem last_eq_mul_prod {P : Type} [CommMonoid P] : ∀ (n : ℕ) (u : Fin (n +
     rfl
 
 /- English proof (translation)
-Use `last_eq_mul_prod s.length (fun j => cpOn k a (s j)) _ fun j => (cpOn_sub_quot a ((s j.castSucc).submoduleOf (s j.succ))).trans (congrArg (· * _) (cpOn_congr a (Submodule.submoduleOfEquivOfLe (s.step j).le)))` as an intermediate fact. Establish `e1 : cpOn k a (s (Fin.last _)) = cpOn k a M` using `cpOn_congr a (LinearEquiv.ofTop _ h1)`. Establish `e0 : cpOn k a (s 0) = 1`. Establish `: Subsingleton (s 0)`. Establish `h0' : s 0 = ⊥` using `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h0']`. Use `infer_instance`. Unfold `cpOn`. Rewrite using `[← (LinearMap.charpoly_monic _).natDegree_eq_zero, LinearMap.charpoly_natDegree]`. Conclude with `Module.finrank_zero_of_subsingleton`.
-
-Rewrite using `[← e1, this, e0, one_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpOn_series (s : CompositionSeries (Submodule A M)) (h0 : s.head = ⊥) (h1 : s.last = ⊤) :
     cpOn k a M = ∏ j : Fin s.length,
@@ -515,13 +505,13 @@ theorem cpOn_series (s : CompositionSeries (Submodule A M)) (h0 : s.head = ⊥) 
 end CharpolySeries
 
 /- English proof (translation)
-Introduce `k Γ V W _ _ _ _ _ _ _ _ ρ σ ⟨s, t, h1, h2, h3, h4, f, hf⟩ g`. Establish `: FiniteDimensional k ρ.asModule` using `inferInstanceAs (FiniteDimensional k V)`. Establish `: FiniteDimensional k σ.asModule` using `inferInstanceAs (FiniteDimensional k W)`. Establish `e1 : LinearMap.charpoly (ρ g) = cpOn k (MonoidAlgebra.of k Γ g) ρ.asModule`. Unfold `cpOn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← LinearEquiv.charpoly_conj ρ.asModuleEquiv]`. Use `congr 1`. Use extensionality with `v`. Simplify using `[LinearEquiv.conj_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `e2 : LinearMap.charpoly (σ g) = cpOn k (MonoidAlgebra.of k Γ g) σ.asModule`. Unfold `cpOn`. Rewrite using `[← LinearEquiv.charpoly_conj σ.asModuleEquiv]`. Use `congr 1`. Use extensionality with `v`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[LinearEquiv.conj_apply]`. Both sides reduce to the same expression. Rewrite using `[e1, e2, cpOn_series _ s h1 h2, cpOn_series _ t h3 h4]`. Conclude with `Fintype.prod_equiv f _ _ fun j => cpOn_congr _ (hf j).some`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_eq_of_sameSS : ∀ (k Γ V W : Type) [Field k] [Group Γ] [AddCommGroup V] [Module k V] [FiniteDimensional k V] [AddCommGroup W] [Module k W] [FiniteDimensional k W] (ρ : Representation k Γ V) (σ : Representation k Γ W), GlobalTheory.IndefiniteRowSideFullHecke.CharPolyRootsConstruction.SameSS ρ σ → ∀ g : Γ, LinearMap.charpoly (ρ g) = LinearMap.charpoly (σ g) := by
   intro k Γ V W _ _ _ _ _ _ _ _ ρ σ ⟨s, t, h1, h2, h3, h4, f, hf⟩ g

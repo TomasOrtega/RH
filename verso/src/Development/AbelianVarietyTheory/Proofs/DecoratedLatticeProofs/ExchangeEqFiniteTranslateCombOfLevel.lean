@@ -11,7 +11,7 @@ namespace GlobalTheory.PosOne.UniformComb
 open GlobalTheory.IndefiniteRowSideFullHecke.PositiveTwistAverage GlobalTheory.RootEx.UniformLattices
 
 /- English proof (translation)
-Unfold `comb`. Rewrite using `[← Finsupp.sum_finset_sum_index (fun _ => zero_mul _) (fun _ _ _ => add_mul _ _ _), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_single_index (zero_mul _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_sum {G ι : Type} (T : Finset ι) (g : ι → G) (a : ℂ) (f : G → ℂ) :
     comb (∑ t ∈ T, Finsupp.single (g t) a) f = a * ∑ t ∈ T, f (g t) := by
@@ -24,11 +24,11 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [MeasurableSpace k] [BorelSpace k] {n : Type} [Fintype n] [DecidableEq n] {c : ℕ}
 
 /- English proof (translation)
-Use `secondCountable k` as an intermediate fact. Use `t2Space k` as an intermediate fact. Establish `hV : {b : n → k | g b ∈ U} ∈ 𝓝 (0 : n → k)` using `hg.continuousAt.preimage_mem_nhds (hU.mem_nhds (by simp [hg1, U.one_mem]))`. Take `⟨t, ht⟩` from `exists_ballLat_subset (inter_mem hV (perp_mem_nhds hψ W hW))`. Establish `hBl` using `ballLat_isLattice (m := n) t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨T, hT⟩` from `exists_isReps (perp ψ W) (ballLat n t).toAddSubgroup (isCompact_perp hψ hψ1 W hW) (LatPair.isClopen_lattice (ballLat n t)).2`. Use `⟨∑ x ∈ T, Finsupp.single (g x) ((((Measure.pi fun _ : n => ν).real ((ballLat n t).toAddSubgroup : Set (n → k)) : ℝ) : ℂ)), fun f h1 h0 => ?_⟩` and prove the remaining obligations. Rewrite using `[comb_sum]`. Use `integral_eq_sum_reps (Measure.pi fun _ : n => ν) (fun x hx => (ht hx).2) (LatPair.isClopen_lattice (ballLat n t)).2 (isCompact_lattice _ hBl) hT (fun x => f (g x)) h0 fun x b hb => ?_` and prove the remaining obligations. Simplify using `only [hadd]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `h1 x b (ht hb).1`.
+A detailed English derivation is pending.
 -/
 theorem exists_comb {ψ : AddChar k Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) (ν : Measure k) [ν.IsAddHaarMeasure]
     (g : (n → k) → GL (n ⊕ Fin c) k) (hg : Continuous g) (hg1 : g 0 = 1)
@@ -60,17 +60,15 @@ namespace GlobalTheory.PosOne
 open GlobalTheory.IndefiniteRowSideFullHecke.PositiveTwistAverage GlobalTheory.RootEx.UniformLattices GlobalTheory.PosOne.UniformComb
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n _ _ c p hp hc ψ hψ hψ1 ν _ U hU`. Establish `hrowN : {u : n → k | rowE c p u ∈ U} ∈ 𝓝 (0 : n → k)` using `ExchangeSupport.continuous_rowE.continuousAt.preimage_mem_nhds (hU.mem_nhds (by simp [ExchangeSupport.rowE_zero, U.one_mem]))`. Establish `hcolN : {β : n → k | colE c (p + 1) β ∈ U} ∈ 𝓝 (0 : n → k)` using `ExchangeSupport.continuous_colE.continuousAt.preimage_mem_nhds (hU.mem_nhds (by simp [ExchangeSupport.colE_zero, U.one_mem]))`. Take `⟨s, hs⟩` from `exists_ballLat_subset hrowN`. Take `⟨s', hs'⟩` from `exists_ballLat_subset hcolN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `exists_comb hψ hψ1 ν (colE c (p + 1)) ExchangeSupport.continuous_colE ExchangeSupport.colE_zero ExchangeSupport.colE_add U hU (ballLat n s) (ballLat_isLattice s)`. Take `⟨e', he'⟩` from `exists_comb hψ hψ1 ν (rowE c p) ExchangeSupport.continuous_rowE ExchangeSupport.rowE_zero ExchangeSupport.rowE_add U hU (ballLat n s') (ballLat_isLattice s')`. Use `⟨e, e', fun A _ _ σ hσ l v hv => ⟨fun hl => ?_, fun hl => ?_⟩⟩` and prove the remaining obligations. Use `he (fun g => l (σ g v)) (fun x b hb => ?_) (fun x hx => ?_)` and prove the remaining obligations. Simplify using `only [map_mul, Module.End.mul_apply, hv _ hb]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hne`. Use `hx fun u hu => ?_` and prove the remaining obligations. Use `((ExchangeSupport.exchange_support k n c p hp hc ψ hψ hψ1 ν A σ hσ l v).2 hl).2 u x` as an intermediate fact. Rewrite `this` using `[hv _ (hs hu)]`. Establish `h4 : (ψ (-(u ⬝ᵥ x)) : ℂ) = 1` using `mul_right_cancel₀ hne (by rw [one_mul]; exact this.symm)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← inv_eq_one, ← AddChar.map_neg_eq_inv]`. Conclude with `Circle.ext (by simpa only [Circle.coe_one] using h4)`. Use `he' (fun g => l (σ g v)) (fun x b hb => ?_) (fun x hx => ?_)` and prove the remaining obligations. Simplify using `only [map_mul, Module.End.mul_apply, hv _ hb]`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `hx fun β hβ => ?_` and prove the remaining obligations. Use `((ExchangeSupport.exchange_support k n c p hp hc ψ hψ hψ1 ν A σ hσ l v).1 hl).2.1 x β` as an intermediate fact. Rewrite `this` using `[hv _ (hs' hβ)]`. Establish `h4 : (ψ (x ⬝ᵥ β) : ℂ) = 1` using `mul_right_cancel₀ hne (by rw [one_mul]; exact this.symm)`. Rewrite using `[dotProduct_comm]`.
-
-Conclude with `Circle.ext (by simpa only [Circle.coe_one] using h4)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exchange_eq_comb : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c p : ℕ) (_ : 1 ≤ p) (_ : p < c) (ψ : AddChar k Circle) (_ : Continuous ψ) (_ : ψ ≠ 1) (ν : Measure k) [ν.IsAddHaarMeasure] (U : Subgroup (GL (n ⊕ Fin c) k)) (_ : IsOpen (U : Set (GL (n ⊕ Fin c) k))), ∃ e e' : GL (n ⊕ Fin c) k →₀ ℂ, ∀ (A : Type) [AddCommGroup A] [Module ℂ A] (σ : Representation ℂ (GL (n ⊕ Fin c) k) A) (_ : IsSmoothRep σ) (l : A →ₗ[ℂ] ℂ) (v : A), (∀ u ∈ U, σ u v = v) → (IsNEquiv ψ (p + 1) σ l → exDown ν p σ l v = comb e fun g => l (σ g v)) ∧ (IsNEquiv ψ p σ l → exUp ν p σ l v = comb e' fun g => l (σ g v)) := by
   intro k _ _ _ _ _ _ n _ _ c p hp hc ψ hψ hψ1 ν _ U hU

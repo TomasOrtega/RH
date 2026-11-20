@@ -7,7 +7,7 @@ open UpperTheory.ConvolutionTheory.R2.G (FS2 nE)
 open scoped Classical
 
 /- English proof (translation)
-Take `⟨C, hC, hEC⟩ : ∃ C, IsCompact C ∧ fundamentalSet ℚ ⊆ C` from `⟨closure (fundamentalSetInfinite ℚ) ×ˢ _, (isCompact_closure_fundamentalSetInfinite ℚ).prod (isCompact_integralFiniteAdeles ℚ), fun x hx => ⟨subset_closure hx.1, hx.2⟩⟩`. Conclude with `⟨Set.univ.pi fun _ : Fin 2 => C, isCompact_univ_pi fun _ => hC, fun x hx i hi => hEC (hx i hi)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem cover : ∃ C : Set (Fin 2 → A ℚ), IsCompact C ∧ FS2 ℚ ⊆ C := by
   obtain ⟨C, hC, hEC⟩ : ∃ C, IsCompact C ∧ fundamentalSet ℚ ⊆ C :=
@@ -17,7 +17,7 @@ private theorem cover : ∃ C : Set (Fin 2 → A ℚ), IsCompact C ∧ FS2 ℚ �
   exact ⟨Set.univ.pi fun _ : Fin 2 => C, isCompact_univ_pi fun _ => hC, fun x hx i hi => hEC (hx i hi)⟩
 
 /- English proof (translation)
-The claim follows from `continuous_gl.comp (continuous_nU.comp ((AdeleBaseChange.continuous_adeleMap.comp (continuous_apply 0)).add ((AdeleBaseChange.continuous_adeleMap.comp (continuous_apply 1)).mul continuous_const)))`.
+A detailed English derivation is pending.
 -/
 private theorem cont_nE' {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) :
     Continuous fun u : Fin 2 → A ℚ => nE D u :=
@@ -25,9 +25,9 @@ private theorem cont_nE' {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) :
     ((AdeleBaseChange.continuous_adeleMap.comp (continuous_apply 1)).mul continuous_const)))
 
 /- English proof (translation)
-Establish `h` using `hasDerivAt_curve f (x * infGL E 2 (c t)) c X c0 cd`. Establish `h2 : HasDerivAt (fun s => f.1 (x * infGL E 2 (c t) * infGL E 2 (c s))) ((lie E 2 X f).1 (x * infGL E 2 (c t))) (t - t)`. Rewrite using `[sub_self]`. Conclude with `h`. Establish `h3` using `HasDerivAt.comp_sub_const t t h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h3.congr_of_eventuallyEq (Eventually.of_forall fun τ => ?_)` and prove the remaining obligations. Establish `e : c τ = c t * c (τ - t)` using `by rw [← cadd]; congr 1; ring`. Simplify using `only [e, map_mul, mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem deriv_at {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (f : Sm E 2)
     (c : ℝ → GL (Fin 2) (Cinf E)) (X : Lie E 2) (x : GL (Fin 2) (A E)) (c0 : c 0 = 1)
@@ -42,11 +42,11 @@ private theorem deriv_at {E : Type} [Field E] [NumberField E] [IsTotallyComplex 
   simp only [e, map_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `E _ _ _ D f c X g c0 cadd cd hf hl ⟨B, hB⟩`. Take `⟨C, hC, hsub⟩` from `cover`. Establish `hfin : adeleMeasurePi ℚ (FS2 ℚ) < ⊤` using `(measure_mono hsub).trans_lt hC.measure_lt_top`. Use `haveI : IsFiniteMeasure ((adeleMeasurePi ℚ).restrict (FS2 ℚ)) := ⟨by simpa using hfin⟩`. Establish `hn` using `cont_nE' D`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ : Continuous fun u : Fin 2 → A ℚ => ψ (u 1)` using `continuous_ψ.comp (continuous_apply 1)`. Establish `hF : ∀ h : GL (Fin 2) (A E), Continuous fun u : Fin 2 → A ℚ => f.1 (nE D u * h) * ψ (u 1)` using `fun h => (hf.comp (hn.mul continuous_const)).mul hψ`. Establish `hF' : ∀ h : GL (Fin 2) (A E), Continuous fun u : Fin 2 → A ℚ => (lie E 2 X f).1 (nE D u * h) * ψ (u 1)` using `fun h => (hl.comp (hn.mul continuous_const)).mul hψ`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := (adeleMeasurePi ℚ).restrict (FS2 ℚ)) (x₀ := (0 : ℝ)) (s := Set.univ) (F := fun t u => f.1 (nE D u * (g * infGL E 2 (c t))) * ψ (u 1)) (F' := fun t u => (lie E 2 X f).1 (nE D u * (g * infGL E 2 (c t))) * ψ (u 1)) (bound := fun …`. Establish `h` using `deriv_at f c X (nE D u * g) c0 cadd cd t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc] at h`. Conclude with `h.mul_const (ψ (u 1)))`. Establish `h2` using `key.2`. Simplify using `only [c0, map_one, mul_one] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.hasDerivAt_whittakerPeriod_oneParameter :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (D : Dat ℚ E) (f : Sm E 2) (c : ℝ → GL (Fin 2) (Cinf E)) (X : Lie E 2)

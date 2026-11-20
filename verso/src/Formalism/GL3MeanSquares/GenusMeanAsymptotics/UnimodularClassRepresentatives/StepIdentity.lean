@@ -10,11 +10,11 @@ variable {n : Type*} [Fintype n] [DecidableEq n]
 namespace Newton
 
 /- English proof (translation)
-Take `⟨M₀, rfl⟩` from `hM.exists_map`. Use `set w : S := ⟨ϖ, hϖ⟩ with hw`. Take `⟨c, h⟩ : ∃ c : S, (1 + w • M₀).det = 1 + M₀.trace * w + c * w ^ 2` from `⟨_, Matrix.det_one_add_smul w M₀⟩`. Use `⟨((M₀.trace + c * w : S) : K), Subtype.prop _, ?_⟩` and prove the remaining obligations. Establish `key : (1 + ϖ • M₀.map S.subtype) = S.subtype.mapMatrix (1 + w • M₀)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[hw]`. Simplify using `[Matrix.one_apply_ne hij, hw]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (1 + M₀.trace * w + c * w ^ 2 : S) = 1 + w * (M₀.trace + c * w)` using `by ring`. Rewrite using `[key, ← RingHom.map_det, h, h2]`. Simplify using `[hw]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_one_add (hϖ : ϖ ∈ S) {M : Matrix n n K} (hM : Ent S M) :
     ∃ s ∈ S, (1 + ϖ • M).det = 1 + ϖ * s := by
@@ -34,11 +34,11 @@ theorem det_one_add (hϖ : ϖ ∈ S) {M : Matrix n n K} (hM : Ent S M) :
   simp [hw]
 
 /- English proof (translation)
-Establish `e1 : P - a • (Y' * P) = (1 - a • Y') * P` using `by rw [sub_mul, one_mul, smul_mul_assoc]`. Establish `e2 : X - a • (X * Y) = X * (1 - a • Y)` using `by rw [mul_sub, mul_one, mul_smul_comm]`. Establish `e3 : (1 - a • Y') * P * H * (X * (1 - a • Y)) = (1 - a • Y') * (P * H * X) * (1 - a • Y)`. Simplify using `only [Matrix.mul_assoc]`. Establish `hYHY : Y' * H * Y = b • (Y' * V')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, hHY, mul_smul_comm]`. Establish `hV2 : V = Z - V'` using `eq_sub_of_add_eq hV`. Rewrite using `[e1, e2, e3, hG]`. Simplify using `only [add_mul, mul_add, sub_mul, mul_sub, one_mul, mul_one, smul_mul_assoc, mul_smul_comm]`. Simplify using `only [← Matrix.mul_assoc, hYHY]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Matrix.mul_assoc, hHY, hYH, hV2]`. Simplify using `only [Matrix.mul_assoc, smul_mul_assoc, mul_smul_comm, smul_smul]`. Use `module`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem step_identity (P H X Y Y' Z V V' : Matrix n n K) (a b : K)
     (hG : P * H * X = H + (a * b) • Z) (hHY : H * Y = b • V') (hYH : Y' * H = b • V)
@@ -60,19 +60,19 @@ theorem step_identity (P H X Y Y' Z V V' : Matrix n n K) (a b : K)
   module
 
 /- English proof (translation)
-Take `⟨τ, hτ, hτ1⟩` from `hS.tr`. Establish `hstar : ∀ m : ℕ, star (ϖ ^ m) = ϖ ^ m` using `fun m => by rw [star_pow, hS.fix]`. Establish `hZH : Zᴴ = Z`. Establish `h1 : (Xᴴ * H * X)ᴴ = Xᴴ * H * X`. Rewrite using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hH, Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hXZ, conjTranspose_add, hH, conjTranspose_smul, hstar]`. Establish `h2 : ϖ ^ k • Zᴴ = ϖ ^ k • Z` using `add_left_cancel h1`. Conclude with `smul_right_injective _ (pow_ne_zero k hS.ne) h2`. Establish `hYent : Ent S (E * (τ • Z))` using `hES.mul (Ent.smul hτ hZ)`. Establish `hYc : Ent S (E * (τ • Z))ᴴ` using `Ent.conjTranspose hS.star_mem hYent`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab : ϖ ^ (k - e) * ϖ ^ e = ϖ ^ k` using `by rw [← pow_add, Nat.sub_add_cancel (by omega : e ≤ k)]`. Establish `hG : Xᴴ * H * X = H + (ϖ ^ (k - e) * ϖ ^ e) • Z` using `by rw [hab]; exact hXZ`. Establish `hHY : H * (E * (τ • Z)) = ϖ ^ e • (τ • Z)`. Rewrite using `[← Matrix.mul_assoc, hHE, smul_mul_assoc, one_mul]`. Establish `hEH : Eᴴ * H = ϖ ^ e • (1 : Matrix n n K)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg conjTranspose hHE`. Rewrite `h3` using `[conjTranspose_mul, hH, conjTranspose_smul, conjTranspose_one, hstar]`. Conclude with `h3`. Establish `hYH : (E * (τ • Z))ᴴ * H = ϖ ^ e • (star τ • Z)`. Rewrite using `[conjTranspose_mul, Matrix.mul_assoc, hEH, conjTranspose_smul, hZH, mul_smul_comm, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV : star τ • Z + τ • Z = Z` using `by rw [← add_smul, add_comm, hτ1, one_smul]`. Establish `hid` using `Newton.step_identity Xᴴ H X (E * (τ • Z)) (E * (τ • Z))ᴴ Z (star τ • Z) (τ • Z) (ϖ ^ (k - e)) (ϖ ^ e) hG hHY hYH hV`. Use `⟨-(X * (E * (τ • Z))), ϖ ^ (k - e - 1) • (-(Z * (E * (τ • Z))) - (E * (τ • Z))ᴴ * Z + (E * (τ • Z))ᴴ * (τ • Z) + ϖ ^ (k - e) • ((E * (τ • Z))ᴴ * Z * (E * (τ • Z)))), (hX.mul hYent).neg, Ent.smul (S.pow_mem hS.mem _) ((((hZ.mul hYent).neg.sub (hYc.mul hZ)).add (hYc.mul (Ent.smul h …` and prove the remaining obligations. Establish `e1 : X + ϖ ^ (k - e) • -(X * (E * (τ • Z))) = X - ϖ ^ (k - e) • (X * (E * (τ • Z)))`. Rewrite using `[smul_neg, ← sub_eq_add_neg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (X - ϖ ^ (k - e) • (X * (E * (τ • Z))))ᴴ = Xᴴ - ϖ ^ (k - e) • ((E * (τ • Z))ᴴ * Xᴴ)`. Rewrite using `[conjTranspose_sub, conjTranspose_smul, hstar, conjTranspose_mul]`. Establish `hp : ϖ ^ (k - e) * ϖ ^ (k - e) * ϖ ^ e = ϖ ^ (k + 1) * ϖ ^ (k - e - 1)`. Rewrite using `[← pow_add, ← pow_add, ← pow_add]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[e1, e2, hid, smul_smul, hp]`.
+A detailed English derivation is pending.
 -/
 theorem step (hS : IsLocUnif S ϖ) {H E : Matrix n n K} (hH : Hᴴ = H) (hES : Ent S E) {e k : ℕ}
     (hHE : H * E = ϖ ^ e • (1 : Matrix n n K)) (hk : e + 1 ≤ k)
@@ -120,15 +120,15 @@ theorem step (hS : IsLocUnif S ϖ) {H E : Matrix n n K} (hH : Hᴴ = H) (hES : E
 end Newton
 
 /- English proof (translation)
-Establish `hW : Ent S (ϖ ^ (k - e - 1) • (Z * E))` using `Ent.smul (S.pow_mem hS.mem _) (hZ.mul hES)`. Take `⟨s, hs, hdet⟩` from `Newton.det_one_add hS.mem hW`. Establish `hmat : Xᴴ * H * X * E = ϖ ^ e • (1 + ϖ • (ϖ ^ (k - e - 1) • (Z * E)))`. Rewrite using `[hXZ, add_mul, hHE, smul_mul_assoc, smul_add, smul_smul, smul_smul, ← pow_succ, ← pow_add, show e + 1 + (k - e - 1) = k by omega]`. Establish `h1` using `congrArg Matrix.det hmat`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[det_mul, det_mul, det_mul, det_smul, hdet, det_conjTranspose]`. Establish `h2` using `congrArg Matrix.det hHE`. Rewrite `h2` using `[det_mul, det_smul, det_one, mul_one]`. Establish `hc : (ϖ ^ e) ^ Fintype.card n ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ hS.ne)`. Establish `h3 : star X.det * X.det = 1 + ϖ * s`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `mul_right_cancel₀ hc` to reduce the goal to its premises. Take the linear combination `h1 - star X.det * X.det * h2`. Take `⟨hne, hinv⟩` from `hS.rad s hs`. Establish `hX0 : X.det ≠ 0`. Introduce `h0`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h3` using `[h0, mul_zero]`. Conclude with `hne h3.symm`. Establish `hsX : star X.det ≠ 0` using `star_ne_zero.mpr hX0`. Use `⟨hX0, ?_⟩` and prove the remaining obligations. Establish `e4 : X.det⁻¹ = star X.det * (1 + ϖ * s)⁻¹`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h3, mul_inv, ← mul_assoc, mul_inv_cancel₀ hsX, one_mul]`. Rewrite using `[e4]`. Conclude with `S.mul_mem (hS.star_mem _ hX.det) hinv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_unit (hS : IsLocUnif S ϖ) {H E : Matrix n n K} (hH : Hᴴ = H) (hHS : Ent S H)
     (hES : Ent S E) {e k : ℕ} (hHE : H * E = ϖ ^ e • (1 : Matrix n n K)) (hk : e + 1 ≤ k)
@@ -160,11 +160,11 @@ theorem det_unit (hS : IsLocUnif S ϖ) {H E : Matrix n n K} (hH : Hᴴ = H) (hHS
   exact S.mul_mem (hS.star_mem _ hX.det) hinv
 
 /- English proof (translation)
-Establish `key : ∀ j : ℕ, ∃ D Z' : Matrix n n K, Ent S D ∧ Ent S Z' ∧ (X + ϖ ^ (k - e) • D)ᴴ * H * (X + ϖ ^ (k - e) • D) = H + ϖ ^ (k + j) • Z'`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => exact ⟨0, Z, Ent.zero, hZ, by simpa using hXZ⟩`. Consider the case `succ j ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨D, Z', hD, hZ', hEq⟩` from `ih`. Take `⟨D₁, Z'', hD₁, hZ'', hEq'⟩` from `Newton.step hS hH hES hHE (by omega : e + 1 ≤ k + j) (hX.add (Ent.smul (S.pow_mem hS.mem _) hD)) hZ' hEq`. Use `⟨D + ϖ ^ j • D₁, Z'', hD.add (Ent.smul (S.pow_mem hS.mem _) hD₁), hZ'', ?_⟩` and prove the remaining obligations. Establish `e1 : X + ϖ ^ (k - e) • (D + ϖ ^ j • D₁) = X + ϖ ^ (k - e) • D + ϖ ^ (k + j - e) • D₁`. Rewrite using `[smul_add, smul_smul, ← pow_add, add_assoc, show k - e + j = k + j - e by omega]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, hEq', show k + (j + 1) = k + j + 1 by omega]`. Take `⟨D, Z', hD, hZ', hEq⟩` from `key N`. Use `⟨D, ϖ ^ k • Z', hD, Ent.smul (S.pow_mem hS.mem _) hZ', ?_⟩` and prove the remaining obligations. Rewrite using `[hEq, smul_smul, ← pow_add, add_comm k N]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_newton (hS : IsLocUnif S ϖ) {H E : Matrix n n K} (hH : Hᴴ = H) (hHS : Ent S H)
     (hES : Ent S E) {e k : ℕ} (hHE : H * E = ϖ ^ e • (1 : Matrix n n K)) (hk : e + 1 ≤ k)

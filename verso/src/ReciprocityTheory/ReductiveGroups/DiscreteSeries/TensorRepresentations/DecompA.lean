@@ -13,26 +13,26 @@ variable {Y : Type*} [AddCommGroup Y] [Module ℂ Y]
 def dc_cplxPts (B : Finset ℝ) : Finset ℂ := B.image (fun b : ℝ => (b : ℂ))
 
 /- English proof (translation)
-Introduce `_ _ _ _ h` and use `h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dc_injOn_id_cplx (B : Finset ℝ) : Set.InjOn (id : ℂ → ℂ) (dc_cplxPts B : Set ℂ) :=
   fun _ _ _ _ h => h
 
 /- English proof (translation)
-Simplify using `[dc_cplxPts]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dc_mem_cplxPts {B : Finset ℝ} {z : ℂ} : z ∈ dc_cplxPts B ↔ ∃ b ∈ B, (b : ℂ) = z := by
   simp [dc_cplxPts]
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.PowerApplication.goal1 .. | (apply Bl.PowerApplication.goal1 <;> assumption) | (intros; apply Bl.PowerApplication.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dc_aeval_eigen {T : Module.End ℂ Y} {z : ℂ} {f : Y} (hf : T f = z • f) (p : ℂ[X]) :
     aeval T p f = p.eval z • f := by
   first | exact Bl.PowerApplication.goal1 .. | (apply Bl.PowerApplication.goal1 <;> assumption) | (intros; apply Bl.PowerApplication.goal1 <;> assumption)
 
 /- English proof (translation)
-Rewrite using `[Lagrange.basis_eq_prod_sub_inv_mul_nodal_div hz, mul_left_comm]`. Use `congr 1`. Conclude with `EuclideanDomain.mul_div_cancel' (X_sub_C_ne_zero z) (Lagrange.X_sub_C_dvd_nodal id hz)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem dc_X_sub_mul_basis {s : Finset ℂ} {z : ℂ} (hz : z ∈ s) :
     (X - C z) * Lagrange.basis s id z = C (Lagrange.nodalWeight s id z) * Lagrange.nodal s id := by
@@ -43,11 +43,11 @@ theorem dc_X_sub_mul_basis {s : Finset ℂ} {z : ℂ} (hz : z ∈ s) :
 variable {T : Module.End ℂ Y} {S : Submodule ℂ Y} {B : Finset ℝ}
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => intro f hf`. Simplify using `using S.add_mem (hp f hf) (hq f hf)`. Consider the case `monomial k a`. Introduce `f hf`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply]`. Use `S.smul_mem _ ?_` and prove the remaining obligations. Proceed by induction on `k with`. Consider the case `zero => simpa using hf`. Consider the case `succ k ih => rw [pow_succ', Module.End.mul_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `hT _ ih`.
+A detailed English derivation is pending.
 -/
 theorem dc_aeval_mem (hT : ∀ f ∈ S, T f ∈ S) (p : ℂ[X]) : ∀ f ∈ S, aeval T p f ∈ S := by
   induction p using Polynomial.induction_on' with
@@ -61,7 +61,7 @@ theorem dc_aeval_mem (hT : ∀ f ∈ S, T f ∈ S) (p : ℂ[X]) : ∀ f ∈ S, a
     | succ k ih => rw [pow_succ', Module.End.mul_apply]; exact hT _ ih
 
 /- English proof (translation)
-Introduce `f hf`. Establish `h` using `congrArg (fun p => aeval T p f) (dc_X_sub_mul_basis hz)`. Simplify using `only [map_mul, Module.End.mul_apply, map_sub, aeval_X, aeval_C, LinearMap.sub_apply, Module.algebraMap_end_apply, hP f hf, map_zero] at h`. Conclude with `sub_eq_zero.mp h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dc_basis_eigen (hP : ∀ f ∈ S, aeval T (Lagrange.nodal (dc_cplxPts B) id) f = 0) {z : ℂ}
     (hz : z ∈ dc_cplxPts B) : ∀ f ∈ S, T (aeval T (Lagrange.basis (dc_cplxPts B) id z) f) =
@@ -73,7 +73,7 @@ theorem dc_basis_eigen (hP : ∀ f ∈ S, aeval T (Lagrange.nodal (dc_cplxPts B)
   exact sub_eq_zero.mp h
 
 /- English proof (translation)
-Establish `h` using `hP f hf`. Rewrite `h` using `[dc_aeval_eigen he]`. Use `(smul_eq_zero.mp h).resolve_left ?_` and prove the remaining obligations. Rewrite using `[Lagrange.eval_nodal]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun w hw h0 => hz (by simpa [sub_eq_zero] using (sub_eq_zero.mp h0) ▸ hw)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dc_eq_zero_of_eigen_not_mem (hP : ∀ f ∈ S, aeval T (Lagrange.nodal (dc_cplxPts B) id) f = 0)
     {z : ℂ} (hz : z ∉ dc_cplxPts B) {f : Y} (hf : f ∈ S) (he : T f = z • f) : f = 0 := by
@@ -84,13 +84,13 @@ theorem dc_eq_zero_of_eigen_not_mem (hP : ∀ f ∈ S, aeval T (Lagrange.nodal (
   exact Finset.prod_ne_zero_iff.mpr fun w hw h0 => hz (by simpa [sub_eq_zero] using (sub_eq_zero.mp h0) ▸ hw)
 
 /- English proof (translation)
-Introduce `f hf`. Use `⟨fun b => if b ∈ B then aeval T (Lagrange.basis (dc_cplxPts B) id (b : ℂ)) f else 0, fun b => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb : b ∈ B`. Simplify using `only [hb, if_true]`. Conclude with `⟨dc_aeval_mem hT _ f hf, dc_basis_eigen hP (dc_mem_cplxPts.mpr ⟨b, hb, rfl⟩) f hf⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `[hb]`. Break down `B.eq_empty_or_nonempty with hB | hB` into its components or cases. Substitute `hB` using the available equality. Use `hP f hf` as an intermediate fact. Simplify `this` using `[dc_cplxPts, Lagrange.nodal]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Finset.sum_congr rfl fun b hb => if_pos hb]`. Establish `hs : (dc_cplxPts B).Nonempty` using `hB.image _`. Establish `h1` using `Lagrange.sum_basis (dc_injOn_id_cplx B) hs`. Establish `h2 : ∑ b ∈ B, aeval T (Lagrange.basis (dc_cplxPts B) id (b : ℂ)) f = ∑ z ∈ dc_cplxPts B, aeval T (Lagrange.basis (dc_cplxPts B) id z) f`. Rewrite using `[dc_cplxPts, Finset.sum_image fun x _ y _ h => Complex.ofReal_injective h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, ← LinearMap.sum_apply, ← map_sum, h1, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dc_lagrange_decomp (hT : ∀ f ∈ S, T f ∈ S)
     (hP : ∀ f ∈ S, aeval T (Lagrange.nodal (dc_cplxPts B) id) f = 0) :
@@ -115,7 +115,7 @@ theorem dc_lagrange_decomp (hT : ∀ f ∈ S, T f ∈ S)
       rw [h2, ← LinearMap.sum_apply, ← map_sum, h1, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Introduce `z f hf h0 he`. Assume the negation of the conclusion as `hno`. Use `h0 (dc_eq_zero_of_eigen_not_mem hP (fun hz => hno ?_) hf he)` and prove the remaining obligations. Take `⟨b, hb, e⟩` from `dc_mem_cplxPts.mp hz`. Conclude with `⟨b, hb, e.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dc_lagrange_eig (hP : ∀ f ∈ S, aeval T (Lagrange.nodal (dc_cplxPts B) id) f = 0) :
     ∀ z : ℂ, ∀ f ∈ S, f ≠ 0 → T f = z • f → ∃ b ∈ B, z = ((b : ℝ) : ℂ) := by
@@ -129,13 +129,13 @@ def dc_lagProj (T : Module.End ℂ Y) (B : Finset ℝ) (z : ℂ) : Module.End �
   if z ∈ dc_cplxPts B then aeval T (Lagrange.basis (dc_cplxPts B) id z) else 0
 
 /- English proof (translation)
-Distinguish the cases in `hz : z ∈ dc_cplxPts B`. Simplify using `only [dc_lagProj, hz, if_true]`. Use `⟨fun f hf => ?_, dc_basis_eigen hP hz, fun f hf he => ?_, fun f hf z' hz' he => ?_⟩` and prove the remaining obligations. Rewrite using `[dc_aeval_eigen (dc_basis_eigen hP hz f hf)]`. Use `Lagrange.eval_basis_self (v := id) (dc_injOn_id_cplx B) hz` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [id] at this`. Rewrite using `[this, one_smul]`. Rewrite using `[dc_aeval_eigen he]`. Use `Lagrange.eval_basis_self (v := id) (dc_injOn_id_cplx B) hz` as an intermediate fact. Simplify using `only [id] at this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, one_smul]`. Distinguish the cases in `hz'' : z' ∈ dc_cplxPts B`. Rewrite using `[dc_aeval_eigen he]`. Use `Lagrange.eval_basis_of_ne (v := id) (s := dc_cplxPts B) (Ne.symm hz') hz''` as an intermediate fact. Simplify using `only [id] at this`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, zero_smul]`. Rewrite using `[dc_eq_zero_of_eigen_not_mem hP hz'' hf he, map_zero]`. Simplify using `only [dc_lagProj, hz, if_false, LinearMap.zero_apply]`. Use `⟨fun _ _ => trivial, fun _ _ => by simp, fun f hf he => (dc_eq_zero_of_eigen_not_mem hP hz hf he).symm, fun _ _ _ _ _ => trivial⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem dc_lagProj_props (hT : ∀ f ∈ S, T f ∈ S)
     (hP : ∀ f ∈ S, aeval T (Lagrange.nodal (dc_cplxPts B) id) f = 0) (z : ℂ) :
@@ -182,7 +182,7 @@ variable {Y : Type*} [AddCommGroup Y] [Module ℂ Y] {T : Module.End ℂ Y} {S W
   {Q : Y →ₗ⋆[ℂ] Y →ₗ[ℂ] ℂ}
 
 /- English proof (translation)
-Establish `h` using `hsym u hu u hu`. Rewrite `h` using `[he, LinearMap.map_smulₛₗ, LinearMap.smul_apply, (Q u).map_smul, smul_eq_mul, smul_eq_mul]`. Establish `hq : Q u u ≠ 0` using `fun h0 => by have := hpos u hu hu0; rw [h0] at this; simp at this`. Establish `h2 : (starRingEnd ℂ) μ = μ` using `mul_right_cancel₀ hq h`. Conclude with `Complex.conj_eq_iff_re.mp h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dc_symm_eig_real (hpos : ∀ f ∈ S, f ≠ 0 → 0 < (Q f f).re)
     (hsym : ∀ f ∈ S, ∀ g ∈ S, Q (T f) g = Q f (T g)) {u : Y} (hu : u ∈ S) (hu0 : u ≠ 0) {μ : ℂ}
@@ -194,15 +194,15 @@ theorem dc_symm_eig_real (hpos : ∀ f ∈ S, f ≠ 0 → 0 < (Q f f).re)
   exact Complex.conj_eq_iff_re.mp h2
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x _ hx`. Simplify using `at hx`. Simplify using `[hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Consider the case `succ k ih`. Introduce `x hx h`. Use `set u := T x - μ • x with hu`. Establish `huS : u ∈ S` using `S.sub_mem (hTS x hx) (S.smul_mem μ hx)`. Establish `hk : ((T - μ • 1) ^ k) u = 0`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[pow_succ, Module.End.mul_apply]`. Simplify `h` using `[hu]`. Establish `hue : T u = μ • u` using `ih u huS hk`. Assume the negation of the conclusion as `hne`. Establish `hu0 : u ≠ 0` using `fun h0 => hne (sub_eq_zero.mp h0)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `dc_symm_eig_real hpos hsym huS hu0 hue`. Establish `h1 : Q u u = 0`. Establish `e1 : Q u u = Q (T x) u - Q (μ • x) u`. Rewrite using `[← LinearMap.sub_apply, ← Q.map_sub]`. Rewrite using `[e1, hsym x hx u huS, hue, (Q x).map_smul, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hr]`. Simplify using the standard rewrite rules. Use `hpos u huS hu0` as an intermediate fact. Rewrite `this` using `[h1]`. Simplify using `at this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dc_symm_semisimple (hpos : ∀ f ∈ S, f ≠ 0 → 0 < (Q f f).re)
     (hsym : ∀ f ∈ S, ∀ g ∈ S, Q (T f) g = Q f (T g)) (hTS : ∀ f ∈ S, T f ∈ S) (μ : ℂ) :
@@ -231,19 +231,19 @@ theorem dc_symm_semisimple (hpos : ∀ f ∈ S, f ≠ 0 → 0 < (Q f f).re)
     rw [h1] at this; simp at this
 
 /- English proof (translation)
-Use `set T' : Module.End ℂ W := T.restrict hTW with hT'`. Establish `hfin` using `Module.End.finite_hasEigenvalue T'`. Use `⟨hfin.toFinset.image Complex.re, fun w hw => ?_⟩` and prove the remaining obligations. Establish `key : ∀ μ : ℂ, ∀ x ∈ T'.maxGenEigenspace μ, aeval T (Lagrange.nodal (dc_cplxPts (hfin.toFinset.image Complex.re)) id) (x : Y) = 0`. Introduce `μ x hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `(Module.End.mem_maxGenEigenspace T' μ x).mp hx`. Establish `hk' : ((T - μ • 1) ^ k) (x : Y) = 0`. Establish `: ∀ j : ℕ, (((T' - μ • 1) ^ j) x : Y) = ((T - μ • 1) ^ j) (x : Y)`. Introduce `j`. Proceed by induction on `j with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ', Module.End.mul_apply, pow_succ', Module.End.mul_apply, ← ih]`. Simplify using `[hT']`. Rewrite using `[← this, hk]`. Simplify using the standard rewrite rules.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `he` using `dc_symm_semisimple hpos hsym hTS μ k (x : Y) (hWS x.2) hk'`. Distinguish the cases in `hx0 : (x : Y) = 0`. Rewrite using `[hx0, map_zero]`. Establish `hr` using `dc_symm_eig_real hpos hsym (hWS x.2) hx0 he`. Rewrite using `[dc_aeval_eigen he, Lagrange.eval_nodal]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : μ ∈ hfin.toFinset`. Rewrite using `[Set.Finite.mem_toFinset]`. Use `Module.End.hasEigenvalue_of_hasEigenvector (x := x) ⟨?_, fun h => hx0 (by simp [h])⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff]`. Conclude with `Subtype.ext (by simpa [hT'] using he)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: μ ∈ dc_cplxPts (hfin.toFinset.image Complex.re)` using `dc_mem_cplxPts.mpr ⟨μ.re, Finset.mem_image_of_mem _ hmem, hr⟩`. Rewrite using `[Finset.prod_eq_zero this (by simp), zero_smul]`. Establish `htop` using `Module.End.iSup_maxGenEigenspace_eq_top T'`. Establish `gen : ∀ y : W, y ∈ ⨆ μ, T'.maxGenEigenspace μ → aeval T (Lagrange.nodal (dc_cplxPts (hfin.toFinset.image Complex.re)) id) (y : Y) = 0`. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hy using Submodule.iSup_induction' with`. Consider the case `mem μ x hx => exact key μ x hx`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [map_add, hx, hy]`. Conclude with `gen ⟨w, hw⟩ (by rw [htop]; trivial)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem dc_symm_nodal (hpos : ∀ f ∈ S, f ≠ 0 → 0 < (Q f f).re)
     (hsym : ∀ f ∈ S, ∀ g ∈ S, Q (T f) g = Q f (T g)) (hTS : ∀ f ∈ S, T f ∈ S) (hWS : W ≤ S)

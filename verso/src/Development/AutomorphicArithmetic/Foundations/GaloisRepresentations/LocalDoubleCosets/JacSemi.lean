@@ -6,9 +6,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL ValuativeRel Matrix 
 namespace UpperTheory.Gal.LocD
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[sg_val, val_diagT, val_diagT]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[diagonal_apply_ne _ h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sg_diagT {E : Type} [Field E] {n : ℕ} (σ : E ≃+* E) (t : Fin n → Eˣ) :
     sg σ (diagT E (Fin n) t) = diagT E (Fin n) (fun i => Units.map (σ : E →* E) (t i)) := by
@@ -20,9 +20,9 @@ private theorem sg_diagT {E : Type} [Field E] {n : ℕ} (σ : E ≃+* E) (t : Fi
   · simp [diagonal_apply_ne _ h]
 
 /- English proof (translation)
-Establish `hx : ((Units.map (σ : E →* E) x : Eˣ) : E) = σ x` using `rfl`. Establish `h1 : valuation E ((Units.map (σ : E →* E) x * x⁻¹ : Eˣ) : E) = 1`. Rewrite using `[Units.val_mul, hx, map_mul, hσ, Units.val_inv_eq_inv_val, map_inv₀, mul_inv_cancel₀]`. Conclude with `(Valuation.ne_zero_iff _).2 x.ne_zero`. Establish `h2` using `isUnram_absPow E s _ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 private theorem absPow_map {E : Type} [Field E] [ValuativeRel E] [TopologicalSpace E]
     [IsNonarchimedeanLocalField E] {σ : E ≃+* E} (hσ : Isom σ) (s : ℂ) (x : Eˣ) :
@@ -36,7 +36,7 @@ private theorem absPow_map {E : Type} [Field E] [ValuativeRel E] [TopologicalSpa
   exact h2
 
 /- English proof (translation)
-Establish `hdet : ∀ (u : Fin n → Eˣ) (a : Fin n), GeneralLinearGroup.det ((leviTorus E (Fin n) u) a) = u a` using `fun u a => congrFun ((leviTorus E (Fin n)).symm_apply_apply u) a`. Rewrite using `[deltaHalf_apply, deltaHalf_apply]`. Simplify using `only [hdet]`. Conclude with `Finset.prod_congr rfl (fun a _ => absPow_map hσ _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem deltaHalf_map {E : Type} [Field E] [ValuativeRel E] [TopologicalSpace E]
     [IsNonarchimedeanLocalField E] {n : ℕ} {σ : E ≃+* E} (hσ : Isom σ) (t : Fin n → Eˣ) :
@@ -52,7 +52,7 @@ private theorem deltaHalf_map {E : Type} [Field E] [ValuativeRel E] [Topological
 end UpperTheory.Gal.LocD
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n σ hσ V _ _ π A hA t y`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `hj : ∀ (s : Fin n → Eˣ) (w : V), jacB π s (Submodule.Quotient.mk w) = (((deltaHalf E (fun _ : Fin n => Unit) (leviTorus E (Fin n) s))⁻¹ : ℂˣ) : ℂ) • (Submodule.Quotient.mk (π (diagT E (Fin n) s) w) : Jacquet π (unipB E (Fin n)))` using `fun _ _ => rfl`. Rewrite using `[hj, map_smul, jacA_mk, jacA_mk, hj, hA, sg_diagT, deltaHalf_map hσ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.LocD.jacSemi :
     JacSemi := by

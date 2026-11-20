@@ -9,9 +9,9 @@ open scoped InnerProductSpace ContDiff
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.HCA
 
 /- English proof (translation)
-Establish `e : (fun z : Fin n → Fin n → ℂ => (fun i j => (Matrix.of z * g) i j : Fin n → Fin n → ℂ)) = fun z i j => ∑ k, z i k * g k j`. Use extensionality with `z i j`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[e]`. Use `contDiff_pi.2 fun i => contDiff_pi.2 fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContDiff.sum fun k _ => ?_` and prove the remaining obligations. Conclude with `((contDiff_apply ℝ ℂ k).comp (contDiff_apply ℝ (Fin n → ℂ) i)).mul contDiff_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiff_mulRight {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
     ContDiff ℝ ∞ (fun z : Fin n → Fin n → ℂ => (fun i j => (Matrix.of z * g) i j : Fin n → Fin n → ℂ)) := by
@@ -25,11 +25,11 @@ theorem contDiff_mulRight {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) :
   exact ((contDiff_apply ℝ ℂ k).comp (contDiff_apply ℝ (Fin n → ℂ) i)).mul contDiff_const
 
 /- English proof (translation)
-Introduce `n G H _ _ π hG hrep`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `u v ⟨Fu, hFu, hu⟩ ⟨Fv, hFv, hv⟩`. Use `⟨fun z => Fu z + Fv z, hFu.add hFv, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hu z hz, hv z hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `c v ⟨Fv, hFv, hv⟩`. Use `⟨fun z => c • Fv z, hFv.const_smul c, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, hv z hz]`. Introduce and unpack `g hg v ⟨Fv, hFv, hv⟩`. Use `⟨fun z => Fv (fun i j => (Matrix.of z * g) i j), hFv.comp (contDiff_mulRight g), fun z hz => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hrep.2 _ hz _ hg, ContinuousLinearMap.comp_apply]`. Use `_ = Fv (fun i j => (Matrix.of z * g) i j) := hv _ (hG.mul_mem _ hz _ hg)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_closed : ∀ {n : ℕ} {G : Set (Matrix (Fin n) (Fin n) ℂ)} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hG : IsLinRed G)

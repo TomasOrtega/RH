@@ -13,7 +13,7 @@ namespace CrystallineSemistableComparison.Pb
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-The claim follows from `@GlobalTheory.T.graded_cech_cohomology_finite locGr_h polyTf_h globSerreSt_h globVanSt_h`.
+A detailed English derivation is pending.
 -/
 theorem gr_cech_fin_pf : KH.GrCechFin :=
   @GlobalTheory.T.graded_cech_cohomology_finite locGr_h polyTf_h globSerreSt_h globVanSt_h

@@ -6,7 +6,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.TensTo
 namespace PI.VolStabSW.TopoAF
 
 /- English proof (translation)
-Introduce `F _ _` and use `⟨inferInstance, inferInstance, inferInstance⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem afTop_holds : PI.VolSemiDirect.W.Lc.AFTop := fun F _ _ =>
   ⟨inferInstance, inferInstance, inferInstance⟩

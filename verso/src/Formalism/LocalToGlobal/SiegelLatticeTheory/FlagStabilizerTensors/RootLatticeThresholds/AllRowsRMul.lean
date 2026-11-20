@@ -17,11 +17,11 @@ variable {D : D7} (X : HidaSetting D)
 abbrev phi (x y : X.B.I.L2 X.B.μf X.B.fund) (c : X.B.I.Gf) : ℂ := ⟪x, X.B.R (1, c) y⟫_ℂ
 
 /- English proof (translation)
-Establish `: X.B.μf.IsHaarMeasure` using `X.B.haar`. Establish `hU` using `Formalism.L2.SG.Closed.GfUnimod_holds X.B.I X.B.μf`. Establish `hFR` using `Formalism.L2.SG.Pf.foldReady_holds X.B.I`. Use `hFR.2.1` as an intermediate fact. Use `hFR.2.2.2.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: X.B.μf.IsMulRightInvariant` using `hU`. Establish `: (X.B.I.muA X.B.μf).IsMulLeftInvariant` using `rr_muA_left X.B.I X.B.μf`. Establish `: (X.B.I.muA X.B.μf).IsMulRightInvariant` using `rr_muA_right X.B.I X.B.μf`. Establish `: SigmaFinite (X.B.I.muA X.B.μf)` using `rr_muA_sigmaFinite X.B.I X.B.μf`. Establish `h1` using `rr_FD_of X.B.I X.B.μf X.B.fund X.B.fund_spec`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `rr_IsReg_of X.B.I X.B.μf X.B.fund X.B.R X.B.R_spec`. Use `⟨fun a b => rr_mul h1 h2 a b, fun a F => rr_norm h1 h2 a F, fun x y => ?_⟩` and prove the remaining obligations. Conclude with `(rr_weak_meas h1 h2 x y).comp_measurable (measurable_const.prodMk measurable_id)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem R_facts :
     (∀ a b : X.B.I.GA, X.B.R (a * b) = (X.B.R a).comp (X.B.R b)) ∧ (∀ a F, ‖X.B.R a F‖ = ‖F‖) ∧
@@ -41,7 +41,7 @@ theorem R_facts :
   exact (rr_weak_meas h1 h2 x y).comp_measurable (measurable_const.prodMk measurable_id)
 
 /- English proof (translation)
-Establish `h` using `(R_facts X).2.1 (1, c) y`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem phi_bound (x y : X.B.I.L2 X.B.μf X.B.fund) (c : X.B.I.Gf) : ‖phi X x y c‖ ≤ ‖x‖ * ‖y‖ := by
   have h := (R_facts X).2.1 (1, c) y
@@ -49,19 +49,19 @@ theorem phi_bound (x y : X.B.I.L2 X.B.μf X.B.fund) (c : X.B.I.Gf) : ‖phi X x 
     _ = ‖x‖ * ‖y‖ := by rw [h]
 
 /- English proof (translation)
-Take `⟨hmul, -, hmeas⟩` from `R_facts X`. Establish `: X.B.μf.IsHaarMeasure` using `X.B.haar`. Establish `: SecondCountableTopology X.B.I.Gf` using `rr_secondCountable X.B.I X.B.μf`. Establish `hK : Integrable (fun p : X.B.I.Gf × X.B.I.Gf => f p.1 * g (p.1⁻¹ * p.2)) (X.B.μf.prod X.B.μf)`. Establish `h0 : Integrable (fun q : X.B.I.Gf × X.B.I.Gf => f q.1 * g q.2) (X.B.μf.prod X.B.μf)` using `hf.1.mul_prod hg.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((measurePreserving_prod_inv_mul X.B.μf X.B.μf).integrable_comp h0.aestronglyMeasurable).2 h0`. Establish `hF : ∀ x y : X.B.I.L2 X.B.μf X.B.fund, Integrable (fun p : X.B.I.Gf × X.B.I.Gf => f p.1 * g (p.1⁻¹ * p.2) * phi X x y p.2) (X.B.μf.prod X.B.μf)` using `fun x y => hK.mul_bdd ((hmeas x y).comp_measurable measurable_snd).aestronglyMeasurable (Filter.Eventually.of_forall fun p => phi_bound X x y p.2)`. Use `⟨hK.integral_prod_right, fun x y => ?_⟩` and prove the remaining obligations. Establish `step : ∀ a, ⟪x, X.B.R (1, a) (U y)⟫_ℂ = ∫ c, g (a⁻¹ * c) * phi X x y c ∂X.B.μf`. Introduce `a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ContinuousLinearMap.adjoint_inner_left, hg.2]`. Establish `e : ∀ b, g b * ⟪ContinuousLinearMap.adjoint (X.B.R (1, a)) x, X.B.R (1, b) y⟫_ℂ = g b * phi X x y (a * b)`. Introduce `b`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left, ← ContinuousLinearMap.comp_apply, ← hmul, Prod.mk_mul_mk, one_mul]`. Repeatedly rewrite using `[e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← integral_mul_left_eq_self (fun c => g (a⁻¹ * c) * phi X x y c) a]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Simplify using `only [inv_mul_cancel_left]`. Rewrite using `[ContinuousLinearMap.comp_apply, hf.2]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[step, ← integral_const_mul]`. Establish `hF' : Integrable (Function.uncurry fun a c => f a * (g (a⁻¹ * c) * phi X x y c)) (X.B.μf.prod X.B.μf)`. Use `hF x y` as an intermediate fact. Simplify using `only [mul_assoc] at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[integral_integral_swap hF']`. Use `congr 1`. Use function extensionality and compare the values at `c`. Unfold `AutInst.convF`. Rewrite using `[← integral_mul_const]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isRConvF_conv {f g : X.B.I.Gf → ℂ} {T U : X.B.I.L2 X.B.μf X.B.fund →L[ℂ] X.B.I.L2 X.B.μf X.B.fund}
     (hf : X.B.I.IsRConvF X.B.μf X.B.fund X.B.R f T) (hg : X.B.I.IsRConvF X.B.μf X.B.fund X.B.R g U) :

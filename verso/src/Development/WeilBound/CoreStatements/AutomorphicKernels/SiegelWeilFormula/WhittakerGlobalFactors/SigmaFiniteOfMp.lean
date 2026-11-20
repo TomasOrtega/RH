@@ -13,11 +13,11 @@ open scoped TensorProduct ENNReal NNReal Matrix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_basis b`. Consider the cases of `i with`. Consider the case `inl i`. Simplify using `only [hermVec, toVec, GlobalTheory.CompanionTheory.SW.HaarCoord.hermCoord, Sum.elim_inl, hermMap, Matrix.map_apply]`. Rewrite using `[GlobalTheory.CompanionTheory.SiegelND.Coef.Lim.trace_map f b, map_mul, AlgHom.commutes]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `h` using `GlobalTheory.CompanionTheory.SiegelND.Coef.Lim.trace_map (AlgHom.id F R) b ((S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) i i)`. Rewrite `h` using `[Algebra.TensorProduct.map_id, AlgHom.id_apply]`. Rewrite using `[h, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, AlgHom.commutes]`. Both sides reduce to the same expression. Consider the case `inr q`. Simplify using `only [hermVec, toVec, GlobalTheory.CompanionTheory.SW.HaarCoord.hermCoord, Sum.elim_inr, hermMap, Matrix.map_apply]`. Conclude with `GlobalTheory.CompanionTheory.SiegelND.Coef.Lim.repr_map f b _ q.2`.
+Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermVec_map {R R' : Type} [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R'] (f : R →ₐ[F] R')
     (σ : E →ₐ[F] E) {d : ℕ} (b : Module.Basis (Fin d) F E) (n : ℕ) (S : HermR R σ n) (i : Idx n d) :
@@ -43,7 +43,7 @@ def hInfR (σ : E →ₐ[F] E) {n : ℕ} (S : HermR (AF F) σ n) : HermR (Ainf F
 def hFinR (σ : E →ₐ[F] E) {n : ℕ} (S : HermR (AF F) σ n) : HermR (Af F) σ n := hermFin σ S
 
 /- English proof (translation)
-Establish `h2 : μ = ν.map e.symm`. Rewrite using `[← h.map_eq, MeasurableEquiv.map_symm_map]`. Rewrite using `[h2]`. Conclude with `e.symm.measurableEmbedding.sigmaFinite_map`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigmaFinite_of_mp {X Y : Type*} [MeasurableSpace X] [MeasurableSpace Y] (e : X ≃ᵐ Y) {μ : Measure X}
     {ν : Measure Y} [SigmaFinite ν] (h : MeasurePreserving e μ ν) : SigmaFinite μ := by
@@ -55,7 +55,7 @@ theorem sigmaFinite_of_mp {X Y : Type*} [MeasurableSpace X] [MeasurableSpace Y] 
 omit [NumberField E] in
 
 /- English proof (translation)
-Substitute `h` using the available equality. Take `rfl : l₁ = l₂` from `Measure.ext fun s _ => hl s`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem coordHerm_congr {R : Type} [CommRing R] [Algebra F R] [TopologicalSpace R]
     {m₁ m₂ : MeasurableSpace R} (h : m₁ = m₂) (l₁ : @Measure R m₁) (l₂ : @Measure R m₂) (hl : ∀ s, l₁ s = l₂ s)
@@ -70,29 +70,23 @@ open GroundTheory.Global GroundTheory.Automorphic.GJMatrix GroundTheory.Heights�
 attribute [local instance 100000] GroundTheory.Global.measurableSpace_adeleRing GroundTheory.Global.measurableSpace_infiniteAdeleRing
 
 /- English proof (translation)
-Take `⟨⟨hALC, hASC, hAT2⟩, hAfLC, hAfSC, hAfT2⟩` from `GlobalTheory.CompanionTheory.AdeleTop.adele_top F`. Use `haveI : BorelSpace (Af F) := ⟨rfl⟩`. Use `haveI : BorelSpace (HermR (AF F) σ n) := ⟨rfl⟩`. Use `haveI : BorelSpace (HermR (Ainf F) σ n) := ⟨rfl⟩`. Use `haveI : BorelSpace (HermR (Af F) σ n) := ⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `haveI : FiniteDimensional F E := Module.Finite.of_basis b`. Take `⟨hinv, δ, hδ, hσδ⟩` from `GlobalTheory.CompanionTheory.SW.HaarCoord.conj_facts hCM`. Take `⟨ξ, hξ⟩` from `GlobalTheory.CompanionTheory.AdeleDual.exists_eq_adelicChar_mul ψ hψ.1 hψ.2.2.1`. Establish `hξ0 : ξ ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Take `⟨x, hx⟩` from `hψ.2.2.2`. Apply `hx` to reduce the goal to its premises. Rewrite using `[hξ x]`. Simplify using the standard rewrite rules. Set `e : HermR (AF F) σ n ≃ₜ (Idx n d → AF F)` to `(hermVec_isHomeomorph hCM (AF F) b n).homeomorph _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : ∀ S, e S = hermVec (AF F) σ b n S` using `fun _ => rfl`. Establish `hs : (ξ • formB σ b n).IsSymm` using `(formB_isSymm hinv b n).smul ξ`. Establish `hdet : (ξ • formB σ b n).det ≠ 0`. Rewrite using `[Matrix.det_smul]`. Conclude with `mul_ne_zero (pow_ne_zero _ hξ0) (formB_det hinv b n)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hpair : ∀ S T : HermR (AF F) σ n, chiG (ξ • formB σ b n) (e S) (e T) = ψ (pairHerm (AF F) σ n S T)`. Introduce `S T`. Rewrite using `[he, he, pair_eq (AF F) hinv hCM.2.2.1 hδ hσδ b n S T, hξ, chiG]`. Use `congr 2`. Establish `h2 : (ξ • formB σ b n).map (algebraMap F (AF F)) = algebraMap F (AF F) ξ • (formB σ b n).map (algebraMap F (AF F))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `p q`. Conclude with `map_mul (algebraMap F (AF F)) ξ (formB σ b n p q)`. Rewrite using `[h2, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]`. Establish `hsd : db.map e = adeleMeasurePi F` using `selfDual_eq _ hs hdet _ (selfDual_transport e (fun S T => by rw [he, he, he, hermVec_add]) _ _ hpair db hdb)`. Establish `hEq` using `GlobalTheory.CompanionTheory.Hypotheses₂.OneV.DxEuler.adele_eq l hH D hD hD1 lf hlf h1`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : SigmaFinite l := Measure.IsAddHaarMeasure.sigmaFinite l`. Use `haveI : SigmaFinite lf := Measure.IsAddHaarMeasure.sigmaFinite lf`. Establish `hΘ` using `measurePreserving_arrowProdEquivProdArrow (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F) (Idx n d) (fun _ => l) (fun _ => lf)`. Establish `hA' : MeasurePreserving e.toMeasurableEquiv db (Measure.pi fun _ : Idx n d => l.prod lf)`. Use `⟨e.toMeasurableEquiv.measurable, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `db.map e = _`. Rewrite using `[hsd, adeleMeasurePi, hEq]`. Set `eI` to `((hermVec_isHomeomorph hCM (Ainf F) b n).homeomorph _).toMeasurableEquiv`. Set `eF` to `((hermVec_isHomeomorph hCM (Af F) b n).homeomorph _).toMeasurableEquiv`. Establish `hI : MeasurePreserving eI (coordHerm (Ainf F) σ b l n) (Measure.pi fun _ : Idx n d => l)` using `mp_hermVec hCM (Ainf F) b n l`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hF : MeasurePreserving eF (coordHerm (Af F) σ b lf n) (Measure.pi fun _ : Idx n d => lf)` using `mp_hermVec hCM (Af F) b n lf`. Use `haveI : SigmaFinite (coordHerm (Ainf F) σ b l n) := sigmaFinite_of_mp eI hI`. Use `haveI : SigmaFinite (coordHerm (Af F) σ b lf n) := sigmaFinite_of_mp eF hF`. Set `eP` to `eI.prodCongr eF`. Establish `hP : MeasurePreserving eP ((coordHerm (Ainf F) σ b l n).prod (coordHerm (Af F) σ b lf n)) ((Measure.pi fun _ : Idx n d => l).prod (Measure.pi fun _ : Idx n d => lf))` using `hI.prod hF`.
-
-Use `(hP.comp_left_iff).1 ?_` and prove the remaining obligations. Establish `hc` using `hΘ.comp hA'`. Use `hc using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `S`. Use `Prod.ext (funext fun i => ?_) (funext fun i => ?_)` and prove the remaining obligations.
-
-Use `show hermVec (Ainf F) σ b n (hermMap (fstA F) σ S) i = (hermVec (AF F) σ b n S i).1`. Rewrite using `[hermVec_map]`. Both sides reduce to the same expression. Use `show hermVec (Af F) σ b n (hermMap (sndA F) σ S) i = (hermVec (AF F) σ b n S i).2`. Rewrite using `[hermVec_map]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem db_split' (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ) (n : ℕ)
     (db : Measure (HermR (AF F) σ n)) (hdb : SdHerm F E σ (AF F) ψ n db)
@@ -169,7 +163,7 @@ theorem db_split' (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF 
 end Meas
 
 /- English proof (translation)
-Establish `hm : GroundTheory.Global.measurableSpace_infiniteAdeleRing F = (measAinf : MeasurableSpace (Ainf F))` using `(GroundTheory.Global.borelSpace_infiniteAdeleRing F).measurable_eq`. Take `⟨l, hl, hH, D, hD, hD1⟩` from `@GlobalTheory.CompanionTheory.Hypotheses₂.OneV.DxEuler.std_transfer F _ _ laminf hinf (GroundTheory.Global.measurableSpace_infiniteAdeleRing F) hm`. Establish `h` using `db_split' σ hCM ψ hψ n db hdb b l hH D hD hD1 lf hlf h1`. Rewrite `h` using `[coordHerm_congr hm l laminf hl σ b n]`. Conclude with `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem db_split (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (ψ : AddChar (AF F) ℂ) (hψ : IsCharAF F ψ) (n : ℕ)
     (db : Measure (HermR (AF F) σ n)) (hdb : SdHerm F E σ (AF F) ψ n db)

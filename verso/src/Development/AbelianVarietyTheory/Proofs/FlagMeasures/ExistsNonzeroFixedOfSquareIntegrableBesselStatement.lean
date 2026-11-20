@@ -8,7 +8,7 @@ open MeasureTheory Matrix Filter Topology Formalism.QuantumDeterminants Formalis
 open scoped InnerProductSpace ENNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.BesselFixed.nonVan_of_bessel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FExistsNonzeroFixedOfSquareIntegrableBessel.lean&line=233#L233)
 -/

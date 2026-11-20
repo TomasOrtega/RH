@@ -27,7 +27,7 @@ private theorem extRep_apply {G A V : Type} [Group G] [CommRing A] [AddCommGroup
     extRep ρ c hc g x = (ρ g x.1 + x.2 • c g, x.2) := rfl
 
 /- English proof (translation)
-The claim follows from `h.comp (f := fun p : H × V => ((p.1 : G), p.2)) ((continuous_subtype_val.comp continuous_fst).prodMk continuous_snd)`.
+A detailed English derivation is pending.
 -/
 private theorem contAction_sub {G A V : Type} [Group G] [TopologicalSpace G] [CommRing A] [AddCommGroup V]
     [Module A V] [TopologicalSpace V] (ρ : Representation A G V) (h : ReciprocityTheory.Gal.ContAction ρ) (H : Subgroup G) :
@@ -45,9 +45,7 @@ variable {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsT
     [ContinuousConstSMul A V]
 
 /- English proof (translation)
-Establish `hs : Continuous fun p : A × V => p.1 • p.2` using `IsModuleTopology.continuous_bilinear_of_finite_left (Algebra.lsmul ℚ_[l] ℚ_[l] V : A →ₐ[ℚ_[l]] Module.End ℚ_[l] V).toLinearMap`. Unfold `ReciprocityTheory.Gal.ContAction`. Simplify using `only [extRep_apply]`. Use `Continuous.prodMk (Continuous.add ?_ ?_) (continuous_snd.comp continuous_snd)` and prove the remaining obligations. Conclude with `Continuous.comp (f := fun p : G × (V × A) => (p.1, p.2.1)) hρ (by fun_prop)`.
-
-Conclude with `hs.comp ((continuous_snd.comp continuous_snd).prodMk (cc.comp continuous_fst))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem cont_ext (l : ℕ) [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G]
     {A : Type} [Field A] [Algebra ℚ_[l] A] [Module.Finite ℚ_[l] A]
@@ -67,9 +65,9 @@ private theorem cont_ext (l : ℕ) [Fact l.Prime] {G : Type} [Group G] [Topologi
   · exact hs.comp ((continuous_snd.comp continuous_snd).prodMk (cc.comp continuous_fst))
 
 /- English proof (translation)
-Establish `hψ : IsOpenEmbedding (φ.comp H.subtype)` using `hφ.comp hH.isOpenEmbedding_subtypeVal`. Establish `cr1 : CrOn φ (chRep (1 : G →* Aˣ)) H` using `crUnr (A := ℚ_[l]) (φ.comp H.subtype) hψ (resCoef ℚ_[l] ((chRep (1 : G →* Aˣ)).comp H.subtype : Representation A H A)) (by`. Unfold `ReciprocityTheory.Gal.ContAction`. Simplify `continuous_snd) 0` using `[resCoef, chRep]`. Use the proof step `(fun g _ x => by simp [resCoef, chRep])`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `htw : twist (1 : G →* Aˣ)⁻¹ ρ = ρ`. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Simplify using `[twist]`. Use `crExt φ hφ ρ (extRep ρ c hc.2) hρ (cont_ext l ρ hρ c hc.2 hc.1) 1 (LinearMap.inl A _ A) (LinearMap.snd A _ A) (0, 1) c LinearMap.inl_injective (Function.Exact.inl_snd) rfl (fun g x => by simp [extRep_apply]) (fun g => by simp [extRep_apply]) H hH h cr1` as an intermediate fact. Rewrite `this` using `[htw]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem ext_iff (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) (ρ : Representation A G V)
     (hρ : ReciprocityTheory.Gal.ContAction ρ) (c : G → V) (hc : c ∈ Z1 ρ) (H : Subgroup G) [H.Normal]
@@ -97,9 +95,9 @@ end UpperTheory.V.Th.BkSub
 
 open UpperTheory.V.Th.BkSub in
 /- English proof (translation)
-Introduce `l _ G _ _ _ φ hφ A _ _ _ _ _ _ V _ _ _ _ _ _ _ _ _ V' _ _ _ _ _ _ _ _ _ ρ ρ' hρ hρ' f hf hi H _ hH h' c hc hz`. Establish `hψ : IsOpenEmbedding (φ.comp H.subtype)` using `hφ.comp hH.isOpenEmbedding_subtypeVal`. Establish `hc' : (fun g => f (c g)) ∈ Z1 ρ'` using `⟨(IsModuleTopology.continuous_of_linearMap (f.restrictScalars ℚ_[l])).comp hc.1, fun g h => by simp only [hc.2 g h, map_add, hf]⟩`. Establish `h : CrOn φ ρ H` using `((isCrys_isDR_sub_quot (φ.comp H.subtype) hψ _ _ (contAction_sub _ hρ H) (contAction_sub _ hρ' H) (f.restrictScalars ℚ_[l]) (fun g x => hf g x)).1 hi).1 h'`. Use `(ext_iff φ hφ ρ hρ c hc H hH h).1 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hE` using `(ext_iff φ hφ ρ' hρ' _ hc' H hH h').2 hz`. Use `((isCrys_isDR_sub_quot (φ.comp H.subtype) hψ _ _ (contAction_sub _ (cont_ext l ρ hρ c hc.2 hc.1) H) (contAction_sub _ (cont_ext l ρ' hρ' _ hc'.2 hc'.1) H) ((f.restrictScalars ℚ_[l]).prodMap LinearMap.id) (fun g x => ?_)).1 ?_).1 hE` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(f (ρ g x.1 + x.2 • c g), x.2) = (ρ' g (f x.1) + x.2 • f (c g), x.2)`. Rewrite using `[map_add, map_smul, hf]`. Conclude with `hi.prodMap Function.injective_id`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.z1fSub :
     ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {A : Type} [Field A] [Algebra ℚ_[l] A] [Module.Finite ℚ_[l] A] [TopologicalSpace A] [IsModuleTopology ℚ_[l] A] [IsTopologicalRing A] {V : Type} [AddCommGroup V] [Module A V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [IsTopologicalAddGroup V] [ContinuousConstSMul A V] {V' : Type} [AddCommGroup V'] [Module A V'] [Module ℚ_[l] V'] [IsScalarTower ℚ_[l] A V'] [FiniteDimensional ℚ_[l] V'] [TopologicalSpace V'] [IsModuleTopology ℚ_[l] V'] [IsTopologicalAddGroup V'] [ContinuousConstSMul A V'] (ρ : Representation A G V) (ρ' : Representation A G V'), ContAction ρ → ContAction ρ' → ∀ f : V →ₗ[A] V', (∀ g x, f (ρ g x) = ρ' g (f x)) → Function.Injective f → ∀ (H : Subgroup G) [H.Normal], IsOpen (H : Set G) → CrOn φ ρ' H → ∀ c ∈ Z1 ρ, (fun g => f (c g)) ∈ UpperTheory.V.Loc.finiteCocycles φ ρ' → c ∈ UpperTheory.V.Loc.finiteCocycles φ ρ := by

@@ -21,17 +21,13 @@ def intConj (hσ : ∀ x, Valued.v (σ x) = Valued.v x) : intL L →+* intL L :=
 open scoped Valued in
 
 /- English proof (translation)
-Use `haveI := P.fSatake_nontriv hU`. Use `letI : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).RankOne := Valuation.IsRankOneDiscrete.rankOne _ (e := 2) (by norm_num)`. Take `⟨hσσ, hσ, h3, h4, ⟨x, hx1, hx2⟩, hq, hcard⟩` from `hU`. Set `A` to `(Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring`. Use `haveI : IsDiscreteValuationRing A := (Valued.v : Valuation L _).valuationSubring_isDiscreteValuationRing`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Finite (A ⧸ IsLocalRing.maximalIdeal A) := Nat.finite_of_card_ne_zero (ne_of_eq_of_ne hcard (pow_ne_zero _ (by omega)))`. Use `haveI : IsAdicComplete (IsLocalRing.maximalIdeal A) A := by`. Use `NormIntegers.isAdicComplete_of_fg (C := L) ⟨?_, ?_, ?_⟩ (IsNoetherian.noetherian _) (IsLocalRing.maximalIdeal.isMaximal _).ne_top` and prove the remaining obligations. Conclude with `FaithfulSMul.algebraMap_injective _ _`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `: ‖(x : L)‖ ≤ 1` using `Valued.toNormedField.norm_le_one_iff.2 x.2`. Conclude with `this` after adjusting the coercions. Introduce `x hx`. Establish `: ‖x‖ ≤ 1` using `by exact_mod_cast hx`. Conclude with `⟨⟨x, Valued.toNormedField.norm_le_one_iff.1 this⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `c : A →+* A` to `intConj hσ`. Establish `hc : ∀ x, c (c x) = x` using `fun x => Subtype.ext (hσσ x)`. Establish `hI : ∀ x ∈ IsLocalRing.maximalIdeal A, c x ∈ IsLocalRing.maximalIdeal A`. Introduce `x hx hu`. Conclude with `hx (by simpa [hc] using hu.map c)`.
-
-Establish `hω : ∃ ω, IsUnit (ω - c ω)`. Use `⟨⟨x, hx1⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[(Valuation.valuationSubring.integers _).isUnit_iff_valuation_eq_one]`. Use `show Valued.v (x - σ x) = 1`. Rewrite using `[Valuation.map_sub_swap, hx2]`.
-
-Conclude with `GlobalTheory.InertNorm.exists_dvd_mul_map_sub_X A _ c hc hI hω f hf hfc h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dvd_norm_sub_X (hU : IsUnramInv ϖ σ q) (f : Polynomial (intL L)) (hf : f.Monic)
     (hfc : f.map (intConj hU.2.1) = f) (h0 : IsUnit (f.coeff 0)) :
@@ -67,13 +63,13 @@ theorem exists_dvd_norm_sub_X (hU : IsUnramInv ϖ σ q) (f : Polynomial (intL L)
   exact GlobalTheory.InertNorm.exists_dvd_mul_map_sub_X A _ c hc hI hω f hf hfc h0
 
 /- English proof (translation)
-Set `c` to `intConj hU.2.1`. Establish `hc : ∀ x, c (c x) = x` using `fun x => Subtype.ext (hU.1 x)`. Set `ι` to `(intL L).subtype`. Set `B : Matrix (Fin n) (Fin n) (intL L)` to `fun i j => if i.val + j.val + 1 = n then 1 else 0`. Establish `hBι : B.map ι = antiJ L n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `show ι (if i.val + j.val + 1 = n then 1 else 0) = if i.val + j.val + 1 = n then 1 else 0`. Rewrite using `[apply_ite ι, map_one, map_zero]`. Establish `hB : cT c B = B`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show c (if j.val + i.val + 1 = n then 1 else 0) = if i.val + j.val + 1 = n then 1 else 0`. Rewrite using `[apply_ite c, map_one, map_zero, add_comm j.val]`. Establish `hBB : B * B = 1` using `Matrix.map_injective (f := ι) Subtype.val_injective (by show (B * B).map ι = (1 : Matrix _ _ _).map ι`. Rewrite using `[Matrix.map_mul, hBι, GlobalTheory.UnitarySwap.antiJ_mul_self, Matrix.map_one _ (map_zero ι) (map_one ι)])`. Take `⟨p, hp⟩` from `GlobalTheory.UnitaryDoubleCoset.exists_poly_norm hc (exists_dvd_norm_sub_X hU) hB (IsUnit.of_mul_eq_one _ hBB)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (B * cT c (Polynomial.aeval B p)) * Polynomial.aeval B p = 1` using `by rw [Matrix.mul_assoc, hp, hBB]`. Use `⟨bc ι ⟨Polynomial.aeval B p, _, mul_eq_one_comm.1 h1, h1⟩, ⟨_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show cT σ ((Polynomial.aeval B p).map ι) * 1 * (Polynomial.aeval B p).map ι = _`. Rewrite using `[Matrix.mul_one, GlobalTheory.UnitaryDoubleCoset.cT_map ι (c := c) (fun _ => rfl), ← Matrix.map_mul, hp, hBι]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_antiJ_frame (hU : IsUnramInv ϖ σ q) (n : ℕ) :
     ∃ h ∈ GLint (Fin n) (intL L), cT σ h.1 * 1 * h.1 = antiJ L n := by
@@ -100,9 +96,9 @@ theorem exists_antiJ_frame (hU : IsUnramInv ϖ σ q) (n : ℕ) :
   rw [Matrix.mul_one, GlobalTheory.UnitaryDoubleCoset.cT_map ι (c := c) (fun _ => rfl), ← Matrix.map_mul, hp, hBι]
 
 /- English proof (translation)
-Introduce and unpack `g hg g' hg' _ ⟨h, rfl⟩ _ ⟨k, rfl⟩ e`. Take `⟨k₁, hk₁, k₂, hk₂, ⟨M, hM⟩, e'⟩` from `GlobalTheory.UnitaryDoubleCoset.exists_unitary_factors (intL L).subtype (c := intConj hU.2.1) (σ := σ) (fun _ => rfl) (fun x => Subtype.ext (hU.1 x)) (exists_dvd_norm_sub_X hU) hg hg' h k e`. Use `⟨k₁, hk₁, k₂, ⟨hk₂, ?_⟩, e'⟩` and prove the remaining obligations. Use `GlobalTheory.UnitarySwap.mem_GLint_of_unitary (J := 1) hU.2.1 (one_mem _) hk₂ fun i j => ?_` and prove the remaining obligations. Rewrite using `[hM]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(M i j).2`.
+A detailed English derivation is pending.
 -/
 theorem doubleCoset_one (hU : IsUnramInv ϖ σ q) :
     ∀ g ∈ UJ σ (1 : Matrix (Fin n) (Fin n) L), ∀ g' ∈ UJ σ (1 : Matrix (Fin n) (Fin n) L),
@@ -121,9 +117,9 @@ theorem doubleCoset_one (hU : IsUnramInv ϖ σ q) :
 open GlobalTheory.InertDoubleCoset in
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q n hU g g' a b ha hb e`. Take `⟨h, hh, eh⟩` from `exists_antiJ_frame hU n`. Take `⟨k₁, h₁, k₂, h₂, e'⟩` from `doubleCoset_one hU _ (conj_mem_UJ σ (inv_frame σ eh) g.2) _ (conj_mem_UJ σ (inv_frame σ eh) g'.2) (h * a * h⁻¹) (mul_mem (mul_mem hh ha) (inv_mem hh)) (h * b * h⁻¹) (mul_mem (mul_mem hh hb) (inv_mem hh)) (by rw [e]; group)`. Establish `m : ∀ k ∈ UJ σ (1 : Matrix (Fin n) (Fin n) L) ⊓ GLint (Fin n) (intL L), ∃ k' ∈ KU σ n, (k' : GL (Fin n) L) = h⁻¹ * k * h` using `fun k hk => ⟨⟨_, conj_mem_UJ σ eh hk.1⟩, ⟨conj_mem_UJ σ eh hk.1, mul_mem (s := GLint (Fin n) (intL L)) (mul_mem (inv_mem hh) hk.2) hh⟩, rfl⟩`. Take `⟨l₁, m₁, e₁⟩` from `m k₁ h₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨l₂, m₂, e₂⟩` from `m k₂ h₂`. Use `⟨l₁, m₁, l₂, m₂, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, e₁, e₂]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem doubleCoset_GU_of_GL : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q n : ℕ), IsUnramInv ϖ σ q → ∀ (g g' : GU σ n) (a b : GL (Fin n) L), a ∈ GLint (Fin n) (intL L) → b ∈ GLint (Fin n) (intL L) → (g' : GL (Fin n) L) = a * g * b → ∃ k₁ ∈ KU σ n, ∃ k₂ ∈ KU σ n, g' = k₁ * g * k₂ := by
   intro L _ _ _ ϖ σ q n hU g g' a b ha hb e

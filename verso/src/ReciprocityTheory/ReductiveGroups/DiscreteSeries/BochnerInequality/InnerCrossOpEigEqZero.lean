@@ -17,14 +17,14 @@ variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin 
   {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M} {lam : Fin n → ℝ}
 
 /- English proof (translation)
-Unfold `Wm`. Conclude with `iSup₂_le fun _ _ => inf_le_right`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Wm_le_ncV : Wm ε E V ≤ ncV ε V 1 := by
   unfold Wm
   exact iSup₂_le fun _ _ => inf_le_right
 
 /- English proof (translation)
-Establish `h` using `crossOp_symm hU 1 0 u v`. Rewrite `h` using `[hu, hv, inner_smul_left, inner_smul_right, Complex.conj_ofReal]`. Establish `hne : (θ : ℂ) ≠ (θ' : ℂ)` using `by exact_mod_cast hθ`. Assume the negation of the conclusion as `h0`. Conclude with `hne (mul_right_cancel₀ h0 h)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem inner_crossOp_eig_eq_zero (hU : IsInfUnitary ε E) {θ θ' : ℝ} (hθ : θ ≠ θ')
     {u v : Big n 1 M} (hu : crossOp ε E 1 0 u = (θ : ℂ) • u)
@@ -36,9 +36,9 @@ theorem inner_crossOp_eig_eq_zero (hU : IsInfUnitary ε E) {θ θ' : ℝ} (hθ :
   exact hne (mul_right_cancel₀ h0 h)
 
 /- English proof (translation)
-Establish `h : (Wm ε E V).IsOrtho (Wp ε E V)`. Unfold `Wm Wp`. Use `Submodule.isOrtho_iSup_left.mpr fun θ => Submodule.isOrtho_iSup_left.mpr fun hθ => Submodule.isOrtho_iSup_right.mpr fun θ' => Submodule.isOrtho_iSup_right.mpr fun hθ' => ?_` and prove the remaining obligations. Rewrite using `[Submodule.isOrtho_iff_inner_eq]`. Introduce `u hu v hv`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hu`, `hv` using `[Submodule.mem_inf, Module.End.mem_eigenspace_iff]`. Conclude with `inner_crossOp_eig_eq_zero hU (ne_of_lt (hθ.trans hθ')) hu.1 hv.1`. Conclude with `Submodule.isOrtho_iff_inner_eq.mp h x hx y hy`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Wm_perp_Wp (hU : IsInfUnitary ε E) {x y : Big n 1 M} (hx : x ∈ Wm ε E V)
     (hy : y ∈ Wp ε E V) : inner ℂ x y = 0 := by
@@ -53,28 +53,28 @@ theorem Wm_perp_Wp (hU : IsInfUnitary ε E) {x y : Big n 1 M} (hx : x ∈ Wm ε 
   exact Submodule.isOrtho_iff_inner_eq.mp h x hx y hy
 
 /- English proof (translation)
-Conclude with `ncV_mem hF κ`.
+A detailed English derivation is pending.
 -/
 theorem mem_V_of_mem_ncV {k : ℕ} {F : Big n k M} (hF : F ∈ ncV ε V k)
     (κ : Fin k → Fin n × Fin n) : F κ ∈ V := by
   exact ncV_mem hF κ
 
 /- English proof (translation)
-Establish `hA' : ∀ a b c d : Fin n, A a b * A c d - A c d * A a b = (if b = c then A a d else 0) - (if d = a then A c b else 0)` using `hA`. Establish `term : ∀ a b : Fin n, ε b = ε a → A a b (A b a w) = ((((if b = a then μ a ^ 2 else 0) + (if a < b then μ a - μ b else 0) : ℝ)) : ℂ) • w`. Introduce `a b hab`. Break down `lt_trichotomy b a with h | h | h` into its components or cases. Rewrite using `[hw.2 b a h hab, map_zero, if_neg (ne_of_lt h), if_neg (lt_asymm h)]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_neg (lt_irrefl b), add_zero, hw.1 b, map_smul, hw.1 b, smul_smul, ← Complex.ofReal_mul, ← sq]`. Establish `e` using `LinearMap.congr_fun (hA' a b b a) w`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, eq_self_iff_true, if_true, hw.2 a b h hab.symm, map_zero, sub_zero] at e`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, if_neg (ne_of_gt h), if_pos h, hw.1 a, hw.1 b]`. Simplify using `[sub_smul]`. Establish `hsum : casimirK ε A w = ((∑ a, ∑ b ∈ univ.filter (fun b => ε b = ε a), ((if b = a then μ a ^ 2 else 0) + (if a < b then μ a - μ b else 0)) : ℝ) : ℂ) • w`. Simplify using `only [casimirK, LinearMap.sum_apply, Module.End.mul_apply, Complex.ofReal_sum, Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b hb => term a b (Finset.mem_filter.mp hb).2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hA2 : ∀ a, ∑ b ∈ univ.filter (fun b => ε b = ε a), ((if b = a then μ a ^ 2 else 0) + (if a < b then μ a - μ b else 0)) = μ a ^ 2 + ((∑ b, if a < b ∧ ε b = ε a then μ a else 0) - ∑ b, if a < b ∧ ε b = ε a then μ b else 0)`. Introduce `a`. Rewrite using `[Finset.sum_filter, ← Finset.sum_sub_distrib]`. Establish `h2 : μ a ^ 2 = ∑ b, (if b = a then μ a ^ 2 else 0)` using `by simp`. Use `conv_rhs => rw [h2, ← Finset.sum_add_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp_all`. Establish `hC : (∑ a, ∑ b, if a < b ∧ ε b = ε a then μ b else 0) = ∑ a, ∑ b, if b < a ∧ ε b = ε a then μ a else 0`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h1 : b < a ∧ ε a = ε b`. Rewrite using `[if_pos h1, if_pos ⟨h1.1, h1.2.symm⟩]`. Rewrite using `[if_neg h1, if_neg fun h2 => h1 ⟨h2.1, h2.2.symm⟩]`. Establish `hρ : ∀ a, 2 * rhoC ε a = (∑ b, if a < b ∧ ε b = ε a then (1 : ℝ) else 0) - ∑ b, if b < a ∧ ε b = ε a then (1 : ℝ) else 0`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [rhoC]`. Rewrite using `[Finset.sum_boole, Finset.sum_boole]`. Expand and normalize the polynomial expressions, which then agree. Establish `hR : casValK ε μ = ∑ a, (μ a ^ 2 + μ a * (2 * rhoC ε a))`. Simplify using `only [casValK, nsq, dot, Pi.add_apply]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`. Rewrite using `[hsum, hR, Finset.sum_congr rfl fun a _ => hA2 a]`. Use `congr 2`. Simplify using `only [hρ, mul_sub, Finset.mul_sum, mul_ite, mul_one, mul_zero, Finset.sum_add_distrib, Finset.sum_sub_distrib, hC]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem casimirK_eq_casValK_smul_of_isKHWVec {X : Type*} [AddCommGroup X] [Module ℂ X]
     {A : Fin n → Fin n → Module.End ℂ X} (hA : IsGlRep A) {μ : Fin n → ℝ} {w : X}
@@ -134,11 +134,11 @@ private theorem casimirK_eq_casValK_smul_of_isKHWVec {X : Type*} [AddCommGroup X
     Finset.sum_sub_distrib, hC]
 
 /- English proof (translation)
-Take `⟨γ, hγ, hνγ⟩` from `khw_big_weight hE hV hx hx0 hν`. Use `⟨(γ 0).1, (γ 0).2, hγ 0, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hνγ` using `[Fin.sum_univ_one]`. Rewrite using `[← hνγ]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hm : casimirK ε (mAct E 1) x = (casValK ε (lowK ε lam) : ℂ) • x`. Use extensionality with `κ`. Rewrite using `[casimirK_mAct_apply, casimirK_irr hE hV _ (ncV_mem hx κ)]`. Both sides reduce to the same expression. Establish `hcas` using `LinearMap.congr_fun (casimirK_bAct (ε := ε) (E := E) 1) x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `hcas` using `[casimirK_eq_casValK_smul_of_isKHWVec (bAct_isGlRep hE 1) hν]`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, Fin.sum_univ_one, factorCasimir_ncV_one hx, hm, two_smul] at hcas`. Rewrite using `[two_smul]`. Use `push_cast`. Rewrite using `[sub_smul, sub_smul, hcas]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -166,11 +166,11 @@ theorem crossOp_khw (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε 
     abel
 
 /- English proof (translation)
-Introduce `a b hab v hv`. Establish `hVs : IsKStableSub ε E V` using `hV.2.1`. Establish `hle : Wm ε E V ≤ (Wm ε E V).comap (bAct E 1 a b)`. Unfold `Wm`. Use `iSup₂_le fun θ hθ x hx => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.mem_comap]`. Rewrite `hx` using `[Submodule.mem_inf, Module.End.mem_eigenspace_iff]`. Establish `hc : crossOp ε E 1 0 (bAct E 1 a b x) = bAct E 1 a b (crossOp ε E 1 0 x)` using `LinearMap.congr_fun (crossOp_comm hE 1 0 hab) x`. Establish `hmem : bAct E 1 a b x ∈ Module.End.eigenspace (crossOp ε E 1 0) (θ : ℂ) ⊓ ncV ε V 1`. Rewrite using `[Submodule.mem_inf, Module.End.mem_eigenspace_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ncV_kStable hVs 1 a b hab x hx.2⟩` and prove the remaining obligations. Rewrite using `[hc, hx.1, map_smul]`. Conclude with `Submodule.mem_iSup_of_mem θ (Submodule.mem_iSup_of_mem hθ hmem)`. Conclude with `hle hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Wm_kStable (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε E (lowK ε lam) V) : IsKStableSub ε (bAct E 1) (Wm ε E V) := by
   intro a b hab v hv

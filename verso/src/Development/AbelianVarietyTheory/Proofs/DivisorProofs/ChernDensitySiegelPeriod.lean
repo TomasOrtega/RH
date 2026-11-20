@@ -24,7 +24,7 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {g : ℕ}
   {τ C : E → Matrix (Fin g) (Fin g) ℂ} {z : E}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use extensionality with `a b`. Apply the tactic sequence `apply Complex.ext <;> simp [imPart, two_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem two_imPart (τ : E → Matrix (Fin g) (Fin g) ℂ) :
     (fun x => (2 : ℂ) • imPart τ x) = fun x => (-Complex.I) • τ x + Complex.I • (τ x)ᴴᵀ := by
@@ -33,7 +33,7 @@ theorem two_imPart (τ : E → Matrix (Fin g) (Fin g) ℂ) :
   apply Complex.ext <;> simp [imPart, two_mul]
 
 /- English proof (translation)
-Establish `h' : MContDiffAt 2 τ z` using `fun a b => (h a b).restrict_scalars ℝ`. Rewrite using `[two_imPart]`. Conclude with `(MContDiffAt.smul contDiffAt_const h').add (MContDiffAt.smul contDiffAt_const h'.conjTranspose.transpose)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mContDiffAt_two_imPart (h : ∀ a b, ContDiffAt ℂ 2 (fun x => τ x a b) z) :
     MContDiffAt 2 (fun x => (2 : ℂ) • imPart τ x) z := by
@@ -43,9 +43,9 @@ theorem mContDiffAt_two_imPart (h : ∀ a b, ContDiffAt ℂ 2 (fun x => τ x a b
     (MContDiffAt.smul contDiffAt_const h'.conjTranspose.transpose)
 
 /- English proof (translation)
-Establish `h' : MContDiffAt 1 τ z` using `fun a b => ((h a b).restrict_scalars ℝ).of_le one_le_two`. Establish `h0 : mdbar τ z ξ = 0`. Use extensionality with `a b`. Simplify using `[dbar_eq_zero ((h a b).differentiableAt two_ne_zero)]`. Establish `h''` using `h'.conjTranspose.transpose`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[two_imPart, mdel_add (MContDiffAt.smul contDiffAt_const h') (MContDiffAt.smul contDiffAt_const h''), mdbar_add (MContDiffAt.smul contDiffAt_const h') (MContDiffAt.smul contDiffAt_const h''), mdel_smul (differentiableAt_const _) h', mdel_smul (differentiableAt_const _) h'', mdbar …`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mdel_two_imPart (h : ∀ a b, ContDiffAt ℂ 2 (fun x => τ x a b) z) (ξ : E) :
     mdel (fun x => (2 : ℂ) • imPart τ x) z ξ = (-Complex.I) • mdel τ z ξ ∧
@@ -64,9 +64,9 @@ theorem mdel_two_imPart (h : ∀ a b, ContDiffAt ℂ 2 (fun x => τ x a b) z) (�
   simp
 
 /- English proof (translation)
-Establish `h' : MContDiffAt 2 τ z` using `fun a b => (h a b).restrict_scalars ℝ`. Use extensionality with `a b`. Establish `h0` using `ddbar_eq_zero_of_holomorphic (eventually_differentiableAt_of_contDiffAt_two (h a b))`. Establish `hc : ContDiffAt ℝ 2 (fun x => conj (τ x a b)) z` using `h'.conjTranspose b a`. Establish `e : (fun x => ((2 : ℂ) • imPart τ x) a b) = fun x => (-Complex.I) • τ x a b + Complex.I • conj (τ x a b)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun x => congrFun (congrFun (congrFun (two_imPart τ) x) a) b`. Rewrite using `[mddbar_apply, e, ddbar_add ((h' a b).const_smul _) (hc.const_smul _), ddbar_const_smul _ (h' a b), ddbar_const_smul _ hc]`. Simplify using `[ddbar_conj (h' a b), h0]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mddbar_two_imPart (h : ∀ a b, ContDiffAt ℂ 2 (fun x => τ x a b) z) (ξ η : E) :
     mddbar (fun x => (2 : ℂ) • imPart τ x) z ξ η = 0 := by
@@ -82,9 +82,9 @@ theorem mddbar_two_imPart (h : ∀ a b, ContDiffAt ℂ 2 (fun x => τ x a b) z) 
   simp [ddbar_conj (h' a b), h0]
 
 /- English proof (translation)
-Establish `hu2 : IsUnit ((2 : ℂ) • imPart τ z).det`. Rewrite using `[det_smul]`. Conclude with `(IsUnit.mk0 _ (pow_ne_zero _ two_ne_zero)).mul hu`. Establish `ei : ((2 : ℂ) • imPart τ z)⁻¹ = (1 / 2 : ℂ) • (imPart τ z)⁻¹` using `inv_eq_right_inv (by rw [smul_mul_smul_comm, mul_nonsing_inv _ hu]; norm_num)`. Rewrite using `[curv_eq (mContDiffAt_two_imPart h) hu2, mddbar_two_imPart h, (mdel_two_imPart h ξ).1, (mdel_two_imPart h ξ).2, ← transpose_nonsing_inv, ei, transpose_zero, Matrix.mul_zero, sub_zero, ← transpose_mul, ← transpose_mul, ← transpose_mul, trace_transpose, show (mdel τ z ξ)ᴴᵀ = (mdel …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, trace_smul, smul_eq_mul]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, trace_mul_comm, ← Matrix.mul_assoc, ← Matrix.mul_assoc]`. Take the linear combination `(-(1 / 4) * ((imPart τ z)⁻¹ * mdel τ z ξ * (imPart τ z)⁻¹ * (mdel τ z ξ).map star).trace) * Complex.I_mul_I`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem trace_curv_two_imPart (h : ∀ a b, ContDiffAt ℂ 2 (fun x => τ x a b) z)
     (hu : IsUnit (imPart τ z).det) (ξ : E) :
@@ -104,11 +104,11 @@ theorem trace_curv_two_imPart (h : ∀ a b, ContDiffAt ℂ 2 (fun x => τ x a b)
     ((imPart τ z)⁻¹ * mdel τ z ξ * (imPart τ z)⁻¹ * (mdel τ z ξ).map star).trace) * Complex.I_mul_I
 
 /- English proof (translation)
-Establish `hC' : MContDiffAt 2 C z` using `fun a b => (hC a b).restrict_scalars ℝ`. Establish `hY` using `mContDiffAt_two_imPart h`. Establish `hd` using `hG`. Rewrite `hd` using `[chg, det_mul, det_mul, det_transpose]`. Establish `hCu : IsUnit (C z).det` using `isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_left hd)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hYu` using `isUnit_of_mul_isUnit_right (isUnit_of_mul_isUnit_left hd)`. Establish `h0 : ∀ᶠ x in 𝓝 z, ∀ η, mdbar C x η = 0` using `by filter_upwards [eventually_all.2 fun a => eventually_all.2 fun b => eventually_differentiableAt_of_contDiffAt_two (hC a b)] with x hx η`. Use extensionality with `a b`. Simplify using `[dbar_eq_zero (hx a b)]`. Rewrite using `[← trace_curv (H := fun x => chg (C x) ((2 : ℂ) • imPart τ x)) ((hC'.transpose.mul hY).mul hC'.conjTranspose.transpose) hh hG, ← trace_curv_two_imPart h hu]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg trace (curv_changeFrame hY hYu hC' hCu h0 ξ ξ)).trans ?_` and prove the remaining obligations. Rewrite using `[trace_mul_comm, mul_nonsing_inv_cancel_left _ _ hCu]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem leviForm_log_det (h : ∀ a b, ContDiffAt ℂ 2 (fun x => τ x a b) z)
     (hu : IsUnit (imPart τ z).det) (hC : ∀ a b, ContDiffAt ℂ 2 (fun x => C x a b) z)
@@ -133,13 +133,11 @@ theorem leviForm_log_det (h : ∀ a b, ContDiffAt ℂ 2 (fun x => τ x a b) z)
   rw [trace_mul_comm, mul_nonsing_inv_cancel_left _ _ hCu]
 
 /- English proof (translation)
-Set `L : (Fin g → Fin g → ℂ) →L[ℂ] symMat g` to `LinearMap.toContinuousLinearMap { toFun := fun A => symPart (Matrix.of A) map_add' := fun A B => Subtype.ext (by`. Use function extensionality and compare the values at `i j`. Simplify using `only [symPart, of_apply, Pi.add_apply, Submodule.coe_add]`. Use the proof step `ring)`. Use the proof step `map_smul' := fun t A => Subtype.ext (by`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i j`. Simplify using `only [symPart, of_apply, Pi.smul_apply, Submodule.coe_smul, smul_eq_mul, RingHom.id_apply]`. Use the proof step `ring) }`. Establish `hd : DifferentiableAt ℂ (fun x => symPart (τ x)) z` using `L.differentiableAt.comp z (f := fun x a b => τ x a b) (differentiableAt_pi.2 fun a => differentiableAt_pi.2 fun b => h a b)`. Use extensionality with `a b`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Set `M : symMat g →L[ℂ] ℂ` to `((ContinuousLinearMap.proj b).comp (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin g => Fin g → ℂ) a)).comp (symMat g).subtypeL`. Establish `e : (fun x => τ x a b) =ᶠ[𝓝 z] fun x => M (symPart (τ x))` using `hs.mono fun x hx => by`. Express the relevant statement in the definitionally equal form `τ x a b = (τ x a b + τ x b a) / 2`. Rewrite using `[hx.apply a b]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[mdel_apply, del_eq_fderiv (h a b), e.fderiv_eq]`. Conclude with `(congrArg (· ξ) (M.hasFDerivAt.comp z hd.hasFDerivAt).fderiv).symm`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tauU_fderiv_symPart (h : ∀ a b, DifferentiableAt ℂ (fun x => τ x a b) z)
     (hs : ∀ᶠ x in 𝓝 z, (τ x).IsSymm) (ξ : E) :
@@ -175,9 +173,9 @@ variable {k : Type} [CommRing k] {S : Scheme.{0}} {p : S ⟶ Sp k} {σ : k →+*
   {τ : V D → Matrix (Fin g) (Fin g) ℂ} {ex : Pt (V D) g → CxPts (A.hom ≫ p) σ}
 
 /- English proof (translation)
-Take `⟨ho, hd⟩` from `H.2.1 W f`. Establish `e : (ex (v, 0)).1 = (c.e.symm v).1 ≫ unitSec A` using `((H.2.2 v hv).2.2.2.1 0).2 ⟨0, zero_mem _, by funext i; simp [per, vecMul, dotProduct]⟩`. Establish `hm : ((v, 0) : Pt (V D) g) ∈ {b ∈ cov c.e.target g | ⊤ ≤ (ex b).1 ⁻¹ᵁ W}`. Use `⟨⟨hv, trivial⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun x hx => hU (hy hx)`. Establish `hF : ContDiffAt ℂ 3 (fun P : Pt (V D) g => ev (A.hom ≫ p) σ W f (ex P)) (v, 0)` using `SCV.contDiffAt_of_differentiableOn hd (ho.mem_nhds hm) 3`. Conclude with `(ContDiffAt.fderiv (𝕜 := ℂ) (f := fun x z => ev (A.hom ≫ p) σ W f (ex (x, z))) (g := fun _ => 0) (m := 2) hF contDiffAt_const (by norm_num)).clm_apply contDiffAt_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_cot (H : IsPeriodChart h c τ ex) {U : S.Opens} {W : A.left.Opens}
     (hU : U ≤ unitSec A ⁻¹ᵁ W) (f : Γ(A.left, W)) {v : V D} (hv : v ∈ c.e.target)
@@ -195,21 +193,19 @@ theorem contDiffAt_cot (H : IsPeriodChart h c τ ex) {U : S.Opens} {W : A.left.O
     (g := fun _ => 0) (m := 2) hF contDiffAt_const (by norm_num)).clm_apply contDiffAt_const
 
 /- English proof (translation)
-Introduce `k _ S p σ P h H c τ ex HP y hy`. Establish `hs` using `LieVB.sec_hom (MonObj.one (X := P.A))`. Take `⟨U, W, hx, hle, ch⟩` from `Conormal.exists_isChart hs (mem_ptsIn.1 (h.isVB.mem_pick y))`. Establish `hU : y ∈ ptsIn p σ U` using `mem_ptsIn.2 hx`. Set `c₀ : VB.Chart (omega P.A) P.g` to `⟨U, _, (h.isVB.pick y).isFrame.res hle⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose f hf using fun a => ch.d_surjective hs (c₀.e a)`. Establish `ho` using `ChartGlue.isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) U)`. Establish `hm` using `ChartGlue.mem_over c.e hy hU`. Set `C : V 1 → Matrix (Fin P.g) (Fin P.g) ℂ` to `fun x => of fun a b => cot ex W (f b) x a`. Establish `hG : ∀ v ∈ c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ U, (h.met σ).G c₀ (c.e.symm v) = chg (C v) ((2 : ℂ) • imPart τ v)` using `fun v hv => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Rewrite using `[← (h.met σ).form_frame c₀ hv.2, ← hf, ← hf, chg_apply]`. Conclude with `(HP.2.2 v hv.1).2.2.2.2 U W ch.le _ _ hv.2`. Establish `hP : ∀ v ∈ c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ U, (chg (C v) ((2 : ℂ) • imPart τ v)).PosDef` using `fun v hv => hG v hv ▸ (h.met σ).posDef c₀ _ hv.2`. Establish `hτ : ∀ a b, ContDiffAt ℂ 2 (fun x => τ x a b) (c.e y)` using `fun a b => SCV.contDiffAt_of_differentiableOn (HP.1.2.1 a b) (HP.1.1.mem_nhds hm.1) 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (imPart τ (c.e y)).det`. Use `(hP _ hm).det_pos.ne'.isUnit` as an intermediate fact. Rewrite `this` using `[chg, det_mul, det_mul, det_smul]`. Conclude with `isUnit_of_mul_isUnit_right (isUnit_of_mul_isUnit_right (isUnit_of_mul_isUnit_left this))`. Establish `key` using `leviForm_log_det (C := C) hτ hu (fun a b => contDiffAt_cot HP ch.le (f b) hm.1 hm.2 a) (eventually_of_mem (ho.mem_nhds hm) fun v hv => (hP v hv).isHermitian) (hP _ hm).det_pos.ne'.isUnit (EuclideanSpace.single 0 1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hi : y ∈ ptsIn p σ ((VB.det (omega P.A) P.g).U c₀)` using `hU`. Establish `e : (fun v => (((h.met σ).detWeight.φ c₀ (c.e.symm v) : ℝ) : ℂ)) =ᶠ[𝓝 (c.e y)] fun v => -((Real.log (chg (C v) ((2 : ℂ) • imPart τ v)).det.re : ℝ) : ℂ)` using `by filter_upwards [ho.mem_nhds hm] with v hv`. Rewrite using `[← Complex.ofReal_neg, ← hG v hv]`. Both sides reduce to the same expression. Establish `hd : ContDiffAt ℝ 2 (fun v => (h.met σ).detWeight.φ c₀ (c.e.symm v)) (c.e y)` using `(H σ).detWeight.contDiffAt c hy hi`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw` using `(contDiffAt_ofReal_comp hd).congr_of_eventuallyEq e.symm`. Rewrite using `[tauU_fderiv_symPart (fun a b => (hτ a b).differentiableAt two_ne_zero) (eventually_of_mem (HP.1.1.mem_nhds hm.1) fun v hv => (HP.1.2.2 v hv).1)]`. Use `(c.chernDens_eq (H σ).detWeight hy hi).trans ?_` and prove the remaining obligations. Simplify using `only [AlgChart.hess, Matrix.det_unique]`. Rewrite using `[ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr e, CurveDens.cHess_apply_eq_ddbar hw]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `erw [ddbar_neg]`. Use `(congrArg (fun t : ℂ => _ * t.re) key).trans ?_` and prove the remaining obligations. Rewrite using `[show (1 / 4 : ℂ) = ((1 / 4 : ℝ) : ℂ) by simp, Complex.re_ofReal_mul]`. Express the relevant statement in the definitionally equal form `_ * (_ * sdens _ _) = _`. Simplify using `only [Nat.factorial_one, Nat.cast_one, pow_one]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chernDens_det_omega : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) (σ : k →+* ℂ)
     (P : PPAS S) (h : VMetric p (omega P.A) P.g) (H : h.IsCInf) (c : AlgChart p σ 1)

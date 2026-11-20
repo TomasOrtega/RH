@@ -21,7 +21,7 @@ section Val
 variable (p : ℕ) {Kc : Type} [Field Kc] (Oc : Subring Kc)
 
 /- English proof (translation)
-Introduce `a b hb _`. Rewrite using `[zero_pow hb.ne', zero_mul]`. Conclude with `Oc.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geV_zero (g : ℝ) : geV p Oc (0 : Kc) g := by
   intro a b hb _
@@ -29,7 +29,7 @@ theorem geV_zero (g : ℝ) : geV p Oc (0 : Kc) g := by
   exact Oc.zero_mem
 
 /- English proof (translation)
-Introduce `a b hb hab`. Rewrite using `[mul_pow, mul_assoc]`. Conclude with `Oc.mul_mem (Oc.pow_mem hc b) (h a b hb hab)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geV_smul {c x : Kc} {g : ℝ} (hc : c ∈ Oc) (h : geV p Oc x g) : geV p Oc (c * x) g := by
   intro a b hb hab
@@ -37,18 +37,18 @@ theorem geV_smul {c x : Kc} {g : ℝ} (hc : c ∈ Oc) (h : geV p Oc x g) : geV p
   exact Oc.mul_mem (Oc.pow_mem hc b) (h a b hb hab)
 
 /- English proof (translation)
-Use `geV_smul p Oc (Oc.neg_mem Oc.one_mem) h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem geV_neg {x : Kc} {g : ℝ} (h : geV p Oc x g) : geV p Oc (-x) g := by
   have := geV_smul p Oc (Oc.neg_mem Oc.one_mem) h
   simpa using this
 
 /- English proof (translation)
-Introduce `a b hb hab`. Distinguish the cases in `hy0 : y = 0`. Substitute `hy0` using the available equality. Simplify using `using hx a b hb hab`. Distinguish the cases in `hx0 : x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Substitute `hx0` using the available equality. Simplify using `using hy a b hb hab`. Break down `hV.val (x / y) with h | h` into its components or cases. Establish `e : x + y = (x / y + 1) * y` using `by field_simp`. Rewrite using `[e, mul_pow, mul_assoc]`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Oc.mul_mem (Oc.pow_mem (Oc.add_mem h Oc.one_mem) _) (hy a b hb hab)`. Establish `h' : y / x ∈ Oc` using `by simpa [inv_div] using h`. Establish `e : x + y = (1 + y / x) * x` using `by field_simp`. Rewrite using `[e, mul_pow, mul_assoc]`. Conclude with `Oc.mul_mem (Oc.pow_mem (Oc.add_mem Oc.one_mem h') _) (hx a b hb hab)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geV_add (hV : ValR p Oc) {x y : Kc} {g : ℝ} (hx : geV p Oc x g) (hy : geV p Oc y g) : geV p Oc (x + y) g := by
   intro a b hb hab

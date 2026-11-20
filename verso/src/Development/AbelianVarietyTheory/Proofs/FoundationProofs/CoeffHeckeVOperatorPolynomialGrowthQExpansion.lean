@@ -7,19 +7,17 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Introduce `l a hl ha`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨C, A, h⟩` from `ha`. Establish `hC : 0 ≤ C`. Use `h 0` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at this`. Conclude with `le_trans (norm_nonneg _) this`. Use `⟨C, A, fun n => ?_⟩` and prove the remaining obligations. Unfold `Vo`. Use `split_ifs with hd`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(h (n / l)).trans ?_ gcongr` and prove the remaining obligations. Conclude with `Nat.div_le_self n l` after adjusting the coercions. Simplify using `only [norm_zero]`. Check the signs of the components of the expression. Introduce `τ σ hσ`.
+Check the signs of the components of the expression. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `qs`. Establish `hinj : Function.Injective (fun m : ℕ => l * m)` using `fun x y hxy => Nat.eq_of_mul_eq_mul_left hl hxy`. Establish `hsupp : Function.support (fun n : ℕ => Vo l a n * cexp (2 * π * Complex.I * n * τ)) ⊆ Set.range (fun m : ℕ => l * m)`. Introduce `n hn`. Assume the negation of the conclusion as `hr`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `hn` to reduce the goal to its premises. Establish `: ¬ l ∣ n`. Introduce and unpack `⟨m, rfl⟩`. Conclude with `hr ⟨m, rfl⟩`. Simplify using `[Vo, this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[← hinj.tsum_eq hsupp]`. Use `congr 1`. Use extensionality with `m`. Establish `hl' : l ≠ 0` using `hl.ne'`. Simplify using `only [Vo, dvd_mul_right, if_true, Nat.mul_div_cancel_left m hl, hσ]`.
-
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Vo_polyB_qs : ∀ (l : ℕ) (a : ℕ → ℂ), 0 < l → PolyB a →
     PolyB (Vo l a) ∧ ∀ τ σ : ℍ, (σ : ℂ) = l * τ → qs (Vo l a) τ = qs a σ := by

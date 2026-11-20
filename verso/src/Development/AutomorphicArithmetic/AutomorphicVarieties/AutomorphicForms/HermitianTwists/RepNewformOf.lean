@@ -74,9 +74,7 @@ def HolAll : Prop :=
     ∀ H, Gk.IsHerm π H → ∃ φ ∈ π.V, φ ≠ 0 ∧ IsLow k φ
 
 /- English proof (translation)
-Introduce `k hk π hπ H hH`. Break down `hk.eq_or_lt with rfl | hk` into its components or cases. Apply the tactic sequence `obtain ⟨φ, hφ, hne, h | h⟩ := h2 π (fun v => by convert hπ v using 2 <;> norm_num) H hH`. Conclude with `⟨φ, hφ, hne, h⟩`. Conclude with `absurd ⟨φ, hφ, hne, h⟩ (h0 π)`.
-
-Conclude with `h3 k hk π hπ H hH`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem holAll_of (h3 : HolVec) (h2 : HolTwo) (h0 : NoLow) : HolAll := by
   intro k hk π hπ H hH
@@ -87,13 +85,13 @@ theorem holAll_of (h3 : HolVec) (h2 : HolTwo) (h0 : NoLow) : HolAll := by
   · exact h3 k hk π hπ H hH
 
 /- English proof (translation)
-Introduce `k hk j π hπ`. Establish `hk1 : 1 ≤ k` using `by omega`. Take `⟨π₀, hi, ht⟩` from `hT k hk1 j π hπ`. Take `⟨H, hH'⟩` from `hO _ π₀ hi`. Take `⟨N, _, χ, g, hg⟩` from `hE k hk1 π₀ (hH k hk π₀ hi H hH')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, _, h, hf, ha⟩` from `hM N k hk1 χ g`. Establish `hfa : ∀ n, f.a n = h.a n` using `fun n => by rw [Newform.a, Eigenform.a, hf]`. Establish `ha'` using `(hP.1 _).2 ha`. Establish `hc` using `(hP.1 _).2 (hC k N f.M hk1 χ f.χ g h ((hP.1 _).1 (by filter_upwards [hg, ha', hP.2 f.M f.pos] with w ⟨α, β, hs, h1, h2⟩ h3 h4`. Use `⟨h3, ?_, by simpa only [hfa] using hN k hk f w h4⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, ← h2, map_mul, Complex.conj_ofReal, mul_assoc, hS π₀ H hH' w α β hs])))`. Use `⟨f, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hg, ha', hc] with w ⟨α, β, hs, h1, h2⟩ h3 h4`. Take `⟨t, h5, h6⟩` from `ht w`. Use `⟨_, (h5 _).1 hs, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Newform.heckePoly, hfa, h3, h1, ← h4, ← h2, ← h6]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem newAE_of (hT : UnitTw) (hO : HermOf) (hH : HolAll) (hE : EigOfLow) (hS : SatHerm) (hP : EvPl) (hN : NewHerm) (hM : MinNew)
     (hC : Rs.CharEq2) : NewAE := by
@@ -117,9 +115,9 @@ theorem newAE_of (hT : UnitTw) (hO : HermOf) (hH : HolAll) (hE : EigOfLow) (hS :
   simp
 
 /- English proof (translation)
-Introduce `k hk j π hπ`. Take `⟨f, hf⟩` from `hA k hk j π hπ`. Take `⟨π', -, hs⟩` from `hN k hk f j`. Establish `hiso : π'.Iso π` using `hS ℚ 2 one_le_two π' π (by filter_upwards [hf, hP.2 f.M f.pos] with w ⟨B, hB, e⟩ hw`. Take `⟨B', hB', e'⟩` from `hs w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `hI _ (hpos w) j B B' (e.trans e'.symm)`. Conclude with `⟨B, hB', hB⟩)`. Use `⟨f, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨B, hB, e⟩` from `hs w hw`. Conclude with `⟨B, hiso.hasSat hB, e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem repNewform_of (hA : NewAE) (hP : EvPl) (hI : PolyInj) (hpos : ∀ w : Pl ℚ, 0 < normV w) (hN : Published.NewformRep)
     (hS : Published.StrongMultOneReal) : Published.RepNewform := by

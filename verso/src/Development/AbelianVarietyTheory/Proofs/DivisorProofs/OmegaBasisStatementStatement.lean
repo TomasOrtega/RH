@@ -10,7 +10,7 @@ open Formalism.MainNotions.DIV.Cons (intO SCF)
 open GlobalTheory.OmegaHT
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.OmegaHT.RankForms.basisSt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FOmegaBasisStatement.lean&line=185#L185)
 -/

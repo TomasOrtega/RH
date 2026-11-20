@@ -22,9 +22,7 @@ namespace GlobalTheory.JacFactor
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Set `e : Subrepresentation (ρ.comp f : Representation ℂ G V) ≃o Subrepresentation ρ` to `{ toFun := fun S => ⟨S.toSubmodule, fun g v hv => by`. Take `⟨x, rfl⟩` from `hf g`. Conclude with `S.apply_mem_toSubmodule x hv⟩`. Use `invFun := fun S => ⟨S.toSubmodule, fun g v hv => S.apply_mem_toSubmodule (f g) hv⟩`. Use `left_inv := fun _ => rfl`.
-
-Use `right_inv := fun _ => rfl`. Use the proof step `map_rel_iff' := Iff.rfl }`. Use `haveI : IsSimpleOrder (Subrepresentation ρ) := h`. Conclude with `e.isSimpleOrder`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIrreducible_comp_surj {G H V : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ H V) (f : G →* H) (hf : Function.Surjective f) (h : ρ.IsIrreducible) :
@@ -41,7 +39,7 @@ theorem isIrreducible_comp_surj {G H V : Type} [Group G] [Group H] [AddCommGroup
   exact e.isSimpleOrder
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h`. Conclude with `⟨⟨S.toSubmodule, fun g _ hv => S.apply_mem_toSubmodule (ψ g) hv⟩, ⟨f.toLinearMap, fun g => f.isIntertwining' (ψ g)⟩, hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSubquotient_comp' {G G' V W : Type} [Group G] [Group G'] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] {σ : Representation ℂ G W} {ρ : Representation ℂ G V}
@@ -63,13 +61,13 @@ def piTensorBoolEquiv {R a b : Type} [CommRing R] [Fintype a] [DecidableEq a] [F
     rfl
 
 /- English proof (translation)
-Set `L` to `leviTwo k (Fin a) (Fin b)`. Set `τ' : Representation ℂ (Levi k (Two (Fin a) (Fin b))) Y` to `τ.comp L.symm.toMonoidHom`. Establish `hτ' : τ'.IsIrreducible` using `isIrreducible_comp_surj τ _ L.symm.surjective hτ`. Establish `hj : (jac₂ (stdSum h) π).comp L.symm.toMonoidHom = jac (two (stdSum h)) π` using `MonoidHom.ext fun g => by simp [jac₂, L]`. Establish `hs' : IsSubquotient τ' (jac (two (stdSum h)) π)` using `hj ▸ isSubquotient_comp' hs L.symm.toMonoidHom`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φ⟩` from `LocGL.nonempty_equiv_multiProd_one hπ (JacTensor.oneBlock n) fun _ _ => rfl`. Establish `hinj : Function.Injective (jacMap (two (stdSum h)) φ.toIntertwiningMap)`. Use `Function.LeftInverse.injective (g := jacMap (two (stdSum h)) φ.symm.toIntertwiningMap) fun x => ?_` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Use `show Submodule.Quotient.mk (φ.symm (φ v)) = _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h1 : IsSubquotient τ' (jac (two (stdSum h)) (multiProd (JacTensor.oneBlock n) fun _ : Fin 1 => π))` using `hs'.trans (.of_injective _ hinj)`. Take `⟨bm, f, g, t, -, ht⟩` from `exists_cell_of_isSubquotient (hGL k).1 (hGL k).2 (m' := Two (Fin a) (Fin b)) (JacTensor.oneBlock n) (two (stdSum h)) (fun _ => hπ) (fun _ => hasFiniteLength_of_isIrreducible hirr) hτ' h1`. Set `F : ∀ j : Bool, Representation ℂ (GL (Two (Fin a) (Fin b) j) k) _` to `fun j => multiProd (g j) fun i => (t i j).ρ`. Establish `h2 : IsSubquotient (τ'.comp L.toMonoidHom) ((piTensor F).comp L.toMonoidHom)` using `isSubquotient_comp' ht L.toMonoidHom`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2' : IsSubquotient τ (τ'.comp L.toMonoidHom)` using `.of_injective ⟨LinearMap.id, fun g => rfl⟩ Function.injective_id`. Establish `h3 : IsSubquotient ((piTensor F).comp L.toMonoidHom) (extTensor (F false) (F true))` using `.of_injective (piTensorBoolEquiv F).toIntertwiningMap (piTensorBoolEquiv F).toLinearEquiv.injective`. Conclude with `⟨_, _, _, _, _, _, F false, F true, isSmooth_parInd _ _, JacTensor.isIrreducible_multiProd_fin_one (g false) fun i => t i false, isSmooth_parInd _ _, JacTensor.isIrreducible_multiProd_fin_one (g true) fun i => t i true, h2'.trans (h2.trans h3)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_extTensor_of_isSubquotient_jac₂ (hGL : GlobalTheory.Published.GeometricLemma) {n : ℕ} {V : Type}
     [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) k) V) (hπ : IsSmooth π)
@@ -109,7 +107,7 @@ theorem exists_extTensor_of_isSubquotient_jac₂ (hGL : GlobalTheory.Published.G
     isSmooth_parInd _ _, JacTensor.isIrreducible_multiProd_fin_one (g true) fun i => t i true, h2'.trans (h2.trans h3)⟩
 
 /- English proof (translation)
-Apply the tactic sequence `have h1 : (piTensor (Exponents.twoRep σ ρ)).IsIrreducible := GlobalTheory.ProdFiniteLength.piTensor_isIrreducible_of_schur _ (fun j => by cases j <;> assumption) (fun j => by cases j <;> assumption)`. Establish `h2` using `isIrreducible_comp_surj _ (leviTwo R a b).toMonoidHom (leviTwo R a b).surjective h1`. Conclude with `GlobalTheory.Parabolic.isIrreducible_of_equiv (piTensorBoolEquiv (Exponents.twoRep σ ρ)) h2`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIrreducible_extTensor {R a b W W' : Type} [CommRing R] [Fintype a] [DecidableEq a] [Fintype b]
     [DecidableEq b] [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
@@ -125,9 +123,9 @@ theorem isIrreducible_extTensor {R a b W W' : Type} [CommRing R] [Fintype a] [De
   exact GlobalTheory.Parabolic.isIrreducible_of_equiv (piTensorBoolEquiv (Exponents.twoRep σ ρ)) h2
 
 /- English proof (translation)
-Use `haveI : IsSimpleOrder (Subrepresentation τ) := hτ`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Apply `(bot_ne_top : (⊥ : Subrepresentation τ) ≠ ⊤)` to reduce the goal to its premises. Use extensionality with `v`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Conclude with `⟨fun _ => trivial, fun _ => Subsingleton.elim v 0⟩`.
+A detailed English derivation is pending.
 -/
 theorem nontrivial_of_isIrreducible {G Y : Type} [Group G] [AddCommGroup Y] [Module ℂ Y]
     {τ : Representation ℂ G Y} (hτ : τ.IsIrreducible) : Nontrivial Y := by
@@ -139,27 +137,23 @@ theorem nontrivial_of_isIrreducible {G Y : Type} [Group G] [AddCommGroup Y] [Mod
   exact ⟨fun _ => trivial, fun _ => Subsingleton.elim v 0⟩
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h`. Use `haveI : IsSimpleOrder (Subrepresentation χ) := hχ`. Use `haveI := nontrivial_of_isIrreducible hτ`. Set `T : Subrepresentation χ` to `⟨(LinearMap.ker f.toLinearMap).map S.toSubmodule.subtype, by`. Introduce and unpack `g _ ⟨v, hv, rfl⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨S.toRepresentation g v, ?_, rfl⟩` and prove the remaining obligations. Establish `hv' : f v = 0` using `hv`. Use `show f (S.toRepresentation g v) = 0`. Establish `h'` using `LinearMap.congr_fun (f.isIntertwining' g) v`. Simplify using `only [LinearMap.comp_apply] at h'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[show f (S.toRepresentation g v) = τ g (f v) from h', hv', map_zero]⟩`. Establish `hinj : Function.Injective f`. Break down `IsSimpleOrder.eq_bot_or_eq_top T with hT | hT` into its components or cases. Use `(injective_iff_map_eq_zero f).2 fun v hv => ?_` and prove the remaining obligations. Establish `: (v : X) ∈ T.toSubmodule` using `⟨v, hv, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[hT]`. Conclude with `Subtype.ext this`. It suffices to derive a contradiction. Take `⟨y, hy⟩` from `exists_ne (0 : Y)`. Take `⟨v, rfl⟩` from `hf y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (v : X) ∈ T.toSubmodule` using `by rw [hT]; trivial`. Take `⟨w, hw, hwv⟩` from `this`. Rewrite `hw` using `[Subtype.ext hwv]`. Conclude with `hy hw`. Establish `hS : S = ⊤`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `IsSimpleOrder.eq_bot_or_eq_top S with hS | hS` into its components or cases. It suffices to derive a contradiction. Take `⟨y, hy⟩` from `exists_ne (0 : Y)`. Take `⟨v, rfl⟩` from `hf y`. Establish `h0 : S.toSubmodule = ⊥` using `congrArg Subrepresentation.toSubmodule hS`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (v : X) ∈ (⊥ : Submodule ℂ X)` using `h0 ▸ v.2`. Establish `hv : v = 0` using `Subtype.ext ((Submodule.mem_bot ℂ).1 this)`. Rewrite `hy` using `[hv, map_zero]`. Conclude with `hy rfl`. Conclude with `hS`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Set `e : S.toSubmodule ≃ₗ[ℂ] Y` to `LinearEquiv.ofBijective f.toLinearMap ⟨hinj, hf⟩`. Use `⟨⟨S.toSubmodule.subtype ∘ₗ e.symm.toLinearMap, fun g => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Take `⟨v, rfl⟩` from `e.surjective y`. Establish `h'` using `LinearMap.congr_fun (f.isIntertwining' g) v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.comp_apply] at h'`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, Submodule.subtype_apply]`. Establish `: e.symm (τ g (e v)) = S.toRepresentation g v`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `h'.symm`.
-
-Rewrite using `[this]`. Both sides reduce to the same expression. Conclude with `Subtype.val_injective.comp e.symm.injective`. Introduce `x`. Establish `hx : x ∈ S.toSubmodule` using `by rw [hS]; trivial`.
-
-Conclude with `⟨e ⟨x, hx⟩, by simp⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_bijective_of_isSubquotient {G Y X : Type} [Group G] [AddCommGroup Y] [Module ℂ Y]
     [AddCommGroup X] [Module ℂ X] {τ : Representation ℂ G Y} {χ : Representation ℂ G X}
@@ -222,9 +216,9 @@ theorem exists_bijective_of_isSubquotient {G Y X : Type} [Group G] [AddCommGroup
 end GlobalTheory.JacFactor
 
 /- English proof (translation)
-Introduce `hBZ hGL _ k _ _ _ _ n V _ _ π hπ hirr a b h Y _ _ τ _ hτ q hq`. Take `⟨W, W', i1, i2, i3, i4, σ, ρ, hσs, hσ, hρs, hρ, hsub⟩` from `GlobalTheory.JacFactor.exists_extTensor_of_isSubquotient_jac₂ hGL π hπ hirr h τ hτ (IsSubquotient.of_surjective q hq)`. Establish `hSσ` using `GlobalTheory.SchurAdm.schur_admissible _ (GlobalTheory.SplitWeil.KO k (Fin a)) GlobalTheory.SplitFlip.isOpen_KO GlobalTheory.SplitFlip.isCompact_KO W σ hσ ((hBZ k).1 (Fin a) W σ hσs hσ)`. Establish `hSρ` using `GlobalTheory.SchurAdm.schur_admissible _ (GlobalTheory.SplitWeil.KO k (Fin b)) GlobalTheory.SplitFlip.isOpen_KO GlobalTheory.SplitFlip.isCompact_KO W' ρ hρ ((hBZ k).1 (Fin b) W' ρ hρs hρ)`. Take `⟨ψ, hψ⟩` from `GlobalTheory.JacFactor.exists_bijective_of_isSubquotient hτ (GlobalTheory.JacFactor.isIrreducible_extTensor σ ρ hσ hρ hSσ hSρ) hsub`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨W, W', i1, i2, i3, i4, σ, ρ, hσs, hσ, hρs, hρ, ψ, hψ⟩`.
+Supply the required witnesses or components.
 -/
 theorem GlobalTheory.JacFactor.exists_extTensor_equiv_of_quotient_jac₂ : GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.ZelevinskyPolynomialRing →
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]

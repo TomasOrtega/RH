@@ -5,9 +5,9 @@ namespace GlobalTheory.SquareImageInterval
 open MeasureTheory
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, hr, rfl⟩`. Conclude with `pow_pos (Set.mem_Ioi.1 hr) 2`. Introduce `hy`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨√y, Real.sqrt_pos.2 hy, Real.sq_sqrt (le_of_lt hy)⟩`.
+A detailed English derivation is pending.
 -/
 theorem image_sq_Ioi : (fun r : ℝ => r ^ 2) '' Set.Ioi (0 : ℝ) = Set.Ioi (0 : ℝ) := by
   ext y
@@ -18,15 +18,15 @@ theorem image_sq_Ioi : (fun r : ℝ => r ^ 2) '' Set.Ioi (0 : ℝ) = Set.Ioi (0 
     exact ⟨√y, Real.sqrt_pos.2 hy, Real.sq_sqrt (le_of_lt hy)⟩
 
 /- English proof (translation)
-Introduce `G`. Establish `hinj : Set.InjOn (fun r : ℝ => r ^ 2) (Set.Ioi 0)`. Introduce `a ha b hb hab`. Establish `ha' : 0 < a` using `ha`. Establish `hb' : 0 < b` using `hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : a ^ 2 = b ^ 2` using `hab`. Use polynomial arithmetic with `[h2]`. Establish `hder : ∀ x ∈ Set.Ioi (0 : ℝ), HasDerivWithinAt (fun r : ℝ => r ^ 2) (2 * x) (Set.Ioi 0) x`. Introduce `x _`. Simplify using `using (hasDerivAt_pow 2 x).hasDerivWithinAt`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `lintegral_image_eq_lintegral_abs_deriv_mul measurableSet_Ioi hder hinj (fun u => (2 : ENNReal)⁻¹ * G √u)`. Rewrite `h` using `[image_sq_Ioi]`. Rewrite using `[h]`. Use `setLIntegral_congr_fun measurableSet_Ioi ?_` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx' : 0 < x` using `hx`. Simplify using `only`. Rewrite using `[abs_of_pos (by positivity : (0 : ℝ) < 2 * x), Real.sqrt_sq (le_of_lt hx'), ENNReal.ofReal_mul (by norm_num : (0 : ℝ) ≤ 2), ENNReal.ofReal_ofNat]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.mul_inv_cancel (by norm_num) (by norm_num), one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = 2 * ENNReal.ofReal x * (2⁻¹ * G x) := by ring`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (G : ℝ → ENNReal), ∫⁻ (r : ℝ) in Set.Ioi (0 : ℝ), ENNReal.ofReal r * G r
     = ∫⁻ (u : ℝ) in Set.Ioi (0 : ℝ), (2 : ENNReal)⁻¹ * G √u := by

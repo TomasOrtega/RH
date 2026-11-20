@@ -17,13 +17,13 @@ variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) {u u' : D.what₂.Word}
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-The claim follows from `LprEx.lprPart_of_iota Zd Formalism.L2.SG.Pf.iotaStep_holds`.
+A detailed English derivation is pending.
 -/
 theorem lprPart_holds : LprPart Zd u u' F0 what₂ :=
   LprEx.lprPart_of_iota Zd Formalism.L2.SG.Pf.iotaStep_holds
 
 /- English proof (translation)
-The claim follows from `fStarC_of_leaves' Zd hC (lprPart_holds Zd) hRat hInt`.
+A detailed English derivation is pending.
 -/
 theorem fStarC_of_beta (hC : CtxP u u' F0 what₂) (hRat : BetaRat Zd u u' F0 what₂) (hInt : BetaInt Zd u u' F0 what₂) :
     FStarC Zd u u' F0 what₂ :=

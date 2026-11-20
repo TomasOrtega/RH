@@ -11,9 +11,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 open scoped Matrix ComplexOrder
 
 /- English proof (translation)
-Rewrite using `[mCoordIdeal_yLine]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, -⟩`. Conclude with `h ()`. Introduce and unpack `⟨i, hi⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun _ => ⟨i, hi⟩, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite `hf` using `[Ideal.mem_bot]`. Substitute `hf` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_mcPts_line {z : (Σ _ : Unit, Fin 2) → ℂ} :
     z ∈ mcPts (mCoordIdeal yLine) ↔ ∃ i, z ⟨(), i⟩ ≠ 0 := by
@@ -33,7 +33,7 @@ def chartLin (a : Fin 2) : (Fin 1 → ℂ) →L[ℂ] ((Σ _ : Unit, Fin 2) → �
   ContinuousLinearMap.pi fun p => if p.2 = a then 0 else (2 : ℂ) • ContinuousLinearMap.proj 0
 
 /- English proof (translation)
-Unfold `chartLin`. Apply the tactic sequence `split_ifs <;> simp [*]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chartLin_apply (a : Fin 2) (t : Fin 1 → ℂ) (p : Σ _ : Unit, Fin 2) :
     chartLin a t p = if p.2 = a then 0 else 2 * t 0 := by
@@ -43,7 +43,7 @@ theorem chartLin_apply (a : Fin 2) (t : Fin 1 → ℂ) (p : Σ _ : Unit, Fin 2) 
 def chartMap (a : Fin 2) (t : Fin 1 → ℂ) : (Σ _ : Unit, Fin 2) → ℂ := chartBase a + chartLin a t
 
 /- English proof (translation)
-Simplify using `only [chartMap, Pi.add_apply, chartBase, chartLin_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chartMap_apply (a : Fin 2) (t : Fin 1 → ℂ) (p : Σ _ : Unit, Fin 2) :
     chartMap a t p = if p.2 = a then 1 else 2 * t 0 := by
@@ -51,7 +51,7 @@ theorem chartMap_apply (a : Fin 2) (t : Fin 1 → ℂ) (p : Σ _ : Unit, Fin 2) 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `fin_cases a`. Conclude with `⟨1, by decide⟩`. Conclude with `⟨0, by decide⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem other_index (a : Fin 2) : ∃ b : Fin 2, b ≠ a := by
   fin_cases a
@@ -59,7 +59,7 @@ theorem other_index (a : Fin 2) : ∃ b : Fin 2, b ≠ a := by
   · exact ⟨0, by decide⟩
 
 /- English proof (translation)
-The claim follows from `(chartLin a).hasFDerivAt.const_add (chartBase a)`.
+A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_chartMap (a : Fin 2) (t : Fin 1 → ℂ) :
     HasFDerivAt (chartMap a) (chartLin a) t :=
@@ -102,31 +102,29 @@ Both sides reduce to the same expression.
 theorem lineChart_γ (a : Fin 2) : (lineChart a).γ = chartMap a := rfl
 
 /- English proof (translation)
-Simplify using `[SncChart.logR, lineChart]`.
+Simplify using the standard rewrite rules.
 -/
 theorem logR_lineChart (a : Fin 2) (t : Fin 1 → ℂ) : (lineChart a).logR t = Real.exp 1 := by
   simp [SncChart.logR, lineChart]
 
 /- English proof (translation)
-The claim follows from `(pi_norm_le_iff_of_nonneg hr).2 fun i => by rw [Subsingleton.elim i 0]; exact h`.
+A detailed English derivation is pending.
 -/
 theorem norm_fin_one_le {t : Fin 1 → ℂ} {r : ℝ} (hr : 0 ≤ r) (h : ‖t 0‖ ≤ r) : ‖t‖ ≤ r :=
   (pi_norm_le_iff_of_nonneg hr).2 fun i => by rw [Subsingleton.elim i 0]; exact h
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨i, hi⟩` from `mem_mcPts_line.1 hz`. Establish `hcases : ∀ p : Σ _ : Unit, Fin 2, p = ⟨(), 0⟩ ∨ p = ⟨(), 1⟩`. Introduce and unpack `⟨⟨⟩, j⟩`. Apply the tactic sequence `fin_cases j <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation.
 
-Distinguish the cases in `h : ‖z ⟨(), 1⟩‖ ≤ ‖z ⟨(), 0⟩‖`. Establish `h0 : z ⟨(), 0⟩ ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, norm_zero]`. Establish `h1 : z ⟨(), 1⟩ = 0` using `norm_le_zero_iff.mp h`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases hcases ⟨(), i⟩ with hp | hp <;> rw [hp] at hi`. Conclude with `hi h0`. Conclude with `hi h1`. Use `⟨0, fun _ => z ⟨(), 1⟩ / (2 * z ⟨(), 0⟩), norm_fin_one_le (by norm_num) ?_, fun _ => z ⟨(), 0⟩, fun _ => h0, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, norm_mul, Complex.norm_two, div_le_iff₀ (by positivity)]`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use function extensionality and compare the values at `p`. Break down `hcases p with rfl | rfl` into its components or cases. Simplify using `[torusSmul, lineChart, chartMap_apply]`. Simplify using `only [torusSmul, lineChart, chartMap_apply]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Apply the tactic sequence `try field_simp`. Use `push Not at h`. Establish `h1 : z ⟨(), 1⟩ ≠ 0` using `fun h1 => by`. Rewrite `h` using `[h1, norm_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `absurd h (not_lt.mpr (norm_nonneg _))`. Use `⟨1, fun _ => z ⟨(), 0⟩ / (2 * z ⟨(), 1⟩), norm_fin_one_le (by norm_num) ?_, fun _ => z ⟨(), 1⟩, fun _ => h1, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, norm_mul, Complex.norm_two, div_le_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use function extensionality and compare the values at `p`.
-
-Break down `hcases p with rfl | rfl` into its components or cases. Simplify using `only [torusSmul, lineChart, chartMap_apply]`. Simplify using the standard rewrite rules. Apply the tactic sequence `try field_simp`. Simplify using `[torusSmul, lineChart, chartMap_apply]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lineChart_cover : ∀ z ∈ mcPts (mCoordIdeal yLine), ∃ a, ∃ t : Fin 1 → ℂ,
     ‖t‖ ≤ 1 / 2 ∧ ∃ c : Unit → ℂ, (∀ k, c k ≠ 0) ∧ z = torusSmul c ((lineChart a).γ t) := by
@@ -169,14 +167,14 @@ theorem lineChart_cover : ∀ z ∈ mcPts (mCoordIdeal yLine), ∃ a, ∃ t : Fi
       · simp [torusSmul, lineChart, chartMap_apply]
 
 /- English proof (translation)
-Simplify using `only [segreCoord, Fintype.prod_unique]`. Conclude with `yLine_ne_zero _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem segreCoord_line_ne_zero (l : Fin 2) : segreCoord yLine (fun _ : Unit => l) ≠ 0 := by
   simp only [segreCoord, Fintype.prod_unique]
   exact yLine_ne_zero _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => hz, isUnitAt_one _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem inFrameDomain_line {l : Fin 2} {z : (Σ _ : Unit, Fin 2) → ℂ} (hz : z ⟨(), l⟩ ≠ 0) :
     InFrameDomain yLine (fun _ : Unit => l) 1 z :=
@@ -236,7 +234,7 @@ def lineMetric : HermMetric yLine (trivialBundle (segreCoord yLine) 2)
       positivity
 
 /- English proof (translation)
-Use `⟨Inter.isSmoothHerm_fsLine 2, fun z hz w _ hw => ?_⟩` and prove the remaining obligations. Establish `hf : (fun z => Real.log ((fsLine 2).h z)) = FubiniLevi.phi` using `funext FubiniLevi.log_fsLine`. Rewrite using `[hf]`. Conclude with `FubiniLevi.levi_phi_pos (mem_mcPts_line.1 hz) fun c h => hw (fun _ => c) h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPositiveRel_fsLine : IsPositiveRel (mCoordIdeal yLine) (fsLine 2) := by
   refine ⟨Inter.isSmoothHerm_fsLine 2, fun z hz w _ hw => ?_⟩
@@ -245,14 +243,14 @@ theorem isPositiveRel_fsLine : IsPositiveRel (mCoordIdeal yLine) (fsLine 2) := b
   exact FubiniLevi.levi_phi_pos (mem_mcPts_line.1 hz) fun c h => hw (fun _ => c) h
 
 /- English proof (translation)
-Introduce `z`. Simplify using `[fsLine, HermLine.ofMetrics, fsMetric, EuclideanSpace.norm_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isConjInvariantH_fsLine : IsConjInvariantH (fsLine 2) := by
   intro z
   simp [fsLine, HermLine.ofMetrics, fsMetric, EuclideanSpace.norm_eq]
 
 /- English proof (translation)
-The claim follows from `IsVerticalDivisorAt.ofPrime isArithVar_yLine.2.2.1 hp`.
+A detailed English derivation is pending.
 -/
 theorem isVerticalDivisorAt_line {p : ℕ} (hp : p ≠ 0) :
     IsVerticalDivisorAt (mCoordIdeal yLine) p 0 (C (p : ℤ)) 1 :=

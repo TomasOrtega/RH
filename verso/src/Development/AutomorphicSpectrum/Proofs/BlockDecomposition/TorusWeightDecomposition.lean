@@ -13,9 +13,9 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `inK inG Jm`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal, Matrix.diagonal_add, ← Matrix.diagonal_zero]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.star_apply, star_mul', Complex.star_def, Complex.conj_ofReal, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -35,7 +35,7 @@ theorem diagI_inK (ε : Fin n → Bool) (θ : Fin n → ℝ) :
     ring
 
 /- English proof (translation)
-Rewrite using `[Complex.ofReal_one, one_smul, Matrix.exp_diagonal, Pi.exp_def]`. Unfold `tor`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[Complex.exp_eq_exp_ℂ]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem tor_eq_exp (θ : Fin n → ℝ) :
     tor θ = NormedSpace.exp (((1 : ℝ) : ℂ) • Matrix.diagonal fun a => (θ a : ℂ) * Complex.I) := by
@@ -46,7 +46,7 @@ theorem tor_eq_exp (θ : Fin n → ℝ) :
   rw [Complex.exp_eq_exp_ℂ]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ContinuousLinearMap.mul_apply, h, map_smul, ih, smul_smul, ← pow_succ']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pow_apply_eq_pow_smul_of_apply_eq_smul {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
     (A : V →L[ℂ] V) (c : ℂ) (w : V) (h : A w = c • w) (k : ℕ) : (A ^ k) w = c ^ k • w := by
@@ -56,9 +56,9 @@ private theorem pow_apply_eq_pow_smul_of_apply_eq_smul {V : Type*} [NormedAddCom
     rw [pow_succ, ContinuousLinearMap.mul_apply, h, map_smul, ih, smul_smul, ← pow_succ']
 
 /- English proof (translation)
-Establish `h1` using `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) A).mapL (ContinuousLinearMap.apply ℂ V w)`. Establish `h2` using `(NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) c).smul_const w`. Rewrite `h2` using `[← Complex.exp_eq_exp_ℂ]`. Establish `h3 : HasSum (fun k : ℕ => (ContinuousLinearMap.apply ℂ V w) (((k.factorial : ℂ))⁻¹ • A ^ k)) (Complex.exp c • w)`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[ContinuousLinearMap.apply_apply, ContinuousLinearMap.smul_apply, pow_apply_eq_pow_smul_of_apply_eq_smul A c w h k, smul_smul, smul_eq_mul]`. Establish `e` using `h1.unique h3`. Rewrite `e` using `[ContinuousLinearMap.apply_apply]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exp_apply_of_eigen {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V]
     (A : V →L[ℂ] V) (c : ℂ) (w : V) (h : A w = c • w) :
@@ -76,11 +76,11 @@ theorem exp_apply_of_eigen {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V
   rwa [ContinuousLinearMap.apply_apply] at e
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.sum_apply]`. Simplify using `only [Matrix.smul_apply, Matrix.single_apply, Matrix.diagonal_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg hij]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hij rfl`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem diagonal_mul_I_eq_sum_single (θ : Fin n → ℝ) :
     (Matrix.diagonal fun a => (θ a : ℂ) * Complex.I) =
@@ -101,9 +101,9 @@ private theorem diagonal_mul_I_eq_sum_single (θ : Fin n → ℝ) :
     exact hij rfl
 
 /- English proof (translation)
-Rewrite using `[diagonal_mul_I_eq_sum_single, map_sum, ContinuousLinearMap.sum_apply]`. Repeatedly rewrite using `[map_smul, ContinuousLinearMap.smul_apply, T.13, smul_smul]`. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dtau_diag_w {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ) (θ : Fin n → ℝ) :
     T.dτ (Matrix.diagonal fun a => (θ a : ℂ) * Complex.I) T.w =
@@ -118,9 +118,9 @@ theorem dtau_diag_w {ε : Fin n → Bool} {Λ : Fin n → ℝ} (T : KType ε Λ)
   ring
 
 /- English proof (translation)
-Introduce `n ε Λ T θ k hk`. Establish `hX` using `diagI_inK ε θ`. Take `⟨γ, hγ⟩` from `exists_curve ε hX`. Establish `h1 : γ 1 = k` using `onep_KG_ext (by rw [hγ 1, hk, tor_eq_exp])`. Rewrite using `[← h1, KType.op_curve T hX γ hγ 1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `exp_apply_of_eigen` to reduce the goal to its premises. Rewrite using `[ContinuousLinearMap.smul_apply, dtau_diag_w, smul_smul, Complex.ofReal_one, one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem torW : TorW := by
   intro n ε Λ T θ k hk

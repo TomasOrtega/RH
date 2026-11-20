@@ -11,29 +11,27 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `A _ _ _ ε Δ hn hΔ hε`. Take `⟨d, x, l, hl, hlx, hadj⟩` from `GlobalTheory.T.exists_generators_dual_point_derivations_augmented k A ε hε`. Use `choose D hD using fun i => GlobalTheory.T.exists_invariant_derivation_of_counital_comul k A ε Δ hΔ (l i) (hl i)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨E, hE⟩` from `GlobalTheory.T.exists_derivations_dual_to_family_of_nilpotent_aug k A ε hε d x D (fun i j => by rw [hD, hlx])`. Establish `hnt : Nontrivial A` using `ε.toRingHom.domain_nontrivial`. Break down `Nat.eq_zero_or_pos d with hd | hd` into its components or cases. Substitute `hd` using the available equality. Use `⟨0, MvPolynomial.aeval x, fun _ => 0, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← AlgHom.range_eq_top, ← Algebra.adjoin_range_eq_range_aeval, hadj]`. Rewrite using `[Set.range_eq_empty, Ideal.span_empty, ← RingHom.injective_iff_ker_eq_bot]`. Introduce `f g h`. Rewrite `h`, the goal using `[MvPolynomial.eq_C_of_isEmpty f, MvPolynomial.eq_C_of_isEmpty g]`. Simplify using `only [MvPolynomial.aeval_C] at h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(algebraMap k A).injective h]`. Take `⟨B, hB, Δ', hΔ'⟩` from `GlobalTheory.T.frobeniusSubalgebra_counital_comul p k A ε Δ hΔ`. Establish `hp : (p : A) = 0`. Rewrite using `[← map_natCast (algebraMap k A), CharP.cast_eq_zero, map_zero]`. Establish `hEB : ∀ i, ∀ b ∈ B, E i b = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i b hb`. Take `⟨c, rfl⟩` from `(hB b).1 hb`. Rewrite using `[Derivation.leibniz_pow, nsmul_eq_mul, hp, zero_mul]`. Establish `hBtop : B ≠ ⊤`. Introduce `h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hE ⟨0, hd⟩ ⟨0, hd⟩`. Rewrite `h1` using `[hEB _ _ (h ▸ Algebra.mem_top), if_pos rfl]`. Conclude with `zero_ne_one h1`. Establish `hlt : Module.finrank k B < n`. Rewrite using `[← hn]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (Subalgebra.toSubmodule B) ≠ ⊤`. Introduce `h`. Apply `hBtop` to reduce the goal to its premises. Rewrite using `[← Algebra.toSubmodule_eq_top]`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.finrank_lt this`. Establish `hfin : Module.Finite k B` using `Module.Finite.of_injective B.val.toLinearMap Subtype.val_injective`. Establish `hε' : IsNilpotent (RingHom.ker (ε.comp B.val))`. Take `⟨m, hm⟩` from `hε`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (RingHom.ker (ε.comp B.val)) = Ideal.comap B.val (RingHom.ker ε)`. Use extensionality with `b`. Simplify using `[RingHom.mem_ker, Ideal.mem_comap]`. Rewrite using `[h1, Ideal.zero_eq_bot, eq_bot_iff]`. Use `(Ideal.le_comap_pow _ m).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm, Ideal.zero_eq_bot]`. Introduce `b hb`. Rewrite `hb` using `[Ideal.mem_comap, Ideal.mem_bot]`. Rewrite using `[Ideal.mem_bot]`. Conclude with `Subtype.ext hb`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `GlobalTheory.T.exists_square_presentation_of_tower k B A (ih _ hlt B (ε.comp B.val) Δ' rfl hΔ' hε') ?_` and prove the remaining obligations. Use `⟨d, MvPolynomial.aeval x, _, ?_, GlobalTheory.T.ker_aeval_truncatedPolynomial_presentation p (Fact.out : p.Prime).pos B A d x (fun i => ⟨x i ^ p, (hB _).2 ⟨x i, rfl⟩⟩) (fun i => rfl) (GlobalTheory.T.truncatedMonomials_linearIndependent_over_constants p k A d x E hE B hEB)⟩` and prove the remaining obligations. Rewrite using `[← AlgHom.range_eq_top, ← Algebra.adjoin_range_eq_range_aeval, eq_top_iff]`. Introduce `a _`. Establish `ha : a ∈ Algebra.adjoin k (Set.range x)` using `hadj ▸ Algebra.mem_top`.
-
-Establish `hle : Algebra.adjoin k (Set.range x) ≤ (Algebra.adjoin B (Set.range x)).restrictScalars k` using `Algebra.adjoin_le Algebra.subset_adjoin`. Conclude with `hle ha`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem square_presentation_counital_comul_of_finrank (p : ℕ) [Fact p.Prime] (k : Type) [Field k]
     [CharP k p] [PerfectRing k p] (n : ℕ) :
@@ -108,7 +106,7 @@ theorem square_presentation_counital_comul_of_finrank (p : ℕ) [Fact p.Prime] (
     exact hle ha
 
 /- English proof (translation)
-Introduce `p _ k A _ _ _ _ _ _ ε Δ h hε`. Conclude with `square_presentation_counital_comul_of_finrank p k _ A ε Δ rfl h hε`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem square_presentation_of_counital_comul : ∀ (p : ℕ) [Fact p.Prime] (k A : Type) [Field k] [CommRing A] [Algebra k A] [CharP k p] [PerfectRing k p] [Module.Finite k A] (ε : A →ₐ[k] k) (Δ : A →ₐ[k] A ⊗[k] A), ((∀ a : A, TensorProduct.lid k A (LinearMap.rTensor A ε.toLinearMap (Δ a)) = a) ∧ (∀ a : A, TensorProduct.rid k A (LinearMap.lTensor A ε.toLinearMap (Δ a)) = a)) → IsNilpotent (RingHom.ker ε) → (∃ (s : ℕ) (φ : MvPolynomial (Fin s) k →ₐ[k] A) (g : Fin s → MvPolynomial (Fin s) k), Function.Surjective φ ∧ RingHom.ker φ = Ideal.span (Set.range g)) := by
   intro p _ k A _ _ _ _ _ _ ε Δ h hε

@@ -6,26 +6,26 @@ import Formalism.LocalToGlobal.CharacterGerms.RowTiePProjFBTop
 namespace Formalism.L2.FormalSeriesBounds
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ I _ p g w hw`. Conclude with `allStart_of_proj Y p (hP C V O dd Y d I p (RowTiePE0.endomorphism_limit_all C V O dd Y)) g w hw`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem allStartFB_of_proj (hP : ProjFBSt) : AllStartFBSt := by
   intro C _ _ V O _ _ dd Y d _ I _ p g w hw
   exact allStart_of_proj Y p (hP C V O dd Y d I p (RowTiePE0.endomorphism_limit_all C V O dd Y)) g w hw
 
 /- English proof (translation)
-The claim follows from `ptFB_of_start3 (allStartFB_of_proj hP) hStab`.
+A detailed English derivation is pending.
 -/
 theorem ptFB_of_proj (hP : ProjFBSt) (hStab : HStabFBSt) : PTFBSt :=
   ptFB_of_start3 (allStartFB_of_proj hP) hStab
 
 /- English proof (translation)
-The claim follows from `cartFB_of_start (allStartFB_of_proj hP) hStab`.
+A detailed English derivation is pending.
 -/
 theorem cartFB_of_proj (hP : ProjFBSt) (hStab : HStabFBSt) : CartFBSt :=
   cartFB_of_start (allStartFB_of_proj hP) hStab
 
 /- English proof (translation)
-The claim follows from `ptFB_of_proj (RowTiePProj.projFB_of_lie hLie) hStab`.
+A detailed English derivation is pending.
 -/
 theorem ptFB_of_lie (hLie : RowTiePProj.ProjLieSt) (hStab : HStabFBSt) : PTFBSt :=
   ptFB_of_proj (RowTiePProj.projFB_of_lie hLie) hStab

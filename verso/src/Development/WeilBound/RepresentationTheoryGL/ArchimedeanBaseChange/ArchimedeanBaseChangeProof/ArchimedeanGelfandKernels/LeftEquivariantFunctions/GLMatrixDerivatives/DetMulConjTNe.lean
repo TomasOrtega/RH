@@ -16,12 +16,12 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `mul_mem hy (conjT_mem hy)`.
+A detailed English derivation is pending.
 -/
 theorem det_mul_conjT_ne {y : Mat n} (hy : y ∈ GLs n) : (y * yᴴ).det ≠ 0 := mul_mem hy (conjT_mem hy)
 
 /- English proof (translation)
-Unfold `wt`. Establish `h1 : ContDiffAt ℝ ∞ (fun y' : Mat n => (y' * y'ᴴ).det) y` using `contDiff_det.contDiffAt.comp y (contDiffAt_matmul contDiffAt_id contDiff_conjT.contDiffAt)`. Conclude with `contDiffAt_const.mul ((h1.pow n).inv (pow_ne_zero _ (det_mul_conjT_ne hy)))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_wt (c : ℝ) {y : Mat n} (hy : y ∈ GLs n) : ContDiffAt ℝ ∞ (fun y' : Mat n => wt c y') y := by
   unfold wt
@@ -30,7 +30,7 @@ theorem contDiffAt_wt (c : ℝ) {y : Mat n} (hy : y ∈ GLs n) : ContDiffAt ℝ 
   exact contDiffAt_const.mul ((h1.pow n).inv (pow_ne_zero _ (det_mul_conjT_ne hy)))
 
 /- English proof (translation)
-Unfold `wt`. Establish `e : (y * (1 + t • X)) * (y * (1 + t • X))ᴴ = y * ((1 + t • X) * (1 + t • X)) * yᴴ`. Rewrite using `[Matrix.conjTranspose_mul, conjT_line hX, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_assoc]`. Rewrite using `[e, Matrix.det_mul, Matrix.det_mul, Matrix.det_mul, Matrix.det_mul]`. Rewrite using `[show y.det * ((1 + t • X).det * (1 + t • X).det) * yᴴ.det = (y.det * yᴴ.det) * (1 + t • X).det ^ 2 by ring, mul_pow, ← pow_mul, mul_inv, mul_assoc]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem wt_line (c : ℝ) (y : Mat n) {X : Mat n} (hX : X.IsHermitian) (t : ℝ) :
     wt c (y * (1 + t • X)) = (c : ℂ) * ((y * yᴴ).det ^ n)⁻¹ * (((1 + t • X).det ^ (2 * n))⁻¹) := by
@@ -47,19 +47,19 @@ variable {lam : Fin n → ℤ} {E : KMod n} {Fr : Mat n → (E.V →L[ℂ] E.V)}
   {S : ℝ → (E.V →L[ℂ] E.V)} {Γ T : E.V →L[ℂ] E.V}
 
 /- English proof (translation)
-Use `set w := x⁻¹ * d * yᴴ⁻¹ with hwdef`. Establish `hw : w ∈ GLs n` using `mul_mem (mul_mem (inv_mem hx) hd) (inv_mem (conjT_mem hy))`. Establish `hkw : DifferentiableAt ℝ k w` using `diffAt_of hk hw`. Establish `hg : ContDiffAt ℝ ∞ (fun y' : Mat n => x⁻¹ * d * y'ᴴ⁻¹) y` using `contDiffAt_matmul contDiffAt_const ((contDiffAt_inv (conjT_mem hy)).comp y contDiff_conjT.contDiffAt)`. Establish `hdiff : DifferentiableAt ℝ (fun y' => wt c y' • Kf Fr k Γ T d x y') y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Kf`. Establish `h1 : DifferentiableAt ℝ (fun y' : Mat n => k (x⁻¹ * d * y'ᴴ⁻¹)) y` using `hkw.comp y (hg.differentiableAt (by simp))`. Establish `h2 : DifferentiableAt ℝ (fun y' : Mat n => Fr y'⁻¹) y` using `(diffAt_of h.smooth (inv_mem hy)).comp y ((contDiffAt_inv hy).differentiableAt (by simp))`. Conclude with `((contDiffAt_wt c hy).differentiableAt (by simp)).smul ((((h1.const_mul (Fr x)).mul_const Γ).mul_const T).mul h2)`. Establish `h1` using `hasDerivAt_fderiv_line hdiff (y * X)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `(hasDerivAt_detLine X).fun_pow (2 * n)`. Establish `hq0 : ((1 + (0 : ℝ) • X).det) ^ (2 * n) ≠ 0` using `by simp`. Establish `hW` using `(hq.fun_inv hq0).const_mul ((c : ℂ) * ((y * yᴴ).det ^ n)⁻¹)`. Establish `hc : HasDerivAt (fun t : ℝ => w * (1 + t • X)⁻¹) (w * (-X)) 0` using `(hasDerivAt_matmul (hasDerivAt_const (0 : ℝ) w) (hasDerivAt_lineInv X)).congr_deriv (by simp)`. Establish `hK : HasDerivAt (fun t : ℝ => k (w * (1 + t • X)⁻¹)) (fderiv ℝ k w (w * (-X))) 0` using `hkw.hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) hc (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : HasDerivAt (fun t : ℝ => Fr (1 + t • X)⁻¹) (fderiv ℝ Fr 1 (-X)) 0` using `(diffAt_of h.smooth one_mem).hasFDerivAt.comp_hasDerivAt_of_eq (0 : ℝ) (hasDerivAt_lineInv X) (by simp)`. Establish `hB` using `(((hK.const_mul (Fr x)).mul_const Γ).mul_const T).fun_mul (hP.mul_const (Fr y⁻¹))`. Establish `h2` using `hW.fun_smul hB`. Establish `e : ∀ᶠ t : ℝ in 𝓝 0, wt c (y + t • (y * X)) • Kf Fr k Γ T d x (y + t • (y * X)) = ((c : ℂ) * ((y * yᴴ).det ^ n)⁻¹ * (((1 + t • X).det ^ (2 * n))⁻¹)) • (Fr x * k (w * (1 + t • X)⁻¹) * Γ * T * (Fr (1 + t • X)⁻¹ * Fr y⁻¹))` using `by filter_upwards [line_mem X] with t ht`. Establish `e1 : y + t • (y * X) = y * (1 + t • X)` using `by rw [Matrix.mul_add, Matrix.mul_one, Matrix.mul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[e1, wt_line c y hX t]`. Use `congr 1`. Unfold `Kf`. Rewrite using `[Matrix.conjTranspose_mul, conjT_line hX, Matrix.mul_inv_rev, Matrix.mul_inv_rev, h.mul _ (inv_mem ht) _ (inv_mem hy)]`. Simplify using `only [hwdef, Matrix.mul_assoc, _root_.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2'` using `h2.congr_of_eventuallyEq e`. Rewrite using `[h1.unique h2']`. Simplify using `only [zero_smul, add_zero, inv_one, Matrix.mul_one, Matrix.one_mul, h.one, _root_.one_mul, Matrix.det_one, one_pow, inv_one, _root_.mul_one, map_neg, Matrix.mul_neg, Rd]`. Establish `ew : (c : ℂ) * ((y * yᴴ).det ^ n)⁻¹ = wt c y` using `rfl`. Rewrite using `[ew]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [smul_sub, mul_sub, sub_mul, smul_mul_assoc, mul_smul_comm, smul_neg, mul_neg, neg_mul, smul_add, mul_add, add_mul, _root_.mul_assoc, smul_smul]`. Use `push_cast`. Put the polynomial expressions in normal form. Use `abel_nf`.
+Put the polynomial expressions in normal form. A detailed English derivation is pending.
 -/
 theorem derTwo_at (h : CxData lam E Fr ε ι S Γ T) {k : Mat n → (E.V →L[ℂ] E.V)} (hk : ContDiffOn ℝ ∞ k (GLs n)) (c : ℝ)
     {d x : Mat n} (hd : d ∈ GLs n) (hx : x ∈ GLs n) {y : Mat n} (hy : y ∈ GLs n) {X : Mat n} (hX : X.IsHermitian) :
@@ -115,7 +115,7 @@ theorem derTwo_at (h : CxData lam E Fr ε ι S Γ T) {k : Mat n → (E.V →L[�
   abel_nf
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ h _ hk c _ _ hd hx _ hy _ hX` and use `derTwo_at h hk c hd hx hy hX`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem derTwo : DerTwo := fun _ _ _ _ _ _ _ _ _ h _ hk c _ _ hd hx _ hy _ hX => derTwo_at h hk c hd hx hy hX
 

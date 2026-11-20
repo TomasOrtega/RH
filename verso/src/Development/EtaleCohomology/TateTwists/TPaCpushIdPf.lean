@@ -5,9 +5,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace LateralTheory.EtaleFoundations
 
 /- English proof (translation)
-Introduce `R _ E I n x`. Take `⟨a, rfl⟩` from `CohomologyClass.mk_surjective x`. Use `show CohomologyClass.mk (zcomp a (Cocycle.ofHom (𝟙 I)) (add_zero n)) = CohomologyClass.mk a`. Use `congr 1`. Apply `Cocycle.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `[zcomp]`.
+A detailed English derivation is pending.
 -/
 theorem t_pa_cpush_id_of : t_pa_cpush_id := by
   intro R _ E I n x

@@ -9,7 +9,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Set `f : pullback (a ≫ b) ν ⟶ pullback b ν` to `(pullbackRightPullbackFstIso b ν a).inv ≫ pullback.snd a (pullback.fst b ν)`. Establish `hf : Surjective f` using `inferInstance`. Conclude with `Function.Surjective.connectedSpace hf.surj f.base.hom.continuous`.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem connectedSpace_pullback_of_comp_surjective (X P Q Z : Scheme.{0}) (a : X ⟶ P)
     (b : P ⟶ Q) (g : X ⟶ Q) (ν : Z ⟶ Q) (hg : a ≫ b = g) (ha : Surjective a)

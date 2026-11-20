@@ -8,9 +8,9 @@ open PI.DSInfCharCap
 open scoped InnerProductSpace Matrix
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use extensionality with `i j`. Break down `eq_or_ne i j with rfl | h` into its components or cases. Apply the tactic sequence `cases hε : ε i <;> simp [Matrix.diagonal_apply, hε]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[Matrix.diagonal_apply, Matrix.one_apply, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jm_sq {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   unfold Formalism.REAL.Jm
@@ -21,34 +21,34 @@ theorem jm_sq {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism
   · simp [Matrix.diagonal_apply, Matrix.one_apply, h]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, jm_sq, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jm_jm_mul {n : ℕ} (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ) :
     Formalism.REAL.Jm ε * (Formalism.REAL.Jm ε * M) = M := by
   rw [← Matrix.mul_assoc, jm_sq, Matrix.one_mul]
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (jm_sq ε)`.
+A detailed English derivation is pending.
 -/
 theorem jm_inv {n : ℕ} (ε : Fin n → Bool) : (Formalism.REAL.Jm ε)⁻¹ = Formalism.REAL.Jm ε := Matrix.inv_eq_left_inv (jm_sq ε)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨Formalism.REAL.Jm ε, Formalism.REAL.Jm ε, jm_sq ε, jm_sq ε⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem jm_isUnit {n : ℕ} (ε : Fin n → Bool) : IsUnit (Formalism.REAL.Jm ε) := ⟨⟨Formalism.REAL.Jm ε, Formalism.REAL.Jm ε, jm_sq ε, jm_sq ε⟩, rfl⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_UJset_iff {n : ℕ} (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) :
     g ∈ PI.UpqRep.UJset ε ↔ gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_UJset_iff]`. Use `set A : Matrix (Fin n) (Fin n) ℂ := (t : ℂ) • X with hAdef`. Establish `h0 : Xᴴ * Formalism.REAL.Jm ε = -(Formalism.REAL.Jm ε * X)` using `eq_neg_of_add_eq_zero_left hX`. Establish `hX' : Xᴴ = -(Formalism.REAL.Jm ε * X * Formalism.REAL.Jm ε)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hA : Aᴴ = Formalism.REAL.Jm ε * (-A) * (Formalism.REAL.Jm ε)⁻¹`. Establish `ht : star (t : ℂ) = t` using `Complex.conj_ofReal t`. Rewrite using `[jm_inv, hAdef, Matrix.conjTranspose_smul, hX', ht]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_smul, Matrix.smul_mul, smul_neg]`. Establish `hcomm : NormedSpace.exp (-A) * NormedSpace.exp A = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.exp_add_of_commute (-A) A (Commute.neg_left (Commute.refl A)), neg_add_cancel, NormedSpace.exp_zero]`. Rewrite using `[← Matrix.exp_conjTranspose, hA, Matrix.exp_conj _ _ (jm_isUnit ε), jm_inv]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, jm_jm_mul]`. Use `_ = Formalism.REAL.Jm ε := by rw [hcomm, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exp_mem_UJ {n : ℕ} {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0) (t : ℝ) :

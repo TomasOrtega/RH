@@ -19,17 +19,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ExpPiecesCheck
 
 /- English proof (translation)
-The claim follows from `LinEig.linEig_holds`.
+A detailed English derivation is pending.
 -/
 theorem linEig : LinEigSt := LinEig.linEig_holds
 
 /- English proof (translation)
-The claim follows from `expChartOf_of (expActOf_of linEig)`.
+A detailed English derivation is pending.
 -/
 theorem expChartOf : ExpChartOfSt := expChartOf_of (expActOf_of linEig)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c S _ _ _ y x _ e e' he he' a`. Take `⟨β, hg, hr, hc⟩` from `he.coc a`. Take `⟨β', hg', hr', hc'⟩` from `he'.coc a`. Take `rfl` from `betaUniq_of_global GlobalTheory.SemiRigid.globalFns E H Dw l Xo a β β' hg hg' hr hr'`. Conclude with `⟨β, hg, hr, hc, hc'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem commonCoc : CommonCocSt := by
   intro E _ _ _ H Dw l Xo c S _ _ _ y x _ e e' he he' a
@@ -46,7 +46,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 end
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨expChartOf, linEig, commonCoc⟩`.
+Supply the required witnesses or components.
 -/
 theorem three_hold : ExpChartOfSt ∧ LinEigSt ∧ CommonCocSt := ⟨expChartOf, linEig, commonCoc⟩
 

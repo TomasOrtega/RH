@@ -18,35 +18,33 @@ end
 open TensorProduct IsLocalRing Matrix in
 
 /- English proof (translation)
-Introduce `R₀ _ p _ g B Tw Dt _ Oe _ _ σ cp D`. Unfold `_root_.ReciprocityTheory.PGsh.Be2.EvLatStatement`. Introduce `C _ _ hdom hinj`. Use `letI inst : ∀ i, Algebra Tw.O.carrier (D.fin.AAx i).carrier := fun i => ((D.fin.sO i).1 : Tw.O.carrier →+* (D.fin.AAx i).carrier).toAlgebra`. Establish `hspec : ∀ t, (D.ptMap t).comp (D.fin.sO (D.ptIdx t)) = _root_.ReciprocityTheory.PGsh.LHom.id _ ∧ B.map (D.ptMap t) (D.fin.y (D.ptIdx t)) = _root_.ReciprocityTheory.PGsh.Be2.ptOf B D.L.τ t` using `fun t => by`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h` using `(D.fin.univ Tw.O (_root_.ReciprocityTheory.PGsh.LHom.id _) (_root_.ReciprocityTheory.PGsh.Be2.ptOf B D.L.τ t) (D.pt_p t)).choose_spec.choose_spec`. Conclude with `⟨h.1, h.2.1⟩`. Set `ev : ∀ t : _root_.ReciprocityTheory.PGsh.Up.Nb p g, (∀ i, (D.fin.AAx i).carrier) →ₐ[Tw.O.carrier] Tw.O.carrier` to `fun t => { toRingHom := ((D.ptMap t).1 : (D.fin.AAx (D.ptIdx t)).carrier →+* Tw.O.carrier).comp (Pi.evalRingHom _ (D.ptIdx t)) commutes' := fun o => by`. Establish `h` using `congrArg (fun φ : _root_.ReciprocityTheory.PGsh.LHom Tw.O Tw.O => φ.1 o) (hspec t).1`. Conclude with `h }`.
+Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Ψ : (∀ i, (D.fin.AAx i).carrier) →ₐ[Tw.O.carrier] (_root_.ReciprocityTheory.PGsh.Up.Nb p g → Tw.O.carrier)` to `Pi.algHom _ _ ev`. Set `f : (∀ i, (D.fin.AAx i).carrier) →ₗ[Tw.O.carrier] (_root_.ReciprocityTheory.PGsh.Up.Nb p g → C)` to `(Algebra.linearMap Tw.O.carrier C).compLeft (_root_.ReciprocityTheory.PGsh.Up.Nb p g) ∘ₗ Ψ.toLinearMap`. Establish `hf : ∀ F x, f F x = algebraMap _ C ((D.ptMap x).1 (F (D.ptIdx x)))` using `fun F x => rfl`. Establish `himg : D.evImg C = LinearMap.range f`. Unfold `_root_.ReciprocityTheory.PGsh.Be2.Dat.evImg _root_.ReciprocityTheory.PGsh.Be2.Dat.evAll`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Submodule.span _ (Set.range ⇑f) = _`. Rewrite using `[← LinearMap.coe_range, Submodule.span_eq]`. Establish `hinjΨ : Function.Injective Ψ`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `F hF`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Apply `D.fin.sep i` to reduce the goal to its premises. Introduce `φ hφ`. Establish `hz : p • B.map φ (D.fin.y i) = 0` using `by rw [← map_nsmul, D.fin.y_p, map_zero]`. Take `⟨t, ht⟩` from `D.L.τ_basis.2 ⟨_, hz⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht' : _root_.ReciprocityTheory.PGsh.Be2.ptOf B D.L.τ t = B.map φ (D.fin.y i)` using `congrArg Subtype.val ht`. Take `⟨i0, φ0, -, -, huniq⟩` from `D.fin.univ Tw.O (_root_.ReciprocityTheory.PGsh.LHom.id _) _ hz`. Take `⟨hi, hφ0⟩` from `huniq i φ hφ rfl`. Take `⟨hi', hψ0⟩` from `huniq (D.ptIdx t) (D.ptMap t) (hspec t).1 ((hspec t).2.trans ht')`. Substitute `hi` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `key : ∀ (j : D.fin.ι) (ψ : _root_.ReciprocityTheory.PGsh.LHom (D.fin.AAx j) Tw.O), j = i → HEq ψ φ → ψ.1 (F j) = φ.1 (F i)`. Introduce and unpack `j ψ rfl h`. Rewrite using `[eq_of_heq h]`. Conclude with `(key _ _ hi' (hψ0.trans hφ0.symm)).symm.trans (congrFun hF t)`. Use `haveI : ∀ i, Module.Free Tw.O.carrier (D.fin.AAx i).carrier := fun i => (D.fin.free i).1`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : ∀ i, Module.Finite Tw.O.carrier (D.fin.AAx i).carrier := fun i => (D.fin.free i).2`. Use `haveI := hdom`. Establish `hrank : Module.finrank Tw.O.carrier (∀ i, (D.fin.AAx i).carrier) = Fintype.card (_root_.ReciprocityTheory.PGsh.Up.Nb p g)`. Rewrite using `[Module.finrank_pi_fintype, ← Nat.card_eq_fintype_card]`. Use `Eq.trans ?_ (D.fin.rank.trans (Nat.card_congr (Equiv.ofBijective _ D.L.τ_basis)).symm)` and prove the remaining obligations.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Both sides reduce to the same expression. Set `b0` to `Module.Free.chooseBasis Tw.O.carrier (∀ i, (D.fin.AAx i).carrier)`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex Tw.O.carrier (∀ i, (D.fin.AAx i).carrier)) = Fintype.card (_root_.ReciprocityTheory.PGsh.Up.Nb p g)`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, hrank]`. Set `b` to `b0.reindex (Fintype.equivOfCardEq hcard)`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `_root_.ReciprocityTheory.PGsh.L2.IsLat`. Use `⟨Matrix.of fun x j => f (b j) x, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isUnit_iff_ne_zero]`. Establish `hdet : (Matrix.of fun x j => f (b j) x).det = algebraMap Tw.O.carrier C (Matrix.of fun x j => Ψ (b j) x).det`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hdet]`. Introduce `h0`. Rewrite `h0` using `[← map_zero (algebraMap Tw.O.carrier C)]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 (hinj h0)`. Apply `hv0` to reduce the goal to its premises. Establish `hsum : Ψ (∑ j, v j • b j) = 0`. Rewrite using `[← hv]`. Use function extensionality and compare the values at `x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_smul, mul_comm]`. Establish `h1 : ∑ j, v j • b j = 0` using `hinjΨ (by rw [hsum, map_zero])`. Use function extensionality and compare the values at `j`. Conclude with `Fintype.linearIndependent_iff.1 b.linearIndependent v h1 j`. Rewrite using `[himg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = Submodule.span _ (Set.range (f ∘ b))`. Rewrite using `[Set.range_comp, ← Submodule.map_span, b.span_eq, Submodule.map_top]`. Rewrite using `[himg]`. Introduce and unpack `_ ⟨F, rfl⟩`. Conclude with `fun x => ⟨_, (hf F x).symm⟩`.
-
-Rewrite using `[himg]`. Conclude with `⟨1, by funext x; simp only [hf, Pi.one_apply, map_one]⟩`. Rewrite using `[himg]`. Introduce and unpack `_ _ ⟨F, rfl⟩ ⟨G, rfl⟩`. Conclude with `⟨F * G, by funext x; simp only [hf, Pi.mul_apply, map_mul]⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.evImg_isLat_subring :
   (∀ {R₀ : Type} [CommRing R₀] {p : ℕ} [Fact p.Prime] {g : ℕ} {B : _root_.ReciprocityTheory.PGsh.BX R₀} {Tw : _root_.ReciprocityTheory.PGsh.ATowerL R₀ p} {Dt : _root_.ReciprocityTheory.PGsh.DualTower Tw} [Algebra ℤ_[p] (Tw.O : Type)] {Oe : Type} [CommRing Oe] [Algebra ℤ_[p] Oe] {σ : Oe ≃ₐ[ℤ_[p]] Oe} {cp : (Tw.O : Type)} (D : _root_.ReciprocityTheory.PGsh.Be2.Dat p g B Tw Dt Oe σ cp), _root_.ReciprocityTheory.PGsh.Be2.EvLatStatement D) := by

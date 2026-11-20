@@ -9,7 +9,7 @@ open MvPolynomial Formalism.DegreeFormula GlobalTheory.FlagPoly
 namespace GlobalTheory.FlagPoly.CoinvTop
 
 /- English proof (translation)
-Use `letI := MvPolynomial.gradedAlgebra (σ := σ) (R := ℝ)`. Establish `h` using `DirectSum.coe_decompose_mul_of_left_mem (homogeneousSubmodule σ ℝ) (a := P) (b := Q) n ((mem_homogeneousSubmodule k P).2 hP)`. Establish `e : ∀ (m : ℕ) (R : MvPolynomial σ ℝ), ((DirectSum.decompose (homogeneousSubmodule σ ℝ) R m : homogeneousSubmodule σ ℝ m) : MvPolynomial σ ℝ) = homogeneousComponent m R` using `fun m R => MvPolynomial.decomposition.decompose'_apply R m`. Rewrite `h` using `[e, e]`. Conclude with `h`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homogeneousComponent_mul_of_left {σ : Type} {k : ℕ} (n : ℕ) {P : MvPolynomial σ ℝ} (hP : P.IsHomogeneous k)
     (Q : MvPolynomial σ ℝ) :
@@ -27,7 +27,7 @@ theorem homogeneousComponent_mul_of_left {σ : Type} {k : ℕ} (n : ℕ) {P : Mv
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ}
 
 /- English proof (translation)
-Unfold `pSum`. Use `IsHomogeneous.sum _ _ _ fun i _ => ?_` and prove the remaining obligations. Simplify using `using (isHomogeneous_X ℝ (τ, i)).pow k`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pSum_isHomogeneous' (τ : ι) (k : ℕ) : (pSum τ k : Pol ι N).IsHomogeneous k := by
   unfold pSum
@@ -48,11 +48,11 @@ def pSumIdeal (ι : Type) [Fintype ι] (N : ℕ) : Ideal (Pol ι N) where
     ring
 
 /- English proof (translation)
-Use `⟨fun τ' k' => if τ' = τ ∧ k' = k then 1 else 0, ?_⟩` and prove the remaining obligations. Establish `hk' : k ∈ Finset.Icc 1 N` using `by simpa using hk`. Rewrite using `[Finset.sum_eq_single τ, Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hb]`. Introduce `h`. Conclude with `absurd hk' h`. Introduce `b _ hb`. Simplify using `[hb]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem pSum_mem_pSumIdeal (τ : ι) {k : ℕ} (hk : k ∈ Set.Icc 1 N) : pSum τ k ∈ pSumIdeal ι N := by
   refine ⟨fun τ' k' => if τ' = τ ∧ k' = k then 1 else 0, ?_⟩
@@ -65,9 +65,9 @@ theorem pSum_mem_pSumIdeal (τ : ι) {k : ℕ} (hk : k ∈ Set.Icc 1 N) : pSum �
   · simp
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.T.high_degree_in_power_sum_ideal N d P hP hd`. Establish `hle : Ideal.span ((fun k => psum (Fin N) ℝ k) '' Set.Icc 1 N) ≤ (pSumIdeal ι N).comap (rename (R` using `ℝ) (fun i : Fin N => (τ, i))) := by`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Establish `: rename (R` using `ℝ) (fun i : Fin N => (τ, i)) (psum (Fin N) ℝ k) = pSum τ k := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `[psum, pSum]`. Simplify using `only [SetLike.mem_coe, Ideal.mem_comap]`. Rewrite using `[this]`. Conclude with `pSum_mem_pSumIdeal τ hk`. Conclude with `hle h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rename_mem_pSumIdeal (τ : ι) {d : ℕ} {P : MvPolynomial (Fin N) ℝ} (hP : P.IsHomogeneous d)
     (hd : N * (N - 1) / 2 < d) : rename (fun i => (τ, i)) P ∈ pSumIdeal ι N := by
@@ -84,11 +84,11 @@ theorem rename_mem_pSumIdeal (τ : ι) {d : ℕ} {P : MvPolynomial (Fin N) ℝ} 
   exact hle h
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ, N * (N - 1) / 2 < ∑ i, m (τ, i) := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `: ∑ x, m x ≤ dimFl ι N`. Rewrite using `[Fintype.sum_prod_type, dimFl]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use linear arithmetic over natural numbers and integers. Establish `hP : (∏ i : Fin N, (X i : MvPolynomial (Fin N) ℝ) ^ m (τ, i)).IsHomogeneous (∑ i, m (τ, i))`. Use `IsHomogeneous.prod _ _ _ fun i _ => ?_` and prove the remaining obligations. Simplify using `using (isHomogeneous_X ℝ i).pow (m (τ, i))`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h` using `rename_mem_pSumIdeal τ hP hτ`. Simplify using `only [map_prod, map_pow, rename_X] at h`. Rewrite using `[monomial_eq, Finsupp.prod_fintype _ _ (by simp), Fintype.prod_prod_type, ← Finset.mul_prod_erase _ _ (Finset.mem_univ τ)]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ h)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monomial_mem_pSumIdeal (m : ι × Fin N →₀ ℕ) (c : ℝ) (hm : dimFl ι N < ∑ x, m x) :
     (monomial m c : Pol ι N) ∈ pSumIdeal ι N := by
@@ -110,15 +110,15 @@ theorem monomial_mem_pSumIdeal (m : ι × Fin N →₀ ℕ) (c : ℝ) (hm : dimF
   exact Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ h)
 
 /- English proof (translation)
-Introduce `ι _ _ N F hF`. Establish `hmem : F ∈ pSumIdeal ι N`. Rewrite using `[F.as_sum]`. Use `Ideal.sum_mem _ fun m hm => monomial_mem_pSumIdeal m _ ?_` and prove the remaining obligations. Establish `h1` using `hF (mem_support_iff.1 hm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : Finsupp.weight (1 : ι × Fin N → ℕ) m = ∑ x, m x`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Take `⟨Q, hQ⟩` from `hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Use `⟨fun τ k => if k ≤ dimFl ι N + 1 then homogeneousComponent (dimFl ι N + 1 - k) (Q τ k) else 0, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ k _ _ dsimp only split_ifs`. Conclude with `homogeneousComponent_isHomogeneous _ _`. Conclude with `isHomogeneous_zero _ _ _`. Establish `h : homogeneousComponent (dimFl ι N + 1) F = F`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[homogeneousComponent_of_mem ((mem_homogeneousSubmodule _ F).2 hF), if_pos rfl]`. Rewrite using `[← h, hQ]`. Simplify using `only [map_sum]`. Use `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[homogeneousComponent_mul_of_left _ (pSum_isHomogeneous' τ k)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_sum_pSum_mul_of_isHomogeneous :
     ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (F : Pol ι N), F.IsHomogeneous (dimFl ι N + 1) →

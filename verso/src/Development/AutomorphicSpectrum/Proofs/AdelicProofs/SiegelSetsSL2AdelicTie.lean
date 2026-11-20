@@ -5,7 +5,7 @@ import GroundTheory.IdeleRoots.ClassicalIdeles.ExistsPosBoundsOfIsCompact
 namespace GlobalTheory.CompanionTheory.Classical
 
 /- English proof (translation)
-The claim follows from `GroundTheory.BlockD.siegelSetsSL2Adelic_holds`.
+A detailed English derivation is pending.
 -/
 theorem siegelSetsSL2Adelic_tie : Formalism.D.siegelSetsSL2Adelic :=
   GroundTheory.BlockD.siegelSetsSL2Adelic_holds

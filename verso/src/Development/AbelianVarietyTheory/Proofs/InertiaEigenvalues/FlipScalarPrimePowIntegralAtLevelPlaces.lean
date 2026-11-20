@@ -20,27 +20,25 @@ noncomputable section
 namespace GlobalTheory.LevelSeries
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ m : ℕ, m ≠ 0 ∧ IsIntegral ℤ ((m : ℂ) * z)`. Take `⟨m, hm0, hint⟩` from `h`. Take `⟨c, m', hm', hmeq⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hm0 l hl.ne_one`. Use `⟨c, fun k _ _ σ la O hla hO hz => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hz`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hti : IsIntegral ℤ ((m : k) * y)`. Rewrite using `[← isIntegral_algHom_iff σ.toIntAlgHom σ.injective]`. Simplify using `using hint`. Establish `hm'0 : (m' : k) ≠ 0`. Introduce and unpack `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `h0` using `[Nat.cast_eq_zero]`. Substitute `h0` using the available equality. Simplify using `at hmeq`. Conclude with `hm0 hmeq`. Establish `hcop : IsCoprime (m' : ℤ) (l : ℤ)` using `Nat.isCoprime_iff_coprime.2 (Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hl).2 hm'))`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnot : ((m' : ℕ) : 𝓞 k) ∉ la.asIdeal`. Introduce `hmem`. Take `⟨s, t, hst⟩` from `hcop`. Apply `la.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ((s : 𝓞 k) * ((m' : ℕ) : 𝓞 k) + (t : 𝓞 k) * ((l : ℕ) : 𝓞 k)) = 1`. Use `congrArg (Int.cast : ℤ → 𝓞 k) hst` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Rewrite using `[← this]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `la.asIdeal.add_mem (la.asIdeal.mul_mem_left _ hmem) (la.asIdeal.mul_mem_left _ hla)`. Establish `hv1 : la.valuation k (m' : k) = 1`. Establish `e : ((m' : ℕ) : k) = algebraMap (𝓞 k) k ((m' : ℕ) : 𝓞 k)` using `(map_natCast _ _).symm`. Rewrite using `[e, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `HeightOneSpectrum.intValuation_eq_one_iff.2 hnot`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvt : la.valuation k ((m : k) * y) ≤ 1`. Use `HeightOneSpectrum.valuation_le_one (K := k) la (⟨(m : k) * y, hti⟩ : 𝓞 k)` as an intermediate fact. Conclude with `this`. Establish `heq : ((l : k) ^ c * y) = ((m : k) * y) / (m' : k)`. Rewrite using `[hmeq]`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hmem` using `hO ((l : k) ^ c * y) (by rw [heq, map_div₀, hv1, div_one]; exact hvt)`. Simplify using `using hmem`. Use `⟨0, fun k _ _ σ la O hla hO hz => ?_⟩` and prove the remaining obligations.
+It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-It suffices to derive a contradiction. Take `⟨y, rfl⟩` from `hz`. Establish `hy : IsAlgebraic ℤ y` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ k).2 (Algebra.IsAlgebraic.isAlgebraic y)`. Take `⟨m, hm0, hmi⟩` from `hy.exists_integral_multiple`. Apply `h` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨m.natAbs, by simpa using hm0, ?_⟩` and prove the remaining obligations. Establish `h2 : IsIntegral ℤ (σ (m • y))` using `hmi.map σ.toIntAlgHom`. Break down `Int.natAbs_eq m with hm | hm` into its components or cases. Rewrite `h2` using `[hm]`. Simplify `h2` using `[zsmul_eq_mul]`.
-
-Rewrite `h2` using `[hm]`. Establish `h3` using `h2.neg`. Simplify `h3` using `[zsmul_eq_mul, neg_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem_of_mem_fieldRange (z : ℂ) (l : ℕ) (hl : l.Prime) : ∃ c : ℕ, ∀ (k : Type) [Field k] [NumberField k]
     (σ : k →+* ℂ) (la : HeightOneSpectrum (𝓞 k)) (O : Subring ℂ), ((l : ℕ) : 𝓞 k) ∈ la.asIdeal → ValRing σ la O →
@@ -99,11 +97,11 @@ theorem exists_pow_mul_mem_of_mem_fieldRange (z : ℂ) (l : ℕ) (hl : l.Prime) 
       simpa [zsmul_eq_mul, neg_mul] using h3
 
 /- English proof (translation)
-Introduce `D ψ θ V W χV χW om ΛV ΛW sW f₀ hVP hW χ M₀ l hχ hl hM T`. Establish `hM' : ((M₀ : ℕ) : D.host.E) ≠ 0` using `by exact_mod_cast hM`. Use `set u : D.host.Eˣ := Units.mk0 _ hM' with hu`. Use `set z : ℂ := (∏ PP ∈ T, ((χ.locK PP u : ℂˣ) : ℂ) ^ V.rank) * ((Real.sqrt (flipIdx V W T M₀ : ℝ) : ℝ) : ℂ)⁻¹ with hz`. Take `⟨c, hc⟩` from `exists_pow_mul_mem_of_mem_fieldRange z l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨c, fun eT x hT hTM hx k _ _ σ la O hla hO hconj hval _ _ => ?_⟩` and prove the remaining obligations. Establish `hfl : flipScal χW V W T M₀ x = z`. Unfold `flipScal`. Rewrite using `[GlobalTheory.T.char_inv_centralFlipIdele_eq_prod_local_components D V χW χ M₀ u T eT x hχ.1 rfl hT hx]`. Rewrite using `[hfl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `hc k σ la O hla hO ?_` and prove the remaining obligations. Take `⟨a, hai, hA1, hA2⟩` from `GlobalTheory.T.exists_field_element_local_components_level_number D.host.E χ M₀ u rfl T`. Establish `hinf` using `GlobalTheory.T.heckeChar_infinity_eq_coeff_mul_halfNorm_pow D ψ θ V W χV χW om ΛV ΛW sW f₀ hVP χ hχ.1 k σ hconj a`. Use `GlobalTheory.T.centralFlipScalar_mem_coefficientField D.host.E χ M₀ V.rank W.rank u a T k σ hW rfl hai hTM (fun v hv => hχ.2.1 v hv) hval hinf hA1 hA2` as an intermediate fact. Simplify `this` using `[hz, flipIdx]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem flipScal_pow_mem : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (sW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) (f₀ : WO V W → ℂ), VacPair ψ θ V W χV χW om ΛV ΛW sW f₀ → Odd W.rank → ∀ (χ : Formalism.L2.Host.HChar D.host.E) (M₀ l : ℕ), ChiData χW χ M₀ → l.Prime → M₀ ≠ 0 → ∀ (T : Finset (Formalism.L2.DIV.Pl D.host.E)), ∃ c : ℕ, ∀ (eT : AE D) (x : (AE D)ˣ), IsIdemSum eT T → (∀ PP ∈ T, ((M₀ : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) → IsFlipDet V eT M₀ x → ∀ (k : Type) [Field k] [NumberField k] (σ : k →+* ℂ) (la : HeightOneSpectrum (𝓞 k)) (O : Subring ℂ), ((l : ℕ) : 𝓞 k) ∈ la.asIdeal → ValRing σ la O → ConjIn D σ → χ.ValuesIn (-1 / 2) σ → Odd M₀ → Nat.Coprime M₀ (GlobalTheory.Tow.badN D) → (l : ℂ) ^ c * flipScal χW V W T M₀ x ∈ O := by
   intro D ψ θ V W χV χW om ΛV ΛW sW f₀ hVP hW χ M₀ l hχ hl hM T

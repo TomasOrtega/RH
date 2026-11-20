@@ -12,7 +12,7 @@ open NumberField NumberField.Units NumberField.Units.dirichletUnitTheorem Global
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Cones
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_coe_sort s f]`. Conclude with `Equiv.sum_comp s.equivFin.symm (fun y : s => f (y : F))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_equivFin_symm {F M : Type} [AddCommMonoid M] (s : Finset F) (f : F → M) :
     ∑ i : Fin s.card, f (s.equivFin.symm i : F) = ∑ y ∈ s, f y := by
@@ -20,13 +20,13 @@ theorem sum_equivFin_symm {F M : Type} [AddCommMonoid M] (s : Finset F) (f : F �
   exact Equiv.sum_comp s.equivFin.symm (fun y : s => f (y : F))
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, rfl⟩`. Use `⟨fun y => if h : y ∈ s then t (s.equivFin ⟨y, h⟩) else 1, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [dif_pos hy]`. Conclude with `ht _`. Rewrite using `[← sum_equivFin_symm s (fun y => (if h : y ∈ s then t (s.equivFin ⟨y, h⟩) else 1 : ℚ) • y)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hm : (s.equivFin.symm i : F) ∈ s` using `(s.equivFin.symm i).2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [dif_pos hm, Subtype.coe_eta, Equiv.apply_symm_apply]`. Rewrite using `[Rat.smul_def]`. Introduce and unpack `⟨t, ht, rfl⟩`. Use `⟨fun i => t (s.equivFin.symm i : F), fun i => ht _ (s.equivFin.symm i).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← sum_equivFin_symm s (fun y => t y • y)]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Rat.smul_def]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem openCone_equivFin {F : Type} [Field F] [CharZero F] (s : Finset F) :
     openCone (fun i : Fin s.card => (s.equivFin.symm i : F)) = coneOn s := by
@@ -50,27 +50,21 @@ theorem openCone_equivFin {F : Type} [Field F] [CharZero F] (s : Finset F) :
     rw [Rat.smul_def]
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `empty`. Introduce `_`. Conclude with `⟨Empty, inferInstance, fun c => c.elim, fun c => c.elim, fun c => c.elim, fun c => c.elim, fun c => c.elim, fun c => c.elim, fun x hx => hx.elim⟩`. Consider the case `cone s hli hP hQ`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `h0`. Establish `hcone` using `openCone_equivFin s`. Use `⟨Unit, inferInstance, fun _ => s.card, fun _ i => (s.equivFin.symm i : F), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `_`. Use `Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `rfl`. Conclude with `h0 ⟨fun _ => 0, by simp, by simp⟩`. Introduce `_`. Establish `hinj : Function.Injective (fun i : Fin s.card => (⟨(s.equivFin.symm i : F), (s.equivFin.symm i).2⟩ : (s : Set F)))`. Introduce `i j hij`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `s.equivFin.symm.injective (Subtype.ext (congrArg Subtype.val hij))`. Conclude with `LinearIndependent.comp hli _ hinj`. Introduce `_ i`. Conclude with `hP (s.equivFin.symm i).2`. Introduce `_`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hcone.le`. Introduce `x hx`. Conclude with `⟨(), hcone.ge hx, fun _ _ => rfl⟩`. Consider the case `@union A B _ _ hAB ihA ihB`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Take `⟨ι₁, f₁, r₁, v₁, hr₁, hl₁, hp₁, hs₁, hu₁⟩` from `ihA (fun h => h0 (Or.inl h))`. Take `⟨ι₂, f₂, r₂, v₂, hr₂, hl₂, hp₂, hs₂, hu₂⟩` from `ihB (fun h => h0 (Or.inr h))`. Use `⟨ι₁ ⊕ ι₂, inferInstance, Sum.elim r₁ r₂, fun c => match c with` and prove the remaining obligations. Consider the case `Sum.inl a => v₁ a`. Consider the case `Sum.inr b => v₂ b, ?_, ?_, ?_, ?_, ?_⟩`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(a | b)`. Conclude with `hr₁ a`. Conclude with `hr₂ b`. Introduce and unpack `(a | b)`. Conclude with `hl₁ a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hl₂ b`. Introduce and unpack `(a | b) i`. Conclude with `hp₁ a i`. Conclude with `hp₂ b i`. Introduce and unpack `(a | b)`.
-
-Conclude with `(hs₁ a).trans Set.subset_union_left`. Conclude with `(hs₂ b).trans Set.subset_union_right`. Introduce and unpack `x (hx | hx)`. Take `⟨a, ha, hu⟩` from `hu₁ x hx`. Use `⟨Sum.inl a, ha, ?_⟩` and prove the remaining obligations.
-
-Introduce and unpack `(a' | b') h'`. Conclude with `congrArg Sum.inl (hu a' h')`. Conclude with `(Set.disjoint_left.mp hAB hx (hs₂ b' h')).elim`. Take `⟨b, hb, hu⟩` from `hu₂ x hx`. Use `⟨Sum.inr b, hb, ?_⟩` and prove the remaining obligations.
-
-Introduce and unpack `(a' | b') h'`. Conclude with `(Set.disjoint_left.mp hAB (hs₁ a' h') hx).elim`. Conclude with `congrArg Sum.inr (hu b' h')`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem tile_family {F : Type} [Field F] [NumberField F] (P : Set F) (Q : Set F → Prop) (C : Set F) (h : Tile P Q C) :
     (0 : F) ∉ C →
@@ -134,7 +128,7 @@ theorem tile_family {F : Type} [Field F] [NumberField F] (P : Set F) (Q : Set F 
         · exact congrArg Sum.inr (hu b' h')
 
 /- English proof (translation)
-Introduce `P Q C h` and use `tile_family P Q C h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tile_family_closed : ∀ {F : Type} [Field F] [NumberField F] (P : Set F) (Q : Set F → Prop) (C : Set F), Tile P Q C → (0 : F) ∉ C →
     ∃ (ι : Type) (_ : Fintype ι) (r : ι → ℕ) (v : ∀ c, Fin (r c) → F), (∀ c, 0 < r c) ∧

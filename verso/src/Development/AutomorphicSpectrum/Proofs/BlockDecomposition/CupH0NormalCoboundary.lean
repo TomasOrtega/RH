@@ -27,9 +27,9 @@ def vx {n : ℕ} (s : ComposableArrows C n) (w : ∀ T : C, Φ.A.obj T) (i : Fin
   (Φ.A.map (s.map (homOfLE (Fin.le_last i)))).hom (w (s.obj i))
 
 /- English proof (translation)
-Establish `e : (hg.functor ⋙ s).map (homOfLE (Fin.le_last i)) ≫ s.map (homOfLE (Fin.le_last (g (Fin.last p)))) = s.map (homOfLE (Fin.le_last (g i)))`. Express the relevant statement in the definitionally equal form `s.map _ ≫ s.map _ = _`. Rewrite using `[← s.map_comp]`. Both sides reduce to the same expression. Unfold `vx`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Express the relevant statement in the definitionally equal form `(Φ.A.map ((hg.functor ⋙ s).map (homOfLE (Fin.le_last i))) ≫ Φ.A.map (s.map (homOfLE (Fin.le_last (g (Fin.last p)))))).hom (w (s.obj (g i))) = _`. Rewrite using `[← Φ.A.map_comp, e]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem vx_res {p n : ℕ} (s : ComposableArrows C n) (w : ∀ T : C, Φ.A.obj T) (g : Fin (p + 1) → Fin (n + 1))
     (hg : Monotone g) (i : Fin (p + 1)) :
@@ -45,7 +45,7 @@ theorem vx_res {p n : ℕ} (s : ComposableArrows C n) (w : ∀ T : C, Φ.A.obj T
   rfl
 
 /- English proof (translation)
-Rewrite using `[Subsingleton.elim h (𝟙 _), s.map_id, Φ.A.map_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_idem {n : ℕ} (s : ComposableArrows C n) (i : Fin (n + 1)) (h : i ⟶ i) (x : Φ.A.obj (s.obj i)) :
     (Φ.A.map (s.map h)).hom x = x := by
@@ -53,14 +53,14 @@ theorem map_idem {n : ℕ} (s : ComposableArrows C n) (i : Fin (n + 1)) (h : i �
   rfl
 
 /- English proof (translation)
-The claim follows from `map_idem s _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem vx_last {n : ℕ} (s : ComposableArrows C n) (w : ∀ T : C, Φ.A.obj T) :
     vx s w (Fin.last n) = w (s.obj (Fin.last n)) :=
   map_idem s _ _ _
 
 /- English proof (translation)
-Rewrite using `[cech_d_h0_eval, vx_last]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cech_d_h0_vertex_diff (w : ∀ T : C, Φ.A.obj T) (t : ComposableArrows C 1) :
     vl (CH.d (CH.modF Φ.A) 0 (h0 w)) t = vx t w (Fin.last 1) - vx t w 0 := by
@@ -68,7 +68,7 @@ theorem cech_d_h0_vertex_diff (w : ∀ T : C, Φ.A.obj T) (t : ComposableArrows 
   rfl
 
 /- English proof (translation)
-The claim follows from `| 0, _, _ => by simp; rfl | a + 1, u, s => by have ih := cupList_val (fun i : Fin a => u i.castSucc) ((CH.front_mono (rfl : a + 1 = a + 1)).functor ⋙ s) have h1 : (show Φ.A.obj (s.obj (Fin.last (a + 1))) from CH.term (CH.modF Φ.A) s (cupListC Φ.A fun k : Fin a => CH.d (CH.modF Φ. …`.
+A detailed English derivation is pending.
 -/
 theorem cupList_val : ∀ {a : ℕ} (u : Fin a → ∀ T : C, Φ.A.obj T) (s : ComposableArrows C a),
     vl (cupListC Φ.A fun k => CH.d (CH.modF Φ.A) 0 (h0 (u k))) s =
@@ -104,7 +104,7 @@ def fm {a : ℕ} (u₀ : ∀ T : C, Φ.A.obj T) (u : Fin a → ∀ T : C, Φ.A.o
   (CH.mulP Φ.A).cupC (add_zero a) (cupListC Φ.A fun k => CH.d (CH.modF Φ.A) 0 (h0 (u k))) (h0 u₀)
 
 /- English proof (translation)
-Establish `h1 : (show Φ.A.obj (s.obj (Fin.last a)) from CH.term (CH.modF Φ.A) s P (CH.front (add_zero a)) (CH.front_mono _)) = vl P s` using `map_idem (Φ := Φ) s (Fin.last a) _ _`. Establish `h2 : (show Φ.A.obj (s.obj (Fin.last a)) from CH.term (CH.modF Φ.A) s (h0 w) (CH.back (add_zero a)) (CH.back_mono _)) = w (s.obj (Fin.last a))` using `map_idem (Φ := Φ) s (Fin.last a) _ _`. Rewrite using `[← h1, ← h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cup_h0_eval {a : ℕ} (P : CH.Cn (CH.modF Φ.A) a) (w : ∀ T : C, Φ.A.obj T) (s : ComposableArrows C a) :
     vl ((CH.mulP Φ.A).cupC (add_zero a) P (h0 w)) s = vl P s * w (s.obj (Fin.last a)) := by
@@ -118,7 +118,7 @@ theorem cup_h0_eval {a : ℕ} (P : CH.Cn (CH.modF Φ.A) a) (w : ∀ T : C, Φ.A.
   rfl
 
 /- English proof (translation)
-Unfold `fm`. Rewrite using `[cup_h0_eval, cupList_val]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fm_val {a : ℕ} (u₀ : ∀ T : C, Φ.A.obj T) (u : Fin a → ∀ T : C, Φ.A.obj T) (s : ComposableArrows C a) :
     vl (fm u₀ u) s = (∏ k : Fin a, (vx s (u k) k.succ - vx s (u k) k.castSucc)) * u₀ (s.obj (Fin.last a)) := by
@@ -134,7 +134,7 @@ def Nr (Fil : ℤ → IdF Φ.A) (w : ∀ T : C, Φ.A.obj T) : Prop :=
   ∀ (T T' : C) (f : T ⟶ T'), w T' - (Φ.A.map f).hom (w T) ∈ (Fil ((1 : ℕ) : ℤ)).S T'
 
 /- English proof (translation)
-The claim follows from `mem_FC.2 fun t => by rw [cech_d_h0_eval] exact hw _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem d_h0_mem_filtration_one {w : ∀ T : C, Φ.A.obj T} (hw : Nr Fil w) :
     CH.d (CH.modF Φ.A) 0 (h0 w) ∈ FC (Fil ((1 : ℕ) : ℤ)) 1 :=
@@ -143,7 +143,7 @@ theorem d_h0_mem_filtration_one {w : ∀ T : C, Φ.A.obj T} (hw : Nr Fil w) :
     exact hw _ _ _
 
 /- English proof (translation)
-The claim follows from `mem_FC.2 fun t => by have e : (Fil ((0 : ℕ) : ℤ)).S (t.obj (Fin.last 0)) = ⊤ := hF.top _ (by simp) _ rw [e] trivial`.
+A detailed English derivation is pending.
 -/
 theorem h0_mem_filtration_zero (hF : IsFil Φ Fil) (w : ∀ T : C, Φ.A.obj T) : h0 w ∈ FC (Fil ((0 : ℕ) : ℤ)) 0 :=
   mem_FC.2 fun t => by
@@ -152,14 +152,14 @@ theorem h0_mem_filtration_zero (hF : IsFil Φ Fil) (w : ∀ T : C, Φ.A.obj T) :
     trivial
 
 /- English proof (translation)
-The claim follows from `cup_mem hF (add_zero a) (r := a) (r' := 0) (cupList_mem hF _ fun k => d_h0_mem_filtration_one (hu k)) (h0_mem_filtration_zero hF u₀)`.
+A detailed English derivation is pending.
 -/
 theorem fm_mem (hF : IsFil Φ Fil) {a : ℕ} (u₀ : ∀ T : C, Φ.A.obj T) {u : Fin a → ∀ T : C, Φ.A.obj T}
     (hu : ∀ k, Nr Fil (u k)) : fm u₀ u ∈ FC (Fil (a : ℤ)) a :=
   cup_mem hF (add_zero a) (r := a) (r' := 0) (cupList_mem hF _ fun k => d_h0_mem_filtration_one (hu k)) (h0_mem_filtration_zero hF u₀)
 
 /- English proof (translation)
-Unfold `fm`. Rewrite using `[CrystallineSemistableComparison.P.leibniz, d_cupList Φ.A _ fun k => CH.d_d _ 0 _]`. Simplify using `only [map_zero, LinearMap.zero_apply, zero_add]`. Conclude with `zsmul_mem (cup_mem hF _ (r := a) (r' := 1) (cupList_mem hF _ fun k => d_h0_mem_filtration_one (hu k)) (d_h0_mem_filtration_one h₀)) _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem d_fm_mem (hF : IsFil Φ Fil) {a : ℕ} {u₀ : ∀ T : C, Φ.A.obj T} {u : Fin a → ∀ T : C, Φ.A.obj T}
     (h₀ : Nr Fil u₀) (hu : ∀ k, Nr Fil (u k)) :
@@ -170,11 +170,11 @@ theorem d_fm_mem (hF : IsFil Φ Fil) {a : ℕ} {u₀ : ∀ T : C, Φ.A.obj T} {u
   exact zsmul_mem (cup_mem hF _ (r := a) (r' := 1) (cupList_mem hF _ fun k => d_h0_mem_filtration_one (hu k)) (d_h0_mem_filtration_one h₀)) _
 
 /- English proof (translation)
-Consider the cases of `m with`. Consider the case `zero`. Establish `hg0 : g = 0` using `hg`. Substitute `hg0` using the available equality. Use `⟨0, zero_mem _, ?_⟩` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `_ = _`. Simplify using the standard rewrite rules. Consider the case `succ n`. Take `⟨H, hH, rfl⟩` from `hg`. Use `⟨-((-1 : ℤ) ^ n • (CH.mulP Φ.A).cupC (p := n) (q := 0 + 1) (by omega) H (CH.d (CH.modF Φ.A) 0 (h0 y))), neg_mem (zsmul_mem (cup_mem hF _ (r := n + 1) (r' := 1) hH (d_h0_mem_filtration_one hy)) _), (CH.mulP Φ.A).cupC (add_zero n) H (h0 y), cup_mem hF (add_zero n) (r := n + 1) (r' …` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[CrystallineSemistableComparison.P.leibniz, sub_neg_eq_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cup_h0_normal_coboundary (hF : IsFil Φ Fil) {m : ℕ} {g : CH.Cn (CH.modF Φ.A) m} (hg : IsBd Fil m g)
     {y : ∀ T : C, Φ.A.obj T} (hy : Nr Fil y) :
@@ -194,17 +194,15 @@ theorem cup_h0_normal_coboundary (hF : IsFil Φ Fil) {m : ℕ} {g : CH.Cn (CH.mo
     rw [CrystallineSemistableComparison.P.leibniz, sub_neg_eq_add]
 
 /- English proof (translation)
-Use `set P := cupListC Φ.A fun k => CH.d (CH.modF Φ.A) 0 (h0 (u k)) with hP`. Use `set P' := cupListC Φ.A fun k => CH.d (CH.modF Φ.A) 0 (h0 (u' k)) with hP'`. Establish `hα : ∀ k, h0 (u' k) - h0 (u k) ∈ FC (Fil ((1 : ℕ) : ℤ)) 0` using `fun k => mem_FC.2 fun t => hz k _`. Establish `hbd : IsBd Fil a (P' - P)`. Use `cupList_diff hF (fun k => CH.d (CH.modF Φ.A) 0 (h0 (u k))) (fun k => h0 (u' k) - h0 (u k)) (fun k => d_h0_mem_filtration_one (hu k)) (fun k => CH.d_d _ 0 _) hα` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun k => CH.d (CH.modF Φ.A) 0 (h0 (u k)) + CH.d (CH.modF Φ.A) 0 (h0 (u' k) - h0 (u k))) = fun k => CH.d (CH.modF Φ.A) 0 (h0 (u' k))`. Use function extensionality and compare the values at `k`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite `this` using `[e]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `this`. Take `⟨W, hW, hD⟩` from `cup_h0_normal_coboundary hF hbd h₀'`. Use `set D := (CH.mulP Φ.A).cupC (add_zero a) (P' - P) (h0 u₀') with hDdef`. Use `set V := (CH.mulP Φ.A).cupC (add_zero a) P (h0 u₀' - h0 u₀) with hV`. Establish `hVm : V ∈ FC (Fil ((a + 1 : ℕ) : ℤ)) a` using `cup_mem hF (add_zero a) (r := a) (r' := 1) (cupList_mem hF _ fun k => d_h0_mem_filtration_one (hu k)) (mem_FC.2 fun t => hz₀ _)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `e : fm u₀' u' = fm u₀ u + D + V`. Express the relevant statement in the definitionally equal form `(CH.mulP Φ.A).cupC (add_zero a) P' (h0 u₀') = (CH.mulP Φ.A).cupC (add_zero a) P (h0 u₀) + D + V`. Simplify using `only [hDdef, hV, map_sub, LinearMap.sub_apply]`. Normalize the expressions using the abelian group laws. Establish `h1 : CrystallineSemistableComparison.Pb.Rep (Fil (a : ℤ)) (Fil ((a : ℤ) + 1)) (fm u₀ u + (D - W)) c` using `rep_of_bd (z := fm u₀ u) (by rwa [add_sub_cancel_left]) h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Use `rep_congr h1 fun s => ?_` and prove the remaining obligations. Establish `e2 : (fm u₀ u + (D - W)) - fm u₀' u' = -(W + V)`. Rewrite using `[e]`. Normalize the expressions using the abelian group laws. Establish `h3 : -(W + V) ∈ FC (Fil ((a + 1 : ℕ) : ℤ)) a` using `neg_mem (add_mem hW hVm)`.
-
-Establish `h4` using `mem_FC.1 h3 s`. Rewrite `h4` using `[← e2]`. Conclude with `h4`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fm_change (hF : IsFil Φ Fil) {a : ℕ} {u₀ u₀' : ∀ T : C, Φ.A.obj T} {u u' : Fin a → ∀ T : C, Φ.A.obj T}
     (h₀' : Nr Fil u₀') (hu : ∀ k, Nr Fil (u k))
@@ -247,7 +245,7 @@ theorem fm_change (hF : IsFil Φ Fil) {a : ℕ} {u₀ u₀' : ∀ T : C, Φ.A.ob
   exact h4
 
 /- English proof (translation)
-The claim follows from `rep_exists (fm u₀ u) (fun s => mem_FC.1 (fm_mem hF u₀ hu) s) (fun s => by have h := mem_FC.1 (d_fm_mem hF h₀ hu) s rw [Nat.cast_succ] at h exact h)`.
+A detailed English derivation is pending.
 -/
 theorem fm_exists (hF : IsFil Φ Fil) {a : ℕ} {u₀ : ∀ T : C, Φ.A.obj T} {u : Fin a → ∀ T : C, Φ.A.obj T}
     (h₀ : Nr Fil u₀) (hu : ∀ k, Nr Fil (u k)) :
@@ -263,17 +261,15 @@ section Conc
 open CrystallineSemistableComparison.HT CrystallineSemistableComparison.Om.L2
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `r hr T`. Express the relevant statement in the definitionally equal form `T.pdPow r.toNat = ⊤`. Rewrite using `[Int.toNat_of_nonpos hr]`. Conclude with `T.pdPow_zero`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T`. Express the relevant statement in the definitionally equal form `T.pdPow (1 : ℤ).toNat = T.J`. Conclude with `le_antisymm (GlobalTheory.CompanionTheory.DPFil.dividedPowerFiltration_one_le T.δ) T.J_le_pdPow_one`. Introduce `r r' h T`. Conclude with `T.pdPow_anti (Int.toNat_le_toNat h)`.
+Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `r r' T x y hx hy`. Establish `hx' : (show T.B from x) ∈ pdP T.δ r`. Establish `: (show T.B from x) ∈ T.pdPow ((r : ℤ).toNat)` using `hx`. Rewrite `this` using `[Int.toNat_natCast]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hy' : (show T.B from y) ∈ pdP T.δ r'`. Establish `: (show T.B from y) ∈ T.pdPow ((r' : ℤ).toNat)` using `hy`. Rewrite `this` using `[Int.toNat_natCast]`. Conclude with `this`. Establish `h` using `GlobalTheory.CompanionTheory.DPFil.dividedPowerFiltration_mul_le T.δ r r' (Ideal.mul_mem_mul hx' hy')`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ ∈ T.pdPow (((r + r' : ℕ) : ℤ).toNat)`. Rewrite using `[Int.toNat_natCast]`. Conclude with `h`. Introduce `k T x hx`. Express the relevant statement in the definitionally equal form `_ ∈ T.pdPow ((k : ℤ).toNat)`.
-
-Rewrite using `[Int.toNat_natCast]`. Conclude with `GlobalTheory.CompanionTheory.DPFil.dpow_mem_pdP T.δ k hx`.
+A detailed English derivation is pending.
 -/
 theorem isFil_thFil {b : Base} (L : b.Fun) : IsFil (thP L) (thFil L) := by
   refine ⟨?_, ?_, ?_, ?_, ?_⟩
@@ -307,15 +303,15 @@ theorem isFil_thFil {b : Base} (L : b.Fun) : IsFil (thP L) (thFil L) := by
 variable {K : Type} [CommRing K] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)}
 
 /- English proof (translation)
-The claim follows from `(isFil_thFil (smFun X q)).one T`.
+A detailed English derivation is pending.
 -/
 theorem fil_one (T : Thick (smFun X q)) : (thFil (smFun X q) ((1 : ℕ) : ℤ)).S T = T.J :=
   (isFil_thFil (smFun X q)).one T
 
 /- English proof (translation)
-Introduce `T T' f`. Rewrite using `[fil_one]`. Establish `h : Ideal.Quotient.mk T'.J (Λ.v T' x) = Ideal.Quotient.mk T'.J (f.φ (Λ.v T x))`. Rewrite using `[Λ.hv T' x]`. Use `(GlobalTheory.CompanionTheory.KMVan.evT_nat f x).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `Ideal.quotientMap T'.J f.φ f.hle (ev T (inTop q T) x) = _`. Rewrite using `[← Λ.hv T x]`. Both sides reduce to the same expression. Conclude with `Ideal.Quotient.eq.1 h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lifts_nr (Λ : LiftsT q) (x : Γ(X, ⊤)) : Nr (Φ := thP (smFun X q)) (thFil (smFun X q)) fun T => Λ.v T x := by
   intro T T' f
@@ -329,7 +325,7 @@ theorem lifts_nr (Λ : LiftsT q) (x : Γ(X, ⊤)) : Nr (Φ := thP (smFun X q)) (
   exact Ideal.Quotient.eq.1 h
 
 /- English proof (translation)
-Rewrite using `[fil_one]`. Conclude with `Ideal.Quotient.eq.1 ((Λ'.hv T x).trans (Λ.hv T x).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lifts_sub (Λ Λ' : LiftsT q) (x : Γ(X, ⊤)) (T : Thick (smFun X q)) :
     Λ'.v T x - Λ.v T x ∈ (thFil (smFun X q) ((1 : ℕ) : ℤ)).S T := by
@@ -344,7 +340,7 @@ def liftsTopBot : LiftsT q where
   hv T g := Function.surjInv_eq _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Use `Eq.trans ?_ (fm_val (Φ := thP (smFun X q)) (fun T => Λ.v T g₀) (fun k T => Λ.v T (g k)) s).symm` and prove the remaining obligations. Conclude with `mul_comm _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem form_eq (Λ : LiftsT q) {a : ℕ} (g₀ : Γ(X, ⊤)) (g : Fin a → Γ(X, ⊤)) :
     Λ.form g₀ g = fm (Φ := thP (smFun X q)) (fun T => Λ.v T g₀) fun k T => Λ.v T (g k) := by
@@ -357,9 +353,9 @@ end Conc
 open CrystallineSemistableComparison.HT CrystallineSemistableComparison.Om.L2 in
 
 /- English proof (translation)
-Introduce `K _ X q a g₀ g`. Establish `hF` using `isFil_thFil (smFun X q)`. Take `⟨c, hc⟩` from `fm_exists (Φ := thP (smFun X q)) hF (u₀ := fun T => (liftsTopBot q).v T g₀) (u := fun k T => (liftsTopBot q).v T (g k)) (lifts_nr _ _) fun k => lifts_nr _ _`. Use `⟨c, fun Λ => ?_⟩` and prove the remaining obligations. Rewrite using `[form_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fm_change hF (lifts_nr Λ g₀) (fun k => lifts_nr _ _) (lifts_sub _ _ _) (fun k => lifts_sub _ _ _) hc`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) {a : ℕ} (g₀ : Γ(X, ⊤)) (g : Fin a → Γ(X, ⊤)),
     ∃ c : CrystallineSemistableComparison.HT.Hdg q a a, CrystallineSemistableComparison.Om.L2.IsFormT q g₀ g c := by

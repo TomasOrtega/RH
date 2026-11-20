@@ -39,7 +39,7 @@ theorem tr_apply (σ : Herm E a →ₗ[ℝ] Herm E a) (T : M →ₗ[ℂ] M') {q 
     (X : Fin q → Herm E a) : tr σ T ω X = T (ω fun i => σ (X i)) := rfl
 
 /- English proof (translation)
-Introduce `k X` and use `by rw [tr_apply, tr_apply, ← hκ, ← hω] simp only [had]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isCochain_tr {σ : Herm E a →ₗ[ℝ] Herm E a} {s : Kinf E a → Kinf E a} {T : M →ₗ[ℂ] M'}
     (had : ∀ k X, σ (adHerm k X) = adHerm (s k) (σ X)) (hκ : ∀ k m, T (κ (s k) m) = κ' k (T m))
@@ -48,7 +48,7 @@ theorem isCochain_tr {σ : Herm E a →ₗ[ℝ] Herm E a} {s : Kinf E a → Kinf
   simp only [had]
 
 /- English proof (translation)
-Use `AlternatingMap.ext fun X => ?_` and prove the remaining obligations. Rewrite using `[tr_apply, dCo_apply, dCo_apply, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, hL, tr_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dCo_tr {σ : Herm E a →ₗ[ℝ] Herm E a} {T : M →ₗ[ℂ] M'}
     (hL : ∀ X m, T (L (toL (σ X).1) m) = L' (toL X.1) (T m))
@@ -60,7 +60,7 @@ theorem dCo_tr {σ : Herm E a →ₗ[ℝ] Herm E a} {T : M →ₗ[ℂ] M'}
   rfl
 
 /- English proof (translation)
-Use `AlternatingMap.ext fun X => ?_` and prove the remaining obligations. Simplify using `[tr_apply, hσ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tr_tr {σ : Herm E a →ₗ[ℝ] Herm E a} (hσ : ∀ X, σ (σ X) = X) (T : M ≃ₗ[ℂ] M')
     {q : ℕ} (ω : Herm E a [⋀^Fin q]→ₗ[ℝ] M) : tr σ T.symm.toLinearMap (tr σ T.toLinearMap ω) = ω := by
@@ -68,20 +68,20 @@ theorem tr_tr {σ : Herm E a →ₗ[ℝ] Herm E a} (hσ : ∀ X, σ (σ X) = X) 
   simp [tr_apply, hσ]
 
 /- English proof (translation)
-The claim follows from `AlternatingMap.ext fun X => by simp [tr_apply]`.
+A detailed English derivation is pending.
 -/
 theorem tr_zero (σ : Herm E a →ₗ[ℝ] Herm E a) (T : M →ₗ[ℂ] M') {q : ℕ} :
     tr σ T (0 : Herm E a [⋀^Fin q]→ₗ[ℝ] M) = 0 :=
   AlternatingMap.ext fun X => by simp [tr_apply]
 
 /- English proof (translation)
-Establish `hκ' : ∀ k m, T.symm (κ' (s k) m) = κ k (T.symm m)` using `fun k m => by`. Rewrite using `[T.symm_apply_eq]`. Use `hκ (s k) (T.symm m)` as an intermediate fact. Rewrite `this` using `[hs, T.apply_symm_apply]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hL' : ∀ X m, T.symm (L' (toL (σ X).1) m) = L (toL X.1) (T.symm m)` using `fun X m => by`. Rewrite using `[T.symm_apply_eq]`. Use `hL (σ X) (T.symm m)` as an intermediate fact. Rewrite `this` using `[hσ, T.apply_symm_apply]`. Conclude with `this.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Break down `H with ⟨ω, h0, h1, h2⟩ | ⟨q, ω, h0, h1, h2⟩` into its components or cases. Use `Or.inl ⟨tr σ T.toLinearMap ω, isCochain_tr (T := T.toLinearMap) had hκ h0, ?_, fun h => h2 ?_⟩` and prove the remaining obligations. Rewrite using `[dCo_tr (L := L) (T := T.toLinearMap) hL, h1, tr_zero]`. Rewrite using `[← tr_tr hσ T ω, h, tr_zero]`. Use `Or.inr ⟨q, tr σ T.toLinearMap ω, isCochain_tr (T := T.toLinearMap) had hκ h0, ?_, fun η hη h => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dCo_tr (L := L) (T := T.toLinearMap) hL, h1, tr_zero]`. Use `h2 (tr σ T.symm.toLinearMap η) (isCochain_tr (T := T.symm.toLinearMap) had hκ' hη) ?_` and prove the remaining obligations. Rewrite using `[dCo_tr (L := L') (T := T.symm.toLinearMap) hL', h, tr_tr hσ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasCohomology_transport {σ : Herm E a →ₗ[ℝ] Herm E a} {s : Kinf E a → Kinf E a} (T : M ≃ₗ[ℂ] M')
     (hσ : ∀ X, σ (σ X) = X) (hs : ∀ k, s (s k) = k)
@@ -116,14 +116,14 @@ Both sides reduce to the same expression.
 theorem barG_val (y : GL (Fin a) (Cinf E)) (i j : Fin a) : (barG y).val i j = star (y.val i j) := rfl
 
 /- English proof (translation)
-Use extensionality with `i j : 2`. Simplify using `[barG_val]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem barG_barG (y : GL (Fin a) (Cinf E)) : barG (barG y) = y := by
   ext i j : 2
   simp [barG_val]
 
 /- English proof (translation)
-The claim follows from `((starRingEnd (Cinf E)).map_det y.val).symm`.
+A detailed English derivation is pending.
 -/
 theorem barG_det (y : GL (Fin a) (Cinf E)) : (barG y).val.det = star y.val.det :=
   ((starRingEnd (Cinf E)).map_det y.val).symm
@@ -143,9 +143,9 @@ def barH : Herm E a →ₗ[ℝ] Herm E a where
 variable [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Establish `hne : ComplexEmbedding.conjugate τ ≠ τ` using `fun h => IsTotallyComplex.complexEmbedding_not_isReal τ (ComplexEmbedding.isReal_iff.2 h)`. Unfold `coord`. Rewrite using `[InfinitePlace.mk_conjugate_eq]`. Break down `InfinitePlace.embedding_mk_eq τ with h | h` into its components or cases. Rewrite using `[if_pos h, if_neg (by rw [h]; exact hne.symm)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg (by rw [h]; exact hne), if_pos h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coord_star (τ : E →+* ℂ) (x : Cinf E) : coord τ (star x) = coord (ComplexEmbedding.conjugate τ) x := by
   have hne : ComplexEmbedding.conjugate τ ≠ τ := fun h =>
@@ -159,9 +159,9 @@ theorem coord_star (τ : E →+* ℂ) (x : Cinf E) : coord τ (star x) = coord (
     simp
 
 /- English proof (translation)
-Proceed by induction on `hf using Algebra.adjoin_induction with`. Consider the case `mem f hf`. Break down `hf with ⟨τ, i, j, rfl⟩ | ⟨τ, rfl⟩` into its components or cases. Conclude with `Algebra.subset_adjoin (Or.inl ⟨_, i, j, funext fun y => coord_star τ _⟩)`. Conclude with `Algebra.subset_adjoin (Or.inr ⟨ComplexEmbedding.conjugate τ, funext fun y => by`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [barG_det, coord_star]⟩)`. Consider the case `algebraMap c => exact Subalgebra.algebraMap_mem _ c`. Consider the case `add f g _ _ h1 h2 => exact add_mem h1 h2`. Consider the case `mul f g _ _ h1 h2 => exact mul_mem h1 h2`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem regFun_comp {f : GL (Fin a) (Cinf E) → ℂ} (hf : f ∈ regFun E a) : (fun y => f (barG y)) ∈ regFun E a := by
   induction hf using Algebra.adjoin_induction with

@@ -15,11 +15,11 @@ variable {A : Type} [AddCommGroup A] [TopologicalSpace A] [IsTopologicalAddGroup
   [T2Space A] [SecondCountableTopology A] [MeasurableSpace A] [BorelSpace A]
 
 /- English proof (translation)
-Establish `hreg : μ.Regular` using `inferInstance`. Establish `h1` using `MeasureTheory.addEquivAddHaarChar_smul_map μ φ`. Rewrite `h1` using `[h, smul_smul]`. Take `⟨K, hK, hKn⟩` from `exists_compact_mem_nhds (0 : A)`. Establish `hpos : 0 < μ K` using `MeasureTheory.Measure.measure_pos_of_mem_nhds μ hKn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfin : μ K ≠ ⊤` using `hK.measure_lt_top.ne`. Establish `h2` using `congrArg (fun ν : Measure A => ν K) h1`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul] at h2`. Establish `h3 : μ K * ((addEquivAddHaarChar φ * c : ℝ≥0) : ℝ≥0∞) = μ K * 1`. Rewrite using `[mul_one, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2` after adjusting the coercions. Establish `h4 : ((addEquivAddHaarChar φ * c : ℝ≥0) : ℝ≥0∞) = 1` using `(ENNReal.mul_right_inj hpos.ne' hfin).1 h3`. Establish `h5 : addEquivAddHaarChar φ * c = 1` using `by exact_mod_cast h4`. Conclude with `eq_inv_of_mul_eq_one_left h5`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem char_eq_of_map' (μ : Measure A) [μ.IsAddHaarMeasure] (φ : A ≃ₜ+ A) {c : ℝ≥0} (hc : c ≠ 0)
     (h : μ.map φ = c • μ) : addEquivAddHaarChar φ = c⁻¹ := by
@@ -39,7 +39,7 @@ theorem char_eq_of_map' (μ : Measure A) [μ.IsAddHaarMeasure] (φ : A ≃ₜ+ A
   exact eq_inv_of_mul_eq_one_left h5
 
 /- English proof (translation)
-Establish `h1 : μ.map φ = (1 : ℝ≥0) • μ` using `by rw [one_smul]; exact h`. Simplify using `using char_eq_of_map' μ φ one_ne_zero h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem char_eq_one_of_map (μ : Measure A) [μ.IsAddHaarMeasure] (φ : A ≃ₜ+ A) (h : μ.map φ = μ) :
     addEquivAddHaarChar φ = 1 := by
@@ -56,15 +56,13 @@ def piE {ι : Type*} [Fintype ι] (φ : ι → A ≃ₜ+ A) : (ι → A) ≃ₜ+
   continuous_invFun := continuous_pi fun i => (φ i).symm.continuous.comp (continuous_apply i)
 
 /- English proof (translation)
-Use `set μ : Measure A := Measure.addHaar with hμ`. Use `set c : ι → ℝ≥0 := fun i => addEquivAddHaarChar (φ i) with hcdef`. Establish `hc0 : ∀ i, c i ≠ 0` using `fun i => (addEquivAddHaarChar_pos (φ i)).ne'`. Establish `hmap : ∀ i, μ.map (φ i) = (c i)⁻¹ • μ`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1` using `addEquivAddHaarChar_smul_map μ (φ i)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ (hc0 i), one_smul]`. Use `_ = (c i)⁻¹ • μ := by rw [h1]`. Use `haveI : ∀ i, SigmaFinite (μ.map (φ i)) := fun i => by rw [hmap i]; infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hbox : ∀ d : ι → ℝ≥0, Measure.pi (fun i => d i • μ) = (∏ i, d i) • Measure.pi (fun _ : ι => μ)`. Introduce `d`. Use `(Measure.pi_eq (μ := fun i => d i • μ) (μ' := (∏ i, d i) • Measure.pi (fun _ : ι => μ)) fun s hs => ?_)` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, Measure.pi_pi]`. Simplify using `only [Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_mul_distrib, ENNReal.coe_finset_prod]`. Establish `hpm : (Measure.pi (fun _ : ι => μ)).map (piE φ) = (∏ i, (c i)⁻¹) • Measure.pi (fun _ : ι => μ)`. Establish `h2 : ⇑(piE φ) = fun x i => φ i (x i)` using `rfl`. Rewrite using `[h2, Measure.pi_map_pi (f := fun i => (φ i : A → A)) (fun i => (φ i).continuous.measurable.aemeasurable)]`. Simplify using `only [hmap]`.
-
-Conclude with `hbox _`. Establish `h3` using `char_eq_of_map' (Measure.pi fun _ : ι => μ) (piE φ) (Finset.prod_ne_zero_iff.2 fun i _ => inv_ne_zero (hc0 i)) hpm`. Rewrite using `[h3, Finset.prod_inv_distrib, inv_inv]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_pi {ι : Type} [Fintype ι] [DecidableEq ι] (φ : ι → A ≃ₜ+ A) :
     addEquivAddHaarChar (piE φ) = ∏ i, addEquivAddHaarChar (φ i) := by
@@ -103,9 +101,9 @@ variable (I : AutInst)
 attribute [local instance] AfT.tAf Nrm.topRing Nrm.t2 Nrm.mAf Nrm.borel_mAf MFI.locallyCompact_AEf
 
 /- English proof (translation)
-Use `⟨⟨fun N => (fun x => (((AfT.isUnit_natCast I (N + 1) (by omega)).unit⁻¹ : (AEf I)ˣ) : AEf I) * x) '' ((IntAf I.F I.E : Subring (AEf I)) : Set (AEf I)), fun N => (Nrm.isCompact_IntAf I).image (continuous_const.mul continuous_id), ?_⟩⟩` and prove the remaining obligations. Use `Set.eq_univ_of_forall fun t => ?_` and prove the remaining obligations. Take `⟨N, hN, hmem⟩` from `AfT.exists_nat_mul_mem I t`. Use `Set.mem_iUnion.2 ⟨N - 1, (N : AEf I) * t, hmem, ?_⟩` and prove the remaining obligations. Establish `e : ((N - 1 + 1 : ℕ) : AEf I) = N` using `by congr 1; omega`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show (((AfT.isUnit_natCast I (N - 1 + 1) (by omega)).unit⁻¹ : (AEf I)ˣ) : AEf I) * ((N : AEf I) * t) = t`. Rewrite using `[← mul_assoc]`. Establish `h2 : (((AfT.isUnit_natCast I (N - 1 + 1) (by omega)).unit⁻¹ : (AEf I)ˣ) : AEf I) * (N : AEf I) = 1`. Rewrite using `[← e]; exact (AfT.isUnit_natCast I (N - 1 + 1) (by omega)).val_inv_mul`. Rewrite using `[h2, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigmaCompact_AEf : SigmaCompactSpace (AEf I) := by
   refine ⟨⟨fun N => (fun x => (((AfT.isUnit_natCast I (N + 1) (by omega)).unit⁻¹ : (AEf I)ˣ) : AEf I) * x) ''
@@ -122,7 +120,7 @@ theorem sigmaCompact_AEf : SigmaCompactSpace (AEf I) := by
   rw [h2, one_mul]
 
 /- English proof (translation)
-Use `letI : UniformSpace (AEf I) := IsTopologicalAddGroup.rightUniformSpace (AEf I)`. Use `haveI : IsUniformAddGroup (AEf I) := isUniformAddGroup_of_addCommGroup`. Use `haveI : (𝓝 (0 : AEf I)).IsCountablyGenerated := (AfT.hasBasis_nhds_zero_tAf I).isCountablyGenerated`. Use `haveI : (uniformity (AEf I)).IsCountablyGenerated := IsUniformAddGroup.uniformity_countably_generated`. Conclude with `UniformSpace.pseudoMetrizableSpace`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem pseudoMetrizable_AEf : TopologicalSpace.PseudoMetrizableSpace (AEf I) := by
   letI : UniformSpace (AEf I) := IsTopologicalAddGroup.rightUniformSpace (AEf I)
@@ -132,7 +130,7 @@ theorem pseudoMetrizable_AEf : TopologicalSpace.PseudoMetrizableSpace (AEf I) :=
   exact UniformSpace.pseudoMetrizableSpace
 
 /- English proof (translation)
-Use `haveI := sigmaCompact_AEf I`. Use `haveI := pseudoMetrizable_AEf I`. Use `letI := TopologicalSpace.pseudoMetrizableSpacePseudoMetric (AEf I)`. Use `infer_instance`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem secondCountable_AEf : SecondCountableTopology (AEf I) := by
   haveI := sigmaCompact_AEf I

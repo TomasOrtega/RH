@@ -13,9 +13,9 @@ open ReciprocityTheory.AnForm.M (FinHolAtlas IsCompatChart)
 noncomputable section
 
 /- English proof (translation)
-Use `⟨h.1.comp (continuous_const_smul c).continuousOn fun _ hz => hz, fun z w hz => ?_⟩` and prove the remaining obligations. Establish `hline : ∀ ζ : ℂ, c • z + ζ • (c • w) = c • (z + ζ • w)` using `fun ζ => by`. Rewrite using `[smul_add, smul_comm ζ c w]`. Establish `h2` using `h.2 (c • z) (c • w) fun ζ hζ => by rw [hline]; exact hz ζ hζ`. Simplify using `only [hline] at h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem isPsh_comp_smul {D : ℕ} {U : Set (Fin D → ℂ)} {u : (Fin D → ℂ) → ℝ} (h : IsPsh U u) (c : ℂ) :
     IsPsh ((c • ·) ⁻¹' U) (fun z => u (c • z)) := by
@@ -36,7 +36,7 @@ theorem scaleHom_apply (D : ℕ) {c : ℝ} (hc : 0 < c) (z : Fin D → ℂ) :
     scaleHom D hc z = (c : ℂ) • z := rfl
 
 /- English proof (translation)
-Introduce `z hz`. Establish `hz' : ‖(c : ℂ) • z‖ < c` using `by simpa [scaleHom_apply] using hz`. Rewrite `hz'` using `[norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hc]`. Simplify using `using (mul_lt_iff_lt_one_right hc).1 hz'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem scaleHom_preimage_ball (D : ℕ) {c : ℝ} (hc : 0 < c) :
     scaleHom D hc ⁻¹' ball 0 c ⊆ ball 0 1 := by
@@ -46,7 +46,7 @@ theorem scaleHom_preimage_ball (D : ℕ) {c : ℝ} (hc : 0 < c) :
   simpa using (mul_lt_iff_lt_one_right hc).1 hz'
 
 /- English proof (translation)
-Introduce `j`. Establish `hlin : ∀ a : ℂ, AnalyticOnNhd ℂ (fun z : Fin D → ℂ => a • z) univ` using `fun a => (a • ContinuousLinearMap.id ℂ (Fin D → ℂ)).analyticOnNhd univ`. Use `⟨(hlin ((c : ℂ)⁻¹)).comp (hψ j).1 (mapsTo_univ _ _), ?_⟩` and prove the remaining obligations. Establish `h2 : AnalyticOnNhd ℂ ((A.chart j ∘ ψ.symm) ∘ fun z : Fin D → ℂ => (c : ℂ) • z) ((ψ.transHomeomorph (scaleHom D hc).symm).target ∩ (ψ.transHomeomorph (scaleHom D hc).symm).symm ⁻¹' (A.chart j).source)` using `(hψ j).2.comp ((hlin (c : ℂ)).mono (subset_univ _)) fun z hz => hz`. Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCompatChart_scale {D : ℕ} {X : Type*} [TopologicalSpace X] {A : FinHolAtlas D X}
     {ψ : OpenPartialHomeomorph X (Fin D → ℂ)} (hψ : IsCompatChart A ψ) {c : ℝ} (hc : 0 < c) :
@@ -124,7 +124,7 @@ Both sides reduce to the same expression.
 theorem scaled_θ : (R.scaled M hM0 hM).θ = R.θ := rfl
 
 /- English proof (translation)
-The claim follows from `(preimage_mono inter_subset_right).trans (scaleHom_preimage_ball D (hM0 j))`.
+A detailed English derivation is pending.
 -/
 theorem scaled_W_subset (j : Fin R.n) : (R.scaled M hM0 hM).W j ⊆ ball 0 1 :=
   (preimage_mono inter_subset_right).trans (scaleHom_preimage_ball D (hM0 j))
@@ -145,7 +145,7 @@ def scaled (P : BoundedThPsh R) (M : Fin R.n → ℝ) (hM0 : ∀ j, 0 < M j)
 end BoundedThPsh
 
 /- English proof (translation)
-Introduce `X _ _ _ D A R P`. Establish `hb : ∀ j, ∃ M : ℝ, 0 < M ∧ closure (R.W' j) ⊆ ball 0 M` using `fun j => (R.isCompact_closure_middle j).isBounded.subset_ball_lt 0 0`. Use `choose M hM0 hM using hb`. Conclude with `⟨(P.scaled M hM0 hM).toBoundedPsh (R.scaled_W_subset M hM0 hM), rfl, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem BoundedChartsOfRegCharts.proof : BoundedChartsOfRegCharts.Statement := by
   intro X _ _ _ D A R P

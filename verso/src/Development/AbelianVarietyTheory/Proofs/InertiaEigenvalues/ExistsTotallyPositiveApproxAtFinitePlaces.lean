@@ -9,23 +9,19 @@ noncomputable section
 namespace GlobalTheory.FinPlaceApproxPos
 
 /- English proof (translation)
-Take `⟨a₀, ha₀⟩` from `GlobalTheory.FinPlaceApprox.approx_target F T t M`. Use `set J : Ideal (𝓞 F) := ∏ v ∈ T, v.asIdeal ^ M with hJ`. Establish `hJ0 : J ≠ ⊥`. Rewrite using `[hJ, ← Ideal.zero_eq_bot, Finset.prod_ne_zero_iff]`. Introduce `v _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `pow_ne_zero _ v.ne_bot`. Use `set d : ℕ := Ideal.absNorm J with hd`. Establish `hd0 : d ≠ 0`. Rewrite using `[hd]`. Conclude with `fun h => hJ0 (Ideal.absNorm_eq_zero_iff.1 h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hdJ : ((d : ℤ) : 𝓞 F) ∈ J`. Simplify `Ideal.absNorm_mem J` using `[hd]`. Establish `hJv : ∀ v ∈ T, J ≤ v.asIdeal ^ M` using `fun v hv => Ideal.prod_le_inf.trans (Finset.inf_le hv)`. Take `⟨B, hB⟩` from `(Set.finite_range (fun φ : F →+* ℝ => |φ a₀|)).bddAbove`. Use `set N : ℕ := ⌈B⌉₊ + 1 with hN`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `⟨a₀ + (N * d : ℕ), fun v hv => ?_, fun φ => ?_⟩` and prove the remaining obligations. Establish `hmem : ((N * d : ℕ) : 𝓞 F) ∈ v.asIdeal ^ M`. Apply `hJv v hv` to reduce the goal to its premises. Establish `: ((N * d : ℕ) : 𝓞 F) = (N : 𝓞 F) * ((d : ℤ) : 𝓞 F)` using `by push_cast; ring`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mem_left _ _ hdJ`. Establish `hval : v.valuation F ((N * d : ℕ) : F) ≤ WithZero.exp (-(M : ℤ))`. Establish `: ((N * d : ℕ) : F) = algebraMap (𝓞 F) F ((N * d : ℕ) : 𝓞 F)` using `by simp`. Rewrite using `[this, HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(v.intValuation_le_pow_iff_mem _ _).2 hmem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: a₀ + ((N * d : ℕ) : F) - t v = (a₀ - t v) + ((N * d : ℕ) : F)` using `by ring`. Rewrite using `[this]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le (ha₀ v hv) hval)`. Establish `h1 : φ a₀ ≥ -B`. Use `hB ⟨φ, rfl⟩` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `neg_abs_le (φ a₀)` as an intermediate fact. Simplify using `only at *`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdpos : (1 : ℝ) ≤ d` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 hd0`. Establish `hNB : B < N`.
-
-Rewrite using `[hN]`. Use `push_cast`. Conclude with `lt_of_le_of_lt (Nat.le_ceil B) (by linarith)`. Establish `hN0 : (0 : ℝ) ≤ N` using `by positivity`. Rewrite using `[map_add, map_natCast]`.
-
-Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_approx_totally_positive (F : Type) [Field F] [NumberField F]
     (T : Finset (HeightOneSpectrum (𝓞 F))) (t : HeightOneSpectrum (𝓞 F) → F) (M : ℕ) :
@@ -74,7 +70,7 @@ theorem exists_approx_totally_positive (F : Type) [Field F] [NumberField F]
     nlinarith
 
 /- English proof (translation)
-Introduce `F _ _ T t M` and use `exists_approx_totally_positive F T t M`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem approxpos_target : ∀ (F : Type) [Field F] [NumberField F]
     (T : Finset (IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)))

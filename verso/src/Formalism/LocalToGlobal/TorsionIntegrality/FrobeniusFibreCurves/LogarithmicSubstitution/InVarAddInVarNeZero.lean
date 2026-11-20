@@ -15,9 +15,9 @@ section Alg
 variable {K : Type} [Field K] [CharZero K]
 
 /- English proof (translation)
-Establish `h0 : MvPowerSeries.constantCoeff (0 : MvPowerSeries ι K) = 0` using `map_zero _`. Establish `hm : Formalism.L2.Th1.B.fExp (0 : MvPowerSeries ι K) * Formalism.L2.Th1.B.fExp 0 = Formalism.L2.Th1.B.fExp 0 * 1`. Rewrite using `[mul_one, ← Formalism.L2.Th1.B.fExp_add h0 h0, add_zero]`. Establish `hne : Formalism.L2.Th1.B.fExp (0 : MvPowerSeries ι K) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `Formalism.L2.Th1.B.constantCoeff_fExp h0`. Rewrite `h1` using `[h, map_zero]`. Conclude with `zero_ne_one h1`. Conclude with `mul_left_cancel₀ hne hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fExp_zero {ι : Type} : fExp (0 : MvPowerSeries ι K) = 1 := by
   have h0 : MvPowerSeries.constantCoeff (0 : MvPowerSeries ι K) = 0 := map_zero _
@@ -31,7 +31,7 @@ theorem fExp_zero {ι : Type} : fExp (0 : MvPowerSeries ι K) = 1 := by
   exact mul_left_cancel₀ hne hm
 
 /- English proof (translation)
-Establish `hnf : MvPowerSeries.constantCoeff (-f) = 0` using `by rw [map_neg, hf, neg_zero]`. Rewrite using `[← Formalism.L2.Th1.B.fExp_add hf hnf, add_neg_cancel, fExp_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fExp_mul_neg {ι : Type} {f : MvPowerSeries ι K} (hf : MvPowerSeries.constantCoeff f = 0) :
     fExp f * fExp (-f) = 1 := by
@@ -39,9 +39,9 @@ theorem fExp_mul_neg {ι : Type} {f : MvPowerSeries ι K} (hf : MvPowerSeries.co
   rw [← Formalism.L2.Th1.B.fExp_add hf hnf, add_neg_cancel, fExp_zero]
 
 /- English proof (translation)
-Establish `hg0` using `Formalism.L2.Th1.B.constantCoeff_fLog hg`. Establish `hh0` using `Formalism.L2.Th1.B.constantCoeff_fLog hh`. Establish `hs : MvPowerSeries.constantCoeff (Formalism.L2.Th1.B.fLog g + Formalism.L2.Th1.B.fLog h) = 0`. Rewrite using `[map_add, hg0, hh0, add_zero]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Formalism.L2.Th1.B.fExp_fLog hg, Formalism.L2.Th1.B.fExp_fLog hh]`. Use `_ = Formalism.L2.Th1.B.fLog (Formalism.L2.Th1.B.fExp (Formalism.L2.Th1.B.fLog g + Formalism.L2.Th1.B.fLog h)) := by rw [Formalism.L2.Th1.B.fExp_add hg0 hh0]`. Use `_ = Formalism.L2.Th1.B.fLog g + Formalism.L2.Th1.B.fLog h := Formalism.L2.Th1.B.fLog_fExp hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fLog_mul {ι : Type} {g h : MvPowerSeries ι K} (hg : MvPowerSeries.constantCoeff g = 1)
     (hh : MvPowerSeries.constantCoeff h = 1) : fLog (g * h) = fLog g + fLog h := by
@@ -55,7 +55,7 @@ theorem fLog_mul {ι : Type} {g h : MvPowerSeries ι K} (hg : MvPowerSeries.cons
     _ = Formalism.L2.Th1.B.fLog g + Formalism.L2.Th1.B.fLog h := Formalism.L2.Th1.B.fLog_fExp hs
 
 /- English proof (translation)
-Establish `hX : MvPowerSeries.constantCoeff (MvPowerSeries.X x : MvPowerSeries ι K) = 0` using `by simp`. Rewrite using `[Formalism.InvariantFactorPaths.G7.at1, Formalism.L2.Th1.B.psubst_msubst f hX hb, MvPowerSeries.subst_X hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_inVar {ι κ : Type} (f : PowerSeries K) (x : ι) {b : ι → MvPowerSeries κ K}
     (hb : MvPowerSeries.HasSubst b) :
@@ -64,14 +64,14 @@ theorem subst_inVar {ι κ : Type} (f : PowerSeries K) (x : ι) {b : ι → MvPo
   rw [Formalism.InvariantFactorPaths.G7.at1, Formalism.L2.Th1.B.psubst_msubst f hX hb, MvPowerSeries.subst_X hb]
 
 /- English proof (translation)
-The claim follows from `PowerSeries.constantCoeff_subst_eq_zero (by simp) f hf`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_inVar {ι : Type} (x : ι) {f : PowerSeries K}
     (hf : PowerSeries.constantCoeff f = 0) : MvPowerSeries.constantCoeff (at1 x f) = 0 :=
   PowerSeries.constantCoeff_subst_eq_zero (by simp) f hf
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.Th1.B.fExp]`. Conclude with `PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hf) (PowerSeries.HasSubst.of_constantCoeff_zero hu) _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psubst_fExp {ι : Type} {u : MvPowerSeries ι K} (hu : MvPowerSeries.constantCoeff u = 0)
     {f : PowerSeries K} (hf : PowerSeries.constantCoeff f = 0) :
@@ -81,14 +81,14 @@ theorem psubst_fExp {ι : Type} {u : MvPowerSeries ι K} (hu : MvPowerSeries.con
     (PowerSeries.HasSubst.of_constantCoeff_zero hu) _
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coe_substAlgHom (PowerSeries.HasSubst.of_constantCoeff_zero hu), map_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psubst_neg {ι : Type} {u : MvPowerSeries ι K} (hu : MvPowerSeries.constantCoeff u = 0)
     (f : PowerSeries K) : PowerSeries.subst u (-f) = -PowerSeries.subst u f := by
   rw [← PowerSeries.coe_substAlgHom (PowerSeries.HasSubst.of_constantCoeff_zero hu), map_neg]
 
 /- English proof (translation)
-Establish `hlS` using `PowerSeries.HasSubst.of_constantCoeff_zero' hl`. Establish `hUS` using `PowerSeries.HasSubst.of_constantCoeff_zero hU`. Establish `hnph : PowerSeries.constantCoeff (-ph) = 0` using `by rw [map_neg, hph, neg_zero]`. Rewrite using `[← PowerSeries.subst_comp_subst_apply hlS hUS, e, PowerSeries.subst_mul hUS, PowerSeries.subst_X hUS, psubst_fExp hU hnph, psubst_neg hU]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem value_at {ι : Type} {l g ph : PowerSeries K} (hl : PowerSeries.constantCoeff l = 0)
     (hph : PowerSeries.constantCoeff ph = 0)
@@ -102,7 +102,7 @@ theorem value_at {ι : Type} {l g ph : PowerSeries K} (hl : PowerSeries.constant
     PowerSeries.subst_X hUS, psubst_fExp hU hnph, psubst_neg hU]
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `congrArg (fun φ => MvPowerSeries.coeff (Finsupp.single x 1) φ) h`. Simplify using `only [Formalism.InvariantFactorPaths.G7.at1, map_zero, PowerSeries.coeff_subst_single] at h2`. Simplify using `[hl1] at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem inVar_ne_zero {l : PowerSeries K} (hl1 : PowerSeries.coeff 1 l = 1) (x : Fin 2) :
     at1 x l ≠ 0 := by
@@ -112,7 +112,7 @@ theorem inVar_ne_zero {l : PowerSeries K} (hl1 : PowerSeries.coeff 1 l = 1) (x :
   simp [hl1] at h2
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `congrArg (fun φ => MvPowerSeries.coeff (Finsupp.single (0 : Fin 2) 1) φ) h`. Simplify using `only [Formalism.InvariantFactorPaths.G7.at1, map_add, map_zero, PowerSeries.coeff_subst_single] at h2`. Simplify using `[hl1] at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem inVar_add_inVar_ne_zero {l : PowerSeries K} (hl1 : PowerSeries.coeff 1 l = 1) :
     at1 (0 : Fin 2) l + at1 1 l ≠ 0 := by
@@ -122,7 +122,7 @@ theorem inVar_add_inVar_ne_zero {l : PowerSeries K} (hl1 : PowerSeries.coeff 1 l
   simp [hl1] at h2
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `congrArg (fun φ => MvPowerSeries.coeff (Finsupp.single (0 : Fin 2) 1) φ) h`. Simplify using `only [Formalism.InvariantFactorPaths.G7.at1, map_sub, map_zero, PowerSeries.coeff_subst_single] at h2`. Simplify using `[hl1] at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem inVar_sub_inVar_ne_zero {l : PowerSeries K} (hl1 : PowerSeries.coeff 1 l = 1) :
     at1 (0 : Fin 2) l - at1 1 l ≠ 0 := by
@@ -132,7 +132,7 @@ theorem inVar_sub_inVar_ne_zero {l : PowerSeries K} (hl1 : PowerSeries.coeff 1 l
   simp [hl1] at h2
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Conclude with `h (PowerSeries.subst_zero_of_constantCoeff_zero hl)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_psubst {ι : Type} {l : PowerSeries K} (hl : PowerSeries.constantCoeff l = 0)
     {U : MvPowerSeries ι K} (h : PowerSeries.subst U l ≠ 0) : U ≠ 0 := by
@@ -140,7 +140,7 @@ theorem ne_zero_of_psubst {ι : Type} {l : PowerSeries K} (hl : PowerSeries.cons
   exact h (PowerSeries.subst_zero_of_constantCoeff_zero hl)
 
 /- English proof (translation)
-Establish `h0 : MvPowerSeries.constantCoeff (MvPowerSeries.X 0 + MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K) = 0` using `by simp`. Rewrite using `[Formalism.L2.Th1.B.atS, Formalism.L2.Th1.B.psubst_msubst g h0 hb, MvPowerSeries.subst_add hb, MvPowerSeries.subst_X hb, MvPowerSeries.subst_X hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_atS {ι : Type} (g : PowerSeries K) {b : Fin 2 → MvPowerSeries ι K}
     (hb : MvPowerSeries.HasSubst b) :
@@ -151,7 +151,7 @@ theorem subst_atS {ι : Type} (g : PowerSeries K) {b : Fin 2 → MvPowerSeries �
     MvPowerSeries.subst_X hb]
 
 /- English proof (translation)
-Establish `h0 : MvPowerSeries.constantCoeff (MvPowerSeries.X 0 - MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K) = 0` using `by simp`. Rewrite using `[Formalism.L2.Th1.B.atD, Formalism.L2.Th1.B.psubst_msubst g h0 hb, MvPowerSeries.subst_sub hb, MvPowerSeries.subst_X hb, MvPowerSeries.subst_X hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_atD {ι : Type} (g : PowerSeries K) {b : Fin 2 → MvPowerSeries ι K}
     (hb : MvPowerSeries.HasSubst b) :
@@ -162,7 +162,7 @@ theorem subst_atD {ι : Type} (g : PowerSeries K) {b : Fin 2 → MvPowerSeries �
     MvPowerSeries.subst_X hb]
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.Th1.B.wpDiff]`. Simplify using `only [MvPowerSeries.subst_add hb, MvPowerSeries.subst_sub hb, MvPowerSeries.subst_mul hb, MvPowerSeries.subst_pow hb, MvPowerSeries.subst_X hb, subst_inVar P 0 hb, subst_inVar P 1 hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem subst_wpDiff {ι : Type} (P : PowerSeries K) {b : Fin 2 → MvPowerSeries ι K}
     (hb : MvPowerSeries.HasSubst b) :
@@ -174,7 +174,7 @@ theorem subst_wpDiff {ι : Type} (P : PowerSeries K) {b : Fin 2 → MvPowerSerie
     MvPowerSeries.subst_pow hb, MvPowerSeries.subst_X hb, subst_inVar P 0 hb, subst_inVar P 1 hb]
 
 /- English proof (translation)
-The claim follows from `Fin.forall_fin_two.mpr ⟨ha, hb⟩`.
+A detailed English derivation is pending.
 -/
 private theorem constantCoeff_vec_pair_eq_zero {ι : Type} {a b : MvPowerSeries ι K}
     (ha : MvPowerSeries.constantCoeff a = 0) (hb : MvPowerSeries.constantCoeff b = 0) :
@@ -182,7 +182,7 @@ private theorem constantCoeff_vec_pair_eq_zero {ι : Type} {a b : MvPowerSeries 
   Fin.forall_fin_two.mpr ⟨ha, hb⟩
 
 /- English proof (translation)
-Establish `hX : PowerSeries.HasSubst (MvPowerSeries.X x : MvPowerSeries ι K)` using `PowerSeries.HasSubst.X x`. Establish `hlS` using `PowerSeries.HasSubst.of_constantCoeff_zero' hl`. Establish `h2` using `congrArg (fun φ : PowerSeries K => PowerSeries.subst (MvPowerSeries.X x : MvPowerSeries ι K) φ) h`. Simplify using `only [PowerSeries.subst_mul hX, PowerSeries.subst_add hX, PowerSeries.subst_pow hX, Formalism.L2.Th1.B.psubst_one hX, PowerSeries.subst_X hX, PowerSeries.subst_C, PowerSeries.subst_comp_subst_apply hlS hX] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem curve_at {ι : Type} {l P ep : PowerSeries K} {c0 : K}
     (hl : PowerSeries.constantCoeff l = 0)
@@ -205,7 +205,7 @@ section Norm
 variable {K : Type} [NormedField K] [CharZero K]
 
 /- English proof (translation)
-Establish `h5` using `h.2.2.2.2`. Simplify using `only [Formalism.InvariantFactorPaths.G7.cob] at h5`. Take the linear combination `h5`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem log_law {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog F l) :
     PowerSeries.subst F l = at1 0 l + at1 1 l := by
@@ -214,7 +214,7 @@ theorem log_law {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog F 
   linear_combination h5
 
 /- English proof (translation)
-Establish `h1 : MvPowerSeries.constantCoeff (Formalism.InvariantFactorPaths.G7.at1 1 i : MvPowerSeries (Fin 2) K) = 0` using `constantCoeff_inVar 1 hi.1`. Establish `h0 : MvPowerSeries.constantCoeff (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K) = 0` using `by simp`. Conclude with `MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero (constantCoeff_vec_pair_eq_zero h0 h1)) (constantCoeff_vec_pair_eq_zero h0 h1) h.1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem constantCoeff_FI {F : MvPowerSeries (Fin 2) K} {l i : PowerSeries K} (h : LawLog F l)
     (hi : IsInv l i) : MvPowerSeries.constantCoeff (FI F i) = 0 := by
@@ -226,9 +226,9 @@ theorem constantCoeff_FI {F : MvPowerSeries (Fin 2) K} {l i : PowerSeries K} (h 
     (constantCoeff_vec_pair_eq_zero h0 h1) h.1
 
 /- English proof (translation)
-Establish `h1 : MvPowerSeries.constantCoeff (Formalism.InvariantFactorPaths.G7.at1 1 i : MvPowerSeries (Fin 2) K) = 0` using `constantCoeff_inVar 1 hi.1`. Establish `h0 : MvPowerSeries.constantCoeff (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K) = 0` using `by simp`. Establish `hX1c : MvPowerSeries.constantCoeff (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K) = 0` using `by simp`. Establish `hb : MvPowerSeries.HasSubst ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K), Formalism.InvariantFactorPaths.G7.at1 1 i]` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (constantCoeff_vec_pair_eq_zero h0 h1)`. Establish `hiS` using `PowerSeries.HasSubst.of_constantCoeff_zero' hi.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX1 : PowerSeries.HasSubst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K)` using `PowerSeries.HasSubst.X 1`. Rewrite using `[Formalism.L2.Th1.B.FI, ← Formalism.L2.Th1.B.psubst_msubst l h.1 hb, log_law h, MvPowerSeries.subst_add hb, subst_inVar l 0 hb, subst_inVar l 1 hb]`. Use `show PowerSeries.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K) l + PowerSeries.subst (PowerSeries.subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K) i) l = PowerSeries.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K) l - PowerSeries.subst (MvPowerSeries.X 1 : MvPowerSer …`. Rewrite using `[← PowerSeries.subst_comp_subst_apply hiS hX1, hi.2.2, psubst_neg hX1c l, sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_FI {F : MvPowerSeries (Fin 2) K} {l i : PowerSeries K} (h : LawLog F l)
     (hi : IsInv l i) : PowerSeries.subst (FI F i) l = at1 0 l - at1 1 l := by
@@ -249,7 +249,7 @@ theorem log_FI {F : MvPowerSeries (Fin 2) K} {l i : PowerSeries K} (h : LawLog F
   rw [← PowerSeries.subst_comp_subst_apply hiS hX1, hi.2.2, psubst_neg hX1c l, sub_eq_add_neg]
 
 /- English proof (translation)
-Establish `W : X0 ^ 2 * X1 ^ 2 * (L0 ^ 2 - L1 ^ 2 + L0 ^ 2 * L1 ^ 2 * (P1 - P0)) = -(L0 ^ 2 * L1 ^ 2 * c * F * D)`. Take the linear combination `(-(L0 ^ 2 * L1 ^ 2)) * hc + (X0 ^ 2 * L0 ^ 2) * C1 - (X1 ^ 2 * L1 ^ 2) * C0`. Apply `mul_left_cancel₀ hN` to reduce the goal to its premises. Take the linear combination `KE + (E0 ^ 2 * E1 ^ 2) * W`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem addition_identity_products_eq_neg_c_mul_sq {R : Type} [CommRing R] [NoZeroDivisors R]
     {L0 L1 X0 X1 F D c EF ED E0 E1 P0 P1 ep0 ep1 c0 : R}
@@ -267,23 +267,23 @@ private theorem addition_identity_products_eq_neg_c_mul_sq {R : Type} [CommRing 
   linear_combination KE + (E0 ^ 2 * E1 ^ 2) * W
 
 /- English proof (translation)
-Establish `hl0 : PowerSeries.constantCoeff l = 0` using `hF.2.2.1`. Establish `hl1 : PowerSeries.coeff 1 l = 1` using `hF.2.2.2.1`. Establish `hF0 : MvPowerSeries.constantCoeff F = 0` using `hF.1`. Establish `hD0 : MvPowerSeries.constantCoeff (Formalism.L2.Th1.B.FI F i) = 0` using `constantCoeff_FI hF hi`. Take `⟨hψ0, e⟩` from `hD K s2 P l hl0 hl1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hAd` using `hA K g2 g3 s2 P hP`. Establish `hL0c : MvPowerSeries.constantCoeff (Formalism.InvariantFactorPaths.G7.at1 0 l : MvPowerSeries (Fin 2) K) = 0` using `constantCoeff_inVar 0 hl0`. Establish `hL1c : MvPowerSeries.constantCoeff (Formalism.InvariantFactorPaths.G7.at1 1 l : MvPowerSeries (Fin 2) K) = 0` using `constantCoeff_inVar 1 hl0`. Establish `hb : MvPowerSeries.HasSubst ![(Formalism.InvariantFactorPaths.G7.at1 0 l : MvPowerSeries (Fin 2) K), Formalism.InvariantFactorPaths.G7.at1 1 l]` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (constantCoeff_vec_pair_eq_zero hL0c hL1c)`. Establish `hb0 : (![(Formalism.InvariantFactorPaths.G7.at1 0 l : MvPowerSeries (Fin 2) K), Formalism.InvariantFactorPaths.G7.at1 1 l] : Fin 2 → MvPowerSeries (Fin 2) K) 0 = Formalism.InvariantFactorPaths.G7.at1 0 l` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb1 : (![(Formalism.InvariantFactorPaths.G7.at1 0 l : MvPowerSeries (Fin 2) K), Formalism.InvariantFactorPaths.G7.at1 1 l] : Fin 2 → MvPowerSeries (Fin 2) K) 1 = Formalism.InvariantFactorPaths.G7.at1 1 l` using `rfl`. Establish `KE` using `congrArg (fun φ => MvPowerSeries.subst ![(Formalism.InvariantFactorPaths.G7.at1 0 l : MvPowerSeries (Fin 2) K), Formalism.InvariantFactorPaths.G7.at1 1 l] φ) hAd`. Simplify using `only [MvPowerSeries.subst_mul hb, MvPowerSeries.subst_pow hb, MvPowerSeries.subst_X hb, subst_atS (Formalism.L2.Th1.B.sgStar s2 P) hb, subst_atD (Formalism.L2.Th1.B.sgStar s2 P) hb, subst_inVar (Formalism.L2.Th1.B.sgStar s2 P) 0 hb, subst_inVar (Formalism.L2.Th1.B.sgStar s2 P) 1 …`. Establish `sF` using `value_at hl0 hψ0 e hF0`. Establish `sD` using `value_at hl0 hψ0 e hD0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s0 : PowerSeries.subst (Formalism.InvariantFactorPaths.G7.at1 0 l : MvPowerSeries (Fin 2) K) (Formalism.L2.Th1.B.sgStar s2 P) = MvPowerSeries.X 0 * Formalism.L2.Th1.B.fExp (-Formalism.InvariantFactorPaths.G7.at1 0 (Formalism.L2.Th1.B.phO s2 P l))` using `value_at hl0 hψ0 e (U := MvPowerSeries.X 0) (by simp)`. Establish `s1 : PowerSeries.subst (Formalism.InvariantFactorPaths.G7.at1 1 l : MvPowerSeries (Fin 2) K) (Formalism.L2.Th1.B.sgStar s2 P) = MvPowerSeries.X 1 * Formalism.L2.Th1.B.fExp (-Formalism.InvariantFactorPaths.G7.at1 1 (Formalism.L2.Th1.B.phO s2 P l))` using `value_at hl0 hψ0 e (U := MvPowerSeries.X 1) (by simp)`. Rewrite `KE` using `[← log_law hF, ← log_FI hF hi, sF, sD, s0, s1]`. Establish `C0` using `curve_at (ι := Fin 2) hl0 h3 0`. Establish `C1` using `curve_at (ι := Fin 2) hl0 h3 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL0` using `inVar_ne_zero hl1 0`. Establish `hL1` using `inVar_ne_zero hl1 1`. Establish `hFne : F ≠ 0` using `ne_zero_of_psubst hl0 (by rw [log_law hF]; exact inVar_add_inVar_ne_zero hl1)`. Establish `hDne : Formalism.L2.Th1.B.FI F i ≠ 0` using `ne_zero_of_psubst hl0 (by rw [log_FI hF hi]; exact inVar_sub_inVar_ne_zero hl1)`. Establish `hN : (Formalism.InvariantFactorPaths.G7.at1 0 l : MvPowerSeries (Fin 2) K) ^ 2 * Formalism.InvariantFactorPaths.G7.at1 1 l ^ 2 * F * Formalism.L2.Th1.B.FI F i ≠ 0` using `mul_ne_zero (mul_ne_zero (mul_ne_zero (pow_ne_zero 2 hL0) (pow_ne_zero 2 hL1)) hFne) hDne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEE` using `addition_identity_products_eq_neg_c_mul_sq (L0 := (Formalism.InvariantFactorPaths.G7.at1 0 l : MvPowerSeries (Fin 2) K)) (L1 := Formalism.InvariantFactorPaths.G7.at1 1 l) (X0 := MvPowerSeries.X 0) (X1 := MvPowerSeries.X 1) (F := F) (D := Formalism.L2.Th1.B.FI F i) (c := c) (EF := …`. Establish `hA0 : MvPowerSeries.constantCoeff (PowerSeries.subst F (Formalism.L2.Th1.B.phO s2 P l)) = 0` using `PowerSeries.constantCoeff_subst_eq_zero hF0 _ hψ0`. Establish `hB0 : MvPowerSeries.constantCoeff (PowerSeries.subst (Formalism.L2.Th1.B.FI F i) (Formalism.L2.Th1.B.phO s2 P l)) = 0` using `PowerSeries.constantCoeff_subst_eq_zero hD0 _ hψ0`. Establish `ha0 : MvPowerSeries.constantCoeff (Formalism.InvariantFactorPaths.G7.at1 0 (Formalism.L2.Th1.B.phO s2 P l) : MvPowerSeries (Fin 2) K) = 0` using `constantCoeff_inVar 0 hψ0`. Establish `ha1 : MvPowerSeries.constantCoeff (Formalism.InvariantFactorPaths.G7.at1 1 (Formalism.L2.Th1.B.phO s2 P l) : MvPowerSeries (Fin 2) K) = 0` using `constantCoeff_inVar 1 hψ0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m0` using `fExp_mul_neg ha0`. Establish `m1` using `fExp_mul_neg ha1`. Establish `hc' : -c = Formalism.L2.Th1.B.fExp (-PowerSeries.subst F (Formalism.L2.Th1.B.phO s2 P l)) * Formalism.L2.Th1.B.fExp (-PowerSeries.subst (Formalism.L2.Th1.B.FI F i) (Formalism.L2.Th1.B.phO s2 P l)) * Formalism.L2.Th1.B.fExp (Formalism.InvariantFactorPaths.G7.at1 0 (Formalism.L2.Th …`. Take the linear combination `(-(Formalism.L2.Th1.B.fExp (Formalism.InvariantFactorPaths.G7.at1 0 (Formalism.L2.Th1.B.phO s2 P l) : MvPowerSeries (Fin 2) K) ^ 2 * Formalism.L2.Th1.B.fExp (Formalism.InvariantFactorPaths.G7.at1 1 (Formalism.L2.Th1.B.phO s2 P l) : MvPowerSeries (Fin 2) K) ^ 2)) * hEE + (c * (For …`. Establish `hprod : Formalism.L2.Th1.B.fExp (-PowerSeries.subst F (Formalism.L2.Th1.B.phO s2 P l)) * Formalism.L2.Th1.B.fExp (-PowerSeries.subst (Formalism.L2.Th1.B.FI F i) (Formalism.L2.Th1.B.phO s2 P l)) * Formalism.L2.Th1.B.fExp (Formalism.InvariantFactorPaths.G7.at1 0 (Formalism.L2.Th1.B …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[Formalism.L2.Th1.B.fExp_add, Formalism.L2.Th1.B.fExp_add, Formalism.L2.Th1.B.fExp_add, Formalism.L2.Th1.B.fExp_add, Formalism.L2.Th1.B.fExp_add]`. Expand and normalize the polynomial expressions, which then agree. Apply the tactic sequence `all_goals simp [hA0, hB0, ha0, ha1]`. Establish `hlog : Formalism.L2.Th1.B.fLog (-c) = -PowerSeries.subst F (Formalism.L2.Th1.B.phO s2 P l) + -PowerSeries.subst (Formalism.L2.Th1.B.FI F i) (Formalism.L2.Th1.B.phO s2 P l) + (Formalism.InvariantFactorPaths.G7.at1 0 (Formalism.L2.Th1.B.phO s2 P l) + Formalism.InvariantFactorPaths. …`. Rewrite using `[hc', hprod]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.L2.Th1.B.fLog_fExp (by simp [hA0, hB0, ha0, ha1])`. Rewrite using `[Formalism.L2.Th1.B.par, hlog]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem par_eq (hA : AddSgStar) (hD : PhODef) {g2 g3 s2 c0 : K} {P l i ep : PowerSeries K}
     {F c : MvPowerSeries (Fin 2) K} (hP : IsWp g2 g3 P) (hF : LawLog F l) (hi : IsInv l i)
@@ -391,9 +391,9 @@ theorem par_eq (hA : AddSgStar) (hD : PhODef) {g2 g3 s2 c0 : K} {P l i ep : Powe
 end Norm
 
 /- English proof (translation)
-Introduce `K _ _ _ g2 g3 s2 c0 P l i ep F hP hF hi hCC`. Take `⟨-, -, h3, c, hcI, hc1, hc⟩` from `hCC`. Rewrite using `[par_eq hA hD hP hF hi h3 hc]`. Establish `h1 : MvPowerSeries.constantCoeff (-c) = 1` using `by rw [map_neg, hc1, neg_neg]`. Establish `hI : Formalism.DworkPowerSeriesWeights.Integral (-c)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `n`. Rewrite using `[map_neg, norm_neg]`. Conclude with `hcI n`. Conclude with `(hL K (Fin 2) (-c) h1 hI).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ParO_of (hA : AddSgStar) (hD : PhODef) (hL : SimeqLog) : ParO := by
   intro K _ _ _ g2 g3 s2 c0 P l i ep F hP hF hi hCC
@@ -411,7 +411,7 @@ section Alg2
 variable {K : Type} [Field K] [CharZero K]
 
 /- English proof (translation)
-Use extensionality with `n`. Consider the cases of `n with`. Consider the case `zero => rw [PowerSeries.coeff_zero_X_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply, hl]`. Consider the case `succ n => rw [PowerSeries.coeff_succ_X_mul, Formalism.L2.Th1.B.lU, PowerSeries.coeff_mk]`.
+By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem X_mul_lU {l : PowerSeries K} (hl : PowerSeries.constantCoeff l = 0) :
     PowerSeries.X * lU l = l := by
@@ -421,35 +421,35 @@ theorem X_mul_lU {l : PowerSeries K} (hl : PowerSeries.constantCoeff l = 0) :
   | succ n => rw [PowerSeries.coeff_succ_X_mul, Formalism.L2.Th1.B.lU, PowerSeries.coeff_mk]
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, Formalism.L2.Th1.B.lU, PowerSeries.coeff_mk, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem constantCoeff_lU (l : PowerSeries K) :
     PowerSeries.constantCoeff (lU l) = PowerSeries.coeff 1 l := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, Formalism.L2.Th1.B.lU, PowerSeries.coeff_mk, zero_add]
 
 /- English proof (translation)
-The claim follows from `PowerSeries.subst_C c`.
+A detailed English derivation is pending.
 -/
 theorem psubst_C (l : PowerSeries K) (c : K) :
     PowerSeries.subst l (PowerSeries.C c) = PowerSeries.C c :=
   PowerSeries.subst_C c
 
 /- English proof (translation)
-Establish `hlS` using `PowerSeries.HasSubst.of_constantCoeff_zero' hl0`. Establish `hS1 : PowerSeries.constantCoeff (Formalism.L2.Th1.B.sigmaOneSeries e1 (3 * e1 ^ 2 - g2 / 4) (Formalism.L2.Th1.B.wOf e1 P)) = 0`. Rewrite using `[Formalism.L2.Th1.B.sigmaOneSeries, map_neg, Formalism.L2.Th1.B.constantCoeff_prim, neg_zero]`. Establish `hS0 : PowerSeries.constantCoeff (Formalism.L2.Th1.B.sigS P) = 0`. Rewrite using `[Formalism.L2.Th1.B.sigS, map_neg, Formalism.L2.Th1.B.constantCoeff_prim, neg_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq` using `hS K g2 g3 e1 P hP he`. Rewrite `hsq` using `[Formalism.L2.Th1.B.sigma1, Formalism.L2.Th1.B.sigma]`. Establish `hcan : Formalism.L2.Th1.B.fExp (Formalism.L2.Th1.B.sigmaOneSeries e1 (3 * e1 ^ 2 - g2 / 4) (Formalism.L2.Th1.B.wOf e1 P)) ^ 2 = Formalism.L2.Th1.B.fExp (Formalism.L2.Th1.B.sigS P) ^ 2 * (1 + PowerSeries.X ^ 2 * P - PowerSeries.C e1 * PowerSeries.X ^ 2)`. Apply `mul_left_cancel₀ (pow_ne_zero 2 (PowerSeries.X_ne_zero (R := K)))` to reduce the goal to its premises. Take the linear combination `hsq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hsub` using `congrArg (fun φ : PowerSeries K => PowerSeries.subst l φ) hcan`. Simplify using `only [PowerSeries.subst_mul hlS, PowerSeries.subst_pow hlS, PowerSeries.subst_sub hlS, PowerSeries.subst_add hlS, Formalism.L2.Th1.B.psubst_one hlS, PowerSeries.subst_X hlS, psubst_C l, psubst_fExp (u := l) hl0 hS1, psubst_fExp (u := l) hl0 hS0] at hsub`. Establish `hm : PowerSeries.X * Formalism.L2.Th1.B.lU l = l` using `X_mul_lU hl0`. Establish `h3' : PowerSeries.X ^ 2 * (1 + l ^ 2 * PowerSeries.subst l P) = PowerSeries.X ^ 2 * (Formalism.L2.Th1.B.lU l ^ 2 * (ep + PowerSeries.C c0 * PowerSeries.X ^ 2))`. Take the linear combination `h3 - ((l + PowerSeries.X * Formalism.L2.Th1.B.lU l) * (ep + PowerSeries.C c0 * PowerSeries.X ^ 2)) * hm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hQ` using `mul_left_cancel₀ (pow_ne_zero 2 (PowerSeries.X_ne_zero (R := K))) h3'`. Establish `eq2 : Formalism.L2.Th1.B.fExp (PowerSeries.subst l (Formalism.L2.Th1.B.sigmaOneSeries e1 (3 * e1 ^ 2 - g2 / 4) (Formalism.L2.Th1.B.wOf e1 P))) ^ 2 = Formalism.L2.Th1.B.fExp (PowerSeries.subst l (Formalism.L2.Th1.B.sigS P)) ^ 2 * (Formalism.L2.Th1.B.lU l ^ 2 * (ep + PowerSeries.C …`. Rewrite using `[map_sub]`. Take the linear combination `hsub + (Formalism.L2.Th1.B.fExp (PowerSeries.subst l (Formalism.L2.Th1.B.sigS P)) ^ 2) * hQ + (Formalism.L2.Th1.B.fExp (PowerSeries.subst l (Formalism.L2.Th1.B.sigS P)) ^ 2 * PowerSeries.C e1 * (l + PowerSeries.X * Formalism.L2.Th1.B.lU l)) * hm`. Establish `hu : MvPowerSeries.constantCoeff (PowerSeries.subst l (Formalism.L2.Th1.B.sigmaOneSeries e1 (3 * e1 ^ 2 - g2 / 4) (Formalism.L2.Th1.B.wOf e1 P))) = 0` using `PowerSeries.constantCoeff_subst_eq_zero hl0 _ hS1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hv : MvPowerSeries.constantCoeff (PowerSeries.subst l (Formalism.L2.Th1.B.sigS P)) = 0` using `PowerSeries.constantCoeff_subst_eq_zero hl0 _ hS0`. Establish `hEu` using `Formalism.L2.Th1.B.constantCoeff_fExp hu`. Establish `hEv` using `Formalism.L2.Th1.B.constantCoeff_fExp hv`. Establish `hm1 : MvPowerSeries.constantCoeff (Formalism.L2.Th1.B.lU l) = 1` using `(constantCoeff_lU l).trans hl1`. Establish `hE : MvPowerSeries.constantCoeff (ep + PowerSeries.C (c0 - e1) * PowerSeries.X ^ 2) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `congrArg (fun φ : PowerSeries K => MvPowerSeries.constantCoeff φ) eq2`. Simplify using `only [map_mul, map_pow, hEu, hEv, hm1, one_pow, one_mul] at h4`. Conclude with `h4.symm`. Establish `hEvv : MvPowerSeries.constantCoeff (Formalism.L2.Th1.B.fExp (PowerSeries.subst l (Formalism.L2.Th1.B.sigS P)) * Formalism.L2.Th1.B.fExp (PowerSeries.subst l (Formalism.L2.Th1.B.sigS P))) = 1` using `by rw [map_mul, hEv, one_mul]`. Establish `hmm : MvPowerSeries.constantCoeff (Formalism.L2.Th1.B.lU l * Formalism.L2.Th1.B.lU l) = 1` using `by rw [map_mul, hm1, one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmmE : MvPowerSeries.constantCoeff (Formalism.L2.Th1.B.lU l * Formalism.L2.Th1.B.lU l * (ep + PowerSeries.C (c0 - e1) * PowerSeries.X ^ 2)) = 1` using `by rw [map_mul, hmm, hE, one_mul]`. Establish `key : PowerSeries.subst l (Formalism.L2.Th1.B.sigmaOneSeries e1 (3 * e1 ^ 2 - g2 / 4) (Formalism.L2.Th1.B.wOf e1 P)) + PowerSeries.subst l (Formalism.L2.Th1.B.sigmaOneSeries e1 (3 * e1 ^ 2 - g2 / 4) (Formalism.L2.Th1.B.wOf e1 P)) = PowerSeries.subst l (Formalism.L2.Th1.B.sigS P) …`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[fLog_mul hEu hEu, Formalism.L2.Th1.B.fLog_fExp hu]`. Use `_ = Formalism.L2.Th1.B.fLog (Formalism.L2.Th1.B.fExp (PowerSeries.subst l (Formalism.L2.Th1.B.sigS P)) * Formalism.L2.Th1.B.fExp (PowerSeries.subst l (Formalism.L2.Th1.B.sigS P)) * (Formalism.L2.Th1.B.lU l * Formalism.L2.Th1.B.lU l * (ep + PowerSeries.C (c0 - e1) * PowerSeries.X …`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by`. Rewrite using `[fLog_mul hEvv hmmE, fLog_mul hEv hEv, fLog_mul hmm hE, fLog_mul hm1 hm1, Formalism.L2.Th1.B.fLog_fExp hv]`. Rewrite using `[Formalism.L2.Th1.B.phE, Formalism.L2.Th1.B.phO]`. Take the linear combination `(-1 : PowerSeries K) * key`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem diff_eq (hS : Sigma1Sq) {g2 g3 s2 c0 e1 : K} {P l ep : PowerSeries K}
     (hP : IsWp g2 g3 P) (he : 4 * e1 ^ 3 - g2 * e1 - g3 = 0)
@@ -529,15 +529,13 @@ theorem diff_eq (hS : Sigma1Sq) {g2 g3 s2 c0 e1 : K} {P l ep : PowerSeries K}
 end Alg2
 
 /- English proof (translation)
-Introduce `K _ _ _ g2 g3 s2 c0 e1 P l i ep F hP he hF hCC`. Establish `key` using `diff_eq (s2 := s2) hS hP he hF.2.2.1 hF.2.2.2.1 hCC.2.2.1`. Use `⟨key, fun hce => ?_⟩` and prove the remaining obligations. Establish `hE1' : PowerSeries.constantCoeff (ep + PowerSeries.C (c0 - e1) * PowerSeries.X ^ 2) = 1`. Simplify using `[hCC.2.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hE1 : MvPowerSeries.constantCoeff (ep + PowerSeries.C (c0 - e1) * PowerSeries.X ^ 2) = 1` using `hE1'`. Establish `hEI : Formalism.DworkPowerSeriesWeights.Integral (ep + PowerSeries.C (c0 - e1) * PowerSeries.X ^ 2 : PowerSeries K)`. Introduce `n`. Rewrite using `[map_add, PowerSeries.C_apply, PowerSeries.X_apply, MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_X_pow]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hCC.1 n) ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Rewrite using `[mul_one]`. Conclude with `hce`. Rewrite using `[mul_zero, norm_zero]`. Conclude with `zero_le_one`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hex` using `(hL K Unit (ep + PowerSeries.C (c0 - e1) * PowerSeries.X ^ 2) hE1 hEI).2`. Establish `heq : (2 * Formalism.L2.Th1.B.phE s2 e1 (3 * e1 ^ 2 - g2 / 4) (Formalism.L2.Th1.B.wOf e1 P) l - 2 * Formalism.L2.Th1.B.phO s2 P l : PowerSeries K) = -Formalism.L2.Th1.B.fLog (ep + PowerSeries.C (c0 - e1) * PowerSeries.X ^ 2) - 0`. Take the linear combination `key`. Unfold `Formalism.InvariantFactorPaths.G7.Simeq at hex ⊢`. Rewrite using `[heq]`.
-
-Conclude with `hex`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DiffPh_of (hS : Sigma1Sq) (hL : SimeqLog) : DiffPh := by
   intro K _ _ _ g2 g3 s2 c0 e1 P l i ep F hP he hF hCC

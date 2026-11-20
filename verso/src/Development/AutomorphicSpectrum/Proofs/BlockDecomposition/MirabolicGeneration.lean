@@ -8,9 +8,9 @@ open MeasureTheory PositivityTheory.RgEis PositivityTheory.RgEis.MG
 namespace GlobalTheory.CompanionTheory.EisMir
 
 /- English proof (translation)
-Establish `hint : Integrable (fun κ : K => (1 : ℂ) • ρ κ) μ`. Simplify using `only [one_smul]`. Conclude with `hρ.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Simplify using `only [avg]`. Rewrite using `[ContinuousLinearMap.integral_apply hint]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hw]`.
+A detailed English derivation is pending.
 -/
 theorem avg_one_apply {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W]
@@ -25,7 +25,7 @@ theorem avg_one_apply {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGr
   simp [hw]
 
 /- English proof (translation)
-Use `⟨?_, fun g => ⟨g, Subgroup.mem_top g, 1, K.one_mem, (mul_one g).symm⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_top]`. Conclude with `isClosed_univ`. Conclude with `⟨fun _ _ _ _ => by simp, fun _ _ => by simp, fun _ _ _ => by simp, continuous_const.continuousOn⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isPar_top {G : Type} [Group G] [TopologicalSpace G] (Γ K : Subgroup G) :
     IsPar Γ K ⊤ (1 : G → ℂ) := by
@@ -36,7 +36,7 @@ theorem isPar_top {G : Type} [Group G] [TopologicalSpace G] (Γ K : Subgroup G) 
       continuous_const.continuousOn⟩
 
 /- English proof (translation)
-Unfold `sec`. Rewrite using `[dif_pos ⟨1, Subgroup.mem_top _⟩]`. Simplify using `[hw]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sec_top_apply {G : Type} [Group G] [TopologicalSpace G] {W : Type} [NormedAddCommGroup W]
     [NormedSpace ℂ W] (K : Subgroup G) (ρ : K →* (W →L[ℂ] W)) (g : G) (w : W)
@@ -46,25 +46,23 @@ theorem sec_top_apply {G : Type} [Group G] [TopologicalSpace G] {W : Type} [Norm
   simp [hw]
 
 /- English proof (translation)
-Introduce `_hSec hSph hMem hInv hSide hTK hCore G _ _ _ _ _ W _ _ _ K ρ hK hρ k _ _ ι _ _ π Γ i₀ i₁ ω d c η η' l hSC hMD`. Use `haveI := hSC`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hK`. Use `letI : MeasurableSpace K := borel K`. Use `haveI : BorelSpace K := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `μ : Measure K` to `Measure.haarMeasure ⊤`. Establish `hHaar : μ.IsHaarMeasure` using `Measure.isHaarMeasure_haarMeasure _`. Establish `hProb : IsProbabilityMeasure μ` using `⟨by`. Establish `h` using `Measure.haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts K))`. Simplify using `using h⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := hProb`. Establish `hN1 : (1 : ℝ) < Fintype.card ι`. Establish `h2` using `hMD.two`. Conclude with `(show 1 < Fintype.card ι by omega)` after adjusting the coercions. Take `⟨hS0, -, -, -⟩` from `hSide G K hK k ι π Γ i₀ i₁ ω d c η η' l hMD`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨V, hV, hJV⟩` from `hInv G W K ρ hK hρ μ hHaar hProb Γ _ c hMD.par`. Take `⟨Ψ, Ψ₁, φ, hΨ, hΨ₁, hφc, hφ1, hφL, hφN, hzt, hz, hω1⟩` from `hTK G K hK k ι π Γ _ i₀ ω d c η hS0 V hV`. Take `⟨J, hJ⟩` from `hJV φ hφc hφ1 hφL hφN`. Take `⟨R, D, Op, H, hW, ⟨dd, hdd, hD, hddN⟩, -, hH⟩` from `hCore G W K ρ hK hρ μ hHaar hProb k ι π Γ i₀ i₁ ω d c η η' l hMD Ψ Ψ₁ φ _ J hΨ hΨ₁ hzt hz le_rfl hJ`. Use `⟨⟨R, D, Op, H, hW⟩, fun hω hc => ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hω` using the available equality. Substitute `hc` using the available equality. Establish `hinv : ∀ w ∈ secSp K ⊤ (1 : G → ℂ) ρ, ∀ r : K, ρ r w = w` using `fun w hw r => by`. Simplify using `using hw r (Subgroup.mem_top _)`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Take `⟨Ψs, Ψ₁s, hΨs, hΨ₁s, hΨ0, hsph, hnz⟩` from `hSph k ι i₀`. Establish `hzt' : ∀ s (κ : K), zt π d i₀ Ψs 1 s κ = tate Ψ₁s 1 s * (fun _ => (1 : ℂ)) κ`. Introduce `s κ`. Simplify using `only [mul_one]`. Unfold `zt tate lineZeta`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `hsph t ⟨kap π d κ, hS0.piK κ κ.2⟩`. Establish `hnz' : ∃ z : ℂ, (Fintype.card ι : ℝ) < z.re ∧ tate Ψ₁s 1 z ≠ 0` using `⟨(((Fintype.card ι : ℝ) + 1 : ℝ) : ℂ), by simp, hnz _ (by linarith)⟩`. Establish `hle : secSp K ⊤ (1 : G → ℂ) ρ ≤ secSp K ((stab _ {i₀}).comap π) 1 ρ` using `fun w hw r _ => hw r (Subgroup.mem_top _)`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `havg : ∀ w : secSp K ⊤ (1 : G → ℂ) ρ, avg μ ρ (fun _ => (1 : ℂ)) ((secSp K ⊤ (1 : G → ℂ) ρ).subtypeL w) = w` using `fun w => by`. Simplify using `using avg_one_apply μ ρ hρ (w : W) (hinv w w.2)`. Take `⟨R', D', Op', H', hW', -, ⟨O', hO', hOp'⟩, hH'⟩` from `hCore G W K ρ hK hρ μ hHaar hProb k ι π Γ i₀ i₁ 1 d 1 η η' l hMD Ψs Ψ₁s (fun _ => 1) (secSp K ⊤ (1 : G → ℂ) ρ) (secSp K ⊤ (1 : G → ℂ) ρ).subtypeL hΨs hΨ₁s hzt' hnz' hle havg`. Take `⟨⟨a, ha, hH0⟩, -⟩` from `hH' rfl`. Use `⟨R', D', Op', H', hW', ⟨a, ha, fun g w => ?_⟩, O', hO', hOp'⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hH0, hΨ0, mul_one, havg w, sec_top_apply K ρ g (w : W) (hinv w w.2)]`. Take `⟨-, b, hb⟩` from `hH rfl`. Establish `hmem : ∀ v, avg μ ρ (fun _ => (1 : ℂ)) v ∈ secSp K ⊤ (1 : G → ℂ) ρ` using `hMem G W K ρ hK hρ μ hHaar hProb Γ ⊤ 1 (isPar_top Γ K) (fun _ => 1) continuous_const (fun _ _ _ => by simp)`. Set `T : secSp K ((stab _ {i₀}).comap π) 1 ρ →L[ℂ] secSp K ⊤ (1 : G → ℂ) ρ` to `b • ((avg μ ρ (fun _ => (1 : ℂ))).comp J).codRestrict _ (fun w => hmem (J w))`. Use `⟨R, D, Op, H, hW, ⟨dd, hdd, hddN (hω1 rfl _ hN1), hD⟩, T, fun g w => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hb g w, sec_top_apply K ρ g _ (hinv _ (T w).2), mul_smul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mirGen_of_core : SecLaw → TestSph → AvgMem → AvgInv → SideOf → TestK → Core → MirGen := by
   intro _hSec hSph hMem hInv hSide hTK hCore G _ _ _ _ _ W _ _ _ K ρ hK hρ k _ _ ι _ _ π Γ i₀ i₁ ω d c η η' l hSC hMD

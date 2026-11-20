@@ -38,9 +38,9 @@ theorem zchar_apply {N : ℕ} [NeZero N] (ζ : ℂˣ) (hζ : ζ ^ N = 1) (x : Mu
     zchar ζ hζ x = ζ ^ (Multiplicative.toAdd x).val := rfl
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => (ζ ^ i) ^ k)]`. Repeatedly rewrite using `[← pow_mul, mul_comm _ k, pow_mul]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hne : ζ ^ k ≠ 1` using `fun e => h (Nat.eq_zero_of_dvd_of_lt ((hζ.pow_eq_one_iff_dvd k).1 e) hk)`. Rewrite using `[geom_sum_eq hne, ← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow, sub_self, zero_div]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_roots {N : ℕ} {ζ : ℂ} (hζ : IsPrimitiveRoot ζ N) (k : ℕ) (hk : k < N) :
     ∑ i : Fin N, (ζ ^ (i : ℕ)) ^ k = if k = 0 then (N : ℂ) else 0 := by
@@ -61,17 +61,15 @@ def stab (W : Wt E n) (f : algForms W) : Subgroup (UA E n) where
     exact this.symm
 
 /- English proof (translation)
-Take `⟨N₁, hN₁, h1, hN₁C⟩` from `ho`. Establish `hsm` using `isSmooth_algRep W f`. Take `⟨t, ht, hte⟩` from `isOpen_induced_iff.1 hsm`. Establish `hfix : ∀ x (hx : x ∈ finU E n), x ∈ t → x ∈ stab W f`. Introduce `x hx hxt v g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (⟨x, hx⟩ : finU E n) ∈ {k : finU E n | algRep W k f = f}` using `by rw [← hte]; exact hxt`. Conclude with `congrArg (fun F : algForms W => F.1 v g) this`. Establish `h1t : (1 : UA E n) ∈ t`. Establish `: (1 : finU E n) ∈ {k : finU E n | algRep W k f = f}` using `by simp`. Rewrite `this` using `[← hte]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hN : N₁ ∩ t ∩ finU E n ⊆ (C ⊓ stab W f : Subgroup (UA E n))` using `fun x ⟨⟨hx1, hxt⟩, hxf⟩ => ⟨hN₁C ⟨hx1, hxf⟩, hfix x hxf hxt⟩`. Use `⟨?_, N₁ ∩ t, hN₁.inter ht, ⟨h1, h1t⟩, hN⟩` and prove the remaining obligations. Use `haveI : CompactSpace C := isCompact_iff_compactSpace.1 hc`. Establish `hHo : IsOpen (((C ⊓ stab W f).subgroupOf C : Subgroup C) : Set C)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset (((hN₁.inter ht).preimage continuous_subtype_val).mem_nhds ⟨h1, h1t⟩) ?_)` and prove the remaining obligations. Introduce `x hx`. Conclude with `Subgroup.mem_subgroupOf.2 (hN ⟨hx, hC x.2⟩)`. Establish `hHc` using `Subtype.isCompact_iff.1 (Subgroup.isClosed_of_isOpen _ hHo).isCompact`. Use `hHc using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨⟨x, hx.1⟩, Subgroup.mem_subgroupOf.2 hx, rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
-
-Conclude with `Subgroup.mem_subgroupOf.1 hy`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem stab_level (W : Wt E n) (f : algForms W) (C : Subgroup (UA E n)) (hC : C ≤ finU E n)
     (hc : IsCompact (C : Set (UA E n))) (ho : ∃ N : Set (UA E n), IsOpen N ∧ 1 ∈ N ∧ N ∩ finU E n ⊆ C) :

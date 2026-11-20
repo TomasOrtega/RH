@@ -9,11 +9,11 @@ open CompanionTheory.Rg.Fl
 namespace GlobalTheory.CompanionTheory.Bernstein
 
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k, N = k + 1` from `⟨N - 1, by omega⟩`. Establish `e1 : 2 * (k + 1) - 1 = 2 * k + 1` using `by omega`. Establish `e2 : 2 * (k + 1) - 1 + 1 = 2 * (k + 1)` using `by omega`. Rewrite `h1` using `[e1]`. Rewrite `h2` using `[e2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : (2 * (k + 1)) * D ≤ (2 * (k + 1)) * ((2 * k + 1) * D') + m ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `h5 : (2 * (k + 1)) * ((2 * k + 1) * D') ≤ 4 * (k + 1) ^ 2 * D'`. Establish `: (2 * (k + 1)) * ((2 * k + 1) * D') + 2 * (k + 1) * D' = 4 * (k + 1) ^ 2 * D'` using `by ring`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h6 : (2 * (k + 1)) * D ≤ 2 * m ^ 2 + K * m` using `by omega`. Establish `h7 : 2 * ((k + 1) * D) ≤ 2 * (m ^ 2 + K * m)`. Establish `: (2 * (k + 1)) * D = 2 * ((k + 1) * D)` using `by ring`. Establish `h8 : 2 * (m ^ 2 + K * m) = 2 * m ^ 2 + K * m + K * m` using `by ring`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -41,11 +41,11 @@ theorem arith_nil (N D D' E m K : ℕ) (hN : 0 < N)
   omega
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Apply `Algebra.adjoin_le` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `Subalgebra.sub_mem _ (Algebra.subset_adjoin ⟨0, rfl⟩) (Subalgebra.algebraMap_mem _ μ)`. Simplify using `only [Fin.cons_succ]`. Conclude with `Algebra.subset_adjoin ⟨j.succ, rfl⟩`. Apply `Algebra.adjoin_le` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Establish `h0 : a 0 - algebraMap ℂ _ μ ∈ Algebra.adjoin ℂ (Set.range (Fin.cons (a 0 - algebraMap ℂ _ μ) (fun i : Fin l => a i.succ) : Fin (l + 1) → Module.End ℂ V))` using `Algebra.subset_adjoin ⟨0, by simp⟩`. Use `Subalgebra.add_mem _ h0 (Subalgebra.algebraMap_mem (Algebra.adjoin ℂ (Set.range (Fin.cons (a 0 - algebraMap ℂ _ μ) (fun i : Fin l => a i.succ) : Fin (l + 1) → Module.End ℂ V))) μ)` as an intermediate fact. Simplify using `using this`. Conclude with `Algebra.subset_adjoin ⟨j.succ, by simp⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem adjoin_shift {V : Type} [AddCommGroup V] [Module ℂ V] {l : ℕ}
     (a : Fin (l + 1) → Module.End ℂ V) (μ : ℂ) :
@@ -71,37 +71,33 @@ theorem adjoin_shift {V : Type} [AddCommGroup V] [Module ℂ V] {l : ℕ}
     · exact Algebra.subset_adjoin ⟨j.succ, by simp⟩
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `V _ _ _ a hn hc`. Break down `subsingleton_or_nontrivial V with hV | hV` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `: Module.finrank ℂ (Algebra.adjoin ℂ (Set.range a)) = 0` using `Module.finrank_zero_of_subsingleton`. Simplify using `[this]`. Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue (a 0)`. Take `⟨v, hv⟩` from `hμ.exists_hasEigenvector`. Use `set s : Module.End ℂ V := a 0 - algebraMap ℂ _ μ with hs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsc : ∀ i, Commute s (a i)` using `fun i => (hc 0 i).sub_left (Algebra.commutes μ (a i))`. Establish `hsv : s v = 0`. Simplify using `[hs, hv.apply_eq_smul, Module.algebraMap_end_apply]`. Take `⟨k, hcompl, hk⟩` from `((LinearMap.eventually_isCompl_ker_pow_range_pow s).and (Filter.eventually_ge_atTop 1)).exists`. Establish `hkc : ∀ i, Commute (s ^ k) (a i)` using `fun i => (hsc i).pow_left k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : ∀ i, ∀ w ∈ LinearMap.ker (s ^ k), a i w ∈ LinearMap.ker (s ^ k)`. Introduce `i w hw`. Rewrite `hw`, the goal using `[LinearMap.mem_ker]`. Use `congrArg (fun f : Module.End ℂ V => f w) (hkc i).eq` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hw, map_zero]`. Establish `h' : ∀ i, ∀ w ∈ LinearMap.range (s ^ k), a i w ∈ LinearMap.range (s ^ k)`. Introduce and unpack `i _ ⟨u, rfl⟩`. Use `⟨a i u, ?_⟩` and prove the remaining obligations. Use `congrArg (fun f : Module.End ℂ V => f u) (hkc i).eq` as an intermediate fact.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [Module.End.mul_apply]`. Distinguish the cases in `hr : LinearMap.range (s ^ k) = ⊥`. Establish `hnil : IsNilpotent s` using `⟨k, LinearMap.range_eq_bot.mp hr⟩`. Use `set b : Fin (l + 1) → Module.End ℂ V := Fin.cons s (fun i : Fin l => a i.succ) with hb`. Establish `hadj : Algebra.adjoin ℂ (Set.range b) = Algebra.adjoin ℂ (Set.range a)` using `adjoin_shift a μ`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : b 0 = s` using `rfl`. Establish `hbs : ∀ i : Fin l, b i.succ = a i.succ` using `fun i => rfl`. Establish `hbc : ∀ i j, Commute (b i) (b j)`. Introduce `i j`. Apply the tactic sequence `refine Fin.cases ?_ (fun i' => ?_) i <;> refine Fin.cases ?_ (fun j' => ?_) j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Commute.refl _`. Rewrite using `[hb0, hbs]`. Conclude with `hsc _`. Rewrite using `[hb0, hbs]`. Conclude with `(hsc _).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hbs, hbs]`. Conclude with `hc _ _`. Establish `hmem : ∀ c ∈ Subalgebra.toSubmodule (Algebra.adjoin ℂ (Set.range b)), Commute c s`. Introduce `c hcm`. Establish `hle : Algebra.adjoin ℂ (Set.range b) ≤ Subalgebra.centralizer ℂ {s}`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Algebra.adjoin_le` to reduce the goal to its premises. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_centralizer_iff]`. Introduce and unpack `g rfl`. Conclude with `hbc 0 i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hle hcm` as an intermediate fact. Rewrite `this` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `(this s rfl).symm`. Establish `h1` using `GlobalTheory.CompanionTheory.CommStep.comm_step V l b hbc (2 * N - 1)`. Establish `h2` using `GlobalTheory.CompanionTheory.CommNil.succ_mul_finrank_map_le V s hnil (2 * N - 1) _ hmem`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hb0]`. Establish `h3` using `hK V (fun i : Fin l => b i.succ) (fun i j => hbc _ _)`. Rewrite `h1`, `h2` using `[hadj]`. Conclude with `arith_nil N _ _ _ _ K hN h1 h2 h3`. Establish `hker : LinearMap.ker (s ^ k) ≠ ⊥`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hbot`. Establish `hmem : v ∈ LinearMap.ker (s ^ k)`. Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Rewrite using `[LinearMap.mem_ker, pow_succ, Module.End.mul_apply, hsv, map_zero]`. Rewrite `hmem` using `[hbot, Submodule.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `hv.2 hmem`. Establish `hsum` using `Submodule.finrank_add_eq_of_isCompl hcompl`. Establish `p1 : Module.finrank ℂ (LinearMap.ker (s ^ k)) ≠ 0` using `fun h0 => hker (Submodule.finrank_eq_zero.mp h0)`. Establish `p2 : Module.finrank ℂ (LinearMap.range (s ^ k)) ≠ 0` using `fun h0 => hr (Submodule.finrank_eq_zero.mp h0)`. Establish `hres : ∀ (W : Submodule ℂ V) (g : ∀ i, ∀ w ∈ W, a i w ∈ W) (i j : Fin (l + 1)), Commute (((a i).restrict (g i) : Module.End ℂ W)) ((a j).restrict (g j))`.
-
-Introduce `W g i j`. Use `show ((a i).restrict (g i) : Module.End ℂ W) * (a j).restrict (g j) = ((a j).restrict (g j) : Module.End ℂ W) * (a i).restrict (g i)`. Use `LinearMap.ext fun w => Subtype.ext ?_` and prove the remaining obligations. Use `congrArg (fun f : Module.End ℂ V => f w.1) (hc i j).eq` as an intermediate fact. Simplify `this` using `[Module.End.mul_apply]`.
-
-Establish `i1` using `ih (Module.finrank ℂ (LinearMap.ker (s ^ k))) (by omega) (LinearMap.ker (s ^ k)) (fun i => ((a i).restrict (h i) : Module.End ℂ (LinearMap.ker (s ^ k)))) rfl (hres _ h)`. Establish `i2` using `ih (Module.finrank ℂ (LinearMap.range (s ^ k))) (by omega) (LinearMap.range (s ^ k)) (fun i => ((a i).restrict (h' i) : Module.End ℂ (LinearMap.range (s ^ k)))) rfl (hres _ h')`. Establish `h3` using `GlobalTheory.CompanionTheory.CommSplit.finrank_adjoin_le_add V (l + 1) a _ _ hcompl h h'`. Rewrite using `[← hsum]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem positionOne_invariantIntegral_exchange_step (l N K : ℕ) (hN : 0 < N)
     (hK : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
@@ -208,15 +204,15 @@ theorem positionOne_invariantIntegral_exchange_step (l N K : ℕ) (hN : 0 < N)
             Module.finrank ℂ (LinearMap.range (s ^ k)))]
 
 /- English proof (translation)
-Unfold `StComm`. Introduce `l`. Proceed by induction on `l with`. Consider the case `zero`. Introduce `N`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨N, ?_⟩` and prove the remaining obligations. Introduce `V _ _ _ a _`. Establish `hr : Set.range a = ∅` using `Set.range_eq_empty a`. Rewrite using `[hr, Algebra.adjoin_empty]`. Break down `subsingleton_or_nontrivial V with hV | hV` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `: Module.finrank ℂ (⊥ : Subalgebra ℂ (Module.End ℂ V)) = 0` using `Module.finrank_zero_of_subsingleton`. Simplify using `[this]`. Establish `hpos : 0 < Module.finrank ℂ V` using `Module.finrank_pos`. Rewrite using `[Subalgebra.finrank_bot]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Consider the case `succ l ih`. Introduce `N`. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Conclude with `⟨0, fun V _ _ _ a _ => by simp⟩`. Take `⟨K, hK⟩` from `ih (4 * N ^ 2)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨K, fun V _ _ _ a hc => positionOne_invariantIntegral_exchange_step l N K hN hK _ V a rfl hc⟩`.
+Supply the required witnesses or components.
 -/
 theorem stComm : StComm := by
   unfold StComm

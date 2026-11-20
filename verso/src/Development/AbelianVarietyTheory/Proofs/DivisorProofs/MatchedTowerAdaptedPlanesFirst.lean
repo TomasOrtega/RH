@@ -24,21 +24,19 @@ namespace GlobalTheory.ThK.SplitAdm
 open GlobalTheory.ThK.TowerInt GlobalTheory.ThK.CoinvFin GlobalTheory.SplitUnitLift
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hq d₁ H' i₀ i₁ sp pl hH' hiso c hb0 hbj i hi f hf _ hdec co hco om₁ hom Φ hΦ μ 𝓕 hμ h𝓕`. Establish `hT` using `hM.triple`. Establish `hB` using `hT.base`. Take `⟨hfc, hfr⟩` from `GlobalTheory.ThK.DescB.Nondeg.lev_reg hKP hM hH' hiso c hb0 hbj i hi f hf`. Establish `hHe : IsHecke F E (X.α / X.β)` using `⟨hT.chars.heckeα.1.div' hT.chars.heckeβ.1, fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.div_apply, hT.chars.heckeα.2 x, hT.chars.heckeβ.2 x, div_one]⟩`. Establish `hres : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range (X.α / X.β) (a + a')` using `fun x => by`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, hT.chars.resα x, hT.chars.resβ x]`. Use `split_ifs`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases neg_one_pow_eq_or ℂ a with e | e <;> simp [pow_add, e, div_neg]`. Establish `hrk : a + a' = (d₁ - 2 * i) + 2 * (i + 1)`. Establish `h1` using `hH'.rank`. Establish `h2` using `(hiso i hi).1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hres₁ : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range (X.α / X.β) (d₁ - 2 * i)` using `fun x => by`. Rewrite using `[hres x, hrk, pow_add, pow_mul]`. Simplify using the standard rewrite rules. Establish `hV' : IsPair B G.M' X.α (X.α / X.β) om' G.q (a' - G.q) (a + a' - (G.p + G.q)) (G.p + G.q)` using `⟨hB, hT.geo.hV', hT.geo.hW, hT.geo.hM', hT.chars.heckeα, hHe, hT.chars.resα, hres, hT.weil'⟩`. Take `⟨Z, r₁, s₁, hZ⟩` from `GlobalTheory.ThK.SkewChain.skew_chain F E σ B a' (a + a') G.V' G.W G.M' _ _ om' _ _ _ _ hV' d₁ H' i₀ i₁ sp pl G.p hH' hiso i hi`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨M₀, hM₀⟩` from `GlobalTheory.ModelEx.model_exists F E σ B hB a' _ G.V' (reJ (sp i) Z) _ _ _ _ hT.geo.hV' hZ`. Take `⟨om₀, hom₀⟩` from `GlobalTheory.WeilExGen.exists_isWeil hKP.base F E σ B hB a' _ G.V' (reJ (sp i) Z) _ _ _ _ hT.geo.hV' hZ M₀ hM₀ X.α (X.α / X.β) hT.chars.heckeα hHe hT.chars.resα hres₁`. Establish `hP₀ : IsPair B M₀ X.α (X.α / X.β) om₀ G.q (a' - G.q) r₁ s₁` using `⟨hB, hT.geo.hV', hZ, hM₀, hT.chars.heckeα, hHe, hT.chars.resα, hres₁, hom₀⟩`. Take `⟨M₁, om₂, -, -, hco₁, hP₂, -, -⟩` from `GlobalTheory.T.darboux_coords_rational_points F E σ B a' _ G.V' (reJ (sp i) Z) M₀ _ _ om₀ _ _ _ _ hP₀ co hco`. Substitute `hco₁` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hP : IsPair B M₁ X.α (X.α / X.β) om₁ G.q (a' - G.q) r₁ s₁` using `⟨hB, hT.geo.hV', hZ, hP₂.good, hT.chars.heckeα, hHe, hT.chars.resα, hres₁, hom⟩`. Use `⟨X.T, fun v hv hs => ?_⟩` and prove the remaining obligations. Establish `hcm` using `hP.base.cm`. Take `⟨τ⟩` from `GlobalTheory.LinWAt.nonempty_emb_of_splitsFully hcm v hs`. Establish `herm : ∀ k l, σ ((sp i).J l k) = algebraMap F E (-1) * (sp i).J k l` using `fun k l => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_neg, map_one, neg_one_mul]`. Conclude with `hP.skew.skew k l`. Establish `hJ : IsUnit ((sp i).J.map τ).det`. Establish `w` using `Classical.arbitrary (InfinitePlace F)`. Conclude with `isUnit_det_of_cartan (sp i).J τ (B.emb w).1 Complex.I Complex.I_ne_zero _ (hP.skew.cartan w)`.
-
-Establish `hbig : 2 * (G.p + G.q) + 1 < (a - a') / 2` using `hM.triple.geo.eBig`. Establish `e : Fin (a - 2 * (i + 1) + a') ≃ Fin (d₁ - 2 * i)` using `finCongr (by omega)`. Conclude with `GlobalTheory.ThK.LiftAdm.smAdm_of_locType (W := reJ (sp i) Z) hKP hP f hfc hfr hdec μ 𝓕 hμ h𝓕 hΦ v τ herm hJ e _ _ (GlobalTheory.ThK.LiftAdm.locType hKP F E σ B a a' G X om om' R Rf hM hq d₁ H' i₀ i₁ sp pl hH' hiso c hb0 hbj i hi v ⟨hv, hs⟩ τ hcm (-1) herm hJ e f hf)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smAdm_lift : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ)
     (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'),

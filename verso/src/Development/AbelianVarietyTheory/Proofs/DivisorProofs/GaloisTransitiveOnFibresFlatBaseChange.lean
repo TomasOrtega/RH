@@ -16,20 +16,20 @@ namespace GlobalTheory.Mum.GalOrbit
 variable {R R' : Type} [CommRing R] [CommRing R'] {ρ : R →+* R'}
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Use `congr 1`. Use extensionality with `r`. Conclude with `σ.2 r`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem spMap_gal_comp (σ : Gal ρ) : spMap (Gal.hom σ) ≫ spMap ρ = spMap ρ := by
   rw [← Spec.map_comp]; congr 1; ext r; exact σ.2 r
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_gal_mul (σ τ : Gal ρ) :
     spMap (Gal.hom (σ * τ)) = spMap (Gal.hom σ) ≫ spMap (Gal.hom τ) := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_gal_one : spMap (Gal.hom (1 : Gal ρ)) = 𝟙 _ := by
   rw [← Spec.map_id]; rfl
@@ -41,23 +41,23 @@ def act (σ : Gal ρ) : Z ⟶ Z :=
   hpb.lift p (s ≫ spMap (Gal.hom σ)) (by rw [Category.assoc, spMap_gal_comp, hpb.w])
 
 /- English proof (translation)
-The claim follows from `hpb.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem act_p (σ : Gal ρ) : act hpb σ ≫ p = p := hpb.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `hpb.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem galoisBaseChangeSchemeAction_comp_snd (σ : Gal ρ) : act hpb σ ≫ s = s ≫ spMap (Gal.hom σ) := hpb.lift_snd _ _ _
 
 /- English proof (translation)
-The claim follows from `hpb.hom_ext (by rw [act_p, Category.id_comp]) (by rw [galoisBaseChangeSchemeAction_comp_snd, spMap_gal_one, Category.comp_id, Category.id_comp])`.
+A detailed English derivation is pending.
 -/
 theorem act_one : act hpb 1 = 𝟙 Z :=
   hpb.hom_ext (by rw [act_p, Category.id_comp]) (by rw [galoisBaseChangeSchemeAction_comp_snd, spMap_gal_one, Category.comp_id, Category.id_comp])
 
 /- English proof (translation)
-The claim follows from `hpb.hom_ext (by rw [act_p, Category.assoc, act_p, act_p]) (by rw [galoisBaseChangeSchemeAction_comp_snd, Category.assoc, galoisBaseChangeSchemeAction_comp_snd, galoisBaseChangeSchemeAction_comp_snd_assoc, spMap_gal_mul])`.
+A detailed English derivation is pending.
 -/
 theorem act_mul (σ τ : Gal ρ) : act hpb (σ * τ) = act hpb σ ≫ act hpb τ :=
   hpb.hom_ext (by rw [act_p, Category.assoc, act_p, act_p])
@@ -77,11 +77,11 @@ end GlobalTheory.Mum.GalOrbit
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R R' _ _ _ hinj hG Y hfl Z p s hpb z z' hzz`. Establish `: Finite (Gal (algebraMap R R'))` using `hG.1`. Establish `: Flat Y.hom` using `hfl`. Establish `: IsAffineHom p` using `MorphismProperty.of_isPullback (P := @IsAffineHom) hpb.flip inferInstance`. Establish `hinv : ∀ W : Y.left.Opens, IsAffineOpen W → ∀ u : Γ(Z, p ⁻¹ᵁ W), GlobalTheory.IsInvariantSection (GalOrbit.actAut hpb) _ u → u ∈ Set.range (p.app W)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `W hW u hu`. Use `(InvFun.affine_inv (algebraMap R R') hinj hG hpb (GalOrbit.act hpb) (GalOrbit.act_p hpb) (GalOrbit.galoisBaseChangeSchemeAction_comp_snd hpb) hW).2 u fun σ hσ => ?_` and prove the remaining obligations. Take `⟨h₁, h₂⟩` from `hu σ⁻¹`. Establish `key : ∀ (τ τ' : Gal (algebraMap R R')) (_ : τ = τ') (e : p ⁻¹ᵁ W ≤ GalOrbit.act hpb τ ⁻¹ᵁ (p ⁻¹ᵁ W)) (e' : p ⁻¹ᵁ W ≤ GalOrbit.act hpb τ' ⁻¹ᵁ (p ⁻¹ᵁ W)), ((GalOrbit.act hpb τ).appLE _ _ e).hom u = ((GalOrbit.act hpb τ').appLE _ _ e').hom u`. Introduce and unpack `τ _ rfl _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Conclude with `(key _ _ (inv_inv σ).symm hσ h₁).trans h₂`. Take `⟨g, hg⟩` from `(GlobalTheory.apply_eq_iff_exists_aut_of_invariant (GalOrbit.actAut hpb) p (fun g => GalOrbit.act_p hpb _) hinv z z').1 hzz`. Conclude with `⟨g⁻¹, GalOrbit.act hpb g⁻¹, GalOrbit.act_p hpb _, GalOrbit.galoisBaseChangeSchemeAction_comp_snd hpb _, hg⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gal_transitive_on_fibres : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'],
     Function.Injective (algebraMap R R') → IsGal (algebraMap R R') → ∀ (Y : Over (Sp R)), Flat Y.hom →

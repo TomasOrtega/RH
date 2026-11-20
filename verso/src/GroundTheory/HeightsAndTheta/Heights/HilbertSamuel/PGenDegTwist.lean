@@ -39,19 +39,19 @@ theorem intNumMultilinear_apply {K : Type} [Fintype K] [DecidableEq K] {ι : K �
   rfl
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y D a n w p q hV hw hgw hpos hq`. Set `_ : LinearOrder K` to `LinearOrder.lift' (Fintype.equivFin K) (Fintype.equivFin K).injective`. Set `_ : ∀ k, LinearOrder (ι k)` to `fun k => LinearOrder.lift' (Fintype.equivFin (ι k)) (Fintype.equivFin (ι k)).injective`. Establish `hGa` using `(hFib K ι Ω y a n w hw hgw).1`. Establish `hPV` using `hVar K ι Ω y D hV`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `(Bridge.isMultiProjPrime_iff _).mpr hPV.1`. Establish `hd : FieldNumbers.relDim (KH.genIdeal y) = D`. Rewrite using `[FieldNumbers.relDim_of_ringKrullDim_eq _ _ hPV.2]`. Simplify using `only [Nat.cast_add, add_sub_cancel_right]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `set f := intNumMultilinear (KH.genIdeal y) D hP.multiHomog hP.relevant hd with hf`. Establish `hg : ∀ b, genDeg (mCoordIdeal y) D b = f (fun _ => b)` using `fun b => by`. Rewrite using `[hf, intNumMultilinear_apply, genDeg]`. Reduce the equality to equality of the corresponding arguments. Establish `key : ∀ s : Finset (Fin D), 0 ≤ f (s.piecewise (fun _ => a) fun _ _ => 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Use `hNonneg ℚ K ι (KH.genIdeal y) D (s.piecewise (fun _ => a) fun _ _ => 1) hPV fun i => by` as an intermediate fact. Distinguish the cases in `hi : i ∈ s`. Simplify `hGa` using `[Finset.piecewise, hi]`. Simplify `hOne ℚ K ι (KH.genIdeal y)` using `[Finset.piecewise, hi]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, intNumMultilinear_apply]`. Use `this` and compare the differences between its conclusion and the goal. Rewrite `hpos`, the goal using `[hg]`. Establish `hsplit : (fun _ : Fin D => (q : ℤ) • a + fun _ => (p : ℤ)) = (fun _ : Fin D => (q : ℤ) • a) + fun _ : Fin D => (p : ℤ) • fun _ : K => (1 : ℤ)`. Use function extensionality and compare the values at `i k`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hsplit, f.map_add_univ]`. Use `Finset.sum_pos' (fun s _ => ?_) ⟨Finset.univ, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Establish `hs : s.piecewise (fun _ : Fin D => (q : ℤ) • a) (fun _ => (p : ℤ) • fun _ : K => (1 : ℤ)) = fun i => (if i ∈ s then (q : ℤ) else p) • s.piecewise (fun _ => a) (fun _ _ => 1) i`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases hi : i ∈ s <;> simp [hi]`. Rewrite using `[hs, f.map_smul_univ]`. Apply the tactic sequence `exact smul_nonneg (Finset.prod_nonneg fun i _ => by split_ifs <;> positivity) (key s)`. Rewrite using `[Finset.piecewise_univ, show (fun _ : Fin D => (q : ℤ) • a) = fun i => (q : ℤ) • (fun _ : Fin D => a) i from rfl, f.map_smul_univ]`. Conclude with `smul_pos (Finset.prod_pos fun _ _ => by exact_mod_cast hq) hpos`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GenDegTwist.proof (hFib : GenOnFibres.Statement) (hVar : GenericFibreVar.Statement)
     (hOne : GeneratedOne.Statement) (hNonneg : GeneratedMixedNonneg.Statement) :

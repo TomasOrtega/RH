@@ -22,20 +22,20 @@ def Gm (σ : E →ₐ[F] E) (J : Matrix (Fin m) (Fin m) E) (bs : Module.Basis (F
   LinearMap.BilinForm.toMatrix (bs.matrix (Fin m) (Fin n)) (BfE σ J)
 
 /- English proof (translation)
-The claim follows from `(LinearMap.BilinForm.nondegenerate_iff_det_ne_zero _).1 (BfE_nondeg σ hσ J hJ)`.
+A detailed English derivation is pending.
 -/
 theorem Gm_det [FiniteDimensional F E] (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = a) (J : Matrix (Fin m) (Fin m) E)
     (hJ : J.det ≠ 0) (bs : Module.Basis (Fin 2) F E) : (Gm (n := n) σ J bs).det ≠ 0 :=
   (LinearMap.BilinForm.nondegenerate_iff_det_ne_zero _).1 (BfE_nondeg σ hσ J hJ)
 
 /- English proof (translation)
-Take `⟨i, j, l⟩` from `k`. Take `⟨i', j', l'⟩` from `k'`. Establish `hE : ∀ (a : Fin m) (b : Fin n) (c : Fin 2), Ek bs (a, b, c) = incM F (Matrix.single a b (bs c))`. Introduce `a b c`. Use extensionality with `x y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `by_cases hx : a = x <;> by_cases hy : b = y <;> simp [Ek, incM, Matrix.single_apply, inclR, hx, hy]`. Establish `hc : ∀ M : Matrix (Fin m) (Fin n) E, (incM F M).map (cA σ) = incM F (M.map σ)`. Introduce `M`. Use extensionality with `x y`. Simplify using `[incM, cA, inclR]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `htr : ∀ M : Matrix (Fin m) (Fin n) E, (incM F M)ᵀ = incM F Mᵀ`. Introduce `M`. Use extensionality with `x y`. Both sides reduce to the same expression. Establish `ht : ∀ M : Matrix (Fin n) (Fin n) E, (incM F M).trace = inclR (F` using `F) (E := E) (AF F) M.trace := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `M`. Rewrite using `[incM, AddMonoidHom.map_trace]`. Rewrite using `[Gm, LinearMap.BilinForm.toMatrix_apply, Module.Basis.matrix_apply, Module.Basis.matrix_apply, Bf, hE, hE, hc, htr, ← incM_mul, ← incM_mul, ht, trace_inclR']`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Bf_Ek_Ek [FiniteDimensional F E] (σ : E →ₐ[F] E) (J : Matrix (Fin m) (Fin m) E) (bs : Module.Basis (Fin 2) F E)
     (k k' : Fin m × Fin n × Fin 2) : Bf σ J (Ek bs k) (Ek bs k') = algebraMap F (AF F) (Gm σ J bs k k') := by
@@ -64,14 +64,14 @@ def bM (bs : Module.Basis (Fin 2) F E) : Module.Basis (Fin m × Fin n × Fin 2) 
   (Algebra.TensorProduct.basis (AF F) bs).matrix (Fin m) (Fin n)
 
 /- English proof (translation)
-Take `⟨i, j, l⟩` from `k`. Simplify using `[bM, Ek, Algebra.TensorProduct.basis_apply]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem bM_apply (bs : Module.Basis (Fin 2) F E) (k : Fin m × Fin n × Fin 2) : bM bs k = Ek bs k := by
   obtain ⟨i, j, l⟩ := k
   simp [bM, Ek, Algebra.TensorProduct.basis_apply]
 
 /- English proof (translation)
-Take `⟨i, j, l⟩` from `k`. Establish `hinj : Function.Injective (Prod.map id ⇑(Equiv.sigmaEquivProd (Fin n) (Fin 2)) ∘ ⇑(Equiv.sigmaEquivProd (Fin m) (Σ _ : Fin n, Fin 2)))` using `(Function.injective_id.prodMap (Equiv.injective _)).comp (Equiv.injective _)`. Simplify using `[bM, Module.Basis.matrix, crdB, Pi.basis_repr]`. Rewrite using `[show ((i, j, l) : Fin m × Fin n × Fin 2) = (Prod.map id ⇑(Equiv.sigmaEquivProd (Fin n) (Fin 2)) ∘ ⇑(Equiv.sigmaEquivProd (Fin m) (Σ _ : Fin n, Fin 2))) ⟨i, ⟨j, l⟩⟩ from rfl, Finsupp.mapDomain_apply hinj, Pi.basis_repr, Pi.basis_repr]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bM_repr (bs : Module.Basis (Fin 2) F E) (X : Mx F E m n) (k : Fin m × Fin n × Fin 2) :
     (bM bs).repr X k = crdB bs X k := by
@@ -86,7 +86,7 @@ theorem bM_repr (bs : Module.Basis (Fin 2) F E) (X : Mx F E m n) (k : Fin m × F
   rfl
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem incM_one {ι : Type} [Fintype ι] [DecidableEq ι] : incM F (1 : Matrix ι ι E) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
@@ -123,7 +123,7 @@ theorem eQ_symm_apply (b : GL (Fin n ⊕ Fin n) E) (Z X : Mx F E m n) :
     (eQ b).symm (Z, X) = Z * (incM F b.1.toCols₁)ᵀ + X * (incM F b.1.toCols₂)ᵀ := rfl
 
 /- English proof (translation)
-Rewrite using `[← eQ_symm_apply, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eQ_frame (b : GL (Fin n ⊕ Fin n) E) (Z X : Mx F E m n) :
     eQ b (Z * (incM F b.1.toCols₁)ᵀ + X * (incM F b.1.toCols₂)ᵀ) = (Z, X) := by

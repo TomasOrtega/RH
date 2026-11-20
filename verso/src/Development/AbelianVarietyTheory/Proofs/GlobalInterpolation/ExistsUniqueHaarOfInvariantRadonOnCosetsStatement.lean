@@ -5,7 +5,7 @@ open MeasureTheory GlobalTheory.IndefiniteRowSideFullHecke.InvariantRadonFibre
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.QuotientHaar.existsUnique_haar_of_invariantRadon` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FExistsUniqueHaarOfInvariantRadonOnCosets.lean&line=190#L190)
 -/

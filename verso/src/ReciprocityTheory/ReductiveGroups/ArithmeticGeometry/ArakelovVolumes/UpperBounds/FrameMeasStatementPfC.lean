@@ -23,9 +23,7 @@ def ufL : (Ix X.Ψ r → ℂ) ≃ₗ[ℂ] Frame X.Ψ r where
 def ufC : (Ix X.Ψ r → ℂ) ≃L[ℂ] Frame X.Ψ r := (ufL X).toContinuousLinearEquiv
 
 /- English proof (translation)
-Use `haveI h1 : (volume : Measure (Fin r → ℂ)).IsAddHaarMeasure := by`. Rewrite using `[volume_pi]`. Conclude with `Measure.pi.isAddHaarMeasure _`. Use `haveI h2 : (volume : Measure (Fin r → Fin r → ℂ)).IsAddHaarMeasure := by`. Rewrite using `[volume_pi]`.
-
-Conclude with `Measure.pi.isAddHaarMeasure _`. Rewrite using `[volume_pi]`. Conclude with `Measure.pi.isAddHaarMeasure _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haarF : (volume : Measure (Frame X.Ψ r)).IsAddHaarMeasure := by
   haveI h1 : (volume : Measure (Fin r → ℂ)).IsAddHaarMeasure := by
@@ -38,7 +36,7 @@ theorem haarF : (volume : Measure (Frame X.Ψ r)).IsAddHaarMeasure := by
   exact Measure.pi.isAddHaarMeasure _
 
 /- English proof (translation)
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem haarIx : (volume : Measure (Ix X.Ψ r → ℂ)).IsAddHaarMeasure := by
   infer_instance
@@ -46,9 +44,7 @@ theorem haarIx : (volume : Measure (Ix X.Ψ r → ℂ)).IsAddHaarMeasure := by
 attribute [local instance] haarF haarIx
 
 /- English proof (translation)
-Use `haveI : (volume.map (ufC X)).IsAddHaarMeasure := (ufC X).isAddHaarMeasure_map volume`. Establish `e1 : ∫⁻ v, F (ufC X v) = ∫⁻ x, F x ∂(volume.map (ufC X))` using `(lintegral_map_equiv F (ufC X).toHomeomorph.toMeasurableEquiv).symm`. Rewrite using `[e1]`. Use `conv_lhs => rw [Measure.isAddLeftInvariant_eq_smul (volume.map (ufC X)) volume]`. Rewrite using `[lintegral_smul_measure]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lintegral_ufC (F : Frame X.Ψ r → ℝ≥0∞) :
     ∫⁻ v, F (ufC X v) = Measure.addHaarScalarFactor (volume.map (ufC X)) volume * ∫⁻ x, F x := by
@@ -61,17 +57,17 @@ theorem lintegral_ufC (F : Frame X.Ψ r → ℝ≥0∞) :
   rfl
 
 /- English proof (translation)
-Conclude with `(continuous_apply b).comp ((continuous_apply a).comp (continuous_apply τ))`.
+A detailed English derivation is pending.
 -/
 theorem cont_ent (τ : X.Ψ) (a b : Fin r) : Continuous fun x : Frame X.Ψ r => x τ a b := by
   exact (continuous_apply b).comp ((continuous_apply a).comp (continuous_apply τ))
 
 /- English proof (translation)
-Apply `continuous_pi` to reduce the goal to its premises. Introduce `τ`. Apply `continuous_pi` to reduce the goal to its premises. Introduce `a`. Apply `continuous_pi` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `b`. Simplify using `only [UF, Umat, Matrix.of_apply]`. Distinguish the cases in `hh : b < a`. Simplify using `only [hh, not_true_eq_false, dite_false]`. Conclude with `continuous_const`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hh, not_false_eq_true, dite_true] fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem continuous_UF : Continuous (UF X) := by
   apply continuous_pi
@@ -88,9 +84,9 @@ theorem continuous_UF : Continuous (UF X) := by
     fun_prop
 
 /- English proof (translation)
-Apply `continuous_pi` to reduce the goal to its premises. Introduce `τ`. Apply `continuous_pi` to reduce the goal to its premises. Introduce `a`. Apply `continuous_pi` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `b`. Simplify using `only [rmul, mat, Matrix.mul_apply, Matrix.of_apply]`. Apply `continuous_finset_sum` to reduce the goal to its premises. Introduce `k _`. Use `fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem continuous_rmul : Continuous fun q : Frame X.Ψ r × Frame X.Ψ r => rmul q.1 q.2 := by
   apply continuous_pi
@@ -109,13 +105,11 @@ def fI (C : Set (Frame X.Ψ r)) (q : Frame X.Ψ r × (UpI X.Ψ r → ℂ)) : ℝ
     ENNReal.ofReal (Complex.normSq (jacU q.2)) * C.indicator (1 : Frame X.Ψ r → ℝ≥0∞) (rmul q.1 (UF X q.2)) else 0
 
 /- English proof (translation)
-Establish `hJ : Continuous (fun y : UpI X.Ψ r → ℂ => jacU y)`. Unfold `jacU`. Apply `continuous_finset_prod` to reduce the goal to its premises. Introduce `i _`. Use `split_ifs`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `continuous_apply _`. Conclude with `continuous_const`. Establish `hS : MeasurableSet {q : Frame X.Ψ r × (UpI X.Ψ r → ℂ) | ∀ τ b, q.2 (dI τ b) ≠ 0}`. Simplify using `only [Set.setOf_forall]`. Use `MeasurableSet.iInter fun τ => MeasurableSet.iInter fun b => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous fun q : Frame X.Ψ r × (UpI X.Ψ r → ℂ) => q.2 (dI τ b)` using `(continuous_apply (dI τ b) : Continuous fun y : UpI X.Ψ r → ℂ => y (dI τ b)).comp continuous_snd`. Conclude with `(isOpen_ne_fun hc continuous_const).measurableSet`. Establish `hf : Measurable (fun q : Frame X.Ψ r × (UpI X.Ψ r → ℂ) => ENNReal.ofReal (Complex.normSq (jacU q.2)))` using `ENNReal.measurable_ofReal.comp ((Complex.continuous_normSq.comp (hJ.comp continuous_snd)).measurable)`. Establish `hg : Measurable (fun q : Frame X.Ψ r × (UpI X.Ψ r → ℂ) => C.indicator (1 : Frame X.Ψ r → ℝ≥0∞) (rmul q.1 (UF X q.2)))` using `(measurable_one.indicator hCm).comp ((continuous_rmul X).comp (continuous_fst.prodMk ((continuous_UF X).comp continuous_snd))).measurable`. Unfold `fI`.
-
-Conclude with `Measurable.ite hS (hf.mul hg) measurable_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_fI {C : Set (Frame X.Ψ r)} (hCm : MeasurableSet C) : Measurable (fI X C) := by
   have hJ : Continuous (fun y : UpI X.Ψ r → ℂ => jacU y) := by
@@ -142,15 +136,15 @@ theorem measurable_fI {C : Set (Frame X.Ψ r)} (hCm : MeasurableSet C) : Measura
   exact Measurable.ite hS (hf.mul hg) measurable_const
 
 /- English proof (translation)
-Conclude with `(measurable_fI X hCm).lintegral_prod_right'`.
+A detailed English derivation is pending.
 -/
 theorem measurable_Jp {C : Set (Frame X.Ψ r)} (hCm : MeasurableSet C) : Measurable (Jp X C) := by
   exact (measurable_fI X hCm).lintegral_prod_right'
 
 /- English proof (translation)
-Unfold `Jp`. Establish `hz : ∀ y : UpI X.Ψ r → ℂ, (if ∀ τ b, y (dI τ b) ≠ 0 then ENNReal.ofReal (Complex.normSq (jacU y)) * C.indicator 1 (rmul q (UF X y)) else 0) = 0`. Introduce `y`. Use `split_ifs with hy`. Simplify using `[Set.indicator, h y hy]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Repeatedly rewrite using `[hz]`. Conclude with `lintegral_zero`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Jp_eq_zero {C : Set (Frame X.Ψ r)} {q : Frame X.Ψ r}
     (h : ∀ y : UpI X.Ψ r → ℂ, (∀ τ b, y (dI τ b) ≠ 0) → rmul q (UF X y) ∉ C) : Jp X C q = 0 := by
@@ -165,7 +159,7 @@ theorem Jp_eq_zero {C : Set (Frame X.Ψ r)} {q : Frame X.Ψ r}
   exact lintegral_zero
 
 /- English proof (translation)
-Establish `hb` using `UF_mem X hd`. Use `⟨?_, rmul (cpt X x0 z) (UF X y), hxC, invF X (UF X y), invF_mem' X hb, (rmul_invF X hb).symm⟩` and prove the remaining obligations. Use `show cpt X x0 z ∈ X.dom`. Use `OrthogonalFrameDomain.rmul_mem_dom X (hCd hxC) (invF_mem' X hb)` as an intermediate fact. Rewrite `this` using `[rmul_invF X hb]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_sat {C : Set (Frame X.Ψ r)} (hCd : C ⊆ X.dom) {x0 : Frame X.Ψ r} {z : V (nd X)}
     {y : UpI X.Ψ r → ℂ} (hd : ∀ τ b, y (dI τ b) ≠ 0) (hxC : rmul (cpt X x0 z) (UF X y) ∈ C) :
@@ -177,7 +171,7 @@ theorem mem_sat {C : Set (Frame X.Ψ r)} (hCd : C ⊆ X.dom) {x0 : Frame X.Ψ r}
   rwa [rmul_invF X hb] at this
 
 /- English proof (translation)
-Introduce `h` and use `by have hb := UF_mem X hd have := OrthogonalFrameDomain.rmul_mem_dom X (hCd h) (invF_mem' X hb) rw [rmul_invF X hb] at this exact hp this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_dom_rmul {C : Set (Frame X.Ψ r)} (hCd : C ⊆ X.dom) {p : Frame X.Ψ r} (hp : p ∉ X.dom)
     {y : UpI X.Ψ r → ℂ} (hd : ∀ τ b, y (dI τ b) ≠ 0) : rmul p (UF X y) ∉ C := fun h => by
@@ -187,17 +181,15 @@ theorem not_dom_rmul {C : Set (Frame X.Ψ r)} (hCd : C ⊆ X.dom) {p : Frame X.�
   exact hp this
 
 /- English proof (translation)
-Use `set p := rmul x0 (NF X x) with hpdef`. Establish `hg : ∀ y, C.indicator G (ufC X (LA (fun τ => mat x0 τ) (lu ((eS X.Ψ r).symm (x, y))))) = C.indicator G (rmul p (UF X y))`. Introduce `y`. Express the relevant statement in the definitionally equal form `C.indicator G (rmul x0 (uf X (lu ((eS X.Ψ r).symm (x, y))))) = _`. Rewrite using `[uf_lu_eS, rmul_assoc']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hp : p ∈ X.dom`. Establish `hmeas : Measurable fun y => fI X C (p, y)` using `(measurable_fI X hCm).comp (measurable_const.prodMk measurable_id)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [fI]`. Use `split_ifs with hd`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hg y]`. Distinguish the cases in `hxC : rmul p (UF X y) ∈ C`. Rewrite using `[Set.indicator_of_mem hxC, Set.indicator_of_mem hxC, hGinv p hp _ (UF_mem X hd), Pi.one_apply, mul_one, mul_comm]`. Simplify using `[Set.indicator_of_notMem hxC]`. Rewrite using `[mul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `_ = G p * Jp X C p := lintegral_const_mul _ hmeas`. Use `_ ≤ KR X R0 * GLo X x0 ({p | Jp X C p ≠ 0}.indicator G) x := by`. Unfold `GLo`. Rewrite using `[if_pos hp]`. Distinguish the cases in `hJ : Jp X C p = 0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hJ, mul_zero]`. Conclude with `bot_le`. Rewrite using `[Set.indicator_of_mem (show p ∈ {p | Jp X C p ≠ 0} from hJ)]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[hg y, Set.indicator_of_notMem (not_dom_rmul X hCd hp hd), mul_zero]`. Both sides reduce to the same expression. Use `_ = 0 := lintegral_zero`. Use `_ ≤ _ := bot_le`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inner_le {x0 : Frame X.Ψ r} (hx0 : X.IsOrtho x0) {C : Set (Frame X.Ψ r)} (hCm : MeasurableSet C)
     (hCd : C ⊆ X.dom) {R0 : ℝ} (hR0 : ∀ x ∈ C, ∀ τ a b, ‖β0 X x τ a b‖ ≤ R0)

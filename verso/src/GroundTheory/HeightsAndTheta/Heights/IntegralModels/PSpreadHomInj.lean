@@ -11,9 +11,9 @@ namespace GroundTheory.Heights₂.Heights.Model
 open CategoryTheory AlgebraicGeometry
 
 /- English proof (translation)
-Introduce `X f _ _ a ha F G hF hG`. Take `⟨m, hm, H⟩` from `h₁ X f`. Use `⟨m, hm, fun n hn hmn ψ₁ ψ₂ e => ?_⟩` and prove the remaining obligations. Establish `hk : IsUnit (((a : ℤ) * n : ℤ) : ℚ)` using `isUnit_intCast_rat _ (by positivity)`. Establish `hG' : IsVectorBundle ((Scheme.Modules.pullback (X.homOfLE (invOpen_mul_le_left f a n))).obj G)` using `hG.pullback_of_isOpenImmersion _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h₂ _ _ (toInvOpen f ℚ ((a : ℤ) * n) hk) (H _ hk (Dvd.dvd.mul_left (Int.natCast_dvd_natCast.mpr hmn) _)) _ _ hG' ψ₁ ψ₂ ?_` and prove the remaining obligations. Unfold `pullbackHomAlong at e`. Rewrite `e` using `[cancel_epi, cancel_mono]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem SpreadHomInj.proof (h₁ : GenericSectionsInj.Statement)
     (h₂ : PullbackFaithful.Statement.{0}) : SpreadHomInj.Statement := by

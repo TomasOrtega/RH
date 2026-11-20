@@ -9,11 +9,11 @@ open scoped TensorProduct DirectSum Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `φ : Z → Module.Dual ℂ T` to `fun z => (LinearMap.proj z).comp T.subtype`. Establish `hfg : (Submodule.span ℂ (Set.range φ)).FG` using `IsNoetherian.noetherian _`. Take `⟨s', hs', hspan⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset _).1 hfg`. Rewrite `hs'` using `[← Set.image_univ]`. Take `⟨Y, -, rfl⟩` from `Finset.subset_set_image_iff.1 hs'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨Y, fun g hg hY => ?_⟩` and prove the remaining obligations. Establish `hle : Submodule.span ℂ (Set.range φ) ≤ LinearMap.ker (Module.Dual.eval ℂ T ⟨g, hg⟩)`. Rewrite using `[hspan, Submodule.span_le]`. Introduce `ψ hψ`. Simplify using `only [Finset.coe_image, Set.mem_image, Finset.mem_coe] at hψ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨y, hy, rfl⟩` from `hψ`. Simplify using `[φ, hY y hy]`. Use function extensionality and compare the values at `z`. Establish `hz` using `hle (Submodule.subset_span ⟨z, rfl⟩)`. Simplify `hz` using `[φ]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_finset_eval_injective {Z : Type} (T : Submodule ℂ (Z → ℂ))
     [FiniteDimensional ℂ T] :
@@ -36,19 +36,19 @@ theorem exists_finset_eval_injective {Z : Type} (T : Submodule ℂ (Z → ℂ))
   simpa [φ] using hz
 
 /- English proof (translation)
-Use `choose Y hY using fun i => @exists_finset_eval_injective (X i) (S i) (hS i)`. Set `P : Submodule ℂ ((∀ i, X i) → ℂ)` to `{ carrier := {f | ∀ i x, (fun y => f (Function.update x i y)) ∈ S i} add_mem' := fun {f g} hf hg i x => (S i).add_mem (hf i x) (hg i x) zero_mem' := fun i x => (S i).zero_mem smul_mem' := fun c f hf i x => (S i).smul_mem c (hf i x) }`. Establish `hle : Submodule.span ℂ {f : (∀ i, X i) → ℂ | ∀ i x, (fun y => f (Function.update x i y)) ∈ S i} ≤ P` using `Submodule.span_le.2 fun f hf => hf`. Set `L : P →ₗ[ℂ] ((∀ i, Y i) → ℂ)` to `{ toFun := fun f y => (f : (∀ i, X i) → ℂ) (fun i => (y i : X i)) map_add' := fun f g => rfl map_smul' := fun c f => rfl }`. Establish `hL : Function.Injective L`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `f hf`. Establish `hfP : ∀ i x, (fun y => (f : (∀ i, X i) → ℂ) (Function.update x i y)) ∈ S i` using `f.2`. Establish `key : ∀ A : Finset ι, ∀ x : ∀ i, X i, (∀ j ∉ A, x j ∈ Y j) → (f : (∀ i, X i) → ℂ) x = 0`. Introduce `A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `A using Finset.induction_on with`. Consider the case `empty`. Introduce `x hx`. Establish `h0` using `congrFun hf (fun j => ⟨x j, hx j (by simp)⟩)`. Simplify `h0` using `[L]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `@insert i A hiA ih`. Introduce `x hx`. Establish `hg : (fun y => (f : (∀ i, X i) → ℂ) (Function.update x i y)) = 0`. Use `hY i _ (hfP i x) ?_` and prove the remaining obligations. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ih` to reduce the goal to its premises. Introduce `j hj`. Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Simplify using `using hy`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne hji]`. Conclude with `hx j (by simp [hji, hj])`. Establish `h1` using `congrFun hg (x i)`. Simplify using `using h1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Conclude with `key Finset.univ x (fun j hj => absurd (Finset.mem_univ j) hj)`. Establish `: FiniteDimensional ℂ P` using `Module.Finite.of_injective L hL`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_span_separately (ι : Type) [Fintype ι] [DecidableEq ι] (X : ι → Type)
     (S : ∀ i, Submodule ℂ (X i → ℂ)) (hS : ∀ i, FiniteDimensional ℂ (S i)) :

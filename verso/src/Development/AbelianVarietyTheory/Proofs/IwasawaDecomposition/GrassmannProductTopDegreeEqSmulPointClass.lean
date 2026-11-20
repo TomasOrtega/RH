@@ -11,13 +11,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
 /- English proof (translation)
-Apply `Ideal.homogeneous_span` to reduce the goal to its premises. Introduce and unpack `x ((⟨τ, rfl⟩ | ⟨τ, k, -, rfl⟩) | ⟨τ, k, -, rfl⟩)`. Use `⟨0, ?_⟩` and prove the remaining obligations. Use `sub_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isWeightedHomogeneous_X ℝ Prod.snd (τ, 0)`. Rewrite using `[mem_weightedHomogeneousSubmodule]`. Conclude with `isWeightedHomogeneous_one ℝ Prod.snd`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isWeightedHomogeneous_X ℝ Prod.snd (τ, k)`. Use `⟨k, Submodule.sum_mem _ fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_weightedHomogeneousSubmodule]`. Establish `ha' : a ≤ k` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 ha)`. Establish `h` using `((isWeightedHomogeneous_C Prod.snd ((-1 : ℝ) ^ (k - a))).mul (isWeightedHomogeneous_X ℝ Prod.snd (τ.1, a))).mul (isWeightedHomogeneous_X ℝ Prod.snd (conjEmb τ.1, k - a))`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `only [zero_add]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem relIdeal_isHomogeneous (H : Host E) (Dw : Datum H) :
     (relIdeal H Dw).IsHomogeneous
@@ -44,11 +44,11 @@ theorem relIdeal_isHomogeneous (H : Host E) (Dw : Datum H) :
     omega
 
 /- English proof (translation)
-Establish `h : ∀ τ ∈ (Finset.univ : Finset (GlobalTheory.AllWt.Psi H)), IsWeightedHomogeneous Prod.snd ((C ((-1 : ℝ) ^ Dw.mult τ.1) * X (τ.1, Dw.mult τ.1)) ^ (Dw.p + Dw.q - Dw.mult τ.1)) (Dw.p * Dw.q)`. Introduce `τ _`. Establish `hm : Dw.mult τ.1 = Dw.p` using `GlobalTheory.PointChern.mult_of_mem Dw τ.2`. Establish `h1` using `((isWeightedHomogeneous_C Prod.snd ((-1 : ℝ) ^ Dw.mult τ.1)).mul (isWeightedHomogeneous_X ℝ Prod.snd (τ.1, Dw.mult τ.1))).pow (Dw.p + Dw.q - Dw.mult τ.1)`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [hm, zero_add, Nat.add_sub_cancel_left]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `IsWeightedHomogeneous.prod Finset.univ _ _ h`. Rewrite using `[pointPoly]`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `[Finset.sum_const, Finset.card_univ, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pointPoly_isWeightedHomogeneous (H : Host E) (Dw : Datum H) :
     IsWeightedHomogeneous Prod.snd (pointPoly H Dw) (Fintype.card (GlobalTheory.AllWt.Psi H) * (Dw.p * Dw.q)) := by
@@ -67,7 +67,7 @@ theorem pointPoly_isWeightedHomogeneous (H : Host E) (Dw : Datum H) :
   simp [Finset.sum_const, Finset.card_univ, smul_eq_mul]
 
 /- English proof (translation)
-Use `(Module.forall_dual_apply_eq_zero_iff ℝ (S.mkQ v)).1 h` as an intermediate fact. Simplify `this` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_of_forall_dual {V : Type} [AddCommGroup V] [Module ℝ V] (S : Submodule ℝ V) (v : V)
     (h : ∀ f : Module.Dual ℝ (V ⧸ S), f (S.mkQ v) = 0) : v ∈ S := by
@@ -75,23 +75,21 @@ theorem mem_of_forall_dual {V : Type} [AddCommGroup V] [Module ℝ V] (S : Submo
   simpa [Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] using this
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Q hQ`. Take `⟨β, hβ⟩` from `GlobalTheory.T.admissible_form_eq_mul_point_class_value E H Dw Q`. Use `set D := Fintype.card (GlobalTheory.AllWt.Psi H) * (Dw.p * Dw.q) with hD`. Set `N : Submodule ℝ (MvPolynomial ((E →+* ℂ) × ℕ) ℝ)` to `Submodule.span ℝ {f | ∃ d : (E →+* ℂ) × ℕ →₀ ℕ, (d.sum fun x i => x.2 * i) ≠ D ∧ f = monomial d 1}`. Set `S` to `(relIdeal H Dw).restrictScalars ℝ ⊔ N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS : Q - C β * pointPoly H Dw ∈ S`. Apply `mem_of_forall_dual` to reduce the goal to its premises. Introduce `f`. Set `Θ : MvPolynomial ((E →+* ℂ) × ℕ) ℝ →ₗ[ℝ] ℝ` to `f ∘ₗ S.mkQ`. Establish `hker : ∀ x ∈ S, Θ x = 0` using `fun x hx => by`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Θ, (Submodule.Quotient.mk_eq_zero _).2 hx]`. Establish `hrel : ∀ x ∈ relIdeal H Dw, Θ x = 0` using `fun x hx => hker x (Submodule.mem_sup_left (by simpa using hx))`. Establish `hadm : GlobalTheory.Schubert.admitted H Dw Θ`. Use `⟨fun τ k hk P => hrel _ ?_, fun τ P => hrel _ ?_, fun τ k hk P => hrel _ ?_, fun d hd => hker _ (Submodule.mem_sup_right (Submodule.subset_span ⟨d, hd, rfl⟩))⟩` and prove the remaining obligations. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span (Or.inr ⟨τ, k, hk, rfl⟩))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span (Or.inl (Or.inl ⟨τ, rfl⟩)))`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span (Or.inl (Or.inr ⟨τ, k, hk, rfl⟩)))`. Use `show Θ (Q - C β * pointPoly H Dw) = 0`. Rewrite using `[map_sub, hβ Θ hadm, C_mul', map_smul, smul_eq_mul, sub_self]`. Take `⟨r, hr, n, hn, hrn⟩` from `Submodule.mem_sup.1 hS`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hn0 : ∀ n ∈ N, weightedHomogeneousComponent Prod.snd D n = 0`. Introduce `n hn`. Proceed by induction on `hn using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨d, hd, rfl⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `weightedHomogeneousComponent_eq_zero' _ _ fun d' hd' => ?_` and prove the remaining obligations. Rewrite `hd'` using `[support_monomial, if_neg one_ne_zero, Finset.mem_singleton]`. Substitute `hd'` using the available equality. Rewrite using `[Finsupp.weight_apply]`. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Apply `hd` to reduce the goal to its premises. Rewrite using `[← h]`. Conclude with `Finsupp.sum_congr fun x _ => by rw [smul_eq_mul, mul_comm]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add, hx, hy, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `smul c x _ hx => rw [map_smul, hx, smul_zero]`. Establish `hhom : IsWeightedHomogeneous Prod.snd (Q - C β * pointPoly H Dw) D`. Establish `h1 : Q ∈ weightedHomogeneousSubmodule ℝ Prod.snd D` using `(mem_weightedHomogeneousSubmodule _ _ _ _).2 hQ`. Establish `h2 : pointPoly H Dw ∈ weightedHomogeneousSubmodule ℝ Prod.snd D` using `(mem_weightedHomogeneousSubmodule _ _ _ _).2 (pointPoly_isWeightedHomogeneous H Dw)`. Rewrite using `[← mem_weightedHomogeneousSubmodule, C_mul']`.
-
-Conclude with `sub_mem h1 (Submodule.smul_mem _ β h2)`. Use `⟨β, ?_⟩` and prove the remaining obligations. Rewrite using `[← hhom.weightedHomogeneousComponent_same, ← hrn, map_add, hn0 n hn, add_zero]`. Conclude with `weightedHomogeneousComponent_mem_of_mem ℝ Prod.snd (relIdeal_isHomogeneous H Dw) (by simpa using hr) D`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_eq_smul_point : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (Q : MvPolynomial ((E →+* ℂ) × ℕ) ℝ),

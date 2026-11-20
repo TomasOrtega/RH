@@ -9,7 +9,7 @@ open BpJoin
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.pointwiseBound_discreteSeries_coefficients GlobalTheory.besselXiIntegrable_holds GlobalTheory.actualClasses_compactSupport`.
+A detailed English derivation is pending.
 -/
 theorem discreteSeriesCoef_pointwiseBound : ThmBpDS :=
   GlobalTheory.T.pointwiseBound_discreteSeries_coefficients GlobalTheory.besselXiIntegrable_holds GlobalTheory.actualClasses_compactSupport

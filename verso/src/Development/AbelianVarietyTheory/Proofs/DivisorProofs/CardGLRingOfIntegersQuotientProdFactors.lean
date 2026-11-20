@@ -7,17 +7,17 @@ noncomputable section
 namespace GlobalTheory.CardGLQuot
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite κ`. Establish `hq1 : 1 ≤ Nat.card κ` using `Nat.one_le_iff_ne_zero.mpr (Nat.card_pos).ne'`. Establish `hq0 : (Nat.card κ : ℝ) ≠ 0` using `by positivity`. Establish `hIcc : Finset.Icc 1 n = Finset.Ioc 0 n`. Use extensionality with `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_Icc, Finset.mem_Ioc]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[glVol, hIcc]`. Rewrite using `[Matrix.card_GL_field, Nat.cast_prod, ← Nat.card_eq_fintype_card]`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun i => ((Nat.card κ ^ n - Nat.card κ ^ i : ℕ) : ℝ)) n]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_range_reflect]`. Establish `hIoc : Finset.Ioc 0 n = (Finset.range n).map ⟨(· + 1), add_left_injective 1⟩`. Use extensionality with `x`. Simplify using `only [Finset.mem_Ioc, Finset.mem_map, Finset.mem_range, Function.Embedding.coeFn_mk]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩; exact ⟨x - 1, by omega, by omega⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hIoc, Finset.prod_map, sq, pow_mul, show ((Nat.card κ : ℝ) ^ n) ^ n = ∏ _j ∈ Finset.range n, (Nat.card κ : ℝ) ^ n by simp, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl (fun j hj => ?_)` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hj' : j < n` using `Finset.mem_range.mp hj`. Establish `hle : Nat.card κ ^ (n - 1 - j) ≤ Nat.card κ ^ n` using `Nat.pow_le_pow_right hq1 (by omega)`. Simplify using `only [Function.Embedding.coeFn_mk]`. Rewrite using `[Nat.cast_sub hle, Nat.cast_pow, Nat.cast_pow, mul_sub, mul_one]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hsplit : (Nat.card κ : ℝ) ^ n = (Nat.card κ : ℝ) ^ (n - 1 - j) * (Nat.card κ : ℝ) ^ (j + 1)`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hsplit, mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hq0), mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_GL_field_real (κ : Type) [Field κ] [Finite κ] (n : ℕ) :
     (Nat.card (GL (Fin n) κ) : ℝ) = (Nat.card κ : ℝ) ^ (n ^ 2) * glVol (Nat.card κ) n := by
@@ -52,9 +52,9 @@ theorem card_GL_field_real (κ : Type) [Field κ] [Finite κ] (n : ℕ) :
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[← Fintype.card_subtype, ← Nat.card_eq_fintype_card]`. Use `Nat.card_congr (Equiv.ofBijective (fun u => ⟨(u : Matrix (Fin n) (Fin n) S), u.isUnit⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `u v h`. Conclude with `Units.ext (congrArg Subtype.val h)`. Introduce and unpack `⟨A, hA⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨hA.unit, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem card_GL_eq_card_isUnit (S : Type) [CommRing S] [Fintype S] (n : ℕ) :
     Nat.card (GL (Fin n) S) =
@@ -66,25 +66,21 @@ theorem card_GL_eq_card_isUnit (S : Type) [CommRing S] [Fintype S] (n : ℕ) :
   · rintro ⟨A, hA⟩; exact ⟨hA.unit, rfl⟩
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite R`. Use `haveI : Finite k := Finite.of_surjective π hπ`. Use `haveI := Fintype.ofFinite k`. Set `φ : Matrix (Fin n) (Fin n) R →+ Matrix (Fin n) (Fin n) k` to `(π.mapMatrix).toAddMonoidHom`. Establish `hφ : ∀ A, φ A = A.map π` using `fun A => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsurj : Function.Surjective φ`. Introduce `B`. Use `⟨Matrix.of fun i j => (hπ (B i j)).choose, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `(hπ (B i j)).choose_spec`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hunit : ∀ A, IsUnit A ↔ IsUnit (φ A)`. Introduce `A`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.isUnit_iff_isUnit_det, hu, isUnit_iff_ne_zero, hφ, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Use `set K := (Finset.univ.filter (fun A => φ A = 0)).card with hK`. Establish `hfib : ∀ B, (Finset.univ.filter (fun A => φ A = B)).card = K` using `fun B => AddMonoidHom.card_fiber_eq_of_mem_range φ (hsurj B) (hsurj 0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (Finset.univ.filter (fun A : Matrix (Fin n) (Fin n) R => IsUnit A)).card = (Finset.univ.filter (fun B : Matrix (Fin n) (Fin n) k => IsUnit B)).card * K`. Rewrite using `[Finset.card_eq_sum_card_fiberwise (f := φ) (t := Finset.univ.filter (fun B : Matrix (Fin n) (Fin n) k => IsUnit B))]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => K), Finset.sum_const, smul_eq_mul]`. Introduce `B hB`. Rewrite using `[← hfib B, Finset.filter_filter]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Use `Finset.filter_congr (fun A _ => ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨(hunit A).2 ?_, h⟩` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `(Finset.mem_filter.1 hB).2`. Introduce `A hA`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq] at hA ⊢`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(hunit A).1 hA`. Establish `h2 : Fintype.card (Matrix (Fin n) (Fin n) R) = Fintype.card (Matrix (Fin n) (Fin n) k) * K`. Rewrite using `[← Finset.card_univ, Finset.card_eq_sum_card_fiberwise (f := φ) (t := Finset.univ)]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => K), Finset.sum_const, smul_eq_mul, Finset.card_univ]`. Introduce `B _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `hfib B`. Introduce `A _`. Conclude with `Finset.mem_coe.2 (Finset.mem_univ _)`. Establish `hcard : ∀ (S : Type) [Fintype S], (Fintype.card (Matrix (Fin n) (Fin n) S) : ℝ) = (Nat.card S : ℝ) ^ (n ^ 2)`. Introduce `S _`.
-
-Rewrite using `[← Nat.card_eq_fintype_card, show Nat.card (Matrix (Fin n) (Fin n) S) = Nat.card (Fin n → Fin n → S) from rfl, Nat.card_fun, Nat.card_fun, Nat.card_fin, ← pow_mul, ← sq]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hR : (Nat.card R : ℝ) ^ (n ^ 2) = (Nat.card k : ℝ) ^ (n ^ 2) * K`. Rewrite using `[← hcard R, ← hcard k, h2, Nat.cast_mul]`.
-
-Rewrite using `[card_GL_eq_card_isUnit, h1, Nat.cast_mul, ← card_GL_eq_card_isUnit, card_GL_field_real]`. Take the linear combination `(-(glVol (Nat.card k) n)) * hR`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem card_GL_of_residue {R k : Type} [CommRing R] [Finite R] [Field k] (π : R →+* k)
     (hπ : Function.Surjective π) (hu : ∀ x, IsUnit x ↔ π x ≠ 0) (n : ℕ) :
@@ -142,13 +138,11 @@ theorem card_GL_of_residue {R k : Type} [CommRing R] [Finite R] [Field k] (π : 
   linear_combination (-(glVol (Nat.card k) n)) * hR
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[Ideal.Quotient.factor_mk, Ne, Ideal.Quotient.eq_zero_iff_mem]`. Prove the components needed by the constructor for the conclusion. Introduce `h ha`. Establish `hU` using `h.map (Ideal.Quotient.factor (Ideal.pow_le_self hc))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hU` using `[Ideal.Quotient.factor_mk, (Ideal.Quotient.eq_zero_iff_mem).2 ha]`. Use `haveI := hw.isPrime`. Conclude with `not_isUnit_zero hU`. Introduce `ha`. Take `⟨y, i, hi, hyx⟩` from `hw.exists_inv ha`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnil : IsNilpotent (Ideal.Quotient.mk (w ^ c) i)` using `⟨c, by rw [← map_pow, Ideal.Quotient.eq_zero_iff_mem]; exact Ideal.pow_mem_pow hi c⟩`. Establish `hu : IsUnit (Ideal.Quotient.mk (w ^ c) (y * a))`. Use `hnil.isUnit_one_sub` as an intermediate fact. Rewrite `this` using `[← map_one (Ideal.Quotient.mk (w ^ c)), ← map_sub, show (1 : A) - i = y * a by rw [← hyx]; ring]`. Then use the resulting hypothesis. Rewrite `hu` using `[map_mul]`.
-
-Conclude with `isUnit_of_mul_isUnit_right hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_quot_pow_iff {A : Type} [CommRing A] {w : Ideal A} (hw : w.IsMaximal) {c : ℕ} (hc : c ≠ 0)
     (x : A ⧸ w ^ c) : IsUnit x ↔ Ideal.Quotient.factor (Ideal.pow_le_self hc) x ≠ 0 := by
@@ -172,20 +166,18 @@ theorem isUnit_quot_pow_iff {A : Type} [CommRing A] {w : Ideal A} (hw : w.IsMaxi
     exact isUnit_of_mul_isUnit_right hu
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natCard_quot {E : Type} [Field E] [NumberField E] (I : Ideal (𝓞 E)) :
     Nat.card (𝓞 E ⧸ I) = Ideal.absNorm I := by
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
 
 /- English proof (translation)
-Set `e` to `IsDedekindDomain.quotientEquivPiFactors h𝔪`. Establish `h1 : Nat.card (GL (Fin n) (𝓞 E ⧸ 𝔪)) = Nat.card (∀ P : (factors 𝔪).toFinset, GL (Fin n) (𝓞 E ⧸ (P : Ideal (𝓞 E)) ^ (factors 𝔪).count ↑P))` using `Nat.card_congr ((Units.mapEquiv ((e.mapMatrix).trans Matrix.piRingEquiv).toMulEquiv).trans MulEquiv.piUnits).toEquiv`. Rewrite using `[h1, Nat.card_pi, Nat.cast_prod, ← factors_eq_normalizedFactors]`. Rewrite using `[← Finset.prod_coe_sort (factors 𝔪).toFinset (fun w => (Ideal.absNorm w : ℝ) ^ ((factors 𝔪).count w * n ^ 2) * glVol (Ideal.absNorm w : ℝ) n)]`. Use `Finset.prod_congr rfl (fun P _ => ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : (P : Ideal (𝓞 E)) ∈ factors 𝔪` using `Multiset.mem_toFinset.1 P.2`. Establish `hprime : Prime (P : Ideal (𝓞 E))` using `prime_of_factor _ hmem`. Establish `hbot : (P : Ideal (𝓞 E)) ≠ ⊥` using `hprime.ne_zero`. Establish `hmax : (P : Ideal (𝓞 E)).IsMaximal` using `((Ideal.isPrime_of_prime hprime)).isMaximal hbot`. Establish `hc : (factors 𝔪).count (P : Ideal (𝓞 E)) ≠ 0` using `(Multiset.count_pos.2 hmem).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI : Field (𝓞 E ⧸ (P : Ideal (𝓞 E))) := Ideal.Quotient.field _`. Use `haveI : Finite (𝓞 E ⧸ (P : Ideal (𝓞 E)) ^ (factors 𝔪).count ↑P) := by`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[natCard_quot, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `pow_ne_zero _ hbot`.
-
-Rewrite using `[card_GL_of_residue (Ideal.Quotient.factor (Ideal.pow_le_self hc)) (Ideal.Quotient.factor_surjective _) (isUnit_quot_pow_iff hmax hc) n, natCard_quot, natCard_quot, map_pow, Nat.cast_pow, ← pow_mul]`.
+Equip the data with the indicated structure. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_GL_quot (E : Type) [Field E] [NumberField E] (𝔪 : Ideal (𝓞 E)) (h𝔪 : 𝔪 ≠ ⊥) (n : ℕ) :
     (Nat.card (GL (Fin n) (𝓞 E ⧸ 𝔪)) : ℝ) = ∏ w ∈ (normalizedFactors 𝔪).toFinset,
@@ -215,7 +207,7 @@ theorem card_GL_quot (E : Type) [Field E] [NumberField E] (𝔪 : Ideal (𝓞 E)
     (isUnit_quot_pow_iff hmax hc) n, natCard_quot, natCard_quot, map_pow, Nat.cast_pow, ← pow_mul]
 
 /- English proof (translation)
-Introduce `E _ _ 𝔪 h𝔪 n` and use `card_GL_quot E 𝔪 h𝔪 n`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem card_GL_quot_prod : ∀ (E : Type) [Field E] [NumberField E] (𝔪 : Ideal (𝓞 E)), 𝔪 ≠ ⊥ → ∀ n : ℕ,
     (Nat.card (GL (Fin n) (𝓞 E ⧸ 𝔪)) : ℝ) = ∏ w ∈ (normalizedFactors 𝔪).toFinset,

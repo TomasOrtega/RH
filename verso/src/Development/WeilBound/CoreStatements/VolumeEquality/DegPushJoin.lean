@@ -10,9 +10,9 @@ open scoped TensorProduct
 namespace Join
 
 /- English proof (translation)
-Use `letI : Algebra P Ω := φ.toAlgebra`. Use `letI : Algebra K₀ Ω := (φ.comp K₀.subtype).toAlgebra`. Use `haveI : IsScalarTower K₀ P Ω := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `h1 : Module.finrank P Ω = Module.finrank φ.fieldRange Ω` using `Algebra.finrank_eq_of_equiv_equiv φ.rangeRestrictFieldEquiv (RingEquiv.refl Ω) (RingHom.ext fun _ => rfl)`. Establish `h2 : Module.finrank K₀ Ω = Module.finrank (K₀.map φ) Ω` using `Algebra.finrank_eq_of_equiv_equiv (K₀.toSubring.equivMapOfInjective φ φ.injective) (RingEquiv.refl Ω) (RingHom.ext fun _ => rfl)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, ← h2, Module.finrank_mul_finrank]`.
+A detailed English derivation is pending.
 -/
 theorem tower {P Ω : Type} [Field P] [Field Ω] (φ : P →+* Ω) (K₀ : Subfield P) :
     Module.finrank (K₀.map φ) Ω = Module.finrank K₀ P * Module.finrank φ.fieldRange Ω := by
@@ -27,13 +27,13 @@ theorem tower {P Ω : Type} [Field P] [Field Ω] (φ : P →+* Ω) (K₀ : Subfi
   rw [← h1, ← h2, Module.finrank_mul_finrank]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem finrank_congr {Ω : Type} [Field Ω] {A B : Subfield Ω} (h : A = B) : Module.finrank A Ω = Module.finrank B Ω := by
   subst h; rfl
 
 /- English proof (translation)
-Rewrite using `[IntermediateField.adjoin_toSubfield, IntermediateField.adjoin_toSubfield, RingHom.map_field_closure, Set.image_union, ← Set.range_comp, ← Set.range_comp, ← hφ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_adjoin {F P Ω : Type} [Field F] [Field P] [Field Ω] [Algebra F P] [Algebra F Ω] (φ : P →+* Ω)
     (hφ : φ.comp (algebraMap F P) = algebraMap F Ω) {I : Type} (w : I → P) :
@@ -44,23 +44,19 @@ theorem map_adjoin {F P Ω : Type} [Field F] [Field P] [Field Ω] [Algebra F P] 
   rfl
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F A := Module.finite_of_finrank_pos (hA ▸ he)`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (B ⊗[F] A)`. Use `letI : Field ((B ⊗[F] A) ⧸ m) := Ideal.Quotient.field m`. Set `j : A →ₐ[F] ((B ⊗[F] A) ⧸ m)` to `(Ideal.Quotient.mkₐ F m).comp Algebra.TensorProduct.includeRight`. Use `letI : Algebra A ((B ⊗[F] A) ⧸ m) := j.toRingHom.toAlgebra`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI : IsScalarTower F A ((B ⊗[F] A) ⧸ m) := IsScalarTower.of_algebraMap_eq fun x => (j.commutes x).symm`. Use `haveI : Module.Finite B ((B ⊗[F] A) ⧸ m) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ B m).toLinearMap (Ideal.Quotient.mkₐ_surjective B m)`. Set `Ω` to `((B ⊗[F] A) ⧸ m)`. Set `i : B →+* Ω` to `algebraMap B Ω`. Establish `hi : i.comp (algebraMap F B) = algebraMap F Ω` using `(IsScalarTower.algebraMap_eq F B Ω).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : AlgebraicIndependent F (fun q => i (w q))` using `hw.map' (f := IsScalarTower.toAlgHom F B Ω) (algebraMap B Ω).injective`. Establish `hx : AlgebraicIndependent A (fun q => i (w q))` using `hx0.extendScalars A`. Establish `hn : 0 < Module.finrank i.fieldRange Ω`. Rewrite using `[← Algebra.finrank_eq_of_equiv_equiv i.rangeRestrictFieldEquiv (RingEquiv.refl Ω) (RingHom.ext fun _ => rfl)]`. Conclude with `Module.finrank_pos`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `t1` using `tower i (IntermediateField.adjoin F (Set.range w)).toSubfield`. Rewrite `t1` using `[finrank_congr (map_adjoin i hi w)]`. Set `P` to `FractionRing (MvPolynomial I A)`. Set `φ : P →+* Ω` to `(IntermediateField.adjoin A (Set.range fun q => i (w q))).val.toRingHom.comp hx.aevalEquivField.toRingEquiv.toRingHom`. Use `letI : Algebra F P := ((algebraMap A P).comp (algebraMap F A)).toAlgebra`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφA : ∀ a, φ (algebraMap A P a) = algebraMap A Ω a` using `fun a => congrArg Subtype.val (hx.aevalEquivField.commutes a)`. Establish `hφ : φ.comp (algebraMap F P) = algebraMap F Ω` using `RingHom.ext fun a => (hφA _).trans (IsScalarTower.algebraMap_apply F A Ω a).symm`. Establish `hX : (fun q => φ (algebraMap (MvPolynomial I A) P (MvPolynomial.X q))) = fun q => i (w q)` using `funext fun q => (hx.aevalEquivField_algebraMap_apply_coe _).trans (MvPolynomial.aeval_X _ q)`. Establish `hr : φ.fieldRange = (IntermediateField.adjoin A (Set.range fun q => i (w q))).toSubfield`. Use extensionality with `z`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `(hx.aevalEquivField y).2`. Introduce `hz`. Conclude with `⟨hx.aevalEquivField.symm ⟨z, hz⟩, congrArg Subtype.val (hx.aevalEquivField.apply_symm_apply ⟨z, hz⟩)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `t2` using `tower φ (IntermediateField.adjoin F (Set.range fun q => algebraMap (MvPolynomial I A) P (MvPolynomial.X q))).toSubfield`. Rewrite `t2` using `[finrank_congr (map_adjoin φ hφ _), hX, finrank_congr hr]`. Establish `t3` using `GlobalTheory.CompanionTheory.FieldDeg.finrank_fraction_over_adjoin_X_eq F A I rfl`. Establish `key : d₂ * Module.finrank i.fieldRange Ω = e * Module.finrank (IntermediateField.adjoin A (Set.range fun q => i (w q))) Ω`. Rewrite using `[← hB, ← hA, ← t3]`.
-
-Conclude with `t1.symm.trans t2`. Use `⟨Ω, inferInstance, inferInstance, i, _, _, hi.trans (IsScalarTower.algebraMap_eq F A Ω), hx, ?_, rfl, rfl, hn, ?_⟩` and prove the remaining obligations. Use `Nat.pos_of_ne_zero fun h => ?_` and prove the remaining obligations. Rewrite `key` using `[h, mul_zero]`. Conclude with `(Nat.mul_pos hd hn).ne' key`.
-
-Rewrite using `[mul_comm, key, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (F A B : Type) [Field F] [Field A] [Field B] [Algebra F A] [Algebra F B] {I : Type} (w : I → B) (d₂ e : ℕ)
     (hw : AlgebraicIndependent F w) (hd : 0 < d₂) (hB : Module.finrank (IntermediateField.adjoin F (Set.range w)) B = d₂)
@@ -117,9 +113,9 @@ theorem core (F A B : Type) [Field F] [Field A] [Field B] [Algebra F A] [Algebra
   · rw [mul_comm, key, mul_comm]
 
 /- English proof (translation)
-Use `le_antisymm (IntermediateField.adjoin_le_iff.2 ?_) (IntermediateField.adjoin.mono _ _ _ ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨s, l, m⟩, rfl⟩ show u s l m ∈ _`. Break down `lt_trichotomy l m with h | rfl | h` into its components or cases. Rewrite using `[h0 s l m h]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `one_mem _`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨⟨s, ⟨(l, m), h⟩⟩, rfl⟩`. Introduce and unpack `_ ⟨⟨s, lm, h⟩, rfl⟩`. Conclude with `⟨⟨s, lm⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem adjoin_entries (k : Type) [Field k] {Ω : Type} [Field Ω] [Algebra k Ω] {S : Type} {r : S → ℕ}
     (u : ∀ s, Matrix (Fin (r s)) (Fin (r s)) Ω) (h1 : ∀ s m, u s m m = 1) (h0 : ∀ s l m, l < m → u s l m = 0) :
@@ -139,9 +135,9 @@ theorem adjoin_entries (k : Type) [Field k] {Ω : Type} [Field Ω] [Algebra k Ω
 end Join
 
 /- English proof (translation)
-Introduce `Ω₀ Ω₁ Ω₂ _ _ _ _ _ S _ r u d₂ e ⟨h1, h0, hi, hd, hf⟩ he hA`. Rewrite `hf` using `[Join.adjoin_entries Ω₀ u h1 h0]`. Take `⟨Ω, _, _, i, d, n, a1, a2, a3, a4, a5, a6, a7⟩` from `Join.core Ω₀ Ω₁ Ω₂ _ d₂ e hi hd hf he hA`. Establish `g1 : ∀ s m, (u s).map i m m = 1` using `fun s m => by simp [h1]`. Establish `g0 : ∀ s l m, l < m → (u s).map i l m = 0` using `fun s l m h => by simp [h0 s l m h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Ω, inferInstance, inferInstance, i, d, n, a1, ⟨g1, g0, a2, a3, ?_⟩, a5, a6, a7⟩` and prove the remaining obligations. Rewrite using `[Join.adjoin_entries Ω₁ (fun s => (u s).map i) g1 g0]`. Conclude with `a4`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fieldJoin : FieldJoin := by
   intro Ω₀ Ω₁ Ω₂ _ _ _ _ _ S _ r u d₂ e ⟨h1, h0, hi, hd, hf⟩ he hA

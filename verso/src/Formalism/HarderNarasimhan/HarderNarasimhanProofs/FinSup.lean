@@ -7,7 +7,7 @@ noncomputable section
 namespace Formalism.HN
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private lemma finSup_mem_zl {R V E : Type*} [Ring R] [AddCommGroup V] [Module R V]
     [NormedAddCommGroup E] [InnerProductSpace ℝ E] (ρ : V →+ E) (N : Submodule R V) (x : E) :
@@ -15,25 +15,21 @@ private lemma finSup_mem_zl {R V E : Type*} [Ring R] [AddCommGroup V] [Module R 
   exact Iff.rfl
 
 /- English proof (translation)
-Introduce `R V E _ _ _ _ _ _ ρ L S hL hS`. Use `haveI : DiscreteTopology (zl ρ L) := hL.2`. Establish `hmono : ∀ A B : Submodule R V, A ≤ B → zl ρ A ≤ zl ρ B`. Introduce `A B h x hx`. Rewrite `hx`, the goal using `[finSup_mem_zl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `⟨y, h hy, rfl⟩`. Establish `hrev : ∀ A B : Submodule R V, B ≤ L → zl ρ B ≤ zl ρ A → A ≤ L → B ≤ A`. Introduce `A B hBL h hAL y hy`. Establish `: ρ y ∈ zl ρ A` using `h ((finSup_mem_zl ρ B _).mpr ⟨y, hy, rfl⟩)`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, hzy⟩` from `(finSup_mem_zl ρ A _).mp this`. Use `hL.1 (hAL hz) (hBL hy) hzy` as an intermediate fact. Rewrite using `[← this]`. Conclude with `hz`. Set `g : Set.Iic L → Submodule ℤ (zl ρ L)` to `fun N => (zl ρ N.1).comap (zl ρ L).subtype`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : StrictMono g`. Introduce `A B hAB`. Establish `hle : (A : Submodule R V) ≤ B` using `le_of_lt hAB`. Establish `hnle : ¬ (B : Submodule R V) ≤ A` using `not_le_of_gt hAB`. Use `lt_of_le_of_ne (Submodule.comap_mono (hmono _ _ hle)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `heq`. Apply `hnle` to reduce the goal to its premises. Use `hrev A B B.2 ?_ A.2` and prove the remaining obligations. Introduce `x hx`. Establish `hxL : x ∈ zl ρ L` using `hmono _ _ B.2 hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : (⟨x, hxL⟩ : zl ρ L) ∈ g B` using `hx`. Rewrite `hm` using `[← heq]`. Conclude with `hm`. Use `haveI : WellFoundedGT (Set.Iic L) := hg.wellFoundedGT`. Take `⟨t', ht', he⟩` from `CompleteLattice.WellFoundedGT.isSupFiniteCompact (Set.Iic L) {x | (x : Submodule R V) ∈ S}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU : (t'.image Subtype.val).sup id ≤ L`. Use `Finset.sup_le fun N hN => ?_` and prove the remaining obligations. Take `⟨x, _, rfl⟩` from `Finset.mem_image.mp hN`. Conclude with `x.2`. Establish `hkey : t'.sup id ≤ (⟨_, hU⟩ : Set.Iic L)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sup_le fun x hx => ?_` and prove the remaining obligations. Use `show (x : Submodule R V) ≤ (t'.image Subtype.val).sup id`. Conclude with `Finset.le_sup (f := id) (Finset.mem_image_of_mem _ hx)`. Use `⟨t'.image Subtype.val, ?_, ?_⟩` and prove the remaining obligations. Introduce `N hN`.
-
-Take `⟨x, hx, rfl⟩` from `Finset.mem_image.mp (Finset.mem_coe.mp hN)`. Conclude with `ht' hx`. Use `le_antisymm (sSup_le fun N hN => ?_) (Finset.sup_le fun N hN => ?_)` and prove the remaining obligations. Establish `h1 : (⟨N, hS N hN⟩ : Set.Iic L) ≤ sSup {x : Set.Iic L | (x : Submodule R V) ∈ S}` using `le_sSup hN`. Rewrite `h1` using `[he]`.
-
-Conclude with `h1.trans hkey`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.mp hN`. Conclude with `le_sSup (ht' hx)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finite_supremum_slopes : FinSup := by
   intro R V E _ _ _ _ _ _ ρ L S hL hS

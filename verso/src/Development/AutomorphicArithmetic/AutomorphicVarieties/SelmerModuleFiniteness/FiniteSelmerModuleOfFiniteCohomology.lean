@@ -7,13 +7,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix Filter ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.Pa.B2
 
 /- English proof (translation)
-Use `set N := Submodule.comap (Z1 M.ρ).subtype (B1 M.ρ) with hN`. Establish `hB : Finite (B1 M.ρ)`. Unfold `B1`. Conclude with `Set.finite_range (d0 M.ρ) |>.to_subtype`. Establish `hNf : Finite N`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finite.of_injective (fun z : N => (⟨(z : Z1 M.ρ), z.2⟩ : B1 M.ρ)) ?_` and prove the remaining obligations. Introduce `a b hab`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg Subtype.val hab` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hQ : Finite ((Z1 M.ρ) ⧸ N.toAddSubgroup)` using `hH`. Establish `hc` using `AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup N.toAddSubgroup`. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[hc]`.
-
-Conclude with `Nat.mul_ne_zero Nat.card_pos.ne' Nat.card_pos.ne'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finite_cocycles_of_finite_H1 {A Γ : Type} [CommRing A] [Group Γ] [TopologicalSpace Γ] (M : FRep A Γ)
     (hH : Finite (H1 M.ρ)) : Finite (Z1 M.ρ) := by
@@ -42,23 +40,23 @@ private def trRep {A Γ M N : Type} [CommRing A] [Group Γ] [AddCommGroup M] [Mo
   map_mul' g h := by ext; simp
 
 /- English proof (translation)
-Introduce `l _ L G G0 h n x e hF`. Establish `hA` using `finAm l G0.frame n x e e`. Use `haveI : Finite (x.Am e) := hA.1`. Establish `ht : (algebraMap x.A (x.Am e)) x.t ^ e = 0` using `hA.2.2.2.2.2.1`. Take `⟨D, ⟨a⟩⟩` from `odEx l L G G0 h n x (x.Am e) ⟨e, by rw [map_pow]; exact ht⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hK` using `odKill l L G G0 h n x (x.Am e) D a`. Establish `hZ : Finite (Z1 D.M.ρ)` using `finite_cocycles_of_finite_H1 D.M (hF x.A D.M hK.1).1`. Use `set rep := trRep D.M.ρ a.e with hrep`. Establish `hrepv : ∀ g (Z : Od x.A (x.Am e) n x.a), rep g Z = a.e (D.M.ρ g (a.e.symm Z))`. Introduce `g Z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hZl : Finite (Zl rep)`. Use `Finite.of_injective (β := Z1 D.M.ρ) (fun y => ⟨fun g => a.e.symm (y.1 g), ⟨(y.2.1.comp a.e.symm).continuous, ?_⟩⟩) ?_` and prove the remaining obligations. Introduce `g k`. Use `y.2.2 g k` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [this, map_add, hrepv, LinearEquiv.symm_apply_apply]`. Introduce `y y' hyy`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `congrFun (congrArg Subtype.val hyy) g` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `a.e.symm.injective this`. Establish `hAd : IsAd G.frame (fun g => x.ρX (x.Am e) (h.p₀ g)) (fun _ => (1 : x.Am e)) (Od x.A (x.Am e) n x.a) rep`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `g Z`. Rewrite using `[one_smul, hrepv, a.act]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `Z`. Rewrite using `[one_smul, hrepv, a.actc]`. Simplify using the standard rewrite rules. Establish `hP` using `(polZ l G.frame x.A (x.Am e) n (fun g => x.ρX (x.Am e) (h.p₀ g)) (fun _ => (1 : x.Am e)) (Od x.A (x.Am e) n x.a) rep hAd).1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `(Set.finite_range (fun y : Zl rep => fun g : G.frame.G₀ => ((y.1 (g : G.Γ)) : Matrix (Fin n) (Fin n) (x.Am e)))).subset ?_` and prove the remaining obligations. Introduce `z hz`. Take `⟨hV, hC, hco, hcj, -, -⟩` from `hz`. Establish `hLC : IsLocallyConstant z`. Establish `hij : ∀ i j, IsLocallyConstant fun g => z g i j` using `fun i j => (adicLC _ _ _ e _ ht).1 (hC i j)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[IsLocallyConstant.iff_isOpen_fiber]`. Introduce `M`. Establish `: z ⁻¹' {M} = ⋂ i, ⋂ j, (fun g => z g i j) ⁻¹' {M i j}`. Use extensionality with `g`. Simplify using `[Matrix.ext_iff.symm, funext_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => (hij i j).isOpen_fiber _`. Take `⟨y, hy, -, hyz⟩` from `hP z hV hLC (by intro g k; rw [one_smul]; exact hco g k) (by intro g; rw [one_smul]; exact hcj g)`. Conclude with `⟨⟨y, hy⟩, funext hyz⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.finite_selmerModule_of_finite_cohomology :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n) (e : ℕ), FinH l G.Γ → (SelM h x (x.Am e)).Finite := by

@@ -10,11 +10,11 @@ namespace GlobalTheory.NB.LT
 open scoped PowerSeries.WithPiTopology in
 
 /- English proof (translation)
-Set `: WithIdeal O` to `⟨I⟩`. Establish `hI : IsAdic I` using `rfl`. Take `⟨h1, h2⟩` from `hI.isAdicComplete_iff.mp h`. Establish `ha : PowerSeries.HasEval c` using `WithIdeal.isTopologicallyNilpotent_of_mem hc`. Establish `hC : PowerSeries.HasEval (C c : O⟦X⟧)` using `ha.map (φ := (C : O →+* O⟦X⟧)) PowerSeries.WithPiTopology.continuous_C`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLinearTopology O⟦X⟧ O⟦X⟧` using `inferInstance`. Establish `hX : PowerSeries.HasEval (X + C c : O⟦X⟧)` using `PowerSeries.HasEval.X.add hC`. Establish `: ContinuousSMul O O⟦X⟧` using `⟨by`. Establish `: (fun p : O × O⟦X⟧ => p.1 • p.2) = fun p => C p.1 * p.2`. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[smul_eq_C_mul]`. Rewrite using `[this]`. Conclude with `(PowerSeries.WithPiTopology.continuous_C.comp continuous_fst).mul continuous_snd⟩`. Use `⟨PowerSeries.aeval hX, ?_⟩` and prove the remaining obligations. Rewrite using `[PowerSeries.coe_aeval, PowerSeries.eval₂_X]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_algHom_X_add_C {O : Type} [CommRing O] (I : Ideal O) [h : IsAdicComplete I O]
     (c : O) (hc : c ∈ I) : ∃ t : O⟦X⟧ →ₐ[O] O⟦X⟧, t X = X + C c := by
@@ -36,11 +36,11 @@ theorem exists_algHom_X_add_C {O : Type} [CommRing O] (I : Ideal O) [h : IsAdicC
   rw [PowerSeries.coe_aeval, PowerSeries.eval₂_X]
 
 /- English proof (translation)
-Introduce `O _ I _ c hc`. Take `⟨s, hs⟩` from `exists_algHom_X_add_C I c hc`. Take `⟨t, ht⟩` from `exists_algHom_X_add_C I (-c) (neg_mem hc)`. Establish `hC : ∀ (u : O⟦X⟧ →ₐ[O] O⟦X⟧) (a : O), u (C a) = C a` using `fun u a => u.commutes a`. Establish `h1 : (s.comp t) X = X`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[AlgHom.comp_apply, ht, map_add, hs, hC, map_neg]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (t.comp s) X = X`. Rewrite using `[AlgHom.comp_apply, hs, map_add, ht, hC, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `⟨AlgEquiv.ofAlgHom s t (algHom_ext_X _ _ h1 (by rw [h1])) (algHom_ext_X _ _ h2 (by rw [h2])), hs⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_algEquiv_X_add_C : ∀ {O : Type} [CommRing O] (I : Ideal O) [IsAdicComplete I O] (c : O), c ∈ I → ∃ lev : O⟦X⟧ ≃ₐ[O] O⟦X⟧, lev X = X + C c := by
   intro O _ I _ c hc

@@ -14,15 +14,13 @@ open scoped Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hre : ∀ z : E, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc z = -z → (τ z).re = 0`. Introduce `z hz`. Establish `h1` using `_root_.GlobalTheory.PerMove.map_cc τ z`. Rewrite `h1` using `[hz, map_neg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg Complex.re h1`. Simplify using `only [Complex.neg_re, Complex.conj_re] at h2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hxr` using `hre x hx`. Establish `hyr` using `hre y hy`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : (τ y).im = (τ x).im ∨ (τ y).im = -(τ x).im`. Establish `h2 : ‖τ x‖ ^ 2 = ‖τ y‖ ^ 2` using `by rw [h τ]`. Rewrite `h2` using `[Complex.sq_norm, Complex.sq_norm, Complex.normSq_apply, Complex.normSq_apply, hxr, hyr]`. Conclude with `mul_self_eq_mul_self_iff.mp (by linarith)`. Break down `key with k | k` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Use `left`. Apply `τ.injective` to reduce the goal to its premises. Apply the tactic sequence `apply Complex.ext <;> simp [hxr, hyr, k]`. Use `right`. Apply `τ.injective` to reduce the goal to its premises.
-
-Rewrite using `[map_neg]`. Apply the tactic sequence `apply Complex.ext <;> simp [hxr, hyr, k]`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.TraceIsometry.eq_or_eq_neg_of_norm_eq {x y : E} (hx : _root_.ReciprocityTheory.ChartRestriction.G.FD.cc x = -x) (hy : _root_.ReciprocityTheory.ChartRestriction.G.FD.cc y = -y)
     (h : ∀ τ : E →+* ℂ, ‖τ x‖ = ‖τ y‖) : y = x ∨ y = -x := by
@@ -55,35 +53,33 @@ open scoped Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Introduce `E _ _ _ r X X' hξ gam hgam`. Choose the witnesses or unpack the hypotheses as in `⟨ε, hε1, hεξ⟩ : ∃ ε : E, (ε = 1 ∨ ε = -1) ∧ X'.ξ0 = ε * X.ξ0 := by`. Break down `_root_.GlobalTheory.TraceIsometry.eq_or_eq_neg_of_norm_eq X.ξ0_im X'.ξ0_im hξ with h | h` into its components or cases. Conclude with `⟨1, Or.inl rfl, by rw [h, one_mul]⟩`. Conclude with `⟨-1, Or.inr rfl, by rw [h, neg_one_mul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `hsp : ∀ Y : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r, Submodule.span E (Set.range Y.Λ.subtype) = ⊤`. Introduce `Y`. Establish `: Set.range Y.Λ.subtype = (Y.Λ : Set (Fin r → E))` using `by ext; simp`. Rewrite using `[this]`. Conclude with `Y.Λ_span`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA⟩` from `_root_.GlobalTheory.FrameFibre.exists_matrix X.Λ.subtype Subtype.val_injective (hsp X) (X'.Λ.subtype ∘ₗ gam.toLinearMap)`. Take `⟨B, hB⟩` from `_root_.GlobalTheory.FrameFibre.exists_matrix X'.Λ.subtype Subtype.val_injective (hsp X') (X.Λ.subtype ∘ₗ gam.symm.toLinearMap)`. Establish `hA' : ∀ v : X.Λ, A *ᵥ (v : Fin r → E) = (gam v : Fin r → E)` using `fun v => hA v`. Establish `hB' : ∀ w : X'.Λ, B *ᵥ (w : Fin r → E) = (gam.symm w : Fin r → E)` using `fun w => hB w`. Establish `hBA : B * A = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlin : Matrix.mulVecLin (B * A) = LinearMap.id`. Apply `LinearMap.ext_on X.Λ_span` to reduce the goal to its premises. Introduce `v hv`. Simplify using `only [Matrix.mulVecLin_apply, LinearMap.id_apply]`. Rewrite using `[← Matrix.mulVec_mulVec, show A *ᵥ v = _ from hA' ⟨v, hv⟩, hB']`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Apply `Matrix.ext_of_mulVec_single` to reduce the goal to its premises. Introduce `i`. Establish `h1` using `LinearMap.congr_fun hlin (Pi.single i 1)`. Simplify using `only [Matrix.mulVecLin_apply, LinearMap.id_apply] at h1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Matrix.one_mulVec]`. Establish `hsm : ∀ (G : Matrix (Fin r) (Fin r) E) (c : 𝓞 E) (x y : Fin r → E), _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G (c • x) y = (c : E) * _root_.ReciprocityTheory.ChartRestriction.G.FD.herm G x y`. Introduce `G c x y`. Establish `h1` using `_root_.GlobalTheory.FrameFibre.herm_smul_smul G (c : E) 1 x y`. Rewrite `h1` using `[one_smul, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc_one, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Both sides reduce to the same expression. Establish `hL : ∀ u v : X.Λ, _root_.ReciprocityTheory.ChartRestriction.G.FD.herm X'.Gm (A *ᵥ (u : Fin r → E)) (A *ᵥ (v : Fin r → E)) = ε * _root_.ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm u v`. Introduce `u v`. Establish `hD : -X'.ξ0 * _root_.ReciprocityTheory.ChartRestriction.G.FD.herm X'.Gm (gam u) (gam v) - -X.ξ0 * _root_.ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm u v = 0`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `_root_.GlobalTheory.FrameFibre.eq_zero_of_trace` to reduce the goal to its premises. Introduce `c`. Establish `h1` using `hgam (c • u) v`. Rewrite `h1` using `[LinearEquiv.map_smul, Submodule.coe_smul, Submodule.coe_smul, hsm, hsm]`. Rewrite using `[mul_sub, map_sub, sub_eq_zero, mul_left_comm (c : E), mul_left_comm (c : E)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Rewrite `hD` using `[hεξ, ← hA' u, ← hA' v]`. Apply the tactic sequence `have hε2 : ε * ε = 1 := by rcases hε1 with h | h <;> rw [h] <;> ring`. Apply `mul_left_cancel₀ X.ξ0_ne` to reduce the goal to its premises. Take the linear combination `(-ε) * hD - X.ξ0 * _root_.ReciprocityTheory.ChartRestriction.G.FD.herm X'.Gm (A *ᵥ (u : Fin r → E)) (A *ᵥ (v : Fin r → E)) * hε2`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hall : ∀ u v : Fin r → E, _root_.ReciprocityTheory.ChartRestriction.G.FD.herm X'.Gm (A *ᵥ u) (A *ᵥ v) = ε * _root_.ReciprocityTheory.ChartRestriction.G.FD.herm X.Gm u v`. Introduce `u v`. Take `⟨c, u', hc, hu'⟩` from `_root_.GlobalTheory.FrameFibre.exists_smul_eq X.Λ.subtype (hsp X) u`. Take `⟨d, v', hd, hv'⟩` from `_root_.GlobalTheory.FrameFibre.exists_smul_eq X.Λ.subtype (hsp X) v`. Establish `h1` using `hL u' v'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu'' : (u' : Fin r → E) = (c : E) • u` using `hu'.symm`. Establish `hv'' : (v' : Fin r → E) = (d : E) • v` using `hv'.symm`. Rewrite `h1` using `[hu'', hv'', Matrix.mulVec_smul, Matrix.mulVec_smul, _root_.GlobalTheory.FrameFibre.herm_smul_smul, _root_.GlobalTheory.FrameFibre.herm_smul_smul]`. Establish `hc' : (c : E) ≠ 0` using `by exact_mod_cast hc`. Establish `hd' : (d : E) ≠ 0` using `by exact_mod_cast hd`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcc : _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (d : E) ≠ 0`. Introduce `h0`. Apply `hd'` to reduce the goal to its premises. Rewrite using `[← _root_.ReciprocityTheory.ChartRestriction.G.FD.cc_cc (d : E), h0, _root_.ReciprocityTheory.ChartRestriction.G.FD.cc_zero]`. Apply `mul_left_cancel₀ (mul_ne_zero hc' hcc)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `h1`. Use `⟨⟨A, B, (mul_eq_one_comm.mp hBA), hBA⟩, ε, hε1, hεξ, hA', ?_, hall⟩` and prove the remaining obligations. Introduce `v`. Express the relevant statement in the definitionally equal form `v ∈ X.Λ ↔ A *ᵥ v ∈ X'.Λ`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `hv`. Rewrite using `[show A *ᵥ v = _ from hA' ⟨v, hv⟩]`. Conclude with `(gam ⟨v, hv⟩).2`. Introduce `hv`. Establish `h1 : B *ᵥ (A *ᵥ v) = v` using `by rw [Matrix.mulVec_mulVec, hBA, Matrix.one_mulVec]`.
-
-Rewrite using `[← h1, show B *ᵥ (A *ᵥ v) = _ from hB' ⟨A *ᵥ v, hv⟩]`. Conclude with `(gam.symm _).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.TraceIsometry.exists_gl_of_trace_isometry : ∀ (E : Type) [Field E] [NumberField E]
     [IsCMField E] (r : ℕ) (X X' : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r), (∀ τ : E →+* ℂ, ‖τ X.ξ0‖ = ‖τ X'.ξ0‖) →

@@ -28,7 +28,7 @@ open scoped BoundedContinuousFunction in
 variable {d : ℕ} in
 
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.HCA.apOp, zero_add, Finset.range_one, Finset.sum_singleton, one_mul, Fintype.sum_unique, List.ofFn_zero]`. Unfold `_root_.ZetaZeros.D.EllReg.dw`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.HCA.apOp_zero_one (u : _root_.ZetaZeros.D.EllReg.E d → ℂ) (x : _root_.ZetaZeros.D.EllReg.E d) :
     _root_.GlobalTheory.HCA.apOp 0 (fun _ _ _ => 1) u x = u x := by
@@ -41,9 +41,9 @@ open scoped BoundedContinuousFunction in
 variable {d : ℕ} in
 
 /- English proof (translation)
-Establish `h : _root_.GlobalTheory.HCA.ext0 U (0 : U →ᵇ ℂ) = fun _ => 0`. Use function extensionality and compare the values at `x`. Unfold `_root_.GlobalTheory.HCA.ext0`. Apply the tactic sequence `split_ifs <;> rfl`. Use `show _root_.ZetaZeros.D.EllReg.WeakSol P U (_root_.GlobalTheory.HCA.ext0 U (0 : U →ᵇ ℂ))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Unfold `_root_.ZetaZeros.D.EllReg.WeakSol`. Introduce `i φ _ _ _`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HCA.zero_mem_solSet {ι : Type} (P : _root_.ZetaZeros.D.EllReg.Sys d ι) (U : Set (_root_.ZetaZeros.D.EllReg.E d)) :
     (0 : U →ᵇ ℂ) ∈ _root_.GlobalTheory.HCA.solSet P U := by

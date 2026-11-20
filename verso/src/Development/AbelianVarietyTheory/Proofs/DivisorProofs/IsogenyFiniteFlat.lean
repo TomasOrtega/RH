@@ -16,13 +16,13 @@ namespace GlobalTheory.SurjHomFlat
 open GlobalTheory GlobalTheory.SurjIsogeny GlobalTheory.IsogenyModel
 
 /- English proof (translation)
-Introduce `A X _ _ g hA hX hgA hgX ψ _ _`. Use `hX.proper` as an intermediate fact. Use `hA.proper` as an intermediate fact. Use `forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ X.hom hX.smooth hX.geomConnected` as an intermediate fact. Establish `: IsIntegral X.left` using `GeometricallyIntegral.isIntegral_of_subsingleton X.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ A.hom hA.smooth hA.geomConnected` as an intermediate fact. Establish `: IsIntegral A.left` using `GeometricallyIntegral.isIntegral_of_subsingleton A.hom`. Establish `: IsProper (ψ.left ≫ X.hom)` using `by rw [Over.w]; infer_instance`. Establish `: IsProper ψ.left` using `IsProper.of_comp ψ.left X.hom`. Establish `hA' : SmoothOfRelativeDimension g (ψ.left ≫ X.hom)` using `by rw [Over.w]; exact hgA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `ψ.left.surjective (genericPoint X.left)`. Establish `: LocallyQuasiFinite ψ.left`. Use `locallyQuasiFinite_of_finite_fibre ψ a ((Set.finite_singleton (genericPoint _)).subset ?_)` and prove the remaining obligations. Introduce `x hx`. Conclude with `eq_genericPoint_of_apply_eq ψ.left X.hom hgX hA' (ha ▸ hx)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hf : IsFinite ψ.left` using `.of_isProper_of_locallyQuasiFinite _`. Use `⟨hf, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.SS.flat_of_isDominant_grpHom ℂ A X ψ`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_flat :
     ∀ (A X : Over (Sp ℂ)) [GrpObj A] [GrpObj X] (g : ℕ), IsAbelianScheme A → IsAbelianScheme X →

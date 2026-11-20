@@ -10,9 +10,9 @@ open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR GlobalTheory.Compan
 namespace GlobalTheory.CompanionTheory.Ar.Num
 
 /- English proof (translation)
-Use `haveI : IsNoetherianRing (MRing ι O) := by`. Unfold `MRing`. Use `infer_instance`. Use `(Ideal.finite_minimalPrimes_of_isNoetherianRing (MRing ι O) (P ⊔ Ideal.span {f})).subset ?_` and prove the remaining obligations. Introduce `W hW`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hn`. Apply `hW` to reduce the goal to its premises. Unfold `divCycle`. Rewrite using `[dif_neg]`. Conclude with `fun h => hn h.1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem divCycle_support_finite {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
@@ -29,7 +29,7 @@ theorem divCycle_support_finite {O : Type} [CommRing O] [IsDomain O] [IsDiscrete
   exact fun h => hn h.1
 
 /- English proof (translation)
-Establish `e : ratDiv P f g = divCycle P f - divCycle P g` using `rfl`. Unfold `cycList`. Rewrite using `[e]`. Conclude with `(cycEval_sub_cycle _ _ _ (divCycle_support_finite P f) (divCycle_support_finite P g)).symm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycList_ratDiv {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
@@ -41,7 +41,7 @@ theorem cycList_ratDiv {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuation
   exact (cycEval_sub_cycle _ _ _ (divCycle_support_finite P f) (divCycle_support_finite P g)).symm
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.homogeneous_class_substitution (K → ℤ) d (fun l => (cycList Z l : ℝ)) (fun l l' h => by rw [GlobalTheory.T.cycle_list_perm_invariant.2 O K ι Z l l' h]) (fun b b' l h => by rw [hadd b b' l h]; push_cast; rfl) σ σ' cls M H m hH Q hQ`.
+A detailed English derivation is pending.
 -/
 theorem cycNum_subst_of_add {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)]
@@ -58,7 +58,7 @@ theorem cycNum_subst_of_add {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValu
     σ σ' cls M H m hH Q hQ
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP a a' f g hf hg hfP hgP σ σ' _ cls M H m hH Q hQ`. Establish `af` using `GlobalTheory.T.divisor_cycle_list_additive O ϖ hϖ K ι P d hP a f hf hfP`. Establish `ag` using `GlobalTheory.T.divisor_cycle_list_additive O ϖ hϖ K ι P d hP a' g hg hgP`. Use `⟨cycNum_subst_of_add _ d (fun b b' l h => ?_) cls M H m hH Q hQ, cycNum_subst_of_add _ d (af · · · ·) cls M H m hH Q hQ⟩` and prove the remaining obligations. Rewrite using `[cycList_ratDiv, cycList_ratDiv, cycList_ratDiv, af b b' l h, ag b b' l h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

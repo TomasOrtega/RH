@@ -12,13 +12,13 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 variable {N : ℕ}
 
 /- English proof (translation)
-The claim follows from `cmpt_compact (ε := fun _ : Fin N => true) fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem unGrp_compactSpace (N : ℕ) : CompactSpace (UNgrp N) :=
   cmpt_compact (ε := fun _ : Fin N => true) fun _ _ => rfl
 
 /- English proof (translation)
-Use `unGrp_compactSpace N` as an intermediate fact. Set `K : TopologicalSpace.PositiveCompacts (UNgrp N)` to `⊤`. Use `⟨Measure.haarMeasure K, inferInstance, ⟨?_⟩⟩` and prove the remaining obligations. Establish `h` using `Measure.haarMeasure_self (K₀ := K)`. Simplify `h` using `[K]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unGrp_haarProb_exists (N : ℕ) :
     ∃ μ : Measure (UNgrp N), μ.IsHaarMeasure ∧ IsProbabilityMeasure μ := by

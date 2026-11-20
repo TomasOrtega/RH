@@ -19,7 +19,7 @@ set_option autoImplicit false
 namespace GlobalTheory.Mix.CycAdd
 
 /- English proof (translation)
-Take `⟨N, i, hi, h⟩` from `hp`. Conclude with `⟨N, closι z ≫ i, inferInstance, by rw [Category.assoc, h]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isProjOver_clos {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} (hp : IsProjOver p) (z : X) :
     IsProjOver (closι z ≫ p) := by
@@ -27,14 +27,14 @@ theorem isProjOver_clos {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k
   exact ⟨N, closι z ≫ i, inferInstance, by rw [Category.assoc, h]⟩
 
 /- English proof (translation)
-Simplify using `only [Mix.int, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem int_congr {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
     {L M : Fin D → MLine p σ} (h : ∀ ε, part L ε = part M ε) (f : CxPts p σ → ℝ) : Mix.int L f = Mix.int M f := by
   simp only [Mix.int, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hj]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pull_update {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {D : ℕ}
     (L : Fin D → MLine p σ) (i : Fin D) (A : MLine p σ) (z : X) :
@@ -50,11 +50,11 @@ end GlobalTheory.Mix.CycAdd
 open GlobalTheory.Mix.CycAdd in
 
 /- English proof (translation)
-Introduce `k _ X p σ hp D L i A B f z hA hB`. Establish `hq` using `isProjOver_clos hp z`. Establish `hI` using `GlobalTheory.T.smoothWeightedLineBundle_isometry_calculus k X (clos z) p (closι z ≫ p) σ (closι z) rfl`. Establish `hparts : ∀ ε, part (fun j => (Function.update L i (A.tens B) j).pull (closι z) rfl) ε = part (Function.update (fun j => (L j).pull (closι z) rfl) i ((A.pull (closι z) rfl).tens (B.pull (closι z) rfl))) ε`. Introduce `ε`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.T.mixedChernFormSignedPartMeasure_eq_of_isometric_projOver k (clos z) (closι z ≫ p) σ hq D _ _ (fun j => ?_) ε` and prove the remaining obligations. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `using hI.2.2.1 A B`. Simplify `(GlobalTheory.T.smoothWeightedLineBundle_isometry_calculus k (clos z) (clos z) (closι z ≫ p) (closι z ≫ p) σ (𝟙 _) (Category.id_comp _)).1 ((L j).pull (closι z) rfl)` using `[Function.update_of_ne hj]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `CycIntg at hA hB`. Unfold `cycInt`. Rewrite using `[int_congr hparts, pull_update, pull_update]`. Rewrite `hA`, `hB` using `[pull_update]`. Conclude with `(GlobalTheory.T.mixedChernIntegral_additive_in_factor k (clos z) (closι z ≫ p) σ hq D _ i _ _ _ hA hB).2`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mix.cycInt_update_tens : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ), IsProjOver p → ∀ (D : ℕ) (L : Fin D → MLine p σ) (i : Fin D) (A B : MLine p σ) (f : CxPts p σ → ℝ) (z : X), CycIntg (Function.update L i A) f z → CycIntg (Function.update L i B) f z → cycInt (Function.update L i (A.tens B)) f z = cycInt (Function.update L i A) f z + cycInt (Function.update L i B) f z := by
   intro k _ X p σ hp D L i A B f z hA hB

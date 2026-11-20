@@ -8,35 +8,29 @@ namespace GlobalTheory
 open Formalism.IndefR.Arith
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `swap`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨hy1, hy2⟩`. Conclude with `⟨Submodule.subset_span hy1, hy2⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨n, b, hbK, _, hspK, hliL, hspL⟩` from `hK`. Use `set ψ : (Fin n → LL) →ₗ[LL] WL := Fintype.linearCombination LL b with hψdef`. Establish `hψ : ∀ y, ψ y = ∑ k, y k • b k` using `fun y => by simp [hψdef, Fintype.linearCombination_apply]`. Establish `hψinj : Function.Injective ψ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `y hy`. Rewrite `hy` using `[hψ]`. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.1 hliL y hy i`. Use `set e : (Fin n → Ks) → (Fin n → LL) := fun x i => algebraMap Ks LL (x i) with he`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hψe : ∀ x, ψ (e x) = ∑ k, x k • b k` using `fun x => by`. Rewrite using `[hψ]`. Simplify using `[he, algebraMap_smul]`. Establish `hex : ∀ (p : J0) (k : Fin n), ∃ c : Fin n → Ks, ∑ i, c i • b i = A.ρ p (b k)`. Introduce `p k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: A.ρ p (b k) ∈ Submodule.span Ks (Set.range b)` using `by rw [hspK]; exact hρ p _ (hbK k)`. Conclude with `(Submodule.mem_span_range_iff_exists_fun Ks).1 this`. Use `choose cc hcc using hex`. Set `Am : J0 → Matrix (Fin n) (Fin n) Ks` to `fun p => Matrix.of fun i k => cc p k i`. Use `choose lamK hlamK using hc`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hρψ : ∀ (p : J0) y, A.ρ p (ψ y) = ψ (((Am p).map (algebraMap Ks LL)).mulVec y)`. Introduce `p y`. Rewrite using `[hψ, hψ, map_sum]`. Simplify using `only [LinearMap.map_smul, ← hcc, Finset.smul_sum, Matrix.mulVec, dotProduct, Matrix.map_apply, Matrix.of_apply, Am, Finset.sum_smul, mul_smul, algebraMap_smul]`. Rewrite using `[Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `smul_comm _ _ _`. Establish `hmemT : ∀ y, ψ y ∈ A.typeP J0 lam0 ↔ ∀ p : J0, ((Am p).map (algebraMap Ks LL)).mulVec y = algebraMap Ks LL (lamK p) • y`. Introduce `y`. Rewrite using `[FormsL.mem_typeP]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `forall_congr' fun p => ?_` and prove the remaining obligations. Rewrite using `[hρψ, hlamK p, ← LinearMap.map_smul]`. Conclude with `hψinj.eq_iff`. Set `Wt : Submodule Ks (Fin n → Ks)` to `{ carrier := {x | ∀ p, (Am p).mulVec x = lamK p • x} zero_mem' := fun p => by simp add_mem' := fun {x y} hx hy p => by simp [Matrix.mulVec_add, hx p, hy p, smul_add] smul_mem' := fun a x hx p => by show (Am p).mulVec (a • x) = lamK p • (a • x)`. Rewrite using `[Matrix.mulVec_smul, hx p, smul_smul, smul_smul, mul_comm] }`.
+Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `φ : (Fin n → Ks) →ₗ[𝓞 Ks] WL` to `(Fintype.linearCombination Ks b).restrictScalars (𝓞 Ks)`. Set `M : Submodule (𝓞 Ks) (Fin n → Ks)` to `A.MK.comap φ`. Establish `hMmem : ∀ x, x ∈ M ↔ ∑ k, x k • b k ∈ A.MK` using `fun x => by simp [M, φ, Fintype.linearCombination_apply]`. Establish `hI1` using `(GlobalTheory.T.rational_matrix_eigenspace_image_spanned_rational Ks LL n J0 Am lamK 0).1`. Establish `hI2` using `GlobalTheory.T.lattice_span_inf_rational_subspace_integers_ext Ks LL n M Wt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `ψO : (Fin n → LL) →ₗ[𝓞 LL] WL` to `ψ.restrictScalars (𝓞 LL)`. Introduce and unpack `y ⟨hy1, hy2⟩`. Establish `hle : Submodule.span (𝓞 LL) (A.MK : Set WL) ≤ (Submodule.span (𝓞 LL) (e '' (M : Set _))).map ψO`. Rewrite using `[Submodule.span_le]`. Introduce `m hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hmK : m ∈ Submodule.span Ks (Set.range b)` using `by rw [hspK]; exact A.MK_le_WK hm`. Take `⟨x, hx⟩` from `(Submodule.mem_span_range_iff_exists_fun Ks).1 hmK`. Use `⟨e x, Submodule.subset_span ⟨x, (hMmem x).2 (hx ▸ hm), rfl⟩, ?_⟩` and prove the remaining obligations. Use `show ψ (e x) = m`. Rewrite using `[hψe, hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz, rfl⟩` from `hle hy1`. Establish `hzW : z ∈ Submodule.span LL (e '' (Wt : Set _))` using `(hI1 z).1 ((hmemT z).1 hy2)`. Establish `hz2 : z ∈ Submodule.span (𝓞 LL) (e '' ((M ⊓ Wt.restrictScalars (𝓞 Ks) : Submodule (𝓞 Ks) _) : Set _))`. Rewrite using `[← hI2]`. Conclude with `⟨hz, hzW⟩`.
-
-Establish `hle2 : Submodule.span (𝓞 LL) (e '' ((M ⊓ Wt.restrictScalars (𝓞 Ks) : Submodule (𝓞 Ks) _) : Set _)) ≤ (Submodule.span (𝓞 LL) {y | y ∈ A.MK ∧ y ∈ A.typeP J0 lam0}).comap ψO`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, ⟨hxM, hxW⟩, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Use `show ψ (e x) ∈ A.MK`. Rewrite using `[hψe]`. Conclude with `(hMmem x).1 hxM`. Use `show ψ (e x) ∈ A.typeP J0 lam0`. Rewrite using `[hmemT]`.
-
-Conclude with `(hI1 (e x)).2 (Submodule.subset_span ⟨x, hxW, rfl⟩)`. Conclude with `hle2 hz2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mall_eq_span_rat (LL Ks WL G0 : Type) [Field LL] [NumberField LL] [Field Ks] [NumberField Ks] [Algebra Ks LL] [AddCommGroup WL] [Module LL WL] [Module Ks WL] [IsScalarTower Ks LL WL] [Module (𝓞 LL) WL] [IsScalarTower (𝓞 LL) LL WL] [Module (𝓞 Ks) WL] [IsScalarTower (𝓞 Ks) Ks WL] (W : (LL →+* ℂ) → Type) [∀ σ, NormedAddCommGroup (W σ)] [∀ σ, InnerProductSpace ℂ (W σ)] [Group G0] [Fintype G0] (A : Formalism.IndefR.Arith.FormsL LL Ks WL W G0) (J0 : Subgroup G0) (lam0 : J0 →* LLˣ) (hK : A.IsKsForm) (hρ : ∀ u : J0, ∀ f ∈ A.WK, A.ρ u f ∈ A.WK) (hc : ∀ u : J0, ((A.chi u * lam0 u : LLˣ) : LL) ∈ Set.range (algebraMap Ks LL)) : A.Mall J0 lam0 = Submodule.span (𝓞 LL) {y | y ∈ A.MK ∧ y ∈ A.typeP J0 lam0} := by
   apply le_antisymm

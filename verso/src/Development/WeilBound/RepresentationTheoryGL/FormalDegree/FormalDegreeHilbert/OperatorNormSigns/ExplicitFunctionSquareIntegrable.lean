@@ -14,11 +14,11 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `set b := stdOrthonormalBasis ℂ V`. Establish `h1 : ‖A‖ ≤ ∑ i, ‖A (b i)‖`. Use `A.opNorm_le_bound (Finset.sum_nonneg fun _ _ => norm_nonneg _) fun v => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← b.sum_repr' v]`. Rewrite using `[map_sum, Finset.sum_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, norm_smul, mul_comm]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (∑ i, ‖A (b i)‖) ^ 2 ≤ (Finset.univ.card : ℝ) * ∑ i, ‖A (b i)‖ ^ 2` using `sq_sum_le_card_mul_sum_sq`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hc : (Finset.univ : Finset (Fin (Module.finrank ℂ V))).card = Module.finrank ℂ V` using `by simp`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem pl_opNorm_le {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V]
     (A : V →L[ℂ] V) : ‖A‖ ^ 2 ≤ (Module.finrank ℂ V : ℝ) * hsOp A := by
@@ -38,13 +38,11 @@ theorem pl_opNorm_le {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V
     _ ≤ _ := by rw [hc] at h2; exact h2
 
 /- English proof (translation)
-Introduce `hN n ε lam T μ hl hμ ν hν`. Establish `hfin` using `hN n ε lam hl T μ hμ`. Use `muCD_isHaar ε` as an intermediate fact. Use `set f : UJ ε → (T.V →L[ℂ] T.V) := fun g => PsiM T μ (toM g) with hf`. Establish `hcont : Continuous f` using `(psiM_continuousOn T μ hμ).comp_continuous (continuous_toM ε) (fun g => g.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmCD : MemLp f 2 (muCD ε)`. Use `(memLp_two_iff_integrable_sq_norm hcont.aestronglyMeasurable).2 ⟨(hcont.norm.pow 2).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Unfold `HasFiniteIntegral`. Establish `hle : ∀ g : Formalism.REAL.UJ ε, ‖‖f g‖ ^ 2‖ₑ ≤ ENNReal.ofReal (Module.finrank ℂ T.V : ℝ) * ENNReal.ofReal (hsOp (PsiM T μ (Formalism.MainNotions.S.umat g)))`. Introduce `g`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_mul (Nat.cast_nonneg _), Real.enorm_eq_ofReal (by positivity)]`. Conclude with `ENNReal.ofReal_le_ofReal (pl_opNorm_le _)`. Combine the equalities or inequalities in the displayed calculation. Use `haveI hH : (show Measure (UJ ε) from muCD ε).IsHaarMeasure := muCD_isHaar ε`. Establish `heq` using `Measure.isMulLeftInvariant_eq_smul ν (show Measure (UJ ε) from muCD ε)`.
-
-Rewrite using `[heq]`. Conclude with `hmCD.smul_measure ENNReal.coe_ne_top`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem square_integrable_of_norm : PsiNorm → PositivityTheory.RgDs.ExplicitFunctionSquareIntegrable := by
   intro hN n ε lam T μ hl hμ ν hν

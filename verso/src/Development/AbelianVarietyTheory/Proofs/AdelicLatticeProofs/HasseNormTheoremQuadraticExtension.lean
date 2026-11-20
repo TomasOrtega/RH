@@ -11,13 +11,11 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Introduce `F _ _ δ x hδ hx hreal hfin`. Distinguish the cases in `hsq : IsSquare δ`. Conclude with `GlobalTheory.Published.HasseNormSt.of_isSquare hδ hsq x`. Take `⟨S, -, hS⟩` from `exists_superset_mem_sUnits F {Units.mk0 δ hδ, Units.mk0 x hx} ∅`. Take `⟨T, hST, hT⟩` from `exists_admissible_superset_finite_places F S`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hδT : Units.mk0 δ hδ ∈ sUnits F T` using `hS T hST _ (by simp)`. Establish `hxT : Units.mk0 x hx ∈ sUnits F T` using `hS T hST _ (by simp)`. Establish `hloc : Units.mk0 x hx ∈ locNorm F ((Units.mk0 δ hδ : Fˣ) : F) T`. Use `Subgroup.mem_inf.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Use `Subgroup.mem_iInf.mpr fun v => Subgroup.mem_iInf.mpr fun _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_normSub]`. Conclude with `hfin v`. Use `Subgroup.mem_iInf.mpr fun σ => ?_` and prove the remaining obligations. Rewrite using `[mem_normSub]`. Conclude with `hreal σ`.
-
-Establish `h` using `GlobalTheory.T.sUnit_mem_globalNorm_of_mem_localNorms F (Units.mk0 δ hδ) T hT hδT hsq _ hxT hloc`. Rewrite `h` using `[mem_normSub]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasseNormSt : GlobalTheory.Published.HasseNormSt := by
   intro F _ _ δ x hδ hx hreal hfin

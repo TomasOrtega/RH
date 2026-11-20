@@ -14,19 +14,19 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory.Dieu
 
 /- English proof (translation)
-Introduce `p _ T k _ _ _ G H q e hq he`. Take `⟨n, g, hqg, hgq⟩` from `hq`. Establish `hq' : IsIsog q` using `⟨n, g, hqg, hgq⟩`. Establish `hg : IsIsog g` using `⟨n, q, hgq, hqg⟩`. Take `⟨e', he', -⟩` from `GlobalTheory.T.existsUnique_kernelOrder_pPowerDegree_isogeny p k H G g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpG` using `((GlobalTheory.T.pDivisibleGroup_isogeny_basic_properties p k G).1 n).2`. Rewrite `hpG` using `[← hqg]`. Establish `hle : n * G.height ≤ e + e'` using `GlobalTheory.T.hasKernelOrderPPowerDegree_comp_le_add p k G H G q g e e' _ he he' hpG`. Establish `h1` using `GlobalTheory.T.kernelDegree_le_dieudonneColength p T k G H q e hq' he`. Establish `h2` using `GlobalTheory.T.kernelDegree_le_dieudonneColength p T k H G g e' hg he'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hinj, hfin1, -⟩` from `GlobalTheory.T.isogenous_pDivGroup_finrank_omega_dual p T k G H q hq'`. Take `⟨-, hfin2, -⟩` from `GlobalTheory.T.isogenous_pDivGroup_finrank_omega_dual p T k H G g hg`. Take `⟨hid, hcomp, -, -, -, -, -, hrank, -⟩` from `GlobalTheory.T.dieudonneFunctorBase_functor_properties p (fun _ _ _ => True) T.base k G H G trivial trivial trivial`. Take `⟨-, -, -, -, hsmulG, -⟩` from `GlobalTheory.T.dieudonneFunctorBase_functor_properties p (fun _ _ _ => True) T.base k G G G trivial trivial trivial`. Take `⟨hadd, hpow, -⟩` from `GlobalTheory.T.witt_module_length_composition p k (T.M G) (T.M H) (T.M G)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsum` using `hadd (T.map q) (T.map g) hinj`. Establish `hcomp' : T.map q ∘ₗ T.map g = T.map (q ≫ g)` using `(hcomp q g).symm`. Establish `hmul : ∀ a : T.M G, (T.map q ∘ₗ T.map g) a = p ^ n • a`. Introduce `a`. Rewrite using `[hcomp', hqg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show T.base.map trivial trivial ((p : ℤ_[p]) ^ n • 𝟙 G) a = p ^ n • a`. Rewrite using `[hsmulG n (𝟙 G) a, hid]`. Both sides reduce to the same expression. Establish `hn` using `hpow (T.base.free G trivial) (T.base.finite G trivial) n _ hmul`. Rewrite `hsum` using `[hn, hrank]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `ENat.ne_top_iff_exists.mp hfin1`. Take `⟨b, hb⟩` from `ENat.ne_top_iff_exists.mp hfin2`. Rewrite `h1`, `hsum`, the goal using `[← ha]`. Rewrite `h2`, `hsum` using `[← hb]`. Normalize the coercions in `at h1 h2 hsum ⊢`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem length_quot_range_map_eq_of_hasLogDeg : ∀ (p : ℕ) [Fact p.Prime] (T : Theory p) (k : Type) [Field k]
     [CharP k p] [PerfectRing k p] (G H : PDivGroup p k) (q : G ⟶ H) (e : ℕ), IsIsog q → HasLogDeg q e →

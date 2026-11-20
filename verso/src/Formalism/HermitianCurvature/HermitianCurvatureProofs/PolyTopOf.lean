@@ -11,7 +11,7 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Use `Formalism.FourierDecayAlt.P.B6.haar_sigmaFinite Bs.haarN` as an intermediate fact. Establish `a1 : ∀ᵐ x ∂(Bs.μW.prod Bs.μN), (Matrix.of x.1 : B.Mat k r) ∈ UWset k r Bs.z` using `Measure.quasiMeasurePreserving_fst.ae (Formalism.FourierDecayAlt.P.B6.haar_ae Bs.haarW)`. Establish `a2 : ∀ᵐ x ∂(Bs.μW.prod Bs.μN), (Matrix.of x.2 : B.Mat k r) ∈ Formalism.QuantumDeterminants.Nset k r` using `Measure.quasiMeasurePreserving_snd.ae (Formalism.FourierDecayAlt.P.B6.haar_ae Bs.haarN)`. Use `filter_upwards [a1, a2] with x h1 h2 using ⟨h1, h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ae_left {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (Bs : B.RealPlaceData k r Wp Wq) :
@@ -25,25 +25,21 @@ theorem ae_left {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProduct
   filter_upwards [a1, a2] with x h1 h2 using ⟨h1, h2⟩
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p G s h t hs hq hG`. Use `set q : C.LPt := h ++ [(s, t)] with hqdef`. Use `set Bs := p.T.base with hBs`. Distinguish the cases in `hpos : D.IsLocPt q (P.r + 1) ∧ 0 < D.ptG (Tz P.k P.r Bs.z * Tz P.k P.r Bs.z') P.r q`. Distinguish the cases in `h' : ∃ γ ∈ B.GV P.k P.r, Zhat P.k P.r Bs.z Bs.z' γ = D.ptMatN q (P.r + 1) ∧ D.IsDFrame Bs p.ν' p.m₀ γ`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨θL, hsplit⟩` from `vecV_split Bs p.ν' p.m₀ q hpos h'`. Establish `hγ` using `h'.choose_spec.1`. Establish `hZ` using `h'.choose_spec.2.1`. Establish `hGq` using `Formalism.FourierDecayAlt.P.ptG_spec P.k P.r Bs.z Bs.z' q h'.choose hpos.1 hZ`. Establish `hposG : 0 < Gf P.k P.r Bs.z Bs.z' h'.choose` using `hGq ▸ hpos.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set κ : ℂ := (-1) ^ (s - 1) / t with hκ`. Establish `hA : ∀ y : ℝ, KB.CptCoef Bs (PBN.aaTop Bs y G)` using `fun y => Formalism.FourierDecayAlt.P.raising_compact_support P.k P.r Wp Wq Bs G y hG`. Take `⟨c, hc, hcy⟩` from `poly_integral (Bs.μW.prod Bs.μN) (D.ptSize h) (fun y x => lint Bs h'.choose θL (PBN.aaTop Bs y G) x) (fun x => κ • lint Bs h'.choose θL G x) (fun y => (hsplit _ (hA y)).1) (by filter_upwards [ae_left Bs] with x hx`. Take `⟨c, hc, hcy⟩` from `pt_poly hKA Bs hG h s t hs hq hγ hZ hposG hx`. Use `set a : ℂ := ((θL x : ℝ) : ℂ) * psi P.k P.r Bs.z cStd (Matrix.of x.2) with ha`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `set L := ContinuousLinearMap.compL ℂ Wq Wp Wp (Bs.π (Matrix.of x.1)) with hL`. Use `⟨fun n => a • L (c n), ?_, fun y => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hc, map_smul, smul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show a • L (PBG.Kr Bs (PBN.aaTop Bs y G) _) = _`. Rewrite using `[hcy y, map_sum, Finset.smul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `n _`. Rewrite using `[map_smul, smul_comm])`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `⟨c, ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hc, integral_smul, ← (hsplit G hG).2]`. Both sides reduce to the same expression. Use `show D.vecV Bs p.ν' p.m₀ (PBN.aaTop Bs y G) q = _`. Rewrite using `[(hsplit _ (hA y)).2, hcy y]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun _ => 0, ?_, fun y => ?_⟩` and prove the remaining obligations. Use `show (0 : Wq →L[ℂ] Wp) = _ • D.vecV Bs p.ν' p.m₀ G q`. Unfold `D.vecV`. Rewrite using `[dif_pos hpos, dif_neg h', smul_zero]`. Use `show D.vecV Bs p.ν' p.m₀ _ q = _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `D.vecV`. Rewrite using `[dif_pos hpos, dif_neg h']`. Simplify using the standard rewrite rules. Use `⟨fun _ => 0, ?_, fun y => ?_⟩` and prove the remaining obligations. Use `show (0 : Wq →L[ℂ] Wp) = _ • D.vecV Bs p.ν' p.m₀ G q`.
-
-Unfold `D.vecV`. Rewrite using `[dif_neg hpos, smul_zero]`. Use `show D.vecV Bs p.ν' p.m₀ _ q = _`. Unfold `D.vecV`. Rewrite using `[dif_neg hpos]`.
-
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem polyTop_of (hKA : KrAA) : PBN.PolyTop := by
   intro Wp Wq _ _ _ _ _ _ P p G s h t hs hq hG

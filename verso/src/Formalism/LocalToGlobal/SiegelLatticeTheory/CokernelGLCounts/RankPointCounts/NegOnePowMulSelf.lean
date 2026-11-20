@@ -23,7 +23,7 @@ variable (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s
 
 include hA in
 /- English proof (translation)
-Rewrite `hx`, the goal using `[← locGlob _ (shapeNZ.1 h)]`. Conclude with `fun p => locMem_conj δ M hA p hk (hx p)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dd_conj {h : ℕ} (hk : h ≤ D.R.rS) {x : D.host.E} (hx : x ∈ ddPow D h) : D.conjF x ∈ ddPow D h := by
   rw [← locGlob _ (shapeNZ.1 h)] at hx ⊢
@@ -31,7 +31,7 @@ theorem dd_conj {h : ℕ} (hk : h ≤ D.R.rS) {x : D.host.E} (hx : x ∈ ddPow D
 
 include hA in
 /- English proof (translation)
-Rewrite `hx`, the goal using `[qdPow_mem_iff]`. Use `dd_conj δ M hA hk hx` as an intermediate fact. Rewrite `this` using `[map_div₀, map_natCast]`. Then use the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem qd_conj {h : ℕ} (hk : h ≤ D.R.rS) {x : D.host.E} (hx : x ∈ qdPow D h) : D.conjF x ∈ qdPow D h := by
   rw [qdPow_mem_iff] at hx ⊢
@@ -41,7 +41,7 @@ theorem qd_conj {h : ℕ} (hk : h ≤ D.R.rS) {x : D.host.E} (hx : x ∈ qdPow D
 end Conj
 
 /- English proof (translation)
-Rewrite using `[← pow_add]`. Conclude with `Even.neg_one_pow ⟨k, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem neg_one_pow_mul_self (k : ℕ) : ((-1 : D.host.E) ^ k) * (-1) ^ k = 1 := by
   rw [← pow_add]; exact Even.neg_one_pow ⟨k, rfl⟩
@@ -52,7 +52,7 @@ def sgm (a c : Fin (D.R.rS + 1)) : D.host.E := (-1) ^ (D.R.rS - a.val) * (-1) ^ 
 
 omit w in
 /- English proof (translation)
-Unfold `sgm`. Use `neg_one_pow_mul_self (D := D) (D.R.rS - d.val)` as an intermediate fact. Take the linear combination `((-1 : D.host.E) ^ (D.R.rS - a.val) * (-1) ^ (D.R.rS - c.val)) * this`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem sgm_mul (a d c : Fin (D.R.rS + 1)) : sgm a d * sgm d c = sgm a c := by
   unfold sgm
@@ -61,20 +61,20 @@ theorem sgm_mul (a d c : Fin (D.R.rS + 1)) : sgm a d * sgm d c = sgm a c := by
 
 omit w in
 /- English proof (translation)
-The claim follows from `neg_one_pow_mul_self _`.
+A detailed English derivation is pending.
 -/
 theorem sgm_self (a : Fin (D.R.rS + 1)) : sgm a a = (1 : D.host.E) := neg_one_pow_mul_self _
 
 omit w in
 /- English proof (translation)
-Simplify using `[sgm, map_pow, map_neg, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sgm_conj (a c : Fin (D.R.rS + 1)) : D.conjF (sgm a c) = sgm a c := by
   simp [sgm, map_pow, map_neg, map_one]
 
 omit w in
 /- English proof (translation)
-Unfold `sgm`. Rewrite using `[← pow_add]`. Conclude with `neg_one_pow_eq_or _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sgm_cases (a c : Fin (D.R.rS + 1)) : sgm a c = (1 : D.host.E) ∨ sgm a c = -1 := by
   unfold sgm
@@ -82,9 +82,9 @@ theorem sgm_cases (a c : Fin (D.R.rS + 1)) : sgm a c = (1 : D.host.E) ∨ sgm a 
   exact neg_one_pow_eq_or _ _
 
 /- English proof (translation)
-Unfold `sgm`. Establish `h1` using `pinv_add w a c hs`. Establish `ha` using `a.isLt`. Establish `hc` using `c.isLt`. Establish `ha'` using `(pinv w a).isLt`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc'` using `(pinv w c).isLt`. Rewrite using `[show ((-1 : D.host.E)) ^ (D.R.rS - a.val) * (-1) ^ (D.R.rS - c.val) * ((-1) ^ (D.R.rS - (pinv w c).val) * (-1) ^ (D.R.rS - (pinv w a).val)) = (-1) ^ ((D.R.rS - a.val) + (D.R.rS - c.val) + (D.R.rS - (pinv w c).val) + (D.R.rS - (pinv w a).val)) by ring]`. Conclude with `Even.neg_one_pow ⟨2 * D.R.rS - (pinv w a).val - a.val, by omega⟩`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sgm_pinv (a c : Fin (D.R.rS + 1)) (hs : blkOf w.1 a.val = blkOf w.1 c.val) :
     sgm a c * sgm (pinv w c) (pinv w a) = (1 : D.host.E) := by
@@ -101,13 +101,13 @@ def Psi (Mt : MatR D) : MatR D := fun a c => sgm a c * D.conjF (Mt (pinv w c) (p
 def piPerm : Equiv.Perm (Fin (D.R.rS + 1)) := ⟨pinv w, pinv w, pinv_pinv w, pinv_pinv w⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a c`. Simplify using `[Psi, map_sub, mul_sub]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Psi_sub (A B : MatR D) : Psi w (A - B) = Psi w A - Psi w B := by
   funext a c; simp [Psi, map_sub, mul_sub]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a c`. Simplify using `only [Psi, Matrix.mul_apply, map_sum, map_mul, Finset.mul_sum]`. Use `Fintype.sum_equiv (piPerm w) _ _ (fun e => ?_)` and prove the remaining obligations. Simplify using `only [piPerm, Equiv.coe_fn_mk, pinv_pinv]`. Rewrite using `[← sgm_mul a (pinv w e) c]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -119,9 +119,9 @@ theorem Psi_mul (A B : MatR D) : Psi w (A * B) = Psi w B * Psi w A := by
   rw [← sgm_mul a (pinv w e) c]; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a c`. Simplify using `only [Psi, Matrix.one_apply]`. Distinguish the cases in `h : a = c`. Substitute `h` using the available equality. Simplify using `[sgm_self]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: pinv w c ≠ pinv w a` using `fun e => h (pinv_inj w e).symm`. Simplify using `[this, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem Psi_one : Psi w (1 : MatR D) = 1 := by
   funext a c
@@ -132,14 +132,14 @@ theorem Psi_one : Psi w (1 : MatR D) = 1 := by
     simp [this, h]
 
 /- English proof (translation)
-Establish `: Psi w A⁻¹ * Psi w A = 1` using `by rw [← Psi_mul, Matrix.mul_nonsing_inv _ hA, Psi_one]`. Conclude with `(Matrix.inv_eq_left_inv this).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Psi_inv {A : MatR D} (hA : IsUnit A.det) : Psi w A⁻¹ = (Psi w A)⁻¹ := by
   have : Psi w A⁻¹ * Psi w A = 1 := by rw [← Psi_mul, Matrix.mul_nonsing_inv _ hA, Psi_one]
   exact (Matrix.inv_eq_left_inv this).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a c`. Simplify using `only [Psi, pinv_pinv, map_mul, Formalism.MainNotions.BridgeLemma.conjF_inv, sgm_conj]`. Distinguish the cases in `hs : blkOf w.1 a.val = blkOf w.1 c.val`. Rewrite using `[← mul_assoc, sgm_pinv w a c hs, one_mul]`. Rewrite using `[hB a c hs, mul_zero, mul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Psi_Psi {A : MatR D} (hB : IsBlockDiagonalMatrix w A) : Psi w (Psi w A) = A := by
   funext a c
@@ -149,7 +149,7 @@ theorem Psi_Psi {A : MatR D} (hB : IsBlockDiagonalMatrix w A) : Psi w (Psi w A) 
   · rw [hB a c hs, mul_zero, mul_zero]
 
 /- English proof (translation)
-Introduce `a c hne`. Establish `: blkOf w.1 (pinv w c).val ≠ blkOf w.1 (pinv w a).val`. Rewrite using `[blkOf_pinv, blkOf_pinv]`. Conclude with `fun e => hne e.symm`. Simplify using `only [Psi, hB _ _ this, map_zero, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules.
 -/
 theorem Psi_blk {A : MatR D} (hB : IsBlockDiagonalMatrix w A) : IsBlockDiagonalMatrix w (Psi w A) := by
   intro a c hne
@@ -158,11 +158,11 @@ theorem Psi_blk {A : MatR D} (hB : IsBlockDiagonalMatrix w A) : IsBlockDiagonalM
   simp only [Psi, hB _ _ this, map_zero, mul_zero]
 
 /- English proof (translation)
-Introduce `a c`. Use `⟨fun hca => ?_, fun hac => ?_⟩` and prove the remaining obligations. Simplify using `only [Psi]`. Distinguish the cases in `hs : blkOf w.1 a.val = blkOf w.1 c.val`. Use `(pinv_lt_iff w c a hs.symm).1 hca` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[(hU _ _).1 this, map_zero, mul_zero]`. Establish `: blkOf w.1 (pinv w c).val ≠ blkOf w.1 (pinv w a).val`. Rewrite using `[blkOf_pinv, blkOf_pinv]`. Conclude with `fun e => hs e.symm`. Rewrite using `[hB _ _ this, map_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Substitute `hac` using the available equality. Simplify using `[Psi, sgm_self, (hU _ _).2 rfl]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem Psi_upU {A : MatR D} (hU : UpU A) (hB : IsBlockDiagonalMatrix w A) : UpU (Psi w A) := by
   intro a c
@@ -177,15 +177,13 @@ theorem Psi_upU {A : MatR D} (hU : UpU A) (hB : IsBlockDiagonalMatrix w A) : UpU
   · subst hac; simp [Psi, sgm_self, (hU _ _).2 rfl]
 
 /- English proof (translation)
-Introduce `a c hac`. Simplify using `only [Psi]`. Distinguish the cases in `hs : blkOf w.1 a.val = blkOf w.1 c.val`. Establish `hle : pinv w c ≤ pinv w a`. Break down `eq_or_lt_of_le hac with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h]`. Conclude with `le_of_lt ((pinv_lt_iff w a c hs).1 h)`. Establish `hh : (pinv w a).val - (pinv w c).val = c.val - a.val`. Use `pinv_add w a c hs` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h1` using `hG _ _ hle`. Rewrite `h1` using `[hh]`. Establish `h2` using `dd_conj δ M hA (by have := c.isLt; omega) h1`. Break down `sgm_cases a c with e | e` into its components or cases. Rewrite using `[e, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Rewrite using `[e, neg_one_mul]`. Conclude with `(ddPow D _ : Submodule (𝓞 D.host.E) D.host.E).neg_mem h2`. Establish `: blkOf w.1 (pinv w c).val ≠ blkOf w.1 (pinv w a).val`. Rewrite using `[blkOf_pinv, blkOf_pinv]`.
-
-Conclude with `fun e => hs e.symm`. Rewrite using `[hB _ _ this, map_zero, mul_zero]`. Conclude with `FractionalIdeal.zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Psi_grD (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (hA : ∀ q, Agree δ M q) {A : MatR D} (hB : IsBlockDiagonalMatrix w A) (hG : GrD A) : GrD (Psi w A) := by
@@ -209,11 +207,11 @@ theorem Psi_grD (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Mod
     rw [hB _ _ this, map_zero, mul_zero]; exact FractionalIdeal.zero_mem _
 
 /- English proof (translation)
-Take `⟨hlo, hXi, hW, -⟩` from `st_of_X w hU hB`. Use `set β := ptMat w * X * (ptMat w)⁻¹`. Establish `hu` using `ptMat_isUnit w`. Establish `hβd : IsUnit β.det` using `by rw [loU_det (show LoU β from hlo)]; exact isUnit_one`. Establish `hXd : IsUnit X.det` using `by rw [upU_det hU]; exact isUnit_one`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW' : β⁻¹ * ptMat w * X = ptMat w`. Establish `: ptMat w * X⁻¹ = β⁻¹ * ptMat w`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc β]`. Conclude with `(Matrix.nonsing_inv_mul_cancel_left β _ hβd).symm`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `_ = β⁻¹ * ptMat w := by rw [hW]`. Rewrite using `[← this, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hXd, Matrix.mul_one]`. Take `⟨h1, -, h3⟩` from `X_of_st w (loU_inv (show LoU β from hlo)) hU hW'`. Rewrite `h3` using `[h1]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blk_inv {X : MatR D} (hU : UpU X) (hB : IsBlockDiagonalMatrix w X) : IsBlockDiagonalMatrix w X⁻¹ := by
   obtain ⟨hlo, hXi, hW, -⟩ := st_of_X w hU hB

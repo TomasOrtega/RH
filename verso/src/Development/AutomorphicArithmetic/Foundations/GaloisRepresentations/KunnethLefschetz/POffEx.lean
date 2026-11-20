@@ -5,11 +5,11 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.Etal
 open scoped TensorProduct DirectSum
 
 /- English proof (translation)
-Use `⟨fun {Z X} ι hι => ⟨⟨(Set.range ι)ᶜ, ι.isClosedEmbedding.isClosed_range.isOpen_compl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce `Z' X' Z X ι' ι f u h U hU`. Express the relevant statement in the definitionally equal form `f ⁻¹' (U : Set X) = _`. Rewrite using `[hU, Set.preimage_compl, ← Scheme.Pullback.range_fst]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨h.isoPullback.inv y, by rw [← Scheme.Hom.comp_apply, h.isoPullback_inv_fst]⟩`. Introduce and unpack `⟨y, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h.isoPullback.hom y, by rw [← Scheme.Hom.comp_apply, h.isoPullback_hom_fst]⟩`.
+Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.offEx_holds :
     UpperTheory.Gal.KunnethLefschetz.OffEx := by

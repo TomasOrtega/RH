@@ -8,7 +8,7 @@ namespace Formalism.FourierDecayAlt.P.CutMP.Gauge.GC
 noncomputable section
 
 /- English proof (translation)
-Unfold `MA.toSm`. Rewrite using `[dif_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem toSm_of_mem (P : M.Par) {u : MA.Qp P.r P.TT → ℂ} (h : u ∈ MA.smSub P.r P.TT) (q : MA.Qp P.r P.TT) :
     (MA.toSm P u : MA.Qp P.r P.TT → ℂ) q = u q := by
@@ -16,13 +16,13 @@ theorem toSm_of_mem (P : M.Par) {u : MA.Qp P.r P.TT → ℂ} (h : u ∈ MA.smSub
   rw [dif_pos h]
 
 /- English proof (translation)
-Introduce `hFL hGQ hML hRS hRaw hQL Wp Wq _ _ _ _ _ _ P Bs hPl hk hsec`. Take `⟨X⟩` from `Formalism.FourierDecayAlt.P.actual_operators_exist Wp Wq P Bs.z Bs.z' Bs.π Bs.π' hPl`. Take `⟨e, he, hQQ⟩` from `hGQ Wp Wq P Bs hPl hk hsec X`. Use `⟨e, he, fun Dc Φ hΦ Y a b ρ => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `q`. Establish `hLsm` using `hRaw Wp Wq P Bs hPl hk e he Dc _ (hQL Wp Wq P Bs hPl hk Dc Φ hΦ Y a b) ρ`. Rewrite using `[toSm_of_mem P hLsm q]`. Take `⟨Φt, V, hV, hagree⟩` from `hFL Wp Wq P Bs hPl hk X Dc Φ hΦ q`. Establish `h1 : rawR P Bs.μsec e (Q.QL P.k P.r Bs.z Bs.z' (Fin.last P.r) (Y : ℂ) a b Φ) ρ q = rawR P Bs.μsec e ((X.t (Y : ℂ) a b Φt : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ q`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `rawR`. Rewrite using `[((hagree q.1.2 (mem_of_mem_nhds hV)).2 (Y : ℂ) a b).symm]`. Rewrite using `[h1, ← toSm_of_mem P (hRS Wp Wq P Bs hPl hk e he (X.t (Y : ℂ) a b Φt) ρ) q]`. Use `show (trR P Bs e (X.t (Y : ℂ) a b Φt) ρ : MA.Qp P.r P.TT → ℂ) q = _`. Rewrite using `[hQQ Φt (Y : ℂ) a b]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hML P (trR P Bs e Φt) (fun ρ' => MA.toSm P (rawR P Bs.μsec e Φ ρ')) q.1.1 (interior V) isOpen_interior (fun ρ' q' hq'c hq'V => ?_) (Y : ℂ) a b ρ q rfl (mem_interior_iff_mem_nhds.2 hV)` and prove the remaining obligations. Use `show (MA.toSm P (rawR P Bs.μsec e (Φt : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ') : MA.Qp P.r P.TT → ℂ) q' = (MA.toSm P (rawR P Bs.μsec e Φ ρ') : MA.Qp P.r P.TT → ℂ) q'`. Rewrite using `[toSm_of_mem P (hRS Wp Wq P Bs hPl hk e he Φt ρ') q', toSm_of_mem P (hRaw Wp Wq P Bs hPl hk e he Dc Φ hΦ ρ') q']`. Unfold `rawR`. Rewrite using `[hq'c, (hagree q'.1.2 (interior_subset hq'V)).1]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem assumption_on_sections_holds : AsmSec := by
   intro hFL hGQ hML hRS hRaw hQL Wp Wq _ _ _ _ _ _ P Bs hPl hk hsec

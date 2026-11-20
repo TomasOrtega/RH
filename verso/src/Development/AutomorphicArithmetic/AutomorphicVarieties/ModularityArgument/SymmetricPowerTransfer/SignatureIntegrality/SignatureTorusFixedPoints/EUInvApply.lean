@@ -13,7 +13,7 @@ section Alg
 variable {K : Type} [Field K] {Δ s : K}
 
 /- English proof (translation)
-Rewrite using `[neg_mul_neg, hs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem neg_sq (hs : s * s = Δ) : (-s) * (-s) = Δ := by rw [neg_mul_neg, hs]
 
@@ -23,21 +23,19 @@ Both sides reduce to the same expression.
 private theorem proj_apply (hs : s * s = Δ) (x : Lsq K Δ) : proj hs x = x.re + s * x.im := rfl
 
 /- English proof (translation)
-Simplify using `[proj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem proj_star (hs : s * s = Δ) (x : Lsq K Δ) : proj hs (star x) = proj (neg_sq hs) x := by
   simp [proj_apply]
 
 /- English proof (translation)
-Simplify using `[proj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem proj_alg (hs : s * s = Δ) (a : K) : proj hs (algebraMap K (Lsq K Δ) a) = a := by
   simp [proj_apply]
 
 /- English proof (translation)
-Rewrite `e1`, `e2` using `[proj_apply, proj_apply]`. Establish `a : 2 * x.re = 2 * y.re` using `by linear_combination e1 + e2`. Establish `b : (2 * s) * x.im = (2 * s) * y.im` using `by linear_combination e1 - e2`. Use `ext`. Conclude with `mul_left_cancel₀ h2 a`.
-
-Conclude with `mul_left_cancel₀ (mul_ne_zero h2 h0) b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem proj_ext (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (hs : s * s = Δ) {x y : Lsq K Δ}
     (e1 : proj hs x = proj hs y) (e2 : proj (neg_sq hs) x = proj (neg_sq hs) y) : x = y := by
@@ -51,7 +49,7 @@ private theorem proj_ext (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (hs : s * s = Δ) {
 private def lft (s a b : K) : Lsq K Δ := ⟨(a + b) / 2, (a - b) / (2 * s)⟩
 
 /- English proof (translation)
-Rewrite using `[proj_apply]`. Use `show (a + b) / 2 + s * ((a - b) / (2 * s)) = a`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem proj_lft (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (hs : s * s = Δ) (a b : K) :
     proj hs (lft s a b) = a := by
@@ -61,7 +59,7 @@ private theorem proj_lft (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (hs : s * s = Δ) (
   ring
 
 /- English proof (translation)
-Rewrite using `[proj_apply]`. Use `show (a + b) / 2 + -s * ((a - b) / (2 * s)) = b`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem proj_lft' (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (hs : s * s = Δ) (a b : K) :
     proj (neg_sq hs) (lft s a b) = b := by
@@ -77,7 +75,7 @@ private theorem eU_val (hs : s * s = Δ) (g : U3 Δ) :
     ((eU hs g : GL (Fin 3) K) : Matrix (Fin 3) (Fin 3) K) = (g : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).map (proj hs) := rfl
 
 /- English proof (translation)
-Rewrite using `[← map_inv, eU_val, Matrix.map_apply, ← proj_star]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem eU_inv_apply (hs : s * s = Δ) (g : U3 Δ) (i j : Fin 3) :
     (((eU hs g)⁻¹ : GL (Fin 3) K) : Matrix (Fin 3) (Fin 3) K) i j =
@@ -92,7 +90,7 @@ private theorem theta_val (g : U3 Δ) :
     ((theta Δ g : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) = (g : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).map star := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[eU_val, theta_val]`. Use `show _ = ((eU hs g)⁻¹ : GL (Fin 3) K) j i`. Rewrite using `[eU_inv_apply, Matrix.map_apply, Matrix.map_apply, proj_star]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eU_theta (hs : s * s = Δ) (g : U3 Δ) : eU hs (theta Δ g) = th K 3 (eU hs g) := by
   ext i j
@@ -107,15 +105,15 @@ section Alg2
 variable {K : Type} [Field K] {Δ s : K}
 
 /- English proof (translation)
-Simplify using `[proj_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem proj_star' (hs : s * s = Δ) (x : Lsq K Δ) : proj (neg_sq hs) (star x) = proj hs x := by
   simp [proj_apply]
 
 /- English proof (translation)
-Introduce `g g' h`. Use `Subtype.ext (Matrix.ext fun i j => proj_ext h2 h0 hs ?_ ?_)` and prove the remaining obligations. Use `congrArg (fun x : GL (Fin 3) K => (x : Matrix (Fin 3) (Fin 3) K) i j) h` as an intermediate fact. Simplify `this` using `only [eU_val, Matrix.map_apply]`. Use `congrArg (fun x : GL (Fin 3) K => ((x⁻¹ : GL (Fin 3) K) : Matrix (Fin 3) (Fin 3) K) j i) h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `only [eU_inv_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem eU_inj (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (hs : s * s = Δ) : Function.Injective (eU hs) := by
   intro g g' h
@@ -126,21 +124,19 @@ private theorem eU_inj (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (hs : s * s = Δ) : F
     simpa only [eU_inv_apply] using this
 
 /- English proof (translation)
-Introduce `A`. Use `set B : Matrix (Fin 3) (Fin 3) K := ((A⁻¹ : GL (Fin 3) K) : Matrix (Fin 3) (Fin 3) K) with hB`. Set `M : Matrix (Fin 3) (Fin 3) (Lsq K Δ)` to `Matrix.of fun i j => lft s ((A : Matrix (Fin 3) (Fin 3) K) i j) (B j i)`. Establish `p1 : M.map (proj hs) = (A : Matrix (Fin 3) (Fin 3) K)`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `proj_lft h2 h0 hs _ _`. Establish `p2 : M.map (proj (neg_sq hs)) = Bᵀ`. Use extensionality with `i j`. Conclude with `proj_lft' h2 h0 hs _ _`. Establish `q1 : (star M).map (proj hs) = B`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.star_apply, proj_star]`. Establish `e` using `congrFun (congrFun p2 j) i`. Simplify `e` using `only [Matrix.map_apply, Matrix.transpose_apply]`. Establish `q2 : (star M).map (proj (neg_sq hs)) = (A : Matrix (Fin 3) (Fin 3) K)ᵀ`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.star_apply, proj_star']`. Establish `e` using `congrFun (congrFun p1 j) i`. Simplify `e` using `only [Matrix.map_apply, Matrix.transpose_apply]`. Establish `hBA : B * (A : Matrix (Fin 3) (Fin 3) K) = 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB]`. Conclude with `A.inv_mul`. Establish `e1 : (star M * M).map (proj hs) = (1 : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).map (proj hs)`. Rewrite using `[Matrix.map_mul, q1, p1, hBA, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e2 : (star M * M).map (proj (neg_sq hs)) = (1 : Matrix (Fin 3) (Fin 3) (Lsq K Δ)).map (proj (neg_sq hs))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Matrix.map_mul, q2, p2, ← Matrix.transpose_mul, hBA, Matrix.transpose_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hu : star M * M = 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply `proj_ext h2 h0 hs` to reduce the goal to its premises. Establish `e` using `congrFun (congrFun e1 i) j`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `e` using `only [Matrix.map_apply]`. Establish `e` using `congrFun (congrFun e2 i) j`. Simplify `e` using `only [Matrix.map_apply]`. Use `⟨⟨M, (Matrix.mem_unitaryGroup_iff').2 hu⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises.
-
-Rewrite using `[eU_val]`. Conclude with `p1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eU_surj (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (hs : s * s = Δ) : Function.Surjective (eU hs) := by
   intro A
@@ -185,19 +181,19 @@ private theorem eU_surj (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (hs : s * s = Δ) : 
   exact p1
 
 /- English proof (translation)
-Use `set N : Matrix (Fin 3) (Fin 3) (Lsq K Δ) := ((δ * theta Δ δ : U3 Δ) : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) with hN`. Use `set Q : K[X] := (X - 1) * (X ^ 2 - C τ * X + 1) with hQ`. Establish `hQ' : ((X - 1) * (X ^ 2 - C (algebraMap K (Lsq K Δ) τ) * X + 1) : (Lsq K Δ)[X]) = Q.map (algebraMap K (Lsq K Δ))`. Simplify using `[hQ]`. Establish `hA : ((eU hs δ * th K 3 (eU hs δ) : GL (Fin 3) K) : Matrix (Fin 3) (Fin 3) K) = N.map (proj hs)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← eU_theta, ← map_mul, eU_val]`. Establish `htt : theta Δ (theta Δ δ) = δ`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[theta_val, theta_val]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show star (star ((δ : Matrix (Fin 3) (Fin 3) (Lsq K Δ)) i j)) = _`. Conclude with `star_star _`. Establish `hθ : (theta Δ δ * δ : U3 Δ) = theta Δ (δ * theta Δ δ)`. Rewrite using `[map_mul, htt]`. Establish `hB : N.map (proj (neg_sq hs)) = ((eU hs (theta Δ δ) * eU hs δ : GL (Fin 3) K) : Matrix (Fin 3) (Fin 3) K)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, eU_val, hθ, theta_val]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, Matrix.map_apply, Matrix.map_apply, proj_star]`. Establish `h1 : N.charpoly.map (proj hs) = ((eU hs δ * th K 3 (eU hs δ) : GL (Fin 3) K) : Matrix (Fin 3) (Fin 3) K).charpoly`. Rewrite using `[hA, Matrix.charpoly_map]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `h2' : N.charpoly.map (proj (neg_sq hs)) = ((eU hs δ * th K 3 (eU hs δ) : GL (Fin 3) K) : Matrix (Fin 3) (Fin 3) K).charpoly`. Rewrite using `[← Matrix.charpoly_map, hB, ← eU_theta, Units.val_mul, Units.val_mul, Matrix.charpoly_mul_comm]`. Use `show N.charpoly = _ ↔ _`. Rewrite using `[hQ']`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite using `[← h1, h, Polynomial.map_map]`. Establish `hc : (proj hs).comp (algebraMap K (Lsq K Δ)) = RingHom.id K` using `RingHom.ext (proj_alg hs)`. Rewrite using `[hc, Polynomial.map_id]`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Polynomial.ext fun n => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.coeff_map]`. Apply `proj_ext h2 h0 hs` to reduce the goal to its premises. Rewrite using `[proj_alg, ← Polynomial.coeff_map, h1, h]`. Rewrite using `[proj_alg, ← Polynomial.coeff_map, h2', h]`.
+A detailed English derivation is pending.
 -/
 private theorem hasTau_iff (h2 : (2 : K) ≠ 0) (h0 : s ≠ 0) (hs : s * s = Δ) (δ : U3 Δ) (τ : K) :
     HasTau δ τ ↔ ((eU hs δ * th K 3 (eU hs δ) : GL (Fin 3) K) : Matrix (Fin 3) (Fin 3) K).charpoly =
@@ -250,7 +246,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {O : Type} [CommRing O] [Algebra O k] {Δ s : k}
 
 /- English proof (translation)
-Establish `hv : (valuation k).Integers O` using `⟨hO.inj, fun x => (hO.range _).1 ⟨x, rfl⟩, fun x hx => (hO.range x).2 hx⟩`. Conclude with `hv.mem_of_integral h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem val_of_int (hO : IsInts k O) {a : k} (h : IsIntegral O a) : valuation k a ≤ 1 := by
   have hv : (valuation k).Integers O :=
@@ -258,13 +254,13 @@ private theorem val_of_int (hO : IsInts k O) {a : k} (h : IsIntegral O a) : valu
   exact hv.mem_of_integral h
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply O k (Lsq k Δ), proj_alg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem proj_algO (hs : s * s = Δ) (r : O) : proj hs (algebraMap O (Lsq k Δ) r) = algebraMap O k r := by
   rw [IsScalarTower.algebraMap_apply O k (Lsq k Δ), proj_alg]
 
 /- English proof (translation)
-Establish `hc : (algebraMap O k).comp (RingHom.id O) = (proj hs).comp (algebraMap O (Lsq k Δ))` using `RingHom.ext fun r => (proj_algO hs r).symm`. Conclude with `IsIntegral.map_of_comp_eq (RingHom.id O) (proj hs) hc h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem int_proj (hs : s * s = Δ) {x : Lsq k Δ} (h : IsIntegral O x) : IsIntegral O (proj hs x) := by
   have hc : (algebraMap O k).comp (RingHom.id O) = (proj hs).comp (algebraMap O (Lsq k Δ)) :=
@@ -272,11 +268,11 @@ private theorem int_proj (hs : s * s = Δ) {x : Lsq k Δ} (h : IsIntegral O x) :
   exact IsIntegral.map_of_comp_eq (RingHom.id O) (proj hs) hc h
 
 /- English proof (translation)
-Establish `hsum : valuation k (proj hs x + proj (neg_sq hs) x) ≤ 1` using `(valuation k).map_add_le e1 e2`. Establish `hprod : valuation k (proj hs x * proj (neg_sq hs) x) ≤ 1`. Rewrite using `[map_mul]`. Conclude with `mul_le_one' e1 e2`. Take `⟨p, hp⟩` from `RingHom.mem_range.1 ((hO.range _).2 hsum)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `RingHom.mem_range.1 ((hO.range _).2 hprod)`. Use `⟨X ^ 2 - C p * X + C q, by monicity!, ?_⟩` and prove the remaining obligations. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_X_pow, Polynomial.eval₂_C, Polynomial.eval₂_X]`. Rewrite using `[IsScalarTower.algebraMap_apply O k (Lsq k Δ) p, IsScalarTower.algebraMap_apply O k (Lsq k Δ) q, hp, hq]`. Apply `proj_ext h2 h0 hs` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, map_sub, map_mul, map_pow, proj_alg, map_zero]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [map_add, map_sub, map_mul, map_pow, proj_alg, map_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem int_of_val (hO : IsInts k O) (h2 : (2 : k) ≠ 0) (h0 : s ≠ 0) (hs : s * s = Δ) {x : Lsq k Δ}
     (e1 : valuation k (proj hs x) ≤ 1) (e2 : valuation k (proj (neg_sq hs) x) ≤ 1) : IsIntegral O x := by
@@ -297,15 +293,13 @@ private theorem int_of_val (hO : IsInts k O) (h2 : (2 : k) ≠ 0) (h0 : s ≠ 0)
     ring
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[Subgroup.mem_comap, GlAx.mem_KO, GlAx.bd_zero, GlAx.bd_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hA, hB⟩`. Establish `a1 : ∀ i j, valuation k (proj hs ((g : Matrix (Fin 3) (Fin 3) (Lsq k Δ)) i j)) ≤ 1` using `fun i j => by`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e` using `hA i j`. Rewrite `e` using `[eU_val, Matrix.map_apply, Valuation.mem_integer_iff]`. Conclude with `e`. Establish `a2 : ∀ i j, valuation k (proj (neg_sq hs) ((g : Matrix (Fin 3) (Fin 3) (Lsq k Δ)) i j)) ≤ 1` using `fun i j => by`. Establish `e` using `hB j i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[eU_inv_apply, Valuation.mem_integer_iff]`. Conclude with `e`. Use `show ∀ i j, _ ∧ _`. Use `fun i j => ⟨int_of_val hO h2 h0 hs (a1 i j) (a2 i j), int_of_val hO h2 h0 hs ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[proj_star]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `a2 i j`. Rewrite using `[proj_star']`. Conclude with `a1 i j`. Introduce `hg`. Establish `hg' : ∀ i j, IsIntegral O ((g : Matrix (Fin 3) (Fin 3) (Lsq k Δ)) i j) ∧ IsIntegral O (star ((g : Matrix (Fin 3) (Fin 3) (Lsq k Δ)) i j))` using `hg`.
-
-Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[eU_val, Matrix.map_apply, Valuation.mem_integer_iff]`. Conclude with `val_of_int hO (int_proj hs (hg' i j).1)`. Rewrite using `[eU_inv_apply, ← proj_star hs, Valuation.mem_integer_iff]`. Conclude with `val_of_int hO (int_proj hs (hg' j i).2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comap_KO (hO : IsInts k O) (h2 : (2 : k) ≠ 0) (h0 : s ≠ 0) (hs : s * s = Δ) :
     (KO k (Fin 3)).comap (eU hs) = KU O Δ := by
@@ -339,7 +333,7 @@ private theorem comap_KO (hO : IsInts k O) (h2 : (2 : k) ≠ 0) (h0 : s ≠ 0) (
 end Int
 
 /- English proof (translation)
-Introduce `k _ _ _ _ O _ _ hO h2 Δ s hs h0`. Conclude with `⟨⟨eU_inj h2 h0 hs, eU_surj h2 h0 hs⟩, eU_theta hs, comap_KO hO h2 h0 hs, hasTau_iff h2 h0 hs⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem eU_facts : EU := by
   intro k _ _ _ _ O _ _ hO h2 Δ s hs h0

@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.TopLevelInv
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Rewrite using `[Equiv.symm_apply_eq]`. Use `ext`. Simplify using `only [frame, Equiv.trans_apply, finCongr_apply, Fin.val_cast]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem frame_symm_of_zero {a c b : ℕ} (h : a + c = b) (hc : c = 0) (p : Fin b) :
     (frame h).symm p = Sum.inl ⟨p.val, by omega⟩ := by
@@ -23,11 +23,11 @@ theorem frame_symm_of_zero {a c b : ℕ} (h : a + c = b) (hc : c = 0) (p : Fin b
   rfl
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ Γ hs j hj hB g κ hg x x' e e' hx`. Establish `hr : Γ.rank (Γ.m, j + 1) = topRank Γ (j + 1)` using `by have := topRank_add hs (j + 1); omega`. Establish `hval : ∀ p q, g.val p q = κ.val (Fin.cast hr p) (Fin.cast hr q)`. Introduce `p q`. Establish `h1 : g = (toFrame hs hj).symm (embX _ κ)` using `by rw [← hg, MulEquiv.symm_apply_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Unfold `toFrame`. Rewrite using `[frameGL_symm_val, submatrix_apply, frame_symm_of_zero _ (by omega), frame_symm_of_zero _ (by omega)]`. Both sides reduce to the same expression. Unfold `downMap`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_neg (by omega), dif_pos (by omega), dif_neg (by omega), dif_pos (by omega), hx]`. Use extensionality with `r q`. Simplify using `only [submatrix_apply, mul_apply, hval]`. Conclude with `(Fintype.sum_equiv (finCongr hr) _ _ (fun p => rfl)).symm`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem downMap_last_mul_of_toFrame_eq : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] {Γ : Grid k} (hs : 1 ≤ Γ.s) (j : ℕ) (hj : j + 1 < Γ.m) (hB : j + 2 = Γ.m)
     (g : GL (Fin (Γ.rank (Γ.m, j + 1))) k) (κ : GL (Fin (topRank Γ (j + 1))) k),

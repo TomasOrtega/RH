@@ -6,9 +6,9 @@ import Development.WeilBound.CoreStatements.FlagImmersions.IntersectionMultiline
 open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm ReciprocityTheory.AnForm.M ReciprocityTheory.AnForm.P ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I2 ReciprocityTheory.ChartRestriction.G.AI.I4 GlobalTheory.CompanionTheory.Ar.PB GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree
 
 /- English proof (translation)
-Unfold `IsSmoothHerm`. Establish `hfun : (combLine A d).h = fun z => ∏ x : σ, (A x).h z ^ d x` using `funext (combLine_h A d)`. Rewrite using `[hfun]`. Apply `contDiffOn_prod` to reduce the goal to its premises. Introduce `x _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Int.eq_nat_or_neg (d x) with ⟨m, hm | hm⟩` into its components or cases. Repeatedly rewrite using `[hm, zpow_natCast]`. Conclude with `(hA x).pow m`. Repeatedly rewrite using `[hm, zpow_neg, zpow_natCast]`. Conclude with `((hA x).pow m).inv (fun z hz => pow_ne_zero _ ((A x).pos z hz).ne')`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isSmoothHerm_combLine' {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {σ : Type}
     [Fintype σ] (A : σ → HermLine ι) (hA : ∀ a, IsSmoothHerm (A a)) (d : σ → ℤ) :
@@ -26,29 +26,27 @@ private theorem isSmoothHerm_combLine' {K : Type} [Fintype K] {ι : K → Type} 
     exact ((hA x).pow m).inv (fun z hz => pow_ne_zero _ ((A x).pos z hz).ne')
 
 /- English proof (translation)
-Establish `hsm : ∀ (M : HermLine ι), IsSmoothHerm M → ∀ r, IsSmoothHerm (Function.update L j M r)`. Introduce `M hM r`. Distinguish the cases in `h : r = j`. Substitute `h` using the available equality. Simplify using `using hM`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hL r` using `[Function.update_of_ne h]`. Establish `hloc : ∀ M M' : HermLine ι, IsSmoothHerm M → IsSmoothHerm M' → M.a = M'.a → (∀ z ∈ mcPts P, M.h z = M'.h z) → II K ι P n (Function.update L j M) = II K ι P n (Function.update L j M')`. Introduce `M M' hM hM' ha hh`. Apply `hML K ι (II K ι) (hII.1 K ι) P n _ _ hP (hsm M hM) (hsm M' hM')` to reduce the goal to its premises. Introduce `r`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : r = j`. Substitute `h` using the available equality. Simplify using `[ha]`. Simplify using `[Function.update_of_ne h]`. Introduce `r z hz`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : r = j`. Substitute `h` using the available equality. Simplify using `using hh z hz`. Simplify using `[Function.update_of_ne h]`. Set `G : (σ → ℤ) → ℝ` to `fun d => II K ι P n (Function.update L j (combLine A d))`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hadd : ∀ d d', G (d + d') = G d + G d'`. Introduce `d d'`. Establish `h1 : G (d + d') = II K ι P n (Function.update L j ((combLine A d).tensor (combLine A d')))`. Apply `hloc _ _ (isSmoothHerm_combLine' A hA _) (by unfold IsSmoothHerm; exact (isSmoothHerm_combLine' A hA d).mul (isSmoothHerm_combLine' A hA d'))` to reduce the goal to its premises. Use function extensionality and compare the values at `k show (combLine A (d + d')).a k = (combLine A d).a k + (combLine A d').a k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[combLine_a, combLine_a, combLine_a, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `z hz show (combLine A (d + d')).h z = (combLine A d).h z * (combLine A d').h z`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[combLine_h, combLine_h, combLine_h, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Conclude with `zpow_add₀ ((A x).pos z hz.1).ne' _ _`. Rewrite using `[h1]`. Conclude with `hII.2.1 K ι P n L j _ _ hP hL (isSmoothHerm_combLine' A hA d) (isSmoothHerm_combLine' A hA d')`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsingle : ∀ a, G (Pi.single a 1) = II K ι P n (Function.update L j (A a))`. Introduce `a`. Apply `hloc _ _ (isSmoothHerm_combLine' A hA _) (hA a)` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Rewrite using `[combLine_a]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Pi.single_apply]`. Introduce `z _`. Rewrite using `[combLine_h, Finset.prod_eq_single a]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, hb]`. Simplify using the standard rewrite rules. Set `Gh : (σ → ℤ) →+ ℝ` to `AddMonoidHom.mk' G hadd`. Establish `hd : d = ∑ a, d a • Pi.single a (1 : ℤ)`. Use function extensionality and compare the values at `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `show G d = _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_zsmul, zsmul_eq_mul]`. Both sides reduce to the same expression. Use `_ = _ := by simp_rw [hsingle]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem II_update_combLine (hML : MetricLocalStatement) (II : IntersectionSystem)
     (hII : IsFullIntersectionSystem II) (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
@@ -126,41 +124,39 @@ private theorem II_update_combLine (hML : MetricLocalStatement) (II : Intersecti
     _ = _ := by simp_rw [hsingle]
 
 /- English proof (translation)
-Unfold `polar`. Break down `isEmpty_or_nonempty σ with hσ | ⟨⟨a0⟩⟩` into its components or cases. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite using `[Fintype.sum_unique]`. Simplify using `only [Finset.univ_eq_empty, Finset.prod_empty, one_mul]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `r`. Conclude with `r.elim0`. Take `⟨j⟩ : Nonempty (Fin n)` from `⟨⟨0, hn⟩⟩ haveI : IsEmpty (Fin n → σ) := ⟨fun w => hσ.elim (w j)⟩`. Establish `e : (fun r => combLine A (c r)) = Function.update (fun r => combLine A (c r)) j (combLine A (c j))` using `by simp`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, II_update_combLine hML II hII K ι σ P n A hA hP _ (fun r => isSmoothHerm_combLine' A hA (c r)) j (c j)]`. Simplify using `[Finset.univ_eq_empty]`. Set `t : Finset (Fin n) → Fin n → Finset σ` to `fun S r => if r ∈ S then Finset.univ else {a0}`. Set `line : Finset (Fin n) → (Fin n → σ) → Fin n → HermLine ι` to `fun S w r => if r ∈ S then A (w r) else combLine A (c r)`. Establish `hsm : ∀ S w r, IsSmoothHerm (line S w r)`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S w r`. Simplify using `only [line]`. Use `split_ifs`. Conclude with `hA _`. Conclude with `isSmoothHerm_combLine' A hA _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : ∀ S : Finset (Fin n), II K ι P n (fun r => combLine A (c r)) = ∑ w ∈ Fintype.piFinset (t S), (∏ r ∈ S, (c r (w r) : ℝ)) * II K ι P n (line S w)`. Introduce `S`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Establish `h0 : Fintype.piFinset (t ∅) = {fun _ => a0}`. Use extensionality with `w`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[t, Fintype.mem_piFinset, funext_iff]`. Rewrite using `[h0, Finset.sum_singleton]`. Simplify using `[line]`. Introduce `j S hj ih`. Rewrite using `[ih]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hexp : ∀ w ∈ Fintype.piFinset (t S), (∏ r ∈ S, (c r (w r) : ℝ)) * II K ι P n (line S w) = ∑ a, (∏ r ∈ insert j S, (c r (Function.update w j a r) : ℝ)) * II K ι P n (line (insert j S) (Function.update w j a))`. Introduce `w _`. Establish `hl : line S w = Function.update (line S w) j (combLine A (c j))`. Use function extensionality and compare the values at `r`. Distinguish the cases in `h : r = j`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Simplify using `[line, hj]`. Simplify using `[Function.update_of_ne h]`. Rewrite using `[hl, II_update_combLine hML II hII K ι σ P n A hA hP _ (hsm S w) j (c j), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hupd : Function.update (line S w) j (A a) = line (insert j S) (Function.update w j a)`. Use function extensionality and compare the values at `r`. Distinguish the cases in `h : r = j`. Substitute `h` using the available equality. Simplify using `[line]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[line, Function.update_of_ne h, Finset.mem_insert, h]`. Rewrite using `[hupd, Finset.prod_insert hj, Function.update_self]`. Establish `hprod : ∏ r ∈ S, (c r (Function.update w j a r) : ℝ) = ∏ r ∈ S, (c r (w r) : ℝ)` using `Finset.prod_congr rfl fun r hr => by`. Establish `hrj : r ≠ j` using `fun h => hj (h ▸ hr)`. Rewrite using `[Function.update_of_ne hrj]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hprod]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl hexp, ← Finset.sum_product']`. Apply `Finset.sum_nbij' (fun p => Function.update p.1 j p.2) (fun w => (Function.update w j a0, w j))` to reduce the goal to its premises. Introduce and unpack `⟨w, a⟩ hp`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Finset.mem_coe, Finset.mem_product, Fintype.mem_piFinset] at hp ⊢`. Introduce `r`. Distinguish the cases in `h : r = j`. Substitute `h` using the available equality. Simplify using `[t]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.update_of_ne h]`. Use `hp.1 r` as an intermediate fact. Simplify `this` using `[t, Finset.mem_insert, h]`. Introduce `w hw`. Simplify using `only [Finset.mem_coe, Finset.mem_product, Finset.mem_univ, and_true, Fintype.mem_piFinset] at hw ⊢`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Introduce `r`. Distinguish the cases in `h : r = j`. Substitute `h` using the available equality. Simplify using `[t, hj]`. Rewrite using `[Function.update_of_ne h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Use `hw r` as an intermediate fact. Simplify `this` using `[t, Finset.mem_insert, h]`. Introduce and unpack `⟨w, a⟩ hp`. Simplify using `only [Finset.mem_coe, Finset.mem_product, Fintype.mem_piFinset] at hp`. Establish `hwj : w j = a0` using `by simpa [t, hj] using hp.1 j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Function.update_idem, ← hwj]`. Introduce `w _`. Simplify using `[Function.update_idem]`. Introduce `p _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[key Finset.univ]`. Establish `hu : Fintype.piFinset (t Finset.univ) = Finset.univ`. Use extensionality with `w`. Simplify using `[t]`. Rewrite using `[hu]`.
-
-Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `[line]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem II_combLine_eq_polar (hML : MetricLocalStatement) (II : IntersectionSystem)
     (hII : IsFullIntersectionSystem II) (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
@@ -266,7 +262,7 @@ private theorem II_combLine_eq_polar (hML : MetricLocalStatement) (II : Intersec
     simp [line]
 
 /- English proof (translation)
-Introduce `hML II hII K _ ι _ σ _ P n A c hP hA`. Conclude with `⟨fun r => isSmoothHerm_combLine' A hA (c r), II_combLine_eq_polar hML II hII K ι σ P n A c hP hA⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem PositivityTheory.Xgp.t_re_comb : MetricLocalStatement → ∀ (II : IntersectionSystem), IsFullIntersectionSystem II → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (σ : Type) [Fintype σ] (P : Ideal (MRing ι)) (n : ℕ) (A : σ → HermLine ι) (c : Fin n → σ → ℤ), IsArithVar P n → (∀ a, IsSmoothHerm (A a)) → (∀ r, IsSmoothHerm (combLine A (c r))) ∧ II K ι P n (fun r => combLine A (c r)) = polar n (fun w => II K ι P n fun r => A (w r)) (fun r a => (c r a : ℝ)) := by
   intro hML II hII K _ ι _ σ _ P n A c hP hA

@@ -40,7 +40,7 @@ namespace GlobalTheory.RealLift.Main
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM, piInf, compInf, inclR, infEmb_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_map_piInf {n m : Type} (J : Matrix n m E) {w : InfinitePlace F} (τ : EmbOver E w) :
     (incM F J).map (piInf τ) = J.map τ.1 := by
@@ -48,11 +48,9 @@ theorem incM_map_piInf {n m : Type} (J : Matrix n m E) {w : InfinitePlace F} (τ
   simp [incM, piInf, compInf, inclR, infEmb_tmul]
 
 /- English proof (translation)
-Introduce `z hz`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, h z hz, h' z hz, ← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `: piInf (τ w) (z : AE F E) / (‖piInf (τ w) (z : AE F E)‖ : ℂ) ≠ 0`. Establish `h0 : piInf (τ w) (z : AE F E) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `e`. Use `congrArg (piInf (τ w)) z.mul_inv` as an intermediate fact. Rewrite `this` using `[map_mul, e, zero_mul, map_one]`. Conclude with `zero_ne_one this`. Conclude with `div_ne_zero h0 (by exact_mod_cast norm_ne_zero_iff.2 h0)`.
-
-Rewrite using `[zpow_sub₀ this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasExp_div (τ : ∀ w : InfinitePlace F, EmbOver E w) {χ χ' : Chr F E} {m m' : InfinitePlace F → ℤ}
     (h : HasExp τ χ m) (h' : HasExp τ χ' m') : HasExp τ (χ / χ') (fun w => m w - m' w) := by
@@ -73,9 +71,9 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {V W : ι → Type} [∀ i, A
   [∀ i, AddCommGroup (W i)] [∀ i, Module ℂ (W i)]
 
 /- English proof (translation)
-Unfold `atPl`. Rewrite using `[← PiTensorProduct.map_comp, ← PiTensorProduct.map_comp]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = w`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hi` using the available equality. Simplify using `[h]`. Simplify using `[Function.update_of_ne hi]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_atPl (p : ∀ i, V i →ₗ[ℂ] W i) (w : ι) (L : Module.End ℂ (V w)) (L' : Module.End ℂ (W w))
     (h : p w ∘ₗ L = L' ∘ₗ p w) : PiTensorProduct.map p ∘ₗ atPl w L = atPl w L' ∘ₗ PiTensorProduct.map p := by
@@ -88,7 +86,7 @@ theorem map_atPl (p : ∀ i, V i →ₗ[ℂ] W i) (w : ι) (L : Module.End ℂ (
   · simp [Function.update_of_ne hi]
 
 /- English proof (translation)
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [sumPl, LinearMap.comp_apply, LinearMap.sum_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => LinearMap.congr_fun (map_atPl p i (L i) (L' i) (h i)) x`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_sumPl (p : ∀ i, V i →ₗ[ℂ] W i) (L : ∀ i, Module.End ℂ (V i)) (L' : ∀ i, Module.End ℂ (W i))
     (h : ∀ i, p i ∘ₗ L i = L' i ∘ₗ p i) : PiTensorProduct.map p ∘ₗ sumPl L = sumPl L' ∘ₗ PiTensorProduct.map p := by
@@ -99,132 +97,132 @@ theorem map_sumPl (p : ∀ i, V i →ₗ[ℂ] W i) (L : ∀ i, Module.End ℂ (V
 end Tensor
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.multOne'`.
+A detailed English derivation is pending.
 -/
 theorem i_multone : GlobalTheory.RealLift.MultOne := GlobalTheory.T.multOne'
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.FormExists`.
+A detailed English derivation is pending.
 -/
 theorem i_formex : GlobalTheory.RealLift.FormEx := GlobalTheory.T.FormExists
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.hasForm_neg_of_pair_bounds`.
+A detailed English derivation is pending.
 -/
 theorem i_formdual : GlobalTheory.RealLift.FormEx → ∀ (P Q R S : ℕ) (x : ℚ) (k k' : ℕ), P ≤ S → Q ≤ R → 0 < k → 0 < k' → x - Formalism.BasicNotions.TH.cPair S R = k → x + Formalism.BasicNotions.TH.cPair S R = k' → GlobalTheory.RealLift.HasForm P Q R S (-x) := GlobalTheory.T.hasForm_neg_of_pair_bounds
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_nontrivial_lift_module`.
+A detailed English derivation is pending.
 -/
 theorem i_quot : ∀ (P Q R S : ℕ) (x t : ℚ), GlobalTheory.RealLift.HasForm P Q R S x → ∃ (M : Formalism.BasicNotions.TH.GKMod R S) (pr : Formalism.BasicNotions.TH.Pol P Q R S →ₗ[ℂ] M.V), GlobalTheory.RealLift.IsLift x t M pr ∧ Nontrivial M.V := GlobalTheory.T.exists_nontrivial_lift_module
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_joint_shape_generated`.
+A detailed English derivation is pending.
 -/
 theorem i_gen : ∀ (P Q R S : ℕ) (x t : ℚ) (M : Formalism.BasicNotions.TH.GKMod R S) (pr : Formalism.BasicNotions.TH.Pol P Q R S →ₗ[ℂ] M.V), GlobalTheory.RealLift.IsLift x t M pr → Nontrivial M.V → ∃ μ' : Formalism.BasicNotions.TH.Ix R S → ℚ, Formalism.BasicNotions.TH.JointShape P Q R S (fun _ => x) μ' ∧ GlobalTheory.RealLift.GenBy M (fun c => μ' c + t) := GlobalTheory.T.exists_joint_shape_generated
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_harmonic_highest_weight`.
+A detailed English derivation is pending.
 -/
 theorem i_harm : ∀ (P Q R S : ℕ) (x t : ℚ) (M : Formalism.BasicNotions.TH.GKMod R S) (pr : Formalism.BasicNotions.TH.Pol P Q R S →ₗ[ℂ] M.V), GlobalTheory.RealLift.IsLift x t M pr → ∀ (μ : Formalism.BasicNotions.TH.Ix R S → ℚ) (w : M.V), Formalism.BasicNotions.TH.IsHW M.act μ w → ∃ f : Formalism.BasicNotions.TH.Pol P Q R S, GlobalTheory.RealLift.IsHarmVec x (fun c => μ c - t) f := GlobalTheory.T.exists_harmonic_highest_weight
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.casimir_lt_add_root`.
+A detailed English derivation is pending.
 -/
 theorem i_steepv : ∀ (P Q P' Q' R S : ℕ) (κ : ℤ), GlobalTheory.RealLift.Num P Q P' Q' R S κ → ∀ a b : Formalism.BasicNotions.TH.Ix R S, ¬ Formalism.BasicNotions.TH.sameBlock a b → ∀ f : Formalism.BasicNotions.TH.Pol P Q R S, GlobalTheory.RealLift.IsHarmVec ((κ : ℚ) / 2) (GlobalTheory.RealLift.addRoot (GlobalTheory.RealLift.lam P Q R S κ) a b) f → GlobalTheory.RealLift.casK (GlobalTheory.RealLift.lam P Q R S κ) + ((R + S : ℕ) : ℚ) < GlobalTheory.RealLift.casK (GlobalTheory.RealLift.addRoot (GlobalTheory.RealLift.lam P Q R S κ) a b) := GlobalTheory.T.casimir_lt_add_root
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.casimir_lt_add_root_neg`.
+A detailed English derivation is pending.
 -/
 theorem i_steepw : ∀ (P Q P' Q' R S : ℕ) (κ : ℤ), GlobalTheory.RealLift.Num P Q P' Q' R S κ → ∀ a b : Formalism.BasicNotions.TH.Ix R S, ¬ Formalism.BasicNotions.TH.sameBlock a b → ∀ f : Formalism.BasicNotions.TH.Pol P' Q' R S, GlobalTheory.RealLift.IsHarmVec (-((κ : ℚ) / 2)) (fun c => GlobalTheory.RealLift.addRoot (GlobalTheory.RealLift.lam P Q R S κ) a b c - (κ : ℚ) / 2) f → GlobalTheory.RealLift.casK (GlobalTheory.RealLift.lam P Q R S κ) + ((R + S : ℕ) : ℚ) < GlobalTheory.RealLift.casK (GlobalTheory.RealLift.addRoot (GlobalTheory.RealLift.lam P Q R S κ) a b) := GlobalTheory.T.casimir_lt_add_root_neg
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.joint_shape_forced_lambda`.
+A detailed English derivation is pending.
 -/
 theorem i_shape : ∀ (P Q P' Q' R S : ℕ) (κ : ℤ), GlobalTheory.RealLift.Num P Q P' Q' R S κ → (∀ μ' : Formalism.BasicNotions.TH.Ix R S → ℚ, Formalism.BasicNotions.TH.JointShape P Q R S (fun _ => (κ : ℚ) / 2) μ' → μ' = GlobalTheory.RealLift.lam P Q R S κ) ∧ ∀ μ' : Formalism.BasicNotions.TH.Ix R S → ℚ, Formalism.BasicNotions.TH.JointShape P' Q' R S (fun _ => -((κ : ℚ) / 2)) μ' → (fun c => μ' c + (κ : ℚ) / 2) = GlobalTheory.RealLift.lam P Q R S κ := GlobalTheory.T.joint_shape_forced_lambda
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_common_irreducible_quotient`.
+A detailed English derivation is pending.
 -/
 theorem i_cq : GlobalTheory.RealLift.MultOne → ∀ (R S : ℕ) (M M' : Formalism.BasicNotions.TH.GKMod R S) (Λ : Formalism.BasicNotions.TH.Ix R S → ℚ), GlobalTheory.RealLift.GenBy M Λ → GlobalTheory.RealLift.GenBy M' Λ → GlobalTheory.RealLift.Steep M Λ → GlobalTheory.RealLift.Steep M' Λ → ∃ (N : Formalism.BasicNotions.TH.GKMod R S) (π : M.V →ₗ[ℂ] N.V) (π' : M'.V →ₗ[ℂ] N.V), GlobalTheory.RealLift.IsQuot M N π ∧ GlobalTheory.RealLift.IsQuot M' N π' ∧ Formalism.MainNotions.SchurIrreducible.IrrGK N ∧ GlobalTheory.RealLift.ScalarEnd N := GlobalTheory.T.exists_common_irreducible_quotient
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isLocallyFinite_piTensorSumOfFactorOperators`.
+A detailed English derivation is pending.
 -/
 theorem i_locfin : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (V : ι → Type) [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)] (L : ∀ i, Module.End ℂ (V i)), (∀ i, GlobalTheory.RealLift.LocFin (L i)) → GlobalTheory.RealLift.LocFin (GlobalTheory.RealLift.sumPl L) := GlobalTheory.T.isLocallyFinite_piTensorSumOfFactorOperators
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.weakExponential_action_on_fockVectors`.
+A detailed English derivation is pending.
 -/
 theorem i_expact : ∀ (F : Type) [Field F] [NumberField F] (κ V : Type) [Fintype κ] [AddCommGroup V] [Module ℂ V] (Φ : V →ₗ[ℂ] GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ) (L : Module.End ℂ V) (om : Multiplicative ℝ →* Module.End ℂ ((κ → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF F) → ℂ)), GlobalTheory.RealLift.LocFin L → (∀ t, ∀ l ∈ (GlobalTheory.WeilM.adeleClass F).adm κ, l ∘ₗ om t ∈ (GlobalTheory.WeilM.adeleClass F).adm κ) → (∀ T, GlobalTheory.RealLift.SD (fun t => om (Multiplicative.ofAdd t)) (Φ T) (Φ (L T))) → ∃ U : Module.End ℂ V, GlobalTheory.RealLift.IsExp L U ∧ ∀ T, GlobalTheory.RealLift.SA (om (Multiplicative.ofAdd 1)) (Φ T) (Φ (U T)) := GlobalTheory.T.weakExponential_action_on_fockVectors
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.archActionReadings_compatible`.
+A detailed English derivation is pending.
 -/
 theorem i_actslaws : GlobalTheory.RealLift.ActsLaws := GlobalTheory.T.archActionReadings_compatible
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.archHeisenbergDerivatives_exist`.
+A detailed English derivation is pending.
 -/
 theorem i_derex : GlobalTheory.RealLift.DerEx := GlobalTheory.T.archHeisenbergDerivatives_exist
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.fockToSchrodingerMapExists_of_archHeisenbergDerivatives`.
+A detailed English derivation is pending.
 -/
 theorem i_fockex : GlobalTheory.RealLift.DerEx → GlobalTheory.RealLift.FockEx := GlobalTheory.T.fockToSchrodingerMapExists_of_archHeisenbergDerivatives
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives`.
+A detailed English derivation is pending.
 -/
 theorem i_vacline : GlobalTheory.RealLift.DerEx → GlobalTheory.RealLift.VacLine := GlobalTheory.T.schwartzFockVacuumLineUnique_of_heisenberg_derivatives
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.fockPolynomialSpace_eq_fockImage_of_arch_laws`.
+A detailed English derivation is pending.
 -/
 theorem i_polrange : GlobalTheory.RealLift.ActsLaws → GlobalTheory.RealLift.DerEx → GlobalTheory.RealLift.VacLine → GlobalTheory.RealLift.PolRange := GlobalTheory.T.fockPolynomialSpace_eq_fockImage_of_arch_laws
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.oneParamSubgroup_generators_exist`.
+A detailed English derivation is pending.
 -/
 theorem i_genex : GlobalTheory.RealLift.GenEx := GlobalTheory.T.oneParamSubgroup_generators_exist
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.unitaryLieElements_generate_oneParamLines`.
+A detailed English derivation is pending.
 -/
 theorem i_lineex : GlobalTheory.RealLift.LineEx := GlobalTheory.T.unitaryLieElements_generate_oneParamLines
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.maximalCompact_oneParameterLines_of_lieLines`.
+A detailed English derivation is pending.
 -/
 theorem i_kline : GlobalTheory.RealLift.LineEx → GlobalTheory.RealLift.KLine := GlobalTheory.T.maximalCompact_oneParameterLines_of_lieLines
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.lieScalar_of_prints_derEx_vacLine`.
+A detailed English derivation is pending.
 -/
 theorem i_liescalar : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.RealLift.DerEx → GlobalTheory.RealLift.VacLine → GlobalTheory.RealLift.LieScalar := GlobalTheory.T.lieScalar_of_prints_derEx_vacLine
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.lieSecond_of_prints_derEx_fockEx_vacLine_lieScalar`.
+A detailed English derivation is pending.
 -/
 theorem i_liesecond : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.RealLift.DerEx → GlobalTheory.RealLift.FockEx → GlobalTheory.RealLift.VacLine → GlobalTheory.RealLift.LieScalar → GlobalTheory.RealLift.LieSecond := GlobalTheory.T.lieSecond_of_prints_derEx_fockEx_vacLine_lieScalar
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.lieFirst_of_lieSecond'`.
+A detailed English derivation is pending.
 -/
 theorem i_liefirst : GlobalTheory.RealLift.LieSecond → GlobalTheory.RealLift.LieFirst := GlobalTheory.T.lieFirst_of_lieSecond'
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.cartanEigen_orthonormalFrame_exists`.
+A detailed English derivation is pending.
 -/
 theorem i_frameex : GlobalTheory.RealLift.FrameEx := GlobalTheory.T.cartanEigen_orthonormalFrame_exists
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.realLift_parity`.
+A detailed English derivation is pending.
 -/
 theorem i_parity : GlobalTheory.RealLift.Parity := GlobalTheory.T.realLift_parity
 
 /- English proof (translation)
-Use `⟨hπ.1.comp h.1, fun X f => ?_, fun Y f => ?_⟩` and prove the remaining obligations. Simplify using `[h.2.1 X f]`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[← hπ.2, h.2.2 Y f, map_add, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_isLift {P Q R S : ℕ} {x t : ℚ} {M N : GKMod R S} {pr : Formalism.BasicNotions.TH.Pol P Q R S →ₗ[ℂ] M.V} {π : M.V →ₗ[ℂ] N.V}
     (h : IsLift x t M pr) (hπ : IsQuot M N π) : IsLift x t N (π ∘ₗ pr) := by
@@ -234,19 +232,17 @@ theorem comp_isLift {P Q R S : ℕ} {x t : ℚ} {M N : GKMod R S} {pr : Formalis
     rw [← hπ.2, h.2.2 Y f, map_add, map_smul]
 
 /- English proof (translation)
-Take `⟨hR, hS, hSP, hSQ, ⟨m, hm⟩, ⟨k0, hk0⟩, hlt⟩` from `h`. Establish `hk : (0 : ℤ) < k0 - m + S` using `by omega`. Establish `hk' : (0 : ℤ) < k0 + m - S` using `by omega`. Establish `ec : cPair R S = (m : ℚ) - S`. Unfold `cPair`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `: (R : ℚ) + S = m + m` using `by exact_mod_cast hm`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ec' : cPair S R = (S : ℚ) - m` using `by unfold cPair at *; linarith`. Establish `ek : ((κ : ℚ) / 2) = k0` using `by rw [hk0]; push_cast; ring`. Establish `hF : HasForm P Q R S ((κ : ℚ) / 2)` using `i_formex P Q R S _ (k0 - m + S).toNat (k0 + m - S).toNat (by omega) (by omega) (by omega) (by omega) (by rw [ec, ek]; rw [show (((k0 - m + S : ℤ).toNat : ℕ) : ℚ) = ((k0 - m + S : ℤ) : ℚ) by exact_mod_cast Int.toNat_of_nonneg hk.le]; push_cast; ring) (by rw [ec, ek]; rw [show (((k …`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF' : HasForm P' Q' R S (-((κ : ℚ) / 2))` using `i_formdual i_formex P' Q' R S _ (k0 + m - S).toNat (k0 - m + S).toNat (by omega) (by omega) (by omega) (by omega) (by rw [ec', ek]; rw [show (((k0 + m - S : ℤ).toNat : ℕ) : ℚ) = ((k0 + m - S : ℤ) : ℚ) by exact_mod_cast Int.toNat_of_nonneg hk'.le]; push_cast; ring) (by rw [ec', ek …`. Establish `hN : Num P Q P' Q' R S κ` using `⟨hR, hS, hSP, hSQ, ⟨m, hm⟩, ⟨k0, hk0⟩, hlt⟩`. Take `⟨M, pr, hM, hMn⟩` from `i_quot P Q R S _ 0 hF`. Take `⟨M', pr', hM', hMn'⟩` from `i_quot P' Q' R S _ ((κ : ℚ) / 2) hF'`. Take `⟨μ, hμ, hg⟩` from `i_gen _ _ _ _ _ _ M pr hM hMn`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨μ', hμ', hg'⟩` from `i_gen _ _ _ _ _ _ M' pr' hM' hMn'`. Establish `e1 : (fun c => μ c + (0 : ℚ)) = lam P Q R S κ`. Rewrite using `[← (i_shape _ _ _ _ _ _ _ hN).1 μ hμ]`. Use function extensionality and compare the values at `c`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `e2` using `(i_shape _ _ _ _ _ _ _ hN).2 μ' hμ'`. Rewrite `hg` using `[e1]`. Rewrite `hg'` using `[e2]`. Establish `st : Steep M (lam P Q R S κ)` using `fun a b hab w hw => by`. Take `⟨f, hf⟩` from `i_harm _ _ _ _ _ _ M pr hM _ w hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `i_steepv _ _ _ _ _ _ _ hN a b hab f (by simpa using hf)`. Establish `st' : Steep M' (lam P Q R S κ)` using `fun a b hab w hw => by`. Take `⟨f, hf⟩` from `i_harm _ _ _ _ _ _ M' pr' hM' _ w hw`. Conclude with `i_steepw _ _ _ _ _ _ _ hN a b hab f hf`. Take `⟨N, π, π', hπ, hπ', hirr, hsc⟩` from `i_cq i_multone R S M M' _ hg hg' st st'`.
-
-Conclude with `⟨N, π ∘ₗ pr, π' ∘ₗ pr', comp_isLift hM hπ, comp_isLift hM' hπ', hirr, hsc⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem onePlace (P Q P' Q' R S : ℕ) (κ : ℤ) (h : Num P Q P' Q' R S κ) :
     ∃ (N : GKMod R S) (p : Formalism.BasicNotions.TH.Pol P Q R S →ₗ[ℂ] N.V) (p' : Formalism.BasicNotions.TH.Pol P' Q' R S →ₗ[ℂ] N.V),
@@ -299,21 +295,21 @@ theorem atPl_eq (w : ι) (L : Module.End ℂ (V w)) :
     atPl w L = PiTensorProduct.mapMultilinear ℂ V V (Function.update (fun i => (LinearMap.id : V i →ₗ[ℂ] V i)) w L) := rfl
 
 /- English proof (translation)
-Simplify using `only [atPl_eq, MultilinearMap.map_update_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem atPl_add (w : ι) (L L' : Module.End ℂ (V w)) : atPl w (L + L') = atPl w L + atPl w L' := by
   simp only [atPl_eq, MultilinearMap.map_update_add]
 
 /- English proof (translation)
-Simplify using `only [atPl_eq, MultilinearMap.map_update_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem atPl_smul (w : ι) (c : ℂ) (L : Module.End ℂ (V w)) : atPl w (c • L) = c • atPl w L := by
   simp only [atPl_eq, MultilinearMap.map_update_smul]
 
 /- English proof (translation)
-Rewrite using `[atPl_eq, show Function.update (fun i => (LinearMap.id : V i →ₗ[ℂ] V i)) w 1 = fun i => LinearMap.id by`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = w`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `[Function.update_of_ne h]]`. Conclude with `PiTensorProduct.map_id`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem atPl_one (w : ι) : atPl w (1 : Module.End ℂ (V w)) = 1 := by
   rw [atPl_eq, show Function.update (fun i => (LinearMap.id : V i →ₗ[ℂ] V i)) w 1 = fun i => LinearMap.id by
@@ -323,7 +319,7 @@ theorem atPl_one (w : ι) : atPl w (1 : Module.End ℂ (V w)) = 1 := by
   exact PiTensorProduct.map_id
 
 /- English proof (translation)
-Simplify using `only [atPl_eq, MultilinearMap.map_update_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem atPl_zero (w : ι) : atPl w (0 : Module.End ℂ (V w)) = 0 := by
   simp only [atPl_eq, MultilinearMap.map_update_zero]
@@ -335,7 +331,7 @@ section Exp
 variable {V V' Z : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] [AddCommGroup Z] [Module ℂ Z]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', pow_succ', Module.End.mul_apply, Module.End.mul_apply, ← ih, ← LinearMap.comp_apply, h, LinearMap.comp_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pow_comm {q : V →ₗ[ℂ] Z} {L : Module.End ℂ V} {L0 : Module.End ℂ Z} (h : q ∘ₗ L = L0 ∘ₗ q) (n : ℕ) (v : V) :
     q ((L ^ n) v) = (L0 ^ n) (q v) := by
@@ -345,9 +341,9 @@ theorem pow_comm {q : V →ₗ[ℂ] Z} {L : Module.End ℂ V} {L0 : Module.End �
       LinearMap.comp_apply]
 
 /- English proof (translation)
-Use `sub_eq_zero.1 ((Module.forall_dual_apply_eq_zero_iff ℂ (q (U v) - q' (U' v'))).1 fun l => ?_)` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`. Establish `a` using `hU v (l ∘ₗ q)`. Establish `b` using `hU' v' (l ∘ₗ q')`. Simplify using `only [LinearMap.comp_apply, pow_comm h, pow_comm h', e] at a b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `a.unique b`.
+A detailed English derivation is pending.
 -/
 theorem exp_equiv {q : V →ₗ[ℂ] Z} {q' : V' →ₗ[ℂ] Z} {L U : Module.End ℂ V} {L' U' : Module.End ℂ V'} {L0 : Module.End ℂ Z}
     (hU : IsExp L U) (hU' : IsExp L' U') (h : q ∘ₗ L = L0 ∘ₗ q) (h' : q' ∘ₗ L' = L0 ∘ₗ q') {v : V} {v' : V'}
@@ -362,7 +358,7 @@ theorem exp_equiv {q : V →ₗ[ℂ] Z} {q' : V' →ₗ[ℂ] Z} {L U : Module.En
 end Exp
 
 /- English proof (translation)
-Introduce `v` and use `by obtain ⟨⟨W, hW, hv, hs⟩, -⟩ := (GlobalTheory.FockPolGK.pol_locFin_weights P Q R S).1 v exact ⟨W, hW, hv, fun y hy => W.add_mem (hs X hX y hy) (W.smul_mem c hy)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locFin_fock1 (P Q R S : ℕ) (X : Mat P Q) (hX : IsKC X) (c : ℂ) :
     LocFin (fockAct1 P Q R S X + c • 1) := fun v => by
@@ -370,7 +366,7 @@ theorem locFin_fock1 (P Q R S : ℕ) (X : Mat P Q) (hX : IsKC X) (c : ℂ) :
   exact ⟨W, hW, hv, fun y hy => W.add_mem (hs X hX y hy) (W.smul_mem c hy)⟩
 
 /- English proof (translation)
-Introduce `v` and use `by obtain ⟨⟨W, hW, hv, hs⟩, -⟩ := (GlobalTheory.FockPolGK.pol_locFin_weights P Q R S).2 v exact ⟨W, hW, hv, fun y hy => W.add_mem (hs Y hY y hy) (W.smul_mem c hy)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locFin_fock2 (P Q R S : ℕ) (Y : Mat R S) (hY : IsKC Y) (c : ℂ) :
     LocFin (fockAct2 P Q R S Y + c • 1) := fun v => by
@@ -386,7 +382,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 include Φ in
 /- English proof (translation)
-Rewrite `hf` using `[← hrange]`. Take `⟨T, rfl⟩` from `hf`. Conclude with `⟨T, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pol_eq (hrange : LinearMap.range Φ = M.Pol B.ψ B.emb) {f : SInf F (Fin n × Fin d)} (hf : f ∈ M.Pol B.ψ B.emb) :
     ∃ T, f = Φ T := by
@@ -406,7 +402,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 end SideW
 
 /- English proof (translation)
-Simplify using `[upq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zero_mem_upq (R S : ℕ) : (0 : Mat R S) ∈ upq R S := by simp [upq]
 

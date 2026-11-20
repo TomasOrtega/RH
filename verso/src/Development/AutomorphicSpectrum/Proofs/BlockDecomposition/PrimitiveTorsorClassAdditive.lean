@@ -7,9 +7,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.SmallLift
 
 /- English proof (translation)
-Introduce `_ _ hAx R _ A _ g hA hg c a b d ha hb hd`. Establish `hm : fst A A * snd A A = μ[A]`. Rewrite using `[Hom.mul_def, lift_fst_snd, Category.id_comp]`. Establish `p` using `GlobalTheory.CompanionTheory.HopfSys.primitive_structure_sheaf_cohomology_class A (hAx R A g hA hg) c`. Use `revert ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Introduce `ha`. Rewrite using `[ha.eq_pullHO1, hb.eq_pullHO1, hd.eq_pullHO1]`. Conclude with `p`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem primitive_HO1_abelian : DescentSt → LowSt → AxOSt → AllAb fun _ _ A _ _ ↦ ∀ (c : HO1 A.hom) (a b d : HO1 (A ⊗ A).hom), IsPullO (wOver (fst A A * snd A A)) c a → IsPullO (wOver (fst A A)) c b → IsPullO (wOver (snd A A)) c d → a = b + d := by
   intro _ _ hAx R _ A _ g hA hg c a b d ha hb hd

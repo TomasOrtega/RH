@@ -11,7 +11,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 open GlobalTheory.EigTie (ResTied IsRowPar plRed resTied_of_plSide)
 open GlobalTheory.IndefiniteRowSideFullHecke.RayClassPrimeCounting (IsGaloisRepOf Zbar GalE OnW)
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨r, hr⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_galRep_cast_alt {D : D7} {a p q : ℕ} [Fact p.Prime] [Fact q.Prime] (h : p = q) {ι : Qbar p ≃+* ℂ} {π : D.naut.CG a}
     {r : GalE D →* GL (Fin a) (Qbar p)} (hr : _root_.UpperTheory.GalS.IsGaloisRepOfN D π p ι r) : ∃ r', _root_.UpperTheory.GalS.IsGaloisRepOfN D π q (qCast h ι) r' := by

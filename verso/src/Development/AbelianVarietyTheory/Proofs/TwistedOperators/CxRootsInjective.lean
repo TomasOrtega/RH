@@ -14,14 +14,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (P : PPol σ r) {w : InfinitePlace F} (τ : EmbOver E w)
 
 /- English proof (translation)
-Rewrite using `[← eval_map, cxRoots_spec, eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cxRoots_root (i : Fin r) : eval₂ τ.1 (cxRoots τ.1 P i) P.1 = 0 := by
   rw [← eval_map, cxRoots_spec, eval_prod]
   exact Finset.prod_eq_zero (Finset.mem_univ i) (by simp)
 
 /- English proof (translation)
-Establish `hs : (P.1.map τ.1).Separable` using `(PerfectField.separable_of_irreducible P.2.2.1).map`. Establish `hn` using `nodup_roots hs`. Rewrite `hn` using `[cxRoots_spec, ← Finset.prod_map_val, show Multiset.map (fun i => X - C (cxRoots τ.1 P i)) Finset.univ.val = Multiset.map (fun a => X - C a) (Finset.univ.val.map (cxRoots τ.1 P)) by rw [Multiset.map_map]; rfl, roots_multiset_prod_X_sub_C]`. Conclude with `fun i j h => (Multiset.nodup_map_iff_inj_on Finset.univ.nodup).1 hn i (by simp) j (by simp) h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cxRoots_injective : Function.Injective (cxRoots τ.1 P) := by
   have hs : (P.1.map τ.1).Separable := (PerfectField.separable_of_irreducible P.2.2.1).map
@@ -33,7 +33,7 @@ theorem cxRoots_injective : Function.Injective (cxRoots τ.1 P) := by
   exact fun i j h => (Multiset.nodup_map_iff_inj_on Finset.univ.nodup).1 hn i (by simp) j (by simp) h
 
 /- English proof (translation)
-The claim follows from `((AdjoinRoot.powerBasis P.2.2.1.ne_zero).finrank.trans (AdjoinRoot.powerBasis_dim _)).trans P.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem finrank_Fld : Module.finrank E (Fld P) = r :=
   ((AdjoinRoot.powerBasis P.2.2.1.ne_zero).finrank.trans (AdjoinRoot.powerBasis_dim _)).trans P.2.2.2.1
@@ -41,18 +41,18 @@ theorem finrank_Fld : Module.finrank E (Fld P) = r :=
 def psiL (i : Fin r) : Fld P →+* ℂ := AdjoinRoot.lift τ.1 (cxRoots τ.1 P i) (cxRoots_root P τ i)
 
 /- English proof (translation)
-The claim follows from `AdjoinRoot.lift_of _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem psiL_algebraMap (i : Fin r) (e : E) : psiL P τ i (algebraMap E (Fld P) e) = τ.1 e :=
   AdjoinRoot.lift_of _
 
 /- English proof (translation)
-The claim follows from `AdjoinRoot.lift_root _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem psiL_alpha (i : Fin r) : psiL P τ i (alpha P) = cxRoots τ.1 P i := AdjoinRoot.lift_root _
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply F E (Fld P), psiL_algebraMap]`. Conclude with `RingHom.congr_fun τ.2 a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiL_algebraMap_F (i : Fin r) (a : F) : psiL P τ i (algebraMap F (Fld P) a) = w.embedding a := by
   rw [IsScalarTower.algebraMap_apply F E (Fld P), psiL_algebraMap]

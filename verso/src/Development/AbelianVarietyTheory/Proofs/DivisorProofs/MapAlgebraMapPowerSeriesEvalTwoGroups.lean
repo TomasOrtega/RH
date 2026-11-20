@@ -8,9 +8,9 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory.QLog
 
 /- English proof (translation)
-Introduce `R S _ _ _ d τ t u v hu hv`. Apply the tactic sequence `have ha : HasSubst (Sum.elim u v) := hasSubst_of_constantCoeff_zero (fun i => by cases i <;> simp [hu, hv])`. Rewrite using `[at2, at2, map_subst ha]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_algebraMap_powerSeriesEvalTwoGroups : ∀ (R S : Type) [CommRing R] [CommRing S] [Algebra R S] (d : ℕ) (τ : Type)
     (t : MvPowerSeries (Fin d ⊕ Fin d) R) (u v : Fin d → MvPowerSeries τ R),

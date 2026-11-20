@@ -9,45 +9,39 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n m e X G₁ _ _ _ π ι hι U M Λ hMU hU hM hsm hNinv hequiv`. Use `set N := unipRad k e with hNdef`. Use `set L : GL (Fin m) k →* GL (Fin n) k := (leviEmb k e).comp (midIncl k m) with hLdef`. Use `set σ := GlobalTheory.PRep.sub π U hU with hσ`. Set `P : Submodule ℂ X` to `(twKer σ N 1).map U.subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgen : ∀ g ∈ N, ∀ ψ ∈ U, π g ψ - ψ ∈ P`. Introduce `g hg ψ hψ`. Use `⟨σ g ⟨ψ, hψ⟩ - (((1 : N →* ℂˣ) ⟨g, hg⟩ : ℂˣ) : ℂ) • ⟨ψ, hψ⟩, Submodule.subset_span ⟨⟨g, hg⟩, ⟨ψ, hψ⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[σ, GlobalTheory.PRep.sub]`. Establish `hσsm : IsSmooth σ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `v`. Establish `: {g | σ g v = v} = {g | π g (v : X) = v}`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Subtype.ext_iff]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `hsm v v.2`. Establish `step1 : ∀ φ ∈ M, φ ∈ P → Λ φ = 0`. Introduce `φ hφM hφP`. Take `⟨ψ, hψ, rfl⟩` from `hφP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `GlobalTheory.MidJacquet.map_eq_zero_of_unipRad e hσsm (m := 1) (Λ ∘ₗ U.subtype ∘ₗ LinearMap.proj 0) (fun _ => ψ) (fun g hg => ?_) (fun _ => hψ)` as an intermediate fact. Simplify using `using this`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_proj, Function.eval]`. Conclude with `hNinv _ hφM g hg`. Set `q : M →ₗ[ℂ] X ⧸ P` to `P.mkQ ∘ₗ M.subtype`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hker : LinearMap.ker q ≤ LinearMap.ker (Λ ∘ₗ M.subtype)`. Introduce `x hx`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Conclude with `step1 x x.2 ((Submodule.Quotient.mk_eq_zero _).1 hx)`. Set `φ₀ : LinearMap.range q →ₗ[ℂ] (G₁ → ℂ)` to `(LinearMap.ker q).liftQ (Λ ∘ₗ M.subtype) hker ∘ₗ q.quotKerEquivRange.symm.toLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ₀ : ∀ x : M, φ₀ ⟨q x, LinearMap.mem_range_self q x⟩ = Λ x`. Introduce `x`. Simplify using `only [φ₀, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, LinearMap.quotKerEquivRange_symm_apply_image, Submodule.mkQ_apply, Submodule.liftQ_apply, Submodule.coe_subtype]`. Take `⟨ext0, hext0⟩` from `LinearMap.exists_extend φ₀`. Set `Λ₀ : X →ₗ[ℂ] (G₁ → ℂ)` to `ext0 ∘ₗ P.mkQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hΛ₀M : ∀ φ ∈ M, Λ₀ φ = Λ φ`. Introduce `φ hφ`. Use `congrArg (fun F => F ⟨q ⟨φ, hφ⟩, LinearMap.mem_range_self q _⟩) hext0` as an intermediate fact. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.coe_subtype] at this`. Rewrite `this` using `[hφ₀]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hΛ₀P : ∀ φ ∈ P, Λ₀ φ = 0`. Introduce `φ hφ`. Simplify using `[Λ₀, (Submodule.Quotient.mk_eq_zero _).2 hφ]`. Set `H` to `ι.range`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `r : G₁ → G₁` to `fun g => (QuotientGroup.mk g : G₁ ⧸ H).out`. Establish `hrmem : ∀ g, (r g)⁻¹ * g ∈ H`. Introduce `g`. Establish `: (QuotientGroup.mk (r g) : G₁ ⧸ H) = QuotientGroup.mk g` using `Quotient.out_eq' _`. Conclude with `QuotientGroup.eq.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `hh : G₁ → GL (Fin m) k` to `fun g => (MonoidHom.ofInjective hι).symm ⟨_, hrmem g⟩`. Establish `hιh : ∀ g, ι (hh g) = (r g)⁻¹ * g`. Introduce `g`. Establish `h1` using `congrArg Subtype.val ((MonoidHom.ofInjective hι).apply_symm_apply ⟨_, hrmem g⟩)`. Rewrite `h1` using `[MonoidHom.ofInjective_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1`. Establish `hdec : ∀ g, r g * ι (hh g) = g`. Introduce `g`. Rewrite using `[hιh]`. Use `group`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : ∀ g x, r (g * ι x) = r g`. Introduce `g x`. Use `show (QuotientGroup.mk (g * ι x) : G₁ ⧸ H).out = (QuotientGroup.mk g : G₁ ⧸ H).out`. Use `congr 1`. Conclude with `QuotientGroup.eq.2 (by rw [mul_inv_rev, mul_assoc, inv_mul_cancel, mul_one]; exact ⟨x⁻¹, map_inv ι x⟩)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hhm : ∀ g x, hh (g * ι x) = hh g * x`. Introduce `g x`. Apply `hι` to reduce the goal to its premises. Rewrite using `[hιh, map_mul, hιh, hr]`. Use `group`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `Λ' : X →ₗ[ℂ] (G₁ → ℂ)` to `LinearMap.pi fun g => LinearMap.proj (r g) ∘ₗ Λ₀ ∘ₗ π (L (hh g))`. Establish `hΛ' : ∀ φ g, Λ' φ g = Λ₀ (π (L (hh g)) φ) (r g)` using `fun _ _ => rfl`. Establish `hrR : ∀ x (f : G₁ → ℂ) y, rightReg ℂ G₁ ℂ x f y = f (y * x)` using `fun _ _ _ => rfl`. Use `⟨Λ', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `φ hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[hΛ', hΛ₀M _ (hM _ _ hφ)]`. Use `congrFun (hequiv φ hφ (hh g)) (r g)` as an intermediate fact. Rewrite `this` using `[hrR, hdec]`. Conclude with `this`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ hφ u hu`. Use function extensionality and compare the values at `g`. Rewrite using `[hΛ', hΛ']`. Establish `hl : L (hh g) ∈ Subgroup.normalizer (N : Set (GL (Fin n) k))` using `leviEmb_mem_normalizer k e _`. Establish `hn : L (hh g) * u * (L (hh g))⁻¹ ∈ N` using `(Subgroup.mem_normalizer_iff.1 hl u).1 hu`.
-
-Establish `hdiff : π (L (hh g)) (π u φ) - π (L (hh g)) φ ∈ P`. Use `hgen _ hn (π (L (hh g)) φ) (hU _ _ hφ)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`.
-
-Use `group`. Use `hΛ₀P _ hdiff` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Rewrite using `[this]`. Introduce `φ hφ x`.
-
-Use function extensionality and compare the values at `g`. Rewrite using `[hΛ', hrR, hΛ', hhm, hr, map_mul L, map_mul π, Module.End.mul_apply]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ext_sub_smooth : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n m : ℕ) (e : (Σ i : Fin 3, Fin (blk3 m i)) ≃ Fin n) (X G₁ : Type) [AddCommGroup X] [Module ℂ X] [Group G₁]

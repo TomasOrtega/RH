@@ -194,7 +194,7 @@ def AdFormK : Prop :=
       ∀ (W : VK) X, U ⟨_, hVK.lie _ W.2 X⟩ = EAK X (U W)
 
 /- English proof (translation)
-Introduce `hd hc D V hV hq`. Take `⟨DK, hk, hb, ha⟩` from `h7 hd hc D V hV hq`. Take `⟨VK, hVK, hg⟩` from `h5 hd hc h1 h2 h3 h4 DK ha`. Conclude with `⟨DK, hk, hb, VK, hVK, hg, h6 VK hVK hg.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem adFormK_of (h1 : LocFG) (h2 : LocU) (h3 : LocC) (h4 : MellinK K) (h5 : GlobK K) (h6 : ConvAK K) (h7 : ThK K) :
     AdFormK K := by

@@ -25,14 +25,14 @@ variable {S : Type} [CommRing S]
 abbrev z {κ : Type} (m : ℕ) (j : κ) : Jet S κ m := Ideal.Quotient.mk _ (X j)
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.algHom_ext _ (MvPolynomial.algHom_ext h)`.
+A detailed English derivation is pending.
 -/
 theorem jext {κ : Type} {m : ℕ} {A : Type} [CommRing A] [Algebra S A] {ψ₁ ψ₂ : Jet S κ m →ₐ[S] A}
     (h : ∀ j, ψ₁ (z m j) = ψ₂ (z m j)) : ψ₁ = ψ₂ :=
   Ideal.Quotient.algHom_ext _ (MvPolynomial.algHom_ext h)
 
 /- English proof (translation)
-Use `show Ideal.Quotient.mkₐ S _ (MvPolynomial.aeval φ (MvPolynomial.X s)) = _`. Rewrite using `[MvPolynomial.aeval_X]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem jetMap_z {κ κ' : Type} (m : ℕ) (φ : κ → MvPolynomial κ' S) (h) (s : κ) :
     (jetMap φ h : Jet S κ m →ₐ[S] Jet S κ' m) (z m s) = Ideal.Quotient.mk _ (φ s) := by
@@ -40,7 +40,7 @@ theorem jetMap_z {κ κ' : Type} (m : ℕ) (φ : κ → MvPolynomial κ' S) (h) 
   rw [MvPolynomial.aeval_X]; rfl
 
 /- English proof (translation)
-The claim follows from `MvPolynomial.aeval_X (fun _ => (0 : S)) s`.
+A detailed English derivation is pending.
 -/
 theorem jetAug_z {κ : Type} (m : ℕ) (s : κ) : (jetAug : Jet S κ m →ₐ[S] S) (z m s) = 0 :=
   MvPolynomial.aeval_X (fun _ => (0 : S)) s
@@ -56,18 +56,18 @@ def jOut (d m : ℕ) : Jet S (Fin 1 × Fin d) m →ₐ[S] Jet S (Fin d) m := jet
 variable {d : ℕ}
 
 /- English proof (translation)
-The claim follows from `jetMap_z m _ _ j`.
+A detailed English derivation is pending.
 -/
 theorem jet_inclusion_z (m : ℕ) (j : Fin d) : jIn S d m (z m j) = z m (0, j) := jetMap_z m _ _ j
 
 /- English proof (translation)
-The claim follows from `jext fun j => by rw [AlgHom.comp_apply, jet_inclusion_z]; exact jetMap_z m _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem jOut_jIn (m : ℕ) : (jOut S d m).comp (jIn S d m) = AlgHom.id S _ :=
   jext fun j => by rw [AlgHom.comp_apply, jet_inclusion_z]; exact jetMap_z m _ _ _
 
 /- English proof (translation)
-The claim follows from `jext fun p => by obtain ⟨i, j⟩ := p obtain rfl := Subsingleton.elim i 0 rw [AlgHom.comp_apply, jOut, jetMap_z] exact jet_inclusion_z m j`.
+A detailed English derivation is pending.
 -/
 theorem jIn_jOut (m : ℕ) : (jIn S d m).comp (jOut S d m) = AlgHom.id S _ :=
   jext fun p => by
@@ -77,13 +77,13 @@ theorem jIn_jOut (m : ℕ) : (jIn S d m).comp (jOut S d m) = AlgHom.id S _ :=
     exact jet_inclusion_z m j
 
 /- English proof (translation)
-The claim follows from `jext fun j => by rw [AlgHom.comp_apply, jet_inclusion_z, jetAug_z, jetAug_z]`.
+A detailed English derivation is pending.
 -/
 theorem aug_jIn (m : ℕ) : (jetAug : Jet S (Fin 1 × Fin d) m →ₐ[S] S).comp (jIn S d m) = jetAug :=
   jext fun j => by rw [AlgHom.comp_apply, jet_inclusion_z, jetAug_z, jetAug_z]
 
 /- English proof (translation)
-The claim follows from `jext fun j => by rw [AlgHom.comp_apply, AlgHom.comp_apply, jet_inclusion_z] exact (jet_inclusion_z m j).symm`.
+A detailed English derivation is pending.
 -/
 theorem trunc_jIn (m : ℕ) : (jetTrunc : Jet S (Fin 1 × Fin d) (m + 1) →ₐ[S] _).comp (jIn S d (m + 1)) =
     (jIn S d m).comp jetTrunc :=
@@ -92,7 +92,7 @@ theorem trunc_jIn (m : ℕ) : (jetTrunc : Jet S (Fin 1 × Fin d) (m + 1) →ₐ[
     exact (jet_inclusion_z m j).symm
 
 /- English proof (translation)
-The claim follows from `jext fun j => by rw [AlgHom.comp_apply, jet_inclusion_z] exact (jetMap_z m _ _ _).trans (jetMap_z m (fun l => X (i, l)) _ j).symm`.
+A detailed English derivation is pending.
 -/
 theorem copy_jIn {n : ℕ} (m : ℕ) (i : Fin n) : (jetCopy (S := S) d m i).comp (jIn S d m) = jetIn i :=
   jext fun j => by
@@ -100,7 +100,7 @@ theorem copy_jIn {n : ℕ} (m : ℕ) (i : Fin n) : (jetCopy (S := S) d m i).comp
     exact (jetMap_z m _ _ _).trans (jetMap_z m (fun l => X (i, l)) _ j).symm
 
 /- English proof (translation)
-The claim follows from `jext fun j => by rw [AlgHom.comp_apply, jet_inclusion_z] exact (jetMap_z m _ _ _).trans (jetMap_z m (fun i => psTrunc m (F i) - C (MvPolynomial.constantCoeff (psTrunc m (F i)))) _ j).symm`.
+A detailed English derivation is pending.
 -/
 theorem subst_jIn {n : ℕ} (m : ℕ) (F : Fin d → MvPowerSeries (Fin n × Fin d) S) :
     (jetSubstP m fun p : Fin 1 × Fin d => psTrunc m (F p.2)).comp (jIn S d m) = jetSubstPS F :=
@@ -110,7 +110,7 @@ theorem subst_jIn {n : ℕ} (m : ℕ) (F : Fin d → MvPowerSeries (Fin n × Fin
       (fun i => psTrunc m (F i) - C (MvPolynomial.constantCoeff (psTrunc m (F i)))) _ j).symm
 
 /- English proof (translation)
-The claim follows from `jext fun i => by rw [AlgHom.comp_apply, jetVec_X] refine (congrArg _ (jet_inclusion_z 1 i)).trans ?_ show MvPolynomial.aeval (fun i => if i = ((0 : Fin 1), j) then (DualNumber.eps : DualNumber S) else 0) (MvPolynomial.X ((0 : Fin 1), i)) = _ rw [MvPolynomial.aeval_X] by_cases hij …`.
+A detailed English derivation is pending.
 -/
 theorem tan_jIn (j : Fin d) :
     (jetTan ((0 : Fin 1), j) : Jet S (Fin 1 × Fin d) (0 + 1) →ₐ[S] DualNumber S).comp (jIn S d 1) =
@@ -126,7 +126,7 @@ theorem tan_jIn (j : Fin d) :
     · rw [if_neg (fun h => hij (Prod.ext_iff.1 h).2), Pi.single_eq_of_ne hij, zero_smul]
 
 /- English proof (translation)
-Rewrite using `[jetVec_X]`. Apply the tactic sequence `ext <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jetVec_z_one {σ : Type} (c : σ → S) (i : σ) : jetVec c (z 1 i) = TrivSqZeroExt.inr (c i) := by
   rw [jetVec_X]
@@ -145,7 +145,7 @@ theorem algMap_eq {A B : Type} [CommRing A] [Algebra S A] [CommRing B] [Algebra 
     algMap x0 f = homAt x0 f := rfl
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, homAt_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hcomp {A B D : Type} [CommRing A] [Algebra S A] [CommRing B] [Algebra S B] [CommRing D] [Algebra S D]
     (f : A →ₐ[S] B) (g : B →ₐ[S] D) {G : Over X0} (y : overAt x0 A ⟶ G) :
@@ -169,7 +169,7 @@ theorem famEquiv_apply {G : Over X0} {d : ℕ} (j : JetPts G x0 d) (m : ℕ) :
     famEquiv x0 G d j m = homAt x0 (jIn S d m) ≫ j m := rfl
 
 /- English proof (translation)
-Use `congrArg (homAt x0 (jOut S d m) ≫ ·) h` as an intermediate fact. Simplify `this` using `only [hcomp, jOut_jIn, homAt_id, Category.id_comp]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem jIn_cancel {G : Over X0} {d m : ℕ} {y y' : overAt x0 (Jet S (Fin d) m) ⟶ G}
     (h : homAt x0 (jIn S d m) ≫ y = homAt x0 (jIn S d m) ≫ y') : y = y' := by
@@ -179,17 +179,17 @@ theorem jIn_cancel {G : Over X0} {d m : ℕ} {y y' : overAt x0 (Jet S (Fin d) m)
 variable {G : Over X0} [GrpObj G]
 
 /- English proof (translation)
-Establish `hz : homAt x0 (tm (0 : S × S →ₗ[S] S)) ≫ W = 1`. Establish `e : tm (0 : S × S →ₗ[S] S) = (Algebra.ofId S (DualNumber S)).comp (TrivSqZeroExt.fstHom S S (S × S))`. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `r`. Apply the tactic sequence `ext <;> simp [Algebra.ofId_apply, TrivSqZeroExt.algebraMap_eq_inl]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[e, ← hcomp, h0, MonObj.comp_one]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `spec_ext_two (tm (LinearMap.fst S S S) : TrivSqZeroExt S (S × S) →+* DualNumber S) (tm (LinearMap.snd S S S) : TrivSqZeroExt S (S × S) →+* DualNumber S)` to reduce the goal to its premises. Introduce `y`. Use `⟨tm (LinearMap.inl S S S) y, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `ext <;> simp`. Introduce `x hx`. Establish `h1 : x.fst = 0` using `by simpa using congrArg TrivSqZeroExt.fst hx`. Apply the tactic sequence `ext <;> simp [h1]`. Introduce `x hx hx'`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : x.fst = 0` using `by simpa using congrArg TrivSqZeroExt.fst hx`. Establish `h2 : x.snd.1 = 0` using `by simpa using congrArg TrivSqZeroExt.snd hx`. Establish `h3 : x.snd.2 = 0` using `by simpa using congrArg TrivSqZeroExt.snd hx'`. Apply the tactic sequence `ext <;> simp [h1, h2, h3]`. Establish `h : homAt x0 (tm (LinearMap.fst S S S)) ≫ W = homAt x0 (tm (LinearMap.fst S S S)) ≫ ((homAt x0 (tm (LinearMap.inl S S S)) ≫ homAt x0 (tm (LinearMap.fst S S S)) ≫ W) * (homAt x0 (tm (LinearMap.inr S S S)) ≫ homAt x0 (tm (LinearMap.snd S S S)) ≫ W))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[MonObj.comp_mul]`. Simplify using `only [hcomp, ← TrivSqZeroExt.map_comp_map, ← LinearMap.comp_assoc, LinearMap.fst_comp_inl, LinearMap.fst_comp_inr, LinearMap.id_comp, LinearMap.zero_comp]`. Rewrite using `[hz, _root_.mul_one]`. Conclude with `congrArg (fun φ => φ.left) h`. Establish `h : homAt x0 (tm (LinearMap.snd S S S)) ≫ W = homAt x0 (tm (LinearMap.snd S S S)) ≫ ((homAt x0 (tm (LinearMap.inl S S S)) ≫ homAt x0 (tm (LinearMap.fst S S S)) ≫ W) * (homAt x0 (tm (LinearMap.inr S S S)) ≫ homAt x0 (tm (LinearMap.snd S S S)) ≫ W))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonObj.comp_mul]`. Simplify using `only [hcomp, ← TrivSqZeroExt.map_comp_map, ← LinearMap.comp_assoc, LinearMap.snd_comp_inl, LinearMap.snd_comp_inr, LinearMap.id_comp, LinearMap.zero_comp]`. Rewrite using `[hz, _root_.one_mul]`. Conclude with `congrArg (fun φ => φ.left) h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_axes (W : overAt x0 (TrivSqZeroExt S (S × S)) ⟶ G)
     (h0 : homAt x0 (TrivSqZeroExt.fstHom S S (S × S)) ≫ W = 1) :
@@ -235,7 +235,7 @@ theorem split_axes (W : overAt x0 (TrivSqZeroExt S (S × S)) ⟶ G)
 variable {σ : Type} (y : overAt x0 (Jet S σ 1) ⟶ G) (h0 : homAt x0 (jetAug : Jet S σ 1 →ₐ[S] S) ≫ y = 1)
 
 /- English proof (translation)
-Rewrite using `[smT, hcomp]`. Use `congr 2`. Use `jext fun i => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, jetVec_z_one, jetVec_z_one]`. Apply the tactic sequence `ext <;> simp [mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem smT_vec (a : S) (c : σ → S) :
     smT x0 a (homAt x0 (jetVec c) ≫ y) = homAt x0 (jetVec (a • c)) ≫ y := by
@@ -248,7 +248,7 @@ theorem smT_vec (a : S) (c : σ → S) :
 include h0
 
 /- English proof (translation)
-Establish `e : jetVec (0 : σ → S) = (Algebra.ofId S (DualNumber S)).comp jetAug` using `jext fun i => by rw [jetVec_z_one, AlgHom.comp_apply, jetAug_z, map_zero]; simp`. Rewrite using `[e, ← hcomp, h0, MonObj.comp_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem vec_zero : homAt x0 (jetVec (0 : σ → S)) ≫ y = 1 := by
   have e : jetVec (0 : σ → S) = (Algebra.ofId S (DualNumber S)).comp jetAug :=
@@ -256,11 +256,9 @@ theorem vec_zero : homAt x0 (jetVec (0 : σ → S)) ≫ y = 1 := by
   rw [e, ← hcomp, h0, MonObj.comp_one]
 
 /- English proof (translation)
-Set `Φ : Jet S σ 1 →ₐ[S] TrivSqZeroExt S (S × S)` to `Chart.jetLift S _ Chart.delta_sq (fun i => TrivSqZeroExt.inr (c i, c' i)) (fun i => (RingHom.mem_ker).mpr rfl)`. Establish `hΦ : ∀ i, Φ (z 1 i) = TrivSqZeroExt.inr (c i, c' i)` using `fun i => Chart.jetLift_zR _ _ _ _ i`. Establish `e : ∀ (l : S × S →ₗ[S] S) (b : σ → S), (∀ i, l (c i, c' i) = b i) → (tm l).comp Φ = jetVec b` using `fun l b h => jext fun i => by rw [AlgHom.comp_apply, hΦ, jetVec_z_one, TrivSqZeroExt.map_inr, h]`. Establish `key` using `split_axes x0 (homAt x0 Φ ≫ y) (by`. Establish `: (TrivSqZeroExt.fstHom S S (S × S)).comp Φ = jetAug` using `jext fun i => by rw [AlgHom.comp_apply, hΦ, jetAug_z]; rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hcomp, this, h0])`. Rewrite `key` using `[hcomp x0 Φ (tm (LinearMap.fst S S S)), hcomp x0 Φ (tm (LinearMap.snd S S S)), e _ c fun _ => rfl, e _ c' fun _ => rfl]`. Establish `h` using `congrArg (homAt x0 (tm (LinearMap.coprod (LinearMap.id : S →ₗ[S] S) LinearMap.id)) ≫ ·) key`. Use `beta_reduce at h`. Rewrite `h` using `[MonObj.comp_mul, hcomp, e _ (c + c') (fun _ => rfl), hcomp x0 (tm (LinearMap.inl S S S)), hcomp x0 (tm (LinearMap.inr S S S)), ← TrivSqZeroExt.map_comp_map, ← TrivSqZeroExt.map_comp_map, LinearMap.coprod_inl, LinearMap.coprod_inr, TrivSqZeroExt.map_id, homAt_id, Category.id_comp …`.
-
-Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vec_add (c c' : σ → S) :
     homAt x0 (jetVec (c + c')) ≫ y = (homAt x0 (jetVec c) ≫ y) * (homAt x0 (jetVec c') ≫ y) := by
@@ -303,17 +301,17 @@ variable {X0 : Scheme.{0}} {S : Type} [CommRing S] {x0 : Sp S ⟶ X0} {G : Over 
   {j : JetPts G x0 d}
 
 /- English proof (translation)
-Establish `hmk : ∀ W : TanM x0 G, algMap x0 (Ideal.Quotient.mkₐ S (RingHom.ker (Chart.fstD S))) ≫ tv W = 1` using `fun W => by`. Use `tan_pull x0 _ ?_ _ (tv_zero' W)` and prove the remaining obligations. Rewrite using `[algMap_eq, homAt_comp]`. Use `congr 1`. Use `AlgHom.ext fun r => Ideal.Quotient.eq.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[RingHom.mem_ker]`. Establish `hfst : ∀ W : TanM x0 G, homAt x0 (Chart.fstD S) ≫ tv W = 1` using `fun W => by`. Use `tan_pull x0 _ ?_ _ (tv_zero' W)` and prove the remaining obligations. Rewrite using `[homAt_comp]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `AlgHom.ext fun r => by simp`. Prove the components needed by the constructor for the conclusion. Introduce `c c' hc`. Establish `e` using `(h.2.2 1 (DualNumber S) _ Chart.kerD_sq _ (hmk (dif x0 (j 1) (h.2.1 1) c'))).unique (congrArg tv hc : algMap x0 (jetVec c) ≫ j 1 = _) (rfl : algMap x0 (jetVec c') ≫ j 1 = _)`. Use function extensionality and compare the values at `i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congrArg TrivSqZeroExt.snd (AlgHom.congr_fun e (z 1 i))` as an intermediate fact. Rewrite `this` using `[jetVec_z_one, jetVec_z_one, TrivSqZeroExt.snd_inr, TrivSqZeroExt.snd_inr]`. Then use the resulting hypothesis. Introduce `W`. Take `⟨f, hf, -⟩` from `h.2.2 1 (DualNumber S) _ Chart.kerD_sq _ (hmk W)`. Establish `e : (Chart.fstD S).comp f = jetAug` using `(h.2.2 1 S ⊥ (Ideal.bot_pow (by omega)) 1 (MonObj.comp_one _)).unique (by rw [algMap_eq, ← hcomp, ← algMap_eq x0 f, hf, hfst]) (h.2.1 1)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => (f (z 1 i)).snd, tv_injective ?_⟩` and prove the remaining obligations. Use `(tv_dif x0 _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← hf, algMap_eq]`. Use `congr 2`. Use `jext fun i => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[jetVec_z_one]`. Conclude with `TrivSqZeroExt.ext ((AlgHom.congr_fun e (z 1 i)).trans (jetAug_z 1 i)).symm rfl`.
+A detailed English derivation is pending.
 -/
 theorem dif_bijective_of_param (h : IsFormalParam G x0 j) : Function.Bijective (dif x0 (j 1) (h.2.1 1)) := by
   have hmk : ∀ W : TanM x0 G,
@@ -351,31 +349,29 @@ theorem dif_bijective_of_param (h : IsFormalParam G x0 j) : Function.Bijective (
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use `⟨ht, h0, fun m B _ _ I hI g hg => ?_⟩` and prove the remaining obligations. Establish `hp` using `isGrpPullback_pullback G x0`. Establish `hG' : Smooth ((Over.pullback x0).obj G).hom` using `smooth_isStableUnderBaseChange.of_isPullback (IsPullback.of_hasPullback _ _) hG`. Set `P : ∀ (A : Type) [CommRing A] [Algebra S A], (Chart.sp (R₀` to `S) A ⟶ (Over.pullback x0).obj G) →* (overAt x0 A ⟶ G) := fun A _ _ => pushHom hp (Chart.sp A)`. Establish `inj : ∀ (A : Type) [CommRing A] [Algebra S A], Function.Injective (P A)` using `fun A _ _ u v h => Over.OverMorphism.ext (pullback.hom_ext (congrArg (fun q => q.left) h) ((Over.w u).trans (Over.w v).symm))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `sur : ∀ (A : Type) [CommRing A] [Algebra S A], Function.Surjective (P A)` using `fun A _ _ w => ⟨Over.homMk (pullback.lift w.left _ (Over.w w)) (pullback.lift_snd _ _ _), Over.OverMorphism.ext (pullback.lift_fst _ _ _)⟩`. Establish `nat : ∀ {A A' : Type} [CommRing A] [Algebra S A] [CommRing A'] [Algebra S A'] (f : A →ₐ[S] A') y, P A' (Chart.spMap f ≫ y) = homAt x0 f ≫ P A y` using `fun f y => Over.OverMorphism.ext (Category.assoc _ _ _)`. Use `choose x hx using fun m => sur (Jet S (Fin d) m) (j m)`. Set `x' : ∀ m : ℕ, Chart.sp (R₀` to `S) (Chart.JetR S (Fin d) m) ⟶ (Over.pullback x0).obj G := x`. Establish `dl : ∀ c : Fin d → S, P _ (Chart.spMap (Chart.dualLift c) ≫ x' 1) = tv (dif x0 (j 1) (h0 1) c)` using `fun c => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (Chart.dualLift c : Jet S (Fin d) 1 →ₐ[S] DualNumber S) = jetVec c` using `jext fun i => (Chart.dualLift_zR c i).trans (jetVec_z_one c i).symm`. Use `(congrArg (fun f : Jet S (Fin d) 1 →ₐ[S] DualNumber S => P _ (Chart.spMap f ≫ x 1)) e).trans ?_` and prove the remaining obligations. Rewrite using `[nat, hx, tv_dif]`. Set `v : Fin d → (epsR S ⟶ (Over.pullback x0).obj G)` to `fun i => Chart.spMap (Chart.dualLift (Pi.single i 1)) ≫ x' 1`. Establish `pr : ∀ c : Fin d → S, P _ (Chart.prodPts c v) = tv (dif x0 (j 1) (h0 1) c)` using `fun c => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : c = ∑ i, c i • (Pi.single i 1 : Fin d → S)`. Use function extensionality and compare the values at `k`. Simplify using `[Pi.single_apply]`. Use `conv_rhs => rw [e, map_sum]`. Simplify using `only [map_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[tv_comb, Chart.prodPts, List.prod_ofFn, map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[nat, ← dl]`. Both sides reduce to the same expression. Establish `tan : ∀ w : Chart.sp (R₀` using `S) (DualNumber S) ⟶ (Over.pullback x0).obj G, Chart.IsTan w ↔ smT x0 0 (P _ w) = 1 := fun w => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hw`. Use `congrArg (P _) (Chart.spMap_scaleD_zero hw)` as an intermediate fact. Rewrite `this` using `[nat, map_one]`. Then use the resulting hypothesis. Introduce `hw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `inj` to reduce the goal to its premises. Rewrite using `[nat, map_one]`. Use `tan_pull x0 _ ?_ _ hw` and prove the remaining obligations. Rewrite using `[homAt_comp]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `AlgHom.ext fun r => by simp`. Establish `hv : IsLieBasis v`. Use `⟨fun i => (Chart.isTan_iff _).1 ((tan _).2 ?_), fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[dl]`. Conclude with `tv_zero' _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hw'` using `(tan w).1 ((Chart.isTan_iff _).2 hw)`. Take `⟨c, hc, hu⟩` from `hb.existsUnique (mkT _ hw')`. Use `⟨c, (Chart.isLieComb_iff _ _ _).2 (inj _ ?_), fun c' hc' => hu c' (tv_injective ?_)⟩` and prove the remaining obligations. Rewrite using `[pr, hc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← pr, ← (Chart.isLieComb_iff _ _ _).1 hc']`. Both sides reduce to the same expression. Establish `h₁ : ∀ m, Chart.spMap (Chart.jetTruncR S (Fin d) m) ≫ x' (m + 1) = x' m` using `fun m => inj (Jet S (Fin d) m) (by`. Use `(nat (A := Jet S (Fin d) (m + 1)) (A' := Jet S (Fin d) m) jetTrunc (x (m + 1))).trans ?_` and prove the remaining obligations. Rewrite using `[hx, ht]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hx m).symm)`. Establish `h₂ : ∀ m, Chart.spMap (Chart.jetZeroR S (Fin d) m) ≫ x' m = 1` using `fun m => inj (Jet S (Fin d) 0) (by`. Establish `e : (Algebra.ofId S (Jet S (Fin d) 0)).comp (jetAug : Jet S (Fin d) m →ₐ[S] S) = Chart.jetZeroR S (Fin d) m` using `jext fun i => by`. Rewrite using `[AlgHom.comp_apply, jetAug_z, map_zero]`. Conclude with `(Ideal.Quotient.eq_zero_iff_mem.2 (by rw [zero_add, pow_one]; exact X_mem_orig i)).symm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg (fun f : Jet S (Fin d) m →ₐ[S] Jet S (Fin d) 0 => P _ (Chart.spMap f ≫ x m)) e.symm).trans ?_` and prove the remaining obligations. Rewrite using `[nat, hx, ← hcomp, h0, MonObj.comp_one]`. Conclude with `(map_one _).symm)`. Take `⟨g', rfl⟩` from `sur B g`. Take `⟨ψ, hψ, hu⟩` from `NilChart.existsUnique_coord hG' hv h₁ h₂ (fun _ => rfl) hI g' (inj _ (by rw [nat, map_one]; exact hg))`.
-
-Establish `tr : ∀ f : Jet S (Fin d) m →ₐ[S] B, algMap x0 f ≫ j m = P B (Chart.spMap f ≫ x m)` using `fun f => by`. Rewrite using `[nat, hx]`. Both sides reduce to the same expression. Conclude with `⟨ψ, (tr ψ).trans (congrArg _ hψ), fun f hf => hu f (inj _ ((tr f).symm.trans hf))⟩`.
+Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem param_of_dif_bijective (hG : Smooth G.hom)
     (ht : ∀ m, homAt x0 (jetTrunc : Jet S (Fin d) (m + 1) →ₐ[S] Jet S (Fin d) m) ≫ j (m + 1) = j m)
@@ -465,14 +461,14 @@ def IsTanBasisG (tg : κ → (Sp (DualNumber S) ⟶ t.G.left)) : Prop :=
 variable (j : JetPts t.G x0 d)
 
 /- English proof (translation)
-Rewrite using `[jptG, famEquiv_apply, hcomp, copy_jIn, algMap_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem jptG_eq {n : ℕ} (m : ℕ) (i : Fin n) :
     jptG t x0 d (famEquiv x0 t.G d j) m i = algMap x0 (jetIn i) ≫ j m := by
   rw [jptG, famEquiv_apply, hcomp, copy_jIn, algMap_eq]
 
 /- English proof (translation)
-Rewrite using `[famEquiv_apply, hcomp, aug_jIn, algMap_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zero_iff (m : ℕ) :
     homAt x0 (jetAug : Jet S (Fin 1 × Fin d) m →ₐ[S] S) ≫ famEquiv x0 t.G d j m = 1 ↔
@@ -480,7 +476,7 @@ theorem zero_iff (m : ℕ) :
   rw [famEquiv_apply, hcomp, aug_jIn, algMap_eq]
 
 /- English proof (translation)
-Rewrite using `[famEquiv_apply, famEquiv_apply, hcomp, trunc_jIn, ← hcomp, algMap_eq]`. Conclude with `⟨jIn_cancel x0, fun h => by rw [h]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem trunc_iff (m : ℕ) :
     homAt x0 (jetTrunc : Jet S (Fin 1 × Fin d) (m + 1) →ₐ[S] Jet S (Fin 1 × Fin d) m) ≫ famEquiv x0 t.G d j (m + 1) =
@@ -490,7 +486,7 @@ theorem trunc_iff (m : ℕ) :
   exact ⟨jIn_cancel x0, fun h => by rw [h]⟩
 
 /- English proof (translation)
-Use `and_congr_right fun _ => forall_congr' fun m => ?_` and prove the remaining obligations. Rewrite using `[jptG_eq, jptG_eq, famEquiv_apply, hcomp, subst_jIn]`. Conclude with `eq_comm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem law_iff (F : Fin d → Germ.PS S 2 d) :
     LawIs t.G x0 j F ↔ (∀ i, MvPowerSeries.constantCoeff (F i) = 0) ∧
@@ -501,7 +497,7 @@ theorem law_iff (F : Fin d → Germ.PS S 2 d) :
   exact eq_comm
 
 /- English proof (translation)
-Use `and_congr_right fun _ => forall_congr' fun m => ?_` and prove the remaining obligations. Rewrite using `[famEquiv_apply, hcomp, subst_jIn, Category.assoc]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem end_iff (α : t.G ⟶ t.G) (φ : Germ.Pt S 1 d) :
     EndIs t.G x0 j α φ ↔ (∀ i, MvPowerSeries.constantCoeff (φ i) = 0) ∧
@@ -512,7 +508,7 @@ theorem end_iff (α : t.G ⟶ t.G) (φ : Germ.Pt S 1 d) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[isCombAtG_iff t x0 (fun i => tv (U (e i))), tv_comb, ← Equiv.prod_comp e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comb_iff_sum {σ : Type} [Fintype σ] {n : ℕ} (e : Fin n ≃ σ) (U : σ → TanM x0 t.G) (a : σ → S)
     (w : Sp (DualNumber S) ⟶ t.G.left) :
@@ -521,11 +517,11 @@ theorem comb_iff_sum {σ : Type} [Fintype σ] {n : ℕ} (e : Fin n ≃ σ) (U : 
   rfl
 
 /- English proof (translation)
-Establish `e₁ : ∀ i : Fin d, homAt x0 (jetTan ((0 : Fin 1), i) : Jet S (Fin 1 × Fin d) (0 + 1) →ₐ[S] DualNumber S) ≫ famEquiv x0 t.G d j 1 = tv (dif x0 (j 1) h0 (Pi.single i 1))` using `fun i => by`. Use `Eq.trans ?_ (tv_dif x0 _ _ _).symm` and prove the remaining obligations. Rewrite using `[← tan_jIn, ← hcomp]`. Both sides reduce to the same expression. Establish `e₂ : ∑ i, c i • dif x0 (j 1) h0 (Pi.single i 1) = dif x0 (j 1) h0 c`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [← map_smul, ← map_sum]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[Pi.single_apply]`. Simplify using `only [e₁]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `Iff.trans ?_ (comb_iff_sum t x0 (Equiv.refl _) (fun i => dif x0 (j 1) h0 (Pi.single i 1)) c v).symm` and prove the remaining obligations. Rewrite using `[e₂]`. Conclude with `eq_comm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tan_iff (h0 : algMap x0 (jetAug : Jet S (Fin d) 1 →ₐ[S] S) ≫ j 1 = 1)
     (v : Sp (DualNumber S) ⟶ t.G.left) (c : Fin d → S) :
@@ -545,7 +541,7 @@ theorem tan_iff (h0 : algMap x0 (jetAug : Jet S (Fin d) 1 →ₐ[S] S) ≫ j 1 =
   exact eq_comm
 
 /- English proof (translation)
-Rewrite using `[← Fintype.range_linearCombination, LinearMap.range_eq_top, Fintype.linearIndependent_iff]`. Use `and_congr_left fun _ => ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Simplify using `only [Fintype.linearCombination_apply, funext_iff (g := (0 : κ → S)), Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem basis_iff (c : κ → Fin d → S) :
     (LinearIndependent S c ∧ Submodule.span S (Set.range c) = ⊤) ↔ Function.Bijective (Fintype.linearCombination S c) := by
@@ -555,7 +551,7 @@ theorem basis_iff (c : κ → Fin d → S) :
   simp only [Fintype.linearCombination_apply, funext_iff (g := (0 : κ → S)), Pi.zero_apply]
 
 /- English proof (translation)
-Rewrite using `[Function.bijective_iff_existsUnique]`. Use `forall_congr' fun v => existsUnique_congr fun a => ?_` and prove the remaining obligations. Simplify using `[Fintype.linearCombination_apply, funext_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem basis_iff' (c : κ → Fin d → S) :
     (∀ v : Fin d → S, ∃! a : κ → S, ∀ i, ∑ ℓ, a ℓ * c ℓ i = v i) ↔ Function.Bijective (Fintype.linearCombination S c) := by
@@ -564,11 +560,11 @@ theorem basis_iff' (c : κ → Fin d → S) :
   simp [Fintype.linearCombination_apply, funext_iff]
 
 /- English proof (translation)
-Take `rfl : tg = fun ℓ => (tv (dif x0 (j 1) h0 (c ℓ))).left` from `funext h`. Establish `key : ∀ (W : TanM x0 t.G) (a : κ → S), IsCombAtG t x0 (m` using `Fintype.card κ) (fun i => (tv (dif x0 (j 1) h0 (c ((Fintype.equivFin κ).symm i)))).left) (fun i => a ((Fintype.equivFin κ).symm i)) (tv W).left ↔ dif x0 (j 1) h0 (Fintype.linearCombination S c a) = W := fun W a => by`. Rewrite using `[comb_iff_sum t x0 (Fintype.equivFin κ).symm (fun ℓ => dif x0 (j 1) h0 (c ℓ)) a, Fintype.linearCombination_apply, map_sum]`. Simplify using `only [map_smul]`. Conclude with `⟨fun h => tv_injective (Over.OverMorphism.ext h), fun h => by rw [h]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite using `[← Function.Bijective.of_comp_iff _ hc, Function.bijective_iff_existsUnique]`. Prove the components needed by the constructor for the conclusion. Introduce `hb W`. Conclude with `(existsUnique_congr (key W)).1 (hb.2 _ (isTanAtG_of _ (tv_zero' W)))`. Introduce `hb`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨fun ℓ => isTanAtG_of _ (tv_zero' _), fun w hw => (existsUnique_congr (key (mkT (ovT hw) (smT_zero_ovT hw)))).2 (hb _)⟩`.
+A detailed English derivation is pending.
 -/
 theorem tanBasis_iff (h0 : algMap x0 (jetAug : Jet S (Fin d) 1 →ₐ[S] S) ≫ j 1 = 1)
     (tg : κ → (Sp (DualNumber S) ⟶ t.G.left)) (c : κ → Fin d → S) (h : ∀ ℓ, TanIs t.G x0 j (tg ℓ) (c ℓ))
@@ -592,9 +588,9 @@ theorem tanBasis_iff (h0 : algMap x0 (jetAug : Jet S (Fin d) 1 →ₐ[S] S) ≫ 
       (existsUnique_congr (key (mkT (ovT hw) (smT_zero_ovT hw)))).2 (hb _)⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hP, hF, hA, hT, hc⟩`. Establish `hc'` using `(basis_iff c).1 hc`. Conclude with `⟨⟨fun m => (zero_iff t x0 j m).2 (hP.2.1 m), fun m => (trunc_iff t x0 j m).2 (hP.1 m), ((law_iff t x0 j F).1 hF).2, fun m a => ((end_iff t x0 j _ _).1 (hA a)).2 m, fun ℓ => (tan_iff t x0 j (hP.2.1 1) _ _).1 (hT ℓ), (basis_iff' c).2 hc'⟩, (tanBasis_iff t x0 j (hP.2.1 1) tg c hT hc …`. Introduce and unpack `⟨h, hb, hF, hA⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `h0` using `fun m => (zero_iff t x0 j m).1 (h.zero m)`. Establish `hT` using `fun ℓ => (tan_iff t x0 j (h0 1) _ _).2 (h.tan ℓ)`. Establish `hc'` using `(basis_iff' c).1 h.basis`. Conclude with `⟨param_of_dif_bijective t.semi.smooth (fun m => (trunc_iff t x0 j m).1 (h.trunc m)) h0 ((tanBasis_iff t x0 j (h0 1) tg c hT hc').1 hb), (law_iff t x0 j F).2 ⟨hF, h.law⟩, fun a => (end_iff t x0 j _ _).2 ⟨hA a, fun m => h.act m a⟩, hT, (basis_iff c).2 hc'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isChart_iff_isChartG (F : Fin d → Germ.PS S 2 d) (A : 𝓞 E → Germ.Pt S 1 d)
     (tg : κ → (Sp (DualNumber S) ⟶ t.G.left)) (c : κ → Fin d → S) :
@@ -617,7 +613,7 @@ theorem isChart_iff_isChartG (F : Fin d → Germ.PS S 2 d) (A : 𝓞 E → Germ.
       fun a => (end_iff t x0 j _ _).2 ⟨hA a, fun m => h.act m a⟩, hT, (basis_iff c).2 hc'⟩
 
 /- English proof (translation)
-The claim follows from `(isChart_iff_isChartG t x0 j GG.F A.act tg c).trans ⟨fun h => h.1, fun h => ⟨h, htg, GG.const, A.const⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem isChartOf_iff (GG : Germ.FGLaw S d) (A : Germ.OAct (𝓞 E) GG)
     (tg : κ → (Sp (DualNumber S) ⟶ t.G.left)) (htg : IsTanBasisG t x0 tg) (c : κ → Fin d → S) :
@@ -632,7 +628,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l} {c : Coeff l} {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) {d : ℕ}
 
 /- English proof (translation)
-The claim follows from `isChartOf_iff Xo.univ.t y.x j GG A (fun ℓ : Lt1 Dw => y.u ℓ.1 ℓ.2) ⟨fun ℓ => y.tan ℓ.1 ℓ.2, fun w hw => frame_tangent_basis E H Dw l Xo c S y w hw⟩ uvec`.
+A detailed English derivation is pending.
 -/
 theorem isChartOf_iff_framed (j : JetPts Xo.univ.t.G y.x d) (GG : Germ.FGLaw S d) (A : Germ.OAct (𝓞 E) GG)
     (uvec : Lt1 Dw → Fin d → S) :

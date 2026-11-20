@@ -7,9 +7,9 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.Etal
 open scoped TensorProduct DirectSum
 
 /- English proof (translation)
-Establish `hb' : (b : ℚ_[l]) ≠ 0` using `by rwa [Ne, PadicInt.coe_eq_zero]`. Establish `h1 : (1 : ℚ_[l]) ⊗ₜ[ℤ_[l]] w = 0`. Establish `h2` using `congrArg (fun t => (b : ℚ_[l]) • t) h`. Simplify `h2` using `[TensorProduct.smul_tmul', hb']`. Establish `hloc : IsLocalizedModule (nonZeroDivisors ℤ_[l]) (TensorProduct.mk ℤ_[l] ℚ_[l] M 1)` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `(IsLocalizedModule.eq_zero_iff (nonZeroDivisors ℤ_[l]) (TensorProduct.mk ℤ_[l] ℚ_[l] M 1)).1 h1`. Conclude with `⟨c, nonZeroDivisors.ne_zero c.2, hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem tors_of {l : ℕ} [Fact l.Prime] {M : Type*} [AddCommGroup M] [Module ℤ_[l] M] (b : ℤ_[l]) (hb : b ≠ 0)
     (w : M) (h : ((b : ℚ_[l]))⁻¹ ⊗ₜ[ℤ_[l]] w = 0) : ∃ c : ℤ_[l], c ≠ 0 ∧ c • w = 0 := by
@@ -22,19 +22,17 @@ private theorem tors_of {l : ℕ} [Fact l.Prime] {M : Type*} [AddCommGroup M] [M
   exact ⟨c, nonZeroDivisors.ne_zero c.2, hc⟩
 
 /- English proof (translation)
-Unfold `QOnto`. Introduce `hI hLim l _ k _ _ hl G d e Z X p ι h n m hn U hU hprop z hz`. Take `⟨b, x, hb, rfl⟩` from `H0LimitCoherence.tensor_form l z`. Establish `hz' : ((b : ℚ_[l]))⁻¹ ⊗ₜ[ℤ_[l]] (pullHl l (sch.map U.ι) m 0 x) = 0`. Simplify `hz` using `[pb, pullHQ, LinearMap.baseChange_tmul]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨c, hc, hcx⟩` from `tors_of b hb _ hz'`. Establish `hunit : ∀ j : ℕ, IsUnit (((l ^ j : ℕ)) : k)` using `fun j => by`. Use `push_cast`. Conclude with `(IsUnit.mk0 _ hl).pow j`. Establish `hne : ∀ j : ℕ, NeZero (l ^ j)` using `fun j => ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : ∀ j : ℕ, Finite (Ht (l ^ j) (sch.obj Z) n 0)` using `fun j => by haveI := hne j haveI := hprop`. Conclude with `hI.e4 (l ^ j) k (hunit j) (ι ≫ p) n 0`. Use `set x' : Hl l (sch.obj X) m 0 := c • x with hx'`. Establish `hpull : pullHl l (sch.map U.ι) m 0 x' = 0`. Rewrite using `[hx', map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hcx`. Establish `hlev : ∀ j, ∃ a, G.g j h hn a = x'.1 j` using `fun j => by`. Establish `h0 : pull _ (sch.map U.ι) (tw (l ^ j) 0) m (x'.1 j) = 0`. Use `congrArg (fun t : Hl l (sch.obj U) m 0 => t.1 j) hpull` as an intermediate fact. Conclude with `this`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(G.exact j h hn U hU _).1 h0`. Take `⟨a, ha, hfa⟩` from `hLim (fun j => Ht (l ^ j) (sch.obj Z) n 0) (fun j => Ht (l ^ j) (sch.obj X) m 0) (fun j => red (l ^ (j + 1)) (l ^ j) _ n 0) (fun j => red (l ^ (j + 1)) (l ^ j) _ m 0) (fun j => G.g j h hn) (fun j a => G.red j h hn a) (fun j => x'.1 j) (fun j => x'.2 j) hlev`. Set `a' : Hl l (sch.obj Z) n 0` to `⟨a, ha⟩`. Establish `hga : G.hl h hn a' = x'` using `Subtype.ext (funext hfa)`. Use `⟨(((b * c : ℤ_[l]) : ℚ_[l]))⁻¹ ⊗ₜ a', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hc' : (c : ℚ_[l]) ≠ 0` using `by rwa [Ne, PadicInt.coe_eq_zero]`. Establish `hb' : (b : ℚ_[l]) ≠ 0` using `by rwa [Ne, PadicInt.coe_eq_zero]`. Express the relevant statement in the definitionally equal form `(G.hl h hn).baseChange ℚ_[l] _ = _`. Rewrite using `[LinearMap.baseChange_tmul, hga, hx', ← TensorProduct.smul_tmul, Algebra.smul_def]`. Use `congr 1`.
-
-Establish `hal : algebraMap ℤ_[l] ℚ_[l] c = (c : ℚ_[l])` using `rfl`. Rewrite using `[hal, PadicInt.coe_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.qOnto_holds :
     UpperTheory.Gal.KunnethLefschetz.QOnto := by

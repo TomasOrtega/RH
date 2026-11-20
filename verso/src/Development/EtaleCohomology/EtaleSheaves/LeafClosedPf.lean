@@ -6,9 +6,9 @@ open CategoryTheory AlgebraicGeometry
 namespace LateralTheory.E.LeafClosedPf
 
 /- English proof (translation)
-Introduce `B V`. Set `Z : TopologicalSpace.Closeds B` to `⟨(V : Set B)ᶜ, V.isOpen.isClosed_compl⟩`. Set `I` to `Scheme.IdealSheafData.vanishingIdeal Z`. Use `⟨I.subscheme, I.subschemeι, inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.range_subschemeι, Scheme.IdealSheafData.coe_support_vanishingIdeal]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Z]`.
+Simplify using the standard rewrite rules.
 -/
 theorem LeafClosed_of : LateralTheory.E.LeafGeoCut.LeafClosed := by
   intro B V

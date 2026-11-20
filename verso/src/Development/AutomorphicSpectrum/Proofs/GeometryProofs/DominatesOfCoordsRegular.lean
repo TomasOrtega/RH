@@ -13,11 +13,11 @@ noncomputable def val (ζ : Spec (CommRingCat.of Ω) ⟶ W) : Γ(W, ⊤) ⟶ Com
   ζ.appTop ≫ (Scheme.ΓSpecIso _).hom
 
 /- English proof (translation)
-Establish `h1 : genMap ζ q (W.presheaf.germ ⊤ q.1 trivial s) = (Scheme.stalkClosedPointTo ζ).hom (W.presheaf.germ ⊤ (genPt ζ) trivial s)` using `congrArg (Scheme.stalkClosedPointTo ζ).hom (TopCat.Presheaf.germ_stalkSpecializes_apply W.presheaf (show q.1 ∈ (⊤ : W.Opens) from trivial) q.2 s)`. Rewrite using `[h1]`. Establish `h2` using `Scheme.germ_stalkClosedPointTo (R := CommRingCat.of Ω) ζ ⊤ trivial`. Establish `h3` using `congrArg (fun g => g.hom s) h2`. Use `Eq.trans ?_ h3.symm` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h4 : ∀ (e : (⊤ : (Spec (CommRingCat.of Ω)).Opens) ⟶ (⊤ : (Spec (CommRingCat.of Ω)).Opens)), (Spec (CommRingCat.of Ω)).presheaf.map e.op = 𝟙 _` using `fun e => by`. Rewrite using `[show e = 𝟙 _ from Subsingleton.elim _ _]`. Simplify using the standard rewrite rules. Simplify using `only [val, Iso.trans_hom, Functor.mapIso_hom, Iso.op_hom, CommRingCat.hom_comp, RingHom.comp_apply]`. Use `erw [h4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem val_eq (ζ : Spec (CommRingCat.of Ω) ⟶ W) (q : Cpt ζ) (s : Γ(W, ⊤)) :
     (val ζ).hom s = genMap ζ q (W.presheaf.germ ⊤ q.1 trivial s) := by
@@ -37,7 +37,7 @@ theorem val_eq (ζ : Spec (CommRingCat.of Ω) ⟶ W) (q : Cpt ζ) (s : Γ(W, ⊤
   rfl
 
 /- English proof (translation)
-Introduce `s t hst`. Use `TopCat.Presheaf.section_ext W.sheaf ⊤ s t fun q hq => ?_` and prove the remaining obligations. Apply `hg.inj ⟨q, hall q⟩` to reduce the goal to its premises. Conclude with `(val_eq ζ ⟨q, hall q⟩ s).symm.trans (hst.trans (val_eq ζ ⟨q, hall q⟩ t))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem val_injective {ζ : Spec (CommRingCat.of Ω) ⟶ W} (hg : IsCptGen ζ)
     (hall : ∀ q : W, genPt ζ ⤳ q) : Function.Injective (val ζ).hom := by
@@ -47,13 +47,13 @@ theorem val_injective {ζ : Spec (CommRingCat.of Ω) ⟶ W} (hg : IsCptGen ζ)
   exact (val_eq ζ ⟨q, hall q⟩ s).symm.trans (hst.trans (val_eq ζ ⟨q, hall q⟩ t))
 
 /- English proof (translation)
-Establish `h : ∀ q : W, ∃ (O : W.Opens) (_ : q ∈ O) (s : Γ(W, O)), ∀ (r : Cpt ζ) (hr : r.1 ∈ O), genMap ζ r (W.presheaf.germ O r.1 hr s) = a`. Introduce `q`. Take `⟨g, hgq⟩` from `ha ⟨q, hall q⟩`. Take `⟨O, hO, s, rfl⟩` from `W.presheaf.exists_germ_eq g`. Use `⟨O, hO, s, fun r hr => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hgq]`. Conclude with `genMap_germ_eq_genMap_germ ζ O r ⟨q, hall q⟩ hr hO s`. Use `choose O hO s hs using h`. Take `⟨t, ht, -⟩` from `TopCat.Sheaf.existsUnique_gluing' W.sheaf O ⊤ (fun i => homOfLE le_top) (fun q _ => TopologicalSpace.Opens.mem_iSup.2 ⟨q, hO q⟩) s (fun i j => by`. Use `TopCat.Presheaf.section_ext W.sheaf _ _ _ fun r hr => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hg.inj ⟨r, hall r⟩` to reduce the goal to its premises. Establish `e1` using `TopCat.Presheaf.germ_res_apply W.presheaf (TopologicalSpace.Opens.infLELeft (O i) (O j)) r hr (s i)`. Establish `e2` using `TopCat.Presheaf.germ_res_apply W.presheaf (TopologicalSpace.Opens.infLERight (O i) (O j)) r hr (s j)`. Use `(congrArg (genMap ζ ⟨r, hall r⟩) e1).trans (Eq.trans ?_ (congrArg (genMap ζ ⟨r, hall r⟩) e2).symm)` and prove the remaining obligations. Rewrite using `[hs i ⟨r, hall r⟩, hs j ⟨r, hall r⟩])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `hq` using `hO (genPt ζ)`. Use `(val_eq ζ ⟨genPt ζ, specializes_rfl⟩ t).trans (Eq.trans ?_ (hs (genPt ζ) ⟨genPt ζ, specializes_rfl⟩ hq))` and prove the remaining obligations. Rewrite using `[← ht (genPt ζ)]`. Conclude with `congrArg (genMap ζ ⟨genPt ζ, specializes_rfl⟩) (TopCat.Presheaf.germ_res_apply W.presheaf (homOfLE le_top) (genPt ζ) hq t).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_val_eq {ζ : Spec (CommRingCat.of Ω) ⟶ W} (hg : IsCptGen ζ)
     (hall : ∀ q : W, genPt ζ ⤳ q) (a : Ω) (ha : ∀ q : Cpt ζ, a ∈ regAt ζ q) :
@@ -83,13 +83,13 @@ theorem exists_val_eq {ζ : Spec (CommRingCat.of Ω) ⟶ W} (hg : IsCptGen ζ)
     (TopCat.Presheaf.germ_res_apply W.presheaf (homOfLE le_top) (genPt ζ) hq t).symm
 
 /- English proof (translation)
-Establish `hb : Function.Bijective (val ζ).hom.rangeRestrict` using `⟨fun a b hab => val_injective hg hall (congrArg Subtype.val hab), RingHom.rangeRestrict_surjective _⟩`. Set `e` to `RingEquiv.ofBijective _ hb`. Establish `hr : ∀ s, i ((val θ).hom s) ∈ (val ζ).hom.range` using `fun s => exists_val_eq hg hall _ (h s)`. Set `φ₀ : Γ(Y, ⊤) →+* (val ζ).hom.range` to `(i.comp (val θ).hom).codRestrict _ hr`. Set `φ : Γ(Y, ⊤) ⟶ Γ(W, ⊤)` to `CommRingCat.ofHom (e.symm.toRingHom.comp φ₀)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hφ : φ ≫ val ζ = val θ ≫ CommRingCat.ofHom i`. Use extensionality with `s`. Establish `: (val ζ).hom.rangeRestrict (e.symm (φ₀ s)) = φ₀ s` using `e.apply_symm_apply _`. Conclude with `congrArg Subtype.val this`. Use `⟨W.toSpecΓ ≫ Spec.map φ ≫ Y.isoSpec.inv, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono Y.isoSpec.hom]`. Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Rewrite using `[Scheme.isoSpec_hom, Scheme.toSpecΓ_naturality_assoc, Scheme.toSpecΓ_naturality, ← SpecMap_ΓSpecIso_hom]`. Establish `L : Spec.map (Scheme.ΓSpecIso (CommRingCat.of Ω')).hom ≫ Spec.map ζ.appTop ≫ Spec.map φ = Spec.map (φ ≫ val ζ)` using `by simp [val, Spec.map_comp]`. Establish `R : Spec.map (CommRingCat.ofHom i) ≫ Spec.map (Scheme.ΓSpecIso (CommRingCat.of Ω)).hom ≫ Spec.map θ.appTop = Spec.map (val θ ≫ CommRingCat.ofHom i)` using `by simp [val, Spec.map_comp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[L, ← SpecMap_ΓSpecIso_hom, R, hφ]`.
+A detailed English derivation is pending.
 -/
 theorem exists_map_affine [IsAffine Y] (θ : Spec (CommRingCat.of Ω) ⟶ Y)
     {ζ : Spec (CommRingCat.of Ω') ⟶ W} (hg : IsCptGen ζ) (hall : ∀ q : W, genPt ζ ⤳ q) (i : Ω →+* Ω')
@@ -122,25 +122,25 @@ section Transfer
 variable {j : W ⟶ Y} [IsOpenImmersion j] {ζ : Spec (CommRingCat.of Ω) ⟶ W}
 
 /- English proof (translation)
-The claim follows from `j.isOpenEmbedding.isInducing.specializes_iff`.
+A detailed English derivation is pending.
 -/
 theorem specializes_comp_iff {w : W} : genPt (ζ ≫ j) ⤳ j w ↔ genPt ζ ⤳ w :=
   j.isOpenEmbedding.isInducing.specializes_iff
 
 /- English proof (translation)
-Simplify using `[Dominates]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dominates_open : Dominates ζ (ζ ≫ j) j (RingHom.id Ω) := by
   simp [Dominates]
 
 /- English proof (translation)
-The claim follows from `ConcreteCategory.bijective_of_isIso (j.stalkMap w)`.
+A detailed English derivation is pending.
 -/
 theorem stalkMap_bijective (w : W) : Function.Bijective (j.stalkMap w).hom :=
   ConcreteCategory.bijective_of_isIso (j.stalkMap w)
 
 /- English proof (translation)
-The claim follows from `RegAtDom.genMap_stalkMap dominates_open w h (specializes_comp_iff.2 h) s`.
+A detailed English derivation is pending.
 -/
 theorem genMap_open (w : W) (h : genPt ζ ⤳ w) (s : Y.presheaf.stalk (j w)) :
     genMap ζ ⟨w, h⟩ ((j.stalkMap w).hom s) =
@@ -148,9 +148,9 @@ theorem genMap_open (w : W) (h : genPt ζ ⤳ w) (s : Y.presheaf.stalk (j w)) :
   RegAtDom.genMap_stalkMap dominates_open w h (specializes_comp_iff.2 h) s
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, rfl⟩`. Take `⟨t, rfl⟩` from `(stalkMap_bijective (j := j) w).2 s`. Conclude with `⟨t, (genMap_open w h t).symm⟩`. Introduce and unpack `⟨t, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, genMap_open w h t⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_regAt_open_iff (w : W) (h : genPt ζ ⤳ w) (a : Ω) :
     a ∈ regAt ζ ⟨w, h⟩ ↔ a ∈ regAt (ζ ≫ j) ⟨j w, specializes_comp_iff.2 h⟩ := by
@@ -162,11 +162,11 @@ theorem mem_regAt_open_iff (w : W) (h : genPt ζ ⤳ w) (a : Ω) :
     exact ⟨_, genMap_open w h t⟩
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : Scheme.stalkClosedPointTo (ζ ≫ j) = j.stalkMap _ ≫ Scheme.stalkClosedPointTo ζ` using `Scheme.stalkClosedPointTo_comp ζ j`. Establish `hb` using `hg.bij`. Rewrite `hb` using `[e]`. Establish `hs` using `stalkMap_bijective (j := j) (ζ (IsLocalRing.closedPoint Ω))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Function.Bijective.of_comp_iff _ hs).1 hb`. Introduce and unpack `⟨w, h⟩ s t hst`. Take `⟨s, rfl⟩` from `(stalkMap_bijective (j := j) w).2 s`. Take `⟨t, rfl⟩` from `(stalkMap_bijective (j := j) w).2 t`. Rewrite `hst` using `[genMap_open w h, genMap_open w h]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg.inj _ hst]`.
+A detailed English derivation is pending.
 -/
 theorem isCptGen_open (hg : IsCptGen (ζ ≫ j)) : IsCptGen ζ := by
   refine ⟨?_, ?_⟩
@@ -189,7 +189,7 @@ section Points
 variable {ξ : Spec (CommRingCat.of Ω) ⟶ W}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨isCptGen_open hg, fun q => specializes_comp_iff.1 (hall _)⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem open_data {V : Scheme.{0}} (j : V ⟶ W) [IsOpenImmersion j] {ζ : Spec (CommRingCat.of Ω) ⟶ V}
     (h : ζ ≫ j = ξ) (hg : IsCptGen ξ) (hall : ∀ q, genPt ξ ⤳ q) :
@@ -198,7 +198,7 @@ theorem open_data {V : Scheme.{0}} (j : V ⟶ W) [IsOpenImmersion j] {ζ : Spec 
   exact ⟨isCptGen_open hg, fun q => specializes_comp_iff.1 (hall _)⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `and_congr_right fun _ => forall_congr' fun c' => mem_regAt_open_iff w hw _`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem inChart_open_iff {V : Scheme.{0}} (j : V ⟶ W) [IsOpenImmersion j]
     {ζ : Spec (CommRingCat.of Ω) ⟶ V} (h : ζ ≫ j = ξ) {κ : Type} (y : κ → Ω) (c : κ) (w : V)
@@ -208,7 +208,7 @@ theorem inChart_open_iff {V : Scheme.{0}} (j : V ⟶ W) [IsOpenImmersion j]
   exact and_congr_right fun _ => forall_congr' fun c' => mem_regAt_open_iff w hw _
 
 /- English proof (translation)
-Establish `: ∀ q : W, _root_.IsReduced (W.presheaf.stalk q)` using `fun q => isReduced_of_injective (genMap ξ ⟨q, hall q⟩) (hg.inj _)`. Conclude with `isReduced_of_isReduced_stalk W`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isReduced_of_cptGen (hg : IsCptGen ξ) (hall : ∀ q, genPt ξ ⤳ q) : IsReduced W := by
   have : ∀ q : W, _root_.IsReduced (W.presheaf.stalk q) := fun q =>
@@ -216,14 +216,14 @@ theorem isReduced_of_cptGen (hg : IsCptGen ξ) (hall : ∀ q, genPt ξ ⤳ q) : 
   exact isReduced_of_isReduced_stalk W
 
 /- English proof (translation)
-Rewrite using `[isDominant_iff]`. Conclude with `fun q => (hall q).mem_closed isClosed_closure (subset_closure ⟨_, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isDominant_of_all (hall : ∀ q, genPt ξ ⤳ q) : IsDominant ξ := by
   rw [isDominant_iff]
   exact fun q => (hall q).mem_closed isClosed_closure (subset_closure ⟨_, rfl⟩)
 
 /- English proof (translation)
-Establish `hr : Set.range ξ ⊆ Set.range V.ι`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Rewrite using `[show p = IsLocalRing.closedPoint Ω from Subsingleton.elim (α := PrimeSpectrum Ω) _ _]` and apply the resulting hypothesis. Conclude with `⟨IsOpenImmersion.lift V.ι ξ hr, IsOpenImmersion.lift_fac _ _ _⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 -/
 theorem exists_lift (V : W.Opens) (ξ : Spec (CommRingCat.of Ω) ⟶ W) (h : genPt ξ ∈ V) :
     ∃ ζ : Spec (CommRingCat.of Ω) ⟶ V.toScheme, ζ ≫ V.ι = ξ := by
@@ -234,7 +234,7 @@ theorem exists_lift (V : W.Opens) (ξ : Spec (CommRingCat.of Ω) ⟶ W) (h : gen
   exact ⟨IsOpenImmersion.lift V.ι ξ hr, IsOpenImmersion.lift_fac _ _ _⟩
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hg.bij.2 a`. Use `⟨s, ?_⟩` and prove the remaining obligations. Use `show (W.presheaf.stalkSpecializes h ≫ Scheme.stalkClosedPointTo ξ).hom s = _`. Rewrite using `[show W.presheaf.stalkSpecializes h = 𝟙 _ from TopCat.Presheaf.stalkSpecializes_refl _ _]`. Conclude with `congrArg (fun g : W.presheaf.stalk (genPt ξ) ⟶ CommRingCat.of Ω => g.hom s) (Category.id_comp _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_regAt_genPt (hg : IsCptGen ξ) (h : genPt ξ ⤳ genPt ξ) (a : Ω) :
     a ∈ regAt ξ ⟨genPt ξ, h⟩ := by
@@ -245,16 +245,14 @@ theorem mem_regAt_genPt (hg : IsCptGen ξ) (h : genPt ξ ⤳ genPt ξ) (a : Ω) 
   exact congrArg (fun g : W.presheaf.stalk (genPt ξ) ⟶ CommRingCat.of Ω => g.hom s) (Category.id_comp _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hc, fun _ => mem_regAt_genPt hg h _⟩`.
+Supply the required witnesses or components.
 -/
 theorem inChart_genPt (hg : IsCptGen ξ) {κ : Type} (y : κ → Ω) (c : κ) (hc : y c ≠ 0)
     (h : genPt ξ ⤳ genPt ξ) : InChart ξ y c ⟨genPt ξ, h⟩ :=
   ⟨hc, fun _ => mem_regAt_genPt hg h _⟩
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `q hq`. Establish `h : ∀ c', ∃ O : W.Opens, q ∈ O ∧ ∀ r : Cpt ξ, r.1 ∈ O → y c' / y c ∈ regAt ξ r` using `fun c' => exists_open_mem_regAt ξ ⟨q, hall q⟩ _ (hq.2 c')`. Use `choose O hqO hO using h`. Use `⟨⋂ c', (O c' : Set W), fun r hr => ⟨hq.1, fun c' => hO c' ⟨r, hall r⟩ ?_⟩, isOpen_iInter_of_finite fun c' => (O c').isOpen, Set.mem_iInter.2 hqO⟩` and prove the remaining obligations.
-
-Conclude with `Set.mem_iInter.1 hr c'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_chart {κ' : Type} [Finite κ'] (hall : ∀ q, genPt ξ ⤳ q) (y : κ' → Ω) (c : κ') :
     IsOpen {q : W | InChart ξ y c ⟨q, hall q⟩} := by
@@ -275,7 +273,7 @@ variable {X X' : Scheme.{0}} {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ζ : Spec (C
   {g : X' ⟶ X} {i : Ω →+* Ω'} {κ : Type} {x : κ → Ω}
 
 /- English proof (translation)
-Take `⟨_, hreg, -⟩` from `RegAtDom.regAt_dominates X Ω ξ X' Ω' ζ g i hd w`. Use `⟨(map_ne_zero i).2 hc.1, fun c' => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_div₀]`. Conclude with `hreg _ (hc.2 c')`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inChart_pull (hd : Dominates ζ ξ g i) (w : Cpt ζ) (h : genPt ξ ⤳ g w.1) (c : κ)
     (hc : InChart ξ x c ⟨g w.1, h⟩) : InChart ζ (fun k => i (x k)) c w := by
@@ -285,11 +283,11 @@ theorem inChart_pull (hd : Dominates ζ ξ g i) (w : Cpt ζ) (h : genPt ξ ⤳ g
   exact hreg _ (hc.2 c')
 
 /- English proof (translation)
-Take `⟨_, hreg, hunit⟩` from `RegAtDom.regAt_dominates X Ω ξ X' Ω' ζ g i hd w`. Establish `hxc : x c ≠ 0` using `fun e => hc.1 (by simp [e])`. Establish `hxd` using `hdc.1`. Establish `hia : i (x c / x d) ≠ 0` using `(map_ne_zero i).2 (div_ne_zero hxc hxd)`. Establish `hu : unitAt ζ w (i (x c / x d))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hia, hreg _ (hdc.2 c), ?_⟩` and prove the remaining obligations. Use `hc.2 d` as an intermediate fact. Rewrite `this` using `[← map_div₀, ← inv_div, map_inv₀]`. Then use the resulting hypothesis. Take `⟨-, -, hinv⟩` from `hunit hg _ (hdc.2 c) hu`. Use `⟨hxc, fun c' => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : x c' / x c = x c' / x d * (x c / x d)⁻¹` using `by field_simp`. Rewrite using `[e]`. Conclude with `mul_mem (hdc.2 c') hinv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inChart_of_inChart (hd : Dominates ζ ξ g i) (hg : IsCptGen ζ) (w : Cpt ζ)
     (h : genPt ξ ⤳ g w.1) (c d : κ) (hdc : InChart ξ x d ⟨g w.1, h⟩)
@@ -316,13 +314,11 @@ variable {X X' : Scheme.{0}} {ξ : Spec (CommRingCat.of Ω) ⟶ X} {ξ' : Spec (
   {i : Ω →+* Ω'} {κ : Type} {x : κ → Ω}
 
 /- English proof (translation)
-Establish `: IsAffine U.toScheme` using `hU`. Use `isReduced_of_cptGen hg hall` as an intermediate fact. Use `isDominant_of_all hall` as an intermediate fact. Establish `hra : Set.range a ⊆ Set.range U.ι`. Rewrite using `[Scheme.Opens.range_ι]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `ha w`. Establish `hrb : Set.range b ⊆ Set.range U.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨w, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hb w`. Establish `e : IsOpenImmersion.lift U.ι a hra = IsOpenImmersion.lift U.ι b hrb`. Use `ext_of_isDominant ζ ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono U.ι]`. Simplify using `using h`.
-
-Rewrite using `[← IsOpenImmersion.lift_fac U.ι a hra, ← IsOpenImmersion.lift_fac U.ι b hrb, e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_of_land {P : Scheme.{0}} {ζ : Spec (CommRingCat.of Ω') ⟶ P} (hg : IsCptGen ζ)
     (hall : ∀ q, genPt ζ ⤳ q) (U : X.Opens) (hU : IsAffineOpen U) (a b : P ⟶ X)
@@ -341,15 +337,13 @@ theorem ext_of_land {P : Scheme.{0}} {ζ : Spec (CommRingCat.of Ω') ⟶ P} (hg 
   rw [← IsOpenImmersion.lift_fac U.ι a hra, ← IsOpenImmersion.lift_fac U.ι b hrb, e]
 
 /- English proof (translation)
-Take `⟨hg₂, hall₂⟩` from `open_data V₂.ι hζ₂ hg' hall`. Set `ζP : Spec (CommRingCat.of Ω') ⟶ pullback V₁.ι V₂.ι` to `pullback.lift ζ₁ ζ₂ (hζ₁.trans hζ₂.symm)`. Establish `hπ : ζP ≫ (pullback.fst V₁.ι V₂.ι ≫ V₁.ι) = ξ'` using `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ V₁.ι) (pullback.lift_fst _ _ _)).trans hζ₁)`. Take `⟨hgP, hallP⟩` from `open_data (pullback.fst V₁.ι V₂.ι ≫ V₁.ι) hπ hg' hall`. Use `ext_of_land hgP hallP U₁ hU₁ _ _ (fun w => ?_) (fun w => ?_) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hG₁ _`. Establish `hw : V₂.ι (pullback.snd V₁.ι V₂.ι w) = V₁.ι (pullback.fst V₁.ι V₂.ι w)`. Use `congrArg (fun m : pullback V₁.ι V₂.ι ⟶ X' => m w) (pullback.condition (f := V₁.ι) (g := V₂.ι))` as an intermediate fact. Simplify using `using this.symm`. Establish `hin₁ : V₂.ι (pullback.snd V₁.ι V₂.ι w) ∈ V₁`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw]`. Conclude with `(pullback.fst V₁.ι V₂.ι w).2`. Use `set w₂ := pullback.snd V₁.ι V₂.ι w with hw₂`. Establish `hc` using `hV₁ _ hin₁`. Establish `hc'` using `(inChart_open_iff V₂.ι hζ₂ _ c w₂ (hall₂ w₂) (hall _)).2 hc`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h, hin⟩` from `hG₂ w₂`. Conclude with `(hmem₁ _).2 ⟨h, inChart_of_inChart hd₂ hg₂ ⟨w₂, hall₂ w₂⟩ h c d hin hc'⟩`. Establish `e₁ : ζP ≫ pullback.fst V₁.ι V₂.ι = ζ₁` using `pullback.lift_fst _ _ _`. Establish `e₂ : ζP ≫ pullback.snd V₁.ι V₂.ι = ζ₂` using `pullback.lift_snd _ _ _`. Rewrite using `[reassoc_of% e₁, reassoc_of% e₂]`.
-
-Conclude with `hd₁.trans hd₂.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_compat (hg' : IsCptGen ξ') (hall : ∀ q, genPt ξ' ⤳ q) {c d : κ}
     (V₁ V₂ : X'.Opens) (ζ₁ : Spec (CommRingCat.of Ω') ⟶ V₁.toScheme)
@@ -387,15 +381,15 @@ theorem glue_compat (hg' : IsCptGen ξ') (hall : ∀ q, genPt ξ' ⤳ q) {c d : 
 variable {o : Type} [CommRing o] [Algebra o Ω]
 
 /- English proof (translation)
-Establish `: IsAffine U.toScheme` using `hU`. Take `⟨hgV, hallV⟩` from `open_data V.ι hζ hg' hall`. Use `exists_map_affine θ hgV hallV i fun s q => ?_` and prove the remaining obligations. Establish `hreg : (val θ).hom s ∈ Algebra.adjoin o (Set.range fun j => x j / x c)`. Use `(tie.ring c hc _).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨q, hq⟩ hin`. Substitute `hθ` using the available equality. Establish `hqU : q ∈ U` using `(hmem q).2 ⟨hq, hin⟩`. Establish `hu : genPt θ ⤳ (⟨q, hqU⟩ : U.toScheme)` using `specializes_comp_iff (j := U.ι).1 hq`. Conclude with `(mem_regAt_open_iff (j := U.ι) ⟨q, hqU⟩ hu _).1 ⟨_, (val_eq θ ⟨⟨q, hqU⟩, hu⟩ s).symm⟩`.
+Assume the hypotheses and unpack their components. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadj : ∀ a ∈ Algebra.adjoin o (Set.range fun j => x j / x c), ∀ r : X', r ∈ V → i a ∈ regAt ξ' ⟨r, hall r⟩`. Introduce `a ha r hr`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a ha`. Take `⟨j, rfl⟩` from `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_div₀]`. Conclude with `(hV r hr).2 j`. Consider the case `algebraMap s => exact ho s _`. Consider the case `add a b _ _ iha ihb => rw [map_add]`. Conclude with `add_mem iha ihb`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Consider the case `mul a b _ _ iha ihb => rw [map_mul]`. Conclude with `mul_mem iha ihb`. Take `⟨w, hw⟩` from `q`. Substitute `hζ` using the available equality. Conclude with `(mem_regAt_open_iff (j := V.ι) w hw _).2 (hadj _ hreg _ w.2)`.
+A detailed English derivation is pending.
 -/
 theorem exists_chart_map (tie : CoordTie o ξ x) (hg' : IsCptGen ξ') (hall : ∀ q, genPt ξ' ⤳ q)
     (ho : ∀ (r : o) (p' : Cpt ξ'), i (algebraMap o Ω r) ∈ regAt ξ' p') (c : κ) (hc : x c ≠ 0)
@@ -432,23 +426,19 @@ theorem exists_chart_map (tie : CoordTie o ξ x) (hg' : IsCptGen ξ') (hall : �
 end Main
 
 /- English proof (translation)
-Introduce `X Ω _ ξ o _ _ κ _ x X' Ω' _ ξ' i tie hg' hall ho hcov`. Set `I` to `{c : κ // x c ≠ 0}`. Establish `hne : ∀ c : I, i (x c.1) ≠ 0` using `fun c => (map_ne_zero i).2 c.2`. Use `choose U hU hUmem using fun c : I => tie.affine c.1 c.2`. Set `V : I → X'.Opens` to `fun c => ⟨_, isOpen_chart hall (fun k => i (x k)) c.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hVmem : ∀ (c : I) (q : X'), q ∈ V c ↔ InChart ξ' (fun k => i (x k)) c.1 ⟨q, hall q⟩` using `fun c q => Iff.rfl`. Establish `hξV : ∀ c : I, genPt ξ' ∈ V c` using `fun c => (hVmem c _).2 (inChart_genPt hg' _ c.1 (hne c) (hall _))`. Establish `hξU : ∀ c : I, genPt ξ ∈ U c` using `fun c => (hUmem c _).2 ⟨specializes_rfl, inChart_genPt tie.gen _ c.1 c.2 specializes_rfl⟩`. Use `choose ζ hζ using fun c : I => exists_lift (V c) ξ' (hξV c)`. Use `choose θ hθ using fun c : I => exists_lift (U c) ξ (hξU c)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose g hg using fun c : I => exists_chart_map tie hg' hall ho c.1 c.2 (U c) (hU c) (hUmem c) (V c) (fun q hq => (hVmem c q).1 hq) (ζ c) (hζ c) (θ c) (hθ c)`. Set `G : ∀ c : I, (V c).toScheme ⟶ X` to `fun c => g c ≫ (U c).ι`. Establish `hdom : ∀ c : I, Dominates (ζ c) ξ (G c) i` using `fun c => by show ζ c ≫ g c ≫ (U c).ι = _`. Rewrite using `[reassoc_of% (hg c), hθ c]`. Establish `hGU : ∀ (c : I) (w : (V c).toScheme), G c w ∈ U c` using `fun c w => by show (U c).ι (g c w) ∈ U c`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(g c w).2`. Establish `hcover : TopologicalSpace.IsOpenCover V`. Use `top_le_iff.1 fun q _ => TopologicalSpace.Opens.mem_iSup.2 ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `hcov ⟨q, hall q⟩`. Establish `hxc : x c ≠ 0` using `fun e => hc.1 (by simp [e])`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨⟨c, hxc⟩, (hVmem ⟨c, hxc⟩ q).2 hc⟩`. Set `𝒰` to `X'.openCoverOfIsOpenCover V hcover`. Establish `hcomp : ∀ c d : I, pullback.fst (𝒰.f c) (𝒰.f d) ≫ G c = pullback.snd (𝒰.f c) (𝒰.f d) ≫ G d` using `fun c d => glue_compat hg' hall (V c) (V d) (ζ c) (ζ d) (hζ c) (hζ d) (fun q hq => (hVmem c q).1 hq) (U c) (hU c) (hUmem c) (G c) (G d) (hGU c) (fun w => (hUmem d _).1 (hGU d w)) (hdom c) (hdom d)`. Set `f : X' ⟶ X` to `𝒰.glueMorphisms G hcomp`. Establish `hf : ∀ c : I, (V c).ι ≫ f = G c` using `fun c => 𝒰.ι_glueMorphisms G hcomp c`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfd : Dominates ξ' ξ f i`. Take `⟨c, hc⟩` from `hcov ⟨genPt ξ', hall _⟩`. Establish `hxc : x c ≠ 0` using `fun e => hc.1 (by simp [e])`. Use `show ξ' ≫ f = _`. Rewrite using `[← hζ ⟨c, hxc⟩, Category.assoc, hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hdom ⟨c, hxc⟩`. Use `⟨f, hfd, fun p' c h => ⟨inChart_pull hfd p' h c, fun hc => ?_⟩⟩` and prove the remaining obligations. Establish `hxc : x c ≠ 0` using `fun e => hc.1 (by simp [e])`. Establish `hp : p'.1 ∈ V ⟨c, hxc⟩` using `hc`. Establish `e : f p'.1 = G ⟨c, hxc⟩ ⟨p'.1, hp⟩`.
-
-Use `congrArg (fun m : (V ⟨c, hxc⟩).toScheme ⟶ X => m ⟨p'.1, hp⟩) (hf ⟨c, hxc⟩)` as an intermediate fact. Conclude with `this`. Establish `hm : f p'.1 ∈ U ⟨c, hxc⟩`. Rewrite using `[e]`. Conclude with `hGU _ _`.
-
-Take `⟨_, hin⟩` from `(hUmem ⟨c, hxc⟩ _).1 hm`. Conclude with `hin`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_dominating_map : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (o : Type) [CommRing o] [Algebra o Ω] (κ : Type) [Finite κ] (x : κ → Ω) (X' : Scheme.{0}) (Ω' : Type) [Field Ω'] (ξ' : Spec (CommRingCat.of Ω') ⟶ X') (i : Ω →+* Ω'), CoordTie o ξ x → IsCptGen ξ' → (∀ q : X', genPt ξ' ⤳ q) → (∀ (r : o) (p' : Cpt ξ'), i (algebraMap o Ω r) ∈ regAt ξ' p') → (∀ p' : Cpt ξ', ∃ c, InChart ξ' (fun k => i (x k)) c p') → ∃ f : X' ⟶ X, Dominates ξ' ξ f i ∧ ∀ (p' : Cpt ξ') (c : κ) (h : genPt ξ ⤳ f p'.1), InChart ξ x c ⟨f p'.1, h⟩ ↔ InChart ξ' (fun k => i (x k)) c p' := by
   intro X Ω _ ξ o _ _ κ _ x X' Ω' _ ξ' i tie hg' hall ho hcov

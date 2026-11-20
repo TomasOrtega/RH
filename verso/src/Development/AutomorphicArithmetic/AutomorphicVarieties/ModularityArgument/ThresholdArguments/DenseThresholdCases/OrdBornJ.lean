@@ -17,9 +17,9 @@ open UpperTheory.V.HV (Coef)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.V.Z UpperTheory.V.Z.Ord
 /- English proof (translation)
-Take `⟨A, hA⟩` from `exists_isPlaceOver Ω w`. Take `⟨σ, hσ⟩` from `ReciprocityTheory.Gal.exists_isFrob hA`. Establish `e` using `congrArg Polynomial.roots (((h A hA).2 σ hσ).symm.trans ((h' A hA).2 σ hσ))`. Rewrite `e` using `[roots_multiset_prod_X_sub_C, roots_multiset_prod_X_sub_C]`. Establish `hq : (0 : ℝ) < (normV w : ℕ)` using `Nat.cast_pos.2 (lt_trans one_pos (one_lt_normV w))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : (((normV w : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (Real.rpow_pos_of_pos hq _).ne'`. Establish `e'` using `Multiset.map_injective (mul_right_injective₀ hc) (a₁ := B.map Units.val) (a₂ := B'.map Units.val) (by simpa [Af.algSat, Multiset.map_map] using e)`. Conclude with `Multiset.map_injective Units.val_injective e'`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem sat_of_frob {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l n : ℕ}
     [Fact l.Prime] {ι : Qbar l ≃+* ℂ} {ρ : G F Ω →* GL (Fin n) (Qbar l)} {w : HeightOneSpectrum (𝓞 F)} {B B' : Multiset ℂˣ}
@@ -35,13 +35,13 @@ private theorem sat_of_frob {F Ω : Type} [Field F] [NumberField F] [Field Ω] [
     (by simpa [Af.algSat, Multiset.map_map] using e)
   exact Multiset.map_injective Units.val_injective e'
 /- English proof (translation)
-Introduce `P hO l _ L Ω _ _ _ _ _ _ s n hn V c r ι B Λ J hR hE x h ρ hJ hA hρ hI hc w hl hU`. Take `⟨π₀, -, hd, ha, he⟩` from `hE x h ρ hJ hA hρ hI`. Establish `hl'` using `(UpperTheory.V.Hi.Pu.l_iff (l := l) w).2 hl`. Set `v : Vl l L` to `⟨w.under (𝓞 (Lp L)), hl'⟩`. Establish `hu : (s.w v.1).under (𝓞 (Lp L)) = v.1` using `UpperTheory.V.Hi.Pu.w_under s v.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsl : ((l : ℕ) : 𝓞 L) ∈ (s.w v.1).asIdeal` using `(UpperTheory.V.Hi.Pu.l_iff (l := l) _).1 (by rw [hu]; exact hl')`. Establish `hF` using `_root_.UpperTheory.V.Z.Ord.flagJ_alt P.litN l L Ω s n V c r B Λ J hR x h ρ hJ hA hρ hI v`. Take `⟨hu1, hu2⟩` from `_root_.UpperTheory.V.Z.Ord.conj_unlinked_of_printed_results P L Ω l ι n ρ π₀ hc hd ha (s.w v.1) w hu.symm (s.A v.1) (s.hw v.1) (x.psi v) hF`. Take `⟨-, hTU, hW⟩` from `_root_.UpperTheory.V.Z.Ord.exp_torsion_of_literal_automorphy_n P.litN L Ω l n hn ι (s.A v.1) (s.w v.1) (s.hw v.1) hsl π₀ (x.psi v) (he v)`. Establish `hT : TU π₀ (s.w v.1)` using `hTU (hu1 hU)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `hO L n hn π₀`. Use `⟨hu2 (hW t (ht (s.w v.1) hT.1 hT.2)), fun π hπ => ?_⟩` and prove the remaining obligations. Establish `e : π₀ = π` using `GlobalTheory.CuspRep.CuspSub.ext (UpperTheory.V.Af.strongMultOneC L n π₀ π (by filter_upwards [ha.2, hπ.2] with u ⟨b, hb, hf⟩ ⟨b', hb', hf'⟩`. Take `rfl` from `sat_of_frob hf hf'`. Conclude with `⟨b, (CG.hasSat_mk π₀ u b).1 hb, (CG.hasSat_mk π u b).1 hb'⟩))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `e ▸ _root_.UpperTheory.V.Z.Ord.conj_torsion_of_printed_results P L n hn π₀ hd (s.w v.1) w hu.symm hT`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Ord.born_j_of_printed_polarization_window :
     _root_.UpperTheory.V.Af.Hypotheses' → ImaginaryQuadraticEtaCharacter.WinOf → BornJ := by

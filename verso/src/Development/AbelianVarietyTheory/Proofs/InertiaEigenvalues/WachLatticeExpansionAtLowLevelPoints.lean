@@ -22,7 +22,7 @@ section Series
 variable {LL M : Type} [Field LL] [AddCommGroup M] [Module LL M]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Unfold `conv`. Simplify using `only [Pi.smul_apply, map_smul, smul_eq_mul, mul_smul]`. Rewrite using `[smul_finsum]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conv_smul (c : LL) (e : PowerSeries LL) (f : ℤ → M) : conv (c • e) f = c • conv e f := by
   funext k
@@ -31,9 +31,9 @@ theorem conv_smul (c : LL) (e : PowerSeries LL) (f : ℤ → M) : conv (c • e)
   rw [smul_finsum]
 
 /- English proof (translation)
-Distinguish the cases in `h : r < -(a : ℤ)`. Rewrite using `[LatFil.conv_vanish e f _ hf r h, LatFil.conv_vanish e' f _ hf r h]`. Take `⟨q, rfl⟩ : ∃ q : ℕ, r = (q : ℤ) - a` from `⟨(r + a).toNat, by omega⟩`. Rewrite using `[LatFil.conv_eq_sum e f a hf, LatFil.conv_eq_sum e' f a hf]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hj' : j < m` using `by have := Finset.mem_range.1 hj; omega`. Use `(PowerSeries.X_pow_dvd_iff.1 hd) j hj'` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem conv_congr (e e' : PowerSeries LL) (f : ℤ → M) (a m : ℕ)
     (hf : ∀ r : ℤ, r < -(a : ℤ) → f r = 0) (hd : PowerSeries.X ^ m ∣ e - e') (r : ℤ)
@@ -49,11 +49,11 @@ theorem conv_congr (e e' : PowerSeries LL) (f : ℤ → M) (a m : ℕ)
     rw [this]
 
 /- English proof (translation)
-Substitute `hcc` using the available equality. Establish `h1 : bb • conv e f r = conv (PowerSeries.C bb * e) f r`. Rewrite using `[← PowerSeries.smul_eq_C_mul, conv_smul]`. Both sides reduce to the same expression. Rewrite using `[h1]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `conv_congr _ _ f a m hf ?_ r hr` and prove the remaining obligations. Establish `h2 : PowerSeries.C bb * e - PowerSeries.C (bb * c) * q = -(PowerSeries.C bb * (PowerSeries.C c * q - e))`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, dvd_neg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Dvd.dvd.mul_left hd _`.
+A detailed English derivation is pending.
 -/
 theorem approx_step (bb c cc : LL) (e q : PowerSeries LL) (f : ℤ → M) (a m : ℕ)
     (hf : ∀ r : ℤ, r < -(a : ℤ) → f r = 0) (hd : PowerSeries.X ^ m ∣ PowerSeries.C c * q - e)
@@ -79,35 +79,31 @@ namespace GlobalTheory.NL.LatLevel
 set_option maxHeartbeats 20000000 in
 
 /- English proof (translation)
-Introduce `D HW F Cm l _ K s LL h T hT`. Establish `hP4a` using `GlobalTheory.NL.LowLevel.expansions_low_and_pullback_record D HW F Cm l K s LL h T hT`. Unfold `p4`. Use `⟨hP4a.1, fun i ζ τ hpt => ⟨hP4a.2 i ζ τ hpt, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `x k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : ex (Cm l) h T i ζ ((letE i : AA K LL) • x) ∈ Lat (Cm l) h T i ζ` using `Submodule.subset_span ⟨1, _, (LowLevel.conv_one _).symm⟩`. Establish `hk` using `((LatFil.lat_eq_fil D HW F Cm l K s LL h T hT i ζ τ hpt _).1 hmem).2 k`. Rewrite using `[((Cm l).C K s LL h).tie.levN_eq]`. Conclude with `⟨Submodule.mem_map_of_mem hk.1, hk.2⟩`. Introduce `k w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hprim, hτ, ι, hcomp⟩` from `(GlobalTheory.NL.Points.points D HW l K s LL h).2.1 i ζ τ hpt`. Establish `hC` using `GlobalTheory.NL.CompD.component D HW l K s LL h T hT i ζ τ ι hcomp hτ`. Establish `hw' : w ∈ DdRE ((D.loc l).PD K) T.ρ τ ⊓ FilV ((D.loc l).PD K) (LL` using `↥LL.1) (V := T.V) (-k) := hw`. Take `⟨d, hd, hdw⟩` from `hC.2.2.1 w (Submodule.mem_inf.1 hw').1`. Establish `hdF : ιV ((D.loc l).PD K) (LL` using `↥LL.1) (V := T.V) d ∈ FilAt ((D.loc l).PD K) T τ (-k) := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : ιV ((D.loc l).PD K) (LL` using `↥LL.1) (V := T.V) d = w + (ιV ((D.loc l).PD K) (LL := ↥LL.1) (V := T.V) d - w) := by abel`. Rewrite using `[e1]`. Conclude with `Submodule.add_mem_sup hw hdw`. Establish `hlat` using `LatFil.lat_eq_fil D HW F Cm l K s LL h T hT i ζ τ hpt`. Establish `hsingle : (Pi.single k d : ℤ → T.V ⊗[ℚ_[l]] (D.loc l).R.B) ∈ Lat (Cm l) h T i ζ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hlat _).2 ⟨⟨k, fun r hr => Pi.single_eq_of_ne hr.ne _⟩, fun r => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hr : r = k`. Substitute `hr` using the available equality. Simplify using `only [Pi.single_eq_same]`. Conclude with `⟨hd, hdF⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne hr, map_zero]`. Conclude with `⟨zero_mem _, zero_mem _⟩`. Establish `hfull` using `GlobalTheory.T.wach_expansions_span_full_lattice D HW F Cm l K s LL h T hT i ζ hprim`. Take `⟨nb⟩` from `@GlobalTheory.NL.N_basis D HW F l _ K s LL h T hT`. Establish `hli` using `GlobalTheory.T.wachExpansion_basis_divisibility D HW F Cm l K s LL h T hT i ζ ⟨s, hprim⟩ hfull`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `(hli.2 _ nb).2.1 _ hsingle`. Take `⟨a₀, ha₀⟩ : ∃ a₀ : ℕ, ∀ j, ∀ r : ℤ, r < -(a₀ : ℤ) → ex (Cm l) h T i ζ (nb j) r = 0` from `by choose m hm using fun j => ((Cm l).C K s LL h).tie.levB_supp T i ζ (nb j)`. Use `⟨∑ j, (-m j).toNat, fun j r hr => hm _ _ ?_⟩` and prove the remaining obligations. Use `Finset.single_le_sum (f := fun j => (-m j).toNat) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩ : ∃ m : ℕ, k < (m : ℤ) - a₀` from `⟨(k + a₀ + 1).toNat, by omega⟩`. Establish `hwd` using `(GlobalTheory.NL.WDiv.weierstrass_dense D HW l K s LL h).2.2.2 i ζ hprim`. Use `choose a c hc0 hca _ using fun j => hwd (e j) m`. Establish `t1 : ∀ j, c j • ((HW l).W K s LL h).lev i ζ (a j) = PowerSeries.C (c j) * ((HW l).W K s LL h).lev i ζ (a j)` using `fun j => PowerSeries.smul_eq_C_mul _ _`. Establish `hca' : ∀ j, PowerSeries.X ^ m ∣ PowerSeries.C (c j) * ((HW l).W K s LL h).lev i ζ (a j) - e j` using `fun j => by rw [← t1 j]; exact hca j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Use `haveI : IsFractionRing ↥(OL LL) ↥LL.1 := integralClosure.isFractionRing_of_finite_extension ℚ_[l] ↥LL.1`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors ↥(OL LL)) (Finset.univ : Finset (Fin _)) c`. Use `choose o ho using fun j => hb j (Finset.mem_univ j)`. Establish `ho' : ∀ j, algebraMap ↥(OL LL) ↥LL.1 (b : ↥(OL LL)) * c j = algebraMap ↥(OL LL) ↥LL.1 (o j)` using `fun j => (Algebra.smul_def _ _).symm.trans (ho j).symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hb0 : algebraMap ↥(OL LL) ↥LL.1 (b : ↥(OL LL)) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2`. Set `x : ↥(((HW l).W K s LL h).N T)` to `∑ j, (algebraMap ↥(OL LL) (AA K LL) (o j) * a j) • nb j`. Establish `hx : ∀ r, ex (Cm l) h T i ζ x r = ∑ j, conv (((HW l).W K s LL h).lev i ζ (algebraMap ↥(OL LL) (AA K LL) (o j) * a j)) (ex (Cm l) h T i ζ (nb j)) r`. Introduce `r`. Use `show ((Cm l).C K s LL h).tie.levB T i ζ (∑ j, (algebraMap ↥(OL LL) (AA K LL) (o j) * a j) • nb j) r = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `congrFun (hli.1 _ _) r`. Establish `hkey : ∀ r : ℤ, r < (m : ℤ) - a₀ → algebraMap ↥(OL LL) ↥LL.1 (b : ↥(OL LL)) • (Pi.single k d : ℤ → T.V ⊗[ℚ_[l]] (D.loc l).R.B) r = ex (Cm l) h T i ζ x r`. Introduce `r hr`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[he, hx, Finset.sum_apply]`. Use `Finset.smul_sum.trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Establish `hlev : ((HW l).W K s LL h).lev i ζ (algebraMap ↥(OL LL) (AA K LL) (o j) * a j) = PowerSeries.C (algebraMap ↥(OL LL) ↥LL.1 (o j)) * ((HW l).W K s LL h).lev i ζ (a j)`. Use `letI : Algebra ↥(OL LL) (PowerSeries ↥LL.1) := MvPowerSeries.instAlgebra`. Establish `hcom` using `(((HW l).W K s LL h).lev i ζ).commutes (o j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, hcom, PowerSeries.algebraMap_apply]`. Conclude with `(approx_step (algebraMap ↥(OL LL) ↥LL.1 (b : ↥(OL LL))) (c j) _ (e j) (((HW l).W K s LL h).lev i ζ (a j)) (ex (Cm l) h T i ζ (nb j)) a₀ m (ha₀ j) (hca' j) (ho' j) r hr).trans (congrArg (fun p => conv p (ex (Cm l) h T i ζ (nb j)) r) hlev.symm)`. Establish `hl1` using `(GlobalTheory.NL.lev_at_root_of_unity D HW l K s LL h i ζ ⟨s, hprim⟩).2.1`. Establish `hN1 : ∀ j, ((HW l).W K s LL h).levN T i ζ ((letE i : AA K LL) • x) j = ιV ((D.loc l).PD K) (LL` using `↥LL.1) (V := T.V) (ex (Cm l) h T i ζ x j) := by`. Introduce `j`.
-
-Rewrite using `[((HW l).W K s LL h).levN_smul, hl1]`. Conclude with `(congrFun (LowLevel.conv_one (((HW l).W K s LL h).levN T i ζ x)) j).trans (((Cm l).C K s LL h).tie.levN_eq T i ζ x j)`. Establish `hc : ∀ j, j ≤ k → (algebraMap ↥(OL LL) ↥LL.1 (b : ↥(OL LL)))⁻¹ • ((HW l).W K s LL h).levN T i ζ ((letE i : AA K LL) • x) j = ιV ((D.loc l).PD K) (LL` using `↥LL.1) (V := T.V) ((Pi.single k d : ℤ → T.V ⊗[ℚ_[l]] (D.loc l).R.B) j) := by`. Introduce `j hj`. Rewrite using `[hN1, ← map_smul, ← hkey j (by omega), inv_smul_smul₀ hb0]`.
-
-Use `⟨x, (algebraMap ↥(OL LL) ↥LL.1 (b : ↥(OL LL)))⁻¹, inv_ne_zero hb0, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hc j hj.le, Pi.single_eq_of_ne hj.ne, map_zero]`. Conclude with `zero_mem _`. Rewrite using `[hc k le_rfl, Pi.single_eq_same]`. Conclude with `Submodule.mem_sup_right hdw`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice_at_level : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW)
     (Cm : CmpOf D.loc D.locA HW F), P4 D HW F Cm := by

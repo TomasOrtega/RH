@@ -30,7 +30,7 @@ inductive IsSncBlowupSeq {S X : Scheme.{0}} (g : X ⟶ S) (E : Closeds X) :
       FinalTheorems.Blowup π Z → IsSncBlowupSeq g E (π ≫ s) (totalTransform π Z E₁)
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `id => exact IsSmoothBlowupSeq.id`. Consider the case `step Z π _ _ hZ _ hB ih => exact IsSmoothBlowupSeq.step Z π ih hZ (Set.subset_univ _) hB`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem IsSncBlowupSeq.isSmoothBlowupSeq {S X X' : Scheme.{0}} {g : X ⟶ S} {E : Closeds X} {s : X' ⟶ X}
     {E' : Closeds X'} (h : IsSncBlowupSeq g E s E') : IsSmoothBlowupSeq g Set.univ s := by
@@ -71,7 +71,7 @@ def PrincipalisationCharZero : Prop :=
 namespace SncBlowup
 
 /- English proof (translation)
-Introduce `C hC h` and use `by obtain ⟨o, ho, hne, hoC⟩ := NoetherianSpace.exists_isOpen_nonempty_subset_irreducibleComponent C hC obtain ⟨x, hx, hxT⟩ := hT.inter_open_nonempty o ho hne exact hxT (h (hoC hx))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_subset_of_dense_compl {X : Type*} [TopologicalSpace X] [NoetherianSpace X] {T : Set X}
     (hT : Dense Tᶜ) : ∀ C ∈ irreducibleComponents X, ¬ C ⊆ T := fun C hC h => by
@@ -80,9 +80,9 @@ theorem not_subset_of_dense_compl {X : Type*} [TopologicalSpace X] [NoetherianSp
   exact hxT (h (hoC hx))
 
 /- English proof (translation)
-Introduce `C hC hsub`. Rewrite `hC` using `[irreducibleComponents_eq_singleton, Set.mem_singleton_iff]`. Substitute `hC` using the available equality. Apply `hI` to reduce the goal to its premises. Rewrite using `[← Scheme.IdealSheafData.support_eq_top_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Simplify using `only [TopologicalSpace.Closeds.coe_top, Set.mem_univ, iff_true]`. Conclude with `hsub (Set.mem_univ x)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem not_subset_of_ne_bot {X : Scheme.{0}} [IsIntegral X] {I : X.IdealSheafData} (hI : I ≠ ⊥) :
     ∀ C ∈ irreducibleComponents X, ¬ C ⊆ (I.support : Set X) := by

@@ -9,7 +9,7 @@ namespace AAInvW
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.C3
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [EabH, RdV, Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ly_Eab_left {n : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (H : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) (F : Matrix (Fin n) (Fin n) ℂ → E) (s : Matrix (Fin n) (Fin n) ℂ) :
@@ -18,7 +18,7 @@ theorem ly_Eab_left {n : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace �
   simp only [EabH, RdV, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Formalism.QuantumDeterminants.Top, EabH, RdV, Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ly_Top_left {n : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (H : Matrix (Fin n) (Fin n) ℂ) (v : ℂ) (a b : Fin n) (F : Matrix (Fin n) (Fin n) ℂ → E)
@@ -28,7 +28,7 @@ theorem ly_Top_left {n : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace �
   simp only [Formalism.QuantumDeterminants.Top, EabH, RdV, Matrix.mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons T l ih`. Simplify using `only [List.foldr_cons]`. Rewrite using `[ih (fun T' hT' => hl T' (by simp [hT'])), hl T (by simp)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ly_foldr_comm {X E : Type*} (L : (X → E) → (X → E)) (l : List ((X → E) → (X → E)))
     (hl : ∀ T ∈ l, ∀ f, T (L f) = L (T f)) (f : X → E) :
@@ -40,9 +40,9 @@ theorem ly_foldr_comm {X E : Type*} (L : (X → E) → (X → E)) (l : List ((X 
     rw [ih (fun T' hT' => hl T' (by simp [hT'])), hl T (by simp)]
 
 /- English proof (translation)
-Unfold `qminorOp`. Rewrite using `[Finset.sum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Pi.smul_apply]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[ly_foldr_comm (fun f y => f (s * y)) _ ?_ F]`. Introduce `T hT f`. Simplify using `only [List.mem_ofFn, Set.mem_range] at hT`. Take `⟨i, rfl⟩` from `hT`. Conclude with `ly_Top_left H _ _ _ f s`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ly_qminor_left {n : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (H : Matrix (Fin n) (Fin n) ℂ) {t : ℕ} (a b : Fin t → Fin n) (u : ℂ) (F : Matrix (Fin n) (Fin n) ℂ → E)
@@ -60,9 +60,9 @@ theorem ly_qminor_left {n : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace
   exact ly_Top_left H _ _ _ f s
 
 /- English proof (translation)
-Unfold `LeftAA`. Introduce `E _ _ k r z m hm u ell F s g hs hg`. Prove the components needed by the constructor for the conclusion. Simplify using `only [AAop]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ly_qminor_left, coef_left_aa k r z m hm s g c hs]`. Simplify using `only [AAvop]`. Use `Finset.sum_congr rfl (fun B _ => ?_)` and prove the remaining obligations. Rewrite using `[ly_qminor_left, coef_left_aa_vector k r z m hm s g B hs hg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem left_aa : LeftAA := by
   unfold LeftAA

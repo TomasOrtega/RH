@@ -4,7 +4,7 @@ import Formalism.SmithDeterminants.DivisibilityChains.SmithExists
 namespace Formalism.A
 
 /- English proof (translation)
-The claim follows from `smith_form_exists`.
+A detailed English derivation is pending.
 -/
 theorem smithExists : SmithExists := smith_form_exists
 

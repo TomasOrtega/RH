@@ -9,11 +9,11 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.LogDR
 namespace GlobalTheory.LogDR
 
 /- English proof (translation)
-Introduce `X _ Z G a y f η hf hη`. Unfold `logAt spanForms at hη ⊢`. Proceed by induction on `hη using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, v, hv, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨f * c, ?_, v, hv, ?_⟩` and prove the remaining obligations. Conclude with `(show G.RegularAt y c from hc).regAt_mul hf`. Rewrite using `[smul_smul]`. Consider the case `zero => simp`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `AddSubgroup.add_mem _ hx hy`. Consider the case `neg x _ hx => rw [smul_neg]`. Conclude with `AddSubgroup.neg_mem _ hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem logAt_smul_mem : ∀ (X : Scheme.{0}) [IsIntegral X] (Z : Set X) (G : CartierDiv X) (a : ℕ) (y : X)
     (f : X.functionField) (η : abelian₂ X.functionField), RegAt y f → η ∈ logAt Z G a y → f • η ∈ logAt Z G a y := by

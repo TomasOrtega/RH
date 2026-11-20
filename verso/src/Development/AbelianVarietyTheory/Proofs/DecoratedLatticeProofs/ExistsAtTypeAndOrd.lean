@@ -15,11 +15,11 @@ section Compl
 variable {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, s, hs, e⟩`. Establish `h1 : P.valuation E (algebraMap (𝓞 E) E s) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(HeightOneSpectrum.intValuation_eq_one_iff).2 hs`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (P.valuation E) e`. Rewrite `h2` using `[map_mul, h1, one_mul]`. Rewrite using `[h2]`. Conclude with `HeightOneSpectrum.valuation_le_one P r`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨r, s, e⟩` from `HeightOneSpectrum.exists_primeCompl_mul_eq_of_integer P a h`. Conclude with `⟨r, s.1, s.2, by rw [mul_comm]; exact e⟩`.
+A detailed English derivation is pending.
 -/
 theorem intAt_iff (a : E) : IntAt P a ↔ P.valuation E a ≤ 1 := by
   constructor
@@ -36,9 +36,9 @@ theorem intAt_iff (a : E) : IntAt P a ↔ P.valuation E a ≤ 1 := by
     exact ⟨r, s.1, s.2, by rw [mul_comm]; exact e⟩
 
 /- English proof (translation)
-Establish `hm : ((qOf P : ℕ) : 𝓞 E) ∈ P.asIdeal` using `Ideal.absNorm_mem _`. Establish `e : ((qOf P : ℕ) : E) = algebraMap (𝓞 E) E ((qOf P : ℕ) : 𝓞 E)` using `by simp`. Rewrite using `[e, HeightOneSpectrum.valuation_of_algebraMap]`. Establish `h1` using `(HeightOneSpectrum.intValuation_le_pow_iff_mem P ((qOf P : ℕ) : 𝓞 E) 1).2 (by simpa using hm)`. Establish `h2` using `mt (HeightOneSpectrum.intValuation_le_pow_iff_mem P ((qOf P : ℕ) : 𝓞 E) 2).1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : P.intValuation ((qOf P : ℕ) : 𝓞 E) ≠ 0` using `fun h0 => h2 (by rw [h0]; exact zero_le')`. Rewrite `h1`, `h2`, the goal using `[← WithZero.exp_log h0]`. Rewrite `h1`, `h2` using `[WithZero.exp_le_exp]`. Use `congr 1`. Move the coercions through the operations in `at h1 h2`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -57,7 +57,7 @@ theorem valuation_norm (h : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) :
   omega
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocalData.isLocalField P ∃ ϖ : (P.adicCompletion E)ˣ, IsCompl P (qOf P) (algebraMap E (P.adicCompletion E)) ϖ ∧ GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum.IsUnif ϖ := by letI := GlobalTheory.LocalData.complRel P haveI := GlobalTheory.LocalData.isLocalFi …`.
+A detailed English derivation is pending.
 -/
 theorem exists_compl (h : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) :
     letI := GlobalTheory.LocalData.complRel P
@@ -88,11 +88,11 @@ theorem exists_compl (h : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) :
 end Compl
 
 /- English proof (translation)
-Introduce `X Pr R Ch sel S₀ mu cst σ₀ P s hP hs hok hsh hA hpsi hq`. Use `letI := GlobalTheory.LocalData.complRel P.1`. Use `haveI := GlobalTheory.LocalData.isLocalField P.1`. Take `⟨ϖ, hc, hu⟩` from `exists_compl P.1 hq`. Establish `hne : psi0P Ch P.1 ≠ 1` using `fun h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hpsi 1 ((intAt_iff P.1 1).2 (by simp))`. Rewrite `h1` using `[h, one_div]`. Conclude with `hok.psi_ne P (by simpa using h1)`. Choose the witnesses or unpack the hypotheses as in `⟨ρ, rfl⟩ : ∃ ρ, s = 2 * ρ := by`. Take `⟨b, hb⟩` from `R.m_even`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b - 1, by omega⟩`. Take `⟨S, hS⟩` from `GlobalTheory.SymTieExists.exists_tie X.E X.K (P.1.adicCompletion X.E) P.1 (qOf P.1) _ ϖ σ₀ (psi0P Ch P.1) (chiP Ch P.1) ρ R.k hc hu hne`. Conclude with `⟨_, _, _, _, inferInstance, _, S, hP, hs, hok, hsh, hA, hpsi, hS⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_atType : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S₀ : Set ℕ) (mu : Tup X.F X.E X.K S₀) (cst : LocCst X (rowSG Pr sel mu)) (σ₀ : X.K →+* ℂ) (P : rowSG Pr sel mu) (s : ℕ), P.1 ∈ Pr.vGs → R.m = s + 2 → cst.Ok → cst.sharp = true → R.m ≤ cst.A → (∀ a, IntAt P.1 a → cst.psi P (a / (qOf P.1 : X.E)) = psi0P Ch P.1 (redP P.1 a)) → ((qOf P.1 : ℕ) : 𝓞 X.E) ∉ P.1.asIdeal ^ 2 → ∃ (k : Type) (_ : Field k) (_ : ValuativeRel k) (_ : TopologicalSpace k) (_ : IsNonarchimedeanLocalField k) (ι : X.E →+* k) (S : SymData k s R.k), AtType Ch sel mu cst σ₀ P ι S := by
   intro X Pr R Ch sel S₀ mu cst σ₀ P s hP hs hok hsh hA hpsi hq
@@ -111,11 +111,11 @@ theorem exists_atType : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars
   exact ⟨_, _, _, _, inferInstance, _, S, hP, hs, hok, hsh, hA, hpsi, hS⟩
 
 /- English proof (translation)
-Use `⟨fun κ τ j => ?_, fun κ τ l j => ?_, fun A n c pos d hd => ?_, fun A n N pos d hd hN => ?_⟩` and prove the remaining obligations. Use `⟨((Equiv.sumCongr finSumFinEquiv finProdFinEquiv).trans finSumFinEquiv).trans (finCongr (by ring)), ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rintro ((i | i) | ⟨i, i'⟩) <;> simp [xPos, finProdFinEquiv]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨(Equiv.sumCongr finSumFinEquiv finProdFinEquiv).trans finSumFinEquiv, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rintro ((i | i) | ⟨i, i'⟩) <;> simp [zPos, finProdFinEquiv]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨(Equiv.sumCongr d (Equiv.refl _)).trans finSumFinEquiv, ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | i)`. Simplify `hd i` using `[yPos]`.
+Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[yPos]`. Substitute `hN` using the available equality. Use `⟨(Equiv.sumCongr d (Equiv.ofUnique Unit (Fin 1))).trans finSumFinEquiv, ?_⟩` and prove the remaining obligations. Introduce and unpack `(i | i)`. Simplify using `using hd i`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
 Simplify using the standard rewrite rules.
 -/

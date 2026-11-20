@@ -35,11 +35,11 @@ def Z1 (N l w : ℕ) [Fact l.Prime] : Submodule ℤ_[l] (Gam N l → MvPolynomia
     · simp only [Pi.smul_apply, h2, map_smul, smul_add]
 
 /- English proof (translation)
-Rewrite using `[Filter.neBot_iff]`. Introduce `h`. Establish `hmem : (∅ : Set ℂ) ∈ Filter.codiscreteWithin Hs` using `by rw [h]; exact Filter.mem_bot`. Rewrite `hmem` using `[mem_codiscreteWithin]`. Establish `hI : Complex.I ∈ Hs` using `by simp [Hs]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hd` using `hmem Complex.I hI`. Simplify using `only [Set.diff_empty] at hd`. Establish `hopen : IsOpen Hs` using `isOpen_lt continuous_const Complex.continuous_im`. Establish `hle : nhdsWithin Complex.I {Complex.I}ᶜ ≤ Filter.principal Hs` using `le_trans nhdsWithin_le_nhds (Filter.le_principal_iff.2 (hopen.mem_nhds hI))`. Establish `hbot : nhdsWithin Complex.I {Complex.I}ᶜ = ⊥`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hd.mono_right hle` as an intermediate fact. Conclude with `disjoint_self.1 this`. Conclude with `(NormedField.nhdsNE_neBot Complex.I).ne hbot`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hs_codiscrete_neBot : (Filter.codiscreteWithin Hs).NeBot := by
   rw [Filter.neBot_iff]
@@ -58,9 +58,9 @@ theorem hs_codiscrete_neBot : (Filter.codiscreteWithin Hs).NeBot := by
   exact (NormedField.nhdsNE_neBot Complex.I).ne hbot
 
 /- English proof (translation)
-Introduce `n u`. Use `⟨0, ⟨1, fun _ => 1, fun _ => 1, 1, one_pos, ?_, ?_, ?_⟩, 1, one_pos, fun δ _ => by simp⟩` and prove the remaining obligations. Simplify using `[Tower.cls]`. Apply `H3.isRoot_one haveI := hs_codiscrete_neBot` to reduce the goal to its premises. Conclude with `one_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `δ _ z _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem btZ_zero (X : Tower Ω ε) (N l : ℕ) [Fact l.Prime] : BtZ X N l 0 0 := by
   intro n u

@@ -15,7 +15,7 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSNef
 
 /- English proof (translation)
-The claim follows from `rfl deg := Scheme.Hom.residueDegree_id _ compat y a := by simp only [RingHom.id_apply, Scheme.Hom.stalkMap_id] rfl`.
+A detailed English derivation is pending.
 -/
 theorem isModel_id (X : Scheme.{0}) [IsIntegral X] : IsModel (𝟙 X) (RingHom.id X.functionField) where
   gen := rfl
@@ -25,9 +25,9 @@ theorem isModel_id (X : Scheme.{0}) [IsIntegral X] : IsModel (𝟙 X) (RingHom.i
     rfl
 
 /- English proof (translation)
-Use `show π (π' (genericPoint Z)) = genericPoint X`. Rewrite using `[h'.gen, h.gen]`. Use `deg := by`. Rewrite using `[GlobalTheory.CurveDegreesCompare.residueDegree_comp π' π (genericPoint Z), h'.deg]`. Rewrite using `[h'.gen, h.deg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `compat z a := by`. Use `(congrArg φ' (h.compat (π' z) a)).trans ((h'.compat z _).trans ?_)` and prove the remaining obligations. Rewrite using `[Scheme.Hom.stalkMap_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem IsModel.comp {X Y Z : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsIntegral Z] {π : Y ⟶ X} {π' : Z ⟶ Y}
     {φ : X.functionField →+* Y.functionField} {φ' : Y.functionField →+* Z.functionField}
@@ -44,7 +44,7 @@ theorem IsModel.comp {X Y Z : Scheme.{0}} [IsIntegral X] [IsIntegral Y] [IsInteg
     rfl
 
 /- English proof (translation)
-Introduce `X _ _ _ _ _ _ _ _ _` and use `⟨isModel_id X, fun h h' => h.comp h'⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isModel_id_and_comp : ∀ (X Y Z : Scheme.{0}) [IsIntegral X] [IsIntegral Y] [IsIntegral Z] (π : Y ⟶ X) (π' : Z ⟶ Y)
     (φ : X.functionField →+* Y.functionField) (φ' : Y.functionField →+* Z.functionField),

@@ -13,9 +13,9 @@ namespace MixedBoxCount
 open scoped Classical in
 
 /- English proof (translation)
-Establish `hsub : {y : mixedSpace F | y ∈ La ∧ ∀ w, normAtPlace w y ≤ f w} ⊆ closedBall 0 (∑ w, f w) ∩ (La : Set (mixedSpace F))`. Introduce and unpack `y ⟨hyL, hy⟩`. Use `⟨?_, hyL⟩` and prove the remaining obligations. Rewrite using `[mem_closedBall_zero_iff, norm_eq_sup'_normAtPlace]`. Use `Finset.sup'_le _ _ fun w _ => (hy w).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.single_le_sum (fun v _ => (hf v).le) (Finset.mem_univ w)`. Use `Set.Finite.subset ?_ hsub` and prove the remaining obligations. Use `Metric.finite_isBounded_inter_isClosed DiscreteTopology.isDiscrete isBounded_closedBall ?_` and prove the remaining obligations. Rewrite using `[← Submodule.coe_toAddSubgroup]`. Conclude with `AddSubgroup.isClosed_of_discrete`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_box (F : Type) [Field F] [NumberField F] (La : Submodule ℤ (mixedSpace F))
     [DiscreteTopology La] (f : InfinitePlace F → ℝ) (hf : ∀ w, 0 < f w) :
@@ -35,9 +35,9 @@ theorem finite_box (F : Type) [Field F] [NumberField F] (La : Submodule ℤ (mix
 open scoped Classical in
 
 /- English proof (translation)
-Break down `isReal_or_isComplex w with hw | hw` into its components or cases. Rewrite using `[normAtPlace_apply_of_isReal hw]`. Use `hx.1 ⟨w, hw⟩ (Set.mem_univ _)` as an intermediate fact. Simplify `this` using `[mem_ball_zero_iff]`. Rewrite using `[normAtPlace_apply_of_isComplex hw]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `hx.2 ⟨w, hw⟩ (Set.mem_univ _)` as an intermediate fact. Simplify `this` using `[mem_ball_zero_iff]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem normAtPlace_lt_of_mem (F : Type) [Field F] [NumberField F] (g : InfinitePlace F → ℝ≥0)
     {x : mixedSpace F} (hx : x ∈ convexBodyLT F g) (w : InfinitePlace F) : normAtPlace w x < g w := by
@@ -54,19 +54,19 @@ end MixedBoxCount
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `F _ _ La _ _ f hf`. Establish `hfin` using `MixedBoxCount.finite_box F La f hf`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Use `set B := {y : mixedSpace F | y ∈ La ∧ ∀ w, normAtPlace w y ≤ f w} with hB`. Set `g : InfinitePlace F → ℝ≥0` to `fun w => ⟨f w / 2, (half_pos (hf w)).le⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS : MeasurableSet (convexBodyLT F g)` using `(MeasurableSet.univ_pi fun _ => measurableSet_ball).prod (MeasurableSet.univ_pi fun _ => measurableSet_ball)`. Establish `hdiff : ∀ x ∈ convexBodyLT F g, ∀ y ∈ convexBodyLT F g, x - y ∈ {z : mixedSpace F | ∀ w, normAtPlace w z ≤ f w}`. Introduce `x hx y hy w`. Establish `h1` using `MixedBoxCount.normAtPlace_lt_of_mem F g hx w`. Establish `h2` using `MixedBoxCount.normAtPlace_lt_of_mem F g hy w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `normAtPlace_add_le w x (-y)`. Rewrite `h3` using `[normAtPlace_neg, ← sub_eq_add_neg]`. Establish `: ((g w : ℝ≥0) : ℝ) = f w / 2` using `rfl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hle` using `h (mixedSpace F) volume La (convexBodyLT F g) _ hS hdiff`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hset : {x : mixedSpace F | x ∈ La ∧ x ∈ {z : mixedSpace F | ∀ w, normAtPlace w z ≤ f w}} = B` using `rfl`. Rewrite `hle` using `[hset, convexBodyLT_volume, ← hfin.cast_ncard_eq]`. Establish `hcpos` using `ZLattice.covolume_pos La volume`. Establish `hreal` using `ENNReal.toReal_mono (ENNReal.mul_ne_top (by simp) ENNReal.ofReal_ne_top) hle`. Simplify using `only [ENNReal.toReal_mul, ENNReal.coe_toReal, ENNReal.toReal_ofReal hcpos.le, NNReal.coe_prod, NNReal.coe_pow, ENat.toENNReal_coe, ENNReal.toReal_natCast] at hreal`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hg : ∀ w, ((g w : ℝ≥0) : ℝ) = f w / 2` using `fun _ => rfl`. Simplify using `only [hg] at hreal`. Establish `hNpos : 0 < B.ncard` using `(Set.ncard_pos hfin).mpr ⟨0, La.zero_mem, fun w => by simp [(hf w).le]⟩`. Establish `hN : (0 : ℝ) < (B.ncard : ℝ)` using `by exact_mod_cast hNpos`. Establish `hc : (0 : ℝ) < (convexBodyLTFactor F : ℝ)` using `NNReal.coe_pos.mpr (pos_iff_ne_zero.mpr (convexBodyLTFactor_ne_zero F))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfac : ∀ w, 0 < (f w / 2) ^ mult w` using `fun w => pow_pos (half_pos (hf w)) _`. Establish `hprod : 0 < ∏ w, (f w / 2) ^ mult w` using `Finset.prod_pos fun w _ => hfac w`. Establish `hlog` using `Real.log_le_log (mul_pos hc hprod) hreal`. Rewrite `hlog` using `[Real.log_mul hc.ne' hprod.ne', Real.log_mul hN.ne' hcpos.ne', Real.log_prod (fun w _ => (hfac w).ne')]`. Establish `hl : ∀ w, Real.log ((f w / 2) ^ mult w) = (mult w : ℝ) * Real.log (f w) - (mult w : ℝ) * Real.log 2` using `fun w => by rw [Real.log_pow, Real.log_div (hf w).ne' two_ne_zero, mul_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcast : (∑ w : InfinitePlace F, (mult w : ℝ)) = (Module.finrank ℚ F : ℝ)`. Conclude with `sum_mult_eq` after adjusting the coercions. Simplify using `only [hl, Finset.sum_sub_distrib, ← Finset.sum_mul, hcast] at hlog`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem MixedBoxCount.proof (h : LatticeCountVolume.Statement) : MixedBoxCount.Statement := by
   intro F _ _ La _ _ f hf

@@ -16,19 +16,17 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalZero (swSec)
 namespace GlobalTheory.WeilEisConv
 
 /- English proof (translation)
-Introduce `D n V hn hV ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω Φ`. Set `A : HSp D` to `Formalism.BasicNotions.Examples₂.posSpace (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral n`. Take `⟨ψ₀, μ', lam, κ, omh, hstd, hsk, _, _, hκ, hW, hT⟩` from `GlobalTheory.StdUnn.SchDatum.exists_datum D A V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω`. Take `⟨f, hf, hfΦ⟩` from `(GlobalTheory.SchSchwartzAll.schSchwartz D ψ₀ hstd θ hθ A V μ 𝓕 hμ).2.1 Φ.1 Φ.2`. Establish `key : ∀ g : G D n, (ω g Φ).1 0 = swSec A V omh μ 𝓕 f (κ.symm g)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `g`. Establish `h` using `hT (κ.symm g) f hf Φ hfΦ.symm`. Establish `e : κ (κ.symm g) = g` using `κ.apply_symm_apply g`. Rewrite `h` using `[e]`. Conclude with `(congrFun h 0).trans (mixS_dblDec_zero A V ψ₀ μ 𝓕 _ 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `exists_isMaj A`. Establish `hI` using `GlobalTheory.Core.Rk.IP.hasIwasawa_Khat D A a ha`. Take `⟨C, hC, h₁⟩` from `GlobalTheory.SWAbsGrowth.norm_swSec_le hW hμ hf a ha`. Establish `hc` using `GlobalTheory.AdelicU.isCMExt_host D`. Establish `hs : ∀ x, D.sp.cm.sig (D.sp.cm.sig x) = x` using `fun x => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨τ⟩ : Nonempty (D.host.E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [hc.2.2.2, hc.2.2.2, star_star])`. Establish `hP` using `GlobalTheory.StdUnn.mem_siegel_iff_chart_mem_P D A μ' hsk κ hκ`. Establish `hG` using `GlobalTheory.StdUnn.chart_mem_GF_iff D A μ' hsk κ hκ`. Establish `hb : (A.rank : ℝ) < (V.rank : ℝ) / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `: (2 * n : ℝ) < V.rank` using `by exact_mod_cast hV`. Express the relevant statement in the definitionally equal form `(n : ℝ) < _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : Summable fun q : GlobalTheory.Eis.Cosets (P D n) (GF D n) => (hgt A a (κ.symm (Subtype.val (q.out : GF D n))) : ℝ) ^ ((V.rank : ℝ) / 2)`. Use `GlobalTheory.Eis.Conv.summable_hgt hc hs (GlobalTheory.Doubling.gram_hdbl A) (GlobalTheory.Doubling.isHermND_gram A) (GlobalTheory.Doubling.isCompact_Khat A a) hI (γ := fun q : GlobalTheory.Eis.Cosets (P D n) (GF D n) => κ.symm (Subtype.val (q.out : GF D n))) (fun q => (hG _).2 ( …` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h'` using `(hP _).1 h`. Rewrite `h'` using `[map_mul, map_inv, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply]`. Rewrite using `[← q.out_eq, ← q'.out_eq]`. Conclude with `GlobalTheory.AutomorphicL2Unitary.mk_eq_iff.2 ⟨⟨q'.out * q.out⁻¹, h'⟩, inv_mul_cancel_right _ _⟩`. Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun q => ?_) (hsum.mul_left C)` and prove the remaining obligations.
-
-Simplify using `only [GlobalTheory.Eis.term, mul_one]`. Rewrite using `[key]`. Conclude with `h₁ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilEisensteinSiegelConvergence : GlobalTheory.Published.WeilEisensteinSiegelConvergence := by
   intro D n V hn hV ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω Φ

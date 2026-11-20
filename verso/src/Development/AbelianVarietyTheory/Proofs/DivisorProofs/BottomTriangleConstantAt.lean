@@ -18,9 +18,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BotRatio
 
 /- English proof (translation)
-Take `⟨a₁, h₁⟩` from `h₁`. Take `⟨a₂, h₂⟩` from `h₂`. Use `⟨max a₁ a₂, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C₁, x₁, h₁⟩` from `h₁ ε CF (le_of_max_le_left hCF)`. Take `⟨C₂, x₂, h₂⟩` from `h₂ ε CF (le_of_max_le_right hCF)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨max C₁ C₂, max x₁ x₂, fun C hC D large₂ he hx r T Lc μ hLc G => H G μ C _ _ (h₁ C (le_of_max_le_left hC) D large₂ he (le_of_max_le_left hx) r T Lc μ hLc G) (h₂ C (le_of_max_le_right hC) D large₂ he (le_of_max_le_right hx) r T Lc μ hLc G)⟩`.
+Supply the required witnesses or components.
 -/
 theorem gBig_of_two {Q₁ Q₂ Q₃ : GlobalTheory.SqTop.GP} (h₁ : GlobalTheory.SqTop.GBig Q₁) (h₂ : GlobalTheory.SqTop.GBig Q₂)
     (H : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (μ₀ : T) (C x b : ℝ),
@@ -35,13 +35,13 @@ theorem gBig_of_two {Q₁ Q₂ Q₃ : GlobalTheory.SqTop.GP} (h₁ : GlobalTheor
       (h₂ C (le_of_max_le_right hC) D large₂ he (le_of_max_le_right hx) r T Lc μ hLc G)⟩
 
 /- English proof (translation)
-Introduce `hPr hK hM _ _ hL`. Use `GlobalTheory.BotRatio.gBig_of_two (GlobalTheory.T.bottom_triangle_constant_ratio hPr hK hM hL) (GlobalTheory.T.bottom_constant_of_bottom_pair hPr hK hM) fun {D T Lc sc} G μ₀ C x b ha hb => ?_` and prove the remaining obligations. Introduce `W S hψ hN i j t A A' WW X c0 hX hc`. Take `⟨B, B', WW₁, Y, hY, hS⟩` from `hN.bottom i j ⟨A, A', WW, X, hX⟩`. Establish `hr` using `hS.rationalSums (fun t => (hY.integrable t).1) fun t => (hY.integrable t).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `hb W S hψ hN i j B B' WW₁ Y A A' WW X c0 hY hX hc`. Take `⟨lam, hl⟩` from `ha W hψ i j B B' WW₁ Y hY`. Establish `hR` using `GlobalTheory.ConstRatio.ratIn_of_definite hY.is (GlobalTheory.ConstRatio.posDef_of_std hY.std) (GlobalTheory.ConstRatio.posDef_of_std hY.std') (GlobalTheory.ConstRatio.posDef_of_std hY.stdW) hl hr μ₀`. Take `⟨κ, hκ, e⟩` from `hl.eq_mul hu`. Establish `h1 : GlobalTheory.ConstRatio.RatIn D.what₂.embLL μ₀ fun t => D.what₂.embLL (u t) * c0 t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[show (fun t => D.what₂.embLL (u t) * c0 t) = fun t => κ * lam t from funext e]`. Conclude with `(GlobalTheory.ConstRatio.ratIn_const hκ).mul hR`. Establish `h2 : GlobalTheory.ConstRatio.RatIn D.what₂.embLL μ₀ c0` using `GlobalTheory.ConstRatio.RatIn.of_mul h1 (GlobalTheory.ConstRatio.ratIn_of_unit fun t => ⟨u t, rfl⟩) fun t => mul_comm _ _`. Take `⟨h3, y, hy⟩` from `h2 t`. Use `⟨h3, (h2 μ₀).1, y, ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, div_mul_cancel₀ _ (h2 μ₀).1]`.
+A detailed English derivation is pending.
 -/
 theorem bottomConst_ratio : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall → GlobalTheory.SqTop.LNe →

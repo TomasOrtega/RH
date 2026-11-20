@@ -16,31 +16,29 @@ set_option autoImplicit false
 namespace GlobalTheory.ChernCalc
 
 /- English proof (translation)
-Introduce `F _ σ X ι _ m E H gr hG hH x`. Take `⟨B, hB, hgr⟩` from `hG`. Establish `hunit : ∀ (z : X.X) (A : Mat m X.Fn), A ∈ E.S z → ∀ f : X.Fnˣ, (gr x).IsEqn z f → UnitAt z ((B * A⁻¹) x.1 x.2 x.2 / f)`. Introduce `z A hA f hf`. Take `⟨A₀, hA₀, t, ht, he⟩` from `hgr z x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hu, hd⟩` from `GlobalTheory.T.adaptedFullFlag_frame_change_diagonal_units F X ι m E B hB z A₀ A hA₀ hA x`. Establish `htf : UnitAt z ((t : X.Fn) / f)` using `(hf.iff_unitAt).1 he`. Establish `hne : (A * A₀⁻¹) x.1 x.2 x.2 ≠ 0` using `fun h0 => by`. Take `⟨a, ha, h⟩` from `hu`. Rewrite `h` using `[h0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(ha.map (algebraMap _ X.Fn)).ne_zero h`. Establish `e : (B * A⁻¹) x.1 x.2 x.2 / f = ((t : X.Fn) / f) * ((A * A₀⁻¹) x.1 x.2 x.2)⁻¹`. Rewrite using `[← ht, hd]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `htf.mul hu.inv`. Set `Ach : CxPts X.str σ → Mat m X.Fn` to `fun y => (E.nonempty (under y)).choose`. Establish `hAch : ∀ y, Ach y ∈ E.S (under y)` using `fun y => (E.nonempty (under y)).choose_spec`. Set `val : Mat m X.Fn → CxPts X.str σ → X.Fn → ℝ` to `fun A y f => -Real.log (‖ratVal ((B * A⁻¹) x.1 x.2 x.2 / f) y‖ ^ 2) - Real.log (grD (H A y x.1) x.2)`. Set `D` to `gr x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `presents_toLB D`. Establish `heq : ∀ (i : (toLB D).ι) (y : CxPts X.str σ), y ∈ ptsIn X.str σ ((toLB D).U i) → D.IsEqn (under y) (i.1.2)` using `fun i y hy => i.2.2 _ (mem_ptsIn.1 hy)`. Establish `hindep : ∀ (i : (toLB D).ι) (y : CxPts X.str σ), y ∈ ptsIn X.str σ ((toLB D).U i) → ∀ A ∈ E.S (under y), val (Ach y) y i.1.2 = val A y i.1.2` using `fun i y hy A hA => GlobalTheory.T.flaggedBundleMetric_graded_weight_frame_independent F σ X ι m E H hH B hB y (Ach y) (hAch y) A hA x _ (hunit _ A hA _ (heq i y hy))`. Set `ψ : Weight X.str σ (toLB D)` to `{ isLB := isLB_toLB D φ := fun i y => val (Ach y) y i.1.2 trans := by`. Introduce `i j y hi hj`.
+Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu1` using `hunit _ _ (hAch y) _ (heq i y hi)`. Establish `hu2 : UnitAt (under y) ((i.1.2 : X.Fn) / (j.1.2 : X.Fn))` using `((heq j y hj).iff_unitAt).1 (heq i y hi)`. Establish `hg : gv X.str σ (toLB D) i j y = ratVal ((i.1.2 : X.Fn) / (j.1.2 : X.Fn)) y`. Establish `hgen : genericPoint X.X ∈ (toLB D).U i ⊓ (toLB D).U j` using `⟨i.2.1, j.2.1⟩`. Rewrite using `[← fnOf_toLB_g i j hgen, ratVal_fnOf (mem_ptsIn_inf.2 ⟨hi, hj⟩) hgen]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hi0` using `(i.1.2).ne_zero`. Establish `hj0` using `(j.1.2).ne_zero`. Establish `e : (B * (Ach y)⁻¹) x.1 x.2 x.2 / (j.1.2 : X.Fn) = ((B * (Ach y)⁻¹) x.1 x.2 x.2 / i.1.2) * ((i.1.2 : X.Fn) / (j.1.2 : X.Fn))`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show val (Ach y) y j.1.2 = val (Ach y) y i.1.2 - _`. Simplify using `only [val]`. Rewrite using `[e, ratVal_mul hu1.regAt hu2.regAt, log_normSq_mul (ratVal_ne_zero hu1) (ratVal_ne_zero hu2), hg]`. Use `ring }`. Use `⟨toLB D, fun i => i.1.2, ψ, hP, ?_, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i y hy`. Establish `hu` using `hunit _ _ (hAch y) _ (heq i y hy)`. Use `(GlobalTheory.T.complexPointsSmoothAt_log_unit_add_graded_length F σ X ι m m E H hH y (Ach y) (hAch y) _ hu x.1 x.2).congr ?_` and prove the remaining obligations. Use `filter_upwards [frame_eventually_near F σ X ι m m E y (Ach y) (hAch y), (isOpen_ptsIn _).mem_nhds hy] with z hz hzi`. Conclude with `hindep i z hzi (Ach y) hz`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Take `⟨⟨c, y⟩, hy⟩` from `p`. Establish `hy' : y ∈ c.e.source` using `hy`. Establish `ha : y ∈ ptsIn X.str σ ((toLB D).U (pick ψ.isLB y))` using `mem_pick ψ.isLB y`. Establish `hu` using `hunit _ _ (hAch y) _ (heq _ y ha)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hnear : ∀ᶠ z in 𝓝 y, z ∈ ptsIn X.str σ ((toLB D).U (pick ψ.isLB y)) ∧ Ach y ∈ E.S (under z)` using `Filter.Eventually.and ((isOpen_ptsIn _).mem_nhds ha) (frame_eventually_near F σ X ι m m E y (Ach y) (hAch y))`. Establish `hnear' : ∀ᶠ v in 𝓝 (c.e y), c.e.symm v ∈ ptsIn X.str σ ((toLB D).U (pick ψ.isLB y)) ∧ Ach y ∈ E.S (under (c.e.symm v))`. Establish `hc` using `c.e.continuousAt_symm (c.e.map_source hy')`. Rewrite `hc` using `[ContinuousAt, c.e.left_inv hy']`. Conclude with `hc.eventually hnear`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `key : leviForm (fun v => ψ.φ (pick ψ.isLB y) (c.e.symm v)) (c.e y) = leviForm (fun v => -Real.log (grD (H (Ach y) (c.e.symm v) x.1) x.2)) (c.e y)`. Rewrite using `[leviForm_congr (u' := fun v => val (Ach y) (c.e.symm v) (pick ψ.isLB y).1.2)]`. Conclude with `GlobalTheory.T.leviForm_graded_length_sub_log_unit_normSq F σ X ι m m E H hH y (Ach y) (hAch y) _ hu x.1 x.2 c hy'`. Use `filter_upwards [hnear'] with v hv`. Conclude with `hindep _ _ hv.1 (Ach y) hv.2`.
-
-Establish `e1 : c1W ψ ⟨(c, y), hy⟩ = ofValues (HermFrame.ddc (fun v => ψ.φ (pick ψ.isLB y) (c.e.symm v)) (c.e y))` using `rfl`. Establish `e2 : grF E H x ⟨(c, y), hy⟩ = ofValues (HermFrame.ddc (fun v => -Real.log (grD (H (Ach y) (c.e.symm v) x.1) x.2)) (c.e y))` using `rfl`. Rewrite using `[e1, e2]`. Unfold `HermFrame.ddc`. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem graded_weight : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (ι : Type) [Finite ι] (m : ι → ℕ)
     (E : Fr (ratOf X) m m) (H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ) (gr : Root m → X.Dv), IsGraded E gr →

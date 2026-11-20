@@ -20,11 +20,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
 
 /- English proof (translation)
-Take `⟨n, xc, hx⟩` from `EigLoc.exists_chart t x`. Use `choose ea hea using fun j => vec_exists hx _ (ha j)`. Use `choose eb heb using fun j => vec_exists hx _ (hb j)`. Take `⟨ew, hew⟩` from `vec_exists hx _ hw`. Take `rfl : a = fun j => vec t x xc (ea j)` from `funext hea`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Take `rfl : b = fun j => vec t x xc (eb j)` from `funext heb`. Substitute `hew` using the available equality. Establish `e₁ : ∀ k, eb k = ∑ j, P k j • ea j` using `fun k => (comb_iff hx _ _ _).1 (h₁ k)`. Establish `e₂ : ew = ∑ k, T k • eb k` using `(comb_iff hx _ _ _).1 h₂`. Use `(comb_iff hx _ _ _).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e₂]`. Simplify using `only [e₁, Matrix.vecMul, dotProduct, Finset.smul_sum, Finset.sum_smul, smul_smul]`. Conclude with `Finset.sum_comm`.
+A detailed English derivation is pending.
 -/
 theorem comb_trans {X : Scheme.{0}} (t : SAB H X) {L : Type} [CommRing L] [IsLocalRing L] (x : Sp L ⟶ X) {m : ℕ}
     {a b : Fin m → (Sp (DualNumber L) ⟶ t.G.left)} {w : Sp (DualNumber L) ⟶ t.G.left}
@@ -47,9 +47,9 @@ theorem comb_trans {X : Scheme.{0}} (t : SAB H X) {L : Type} [CommRing L] [IsLoc
   exact Finset.sum_comm
 
 /- English proof (translation)
-Take `⟨rfl, rfl, h⟩` from `h`. Take `⟨gb, hgb⟩` from `exists_bc f ψ rfl rfl`. Use `choose T a₁ b₁ c₁ using h τ`. Use `⟨Matrix.of T * P, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply_eq_vecMul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `comb_trans Z.t _ (a.tan τ) (fun k => hgb τ k ▸ gb.tan τ k) (g.tan τ i) hP (c₁ i)`. Rewrite using `[Matrix.det_mul, Matrix.det_of_lowerTriangular (Matrix.of T) (fun i k hk => b₁ i k hk)]`. Simplify using `only [Matrix.of_apply, a₁, Units.coe_prod]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_tri_chg {A L : Type} [CommRing A] [CommRing L] [IsLocalRing L] {φ : c.F →+* A} {x : Sp A ⟶ Z.X}
     (f : EigFrame Z φ x) (ψ : A →+* L) {φ' : c.F →+* L} {x' : Sp L ⟶ Z.X} (g a : EigFrame Z φ' x')
@@ -68,27 +68,25 @@ theorem exists_tri_chg {A L : Type} [CommRing A] [CommRing L] [IsLocalRing L] {�
     simp only [Matrix.of_apply, a₁, Units.coe_prod]
 
 /- English proof (translation)
-Take `⟨y₁, ψ, φ₁, f, t₁, t', r₁, hp, hT₁, hT', hr₁, hv⟩` from `hc`. Set `z : C.Y.X` to `p.1 (IsLocalRing.closedPoint ℂ)`. Set `R : Type` to `C.Y.X.presheaf.stalk z`. Set `χ : R →+* ℂ` to `(Scheme.stalkClosedPointTo (R := .of ℂ) p.1).hom`. Set `gm : ∀ {W : C.Y.X.Opens}, p ∈ CxPts.ptsIn _ _ W → (Γ(C.Y.X, W) →+* R)` to `fun {W} h => (C.Y.X.presheaf.germ W z (CxPts.mem_ptsIn.1 h)).hom`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hχ : ∀ {W : C.Y.X.Opens} (h : p ∈ CxPts.ptsIn _ _ W), χ.comp (gm h) = CxPts.evHom h` using `fun {W} h => (congrArg CommRingCat.Hom.hom (valR_eq_germ p.1 W h)).symm`. Establish `hκ : ∀ {W : C.Y.X.Opens} (h : p ∈ CxPts.ptsIn _ _ W) (h' : genericPoint C.Y.X ∈ W), (algebraMap R C.Y.X.functionField).comp (gm h) = fnOf W h'` using `fun {W} h h' => RingHom.ext fun a => algebraMap_germ _ a`. Establish `hs : spMap (gm h₀) ≫ (show Sp Γ(C.Y.X, U₀) ⟶ C.Y.X from hU₀.fromSpec) = C.Y.X.fromSpecStalk z` using `hU₀.fromSpecStalk_eq_fromSpecStalk (CxPts.mem_ptsIn.1 h₀)`. Establish `inj` using `IsFractionRing.injective R C.Y.X.functionField`. Establish `hsp : z ⤳ y₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: z ∈ Set.range (C.Y.X.fromSpecStalk y₁)` using `⟨spMap ψ (IsLocalRing.closedPoint ℂ), by show (spMap ψ ≫ stalkPt C.Y y₁) _ = _`. Rewrite using `[← hp]⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Set `ρ : C.Y.X.presheaf.stalk y₁ →+* R` to `(C.Y.X.presheaf.stalkSpecializes hsp).hom`. Establish `hρ : spMap ρ ≫ C.Y.X.fromSpecStalk y₁ = C.Y.X.fromSpecStalk z` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk hsp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ : χ.comp ρ = ψ`. Use `spMap_inj ((cancel_mono (C.Y.X.fromSpecStalk y₁)).1 ?_)` and prove the remaining obligations. Rewrite using `[spMap_comp₂, Category.assoc, hρ]`. Conclude with `(Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := .of ℂ) p.1).trans hp`. Establish `hκρ : (algebraMap R C.Y.X.functionField).comp ρ = algebraMap (C.Y.X.presheaf.stalk y₁) C.Y.X.functionField` using `congrArg CommRingCat.Hom.hom (TopCat.Presheaf.stalkSpecializes_comp C.Y.X.presheaf _ hsp)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tr` using `exists_transition f fr₀ ρ (gm h₀) (by show spMap ρ ≫ C.Y.X.fromSpecStalk y₁ ≫ C.π ≫ genι Z = _`. Simplify using `only [← Category.assoc]`. Rewrite using `[hρ, hs]) inj (hκρ.symm ▸ hT₁) (hκ h₀ _ ▸ hT) χ`. Simplify using `only [hχ, hψ, ← funext (ha _)] at tr`. Take `⟨M₀, uM, dM, cM⟩` from `tr τ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N₀, uN, dN, cN⟩` from `tr (conjEmb τ)`. Establish `hx' : (p.1 ≫ C.π) ≫ genι Z = spMap ψ ≫ stalkPt C.Y y₁ ≫ C.π ≫ genι Z` using `hT'.1`. Rewrite `cM`, `cN` using `[← hx']`. Take `⟨M, hM, eM⟩` from `exists_tri_chg f ψ g a hT' τ cM`. Take `⟨N, hN, eN⟩` from `exists_tri_chg f ψ g a hT' (conjEmb τ) cN`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : M₀.det * ρ r₁ = gm hpW r * N₀.det`. Use `inj ?_` and prove the remaining obligations. Establish `hM0` using `(uM.map (algebraMap R C.Y.X.functionField)).ne_zero`. Establish `hN0` using `(uN.map (algebraMap R C.Y.X.functionField)).ne_zero`. Rewrite using `[map_mul, map_mul, ← RingHom.comp_apply _ (gm hpW), hκ hpW hW, hr, ← RingHom.comp_apply _ ρ, hκρ, hr₁]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [prod_expo_detSym Dw _ _ hτ, Units.val_div_eq_div_val]`. Rewrite using `[dM, dN]`. Use `(∏ i, t₁ τ i).ne_zero` as an intermediate fact. Use `(∏ i, t₁ (conjEmb τ) i).ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨M, N, hM, hN, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[eM, ← RingHom.map_det]`. Conclude with `mul_ne_zero (Units.ne_zero _) (uM.map χ).ne_zero`. Establish `hA` using `(∏ i, t' τ i).ne_zero`. Establish `hB` using `(∏ i, t' (conjEmb τ) i).ne_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hinv : (∏ z : Pad.Letter Dw, t' z.1 z.2 ^ (-expo Dw (detSym Dw (fun _ => false) none τ) z)) = (∏ i, t' (conjEmb τ) i) / ∏ i, t' τ i`. Simplify using `only [zpow_neg, Finset.prod_inv_distrib, prod_expo_detSym Dw _ _ hτ, inv_div]`. Establish `hk` using `congrArg χ key`. Rewrite `hk` using `[map_mul, map_mul]`. Rewrite using `[eM, eN, ← RingHom.map_det, ← RingHom.map_det, hv, hinv, CxPts.ev_eq hpW, ← hχ, ← hψ, Units.val_div_eq_div_val]`.
-
-Establish `e : ∀ A B m n x y : ℂ, A ≠ 0 → m * x = y * n → (A * m) * (x * (B / A)) = y * (B * n)` using `fun A B m n x y hA h => by field_simp; linear_combination B * h`. Conclude with `e _ _ _ _ _ _ hA hk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_coord_chg {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (C : FlagCpt Z e) {σ : c.F →+* ℂ}
     {U₀ : C.Y.X.Opens} (hU₀ : IsAffineOpen U₀) (hgen : genericPoint C.Y.X ∈ U₀) {φ₀ : c.F →+* Γ(C.Y.X, U₀)}
@@ -173,33 +171,31 @@ theorem exists_coord_chg {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} 
     exact e _ _ _ _ _ _ hA hk
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z σ F _ _ e C τ hτ`. Use `choose U hU hy φ fr t _ hφ hT ht using fun y => GlobalTheory.T.exists_affine_eigenframe_flag E H Dw l Xo c O β Z F e C y ⊤ trivial`. Establish `hov : ∀ p : CxPts C.Y.str (σ.comp e.toRingHom), (p.1 ≫ C.π) ≫ genStr Z = spMap σ` using `fun p => by`. Establish `h1 : spMap e.toRingHom ≫ spMap e.symm.toRingHom = 𝟙 _`. Rewrite using `[← spMap_comp₂, RingEquiv.toRingHom_comp_symm_toRingHom]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Spec.map_id _`. Establish `h2 : ((p.1 ≫ C.π) ≫ genStr Z) ≫ spMap e.toRingHom = spMap σ ≫ spMap e.toRingHom`. Rewrite using `[Category.assoc, Category.assoc, C.π_str, p.2, spMap_comp₂]`. Rewrite using `[← Category.comp_id (_ ≫ genStr Z), ← h1, ← Category.assoc, h2, Category.assoc, h1, Category.comp_id]`. Establish `hp : ∀ y (p : CxPts C.Y.str (σ.comp e.toRingHom)) (h : p ∈ CxPts.ptsIn _ _ (U y)), spMap (CxPts.evHom h) ≫ (show Sp Γ(C.Y.X, U y) ⟶ C.Y.X from (hU y).fromSpec) = p.1` using `fun y p h => specMap_valMap_fromSpec (hU y) p.1 h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : ∀ y (p : CxPts C.Y.str (σ.comp e.toRingHom)) (h : p ∈ CxPts.ptsIn _ _ (U y)), (p.1 ≫ C.π) ≫ genι Z = spMap (CxPts.evHom h) ≫ ((show Sp Γ(C.Y.X, U y) ⟶ C.Y.X from (hU y).fromSpec) ≫ C.π) ≫ genι Z` using `fun y p h => by`. Rewrite using `[← hp y p h]`. Simplify using `only [Category.assoc]`. Establish `ex : ∀ y (p : CxPts C.Y.str (σ.comp e.toRingHom)), ∃ g : EigFrame Z σ ((p.1 ≫ C.π) ≫ genι Z), ∀ h : p ∈ CxPts.ptsIn _ _ (U y), ∀ ρ i, g.v ρ i = spMap (dualMap (CxPts.evHom h)) ≫ (fr y).v ρ i` using `fun y p => by`. Distinguish the cases in `h : p ∈ CxPts.ptsIn _ _ (U y)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg⟩` from `exists_bc (fr y) (CxPts.evHom h) (φ' := σ) (spMap_inj (by`. Rewrite using `[spMap_comp₂, ← hφ y, ← hov p, ← hp y p h]`. Simplify using `only [Category.assoc])) (hx y p h)`. Conclude with `⟨g, fun _ => hg⟩`. Take `⟨g⟩` from `exists_eigFrame E H Dw l Xo c O β Z ℂ σ _ (hov p)`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨g, fun h' => (h h').elim⟩`. Use `choose g hg using ex`. Use `⟨U, fun y => ∏ z : Pad.Letter Dw, t y z.1 z.2 ^ expo Dw (detSym Dw (fun _ => false) none τ) z, fun y p => ⟨⟨p.1 ≫ C.π, hov p⟩, g y p⟩, hy, fun y y' hy' => ?_, fun _ _ _ => rfl, fun y V _ _ _ B x hB hol hm => ⟨fun W f => by` and prove the remaining obligations. Simplify using `only [valAt'_eq_valR, valR_comp]`. Conclude with `hol (C.π ⁻¹ᵁ W) ((C.π.app W).hom f), fun ρ i => ?_⟩,`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `fun y y' W hW r hr p hpm => ?_, fun y W hW r s hr p hpm g' v hc => ?_⟩`. Establish `hE : ∀ s : Finset (Pad.Letter Dw), (∑ z ∈ s, expo Dw (detSym Dw (fun _ => false) none τ) z • C.gr z.1 z.2).IsEqn y' (∏ z ∈ s, t y z.1 z.2 ^ expo Dw (detSym Dw (fun _ => false) none τ) z)` using `fun s => by classical`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using CartierDiv.isEqn_zero y'`. Consider the case `insert z s hz ih`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[Finset.sum_insert hz, Finset.prod_insert hz]`. Conclude with `((ht y y' hy' _ _).zsmul _).add ih`. Conclude with `hE Finset.univ`. Use `holTan_dualMap hB ((fr y).v ρ i) (fun b hb => CxPts.evHom (hm hb)) (fun a => ⟨_, (hol (U y) a).2.mono fun b hb => ⟨hb, hm hb⟩, fun b hb => (CxPts.ev_eq (hm hb) a).symm⟩) fun b hb => hg y _ (hm hb) ρ i` and prove the remaining obligations. Take `⟨h₁₂, h₃⟩` from `CxPts.mem_ptsIn_inf.1 hpm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h₁, h₂⟩` from `CxPts.mem_ptsIn_inf.1 h₁₂`. Set `z : C.Y.X` to `p.1 (IsLocalRing.closedPoint ℂ)`. Set `R : Type` to `C.Y.X.presheaf.stalk z`. Set `χ : R →+* ℂ` to `(Scheme.stalkClosedPointTo (R := .of ℂ) p.1).hom`. Set `gm : ∀ {W : C.Y.X.Opens}, p ∈ CxPts.ptsIn _ _ W → (Γ(C.Y.X, W) →+* R)` to `fun {W} h => (C.Y.X.presheaf.germ W z (CxPts.mem_ptsIn.1 h)).hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hχ : ∀ {W : C.Y.X.Opens} (h : p ∈ CxPts.ptsIn _ _ W), χ.comp (gm h) = CxPts.evHom h` using `fun {W} h => (congrArg CommRingCat.Hom.hom (valR_eq_germ p.1 W h)).symm`. Establish `hκ : ∀ {W : C.Y.X.Opens} (h : p ∈ CxPts.ptsIn _ _ W) (h' : genericPoint C.Y.X ∈ W), (algebraMap R C.Y.X.functionField).comp (gm h) = fnOf W h'` using `fun {W} h h' => RingHom.ext fun a => algebraMap_germ _ a`. Establish `hs : ∀ y (h : p ∈ CxPts.ptsIn _ _ (U y)), spMap (gm h) ≫ (show Sp Γ(C.Y.X, U y) ⟶ C.Y.X from (hU y).fromSpec) = C.Y.X.fromSpecStalk z` using `fun y h => (hU y).fromSpecStalk_eq_fromSpecStalk (CxPts.mem_ptsIn.1 h)`. Establish `inj` using `IsFractionRing.injective R C.Y.X.functionField`. Establish `tr` using `exists_transition (fr y) (fr y') (gm h₁) (gm h₂) (by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [← Category.assoc]`. Rewrite using `[hs y h₁, hs y' h₂]) inj (hκ h₁ _ ▸ hT y) (hκ h₂ _ ▸ hT y') χ`. Simplify using `only [hχ] at tr`. Establish `chg : ∀ ρ (M : Matrix (Fin (Dw.mult ρ)) (Fin (Dw.mult ρ)) ℂ), (∀ i, IsCombAtG Z.t (spMap (CxPts.evHom h₁) ≫ ((show Sp Γ(C.Y.X, U y) ⟶ C.Y.X from (hU y).fromSpec) ≫ C.π) ≫ genι Z) (fun j => spMap (dualMap (CxPts.evHom h₂)) ≫ (fr y').v ρ j) (M i) (spMap (dualMap (CxPts.evHom h₁)) ≫ …` using `Z) (σ := σ) ⟨⟨p.1 ≫ C.π, hov p⟩, g y' p⟩ ⟨⟨p.1 ≫ C.π, hov p⟩, g y p⟩ ρ M := fun ρ M hM => ⟨rfl, fun i => by`. Use `hM i` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[← hx y p h₁, ← hg y p h₁, ← funext (hg y' p h₂ ρ)]`. Conclude with `this⟩`. Take `⟨M, uM, dM, cM⟩` from `tr τ`. Take `⟨N, -, dN, cN⟩` from `tr (conjEmb τ)`. Use `⟨_, _, chg _ _ cM, chg _ _ cN, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← RingHom.map_det]`. Conclude with `(uM.map χ).ne_zero`. Rewrite using `[← RingHom.map_det, ← RingHom.map_det, CxPts.ev_eq h₃, ← hχ, RingHom.comp_apply, ← map_mul]`. Use `congrArg χ (inj ?_)` and prove the remaining obligations. Establish `hM0` using `(uM.map (algebraMap R C.Y.X.functionField)).ne_zero`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[map_mul, ← RingHom.comp_apply _ (gm h₃), hκ h₃ hW, hr]`. Simplify using `only [prod_expo_detSym Dw _ _ hτ, Units.val_div_eq_div_val]`. Rewrite using `[dM, dN]`. Use `(∏ i, t y τ i).ne_zero` as an intermediate fact. Use `(∏ i, t y (conjEmb τ) i).ne_zero` as an intermediate fact.
-
-Clear the denominators using the available nonvanishing facts. Take `⟨h₁, h₃⟩` from `CxPts.mem_ptsIn_inf.1 hpm`. Take `⟨M, N, cM, cN, h0, he⟩` from `exists_coord_chg C (hU y) (gen_mem (hy y)) (fr y) (hT y) hτ p h₁ (g y p) (hg y p h₁) hW r h₃ s hr g' v hc`. Conclude with `⟨M, N, ⟨rfl, cM⟩, ⟨rfl, cN⟩, h0, he⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_holFrames_coord : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (F : Type) [Field F] [NumberField F] (e : F ≃+* c.F) (C : FlagCpt Z e) (τ : E →+* ℂ), τ (H.rt : E) = H.rt0 → ∃ (W : C.Y.X → C.Y.X.Opens) (δ : C.Y.X → C.Y.Fnˣ) (a : C.Y.X → CxPts C.Y.str (σ.comp e.toRingHom) → CxFr Z σ), (∀ y, y ∈ W y) ∧ (∀ y, ∀ y' ∈ W y, (divOf C (expo Dw (detSym Dw (fun _ => false) none τ))).IsEqn y' (δ y)) ∧ (∀ y, ∀ p ∈ CxPts.ptsIn C.Y.str (σ.comp e.toRingHom) (W y), (a y p).1.1 = p.1 ≫ C.π) ∧ (∀ y (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimensional ℂ V] (B : Set V) (x : V → CxPts C.Y.str (σ.comp e.toRingHom)), IsOpen B → IsHolTo B (fun b => (x b).1) → Set.MapsTo x B (CxPts.ptsIn C.Y.str (σ.comp e.toRingHom) (W y)) → HolFam B (fun b => a y (x b))) ∧ (∀ y y' (U : C.Y.X.Opens) (hU : genericPoint C.Y.X ∈ U) (r : Γ(C.Y.X, U)), fnOf U hU r = (δ y : C.Y.Fn) / (δ y' : C.Y.Fn) → ∀ p ∈ CxPts.ptsIn C.Y.str (σ.comp e.toRingHom) (W y ⊓ W y' ⊓ U), ∃ M N, Chg (a y' p) (a y p) τ M ∧ Chg (a y' p) (a y p) (conjEmb τ) N ∧ M.det ≠ 0 ∧ M.det * CxPts.ev C.Y.str (σ.comp e.toRingHom) U r p = N.det) ∧ ∀ y (U : C.Y.X.Opens) (hU : genericPoint C.Y.X ∈ U) (r : Γ(C.Y.X, U)) (s : C.Y.Fn), fnOf U hU r = s * (δ y : C.Y.Fn) → ∀ p ∈ CxPts.ptsIn C.Y.str (σ.comp e.toRingHom) (W y ⊓ U), ∀ (g : EigFrame Z σ ((a y p).1.1 ≫ genι Z)) (v : ℂ), IsCoord C p.1 g (expo Dw (detSym Dw (fun _ => false) none τ)) s v → ∃ M N, Chg (a y p) ⟨(a y p).1, g⟩ τ M ∧ Chg (a y p) ⟨(a y p).1, g⟩ (conjEmb τ) N ∧ M.det ≠ 0 ∧ M.det * v = CxPts.ev C.Y.str (σ.comp e.toRingHom) U r p * N.det := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ F _ _ e C τ hτ

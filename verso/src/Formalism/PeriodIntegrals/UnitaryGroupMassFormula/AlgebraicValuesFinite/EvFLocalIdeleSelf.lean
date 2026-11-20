@@ -27,33 +27,33 @@ theorem evF_val (v : HeightOneSpectrum (𝓞 L)) (x : Ideles L) :
     ((evF v x : (v.adicCompletion L)ˣ) : v.adicCompletion L) = (x : AdeleRing (𝓞 L) L).2 v := rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem evF_diag (v : HeightOneSpectrum (𝓞 L)) (k : Lˣ) : evF v (diagUnits L k) = atFin v k :=
   Units.ext rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem evI_diag (w : InfinitePlace L) (k : Lˣ) : evI w (diagUnits L k) = atInf w k :=
   Units.ext rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (infIdele_snd L w x v)`.
+A detailed English derivation is pending.
 -/
 theorem evF_infIdele (v : HeightOneSpectrum (𝓞 L)) (w : InfinitePlace L) (x : (w.Completion)ˣ) :
     evF v (infIdele L w x) = 1 :=
   Units.ext (infIdele_snd L w x v)
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem evI_localIdele (w : InfinitePlace L) (v : HeightOneSpectrum (𝓞 L)) (x : (v.adicCompletion L)ˣ) :
     evI w (localIdele L v x) = 1 :=
   Units.ext rfl
 
 /- English proof (translation)
-The proof uses `by classical exact Units.ext (RestrictedProduct.mulSingle_eq_of_ne (fun u : HeightOneSpectrum (𝓞 L) => u.adicCompletionIntegers L) (x : v.adicCompletion L) h)`.
+A detailed English derivation is pending.
 -/
 theorem evF_localIdele_ne (w v : HeightOneSpectrum (𝓞 L)) (h : w ≠ v) (x : (v.adicCompletion L)ˣ) :
     evF w (localIdele L v x) = 1 :=
@@ -61,30 +61,28 @@ theorem evF_localIdele_ne (w v : HeightOneSpectrum (𝓞 L)) (h : w ≠ v) (x : 
     (fun u : HeightOneSpectrum (𝓞 L) => u.adicCompletionIntegers L) (x : v.adicCompletion L) h)
 
 /- English proof (translation)
-The claim follows from `Units.ext (localIdele_snd_self L v x)`.
+A detailed English derivation is pending.
 -/
 theorem evF_localIdele_self (v : HeightOneSpectrum (𝓞 L)) (x : (v.adicCompletion L)ˣ) :
     evF v (localIdele L v x) = x :=
   Units.ext (localIdele_snd_self L v x)
 
 /- English proof (translation)
-The claim follows from `Units.ext (infIdele_fst_ne L w w' h x)`.
+A detailed English derivation is pending.
 -/
 theorem evI_infIdele_ne (w w' : InfinitePlace L) (h : w' ≠ w) (x : (w.Completion)ˣ) :
     evI w' (infIdele L w x) = 1 :=
   Units.ext (infIdele_fst_ne L w w' h x)
 
 /- English proof (translation)
-The claim follows from `Units.ext (infIdele_fst_self L w x)`.
+A detailed English derivation is pending.
 -/
 theorem evI_infIdele_self (w : InfinitePlace L) (x : (w.Completion)ˣ) :
     evI w (infIdele L w x) = x :=
   Units.ext (infIdele_fst_self L w x)
 
 /- English proof (translation)
-Rewrite using `[infDiag, MonoidHom.finsetProd_apply, map_prod, Finset.prod_eq_single w]`. Conclude with `evI_infIdele_self w _`. Introduce `w' _ hw'`. Conclude with `evI_infIdele_ne w' w (Ne.symm hw') _`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem evI_infDiag (w : InfinitePlace L) (k : Lˣ) : evI w (infDiag k) = atInf w k := by
   rw [infDiag, MonoidHom.finsetProd_apply, map_prod, Finset.prod_eq_single w]
@@ -95,22 +93,20 @@ theorem evI_infDiag (w : InfinitePlace L) (k : Lˣ) : evI w (infDiag k) = atInf 
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Rewrite using `[infDiag, MonoidHom.finsetProd_apply, map_prod]`. Conclude with `Finset.prod_eq_one fun w _ => evF_infIdele v w _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evF_infDiag (v : HeightOneSpectrum (𝓞 L)) (k : Lˣ) : evF v (infDiag k) = 1 := by
   rw [infDiag, MonoidHom.finsetProd_apply, map_prod]
   exact Finset.prod_eq_one fun w _ => evF_infIdele v w _
 
 /- English proof (translation)
-Introduce `k T hT`. Use `set D := infDiag k * (∏ v ∈ T, localIdele L v (atFin v k)) with hD`. Use `⟨D⁻¹ * diagUnits L k, ⟨?_, fun v => ?_⟩, by rw [mul_inv_cancel_left]⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w show ((evI w (D⁻¹ * diagUnits L k) : (w.Completion)ˣ) : w.Completion) = (1 : InfiniteAdeleRing L) w`. Establish `hP : evI w (∏ v ∈ T, localIdele L v (atFin v k)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_prod]`. Conclude with `Finset.prod_eq_one fun v _ => evI_localIdele w v _`. Rewrite using `[map_mul, map_inv, hD, map_mul, hP, evI_infDiag, evI_diag, mul_one, inv_mul_cancel]`. Both sides reduce to the same expression. Use `show Valued.v ((evF v (D⁻¹ * diagUnits L k) : (v.adicCompletion L)ˣ) : v.adicCompletion L) = 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : evF v (∏ u ∈ T, localIdele L u (atFin u k)) = if v ∈ T then atFin v k else 1`. Rewrite using `[map_prod]`. Use `split_ifs with hv`. Rewrite using `[Finset.prod_eq_single v (fun u _ hu => evF_localIdele_ne v u (Ne.symm hu) _) (fun h => absurd hv h), evF_localIdele_self]`. Conclude with `Finset.prod_eq_one fun u hu => evF_localIdele_ne v u (by rintro rfl; exact hv hu) _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, map_inv, hD, map_mul, hP, evF_infDiag, evF_diag, one_mul]`. Use `split_ifs with hv`. Rewrite using `[inv_mul_cancel]`. Simplify using the standard rewrite rules. Rewrite using `[inv_one, one_mul, valued_atFin, hT v hv]`.
-
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem decomp : Decomp L := by
   classical

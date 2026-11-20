@@ -24,7 +24,7 @@ def semiToLin {S R : Type} [CommRing S] [CommRing R] [Algebra S R] {M N : Type} 
   map_smul' s m := by simp [f.map_smulₛₗ, algebraMap_smul]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use `⟨Module.Finite.equiv e, Module.Projective.of_equiv e, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.rankAtStalk_eq_of_equiv e, Module.rankAtStalk_baseChange, h3]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem fp_of_tensor_equiv {S R M N : Type} [CommRing S] [CommRing R] [Algebra S R] [AddCommGroup M] [Module S M]
     [AddCommGroup N] [Module R N] {g : ℕ} (e : R ⊗[S] M ≃ₗ[R] N) (h : FP S M g) : FP R N g := by
@@ -33,29 +33,29 @@ theorem fp_of_tensor_equiv {S R M N : Type} [CommRing S] [CommRing R] [Algebra S
   rw [← Module.rankAtStalk_eq_of_equiv e, Module.rankAtStalk_baseChange, h3]
 
 /- English proof (translation)
-Establish `hE` using `GlobalTheory.TopForm.isBaseChange_exteriorPower hφ 2`. Set `e : ⋀[R]^2 N ≃ₗ[R] N₂` to `hE.equiv.symm ≪≫ₗ eM.baseChange S R _ _ ≪≫ₗ hψ.equiv`. Use `⟨e, ?_⟩` and prove the remaining obligations. Establish `key : ∀ m m', e (exteriorPower.ιMulti R 2 ![φ m, φ m']) = cN (φ m) (φ m')`. Introduce `m m'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : exteriorPower.ιMulti R 2 ![φ m, φ m'] = GlobalTheory.exteriorPowerMapOver R 2 φ (exteriorPower.ιMulti S 2 ![m, m'])`. Rewrite using `[GlobalTheory.exteriorPowerMapOver_ιMulti]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases k <;> rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2 : hE.equiv.symm (GlobalTheory.exteriorPowerMapOver R 2 φ (exteriorPower.ιMulti S 2 ![m, m'])) = 1 ⊗ₜ exteriorPower.ιMulti S 2 ![m, m']`. Rewrite using `[LinearEquiv.symm_apply_eq, IsBaseChange.equiv_tmul, one_smul]`. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `hψ.equiv (eM.baseChange S R _ _ (hE.equiv.symm _)) = _`. Rewrite using `[h2, LinearEquiv.baseChange_tmul, IsBaseChange.equiv_tmul, one_smul, heM, hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Set `iw` to `exteriorPower.ιMulti R 2 (M := N)`. Establish `u0 : ∀ a b x : N, (![x, b] : Fin 2 → N) = Function.update ![a, b] 0 x`. Apply the tactic sequence `intro a b x; funext k; fin_cases k <;> simp`. Establish `u1 : ∀ a b x : N, (![a, x] : Fin 2 → N) = Function.update ![a, b] 1 x`. Apply the tactic sequence `intro a b x; funext k; fin_cases k <;> simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `add0 : ∀ a a' b : N, iw ![a + a', b] = iw ![a, b] + iw ![a', b]`. Introduce `a a' b`. Use `iw.map_update_add ![a, b] 0 a a'` as an intermediate fact. Rewrite `this` using `[← u0 a b (a + a'), ← u0 a b a, ← u0 a b a']`. Then use the resulting hypothesis. Establish `add1 : ∀ a b b' : N, iw ![a, b + b'] = iw ![a, b] + iw ![a, b']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `a b b'`. Use `iw.map_update_add ![a, b] 1 b b'` as an intermediate fact. Rewrite `this` using `[← u1 a b (b + b'), ← u1 a b b, ← u1 a b b']`. Then use the resulting hypothesis. Establish `smul0 : ∀ (r : R) (a b : N), iw ![r • a, b] = r • iw ![a, b]`. Introduce `r a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `iw.map_update_smul ![a, b] 0 r a` as an intermediate fact. Rewrite `this` using `[← u0 a b (r • a), ← u0 a b a]`. Then use the resulting hypothesis. Establish `smul1 : ∀ (r : R) (a b : N), iw ![a, r • b] = r • iw ![a, b]`. Introduce `r a b`. Use `iw.map_update_smul ![a, b] 1 r b` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[← u1 a b (r • b), ← u1 a b b]`. Then use the resulting hypothesis. Establish `zero0 : ∀ b : N, iw ![0, b] = 0` using `fun b => by`. Simplify using `using smul0 0 0 b`. Establish `zero1 : ∀ a : N, iw ![a, 0] = 0` using `fun a => by`. Simplify using `using smul1 0 a 0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `a b`. Proceed by induction on `a using hφ.inductionOn with`. Consider the case `zero => simp [iw, zero0]`. Consider the case `add x y hx hy => simp only [iw] at add0`. Rewrite using `[add0, map_add, hx, hy, map_add, LinearMap.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul r x hx => simp only [iw] at smul0`. Rewrite using `[smul0, map_smul, hx, map_smul, LinearMap.smul_apply]`. Consider the case `tmul m`. Proceed by induction on `b using hφ.inductionOn with`. Consider the case `zero => simp only [iw] at zero1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Rewrite using `[zero1, map_zero, map_zero]`. Consider the case `add x y hx hy => simp only [iw] at add1`. Rewrite using `[add1, map_add, hx, hy, map_add]`. Consider the case `smul r x hx => simp only [iw] at smul1`. Rewrite using `[smul1, map_smul, hx, map_smul]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `tmul m' => exact key m m'`.
+Treat this case separately.
 -/
 theorem wedge_of_isBaseChange {S R M N M₂ N₂ : Type} [CommRing S] [CommRing R] [Algebra S R]
     [AddCommGroup M] [Module S M] [AddCommGroup N] [Module R N] [Module S N] [IsScalarTower S R N]
@@ -119,11 +119,11 @@ theorem wedge_of_isBaseChange {S R M N M₂ N₂ : Type} [CommRing S] [CommRing 
     | tmul m' => exact key m m'
 
 /- English proof (translation)
-Use `⟨(e1.symm.baseChange R R' _ _) ≪≫ₗ AlgebraTensorModule.cancelBaseChange S R R' R' M ≪≫ₗ e2, fun c => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `e1.surjective c`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r m`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h1 : e1 (r ⊗ₜ m) = r • φ m`. Rewrite using `[← he1, ← e1.map_smul, smul_tmul', smul_eq_mul, _root_.mul_one]`. Establish `h2 : (algebraMap R R' r) ⊗ₜ[S] m = (algebraMap R R' r) • ((1 : R') ⊗ₜ[S] m)`. Rewrite using `[smul_tmul', smul_eq_mul, _root_.mul_one]`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.baseChange_tmul, LinearEquiv.symm_apply_apply, AlgebraTensorModule.cancelBaseChange_tmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Algebra.smul_def, _root_.mul_one, h2, e2.map_smul, he2, h1, χ.map_smulₛₗ, hθ]`. Consider the case `add x y hx hy => simp only [tmul_add, map_add, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem tensor_equiv_of_tower {S R R' M N P : Type} [CommRing S] [CommRing R] [CommRing R'] [Algebra S R]
     [Algebra R R'] [Algebra S R'] [IsScalarTower S R R'] [AddCommGroup M] [Module S M] [AddCommGroup N]
@@ -148,19 +148,17 @@ theorem tensor_equiv_of_tower {S R R' M N P : Type} [CommRing S] [CommRing R] [C
   | add x y hx hy => simp only [tmul_add, map_add, hx, hy]
 
 /- English proof (translation)
-Introduce `R _ A _ g hA hg`. Take `⟨S, B, _, φ, -, hfg, hB, hBg, hpb⟩` from `GlobalTheory.AbelianLimit.abelianScheme_descends_to_fg_subring R g A ∅ hA hg`. Establish `: IsNoetherianRing S` using `Algebra.FiniteType.isNoetherianRing ℤ S`. Take `⟨hFP, hW, hBC1, hBC2⟩` from `GlobalTheory.T.abelianScheme_structureSheafCohomology_noetherian S B g hB hBg`. Establish `hAB : IsPullback φ A.hom B.hom (spMap (algebraMap S R))` using `hpb.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e1, he1⟩` from `hBC1 R A.left A.hom φ hAB`. Take `⟨e2, he2⟩` from `hBC2 R A.left A.hom φ hAB`. Establish `hp1 : IsBaseChange R (semiToLin (pullHO1 hAB.w))` using `IsBaseChange.of_equiv e1 he1`. Establish `hp2 : IsBaseChange R (semiToLin (pullHO2 hAB.w))` using `IsBaseChange.of_equiv e2 he2`. Establish `hcomp` using `GlobalTheory.T.structureSheafCohomology_pullback_comp_cup_id`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fp_of_tensor_equiv e1 hFP, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨eM, heM⟩` from `hW`. Conclude with `wedge_of_isBaseChange hp1 hp2 (cup _) (cup _) ((hcomp.2.1 S R B.left A.left B.hom A.hom (algebraMap S R) φ hAB.w).1) eM heM`. Introduce `R' _ _ X' s' ψ h`. Use `letI : Algebra S R' := ((algebraMap R R').comp (algebraMap S R)).toAlgebra`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower S R R' := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `es : spMap (algebraMap R R') ≫ spMap (algebraMap S R) = spMap (algebraMap S R')`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hc : IsPullback (ψ ≫ φ) s' B.hom (spMap (algebraMap S R'))` using `es ▸ h.paste_horiz hAB`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨e3, he3⟩` from `hBC1 R' X' s' (ψ ≫ φ) hc`. Conclude with `tensor_equiv_of_tower (pullHO1 hAB.w) (pullHO1 h.w) (pullHO1 hc.w) ((hcomp.1 S R B.left A.left B.hom A.hom (algebraMap S R) φ hAB.w R' X' s' (algebraMap R R') ψ h.w (algebraMap S R') (ψ ≫ φ) hc.w rfl (fun _ => rfl)).1) e1 he1 e3 he3`. Introduce `R' _ _ X' s' ψ h`. Use `letI : Algebra S R' := ((algebraMap R R').comp (algebraMap S R)).toAlgebra`. Use `haveI : IsScalarTower S R R' := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `es : spMap (algebraMap R R') ≫ spMap (algebraMap S R) = spMap (algebraMap S R')`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hc : IsPullback (ψ ≫ φ) s' B.hom (spMap (algebraMap S R'))` using `es ▸ h.paste_horiz hAB`. Take `⟨e3, he3⟩` from `hBC2 R' X' s' (ψ ≫ φ) hc`.
-
-Conclude with `tensor_equiv_of_tower (pullHO2 hAB.w) (pullHO2 h.w) (pullHO2 hc.w) ((hcomp.1 S R B.left A.left B.hom A.hom (algebraMap S R) φ hAB.w R' X' s' (algebraMap R R') ψ h.w (algebraMap S R') (ψ ≫ φ) hc.w rfl (fun _ => rfl)).2.1) e2 he2 e3 he3`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem oStr_of_noetherian : OStr := by
   intro R _ A _ g hA hg

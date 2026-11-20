@@ -15,47 +15,47 @@ import Formalism.GradedWeylDivisibility.FockSpaceTableaux.BlockActTensor
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-The claim follows from `semistandard_index_finite`.
+A detailed English derivation is pending.
 -/
 theorem sSIdxFinite : SSIdxFinite := semistandard_index_finite
 /- English proof (translation)
-The claim follows from `semistandard_basis`.
+A detailed English derivation is pending.
 -/
 theorem sSBasis : SSBasis := semistandard_basis
 /- English proof (translation)
-The claim follows from `row_action_diagonal_weight`.
+A detailed English derivation is pending.
 -/
 theorem rowActDiagWeight : RowActDiagWeight := row_action_diagonal_weight
 /- English proof (translation)
-The claim follows from `row_action_mul`.
+A detailed English derivation is pending.
 -/
 theorem rowActMul : RowActMul := row_action_mul
 /- English proof (translation)
-The claim follows from `nabla_weight_le`.
+A detailed English derivation is pending.
 -/
 theorem nablaLLe : NablaLLe := nabla_weight_le
 /- English proof (translation)
-The claim follows from `nablaLBasis_of rowActMul`.
+A detailed English derivation is pending.
 -/
 theorem nablaLBasis : NablaLBasis := nablaLBasis_of rowActMul
 /- English proof (translation)
-The claim follows from `nablaLKBasis_of rowActMul sSBasis`.
+A detailed English derivation is pending.
 -/
 theorem nablaLKBasis : NablaLKBasis := nablaLKBasis_of rowActMul sSBasis
 /- English proof (translation)
-The claim follows from `nablaLDiag_of rowActMul rowActDiagWeight nablaLBasis`.
+A detailed English derivation is pending.
 -/
 theorem nablaLDiag : NablaLDiag := nablaLDiag_of rowActMul rowActDiagWeight nablaLBasis
 /- English proof (translation)
-The claim follows from `nabla_twist_mem`.
+A detailed English derivation is pending.
 -/
 theorem nablaLTwMem : NablaLTwMem := nabla_twist_mem
 /- English proof (translation)
-The claim follows from `tensor_power_basis`.
+A detailed English derivation is pending.
 -/
 theorem tensorBasis : TensorBasis := tensor_power_basis
 /- English proof (translation)
-The claim follows from `block_action_tensor`.
+A detailed English derivation is pending.
 -/
 theorem blockActTensor : BlockActTensor := block_action_tensor
 

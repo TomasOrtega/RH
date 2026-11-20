@@ -9,7 +9,7 @@ namespace PI.KLW
 variable {K E : Type} [Field K] [NumberField K] [Field E] [NumberField E] [Algebra K E]
 
 /- English proof (translation)
-Establish `e : z * cj ((s : E) * y) = algebraMap K E (s : K) * (z * cj y)`. Rewrite using `[map_mul cj, map_natCast cj, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← Algebra.smul_def, map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_mul_natCast (cj : E ≃ₐ[ℚ] E) (s : ℕ) (z y : E) :
     Algebra.trace K E (z * cj ((s : E) * y)) = (s : K) * Algebra.trace K E (z * cj y) := by
@@ -18,9 +18,7 @@ theorem trace_mul_natCast (cj : E ≃ₐ[ℚ] E) (s : ℕ) (z y : E) :
   rw [e, ← Algebra.smul_def, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `h1 : (1 : E) ∈ I` using `(hI 1).2 fun z hz => by`. Rewrite using `[hne z hz, zero_mul, map_zero]`. Conclude with `zero_mem _`.
-
-Conclude with `one_ne_zero (hne 1 h1)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_mem (cj : E ≃ₐ[ℚ] E) (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)
     (hI : PI.KerIso.SelfDualI K cj I) : ∃ y0 ∈ I, y0 ≠ 0 := by
@@ -31,13 +29,13 @@ theorem exists_ne_zero_mem (cj : E ≃ₐ[ℚ] E) (I : FractionalIdeal (nonZeroD
   exact one_ne_zero (hne 1 h1)
 
 /- English proof (translation)
-Take `⟨y, hy, hint⟩` from `exists_integral_multiples ℤ ℚ (L := E) {e / y0}`. Establish `hi : IsIntegral ℤ ((y : E) * (e / y0))`. Use `hint (e / y0) (Finset.mem_singleton_self _)` as an intermediate fact. Simplify `this` using `[zsmul_eq_mul]`. Establish `hN : IsIntegral ℤ ((y.natAbs : E) * (e / y0))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Break down `Int.natAbs_eq y with h | h` into its components or cases. Establish `: (y.natAbs : E) = (y : E)` using `by rw [← Int.cast_natCast, ← h]`. Rewrite using `[this]`. Conclude with `hi`. Establish `: (y.natAbs : E) = -(y : E)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : (y.natAbs : ℤ) = -y` using `by omega`. Rewrite using `[← Int.cast_natCast, h', Int.cast_neg]`. Rewrite using `[this, neg_mul]`. Conclude with `hi.neg`. Use `⟨y.natAbs, Int.natAbs_ne_zero.mpr hy, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `key : (y.natAbs : E) * e = ((⟨(y.natAbs : E) * (e / y0), hN⟩ : 𝓞 E) : E) * y0` using `by show (y.natAbs : E) * e = (y.natAbs : E) * (e / y0) * y0`. Clear the denominators using the available nonvanishing facts. Rewrite using `[key]`. Conclude with `(I : Submodule (𝓞 E) E).smul_mem (⟨(y.natAbs : E) * (e / y0), hN⟩ : 𝓞 E) hy0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_natCast_mul_mem (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) {y0 : E}
     (hy0 : y0 ∈ I) (hne : y0 ≠ 0) (e : E) : ∃ N : ℕ, N ≠ 0 ∧ (N : E) * e ∈ I := by
@@ -61,7 +59,7 @@ theorem exists_natCast_mul_mem (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E
   exact (I : Submodule (𝓞 E) E).smul_mem (⟨(y.natAbs : E) * (e / y0), hN⟩ : 𝓞 E) hy0
 
 /- English proof (translation)
-Use `(I : Submodule (𝓞 E) E).smul_mem (q : 𝓞 E) hz` as an intermediate fact. Rewrite `this` using `[Algebra.smul_def, map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem natCast_mul_mem (I : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) (q : ℕ) {z : E}
     (hz : z ∈ I) : (q : E) * z ∈ I := by
@@ -74,31 +72,27 @@ variable (cj : E ≃ₐ[ℚ] E) (hc : PI.KerIso.IsConj K cj) {n : Type} [Fintype
 
 include hc in
 /- English proof (translation)
-Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hsv⟩ w ⟨t, ht, htw⟩`. Use `⟨s * t, Nat.Coprime.mul_left hs ht, ?_⟩` and prove the remaining obligations. Establish `e1 : hf (conjK cj hc.2.1) v w = ∑ a, Algebra.trace K E (g₀.symm v a * cj (g₀.symm w a))`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hf_isom cj hc.2.1 g₀ hg]`. Simplify using the standard rewrite rules. Rewrite using `[e1, Finset.mul_sum]`. Use `Subring.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← trace_natCast_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hI _).1 (htw a) _ (hsv a)`. Introduce `hv set x := g₀.symm v with hx`. Establish `claim1 : ∀ a, ∀ z ∈ I, Rp K p (Algebra.trace K E (z * cj (x a)))`. Introduce `a z hz`. Establish `hw : g₀ (Pi.single a z) ∈ Lset I p g₀` using `⟨1, Nat.coprime_one_left p, fun b => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_one, one_mul, LinearEquiv.symm_apply_apply]`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using `using hz`. Rewrite using `[Pi.single_eq_of_ne hb]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `FractionalIdeal.mem_coe.mp (I : Submodule (𝓞 E) E).zero_mem⟩`. Establish `h2` using `Rp_map (conjK cj hc.2.1) (hv _ hw)`. Rewrite `h2` using `[← hf_symm _ (conjK_invol cj hc)]`. Establish `e2 : hf (conjK cj hc.2.1) (g₀ (Pi.single a z)) v = Algebra.trace K E (z * cj (x a))`. Establish `: v = g₀ x` using `by simp [hx]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, hf_isom cj hc.2.1 g₀ hg, Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd (Finset.mem_univ a) h`. Rewrite `h2` using `[e2]`. Then use the resulting hypothesis. Take `⟨T, hT⟩` from `(FractionalIdeal.fg_of_isNoetherianRing le_rfl I).restrictScalars (R := ℤ)`. Establish `hTI : ∀ z ∈ T, z ∈ I` using `fun z hz => by`. Establish `: z ∈ ((I : Submodule (𝓞 E) E).restrictScalars ℤ)` using `hT ▸ Submodule.subset_span hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `this`. Establish `claim2 : ∀ a, ∃ s : ℕ, Nat.Coprime s p ∧ ∀ z ∈ I, (s : K) * Algebra.trace K E (z * cj (x a)) ∈ (algebraMap (𝓞 K) K).range`. Introduce `a`. Take `⟨s, hs, hsT⟩` from `Rp_finset (p := p) T (fun z => Algebra.trace K E (z * cj (x a))) fun z hz => claim1 a z (hTI z hz)`. Use `⟨s, hs, fun z hz => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Establish `hz' : z ∈ Submodule.span ℤ (T : Set E)`. Rewrite using `[hT]`. Conclude with `hz`. Use `clear hz`. Proceed by induction on `hz' using Submodule.span_induction with`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `mem z hz => exact hsT z hz`. Consider the case `zero => simp`. Consider the case `add z z' _ _ h h'`. Rewrite using `[add_mul, map_add, mul_add]`. Conclude with `Subring.add_mem _ h h'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Consider the case `smul k z _ h`. Establish `e : (s : K) * Algebra.trace K E ((k • z) * cj (x a)) = k • ((s : K) * Algebra.trace K E (z * cj (x a)))`. Rewrite using `[smul_mul_assoc, map_zsmul, mul_smul_comm]`. Rewrite using `[e]`. Conclude with `Subring.zsmul_mem _ h k`.
-
-Use `choose s hs hsI using claim2`. Use `⟨∏ a, s a, Nat.Coprime.prod_left fun a _ => hs a, fun a => (hI _).2 fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[trace_mul_natCast]`. Take `⟨q, hq⟩` from `Finset.dvd_prod_of_mem s (Finset.mem_univ a)`. Rewrite using `[hq, Nat.cast_mul, mul_comm (s a : K), mul_assoc]`.
-
-Conclude with `Subring.mul_mem _ (natCast_mem _ q) (hsI a z hz)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lset_unimod (hI : PI.KerIso.SelfDualI K cj I) (hg : PI.KerIso.IsIsom cj g₀) :
     Unimod K (conjK cj hc.2.1) p (Lset I p g₀) := by
@@ -167,9 +161,9 @@ theorem lset_unimod (hI : PI.KerIso.SelfDualI K cj I) (hg : PI.KerIso.IsIsom cj 
 
 include hc in
 /- English proof (translation)
-Introduce `v`. Take `⟨y0, hy0, hne⟩` from `exists_ne_zero_mem cj I hI`. Use `choose N hN hNI using fun a => exists_natCast_mul_mem I hy0 hne (g₀.symm v a)`. Use `⟨∏ a, N a, Finset.prod_ne_zero_iff.mpr fun a _ => hN a, 1, Nat.coprime_one_left p, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_one, one_mul, map_smul, Pi.smul_apply, Algebra.smul_def, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `Finset.dvd_prod_of_mem N (Finset.mem_univ a)`. Rewrite using `[hq, Nat.cast_mul, mul_comm (N a : E), mul_assoc]`. Conclude with `natCast_mul_mem I q (hNI a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lset_spans (hI : PI.KerIso.SelfDualI K cj I) : Spans K (Lset I p g₀) := by
   intro v

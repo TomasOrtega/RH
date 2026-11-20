@@ -21,7 +21,7 @@ def sub (M : HermitianBundle K) (F : Submodule (𝓞 K) M.carrier) : HermitianBu
   ⟨F, M.metric.comap F.subtype F.injective_subtype⟩
 
 /- English proof (translation)
-Introduce `a x ha hx`. Conclude with `hG a ((show F from x) : M.carrier) ha hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Saturated.comap_subtype {M : HermitianBundle K} {G : Submodule (𝓞 K) M.carrier}
     (hG : M.Saturated G) (F : Submodule (𝓞 K) M.carrier) :
@@ -32,9 +32,9 @@ theorem Saturated.comap_subtype {M : HermitianBundle K} {G : Submodule (𝓞 K) 
 variable {M : HermitianBundle K} {F : Submodule (𝓞 K) M.carrier}
 
 /- English proof (translation)
-Use `Module.IsTorsionFree.of_smul_eq_zero fun a x hax ↦ ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `F.mkQ_surjective x`. Distinguish the cases in `ha : a = 0`. Conclude with `Or.inl ha`. Use `right`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the first alternative. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hax` using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hF a x ha hax`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTorsionFree_quotient (hF : M.Saturated F) :
     Module.IsTorsionFree (𝓞 K) (M.carrier ⧸ F) := by
@@ -48,7 +48,7 @@ theorem isTorsionFree_quotient (hF : M.Saturated F) :
     exact hF a x ha hax
 
 /- English proof (translation)
-The claim follows from `haveI := isTorsionFree_quotient hF projective_of_isTorsionFree _`.
+A detailed English derivation is pending.
 -/
 theorem quot_projective (hF : M.Saturated F) : Module.Projective (𝓞 K) (M.carrier ⧸ F) :=
   haveI := isTorsionFree_quotient hF
@@ -61,7 +61,7 @@ def quotSection (hF : M.Saturated F) : (M.carrier ⧸ F) →ₗ[𝓞 K] M.carrie
   (Module.projective_lifting_property F.mkQ LinearMap.id F.mkQ_surjective).choose
 
 /- English proof (translation)
-The claim follows from `letI := quot_projective hF (Module.projective_lifting_property F.mkQ LinearMap.id F.mkQ_surjective).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem mkQ_comp_quotSection (hF : M.Saturated F) :
     F.mkQ ∘ₗ quotSection M F hF = LinearMap.id :=
@@ -78,7 +78,7 @@ variable {E : Type*} [AddCommGroup E] [Module (𝓞 K) E] [Module.Finite (𝓞 K
 omit [NumberField K] [Module.Finite (𝓞 K) E] [Module.Projective (𝓞 K) E] in
 
 /- English proof (translation)
-The claim follows from `(LinearMap.lTensor_comp_apply _ _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem fibreMap_fibreMap {E' E'' : Type*} [AddCommGroup E'] [Module (𝓞 K) E']
     [AddCommGroup E''] [Module (𝓞 K) E'']
@@ -97,20 +97,20 @@ def conjFS (h : HermitianMetric K E) (σ : K →+* ℂ) (y : FibreSpace h σ) :
 variable (h : HermitianMetric K E) (σ : K →+* ℂ)
 
 /- English proof (translation)
-The claim follows from `h.form_conj σ _ _`.
+A detailed English derivation is pending.
 -/
 theorem conjFS_inner (y z : FibreSpace h σ) :
     inner ℂ (conjFS h σ y) (conjFS h σ z) = starRingEnd ℂ (inner ℂ y z) :=
   h.form_conj σ _ _
 
 /- English proof (translation)
-Simplify using `only [conjFS, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conjFS_sub (y z : FibreSpace h σ) : conjFS h σ (y - z) = conjFS h σ y - conjFS h σ z := by
   simp only [conjFS, map_sub]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `hy`. Conclude with `⟨conjMap σ F z, (conjMap_fibreMap σ F.subtype z).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem conjFS_mem_subFibre (F : Submodule (𝓞 K) E) {y : FibreSpace h σ}
     (hy : y ∈ subFibre h σ F) : conjFS h σ y ∈ subFibre h (conjugate σ) F := by
@@ -118,7 +118,7 @@ theorem conjFS_mem_subFibre (F : Submodule (𝓞 K) E) {y : FibreSpace h σ}
   exact ⟨conjMap σ F z, (conjMap_fibreMap σ F.subtype z).symm⟩
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `hw`. Take `⟨z', rfl⟩` from `conjMap_surjective (σ := σ) (E := F) z`. Use `⟨_, ⟨z', rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [conjFS, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Rewrite using `[conjMap_fibreMap]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_subFibre_conj (F : Submodule (𝓞 K) E) {w : FibreSpace h (conjugate σ)}
     (hw : w ∈ subFibre h (conjugate σ) F) : ∃ y ∈ subFibre h σ F, w = conjFS h σ y := by
@@ -129,13 +129,11 @@ theorem mem_subFibre_conj (F : Submodule (𝓞 K) E) {w : FibreSpace h (conjugat
   rw [conjMap_fibreMap]
 
 /- English proof (translation)
-Use `set V := subFibre h σ F`. Use `set V' := subFibre h (conjugate σ) F`. Establish `hp : Vᗮ.starProjection y ∈ Vᗮ` using `Vᗮ.starProjection_apply_mem y`. Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero ?_ ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_orthogonal]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `w hw`. Take `⟨w', hw', rfl⟩` from `mem_subFibre_conj h σ F hw`. Rewrite using `[conjFS_inner, Submodule.inner_right_of_mem_orthogonal hw' hp, map_zero]`. Introduce `w hw`. Rewrite using `[← conjFS_sub]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : y - Vᗮ.starProjection y ∈ V`. Establish `e : Vᗮ.starProjection y = y - V.starProjection y`. Rewrite using `[Submodule.starProjection_orthogonal']`. Both sides reduce to the same expression. Rewrite using `[e, sub_sub_cancel]`.
-
-Conclude with `V.starProjection_apply_mem y`. Conclude with `Submodule.inner_right_of_mem_orthogonal (conjFS_mem_subFibre h σ F hq) hw`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem starProjection_conjFS (F : Submodule (𝓞 K) E) (y : FibreSpace h σ) :
     (subFibre h (conjugate σ) F)ᗮ.starProjection (conjFS h σ y) =
@@ -172,13 +170,11 @@ def quotFibreMap (σ : K →+* ℂ) :
     (FibreSpace.equiv M.metric σ).toLinearMap ∘ₗ fibreMap σ (quotSection M F hF)
 
 /- English proof (translation)
-Use `quot_projective hF` as an intermediate fact. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Use `set V := subFibre M.metric σ F`. Establish `h1 : FibreSpace.equiv M.metric σ (fibreMap σ (quotSection M F hF) x) ∈ V`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.orthogonal_orthogonal V, ← Submodule.starProjection_apply_eq_zero_iff]`. Conclude with `hx`. Take `⟨y, hy⟩` from `h1`. Establish `h2 : fibreMap σ F.subtype y = fibreMap σ (quotSection M F hF) x` using `hy`. Establish `h3` using `congrArg (fibreMap σ F.mkQ) h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[fibreMap_fibreMap, fibreMap_fibreMap, mkQ_comp_quotSection]`. Establish `h4 : F.mkQ ∘ₗ F.subtype = 0`. Use extensionality with `z`. Simplify using the standard rewrite rules. Rewrite `h3` using `[h4]`.
-
-Simplify `h3.symm` using `[fibreMap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem quotFibreMap_injective (σ : K →+* ℂ) : Function.Injective (quotFibreMap M F hF σ) := by
   have := quot_projective hF
@@ -228,9 +224,9 @@ namespace HermitianBundle
 variable (M : HermitianBundle K) (F : Submodule (𝓞 K) M.carrier) (hF : M.Saturated F)
 
 /- English proof (translation)
-Establish `h1` using `norm_sq_eq_re_inner (𝕜 := ℂ) (FibreSpace.equiv (M.quot F hF).metric σ ξ)`. Establish `h2` using `norm_sq_eq_re_inner (𝕜 := ℂ) (quotFibreMap M F hF σ ξ)`. Establish `h3 : ‖FibreSpace.equiv (M.quot F hF).metric σ ξ‖ ^ 2 = ‖quotFibreMap M F hF σ ξ‖ ^ 2`. Rewrite using `[h1, h2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← Real.sqrt_sq (norm_nonneg (FibreSpace.equiv (M.quot F hF).metric σ ξ)), h3, Real.sqrt_sq (norm_nonneg _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem quot_norm_eq (σ : K →+* ℂ) (ξ : Fibre σ (M.carrier ⧸ F)) :
     ‖FibreSpace.equiv (M.quot F hF).metric σ ξ‖ = ‖quotFibreMap M F hF σ ξ‖ := by
@@ -243,17 +239,15 @@ theorem quot_norm_eq (σ : K →+* ℂ) (ξ : Fibre σ (M.carrier ⧸ F)) :
     Real.sqrt_sq (norm_nonneg _)]
 
 /- English proof (translation)
-Use `quot_projective hF` as an intermediate fact. Rewrite using `[quot_norm_eq]`. Use `set V := subFibre M.metric σ F`. Use `set x₀ : FibreSpace M.metric σ := FibreSpace.equiv M.metric σ (fibreMap σ (quotSection M F hF) ξ) with hx₀`. Establish `hq : quotFibreMap M F hF σ ξ = x₀ - V.starProjection x₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Vᗮ.starProjection x₀ = _`. Rewrite using `[Submodule.starProjection_orthogonal']`. Both sides reduce to the same expression. Rewrite using `[hq, Submodule.starProjection_minimal]`. Establish `hlift : F.mkQ.lTensor (ComplexAt σ) ((FibreSpace.equiv M.metric σ).symm x₀) = ξ`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `fibreMap σ F.mkQ (fibreMap σ _ ξ) = ξ`. Rewrite using `[fibreMap_fibreMap, mkQ_comp_quotSection]`. Simplify using `[fibreMap]`. Establish `hex` using `lTensor_exact (ComplexAt σ) (LinearMap.exact_subtype_mkQ F) F.mkQ_surjective`. Establish `hV : ∀ w : FibreSpace M.metric σ, w ∈ V ↔ F.mkQ.lTensor (ComplexAt σ) ((FibreSpace.equiv M.metric σ).symm w) = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Rewrite using `[hex]`. Both sides reduce to the same expression. Set `e : V ≃ {x : Fibre σ M.carrier // F.mkQ.lTensor (ComplexAt σ) x = ξ}` to `{ toFun := fun w ↦ ⟨(FibreSpace.equiv M.metric σ).symm (x₀ - w), by`. Rewrite using `[map_sub, map_sub, hlift, (hV w).mp w.2, sub_zero]⟩`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `invFun := fun x ↦ ⟨x₀ - FibreSpace.equiv M.metric σ x.1, by`. Rewrite using `[hV, map_sub, map_sub, hlift, LinearEquiv.symm_apply_apply, x.2, sub_self]⟩`. Use `left_inv := fun w ↦ by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
-
-Use `right_inv := fun x ↦ by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `}`. Conclude with `Equiv.iInf_congr e fun w ↦ by simp [e]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quot_norm_eq_iInf (σ : K →+* ℂ) (ξ : Fibre σ (M.carrier ⧸ F)) :
     ‖FibreSpace.equiv (M.quot F hF).metric σ ξ‖ =
@@ -322,11 +316,11 @@ theorem baseChangeCoord_tmul (τ : L →+* ℂ) (z : ComplexAt τ) (b : 𝓞 L) 
 
 omit [NumberField K] [NumberField L] [Module.Finite (𝓞 K) E] [Module.Projective (𝓞 K) E] in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul z t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp only [tmul_zero, map_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul b e`. Rewrite using `[conjMap_tmul, baseChangeCoord_tmul, baseChangeCoord_tmul, conjMap_tmul, conj_ofComplex]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `ofComplex _ _ = ofComplex _ _`. Simplify using `only [map_mul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Consider the case `add s t hs ht => simp only [tmul_add, map_add, hs, ht]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately.
 -/
 theorem baseChangeCoord_conjMap (τ : L →+* ℂ) (x : Fibre τ (𝓞 L ⊗[𝓞 K] E)) :
     baseChangeCoord (conjugate τ) (conjMap τ _ x) =

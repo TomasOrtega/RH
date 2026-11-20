@@ -28,7 +28,7 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
 /- English proof (translation)
-Use `TopCat.Presheaf.section_ext X.sheaf W s t fun p hp => ?_` and prove the remaining obligations. Establish `hW : genPt ξ ∈ W` using `(hall p).mem_open W.isOpen hp`. Use `hg.inj ⟨p, hall p⟩ ?_` and prove the remaining obligations. Conclude with `(CoordBase.genMap_germ_val W hW ⟨p, hall p⟩ hp s).trans ((h hW).trans (CoordBase.genMap_germ_val W hW ⟨p, hall p⟩ hp t).symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sec_ext (hg : IsCptGen ξ) (hall : ∀ q : X, genPt ξ ⤳ q) {W : X.Opens} {s t : Γ(X, W)}
     (h : ∀ hW : genPt ξ ∈ W, CoordBase.val (ξ := ξ) W hW s = CoordBase.val (ξ := ξ) W hW t) : s = t := by
@@ -39,16 +39,16 @@ theorem sec_ext (hg : IsCptGen ξ) (hall : ∀ q : X, genPt ξ ⤳ q) {W : X.Ope
     ((h hW).trans (CoordBase.genMap_germ_val W hW ⟨p, hall p⟩ hp t).symm)
 
 /- English proof (translation)
-Conclude with `congrArg (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ_res_apply (homOfLE h).op.unop _ hV s)`.
+A detailed English derivation is pending.
 -/
 theorem val_resG {U V : X.Opens} (h : V ≤ U) (hV : genPt ξ ∈ V) (s : Γ(X, U)) :
     CoordBase.val (ξ := ξ) V hV (resG X h s) = CoordBase.val (ξ := ξ) U (h hV) s := by
   exact congrArg (Scheme.stalkClosedPointTo ξ).hom (X.presheaf.germ_res_apply (homOfLE h).op.unop _ hV s)
 
 /- English proof (translation)
-Establish `: ∀ c, ∃ U : X.Opens, IsAffineOpen U ∧ ∀ q, q ∈ U ↔ InChart ξ x c ⟨q, hall q⟩`. Introduce `c`. Distinguish the cases in `hc : x c = 0`. Conclude with `⟨⊥, isAffineOpen_bot X, fun q => ⟨fun h => h.elim, fun h => (h.1 hc).elim⟩⟩`. Take `⟨U, hU, hm⟩` from `hT.affine c hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U, hU, fun q => (hm q).trans ⟨fun ⟨_, h⟩ => h, fun h => ⟨hall q, h⟩⟩⟩`. Use `choose U hU using this`. Conclude with `⟨U, fun c => (hU c).1, fun c => (hU c).2⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_charts {κ : Type} {x : κ → Ω} (hT : CoordTie ℤ ξ x) (hall : ∀ q : X, genPt ξ ⤳ q) :
     ∃ U : κ → X.Opens, (∀ c, IsAffineOpen (U c)) ∧ ∀ c q, q ∈ U c ↔ InChart ξ x c ⟨q, hall q⟩ := by
@@ -62,9 +62,9 @@ theorem exists_charts {κ : Type} {x : κ → Ω} (hT : CoordTie ℤ ξ x) (hall
   exact ⟨U, fun c => (hU c).1, fun c => (hU c).2⟩
 
 /- English proof (translation)
-Introduce `g`. Establish `hg` using `hA g`. Rewrite `hg` using `[Algebra.adjoin_range_eq_range_aeval]`. Take `⟨P, hP⟩` from `hg`. Use `⟨P, hv ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : v.comp (MvPolynomial.eval₂Hom b ρ) = (MvPolynomial.aeval y : MvPolynomial J ℤ →ₐ[ℤ] Ω).toRingHom`. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun j => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `[hρ]`. Conclude with `(congrArg (fun φ : MvPolynomial J ℤ →+* Ω => φ P) key).trans hP`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval₂Hom_surjective {A J : Type} [CommRing A] (b : ℤ →+* A) (ρ : J → A) (v : A →+* Ω)
     (hv : Function.Injective v) (y : J → Ω) (hρ : ∀ j, v (ρ j) = y j)
@@ -83,29 +83,25 @@ theorem eval₂Hom_surjective {A J : Type} [CommRing A] (b : ℤ →+* A) (ρ : 
   exact (congrArg (fun φ : MvPolynomial J ℤ →+* Ω => φ P) key).trans hP
 
 /- English proof (translation)
-Take `⟨U, hU, hm⟩` from `exists_charts hT hall`. Establish `hmem : ∀ c q, q ∈ U c ↔ ∃ h : genPt ξ ⤳ q, InChart ξ x c ⟨q, h⟩` using `fun c q => (hm c q).trans ⟨fun h => ⟨hall q, h⟩, fun ⟨_, h⟩ => h⟩`. Establish `hgen : ∀ c, genPt ξ ∈ U c → x c ≠ 0` using `fun c h => ((hm c _).1 h).1`. Establish `hr : ∀ c j, ∃ b : Γ(X, U c), ∀ hW : genPt ξ ∈ U c, CoordBase.val (ξ` using `ξ) (U c) hW b = x j / x c := by`. Introduce `c j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hW : genPt ξ ∈ U c`. Take `⟨b, hb⟩` from `(CoordBase.mem_adjoin_iff hT (hgen c hW) (hU c) (hmem c) hW (x j / x c)).1 (Algebra.subset_adjoin ⟨j, rfl⟩)`. Conclude with `⟨b, fun _ => hb⟩`. Conclude with `⟨0, fun h => (hW h).elim⟩`. Use `choose r hr using hr`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `H : IsCoordFamily U r` using `{ cover := by`. Rewrite using `[eq_top_iff]`. Introduce `q _`. Take `⟨c, hc⟩` from `hT.cover ⟨q, hall q⟩`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨c, (hm c q).2 hc⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `self := fun i => sec_ext hT.gen hall fun hW => by`. Rewrite using `[hr, map_one, div_self (hgen i hW)]`. Use `mul := fun i j k => sec_ext hT.gen hall fun hW => by`. Establish `hi` using `hgen i hW.1`. Establish `hj` using `hgen j hW.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, val_resG, val_resG, val_resG, hr, hr, hr]`. Clear the denominators using the available nonvanishing facts. Use `basicOpen_le := fun i j p hp => by`. Establish `hpi : p ∈ U i` using `X.basicOpen_le _ hp`. Take `⟨u, hu⟩ : IsUnit (X.presheaf.germ (U i) p hpi (r i j))` from `(X.mem_basicOpen _ p hpi).1 hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hW : genPt ξ ∈ U i` using `(hall p).mem_open (U i).isOpen hpi`. Establish `hxi` using `hgen i hW`. Establish `hv : genMap ξ ⟨p, hall p⟩ (u : X.presheaf.stalk p) = x j / x i`. Rewrite using `[hu]`. Conclude with `(CoordBase.genMap_germ_val (U i) hW ⟨p, hall p⟩ hpi _).trans (hr _ _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : (x j / x i) * genMap ξ ⟨p, hall p⟩ ((u⁻¹ : (X.presheaf.stalk p)ˣ) : X.presheaf.stalk p) = 1`. Rewrite using `[← hv, ← map_mul, Units.mul_inv, map_one]`. Establish `hxj : x j ≠ 0`. Introduce `h`. Rewrite `hinv` using `[h, zero_div, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `zero_ne_one hinv`. Establish `hi` using `(hm i p).1 hpi`. Use `(hm j p).2 ⟨hxj, fun c' => ?_⟩` and prove the remaining obligations. Establish `e : x c' / x j = (x c' / x i) * genMap ξ ⟨p, hall p⟩ ((u⁻¹ : (X.presheaf.stalk p)ˣ) : X.presheaf.stalk p)`. Establish `e' : genMap ξ ⟨p, hall p⟩ ((u⁻¹ : (X.presheaf.stalk p)ˣ) : X.presheaf.stalk p) = x i / x j`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Clear denominators, using `at hinv ⊢` for the nonvanishing conditions. Take the linear combination `hinv`. Rewrite using `[e']`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(regAt ξ _).mul_mem (hi.2 c') ⟨_, rfl⟩ }`. Use `⟨N, H.toHom s, ?_, H.toHom_str s⟩` and prove the remaining obligations. Use `(isClosedImmersion_iff_pullRatio (H.toHom s) (H.toHom_preimage s)).2 fun i => ⟨hU i, ?_⟩` and prove the remaining obligations. Establish `hρ : pullRatio (H.toHom s) (U i) i (H.toHom_preimage s i).ge = r i`. Use function extensionality and compare the values at `(H.pullRatio_toHom s i)`.
-
-Rewrite using `[hρ]`. Distinguish the cases in `hW : genPt ξ ∈ U i`. Use `eval₂Hom_surjective _ _ (CoordBase.val (ξ := ξ) (U i) hW) ?_ (fun j => x j / x i) (hr i · hW) ?_` and prove the remaining obligations. Introduce `a a' e`. Conclude with `sec_ext hT.gen hall fun _ => e`.
-
-Introduce `a`. Conclude with `(CoordBase.mem_adjoin_iff hT (hgen i hW) (hU i) (hmem i) hW _).2 ⟨a, rfl⟩`. Conclude with `fun g => ⟨0, sec_ext hT.gen hall fun h => (hW h).elim⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isProjOver_of_coordTie {N : ℕ} {x : Fin (N + 1) → Ω} (hT : CoordTie ℤ ξ x)
     (hall : ∀ q : X, genPt ξ ⤳ q) (s : X ⟶ Sp ℤ) : IsProjOver s := by
@@ -176,16 +172,16 @@ theorem isProjOver_of_coordTie {N : ℕ} {x : Fin (N + 1) → Ω} (hT : CoordTie
   · exact fun g => ⟨0, sec_ext hT.gen hall fun h => (hW h).elim⟩
 
 /- English proof (translation)
-Take `⟨N, x', h⟩` from `coordTie_int_of_finite M.X Ω M.ξ ℤ κ x M.tie`. Conclude with `isProjOver_of_coordTie h M.all M.s`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isProjOver_pModel {κ : Type} [Finite κ] {x : κ → Ω} (M : PModel ℤ x) : IsProjOver M.s := by
   obtain ⟨N, x', h⟩ := coordTie_int_of_finite M.X Ω M.ξ ℤ κ x M.tie
   exact isProjOver_of_coordTie h M.all M.s
 
 /- English proof (translation)
-Establish `hp` using `isProjOver_pullback_snd (Int.castRingHom O) h`. Set `σ : Z ⟶ pullback s (spMap (Int.castRingHom O))` to `pullback.lift (𝟙 Z) g (specZIsTerminal.hom_ext _ _)`. Establish `hσ : IsClosedImmersion σ`. Establish `: IsClosedImmersion (σ ≫ pullback.fst s (spMap (Int.castRingHom O)))`. Rewrite using `[pullback.lift_fst]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Conclude with `.of_comp σ (pullback.fst s (spMap (Int.castRingHom O)))`. Use `isProjOver_comp_of_isClosedImmersion σ hp` as an intermediate fact. Rewrite `this` using `[pullback.lift_snd]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isProjOver_of_map {O : Type} [CommRing O] {Z : Scheme.{0}} {s : Z ⟶ Sp ℤ} (h : IsProjOver s)
     (g : Z ⟶ Sp O) : IsProjOver g := by
@@ -201,7 +197,7 @@ theorem isProjOver_of_map {O : Type} [CommRing O] {Z : Scheme.{0}} {s : Z ⟶ Sp
   rwa [pullback.lift_snd] at this
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ Y _ _ _ _ _ M f` and use `isProjOver_of_map (isProjOver_pModel M) (f ≫ Y.s)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isProjOver_comp_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H)
     (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (Ω : Type) [Field Ω]

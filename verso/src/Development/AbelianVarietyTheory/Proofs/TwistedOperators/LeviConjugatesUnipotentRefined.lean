@@ -19,16 +19,16 @@ namespace GlobalTheory.RealInd.Stages.UnipConj
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Rewrite using `[← show uMat (g * g⁻¹) = uMat g * uMat g⁻¹ from rfl, mul_inv_cancel]`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma unitaryMatrix_mul_inv_eq_one (g : Formalism.REAL.UJ ε) : uMat g * uMat g⁻¹ = 1 := by
   rw [← show uMat (g * g⁻¹) = uMat g * uMat g⁻¹ from rfl, mul_inv_cancel]
   rfl
 
 /- English proof (translation)
-Establish `hf : (uMat g)ᴴ * Formalism.REAL.Jm ε * uMat g = Formalism.REAL.Jm ε` using `g.2`. Establish `h1 : (Formalism.REAL.Jm ε * (uMat g)ᴴ * Formalism.REAL.Jm ε) * uMat g = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (uMat g)ᴴ, hf, Formalism.REAL.Jm_mul_self]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by rw [Matrix.mul_assoc, unitaryMatrix_mul_inv_eq_one, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 private lemma unitaryMatrix_inv_eq_conj_transpose (g : Formalism.REAL.UJ ε) :
     uMat g⁻¹ = Formalism.REAL.Jm ε * (uMat g)ᴴ * Formalism.REAL.Jm ε := by
@@ -42,13 +42,11 @@ private lemma unitaryMatrix_inv_eq_conj_transpose (g : Formalism.REAL.UJ ε) :
     _ = _ := by rw [Matrix.mul_assoc, unitaryMatrix_mul_inv_eq_one, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hmk : ∀ i, ∀ y ∈ W i, uMat m *ᵥ y ∈ W i` using `fun i y hy => (hm i y hy).1`. Establish `hmik : ∀ i, ∀ y ∈ W i, uMat m⁻¹ *ᵥ y ∈ W i` using `fun i => UnipRad.inv_keeps m (W i) (hmk i)`. Establish `key : ∀ y : Fin n → ℂ, uMat (m * u * m⁻¹) *ᵥ y - y = uMat m *ᵥ (uMat u *ᵥ (uMat m⁻¹ *ᵥ y) - uMat m⁻¹ *ᵥ y)`. Introduce `y`. Establish `e` using `unitaryMatrix_mul_inv_eq_one m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[show uMat (m * u * m⁻¹) = uMat m * uMat u * uMat m⁻¹ from rfl]`. Simplify using `only [Matrix.mulVec_sub, Matrix.mulVec_mulVec, e, Matrix.one_mulVec, Matrix.mul_assoc]`. Use `⟨fun i y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `hmk _ _ (hu.1 i _ (hmik _ _ hy))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Use `hmk _ _ (hu.2 _ fun x hx => ?_)` and prove the remaining obligations. Establish `hx'` using `hmk _ x hx`. Establish `h0` using `hy _ hx'`. Rewrite using `[unitaryMatrix_inv_eq_conj_transpose, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec _ (Formalism.REAL.Jm ε) (Formalism.REAL.Jm ε), Formalism.REAL.Jm_mul_self, Matrix.one_mulVec, Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`.
-
-Conclude with `h0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_flagN {a : ℕ} {W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)}
     (m : Formalism.REAL.UJ ε) (hm : m ∈ flagM ε W) (u : Formalism.REAL.UJ ε) (hu : u ∈ flagN ε W) :
@@ -75,11 +73,11 @@ theorem conj_mem_flagN {a : ℕ} {W : Fin (a + 1) → Submodule ℂ (Fin n → �
     exact h0
 
 /- English proof (translation)
-Use `⟨fun l y hy => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `(hβ l (β l)).1 rfl`. Establish `hs : l.succ ≤ p (β l).succ`. Rewrite using `[Fin.le_def]`. Rewrite `h2` using `[Fin.lt_def]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Fin.val_succ, Fin.coe_castSucc] at h2 ⊢`. Use linear arithmetic over natural numbers and integers. Establish `hy' : y ∈ W (β l).succ` using `by rw [← hp]; exact hW' hs hy`. Use `hg.1 (β l) y hy'` as an intermediate fact. Rewrite `this` using `[← hp]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hW' h1 this`. Rewrite `hy`, the goal using `[hlast]`. Conclude with `hg.2 y hy`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flagN_le_refine {a b : ℕ} {W : Flag n a} {W' : Flag n b} (hW' : Monotone W')
     {β : Fin b → Fin a} {p : Fin (a + 1) → Fin (b + 1)} (hp : ∀ i, W' (p i) = W i)
@@ -100,7 +98,7 @@ theorem flagN_le_refine {a b : ℕ} {W : Flag n a} {W' : Flag n b} (hW' : Monoto
 end GlobalTheory.RealInd.Stages.UnipConj
 
 /- English proof (translation)
-Introduce `n a b ε j W W' β p hW hW' hp hlast hβ m hm u hu`. Conclude with `GlobalTheory.RealInd.Stages.UnipConj.flagN_le_refine hW'.2.1 hp hlast hβ _ (GlobalTheory.RealInd.Stages.UnipConj.conj_mem_flagN m hm u hu)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RealInd.Stages.unip_conj_refine : ∀ {n a b : ℕ} {ε : Fin n → Bool} {j : Fin a → ℕ} {W : Flag n a} {W' : Flag n b} {β : Fin b → Fin a} {p : Fin (a + 1) → Fin (b + 1)}, IsIsoFlag ε j W → IsIsoFlag ε (fun _ => 1) W' → (∀ i, W' (p i) = W i) → W' (Fin.last b) = W (Fin.last a) → (∀ l i, β l = i ↔ p i.castSucc ≤ l.castSucc ∧ l.castSucc < p i.succ) → ∀ m ∈ flagM ε W, ∀ u ∈ flagN ε W, m * u * m⁻¹ ∈ flagN ε W' := by
   intro n a b ε j W W' β p hW hW' hp hlast hβ m hm u hu

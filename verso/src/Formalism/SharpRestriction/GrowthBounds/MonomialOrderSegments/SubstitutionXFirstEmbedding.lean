@@ -11,7 +11,7 @@ namespace TwistData
 variable {K : Type} [Field K] (D : TwistData K) (j : Fin D.J)
 
 /- English proof (translation)
-The claim follows from `integral_prod_rename col (fun k => Prod.map (D.fk j (occ k)) id) (fun k => (D.fk_inj j (occ k)).prodMap Function.injective_id) h`.
+A detailed English derivation is pending.
 -/
 theorem PsiP_integral {v : AddValuation K (WithTop ℚ)} {nc : ℕ}
     (col : Fin nc → MvPolynomial (Fin (D.nB j + D.r) × Fin D.r) K)
@@ -21,9 +21,9 @@ theorem PsiP_integral {v : AddValuation K (WithTop ℚ)} {nc : ℕ}
     (fun k => (D.fk_inj j (occ k)).prodMap Function.injective_id) h
 
 /- English proof (translation)
-Unfold `fk ph`. Rewrite using `[aeval_X]`. Use `Fin.addCases (fun a0 => ?_) (fun m => ?_) l` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [mb]`. Use `split_ifs`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [second_embedding_natAdd] split_ifs <;> simp [mlab, mtp]`. Simplify using `[mlab]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ph_X_fk (p : ℕ) (o : Finset (Fin (D.nB j + D.r))) (l : Fin (D.nB j + D.r)) (a : Fin D.r) :
     D.ph p (X (D.fk j o l, a) : MvPolynomial (D.ML × Fin D.r) K) = X (D.eA j l, a) := by
@@ -37,7 +37,7 @@ theorem ph_X_fk (p : ℕ) (o : Finset (Fin (D.nB j + D.r))) (l : Fin (D.nB j + D
     · simp [mlab]
 
 /- English proof (translation)
-Unfold `ph`. Rewrite using `[aeval_X]`. Use `Fin.addCases (fun a0 => ?_) (fun m => ?_) l` and prove the remaining obligations. Simplify using `[mb]`. Simplify using `[mlab]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem substitution_X_first_embedding (p : ℕ) (l : Fin (D.nB j + D.r)) (a : Fin D.r) :
     D.ph p (X (D.e0 j l, a) : MvPolynomial (D.ML × Fin D.r) K) = X (D.eA j l, a) := by
@@ -48,9 +48,7 @@ theorem substitution_X_first_embedding (p : ℕ) (l : Fin (D.nB j + D.r)) (a : F
   · simp [mlab]
 
 /- English proof (translation)
-Establish `: (D.ph p).comp (rename (Prod.map (D.fk j o) (id : Fin D.r → Fin D.r))) = rename (Prod.map (D.eA j) (id : Fin D.r → Fin D.r))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨l, a⟩`. Simplify using `only [AlgHom.comp_apply, rename_X, Prod.map_apply, id_eq]`. Conclude with `D.ph_X_fk j p o l a`.
-
-Conclude with `DFunLike.congr_fun this G`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ph_rename_fk (p : ℕ) (o : Finset (Fin (D.nB j + D.r)))
     (G : MvPolynomial (Fin (D.nB j + D.r) × Fin D.r) K) :
@@ -64,9 +62,7 @@ theorem ph_rename_fk (p : ℕ) (o : Finset (Fin (D.nB j + D.r)))
   exact DFunLike.congr_fun this G
 
 /- English proof (translation)
-Establish `: (D.ph p).comp (rename (Prod.map (D.e0 j) (id : Fin D.r → Fin D.r))) = rename (Prod.map (D.eA j) (id : Fin D.r → Fin D.r))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨l, a⟩`. Simplify using `only [AlgHom.comp_apply, rename_X, Prod.map_apply, id_eq]`. Conclude with `D.substitution_X_first_embedding j p l a`.
-
-Conclude with `DFunLike.congr_fun this G`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem substitution_rename_first_embedding (p : ℕ) (G : MvPolynomial (Fin (D.nB j + D.r) × Fin D.r) K) :
     D.ph p (rename (Prod.map (D.e0 j) id) G) = rename (Prod.map (D.eA j) id) G := by
@@ -79,7 +75,7 @@ theorem substitution_rename_first_embedding (p : ℕ) (G : MvPolynomial (Fin (D.
   exact DFunLike.congr_fun this G
 
 /- English proof (translation)
-Unfold `PsiP`. Rewrite using `[map_prod, map_prod]`. Conclude with `Finset.prod_congr rfl fun k _ => D.ph_rename_fk j p _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PsiP_ph (p : ℕ) {nc : ℕ} (col : Fin nc → MvPolynomial (Fin (D.nB j + D.r) × Fin D.r) K)
     (occ : Fin nc → Finset (Fin (D.nB j + D.r))) :
@@ -89,11 +85,11 @@ theorem PsiP_ph (p : ℕ) {nc : ℕ} (col : Fin nc → MvPolynomial (Fin (D.nB j
   exact Finset.prod_congr rfl fun k _ => D.ph_rename_fk j p _ _
 
 /- English proof (translation)
-Establish `h1 : (o.filter fun l => l.val < D.stg j m ∧ (D.msg ∘ D.e0 j) l = true).card ≤ (Finset.Ico (D.nB j) (D.stg j m)).card`. Use `Finset.card_le_card_of_injOn (fun l => l.val) ?_ ?_` and prove the remaining obligations. Introduce `l hl`. Establish `hl'` using `Finset.mem_filter.mp (Finset.mem_coe.mp hl)`. Simplify using `only [Finset.coe_Ico, Set.mem_Ico]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨?_, hl'.2.1⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Conclude with `hM ⟨l, hl'.1, not_le.mp hlt⟩`. Introduce `x _ y _ h`. Conclude with `Fin.ext h`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[Nat.card_Ico]`. Use `m.2` as an intermediate fact. Establish `h2 : D.stg j m - D.nB j < D.r` using `by unfold stg; omega`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_unmarked (o : Finset (Fin (D.nB j + D.r))) (hM : ¬ D.Marked j o) (m : Fin D.r) :
     (o.filter fun l => l.val < D.stg j m ∧ (D.msg ∘ D.e0 j) l = true).card < D.r := by
@@ -114,21 +110,19 @@ theorem card_unmarked (o : Finset (Fin (D.nB j + D.r))) (hM : ¬ D.Marked j o) (
   omega
 
 /- English proof (translation)
-Unfold `PsiP`. Use `le_trans ?_ (valS_prod_le D.msg (D.YPset j m) Finset.univ _)` and prove the remaining obligations. Rewrite using `[WithTop.coe_sum]`. Use `Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hM : D.Marked j (occ k)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hf : D.fk j (occ k) = D.e1 j` using `by unfold fk; rw [if_pos hM]`. Rewrite using `[hf, valS_rename (D.e1 j) (D.second_embedding_injective j), YP_preimage1]`. Establish `: D.msg ∘ D.e1 j = D.msg ∘ D.e0 j` using `funext fun l => D.second_embedding_mark_eq_first j l`. Rewrite using `[this]`. Conclude with `h16 k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf : D.fk j (occ k) = D.e0 j` using `by unfold fk; rw [if_neg hM]`. Rewrite using `[hf, valS_rename (D.e0 j) (D.index_embedding_injective j)]`. Establish `h0 : (0 : WithTop ℤ) ≤ valS (D.msg ∘ D.e0 j) ((D.YPset j m).preimage (D.e0 j) (D.index_embedding_injective j).injOn) (col k)`. Apply `valS_nonneg_of_free` to reduce the goal to its premises. Introduce `α hα i hi a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hlt` using `D.YP_preimage0 j m i hi`. Establish `hi2 : i ∉ occ k` using `fun h => hM ⟨i, h, hlt⟩`. Establish `hd` using `(mem_PolK_iff _ _).mp (hcol k) α hα i`. Rewrite `hd` using `[if_neg hi2]`. Unfold `ldeg at hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Finset.sum_eq_zero_iff.mp hd) a (Finset.mem_univ a)`. Use `le_trans ?_ h0` and prove the remaining obligations. Establish `: colVal (cidx k) (hts k) D.r ≤ 0`. Unfold `colVal`. Distinguish the cases in `hc : 1 ≤ cidx k`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `h14 k hc`. Establish `h2` using `D.card_unmarked j (occ k) hM m`. Establish `h3 : ¬ (1 ≤ cidx k ∧ hts k = D.r)`. Introduce and unpack `⟨-, h⟩`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[if_neg h3]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h3 : ¬ (1 ≤ cidx k ∧ hts k = D.r)` using `fun h => hc h.1`. Rewrite using `[if_neg h3]`. Apply the tactic sequence `split_ifs <;> simp`.
-
-Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem PsiP_val {nc : ℕ} (col : Fin nc → MvPolynomial (Fin (D.nB j + D.r) × Fin D.r) K)
     (occ : Fin nc → Finset (Fin (D.nB j + D.r)))

@@ -11,13 +11,13 @@ namespace CrystallineSemistableComparison.crystallineComparison.PinP
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Take `⟨fr, hfr, hfz⟩` from `Pb.G3.res_frob r`. Take `⟨c, hc1, hc⟩` from `Pb.G3.exists_teichmuller_close r`. Establish `hc0 : 0 ≤ c` using `(norm_nonneg _).trans (hc 0)`. Establish `hl : (l : ℂ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`. Take `⟨j, hj⟩` from `exists_pow_lt_of_lt_one (norm_pos_iff.2 hl) hc1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hN : ∀ (M : ℕ) (z : r.k), z ^ l ^ (fr * M) = z`. Introduce `M z`. Proceed by induction on `M with`. Consider the case `zero => simp`. Consider the case `succ M ih => rw [Nat.mul_succ, pow_add, pow_mul, ih, hfz]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hjN : j ≤ l ^ (fr * (f * j))` using `(Nat.lt_pow_self (Fact.out : l.Prime).one_lt).le.trans (Nat.pow_le_pow_right (Fact.out : l.Prime).pos ((Nat.le_mul_of_pos_left j hf).trans (Nat.le_mul_of_pos_left (f * j) hfr)))`. Use `⟨fr * (f * j), ⟨fr * j, by ring⟩, fun x => ?_⟩` and prove the remaining obligations. Establish `ht : PreTilt.untilt (r.s (r.ρ x)) ^ l ^ (fr * (f * j)) = PreTilt.untilt (r.s (r.ρ x))`. Rewrite using `[← map_pow, ← map_pow, hN]`. Establish `hp` using `Pb.G3.pow_close (okToOC l K x) (PreTilt.untilt (r.s (r.ρ x))) c (hc x) (fr * (f * j))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hp` using `[ht]`. Use `hp.trans (max_le le_rfl ?_)` and prove the remaining obligations. Conclude with `(pow_le_pow_of_le_one hc0 hc1.le hjN).trans hj.le`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem close_dvd (r : Res l K) [FiniteDimensional ℚ_[l] K] (f : ℕ) (hf : 0 < f) :
     ∃ N : ℕ, f ∣ N ∧ ∀ x : OK l K,
@@ -44,7 +44,7 @@ theorem close_dvd (r : Res l K) [FiniteDimensional ℚ_[l] K] (f : ℕ) (hf : 0 
   exact (pow_le_pow_of_le_one hc0 hc1.le hjN).trans hj.le
 
 /- English proof (translation)
-Take `⟨N, hfN, hN⟩` from `close_dvd r f hf`. Use `⟨N, hfN, fun n x => ?_⟩` and prove the remaining obligations. Rewrite using `[Pb.Mid.phiQ_pow, Pb.G3.struct, ← Pb.G3.cong n _ _ (hN x)]`. Rewrite using `[map_pow, map_pow]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem teich_dvd (r : Res l K) [FiniteDimensional ℚ_[l] K] (f : ℕ) (hf : 0 < f) :
     ∃ N : ℕ, f ∣ N ∧ Pb.Mid.TeichmullerCongruence r N := by

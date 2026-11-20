@@ -18,11 +18,11 @@ open GlobalTheory.Tow
 namespace GlobalTheory.Tow
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Establish `ha0` using `GlobalTheory.PlaceModelSum.infPart_split ha.1`. Establish `hda` using `(GlobalTheory.IdemSupport.tie_iff hΦ ha.1.1 ha0 P).mp ha.2`. Establish `hdb` using `(GlobalTheory.IdemSupport.tie_iff hΦ hb.1.1 (GlobalTheory.PlaceModelSum.infPart_split hb.1) Q).mp hb.2`. Apply `hΦ.ext'` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_mul, ha0, zero_mul, map_zero]`. Introduce `R`. Rewrite using `[GlobalTheory.IdemSupport.ev_mul, GlobalTheory.IdemSupport.ev_zero]`. Distinguish the cases in `hR : R = P`. Rewrite using `[hR, hdb.2.2 P h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hda.2.2 R hR, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idemAt_orth {D : D7} {P Q : Formalism.L2.DIV.Pl D.host.E} {a b : AE D} (ha : Formalism.L2.NTheta.IsIdemAt a P)
     (hb : Formalism.L2.NTheta.IsIdemAt b Q) (h : P ≠ Q) : a * b = 0 := by
@@ -40,7 +40,7 @@ theorem idemAt_orth {D : D7} {P Q : Formalism.L2.DIV.Pl D.host.E} {a b : AE D} (
     · rw [hda.2.2 R hR, zero_mul]
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Conclude with `GlobalTheory.IdemSupport.delta_unique hΦ ((GlobalTheory.IdemSupport.tie_iff hΦ ha.1.1 (GlobalTheory.PlaceModelSum.infPart_split ha.1) P).mp ha.2) ((GlobalTheory.IdemSupport.tie_iff hΦ hb.1.1 (GlobalTheory.PlaceModelSum.infPart_split hb.1) P).mp hb.2)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem idemAt_unique {D : D7} {P : Formalism.L2.DIV.Pl D.host.E} {a b : AE D} (ha : Formalism.L2.NTheta.IsIdemAt a P)
     (hb : Formalism.L2.NTheta.IsIdemAt b P) : a = b := by
@@ -50,9 +50,9 @@ theorem idemAt_unique {D : D7} {P : Formalism.L2.DIV.Pl D.host.E} {a b : AE D} (
     ((GlobalTheory.IdemSupport.tie_iff hΦ hb.1.1 (GlobalTheory.PlaceModelSum.infPart_split hb.1) P).mp hb.2)
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `h`. Take `⟨⟨fs, hfs, rfl⟩, -⟩` from `h₂`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun R hR => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul, Finset.sum_eq_single_of_mem R (hP hR)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[idemAt_unique (hfs R (hP hR)) (hes R hR)]`. Conclude with `(hes R hR).1.1`. Introduce `Q hQ hQR`. Conclude with `idemAt_orth (hfs Q hQ) (hes R hR) hQR`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem idemSum_mul_of_subset {D : D7} {e e₂ : AE D} {P P₂ : Finset (Formalism.L2.DIV.Pl D.host.E)}
     (h : IsIdemSum e P) (h₂ : IsIdemSum e₂ P₂) (hP : P ⊆ P₂) : e₂ * e = e := by

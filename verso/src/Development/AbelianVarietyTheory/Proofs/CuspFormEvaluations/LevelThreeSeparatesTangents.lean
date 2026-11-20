@@ -13,7 +13,7 @@ variable {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V]
 omit [NormedSpace ℂ V] in
 
 /- English proof (translation)
-Establish `hD : ∀ e : V ≃ₜ V, Dense (e ⁻¹' U)` using `fun e => hd.preimage e.isOpenMap`. Establish `hO : ∀ e : V ≃ₜ V, IsOpen (e ⁻¹' U)` using `fun e => ho.preimage e.continuous`. Conclude with `((hD e₁).inter_of_isOpen_left ((hD e₂).inter_of_isOpen_left ((hD e₃).inter_of_isOpen_left (hD e₄) (hO e₃)) (hO e₂)) (hO e₁)).nonempty`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma exists_mem_four_of_open_dense {U : Set V} (ho : IsOpen U) (hd : Dense U)
     (e₁ e₂ e₃ e₄ : V ≃ₜ V) : ∃ x, e₁ x ∈ U ∧ e₂ x ∈ U ∧ e₃ x ∈ U ∧ e₄ x ∈ U := by
@@ -23,29 +23,27 @@ lemma exists_mem_four_of_open_dense {U : Set V} (ho : IsOpen U) (hd : Dense U)
     ((hD e₃).inter_of_isOpen_left (hD e₄) (hO e₃)) (hO e₂)) (hO e₁)).nonempty
 
 /- English proof (translation)
-Establish `h1 : ∀ t a b, a ∈ U → a + t ∈ U → b ∈ U → b + t ∈ U → -a - t - b ∈ U → f (a + t) - f a = f (b + t) - f b`. Introduce `t a b ha hat hb hbt hab`. Establish `e1 : -(a + t) - b = -a - t - b` using `by abel`. Establish `e2 : -a - (b + t) = -a - t - b` using `by abel`. Establish `h1` using `hf _ hat _ hb (e1 ▸ hab)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hf _ ha _ hbt (e2 ▸ hab)`. Rewrite `h1` using `[e1]`. Rewrite `h2` using `[e2]`. Take the linear combination `h1 - h2`. Establish `h2 : ∀ t a b, a ∈ U → a + t ∈ U → b ∈ U → b + t ∈ U → f (a + t) - f a = f (b + t) - f b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `t a b ha hat hb hbt`. Take `⟨d, hd1, hd2, hd3, hd4⟩` from `exists_mem_four_of_open_dense ho hd (Homeomorph.refl V) (Homeomorph.addRight t) (Homeomorph.subLeft (-a - t)) (Homeomorph.subLeft (-b - t))`. Rewrite using `[h1 t a d ha hat hd1 hd2 hd3, h1 t b d hb hbt hd1 hd2 hd4]`. Establish `h3 : ∀ t : V, ∃ p, p ∈ U ∧ p + t ∈ U`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨d, hd1, hd2, -⟩` from `exists_mem_four_of_open_dense ho hd (Homeomorph.refl V) (Homeomorph.addRight t) (Homeomorph.refl V) (Homeomorph.refl V)`. Conclude with `⟨d, hd1, hd2⟩`. Use `choose p hp hpt using h3`. Use `set l : V → ℂ := fun t => f (p t + t) - f (p t) with hl`. Establish `hla : ∀ a t, a ∈ U → a + t ∈ U → f (a + t) - f a = l t` using `fun a t ha hat => h2 t a (p t) ha hat (hp t) (hpt t)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hadd : ∀ s t, l (s + t) = l s + l t`. Introduce `s t`. Take `⟨d, hd1, hd2, hd3, -⟩` from `exists_mem_four_of_open_dense ho hd (Homeomorph.refl V) (Homeomorph.addRight s) (Homeomorph.addRight (s + t)) (Homeomorph.refl V)`. Establish `hd1' : d ∈ U` using `hd1`. Establish `hd2' : d + s ∈ U` using `hd2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd3' : d + (s + t) ∈ U` using `hd3`. Rewrite using `[← hla d _ hd1' hd3', ← hla d _ hd1' hd2', ← hla (d + s) t hd2' (by rwa [add_assoc]), add_assoc]`. Expand and normalize the polynomial expressions, which then agree. Establish `hl0 : l 0 = 0` using `by simp [hl]`. Use `set L := fderiv ℂ f a₀`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hL0 : HasFDerivAt l L 0`. Establish `hA : HasFDerivAt (fun t => f (a₀ + t) - f a₀) L 0`. Use `HasFDerivAt.sub_const _ ?_` and prove the remaining obligations. Establish `: HasFDerivAt f L (a₀ + 0)` using `by simpa using hdf.hasFDerivAt`. Conclude with `(hasFDerivAt_comp_add_left a₀).2 this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hA.congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `: ∀ᶠ t in 𝓝 (0 : V), a₀ + t ∈ U` using `(continuous_const.add continuous_id).continuousAt.eventually (ho.mem_nhds (by simpa using ha₀))`. Use `filter_upwards [this] with t ht`. Conclude with `(hla a₀ t ha₀ ht).symm`. Establish `hL : ∀ x, HasFDerivAt l L x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `x`. Establish `hA : HasFDerivAt (fun t => l x + l (-x + t)) L x`. Use `HasFDerivAt.const_add _ ?_` and prove the remaining obligations. Establish `: HasFDerivAt l L (-x + x)` using `by simpa using hL0`. Conclude with `(hasFDerivAt_comp_add_left (-x)).2 this`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (fun t => l x + l (-x + t)) = l`. Use function extensionality and compare the values at `t`. Rewrite using `[← hadd]`. Use `congr 1`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hA` using `[this]`. Then use the resulting hypothesis. Use `⟨L, fun a t ha hat => ?_⟩` and prove the remaining obligations. Establish `hz : ∀ x, HasFDerivAt (fun t => l t - L t) (0 : V →L[ℂ] ℂ) x` using `fun x => by`. Use `(hL x).sub (L.hasFDerivAt (x := x))` as an intermediate fact. Rewrite `this` using `[sub_self]`.
-
-Conclude with `this`. Use `is_const_of_fderiv_eq_zero (𝕜 := ℂ) (f := fun t => l t - L t) (fun x => (hz x).differentiableAt) (fun x => (hz x).fderiv) t 0` as an intermediate fact. Rewrite using `[hla a t ha hat]`. Simplify using `only [hl0, map_zero, sub_zero] at this`. Conclude with `sub_eq_zero.1 this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma exists_linear_increment {U : Set V} (ho : IsOpen U) (hd : Dense U) {f : V → ℂ} {c₀ : ℂ}
     (hf : ∀ a ∈ U, ∀ b ∈ U, -a - b ∈ U → c₀ + f a + f b + f (-a - b) = 0)
@@ -125,9 +123,9 @@ end Affine
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Establish `h : ∀ c : EuclideanSpace ℂ ι, innerSL ℂ γ c = Hf c γ` using `fun c => by`. Simplify using `[Hf, PiLp.inner_apply]`. Use `⟨innerSL ℂ γ, h, ?_⟩` and prove the remaining obligations. Establish `: (fun v => Hf v γ) = innerSL ℂ γ` using `by funext v; exact (h v).symm`. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(innerSL ℂ γ).hasFDerivAt`.
+A detailed English derivation is pending.
 -/
 lemma hasFDerivAt_Hf_left (γ v : EuclideanSpace ℂ ι) :
     ∃ A : EuclideanSpace ℂ ι →L[ℂ] ℂ, (∀ c, A c = Hf c γ) ∧ HasFDerivAt (fun v => Hf v γ) A v := by
@@ -139,9 +137,9 @@ lemma hasFDerivAt_Hf_left (γ v : EuclideanSpace ℂ ι) :
   exact (innerSL ℂ γ).hasFDerivAt
 
 /- English proof (translation)
-Take `⟨hd, hl⟩` from `hθ`. Take `⟨A, hA, hA'⟩` from `hasFDerivAt_Hf_left γ a`. Establish `h1 : HasFDerivAt (fun v => θ (v + γ)) (fderiv ℂ θ (a + γ)) a` using `(hasFDerivAt_comp_add_right γ).2 (hd _).hasFDerivAt`. Establish `h2` using `((((hA'.const_mul (((1 : ℕ) : ℂ) * Real.pi)).add_const (((1 : ℕ) : ℂ) * Real.pi * Hf γ γ / 2)).cexp).const_mul (Y.ka γ)).mul (hd a).hasFDerivAt`. Establish `h3 : (fun v => θ (v + γ)) = _` using `funext (hl γ hγ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h3]`. Establish `h4` using `congrArg (fun B => B c) (h1.unique h2)`. Rewrite using `[h4, hl γ hγ a]`. Simplify using `[hA]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma fderiv_sec_add (Y : GT ι) {θ : EuclideanSpace ℂ ι → ℂ} (hθ : θ ∈ Y.Sec 1)
     {γ : EuclideanSpace ℂ ι} (hγ : γ ∈ lat Y.b) (a c : EuclideanSpace ℂ ι) :
@@ -160,37 +158,33 @@ lemma fderiv_sec_add (Y : GT ι) {θ : EuclideanSpace ℂ ι → ℂ} (hθ : θ 
   ring
 
 /- English proof (translation)
-Establish `hd : Differentiable ℂ θ` using `hθ.1`. Establish `han : AnalyticOnNhd ℂ θ Set.univ` using `fun x _ => SCV.analyticAt_of_differentiableOn (s := Set.univ) hd.differentiableOn univ_mem`. Use `set U : Set (EuclideanSpace ℂ ι) := {x | θ x ≠ 0} with hU`. Establish `ho : IsOpen U` using `isOpen_ne_fun hd.continuous continuous_const`. Establish `hden : Dense U`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Assume the negation of the conclusion as `hx`. Apply `h0` to reduce the goal to its premises. Use `han.eq_of_eventuallyEq (g := 0) (z₀ := x) analyticOnNhd_const ?_` and prove the remaining obligations. Use `filter_upwards [isClosed_closure.isOpen_compl.mem_nhds hx] with y hy`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hy'`. Conclude with `hy (subset_closure hy')`. Establish `hder : ∀ a b, fderiv ℂ (fun v => θ (v + a) * θ (v + b) * θ (v - a - b)) 0 c = fderiv ℂ θ a c * θ b * θ (-a - b) + θ a * fderiv ℂ θ b c * θ (-a - b) + θ a * θ b * fderiv ℂ θ (-a - b) c`. Introduce `a b`. Establish `ht : ∀ x, HasFDerivAt (fun v => θ (v + x)) (fderiv ℂ θ x) 0` using `fun x => (hasFDerivAt_comp_add_right x).2 (by simpa using (hd x).hasFDerivAt)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `e : (fun v => θ (v + a) * θ (v + b) * θ (v - a - b)) = ((fun v => θ (v + a)) * fun v => θ (v + b)) * fun v => θ (v + (-a - b))`. Use function extensionality and compare the values at `v`. Simplify using `only [Pi.mul_apply]`. Use `congr 2`. Normalize the expressions using the abelian group laws.
+Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, (((ht a).mul (ht b)).mul (ht (-a - b))).fderiv]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Use `set f : EuclideanSpace ℂ ι → ℂ := fun x => fderiv ℂ θ x c / θ x with hfdef`. Establish `hf : ∀ a ∈ U, ∀ b ∈ U, -a - b ∈ U → c₀ + f a + f b + f (-a - b) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a ha b hb hab`. Establish `ha' : θ a ≠ 0` using `ha`. Establish `hb' : θ b ≠ 0` using `hb`. Establish `hab' : θ (-a - b) ≠ 0` using `hab`. Use `h a b` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `this` using `[hder]`. Simplify using `only [hfdef]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `this`. Take `⟨a₀, ha₀⟩` from `hden.nonempty`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `ha₀' : θ a₀ ≠ 0` using `ha₀`. Establish `hdf : DifferentiableAt ℂ f a₀`. Simplify using `only [hfdef, div_eq_mul_inv]`. Conclude with `(((han a₀ trivial).fderiv.differentiableAt).clm_apply (differentiableAt_const c)).mul ((hd a₀).inv ha₀')`. Take `⟨L, hL⟩` from `exists_linear_increment ho hden hf ha₀ hdf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlat : ∀ γ ∈ lat Y.b, L γ = Real.pi * Hf c γ`. Introduce `γ hγ`. Establish `hne : θ (a₀ + γ) ≠ 0`. Rewrite using `[hθ.2 γ hγ]`. Establish `: Y.ka γ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `hk`. Use `Y.ka_abs γ hγ` as an intermediate fact. Simplify using `[hk] at this`. Conclude with `mul_ne_zero (mul_ne_zero this (exp_ne_zero _)) ha₀'`. Rewrite using `[← hL a₀ γ ha₀ hne]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `fderiv_sec_add Y hθ hγ a₀ c` as an intermediate fact. Simplify using `only [hfdef]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `this`. Establish `hH : ∀ v w : EuclideanSpace ℂ ι, Hf v w = inner ℂ w v` using `fun v w => by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `[Hf, PiLp.inner_apply]`. Set `M : EuclideanSpace ℂ ι →ₗ[ℝ] ℂ` to `{ toFun := fun v => Real.pi * inner ℂ v c map_add' := fun x y => by rw [inner_add_left]; ring map_smul' := fun r x => by`. Rewrite using `[RCLike.real_smul_eq_coe_smul (K := ℂ), inner_smul_left]`. Simplify using the standard rewrite rules. Use `ring }`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : (L : EuclideanSpace ℂ ι →ₗ[ℂ] ℂ).restrictScalars ℝ = M`. Use `Y.b.ext fun i => ?_` and prove the remaining obligations. Use `hlat (Y.b i) (Submodule.subset_span ⟨i, rfl⟩)` as an intermediate fact. Rewrite `this` using `[hH]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hLM : ∀ v, L v = Real.pi * inner ℂ v c` using `fun v => LinearMap.congr_fun hM v`. Establish `hc : c = 0`. Establish `h1` using `hLM (I • c)`. Rewrite `h1` using `[map_smul, hLM, inner_smul_left, conj_I, smul_eq_mul]`. Establish `h2 : (2 * I * Real.pi) * inner ℂ c c = 0` using `by linear_combination h1`.
-
-Establish `h3 : (2 * I * Real.pi : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero]`. Conclude with `inner_self_eq_zero.1 ((mul_eq_zero.1 h2).resolve_left h3)`. Use `⟨hc, ?_⟩` and prove the remaining obligations. Take `⟨d, hd1, hd2, -⟩` from `exists_mem_four_of_open_dense ho hden (Homeomorph.refl _) (Homeomorph.subLeft (-a₀)) (Homeomorph.refl _) (Homeomorph.refl _)`. Use `hf a₀ ha₀ d hd1 hd2` as an intermediate fact.
-
-Simplify `this` using `[hfdef, hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem level_three_separates_tangents {ι : Type} [Fintype ι] (Y : GT ι) (θ : EuclideanSpace ℂ ι → ℂ) (hθ : θ ∈ Y.Sec 1) (h0 : θ ≠ 0)
     (c₀ : ℂ) (c : EuclideanSpace ℂ ι)

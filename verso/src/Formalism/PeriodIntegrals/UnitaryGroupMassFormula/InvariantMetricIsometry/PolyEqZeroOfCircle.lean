@@ -8,11 +8,9 @@ open Matrix Classical Finset PI.IsoInvMetric Polynomial
 namespace PI.IsoInvMetricW
 
 /- English proof (translation)
-Apply `Polynomial.eq_zero_of_infinite_isRoot` to reduce the goal to its premises. Establish `hinj : Set.InjOn (fun t : ℝ => Complex.exp (t * Complex.I)) (Set.Ioo 0 1)`. Introduce `a ha b hb hab`. Establish `hpi` using `Real.pi_gt_three`. Use `Complex.exp_inj_of_neg_pi_lt_of_le_pi ?_ ?_ ?_ ?_ hab` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Apply the tactic sequence `all_goals simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, mul_one, zero_mul, add_zero]`. Apply the tactic sequence `all_goals linarith [ha.1, ha.2, hb.1, hb.2]`. Use `((Set.Ioo_infinite (by norm_num : (0:ℝ) < 1)).image hinj).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, -, rfl⟩`.
-
-Conclude with `h _ (Complex.norm_exp_ofReal_mul_I t)`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem poly_eq_zero_of_circle (P : ℂ[X]) (h : ∀ z : ℂ, ‖z‖ = 1 → P.eval z = 0) : P = 0 := by
   apply Polynomial.eq_zero_of_infinite_isRoot
@@ -29,7 +27,7 @@ theorem poly_eq_zero_of_circle (P : ℂ[X]) (h : ∀ z : ℂ, ‖z‖ = 1 → P.
   exact h _ (Complex.norm_exp_ofReal_mul_I t)
 
 /- English proof (translation)
-Establish `h` using `Complex.conj_mul' z`. Rewrite `h` using `[hz]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem star_mul_self_of_norm {z : ℂ} (hz : ‖z‖ = 1) : star z * z = 1 := by
   have h := Complex.conj_mul' z
@@ -37,9 +35,9 @@ theorem star_mul_self_of_norm {z : ℂ} (hz : ‖z‖ = 1) : star z * z = 1 := b
   simpa using h
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `i`. Proceed by induction on `i with`. Consider the case `zero => exact Nat.zero_le _`. Consider the case `succ n ih`. Establish `h1` using `ih (by omega)`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h2 : J ⟨n, by omega⟩ < J ⟨n + 1, hi⟩` using `J.lt_iff_lt.mpr (by simp [Fin.lt_def])`. Establish `h3 : ((J ⟨n, by omega⟩ : Fin N) : ℕ) < ((J ⟨n + 1, hi⟩ : Fin N) : ℕ)` using `h2`. Simplify using `only at h1 ⊢`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem emb_ge {h N : ℕ} (J : Fin h ↪o Fin N) (i : Fin h) : (i : ℕ) ≤ J i := by
   obtain ⟨i, hi⟩ := i
@@ -58,24 +56,24 @@ variable {Lt : Type} [Fintype Lt] [DecidableEq Lt] {N : ℕ} {nu : Lt → YoungD
 def wt (J : ColChoice N nu) : ℕ := ∑ s, ∑ c, ∑ i, (N - ((J s c i : Fin N) : ℕ))
 
 /- English proof (translation)
-Simplify using `[J0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem column_index_val (hle : ∀ z, (nu z).colLen 0 ≤ N) (s : Lt) (c : Fin ((nu s).rowLen 0))
     (i : Fin ((nu s).colLen c)) : ((J0 nu hle s c i : Fin N) : ℕ) = i := by
   simp [J0]
 
 /- English proof (translation)
-Establish `hex : ∃ s c i, J s c i ≠ J0 nu hle s c i`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `hJ` to reduce the goal to its premises. Use function extensionality and compare the values at `s c`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Conclude with `DFunLike.ext _ _ (hc s c)`. Take `⟨s0, c0, i0, h0⟩` from `hex`. Establish `hv : ((J s0 c0 i0 : Fin N) : ℕ) ≠ i0`. Introduce `e`. Apply `h0` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[e, column_index_val]`. Establish `hterm : ∀ s c i, N - ((J s c i : Fin N) : ℕ) ≤ N - ((J0 nu hle s c i : Fin N) : ℕ)`. Introduce `s c i`. Rewrite using `[column_index_val]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `emb_ge (J s c) i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Unfold `wt`. Apply `Finset.sum_lt_sum (fun s _ => Finset.sum_le_sum fun c _ => Finset.sum_le_sum fun i _ => hterm s c i)` to reduce the goal to its premises. Use `⟨s0, Finset.mem_univ _, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Finset.sum_lt_sum (fun c _ => Finset.sum_le_sum fun i _ => hterm s0 c i)` to reduce the goal to its premises. Use `⟨c0, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Apply `Finset.sum_lt_sum (fun i _ => hterm s0 c0 i)` to reduce the goal to its premises. Use `⟨i0, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[column_index_val]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `emb_ge (J s0 c0) i0` as an intermediate fact. Use `(J s0 c0 i0).isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem wt_lt (hle : ∀ z, (nu z).colLen 0 ≤ N) (J : ColChoice N nu) (hJ : J ≠ J0 nu hle) :
     wt J < wt (J0 nu hle) := by
@@ -105,7 +103,7 @@ theorem wt_lt (hle : ∀ z, (nu z).colLen 0 ≤ N) (J : ColChoice N nu) (hJ : J 
 def dz (z : ℂ) (_s : Lt) (a : Fin N) : ℂ := z ^ (N - (a : ℕ))
 
 /- English proof (translation)
-Rewrite using `[vnuMap_eq]`. Repeatedly rewrite using `[metric_diagonal Lt N nu (dz z), ite_mul, zero_mul]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using `only [Finset.mem_univ, if_true, dz, wt]`. Repeatedly rewrite using `[Finset.prod_pow_eq_pow_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem vnuMap_torus (z : ℂ) (φ : LaC N nu) (I : ColChoice N nu) :
     VnuMap nu (fun s => Matrix.diagonal (dz z s)) φ I = z ^ wt I * φ I := by
@@ -116,7 +114,7 @@ theorem vnuMap_torus (z : ℂ) (φ : LaC N nu) (I : ColChoice N nu) :
   simp_rw [Finset.prod_pow_eq_pow_sum]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [dz, Pi.star_apply, star_pow]`. Rewrite using `[← mul_pow, star_mul_self_of_norm hz, one_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem torus_unitary {z : ℂ} (hz : ‖z‖ = 1) (s : Lt) :
     Matrix.diagonal (dz (N := N) z s) ∈ Matrix.unitaryGroup (Fin N) ℂ := by
@@ -130,35 +128,31 @@ theorem torus_unitary {z : ℂ} (hz : ‖z‖ = 1) (s : Lt) :
 end
 
 /- English proof (translation)
-Introduce `Lt _ _ N nu ip hip ψ hψ`. Distinguish the cases in `hle : ∀ z, (nu z).colLen 0 ≤ N`. Use `set J0' := J0 nu hle with hJ0' set m0 := wt J0' with hm0`. Establish `hu0 : u0 N nu = fun J => if J = J0' then 1 else 0`. Use function extensionality and compare the values at `J`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `unitVector_val_eq nu hle J`. Establish `hu0V : u0 N nu ∈ Vnu N nu` using `Submodule.subset_span ⟨_, rfl⟩`. Use `set a : ColChoice N nu → ℂ := fun J => ip (u0 N nu) (fun j => if J = j then 1 else 0) with ha`. Establish `hexp : ∀ φ : LaC N nu, ip (u0 N nu) φ = ∑ J, φ J * a J`. Introduce `φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.pi_apply_eq_sum_univ (ip (u0 N nu)) φ]`. Both sides reduce to the same expression. Establish `hnorm : ip (u0 N nu) (u0 N nu) = 1` using `(hip (fun _ => 1) (fun _ => one_mem _)).2`. Establish `haJ0 : a J0' = 1`. Establish `e : (fun j => if J0' = j then (1:ℂ) else 0) = u0 N nu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hu0]`. Use function extensionality and compare the values at `j`. Simplify using `only [eq_comm]`. Use `show ip (u0 N nu) (fun j => if J0' = j then 1 else 0) = 1`. Rewrite using `[e, hnorm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htor : ∀ z : ℂ, ‖z‖ = 1 → ∑ J, z ^ wt J * (ψ J * a J) = z ^ m0 * ∑ J, ψ J * a J`. Introduce `z hz`. Establish `hk` using `(hip (fun s => Matrix.diagonal (dz z s)) (fun s => torus_unitary hz s)).1 (u0 N nu) hu0V ψ hψ`. Establish `hρu0 : VnuMap nu (fun s => Matrix.diagonal (dz z s)) (u0 N nu) = z ^ m0 • u0 N nu`. Use function extensionality and compare the values at `I`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[vnuMap_torus, hu0]`. Distinguish the cases in `hI : I = J0'`. Substitute `hI` using the available equality. Simplify using `[hm0]`. Simplify using `[hI]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `hk` using `[hρu0, LinearMap.map_smulₛₗ, LinearMap.smul_apply, hexp, hexp]`. Establish `hzz : z ^ m0 * starRingEnd ℂ (z ^ m0) = 1`. Rewrite using `[mul_comm]; exact star_mul_self_of_norm (by rw [norm_pow, hz, one_pow])`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_eq_mul, ← mul_assoc, hzz, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[vnuMap_torus]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = z ^ m0 * ∑ J, ψ J * a J := by rw [hk]`. Use `set S := ∑ J, ψ J * a J with hS`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set P : ℂ[X] := (∑ J, C (ψ J * a J) * X ^ wt J) - C S * X ^ m0 with hP`. Establish `hP0 : P = 0`. Apply `poly_eq_zero_of_circle` to reduce the goal to its premises. Introduce `z hz`. Rewrite using `[hP, eval_sub, eval_finsetSum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [eval_mul, eval_C, eval_pow, eval_X]`. Rewrite using `[sub_eq_zero, mul_comm S, ← htor z hz]`. Conclude with `Finset.sum_congr rfl fun J _ => by ring`. Establish `hc` using `congrArg (fun Q : ℂ[X] => Q.coeff m0) hP0`. Simplify using `only [hP, coeff_sub, finsetSum_coeff, coeff_C_mul_X_pow, coeff_zero, if_true] at hc`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_eq_single J0' (fun J _ hJ => by`. Use `wt_lt hle J hJ` as an intermediate fact. Rewrite `hc` using `[if_neg (by rw [← hm0] at this; omega)]) (fun h => absurd (Finset.mem_univ _) h)]`. Rewrite `hc` using `[if_pos rfl, haJ0, mul_one, sub_eq_zero]`. Rewrite using `[hexp, ← hS, ← hc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [ipl, hu0]`. Rewrite using `[Finset.sum_eq_single J0' (fun J _ hJ => by simp [hJ]) (fun h => absurd (Finset.mem_univ _) h)]`. Simplify using the standard rewrite rules. Use `push Not at hle`. Take `⟨z, hz⟩` from `hle`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hrow : 0 < (nu z).rowLen 0`. Establish `hmem : ((0 : ℕ), (0 : ℕ)) ∈ nu z` using `YoungDiagram.mem_iff_lt_colLen.mpr (by omega)`. Conclude with `YoungDiagram.mem_iff_lt_rowLen.mp hmem`. Establish `: IsEmpty (ColChoice N nu)` using `⟨fun J => by`. Establish `e` using `J z ⟨0, hrow⟩`.
-
-Use `Fintype.card_le_of_injective e e.injective` as an intermediate fact. Simplify using `only [Fintype.card_fin] at this`. Use the proof step `omega⟩`. Establish `hz0 : u0 N nu = 0` using `funext fun J => isEmptyElim J`. Rewrite using `[hz0]`.
-
-Simplify using `[ipl]`.
+A detailed English derivation is pending.
 -/
 theorem hermitian_weight : HW := by
   intro Lt _ _ N nu ip hip ψ hψ

@@ -27,29 +27,27 @@ def chartPullPw {X : Scheme.{0}} (H : LB X) (N : ℕ) :
         Category.id_comp] }
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hw`. Take `⟨N, hN, M, s, hcov, hs⟩` from `hA ⊤ (isAffineOpen_top _)`. Establish `: IsIso (A.hom ⁻¹ᵁ ⊤).ι` using `inferInstanceAs (IsIso A.left.topIso.hom)`. Take `⟨ψ, hiso, hψ⟩ : ∃ ψ : X ⟶ (A.hom ⁻¹ᵁ ⊤).toScheme, IsIso ψ ∧ ψ ≫ (A.hom ⁻¹ᵁ ⊤).ι = e` from `⟨e ≫ inv (A.hom ⁻¹ᵁ ⊤).ι, inferInstance, by simp⟩`. Establish `hP` using `linComb_isLB L hL (K := Fin N) (fun _ => (A.hom ⁻¹ᵁ ⊤).ι) (fun _ => 1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hP'` using `isLB_pw hH N`. Take `⟨W, hW⟩` from `LBIso.chartPull (chartPullPw H N) (chartPullOut L (fun _ : Fin N => (A.hom ⁻¹ᵁ ⊤).ι) (fun _ => 1) ψ _ fun _ => (Category.id_comp _).trans hψ.symm) (iso_linComb ((isGen_iff w).1 hw) (fun _ : Fin N => 𝟙 X) (fun _ => 1))`. Use `choose s' hs' using fun i => sec_pull_down ((isGen_iff W).1 hW) hP hP' (s i)`. Establish `loc : ∀ i, nonzeroLocus (M` using `pw H N) (s' i) = ψ ⁻¹ᵁ nonzeroLocus (s i) := fun i => by`. Use extensionality with `y`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mem_nonzeroLocus _ y).trans (Iff.trans ⟨fun ⟨k, hk, u⟩ => ?_, fun ⟨j, hj, u⟩ => ?_⟩ (mem_nonzeroLocus _ (ψ y)).symm)` and prove the remaining obligations. Take `⟨j, hj⟩` from `exists_chart hP (ψ y)`. Establish `e` using `hs' i _ (𝟙 _) y j k hj hk`. Rewrite `e` using `[Category.id_comp, gs_stalkMap ψ y _ hj]`. Conclude with `⟨j, hj, (isUnit_map_iff (ψ.stalkMap y).hom _).1 ((congrArg IsUnit e).mpr ((Units.isUnit _).mul u))⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `exists_chart hP' y`. Establish `e` using `hs' i _ (𝟙 _) y j k hj hk`. Rewrite `e` using `[Category.id_comp]`. Conclude with `⟨k, hk, isUnit_of_mul_isUnit_right ((congrArg IsUnit ((gs_stalkMap ψ y _ hj _).symm.trans e)).mp (u.map _))⟩`. Use `⟨N, hN, M, s', hP', ?_, fun i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `top_le_iff.1 fun y _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (show ψ y ∈ ⨆ i, nonzeroLocus (s i) by rw [hcov]; trivial)`. Conclude with `Opens.mem_iSup.2 ⟨i, by rw [loc]; exact hi⟩`. Take `⟨haff, r, hr, hsurj⟩` from `hs i`. Use `⟨by rw [loc]; exact haff.preimage ψ, fun j => (ψ.appLE _ _ (loc i).le).hom (r j), fun j k => fn_ext fun y hy => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨l, hl⟩` from `exists_chart hP (ψ y)`. Establish `hm : ψ y ∈ nonzeroLocus (s i) ⊓ (powOver A L ⊤ N).U l` using `⟨(loc i).le hy.1, hl⟩`. Establish `e` using `congrArg (gs ψ y _) (hr j l)`. Rewrite `e` using `[gs_res _ y _ hm, gs_mul _ y _ hm, gs_res _ y _ hm, gs_res _ y _ hm]`. Establish `e₁` using `hs' j _ (𝟙 _) y l k hl hy.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e₂` using `hs' i _ (𝟙 _) y l k hl hy.2`. Rewrite `e₁`, `e₂` using `[Category.id_comp]`. Establish `e₃` using `(gw W (𝟙 _) y l k).mul_right_inj.1 (e₁.symm.trans (e.trans ((congrArg _ e₂).trans (mul_left_comm _ _ _))))`. Use `(gs_res _ y _ hy _).trans (e₃.trans (Eq.symm ((gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) ((gs_res _ y _ hy _).trans ((gs_appLE ψ _ _ _ (𝟙 _) y hy.1 _).trans (by rw [Category.id_comp]))) (gs_res _ y _ hy _)))))` and prove the remaining obligations. Establish `hT : IsIso (⊤ : (Spec (CommRingCat.of R)).Opens).ι` using `inferInstanceAs (IsIso (Spec (CommRingCat.of R)).topIso.hom)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `θ : CommRingCat.of R ⟶ Γ((⊤ : (Spec (CommRingCat.of R)).Opens).toScheme, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ (⊤ : (Spec (CommRingCat.of R)).Opens).ι.app ⊤`. Establish `hθi : IsIso θ` using `IsIso.comp_isIso' inferInstance (inferInstanceAs (IsIso ((⊤ : (Spec (CommRingCat.of R)).Opens).ι.app ⊤)))`. Establish `hθ : Function.Surjective θ.hom` using `(ConcreteCategory.bijective_of_isIso θ).2`. Establish `hf' : f = ψ ≫ (A.hom ∣_ ⊤) ≫ (⊤ : (Spec (CommRingCat.of R)).Opens).ι`. Rewrite using `[morphismRestrict_ι, ← Category.assoc, hψ, hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hap : IsIso (ψ.appLE _ _ (loc i).le)`. Establish `key : ∀ (V : X.Opens) (h : V = ψ ⁻¹ᵁ nonzeroLocus (s i)), IsIso (ψ.appLE _ V h.le)`. Introduce and unpack `_ rfl`. Rewrite using `[Scheme.Hom.appLE_eq_app]`. Use `infer_instance`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `key _ (loc i)`. Establish `hc : cst f (nonzeroLocus (M` using `pw H N) (s' i)) = (ψ.appLE _ _ (loc i).le).hom.comp (((A.hom ∣_ ⊤).appLE ⊤ (nonzeroLocus (s i)) le_top).hom.comp θ.hom) := by`. Rewrite using `[hf']`. Establish `e₁` using `Scheme.Hom.appLE_comp_appLE ψ (A.hom ∣_ ⊤) ⊤ (nonzeroLocus (s i)) (nonzeroLocus (M := pw H N) (s' i)) le_top (loc i).le`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e₂` using `congrArg (fun q => q.hom (θ.hom x)) e₁`. Conclude with `e₂.symm`. Introduce `d`. Take `⟨d, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (ψ.appLE _ _ (loc i).le)).2 d`. Take `⟨p, rfl⟩` from `hsurj d`.
-
-Take `⟨p, rfl⟩` from `MvPolynomial.map_surjective θ.hom hθ p`. Use `⟨p, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, MvPolynomial.eval₂Hom_map_hom]`. Conclude with `(MvPolynomial.map_eval₂Hom _ _ _ p).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem veryAmpleBy_of_relAmple {R : Type} [CommRing R] {A : Over (Spec (CommRingCat.of R))}
     {L : LB A.left} (hL : L.IsLB) (hA : RelAmple A L) {X : Scheme.{0}} (e : X ⟶ A.left) [IsIso e]
@@ -136,7 +134,7 @@ theorem veryAmpleBy_of_relAmple {R : Type} [CommRing R] {A : Over (Spec (CommRin
     exact (MvPolynomial.map_eval₂Hom _ _ _ p).symm
 
 /- English proof (translation)
-Introduce `hBC S P R _ t X π f h`. Take `⟨P', g, hg, -, -, w⟩` from `hBC S _ t P`. Set `e` to `h.isoIsPullback _ _ hg`. Establish `he : e.hom ≫ g = π` using `h.isoIsPullback_hom_fst _ _ hg`. Conclude with `veryAmpleBy_of_relAmple P'.isLB P'.ample e.hom (h.isoIsPullback_hom_snd _ _ hg) (pull_isLB P.isLB π) (LBIso.chartPull (chartPullSame P.L (fun _ : PUnit => π) (fun _ => g) (fun _ => 1) e.hom fun _ => he.symm) (chartPullPull P'.L e.hom e.hom rfl) w)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem polAV_veryAmpleBy : PolBaseChangeSt → ∀ (S : Scheme.{0}) (P : PolAV S) (R : Type) [CommRing R] (t : Spec (CommRingCat.of R) ⟶ S) (X : Scheme.{0}) (π : X ⟶ P.A.left) (f : X ⟶ Spec (CommRingCat.of R)), IsPullback π f P.A.hom t → ∃ N : ℕ, 1 ≤ N ∧ ∃ (m : ℕ) (s : Fin (m + 1) → LB.Sec (pw (P.L.pull π) N)), (pw (P.L.pull π) N).IsLB ∧ VeryAmpleBy f (pw (P.L.pull π) N) s := by
   intro hBC S P R _ t X π f h

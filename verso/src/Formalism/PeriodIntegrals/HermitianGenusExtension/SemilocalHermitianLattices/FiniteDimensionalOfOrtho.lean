@@ -26,18 +26,18 @@ theorem stdForm_apply (K : Type) [Field K] [StarRing K] (n : ℕ) (x y : Fin n �
     stdForm K n x y = ∑ i, star (x i) * y i := rfl
 
 /- English proof (translation)
-Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Simplify using `[stdForm_apply, mul_comm, starRingEnd_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem stdForm_isSymm (K : Type) [Field K] [StarRing K] (n : ℕ) : (stdForm K n).IsSymm := by
   refine ⟨fun x y => ?_⟩
   simp [stdForm_apply, mul_comm, starRingEnd_apply]
 
 /- English proof (translation)
-Use `⟨fun i => Pi.single i 1, ?_, ?_, rfl, ?_⟩` and prove the remaining obligations. Use `(Pi.basisFun K (Fin n)).linearIndependent` as an intermediate fact. Rewrite using `[show ⇑(Pi.basisFun K (Fin n)) = fun i => (Pi.single i 1 : Fin n → K) from` and apply the resulting hypothesis. Use function extensionality and compare the values at `fun i => Pi.basisFun_apply K (Fin n) i] at this`. Use `(Pi.basisFun K (Fin n)).span_eq` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[show ⇑(Pi.basisFun K (Fin n)) = fun i => (Pi.single i 1 : Fin n → K) from` and apply the resulting hypothesis. Use function extensionality and compare the values at `fun i => Pi.basisFun_apply K (Fin n) i] at this`. Introduce `i j`. Rewrite using `[stdForm_apply]`. Distinguish the cases in `hij : i = j`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using `[Pi.single_apply]`. Simplify using `[Pi.single_apply, hij, Ne.symm hij]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem stdLat_isOrtho (K : Type) [Field K] [NumberField K] [StarRing K] (n : ℕ) :
     Formalism.HermitianLatticesTheory.IsOrthoLattice (stdForm K n) (stdLat K n) n := by
@@ -63,7 +63,7 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
 namespace StandardSymmetricSums
 
 /- English proof (translation)
-Simplify using `[map_sum, LinearMap.sum_apply, he, mul_comm, starRingEnd_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_sum {h : V →ₗ⋆[K] V →ₗ[K] K} {n : ℕ} {e : Fin n → V}
     (he : ∀ i j, h (e i) (e j) = if i = j then 1 else 0) (c d : Fin n → K) :
@@ -71,7 +71,7 @@ theorem form_sum {h : V →ₗ⋆[K] V →ₗ[K] K} {n : ℕ} {e : Fin n → V}
   simp [map_sum, LinearMap.sum_apply, he, mul_comm, starRingEnd_apply]
 
 /- English proof (translation)
-Simplify using `[map_sum, he]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_left {h : V →ₗ⋆[K] V →ₗ[K] K} {n : ℕ} {e : Fin n → V}
     (he : ∀ i j, h (e i) (e j) = if i = j then 1 else 0) (i : Fin n) (d : Fin n → K) :
@@ -79,20 +79,20 @@ theorem form_left {h : V →ₗ⋆[K] V →ₗ[K] K} {n : ℕ} {e : Fin n → V}
   simp [map_sum, he]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨RingOfIntegers.mapRingHom (starRingEnd K) r, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem star_int (r : 𝓞 K) : ∃ t : 𝓞 K, algebraMap (𝓞 K) K t = star (algebraMap (𝓞 K) K r) :=
   ⟨RingOfIntegers.mapRingHom (starRingEnd K) r, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(Submodule.mem_span_range_iff_exists_fun K).1 (hsp ▸ Submodule.mem_top)`.
+A detailed English derivation is pending.
 -/
 theorem exists_coord {n : ℕ} {e : Fin n → V} (hsp : Submodule.span K (Set.range e) = ⊤) (x : V) :
     ∃ c : Fin n → K, ∑ i, c i • e i = x :=
   (Submodule.mem_span_range_iff_exists_fun K).1 (hsp ▸ Submodule.mem_top)
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Simplify using `only [algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_lat_iff {n : ℕ} {e : Fin n → V} (x : V) :
     x ∈ Submodule.span (𝓞 K) (Set.range e) ↔
@@ -105,7 +105,7 @@ end StandardSymmetricSums
 open StandardSymmetricSums
 
 /- English proof (translation)
-Take `⟨e, hli, hsp, -, -⟩` from `hL`. Conclude with `(Basis.mk hli hsp.ge).finiteDimensional_of_finite`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_of_ortho {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V} {n : ℕ}
     (hL : Formalism.HermitianLatticesTheory.IsOrthoLattice h L n) : FiniteDimensional K V := by
@@ -113,7 +113,7 @@ theorem finiteDimensional_of_ortho {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submo
   exact (Basis.mk hli hsp.ge).finiteDimensional_of_finite
 
 /- English proof (translation)
-Take `⟨e, hli, hsp, -, -⟩` from `hL`. Simplify using `using finrank_eq_card_basis (Basis.mk hli hsp.ge)`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finrank_of_ortho {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V} {n : ℕ}
     (hL : Formalism.HermitianLatticesTheory.IsOrthoLattice h L n) : finrank K V = n := by
@@ -121,7 +121,7 @@ theorem finrank_of_ortho {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞
   simpa using finrank_eq_card_basis (Basis.mk hli hsp.ge)
 
 /- English proof (translation)
-Take `⟨e, hli, hsp, rfl, -⟩` from `hL`. Use `⟨Submodule.fg_span (Set.finite_range e), ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_span_of_tower, hsp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLattice_of_ortho {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V} {n : ℕ}
     (hL : Formalism.HermitianLatticesTheory.IsOrthoLattice h L n) : Submodule.IsLattice K L := by
@@ -130,11 +130,11 @@ theorem isLattice_of_ortho {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (�
   rw [Submodule.span_span_of_tower, hsp]
 
 /- English proof (translation)
-Take `⟨e, hli, hsp, -, he⟩` from `hL`. Introduce `x hx φ`. Take `⟨c, rfl⟩` from `exists_coord hsp x`. Rewrite using `[form_sum he, map_sum, Complex.re_sum]`. Establish `hc : ∃ i, c i ≠ 0`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hx (by simp [hcon])`. Take `⟨i, hi⟩` from `hc`. Establish `hterm : ∀ j, (φ (star (c j) * c j)).re = Complex.normSq (φ (c j))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[map_mul, hK.2.1, Complex.normSq_eq_conj_mul_self.symm, Complex.ofReal_re]`. Simplify using `only [hterm]`. Use `Finset.sum_pos' (fun j _ => Complex.normSq_nonneg _) ⟨i, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Conclude with `Complex.normSq_pos.2 (by simpa using hi)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isTotPosDef_of_ortho (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hs : h.IsSymm) {L : Submodule (𝓞 K) V} {n : ℕ} (hL : Formalism.HermitianLatticesTheory.IsOrthoLattice h L n) :
@@ -156,11 +156,11 @@ theorem isTotPosDef_of_ortho (hK : Formalism.HermitianLatticesTheory.IsCMUnram K
   exact Complex.normSq_pos.2 (by simpa using hi)
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hp` using `isTotPosDef_of_ortho hK hs hL x hx`. Establish `ht` using `trace_eq_sum_embeddings (K := ℚ) (L := K) ℂ (x := h x x)`. Establish `hre` using `congrArg Complex.re ht`. Rewrite `hre` using `[Complex.re_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : 0 < ∑ σ : K →ₐ[ℚ] ℂ, (σ (h x x)).re` using `Finset.sum_pos (fun σ _ => hp σ.toRingHom) ⟨(Classical.arbitrary (K →+* ℂ)).toRatAlgHom, Finset.mem_univ _⟩`. Rewrite `hpos` using `[← hre]`. Establish `: (algebraMap ℚ ℂ (Algebra.trace ℚ K (h x x))).re = ((Algebra.trace ℚ K (h x x) : ℚ) : ℝ)`. Simplify using the standard rewrite rules. Rewrite `hpos` using `[this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hpos` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem trace_pos_of_ortho (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hs : h.IsSymm) {L : Submodule (𝓞 K) V} {n : ℕ} (hL : Formalism.HermitianLatticesTheory.IsOrthoLattice h L n) :
@@ -180,9 +180,9 @@ theorem trace_pos_of_ortho (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) 
   exact_mod_cast hpos
 
 /- English proof (translation)
-Take `⟨e, hli, hsp, rfl, he⟩` from `hL`. Introduce `x hx y hy`. Take `⟨c, rfl⟩` from `(mem_lat_iff x).1 hx`. Take `⟨d, rfl⟩` from `(mem_lat_iff y).1 hy`. Rewrite using `[form_sum he]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `star_int (c i)`. Rewrite using `[← ht, ← map_mul]`. Conclude with `Submodule.mem_one.2 ⟨_, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegralLat_of_ortho {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V} {n : ℕ}
     (hL : Formalism.HermitianLatticesTheory.IsOrthoLattice h L n) : Formalism.HermitianLatticesTheory.IsIntegralLat h L := by
@@ -197,13 +197,11 @@ theorem isIntegralLat_of_ortho {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule
   exact Submodule.mem_one.2 ⟨_, rfl⟩
 
 /- English proof (translation)
-Establish `hint` using `isIntegralLat_of_ortho hL`. Take `⟨e, hli, hsp, rfl, he⟩` from `hL`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨c, rfl⟩` from `exists_coord hsp x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars] at hx`. Establish `hc : ∀ i, ∃ r : 𝓞 K, algebraMap (𝓞 K) K r = c i`. Introduce `i`. Use `hx (e i) (Submodule.subset_span ⟨i, rfl⟩)` as an intermediate fact. Rewrite `this` using `[form_left he]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Submodule.mem_one.1 this`. Use `choose r hr using hc`. Conclude with `(mem_lat_iff _).2 ⟨r, by simp only [hr]⟩`. Introduce `x hx`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars]`.
-
-Conclude with `fun y hy => hint y hy x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem isUnimodular_of_ortho {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule (𝓞 K) V} {n : ℕ}
     (hL : Formalism.HermitianLatticesTheory.IsOrthoLattice h L n) : Formalism.HermitianLatticesTheory.IsUnimodular h L := by
@@ -227,7 +225,7 @@ theorem isUnimodular_of_ortho {h : V →ₗ⋆[K] V →ₗ[K] K} {L : Submodule 
     exact fun y hy => hint y hy x hx
 
 /- English proof (translation)
-The claim follows from `((Formalism.HermitianLatticesTheory.locDual (𝓞 K) K V h hs (fun r => (star_int r).imp fun _ ht => ht) L (isLattice_of_ortho hL).fg).2).1 (isUnimodular_of_ortho hL)`.
+A detailed English derivation is pending.
 -/
 theorem isUnimodularAt_of_ortho (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hs : h.IsSymm) {L : Submodule (𝓞 K) V} {n : ℕ} (hL : Formalism.HermitianLatticesTheory.IsOrthoLattice h L n) :
@@ -236,7 +234,7 @@ theorem isUnimodularAt_of_ortho (hK : Formalism.HermitianLatticesTheory.IsCMUnra
     (isLattice_of_ortho hL).fg).2).1 (isUnimodular_of_ortho hL)
 
 /- English proof (translation)
-Use `finiteDimensional_of_ortho hL` as an intermediate fact. Conclude with `(Formalism.HermitianLatticesTheory.massBasic K V h hs (trace_pos_of_ortho hK hs hL) L (isLattice_of_ortho hL)).2.2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mass_pos_of_ortho (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hs : h.IsSymm) {L : Submodule (𝓞 K) V} {n : ℕ} (hL : Formalism.HermitianLatticesTheory.IsOrthoLattice h L n) :

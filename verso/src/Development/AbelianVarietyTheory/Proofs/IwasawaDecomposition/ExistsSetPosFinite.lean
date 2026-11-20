@@ -9,9 +9,9 @@ open scoped TensorProduct
 namespace GlobalTheory.Mem.VolUnique
 
 /- English proof (translation)
-Establish `hμ` using `Measure.isMulLeftInvariant_eq_smul μ μ'`. Establish `hc : ((Measure.haarScalarFactor μ μ' : NNReal) : ENNReal) = 1`. Establish `h1 : μ S = (Measure.haarScalarFactor μ μ' : ENNReal) * μ' S` using `by conv_lhs => rw [hμ]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((ENNReal.mul_left_inj h0 ht).1 (by rw [one_mul]; exact h1)).symm`. Establish `hc' : Measure.haarScalarFactor μ μ' = 1` using `by exact_mod_cast hc`. Rewrite using `[hμ, hc', one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_eq_of_eq_on_set {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
@@ -28,7 +28,7 @@ theorem haar_eq_of_eq_on_set {G : Type} [Group G] [TopologicalSpace G] [IsTopolo
   rw [hμ, hc', one_smul]
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _⟩` from `GlobalTheory.UpqTopology.upq_lcsc P Q`. Use `haveI := cd.haar P Q`. Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : UpqT P Q)`. Conclude with `⟨K, hK.measurableSet, (Measure.measure_pos_of_mem_nhds _ hK1).ne', hK.measure_lt_top.ne⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_set_pos_finite (cd : CDHaar) (P Q : ℕ) :
     ∃ B : Set (UpqT P Q), MeasurableSet B ∧ cd.cd P Q B ≠ 0 ∧ cd.cd P Q B ≠ ⊤ := by
@@ -38,13 +38,11 @@ theorem exists_set_pos_finite (cd : CDHaar) (P Q : ℕ) :
   exact ⟨K, hK.measurableSet, (Measure.measure_pos_of_mem_nhds _ hK1).ne', hK.measure_lt_top.ne⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ cm I _ τ cd W _ _ μ μ' hμ hμ'`. Take `⟨hH, ⟨θ, hθ⟩, hall⟩` from `hμ`. Take `⟨hH', -, hall'⟩` from `hμ'`. Take `⟨⟨A, hA⟩, hB⟩` from `hall θ hθ`. Establish `hB'` using `(hall' θ hθ).2 A hA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hB` using `hB A hA`. Use `choose B hBm hB0 hBt using fun ρ : I => exists_set_pos_finite cd (W.sig (τ ρ)).1 (W.sig (τ ρ)).2`. Take `⟨_, _, _⟩` from `GlobalTheory.AdelicUnitaryTop.lcsc_adelicUnitary F E cm.sig W.rank W.gram`. Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsTopologicalGroup (HA (AF F) cm.sig W.gram) := inferInstanceAs (IsTopologicalGroup (HR (AF F) cm.sig W.gram))`. Use `haveI : BorelSpace (HA (AF F) cm.sig W.gram) := ⟨rfl⟩`. Use `haar_eq_of_eq_on_set μ μ' _ ((hB B hBm).trans (hB' B hBm).symm) ?_ ?_` and prove the remaining obligations. Rewrite using `[hB' B hBm]`. Conclude with `Finset.prod_ne_zero_iff.2 fun ρ _ => hB0 ρ`.
-
-Rewrite using `[hB' B hBm]`. Conclude with `ENNReal.prod_ne_top fun ρ _ => hBt ρ`.
+A detailed English derivation is pending.
 -/
 theorem volMeas_unique : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (I : Type) [Fintype I] (τ : I → (E →+* ℂ)) (cd : CDHaar) (W : HSpace E), IsCMFam τ → W.SigOK → ∀ μ μ', IsVolMeasF cm τ cd W (fun ρ => (W.sig (τ ρ)).1) (fun ρ => (W.sig (τ ρ)).2) μ → IsVolMeasF cm τ cd W (fun ρ => (W.sig (τ ρ)).1) (fun ρ => (W.sig (τ ρ)).2) μ' → μ = μ' := by
   intro F E _ _ _ _ _ _ cm I _ τ cd W _ _ μ μ' hμ hμ'

@@ -8,7 +8,7 @@ open scoped TensorProduct ENNReal nonZeroDivisors
 namespace GlobalTheory.SnMass.VolN
 
 /- English proof (translation)
-Rewrite using `[show J.map w.embedding = w.embedding.mapMatrix J from rfl, ← RingHom.map_det]`. Conclude with `(map_ne_zero _).mpr hJ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_embed_ne_zero {E : Type} [Field E] [NumberField E] {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (hJ : J.det ≠ 0)
     (w : InfinitePlace E) : (J.map w.embedding).det ≠ 0 := by
@@ -16,7 +16,7 @@ theorem det_embed_ne_zero {E : Type} [Field E] [NumberField E] {n : ℕ} (J : Ma
   exact (map_ne_zero _).mpr hJ
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Establish `h : ((A w)ᴴ * Hpk k r * A w).det = (J.map w.embedding).det` using `congrArg Matrix.det (hA w)`. Rewrite `h` using `[det_mul, det_mul, h0, mul_zero]`. Conclude with `det_embed_ne_zero J hJ w h.symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem A_isUnit_det {E : Type} [Field E] [NumberField E] {k r : ℕ}
     (J : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E)
@@ -29,17 +29,17 @@ theorem A_isUnit_det {E : Type} [Field E] [NumberField E] {k r : ℕ}
   exact det_embed_ne_zero J hJ w h.symm
 
 /- English proof (translation)
-Introduce `h`. Establish `hJ : J.det ≠ 0` using `h.2.2.1.2`. Establish `hA : IsModelAt J A` using `h.2.2.2.2.2.2.2.1`. Establish `hu : ∀ w, IsUnit (A w).det` using `fun w => A_isUnit_det J A hJ hA w`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Use function extensionality and compare the values at `w`. Establish `e : (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E).map w.embedding = 1` using `map_one w.embedding.mapMatrix`. Simplify using `only [actM, e, Matrix.mul_one, Matrix.mul_nonsing_inv _ (hu w), Matrix.one_mul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Introduce `γ γ' x`. Use function extensionality and compare the values at `w`. Establish `e : (γ * γ').map w.embedding = γ.map w.embedding * γ'.map w.embedding` using `map_mul w.embedding.mapMatrix γ γ'`. Establish `m : A w * (γ.map w.embedding * γ'.map w.embedding) * (A w)⁻¹ * Matrix.of (x w) = A w * γ.map w.embedding * (A w)⁻¹ * (A w * γ'.map w.embedding * (A w)⁻¹ * Matrix.of (x w))`. Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ (hu w)]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `show Matrix.of.symm (A w * (γ * γ').map w.embedding * (A w)⁻¹ * Matrix.of (x w)) = Matrix.of.symm (A w * γ.map w.embedding * (A w)⁻¹ * Matrix.of (Matrix.of.symm (A w * γ'.map w.embedding * (A w)⁻¹ * Matrix.of (x w))))`. Rewrite using `[Equiv.apply_symm_apply, e, m]`. Introduce `γ hγ`. Take `⟨w⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Establish `hi : (A w)⁻¹ * A w = 1` using `Matrix.nonsing_inv_mul _ (hu w)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : γ.map w.embedding = 1`. Establish `e : A w * γ.map w.embedding * (A w)⁻¹ = 1` using `hγ w`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, hi, Matrix.mul_one, Matrix.nonsing_inv_mul_cancel_left _ _ (hu w)]`. Use `_ = 1 := by rw [e, Matrix.mul_one, hi]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `i j`. Apply `w.embedding.injective` to reduce the goal to its premises. Use `congrArg (fun M => M i j) h1` as an intermediate fact. Simplify `this` using `[Matrix.one_apply, apply_ite]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem actLaws (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (k r : ℕ) (J : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) E) (Λ : Submodule (𝓞 E) (Fin (2 * r + k + 1) → E)) (P : Matrix (Fin (2 * r + k + 1)) (Fin (r + 1)) E) (f : Matrix (Fin (2 * r + k + 1)) (Fin r) E) (T : F) (A : InfinitePlace E → Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (s : Fin r → ℝ) :
     IsVolData σ J Λ P f T A s → (∀ x, actM A 1 x = x) ∧ (∀ γ γ' x, actM A (γ * γ') x = actM A γ (actM A γ' x)) ∧ ∀ γ, (∀ w, gM A γ w = 1) → γ = 1 := by

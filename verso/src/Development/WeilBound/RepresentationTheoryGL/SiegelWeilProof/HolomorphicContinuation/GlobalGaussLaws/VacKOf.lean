@@ -16,9 +16,9 @@ open PositivityTheory.Rg.Sw.Glob.VacS PositivityTheory.Rg.Sw.Glob.VacB Positivit
   PositivityTheory.Rg.Sw.Glob.VacG PositivityTheory.Rg.Sw.Glob.VacH PositivityTheory.Rg.Sw.Glob.VacI PositivityTheory.Rg.Sw.Glob.VacJ PositivityTheory.Rg.Sw.Glob.VacK
 
 /- English proof (translation)
-Unfold `cnt`. Rewrite using `[Finset.card_filter, Finset.card_filter, ← Finset.sum_add_distrib]`. Establish `h : ∀ a : Fin m, ((if ε a = true then 1 else 0) + (if ε a = false then 1 else 0) : ℕ) = 1`. Introduce `a`. Apply the tactic sequence `cases ε a <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [h, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cnt_true_add_cnt_false {m : ℕ} (ε : Fin m → Bool) : cnt ε true + cnt ε false = m := by
   unfold cnt
@@ -29,25 +29,23 @@ private theorem cnt_true_add_cnt_false {m : ℕ} (ε : Fin m → Bool) : cnt ε 
   simp only [h, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Introduce `hGZ hN hNb hLM hLNe`. Unfold `PositivityTheory.Rg.Sw.Glob.VacK`. Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hC L hL e hlev k hk`. Establish `hl0 : l τ ≠ 0` using `hLNe D ψ θ l hC.hψ hC.hθ hC.hl τ`. Establish `hc0 : 0 < cLoc l τ` using `VacF.cpos hl0`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSch : ∀ K : ℂ, IsSch (DG (m` using `V.rank) (n := n) K (fun _ _ => ((cLoc l τ : ℝ) : ℂ))) := fun K => VacE.isSch_DG hGZ ε (tLoc l τ) (cLoc l τ) hc0 VacF.tabs K`. Take `⟨u, u', φ, hu, hu', hφ, hkm⟩` from `VacG.kak (mR k) hk`. Establish `hdu : IsUnit u.det` using `Matrix.isUnit_det_of_left_inverse hu`. Establish `hdu' : IsUnit u'.det` using `Matrix.isUnit_det_of_left_inverse hu'`. Establish `hk_eq : k = VacB.mkG (mM u) (VacB.inG_mM u hdu) * VacB.mkG (VacB.kth φ) (VacB.inK_kth φ).1 * VacB.mkG (mM u') (VacB.inG_mM u' hdu')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `mR k = mR (VacB.mkG (mM u) (VacB.inG_mM u hdu)) * mR (VacB.mkG (VacB.kth φ) (VacB.inK_kth φ).1) * mR (VacB.mkG (mM u') (VacB.inG_mM u' hdu'))`. Rewrite using `[VacB.mR_mkG, VacB.mR_mkG, VacB.mR_mkG]`. Conclude with `hkm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hLM'` using `hLM _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hC L hL`. Establish `h1 : L (VacB.mkG (mM u') (VacB.inG_mM u' hdu')) (DG 1 (fun _ _ => ((cLoc l τ : ℝ) : ℂ))) = DG (1 * (u'.det ^ e * (star u'.det) ^ ((V.rank : ℤ) - e))) (fun _ _ => ((cLoc l τ : ℝ) : ℂ))`. Rewrite using `[hlev _ u' hdu' (VacB.mR_mkG _ _) _ (hSch 1)]`. Conclude with `VacH.levF_unitary e u' hu' 1 _`. Establish `h2` using `VacJ.rot_gen hC hl0 hN hNb hLM hGZ L hL e hlev φ hφ (1 * (u'.det ^ e * (star u'.det) ^ ((V.rank : ℤ) - e)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : ∀ K : ℂ, L (VacB.mkG (mM u) (VacB.inG_mM u hdu)) (DG K (fun _ _ => ((cLoc l τ : ℝ) : ℂ))) = DG (K * (u.det ^ e * (star u.det) ^ ((V.rank : ℤ) - e))) (fun _ _ => ((cLoc l τ : ℝ) : ℂ))`. Introduce `K`. Rewrite using `[hlev _ u hdu (VacB.mR_mkG _ _) _ (hSch K)]`. Conclude with `VacH.levF_unitary e u hu K _`. Establish `hLk : L k (DG 1 (fun _ _ => ((cLoc l τ : ℝ) : ℂ))) = DG (1 * (u'.det ^ e * (star u'.det) ^ ((V.rank : ℤ) - e)) * (∏ a, ∏ j, ((Real.cos (φ j) : ℂ) + Complex.I * (VacE.rhoT (tLoc l τ) ε a : ℂ) * (Real.sin (φ j) : ℂ))) * (u.det ^ e * (star u.det) ^ ((V.rank : ℤ) - e))) (fun _ _ => ( …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hk_eq, hLM' (VacB.mkG (mM u) (VacB.inG_mM u hdu) * VacB.mkG (VacB.kth φ) (VacB.inK_kth φ).1) (VacB.mkG (mM u') (VacB.inG_mM u' hdu')) _ (hSch 1), h1, hLM' (VacB.mkG (mM u) (VacB.inG_mM u hdu)) (VacB.mkG (VacB.kth φ) (VacB.inK_kth φ).1) _ (hSch _), h2, h3]`. Establish `hsu : star u.det = u.det⁻¹`. Establish `h` using `congrArg Matrix.det hu`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_one]`. Conclude with `eq_inv_of_mul_eq_one_left h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsu' : star u'.det = u'.det⁻¹`. Establish `h` using `congrArg Matrix.det hu'`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_conjTranspose, Matrix.det_one]`. Conclude with `eq_inv_of_mul_eq_one_left h`. Establish `hm : (V.rank : ℤ) = ((cnt (epsT (tLoc l τ) ε) true + cnt (epsT (tLoc l τ) ε) false : ℕ) : ℤ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[cnt_true_add_cnt_false]`. Establish `hX : (∏ j, Complex.exp (Complex.I * (φ j : ℂ))) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun j _ => Complex.exp_ne_zero _`. Establish `hXinv : ∏ j, Complex.exp (-(Complex.I * (φ j : ℂ))) = (∏ j, Complex.exp (Complex.I * (φ j : ℂ)))⁻¹`. Simplify using `only [Complex.exp_neg, Finset.prod_inv_distrib]`. Establish `hK : 1 * (u'.det ^ e * (star u'.det) ^ ((V.rank : ℤ) - e)) * (∏ a, ∏ j, ((Real.cos (φ j) : ℂ) + Complex.I * (VacE.rhoT (tLoc l τ) ε a : ℂ) * (Real.sin (φ j) : ℂ))) * (u.det ^ e * (star u.det) ^ ((V.rank : ℤ) - e)) = jF e (cnt (epsT (tLoc l τ) ε) true) (cnt (epsT (tLoc l τ) ε) fal …`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[VacI.jF_kak e _ _ k u u' φ hu hu' hφ hkm, VacK.prodF, hsu, hsu', hm, hXinv]`. Conclude with `VacK.alg _ _ _ hdu.ne_zero hdu'.ne_zero hX e _ _`. Rewrite using `[VacC.vac_eq, hLk]`. Use function extensionality and compare the values at `v`. Rewrite using `[VacC.dg_const, VacC.dg_const, hK]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem vacK_of : GZSch → LawN → LawNbar → LocMul → LNe → VacK := by
   intro hGZ hN hNb hLM hLNe

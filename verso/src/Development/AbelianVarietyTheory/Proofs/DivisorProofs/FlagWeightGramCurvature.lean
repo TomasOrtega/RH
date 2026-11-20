@@ -8,19 +8,17 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ _ _ ι _ n U H Y π A e _ hA he y hy lam G C hB`. Establish `hU : π y ∈ U` using `hA.mapsTo hy`. Take `⟨-, hG, -⟩` from `hB (π y) hU`. Rewrite using `[formAbsLe_iff]`. Introduce `ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set v := fderiv ℂ π y ξ with hv`. Establish `hpull : diagVal (pullForm G π y) ξ = gnorm (G (π y)) v ^ 2` using `diagVal_formOf_eq_gnorm_sq hG v`. Establish `hci : ∀ i, ‖curvDiag H π e i y ξ ξ‖ ≤ C * gnorm (G (π y)) v ^ 2` using `fun i => by`. Establish `h1` using `hB.norm_form_le hU v (fun a => e y a i)`. Establish `h2 : gnorm (H (π y)) (fun a => e y a i) ^ 2 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gnorm_sq (hB (π y) hU).1.posSemidef, he.unitary y hy i i, if_pos rfl, one_re]`. Rewrite `h1` using `[h2, mul_one]`. Conclude with `h1`. Use `set S : ℂ := ∑ i, (lam i : ℂ) * curvDiag H π e i y ξ ξ with hS`. Establish `hdiag : diagVal (horizForm H π e lam y) ξ = -(1 / (2 * Real.pi)) * S.re`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2π : ((2 * Real.pi : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (by positivity : (2 * Real.pi) ≠ 0)`. Establish `: -I * horizForm H π e lam y ξ ξ = ((-(1 / (2 * Real.pi)) : ℝ) : ℂ) * S`. Rewrite using `[horizForm, kappa, ← hS]`. Move the coercions through the operations in `at h2π ⊢`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `S * I_sq`. Rewrite using `[diagVal, this, re_ofReal_mul]`. Establish `hSre : S.re = ∑ i, lam i * (curvDiag H π e i y ξ ξ).re`. Rewrite using `[hS, re_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => re_ofReal_mul _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdiag, hSre, hpull, abs_mul, abs_neg, abs_of_pos (by positivity : (0:ℝ) < 1 / (2 * Real.pi))]`. Establish `hsum : |∑ i, lam i * (curvDiag H π e i y ξ ξ).re| ≤ ∑ i, |lam i| * (C * gnorm (G (π y)) v ^ 2)`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[abs_mul]`. Conclude with `mul_le_mul_of_nonneg_left ((abs_re_le_norm _).trans (hci i)) (abs_nonneg _)`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem horizForm_formAbsLe : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]
     [FiniteDimensional ℂ E] (ι : Type) [Fintype ι] (n : ℕ) (U : Set (ι → ℂ))

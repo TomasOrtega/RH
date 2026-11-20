@@ -5,14 +5,14 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Simplify using `only [wt, Prod.mk_add_mk, Prod.mk.injEq]`. Apply the tactic sequence `constructor <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem wt_add' (i k j : Fin 4) : wt i j = wt i k + wt k j := by
   simp only [wt, Prod.mk_add_mk, Prod.mk.injEq]
   constructor <;> ring
 
 /- English proof (translation)
-Simplify using `[wt]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem wt_self' (i : Fin 4) : wt i i = 0 := by
   simp [wt]
@@ -20,33 +20,33 @@ private theorem wt_self' (i : Fin 4) : wt i i = 0 := by
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Simplify using `only [wv, Prod.fst_add, Prod.snd_add, zpow_add]`. Rewrite using `[mul_mul_mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem wv_add' (t : Rˣ × Rˣ) (a b : ℤ × ℤ) : wv t (a + b) = wv t a * wv t b := by
   simp only [wv, Prod.fst_add, Prod.snd_add, zpow_add]
   rw [mul_mul_mul_comm]
 
 /- English proof (translation)
-Simplify using `[wv]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem wv_zero' (t : Rˣ × Rˣ) : wv t 0 = 1 := by simp [wv]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, Matrix.mul_apply, Fin.sum_univ_four, sgn] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem adj_mul' (X Y : M4 R) : adj (X * Y) = adj Y * adj X := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [adj_apply, Matrix.mul_apply, Fin.sum_univ_four, sgn] <;> ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem adj_adj' (X : M4 R) : adj (adj X) = X := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [adj_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[mul_smul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem adj_smul' (a : R) (X : M4 R) : adj (a • X) = a • adj X := by
   ext i j
@@ -54,7 +54,7 @@ private theorem adj_smul' (a : R) (X : M4 R) : adj (a • X) = a • adj X := by
   rw [mul_smul_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [adj_apply, sgn, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem adj_one' : adj (1 : M4 R) = 1 := by
   ext i j
@@ -66,9 +66,9 @@ Both sides reduce to the same expression.
 private theorem tconj_apply' (t : Rˣ × Rˣ) (X : M4 R) (i j : Fin 4) : tconj t X i j = (wv t (wt i j) : R) * X i j := rfl
 
 /- English proof (translation)
-Set `d : Fin 4 → Rˣ` to `fun i => wv t (lamW i, muW i)`. Establish `key : ∀ i j, wv t (wt i j) = d i * (d j)⁻¹`. Introduce `i j`. Rewrite using `[eq_mul_inv_iff_mul_eq, ← wv_add']`. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[wt]`. Set `u : (M4 R)ˣ` to `⟨Matrix.diagonal fun i => (d i : R), Matrix.diagonal fun i => ((d i)⁻¹ : Rˣ), by simp [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one], by simp [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]⟩`. Use `⟨u, fun X => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [u, Units.inv_mk, tconj_apply', key, Units.val_mul, Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -89,19 +89,19 @@ private theorem tconj_unit' (t : Rˣ × Rˣ) : ∃ u : (M4 R)ˣ, ∀ X, tconj t 
 end UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Introduce `R _`. Use `⟨adj_mul', adj_adj', ?_, adj_smul', adj_one', ?_, ?_, ?_, ?_, ?_, ?_, ?_, tconj_unit'⟩` and prove the remaining obligations. Introduce `X Y`. Use extensionality with `i j`. Simplify using `[adj_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `R' _ f X`. Use extensionality with `i j`. Simplify using `[adj_apply, Matrix.map_apply]`. Introduce `ν g g' hg h`. Establish `hg' : adj g * g = ν • 1` using `hg`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `ν ν' g g' hg hg'`. Establish `h1 : adj g * g = ν • 1` using `hg`. Establish `h2 : adj g' * g' = ν' • 1` using `hg'`. Use `show adj (g * g') * (g * g') = (ν * ν') • 1`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[adj_mul', mul_assoc, ← mul_assoc (adj g), h1, smul_mul_assoc, one_mul, mul_smul_comm, h2, smul_smul]`. Introduce `t X Y`. Use extensionality with `i j`. Simplify using `only [tconj_apply', Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[wt_add' i k j, wv_add', Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `t`. Use extensionality with `i j`. Rewrite using `[tconj_apply', Matrix.one_apply]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[wt_self', wv_zero']`. Simplify using the standard rewrite rules. Introduce `t X`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `only [adj_apply, tconj_apply']`. Rewrite using `[wt_rev, mul_smul_comm]`. Introduce `t X`. Simplify using `[Matrix.trace, tconj_apply', wt_self', wv_zero']`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.grp :
     ∀ (R : Type) [CommRing R], (∀ X Y : M4 R, adj (X * Y) = adj Y * adj X) ∧ (∀ X : M4 R, adj (adj X) = X) ∧ (∀ X Y : M4 R, adj (X + Y) = adj X + adj Y) ∧ (∀ (a : R) (X : M4 R), adj (a • X) = a • adj X) ∧ adj (1 : M4 R) = 1 ∧ (∀ (R' : Type) [CommRing R'] (f : R →+* R') (X : M4 R), adj (X.map f) = (adj X).map f) ∧ (∀ (ν : R) (g g' : M4 R), IsGSp ν g → g * g' = 1 → adj g = ν • g') ∧ (∀ (ν ν' : R) (g g' : M4 R), IsGSp ν g → IsGSp ν' g' → IsGSp (ν * ν') (g * g')) ∧ (∀ (t : Rˣ × Rˣ) (X Y : M4 R), tconj t (X * Y) = tconj t X * tconj t Y) ∧ (∀ t : Rˣ × Rˣ, tconj t (1 : M4 R) = 1) ∧ (∀ (t : Rˣ × Rˣ) (X : M4 R), adj (tconj t X) = tconj t (adj X)) ∧ (∀ (t : Rˣ × Rˣ) (X : M4 R), (tconj t X).trace = X.trace) ∧ (∀ t : Rˣ × Rˣ, ∃ u : (M4 R)ˣ, ∀ X, tconj t X = u * X * (u⁻¹ : (M4 R)ˣ)) := by

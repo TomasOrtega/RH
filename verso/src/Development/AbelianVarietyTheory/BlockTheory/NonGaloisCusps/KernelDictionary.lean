@@ -95,13 +95,13 @@ def JumpCmp [IsDomain O] (β : ∀ i, Fin R.e ≃ EmbOver K (W.emb i)) (T : LocL
       (S.count i τ a a : ℤ) = multV PD T.ρ (β i τ).1 a
 
 /- English proof (translation)
-Introduce `y hy` and use `⟨y, hy, by rw [W.map_id]; exact (one_smul (LetA O n) y).symm⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 example (T : LocLat G Qp LL O) (i : ZMod n) : KillsN W (latId T) i 1 := fun y hy =>
   ⟨y, hy, by rw [W.map_id]; exact (one_smul (LetA O n) y).symm⟩
 
 /- English proof (translation)
-Simplify using `[vec]`.
+Simplify using the standard rewrite rules.
 -/
 example {T : LocLat G Qp LL O} {r : ℕ} (b : ZMod n → Fin r → W.DD T) : vec W jE b 0 = 0 := by
   simp [vec]
@@ -150,7 +150,7 @@ def DictionaryAll (P : LocPrime l) (H : LocHW l P) : Prop :=
   ∀ (K LL : FinExt l) (h : Good K 1 LL), Dictionary P H K LL h
 
 /- English proof (translation)
-Introduce `h2` and use `by have := h.2.1 h2 omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ne_two_of_good {K LL : FinExt l} (h : Good K 1 LL) : l ≠ 2 := fun h2 => by
   have := h.2.1 h2

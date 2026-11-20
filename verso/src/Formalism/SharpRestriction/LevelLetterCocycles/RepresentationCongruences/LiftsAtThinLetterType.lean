@@ -26,23 +26,23 @@ theorem arc_letter_type_eq_ite [NeZero n] {b w S η : ℕ} {up : ZMod n → Bool
   rfl
 
 /- English proof (translation)
-Use `set A := arcOf b w S η up size with hA`. Establish `hup1 : up (c - 1) = true`. Apply the tactic sequence `cases h : up (c - 1) <;> simp_all`. Establish `hty0 : A.ty c = Formalism.MainNotions.LocalTheoryWindows.LT.down (size c)`. Rewrite using `[hA, arc_letter_type_eq_ite, hup]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hty1 : A.ty (c - 1) = Formalism.MainNotions.LocalTheoryWindows.LT.up (size (c - 1))`. Rewrite using `[hA, arc_letter_type_eq_ite, hup1]`. Both sides reduce to the same expression. Establish `hl5 : 5 ≤ PD.p` using `by have := hB.1; omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcase : Formalism.MainNotions.LiftingTheory.CaseA W` using `hB.2.1.1`. Establish `hthick : ∀ s < A.len c, (A.ty (c - (s : ZMod n))).thick`. Introduce `s _`. Rewrite using `[hA, arc_letter_type_eq_ite]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hden : nnDen W A c = ps W 1 ^ size (c - 1)`. Simplify using `only [nnDen, prodTy, hlen, Finset.prod_range_succ, Finset.prod_range_zero, Nat.cast_zero, sub_zero, Nat.cast_one, hty0, hty1, pow_zero, one_mul]`. Take `⟨hf1, hf2⟩` from `hf`. Establish `hL` using `liftsAt_thin_letter_type W A F c bb sol k₀ hOK hc hthick hcase hl5 hP2 hP9 hpi0 hSec hGL hFL hO hOv hinj hArc hW₁ hW₂ hbb ({1} : Finset ℕ) (by`. Introduce `s hs`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[Finset.mem_singleton]`. Substitute `hs` using the available equality. Use `⟨by omega, size (c - 1), ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_one, hty1]) b₁ sol₁ hb₁ c₁ (2 * A.σ PD.p) (by`. Introduce `s hs bs hbs`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[Finset.mem_singleton]`. Substitute `hs` using the available equality. Rewrite `hbs` using `[Nat.cast_one, hty1]`. Consider the cases of `hbs`. Conclude with `hlt) hpr f (by`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `hf1) (by` using `[Nat.cast_one, hty1, ← hden]`. Introduce `s hs bs hbs`. Take `⟨κ, x, hx⟩` from `hf2 s hs bs hbs`. Use `⟨κ, x, ?_⟩` and prove the remaining obligations. Simplify `hx) (by` using `[Nat.cast_one, hty1, ← hden]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s hs hs1 bs hbs`. Establish `hs0 : s = 0`. Rewrite `hs1` using `[Finset.mem_singleton]`. Use linear arithmetic over natural numbers and integers. Substitute `hs0` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Rewrite `hbs` using `[Nat.cast_zero, sub_zero, hty0]`. Consider the cases of `hbs)`. Use `⟨2 * A.σ PD.p + A.σ PD.p, ?_, hL⟩` and prove the remaining obligations. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem arc_length_two_reduction [NeZero n] [Fintype (K →ₐ[Qp] LL)] (W : LocWach PD LL O v n)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {b w S η m : ℕ} {up : ZMod n → Bool}

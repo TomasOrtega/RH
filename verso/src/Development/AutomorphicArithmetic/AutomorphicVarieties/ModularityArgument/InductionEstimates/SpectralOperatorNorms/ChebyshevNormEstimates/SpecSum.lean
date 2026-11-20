@@ -6,21 +6,21 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg.Tf.IntegralApplyAeEq UpperTheory.V.Z.IntegralApplyAeEq UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Establish `hpos : a.IsPositive` using `(ContinuousLinearMap.nonneg_iff_isPositive a).1 ha`. Establish `hsym : (a : Eu d →ₗ[ℂ] Eu d).IsSymmetric` using `hpos.isSymmetric`. Establish `htop : (⨆ μ : ℂ, Module.End.eigenspace (a : Eu d →ₗ[ℂ] Eu d) μ) = ⊤` using `Submodule.orthogonal_eq_bot_iff.1 hsym.orthogonalComplement_iSup_eigenspaces_eq_bot`. Establish `hw : w ∈ (⨆ μ : ℂ, Module.End.eigenspace (a : Eu d →ₗ[ℂ] Eu d) μ)` using `htop ▸ Submodule.mem_top`. Proceed by induction on `hw using Submodule.iSup_induction' with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => simp only [map_add, hu, hv, smul_add, Finset.sum_add_distrib]`. Consider the case `mem μ v hv`. Distinguish the cases in `h0 : v = 0`. Substitute `h0` using the available equality.
+Treat this case separately. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `hav : a v = μ • v` using `Module.End.mem_eigenspace_iff.1 hv`. Establish `hev : Module.End.HasEigenvalue (a : Eu d →ₗ[ℂ] Eu d) μ` using `Module.End.hasEigenvalue_of_hasEigenvector ⟨hv, h0⟩`. Establish `hre : (starRingEnd ℂ) μ = μ` using `hsym.conj_eigenvalue_eq_self hev`. Take `⟨r, rfl⟩ : ∃ r : ℝ, μ = r` from `⟨μ.re, (Complex.conj_eq_iff_re.1 hre).symm⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hr : 0 ≤ r`. Establish `h1` using `hpos.re_inner_nonneg_right v`. Rewrite `h1` using `[hav, inner_smul_right, inner_self_eq_norm_sq_to_K]`. Establish `h2 : 0 < ‖v‖ ^ 2` using `by positivity`. Establish `h3 : RCLike.re ((r : ℂ) * ((‖v‖ : ℂ)) ^ 2) = r * ‖v‖ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Complex.ofReal_pow, ← Complex.ofReal_mul]`. Simplify using `only [RCLike.re_to_complex, Complex.ofReal_re]`. Establish `h4 : 0 ≤ r * ‖v‖ ^ 2` using `by rw [← h3]; exact h1`. Conclude with `nonneg_of_mul_nonneg_left h4 h2`. Establish `hne : ∀ x : ℝ, x ≠ r → eigP a x v = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Unfold `eigP`. Rewrite using `[Submodule.starProjection_apply_eq_zero_iff]`. Introduce `u hu`. Establish `hx' : (x : ℂ) ≠ r` using `by exact_mod_cast hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hsym.orthogonalFamily_eigenspaces hx' ⟨u, hu⟩ ⟨v, hv⟩`. Establish `heq : eigP a r v = v` using `Submodule.starProjection_eq_self_iff.2 hv`. Break down `hr.eq_or_lt with h | h` into its components or cases. Establish `h1 : a (Y v) = Y (a v)` using `congrArg (fun T : Eu d →L[ℂ] Eu d => T v) hc.eq`. Rewrite using `[h1, hav, ← h]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Complex.ofReal_zero, zero_smul, map_zero]`. Use `(Finset.sum_eq_zero fun x hx => ?_).symm` and prove the remaining obligations. Rewrite using `[hne x (h ▸ ((hsp x).1 hx).1.ne'), smul_zero]`. Establish `hm : r ∈ sp` using `(hsp r).2 ⟨h, hev⟩`. Rewrite using `[Finset.sum_eq_single_of_mem r hm fun x _ hx => by rw [hne x hx, smul_zero], heq, hY r h v hv, map_smul, hav, smul_smul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem specSum_op {d : ℕ} (a Y : Eu d →L[ℂ] Eu d) (y : ℝ → ℂ) (sp : Finset ℝ) (ha : 0 ≤ a) (hc : Commute a Y)
     (hsp : ∀ x, x ∈ sp ↔ 0 < x ∧ Module.End.eigenspace (a : Eu d →ₗ[ℂ] Eu d) (x : ℂ) ≠ ⊥)
@@ -69,9 +69,9 @@ private theorem specSum_op {d : ℕ} (a Y : Eu d →L[ℂ] Eu d) (y : ℝ → �
         smul_smul, mul_comm]
 
 /- English proof (translation)
-Introduce `d d' a Y Z N s y sp ha hc hsp hY`. Establish `key : (N ∘ₗ ((a ∘L Y ∘L Z : Eu d' →L[ℂ] Eu d') : Eu d' →ₗ[ℂ] Eu d') ∘ₗ s) = ∑ x ∈ sp, ((x : ℂ) * y x) • (N ∘ₗ ((eigP a x ∘L Z : Eu d' →L[ℂ] Eu d') : Eu d' →ₗ[ℂ] Eu d') ∘ₗ s)`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Express the relevant statement in the definitionally equal form `N (a (Y (Z (s w)))) = ∑ x ∈ sp, ((x : ℂ) * y x) • N (eigP a x (Z (s w)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[specSum_op a Y y sp ha hc hsp hY, map_sum]`. Simplify using `only [map_smul]`. Rewrite using `[key, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.specSum :
     ∀ {d d' : ℕ} (a Y Z : Eu d' →L[ℂ] Eu d') (N : Eu d' →ₗ[ℂ] Eu d) (s : Eu d →ₗ[ℂ] Eu d') (y : ℝ → ℂ) (sp : Finset ℝ), 0 ≤ a → Commute a Y →

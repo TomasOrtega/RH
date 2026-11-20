@@ -13,9 +13,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 namespace GlobalTheory.FlagGen
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_lowerTriangular]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Simplify using `[uni]`. Introduce `i j hij`. Establish `h : i < j` using `hij`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[uni, h.ne, not_lt.2 h.le]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_uni_eq_one {R : Type} [CommRing R] {m : ℕ} (s : Low m → R) : (Matrix.of (uni s)).det = 1 := by
   rw [Matrix.det_of_lowerTriangular]
@@ -26,7 +26,7 @@ theorem det_uni_eq_one {R : Type} [CommRing R] {m : ℕ} (s : Low m → R) : (Ma
     simp [uni, h.ne, not_lt.2 h.le]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l c X t R _ g x0 u hu s`. Use `choose v hvt hvc using fun τ (i : Fin (Dw.mult τ)) => GlobalTheory.FlagEmb.exists_comb t (fun j => (hu.1 τ j).1) (fun j => uni (s τ) j i)`. Use `⟨v, ⟨fun τ i => ⟨hvt τ i, fun a => ?_⟩, fun τ w hw hE => ?_⟩, hvc⟩` and prove the remaining obligations. Conclude with `GlobalTheory.FlagEmb.eig_of_comb t _ _ _ a _ (fun j => ⟨(hu.1 τ j).1, (hu.1 τ j).2 a⟩) (hvc τ i)`. Conclude with `GlobalTheory.FlagEmb.existsUnique_comb_change t (fun j => (hu.1 τ j).1) (Matrix.of (uni (s τ))) (by rw [det_uni_eq_one]; exact isUnit_one) (hvc τ) hw (hu.2 τ w hw hE)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isFrame_uni : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {c : Coeff l} {X : Scheme.{0}} (t : SAB H X) {R : Type} [CommRing R] (g : c.F →+* R) (x0 : Sp R ⟶ X)

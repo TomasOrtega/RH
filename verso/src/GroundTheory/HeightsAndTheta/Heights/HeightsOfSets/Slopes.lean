@@ -22,7 +22,7 @@ def degreeWith (F : Submodule (𝓞 K) E.carrier) {r : ℕ} (f : Fin r → F) : 
     (1 / 2) * ∑ σ : K →+* ℂ, Real.log ‖gramDet E σ (fun i ↦ (f i : E.carrier))‖
 
 /- English proof (translation)
-The claim follows from `exists_linearIndependent_of_le_finrank le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem exists_linearIndependent_rank (F : Submodule (𝓞 K) E.carrier) :
     ∃ f : Fin (rank E F) → F, LinearIndependent (𝓞 K) f :=
@@ -69,7 +69,7 @@ abbrev secondProj (K : Type*) [Field K] : (Fin 2 → 𝓞 K) →ₗ[𝓞 K] 𝓞
   LinearMap.proj 1
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem integers_inner_eq (σ : K →+* ℂ) (x y : Fibre σ (𝓞 K)) :
     ((HermitianMetric.integers K).form σ).inner x y =
@@ -79,11 +79,11 @@ theorem integers_inner_eq (σ : K →+* ℂ) (x y : Fibre σ (𝓞 K)) :
 
 omit [NumberField K] in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z a`. Rewrite using `[LinearMap.lTensor_tmul, standardCoord_tmul, integersCoord_tmul]`. Distinguish the cases in `hi : i = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hi]`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, PiLp.add_apply, hx, hy, map_add]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem standardCoord_firstIncl (σ : K →+* ℂ) (x : Fibre σ (𝓞 K)) (i : Fin 2) :
     standardCoord K σ (Fin 2) ((firstIncl K).lTensor (ComplexAt σ) x) i =
@@ -101,7 +101,7 @@ theorem standardCoord_firstIncl (σ : K →+* ℂ) (x : Fibre σ (𝓞 K)) (i : 
 
 omit [NumberField K] in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z a => rw [LinearMap.lTensor_tmul, standardCoord_tmul, integersCoord_tmul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, PiLp.add_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem integersCoord_secondProj (σ : K →+* ℂ) (x : Fibre σ (Fin 2 → 𝓞 K)) :
     integersCoord K σ ((secondProj K).lTensor (ComplexAt σ) x) = standardCoord K σ (Fin 2) x 1 := by
@@ -112,16 +112,16 @@ theorem integersCoord_secondProj (σ : K →+* ℂ) (x : Fibre σ (Fin 2 → �
 
 omit [NumberField K] in
 /- English proof (translation)
-The claim follows from `fun a b h ↦ by simpa using congrFun h 0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem firstIncl_injective : Function.Injective (firstIncl K) :=
   fun a b h ↦ by simpa using congrFun h 0
 
 omit [NumberField K] in
 /- English proof (translation)
-Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hy1 : y 1 = 0` using `hy`. Use `⟨y 0, funext fun i ↦ ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `fin_cases i`. Simplify using the standard rewrite rules. Simplify using `[hy1]`. Introduce and unpack `⟨a, rfl⟩`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem firstIncl_exact : Function.Exact (firstIncl K) (secondProj K) := by
   intro y
@@ -137,13 +137,13 @@ theorem firstIncl_exact : Function.Exact (firstIncl K) (secondProj K) := by
 
 omit [NumberField K] in
 /- English proof (translation)
-The claim follows from `fun a ↦ ⟨Pi.single 1 a, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem secondProj_surjective : Function.Surjective (secondProj K) :=
   fun a ↦ ⟨Pi.single 1 a, by simp⟩
 
 /- English proof (translation)
-Rewrite using `[HermitianMetric.standard_inner, integers_inner_eq, Fin.sum_univ_two, standardCoord_firstIncl, standardCoord_firstIncl, standardCoord_firstIncl, standardCoord_firstIncl]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem firstIncl_isometric (σ : K →+* ℂ) (x y : Fibre σ (𝓞 K)) :
     ((HermitianMetric.standard K (Fin 2)).form σ).inner ((firstIncl K).lTensor (ComplexAt σ) x)
@@ -154,7 +154,7 @@ theorem firstIncl_isometric (σ : K →+* ℂ) (x y : Fibre σ (𝓞 K)) :
   simp
 
 /- English proof (translation)
-Establish `h` using `hv ((1 : ComplexAt σ) ⊗ₜ (1 : 𝓞 K))`. Rewrite `h` using `[HermitianMetric.standard_inner, Fin.sum_univ_two, standardCoord_firstIncl, standardCoord_firstIncl, integersCoord_tmul]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem standardCoord_zero_of_orthogonal (σ : K →+* ℂ) (v : Fibre σ (Fin 2 → 𝓞 K))
     (hv : ∀ w : Fibre σ (𝓞 K), ((HermitianMetric.standard K (Fin 2)).form σ).inner
@@ -166,7 +166,7 @@ theorem standardCoord_zero_of_orthogonal (σ : K →+* ℂ) (v : Fibre σ (Fin 2
   simpa using h
 
 /- English proof (translation)
-Rewrite using `[integers_inner_eq, HermitianMetric.standard_inner, Fin.sum_univ_two, standardCoord_zero_of_orthogonal σ x hx, standardCoord_zero_of_orthogonal σ y hy, integersCoord_secondProj, integersCoord_secondProj]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem secondProj_coisometric (σ : K →+* ℂ) (x y : Fibre σ (Fin 2 → 𝓞 K))
     (hx : ∀ w : Fibre σ (𝓞 K), ((HermitianMetric.standard K (Fin 2)).form σ).inner
@@ -200,20 +200,18 @@ def standardFlag : Fin 3 → Submodule (𝓞 K) (HermitianBundle.standard K 2).c
   ![⊥, LinearMap.range (firstIncl K), ⊤]
 
 /- English proof (translation)
-Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp_all [standardFlag]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem standardFlag_monotone : Monotone (standardFlag K) := by
   intro i j hij
   fin_cases i <;> fin_cases j <;> simp_all [standardFlag]
 
 /- English proof (translation)
-Introduce `a x ha hx`. Express the relevant statement in the definitionally equal form `Fin 2 → 𝓞 K at x`. Use `fin_cases i`. Express the relevant statement in the definitionally equal form `x ∈ (⊥ : Submodule (𝓞 K) (Fin 2 → 𝓞 K))`. Express the relevant statement in the definitionally equal form `a • x ∈ (⊥ : Submodule (𝓞 K) (Fin 2 → 𝓞 K)) at hx`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[Submodule.mem_bot]`. Conclude with `(smul_eq_zero.mp hx).resolve_left ha`. Express the relevant statement in the definitionally equal form `x ∈ LinearMap.range (firstIncl K)`. Express the relevant statement in the definitionally equal form `a • x ∈ LinearMap.range (firstIncl K) at hx`. Take `⟨b, hb⟩` from `hx`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (a • x) 1 = 0` using `by rw [← hb]; simp`. Rewrite `h1` using `[Pi.smul_apply, smul_eq_mul]`. Establish `hx1 : x 1 = 0` using `(mul_eq_zero.mp h1).resolve_left ha`. Use `⟨x 0, funext fun i ↦ ?_⟩` and prove the remaining obligations. Use `fin_cases i`.
-
-Simplify using the standard rewrite rules. Simplify using `[hx1]`. Conclude with `Submodule.mem_top`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem standardFlag_saturated (i : Fin 3) :
     (HermitianBundle.standard K 2).Saturated (standardFlag K i) := by
@@ -237,9 +235,9 @@ theorem standardFlag_saturated (i : Fin 3) :
   · exact Submodule.mem_top
 
 /- English proof (translation)
-Use `fin_cases i`. Express the relevant statement in the definitionally equal form `Module.finrank (𝓞 K) (⊥ : Submodule (𝓞 K) (Fin 2 → 𝓞 K)) = 0`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `Module.finrank (𝓞 K) (LinearMap.range (firstIncl K)) = 1`. Rewrite using `[← (LinearEquiv.ofInjective (firstIncl K) firstIncl_injective).finrank_eq, Module.finrank_self]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Module.finrank (𝓞 K) (⊤ : Submodule (𝓞 K) (Fin 2 → 𝓞 K)) = 2`. Rewrite using `[finrank_top, Module.finrank_fin_fun]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem standardFlag_rank (i : Fin 3) :
     (HermitianBundle.standard K 2).rank (standardFlag K i) = i := by

@@ -27,17 +27,15 @@ open scoped ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n hn u ρ hρ hu hint`. Assume the negation of the conclusion as `hne`. Establish `hb : Metric.ball (0 : V n) ρ ∈ nhds (0 : V n)` using `Metric.ball_mem_nhds 0 hρ`. Use `set a := ‖u 0‖ with ha`. Establish `ha0 : 0 < a` using `norm_pos_iff.mpr hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ContinuousAt u 0` using `hu.continuousOn.continuousAt hb`. Establish `ev1 : ∀ᶠ z in nhds (0 : V n), a / 2 < ‖u z‖` using `hc.norm.eventually (Ioi_mem_nhds (by show a / 2 < a; linarith))`. Take `⟨δ0, hδ0, hall⟩` from `Metric.eventually_nhds_iff.mp (ev1.and (Filter.eventually_of_mem hb fun z hz => hz))`. Use `set δ := min δ0 ρ with hδ`. Establish `hδpos : 0 < δ` using `lt_min hδ0 hρ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : Metric.ball (0 : V n) δ ⊆ Metric.ball (0 : V n) ρ` using `Metric.ball_subset_ball (min_le_right _ _)`. Establish `hpt : ∀ z ∈ Metric.ball (0 : V n) δ, ENNReal.ofReal ((a / 2) ^ 2) * ENNReal.ofReal (‖z‖ ^ (-2 * (n : ℝ))) ≤ ENNReal.ofReal (‖u z‖ ^ 2 * ‖z‖ ^ (-(2 * (n : ℝ))))`. Introduce `z hz`. Establish `hz0 : dist z 0 < δ0`. Rewrite `hz` using `[Metric.mem_ball]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_of_lt_of_le hz (min_le_left _ _)`. Establish `h1` using `(hall hz0).1`. Rewrite using `[← ENNReal.ofReal_mul (by positivity), neg_mul]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `hr : 0 ≤ ‖z‖ ^ (-(2 * (n : ℝ)))` using `Real.rpow_nonneg (norm_nonneg _) _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (a / 2) ^ 2 ≤ ‖u z‖ ^ 2` using `pow_le_pow_left₀ (by positivity) h1.le 2`. Conclude with `mul_le_mul_of_nonneg_right h2 hr`. Establish `hlow : ENNReal.ofReal ((a / 2) ^ 2) * ∫⁻ z in Metric.ball (0 : V n) δ, ENNReal.ofReal (‖z‖ ^ (-2 * (n : ℝ))) ≤ ∫⁻ z in Metric.ball (0 : V n) ρ, ENNReal.ofReal (‖u z‖ ^ 2 * ‖z‖ ^ (-(2 * (n : ℝ))))`. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite `hlow` using `[ReciprocityTheory.ChartRestriction.G.AR.Up.VanishPf.crit_div hn hδpos, ENNReal.mul_top (by simp [ENNReal.ofReal_eq_zero, not_le]; positivity)]`. Conclude with `absurd (lt_of_le_of_lt hlow hint) (lt_irrefl _)`.
+Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem holo_vanish_of_critical_integrable : ∀ {n : ℕ}, 0 < n → ∀ (u : V n → ℂ) (ρ : ℝ), 0 < ρ → DifferentiableOn ℂ u (Metric.ball 0 ρ) → ∫⁻ z in Metric.ball (0 : V n) ρ, ENNReal.ofReal (‖u z‖ ^ 2 * ‖z‖ ^ (-(2 * (n : ℝ)))) < ⊤ → u 0 = 0 := by
   intro n hn u ρ hρ hu hint

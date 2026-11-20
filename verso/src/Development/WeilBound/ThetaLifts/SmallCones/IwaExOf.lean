@@ -8,7 +8,7 @@ namespace PositivityTheory.ThKCT
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n n₁ X r s H hB hX hx h0 K hK`. Take `⟨K₀, -, -, k1, k2, -⟩` from `hS F E σ B n X r s hB hX`. Take `rfl : K = K₀` from `Subgroup.ext fun g => (hK g).trans (k1 g).symm`. Conclude with `⟨k2, IwaG.iwa_glob hB hX hx h0 (fun v _ hg => PositivityTheory.ThKG.Loc.Iwa.iwaLoc hB (Or.inl hX) hx h0 v hg) hK⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem iwaEx_of (hS : StabEx) : IwaEx := by
   intro F E _ _ _ _ _ σ B n n₁ X r s H hB hX hx h0 K hK

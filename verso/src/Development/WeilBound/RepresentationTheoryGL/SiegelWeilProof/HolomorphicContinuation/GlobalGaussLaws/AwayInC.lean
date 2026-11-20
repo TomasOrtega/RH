@@ -8,7 +8,7 @@ open Matrix
 namespace PositivityTheory.Rg.Sw.Glob.AwayPf
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, dotProduct, mulVec, Matrix.conjTranspose_apply, Pi.star_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem diag_eq {m n : ℕ} (A : Matrix (Fin m) (Fin m) ℂ) (M : Matrix (Fin m) (Fin n) ℂ) (j : Fin n) :
     (Mᴴ * A * M) j j = star (fun a => M a j) ⬝ᵥ (A *ᵥ fun a => M a j) := by
@@ -19,13 +19,13 @@ theorem diag_eq {m n : ℕ} (A : Matrix (Fin m) (Fin m) ℂ) (M : Matrix (Fin m)
   ring
 
 /- English proof (translation)
-Establish `hsum : (trace (Mᴴ * A * M)).re = ∑ j, (star (fun a => M a j) ⬝ᵥ (A *ᵥ fun a => M a j)).re`. Rewrite using `[Matrix.trace, Complex.re_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, diag_eq]`. Establish `hnn : ∀ j, 0 ≤ (star (fun a => M a j) ⬝ᵥ (A *ᵥ fun a => M a j)).re`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `j`. Distinguish the cases in `hv : (fun a => M a j) = 0`. Rewrite using `[hv]`. Simplify using the standard rewrite rules. Conclude with `(hA.re_dotProduct_pos hv).le`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hsum ▸ Finset.sum_nonneg (fun j _ => hnn j), fun hM => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, (fun a => M a j) ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `hM` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a j`. Conclude with `congrFun (hc j) a`. Rewrite using `[hsum]`. Conclude with `Finset.sum_pos' (fun j _ => hnn j) ⟨j, Finset.mem_univ _, hA.re_dotProduct_pos hj⟩`.
+A detailed English derivation is pending.
 -/
 theorem tr_re_nonneg {m n : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A.PosDef) (M : Matrix (Fin m) (Fin n) ℂ) :
     0 ≤ (trace (Mᴴ * A * M)).re ∧ (M ≠ 0 → 0 < (trace (Mᴴ * A * M)).re) := by
@@ -50,7 +50,7 @@ theorem tr_re_nonneg {m n : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A.PosDef
   exact Finset.sum_pos' (fun j _ => hnn j) ⟨j, Finset.mem_univ _, hA.re_dotProduct_pos hj⟩
 
 /- English proof (translation)
-Establish `h : (Mᴴ * A * N)ᴴ = Nᴴ * A * M`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hA.eq, Matrix.mul_assoc]`. Rewrite using `[← h, Matrix.trace_conjTranspose]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tr_re_symm {m n : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A.IsHermitian) (M N : Matrix (Fin m) (Fin n) ℂ) :
     (trace (Mᴴ * A * N)).re = (trace (Nᴴ * A * M)).re := by
@@ -61,9 +61,9 @@ theorem tr_re_symm {m n : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A.IsHermit
   simp
 
 /- English proof (translation)
-Establish `h : star (trace (Mᴴ * A * M)) = trace (Mᴴ * A * M)`. Rewrite using `[← Matrix.trace_conjTranspose]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hA.eq, Matrix.mul_assoc]`. Establish `him : (trace (Mᴴ * A * M)).im = 0`. Use `congrArg Complex.im h` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Apply the tactic sequence `apply Complex.ext <;> simp [him]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tr_im_zero {m n : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} (hA : A.IsHermitian) (M : Matrix (Fin m) (Fin n) ℂ) :
     trace (Mᴴ * A * M) = ((trace (Mᴴ * A * M)).re : ℂ) := by
@@ -120,7 +120,7 @@ theorem Qf_apply (A : T → Matrix (Fin m) (Fin m) ℂ) (w : T → ℝ) (b b' : 
     Qf τ A w b b' = 2 * qf τ A w b b' := rfl
 
 /- English proof (translation)
-Rewrite using `[Qf_apply, Qf_apply]`. Use `congr 1`. Unfold `qf`. Use `Finset.sum_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Rewrite using `[tr_re_symm (hA t.1 t.2)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Qf_symm (A : T → Matrix (Fin m) (Fin m) ℂ) (hA : ∀ t, t ≠ τ → (A t).IsHermitian) (w : T → ℝ)
     (b b' : Bsp τ m n) : Qf τ A w b b' = Qf τ A w b' b := by
@@ -131,11 +131,11 @@ theorem Qf_symm (A : T → Matrix (Fin m) (Fin m) ℂ) (hA : ∀ t, t ≠ τ →
   rw [tr_re_symm (hA t.1 t.2)]
 
 /- English proof (translation)
-Rewrite using `[Qf_apply]`. Establish `hnn : ∀ t : {τ' : T // τ' ≠ τ}, 0 ≤ w t.1 * (trace ((of (b t))ᴴ * A t.1 * of (b t))).re` using `fun t => mul_nonneg (hw t.1 t.2).le (tr_re_nonneg (hA t.1 t.2) _).1`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, b t ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hb (funext hc)`. Establish `hof : of (b t) ≠ 0`. Introduce `h0`. Apply `ht` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `congrFun (congrFun h0 i) j`. Establish `hpos : 0 < qf τ A w b b` using `Finset.sum_pos' (fun t _ => hnn t) ⟨t, Finset.mem_univ _, mul_pos (hw t.1 t.2) ((tr_re_nonneg (hA t.1 t.2) _).2 hof)⟩`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem Qf_pos (A : T → Matrix (Fin m) (Fin m) ℂ) (hA : ∀ t, t ≠ τ → (A t).PosDef) (w : T → ℝ)
     (hw : ∀ t, t ≠ τ → 0 < w t) (b : Bsp τ m n) (hb : b ≠ 0) : 0 < Qf τ A w b b := by
@@ -157,7 +157,7 @@ theorem Qf_pos (A : T → Matrix (Fin m) (Fin m) ℂ) (hA : ∀ t, t ≠ τ → 
   linarith
 
 /- English proof (translation)
-Take `⟨G, hG⟩` from `GlobalTheory.ThK.EvAt0.GaussForm.exists_schwartz_gauss_form (Qf τ A w) (Qf_symm τ A (fun t ht => (hA t ht).isHermitian) w) (fun b hb => Qf_pos τ A hA w hw b hb)`. Use `⟨G, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[(hG b).1, Qf_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_gauss (A : T → Matrix (Fin m) (Fin m) ℂ) (hA : ∀ t, t ≠ τ → (A t).PosDef) (w : T → ℝ)
     (hw : ∀ t, t ≠ τ → 0 < w t) :

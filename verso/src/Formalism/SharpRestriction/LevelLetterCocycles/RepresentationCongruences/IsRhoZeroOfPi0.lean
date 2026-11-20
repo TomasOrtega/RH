@@ -19,9 +19,9 @@ namespace Formalism.MainNotions.N.Ln17.PCutBoundRho
 open Formalism.MainNotions.N.Ln17.PCutBoundRep
 
 /- English proof (translation)
-Proceed by induction on `x using Submodule.Quotient.induction_on with`. Consider the case `H z`. Rewrite using `[← Submodule.Quotient.mk_smul]`. Use `show Submodule.Quotient.mk _ = Submodule.Quotient.mk (o • z)`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `show (latSmul T o).f ((z : G → T.V) g) = o • (z : G → T.V) g`. Simplify using `[latSmul, algebraMap_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem H1map_latSmul (T : LocLat G Qp LL O) (o : O) (x : LatticeCohomology T.L) :
     (latSmul T o).H1map x = o • x := by
@@ -43,33 +43,33 @@ variable {W : LocWach PD LL O v n} {A : ArcP n} {c : ZMod n} {T : LocLat G Qp LL
 include hRelay hcase hl hA hc hW
 
 /- English proof (translation)
-The claim follows from `(((hRelay hcase hl A hA c hc).1 T hW).2.1 w hw).2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem rho_ex {w : W.DD T} (hw : InI W T c w) : ∃ x, IsRho W A T c w x :=
   (((hRelay hcase hl A hA c hc).1 T hW).2.1 w hw).2.2.2.1
 
 /- English proof (translation)
-The claim follows from `(((hRelay hcase hl A hA c hc).1 T hW).2.1 w hw).2.2.2.2.1 x x' h h'`.
+A detailed English derivation is pending.
 -/
 theorem rho_uniq {w : W.DD T} (hw : InI W T c w) {x x' : LatticeCohomology T.L} (h : IsRho W A T c w x)
     (h' : IsRho W A T c w x') : x = x' :=
   (((hRelay hcase hl A hA c hc).1 T hW).2.1 w hw).2.2.2.2.1 x x' h h'
 
 /- English proof (translation)
-The claim follows from `(((hRelay hcase hl A hA c hc).1 T hW).2.1 w hw).2.2.2.2.2.1 hπ`.
+A detailed English derivation is pending.
 -/
 theorem isRho_zero_of_pi0 {w : W.DD T} (hw : InI W T c w) (hπ : InFNc W T c W.π₀ w) : IsRho W A T c w 0 :=
   (((hRelay hcase hl A hA c hc).1 T hW).2.1 w hw).2.2.2.2.2.1 hπ
 
 /- English proof (translation)
-The claim follows from `((hRelay hcase hl A hA c hc).1 T hW).2.2 w w' x x' hw hw' h h'`.
+A detailed English derivation is pending.
 -/
 theorem rho_add {w w' : W.DD T} {x x' : LatticeCohomology T.L} (hw : InI W T c w) (hw' : InI W T c w')
     (h : IsRho W A T c w x) (h' : IsRho W A T c w' x') : IsRho W A T c (w + w') (x + x') :=
   ((hRelay hcase hl A hA c hc).1 T hW).2.2 w w' x x' hw hw' h h'
 
 /- English proof (translation)
-Establish `h2` using `(hRelay hcase hl A hA c hc).2 T T (latSmul T o) hW hW w x hw h`. Rewrite `h2` using `[W.map_latSmul, H1map_latSmul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem rho_smul {w : W.DD T} {x : LatticeCohomology T.L} (hw : InI W T c w) (h : IsRho W A T c w x) (o : O) :
     IsRho W A T c (o • w) (o • x) := by
@@ -77,9 +77,9 @@ theorem rho_smul {w : W.DD T} {x : LatticeCohomology T.L} (hw : InI W T c w) (h 
   rwa [W.map_latSmul, H1map_latSmul] at h2
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `isRho_zero_of_pi0 hRelay hcase hl hA hc hW (TypesA.InI_zero W) ⟨0, zero_mem _, smul_zero _, (smul_zero _).symm⟩`. Consider the case `insert j s hj ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj]`. Conclude with `rho_add hRelay hcase hl hA hc hW (hw j (Finset.mem_insert_self j s)) (InI_sum W s w fun i hi => hw i (Finset.mem_insert_of_mem hi)) (h j (Finset.mem_insert_self j s)) (ih (fun i hi => hw i (Finset.mem_insert_of_mem hi)) fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+A detailed English derivation is pending.
 -/
 theorem rho_sum {ι : Type} (s : Finset ι) (w : ι → W.DD T) (x : ι → LatticeCohomology T.L)
     (hw : ∀ i ∈ s, InI W T c (w i)) (h : ∀ i ∈ s, IsRho W A T c (w i) (x i)) :
@@ -102,9 +102,7 @@ section abelian₂
 variable {W : LocWach PD LL O v n}
 
 /- English proof (translation)
-Use `choose r hr r' hr' hrr hγ using GS.psγ hR`. Use `⟨∏ s ∈ Finset.range e, r s ^ A.Hs a e s, prod_mem fun s _ => pow_mem (GS.mem_invariants_of_mem_S1 W (hr s)) _, ∏ s ∈ Finset.range e, r' s ^ A.Hs a e s, prod_mem fun s _ => pow_mem (GS.mem_invariants_of_mem_S1 W (hr' s)) _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun s _ => by rw [← mul_pow, hrr, one_pow]`. Unfold `abelian₂`.
-
-Conclude with `GS.γ_prod r hγ e _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem γ_Lam (hR : GS.RD W) (A : ArcP n) (a : ZMod n) (e : ℕ) :
     ∃ R ∈ W.AΔ, ∃ R' ∈ W.AΔ, R * R' = 1 ∧ W.γA W.gam (abelian₂ W A a e) = R * abelian₂ W A a e := by
@@ -117,13 +115,13 @@ theorem γ_Lam (hR : GS.RD W) (A : ArcP n) (a : ZMod n) (e : ℕ) :
     exact GS.γ_prod r hγ e _
 
 /- English proof (translation)
-Take `⟨-, ⟨w, hw⟩, -⟩` from `id hR`. Establish `hwΔ : (w : LetA O n) ∈ W.AΔ`. Use `GS.quot_mem W (W.AΔ.mul_mem (GS.π₀_mem W) (pow_mem (GS.qA_mem W) (PD.p - 1))) ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow]`. Conclude with `(GS.isUnit_π₀ hR).mul ((GS.isUnit_qA hR).pow _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: W.π₀ * qA W ^ (PD.p - 1) * (w : LetA O n) = W.φA W.π₀` using `by rw [hw]; ring`. Rewrite using `[this]`. Simplify using `using TypesA.φA_pow_mem W (TypesA.pi0_mem_ADelta W) 1`. Proceed by induction on `t with`. Consider the case `zero => exact ⟨1, W.AΔ.one_mem, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ t ih`. Take `⟨U, hU, hUe⟩` from `ih`. Use `⟨(W.φA ^ t) (w : LetA O n) * U, W.AΔ.mul_mem (TypesA.φA_pow_mem W hwΔ t) hU, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, AlgHom.mul_apply, hw, map_mul, map_mul, map_pow, hUe, Finset.prod_range_succ]`. Simplify using `only [ps]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem φpow_π₀_prod (hR : GS.RD W) (t : ℕ) :
     ∃ U ∈ W.AΔ, (W.φA ^ t) W.π₀ = W.π₀ * (∏ k ∈ Finset.range t, ps W k ^ (PD.p - 1)) * U := by
@@ -145,9 +143,9 @@ theorem φpow_π₀_prod (hR : GS.RD W) (t : ℕ) :
     ring
 
 /- English proof (translation)
-Take `⟨U, hU, hUe⟩` from `φpow_π₀_prod hR j`. Use `⟨(∏ k ∈ Finset.range j, ps W k ^ ((PD.p - 1) * M - 2 * G₀)) * U ^ M, W.AΔ.mul_mem (prod_mem fun k _ => pow_mem (TypesA.ps_mem W k) _) (pow_mem hU M), ?_⟩` and prove the remaining obligations. Establish `e1 : (∏ k ∈ Finset.range j, ps W k ^ (PD.p - 1)) ^ M = (∏ k ∈ Finset.range j, ps W k ^ (2 * G₀)) * ∏ k ∈ Finset.range j, ps W k ^ ((PD.p - 1) * M - 2 * G₀)`. Rewrite using `[← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← pow_mul, ← pow_add, Nat.add_sub_cancel' h2]`. Establish `hpk : ∀ k, Formalism.MainNotions.LiftingTheory.pk W k = ps W k` using `fun _ => rfl`. Rewrite using `[hUe, mul_pow, mul_pow, e1]`. Unfold `Formalism.MainNotions.LiftingTheory.JJ`. Simplify using `only [hpk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -184,7 +182,7 @@ def LV (g : Fin d → W.EE) (e : ℕ) : Prop :=
 variable {W A F c b sol}
 
 /- English proof (translation)
-Take `⟨w₁, z, hw, hΛ, hP, hz, hR⟩` from `h`. Conclude with `⟨w₁, z, hw, hΛ, hP, hz, TypesA.RepVV_congr W hR rfl fun k => by rw [mul_ite, mul_zero]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LV_of_lifts {k₀ : Fin d} {f : W.EE} {e : ℕ} (h : LiftsAt W A F c b sol k₀ f e) :
     LV W A F c b sol (fun k => if k = k₀ then f else 0) e := by
@@ -192,9 +190,9 @@ theorem LV_of_lifts {k₀ : Fin d} {f : W.EE} {e : ℕ} (h : LiftsAt W A F c b s
   exact ⟨w₁, z, hw, hΛ, hP, hz, TypesA.RepVV_congr W hR rfl fun k => by rw [mul_ite, mul_zero]⟩
 
 /- English proof (translation)
-Take `⟨w₁, z, hw, ⟨Λ₁, hΛ₁, hΛw₁⟩, hP, hz, hR⟩` from `h`. Take `⟨w₁', z', hw', ⟨Λ₂, hΛ₂, hΛw₂⟩, hP', hz', hR'⟩` from `h'`. Use `⟨w₁ + w₁', z + z', TypesA.InI_add W hw hw', ⟨Λ₁ * Λ₂, mul_mem hΛ₁ hΛ₂, ?_⟩, ?_, TypesA.InFNc_add W hz hz', ?_⟩` and prove the remaining obligations. Establish `hsplit : (Λ₁ * Λ₂) • (w₁ + w₁') = Λ₂ • (Λ₁ • w₁) + Λ₁ • (Λ₂ • w₁')`. Rewrite using `[smul_add, mul_smul, mul_smul, smul_comm Λ₁ Λ₂ w₁]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit]`. Conclude with `TypesA.InFNc_add W (TypesA.InFNc_smul W (TypesA.Ps_mem W hΛ₂) hΛw₁) (TypesA.InFNc_smul W (TypesA.Ps_mem W hΛ₁) hΛw₂)`. Rewrite using `[map_add, smul_add]`. Conclude with `TypesA.inMultiple_add W hP hP'`. Conclude with `TypesA.RepVV_congr W (TypesA.RepVV_add W hR hR') (by rw [map_add]; abel) fun k => (mul_add _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LV_add {g g' : Fin d → W.EE} {e : ℕ} (h : LV W A F c b sol g e) (h' : LV W A F c b sol g' e) :
     LV W A F c b sol (fun k => g k + g' k) e := by
@@ -213,7 +211,7 @@ theorem LV_add {g g' : Fin d → W.EE} {e : ℕ} (h : LV W A F c b sol g e) (h' 
       fun k => (mul_add _ _ _).symm
 
 /- English proof (translation)
-Use `⟨0, 0, TypesA.InI_zero W, ⟨1, one_mem _, ?_⟩, ?_, ⟨0, zero_mem _, smul_zero _, (smul_zero _).symm⟩, TypesA.RepVV_congr W h0 (by simp) fun k => (mul_zero _).symm⟩` and prove the remaining obligations. Rewrite using `[smul_zero]`. Conclude with `⟨0, zero_mem _, smul_zero _, (smul_zero _).symm⟩`. Rewrite using `[map_zero, smul_zero]`. Conclude with `⟨0, zero_mem _, (smul_zero _).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem LV_zero {e : ℕ}
     (h0 : RepVV W T₂ (c - ((A.len c : ℕ) : ZMod n)) (A.len c) (A.M PD.p) (abelian₂ W A c (A.len c)) b sol 0
@@ -224,7 +222,7 @@ theorem LV_zero {e : ℕ}
   · rw [map_zero, smul_zero]; exact ⟨0, zero_mem _, (smul_zero _).symm⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using LV_zero h0 (e := e)`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `LV_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LV_sum {e : ℕ}
     (h0 : RepVV W T₂ (c - ((A.len c : ℕ) : ZMod n)) (A.len c) (A.M PD.p) (abelian₂ W A c (A.len c)) b sol 0

@@ -12,9 +12,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 variable {S : Scheme.{0}} {X : Type} [AddCommGroup X]
 
 /- English proof (translation)
-Unfold `charVal`. Use `set g : Sp A ⟶ Spec (torusRing ZU X) := t.left ≫ pullback.fst (splitTorusAff ZU X).hom (toZ S) with hg`. Establish `h : (Scheme.ΓSpecIso (torusRing ZU X)).inv ≫ g.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of A)).hom = Spec.preimage g` using `by conv_lhs => rw [← Spec.map_preimage g]`. Rewrite using `[Scheme.ΓSpecIso_naturality, Iso.inv_hom_id_assoc]`. Rewrite using `[← h]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem charVal_eq {A : Type} [CommRing A] {a : Sp A ⟶ S} (t : Over.mk a ⟶ splitTorus S X) (χ : X) :
     charVal t χ = (Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom
@@ -29,35 +29,35 @@ theorem charVal_eq {A : Type} [CommRing A] {a : Sp A ⟶ S} (t : Over.mk a ⟶ s
   rfl
 
 /- English proof (translation)
-Simplify using `only [charVal_eq, map_mul, MonoidHom.mul_apply, Units.val_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem charVal_mul {A : Type} [CommRing A] {a : Sp A ⟶ S} (t t' : Over.mk a ⟶ splitTorus S X) (χ : X) :
     charVal (t * t') χ = charVal t χ * charVal t' χ := by
   simp only [charVal_eq, map_mul, MonoidHom.mul_apply, Units.val_mul]
 
 /- English proof (translation)
-Simplify using `only [charVal_eq, map_one, MonoidHom.one_apply, Units.val_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem charVal_one {A : Type} [CommRing A] {a : Sp A ⟶ S} (χ : X) :
     charVal (1 : Over.mk a ⟶ splitTorus S X) χ = 1 := by
   simp only [charVal_eq, map_one, MonoidHom.one_apply, Units.val_one]
 
 /- English proof (translation)
-Simplify using `only [charVal_eq, ofAdd_add, map_mul, Units.val_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem charVal_add {A : Type} [CommRing A] {a : Sp A ⟶ S} (t : Over.mk a ⟶ splitTorus S X) (χ χ' : X) :
     charVal t (χ + χ') = charVal t χ * charVal t χ' := by
   simp only [charVal_eq, ofAdd_add, map_mul, Units.val_mul]
 
 /- English proof (translation)
-Simplify using `only [charVal_eq, ofAdd_zero, map_one, Units.val_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem charVal_zero {A : Type} [CommRing A] {a : Sp A ⟶ S} (t : Over.mk a ⟶ splitTorus S X) :
     charVal t 0 = 1 := by
   simp only [charVal_eq, ofAdd_zero, map_one, Units.val_one]
 
 /- English proof (translation)
-Apply `(GlobalTheory.splitTorusPointsEquiv S X (Over.mk a)).injective` to reduce the goal to its premises. Use extensionality with `χ`. Use `h χ` as an intermediate fact. Rewrite `this` using `[charVal_eq, charVal_eq]`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of A)).commRingCatIsoToRingEquiv.injective this`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charVal_ext {A : Type} [CommRing A] {a : Sp A ⟶ S} {t t' : Over.mk a ⟶ splitTorus S X}
     (h : ∀ χ, charVal t χ = charVal t' χ) : t = t' := by
@@ -68,7 +68,7 @@ theorem charVal_ext {A : Type} [CommRing A] {a : Sp A ⟶ S} {t t' : Over.mk a �
   exact (Scheme.ΓSpecIso (CommRingCat.of A)).commRingCatIsoToRingEquiv.injective this
 
 /- English proof (translation)
-Use `⟨(GlobalTheory.splitTorusPointsEquiv S X (Over.mk a)).symm ((Units.map (Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom.toMonoidHom).comp u), fun χ => ?_⟩` and prove the remaining obligations. Rewrite using `[charVal_eq, MulEquiv.apply_symm_apply]`. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of A)).inv_hom_id_apply _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_charVal {A : Type} [CommRing A] (a : Sp A ⟶ S) (u : Multiplicative X →* Aˣ) :
     ∃ t : Over.mk a ⟶ splitTorus S X, ∀ χ, charVal t χ = (u (Multiplicative.ofAdd χ)).val := by
@@ -78,9 +78,9 @@ theorem exists_charVal {A : Type} [CommRing A] (a : Sp A ⟶ S) (u : Multiplicat
   exact (Scheme.ΓSpecIso (CommRingCat.of A)).inv_hom_id_apply _
 
 /- English proof (translation)
-Unfold `charVal`. Establish `e : (t'.left ≫ pullback.fst (splitTorusAff ZU X).hom (toZ S) : Sp B ⟶ Spec (torusRing ZU X)) = Spec.map (CommRingCat.ofHom g) ≫ (t.left ≫ pullback.fst (splitTorusAff ZU X).hom (toZ S) : Sp A ⟶ Spec (torusRing ZU X))`. Rewrite using `[h]`. Conclude with `Category.assoc _ _ _`. Rewrite using `[e, Spec.preimage_comp, Spec.preimage_map]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem charVal_comp {A B : Type} [CommRing A] [CommRing B] {a : Sp A ⟶ S} {b : Sp B ⟶ S} (g : A →+* B)
     (t : Over.mk a ⟶ splitTorus S X) (t' : Over.mk b ⟶ splitTorus S X)
@@ -94,7 +94,7 @@ theorem charVal_comp {A B : Type} [CommRing A] [CommRing B] {a : Sp A ⟶ S} {b 
   rfl
 
 /- English proof (translation)
-Set `k : Over.mk b ⟶ Over.mk a` to `Over.homMk (spMap g) hg`. Establish `: t' = k ≫ t` using `charVal_ext fun χ => by rw [h, charVal_comp g t (k ≫ t) rfl]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem left_eq_of_charVal {A B : Type} [CommRing A] [CommRing B] {a : Sp A ⟶ S} {b : Sp B ⟶ S} (g : A →+* B)
     (hg : spMap g ≫ a = b) (t : Over.mk a ⟶ splitTorus S X) (t' : Over.mk b ⟶ splitTorus S X)
@@ -113,14 +113,14 @@ def tanPt {R : Type} [CommRing R] (x : Sp R ⟶ S) (δ : X →+ R) : epsAt x ⟶
   (exists_charVal _ (epsUnit δ)).choose
 
 /- English proof (translation)
-The claim follows from `(exists_charVal _ (epsUnit δ)).choose_spec χ`.
+A detailed English derivation is pending.
 -/
 theorem charVal_tanPt {R : Type} [CommRing R] (x : Sp R ⟶ S) (δ : X →+ R) (χ : X) :
     charVal (tanPt x δ) χ = TrivSqZeroExt.inl 1 + TrivSqZeroExt.inr (δ χ) :=
   (exists_charVal _ (epsUnit δ)).choose_spec χ
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, ← Spec.map_comp, ← h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_eps {R A : Type} [CommRing R] [CommRing A] (x : Sp R ⟶ S) (g : DualNumber R →+* A)
     (f : R →+* A) (h : g.comp (algebraMap R (DualNumber R)) = f) :
@@ -128,7 +128,7 @@ theorem spMap_comp_eps {R A : Type} [CommRing R] [CommRing A] (x : Sp R ⟶ S) (
   rw [← Category.assoc, ← Spec.map_comp, ← h]; rfl
 
 /- English proof (translation)
-Rewrite using `[spMap_comp_eps x _ (RingHom.id R) (by ext; simp)]`. Simplify using `[spMap]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fst_eps {R : Type} [CommRing R] (x : Sp R ⟶ S) :
     spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫
@@ -162,24 +162,24 @@ def lieModel {R : Type} [CommRing R] (x : Sp R ⟶ S) : LieModel (splitTorus S X
       ext <;> simp [epsMul, mul_comm]
 
 /- English proof (translation)
-The claim follows from `charVal_tanPt x`.
+A detailed English derivation is pending.
 -/
 theorem isCocharLie_lieModel {R : Type} [CommRing R] (x : Sp R ⟶ S) :
     IsCocharLie (lieModel (X := X) x) := charVal_tanPt x
 
 /- English proof (translation)
-The claim follows from `funext fun δ => charVal_ext fun χ => (h δ χ).trans (h' δ χ).symm`.
+A detailed English derivation is pending.
 -/
 theorem IsCocharLie.pt_eq {R : Type} [CommRing R] {x : Sp R ⟶ S} {M M' : LieModel (splitTorus S X) x (X →+ R)}
     (h : IsCocharLie M) (h' : IsCocharLie M') : M.pt = M'.pt :=
   funext fun δ => charVal_ext fun χ => (h δ χ).trans (h' δ χ).symm
 
 /- English proof (translation)
-Unfold `LieModel.Lifts`. Rewrite using `[Category.comp_id]`. Prove the components needed by the constructor for the conclusion. Introduce `h χ`. Use `congrArg TrivSqZeroExt.snd (charVal_comp (dualMap c) (tanPt x δ) _ h χ)` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[charVal_tanPt, dualMap]`. Introduce `h`. Use `left_eq_of_charVal (dualMap c) ?_ (tanPt x δ) _ fun χ => ?_` and prove the remaining obligations. Apply the tactic sequence `rw [spMap_comp_eps x _ ((algebraMap R' (DualNumber R')).comp c) (by ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]), ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression.
 
-Rewrite using `[charVal_tanPt, charVal_tanPt]`. Apply the tactic sequence `ext <;> simp [dualMap, h]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lifts_iff {R R' : Type} [CommRing R] [CommRing R'] (x : Sp R ⟶ S) (c : R →+* R') (δ : X →+ R)
     (δ' : X →+ R') :
@@ -199,13 +199,11 @@ theorem lifts_iff {R R' : Type} [CommRing R] [CommRing R'] (x : Sp R ⟶ S) (c :
       ext <;> simp [dualMap, h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[eq_top_iff]`. Introduce `χ _`. Take `⟨t, ht⟩` from `exists_charVal (X := X) (spMap (algebraMap B (AddMonoidAlgebra B (X ⧸ Y))) ≫ b) (MonoidHom.toHomUnits ((AddMonoidAlgebra.of B (X ⧸ Y)).comp (AddMonoidHom.toMultiplicative (QuotientAddGroup.mk' Y))))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `ht' : ∀ χ, charVal t χ = AddMonoidAlgebra.single (QuotientAddGroup.mk χ : X ⧸ Y) 1` using `ht`. Establish `h1` using `h _ _ t fun y hy => by`. Rewrite using `[ht', (QuotientAddGroup.eq_zero_iff y).2 hy]`. Both sides reduce to the same expression. Rewrite `h1` using `[Category.comp_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `ht' χ`. Rewrite `h2` using `[h1, charVal_one, AddMonoidAlgebra.one_def]`. Conclude with `(QuotientAddGroup.eq_zero_iff χ).1 (AddMonoidAlgebra.single_left_injective one_ne_zero h2).symm`. Introduce and unpack `rfl A _ g t ht`. Rewrite using `[Category.comp_id]`.
-
-Conclude with `charVal_ext fun χ => (ht χ trivial).trans (charVal_one χ).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killsOver_id_iff (Y : AddSubgroup X) {B : Type} [CommRing B] [Nontrivial B] (b : Sp B ⟶ S) :
     KillsOver (𝟙 (splitTorus S X)) Y b ↔ Y = ⊤ := by
@@ -228,7 +226,7 @@ theorem killsOver_id_iff (Y : AddSubgroup X) {B : Type} [CommRing B] [Nontrivial
     exact charVal_ext fun χ => (ht χ trivial).trans (charVal_one χ).symm
 
 /- English proof (translation)
-Introduce `A _ g t ht`. Rewrite using `[MonObj.comp_mul, Category.comp_id]`. Use `charVal_ext fun χ => ?_` and prove the remaining obligations. Rewrite using `[charVal_mul, ← charVal_add, charVal_one]`. Conclude with `ht _ ⟨χ, two_nsmul χ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killsOver_sq {B : Type} [CommRing B] (b : Sp B ⟶ S) :
     KillsOver (𝟙 (splitTorus S X) * 𝟙 (splitTorus S X)) (nsmulAddMonoidHom (α := X) 2).range b := by
@@ -239,7 +237,7 @@ theorem killsOver_sq {B : Type} [CommRing B] (b : Sp B ⟶ S) :
   exact ht _ ⟨χ, two_nsmul χ⟩
 
 /- English proof (translation)
-Rewrite using `[killsOver_id_iff]`. Introduce `h`. Take `⟨n, hn⟩ : (1 : ℤ) ∈ (nsmulAddMonoidHom (α` from `ℤ) 2).range := h ▸ trivial`. Establish `: 2 * n = 1` using `by simpa using hn`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem not_killsOver_mu_two (b : Sp (ZMod 2) ⟶ S) :
     ¬ KillsOver (𝟙 (splitTorus S ℤ)) (nsmulAddMonoidHom (α := ℤ) 2).range b := by

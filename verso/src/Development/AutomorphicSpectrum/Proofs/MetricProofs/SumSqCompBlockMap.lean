@@ -7,17 +7,17 @@ open scoped ComplexOrder Classical
 namespace GlobalTheory.CompanionTheory.Ar.PB.StepW
 
 /- English proof (translation)
-Take `⟨hκ, hvi, hblk, hsurj⟩` from `hv`. Establish `key : ∀ m : ιk k', ∃ i : ι (κ k'), v ⟨k', m⟩ = ⟨κ k', i⟩`. Introduce `m`. Establish `h` using `hblk ⟨k', m⟩`. Break down `hh : v ⟨k', m⟩ with ⟨c, i⟩` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h` using `[hh]`. Simplify using `only at h`. Substitute `h` using the available equality. Conclude with `⟨i, rfl⟩`. Use `choose g hg using key`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective g`. Introduce `m m' hmm`. Establish `h : v ⟨k', m⟩ = v ⟨k', m'⟩` using `by rw [hg, hg, hmm]`. Establish `h'` using `hvi h`. Simplify using `using h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hsur : Function.Surjective g`. Introduce `i`. Take `⟨⟨k'', m⟩, hp⟩` from `hsurj ⟨κ k', i⟩ ⟨k', rfl⟩`. Establish `h` using `hblk ⟨k'', m⟩`. Rewrite `h` using `[hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hk : k'' = k'` using `(hκ h).symm`. Substitute `hk` using the available equality. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite `hp` using `[hg]`. Simplify using `using hp`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hbij : Function.Bijective g` using `⟨hinj, hsur⟩`. Rewrite using `[← hbij.sum_comp (fun i => ‖z ⟨κ k', i⟩‖ ^ 2)]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, hg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_sq_comp_blockMap {K : Type} {ι : K → Type} [∀ k, Fintype (ι k)]
     {Kk : Type} {ιk : Kk → Type} [∀ k, Fintype (ιk k)]
@@ -55,11 +55,11 @@ theorem sum_sq_comp_blockMap {K : Type} {ι : K → Type} [∀ k, Fintype (ι k)
   simp only [Function.comp_apply, hg]
 
 /- English proof (translation)
-Introduce `K _ ι _ Kk _ ιk _ κ v a z hv ha`. Rewrite using `[fsHerm_h, fsHerm_h]`. Unfold `refNorm`. Use `symm`. Use `Fintype.prod_of_injective κ hv.1 _ _ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k hk`. Establish `h0 : a k = 0`. Assume the negation of the conclusion as `h`. Conclude with `hk (ha k h)`. Simplify using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k'`. Rewrite using `[sum_sq_comp_blockMap hv z k']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fsHerm_h_blockMap : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Kk : Type) [Fintype Kk] (ιk : Kk → Type) [∀ k, Fintype (ιk k)] (κ : Kk → K) (v : (Σ k, ιk k) → (Σ k, ι k)) (a : K → ℤ) (z : (Σ k, ι k) → ℂ), IsBlockMap κ v → (∀ k, a k ≠ 0 → k ∈ Set.range κ) → (fsHerm ι a).h z = (fsHerm ιk fun k => a (κ k)).h (z ∘ v) := by
   intro K _ ι _ Kk _ ιk _ κ v a z hv ha

@@ -15,17 +15,15 @@ noncomputable section
 namespace GlobalTheory.WeilIntegral
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite J`. Use `set χ : (Π i, T i) →ₐ[O] O := ψ.comp e.symm.toAlgHom with hχ`. Establish `hsum : ∑ i, χ (Pi.single i 1) = 1`. Rewrite using `[← map_sum, show (∑ i, Pi.single i 1 : Π i, T i) = 1 from Finset.univ_sum_single (1 : Π i, T i), map_one]`. Take `⟨i, -, hi⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (hsum.trans_ne one_ne_zero)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hidem : IsIdempotentElem (χ (Pi.single i 1))`. Establish `: IsIdempotentElem (Pi.single i (1 : T i) : Π j, T j)`. Unfold `IsIdempotentElem`. Rewrite using `[← Pi.single_mul, _root_.one_mul]`. Conclude with `this.map χ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : χ (Pi.single i 1) = 1` using `(IsIdempotentElem.iff_eq_zero_or_one.1 hidem).resolve_left hi`. Establish `hmul : ∀ y : Π j, T j, y * Pi.single i 1 = Pi.single i (y i)`. Introduce `y`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Set `φ : T i →ₐ[O] O` to `{ toFun := fun t => χ (Pi.single i t) map_one' := h1 map_mul' := fun a b => by rw [Pi.single_mul, map_mul] map_zero' := by simp only [Pi.single_zero, map_zero] map_add' := fun a b => by simp only [Pi.single_add, map_add] commutes' := fun r => by`. Express the relevant statement in the definitionally equal form `χ (Pi.single i (algebraMap O (T i) r)) = _`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one, Pi.single_smul, map_smul, h1, smul_eq_mul, _root_.mul_one]`. Use `rfl }`. Use `⟨i, φ, AlgHom.ext fun b => ?_⟩` and prove the remaining obligations. Establish `hb : ψ b = χ (e b)` using `by simp [hχ]`. Rewrite using `[hb]`.
-
-Express the relevant statement in the definitionally equal form `χ (e b) = χ (Pi.single i (e b i))`. Rewrite using `[← hmul, map_mul, h1, _root_.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor_pi {O B : Type} [CommRing O] [IsDomain O] [CommRing B] [Algebra O B]
     {J : Type} [Finite J] {T : J → Type} [∀ i, CommRing (T i)] [∀ i, Algebra O (T i)]
@@ -70,13 +68,9 @@ end GlobalTheory.WeilIntegral
 open GlobalTheory.TangentPow in
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P hloc B _ _ _ _ N hN x y hx hy`. Use `haveI : IsDomain O := P.integers.hom_inj.isDomain (algebraMap O C)`. Use `haveI : ValuationRing O := ValuationRing.of_integers v P.integers`. Use `haveI : IsFractionRing O C := P.integers.isFractionRing`. Use `haveI : HenselianLocalRing O := henselianLocalRing_of_valuationRing_of_isAlgClosed O C`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨J, hJ, T, _, _, e, hT⟩` from `((finite_algebras_over_henselian O).1 B).1`. Set `π : ∀ i, B →ₐ[O] T i` to `fun i => (Pi.evalAlgHom O T i).comp e.toAlgHom`. Establish `hflat : ∀ i, Module.Flat O (T i)` using `fun i => Module.Flat.of_retract (e.symm.toLinearMap ∘ₗ LinearMap.single O T i) (LinearMap.proj i ∘ₗ e.toLinearMap) (LinearMap.ext fun t => by simp)`. Establish `key : ∀ i, ∃ u : T i, ∀ φ : T i →ₐ[O] O, algebraMap O C (φ u) = (weil P.A N (P.toA (ptMap φ ≫ ptMap (π i) ≫ x)) (P.toA (ptMap φ ≫ ptMap (π i) ≫ y)) : C)`. Introduce `i`.
-
-Use `haveI := (hT i).1`. Use `haveI := (hT i).2`. Use `haveI := hflat i`. Conclude with `hloc (T i) N hN (ptMap (π i) ≫ x) (ptMap (π i) ≫ y) (by rw [← MonObj.comp_pow, hx, MonObj.comp_one]) (by rw [← MonObj.comp_pow, hy, MonObj.comp_one])`. Use `choose u hu using key`.
-
-Use `⟨e.symm u, fun ψ => ?_⟩` and prove the remaining obligations. Take `⟨i, φ, rfl⟩` from `GlobalTheory.WeilIntegral.exists_factor_pi e ψ`. Rewrite using `[← ptMap_comp_ptMap, Category.assoc, Category.assoc, ← hu i φ]`. Conclude with `congrArg (fun t => algebraMap O C (φ t)) (congrFun (e.apply_symm_apply u) i)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.WeilIntegral.weilIntegralFinite_of_local : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] (Λ : Type) [CommRing Λ] [StarRing Λ] (P : Point p v O Λ), WeilIntegralLocal P → WeilIntegralFinite P := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P hloc B _ _ _ _ N hN x y hx hy

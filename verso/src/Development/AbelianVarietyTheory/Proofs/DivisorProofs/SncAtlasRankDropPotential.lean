@@ -10,9 +10,9 @@ namespace GlobalTheory.SNCRankDrop
 open Filter Topology
 
 /- English proof (translation)
-Use `⟨hμ.1.comp hν.1, fun j k z hz => ?_⟩` and prove the remaining obligations. Take `⟨j₀, hj₀⟩` from `B.cover (ν ((C.chart j).symm z))`. Establish `h1 : AnalyticAt ℂ (B.chart j₀ ∘ ν ∘ (C.chart j).symm) z` using `hν.2 j j₀ z ⟨hz.1, hj₀⟩`. Establish `h2 : AnalyticAt ℂ (A.chart k ∘ μ ∘ (B.chart j₀).symm) ((B.chart j₀ ∘ ν ∘ (C.chart j).symm) z)`. Use `hμ.2 j₀ k _ ⟨(B.chart j₀).map_source hj₀, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp_apply, Set.mem_preimage, (B.chart j₀).left_inv hj₀]`. Conclude with `hz.2`. Use `(h2.comp h1).congr ?_` and prove the remaining obligations. Use `filter_upwards [holoMap_preimage_mem_nhds hν j j₀ hz.1 hj₀] with y hy`. Simplify using `only [Function.comp_apply, (B.chart j₀).left_inv hy.2]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem holoMap_comp {a b c : ℕ} {X Y Z : Type} [TopologicalSpace X] [TopologicalSpace Y]
     [TopologicalSpace Z] {A : FinHolAtlas a X} {B : FinHolAtlas b Y} {C : FinHolAtlas c Z}
@@ -30,9 +30,9 @@ theorem holoMap_comp {a b c : ℕ} {X Y Z : Type} [TopologicalSpace X] [Topologi
   simp only [Function.comp_apply, (B.chart j₀).left_inv hy.2]
 
 /- English proof (translation)
-Take `⟨j₀, hj₀⟩` from `B.cover (χ.symm z)`. Establish `h1 : AnalyticAt ℂ (B.chart j₀ ∘ χ.symm) z` using `(hχ j₀).2 z ⟨hz, hj₀⟩`. Establish `h2 : AnalyticAt ℂ (A.chart k ∘ μ ∘ (B.chart j₀).symm) ((B.chart j₀ ∘ χ.symm) z)`. Use `hμ.2 j₀ k _ ⟨(B.chart j₀).map_source hj₀, ?_⟩` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Set.mem_preimage, (B.chart j₀).left_inv hj₀]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hk`. Use `(h2.comp h1).congr ?_` and prove the remaining obligations. Use `filter_upwards [(χ.isOpen_inter_preimage_symm (B.chart j₀).open_source).mem_nhds ⟨hz, hj₀⟩] with y hy`. Simplify using `only [Function.comp_apply, (B.chart j₀).left_inv hy.2]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem analyticAt_compat {a b : ℕ} {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y]
     {A : FinHolAtlas a X} {B : FinHolAtlas b Y} {μ : Y → X} (hμ : HoloMap B A μ)
@@ -67,7 +67,7 @@ theorem insZero_apply {n : ℕ} (a : Fin (n + 1)) (z : Fin n → ℂ) :
     insZero a z = Fin.insertNth a 0 z := rfl
 
 /- English proof (translation)
-Rewrite using `[LinearMap.range_comp (D ∘ₗ I) T]`. Use `(Submodule.finrank_map_le _ _).trans (Submodule.finrank_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨⟨I x, hK x⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem finrank_range_comp_le {E E' F G : Type} [AddCommGroup E] [AddCommGroup E'] [AddCommGroup F]
     [AddCommGroup G] [Module ℂ E] [Module ℂ E'] [Module ℂ F] [Module ℂ G] [Module.Finite ℂ F]
@@ -81,21 +81,19 @@ theorem finrank_range_comp_le {E E' F G : Type} [AddCommGroup E] [AddCommGroup E
   exact ⟨⟨I x, hK x⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `d n X Y _ _ A B μ hμ q r L t W e k C hC hS hR Φ hΦ g`. Use `rankDrop A C (μ ∘ Subtype.val) (holoMap_comp hμ hC) ?_ Φ hΦ g` and prove the remaining obligations. Introduce `j k' z hz hk'`. Take `⟨y, χ, κ, a, hχ, -, hκ, -, hW, -, hsrc, -, htgt, hsymm⟩` from `hS j`. Establish `hzt : insZero a z ∈ χ.target`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hz` as an intermediate fact. Rewrite `this` using `[htgt]`. Conclude with `this`. Use `set w : Y := ((C.chart j).symm z).1 with hw`. Establish `hwχ : w = χ.symm (insZero a z)` using `hsymm z hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hws : w ∈ χ.source` using `hwχ ▸ χ.map_target hzt`. Establish `hχw : χ w = insZero a z` using `by rw [hwχ, χ.right_inv hzt]`. Establish `hWk : W k ∩ χ.source = {w' | w' ∈ χ.source ∧ χ w' a = 0}`. Rewrite using `[hW k]`. Use extensionality with `v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hκ]`. Establish `hlt` using `hR w ((C.chart j).symm z).2 χ a hχ hws hWk`. Rewrite `hlt` using `[hχw]`. Use `set k₀ := chartIdx A (μ w) with hk₀`. Establish `hk₀s : μ w ∈ (A.chart k₀).source` using `Classical.choose_spec (A.cover (μ w))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk's : μ w ∈ (A.chart k').source` using `hk'`. Use `set F : (Fin (n + 1) → ℂ) → (Fin d → ℂ) := fun z => A.chart k₀ (μ (χ.symm z)) with hF`. Establish `hFa : AnalyticAt ℂ F (insZero a z)` using `analyticAt_compat hμ hχ k₀ hzt (hwχ ▸ hk₀s)`. Establish `hFz : F (insZero a z) = A.chart k₀ (μ w)` using `by rw [hwχ]`. Establish `hTa : AnalyticAt ℂ (A.chart k' ∘ (A.chart k₀).symm) (F (insZero a z))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hFz]`. Use `A.holo k₀ k' _ ⟨(A.chart k₀).map_source hk₀s, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, (A.chart k₀).left_inv hk₀s]`. Conclude with `hk's`. Establish `hd : HasFDerivAt ((A.chart k' ∘ (A.chart k₀).symm) ∘ F ∘ insZero a) ((fderiv ℂ (A.chart k' ∘ (A.chart k₀).symm) (F (insZero a z))).comp ((fderiv ℂ F (insZero a z)).comp (insZero a))) z` using `HasFDerivAt.comp z hTa.differentiableAt.hasFDerivAt (HasFDerivAt.comp z hFa.differentiableAt.hasFDerivAt (insZero a).hasFDerivAt)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : (A.chart k' ∘ (μ ∘ Subtype.val) ∘ (C.chart j).symm) =ᶠ[𝓝 z] ((A.chart k' ∘ (A.chart k₀).symm) ∘ F ∘ insZero a)` using `by filter_upwards [holoMap_preimage_mem_nhds (holoMap_comp hμ hC) j k₀ hz hk₀s] with v hv`. Establish `h1 : ((C.chart j).symm v).1 = χ.symm (insZero a v)` using `hsymm v hv.1`. Establish `h2 : μ (χ.symm (insZero a v)) ∈ (A.chart k₀).source` using `h1 ▸ hv.2`. Simplify using `only [Function.comp_apply, hF, h1, (A.chart k₀).left_inv h2]`. Rewrite using `[(hd.congr_of_eventuallyEq heq).fderiv]`.
-
-Use `lt_of_le_of_lt (finrank_range_comp_le (fderiv ℂ (A.chart k' ∘ (A.chart k₀).symm) (F (insZero a z))).toLinearMap (fderiv ℂ F (insZero a z)).toLinearMap (insZero a).toLinearMap (LinearMap.ker (LinearMap.proj a)) ?_) hlt` and prove the remaining obligations. Introduce `x`. Simplify using `[insZero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mInt_eq_zero_of_rankDropAlong : ∀ (d n : ℕ) (X Y : Type) [TopologicalSpace X] [TopologicalSpace Y] (A : FinHolAtlas d X)
     (B : FinHolAtlas (n + 1) Y) (μ : Y → X) (hμ : HoloMap B A μ) (q r : ℕ) (L : Fin q → LocPot X)

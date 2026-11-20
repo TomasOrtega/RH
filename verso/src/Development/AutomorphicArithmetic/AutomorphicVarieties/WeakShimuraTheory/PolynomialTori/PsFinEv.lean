@@ -5,23 +5,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open IsLocalRing UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Introduce `O _ _ B _ _ _ _ h0 t ht ht0 n hn`. Set `ι : ResidueField O →+* B` to `Ideal.Quotient.lift (maximalIdeal O) (algebraMap O B) h0`. Use `letI : UniformSpace (ResidueField O) := ⊥`. Use `letI : WithIdeal B := ⟨maximalIdeal B⟩`. Establish `hadic : IsAdic (maximalIdeal B)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hc : CompleteSpace B ∧ T2Space B` using `hadic.isAdicComplete_iff.mp (IsCO.complete (O := O))`. Use `haveI := hc.1`. Use `haveI := hc.2`. Establish `hcont : Continuous ι` using `continuous_of_discreteTopology`. Establish `hte : PowerSeries.HasEval t` using `by show Filter.Tendsto (fun m => t ^ m) Filter.atTop (nhds 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hadic.hasBasis_nhds_zero.tendsto_right_iff]`. Introduce `i _`. Use `filter_upwards [Filter.eventually_ge_atTop i] with m hm`. Conclude with `Ideal.pow_le_pow_right hm (Ideal.pow_mem_pow ht m)`. Set `φ` to `PowerSeries.eval₂Hom hcont hte`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hφX : φ PowerSeries.X = t` using `by simp [φ, PowerSeries.coe_eval₂Hom]`. Establish `hφC : ∀ r, φ (PowerSeries.C r) = ι r`. Introduce `r`. Simplify using `[φ, PowerSeries.coe_eval₂Hom]`. Use `⟨φ, ?_, ?_, hφX, fun a => by rw [hφC]; rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `f hf`. Assume the negation of the conclusion as `hne`. Establish `hu : IsUnit (PowerSeries.divXPowOrder f)`. Rewrite using `[PowerSeries.isUnit_iff_constantCoeff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ne.isUnit (PowerSeries.constantCoeff_divXPowOrder_eq_zero_iff.not.mpr hne)`. Establish `h1` using `congrArg φ (PowerSeries.X_pow_order_mul_divXPowOrder (f := f))`. Rewrite `h1` using `[map_mul, map_pow, hφX, hf]`. Conclude with `mul_ne_zero (pow_ne_zero _ ht0) (hu.map φ).ne_zero h1`. Use `letI : Algebra (PowerSeries (ResidueField O)) B := φ.toAlgebra haveI : IsAdicComplete (maximalIdeal (PowerSeries (ResidueField O))) (PowerSeries (ResidueField O)) := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[PowerSeries.maximalIdeal_eq_span_X]`. Use `infer_instance`. Establish `hmap : Ideal.map (algebraMap (PowerSeries (ResidueField O)) B) (maximalIdeal (PowerSeries (ResidueField O))) = Ideal.span {t}`. Rewrite using `[PowerSeries.maximalIdeal_eq_span_X, Ideal.map_span, Set.image_singleton, RingHom.algebraMap_toAlgebra, hφX]`. Use `show Module.Finite _ _`.
-
-Use `UpperTheory.V.Ws.Po.finPow ?_ ?_ n ?_` and prove the remaining obligations. Rewrite using `[hmap, Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `ht`. Introduce `x`. Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) x`.
-
-Conclude with `⟨PowerSeries.C (residue O a), by rw [RingHom.algebraMap_toAlgebra, hφC]; exact ha⟩`. Rewrite using `[hmap]`. Conclude with `hn`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Po.psFin :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] (B : Type) [CommRing B] [Algebra O B] [IsCO O B] [IsDomain B], (∀ a ∈ maximalIdeal O, algebraMap O B a = 0) →

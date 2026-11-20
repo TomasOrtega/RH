@@ -15,11 +15,11 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' hcfg e he ei ev hloc K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ l hl g hg φ hφ`. Take `⟨m, hm, hAe⟩` from `GlobalTheory.T.config_a_local_eigen_stabilizer hP F E σ B b a' G G₁ H H' hcfg e he ei ev hloc K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ`. Establish `hφg` using `locOp_mem v (om (g, 1)) φ`. Take `⟨hB1, hB2, hB3⟩` from `GlobalTheory.T.config_a_local_eigen_triples hP F E σ B b a' G G₁ H H' hcfg e he ei ev hloc X om om' om₁ om₁' hT hT₁ v l hl φ hφ`. Establish `hmem : ∀ (k : KAt K (evFin F v)) (t : idelesAt E (evFin F v)), (m t.1)⁻¹ * k.1 ∈ UAt σ G.V (evFin F v)` using `fun k t => (UAtSub σ G.V (evFin F v)).mul_mem ((UAtSub σ G.V (evFin F v)).inv_mem (hm t.1 t.2).2) (mem_KAt.1 k.2).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[(hAe l _ hφg).2, (hAe l φ hφ).2]`. Establish `e1 : ∀ (k : KAt K (evFin F v)) (t : idelesAt E (evFin F v)), coneEvFun B G H H' om v (ev v) l (locOp v (om (g, 1)) φ) ((m t.1)⁻¹ * k.1) = coneEvFun B G H H' om v (ev v) l φ ((m t.1)⁻¹ * k.1 * g)` using `fun k t => hB2 g hg _ (hmem k t)`. Repeatedly rewrite using `[e1]`. Use `GlobalTheory.T.config_a_stabilizer_haar_triple hP F E σ B b a' G G₁ H H' hcfg K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ m hm _ hB1 hB3 (fun g' hg' => ?_) g hg` and prove the remaining obligations. Establish `e2 : ∀ p : KAt K (evFin F v) × idelesAt E (evFin F v), coneEvFun B G H H' om v (ev v) l φ ((m p.2.1)⁻¹ * p.1.1 * g') = coneEvFun B G H H' om v (ev v) l (locOp v (om (g', 1)) φ) ((m p.2.1)⁻¹ * p.1.1)` using `fun p => (hB2 g' hg' _ (hmem p.1 p.2)).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Repeatedly rewrite using `[e2]`. Conclude with `(hAe l _ (locOp_mem v (om (g', 1)) φ)).1`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coneInvA (hP : GlobalTheory.FunPr.Hypotheses₂) : ConeInvA := by
   intro F E _ _ _ _ _ σ B b a' G G₁ H H' hcfg e he ei ev hloc K hK X om om' om₁ om₁' hT hT₁ v μK μ hμK hμ l hl g hg φ hφ

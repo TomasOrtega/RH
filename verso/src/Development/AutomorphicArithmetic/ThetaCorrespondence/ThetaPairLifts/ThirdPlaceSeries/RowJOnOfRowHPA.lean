@@ -16,9 +16,9 @@ noncomputable section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk Formalism.MainNotions.Lnk Formalism.MainNotions.GlobalTheoryTheory Formalism.L2.GlobalTheoryTheory Formalism.MainNotions.RT GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Fc
 namespace GlobalTheory.Fc.JOnBundle
 /- English proof (translation)
-Introduce `Q Lk h`. Apply `_root_.GlobalTheory.JOnRow.row_jOn_of_realisations_alt _root_.GlobalTheory.Fc.BundleCondition Q Lk` to reduce the goal to its premises. Use `Row.imp h fun 𝒜 σ _ hA => ?_` and prove the remaining obligations. Introduce `eps Fm hc x hx i`. Establish `hb` using `hA Fm hc x hx i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨(σ Fm hc x hx i).R, (σ Fm hc x hx i).P, _, _, _, (σ Fm hc x hx i).S, _, inferInstance, inferInstance, inferInstance, (σ Fm hc x hx i).B.Q, 1, (σ Fm hc x hx i).C.ok1, hb.2, hb.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem row_jOn_of_row_hPA_alt : ∀ (Q : V4.Slot) (Lk : LkT _root_.GlobalTheory.Fc.BundleCondition), _root_.GlobalTheory.Fc.R1.SlotPrimitivityCondition Q Lk → R0.JInvariantConditionAtConstructedPoints Q Lk := by
   intro Q Lk h

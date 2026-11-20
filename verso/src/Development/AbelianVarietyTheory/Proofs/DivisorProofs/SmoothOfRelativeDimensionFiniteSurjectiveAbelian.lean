@@ -14,11 +14,11 @@ set_option autoImplicit false
 namespace GlobalTheory.FiniteSurjDimField
 
 /- English proof (translation)
-Introduce `K _ _ A A' _ _ g q hA hA' hfin hsurj hg`. Use `hA.geomConnected` as an intermediate fact. Use `hA'.geomConnected` as an intermediate fact. Use `hA'.smooth` as an intermediate fact. Establish `: ConnectedSpace A.left` using `GeometricallyConnected.geometrically_connectedSpace (f := A.hom) (𝟙 _) (𝟙 _) A.hom (IsPullback.of_horiz_isIso ⟨by simp⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ConnectedSpace A'.left` using `GeometricallyConnected.geometrically_connectedSpace (f := A'.hom) (𝟙 _) (𝟙 _) A'.hom (IsPullback.of_horiz_isIso ⟨by simp⟩)`. Take `⟨m, hm⟩` from `exists_dim_of_preconnected A'.hom (Classical.arbitrary A'.left)`. Establish `hw : q.left ≫ A'.hom = A.hom` using `Over.w q`. Establish `hg' : SmoothOfRelativeDimension g (q.left ≫ A'.hom)` using `by rw [hw]; exact hg`. Establish `e` using `GlobalTheory.FiniteSurjDim.eq_of_finite_surjective (k := K) q.left A'.hom hg' hm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `e` using the available equality. Conclude with `hm`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_of_finite_surjective : ∀ (K : Type) [Field K] [IsAlgClosed K]
     (A A' : Over (Sp K)) [GrpObj A] [GrpObj A'] (g : ℕ) (q : A ⟶ A'), IsAbelianScheme A → IsAbelianScheme A' →

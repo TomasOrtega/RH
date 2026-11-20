@@ -5,15 +5,15 @@ open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.U3 UpperTheory.V.Alg
 namespace UpperTheory.V.UnitaryThreeInertia
 
 /- English proof (translation)
-Establish `e : (t : O) * ((t⁻¹ : Oˣ) : O) = 1` using `Units.mul_inv t`. Establish `h1 : IsUnit ((t : O) - 1)`. Rewrite `ht` using `[show (t : O) ^ 2 - 1 = ((t : O) - 1) * (t + 1) by ring]`. Conclude with `isUnit_of_mul_isUnit_left ht`. Establish `h2 : IsUnit ((t : O) - ((t⁻¹ : Oˣ) : O))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ht.mul (t⁻¹).isUnit` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Take the linear combination `(-(t : O)) * e`. Establish `h3 : IsUnit (1 - ((t⁻¹ : Oˣ) : O))`. Use `h1.mul (t⁻¹).isUnit` as an intermediate fact.
+Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Take the linear combination `(-1 : O) * e`. Establish `h1'` using `h1.neg`. Establish `h2'` using `h2.neg`. Establish `h3'` using `h3.neg`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1'`, `h2'`, `h3'` using `[neg_sub]`. Establish `w0 : wt1 0 = 1` using `rfl`. Establish `w1 : wt1 1 = 0` using `rfl`. Establish `w2 : wt1 2 = -1` using `rfl`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;>`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [Fin.zero_eta, Fin.mk_one, Fin.reduceFinMk, w0, w1, w2, zpow_one, zpow_zero, _root_.zpow_neg, Units.val_one, ne_eq, not_true_eq_false] at hab ⊢ <;> assumption`.
+A detailed English derivation is pending.
 -/
 private theorem lu_unit {O : Type} [CommRing O] (t : Oˣ) (ht : IsUnit ((t : O) ^ 2 - 1)) (a b : Fin 3)
     (hab : a ≠ b) : IsUnit (((t ^ wt1 a : Oˣ) : O) - ((t ^ wt1 b : Oˣ) : O)) := by
@@ -41,13 +41,13 @@ private theorem lu_unit {O : Type} [CommRing O] (t : Oˣ) (ht : IsUnit ((t : O) 
       Units.val_one, ne_eq, not_true_eq_false] at hab ⊢ <;> assumption
 
 /- English proof (translation)
-Establish `e10` using `congrFun (congrFun e 1) 0`. Establish `e20` using `congrFun (congrFun e 2) 0`. Establish `e21` using `congrFun (congrFun e 2) 1`. Establish `u10` using `hU 1 0 (by decide)`. Establish `u20` using `hU 2 0 (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u21` using `hU 2 1 (by decide)`. Establish `t10` using `hT 1 0 (by decide)`. Establish `t20` using `hT 2 0 (by decide)`. Establish `t21` using `hT 2 1 (by decide)`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_three, u10, u20, u21, t10, t20, t21] at e10 e20 e21`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `k20 : k 2 0 = 0` using `(hu 2 0 (by decide)).mul_right_eq_zero.1 (by linear_combination e20)`. Establish `k10 : k 1 0 = 0` using `(hu 1 0 (by decide)).mul_right_eq_zero.1 (by`. Rewrite `e10` using `[k20]`. Take the linear combination `e10)`. Establish `k21 : k 2 1 = 0` using `(hu 2 1 (by decide)).mul_right_eq_zero.1 (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `e21` using `[k20]`. Take the linear combination `e21)`. Introduce `a b hab`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> first | assumption | exact absurd hab (by decide)`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem lu_up {R : Type} [CommRing R] (U k T : Matrix (Fin 3) (Fin 3) R) (e : U * k = k * T)
     (hU : ∀ a b, wt a b < 0 → U a b = 0) (hT : ∀ a b, wt a b < 0 → T a b = 0)
@@ -72,7 +72,7 @@ private theorem lu_up {R : Type} [CommRing R] (U k T : Matrix (Fin 3) (Fin 3) R)
   fin_cases a <;> fin_cases b <;> first | assumption | exact absurd hab (by decide)
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [Matrix.mul_apply, Fin.sum_univ_three, Jmat, Fin.rev]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem lu_J {R : Type} [CommRing R] (X : Matrix (Fin 3) (Fin 3) R) (a b : Fin 3) :
     (Jmat R 3 * Xᵀ * Jmat R 3) a b = X b.rev a.rev := by
@@ -81,19 +81,19 @@ private theorem lu_J {R : Type} [CommRing R] (X : Matrix (Fin 3) (Fin 3) R) (a b
 end UpperTheory.V.UnitaryThreeInertia
 
 /- English proof (translation)
-Introduce `O R D _ _ _ _ _ _ η Ψ r x hr hx hΨ hU g`. Break down `Int.units_eq_one_or (η g) with hg | hg` into its components or cases. Conclude with `hU g hg`. Establish `hX : ∀ x a, residue R ((r x).mat a a) = residue R (algebraMap O R ((Ψ x ^ wt1 a : Oˣ) : O))`. Introduce `x a`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(residue_eq_zero_iff _).2 (hr.red x a a)` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, map_sub, sub_eq_zero]`. Rewrite using `[this]`. Simplify using `only [GG.mat, unitaryThreeReflection_left, tor_val, Matrix.map_apply, Matrix.diagonal_apply_eq]`. Take `⟨y, hy⟩ : ∃ y, y = g⁻¹ * x⁻¹ * g` from `⟨_, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hηy : η y = 1` using `by simp [hy, hx]`. Establish `hΨy : Ψ y = (Ψ x)⁻¹` using `by simp [hy]`. Establish `rx : (r x).right = 1` using `(hr.mult x).trans hx`. Establish `ry : (r y).right = 1` using `(hr.mult y).trans hηy`. Establish `rg : (r g).right = -1` using `(hr.mult g).trans hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : r x * r g = r g * (r y)⁻¹`. Rewrite using `[← map_inv, ← map_mul, ← map_mul, hy]`. Use `congr 1`. Use `group`. Establish `e1 : (r x).left * (r g).left = (r g).left * theta ((r y).left⁻¹)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg SemidirectProduct.left e0` as an intermediate fact. Simplify `this` using `[rx, ry, rg]`. Establish `e2 : (r x).mat * (r g).mat = (r g).mat * (Jmat R 3 * (r y).matᵀ * Jmat R 3)`. Use `congrArg Units.val e1` as an intermediate fact. Rewrite `this` using `[Units.val_mul, Units.val_mul, theta_val, inv_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `lu_up _ _ _ e2 (hU x hx) (fun a b hab => ?_) (fun a b hab => ?_)` and prove the remaining obligations. Rewrite using `[lu_J]`. Use `hU y hηy _ _ ?_` and prove the remaining obligations. Apply the tactic sequence `have : wt b.rev a.rev = wt a b := by fin_cases a <;> fin_cases b <;> rfl`. Rewrite using `[this]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `have w : wt1 b.rev = -wt1 b := by fin_cases b <;> rfl`. Rewrite using `[lu_J, ← residue_ne_zero_iff_isUnit, map_sub, hX, hX, ← map_sub, ← map_sub, residue_ne_zero_iff_isUnit, hΨy, w, _root_.inv_zpow', neg_neg]`. Conclude with `(lu_unit (Ψ x) hΨ a b hab).map _`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.lt_upper :
     ∀ {O R D : Type} [CommRing O] [IsLocalRing O] [CommRing R] [IsLocalRing R] [Algebra O R] [Group D] (η : D →* ℤˣ) (Ψ : D →* Oˣ) (r : D →* GG 3 R) (x : D),

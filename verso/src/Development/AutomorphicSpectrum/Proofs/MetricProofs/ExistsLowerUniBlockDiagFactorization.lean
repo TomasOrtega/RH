@@ -15,7 +15,7 @@ abbrev square_block_restriction (G : Matrix (Fin N) (Fin N) ℂ) (T : Finset (Fi
   G.submatrix Subtype.val Subtype.val
 
 /- English proof (translation)
-Unfold `minorIJ`. Rewrite using `[dif_pos rfl, ← Matrix.det_submatrix_equiv_self (T.orderIsoOfFin rfl).toEquiv (square_block_restriction G T)]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem minorIJ_self (G : Matrix (Fin N) (Fin N) ℂ) (T : Finset (Fin N)) :
     minorIJ G T T = (square_block_restriction G T).det := by
@@ -24,11 +24,11 @@ theorem minorIJ_self (G : Matrix (Fin N) (Fin N) ℂ) (T : Finset (Fin N)) :
   congr 1
 
 /- English proof (translation)
-Establish `hB : G⁻¹ * G = 1` using `Matrix.nonsing_inv_mul G (isUnit_iff_ne_zero.mpr hd)`. Establish `hprod : square_block_restriction G⁻¹ T * square_block_restriction G T = 1`. Use extensionality with `x y`. Establish `h1 : (G⁻¹ * G) x.1 y.1 = (1 : Matrix (Fin N) (Fin N) ℂ) x.1 y.1` using `by rw [hB]`. Rewrite `h1` using `[Matrix.mul_apply, ← Finset.sum_subset (Finset.subset_univ T) (f := fun c => G⁻¹ x.1 c * G c y.1) (fun c _ hc => by rw [h x.1 x.2 c hc, zero_mul]), ← Finset.sum_coe_sort T, Matrix.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : (square_block_restriction G⁻¹ T * square_block_restriction G T) x y = ∑ i : {x // x ∈ T}, G⁻¹ x.1 i.1 * G i.1 y.1` using `rfl`. Rewrite using `[h3, h1, Matrix.one_apply]`. Distinguish the cases in `hxy : x = y`. Rewrite using `[if_pos hxy, if_pos (congrArg Subtype.val hxy)]`. Rewrite using `[if_neg hxy, if_neg (fun h => hxy (Subtype.ext h))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Establish `h2` using `congrArg Matrix.det hprod`. Rewrite `h2` using `[Matrix.det_mul, h0, mul_zero, Matrix.det_one]`. Conclude with `zero_ne_one h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_squareBlockRestriction_ne_zero (G : Matrix (Fin N) (Fin N) ℂ) (hd : G.det ≠ 0) (T : Finset (Fin N))
     (h : ∀ x ∈ T, ∀ c, c ∉ T → G⁻¹ x c = 0) : (square_block_restriction G T).det ≠ 0 := by
@@ -50,19 +50,17 @@ theorem det_squareBlockRestriction_ne_zero (G : Matrix (Fin N) (Fin N) ℂ) (hd 
   exact zero_ne_one h2
 
 /- English proof (translation)
-Establish `hex : ∀ b, ∃ n, ∃ T ∈ F, b ∈ T ∧ T.card = n` using `fun b => by`. Take `⟨T, hT, hb⟩` from `hcov b`. Conclude with `⟨T.card, T, hT, hb, rfl⟩`. Establish `hmin : ∀ b, ∃ T ∈ F, b ∈ T ∧ ∀ T' ∈ F, b ∈ T' → T ⊆ T'`. Introduce `b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨T, hTF, hbT, hcard⟩` from `Nat.find_spec (hex b)`. Use `⟨T, hTF, hbT, fun T' hT'F hbT' => ?_⟩` and prove the remaining obligations. Break down `hnest T hTF T' hT'F b hbT hbT' with h1 | h1` into its components or cases. Conclude with `h1`. Establish `hle : T.card ≤ T'.card`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcard]`. Conclude with `Nat.find_min' (hex b) ⟨T', hT'F, hbT', rfl⟩`. Conclude with `le_of_eq (Finset.eq_of_subset_of_card_le h1 hle).symm`. Use `choose Tb hTbF hbTb hTbmin using hmin`. Use `⟨Matrix.of fun x b => if hx : x ∈ Tb b then (square_block_restriction G (Tb b))⁻¹ ⟨x, hx⟩ ⟨b, hbTb b⟩ else 0, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T hT c hc x hx`. Establish `hx' : x ∉ Tb c` using `fun h' => hx (hTbmin c T hT hc h')`. Simplify using `only [Matrix.of_apply, dif_neg hx']`. Introduce `a b hab`. Establish `ha : a ∈ Tb b` using `hab (Tb b) (hTbF b) (hbTb b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hM : square_block_restriction G (Tb b) * (square_block_restriction G (Tb b))⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr (hinv _ (hTbF b)))`. Establish `h1` using `congrFun (congrFun hM ⟨a, ha⟩) ⟨b, hbTb b⟩`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `h2 : ∀ x : {x // x ∈ Tb b}, G a x.1 * (if hx : x.1 ∈ Tb b then (square_block_restriction G (Tb b))⁻¹ ⟨x.1, hx⟩ ⟨b, hbTb b⟩ else 0) = square_block_restriction G (Tb b) ⟨a, ha⟩ x * (square_block_restriction G (Tb b))⁻¹ x ⟨b, hbTb b⟩`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[dif_pos x.2]`. Both sides reduce to the same expression. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ (Tb b)) (f := fun x => G a x * (if hx : x ∈ Tb b then (square_block_restriction G (Tb b))⁻¹ ⟨x, hx⟩ ⟨b, hbTb b⟩ else 0)) (fun x _ hx => by simp only [dif_neg hx, mul_zero]), ← Finset.sum_coe_sort (Tb b), Finset.sum_congr rfl (fun x _ => h2 …`.
-
-Simplify using `only [Subtype.mk.injEq]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_cols (G : Matrix (Fin N) (Fin N) ℂ) (F : Set (Finset (Fin N))) (hcov : ∀ b, ∃ T ∈ F, b ∈ T)
     (hnest : ∀ T ∈ F, ∀ T' ∈ F, ∀ b, b ∈ T → b ∈ T' → T ⊆ T' ∨ T' ⊆ T)
@@ -111,21 +109,21 @@ def IsSeg (N j : ℕ) (T : Finset (Fin N)) : Prop :=
     ∃ m, T = Finset.univ.filter fun a : Fin N => N - j ≤ (a : ℕ) ∧ (a : ℕ) < m
 
 /- English proof (translation)
-Conclude with `Or.inl ⟨N - j, le_refl _, rfl⟩`.
+Prove the first alternative.
 -/
 theorem isSeg_omIdx (N j : ℕ) : IsSeg N j (omIdx N j) := by
   exact Or.inl ⟨N - j, le_refl _, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Or.inr ⟨N, by ext a; simp [wIdx]⟩`.
+Prove the second alternative.
 -/
 theorem isSeg_wIdx (N j : ℕ) : IsSeg N j (wIdx N j) :=
   Or.inr ⟨N, by ext a; simp [wIdx]⟩
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Unfold `IsSeg stepCols`. Distinguish the cases in `h : (i : ℕ) + 1 ≤ j`. Use `right`. Conclude with `⟨N - j + ((i : ℕ) + 1), by ext a; simp [h]⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `left`. Conclude with `⟨(i : ℕ) + 1 - j, by omega, by ext a; simp [h]⟩`.
+A detailed English derivation is pending.
 -/
 theorem isSeg_stepCols (N j : ℕ) (i : Fin N) : IsSeg N j (stepCols N j i) := by
   have hi := i.isLt
@@ -137,11 +135,9 @@ theorem isSeg_stepCols (N j : ℕ) (i : Fin N) : IsSeg N j (stepCols N j i) := b
     exact ⟨(i : ℕ) + 1 - j, by omega, by ext a; simp [h]⟩
 
 /- English proof (translation)
-Apply the tactic sequence `rcases h with ⟨m, hm, rfl⟩ | ⟨m, rfl⟩ <;> rcases h' with ⟨m', hm', rfl⟩ | ⟨m', rfl⟩ <;>`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb hb'`. Apply the tactic sequence `all_goals first`. Consider the case `(exfalso; omega)`. Consider the case `(rcases le_total m m' with hmm | hmm`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `left`. Introduce `a ha`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha ⊢`. Use linear arithmetic over natural numbers and integers. Use `right`.
-
-Introduce `a ha`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at ha ⊢`. Use the proof step `omega)`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsSeg.nested {N j : ℕ} {T T' : Finset (Fin N)} (h : IsSeg N j T) (h' : IsSeg N j T') {b : Fin N}
     (hb : b ∈ T) (hb' : b ∈ T') : T ⊆ T' ∨ T' ⊆ T := by
@@ -160,9 +156,9 @@ theorem IsSeg.nested {N j : ℕ} {T T' : Finset (Fin N)} (h : IsSeg N j T) (h' :
          omega)
 
 /- English proof (translation)
-Establish `hab' : (a : ℕ) < b` using `hab`. Apply the tactic sequence `rcases h with ⟨m, hm, rfl⟩ | ⟨m, rfl⟩ <;>`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hb ⊢`. Use linear arithmetic over natural numbers and integers. Establish `h1 : ¬ ((b : ℕ) < N - j)` using `by omega`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h2 : ¬ ((a : ℕ) < N - j)` using `fun h => h1 (hs.mp h)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem IsSeg.down {N j : ℕ} {T : Finset (Fin N)} (h : IsSeg N j T) {a b : Fin N} (hb : b ∈ T) (hab : a < b)
     (hs : (a : ℕ) < N - j ↔ (b : ℕ) < N - j) : a ∈ T := by
@@ -175,41 +171,33 @@ theorem IsSeg.down {N j : ℕ} {T : Finset (Fin N)} (h : IsSeg N j T) {a b : Fin
     omega
 
 /- English proof (translation)
-Introduce `N j kp G hjN hbd hdet hstep`. Establish `hGG : G * G⁻¹ = 1` using `Matrix.mul_nonsing_inv G (isUnit_iff_ne_zero.mpr hdet)`. Establish `hGinv : ∀ x c : Fin N, ¬ ((x : ℕ) < N - j ↔ (c : ℕ) < N - j) → G⁻¹ x c = 0` using `by set E : Matrix (Fin N) (Fin N) ℂ := Matrix.of (fun x c => if ((x : ℕ) < N - j ↔ (c : ℕ) < N - j) then G⁻¹ x c else 0) with hEdef`. Establish `hE : G * E = 1`. Use extensionality with `a c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Distinguish the cases in `hac : ((a : ℕ) < N - j ↔ (c : ℕ) < N - j)`. Rewrite using `[← hGG, Matrix.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations. Rewrite using `[hEdef, Matrix.of_apply]`. Distinguish the cases in `hxc : ((x : ℕ) < N - j ↔ (c : ℕ) < N - j)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hxc]`. Rewrite using `[if_neg hxc, hbd a x (fun hax => hxc (hax.symm.trans hac)), zero_mul, zero_mul]`. Establish `hne : a ≠ c` using `fun h => hac (by rw [h])`. Rewrite using `[Matrix.one_apply_ne hne, Matrix.mul_apply]`. Use `Finset.sum_eq_zero (fun x _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hEdef, Matrix.of_apply]`. Distinguish the cases in `hxc : ((x : ℕ) < N - j ↔ (c : ℕ) < N - j)`. Rewrite using `[hbd a x (fun hax => hac (hax.trans hxc)), zero_mul]`. Rewrite using `[if_neg hxc, mul_zero]`. Establish `hEinv : G⁻¹ = E` using `Matrix.inv_eq_right_inv hE`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x c hxc`. Rewrite using `[hEinv, hEdef, Matrix.of_apply, if_neg hxc]`. Establish `hom : (square_block_restriction G (omIdx N j)).det ≠ 0` using `det_squareBlockRestriction_ne_zero G hdet _ (fun x hx c hc => hGinv x c (fun h => by`. Simplify using `only [omIdx, Finset.mem_filter, Finset.mem_univ, true_and] at hx hc`. Conclude with `hc (h.mp hx)))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hw : (square_block_restriction G (wIdx N j)).det ≠ 0` using `det_squareBlockRestriction_ne_zero G hdet _ (fun x hx c hc => hGinv x c (fun h => by`. Simplify using `only [wIdx, Finset.mem_filter, Finset.mem_univ, true_and] at hx hc`. Conclude with `(not_lt.mpr hx) (h.mpr (not_le.mp hc))))`. Set `F : Set (Finset (Fin N))` to `{T | (∃ i, kp i ∧ IsProperStep N j i ∧ T = stepCols N j i) ∨ T = omIdx N j ∨ T = wIdx N j}`. Establish `hseg : ∀ T ∈ F, IsSeg N j T`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `T (⟨i, -, -, rfl⟩ | rfl | rfl)`. Conclude with `isSeg_stepCols N j i`. Conclude with `isSeg_omIdx N j`. Conclude with `isSeg_wIdx N j`. Establish `hcov : ∀ b, ∃ T ∈ F, b ∈ T`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Introduce `b`. Distinguish the cases in `hb : (b : ℕ) < N - j`. Conclude with `⟨omIdx N j, Or.inr (Or.inl rfl), by`. Simplify using `only [omIdx, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `hb⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨wIdx N j, Or.inr (Or.inr rfl), by`. Simplify using `only [wIdx, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `not_lt.mp hb⟩`. Establish `hinv : ∀ T ∈ F, (square_block_restriction G T).det ≠ 0`. Introduce and unpack `T (⟨i, hki, hpi, rfl⟩ | rfl | rfl)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← minorIJ_self]`. Conclude with `hstep i hki hpi`. Conclude with `hom`. Conclude with `hw`. Take `⟨W, hWsupp, hGW⟩` from `exists_cols G F hcov (fun T hT T' hT' b hb hb' => (hseg T hT).nested (hseg T' hT') hb hb') hinv`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hWblk : IsBlockDiag j W`. Introduce `x c hxc`. Distinguish the cases in `hc : (c : ℕ) < N - j`. Use `hWsupp (omIdx N j) (Or.inr (Or.inl rfl)) c ?_ x ?_` and prove the remaining obligations. Simplify using `only [omIdx, Finset.mem_filter, Finset.mem_univ, true_and]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hc`. Simplify using `only [omIdx, Finset.mem_filter, Finset.mem_univ, true_and]`. Introduce `hx`. Conclude with `hxc (iff_of_true hx hc)`. Use `hWsupp (wIdx N j) (Or.inr (Or.inr rfl)) c ?_ x ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [wIdx, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `not_lt.mp hc`. Simplify using `only [wIdx, Finset.mem_filter, Finset.mem_univ, true_and]`. Introduce `hx`. Conclude with `hxc (iff_of_false (not_lt.mpr hx) hc)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hLblk : IsBlockDiag j (G * W)`. Introduce `a b hab`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero (fun x _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hxb : ((x : ℕ) < N - j ↔ (b : ℕ) < N - j)`.
-
-Rewrite using `[hbd a x (fun hax => hab (hax.trans hxb)), zero_mul]`. Rewrite using `[hWblk x b hxb, mul_zero]`. Use `⟨G * W, W, hLblk, ⟨fun a => ?_, fun a b hab => ?_⟩, ?_, hWblk, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[hGW a a (fun T _ h => h), if_pos rfl]`. Distinguish the cases in `hs : ((a : ℕ) < N - j ↔ (b : ℕ) < N - j)`.
-
-Rewrite using `[hGW a b (fun T hT hb => (hseg T hT).down hb hab hs), if_neg (ne_of_lt hab)]`. Conclude with `hLblk a b hs`. Introduce `a b hba hs hno`. Use `(hGW a b ?_).trans (if_neg (ne_of_gt hba))` and prove the remaining obligations. Introduce and unpack `T (⟨i, hki, hpi, rfl⟩ | rfl | rfl) hb`.
-
-Assume the negation of the conclusion as `ha`. Conclude with `hno ⟨i, hki, hpi, hb, ha⟩`. Simplify using `only [omIdx, Finset.mem_filter, Finset.mem_univ, true_and] at hb ⊢`. Conclude with `hs.mpr hb`. Simplify using `only [wIdx, Finset.mem_filter, Finset.mem_univ, true_and] at hb ⊢`.
-
-Conclude with `not_lt.mp (fun h => (not_lt.mpr hb) (hs.mp h))`. Introduce `i hki hpi c hc x hx`. Conclude with `hWsupp _ (Or.inl ⟨i, hki, hpi, rfl⟩) c hc x hx`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_lu : ∀ (N j : ℕ) (kp : Fin N → Prop) (G : Matrix (Fin N) (Fin N) ℂ), j ≤ N → IsBlockDiag j G → G.det ≠ 0 → (∀ i, kp i → IsProperStep N j i → minorIJ G (stepCols N j i) (stepCols N j i) ≠ 0) → ∃ L W : Matrix (Fin N) (Fin N) ℂ, IsBlockDiag j L ∧ IsLowerUni L ∧ (∀ a b : Fin N, b < a → ((a : ℕ) < N - j ↔ (b : ℕ) < N - j) → (¬ ∃ i, kp i ∧ IsProperStep N j i ∧ b ∈ stepCols N j i ∧ a ∉ stepCols N j i) → L a b = 0) ∧ IsBlockDiag j W ∧ (∀ i, kp i → IsProperStep N j i → ∀ c ∈ stepCols N j i, ∀ x, x ∉ stepCols N j i → W x c = 0) ∧ G * W = L := by
   intro N j kp G hjN hbd hdet hstep

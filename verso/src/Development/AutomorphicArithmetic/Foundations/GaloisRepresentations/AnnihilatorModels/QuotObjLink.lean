@@ -7,23 +7,23 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Annih
 namespace UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-The claim follows from `UpperTheory.Cb.exists_heckeCorrespondence_on_integral_shimuraModel`.
+A detailed English derivation is pending.
 -/
 theorem esGen_link : EsGen := UpperTheory.Cb.exists_heckeCorrespondence_on_integral_shimuraModel
 /- English proof (translation)
-The claim follows from `esNorm_of esGen_link`.
+A detailed English derivation is pending.
 -/
 theorem esNorm_link : EsNorm := esNorm_of esGen_link
 /- English proof (translation)
-The claim follows from `UpperTheory.Gal.Ord.ordGen`.
+A detailed English derivation is pending.
 -/
 theorem ordGen_link : OrdGen := UpperTheory.Gal.Ord.ordGen
 /- English proof (translation)
-The claim follows from `UpperTheory.Cb.exists_pIsogeny_kernel_eq_subgroupScheme`.
+A detailed English derivation is pending.
 -/
 theorem quotObj_link : QuotObj := UpperTheory.Cb.exists_pIsogeny_kernel_eq_subgroupScheme
 /- English proof (translation)
-The claim follows from `congKS_holds esNorm_link esGen_link ordGen_link quotObj_link`.
+A detailed English derivation is pending.
 -/
 theorem congKS_link : CongKS := congKS_holds esNorm_link esGen_link ordGen_link quotObj_link
 

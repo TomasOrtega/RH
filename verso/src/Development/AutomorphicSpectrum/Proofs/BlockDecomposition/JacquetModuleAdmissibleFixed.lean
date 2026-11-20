@@ -7,9 +7,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.SplitWe
 namespace GlobalTheory.CompanionTheory.Jacquet
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n hd V _ _ π hπ h0 h3 m hm`. Take `⟨hopen, hcompact, hfact⟩` from `h0 n m n (fun _ : Fin n => 1) hd hm`. Take `⟨-, hsurj, -⟩` from `h3 n n (fun _ : Fin n => 1) hd (Zls.Km k n m) hopen hcompact hfact (fun _ => Nat.one_pos) V π hπ`. Use `haveI : FiniteDimensional ℂ ↥(fixed π (Zls.Km k n m)) := hπ.2 _ hopen hcompact`. Set `f : ↥(fixed π (Zls.Km k n m)) →ₗ[ℂ] Jacquet π (unipRad k (stdBlocks (fun _ : Fin n => 1) hd))` to `(Submodule.mkQ _).comp (Submodule.subtype _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hle : fixed (jac (stdBlocks (fun _ : Fin n => 1) hd) π) (PositivityTheory.Lbc.KM k n (Zls.Km k n m) (fun _ : Fin n => 1) hd) ≤ LinearMap.range f`. Introduce `w hw`. Take `⟨v, hv⟩` from `hsurj w hw`. Conclude with `⟨v, hv⟩`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_fixed_jac :
     ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ)

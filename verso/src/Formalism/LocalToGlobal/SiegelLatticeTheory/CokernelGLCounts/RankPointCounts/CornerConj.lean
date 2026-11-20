@@ -29,7 +29,7 @@ def locR (p : PlF D) (A B : PairVal.MatR D) : MatP D p :=
         Sg (D.s.atP p).Fp D.R.rS) * Matrix.diagonal (cf Zd p))
 
 /- English proof (translation)
-Simplify using `only [Matrix.transpose_mul, hSt, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc S S, hS, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_lem {K : Type*} [CommRing K] {n : ℕ} (S L X B : Matrix (Fin n) (Fin n) K) (hS : S * S = 1)
     (hSt : S.transpose = S) :
@@ -38,26 +38,26 @@ theorem tr_lem {K : Type*} [CommRing K] {n : ℕ} (S L X B : Matrix (Fin n) (Fin
   rw [← Matrix.mul_assoc S S, hS, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, lo_corner_up hL hU]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem corner_conj {K : Type*} [CommRing K] {r : ℕ} {L U Y : Matrix (Fin (r + 1)) (Fin (r + 1)) K} (hL : IsLo L)
     (hU : IsUp U) (c : K) : L * (Y - c • Ecorner r) * U = L * Y * U - c • Ecorner r := by
   rw [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, lo_corner_up hL hU]
 
 /- English proof (translation)
-Establish `hAg` using `(Zd.agree p).2.2.2.2.2`. Apply the tactic sequence `rcases hM : (Zd.M p).split with _ | g <;> rcases hR : (D.s.atP p).split with _ | sg <;>`. Simplify using `only [hM, hR] at hAg`. Use `set fr : Fin (D.R.rS + 1) → (D.s.atP p).Ep := fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cf Zd p a) set fri : Fin (D.R.rS + 1) → (D.s.atP p).Ep := fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cfi Zd p a)`. Establish `hfr : ∀ a, fri a * fr a = 1` using `fun a => by simp only [fr, fri, ← map_mul, cfi_cf, map_one]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zzp_sgn_ord Zd u u' p hM Z₂, zzp_sgn_ord Zd u u' p hM Z₁, h, Matrix.map_mul, Matrix.map_mul, regroup fr fri hfr]`. Simplify using `only [locL, locR, hM]`. Both sides reduce to the same expression. Take `⟨hge, hgq⟩` from `hAg`. Establish `hcc : ∀ a, cf Zd p a * cfi Zd p a = 1` using `cf_cfi Zd p`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc' : ∀ a, cfi Zd p a * cf Zd p a = 1` using `cfi_cf Zd p`. Establish `hL1 : IsLo (Matrix.diagonal (cf Zd p) * A.map ((p1 sg.e).comp (D.s.atP p).ιE) * Matrix.diagonal (cfi Zd p))` using `isLo_conj (isLo_map _ hA) _ _ hcc`. Establish `hU1 : IsUp (Matrix.diagonal (cfi Zd p) * B.map ((p1 sg.e).comp (D.s.atP p).ιE) * Matrix.diagonal (cf Zd p))` using `isUp_conj (isUp_map _ hB) _ _ hcc'`. Establish `hL2a : IsLo (Sg (D.s.atP p).Fp D.R.rS * (B.map ((p2 sg.e).comp (D.s.atP p).ιE)).transpose * Sg (D.s.atP p).Fp D.R.rS)` using `(isLo_conj (isLo_transpose (isUp_map ((p2 sg.e).comp (D.s.atP p).ιE) hB)) _ _ (fun a => sgn_sq' D.R.rS a) : IsLo (Sg (D.s.atP p).Fp D.R.rS * (B.map ((p2 sg.e).comp (D.s.atP p).ιE)).transpose * Sg (D.s.atP p).Fp D.R.rS))`. Establish `hU2a : IsUp (Sg (D.s.atP p).Fp D.R.rS * (A.map ((p2 sg.e).comp (D.s.atP p).ιE)).transpose * Sg (D.s.atP p).Fp D.R.rS)` using `(isUp_conj (isUp_transpose (isLo_map ((p2 sg.e).comp (D.s.atP p).ιE) hA)) _ _ (fun a => sgn_sq' D.R.rS a) : IsUp (Sg (D.s.atP p).Fp D.R.rS * (A.map ((p2 sg.e).comp (D.s.atP p).ιE)).transpose * Sg (D.s.atP p).Fp D.R.rS))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL2` using `isLo_conj hL2a (cf Zd p) (cfi Zd p) hcc`. Establish `hU2` using `isUp_conj hU2a (cfi Zd p) (cf Zd p) hcc'`. Establish `hZ2 : Z₂ = A * (Z₁ * Sg D.host.E D.R.rS) * B * Sg D.host.E D.R.rS`. Rewrite using `[← h, Matrix.mul_assoc, sg_sq, Matrix.mul_one]`. Simplify using `only [locL, locR, hM, hge]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mat_eq sg.e` to reduce the goal to its premises. Establish `l1` using `zz1' Zd p sg hR g hM hge hgq u u' Z₂`. Establish `r1` using `zz1' Zd p sg hR g hM hge hgq u u' Z₁`. Establish `key1 : (A * (Z₁ * Sg D.host.E D.R.rS) * B).map ((p1 sg.e).comp (D.s.atP p).ιE) = A.map ((p1 sg.e).comp (D.s.atP p).ιE) * (Z₁ * Sg D.host.E D.R.rS).map ((p1 sg.e).comp (D.s.atP p).ιE) * B.map ((p1 sg.e).comp (D.s.atP p).ιE)` using `by simp only [Matrix.map_mul]`. Rewrite `l1` using `[h, key1, fact1 (cf Zd p) (cfi Zd p) hcc']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `l1.trans ?_` and prove the remaining obligations. Use `conv_rhs => rw [Matrix.map_mul, Matrix.map_mul, glue_map_fst, glue_map_fst, r1, corner_conj hL1 hU1]`. Establish `e2 : (Z₂.map ((p2 sg.e).comp (D.s.atP p).ιE)).transpose * Sg (D.s.atP p).Fp D.R.rS = (Sg (D.s.atP p).Fp D.R.rS * (B.map ((p2 sg.e).comp (D.s.atP p).ιE)).transpose * Sg (D.s.atP p).Fp D.R.rS) * ((Z₁.map ((p2 sg.e).comp (D.s.atP p).ιE)).transpose * Sg (D.s.atP p).Fp D.R.rS) * (Sg ( …`. Rewrite using `[hZ2, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, sg_map]`. Conclude with `tr_lem _ _ _ _ (sg_sq _) (Matrix.diagonal_transpose _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `l2` using `zz2' Zd p sg hR g hM hge hgq u u' Z₂`. Establish `r2` using `zz2' Zd p sg hR g hM hge hgq u u' Z₁`. Rewrite `l2` using `[e2, fact1 (cf Zd p) (cfi Zd p) hcc']`. Use `l2.trans ?_` and prove the remaining obligations. Use `conv_rhs => rw [Matrix.map_mul, Matrix.map_mul, glue_map_snd, glue_map_snd, r2, corner_conj hL2 hU2]`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem locMove (u u' : D.what₂.Word) (p : PlF D) {Z₁ Z₂ A B : PairVal.MatR D} (hA : IsLo A) (hB : IsUp B)
     (h : Z₂ * Sg D.host.E D.R.rS = A * (Z₁ * Sg D.host.E D.R.rS) * B) :

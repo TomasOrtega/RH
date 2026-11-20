@@ -109,13 +109,13 @@ section Facts
 variable {D : D7} {X : HidaSetting D} {Y : Full X}
 
 /- English proof (translation)
-Rewrite using `[h.2.2.2.1, ← D.Dstar_eq u]`. Conclude with `(D.mem u).A.Dstar_pos`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dst_pos (h : ConcTie X Y) (u : D.what₂.Word) : 0 < DstC X := by
   rw [h.2.2.2.1, ← D.Dstar_eq u]; exact (D.mem u).A.Dstar_pos
 
 /- English proof (translation)
-Unfold `ddC`. Establish `h1 : 0 ≤ duC X Y u` using `Nat.cast_nonneg _`. Establish `h2 : 0 ≤ duC X Y u'` using `Nat.cast_nonneg _`. Conclude with `div_nonneg (mul_nonneg h1 h2) (dst_pos h u).le`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dd_nonneg (h : ConcTie X Y) (u u' : D.what₂.Word) : 0 ≤ ddC X Y u u' := by
   unfold ddC
@@ -124,7 +124,7 @@ theorem dd_nonneg (h : ConcTie X Y) (u u' : D.what₂.Word) : 0 ≤ ddC X Y u u'
   exact div_nonneg (mul_nonneg h1 h2) (dst_pos h u).le
 
 /- English proof (translation)
-The claim follows from `(Formalism.L2.SG.PoincareInHH.Cut.cols_dim_of_neat X u Y.hK (h.2.1 u) hC).1`.
+A detailed English derivation is pending.
 -/
 theorem cu_fd (h : ConcTie X Y) (u : D.what₂.Word) (hC : Formalism.L2.SG.PoincareInHH.Cut.ClassFin X u Y.hK) :
     FiniteDimensional ℂ (Cu X u Y.hK) :=
@@ -153,13 +153,11 @@ def IdOneC : Prop :=
     Formalism.L2.SG.RowsOther.IdOne (Y.tO u u) (oneC X Y u)
 
 /- English proof (translation)
-Establish `hL : 0 < large₂.sc.L`. Unfold `Formalism.BasicNotions.Scale.L`. Conclude with `Real.rpow_pos_of_pos (by linarith [large₂.sc.one_lt_alt]) _`. Establish `hb : 1 < large₂.sc.b`. Unfold `Formalism.BasicNotions.Scale.b`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `Real.add_one_lt_exp (ne_of_gt hL)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk5 : 5 ≤ D.R.k` using `by have := D.R.two_le_m; have := D.R.m_add_three_le_k; omega`. Establish `hk : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk5`. Establish `hkb : (5 : ℝ) ≤ (D.R.k : ℝ) * large₂.sc.b` using `by nlinarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h8 : (3 : ℝ) ≤ ((D.R.k : ℝ) * large₂.sc.b) ^ 8` using `le_trans (by norm_num) (pow_le_pow_left₀ (by norm_num) hkb 8)`. Break down `TR.card_q v with h | h` into its components or cases. Rewrite using `[h]`. Conclude with `h8.trans (hK.2.1 0).1` after adjusting the coercions. Rewrite using `[h]`.
-
-Conclude with `h8.trans (hK.2.1 1).1` after adjusting the coercions.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_ge_three {D : D7} {large₂ : SizeData₂ D} {Cl Cg CT : ℝ} (hK : Formalism.MainNotions.NonGenericAndKTwoTheorems.KTwoParameterConditions D large₂ Cl Cg CT)
     {X : HidaSetting D} (TR : TypedRed X) (v : TR.Pl) : 3 ≤ Fintype.card (TR.Fq v) := by
@@ -190,9 +188,9 @@ def LoopsCutC : Prop :=
           (ddC X Y u u')
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0 A`. Take `⟨C, hC, hK⟩` from `hc Cg cb Cw cT CT C0 A`. Take `⟨K₀, hJ⟩` from `Formalism.L2.SG.RowsOther.rowLoops_of_input hL hSub C hC`. Take `⟨C'₀, Cl₀, h⟩` from `hK K₀`. Use `⟨C'₀, Cl₀, fun C' Cl h1 h2 D large₂ X Y u u' hH hT ha => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Al, NT, Gam, Xi, hA1, hP, hX, h6, hAmp⟩` from `h C' Cl h1 h2 D large₂ X Y u u' hH hT`. Conclude with `hJ _ _ _ _ _ (Y.tO u u') D.R.k D.R.rS D.R.f Al large₂.sc.b (X.B.g : ℝ) D.host.v NT Gam Xi (ddC X Y u u') hA1 hP hX h6 (dd_nonneg hT u u') ha (Formalism.L2.SG.RowsOther.loopsInput_of_amp _ ha.2.2.le _ _ _ _ _ _ _ _ _ _ _ hAmp)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rowLoopsC_of_cut (hL : PN.LoopCores) (hSub : PB.SubFamily) (hc : LoopsCutC) :
     RowLoopsC := by
@@ -213,9 +211,9 @@ def PairsDegCutC : Prop :=
       Formalism.L2.SG.RowsOther.PairsDegAmp (Y.tO u u) (PgC Y) (duC X Y u) D.R.k D.R.f
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Take `⟨C'₀, Cl₀, h⟩` from `hc Cg cb Cw cT CT C0`. Use `⟨C'₀, Cl₀, fun C' Cl h1 h2 D large₂ X Y u hH hT ha => ?_⟩` and prove the remaining obligations. Establish `hG0 : 0 ≤ (Y.tO u u).Gam1` using `ha.2.2.le`. Establish `hPg : 0 ≤ PgC Y` using `Finset.prod_nonneg fun v _ => by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGB : (Y.tO u u).GGBound (PgC Y)` using `Formalism.L2.SG.TermOp.ggBound Y.TR (Y.cs u) (Y.cs u) (Y.FN u) (Y.FN u) hGG Y.psi_ne (fun v => card_ge_three hH.2 Y.TR v)`. Use `⟨ha.1.indicator _, ?_⟩` and prove the remaining obligations. Conclude with `Formalism.L2.SG.RowsOther.kppDiag_of_pairs (Y.tO u u) hP hE hS hSub (PgC Y) (duC X Y u) D.R.k D.R.f hPg ha (Formalism.L2.SG.TermOp.rowOrth Y.TR (Y.cs u) (Y.cs u) (Y.FN u) (Y.FN u)) (hC D X Y u u hT) (hN D X Y u hT) hGB (Formalism.L2.SG.RowsOther.pairsDeg_of_amp _ hG0 _ _ _ _ hPg …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kppDiagC_of_cut (hP : PB.NormSqBoundOfEqualIota) (hE : PB.GramSumLeOfPosSemidef) (hS : PB.PairSplit) (hSub : PB.SubFamily)
     (hGG : Formalism.L2.SG.GGMirabolic.TermsGGBound) (hC : CorankPosC) (hN : NormExpDegC)
@@ -241,15 +239,15 @@ def DiagNumC : Prop :=
       (√(PgC Y * (gamB D large₂ CB + 2 * epsL D)) + √(PgC Y * (epsL D + epsNG D large₂ C4))) ^ 2 ≤ (D.mem u).A.GamP
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0 A`. Take `⟨CB, hCB, C'₁, Cl₁, hM'⟩` from `hM Cg cb Cw cT CT C0 A`. Take `⟨C4, hC4, C'₂, Cl₂, hNG'⟩` from `hNG Cg cb Cw cT CT C0`. Take `⟨C'₃, Cl₃, hL'⟩` from `hL Cg cb Cw cT CT C0 A`. Take `⟨C'₄, Cl₄, hNum'⟩` from `hNum Cg cb Cw cT CT C0 A CB C4 hCB hC4`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨CB, C4, hCB, hC4, max (max C'₁ C'₂) (max C'₃ C'₄), max (max Cl₁ Cl₂) (max Cl₃ Cl₄), fun C' Cl h1 h2 D large₂ X Y u hH hK2 hT ha hG => ?_⟩` and prove the remaining obligations. Establish `a1 : C'₁ ≤ C'` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) h1`. Establish `a2 : C'₂ ≤ C'` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) h1`. Establish `a3 : C'₃ ≤ C'` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) h1`. Establish `a4 : C'₄ ≤ C'` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b1 : Cl₁ ≤ Cl` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) h2`. Establish `b2 : Cl₂ ≤ Cl` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) h2`. Establish `b3 : Cl₃ ≤ Cl` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) h2`. Establish `b4 : Cl₄ ≤ Cl` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) h2`. Establish `h0 : Formalism.MainNotions.S.Cnt.Hyp0 D large₂ C' Cl Cg cb Cw cT CT C0` using `hH.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Formalism.MainNotions.S.Cnt.Stand D u u` using `hH.2.1`. Establish `hPg : 0 ≤ PgC Y` using `Finset.prod_nonneg fun v _ => by positivity`. Establish `hdd` using `dd_nonneg hT u u`. Take `⟨r1, r2⟩` from `hL' C' Cl a3 b3 D large₂ X Y u u hH hT ha`. Establish `r3` using `hM' C' Cl a1 b1 D large₂ X Y u hH hT ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `r4` using `hNG' C' Cl a2 b2 D large₂ X Y u u h0 hs hT ha`. Establish `hGB : (Y.tO u u).GGBound (PgC Y)` using `Formalism.L2.SG.TermOp.ggBound Y.TR (Y.cs u) (Y.cs u) (Y.FN u) (Y.FN u) hGG Y.psi_ne (fun v => card_ge_three hK2 Y.TR v)`. Establish `hD` using `Formalism.L2.SG.RowsOther.diag_of_abstract (Y.tO u u) hA hP hE hS hSub (oneC X Y u) (PgC Y) (gamB D large₂ CB) (epsL D) (epsNG D large₂ C4) (ddC X Y u u) hPg hdd ha (hNS D X Y u u hT) hGB (Formalism.L2.SG.TermOp.rowOrth Y.TR (Y.cs u) (Y.cs u) (Y.FN u) (Y.FN u)) (hC D X Y u u hT) …`. Unfold `Formalism.L2.SG.RowsOther.DiagRow at hD ⊢`. Conclude with `hD.trans (mul_le_mul_of_nonneg_right (hNum' C' Cl a4 b4 D large₂ X Y u hH hK2 hT hG) hdd)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem diagC_of_rows (hA : PB.PairBoundAbstract) (hP : PB.NormSqBoundOfEqualIota) (hE : PB.GramSumLeOfPosSemidef) (hS : PB.PairSplit)
     (hSub : PB.SubFamily) (hGG : Formalism.L2.SG.GGMirabolic.TermsGGBound)
@@ -294,7 +292,7 @@ section FromFull
 open Formalism.L2.SG.WuDecay
 
 /- English proof (translation)
-Introduce `D X Y u u' hT`. Establish `f1` using `hFo D X Y u hT.1 hT.2.2.2.2.1`. Establish `f2` using `hFo D X Y u' hT.1 hT.2.2.2.2.1`. Conclude with `hA D X Y u u' f1 f2 (hF D X Y u u') (hO D X Y u u' f1 f2 (hF D X Y u u'))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem absConvTied_of_full (hFo : FoldOKC) (hF : FundExistsC) (hO : OOIntAllC)
     (hA : AbsConvC) : AbsConvTied := by
@@ -304,7 +302,7 @@ theorem absConvTied_of_full (hFo : FoldOKC) (hF : FundExistsC) (hO : OOIntAllC)
   exact hA D X Y u u' f1 f2 (hF D X Y u u') (hO D X Y u u' f1 f2 (hF D X Y u u'))
 
 /- English proof (translation)
-Introduce `D X Y u u' hT`. Establish `f1` using `hFo D X Y u hT.1 hT.2.2.2.2.1`. Establish `f2` using `hFo D X Y u' hT.1 hT.2.2.2.2.1`. Establish `hOO` using `hO D X Y u u' f1 f2 (hF D X Y u u')`. Conclude with `hN D X Y u u' (hAW D X Y u u' hOO) (hCh D X Y u u') (absConvTied_of_full hFo hF hO hA D X Y u u' hT)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem normExpSatTied_of_full (hFo : FoldOKC) (hF : FundExistsC) (hO : OOIntAllC)
     (hA : AbsConvC) (hAW : AmpWellDefC) (hCh : ChiNIndepC) (hN : NormExpSatC) : NormExpSatTied := by
@@ -315,7 +313,7 @@ theorem normExpSatTied_of_full (hFo : FoldOKC) (hF : FundExistsC) (hO : OOIntAll
   exact hN D X Y u u' (hAW D X Y u u' hOO) (hCh D X Y u u') (absConvTied_of_full hFo hF hO hA D X Y u u' hT)
 
 /- English proof (translation)
-The claim follows from `h.map (Formalism.L2.SG.PackageTie.hsEmb (Wq := W) (Wp := W)) (LinearMap.continuous_of_finiteDimensional _)`.
+A detailed English derivation is pending.
 -/
 theorem hasSum_hsEmb {ι : Type*} {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W]
     {f : ι → W →L[ℂ] W} {a : W →L[ℂ] W} (h : HasSum f a) :
@@ -323,7 +321,7 @@ theorem hasSum_hsEmb {ι : Type*} {W : Type} [NormedAddCommGroup W] [InnerProduc
   h.map (Formalism.L2.SG.PackageTie.hsEmb (Wq := W) (Wp := W)) (LinearMap.continuous_of_finiteDimensional _)
 
 /- English proof (translation)
-Establish `hs` using `hasSum_hsEmb (h (Y.FN_fund u))`. Unfold `Formalism.L2.SG.RowsOther.IdOne PB.Terms.part`. Rewrite using `[← tsum_subtype]`. Conclude with `hs.tsum_eq`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idOne_of_cell {D : D7} {X : HidaSetting D} (Y : Full X) (u : D.what₂.Word)
     (h : Formalism.L2.SG.TermOp.IdCellDiag (X.Fu u) (Y.cs u) (Y.FN u)) :
@@ -334,7 +332,7 @@ theorem idOne_of_cell {D : D7} {X : HidaSetting D} (Y : Full X) (u : D.what₂.W
   exact hs.tsum_eq
 
 /- English proof (translation)
-Introduce `D X Y u hT`. Establish `f1` using `hFo D X Y u hT.1 hT.2.2.2.2.1`. Conclude with `idOne_of_cell Y u (hI D X Y u hT.1 (hF D X Y u u) (hO D X Y u u f1 f1 (hF D X Y u u)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem idOneC_of_full (hFo : FoldOKC) (hF : FundExistsC) (hO : OOIntAllC)
     (hI : IdCellDiagC) : IdOneC := by
@@ -343,9 +341,9 @@ theorem idOneC_of_full (hFo : FoldOKC) (hF : FundExistsC) (hO : OOIntAllC)
   exact idOne_of_cell Y u (hI D X Y u hT.1 (hF D X Y u u) (hO D X Y u u f1 f1 (hF D X Y u u)))
 
 /- English proof (translation)
-Use `show ‖vec (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t‖ = _`. Unfold `vec`. Establish `e : (fun q : {Λ // Λ ∈ Y.what₂ u} × {Λ' // Λ' ∈ Y.what₂ u'} => if q = (⟨t.lam, t.mem⟩, ⟨t.lam', t.mem'⟩) then ((wt t : ℝ) : ℂ) • Formalism.L2.SG.PackageTie.hsEmb (ampN (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t) else 0) = Pi.single (⟨t.lam, t.mem⟩, ⟨t.lam', t.mem'⟩) (((wt t : ℝ) : ℂ …`. Use function extensionality and compare the values at `q`. Simplify using `[Pi.single_apply]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, PiLp.norm_toLp_single, norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (show (0:ℝ) ≤ wt t from Real.sqrt_nonneg _)]`.
+A detailed English derivation is pending.
 -/
 theorem norm_vec {D : D7} {X : HidaSetting D} (Y : Full X) {u u' : D.what₂.Word}
     (t : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')) :
@@ -502,11 +500,11 @@ def NGCutC : Prop :=
         Formalism.L2.SG.RowsOther.NGReal (Y.tO u u') (NOf Y u u') D.R.f A CB large₂.sc.b cSt Ire
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Take `⟨C1, C0n, A, CB, CSt, Cgs, CTs, h1, h2, h3, h4, hA, C'₀, Cl₀, h⟩` from `hc Cg cb Cw cT CT C0`. Take `⟨Cn, hCn, hK⟩` from `Formalism.L2.SG.RowsOther.rowNG_of_cut hR hC C1 C0n A CB CSt Cgs CTs h1 h2 h3 h4 hA`. Use `⟨Cn, hCn, C'₀, Cl₀, fun C' Cl a b D large₂ X Y u u' h0 hs hT ha => ?_⟩` and prove the remaining obligations. Take `⟨P, iP, B, cSt, e1, Irat, Ire, hG, hdd, hN, hF, hS, hFin, hRe⟩` from `h C' Cl a b D large₂ X Y u u' h0 hs hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hcard` using `Formalism.MainNotions.LatticeGluingRadicals.d_card D`. Establish `key` using `hK D.host.E (TauC Y u u') _ _ _ _ (Y.tO u u') D.R.rS D.R.k (Set (TauC Y u u')) (TauC Y u u') (NOf Y u u') P B large₂.sc.b (2 * D.host.v) (X.B.g : ℝ) (((Tu D u : ℕ) : ℝ) * ((Tu D u' : ℕ) : ℝ)) cSt e1 Irat Ire`. Rewrite `key` using `[hcard]`. Establish `r` using `key ha hG hN hF hS hFin hRe`. Rewrite `r` using `[hdd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `r`.
+A detailed English derivation is pending.
 -/
 theorem rowNGC_of_cut (hR : PN.RowNGJoint) (hC : PN.NGChain) (hc : NGCutC) : RowNGC := by
   intro Cg cb Cw cT CT C0

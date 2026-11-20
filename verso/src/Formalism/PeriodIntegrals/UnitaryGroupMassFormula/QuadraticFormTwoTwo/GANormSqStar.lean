@@ -17,11 +17,11 @@ variable {k r : ℕ}
 private def gAlast (k r : ℕ) : Fin (2 * r + k + 1) := ⟨r + k, by omega⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single i]`. Introduce `j _ hji`. Distinguish the cases in `hj : j.val < r ∨ r + k < j.val`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hv j hj, mul_zero]`. Use `push Not at hj`. Establish `hij : i ≠ j` using `fun h => hji h.symm`. Establish `h0 : Hpk k r i j = 0`. Simplify using `only [Hpk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (by omega), if_neg (by omega), if_neg (fun h => hij h.2.2)]`. Rewrite using `[h0, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem gA_mulVec {v : Fin (2 * r + k + 1) → ℂ} (hv : inWb k r v) :
     Hpk k r *ᵥ v = fun i => Hpk k r i i * v i := by
@@ -41,20 +41,20 @@ private theorem gA_mulVec {v : Fin (2 * r + k + 1) → ℂ} (hv : inWb k r v) :
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Simplify using `only [herm, dotProduct, gA_mulVec hv, Pi.star_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem gA_herm {v w : Fin (2 * r + k + 1) → ℂ} (hv : inWb k r v) :
     herm (Hpk k r) v w = ∑ i, star (w i) * (Hpk k r i i * v i) := by
   simp only [herm, dotProduct, gA_mulVec hv, Pi.star_apply]
 
 /- English proof (translation)
-Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Simplify using `[hx i hi]`. Use `push Not at hi`. Establish `e : star (x i) * x i = (Complex.normSq (x i) : ℂ)`. Rewrite using `[Complex.normSq_eq_conj_mul_self, starRingEnd_apply]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hH : Hpk k r i i = if i.val = r + k then -1 else 1`. Simplify using `only [Hpk]`. Rewrite using `[if_neg (by omega), if_neg (by omega), if_pos ⟨hi.1, hi.2, trivial⟩]`. Rewrite using `[hH]`. Distinguish the cases in `hl : i = gAlast k r`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hv : i.val = r + k` using `by rw [hl]; rfl`. Rewrite using `[if_pos hv, if_pos hl, show star (x i) * (-1 * x i) = -(star (x i) * x i) by ring, e]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hv : i.val ≠ r + k` using `fun h => hl (Fin.ext h)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hv, if_neg hl, one_mul, e]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem gA_term {x : Fin (2 * r + k + 1) → ℂ} (hx : inWb k r x) (i : Fin (2 * r + k + 1)) :
     star (x i) * (Hpk k r i i * x i) =
@@ -78,7 +78,7 @@ private theorem gA_term {x : Fin (2 * r + k + 1) → ℂ} (hx : inWb k r x) (i :
       simp
 
 /- English proof (translation)
-Rewrite using `[gA_herm hx]`. Repeatedly rewrite using `[gA_term hx]`. Rewrite using `[← Complex.ofReal_sum]`. Use `congr 1`. Rewrite using `[Finset.sum_sub_distrib, ← Finset.mul_sum, Finset.sum_ite_eq']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -92,7 +92,7 @@ private theorem gA_self {x : Fin (2 * r + k + 1) → ℂ} (hx : inWb k r x) :
   simp
 
 /- English proof (translation)
-Establish `h : Tz k r z = -(herm (Hpk k r) z z).re` using `rfl`. Rewrite using `[h, gA_self hz]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem gA_hz {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) :
     herm (Hpk k r) z z = ((-Tz k r z : ℝ) : ℂ) := by
@@ -101,33 +101,33 @@ private theorem gA_hz {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) :
   simp
 
 /- English proof (translation)
-Simplify using `only [herm, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem gA_smul_left (H : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (c : ℂ) (v w : Fin (2 * r + k + 1) → ℂ) :
     herm H (c • v) w = c * herm H v w := by
   simp only [herm, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [herm, star_smul, smul_dotProduct, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem gA_smul_right (H : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) (c : ℂ) (v w : Fin (2 * r + k + 1) → ℂ) :
     herm H v (c • w) = star c * herm H v w := by
   simp only [herm, star_smul, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[← starRingEnd_apply, Complex.mul_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem gA_mul_star (c : ℂ) : c * star c = (Complex.normSq c : ℂ) := by rw [← starRingEnd_apply, Complex.mul_conj]
 
 /- English proof (translation)
-Rewrite using `[← starRingEnd_apply, Complex.normSq_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem gA_normSq_star (c : ℂ) : Complex.normSq (star c) = Complex.normSq c := by rw [← starRingEnd_apply, Complex.normSq_conj]
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Establish `hj` using `j.isLt`. Establish `h1 : (eI k r a).val = a.val` using `rfl`. Establish `h2 : (esI k r a).val = 2 * r + k - a.val` using `rfl`. Simplify using `only [Hpk, Fin.ext_iff, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem gA_H_eI (a : Fin r) (j : Fin (2 * r + k + 1)) :
     Hpk k r (eI k r a) j = if j = esI k r a then 1 else 0 := by
@@ -139,9 +139,9 @@ private theorem gA_H_eI (a : Fin r) (j : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Establish `ha` using `a.isLt`. Establish `hj` using `j.isLt`. Establish `h1 : (eI k r a).val = a.val` using `rfl`. Establish `h2 : (esI k r a).val = 2 * r + k - a.val` using `rfl`. Simplify using `only [Hpk, Fin.ext_iff, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem gA_H_esI (a : Fin r) (j : Fin (2 * r + k + 1)) :
     Hpk k r (esI k r a) j = if j = eI k r a then 1 else 0 := by
@@ -153,9 +153,9 @@ private theorem gA_H_esI (a : Fin r) (j : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Simplify using `only [herm, dotProduct]`. Rewrite using `[Finset.sum_eq_single j]`. Simplify using `[bvec]`. Introduce `i _ hij`. Simplify using `[bvec, hij]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem gA_herm_bvec (v : Fin (2 * r + k + 1) → ℂ) (j : Fin (2 * r + k + 1)) :
     herm (Hpk k r) v (bvec j) = (Hpk k r *ᵥ v) j := by
@@ -168,27 +168,27 @@ private theorem gA_herm_bvec (v : Fin (2 * r + k + 1) → ℂ) (j : Fin (2 * r +
     exact absurd (Finset.mem_univ j) h
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, gA_H_eI]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem gA_mv_eI (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     (Hpk k r *ᵥ v) (eI k r a) = v (esI k r a) := by
   simp [Matrix.mulVec, dotProduct, gA_H_eI]
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, gA_H_esI]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem gA_mv_esI (v : Fin (2 * r + k + 1) → ℂ) (a : Fin r) :
     (Hpk k r *ᵥ v) (esI k r a) = v (eI k r a) := by
   simp [Matrix.mulVec, dotProduct, gA_H_esI]
 
 /- English proof (translation)
-Simplify using `only [gA_herm_bvec, gA_mv_eI, gA_mv_esI]`. Prove the components needed by the constructor for the conclusion. Introduce `hv a`. Establish `ha` using `a.isLt`. Establish `h1 : (eI k r a).val = a.val` using `rfl`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (esI k r a).val = 2 * r + k - a.val` using `rfl`. Conclude with `⟨hv _ (Or.inr (by omega)), hv _ (Or.inl (by omega))⟩`. Introduce `h i hi`. Establish `hiv` using `i.isLt`. Break down `hi with hi | hi` into its components or cases.
+Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `e : eI k r ⟨i.val, hi⟩ = i` using `Fin.ext rfl`. Use `(h ⟨i.val, hi⟩).2` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `e : esI k r ⟨2 * r + k - i.val, by omega⟩ = i` using `Fin.ext (show 2 * r + k - (2 * r + k - i.val) = i.val by omega)`. Use `(h ⟨2 * r + k - i.val, by omega⟩).1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem gA_inWb_iff (v : Fin (2 * r + k + 1) → ℂ) :
     inWb k r v ↔ ∀ a : Fin r, herm (Hpk k r) v (bvec (eI k r a)) = 0 ∧
@@ -212,9 +212,9 @@ private theorem gA_inWb_iff (v : Fin (2 * r + k + 1) → ℂ) :
       rwa [e] at this
 
 /- English proof (translation)
-Take `⟨-, hHH, -, -⟩` from `hpkFacts k r`. Establish `hdet : IsUnit (Hpk k r).det`. Establish `h` using `congrArg Matrix.det hHH`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `isUnit_iff_exists_inv.mpr ⟨_, h⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu` using `((uHGroup _ (Hpk k r) hdet).2.2 g hg.1).1`. Conclude with `⟨Matrix.nonsing_inv_mul g hu, Matrix.mul_nonsing_inv g hu⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem glev_unit {g : Mx k r} (hg : g ∈ Glev k r (Fin.last r)) : g⁻¹ * g = 1 ∧ g * g⁻¹ = 1 := by
   obtain ⟨-, hHH, -, -⟩ := hpkFacts k r
@@ -226,7 +226,7 @@ theorem glev_unit {g : Mx k r} (hg : g ∈ Glev k r (Fin.last r)) : g⁻¹ * g =
   exact ⟨Matrix.nonsing_inv_mul g hu, Matrix.mul_nonsing_inv g hu⟩
 
 /- English proof (translation)
-Establish `hU : gᴴ * Hpk k r * g = Hpk k r` using `hg.1`. Simplify using `only [herm]`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hU]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem glev_herm {g : Mx k r} (hg : g ∈ Glev k r (Fin.last r)) (v w : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (g *ᵥ v) (g *ᵥ w) = herm (Hpk k r) v w := by
@@ -235,15 +235,15 @@ theorem glev_herm {g : Mx k r} (hg : g ∈ Glev k r (Fin.last r)) (v w : Fin (2 
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hU]
 
 /- English proof (translation)
-Establish `key : ∀ h ∈ Glev k r (Fin.last r), inWb k r (h *ᵥ v)`. Introduce `h hh`. Rewrite using `[gA_inWb_iff]`. Introduce `a`. Take `⟨h1, h2⟩` from `hh.2 a a.isLt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hv'` using `(gA_inWb_iff v).1 hv a`. Rewrite using `[← h1, ← h2, glev_herm hh, glev_herm hh]`. Conclude with `hv'`. Take `⟨-, hHH, -, -⟩` from `hpkFacts k r`. Establish `hdet : IsUnit (Hpk k r).det`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `congrArg Matrix.det hHH`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `isUnit_iff_exists_inv.mpr ⟨_, h⟩`. Establish `hl` using `(glev_unit hg).1`. Establish `hinv : g⁻¹ ∈ Glev k r (Fin.last r)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Glev, Set.mem_ofPred_eq]`. Use `⟨((uHGroup _ (Hpk k r) hdet).2.2 g hg.1).2, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hg.2 a ha`. Prove the components needed by the constructor for the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Supply the required witnesses or components.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨key g hg, key g⁻¹ hinv⟩`.
+A detailed English derivation is pending.
 -/
 theorem glev_inWb {g : Mx k r} (hg : g ∈ Glev k r (Fin.last r)) {v : Fin (2 * r + k + 1) → ℂ}
     (hv : inWb k r v) : inWb k r (g *ᵥ v) ∧ inWb k r (g⁻¹ *ᵥ v) := by
@@ -273,25 +273,25 @@ theorem glev_inWb {g : Mx k r} (hg : g ∈ Glev k r (Fin.last r)) {v : Fin (2 * 
   exact ⟨key g hg, key g⁻¹ hinv⟩
 
 /- English proof (translation)
-Simplify using `[fvec]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem gA_fvec (z : Fin (2 * r + k + 1) → ℂ) : fvec k r z (Fin.last r) = z := by
   simp [fvec]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `c hc`. Apply `hGG` to reduce the goal to its premises. Establish `hz_eq : z = c • (g *ᵥ z')`. Establish `h` using `congrArg (g *ᵥ ·) hc`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec_mulVec, (glev_unit hg).2, Matrix.one_mulVec, Matrix.mulVec_smul] at h`. Conclude with `h`. Establish `hu : herm (Hpk k r) (g *ᵥ z') (g *ᵥ z') = ((-Tz k r z' : ℝ) : ℂ)`. Rewrite using `[glev_herm hg, gA_hz hz']`. Establish `hzeta : zetaL k r z z' (Fin.last r) g = star c * ((-Tz k r z' : ℝ) : ℂ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [zetaL, gA_fvec]`. Rewrite using `[show herm (Hpk k r) (g *ᵥ z') z = herm (Hpk k r) (g *ᵥ z') (c • (g *ᵥ z')) by rw [← hz_eq], gA_smul_right, hu]`. Establish `hT : Tz k r z = Complex.normSq c * Tz k r z'`. Establish `h : Tz k r z = -(herm (Hpk k r) z z).re` using `rfl`. Rewrite using `[h, hz_eq, gA_smul_left, gA_smul_right, ← mul_assoc, gA_mul_star, hu, ← Complex.ofReal_mul, Complex.ofReal_re]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [GGl]`. Rewrite using `[hzeta, hT, Complex.normSq_mul, gA_normSq_star, Complex.normSq_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Introduce `c hc`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hGG` to reduce the goal to its premises. Establish `hzeta : zetaL k r z z' (Fin.last r) g = c * ((-Tz k r z : ℝ) : ℂ)`. Simplify using `only [zetaL, gA_fvec]`. Rewrite using `[hc, gA_smul_left, gA_hz hz]`. Establish `hT : Tz k r z' = Complex.normSq c * Tz k r z`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : herm (Hpk k r) z' z' = herm (Hpk k r) (g *ᵥ z') (g *ᵥ z')` using `(glev_herm hg z' z').symm`. Rewrite `h1` using `[hc, gA_smul_left, gA_smul_right, ← mul_assoc, gA_mul_star, gA_hz hz]`. Establish `h : Tz k r z' = -(herm (Hpk k r) z' z').re` using `rfl`. Rewrite using `[h, h1, ← Complex.ofReal_mul, Complex.ofReal_re]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [GGl]`. Rewrite using `[hzeta, hT, Complex.normSq_mul, Complex.normSq_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem not_prop_of_GG {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z') {g : Mx k r}
     (hg : g ∈ Glev k r (Fin.last r)) (hGG : GGl k r z z' g ≠ 0) :

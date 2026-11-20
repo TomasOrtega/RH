@@ -14,9 +14,9 @@ namespace GlobalTheory.Honda.KurUnr
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`. Establish `e : y ^ (i + 1) - z ^ (i + 1) = y * (y ^ i - z ^ i) + (y - z) * z ^ i` using `by ring`. Rewrite using `[e]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_pow_sub_pow_le {y z : K} (hy : ‖y‖ ≤ 1) (hz : ‖z‖ ≤ 1) (i : ℕ) :
     ‖y ^ i - z ^ i‖ ≤ ‖y - z‖ := by
@@ -36,7 +36,7 @@ theorem norm_pow_sub_pow_le {y z : K} (hy : ‖y‖ ≤ 1) (hz : ‖z‖ ≤ 1) 
         _ = ‖y - z‖ := mul_one _
 
 /- English proof (translation)
-Rewrite using `[Polynomial.eval_eq_sum_range y, Polynomial.eval_eq_sum_range z, ← Finset.sum_sub_distrib]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_sub, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_eval_sub_eval_le (f : Polynomial K) (hf : ∀ n, ‖f.coeff n‖ ≤ 1) {y z : K}
     (hy : ‖y‖ ≤ 1) (hz : ‖z‖ ≤ 1) : ‖f.eval y - f.eval z‖ ≤ ‖y - z‖ := by
@@ -48,15 +48,15 @@ theorem norm_eval_sub_eval_le (f : Polynomial K) (hf : ∀ n, ‖f.coeff n‖ �
     _ = ‖y - z‖ := one_mul _
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Use `set n := f.natDegree`. Establish `e` using `hm.as_sum`. Establish `h0 : z ^ n = -∑ i ∈ Finset.range n, f.coeff i * z ^ i`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg (Polynomial.eval z) e` as an intermediate fact. Rewrite `this` using `[hz]`. Simplify using `only [Polynomial.eval_add, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_finset_sum, Polynomial.eval_mul, Polynomial.eval_C] at this`. Take the linear combination `-this`. Establish `hz0 : (0 : ℝ) ≤ ‖z‖ ^ (n - 1)` using `by positivity`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb : ‖∑ i ∈ Finset.range n, f.coeff i * z ^ i‖ ≤ ‖z‖ ^ (n - 1)`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hz0 fun i hi => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Establish `hi' : i ≤ n - 1`. Use `Finset.mem_range.mp hi` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation.
 
-Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Rewrite `hb` using `[← norm_neg, ← h0, norm_pow]`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Simplify using `[hn] at h0`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: ‖z‖ ^ (n - 1) < ‖z‖ ^ n` using `pow_lt_pow_right₀ h (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem norm_root_le_one (f : Polynomial K) (hm : f.Monic) (hf : ∀ n, ‖f.coeff n‖ ≤ 1) {z : K}
     (hz : f.eval z = 0) : ‖z‖ ≤ 1 := by
@@ -87,23 +87,21 @@ theorem norm_root_le_one (f : Polynomial K) (hm : f.Monic) (hf : ∀ n, ‖f.coe
     linarith
 
 /- English proof (translation)
-Take `⟨hp, hl2, hnl, hval, hfr⟩` from `h`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hp.one_lt`. Establish `hl0 : (0 : ℝ) < l` using `by linarith`. Establish `hlinv : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hl1`. Establish `hlK : (l : K) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `hnl` using `[h0, norm_zero]`. Conclude with `(inv_pos.mpr hl0).ne' hnl.symm`. Establish `hiso : ∀ a : K, ‖σ a‖ = ‖a‖`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_ne a 0 with rfl | ha` into its components or cases. Simplify using the standard rewrite rules. Take `⟨k, hk⟩` from `hval a ha`. Use `set u := a * (l : K) ^ k with hu`. Establish `hc : ‖((l : K) ^ k)‖ = (l : ℝ)⁻¹ ^ k` using `by rw [norm_zpow, hnl]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hun : ‖u‖ = 1`. Rewrite using `[hu, norm_mul, hc, hk, inv_zpow', ← zpow_add₀ hl0.ne', add_neg_cancel, zpow_zero]`. Establish `hsu : ‖σ u‖ = 1`. Establish `h1` using `hfr u hun.le`. Establish `hup : ‖u ^ l‖ = 1` using `by rw [norm_pow, hun, one_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ‖σ u - u ^ l‖ ≠ ‖u ^ l‖` using `by rw [hup]; linarith`. Use `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hne` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, hup, max_eq_right (by linarith)]`. Conclude with `this`. Establish `hσu : σ u = σ a * (l : K) ^ k` using `by rw [hu, map_mul, map_zpow₀, map_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcne : ‖((l : K) ^ k)‖ ≠ 0` using `by rw [norm_ne_zero_iff]; exact zpow_ne_zero _ hlK`. Establish `e1 : ‖σ a‖ * ‖((l : K) ^ k)‖ = ‖a‖ * ‖((l : K) ^ k)‖`. Rewrite using `[← norm_mul, ← norm_mul, ← hσu, ← hu, hsu, hun]`. Conclude with `mul_right_cancel₀ hcne e1`. Use `⟨hp, hl2, by rw [hnl]; exact hlinv, ?_, hiso, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Break down `eq_or_ne x 0 with rfl | hx0` into its components or cases. Simplify using the standard rewrite rules. Take `⟨k, hk⟩` from `hval x hx0`. Rewrite using `[hnl, hk]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hkneg : k ≤ -1`. Assume the negation of the conclusion as `hk1`. Use `push_neg at hk1`. Establish `: (1 : ℝ) ≤ (l : ℝ) ^ k` using `one_le_zpow₀ hl1.le (by omega)`. Rewrite `this` using `[← hk]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Introduce `x hx`. Conclude with `(hfr x hx).trans_lt hlinv`.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unr_of_unrOK (l : ℕ) (σ : K →+* K) (h : Formalism.InvariantFactorPaths.G7.UnrOK K l σ) : Unr K l σ := by
   obtain ⟨hp, hl2, hnl, hval, hfr⟩ := h
@@ -158,15 +156,13 @@ end GlobalTheory.Honda.KurUnr
 open GlobalTheory.Honda.KurUnr in
 
 /- English proof (translation)
-Introduce `l _ _`. Use `⟨?_, fun σ hσ => unr_of_unrOK l σ hσ⟩` and prove the remaining obligations. Introduce `f hm hdeg hf`. Use `set g : Polynomial ℂ_[l] := f.map (MaximalUnramifiedExtension l).subtype with hg`. Establish `hgm : g.Monic` using `hm.map _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgdeg : g.natDegree = f.natDegree` using `Polynomial.natDegree_map _`. Establish `hgc : ∀ n, ‖g.coeff n‖ ≤ 1` using `fun n => by`. Rewrite using `[hg, Polynomial.coeff_map]`. Conclude with `hf n`. Establish `hdg : g.degree ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Polynomial.degree_eq_natDegree hgm.ne_zero, hgdeg]`. Conclude with `hdeg.ne'` after adjusting the coercions. Take `⟨z, hz⟩` from `IsAlgClosed.exists_root g hdg`. Establish `hz1 : ‖z‖ ≤ 1` using `norm_root_le_one g hgm hgc hz`. Take `⟨y, hyK, hy1, hzy⟩` from `GlobalTheory.T.exists_unramified_near_integral_complexPadic l z hz1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨y, hyK⟩, hy1, ?_⟩` and prove the remaining obligations. Establish `hev : ((f.eval ⟨y, hyK⟩ : MaximalUnramifiedExtension l) : ℂ_[l]) = g.eval y`. Rewrite using `[hg, Polynomial.eval_map]`. Conclude with `(Polynomial.eval₂_hom (MaximalUnramifiedExtension l).subtype ⟨y, hyK⟩).symm`. Express the relevant statement in the definitionally equal form `‖((f.eval ⟨y, hyK⟩ : MaximalUnramifiedExtension l) : ℂ_[l])‖ < 1`.
-
-Rewrite using `[hev, ← sub_zero (g.eval y), ← hz]`. Combine the equalities or inequalities in the displayed calculation.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Honda.kur_resAlg_unr : ∀ (l : ℕ) [Fact l.Prime], 2 < l →
     ResAlg (MaximalUnramifiedExtension l) ∧ ∀ σ : MaximalUnramifiedExtension l →+* MaximalUnramifiedExtension l, Formalism.InvariantFactorPaths.G7.UnrOK (MaximalUnramifiedExtension l) l σ → Unr (MaximalUnramifiedExtension l) l σ := by

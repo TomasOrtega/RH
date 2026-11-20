@@ -21,11 +21,11 @@ noncomputable section
 namespace GlobalTheory.GradFlag
 
 /- English proof (translation)
-Establish `ho` using `isOpen_over ch.e ch₀.e.open_source`. Establish `hn` using `ho.mem_nhds (mem_over ch.e hy hy₀)`. Establish `hT : DifferentiableAt ℂ (ch₀.e ∘ ch.e.symm) (ch.e y)` using `(ch.holo_trans ch₀).differentiableAt hn`. Establish `e0 : (ch₀.e ∘ ch.e.symm) (ch.e y) = ch₀.e y` using `congrArg ch₀.e (ch.e.left_inv hy)`. Establish `hd' : DifferentiableAt ℝ (f ∘ ch₀.e.symm) ((ch₀.e ∘ ch.e.symm) (ch.e y))` using `e0 ▸ hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : f ∘ ch.e.symm =ᶠ[𝓝 (ch.e y)] (f ∘ ch₀.e.symm) ∘ (ch₀.e ∘ ch.e.symm)` using `Filter.eventually_of_mem hn fun v hv => by simp only [Function.comp_apply, ch₀.e.left_inv hv.2]`. Establish `hc` using `hd'.hasFDerivAt.comp (ch.e y) (hT.restrictScalars ℝ).hasFDerivAt`. Use `⟨(hc.differentiableAt).congr_of_eventuallyEq heq, fun ξ => ?_⟩` and prove the remaining obligations. Rewrite using `[heq.fderiv_eq, hc.fderiv, ha.trans hy hy₀ ξ.ofLp]`. Establish `e1 : (fderiv ℝ (ch₀.e ∘ ch.e.symm) (ch.e y)) ξ = WithLp.toLp 2 (ch.dtrans ch₀ y ξ.ofLp)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hT.fderiv_restrictScalars ℝ]`. Both sides reduce to the same expression. Simplify using `only [ContinuousLinearMap.comp_apply, e1]`. Rewrite using `[e0]`. Conclude with `hb _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transfer {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp k} {σ : k →+* ℂ} {d : ℕ}
     {R : GlobalTheory.AnRead p σ d} {a : ChartForm p σ d} (ha : IsKaehlerForm R a) (f : GlobalTheory.CxPts p σ → ℝ)
@@ -74,35 +74,31 @@ abbrev lineFn {D : D7} (O : Setup D) (x : ToroidalCompactificationData O.s) (c :
   lnRatio (metsOf x O.Φ c none σ (O.ex ρ)) (refMet x O.Φ c σ (O.ex ρ))
 
 /- English proof (translation)
-Introduce `h2 hH D O x P hc hN hR`. Establish `hI'` using `hI h2 hH D O x P hc hN hR`. Establish `hB'` using `hB h2 hH D O x P hc hN hR`. Establish `hr1 : ∀ c σ (y : GlobalTheory.CxPts (O.var c).str σ), 1 ≤ O.met.r c σ y` using `fun c σ y => by`. Rewrite using `[hc.r_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(by linarith [Real.add_one_le_exp (1 : ℝ)] : (1 : ℝ) ≤ Real.exp 1).trans exp_le_rFlag`. Establish `hE : ∀ c σ (y : GlobalTheory.CxPts (O.var c).str σ) (a : ℝ), 0 ≤ Real.exp (O.met.r c σ y / 2) * √a` using `fun _ _ _ _ => mul_nonneg (Real.exp_pos _).le (Real.sqrt_nonneg _)`. Establish `loc : ∀ c σ (ρ : DV.Rt D.what₂.Tau O.N) (y₀ : GlobalTheory.CxPts (O.var c).str σ), ∃ (ch : GlobalTheory.AlgChart (O.var c).str σ (O.var c).dim) (U : Set (GlobalTheory.CxPts (O.var c).str σ)) (C μ : ℝ), IsOpen U ∧ y₀ ∈ U ∧ U ⊆ ch.e.source ∧ 0 ≤ C ∧ 0 ≤ μ ∧ ∀ y ∈ U, y ∈ offBd O.Φ c …`. Introduce `c σ ρ y₀`. Distinguish the cases in `h₀ : y₀ ∈ offBd O.Φ c σ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨ch, U, C, hUo, hy₀, hUs, hb⟩` from `hI' c σ ρ y₀ h₀`. Use `⟨ch, U, max C 0, 0, hUo, hy₀, hUs, le_max_right _ _, le_rfl, fun y hy _ => ⟨(hb y hy).2.1, fun ξ => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `(hb y hy).2.2 ξ`. Establish `h2 : 1 ≤ Real.exp (O.met.r c σ y / 2)` using `Real.one_le_exp (by linarith [hr1 c σ y])`. Establish `h3` using `Real.sqrt_nonneg (P.om c σ ch y ξ.ofLp)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.rpow_zero, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (le_mul_of_one_le_left h3 h2) (le_max_right _ _)`. Take `⟨ch, U, C, μ, hUo, hy₀, hUs, hμ, hb⟩` from `hB' c σ ρ y₀ h₀`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨ch, U, max C 0, μ, hUo, hy₀, hUs, le_max_right _ _, hμ, fun y hy hoff => ⟨(hb y hy hoff).1, fun ξ => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `(hb y hy hoff).2 ξ`. Establish `hp : 0 ≤ O.met.r c σ y ^ μ` using `Real.rpow_nonneg (by linarith [hr1 c σ y]) _`. Use `h1.trans ?_` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_left _ _) hp) (Real.exp_pos _).le) (Real.sqrt_nonneg _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `glob : ∀ c σ (ρ : DV.Rt D.what₂.Tau O.N), ∃ C μ : ℝ, 0 ≤ C ∧ 0 ≤ μ ∧ ∀ (ch : GlobalTheory.AlgChart (O.var c).str σ (O.var c).dim), ∀ y ∈ ch.e.source, y ∈ offBd O.Φ c σ → DifferentiableAt ℝ (lineFn O x c σ ρ ∘ ch.e.symm) (ch.e y) ∧ ∀ ξ : ReciprocityTheory.L2DbarEstimates.V (O.var …`. Introduce `c σ ρ`. Use `choose ch U C μ hUo hy₀ hUs hC hμ hb using loc c σ ρ`. Take `⟨t, -, ht⟩` from `isCompact_univ.elim_nhds_subcover U fun y _ => (hUo y).mem_nhds (hy₀ y)`. Use `⟨∑ y ∈ t, C y, ∑ y ∈ t, μ y, Finset.sum_nonneg fun _ _ => hC _, Finset.sum_nonneg fun _ _ => hμ _, fun ch' y hy hoff => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y₀, hy₀t, hyU⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ y))`. Take `⟨hd, hbd⟩` from `hb y₀ y hyU hoff`. Take `⟨hd', hb'⟩` from `transfer (P.om_kaehler c σ) (lineFn O x c σ ρ) ch' (ch y₀) hy (hUs y₀ hyU) hd _ hbd`. Use `⟨hd', fun ξ => (hb' ξ).trans ?_⟩` and prove the remaining obligations. Establish `hr` using `hr1 c σ y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC1 : C y₀ ≤ ∑ y ∈ t, C y` using `Finset.single_le_sum (f := C) (fun _ _ => hC _) hy₀t`. Establish `hμ1 : μ y₀ ≤ ∑ y ∈ t, μ y` using `Finset.single_le_sum (f := μ) (fun _ _ => hμ _) hy₀t`. Establish `hp1 : O.met.r c σ y ^ μ y₀ ≤ O.met.r c σ y ^ (∑ y ∈ t, μ y)` using `Real.rpow_le_rpow_of_exponent_le hr hμ1`. Establish `hp0 : 0 ≤ O.met.r c σ y ^ μ y₀` using `Real.rpow_nonneg (by linarith) _`. Establish `h4` using `mul_le_mul hC1 hp1 hp0 (Finset.sum_nonneg fun _ _ => hC _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right h4 (Real.exp_pos _).le) (Real.sqrt_nonneg _)`. Use `haveI : Fintype O.s.Comp := Fintype.ofFinite _`. Use `choose Cg μg hCg hμg hg using glob`. Establish `hS0 : 0 ≤ ∑ c, ∑ σ, ∑ ρ, Cg c σ ρ` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => hCg _ _ _`. Use `⟨2 * ∑ c, ∑ σ, ∑ ρ, Cg c σ ρ, ∑ c, ∑ σ, ∑ ρ, μg c σ ρ, mul_nonneg zero_le_two hS0, Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => hμg _ _ _, fun c σ τ i ch y hy hoff => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd` using `fun ρ => (hg c σ ρ ch y hy hoff).1`. Establish `hsum : HasFDerivAt (fun v => 2 * ∑ ρ : DV.Rt D.what₂.Tau O.N, fund τ i ρ.1 ρ.2 * (lineFn O x c σ ρ ∘ ch.e.symm) v) ((2 : ℝ) • ∑ ρ : DV.Rt D.what₂.Tau O.N, fund τ i ρ.1 ρ.2 • fderiv ℝ (lineFn O x c σ ρ ∘ ch.e.symm) (ch.e y)) (ch.e y)`. Use `(HasFDerivAt.sum (u := Finset.univ) fun ρ _ => (hd ρ).hasFDerivAt.const_mul (fund τ i ρ.1 ρ.2)).const_mul 2` as an intermediate fact. Simplify `this` using `only [Finset.sum_apply]`. Establish `e : psi O x c σ τ i ∘ ch.e.symm = fun v => 2 * ∑ ρ : DV.Rt D.what₂.Tau O.N, fund τ i ρ.1 ρ.2 * (lineFn O x c σ ρ ∘ ch.e.symm) v` using `rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `⟨hsum.differentiableAt, fun ξ => ?_⟩` and prove the remaining obligations. Rewrite using `[hsum.fderiv]`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.coe_sum', Finset.sum_apply, smul_eq_mul]`. Use `set r := O.met.r c σ y`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set E := Real.exp (r / 2) * √(P.om c σ ch y ξ.ofLp)`. Establish `hE0 : 0 ≤ E` using `hE _ _ _ _`. Establish `hr` using `hr1 c σ y`. Establish `hμall : ∀ ρ, μg c σ ρ ≤ ∑ c, ∑ σ, ∑ ρ, μg c σ ρ` using `fun ρ => (Finset.single_le_sum (f := μg c σ) (fun _ _ => hμg _ _ _) (Finset.mem_univ ρ)).trans ((Finset.single_le_sum (f := fun σ => ∑ ρ, μg c σ ρ) (fun _ _ => Finset.sum_nonneg fun _ _ => hμg _ _ _) (Finset.mem_univ σ)).trans (Finset.single_le_sum (f := fun c => ∑ σ, ∑ ρ, μg c σ …`. Establish `hCall : ∑ ρ, Cg c σ ρ ≤ ∑ c, ∑ σ, ∑ ρ, Cg c σ ρ` using `(Finset.single_le_sum (f := fun σ => ∑ ρ, Cg c σ ρ) (fun _ _ => Finset.sum_nonneg fun _ _ => hCg _ _ _) (Finset.mem_univ σ)).trans (Finset.single_le_sum (f := fun c => ∑ σ, ∑ ρ, Cg c σ ρ) (fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => hCg _ _ _) (Finset.mem …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hterm : ∀ ρ : DV.Rt D.what₂.Tau O.N, |fund τ i ρ.1 ρ.2 * fderiv ℝ (lineFn O x c σ ρ ∘ ch.e.symm) (ch.e y) ξ| ≤ Cg c σ ρ * (r ^ (∑ c, ∑ σ, ∑ ρ, μg c σ ρ) * E)` using `fun ρ => by`. Apply the tactic sequence `have hf : |fund τ i ρ.1 ρ.2| ≤ 1 := by unfold fund; split_ifs <;> simp`. Establish `hb` using `(hg c σ ρ ch y hy hoff).2 ξ`. Establish `hp1 : r ^ μg c σ ρ ≤ r ^ (∑ c, ∑ σ, ∑ ρ, μg c σ ρ)` using `Real.rpow_le_rpow_of_exponent_le hr (hμall ρ)`. Establish `hp0 : 0 ≤ r ^ μg c σ ρ` using `Real.rpow_nonneg (by linarith) _`.
-
-Rewrite using `[abs_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `*` using `[← mul_assoc (Cg c σ ρ * _)]`. Conclude with `mul_le_mul hf (by simpa only [E, mul_assoc] using hb) (abs_nonneg _) zero_le_one`. Use `_ ≤ Cg c σ ρ * (r ^ (∑ c, ∑ σ, ∑ ρ, μg c σ ρ) * E) := by`.
-
-Rewrite using `[one_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hp1 hE0) (hCg _ _ _)`. Rewrite using `[abs_mul, abs_two]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem gradSt_of_local (hI : GradLineInt) (hB : GradLineBd) : Hypotheses2 → HypothesesH → GradSt := by
   intro h2 hH D O x P hc hN hR
@@ -224,7 +220,7 @@ theorem gradSt_of_local (hI : GradLineInt) (hB : GradLineBd) : Hypotheses2 → H
     _ = _ := by simp only [E]; ring
 
 /- English proof (translation)
-The claim follows from `gradSt_of_local GlobalTheory.T.log_metric_ratio_differentiable_chart GlobalTheory.T.log_metric_ratio_differentiable_nonneg`.
+A detailed English derivation is pending.
 -/
 theorem gradSt : Hypotheses2 → HypothesesH → GradSt := gradSt_of_local GlobalTheory.T.log_metric_ratio_differentiable_chart GlobalTheory.T.log_metric_ratio_differentiable_nonneg
 

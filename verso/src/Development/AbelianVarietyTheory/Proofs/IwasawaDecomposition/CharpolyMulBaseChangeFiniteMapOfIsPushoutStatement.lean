@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.AlgebraMapNo
 open CategoryTheory Polynomial GlobalTheory.NormalDescent
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.NormalDescent.charK_map_of_isPushout | exact GlobalTheory.NormalDescent.charK_map_of_isPushout | (intros; apply GlobalTheory.NormalDescent.charK_map_of_isPushout <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.charpolyMulBaseChangeFinite_map_of_isPushout : ∀ {A B A' B' K K' : Type} [CommRing A] [CommRing B] [CommRing A'] [CommRing B'] [Field K] [Field K']
     [Algebra A K] [Algebra A' K'] (φ : A →+* B) (α : A →+* A') (β : B →+* B') (φ' : A' →+* B'),

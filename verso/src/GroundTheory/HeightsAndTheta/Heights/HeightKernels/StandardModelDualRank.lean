@@ -34,11 +34,11 @@ def psiZ (K : Type) [Field K] (i : ℕ) : MvPolynomial (Fin i) ℤ →+* dualStd
   (psi K i).comp (MvPolynomial.map (Int.castRingHom K))
 
 /- English proof (translation)
-Set `ev : MvPolynomial Unit (MvPolynomial Unit (ProjField K i)) →+* ProjField K i` to `eval₂Hom (MvPolynomial.eval fun _ => (1 : ProjField K i)) fun _ => 1`. Establish `h : ev.comp (psiA K i) = algebraMap (MvPolynomial (Fin i) K) (ProjField K i)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `k`. Simplify using `only [ev, psiA, RingHom.comp_apply, eval₂Hom_C, eval_C]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`. Introduce `j`. Simplify using `[ev, psiA]`. Introduce `p q hpq`. Apply `IsFractionRing.injective (MvPolynomial (Fin i) K) (ProjField K i)` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← h, RingHom.comp_apply, RingHom.comp_apply, hpq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psiA_injective : Function.Injective (psiA K i) := by
   let ev : MvPolynomial Unit (MvPolynomial Unit (ProjField K i)) →+* ProjField K i :=
@@ -55,7 +55,7 @@ theorem psiA_injective : Function.Injective (psiA K i) := by
   rw [← h, RingHom.comp_apply, RingHom.comp_apply, hpq]
 
 /- English proof (translation)
-Rewrite using `[psi, RingHom.coe_comp]`. Conclude with `(IsFractionRing.injective (MvPolynomial Unit (MvPolynomial Unit (ProjField K i))) (dualStdModelField K i)).comp psiA_injective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_injective : Function.Injective (psi K i) := by
   rw [psi, RingHom.coe_comp]
@@ -63,27 +63,27 @@ theorem psi_injective : Function.Injective (psi K i) := by
     (dualStdModelField K i)).comp psiA_injective
 
 /- English proof (translation)
-Simplify using `[psi, psiA, u, dualStdModelEmb, dualStdModelS, dualStdModelT]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psi_X (j : Fin i) : psi K i (X j) = u K i j := by
   simp [psi, psiA, u, dualStdModelEmb, dualStdModelS, dualStdModelT]
 
 /- English proof (translation)
-Simplify using `[psi, psiA, embK, dualStdModelEmb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psi_C (k : K) : psi K i (C k) = embK K i k := by
   simp [psi, psiA, embK, dualStdModelEmb]
 
 /- English proof (translation)
-The claim follows from `(Subring.closure_le).mpr (by rintro _ ⟨j, rfl⟩; exact ⟨X j, by simp [psiZ, psi_X]⟩)`.
+A detailed English derivation is pending.
 -/
 theorem closure_le : Subring.closure (Set.range (u K i)) ≤ (psiZ K i).range :=
   (Subring.closure_le).mpr (by rintro _ ⟨j, rfl⟩; exact ⟨X j, by simp [psiZ, psi_X]⟩)
 
 /- English proof (translation)
-Take `⟨y, hy, z, hz, rfl⟩` from `Subfield.mem_closure_iff.mp hf`. Distinguish the cases in `h0 : z = 0`. Conclude with `⟨1, one_mem _, one_ne_zero, by simp [h0]⟩`. Use `⟨z, closure_le hz, h0, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_div_cancel₀ y h0]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `closure_le hy`.
+A detailed English derivation is pending.
 -/
 theorem exists_den {f : dualStdModelField K i} (hf : f ∈ Subfield.closure (Set.range (u K i))) :
     ∃ d ∈ (psiZ K i).range, d ≠ 0 ∧ d * f ∈ (psiZ K i).range := by
@@ -95,7 +95,7 @@ theorem exists_den {f : dualStdModelField K i} (hf : f ∈ Subfield.closure (Set
     exact closure_le hy
 
 /- English proof (translation)
-Use `choose d hd hd0 hdf using fun k => exists_den (hf k)`. Use `⟨∏ k, d k, prod_mem fun k _ => hd k, Finset.prod_ne_zero_iff.mpr fun k _ => hd0 k, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.mul_prod_erase Finset.univ d (Finset.mem_univ k), mul_comm (d k), mul_assoc]`. Conclude with `mul_mem (prod_mem fun l _ => hd l) (hdf k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den_fin {n : ℕ} (f : Fin n → dualStdModelField K i)
     (hf : ∀ k, f k ∈ Subfield.closure (Set.range (u K i))) :
@@ -109,11 +109,11 @@ theorem exists_den_fin {n : ℕ} (f : Fin n → dualStdModelField K i)
 variable [NumberField K]
 
 /- English proof (translation)
-Establish `h' : ∑ k, C (B k) * MvPolynomial.map (Int.castRingHom K) (q k) = 0`. Apply `psi_injective` to reduce the goal to its premises. Rewrite using `[map_sum, map_zero]`. Simplify `h` using `[psiZ, psi_C]`. Establish `hB : LinearIndependent ℤ B` using `B.linearIndependent.restrict_scalars' ℤ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `k`. Use extensionality with `m`. Establish `hm` using `congrArg (coeff m) h'`. Rewrite `hm` using `[coeff_sum, coeff_zero]`. Simplify using `only [coeff_C_mul, coeff_map, eq_intCast] at hm`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Fintype.linearIndependent_iff.mp hB (fun k => coeff m (q k)) (by simpa [zsmul_eq_mul, mul_comm] using hm) k` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem indep_int {n : ℕ} (B : Module.Basis (Fin n) ℚ K) (q : Fin n → MvPolynomial (Fin i) ℤ)
     (h : ∑ k, embK K i (B k) * psiZ K i (q k) = 0) : ∀ k, q k = 0 := by
@@ -131,13 +131,13 @@ theorem indep_int {n : ℕ} (B : Module.Basis (Fin n) ℚ K) (q : Fin n → MvPo
   simpa using this
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `F.fg`. Take `⟨N, hN, hint⟩` from `exists_integral_multiples ℤ ℚ (S.image fun g => v ⬝ᵥ g)`. Use `⟨N, hN, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← hS]`. Proceed by induction on `hx using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Consider the case `mem g hg`. Establish `hg'` using `hint _ (Finset.mem_image_of_mem _ hg)`. Rewrite using `[smul_dotProduct, Int.cast_smul_eq_zsmul]`. Conclude with `RingHom.mem_range.mpr ((IsIntegralClosure.isIntegral_iff (A := 𝓞 K)).mp hg')`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨c, hc⟩` from `hy`. Conclude with `⟨a + c, by rw [dotProduct_add, map_add, ha, hc]⟩`. Consider the case `smul r x _ hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hx`. Use `⟨r * a, ?_⟩` and prove the remaining obligations. Rewrite using `[dotProduct_smul, map_mul, ha]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_int_smul_mem (F : HermLattice K i) (v : Fin i → K) :
     ∃ N : ℤ, N ≠ 0 ∧ (N : K) • v ∈ dualLattice F := by
@@ -169,7 +169,7 @@ def w (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K i))) (t : T) 
 
 omit [NumberField K] in
 /- English proof (translation)
-Rewrite using `[dualStdModelS]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective (MvPolynomial Unit (MvPolynomial Unit (ProjField K i))) (dualStdModelField K i))).mpr (by simp [X_ne_zero])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem S_ne_zero : dualStdModelS K i ≠ 0 := by
   rw [dualStdModelS]
@@ -178,7 +178,7 @@ theorem S_ne_zero : dualStdModelS K i ≠ 0 := by
 
 omit [NumberField K] in
 /- English proof (translation)
-Rewrite using `[dualStdModelT]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective (MvPolynomial Unit (MvPolynomial Unit (ProjField K i))) (dualStdModelField K i))).mpr (X_ne_zero _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_ne_zero : dualStdModelT K i ≠ 0 := by
   rw [dualStdModelT]
@@ -186,7 +186,7 @@ theorem T_ne_zero : dualStdModelT K i ≠ 0 := by
     (dualStdModelField K i))).mpr (X_ne_zero _)
 
 /- English proof (translation)
-Rewrite using `[map_ne_zero_iff _ (dualStdModelEmb K i).injective, dualLatticeCoord_eq]`. Conclude with `evalForm_ne_zero fun h => b.ne_zero t ((Submodule.coe_eq_zero).mp h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_ne_zero (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K i))) (t : T) :
     dualStdModelEmb K i (dualLatticeCoord b ⟨(), t⟩) ≠ 0 := by
@@ -194,13 +194,13 @@ theorem coord_ne_zero (b : Module.Basis T ℤ (dualLattice (HermLattice.standard
   exact evalForm_ne_zero fun h => b.ne_zero t ((Submodule.coe_eq_zero).mp h)
 
 /- English proof (translation)
-The claim follows from `mul_ne_zero (mul_ne_zero (coord_ne_zero b t) S_ne_zero) T_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem w_ne_zero (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K i))) (t : T) : w b t ≠ 0 :=
   mul_ne_zero (mul_ne_zero (coord_ne_zero b t) S_ne_zero) T_ne_zero
 
 /- English proof (translation)
-Simplify using `only [w, u, dualLatticeCoord, map_sum, map_mul, Finset.sum_mul, embK, RingHom.comp_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply, mul_assoc, mul_assoc, mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem w_eq (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K i))) (t : T) :
     w b t = ∑ j, embK K i ((b t : Fin i → K) j) * u K i j := by
@@ -209,9 +209,9 @@ theorem w_eq (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K i))) (
   rw [← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply, mul_assoc, mul_assoc, mul_assoc]
 
 /- English proof (translation)
-Take `⟨N, hN, hmem⟩` from `exists_int_smul_mem (HermLattice.standard K i) (a • (b c : Fin i → K))`. Take `⟨φ, hφ⟩ : ∃ φ : dualLattice (HermLattice.standard K i), (φ : Fin i → K) = (N : K) • a • (b c : Fin i → K)` from `⟨⟨_, hmem⟩, rfl⟩`. Use `⟨N, hN, fun t => b.repr φ t, ?_⟩` and prove the remaining obligations. Establish `hrepr` using `congrArg (fun ψ : dualLattice (HermLattice.standard K i) => evalForm i (ψ : Fin i → K)) (b.sum_repr φ)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, map_sum, map_zsmul, hφ, map_smul] at hrepr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [← dualLatticeCoord_eq b, zsmul_eq_mul, Algebra.smul_def, map_intCast] at hrepr`. Establish `h2` using `congrArg (fun y => dualStdModelEmb K i y * dualStdModelS K i * dualStdModelT K i) hrepr`. Simplify using `only [map_sum, map_mul, map_intCast, Finset.sum_mul] at h2`. Simplify using `only [w, embK, RingHom.comp_apply, mul_assoc] at h2 ⊢`. Rewrite using `[h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_int_comb [Fintype T] (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K i))) (c : T) (a : K) :
     ∃ N : ℤ, N ≠ 0 ∧ ∃ n : T → ℤ, ∑ t, (n t : dualStdModelField K i) * w b t = (N : _) * embK K i a * w b c := by
@@ -229,13 +229,11 @@ theorem exists_int_comb [Fintype T] (b : Module.Basis T ℤ (dualLattice (HermLa
   rw [h2]
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `hf : ∀ k, algebraMap Φ₀ _ (g k) ∈ Subfield.closure (Set.range (u K i))` using `fun k => by`. Rewrite using `[← hΦ]`. Conclude with `RingHom.mem_fieldRange.mpr ⟨g k, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨D, -, hD0, hD⟩` from `exists_den_fin _ hf`. Use `choose q hq using fun k => RingHom.mem_range.mp (hD k)`. Simplify using `only [Algebra.smul_def] at hg`. Establish `hsum : ∑ k, embK K i (B k) * psiZ K i (q k) = 0`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [hq]; ring`. Use `_ = 0 := by rw [hg, mul_zero]`. Establish `h0` using `indep_int B q hsum`. Introduce `k`.
-
-Establish `hk : D * algebraMap Φ₀ (dualStdModelField K i) (g k) = 0` using `by rw [← hq, h0, map_zero]`. Conclude with `(algebraMap Φ₀ (dualStdModelField K i)).injective (((mul_eq_zero.mp hk).resolve_left hD0).trans (map_zero _).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linIndep {n : ℕ} (B : Module.Basis (Fin n) ℚ K) (Φ₀ : Type) [Field Φ₀]
     [Algebra Φ₀ (dualStdModelField K i)]
@@ -261,11 +259,9 @@ theorem linIndep {n : ℕ} (B : Module.Basis (Fin n) ℚ K) (Φ₀ : Type) [Fiel
     (((mul_eq_zero.mp hk).resolve_left hD0).trans (map_zero _).symm)
 
 /- English proof (translation)
-Establish `hq : ∀ q : ℚ, (q : dualStdModelField K i) = algebraMap Φ₀ _ ((q.num : Φ₀) / (q.den : Φ₀))` using `fun q => by`. Rewrite using `[map_div₀, map_intCast, map_natCast, Rat.cast_def]`. Rewrite using `[Algebra.adjoin_eq_span, show Submonoid.closure (Set.range (embK K i)) = (embK K i).range.toSubmonoid from Submonoid.closure_eq (embK K i).range.toSubmonoid]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[← B.sum_repr a, map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Rat.smul_def, map_mul, map_ratCast, hq, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
-
-Conclude with `Submodule.span_mono (by rintro _ ⟨k, rfl⟩; exact ⟨B k, rfl⟩)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjoin_embK_eq_span {n : ℕ} (B : Module.Basis (Fin n) ℚ K) (Φ₀ : Type) [Field Φ₀]
     [Algebra Φ₀ (dualStdModelField K i)] :

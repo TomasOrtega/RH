@@ -22,18 +22,18 @@ def twistInvOver (A : Type*) [AddCommGroup A] [Module O A] (U : Subgroup ℤ_[l]
 variable {l O}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_twistInvOver {A : Type*} [AddCommGroup A] [Module O A] {U : Subgroup ℤ_[l]ˣ} {tr : ℕ}
     {x : A} : x ∈ twistInvOver l O A U tr ↔
       ∀ u ∈ U, (algebraMap ℤ_[l] O (u : ℤ_[l]) ^ tr) • x = x := Iff.rfl
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx` using `[Submodule.mem_torsionBy_iff]`. Rewrite using `[mem_twistInvOver]`. Introduce `u hu`. Take `⟨c, hc⟩` from `le_nu_iff.mp h u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e : (algebraMap ℤ_[l] O (u : ℤ_[l])) ^ tr - 1 = (l : O) ^ n * algebraMap ℤ_[l] O c`. Rewrite using `[← map_pow, ← map_one (algebraMap ℤ_[l] O), ← map_sub, hc, map_mul, map_pow, map_natCast]`. Establish `e2 : ((algebraMap ℤ_[l] O (u : ℤ_[l])) ^ tr) • x = x + ((algebraMap ℤ_[l] O (u : ℤ_[l])) ^ tr - 1) • x`. Rewrite using `[sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e2, e, mul_comm, mul_smul, hx, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem torsionBy_pow_le_twistInvOver (A : Type*) [AddCommGroup A] [Module O A] {U : Subgroup ℤ_[l]ˣ}
     {tr n : ℕ} (h : (n : ℕ∞) ≤ nu l U tr) :
@@ -52,15 +52,15 @@ private theorem torsionBy_pow_le_twistInvOver (A : Type*) [AddCommGroup A] [Modu
   rw [e2, e, mul_comm, mul_smul, hx, smul_zero, add_zero]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[mem_twistInvOver]`. Rewrite using `[Submodule.mem_torsionBy_iff]`. Establish `hstar : nuStar (l : ℤ_[l]) ((fun u : ℤ_[l]ˣ => (u : ℤ_[l])) '' (U : Set ℤ_[l]ˣ)) tr = (n : ℕ∞)` using `h`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨w, ⟨v, hv, rfl⟩, hdvd, hndvd⟩` from `exists_exact_of_nuStar_eq hstar`. Take `⟨c, hc⟩` from `hdvd`. Establish `hcu : IsUnit c`. Assume the negation of the conclusion as `hnu`. Rewrite `hnu` using `[PadicInt.not_isUnit_iff, PadicInt.norm_lt_one_iff_dvd]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨d, hd⟩` from `hnu`. Apply `hndvd` to reduce the goal to its premises. Use `⟨d, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, hd, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e : (algebraMap ℤ_[l] O (v : ℤ_[l])) ^ tr - 1 = (l : O) ^ n * algebraMap ℤ_[l] O c`. Rewrite using `[← map_pow, ← map_one (algebraMap ℤ_[l] O), ← map_sub, hc, map_mul, map_pow, map_natCast]`. Establish `h1 : ((algebraMap ℤ_[l] O (v : ℤ_[l])) ^ tr - 1) • x = 0`. Rewrite using `[sub_smul, one_smul, hx v hv, sub_self]`. Rewrite `h1` using `[e, mul_comm, mul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((hcu.map (algebraMap ℤ_[l] O)).smul_eq_zero).mp h1`. Conclude with `torsionBy_pow_le_twistInvOver A (by rw [h])`.
+A detailed English derivation is pending.
 -/
 theorem twistInvOver_eq_torsionBy (A : Type*) [AddCommGroup A] [Module O A] {U : Subgroup ℤ_[l]ˣ}
     {tr n : ℕ} (h : nu l U tr = n) :
@@ -94,13 +94,13 @@ variable [IsDomain O] [IsDiscreteValuationRing O]
 omit [Algebra ℤ_[l] O] in
 
 /- English proof (translation)
-Set `Φ : Matrix (Fin 1) (Fin 1) O` to `Matrix.of (fun _ _ => b)`. Establish `hdet : Φ.det = b` using `by simp [Φ, Matrix.det_unique]`. Use `conv_rhs => rw [← hdet]`. Rewrite using `[← Selmer.length_kernel_fraction_module_eq_addVal_det (K := K) Φ]`. Set `e : (Fin 1 → Selmer.FracMod O K) ≃ₗ[O] Selmer.FracMod O K` to `LinearEquiv.funUnique (Fin 1) O _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmap : (Selmer.H1c Φ (Selmer.FracMod O K)).map (e : (Fin 1 → Selmer.FracMod O K) →ₗ[O] Selmer.FracMod O K) = Submodule.torsionBy O (Selmer.FracMod O K) b`. Use extensionality with `x`. Rewrite using `[Submodule.map_equiv_eq_comap_symm, Submodule.mem_comap, Submodule.mem_torsionBy_iff]`. Simplify using `only [Selmer.H1c, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Establish `h0` using `congrFun hx 0`. Rewrite `h0` using `[Selmer.coefMap_apply]`. Simplify `h0` using `[Φ, e]`. Introduce `hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Selmer.coefMap_apply]`. Simplify `hx` using `[Φ, e]`. Rewrite using `[← hmap]`. Conclude with `((e.submoduleMap _).length_eq).symm`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_torsionBy_fracMod (b : O) :
     Module.length O (Submodule.torsionBy O (Selmer.FracMod O K) b) = addVal O b := by
@@ -128,18 +128,18 @@ theorem length_torsionBy_fracMod (b : O) :
   exact ((e.submoduleMap _).length_eq).symm
 
 /- English proof (translation)
-Rewrite using `[twistInvOver_eq_torsionBy _ h, length_torsionBy_fracMod K, addVal_pow, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem length_twistInvOver_of_eq {U : Subgroup ℤ_[l]ˣ} {tr n : ℕ} (h : nu l U tr = n) :
     Module.length O (twistInvOver l O (Selmer.FracMod O K) U tr) = n * addVal O (l : O) := by
   rw [twistInvOver_eq_torsionBy _ h, length_torsionBy_fracMod K, addVal_pow, nsmul_eq_mul]
 
 /- English proof (translation)
-Distinguish the cases in `htop : nu l U tr = ⊤`. Establish `hv : addVal O (l : O) ≠ 0`. Rewrite using `[Ne, addVal_eq_zero_iff]`. Conclude with `hl`. Rewrite using `[htop, ENat.top_mul hv, ENat.eq_top_iff_forall_ge]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Establish `hle : Submodule.torsionBy O (Selmer.FracMod O K) ((l : O) ^ m) ≤ twistInvOver l O (Selmer.FracMod O K) U tr` using `torsionBy_pow_le_twistInvOver _ (by rw [htop]; exact le_top)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[length_torsionBy_fracMod K, addVal_pow, nsmul_eq_mul]`. Use `_ ≤ _ := Module.length_le_of_injective (Submodule.inclusion hle) (Submodule.inclusion_injective hle)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp htop`. Rewrite using `[length_twistInvOver_of_eq K hn.symm, ← hn]`.
+A detailed English derivation is pending.
 -/
 theorem length_twistInvOver (hl : ¬ IsUnit (l : O)) (U : Subgroup ℤ_[l]ˣ) (tr : ℕ) :
     Module.length O (twistInvOver l O (Selmer.FracMod O K) U tr) =

@@ -262,7 +262,7 @@ section Examples
 abbrev projCoords (D : ℕ) : Unit → Type := fun _ => Fin (D + 1)
 
 /- English proof (translation)
-Conclude with `rename_injective _ (Function.Injective.sigma_map (β₂ := Sum.elim ι ι₂) (f₁ := Sum.inl) (f₂ := fun _ x => x) Sum.inl_injective fun _ _ _ h => h)`.
+A detailed English derivation is pending.
 -/
 theorem blockIncl_injective {F : Type u} [Field F] {K : Type v} {L : Type v'} {ι : K → Type w}
     (ι₂ : L → Type w) : Function.Injective (blockIncl (F := F) (ι := ι) ι₂) := by

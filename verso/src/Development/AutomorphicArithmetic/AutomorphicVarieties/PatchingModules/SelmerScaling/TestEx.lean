@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
 /- English proof (translation)
-Set `f : (X × (Fin g → X) × (Fin g → X) × X) →ₗ[X] DD X g` to `{ toFun := fun p => ⟨p.1, p.2.1, p.2.2.1, p.2.2.2⟩ map_add' := fun p q => DD.ext (by simp) (by ext j; simp) (by ext j; simp) (by simp) map_smul' := fun c p => by`. Establish `hC : (DD.C c : DD X g) = ⟨c, 0, 0, 0⟩` using `rfl`. Simplify using `only [RingHom.id_apply]`. Express the relevant statement in the definitionally equal form `_ = DD.C c * _`. Rewrite using `[hC]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `apply DD.ext <;> (try funext j) <;> simp }`. Use `Module.Finite.of_surjective f ?_` and prove the remaining obligations. Introduce `y`. Conclude with `⟨(y.a, y.ep, y.ep', y.eta), rfl⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 private theorem dd_fin (X : Type) [CommRing X] (g : ℕ) : Module.Finite X (DD X g) := by
   let f : (X × (Fin g → X) × (Fin g → X) × X) →ₗ[X] DD X g :=
@@ -23,15 +23,15 @@ private theorem dd_fin (X : Type) [CommRing X] (g : ℕ) : Module.Finite X (DD X
   exact ⟨(y.a, y.ep, y.ep', y.eta), rfl⟩
 
 /- English proof (translation)
-Use `set I := RingHom.ker (DD.aug X g) with hIdef`. Establish `hI : ∀ y ∈ I, y.a = 0` using `fun y hy => RingHom.mem_ker.mp hy`. Establish `h2 : ∀ w ∈ I ^ 2, w.a = 0 ∧ w.ep = 0 ∧ w.ep' = 0`. Introduce `w hw`. Rewrite `hw` using `[sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mul_induction_on hw ?_ ?_` and prove the remaining obligations. Introduce `m hm n hn`. Establish `e1` using `hI m hm`. Establish `e2` using `hI n hn`. Use `⟨by simp [e1, e2], by ext j; simp [e1, e2], by ext j; simp [e1, e2]⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x y ⟨h1, h2, h3⟩ ⟨h4, h5, h6⟩`. Use `⟨by simp [h1, h4], by ext j; simp [h2, h5], by ext j; simp [h3, h6]⟩` and prove the remaining obligations. Rewrite using `[eq_bot_iff, pow_succ, Ideal.mul_le]`. Introduce `r hr s hs`. Take `⟨a1, a2, a3⟩` from `h2 r hr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `hI s hs`. Rewrite using `[Ideal.mem_bot]`. Apply `DD.ext` to reduce the goal to its premises. Simplify using `[a1]`. Use extensionality with `j`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[a1, a2, e]`. Use extensionality with `j`. Simplify using `[a1, a3, e]`. Simplify using `[a1, a2, a3, e]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem dd_nil (X : Type) [CommRing X] (g : ℕ) : RingHom.ker (DD.aug X g) ^ 3 = ⊥ := by
   set I := RingHom.ker (DD.aug X g) with hIdef
@@ -60,27 +60,27 @@ private theorem dd_nil (X : Type) [CommRing X] (g : ℕ) : RingHom.ker (DD.aug X
   · simp [a1, a2, a3, e]
 
 /- English proof (translation)
-Introduce `l _ S e α μ Φ hα hμ hΦ`. Take `⟨p1, p2, p3, p4, p5, p6, p7⟩` from `prAdd l S`. Establish `hα' : ∀ k, (∀ b b', α k (b * b') = S.rF b * α k b' + S.rF b' * α k b) ∧ (∀ o, α k (algebraMap S.OO S.Bh o) = 0) ∧ ∀ b ∈ ired S.U.N, α k b = 0` using `fun k => hα k`. Establish `hμ' : ∀ k (b : S.Bh) y, μ k (b • y) = S.rF b * μ k y` using `fun k => hμ k`. Establish `q0 : ∀ b : S.Bh, S.pr0 (algebraMap S.Bh S.U.AA b) = b` using `fun b => by simpa using (p2 b 0).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q1 : ∀ b : S.Bh, S.pr1 (algebraMap S.Bh S.U.AA b) = 0` using `fun b => by simpa using (p2 b 0).2`. Establish `o0 : S.pr0 1 = 1` using `by simpa using q0 1`. Establish `o1 : S.pr1 1 = 0` using `by simpa using q1 1`. Establish `z0 : S.pr0 0 = 0` using `by simpa using q0 0`. Establish `z1 : S.pr1 0 = 0` using `by simpa using q1 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hα1 : ∀ k, α k 1 = 0` using `fun k => by simpa using (hα' k).2.1 1`. Set `T : S.U.AA → DD S.F e` to `fun a => ⟨S.rF (S.pr0 a), fun k => μ k (S.pr1 a), fun k => α k (S.pr0 a), Φ (S.pr1 a)⟩`. Establish `hmul : ∀ a a', T (a * a') = T a * T a'`. Introduce `a a'`. Establish `hd : S.rF (S.pr0 (a * a')) = S.rF (S.pr0 a) * S.rF (S.pr0 a')`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : S.pr0 (a * a') - S.pr0 a * S.pr0 a' ∈ RingHom.ker S.rF`. Rewrite using `[S.rF_ker]`. Conclude with `p6 (p5 a a').1`. Rewrite `h0` using `[RingHom.mem_ker, map_sub, map_mul, sub_eq_zero]`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hda : ∀ k, α k (S.pr0 (a * a')) = S.rF (S.pr0 a) * α k (S.pr0 a') + S.rF (S.pr0 a') * α k (S.pr0 a)`. Introduce `k`. Establish `h0` using `(hα' k).2.2 _ (p5 a a').1`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Rewrite using `[h0, (hα' k).1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hp1` using `(p5 a a').2`. Apply `DD.ext` to reduce the goal to its premises. Simplify using `only [T, DD.mul_a]`. Conclude with `hd`. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [T, DD.mul_ep]`. Rewrite using `[hp1, map_add, hμ', hμ']`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `k`. Simplify using `only [T, DD.mul_ep']`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[hda k]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [T, DD.mul_eta]`. Rewrite using `[hp1, map_add, hΦ, hΦ, Finset.sum_add_distrib]`. Establish `s1 : ∑ j, μ j (S.pr1 a) * α j (S.pr0 a') = ∑ j, α j (S.pr0 a') * μ j (S.pr1 a)` using `Finset.sum_congr rfl (fun j _ => mul_comm _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression.
 
-Rewrite using `[s1]`. Expand and normalize the polynomial expressions, which then agree. Set `θ : S.U.AA →+* DD S.F e` to `{ toFun := T map_one' := DD.ext (by simp [T, o0]) (by funext k; simp [T, o1]) (by funext k; simp [T, o0, hα1]) (by simp [T, o1]) map_mul' := hmul map_zero' := DD.ext (by simp [T, z0]) (by funext k; simp [T, z1]) (by funext k; simp [T, z0]) (by simp [T, z1]) map_add' := fun a a' = …`. Establish `hAlg : ∀ c : S.F, algebraMap S.F (DD S.F e) c = ⟨c, 0, 0, 0⟩` using `fun c => rfl`. Use `⟨θ, ⟨dd_fin _ _, ⟨3, dd_nil _ _⟩, fun a => rfl, fun o => ?_⟩, fun a => rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[hAlg]`. Apply `DD.ext` to reduce the goal to its premises. Simplify using `[θ, T, q0]`. Use function extensionality and compare the values at `k`. Simplify using `[θ, T, q1]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `k`. Simplify using `[θ, T, q0, (hα' k).2.1]`. Simplify using `[θ, T, q1]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.testEx :
     ∀ (l : ℕ) [Fact l.Prime] (S : Ctx l), ∀ (e : ℕ) (α : Fin e → S.Bh →+ S.F) (μ : Fin e → S.U.N →+ S.F) (Φ : S.U.N →+ S.F), (∀ k, α k ∈ S.Tp) → (∀ k, μ k ∈ S.La) → (∀ (b : S.Bh) y, Φ (b • y) = S.rF b * Φ y + ∑ k, α k b * μ k y) → ∃ θ : S.U.AA →+* DD S.F e, S.Test (DD S.F e) (DD.aug S.F e) θ ∧ ∀ a, θ a = ⟨S.rF (S.pr0 a), fun k => μ k (S.pr1 a), fun k => α k (S.pr0 a), Φ (S.pr1 a)⟩ := by

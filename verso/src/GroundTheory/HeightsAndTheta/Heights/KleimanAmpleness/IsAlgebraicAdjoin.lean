@@ -37,12 +37,12 @@ theorem phi_apply (f : Kleiman.Poly k N) :
       (FractionRing (NumbersDVR.MRing (graphIdx N m) k ⧸ W)) (Ideal.Quotient.mk W (baseRen k N m f)) := rfl
 
 /- English proof (translation)
-The claim follows from `rename_X _ _`.
+A detailed English derivation is pending.
 -/
 theorem baseRen_X (a : Fin (N + 1)) : baseRen k N m (X a) = X ⟨baseBlock, a⟩ := rename_X _ _
 
 /- English proof (translation)
-The claim follows from `rename_C _ _`.
+A detailed English derivation is pending.
 -/
 theorem baseRen_C (c : k) : baseRen k N m (C c) = C c := rename_C _ _
 
@@ -50,7 +50,7 @@ abbrev eta (b : Fin m) : FractionRing (NumbersDVR.MRing (graphIdx N m) k ⧸ W) 
   algebraMap (NumbersDVR.MRing (graphIdx N m) k ⧸ W) _ (Ideal.Quotient.mk W (X ⟨Sum.inr (), b⟩))
 
 /- English proof (translation)
-Rewrite using `[IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_eq_zero_iff (f : NumbersDVR.MRing (graphIdx N m) k) :
     algebraMap (NumbersDVR.MRing (graphIdx N m) k ⧸ W) (FractionRing (NumbersDVR.MRing (graphIdx N m) k ⧸ W))
@@ -58,7 +58,7 @@ theorem map_eq_zero_iff (f : NumbersDVR.MRing (graphIdx N m) k) :
   rw [IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]
 
 /- English proof (translation)
-Use extensionality with `f`. Rewrite using `[RingHom.mem_ker, phi_apply, map_eq_zero_iff, Ideal.mem_comap]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_phi : RingHom.ker (phi W) = W.comap (baseRen k N m) := by
   ext f
@@ -67,9 +67,9 @@ theorem ker_phi : RingHom.ker (phi W) = W.comap (baseRen k N m) := by
 abbrev bideg (d c : ℕ) : Unit ⊕ Unit → ℕ := Sum.elim (fun _ => d) (fun _ => c)
 
 /- English proof (translation)
-Establish `h1 : IsWeightedHomogeneous (NumbersDVR.blockWeight (graphIdx N m)) (baseRen k N m (homogeneousComponent d F)) (Sum.elim (fun _ => d) (fun _ => 0))`. Rewrite using `[rename_base_homogeneousComponent]`. Conclude with `weightedHomogeneousComponent_isWeightedHomogeneous _ _`. Establish `h2` using `(isWeightedHomogeneous_X k (NumbersDVR.blockWeight (graphIdx N m)) (⟨Sum.inr (), b⟩ : Σ c, graphIdx N m c)).pow c`. Use `h1.mul h2 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Apply the tactic sequence `rcases x with ⟨⟩ | ⟨⟩ <;> simp [NumbersDVR.blockWeight]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_term (F : Kleiman.Poly k N) (d c : ℕ) (b : Fin m) :
     IsWeightedHomogeneous (NumbersDVR.blockWeight (graphIdx N m))
@@ -85,27 +85,23 @@ theorem isMultiHomog_term (F : Kleiman.Poly k N) (d c : ℕ) (b : Fin m) :
   rcases x with ⟨⟩ | ⟨⟩ <;> simp [NumbersDVR.blockWeight]
 
 /- English proof (translation)
-Rewrite using `[transcendental_iff]`. Introduce `p hp`. Establish `hq : ∀ c, ∃ f, phi W f = ((p.coeff c : (phi W).range) : FractionRing (NumbersDVR.MRing (graphIdx N m) k ⧸ W))` using `fun c => (p.coeff c).2`. Use `choose f hf using hq`. Use `set Y := (X ⟨Sum.inr (), j⟩ : NumbersDVR.MRing (graphIdx N m) k) with hY`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set s := p.support`. Use `set G := ∑ c ∈ s, ∑ d ∈ Finset.range ((f c).totalDegree + 1), baseRen k N m (homogeneousComponent d (f c)) * Y ^ c with hGdef`. Establish `hGc : ∀ c, ∑ d ∈ Finset.range ((f c).totalDegree + 1), baseRen k N m (homogeneousComponent d (f c)) * Y ^ c = baseRen k N m (f c) * Y ^ c`. Introduce `c`. Rewrite using `[← Finset.sum_mul, ← map_sum, sum_homogeneousComponent]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hG : G ∈ W`. Rewrite using `[← map_eq_zero_iff W, ← hp, Polynomial.aeval_def, Polynomial.eval₂_eq_sum, Polynomial.sum_def, hGdef]`. Simplify using `only [hGc, map_sum, map_mul, map_pow]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← phi_apply, hf c]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hcomp : ∀ c ∈ s, ∀ d ∈ Finset.range ((f c).totalDegree + 1), weightedHomogeneousComponent (NumbersDVR.blockWeight (graphIdx N m)) (bideg d c) G = baseRen k N m (homogeneousComponent d (f c)) * Y ^ c`. Introduce `c hc d hd`. Rewrite using `[hGdef, map_sum, Finset.sum_eq_single c, map_sum, Finset.sum_eq_single d]`. Conclude with `(isMultiHomog_term (f c) d c j).weightedHomogeneousComponent_same`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `d' _ hne`. Use `(isMultiHomog_term (f c) d' c j).weightedHomogeneousComponent_ne _ fun e => hne ?_` and prove the remaining obligations. Use `congrFun e (Sum.inl ())` as an intermediate fact. Simplify using `only [bideg, Sum.elim_inl] at this`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h`. Conclude with `absurd hd h`. Introduce `c' _ hne`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun d' _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(isMultiHomog_term (f c') d' c' j).weightedHomogeneousComponent_ne _ fun e => hne ?_` and prove the remaining obligations. Use `congrFun e (Sum.inr ())` as an intermediate fact. Simplify using `only [bideg, Sum.elim_inr] at this`. Use linear arithmetic over natural numbers and integers. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd hc h`. Establish `hmemF : ∀ c ∈ s, baseRen k N m (f c) ∈ W`. Introduce `c hc`. Rewrite using `[← sum_homogeneousComponent (f c), map_sum]`. Use `Ideal.sum_mem _ fun d hd => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmem : baseRen k N m (homogeneousComponent d (f c)) * Y ^ c ∈ W`. Rewrite using `[← hcomp c hc d hd]`. Conclude with `hH G hG _`. Conclude with `(Ideal.IsPrime.mem_or_mem ‹_› hmem).resolve_right fun h => hj (Ideal.IsPrime.mem_of_pow_mem ‹_› c h)`. Use `Polynomial.ext fun c => ?_` and prove the remaining obligations.
-
-Rewrite using `[Polynomial.coeff_zero]`. Distinguish the cases in `hc : c ∈ s`. Use `hf c` as an intermediate fact. Rewrite `this` using `[phi_apply, (map_eq_zero_iff W _).2 (hmemF c hc)]`. Conclude with `Subtype.ext this.symm`.
-
-Conclude with `Polynomial.notMem_support_iff.mp hc`.
+A detailed English derivation is pending.
 -/
 theorem transcendental_eta [W.IsPrime] (hH : NumbersDVR.IsMultiHomogIdeal W) (j : Fin m)
     (hj : (X ⟨Sum.inr (), j⟩ : NumbersDVR.MRing (graphIdx N m) k) ∉ W) :
@@ -173,23 +169,19 @@ theorem transcendental_eta [W.IsPrime] (hH : NumbersDVR.IsMultiHomogIdeal W) (j 
   · exact Polynomial.notMem_support_iff.mp hc
 
 /- English proof (translation)
-Use `set R := NumbersDVR.MRing (graphIdx N m) k ⧸ W`. Use `set L := FractionRing R`. Use `set T := Algebra.adjoin (phi W).range (Set.range fun _ : Unit => eta W j)`. Establish `hT : ∀ x ∈ T, IsAlgebraic T x` using `fun x hx => isAlgebraic_algebraMap (⟨x, hx⟩ : T)`. Establish `hA : ∀ f, phi W f ∈ T` using `fun f => T.algebraMap_mem (⟨phi W f, f, rfl⟩ : (phi W).range)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hη : eta W j ∈ T` using `Algebra.subset_adjoin ⟨(), rfl⟩`. Establish `hbase : ∀ a : Fin (N + 1), IsAlgebraic T (algebraMap R L (Ideal.Quotient.mk W (X ⟨Sum.inl (), a⟩)))`. Introduce `a`. Use `hT _ ?_` and prove the remaining obligations. Use `hA (X a)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `this` using `[phi_apply, baseRen_X]`. Then use the resulting hypothesis. Establish `hvar : ∀ v, IsAlgebraic T (algebraMap R L (Ideal.Quotient.mk W (X v)))`. Introduce and unpack `⟨⟨⟨⟩⟩ | ⟨⟨⟩⟩, i⟩`. Conclude with `hbase i`. Take `⟨f, g, hg, hfg⟩` from `hrat i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hg0 : phi W g ≠ 0`. Rewrite using `[phi_apply, Ne, map_eq_zero_iff]`. Conclude with `hg`. Establish `hrel` using `(map_eq_zero_iff W _).2 hfg`. Simplify using `only [map_sub, map_mul] at hrel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : algebraMap R L (Ideal.Quotient.mk W (X ⟨Sum.inr (), i⟩)) = phi W f * eta W j / phi W g`. Rewrite using `[eq_div_iff hg0, phi_apply, phi_apply]`. Take the linear combination `hrel`. Rewrite using `[e, div_eq_mul_inv]`. Conclude with `(hT _ (T.mul_mem (hA f) hη)).mul (IsAlgebraic.inv_iff.mpr (hT _ (hA g)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hR : ∀ r : R, IsAlgebraic T (algebraMap R L r)`. Introduce `r`. Take `⟨F, rfl⟩` from `Ideal.Quotient.mk_surjective r`. Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `hT _ ?_` and prove the remaining obligations. Use `hA (C c)` as an intermediate fact. Rewrite `this` using `[phi_apply, baseRen_C]`. Then use the resulting hypothesis. Consider the case `add f g hf hg => rw [map_add, map_add]`. Conclude with `hf.add hg`.
-
-Consider the case `mul_X f v hf => rw [map_mul, map_mul]`. Conclude with `hf.mul (hvar v)`. Use `⟨fun x => ?_⟩` and prove the remaining obligations. Take `⟨a, d, -, rfl⟩` from `IsFractionRing.div_surjective (A := R) x`. Rewrite using `[div_eq_mul_inv]`.
-
-Conclude with `(hR a).mul (IsAlgebraic.inv_iff.mpr (hR d))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_adjoin [W.IsPrime] (j : Fin m)
     (hrat : ∀ b : Fin m, ∃ f g : Kleiman.Poly k N, baseRen k N m g ∉ W ∧
@@ -241,13 +233,11 @@ end RatioDim
 open RatioDim in
 
 /- English proof (translation)
-Introduce `k _ N m W hW hH j hj hrat`. Use `hW` as an intermediate fact. Use `set R := NumbersDVR.MRing (graphIdx N m) k ⧸ W`. Use `set L := FractionRing R`. Use `set A := (phi W).range`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hb : IsTranscendenceBasis A (fun _ : Unit => eta W j)` using `(algebraicIndependent_unique_type_iff.mpr (transcendental_eta W hH j hj)).isTranscendenceBasis_iff_isAlgebraic.mpr (isAlgebraic_adjoin W j hrat)`. Establish `h1 : Algebra.trdeg A L = 1`. Simplify using `using hb.lift_cardinalMk_eq_trdeg.symm`. Establish `: FaithfulSMul A L` using `(faithfulSMul_iff_algebraMap_injective _ _).2 Subtype.val_injective`. Establish `: FaithfulSMul k A` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (algebraMap k A).injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hkA : Algebra.trdeg k A = Algebra.trdeg k (Kleiman.Poly k N ⧸ W.comap (baseRen k N m))`. Rewrite using `[← ker_phi]`. Conclude with `(Ideal.quotientKerEquivRange (phi W)).trdeg_eq.symm`. Establish `htot : Algebra.trdeg k R = Algebra.trdeg k (Kleiman.Poly k N ⧸ W.comap (baseRen k N m)) + 1`. Rewrite using `[← GroundTheory.Arith.Abelian.Jacobian.trdeg_eq_of_isFractionRing (k := k) (A := R) L, ← trdeg_add_eq k A (A := L), h1, hkA]`.
-
-Express the relevant statement in the definitionally equal form `ringKrullDim R = ringKrullDim (Kleiman.Poly k N ⧸ W.comap (baseRen k N m)) + 1`. Rewrite using `[GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_eq_trdeg k (A := R), GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_eq_trdeg k (A := Kleiman.Poly k N ⧸ W.comap (baseRen k N m)), htot, map_add, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem RatioDim.full : RatioDim.Statement := by
   intro k _ N m W hW hH j hj hrat

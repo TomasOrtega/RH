@@ -13,9 +13,9 @@ open PowerSeries Formalism.G Formalism.LT Formalism.L2.Th1.CM
 open Formalism.L2.Th1
 
 /- English proof (translation)
-Establish `hd : L.derivWeierstrassP (L.ω₁ / 2) = 0` using `(F.pDerivZero L _ L.ω₁_div_two_notMem_lattice).2 (by rw [mul_div_cancel₀ _ (two_ne_zero)]; exact L.ω₁_mem_lattice)`. Establish `h` using `L.derivWeierstrassP_sq _ L.ω₁_div_two_notMem_lattice`. Rewrite `h` using `[hd]`. Establish `h'` using `congrArg ι h`. Simplify using `only [map_pow, map_mul, map_sub, map_zero, map_ofNat] at h'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hM.eq2, hM.eq3, ← h']`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem half_cubic (l : ℕ) [Fact l.Prime] (L : PeriodPair) (ι : ℂ ≃+* ℂ_[l]) (g2 g3 : ℂ_[l])
     (hM : LatModel l L ι g2 g3) :
@@ -31,9 +31,9 @@ theorem half_cubic (l : ℕ) [Fact l.Prime] (L : PeriodPair) (ι : ℂ ≃+* ℂ
   norm_num
 
 /- English proof (translation)
-Establish `hlp : l.Prime` using `Fact.out`. Establish `h` using `congrArg ι (an_two L l (hlp.odd_of_ne_two hl) S hS L.ω₁ L.ω₁_mem_lattice L.ω₁_div_two_notMem_lattice)`. Simplify using `only [map_pow, map_mul, map_prod, map_sub, map_natCast, map_div₀, map_ofNat] at h`. Rewrite `h` using `[← hM.eq2]`. Establish `hn` using `congrArg norm h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hn` using `[norm_pow, norm_pow _ (l ^ 2 - 1), hκ, one_pow, norm_mul, norm_prod]`. Conclude with `(pow_eq_one_iff_of_nonneg (by positivity) two_ne_zero).1 hn`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half_prod_norm (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) (L : PeriodPair) (ι : ℂ ≃+* ℂ_[l])
     (g2 g3 : ℂ_[l]) (hM : LatModel l L ι g2 g3) (S : Finset ℂ) (hS : F.IsKerReps L (l : ℂ) S)
@@ -49,21 +49,21 @@ theorem half_prod_norm (l : ℕ) [Fact l.Prime] (hl : l ≠ 2) (L : PeriodPair) 
   exact (pow_eq_one_iff_of_nonneg (by positivity) two_ne_zero).1 hn
 
 /- English proof (translation)
-Establish `hlp : l.Prime` using `Fact.out`. Establish `hl2 : l ≠ 2` using `by omega`. Take `⟨L', hM, -⟩` from `good_lattice l L ι g2 g3 hg`. Take `⟨-, -, h2, h3, hΔ, -⟩` from `hg`. Establish `h22 : ‖(2 : ℂ_[l])‖ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `norm_natCast_Cl_of_not_dvd (l := l) (n := 2) (fun h => hl2 ((Nat.prime_dvd_prime_iff_eq hlp Nat.prime_two).1 h))` as an intermediate fact. Simplify using `using this`. Establish `hl0 : (l : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hlp.ne_zero`. Establish `hst : F.MulStable L' (l : ℂ)` using `fun ω hω => by`. Use `L'.lattice.smul_mem (l : ℤ) hω` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Take `⟨S, hS⟩` from `F.kerRepsExist L' (l : ℂ) hl0 hst`. Establish `hcard : S.card + 1 = l ^ 2`. Use `F.kerRepsCard L' (l : ℂ) S hl0 hst hS` as an intermediate fact. Rewrite `this` using `[Complex.normSq_natCast]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h' : ((S.card + 1 : ℕ) : ℝ) = ((l ^ 2 : ℕ) : ℝ)`. Use `push_cast`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h'` after adjusting the coercions.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU0, hUi, hsq⟩` from `sq_formula l hl2 L' ι g2 g3 hM l hlp.pos S hS`. Take `⟨e', he'0, he'i, he'l⟩` from `mulN_integral (curve_law g2 g3 h2 h3 h22) l`. Establish `hee : e' = (uSer g2 g3).subst (C (l : ℂ_[l]) * lgS g2 g3)` using `mult_unique g2 g3 _ e' he'0 he'l`. Rewrite `hsq`, the goal using `[← hee]`. Take `⟨hAi, hA0, -⟩` from `A.bridgeCurve ℂ_[l] (A.shortW g2 g3) (shortW_intModel g2 g3 h2 h3 h22)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hAi' : IntegralPS (A.xS (A.shortW g2 g3))` using `(integralPS_iff_mv _).2 hAi`. Establish `hGi` using `integral_of_sq_eq he'i he'0 hUi hU0 hsq`. Establish `hb` using `gauss_bound S (fun P => ι (L'.weierstrassP P)) _ hAi' hA0 _ hGi`. Take `⟨he1, hκ⟩` from `kap_unit g2 g3 _ h2 h3 hΔ h22 (half_cubic l L' ι g2 g3 hM)`. Establish `hp` using `half_prod_norm l hl2 L' ι g2 g3 hM S hS hκ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : ‖(l : ℂ_[l]) ^ 2‖ * ∏ P ∈ S, ‖ι (L'.weierstrassP (L'.ω₁ / 2)) - ι (L'.weierstrassP P)‖ ≤ ‖(l : ℂ_[l]) ^ 2‖ * ∏ P ∈ S, max 1 ‖ι (L'.weierstrassP P)‖`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Use `Finset.prod_le_prod (fun P _ => norm_nonneg _) fun P _ => ?_` and prove the remaining obligations. Conclude with `(norm_sub_le_max_Cl l _ _).trans (max_le_max he1 le_rfl)`. Rewrite `hle` using `[hp]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, hi, hi1⟩` from `unit_coeff_mul hUi hGi (by rw [hU0, norm_one]) _ (gauss_unit S (fun P => ι (L'.weierstrassP P)) _ hAi' hA0 _ (le_antisymm hb hle))`. Use `unit_coeff_of_sq he'i (l ^ 2) ⟨i + 2, by omega, ?_⟩` and prove the remaining obligations. Rewrite using `[hsq, mul_assoc, coeff_X_pow_mul]`. Conclude with `hi1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_le (L : PeriodPair) (l : ℕ) [Fact l.Prime] (hl : 5 ≤ l) (ι : ℂ ≃+* ℂ_[l])
     (g2 g3 : ℂ_[l]) (hg : IsGoodModel l L ι g2 g3) :

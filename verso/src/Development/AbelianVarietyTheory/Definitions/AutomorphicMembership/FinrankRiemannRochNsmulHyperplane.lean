@@ -40,7 +40,7 @@ Both sides reduce to the same expression.
 theorem hdim_def (i : ℕ) (Δ : Y.Dv) : Y.hdim i Δ = Module.finrank F (Y.H i Δ) := rfl
 
 /- English proof (translation)
-The claim follows from `Module.finrank_zero_iff`.
+A detailed English derivation is pending.
 -/
 theorem hdim_eq_zero_iff (i : ℕ) (Δ : Y.Dv) : Y.hdim i Δ = 0 ↔ Subsingleton (Y.H i Δ) :=
   Module.finrank_zero_iff
@@ -48,33 +48,33 @@ theorem hdim_eq_zero_iff (i : ℕ) (Δ : Y.Dv) : Y.hdim i Δ = 0 ↔ Subsingleto
 def hZeroEquiv (Δ : Y.Dv) : Y.H 0 Δ ≃ₗ[F] Y.H0 Δ := cohEquiv (presents_toLB Δ)
 
 /- English proof (translation)
-The claim follows from `(Y.hZeroEquiv Δ).finrank_eq`.
+A detailed English derivation is pending.
 -/
 theorem hdim_zero (Δ : Y.Dv) : Y.hdim 0 Δ = Module.finrank F (Y.H0 Δ) :=
   (Y.hZeroEquiv Δ).finrank_eq
 
 /- English proof (translation)
-The claim follows from `Y.isAmple_projective_O_one.subsingleton_coh_of_dim_lt _ (by rw [Y.topologicalKrullDim_eq]; exact_mod_cast hi)`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_H {i : ℕ} (hi : Y.dim < i) (Δ : Y.Dv) : Subsingleton (Y.H i Δ) :=
   Y.isAmple_projective_O_one.subsingleton_coh_of_dim_lt _
     (by rw [Y.topologicalKrullDim_eq]; exact_mod_cast hi)
 
 /- English proof (translation)
-The claim follows from `(Y.hdim_eq_zero_iff i Δ).2 (Y.subsingleton_H hi Δ)`.
+A detailed English derivation is pending.
 -/
 theorem hdim_eq_zero_of_lt {i : ℕ} (hi : Y.dim < i) (Δ : Y.Dv) : Y.hdim i Δ = 0 :=
   (Y.hdim_eq_zero_iff i Δ).2 (Y.subsingleton_H hi Δ)
 
 /- English proof (translation)
-The claim follows from `chi_eq_sum_range F _ fun _ hi => Y.subsingleton_H hi Δ`.
+A detailed English derivation is pending.
 -/
 theorem chi_eq_sum (Δ : Y.Dv) :
     Y.chi Δ = ∑ i ∈ Finset.range (Y.dim + 1), (-1 : ℤ) ^ i * Y.hdim i Δ :=
   chi_eq_sum_range F _ fun _ hi => Y.subsingleton_H hi Δ
 
 /- English proof (translation)
-The claim follows from `(chi_eq_hdim_zero F fun i hi => (Y.hdim_eq_zero_iff i Δ).1 (h i hi)).trans (congrArg _ (Y.hdim_zero Δ))`.
+A detailed English derivation is pending.
 -/
 theorem eulerChar_eq_finrank_riemannRoch {Δ : Y.Dv} (h : ∀ i, 0 < i → Y.hdim i Δ = 0) :
     Y.chi Δ = Module.finrank F (Y.H0 Δ) :=
@@ -84,7 +84,7 @@ theorem eulerChar_eq_finrank_riemannRoch {Δ : Y.Dv} (h : ∀ i, 0 < i → Y.hdi
 variable {Y} in
 
 /- English proof (translation)
-The claim follows from `(nonempty_twist_iso_of_cls_eq _ (isLB_toLB Δ) hL e).elim (hdim_congr F i)`.
+A detailed English derivation is pending.
 -/
 theorem hdim_eq_of_toPic_eq {Δ : Y.Dv} {L : LB Y.X} (hL : L.IsLB) (e : toPic Δ = cls L hL) (i : ℕ) :
     Y.hdim i Δ = GlobalTheory.hdim F (twist (structureModule Y.X) L) i :=
@@ -93,13 +93,13 @@ theorem hdim_eq_of_toPic_eq {Δ : Y.Dv} {L : LB Y.X} (hL : L.IsLB) (e : toPic Δ
 variable {Y} in
 
 /- English proof (translation)
-The claim follows from `hdim_eq_of_toPic_eq (isLB_toLB Δ') e i`.
+A detailed English derivation is pending.
 -/
 theorem hdim_congr {Δ Δ' : Y.Dv} (e : toPic Δ = toPic Δ') (i : ℕ) : Y.hdim i Δ = Y.hdim i Δ' :=
   hdim_eq_of_toPic_eq (isLB_toLB Δ') e i
 
 /- English proof (translation)
-The claim follows from `hdim_congr (by rw [map_add, toPic_principal, add_zero]) i`.
+A detailed English derivation is pending.
 -/
 theorem hdim_add_principal (i : ℕ) (Δ : Y.Dv) (g : Y.Fnˣ) :
     Y.hdim i (Δ + principal g) = Y.hdim i Δ :=
@@ -111,7 +111,7 @@ Both sides reduce to the same expression.
 theorem chi_eq_chiPic (Δ : Y.Dv) : Y.chi Δ = chiPic F (structureModule Y.X) (toPic Δ) := rfl
 
 /- English proof (translation)
-Rewrite using `[chi_eq_chiPic, map_zero, chiPic_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_zero : Y.chi 0 = GlobalTheory.chi F (structureModule Y.X) := by
   rw [chi_eq_chiPic, map_zero, chiPic_zero]
@@ -119,20 +119,20 @@ theorem chi_zero : Y.chi 0 = GlobalTheory.chi F (structureModule Y.X) := by
 def stdOpen (j : Fin (Y.N + 1)) : Y.X.Opens := Y.ι ⁻¹ᵁ ProjSpace.chart F Y.N j
 
 /- English proof (translation)
-The claim follows from `(ProjSpace.isAffineOpen_chart F Y.N j).preimage _`.
+A detailed English derivation is pending.
 -/
 theorem isAffineOpen_stdOpen (j : Fin (Y.N + 1)) : IsAffineOpen (Y.stdOpen j) :=
   (ProjSpace.isAffineOpen_chart F Y.N j).preimage _
 
 /- English proof (translation)
-The claim follows from `eq_top_iff.2 fun y _ => have ⟨j, hj⟩ := ProjSpace.exists_mem_chart F Y.N (Y.ι y) Opens.mem_iSup.2 ⟨j, hj⟩`.
+A detailed English derivation is pending.
 -/
 theorem iSup_stdOpen : ⨆ j, Y.stdOpen j = ⊤ := eq_top_iff.2 fun y _ =>
   have ⟨j, hj⟩ := ProjSpace.exists_mem_chart F Y.N (Y.ι y)
   Opens.mem_iSup.2 ⟨j, hj⟩
 
 /- English proof (translation)
-The claim follows from `have := isAffineHom_diagonal_of_isSeparated Y.str isAffineOpen_finset_biInf Y.isAffineOpen_stdOpen s hs`.
+A detailed English derivation is pending.
 -/
 theorem isAffineOpen_biInf_stdOpen (s : Finset (Fin (Y.N + 1))) (hs : s.Nonempty) :
     IsAffineOpen (⨅ j ∈ s, Y.stdOpen j) :=
@@ -145,7 +145,7 @@ def cechEquiv (i : ℕ) (Δ : Y.Dv) : (Y.cechCx Δ).homology i ≃ₗ[F] Y.H i �
   cechHEquivCoh F Y.iSup_stdOpen Y.isAffineOpen_biInf_stdOpen (Y.sheaf Δ) i
 
 /- English proof (translation)
-The claim follows from `(Y.cechEquiv i Δ).finrank_eq.symm`.
+A detailed English derivation is pending.
 -/
 theorem hdim_eq_cech (i : ℕ) (Δ : Y.Dv) :
     Y.hdim i Δ = Module.finrank F ((Y.cechCx Δ).homology i) := (Y.cechEquiv i Δ).finrank_eq.symm
@@ -153,7 +153,7 @@ theorem hdim_eq_cech (i : ℕ) (Δ : Y.Dv) :
 def inter (Δ : Fin Y.dim → Y.Dv) : ℤ := interNum F (structureModule Y.X) fun i => Y.lb (Δ i)
 
 /- English proof (translation)
-Establish `e` using `congrFun (multiDiff_comap toPic Δ (chiPic F (structureModule Y.X))) 0`. Rewrite `e` using `[Function.comp_apply, map_zero]`. Conclude with `(interNum_eq_multiDiff F _ fun i => isLB_toLB (Δ i)).trans e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inter_eq_multiDiff (Δ : Fin Y.dim → Y.Dv) : Y.inter Δ = multiDiff Δ Y.chi 0 := by
   have e := congrFun (multiDiff_comap toPic Δ (chiPic F (structureModule Y.X))) 0
@@ -161,7 +161,7 @@ theorem inter_eq_multiDiff (Δ : Fin Y.dim → Y.Dv) : Y.inter Δ = multiDiff Δ
   exact (interNum_eq_multiDiff F _ fun i => isLB_toLB (Δ i)).trans e.symm
 
 /- English proof (translation)
-Simplify using `only [inter_eq_multiDiff, multiDiff_apply, zero_sub, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inter_eq_sum (Δ : Fin Y.dim → Y.Dv) :
     Y.inter Δ = ∑ S : Finset (Fin Y.dim), (-1 : ℤ) ^ S.card * Y.chi (-∑ i ∈ S, Δ i) := by
@@ -170,7 +170,7 @@ theorem inter_eq_sum (Δ : Fin Y.dim → Y.Dv) :
 variable {Y} in
 
 /- English proof (translation)
-The claim follows from `interNum_congr_cls F _ (fun i => isLB_toLB (Δ i)) hL e`.
+A detailed English derivation is pending.
 -/
 theorem inter_eq_of_toPic_eq {Δ : Fin Y.dim → Y.Dv} {L : Fin Y.dim → LB Y.X}
     (hL : ∀ i, (L i).IsLB) (e : ∀ i, toPic (Δ i) = cls (L i) (hL i)) :
@@ -180,13 +180,13 @@ theorem inter_eq_of_toPic_eq {Δ : Fin Y.dim → Y.Dv} {L : Fin Y.dim → LB Y.X
 variable {Y} in
 
 /- English proof (translation)
-The claim follows from `inter_eq_of_toPic_eq (fun i => isLB_toLB (Δ' i)) e`.
+A detailed English derivation is pending.
 -/
 theorem inter_congr {Δ Δ' : Fin Y.dim → Y.Dv} (e : ∀ i, toPic (Δ i) = toPic (Δ' i)) :
     Y.inter Δ = Y.inter Δ' := inter_eq_of_toPic_eq (fun i => isLB_toLB (Δ' i)) e
 
 /- English proof (translation)
-The claim follows from `interNum_eq_zero_of_cls_eq_zero F _ (fun i => isLB_toLB (Δ i)) i ((toPic_apply _).symm.trans (h ▸ toPic_principal g))`.
+A detailed English derivation is pending.
 -/
 theorem inter_eq_zero_of_principal (Δ : Fin Y.dim → Y.Dv) (i : Fin Y.dim) (g : Y.Fnˣ)
     (h : Δ i = principal g) : Y.inter Δ = 0 :=
@@ -194,7 +194,7 @@ theorem inter_eq_zero_of_principal (Δ : Fin Y.dim → Y.Dv) (i : Fin Y.dim) (g 
     ((toPic_apply _).symm.trans (h ▸ toPic_principal g))
 
 /- English proof (translation)
-The claim follows from `interNum_comp_perm F _ (L := fun i => Y.lb (Δ i)) (fun i => isLB_toLB (Δ i)) σ`.
+A detailed English derivation is pending.
 -/
 theorem inter_comp_perm (Δ : Fin Y.dim → Y.Dv) (σ : Equiv.Perm (Fin Y.dim)) :
     Y.inter (Δ ∘ σ) = Y.inter Δ :=
@@ -212,7 +212,7 @@ theorem del_linSys {Δ : Y.Dv} {n : ℕ} (b : Fin n → Y.H0 Δ) :
     (Y.linSys b).del = Y.inter fun _ => Δ := rfl
 
 /- English proof (translation)
-The claim follows from `(diffVanish_chiPic_of_isProjOver Y.algebraMap_Γ (structureModule Y.X) Y.isProjOver (by rw [suppDim_structureModule, Y.topologicalKrullDim_eq])).comap toPic`.
+A detailed English derivation is pending.
 -/
 theorem diffVanish_chi : DiffVanish (Y.dim + 1) Y.chi :=
   (diffVanish_chiPic_of_isProjOver Y.algebraMap_Γ (structureModule Y.X) Y.isProjOver
@@ -221,13 +221,13 @@ theorem diffVanish_chi : DiffVanish (Y.dim + 1) Y.chi :=
 def interForm : MultilinearMap ℤ (fun _ : Fin Y.dim => Y.Dv) ℤ := Y.diffVanish_chi.form
 
 /- English proof (translation)
-The claim follows from `(Y.diffVanish_chi.form_apply Δ 0).trans (Y.inter_eq_multiDiff Δ).symm`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem interForm_apply (Δ : Fin Y.dim → Y.Dv) : Y.interForm Δ = Y.inter Δ :=
   (Y.diffVanish_chi.form_apply Δ 0).trans (Y.inter_eq_multiDiff Δ).symm
 
 /- English proof (translation)
-Simplify using `only [← interForm_apply, MultilinearMap.map_update_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inter_update_add (Δ : Fin Y.dim → Y.Dv) (i : Fin Y.dim) (A B : Y.Dv) :
     Y.inter (Function.update Δ i (A + B)) =
@@ -235,28 +235,28 @@ theorem inter_update_add (Δ : Fin Y.dim → Y.Dv) (i : Fin Y.dim) (A B : Y.Dv) 
   simp only [← interForm_apply, MultilinearMap.map_update_add]
 
 /- English proof (translation)
-Simplify using `only [← interForm_apply, MultilinearMap.map_update_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inter_update_zsmul (Δ : Fin Y.dim → Y.Dv) (i : Fin Y.dim) (n : ℤ) (A : Y.Dv) :
     Y.inter (Function.update Δ i (n • A)) = n * Y.inter (Function.update Δ i A) := by
   simp only [← interForm_apply, MultilinearMap.map_update_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [← interForm_apply, MultilinearMap.map_smul_univ, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inter_zsmul (n : Fin Y.dim → ℤ) (Δ : Fin Y.dim → Y.Dv) :
     Y.inter (fun i => n i • Δ i) = (∏ i, n i) * Y.inter Δ := by
   simp only [← interForm_apply, MultilinearMap.map_smul_univ, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `using Y.inter_zsmul (fun _ => n) fun _ => Δ`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inter_const_nsmul (n : ℕ) (Δ : Y.Dv) :
     Y.inter (fun _ => n • Δ) = (n : ℤ) ^ Y.dim * Y.inter fun _ => Δ := by
   simpa using Y.inter_zsmul (fun _ => n) fun _ => Δ
 
 /- English proof (translation)
-Take `⟨p, h₁, h₂, h₃⟩` from `Y.diffVanish_chi.exists_polynomial_int ℚ Δ A`. Conclude with `⟨p, h₁, h₂, by rw [h₃, inter_eq_multiDiff, Y.diffVanish_chi.multiDiff_eq _ A 0]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_polynomial_chi (A Δ : Y.Dv) : ∃ p : Polynomial ℚ, p.natDegree ≤ Y.dim ∧
     (∀ n : ℤ, p.eval (n : ℚ) = Y.chi (A + n • Δ)) ∧
@@ -277,9 +277,7 @@ def IsCurve (Z : Y.Cl) : Prop :=
 def deg (C : Y.Cl) (Δ : Y.Dv) : ℤ := interNumRed F C ![Y.lb Δ]
 
 /- English proof (translation)
-Use `letI := algebraΓAlong F (redι Z)`. Establish `hf` using `algebraMap_eq_strHom F (Scheme.IdealSheafData.vanishingIdeal Z).subscheme`. Establish `: IsProper (strHom F (Scheme.IdealSheafData.vanishingIdeal Z).subscheme)`. Rewrite using `[← comp_strHom (appTop_algebraMap_along F (redι Z)), strHom_eq Y.algebraMap_Γ]`. Use `infer_instance`.
-
-Conclude with `((Y.isAmple_projective_O_one.pull_of_isClosedImmersion (redι Z)).finiteCohTwists hf (structureModule _)).pushforward_of_isClosedImmersion (appTop_algebraMap_along F (redι Z)) _ (isLB_toLB Δ)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteCoh_sheafOn (Z : Y.Cl) (Δ : Y.Dv) : FiniteCoh F (Y.sheafOn Z Δ) := by
   letI := algebraΓAlong F (redι Z)
@@ -292,7 +290,7 @@ theorem finiteCoh_sheafOn (Z : Y.Cl) (Δ : Y.Dv) : FiniteCoh F (Y.sheafOn Z Δ) 
       (isLB_toLB Δ)
 
 /- English proof (translation)
-The claim follows from `letI := algebraΓAlong F (redι Z) chi_twist_pushforward_of_isClosedImmersion (appTop_algebraMap_along F (redι Z)) _ _`.
+A detailed English derivation is pending.
 -/
 theorem chiOn_eq_chi_pull (Z : Y.Cl) (Δ : Y.Dv) :
     letI := algebraΓAlong F (redι Z)
@@ -301,7 +299,7 @@ theorem chiOn_eq_chi_pull (Z : Y.Cl) (Δ : Y.Dv) :
   chi_twist_pushforward_of_isClosedImmersion (appTop_algebraMap_along F (redι Z)) _ _
 
 /- English proof (translation)
-Establish `e` using `congrFun (multiDiff_comap toPic Δ (chiPic F ((Scheme.Modules.pushforward (redι Z)).obj (structureModule _)))) 0`. Rewrite `e` using `[Function.comp_apply, map_zero]`. Conclude with `(interNum_eq_multiDiff F _ fun i => isLB_toLB (Δ i)).trans e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interOn_eq_multiDiff (Z : Y.Cl) {d : ℕ} (Δ : Fin d → Y.Dv) :
     Y.interOn Z Δ = multiDiff Δ (Y.chiOn Z) 0 := by
@@ -311,7 +309,7 @@ theorem interOn_eq_multiDiff (Z : Y.Cl) {d : ℕ} (Δ : Fin d → Y.Dv) :
   exact (interNum_eq_multiDiff F _ fun i => isLB_toLB (Δ i)).trans e.symm
 
 /- English proof (translation)
-Simplify using `only [interOn_eq_multiDiff, multiDiff_apply, zero_sub, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem interOn_eq_sum (Z : Y.Cl) {d : ℕ} (Δ : Fin d → Y.Dv) :
     Y.interOn Z Δ = ∑ S : Finset (Fin d), (-1 : ℤ) ^ S.card * Y.chiOn Z (-∑ i ∈ S, Δ i) := by
@@ -320,23 +318,23 @@ theorem interOn_eq_sum (Z : Y.Cl) {d : ℕ} (Δ : Fin d → Y.Dv) :
 variable {Y} in
 
 /- English proof (translation)
-The claim follows from `interNum_congr_cls F _ (fun i => isLB_toLB (Δ i)) (fun i => isLB_toLB (Δ' i)) e`.
+A detailed English derivation is pending.
 -/
 theorem interOn_congr (Z : Y.Cl) {d : ℕ} {Δ Δ' : Fin d → Y.Dv}
     (e : ∀ i, toPic (Δ i) = toPic (Δ' i)) : Y.interOn Z Δ = Y.interOn Z Δ' :=
   interNum_congr_cls F _ (fun i => isLB_toLB (Δ i)) (fun i => isLB_toLB (Δ' i)) e
 
 /- English proof (translation)
-The claim follows from `interNum_comp_perm F _ (L := fun i => Y.lb (Δ i)) (fun i => isLB_toLB (Δ i)) σ`.
+A detailed English derivation is pending.
 -/
 theorem interOn_comp_perm (Z : Y.Cl) {d : ℕ} (Δ : Fin d → Y.Dv) (σ : Equiv.Perm (Fin d)) :
     Y.interOn Z (Δ ∘ σ) = Y.interOn Z Δ :=
   interNum_comp_perm F _ (L := fun i => Y.lb (Δ i)) (fun i => isLB_toLB (Δ i)) σ
 
 /- English proof (translation)
-Establish `h` using `InterModel.interNumRed_eq_interNumOn F (𝟙 Y.X) ⊤ (by simp) ![Y.lb (-Δ)]`. Establish `h₀` using `InterModel.interNumRed_eq_interNumOn F (𝟙 Y.X) ⊤ (by simp) (![] : Fin 0 → LB Y.X)`. Rewrite `h`, `h₀` using `[interNumOn_id]`. Establish `hL` using `isLB_toLB (-Δ)`. Establish `e : cls _ (isLB_toLB Δ) = -cls _ hL` using `by rw [← toPic_apply, ← toPic_apply, map_neg, neg_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁` using `(interNum_cons_of_cls_eq_neg F _ (P := ![]) hL isEmptyElim _ e).symm.trans (h.trans (interNum_cons_of_cls_eq_neg F _ (P := ![]) hL isEmptyElim _ e))`. Rewrite `h₁` using `[← h₀, interNum_of_isEmpty F (twist _ _), interNum_of_isEmpty F (twist _ _)]`. Conclude with `sub_right_injective h₁`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiOn_top (Δ : Y.Dv) : Y.chiOn ⊤ Δ = Y.chi Δ := by
   have h := InterModel.interNumRed_eq_interNumOn F (𝟙 Y.X) ⊤ (by simp) ![Y.lb (-Δ)]
@@ -350,14 +348,14 @@ theorem chiOn_top (Δ : Y.Dv) : Y.chiOn ⊤ Δ = Y.chi Δ := by
   exact sub_right_injective h₁
 
 /- English proof (translation)
-Rewrite using `[interOn, InterModel.interNumRed_eq_interNumOn F (𝟙 _) ⊤ (by simp), interNumOn_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem interOn_top_eq_interNum {d : ℕ} (Δ : Fin d → Y.Dv) :
     Y.interOn ⊤ Δ = interNum F (structureModule Y.X) fun i => Y.lb (Δ i) := by
   rw [interOn, InterModel.interNumRed_eq_interNumOn F (𝟙 _) ⊤ (by simp), interNumOn_id]
 
 /- English proof (translation)
-The claim follows from `Y.interOn_top_eq_interNum Δ`.
+A detailed English derivation is pending.
 -/
 theorem interOn_top (Δ : Fin Y.dim → Y.Dv) : Y.interOn ⊤ Δ = Y.inter Δ :=
   Y.interOn_top_eq_interNum Δ
@@ -365,7 +363,7 @@ theorem interOn_top (Δ : Fin Y.dim → Y.Dv) : Y.interOn ⊤ Δ = Y.inter Δ :=
 variable {Y} in
 
 /- English proof (translation)
-Use `(mono_cutHom_structureModule_iff (isLB_toLB A) (sec f)).2 (((presents_toLB A).generatesAt_rat_iff _).1 ((rat_sec f).symm ▸ generatesAt_genericPoint A hf))` as an intermediate fact. Rewrite using `[interOn_top_eq_interNum, ← interNum_cons_eq_interNumSub (isLB_toLB A) (sec f) (fun i => isLB_toLB (Δ i)) (Y.isAmple_projective_O_one.finiteCohTwists Y.algebraMap_Γ _)]`. Conclude with `congrArg _ (funext (Fin.cases rfl fun _ => rfl))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interOn_top_cons {A : Y.Dv} (f : Y.H0 A) (hf : (f : Y.Fn) ≠ 0) {d : ℕ} (Δ : Fin d → Y.Dv) :
     Y.interOn ⊤ (Fin.cons A Δ : Fin (d + 1) → Y.Dv) =
@@ -379,9 +377,7 @@ theorem interOn_top_cons {A : Y.Dv} (f : Y.H0 A) (hf : (f : Y.Fn) ≠ 0) {d : �
 variable {Y} in
 
 /- English proof (translation)
-Use `letI := algebraΓAlong F (redι Z)`. Establish `hf` using `algebraMap_eq_strHom F (Scheme.IdealSheafData.vanishingIdeal Z).subscheme`. Establish `: IsProper (strHom F (Scheme.IdealSheafData.vanishingIdeal Z).subscheme)`. Rewrite using `[← comp_strHom (appTop_algebraMap_along F (redι Z)), strHom_eq Y.algebraMap_Γ]`. Use `infer_instance`.
-
-Conclude with `(((Y.isAmple_projective_O_one.pull_of_isClosedImmersion (redι Z)).diffVanish_chiPic_of_isProper hf (structureModule _) (by rwa [suppDim_structureModule, topologicalKrullDim_red]) ).chiPic_pushforward_of_isAffineHom (appTop_algebraMap_along F (redι Z))).comap toPic`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diffVanish_chiOn {Z : Y.Cl} {d : ℕ} (hd : topologicalKrullDim (Z : Set Y.X) ≤ d) :
     DiffVanish (d + 1) (Y.chiOn Z) := by
@@ -397,7 +393,7 @@ theorem diffVanish_chiOn {Z : Y.Cl} {d : ℕ} (hd : topologicalKrullDim (Z : Set
 variable {Y} in
 
 /- English proof (translation)
-Simplify using `only [interOn_eq_multiDiff, (diffVanish_chiOn hd).multiDiff_update_add, Pi.add_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem interOn_update_add {Z : Y.Cl} {d : ℕ} (hd : topologicalKrullDim (Z : Set Y.X) ≤ d)
     (Δ : Fin d → Y.Dv) (i : Fin d) (A B : Y.Dv) :
@@ -408,19 +404,19 @@ theorem interOn_update_add {Z : Y.Cl} {d : ℕ} (hd : topologicalKrullDim (Z : S
 variable {Y} in
 
 /- English proof (translation)
-Rewrite using `[interOn_eq_multiDiff, diffVanish_chiOn hd Δ, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem interOn_eq_zero {Z : Y.Cl} {d : ℕ} (hd : topologicalKrullDim (Z : Set Y.X) ≤ d)
     (Δ : Fin (d + 1) → Y.Dv) : Y.interOn Z Δ = 0 := by
   rw [interOn_eq_multiDiff, diffVanish_chiOn hd Δ, Pi.zero_apply]
 
 /- English proof (translation)
-The claim follows from `(Y.isCompleteCurve_iff Z).symm`.
+A detailed English derivation is pending.
 -/
 theorem isCurve_iff (Z : Y.Cl) : Y.IsCurve Z ↔ IsCompleteCurve F Z := (Y.isCompleteCurve_iff Z).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IrreducibleSpace.isIrreducible_univ _, (topologicalKrullDim_eq_of_isEmbedding Topology.IsEmbedding.id Set.range_id).trans (Y.topologicalKrullDim_eq.trans (by rw [h]; rfl))⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCurve_top (h : Y.dim = 1) : Y.IsCurve ⊤ :=
   ⟨IrreducibleSpace.isIrreducible_univ _,
@@ -430,20 +426,20 @@ theorem isCurve_top (h : Y.dim = 1) : Y.IsCurve ⊤ :=
 variable {Y} in
 
 /- English proof (translation)
-The claim follows from `not_not.1 fun hn => (Y.properCl_iff C).1 hn (PositivityModel.genericPoint_mem (Y.topologicalKrullDim_eq.trans (by rw [h]; rfl)) ((Y.isCurve_iff C).1 hC))`.
+A detailed English derivation is pending.
 -/
 theorem IsCurve.eq_top (h : Y.dim = 1) {C : Y.Cl} (hC : Y.IsCurve C) : C = ⊤ :=
   not_not.1 fun hn => (Y.properCl_iff C).1 hn (PositivityModel.genericPoint_mem
     (Y.topologicalKrullDim_eq.trans (by rw [h]; rfl)) ((Y.isCurve_iff C).1 hC))
 
 /- English proof (translation)
-The claim follows from `congrArg (interNumRed F C) (funext fun i => by fin_cases i; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem deg_eq_interOn (C : Y.Cl) (Δ : Y.Dv) : Y.deg C Δ = Y.interOn C ![Δ] :=
   congrArg (interNumRed F C) (funext fun i => by fin_cases i; rfl)
 
 /- English proof (translation)
-Rewrite using `[deg_eq_interOn, interOn_eq_multiDiff]`. Use `(congrFun (multiDiff_cons Δ ![] (Y.chiOn C)) 0).trans ?_` and prove the remaining obligations. Rewrite using `[multiDiff_of_isEmpty, bwdDiff_apply, zero_sub]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem deg_eq (C : Y.Cl) (Δ : Y.Dv) : Y.deg C Δ = Y.chiOn C 0 - Y.chiOn C (-Δ) := by
   rw [deg_eq_interOn, interOn_eq_multiDiff]
@@ -451,7 +447,7 @@ theorem deg_eq (C : Y.Cl) (Δ : Y.Dv) : Y.deg C Δ = Y.chiOn C 0 - Y.chiOn C (-�
   rw [multiDiff_of_isEmpty, bwdDiff_apply, zero_sub]
 
 /- English proof (translation)
-Rewrite using `[deg_eq_interOn, interOn_top_eq_interNum, inter_const, h]`. Conclude with `congrArg _ (funext fun i => by fin_cases i; rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_top (h : Y.dim = 1) (Δ : Y.Dv) : Y.deg ⊤ Δ = Y.inter fun _ => Δ := by
   rw [deg_eq_interOn, interOn_top_eq_interNum, inter_const, h]
@@ -460,26 +456,26 @@ theorem deg_top (h : Y.dim = 1) (Δ : Y.Dv) : Y.deg ⊤ Δ = Y.inter fun _ => Δ
 variable {Y}
 
 /- English proof (translation)
-The claim follows from `interNumRed_one_congr (isLB_toLB Δ) hL e C`.
+A detailed English derivation is pending.
 -/
 theorem deg_eq_of_toPic_eq (C : Y.Cl) {Δ : Y.Dv} {L : LB Y.X} (hL : L.IsLB)
     (e : toPic Δ = cls L hL) : Y.deg C Δ = interNumRed F C ![L] :=
   interNumRed_one_congr (isLB_toLB Δ) hL e C
 
 /- English proof (translation)
-The claim follows from `deg_eq_of_toPic_eq C (isLB_toLB Δ') e`.
+A detailed English derivation is pending.
 -/
 theorem deg_congr (C : Y.Cl) {Δ Δ' : Y.Dv} (e : toPic Δ = toPic Δ') : Y.deg C Δ = Y.deg C Δ' :=
   deg_eq_of_toPic_eq C (isLB_toLB Δ') e
 
 /- English proof (translation)
-The claim follows from `interNumRed_one_eq_zero (isLB_toLB _) (toPic_principal g) C`.
+A detailed English derivation is pending.
 -/
 theorem deg_principal (C : Y.Cl) (g : Y.Fnˣ) : Y.deg C (principal g) = 0 :=
   interNumRed_one_eq_zero (isLB_toLB _) (toPic_principal g) C
 
 /- English proof (translation)
-The claim follows from `deg_principal C 1`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem deg_zero (C : Y.Cl) : Y.deg C 0 = 0 := deg_principal C 1
 
@@ -490,7 +486,7 @@ variable {C : Y.Cl} (hC : Y.IsCurve C)
 include hC
 
 /- English proof (translation)
-The claim follows from `((Y.isCurve_iff C).1 hC).interNumRed_of_cls_eq_add Y.isAmple_projective_O_one (isLB_toLB _) (isLB_toLB A) (isLB_toLB B) (map_add toPic A B)`.
+A detailed English derivation is pending.
 -/
 theorem deg_add (A B : Y.Dv) : Y.deg C (A + B) = Y.deg C A + Y.deg C B :=
   ((Y.isCurve_iff C).1 hC).interNumRed_of_cls_eq_add Y.isAmple_projective_O_one (isLB_toLB _) (isLB_toLB A)
@@ -499,28 +495,28 @@ theorem deg_add (A B : Y.Dv) : Y.deg C (A + B) = Y.deg C A + Y.deg C B :=
 def degHom : Y.Dv →+ ℤ := AddMonoidHom.mk' (Y.deg C) hC.deg_add
 
 /- English proof (translation)
-The claim follows from `map_neg hC.degHom Δ`.
+A detailed English derivation is pending.
 -/
 theorem deg_neg (Δ : Y.Dv) : Y.deg C (-Δ) = -Y.deg C Δ := map_neg hC.degHom Δ
 
 /- English proof (translation)
-The claim follows from `map_sub hC.degHom A B`.
+A detailed English derivation is pending.
 -/
 theorem deg_sub (A B : Y.Dv) : Y.deg C (A - B) = Y.deg C A - Y.deg C B := map_sub hC.degHom A B
 
 /- English proof (translation)
-The claim follows from `map_zsmul hC.degHom n Δ`.
+A detailed English derivation is pending.
 -/
 theorem deg_zsmul (n : ℤ) (Δ : Y.Dv) : Y.deg C (n • Δ) = n * Y.deg C Δ := map_zsmul hC.degHom n Δ
 
 /- English proof (translation)
-Rewrite using `[← natCast_zsmul, hC.deg_zsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem deg_nsmul (n : ℕ) (Δ : Y.Dv) : Y.deg C (n • Δ) = n * Y.deg C Δ := by
   rw [← natCast_zsmul, hC.deg_zsmul]
 
 /- English proof (translation)
-Use `Y.deg_eq C (-Δ)` as an intermediate fact. Rewrite `this` using `[hC.deg_neg, neg_neg]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem deg_eq (Δ : Y.Dv) : Y.deg C Δ = Y.chiOn C Δ - Y.chiOn C 0 := by
   have := Y.deg_eq C (-Δ)
@@ -528,7 +524,7 @@ theorem deg_eq (Δ : Y.Dv) : Y.deg C Δ = Y.chiOn C Δ - Y.chiOn C 0 := by
   omega
 
 /- English proof (translation)
-Establish `e` using `rat_sec (⟨f, hf⟩ : Y.H0 Δ)`. Establish `H` using `((Y.isCurve_iff C).1 hC).interNumRed_nonneg_of_sec Y.isAmple_projective_O_one (isLB_toLB Δ) (sec ⟨f, hf⟩) hx (((presents_toLB Δ).generatesAt_rat_iff _).1 (e.symm ▸ h))`. Conclude with `⟨H.1, fun ⟨y, hy, hy'⟩ => H.2 ⟨y, hy, ((presents_toLB Δ).vanishesAt_rat_iff _).1 (e.symm ▸ hy')⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem deg_nonneg_of_generatesAt {Δ : Y.Dv} {f : Y.Fn} (hf : f ∈ Y.H0 Δ) {x : Y.X} (hx : x ∈ C)
     (h : Δ.GeneratesAt x f) :
@@ -540,7 +536,7 @@ theorem deg_nonneg_of_generatesAt {Δ : Y.Dv} {f : Y.Fn} (hf : f ∈ Y.H0 Δ) {x
     H.2 ⟨y, hy, ((presents_toLB Δ).vanishesAt_rat_iff _).1 (e.symm ▸ hy')⟩⟩
 
 /- English proof (translation)
-Take `⟨x, hx, hx'⟩` from `SetLike.not_le_iff_exists.1 hs`. Establish `H` using `hC.deg_nonneg_of_generatesAt (eff_iff_one_mem.1 h) hx (notMem_supp_iff.1 hx')`. Conclude with `⟨H.1, fun ⟨y, hy, hy'⟩ => H.2 ⟨y, hy, (CartierDiv.Eff.mem_supp_iff h).1 hy'⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem deg_nonneg_of_eff {Δ : Y.Dv} (h : Y.Eff Δ) (hs : ¬ Y.subCl C (Y.supp Δ)) :
     0 ≤ Y.deg C Δ ∧ ((∃ y ∈ C, y ∈ Y.supp Δ) → 0 < Y.deg C Δ) := by
@@ -565,14 +561,14 @@ def ample (Δ : Y.Dv) : Prop := IsAmpleLB (Y.lb Δ)
 variable {Δ A B : Y.Dv} {L : LB Y.X}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h C hC => h.2 C ((Y.isCurve_iff C).1 hC), fun h => ⟨isLB_toLB Δ, fun C hC => h C ((Y.isCurve_iff C).2 hC)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem nef_iff : Y.nef Δ ↔ ∀ C, Y.IsCurve C → 0 ≤ Y.deg C Δ :=
   ⟨fun h C hC => h.2 C ((Y.isCurve_iff C).1 hC),
     fun h => ⟨isLB_toLB Δ, fun C hC => h C ((Y.isCurve_iff C).2 hC)⟩⟩
 
 /- English proof (translation)
-The claim follows from `(Y.hdim_zero _).symm.trans (hdim_eq_of_toPic_eq (isLB_lbPow (isLB_toLB Δ) n) (by rw [cls_lbPow (isLB_toLB Δ), map_nsmul, toPic_apply]) 0)`.
+A detailed English derivation is pending.
 -/
 theorem finrank_riemannRoch_nsmul (Δ : Y.Dv) (n : ℕ) :
     Module.finrank F (Y.H0 (n • Δ)) = lbH0 F (lbPow (Y.lb Δ) n) :=
@@ -580,7 +576,7 @@ theorem finrank_riemannRoch_nsmul (Δ : Y.Dv) (n : ℕ) :
     (by rw [cls_lbPow (isLB_toLB Δ), map_nsmul, toPic_apply]) 0)
 
 /- English proof (translation)
-Simplify using `only [finrank_riemannRoch_nsmul]`. Conclude with `(isBig_iff Y.algebraMap_Γ Y.isProjOver Y.topologicalKrullDim_eq).trans (and_iff_right (isLB_toLB Δ))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem big_iff : Y.big Δ ↔ ∃ c : ℝ, 0 < c ∧
     ∃ᶠ n : ℕ in atTop, c * (n : ℝ) ^ Y.dim ≤ Module.finrank F (Y.H0 (n • Δ)) := by
@@ -589,38 +585,38 @@ theorem big_iff : Y.big Δ ↔ ∃ c : ℝ, 0 < c ∧
     (and_iff_right (isLB_toLB Δ))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.of_cls_eq hL e.symm, fun h => h.of_cls_eq (isLB_toLB Δ) e⟩`.
+Supply the required witnesses or components.
 -/
 theorem nef_iff_of_toPic_eq (hL : L.IsLB) (e : toPic Δ = cls L hL) : Y.nef Δ ↔ IsNef F L :=
   ⟨fun h => h.of_cls_eq hL e.symm, fun h => h.of_cls_eq (isLB_toLB Δ) e⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.of_cls_eq hL e.symm, fun h => h.of_cls_eq (isLB_toLB Δ) e⟩`.
+Supply the required witnesses or components.
 -/
 theorem big_iff_of_toPic_eq (hL : L.IsLB) (e : toPic Δ = cls L hL) : Y.big Δ ↔ IsBig F L :=
   ⟨fun h => h.of_cls_eq hL e.symm, fun h => h.of_cls_eq (isLB_toLB Δ) e⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.of_lbIso hL ((cls_eq_iff _ _).1 e.symm), fun h => h.of_lbIso (isLB_toLB Δ) ((cls_eq_iff _ _).1 e)⟩`.
+Supply the required witnesses or components.
 -/
 theorem ample_iff_of_toPic_eq (hL : L.IsLB) (e : toPic Δ = cls L hL) : Y.ample Δ ↔ IsAmpleLB L :=
   ⟨fun h => h.of_lbIso hL ((cls_eq_iff _ _).1 e.symm),
     fun h => h.of_lbIso (isLB_toLB Δ) ((cls_eq_iff _ _).1 e)⟩
 
 /- English proof (translation)
-The claim follows from `nef_iff_of_toPic_eq (isLB_toLB B) e`.
+A detailed English derivation is pending.
 -/
 theorem nef_congr (e : toPic A = toPic B) : Y.nef A ↔ Y.nef B :=
   nef_iff_of_toPic_eq (isLB_toLB B) e
 
 /- English proof (translation)
-The claim follows from `big_iff_of_toPic_eq (isLB_toLB B) e`.
+A detailed English derivation is pending.
 -/
 theorem big_congr (e : toPic A = toPic B) : Y.big A ↔ Y.big B :=
   big_iff_of_toPic_eq (isLB_toLB B) e
 
 /- English proof (translation)
-The claim follows from `ample_iff_of_toPic_eq (isLB_toLB B) e`.
+A detailed English derivation is pending.
 -/
 theorem ample_congr (e : toPic A = toPic B) : Y.ample A ↔ Y.ample B :=
   ample_iff_of_toPic_eq (isLB_toLB B) e
@@ -628,31 +624,31 @@ theorem ample_congr (e : toPic A = toPic B) : Y.ample A ↔ Y.ample B :=
 variable (Y) in
 
 /- English proof (translation)
-The claim follows from `nef_iff.2 fun C _ => (deg_zero C).ge`.
+A detailed English derivation is pending.
 -/
 theorem nef_zero : Y.nef 0 := nef_iff.2 fun C _ => (deg_zero C).ge
 
 /- English proof (translation)
-The claim follows from `nef_iff.2 fun C hC => (add_nonneg (nef_iff.1 hA C hC) (nef_iff.1 hB C hC)).trans_eq (hC.deg_add A B).symm`.
+A detailed English derivation is pending.
 -/
 theorem nef.add (hA : Y.nef A) (hB : Y.nef B) : Y.nef (A + B) := nef_iff.2 fun C hC =>
   (add_nonneg (nef_iff.1 hA C hC) (nef_iff.1 hB C hC)).trans_eq (hC.deg_add A B).symm
 
 /- English proof (translation)
-The claim follows from `nef_iff.2 fun C hC => (mul_nonneg (Nat.cast_nonneg n) (nef_iff.1 h C hC)).trans_eq (hC.deg_nsmul n Δ).symm`.
+A detailed English derivation is pending.
 -/
 theorem nef.nsmul (h : Y.nef Δ) (n : ℕ) : Y.nef (n • Δ) := nef_iff.2 fun C hC =>
   (mul_nonneg (Nat.cast_nonneg n) (nef_iff.1 h C hC)).trans_eq (hC.deg_nsmul n Δ).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => nef_iff.2 fun C hC => nonneg_of_mul_nonneg_right ((nef_iff.1 h C hC).trans_eq (hC.deg_nsmul n Δ)) (Nat.cast_pos.2 hn), fun h => h.nsmul n⟩`.
+Supply the required witnesses or components.
 -/
 theorem nef_nsmul_iff {n : ℕ} (hn : 1 ≤ n) : Y.nef (n • Δ) ↔ Y.nef Δ :=
   ⟨fun h => nef_iff.2 fun C hC => nonneg_of_mul_nonneg_right
       ((nef_iff.1 h C hC).trans_eq (hC.deg_nsmul n Δ)) (Nat.cast_pos.2 hn), fun h => h.nsmul n⟩
 
 /- English proof (translation)
-The claim follows from `nef_iff.2 fun _ hC => by obtain ⟨x, hx⟩ := hC.1.nonempty obtain ⟨f, hf, hfx⟩ := h.2 x exact (hC.deg_nonneg_of_generatesAt (h.mem f hf) hx hfx).1`.
+A detailed English derivation is pending.
 -/
 theorem bpf.nef {V : Set Y.Fn} (h : Y.bpf Δ V) : Y.nef Δ := nef_iff.2 fun _ hC => by
   obtain ⟨x, hx⟩ := hC.1.nonempty
@@ -660,25 +656,25 @@ theorem bpf.nef {V : Set Y.Fn} (h : Y.bpf Δ V) : Y.nef Δ := nef_iff.2 fun _ hC
   exact (hC.deg_nonneg_of_generatesAt (h.mem f hf) hx hfx).1
 
 /- English proof (translation)
-Rewrite using `[nef_iff, ← Y.deg_top h]`. Conclude with `⟨fun H => H _ (Y.isCurve_top h), fun H C hC => hC.eq_top h ▸ H⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem nef_iff_of_dim_eq_one (h : Y.dim = 1) : Y.nef Δ ↔ 0 ≤ Y.inter fun _ => Δ := by
   rw [nef_iff, ← Y.deg_top h]
   exact ⟨fun H => H _ (Y.isCurve_top h), fun H C hC => hC.eq_top h ▸ H⟩
 
 /- English proof (translation)
-The claim follows from `IsAmpleLB.interNumRed_pos h ((Y.isCurve_iff C).1 hC)`.
+A detailed English derivation is pending.
 -/
 theorem ample.deg_pos (h : Y.ample A) {C : Y.Cl} (hC : Y.IsCurve C) : 0 < Y.deg C A :=
   IsAmpleLB.interNumRed_pos h ((Y.isCurve_iff C).1 hC)
 
 /- English proof (translation)
-The claim follows from `IsAmpleLB.isNef h`.
+A detailed English derivation is pending.
 -/
 theorem ample.nef (h : Y.ample A) : Y.nef A := IsAmpleLB.isNef h
 
 /- English proof (translation)
-The claim follows from `(IsAmpleLB.eventually_subsingleton_coh_twist Y.algebraMap_Γ (Y.sheaf Δ) h).mono fun n hn i hi => by obtain ⟨e⟩ := nonempty_twist_twist_iso_of_cls_eq (structureModule Y.X) (isLB_toLB Δ) (isLB_lbPow (isLB_toLB A) n) (isLB_toLB (Δ + n • A)) (by rw [cls_lbPow (isLB_toLB A), ← toPic_a …`.
+A detailed English derivation is pending.
 -/
 theorem ample.eventually_hdim_eq_zero (h : Y.ample A) (Δ : Y.Dv) :
     ∀ᶠ n : ℕ in atTop, ∀ i, 0 < i → Y.hdim i (Δ + n • A) = 0 :=
@@ -692,34 +688,34 @@ theorem ample.eventually_hdim_eq_zero (h : Y.ample A) (Δ : Y.Dv) :
 variable (Y) in
 
 /- English proof (translation)
-The claim follows from `(ample_iff_of_toPic_eq Y.isLineBundle_twistingSheafOne (Y.presents_hyp hi).toPic_eq).2 Y.isAmple_projective_O_one`.
+A detailed English derivation is pending.
 -/
 theorem ample_hyp {i : Fin (Y.N + 1)} (hi : Y.ι (genericPoint Y.X) ∈ ProjSpace.chart F Y.N i) :
     Y.ample (Y.hyp hi) :=
   (ample_iff_of_toPic_eq Y.isLineBundle_twistingSheafOne (Y.presents_hyp hi).toPic_eq).2 Y.isAmple_projective_O_one
 
 /- English proof (translation)
-The claim follows from `hasNonzeroSec_iff_nontrivial.trans ((Y.hZeroEquiv Δ).toEquiv.nontrivial_congr.trans Submodule.nontrivial_iff_ne_bot)`.
+A detailed English derivation is pending.
 -/
 theorem hasNonzeroSec_iff : HasNonzeroSec (Y.lb Δ) ↔ Y.H0 Δ ≠ ⊥ :=
   hasNonzeroSec_iff_nontrivial.trans
     ((Y.hZeroEquiv Δ).toEquiv.nontrivial_congr.trans Submodule.nontrivial_iff_ne_bot)
 
 /- English proof (translation)
-The claim follows from `IsBig.of_cls_eq_add Y.algebraMap_Γ Y.isProjOver hA (isLB_toLB B) (hasNonzeroSec_iff.2 hB) (isLB_toLB _) (map_add toPic A B)`.
+A detailed English derivation is pending.
 -/
 theorem big.isBig_add_of_riemannRoch_ne_bot (hA : Y.big A) (hB : Y.H0 B ≠ ⊥) : Y.big (A + B) :=
   IsBig.of_cls_eq_add Y.algebraMap_Γ Y.isProjOver hA (isLB_toLB B) (hasNonzeroSec_iff.2 hB)
     (isLB_toLB _) (map_add toPic A B)
 
 /- English proof (translation)
-The claim follows from `hA.isBig_add_of_riemannRoch_ne_bot ((Submodule.ne_bot_iff _).2 ⟨1, eff_iff_one_mem.1 hB, one_ne_zero⟩)`.
+A detailed English derivation is pending.
 -/
 theorem big.add_eff (hA : Y.big A) (hB : Y.Eff B) : Y.big (A + B) :=
   hA.isBig_add_of_riemannRoch_ne_bot ((Submodule.ne_bot_iff _).2 ⟨1, eff_iff_one_mem.1 hB, one_ne_zero⟩)
 
 /- English proof (translation)
-The claim follows from `(big_iff_of_toPic_eq (isLB_lbPow (isLB_toLB Δ) n) (by rw [cls_lbPow (isLB_toLB Δ), map_nsmul, toPic_apply])).trans (isBig_pow_iff Y.algebraMap_Γ Y.isProjOver (isLB_toLB Δ) hn)`.
+A detailed English derivation is pending.
 -/
 theorem big_nsmul_iff {n : ℕ} (hn : 1 ≤ n) : Y.big (n • Δ) ↔ Y.big Δ :=
   (big_iff_of_toPic_eq (isLB_lbPow (isLB_toLB Δ) n)
@@ -727,7 +723,7 @@ theorem big_nsmul_iff {n : ℕ} (hn : 1 ≤ n) : Y.big (n • Δ) ↔ Y.big Δ :
       (isBig_pow_iff Y.algebraMap_Γ Y.isProjOver (isLB_toLB Δ) hn)
 
 /- English proof (translation)
-The claim follows from `(IsBig.frequently_hasNonzeroSec h).mono fun n hn => hasNonzeroSec_iff.1 (hn.of_cls_eq (isLB_toLB _) (isLB_lbPow (isLB_toLB Δ) n) (by rw [cls_lbPow (isLB_toLB Δ), ← toPic_apply, ← toPic_apply, map_nsmul]))`.
+A detailed English derivation is pending.
 -/
 theorem big.isBig_frequently_riemannRoch_ne_bot (h : Y.big Δ) : ∃ᶠ n : ℕ in atTop, Y.H0 (n • Δ) ≠ ⊥ :=
   (IsBig.frequently_hasNonzeroSec h).mono fun n hn => hasNonzeroSec_iff.1
@@ -735,7 +731,7 @@ theorem big.isBig_frequently_riemannRoch_ne_bot (h : Y.big Δ) : ∃ᶠ n : ℕ 
       (by rw [cls_lbPow (isLB_toLB Δ), ← toPic_apply, ← toPic_apply, map_nsmul]))
 
 /- English proof (translation)
-Introduce `hb` and use `by obtain ⟨c, hc, hn⟩ := big_iff.1 hb have ht : Tendsto (fun n : ℕ => c * (n : ℝ) ^ Y.dim) atTop atTop := ((tendsto_pow_atTop (by omega)).comp tendsto_natCast_atTop_atTop).const_mul_atTop hc obtain ⟨n, h₁, h₂⟩ := (hn.and_eventually (ht.eventually_gt_atTop (Module.finrank F (Y.H0 …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_big_zero (h : 1 ≤ Y.dim) : ¬ Y.big 0 := fun hb => by
   obtain ⟨c, hc, hn⟩ := big_iff.1 hb
@@ -755,11 +751,9 @@ open ProjSpace
 variable (F : Type) [Field F] (n : ℕ)
 
 /- English proof (translation)
-Use `Geo.Tor.isProper_str F n` as an intermediate fact. Establish `H : IsPullback (proj F n).ι (proj F n).str (PSpace.str F n) (Spec.map (CommRingCat.ofHom (algebraMap F F)))`. Rewrite using `[show Spec.map (CommRingCat.ofHom (algebraMap F F)) = 𝟙 _ from Spec.map_id _]`. Conclude with `IsPullback.of_horiz_isIso ⟨(Category.comp_id _).symm⟩`. Establish `hm` using `Twist.isLB_lbZPow (O1_isLB F n) m`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `FieldChangeInter.hdim_pull (f := PSpace.str F n) H hm i`. Use `(Var.hdim_eq_of_toPic_eq (LB.isLB_pull hm _) ?_ i).trans (h.trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (cls_pull hm _ _).symm` and prove the remaining obligations. Rewrite using `[map_zsmul, cls_lbZPow (O1_isLB F n), map_zsmul]`. Conclude with `congrArg _ (((proj F n).presents_hyp _).toPic_eq.trans (cls_pull (O1_isLB F n) _ _))`.
-
-Rewrite using `[← projSys.algebraΓ_eq]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hdim_zsmul_projHyp (i : ℕ) (m : ℤ) :
     (proj F n).hdim i (m • projHyp F n) = GlobalTheory.hdim F (ProjCoh.sheafO F n m) i := by
@@ -777,14 +771,14 @@ theorem hdim_zsmul_projHyp (i : ℕ) (m : ℤ) :
   · rw [← projSys.algebraΓ_eq]
 
 /- English proof (translation)
-The claim follows from `(finsum_congr fun i => congrArg (fun a : ℕ => (-1 : ℤ) ^ i * a) (hdim_zsmul_projHyp F n i m)).trans (ProjCoh.chi_sheafO F n m)`.
+A detailed English derivation is pending.
 -/
 theorem chi_zsmul_projHyp (m : ℤ) : (proj F n).chi (m • projHyp F n) = Ring.choose (m + n) n :=
   (finsum_congr fun i => congrArg (fun a : ℕ => (-1 : ℤ) ^ i * a)
     (hdim_zsmul_projHyp F n i m)).trans (ProjCoh.chi_sheafO F n m)
 
 /- English proof (translation)
-Rewrite using `[← Var.hdim_zero, ← natCast_zsmul, hdim_zsmul_projHyp]`. Conclude with `sectionDim_twistingSheaf_pow F n m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_riemannRoch_nsmul_hyperplane (m : ℕ) :
     Module.finrank F ((proj F n).H0 (m • projHyp F n)) = (m + n).choose n := by
@@ -792,16 +786,14 @@ theorem finrank_riemannRoch_nsmul_hyperplane (m : ℕ) :
   exact sectionDim_twistingSheaf_pow F n m
 
 /- English proof (translation)
-The claim follows from `(hdim_zsmul_projHyp F n n m).trans (ProjCoh.finrank_coh_top F hn m)`.
+A detailed English derivation is pending.
 -/
 theorem hdim_top_zsmul_projHyp (hn : 1 ≤ n) (m : ℤ) :
     (proj F n).hdim n (m • projHyp F n) = (-m - 1).toNat.choose n :=
   (hdim_zsmul_projHyp F n n m).trans (ProjCoh.finrank_coh_top F hn m)
 
 /- English proof (translation)
-Take `⟨p, -, h₂, h₃⟩` from `(proj F n).exists_polynomial_chi 0 (projHyp F n)`. Establish `e : p = Polynomial.preHilbertPoly ℚ n 0` using `Polynomial.eq_of_infinite_eval_eq _ _ (Set.infinite_of_injective_forall_mem (f := fun m : ℤ => (m : ℚ)) Int.cast_injective fun m => by`. Rewrite using `[Set.mem_setOf_eq, h₂, zero_add, chi_zsmul_projHyp, ← ProjCoh.chi_sheafO F, ProjCoh.chi_sheafO_eq_eval])`. Use `replace h₃ : p.coeff n = (n.factorial : ℚ)⁻¹ * (proj F n).inter fun _ => projHyp F n := h₃`. Rewrite `h₃` using `[e, Polynomial.coeff_preHilbertPoly_self, eq_comm, mul_eq_left₀ (inv_ne_zero (Nat.cast_ne_zero.2 n.factorial_ne_zero))]`.
-
-Conclude with `h₃` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inter_projHyp : (proj F n).inter (fun _ => projHyp F n) = 1 := by
   obtain ⟨p, -, h₂, h₃⟩ := (proj F n).exists_polynomial_chi 0 (projHyp F n)
@@ -816,31 +808,31 @@ theorem inter_projHyp : (proj F n).inter (fun _ => projHyp F n) = 1 := by
   exact_mod_cast h₃
 
 /- English proof (translation)
-The claim follows from `((proj F n).inter_zsmul d fun _ => projHyp F n).trans (by rw [inter_projHyp]; exact mul_one _)`.
+A detailed English derivation is pending.
 -/
 theorem inter_zsmul_projHyp (d : Fin n → ℤ) :
     (proj F n).inter (fun i => d i • projHyp F n) = ∏ i, d i :=
   ((proj F n).inter_zsmul d fun _ => projHyp F n).trans (by rw [inter_projHyp]; exact mul_one _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨proj F n, projHyp F n, rfl, inter_projHyp F n⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_inter_eq_one :
     ∃ (Y : Var F) (Δ : Y.Dv), Y.dim = n ∧ Y.inter (fun _ => Δ) = 1 :=
   ⟨proj F n, projHyp F n, rfl, inter_projHyp F n⟩
 
 /- English proof (translation)
-The claim follows from `(proj F n).ample_hyp _`.
+A detailed English derivation is pending.
 -/
 theorem ample_projHyp : (proj F n).ample (projHyp F n) := (proj F n).ample_hyp _
 
 /- English proof (translation)
-The claim follows from `(ample_projHyp F n).nef`.
+A detailed English derivation is pending.
 -/
 theorem nef_projHyp : (proj F n).nef (projHyp F n) := (ample_projHyp F n).nef
 
 /- English proof (translation)
-Use `Var.big_iff.2 ⟨(n.factorial : ℝ)⁻¹, by positivity, Frequently.of_forall fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[finrank_riemannRoch_nsmul_hyperplane, ← div_eq_inv_mul, proj_dim]`. Use `le_trans ?_ (Nat.pow_le_choose n (m + n))` and prove the remaining obligations. Use `gcongr`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem big_projHyp : (proj F n).big (projHyp F n) := by
   refine Var.big_iff.2 ⟨(n.factorial : ℝ)⁻¹, by positivity, Frequently.of_forall fun m => ?_⟩
@@ -850,29 +842,27 @@ theorem big_projHyp : (proj F n).big (projHyp F n) := by
   omega
 
 /- English proof (translation)
-The claim follows from `((proj F 1).deg_top rfl _).trans (inter_projHyp F 1)`.
+A detailed English derivation is pending.
 -/
 theorem deg_projHyp_line : (proj F 1).deg ⊤ (projHyp F 1) = 1 :=
   ((proj F 1).deg_top rfl _).trans (inter_projHyp F 1)
 
 /- English proof (translation)
-Rewrite using `[((proj F 1).isCurve_top rfl).deg_zsmul, deg_projHyp_line, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem deg_zsmul_projHyp_line (m : ℤ) : (proj F 1).deg ⊤ (m • projHyp F 1) = m := by
   rw [((proj F 1).isCurve_top rfl).deg_zsmul, deg_projHyp_line, mul_one]
 
 /- English proof (translation)
-Rewrite using `[Var.nef_iff_of_dim_eq_one rfl, ← (proj F 1).deg_top rfl, deg_zsmul_projHyp_line]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nef_zsmul_projHyp_line (m : ℤ) : (proj F 1).nef (m • projHyp F 1) ↔ 0 ≤ m := by
   rw [Var.nef_iff_of_dim_eq_one rfl, ← (proj F 1).deg_top rfl, deg_zsmul_projHyp_line]
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Use `by_contra! hm`. Take `⟨k, rfl⟩ : ∃ k : ℕ, m = -k` from `⟨m.natAbs, by omega⟩`. Establish `he : (proj F n).Eff (k • projHyp F n)` using `by clear h hm`. Proceed by induction on `k with`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => rw [zero_nsmul]`. Conclude with `Var.eff_zero _`. Consider the case `succ k ih => rw [succ_nsmul]`. Conclude with `Var.eff_add _ _ _ ih (Var.eff_hyp _ _)`. Use `h.add_eff he` as an intermediate fact.
-
-Rewrite `this` using `[neg_zsmul, natCast_zsmul, neg_add_cancel]`. Conclude with `Var.not_big_zero hn this`. Use `lift m to ℕ using h.le`. Rewrite using `[natCast_zsmul]`. Conclude with `(Var.big_nsmul_iff (by omega)).2 (big_projHyp F n)`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem big_zsmul_projHyp (hn : 1 ≤ n) (m : ℤ) : (proj F n).big (m • projHyp F n) ↔ 0 < m := by
   refine ⟨fun h => ?_, fun h => ?_⟩
@@ -891,7 +881,7 @@ theorem big_zsmul_projHyp (hn : 1 ≤ n) (m : ℤ) : (proj F n).big (m • projH
     exact (Var.big_nsmul_iff (by omega)).2 (big_projHyp F n)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hdim_top_zsmul_projHyp F 1 le_rfl _, hdim_top_zsmul_projHyp F 1 le_rfl _, (chi_zsmul_projHyp F 1 _).trans (by simp)⟩`.
+Supply the required witnesses or components.
 -/
 example : (proj F 1).hdim 1 ((-2 : ℤ) • projHyp F 1) = 1 ∧
     (proj F 1).hdim 1 ((-1 : ℤ) • projHyp F 1) = 0 ∧
@@ -900,13 +890,13 @@ example : (proj F 1).hdim 1 ((-2 : ℤ) • projHyp F 1) = 1 ∧
     (chi_zsmul_projHyp F 1 _).trans (by simp)⟩
 
 /- English proof (translation)
-The claim follows from `(inter_zsmul_projHyp F 2 _).trans (by simp [Fin.prod_univ_two])`.
+A detailed English derivation is pending.
 -/
 example : (proj F 2).inter (fun i => (![2, 3] : Fin 2 → ℤ) i • projHyp F 2) = 6 :=
   (inter_zsmul_projHyp F 2 _).trans (by simp [Fin.prod_univ_two])
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [nef_zsmul_projHyp_line]; omega, by rw [big_zsmul_projHyp F 1 le_rfl]; omega, Var.nef_zero _, Var.not_big_zero le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ¬ (proj F 1).nef ((-1 : ℤ) • projHyp F 1) ∧ ¬ (proj F 1).big ((-1 : ℤ) • projHyp F 1) ∧
     (proj F 1).nef 0 ∧ ¬ (proj F 1).big 0 :=

@@ -10,13 +10,13 @@ namespace Formalism.RepresentationBoundsCohomology.ringDataObjects
 open Formalism.NG Formalism.TruncatedSeriesCounting.TruncatedSeriesCountingIdentities
 
 /- English proof (translation)
-Unfold `StatResConst`. Introduce `O _ _ X T hT f hf x y`. Use `set g : T := ⟨f, hf⟩ - algebraMap O T (f x) with hg`. Establish `hgnu : ¬ IsUnit g`. Introduce `hu`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hu.map ((Pi.evalRingHom (fun _ : X => O) x).comp T.val.toRingHom)` as an intermediate fact. Simplify using `[hg] at this`. Set `ψ : T →+* IsLocalRing.ResidueField O` to `(IsLocalRing.residue O).comp ((Pi.evalRingHom (fun _ : X => O) y).comp T.val.toRingHom)`. Establish `hsurj : Function.Surjective ψ`. Introduce `z`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `IsLocalRing.residue_surjective z`. Conclude with `⟨algebraMap O T c, by simp [ψ]⟩`. Establish `hmax : (RingHom.ker ψ).IsMaximal` using `RingHom.ker_isMaximal_of_surjective ψ hsurj`. Establish `hker : RingHom.ker ψ = IsLocalRing.maximalIdeal T` using `IsLocalRing.eq_maximalIdeal hmax`. Establish `hgm : g ∈ RingHom.ker ψ`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hker, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `hgnu`. Rewrite `hgm` using `[RingHom.mem_ker]`. Simplify using `[ψ, hg, sub_eq_zero] at hgm`. Conclude with `hgm.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem resConst : StatResConst := by
   unfold StatResConst
@@ -42,13 +42,11 @@ theorem resConst : StatResConst := by
   exact hgm.symm
 
 /- English proof (translation)
-Unfold `StatSepPoint`. Introduce `O _ _ X _ T hsep x`. Establish `hy : ∀ y, ∃ g ∈ T, y ≠ x → g y = 0 ∧ g x ≠ 0`. Introduce `y`. Distinguish the cases in `hyx : y = x`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨1, T.one_mem, fun h => absurd hyx h⟩`. Take `⟨f, hf, hne⟩` from `hsep x y (Ne.symm hyx)`. Use `⟨f - algebraMap O (X → O) (f y), T.sub_mem hf (T.algebraMap_mem _), fun _ => ⟨by simp, ?_⟩⟩` and prove the remaining obligations. Simplify `hne` using `[sub_eq_zero]`. Use `choose g hgT hg using hy`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∏ y ∈ Finset.univ.erase x, g y, prod_mem fun y _ => hgT y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_apply, Finset.prod_ne_zero_iff]`. Introduce `y hy`. Conclude with `(hg y (Finset.ne_of_mem_erase hy)).2`. Introduce `z hz`.
-
-Rewrite using `[Finset.prod_apply]`. Conclude with `Finset.prod_eq_zero (Finset.mem_erase.2 ⟨hz, Finset.mem_univ z⟩) (hg z hz).1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sepPoint : StatSepPoint := by
   unfold StatSepPoint
@@ -71,9 +69,9 @@ theorem sepPoint : StatSepPoint := by
     exact Finset.prod_eq_zero (Finset.mem_erase.2 ⟨hz, Finset.mem_univ z⟩) (hg z hz).1
 
 /- English proof (translation)
-Unfold `DvrArtinReesInclusion`. Introduce `O _ _ _ M _ _ _ _ R`. Take `⟨k, hk⟩` from `Ideal.exists_pow_inf_eq_pow_smul (IsLocalRing.maximalIdeal O) R`. Use `⟨k + 1, fun a ha haN => ?_⟩` and prove the remaining obligations. Establish `hmem : a ∈ (IsLocalRing.maximalIdeal O) ^ (k + 1) • (⊤ : Submodule O M) ⊓ R` using `Submodule.mem_inf.2 ⟨haN, ha⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hmem` using `[hk (k + 1) (Nat.le_succ k), Nat.add_sub_cancel_left, pow_one]`. Conclude with `Submodule.smul_mono le_rfl inf_le_right hmem`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem satur : DvrArtinReesInclusion := by
   unfold DvrArtinReesInclusion
@@ -86,13 +84,13 @@ theorem satur : DvrArtinReesInclusion := by
   exact Submodule.smul_mono le_rfl inf_le_right hmem
 
 /- English proof (translation)
-Unfold `StatIdemSmall`. Introduce `O _ _ _ n _ _ e he h0`. Establish `h1 : (IsLocalRing.residue O).mapMatrix (1 - e) = 1`. Rewrite using `[map_sub, map_one, RingHom.mapMatrix_apply, h0, sub_zero]`. Establish `hres : IsLocalRing.residue O (1 - e).det = 1`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[RingHom.map_det, h1, Matrix.det_one]`. Establish `hdet : IsUnit (1 - e).det`. Assume the negation of the conclusion as `hnu`. Establish `hm : (1 - e).det ∈ IsLocalRing.maximalIdeal O` using `hnu`. Rewrite `hm` using `[← IsLocalRing.residue_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hres` using `[hm]`. Conclude with `zero_ne_one hres`. Establish `hmul : e * (1 - e) = 0`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, he, sub_self]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hdet, Matrix.mul_one]`. Use `_ = 0 := by rw [hmul, Matrix.zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem idemSmall : StatIdemSmall := by
   unfold StatIdemSmall
@@ -114,11 +112,9 @@ theorem idemSmall : StatIdemSmall := by
     _ = 0 := by rw [hmul, Matrix.zero_mul]
 
 /- English proof (translation)
-Unfold `StatCommonNonzero`. Introduce `O _ _ _ σ ι _ D hD`. Establish `hprod : (∏ i, D i) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => hD i`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hprod` to reduce the goal to its premises. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `z`. Take `⟨i, hi⟩` from `hcon z`. Rewrite using `[map_prod, map_zero]`.
-
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) hi`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commonNonzero : StatCommonNonzero := by
   unfold StatCommonNonzero
@@ -135,9 +131,9 @@ theorem commonNonzero : StatCommonNonzero := by
   exact Finset.prod_eq_zero (Finset.mem_univ i) hi
 
 /- English proof (translation)
-Unfold `RightIdealImageOfSurjective`. Introduce `O R' _ _ _ n _ _ ρ hρ e₁ A`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨B, rfl⟩`. Take `⟨b, rfl⟩` from `hρ B`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b, by rw [map_mul]⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨ρ a, by rw [map_mul]⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem idempotent_image_surjective : RightIdealImageOfSurjective := by
   unfold RightIdealImageOfSurjective
@@ -150,15 +146,13 @@ theorem idempotent_image_surjective : RightIdealImageOfSurjective := by
     exact ⟨ρ a, by rw [map_mul]⟩
 
 /- English proof (translation)
-Unfold `StatRootsInt`. Introduce `O _ _ _ P t α hP`. Establish `hinj : Function.Injective (algebraMap O (FractionRing O))` using `IsFractionRing.injective O (FractionRing O)`. Establish `hmon : (P.map (algebraMap O (FractionRing O))).Monic`. Rewrite using `[hP]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Polynomial.monic_prod_of_monic _ _ fun i _ => Polynomial.monic_X_sub_C _`. Establish `hPm : P.Monic` using `by first`. Consider the case `exact Polynomial.monic_of_injective hinj hmon`. Consider the case `(rw [Polynomial.Monic, ← hinj.eq_iff, map_one, ← Polynomial.leadingCoeff_map_of_injective hinj]`. Conclude with `hmon)`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hint : ∀ i, ∃ b : O, algebraMap O (FractionRing O) b = α i`. Introduce `i`. Establish `hroot : Polynomial.eval₂ (algebraMap O (FractionRing O)) (α i) P = 0`. Rewrite using `[Polynomial.eval₂_eq_eval_map, hP, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsIntegrallyClosed.isIntegral_iff.1 ⟨P, hPm, hroot⟩`. Use `choose β hβ using hint`. Use `⟨β, hβ, ?_⟩` and prove the remaining obligations. Apply `Polynomial.map_injective _ hinj` to reduce the goal to its premises. Rewrite using `[hP, Polynomial.map_prod]`.
-
-Simplify using `[hβ]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rootsInt : StatRootsInt := by
   unfold StatRootsInt
@@ -186,11 +180,9 @@ theorem rootsInt : StatRootsInt := by
   simp [hβ]
 
 /- English proof (translation)
-Unfold `BlockRingDecompositionLemma`. Introduce `O _ _ _ X d G _ _ _ t ht bl T D _ _ hTop Z NN _ _ g₀ n hspan hZ hcard`. Unfold `RingData.Top RingTop at hTop`. Take `⟨h1, h2, h3, -, -, -, h7, h8, h9, h10, -⟩` from `hTop`. Establish `hsum : ∑ k : Fin (t + 1), Fintype.card {a // bl a = k} = Fintype.card d`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Fintype.card_sigma]`. Conclude with `Fintype.card_congr (Equiv.sigmaFiberEquiv bl)`. Establish `hcard' : ((g₀ * ∑ k : Fin (t + 1), Fintype.card {a // bl a = k} : ℕ) : Cardinal) < Cardinal.mk (IsLocalRing.ResidueField O)`. Rewrite using `[hsum]`. Conclude with `hcard`.
-
-Establish `hmain` using `Formalism.NG.globalModule O X D.X' T D.T' Z D.p D.q D.b h1 (fun x _ => h2 x) d D.R' h3 NN g₀ n hspan hZ D.π' D.ρπ h7 (Fin (t + 1)) bl h8 D.ρk h9 h10 hcard'`. Conclude with `hmain.trans (Finset.sum_le_sum_of_subset (Finset.subset_univ _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lemma_five_three_holds : BlockRingDecompositionLemma := by
   unfold BlockRingDecompositionLemma

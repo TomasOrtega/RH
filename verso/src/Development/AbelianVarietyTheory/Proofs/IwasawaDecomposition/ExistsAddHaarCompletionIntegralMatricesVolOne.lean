@@ -13,7 +13,7 @@ open MeasureTheory Matrix NumberField IsDedekindDomain Formalism.BasicNotions Fo
 variable {L : Type} [Field L] [NumberField L] (P : HeightOneSpectrum (𝓞 L))
 
 /- English proof (translation)
-Use extensionality with `y`. Conclude with `⟨fun h i _ j _ => h i j, fun h i j => h i trivial j trivial⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem intMat_eq_pi (n m : ℕ) : intMat (OP P) n m = Set.pi Set.univ (fun _ : Fin n => Set.pi Set.univ
       fun _ : Fin m => ((P.adicCompletionIntegers L : Set (P.adicCompletion L)))) := by
@@ -21,14 +21,14 @@ theorem intMat_eq_pi (n m : ℕ) : intMat (OP P) n m = Set.pi Set.univ (fun _ : 
   exact ⟨fun h i _ j _ => h i j, fun h i j => h i trivial j trivial⟩
 
 /- English proof (translation)
-Rewrite using `[intMat_eq_pi]`. Conclude with `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers P`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_intMat (n m : ℕ) : IsCompact (intMat (OP P) n m) := by
   rw [intMat_eq_pi]
   exact isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers P
 
 /- English proof (translation)
-Rewrite using `[intMat_eq_pi]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => Valued.isOpen_valuationSubring _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_intMat (n m : ℕ) : IsOpen (intMat (OP P) n m) := by
   rw [intMat_eq_pi]
@@ -43,9 +43,7 @@ def intMatK (n m : ℕ) : TopologicalSpace.PositiveCompacts (Matrix (Fin n) (Fin
     exact ⟨0, fun i j => (OP P).zero_mem⟩
 
 /- English proof (translation)
-Introduce `L _ _ P n m`. Use `letI : MeasurableSpace (P.adicCompletion L) := borel _`. Use `haveI : BorelSpace (P.adicCompletion L) := ⟨rfl⟩`. Use `haveI : BorelSpace (Matrix (Fin n) (Fin m) (P.adicCompletion L)) := inferInstanceAs (BorelSpace (Fin n → Fin m → P.adicCompletion L))`. Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin m) (P.adicCompletion L)) := (isCompact_intMat P n m).locallyCompactSpace_of_mem_nhds_of_addGroup ((isOpen_intMat P n m).mem_nhds fun i j => (OP P).zero_mem)`.
-
-Use `haveI : SecondCountableTopology (Matrix (Fin n) (Fin m) (P.adicCompletion L)) := inferInstanceAs (SecondCountableTopology (Fin n → Fin m → P.adicCompletion L))`. Use `haveI : SigmaCompactSpace (Matrix (Fin n) (Fin m) (P.adicCompletion L)) := inferInstance`. Use `haveI : SigmaFinite (Measure.addHaarMeasure (intMatK P n m)) := inferInstance`. Use `⟨Measure.addHaarMeasure (intMatK P n m), inferInstance, inferInstance, Measure.addHaarMeasure_self⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_haar_intMat : ∀ (L : Type) [Field L] [NumberField L] (P : HeightOneSpectrum (𝓞 L)) (n m : ℕ),
     letI : MeasurableSpace (P.adicCompletion L) := borel _;

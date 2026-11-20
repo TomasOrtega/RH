@@ -10,11 +10,11 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[Metric.dense_iff]`. Introduce `z₀ r hr`. Assume the negation of the conclusion as `hne`. Apply `hq` to reduce the goal to its premises. Use `MvPolynomial.funext_set (fun i => Metric.ball (z₀ i) r) (fun i => infinite_of_mem_nhds (z₀ i) (Metric.ball_mem_nhds _ hr)) (fun x hx => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zero]`. Assume the negation of the conclusion as `hx0`. Apply `hne` to reduce the goal to its premises. Use `⟨x, ?_, hx0⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_ball, dist_pi_lt_iff hr]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun i => hx i (Set.mem_univ i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dense_mvPolynomial_eval_ne_zero {D : ℕ} (q : MvPolynomial (Fin D) ℂ) (hq : q ≠ 0) :
     Dense {z : Fin D → ℂ | MvPolynomial.eval z q ≠ 0} := by
@@ -32,15 +32,13 @@ theorem dense_mvPolynomial_eval_ne_zero {D : ℕ} (q : MvPolynomial (Fin D) ℂ)
   exact fun i => hx i (Set.mem_univ i)
 
 /- English proof (translation)
-Introduce `K _ _ sg D z₀ ε hε`. Set `S : {p : MvPolynomial (Fin D) K // p ≠ 0} → Set (Fin D → ℂ)` to `fun p => {z | MvPolynomial.eval z (MvPolynomial.map sg p.1) ≠ 0}`. Establish `: Countable (MvPolynomial (Fin D) K)`. Use `Function.Surjective.countable (f := fun l : List ((Fin D →₀ ℕ) × K) => (l.map fun mc => MvPolynomial.monomial mc.1 mc.2).sum) fun p => ?_` and prove the remaining obligations. Use `⟨p.support.toList.map fun m => (m, MvPolynomial.coeff m p), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [List.map_map]`. Rewrite using `[Finset.sum_map_toList]`. Conclude with `p.as_sum.symm`. Establish `hS : Dense (⋂ p, S p)`. Apply `dense_iInter_of_isOpen` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Conclude with `isOpen_ne_fun (MvPolynomial.continuous_eval _) continuous_const`. Introduce `p`. Use `dense_mvPolynomial_eval_ne_zero _ fun h0 => p.2 ?_` and prove the remaining obligations. Conclude with `MvPolynomial.map_injective sg sg.injective (h0.trans (map_zero _).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z, hzS, hz⟩` from `hS.exists_mem_open (Metric.isOpen_ball (x := z₀)) (Metric.nonempty_ball.mpr hε)`. Use `⟨z, ?_, fun p hp => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[Metric.mem_ball, dist_pi_lt_iff hε]`. Introduce `i`. Rewrite using `[← dist_eq_norm]`.
-
-Conclude with `hz i`. Rewrite using `[← MvPolynomial.eval_map]`. Conclude with `Set.mem_iInter.mp hzS ⟨p, hp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_algIndep_tuple_near :
     ∀ (K : Type) [Field K] [Countable K] (sg : K →+* ℂ) (D : ℕ) (z₀ : Fin D → ℂ) (ε : ℝ), 0 < ε → ∃ z : Fin D → ℂ, (∀ i, ‖z i - z₀ i‖ < ε) ∧ ∀ p : MvPolynomial (Fin D) K, p ≠ 0 → MvPolynomial.eval₂ sg z p ≠ 0 := by

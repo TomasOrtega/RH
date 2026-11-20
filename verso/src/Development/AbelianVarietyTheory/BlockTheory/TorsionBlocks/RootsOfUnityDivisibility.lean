@@ -155,23 +155,23 @@ section Basic₂
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Simplify using `[vw, FractionalIdeal.count_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vw_one' (w : Pl K) : vw w (1 : K) = 0 := by
   simp [vw, FractionalIdeal.count_one]
 
 /- English proof (translation)
-Use `⟨by norm_num, ⟨by norm_num, by norm_num, by norm_num, by norm_num, Matrix.PosDef.one, by simp⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `w ν _`. Use `⟨by simp, by simp, by simp, ⟨by simp, ?_, ?_⟩, ?_, ?_, ?_, by simp⟩` and prove the remaining obligations. Introduce `h`. Use `congrFun (congrFun h ()) 0` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `at this`. Introduce `h`. Use `congrFun (congrFun h ()) 0` as an intermediate fact. Simplify using `at this`. Introduce `x _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨one_pos, fun k => ⟨1, 1, by simp, by simp, ?_, ?_, ?_, ?_⟩, fun k l => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `all_goals first`. Consider the case `(right; simp [vw_one']; done)`. Consider the case `(right; rw [Subsingleton.elim k l]; simp [vw_one'])`. Simplify using `[classNorm, map_ofNat]`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Simplify using `[classNorm]`. Introduce `w`. Prove the components needed by the constructor for the conclusion. Simplify using `[classNorm, map_ofNat]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Simplify using `[classNorm]`. Introduce `s _`. Simplify using `[wt, vw_one']`. Introduce `w _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun s _ => by simp [wt, vw_one'], fun s _ => ⟨1, ⟨1, fun _ _ => 1, ⟨1, one_pos, by simp⟩, by simp, by simp⟩, by simp⟩, fun k _ => ⟨1, ⟨1, fun _ => 1, fun _ => 1, fun _ => 1, ⟨1, one_pos, by simp⟩, by simp, by simp, by simp⟩, by simp⟩⟩` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 example (σ : K →+* ℂ) :
     SquareInputs σ (Mu := Unit) (Sq := Unit) (H := Unit) () (fun _ => ()) (fun _ => ()) Set.univ

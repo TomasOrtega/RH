@@ -15,7 +15,7 @@ variable {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [Numbe
   (S : GStep E K n) (emb : ι → E →+* K) (σ : K →+* ℂ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [trFr_apply, mul_inv_rev, frMul_mul, Units.val_mul, map_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem trFr_mul_apply (γ δ : GL (Fin n) E) (c d : Kˣ) (F : Fr emb σ n → ℂ) :
     trFr emb σ (γ * δ) (c * d) F = trFr emb σ γ c (trFr emb σ δ d F) := by
@@ -23,14 +23,14 @@ theorem trFr_mul_apply (γ δ : GL (Fin n) E) (c d : Kˣ) (F : Fr emb σ n → �
   simp only [trFr_apply, mul_inv_rev, frMul_mul, Units.val_mul, map_mul, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [trFr_apply, inv_one, frMul_one, Units.val_one, map_one, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem trFr_one_apply (F : Fr emb σ n → ℂ) : trFr emb σ (1 : GL (Fin n) E) (1 : Kˣ) F = F := by
   funext y
   simp only [trFr_apply, inv_one, frMul_one, Units.val_one, map_one, one_mul]
 
 /- English proof (translation)
-Unfold `GStep.tr`. Rewrite using `[map_mul, map_mul, trFr_mul_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_mul_apply (b : S.β) (g h : S.G b) (F : Fr emb σ n → ℂ) :
     S.tr emb σ b (g * h) F = S.tr emb σ b g (S.tr emb σ b h F) := by
@@ -38,26 +38,26 @@ theorem tr_mul_apply (b : S.β) (g h : S.G b) (F : Fr emb σ n → ℂ) :
   rw [map_mul, map_mul, trFr_mul_apply]
 
 /- English proof (translation)
-Unfold `GStep.tr`. Rewrite using `[map_one, map_one, trFr_one_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_one_apply (b : S.β) (F : Fr emb σ n → ℂ) : S.tr emb σ b 1 F = F := by
   unfold GStep.tr
   rw [map_one, map_one, trFr_one_apply]
 
 /- English proof (translation)
-The claim follows from `Quotient.sound ⟨g, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mk_smul (b : S.β) (g : S.G b) (d : S.D b) :
     Quotient.mk (MulAction.orbitRel (S.G b) (S.D b)) (g • d) = Quotient.mk _ d :=
   Quotient.sound ⟨g, rfl⟩
 
 /- English proof (translation)
-The claim follows from `S.mv_smul b d`.
+A detailed English derivation is pending.
 -/
 theorem mv_smul' (b : S.β) (d : S.D b) : S.mv b d • S.rp b (Quotient.mk _ d) = d := S.mv_smul b d
 
 /- English proof (translation)
-Establish `h1 : (h⁻¹ * g) • d = d` using `by rw [mul_smul, e, inv_smul_smul]`. Establish `h2` using `hf b _ d h1`. Conclude with `(inv_mul_eq_one.1 h2).symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_free (hf : S.Free) (b : S.β) (g h : S.G b) (d : S.D b) (e : g • d = h • d) : g = h := by
   have h1 : (h⁻¹ * g) • d = d := by rw [mul_smul, e, inv_smul_smul]
@@ -65,7 +65,7 @@ theorem eq_of_free (hf : S.Free) (b : S.β) (g h : S.G b) (d : S.D b) (e : g •
   exact (inv_mul_eq_one.1 h2).symm
 
 /- English proof (translation)
-Apply `eq_of_free S hf b _ _ (S.rp b (Quotient.mk _ d))` to reduce the goal to its premises. Establish `h1` using `mv_smul' S b (g • d)`. Rewrite `h1` using `[mk_smul]`. Rewrite using `[h1, mul_smul, mv_smul']`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mv_smul_eq (hf : S.Free) (b : S.β) (g : S.G b) (d : S.D b) : S.mv b (g • d) = g * S.mv b d := by
   apply eq_of_free S hf b _ _ (S.rp b (Quotient.mk _ d))
@@ -74,7 +74,7 @@ theorem mv_smul_eq (hf : S.Free) (b : S.β) (g : S.G b) (d : S.D b) : S.mv b (g 
   rw [h1, mul_smul, mv_smul']
 
 /- English proof (translation)
-Apply `hf b _ (S.rp b q)` to reduce the goal to its premises. Establish `h1` using `mv_smul' S b (S.rp b q)`. Rewrite `h1` using `[S.rp_spec]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mv_rp (hf : S.Free) (b : S.β) (q : MulAction.orbitRel.Quotient (S.G b) (S.D b)) : S.mv b (S.rp b q) = 1 := by
   apply hf b _ (S.rp b q)
@@ -85,7 +85,7 @@ def evPt (φ : S.Cl → Fr emb σ n → ℂ) (b : S.β) (d : S.D b) : Fr emb σ 
   S.tr emb σ b (S.mv b d) (φ ⟨b, Quotient.mk _ d⟩)
 
 /- English proof (translation)
-Unfold `evPt`. Rewrite using `[mv_smul_eq S hf, tr_mul_apply, mk_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem evPt_smul (hf : S.Free) (φ : S.Cl → Fr emb σ n → ℂ) (b : S.β) (g : S.G b) (d : S.D b) :
     evPt S emb σ φ b (g • d) = S.tr emb σ b g (evPt S emb σ φ b d) := by
@@ -93,7 +93,7 @@ theorem evPt_smul (hf : S.Free) (φ : S.Cl → Fr emb σ n → ℂ) (b : S.β) (
   rw [mv_smul_eq S hf, tr_mul_apply, mk_smul]
 
 /- English proof (translation)
-Take `⟨b, q⟩` from `c`. Use `show S.tr emb σ b (S.mv b (S.rp b q)) (φ ⟨b, Quotient.mk _ (S.rp b q)⟩) = φ ⟨b, q⟩`. Rewrite using `[mv_rp S hf, tr_one_apply, S.rp_spec]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evPt_rep (hf : S.Free) (φ : S.Cl → Fr emb σ n → ℂ) (c : S.Cl) :
     evPt S emb σ φ c.1 (S.rep c) = φ c := by
@@ -113,7 +113,7 @@ theorem diaLin_apply (P : J.ST) (a : (Res P.1)ˣ) (φ : (I.S 0).Cl → Fr emb σ
     J.diaLin emb σ P a φ c = evPt (I.S 0) emb σ φ c.1 ((J.A 0).dia c.1 P a ((I.S 0).rep c)) := rfl
 
 /- English proof (translation)
-Establish `h1 : evPt (I.S 0) emb σ (J.diaLin emb σ P a φ) b d = (I.S 0).tr emb σ b ((I.S 0).mv b d) (evPt (I.S 0) emb σ φ b ((J.A 0).dia b P a ((I.S 0).rp b (Quotient.mk _ d))))` using `rfl`. Rewrite using `[h1, ← evPt_smul _ _ _ h.free0, ← (h.lev 0).dia_act, mv_smul']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem evPt_diaLin (h : J.Ok) (P : J.ST) (a : (Res P.1)ˣ) (φ : (I.S 0).Cl → Fr emb σ (R.N 0) → ℂ)
     (b : (I.S 0).β) (d : (I.S 0).D b) :
@@ -123,7 +123,7 @@ theorem evPt_diaLin (h : J.Ok) (P : J.ST) (a : (Res P.1)ˣ) (φ : (I.S 0).Cl →
   rw [h1, ← evPt_smul _ _ _ h.free0, ← (h.lev 0).dia_act, mv_smul']
 
 /- English proof (translation)
-Introduce `P`. Use `LinearMap.ext fun φ => funext fun c => ?_` and prove the remaining obligations. Rewrite using `[diaLin_apply, (h.lev 0).dia_one, evPt_rep _ _ _ h.free0]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lawDiaOne (h : J.Ok) : J.LawDiaOne emb σ := by
   intro P
@@ -132,7 +132,7 @@ theorem lawDiaOne (h : J.Ok) : J.LawDiaOne emb σ := by
   rfl
 
 /- English proof (translation)
-Introduce `P a b`. Use `LinearMap.ext fun φ => funext fun c => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, diaLin_apply, diaLin_apply, evPt_diaLin J emb σ h, ← (h.lev 0).dia_mul, mul_comm b a]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lawDiaMul (h : J.Ok) : J.LawDiaMul emb σ := by
   intro P a b
@@ -140,7 +140,7 @@ theorem lawDiaMul (h : J.Ok) : J.LawDiaMul emb σ := by
   rw [Module.End.mul_apply, diaLin_apply, diaLin_apply, evPt_diaLin J emb σ h, ← (h.lev 0).dia_mul, mul_comm b a]
 
 /- English proof (translation)
-Introduce `_ J emb σ _ _ _ h` and use `⟨lawDiaOne J emb σ h, lawDiaMul J emb σ h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem diamond_rep : ∀ {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberField K] [StarRing K]
     [Fintype ι] {R : Ranks} (I : ChainIn E K ι R) (J : AtIn I) (emb : ι → E →+* K) (σ : K →+* ℂ) (hc : ι → HCParam R),

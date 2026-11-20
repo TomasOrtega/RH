@@ -14,21 +14,21 @@ namespace GlobalTheory.Amp.OnePiece
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `lmulM`. Conclude with `continuous_const.matrix_mul continuous_id.matrixOf`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_lmul (a : Mat k r) : Continuous (lmulM a : Mt k r → Mt k r) := by
   unfold lmulM
   exact continuous_const.matrix_mul continuous_id.matrixOf
 
 /- English proof (translation)
-Unfold `conjM`. Conclude with `(continuous_const.matrix_mul continuous_id.matrixOf).matrix_mul continuous_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_conj (a : Mat k r) : Continuous (conjM a : Mt k r → Mt k r) := by
   unfold conjM
   exact (continuous_const.matrix_mul continuous_id.matrixOf).matrix_mul continuous_const
 
 /- English proof (translation)
-Unfold `lmulM`. Conclude with `continuous_fst.matrixOf.matrix_mul continuous_snd.matrixOf`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_mulPair :
     Continuous fun p : Mt k r × Mt k r => lmulM (Matrix.of p.1) p.2 := by
@@ -38,7 +38,7 @@ theorem continuous_mulPair :
 def grp (k r : ℕ) : Set (Mt k r) := {x | Matrix.of x ∈ GG k r}
 
 /- English proof (translation)
-Establish `hc : Continuous fun x : Mt k r => (Matrix.of x : Mat k r)ᴴ * Hpk k r * Matrix.of x` using `(continuous_id.matrixOf.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id.matrixOf`. Conclude with `(isClosed_eq hc continuous_const).measurableSet`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurableSet_grp : MeasurableSet (grp k r) := by
   have hc : Continuous fun x : Mt k r => (Matrix.of x : Mat k r)ᴴ * Hpk k r * Matrix.of x :=
@@ -46,13 +46,13 @@ theorem measurableSet_grp : MeasurableSet (grp k r) := by
   exact (isClosed_eq hc continuous_const).measurableSet
 
 /- English proof (translation)
-The claim follows from `continuous_id.matrixOf`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_matrix_of : Continuous fun x : Mt k r => (Matrix.of x : Mat k r) :=
   continuous_id.matrixOf
 
 /- English proof (translation)
-Rewrite using `[← Set.piecewise_eq_indicator]`. Conclude with `ContinuousOn.measurable_piecewise (hf.comp continuous_matrix_of.continuousOn fun _ hx => hx) continuousOn_const measurableSet_grp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_indicator_grp {f : Mat k r → ℝ≥0∞} (hf : ContinuousOn f (GG k r)) :
     Measurable ((grp k r).indicator fun x => f (Matrix.of x)) := by
@@ -62,9 +62,9 @@ theorem measurable_indicator_grp {f : Mat k r → ℝ≥0∞} (hf : ContinuousOn
     (hf.comp continuous_matrix_of.continuousOn fun _ hx => hx) continuousOn_const measurableSet_grp
 
 /- English proof (translation)
-Establish `hs' : sᴴ * Hpk k r * s = Hpk k r` using `hs`. Establish `h' : (s * x)ᴴ * Hpk k r * (s * x) = Hpk k r` using `h`. Use `show xᴴ * Hpk k r * x = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := h'`.
+A detailed English derivation is pending.
 -/
 theorem mem_GG_of_mul {s x : Mat k r} (hs : s ∈ GG k r) (h : s * x ∈ GG k r) : x ∈ GG k r := by
   have hs' : sᴴ * Hpk k r * s = Hpk k r := hs
@@ -76,16 +76,16 @@ theorem mem_GG_of_mul {s x : Mat k r} (hs : s ∈ GG k r) (h : s * x ∈ GG k r)
     _ = Hpk k r := h'
 
 /- English proof (translation)
-The claim follows from `((ENNReal.continuous_pow 2).comp (ENNReal.continuous_coe.comp continuous_nnnorm)).comp_continuousOn hg`.
+A detailed English derivation is pending.
 -/
 theorem continuousOn_sq {X E : Type} [TopologicalSpace X] [NormedAddCommGroup E] {g : X → E} {s : Set X}
     (hg : ContinuousOn g s) : ContinuousOn (fun x => (‖g x‖₊ : ℝ≥0∞) ^ 2) s :=
   ((ENNReal.continuous_pow 2).comp (ENNReal.continuous_coe.comp continuous_nnnorm)).comp_continuousOn hg
 
 /- English proof (translation)
-Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `hb' : bᴴ * Hpk k r * b = Hpk k r` using `hb`. Use `show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [ha', hb']`.
+A detailed English derivation is pending.
 -/
 private theorem mul_mem_UH_Hpk' {a b : Mat k r} (ha : a ∈ GG k r) (hb : b ∈ GG k r) : a * b ∈ GG k r := by
   have ha' : aᴴ * Hpk k r * a = Hpk k r := ha
@@ -96,9 +96,7 @@ private theorem mul_mem_UH_Hpk' {a b : Mat k r} (ha : a ∈ GG k r) (hb : b ∈ 
     _ = Hpk k r := by rw [ha', hb']
 
 /- English proof (translation)
-Establish `hm : MeasurableSet {x : Mt k r | Matrix.of x ∈ S}` using `(hS.preimage continuous_matrix_of).measurableSet`. Establish `h1 : Measurable ({x : Mt k r | Matrix.of x ∈ S}.piecewise (fun x => g (Matrix.of x)) 0)` using `ContinuousOn.measurable_piecewise (hg.comp continuous_matrix_of.continuousOn fun _ hx => hx) continuousOn_const hm`. Establish `hae : ∀ᵐ x ∂μ, Matrix.of x ∈ S` using `by rw [ae_iff]; exact hμ`. Use `h1.aemeasurable.congr ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`.
-
-Conclude with `Set.piecewise_eq_of_mem _ _ _ hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem aemeasurable_comp_of_continuousOn_closed {S : Set (Mat k r)} (hS : IsClosed S) {μ : Measure (Mt k r)}
     (hμ : μ {x | Matrix.of x ∉ S} = 0) {g : Mat k r → ℝ≥0∞} (hg : ContinuousOn g S) :
@@ -115,7 +113,7 @@ private theorem aemeasurable_comp_of_continuousOn_closed {S : Set (Mat k r)} (hS
   exact Set.piecewise_eq_of_mem _ _ _ hx
 
 /- English proof (translation)
-Establish `hd' : (0 : ℝ) < d` using `Nat.cast_pos.2 hd`. Rewrite using `[one_pow, one_mul, div_eq_inv_mul, ENNReal.ofReal_mul (inv_nonneg.2 hd'.le), ENNReal.ofReal_inv_of_pos hd', ENNReal.ofReal_natCast, ← coe_nnnorm v, ← NNReal.coe_pow, ENNReal.ofReal_coe_nnreal, ENNReal.coe_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ofReal_one_sq_mul_norm_sq_div {E : Type} [NormedAddCommGroup E] (v : E) (d : ℕ) (hd : 0 < d) :
     ENNReal.ofReal ((1 : ℝ) ^ 2 * ‖v‖ ^ 2 / d) = (d : ℝ≥0∞)⁻¹ * (‖v‖₊ : ℝ≥0∞) ^ 2 := by
@@ -125,45 +123,37 @@ private theorem ofReal_one_sq_mul_norm_sq_div {E : Type} [NormedAddCommGroup E] 
     ENNReal.ofReal_coe_nnreal, ENNReal.coe_pow]
 
 /- English proof (translation)
-Introduce `k r Wp _ _ _ z π ψ μG μW μN νS Φ c hOS f Q Vol hf hQ hQinv hVol w hw`. Take `⟨hz, hT, hnt, hU, hI, hG, hW, hW1, hN, hQm, hψ, hE, hΦ, -, -⟩` from `hOS`. Use `haveI := hnt`. Establish `hd : 0 < Module.finrank ℂ Wp` using `Module.finrank_pos`. Establish `hinC : Continuous fun v : Wp => ⟪w, v⟫_ℂ` using `continuous_const.inner continuous_id`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A : Mt k r → ℝ≥0∞ := (grp k r).indicator fun y => (‖⟪w, Φ (Matrix.of y)⟫_ℂ‖₊ : ℝ≥0∞) ^ 2 with hAdef`. Use `set B : Mt k r → ℝ≥0∞ := (grp k r).indicator fun y => (‖Φ (Matrix.of y)‖₊ : ℝ≥0∞) ^ 2 with hBdef`. Establish `hAm : Measurable A` using `measurable_indicator_grp (f := fun g => (‖⟪w, Φ g⟫_ℂ‖₊ : ℝ≥0∞) ^ 2) (continuousOn_sq (hinC.comp_continuousOn hΦ))`. Establish `hBm : Measurable B` using `measurable_indicator_grp (f := fun g => (‖Φ g‖₊ : ℝ≥0∞) ^ 2) (continuousOn_sq hΦ)`. Use `set F : Mt k r → ℝ≥0∞ := Q.indicator fun y => f y * A y with hFdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFm : Measurable F` using `(hf.mul hAm).indicator hQ`. Establish `haeG : ∀ᵐ x ∂μG, Matrix.of x ∈ GG k r` using `by rw [ae_iff]; exact hG.2.2.1`. Establish `haeW : ∀ᵐ h ∂μW, Matrix.of h ∈ UWset k r z` using `by rw [ae_iff]; exact hW.2.2.1`. Establish `haeN : ∀ᵐ n ∂μN, Matrix.of n ∈ Nset k r` using `by rw [ae_iff]; exact hN.2.2.1`. Establish `step1 : ∫⁻ x in Q, f x * (‖⟪w, Φ (Matrix.of x)⟫_ℂ‖₊ : ℝ≥0∞) ^ 2 ∂μG = ∫⁻ x, F x ∂μG`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← lintegral_indicator hQ]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [haeG] with x hx`. Establish `hxg : x ∈ grp k r` using `hx`. Distinguish the cases in `hxQ : x ∈ Q`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hFdef, hAdef]`. Simplify using `only [Set.indicator_of_mem hxQ, Set.indicator_of_mem hxg]`. Rewrite using `[hFdef]`. Simplify using `only [Set.indicator_of_notMem hxQ]`. Establish `inner_le : ∀ x : Mt k r, ∫⁻ s, F (fun i j => (Matrix.of s * Matrix.of x) i j) ∂(muProd μW μN) ≤ Vol * (Module.finrank ℂ Wp : ℝ≥0∞)⁻¹ * Q.indicator B x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `x`. Establish `hit : ∫⁻ s, F (fun i j => (Matrix.of s * Matrix.of x) i j) ∂(muProd μW μN) ≤ ∫⁻ h, ∫⁻ n, F (lmulM (Matrix.of h * Matrix.of n) x) ∂μN ∂μW`. Combine the equalities or inequalities in the displayed calculation. Use `hit.trans ?_` and prove the remaining obligations. Establish `zero_case : (∀ h : Mt k r, Matrix.of h ∈ UWset k r z → ∀ n : Mt k r, Matrix.of n ∈ Nset k r → F (lmulM (Matrix.of h * Matrix.of n) x) = 0) → ∫⁻ h, ∫⁻ n, F (lmulM (Matrix.of h * Matrix.of n) x) ∂μN ∂μW ≤ Vol * (Module.finrank ℂ Wp : ℝ≥0∞)⁻¹ * Q.indicator B x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Introduce `h0`. Use `le_trans ?_ (zero_le ..)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [haeW] with h hh`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [haeN] with n hn`. Conclude with `(h0 h hh n hn).le`. Use `_ = 0 := lintegral_zero`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `_ = 0 := lintegral_zero`. Distinguish the cases in `hxg : x ∈ grp k r`. Distinguish the cases in `hxQ : x ∈ Q`. Establish `hB : Q.indicator B x = (‖Φ (Matrix.of x)‖₊ : ℝ≥0∞) ^ 2`. Rewrite using `[hBdef]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.indicator_of_mem hxQ, Set.indicator_of_mem hxg]`. Establish `hmain : ∀ h : Mt k r, Matrix.of h ∈ UWset k r z → ∀ n : Mt k r, Matrix.of n ∈ Nset k r → F (lmulM (Matrix.of h * Matrix.of n) x) = f (lmulM (Matrix.of h * Matrix.of n) x) * (‖⟪w, π (Matrix.of h) (Φ (Matrix.of x))⟫_ℂ‖₊ : ℝ≥0∞) ^ 2`. Introduce `h hh n hn`. Establish `hs : Matrix.of h * Matrix.of n ∈ Sset k r z` using `by show ∃ h' ∈ UWset k r z, ∃ m ∈ Nset k r, Matrix.of h * Matrix.of n = h' * m`. Conclude with `⟨_, hh, _, hn, rfl⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSQ : lmulM (Matrix.of h * Matrix.of n) x ∈ Q` using `(hQinv _ hs x hxg).2 hxQ`. Establish `hSG : lmulM (Matrix.of h * Matrix.of n) x ∈ grp k r` using `mul_mem_UH_Hpk' (mul_mem_UH_Hpk' hh.1 hn.1) hxg`. Establish `hΦS : Φ (Matrix.of (lmulM (Matrix.of h * Matrix.of n) x)) = ψ (Matrix.of n) • π (Matrix.of h) (Φ (Matrix.of x))` using `hE _ hh _ hn _ hxg`. Establish `hψ1 : ‖ψ (Matrix.of n)‖₊ = 1` using `by ext; simpa using hψ _ hn`. Rewrite using `[hFdef, hAdef]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Simplify using `only [Set.indicator_of_mem hSQ, Set.indicator_of_mem hSG, hΦS, inner_smul_right, nnnorm_mul, hψ1, one_mul]`. Establish `hfib : ∀ h : Mt k r, Matrix.of h ∈ UWset k r z → ∫⁻ n, f (lmulM (Matrix.of h * Matrix.of n) x) ∂μN ≤ Vol`. Introduce `h hh`. Establish `hdet : IsUnit (Matrix.of h : Mat k r).det` using `isUnit_det_of_mem_GG hh.1`. Establish `key : ∀ n : Mt k r, lmulM (Matrix.of h * Matrix.of n) x = rmulM (Matrix.of h * Matrix.of x) (conjM (Matrix.of h) n)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Introduce `n`. Use `show (Matrix.of h * Matrix.of n * Matrix.of x : Mat k r) = Matrix.of h * Matrix.of n * (Matrix.of h)⁻¹ * (Matrix.of h * Matrix.of x)`. Rewrite using `[Matrix.mul_assoc (Matrix.of h * Matrix.of n) (Matrix.of h)⁻¹, ← Matrix.mul_assoc (Matrix.of h)⁻¹, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mul]`. Establish `hrc : Continuous (rmulM (Matrix.of h * Matrix.of x) : Mt k r → Mt k r)`. Unfold `rmulM`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `continuous_matrix_of.matrix_mul continuous_const`. Establish `hinv : μN.map (conjM (Matrix.of h)) = μN` using `((GlobalTheory.T.unimodular_besselSubgroups_UW_N k r z hz hT μN).2.1 hN).2 _ hh`. Combine the equalities or inequalities in the displayed calculation. Establish `hAEM : AEMeasurable (fun h : Mt k r => (‖⟪w, π (Matrix.of h) (Φ (Matrix.of x))⟫_ℂ‖₊ : ℝ≥0∞) ^ 2) μW` using `aemeasurable_comp_of_continuousOn_closed (isClosedSub_UWset z).2.1 hW.2.2.1 (g := fun g => (‖⟪w, π g (Φ (Matrix.of x))⟫_ℂ‖₊ : ℝ≥0∞) ^ 2) (continuousOn_sq (hinC.comp_continuousOn (hU.2.2 (Φ (Matrix.of x)))))`. Combine the equalities or inequalities in the displayed calculation.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [haeW] with h hh`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [haeN] with n hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hmain h hh n hn`. Use `_ = (∫⁻ n, f (lmulM (Matrix.of h * Matrix.of n) x) ∂μN) * (‖⟪w, π (Matrix.of h) (Φ (Matrix.of x))⟫_ℂ‖₊ : ℝ≥0∞) ^ 2 := lintegral_mul_const' _ _ (ENNReal.pow_ne_top ENNReal.coe_ne_top)`. Use `_ ≤ Vol * (‖⟪w, π (Matrix.of h) (Φ (Matrix.of x))⟫_ℂ‖₊ : ℝ≥0∞) ^ 2 := mul_le_mul_of_nonneg_right (hfib h hh) (zero_le ..)`. Use `_ = Vol * ∫⁻ h, (‖⟪w, π (Matrix.of h) (Φ (Matrix.of x))⟫_ℂ‖₊ : ℝ≥0∞) ^ 2 ∂μW := lintegral_const_mul'' _ hAEM`. Use `_ = Vol * ENNReal.ofReal (‖w‖ ^ 2 * ‖Φ (Matrix.of x)‖ ^ 2 / Module.finrank ℂ Wp) := by`.
-
-Rewrite using `[(GlobalTheory.T.hcTypeW_irreducible_and_schur_average k r z π hz hT).2 μW hU hI hW hW1 w (Φ (Matrix.of x))]`. Use `_ = Vol * (Module.finrank ℂ Wp : ℝ≥0∞)⁻¹ * Q.indicator B x := by`. Rewrite using `[hB, hw, ofReal_one_sq_mul_norm_sq_div _ _ hd, mul_assoc]`. Use `zero_case fun h hh n hn => ?_` and prove the remaining obligations. Establish `hs : Matrix.of h * Matrix.of n ∈ Sset k r z` using `by show ∃ h' ∈ UWset k r z, ∃ m ∈ Nset k r, Matrix.of h * Matrix.of n = h' * m`.
-
-Conclude with `⟨_, hh, _, hn, rfl⟩`. Establish `hSQ : lmulM (Matrix.of h * Matrix.of n) x ∉ Q` using `fun h' => hxQ ((hQinv _ hs x hxg).1 h')`. Rewrite using `[hFdef]`. Simplify using `only [Set.indicator_of_notMem hSQ]`. Use `zero_case fun h hh n hn => ?_` and prove the remaining obligations.
-
-Establish `hS : lmulM (Matrix.of h * Matrix.of n) x ∉ grp k r` using `fun hS => hxg (mem_GG_of_mul (s := Matrix.of h * Matrix.of n) (x := Matrix.of x) (mul_mem_UH_Hpk' hh.1 hn.1) hS)`. Rewrite using `[hFdef, hAdef]`. Distinguish the cases in `hSQ : lmulM (Matrix.of h * Matrix.of n) x ∈ Q`. Simplify using `only [Set.indicator_of_mem hSQ, Set.indicator_of_notMem hS, mul_zero]`. Simplify using `only [Set.indicator_of_notMem hSQ]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem one_piece : ∀ (k r : ℕ) {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] (z : (Fin (2 * r + k + 1) → ℂ)) (π : Mat k r → (Wp →L[ℂ] Wp)) (ψ : Mat k r → ℂ) (μG μW μN νS : Measure (Mt k r)) (Φ : Mat k r → Wp) (c : ℝ), OneSide z π ψ μG μW μN νS Φ c → ∀ (f : Mt k r → ℝ≥0∞) (Q : Set (Mt k r)) (Vol : ℝ≥0∞), Measurable f → MeasurableSet Q → (∀ s ∈ Sset k r z, ∀ x, Matrix.of x ∈ GG k r → (lmulM s x ∈ Q ↔ x ∈ Q)) → (∀ g ∈ GG k r, ∫⁻ n, f (rmulM g n) ∂μN ≤ Vol) → ∀ w : Wp, ‖w‖ = 1 → ∫⁻ x in Q, f x * (‖⟪w, Φ (Matrix.of x)⟫_ℂ‖₊ : ℝ≥0∞) ^ 2 ∂μG ≤ Vol * (Module.finrank ℂ Wp : ℝ≥0∞)⁻¹ * ∫⁻ x in Q, (‖Φ (Matrix.of x)‖₊ : ℝ≥0∞) ^ 2 ∂νS := by
   intro k r Wp _ _ _ z π ψ μG μW μN νS Φ c hOS f Q Vol hf hQ hQinv hVol w hw

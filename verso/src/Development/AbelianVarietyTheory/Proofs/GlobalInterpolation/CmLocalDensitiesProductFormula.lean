@@ -10,7 +10,7 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.ProductLocalD
 namespace GlobalTheory.Proof.cm_localDensities_productFormula
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ h₁ h₂ h₃` and use `⟨GlobalTheory.T.existsUnique_isStandardAdeleChar_unramifiedCM_base F E σ h₁ h₂ h₃, GlobalTheory.T.dual_lattice_different_index F E σ h₁ h₂ h₃, GlobalTheory.T.finprod_localDifferentIdealNorm_eq_discr F E σ h₁ h₂ h₃, GlobalTheory.T.exists_eq_standardAdeleChar_rational_dilate F E σ …`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem densityProduct : GlobalTheory.IndefiniteRowSideFullHecke.LocalDualIndex.DensityProduct :=
   fun F E _ _ _ _ _ _ σ h₁ h₂ h₃ =>

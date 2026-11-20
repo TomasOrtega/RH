@@ -23,7 +23,7 @@ variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 omit d hc in
 /- English proof (translation)
-Take `⟨y, hy⟩` from `(hL.toB_ker 0).1 (map_zero _)`. Distinguish the cases in `ht : (per l K).tB ∈ (per l K).P`. Rewrite using `[hL.pdP_B m ⟨_, ht⟩ rfl, Ideal.span_singleton_eq_bot, ← map_pow, hL.toB_ker]`. Conclude with `⟨1, by simp⟩`. Conclude with `absurd (facts l K).t_mem ht`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pdP_B_bot (hL : L.Good) : pdP L.γB m = ⊥ := by
   obtain ⟨y, hy⟩ := (hL.toB_ker 0).1 (map_zero _)
@@ -35,7 +35,7 @@ theorem pdP_B_bot (hL : L.Good) : pdP L.γB m = ⊥ := by
 omit d hc in
 
 /- English proof (translation)
-Establish `e : quoM (QB L M s) r j (bMap M s hL hQ j z) = ((smB M s hL hQ).sq (a` using `sFil _ 0) (a' := sFil _ 0) (b := sFil _ r) (b' := sFil _ r) (fun _ _ hx => hx) fun _ _ hx => hx).pull j (quoM (QA L M s) r j z) := by`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Both sides reduce to the same expression. Rewrite using `[e, hz, map_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem quoM_bMap (hQ : ∀ T, QB L M s T → QA L M s (((nmB M hL).mor 0).obj T)) (r : ℤ) (j : ℕ) (z : HO (QA L M s) j)
     (hz : quoM (QA L M s) r j z = 0) : quoM (QB L M s) r j (bMap M s hL hQ j z) = 0 := by
@@ -48,15 +48,15 @@ theorem quoM_bMap (hQ : ∀ T, QB L M s T → QA L M s (((nmB M hL).mor 0).obj T
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Take `⟨hlin, e, z, hz, hb⟩` from `hf`. Take `⟨e', -, -, hsep⟩` from `cg_lift hL M hM s hs j`. Establish `h1 : ∀ n, redM (QA L M s) (some (N : ℤ)) ((l : L.A) ^ n) j z = 0` using `fun n => by`. Establish `h2 : redM (QA L M s) none ((l : L.A) ^ n) j z = (l : L.A) ^ e • rHof d hc M s n j (x n)` using `hz n`. Rewrite using `[← toSome_redM, h2, map_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : toSome (QA L M s) N ((l : L.A) ^ n) j (rHof d hc M s n j (x n)) = 0` using `red_fil (d n) M.p s {⊤} ((PAlg.base l).cris n) L.lam (hc n) N j (x n) (hfil n)`. Rewrite using `[h3, smul_zero]`. Establish `h4` using `hsep N (by exact_mod_cast hN) z h1`. Rewrite `h4` using `[← map_smul]`. Establish `h5` using `quoM_bMap hL M s (qb_le hL M s) N j _ h4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := (m_fin M hM j).1`. Set `bs` to `Module.finBasis K (HdR M.q j)`. Establish `h6 : (l : L.B) ^ e • ∑ t, f (bs.coord t) • muB L.γB M.q 1 s {⊤} j (bs t) = bMap M s hL (qb_le hL M s) j z` using `hb bs`. Rewrite `h5` using `[LinearMap.map_smulₛₗ, ← h6, map_pow, map_natCast, map_smul, map_smul]`. Establish `hu` using `unit_B hL`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h5` using `[(hu.pow e').smul_eq_zero, (hu.pow e).smul_eq_zero]`. Establish `h7` using `(basisB L.γB s m (pdP_B_bot hL) hs M.q U hU {⊤} sSup_singleton j bs).2 N hN _ h5 r φ hφ`. Establish `h8 : f φ = ∑ t, f (bs.coord t) * algebraMap K L.B (φ (bs t))` using `by conv_lhs => rw [← bs.dualBasis.sum_repr φ]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hlin _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.dualBasis_repr, Module.Basis.coe_dualBasis, mul_comm]`. Both sides reduce to the same expression. Rewrite using `[h8]`. Conclude with `h7`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fil_lev_pf [FiniteDimensional ℚ_[l] K] (hM : M.Sm) (U : Cov M.q) (hU : ∀ α, U.d α + m ≤ s) (hs : m ≤ s) {j : ℕ}
     (x : ∀ n, M.Hc false n j) (hx : (chainOf hL M s (qb_le hL M s) (rHof d hc M s)).Comp x)

@@ -21,11 +21,11 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 namespace GlobalTheory.Mum.MonoAb
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Use extensionality with `a b`. Establish `h1` using `hc (a + b)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : d a a = 0` using `le_antisymm (hc a) (hn a)`. Establish `h3 : d b b = 0` using `le_antisymm (hc b) (hn b)`. Establish `h4` using `hn (a + b)`. Establish `h5 : d (a + b) (a + b) = 0` using `le_antisymm h1 h4`. Simplify using `only [map_add, LinearMap.add_apply, h2, h3, hs b a] at h5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.zero_apply]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_pos_of_ne_zero {X : Type} [AddCommGroup X] (d : LinearMap.BilinForm ℤ X)
     (hs : ∀ a b, d a b = d b a) (hn : ∀ a, 0 ≤ d a a) (h : d ≠ 0) : ∃ y, 0 < d y y := by
@@ -45,23 +45,19 @@ theorem exists_pos_of_ne_zero {X : Type} [AddCommGroup X] (d : LinearMap.BilinFo
 end GlobalTheory.Mum.MonoAb
 
 /- English proof (translation)
-Introduce `R _ _ _ hR Q _ G _ _ P hM m t δ ht hsymm hnn hdef hne hmono p`. Take `⟨R', _, _, _, ρ, r, D, e, hR', hinj, hfin, -, hr, href, hmon⟩` from `GlobalTheory.PolDeg.refine_monomial_of_polarised R Q m t δ hR hmono (fun k => (ht k).1) (fun k => (ht k).2) (fun k a b => hsymm k a b) hnn hdef`. Take `⟨-, -, hG, -, hU⟩` from `hM`. Take `⟨G', _, _, π, -, A, U, hpb, -, -⟩` from `hU R' ρ hR' hinj hfin D e href`. Establish `hG' : IsSemiAbelian G'` using `GlobalTheory.SiegLoc.TraitOrd.isSemiAbelian_of_isGrpPullback hpb hG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsNoetherianRing R' := hR'.1`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : ∃ q : Sp R', spMap ρ q = p := by`. Use `letI := ρ.toAlgebra`. Use `haveI : p.asIdeal.IsPrime := p.isPrime`. Use `haveI : Module.Finite R R' := hfin`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨Q', -, hQ', hc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral p.asIdeal (⊥ : Ideal R') (by`. Introduce `x hx`. Establish `: ρ x = 0` using `hx`. Rewrite using `[show x = 0 from hinj (this.trans (map_zero ρ).symm)]`. Conclude with `p.asIdeal.zero_mem)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨⟨Q', hQ'⟩, PrimeSpectrum.ext hc⟩`. Substitute `hq` using the available equality. Use `haveI : q.asIdeal.IsPrime := q.isPrime`. Rewrite using `[abLocus_pullback abLocusOne hG hpb.1 q]`. Establish `key : ∏ k, t k ∈ (spMap ρ q).asIdeal ↔ ∏ k, r k ∈ q.asIdeal` using `by show ρ (∏ k, t k) ∈ q.asIdeal ↔ _`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_prod, show (∏ k, ρ (t k)) = (∏ k, r k) ^ 2 by rw [← Finset.prod_pow]; simp only [hr]]`. Conclude with `⟨fun h => q.isPrime.mem_of_pow_mem 2 h, fun h => Ideal.pow_mem_of_mem _ h 2 (by norm_num)⟩`. Rewrite using `[key]`. Take `⟨h1, h2, h3, h4, h5, -⟩` from `GlobalTheory.allSixLaws`. Establish `ho : IsOpen (abLocus G')` using `GlobalTheory.AbLocusOpenGlobal.isOpen_abLocus_of_locallyNoetherian G' hG'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hab hmem`. Take `⟨k, -, hk⟩` from `(Ideal.IsPrime.prod_mem_iff).1 hmem`. Take `⟨y, hy⟩` from `GlobalTheory.Mum.MonoAb.exists_pos_of_ne_zero (δ k) (hsymm k) (hnn k) (hne k)`. Take `⟨u, n, hn, hc⟩` from `hmon (e.symm y)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hnk : 0 < n k`. Use `hn k` as an intermediate fact. Simplify using `[pull] at this`. Use linear arithmetic over natural numbers and integers. Establish `hUo` using `GlobalTheory.PsiAbelian.psiUnitOn_abLocus h1 h2 h3 h4 h5 R' _ (GlobalTheory.SiegChart.isAdmissibleBase_of_completeNormalLocalCharZero hR') D A G' hG' U ho (e.symm y)`.
-
-Use `GlobalTheory.PsiCoordLocal.not_mem_of_coord ho hab hUo hc ?_` and prove the remaining obligations. Use `Ideal.mul_mem_left _ _ ?_` and prove the remaining obligations. Conclude with `Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem _ (Finset.mem_univ k)) (Ideal.pow_mem_of_mem _ hk _ hnk)`. Introduce `hnot`. Set `W : (Sp R').Opens` to `⟨{x | ∏ k, r k ∉ x.asIdeal}, (PrimeSpectrum.basicOpen (∏ k, r k)).isOpen⟩`.
-
-Conclude with `GlobalTheory.Mum.UnifFibre.fibres_abelian_of_psiUnitOn R' ⟨admissibleBase_of_completeNormalLocalCharZero hR', hR'.2.2.2⟩ D A G' hG' U W (fun y => hmon.psiUnitOn y fun x hx => hx) hnot`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.abLocus_iff_of_monomialTau : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], IsCN R → ∀ Q : Data R, Q.IsPos (maximalIdeal R) → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (P : LB (G2 G).left), IsMumPol Q G P → ∀ (m : ℕ) (t : Fin m → R) (δ : Fin m → LinearMap.BilinForm ℤ Q.X), (∀ k, t k ∈ maximalIdeal R ∧ t k ≠ 0) → (∀ k a b, δ k a b = δ k b a) → (∀ k a, 0 ≤ δ k a a) → (∀ a, a ≠ 0 → ∃ k, 0 < δ k a a) → (∀ k, δ k ≠ 0) → Q.IsMonomialTau t δ → ∀ p : Sp R, p ∈ abLocus G ↔ ∏ k, t k ∉ p.asIdeal := by
   intro R _ _ _ hR Q _ G _ _ P hM m t δ ht hsymm hnn hdef hne hmono p

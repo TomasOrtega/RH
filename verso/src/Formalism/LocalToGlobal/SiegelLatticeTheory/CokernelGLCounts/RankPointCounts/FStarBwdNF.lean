@@ -19,7 +19,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D)
 
 /- English proof (translation)
-Use `PI.UnitaryGroupMassFormula.UJClassMass.interLocF (F := D.host.F) Λ hΛ x fun v => ?_` and prove the remaining obligations. Use `v.isPrime` as an intermediate fact. Establish `h2` using `(Formalism.L2.SG.Pf.LocalDenominators.baseChangeAt_mem_localLattice_iff Zd v hΛ x).1 (h v)`. Conclude with `(Formalism.HermitianLattices.Ext.L3.LocalSpans.mem_locF v.asIdeal Λ x).1 h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_of_bcP {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : Submodule.IsLattice D.host.E Λ) {x : (VS D).V}
     (h : ∀ p, baseChange₂ D p x ∈ lattice₂ D Zd.M p Λ) : x ∈ Λ := by
@@ -29,26 +29,26 @@ theorem mem_of_bcP {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : Submodule.Is
   exact (Formalism.HermitianLattices.Ext.L3.LocalSpans.mem_locF v.asIdeal Λ x).1 h2
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem baseChange_mem_localLattice {Λ : Submodule (𝓞 D.host.E) (VS D).V} {x : (VS D).V} (hx : x ∈ Λ) (p : PlF D) :
     baseChange₂ D p x ∈ lattice₂ D Zd.M p Λ := Submodule.subset_span ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[LocFacts.lf_hO Zd p]`. Conclude with `Formalism.L2.SG.Pf.StabIntSh.lg_iota_int p ⟨y, hy⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iE_intD (p : PlF D) {y : D.host.E} (hy : IsIntegral ℤ y) : (D.s.atP p).ιE y ∈ (Zd.M p).L.O := by
   rw [LocFacts.lf_hO Zd p]
   exact Formalism.L2.SG.Pf.StabIntSh.lg_iota_int p ⟨y, hy⟩
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.StabIntSh.lg_int_of_loc y fun p => by rw [← LocFacts.lf_hO Zd p]; exact h p`.
+A detailed English derivation is pending.
 -/
 theorem int_of_loc {y : D.host.E} (h : ∀ p, (D.s.atP p).ιE y ∈ (Zd.M p).L.O) : IsIntegral ℤ y :=
   Formalism.L2.SG.Pf.StabIntSh.lg_int_of_loc y fun p => by rw [← LocFacts.lf_hO Zd p]; exact h p
 
 /- English proof (translation)
-The claim follows from `baseChangeAt_form Zd.M p (Zd.hcj p) x y`.
+A detailed English derivation is pending.
 -/
 theorem localForm_baseChange (p : PlF D) (x y : (VS D).V) :
     (locH Zd p).h (baseChange₂ D p x) (baseChange₂ D p y) = (D.s.atP p).ιE ((VS D).hT y x) :=
@@ -60,15 +60,13 @@ Both sides reduce to the same expression.
 theorem h_eq (p : PlF D) : (locH Zd p).h = LocFacts₂ Zd.M p := rfl
 
 /- English proof (translation)
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`. Use `int_of_loc Zd fun p => ?_` and prove the remaining obligations. Rewrite using `[← localForm_baseChange]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hloc p).2.2 (baseChange₂ D p x)).1 (baseChange_mem_localLattice Zd hx p) (baseChange₂ D p y) (baseChange_mem_localLattice Zd hy p)`. Introduce `h`. Use `mem_of_bcP Zd hΛ fun p => ((hloc p).2.2 _).2 fun w hw => ?_` and prove the remaining obligations. Rewrite using `[h_eq]`. Proceed by induction on `hw using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `mem w hw`. Take `⟨y, hy, rfl⟩` from `hw`. Rewrite using `[← h_eq, localForm_baseChange]`. Conclude with `iE_intD Zd p (h y hy)`. Consider the case `zero => rw [LocFacts.localForm_zero_right]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [LocFacts.localForm_add_right]`. Conclude with `add_mem ha hb`. Consider the case `smul o w _ hw`. Express the relevant statement in the definitionally equal form `LocFacts₂ Zd.M p (baseChange₂ D p x) ((o : (D.s.atP p).Ep) • w) ∈ _`.
-
-Rewrite using `[LocFacts.localForm_smul_right]`. Conclude with `mul_mem (LocFacts.lf_cjM_mem Zd p _ o.2) hw`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sd_of_loc {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : Submodule.IsLattice D.host.E Λ)
     (hloc : ∀ p, (locH Zd p).IsSelfDual (lattice₂ D Zd.M p Λ)) : BwdNA.SD (VS D) Λ := by
@@ -108,7 +106,7 @@ Both sides reduce to the same expression.
 theorem tLam (p : PlF D) (γ : TermDef.Term D u u' F0 what₂) : (tLoc Zd p γ).abelian₂ = lattice₂ D Zd.M p γ.lam := rfl
 
 /- English proof (translation)
-Unfold `TermLoc.sgnP`. Use `split`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sgnP_last (p : PlF D) : TermLoc.sgnP D p (Fin.last D.R.rS) = 1 := by
   unfold TermLoc.sgnP
@@ -117,13 +115,13 @@ theorem sgnP_last (p : PlF D) : TermLoc.sgnP D p (Fin.last D.R.rS) = 1 := by
   · rfl
 
 /- English proof (translation)
-Unfold `frFac`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem frFac_last' (p : PlF D) : frFac Zd.δ p (Fin.last D.R.rS) = 1 := by
   unfold frFac; simp
 
 /- English proof (translation)
-Rewrite using `[tf, sgnP_last, frFac_last', one_mul, one_smul]`. Use `congr 1`. Simplify using `[frame, FlagG.fvec]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem tf_last (p : PlF D) (γ : TermDef.Term D u u' F0 what₂) :
     (tLoc Zd p γ).f (Fin.last D.R.rS) = baseChange₂ D p F0.z := by
@@ -132,17 +130,17 @@ theorem tf_last (p : PlF D) (γ : TermDef.Term D u u' F0 what₂) :
   simp [frame, FlagG.fvec]
 
 /- English proof (translation)
-Simplify using `[frame, FlagG.fvec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frame_cs (i : Fin D.R.rS) : frame (lf D F0) i.castSucc = F0.e i := by
   simp [frame, FlagG.fvec]
 
 /- English proof (translation)
-Establish `hs : IsUnit (TermLoc.sgnP D p a)` using `⟨⟨TermLoc.sgnP D p a, TermLoc.sgnP D p a, TermLoc.localSign_sq p a, TermLoc.localSign_sq p a⟩, rfl⟩`. Use `hs.mul ?_` and prove the remaining obligations. Distinguish the cases in `h : IsUnit ((algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (Zd.δ p) * (D.s.atP p).ιE (uP p : D.host.E)) ^ (D.R.rS - a.val))`. Take `⟨w, hw⟩` from `h`. Unfold `frFac`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hw, Ring.inverse_unit]`. Conclude with `Units.isUnit _`. It suffices to derive a contradiction. Establish `h0 : frFac Zd.δ p a = 0` using `by unfold frFac; exact Ring.inverse_non_unit _ h`. Establish `hne` using `hfr.1.2.1.ne_zero a`.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hne` to reduce the goal to its premises. Rewrite using `[tf, h0, mul_zero, zero_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_of_frame (p : PlF D) (γ : TermDef.Term D u u' F0 what₂) {L : Submodule (Zd.M p).L.O (Vp D p)}
     {T : (D.s.atP p).Fp} (hfr : (locH Zd p).IsFrame L D.R.rS (tLoc Zd p γ).f T) (a : Fin (D.R.rS + 1)) :

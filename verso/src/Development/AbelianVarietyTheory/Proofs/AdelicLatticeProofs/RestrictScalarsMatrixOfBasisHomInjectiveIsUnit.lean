@@ -6,7 +6,7 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [Matrix.mulVec, dotProduct, res, Matrix.of_apply, Fintype.sum_prod_type, map_sum, Finsupp.coe_finsetSum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h` using `congrFun (Algebra.leftMulMatrix_mulVec_repr b (g p.1 j) (v j)) p.2`. Simplify `h` using `[Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem res_mulVec_repr {R A β κ : Type} [CommRing R] [CommRing A] [Algebra R A] [Fintype β] [DecidableEq β]
     [Fintype κ] (b : Module.Basis β R A) (g : Matrix κ κ A) (v : κ → A) :
@@ -19,17 +19,17 @@ theorem res_mulVec_repr {R A β κ : Type} [CommRing R] [CommRing A] [Algebra R 
   simpa [Matrix.mulVec, dotProduct] using h
 
 /- English proof (translation)
-Introduce `R A β κ _ _ _ _ _ _ _ b`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[res, Matrix.one_apply]`. Simplify using `[res, Matrix.one_apply, h]`. Introduce `g h`. Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Simplify using `only [res, Matrix.mul_apply, Matrix.of_apply, Fintype.sum_prod_type, map_sum, map_mul, Matrix.sum_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `g h hgh`. Use extensionality with `i j`. Apply `Algebra.leftMulMatrix_injective b` to reduce the goal to its premises. Use extensionality with `k l`. Conclude with `congrFun (congrFun hgh (i, k)) (j, l)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Rewrite using `[← Matrix.mulVec_surjective_iff_isUnit]`. Introduce `w`. Establish `hs : Function.Surjective (res b g).mulVec` using `Matrix.mulVec_surjective_iff_isUnit.2 ((Matrix.isUnit_iff_isUnit_det _).2 hg)`. Take `⟨u, hu⟩` from `hs (fun p : κ × β => b.repr (w p.1) p.2)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => b.equivFun.symm (fun k => u (i, k)), ?_⟩` and prove the remaining obligations. Establish `h` using `res_mulVec_repr b g (fun i => b.equivFun.symm (fun k => u (i, k)))`. Establish `hu' : (fun p : κ × β => b.repr (b.equivFun.symm (fun k => u (p.1, k))) p.2) = u`. Use function extensionality and compare the values at `p`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hu', hu]`. Use function extensionality and compare the values at `i`. Apply `b.repr.injective` to reduce the goal to its premises. Use extensionality with `k`. Conclude with `(congrFun h (i, k)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem res_one_mul_injective_isUnit :
     ∀ (R A β κ : Type) [CommRing R] [CommRing A] [Algebra R A] [Fintype β] [DecidableEq β] [Fintype κ] [DecidableEq κ] (b : Module.Basis β R A), res b (1 : Matrix κ κ A) = 1 ∧ (∀ g h : Matrix κ κ A, res b (g * h) = res b g * res b h) ∧ Function.Injective (fun g : Matrix κ κ A => res b g) ∧ ∀ g : Matrix κ κ A, IsUnit (res b g).det → IsUnit g := by

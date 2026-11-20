@@ -10,11 +10,11 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ ι n r w A h hl hr hu`. Take `⟨s, j, _, hs, hno⟩` from `hu`. Establish `ha : ActsAs A (normV w) s j 0`. Establish `h1` using `actsAs_one_iff.mpr hs`. Use `⟨h1.1, fun x hx => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using h1.2 x hx`. Establish `hc : Continuous fun g => (r g : Matrix (Fin n) (Fin n) (Qbar l))` using `Units.continuous_val.comp hr`. Establish `hd : deg (⟨s, j, 0, ha⟩ : Weil h) = j`. Simplify using `using deg_eq (σ := (⟨s, j, 0, ha⟩ : Weil h)) ha`. Use `⟨⟨s, j, 0, ha⟩, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `α hα hβ`. Rewrite `hα`, `hβ` using `[WD.eig, charPol_wdOf hl ι hc]`. Rewrite `hβ` using `[hd, zpow_natCast]`. Conclude with `hno α (isRoot_of_mem_roots hα) (isRoot_of_mem_roots hβ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.GalN.V.L.unlwd :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (n : ℕ) (r : G F Ω →* GL (Fin n) (Qbar l)) (w : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω) (h : IsPlaceOver A w) (hl : ((l : ℕ) : 𝓞 F) ∉ w.asIdeal), Continuous r → UnlAt ι r w A → ∃ g : ↥(Weil h), NoRatio (wdOf h hl ι r) g := by

@@ -17,17 +17,17 @@ namespace ProjectionFormulaVertical
 open PointVertical
 
 /- English proof (translation)
-Use `set p := charOf W with hpdef`. Establish `: Fact p.Prime` using `⟨hpr⟩`. Establish `hpW : ((p : ℕ) : MRing ι') ∈ W` using `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.natCast_mem_of_charOf W`. Establish `hWp : IsProjVarF (W.map (red p)) (d + r)` using `⟨isMultiProjPrime_red p hWm hpW, by rw [ringKrullDim_red p hpW, hWd]⟩`. Establish `hImm : IsMultiProjPrime (imageZ v W)` using `isMultiProjPrime_imageZ hv hWm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpI : ((p : ℕ) : MRing ι) ∈ imageZ v W` using `by show rename v ((p : ℕ) : MRing ι) ∈ W`. Simplify using `using hpW`. Establish `hVm` using `isMultiProjPrime_red p hImm hpI`. Take `⟨D, hKD, hD⟩` from `exists_dim_F p _ hVm`. Take `⟨-, ⟨hQp, -, -⟩, hQh, hQd⟩` from `hP`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hQp` as an intermediate fact. Establish `hle : imageZ v P' ≤ imageZ v W` using `Ideal.comap_mono hPW`. Establish `hpQ : ((p : ℕ) : MRing ι) ∉ imageZ v P'`. Introduce `h`. Establish `h2 : ((p : ℕ) : ℤ) ∈ (imageZ v P').comap (C : ℤ →+* MRing ι)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `h`. Rewrite `h2` using `[hQh, Ideal.mem_bot]`. Conclude with `hpr.ne_zero (by exact_mod_cast h2)`. Establish `hdim` using `krullDim_quot_add_one_le hle hpI hpQ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hdim` using `[← ringKrullDim_red p hpI, hD, hQd]`. Establish `hD' : D + 1 ≤ d + Fintype.card K` using `by exact_mod_cast hdim`. Establish `hVi : IsProjVarF (imageVar (ZMod p) v (W.map (red p))) (D - Fintype.card K)`. Rewrite using `[imageVar_red p v hpW]`. Use `⟨hVm, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD, Nat.sub_add_cancel hKD]`. Take `⟨I, hI, -⟩` from `hR4 (ZMod p) K' ι'`. Rewrite using `[hGeo K' ι' p I hI W (d + r) _ hWm hpW hWp]`. Conclude with `hCMF (ZMod p) K ι K' ι' I hI κ v _ (D - Fintype.card K) d r L N hv hWp hVi (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem geoNum_mixed_eq_zero
     (hGeo : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)], GeoNumStatement ι)
@@ -79,11 +79,11 @@ end ProjectionFormulaVertical
 open ProjectionFormulaVertical in
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' d r L L' N s a W hv hP' hP hL hs hsP hW hh`. Establish `hsec : IsSectionOn P' (HermLine.sqMetric (ι` using `ι') a) s := ⟨a, fun _ => rfl, hs, hsP⟩`. Take `⟨-, hvert⟩` from `divSuppArith K' ι' P' (d + r) _ _ W hP' hsec hW`. Take `⟨hWm, hpr, hWd⟩` from `hvert hh`. Establish `hPW : P' ≤ W` using `le_sup_left.trans hW.1.1.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : (fun j => (Fin.append L' N j).a) = Fin.append (fun j => pullDeg κ (L j).a) (fun j => (N j).a)`. Use function extensionality and compare the values at `j`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) j` and prove the remaining obligations. Simplify using `[(hL i).1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `geoNum_mixed_eq_zero hGeo hR4 hCMF hv hP hPW hWm hpr hWd _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PFVert.proof
     (hGeo : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)], GeoNumStatement ι)

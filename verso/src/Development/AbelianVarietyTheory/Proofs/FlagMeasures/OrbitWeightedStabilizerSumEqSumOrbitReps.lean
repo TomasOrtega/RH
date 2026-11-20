@@ -10,15 +10,15 @@ open NumberField Matrix in
 open scoped ENNReal Classical in
 
 /- English proof (translation)
-Introduce `G α _ _ X N hX hN s hs huniq`. Establish `hX' : ∀ (g : G), ∀ x ∈ X, g • x ∈ X` using `hX`. Unfold `_root_.GlobalTheory.Mass.orbSum`. Establish `hout : ∀ x : α, ∃ g : G, g • x = (Quotient.mk (MulAction.orbitRel G α) x).out` using `fun x => MulAction.mem_orbit_iff.mp (MulAction.orbitRel_apply.mp (Quotient.exact (Quotient.out_eq (Quotient.mk (MulAction.orbitRel G α) x))))`. Establish `hterm : ∀ x : α, ((ENat.card (MulAction.stabilizer G (Quotient.mk (MulAction.orbitRel G α) x).out) : ℕ∞) : ℝ≥0∞)⁻¹ * N (Quotient.mk (MulAction.orbitRel G α) x).out = ((ENat.card (MulAction.stabilizer G x) : ℕ∞) : ℝ≥0∞)⁻¹ * N x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Take `⟨g, hg⟩` from `hout x`. Rewrite using `[← hg, hN, ENat.card_congr (MulAction.stabilizerEquivStabilizer (rfl : g • x = g • x)).toEquiv.symm]`. Set `e : {x // x ∈ s} → {q : MulAction.orbitRel.Quotient G α // q.out ∈ X}` to `fun x => ⟨Quotient.mk _ x.1, by obtain ⟨g, hg⟩ := hout x.1; rw [← hg]; exact hX' g _ (hs _ x.2)⟩`. Establish `he_inj : Function.Injective e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce and unpack `⟨x, hx⟩ ⟨y, hy⟩ hxy`. Establish `hq : Quotient.mk (MulAction.orbitRel G α) x = Quotient.mk _ y` using `congrArg Subtype.val hxy`. Take `⟨g, hg⟩` from `MulAction.mem_orbit_iff.mp (MulAction.orbitRel_apply.mp (Quotient.exact hq))`. Take `⟨z, -, hz⟩` from `huniq x (hs x hx)`. Establish `h1` using `hz x ⟨hx, 1, one_smul G x⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `hz y ⟨hy, g, hg⟩`. Conclude with `Subtype.ext (h1.trans h2.symm)`. Establish `he_surj : Function.Surjective e`. Introduce and unpack `⟨q, hq⟩`. Take `⟨y, ⟨hy, g, hg⟩, -⟩` from `huniq q.out hq`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨y, hy⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show Quotient.mk _ y = q`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← (Equiv.ofBijective e ⟨he_inj, he_surj⟩).tsum_eq, tsum_fintype, ← Finset.sum_coe_sort s]`. Conclude with `Finset.sum_congr rfl fun x _ => hterm x.1`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Mass.orbSum_eq_sum_reps : ∀ (G α : Type) [Group G] [MulAction G α]
     (X : Set α) (N : α → ℝ≥0∞), _root_.GlobalTheory.Mass.Stable G X → (∀ (g : G) x, N (g • x) = N x) →

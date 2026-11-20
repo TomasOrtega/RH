@@ -10,19 +10,19 @@ namespace UnramSub
 variable {V F : Type} [CommRing V] [Field F] {i : V →+* F}
 
 /- English proof (translation)
-Take `⟨_, f, hf, -⟩` from `h`. Conclude with `hf v ▸ (f v).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem {T : Subring F} (h : UnramSub i T) (v : V) : i v ∈ T := by
   obtain ⟨_, f, hf, -⟩ := h
   exact hf v ▸ (f v).2
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem isDVR {T : Subring F} (h : UnramSub i T) : IsDiscreteValuationRing T := h.1
 
 /- English proof (translation)
-Take `⟨_, f₁, hf₁, hi₁⟩` from `h₁`. Take `⟨_, f₂, hf₂, hi₂⟩` from `h₂`. Use `⟨‹_›, f₂.comp f₁, fun v => ?_, fun π hπ => hi₂ _ (hi₁ π hπ)⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hf₂, Subring.coe_subtype, hf₁]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem trans {T₁ T₂ : Subring F} (h₁ : UnramSub i T₁) (h₂ : UnramSub T₁.subtype T₂) : UnramSub i T₂ := by
   obtain ⟨_, f₁, hf₁, hi₁⟩ := h₁
@@ -31,12 +31,12 @@ theorem trans {T₁ T₂ : Subring F} (h₁ : UnramSub i T₁) (h₂ : UnramSub 
   rw [RingHom.comp_apply, hf₂, Subring.coe_subtype, hf₁]
 
 /- English proof (translation)
-Introduce `z hz` and use `h₂.mem ⟨z, hz⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le {T₁ T₂ : Subring F} (h₂ : UnramSub T₁.subtype T₂) : T₁ ≤ T₂ := fun z hz => h₂.mem ⟨z, hz⟩
 
 /- English proof (translation)
-Set `e : V ≃+* i.range` to `RingEquiv.ofLeftInverse (Function.leftInverse_invFun hi)`. Conclude with `⟨IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing e, e.toRingHom, fun v => rfl, fun π hπ => hπ.map e⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem range [IsDomain V] [IsDiscreteValuationRing V] (hi : Function.Injective i) : UnramSub i i.range := by
   let e : V ≃+* i.range := RingEquiv.ofLeftInverse (Function.leftInverse_invFun hi)

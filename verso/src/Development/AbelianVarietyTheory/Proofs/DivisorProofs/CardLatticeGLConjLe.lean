@@ -13,41 +13,37 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL GlobalTh
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ a`. Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Use `⟨0, fun W _ => ⟨1, zero_le_one, fun y => ?_⟩⟩` and prove the remaining obligations. Establish `hs : ∀ s : Set (GlobalTheory.UnitaryBC.latticeGL E 0), s.Subsingleton` using `fun s x _ z _ => Subtype.ext (Units.ext (Matrix.ext fun i => Fin.elim0 i))`. Use `⟨(hs _).finite, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_zero, mul_one]`. Conclude with `(Set.ncard_le_one_iff (hs _).finite).2 fun h1 h2 => hs _ h1 h2` after adjusting the coercions. Take `⟨m, hm⟩` from `GlobalTheory.T.rationalGL_boundedSize_compactFinite_polynomialCount E a`. Use `⟨m, fun W hW => ?_⟩` and prove the remaining obligations. Take `⟨n₀, hn₀⟩` from `GlobalTheory.T.abs_splitCentre_exponent_le_of_conj_mem_compact E a ha W hW`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hInf, hFin, -, -⟩` from `GlobalTheory.T.continuous_GL_adelic_projections_inclusions E a`. Use `set e : GA E a := GlobalTheory.UnitaryBC.splitCentre E a 1 with he`. Use `set W' : Set (GA E a) := ⋃ n ∈ Finset.Icc (-(n₀ : ℤ)) n₀, (fun g => g * (e ^ n)⁻¹) '' W with hW'`. Establish `hW'c : IsCompact W'` using `(Finset.Icc (-(n₀ : ℤ)) n₀).isCompact_biUnion fun n _ => hW.image (continuous_mul_right _)`. Use `set Kf : Set (GL (Fin a) (Af E)) := (fun g : GA E a => Matrix.GeneralLinearGroup.map (pFin E) g) '' W' with hKf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKfc : IsCompact Kf` using `hW'c.image hFin`. Establish `hv : Continuous fun g : GA E a => ((Matrix.GeneralLinearGroup.map (pInf E) g : GL (Fin a) (Cinf E)) : Matrix (Fin a) (Fin a) (Cinf E))` using `Units.continuous_val.comp hInf`. Establish `ht : Continuous (toL : Matrix (Fin a) (Fin a) (Cinf E) → Lie E a)` using `continuous_id`. Establish `hcn : Continuous fun g : GA E a => ‖toL (Matrix.GeneralLinearGroup.map (pInf E) g).val‖` using `continuous_norm.comp (ht.comp hv)`. Take `⟨B₀, hB₀⟩` from `hW'c.exists_bound_of_continuousOn hcn.continuousOn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set B : ℝ := max 0 B₀ with hB`. Establish `hB0 : 0 ≤ B` using `le_max_left _ _`. Establish `hBb : ∀ w ∈ W', ‖toL (Matrix.GeneralLinearGroup.map (pInf E) w).val‖ ≤ B` using `fun w hw => (le_abs_self _).trans ((Real.norm_eq_abs _ ▸ hB₀ w hw).trans (le_max_right _ _))`. Take `⟨C₁, hC₁0, hC₁⟩` from `hm Kf hKfc`. Use `set N : ℝ := ((Set.Icc (-(n₀ : ℤ)) n₀).ncard : ℝ) with hN`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c : ℝ := 1 + (a : ℝ) ^ 2 * B with hc`. Establish `hc1 : 1 ≤ c`. Establish `: 0 ≤ (a : ℝ) ^ 2 * B` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨C₁ * c ^ m * N, by positivity, fun y => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `set T : ℝ := c * height y ^ 2 with hT`. Establish `hh` using `one_le_height y`. Establish `hT1 : 1 ≤ T` using `one_le_mul_of_one_le_of_one_le hc1 (one_le_pow₀ hh)`. Take `⟨hfin, hcard⟩` from `hC₁ T hT1`. Use `set S := {δ : GL (Fin a) E | ‖toL (Matrix.GeneralLinearGroup.map (pInf E) (ratGL E a δ)).val‖ ≤ T ∧ Matrix.GeneralLinearGroup.map (pFin E) (ratGL E a δ) ∈ Kf} with hS`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : GL (Fin a) E × ℤ → GlobalTheory.UnitaryBC.latticeGL E a` to `fun p => ⟨ratGL E a p.1 * e ^ p.2, GlobalTheory.CuspRep.CuspidalL2GL.mem_latticeGL_iff.2 ⟨p.1, p.2, rfl⟩⟩`. Establish `hsub : {γ : GlobalTheory.UnitaryBC.latticeGL E a | (infGL E a y)⁻¹ * (γ : GA E a) * infGL E a y ∈ W} ⊆ f '' (S ×ˢ Set.Icc (-(n₀ : ℤ)) n₀)`. Introduce and unpack `⟨γ, hγ⟩ hγW`. Take `⟨δ, n, rfl⟩` from `GlobalTheory.CuspRep.CuspidalL2GL.mem_latticeGL_iff.1 hγ`. Express the relevant statement in the definitionally equal form `(infGL E a y)⁻¹ * (ratGL E a δ * e ^ n) * infGL E a y ∈ W at hγW`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn : |n| ≤ n₀` using `hn₀ δ n _ hγW`. Establish `hn' : n ∈ Set.Icc (-(n₀ : ℤ)) n₀` using `abs_le.1 hn`. Use `set w := (infGL E a y)⁻¹ * ratGL E a δ * infGL E a y with hw`. Establish `hcomm : Commute (e ^ n) (infGL E a y)` using `(Commute.zpow_left (GlobalTheory.CuspRep.CuspidalL2GL.splitCentre_comm 1 (infGL E a y)) n)`. Establish `hwW : w ∈ W'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Set.mem_biUnion (Finset.mem_coe.2 (Finset.mem_Icc.2 hn')) ⟨_, hγW, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(infGL E a y)⁻¹ * (ratGL E a δ * e ^ n) * infGL E a y * (e ^ n)⁻¹ = w`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc (e ^ n) (infGL E a y), hcomm.eq, mul_inv_cancel_right]`. Apply the tactic sequence `all_goals simp only [hw, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hδ : ratGL E a δ = infGL E a y * w * (infGL E a y)⁻¹` using `by rw [hw]; group`. Use `⟨(δ, n), ⟨⟨?_, ?_⟩, hn'⟩, rfl⟩` and prove the remaining obligations. Establish `e1 : Matrix.GeneralLinearGroup.map (pInf E) (ratGL E a δ) = y * Matrix.GeneralLinearGroup.map (pInf E) w * y⁻¹`. Rewrite using `[hδ, map_mul, map_mul, map_inv, pInf_infGL]`. Rewrite using `[e1, Units.val_mul, Units.val_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw'` using `hBb w hwW`. Establish `p1` using `GlobalTheory.AutGrowth.norm_toL_mul_le (y.val * (Matrix.GeneralLinearGroup.map (pInf E) w).val) (y⁻¹).val`. Establish `p2` using `GlobalTheory.AutGrowth.norm_toL_mul_le y.val (Matrix.GeneralLinearGroup.map (pInf E) w).val`. Establish `hy1 : ‖toL y.val‖ ≤ height y`. Unfold `height`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear relations using `[norm_nonneg (toL (y⁻¹).val)]`. Establish `hy2 : ‖toL (y⁻¹).val‖ ≤ height y`. Unfold `height`. Combine the linear relations using `[norm_nonneg (toL y.val)]`. Establish `n1` using `norm_nonneg (toL y.val)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `n2` using `norm_nonneg (toL (y⁻¹).val)`. Establish `n3` using `norm_nonneg (toL (Matrix.GeneralLinearGroup.map (pInf E) w).val)`. Establish `ha0 : (0 : ℝ) ≤ a` using `Nat.cast_nonneg a`. Establish `q1 : ‖toL (y.val * (Matrix.GeneralLinearGroup.map (pInf E) w).val)‖ ≤ a * (height y * B)` using `p2.trans (mul_le_mul_of_nonneg_left (mul_le_mul hy1 hw' n3 (by linarith)) ha0)`. Establish `q2 : ‖toL (y.val * (Matrix.GeneralLinearGroup.map (pInf E) w).val * (y⁻¹).val)‖ ≤ a * ((a * (height y * B)) * height y)` using `p1.trans (mul_le_mul_of_nonneg_left (mul_le_mul q1 hy2 n2 (by positivity)) ha0)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `q2.trans ?_` and prove the remaining obligations. Rewrite using `[hT, hc]`. Establish `: 0 ≤ height y ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `e2 : Matrix.GeneralLinearGroup.map (pFin E) (ratGL E a δ) = Matrix.GeneralLinearGroup.map (pFin E) w`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hδ, map_mul, map_mul, map_inv, pFin_infGL, inv_one, one_mul, mul_one]`. Rewrite using `[e2]`. Conclude with `⟨w, hwW, rfl⟩`. Establish `hfin2 : (f '' (S ×ˢ Set.Icc (-(n₀ : ℤ)) n₀)).Finite` using `(hfin.prod (Set.finite_Icc _ _)).image f`. Use `⟨hfin2.subset hsub, ?_⟩` and prove the remaining obligations.
-
-Establish `k1` using `Set.ncard_le_ncard hsub hfin2`. Establish `k2` using `Set.ncard_image_le (f := f) (hfin.prod (Set.finite_Icc (-(n₀ : ℤ)) n₀))`. Rewrite `k2` using `[Set.ncard_prod]`. Establish `k3 : (({γ : GlobalTheory.UnitaryBC.latticeGL E a | (infGL E a y)⁻¹ * (γ : GA E a) * infGL E a y ∈ W}.ncard : ℕ) : ℝ) ≤ (S.ncard : ℝ) * N` using `by rw [hN]; exact_mod_cast k1.trans k2`. Use `k3.trans ?_` and prove the remaining obligations.
-
-Establish `hN0 : 0 ≤ N` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem card_latticeGL_conj_le : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), ∃ A : ℕ,
     ∀ W : Set (GA E a), IsCompact W → ∃ C : ℝ, 0 ≤ C ∧ ∀ y : GL (Fin a) (Cinf E),

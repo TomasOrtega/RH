@@ -14,7 +14,7 @@ section Proj
 variable {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {π : Representation ℂ G V}
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [disjoint_iff, ← Subrepresentation.toSubmodule_inf, disjoint_iff.mp h.1] try rfl`. Apply the tactic sequence `rw [codisjoint_iff, ← Subrepresentation.toSubmodule_sup, codisjoint_iff.mp h.2] try rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCompl_toSubmodule {S S' : Subrepresentation π} (h : IsCompl S S') :
     IsCompl S.toSubmodule S'.toSubmodule := by
@@ -29,7 +29,7 @@ def proj {S S' : Subrepresentation π} (h : IsCompl S S') : V →ₗ[ℂ] V :=
     Submodule.projectionOnto S.toSubmodule S'.toSubmodule (isCompl_toSubmodule h)
 
 /- English proof (translation)
-Use `show S.toSubmodule.subtype (Submodule.projectionOnto S.toSubmodule S'.toSubmodule (isCompl_toSubmodule h) v) = v`. Simplify using `only [Submodule.projectionOnto_apply_of_mem_left _ hv, Submodule.subtype_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem proj_left {S S' : Subrepresentation π} (h : IsCompl S S') {v : V} (hv : v ∈ S.toSubmodule) :
     proj h v = v := by
@@ -38,7 +38,7 @@ theorem proj_left {S S' : Subrepresentation π} (h : IsCompl S S') {v : V} (hv :
   simp only [Submodule.projectionOnto_apply_of_mem_left _ hv, Submodule.subtype_apply]
 
 /- English proof (translation)
-Use `show S.toSubmodule.subtype (Submodule.projectionOnto S.toSubmodule S'.toSubmodule (isCompl_toSubmodule h) v) = 0`. Simplify using `only [Submodule.projectionOnto_apply_of_mem_right _ hv, map_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem proj_right {S S' : Subrepresentation π} (h : IsCompl S S') {v : V}
     (hv : v ∈ S'.toSubmodule) : proj h v = 0 := by
@@ -47,9 +47,9 @@ theorem proj_right {S S' : Subrepresentation π} (h : IsCompl S S') {v : V}
   simp only [Submodule.projectionOnto_apply_of_mem_right _ hv, map_zero]
 
 /- English proof (translation)
-Establish `htop : S.toSubmodule ⊔ S'.toSubmodule = ⊤` using `(isCompl_toSubmodule h).sup_eq_top`. Establish `hv : v ∈ S.toSubmodule ⊔ S'.toSubmodule`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Take `⟨x, hx, y, hy, rfl⟩` from `Submodule.mem_sup.mp hv`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, proj_left h hx, proj_right h hy, proj_left h (S.apply_mem_toSubmodule g hx), proj_right h (S'.apply_mem_toSubmodule g hy), add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem proj_comm {S S' : Subrepresentation π} (h : IsCompl S S') (g : G) (v : V) :
     proj h (π g v) = π g (proj h v) := by
@@ -76,9 +76,9 @@ def ev (e : (Σ a, m a) ≃ n) (ρ : Representation ℂ (Levi k m) X) : IndSp e 
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Take `⟨p, hp, rfl⟩` from `Subgroup.mem_map.mp hu`. Rewrite `hp` using `[MonoidHom.mem_ker]`. Establish `h` using `f.1.2 p 1`. Rewrite `h` using `[MonoidHom.comp_apply, hp, map_one, Module.End.one_apply, mul_one]`. Use `show f.1.1 (1 * ((parab k e).subtype p)) = f.1.1 1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_mul]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem ev_unip (e : (Σ a, m a) ≃ n) (ρ : Representation ℂ (Levi k m) X) {u : GL n k}
     (hu : u ∈ unipRad k e) (f : IndSp e ρ) : ev e ρ (parInd e ρ u f) = ev e ρ f := by
@@ -91,9 +91,7 @@ theorem ev_unip (e : (Σ a, m a) ≃ n) (ρ : Representation ℂ (Levi k m) X) {
   exact h
 
 /- English proof (translation)
-Establish `hmem` using `leviEmb_mem_parab k e g`. Establish `h` using `f.1.2 ⟨leviEmb k e g, hmem⟩ 1`. Rewrite `h` using `[mul_one, MonoidHom.comp_apply, leviProj_leviEmb]`. Use `show f.1.1 (1 * leviEmb k e g) = (deltaHalf k m g : ℂ) • ρ g (f.1.1 1)`. Rewrite using `[one_mul]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_levi (e : (Σ a, m a) ≃ n) (ρ : Representation ℂ (Levi k m) X) (g : Levi k m)
     (f : IndSp e ρ) :
@@ -106,9 +104,9 @@ theorem ev_levi (e : (Σ a, m a) ≃ n) (ρ : Representation ℂ (Levi k m) X) (
   exact h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Apply `hf` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Assume the negation of the conclusion as `hg`. Conclude with `hcon ⟨g, by`. Express the relevant statement in the definitionally equal form `f.1.1 (1 * g) ≠ 0`. Rewrite using `[one_mul]`. Conclude with `hg⟩`.
+Assume the negation of the conclusion and derive a contradiction. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ev_ne (e : (Σ a, m a) ≃ n) (ρ : Representation ℂ (Levi k m) X) {f : IndSp e ρ}
     (hf : f ≠ 0) : ∃ g, ev e ρ (parInd e ρ g f) ≠ 0 := by
@@ -135,7 +133,7 @@ theorem lam_apply {S S' : Subrepresentation (parInd e ρ)} (h : IsCompl S S') (f
     lam h f = ev e ρ (proj h f) := rfl
 
 /- English proof (translation)
-Unfold `GlobalTheory.PRep.twKer`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `w ⟨u, v, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, map_sub, MonoidHom.one_apply, Units.val_one, one_smul, lam_apply, lam_apply, proj_comm, ev_unip e ρ u.2, sub_self]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_twKer {S S' : Subrepresentation (parInd e ρ)} (h : IsCompl S S') :
     twKer (parInd e ρ) (unipRad k e) 1 ≤ LinearMap.ker (lam h) := by
@@ -163,11 +161,9 @@ theorem frob_mk {S S' : Subrepresentation (parInd e ρ)} (h : IsCompl S S') (v :
     (frob h).toLinearMap (Submodule.Quotient.mk v) = lam h v := rfl
 
 /- English proof (translation)
-Establish `hS0 : S.toSubmodule ≠ ⊥`. Introduce `h0`. Apply `hS` to reduce the goal to its premises. Apply `Subrepresentation.ext` to reduce the goal to its premises. Rewrite using `[h0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try rfl`. Take `⟨f, hfS, hf0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hS0`. Take `⟨g, hg⟩` from `exists_ev_ne e ρ hf0`. Use `⟨parInd e ρ g f, S.apply_mem_toSubmodule g hfS, ?_⟩` and prove the remaining obligations. Rewrite using `[lam_apply, proj_left h (S.apply_mem_toSubmodule g hfS)]`.
-
-Conclude with `hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lam_ne {S S' : Subrepresentation (parInd e ρ)} (h : IsCompl S S') (hS : S ≠ ⊥) :
     ∃ v ∈ S.toSubmodule, lam h v ≠ 0 := by
@@ -184,11 +180,11 @@ theorem exists_lam_ne {S S' : Subrepresentation (parInd e ρ)} (h : IsCompl S S'
   exact hg
 
 /- English proof (translation)
-Introduce `hd`. Take `⟨v, hvS, hv⟩` from `exists_lam_ne h hS`. Take `⟨w, hwS', hw⟩` from `exists_lam_ne h.symm hS'`. Break down `hd (frob h) (frob h.symm) with h0 | ⟨c, hc⟩` into its components or cases. Apply `hv` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← frob_mk h v, h0, LinearMap.zero_apply]`. Establish `e1 : lam h.symm v = c • lam h v`. Rewrite using `[← frob_mk h.symm v, hc, LinearMap.smul_apply, frob_mk]`. Rewrite `e1` using `[lam_apply, proj_right h.symm hvS, map_zero]`. Break down `smul_eq_zero.mp e1.symm with hc0 | hc0` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Apply `hw` to reduce the goal to its premises. Rewrite using `[← frob_mk h.symm w, hc, hc0, zero_smul, LinearMap.zero_apply]`. Conclude with `hv hc0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_dichotomy {S S' : Subrepresentation (parInd e ρ)} (h : IsCompl S S') (hS : S ≠ ⊥)
     (hS' : S' ≠ ⊥) :
@@ -211,7 +207,7 @@ theorem not_dichotomy {S S' : Subrepresentation (parInd e ρ)} (h : IsCompl S S'
 end Induced
 
 /- English proof (translation)
-Introduce `k _ _ _ _ a b χ₁ χ₂ W W' h hW hW'`. Conclude with `not_dichotomy h hW hW'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem not_dichotomy_det : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a b : ℕ) (χ₁ χ₂ : kˣ →* ℂˣ) (W W' : Subrepresentation (parInd (two (stdSum (rfl : a + b = a + b))) ((extTensor (detRep (Fin a) χ₁) (detRep (Fin b) χ₂)).comp (leviTwo k (Fin a) (Fin b)).symm.toMonoidHom))), IsCompl W W' → W ≠ ⊥ → W' ≠ ⊥ → ¬ (∀ φ ψ : (jac (two (stdSum (rfl : a + b = a + b))) (parInd (two (stdSum (rfl : a + b = a + b))) ((extTensor (detRep (Fin a) χ₁) (detRep (Fin b) χ₂)).comp (leviTwo k (Fin a) (Fin b)).symm.toMonoidHom))).IntertwiningMap (((extTensor (detRep (Fin a) χ₁) (detRep (Fin b) χ₂)).comp (leviTwo k (Fin a) (Fin b)).symm.toMonoidHom)), φ.toLinearMap = 0 ∨ ∃ c : ℂ, ψ.toLinearMap = c • φ.toLinearMap) := by
   intro k _ _ _ _ a b χ₁ χ₂ W W' h hW hW'

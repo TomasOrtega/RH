@@ -23,7 +23,7 @@ def dk (k : ℕ) : ℕ := 2 * k * primorial (k + 1)
 def ck (l k : ℕ) : ℕ := padicValNat l (dk k)
 
 /- English proof (translation)
-Unfold `dk`. Conclude with `Nat.mul_pos (by omega) (primorial_pos _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dk_pos {k : ℕ} (hk : 0 < k) : 0 < dk k := by
   unfold dk
@@ -54,21 +54,21 @@ abbrev cf (R Γ : Type) [CommRing R] [Group Γ] : MonoidAlgebra ℤ Γ →+* Mon
   MonoidAlgebra.mapRingHom Γ (Int.castRingHom R)
 
 /- English proof (translation)
-Simplify using `[cf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cf_single (R : Type) [CommRing R] (g : Γ) (n : ℤ) :
     cf R Γ (MonoidAlgebra.single g n) = MonoidAlgebra.single g (n : R) := by
   simp [cf]
 
 /- English proof (translation)
-Simplify using `only [sumEl, map_sum, cf_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cf_sumEl (R : Type) [CommRing R] {M : ℕ} [NeZero M] (φ : (ZMod M)ˣ →* Γ) (f : ZMod M → ℤ) :
     cf R Γ (sumEl φ f) = sumEl φ fun b => (f b : R) := by
   simp only [sumEl, map_sum, cf_single]
 
 /- English proof (translation)
-Simplify using `only [sumEl, MonoidAlgebra.single_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sumEl_add {R : Type} [CommRing R] {M : ℕ} [NeZero M] (φ : (ZMod M)ˣ →* Γ) (f g : ZMod M → R) :
     sumEl φ (fun b => f b + g b) = sumEl φ f + sumEl φ g := by
@@ -85,7 +85,7 @@ def tw {R : Type} [CommRing R] (κ : G →* Rˣ) (π : G →* Γ) (e : ℕ) : Mo
 end Maps
 
 /- English proof (translation)
-Establish `h : ((5 : ℕ) : ZMod 7)⁻¹ = 3` using `ZMod.inv_eq_of_mul_eq_one 7 _ _ (by decide)`. Rewrite using `[Eone, jv, yCl, h]`. Evaluate the decidable proposition.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 -/
 example : Eone 7 5 1 = 0 := by
   have h : ((5 : ℕ) : ZMod 7)⁻¹ = 3 := ZMod.inv_eq_of_mul_eq_one 7 _ _ (by decide)

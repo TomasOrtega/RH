@@ -12,31 +12,31 @@ section Loc
 variable {n r : ℕ} (ε : Fin n → Bool)
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[Matrix.mulVec_add, dotProduct_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_add (x y y' : Fin n → ℂ) : hJ ε x (y + y') = hJ ε x y + hJ ε x y' := by
   unfold hJ; rw [Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_smul (x y : Fin n → ℂ) (c : ℂ) : hJ ε x (c • y) = c * hJ ε x y := by
   unfold hJ; rw [Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[Matrix.mulVec_sub, dotProduct_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_sub (x y y' : Fin n → ℂ) : hJ ε x (y - y') = hJ ε x y - hJ ε x y' := by
   unfold hJ; rw [Matrix.mulVec_sub, dotProduct_sub]
 
 /- English proof (translation)
-Simplify using `[hJ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hJ_zero (x : Fin n → ℂ) : hJ ε x 0 = 0 := by
   simp [hJ]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [hJ]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hJ_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem hJ_sum {ι : Type*} (s : Finset ι) (x : Fin n → ℂ) (y : ι → Fin n → ℂ) :
     hJ ε x (∑ i ∈ s, y i) = ∑ i ∈ s, hJ ε x (y i) := by
@@ -46,7 +46,7 @@ theorem hJ_sum {ι : Type*} (s : Finset ι) (x : Fin n → ℂ) (y : ι → Fin 
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hJ_add, ih]
 
 /- English proof (translation)
-Unfold `hJ Formalism.REAL.Jm`. Simplify using `only [Matrix.mulVec_diagonal, dotProduct, star_sum, star_mul', star_star, Pi.star_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [mul_comm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hJ_conj (u w : Fin n → ℂ) : hJ ε w u = star (hJ ε u w) := by
   unfold hJ Formalism.REAL.Jm
@@ -77,7 +77,7 @@ def Alin (ε : Fin n → Bool) (e f : Fin r → Fin n → ℂ) (s : Fin r → �
     (LinearMap.id - ∑ b, (lf ε (f b)).smulRight (e b) - ∑ b, (lf ε (e b)).smulRight (f b))
 
 /- English proof (translation)
-Simplify using `[Alin, Afun, Pw, lf, LinearMap.sum_apply, smul_eq_mul]`. Apply the tactic sequence `try abel`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Alin_apply (s : Fin r → ℝ) (v : Fin n → ℂ) : Alin ε e f s v = Afun ε e f s v := by
   simp [Alin, Afun, Pw, lf, LinearMap.sum_apply, smul_eq_mul]
@@ -87,7 +87,7 @@ def Amat (ε : Fin n → Bool) (e f : Fin r → Fin n → ℂ) (s : Fin r → �
   LinearMap.toMatrix' (Alin ε e f s)
 
 /- English proof (translation)
-Unfold `Amat`. Rewrite using `[LinearMap.toMatrix'_mulVec, Alin_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Amat_mulVec (s : Fin r → ℝ) (v : Fin n → ℂ) : Amat ε e f s *ᵥ v = Afun ε e f s v := by
   unfold Amat
@@ -97,56 +97,56 @@ variable (hG : Gram ε e f)
 include hG
 
 /- English proof (translation)
-Rewrite using `[hJ_conj, hG.ef]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fe (a b : Fin r) : hJ ε (f b) (e a) = if a = b then 1 else 0 := by
   rw [hJ_conj, hG.ef]
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[hJ_sum]`. Simplify using `[hJ_smul, fe hG]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem f_sum_e (b : Fin r) (k : Fin r → ℂ) : hJ ε (f b) (∑ c, k c • e c) = k b := by
   rw [hJ_sum]
   simp [hJ_smul, fe hG]
 
 /- English proof (translation)
-Rewrite using `[hJ_sum]`. Simplify using `[hJ_smul, hG.ff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem f_sum_f (b : Fin r) (k : Fin r → ℂ) : hJ ε (f b) (∑ c, k c • f c) = 0 := by
   rw [hJ_sum]
   simp [hJ_smul, hG.ff]
 
 /- English proof (translation)
-Rewrite using `[hJ_sum]`. Simplify using `[hJ_smul, hG.ee]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem e_sum_e (b : Fin r) (k : Fin r → ℂ) : hJ ε (e b) (∑ c, k c • e c) = 0 := by
   rw [hJ_sum]
   simp [hJ_smul, hG.ee]
 
 /- English proof (translation)
-Rewrite using `[hJ_sum]`. Simplify using `[hJ_smul, hG.ef]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem e_sum_f (b : Fin r) (k : Fin r → ℂ) : hJ ε (e b) (∑ c, k c • f c) = k b := by
   rw [hJ_sum]
   simp [hJ_smul, hG.ef]
 
 /- English proof (translation)
-Unfold `Pw`. Simplify using `only [hJ_sub, f_sum_e hG, f_sum_f hG, sub_self, sub_zero]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem f_Pw (b : Fin r) (v : Fin n → ℂ) : hJ ε (f b) (Pw ε e f v) = 0 := by
   unfold Pw
   simp only [hJ_sub, f_sum_e hG, f_sum_f hG, sub_self, sub_zero]
 
 /- English proof (translation)
-Unfold `Pw`. Simplify using `only [hJ_sub, e_sum_e hG, e_sum_f hG, sub_self, sub_zero]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem e_Pw (b : Fin r) (v : Fin n → ℂ) : hJ ε (e b) (Pw ε e f v) = 0 := by
   unfold Pw
   simp only [hJ_sub, e_sum_e hG, e_sum_f hG, sub_self, sub_zero]
 
 /- English proof (translation)
-Unfold `Afun`. Simplify using `only [hJ_add, f_sum_e hG, f_sum_f hG, f_Pw hG, add_zero]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem f_A (s : Fin r → ℝ) (b : Fin r) (v : Fin n → ℂ) :
     hJ ε (f b) (Afun ε e f s v) = (s b : ℂ) * hJ ε (f b) v := by
@@ -154,7 +154,7 @@ theorem f_A (s : Fin r → ℝ) (b : Fin r) (v : Fin n → ℂ) :
   simp only [hJ_add, f_sum_e hG, f_sum_f hG, f_Pw hG, add_zero]
 
 /- English proof (translation)
-Unfold `Afun`. Simplify using `only [hJ_add, e_sum_e hG, e_sum_f hG, e_Pw hG, add_zero, zero_add]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem e_A (s : Fin r → ℝ) (b : Fin r) (v : Fin n → ℂ) :
     hJ ε (e b) (Afun ε e f s v) = (s b : ℂ)⁻¹ * hJ ε (e b) v := by
@@ -162,7 +162,7 @@ theorem e_A (s : Fin r → ℝ) (b : Fin r) (v : Fin n → ℂ) :
   simp only [hJ_add, e_sum_e hG, e_sum_f hG, e_Pw hG, add_zero, zero_add]
 
 /- English proof (translation)
-Unfold `Pw`. Simplify using `only [f_A hG, e_A hG]`. Unfold `Afun Pw`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Normalize the expressions using the abelian group laws.
 -/
 theorem Pw_A (s : Fin r → ℝ) (v : Fin n → ℂ) : Pw ε e f (Afun ε e f s v) = Pw ε e f v := by
   unfold Pw
@@ -171,7 +171,7 @@ theorem Pw_A (s : Fin r → ℝ) (v : Fin n → ℂ) : Pw ε e f (Afun ε e f s 
   abel
 
 /- English proof (translation)
-Use `show ∑ b, ((s b : ℂ) * hJ ε (f b) (Afun ε e f u v)) • e b + ∑ b, ((s b : ℂ)⁻¹ * hJ ε (e b) (Afun ε e f u v)) • f b + Pw ε e f (Afun ε e f u v) = Afun ε e f (s * u) v`. Rewrite using `[Pw_A hG]`. Simplify using `only [f_A hG, e_A hG]`. Simplify using `only [Afun, Pi.mul_apply, Complex.ofReal_mul, mul_inv, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem A_A (s u : Fin r → ℝ) (v : Fin n → ℂ) :
     Afun ε e f s (Afun ε e f u v) = Afun ε e f (s * u) v := by
@@ -183,28 +183,28 @@ theorem A_A (s u : Fin r → ℝ) (v : Fin n → ℂ) :
   simp only [Afun, Pi.mul_apply, Complex.ofReal_mul, mul_inv, mul_assoc]
 
 /- English proof (translation)
-Simplify using `only [Afun, Pw, Pi.one_apply, Complex.ofReal_one, one_mul, inv_one]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem A_one (v : Fin n → ℂ) : Afun ε e f 1 v = v := by
   simp only [Afun, Pw, Pi.one_apply, Complex.ofReal_one, one_mul, inv_one]
   abel
 
 /- English proof (translation)
-Rewrite using `[A_A hG, show s * s⁻¹ = 1 from funext fun b => by simp [hs b], A_one hG]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem A_inv (s : Fin r → ℝ) (hs : ∀ b, s b ≠ 0) (v : Fin n → ℂ) :
     Afun ε e f s (Afun ε e f s⁻¹ v) = v := by
   rw [A_A hG, show s * s⁻¹ = 1 from funext fun b => by simp [hs b], A_one hG]
 
 /- English proof (translation)
-Unfold `Afun Pw`. Simplify using `[fe hG, hG.ee]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem A_e (s : Fin r → ℝ) (d : Fin r) : Afun ε e f s (e d) = (s d : ℂ) • e d := by
   unfold Afun Pw
   simp [fe hG, hG.ee]
 
 /- English proof (translation)
-Unfold `Afun Pw`. Simplify using `[hez, hfz]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem A_orth (s : Fin r → ℝ) (z : Fin n → ℂ) (hez : ∀ a, hJ ε (e a) z = 0) (hfz : ∀ a, hJ ε (f a) z = 0) :
     Afun ε e f s z = z := by
@@ -212,11 +212,9 @@ theorem A_orth (s : Fin r → ℝ) (z : Fin n → ℂ) (hez : ∀ a, hJ ε (e a)
   simp [hez, hfz]
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨d, hd, rfl⟩` from `hx`. Rewrite using `[A_e hG]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨d, hd, rfl⟩)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [← Alin_apply, map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`. Rewrite using `[← Alin_apply, map_add, Alin_apply, Alin_apply]`. Conclude with `Submodule.add_mem _ hx hy`.
-
-Consider the case `smul c x _ hx`. Rewrite using `[← Alin_apply, map_smul, Alin_apply]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem A_spanLt (s : Fin r → ℝ) (k : ℕ) {v : Fin n → ℂ} (hv : v ∈ spanLt e k) :
     Afun ε e f s v ∈ spanLt e k := by
@@ -234,17 +232,17 @@ theorem A_spanLt (s : Fin r → ℝ) (k : ℕ) {v : Fin n → ℂ} (hv : v ∈ s
     exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Establish `addl : ∀ x x' y, hJ ε (x + x') y = hJ ε x y + hJ ε x' y` using `fun x x' y => by`. Rewrite using `[hJ_conj ε y (x + x'), hJ_add, star_add, ← hJ_conj ε y x, ← hJ_conj ε y x']`. Establish `smull : ∀ (c : ℂ) x y, hJ ε (c • x) y = star c * hJ ε x y` using `fun c x y => by`. Rewrite using `[hJ_conj ε y (c • x), hJ_smul, star_mul', ← hJ_conj ε y x]`. Establish `suml : ∀ (g : Fin r → Fin n → ℂ) y, hJ ε (∑ b, g b) y = ∑ b, hJ ε (g b) y` using `fun g y => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hJ_conj ε y, hJ_sum, star_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => (hJ_conj ε y (g b)).symm`. Establish `ePw : ∀ b v, hJ ε (e b) (Pw ε e f v) = 0` using `e_Pw hG`. Establish `fPw : ∀ b v, hJ ε (f b) (Pw ε e f v) = 0` using `f_Pw hG`. Establish `Pwe : ∀ b v, hJ ε (Pw ε e f v) (e b) = 0` using `fun b v => by rw [hJ_conj, ePw, star_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `Pwf : ∀ b v, hJ ε (Pw ε e f v) (f b) = 0` using `fun b v => by rw [hJ_conj, fPw, star_zero]`. Establish `key : ∀ (α β α' β' : Fin r → ℂ) (v v' : Fin n → ℂ), hJ ε (∑ b, α b • e b + ∑ b, β b • f b + Pw ε e f v) (∑ b, α' b • e b + ∑ b, β' b • f b + Pw ε e f v') = ∑ b, (star (α b) * β' b + star (β b) * α' b) + hJ ε (Pw ε e f v) (Pw ε e f v')`. Introduce `α β α' β' v v'`. Simplify using `only [addl, hJ_add, suml, hJ_sum, smull, hJ_smul, hG.ee, hG.ff, hG.ef, fe hG, ePw, fPw, Pwe, Pwf, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add, mul_ite, mul_one, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_add_distrib]`. Apply the tactic sequence `try ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `dec : ∀ v, v = ∑ b, hJ ε (f b) v • e b + ∑ b, hJ ε (e b) v • f b + Pw ε e f v` using `fun v => by`. Unfold `Pw`. Normalize the expressions using the abelian group laws. Establish `hA : ∀ v, Afun ε e f s v = ∑ b, ((s b : ℂ) * hJ ε (f b) v) • e b + ∑ b, ((s b : ℂ)⁻¹ * hJ ε (e b) v) • f b + Pw ε e f v` using `fun v => rfl`. Rewrite using `[hA, hA, key]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_rhs => rw [dec x, dec y, key]`. Use `congr 1`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `hsb : (s b : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (hs b)`. Establish `hst : star (s b : ℂ) = s b` using `by first`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `simp`. Consider the case `exact Complex.conj_ofReal _`. Rewrite using `[star_mul', star_mul', star_inv₀, hst]`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try ring`.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem hJ_A (s : Fin r → ℝ) (hs : ∀ b, s b ≠ 0) (x y : Fin n → ℂ) :
     hJ ε (Afun ε e f s x) (Afun ε e f s y) = hJ ε x y := by
@@ -288,7 +286,7 @@ theorem hJ_A (s : Fin r → ℝ) (hs : ∀ b, s b ≠ 0) (x y : Fin n → ℂ) :
 
 omit hG in
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[Matrix.star_mulVec, Matrix.mulVec_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_mulVec_eq (M : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) :
     hJ ε (M *ᵥ x) (M *ᵥ y) = star x ⬝ᵥ ((Mᴴ * Formalism.REAL.Jm ε * M) *ᵥ y) := by
@@ -298,9 +296,9 @@ theorem hJ_mulVec_eq (M : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) :
 
 omit hG in
 /- English proof (translation)
-Unfold `Formalism.REAL.inUJ`. Use extensionality with `i j`. Use `h (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[hJ_mulVec_eq]`. Unfold `hJ at this`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify `this` using `[Matrix.mulVec_single_one, Pi.star_single]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inUJ_of_hJ (M : Matrix (Fin n) (Fin n) ℂ) (h : ∀ x y, hJ ε (M *ᵥ x) (M *ᵥ y) = hJ ε x y) :
     Formalism.REAL.inUJ ε M := by
@@ -312,12 +310,12 @@ theorem inUJ_of_hJ (M : Matrix (Fin n) (Fin n) ℂ) (h : ∀ x y, hJ ε (M *ᵥ 
   simpa [Matrix.mulVec_single_one, Pi.star_single] using this
 
 /- English proof (translation)
-The claim follows from `inUJ_of_hJ _ (fun x y => by rw [Amat_mulVec, Amat_mulVec]; exact hJ_A hG s hs x y)`.
+A detailed English derivation is pending.
 -/
 theorem inUJ_A (s : Fin r → ℝ) (hs : ∀ b, s b ≠ 0) : Formalism.REAL.inUJ ε (Amat ε e f s) := inUJ_of_hJ _ (fun x y => by rw [Amat_mulVec, Amat_mulVec]; exact hJ_A hG s hs x y)
 
 /- English proof (translation)
-Unfold `Amat`. Rewrite using `[← LinearMap.toMatrix'_comp]`. Establish `hid : Alin ε e f s ∘ₗ Alin ε e f s⁻¹ = LinearMap.id` using `LinearMap.ext fun v => by`. Rewrite using `[LinearMap.comp_apply, Alin_apply, Alin_apply, A_inv hG s hs, LinearMap.id_apply]`. Rewrite using `[hid, LinearMap.toMatrix'_id]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Amat_mul_inv (s : Fin r → ℝ) (hs : ∀ b, s b ≠ 0) : Amat ε e f s * Amat ε e f s⁻¹ = 1 := by
   unfold Amat
@@ -327,9 +325,9 @@ theorem Amat_mul_inv (s : Fin r → ℝ) (hs : ∀ b, s b ≠ 0) : Amat ε e f s
   rw [hid, LinearMap.toMatrix'_id]
 
 /- English proof (translation)
-Unfold `Amat`. Rewrite using `[← LinearMap.toMatrix'_comp]`. Establish `hid : Alin ε e f s⁻¹ ∘ₗ Alin ε e f s = LinearMap.id` using `LinearMap.ext fun v => by`. Rewrite using `[LinearMap.comp_apply, Alin_apply, Alin_apply, LinearMap.id_apply]`. Establish `h1` using `A_inv hG s⁻¹ (fun b => by simp [hs b]) v`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[inv_inv]`. Then use the resulting hypothesis. Rewrite using `[hid, LinearMap.toMatrix'_id]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem Amat_inv_mul (s : Fin r → ℝ) (hs : ∀ b, s b ≠ 0) : Amat ε e f s⁻¹ * Amat ε e f s = 1 := by
   unfold Amat
@@ -341,11 +339,11 @@ theorem Amat_inv_mul (s : Fin r → ℝ) (hs : ∀ b, s b ≠ 0) : Amat ε e f s
   rw [hid, LinearMap.toMatrix'_id]
 
 /- English proof (translation)
-Establish `hconj : ∀ v, (Amat ε e f s * g * Amat ε e f s⁻¹ - 1) *ᵥ v = Afun ε e f s ((g - 1) *ᵥ Afun ε e f s⁻¹ v)` using `fun v => by`. Establish `e1 : Afun ε e f s ((g - 1) *ᵥ Afun ε e f s⁻¹ v) = Afun ε e f s (g *ᵥ Afun ε e f s⁻¹ v) - v`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, ← Alin_apply (s := s), map_sub, Alin_apply, Alin_apply, A_inv hG s hs]`. Rewrite using `[e1, Matrix.sub_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Amat_mulVec, Amat_mulVec]`. Take `⟨⟨hSe, hSz⟩, hN⟩` from `hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨fun a => ?_, ?_⟩, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[hconj, A_e hG s⁻¹ a, Matrix.mulVec_smul]`. Conclude with `A_spanLt hG s _ (Submodule.smul_mem _ _ (hSe a))`. Rewrite using `[hconj, A_orth hG s⁻¹ z hez hfz]`. Conclude with `A_spanLt hG s _ hSz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hconj]`. Apply `A_spanLt hG s` to reduce the goal to its premises. Apply `hN` to reduce the goal to its premises. Introduce `b`. Rewrite using `[e_A hG, hy b, mul_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inN_A_conj (s : Fin r → ℝ) (hs : ∀ b, s b ≠ 0) {z : Fin n → ℂ} (hez : ∀ a, hJ ε (e a) z = 0)
     (hfz : ∀ a, hJ ε (f a) z = 0) {g : Matrix (Fin n) (Fin n) ℂ} (hg : InN ε e z g) :

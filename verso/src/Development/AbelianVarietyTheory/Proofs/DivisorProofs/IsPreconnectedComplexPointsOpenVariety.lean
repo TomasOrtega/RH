@@ -20,7 +20,7 @@ namespace GlobalTheory.CxConn
 variable {F : Type} [Field F] {Y : Scheme.{0}} {p : Y ⟶ Sp F} {σ : F →+* ℂ} {d : ℕ}
 
 /- English proof (translation)
-Establish `: IsIso p.appTop` using `ProperFunctions.isIso_appTop_of_field p`. Take `⟨b, rfl⟩` from `(ConcreteCategory.bijective_of_isIso p.appTop).2 a`. Take `⟨c, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of F)).inv).2 b`. Conclude with `⟨c, congrArg (fun g : Γ(Sp F, ⊤) ⟶ Γ(Y, ⊤) => g ((Scheme.ΓSpecIso (CommRingCat.of F)).inv c)) (p.appLE_eq_app (U := ⊤))⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_algX_eq [IsProper p] [GeometricallyIntegral p] (a : Γ(Y, ⊤)) : ∃ c : F, algX p ⊤ c = a := by
   have : IsIso p.appTop := ProperFunctions.isIso_appTop_of_field p
@@ -30,11 +30,11 @@ theorem exists_algX_eq [IsProper p] [GeometricallyIntegral p] (a : Γ(Y, ⊤)) :
     (p.appLE_eq_app (U := ⊤))⟩
 
 /- English proof (translation)
-Establish `hs : (fun _ => f) ∈ R.holSec (Out.Inh.trivLB Y)`. Use `⟨⟨fun i j w hi hj => ?_, fun i w h => (h mem_ptsIn_top).elim⟩, fun i => hf.mono (subset_univ _)⟩` and prove the remaining obligations. Establish `e : gv p σ (Out.Inh.trivLB Y) i j w = 1` using `(ev_eq (mem_ptsIn_inf.2 ⟨hi, hj⟩) _).trans (map_one _)`. Rewrite using `[e, one_mul]`. Take `⟨x, hx⟩` from `(AnRead.bijective_valC hp R (Out.Inh.trivLB_isLB Y)).2 ⟨_, hs⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `L : ((Out.Inh.trivLB Y).ι → CxPts p σ → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun s => s PUnit.unit y - s PUnit.unit z map_add' := fun s t => add_sub_add_comm _ _ _ _ map_smul' := fun c s => (mul_sub c _ _).symm }`. Establish `h` using `SecC.val_mem_of (M := LinearMap.ker L) (fun s => by`. Take `⟨c, hc⟩` from `exists_algX_eq (p := p) (s.f PUnit.unit)`. Establish `e (w : CxPts p σ) : secVal p σ s PUnit.unit w = σ c` using `(congrArg (fun a => ev p σ ⊤ a w) hc.symm).trans (ev_algX mem_ptsIn_top c)`. Express the relevant statement in the definitionally equal form `secVal p σ s PUnit.unit y - secVal p σ s PUnit.unit z = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e, e, sub_self]) x`. Establish `e : SecC.val x = fun _ => f` using `congrArg Subtype.val hx`. Rewrite `h` using `[e]`. Conclude with `sub_eq_zero.1 h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_holoOn_univ [SmoothOfRelativeDimension d p] [IsProper p] [GeometricallyIntegral p]
     (hp : IsProjOver p) (R : AnRead p σ d) {f : CxPts p σ → ℂ} (hf : R.HoloOn univ f) (y z : CxPts p σ) :
@@ -60,7 +60,7 @@ theorem eq_of_holoOn_univ [SmoothOfRelativeDimension d p] [IsProper p] [Geometri
   exact sub_eq_zero.1 h
 
 /- English proof (translation)
-Use `choose T f hT hy hf he using h`. Use `⟨fun y => f y y, AnRead.holoOn_of_cover (T := T) hT (fun y _ => ⟨y, hy y⟩) fun y => ((hf y).mono inter_subset_right).congr fun z hz => ?_, fun y hS => he y ⟨hy y, hS⟩⟩` and prove the remaining obligations. Establish `ho` using `(hT z).inter (hT y)`. Establish `e : EqOn (f z) (f y) (T z ∩ T y ∩ A)` using `fun w hw => (he z ⟨hw.1.1, hw.2⟩).trans (he y ⟨hw.1.2, hw.2⟩).symm`. Conclude with `e.of_subset_closure (((hf z).mono inter_subset_left).continuousOn ho) (((hf y).mono inter_subset_right).continuousOn ho) inter_subset_left (hA.open_subset_closure_inter ho) ⟨hy z, hz.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_holoOn_univ_of_local {R : AnRead p σ d} {A : Set (CxPts p σ)} (hA : Dense A) {u : CxPts p σ → ℂ}
     (h : ∀ y, ∃ (T : Set (CxPts p σ)) (f : CxPts p σ → ℂ), IsOpen T ∧ y ∈ T ∧ R.HoloOn T f ∧ EqOn f u (T ∩ A)) :
@@ -76,17 +76,15 @@ theorem exists_holoOn_univ_of_local {R : AnRead p σ d} {A : Set (CxPts p σ)} (
     ⟨hy z, hz.2⟩
 
 /- English proof (translation)
-Establish `: IsIntegral Y` using `GeometricallyIntegral.isIntegral_of_subsingleton p`. Take `⟨i, hi⟩` from `R.cover y`. Use `set c := R.chart i`. Take `⟨φ, hφ, hφW⟩` from `CxPtsDense.exists_ne_zero_basicOpen_le c.affine ⟨_, mem_ptsIn.1 (c.source_subset hi)⟩ hW`. Establish `hD : Dense (ptsIn p σ (Y.basicOpen φ))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(CxPtsDense.nonempty_and_dense_of_geometricallyIntegral p σ).2 _ (nonempty_iff_ne_empty.2 fun h => hφ ?_)` and prove the remaining obligations. Conclude with `(basicOpen_eq_bot_iff φ).1 (Opens.ext h)`. Establish `hin {z} (hz : z ∈ c.e.source) : z ∈ ptsIn p σ (Y.basicOpen φ) ↔ ev p σ c.U φ z ≠ 0` using `mem_ptsIn_basicOpen (c.source_subset hz) φ`. Take `⟨v, hv, he⟩` from `GlobalTheory.LogExt.riemann_extension_log _ c.e.target (ev p σ c.U φ ∘ c.e.symm) (u ∘ c.e.symm) c.e.open_target ((c.holo c.U φ).mono fun b hb => ⟨hb, c.source_subset (c.e.map_target hb)⟩) ((hu i).mono fun b hb => ⟨hb.1, ptsIn_mono hφW ((hin (c.e.map_target hb.1)).2 hb.2)⟩) (fun b …`. Establish `hs` using `c.e.map_target hb`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁` using `hD.open_subset_closure_inter c.e.open_source hs`. Establish `h₂` using `(c.e.continuousAt hs).continuousWithinAt.mem_closure_image h₁`. Rewrite `h₂` using `[c.e.right_inv hb]`. Use `closure_mono ?_ h₂` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c.e.map_source hz.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Function.comp_apply, c.e.left_inv hz.1]`. Conclude with `(hin hz.1).1 hz.2)`. Use `fun b _ => ⟨C, 0, Eventually.of_forall fun b' _ => by rw [pow_zero, mul_one]; exact hC _⟩`. Establish `hf : R.HoloOn c.e.source (v ∘ c.e)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `AnRead.holoOn_of_chart (R := R) (S := univ) (f := v ∘ c.e) c ((hv.mono inter_subset_left).congr fun b hb => congrArg v (c.e.right_inv hb.1))` as an intermediate fact. Rewrite `this` using `[inter_univ]`. Then use the resulting hypothesis. Use `⟨c.e.source, v ∘ c.e, c.e.open_source, hi, hf, ?_⟩` and prove the remaining obligations. Establish `ho` using `c.e.open_source.inter (isOpen_ptsIn (p := p) (σ := σ) W)`. Establish `e : EqOn (v ∘ c.e) u (c.e.source ∩ ptsIn p σ W ∩ ptsIn p σ (Y.basicOpen φ))` using `fun z hz => by`.
-
-Use `he (x := c.e z) ⟨c.e.map_source hz.1.1, by` as an intermediate fact. Rewrite using `[Function.comp_apply, c.e.left_inv hz.1.1]`. Conclude with `(hin hz.1.1).1 hz.2⟩`. Simplify `this` using `only [c.e.left_inv hz.1.1, Function.comp_apply]`. Conclude with `e.of_subset_closure ((hf.mono inter_subset_left).continuousOn ho) ((hu.mono inter_subset_right).continuousOn ho) inter_subset_left (hD.open_subset_closure_inter ho)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_local_extension [GeometricallyIntegral p] [LocallyOfFiniteType p] (R : AnRead p σ d) {W : Y.Opens}
     (hW : (W : Set Y).Nonempty) {u : CxPts p σ → ℂ} (hu : R.HoloOn (ptsIn p σ W) u) {C : ℝ}
@@ -130,11 +128,11 @@ theorem exists_local_extension [GeometricallyIntegral p] [LocallyOfFiniteType p]
     ((hu.mono inter_subset_right).continuousOn ho) inter_subset_left (hD.open_subset_closure_inter ho)
 
 /- English proof (translation)
-Use `isPreconnected_of_forall_constant fun g hg y hy z hz => ?_` and prove the remaining obligations. Establish `hW : (W : Set Y).Nonempty` using `⟨_, mem_ptsIn.1 hy⟩`. Set `R` to `AnRead.all p σ d`. Set `κ : Bool → ℂ` to `fun b => if b then 1 else 0`. Establish `hu : R.HoloOn (ptsIn p σ W) (κ ∘ g)` using `fun i b hb => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h₁ : ContinuousAt (g ∘ (R.chart i).e.symm) b` using `(hg.continuousAt ((isOpen_ptsIn W).mem_nhds hb.2)).comp ((R.chart i).e.continuousAt_symm hb.1)`. Establish `h₂ : ∀ᶠ b' in 𝓝 b, (g ∘ (R.chart i).e.symm) b' = (g ∘ (R.chart i).e.symm) b` using `h₁.eventually ((isOpen_discrete _).mem_nhds (mem_singleton _))`. Use `((differentiableAt_const (κ ((g ∘ (R.chart i).e.symm) b))).congr_of_eventuallyEq (h₂.mono fun b' hb' => congrArg κ hb')).differentiableWithinAt` and prove the remaining obligations. Establish `hC (w) : ‖(κ ∘ g) w‖ ≤ 1`. Simplify using `only [Function.comp_apply, κ]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Take `⟨f, hf, he⟩` from `exists_holoOn_univ_of_local ((CxPtsDense.nonempty_and_dense_of_geometricallyIntegral p σ).2 W hW) (exists_local_extension R hW hu hC)`. Establish `e : κ (g y) = κ (g z)` using `(he hy).symm.trans ((eq_of_holoOn_univ hp R hf y z).trans (he hz))`. Use `revert e`. Apply the tactic sequence `cases g y <;> cases g z <;> simp [κ]`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isPreconnected_ptsIn_of_isProjOver (d : ℕ) [SmoothOfRelativeDimension d p] [IsProper p]
     [GeometricallyIntegral p] (hp : IsProjOver p) (W : Y.Opens) : IsPreconnected (ptsIn p σ W) := by
@@ -159,7 +157,7 @@ theorem isPreconnected_ptsIn_of_isProjOver (d : ℕ) [SmoothOfRelativeDimension 
   cases g y <;> cases g z <;> simp [κ]
 
 /- English proof (translation)
-Introduce `_ _ _ B _ W` and use `isPreconnected_ptsIn_of_isProjOver B.dim B.isProjOver W`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isPreconnected_ptsIn : ∀ (F : Type) [Field F] [NumberField F] (B : GlobalTheory.ProjVar.Var F) (e : F →+* ℂ)
     (W : B.X.Opens), IsPreconnected (GlobalTheory.CxPts.ptsIn B.str e W) :=

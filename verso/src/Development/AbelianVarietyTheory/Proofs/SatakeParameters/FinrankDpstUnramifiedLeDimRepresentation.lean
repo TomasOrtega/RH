@@ -17,7 +17,7 @@ def sigSt (g : ↥(GK K)) : Bst P ⊗[ℚ_[l]] V →ₗ[ℚ_[l]] Bst P ⊗[ℚ_[
   TensorProduct.map (actSt P (g : GQ l)).toLinearMap ((ρ g).restrictScalars ℚ_[l])
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c v => simp [sigSt, TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigSt_smul (g : ↥(GK K)) (b : Bst P) (w : Bst P ⊗[ℚ_[l]] V) :
     sigSt P ρ g (b • w) = actSt P (g : GQ l) b • sigSt P ρ g w := by
@@ -27,7 +27,7 @@ theorem sigSt_smul (g : ↥(GK K)) (b : Bst P) (w : Bst P ⊗[ℚ_[l]] V) :
   | add x y hx hy => simp only [smul_add, map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [sigSt]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigSt_comm (g : ↥(GK K)) (y : V ⊗[ℚ_[l]] Bst P) :
     sigSt P ρ g (TensorProduct.comm ℚ_[l] V (Bst P) y) =
@@ -38,7 +38,7 @@ theorem sigSt_comm (g : ↥(GK K)) (y : V ⊗[ℚ_[l]] Bst P) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [TensorProduct.smul_tmul', Algebra.smul_def]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem comm_mulV (c : ↥(MaximalUnramifiedExtension l)) (y : V ⊗[ℚ_[l]] Bst P) :
     TensorProduct.comm ℚ_[l] V (Bst P) (mulV P LL V c y) = c • TensorProduct.comm ℚ_[l] V (Bst P) y := by
@@ -53,7 +53,7 @@ def toB : DpstUr P ρ →ₗ[↥(MaximalUnramifiedExtension l)] Bst P ⊗[ℚ_[l
   map_smul' c x := comm_mulV P c _
 
 /- English proof (translation)
-Introduce `x y h` and use `(toUr P ρ).symm.injective (Subtype.ext ((TensorProduct.comm ℚ_[l] V (Bst P)).injective h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toB_injective : Function.Injective (toB P ρ) := fun x y h =>
   (toUr P ρ).symm.injective (Subtype.ext ((TensorProduct.comm ℚ_[l] V (Bst P)).injective h))
@@ -63,15 +63,15 @@ end GlobalTheory.PstRank
 namespace GlobalTheory.PstRank
 
 /- English proof (translation)
-Introduce `l _ P hdom hreg K LL _ _ V _ _ _ _ _ ρ`. Use `rank_le fun s hs => ?_` and prove the remaining obligations. Use `choose F hF using fun i : ↥s => (mem_Dpst P ρ).mp ((toUr P ρ).symm (i : DpstUr P ρ)).2`. Establish `hFd` using `fun i : ↥s => (F i).2`. Set `K' : FinExt l` to `supExt K ⟨⨆ i, (F i).1, inferInstance⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hKK' : K.1 ≤ K'.1` using `le_sup_left`. Establish `hFK' : ∀ i, (F i).1 ≤ K'.1` using `fun i => (le_iSup (fun i => (F i).1) i).trans le_sup_right`. Set `v : ↥s → Bst P ⊗[ℚ_[l]] V` to `fun i => toB P ρ (i : DpstUr P ρ)`. Establish `hv : ∀ (g : ↥(GK K')) i, sigSt P ρ ⟨g, GK_le hKK' g.2⟩ (v i) = v i`. Introduce `g i`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `sigSt P ρ _ (TensorProduct.comm ℚ_[l] V (Bst P) _) = _`. Rewrite using `[sigSt_comm, hF i ⟨g, GK_le hKK' g.2⟩ (GK_le (hFK' i) g.2)]`. Both sides reduce to the same expression. Establish `hli : LinearIndependent ↥(MaximalUnramifiedExtension l) v` using `hs.map' (toB P ρ) (LinearMap.ker_eq_bot.mpr (toB_injective P ρ))`. Establish `hB : LinearIndepOn (Bst P) v ((Finset.univ : Finset ↥s) : Set ↥s)` using `GlobalTheory.RegularRing.linearIndepOn_of_invariant (K := ↥(MaximalUnramifiedExtension l)) (B := Bst P) (G := ↥(GK K')) (fun g b => actSt P (g : GQ l) b) (fun g => (sigSt P ρ ⟨g, GK_le hKK' g.2⟩).toAddMonoidHom) (fun g b w => sigSt_smul P ρ _ b w) (fun b b' hb h => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, -, hc⟩` from `hreg K' b b' hb h`. Conclude with `⟨c, hc⟩)`. Use `v hv Finset.univ (hli.linearIndepOn _)`. Establish `hB' : LinearIndependent (Bst P) v`. Rewrite using `[← linearIndepOn_univ]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hB` using `[Finset.coe_univ]`. Conclude with `hB`. Simplify using `using LinearIndependent.fintype_card_le_finrank hB'`.
+A detailed English derivation is pending.
 -/
 theorem rank_DpstUr_le : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l), IsDomain (Bst P) → (∀ (K : FinExt l) (b b' : Bst P), b ≠ 0 → (∀ g : ↥(GK K), b * actSt P (g : GQ l) b' = actSt P (g : GQ l) b * b') → ∃ c : ↥(MaximalUnramifiedExtension l), (c : Om l) ∈ K.1 ∧ b' = algebraMap ↥(MaximalUnramifiedExtension l) (Bst P) c * b) → ∀ {K : FinExt l} {LL : Type} [Field LL] [Algebra ℚ_[l] LL] {V : Type} [AddCommGroup V] [Module LL V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] LL V] [FiniteDimensional ℚ_[l] V] (ρ : Representation LL ↥(GK K) V), Module.rank ↥(MaximalUnramifiedExtension l) (DpstUr P ρ) ≤ finrank ℚ_[l] V := by
   intro l _ P hdom hreg K LL _ _ V _ _ _ _ _ ρ

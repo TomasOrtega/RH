@@ -18,11 +18,11 @@ def PtsIntegralZeroLowerNE.Statement : Prop :=
     c * degC W ≤ ptsIntegral (e := 0) W φ g
 
 /- English proof (translation)
-Establish `he : (plAnchor j m).1.orderEmbOfFin (plAnchor j m).2 = Fin.castLEOrderEmb (Nat.le_add_right j m)`. Use `symm`. Apply `Finset.orderEmbOfFin_unique'` to reduce the goal to its premises. Introduce `x`. Simplify using `only [plAnchor, Finset.mem_map, Finset.mem_univ, true_and]`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `⟨x, rfl⟩`. Establish `: colsOf (onePipe Z) (plAnchor j m) = 1`. Use extensionality with `a b`. Simplify using `only [colsOf, Matrix.submatrix_apply, id, he, onePipe, Matrix.of_apply]`. Establish `: (Fin.castLEOrderEmb (Nat.le_add_right j m)) b = Fin.castAdd m b` using `rfl`.
+Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[this, Fin.append_left]`. Rewrite using `[this, Matrix.det_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem anchor_minor {R : Type*} [CommRing R] (j m : ℕ) (Z : Matrix (Fin j) (Fin m) R) :
     (colsOf (onePipe Z) (plAnchor j m)).det = 1 := by
@@ -40,11 +40,11 @@ theorem anchor_minor {R : Type*} [CommRing R] (j m : ℕ) (Z : Matrix (Fin j) (F
   rw [this, Matrix.det_one]
 
 /- English proof (translation)
-Use `⟨fun k => ⟨plAnchor j m, ?_⟩, fun g hg => ?_⟩` and prove the remaining obligations. Simplify using `[rootCoord, anchor_minor]`. Establish `h : mConeMap (rootCoord ζ) g = 0` using `hg`. Establish `h2` using `congrArg (MvPolynomial.eval (fun _ : Fin f => (1 : ℂ))) h`. Establish `key : (MvPolynomial.eval (fun _ : Fin f => (1 : ℂ))).comp (mConeMap (rootCoord ζ) : MRing (plBlocks f j m) →+* MvPolynomial (Fin f) ℂ) = (eval (rootCoord ζ)).comp (map (Int.castRingHom ℂ))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using the standard rewrite rules. Introduce `i`. Simplify using `[mConeMap]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun φ => φ g) key` as an intermediate fact. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, h, map_zero] at this`. Conclude with `this.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rootCoord_mem {f j m : ℕ} (ζ : Fin f → Matrix (Fin j) (Fin m) ℂ) :
     rootCoord ζ ∈ mcPts (rootPointIdeal ζ) := by
@@ -63,17 +63,17 @@ theorem rootCoord_mem {f j m : ℕ} (ζ : Fin f → Matrix (Fin j) (Fin m) ℂ) 
     exact this.symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨∅, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 example : IsMultiHomogIdeal (⊥ : Ideal (MRing (fun _ : Unit => Unit))) :=
   ⟨∅, by simp, by simp⟩
 
 /- English proof (translation)
-Use `haveI : Subsingleton (McClasses (⊥ : Ideal (MRing (fun _ : Unit => Unit)))) := by`. Prove the components needed by the constructor for the conclusion. Introduce `x y`. Proceed by induction on `x using Quot.ind with | mk z => ?_`. Proceed by induction on `y using Quot.ind with | mk z' => ?_`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Proceed by induction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Quot.sound` to reduce the goal to its premises. Take `⟨⟨⟩, hz⟩` from `z.2.1 ()`. Take `⟨⟨⟩, hz'⟩` from `z'.2.1 ()`. Use `⟨fun _ => z'.1 ⟨(), ()⟩ / z.1 ⟨(), ()⟩, fun _ => div_ne_zero hz' hz, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `p with ⟨⟨⟩, ⟨⟩⟩` into its components or cases. Clear the denominators using the available nonvanishing facts. Conclude with `Finite.of_subsingleton`.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem finite_mcClasses_bot_unit : Finite (McClasses (⊥ : Ideal (MRing (fun _ : Unit => Unit)))) := by
   haveI : Subsingleton (McClasses (⊥ : Ideal (MRing (fun _ : Unit => Unit)))) := by

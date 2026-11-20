@@ -10,21 +10,19 @@ namespace CompanionTheory.Lime.T3
 open ReciprocityTheory.ChartRestriction.DS (smD smE actM dS IsSmoothVecU mem_smD_iff isDerivedOn_smE dS_eq_actM)
 
 /- English proof (translation)
-Take `⟨ha0, ha1⟩` from `ha`. Establish `key : ∀ s ∈ Set.Icc (0:ℝ) 1, ‖f' s‖ ≤ 2 * η / τ + M * τ`. Introduce `s hs`. Take `⟨hs0, hs1⟩` from `hs`. Establish `hg : ∀ t ∈ Set.Icc (0:ℝ) τ, HasDerivWithinAt (fun t : ℝ => f (s + t) - (t : ℂ) * f' s) (f' (s + t) - f' s) (Set.Icc 0 τ) t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `t _`. Establish `h1 : HasDerivAt (fun t : ℝ => f (s + t)) (f' (s + t)) t`. Use `(hf (s + t)).scomp t ((hasDerivAt_id' t).const_add s)` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Establish `h2 : HasDerivAt (fun t : ℝ => (t : ℂ) * f' s) (f' s) t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(Complex.ofRealCLM.hasDerivAt (x := t)).mul_const (f' s)` as an intermediate fact. Simplify using `using this`. Conclude with `(h1.sub h2).hasDerivWithinAt`. Establish `hb : ∀ t ∈ Set.Ico (0:ℝ) τ, ‖f' (s + t) - f' s‖ ≤ M * τ`. Introduce `t ht`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_mul_of_nonneg_left _ hM` to reduce the goal to its premises. Rewrite using `[add_sub_cancel_left, abs_of_nonneg ht.1]`. Conclude with `ht.2.le`. Establish `hmv` using `norm_image_sub_le_of_norm_deriv_le_segment' hg hb τ ⟨hτ.le, le_rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Complex.ofReal_zero, zero_mul, sub_zero, add_zero] at hmv`. Establish `e1` using `hη (s + τ) ⟨by linarith, by linarith⟩`. Establish `e2` using `hη s ⟨hs0, by linarith⟩`. Establish `htri : ‖(τ : ℂ) * f' s‖ ≤ ‖f (s + τ) - (τ:ℂ) * f' s - f s‖ + ‖f (s + τ)‖ + ‖f s‖`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ‖-(f (s + τ) - (τ:ℂ) * f' s - f s) + f (s + τ)‖ + ‖f s‖ := norm_sub_le _ _`. Use `_ ≤ ‖-(f (s + τ) - (τ:ℂ) * f' s - f s)‖ + ‖f (s + τ)‖ + ‖f s‖ := by gcongr`. Conclude with `norm_add_le _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = _ := by rw [norm_neg]`. Rewrite `htri` using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hτ.le]`. Rewrite using `[div_add' _ _ _ hτ.ne', le_div_iff₀ hτ]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hg2 : ∀ x ∈ Set.Icc (0:ℝ) a, HasDerivWithinAt f (f' x) (Set.Icc 0 a) x` using `fun x _ => (hf x).hasDerivWithinAt`.
-
-Establish `hb2 : ∀ x ∈ Set.Ico (0:ℝ) a, ‖f' x‖ ≤ 2 * η / τ + M * τ` using `fun x hx => key x ⟨hx.1, by linarith [hx.2]⟩`. Establish `hfin` using `norm_image_sub_le_of_norm_deriv_le_segment' hg2 hb2 a ⟨ha0, le_rfl⟩`. Simplify using `using hfin`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem interp {f f' : ℝ → ℂ} (hf : ∀ s, HasDerivAt f (f' s) s) {M η τ a : ℝ} (hM : 0 ≤ M)
     (hL : ∀ s t, ‖f' s - f' t‖ ≤ M * |s - t|) (hη : ∀ s ∈ Set.Icc (0 : ℝ) 2, ‖f s‖ ≤ η) (hτ : 0 < τ) (hτ1 : τ ≤ 1)
@@ -77,15 +75,15 @@ variable {m : ℕ} {ε : Fin m → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {π : Matrix (Fin m) (Fin m) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Establish `mem : ∀ h : UJ ε, uMat h ∈ UJset ε` using `fun h => h.2`. Establish `hu0 : uMat (c 0) = 1`. Rewrite using `[h0]`. Both sides reduce to the same expression. Establish `hd0 : HasDerivAt (fun t : ℝ => π (uMat (c t)) (x : H)) (actM (smE ε π) Z x : smD ε π) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ t : ℝ in 𝓝 0, inUJ ε (uMat (c t))` using `Filter.Eventually.of_forall fun t => (c t).2`. Establish `h1` using `hasDerivAt_curve hπ x.2 hu0 hc hev`. Rewrite `h1` using `[dS_eq_actM (isDerivedOn_smE hπ) (inG_of_curve hu0 hc hev) x]`. Then use the resulting hypothesis. Use `set L := π (uMat (c s)) with hL`. Establish `h4 : HasDerivAt (fun t : ℝ => π (uMat (c t)) (x : H)) (actM (smE ε π) Z x : smD ε π) (s - s)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_self]`. Conclude with `hd0`. Establish `h2 : HasDerivAt (fun t : ℝ => L (π (uMat (c (t - s))) (x : H))) (L (actM (smE ε π) Z x : smD ε π)) s`. Establish `h3` using `(L.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (s - s) h4`. Conclude with `h3.comp_sub_const s s`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Establish `e : c t = c s * c (t - s)`. Rewrite using `[← hadd]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Expand and normalize the polynomial expressions, which then agree. Use `show π (uMat (c t)) (x : H) = L (π (uMat (c (t - s))) x)`. Rewrite using `[e, show uMat (c s * c (t - s)) = uMat (c s) * uMat (c (t - s)) from rfl, hπ.1.2 _ (mem _) _ (mem _)]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem orbit_deriv (hπ : IsURepOn (UJset ε) π) (x : smD ε π) {c : ℝ → UJ ε} {Z : Matrix (Fin m) (Fin m) ℂ}
     (h0 : c 0 = 1) (hadd : ∀ s t, c (s + t) = c s * c t) (hc : HasDerivAt (fun t => uMat (c t)) Z 0) (s : ℝ) :
@@ -118,13 +116,13 @@ theorem orbit_deriv (hπ : IsURepOn (UJset ε) π) (x : smD ε π) {c : ℝ → 
   rfl
 
 /- English proof (translation)
-Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans hM`. Use `set y : smD ε π := actM (smE ε π) Z x with hy`. Establish `hF : ∀ s, HasDerivAt (fun t : ℝ => π (uMat (c t)) (x : H)) (π (uMat (c s)) (y : H)) s` using `orbit_deriv hπ x h0 hadd hc`. Establish `hG : ∀ s, HasDerivAt (fun t : ℝ => π (uMat (c t)) (y : H)) (π (uMat (c s)) (actM (smE ε π) Z y : H)) s` using `orbit_deriv hπ y h0 hadd hc`. Establish `hf : ∀ s, HasDerivAt (fun t : ℝ => ⟪π (uMat (c t)) (x : H), u⟫_ℂ) ⟪π (uMat (c s)) (y : H), u⟫_ℂ s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Establish `h1` using `(hF s).inner ℂ (hasDerivAt_const s u)`. Simplify using `using h1`. Establish `hL : ∀ s t, ‖⟪π (uMat (c s)) (y : H), u⟫_ℂ - ⟪π (uMat (c t)) (y : H), u⟫_ℂ‖ ≤ M * |s - t|`. Introduce `s t`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← inner_sub_left]`. Establish `hmv : ‖π (uMat (c s)) (y : H) - π (uMat (c t)) (y : H)‖ ≤ M * ‖s - t‖`. Apply `Convex.norm_image_sub_le_of_norm_hasDerivWithin_le (fun r _ => (hG r).hasDerivWithinAt) _ convex_univ (Set.mem_univ _) (Set.mem_univ _)` to reduce the goal to its premises. Introduce `r _`. Rewrite using `[hπ.2.1 _ (c r).2 _]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hM`. Rewrite `hmv` using `[Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `interp hf hM0 hL hη hτ hτ1 ha`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem coef_interp (hπ : IsURepOn (UJset ε) π) (x : smD ε π) {c : ℝ → UJ ε} {Z : Matrix (Fin m) (Fin m) ℂ}
     (h0 : c 0 = 1) (hadd : ∀ s t, c (s + t) = c s * c t) (hc : HasDerivAt (fun t => uMat (c t)) Z 0) {u : H}
@@ -160,9 +158,9 @@ theorem coef_interp (hπ : IsURepOn (UJset ε) π) (x : smD ε π) {c : ℝ → 
   exact interp hf hM0 hL hη hτ hτ1 ha
 
 /- English proof (translation)
-Establish `mem : ∀ h : UJ ε, uMat h ∈ UJset ε` using `fun h => h.2`. Establish `hk : uMat k = uMat g * uMat (g⁻¹ * k)`. Establish `e : k = g * (g⁻¹ * k)` using `(mul_inv_cancel_left g k).symm`. Use `conv_lhs => rw [e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, hπ.1.2 _ (mem g) _ (mem _), ContinuousLinearMap.comp_apply]`. Set `L : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (π (uMat g)).toLinearMap, norm_map' := hπ.2.1 _ (mem g) }`. Conclude with `L.inner_map_map a _`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem inner_move (hπ : IsURepOn (UJset ε) π) (g k : UJ ε) (a b : H) :
     ⟪π (uMat g) a, π (uMat k) b⟫_ℂ = ⟪a, π (uMat (g⁻¹ * k)) b⟫_ℂ := by
@@ -176,29 +174,29 @@ theorem inner_move (hπ : IsURepOn (UJset ε) π) (g k : UJ ε) (a b : H) :
   exact L.inner_map_map a _
 
 /- English proof (translation)
-Take `⟨hv_s, hW⟩` from `kFiniteWordBound_indefUnitary m ε lam B H π hm hl hDS hB hg v hv`. Establish `hπ : IsURepOn (UJset ε) π` using `hDS.2.2.1`. Establish `hsm : v ∈ smD ε π`. Rewrite using `[mem_smD_iff]`. Introduce `g₀ hg₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U, F, hU, hgU, hF, hfe⟩` from `hv_s g₀ hg₀`. Conclude with `⟨U, F, hU, hgU, hF, fun g hg hgi => hfe g hg hgi⟩`. Use `set x : smD ε π := ⟨v, hsm⟩ with hx`. Establish `hC : ∀ W : List (Matrix (Fin m) (Fin m) ℂ), W.length ≤ 2 → (∀ X ∈ W, hs X ≤ 1) → ‖PI.DSInfCharCap.dsigCW ε π W v‖ ≤ (8 * Real.sqrt m * (B + 2)) ^ W.length`. Introduce `W hl1 hX`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hW 2 W hl1 hX`. Rewrite `h` using `[hv1, mul_one]`. Simplify using `using h`. Establish `one : ∀ X, hs X ≤ 1 → ‖actM (smE ε π) X x‖ ≤ 8 * Real.sqrt m * (B + 2)`. Introduce `X hX`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hC [X] (by simp) (by simpa using hX)`. Establish `e : PI.DSInfCharCap.dsigCW ε π [X] v = (actM (smE ε π) X x : H)` using `dsigC_eq_actM hπ X x`. Rewrite `h` using `[e]`. Simplify using `using h`. Establish `two : ∀ X, hs X ≤ 1 → ‖actM (smE ε π) X (actM (smE ε π) X x)‖ ≤ (8 * Real.sqrt m * (B + 2)) ^ 2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `X hX`. Establish `h` using `hC [X, X] (by simp) (by simp [hX])`. Establish `e : PI.DSInfCharCap.dsigCW ε π [X, X] v = (actM (smE ε π) X (actM (smE ε π) X x) : H)` using `by show PI.DSInfCharCap.dsigC ε π X (PI.DSInfCharCap.dsigC ε π X (x : H)) = _`. Rewrite using `[dsigC_eq_actM hπ X x, dsigC_eq_actM hπ X]`. Rewrite `h` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h`. Use `⟨x, rfl, one, ?_⟩` and prove the remaining obligations. Introduce `Z`. Establish `hnn : 0 ≤ hs Z`. Unfold `hs`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Break down `hnn.eq_or_lt with h0 | hpos` into its components or cases. Establish `hZ0 : Z = 0`. Use extensionality with `i j`. Establish `hsum : ∑ i, ∑ j, ‖Z i j‖ ^ 2 = 0` using `h0.symm`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsum` using `[Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => by positivity)]`. Establish `hi` using `hsum i (Finset.mem_univ _)`. Rewrite `hi` using `[Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => by positivity)]`. Establish `hij` using `hi j (Finset.mem_univ _)`. Simplify using `using hij`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality.
 
-Substitute `hZ0` using the available equality. Establish `hz` using `actM_smul (actM (smE ε π) 0 x) 0 (0 : Matrix (Fin m) (Fin m) ℂ)`. Simplify using `only [Complex.ofReal_zero, zero_smul] at hz`. Rewrite using `[hz, ← h0]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set a := (Real.sqrt (hs Z))⁻¹ with ha`. Establish `hsq : Real.sqrt (hs Z) ^ 2 = hs Z` using `Real.sq_sqrt hpos.le`. Establish `hspos : 0 < Real.sqrt (hs Z)` using `Real.sqrt_pos.mpr hpos`. Establish `ha0 : 0 ≤ a` using `by positivity`. Establish `ha2 : a * a * hs Z = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ha, ← sq, inv_pow, hsq, inv_mul_cancel₀ hpos.ne']`. Establish `hY : hs ((a : ℂ) • Z) ≤ 1`. Rewrite using `[hs_smul, ← ha2, sq]`. Establish `h` using `two _ hY`. Rewrite `h` using `[actM_smul, actM_smul, map_smul, norm_smul, norm_smul, Complex.norm_real, Real.norm_of_nonneg ha0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hw0` using `norm_nonneg (actM (smE ε π) Z (actM (smE ε π) Z x))`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h hpos.le]`.
+A detailed English derivation is pending.
 -/
 theorem low_bounds {lam : Fin m → ℝ} {B : ℝ} (hm : 2 ≤ m) (hl : Formalism.QuantumDeterminants.IsHCParam lam) (hDS : IsDS ε lam π)
     (hB : ∀ a, |lam a| ≤ B) (hg : Formalism.QuantumDeterminants.GapAtLeast ε lam (100 * (m : ℝ) ^ 3)) {v : H} (hv : v ∈ lowKSub ε lam π)

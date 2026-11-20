@@ -14,11 +14,11 @@ noncomputable section
 namespace GlobalTheory.VertPassDeg
 
 /- English proof (translation)
-Introduce `hA F _ _ Y M ι _ A L m Ψ hI hΨ`. Use `haveI := M.ar.isIntegral`. Take `⟨Q, ρ, -, hQ, hρ, -, hj, -, -, -⟩` from `GlobalTheory.ModelDom.exists_normal_dominating F Y M M`. Use `haveI := Q.ar.isIntegral`. Take `⟨eρ, dρ⟩` from `GlobalTheory.CoverModelDeg.map_genericPoint_and_deg F Y (Cover.ofModel Q hQ) M ρ hρ (by simpa [Cover.ofModel] using hj)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `dρ` using `[Cover.deg_ofModel]`. Establish `dρ' : ρ.residueDegree (genericPoint Q.X) = 1` using `dρ`. Establish `nρ : ρ.residueDegree (genericPoint Q.X) ≠ 0` using `dρ' ▸ one_ne_zero`. Use `⟨Cover.ofModel Q hQ, fun i => (L i).pull ρ hρ, fun i => ?_, ?_⟩` and prove the remaining obligations. Establish `h₁` using `Cover.induces_ofModel hQ (GlobalTheory.T.induced_metric_pullback F _ Y (A i) M Q ρ hρ hj (L i) m 0 (hI i))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `norms_of_induces h₁`. Establish `h₁` using `(hA.arProj (𝓞 F) M.X Q.X M.p Q.p Y.dim M.ar Q.ar ρ hρ eρ nρ).2 ι L Ψ hΨ`. Rewrite `h₁` using `[dρ']`. Rewrite using `[Cover.deg_ofModel]`. Conclude with `h₁`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem passDeg : GlobalTheory.Published.ArCalc → ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (M : TrueGeo.Model Y) (ι : Type) [Fintype ι]
     (A : ι → Adl (cxSt F) Y) (L : ι → HermLB M.p) (m : ℕ+) (Ψ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ),

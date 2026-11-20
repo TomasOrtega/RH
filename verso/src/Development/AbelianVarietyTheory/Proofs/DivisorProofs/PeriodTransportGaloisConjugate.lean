@@ -16,9 +16,9 @@ namespace GlobalTheory.DiagConj
 open GlobalTheory.HolHom
 
 /- English proof (translation)
-Establish `h0 : (fun j => m j * (0 : Fin n → ℂ) j) = 0` using `by funext j; simp`. Establish `hL : HasFDerivAt (fun z : Fin n → ℂ => (fun j => m j * z j)) (ContinuousLinearMap.mul ℂ (Fin n → ℂ) m) 0` using `(ContinuousLinearMap.mul ℂ (Fin n → ℂ) m).hasFDerivAt`. Establish `hg` using `((hc U hU).2 f).hasFDerivAt`. Rewrite `hg` using `[← h0]`. Establish `hcomp` using `HasFDerivAt.comp (0 : Fin n → ℂ) hg hL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `congrArg (fun L => L w) hcomp.fderiv`. Simplify using `only [Function.comp_def, ContinuousLinearMap.coe_comp', Function.comp_apply, ContinuousLinearMap.mul_apply', h0] at e1`. Conclude with `e1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fderiv_diag {n : ℕ} {X : Scheme.{0}} {c : (Fin n → ℂ) → (Sp ℂ ⟶ X)} (hc : HolAt c 0)
     (m w : Fin n → ℂ) (U : X.Opens) (hU : ⊤ ≤ c 0 ⁻¹ᵁ U) (f : Γ(X, U)) :
@@ -36,7 +36,7 @@ theorem fderiv_diag {n : ℕ} {X : Scheme.{0}} {c : (Fin n → ℂ) → (Sp ℂ 
   exact e1
 
 /- English proof (translation)
-Establish `h0 : (fun j => m j * (0 : Fin n → ℂ) j) = 0` using `by funext j; simp`. Unfold `IsDerivAt`. Simplify using `only [h0]`. Use `and_congr_right fun _ => forall_congr' fun U => forall_congr' fun hU => forall_congr' fun f => ?_` and prove the remaining obligations. Rewrite using `[fderiv_diag hc m w U hU f]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isDerivAt_diag_iff {n : ℕ} {X : Scheme.{0}} {c : (Fin n → ℂ) → (Sp ℂ ⟶ X)} (hc : HolAt c 0)
     (m w : Fin n → ℂ) (v : Sp (DualNumber ℂ) ⟶ X) :
@@ -48,11 +48,9 @@ theorem isDerivAt_diag_iff {n : ℕ} {X : Scheme.{0}} {c : (Fin n → ℂ) → (
   rw [fderiv_diag hc m w U hU f]
 
 /- English proof (translation)
-Establish `e0 : (Chart.dualMapR (g.symm : ℂ →+* ℂ)).comp (Chart.dualMapR (g : ℂ →+* ℂ)) = RingHom.id _`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`. Apply the tactic sequence `apply TrivSqZeroExt.ext <;> simp [Chart.dualMapR]`. Establish `e : spMap (Chart.dualMapR (g.symm : ℂ →+* ℂ)) ≫ spMap (Chart.dualMapR (g : ℂ →+* ℂ)) = 𝟙 _`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`. Use `ext1`. Conclude with `e0`. Use `congrArg (spMap (Chart.dualMapR (g.symm : ℂ →+* ℂ)) ≫ ·) h` as an intermediate fact.
-
-Simplify `this` using `[← Category.assoc, e]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem spMap_dual_cancel (g : ℂ ≃+* ℂ) {X : Scheme.{0}} (x y : Sp (DualNumber ℂ) ⟶ X)
     (h : spMap (Chart.dualMapR (g : ℂ →+* ℂ)) ≫ x = spMap (Chart.dualMapR (g : ℂ →+* ℂ)) ≫ y) : x = y := by
@@ -68,71 +66,67 @@ theorem spMap_dual_cancel (g : ℂ ≃+* ℂ) {X : Scheme.{0}} (x y : Sp (DualNu
   simpa [← Category.assoc, e] using this
 
 /- English proof (translation)
-Introduce `A A' _ _ L L' n u u' g p hp Ω₀ Ω₁ hΩ₀ hΩ₁ htr m α _ α' _ hαp`. Establish `holA : IsHolTo Set.univ (fun z => (u.ex z).left)` using `fun U f => by`. Simplify `u.hol U f` using `only [Set.mem_univ, true_and, Set.sep_univ]`. Establish `holA' : IsHolTo Set.univ (fun z => (u'.ex z).left)` using `fun U f => by`. Simplify `u'.hol U f` using `only [Set.mem_univ, true_and, Set.sep_univ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hA : ∀ z, HolAt (fun z => (u.ex z).left) z` using `fun z => holAt_of_isHolTo holA (Set.mem_univ z)`. Establish `hA' : ∀ z, HolAt (fun z => (u'.ex z).left) z` using `fun z => holAt_of_isHolTo holA' (Set.mem_univ z)`. Establish `one0 : u.ex 0 = 1` using `map_zero_eq_one u.ex_add`. Establish `one0' : u'.ex 0 = 1` using `map_zero_eq_one u'.ex_add`. Establish `eta : (u.ex 0).left = η[A].left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[one0, Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Establish `eta' : (u'.ex 0).left = η[A'].left`. Rewrite using `[one0', Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Establish `tan : ∀ w, ∃ v : epsR ℂ ⟶ A, IsDerivAt (fun z => (u.ex z).left) 0 w v.left`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv⟩` from `(hA 0).exists_isDerivAt w`. Establish `hv2 : v ≫ A.hom = (epsR ℂ).hom`. Establish `h1` using `hv.comp A.hom`. Establish `h2 : (fun t => (u.ex t).left ≫ A.hom) = fun _ => 𝟙 (Sp ℂ)` using `funext fun t => Over.w (u.ex t)`. Rewrite `h1` using `[h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1.unique (isDerivAt_const (𝟙 (Sp ℂ)) 0 w)]`. Simplify using `[constVec]`. Conclude with `⟨Over.homMk v hv2, hv⟩`. Establish `ringSq : spMap (Chart.dualMapR (g : ℂ →+* ℂ)) ≫ spMap (algebraMap ℂ (DualNumber ℂ)) = spMap (algebraMap ℂ (DualNumber ℂ)) ≫ spMap (g : ℂ →+* ℂ)`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `ext1`. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`. Apply the tactic sequence `apply TrivSqZeroExt.ext <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `fstSq : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ spMap (Chart.dualMapR (g : ℂ →+* ℂ)) = spMap (g : ℂ →+* ℂ) ≫ spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`. Use `ext1`. Apply `RingHom.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a`. Simplify using `[Chart.dualMapR]`. Establish `fstAlg : spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ spMap (algebraMap ℂ (DualNumber ℂ)) = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `all_goals (ext1; apply RingHom.ext; intro a; simp)`. Establish `conj : ∀ v : epsR ℂ ⟶ A, ∃ v' : epsR ℂ ⟶ A', v'.left ≫ p = spMap (Chart.dualMapR (g : ℂ →+* ℂ)) ≫ v.left`. Introduce `v`. Establish `w : (spMap (Chart.dualMapR (g : ℂ →+* ℂ)) ≫ v.left) ≫ A.hom = (epsR ℂ).hom ≫ spMap (g : ℂ →+* ℂ)`. Rewrite using `[Category.assoc, Over.w v]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ringSq`. Conclude with `⟨Over.homMk (hp.1.lift _ _ w) (hp.1.lift_snd _ _ _), hp.1.lift_fst _ _ _⟩`. Establish `conj0 : ∀ (v : epsR ℂ ⟶ A) (v' : epsR ℂ ⟶ A'), v'.left ≫ p = spMap (Chart.dualMapR (g : ℂ →+* ℂ)) ≫ v.left → spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v.left = (u.ex 0).left → spMap (TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom ≫ v'.left = (u'.ex 0).left`. Introduce `v v' hv' h0`. Apply `hp.1.hom_ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Category.assoc, hv', ← Category.assoc, fstSq, Category.assoc, h0, eta, eta', GlobalTheory.LieChart.unit_comp_of_isGrpPullback hp]`. Rewrite using `[Category.assoc, Over.w v', Over.w (u'.ex 0)]`. Conclude with `fstAlg`. Establish `trD : ∀ (w : Fin n → ℂ) (v : epsR ℂ ⟶ A) (v' : epsR ℂ ⟶ A'), v'.left ≫ p = spMap (Chart.dualMapR (g : ℂ →+* ℂ)) ≫ v.left → IsDerivAt (fun z => (u.ex z).left) 0 w v.left → IsDerivAt (fun z => (u'.ex z).left) 0 (fun j => g (Ω₀ * w j) / Ω₁) v'.left`. Introduce `w v v' hv' hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h0'` using `conj0 v v' hv' hv.1`. Establish `hd : u.IsDiff w v` using `((isDerivAt0_iff _ _ _).2 hv).2`. Conclude with `(isDerivAt0_iff _ _ _).1 ⟨h0', htr w v v' hv' hd⟩`. Establish `Tsurj : ∀ w' : Fin n → ℂ, (fun j => g (Ω₀ * (fun j => Ω₀⁻¹ * g.symm (Ω₁ * w' j)) j) / Ω₁) = w'`. Introduce `w'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Simplify using `only`. Rewrite using `[← _root_.mul_assoc, mul_inv_cancel₀ hΩ₀, _root_.one_mul, RingEquiv.apply_symm_apply, mul_div_cancel_left₀ _ hΩ₁]`. Establish `Tmul : ∀ w : Fin n → ℂ, (fun j => g (Ω₀ * (fun j => m j * w j) j) / Ω₁) = fun j => g (m j) * (fun j => g (Ω₀ * w j) / Ω₁) j`. Introduce `w`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Use function extensionality and compare the values at `j`. Simplify using `only`. Rewrite using `[mul_left_comm, map_mul, mul_div_assoc]`. Establish `hz : (fun j => m j * (0 : Fin n → ℂ) j) = 0` using `by funext j; simp`. Establish `hz' : (fun j => g (m j) * (0 : Fin n → ℂ) j) = 0` using `by funext j; simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hα`. Establish `he : ∀ z w : Fin n → ℂ, u'.ex (fun j => g (m j) * (z + w) j) = u'.ex (fun j => g (m j) * z j) * u'.ex (fun j => g (m j) * w j)`. Introduce `z w`. Rewrite using `[← u'.ex_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[mul_add]`. Establish `he' : ∀ z w : Fin n → ℂ, u'.ex (z + w) ≫ α' = (u'.ex z ≫ α') * (u'.ex w ≫ α')`. Introduce `z w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[u'.ex_add, MonObj.mul_comp]`. Establish `hol : IsHolTo Set.univ (fun (z : Fin n → ℂ) => (u'.ex (fun j => g (m j) * z j)).left)` using `isHolTo_of_holAt isOpen_univ fun z _ => (hA' _).precomp (k := fun (t : Fin n → ℂ) j => g (m j) * t j) (ContinuousLinearMap.mul ℂ (Fin n → ℂ) (fun j => g (m j))).differentiableAt`. Establish `hol' : IsHolTo Set.univ (fun z => (u'.ex z ≫ α').left)`. Establish `e : (fun z => (u'.ex z ≫ α').left) = (fun z => (u'.ex z).left ≫ α'.left)`. Use function extensionality and compare the values at `fun z => by rw [Over.comp_left]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `isHolTo_of_holAt isOpen_univ fun z _ => (hA' z).comp α'.left`. Establish `hd : ∀ U : A'.left.Opens, ⊤ ≤ (u'.ex (fun j => g (m j) * (0 : Fin n → ℂ) j)).left ⁻¹ᵁ U → ∀ f : Γ(A'.left, U), fderiv ℂ (fun (z : Fin n → ℂ) => valAt' (u'.ex (fun j => g (m j) * z j)).left U f) 0 = fderiv ℂ (fun z => valAt' (u'.ex z ≫ α').left U f) 0`. Introduce `U hU f`. Simplify using `only [Over.comp_left]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `ContinuousLinearMap.ext fun w' => ?_` and prove the remaining obligations. Take `⟨v, hv⟩` from `tan (fun j => Ω₀⁻¹ * g.symm (Ω₁ * w' j))`. Take `⟨v', hv'⟩` from `conj v`. Establish `D1` using `trD _ v v' hv' hv`. Rewrite `D1` using `[Tsurj]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcα : (fun t => (u.ex t).left ≫ α.left) = fun t => (u.ex (fun j => m j * t j)).left`. Use function extensionality and compare the values at `fun t => by rw [hα t]; rfl`. Establish `Dα` using `hv.comp α.left`. Rewrite `Dα` using `[hcα]`. Establish `Dα'` using `(isDerivAt_diag_iff (hA 0) m _ _).1 Dα`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv'α : (v'.left ≫ α'.left) ≫ p = spMap (Chart.dualMapR (g : ℂ →+* ℂ)) ≫ (v.left ≫ α.left)`. Rewrite using `[Category.assoc, hαp, ← Category.assoc, hv', Category.assoc]`. Establish `D2` using `trD _ (v ≫ α) (v' ≫ α') hv'α Dα'`. Rewrite `D2` using `[Tmul, Tsurj]`. Establish `D2'` using `(isDerivAt_diag_iff (hA' 0) (fun j => g (m j)) w' _).2 D2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `D3` using `D1.comp α'.left`. Establish `hU' : ⊤ ≤ (u'.ex 0).left ⁻¹ᵁ U` using `by rw [← hz']; exact hU`. Establish `hU'' : ⊤ ≤ ((u'.ex 0).left ≫ α'.left) ⁻¹ᵁ U`. Rewrite using `[← Over.comp_left, one0', MonObj.one_comp, ← one0']`. Conclude with `hU'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `D2'.2 U hU f`. Establish `e2` using `D3.2 U hU'' f`. Conclude with `e1.symm.trans e2`. Establish `key : (fun (w : Fin n → ℂ) => u'.ex (fun j => g (m j) * w j)) = (fun w => u'.ex w ≫ α')` using `eq_of_fderiv_eq (y := 𝟙 (Sp ℂ)) he he' hol hol' hd`. Conclude with `fun w => congrFun key w`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hα'`. Establish `he : ∀ z w : Fin n → ℂ, u.ex (fun j => m j * (z + w) j) = u.ex (fun j => m j * z j) * u.ex (fun j => m j * w j)`. Introduce `z w`. Rewrite using `[← u.ex_add]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Simplify using `[mul_add]`. Establish `he' : ∀ z w : Fin n → ℂ, u.ex (z + w) ≫ α = (u.ex z ≫ α) * (u.ex w ≫ α)`. Introduce `z w`. Rewrite using `[u.ex_add, MonObj.mul_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hol : IsHolTo Set.univ (fun (z : Fin n → ℂ) => (u.ex (fun j => m j * z j)).left)` using `isHolTo_of_holAt isOpen_univ fun z _ => (hA _).precomp (k := fun (t : Fin n → ℂ) j => m j * t j) (ContinuousLinearMap.mul ℂ (Fin n → ℂ) m).differentiableAt`. Establish `hol' : IsHolTo Set.univ (fun z => (u.ex z ≫ α).left)`. Establish `e : (fun z => (u.ex z ≫ α).left) = (fun z => (u.ex z).left ≫ α.left)`. Use function extensionality and compare the values at `fun z => by rw [Over.comp_left]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `isHolTo_of_holAt isOpen_univ fun z _ => (hA z).comp α.left`. Establish `hd : ∀ U : A.left.Opens, ⊤ ≤ (u.ex (fun j => m j * (0 : Fin n → ℂ) j)).left ⁻¹ᵁ U → ∀ f : Γ(A.left, U), fderiv ℂ (fun (z : Fin n → ℂ) => valAt' (u.ex (fun j => m j * z j)).left U f) 0 = fderiv ℂ (fun z => valAt' (u.ex z ≫ α).left U f) 0`. Introduce `U hU f`. Simplify using `only [Over.comp_left]`. Use `ContinuousLinearMap.ext fun w => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨v, hv⟩` from `tan w`. Take `⟨v', hv'⟩` from `conj v`. Take `⟨v₂, hv₂⟩` from `tan (fun j => m j * w j)`. Take `⟨v₂', hv₂'⟩` from `conj v₂`. Establish `D1` using `trD w v v' hv' hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcα' : (fun t => (u'.ex t).left ≫ α'.left) = fun t => (u'.ex (fun j => g (m j) * t j)).left`. Use function extensionality and compare the values at `fun t => by rw [hα' t]; rfl`. Establish `D1α` using `D1.comp α'.left`. Rewrite `D1α` using `[hcα']`. Establish `D1α'` using `(isDerivAt_diag_iff (hA' 0) _ _ _).1 D1α`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `D2` using `trD _ v₂ v₂' hv₂' hv₂`. Rewrite `D2` using `[Tmul]`. Establish `huq` using `D2.unique D1α'`. Establish `hv₂α : v₂.left = v.left ≫ α.left`. Apply `spMap_dual_cancel g` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hv₂', huq, Category.assoc, hαp, ← Category.assoc, hv', Category.assoc]`. Establish `E1` using `(isDerivAt_diag_iff (hA 0) m w _).2 hv₂`. Establish `E2` using `hv.comp α.left`. Establish `hU' : ⊤ ≤ (u.ex 0).left ⁻¹ᵁ U` using `by rw [← hz]; exact hU`. Establish `hU'' : ⊤ ≤ ((u.ex 0).left ≫ α.left) ⁻¹ᵁ U`.
-
-Rewrite using `[← Over.comp_left, one0, MonObj.one_comp, ← one0]`. Conclude with `hU'`. Establish `e1` using `E1.2 U hU f`. Establish `e2` using `E2.2 U hU'' f`. Rewrite `e1` using `[hv₂α]`.
-
-Conclude with `e1.symm.trans e2`. Establish `key : (fun (w : Fin n → ℂ) => u.ex (fun j => m j * w j)) = (fun w => u.ex w ≫ α)` using `eq_of_fderiv_eq (y := 𝟙 (Sp ℂ)) he he' hol hol' hd`. Conclude with `fun w => congrFun key w`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem diag_endo_iff_conj_diag : ∀ (A A' : Over (Sp ℂ)) [GrpObj A] [GrpObj A'] (L : LB A.left) (L' : LB A'.left) (n : ℕ)
     (u : HolUnif A L n) (u' : HolUnif A' L' n) (g : ℂ ≃+* ℂ) (p : A'.left ⟶ A.left),

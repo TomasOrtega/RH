@@ -18,7 +18,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.IndivisibleSection
 
 /- English proof (translation)
-Introduce `hS _ _ _ _ _ _ D` and use `exists_generator D.toPre hS`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_secBGenerates : SecBaseChangeSt → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (I : Ideal R) (D : DegData R I), ∃ b : D.toPre.SecB 1 0, SecBGenerates (D := D) 1 0 b :=
   fun hS _ _ _ _ _ _ D => exists_generator D.toPre hS

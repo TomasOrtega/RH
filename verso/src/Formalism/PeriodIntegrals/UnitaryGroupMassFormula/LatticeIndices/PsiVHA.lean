@@ -18,9 +18,9 @@ variable {D : D7} (X : HidaSetting D) (p : TypX X) (θ : TpX X p ≃ₐ[FpX X p]
   (Q : GL (IdxD D) (FpX X p))
 
 /- English proof (translation)
-Unfold `crd1 crd2`. Rewrite using `[Matrix.mulVec_transpose, Matrix.mulVec_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec, ← Matrix.dotProduct_mulVec, Matrix.reindex_apply, Matrix.submatrix_mulVec_equiv]`. Simplify using `only [dotProduct, Matrix.mulVec, Function.comp_apply]`. Rewrite using `[← Equiv.sum_comp (idxEquiv X).symm.symm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Equiv.symm_symm, Equiv.symm_apply_apply, fst_apply_alt, snd_apply_alt, jm1, JR, Matrix.map_apply]`. Rewrite using `[Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pair_sum (v w : Fin X.B.I.n → TpX X p) :
     crd2 X p θ Q v ⬝ᵥ crd1 X p θ Q w =
@@ -36,7 +36,7 @@ theorem pair_sum (v w : Fin X.B.I.n → TpX X p) :
   rw [Finset.mul_sum]
 
 /- English proof (translation)
-Rewrite using `[pair_sum]`. Simplify using `only [hR, Formalism.UG.hform, map_sum, Prod.fst_sum, map_mul, Prod.fst_mul, JR, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hθ (v i), Prod.fst_swap]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pair1 (hθ : IsSplitEquiv X p θ) (v w : Fin X.B.I.n → TpX X p) :
     crd2 X p θ Q v ⬝ᵥ crd1 X p θ Q w = (θ (hR (FpX X p) X.B.I.cm.sig X.B.I.J v w)).1 := by
@@ -47,9 +47,9 @@ theorem pair1 (hθ : IsSplitEquiv X p θ) (v w : Fin X.B.I.n → TpX X p) :
   ring
 
 /- English proof (translation)
-Rewrite using `[dotProduct_comm, pair_sum]`. Simplify using `only [hR, Formalism.UG.hform, map_sum, Prod.snd_sum, map_mul, Prod.snd_mul, JR, Matrix.map_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hθ (v i), Prod.snd_swap]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `secondEmbedding_eq_star X p θ hθ (X.B.I.J i j)`. Rewrite `h` using `[herm_entry]`. Establish `h' : (θ (inclR (FpX X p) (X.B.I.J i j))).2 = (θ (inclR (FpX X p) (X.B.I.J j i))).1` using `h`. Rewrite using `[h']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pair2 (hθ : IsSplitEquiv X p θ) (v w : Fin X.B.I.n → TpX X p) :
     crd1 X p θ Q v ⬝ᵥ crd2 X p θ Q w = (θ (hR (FpX X p) X.B.I.cm.sig X.B.I.J v w)).2 := by
@@ -65,9 +65,9 @@ theorem pair2 (hθ : IsSplitEquiv X p θ) (v w : Fin X.B.I.n → TpX X p) :
   ring
 
 /- English proof (translation)
-Establish `hi : ∀ a : X.B.I.E, PI.FinKW.psiV X.B.I p.1 (Formalism.UG.inclE (F` using `X.B.I.F) (Formalism.MainNotions.S.Af X.B.I.F) a) = inclR (FpX X p) a := by`. Introduce `a`. Use `show (Algebra.TensorProduct.map (evalV X.B.I.F p.1) (AlgHom.id X.B.I.F X.B.I.E)) ((Algebra.TensorProduct.comm X.B.I.F X.B.I.E (Formalism.MainNotions.S.Af X.B.I.F)) (a ⊗ₜ[X.B.I.F] (1 : Formalism.MainNotions.S.Af X.B.I.F))) = (1 : FpX X p) ⊗ₜ[X.B.I.F] a`. Rewrite using `[Algebra.TensorProduct.comm_tmul, Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hs` using `PIW.MassDataColumns.psiV_sigA X p`. Simplify using `only [hA, hR, Formalism.UG.hform, map_sum, map_mul, Matrix.map_apply, JR, PI.FinKW.vecV]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hs, hi]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiV_hA' (x y : Formalism.L2.SG.HidaSetting.VA X.B.I) :
     PI.FinKW.psiV X.B.I p.1 (hA X.B.I x y) =

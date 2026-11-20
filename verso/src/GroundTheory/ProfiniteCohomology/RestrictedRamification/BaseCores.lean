@@ -35,11 +35,11 @@ def coindTracePreimage (a : A) : Rep.coind U.subtype (Rep.res U.subtype A) :=
       rw [if_neg hug, if_neg hg, map_zero]⟩
 
 /- English proof (translation)
-Rewrite using `[coindTrace_hom_apply, Finset.sum_eq_single ((1 : G) : G ⧸ U)]`. Rewrite using `[coindTraceTerm_apply, inv_one]`. Express the relevant statement in the definitionally equal form `A.ρ 1 (if (1 : G) ∈ U then A.ρ 1 a else 0) = a`. Rewrite using `[if_pos U.one_mem, map_one, Module.End.one_apply, Module.End.one_apply]`. Introduce `c _ hc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `c using QuotientGroup.induction_on with`. Consider the case `H x`. Rewrite using `[coindTraceTerm_apply]`. Establish `hx : x⁻¹ ∉ U` using `fun h => hc (QuotientGroup.eq.2 (by simpa using h))`. Express the relevant statement in the definitionally equal form `A.ρ x (if x⁻¹ ∈ U then A.ρ x⁻¹ a else 0) = 0`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[if_neg hx, map_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coindTrace_coindTracePreimage (a : A) : (coindTrace U A).hom (coindTracePreimage U A a) = a := by
   classical
@@ -58,7 +58,7 @@ theorem coindTrace_coindTracePreimage (a : A) : (coindTrace U A).hom (coindTrace
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Introduce `a` and use `⟨coindTracePreimage U A a, coindTrace_coindTracePreimage U A a⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem surjective_coindTrace : Function.Surjective (coindTrace U A).hom :=
   fun a => ⟨coindTracePreimage U A a, coindTrace_coindTracePreimage U A a⟩
@@ -73,7 +73,7 @@ def coindTraceKer : Submodule k (Rep.coind U.subtype (Rep.res U.subtype A)) :=
   LinearMap.ker (coindTrace U A).hom.toLinearMap
 
 /- English proof (translation)
-Introduce `f hf`. Express the relevant statement in the definitionally equal form `(coindTrace U A).hom ((Rep.coind U.subtype (Rep.res U.subtype A)).ρ g f) = 0`. Rewrite using `[Rep.hom_comm_apply]`. Rewrite using `[show (coindTrace U A).hom f = 0 from hf, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coindTraceKer_le_comap (g : G) :
     coindTraceKer U A ≤ (coindTraceKer U A).comap ((Rep.coind U.subtype (Rep.res U.subtype A)).ρ g) := by
@@ -88,7 +88,7 @@ def coindTraceShortComplex : ShortComplex (Rep.{u} k G) :=
     exact f.2)
 
 /- English proof (translation)
-Rewrite using `[← ShortComplex.exact_map_iff_of_faithful _ (forget₂ (Rep.{u} k G) (ModuleCat.{u} k)), ShortComplex.moduleCat_exact_iff]`. Introduce `f hf`. Conclude with `⟨⟨f, hf⟩, rfl⟩`. Use `mono_f := (Rep.mono_iff_injective _).2 fun _ _ h => Subtype.ext h`. Use `epi_g := (Rep.epi_iff_surjective _).2 (surjective_coindTrace U A)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coindTraceShortComplex_shortExact : (coindTraceShortComplex U A).ShortExact where
   exact := by
@@ -104,7 +104,7 @@ end Sequence
 section Cores
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun f : X ⟶ X => f.hom x) e.hom_inv_id`. Express the relevant statement in the definitionally equal form `g.hom (e.inv.hom (e.hom.hom x)) = g.hom x`. Conclude with `congrArg g.hom h`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem inv_comp_hom_apply_base {k : Type u} [CommRing k] {X Y Z : ModuleCat.{u} k} (e : X ≅ Y) (g : X ⟶ Z)
     (x : X) : (e.inv ≫ g).hom (e.hom.hom x) = g.hom x := by
@@ -117,11 +117,11 @@ variable {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Com
   [∀ v, IsTopologicalGroup (Hv v)] [∀ v, CompactSpace (Hv v)] (φ : ∀ v, Hv v →ₜ* G)
 
 /- English proof (translation)
-Establish `hS` using `coindTraceShortComplex_shortExact (V : Subgroup G) D`. Establish `: IsDiscreteRep (coindTraceShortComplex (V : Subgroup G) D).X₂` using `inferInstanceAs (IsDiscreteRep (Rep.coind (V : Subgroup G).subtype (Rep.res (V : Subgroup G).subtype D)))`. Establish `: IsDiscreteRep (coindTraceShortComplex (V : Subgroup G) D).X₁` using `isDiscreteRep_subrepresentation _ _ _`. Establish `: IsDiscreteRep (coindTraceShortComplex (V : Subgroup G) D).X₃` using `inferInstanceAs (IsDiscreteRep D)`. Establish `: Finite (Rep.res (V : Subgroup G).subtype D)` using `inferInstanceAs (Finite D)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (Rep.coind (V : Subgroup G).subtype (Rep.res (V : Subgroup G).subtype D))` using `finite_coind V _`. Establish `: Finite (coindTraceShortComplex (V : Subgroup G) D).X₁` using `inferInstanceAs (Finite (coindTraceKer (V : Subgroup G) D))`. Establish `hN : ∀ m : (coindTraceShortComplex (V : Subgroup G) D).X₁, n • m = 0` using `fun m => Subtype.ext (Subtype.ext (funext fun x => hD _))`. Establish `h4` using `hV _ hN`. Establish `hg : Function.Surjective (compactCohomologyResMap φ (coindTrace (V : Subgroup G) D) 3).hom` using `fun y => (ShortComplex.moduleCat_exact_iff_ker_sub_range _).1 (compactRes_exact₃ φ hS 3) (@Subsingleton.elim _ h4 _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Use `(hg y).elim fun x hx => ⟨(mackeyCompactCohomologyIso V φ (Rep.res (V : Subgroup G).subtype D) 3).hom.hom x, ?_⟩` and prove the remaining obligations. Conclude with `(inv_comp_hom_apply_base _ _ x).trans hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem surjective_compactCores_three (V : OpenSubgroup G) (D : Rep.{u} (ULift.{u} ℤ) G) [IsDiscreteRep D]
     [Finite D] {n : ℕ} (hD : ∀ d : D, n • d = 0)
@@ -158,7 +158,7 @@ open IsDedekindDomain NumberField GroundTheory.Global
 local notation "ℚ̄" => AlgebraicClosure ℚ
 
 /- English proof (translation)
-The claim follows from `surjective_compactCores_three (gsFinFamily S ιs) V D hD fun M _ _ hM => subsingleton_compactCohomology_four K S hn hS hK ιs M hM`.
+A detailed English derivation is pending.
 -/
 theorem surjective_gs_compactCores_three (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
     (ιs : ∀ v : S, ℚ̄ →ₐ[K.1] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))

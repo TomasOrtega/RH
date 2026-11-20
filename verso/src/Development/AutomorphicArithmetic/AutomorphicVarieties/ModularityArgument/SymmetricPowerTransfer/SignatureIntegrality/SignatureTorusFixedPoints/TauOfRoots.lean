@@ -10,11 +10,11 @@ noncomputable section
 open ValuativeRel Matrix Polynomial GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Sig UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob
 
 /- English proof (translation)
-Establish `hu : C (a : k) * C ((a⁻¹ : kˣ) : k) = 1`. Rewrite using `[← C_mul, Units.mul_inv, C_1]`. Establish `e1 : (X - C (a : k)) * (X - C 1) * (X - C ((a⁻¹ : kˣ) : k)) = (X - 1) * (X ^ 2 - C ((a : k) + ((a⁻¹ : kˣ) : k)) * X + 1)`. Rewrite using `[C_add, C_1]`. Take the linear combination `(X - 1) * hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `h` using `[e1]`. Establish `hne : (X - 1 : k[X]) ≠ 0` using `by simpa using X_sub_C_ne_zero (1 : k)`. Establish `h'` using `mul_left_cancel₀ hne h`. Establish `hc` using `congrArg (fun q : k[X] => q.coeff 1) h'`. Simplify using `only [coeff_add, coeff_sub, coeff_C_mul_X, coeff_X_pow, coeff_one] at hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Evaluate the numerical expressions using `at hc`. Rewrite using `[Units.val_inv_eq_inv_val]`. Take the linear combination `hc`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem tau_of_roots {k : Type} [Field k] (h2 : (2 : k) ≠ 0) (a : kˣ) (τ : k)
     (h : (X - C (a : k)) * (X - C 1) * (X - C ((a⁻¹ : kˣ) : k)) = ((X - 1) * (X ^ 2 - C τ * X + 1) : k[X])) :
@@ -35,7 +35,7 @@ private theorem tau_of_roots {k : Type} [Field k] (h2 : (2 : k) ≠ 0) (a : kˣ)
   linear_combination hc
 
 /- English proof (translation)
-Rewrite using `[dg.eq_1, val_diagT, charpoly_diagonal]`. Simplify using `[Fin.prod_univ_three]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem charpoly_dg {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a b c : kˣ) :
     (((dg ![a, b, c] : GL (Fin 3) k) : Matrix (Fin 3) (Fin 3) k)).charpoly = (X - C (a : k)) * (X - C (b : k)) * (X - C (c : k)) := by
@@ -43,39 +43,37 @@ private theorem charpoly_dg {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
   simp [Fin.prod_univ_three]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ O _ _ hO h2 Δ s hs hs0 V Ry hRy χ hχ t ht`. Simplify using `only [Lev.data.eq_1, Set.mem_setOf_eq] at ht ⊢`. Take `⟨hbij, htheta, -, htau⟩` from `eU_facts k O hO h2 Δ s hs hs0`. Establish `hinv : ∀ (d : Fin 3 → kˣ) (u : GL (Fin 3) k), u ∈ V.J 3 → ∀ u' ∈ V.J 3, ∀ g, V.unitaryDoubleCosetIndicator d (u * g * th k 3 u') = V.unitaryDoubleCosetIndicator d g` using `fun d u hu u' hu' g => ((eqG k V 1 ∅ ∅ 1 1 d).1 u hu u' hu' g).1`. Establish `hfin : ∀ d : Fin 3 → kˣ, {y : GL (Fin 3) k ⧸ Subgroup.map (th k 3) (V.J 3) | V.unitaryDoubleCosetIndicator d (Quotient.out y) ≠ 0}.Finite` using `fun d => (eqG k V 1 ∅ ∅ 1 1 d).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu y`. Rewrite `hu` using `[Subgroup.mem_comap]`. Prove the components needed by the constructor for the conclusion. Simplify using `only [map_mul, Lev.unitaryHeckeTestSum.eq_1]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify `hinv _ (eU hs u) hu 1 (Subgroup.one_mem _) (eU hs y)` using `[map_one]`. Simplify using `only [map_mul, htheta, Lev.unitaryHeckeTestSum.eq_1]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using `using hinv _ 1 (Subgroup.one_mem _) (eU hs u) hu (eU hs y)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Set `ψ : U3 Δ ⧸ Subgroup.comap (eU hs) (V.J 3) → GL (Fin 3) k ⧸ Subgroup.map (th k 3) (V.J 3)` to `fun x => QuotientGroup.mk (th k 3 (eU hs (Quotient.out x)))`. Establish `hψ : Function.Injective ψ`. Introduce `x x' hxx`. Rewrite using `[← QuotientGroup.out_eq' x, ← QuotientGroup.out_eq' x']`. Rewrite `hxx`, the goal using `[QuotientGroup.eq]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mem_comap]`. Take `⟨j, hj, hjeq⟩` from `Subgroup.mem_map.1 hxx`. Establish `hth : Function.Injective (th k 3)` using `fun a b hab => by`. Use `congrArg (th k 3) hab` as an intermediate fact. Rewrite `this` using `[(thFacts k V).2.2.2.1, (thFacts k V).2.2.2.1]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hjeq` using `[← map_inv, ← map_mul, ← map_inv, ← map_mul]`. Rewrite using `[← hth hjeq]`. Conclude with `hj`. Set `T : Set (GL (Fin 3) k ⧸ Subgroup.map (th k 3) (V.J 3))` to `⋃ y ∈ Ry, {z | V.unitaryDoubleCosetIndicator ![t * (unif k)⁻¹, y, (unif k)⁻¹] (Quotient.out z) ≠ 0}`. Establish `hT : T.Finite` using `Set.Finite.biUnion Ry.finite_toSet fun y _ => hfin _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hT.preimage hψ.injOn).subset fun x hx => ?_` and prove the remaining obligations. Establish `hx' : V.unitaryHeckeTestSum Ry t (eU hs (theta Δ (Quotient.out x))) ≠ 0` using `hx`. Rewrite `hx'` using `[htheta, Lev.unitaryHeckeTestSum.eq_1]`. Take `⟨y, hy, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hx'`. Simplify using `only [Set.mem_preimage, T, Set.mem_iUnion, Set.mem_setOf_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `QuotientGroup.mk_out_eq_mul (Subgroup.map (th k 3) (V.J 3)) (th k 3 (eU hs (Quotient.out x)))`. Take `⟨j, hj, hjm⟩` from `Subgroup.mem_map.1 m.2`. Express the relevant statement in the definitionally equal form `V.unitaryDoubleCosetIndicator _ (Quotient.out (QuotientGroup.mk (th k 3 (eU hs (Quotient.out x))) : GL (Fin 3) k ⧸ Subgroup.map (th k 3) (V.J 3))) ≠ 0`. Rewrite using `[hm, ← hjm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `hinv ![t * (unif k)⁻¹, y, (unif k)⁻¹] 1 (Subgroup.one_mem _) j hj (th k 3 (eU hs (Quotient.out x)))`. Rewrite `e` using `[one_mul]`. Rewrite using `[e]`. Conclude with `hne`. Introduce `δ τ hτ hne`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hne` using `[Lev.unitaryHeckeTestSum.eq_1]`. Take `⟨y, hy, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`. Establish `hv : (valuation k) ((unif k : kˣ) : k) < 1`. Rewrite using `[GlAx.unif_spec]`. Conclude with `uniformizer_lt_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hv0 : 0 < (valuation k) ((unif k : kˣ) : k)`. Rewrite using `[zero_lt_iff]`. Conclude with `(_root_.map_ne_zero _).2 (unif k).ne_zero`. Take `⟨hy1, hy2⟩` from `hRy.1 y hy`. Establish `h01 : (valuation k) ((t * (unif k)⁻¹ : kˣ) : k) < (valuation k) (y : k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀, ← div_eq_mul_inv, div_lt_iff₀ hv0]`. Combine the equalities or inequalities in the displayed calculation. Establish `h12 : (valuation k) (y : k) < (valuation k) (((unif k)⁻¹ : kˣ) : k)`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀]`. Conclude with `hy2.trans_lt ((one_lt_inv₀ hv0).2 hv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Establish `hSD : SDom ![t * (unif k)⁻¹, y, (unif k)⁻¹]`. Rewrite using `[SDom.eq_1]`. Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp at hij`. Apply the tactic sequence `all_goals first`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `exact h01`. Consider the case `exact h12`. Consider the case `exact h01.trans h12`. Take `⟨g₀, x, y', z, hδ, hH⟩` from `supp0 k V _ hSD _ hne`. Establish `hd : (![t * (unif k)⁻¹, y, (unif k)⁻¹] 0 / ![t * (unif k)⁻¹, y, (unif k)⁻¹] 2 : kˣ) = t`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `hH` using `[hd]`. Establish `hcp` using `(htau δ τ).1 hτ`. Rewrite `hcp` using `[hδ, (normalG k).1 g₀ x y' z]`. Establish `hc2 : ((g₀ * dg ![x / z, 1, z / x] * g₀⁻¹ : GL (Fin 3) k) : Matrix (Fin 3) (Fin 3) k).charpoly = (X - C ((x / z : kˣ) : k)) * (X - C 1) * (X - C (((x / z)⁻¹ : kˣ) : k))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, Units.val_mul, Matrix.coe_units_inv, charpoly_units_conj, charpoly_dg, inv_div, Units.val_one]`. Rewrite `hcp` using `[hc2]`. Establish `hτ'` using `tau_of_roots h2 (x / z) τ hcp`. Rewrite using `[Ind.eq_1]`. Use `⟨x / z / t, hH, ?_⟩` and prove the remaining obligations.
-
-Establish `hm : t * (x / z / t) = x / z`. Rewrite using `[mul_comm]`. Conclude with `div_mul_cancel (x / z) t`. Rewrite using `[hm]`. Conclude with `hτ'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Sig.okG :
     UpperTheory.V.Z.Sym.Sig.OkG := by

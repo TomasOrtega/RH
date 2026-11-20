@@ -16,7 +16,7 @@ section Signs
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `Cech.sgn`. Rewrite using `[Finset.filter_insert]`. Use `split_ifs with h`. Rewrite using `[Finset.card_insert_of_notMem (fun hm => ha (Finset.mem_filter.mp hm).1), pow_succ]`. Rewrite using `[mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sgn_insert {a b : Fin n} {A : Finset (Fin n)} (ha : a ∉ A) :
     Cech.sgn (insert a A) b = Cech.sgn A b * (if a < b then -1 else 1) := by
@@ -27,18 +27,18 @@ theorem sgn_insert {a b : Fin n} {A : Finset (Fin n)} (ha : a ∉ A) :
   · rw [mul_one]
 
 /- English proof (translation)
-Unfold `Cech.sgn`. Rewrite using `[← mul_pow, neg_one_mul, neg_neg, one_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sgn_mul_self (A : Finset (Fin n)) (b : Fin n) : Cech.sgn A b * Cech.sgn A b = 1 := by
   unfold Cech.sgn
   rw [← mul_pow, neg_one_mul, neg_neg, one_pow]
 
 /- English proof (translation)
-Establish `hne : j ≠ i₀` using `fun e => hi₀ (e ▸ hj)`. Establish `h1 : Cech.sgn (insert i₀ (K.erase j)) i₀ = Cech.sgn (K.erase j) i₀`. Rewrite using `[sgn_insert (fun hm => hi₀ (Finset.mem_of_mem_erase hm)), if_neg (lt_irrefl _), mul_one]`. Establish `h2 : Cech.sgn (insert i₀ K) i₀ = Cech.sgn K i₀`. Rewrite using `[sgn_insert hi₀, if_neg (lt_irrefl _), mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `sgn_insert (b := j) hi₀`. Establish `h4` using `sgn_insert (b := i₀) (Finset.notMem_erase j K)`. Rewrite `h4` using `[Finset.insert_erase hj]`. Rewrite using `[h1, h2, h3, h4]`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [if_pos h, if_neg (lt_asymm h)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [if_neg (lt_asymm h), if_pos h]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sgn_key {K : Finset (Fin n)} {i₀ j : Fin n} (hi₀ : i₀ ∉ K) (hj : j ∈ K) :
     Cech.sgn K j * Cech.sgn (insert i₀ (K.erase j)) i₀ =
@@ -66,7 +66,7 @@ def onSet {i : ℕ} (s : Cech.Cochain (fun _ : StdCell N => V) i) (A : Finset (F
   else 0
 
 /- English proof (translation)
-Unfold `onSet`. Rewrite using `[dif_pos I.2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem onSet_idx {i : ℕ} (s : Cech.Cochain (fun _ : StdCell N => V) i)
     (I : Cech.Idx (Finset.univ : Finset (Fin (N + 1))) i) : onSet s I.1.1 = s I := by
@@ -74,7 +74,7 @@ theorem onSet_idx {i : ℕ} (s : Cech.Cochain (fun _ : StdCell N => V) i)
   rw [dif_pos I.2]
 
 /- English proof (translation)
-Rewrite using `[Cech.d_apply, ← Finset.sum_coe_sort K.1.1]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← onSet_idx s (Cech.face K j)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem d_eq {i : ℕ} (s : Cech.Cochain (fun _ : StdCell N => V) i)
     (K : Cech.Idx (Finset.univ : Finset (Fin (N + 1))) (i + 1)) :
@@ -90,11 +90,11 @@ def coneY {i : ℕ} (i₀ : Fin (N + 1)) (z : Cech.Cochain (fun _ : StdCell N =>
   if i₀ ∈ A then 0 else Cech.sgn (insert i₀ A) i₀ • onSet z (insert i₀ A)
 
 /- English proof (translation)
-Establish `hcard : ({a, b} : Finset (Fin (N + 1))).card = 0 + 1 + 1` using `Finset.card_pair hab.ne`. Establish `h` using `congrFun hz ⟨⟨{a, b}, Finset.insert_nonempty _ _, Finset.subset_univ _⟩, hcard⟩`. Rewrite `h` using `[d_eq]`. Express the relevant statement in the definitionally equal form `∑ j ∈ ({a, b} : Finset (Fin (N + 1))), Cech.sgn {a, b} j • onSet z (({a, b} : Finset _).erase j) = 0 at h`. Establish `ha : a ∉ ({b} : Finset (Fin (N + 1)))` using `Finset.notMem_singleton.mpr hab.ne`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite `h` using `[Finset.sum_pair hab.ne, Finset.erase_insert ha, Finset.erase_insert_of_ne hab.ne, Finset.erase_singleton, sgn_insert ha, sgn_insert ha, if_neg (lt_irrefl _), if_pos hab]`. Establish `e1 : Cech.sgn ({b} : Finset (Fin (N + 1))) a = 1`. Simplify using `[Cech.sgn, Finset.filter_singleton, lt_asymm hab]`. Establish `e2 : Cech.sgn ({b} : Finset (Fin (N + 1))) b = 1`. Simplify using `[Cech.sgn, Finset.filter_singleton]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[e1, e2, insert_empty_eq]`. Rewrite `h` using `[one_mul, one_smul, one_mul, neg_one_smul, ← sub_eq_add_neg, sub_eq_zero]`. Conclude with `h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onSet_pair {z : Cech.Cochain (fun _ : StdCell N => V) 0}
     (hz : Cech.d (fun _ : StdCell N => V) (Cech.idRes R V Finset.univ) 0 z = 0)
@@ -116,9 +116,9 @@ theorem onSet_pair {z : Cech.Cochain (fun _ : StdCell N => V) 0}
   exact h.symm
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Finset.card_eq_one.mp I.2`. Take `⟨b, hb⟩` from `Finset.card_eq_one.mp K.2`. Rewrite using `[← onSet_idx z I, ← onSet_idx z K, ha, hb]`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Conclude with `onSet_pair hz h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `(onSet_pair hz h).symm`.
+A detailed English derivation is pending.
 -/
 theorem const {z : Cech.Cochain (fun _ : StdCell N => V) 0}
     (hz : Cech.d (fun _ : StdCell N => V) (Cech.idRes R V Finset.univ) 0 z = 0)
@@ -136,31 +136,27 @@ end Cech.Cone
 open Cech.Cone in
 
 /- English proof (translation)
-Introduce `R _ V _ _ N J`. Use `⟨?_, ?_, fun z hz I K => const hz I K⟩` and prove the remaining obligations. Introduce `W i₀ hi₀ i z hz hW hJ`. Establish `hWs : ∀ A, onSet z A ∈ W`. Introduce `A`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `onSet`. Use `split_ifs`. Conclude with `hW _`. Conclude with `W.zero_mem`. Establish `hJs : ∀ A, ¬ J ⊆ A → onSet z A = 0`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Introduce `A hA`. Unfold `onSet`. Use `split_ifs`. Conclude with `hJ _ hA`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcoc : ∀ L : Finset (Fin (N + 1)), L.card = i + 1 + 1 + 1 → ∑ j ∈ L, Cech.sgn L j • onSet z (L.erase j) = 0`. Introduce `L hL`. Establish `h` using `congrFun hz ⟨⟨L, Finset.card_pos.mp (by omega), Finset.subset_univ L⟩, hL⟩`. Rewrite `h` using `[d_eq]`. Conclude with `h`.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Use `⟨fun I => coneY i₀ z I.1.1, fun I => ?_, fun I hI => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `coneY i₀ z I.1.1 ∈ W`. Unfold `coneY`. Use `split_ifs`. Conclude with `W.zero_mem`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zsmul_mem (hWs _) _`. Express the relevant statement in the definitionally equal form `coneY i₀ z I.1.1 = 0`. Unfold `coneY`. Use `split_ifs`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[hJs _ fun hs => hI fun x hx => (Finset.mem_insert.mp (hs hx)).resolve_left fun (e : x = i₀) => hi₀ (e ▸ hx), smul_zero]`. Use function extensionality and compare the values at `K`. Rewrite using `[d_eq, ← onSet_idx z K]`. Establish `hK : K.1.1.card = i + 1 + 1` using `K.2`. Establish `hY : ∀ j ∈ K.1.1, onSet (fun I => coneY i₀ z I.1.1 : Cech.Cochain (fun _ : StdCell N => V) i) (K.1.1.erase j) = coneY i₀ z (K.1.1.erase j)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j hj`. Unfold `onSet`. Rewrite using `[dif_pos (by rw [Finset.card_erase_of_mem hj, hK]; rfl)]`. Rewrite using `[Finset.sum_congr rfl fun j hj => by rw [hY j hj]]`. Generalize the expression as in `K.1.1 = Kf at hK ⊢`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `h : i₀ ∈ Kf`. Rewrite using `[Finset.sum_eq_single i₀]`. Rewrite using `[coneY, if_neg (Finset.notMem_erase i₀ Kf), Finset.insert_erase h, smul_smul, sgn_mul_self, one_smul]`. Introduce `j hj hne`. Rewrite using `[coneY, if_pos (Finset.mem_erase.mpr ⟨Ne.symm hne, h⟩), smul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h' => absurd h h'`. Establish `hc` using `hcoc (insert i₀ Kf) (by rw [Finset.card_insert_of_notMem h, hK])`. Rewrite `hc` using `[Finset.sum_insert h, Finset.erase_insert h]`. Establish `hb` using `eq_neg_iff_add_eq_zero.mpr ((add_comm _ _).trans hc)`. Establish `hs : ∑ j ∈ Kf, Cech.sgn Kf j • coneY i₀ z (Kf.erase j) = -(Cech.sgn (insert i₀ Kf) i₀ • ∑ j ∈ Kf, Cech.sgn (insert i₀ Kf) j • onSet z ((insert i₀ Kf).erase j))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression.
 
-Rewrite using `[Finset.smul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hne : i₀ ≠ j` using `fun e => h (e ▸ hj)`. Establish `hni : i₀ ∉ Kf.erase j` using `fun hm => h (Finset.mem_of_mem_erase hm)`. Rewrite using `[Finset.erase_insert_of_ne hne, coneY, if_neg hni, smul_smul, smul_smul, sgn_key h hj, neg_smul]`.
-
-Rewrite using `[hs, hb, smul_neg, neg_neg, smul_smul, sgn_mul_self, one_smul]`. Introduce `hJne i₀ hi₀ z hz hJ`. Take `⟨j, hj⟩` from `hJne`. Use function extensionality and compare the values at `I`. Set `I₀ : Cech.Idx (Finset.univ : Finset (Fin (N + 1))) 0` to `⟨⟨{i₀}, Finset.singleton_nonempty _, Finset.subset_univ _⟩, Finset.card_singleton _⟩`.
-
-Rewrite using `[const hz I I₀]`. Conclude with `hJ I₀ fun hs => hi₀ (Finset.mem_singleton.mp (hs hj) ▸ hj)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Cech.Cone.proof : Cech.Cone.Statement.{u, v} := by
   intro R _ V _ _ N J

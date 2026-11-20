@@ -22,9 +22,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `e : mat (m * m') = mat m * mat m'` using `rfl`. Establish `e1 : mat (γ * h₁) = mat γ * mat h₁` using `rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← Matrix.mulVec_mulVec, h'.1, Matrix.mulVec_smul, h.1, smul_smul, Units.val_mul, mul_comm]`. Rewrite using `[e, ← Matrix.mulVec_mulVec, h'.2.1, Matrix.mulVec_smul, h.2.1, smul_smul, mul_inv_rev, Units.val_mul, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Matrix.mul_assoc, h'.2.2, e1, ← Matrix.mul_assoc, h.2.2, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isLevi_mul {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : Plane E n n₁} {t s : (AE F E)ˣ}
     {γ h₁ : UA σ W₁.J} {m m' : UA σ W.J} (h : IsLevi (W₁ := W₁) H t γ m) (h' : IsLevi (W₁ := W₁) H s h₁ m') :
@@ -39,11 +39,11 @@ theorem isLevi_mul {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : Pla
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `hi : mat m⁻¹ * mat m = 1` using `by show (m.1⁻¹ * m.1 : GL _ _).1 = 1`. Simplify using the standard rewrite rules. Establish `hg : mat γ * mat γ⁻¹ = 1` using `by show (γ.1 * γ.1⁻¹ : GL _ _).1 = 1`. Simplify using the standard rewrite rules. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `congrArg (fun v => ((t⁻¹ : (AE F E)ˣ) : AE F E) • (mat m⁻¹ *ᵥ v)) h.1`. Simplify using `only [Matrix.mulVec_mulVec, hi, Matrix.one_mulVec, Matrix.mulVec_smul, smul_smul, Units.inv_mul, one_smul] at h1`. Conclude with `h1.symm`. Establish `h1` using `congrArg (fun v => cA σ (t : AE F E) • (mat m⁻¹ *ᵥ v)) h.2.1`. Simplify using `only [Matrix.mulVec_mulVec, hi, Matrix.one_mulVec, Matrix.mulVec_smul, smul_smul, ← map_mul, Units.mul_inv, map_one, one_smul] at h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_inv]`. Conclude with `h1.symm`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isLevi_inv {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : Plane E n n₁} {t : (AE F E)ˣ}
     {γ : UA σ W₁.J} {m : UA σ W.J} (h : IsLevi (W₁ := W₁) H t γ m) : IsLevi (W₁ := W₁) H t⁻¹ γ⁻¹ m⁻¹ := by
@@ -71,15 +71,13 @@ theorem isLevi_inv {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : Pla
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `hi` using `isLevi_inv h`. Establish `hg : mat γ * mat γ⁻¹ = 1` using `by show (γ.1 * γ.1⁻¹ : GL _ _).1 = 1`. Simplify using the standard rewrite rules. Proceed by induction on `hu using Subgroup.closure_induction with`. Consider the case `mem u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Use `Subgroup.subset_closure ⟨?_, fun z => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(mat m * mat u * mat m⁻¹) *ᵥ _ = _`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hi.1, Matrix.mulVec_smul, hu.1, Matrix.mulVec_smul, h.1, smul_smul, Units.inv_mul, one_smul]`. Take `⟨a, ha⟩` from `hu.2 (mat γ⁻¹ *ᵥ z)`. Use `⟨a * t, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(mat m * mat u * mat m⁻¹) *ᵥ _ = _`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec z (mat m⁻¹), hi.2.2, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_add, Matrix.mulVec_smul, h.1, smul_smul, Matrix.mulVec_mulVec, h.2.2, Matrix.mulVec_mulVec, Matrix.mul_assoc, hg, Matrix.mul_one]`. Consider the case `one => simpa using (unip σ W H).one_mem`. Consider the case `mul a b _ _ ha hb`. Establish `e : m * (a * b) * m⁻¹ = (m * a * m⁻¹) * (m * b * m⁻¹)` using `by group`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `(unip σ W H).mul_mem ha hb`. Consider the case `inv a _ ha`. Establish `e : m * a⁻¹ * m⁻¹ = (m * a * m⁻¹)⁻¹` using `by group`. Rewrite using `[e]`.
-
-Conclude with `(unip σ W H).inv_mem ha`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_unip {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : Plane E n n₁} {t : (AE F E)ˣ}
     {γ : UA σ W₁.J} {m : UA σ W.J} (h : IsLevi (W₁ := W₁) H t γ m) {u : UA σ W.J} (hu : u ∈ unip σ W H) :
@@ -111,21 +109,19 @@ theorem conj_mem_unip {n n₁ : ℕ} {W : Spc F E n} {W₁ : Spc F E n₁} {H : 
     exact (unip σ W H).inv_mem ha
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ hσ n n₁ W W₁ H hsk hn hxx hyy hxy hι hJ c₀ hc₀ hW₁ hW M _ hM _ r Xf Yf _ X' Y' hF hX _ _`. Establish `hP : GlobalTheory.ThK.GLTwo.IsHypPlane σ H W W₁` using `⟨hn, hxx, hyy, hxy, hι, hJ⟩`. Establish `hd : W₁.J.det ≠ 0` using `fun h0 => hW₁.2 (by`. Establish `e : (W₁.J.map σ).det = (σ : E →+* E) W₁.J.det` using `by rw [RingHom.map_det]; rfl`. Rewrite using `[Matrix.det_smul, e, h0, map_zero, mul_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set φ := GlobalTheory.ThK.SquareIntegrability.toGAd hσ W.J hc₀ with hφ`. Use `set ψ := GlobalTheory.ThK.SquareIntegrability.toGAd hσ W₁.J hc₀ with hψ`. Establish `hU : ∀ g, g ∈ unip σ W H ↔ φ g ∈ GlobalTheory.StdPar.unip σ (c₀ • W.J.map σ) X' {0}` using `fun g => hP.mem_unip_iff hσ hsk hd hc₀ hF (Nat.succ_pos r) hX g`. Establish `key : ∀ t y g, IsParDec hσ W W₁ H hc₀ X' M t y g ↔ ∃ u ∈ unip σ W H, ∃ l, IsLevi (W₁` using `W₁) H t (ψ.symm y) l ∧ g = φ (u * l) := by`. Introduce `t y g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, m, hm, rfl⟩`. Use `⟨φ.symm u, (hU _).2 (by rwa [MulEquiv.apply_symm_apply]), m * M (ψ.symm y), ?_, ?_⟩` and prove the remaining obligations. Simplify `isLevi_mul hm (hM (ψ.symm y))` using `only [mul_one, one_mul]`. Rewrite using `[map_mul, map_mul, MulEquiv.apply_symm_apply, ← mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨u, hu, l, hl, rfl⟩`. Use `⟨φ u, (hU _).1 hu, l * (M (ψ.symm y))⁻¹, ?_, ?_⟩` and prove the remaining obligations. Simplify `isLevi_mul hl (isLevi_inv (hM (ψ.symm y)))` using `only [inv_one, mul_one, mul_inv_cancel]`. Express the relevant statement in the definitionally equal form `φ (u * l) = φ u * φ (l * (M (ψ.symm y))⁻¹) * φ (M (ψ.symm y))`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Use `group`. Use `⟨fun t t' y y' g g' h h' => ?_, fun t y g h => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, l, hl, rfl⟩` from `(key _ _ _).1 h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u', hu', l', hl', rfl⟩` from `(key _ _ _).1 h'`. Use `(key _ _ _).2 ⟨u * (l * u' * l⁻¹), mul_mem hu (conj_mem_unip hl hu'), l * l', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `isLevi_mul hl hl'`. Rewrite using `[← map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `group`. Take `⟨u, hu, l, hl, rfl⟩` from `(key _ _ _).1 h`. Use `(key _ _ _).2 ⟨l⁻¹ * u⁻¹ * l⁻¹⁻¹, conj_mem_unip (isLevi_inv hl) (inv_mem hu), l⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv]`.
-
-Conclude with `isLevi_inv hl`. Rewrite using `[← map_inv]`. Use `congr 1`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isParDec_mul_inv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →

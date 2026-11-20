@@ -9,7 +9,7 @@ noncomputable def rightContract {F : Type} [Field F] {E E' : Type} [AddCommGroup
   (TensorProduct.rid F E).toLinearMap ∘ₗ TensorProduct.map LinearMap.id l
 
 /- English proof (translation)
-Simplify using `[rightContract]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rightContract_tmul {F : Type} [Field F] {E E' : Type} [AddCommGroup E] [Module F E]
     [AddCommGroup E'] [Module F E'] (l : E' →ₗ[F] F) (x : E) (y : E') :
@@ -17,7 +17,7 @@ theorem rightContract_tmul {F : Type} [Field F] {E E' : Type} [AddCommGroup E] [
   simp [rightContract]
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [rightContract_tmul]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem rightContract_map {F : Type} [Field F] {E E' : Type} [AddCommGroup E] [Module F E]
     [AddCommGroup E'] [Module F E'] (l : E' →ₗ[F] F) (f : E →ₗ[F] E) (g : E' →ₗ[F] E')
@@ -29,9 +29,9 @@ theorem rightContract_map {F : Type} [Field F] {E E' : Type} [AddCommGroup E] [M
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Set `b` to `Module.Basis.ofVectorSpace F E'`. Establish `key : ∀ (i) (v : TensorProduct F E E'), TensorProduct.equivFinsuppOfBasisRight b v i = rightContract (b.coord i) v`. Introduce `i v`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul x y => simp [rightContract_tmul]`. Consider the case `add a c ha hc => simp only [map_add, Finsupp.add_apply, ha, hc]`. Apply `(TensorProduct.equivFinsuppOfBasisRight b).injective` to reduce the goal to its premises. Use extensionality with `i`. Rewrite using `[key, h]`.
+Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -53,19 +53,17 @@ theorem eq_zero_of_rightContract {F : Type} [Field F] {E E' : Type} [AddCommGrou
   simp
 
 /- English proof (translation)
-Introduce `F _ E E' Ix _ _ _ _ Φ Φ' hirr w hw heig π hπ`. Set `U : Submodule F E` to `Submodule.span F (Set.range fun l : E' →ₗ[F] F => rightContract l w)`. Establish `hmem : ∀ l : E' →ₗ[F] F, rightContract l w ∈ U` using `fun l => Submodule.subset_span ⟨l, rfl⟩`. Establish `hstab : ∀ i, ∀ v ∈ U, Φ i v ∈ U`. Introduce `i v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : U ≤ U.comap (Φ i)`. Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨l, rfl⟩`. Take `⟨r, hr⟩` from `heig i`. Establish `h1` using `rightContract_map (l ∘ₗ ((Φ' i).symm : E' →ₗ[F] E')) (Φ i) (Φ' i : E' →ₗ[F] E') w`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : (l ∘ₗ ((Φ' i).symm : E' →ₗ[F] E')) ∘ₗ (Φ' i : E' →ₗ[F] E') = l`. Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2, hr, map_smul]`. Use `show Φ i (rightContract l w) ∈ U`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Conclude with `U.smul_mem _ (hmem _)`. Conclude with `hle hv`. Break down `hirr U hstab with hU | hU` into its components or cases. It suffices to derive a contradiction.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hw` to reduce the goal to its premises. Apply `eq_zero_of_rightContract` to reduce the goal to its premises. Introduce `l`. Use `hmem l` as an intermediate fact. Rewrite `this` using `[hU, Submodule.mem_bot]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Establish `hle : U ≤ LinearMap.ker π`. Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨l, rfl⟩`. Establish `h1` using `rightContract_map l π LinearMap.id w`. Rewrite `h1` using `[hπ, map_zero, LinearMap.comp_id]`.
-
-Conclude with `h1.symm`. Rewrite `hle` using `[hU, top_le_iff]`. Conclude with `LinearMap.ker_eq_top.1 hle`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigenTensor_full_left_support :
     ∀ (F : Type) [Field F] (E E' Ix : Type) [AddCommGroup E] [Module F E] [AddCommGroup E'] [Module F E'] (Φ : Ix → (E →ₗ[F] E)) (Φ' : Ix → (E' ≃ₗ[F] E')), (∀ U : Submodule F E, (∀ i, ∀ v ∈ U, Φ i v ∈ U) → U = ⊥ ∨ U = ⊤) → ∀ w : TensorProduct F E E', w ≠ 0 → (∀ i, ∃ r : F, TensorProduct.map (Φ i) (Φ' i : E' →ₗ[F] E') w = r • w) → ∀ π : E →ₗ[F] E, TensorProduct.map π (LinearMap.id : E' →ₗ[F] E') w = 0 → π = 0 := by

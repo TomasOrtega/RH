@@ -14,19 +14,17 @@ namespace GlobalTheory.DepHalf
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `D T L sc μ₀ hL hQ G i hi e he u hu`. Establish `h1 : e • u ∈ hatMx (G.modul • homLat (G.Λ (.grid (i + 1) 0)) (G.Λ (.grid i 0)))` using `hu.2 e he`. Establish `hmB : ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0`. Use `FractionalIdeal.coeIdeal_ne_zero.2 ?_` and prove the remaining obligations. Unfold `Places.modulBar`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Introduce `h`. Apply `G.pl.modul_ne_bot sc` to reduce the goal to its premises. Use `congrArg (fun J : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • J) h` as an intermediate fact. Simplify `this` using `[smul_smul]`. Establish `hone : (1 : D.host.E) ∈ ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hle : (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≤ ((G.pl.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)⁻¹`. Use `FractionalIdeal.inv_anti_mono hmB one_ne_zero FractionalIdeal.coeIdeal_le_one` as an intermediate fact. Rewrite `this` using `[inv_one]`. Then use the resulting hypothesis. Conclude with `hle (FractionalIdeal.one_mem_one _)`. Establish `hsub : G.modul • homLat (G.Λ (.grid (i + 1) 0)) (G.Λ (.grid i 0)) ≤ homLat (G.Λ (.grid (i + 1) 0)) (idLat (shiftId G) (G.Λ (.grid i 0)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_le.2 fun r hr x hx y hy => ?_` and prove the remaining obligations. Rewrite using `[smul_mulVec]`. Use `Submodule.subset_span ⟨algebraMap (𝓞 D.host.E) D.host.E r, ?_, x *ᵥ y, hx y hy, ?_⟩` and prove the remaining obligations. Unfold `shiftId`. Rewrite using `[show algebraMap (𝓞 D.host.E) D.host.E r = algebraMap (𝓞 D.host.E) D.host.E r * 1 by rw [mul_one]]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_coeIdeal_of_mem _ hr) hone`. Conclude with `(algebraMap_smul D.host.E r (x *ᵥ y)).symm`. Establish `h2 : e • u ∈ hatMx (homLat (G.Λ (.grid (i + 1) 0)) (idLat (shiftId G) (G.Λ (.grid i 0))))`. Use `AddSubgroup.closure_mono ?_ h1` and prove the remaining obligations. Introduce and unpack `w ⟨α, hα, x, hx, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨α, hα, x, hsub hx, rfl⟩`. Establish `hhalf : IsHalf e (e • u)` using `fun a b => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, ← mul_assoc, GlobalTheory.PlaceDatum.idemSum_mul_self he]`. Establish `h0 : ∀ j, (Node.grid (i + 1) 0 : Node) ≠ .grid 0 j` using `fun j h => by injection h with h'`. Use linear arithmetic over natural numbers and integers.
-
-Establish `hsd : IsSelfDualC (G.V (.grid (i + 1) 0)) (G.Λ (.grid (i + 1) 0))` using `(G.isV (show (Node.grid (i + 1) 0 : Node).InRange D.R.m from ⟨hi, Nat.zero_le _⟩) h0).sd`. Conclude with `GlobalTheory.RowLatChi.mem_latO_of_mem_hatMx hsd he (GlobalTheory.AAUnit.exists_valuation_one_element_at_grid_places hQ hL G) hhalf h2`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smul_mem_latBig : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T}, L.Is μ₀ → OffQ D →
     ∀ (G : GridData L sc) (i : ℕ), i < D.R.m → ∀ e : AE D, IsIdemSum e G.pl.W0 → ∀ u ∈ latRow G i, e • u ∈ latBig G i := by

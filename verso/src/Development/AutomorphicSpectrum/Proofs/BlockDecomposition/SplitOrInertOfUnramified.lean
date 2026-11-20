@@ -11,13 +11,11 @@ open scoped ValuativeRel
 namespace GlobalTheory.CompanionTheory.QuadPlace
 
 /- English proof (translation)
-Introduce `K _ _ h2 v he`. Distinguish the cases in `hd : ∃ w₁ w₂ : Ad3.K.PlK K, w₁.asIdeal.LiesOver v.asIdeal ∧ w₂.asIdeal.LiesOver v.asIdeal ∧ w₁ ≠ w₂`. Conclude with `Or.inl hd`. Use `right`. Take `⟨⟨w, hw⟩⟩` from `nonempty_placesOver K v`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hw`. Establish `huniq : ∀ w' : Ad3.K.PlK K, w'.asIdeal.LiesOver v.asIdeal → w' = w` using `fun w' h' => by`. Assume the negation of the conclusion as `hne`. Conclude with `hd ⟨w', w, h', hw, hne⟩`. Use `⟨w, hw, huniq, ?_, ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hs` using `SemiLocal.sum_ramificationIdx_mul_inertiaDeg K v`. Rewrite `hs` using `[Finset.sum_eq_single (⟨w, hw⟩ : SemiLocal.PlacesOver K v) (fun b _ hb => absurd (Subtype.ext (huniq b.1 b.2)) hb) (fun h => absurd (Finset.mem_univ _) h), h2]`. Rewrite using `[finrank_adicCompletion v w]`. Conclude with `hs`. Establish `hx : algebraMap (Ad3.Qv v) (Ad3.K.Kv K w) (unifUnit (Ad3.Qv v) : Ad3.Qv v) ≠ 0`.
-
-Simplify using the standard rewrite rules. Establish `h1` using `valued_algebraMap_adicCompletion v w (unifUnit (Ad3.Qv v) : Ad3.Qv v)`. Rewrite `h1` using `[he w, pow_one, valued_eq_exp_neg_ord hx, valued_eq_exp_neg_ord (Units.ne_zero _), ord_unifUnit]`. Conclude with `neg_injective (WithZero.exp_injective h1)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_or_inert_of_unramified : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → ∀ v : Ad3.Pl, (∀ (w : Ad3.K.PlK K) [w.asIdeal.LiesOver v.asIdeal], w.asIdeal.ramificationIdx (𝓞 ℚ) = 1) → (∃ w₁ w₂ : Ad3.K.PlK K, w₁.asIdeal.LiesOver v.asIdeal ∧ w₂.asIdeal.LiesOver v.asIdeal ∧ w₁ ≠ w₂) ∨ (∃ (w : Ad3.K.PlK K) (_ : w.asIdeal.LiesOver v.asIdeal), (∀ w' : Ad3.K.PlK K, w'.asIdeal.LiesOver v.asIdeal → w' = w) ∧ Module.finrank (Ad3.Qv v) (Ad3.K.Kv K w) = 2 ∧ GroundTheory.LocalField.ord (algebraMap (Ad3.Qv v) (Ad3.K.Kv K w) (unifUnit (Ad3.Qv v) : Ad3.Qv v)) = 1) := by
   classical

@@ -13,7 +13,7 @@ namespace GlobalTheory.HP
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D X0 u w hg Tw μ Z Fl ht Gt T c K hF G A`. Use `HypTiesI.hyp (X0 := X0) ⟨ht, hF, fun j hj => ⟨Z.Fo j hj, Z.loc Fl ht j hj, rfl, ?_⟩⟩ K` and prove the remaining obligations. Conclude with `{ frRat := Z.frRat Fl ht j hj sameU := Z.sameU Fl ht j hj hypT := hypTJ_site Z Fl ht G.siteGood_prime_torsion G.bad_p j hj bad_p := G.bad_p j hj std := A.std j hj psi := A.psi j hj chRat := A.chRat j hj hypC := hypTJC_site Z Fl ht G.siteGood_prime_torsion j hj ok := G.ok j hj sit …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cmpJHyp_inTw_site : ∀ {D : D7} (X0 : Formalism.L2.Herm.Herm0 D) (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (Tw : TwForms D) (μ : D.what₂.Tup) (Z : SiteD X0 u w hg (Tw.fm u μ)) (Fl : Fills (D.gat u w hg)) (ht : Fl.t = D.R.t) (Gt : GatTies D) (T : ∀ u : D.what₂.Word, Forms0 D u) (c : LatCmp D), CmpTied D X0 T Gt c → FillTie Gt u w hg Fl → SiteGood Z → SiteRest Z c → CmpJHyp c (Z.inTw Fl ht Gt) := by
   intro D X0 u w hg Tw μ Z Fl ht Gt T c K hF G A

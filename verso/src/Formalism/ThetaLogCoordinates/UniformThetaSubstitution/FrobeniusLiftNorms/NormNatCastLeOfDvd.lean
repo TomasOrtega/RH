@@ -20,47 +20,47 @@ variable {Tp Lw : Type}
 def jn (e : Tp →₀ ℕ) (n : Lw →₀ ℕ) : Tp ⊕ Lw →₀ ℕ := e.mapDomain Sum.inl + n.mapDomain Sum.inr
 
 /- English proof (translation)
-The claim follows from `Finsupp.mapDomain_apply Sum.inl_injective _ _`.
+A detailed English derivation is pending.
 -/
 lemma mapDomain_inl_inl (e : Tp →₀ ℕ) (τ : Tp) :
     (e.mapDomain (Sum.inl : Tp → Tp ⊕ Lw)) (Sum.inl τ) = e τ :=
   Finsupp.mapDomain_apply Sum.inl_injective _ _
 
 /- English proof (translation)
-The claim follows from `Finsupp.mapDomain_of_notMem_range _ _ (by simp)`.
+A detailed English derivation is pending.
 -/
 lemma mapDomain_inl_inr (e : Tp →₀ ℕ) (x : Lw) :
     (e.mapDomain (Sum.inl : Tp → Tp ⊕ Lw)) (Sum.inr x) = 0 :=
   Finsupp.mapDomain_of_notMem_range _ _ (by simp)
 
 /- English proof (translation)
-The claim follows from `Finsupp.mapDomain_apply Sum.inr_injective _ _`.
+A detailed English derivation is pending.
 -/
 lemma mapDomain_inr_inr (n : Lw →₀ ℕ) (x : Lw) :
     (n.mapDomain (Sum.inr : Lw → Tp ⊕ Lw)) (Sum.inr x) = n x :=
   Finsupp.mapDomain_apply Sum.inr_injective _ _
 
 /- English proof (translation)
-The claim follows from `Finsupp.mapDomain_of_notMem_range _ _ (by simp)`.
+A detailed English derivation is pending.
 -/
 lemma mapDomain_inr_inl (n : Lw →₀ ℕ) (τ : Tp) :
     (n.mapDomain (Sum.inr : Lw → Tp ⊕ Lw)) (Sum.inl τ) = 0 :=
   Finsupp.mapDomain_of_notMem_range _ _ (by simp)
 
 /- English proof (translation)
-Simplify using `[jn, mapDomain_inl_inl, mapDomain_inr_inl]`.
+Simplify using the standard rewrite rules.
 -/
 lemma jn_inl (e : Tp →₀ ℕ) (n : Lw →₀ ℕ) (τ : Tp) : jn e n (Sum.inl τ) = e τ := by
   simp [jn, mapDomain_inl_inl, mapDomain_inr_inl]
 
 /- English proof (translation)
-Simplify using `[jn, mapDomain_inl_inr, mapDomain_inr_inr]`.
+Simplify using the standard rewrite rules.
 -/
 lemma jn_inr (e : Tp →₀ ℕ) (n : Lw →₀ ℕ) (x : Lw) : jn e n (Sum.inr x) = n x := by
   simp [jn, mapDomain_inl_inr, mapDomain_inr_inr]
 
 /- English proof (translation)
-Introduce `n n' h`. Use extensionality with `x`. Rewrite using `[← jn_inr e n x, h, jn_inr]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 lemma jn_injective (e : Tp →₀ ℕ) : Function.Injective (jn (Lw := Lw) e) := by
   intro n n' h
@@ -68,40 +68,40 @@ lemma jn_injective (e : Tp →₀ ℕ) : Function.Injective (jn (Lw := Lw) e) :=
   rw [← jn_inr e n x, h, jn_inr]
 
 /- English proof (translation)
-Simplify using `only [Finsupp.degree_eq_sum, Fintype.sum_sum_type, jn_inl, jn_inr]`.
+Simplify using the standard rewrite rules.
 -/
 lemma degree_jn [Fintype Tp] [Fintype Lw] (e : Tp →₀ ℕ) (n : Lw →₀ ℕ) :
     (jn e n).degree = e.degree + n.degree := by
   simp only [Finsupp.degree_eq_sum, Fintype.sum_sum_type, jn_inl, jn_inr]
 
 /- English proof (translation)
-Unfold `mfact`. Conclude with `Finsupp.prod_fintype _ _ (fun _ => rfl)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma mfact_eq_prod {ι : Type} [Fintype ι] (n : ι →₀ ℕ) : mfact n = ∏ i, (n i).factorial := by
   unfold mfact
   exact Finsupp.prod_fintype _ _ (fun _ => rfl)
 
 /- English proof (translation)
-Simplify using `only [mfact_eq_prod, Fintype.prod_sum_type, jn_inl, jn_inr]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mfact_jn [Fintype Tp] [Fintype Lw] (e : Tp →₀ ℕ) (n : Lw →₀ ℕ) :
     mfact (jn e n) = mfact e * mfact n := by
   simp only [mfact_eq_prod, Fintype.prod_sum_type, jn_inl, jn_inr]
 
 /- English proof (translation)
-Simplify using `only [lowDeg, Finsupp.degree_eq_sum, jn_inr]`.
+Simplify using the standard rewrite rules.
 -/
 lemma lowDeg_jn [Fintype Lw] (e : Tp →₀ ℕ) (n : Lw →₀ ℕ) : lowDeg (jn e n) = n.degree := by
   simp only [lowDeg, Finsupp.degree_eq_sum, jn_inr]
 
 /- English proof (translation)
-Simplify using `[lowDeg, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma lowDeg_add [Fintype Lw] (a c : Tp ⊕ Lw →₀ ℕ) : lowDeg (a + c) = lowDeg a + lowDeg c := by
   simp [lowDeg, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `lowDeg`. Use `Finset.sum_le_sum fun x _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma lowDeg_sub_le [Fintype Lw] (a c : Tp ⊕ Lw →₀ ℕ) : lowDeg (a - c) ≤ lowDeg a := by
   unfold lowDeg
@@ -115,7 +115,7 @@ section Op
 variable {K Tp Lw : Type} [Field K]
 
 /- English proof (translation)
-Unfold `jn topMonoP lowPoly`. Rewrite using `[MvPolynomial.coeff_monomial_mul, one_mul, MvPolynomial.coeff_rename_mapDomain _ Sum.inr_injective]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma coeff_jn (e : Tp →₀ ℕ) (n : Lw →₀ ℕ) (R : MvPolynomial Lw K) :
     MvPolynomial.coeff (jn e n) (topMonoP e * lowPoly R) = MvPolynomial.coeff n R := by
@@ -124,13 +124,11 @@ lemma coeff_jn (e : Tp →₀ ℕ) (n : Lw →₀ ℕ) (R : MvPolynomial Lw K) :
     MvPolynomial.coeff_rename_mapDomain _ Sum.inr_injective]
 
 /- English proof (translation)
-Introduce `m hm`. Rewrite `hm` using `[MvPolynomial.mem_support_iff]`. Unfold `topMonoP lowPoly at hm`. Rewrite `hm` using `[MvPolynomial.coeff_monomial_mul']`. Use `split_ifs at hm with hle`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm` using `[one_mul]`. Assume the negation of the conclusion as `hcon`. Apply `hm` to reduce the goal to its premises. Use `MvPolynomial.coeff_rename_eq_zero _ _ _ fun u hu => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hu0`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hcon` to reduce the goal to its premises. Rewrite using `[Finset.mem_image]`. Use `⟨u, MvPolynomial.mem_support_iff.2 hu0, ?_⟩` and prove the remaining obligations. Unfold `jn`. Rewrite using `[hu]`.
-
-Conclude with `add_tsub_cancel_of_le hle`. Conclude with `absurd rfl hm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma support_topLow [DecidableEq Tp] [DecidableEq Lw] (e : Tp →₀ ℕ) (R : MvPolynomial Lw K) :
     (topMonoP e * lowPoly R).support ⊆ R.support.image (jn e) := by
@@ -153,7 +151,7 @@ lemma support_topLow [DecidableEq Tp] [DecidableEq Lw] (e : Tp →₀ ℕ) (R : 
   · exact absurd rfl hm
 
 /- English proof (translation)
-Rewrite using `[jetPair_eq_sum _ _ _ (support_topLow e R), Finset.sum_image (fun a _ c _ h => jn_injective e h)]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_jn, mfact_jn]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma jetPair_topLow [Fintype Tp] [Fintype Lw] (e : Tp →₀ ℕ)
     (R : MvPolynomial Lw K) (G : MvPowerSeries (Tp ⊕ Lw) K) :
@@ -166,7 +164,7 @@ lemma jetPair_topLow [Fintype Tp] [Fintype Lw] (e : Tp →₀ ℕ)
   rw [coeff_jn, mfact_jn]
 
 /- English proof (translation)
-Unfold `jetPair`. Conclude with `Finset.sum_congr rfl fun m hm => by rw [h m hm]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma jetPair_congr {ι : Type} (P : MvPolynomial ι K) (G G' : MvPowerSeries ι K)
     (h : ∀ m ∈ P.support, MvPowerSeries.coeff m G = MvPowerSeries.coeff m G') :
@@ -179,7 +177,7 @@ variable {κ : Type} [Fintype κ]
 def ext0 (b : κ → Lw → K) (k : κ) : Tp ⊕ Lw → K := Sum.elim 0 (b k)
 
 /- English proof (translation)
-Unfold `linS lowLin ext0`. Rewrite using `[Fintype.sum_sum_type]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma lin_s_extend_zero [Fintype Tp] [Fintype Lw] (b : κ → Lw → K) (k : κ) :
     linS (ext0 (Tp := Tp) b k) = lowLin (b k) := by
@@ -188,7 +186,7 @@ lemma lin_s_extend_zero [Fintype Tp] [Fintype Lw] (b : κ → Lw → K) (k : κ)
   simp
 
 /- English proof (translation)
-Unfold `shiftPoly topMonoP`. Rewrite using `[MvPolynomial.aeval_monomial, Finsupp.prod_mapDomain_index_inj Sum.inl_injective, MvPolynomial.monomial_eq, Finsupp.prod_mapDomain_index_inj Sum.inl_injective]`. Simplify using `[ext0, Finsupp.prod, map_prod]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma shiftPoly_topMonoP (b : κ → Lw → K) (e : Tp →₀ ℕ) :
     shiftPoly (ext0 (Tp := Tp) b) (topMonoP e) = MvPolynomial.C (topMonoP e) := by
@@ -198,9 +196,9 @@ lemma shiftPoly_topMonoP (b : κ → Lw → K) (e : Tp →₀ ℕ) :
   simp [ext0, Finsupp.prod, map_prod]
 
 /- English proof (translation)
-Unfold `shiftPoly lowPoly`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => simp [MvPolynomial.algebraMap_eq]`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `mul_X f x hf`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [map_mul, hf]`. Simplify using `[ext0, map_sum]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma shiftPoly_lowPoly (b : κ → Lw → K) (Q : MvPolynomial Lw K) :
     shiftPoly (ext0 (Tp := Tp) b) (lowPoly Q) =
@@ -215,9 +213,9 @@ lemma shiftPoly_lowPoly (b : κ → Lw → K) (Q : MvPolynomial Lw K) :
     simp [ext0, map_sum]
 
 /- English proof (translation)
-Establish `hm : shiftPoly (ext0 (Tp` using `Tp) b) (topMonoP e * lowPoly Q) = shiftPoly (ext0 (Tp := Tp) b) (topMonoP e) * shiftPoly (ext0 (Tp := Tp) b) (lowPoly Q) := by`. Unfold `shiftPoly`. Conclude with `map_mul _ _ _`. Unfold `hasseDir`. Rewrite using `[hm, shiftPoly_topMonoP, shiftPoly_lowPoly, MvPolynomial.coeff_C_mul, MvPolynomial.coeff_map]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 lemma hasseDir_topLow (b : κ → Lw → K) (β : κ →₀ ℕ) (e : Tp →₀ ℕ) (Q : MvPolynomial Lw K) :
     hasseDir (ext0 (Tp := Tp) b) β (topMonoP e * lowPoly Q) =
@@ -240,14 +238,14 @@ def Agree (D : ℕ) (f f' : MvPowerSeries σ K) : Prop :=
   ∀ n : σ →₀ ℕ, n.degree ≤ D → MvPowerSeries.coeff n f = MvPowerSeries.coeff n f'
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 lemma agree_refl (D : ℕ) (f : MvPowerSeries σ K) : Agree D f f := fun _ _ => rfl
 
 /- English proof (translation)
-Introduce `n hn`. Rewrite using `[MvPowerSeries.coeff_mul, MvPowerSeries.coeff_mul]`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `hx'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hx`. Establish `hd : x.1.degree + x.2.degree = n.degree` using `by rw [← hx', map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hf _ (by omega), hg _ (by omega)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma agree_mul {D : ℕ} {f f' g g' : MvPowerSeries σ K} (hf : Agree D f f') (hg : Agree D g g') :
     Agree D (f * g) (f' * g') := by
@@ -260,7 +258,7 @@ lemma agree_mul {D : ℕ} {f f' g g' : MvPowerSeries σ K} (hf : Agree D f f') (
   rw [hf _ (by omega), hg _ (by omega)]
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simpa using agree_refl D (1 : MvPowerSeries σ K)`. Consider the case `succ i ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `agree_mul ih hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma agree_pow {D : ℕ} {f f' : MvPowerSeries σ K} (hf : Agree D f f') (i : ℕ) :
     Agree D (f ^ i) (f' ^ i) := by
@@ -271,7 +269,7 @@ lemma agree_pow {D : ℕ} {f f' : MvPowerSeries σ K} (hf : Agree D f f') (i : �
     exact agree_mul ih hf
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [MvPowerSeries.monomial_zero_one]`. Consider the case `insert x s hx ih`. Rewrite using `[Finset.prod_insert hx, Finset.sum_insert hx, Finset.prod_insert hx, ih, MvPowerSeries.monomial_mul_monomial]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 lemma prod_monomial {α : Type} (s : Finset α) (d : α → σ →₀ ℕ) (a : α → K) :
     ∏ i ∈ s, MvPowerSeries.monomial (d i) (a i) =
@@ -284,7 +282,7 @@ lemma prod_monomial {α : Type} (s : Finset α) (d : α → σ →₀ ℕ) (a : 
       MvPowerSeries.monomial_mul_monomial]
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.monomial_zero_eq_C_apply, MvPowerSeries.monomial_mul_monomial, zero_add, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma C_mul_monomial_one (a : K) (d : σ →₀ ℕ) :
     MvPowerSeries.C a * MvPowerSeries.monomial d (1 : K) = MvPowerSeries.monomial d a := by
@@ -301,14 +299,14 @@ def LowGe (m : ℕ) (V : MvPowerSeries (Tp ⊕ Lw) K) : Prop :=
   ∀ n, MvPowerSeries.coeff n V ≠ 0 → m ≤ lowDeg n
 
 /- English proof (translation)
-Introduce `_ _` and use `Nat.zero_le _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma lowGe_zero (V : MvPowerSeries (Tp ⊕ Lw) K) : LowGe 0 V := fun _ _ => Nat.zero_le _
 
 /- English proof (translation)
-Introduce `n hn`. Rewrite `hn` using `[MvPowerSeries.coeff_mul]`. Take `⟨x, hx, hx0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hn`. Establish `hx'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hx`. Rewrite using `[← hx', lowDeg_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_le_add (h _ (left_ne_zero_of_mul hx0)) (h' _ (right_ne_zero_of_mul hx0))`.
+A detailed English derivation is pending.
 -/
 lemma lowGe_mul {m m' : ℕ} {V V' : MvPowerSeries (Tp ⊕ Lw) K} (h : LowGe m V) (h' : LowGe m' V') :
     LowGe (m + m') (V * V') := by
@@ -321,7 +319,7 @@ lemma lowGe_mul {m m' : ℕ} {V V' : MvPowerSeries (Tp ⊕ Lw) K} (h : LowGe m V
   exact add_le_add (h _ (left_ne_zero_of_mul hx0)) (h' _ (right_ne_zero_of_mul hx0))
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => exact lowGe_zero _`. Consider the case `succ i ih`. Rewrite using `[pow_succ, Nat.mul_succ]`. Conclude with `lowGe_mul ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lowGe_pow {m : ℕ} {V : MvPowerSeries (Tp ⊕ Lw) K} (h : LowGe m V) (i : ℕ) :
     LowGe (m * i) (V ^ i) := by
@@ -338,7 +336,7 @@ section Norm
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun x _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hf _) (norm_nonneg _) (hg _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma integral_mul {σ : Type} {f g : MvPowerSeries σ K} (hf : Integral f) (hg : Integral g) :
     Integral (f * g) := by
@@ -350,9 +348,9 @@ lemma integral_mul {σ : Type} {f g : MvPowerSeries σ K} (hf : Integral f) (hg 
   exact mul_le_one₀ (hf _) (norm_nonneg _) (hg _)
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero`. Introduce `n`. Rewrite using `[pow_zero, MvPowerSeries.coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `succ i ih`. Rewrite using `[pow_succ]`. Conclude with `integral_mul ih hf`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma integral_pow {σ : Type} {f : MvPowerSeries σ K} (hf : Integral f) (i : ℕ) :
     Integral (f ^ i) := by
@@ -367,7 +365,7 @@ lemma integral_pow {σ : Type} {f : MvPowerSeries σ K} (hf : Integral f) (i : �
     exact integral_mul ih hf
 
 /- English proof (translation)
-Rewrite using `[norm_prod]`. Use `Finset.prod_le_one (fun _ _ => norm_nonneg _) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) (ha i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_prod_pow_le_one {α : Type} (s : Finset α) (a : α → K) (m : α → ℕ)
     (ha : ∀ i, ‖a i‖ ≤ 1) : ‖∏ i ∈ s, a i ^ m i‖ ≤ 1 := by
@@ -377,9 +375,9 @@ lemma norm_prod_pow_le_one {α : Type} (s : Finset α) (a : α → K) (m : α �
   exact pow_le_one₀ (norm_nonneg _) (ha i)
 
 /- English proof (translation)
-Break down `s.eq_empty_or_nonempty with rfl | hs` into its components or cases. Use `left`. Simplify using the standard rewrite rules. Take `⟨j, hj, hle⟩` from `IsUltrametricDist.exists_norm_finsetSum_le_of_nonempty hs f`. Break down `h j hj with h0 | ⟨w, hw, hb⟩` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `left`. Rewrite `hle` using `[h0, norm_zero]`. Conclude with `norm_le_zero_iff.1 hle`. Conclude with `Or.inr ⟨w, hw, hle.trans hb⟩`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 lemma closure_sum {Wt J : Type} (valid : Wt → Prop) (B : Wt → ℝ) (s : Finset J) (f : J → K)
     (h : ∀ j ∈ s, f j = 0 ∨ ∃ w, valid w ∧ ‖f j‖ ≤ B w) :
@@ -394,7 +392,7 @@ lemma closure_sum {Wt J : Type} (valid : Wt → Prop) (B : Wt → ℝ) (s : Fins
     · exact Or.inr ⟨w, hw, hle.trans hb⟩
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `h`. Rewrite using `[Nat.cast_mul, norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (IsUltrametricDist.norm_natCast_le_one K q)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma norm_natCast_le_of_dvd {a c : ℕ} (h : a ∣ c) : ‖(c : K)‖ ≤ ‖(a : K)‖ := by
   obtain ⟨q, rfl⟩ := h
@@ -404,15 +402,11 @@ lemma norm_natCast_le_of_dvd {a c : ℕ} (h : a ∣ c) : ‖(c : K)‖ ≤ ‖(a
 end Norm
 
 /- English proof (translation)
-Establish `hs` using `Nat.multinomial_spec (univ : Finset (Φ ⊕ κ ⊕ Fin 2)) k`. Rewrite `hs` using `[Fintype.prod_sum_type, Fintype.prod_sum_type, Fintype.sum_sum_type, Fintype.sum_sum_type]`. Use `set A := ∏ φ : Φ, (k (Sum.inl φ)).factorial with hA`. Use `set Bf := ∏ x : κ, (k (Sum.inr (Sum.inl x))).factorial with hBf`. Use `set C2 := ∏ t : Fin 2, (k (Sum.inr (Sum.inr t))).factorial with hC2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set sA := ∑ φ : Φ, k (Sum.inl φ) with hsA`. Use `set sB := ∑ x : κ, k (Sum.inr (Sum.inl x)) with hsB`. Use `set sC := ∑ t : Fin 2, k (Sum.inr (Sum.inr t)) with hsC`. Establish `h1 : A ∣ sA.factorial` using `Nat.prod_factorial_dvd_factorial_sum _ _`. Establish `h2 : C2 ∣ sC.factorial` using `Nat.prod_factorial_dvd_factorial_sum _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : sB.factorial * sC.factorial ∣ (sB + sC).factorial` using `Nat.factorial_mul_factorial_dvd_factorial_add _ _`. Establish `h4 : sA.factorial * (sB + sC).factorial ∣ (sA + (sB + sC)).factorial` using `Nat.factorial_mul_factorial_dvd_factorial_add _ _`. Establish `h5 : A * (sB.factorial * C2) ∣ (sA + (sB + sC)).factorial` using `(mul_dvd_mul h1 ((mul_dvd_mul (dvd_refl _) h2).trans h3)).trans h4`. Rewrite `h5` using `[← hs]`. Establish `hpos : 0 < A * C2` using `Nat.mul_pos (Finset.prod_pos fun _ _ => Nat.factorial_pos _) (Finset.prod_pos fun _ _ => Nat.factorial_pos _)`.
-
-Use `Nat.dvd_of_mul_dvd_mul_left hpos ?_` and prove the remaining obligations. Establish `e1 : A * C2 * sB.factorial = A * (sB.factorial * C2)` using `by ring`. Establish `e2 : A * C2 * (Nat.multinomial univ k * Bf) = A * (Bf * C2) * Nat.multinomial univ k`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`.
-
-Conclude with `h5`.
+Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma fact_dvd {Φ κ : Type} [Fintype Φ] [Fintype κ] (k : Φ ⊕ κ ⊕ Fin 2 → ℕ) :
     (∑ x : κ, k (Sum.inr (Sum.inl x))).factorial ∣
@@ -456,7 +450,7 @@ def piece (p : ℕ) (Z Y : MvPowerSeries (Tp ⊕ Lw) K) (aA : Φ → K) (dA : Φ
       (fun t => if t = 0 then Z else MvPowerSeries.C (p : K) * Y))
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_sum_type, Fintype.sum_sum_type, Fin.sum_univ_two]`. Simplify using `only [piece, Sum.elim_inl, Sum.elim_inr, if_true, one_ne_zero, if_false]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma sum_piece (p : ℕ) (Z Y : MvPowerSeries (Tp ⊕ Lw) K) (aA : Φ → K) (dA : Φ → Tp →₀ ℕ)
     (aB : κ → K) (dB : κ → Tp →₀ ℕ) (b : κ → Lw → K) :
@@ -477,7 +471,7 @@ def cTot (p : ℕ) (aA : Φ → K) (aB : κ → K) (k : Φ ⊕ κ ⊕ Fin 2 → 
     (p : K) ^ k (Sum.inr (Sum.inr 1))
 
 /- English proof (translation)
-Simplify using `[dTot, mapDomain_inl_inl]`.
+Simplify using the standard rewrite rules.
 -/
 lemma dTot_inl (dA : Φ → Tp →₀ ℕ) (dB : κ → Tp →₀ ℕ) (k : Φ ⊕ κ ⊕ Fin 2 → ℕ) (τ : Tp) :
     dTot (Lw := Lw) dA dB k (Sum.inl τ) =
@@ -485,13 +479,13 @@ lemma dTot_inl (dA : Φ → Tp →₀ ℕ) (dB : κ → Tp →₀ ℕ) (k : Φ �
   simp [dTot, mapDomain_inl_inl]
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type, Fin.prod_univ_two]`. Simplify using `only [piece, Sum.elim_inl, Sum.elim_inr, if_true, one_ne_zero, if_false]`. Establish `hA : ∏ φ, (MvPowerSeries.C (aA φ) * topMonoS (Lw` using `Lw) (dA φ)) ^ k (Sum.inl φ) = MvPowerSeries.monomial (∑ φ, k (Sum.inl φ) • (dA φ).mapDomain Sum.inl) (∏ φ, aA φ ^ k (Sum.inl φ)) := by`. Rewrite using `[← prod_monomial]`. Use `Finset.prod_congr rfl fun φ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `topMonoS`. Rewrite using `[C_mul_monomial_one, MvPowerSeries.monomial_pow]`. Establish `hB : ∏ x, (MvPowerSeries.C (aB x) * topMonoS (Lw` using `Lw) (dB x) * lowLin (b x)) ^ k (Sum.inr (Sum.inl x)) = MvPowerSeries.monomial (∑ x, k (Sum.inr (Sum.inl x)) • (dB x).mapDomain Sum.inl) (∏ x, aB x ^ k (Sum.inr (Sum.inl x))) * ∏ x, lowLin (b x) ^ k (Sum.inr (Sum.inl x)) := by`. Rewrite using `[← prod_monomial, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `topMonoS`. Rewrite using `[C_mul_monomial_one, mul_pow, MvPowerSeries.monomial_pow]`. Establish `hC : MvPowerSeries.monomial (dTot (Lw` using `Lw) dA dB k) (cTot p aA aB k) = MvPowerSeries.monomial (∑ φ, k (Sum.inl φ) • (dA φ).mapDomain Sum.inl) (∏ φ, aA φ ^ k (Sum.inl φ)) * MvPowerSeries.monomial (∑ x, k (Sum.inr (Sum.inl x)) • (dB x).mapDomain Sum.inl) (∏ x, aB x ^ k (Sum.inr (Sum.inl x))) * MvPowerSeries.C ((p : K)) …`. Rewrite using `[← map_pow, ← MvPowerSeries.monomial_zero_eq_C_apply, MvPowerSeries.monomial_mul_monomial, MvPowerSeries.monomial_mul_monomial, add_zero]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hA, hB, hC, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma prod_piece (p : ℕ) (Z Y : MvPowerSeries (Tp ⊕ Lw) K) (aA : Φ → K) (dA : Φ → Tp →₀ ℕ)
     (aB : κ → K) (dB : κ → Tp →₀ ℕ) (b : κ → Lw → K) (k : Φ ⊕ κ ⊕ Fin 2 → ℕ)
@@ -541,29 +535,25 @@ def bnd (K : Type) [NormedField K] (p : ℕ) (e : Tp →₀ ℕ)
     ‖(((∑ k, w.2.1 k).factorial : ℕ) : K)‖ * ‖((mfact w.2.2.2 : ℕ) : K)‖
 
 /- English proof (translation)
-Use `set β : κ →₀ ℕ := Finsupp.equivFunOnFinite.symm (fun x => k (Sum.inr (Sum.inl x))) with hβ`. Establish `hβx : ∀ x, β x = k (Sum.inr (Sum.inl x))` using `fun x => rfl`. Establish `hlin : ∏ x, lowLin (Tp` using `Tp) (b x) ^ k (Sum.inr (Sum.inl x)) = ∏ x, linS (ext0 (Tp := Tp) b x) ^ β x := Finset.prod_congr rfl fun x _ => by rw [lin_s_extend_zero, hβx]`. Rewrite using `[prod_piece, hlin, h1 K (Tp ⊕ Lw) κ (ext0 b) β, hasseDir_topLow, jetPair_topLow, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Use `closure_sum _ _ _ _ fun n hn => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPowerSeries.coeff_monomial_mul]`. Use `split_ifs with hle`. Use `swap`. Use `left`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set v := MvPowerSeries.coeff (jn e n - dTot dA dB k) (Z ^ k (Sum.inr (Sum.inr 0)) * (Y ^ k (Sum.inr (Sum.inr 1)) * U)) with hv`. Distinguish the cases in `hc : cTot p aA aB k * v = 0`. Use `left`. Simplify using `[hc]`. Use `right`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc1 : cTot p aA aB k ≠ 0` using `left_ne_zero_of_mul hc`. Establish `hv1 : v ≠ 0` using `right_ne_zero_of_mul hc`. Establish `hsum : ∑ φ, k (Sum.inl φ) + ∑ x, β x + k (Sum.inr (Sum.inr 0)) + k (Sum.inr (Sum.inr 1)) = i`. Rewrite using `[← hk, Fintype.sum_sum_type, Fintype.sum_sum_type, Fin.sum_univ_two]`. Simplify using `only [hβx]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨(fun φ => k (Sum.inl φ), β, k (Sum.inr (Sum.inr 0)), n), ⟨hn, ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `φ hφ h0`. Apply `hc1` to reduce the goal to its premises. Establish `: ∏ φ, aA φ ^ k (Sum.inl φ) = 0` using `Finset.prod_eq_zero (Finset.mem_univ φ) (by rw [h0]; exact zero_pow hφ)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[cTot, this]`. Introduce `x hx h0`. Apply `hc1` to reduce the goal to its premises. Establish `: ∏ x, aB x ^ k (Sum.inr (Sum.inl x)) = 0` using `Finset.prod_eq_zero (Finset.mem_univ x) (by rw [h0]; exact zero_pow hx)`. Simplify using `[cTot, this]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Introduce `τ`. Use `hle (Sum.inl τ)` as an intermediate fact. Rewrite `this` using `[jn_inl, dTot_inl]`. Conclude with `this`. Establish `h3` using `lowGe_mul (lowGe_pow hZlow (k (Sum.inr (Sum.inr 0)))) (lowGe_zero (Y ^ k (Sum.inr (Sum.inr 1)) * U)) _ hv1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h4` using `lowDeg_sub_le (jn e n) (dTot dA dB k)`. Rewrite `h4` using `[lowDeg_jn]`. Use `show p * k (Sum.inr (Sum.inr 0)) ≤ n.degree`. Use linear arithmetic over natural numbers and integers. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp.pos set s := ∑ φ, k (Sum.inl φ) + ∑ x, β x + k (Sum.inr (Sum.inr 0)) with hs set cR := MvPolynomial.coeff n (hasseDir b β Q) with hcR`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : ((p : K) ^ i)⁻¹ * (((Nat.multinomial univ k : ℕ) : K) * (((∏ x, (β x).factorial : ℕ) : K) * (cR * ((mfact e * mfact n : ℕ) : K) * (cTot p aA aB k * v)))) = (((p : K) ^ i)⁻¹ * (p : K) ^ k (Sum.inr (Sum.inr 1))) * ((Nat.multinomial univ k * ∏ x, (β x).factorial : ℕ) : K) * ((m …`. Unfold `cTot`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hx]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hpp : ‖((p : K) ^ i)⁻¹ * (p : K) ^ k (Sum.inr (Sum.inr 1))‖ = (p : ℝ) ^ s`. Rewrite using `[norm_mul, norm_inv, norm_pow, norm_pow, hpn, ← hsum, pow_add, inv_pow, inv_pow, mul_inv, inv_inv, inv_inv, mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hp0.ne'), mul_one]`. Establish `hm : ‖((Nat.multinomial univ k * ∏ x, (β x).factorial : ℕ) : K)‖ ≤ ‖(((∑ x, β x).factorial : ℕ) : K)‖` using `norm_natCast_le_of_dvd (fact_dvd k)`. Establish `ht : ‖cR * ((∏ φ, aA φ ^ k (Sum.inl φ)) * ((∏ x, aB x ^ k (Sum.inr (Sum.inl x))) * v))‖ ≤ 1`. Rewrite using `[norm_mul, norm_mul, norm_mul]`.
-
-Use `mul_le_one₀ ((h2 K Lw κ b β Q).1 hQ hb n) (by positivity) ?_` and prove the remaining obligations. Use `mul_le_one₀ (norm_prod_pow_le_one _ _ _ haA) (by positivity) ?_` and prove the remaining obligations. Use `mul_le_one₀ (norm_prod_pow_le_one _ _ _ haB) (norm_nonneg _) ?_` and prove the remaining obligations. Conclude with `integral_mul (integral_pow hZ _) (integral_mul (integral_pow hY _) hU) _`. Rewrite using `[norm_mul, norm_mul, norm_mul, norm_mul, hpp]`.
-
-Unfold `bnd`. Use `show _ ≤ (p : ℝ) ^ s * ‖((mfact e : ℕ) : K)‖ * ‖(((∑ x, β x).factorial : ℕ) : K)‖ * ‖((mfact n : ℕ) : K)‖`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma term_bound (h1 : JetPairingHasseIdentity) (h2 : HasseDerivIntegralHomogeneous) (p : ℕ) (Z Y : MvPowerSeries (Tp ⊕ Lw) K)
     (aA : Φ → K) (dA : Φ → Tp →₀ ℕ) (aB : κ → K) (dB : κ → Tp →₀ ℕ) (b : κ → Lw → K)
@@ -664,17 +654,17 @@ end ETerm
 open Formalism.DworkPowerSeriesWeights (Integral jetPair mfact)
 
 /- English proof (translation)
-Introduce `K Tp Lw Φ κ _ _ _ _ _ _ _ _ p D dQ h g Z Y aA dA aB dB b e Q hp hpn _ hg haA haB hb hZ hY hZlow hdec hQ hQh hD`. Take `⟨U, hU, hgU⟩` from `hg`. Establish `hag : ETerm.Agree D h (∑ j, ETerm.piece p Z Y aA dA aB dB b j)`. Rewrite using `[ETerm.sum_piece]`. Conclude with `hdec`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsupp : ∀ m ∈ (topMonoP e * lowPoly Q).support, m.degree = D`. Introduce `m hm`. Take `⟨n, hn, rfl⟩` from `Finset.mem_image.1 (ETerm.support_topLow e Q hm)`. Establish `hnd : n.degree = dQ`. Use `hQh (MvPolynomial.mem_support_iff.1 hn)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this, Finsupp.degree_eq_weight_one]`. Both sides reduce to the same expression. Rewrite using `[ETerm.degree_jn, hnd, hD]`. Establish `key : jetPair (topMonoP e * lowPoly Q) g = ∑ i ∈ range (D + 1), ∑ k ∈ Finset.piAntidiag (univ : Finset (Φ ⊕ κ ⊕ Fin 2)) i, ((p : K) ^ i)⁻¹ * (((Nat.multinomial univ k : ℕ) : K) * jetPair (topMonoP e * lowPoly Q) ((∏ j, ETerm.piece p Z Y aA dA aB dB b j ^ k j) * U i))`. Establish `h0 : jetPair (topMonoP e * lowPoly Q) g = jetPair (topMonoP e * lowPoly Q) (∑ i ∈ range (D + 1), MvPowerSeries.C (((p : K) ^ i)⁻¹) * ((∑ j, ETerm.piece p Z Y aA dA aB dB b j) ^ i * U i))`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ETerm.jetPair_congr _ _ _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[hgU m, hsupp m hm, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_C_mul, ETerm.agree_mul (ETerm.agree_pow hag i) (ETerm.agree_refl D (U i)) m (hsupp m hm).le]`. Rewrite using `[h0, Formalism.DworkPowerSeriesWeights.jetPair_sum_right]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.DworkPowerSeriesWeights.jetPair_C_mul_right, Finset.sum_pow_eq_sum_piAntidiag, Finset.sum_mul, Formalism.DworkPowerSeriesWeights.jetPair_sum_right, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hc : ((Nat.multinomial univ k : ℕ) : MvPowerSeries (Tp ⊕ Lw) K) = MvPowerSeries.C ((Nat.multinomial univ k : ℕ) : K)` using `(map_natCast _ _).symm`. Rewrite using `[mul_assoc, hc, Formalism.DworkPowerSeriesWeights.jetPair_C_mul_right]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Establish `hmain` using `ETerm.closure_sum (ETerm.valid p aA dA aB dB b e Q) (ETerm.bnd K p e) (range (D + 1)) (fun i => ∑ k ∈ Finset.piAntidiag (univ : Finset (Φ ⊕ κ ⊕ Fin 2)) i, ((p : K) ^ i)⁻¹ * (((Nat.multinomial univ k : ℕ) : K) * jetPair (topMonoP e * lowPoly Q) ((∏ j, ETerm.piece p Z Y aA dA aB dB …`. Break down `hmain with h0 | ⟨⟨α, β, i2, n⟩, hv, hbd⟩` into its components or cases. Conclude with `Or.inl h0`. Conclude with `Or.inr ⟨α, β, i2, n, hv.1, hv.2.1, hv.2.2.1, hv.2.2.2.1, hv.2.2.2.2, hbd⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem TermBound_of (h1 : JetPairingHasseIdentity) (h2 : HasseDerivIntegralHomogeneous) : TermBound := by
   intro K Tp Lw Φ κ _ _ _ _ _ _ _ _ p D dQ h g Z Y aA dA aB dB b e Q hp hpn _ hg haA haB hb hZ hY

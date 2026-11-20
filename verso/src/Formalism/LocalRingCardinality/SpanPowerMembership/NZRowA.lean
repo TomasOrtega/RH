@@ -19,17 +19,17 @@ abbrev stdH : HLat K where
   L := Submodule.span (𝓞 K) (Set.range (Pi.basisFun K (Fin n)))
 
 /- English proof (translation)
-Use `show x ∈ Submodule.span (𝓞 K) (Set.range (Pi.basisFun K (Fin n))) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `hy`. Introduce `i`. Distinguish the cases in `h : i = k`. Conclude with `⟨1, by subst h; simp⟩`. Conclude with `⟨0, by simp [h]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `zero => exact fun _ => ⟨0, by simp⟩`. Consider the case `add y z _ _ hy hz`. Introduce `i`. Take `⟨a, ha⟩` from `hy i`. Take `⟨b, hb⟩` from `hz i`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a + b, by simp [ha, hb]⟩`. Consider the case `smul a y _ hy`. Introduce `i`. Take `⟨c, hc⟩` from `hy i`. Conclude with `⟨a * c, by rw [Pi.smul_apply, hc, Algebra.smul_def]; simp⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h choose c hc using h`. Establish `: x = ∑ i, c i • Pi.basisFun K (Fin n) i`. Use function extensionality and compare the values at `k`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single k]`. Rewrite using `[Pi.smul_apply, Pi.basisFun_apply, Pi.single_eq_same, hc k, Algebra.smul_def, mul_one]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _ hi`. Rewrite using `[Pi.smul_apply, Pi.basisFun_apply, Pi.single_eq_of_ne (Ne.symm hi), smul_zero]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_stdL (x : Fin n → K) : x ∈ (stdH K n).L ↔ ∀ i, ∃ c : 𝓞 K, x i = (c : K) := by
   show x ∈ Submodule.span (𝓞 K) (Set.range (Pi.basisFun K (Fin n))) ↔ _
@@ -65,7 +65,7 @@ theorem mem_stdL (x : Fin n → K) : x ∈ (stdH K n).L ↔ ∀ i, ∃ c : 𝓞 
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Use `show Submodule.span K ((Submodule.span (𝓞 K) (Set.range (Pi.basisFun K (Fin n))) : Submodule (𝓞 K) (Fin n → K)) : Set (Fin n → K)) = ⊤`. Rewrite using `[Submodule.span_span_of_tower]`. Conclude with `(Pi.basisFun K (Fin n)).span_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdH_span : Submodule.span K ((stdH K n).L : Set (stdH K n).V) = ⊤ := by
   show Submodule.span K ((Submodule.span (𝓞 K) (Set.range (Pi.basisFun K (Fin n))) :
@@ -74,14 +74,14 @@ theorem stdH_span : Submodule.span K ((stdH K n).L : Set (stdH K n).V) = ⊤ := 
   exact (Pi.basisFun K (Fin n)).span_eq
 
 /- English proof (translation)
-Rewrite using `[show (stdH K n).X v = 1 from rfl, Matrix.det_one]`. Conclude with `isUnit_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdH_frames (v : InfinitePlace K) : IsUnit ((stdH K n).X v).det := by
   rw [show (stdH K n).X v = 1 from rfl, Matrix.det_one]
   exact isUnit_one
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨stdH_frames K n, Submodule.fg_span (Set.finite_range _), stdH_span K n⟩`.
+Supply the required witnesses or components.
 -/
 theorem stdH_good : (stdH K n).Good :=
   ⟨stdH_frames K n, Submodule.fg_span (Set.finite_range _), stdH_span K n⟩
@@ -104,7 +104,7 @@ Both sides reduce to the same expression.
 theorem jB_apply (x : Fin n → K) : jB σ b x = ∑ i, σ (x i) • b i := rfl
 
 /- English proof (translation)
-Rewrite using `[jB_apply, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Rewrite using `[Pi.basisFun_apply, Pi.single_eq_of_ne hk, map_zero, zero_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jB_single (i : Fin n) : jB σ b (Pi.basisFun K (Fin n) i) = b i := by
   rw [jB_apply, Finset.sum_eq_single i]
@@ -114,7 +114,7 @@ theorem jB_single (i : Fin n) : jB σ b (Pi.basisFun K (Fin n) i) = b i := by
   · simp
 
 /- English proof (translation)
-Establish `h : (fun i => jB σ b (Pi.basisFun K (Fin n) i)) = b` using `funext fun i => jB_single σ b i`. Rewrite using `[h]`. Conclude with `⟨b.orthonormal.linearIndependent, by`. Use `b.toBasis.span_eq` as an intermediate fact. Rewrite using `[b.coe_toBasis] at this⟩` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem jB_basis0 : LinearIndependent ℂ (fun i => jB σ b (Pi.basisFun K (Fin n) i)) ∧
     Submodule.span ℂ (Set.range (fun i => jB σ b (Pi.basisFun K (Fin n) i))) = ⊤ := by
@@ -125,15 +125,15 @@ theorem jB_basis0 : LinearIndependent ℂ (fun i => jB σ b (Pi.basisFun K (Fin 
     rwa [b.coe_toBasis] at this⟩
 
 /- English proof (translation)
-The claim follows from `inj_of_li σ (jB σ b) (Pi.basisFun K (Fin n)) (jB_basis0 σ b).1`.
+A detailed English derivation is pending.
 -/
 theorem jB_inj : Function.Injective (jB σ b) :=
   inj_of_li σ (jB σ b) (Pi.basisFun K (Fin n)) (jB_basis0 σ b).1
 
 /- English proof (translation)
-Rewrite using `[jB_apply, map_sum, WithLp.ofLp_sum, Finset.sum_apply, Finset.sum_eq_single i]`. Rewrite using `[map_smul, b.repr_self]`. Simplify using the standard rewrite rules. Introduce `k _ hk`. Rewrite using `[map_smul, b.repr_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem repr_jB (x : Fin n → K) (i : Fin n) : b.repr (jB σ b x) i = σ (x i) := by
   rw [jB_apply, map_sum, WithLp.ofLp_sum, Finset.sum_apply, Finset.sum_eq_single i]
@@ -143,7 +143,7 @@ theorem repr_jB (x : Fin n → K) (i : Fin n) : b.repr (jB σ b x) i = σ (x i) 
   · simp
 
 /- English proof (translation)
-Rewrite using `[← b.repr.norm_map, EuclideanSpace.norm_eq]`. Simplify using `only [repr_jB]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_jB (x : Fin n → K) : ‖jB σ b x‖ = Real.sqrt (∑ i, ‖σ (x i)‖ ^ 2) := by
   rw [← b.repr.norm_map, EuclideanSpace.norm_eq]
@@ -154,7 +154,7 @@ open Classical in
 def genB : Finset V := Finset.univ.image b
 
 /- English proof (translation)
-Introduce `v hv` and use `by classical obtain ⟨i, -, rfl⟩ := Finset.mem_image.mp hv exact ⟨_, jB_single σ b i⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem generators_mem_range : ∀ v ∈ genB b, v ∈ Set.range (jB σ b) := fun v hv => by
   classical
@@ -169,7 +169,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] (σ : K →+* ℂ) {n
   {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (b : OrthonormalBasis (Fin n) ℂ V)
 
 /- English proof (translation)
-Establish `h : (fun i => jB σ b ((stdH K n).b i)) = b` using `funext fun i => jB_single σ b i`. Rewrite using `[h]`. Conclude with `⟨b.orthonormal.linearIndependent, by`. Use `b.toBasis.span_eq` as an intermediate fact. Rewrite using `[b.coe_toBasis] at this⟩` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem jB_basis : LinearIndependent ℂ (fun i => jB σ b ((stdH K n).b i)) ∧
     Submodule.span ℂ (Set.range (fun i => jB σ b ((stdH K n).b i))) = ⊤ := by
@@ -180,7 +180,7 @@ theorem jB_basis : LinearIndependent ℂ (fun i => jB σ b ((stdH K n).b i)) ∧
     rwa [b.coe_toBasis] at this⟩
 
 /- English proof (translation)
-Simplify using `[Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fcoord_stdF (v : InfinitePlace K) (x : Fin n → K) (i : Fin n) :
     Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K (Fin n)) (fun _ => (1 : Matrix (Fin n) (Fin n) ℂ)) v x i =
@@ -188,7 +188,7 @@ theorem fcoord_stdF (v : InfinitePlace K) (x : Fin n → K) (i : Fin n) :
   simp [Formalism.HermitianLatticesTheory.fcoord, Formalism.HermitianLatticesTheory.vecAt]
 
 /- English proof (translation)
-Rewrite using `[norm_jB]`. Use `show Real.sqrt (∑ i, ‖Formalism.HermitianLatticesTheory.fcoord (Pi.basisFun K (Fin n)) (fun _ => 1) _ x i‖ ^ 2) = _`. Simplify using `only [fcoord_stdF, InfinitePlace.norm_embedding_eq, InfinitePlace.apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jB_norm (x : Fin n → K) :
     Formalism.HermitianLatticesTheory.normAt (stdH K n).b (stdH K n).X (InfinitePlace.mk σ) x = ‖jB σ b x‖ := by
@@ -197,21 +197,21 @@ theorem jB_norm (x : Fin n → K) :
   simp only [fcoord_stdF, InfinitePlace.norm_embedding_eq, InfinitePlace.apply]
 
 /- English proof (translation)
-Use `b.toBasis.injective` as an intermediate fact. Rewrite `this` using `[b.coe_toBasis]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem b_inj : Function.Injective b := by
   have := b.toBasis.injective
   rwa [b.coe_toBasis] at this
 
 /- English proof (translation)
-Conclude with `Finset.sum_image fun i _ k _ h => b_inj b h`.
+A detailed English derivation is pending.
 -/
 theorem sum_genB (f : V → V) : ∑ v ∈ genB b, f v = ∑ i, f (b i) := by
   classical
   exact Finset.sum_image fun i _ k _ h => b_inj b h
 
 /- English proof (translation)
-Use `b.toBasis.span_eq` as an intermediate fact. Rewrite `this` using `[b.coe_toBasis]`. Rewrite using `[genB, Finset.coe_image, Finset.coe_univ, Set.image_univ]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genB_span : Submodule.span ℂ (genB b : Set V) = ⊤ := by
   have := b.toBasis.span_eq
@@ -223,9 +223,9 @@ theorem genB_span : Submodule.span ℂ (genB b : Set V) = ⊤ := by
 def oB {O : Type} [CommRing O] (φ : O →+* ℂ) : Rows.OLat O φ V := ⟨genB b, genB_span b⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨fun i => c (b i), sum_genB b fun v => φ (c v) • v⟩`. Introduce and unpack `⟨c, rfl⟩ classical`. Use `⟨fun v => if h : ∃ i, b i = v then c h.choose else 0, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show (oB b φ).gen = genB b from rfl, sum_genB b fun v => φ (if h : ∃ i, b i = v then c h.choose else 0) • v]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h : ∃ k, b k = b i` using `⟨i, rfl⟩`. Rewrite using `[dif_pos h, b_inj b h.choose_spec]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_oB {O : Type} [CommRing O] (φ : O →+* ℂ) (x : V) :
     x ∈ (oB b φ).carrier ↔ ∃ c : Fin n → O, x = ∑ i, φ (c i) • b i := by
@@ -241,16 +241,16 @@ theorem mem_oB {O : Type} [CommRing O] (φ : O →+* ℂ) (x : V) :
     rw [dif_pos h, b_inj b h.choose_spec]
 
 /- English proof (translation)
-The claim follows from `generators_mem_range σ b`.
+A detailed English derivation is pending.
 -/
 theorem jB_gen : ∀ v ∈ genB b, v ∈ Set.range (jB σ b) := generators_mem_range σ b
 
 /- English proof (translation)
-Rewrite using `[mem_stdL]`. Prove the components needed by the constructor for the conclusion. Introduce `h choose c hc using h classical`. Use `⟨fun v => if h : ∃ i, b i = v then c h.choose else 0, ?_⟩` and prove the remaining obligations. Rewrite using `[sum_genB b fun v => σ (((if h : ∃ i, b i = v then c h.choose else 0 : 𝓞 K)) : K) • v, jB_apply]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h : ∃ k, b k = b i` using `⟨i, rfl⟩`. Rewrite using `[dif_pos h, b_inj b h.choose_spec, hc i]`. Introduce and unpack `⟨c, hc⟩ i`. Use `⟨c (b i), σ.injective ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hc` using `[sum_genB b fun v => σ ((c v : 𝓞 K) : K) • v]`. Establish `h1` using `congrArg (fun y => b.repr y i) hc`. Establish `h2 : (∑ k, σ ((c (b k) : 𝓞 K) : K) • b k) = jB σ b (fun k => ((c (b k) : 𝓞 K) : K))` using `rfl`. Simplify using `only [h2, repr_jB] at h1`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jB_lat (x : Fin n → K) : x ∈ (stdH K n).L ↔ ∃ c : V → 𝓞 K,
     jB σ b x = ∑ v ∈ genB b, σ ((c v : 𝓞 K) : K) • v := by
@@ -275,13 +275,11 @@ theorem jB_lat (x : Fin n → K) : x ∈ (stdH K n).L ↔ ∃ c : V → 𝓞 K,
 end JB
 
 /- English proof (translation)
-Set `I : Ideal A` to `{ carrier := {d | d • x ∈ Λ} add_mem' := fun {a b} ha hb => by show (a + b) • x ∈ Λ`. Rewrite using `[add_smul]`. Conclude with `Λ.add_mem ha hb`. Use the proof step `zero_mem' := by show (0 : A) • x ∈ Λ`. Rewrite using `[zero_smul]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Λ.zero_mem`. Use the proof step `smul_mem' := fun c {a} ha => by show (c • a) • x ∈ Λ`. Rewrite using `[smul_eq_mul, mul_smul]`. Conclude with `Λ.smul_mem c ha }`. Establish `hI : I = ⊤`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Assume the negation of the conclusion as `hne`. Take `⟨P, hP, hle⟩` from `Ideal.exists_le_maximal I hne`. Take `⟨d, hd, hx⟩` from `h P hP`. Conclude with `hd (hle hx)`. Establish `: (1 : A) ∈ I` using `by rw [hI]; trivial`.
-
-Simplify using `using (show (1 : A) • x ∈ Λ from this)`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_local {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (Λ : Submodule A M) (x : M)
     (h : ∀ P : Ideal A, P.IsMaximal → ∃ d : A, d ∉ P ∧ d • x ∈ Λ) : x ∈ Λ := by
@@ -305,13 +303,11 @@ theorem mem_of_local {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (Λ
   simpa using (show (1 : A) • x ∈ Λ from this)
 
 /- English proof (translation)
-Establish `hexp : ∀ (c : Module.Basis ι K W) (x : W), e x = ∑ i, σ (c.repr x i) • e (c i)` using `fun c x => by conv_lhs => rw [← c.sum_repr x]`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => LinearMap.map_smulₛₗ e _ _`. Establish `hexp' : ∀ x : W, e x = ∑ i, σ (b'.repr x i) • e (b' i)` using `fun x => by conv_lhs => rw [← b'.sum_repr x]`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun i _ => LinearMap.map_smulₛₗ e _ _`. Establish `hspan : Submodule.span ℂ (Set.range fun i => e (b' i)) = ⊤`. Rewrite using `[eq_top_iff, ← hb.2, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `show e (b i) ∈ _`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hexp' (b i)]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Use `⟨?_, hspan⟩` and prove the remaining obligations. Establish `hcard : Fintype.card κ = Fintype.card ι`. Rewrite using `[← Module.finrank_eq_card_basis b', ← Module.finrank_eq_card_basis b]`.
-
-Set `B : Module.Basis ι ℂ M` to `Module.Basis.mk hb.1 hb.2.ge`. Establish `hfin : Module.finrank ℂ M = Fintype.card κ`. Rewrite using `[Module.finrank_eq_card_basis B, hcard]`. Conclude with `linearIndependent_of_top_le_span_of_card_eq_finrank hspan.ge hfin.symm`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basis_of_basis {K W M ι κ : Type} [Field K] [AddCommGroup W] [Module K W] [AddCommGroup M]
     [Module ℂ M] [Fintype ι] [Fintype κ] (σ : K →+* ℂ) (e : W →ₛₗ[σ] M)

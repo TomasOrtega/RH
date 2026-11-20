@@ -7,15 +7,13 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC LateralTheory.Etal
 open scoped TensorProduct DirectSum
 
 /- English proof (translation)
-Unfold `UpperTheory.Gal.KunnethLefschetz.ProjBC`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `R R' _ _ φ X p hp`. Take `⟨N, i, hi, rfl⟩` from `hp`. Use `letI : Algebra R R' := φ.toAlgebra`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Set `s : Spec (CommRingCat.of R') ⟶ Spec (CommRingCat.of R)` to `Spec.map (CommRingCat.ofHom (algebraMap R R'))`. Set `b` to `GroundTheory.Arith.SchemeCoh.ProjSpace.toSpecBase R N`. Establish `H` using `GroundTheory.Arith.SchemeCoh.ProjSpace.isPullback_baseChange R R' N`. Set `ι : pullback (i ≫ b) s ⟶ GroundTheory.Arith.SchemeCoh.projectiveSpace R' N` to `H.lift (pullback.fst (i ≫ b) s ≫ i) (pullback.snd (i ≫ b) s) (by rw [Category.assoc]; exact pullback.condition)`. Establish `hι₁ : ι ≫ _ = pullback.fst (i ≫ b) s ≫ i` using `H.lift_fst _ _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hι₂ : ι ≫ _ = pullback.snd (i ≫ b) s` using `H.lift_snd _ _ _`. Establish `hsq : IsPullback ι (pullback.fst (i ≫ b) s) (GroundTheory.Arith.SchemeCoh.ProjSpace.baseChangeMap R R' N) i`. Use `IsPullback.of_right (h₂₂ := b) (v₁₃ := s) ?_ hι₁ H.flip` and prove the remaining obligations. Rewrite using `[hι₂]`. Conclude with `(IsPullback.of_hasPullback (i ≫ b) s).flip`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨N, ι, MorphismProperty.of_isPullback (P := @IsClosedImmersion) hsq.flip hi, hι₂⟩`. Introduce `R _ X p hp`. Take `⟨N, i, hi, rfl⟩` from `hp`. Establish `: IsProper (GroundTheory.Arith.SchemeCoh.ProjSpace.toSpecBase R N)` using `inferInstance`. Express the relevant statement in the definitionally equal form `IsProper (i ≫ GroundTheory.Arith.SchemeCoh.ProjSpace.toSpecBase R N)`.
-
-Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.projBC_holds :
     UpperTheory.Gal.KunnethLefschetz.ProjBC := by

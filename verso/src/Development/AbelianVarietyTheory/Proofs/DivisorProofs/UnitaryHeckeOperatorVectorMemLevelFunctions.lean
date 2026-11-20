@@ -7,9 +7,9 @@ noncomputable section
 namespace GlobalTheory.BCT.TrKer.HopStab
 
 /- English proof (translation)
-Unfold `toSub`. Distinguish the cases in `hy : y ∈ H`. Establish `h2 : y * (k : G) ∈ H` using `H.mul_mem hy k.2`. Rewrite using `[dif_pos h2, dif_pos hy]`. Conclude with `hu k hk ⟨y, hy⟩`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : y * (k : G) ∉ H` using `fun h => hy (by simpa using H.mul_mem h (H.inv_mem k.2))`. Rewrite using `[dif_neg h2, dif_neg hy]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toSub_mul_right {G : Type} [Group G] (H : Subgroup G) (K : Subgroup H) (u : H → ℂ)
     (hu : ∀ k ∈ K, ∀ x, u (x * k) = u x) (y : G) (k : H) (hk : k ∈ K) :
@@ -23,9 +23,9 @@ theorem toSub_mul_right {G : Type} [Group G] (H : Subgroup G) (K : Subgroup H) (
     rw [dif_neg h2, dif_neg hy]
 
 /- English proof (translation)
-Unfold `toSub`. Distinguish the cases in `hy : y ∈ H`. Establish `h2 : (k : G) * y ∈ H` using `H.mul_mem k.2 hy`. Rewrite using `[dif_pos h2, dif_pos hy]`. Conclude with `hu k hk ⟨y, hy⟩`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (k : G) * y ∉ H` using `fun h => hy (by simpa using H.mul_mem (H.inv_mem k.2) h)`. Rewrite using `[dif_neg h2, dif_neg hy]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toSub_mul_left {G : Type} [Group G] (H : Subgroup G) (K : Subgroup H) (u : H → ℂ)
     (hu : ∀ k ∈ K, ∀ x, u (k * x) = u x) (y : G) (k : H) (hk : k ∈ K) :
@@ -41,7 +41,7 @@ theorem toSub_mul_left {G : Type} [Group G] (H : Subgroup G) (K : Subgroup H) (u
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Unfold `globLev at hk`. Use `(Subgroup.mem_iInf.1 hk w)` as an intermediate fact. Use `Subgroup.mem_iInf.1 this hw` as an intermediate fact. Simplify using `using this`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_loc {S : Set (Pl E)} {K' : ∀ w : Pl E, Subgroup (UL n w)} {k : finU E n} (hk : k ∈ globLev S K')
     {w : Pl E} (hw : w ∈ S) : ∃ k' : UL n w, k' ∈ K' w ∧ (k' : GLw n w) = cLoc w k.1 := by
@@ -51,7 +51,7 @@ theorem mem_loc {S : Set (Pl E)} {K' : ∀ w : Pl E, Subgroup (UL n w)} {k : fin
   simpa using this
 
 /- English proof (translation)
-Unfold `globFn`. Use `finprod_mem_congr rfl fun w hw => ?_` and prove the remaining obligations. Take `⟨k', hk', he⟩` from `mem_loc hk hw`. Rewrite using `[Subgroup.coe_mul, map_mul, ← he]`. Conclude with `toSub_mul_right _ (K' w) (f w) (fun k hk x => ((hf w).2 k hk x).2) _ k' hk'`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem globFn_mul_right {S : Set (Pl E)} {K' : ∀ w : Pl E, Subgroup (UL n w)} {f : ∀ w : Pl E, UL n w → ℂ}
     (hf : ∀ w, IsHecke (K' w) (f w)) {k : finU E n} (hk : k ∈ globLev S K') (x : finU E n) :
@@ -63,7 +63,7 @@ theorem globFn_mul_right {S : Set (Pl E)} {K' : ∀ w : Pl E, Subgroup (UL n w)}
   exact toSub_mul_right _ (K' w) (f w) (fun k hk x => ((hf w).2 k hk x).2) _ k' hk'
 
 /- English proof (translation)
-Unfold `globFn`. Use `finprod_mem_congr rfl fun w hw => ?_` and prove the remaining obligations. Take `⟨k', hk', he⟩` from `mem_loc hk hw`. Rewrite using `[Subgroup.coe_mul, map_mul, ← he]`. Conclude with `toSub_mul_left _ (K' w) (f w) (fun k hk x => ((hf w).2 k hk x).1) _ k' hk'`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem globFn_mul_left {S : Set (Pl E)} {K' : ∀ w : Pl E, Subgroup (UL n w)} {f : ∀ w : Pl E, UL n w → ℂ}
     (hf : ∀ w, IsHecke (K' w) (f w)) {k : finU E n} (hk : k ∈ globLev S K') (x : finU E n) :
@@ -80,9 +80,9 @@ namespace GlobalTheory.BCT.TrKer.HopStab
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `hsub : (Function.support fun q : finU E n ⧸ globLev S K' => globFn S f q.out • F (x * q.out)) ⊆ (hfin.toFinset : Set _)`. Introduce `q hq`. Simplify using `only [Set.Finite.coe_toFinset, Function.mem_support] at hq ⊢`. Introduce `h0`. Apply `hq` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congrArg (fun L : (finU E n → Module.Dual ℂ (Wsp lam)) →ₗ[ℂ] (finU E n → Module.Dual ℂ (Wsp lam)) => L F x) h0` as an intermediate fact. Simplify `this` using `[rightReg, LinearMap.funLeft]`. Unfold `hopM levOp`. Rewrite using `[finsum_eq_sum _ hfin, finsum_eq_sum_of_support_subset _ hsub]`. Simplify using `[rightReg, LinearMap.funLeft, Finset.sum_apply, LinearMap.sum_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hopM_apply {S : Set (Pl E)} {lam : InfinitePlace E → DomWeight n} {K' : ∀ w : Pl E, Subgroup (UL n w)}
     (f : ∀ w : Pl E, UL n w → ℂ) (F : finU E n → Module.Dual ℂ (Wsp lam))
@@ -108,17 +108,17 @@ end GlobalTheory.BCT.TrKer.HopStab
 namespace GlobalTheory.BCT.TrKer.HopStab
 
 /- English proof (translation)
-Introduce `E _ _ _ n S lam K' _ f hf F hF`. Distinguish the cases in `hfin : (Function.support fun q : finU E n ⧸ globLev S K' => globFn S f q.out • (rightReg ℂ (finU E n) (Module.Dual ℂ (Wsp lam)) q.out ∘ₗ LinearMap.id)).Finite`. Use `swap`. Establish `h0 : hopM S lam K' f = 0`. Unfold `hopM levOp`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_of_infinite_support hfin, smul_zero]`. Rewrite using `[h0]`. Conclude with `(vecM S lam K').zero_mem`. Establish `hsupp : ∀ y : finU E n, (Function.support fun q : finU E n ⧸ globLev S K' => globFn S f q.out • F (y * q.out)).Finite`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `hfin.subset fun q hq => ?_` and prove the remaining obligations. Simplify using `only [Function.mem_support] at hq ⊢`. Introduce `h0`. Apply `hq` to reduce the goal to its premises. Use `congrArg (fun L : (finU E n → Module.Dual ℂ (Wsp lam)) →ₗ[ℂ] (finU E n → Module.Dual ℂ (Wsp lam)) => L F y) h0` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `this` using `[rightReg, LinearMap.funLeft]`. Use `⟨fun γ x => ?_, fun k hk x => ?_⟩` and prove the remaining obligations. Rewrite using `[hopM_apply f F hfin, hopM_apply f F hfin, map_smul, map_finsum _ (hsupp x)]`. Use `congr 1`. Use `finsum_congr fun q => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, hF.1 γ, map_smul]`. Rewrite using `[hopM_apply f F hfin, hopM_apply f F hfin]`. Use `congr 1`. Use `symm`. Rewrite using `[← finsum_comp_equiv (MulAction.toPerm k : Equiv.Perm (finU E n ⧸ globLev S K'))]`.
+Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `finsum_congr fun q => ?_` and prove the remaining obligations. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul (globLev S K') (k * q.out)`. Establish `hq : (MulAction.toPerm k : Equiv.Perm (finU E n ⧸ globLev S K')) q = ((k * q.out : finU E n) : finU E n ⧸ globLev S K')` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Rewrite using `[hq, hh, globFn_mul_right hf.1 h.2, globFn_mul_left hf.1 hk, ← mul_assoc, ← mul_assoc, hF.2 h h.2]`.
+Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hopM_mem_vecM : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (S : Set (Pl E))
     (lam : InfinitePlace E → DomWeight n) (K' : ∀ w : Pl E, Subgroup (UL n w)),

@@ -15,7 +15,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : 
 namespace HermMetricEq
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, g, h, hg, hh, hy, hyg, hz, hv⟩`. Conclude with `⟨d, g, h, hg, hh, hy, hyg, hz, by rw [hv, div_mul_cancel₀ _ hz]⟩`. Introduce and unpack `⟨d, g, h, hg, hh, hy, hyg, hz, hv⟩`. Conclude with `⟨d, g, h, hg, hh, hy, hyg, hz, by rw [hv, mul_div_cancel_right₀ _ hz]⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isValueAt_iff {s : Ω} {v : ℂ} :
     IsValueAt y s z v ↔ IndefiniteRowSideFullHecke.LowerBoundFree.IsValueAt y s z v := by
@@ -26,11 +26,9 @@ theorem isValueAt_iff {s : Ω} {v : ℂ} :
     exact ⟨d, g, h, hg, hh, hy, hyg, hz, by rw [hv, mul_div_cancel_right₀ _ hz]⟩
 
 /- English proof (translation)
-Take `⟨v, ⟨d, g, h, hg, hh, hy, hyg, hz, hv⟩, hv0⟩` from `hf`. Establish `hgz : eval z (map (Int.castRingHom ℂ) g) ≠ 0`. Introduce `h0`. Rewrite `hv` using `[h0, zero_div]`. Conclude with `hv0 hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hgy : aeval y g ≠ 0`. Rewrite using `[hyg]`. Conclude with `mul_ne_zero hf0 hy`. Use `⟨v⁻¹, d, h, g, hh, hg, hgy, ?_, hgz, ?_⟩` and prove the remaining obligations. Rewrite using `[hyg, inv_mul_cancel_left₀ hf0]`.
-
-Rewrite using `[hv, inv_div, div_mul_cancel₀ _ hgz]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regularAt_inv {f : Ω} (hf0 : f ≠ 0) (hf : IsUnitAt y f z) :
     IndefiniteRowSideFullHecke.LowerBoundFree.RegularAt y f⁻¹ z := by
@@ -47,9 +45,9 @@ theorem regularAt_inv {f : Ω} (hf0 : f ≠ 0) (hf : IsUnitAt y f z) :
   · rw [hv, inv_div, div_mul_cancel₀ _ hgz]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero]`. Conclude with `⟨1, IndefiniteRowSideFullHecke.LowerBoundFree.isValueAt_one⟩`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Rewrite using `[pow_succ]`. Conclude with `ih.mul ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regularAt_pow {a : Ω} (ha : IndefiniteRowSideFullHecke.LowerBoundFree.RegularAt y a z) (n : ℕ) :
     IndefiniteRowSideFullHecke.LowerBoundFree.RegularAt y (a ^ n) z := by
@@ -62,7 +60,7 @@ theorem regularAt_pow {a : Ω} (ha : IndefiniteRowSideFullHecke.LowerBoundFree.R
     exact ih.mul ha
 
 /- English proof (translation)
-Introduce `h0`. Establish `hm` using `IndefiniteRowSideFullHecke.LowerBoundFree.mem_mCoordIdeal_of_aeval (y := y) (IndefiniteRowSideFullHecke.LowerBoundFree.isMultiHomog_chartMonomial c) (by simpa [segreCoord] using h0)`. Use `hz.2 _ hm` as an intermediate fact. Simplify using `only [map_prod, map_X, eval_X] at this`. Conclude with `Finset.prod_ne_zero_iff.2 (fun k _ => hc k) this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem segreCoord_ne_zero (hz : z ∈ mcPts (mCoordIdeal y)) {c : (k : K) → ι k}
     (hc : ∀ k, z ⟨k, c k⟩ ≠ 0) : segreCoord y c ≠ 0 := by
@@ -76,23 +74,21 @@ theorem segreCoord_ne_zero (hz : z ∈ mcPts (mCoordIdeal y)) {c : (k : K) → �
 variable {E : Type} [AddCommGroup E] [Module Ω E] {N : ℕ}
 
 /- English proof (translation)
-Take `⟨hx, -, hf0, -, hiff⟩` from `hb`. Establish `hfi : IndefiniteRowSideFullHecke.LowerBoundFree.RegularAt y f⁻¹ z` using `regularAt_inv hf0 hd.2`. Establish `hloc : ∀ a : Ω, (∃ n : ℕ, f ^ n * a ∈ chartRing ℤ (segreCoord y) c) → IndefiniteRowSideFullHecke.LowerBoundFree.RegularAt y a z`. Introduce and unpack `a ⟨n, hn⟩`. Establish `h1` using `(regularAt_pow hfi n).mul (IndefiniteRowSideFullHecke.LowerBoundFree.regularAt_of_mem_chartRing hz hd.1 hn)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h1` using `[← mul_assoc, ← mul_pow, inv_mul_cancel₀ hf0, one_pow, one_mul]`. Then use the resulting hypothesis. Establish `hsec : ∀ c' : (k : K) → ι k, (∀ k, z ⟨k, c' k⟩ ≠ 0) → ∀ s ∈ W.lat c', ∃ a : Fin N → Ω, (∀ q, IndefiniteRowSideFullHecke.LowerBoundFree.RegularAt y (a q) z) ∧ s = ∑ q, a q • b q`. Introduce `c' hc' s hs`. Establish `hx'` using `segreCoord_ne_zero hz hc'`. Take `⟨m, hm⟩` from `W.overlap c' c hx' hx s hs`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hae⟩` from `(hiff _).1 ⟨0, by rwa [pow_zero, one_smul]⟩`. Establish `hr : IndefiniteRowSideFullHecke.LowerBoundFree.RegularAt y ((segreCoord y c / segreCoord y c') ^ m) z` using `regularAt_pow (IndefiniteRowSideFullHecke.LowerBoundFree.regularAt_of_mem_chartRing hz hc' (Algebra.subset_adjoin ⟨c, rfl⟩)) m`. Use `⟨fun q => (segreCoord y c / segreCoord y c') ^ m * a q, fun q => hr.mul (hloc _ (ha q)), ?_⟩` and prove the remaining obligations. Establish `hone : (segreCoord y c / segreCoord y c') ^ m * (segreCoord y c' / segreCoord y c) ^ m = 1`. Rewrite using `[← mul_pow, div_mul_div_comm, mul_comm (segreCoord y c) (segreCoord y c'), div_self (mul_ne_zero hx' hx), one_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hone, one_smul]`. Use `_ = (segreCoord y c / segreCoord y c') ^ m • ∑ q, a q • b q := by rw [mul_smul, hae]`. Use `_ = ∑ q, ((segreCoord y c / segreCoord y c') ^ m * a q) • b q := by`. Rewrite using `[Finset.smul_sum]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [mul_smul]`. Use `⟨fun q => ?_, fun e he => ?_⟩` and prove the remaining obligations. Establish `hex : ∃ n : ℕ, f ^ n • b q ∈ W.lat c`. Use `(hiff (b q)).2 ⟨Pi.single q 1, fun q' => ⟨0, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `eq_or_ne q' q with rfl | h` into its components or cases. Rewrite using `[Pi.single_eq_same]`. Conclude with `one_mem _`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Pi.single_apply, ite_smul]`. Take `⟨n, hn⟩` from `hex`. Use `⟨c, hd.1, 1, fun _ => (f ^ n)⁻¹, fun _ => f ^ n • b q, fun _ => hn, fun _ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← inv_pow]`. Conclude with `regularAt_pow hfi n`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.sum_univ_one]`. Conclude with `(inv_smul_smul₀ (pow_ne_zero _ hf0) _).symm`. Take `⟨c', hc', m, a, s, hs, ha, rfl⟩` from `he choose α hα hαe using fun l => hsec c' hc' (s l) (hs l)`. Use `⟨fun q => ∑ l, a l * α l q, fun q => IndefiniteRowSideFullHecke.LowerBoundFree.RegularAt.sum _ fun l _ => (ha l).mul (hα l q), ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.sum_smul, mul_smul]`.
-
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hαe l, Finset.smul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrameAt_of_isFrameOver {W : ChartBundle ℤ (segreCoord y) N E} {c : (k : K) → ι k} {f : Ω}
     {b : Fin N → E} (hb : IsFrameOver y W c f b) (hz : z ∈ mcPts (mCoordIdeal y))
@@ -150,7 +146,7 @@ theorem isFrameAt_of_isFrameOver {W : ChartBundle ℤ (segreCoord y) N E} {c : (
     rw [hαe l, Finset.smul_sum]
 
 /- English proof (translation)
-Use extensionality with `p q`. Conclude with `Fintype.linearIndependent_iffₛ.1 hli (fun p => S p q) (fun p => S' p q) (h q) p`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem coeff_unique {b : Fin N → E} (hli : LinearIndependent Ω b) {S S' : Matrix (Fin N) (Fin N) Ω}
     (h : ∀ q, ∑ p, S p q • b p = ∑ p, S' p q • b p) : S = S' := by
@@ -158,7 +154,7 @@ theorem coeff_unique {b : Fin N → E} (hli : LinearIndependent Ω b) {S S' : Ma
   exact Fintype.linearIndependent_iffₛ.1 hli (fun p => S p q) (fun p => S' p q) (h q) p
 
 /- English proof (translation)
-Use `choose a ha hae using fun q => (isFrameAt_of_isFrameOver hb hz hd).2 _ (hb' q)`. Conclude with `⟨Matrix.of fun p q => a q p, fun p q => ha q p, fun q => hae q⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_coeff {W : ChartBundle ℤ (segreCoord y) N E} {c : (k : K) → ι k} {f : Ω}
     {b : Fin N → E} (hb : IsFrameOver y W c f b) (hz : z ∈ mcPts (mCoordIdeal y))
@@ -174,7 +170,7 @@ def valM (y : (Σ k, ι k) → Ω) (S : Matrix (Fin N) (Fin N) Ω) (z : (Σ k, �
   Matrix.of fun p q => IndefiniteRowSideFullHecke.LowerBoundFree.valAt y (S p q) z
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply]`. Conclude with `IndefiniteRowSideFullHecke.LowerBoundFree.IsValueAt.sum _ fun r _ => (hS p r).mul (hT r q)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isValueAt_mul {S T : Matrix (Fin N) (Fin N) Ω} {Sz Tz : Matrix (Fin N) (Fin N) ℂ}
     (hS : ∀ p q, IndefiniteRowSideFullHecke.LowerBoundFree.IsValueAt y (S p q) z (Sz p q))
@@ -184,7 +180,7 @@ theorem isValueAt_mul {S T : Matrix (Fin N) (Fin N) Ω} {Sz Tz : Matrix (Fin N) 
   exact IndefiniteRowSideFullHecke.LowerBoundFree.IsValueAt.sum _ fun r _ => (hS p r).mul (hT r q)
 
 /- English proof (translation)
-Break down `eq_or_ne p q with rfl | h` into its components or cases. Simplify using `using IndefiniteRowSideFullHecke.LowerBoundFree.isValueAt_one (y := y) (z := z)`. Simplify `IndefiniteRowSideFullHecke.LowerBoundFree.isValueAt_zero (y := y) (z := z)` using `[Matrix.one_apply_ne h]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isValueAt_one_matrix (p q : Fin N) :
     IndefiniteRowSideFullHecke.LowerBoundFree.IsValueAt y ((1 : Matrix (Fin N) (Fin N) Ω) p q) z
@@ -194,7 +190,7 @@ theorem isValueAt_one_matrix (p q : Fin N) :
   · simpa [Matrix.one_apply_ne h] using IndefiniteRowSideFullHecke.LowerBoundFree.isValueAt_zero (y := y) (z := z)
 
 /- English proof (translation)
-Use extensionality with `p q`. Conclude with `IndefiniteRowSideFullHecke.LowerBoundFree.valAt_eq hz (hS p q)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem valM_eq (hz : z ∈ mcPts (mCoordIdeal y)) {S : Matrix (Fin N) (Fin N) Ω}
     {Sz : Matrix (Fin N) (Fin N) ℂ} (hS : ∀ p q, IndefiniteRowSideFullHecke.LowerBoundFree.IsValueAt y (S p q) z (Sz p q)) :
@@ -203,7 +199,7 @@ theorem valM_eq (hz : z ∈ mcPts (mCoordIdeal y)) {S : Matrix (Fin N) (Fin N) �
   exact IndefiniteRowSideFullHecke.LowerBoundFree.valAt_eq hz (hS p q)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, ha.choose_spec.smul s hs⟩`.
+Supply the required witnesses or components.
 -/
 theorem regularAt_smul {a : Ω} (s : K → ℂ) (hs : ∀ k, s k ≠ 0)
     (ha : IndefiniteRowSideFullHecke.LowerBoundFree.RegularAt y a z) :
@@ -211,14 +207,14 @@ theorem regularAt_smul {a : Ω} (s : K → ℂ) (hs : ∀ k, s k ≠ 0)
   ⟨_, ha.choose_spec.smul s hs⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, ha.choose_spec.conj⟩`.
+Supply the required witnesses or components.
 -/
 theorem regularAt_conj {a : Ω} (ha : IndefiniteRowSideFullHecke.LowerBoundFree.RegularAt y a z) :
     IndefiniteRowSideFullHecke.LowerBoundFree.RegularAt y a (fun p => starRingEnd ℂ (z p)) :=
   ⟨_, ha.choose_spec.conj⟩
 
 /- English proof (translation)
-Substitute `hz'` using the available equality. Take `⟨c, hc, m, a, t, ht, ha, rfl⟩` from `he`. Conclude with `⟨c, fun k => mul_ne_zero (hs k) (hc k), m, a, t, ht, fun l => regularAt_smul s hs (ha l), rfl⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isLocSection_smul {W : ChartBundle ℤ (segreCoord y) N E} {e : E} (s : K → ℂ)
     (hs : ∀ k, s k ≠ 0) {z' : (Σ k, ι k) → ℂ} (hz' : z' = fun p => s p.1 * z p)
@@ -228,7 +224,7 @@ theorem isLocSection_smul {W : ChartBundle ℤ (segreCoord y) N E} {e : E} (s : 
   exact ⟨c, fun k => mul_ne_zero (hs k) (hc k), m, a, t, ht, fun l => regularAt_smul s hs (ha l), rfl⟩
 
 /- English proof (translation)
-Take `⟨c, hc, m, a, t, ht, ha, rfl⟩` from `he`. Conclude with `⟨c, fun k => (map_ne_zero _).2 (hc k), m, a, t, ht, fun l => regularAt_conj (ha l), rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isLocSection_conj {W : ChartBundle ℤ (segreCoord y) N E} {e : E}
     (he : IndefiniteRowSideFullHecke.LowerBoundFree.IsLocSection y W z e) :
@@ -237,7 +233,7 @@ theorem isLocSection_conj {W : ChartBundle ℤ (segreCoord y) N E} {e : E}
   exact ⟨c, fun k => (map_ne_zero _).2 (hc k), m, a, t, ht, fun l => regularAt_conj (ha l), rfl⟩
 
 /- English proof (translation)
-Use `⟨fun q => isLocSection_smul s hs rfl (hb.1 q), fun e he => ?_⟩` and prove the remaining obligations. Establish `he' : IndefiniteRowSideFullHecke.LowerBoundFree.IsLocSection y W z e` using `isLocSection_smul (fun k => (s k)⁻¹) (fun k => inv_ne_zero (hs k)) (funext fun p => (inv_mul_cancel_left₀ (hs p.1) (z p)).symm) he`. Take `⟨a, ha, hae⟩` from `hb.2 e he'`. Conclude with `⟨a, fun q => regularAt_smul s hs (ha q), hae⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isFrameAt_smul {W : ChartBundle ℤ (segreCoord y) N E} {b : Fin N → E} (s : K → ℂ)
     (hs : ∀ k, s k ≠ 0) (hb : IndefiniteRowSideFullHecke.LowerBoundFree.IsFrameAt y W z b) :
@@ -250,9 +246,9 @@ theorem isFrameAt_smul {W : ChartBundle ℤ (segreCoord y) N E} {b : Fin N → E
   exact ⟨a, fun q => regularAt_smul s hs (ha q), hae⟩
 
 /- English proof (translation)
-Use `⟨fun q => isLocSection_conj (hb.1 q), fun e he => ?_⟩` and prove the remaining obligations. Establish `he' : IndefiniteRowSideFullHecke.LowerBoundFree.IsLocSection y W z e`. Establish `h` using `isLocSection_conj he`. Simplify using `only [RCLike.conj_conj] at h`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hae⟩` from `hb.2 e he'`. Conclude with `⟨a, fun q => regularAt_conj (ha q), hae⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isFrameAt_conj {W : ChartBundle ℤ (segreCoord y) N E} {b : Fin N → E}
     (hb : IndefiniteRowSideFullHecke.LowerBoundFree.IsFrameAt y W z b) :
@@ -266,7 +262,7 @@ theorem isFrameAt_conj {W : ChartBundle ℤ (segreCoord y) N E} {b : Fin N → E
   exact ⟨a, fun q => regularAt_conj (ha q), hae⟩
 
 /- English proof (translation)
-Take `⟨hc, v, hv, hv0⟩` from `hd`. Conclude with `⟨fun k => mul_ne_zero (hs k) (hc k), v, isValueAt_iff.2 ((isValueAt_iff.1 hv).smul s hs), hv0⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inFrameDomain_smul {c : (k : K) → ι k} {f : Ω} (s : K → ℂ) (hs : ∀ k, s k ≠ 0)
     (hd : InFrameDomain y c f z) : InFrameDomain y c f (fun p => s p.1 * z p) := by
@@ -274,7 +270,7 @@ theorem inFrameDomain_smul {c : (k : K) → ι k} {f : Ω} (s : K → ℂ) (hs :
   exact ⟨fun k => mul_ne_zero (hs k) (hc k), v, isValueAt_iff.2 ((isValueAt_iff.1 hv).smul s hs), hv0⟩
 
 /- English proof (translation)
-Take `⟨hc, v, hv, hv0⟩` from `hd`. Conclude with `⟨fun k => (map_ne_zero _).2 (hc k), starRingEnd ℂ v, isValueAt_iff.2 (isValueAt_iff.1 hv).conj, (map_ne_zero _).2 hv0⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inFrameDomain_conj {c : (k : K) → ι k} {f : Ω} (hd : InFrameDomain y c f z) :
     InFrameDomain y c f (fun p => starRingEnd ℂ (z p)) := by
@@ -283,7 +279,7 @@ theorem inFrameDomain_conj {c : (k : K) → ι k} {f : Ω} (hd : InFrameDomain y
     (map_ne_zero _).2 hv0⟩
 
 /- English proof (translation)
-Take `⟨v, d, g, h, hg, hh, hy, hyg, hz, -⟩` from `ha`. Establish `hc : ContinuousAt (fun w' => eval (γ w') (map (Int.castRingHom ℂ) h)) w` using `(MvPolynomial.continuous_eval (map (Int.castRingHom ℂ) h)).continuousAt.comp hγ`. Use `filter_upwards [hc.eventually_ne hz] with w' hw'`. Conclude with `⟨_, d, g, h, hg, hh, hy, hyg, hw', (div_mul_cancel₀ _ hw').symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eventually_regularAt {m : ℕ} {γ : (Fin m → ℂ) → (Σ k, ι k) → ℂ} {w : Fin m → ℂ}
     (hγ : ContinuousAt γ w) {a : Ω} (ha : IndefiniteRowSideFullHecke.LowerBoundFree.RegularAt y a (γ w)) :
@@ -295,9 +291,9 @@ theorem eventually_regularAt {m : ℕ} {γ : (Fin m → ℂ) → (Σ k, ι k) �
   exact ⟨_, d, g, h, hg, hh, hy, hyg, hw', (div_mul_cancel₀ _ hw').symm⟩
 
 /- English proof (translation)
-Take `⟨hc, v, ⟨d, g, h, hg, hh, hy, hyg, hz, hv⟩, hv0⟩` from `hd`. Establish `hgz : eval (γ w) (map (Int.castRingHom ℂ) g) ≠ 0`. Introduce `h0`. Rewrite `hv` using `[h0, zero_div]`. Conclude with `hv0 hv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hG : ContinuousAt (fun w' => eval (γ w') (map (Int.castRingHom ℂ) g)) w` using `(MvPolynomial.continuous_eval (map (Int.castRingHom ℂ) g)).continuousAt.comp hγ`. Establish `hH : ContinuousAt (fun w' => eval (γ w') (map (Int.castRingHom ℂ) h)) w` using `(MvPolynomial.continuous_eval (map (Int.castRingHom ℂ) h)).continuousAt.comp hγ`. Establish `hC : ∀ᶠ w' in 𝓝 w, ∀ k, γ w' ⟨k, c k⟩ ≠ 0` using `Filter.eventually_all.2 fun k => ((continuous_apply (⟨k, c k⟩ : Σ k, ι k)).continuousAt.comp hγ).eventually_ne (hc k)`. Use `filter_upwards [hG.eventually_ne hgz, hH.eventually_ne hz, hC] with w' hg' hh' hc'`. Conclude with `⟨hc', _, ⟨d, g, h, hg, hh, hy, hyg, hh', rfl⟩, div_ne_zero hg' hh'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eventually_inFrameDomain {m : ℕ} {γ : (Fin m → ℂ) → (Σ k, ι k) → ℂ} {w : Fin m → ℂ}
     (hγ : ContinuousAt γ w) {c : (k : K) → ι k} {f : Ω} (hd : InFrameDomain y c f (γ w)) :

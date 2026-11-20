@@ -5,7 +5,7 @@ open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH Glo
 open scoped TensorProduct
 
 /- English proof (translation)
-Simplify using `[wd, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem wd_apply' {σ E : Type} [LinearOrder σ] [AddCommGroup E] [Module ℂ E]
     (w : σ → Module.End ℂ E) (c : Finset σ → E) (t : Finset σ) :
@@ -13,13 +13,13 @@ private theorem wd_apply' {σ E : Type} [LinearOrder σ] [AddCommGroup E] [Modul
   simp [wd, LinearMap.pi_apply, LinearMap.sum_apply, LinearMap.smul_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Establish `hc : ∀ f : σ → σ → E, ∑ i ∈ t, ∑ j ∈ t.erase i, f i j = ∑ i ∈ t, ∑ j ∈ t.erase i, f j i`. Introduce `f`. Use `Finset.sum_comm' ?_` and prove the remaining obligations. Introduce `x y`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_erase]`. Conclude with `⟨fun ⟨a, b, c⟩ => ⟨⟨Ne.symm b, a⟩, c⟩, fun ⟨⟨b, a⟩, c⟩ => ⟨a, Ne.symm b, c⟩⟩`. Simplify using `only [wd_apply', map_sum, map_zsmul, Finset.smul_sum, smul_smul, Pi.add_apply, Pi.zero_apply]`. Use `conv_lhs => rhs`. Rewrite using `[hc]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun j hj => ?_` and prove the remaining obligations. Establish `hji : j ≠ i` using `(Finset.mem_erase.1 hj).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjt : j ∈ t` using `(Finset.mem_erase.1 hj).2`. Establish `hcomm : w' j (w i (c ((t.erase j).erase i))) = w i (w' j (c ((t.erase i).erase j)))`. Rewrite using `[show (t.erase j).erase i = (t.erase i).erase j from Finset.erase_right_comm]`. Conclude with `(LinearMap.congr_fun (h i j).eq _).symm`. Rewrite using `[hcomm, ← add_smul, GlobalTheory.cubeSign_mul_erase hi hjt (Ne.symm hji), neg_add_cancel, zero_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wd_anti' {σ E : Type} [LinearOrder σ] [AddCommGroup E] [Module ℂ E]
     (w w' : σ → Module.End ℂ E) (h : ∀ i j, Commute (w i) (w' j)) (c : Finset σ → E) :
@@ -45,7 +45,7 @@ private theorem wd_anti' {σ E : Type} [LinearOrder σ] [AddCommGroup E] [Module
   rw [hcomm, ← add_smul, GlobalTheory.cubeSign_mul_erase hi hjt (Ne.symm hji), neg_add_cancel, zero_smul]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.cubeSign, Finset.filter_map, Finset.card_map]`. Use `congr 2`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem cubeSign_map' {σ σ' : Type} [LinearOrder σ] [LinearOrder σ'] (e : σ' ↪o σ)
     (s : Finset σ') (i : σ') :
@@ -56,25 +56,23 @@ private theorem cubeSign_map' {σ σ' : Type} [LinearOrder σ] [LinearOrder σ']
   simp
 
 /- English proof (translation)
-Introduce `σ E _ _ _ _ A w`. Establish `d2 : (∀ i j, Commute (w i) (w j)) → ∀ c, wd w (wd w c) = 0`. Introduce `h c`. Establish `hx` using `wd_anti' w w h c`. Establish `h2 : (2 : ℂ) • wd w (wd w c) = 0` using `by rw [two_smul]; exact hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(smul_eq_zero.1 h2).resolve_left two_ne_zero`. Use `⟨d2, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨hw, hA⟩ n a ha`. Use `⟨?_, d2 hw a⟩` and prove the remaining obligations. Simplify using `only [acx, Submodule.mem_pi, Set.mem_univ, forall_const] at ha ⊢`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Rewrite using `[wd_apply']`. Distinguish the cases in `hs : (s.card : ℤ) = n + 1`. Rewrite using `[if_pos hs]`. Use `Submodule.sum_mem _ fun i hi => Submodule.smul_of_tower_mem _ _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcard : ((s.erase i).card : ℤ) = n`. Use `Finset.card_erase_add_one hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hmem` using `ha (s.erase i)`. Rewrite `hmem` using `[if_pos hcard]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hA (s.erase i) i (by simp) _ hmem` as an intermediate fact. Rewrite `this` using `[Finset.insert_erase hi]`. Then use the resulting hypothesis. Rewrite using `[if_neg hs, Submodule.mem_bot]`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Establish `hcard : ¬ ((s.erase i).card : ℤ) = n`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.card_erase_add_one hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hmem` using `ha (s.erase i)`. Rewrite `hmem` using `[if_neg hcard, Submodule.mem_bot]`. Rewrite using `[hmem, map_zero, smul_zero]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w'`. Use `LinearMap.ext fun c => funext fun t => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply, Pi.add_apply, wd_apply', smul_add, Finset.sum_add_distrib]`. Introduce `w' h _ c`. Conclude with `wd_anti' w w' h c`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `c`. Use function extensionality and compare the values at `t`. Rewrite using `[wd_apply']`. Simplify using `only [Module.End.one_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `σ' _ e c s`. Rewrite using `[wd_apply', wd_apply', Finset.sum_map]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Simplify using `only [RelEmbedding.coe_toEmbedding, cubeSign_map']`. Rewrite using `[Finset.map_erase]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.wdBasic_of :
     WdBasic := by

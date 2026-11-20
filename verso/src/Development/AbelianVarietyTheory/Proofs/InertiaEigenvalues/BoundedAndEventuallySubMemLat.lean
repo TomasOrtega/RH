@@ -15,7 +15,7 @@ namespace GlobalTheory.ExpImage
 variable {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P)
 
 /- English proof (translation)
-Take `⟨p, q, rfl⟩` from `Ideal.mem_span_pair.1 hx`. Rewrite using `[map_add, mul_comm p]`. Use `add_mem (io_mem_Lat AI M n p) (FilB_le_Lat AI ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_pow]`. Conclude with `FilB_zero_mul (io_mem AI q) (by simpa using FilB_pow (io_ξ_mem AI) M)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem io_mem_Lat_of_mem_span {M n : ℕ} {x : Ainf l}
     (hx : x ∈ Ideal.span {((l : ℕ) : Ainf l) ^ n, AI.ξ ^ M}) : io AI x ∈ Lat AI M n := by
@@ -26,13 +26,11 @@ theorem io_mem_Lat_of_mem_span {M n : ℕ} {x : Ainf l}
   exact FilB_zero_mul (io_mem AI q) (by simpa using FilB_pow (io_ξ_mem AI) M)
 
 /- English proof (translation)
-Introduce `l _ P AI T b hb M n`. Take `⟨k, a, ha⟩` from `GlobalTheory.BdRQuot.exists_approx T M b hb`. Express the relevant statement in the definitionally equal form `(l : P.R.BdR) ^ k * b - io AI a ∈ FilB P (M : ℤ) at ha`. Prove the components needed by the constructor for the conclusion. Establish `h0 : (l : P.R.BdR) ^ k * b ∈ Lat AI M 0` using `⟨a, by simpa using ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Use `⟨n + k, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, mul_assoc]`. Conclude with `(pow_mul_mem_Lat_iff AI (k := n) (n := 0)).2 h0`. Use `filter_upwards [GlobalTheory.AinfCont.eventually_sub_mem AI (k + n) M a] with g hg`. Rewrite using `[← pow_mul_mem_Lat_iff AI (k := k)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `io_mem_Lat_of_mem_span AI hg`. Establish `h2` using `FilB_le_Lat AI (n := k + n) (sub_mem (act_mem g ha) ha)`. Establish `h3` using `add_mem h1 h2`. Rewrite `h3` using `[map_sub, io_act, map_sub, map_mul, map_pow, map_natCast]`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem bounded_and_eventually_sub_mem_Lat : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l)
     (AI : LocAinf l P), LocTied l P AI → ∀ b ∈ FilB P 0, ∀ M n : ℕ,

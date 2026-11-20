@@ -8,7 +8,7 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 namespace GlobalTheory.NL.HerrComplexH1
 
 /- English proof (translation)
-Introduce `D HW F l _ K s LL h T _`. Establish `H` using `GlobalTheory.HerrFull.herr_a_and_natural D HW F l K s LL h`. Use `⟨H.2.1 T, fun _ hp => ?_⟩` and prove the remaining obligations. Establish `H1` using `H.1 (fun e => absurd e hp) T`. Conclude with `⟨H1.1, H1.2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem herr_H1_description : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), Pr2a D HW F := by
   intro D HW F l _ K s LL h T _

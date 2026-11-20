@@ -15,11 +15,11 @@ open scoped TensorProduct RestrictedProduct
 variable {ι : Type*} {V : ι → Type*} [∀ v, AddCommGroup (V v)] [∀ v, Module ℂ (V v)]
 
 /- English proof (translation)
-Establish `hex : ∀ v, ∃ f : Dual ℂ (V v), f (x v) = 1`. Introduce `v`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Dual ℂ (V v), f (x v) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components.
 
-Conclude with `h0 v ((Module.forall_dual_apply_eq_zero_iff ℂ (x v)).1 hcon)`. Conclude with `⟨(f (x v))⁻¹ • f, by simp [hf]⟩`. Use `choose l hl using hex`. Establish `hl' : ∀ᶠ v in cofinite, l v (ξ v) = 1` using `(show ∀ᶠ v in cofinite, x v = ξ v from hx).mono fun v h => by rw [← h, hl v]`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `evalForm_tprod (l := l) (hl := hl') hx` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Simplify using `[hl] at this`.
+A detailed English derivation is pending.
 -/
 theorem tprod_ne_zero {ξ x : ∀ v, V v} (hx : IsRestricted ξ x) (h0 : ∀ v, x v ≠ 0) :
     tprod ℂ x ≠ 0 := by
@@ -41,9 +41,9 @@ theorem tprod_ne_zero {ξ x : ∀ v, V v} (hx : IsRestricted ξ x) (h0 : ∀ v, 
 omit [∀ v, Module ℂ (V v)] in
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hW`. Rewrite `hW` using `[not_nontrivial_iff_subsingleton]`. Take `⟨a, b, hab⟩` from `h.toNontrivial.exists_pair_ne`. Apply `hab` to reduce the goal to its premises. Use extensionality with `x`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite using `[Subsingleton.elim x 0]`. Conclude with `⟨fun _ => b.toSubmodule.zero_mem, fun _ => a.toSubmodule.zero_mem⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem nontrivial_of_isIrreducible {H : Type*} [Group H] {W : Type*} [AddCommGroup W]
     [Module ℂ W] {σ : Representation ℂ H W} (h : σ.IsIrreducible) : Nontrivial W := by
@@ -64,9 +64,9 @@ variable {G : ι → Type*} [∀ v, Group (G v)] [∀ v, TopologicalSpace (G v)]
 
 omit [∀ v, Module ℂ (V v)] in
 /- English proof (translation)
-Rewrite using `[← PiTensorProduct.map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [Function.update_self]`. Simplify using `only [Function.update_of_ne hj]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem map_update_id_mul {κ : Type*} [DecidableEq κ] {M : κ → Type*} [∀ j, AddCommGroup (M j)]
     [∀ j, Module ℂ (M j)] (i : κ) (a b : End ℂ (M i)) :
@@ -84,9 +84,9 @@ theorem map_update_id_mul {κ : Type*} [DecidableEq κ] {M : κ → Type*} [∀ 
 
 omit [∀ v, Module ℂ (V v)] in
 /- English proof (translation)
-Establish `: Function.update (fun j => (LinearMap.id : M j →ₗ[ℂ] M j)) i 1 = fun j => (LinearMap.id : M j →ₗ[ℂ] M j)`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Rewrite using `[Function.update_self]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[Function.update_of_ne hj]`. Rewrite using `[this, PiTensorProduct.map_id]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_update_id_one {κ : Type*} [DecidableEq κ] {M : κ → Type*} [∀ j, AddCommGroup (M j)]
     [∀ j, Module ℂ (M j)] (i : κ) :
@@ -114,15 +114,13 @@ include hSK hSξ in
 omit [∀ v, IsTopologicalGroup (G v)] [∀ v, LocallyCompactSpace (G v)] [∀ v, T2Space (G v)]
   [∀ v, TotallyDisconnectedSpace (G v)] hKo hKc in
 /- English proof (translation)
-Proceed by induction on `t using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c w`. Establish `hmem : windowEmbed ξ S (c • tprod ℂ w) ∈ restrictedTensor ξ`. Rewrite using `[map_smul, windowEmbed_tprod]`. Conclude with `Submodule.smul_mem _ _ (tprod_mem_restrictedTensor (isRestricted_extend ξ S _))`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hmem, fun g hg => Subtype.ext ?_⟩` and prove the remaining obligations. Use `show tensorRep K π g (windowEmbed ξ S (c • tprod ℂ w)) = windowEmbed ξ S (c • tprod ℂ w)`. Rewrite using `[map_smul, map_smul, windowEmbed_tprod, tensorRep_tprod]`. Use `congr 2`. Use function extensionality and compare the values at `v`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Treat this case separately.
 
-Unfold `extend`. Use `split_ifs with hv`. Conclude with `(w ⟨v, hv⟩).2 _ (hg v)`. Conclude with `hSξ v hv _ (hSK v hv ▸ hg v)`. Consider the case `add a b ha hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Take `⟨ha1, ha2⟩` from `ha`. Take `⟨hb1, hb2⟩` from `hb`. Use `⟨by rw [map_add]; exact Submodule.add_mem _ ha1 hb1, ?_⟩` and prove the remaining obligations. Use `Submodule.add_mem _ ha2 hb2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
-
-Conclude with `Subtype.ext (map_add _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem windowEmbed_mem (t : ⨂[ℂ] v : S, fixedVectors (π v) (K' v)) :
     ∃ h : windowEmbed ξ S t ∈ restrictedTensor ξ,
@@ -168,23 +166,23 @@ theorem coe_windowEmbedFixed (t : ⨂[ℂ] v : S, fixedVectors (π v) (K' v)) :
 include hπ hK'c hK'o hK'e in
 
 /- English proof (translation)
-Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a ha`. Take `⟨g, rfl⟩` from `ha`. Use `⟨heckeOp _ _ _ (RestrictedProduct.mulSingle K v g), Algebra.subset_adjoin (heckeOp_mem_heckeOps _ _ _ _), fun t => ?_⟩` and prove the remaining obligations. Proceed by induction on `t using PiTensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Consider the case `smul_tprod c w`. Rewrite using `[map_smul, map_smul, map_smul, map_smul]`. Use `congr 1`. Use `Subtype.ext (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[heckeOp_apply]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : IsRestricted ξ (extend ξ S fun u => (w u : V u))` using `isRestricted_extend ξ S _`. Establish `hx' : IsRestricted ξ (Function.update (extend ξ S fun u => (w u : V u)) v (π v g (w v)))` using `hx.update _ _`. Establish `hρ : restrictedTensorRep π ξ hξ (RestrictedProduct.mulSingle K v g) (windowEmbedFixed hξ S hSK hSξ (tprod ℂ w) : restrictedTensor ξ) = ⟨tprod ℂ _, tprod_mem_restrictedTensor hx'⟩`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[coe_restrictedTensorRep_apply, coe_windowEmbedFixed, windowEmbed_tprod, tensorRep_mulSingle_tprod]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Simplify using `[extend]`. Rewrite using `[hρ, coe_fixedProj_tprod hπ hξ hK'c hK'o hK'e hx', coe_windowEmbedFixed, PiTensorProduct.map_tprod, windowEmbed_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `u`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `huv : u = v`. Substitute `huv` using the available equality. Simplify using `[extend, heckeOp_apply]`. Rewrite using `[Function.update_of_ne huv]`. Unfold `extend`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `split_ifs with hu`. Establish `hne : (⟨u, hu⟩ : S) ≠ v` using `fun h => huv (congrArg Subtype.val h) dsimp only`. Rewrite using `[Function.update_of_ne hne]`. Conclude with `fixedProj_apply_of_mem (hπ u) (hK'c u) (hK'o u) (w ⟨u, hu⟩).2`. Conclude with `fixedProj_apply_of_mem (hπ u) (hK'c u) (hK'o u) (hSK u hu ▸ hSξ u hu)`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => rw [map_add, map_add, map_add, map_add, ha, hb]`. Consider the case `algebraMap c`. Use `⟨algebraMap ℂ _ c, Subalgebra.algebraMap_mem _ c, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, PiTensorProduct.map_update_smul, LinearMap.smul_apply, LinearMap.smul_apply, map_smul, map_update_id_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add a b _ _ ha hb`. Take `⟨A, hA, hAt⟩` from `ha`. Take `⟨B, hB, hBt⟩` from `hb`. Use `⟨A + B, Subalgebra.add_mem _ hA hB, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[PiTensorProduct.map_update_add, LinearMap.add_apply, LinearMap.add_apply, hAt, hBt, map_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mul a b _ _ ha hb`. Take `⟨A, hA, hAt⟩` from `ha`. Take `⟨B, hB, hBt⟩` from `hb`. Use `⟨A * B, Subalgebra.mul_mem _ hA hB, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, hBt, hAt, map_update_id_mul, Module.End.mul_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_adjoin_heckeOps (v : S) {a : End ℂ (fixedVectors (π v) (K' v))}
     (ha : a ∈ Algebra.adjoin ℂ (heckeOps (hπ v) (hK'c v) (hK'o v))) :
@@ -252,47 +250,43 @@ theorem lift_adjoin_heckeOps (v : S) {a : End ℂ (fixedVectors (π v) (K' v))}
 end Window
 
 /- English proof (translation)
-Establish `hπs : ∀ v, IsSmooth (π v)` using `fun v => (hπ v).1`. Use `set S : Finset ι := ((Filter.eventually_cofinite.1 ((hK'e.and hgel).and hξ))).toFinset`. Establish `hS : ∀ v ∉ S, K' v = K v ∧ (∀ u ∈ fixedVectors (π v) (K v), ∃ c : ℂ, u = c • ξ v) ∧ ξ v ∈ fixedVectors (π v) (K v)` using `fun v hv => by simpa [S] using hv`. Establish `hSK : ∀ v ∉ S, K' v = K v` using `fun v hv => (hS v hv).1`. Establish `hSξ : ∀ v ∉ S, ξ v ∈ fixedVectors (π v) (K v)` using `fun v hv => (hS v hv).2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle` using `le_range_windowEmbed hπ hξ hK'c hK'o hK'e S hSK (fun v hv => (hS v hv).2.1) hSξ`. Use `set J := windowEmbedFixed (π := π) (K' := K') hξ S hSK hSξ`. Establish `hJ : Function.Surjective J`. Introduce `t`. Take `⟨s, hs⟩` from `hle ⟨t, t.2, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨s, Subtype.ext (Subtype.ext hs)⟩`. Use `⟨Submodule.nontrivial_iff_ne_bot.2 hne, fun p hp => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hp0 : p = ⊥`. Conclude with `Or.inl hp0`. Use `right`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hz, hz0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hp0`. Take `⟨s, rfl⟩` from `hJ z`. Establish `hs0 : s ≠ 0` using `by rintro rfl; exact hz0 (map_zero _)`. Establish `hMnt : ∀ v : S, Nontrivial (fixedVectors (π v) (K' v))`. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hv`. Rewrite `hv` using `[not_nontrivial_iff_subsingleton]`. Apply `hs0` to reduce the goal to its premises. Establish `: ∀ t : ⨂[ℂ] u : S, fixedVectors (π u) (K' u), t = 0`. Introduce `t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `t using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c w`. Rewrite using `[(PiTensorProduct.tprod ℂ).map_coord_zero v (Subsingleton.elim _ _), smul_zero]`. Consider the case `add a b ha hb => rw [ha, hb, add_zero]`. Conclude with `this s`.
+Treat this case separately. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hfd : ∀ v : S, FiniteDimensional ℂ (fixedVectors (π v) (K' v))` using `fun v => (hπ v).2 _ (hK'c v) (hK'o v)`. Set `b : ∀ v : S, Basis (Basis.ofVectorSpaceIndex ℂ (fixedVectors (π v) (K' v))) ℂ (fixedVectors (π v) (K' v))` to `fun v => Basis.ofVectorSpace ℂ _`. Set `B` to `Basis.piTensorProduct b`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, B.repr s k ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push Not at hcon`. Conclude with `hs0 (B.repr.injective (Finsupp.ext fun k => by simp [hcon k]))`. Establish `hadj : ∀ v : S, Algebra.adjoin ℂ (heckeOps (hπs v) (hK'c v) (hK'o v)) = ⊤` using `fun v =>`. Establish `: (π v).IsIrreducible` using `hirr v`. Use `adjoin_eq_top (isSimpleUnder_heckeOps (hπs v) (hK'c v) (hK'o v) (Submodule.nontrivial_iff_ne_bot.1 (hMnt v)))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hpadj` using `IsStable.adjoin hp`. Establish `htarget : ∀ w : ∀ v : S, fixedVectors (π v) (K' v), J (tprod ℂ w) ∈ p`. Introduce `w`. Set `r : ∀ v : S, End ℂ (fixedVectors (π v) (K' v))` to `fun v => (b v).coord (k v) |>.smulRight (w v)`. Establish `hstep : ∀ T : Finset S, J (PiTensorProduct.map (T.piecewise r fun _ => LinearMap.id) s) ∈ p`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.piecewise_empty, PiTensorProduct.map_id, LinearMap.id_apply]`. Conclude with `hz`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Consider the case `insert v T hvT ih`. Take `⟨A, hA, hAt⟩` from `lift_adjoin_heckeOps hπs hξ hK'c hK'o hK'e S hSK hSξ v (a := r v) (by rw [hadj v]; trivial)`. Establish `hmap : (PiTensorProduct.map ((insert v T).piecewise r fun _ => LinearMap.id)) = PiTensorProduct.map (Function.update (fun _ => LinearMap.id) v (r v)) * PiTensorProduct.map (T.piecewise r fun _ => LinearMap.id)`. Rewrite using `[← PiTensorProduct.map_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `u`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[Finset.piecewise_eq_of_mem _ _ _ (Finset.mem_insert_self _ _), Function.update_self, Finset.piecewise_eq_of_notMem _ _ _ hvT]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Function.update_of_ne hu]`. Distinguish the cases in `huT : u ∈ T`. Rewrite using `[Finset.piecewise_eq_of_mem _ _ _ (Finset.mem_insert_of_mem huT), Finset.piecewise_eq_of_mem _ _ _ huT]`. Both sides reduce to the same expression. Rewrite using `[Finset.piecewise_eq_of_notMem _ _ _ (by simp [hu, huT]), Finset.piecewise_eq_of_notMem _ _ _ huT]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hmap, Module.End.mul_apply, ← hAt]`. Conclude with `hpadj A hA _ ih`. Establish `hall` using `hstep Finset.univ`. Rewrite `hall` using `[Finset.piecewise_univ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hrs : PiTensorProduct.map r s = B.repr s k • tprod ℂ w`. Establish `key : PiTensorProduct.map r = (B.coord k).smulRight (tprod ℂ w)`. Use `B.ext fun k' => ?_` and prove the remaining obligations. Rewrite using `[Basis.piTensorProduct_apply, PiTensorProduct.map_tprod, LinearMap.smulRight_apply, Basis.coord_apply, ← Basis.piTensorProduct_apply, Basis.repr_self]`. Simplify using `only [r, LinearMap.smulRight_apply, Basis.coord_apply, Basis.repr_self]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MultilinearMap.map_smul_univ, Finsupp.single_apply]`. Distinguish the cases in `hkk : k' = k`. Substitute `hkk` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hkk]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, k' v ≠ k v := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hkk (funext hcon)`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ v) (by simp [Finsupp.single_apply, hv]), zero_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction.
 
-Rewrite using `[key, LinearMap.smulRight_apply, Basis.coord_apply]`. Rewrite `hall` using `[hrs, map_smul]`. Use `p.smul_mem (B.repr s k)⁻¹ hall` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hk, one_smul]`. Then use the resulting hypothesis. Rewrite using `[eq_top_iff]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Introduce and unpack `t -`. Take `⟨u, rfl⟩` from `hJ t`. Establish `hspan : u ∈ Submodule.span ℂ (range (tprod ℂ : (∀ v : S, fixedVectors (π v) (K' v)) → ⨂[ℂ] v : S, fixedVectors (π v) (K' v)))`. Rewrite using `[PiTensorProduct.span_tprod_eq_top]`. Discharge the goal by the elementary cases of `trivial`.
-
-Proceed by induction on `hspan using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨w, rfl⟩` from `hu`. Conclude with `htarget w`. Consider the case `zero => rw [map_zero]`.
-
-Conclude with `p.zero_mem`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `p.add_mem ha hb`. Consider the case `smul c a _ ha => rw [map_smul]`. Conclude with `p.smul_mem c ha`.
+A detailed English derivation is pending.
 -/
 theorem isSimpleUnder_heckeOps_box (hπ : ∀ v, IsAdmissible (π v))
     (hirr : ∀ v, (π v).IsIrreducible) (hξ : ∀ᶠ v in cofinite, ξ v ∈ fixedVectors (π v) (K v))
@@ -421,17 +415,15 @@ theorem isSimpleUnder_heckeOps_box (hπ : ∀ v, IsAdmissible (π v))
   | smul c a _ ha => rw [map_smul]; exact p.smul_mem c ha
 
 /- English proof (translation)
-Establish `hπs : ∀ v, IsSmooth (π v)` using `fun v => (hπ v).1`. Establish `hnt : Nontrivial (restrictedTensor ξ)`. Establish `hv : ∀ v, ∃ u : V v, u ≠ 0` using `fun v =>`. Use `nontrivial_of_isIrreducible (hirr v)` as an intermediate fact. Use `exists_ne 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose u hu using hv`. Use `set x : ∀ v, V v := fun v => if ξ v ≠ 0 then ξ v else u v`. Establish `hx : IsRestricted ξ x` using `hξ0.mono fun v h => by simp [x, h]`. Establish `hx0 : ∀ v, x v ≠ 0` using `fun v => by`. Distinguish the cases in `h : ξ v = 0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[x, h, hu v]`. Simplify using `[x, h]`. Use `⟨⟨⟨tprod ℂ x, tprod_mem_restrictedTensor hx⟩, 0, fun h => ?_⟩⟩` and prove the remaining obligations. Conclude with `tprod_ne_zero hx hx0 (congrArg Subtype.val h)`. Use `isIrreducible_of_forall (isSmooth_restrictedTensorRep hπs hξ) fun x y hx0 => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨A, hAc, hAo, hAK, hAe, hAfix⟩` from `exists_boxSubgroup_fixing hπs hξ x.2`. Take `⟨B, hBc, hBo, hBK, hBe, hBfix⟩` from `exists_boxSubgroup_fixing hπs hξ y.2`. Use `set K' : ∀ v, Subgroup (G v) := fun v => A v ⊓ B v`. Establish `hK'c : ∀ v, IsCompact (K' v : Set (G v))` using `fun v => (hAc v).inter_right (Subgroup.isClosed_of_isOpen _ (hBo v))`. Establish `hK'o : ∀ v, IsOpen (K' v : Set (G v))` using `fun v => (hAo v).inter (hBo v)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hK'e : ∀ᶠ v in cofinite, K' v = K v` using `by filter_upwards [hAe, hBe] with v h1 h2`. Simplify using `[K', h1, h2]`. Establish `hxK : x ∈ fixedVectors (restrictedTensorRep π ξ hξ) (boxSubgroup K K')` using `fun g hg => Subtype.ext (hAfix g fun v => (hg v).1)`. Establish `hyK : y ∈ fixedVectors (restrictedTensorRep π ξ hξ) (boxSubgroup K K')` using `fun g hg => Subtype.ext (hBfix g fun v => (hg v).2)`. Use `⟨boxSubgroup K K', isCompact_boxSubgroup_of_eq hK'c hK'e, isOpen_boxSubgroup hK'o hK'e, hxK, hyK, isSimpleUnder_heckeOps_box hπ hirr hξ hgel hK'c hK'o hK'e ?_⟩` and prove the remaining obligations.
-
-Introduce `h`. Establish `: x ∈ (⊥ : Submodule ℂ (restrictedTensor ξ))` using `h ▸ hxK`. Conclude with `hx0 ((Submodule.mem_bot ℂ).1 this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIrreducible_restrictedTensorRep (hπ : ∀ v, IsAdmissible (π v))
     (hirr : ∀ v, (π v).IsIrreducible) (hξ : ∀ᶠ v in cofinite, ξ v ∈ fixedVectors (π v) (K v))

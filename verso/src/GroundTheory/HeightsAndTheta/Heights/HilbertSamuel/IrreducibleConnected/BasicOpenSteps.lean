@@ -8,9 +8,9 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open MvPolynomial Filter Topology
 
 /- English proof (translation)
-Establish `h : ∀ i, eval x (ComplexSets.linPoly A i) = A.mulVec x i`. Introduce `i`. Simplify using `[ComplexSets.linPoly, Matrix.mulVec, dotProduct, map_sum]`. Rewrite using `[ComplexSets.pullback, aeval_eq_bind₁]`. Express the relevant statement in the definitionally equal form `eval₂Hom (RingHom.id ℂ) x (bind₁ (ComplexSets.linPoly A) P) = eval₂Hom (RingHom.id ℂ) (A.mulVec x) P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[eval₂Hom_bind₁]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `h i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem IrreducibleBasicOpenConnected.eval_pullback {n d : ℕ} (A : Matrix (Fin d) (Fin n) ℂ)
     (P : MvPolynomial (Fin d) ℂ) (x : Fin n → ℂ) :
@@ -27,7 +27,7 @@ theorem IrreducibleBasicOpenConnected.eval_pullback {n d : ℕ} (A : Matrix (Fin
   exact h i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ComplexSets.linPoly, Matrix.mulVec, dotProduct, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem IrreducibleBasicOpenConnected.eval_linPoly {n d : ℕ} (A : Matrix (Fin d) (Fin n) ℂ)
     (x : Fin n → ℂ) : (fun i => eval x (ComplexSets.linPoly A i)) = A.mulVec x := by
@@ -35,11 +35,11 @@ theorem IrreducibleBasicOpenConnected.eval_linPoly {n d : ℕ} (A : Matrix (Fin 
   simp [ComplexSets.linPoly, Matrix.mulVec, dotProduct, map_sum]
 
 /- English proof (translation)
-Establish `: Nontrivial (MvPolynomial (Fin n) ℂ ⧸ W)` using `Ideal.Quotient.nontrivial_iff.mpr hW.ne_top`. Establish `hle : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ W) ≤ n`. Use `ringKrullDim_le_of_surjective (Ideal.Quotient.mk W) Ideal.Quotient.mk_surjective` as an intermediate fact. Rewrite `this` using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field, zero_add]`. Simplify `this` using `[Nat.card_eq_fintype_card]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0` using `ringKrullDim_nonneg_of_nontrivial (R := MvPolynomial (Fin n) ℂ ⧸ W)`. Generalize the expression as in `ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ W) = D at h0 hle`. Proceed by induction on `D using WithBot.recBotCoe with`. Consider the case `bot => exact absurd h0 (by simp)`. Consider the case `coe e`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `e using ENat.recTopCoe with`. Consider the case `top => exact absurd hle (not_le.2 (WithBot.coe_lt_coe.2 (ENat.natCast_lt_top n)))`. Consider the case `coe d => exact ⟨d, rfl⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem IrreducibleBasicOpenConnected.exists_dim {n : ℕ} {W : Ideal (MvPolynomial (Fin n) ℂ)}
     (hW : W.IsPrime) : ∃ d : ℕ, ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ W) = d := by
@@ -58,11 +58,11 @@ theorem IrreducibleBasicOpenConnected.exists_dim {n : ℕ} {W : Ideal (MvPolynom
     | coe d => exact ⟨d, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[dense_iff_inter_open]`. Introduce and unpack `U hU ⟨y₀, hy₀⟩`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[Set.not_nonempty_iff_eq_empty]`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.mp hU y₀ hy₀`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Apply `hR` to reduce the goal to its premises. Use `funext_set (fun j => Metric.ball (y₀ j) ε) (fun j => infinite_of_mem_nhds (y₀ j) (Metric.ball_mem_nhds _ hε)) fun y hy => ?_` and prove the remaining obligations. Rewrite `hy` using `[← ball_pi y₀ hε]`. Rewrite using `[map_zero]`. Assume the negation of the conclusion as `hyR`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `(Set.eq_empty_iff_forall_notMem.mp hne) y ⟨hball hy, hyR⟩`.
+A detailed English derivation is pending.
 -/
 theorem IrreducibleBasicOpenConnected.dense_ne_zero {d : ℕ} {R : MvPolynomial (Fin d) ℂ} (hR : R ≠ 0) :
     Dense {y : Fin d → ℂ | eval y R ≠ 0} := by
@@ -80,9 +80,9 @@ theorem IrreducibleBasicOpenConnected.dense_ne_zero {d : ℕ} {R : MvPolynomial 
   exact (Set.eq_empty_iff_forall_notMem.mp hne) y ⟨hball hy, hyR⟩
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[mem_closure_iff_nhds]`. Introduce `U hU`. Establish `hN` using `IndefiniteRowSideFullHecke.ComplexSets.FiniteMapOpen.proof n d W (ComplexSets.linPoly A) hW hA.injective hA.finite x hx U hU`. Establish `hfun : (fun z : Fin n → ℂ => fun i => eval z (ComplexSets.linPoly A i)) = fun z => A.mulVec z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun z => IrreducibleBasicOpenConnected.eval_linPoly A z`. Rewrite `hN` using `[hfun, IrreducibleBasicOpenConnected.eval_linPoly]`. Take `⟨y, ⟨z, ⟨hzW, hzU⟩, rfl⟩, hyR⟩` from `mem_closure_iff_nhds.mp (IrreducibleBasicOpenConnected.dense_ne_zero hR (A.mulVec x)) _ hN`. Conclude with `⟨z, hzU, hzW, hyR⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IrreducibleBasicOpenConnected.zeroSet_subset_closure {n d : ℕ} {W : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin d) (Fin n) ℂ} (hW : W.IsPrime) (hA : ComplexSets.IsFiniteProjection W A)
@@ -101,11 +101,11 @@ theorem IrreducibleBasicOpenConnected.zeroSet_subset_closure {n d : ℕ} {W : Id
   exact ⟨z, hzU, hzW, hyR⟩
 
 /- English proof (translation)
-Use `letI : Algebra (MvPolynomial (Fin d) ℂ) (MvPolynomial (Fin n) ℂ ⧸ W) := (ComplexSets.projHom W A).toRingHom.toAlgebra`. Establish `: IsDomain (MvPolynomial (Fin n) ℂ ⧸ W)` using `Ideal.Quotient.isDomain W`. Establish `hne : Ideal.Quotient.mk W g ≠ 0` using `fun h => hg (Ideal.Quotient.eq_zero_iff_mem.mp h)`. Establish `hcomap` using `Ideal.comap_ne_bot_of_integral_mem hne (Ideal.mem_span_singleton_self _) (hA.finite.to_isIntegral _)`. Take `⟨Q, hQmem, hQ⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hcomap`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨Q, hQ, fun x hx hgx => ?_⟩` and prove the remaining obligations. Rewrite `hQmem` using `[Ideal.mem_comap, Ideal.mem_span_singleton']`. Take `⟨c, hc⟩` from `hQmem`. Take `⟨h, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Establish `hmem : ComplexSets.pullback A Q - h * g ∈ W`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, hc]`. Conclude with `sub_eq_zero.mpr rfl`. Establish `hev` using `hx _ hmem`. Rewrite `hev` using `[map_sub, map_mul, hgx, mul_zero, sub_zero, IrreducibleBasicOpenConnected.eval_pullback]`. Conclude with `hev`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IrreducibleBasicOpenConnected.exists_base_vanishing {n d : ℕ} {W : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin d) (Fin n) ℂ} (hW : W.IsPrime) (hA : ComplexSets.IsFiniteProjection W A)

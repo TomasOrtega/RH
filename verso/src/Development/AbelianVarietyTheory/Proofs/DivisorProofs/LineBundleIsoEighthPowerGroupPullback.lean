@@ -17,9 +17,9 @@ open Classical
 namespace GlobalTheory.Poinc.Eq8
 
 /- English proof (translation)
-Establish `f1 : (lift x y).left ≫ (fst C C).left = x.left` using `congrArg (fun q => q.left) (lift_fst x y)`. Establish `f2 : (lift x y).left ≫ (snd C C).left = y.left` using `congrArg (fun q => q.left) (lift_snd x y)`. Establish `f1' : (lift x' y').left ≫ (fst C' C').left = x'.left` using `congrArg (fun q => q.left) (lift_fst x' y')`. Establish `f2' : (lift x' y').left ≫ (snd C' C').left = y'.left` using `congrArg (fun q => q.left) (lift_snd x' y')`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show (_ ≫ _) ≫ (fst C C).left = (_ ≫ _) ≫ (fst C C).left`. Rewrite using `[Category.assoc, hsq.1, ← Category.assoc, f1', hx, Category.assoc, f1]`. Use `show (_ ≫ _) ≫ (snd C C).left = (_ ≫ _) ≫ (snd C C).left`. Rewrite using `[Category.assoc, hsq.2, ← Category.assoc, f2', hy, Category.assoc, f2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_left_comp {T T' : Scheme.{0}} {B C : Over T} {B' C' : Over T'} {φB : B'.left ⟶ B.left}
     {χ : C'.left ⟶ C.left} {χ₂ : (C' ⊗ C').left ⟶ (C ⊗ C).left} (hsq : IsSquare χ χ₂)
@@ -36,9 +36,9 @@ theorem lift_left_comp {T T' : Scheme.{0}} {B C : Over T} {B' C' : Over T'} {φB
     rw [Category.assoc, hsq.2, ← Category.assoc, f2', hy, Category.assoc, f2]
 
 /- English proof (translation)
-Introduce `T T' B C B' C' φB χ χ₂ Q Q' L L' pr pr' W hQ hQ' hL hL' hsq HQ hpr h1 hLL`. Establish `h3` using `GlobalTheory.ShapePull.iso_linComb_pull HQ (K := Fin 8 × Fin 8) (fun ab => (lift (pr' ab.1) (pr' ab.2)).left) (fun ab => (lift (pr ab.1) (pr ab.2)).left) (fun ab => W ab.1 ab.2) φB (fun ab => lift_left_comp hsq _ _ _ _ (hpr ab.1) (hpr ab.2))`. Establish `h2` using `GlobalTheory.SiegelPullComp.iso_pull φB hLL`. Establish `lc : (LB.LinComb Q (K` using `Fin 8 × Fin 8) (fun ab => (lift (pr ab.1) (pr ab.2)).left) (fun ab => W ab.1 ab.2)).IsLB := ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB _ hQ _ _`. Establish `lc' : (LB.LinComb Q' (K` using `Fin 8 × Fin 8) (fun ab => (lift (pr' ab.1) (pr' ab.2)).left) (fun ab => W ab.1 ab.2)).IsLB := ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB _ hQ' _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `LBIso.trans hL' (pull_isLB hL φB) lc' h1 (LBIso.trans (pull_isLB hL φB) (pull_isLB lc φB) lc' h2 h3.symm)`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_eighth_pull : ∀ {T T' : Scheme.{0}} {B C : Over T} {B' C' : Over T'} {φB : B'.left ⟶ B.left} {χ : C'.left ⟶ C.left} {χ₂ : (C' ⊗ C').left ⟶ (C ⊗ C).left} (Q : LB (C ⊗ C).left) (Q' : LB (C' ⊗ C').left) (L : LB B.left) (L' : LB B'.left) (pr : Fin 8 → (B ⟶ C)) (pr' : Fin 8 → (B' ⟶ C')) (W : Matrix (Fin 8) (Fin 8) ℤ), Q.IsLB → Q'.IsLB → L.IsLB → L'.IsLB → IsSquare χ χ₂ → LBIso Q' (Q.pull χ₂) → (∀ a, (pr' a).left ≫ χ = φB ≫ (pr a).left) → LBIso L' (L.pull φB) → LBIso L (LB.LinComb Q (K := Fin 8 × Fin 8) (fun ab => (lift (pr ab.1) (pr ab.2)).left) (fun ab => W ab.1 ab.2)) → LBIso L' (LB.LinComb Q' (K := Fin 8 × Fin 8) (fun ab => (lift (pr' ab.1) (pr' ab.2)).left) (fun ab => W ab.1 ab.2)) := by
   intro T T' B C B' C' φB χ χ₂ Q Q' L L' pr pr' W hQ hQ' hL hL' hsq HQ hpr h1 hLL

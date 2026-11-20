@@ -15,7 +15,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 open GlobalTheory.CompanionTheory.SW.GoodMass
 
 /- English proof (translation)
-The claim follows from `|((cfac E v : ℝ≥0∞) * m (hermOf (Fv F v) σ T hT) (latV b v)).toReal - 1| ≤ C / (Ideal.absNorm v.asIdeal : ℝ) ^ 2 := by intro n induction n with | zero => intro J hJ T hT hdet d b obtain ⟨β, -, hβ0, hβ⟩ := GlobalTheory.T.hermitian_one_by_one_is_scalar F E σ hcm T hT have hβ0 := hβ …`.
+A detailed English derivation is pending.
 -/
 theorem mass_good_eq (hE2 : PositivityTheory.PfSWUS.HMass.OneVecBinaryMass) (hO : MassOne) (hcm : IsCMExt F E σ) :
     ∀ (n : ℕ) (J : Matrix (Fin (n + 1)) (Fin (n + 1)) E), IsHermND σ J →
@@ -69,15 +69,11 @@ theorem mass_good_eq (hE2 : PositivityTheory.PfSWUS.HMass.OneVecBinaryMass) (hO 
 end Main
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M hM J hJ T hT hdet d b lam hlam m hm`. Take `⟨n, rfl⟩ : ∃ n, M = n + 1` from `⟨M - 1, by omega⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `v`. Establish `hloc : IsLocR (Fv F v)` using `GlobalTheory.T.completion_is_local_ring F v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨hTR, hLC, hSC, hT2, -⟩` from `id hloc`. Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Establish `hh` using `GlobalTheory.T.coordinate_haar_measure F E σ hCM (Fv F v) d b (lam v) (hlam v).1`. Use `haveI hW := hh.2.1 (n + 1) (n + 1)`. Use `haveI hH := hh.2.2 (n + 1)`. Use `haveI hlf := (GlobalTheory.T.gram_fiber_measure_locallyFinite_and_ne_zero_of_isOpen F E σ hCM (n + 1) J hJ (Fv F v) hloc (n + 1) _ _ (m v) hW hH (hm v) (hermOf (Fv F v) σ T hT)).1`.
-
-Rewrite using `[Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top ENNReal.coe_lt_top (GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hCM d b (n + 1) (n + 1) v).1.measure_lt_top`. Take `⟨C, hC⟩` from `mass_good_eq hE2 hO hCM n J hJ T hT hdet d b`. Use `Summable.of_norm_bounded_eventually (g := fun v : HeightOneSpectrum (𝓞 F) => C * (1 / (Ideal.absNorm v.asIdeal : ℝ) ^ 2)) ((GlobalTheory.CompanionTheory.SW.Primes.summable_one_div_absNorm_sq F).mul_left C) ?_` and prove the remaining obligations. Use `filter_upwards [hC] with v hv`.
-
-Use `hv (lam v) (hlam v) (m v) (hm v)` as an intermediate fact. Rewrite using `[Real.norm_eq_abs, abs_abs, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Simplify `this` using `[div_eq_mul_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem massCAll_of (hE2 : PositivityTheory.PfSWUS.HMass.OneVecBinaryMass) (hO : MassOne) : MassCAll := by
   intro F E _ _ _ _ _ σ hCM M hM J hJ T hT hdet d b lam hlam m hm

@@ -12,23 +12,21 @@ open scoped Matrix TensorProduct
 namespace GlobalTheory.ArchFinSplit
 
 /- English proof (translation)
-Establish `hS1` using `GlobalTheory.T.cm_archimedean_split_bijective`. Establish `hS2` using `GlobalTheory.T.adele_archimedean_inclusion_continuous`. Establish `hS3` using `GlobalTheory.T.finite_adele_integers_scale_small`. Introduce `F E _ _ _ _ _ σ B h`. Establish `hR` using `h.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `Φ` to `RingEquiv.ofBijective _ (hS1 F E σ B.emb h)`. Establish `hΦ : ∀ z, Φ z = (fun w => piInf (B.emb w) z, GlobalTheory.ArchFinSplit.finPart F E z)` using `fun z => rfl`. Establish `halg : ∀ u : AdeleRing (𝓞 F) F, Φ (algebraMap (AdeleRing (𝓞 F) F) (AE F E) u) = (fun w => InfinitePlace.Completion.extensionEmbedding w (u.1 w), (1 : E) ⊗ₜ[F] u.2)`. Introduce `u`. Rewrite using `[hΦ, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Prod.ext (funext fun w => ?_) rfl` and prove the remaining obligations. Use `show InfinitePlace.Completion.extensionEmbedding w (u.1 w) * (B.emb w).1 1 = _`. Rewrite using `[map_one, mul_one]`. Establish `hfin : ∀ y, Φ.symm (0, y) = GlobalTheory.ArchFinSplit.finIncl F E y` using `fun y => by`. Rewrite using `[RingEquiv.symm_apply_eq, hΦ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Prod.ext (GlobalTheory.ArchFinSplit.archPart_finIncl B.emb y).symm (GlobalTheory.ArchFinSplit.finPart_finIncl y).symm`. Use `⟨Φ, fun x => ?_, fun z w => rfl, fun z => ?_, fun u z hu hz => ?_, fun u z hu hz => ?_, hS2 F E hR Φ fun u hu => by rw [halg, hu, TensorProduct.tmul_zero], fun U hU => ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ]`. Use `Prod.ext (funext fun w => ?_) rfl` and prove the remaining obligations. Use `show InfinitePlace.Completion.extensionEmbedding w ((1 : AdeleRing (𝓞 F) F).1 w) * (B.emb w).1 x = _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show (1 : AdeleRing (𝓞 F) F).1 w = 1 from rfl, map_one, one_mul]`. Rewrite using `[hΦ, hΦ]`. Use `Prod.ext (funext fun w => GlobalTheory.WrongSignPair.piInf_cA h (B.emb w) z) ?_` and prove the remaining obligations. Use `show GlobalTheory.ArchFinSplit.finPart F E (cA σ z) = Formalism.UG.sigR σ _ (GlobalTheory.ArchFinSplit.finPart F E z)`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => rfl`. Establish `h1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).map_eq_zero_iff.1 hu`. Apply `Φ.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero, Algebra.smul_def, map_mul, halg]`. Use `Prod.ext (funext fun w => ?_) ?_` and prove the remaining obligations. Use `show InfinitePlace.Completion.extensionEmbedding w (u.1 w) * (Φ z).1 w = 0`. Rewrite using `[h1]`. Use `show InfinitePlace.Completion.extensionEmbedding w (0 : w.Completion) * (Φ z).1 w = 0`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_zero, zero_mul]`. Simplify using `[hz]`. Apply `Φ.injective` to reduce the goal to its premises. Rewrite using `[map_zero, Algebra.smul_def, map_mul, halg, hu]`. Use `Prod.ext (funext fun w => ?_) ?_` and prove the remaining obligations.
-
-Simplify using `[hz]`. Simplify using the standard rewrite rules. Take `⟨N, hN, hy⟩` from `hS3 F E U hU`. Conclude with `⟨N, hN, fun y hy' => by rw [hfin]; exact hy y hy'⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cm_adele_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E), IsCMExt F E σ → ∃ Φ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E ≃+* (InfinitePlace F → ℂ) × (E ⊗[F] Formalism.MainNotions.S.Af F), (∀ x : E, Φ (inclR (F := F) (AF F) x) = (fun w => (B.emb w).1 x, Formalism.UG.inclE (F := F) (Formalism.MainNotions.S.Af F) x)) ∧ (∀ z w, (Φ z).1 w = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf (B.emb w) z) ∧ (∀ z, Φ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ z) = (fun w => star ((Φ z).1 w), Formalism.UG.sigR σ (Formalism.MainNotions.S.Af F) (Φ z).2)) ∧ (∀ (u : AF F) z, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F u = 0 → (Φ z).2 = 0 → u • z = 0) ∧ (∀ (u : AF F) z, u.2 = 0 → (Φ z).1 = 0 → u • z = 0) ∧ Continuous (fun c : InfinitePlace F → ℂ => Φ.symm (c, 0)) ∧ ∀ U ∈ nhds (0 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E), ∃ N : ℕ, 1 ≤ N ∧ ∀ y ∈ Formalism.MainNotions.S.IntAf F E, Φ.symm (0, (N : E ⊗[F] Formalism.MainNotions.S.Af F) * y) ∈ U := by
   have hS1 := GlobalTheory.T.cm_archimedean_split_bijective

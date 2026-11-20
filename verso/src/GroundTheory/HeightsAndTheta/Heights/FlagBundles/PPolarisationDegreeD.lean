@@ -7,25 +7,25 @@ namespace GroundTheory.Heights₂.Heights.FlagBundles
 open MvPolynomial Finset
 
 /- English proof (translation)
-Introduce `K _ _ r D φ ψ h P hP`. Use `set χ : MvPolynomial (Fin r) K →ₗ[K] K := φ - ψ with hχdef`. Establish `hχ : ∀ c : Fin r → K, χ ((∑ i, C (c i) * X i) ^ D) = 0` using `fun c => by`. Simplify using `[hχdef, h c]`. Establish `hmono : ∀ k : Fin r → ℕ, (∏ i, X i ^ k i : MvPolynomial (Fin r) K) = monomial (Finsupp.equivFunOnFinite.symm k) 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Rewrite using `[monomial_eq, C_1, one_mul, Finsupp.prod_fintype _ _ (fun i => pow_zero _)]`. Simplify using the standard rewrite rules. Establish `hexp : ∀ c : Fin r → K, (∑ i, C (c i) * X i : MvPolynomial (Fin r) K) ^ D = ∑ k ∈ piAntidiag univ D, C ((Nat.multinomial univ k : K) * ∏ i, c i ^ k i) * ∏ i, X i ^ k i`. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_pow_eq_sum_piAntidiag]`. Use `sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [mul_pow, prod_mul_distrib, map_mul, map_prod, map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Use `set Q : MvPolynomial (Fin r) K := ∑ k ∈ piAntidiag univ D, C ((Nat.multinomial univ k : K) * χ (∏ i, X i ^ k i)) * ∏ i, X i ^ k i with hQdef`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hQ : Q = 0`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `c`. Rewrite using `[map_zero, ← hχ c, hexp c, hQdef, map_sum, map_sum]`. Use `sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : C ((Nat.multinomial univ k : K) * ∏ i, c i ^ k i) * ∏ i, X i ^ k i = ((Nat.multinomial univ k : K) * ∏ i, c i ^ k i) • (∏ i, X i ^ k i : MvPolynomial (Fin r) K)` using `C_mul'`. Rewrite using `[hs, map_smul, smul_eq_mul, eval_mul, eval_C]`. Simplify using `only [map_prod, map_pow, eval_X]`. Expand and normalize the polynomial expressions, which then agree. Establish `hzero : ∀ k ∈ piAntidiag univ D, χ (∏ i, X i ^ k i) = 0`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k hk`. Establish `hc : coeff (Finsupp.equivFunOnFinite.symm k) Q = (Nat.multinomial univ k : K) * χ (∏ i, X i ^ k i)`. Rewrite using `[hQdef, coeff_sum]`. Repeatedly rewrite using `[hmono, coeff_C_mul, coeff_monomial, EmbeddingLike.apply_eq_iff_eq]`. Simplify using `[hk]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hc` using `[hQ, coeff_zero]`. Establish `hm : (Nat.multinomial univ k : K) ≠ 0` using `Nat.cast_ne_zero.mpr (Nat.multinomial_pos _ _).ne'`. Conclude with `(mul_eq_zero.mp hc.symm).resolve_left hm`. Establish `hP0 : χ P = 0`. Rewrite using `[as_sum P, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `sum_eq_zero fun d hd => ?_` and prove the remaining obligations. Establish `hdeg : ∑ i, d i = D`. Rewrite using `[← Finsupp.degree_eq_sum, Finsupp.degree_eq_weight_one]`. Conclude with `hP (mem_support_iff.mp hd)`. Establish `hmem : (⇑d : Fin r → ℕ) ∈ piAntidiag univ D`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hdeg]`. Establish `hd1 : monomial d (coeff d P) = coeff d P • monomial d (1 : K)`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[hd1, map_smul, smul_eq_mul]`. Use `hzero _ hmem` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hmono, Finsupp.equivFunOnFinite_symm_coe]`. Rewrite using `[this, mul_zero]`. Use `hP0` as an intermediate fact. Rewrite `this` using `[hχdef, LinearMap.sub_apply, sub_eq_zero]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem PolarisationDegreeD.proof : PolarisationDegreeD.Statement := by
   intro K _ _ r D φ ψ h P hP

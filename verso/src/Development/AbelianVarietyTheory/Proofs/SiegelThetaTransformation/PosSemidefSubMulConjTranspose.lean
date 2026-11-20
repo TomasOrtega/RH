@@ -10,7 +10,7 @@ namespace GlobalTheory.SW
 variable {N : ℕ}
 
 /- English proof (translation)
-Establish `h1 : imH (I • A) = A`. Use `imH_add_I_smul 0 A hA.1` as an intermediate fact. Simplify `this` using `[imH]`. Establish `h` using `(norm_det_denom_mono N 1 0 (I • A) P (by simp) (by simpa using Matrix.PosDef.one) (by rwa [h1]) hP).2`. Simplify `h` using `[← smul_add, det_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_det_le_add_posSemidef (A P : Matrix (Fin N) (Fin N) ℂ) (hA : A.PosDef)
     (hP : P.PosSemidef) : ‖A.det‖ ≤ ‖(A + P).det‖ := by
@@ -22,20 +22,20 @@ theorem norm_det_le_add_posSemidef (A P : Matrix (Fin N) (Fin N) ℂ) (hA : A.Po
   simpa [← smul_add, det_smul] using h
 
 /- English proof (translation)
-Simplify using `[dotProduct, Complex.conj_mul']`.
+Simplify using the standard rewrite rules.
 -/
 theorem star_dotProduct_self_eq_sum (x : Fin N → ℂ) :
     star x ⬝ᵥ x = ((∑ a, ‖x a‖ ^ 2 : ℝ) : ℂ) := by
   simp [dotProduct, Complex.conj_mul']
 
 /- English proof (translation)
-Use `PosSemidef.of_dotProduct_mulVec_nonneg ?_ fun x => ?_` and prove the remaining obligations. Use `IsHermitian.sub ?_ (isHermitian_mul_conjTranspose_self X)` and prove the remaining obligations. Simplify using `[IsHermitian]`. Establish `h1 : star x ⬝ᵥ (X * Xᴴ) *ᵥ x = star (Xᴴ *ᵥ x) ⬝ᵥ (Xᴴ *ᵥ x)`. Rewrite using `[star_mulVec, conjTranspose_conjTranspose, ← dotProduct_mulVec, mulVec_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_mulVec, dotProduct_sub, h1, smul_mulVec, one_mulVec, dotProduct_smul, star_dotProduct_self_eq_sum, star_dotProduct_self_eq_sum, smul_eq_mul, ← ofReal_mul, ← ofReal_sub, Complex.zero_le_real, sub_nonneg]`. Establish `h2 : ∀ a, ‖(Xᴴ *ᵥ x) a‖ ^ 2 ≤ B ^ 2 * (N * ∑ b, ‖x b‖ ^ 2)`. Introduce `a`. Establish `h3 : ‖(Xᴴ *ᵥ x) a‖ ≤ B * ∑ b, ‖x b‖`. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_sum_le Finset.univ fun b => Xᴴ a b * x b).trans (Finset.sum_le_sum fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, conjTranspose_apply, norm_star]`. Conclude with `mul_le_mul_of_nonneg_right (hX b a) (norm_nonneg _)`. Establish `h4 : (∑ b, ‖x b‖) ^ 2 ≤ N * ∑ b, ‖x b‖ ^ 2`. Simplify using `using sq_sum_le_card_mul_sum_sq (s := Finset.univ) (f := fun b => ‖x b‖)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `(Finset.sum_le_sum fun a _ => h2 a).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem posSemidef_sub_mul_conjTranspose (X : Matrix (Fin N) (Fin N) ℂ) (B : ℝ)
     (hX : ∀ a b, ‖X a b‖ ≤ B) :
@@ -65,9 +65,9 @@ theorem posSemidef_sub_mul_conjTranspose (X : Matrix (Fin N) (Fin N) ℂ) (B : �
     ring
 
 /- English proof (translation)
-Establish `h1 : D * Cᴴ = C * Dᴴ` using `by simpa using h.eq`. Establish `h2 : star (I * δ : ℂ) = -(I * δ)` using `by simp`. Establish `h3 : (δ : ℂ) ^ 2 = -((I * δ) * (I * δ))`. Establish `: I * δ * (I * δ) = (I * I) * (δ : ℂ) ^ 2` using `by ring`. Rewrite using `[this, I_mul_I]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`. Generalize the expression as in `(I * δ : ℂ) = t at h2 ⊢`. Simplify using `only [conjTranspose_add, conjTranspose_mul, conjTranspose_smul, conjTranspose_one, hX.eq, h2, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc, h1]`. Use `module`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem denom_mul_conjTranspose (C D X : Matrix (Fin N) (Fin N) ℂ) (h : (C * Dᴴ).IsHermitian)
     (hX : X.IsHermitian) (δ : ℝ) :
@@ -86,7 +86,7 @@ theorem denom_mul_conjTranspose (C D X : Matrix (Fin N) (Fin N) ℂ) (h : (C * D
   module
 
 /- English proof (translation)
-Rewrite using `[det_mul, det_conjTranspose, star_def, Complex.mul_conj']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_det_mul_conjTranspose (A : Matrix (Fin N) (Fin N) ℂ) :
     (A * Aᴴ).det = ((‖A.det‖ ^ 2 : ℝ) : ℂ) := by
@@ -94,27 +94,23 @@ theorem norm_det_mul_conjTranspose (A : Matrix (Fin N) (Fin N) ℂ) :
   simp
 
 /- English proof (translation)
-Introduce `N δ B hδ`. Use `set K : ℝ := (N : ℝ) ^ 2 * (B / 2) ^ 2 with hK`. Establish `hK0 : 0 ≤ K` using `by positivity`. Use `set c : ℝ := δ ^ 2 / (2 * δ ^ 2 + 1 + 2 * K) with hc`. Establish `hc0 : 0 < c` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc1 : 0 ≤ 1 - 2 * c`. Rewrite using `[hc, sub_nonneg, ← mul_div_assoc, div_le_one (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc2 : 0 ≤ δ ^ 2 - c - 2 * c * K`. Establish `: c * (2 * δ ^ 2 + 1 + 2 * K) = δ ^ 2` using `by rw [hc]; field_simp`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations.
 
-Use polynomial arithmetic with `[mul_pos hc0 (pow_pos hδ 2)]`. Use `⟨Real.sqrt (c ^ N), by positivity, fun C D Z h hp hZ hB => ?_⟩` and prove the remaining obligations. Establish `hG : (C * Cᴴ + D * Dᴴ).det = ((‖(C * (I • (1 : Matrix (Fin N) (Fin N) ℂ)) + D).det‖ ^ 2 : ℝ) : ℂ)`. Use `denom_mul_conjTranspose C D 0 h isHermitian_zero 1` as an intermediate fact. Rewrite using `[← norm_det_mul_conjTranspose]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ofReal_one, mul_one, zero_add, Matrix.mul_zero, one_pow, one_smul] at this`. Rewrite using `[this, add_comm]`. Use `⟨?_, by rw [hG, ofReal_re]⟩` and prove the remaining obligations. Use `set X : Matrix (Fin N) (Fin N) ℂ := (2⁻¹ : ℂ) • (Z + Zᴴ) with hXdef`. Establish `hX : X.IsHermitian`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hXdef, IsHermitian, add_comm]`. Establish `hXB : ∀ a b, ‖X a b‖ ≤ B / 2`. Introduce `a b`. Use `hB a b` as an intermediate fact. Rewrite using `[hXdef, Matrix.smul_apply, norm_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [norm_inv, Complex.norm_ofNat]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hone : ((δ : ℂ) • (1 : Matrix (Fin N) (Fin N) ℂ)).PosDef` using `Matrix.PosDef.one.smul (by exact_mod_cast hδ)`. Establish `him : imH (X + (I * δ) • 1) = (δ : ℂ) • (1 : Matrix (Fin N) (Fin N) ℂ)`. Rewrite using `[mul_smul, imH_add_I_smul _ _ hone.1, imH, hX.eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hZe : X + (I * δ) • 1 + I • (imH Z - (δ : ℂ) • (1 : Matrix (Fin N) (Fin N) ℂ)) = Z`. Establish `h2 : I * (2 * I)⁻¹ = 2⁻¹` using `by field_simp`. Rewrite using `[smul_sub, imH, smul_smul, smul_smul, h2, hXdef]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm` using `(norm_det_denom_mono N C D (X + (I * δ) • 1) _ h hp (by rwa [him]) hZ).2`. Rewrite `hm` using `[hZe]`. Use `le_trans ?_ hm` and prove the remaining obligations. Establish `hP : ((((1 - 2 * c : ℝ)) : ℂ) • ((C * X + D) * (C * X + D)ᴴ) + ((δ ^ 2 - c - 2 * c * K : ℝ) : ℂ) • (C * Cᴴ) + ((2 * c : ℝ) : ℂ) • (C * ((K : ℂ) • (1 : Matrix (Fin N) (Fin N) ℂ) - X * Xᴴ) * Cᴴ) + (c : ℂ) • ((C * X + D + C * X) * (C * X + D + C * X)ᴴ)).PosSemidef`. Use `(((posSemidef_self_mul_conjTranspose _).smul ?_).add ((posSemidef_self_mul_conjTranspose _).smul ?_)).add (((posSemidef_sub_mul_conjTranspose X _ hXB).mul_mul_conjTranspose_same C).smul ?_) |>.add ((posSemidef_self_mul_conjTranspose _).smul ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `Complex.zero_le_real.2 hc1`. Conclude with `Complex.zero_le_real.2 hc2`. Conclude with `Complex.zero_le_real.2 (by positivity)`. Conclude with `Complex.zero_le_real.2 hc0.le`. Establish `hd` using `norm_det_le_add_posSemidef _ _ (hp.smul (Complex.zero_lt_real.2 hc0)) hP`.
-
-Establish `he : (c : ℂ) • (C * Cᴴ + D * Dᴴ) + ((((1 - 2 * c : ℝ)) : ℂ) • ((C * X + D) * (C * X + D)ᴴ) + ((δ ^ 2 - c - 2 * c * K : ℝ) : ℂ) • (C * Cᴴ) + ((2 * c : ℝ) : ℂ) • (C * ((K : ℂ) • (1 : Matrix (Fin N) (Fin N) ℂ) - X * Xᴴ) * Cᴴ) + (c : ℂ) • ((C * X + D + C * X) * (C * X + D + C * X)ᴴ)) …`. Rewrite using `[denom_mul_conjTranspose C D X h hX]`. Use `push_cast`. Simplify using `only [conjTranspose_add, conjTranspose_mul, Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_assoc]`. Use `module`.
-
-Rewrite `hd` using `[he, norm_det_mul_conjTranspose, det_smul, hG, ← ofReal_pow, ← ofReal_mul, norm_real, norm_real, Fintype.card_fin, Real.norm_of_nonneg (by positivity), Real.norm_of_nonneg (by positivity)]`. Use `(pow_le_pow_iff_left₀ (by positivity) (norm_nonneg _) two_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[mul_pow, Real.sq_sqrt (by positivity)]` and apply the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem norm_det_denom_compare :
     ∀ (N : ℕ) (δ B : ℝ), 0 < δ → ∃ c : ℝ, 0 < c ∧ ∀ C D Z : Matrix (Fin N) (Fin N) ℂ, (C * Dᴴ).IsHermitian → (C * Cᴴ + D * Dᴴ).PosDef → (imH Z - (δ : ℂ) • (1 : Matrix (Fin N) (Fin N) ℂ)).PosSemidef → (∀ a b, ‖(Z + Zᴴ) a b‖ ≤ B) → c * ‖(C * (I • (1 : Matrix (Fin N) (Fin N) ℂ)) + D).det‖ ≤ ‖(C * Z + D).det‖ ∧ ‖(C * (I • (1 : Matrix (Fin N) (Fin N) ℂ)) + D).det‖ ^ 2 = (C * Cᴴ + D * Dᴴ).det.re := by

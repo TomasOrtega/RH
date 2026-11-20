@@ -7,11 +7,11 @@ open Formalism.MainNotions Formalism.BasicNotions Formalism.MainNotions.G Classi
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `eps Fm`. Use `⟨0, fun x _ _ i u j hj z r hk hr => ⟨(RowWeightLemmas.nuRow_pos _ u j hj _ r hr).le, ?_⟩⟩` and prove the remaining obligations. Take `⟨q, s, hq, hs, rfl⟩` from `RowWeightLemmas.block_decomp _ j r hk hr`. Rewrite using `[RowWeightLemmas.nuRow_block _ u j hj _ q s hq hs, (Fm.D x i).hcW_e u]`. Establish `h1` using `(Fm.L x i).be_close (tauPl (Fm.D x i) z) ⟨q, by omega⟩ ⟨j, hj⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `((Fm.D x i).hc (tauPl (Fm.D x i) z)).gap_be ⟨q, by omega⟩`. Establish `h3 : (0 : ℚ) ≤ ((j : ℚ) - q) * (((Fm.D x i).R.t : ℚ) + 1)`. Establish `: (q : ℚ) ≤ j` using `by exact_mod_cast hq.le`. Conclude with `mul_nonneg (by linarith) (by positivity)`. Establish `h4 : (0 : ℚ) ≤ (((Fm.D x i).R.t : ℚ) + 3) / 2` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ h1` and prove the remaining obligations. Use `le_trans ?_ (neg_le_abs _)` and prove the remaining obligations. Rewrite using `[← Rat.cast_neg]`. Conclude with `Rat.cast_le.2 (by linarith)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blockRows_mem_Icc : ∀ {eps : ℝ} (Fm : FamP eps), ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ i : Fm.Ix x, ∀ (u : (Fm.D x i).what₂.Word), ∀ j < (Fm.D x i).R.m, ∀ (z : Bool × HH (Fm.D x i)), ∀ r, (Fm.D x i).R.k ≤ r → r < (Fm.D x i).R.N j → 0 ≤ DV.nuRow (Fm.D x i) u (j + 1) (tauPl (Fm.D x i) z) r ∧ DV.nuRow (Fm.D x i) u (j + 1) (tauPl (Fm.D x i) z) r ≤ (Fm.L x i).etaSz := by
   intro eps Fm

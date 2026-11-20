@@ -17,11 +17,11 @@ namespace Data
 variable (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Use `letI : Algebra (KTf K d.D d.N) (OmS (Ω c) d.D d.N) := (d.KTtoS h c).toAlgebra`. Use `letI : Algebra (KTf K d.D d.N) ℂ := (tauPev sg _ hpt).toAlgebra`. Take `⟨hfd, hrk⟩` from `d.omS_finite hd h c`. Establish `: CharZero (KTf K d.D d.N)` using `charZero_of_injective_algebraMap (R := K) (algebraMap K (KTf K d.D d.N)).injective`. Establish `hy : ∀ i, y (Fin.natAdd (d.N + 1) i) ≠ 0` using `fun i h0 => by`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hpt (X (i.succ, 0)) (X_ne_zero _)` as an intermediate fact. Rewrite `this` using `[eval₂_X, NPB.gpt_succ, h0, zero_mul]`. Conclude with `this rfl`. Take `⟨hinj, hrange⟩` from `d.fibre_core hd h c sg _ hpt`. Rewrite `hrange` using `[d.ST_scale c sg t y hy]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hrange, finsum_mem_range hinj, finsum_eq_sum_of_fintype]`. Conclude with `trace_eq_sum_embeddings ℂ`.
+A detailed English derivation is pending.
 -/
 theorem trace_fib (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (sg : K →+* ℂ) (t : Fin d.D → Fin (d.N + 1) → ℂ)
     (y : Fin (d.N + 1 + d.D) → ℂ)
@@ -46,21 +46,19 @@ theorem trace_fib (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (sg : K →+* ℂ) (t : 
   exact trace_eq_sum_embeddings ℂ
 
 /- English proof (translation)
-Use `haveI : Countable K := countable_numberField K`. Use `filter_upwards [NPB.ae_gen (D := d.D) (N := d.N) sg] with z hz hb`. Use `(div_eq_iff hb).2 ?_` and prove the remaining obligations. Establish `hG : ∀ (m : Fin d.D → ℕ) (p : MvPolynomial (Fin d.D × Fin (d.N + 1)) K), ReciprocityTheory.MultiplicativeHeights.IsMultiHomogeneous m p → p ≠ 0 → eval₂ sg (fun q : Fin d.D × Fin (d.N + 1) => d.tOf z q.1 q.2) p ≠ 0` using `fun m p h1 h2 => hz m p h1 h2`. Establish `h0 : ∀ q : MvPolynomial (TVar d.D d.N) K, eval₂ sg (NPB.gpt (fun q : Fin d.D × Fin (d.N + 1) => d.tOf z q.1 q.2) (Fin.append (fun _ : Fin (d.N + 1) => (0 : ℂ)) (fun _ : Fin d.D => (1 : ℂ)))) q = d.evT sg 0 (d.tOf z) q`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `q`. Unfold `Data.evT`. Use `congr 1`. Use function extensionality and compare the values at `v`. Take `⟨i, j⟩` from `v`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simp [NPB.gpt]`. Consider the case `succ i => simp [NPB.gpt]`. It suffices to establish `H : ∀ Dv : ℂ, (∀ y : Fin (d.N + 1 + d.D) → ℂ, (∀ q : MvPolynomial (TVar d.D d.N) K, q ≠ 0 → eval₂ sg (NPB.gpt (fun q : Fin d.D × Fin (d.N + 1) => d.tOf z q.1 q.2) y) q ≠ 0) → eval₂ sg (NPB.gpt (fun q : Fin d.D × Fin (d.N + 1) => d.tOf z q.1 q.2) y) a = Dv * eval₂ sg (NPB.gpt (fun …`. Use `H _ fun y hpt => ?_` and prove the remaining obligations.
+Treat this case separately. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `congrArg (tauPev sg _ hpt) hab.2.1`. Rewrite `h1` using `[map_mul, tauPev_apply, tauPev_apply]`. Rewrite using `[h1]`. Use `congr 1`. Rewrite using `[Data.De, RingHom.map_det]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `k l`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `ht` using `d.trace_fib hd h c sg (d.tOf z) y hpt (ratio (Ω := Ω c) (d.thp (hd.sel k) c) (hd.a4.choose c) * ratio (Ω := Ω c) (d.thp (hd.sel l) c) (hd.a4.choose c))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [map_mul] at ht`. Simplify `ht` using `only [Data.bvecG]`. Introduce `Dv hDv`. Establish `hR : NPB.psi sg (fun q : Fin d.D × Fin (d.N + 1) => d.tOf z q.1 q.2) a - MvPolynomial.C Dv * NPB.psi sg (fun q : Fin d.D × Fin (d.N + 1) => d.tOf z q.1 q.2) b = 0`. Assume the negation of the conclusion as `hR`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨y, hy, hgen⟩` from `NPB.exists_gen sg _ hG _ hR`. Apply `hy` to reduce the goal to its premises. Rewrite using `[map_sub, map_mul, MvPolynomial.eval_C, NPB.eval_psi, NPB.eval_psi, hDv y hgen, sub_self]`. Establish `e0` using `congrArg (MvPolynomial.eval (Fin.append (fun _ : Fin (d.N + 1) => (0 : ℂ)) (fun _ : Fin d.D => (1 : ℂ)))) hR`. Rewrite `e0` using `[map_sub, map_mul, MvPolynomial.eval_C, NPB.eval_psi, NPB.eval_psi, h0, h0, map_zero]`.
-
-Conclude with `sub_eq_zero.mp e0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem de_fibre (hd : d.AxH 𝒜) (h : d.S1) (a b : KTp K d.D d.N) (hab : d.IsPres hd h a b)
     (sg : K →+* ℂ) :

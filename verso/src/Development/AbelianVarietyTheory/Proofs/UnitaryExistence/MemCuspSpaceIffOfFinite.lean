@@ -14,9 +14,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.PjFree Glo
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {ι : Type}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨C, hC⟩`. Conclude with `ne_top_of_le_ne_top ENNReal.ofReal_ne_top (iSup_le fun p => ENNReal.ofReal_le_ofReal (hC p))`. Introduce `h`. Use `⟨(Formalism.L2.PjFree.supE X la P).toReal, fun p => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_le_iff_le_toReal h]`. Conclude with `le_iSup (fun q : FPt X => ENNReal.ofReal ((X q.1).pnorm (la q.1) (P q.1) q.2)) p`.
+A detailed English derivation is pending.
 -/
 theorem bdd_iff_supE_ne_top (X : ι → Data E r) (la : FamWt X) (P : FDSec X) :
     (∃ C : ℝ, ∀ p : FramePt X, ptNorm la P p ≤ C) ↔ Formalism.L2.PjFree.supE X la P ≠ ⊤ := by
@@ -30,23 +30,23 @@ theorem bdd_iff_supE_ne_top (X : ι → Data E r) (la : FamWt X) (P : FDSec X) :
     exact le_iSup (fun q : FPt X => ENNReal.ofReal ((X q.1).pnorm (la q.1) (P q.1) q.2)) p
 
 /- English proof (translation)
-The claim follows from `and_congr Iff.rfl (bdd_iff_supE_ne_top X la P)`.
+A detailed English derivation is pending.
 -/
 theorem isCuspSec_iff (X : ι → Data E r) (la : FamWt X) (P : FDSec X) :
     IsCuspSec la P ↔ IsHolCusp X la P ∧ Formalism.L2.PjFree.supE X la P ≠ ⊤ :=
   and_congr Iff.rfl (bdd_iff_supE_ne_top X la P)
 
 /- English proof (translation)
-The claim follows from `isCuspSec_iff_of_finite la P`.
+A detailed English derivation is pending.
 -/
 theorem isCuspSec_iff_isHolCusp [Finite ι] (X : ι → Data E r) (la : FamWt X) (P : FDSec X) :
     IsCuspSec la P ↔ IsHolCusp X la P :=
   isCuspSec_iff_of_finite la P
 
 /- English proof (translation)
-Use `⟨fun h => ?_, holCusp_mem_holSub X la⟩` and prove the remaining obligations. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem Q hQ => exact hQ`. Consider the case `zero => exact fun c => (siegelSpaceAlgebra_holds r (X c) (la c) (la c) 0).1.1`. Consider the case `add Q R _ _ hQ hR => exact fun c => (siegelSpaceAlgebra_holds r (X c) (la c) (la c) 0).1.2.1 _ (hQ c) _ (hR c)`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a Q _ hQ => exact fun c => (siegelSpaceAlgebra_holds r (X c) (la c) (la c) 0).1.2.2 a _ (hQ c)`.
+Treat this case separately.
 -/
 theorem mem_holSub_iff (X : ι → Data E r) (la : FamWt X) (P : FDSec X) :
     P ∈ holSub X la ↔ IsHolCusp X la P := by
@@ -58,7 +58,7 @@ theorem mem_holSub_iff (X : ι → Data E r) (la : FamWt X) (P : FDSec X) :
   | smul a Q _ hQ => exact fun c => (siegelSpaceAlgebra_holds r (X c) (la c) (la c) 0).1.2.2 a _ (hQ c)
 
 /- English proof (translation)
-Rewrite using `[mem_holSub_iff, ← and_assoc, ← isCuspSec_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_cuspSpace_iff (X : ι → Data E r) (la : FamWt X) (P : FDSec X) :
     P ∈ cuspSpace la ↔ P ∈ holSub X la ∧ Formalism.L2.PjFree.supE X la P ≠ ⊤ ∧ ZeroOff P := by
@@ -66,7 +66,7 @@ theorem mem_cuspSpace_iff (X : ι → Data E r) (la : FamWt X) (P : FDSec X) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_holSub_iff, ← isCuspSec_iff_isHolCusp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_cuspSpace_iff_of_finite [Finite ι] (X : ι → Data E r) (la : FamWt X) (P : FDSec X) :
     P ∈ cuspSpace la ↔ P ∈ holSub X la ∧ ZeroOff P := by
@@ -74,17 +74,17 @@ theorem mem_cuspSpace_iff_of_finite [Finite ι] (X : ι → Data E r) (la : FamW
   rfl
 
 /- English proof (translation)
-Introduce `P hP` and use `((mem_cuspSpace_iff X la P).1 hP).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cuspSpace_le_holSub (X : ι → Data E r) (la : FamWt X) : cuspSpace la ≤ holSub X la :=
   fun P hP => ((mem_cuspSpace_iff X la P).1 hP).1
 
 /- English proof (translation)
-Take `⟨⟨⟨hd, hb, hg⟩, C, hC⟩, hc⟩` from `hP`. Use `⟨⟨⟨hd.congr fun x hx => (h x hx).symm, fun x hx b hb' => ?_, fun γ hγ x hx => ?_⟩, C, fun x hx => ?_⟩, fun ξ hξ x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← h _ (ReciprocityTheory.ChartRestriction.G.AR.Up.OntoS.dom_rmul X hx hb'), ← h x hx, hb x hx b hb']`. Rewrite using `[← h _ (ReciprocityTheory.ChartRestriction.G.AR.Up.OntoS.dom_lact X hγ hx), ← h x hx, hg γ hγ x hx]`. Use `hC x hx` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `Data.pnorm at this ⊢`. Rewrite using `[← h x hx]` and apply the resulting hypothesis. Establish `e : ∀ s : X.Ψ → ℝ, P (X.flow ξ (fun τ => (s τ : ℂ)) x) = Q (X.flow ξ (fun τ => (s τ : ℂ)) x)` using `fun s => h _ (TransvectionPeriodicity.flow_real_mem_dom X hξ.2.1 s x hx)`. Use `hc ξ hξ x hx` as an intermediate fact. Unfold `Data.fj at this ⊢`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify `this` using `only [e]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_SS_congr (X : Data E r) (la : Wt X.Ψ r) {P Q : Frame X.Ψ r → ℂ}
     (h : ∀ x ∈ X.dom, P x = Q x) (hP : P ∈ X.SS la) : Q ∈ X.SS la := by
@@ -115,19 +115,19 @@ def trunc (X : ι → Data E r) : FDSec X →ₗ[ℂ] FDSec X where
     by_cases hx : x ∈ (X c).dom <;> simp [hx]
 
 /- English proof (translation)
-The claim follows from `Set.indicator_of_mem hx _`.
+A detailed English derivation is pending.
 -/
 theorem trunc_of_mem (X : ι → Data E r) (P : FDSec X) (c : ι) {x : Frame (X c).Ψ r}
     (hx : x ∈ (X c).dom) : trunc X P c x = P c x := Set.indicator_of_mem hx _
 
 /- English proof (translation)
-Introduce `_ _ hx` and use `Set.indicator_of_notMem hx _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zeroOff_trunc (X : ι → Data E r) (P : FDSec X) : ZeroOff (trunc X P) :=
   fun _ _ hx => Set.indicator_of_notMem hx _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c x`. Distinguish the cases in `hx : x ∈ (X c).dom`. Conclude with `trunc_of_mem X P c hx`. Rewrite using `[zeroOff_trunc X P c x hx, h c x hx]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trunc_eq_self (X : ι → Data E r) {P : FDSec X} (h : ZeroOff P) : trunc X P = P := by
   funext c x
@@ -136,17 +136,15 @@ theorem trunc_eq_self (X : ι → Data E r) {P : FDSec X} (h : ZeroOff P) : trun
   · rw [zeroOff_trunc X P c x hx, h c x hx]
 
 /- English proof (translation)
-The claim follows from `funext fun p => trunc_of_mem X P p.1 p.2.2`.
+A detailed English derivation is pending.
 -/
 theorem res_trunc (X : ι → Data E r) (P : FDSec X) : res X (trunc X P) = res X P :=
   funext fun p => trunc_of_mem X P p.1 p.2.2
 
 /- English proof (translation)
-Use extensionality with `P`. Simplify using `only [LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← res_trunc, h, map_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use function extensionality and compare the values at `c x`. Distinguish the cases in `hx : x ∈ (X c).dom`. Rewrite using `[trunc_of_mem X P c hx]`. Conclude with `congrFun h ⟨c, x, hx⟩`.
-
-Conclude with `zeroOff_trunc X P c x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_trunc (X : ι → Data E r) : LinearMap.ker (trunc X) = LinearMap.ker (res X) := by
   ext P
@@ -162,7 +160,7 @@ theorem ker_trunc (X : ι → Data E r) : LinearMap.ker (trunc X) = LinearMap.ke
     · exact zeroOff_trunc X P c x hx
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h c => mem_SS_congr _ _ (fun _ hx => trunc_of_mem X P c hx) (h c), fun h c => mem_SS_congr _ _ (fun _ hx => (trunc_of_mem X P c hx).symm) (h c)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHolCusp_trunc_iff (X : ι → Data E r) (la : FamWt X) (P : FDSec X) :
     IsHolCusp X la (trunc X P) ↔ IsHolCusp X la P :=
@@ -170,7 +168,7 @@ theorem isHolCusp_trunc_iff (X : ι → Data E r) (la : FamWt X) (P : FDSec X) :
     fun h c => mem_SS_congr _ _ (fun _ hx => (trunc_of_mem X P c hx).symm) (h c)⟩
 
 /- English proof (translation)
-Use extensionality with `P`. Rewrite using `[Submodule.mem_comap, mem_cuspSpace_iff_of_finite, mem_holSub_iff, mem_holSub_iff, isHolCusp_trunc_iff, and_iff_left (zeroOff_trunc X P)]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem holSub_eq_comap [Finite ι] (X : ι → Data E r) (la : FamWt X) :
     holSub X la = (cuspSpace la).comap (trunc X) := by
@@ -179,7 +177,7 @@ theorem holSub_eq_comap [Finite ι] (X : ι → Data E r) (la : FamWt X) :
     isHolCusp_trunc_iff, and_iff_left (zeroOff_trunc X P)]
 
 /- English proof (translation)
-Use `le_antisymm ?_ (Submodule.map_mono (cuspSpace_le_holSub X la))` and prove the remaining obligations. Introduce and unpack `_ ⟨P, hP, rfl⟩`. Conclude with `⟨trunc X P, (holSub_eq_comap X la).le hP, res_trunc X P⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem map_res_eq [Finite ι] (X : ι → Data E r) (la : FamWt X) :
     (holSub X la).map (res X) = (cuspSpace la).map (res X) := by
@@ -188,7 +186,7 @@ theorem map_res_eq [Finite ι] (X : ι → Data E r) (la : FamWt X) :
   exact ⟨trunc X P, (holSub_eq_comap X la).le hP, res_trunc X P⟩
 
 /- English proof (translation)
-Rewrite using `[← ker_trunc, Submodule.disjoint_def]`. Introduce `P hP h0`. Rewrite using `[← trunc_eq_self X hP.2]`. Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem disjoint_cuspSpace_ker (X : ι → Data E r) (la : FamWt X) :
     Disjoint (cuspSpace la) (LinearMap.ker (res X)) := by

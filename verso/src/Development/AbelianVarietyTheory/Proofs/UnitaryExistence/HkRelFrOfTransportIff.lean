@@ -13,9 +13,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Establish `: JacobsonSpace ↥T` using `LocallyOfFiniteType.jacobsonSpace t`. Use `ext_of_fromSpecResidueField_eq f g s (closedPoints T) ?_ ?_ H'` and prove the remaining obligations. Rewrite using `[dense_iff_closure_eq, closure_closedPoints]`. Introduce `x hx`. Rewrite using `[← cancel_epi (Spec.map (residueFieldIsoBase t x hx).hom)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Hq _ (pointOfClosedPoint_comp t x hx)` as an intermediate fact. Simplify `this` using `only [pointOfClosedPoint, Category.assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ext_of_points {Ω : Type} [Field Ω] [IsAlgClosed Ω] {T Y Z : Scheme.{0}} (t : T ⟶ Sp Ω)
     [LocallyOfFiniteType t] [IsReduced T] (s : Y ⟶ Z) [IsSeparated s] {f g : T ⟶ Y} (H' : f ≫ s = g ≫ s)
@@ -38,26 +38,26 @@ variable {Ω : Type} [CommRing Ω]
 def swap (x : Sp Ω ⟶ Xo.X) : Gx x ≅ pullback Xo.univ.t.G.hom x := pullbackSymmetry x Xo.univ.t.G.hom
 
 /- English proof (translation)
-The claim follows from `pullbackSymmetry_hom_comp_fst _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem swap_hom_fst (x : Sp Ω ⟶ Xo.X) :
     (swap x).hom ≫ pullback.fst _ _ = (snd (Over.mk x) Xo.univ.t.G).left := pullbackSymmetry_hom_comp_fst _ _
 
 /- English proof (translation)
-The claim follows from `pullbackSymmetry_hom_comp_snd _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem swap_hom_snd (x : Sp Ω ⟶ Xo.X) :
     (swap x).hom ≫ pullback.snd _ _ = (fst (Over.mk x) Xo.univ.t.G).left := pullbackSymmetry_hom_comp_snd _ _
 
 /- English proof (translation)
-Rewrite using `[← swap_hom_snd, Iso.inv_hom_id_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[reassoc] theorem swap_inv_fst (x : Sp Ω ⟶ Xo.X) :
     (swap x).inv ≫ (fst (Over.mk x) Xo.univ.t.G).left = pullback.snd _ _ := by
   rw [← swap_hom_snd, Iso.inv_hom_id_assoc]
 
 /- English proof (translation)
-Rewrite using `[← swap_hom_fst, Iso.inv_hom_id_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[reassoc] theorem swap_inv_snd (x : Sp Ω ⟶ Xo.X) :
     (swap x).inv ≫ (snd (Over.mk x) Xo.univ.t.G).left = pullback.fst _ _ := by
@@ -77,7 +77,7 @@ theorem conj_apply {x x' : Sp Ω ⟶ Xo.X} (ψ : pullback Xo.univ.t.G.hom x ⟶ 
     conj x x' ψ = (swap x).hom ≫ ψ ≫ (swap x').inv := rfl
 
 /- English proof (translation)
-The claim follows from `pullback.hom_ext h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem gx_ext {x : Sp Ω ⟶ Xo.X} {T : Scheme.{0}} {f g : T ⟶ Gx x}
     (h₁ : f ≫ (fst (Over.mk x) Xo.univ.t.G).left = g ≫ (fst (Over.mk x) Xo.univ.t.G).left)
@@ -85,40 +85,40 @@ theorem gx_ext {x : Sp Ω ⟶ Xo.X} {T : Scheme.{0}} {f g : T ⟶ Gx x}
   pullback.hom_ext h₁ h₂
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, lift_fst]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[reassoc] theorem lift_l_fst {S : Scheme.{0}} {T X Y : Over S} (a : T ⟶ X) (b : T ⟶ Y) :
     (lift a b).left ≫ (fst X Y).left = a.left := by rw [← Over.comp_left, lift_fst]
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, lift_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[reassoc] theorem lift_l_snd {S : Scheme.{0}} {T X Y : Over S} (a : T ⟶ X) (b : T ⟶ Y) :
     (lift a b).left ≫ (snd X Y).left = b.left := by rw [← Over.comp_left, lift_snd]
 
 /- English proof (translation)
-The claim follows from `lift_l_fst _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem toFib_fst (x : Sp Ω ⟶ Xo.X) {T : Scheme.{0}} (t : T ⟶ Sp Ω)
     (a : Over.mk (t ≫ x) ⟶ Xo.univ.t.G) : toFib x t a ≫ (fst (Over.mk x) Xo.univ.t.G).left = t :=
   lift_l_fst _ _
 
 /- English proof (translation)
-The claim follows from `lift_l_snd _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem toFib_snd (x : Sp Ω ⟶ Xo.X) {T : Scheme.{0}} (t : T ⟶ Sp Ω)
     (a : Over.mk (t ≫ x) ⟶ Xo.univ.t.G) : toFib x t a ≫ (snd (Over.mk x) Xo.univ.t.G).left = a.left :=
   lift_l_snd _ _
 
 /- English proof (translation)
-The claim follows from `(Over.w (snd (Over.mk x) Xo.univ.t.G)).trans (Over.w (fst (Over.mk x) Xo.univ.t.G)).symm`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem snd_hom (x : Sp Ω ⟶ Xo.X) : (snd (Over.mk x) Xo.univ.t.G).left ≫ Xo.univ.t.G.hom =
     (fst (Over.mk x) Xo.univ.t.G).left ≫ x :=
   (Over.w (snd (Over.mk x) Xo.univ.t.G)).trans (Over.w (fst (Over.mk x) Xo.univ.t.G)).symm
 
 /- English proof (translation)
-Rewrite using `[conj_apply, Category.assoc, Category.assoc, swap_inv_fst, ← swap_hom_snd, cancel_epi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem over_iff {x x' : Sp Ω ⟶ Xo.X} (ψ : pullback Xo.univ.t.G.hom x ⟶ pullback Xo.univ.t.G.hom x') :
     conj x x' ψ ≫ (fst (Over.mk x') Xo.univ.t.G).left = (fst (Over.mk x) Xo.univ.t.G).left ↔
@@ -126,7 +126,7 @@ theorem over_iff {x x' : Sp Ω ⟶ Xo.X} (ψ : pullback Xo.univ.t.G.hom x ⟶ pu
   rw [conj_apply, Category.assoc, Category.assoc, swap_inv_fst, ← swap_hom_snd, cancel_epi]
 
 /- English proof (translation)
-Establish `e` using `congrArg (· ≫ (snd (Over.mk x') Xo.univ.t.G).left) (h.symm.trans h')`. Simplify using `only [lift_l_snd] at e`. Conclude with `Over.OverMorphism.ext e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sends_unique {x x' : Sp Ω ⟶ Xo.X} {ψ : Gx x ⟶ Gx x'} {a : Over.mk x ⟶ Xo.univ.t.G}
     {b b' : Over.mk x' ⟶ Xo.univ.t.G} (h : Sends ψ a b) (h' : Sends ψ a b') : b = b' := by
@@ -135,7 +135,7 @@ theorem sends_unique {x x' : Sp Ω ⟶ Xo.X} {ψ : Gx x ⟶ Gx x'} {a : Over.mk 
   exact Over.OverMorphism.ext e
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => gx_ext ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, show _ ≫ ψ = _ from h, lift_l_snd]`. Rewrite using `[Category.assoc, hψ, lift_l_fst, lift_l_fst]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc, h, lift_l_snd]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem sends_iff {x x' : Sp Ω ⟶ Xo.X} {ψ : Gx x ⟶ Gx x'}
     (hψ : ψ ≫ (fst (Over.mk x') Xo.univ.t.G).left = (fst (Over.mk x) Xo.univ.t.G).left)
@@ -147,7 +147,7 @@ theorem sends_iff {x x' : Sp Ω ⟶ Xo.X} {ψ : Gx x ⟶ Gx x'}
   · rw [Category.assoc, h, lift_l_snd]
 
 /- English proof (translation)
-Simplify using `only [push, Category.assoc]`. Rewrite using `[snd_hom, reassoc_of% hψ, toFib_fst_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem push_hom {x x' : Sp Ω ⟶ Xo.X} {ψ : Gx x ⟶ Gx x'}
     (hψ : ψ ≫ (fst (Over.mk x') Xo.univ.t.G).left = (fst (Over.mk x) Xo.univ.t.G).left)
@@ -161,7 +161,7 @@ def res (x : Sp Ω ⟶ Xo.X) {T T' : Scheme.{0}} {t : T ⟶ Sp Ω} {t' : T' ⟶ 
   Over.homMk q (by simp [← hq])
 
 /- English proof (translation)
-Use `gx_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[toFib_fst, Category.assoc, toFib_fst, hq]`. Rewrite using `[toFib_snd, Category.assoc, toFib_snd]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toFib_res (x : Sp Ω ⟶ Xo.X) {T T' : Scheme.{0}} {t : T ⟶ Sp Ω} {t' : T' ⟶ Sp Ω} (q : T' ⟶ T)
     (hq : q ≫ t = t') (a : Over.mk (t ≫ x) ⟶ Xo.univ.t.G) :
@@ -171,7 +171,7 @@ theorem toFib_res (x : Sp Ω ⟶ Xo.X) {T T' : Scheme.{0}} {t : T ⟶ Sp Ω} {t'
   · rw [toFib_snd, Category.assoc, toFib_snd]; rfl
 
 /- English proof (translation)
-Rewrite using `[push, push, toFib_res, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem push_res {x x' : Sp Ω ⟶ Xo.X} (ψ : Gx x ⟶ Gx x') {T T' : Scheme.{0}} {t : T ⟶ Sp Ω} {t' : T' ⟶ Sp Ω}
     (q : T' ⟶ T) (hq : q ≫ t = t') (a : Over.mk (t ≫ x) ⟶ Xo.univ.t.G) :
@@ -183,7 +183,7 @@ def sec' (x : Sp Ω ⟶ Xo.X) {T : Scheme.{0}} {t : T ⟶ Sp Ω} (q : Sp Ω ⟶ 
   Over.homMk q (by simp [reassoc_of% hq])
 
 /- English proof (translation)
-Use `gx_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[lift_l_fst, Category.assoc, toFib_fst, hq]`. Both sides reduce to the same expression. Rewrite using `[lift_l_snd, Category.assoc, toFib_snd]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lift_sec' (x : Sp Ω ⟶ Xo.X) {T : Scheme.{0}} {t : T ⟶ Sp Ω} (q : Sp Ω ⟶ T) (hq : q ≫ t = 𝟙 _)
     (a : Over.mk (t ≫ x) ⟶ Xo.univ.t.G) :
@@ -193,7 +193,7 @@ theorem lift_sec' (x : Sp Ω ⟶ Xo.X) {T : Scheme.{0}} {t : T ⟶ Sp Ω} (q : S
   · rw [lift_l_snd, Category.assoc, toFib_snd]; rfl
 
 /- English proof (translation)
-Rewrite using `[sends_iff hψ, lift_sec', push, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sends_sec'_iff {x x' : Sp Ω ⟶ Xo.X} {ψ : Gx x ⟶ Gx x'}
     (hψ : ψ ≫ (fst (Over.mk x') Xo.univ.t.G).left = (fst (Over.mk x) Xo.univ.t.G).left)
@@ -205,7 +205,7 @@ theorem sends_sec'_iff {x x' : Sp Ω ⟶ Xo.X} {ψ : Gx x ⟶ Gx x'}
 end Swap
 
 /- English proof (translation)
-Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, swap_hom_fst, lift_l_snd, fibPt, pullback.lift_fst]`. Rewrite using `[Category.assoc, swap_hom_snd, lift_l_fst, fibPt, pullback.lift_snd]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fibPt_swap {Ω : Type} [Field Ω] {x : Sp Ω ⟶ Xo.X} (a : Over.mk x ⟶ Xo.univ.t.G) :
     (lift (𝟙 (Over.mk x)) a).left ≫ (swap x).hom = fibPt _ a := by
@@ -214,7 +214,7 @@ theorem fibPt_swap {Ω : Type} [Field Ω] {x : Sp Ω ⟶ Xo.X} (a : Over.mk x �
   · rw [Category.assoc, swap_hom_snd, lift_l_fst, fibPt, pullback.lift_snd]; rfl
 
 /- English proof (translation)
-Rewrite using `[Sends, conj_apply, ← fibPt_swap, ← fibPt_swap, ← Category.assoc, ← Category.assoc, Iso.comp_inv_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sends_conj_iff {Ω : Type} [Field Ω] {x x' : Sp Ω ⟶ Xo.X}
     (ψ : pullback Xo.univ.t.G.hom x ⟶ pullback Xo.univ.t.G.hom x')
@@ -227,20 +227,18 @@ section Hom
 variable {Ω : Type} [CommRing Ω] {x x' : Sp Ω ⟶ Xo.X} {ψ : Gx x ⟶ Gx x'}
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, lift_whiskerLeft]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_act (x : Sp Ω ⟶ Xo.X) (a : Over.mk x ⟶ Xo.univ.t.G) (f : Xo.univ.t.G ⟶ Xo.univ.t.G) :
     (lift (𝟙 (Over.mk x)) (a ≫ f)).left = (lift (𝟙 (Over.mk x)) a).left ≫ (Over.mk x ◁ f).left := by
   rw [← Over.comp_left, lift_whiskerLeft]
 
 /- English proof (translation)
-Take `⟨h0, hm, ha⟩` from `h`. Set `f : (Over.mk x ⟶ Xo.univ.t.G) → (Over.mk x' ⟶ Xo.univ.t.G)` to `fun a => Over.homMk ((lift (𝟙 (Over.mk x)) a).left ≫ ψ ≫ (snd (Over.mk x') Xo.univ.t.G).left) (by`. Simplify using `only [Category.assoc]`. Rewrite using `[snd_hom, reassoc_of% h0, lift_l_fst_assoc]`. Conclude with `Category.id_comp _)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf : ∀ a, Sends ψ a (f a)` using `fun a => (sends_iff h0 _ _).2 rfl`. Set `k : ∀ z : Sp Ω ⟶ Xo.X, (Over.mk (𝟙 _ ≫ z) : Over Xo.X) ⟶ Over.mk z` to `fun z => Over.homMk (𝟙 _) rfl`. Establish `hk : ∀ a : Over.mk x ⟶ Xo.univ.t.G, sec' x (𝟙 _) (Category.id_comp _) ≫ k x ≫ a = a` using `fun a => Over.OverMorphism.ext ((Category.id_comp _).trans (Category.id_comp _))`. Establish `hs : ∀ a b, Sends ψ a b ↔ (k x' ≫ b).left = push ψ (𝟙 _) (k x ≫ a)` using `fun a b => by`. Use `sends_sec'_iff h0 (𝟙 _) (Category.id_comp (𝟙 _)) (k x ≫ a) b` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hk, Category.id_comp]`. Rewrite using `[this, eq_comm]`. Conclude with `Iff.of_eq (congrArg (· = _) (Category.id_comp _).symm)`. Use `⟨MonoidHom.mk' f fun a b => sends_unique (hf _) ?_, hf, fun r a => sends_unique (hf _) ?_⟩` and prove the remaining obligations. Rewrite using `[hs, MonObj.comp_mul, MonObj.comp_mul]`.
-
-Conclude with `hm _ _ _ _ _ _ ((hs _ _).1 (hf a)) ((hs _ _).1 (hf b))`. Use `show Sends ψ _ (f a ≫ _)`. Rewrite using `[Sends, lift_act, lift_act, Category.assoc, ha, ← Category.assoc, show _ ≫ ψ = _ from hf a]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pointHom (h : IsLinHom ψ) :
     ∃ ψp : (Over.mk x ⟶ Xo.univ.t.G) →* (Over.mk x' ⟶ Xo.univ.t.G), (∀ a, Sends ψ a (ψp a)) ∧
@@ -273,23 +271,23 @@ section Geom
 variable {Ω : Type} [Field Ω] [IsAlgClosed Ω] {x x' : Sp Ω ⟶ Xo.X} {ψ : Gx x ⟶ Gx x'}
 
 /- English proof (translation)
-Use `Xo.univ.t.semi.smooth` as an intermediate fact. Use `Xo.univ.t.semi.separated` as an intermediate fact. Use `⟨h0, fun T t a₁ a₂ b₁ b₂ h₁ h₂ => ?_, fun r => ?_⟩` and prove the remaining obligations. Set `G` to `Xo.univ.t.G`. Set `t₀ : (Over.mk x ⊗ (G ⊗ G)).left ⟶ Sp Ω` to `(fst (Over.mk x) (G ⊗ G)).left`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: Smooth (G ⊗ G).hom` using `by show Smooth (pullback.fst G.hom G.hom ≫ G.hom) infer_instance`. Establish `: Smooth t₀` using `by show Smooth (pullback.fst x (G ⊗ G).hom) infer_instance`. Establish `: IsReduced (Over.mk x ⊗ (G ⊗ G)).left` using `GlobalTheory.isReduced_of_smooth_of_isReduced t₀`. Set `s₀ : (Over.mk (t₀ ≫ x) : Over Xo.X) ⟶ G ⊗ G` to `Over.homMk (snd (Over.mk x) (G ⊗ G)).left ((Over.w (snd (Over.mk x) (G ⊗ G))).trans (Over.w (fst (Over.mk x) (G ⊗ G))).symm)`. Set `v : (Over.mk (t₀ ≫ x) ⟶ G) → (Over.mk (t₀ ≫ x') ⟶ G)` to `fun u => Over.homMk (push ψ t₀ u) (push_hom h0 t₀ u)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `key : ∀ u₁ u₂, (v u₁ * v u₂).left = push ψ t₀ (u₁ * u₂)` using `fun u₁ u₂ => by`. Use `ext_of_points t₀ G.hom ((Over.w _).trans (push_hom h0 _ _).symm) fun q hq => ?_` and prove the remaining obligations. Establish `e : ∀ u, sec' x' q hq ≫ v u = ψp (sec' x q hq ≫ u)` using `fun u => sends_unique ((sends_sec'_iff h0 q hq u _).2 rfl) (hf _)`. Rewrite using `[(sends_sec'_iff h0 q hq _ _).1 (hf _), MonObj.comp_mul, map_mul, ← e, ← e, ← MonObj.comp_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `q : T ⟶ (Over.mk x ⊗ (G ⊗ G)).left` to `(lift (Over.homMk t rfl : Over.mk (t ≫ x) ⟶ Over.mk x) (lift a₁ a₂)).left`. Establish `hq : q ≫ t₀ = t` using `lift_l_fst _ _`. Establish `hs : res x q hq ≫ s₀ = lift a₁ a₂` using `Over.OverMorphism.ext (lift_l_snd _ _)`. Establish `e₁ : a₁ = res x q hq ≫ s₀ ≫ fst G G` using `by rw [reassoc_of% hs, lift_fst]`. Establish `e₂ : a₂ = res x q hq ≫ s₀ ≫ snd G G` using `by rw [reassoc_of% hs, lift_snd]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f₁ : b₁ = res x' q hq ≫ v (s₀ ≫ fst G G)` using `Over.OverMorphism.ext (h₁.trans (by rw [e₁, push_res]; rfl))`. Establish `f₂ : b₂ = res x' q hq ≫ v (s₀ ≫ snd G G)` using `Over.OverMorphism.ext (h₂.trans (by rw [e₂, push_res]; rfl))`. Rewrite using `[e₁, e₂, f₁, f₂, ← MonObj.comp_mul, ← MonObj.comp_mul, push_res, ← key]`. Both sides reduce to the same expression. Establish `: Smooth (fst (Over.mk x) Xo.univ.t.G).left` using `by show Smooth (pullback.fst x Xo.univ.t.G.hom) infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `: IsSeparated (fst (Over.mk x') Xo.univ.t.G).left` using `by show IsSeparated (pullback.fst x' Xo.univ.t.G.hom) infer_instance`. Establish `: IsReduced (Over.mk x).left` using `inferInstanceAs (IsReduced (Sp Ω))`. Establish `: IsReduced (Gx x)` using `GlobalTheory.isReduced_of_smooth_of_isReduced (fst (Over.mk x) Xo.univ.t.G).left`. Establish `hw : ∀ z : Sp Ω ⟶ Xo.X, (Over.mk z ◁ Xo.univ.t.act.act r).left ≫ (fst (Over.mk z) Xo.univ.t.G).left = (fst (Over.mk z) Xo.univ.t.G).left` using `fun z => by rw [← Over.comp_left, whiskerLeft_fst]`. Use `ext_of_points (fst (Over.mk x) Xo.univ.t.G).left (fst (Over.mk x') Xo.univ.t.G).left (by rw [Category.assoc, Category.assoc, h0, hw, hw, h0]) fun q hq => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `a : Over.mk x ⟶ Xo.univ.t.G` to `Over.homMk (q ≫ (snd (Over.mk x) Xo.univ.t.G).left) (by`. Rewrite using `[Category.assoc, snd_hom, reassoc_of% hq]`. Use the proof step `rfl)`. Establish `e : q = (lift (𝟙 (Over.mk x)) a).left`. Use `gx_ext ?_ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq, lift_l_fst]`. Both sides reduce to the same expression. Rewrite using `[lift_l_snd]`. Both sides reduce to the same expression. Establish `s₁` using `hf (a ≫ Xo.univ.t.act.act r)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `s₁` using `[ha, Sends, lift_act, lift_act, ← show _ ≫ ψ = _ from hf a]`. Rewrite using `[e]`. Simplify `s₁` using `only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isLinHom_of_pointHom
     (h0 : ψ ≫ (fst (Over.mk x') Xo.univ.t.G).left = (fst (Over.mk x) Xo.univ.t.G).left)
@@ -358,7 +356,7 @@ end Geom
 section Level
 
 /- English proof (translation)
-Establish `key : ∀ k : ℕ, f (k • a) = f ((k % N) • a)` using `fun k => by conv_lhs => rw [← Nat.mod_add_div k N, add_smul, hadd, mul_smul, hN, _root_.mul_one]`. Rewrite using `[key m, key n, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem nsmul_congr {A M : Type} [AddCommGroup A] [Monoid M] (f : A → M) (hadd : ∀ a b, f (a + b) = f a * f b)
     (N : ℕ) (hN : ∀ a, f (N • a) = 1) {m n : ℕ} (h : m ≡ n [MOD N]) (a : A) : f (m • a) = f (n • a) := by
@@ -367,11 +365,9 @@ theorem nsmul_congr {A M : Type} [AddCommGroup A] [Monoid M] (f : A → M) (hadd
   rw [key m, key n, h]
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : l.M ∣ l.M'` from `Nat.dvd_lcm_left _ _`. Use `Xo.univ.eta_ker _ ?_` and prove the remaining obligations. Establish `h : (l.M : 𝓞 E) ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)`. Rewrite using `[l.prod]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) ≤ l.Mb`. Conclude with `Ideal.mul_le.2 fun r hr s _ => Ideal.mul_mem_right _ _ hr`. Establish `h' : (l.M : 𝓞 E) ∈ l.Mb` using `hle h`. Establish `e : l.M' • a = (l.M : 𝓞 E) • (k • a)` using `by rw [hk, mul_smul, Nat.cast_smul_eq_nsmul]`. Rewrite using `[e]`.
-
-Conclude with `Submodule.smul_mem_smul h' Submodule.mem_top`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eta_level (a : Dw.La) : Xo.univ.eta (l.M' • a) = 1 := by
   obtain ⟨k, hk⟩ : l.M ∣ l.M' := Nat.dvd_lcm_left _ _
@@ -387,14 +383,14 @@ theorem eta_level (a : Dw.La) : Xo.univ.eta (l.M' • a) = 1 := by
   exact Submodule.smul_mem_smul h' Submodule.mem_top
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : l.A ∣ l.M'` from `Nat.dvd_lcm_right _ _`. Rewrite using `[hk, mul_smul, Xo.univ.etaA_ker]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem etaA_level (a : Dw.La) : Xo.univ.etaA (l.M' • a) = 1 := by
   obtain ⟨k, hk⟩ : l.A ∣ l.M' := Nat.dvd_lcm_right _ _
   rw [hk, mul_smul, Xo.univ.etaA_ker]
 
 /- English proof (translation)
-Use `⟨fun h a => ?_, fun h p' hp' a => ?_⟩` and prove the remaining obligations. Take `⟨p', hp'⟩` from `Nat.exists_mul_mod_eq_of_coprime 1 hp hN0`. Establish `hp' : p * p' ≡ 1 [MOD N]` using `hp'.2`. Rewrite using `[← h p' hp', smul_smul, nsmul_congr f hadd N hN (mul_comm p p' ▸ hp'), one_smul]`. Rewrite using `[h, smul_smul, nsmul_congr f hadd N hN hp', one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem level_iff {A M P P' : Type} [AddCommGroup A] [Monoid M] (f : A → M) (hadd : ∀ a b, f (a + b) = f a * f b)
     (N : ℕ) (hN : ∀ a, f (N • a) = 1) {p : ℕ} (hp : p.Coprime N) (hN0 : N ≠ 0) (i : M → P) (i' : M → P')
@@ -407,7 +403,7 @@ theorem level_iff {A M P P' : Type} [AddCommGroup A] [Monoid M] (f : A → M) (h
   · rw [h, smul_smul, nsmul_congr f hadd N hN hp', one_smul]
 
 /- English proof (translation)
-The claim follows from `Nat.lcm_ne_zero (by have := l.three_le; omega) l.A_pos.ne'`.
+A detailed English derivation is pending.
 -/
 theorem level_ne_zero (l : Level H) : l.M' ≠ 0 :=
   Nat.lcm_ne_zero (by have := l.three_le; omega) l.A_pos.ne'
@@ -415,7 +411,7 @@ theorem level_ne_zero (l : Level H) : l.M' ≠ 0 :=
 end Level
 
 /- English proof (translation)
-The claim follows from `MonoidHom.ext fun a => sends_unique ((sends_conj_iff ψ _ _).2 (hf.2.2.1 a)) ((sends_conj_iff ψ _ _).2 (hg.2.2.1 a))`.
+A detailed English derivation is pending.
 -/
 theorem pointHom_unique {Ω : Type} [Field Ω] [IsAlgClosed Ω] {p : ℕ} {x x' : Sp Ω ⟶ Xo.X}
     {C : Subgroup (Over.mk x ⟶ Xo.univ.t.G)} {ψ : pullback Xo.univ.t.G.hom x ⟶ pullback Xo.univ.t.G.hom x'}
@@ -425,15 +421,15 @@ theorem pointHom_unique {Ω : Type} [Field Ω] [IsAlgClosed Ω] {p : ℕ} {x x' 
     sends_unique ((sends_conj_iff ψ _ _).2 (hf.2.2.1 a)) ((sends_conj_iff ψ _ _).2 (hg.2.2.1 a))
 
 /- English proof (translation)
-Establish `lev` using `fun g : (Over.mk x ⟶ Xo.univ.t.G) → (Over.mk x' ⟶ Xo.univ.t.G) => level_iff Xo.univ.eta Xo.univ.eta_add l.M' eta_level hp (level_ne_zero l) (fun e => toUnit _ ≫ e) (fun e => toUnit _ ≫ e) g`. Establish `levA` using `fun g : (Over.mk x ⟶ Xo.univ.t.G) → (Over.mk x' ⟶ Xo.univ.t.G) => level_iff Xo.univ.etaA Xo.univ.etaA_add l.M' etaA_level hp (level_ne_zero l) (fun e => toUnit _ ≫ e) (fun e => toUnit _ ≫ e) g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ψp, hs, h0, hf, ha, hsurj, hker, hW, hl⟩`. Establish `h0'` using `(over_iff ψ).2 h0`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hf' : ∀ a, Sends (conj x x' ψ) a (ψp a)` using `fun a => (sends_conj_iff ψ _ _).2 (hf a)`. Establish `hiff : ∀ a b, Sends (conj x x' ψ) a b ↔ ψp a = b` using `fun a b => ⟨fun h => sends_unique (hf' a) h, fun h => h ▸ hf' a⟩`. Use `⟨hs, isLinHom_of_pointHom h0' ψp hf' ha, fun b => ?_, fun a => ?_, fun n a₁ a₂ b₁ b₂ e hn h₁ h₂ hw => ?_, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hsurj b`. Conclude with `⟨a, hf' a⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[hiff, ← hker, MonoidHom.mem_ker]`. Rewrite using `[← (hiff _ _).1 h₁, ← (hiff _ _).1 h₂]`. Conclude with `hW n a₁ a₂ e hn hw`. Conclude with `(hiff _ _).2 ((lev ψp).1 (fun p' h a => (hl p' h a).1) a)`. Conclude with `(hiff _ _).2 ((levA ψp).1 (fun p' h a => (hl p' h a).2) a)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨hs, hlin, hsurj, hker, hW, hl, hlA⟩`. Take `⟨ψp, hf', ha⟩` from `exists_pointHom hlin`. Establish `hiff : ∀ a b, Sends (conj x x' ψ) a b ↔ ψp a = b` using `fun a b => ⟨fun h => sends_unique (hf' a) h, fun h => h ▸ hf' a⟩`. Use `⟨ψp, hs, (over_iff ψ).1 hlin.1, fun a => (sends_conj_iff ψ _ _).1 (hf' a), ha, fun b => ?_, ?_, fun n a₁ a₂ e hn hw => hW n _ _ _ _ e hn (hf' _) (hf' _) hw, fun p' h a => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨a, h⟩` from `hsurj b`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨a, (hiff _ _).1 h⟩`. Use extensionality with `a`. Rewrite using `[MonoidHom.mem_ker, ← hiff, hker]`. Conclude with `(lev ψp).2 (fun a => (hiff _ _).1 (hl a)) p' h a`. Conclude with `(levA ψp).2 (fun a => (hiff _ _).1 (hlA a)) p' h a`.
+A detailed English derivation is pending.
 -/
 theorem isog_iff {Ω : Type} [Field Ω] [IsAlgClosed Ω] {p : ℕ} (hp : p.Coprime l.M') (x x' : Sp Ω ⟶ Xo.X)
     (C : Subgroup (Over.mk x ⟶ Xo.univ.t.G)) (ψ : pullback Xo.univ.t.G.hom x ⟶ pullback Xo.univ.t.G.hom x') :
@@ -473,7 +469,7 @@ theorem isog_iff {Ω : Type} [Field Ω] [IsAlgClosed Ω] {p : ℕ} (hp : p.Copri
     · exact (levA ψp).2 (fun a => (hiff _ _).1 (hlA a)) p' h a
 
 /- English proof (translation)
-Establish `: (epsMul a).comp (epsMul b) = RingHom.id _`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [epsMul, ← _root_.mul_assoc, h]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, this]`. Conclude with `Spec.map_id _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eps_cancel {Ω : Type} [Field Ω] {a b : Ω} (h : a * b = 1) :
     spMap (epsMul a) ≫ spMap (epsMul b) = 𝟙 _ := by
@@ -484,13 +480,13 @@ theorem eps_cancel {Ω : Type} [Field Ω] {a b : Ω} (h : a * b = 1) :
   exact Spec.map_id _
 
 /- English proof (translation)
-Use `and_congr_right fun hv => and_congr_right fun _ => ?_` and prove the remaining obligations. Establish `hpush : ∀ a : tEps x ⟶ Xo.univ.t.G, push (conj x x' ψ) (spMap (algebraMap Ω (DualNumber Ω))) a = (toFib x _ a ≫ (swap x).hom) ≫ ψ ≫ pullback.fst _ _` using `fun a => by`. Simplify using `only [push, conj_apply, Category.assoc, swap_inv_snd]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, h₁, h₂, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨a, ha⟩ : ∃ a : tEps x ⟶ Xo.univ.t.G, a.left = v` from `⟨Over.homMk v hv.1, rfl⟩`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Establish `: toFib x _ a ≫ (swap x).hom = u`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, swap_hom_fst, toFib_snd, h₁, ha]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, swap_hom_snd, toFib_fst, h₂]`. Rewrite using `[hpush, this, ← Category.assoc, eps_cancel (mul_inv_cancel₀ hp), Category.id_comp]`. Introduce and unpack `⟨a, rfl, h⟩`. Use `⟨toFib x _ a ≫ (swap x).hom, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, swap_hom_fst, toFib_snd]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, swap_hom_snd, toFib_fst]`. Rewrite using `[← hpush, ← h, ← Category.assoc, eps_cancel (inv_mul_cancel₀ hp), Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lie_iff {Ω : Type} [Field Ω] {p : ℕ} (hp : (p : Ω) ≠ 0) {x x' : Sp Ω ⟶ Xo.X}
     (ψ : pullback Xo.univ.t.G.hom x ⟶ pullback Xo.univ.t.G.hom x')
@@ -524,9 +520,9 @@ theorem idx_eq (h : IsSplitOff l 𝔓 p) (i : ℕ) (Ω : Type) [Field Ω] [IsAlg
     (y : FrPt Xo c Ω) : hkKer (Xo := Xo) 𝔓 p i Ω y = HeckeIdx Xo c h i Ω y := rfl
 
 /- English proof (translation)
-Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap c.F Ω).injective`. Establish `hp : (p : Ω) ≠ 0` using `Nat.cast_ne_zero.2 h.2.2.1.ne_zero`. Establish `hc : p.Coprime l.M'` using `(Nat.Prime.coprime_iff_not_dvd h.2.2.1).2 h.2.2.2.2`. Rewrite using `[← (conj y.x z.x).exists_congr_right]`. Use `exists_congr fun ψ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← isog_iff hc, Equiv.symm_apply_apply, exists_and_right]`. Use `and_congr_right fun _ => and_congr_left fun _ => forall₂_congr fun τ j => ?_` and prove the remaining obligations. Rewrite using `[← lie_iff hp]`. Conclude with `⟨fun h => ⟨y.tan τ j, z.tan τ j, h⟩, fun h => h.2.2⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem hkPt_iff (h : IsSplitOff l 𝔓 p) {Ω : Type} [Field Ω] [IsAlgClosed Ω] [Algebra c.F Ω]
     (sTr : ∀ (y z : FrPt Xo c Ω), (pullback Xo.univ.t.G.hom y.x ⟶ pullback Xo.univ.t.G.hom z.x) → Prop)
@@ -544,7 +540,7 @@ theorem hkPt_iff (h : IsSplitOff l 𝔓 p) {Ω : Type} [Field Ω] [IsAlgClosed �
   exact ⟨fun h => ⟨y.tan τ j, z.tan τ j, h⟩, fun h => h.2.2⟩
 
 /- English proof (translation)
-Rewrite using `[hkRelFr, hkPt_iff h]`. Simplify using `only [htr, Equiv.apply_symm_apply]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem hkRelFr_iff (h : IsSplitOff l 𝔓 p) (i : ℕ)
     (sTr : ∀ (Ω : Type) [Field Ω] [IsAlgClosed Ω] [Algebra c.F Ω] (y z : FrPt Xo c Ω),
@@ -562,7 +558,7 @@ def ofTransport (tr : Transport Xo c) (Ω : Type) [Field Ω] [IsAlgClosed Ω] [A
   tr Ω y.x z.x (conj y.x z.x ψ) y.s z.s
 
 /- English proof (translation)
-The claim follows from `hkRelFr_iff h i _ tr Ω y C z fun _ => Iff.rfl`.
+A detailed English derivation is pending.
 -/
 theorem hkRelFr_ofTransport_iff (h : IsSplitOff l 𝔓 p) (i : ℕ) (tr : Transport Xo c) (Ω : Type) [Field Ω]
     [IsAlgClosed Ω] [Algebra c.F Ω] (y : FrPt Xo c Ω) (C : hkKer (Xo := Xo) 𝔓 p i Ω y) (z : FrPt Xo c Ω) :

@@ -19,7 +19,7 @@ noncomputable def Pimg (j₀ : Fin (N + 1)) (x : Fin N → Ω) (p : TVar D N) :
       (fun k => MvPolynomial.X (Sum.inr (p.1, k))) p.2
 
 /- English proof (translation)
-Unfold `Pimg`. Conclude with `Fin.insertNth_apply_same (α := fun _ => MvPolynomial (SVar D N) Ω) j₀ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Pimg_self (j₀ : Fin (N + 1)) (x : Fin N → Ω) (i : Fin (D + 1)) :
     Pimg j₀ x (i, j₀) =
@@ -28,7 +28,7 @@ theorem Pimg_self (j₀ : Fin (N + 1)) (x : Fin N → Ω) (i : Fin (D + 1)) :
   exact Fin.insertNth_apply_same (α := fun _ => MvPolynomial (SVar D N) Ω) j₀ _ _
 
 /- English proof (translation)
-Unfold `Pimg`. Conclude with `Fin.insertNth_apply_succAbove (α := fun _ => MvPolynomial (SVar D N) Ω) j₀ _ _ k`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Pimg_succAbove (j₀ : Fin (N + 1)) (x : Fin N → Ω) (i : Fin (D + 1)) (k : Fin N) :
     Pimg j₀ x (i, j₀.succAbove k) = X (Sum.inr (i, k)) := by
@@ -36,7 +36,7 @@ theorem Pimg_succAbove (j₀ : Fin (N + 1)) (x : Fin N → Ω) (i : Fin (D + 1))
   exact Fin.insertNth_apply_succAbove (α := fun _ => MvPolynomial (SVar D N) Ω) j₀ _ _ k
 
 /- English proof (translation)
-Use `show aeval (sImg j₀ x) y = _`. Rewrite using `[← MvPolynomial.aeval_algebraMap_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sHom_eq {K : Type} [Field K] [Algebra K Ω] (j₀ : Fin (N + 1)) (x : Fin N → Ω)
     (y : MvPolynomial (TVar D N) K) :
@@ -56,7 +56,7 @@ def col (j₀ : Fin (N + 1)) : SVar D N → Fin (N + 1)
 def cS (b : Fin (D + 1)) (μ : Ω) : SVar D N → Ω := fun s => if blk s = b then μ else 1
 
 /- English proof (translation)
-Unfold `cS`. Use `split_ifs`. Conclude with `hμ`. Conclude with `one_ne_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cS_ne_zero {μ : Ω} (hμ : μ ≠ 0) (b : Fin (D + 1)) (s : SVar D N) : cS b μ s ≠ 0 := by
   unfold cS
@@ -65,11 +65,11 @@ theorem cS_ne_zero {μ : Ω} (hμ : μ ≠ 0) (b : Fin (D + 1)) (s : SVar D N) :
   · exact one_ne_zero
 
 /- English proof (translation)
-Take `⟨i, j⟩` from `t`. Establish `hC : ∀ a : Ω, diag (cS (N` using `N) b μ) (C a) = C a := fun a => by simp [diag]`. Break down `Fin.eq_self_or_eq_succAbove j₀ j with rfl | ⟨k, rfl⟩` into its components or cases. Rewrite using `[Pimg_self]`. Distinguish the cases in `hi : i = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hi` using the available equality. Rewrite using `[if_pos rfl, diag_X]`. Both sides reduce to the same expression. Rewrite using `[if_neg hi, map_neg, map_sum, mul_neg, Finset.mul_sum]`. Use `congr 1`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, diag_X, hC, mul_assoc]`. Both sides reduce to the same expression. Rewrite using `[Pimg_succAbove, diag_X]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem diag_cS_Pimg (j₀ : Fin (N + 1)) (x : Fin N → Ω) (b : Fin (D + 1)) (μ : Ω)
     (t : TVar D N) :
@@ -91,9 +91,9 @@ private theorem diag_cS_Pimg (j₀ : Fin (N + 1)) (x : Fin N → Ω) (b : Fin (D
     rfl
 
 /- English proof (translation)
-Rewrite using `[diag_cS_Pimg, diag_X, map_mul, aeval_X, aeval_C]`. Use `congr 1`. Take `⟨i, j⟩` from `t`. Use `show C (if i = b then (2 : Ω) else 1) = algebraMap K _ (if i = b then (2 : K) else 1)`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[MvPolynomial.algebraMap_apply]`. Use `congr 1`. Conclude with `(map_ofNat (algebraMap K Ω) 2).symm`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lift_scale {K : Type} [Field K] [CharZero K] [Algebra K Ω] (j₀ : Fin (N + 1))
     (x : Fin N → Ω) (b : Fin (D + 1)) (t : TVar D N) :
@@ -112,11 +112,11 @@ def eS (e : Equiv.Perm (Fin (D + 1))) : SVar D N ≃ SVar D N :=
   Equiv.sumCongr (Equiv.refl Unit) (Equiv.prodCongr e (Equiv.refl (Fin N)))
 
 /- English proof (translation)
-Take `⟨i, j⟩` from `t`. Rewrite using `[rename_X, aeval_X]`. Use `show rename (eS e) (Pimg j₀ x (i, j)) = Pimg j₀ x (e i, j)`. Break down `Fin.eq_self_or_eq_succAbove j₀ j with rfl | ⟨k, rfl⟩` into its components or cases. Rewrite using `[Pimg_self, Pimg_self]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality. Simplify using `[he, eS]`. Establish `hei : e i ≠ 0` using `fun h' => hi (e.injective (h'.trans he.symm))`. Simplify using `[hi, hei, eS, map_sum, map_neg]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pimg_succAbove, Pimg_succAbove, rename_X]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lift_swap {K : Type} [Field K] [Algebra K Ω] (j₀ : Fin (N + 1)) (x : Fin N → Ω)
     (e : Equiv.Perm (Fin (D + 1))) (he : e 0 = 0) (t : TVar D N) :
@@ -139,7 +139,7 @@ noncomputable def translS (j₀ : Fin (N + 1)) (a : Fin (N + 1) → Ω) :
   aeval fun s => if blk s = 0 then X s + C (a (col j₀ s)) else X s
 
 /- English proof (translation)
-Use `show aeval _ (X s) = _`. Rewrite using `[aeval_X]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem translS_X (j₀ : Fin (N + 1)) (a : Fin (N + 1) → Ω) (s : SVar D N) :
     translS j₀ a (X s) = if blk s = 0 then X s + C (a (col j₀ s)) else X s := by
@@ -159,9 +159,9 @@ Both sides reduce to the same expression.
     (g : MvPolynomial (SVar D N) Ω) : translSEquiv j₀ a g = translS j₀ a g := rfl
 
 /- English proof (translation)
-Take `⟨i, j⟩` from `t`. Rewrite using `[transl_X]`. Apply the tactic sequence `rcases Fin.eq_self_or_eq_succAbove j₀ j with rfl | ⟨k, rfl⟩ <;> by_cases hi : i = 0`. Substitute `hi` using the available equality. Simplify using `[Pimg_self, translS, blk, col, MvPolynomial.algebraMap_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pimg_self, translS, blk, col, hi, map_sum, map_neg]`. Substitute `hi` using the available equality. Simplify using `[Pimg_succAbove, translS, blk, col, MvPolynomial.algebraMap_apply]`. Simplify using `[Pimg_succAbove, translS, blk, col, hi]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lift_transl {K : Type} [Field K] [Algebra K Ω] (j₀ : Fin (N + 1)) (x : Fin N → Ω)
     (a : Fin (N + 1) → K) (t : TVar D N) :
@@ -189,23 +189,17 @@ variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι]
   (𝒜 : (c : ι) → WT → Submodule (Ω c) (A c)) (d : Data K ι Ω WT A)
 
 /- English proof (translation)
-Set `e : OmS (Ω c) d.D d.N ≃+* OmS (Ω c) d.D d.N` to `IsFractionRing.ringEquivOfRingEquiv τ.toRingEquiv`. Establish `he : ∀ r, e (algebraMap (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N) r) = algebraMap (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N) (τ r)` using `fun r => IsFractionRing.ringEquivOfRingEquiv_algebraMap τ.toRingEquiv r`. Establish `hτ : ∀ y : KTp K d.D d.N, τ (aeval (Pimg (d.jc c) (d.x c)) y) = aeval (Pimg (d.jc c) (d.x c)) (σ y)`. Introduce `y`. Establish `hcomp : ((τ : MvPolynomial (SVar d.D d.N) (Ω c) →ₐ[Ω c] _).restrictScalars K).comp (aeval (Pimg (d.jc c) (d.x c))) = (aeval (Pimg (d.jc c) (d.x c))).comp (σ : KTp K d.D d.N →ₐ[K] KTp K d.D d.N)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `t`. Use `show τ (aeval (Pimg (d.jc c) (d.x c)) (X t)) = aeval (Pimg (d.jc c) (d.x c)) (σ (X t))`. Rewrite using `[aeval_X]`. Conclude with `hc t`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `DFunLike.congr_fun hcomp y`. Establish `hsH : ∀ y, d.sH c y = algebraMap (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N) (aeval (Pimg (d.jc c) (d.x c)) y)` using `fun y => sHom_eq (d.jc c) (d.x c) y`. Establish `hw' : ∀ y, (w.comap (e : OmS (Ω c) d.D d.N →+* OmS (Ω c) d.D d.N)) (d.sH c y) = w (d.sH c (σ y))`. Introduce `y`. Use `show w (e (d.sH c y)) = w (d.sH c (σ y))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsH, hsH, he, hτ]`. Establish `hWres : d.Wres c (w.comap (e : OmS (Ω c) d.D d.N →+* OmS (Ω c) d.D d.N)) = d.Wres c w`. Use `AddValuation.ext fun a => ?_` and prove the remaining obligations. Use `show w (e (algebraMap (Ω c) (OmS (Ω c) d.D d.N) a)) = w (algebraMap (Ω c) (OmS (Ω c) d.D d.N) a)`. Rewrite using `[IsScalarTower.algebraMap_apply (Ω c) (MvPolynomial (SVar d.D d.N) (Ω c)) (OmS (Ω c) d.D d.N), he, AlgEquiv.commutes]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpσ : p.comap σ ∈ d.HtOne`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `hp.1` as an intermediate fact. Conclude with `Ideal.comap_isPrime σ p`. Conclude with `(RingEquiv.height_comap (σ : KTp K d.D d.N ≃+* KTp K d.D d.N) p).trans hp.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hmem : w.comap (e : OmS (Ω c) d.D d.N →+* OmS (Ω c) d.D d.N) ∈ d.GoodP c (p.comap σ)`. Take `⟨⟨⟨hfin, π, hπ⟩, hov⟩, a, ha, hwa⟩` from `hw`. Use `⟨⟨⟨fun z hz => ?_, e.symm π, ?_⟩, fun y => ?_⟩, a, ha, ?_⟩` and prove the remaining obligations. Use `show w (e z) ≠ ⊤`. Conclude with `hfin _ ((map_ne_zero e).mpr hz)`.
-
-Use `show w (e (e.symm π)) = 1`. Rewrite using `[RingEquiv.apply_symm_apply]`. Conclude with `hπ`. Rewrite using `[hw', Ideal.mem_comap]`. Conclude with `hov (σ y)`.
-
-Rewrite using `[hWres]`. Conclude with `hwa`. Break down `hx1 hd h c p hp w hw.1 with h0 | ⟨hadm, htriv, -⟩` into its components or cases. Take `⟨a, ha, hwa⟩` from `hw.2`. Conclude with `absurd (h0 a ha) hwa`.
-
-Establish `m1 : p.comap σ ∈ {q | q ∈ d.HtOne ∧ ∃ w₁ ∈ d.GoodP c q, d.Wres c w₁ = d.Wres c w}` using `⟨hpσ, _, hmem, hWres⟩`. Establish `m2 : p ∈ {q | q ∈ d.HtOne ∧ ∃ w₁ ∈ d.GoodP c q, d.Wres c w₁ = d.Wres c w}` using `⟨hp, w, hw, rfl⟩`. Conclude with `hx2 hd h c (d.Wres c w) hadm htriv m1 m2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comap_eq (hx1 : LeafSt.PlaceTrivialOrPositive 𝒜 d) (hx2 : LeafSt.AdmissibleValuationPrimeUnique 𝒜 d)
     (hd : d.AxH 𝒜) (h : d.S1) (c : ι) (p : Ideal (KTp K d.D d.N)) (hp : p ∈ d.HtOne)

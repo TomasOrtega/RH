@@ -8,25 +8,23 @@ namespace GlobalTheory.DenseSec
 open TensorProduct
 
 /- English proof (translation)
-Introduce `R _ A _ _ g t h hE Ω _ _ hirr f hf`. Establish `hN : (nilradical (TensorProduct R Ω A)).IsPrime` using `PrimeSpectrum.irreducibleSpace_iff_isPrime_nilradical.1 hirr`. Establish `kill : ∀ (a : A →ₐ[R] Ω) (x : TensorProduct R Ω A), x ∈ nilradical (TensorProduct R Ω A) → GlobalTheory.DenseSec.pt a x = 0`. Introduce `a x hx`. Conclude with `((mem_nilradical.1 hx).map (GlobalTheory.DenseSec.pt a)).eq_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `pth : ∀ (a : A →ₐ[R] Ω) (x : A), GlobalTheory.DenseSec.pt a (1 ⊗ₜ[R] x) = a x`. Introduce `a x`. Simplify using `[GlobalTheory.DenseSec.pt]`. Establish `ptw : ∀ (a : A →ₐ[R] Ω) (w : Ω), GlobalTheory.DenseSec.pt a (w ⊗ₜ[R] 1) = w`. Introduce `a w`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[GlobalTheory.DenseSec.pt]`. Distinguish the cases in `h1 : (1 ⊗ₜ[R] h : TensorProduct R Ω A) ∈ nilradical (TensorProduct R Ω A)`. Use `⟨1, one_ne_zero, fun a ha _ => ?_⟩` and prove the remaining obligations. Conclude with `absurd (by rw [← pth a h]; exact kill a _ h1) ha`. Use `set N := nilradical (TensorProduct R Ω A)`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Equip the data with the indicated structure.
 
-Use `set u : TensorProduct R Ω A ⧸ N := Ideal.Quotient.mk N (1 ⊗ₜ[R] h)`. Establish `hu : u ≠ 0`. Simplify `h1` using `[u, Ideal.Quotient.eq_zero_iff_mem]`. Use `letI : IsDomain (TensorProduct R Ω A ⧸ N) := Ideal.Quotient.isDomain N`. Establish `hle : Submonoid.powers u ≤ nonZeroDivisors (TensorProduct R Ω A ⧸ N)` using `powers_le_nonZeroDivisors_of_noZeroDivisors hu`.
+Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : IsDomain (Localization.Away u) := IsLocalization.isDomain_localization hle`. Take `⟨hFT, hFU⟩` from `GlobalTheory.T.etaleChart_localization_finiteType_formallyUnramified R A g t h hE Ω N`. Use `letI : Algebra (MvPolynomial (Fin g) Ω) (Localization.Away u) := (MvPolynomial.aeval (fun i => algebraMap (TensorProduct R Ω A ⧸ N) (Localization.Away u) (Ideal.Quotient.mk N (1 ⊗ₜ[R] t i)))).toRingHom.toAlgebra`. Establish `hf' : algebraMap (TensorProduct R Ω A ⧸ N) (Localization.Away u) (Ideal.Quotient.mk N f) ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Rewrite `h0` using `[map_eq_zero_iff _ (IsLocalization.injective (Localization.Away u) hle), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hf (mem_nilradical.1 h0)`. Take `⟨Q, hQ, d, hd⟩` from `GlobalTheory.T.exists_ne_zero_algebraMap_eq_mul_of_formallyUnramified' (MvPolynomial (Fin g) Ω) (Localization.Away u) _ hf'`. Use `⟨Q, hQ, fun a ha hfa => ?_⟩` and prove the remaining obligations. Set `φ : TensorProduct R Ω A ⧸ N →+* Ω` to `Ideal.Quotient.lift N (GlobalTheory.DenseSec.pt a).toRingHom (fun x hx => kill a x hx)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hφu : IsUnit (φ u)`. Simplify using `only [φ, u, Ideal.Quotient.lift_mk]`. Conclude with `isUnit_iff_ne_zero.2 (by simpa [pth] using ha)`. Set `χ : Localization.Away u →+* Ω` to `IsLocalization.Away.lift u hφu`. Establish `hχ : ∀ x : TensorProduct R Ω A, χ (algebraMap (TensorProduct R Ω A ⧸ N) (Localization.Away u) (Ideal.Quotient.mk N x)) = GlobalTheory.DenseSec.pt a x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Simplify using `[χ, φ, IsLocalization.Away.lift]`. Establish `hP : χ.comp (algebraMap (MvPolynomial (Fin g) Ω) (Localization.Away u)) = MvPolynomial.eval₂Hom (RingHom.id Ω) (fun i => a (t i))`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `w show χ (MvPolynomial.aeval _ (MvPolynomial.C w)) = _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : algebraMap Ω (TensorProduct R Ω A ⧸ N) w = Ideal.Quotient.mk N (w ⊗ₜ[R] 1)` using `rfl`. Rewrite using `[MvPolynomial.aeval_C, IsScalarTower.algebraMap_apply Ω (TensorProduct R Ω A ⧸ N) (Localization.Away u), e, hχ, ptw]`. Simplify using the standard rewrite rules. Introduce `i show χ (MvPolynomial.aeval _ (MvPolynomial.X i)) = _`. Rewrite using `[MvPolynomial.aeval_X, hχ, pth]`.
-
-Simplify using the standard rewrite rules. Use `congrArg χ hd` as an intermediate fact. Rewrite `this` using `[← RingHom.comp_apply, hP, map_mul, hχ, hfa, zero_mul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_poly_vanishing_of_fibre : ∀ (R : Type) [CommRing R] (A : Type) [CommRing A] [Algebra R A] (g : ℕ) (t : Fin g → A) (h : A), GlobalTheory.DenseSec.EtChart R A t h → ∀ (Ω : Type) [Field Ω] [Algebra R Ω], IrreducibleSpace (PrimeSpectrum (TensorProduct R Ω A)) → ∀ f : TensorProduct R Ω A, ¬ IsNilpotent f → ∃ Q : MvPolynomial (Fin g) Ω, Q ≠ 0 ∧ ∀ a : A →ₐ[R] Ω, a h ≠ 0 → GlobalTheory.DenseSec.pt a f = 0 → MvPolynomial.eval (fun i => a (t i)) Q = 0 := by
   intro R _ A _ _ g t h hE Ω _ _ hirr f hf

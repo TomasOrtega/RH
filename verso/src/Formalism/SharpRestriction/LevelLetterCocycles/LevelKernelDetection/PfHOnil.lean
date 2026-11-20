@@ -17,15 +17,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [Fintype (K →ₐ[Qp] LL)]
 
 /- English proof (translation)
-Introduce `c hc`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨e, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hℓ0 hϖ`. Distinguish the cases in `hc0 : c = 0`. Conclude with `⟨1, 0, by simp [hc0]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Take `⟨k, w, hw⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hc0 hϖ`. Establish `hk : 1 ≤ k`. Break down `Nat.eq_zero_or_pos k with h | h` into its components or cases. It suffices to derive a contradiction. Rewrite `hw` using `[h, pow_zero, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hc (hw ▸ w.isUnit)`. Conclude with `h`. Take `⟨j, hj⟩ : ∃ j, k * e = e + j` from `⟨k * e - e, by`. Establish `: e ≤ k * e` using `Nat.le_mul_of_pos_left e hk`. Use the proof step `omega⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨e, ↑u⁻¹ * ↑w ^ e * ϖ ^ j, ?_⟩` and prove the remaining obligations. Establish `h1 : (↑w * ϖ ^ k) ^ e = (↑w : O) ^ e * ϖ ^ e * ϖ ^ j`. Rewrite using `[mul_pow, ← pow_mul, hj, pow_add, mul_assoc]`. Establish `hu1 : (↑u : O) * ↑u⁻¹ = 1` using `Units.mul_inv u`. Rewrite using `[hw, hu, h1]`.
-
-Take the linear combination `(-((↑w : O) ^ e * ϖ ^ e * ϖ ^ j)) * hu1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem hOnil_of [IsDomain O] [IsDiscreteValuationRing O] (hℓ0 : ((PD.p : ℕ) : O) ≠ 0) :
     ∀ c ∈ IsLocalRing.maximalIdeal O, ∃ (N : ℕ) (d : O), c ^ N = ((PD.p : ℕ) : O) * d := by

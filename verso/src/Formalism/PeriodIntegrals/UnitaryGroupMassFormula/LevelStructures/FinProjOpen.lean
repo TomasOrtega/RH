@@ -10,9 +10,9 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.M
 open Formalism.MainNotions.S (AutInst)
 
 /- English proof (translation)
-Introduce `I`. Take `⟨e, he⟩` from `MassDataMassesW.splitIso_holds I.cm.sig I.J`. Establish `h : (fun h : HAd I => (splitA I.cm.sig I.J h).2) = Prod.snd ∘ e`. Use function extensionality and compare the values at `h`. Simplify using `only [Function.comp, he]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Conclude with `isOpenMap_snd.comp e.toHomeomorph.isOpenMap`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finProjOpen_holds : FinProjOpen := by
   intro I

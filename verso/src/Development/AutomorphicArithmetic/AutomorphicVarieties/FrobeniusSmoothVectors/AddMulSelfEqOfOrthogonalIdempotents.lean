@@ -3,21 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Establish `key : ∀ M : Matrix (Fin n) (Fin n) K, (2 : C) • M ∈ A → M ∈ A`. Introduce `M hM`. Use `A.smul_mem hM (↑h2.unit⁻¹ : C)` as an intermediate fact. Rewrite `this` using `[smul_smul, IsUnit.val_inv_mul, one_smul]`. Then use the resulting hypothesis. Establish `hYY` using `A.mul_mem hY hY`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Break down `hn with rfl | rfl` into its components or cases. Apply `key fin_cases i` to reduce the goal to its premises. Establish `e : (2 : C) • Matrix.single (0 : Fin 2) 0 (1 : K) = 1 + Matrix.diagonal (fun i => (w 2 i : K))`. Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [w, two_smul, Matrix.one_apply, Matrix.single_apply] <;> norm_num`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h` using `A.add_mem A.one_mem hY`. Rewrite `h` using `[← e]`. Conclude with `h`. Establish `e : (2 : C) • Matrix.single (1 : Fin 2) 1 (1 : K) = 1 - Matrix.diagonal (fun i => (w 2 i : K))`. Use extensionality with `a b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [w, two_smul, Matrix.one_apply, Matrix.single_apply] <;> norm_num`. Establish `h` using `A.sub_mem A.one_mem hY`. Rewrite `h` using `[← e]`. Conclude with `h`. Apply `key fin_cases i` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e : (2 : C) • Matrix.single (0 : Fin 3) 0 (1 : K) = Matrix.diagonal (fun i => (w 3 i : K)) * Matrix.diagonal (fun i => (w 3 i : K)) + Matrix.diagonal (fun i => (w 3 i : K))`. Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [w, two_smul, Matrix.single_apply] <;> norm_num`. Establish `h` using `A.add_mem hYY hY`. Rewrite `h` using `[← e]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `h`. Establish `e : (2 : C) • Matrix.single (1 : Fin 3) 1 (1 : K) = (2 : C) • (1 - Matrix.diagonal (fun i => (w 3 i : K)) * Matrix.diagonal (fun i => (w 3 i : K)))`. Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [w, two_smul, Matrix.one_apply, Matrix.single_apply] <;> norm_num`. Establish `h` using `A.smul_mem (A.sub_mem A.one_mem hYY) (2 : C)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite `h` using `[← e]`. Conclude with `h`. Establish `e : (2 : C) • Matrix.single (2 : Fin 3) 2 (1 : K) = Matrix.diagonal (fun i => (w 3 i : K)) * Matrix.diagonal (fun i => (w 3 i : K)) - Matrix.diagonal (fun i => (w 3 i : K))`. Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [w, two_smul, Matrix.single_apply] <;> norm_num`.
-
-Establish `h` using `A.sub_mem hYY hY`. Rewrite `h` using `[← e]`. Conclude with `h`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Fr.add_mul_self_eq_of_orthogonal_idempotents {C K : Type} [CommRing C] [CommRing K] [Algebra C K] {n : ℕ}
     (hn : n = 2 ∨ n = 3) (A : Subalgebra C (Matrix (Fin n) (Fin n) K)) (h2 : IsUnit (2 : C))
@@ -69,21 +67,19 @@ private theorem UpperTheory.V.Fr.add_mul_self_eq_of_orthogonal_idempotents {C K 
       exact h
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ F C₀ n hF hn C _ _ _ K _ _ ρ hI i`. Use `haveI : CharP (ResidueField O) l := IsCoef.char`. Establish `hunit : ∀ x : C, res O C x ≠ 0 → IsUnit x`. Introduce `x hx`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hx ((res_eq_zero_iff O C x).2 ((IsLocalRing.mem_maximalIdeal x).2 h))`. Establish `h2 : IsUnit (2 : C)`. Apply `hunit` to reduce the goal to its premises. Rewrite using `[map_ofNat]`. Introduce `h0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0' : ((2 : ℕ) : ResidueField O) = 0` using `by exact_mod_cast h0`. Rewrite `h0'` using `[CharP.cast_eq_zero_iff (ResidueField O) l]`. Conclude with `hF.l_odd ((Nat.prime_dvd_prime_iff_eq (Fact.out : l.Prime) Nat.prime_two).1 h0')`. Take `⟨ζ, hζr, hζ⟩` from `hI.ze`. Establish `hζu : IsUnit ζ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hunit` to reduce the goal to its premises. Rewrite using `[hζr]`. Introduce `h0`. Apply `hF.baseSubgroup_spec` to reduce the goal to its premises. Rewrite `h0` using `[sub_eq_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Apply the tactic sequence `try simp only [← Units.val_inv_eq_inv_val] at h0`. Establish `hx : F.Ψ ↑F.g0 = (F.Ψ ↑F.g0)⁻¹` using `Units.ext h0`. Combine the equalities or inequalities in the displayed calculation. Establish `hD : ρ.r F.g0 - ρ.r (F.star F.g0) = ζ • Matrix.diagonal (fun i => (w n i : K))`. Use extensionality with `a b`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[Matrix.smul_apply, Matrix.diagonal_apply_eq, Algebra.smul_def, hζ a]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Matrix.smul_apply, Matrix.diagonal_apply_ne _ hab, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ρ.diag a b hab`. Establish `hspan : (Algebra.adjoin C (Set.range ρ.r)).toSubmodule = Submodule.span C (Set.range ρ.r)`. Rewrite using `[Algebra.adjoin_eq_span, ← MonoidHom.coe_mrange, Submonoid.closure_eq]`. Establish `hmem : ρ.r F.g0 - ρ.r (F.star F.g0) ∈ Submodule.span C (Set.range ρ.r)` using `Submodule.sub_mem _ (Submodule.subset_span ⟨_, rfl⟩) (Submodule.subset_span ⟨_, rfl⟩)`. Establish `hY : Matrix.diagonal (fun i => (w n i : K)) ∈ Algebra.adjoin C (Set.range ρ.r)`.
-
-Rewrite using `[← Subalgebra.mem_toSubmodule, hspan]`. Establish `h` using `Submodule.smul_mem _ (↑hζu.unit⁻¹ : C) hmem`. Rewrite `h` using `[hD, smul_smul, IsUnit.val_inv_mul, one_smul]`. Then use the resulting hypothesis. Rewrite using `[← hspan, Subalgebra.mem_toSubmodule]`. Conclude with `UpperTheory.V.Fr.add_mul_self_eq_of_orthogonal_idempotents hn _ h2 hY i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.idem :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ (C : Type) [CommRing C] [Algebra O C] [IsCO O C] (K : Type) [CommRing K] [Algebra C K] (ρ : NRep F n K), Integral O C ρ → ∀ i, Matrix.single i i (1 : K) ∈ Submodule.span C (Set.range ρ.r) := by

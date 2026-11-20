@@ -4,15 +4,15 @@ section
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-The claim follows from `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max a b) (max_lt ha hb)`.
+A detailed English derivation is pending.
 -/
 private theorem add_lt {a b : K} (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) : ‖a + b‖ < 1 :=
   lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max a b) (max_lt ha hb)
 
 /- English proof (translation)
-Establish `h` using `add_lt ha hb`. Establish `h1 : ‖a + b‖ = 1`. Establish `e : a + b = 2 + ((a - 1) + (b - 1))` using `by ring`. Rewrite using `[e, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [h2]; exact h.ne'), h2]`. Conclude with `max_eq_left h.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : a ^ 2 - b ^ 2 = (a + b) * (a - b)` using `by ring`. Rewrite using `[e, norm_mul, h1, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sub_eq (h2 : ‖(2 : K)‖ = 1) {a b : K} (ha : ‖a - 1‖ < 1) (hb : ‖b - 1‖ < 1) :
     ‖a - b‖ = ‖a ^ 2 - b ^ 2‖ := by
@@ -25,7 +25,7 @@ private theorem sub_eq (h2 : ‖(2 : K)‖ = 1) {a b : K} (ha : ‖a - 1‖ < 1)
   rw [e, norm_mul, h1, one_mul]
 
 /- English proof (translation)
-Establish `e : a * b - 1 = (a - 1) * (b - 1) + ((a - 1) + (b - 1))` using `by ring`. Rewrite using `[e]`. Use `add_lt ?_ (add_lt ha hb)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use polynomial arithmetic with `[norm_nonneg (a - 1), norm_nonneg (b - 1)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem mul_lt {a b : K} (ha : ‖a - 1‖ < 1) (hb : ‖b - 1‖ < 1) : ‖a * b - 1‖ < 1 := by
   have e : a * b - 1 = (a - 1) * (b - 1) + ((a - 1) + (b - 1)) := by ring
@@ -36,11 +36,11 @@ private theorem mul_lt {a b : K} (ha : ‖a - 1‖ < 1) (hb : ‖b - 1‖ < 1) :
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Take `⟨x, hx⟩` from `IsAlgClosed.exists_pow_nat_eq (y : K) (n := 2) (by norm_num)`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `y.ne_zero (by rw [← hx]; ring)`. Distinguish the cases in `h : ‖x - 1‖ < 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨Units.mk0 x hx0, Units.ext (by simpa using hx), h⟩`. Use `⟨Units.mk0 (-x) (neg_ne_zero.mpr hx0), Units.ext (by simpa using hx), ?_⟩` and prove the remaining obligations. Establish `e : (y : K) - 1 = -((x - 1) * (-x - 1))` using `by rw [← hx]; ring`. Rewrite `hy` using `[e, norm_neg, norm_mul]`. Simplify using `only [Units.val_mk0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h'`. Use `push Not at h h'`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem ex_root [IsAlgClosed K] (y : Kˣ) (hy : ‖(y : K) - 1‖ < 1) :
     ∃ x : Kˣ, x ^ 2 = y ∧ ‖(x : K) - 1‖ < 1 := by
@@ -61,19 +61,17 @@ private theorem ex_root [IsAlgClosed K] (y : Kˣ) (hy : ‖(y : K) - 1‖ < 1) :
 end
 
 /- English proof (translation)
-Introduce `l _ hl Γ _ _ η hη hc`. Establish `h2 : ‖(2 : PadicAlgCl l)‖ = 1`. Establish `e : (2 : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) ((2 : ℕ) : ℚ_[l])`. Rewrite using `[map_natCast]`. Evaluate the numerical expressions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[e]`. Use `erw [PadicAlgCl.norm_extends]`. Rewrite using `[Padic.norm_natCast_eq_one_iff]`. Conclude with `(Nat.coprime_primes Fact.out Nat.prime_two).mpr hl`. Establish `hc' : ∀ g, ‖((η g : (PadicAlgCl l)ˣ) : PadicAlgCl l) - 1‖ < 1` using `fun g => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hc g` using `[UpperTheory.V.Sd.Cong]`. Use `choose d hd hd1 using fun g => ex_root (η g) (hc' g)`. Establish `hv : ∀ g, ((d g : (PadicAlgCl l)ˣ) : PadicAlgCl l) ^ 2 = η g` using `fun g => by`. Rewrite using `[← hd g]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hmul : ∀ g h, d (g * h) = d g * d h` using `fun g h => by`. Apply `Units.ext` to reduce the goal to its premises. Use `sub_eq h2 (hd1 (g * h)) (mul_lt (hd1 g) (hd1 h))` as an intermediate fact. Rewrite `this` using `[mul_pow, hv, hv, hv, map_mul, Units.val_mul, sub_self, norm_zero, norm_eq_zero, sub_eq_zero]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨MonoidHom.mk' d hmul, ?_, hd, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.isEmbedding_val₀.continuous_iff]`. Establish `hη' : Continuous fun g => ((η g : (PadicAlgCl l)ˣ) : PadicAlgCl l)` using `Units.continuous_val.comp hη`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(hη'.continuousAt (x := g))`. Rewrite `h1`, the goal using `[ContinuousAt, tendsto_iff_norm_sub_tendsto_zero]`. Use `h1.congr fun x => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, MonoidHom.mk'_apply]`. Rewrite using `[sub_eq h2 (hd1 x) (hd1 g), hv, hv]`.
-
-Simplify `hd1 g` using `[UpperTheory.V.Sd.Cong]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_square_root_of_character_near_one :
     UpperTheory.V.Sd.S2.SqrtChar := by

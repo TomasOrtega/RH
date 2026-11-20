@@ -26,19 +26,19 @@ section
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-The claim follows from `dif_pos hx`.
+A detailed English derivation is pending.
 -/
 theorem lamC_eq (lam : Qbar →+* ℂ_[p]) {x : ℂ} (hx : x ∈ Qbar) : lamC lam x = lam ⟨x, hx⟩ := dif_pos hx
 
 /- English proof (translation)
-Rewrite using `[lamC_eq lam hx, lamC_eq lam hy, lamC_eq lam (mul_mem hx hy), ← map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lamC_mul' (lam : Qbar →+* ℂ_[p]) {x y : ℂ} (hx : x ∈ Qbar) (hy : y ∈ Qbar) :
     lamC lam (x * y) = lamC lam x * lamC lam y := by
   rw [lamC_eq lam hx, lamC_eq lam hy, lamC_eq lam (mul_mem hx hy), ← map_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[lamC_eq lam hx]`. Introduce `h`. Apply `h0` to reduce the goal to its premises. Use `(map_eq_zero_iff lam lam.injective).1 h` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lamC_ne_zero (lam : Qbar →+* ℂ_[p]) {x : ℂ} (hx : x ∈ Qbar) (h0 : x ≠ 0) : lamC lam x ≠ 0 := by
   rw [lamC_eq lam hx]
@@ -48,14 +48,14 @@ theorem lamC_ne_zero (lam : Qbar →+* ℂ_[p]) {x : ℂ} (hx : x ∈ Qbar) (h0 
   exact congrArg Subtype.val this
 
 /- English proof (translation)
-Use `((GlobalTheory.EvenTheta.SerRing.series_ring_laws p).2.2.1 1).2 norm_one.le` as an intermediate fact. Rewrite `this` using `[map_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem intSer_one : IntSer (1 : PowerSeries ℂ_[p]) := by
   have := ((GlobalTheory.EvenTheta.SerRing.series_ring_laws p).2.2.1 1).2 norm_one.le
   rwa [map_one] at this
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using intSer_one (p := p)`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `((GlobalTheory.EvenTheta.SerRing.series_ring_laws p).1 _ _ ih hf).2.2`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem intSer_pow {f : PowerSeries ℂ_[p]} (hf : IntSer f) (n : ℕ) : IntSer (f ^ n) := by
   induction n with
@@ -65,26 +65,26 @@ theorem intSer_pow {f : PowerSeries ℂ_[p]} (hf : IntSer f) (n : ℕ) : IntSer 
 end
 
 /- English proof (translation)
-Take `⟨h0, n, hn, hc, h⟩` from `h`. Conclude with `⟨by simpa using h0, n, hn, hc, by simpa using h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tors_neg' {p : ℕ} {Λ : AddSubgroup ℂ} {t : ℂ} (h : GL3Theta.Tors1 p Λ t) : GL3Theta.Tors1 p Λ (-t) := by
   obtain ⟨h0, n, hn, hc, h⟩ := h
   exact ⟨by simpa using h0, n, hn, hc, by simpa using h⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨_, n, hn, _, h⟩ := h; ⟨n, hn, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem laQ_of_tors {p : ℕ} {Λ : AddSubgroup ℂ} {t : ℂ} (h : GL3Theta.Tors1 p Λ t) : InRationalLattice Λ t :=
   let ⟨_, n, hn, _, h⟩ := h; ⟨n, hn, h⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `[U1]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem thetaTranslateOperator_zero_eq_self (Λ : AddSubgroup ℂ) (F : ℂ → ℂ) : U1 Λ 0 F = F := by
   funext z; simp [U1]
 
 /- English proof (translation)
-Simplify using `only [U1, zero_add]`. Conclude with `mul_ne_zero ((hlat.sg_eq_zero t).not.2 ht) (Complex.exp_ne_zero _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thetaTranslate_sigmaStar_at_zero_ne_zero_of_not_mem_lattice {Λ : AddSubgroup ℂ} (hlat : IsLat Λ) {t : ℂ} (ht : t ∉ Λ) :
     U1 Λ t (sgStar Λ) 0 ≠ 0 := by
@@ -92,7 +92,7 @@ theorem thetaTranslate_sigmaStar_at_zero_ne_zero_of_not_mem_lattice {Λ : AddSub
   exact mul_ne_zero ((hlat.sg_eq_zero t).not.2 ht) (Complex.exp_ne_zero _)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(GlobalTheory.SerTransport.transport p g).2.1 c hc`. Rewrite using `[← h2]`. Conclude with `((GlobalTheory.SerTransport.transport p g).1 _ _ h1 hF).1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atU_smul' {p : ℕ} [Fact p.Prime] (g : GL3Theta.G1 p) {c : ℂ} (hc : c ∈ Qbar) {F : ℂ → ℂ} (hF : AlgEnt F) :
     AlgEnt (fun z => c * F z) ∧ g.atU (fun z => c * F z) = PowerSeries.C (lamC g.lam c) * g.atU F := by
@@ -101,35 +101,33 @@ theorem atU_smul' {p : ℕ} [Fact p.Prime] (g : GL3Theta.G1 p) {c : ℂ} (hc : c
   exact ((GlobalTheory.SerTransport.transport p g).1 _ _ h1 hF).1
 
 /- English proof (translation)
-Introduce `D p _ cc δ g hg hx t ht`. Establish `hA` using `GlobalTheory.T.thetaTranslatePowerSeries_pow_boundedCoeffs_of_torsion D p cc δ g hg`. Take `⟨hcc, -, hδ, hΛ, hok⟩` from `hg`. Establish `hcrv : Crv D cc δ` using `⟨hcc, hδ⟩`. Establish `hG` using `(GlobalTheory.InducedType.induced_type D).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hlat, -, hdisc, -, hst⟩` from `GlobalTheory.CurveLattice.lattice_of_curve D hG cc δ hcrv`. Take `⟨⟨-, h2, h3⟩, hwp⟩` from `(GlobalTheory.CurveAlgebraic.integral_j_and_algebraic_data D hG).2 cc δ hcrv`. Establish `huse` using `(GlobalTheory.ThetaConj.cmTheta_taylorCoeff_algebraic_and_conjugate D cc δ hcrv).1`. Simplify using `only [tor0] at h2 h3`. Rewrite `hlat`, `hdisc`, `hst`, `h2`, `h3`, `hwp`, `huse` using `[← hΛ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlat' : IsLat g.abelian₂` using `hlat`. Establish `halg : ∀ x, InRationalLattice g.abelian₂ x → AlgEnt (U1 g.abelian₂ x (sgStar g.abelian₂))` using `fun x hx => ⟨by`. Use `hlat'.differentiable` as an intermediate fact. Unfold `U1`. Use the proof step `fun_prop, huse x hx⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hw, -, hE, -⟩` from `GlobalTheory.EvenTheta.DatumBasic.datum_basic p g hok hlat' h2 h3 hdisc`. Establish `hsg : AlgEnt (sgStar g.abelian₂)`. Use `halg 0 ⟨1, one_pos, by simp⟩` as an intermediate fact. Rewrite `this` using `[thetaTranslateOperator_zero_eq_self]`. Then use the resulting hypothesis. Establish `hEi : (ePhi1 g.lam g.abelian₂ g.C g.wq)⁻¹ * ePhi1 g.lam g.abelian₂ g.C g.wq = 1` using `PowerSeries.inv_mul_cancel _ (by rw [hE]; exact one_ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcon : ∀ s, InRationalLattice g.abelian₂ s → PowerSeries.constantCoeff (tau g s) = cval g s ∧ U1 g.abelian₂ s (sgStar g.abelian₂) 0 ∈ Qbar`. Introduce `s hs`. Take `⟨c, d⟩` from `(GlobalTheory.SerTransport.transport p g).2.2.1 _ (halg s hs)`. Use `⟨?_, c⟩` and prove the remaining obligations. Rewrite using `[tau, map_mul, PowerSeries.constantCoeff_inv, hE, inv_one, one_mul, d, cval]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq` using `laQ_of_tors ht`. Establish `hq'` using `laQ_of_tors (tors_neg' ht)`. Take `⟨c1, c2⟩` from `GlobalTheory.EvenTheta.Param.sqTh_atU p g hok.2.1 hlat' h2 h3 hsg t ht.1 (hwp t hq ht.1).1`. Establish `a3` using `(hcon t hq).2`. Establish `b3` using `(hcon (-t) hq').2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `(atU_smul' g (mul_mem a3 b3) c1).2`. Rewrite `e` using `[funext (hlat'.sqTh_mul ht.1), ((GlobalTheory.SerTransport.transport p g).1 _ _ (halg _ hq) (halg _ hq')).1.2, c2, lamC_mul' _ a3 b3]`. Establish `hprod : tau g t * tau g (-t) = PowerSeries.C (cval g t * cval g (-t)) * lineSer g.wq⁻¹ (xAt g t)`. Simplify using `only [tau, cval]`. Take the linear combination `((ePhi1 g.lam g.abelian₂ g.C g.wq)⁻¹ * (ePhi1 g.lam g.abelian₂ g.C g.wq)⁻¹) * e + PowerSeries.C (lamC g.lam (U1 g.abelian₂ t (sgStar g.abelian₂) 0) * lamC g.lam (U1 g.abelian₂ (-t) (sgStar g.abelian₂) 0)) * lineSer g.wq⁻¹ (xAt g t) * ((ePhi1 g.lam g.abelian₂ g.C g.wq)⁻¹ * ePhi1 g …`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hL : IntSer (lineSer g.wq⁻¹ (xAt g t))`. Establish `h1` using `((GlobalTheory.EvenTheta.SerRing.series_ring_laws p).2.2.1 (xAt g t)).2 (hx t ht)`. Establish `h2` using `(GlobalTheory.EvenTheta.SerRing.series_ring_laws p).2.2.2.1`. Establish `h3` using `((GlobalTheory.EvenTheta.SerRing.series_ring_laws p).1 _ _ h2 h2).2.2`. Establish `h4` using `((GlobalTheory.EvenTheta.SerRing.series_ring_laws p).1 _ _ h1 h3).2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `((GlobalTheory.EvenTheta.SerRing.series_ring_laws p).1 _ _ hw h4).2.1`. Simplify `h5` using `[lineSer, _root_.sq, mul_assoc]`. Take `⟨n, hn, hcop, hnt⟩` from `ht.2`. Establish `hnt' : (n : ℂ) * (-t) ∈ g.abelian₂` using `by rw [mul_neg]; exact neg_mem hnt`. Establish `B1` using `hA t ht n hn hnt`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `B2` using `hA (-t) (tors_neg' ht) n hn hnt'`. Use `set c := cval g t with hc`. Use `set c' := cval g (-t) with hc'`. Establish `hc0 : c ≠ 0` using `lamC_ne_zero _ a3 (thetaTranslate_sigmaStar_at_zero_ne_zero_of_not_mem_lattice hlat' ht.1)`. Establish `hc0' : c' ≠ 0` using `lamC_ne_zero _ b3 (thetaTranslate_sigmaStar_at_zero_ne_zero_of_not_mem_lattice hlat' (tors_neg' ht).1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpow : tau g t ^ n * tau g (-t) ^ n = PowerSeries.C ((c * c') ^ n) * lineSer g.wq⁻¹ (xAt g t) ^ n`. Rewrite using `[← mul_pow, hprod, mul_pow, map_pow]`. Establish `hbound : ∀ k, ‖PowerSeries.coeff k (tau g t ^ n * tau g (-t) ^ n)‖ ≤ ‖c * c'‖ ^ n`. Introduce `k`. Rewrite using `[hpow, PowerSeries.coeff_C_mul, norm_mul, norm_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_of_le_one_right (by positivity) (intSer_pow hL n k)`. Establish `G` using `GlobalTheory.EvenTheta.sup_norm_mul_padicComplex p _ _ _ B1 B2 hbound`. Establish `h0' : PowerSeries.coeff 0 (tau g (-t) ^ n) = c' ^ n`. Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply, map_pow, (hcon _ hq').1]`. Establish `hcn : 0 < ‖c'‖ ^ n` using `pow_pos (norm_pos_iff.2 hc0') n`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle : ∀ i, ‖PowerSeries.coeff i (tau g t ^ n)‖ ≤ ‖c‖ ^ n`. Introduce `i`. Use `G i 0` as an intermediate fact. Rewrite `this` using `[h0', norm_pow, norm_mul, mul_pow]`. Conclude with `le_of_mul_le_mul_right this hcn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `set s := PowerSeries.C c⁻¹ * tau g t with hs`. Establish `hsn : IntSer (s ^ n)`. Introduce `k`. Rewrite using `[hs, mul_pow, ← map_pow, PowerSeries.coeff_C_mul, norm_mul, norm_pow, norm_inv]`. Establish `hcp : 0 < ‖c‖ ^ n` using `pow_pos (norm_pos_iff.2 hc0) n`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hs0 : PowerSeries.constantCoeff s = 1`. Rewrite using `[hs, map_mul, PowerSeries.constantCoeff_C, (hcon t hq).1, inv_mul_cancel₀ hc0]`. Use `⟨s, GlobalTheory.T.powerSeriesCoeffNormLeOne_root_coprime_padic p n hn hcop s hs0 hsn, hs0, ?_⟩` and prove the remaining obligations. Rewrite using `[hs, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hc0, map_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tau_eq_C_mul : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (g : GL3Theta.G1 p),
     GL3Theta.At D cc δ g → (∀ s : ℂ, GL3Theta.Tors1 p g.abelian₂ s → ‖GlobalTheory.EvenTheta.xAt g s‖ ≤ 1) →

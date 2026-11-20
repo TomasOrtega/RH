@@ -4,15 +4,15 @@ open CongruenceSubgroup UpperHalfPlane UpperTheory.V.Af
 open scoped MatrixGroups ModularForm
 
 /- English proof (translation)
-Introduce `N k _ χ f hχ hv h0`. Establish `hT : (1:ℝ) ∈ (Subgroup.map (Matrix.SpecialLinearGroup.mapGL ℝ) (Gamma1 N)).strictPeriods`. Rewrite using `[Subgroup.mem_strictPeriods_iff]`. Use `⟨ModularGroup.T, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, Gamma1_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ModularGroup.T]`. Use extensionality with `i j`. Rewrite using `[Matrix.SpecialLinearGroup.mapGL_coe_matrix, Matrix.SpecialLinearGroup.map_apply_coe]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [ModularGroup.T]`. Establish `hinf : IsZeroAtImInfty f`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply `ModularForm.isZeroAtImInfty_of_valueAtInfty_eq_zero f` to reduce the goal to its premises. Rewrite using `[← qExpansion_coeff_zero one_pos (ModularFormClass.analyticAt_cuspFunction_zero f one_pos hT) (SlashInvariantFormClass.periodic_comp_ofComplex f hT)]`. Conclude with `h0`. Use `⟨⟨f.toSlashInvariantForm, f.holo', fun {c} hc => ?_⟩, rfl⟩` and prove the remaining obligations. Establish `hc' : IsCusp c 𝒮ℒ`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hc` using `[Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z]`. Then use the resulting hypothesis. Rewrite using `[OnePoint.isZeroAt_iff_forall_SL2Z hc']`. Introduce `γ _`. Distinguish the cases in `hd : (N:ℤ) ∣ γ 1 0`. Establish `hγ : γ ∈ Gamma0 N` using `Gamma0_mem.mpr ((ZMod.intCast_zmod_eq_zero_iff_dvd _ N).mpr hd)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `IsZeroAtImInfty (⇑f ∣[(k:ℤ)] γ)`. Rewrite using `[hχ γ hγ]`. Conclude with `hinf.smul _`. Conclude with `hv γ hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Sd.cuspOf :
     UpperTheory.V.Sd.CuspOf := by

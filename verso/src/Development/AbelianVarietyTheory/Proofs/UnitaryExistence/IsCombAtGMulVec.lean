@@ -19,13 +19,13 @@ section Comb
 variable {X0 : Scheme.{0}} {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) {G : Over X0} [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-The claim follows from `map_prod (smHom x0 a) u s`.
+A detailed English derivation is pending.
 -/
 theorem smT_prod {κ : Type} (s : Finset κ) (a : S) (u : κ → (overAt x0 (DualNumber S) ⟶ G)) :
     smT x0 a (∏ i ∈ s, u i) = ∏ i ∈ s, smT x0 a (u i) := map_prod (smHom x0 a) u s
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h0`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, smT_add x0 v h0, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem smT_sum {κ : Type} (s : Finset κ) (c : κ → S) (v : overAt x0 (DualNumber S) ⟶ G) (h0 : smT x0 0 v = 1) :
     smT x0 (∑ i ∈ s, c i) v = ∏ i ∈ s, smT x0 (c i) v := by
@@ -35,9 +35,9 @@ theorem smT_sum {κ : Type} (s : Finset κ) (c : κ → S) (v : overAt x0 (DualN
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, smT_add x0 v h0, ih]
 
 /- English proof (translation)
-Simplify using `only [combT, smT_prod, smT_smT]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← smT_sum x0 _ _ _ (hv j)]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Finset.sum_congr rfl fun i _ => _root_.mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem combT_combT {m m' : ℕ} (v : Fin m → (overAt x0 (DualNumber S) ⟶ G)) (hv : ∀ j, smT x0 0 (v j) = 1)
     (A : Matrix (Fin m) (Fin m') S) (N : Fin m' → S) :
@@ -58,7 +58,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : S
 variable {S : Type} [CommRing S] {x0 : Sp S ⟶ X0}
 
 /- English proof (translation)
-Establish `hw : w = fun i => (combT x0 (fun j => ovT (hv j)) (fun j => A j i)).left`. Use function extensionality and compare the values at `fun i => ((isCombAtG_iff t x0 (fun j => ovT (hv j)) _ _).1 (h1 i)).symm`. Substitute `hw` using the available equality. Rewrite `h2` using `[isCombAtG_iff, combT_combT x0 _ (fun j => smT_zero_ovT (hv j))]`. Conclude with `(isCombAtG_iff t x0 (fun j => ovT (hv j)) _ _).2 h2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCombAtG_mulVec {m m' : ℕ} (v : Fin m → (Sp (DualNumber S) ⟶ t.G.left)) (hv : ∀ j, IsTanAtG t x0 (v j))
     (w : Fin m' → (Sp (DualNumber S) ⟶ t.G.left)) (A : Matrix (Fin m) (Fin m') S) (N : Fin m' → S)
@@ -73,7 +73,7 @@ theorem isCombAtG_mulVec {m m' : ℕ} (v : Fin m → (Sp (DualNumber S) ⟶ t.G.
 end Group
 
 /- English proof (translation)
-The claim follows from `isCombAtG_mulVec (t := Xo.univ.t) (x0 := x) v hv w A N w' hw hw'`.
+A detailed English derivation is pending.
 -/
 theorem isCombAt_mulVec (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H)
     (l : Level H) (Xo : Moduli Dw l) (S : Type) [CommRing S] (x : Sp S ⟶ Xo.X) {m : ℕ}

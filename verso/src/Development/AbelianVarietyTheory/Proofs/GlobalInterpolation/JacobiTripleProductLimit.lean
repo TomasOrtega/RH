@@ -7,15 +7,15 @@ open scoped Real
 namespace GlobalTheory.JacobiTriple
 
 /- English proof (translation)
-Introduce `τ z hτ`. Use `set t := cexp (π * I * τ) ^ 2 with ht`. Establish `hs : ‖cexp (π * I * τ)‖ < 1` using `norm_exp_pi_I_lt_one τ hτ`. Establish `ht1 : ‖t‖ < 1`. Rewrite using `[ht, norm_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[norm_nonneg (cexp (π * I * τ))]`. Take `⟨hlim, C, hC⟩` from `GlobalTheory.T.jacobiTripleFiniteCoeff_tendsto_and_bounded t ht1`. Establish `hsum : Summable (fun j : ℤ => C * ‖jacobiTheta₂_term j z τ‖)` using `((summable_jacobiTheta₂_term_iff z τ).2 hτ).norm.mul_left C`. Establish `hT` using `tendsto_tsum_of_dominated_convergence (𝓕 := Filter.atTop) (f := fun (n : ℕ) (j : ℤ) => finCoeff t n j * jacobiTheta₂_term j z τ) (g := fun j => jacobiTheta₂_term j z τ * (qPochInf t)⁻¹) hsum (fun j => by`. Use `(hlim j).mul_const (jacobiTheta₂_term j z τ)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this)` using `[mul_comm]`. Use the proof step `(Filter.Eventually.of_forall fun n j => by`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hC n j) (norm_nonneg _))`. Rewrite `hT` using `[tsum_mul_right]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hT.congr (fun n => ?_)` and prove the remaining obligations. Apply `tsum_eq_sum` to reduce the goal to its premises. Introduce `j hj`. Establish `: ¬ j.natAbs ≤ n`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Apply `hj` to reduce the goal to its premises. Rewrite using `[Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers. Simplify using `[finCoeff, this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_finCoeff_sum_jacobiTheta₂ : ∀ (τ : ℂ) (z : ℂ), 0 < τ.im →
     Filter.Tendsto (fun n : ℕ => ∑ j ∈ Finset.Icc (-(n : ℤ)) n,

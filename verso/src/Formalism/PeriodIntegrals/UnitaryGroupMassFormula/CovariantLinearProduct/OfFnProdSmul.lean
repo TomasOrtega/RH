@@ -7,7 +7,7 @@ namespace PI.QnCovLinW
 open Formalism.REAL Formalism.FourierDecayAlt.Q
 
 /- English proof (translation)
-The claim follows from `| 0, f => by simp | t + 1, f => by simp only [List.ofFn_succ, List.prod_cons] rw [ofFn_prod_sum t (fun k => f k.succ), Finset.sum_mul_sum, ← (Fin.consEquiv (fun _ => ι)).sum_comp, Fintype.sum_prod_type] simp [Fin.consEquiv]`.
+A detailed English derivation is pending.
 -/
 theorem ofFn_prod_sum {A : Type*} [Semiring A] {ι : Type*} [Fintype ι] :
     ∀ (t : ℕ) (f : Fin t → ι → A),
@@ -20,7 +20,7 @@ theorem ofFn_prod_sum {A : Type*} [Semiring A] {ι : Type*} [Fintype ι] :
     simp [Fin.consEquiv]
 
 /- English proof (translation)
-The claim follows from `| 0, r, x => by simp | t + 1, r, x => by simp only [List.ofFn_succ, List.prod_cons] rw [ofFn_prod_smul t (fun k => r k.succ) (fun k => x k.succ), Fin.prod_univ_succ, smul_mul_smul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem ofFn_prod_smul {A : Type*} [Ring A] [Algebra ℂ A] :
     ∀ (t : ℕ) (r : Fin t → ℂ) (x : Fin t → A),
@@ -32,9 +32,9 @@ theorem ofFn_prod_smul {A : Type*} [Ring A] [Algebra ℂ A] :
       smul_mul_smul_comm]
 
 /- English proof (translation)
-Establish `hQP : ∑ c, P c a * Q b c = if a = b then 1 else 0`. Establish `h1` using `congrFun (congrFun h b) a`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply]`. Rewrite using `[show (∑ c, P c a * Q b c) = ∑ c, Q b c * P c a from Finset.sum_congr rfl fun c _ => mul_comm _ _, h1]`. Distinguish the cases in `hab : a = b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hab]`. Simplify using `[hab, Ne.symm hab]`. Simplify using `only [Tm, Econj, smul_add, Finset.sum_add_distrib, Fintype.sum_prod_type, smul_ite, smul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[← Finset.sum_smul, hQP]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tm_conj {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fin n → A)
     (P Q : Matrix (Fin n) (Fin n) ℂ) (h : Q * P = 1) (u : ℂ) (a b : Fin n) :
@@ -52,15 +52,15 @@ theorem tm_conj {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin n → Fi
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `A _ _ n t E P Q hQP a b u`. Establish `key : ∀ σ : Equiv.Perm (Fin t), (List.ofFn fun k : Fin t => Tm (Econj E P Q) (u - (k : ℂ)) (a (σ k)) (b k)).prod = ∑ c : Fin t → Fin n, ∑ d : Fin t → Fin n, ((∏ k, P (c k) (a (σ k))) * ∏ k, Q (b k) (d k)) • (List.ofFn fun k : Fin t => Tm E (u - (k : ℂ)) (c k) (d k)).prod`. Introduce `σ`. Simplify using `only [tm_conj E P Q hQP]`. Rewrite using `[ofFn_prod_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∀ c : Fin t → Fin n × Fin n, (List.ofFn fun k => (P (c k).1 (a (σ k)) * Q (b k) (c k).2) • Tm E (u - (k : ℂ)) (c k).1 (c k).2).prod = (fun p : (Fin t → Fin n) × (Fin t → Fin n) => ((∏ k, P (p.1 k) (a (σ k))) * ∏ k, Q (b k) (p.2 k)) • (List.ofFn fun k : Fin t => Tm E (u - (k …`. Introduce `c`. Rewrite using `[ofFn_prod_smul, Finset.prod_mul_distrib]`. Both sides reduce to the same expression. Rewrite using `[Fintype.sum_equiv (Equiv.arrowProdEquivProdArrow (Fin t) (fun _ => Fin n) (fun _ => Fin n)) _ (fun p : (Fin t → Fin n) × (Fin t → Fin n) => ((∏ k, P (p.1 k) (a (σ k))) * ∏ k, Q (b k) (p.2 k)) • (List.ofFn fun k : Fin t => Tm E (u - (k : ℂ)) (p.1 k) (p.2 k)).prod) hs, Fintype.sum …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `reidx : ∀ σ : Equiv.Perm (Fin t), ∑ c : Fin t → Fin n, ∑ d : Fin t → Fin n, ((Equiv.Perm.sign σ : ℤ) : A) * (((∏ k, P (c k) (a (σ k))) * ∏ k, Q (b k) (d k)) • (List.ofFn fun k : Fin t => Tm E (u - (k : ℂ)) (c k) (d k)).prod) = ∑ c : Fin t → Fin n, ∑ d : Fin t → Fin n, ((∏ k, P (c …`. Introduce `σ`. Rewrite using `[← (Equiv.arrowCongr σ.symm (Equiv.refl (Fin n))).sum_comp]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.arrowCongr_apply, Equiv.coe_refl, Function.comp_apply, Equiv.symm_symm, id]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hp : ∏ k, P (c (σ k)) (a (σ k)) = ∏ k, P (c k) (a k)` using `Equiv.prod_comp σ (fun k => P (c k) (a k))`. Rewrite using `[mul_smul_comm, hp]`. Simplify using `only [qminor, key, Finset.mul_sum]`. Simplify using `only [reidx, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem qnCovLin : PI.QnCovLin := by
   intro A _ _ n t E P Q hQP a b u

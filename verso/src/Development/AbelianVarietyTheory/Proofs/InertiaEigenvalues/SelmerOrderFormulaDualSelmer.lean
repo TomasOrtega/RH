@@ -17,9 +17,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.SelOrder
 
 /- English proof (translation)
-Take `⟨F, hF, h⟩` from `h`. Use `⟨F + fun g => P (x g) (π' g m), hF.add (((IsLocallyConstant.iff_continuous _).2 (hx.prodMk hm)).comp fun p : M × M' => P p.1 p.2), fun g k => ?_⟩` and prove the remaining obligations. Establish `h1` using `h g k`. Establish `h2` using `hP g (x k) (π' k m)`. Simplify using `only [hy, map_add, map_sub, AddMonoidHom.add_apply, Pi.add_apply, hx', map_mul, Module.End.mul_apply] at h1 ⊢`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `h1 + h2`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cupB_sub_cob {Γ A M M' : Type} [Group Γ] [TopologicalSpace Γ] [CommRing A] [AddCommGroup M] [Module A M]
     [AddCommGroup M'] [Module A M'] [TopologicalSpace M] [DiscreteTopology M] [TopologicalSpace M'] [DiscreteTopology M']
@@ -37,7 +37,7 @@ theorem cupB_sub_cob {Γ A M M' : Type} [Group Γ] [TopologicalSpace Γ] [CommRi
   linear_combination h1 + h2
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `IsArtinianRing.isNilpotent_jacobson_bot (R := A)`. Rewrite `hn` using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Use `fun b => ⟨n, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[hn, Ideal.zero_eq_bot, Ideal.mem_bot]`. Rewrite using `[hx, zero_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tors_all (A : Type) [CommRing A] [IsLocalRing A] [Finite A] (B : Type) [AddCommGroup B] [Module A B] :
     Tors A B := by
@@ -57,27 +57,25 @@ variable {F Ω : Type} [Field F] [NumberField F] [IsTotallyComplex F] [Field Ω]
   [AddCommGroup W'] [Module Λ W'] [TopologicalSpace W'] [DiscreteTopology W'] [Finite W']
 
 /- English proof (translation)
-Establish `hfin` using `GlobalTheory.SelObstruction.finite_above (F := F) l`. Establish `hsub : ∀ {M : Type} [AddCommGroup M] [Module Λ M] [TopologicalSpace M] [DiscreteTopology M] (π : Representation Λ (G F Ω) M), ContAction π → ∀ U : Subgroup (G F Ω), ContAction (π.comp U.subtype)` using `fun π h U => h.comp ((continuous_subtype_val.comp continuous_fst).prodMk continuous_snd)`. Establish `hloc` using `fun v => GlobalTheory.T.localDuality_perfect_pair_finite_modules hLF hLD hLE F Ω l n (A.1 v) v (A.2 v) Λ W W' (ρ.comp (Dec (F := F) (A.1 v)).subtype) (ρ'.comp (Dec (F := F) (A.1 v)).subtype) P hn (hsub ρ hc _) (hsub ρ' hc' _) hl hr (fun g x y => hP g.1 x y)`. Establish `hS : ∀ v, v ∈ hfin.toFinset ∪ (hT.toFinset ∪ Q) ↔ v ∈ placesOver F l ∨ v ∈ T ∨ v ∈ Q` using `by simp`. Establish `hS' : ∀ v, v ∉ hfin.toFinset ∪ (hT.toFinset ∪ Q) ↔ v ∉ placesOver F l ∧ v ∉ T ∧ v ∉ Q` using `fun v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hS, not_or, not_or]`. Establish `hnl : ∀ v, v ∈ T ∨ v ∈ Q → v ∉ placesOver F l` using `fun v h => h.elim (hTl v) (hQl v)`. Establish `b1 : ∀ v ∈ placesOver F l, bkCond ρ A l (T ∪ ↑Q) L v = L v` using `fun v hv => if_pos hv`. Establish `b2 : ∀ v, v ∈ T ∨ v ∈ Q → bkCond ρ A l (T ∪ ↑Q) L v = ⊤` using `fun v hv => (if_neg (hnl v hv)).trans (if_pos hv)`. Take `⟨fC, e⟩` from `GlobalTheory.T.greenbergWiles_pair_alt hPT hLF hGF hGE F Ω l n Λ W W' ρ ρ' P hn hc hc' hl hr hP (hfin.toFinset ∪ (hT.toFinset ∪ Q)) A (fun v hv => (hS v).2 (.inl hv)) (fun v hv => hur v ((hS' v).1 hv).1 ((hS' v).1 hv).2.1 ((hS' v).1 hv).2.2) (bkCond ρ A l (T ∪ ↑Q) L) (fun v hv => …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hC]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y', ⟨k1, k2, k3⟩, e⟩`. Establish `e' : (y' - y).1 ∈ B1 ρ'` using `(Submodule.Quotient.eq ((B1 ρ').comap (Z1 ρ').subtype)).1 e.symm`. Take `⟨m, hm⟩` from `(mem_coboundaries1 ρ' _).1 e'`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm' : ∀ g, y.1 g = y'.1 g - (ρ' g m - m)` using `fun g => by`. Rewrite using `[← hm g]`. Conclude with `(sub_sub_cancel _ _).symm`. Use `⟨fun v hv τ hτ => ?_, fun v hv x hx => ?_⟩` and prove the remaining obligations. Take `⟨a, b, c⟩` from `(hS' v).1 hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm', k1 v a b c τ hτ, (hur v a b c _ (A.2 v) τ hτ).2]`. Simplify using the standard rewrite rules. Break down `(hS v).1 hv with hv | hv` into its components or cases. Rewrite `hx` using `[b1 v hv]`. Conclude with `cupB_sub_cob _ (ρ.comp (Dec (F := F) (A.1 v)).subtype) (ρ'.comp (Dec (F := F) (A.1 v)).subtype) P (fun g x y => hP g.1 x y) x.1 _ _ m x.2.1 x.2.2 ((hsub ρ' hc' _).comp (continuous_id.prodMk continuous_const)) (fun g => hm' g.1) (k3 v hv x hx)`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m', hm''⟩` from `k2 v hv`. Use `((hloc v).1 (restrictCocycles1 ρ' _ continuous_subtype_val y)).2 ⟨m' - m, fun g => ?_⟩ x` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y.1 g.1 = ρ' g.1 (m' - m) - (m' - m)`. Rewrite using `[hm', hm'' g.1 g.2, map_sub]`. Normalize the expressions using the abelian group laws.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨k1, k2⟩`. Use `⟨y, ⟨fun v a b c => k1 v ((hS' v).2 ⟨a, b, c⟩), fun v hv => ?_, fun v hv x hx => ?_⟩, rfl⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `((hloc v).1 (restrictCocycles1 ρ' _ continuous_subtype_val y)).1 fun x => k2 v ((hS v).2 (.inr hv)) x (by rw [b2 v hv]; trivial)`. Conclude with `⟨m, fun g hg => hm ⟨g, hg⟩⟩`. Conclude with `k2 v ((hS v).2 (.inl hv)) x (by rw [b1 v hv]; exact hx))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨fC, ?_⟩` and prove the remaining obligations. Establish `hd : Disjoint hfin.toFinset (hT.toFinset ∪ Q)` using `Finset.disjoint_right.2 fun v hv h => hnl v (by simpa using hv) (by simpa using h)`. Rewrite `hcount` using `[finprod_mem_eq_finite_toFinset_prod _ hfin, finprod_mem_eq_finite_toFinset_prod _ hfin]`. Establish `e1 : ∏ v ∈ hfin.toFinset, Nat.card (bkCond ρ A l (T ∪ ↑Q) L v) = ∏ v ∈ hfin.toFinset, Nat.card (L v)` using `Finset.prod_congr rfl fun v hv => by rw [b1 v (by simpa using hv)]`. Establish `e2 : ∏ v ∈ hT.toFinset ∪ Q, Nat.card (bkCond ρ A l (T ∪ ↑Q) L v) = (∏ v ∈ hT.toFinset ∪ Q, Nat.card (H0 (ρ.comp (Dec (F` using `F) (A.1 v)).subtype))) * ∏ v ∈ hT.toFinset ∪ Q, Nat.card (H0 (ρ'.comp (Dec (F := F) (A.1 v)).subtype)) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Establish `hv' : v ∈ T ∨ v ∈ Q` using `by simpa using hv`. Rewrite using `[b2 v hv', Nat.card_congr Submodule.topEquiv.toEquiv]`. Conclude with `(hloc v).2 (hnl v hv')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : ∏ v ∈ Q, Nat.card (H0 (ρ'.comp (Dec (F` using `F) (A.1 v)).subtype)) = ∏ v ∈ hT.toFinset ∪ Q, Nat.card (H0 (ρ'.comp (Dec (F := F) (A.1 v)).subtype)) := Finset.prod_subset Finset.subset_union_right fun v hv hv' => by`. Establish `: v ∈ T ∨ v ∈ Q` using `by simpa using hv`. Rewrite using `[hT0 v (this.resolve_right hv')]`. Conclude with `Nat.card_unique`. Establish `hpos : 0 < (∏ v ∈ hfin.toFinset ∪ (hT.toFinset ∪ Q), Nat.card (H0 (ρ.comp (Dec (F` using `F) (A.1 v)).subtype))) * Nat.card W ^ InfinitePlace.nrComplexPlaces F := mul_pos (Finset.prod_pos fun v _ => Nat.card_pos) (pow_pos Nat.card_pos _)`.
-
-Rewrite `e` using `[h0, h0', Nat.card_unique (α := (⊥ : Submodule Λ W)), Nat.card_unique (α := (⊥ : Submodule Λ W')), mul_one, mul_one, Finset.prod_union hd (f := fun v => Nat.card (bkCond ρ A l (T ∪ ↑Q) L v)), e1, e2, hcount, ← e3, mul_assoc]`. Use `Nat.eq_of_mul_eq_mul_right hpos (e.trans ?_)` and prove the remaining obligations. Rewrite using `[Finset.prod_union hd]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem order_formula (hPT : PoitouTateTotallyComplex) (hLF : LocalFiniteness) (hLD : LocalTateDuality)
     (hLE : LocalEulerChar) (hGF : GlobalFiniteness) (hGE : GlobalEulerChar)
@@ -179,17 +177,15 @@ theorem order_formula (hPT : PoitouTateTotallyComplex) (hLF : LocalFiniteness) (
 end General
 
 /- English proof (translation)
-Introduce `hPT hLF hLD hLE hGF hGE h4 D N X bkP i s A _ _ _ _ κ Q ρ hS hK hD hNI Y Y' _ _ _ _ _ _ _ _ _ _ β hβ`. Use `haveI : IsCMField D.host.E := D.host.isCMField_hostE`. Use `haveI := hS.2.1`. Establish `hcx : InfinitePlace.nrComplexPlaces D.host.E = D.R.f`. Establish `h1` using `IsTotallyComplex.finrank D.host.E`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Module.finrank ℚ D.host.E = 2 * D.R.f`. Rewrite using `[D.host.finrank_cmField]`. Unfold `Ranks.f Ranks.n`. Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hc, hc', hP, hU⟩` from `GlobalTheory.T.pairing_equivariant_alt D N X bkP i s A κ Q ρ hS hK hD Y Y' β hβ.1`. Establish `hcount` using `GlobalTheory.T.localConditionOrder_aboveL_finiteModules D N X bkP i s A κ Q hS hK (GlobalTheory.LocalSaturation.main hLF hLD hLE h4 D N X bkP i s A κ Q hS) (GlobalTheory.LocalConditionCount.locCount hLF hLD hLE h4 D N X bkP i s A κ Q hS) Y`. Establish `hko : IsOpen ((κ⁻¹).ker : Set (GE N))`. Use `hS.2.2.2.1 using 2` and compare the differences between its conclusion and the goal. Use extensionality with `g`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Use `order_formula (X.l i) (nu X i + 1) hPT hLF hLD hLE hGF hGE (repOn (Tgl i s) κ Y) (repOn ρ κ⁻¹ Y') (vecPair D.R.r β) (show 0 < nu X i + 1 by omega) hc hc' (fun x hx => funext fun c => hβ.2.1 _ fun y' => ?_) (fun y hy => funext fun c => hβ.2.2 _ fun x => ?_) hP N.plOm (Spl i) (Glob …` and prove the remaining obligations. Use `hx (Pi.single c y')` as an intermediate fact. Rewrite `this` using `[vecPair_apply, Finset.sum_eq_single c (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hy (Pi.single c x)` as an intermediate fact. Rewrite `this` using `[vecPair_apply, Finset.sum_eq_single c (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using `using this`. Take `⟨n, hn⟩` from `hS.2.2.2.2.1 g`. Conclude with `⟨n, by rw [MonoidHom.inv_apply, inv_pow, hn, inv_one]⟩`.
-
-Rewrite using `[hcount, hcx, Nat.card_pi, Finset.prod_const, Finset.card_fin, ← pow_mul, mul_comm D.R.r]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orderFormula : PoitouTateTotallyComplex → LocalFiniteness → LocalTateDuality → LocalEulerChar → GlobalFiniteness → GlobalEulerChar → Gen.ArchimedeanSignatureMatching → ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i), ∀ (A : Type) [CommRing A] [IsLocalRing A] [Finite A] [Algebra (X.O0 i) A] (κ : GE N →* Aˣ) (Q : Finset (PlE D.host)) (ρ : GE N →* GL (Fin D.R.r) (X.O0 i)), Setup bkP i s κ Q → Kills i A → IsDual i s ρ → NoInvDual i κ ρ → OrderFormula bkP i s κ ρ Q := by
   intro hPT hLF hLD hLE hGF hGE h4 D N X bkP i s A _ _ _ _ κ Q ρ hS hK hD hNI Y Y' _ _ _ _ _ _ _ _ _ _ β hβ

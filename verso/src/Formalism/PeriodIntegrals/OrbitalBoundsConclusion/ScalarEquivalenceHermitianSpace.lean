@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ScalarEquivalenceGenera
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.ScalarEquivalenceHermitianSpace.scalarEquiv_of_gen h D u u'`.
+A detailed English derivation is pending.
 -/
 theorem scalar_equiv_of_general (h : PI.ScalPairs.ScalarEquivG) (D : Formalism.BasicNotions.D7) (u u' : D.what₂.Word) :
     PI.ScalPairs.ScalarEquiv D u u' :=

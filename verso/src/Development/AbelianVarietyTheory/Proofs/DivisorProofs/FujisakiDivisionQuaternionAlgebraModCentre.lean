@@ -17,13 +17,13 @@ variable {R : Type*} [CommRing R] {a b : R}
 def ofCoords (v : Fin 4 → R) : ℍ[R, a, b] := ⟨v 0, v 1, v 2, v 3⟩
 
 /- English proof (translation)
-Apply the tactic sequence `ext i; fin_cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coords_ofCoords (v : Fin 4 → R) : coords (ofCoords v : ℍ[R, a, b]) = v := by
   ext i; fin_cases i <;> rfl
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ofCoords_coords (x : ℍ[R, a, b]) : ofCoords (coords x) = x := by
   ext <;> rfl
@@ -35,16 +35,16 @@ def lmat (w : ℍ[R, a, b]) : Matrix (Fin 4) (Fin 4) R :=
      w.imK, -w.imJ, w.imI, w.re]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i; fin_cases i <;>`. Apply the tactic sequence `simp [lmat, coords, Matrix.mulVec, dotProduct, Fin.sum_univ_four] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lmat_mulVec (w v : ℍ[R, a, b]) : lmat w *ᵥ coords v = coords (w * v) := by
   ext i; fin_cases i <;>
     simp [lmat, coords, Matrix.mulVec, dotProduct, Fin.sum_univ_four] <;> ring
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_succ_row_zero]`. Simplify using `[lmat, Fin.sum_univ_succ, Matrix.det_fin_three, nrm]`. Establish `h1 : (Fin.succAbove 1 2 : Fin 4) = 3` using `by decide`. Establish `h2 : (Fin.succAbove 2 2 : Fin 4) = 3` using `by decide`. Establish `h3 : (Fin.succAbove 3 2 : Fin 4) = 2` using `by decide`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[h1, h2, h3]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_lmat (w : ℍ[R, a, b]) : (lmat w).det = nrm w ^ 2 := by
   rw [Matrix.det_succ_row_zero]
@@ -56,25 +56,25 @@ theorem det_lmat (w : ℍ[R, a, b]) : (lmat w).det = nrm w ^ 2 := by
   ring
 
 /- English proof (translation)
-Simplify using `[nrm]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nrm_smul (t : R) (x : ℍ[R, a, b]) : nrm (t • x) = t ^ 2 * nrm x := by
   simp [nrm]; ring
 
 /- English proof (translation)
-Simplify using `[nrm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nrm_star (x : ℍ[R, a, b]) : nrm (star x) = nrm x := by
   simp [nrm]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [nrm, QuaternionAlgebra.algebraMap_eq] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem star_mul_eq (x : ℍ[R, a, b]) : star x * x = algebraMap R ℍ[R, a, b] (nrm x) := by
   ext <;> simp [nrm, QuaternionAlgebra.algebraMap_eq] <;> ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[mul_smul_comm, mul_star_eq, ← hu, Algebra.algebraMap_eq_smul_one, smul_smul, Units.inv_mul, one_smul]`. Rewrite using `[smul_mul_assoc, star_mul_eq, ← hu, Algebra.algebraMap_eq_smul_one, smul_smul, Units.inv_mul, one_smul]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_inv_of_unit (x : ℍ[R, a, b]) (u : Rˣ) (hu : (u : R) = nrm x) :
     x * (((u⁻¹ : Rˣ) : R) • star x) = 1 ∧ (((u⁻¹ : Rˣ) : R) • star x) * x = 1 := by
@@ -87,30 +87,30 @@ theorem mul_inv_of_unit (x : ℍ[R, a, b]) (u : Rˣ) (hu : (u : R) = nrm x) :
 variable [TopologicalSpace R] [IsTopologicalRing R]
 
 /- English proof (translation)
-The claim follows from `(continuous_apply i).comp continuous_induced_dom`.
+A detailed English derivation is pending.
 -/
 theorem continuous_coord (i : Fin 4) : Continuous fun x : ℍ[R, a, b] => coords x i :=
   (continuous_apply i).comp continuous_induced_dom
 
 /- English proof (translation)
-The claim follows from `continuous_coord 0`.
+A detailed English derivation is pending.
 -/
 @[fun_prop] theorem continuous_re : Continuous fun x : ℍ[R, a, b] => x.re := continuous_coord 0
 /- English proof (translation)
-The claim follows from `continuous_coord 1`.
+A detailed English derivation is pending.
 -/
 @[fun_prop] theorem continuous_imI : Continuous fun x : ℍ[R, a, b] => x.imI := continuous_coord 1
 /- English proof (translation)
-The claim follows from `continuous_coord 2`.
+A detailed English derivation is pending.
 -/
 @[fun_prop] theorem continuous_imJ : Continuous fun x : ℍ[R, a, b] => x.imJ := continuous_coord 2
 /- English proof (translation)
-The claim follows from `continuous_coord 3`.
+A detailed English derivation is pending.
 -/
 @[fun_prop] theorem continuous_imK : Continuous fun x : ℍ[R, a, b] => x.imK := continuous_coord 3
 
 /- English proof (translation)
-The claim follows from `continuous_induced_rng.2 (by have : (coords ∘ (ofCoords : (Fin 4 → R) → ℍ[R, a, b])) = id := funext coords_ofCoords rw [this]; exact continuous_id)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_ofCoords : Continuous (ofCoords : (Fin 4 → R) → ℍ[R, a, b]) :=
   continuous_induced_rng.2 (by
@@ -118,28 +118,28 @@ theorem continuous_ofCoords : Continuous (ofCoords : (Fin 4 → R) → ℍ[R, a,
     rw [this]; exact continuous_id)
 
 /- English proof (translation)
-Use `continuous_induced_rng.2 (continuous_pi fun i => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [coords, Function.comp_def] <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_star' : Continuous (star : ℍ[R, a, b] → ℍ[R, a, b]) := by
   refine continuous_induced_rng.2 (continuous_pi fun i => ?_)
   fin_cases i <;> simp [coords, Function.comp_def] <;> fun_prop
 
 /- English proof (translation)
-Use `continuous_induced_rng.2 (continuous_pi fun i => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [coords, Function.comp_def] <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_mul' : Continuous fun p : ℍ[R, a, b] × ℍ[R, a, b] => p.1 * p.2 := by
   refine continuous_induced_rng.2 (continuous_pi fun i => ?_)
   fin_cases i <;> simp [coords, Function.comp_def] <;> fun_prop
 
 /- English proof (translation)
-Use `continuous_induced_rng.2 (continuous_pi fun i => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [coords, Function.comp_def] <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_star_mul : Continuous fun p : ℍ[R, a, b] × ℍ[R, a, b] => star p.1 * p.2 := by
   refine continuous_induced_rng.2 (continuous_pi fun i => ?_)
   fin_cases i <;> simp [coords, Function.comp_def] <;> fun_prop
 
 /- English proof (translation)
-Use `continuous_induced_rng.2 (continuous_pi fun i => ?_)` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [coords, Function.comp_def] <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_const_mul' (c : ℍ[R, a, b]) : Continuous fun u : ℍ[R, a, b] => c * u := by
   refine continuous_induced_rng.2 (continuous_pi fun i => ?_)
@@ -152,43 +152,43 @@ namespace GlobalTheory.QSA.FujisakiQ
 variable {F : Type} [Field F] [NumberField F] {a b : F}
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [rat]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rat_mul (x y : ℍ[F, a, b]) : rat (x * y) = rat x * rat y := by
   ext <;> simp [rat]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [rat]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rat_star (x : ℍ[F, a, b]) : rat (star x) = star (rat x) := by
   ext <;> simp [rat]
 
 /- English proof (translation)
-Apply the tactic sequence `ext <;> simp [rat]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rat_one : rat (1 : ℍ[F, a, b]) = 1 := by
   ext <;> simp [rat]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i; fin_cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coords_rat (x : ℍ[F, a, b]) :
     coords (rat x) = fun i => algebraMap F (AF F) (coords x i) := by
   ext i; fin_cases i <;> rfl
 
 /- English proof (translation)
-The claim follows from `mul_inv_of_unit x (Units.mk0 (nrm x) hx) rfl`.
+A detailed English derivation is pending.
 -/
 theorem rat_inv (x : ℍ[F, a, b]) (hx : nrm x ≠ 0) :
     x * ((nrm x)⁻¹ • star x) = 1 ∧ ((nrm x)⁻¹ • star x) * x = 1 :=
   mul_inv_of_unit x (Units.mk0 (nrm x) hx) rfl
 
 /- English proof (translation)
-Establish `hdet : (lmat w).det = ((u ^ 2 : (AF F)ˣ) : AF F)` using `by rw [det_lmat, Units.val_pow_eq_pow_val, hu]`. Take `⟨ξ, hξ0, hξ⟩` from `hB (lmat w) (by rw [hdet]; exact Units.isUnit _) ⟨u ^ 2, hdet.symm, by rw [map_pow, hmod, one_pow]; simp⟩`. Set `δ : ℍ[F, a, b]` to `ofCoords ξ`. Use `⟨δ, fun h => hξ0 ?_, ⟨lmat w *ᵥ coords (rat δ), ?_, ?_⟩⟩` and prove the remaining obligations. Establish `h0` using `hdiv _ h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `i`. Use `congrArg (fun x => coords x i) h0` as an intermediate fact. Simplify using `only [δ, coords_ofCoords] at this`. Apply the tactic sequence `rw [this]; fin_cases i <;> rfl`. Rewrite using `[coords_rat, coords_ofCoords]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hξ`. Rewrite using `[lmat_mulVec, ofCoords_coords]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rat_mem (B : Set (Fin 4 → AF F))
     (hB : ∀ g : Matrix (Fin 4) (Fin 4) (AF F), IsUnit g.det → (∃ u : (AF F)ˣ, (u : AF F) = g.det ∧
@@ -218,33 +218,31 @@ namespace GlobalTheory.QSA.FujisakiQ
 open GroundTheory.Global.IdeleGroup in
 
 /- English proof (translation)
-Introduce `F _ _ a b _ _ hdiv`. Take `⟨B, hBc, hB⟩` from `GlobalTheory.T.adelic_minkowski_exists_short_rational_vector F 4 (by norm_num)`. Take `⟨B', hB'⟩ : ∃ B' : Set (DA F a b), B' = ofCoords '' B` from `⟨_, rfl⟩`. Establish `hB'c : IsCompact B'` using `hB' ▸ hBc.image continuous_ofCoords`. Take `⟨S, hS⟩ : ∃ S : Set (DA F a b), S = (fun p : DA F a b × DA F a b => star p.1 * p.2) '' (B' ×ˢ B')` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hSc : IsCompact S` using `hS ▸ (hB'c.prod hB'c).image continuous_star_mul`. Take `⟨Z, hZ⟩ : ∃ Z : Set ℍ[F, a, b], Z = {γ | rat γ ∈ S}` from `⟨_, rfl⟩`. Establish `hZf : Z.Finite`. Establish `hT : (Set.pi Set.univ (fun i : Fin 4 => {k : F | algebraMap F (AF F) k ∈ (fun y : DA F a b => coords y i) '' S})).Finite` using `Set.Finite.pi fun i => GroundTheory.Automorphic.Reduction.finite_setOf_algebraMap_mem (hSc.image (continuous_coord i))`. Use `(hT.image (ofCoords : (Fin 4 → F) → ℍ[F, a, b])).subset fun γ hγ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hγ` using `[hZ]`. Use `⟨coords γ, fun i _ => ⟨rat γ, hγ, ?_⟩, ofCoords_coords γ⟩` and prove the remaining obligations. Use `show coords (rat γ) i = _`. Rewrite using `[coords_rat]`. Take `⟨C, hC⟩ : ∃ C : Set (DA F a b), C = B' ∪ ⋃ γ ∈ Z, (fun u => rat ((nrm γ)⁻¹ • star γ) * u) '' (star '' B')` from `⟨_, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hCc : IsCompact C` using `hC ▸ hB'c.union (hZf.isCompact_biUnion fun γ _ => (hB'c.image continuous_star').image (continuous_const_mul' _))`. Use `⟨C, hCc, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨uy, huy⟩` from `hy`. Take `⟨l, hl⟩` from `ideleModule_surjective (K := F) ⟨Real.sqrt (ideleModule F uy : ℝ), Real.sqrt_pos.2 (ideleModule F uy).2⟩`. Take `⟨uz, huz⟩ : ∃ uz : (AF F)ˣ, uz = l⁻¹ ^ 2 * uy` from `⟨_, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩ : ∃ z : DA F a b, z = ((l⁻¹ : (AF F)ˣ) : AF F) • y` from `⟨_, rfl⟩`. Establish `hnz : (uz : AF F) = nrm z`. Rewrite using `[hz, nrm_smul, ← huy, huz, Units.val_mul, Units.val_pow_eq_pow_val]`. Establish `hmod : ideleModule F uz = 1`. Establish `h : ideleModule F uz * ideleModule F l ^ 2 = ideleModule F uy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, ← map_mul]`. Use `congr 1`. Rewrite using `[huz, mul_comm, ← mul_assoc, ← mul_pow, mul_inv_cancel, one_pow, one_mul]`. Establish `h'` using `congrArg Subtype.val h`. Rewrite `h'` using `[hl]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hp` using `(ideleModule F uy).2`. Establish `h'' : (ideleModule F uz : ℝ) * (ideleModule F uy : ℝ) = (ideleModule F uy : ℝ)`. Establish `e : ((⟨Real.sqrt (ideleModule F uy : ℝ), Real.sqrt_pos.2 hp⟩ : {r : ℝ // 0 < r}) ^ 2 : {r : ℝ // 0 < r}).1 = (ideleModule F uy : ℝ)` using `by show Real.sqrt (ideleModule F uy : ℝ) ^ 2 = _`. Conclude with `Real.sq_sqrt hp.le`. Rewrite `h'` using `[Positive.val_mul, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h'`. Conclude with `Subtype.ext (mul_right_cancel₀ hp.ne' (h''.trans (one_mul _).symm))`. Take `⟨zi, hzi_def⟩ : ∃ zi : DA F a b, zi = ((uz⁻¹ : (AF F)ˣ) : AF F) • star z` from `⟨_, rfl⟩`. Establish `hzi` using `mul_inv_of_unit z uz hnz`. Rewrite `hzi` using `[← hzi_def]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hu1 : ((uz⁻¹ : (AF F)ˣ) : AF F) = nrm zi`. Rewrite using `[hzi_def, nrm_smul, nrm_star, ← hnz, sq, mul_assoc, Units.inv_mul, mul_one]`. Take `⟨δ, hδ, hc'⟩` from `exists_rat_mem B hB hdiv zi uz⁻¹ hu1 (by rw [map_inv, hmod, inv_one])`. Take `⟨δ', hδ', hc2⟩` from `exists_rat_mem B hB hdiv (star z) uz ((nrm_star z).trans hnz.symm).symm hmod`. Take `⟨γ, hγdef⟩ : ∃ γ : ℍ[F, a, b], γ = star δ' * δ` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hγ : rat γ = star (star z * rat δ') * (zi * rat δ)`. Rewrite using `[hγdef, rat_mul, rat_star, star_mul, star_star]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc z zi, hzi.1, one_mul]`. Establish `hγZ : γ ∈ Z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[hZ]`. Use `show rat γ ∈ S`. Rewrite using `[hS]`. Conclude with `⟨(star z * rat δ', zi * rat δ), ⟨hB' ▸ hc2, hB' ▸ hc'⟩, hγ.symm⟩`. Establish `hγ0 : nrm γ ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hγdef, nrm_mul, nrm_star]`. Conclude with `mul_ne_zero hδ' hδ`. Establish `hγi` using `rat_inv γ hγ0`. Establish `hd` using `rat_inv δ hδ`. Establish `e1 : (nrm γ)⁻¹ • star γ * star δ' = (nrm δ)⁻¹ • star δ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hd.1, mul_one]`. Use `_ = ((nrm γ)⁻¹ • star γ * γ) * ((nrm δ)⁻¹ • star δ) := by rw [hγdef]; simp only [mul_assoc]`. Use `_ = (nrm δ)⁻¹ • star δ := by rw [hγi.2, one_mul]`. Establish `hc : rat ((nrm γ)⁻¹ • star γ) * star (star z * rat δ') = rat ((nrm δ)⁻¹ • star δ) * z`.
-
-Rewrite using `[star_mul, star_star, ← rat_star, ← mul_assoc, ← rat_mul, e1]`. Use `⟨δ, (l : AF F), rat ((nrm γ)⁻¹ • star γ) * star (star z * rat δ'), zi * rat δ, hδ, l.isUnit, hC ▸ Or.inr (Set.mem_biUnion hγZ ⟨_, ⟨_, hB' ▸ hc2, rfl⟩, rfl⟩), hC ▸ Or.inl (hB' ▸ hc'), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, ← hγ, ← rat_mul, hγi.2, rat_one]`. Rewrite using `[hc, ← mul_assoc, mul_assoc zi, ← rat_mul, hd.1, rat_one, mul_one, hzi.2]`. Rewrite using `[hc, ← mul_assoc, ← rat_mul, hd.1, rat_one, one_mul, hz, smul_smul, Units.mul_inv, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fujisaki_mod_centre : ∀ (F : Type) [Field F] [NumberField F] (a b : F), a ≠ 0 → b ≠ 0 → (∀ x : ℍ[F, a, b], nrm x = 0 → x = 0) → ∃ C : Set (DA F a b), IsCompact C ∧ ∀ y : DA F a b, IsUnit (nrm y) → ∃ (δ : ℍ[F, a, b]) (l : AF F) (c c' : DA F a b), nrm δ ≠ 0 ∧ IsUnit l ∧ c ∈ C ∧ c' ∈ C ∧ c * c' = 1 ∧ c' * c = 1 ∧ y = l • (rat δ * c) := by
   intro F _ _ a b _ _ hdiv

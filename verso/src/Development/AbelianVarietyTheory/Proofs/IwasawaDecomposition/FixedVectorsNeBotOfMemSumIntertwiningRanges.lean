@@ -4,31 +4,27 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsIrredu
 namespace GlobalTheory.UnrLoc
 
 /- English proof (translation)
-Introduce `G V X _ _ _ _ _ ι _ σ hσ ρ T K f hf hf0 hfix`. Use `haveI : IsSimpleOrder (Subrepresentation σ) := hσ`. Use `haveI : Fintype ι := Fintype.ofFinite ι`. Set `Y : Finset ι → Submodule ℂ X` to `fun t => ⨆ j ∈ t, LinearMap.range (T j).toLinearMap`. Establish `hYst : ∀ (t : Finset ι) (g : G) (x : X), x ∈ Y t → ρ g x ∈ Y t`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t g x hx`. Establish `hle : Y t ≤ (Y t).comap (ρ g)`. Use `iSup₂_le fun j hj => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[Submodule.mem_comap]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: ρ g ((T j).toLinearMap v) = (T j).toLinearMap (σ g v)`. Simplify using `only [Representation.IntertwiningMap.toLinearMap_apply, Representation.IntertwiningMap.isIntertwining]`. Rewrite using `[this]`. Conclude with `(le_iSup₂ (f := fun j (_ : j ∈ t) => LinearMap.range (T j).toLinearMap) j hj) (LinearMap.mem_range_self _ _)`. Conclude with `hle hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `key : ∀ (t : Finset ι) (x : X), x ∈ Y t → x ≠ 0 → (∀ k ∈ K, ρ k x = x) → GlobalTheory.PRep.fixed σ K ≠ ⊥`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Introduce `x hx hx0 _`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `absurd (by simpa [Y] using hx) hx0`. Consider the case `insert j t hjt ih`. Introduce `x hx hx0 hxfix`. Establish `hx' : x ∈ LinearMap.range (T j).toLinearMap ⊔ Y t`. Simplify `hx` using `[Y, Finset.iSup_insert]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨y, ⟨v, rfl⟩, z, hz, rfl⟩` from `Submodule.mem_sup.1 hx'`. Set `U : Subrepresentation σ` to `⟨(Y t).comap (T j).toLinearMap, fun g w hw => by`. Rewrite `hw`, the goal using `[Submodule.mem_comap]`. Establish `: (T j).toLinearMap (σ g w) = ρ g ((T j).toLinearMap w)`. Simplify using `only [Representation.IntertwiningMap.toLinearMap_apply, Representation.IntertwiningMap.isIntertwining]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `hYst t g _ hw⟩`. Break down `eq_bot_or_eq_top U with hU | hU` into its components or cases. Establish `hU' : (Y t).comap (T j).toLinearMap = ⊥` using `congrArg Subrepresentation.toSubmodule hU`. Establish `hvfix : ∀ k ∈ K, σ k v = v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `k hk`. Establish `hmem : σ k v - v ∈ (Y t).comap (T j).toLinearMap`. Rewrite using `[Submodule.mem_comap, map_sub]`. Establish `h1` using `hxfix k hk`. Establish `h2 : (T j).toLinearMap (σ k v) = ρ k ((T j).toLinearMap v)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Representation.IntertwiningMap.toLinearMap_apply, Representation.IntertwiningMap.isIntertwining]`. Rewrite `h1` using `[map_add]`. Establish `h3 : (T j).toLinearMap (σ k v) - (T j).toLinearMap v = z - ρ k z`. Rewrite using `[h2, sub_eq_sub_iff_add_eq_add, h1, add_comm]`. Rewrite using `[h3]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sub_mem hz (hYst t k z hz)`. Rewrite `hmem` using `[hU']`. Conclude with `sub_eq_zero.1 ((Submodule.mem_bot ℂ).1 hmem)`. Distinguish the cases in `hv : v = 0`. Substitute `hv` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_zero, zero_add] at hx0 hxfix hz ⊢`. Conclude with `ih z hz hx0 hxfix`. Rewrite using `[Submodule.ne_bot_iff]`. Use `⟨v, ?_, hv⟩` and prove the remaining obligations. Introduce `h`.
-
-Simplify using `[hvfix _ h.2]`. Establish `hv : (T j).toLinearMap v ∈ Y t`. Establish `: v ∈ (⊤ : Subrepresentation σ).toSubmodule` using `Submodule.mem_top`. Rewrite `this` using `[← hU]`. Conclude with `this`.
-
-Conclude with `ih _ (add_mem hv hz) hx0 hxfix`. Use `key Finset.univ f ?_ hf0 hfix` and prove the remaining obligations. Simplify `hf` using `[Y]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem fixed_ne_bot_of_mem_iSup_range :
     ∀ {G V X : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup X] [Module ℂ X]

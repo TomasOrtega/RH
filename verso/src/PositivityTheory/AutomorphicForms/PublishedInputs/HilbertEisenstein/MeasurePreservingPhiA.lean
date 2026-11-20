@@ -14,12 +14,12 @@ namespace L6
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-The claim follows from `ω.2.2 a`.
+A detailed English derivation is pending.
 -/
 theorem omega_diagonal (ω : HChar F) (a : Fˣ) : ω.1 (diagonal F a) = 1 := ω.2.2 a
 
 /- English proof (translation)
-Establish `hu : ideleModule F (u : IdeleGroup F) = 1` using `u.2`. Rewrite using `[tau, map_mul, map_mul, ideleModule_diagonal, ideleModule_moduleSection, hu, mul_one, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem module_tau_diag (t : {r : ℝ // 0 < r}) (u : normOneSubgroup F) (a : Fˣ) :
     (ideleModule F (tau t u * diagonal F a) : ℝ) = t := by
@@ -27,7 +27,7 @@ theorem module_tau_diag (t : {r : ℝ // 0 < r}) (u : normOneSubgroup F) (a : F�
   rw [tau, map_mul, map_mul, ideleModule_diagonal, ideleModule_moduleSection, hu, mul_one, mul_one]
 
 /- English proof (translation)
-Establish `he : diagonal F a * moduleSection (w0 F) t * (u : IdeleGroup F) = tau t u * diagonal F a`. Rewrite using `[tau, mul_assoc, mul_comm]`. Rewrite using `[he, module_tau_diag, map_mul, omega_diagonal, mul_one, wt, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem G_unfold (ω : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (Y : Ad F) (ξ : F) (t : {r : ℝ // 0 < r})
     (u : normOneSubgroup F) (a : Fˣ) :
@@ -40,7 +40,7 @@ theorem G_unfold (ω : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (Y : Ad
   rw [he, module_tau_diag, map_mul, omega_diagonal, mul_one, wt, mul_assoc]
 
 /- English proof (translation)
-Repeatedly rewrite using `[G_unfold]`. Rewrite using `[coefK, tsum_mul_right]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tsum_G (ω : HChar F) (c : HeightOneSpectrum (𝓞 F) → ℕ) (Y : Ad F) (ξ : F) (t : {r : ℝ // 0 < r})
     (u : normOneSubgroup F) :
@@ -55,16 +55,16 @@ def phiA (a : Fˣ) (p : {r : ℝ // 0 < r} × normOneSubgroup F) : IdeleGroup F 
   diagonal F a * moduleSection (w0 F) p.1 * (p.2 : IdeleGroup F)
 
 /- English proof (translation)
-The claim follows from `(continuous_const.mul ((continuous_moduleSection (w0 F)).comp continuous_fst)).mul (continuous_subtype_val.comp continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_phiA (a : Fˣ) : Continuous (phiA (F := F) a) :=
   (continuous_const.mul ((continuous_moduleSection (w0 F)).comp continuous_fst)).mul
     (continuous_subtype_val.comp continuous_snd)
 
 /- English proof (translation)
-Establish `h0 : MeasurePreserving (normOneSplitting (w0 F)).toHomeomorph.toMeasurableEquiv (ideleMeasure F) ((normOneMeasure F).prod posRealMeasure)` using `measurePreserving_normOneSplitting (w0 F)`. Establish `h1` using `(MeasurePreserving.symm _ h0).comp (Measure.measurePreserving_swap (μ := posRealMeasure) (ν := normOneMeasure F))`. Establish `h3` using `(measurePreserving_mul_left (ideleMeasure F) (diagonal F a)).comp h1`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `diagonal F a * moduleSection (w0 F) p.1 * (p.2 : IdeleGroup F) = diagonal F a * ((p.2 : IdeleGroup F) * moduleSection (w0 F) p.1)`. Rewrite using `[mul_assoc, mul_comm (moduleSection (w0 F) p.1)]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem measurePreserving_phiA (a : Fˣ) :
     MeasurePreserving (phiA (F := F) a) (posRealMeasure.prod (normOneMeasure F)) (ideleMeasure F) := by
@@ -80,7 +80,7 @@ theorem measurePreserving_phiA (a : Fˣ) :
   rw [mul_assoc, mul_comm (moduleSection (w0 F) p.1)]
 
 /- English proof (translation)
-Establish `h : muE F = (posRealMeasure.prod (normOneMeasure F)).restrict (Set.univ ×ˢ normOneFundamentalDomain F)`. Rewrite using `[← Measure.prod_restrict, Measure.restrict_univ]`. Rewrite using `[h]`. Conclude with `Measure.absolutelyContinuous_of_le Measure.restrict_le_self`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muE_ac : muE F ≪ posRealMeasure.prod (normOneMeasure F) := by
   have h : muE F = (posRealMeasure.prod (normOneMeasure F)).restrict (Set.univ ×ˢ normOneFundamentalDomain F) := by
@@ -89,11 +89,11 @@ theorem muE_ac : muE F ≪ posRealMeasure.prod (normOneMeasure F) := by
   exact Measure.absolutelyContinuous_of_le Measure.restrict_le_self
 
 /- English proof (translation)
-Establish `hm : ∀ a : Fˣ, Measurable fun p => g (phiA a p)` using `fun a => hg.comp (continuous_phiA a).measurable`. Establish `hin : ∀ t : {r : ℝ // 0 < r}, ∫⁻ u in normOneFundamentalDomain F, ∑' a : Fˣ, g (phiA a (t, u)) ∂normOneMeasure F = ∫⁻ u, g (phiA 1 (t, u)) ∂normOneMeasure F`. Introduce `t`. Establish `h𝓕` using `isFundamentalDomain_normOneFundamentalDomain F (normOneMeasure F)`. Set `e : Fˣ ≃ (diagonalNormOne F).op` to `(diagonalNormOneEquiv F).trans (diagonalNormOne F).equivOp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[lintegral_tsum (f := fun a u => g (phiA a (t, u))) (fun a => ((hm a).comp measurable_prodMk_left).aemeasurable), h𝓕.lintegral_eq_tsum'', ← e.tsum_eq]`. Use `tsum_congr fun a => lintegral_congr fun u => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g (phiA a (t, u)) = g (phiA 1 (t, u * diagonalToNormOne F a))`. Simplify using `only [phiA, map_one, one_mul, Subgroup.coe_mul, coe_diagonalToNormOne]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-The two sides agree by associativity and commutativity. Rewrite using `[lintegral_prod _ (Measurable.tsum hm).aemeasurable]`. Repeatedly rewrite using `[hin]`. Rewrite using `[← (measurePreserving_phiA 1).lintegral_comp hg, lintegral_prod _ (hm 1).aemeasurable]`.
+The two sides agree by associativity and commutativity. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lintegral_unfold {g : IdeleGroup F → ℝ≥0∞} (hg : Measurable g) :
     ∫⁻ p, ∑' a : Fˣ, g (phiA a p) ∂(muE F) = ∫⁻ x, g x ∂ideleMeasure F := by
@@ -116,11 +116,9 @@ theorem lintegral_unfold {g : IdeleGroup F → ℝ≥0∞} (hg : Measurable g) :
   rw [← (measurePreserving_phiA 1).lintegral_comp hg, lintegral_prod _ (hm 1).aemeasurable]
 
 /- English proof (translation)
-Use `set G' := hG.1.mk G`. Establish `hG'm : StronglyMeasurable G'` using `hG.1.stronglyMeasurable_mk`. Establish `hGG' : G =ᵐ[ideleMeasure F] G'` using `hG.1.ae_eq_mk`. Establish `hae : ∀ᵐ p ∂(muE F), ∀ a : Fˣ, G (phiA a p) = G' (phiA a p)`. Use `ae_all_iff.2 fun a => muE_ac.ae_le ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(measurePreserving_phiA a).quasiMeasurePreserving.ae_eq_comp hGG'`. Establish `hP' : Integrable (fun p : {r : ℝ // 0 < r} × normOneSubgroup F => ∑' a : Fˣ, G' (phiA a p)) (muE F)`. Use `⟨(Measurable.tsum fun a => hG'm.measurable.comp (continuous_phiA a).measurable).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Unfold `HasFiniteIntegral`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `hP'.congr ?_` and prove the remaining obligations. Use `filter_upwards [hae] with p hp`. Conclude with `tsum_congr fun a => (hp a).symm`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrable_unfold {G : IdeleGroup F → ℂ} (hG : Integrable G (ideleMeasure F)) :
     Integrable (fun p : {r : ℝ // 0 < r} × normOneSubgroup F => ∑' a : Fˣ, G (phiA a p)) (muE F) := by
@@ -146,9 +144,9 @@ end L6
 
 open L6 in
 /- English proof (translation)
-Introduce `F _ _ _ ω c H Y ξ hG`. Use `set G : IdeleGroup F → ℂ := fun τ => kern c Y τ ξ * ((ω.1 τ : ℂˣ) : ℂ)⁻¹ * ((ideleModule F τ : ℝ) : ℂ)`. Establish `hP : ∀ p : {r : ℝ // 0 < r} × normOneSubgroup F, coefK c Y (tau p.1 p.2) ξ * wt ω p.1 p.2 = ∑' a : Fˣ, G (phiA a p)` using `fun p => (tsum_G ω c Y ξ p.1 p.2).symm`. Repeatedly rewrite using `[hP]`. Rewrite using `[integral_prod _ (integrable_unfold hG), integral_ideleMeasure_eq_integral_fundamentalDomain (w0 F) hG]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem sUnfold_statement : SUnfold := by
   intro F _ _ _ ω c H Y ξ hG

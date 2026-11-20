@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.EichlerTau
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.LowUniSplit
 
 /- English proof (translation)
-The claim follows from `PI.MirrorSection₂.mirrorDecomp_of stabPairs eichlerTau lowUniSplit`.
+A detailed English derivation is pending.
 -/
 theorem mirrorDecomp : Formalism.FourierDecayAlt.C2.MirrorDecomp :=
   PI.MirrorSection₂.mirrorDecomp_of stabPairs eichlerTau lowUniSplit

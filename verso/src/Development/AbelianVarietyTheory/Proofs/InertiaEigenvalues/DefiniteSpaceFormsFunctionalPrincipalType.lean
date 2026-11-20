@@ -20,7 +20,7 @@ open GlobalTheory.DownLift
 namespace GlobalTheory.DefiniteType
 
 /- English proof (translation)
-Establish `h1 : f (ι 1 * h * k) = (χ ⟨k, hk⟩ : ℂ) • ρ 1 (f h)` using `hf 1 h ⟨k, hk⟩`. Rewrite `h1` using `[map_one, one_mul, map_one, Module.End.one_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem adForms_mul {G Γ : Type} [Group G] [Group Γ] (ι : Γ →* G) {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (χ : J →* ℂˣ) (f : G → W) (hf : f ∈ Formalism.IndefR.Bridge.AdForms ι ρ J χ)
@@ -29,7 +29,7 @@ theorem adForms_mul {G Γ : Type} [Group G] [Group Γ] (ι : Γ →* G) {W : Typ
   rwa [map_one, one_mul, map_one, Module.End.one_apply] at h1
 
 /- English proof (translation)
-The claim follows from `hκ.2`.
+A detailed English derivation is pending.
 -/
 theorem fin_mem {D : D7} {V : HSp D} (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D))
     (L : LevDat D.host.E ℂ V.rank) (κ : GA D V) (hκ : κ ∈ levG V β (flag1L L)) :
@@ -45,9 +45,9 @@ theorem chi_eq {D : D7} {V : HSp D} (β : GL (Fin V.rank) (Formalism.IndefR.Lev.
   rfl
 
 /- English proof (translation)
-Establish `h3 : c.ρ κ⁻¹ = 1` using `hc.1 _ ((GfC V).inv_mem hκ)`. Establish `h4 : c.ρ (h * κ)⁻¹ = c.ρ h⁻¹`. Rewrite using `[_root_.mul_inv_rev, c.ρ.map_mul, h3, one_mul]`. Establish `h5 : f ((finHom V).rangeRestrict (h * κ)) = z • f ((finHom V).rangeRestrict h)` using `(congrArg f ((finHom V).rangeRestrict.map_mul h κ)).trans hz`. Use `show c.ρ (h * κ)⁻¹ (f ((finHom V).rangeRestrict (h * κ))) = z • c.ρ h⁻¹ (f ((finHom V).rangeRestrict h))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4, h5, map_smul]`.
+A detailed English derivation is pending.
 -/
 theorem ext_mul {D : D7} {V : HSp D} (c : CoefA V) (hc : c.Is) (f : Formalism.IndefR.Bridge.Gf V → c.W) (κ : GA D V) (hκ : κ ∈ GfC V) (h : GA D V)
     (z : ℂ) (hz : f ((finHom V).rangeRestrict h * (finHom V).rangeRestrict κ) = z • f ((finHom V).rangeRestrict h)) :
@@ -61,7 +61,7 @@ theorem ext_mul {D : D7} {V : HSp D} (c : CoefA V) (hc : c.Is) (f : Formalism.In
   rw [h4, h5, map_smul]
 
 /- English proof (translation)
-The claim follows from `ext_mul c hc f κ hκ.1 h _ (chi_eq β L κ (fin_mem β L κ hκ) ▸ adForms_mul (Formalism.IndefR.Bridge.ratF V) c.coef.ρ (levEnv V β L).J (levEnv V β L).χ f hf _ _ (fin_mem β L κ hκ))`.
+A detailed English derivation is pending.
 -/
 theorem ext_mul_lev {D : D7} {V : HSp D} (c : CoefA V) (hc : c.Is) (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D))
     (L : LevDat D.host.E ℂ V.rank) (f : Formalism.IndefR.Bridge.Gf V → c.W)
@@ -72,7 +72,7 @@ theorem ext_mul_lev {D : D7} {V : HSp D} (c : CoefA V) (hc : c.Is) (β : GL (Fin
     adForms_mul (Formalism.IndefR.Bridge.ratF V) c.coef.ρ (levEnv V β L).J (levEnv V β L).χ f hf _ _ (fin_mem β L κ hκ))
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hc i t y l κ hκ h`. Establish `hm` using `(hc.models.HV i t).2.1.le (LinearMap.mem_range_self _ y)`. Establish `h1` using `ext_mul_lev (R.cV i) (hc.models.cV i) (R.βV i) (R.datVt i t) ((R.HV i t).e y) hm κ hκ h`. Conclude with `(congrArg l h1).trans (map_smul l _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasType_extV : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type)
     [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F →

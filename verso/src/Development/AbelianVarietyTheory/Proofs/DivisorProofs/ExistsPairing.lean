@@ -40,13 +40,13 @@ namespace GlobalTheory.UPel.HT.ES.PQuot
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {S : Scheme.{0}} {N : ℕ}
 
 /- English proof (translation)
-Establish `hP` using `o.isLB`. Establish `hQ : (Hecke.lbPow o.P c).IsLB` using `LB.isLB_linComb hP _ _`. Establish `clsPow : GlobalTheory.CechPic.cls (Hecke.lbPow o.P c) hQ = c • GlobalTheory.CechPic.cls o.P hP`. Use `(GlobalTheory.CechPic.cls_linComb hP (K := Fin c) (fun _ => 𝟙 _) (fun _ => 1) hQ).trans ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.CechPic.pull_id, one_smul, Finset.sum_const, Finset.card_univ, Fintype.card_fin]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hadd` using `(GlobalTheory.AbDual.additive_of_cube GlobalTheory.CubeTop.cubeTheorem o.ab o.ab hP o.rig₁ o.rig₂).1`. Establish `evcCls : ∀ {M : LB (o.A ⊗ o.A).left} (hM : M.IsLB) {Y : Over S} (a t : Y ⟶ o.A), GlobalTheory.AbDual.evc hM a t = GlobalTheory.CechPic.pull (lift a t).left (GlobalTheory.CechPic.cls M hM)`. Introduce `M hM Y a t`. Rewrite using `[← GlobalTheory.AbDual.cls_ev hM a t (pull_isLB hM _), GlobalTheory.CechPic.cls_pull hM]`. Establish `evcQ : ∀ {Y : Over S} (a t : Y ⟶ o.A), GlobalTheory.AbDual.evc hQ a t = c • GlobalTheory.AbDual.evc hP a t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `Y a t`. Rewrite using `[evcCls hQ, evcCls hP, clsPow, map_nsmul]`. Establish `hQth : GlobalTheory.AbDual.evc hQ (toUnit o.A ≫ h) (𝟙 o.A) = 0`. Rewrite using `[evcQ, ← evc_pow_left o.ab hP o.rig₁ o.rig₂, ← MonObj.comp_pow, hh, MonObj.comp_one]`. Conclude with `GlobalTheory.AbDual.IsAdditive.evc_one hP hadd _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsw : GlobalTheory.CechPic.cls o.P hP = GlobalTheory.CechPic.cls (GlobalTheory.AbDual.swap o.P) (pull_isLB hP _)` using `(GlobalTheory.CechPic.cls_eq_iff _ _).2 o.symm`. Use `⟨(GlobalTheory.AbDual.triv_ev_iff hQ _ _).2 hQth, (GlobalTheory.AbDual.triv_ev_iff hQ _ _).2 ?_⟩` and prove the remaining obligations. Rewrite using `[evcQ, evcCls hP, hsw, ← evcCls (pull_isLB hP _), GlobalTheory.AbDual.evc_swap hP, ← evcQ]`. Conclude with `hQth`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sections_triv {s : S ⟶ Sp R} (o : Obj b N s) (c : ℕ) (h : 𝟙_ (Over S) ⟶ o.A) (hh : h ^ c = 1) :
     (∃ t : ((Hecke.lbPow o.P c).pull (lift (toUnit o.A ≫ h) (𝟙 o.A)).left).Gen, t.IsGen) ∧
@@ -75,25 +75,19 @@ theorem sections_triv {s : S ⟶ Sp R} (o : Obj b N s) (c : ℕ) (h : 𝟙_ (Ove
   exact hQth
 
 /- English proof (translation)
-Take `⟨A', _, _, ψ, hA', hψ, hgal⟩` from `GlobalTheory.T.exists_abelianScheme_quotient_by_finite_translations S o.A (o.P.pull (lift (𝟙 o.A) (𝟙 o.A)).left) H o.ab (pull_isLB o.isLB _) o.ample hfin hfree`. Establish `hepi : Epi ψ`. Use `GlobalTheory.GaloisCartDesc.epi_of_isGaloisCover hgal` as an intermediate fact. Conclude with `(Over.forget S).epi_of_epi_map this`. Establish `kill : ∀ h ∈ H, h ≫ ψ = 1` using `fun h hh => comp_eq_one_of_transl ψ h (hgal.inv ⟨h, hh⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose actf hactf using fun c' : D.O => GlobalTheory.T.exists_descent_endomorphism_quotient_group_scheme S o.A A' H ψ hψ hgal (o.act.act c') (o.act.hom c') (stab c')`. Set `act' : OActN D.O A'` to `{ act := actf hom := fun c' => (hactf c').1 one := by`. Rewrite using `[← cancel_epi ψ, (hactf 1).2, o.act.one, Category.id_comp, Category.comp_id]`. Use `mul := fun b' c' => by`. Rewrite using `[← cancel_epi ψ, (hactf _).2, o.act.mul, Category.assoc, ← (hactf b').2, ← Category.assoc, ← (hactf c').2, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `add := fun b' c' => by`. Rewrite using `[← cancel_epi ψ, (hactf _).2, o.act.add, mul_comp, comp_mul, (hactf _).2, (hactf _).2] }`. Establish `hcomp : ∀ c' : D.O, o.act.act c' ≫ ψ = ψ ≫ act'.act c'` using `fun c' => ((hactf c').2).symm`. Take `⟨u, hu, hcoc⟩` from `GlobalTheory.T.exists_linearisation_birigidifiedPower_isotropicSections S o.A o.ab o.P o.isLB o.rig₁ o.rig₂ c H (fun h hh => (sections_triv o c h (hpow h hh)).1) (fun h hh => (sections_triv o c h (hpow h hh)).2) hiso`. Establish `hGC` using `GlobalTheory.T.isGaloisCover_prod_sq2_of_isGaloisCover S o.A A' H ψ hψ hgal`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨P₀, hP₀, w₀⟩` from `GlobalTheory.LinDescent.exists_descent_of_isGaloisCover _ _ (sq2 ψ) _ _ (Hecke.lbPow o.P c) hGC (DVR.linComb_isLB _ o.isLB _ _) u hu hcoc`. Take `⟨P', hP', r1, r2, w⟩` from `GlobalTheory.T.exists_birigidified_bundle_of_descent p D R b N S s o A' ψ hψ _ P₀ hP₀ w₀`. Establish `hc1 : 1 ≤ c`. Take `⟨e, rfl⟩` from `hc`. Conclude with `pow_pos (Fact.out : p.Prime).pos e`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hlie, hlieR⟩` from `GlobalTheory.T.harrisTaylor_lie_conditions_of_etale_galois_quotient p D R b N S s o A' act' ψ _ _ hA' hψ hgal hcomp`. Set `o' : Obj b N s` to `{ A := A' ab := hA' act := act' P := P' isLB := hP' rig₁ := r1 rig₂ := r2`. Use symmetry as in `:= GlobalTheory.T.descended_birigidified_bundle_symmetric p D R b N S s o A' ψ _ hA' hψ hgal _ P' hP' w r1 r2`. Use `ample := GlobalTheory.T.relAmple_diagonal_descended_bundle_galois_cover p D R b N S s o A' ψ _ hA' hψ hgal _ hc1 P' hP' w`. Use `kerP := GlobalTheory.T.descendedBundle_kernel_killed_primeToP p D R b N S s o c hc hp H A' ψ hA' hψ hgal hmax P' hP' r1 r2 w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `rosati := GlobalTheory.T.rosati_involution_of_galois_isogeny_descent p D R b N S s o A' act' ψ _ hA' hψ hgal hcomp _ P' hP' w r1 r2`. Use `lie := hlie`. Use `lieRank := hlieR`. Use `eta := fun x => o.eta x ≫ ψ`. Use `eta_add := fun x y => by rw [o.eta_add, mul_comp]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `eta_lin := fun c' x => by show o.eta (c' • x) ≫ ψ = (o.eta x ≫ ψ) ≫ act'.act c'`. Rewrite using `[o.eta_lin, Category.assoc, hcomp, Category.assoc]`. Use `eta_ker := fun x => by rw [o.eta_ker, one_comp]`. Use `geom := GlobalTheory.T.exists_tateSimilitude_quotient_by_pGroup_sections p D R b N S s o c hc H A' ψ hA' hψ hgal hpow act' hcomp P' hP' r1 r2 w }`. Establish `hmk : IsMonHom (𝟙 o.A ^ c)` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.isMonHom_mulA c`.
-
-Take `⟨ψ', hψ'h, hψ'⟩` from `GlobalTheory.T.exists_descent_hom_quotient_galois_group_scheme S o.A A' o.A H ψ hψ hgal (𝟙 o.A ^ c) hmk (fun h hh => by rw [MonObj.comp_pow, Category.comp_id, hpow h hh])`. Use `⟨o', ψ, ⟨hc, hψ, hcomp, fun x => rfl, ⟨w⟩, ψ', hψ'h, hψ', ?_⟩, fun κ _ _ x t => ⟨fun ht => ?_, ?_⟩⟩` and prove the remaining obligations. Use `show ψ' ≫ ψ = 𝟙 A' ^ c`. Rewrite using `[← cancel_epi ψ, ← Category.assoc, hψ', MonObj.pow_comp, MonObj.comp_pow, Category.id_comp, Category.comp_id]`. Establish `ht' : t ≫ ψ = (1 : Over.mk x ⟶ A')` using `ht`.
-
-Establish `e1 : t.left ≫ ψ.left = (1 : Over.mk x ⟶ o.A).left ≫ ψ.left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, ht', MonObj.one_comp]`. Take `⟨h, hh, -⟩` from `hgal.fibre κ (1 : Over.mk x ⟶ o.A).left t.left e1.symm`. Use `⟨h.1, h.2, ?_⟩` and prove the remaining obligations. Establish `e2 : t = (1 : Over.mk x ⟶ o.A) ≫ transl h.1` using `Over.OverMorphism.ext (by rw [Over.comp_left]; exact hh.symm)`.
-
-Rewrite using `[e2, TateTransl.one_comp_transl_pt]`. Introduce and unpack `⟨h, hh, rfl⟩ show (toUnit (Over.mk x) ≫ h) ≫ ψ = (1 : Over.mk x ⟶ A')`. Rewrite using `[Category.assoc, kill h hh, MonObj.comp_one]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_quot {s : S ⟶ Sp R} (o : Obj b N s) (c : ℕ) (hc : ∃ e : ℕ, c = p ^ e) (hp : IsUnit ((p : ℕ) : R))
     (H : Subgroup (𝟙_ (Over S) ⟶ o.A)) (hfin : Finite H)
@@ -175,17 +169,15 @@ theorem exists_quot {s : S ⟶ Sp R} (o : Obj b N s) (c : ℕ) (hc : ∃ e : ℕ
     rw [Category.assoc, kill h hh, MonObj.comp_one]
 
 /- English proof (translation)
-Establish `hcκ : (c : κ) ≠ 0`. Take `⟨e, rfl⟩` from `hc`. Rewrite using `[Nat.cast_pow]`. Conclude with `pow_ne_zero _ hp`. Take `⟨e, he, hl, hr⟩` from `GlobalTheory.T.exists_bimultiplicative_weilPairing_torsion_axes S o.A o.P o.ab o.isLB κ x c hcκ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hG2 : IsAbelianScheme (G2 o.A)` using `AbelianSchemeGerms.isAbelianScheme_tensor o.A o.A o.ab o.ab`. Establish `hinj : Function.Injective (unitOn (R` using `κ)) := by`. Use `Units.map_injective (f := (Scheme.ΓSpecIso (CommRingCat.of κ)).inv.hom.toMonoidHom) ?_` and prove the remaining obligations. Conclude with `(Scheme.ΓSpecIso (CommRingCat.of κ)).symm.commRingCatIsoToRingEquiv.injective`. Establish `hmul : ∀ u v : κˣ, unitOn (u * v) = unitOn u * unitOn v` using `fun u v => map_mul (Units.map _) u v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hone : unitOn (1 : κˣ) = 1` using `map_one (Units.map _)`. Establish `hval : ∀ g g' : Over.mk x ⟶ o.A, g ^ c = 1 → g' ^ c = 1 → Out.WeilIs (G2 o.A) o.P c (lift g 1 : Over.mk x ⟶ G2 o.A) (lift 1 g') (unitOn (e g g'))` using `fun g g' hg hg' => GlobalTheory.BiextPairing.weilIs_of_hecke_lbPow hG2 o.isLB c ((he g g' hg hg' _).2 rfl)`. Establish `hact : ∀ (a : D.O) (g : Over.mk x ⟶ o.A), g ^ c = 1 → (g ≫ o.act.act a) ^ c = 1` using `fun a g hg => by haveI := o.act.hom a`. Rewrite using `[← MonObj.pow_comp, hg, MonObj.one_comp]`. Use `⟨e, he, hl, hr, fun a g g' hg hg' => hinj ?_, fun g g' hg hg' => hinj ?_, fun g hg h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.commutatorPairing_adjoint_eq_of_pullback_iso S o.A o.P o.ab o.isLB _ _ (o.act.hom a) (o.act.hom _) (o.rosati a) c _ g g' _ _ (hval _ _ (hact a g hg) hg') (hval _ _ hg (hact _ g' hg'))`. Establish `h1` using `GlobalTheory.CommPairing.weilIs_symm o.isLB (hval g' g hg' hg)`. Establish `h2` using `GlobalTheory.SwapPairing.weilIs_swap_eq S o.A o.P o.ab o.isLB o.symm c _ g g' _ _ h1 (hval g g' hg hg')`. Rewrite using `[hmul, hone, ← h2]`. Conclude with `inv_mul_cancel _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨e₀, he₀, hker⟩` from `o.kerP`. Establish `h1` using `hker _ g (GlobalTheory.T.lineBundle_slice_trivial_of_weilPairing_one_torsion S o.A o.P o.ab o.isLB o.rig₁ o.rig₂ κ x c hcκ g hg (fun g' hg' => by`. Use `hval g g' hg hg'` as an intermediate fact. Rewrite using `[h g' hg', hone] at this))` and apply the resulting hypothesis. Establish `hco : e₀.Coprime c`.
-
-Take `⟨e, rfl⟩` from `hc`. Conclude with `he₀.pow_right e`. Conclude with `(pow_eq_one_iff_of_coprime hco).1 ⟨h1, hg⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_pairing {s : S ⟶ Sp R} (o : Obj b N s) (c : ℕ) (hc : ∃ e : ℕ, c = p ^ e)
     (κ : Type) [Field κ] [IsAlgClosed κ] (hp : ((p : ℕ) : κ) ≠ 0) (x : Sp κ ⟶ S) :
@@ -233,13 +225,13 @@ theorem exists_pairing {s : S ⟶ Sp R} (o : Obj b N s) (c : ℕ) (hc : ∃ e : 
     exact (pow_eq_one_iff_of_coprime hco).1 ⟨h1, hg⟩
 
 /- English proof (translation)
-Take `⟨g₀, hg₀, rfl⟩` from `(GlobalTheory.T.finite_torsion_and_descent_abelianVariety_algClosed k o.A o.ab c hc).2 κ x g hg`. Use `⟨g₀, hmax g₀ hg₀ fun h hh => ?_, rfl⟩` and prove the remaining obligations. Take `⟨e, he, -, -⟩` from `GlobalTheory.T.exists_bimultiplicative_weilPairing_torsion_axes (Sp k) o.A o.P o.ab o.isLB k (𝟙 _) c hc`. Establish `hG2 : IsAbelianScheme (G2 o.A)` using `AbelianSchemeGerms.isAbelianScheme_tensor o.A o.A o.ab o.ab`. Establish `hQ : (Hecke.lbPow o.P c).IsLB` using `LB.isLB_linComb o.isLB _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, hu⟩ : ∃ u : Γ((𝟙_ (Over (Sp k))).left, ⊤)ˣ, Out.WeilIs (G2 o.A) (Hecke.lbPow o.P c) 1 (lift g₀ 1 : 𝟙_ (Over (Sp k)) ⟶ G2 o.A) (lift 1 h) u` from `⟨_, (he g₀ h hg₀ (hpow h hh) _).2 rfl⟩`. Establish `h1` using `GlobalTheory.CommPairing.weilIs_pull GlobalTheory.globalFns_holds hG2 hQ (toUnit (Over.mk x)) hu`. Rewrite `h1` using `[comp_lift, comp_lift, MonObj.comp_one]`. Establish `h2` using `GlobalTheory.CommutatorPairing.weilIs_unique GlobalTheory.globalFns_holds hG2 hQ h1 (ho h hh)`. Establish `hinj : Function.Injective (toUnit (Over.mk x)).left.appTop.hom`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (toUnit (Over.mk x)).left = x` using `by simp`. Rewrite using `[e1]`. Use `haveI : Nontrivial Γ(Sp κ, ⊤) := (Scheme.ΓSpecIso (CommRingCat.of κ)).commRingCatIsoToRingEquiv.toEquiv.nontrivial`. Use `letI : Field Γ(Sp k, ⊤) := ((Scheme.ΓSpecIso (CommRingCat.of k)).commRingCatIsoToRingEquiv.toMulEquiv.isField (Field.toIsField k)).toField`. Conclude with `RingHom.injective x.appTop.hom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hu1 : u = 1` using `Units.map_injective (f := (toUnit (Over.mk x)).left.appTop.hom.toMonoidHom) hinj (h2.trans (map_one _).symm)`. Rewrite `hu` using `[hu1]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem max_geom {k : Type} [Field k] [IsAlgClosed k] {s : Sp k ⟶ Sp R} (o : Obj b N s) (c : ℕ) (hc : (c : k) ≠ 0)
     (H : Subgroup (𝟙_ (Over (Sp k)) ⟶ o.A)) (hpow : ∀ h ∈ H, h ^ c = 1)

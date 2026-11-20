@@ -14,7 +14,7 @@ namespace GlobalTheory.HeisenbergWeightDim
 variable {F : Type} [Field F] {A : Type} [CommGroup A] {E : Type} [AddCommGroup E] [Module F E]
 
 /- English proof (translation)
-The claim follows from `Units.ext (smul_left_injective F hw h)`.
+A detailed English derivation is pending.
 -/
 theorem units_eq_of_smul_eq {x y : Fˣ} {w : E} (hw : w ≠ 0) (h : (x : F) • w = (y : F) • w) :
     x = y :=
@@ -23,7 +23,7 @@ theorem units_eq_of_smul_eq {x y : Fˣ} {w : E} (hw : w ≠ 0) (h : (x : F) • 
 variable [Nontrivial E] {e : A → A → Fˣ} {Φ : A → (E ≃ₗ[F] E)}
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_ne (0 : E)`. Establish `hw : Φ a (Φ b v) ≠ 0` using `by simpa using hv`. Apply `units_eq_of_smul_eq hw` to reduce the goal to its premises. Rewrite using `[Units.val_mul, mul_smul, ← hc b a v, ← hc a b v, Units.val_one, one_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_swap (hc : ∀ a b v, Φ a (Φ b v) = (e a b : F) • Φ b (Φ a v)) (a b : A) :
     e a b * e b a = 1 := by
@@ -33,9 +33,9 @@ theorem comm_swap (hc : ∀ a b v, Φ a (Φ b v) = (e a b : F) • Φ b (Φ a v)
   rw [Units.val_mul, mul_smul, ← hc b a v, ← hc a b v, Units.val_one, one_smul]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_ne (0 : E)`. Establish `hw : Φ b (Φ (a * a') v) ≠ 0` using `by simpa using hv`. Apply `units_eq_of_smul_eq hw` to reduce the goal to its premises. Take `⟨c, h⟩` from `hm a a'`. Rewrite using `[← hc, h, h, hc a' b, map_smul, hc a b, map_smul, Units.val_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem comm_mul_left (hm : ∀ a b, ∃ c : Fˣ, ∀ v, Φ (a * b) v = (c : F) • Φ a (Φ b v))
     (hc : ∀ a b v, Φ a (Φ b v) = (e a b : F) • Φ b (Φ a v)) (a a' b : A) :
@@ -50,7 +50,7 @@ theorem comm_mul_left (hm : ∀ a b, ∃ c : Fˣ, ∀ v, Φ (a * b) v = (c : F) 
   ring
 
 /- English proof (translation)
-Rewrite using `[eq_inv_of_mul_eq_one_left (comm_swap hc a (b * b')), eq_inv_of_mul_eq_one_left (comm_swap hc a b), eq_inv_of_mul_eq_one_left (comm_swap hc a b'), comm_mul_left hm hc, mul_inv]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem comm_mul_right (hm : ∀ a b, ∃ c : Fˣ, ∀ v, Φ (a * b) v = (c : F) • Φ a (Φ b v))
     (hc : ∀ a b v, Φ a (Φ b v) = (e a b : F) • Φ b (Φ a v)) (a b b' : A) :
@@ -60,13 +60,13 @@ theorem comm_mul_right (hm : ∀ a b, ∃ c : Fˣ, ∀ v, Φ (a * b) v = (c : F)
     comm_mul_left hm hc, mul_inv]
 
 /- English proof (translation)
-Set `P : A →* (A →* Fˣ)` to `MonoidHom.mk' (fun a => MonoidHom.mk' (fun b => e b a) (fun b b' => comm_mul_left hm hc b b' a)) (fun a a' => by`. Apply `MonoidHom.ext` to reduce the goal to its premises. Introduce `b`. Conclude with `comm_mul_right hm hc b a a')`. Establish `hinj : Function.Injective P`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[injective_iff_map_eq_one]`. Introduce `a ha`. Apply `hn` to reduce the goal to its premises. Introduce `b`. Establish `h1 : e b a = 1` using `DFunLike.congr_fun ha b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `comm_swap hc a b`. Rewrite `h2` using `[h1, _root_.mul_one]`. Then use the resulting hypothesis. Use `haveI : Finite (A →* Fˣ) := Finite.of_equiv A (CommGroup.monoidHom_mulEquiv_of_hasEnoughRootsOfUnity A F).some.toEquiv.symm`. Establish `hbij : Function.Bijective P` using `hinj.bijective_of_nat_card_le (CommGroup.card_monoidHom_of_hasEnoughRootsOfUnity A F).le`. Take `⟨ψ, hψ⟩` from `MonoidHom.domRestrict_surjective F T χ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `hbij.2 ψ`. Use `⟨a, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[← hψ, ← ha]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_comm_eq [Finite A] [HasEnoughRootsOfUnity F (Monoid.exponent A)]
     (hm : ∀ a b, ∃ c : Fˣ, ∀ v, Φ (a * b) v = (c : F) • Φ a (Φ b v))
@@ -104,23 +104,19 @@ namespace GlobalTheory
 open HeisenbergWeightDim in
 
 /- English proof (translation)
-Introduce `F _ _ A _ _ E _ _ _ e Φ hA hdim hm hc hn T lam hlam Wt hWt`. Establish `hpos : 0 < Nat.card A` using `Nat.card_pos`. Use `haveI : Nontrivial E := by`. Apply `Module.nontrivial_of_finrank_pos (R := F)` to reduce the goal to its premises. Break down `Nat.eq_zero_or_pos (Module.finrank F E) with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hdim` using `[h]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Use `haveI : NeZero ((Nat.card A : ℕ) : F) := ⟨hA⟩`. Use `haveI : NeZero (Nat.card A) := ⟨hpos.ne'⟩`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI h0 : HasEnoughRootsOfUnity F (Nat.card A) := inferInstance`. Use `haveI hAe : HasEnoughRootsOfUnity F (Monoid.exponent A) := h0.of_dvd F Group.exponent_dvd_nat_card`. Use `haveI : HasEnoughRootsOfUnity F (Monoid.exponent T) := hAe.of_dvd F (Monoid.exponent_submonoid_dvd T.toSubmonoid)`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot F (Nat.card A)`. Set `ρ : Representation F T E` to `{ toFun := fun t => (lam t : E →ₗ[F] E) map_one' := by ext v; simp map_mul' := by intro s t; ext v; simp }`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨hfin, hint, -⟩` from `finiteAbelian_weightDecomposition F (Nat.card A) ζ hpos (IsUnit.mk0 _ hA) hζ T (fun t => Subtype.ext (by simp)) E ρ`. Establish `hW : (fun c : T →* Fˣ => ⨅ t, LinearMap.ker (ρ t - (c t : F) • LinearMap.id)) = Wt`. Use function extensionality and compare the values at `c`. Use extensionality with `v`. Rewrite using `[hWt, FiniteAbelianWeights.mem_weightSpace_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite `hint` using `[hW]`. Use `⟨hint.submodule_iSup_eq_top, ?_⟩` and prove the remaining obligations. Establish `hle : ∀ χ ψ, Module.finrank F (Wt χ) ≤ Module.finrank F (Wt ψ)`. Introduce `χ ψ`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `exists_comm_eq hm hc hn T (ψ * χ⁻¹)`. Establish `hmap : (Wt χ).map (Φ a : E →ₗ[F] E) ≤ Wt ψ`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Rewrite using `[hWt]`. Introduce `t`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨c, h⟩` from `hlam t`. Establish `h1` using `(hWt χ v).1 hv t`. Simplify using `only [LinearEquiv.coe_coe]`. Rewrite using `[h, hc, smul_comm, ← map_smul, ← h, h1, map_smul, smul_smul, ha, ← Units.val_mul]`. Simplify using the standard rewrite rules.
-
-Conclude with `(LinearEquiv.finrank_map_eq (Φ a) (Wt χ)).symm.le.trans (Submodule.finrank_mono hmap)`. Introduce `χ`. Use `haveI := Fintype.ofFinite (T →* Fˣ)`. Establish `h1 : Module.finrank F E = ∑ ψ, Module.finrank F (Wt ψ)`. Rewrite using `[← (LinearEquiv.ofBijective (DirectSum.coeLinearMap Wt) hint).finrank_eq, Module.finrank_directSum]`.
-
-Rewrite using `[h1, Finset.sum_congr rfl (fun ψ _ => le_antisymm (hle ψ χ) (hle χ ψ)), Finset.sum_const, Finset.card_univ, ← Nat.card_eq_fintype_card, CommGroup.card_monoidHom_of_hasEnoughRootsOfUnity T F, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heisenberg_weightSpace_finrank :
     ∀ (F : Type) [Field F] [IsAlgClosed F] (A : Type) [CommGroup A] [Finite A] (E : Type) [AddCommGroup E] [Module F E] [FiniteDimensional F E] (e : A → A → Fˣ) (Φ : A → (E ≃ₗ[F] E)), (Nat.card A : F) ≠ 0 → Module.finrank F E ^ 2 = Nat.card A → (∀ a b, ∃ c : Fˣ, ∀ v, Φ (a * b) v = (c : F) • Φ a (Φ b v)) → (∀ a b v, Φ a (Φ b v) = (e a b : F) • Φ b (Φ a v)) → (∀ a, (∀ b, e a b = 1) → a = 1) → ∀ (T : Subgroup A) (lam : T →* (E ≃ₗ[F] E)), (∀ t : T, ∃ c : Fˣ, ∀ v, lam t v = (c : F) • Φ t v) → ∀ Wt : (T →* Fˣ) → Submodule F E, (∀ χ v, v ∈ Wt χ ↔ ∀ t, lam t v = (χ t : F) • v) → (⨆ χ, Wt χ = ⊤) ∧ ∀ χ, Module.finrank F (Wt χ) * Nat.card T = Module.finrank F E := by

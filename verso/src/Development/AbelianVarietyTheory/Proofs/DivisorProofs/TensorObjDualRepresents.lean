@@ -15,7 +15,7 @@ namespace GlobalTheory.HomScheme
 variable {O : Type} [CommRing O] {X : Type} [AddCommGroup X] [Module O X]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul f n => simp [dualTensorHom_apply]`. Consider the case `add z w hz hw => simp [map_add, hz, hw]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem dualTensorHom_lTensor {N N' : Type} [AddCommGroup N] [Module O N] [AddCommGroup N']
     [Module O N'] (g : N →ₗ[O] N') (z : Module.Dual O X ⊗[O] N) (x : X) :
@@ -33,7 +33,7 @@ def homEquiv [Module.Finite O X] [Module.Projective O X] (h : IsTensor H b G a (
   (h.equiv T).symm.trans (dualTensorHomEquiv O X (Pts a T))
 
 /- English proof (translation)
-Simplify using `only [homEquiv, LinearEquiv.trans_apply]`. Rewrite using `[h.natural_symm]`. Conclude with `dualTensorHom_lTensor _ _ x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homEquiv_pre [Module.Finite O X] [Module.Projective O X]
     (h : IsTensor H b G a (Module.Dual O X)) {T T' : Over S} (u : T' ⟶ T) (y : Pts b T) (x : X) :
@@ -43,17 +43,17 @@ theorem homEquiv_pre [Module.Finite O X] [Module.Projective O X]
   exact dualTensorHom_lTensor _ _ x
 
 /- English proof (translation)
-Set `M` to `Module.Dual O X`. Set `C` to `tensorObj M a`. Set `b` to `tensorAct M a`. Set `h : IsTensor C b B a M` to `isTensor M a`. Set `Φ` to `homEquiv h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `u : X → (C ⟶ B)` to `fun x => (Φ C (Pts.mk b (𝟙 C)) x).hom`. Establish `hnat : ∀ (T : Over S) (c : T ⟶ C) (x : X), (Φ T (Pts.mk b c) x).hom = c ≫ u x`. Introduce `T c x`. Use `congrArg Pts.hom (homEquiv_pre h c (Pts.mk b (𝟙 C)) x)` as an intermediate fact. Rewrite `this` using `[Pts.hom_pre]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← this]`. Use `congr 3`. Use `⟨u, fun x => ?_, fun x y => ?_, fun o x => ?_, fun T f hadd hsmul => ?_⟩` and prove the remaining obligations. Use `isMonHom_of_mul_comp _ fun T p q => ?_` and prove the remaining obligations. Rewrite using `[← hnat, ← hnat, ← hnat, Pts.mk_mul, map_add, LinearMap.add_apply, Pts.hom_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(Φ C _ (x + y)).hom = _`. Rewrite using `[map_add, Pts.hom_add]`. Express the relevant statement in the definitionally equal form `(Φ C _ (o • x)).hom = _`. Rewrite using `[map_smul, Pts.hom_smul]`. Set `F : X →ₗ[O] Pts a T` to `{ toFun := fun x => Pts.mk a (f x) map_add' := fun x y => by rw [hadd]; rfl map_smul' := fun o x => by rw [hsmul]; rfl }`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `⟨((Φ T).symm F).hom, fun x => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[← hnat, Pts.mk_hom, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Establish `: Φ T (Pts.mk b c) = F` using `by ext1 x`. Apply `Pts.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hnat, hc]`. Both sides reduce to the same expression. Rewrite using `[← this, LinearEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tensorObj_dual_represents {S : Scheme.{0}} (B : Over S) [GrpObj B] [IsCommMonObj B]
     {O : Type} [CommRing O] (a : OAct O B) (X : Type) [AddCommGroup X] [Module O X]
@@ -99,7 +99,7 @@ theorem tensorObj_dual_represents {S : Scheme.{0}} (B : Over S) [GrpObj B] [IsCo
       rfl
 
 /- English proof (translation)
-Use `haveI := hB.comm`. Take `⟨u, h1, h2, h3, h4⟩` from `tensorObj_dual_represents B a X`. Conclude with `⟨_, inferInstance, u, (isTensor (Module.Dual O X) a).isAbelianScheme hB, GlobalTheory.T.smoothOfRelativeDimension_tensorObj_dual_finrank_mul S B O a X g hg, h1, h2, h3, h4⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_homObj_relDim (S : Scheme.{0}) (B : Over S) [GrpObj B] (hB : IsAbelianScheme B)
     (g : ℕ) (hg : SmoothOfRelativeDimension g B.hom)

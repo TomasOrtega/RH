@@ -5,7 +5,7 @@ open GroundTheory.PAdicHodge Formalism.Per6 DividedPowers CrystallineSemistableC
 namespace GlobalTheory.CompanionTheory.LatC
 
 /- English proof (translation)
-Introduce `l _ K M h k a`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem iota_algebraMap_OK : ∀ {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} {M : ℕ} (h : LevHyp l K M) (k : ℕ), ∀ a : OK l K, (lev h k).ι (algebraMap (OK l K) (lev h k).A a) = algebraMap K (lev h k).B (a : K) := by
   intro l _ K M h k a

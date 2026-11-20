@@ -14,7 +14,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.DualCon
 
 /- English proof (translation)
-Introduce `R _ A _ g hA hg`. Take `⟨S, B, _, φ, -, hS, hB, hgB, hφ⟩` from `GlobalTheory.AbelianLimit.abelianScheme_descends_to_fg_subring R g A ∅ hA hg`. Establish `h₀ : HasRep B g (𝟙_ _)` using `GlobalTheory.T.hasProperSmoothDualRepresentative_finiteType S B g hB hgB`. Conclude with `(GlobalTheory.T.hasProperSmoothDualRepresentative_grpPullback_iff _ _ _ B A φ hφ g (𝟙_ _)).1.2 (GlobalTheory.T.baseChangeBis _ B _ _ g (toUnit _) h₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasRep_affine : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A →
     SmoothOfRelativeDimension g A.hom → HasRep A g (𝟙_ _) := by

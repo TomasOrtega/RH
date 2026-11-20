@@ -13,11 +13,11 @@ namespace GlobalTheory.PerfdLat.HodgeTateBal
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Set `B` to `Localization.Away a`. Establish `hc : w ∘ₗ u = a • LinearMap.id` using `LinearMap.ext h`. Establish `hs : Function.Surjective (w.baseChange B)` using `fun y => by`. Take `⟨v, hv⟩` from `IsLocalization.Away.algebraMap_isUnit (S := B) a`. Use `⟨u.baseChange B ((v⁻¹ : Bˣ) • y), ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← LinearMap.comp_apply, ← LinearMap.baseChange_comp, hc, LinearMap.baseChange_smul, LinearMap.baseChange_id, LinearMap.smul_apply, LinearMap.id_apply, ← algebraMap_smul B a, ← hv, Units.smul_def, smul_smul, Units.mul_inv, one_smul]`. Establish `hb` using `Module.bijective_of_surjective_of_rankAtStalk_eq hs fun q _ => by`. Rewrite using `[Module.rankAtStalk_baseChange, Module.rankAtStalk_baseChange, hr]`. Use `(injective_iff_map_eq_zero _).2 fun m hm => ?_` and prove the remaining obligations. Establish `h1 : TensorProduct.mk R B M 1 m = 0` using `hb.1 (by simp [hm])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨⟨_, k, rfl⟩, hk⟩` from `(IsLocalizedModule.eq_zero_iff (Submonoid.powers a) _).1 h1`. Establish `h2 : IsSMulRegular M a` using `Module.Flat.isSMulRegular_of_isRegular ((Commute.isRegular_iff (Commute.all a)).2 (isLeftRegular_iff.2 ha))`. Conclude with `(h2.pow k) (hk.trans (smul_zero _).symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem injective_of_comp_eq_smul' {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N]
     [Module R N] [Module.Finite R M] [Module.Flat R M] [Module.Finite R N] [Module.Flat R N]
@@ -41,17 +41,17 @@ theorem injective_of_comp_eq_smul' {R M N : Type} [CommRing R] [AddCommGroup M] 
   exact (h2.pow k) (hk.trans (smul_zero _).symm)
 
 /- English proof (translation)
-Establish `hc : ∀ (n : ℕ) (a : Ainf p S.R), ((phiInv p S.R)^[n] a).coeff 0 = (_root_.frobeniusEquiv (PreTilt S.R p) p).symm^[n] (a.coeff 0)` using `fun n a => by`. Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ← ih]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression.
 
-Establish `hp : ∀ (n : ℕ) (a : Ainf p S.R), (phiInv p S.R)^[n] (a * p) = (phiInv p S.R)^[n] a * p` using `fun n a => by`. Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ih, map_mul, map_natCast]`. Establish `key : ∀ (k : ℕ) (a : Ainf p S.R), (∀ n, fontaineTheta S.R p ((phiInv p S.R)^[n + 1] a) = 0) → a ∈ Ideal.span {(p : Ainf p S.R) ^ k}` using `fun k => by`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `k with`. Consider the case `zero => intro a _`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `a h`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : (_root_.frobeniusEquiv (PreTilt S.R p) p).symm (a.coeff 0) = 0` using `Perfection.ext fun n => by`. Establish `h1` using `mk_fontaineTheta ((phiInv p S.R)^[n + 1] a)`. Rewrite `h1` using `[h, map_zero, hc, PreTilt.coeff_iterate_frobeniusEquiv_symm, zero_add, ← PreTilt.coeff_frobeniusEquiv_symm]`. Conclude with `h1.symm.trans (map_zero _).symm`. Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.1 ((mem_span_p_iff_coeff_zero_eq_zero a).2 ((map_eq_zero_iff _ (RingEquiv.injective _)).1 h0))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, ← Ideal.span_singleton_mul_span_singleton]`. Use `Ideal.mul_mem_mul (ih b fun n => S.reg ?_) (Ideal.mem_span_singleton_self _)` and prove the remaining obligations. Establish `h1` using `h n`. Rewrite `h1` using `[hp, map_mul, map_natCast]`. Simplify `h1` using `[mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components.
 
-Use extensionality with `m`. Simplify using `using (mem_span_p_pow_iff_le_coeff_eq_zero a (m + 1)).1 (key _ a h) m m.lt_succ_self`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_theta_phiInv' (S : CycPerfd p) (a : Ainf p S.R)
     (h : ∀ n, fontaineTheta S.R p ((phiInv p S.R)^[n + 1] a) = 0) : a = 0 := by
@@ -86,7 +86,7 @@ theorem eq_zero_of_theta_phiInv' (S : CycPerfd p) (a : Ainf p S.R)
   simpa using (mem_span_p_pow_iff_le_coeff_eq_zero a (m + 1)).1 (key _ a h) m m.lt_succ_self
 
 /- English proof (translation)
-The claim follows from `IsSMulRegular.of_right_eq_zero_of_smul fun a ha => eq_zero_of_theta_phiInv' S a fun n => by have h : ∀ n, muN S n * (phiInv p S.R)^[n] a = 0 := fun n => by induction n with | zero => exact ha | succ n ih => rw [Function.iterate_succ_apply', ← phiInv_muN, ← map_mul, ih, map_zero] …`.
+A detailed English derivation is pending.
 -/
 theorem isSMulRegular_mu' (S : CycPerfd p) : IsSMulRegular (Ainf p S.R) (Sandwich.mu S.ε) :=
   IsSMulRegular.of_right_eq_zero_of_smul fun a ha => eq_zero_of_theta_phiInv' S a fun n => by
@@ -101,7 +101,7 @@ theorem isSMulRegular_mu' (S : CycPerfd p) : IsSMulRegular (Ainf p S.R) (Sandwic
 variable (D : PrismData p) {S : CycPerfd p}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `lieMap _ H H.bidual.inv (D.lie S H.dual (D.map S H.dual G.dual (dualHom G H f) m)) = lieMap G H f (lieMap _ G G.bidual.inv (D.lie S G.dual m))`. Rewrite using `[D.lie_map, ← LinearMap.comp_apply, ← lieMap_comp, dualHom_dualHom_bidual_inv, lieMap_comp, LinearMap.comp_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem toLie_covMap (G H : PDivGroup p S.R) (f : G ⟶ H) (m : D.Cov G) :
     D.toLie H (D.covMap G H f m) = lieMap G H f (D.toLie G m) := by
@@ -112,9 +112,7 @@ theorem toLie_covMap (G H : PDivGroup p S.R) (f : G ⟶ H) (m : D.Cov G) :
 def lieVal (S : CycPerfd p) : S.R := D.toLie (PDivGroup.mu p S.R) (D.e S) (dlogT p S.R)
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `D.toLie_surjective (PDivGroup.mu p S.R) (muLieGen p S.R)`. Establish `h1 : D.toLie (PDivGroup.mu p S.R) m = fontaineTheta S.R p (D.eCoord S m) • D.toLie _ (D.e S)` using `by conv_lhs => rw [← D.eCoord_smul m]`. Conclude with `map_smulₛₗ _ _ _`. Establish `h2` using `LinearMap.congr_fun (hm.symm.trans h1) (dlogT p S.R)`. Rewrite `h2` using `[muLieGen_dlogT, LinearMap.smul_apply, smul_eq_mul]`.
-
-Conclude with `IsUnit.of_mul_eq_one _ ((mul_comm _ _).trans h2.symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_lieVal (S : CycPerfd p) : IsUnit (lieVal D S) := by
   obtain ⟨m, hm⟩ := D.toLie_surjective (PDivGroup.mu p S.R) (muLieGen p S.R)
@@ -128,7 +126,7 @@ theorem isUnit_lieVal (S : CycPerfd p) : IsUnit (lieVal D S) := by
 variable {G : PDivGroup p S.R} (c : ConstTate (eps S) G)
 
 /- English proof (translation)
-Establish `h1` using `congrArg (D.toLie (PDivGroup.mu p S.R)) (coord_smul_e D c m j)`. Rewrite `h1` using `[map_smulₛₗ, toLie_covMap, lieMap_charHom]`. Establish `h2` using `LinearMap.congr_fun h1 (dlogT p S.R)`. Rewrite `h2` using `[LinearMap.smul_apply, LinearMap.smul_apply, muLieGen_dlogT, smul_eq_mul, smul_eq_mul, mul_one]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_coord_mul (m : D.Cov G) (j : Fin G.height) :
     fontaineTheta S.R p (coord D c m j) * lieVal D S = c.alDual (D.toLie G m) j := by
@@ -139,9 +137,7 @@ theorem theta_coord_mul (m : D.Cov G) (j : Fin G.height) :
   exact h2
 
 /- English proof (translation)
-Establish `h : ∀ i, D.map S G.dual (PDivGroup.mu p S.R) (dualChar G (c.t i)) (D.l S) ∈ D.Fil G` using `fun i => (D.mem_Fil G _).2 ⟨D.map S G.dual (PDivGroup.mu p S.R) (dualChar G (c.t i)) (D.l S), by`. Rewrite using `[← D.map_φ, D.φ_l, map_smul]⟩`. Establish `h1 : inj D c y ∈ D.Fil G`. Rewrite using `[inj_apply]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (h i)`.
-
-Conclude with `LinearMap.mem_ker.1 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toLie_inj (y : Fin G.height → Ainf p S.R) : D.toLie G (inj D c y) = 0 := by
   have h : ∀ i, D.map S G.dual (PDivGroup.mu p S.R) (dualChar G (c.t i)) (D.l S) ∈ D.Fil G := fun i =>
@@ -153,7 +149,7 @@ theorem toLie_inj (y : Fin G.height → Ainf p S.R) : D.toLie G (inj D c y) = 0 
   exact LinearMap.mem_ker.1 h1
 
 /- English proof (translation)
-The claim follows from `injective_of_comp_eq_smul' (funext fun q => by haveI := q.nontrivial rw [D.rank_eq S G.dual q, Module.rankAtStalk_eq_finrank_of_free] simp) (inj D c) (coord D c) (isSMulRegular_mu' S) (coord_inj D c)`.
+A detailed English derivation is pending.
 -/
 theorem coord_injective : Function.Injective (coord D c) :=
   injective_of_comp_eq_smul' (funext fun q => by
@@ -169,17 +165,15 @@ namespace GlobalTheory.PerfdLat
 open HodgeTateBal in
 
 /- English proof (translation)
-Introduce `p _ D S`. Take `⟨v, hv⟩` from `isUnit_lieVal D S`. Use `⟨v⁻¹, fun G c => ?_⟩` and prove the remaining obligations. Establish `hb : ∀ m, b D c m = ((v⁻¹ : (S.R)ˣ) : S.R) • c.alDual (D.toLie G m)` using `fun m => funext fun j => by`. Rewrite using `[Pi.smul_apply, smul_eq_mul, b_apply, ← theta_coord_mul D c m j, ← hv, mul_comm (fontaineTheta S.R p _), ← mul_assoc, Units.inv_mul, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hb, (injective_iff_map_eq_zero _).2 fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨m, rfl⟩` from `D.toLie_surjective G x`. Establish `h0 : ∀ j, coord D c m j ∈ Ideal.span {xi S.ε}` using `fun j => by`. Rewrite using `[← S.ker_eq, RingHom.mem_ker]`. Establish `h1` using `congrFun (hb m) j`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hx, smul_zero]`. Conclude with `h1`. Use `choose y hy using fun j => Ideal.mem_span_singleton'.1 (h0 j)`. Establish `e : Sandwich.mu S.ε = xi S.ε * muN S 1` using `(xiN_mul_muN S 0).symm`. Establish `hc : coord D c (muN S 1 • m) = coord D c (inj D c y)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[coord_inj, map_smul]`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← hy j, e]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : D.toLie G (muN S 1 • m) = 0` using `(coord_injective D c hc).symm ▸ toLie_inj D c y`. Rewrite `h2` using `[map_smulₛₗ, theta_muN]`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Establish `h3` using `LinearMap.congr_fun h2 w`. Rewrite `h3` using `[LinearMap.smul_apply, LinearMap.zero_apply, smul_eq_mul]`.
-
-Conclude with `(isSMulRegular_zeta_sub_one S 0).right_eq_zero_of_smul h3`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem b_eq_unit_smul_alDual : ∀ (p : ℕ) [Fact p.Prime] (D : PrismData p) (S : CycPerfd p), ∃ u : (S.R)ˣ,
     ∀ (G : PDivGroup p S.R) (c : ConstTate (eps S) G),

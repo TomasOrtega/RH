@@ -11,9 +11,7 @@ def Big (eps x : ℝ) : Prop := 4 ≤ x ∧ x ^ 6 ≤ Real.exp (x ^ (eps / 3))
 variable {eps : ℝ} (Fm : FamP eps) {x : ℝ}
 
 /- English proof (translation)
-Apply `GlobalTheory.ShNums.size_rel_at (Fm.L x i) (Fm.sizes x hx1 i)` to reduce the goal to its premises. Rewrite using `[Fm.L_x x i hx1]`. Conclude with `hg.1`. Unfold `Scale.X'`. Rewrite using `[Fm.L_x x i hx1, Fm.L_eps x i]`.
-
-Conclude with `hg.2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem size_at (hx1 : Fm.x1 < x) (i : Fm.Ix x) (hg : Big eps x) :
     ((Fm.D x i).R.k : ℝ) * (Fm.D x i).R.N (Fm.D x i).R.m ≤ (Fm.L x i).Sc / 4 ∧ ((Fm.D x i).R.k : ℝ) * (Fm.L x i).Sc ≤ (Fm.L x i).sc.w'' (Fm.D x i).R.n ∧ ((Fm.D x i).R.m : ℝ) * (((Fm.D x i).R.t : ℝ) + 1) * (Fm.L x i).etaSz ≤ (Fm.L x i).sc.w'' (Fm.D x i).R.n ∧ (Fm.L x i).etaSz ≤ (Fm.L x i).sc.w'' (Fm.D x i).R.n ∧ (Fm.L x i).sc.w'' (Fm.D x i).R.n ≤ (Fm.L x i).sc.b' / (Fm.L x i).sc.x ∧ 4 ≤ (Fm.L x i).sc.x ∧ 2 * (Fm.L x i).sc.b' ≤ (Fm.L x i).sc.b ∧ ((Fm.D x i).R.k : ℝ) * (Fm.L x i).sc.b' ≤ (Fm.L x i).sc.b ∧ 1 ≤ (Fm.L x i).sc.w'' (Fm.D x i).R.n ∧ (Fm.L x i).etaSz + 1 + 3 * (Fm.L x i).Sc ≤ (Fm.L x i).sc.b := by
@@ -23,21 +21,21 @@ theorem size_at (hx1 : Fm.x1 < x) (i : Fm.Ix x) (hg : Big eps x) :
     rw [Fm.L_x x i hx1, Fm.L_eps x i]; exact hg.2
 
 /- English proof (translation)
-Introduce `j hj z`. Take `⟨-, -, -, heta, hw, h4, h2b, -, -, -⟩` from `size_at Fm hx1 i hg`. Establish `P` using `Fm.params x hx1 i`. Generalize the expression as in `Fm.L x i = L at *`. Generalize the expression as in `Fm.D x i = D at *`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hxp : 0 < L.sc.x` using `by linarith`. Establish `hb : 0 < L.sc.b` using `Real.exp_pos _`. Establish `hb' : 0 < L.sc.b'` using `div_pos (mul_pos hxp hb) (Real.exp_pos _)`. Establish `he` using `L.etaSz_pos`. Establish `hq : L.sc.b' / L.sc.x ≤ L.sc.b' / 4` using `div_le_div_of_nonneg_left hb'.le (by norm_num) h4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : 0 < L.sc.b' / L.sc.x` using `div_pos hb' hxp`. Establish `htop : ∀ (τ : D.what₂.Tau) (t : D.host.TT), (D.eTau τ : D.R.GG) = D.R.tau1 t → L.sc.b' ≤ wj D (j + 1) τ ∧ wj D (j + 1) τ ≤ 2 * L.sc.b'`. Introduce `τ t ht`. Take `⟨a1, a2⟩` from `L.win_top (j + 1) (by omega) (by omega) τ t ht`. Establish `a3` using `L.bT_ge t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `a4` using `GlobalTheory.Ggeo.bT_le_five_quarters P t`. Apply the tactic sequence `constructor <;> linarith`. Unfold `wPl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : (D.eTau (tauPl D z) : D.R.GG) ∈ D.host.thickPlaces`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `(L.win_thick (j + 1) (by omega) (by omega) _ h1).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `h2 : (D.eTau (tauPl D z) : D.R.GG) ∈ D.host.topPlaces`. Take `⟨t, ht, e⟩` from `Finset.mem_image.mp h2`. Use `(htop _ ⟨t, ht⟩ e.symm).1` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(L.win_thin (j + 1) (by omega) (by omega) _ ⟨(D.eTau _).2, h2, h1⟩).1`. Distinguish the cases in `h1 : (D.eTau (tauPl D z) : D.R.GG) ∈ D.host.thickPlaces`. Conclude with `(L.win_thick (j + 1) (by omega) (by omega) _ h1).2`. Distinguish the cases in `h2 : (D.eTau (tauPl D z) : D.R.GG) ∈ D.host.topPlaces`.
+Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, ht, e⟩` from `Finset.mem_image.mp h2`. Use `(htop _ ⟨t, ht⟩ e.symm).2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `(L.win_thin (j + 1) (by omega) (by omega) _ ⟨(D.eTau _).2, h2, h1⟩).2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨hz1, hz2⟩`. Use `htop _ ⟨z.2, hz2⟩ ?_` and prove the remaining obligations. Unfold `tauPl`. Rewrite using `[Equiv.apply_symm_apply]`. Simplify using `[plGG, hz1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem windows_at (hx1 : Fm.x1 < x) (i : Fm.Ix x) (hg : Big eps x) : ∀ j < (Fm.D x i).R.m, ∀ (z : Bool × HH (Fm.D x i)), (Fm.L x i).sc.w'' (Fm.D x i).R.n ≤ wPl (Fm.D x i) (j + 1) z ∧ wPl (Fm.D x i) (j + 1) z ≤ (Fm.L x i).sc.b + (Fm.L x i).etaSz + 1 ∧ (IsTopPl (Fm.D x i) z → (Fm.L x i).sc.b' ≤ wPl (Fm.D x i) (j + 1) z ∧ wPl (Fm.D x i) (j + 1) z ≤ 2 * (Fm.L x i).sc.b') := by
   intro j hj z
@@ -83,9 +81,9 @@ theorem windows_at (hx1 : Fm.x1 < x) (i : Fm.Ix x) (hg : Big eps x) : ∀ j < (F
     simp [plGG, hz1]
 
 /- English proof (translation)
-Introduce `u j hj z r hr`. Take `⟨h1, h2⟩` from `GlobalTheory.LongRows.row_bounds (Fm.D x i) u j hj z r hr`. Use `⟨fun hz => ?_, fun _ hr1 hr2 => ?_⟩` and prove the remaining obligations. Take `⟨h3, h4⟩` from `GlobalTheory.LongRows.u_bounds_off (Fm.params x hx i) u _ (GlobalTheory.LongRows.not_mem_topPlaces _ z hz) r hr`. Apply the tactic sequence `constructor <;> linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨h3, h4⟩` from `(Fm.L x i).cloud_u u (tauPl (Fm.D x i) z) ⟨r, hr⟩ hr1 hr2`. Apply the tactic sequence `constructor <;> linarith`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem long_at (hx : Fm.x1 < x) (i : Fm.Ix x) : ∀ (u : (Fm.D x i).what₂.Word), ∀ j < (Fm.D x i).R.m, ∀ (z : Bool × HH (Fm.D x i)), ∀ r < (Fm.D x i).R.k, (¬ IsTopPl (Fm.D x i) z → wPl (Fm.D x i) (j + 1) z - (Fm.D x i).R.N (Fm.D x i).R.m - 1 / 2 < DV.nuRow (Fm.D x i) u (j + 1) (tauPl (Fm.D x i) z) r ∧ DV.nuRow (Fm.D x i) u (j + 1) (tauPl (Fm.D x i) z) r < wPl (Fm.D x i) (j + 1) z + (if r = 0 then 3 * (Fm.L x i).Sc else (Fm.L x i).Sc)) ∧ (IsTopPl (Fm.D x i) z → 1 ≤ r → r + 1 < (Fm.D x i).R.k → wPl (Fm.D x i) (j + 1) z - (Fm.D x i).R.N (Fm.D x i).R.m < DV.nuRow (Fm.D x i) u (j + 1) (tauPl (Fm.D x i) z) r ∧ DV.nuRow (Fm.D x i) u (j + 1) (tauPl (Fm.D x i) z) r < wPl (Fm.D x i) (j + 1) z + (Fm.L x i).Sc) := by
   intro u j hj z r hr
@@ -97,11 +95,11 @@ theorem long_at (hx : Fm.x1 < x) (i : Fm.Ix x) : ∀ (u : (Fm.D x i).what₂.Wor
     constructor <;> linarith
 
 /- English proof (translation)
-Introduce `u j hj z r hk hr`. Use `⟨(RowWeightLemmas.nuRow_pos _ u j hj _ r hr).le, ?_⟩` and prove the remaining obligations. Take `⟨q, s, hq, hs, rfl⟩` from `RowWeightLemmas.block_decomp _ j r hk hr`. Rewrite using `[RowWeightLemmas.nuRow_block _ u j hj _ q s hq hs, (Fm.D x i).hcW_e u]`. Establish `h1` using `(Fm.L x i).be_close (tauPl (Fm.D x i) z) ⟨q, by omega⟩ ⟨j, hj⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `((Fm.D x i).hc (tauPl (Fm.D x i) z)).gap_be ⟨q, by omega⟩`. Establish `h3 : (0 : ℚ) ≤ ((j : ℚ) - q) * (((Fm.D x i).R.t : ℚ) + 1)`. Establish `: (q : ℚ) ≤ j` using `by exact_mod_cast hq.le`. Conclude with `mul_nonneg (by linarith) (by positivity)`. Establish `h4 : (0 : ℚ) ≤ (((Fm.D x i).R.t : ℚ) + 3) / 2` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ h1` and prove the remaining obligations. Use `le_trans ?_ (neg_le_abs _)` and prove the remaining obligations. Rewrite using `[← Rat.cast_neg]`. Conclude with `Rat.cast_le.2 (by linarith)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem block_at (i : Fm.Ix x) : ∀ (u : (Fm.D x i).what₂.Word), ∀ j < (Fm.D x i).R.m, ∀ (z : Bool × HH (Fm.D x i)), ∀ r, (Fm.D x i).R.k ≤ r → r < (Fm.D x i).R.N j → 0 ≤ DV.nuRow (Fm.D x i) u (j + 1) (tauPl (Fm.D x i) z) r ∧ DV.nuRow (Fm.D x i) u (j + 1) (tauPl (Fm.D x i) z) r ≤ (Fm.L x i).etaSz := by
   intro u j hj z r hk hr
@@ -120,7 +118,7 @@ theorem block_at (i : Fm.Ix x) : ∀ (u : (Fm.D x i).what₂.Word), ∀ j < (Fm.
   exact Rat.cast_le.2 (by linarith)
 
 /- English proof (translation)
-Introduce `u j hj z hz`. Establish `h4` using `GlobalTheory.TopRows.eta_le (Fm.params x hx1 i)`. Take `⟨e1, e2, e3, e4⟩` from `GlobalTheory.TopRows.nuRow_tauPl_of_isTopPl (Fm.L x i) u j hj z hz`. Use `⟨e1, e2, e3, e4.trans ?_⟩` and prove the remaining obligations. Rewrite using `[mul_div_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -133,15 +131,15 @@ theorem top_rows_at (hx1 : Fm.x1 < x) (i : Fm.Ix x) : ∀ (u : (Fm.D x i).what�
   linarith
 
 /- English proof (translation)
-Introduce `u j hj τ l hl`. Establish `hS` using `Fm.sizes x hx1 i`. Establish `hsx : (Fm.L x i).sc.x = x` using `Fm.L_x x i hx1`. Establish `h2x : 2 ≤ (Fm.L x i).sc.x` using `by rw [hsx]; exact hx2`. Take `⟨h1j, hmj⟩` from `Finset.mem_Icc.1 hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, hw3⟩` from `GlobalTheory.HCEntries.wj_bounds hS h2x j h1j hmj τ`. Establish `hwe : DV.wSz (Fm.D x i) j τ = wj (Fm.D x i) j τ`. Unfold `DV.wSz wj`. Rewrite using `[dif_pos ⟨h1j, hmj⟩, dif_pos (by omega)]`. Establish `hj'` using `Finset.mem_Icc.1 hj`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨j', rfl⟩ : ∃ j', j = j' + 1` from `⟨j - 1, by omega⟩`. Establish `hl' : l < (Fm.D x i).R.N j'` using `by simpa using hl`. Establish `hjm : j' < (Fm.D x i).R.m` using `by omega`. Establish `hk : 0 < (Fm.D x i).R.k` using `by have := (Fm.D x i).R.m_add_three_le_k; omega`. Use `⟨(RowWeightLemmas.nuRow_pos _ u j' hjm τ l hl').le, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `RowWeightLemmas.nuRow_anti' _ u j' hjm τ l 0 (Nat.zero_le _) hl'`. Establish `h2` using `GlobalTheory.nuRow_zero_le (Fm.D x i) u (j' + 1) τ hk`. Establish `hu : |((((Fm.D x i).hcW u τ).u ⟨0, hk⟩ : ℚ) : ℝ)| ≤ 4 * x * (Fm.L x i).sc.b`. Use `GlobalTheory.HCEntries.u_bound hS (Fm.params x hx1 i) h2x u τ ⟨0, hk⟩` as an intermediate fact. Rewrite `this` using `[hsx]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h3` using `(abs_le.1 hu).2`. Establish `hb : 0 < (Fm.L x i).sc.b` using `Real.exp_pos _`. Establish `hx' : 1 < x` using `Fm.one_lt_family_threshold.trans hx1`. Establish `h4 : (Fm.L x i).sc.b ≤ x * (Fm.L x i).sc.b` using `le_mul_of_one_le_left hb.le hx'.le`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem nuRow_le_at (hx2 : 2 ≤ x) (hx1 : Fm.x1 < x) (i : Fm.Ix x) : ∀ u, ∀ j ∈ SizeData₂.lifts (Fm.D x i), ∀ τ, ∀ l < (Fm.D x i).R.N (j - 1), 0 ≤ DV.nuRow (Fm.D x i) u j τ l ∧ DV.nuRow (Fm.D x i) u j τ l ≤ 10 * x * (Fm.L x i).sc.b := by
   intro u j hj τ l hl
@@ -171,11 +169,11 @@ theorem nuRow_le_at (hx2 : 2 ≤ x) (hx1 : Fm.x1 < x) (i : Fm.Ix x) : ∀ u, ∀
   nlinarith
 
 /- English proof (translation)
-Introduce `u j hj z hz`. Take `⟨a1, a2, a3, -⟩` from `size_at Fm hx1 i hg`. Establish `hk` using `(Fm.D x i).R.m_add_three_le_k`. Rewrite using `[GlobalTheory.nuD_card_eq_sum_nuRow (Fm.D x i) (nuRowOK _) u j hj z]`. Establish `heta` using `(Fm.L x i).etaSz_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `GlobalTheory.ExcessLow.excess_sum _ (Fm.D x i).R.k (j * ((Fm.D x i).R.t + 1)) _ ((Fm.D x i).R.N (Fm.D x i).R.m) (Fm.L x i).Sc (Fm.L x i).etaSz ((Fm.L x i).sc.w'' (Fm.D x i).R.n) (by omega) ?_ (Fm.L x i).Sc_pos.le (fun r hr => (long_at Fm hx1 i u j hj z r hr).1 hz) (fun r hr hr' = …` and prove the remaining obligations. Establish `: 1 ≤ (Fm.D x i).R.N (Fm.D x i).R.m`. Unfold `Ranks.N`. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ a3` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_right _ heta.le` to reduce the goal to its premises. Use `push_cast`. Establish `: (j : ℝ) ≤ (Fm.D x i).R.m` using `by exact_mod_cast hj.le`. Conclude with `mul_le_mul_of_nonneg_right this (by positivity)`.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem excess_at (hx1 : Fm.x1 < x) (i : Fm.Ix x) (hg : Big eps x) : ∀ (u : (Fm.D x i).what₂.Word), ∀ j < (Fm.D x i).R.m, ∀ (z : Bool × HH (Fm.D x i)), ¬ IsTopPl (Fm.D x i) z → 0 ≤ (((nuD (Fm.D x i) u j z).card : ℕ) : ℝ) - (((Fm.D x i).R.k : ℝ) - 1) * wPl (Fm.D x i) (j + 1) z ∧ (((nuD (Fm.D x i) u j z).card : ℕ) : ℝ) - (((Fm.D x i).R.k : ℝ) - 1) * wPl (Fm.D x i) (j + 1) z ≤ 4 * wPl (Fm.D x i) (j + 1) z := by
   intro u j hj z hz
@@ -199,19 +197,19 @@ theorem excess_at (hx1 : Fm.x1 < x) (i : Fm.Ix x) (hg : Big eps x) : ∀ (u : (F
     exact mul_le_mul_of_nonneg_right this (by positivity)
 
 /- English proof (translation)
-Introduce `u j hj z hz`. Take `⟨a1, a2, a3, -, a5, a6, -, -, a9, -⟩` from `size_at Fm hx1 i hg`. Take `⟨b1, -, b3⟩` from `windows_at Fm hx1 i hg j hj z`. Take `⟨b3, -⟩` from `b3 hz`. Establish `c` using `long_at Fm hx1 i u j hj z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, -, d3, d4⟩` from `top_rows_at Fm hx1 i u j hj z hz`. Establish `e` using `block_at Fm i u j hj z`. Generalize the expression as in `Fm.L x i = L at *`. Generalize the expression as in `Fm.D x i = D at *`. Establish `hk : 5 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hN : D.R.N j = D.R.k + j * (D.R.t + 1)` using `by unfold Ranks.N; omega`. Establish `hok` using `nuRowOK D`. Rewrite using `[GlobalTheory.nuD_card_eq_sum_nuRow D hok u j hj z, hok u j hj z 0, if_pos (by omega), hN, GlobalTheory.TopExcess.sum_range_split _ _ _ (by omega)]`. Take `⟨m1, m2⟩` from `GlobalTheory.TopExcess.sum_Ico_bounds (DV.nuRow D u (j + 1) (tauPl D z)) 1 (D.R.k - 1) _ _ (fun r hr1 hr2 => let h := (c r (by omega)).2 hz hr1 (by omega); ⟨h.1.le, h.2.le⟩)`. Take `⟨n1, n2⟩` from `GlobalTheory.TopExcess.sum_Ico_bounds (DV.nuRow D u (j + 1) (tauPl D z)) D.R.k (D.R.k + j * (D.R.t + 1)) _ _ (fun r hr1 hr2 => e r hr1 (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hkc : ((D.R.k - 1 - 1 : ℕ) : ℝ) = (D.R.k : ℝ) - 2`. Rewrite using `[Nat.sub_sub, Nat.cast_sub (by omega)]; norm_num`. Rewrite `m1`, `m2` using `[hkc]`. Rewrite `n1`, `n2` using `[Nat.add_sub_cancel_left]`. Move the coercions through the operations in `at n1 n2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hS` using `L.Sc_pos`. Establish `he` using `L.etaSz_pos`. Establish `hk' : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk`. Establish `hj' : (j : ℝ) ≤ D.R.m` using `by exact_mod_cast hj.le`. Establish `ht : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNm : (0 : ℝ) ≤ D.R.N D.R.m` using `Nat.cast_nonneg _`. Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `hb : 0 < L.sc.b` using `Real.exp_pos _`. Establish `hb' : 0 < L.sc.b'` using `div_pos (mul_pos hx0 hb) (Real.exp_pos _)`. Establish `hq : L.sc.b' / L.sc.x ≤ L.sc.b' / 4` using `div_le_div_of_nonneg_left hb'.le (by norm_num) a6`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbl : (j : ℝ) * ((D.R.t : ℝ) + 1) * L.etaSz ≤ (D.R.m : ℝ) * ((D.R.t : ℝ) + 1) * L.etaSz` using `by gcongr`. Establish `hS1 : L.Sc ≤ (D.R.k : ℝ) * L.Sc` using `le_mul_of_one_le_left hS.le (by linarith)`. Rewrite `d4` using `[mul_div_assoc]`. Apply the tactic sequence `constructor <;> nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem top_excess_at (hx1 : Fm.x1 < x) (i : Fm.Ix x) (hg : Big eps x) : ∀ (u : (Fm.D x i).what₂.Word), ∀ j < (Fm.D x i).R.m, ∀ (z : Bool × HH (Fm.D x i)), IsTopPl (Fm.D x i) z → 0 ≤ (((nuD (Fm.D x i) u j z).card : ℕ) : ℝ) - (((nuD (Fm.D x i) u j z).rowLen 0 : ℕ) : ℝ) - ((((Fm.D x i).R.k : ℝ) - 1) * wPl (Fm.D x i) (j + 1) z - 2 * wPl (Fm.D x i) (j + 1) z) ∧ (((nuD (Fm.D x i) u j z).card : ℕ) : ℝ) - (((nuD (Fm.D x i) u j z).rowLen 0 : ℕ) : ℝ) - ((((Fm.D x i).R.k : ℝ) - 1) * wPl (Fm.D x i) (j + 1) z - 2 * wPl (Fm.D x i) (j + 1) z) ≤ 4 * wPl (Fm.D x i) (j + 1) z := by
   intro u j hj z hz
@@ -253,15 +251,15 @@ theorem top_excess_at (hx1 : Fm.x1 < x) (i : Fm.Ix x) (hg : Big eps x) : ∀ (u 
   constructor <;> nlinarith
 
 /- English proof (translation)
-Introduce `u j hj z hz`. Take `⟨-, -, -, -, -, h4, h2b, -, -, -⟩` from `size_at Fm hx1 i hg`. Take `⟨e1, e2, e3, -⟩` from `top_rows_at Fm hx1 i u j hj z hz`. Take `⟨-, -, hw⟩` from `windows_at Fm hx1 i hg j hj z`. Take `⟨-, hw2⟩` from `hw hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Generalize the expression as in `Fm.L x i = L at *`. Generalize the expression as in `Fm.D x i = D at *`. Establish `hxp : 0 < L.sc.x` using `by linarith`. Establish `hb : 0 < L.sc.b` using `Real.exp_pos _`. Establish `hb' : 0 < L.sc.b'` using `div_pos (mul_pos hxp hb) (Real.exp_pos _)`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : aL L z.2 = L.aT ⟨z.2, hz.2⟩` using `by unfold aL; rw [dif_pos hz.2]`. Establish `hbb : bL L z.2 = L.bT ⟨z.2, hz.2⟩` using `by unfold bL; rw [dif_pos hz.2]`. Establish `a1` using `(L.aT_win ⟨z.2, hz.2⟩).1`. Establish `a2` using `L.bT_ge ⟨z.2, hz.2⟩`. Establish `a3 : 4 * L.sc.b ≤ L.sc.a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Scale.a`. Conclude with `mul_le_mul_of_nonneg_right h4 hb.le`. Establish `hN : 0 < D.R.N j`. Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Ranks.N`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[nuRowOK D u j hj z 0, if_pos hN, e1]`. Rewrite `e3` using `[e2, hbb]`. Rewrite using `[ha]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem two_w_at (hx1 : Fm.x1 < x) (i : Fm.Ix x) (hg : Big eps x) : ∀ (u : (Fm.D x i).what₂.Word), ∀ j < (Fm.D x i).R.m, ∀ (z : Bool × HH (Fm.D x i)), IsTopPl (Fm.D x i) z → 2 * wPl (Fm.D x i) (j + 1) z ≤ (((nuD (Fm.D x i) u j z).rowLen 0 : ℕ) : ℝ) := by
   intro u j hj z hz
@@ -291,19 +289,17 @@ theorem two_w_at (hx1 : Fm.x1 < x) (i : Fm.Ix x) (hg : Big eps x) : ∀ (u : (Fm
   linarith
 
 /- English proof (translation)
-Introduce `u j hj z`. Establish `hr` using `nuRow_le_at Fm (by linarith [hg.1]) hx1 i u (j + 1) (Finset.mem_Icc.2 ⟨by omega, by omega⟩) (tauPl (Fm.D x i) z)`. Simplify using `only [Nat.add_sub_cancel] at hr`. Take `⟨hkN, -, -, -, -, h4, -, -, -, hS⟩` from `size_at Fm hx1 i hg`. Establish `hsx` using `Fm.L_x x i hx1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.nuD_card_eq_sum_nuRow _ (nuRowOK _) u j hj z]`. Establish `hsum` using `Finset.sum_le_card_nsmul (Finset.range ((Fm.D x i).R.N j)) (fun r => DV.nuRow (Fm.D x i) u (j + 1) (tauPl (Fm.D x i) z) r) (10 * x * (Fm.L x i).sc.b) (fun r hr' => (hr r (Finset.mem_range.1 hr')).2)`. Rewrite `hsum` using `[Finset.card_range, nsmul_eq_mul]`. Establish `hNle : ((Fm.D x i).R.N j : ℝ) ≤ (Fm.D x i).R.N (Fm.D x i).R.m`. Establish `: (Fm.D x i).R.N j ≤ (Fm.D x i).R.N (Fm.D x i).R.m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Ranks.N`. Use `Nat.mul_le_mul_right ((Fm.D x i).R.t + 1) hj.le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions. Establish `hk : (1 : ℝ) ≤ (Fm.D x i).R.k`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Fm.D x i).R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 1 ≤ (Fm.D x i).R.k)` after adjusting the coercions. Establish `hN0 : (0 : ℝ) ≤ (Fm.D x i).R.N (Fm.D x i).R.m` using `Nat.cast_nonneg _`. Establish `hNk` using `le_mul_of_one_le_left hN0 hk`. Establish `heta` using `(Fm.L x i).etaSz_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : 0 < (Fm.L x i).sc.b` using `Real.exp_pos _`. Establish `hN : ((Fm.D x i).R.N j : ℝ) ≤ (Fm.L x i).sc.b / 10` using `by linarith`. Rewrite `h4` using `[hsx]`. Establish `hxb : 0 ≤ 10 * x * (Fm.L x i).sc.b` using `by positivity`. Establish `h5` using `mul_le_mul_of_nonneg_right hN hxb`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `ha : (Fm.L x i).sc.a = x * (Fm.L x i).sc.b`. Unfold `Scale.a`. Rewrite using `[hsx]`. Rewrite using `[ha]`. Establish `h6 : x * (Fm.L x i).sc.b ^ 2 ≤ x * (x * (Fm.L x i).sc.b ^ 2)` using `le_mul_of_one_le_left (by positivity) (by linarith)`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem card_at (hx1 : Fm.x1 < x) (i : Fm.Ix x) (hg : Big eps x) : ∀ (u : (Fm.D x i).what₂.Word), ∀ j < (Fm.D x i).R.m, ∀ (z : Bool × HH (Fm.D x i)), (((nuD (Fm.D x i) u j z).card : ℕ) : ℝ) ≤ (Fm.L x i).sc.a ^ 2 := by
   intro u j hj z
@@ -343,21 +339,21 @@ theorem card_at (hx1 : Fm.x1 < x) (i : Fm.Ix x) (hg : Big eps x) : ∀ (u : (Fm.
   nlinarith
 
 /- English proof (translation)
-Establish `hK` using `(Fm.sizes x hx1 i).2.2.1.1`. Establish `hsx` using `Fm.L_x x i hx1`. Establish `he` using `(Fm.L x i).sc.eps_pos`. Establish `he'` using `(Fm.L x i).sc.eps_lt`. Establish `hx0 : (0 : ℝ) < x` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hK` using `[hsx]`. Establish `h4 : x ^ (4 : ℕ) ≤ ((Fm.D x i).R.k : ℝ)`. Use `le_trans ?_ hK` and prove the remaining obligations. Rewrite using `[← Real.rpow_natCast]`. Apply `Real.rpow_le_rpow_of_exponent_le (by linarith)` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Unfold `szTh`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL : (Fm.L x i).sc.L ≤ x`. Unfold `Scale.L`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hsx]`. Combine the equalities or inequalities in the displayed calculation. Establish `hL0 : 0 ≤ (Fm.L x i).sc.L`. Unfold `Scale.L`. Rewrite using `[hsx]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Check the signs of the components of the expression. Establish `hla : Real.log (Fm.L x i).sc.a = Real.log x + (Fm.L x i).sc.L`. Unfold `Scale.a Scale.b`. Rewrite using `[hsx, Real.log_mul hx0.ne' (Real.exp_pos _).ne', Real.log_exp]`. Establish `hlx : Real.log x ≤ x` using `(Real.log_le_sub_one_of_pos hx0).trans (by linarith)`.
+Check the signs of the components of the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlx0 : 0 ≤ Real.log x` using `Real.log_nonneg (by linarith)`. Establish `h5 : 1 ≤ Real.log 5`. Rewrite using `[Real.le_log_iff_exp_le (by norm_num)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hb : Real.logb 5 ((Fm.L x i).sc.a ^ 2) ≤ 4 * x`. Rewrite using `[Real.logb, Real.log_pow, hla]`. Use `push_cast`. Use `(div_le_self (by linarith) h5).trans (by linarith)` and prove the remaining obligations. Establish `h27 : 27 ≤ x ^ 3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `: 27 * x ≤ x ^ 4`. Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem rank_at (hx3 : 3 ≤ x) (hx1 : Fm.x1 < x) (i : Fm.Ix x) :
     2 * Real.logb 5 ((Fm.L x i).sc.a ^ 2) + 2 ≤ ((Fm.D x i).R.k : ℝ) - 1 := by
@@ -406,9 +402,9 @@ theorem rank_at (hx3 : 3 ≤ x) (hx1 : Fm.x1 < x) (i : Fm.Ix x) :
   linarith
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, h4, -, -, hw, -⟩` from `size_at Fm hx1 i hg`. Establish `ha : 0 ≤ (Fm.L x i).sc.a`. Establish `h0 : 0 ≤ (Fm.L x i).sc.x` using `by linarith`. Unfold `Scale.a Scale.b`. Check the signs of the components of the expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 
-Rewrite using `[Scale.X'']`. Conclude with `div_le_self ha hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xa_at (hx1 : Fm.x1 < x) (i : Fm.Ix x) (hg : Big eps x) :
     (Fm.L x i).sc.X'' (Fm.D x i).R.n ≤ (Fm.L x i).sc.a := by
@@ -421,15 +417,15 @@ theorem xa_at (hx1 : Fm.x1 < x) (i : Fm.Ix x) (hg : Big eps x) :
   exact div_le_self ha hw
 
 /- English proof (translation)
-Introduce `u j hj z`. Take `⟨-, hw, -⟩` from `windows_at Fm hx1 i hg j hj z`. Establish `hr` using `long_at Fm hx1 i u j hj z`. Establish `hk : 5 ≤ (Fm.D x i).R.k`. Use `(Fm.D x i).R.m_add_three_le_k` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Fm.D x i).R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hN : (Fm.D x i).R.k ≤ (Fm.D x i).R.N j` using `by unfold Ranks.N; omega`. Establish `hS` using `(Fm.L x i).Sc_pos`. Use `split_ifs with hz`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `nuRowOK (Fm.D x i) u j hj z 1`. Rewrite `e` using `[if_pos (by omega)]`. Use `((hr 1 (by omega)).2 hz le_rfl (by omega)).2` as an intermediate fact. Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e` using `nuRowOK (Fm.D x i) u j hj z 0`. Rewrite `e` using `[if_pos (by omega)]`. Use `((hr 0 (by omega)).1 hz).2` as an intermediate fact. Rewrite `this` using `[if_pos rfl]`. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem cap_width_at (hx1 : Fm.x1 < x) (i : Fm.Ix x) (hg : Big eps x) : ∀ (u : (Fm.D x i).what₂.Word), ∀ j < (Fm.D x i).R.m, ∀ (z : Bool × HH (Fm.D x i)), (if IsTopPl (Fm.D x i) z then (((nuD (Fm.D x i) u j z).rowLen 1 : ℕ) : ℝ) else (((nuD (Fm.D x i) u j z).rowLen 0 : ℕ) : ℝ)) ≤ (Fm.L x i).sc.b + (Fm.L x i).etaSz + 1 + 3 * (Fm.L x i).Sc := by
   intro u j hj z
@@ -455,15 +451,15 @@ theorem cap_width_at (hx1 : Fm.x1 < x) (i : Fm.Ix x) (hg : Big eps x) : ∀ (u :
     linarith
 
 /- English proof (translation)
-Introduce `u j hj z`. Establish `hfill : fill (Fm.Gx x i) (bL (Fm.L x i)) (j + 1) z = wPl (Fm.D x i) (j + 1) z`. Take `⟨w⟩` from `GlobalTheory.nonempty_places_of_record (Fm.D x i)`. Use `(Fm.fills x hx i w).1 (j + 1) ?_ (tauPl _ z) z ?_` and prove the remaining obligations. Simplify using `only [SizeData₂.lifts, Finset.mem_Icc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[tauPl]`. Establish `hk : 5 ≤ (Fm.D x i).R.k`. Use `(Fm.D x i).R.m_add_three_le_k` as an intermediate fact. Use `(Fm.D x i).R.two_le_m` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hS` using `(Fm.L x i).Sc_pos`. Unfold `fillG cG`. Rewrite using `[hfill]`. Use `split_ifs with hz`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.CapBound.row_le (Fm.D x i) u j hj z 1 le_rfl (by omega)`. Take `⟨-, h4⟩` from `(Fm.L x i).cloud_u u (tauPl (Fm.D x i) z) ⟨1, by omega⟩ le_rfl (by show 1 + 1 < _; omega)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `GlobalTheory.CapBound.row_le (Fm.D x i) u j hj z 0 (by omega) (by omega)`. Take `⟨-, h4⟩` from `GlobalTheory.LongRows.u_bounds_off (Fm.params x hx i) u _ (GlobalTheory.LongRows.not_mem_topPlaces _ z hz) 0 (by omega)`.
+Extract witnesses or component facts from the available result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[if_pos rfl]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cap_fill_at (hx : Fm.x1 < x) (i : Fm.Ix x) : ∀ (u : (Fm.D x i).what₂.Word), ∀ j < (Fm.D x i).R.m, ∀ (z : Bool × HH (Fm.D x i)), (if IsTopPl (Fm.D x i) z then (((nuD (Fm.D x i) u j z).rowLen 1 : ℕ) : ℝ) else (((nuD (Fm.D x i) u j z).rowLen 0 : ℕ) : ℝ)) ≤ fillG (Fm.Gx x i) (bL (Fm.L x i)) (j + 1) z + cG (Fm.L x i) := by
   intro u j hj z
@@ -488,19 +484,19 @@ theorem cap_fill_at (hx : Fm.x1 < x) (i : Fm.Ix x) : ∀ (u : (Fm.D x i).what₂
     linarith
 
 /- English proof (translation)
-Introduce `u j hj t ht`. Take `⟨s1, -, -, -, -, h4, -, -, -, s2⟩` from `size_at Fm hx1 i hg`. Establish `hz : IsTopPl (Fm.D x i) (false, t)` using `⟨rfl, ht⟩`. Establish `hk : 5 ≤ (Fm.D x i).R.k`. Use `(Fm.D x i).R.m_add_three_le_k` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Fm.D x i).R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨r1, -⟩` from `(long_at Fm hx1 i u j hj (false, t) 1 (by omega)).2 hz le_rfl (by omega)`. Take `⟨e1, -⟩` from `GlobalTheory.TopRows.nuRow_tauPl_of_isTopPl (Fm.L x i) u j hj (false, t) hz`. Generalize the expression as in `Fm.L x i = L at *`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Fm.D x i = D at *`. Establish `hN : D.R.k ≤ D.R.N j` using `by unfold Ranks.N; omega`. Establish `hk' : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk`. Establish `hb : 0 < L.sc.b` using `Real.exp_pos _`. Establish `ha : aL L t = L.aT ⟨t, ht⟩` using `by unfold aL; rw [dif_pos ht]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1` using `(L.aT_win ⟨t, ht⟩).2`. Establish `a3 : 4 * L.sc.b ≤ L.sc.a`. Unfold `Scale.a`. Conclude with `mul_le_mul_of_nonneg_right h4 hb.le`. Establish `hp : 1 ≤ L.sc.x ^ (Scale.A / 2)` using `Real.one_le_rpow (by linarith) (by unfold Scale.A; norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a4 : L.sc.a / ((D.R.k : ℝ) * L.sc.x ^ (Scale.A / 2)) ≤ L.sc.a / 5` using `div_le_div_of_nonneg_left (by linarith) (by norm_num) (by nlinarith)`. Establish `hka : 0 ≤ kaJ D (j + 1)`. Unfold `kaJ`. Use `push_cast`. Establish `: (0 : ℝ) ≤ (2 * ((j : ℝ) + 1) - 1)` using `by have : (0 : ℝ) ≤ j := Nat.cast_nonneg j; linarith`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Establish `hNm : (D.R.N D.R.m : ℝ) ≤ (D.R.k : ℝ) * D.R.N D.R.m` using `le_mul_of_one_le_left (Nat.cast_nonneg _) (by linarith)`. Establish `he` using `L.etaSz_pos`. Rewrite using `[nuRowOK D u j hj, nuRowOK D u j hj, if_pos (by omega), if_pos (by omega), e1]`. Simplify using `only [ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem gap_at (hx1 : Fm.x1 < x) (i : Fm.Ix x) (hg : Big eps x) : ∀ (u : (Fm.D x i).what₂.Word), ∀ j < (Fm.D x i).R.m, ∀ t ∈ (Fm.D x i).host.TT, (((nuD (Fm.D x i) u j (false, t)).rowLen 0 : ℕ) : ℝ) - (((nuD (Fm.D x i) u j (false, t)).rowLen 1 : ℕ) : ℝ) ≤ 2 * (Fm.L x i).sc.a := by
   intro u j hj t ht
@@ -539,7 +535,7 @@ theorem gap_at (hx1 : Fm.x1 < x) (i : Fm.Ix x) (hg : Big eps x) : ∀ (u : (Fm.D
   linarith
 
 /- English proof (translation)
-Establish `h11` using `Formalism.MainNotions.SizesAt.eleven_le (Fm.sizes x h1 i)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem three_le_split_at (h0 : 0 < eps) (hx : (3 : ℝ) ^ (5 / eps) ≤ x) (h1 : Fm.x1 < x)
     (i : Fm.Ix x) : 3 ≤ (Fm.D x i).host.splitBound := by
@@ -547,23 +543,15 @@ theorem three_le_split_at (h0 : 0 < eps) (hx : (3 : ℝ) ^ (5 / eps) ≤ x) (h1 
   omega
 
 /- English proof (translation)
-Introduce `eps`. Distinguish the cases in `he : 0 < eps`. Take `⟨x0, hx0⟩` from `GlobalTheory.ShNums.pow_six_le_exp he`. Use `⟨max x0 ((3 : ℝ) ^ (5 / eps)), fun Fm x hx hx1 i Ee => ?_⟩` and prove the remaining obligations. Establish `hg : Big eps x` using `hx0 x (le_trans (le_max_left _ _) hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : (3 : ℝ) ^ (5 / eps) ≤ x` using `le_trans (le_max_right _ _) hx`. Establish `hx3 : (3 : ℝ) ≤ x` using `by linarith [hg.1]`. Use `⟨?_, fun u j hj t ht => ?_, three_le_split_at Fm he h3 hx1 i⟩` and prove the remaining obligations. Conclude with `{ wpos := fun j hj z => by`. Establish `h2` using `(windows_at Fm hx1 i hg j hj z).1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, -, -, -, -, hw, -⟩` from `size_at Fm hx1 i hg`. Combine the linear equalities and inequalities to obtain the conclusion. Use `low := fun u j hj z hz => by`. Rewrite using `[GlobalTheory.ShapeRows.ent_size Ee u j hj z]`. Conclude with `excess_at Fm hx1 i hg u j hj z hz`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `top := fun u j hj z hz => by`. Rewrite using `[GlobalTheory.ShapeRows.ent_size Ee u j hj z, GlobalTheory.ShapeRows.ent_row Ee u j hj z]`. Conclude with `top_excess_at Fm hx1 i hg u j hj z hz`. Use `top1 := fun u j hj z hz => by`. Rewrite using `[GlobalTheory.ShapeRows.ent_row Ee u j hj z]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `two_w_at Fm hx1 i hg u j hj z hz`. Use `sizeA := fun u j hj z => by`. Rewrite using `[GlobalTheory.ShapeRows.ent_size Ee u j hj z]`. Conclude with `card_at Fm hx1 i hg u j hj z`. Use `rankA := rank_at Fm hx3 hx1 i`.
-
-Use `xa := ⟨xa_at Fm hx1 i hg, GlobalTheory.scale_one_lt_a _⟩`. Use `capW := fun u j hj z => by`. Rewrite using `[GlobalTheory.ShapeRows.ent_cap Ee u j hj z]`. Conclude with `cap_width_at Fm hx1 i hg u j hj z`. Use `alG := fun u j hj t ht => by`.
-
-Rewrite using `[GlobalTheory.ShapeRows.ent_row Ee u j hj, GlobalTheory.ShapeRows.ent_row Ee u j hj]`. Conclude with `GlobalTheory.AlTop.al_le_rowLen_sub (Fm.L x i) u j hj t ht`. Use `capG := fun u j hj z => by`. Rewrite using `[GlobalTheory.ShapeRows.ent_cap Ee u j hj z]`. Conclude with `cap_fill_at Fm hx1 i u j hj z }`.
-
-Rewrite using `[GlobalTheory.ShapeRows.ent_row Ee u j hj, GlobalTheory.ShapeRows.ent_row Ee u j hj]`. Conclude with `gap_at Fm hx1 i hg u j hj t ht`. Use `⟨0, fun Fm x _ _ i Ee => absurd ?_ he⟩` and prove the remaining obligations. Take `⟨i0⟩` from `Fm.Ix_zero`. Rewrite using `[← Fm.L_eps 0 i0]`.
-
-Conclude with `(Fm.L 0 i0).sc.eps_pos`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shape_uniform : ∀ eps : ℝ, ∃ x0 : ℝ, ∀ (Fm : FamP eps), ∀ x ≥ x0, Fm.x1 < x → ∀ (i : Fm.Ix x) (Ee : OrbitPlaces.Ent (Fm.D x i)), OrbitPlaces.Shape (Fm.D x i) (Fm.L x i) (Fm.Gx x i) Ee ∧ (∀ u, ∀ j < (Fm.D x i).R.m, ∀ t ∈ (Fm.D x i).host.TT, Ee.row u j (false, t) 0 - Ee.row u j (false, t) 1 ≤ 2 * (Fm.L x i).sc.a) ∧ 3 ≤ (Fm.D x i).host.splitBound := by
   intro eps

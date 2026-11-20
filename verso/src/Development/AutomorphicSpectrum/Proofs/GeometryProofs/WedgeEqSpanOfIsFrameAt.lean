@@ -6,23 +6,21 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Introduce `X Ω _ ξ E _ _ L r b p h`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨v, hv, rfl⟩`. Establish `hc : ∀ i, ∃ c : Fin r → regAt ξ p, ∑ j, c j • b j = v i` using `fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `hv i` as an intermediate fact. Rewrite `this` using `[h.2]`. Conclude with `(Submodule.mem_span_range_iff_exists_fun _).1 this`. Use `choose c hc using hc`. Establish `hv' : v = fun i => ∑ j, ((c i j : Ω)) • b j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[← hc i]`. Both sides reduce to the same expression. Establish `hsum : exteriorPower.ιMulti Ω r v = ∑ f : Fin r → Fin r, (∏ i, c i (f i)) • exteriorPower.ιMulti Ω r (fun i => b (f i))`. Rewrite using `[hv']`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(exteriorPower.ιMulti Ω r (M := E)).toMultilinearMap.map_sum (fun i j => ((c i j : Ω)) • b j)` as an intermediate fact. Use `this.trans (Finset.sum_congr rfl fun f _ => ?_)` and prove the remaining obligations. Establish `h2` using `(exteriorPower.ιMulti Ω r (M := E)).toMultilinearMap.map_smul_univ (fun i => (c i (f i) : Ω)) (fun i => b (f i))`. Use `h2.trans ?_` and prove the remaining obligations. Establish `h3 : ((∏ i, c i (f i) : regAt ξ p) : Ω) = ∏ i, (c i (f i) : Ω)` using `by simp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← h3]`. Both sides reduce to the same expression. Rewrite using `[SetLike.mem_coe, hsum]`. Use `Submodule.sum_mem _ fun f _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Distinguish the cases in `hf : Function.Injective f`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `σ : Equiv.Perm (Fin r)` to `Equiv.ofBijective f (Finite.injective_iff_bijective.1 hf)`. Establish `h4` using `(exteriorPower.ιMulti Ω r (M := E)).map_perm b σ`. Establish `h5 : (fun i => b (f i)) = b ∘ σ` using `rfl`. Rewrite using `[h5, h4]`. Establish `hm` using `Submodule.mem_span_singleton_self (R := regAt ξ p) (exteriorPower.ιMulti Ω r b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `Int.units_eq_one_or (Equiv.Perm.sign σ) with hs | hs` into its components or cases. Rewrite using `[hs, one_smul]`. Conclude with `hm`. Rewrite using `[hs, Units.neg_smul, one_smul]`. Conclude with `neg_mem hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `h6 : ¬ Function.Injective (fun i => b (f i))` using `fun hh => hf (Function.Injective.of_comp (f := b) hh)`. Rewrite using `[(exteriorPower.ιMulti Ω r (M := E)).map_eq_zero_of_not_injective _ h6]`. Conclude with `zero_mem _`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `w rfl`.
-
-Use `⟨b, fun i => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[h.2]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Lat.wedge_eq_span_of_isFrameAt :
     ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (E : Type) [AddCommGroup E]

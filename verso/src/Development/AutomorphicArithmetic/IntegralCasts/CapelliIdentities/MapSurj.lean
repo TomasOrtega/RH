@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `A E _ _ _ E' _ _ f hf S _ _ x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `tmul s e`. Take `⟨e', rfl⟩` from `hf e`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨TensorProduct.tmul A s e', by simp⟩`. Consider the case `add x y hx hy`. Take `⟨x', rfl⟩` from `hx`. Take `⟨y', rfl⟩` from `hy`. Conclude with `⟨x' + y', map_add _ _ _⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Reformulated.B.Qk2.map_surj :
     ∀ {A E : Type} [inst : CommRing A] [inst_1 : Ring E]

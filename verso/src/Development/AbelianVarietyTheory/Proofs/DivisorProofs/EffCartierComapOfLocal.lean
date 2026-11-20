@@ -16,15 +16,13 @@ namespace GlobalTheory.FactorialLocus
 open ReciprocityTheory.AnForm.R
 
 /- English proof (translation)
-Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Set `U' : X.affineOpens` to `⟨U, hU⟩`. Establish `hx : x ∈ U'.1` using `hxU`. Rewrite `ht` using `[ds_stalkId_eq_map G U' x hx]`. Use `haveI : IsNoetherianRing Γ(X, U) := IsLocallyNoetherian.component_noetherian U'`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure.
 
-Use `letI : Algebra Γ(X, U) (X.presheaf.stalk x) := X.presheaf.algebra_section_stalk ⟨x, hx⟩`. Use `haveI := hU.isLocalization_stalk ⟨x, hx⟩`. Establish `halg : algebraMap Γ(X, U) (X.presheaf.stalk x) = (X.presheaf.germ U x hx).hom` using `rfl`. Rewrite `ht` using `[Ideal.map]`. Take `⟨y, ⟨a, haI, rfl⟩, c, hc⟩` from `ds_gen_of_span _ t htnzd ht`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmap : (G.ideal U').map (algebraMap Γ(X, U) (X.presheaf.stalk x)) = Ideal.span {algebraMap Γ(X, U) (X.presheaf.stalk x) a}`. Rewrite using `[halg, Ideal.map, ht, hc, Ideal.span_singleton_mul_left_unit c.isUnit]`. Establish `hnzd : algebraMap Γ(X, U) (X.presheaf.stalk x) a ∈ nonZeroDivisors (X.presheaf.stalk x)`. Rewrite using `[halg, hc]`. Conclude with `mul_mem (IsUnit.mem_nonZeroDivisors c.isUnit) htnzd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨σ, hσP, hT⟩` from `ds_spread (hU.primeIdealOf ⟨x, hx⟩).asIdeal (G.ideal U') a haI hmap hnzd`. Use `haveI := hU.isLocalization_basicOpen σ`. Take `⟨h1, h2⟩` from `hT Γ(X, X.basicOpen σ)`. Use `⟨X.affineBasicOpen (U := U') σ, algebraMap Γ(X, U) Γ(X, X.basicOpen σ) a, ?_, h2, ?_⟩` and prove the remaining obligations. Use `show x ∈ X.basicOpen σ`.
-
-Rewrite using `[X.mem_basicOpen σ x hx]`. Conclude with `(IsLocalization.AtPrime.isUnit_to_map_iff (X.presheaf.stalk x) (hU.primeIdealOf ⟨x, hx⟩).asIdeal σ).2 hσP`. Rewrite using `[← G.map_ideal_basicOpen U' σ]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_affine_gen {X : Scheme.{0}} [IsLocallyNoetherian X] (G : X.IdealSheafData) (x : X)
     (t : X.presheaf.stalk x) (htnzd : t ∈ nonZeroDivisors (X.presheaf.stalk x))
@@ -60,7 +58,7 @@ theorem exists_affine_gen {X : Scheme.{0}} [IsLocallyNoetherian X] (G : X.IdealS
     exact h1
 
 /- English proof (translation)
-Use `⟨X.presheaf.germ U.1 y hy f, ?_, ?_⟩` and prove the remaining obligations. Use `letI : Algebra Γ(X, U.1) (X.presheaf.stalk y) := X.presheaf.algebra_section_stalk ⟨y, hy⟩ haveI := U.2.isLocalization_stalk ⟨y, hy⟩`. Conclude with `algebraMap_mem_nonZeroDivisors_of_isLocalization (U.2.primeIdealOf ⟨y, hy⟩).asIdeal.primeCompl hf`. Rewrite using `[ds_stalkId_eq_map G U y hy, hG, Ideal.map_span, Set.image_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stalkId_eq_span_of_mem {X : Scheme.{0}} (G : X.IdealSheafData) (U : X.affineOpens)
     (f : Γ(X, U.1)) (hf : f ∈ nonZeroDivisors Γ(X, U.1)) (hG : G.ideal U = Ideal.span {f})
@@ -74,13 +72,13 @@ theorem stalkId_eq_span_of_mem {X : Scheme.{0}} (G : X.IdealSheafData) (U : X.af
   · rw [ds_stalkId_eq_map G U y hy, hG, Ideal.map_span, Set.image_singleton]
 
 /- English proof (translation)
-Introduce `x`. Take `⟨U, h, hxU, hh, hU⟩` from `hI x`. Take `⟨r, hrle, hxr⟩` from `U.2.exists_basicOpen_le (V := f.opensRange) ⟨f x, ⟨x, rfl⟩⟩ hxU`. Establish `himg : f ''ᵁ (f ⁻¹ᵁ Y.basicOpen r) = Y.basicOpen r`. Rewrite using `[f.image_preimage_eq_opensRange_inf, inf_eq_right.2 hrle]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hUX : IsAffineOpen (f ⁻¹ᵁ Y.basicOpen r)`. Rewrite using `[← f.isAffineOpen_iff_of_isOpenImmersion, himg]`. Conclude with `U.2.basicOpen r`. Establish `hle : f ''ᵁ (f ⁻¹ᵁ Y.basicOpen r) ≤ U.1` using `himg.le.trans (Y.basicOpen_le r)`. Establish `hnzd : ∀ (O : Y.Opens) (hO : O = Y.basicOpen r) (hOU : O ≤ U.1), Y.presheaf.map (homOfLE hOU).op h ∈ nonZeroDivisors Γ(Y, O)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `O rfl hOU`. Use `U.2.isLocalization_basicOpen r` as an intermediate fact. Conclude with `algebraMap_mem_nonZeroDivisors_of_isLocalization (Submonoid.powers r) hh`. Set `e` to `(f.appIso (f ⁻¹ᵁ Y.basicOpen r)).commRingCatIsoToRingEquiv`. Use `⟨⟨_, hUX⟩, e (Y.presheaf.map (homOfLE hle).op h), hxr, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ringEquiv_mem_nonZeroDivisors e (hnzd _ himg hle)`. Rewrite using `[Scheme.IdealSheafData.ideal_comap_of_isOpenImmersion]`. Rewrite using `[← I.map_ideal (U := ⟨_, (f.isAffineOpen_iff_of_isOpenImmersion).2 hUX⟩) (V := U) hle, hU, Ideal.map_span, Set.image_singleton]`. Rewrite using `[show ((f.appIso (f ⁻¹ᵁ Y.basicOpen r)).inv.hom : _ →+* _) = (e.symm : _ →+* _) from rfl, Ideal.comap_coe, Ideal.comap_symm, Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem effCartier_comap_of_local {X Y : Scheme.{0}} (I : Y.IdealSheafData) (f : X ⟶ Y)
     [IsOpenImmersion f]
@@ -111,27 +109,25 @@ theorem effCartier_comap_of_local {X Y : Scheme.{0}} (I : Y.IdealSheafData) (f :
     rfl
 
 /- English proof (translation)
-Introduce `X _ _ _ V hV hne`. Establish `hι : IsAffineHom V.ι` using `haveI : IsAffine V := hV haveI : IsAffineHom (V.ι ≫ terminal.from X) := inferInstance IsAffineHom.of_comp _ (terminal.from X)`. Set `G` to `Scheme.IdealSheafData.vanishingIdeal V.compl`. Set `P : X → Prop` to `fun x => ∃ t ∈ nonZeroDivisors (X.presheaf.stalk x), FinalTheorems.stalkId G x = Ideal.span {t}`. Establish `hopen : IsOpen {x | P x}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `isOpen_iff_forall_mem_open.2 fun x hx => ?_` and prove the remaining obligations. Take `⟨t, ht, htG⟩` from `hx`. Take `⟨U, f, hxU, hf, hG⟩` from `exists_affine_gen G x t ht htG`. Conclude with `⟨U.1, fun y hy => stalkId_eq_span_of_mem G U f hf hG y hy, U.1.isOpen, hxU⟩`. Set `W : X.Opens` to `⟨{x | P x}, hopen⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `hVW : V ≤ W`. Introduce `x hx`. Use `⟨1, one_mem _, ?_⟩` and prove the remaining obligations. Establish `h : ∀ q : PrimeSpectrum (X.presheaf.stalk x), X.fromSpecStalk x q ∈ V ↔ (1 : X.presheaf.stalk x) ∉ q.asIdeal` using `fun q => by`. Use `iff_of_true ?_ fun h1 => q.2.ne_top ((Ideal.eq_top_iff_one _).2 h1)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : X.fromSpecStalk x q ∈ Set.range (X.fromSpecStalk x)` using `⟨q, rfl⟩`. Rewrite `hs` using `[Scheme.range_fromSpecStalk]`. Conclude with `Specializes.mem_open hs V.isOpen hx`. Rewrite using `[GlobalTheory.AffineComplement.stalkId_vanishingIdeal_compl V x 1 h, Ideal.span_singleton_one, Ideal.radical_top]`. Establish `hfac : ∀ x : X, UniqueFactorizationMonoid (X.presheaf.stalk x) → x ∈ W`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hufd`. Establish `hd : IsDomain (X.presheaf.stalk x)` using `inferInstance`. Establish `hn : IsNoetherianRing (X.presheaf.stalk x)` using `inferInstance`. Establish `hA : IsAffineOpen (X.fromSpecStalk x ⁻¹ᵁ V)`. Establish `: IsAffineHom (X.fromSpecStalk x ⁻¹ᵁ V).ι` using `MorphismProperty.of_isPullback (P := @IsAffineHom) (isPullback_morphismRestrict (X.fromSpecStalk x) V) hι`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isAffine_of_isAffineHom (X.fromSpecStalk x ⁻¹ᵁ V).ι`. Establish `hg : genericPoint X ∈ Set.range (X.fromSpecStalk x)`. Rewrite using `[Scheme.range_fromSpecStalk]`. Conclude with `(genericPoint_spec X).specializes trivial`. Take `⟨q, hq⟩` from `hg`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hqV : q ∈ X.fromSpecStalk x ⁻¹ᵁ V`. Express the relevant statement in the definitionally equal form `X.fromSpecStalk x q ∈ V`. Rewrite using `[hq]`. Conclude with `((genericPoint_spec X).mem_open_set_iff V.isOpen).2 (by simpa using hne)`. Take `⟨a, ha⟩` from `@GlobalTheory.exists_eq_basicOpen_of_isAffineOpen_of_uniqueFactorization (X.presheaf.stalk x) (X.presheaf.stalk x).commRing hd hn hufd (X.fromSpecStalk x ⁻¹ᵁ V) hA ⟨q, hqV⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h : ∀ q : PrimeSpectrum (X.presheaf.stalk x), X.fromSpecStalk x q ∈ V ↔ a ∉ q.asIdeal` using `fun q => iff_of_eq (congrArg (fun V => q ∈ V) ha)`. Establish `ha0 : a ≠ 0` using `fun h0 => (h q).1 hqV (h0 ▸ zero_mem _)`. Use `show P x`. Simplify using `only [P, G]`. Rewrite using `[GlobalTheory.AffineComplement.stalkId_vanishingIdeal_compl V x a h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.AffineComplement.exists_radical_span_singleton_eq ha0`. Use `⟨W, hVW, hfac, ?_⟩` and prove the remaining obligations. Establish `hE : FinalTheorems.EffCartier (G.comap W.ι)`. Use `effCartier_comap_of_local G W.ι fun y => ?_` and prove the remaining obligations. Establish `hy : P (W.ι y)` using `y.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Take `⟨t, ht, htG⟩` from `hy`. Conclude with `exists_affine_gen G _ t ht htG`. Take `⟨D, hD⟩` from `EffCartierData.exists_idealSheaf_eq hE`. Use `⟨cls D.lb D.isLB_lb, D.lb, D.isLB_lb, D.canonical, rfl, TopologicalSpace.Opens.ext ?_⟩` and prove the remaining obligations. Use `D.coe_nonzeroLocus_canonical.trans ?_` and prove the remaining obligations.
-
-Rewrite using `[hD, Scheme.IdealSheafData.support_comap, TopologicalSpace.Closeds.coe_preimage, Scheme.IdealSheafData.coe_support_vanishingIdeal]`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isLocus : ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [X.IsSeparated] (V : X.Opens), IsAffineOpen V → (V : Set X).Nonempty → ∃ W : X.Opens, V ≤ W ∧ (∀ x : X, UniqueFactorizationMonoid (X.presheaf.stalk x) → x ∈ W) ∧ ∃ c : Pic W.toScheme, IsLocus c (W.ι ⁻¹ᵁ V) := by
   intro X _ _ _ V hV hne

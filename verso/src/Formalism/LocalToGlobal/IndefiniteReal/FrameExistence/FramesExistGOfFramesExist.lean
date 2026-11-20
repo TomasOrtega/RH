@@ -34,9 +34,9 @@ def FramesExistG (Pg : Finset (Pl D.host.E)) : Prop :=
     SDFrames ΛY ΛX ΛV ΛW βY βX βV βW ∧ NormalClausesG Pg βY βW
 
 /- English proof (translation)
-Establish `hXs : IsSDFrame D.sp.X' 1 (FrmP.coordL D.sp.X') 1` using `FrmP.isSDFrame_std D.sp.X' hX 1`. Establish `hVs : ∀ i, IsSDFrame (Vc D i) 1 (FrmP.coordL (Vc D i)) 1` using `fun i => FrmP.isSDFrame_std (Vc D i) (hV _) 1`. Distinguish the cases in `hG : FramesExistG D Pg`. Take `⟨ΛY, ΛX, ΛV, ΛW, βY, βX, βV, βW, ⟨h1, -, -, h4⟩, hN⟩` from `hG`. Conclude with `⟨ΛY, ΛW, βY, βW, ⟨h1, hXs, hVs, h4⟩, fun _ => hN⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨ΛY, ΛX, ΛV, ΛW, βY, βX, βV, βW, ⟨h1, -, -, h4⟩⟩` from `FrmP.sdFramesExist_of_std hY hX hV hW`. Conclude with `⟨ΛY, ΛW, βY, βW, ⟨h1, hXs, hVs, h4⟩, fun h => absurd h hG⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem frames_by_cases_stdG (hY : ∀ j, FrmC.StdLat (D.sp.Y j)) (hX : FrmC.StdLat D.sp.X')
     (hV : ∀ j, FrmC.StdLat (D.sp.V j)) (hW : ∀ j, FrmC.StdLat (D.sp.W j)) (Pg : Finset (Pl D.host.E)) :
@@ -57,7 +57,7 @@ theorem frames_by_cases_stdG (hY : ∀ j, FrmC.StdLat (D.sp.Y j)) (hX : FrmC.Std
 open Classical in
 
 /- English proof (translation)
-Take `⟨ΛY, ΛX, ΛV, ΛW, βY, βX, βV, βW, hSD, e, ev, z, κ, s, hN, hW⟩` from `h`. Establish `h0` using `hN t0`. Simplify using `only [Finset.union_empty] at h0`. Conclude with `⟨ΛY, ΛX, ΛV, ΛW, βY, βX, βV, βW, hSD, e, ev, z, κ, s, h0, hW⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem framesExistG_of_framesExist {T : Type} (t0 : T) {Pg : Finset (Pl D.host.E)}
     (h : FramesExist D Pg ∅ (fun _ : T => ∅)) : FramesExistG D Pg := by

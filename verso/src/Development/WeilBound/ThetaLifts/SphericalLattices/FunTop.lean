@@ -11,7 +11,7 @@ import Development.WeilBound.ThetaLifts.SphericalLattices.InvMemKgKCart2
 namespace PositivityTheory.Sph
 
 /- English proof (translation)
-The claim follows from `sphFun_of countSt avgSt pInvSt unitLiftSt charSt evInvSt siegSt hM cartanSt2 finSt`.
+A detailed English derivation is pending.
 -/
 theorem sphFun_of_modSt (hM : ModSt) : SphFun :=
   sphFun_of countSt avgSt pInvSt unitLiftSt charSt evInvSt siegSt hM cartanSt2 finSt

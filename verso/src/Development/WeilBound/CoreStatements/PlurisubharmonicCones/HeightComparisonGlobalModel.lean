@@ -19,17 +19,17 @@ open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory
 namespace LevelTowerAlt
 
 /- English proof (translation)
-Take `⟨I, hI⟩ : ∃ I : ℝ, I = Real.log (((oSpan A.ρ v).relIndex A.I : ℕ) : ℝ)` from `⟨_, rfl⟩`. Establish `hstep : ∀ τ, A.labDeg (lab τ) (F τ) v (q τ) ≤ ((r : ℝ) + k) * X + (-(r * Real.log (hostRd E)) + I / Module.finrank ℚ E + A.Bq.normDegree (A.img (lab τ)))`. Introduce `τ`. Take `⟨𝔞, h0, h1, h2, h3⟩` from `ha τ`. Establish `hc` using `GlobalTheory.T.labelled_degree_commensurable_bound E L Ψ V A r k v (lab τ) (q τ) (F τ) 𝔞 (hq τ).1 h0 h1 h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs` using `GlobalTheory.T.labelled_degree_eq_log_index E L Ψ V A r k v (lab τ) (q τ) hf hO (hq τ).2 (hq τ).1`. Establish `ht` using `GlobalTheory.T.log_index_of_orthogonal_family E L Ψ V A r v hf hO (lab τ)`. Establish `h4 : ((r : ℝ) + k) * Real.log (Ideal.absNorm 𝔞) / Module.finrank ℚ L ≤ ((r : ℝ) + k) * X`. Rewrite using `[mul_div_assoc]`. Conclude with `mul_le_mul_of_nonneg_left h3 (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h5` using `(abs_le.1 hc).2`. Rewrite `h5` using `[hs, ht, ← hI]`. Unfold `hostRd`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum` using `Finset.sum_le_sum (s := Finset.univ) fun τ _ => hstep τ`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at hsum`. Establish `hE : (Module.finrank ℚ E : ℝ) = 2 * Fintype.card Ψ` using `by exact_mod_cast hf.symm`. Establish `hc0 : (Fintype.card Ψ : ℝ) ≠ 0`. Establish `hn : 0 < Module.finrank ℚ E` using `Module.finrank_pos`. Establish `: Fintype.card Ψ ≠ 0` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hcI : (Fintype.card Ψ : ℝ) * (I / Module.finrank ℚ E) = I / 2`. Rewrite using `[hE]`. Clear the denominators using the available nonvanishing facts. Establish `hphi : A.phiDeg lab F v q = ∑ τ, A.labDeg (lab τ) (F τ) v (q τ) - I / 2 + Fintype.card Ψ * r / 2 * Real.log (4 * Real.pi)`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hI]`. Both sides reduce to the same expression. Rewrite using `[hphi]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem phiDeg_le_parts {E L Ψ : Type} [Field E] [NumberField E] [Field L] [NumberField L] [Fintype Ψ] {V : Type}
     [AddCommGroup V] [Module L V] [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V] (A : LinPt E L Ψ V) (lab : Ψ → Ψ ⊕ Ψ)
@@ -73,11 +73,11 @@ theorem phiDeg_le_parts {E L Ψ : Type} [Field E] [NumberField E] [Field L] [Num
   linarith
 
 /- English proof (translation)
-Establish `hfj : 0 ≤ f * j` using `mul_nonneg hf hj`. Establish `h1 : f * (j * X) ≤ f * j * ((2 * C1 + 2) * La)`. Rewrite using `[← _root_.mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left hX hfj`. Establish `h2 : 0 ≤ f * (r * rd)` using `mul_nonneg hf (mul_nonneg hr0 hrd)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : f * r / 2 * l4 ≤ f * j * La`. Establish `h4 : f * r / 2 * l4 ≤ f * r / 2 * La` using `mul_le_mul_of_nonneg_left hl4 (by positivity)`. Establish `h5 : f * r / 2 * La ≤ f * r * La`. Establish `: 0 ≤ f * r * La` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h6 : f * r * La ≤ f * j * La` using `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hrj hf) hLa`. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem small_blocks_numbers {f j r Ca C1 La X rd l4 T : ℝ} (hf : 0 ≤ f) (hj : 0 ≤ j) (hr0 : 0 ≤ r) (hrj : r ≤ j)
     (hLa : 0 ≤ La) (hrd : 0 ≤ rd) (hl4 : l4 ≤ La) (hX : X ≤ (2 * C1 + 2) * La) (hT : T ≤ Ca * (f * j) * La) :
@@ -98,63 +98,59 @@ theorem small_blocks_numbers {f j r Ca C1 La X rd l4 T : ℝ} (hf : 0 ≤ f) (hj
   nlinarith
 
 /- English proof (translation)
-Introduce `hFS hG hF`. Take `⟨Cf, hCf0, hflat⟩` from `hFS hG hF`. Take `⟨C1, hC10, hprimes⟩` from `GlobalTheory.T.sum_log_prime_div_pred_le_log`. Establish `hG'` using `hG`. Take `⟨-, -, -, -, -, -, -, -, ⟨Cs, hCs0, hslope⟩, -⟩` from `hG'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hC₀ : 0 ≤ Cs + Cf * (2 + C1)` using `by positivity`. Take `⟨Ca, hCa0, habel⟩` from `abel_abstract (Cs + Cf * (2 + C1)) hC₀`. Use `⟨2 * C1 + 2 + Ca + 1, by positivity, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or B₁ B L _ _ z P V _ _ _ _ MV A r k v q hAdm hB hLin hfin hrk hO hq`. Take `⟨hglob, hgood, hS₀, hcard, -, -, hjj⟩` from `hAdm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hrd2, hne, hf2⟩` from `GlobalTheory.CompanionTheory.Ar.Top.HostNumbers.host_numbers E H`. Establish `hf1 : 1 ≤ Dc.f` using `Fintype.card_pos_iff.2 hne`. Establish `hN2` using `Dc.two_le_N`. Establish `hj1` using `Dc.one_le_j`. Establish `hjl` using `Dc.j_le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj' : Dc.j' = Dc.N - Dc.j` using `rfl`. Establish `hNeq` using `Or.N_eq`. Establish `hj'1 : 1 ≤ Dc.j'` using `by omega`. Establish `hpq : 1 ≤ D.p ∧ 1 ≤ D.q`. Apply the tactic sequence `rcases Or.side with ⟨-, -, h⟩ | ⟨-, -, h⟩ <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hN4 : 4 ≤ Dc.N ^ 2` using `by nlinarith`. Establish `hB16 : 16 ≤ B` using `by nlinarith`. Establish `hfNB : Dc.f * Dc.N ≤ B` using `by nlinarith [Nat.le_self_pow (n := 2) (by norm_num) Dc.N]`. Establish `hS₀B : S₀.card ≤ B` using `hcard.trans hB`. Take `⟨hp, hR, ht, hvb⟩` from `GlobalTheory.T.compact_datum_intersection E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hHT : ∀ p ∈ S₀ ∪ Dc.SB B, HT.HTFree (Or.𝔐.withS (S₀ ∪ Dc.SB B) hp hR ht hvb) p`. Introduce `p hp'`. Break down `Finset.mem_union.1 hp' with h | h` into its components or cases. Conclude with `hgood.1 p h`. Conclude with `hgood.2 p (Finset.mem_filter.1 h).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLin' : (Or.𝔐.withS (S₀ ∪ Dc.SB B) hp hR ht hvb).IsLinPtOf z P MV A` using `hLin`. Establish `hSr : ∀ r' : ℕ, r'.Prime → (r' : ℤ) ∣ 2 * discr E * l.M' → r' ∈ S₀ ∪ Dc.SB B` using `fun r' h1 h2 => Finset.mem_union_left _ ((hS₀ r').2 ⟨h1, h2⟩)`. Establish `hSd : ∀ r' : ℕ, r'.Prime → (r' : ℤ) ∣ discr E → r' ∈ S₀ ∪ Dc.SB B` using `fun r' h1 h2 => hSr r' h1 (Dvd.dvd.mul_right (Dvd.dvd.mul_left h2 2) _)`. Establish `hsumP : ∑ p ∈ S₀ ∪ Dc.SB B, Real.log (p : ℝ) / ((p : ℝ) - 1) ≤ C1 * Real.log B`. Use `hprimes (S₀ ∪ Dc.SB B) S₀ B (by omega) (fun p hp' => ⟨hp p hp', ?_⟩) hS₀B` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `Finset.mem_union.1 hp' with h | h` into its components or cases. Conclude with `_root_.Or.inr h`. Conclude with `_root_.Or.inl (Finset.mem_filter.1 h).2`. Establish `hrd0 : 0 < hostRd E` using `by linarith`. Establish `hlrd : 0 ≤ Real.log (hostRd E)` using `Real.log_nonneg (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hB0 : (0 : ℝ) < B` using `by exact_mod_cast (by omega : 0 < B)`. Establish `hB16' : (16 : ℝ) ≤ B` using `by exact_mod_cast hB16`. Establish `hLam : abelian₂ B (hostRd E) (hostLval H) = Real.log B + Real.log (hostRd E) + |hostLval H|`. Unfold `GroundTheory.Heights₂.Heights.LowerBoundFree.abelian₂`. Rewrite using `[Real.log_mul hB0.ne' hrd0.ne']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hlogB : 1 ≤ Real.log B`. Rewrite using `[Real.le_log_iff_exp_le hB0]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hLa1 : 1 ≤ abelian₂ B (hostRd E) (hostLval H)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hLam]`. Combine the linear relations using `[abs_nonneg (hostLval H)]`. Establish `hBLa : Real.log B ≤ abelian₂ B (hostRd E) (hostLval H)`. Rewrite using `[hLam]`. Combine the linear relations using `[abs_nonneg (hostLval H)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hl4 : Real.log (4 * Real.pi) ≤ abelian₂ B (hostRd E) (hostLval H)`. Use `le_trans (Real.log_le_log (by positivity) ?_) hBLa` and prove the remaining obligations. Combine the linear relations using `[Real.pi_le_four]`. Establish `hexp : ((Fintype.card (CMType H) * (D.p + D.q) : ℕ) : ℝ) ≤ Real.exp (abelian₂ B (hostRd E) (hostLval H))`. Establish `h1 : ((Fintype.card (CMType H) * (D.p + D.q) : ℕ) : ℝ) ≤ B`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hNeq]`. Conclude with `hfNB` after adjusting the coercions. Establish `h2 : (B : ℝ) ≤ Real.exp (abelian₂ B (hostRd E) (hostLval H))`. Rewrite using `[← Real.log_le_iff_le_exp hB0]`. Conclude with `hBLa`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `h1.trans h2`. Establish `hrank : ∀ τ, A.Bq.rank (A.img (Or.sm τ)) ≤ Dc.j'`. Introduce `τ`. Take `⟨k', q', -, -, hk', hrk', -⟩` from `(GlobalTheory.T.adapted_family_exists_on_eigenspace E L (CMType H) V A hf2).2 r v hO (Or.sm τ)`. Establish `h1 : Module.finrank L (eigSp A.ρ (A.σ (Or.sm τ))) = r + k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (hq τ).1.2, finrank_span_eq_card (hq τ).1.1, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Establish `hsl : A.Bq.slopeMax ≤ (((Cs + Cf * (2 + C1)) * Real.log (2 + Module.finrank (𝓞 L) A.Bq.carrier + max (-A.Bq.normDegree ⊤) 0) : ℝ) : EReal)`. Take `⟨-, -, -, -, hprinc, t', m', MB, hfib, -⟩` from `hLin`. Use `(hslope E H L t' P.tB m' hprinc A.Bq MB hfib).trans (EReal.coe_le_coe_iff.2 ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `mul_le_mul_of_nonneg_right (by nlinarith [mul_nonneg hCf0 (by linarith : (0 : ℝ) ≤ 2 + C1)]) ?_` and prove the remaining obligations. Use `Real.log_nonneg ?_` and prove the remaining obligations. Establish `h1 : (0 : ℝ) ≤ Module.finrank (𝓞 L) A.Bq.carrier` using `by positivity`. Establish `h2 : (0 : ℝ) ≤ max (-A.Bq.normDegree ⊤) 0` using `le_max_right _ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t', m', MB, ρM, hfib, hact, hρ⟩` from `exists_action Or.𝔐 hLin`. Take `⟨e1, e2, e3⟩` from `eig_facts A ρM hf2 hρ`. Take `⟨σ₀, -, hσu, -, -, -, hσc⟩` from `GlobalTheory.T.cusp_correspondence_bound E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 L (spMap (algebraMap (𝓞 L) L) ≫ z)`. Establish `hσ : A.σ = σ₀` using `hσu A.σ hLin.2.1`. Establish `hrk2 : ∀ s, A.Bq.rank (eigSp ρM (intLift (A.σ s))) ≤ labelRk D s`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Take `⟨k', q', -, -, hk', hrk', -⟩` from `(GlobalTheory.T.adapted_family_exists_on_eigenspace E L (CMType H) V A hf2).2 r v hO s`. Rewrite `hk'` using `[finrank_eig' Or.𝔐 hLin]`. Rewrite using `[e1]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfl0 : ∀ τ, |A.Bq.normDegree (eigSp ρM (intLift (A.σ (.inl τ)))) - A.Bq.normDegree (eigSp ρM (intLift (A.σ (.inr τ))))| ≤ (Cs + Cf * (2 + C1)) * ((D.p + D.q : ℕ) : ℝ) * abelian₂ B (hostRd E) (hostLval H)`. Introduce `τ`. Establish `h0` using `hflat E H L t' P.tB m' A.Bq MB ρM (intLift (A.σ (.inl τ))) (intLift (A.σ (.inr τ))) hLin.2.2.2.2.1 hfib hact (GlobalTheory.T.abelian_part_lie_signature E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 L _ P) (fun a b hab => A.σ_inj (.inl τ) (congrArg (algebraMap (𝓞 L) L) hab)) (fun e a => b …`. Use `DFunLike.congr_fun ((hσc e).2.2 τ) a` as an intermediate fact. Rewrite `this` using `[← hσ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `this)`. Use `h0.trans ?_` and prove the remaining obligations. Establish `h2 : 1 + Real.log (hostRd E) + |hostLval H| ≤ (2 + C1) * abelian₂ B (hostRd E) (hostLval H)`. Establish `h3 : 0 ≤ C1 * abelian₂ B (hostRd E) (hostLval H)` using `mul_nonneg hC10 (by linarith)`. Establish `h4 : Real.log (hostRd E) + |hostLval H| ≤ abelian₂ B (hostRd E) (hostLval H)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hLam]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn : (0 : ℝ) ≤ (D.p : ℝ) + D.q` using `by positivity`. Establish `hLa0 : 0 ≤ abelian₂ B (hostRd E) (hostLval H)` using `by linarith`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h5 : (A.Bq.rank (eigSp ρM (intLift (A.σ (.inl τ)))) : ℝ) + A.Bq.rank (eigSp ρM (intLift (A.σ (.inr τ)))) ≤ (D.p : ℝ) + D.q`. Establish `a1 : A.Bq.rank (eigSp ρM (intLift (A.σ (.inl τ)))) ≤ D.p` using `hrk2 (.inl τ)`. Establish `a2 : A.Bq.rank (eigSp ρM (intLift (A.σ (.inr τ)))) ≤ D.q` using `hrk2 (.inr τ)`. Conclude with `add_le_add a1 a2` after adjusting the coercions. Establish `h6 : 0 ≤ 1 + Real.log (hostRd E) + |hostLval H|` using `by positivity`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `push_cast`. Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right ?_ hn) hLa0` and prove the remaining obligations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `e3` using `[Fintype.sum_sum_type]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hab0` using `habel L (CMType H) A.Bq (fun τ => eigSp ρM (intLift (A.σ (Or.sm τ)))) (fun τ => eigSp ρM (intLift (A.σ (Or.bg τ)))) Dc.j' (D.p + D.q) (abelian₂ B (hostRd E) (hostLval H)) (Nat.mul_pos hf1 hj'1) hLa1 hexp hfin (fun τ => (e1 _).trans_le (hrank τ)) hsl (by`. Break down `Or.side with ⟨hb, hs, -⟩ | ⟨hb, hs, -⟩` into its components or cases. Rewrite using `[hb, hs]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hb, hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e3)`. Use the proof step `(fun τ => by`. Break down `Or.side with ⟨hb, hs, -⟩ | ⟨hb, hs, -⟩` into its components or cases. Rewrite using `[hb, hs, abs_sub_comm]`. Conclude with `hfl0 τ`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hb, hs]`. Conclude with `hfl0 τ)`. Establish `hab` using `(Finset.sum_le_sum (s := Finset.univ) fun τ _ => e2 (Or.sm τ)).trans hab0`. Establish `hm` using `GlobalTheory.T.abelian_part_integral_point hG E H D l (Xo l) c Y (S₀ ∪ Dc.SB B) Ω K J Dc.y (Or.𝔐.withS (S₀ ∪ Dc.SB B) hp hR ht hvb) L z P V MV A (by omega) hSd hHT hLin'`. Establish `hparts` using `phiDeg_le_parts A Or.sm (fun τ => Or.𝔐.FibLat (Or.𝔐.VS (S₀ ∪ Dc.SB B) (Or.sm τ)) z P MV) v q (2 * (∑ p ∈ S₀ ∪ Dc.SB B, Real.log (p : ℝ) / ((p : ℝ) - 1)) + 2 * Real.log (hostRd E)) hf2 hO hq fun τ => hm (Or.sm τ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hjr : ((r : ℝ) + k) = Dc.j'` using `by exact_mod_cast hrk`. Establish `hrj : (r : ℝ) ≤ Dc.j'`. Rewrite using `[← hjr]`. Establish `: (0 : ℝ) ≤ k` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Rewrite `hparts` using `[hjr]`. Use `hparts.trans ?_` and prove the remaining obligations. Use `small_blocks_numbers (f := Dc.f) (by positivity) (by positivity) (by positivity) hrj (by linarith) hlrd hl4 ?_ hab` and prove the remaining obligations. Establish `h3 : C1 * Real.log B ≤ C1 * abelian₂ B (hostRd E) (hostLval H)` using `mul_le_mul_of_nonneg_left hBLa hC10`. Establish `h4 : Real.log (hostRd E) ≤ abelian₂ B (hostRd E) (hostLval H)`.
-
-Rewrite using `[hLam]`. Combine the linear relations using `[abs_nonneg (hostLval H)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem height_comparison_global_model : (Top.Given → Fl.FlatDegree → FlatSat) → Top.Given → Fl.FlatDegree → ∃ C : ℝ, 0 ≤ C ∧ ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd) (B₁ B : ℕ) (L : Type) [Field L] [NumberField L] (z : Sp (𝓞 L) ⟶ Or.𝔐.X) (P : AbPart Or.𝔐.t (spMap (algebraMap (𝓞 L) L) ≫ z)) (V : Type) [AddCommGroup V] [Module L V] [Module (𝓞 L) V] [IsScalarTower (𝓞 L) L V] (MV : LieModel P.tK.G (𝟙 (Sp L)) V) (A : LinPt E L (CMType H) V) (r k : ℕ) (v : Fin r → V) (q : CMType H → Fin k → A.Λ), admitted Xo l c Y Or B₁ → 4 * Dc.f * Dc.N ^ 2 ≤ B → Or.𝔐.IsLinPtOf z P MV A → Module.finrank (𝓞 L) A.Bq.carrier ≤ Fintype.card (CMType H) * (D.p + D.q) → r + k = Dc.j' → IsOFamily A.ρ A.I v → (∀ τ, A.IsAdapted (Or.sm τ) v (q τ) ∧ ∀ i, (q τ i : V) ∈ A.eig (Or.sm τ)) → A.phiDeg Or.sm (fun τ => Or.𝔐.FibLat (Or.𝔐.VS (S₀ ∪ Dc.SB B) (Or.sm τ)) z P MV) v q ≤ C * Dc.f * Dc.j' * abelian₂ B (hostRd E) (hostLval H) := by
   intro hFS hG hF

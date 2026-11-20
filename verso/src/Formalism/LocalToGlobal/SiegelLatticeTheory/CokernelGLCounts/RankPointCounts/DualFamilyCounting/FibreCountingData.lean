@@ -16,7 +16,7 @@ def liftQ {K F : Type} [Field K] [Field F] [Algebra F K] {m : ℕ} {𝔭 : Ideal
   Matrix.of fun i j => (Ideal.Quotient.mk_surjective (M i j)).choose
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, liftQ, Matrix.of_apply]`. Conclude with `(Ideal.Quotient.mk_surjective (M i j)).choose_spec`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem liftQ_map {K F : Type} [Field K] [Field F] [Algebra F K] {m : ℕ} {𝔭 : Ideal (𝓞 F)} {k : ℕ}
     (M : Matrix (Fin m) (Fin m) (𝓞 K ⧸ extP K 𝔭 ^ k)) :
@@ -32,23 +32,21 @@ namespace Formalism.L2.SG.Pf.Cnt
 open Formalism.HermitianLattices.Ext.L3 Formalism.L2.SG.Pf.G5 Formalism.L2.SG.Pf.discriminantNormShapes Formalism.L2.SG.Pf.fibreCountingData
 
 /- English proof (translation)
-Introduce `K F V _ _ _ _ _ _ _ _ _ _ _ _ hK h hs hd L hL hLi 𝔭 h𝔭 b a hb k hk`. Take `⟨-, hloc, horth, hdiag, hne⟩` from `hb`. Establish `hFx : IsFixF K F` using `Fact.out`. Use `letI : Setoid (udPre K 𝔭 k a) := udSetoid K 𝔭 k a`. Set `J : JD h L 𝔭 b a` to `⟨horth, hdiag, hne, hloc, hFx, h𝔭, ⟨hL.fg, hL.span_eq_top⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `h𝔭.isPrime` as an intermediate fact. Establish `hv : ∀ i, vF 𝔭 (a i) ≤ vJof 𝔭 a` using `fun i => Finset.single_le_sum (f := fun i => vF 𝔭 (a i)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`. Establish `hk1 : ∀ i, vF 𝔭 (a i) ≤ k` using `fun i => by have := hv i; omega`. Establish `hk2 : ∀ i j, vF 𝔭 (a i) + vF 𝔭 (a j) ≤ k` using `fun i j => by`. Use `hv i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hv j` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hA : ∀ Y : udPre K 𝔭 k a, ∀ i j, algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) (a i) * liftQ Y.1 i j) / algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) (a j)) ∈ HU.SP K 𝔭` using `fun Y => (condP_iff_eqP hne hk1 (liftQ Y.1)).1 (by rw [liftQ_map]; exact Y.2.1)`. Establish `hW : ∀ Y : udPre K 𝔭 k a, ∀ i j, algebraMap (𝓞 K) K (gramO a (liftQ Y.1) i j) / (algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) (a i)) * algebraMap (𝓞 K) K (algebraMap (𝓞 F) (𝓞 K) (a j))) ∈ HU.SP K 𝔭` using `fun Y => (condW_iff hne hk2 (liftQ Y.1)).1 (by rw [liftQ_map]; exact Y.2.2)`. Set `f0 : udPre K 𝔭 k a → {P : Module.End (𝓞 K) (DiscMod h ⊤ L 𝔭) // ∀ x y x' y' : ↥(locF 𝔭 (dualIn h ⊤ L)), Submodule.Quotient.mk x' = P (Submodule.Quotient.mk x) → Submodule.Quotient.mk y' = P (Submodule.Quotient.mk y) → h (x' : V) (y' : V) - h (x : V) (y : V) ∈ locF 𝔭 (1 : Submodul …` to `fun Y => ⟨J.E (liftQ Y.1) (hA Y), J.E_isom (liftQ Y.1) (hA Y) (hW Y)⟩`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hresp : ∀ Y Y' : udPre K 𝔭 k a, Y ≈ Y' → f0 Y = f0 Y'`. Introduce and unpack `Y Y' ⟨Z, hZ⟩`. Use `Subtype.ext (J.E_eq_of _ _ (hA Y) (hA Y') ((condZ_iff hne hk1 _ _).1 ⟨Z, ?_⟩))` and prove the remaining obligations. Rewrite using `[liftQ_map, liftQ_map]`. Conclude with `hZ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `f : udQ K 𝔭 k a → _` to `Quotient.lift (s := udSetoid K 𝔭 k a) f0 hresp`. Establish `hinj : Function.Injective f`. Introduce `q q'`. Proceed by induction on `q using Quotient.inductionOn with | h Y => ?_`. Proceed by induction on `q' using Quotient.inductionOn with | h Y' => ?_`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Proceed by induction. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `he`. Establish `he' : J.E (liftQ Y.1) (hA Y) = J.E (liftQ Y'.1) (hA Y')` using `congrArg Subtype.val he`. Apply `Quotient.sound` to reduce the goal to its premises. Take `⟨Z, hZ⟩` from `(condZ_iff hne hk1 _ _).2 (J.entry_of_E_eq _ _ (hA Y) (hA Y') he')`. Rewrite `hZ` using `[liftQ_map, liftQ_map]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨Z, hZ⟩`. Establish `hsurj : Function.Surjective f`. Introduce and unpack `⟨P, hP⟩`. Take `⟨Y, hY, hWY, hE⟩` from `J.exists_E_eq P hP`. Set `Yq : udPre K 𝔭 k a` to `⟨Y.map (Ideal.Quotient.mk _), (condP_iff_eqP hne hk1 Y).2 hY, (condW_iff hne hk2 Y).2 hWY⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Quotient.mk _ Yq, Subtype.ext ?_⟩` and prove the remaining obligations. Use `(J.E_eq_of _ _ (hA Yq) hY fun i j => ?_).trans hE` and prove the remaining obligations. Establish `e` using `congrFun (congrFun (liftQ_map (Y.map (Ideal.Quotient.mk (extP K 𝔭 ^ k)))) i) j`. Rewrite `e` using `[map_apply, map_apply, Ideal.Quotient.eq]`. Conclude with `div_mem_SP_of_mem h𝔭 (hne j) (hk1 j) e`.
-
-Rewrite using `[discAut]`. Conclude with `(Nat.card_eq_of_bijective f ⟨hinj, hsurj⟩).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitary_discriminant_model : UDModel := by
   intro K F V _ _ _ _ _ _ _ _ _ _ _ _ hK h hs hd L hL hLi 𝔭 h𝔭 b a hb k hk

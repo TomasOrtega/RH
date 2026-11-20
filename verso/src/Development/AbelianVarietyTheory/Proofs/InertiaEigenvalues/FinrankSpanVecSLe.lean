@@ -25,11 +25,9 @@ Both sides reduce to the same expression.
 theorem vecS_apply (v : Fin a → Fin n → K) (b : Fin a) (j : Fin n) : vecS φ a n v b j = φ (v b j) := rfl
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hx`.
-
-Conclude with `Submodule.span_mono (Set.image_mono Submodule.subset_span)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_vecS_span (S : Set (Fin a → Fin n → K)) :
     Submodule.span L (vecS φ a n '' (Submodule.span K S : Set (Fin a → Fin n → K))) =
@@ -45,13 +43,13 @@ theorem span_vecS_span (S : Set (Fin a → Fin n → K)) :
   · exact Submodule.span_mono (Set.image_mono Submodule.subset_span)
 
 /- English proof (translation)
-Set `b` to `Module.finBasis K W`. Set `g : Fin (Module.finrank K W) → (Fin a → Fin n → L)` to `fun i => vecS φ a n (b i)`. Establish `hle : Submodule.span L (vecS φ a n '' (W : Set (Fin a → Fin n → K))) ≤ Submodule.span L (Set.range g)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨w, hw, rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `h : w = ∑ i, b.repr ⟨w, hw⟩ i • (b i : Fin a → Fin n → K)`. Use `congrArg W.subtype (b.sum_repr ⟨w, hw⟩)` as an intermediate fact. Rewrite `this` using `[map_sum]`. Conclude with `this.symm`. Rewrite using `[h, map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `h1` using `Submodule.finrank_mono hle`. Establish `h2 : Module.finrank L (Submodule.span L (Set.range g)) ≤ Module.finrank K W`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `finrank_range_le_card (R := L) g` as an intermediate fact. Simplify `this` using `[Set.finrank]`. Conclude with `h1.trans h2`.
+A detailed English derivation is pending.
 -/
 theorem finrank_span_vecS_le (W : Submodule K (Fin a → Fin n → K)) :
     finrank L (Submodule.span L (vecS φ a n '' (W : Set (Fin a → Fin n → K)))) ≤ finrank K W := by
@@ -75,9 +73,9 @@ theorem finrank_span_vecS_le (W : Submodule K (Fin a → Fin n → K)) :
   exact h1.trans h2
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `u _`. Establish `e : u = ∑ b, ∑ j, u b j • vecS φ a n (fun b'' j'' => if b'' = b ∧ j'' = j then 1 else 0)`. Use function extensionality and compare the values at `b' j'`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, vecS_apply, smul_eq_mul, apply_ite φ, map_one, map_zero, mul_ite, mul_one, mul_zero, ite_and]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_ite_eq, Finset.sum_ite_eq']`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_vecS_top : Submodule.span L (Set.range (vecS φ a n)) = ⊤ := by
   rw [eq_top_iff]
@@ -92,15 +90,15 @@ theorem span_vecS_top : Submodule.span L (Set.range (vecS φ a n)) = ⊤ := by
     Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)
 
 /- English proof (translation)
-Use `set A := Submodule.span L (vecS φ a n '' (W : Set (Fin a → Fin n → K)))`. Use `set B := Submodule.span L (vecS φ a n '' (W' : Set (Fin a → Fin n → K)))`. Establish `hsup : A ⊔ B = ⊤`. Rewrite using `[eq_top_iff, ← span_vecS_top (φ := φ), Submodule.span_le]`. Introduce and unpack `_ ⟨v, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hv : v ∈ W ⊔ W'` using `by rw [h.sup_eq_top]; trivial`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hv`. Rewrite using `[map_add]`. Conclude with `add_mem (Submodule.mem_sup_left (Submodule.subset_span ⟨y, hy, rfl⟩)) (Submodule.mem_sup_right (Submodule.subset_span ⟨z, hz, rfl⟩))`. Establish `h1 : finrank L A ≤ finrank K W` using `finrank_span_vecS_le W`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : finrank L B ≤ finrank K W'` using `finrank_span_vecS_le W'`. Establish `h3` using `Submodule.finrank_add_eq_of_isCompl h`. Establish `h4` using `Submodule.finrank_sup_add_finrank_inf_eq A B`. Rewrite `h4` using `[hsup, finrank_top]`. Establish `hK : finrank K (Fin a → Fin n → K) = a * n`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[Module.finrank_fin_fun]`. Establish `hL : finrank L (Fin a → Fin n → L) = a * n`. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[Module.finrank_fin_fun]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hinf : A ⊓ B = ⊥`. Rewrite using `[← Submodule.finrank_eq_zero]`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨disjoint_iff.2 hinf, codisjoint_iff.2 hsup⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCompl_span_vecS {W W' : Submodule K (Fin a → Fin n → K)} (h : IsCompl W W') :
     IsCompl (Submodule.span L (vecS φ a n '' (W : Set (Fin a → Fin n → K))))
@@ -134,13 +132,11 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D i w hw r Xs hr a x Y hst ⟨C, hC, hYC⟩`. Establish `hspan : spanL i w hw Y = Submodule.span _ (vecS (Br.toLLK (D.nbr i w hw)) a D.R.nV '' (Submodule.span (KK D.nd i) (Y : Set (Fin a → Fin D.R.nV → KK D.nd i)) : Set (Fin a → Fin D.R.nV → KK D.nd i)))`. Rewrite using `[span_vecS_span]`. Both sides reduce to the same expression. Use `⟨a, x, (spanL i w hw Y).subtype, Subtype.val_injective, fun g v => rfl, Submodule.span _ (vecL i w hw '' (C : Set (Fin a → Fin D.R.nV → KK D.nd i))), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g u hu`. Establish `hle : Submodule.span (Br.LL D.nbr i w hw) (vecL i w hw '' (C : Set (Fin a → Fin D.R.nV → KK D.nd i))) ≤ (Submodule.span (Br.LL D.nbr i w hw) (vecL i w hw '' (C : Set (Fin a → Fin D.R.nV → KK D.nd i)))).comap ((sumG i w hw r Xs hr x).ρ g)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Use `show (sumG i w hw r Xs hr x).ρ g (vecL i w hw v) ∈ Submodule.span (Br.LL D.nbr i w hw) (vecL i w hw '' (C : Set (Fin a → Fin D.R.nV → KK D.nd i)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sumG_vecL]`. Conclude with `Submodule.subset_span ⟨_, hC _ v hv, rfl⟩`. Conclude with `hle hu`. Establish `key : IsCompl (spanL i w hw Y) (Submodule.span (Br.LL D.nbr i w hw) (vecL i w hw '' (C : Set (Fin a → Fin D.R.nV → KK D.nd i))))`. Rewrite using `[hspan]`.
-
-Conclude with `isCompl_span_vecS hYC`. Use `key using 1` and compare the differences between its conclusion and the goal. Conclude with `Submodule.range_subtype _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem isSummandTw_XG : ∀ (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E))
     (hw : w ∈ placesOver D.host.E (D.nd.l i)) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i)))

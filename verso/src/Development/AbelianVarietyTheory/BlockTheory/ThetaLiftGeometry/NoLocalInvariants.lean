@@ -57,7 +57,7 @@ def NoLocalInvariants : Prop :=
     ∀ ρ, IsRankPart N i x ρ → NoLocalInv N i ρ
 
 /- English proof (translation)
-Unfold `matW`. Rewrite using `[← Matrix.map_mul, smul_mul_smul_comm, map_mul, map_mul, mul_inv, Units.val_mul, Units.val_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem matW_mul (i : N.Loc) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i)) (g h : G H.E N.Om) :
     matW N i ρ (g * h) = matW N i ρ g * matW N i ρ h := by
@@ -65,13 +65,13 @@ theorem matW_mul (i : N.Loc) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i)) (g h : 
   rw [← Matrix.map_mul, smul_mul_smul_comm, map_mul, map_mul, mul_inv, Units.val_mul, Units.val_mul]
 
 /- English proof (translation)
-Simplify using `[matW]`.
+Simplify using the standard rewrite rules.
 -/
 theorem matW_one (i : N.Loc) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i)) : matW N i ρ 1 = 1 := by
   simp [matW]
 
 /- English proof (translation)
-Unfold `matT`. Rewrite using `[Matrix.transpose_smul, Matrix.transpose_transpose, Matrix.smul_mul, ← matW_mul, inv_mul_cancel, matW_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem matT_transpose_mul_matW (i : N.Loc) (ρ : G H.E N.Om →* GL (Fin R.r) (N.O i))
     (g : G H.E N.Om) :

@@ -24,7 +24,7 @@ def bil (β : V →ₗ[LL] V' →ₗ[LL] V'') : V ⊗[Qp] F →ₗ[LL] V' ⊗[Qp
       (AlgebraTensorModule.tensorTensorTensorComm Qp Qp LL LL V F V' F).toLinearMap)
 
 /- English proof (translation)
-Simplify using `[bil]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem bil_tmul (β : V →ₗ[LL] V' →ₗ[LL] V'') (v : V) (w : V') (b b' : F) :
     bil Qp F β (v ⊗ₜ[Qp] b) (w ⊗ₜ[Qp] b') = β v w ⊗ₜ[Qp] (b * b') := by
@@ -35,7 +35,7 @@ variable (Qp LL V) in
 def sm : LL ⊗[Qp] F →ₗ[LL] V ⊗[Qp] F →ₗ[LL] V ⊗[Qp] F := bil Qp F (LinearMap.lsmul LL V)
 
 /- English proof (translation)
-Simplify using `[sm]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem sm_tmul (c : LL) (v : V) (b b' : F) :
     sm Qp F LL V (c ⊗ₜ[Qp] b) (v ⊗ₜ[Qp] b') = (c • v) ⊗ₜ[Qp] (b * b') := by
@@ -54,7 +54,7 @@ abbrev mulR (b : F) : V ⊗[Qp] F →ₗ[LL] V ⊗[Qp] F :=
 variable {F}
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b' => simp [TensorProduct.smul_tmul']`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sm_tmul_left (c : LL) (b : F) (x : V ⊗[Qp] F) :
     sm Qp F LL V (c ⊗ₜ[Qp] b) x = c • mulR Qp F LL V b x := by
@@ -64,14 +64,14 @@ theorem sm_tmul_left (c : LL) (b : F) (x : V ⊗[Qp] F) :
   | add x y hx hy => simp only [map_add, hx, hy, smul_add]
 
 /- English proof (translation)
-Rewrite using `[sm_tmul_left, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sm_one_tmul (b : F) (x : V ⊗[Qp] F) :
     sm Qp F LL V ((1 : LL) ⊗ₜ[Qp] b) x = mulR Qp F LL V b x := by
   rw [sm_tmul_left, one_smul]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b' => simp [Algebra.TensorProduct.one_def]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 @[simp] theorem sm_one (x : V ⊗[Qp] F) : sm Qp F LL V 1 x = x := by
   induction x using TensorProduct.induction_on with
@@ -80,11 +80,11 @@ Proceed by induction on `x using TensorProduct.induction_on with`. Consider the 
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add r s hr hs => simp only [map_add, LinearMap.add_apply, hr, hs]`. Consider the case `tmul c b`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add r s hr hs => simp only [map_add, LinearMap.add_apply, hr, hs]`. Consider the case `tmul v b'`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `add r s hr hs => simp only [map_add, hr, hs]`. Consider the case `tmul w b'' => simp [mul_assoc]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem bil_sm_left (β : V →ₗ[LL] V' →ₗ[LL] V'') (r : LL ⊗[Qp] F) (x : V ⊗[Qp] F) (y : V' ⊗[Qp] F) :
     bil Qp F β (sm Qp F LL V r x) y = sm Qp F LL V'' r (bil Qp F β x y) := by
@@ -102,11 +102,11 @@ theorem bil_sm_left (β : V →ₗ[LL] V' →ₗ[LL] V'') (r : LL ⊗[Qp] F) (x 
       | tmul w b'' => simp [mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add r s hr hs => simp only [map_add, LinearMap.add_apply, hr, hs]`. Consider the case `tmul c b`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add r s hr hs => simp only [map_add, LinearMap.add_apply, hr, hs]`. Consider the case `tmul v b'`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `add r s hr hs => simp only [map_add, hr, hs]`. Consider the case `tmul w b'' => simp [mul_left_comm]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem bil_sm_right (β : V →ₗ[LL] V' →ₗ[LL] V'') (r : LL ⊗[Qp] F) (x : V ⊗[Qp] F) (y : V' ⊗[Qp] F) :
     bil Qp F β x (sm Qp F LL V' r y) = sm Qp F LL V'' r (bil Qp F β x y) := by
@@ -124,9 +124,9 @@ theorem bil_sm_right (β : V →ₗ[LL] V' →ₗ[LL] V'') (r : LL ⊗[Qp] F) (x
       | tmul w b'' => simp [mul_left_comm]
 
 /- English proof (translation)
-Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add r s hr hs => simp only [map_add, LinearMap.add_apply, hr, hs, add_mul]`. Consider the case `tmul c b`. Proceed by induction on `s using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add r s hr hs => simp only [map_add, hr, hs, mul_add]`. Consider the case `tmul v b' => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sm_self (r s : LL ⊗[Qp] F) : sm Qp F LL LL r s = r * s := by
   induction r using TensorProduct.induction_on with
@@ -139,7 +139,7 @@ theorem sm_self (r s : LL ⊗[Qp] F) : sm Qp F LL LL r s = r * s := by
     | tmul v b' => simp
 
 /- English proof (translation)
-Rewrite using `[← sm_self]`. Conclude with `bil_sm_left (LinearMap.lsmul LL V) r s x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sm_mul (r s : LL ⊗[Qp] F) (x : V ⊗[Qp] F) :
     sm Qp F LL V (r * s) x = sm Qp F LL V r (sm Qp F LL V s x) := by
@@ -147,16 +147,16 @@ theorem sm_mul (r s : LL ⊗[Qp] F) (x : V ⊗[Qp] F) :
   exact bil_sm_left (LinearMap.lsmul LL V) r s x
 
 /- English proof (translation)
-Rewrite using `[← sm_mul, mul_comm, sm_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sm_comm (r s : LL ⊗[Qp] F) (x : V ⊗[Qp] F) :
     sm Qp F LL V r (sm Qp F LL V s x) = sm Qp F LL V s (sm Qp F LL V r x) := by
   rw [← sm_mul, mul_comm, sm_mul]
 
 /- English proof (translation)
-Proceed by induction on `r using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add r s hr hs => simp only [map_add, LinearMap.add_apply, hr, hs]`. Consider the case `tmul c b`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add r s hr hs => simp only [map_add, hr, hs]`. Consider the case `tmul v b' => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem ext_sm (f : V →ₗ[LL] V') (r : LL ⊗[Qp] F) (x : V ⊗[Qp] F) :
     ext Qp F f (sm Qp F LL V r x) = sm Qp F LL V' r (ext Qp F f x) := by
@@ -170,13 +170,13 @@ theorem ext_sm (f : V →ₗ[LL] V') (r : LL ⊗[Qp] F) (x : V ⊗[Qp] F) :
     | tmul v b' => simp
 
 /- English proof (translation)
-Set `bV` to `Basis.ofVectorSpace LL V`. Establish `key : ∀ x : V ⊗[Qp] F, ∃ s : Finset _, ∀ t : Finset _, s ⊆ t → x = ∑ i ∈ t, sm Qp F LL V (ext Qp F (bV.coord i) x) (bV i ⊗ₜ[Qp] (1 : F))`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨∅, fun t _ => by simp⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy`. Take `⟨s, hs⟩` from `hx`. Take `⟨s', hs'⟩` from `hy`. Use `⟨s ∪ s', fun t ht => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, LinearMap.add_apply, Finset.sum_add_distrib]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hs t (Finset.subset_union_left.trans ht), ← hs' t (Finset.subset_union_right.trans ht)]`. Consider the case `tmul v b`. Use `⟨(bV.repr v).support, fun t ht => ?_⟩` and prove the remaining obligations. Simplify using `only [AlgebraTensorModule.map_tmul, LinearMap.id_apply, sm_tmul, mul_one, Basis.coord_apply, ← TensorProduct.sum_tmul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `conv_lhs => rw [← bV.linearCombination_repr v]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_of_support_subset _ ht _ (by simp)]`. Take `⟨s, hs⟩` from `key x`. Rewrite using `[hs s le_rfl]`. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_ext (x : V ⊗[Qp] F) (h : ∀ φ : V →ₗ[LL] LL, ext Qp F φ x = 0) : x = 0 := by
   classical
@@ -204,9 +204,9 @@ theorem eq_zero_of_forall_ext (x : V ⊗[Qp] F) (h : ∀ φ : V →ₗ[LL] LL, e
   simp [h]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Simplify using `only [map_add, LinearMap.add_apply, Finset.sum_add_distrib]`. Rewrite using `[← hx, ← hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `tmul v b`. Simplify using `only [AlgebraTensorModule.map_tmul, LinearMap.id_apply, sm_tmul, mul_one, Basis.coord_apply, ← TensorProduct.sum_tmul]`. Rewrite using `[bV.sum_repr]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_sum_basis {ι : Type} [Fintype ι] (bV : Basis ι LL V) (x : V ⊗[Qp] F) :
     x = ∑ i, sm Qp F LL V (ext Qp F (bV.coord i) x) (bV i ⊗ₜ[Qp] (1 : F)) := by
@@ -228,13 +228,11 @@ variable {Qp K : Type} [Field Qp] [Field K] [Algebra Qp K]
     {LL : Type} [Field LL] [Algebra Qp LL]
 
 /- English proof (translation)
-Use `haveI : Algebra.IsSeparable Qp K := inferInstance`. Use `haveI : Algebra.FormallyUnramified Qp K := Algebra.FormallyUnramified.of_isSeparable Qp K`. Take `⟨t, ht, ht1⟩` from `(Algebra.FormallyUnramified.iff_exists_tensorProduct (R := Qp) (S := K)).1 inferInstance`. Use `⟨Algebra.TensorProduct.map τ (AlgHom.id Qp K) t, ?_, fun c => ?_⟩` and prove the remaining obligations. Establish `: ∀ t : K ⊗[Qp] K, Algebra.TensorProduct.lift (AlgHom.id Qp LL) τ (fun _ _ => Commute.all _ _) (Algebra.TensorProduct.map τ (AlgHom.id Qp K) t) = τ (Algebra.TensorProduct.lmul' Qp t)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a b => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, ht1, map_one]`. Establish `h` using `congrArg (Algebra.TensorProduct.map τ (AlgHom.id Qp K)) (ht c)`. Rewrite `h` using `[map_mul, map_sub, map_zero, sub_mul, sub_eq_zero]`. Simplify using `only [Algebra.TensorProduct.map_tmul, map_one, AlgHom.id_apply] at h`. Rewrite using `[h, Algebra.smul_def]`.
-
-Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_idem [FiniteDimensional Qp K] [CharZero Qp] (τ : K →ₐ[Qp] LL) :
     ∃ e : LL ⊗[Qp] K, Algebra.TensorProduct.lift (AlgHom.id Qp LL) τ (fun _ _ => Commute.all _ _) e = 1 ∧
@@ -265,9 +263,9 @@ def idem (τ : K →ₐ[Qp] LL) : LL ⊗[Qp] F :=
   Algebra.TensorProduct.map (AlgHom.id Qp LL) (IsScalarTower.toAlgHom Qp K F) (exists_idem τ).choose
 
 /- English proof (translation)
-Take `⟨n, a, c, h⟩` from `TensorProduct.exists_sum_tmul_eq (exists_idem τ).choose`. Use `⟨n, a, c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[idem, h]`. Simplify using `[map_sum]`. Use `(exists_idem τ).choose_spec.1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[h]`. Simplify `this` using `[map_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem idem_repr (τ : K →ₐ[Qp] LL) : ∃ (n : ℕ) (a : Fin n → LL) (c : Fin n → K),
     idem F τ = ∑ i, a i ⊗ₜ[Qp] algebraMap K F (c i) ∧ ∑ i, a i * τ (c i) = 1 := by
@@ -280,7 +278,7 @@ theorem idem_repr (τ : K →ₐ[Qp] LL) : ∃ (n : ℕ) (a : Fin n → LL) (c :
     simpa [map_sum] using this
 
 /- English proof (translation)
-Establish `h` using `congrArg (Algebra.TensorProduct.map (AlgHom.id Qp LL) (IsScalarTower.toAlgHom Qp K F)) ((exists_idem τ).choose_spec.2 c)`. Rewrite `h` using `[map_mul, Algebra.smul_def, map_mul]`. Rewrite using `[Algebra.smul_def]`. Simplify `h` using `[idem]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tmul_mul_idem (τ : K →ₐ[Qp] LL) (c : K) :
     ((1 : LL) ⊗ₜ[Qp] algebraMap K F c) * idem F τ = τ c • idem F τ := by
@@ -293,14 +291,14 @@ theorem tmul_mul_idem (τ : K →ₐ[Qp] LL) (c : K) :
 variable {F}
 
 /- English proof (translation)
-Rewrite using `[← sm_one_tmul, ← sm_mul, tmul_mul_idem, map_smul, LinearMap.smul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulR_sm_idem (τ : K →ₐ[Qp] LL) (c : K) (x : V ⊗[Qp] F) :
     mulR Qp F LL V (algebraMap K F c) (sm Qp F LL V (idem F τ) x) = τ c • sm Qp F LL V (idem F τ) x := by
   rw [← sm_one_tmul, ← sm_mul, tmul_mul_idem, map_smul, LinearMap.smul_apply]
 
 /- English proof (translation)
-Take `⟨n, a, c, h, h1⟩` from `idem_repr F τ`. Rewrite using `[h, map_sum, LinearMap.sum_apply]`. Simplify using `only [sm_tmul_left, hx, smul_smul, ← Finset.sum_smul, h1, one_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sm_idem_of_eigen (τ : K →ₐ[Qp] LL) (x : V ⊗[Qp] F)
     (hx : ∀ c : K, mulR Qp F LL V (algebraMap K F c) x = τ c • x) : sm Qp F LL V (idem F τ) x = x := by
@@ -309,23 +307,23 @@ theorem sm_idem_of_eigen (τ : K →ₐ[Qp] LL) (x : V ⊗[Qp] F)
   simp only [sm_tmul_left, hx, smul_smul, ← Finset.sum_smul, h1, one_smul]
 
 /- English proof (translation)
-The claim follows from `sm_idem_of_eigen τ _ fun c => mulR_sm_idem τ c x`.
+A detailed English derivation is pending.
 -/
 theorem sm_idem_idem (τ : K →ₐ[Qp] LL) (x : V ⊗[Qp] F) :
     sm Qp F LL V (idem F τ) (sm Qp F LL V (idem F τ) x) = sm Qp F LL V (idem F τ) x :=
   sm_idem_of_eigen τ _ fun c => mulR_sm_idem τ c x
 
 /- English proof (translation)
-Use `sm_idem_idem (V := LL) (F := F) τ 1` as an intermediate fact. Simplify `this` using `only [sm_self, mul_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem idem_mul_idem (τ : K →ₐ[Qp] LL) : idem F τ * idem F τ = idem F τ := by
   have := sm_idem_idem (V := LL) (F := F) τ 1
   simpa only [sm_self, mul_one] using this
 
 /- English proof (translation)
-Introduce `h`. Establish `hi : Function.Injective (Algebra.TensorProduct.map (AlgHom.id Qp LL) (IsScalarTower.toAlgHom Qp K F))` using `Module.Flat.lTensor_preserves_injective_linearMap (M := LL) (IsScalarTower.toAlgHom Qp K F).toLinearMap (algebraMap K F).injective`. Establish `h0 : (exists_idem τ).choose = 0` using `hi (by rw [map_zero]; exact h)`. Use `(exists_idem τ).choose_spec.1` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one this`.
+A detailed English derivation is pending.
 -/
 theorem idem_ne_zero [Nontrivial F] (τ : K →ₐ[Qp] LL) : idem F τ ≠ 0 := by
   intro h
@@ -339,7 +337,7 @@ theorem idem_ne_zero [Nontrivial F] (τ : K →ₐ[Qp] LL) : idem F τ ≠ 0 := 
   exact zero_ne_one this
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `: a i ⊗ₜ[Qp] algebraMap K F (c i) = a i • ((1 : LL) ⊗ₜ[Qp] algebraMap K F (c i))`. Simplify using `[TensorProduct.smul_tmul']`. Rewrite using `[this, mul_smul_comm, mul_comm, tmul_mul_idem, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_smul_idem (τ : K →ₐ[Qp] LL) (n : ℕ) (a : Fin n → LL) (c : Fin n → K) :
     idem F τ * ∑ i, a i ⊗ₜ[Qp] algebraMap K F (c i) = (∑ i, a i * τ (c i)) • idem F τ := by
@@ -365,33 +363,33 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V'' : Type} [AddCommGroup V''] [Module LL V''] [Module Qp V''] [IsScalarTower Qp LL V'']
 
 /- English proof (translation)
-The claim follows from `antitone_int_of_succ_le PD.Fil_anti`.
+A detailed English derivation is pending.
 -/
 theorem fil_antitone : Antitone PD.Fil := antitone_int_of_succ_le PD.Fil_anti
 
 /- English proof (translation)
-Introduce `h` and use `PD.not_mem_filtration_two (by simpa using PD.Fil_mul 1 1 _ _ h PD.mem_filtration_one)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_notMem_fil_one : (1 : F) ∉ PD.Fil 1 := fun h =>
   PD.not_mem_filtration_two (by simpa using PD.Fil_mul 1 1 _ _ h PD.mem_filtration_one)
 
 include PD in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨1, 0, fun h => one_notMem_fil_one PD (h ▸ (PD.Fil 1).zero_mem)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem nontrivial_dR : Nontrivial F :=
   ⟨⟨1, 0, fun h => one_notMem_fil_one PD (h ▸ (PD.Fil 1).zero_mem)⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨v ⊗ₜ ⟨b, hb⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem tmul_mem_FilV (v : V) {a : ℤ} {b : F} (hb : b ∈ PD.Fil a) :
     v ⊗ₜ[Qp] b ∈ FilV PD (LL := LL) (V := V) a := ⟨v ⊗ₜ ⟨b, hb⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hx`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simpa using h0`. Consider the case `tmul v b => exact ht v b b.2`. Consider the case `add x y hx hy => rw [map_add]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `ha _ _ hx hy`.
+A detailed English derivation is pending.
 -/
 theorem FilV_induction {a : ℤ} {p : V ⊗[Qp] F → Prop} (h0 : p 0)
     (ht : ∀ v b, b ∈ PD.Fil a → p (v ⊗ₜ[Qp] b)) (ha : ∀ x y, p x → p y → p (x + y))
@@ -403,16 +401,16 @@ theorem FilV_induction {a : ℤ} {p : V ⊗[Qp] F → Prop} (h0 : p 0)
   | add x y hx hy => rw [map_add]; exact ha _ _ hx hy
 
 /- English proof (translation)
-Introduce `a _ hab _ hx` and use `FilV_induction PD (p := fun x => x ∈ FilV PD (LL := LL) (V := V) a) (Submodule.zero_mem _) (fun v _ hb => tmul_mem_FilV PD v (fil_antitone PD hab hb)) (fun _ _ => Submodule.add_mem _) hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FilV_antitone : Antitone (FilV PD (LL := LL) (V := V)) := fun a _ hab _ hx =>
   FilV_induction PD (p := fun x => x ∈ FilV PD (LL := LL) (V := V) a) (Submodule.zero_mem _)
     (fun v _ hb => tmul_mem_FilV PD v (fil_antitone PD hab hb)) (fun _ _ => Submodule.add_mem _) hx
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _⟩`. Consider the case `tmul v b => exact (PD.Fil_exh b).imp fun a ha => tmul_mem_FilV PD v ha`. Consider the case `add x y hx hy`. Take `⟨a, ha⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hy`. Conclude with `⟨min a b, Submodule.add_mem _ (FilV_antitone PD (min_le_left _ _) ha) (FilV_antitone PD (min_le_right _ _) hb)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mem_FilV (x : V ⊗[Qp] F) : ∃ a, x ∈ FilV PD (LL := LL) (V := V) a := by
   induction x using TensorProduct.induction_on with
@@ -425,9 +423,9 @@ theorem exists_mem_FilV (x : V ⊗[Qp] F) : ∃ a, x ∈ FilV PD (LL := LL) (V :
       (FilV_antitone PD (min_le_right _ _) hb)⟩
 
 /- English proof (translation)
-Use `FilV_induction PD (p := fun x => TensorProduct.equivFinsuppOfBasisLeft (N := F) b x i ∈ PD.Fil a) ?_ ?_ ?_ hx` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `v c hc`. Simplify using `using ((PD.Fil a).restrictScalars Qp).smul_mem (b.repr v i) hc`. Introduce `x y hx hy`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `Submodule.add_mem _ hx hy` using `only [map_add, Finsupp.add_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coord_mem_fil {ι : Type} [DecidableEq ι] (b : Basis ι Qp V) {a : ℤ} {x : V ⊗[Qp] F}
     (hx : x ∈ FilV PD (LL := LL) (V := V) a) (i : ι) :
@@ -441,7 +439,7 @@ theorem coord_mem_fil {ι : Type} [DecidableEq ι] (b : Basis ι Qp V) {a : ℤ}
     simpa only [map_add, Finsupp.add_apply] using Submodule.add_mem _ hx hy
 
 /- English proof (translation)
-Set `b` to `Basis.ofVectorSpace Qp V`. Apply `(TensorProduct.equivFinsuppOfBasisLeft (N := F) b).injective` to reduce the goal to its premises. Use extensionality with `i`. Simplify using `using PD.Fil_sep _ fun a => coord_mem_fil PD b (hx a) i`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_forall_mem_FilV (x : V ⊗[Qp] F) (hx : ∀ a, x ∈ FilV PD (LL := LL) (V := V) a) :
     x = 0 := by
@@ -452,9 +450,9 @@ theorem eq_zero_of_forall_mem_FilV (x : V ⊗[Qp] F) (hx : ∀ a, x ∈ FilV PD 
   simpa using PD.Fil_sep _ fun a => coord_mem_fil PD b (hx a) i
 
 /- English proof (translation)
-Use `FilV_induction PD (p := fun x => bil Qp F β x y ∈ FilV PD (LL := LL) (V := V'') (a + b)) (by simp) (fun v c hc => ?_) (fun x x' h h' => ?_) hx` and prove the remaining obligations. Use `FilV_induction PD (p := fun y => bil Qp F β (v ⊗ₜ[Qp] c) y ∈ FilV PD (LL := LL) (V := V'') (a + b)) (by simp) (fun w d hd => ?_) (fun x x' h h' => ?_) hy` and prove the remaining obligations. Rewrite using `[bil_tmul]`. Conclude with `tmul_mem_FilV PD _ (PD.Fil_mul _ _ _ _ hc hd)`. Rewrite using `[map_add]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ h h'`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `Submodule.add_mem _ h h'`.
+A detailed English derivation is pending.
 -/
 theorem bil_mem_FilV (β : V →ₗ[LL] V' →ₗ[LL] V'') {a b : ℤ} {x : V ⊗[Qp] F} {y : V' ⊗[Qp] F}
     (hx : x ∈ FilV PD (LL := LL) (V := V) a) (hy : y ∈ FilV PD (LL := LL) (V := V') b) :
@@ -472,14 +470,14 @@ theorem bil_mem_FilV (β : V →ₗ[LL] V' →ₗ[LL] V'') {a b : ℤ} {x : V �
     exact Submodule.add_mem _ h h'
 
 /- English proof (translation)
-The claim follows from `bil_mem_FilV PD _ hr hy`.
+A detailed English derivation is pending.
 -/
 theorem sm_mem_FilV {a b : ℤ} {r : LL ⊗[Qp] F} {y : V ⊗[Qp] F}
     (hr : r ∈ FilV PD (LL := LL) (V := LL) a) (hy : y ∈ FilV PD (LL := LL) (V := V) b) :
     sm Qp F LL V r y ∈ FilV PD (LL := LL) (V := V) (a + b) := bil_mem_FilV PD _ hr hy
 
 /- English proof (translation)
-Rewrite using `[← sm_self]`. Conclude with `sm_mem_FilV PD hr hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_FilV {a b : ℤ} {r s : LL ⊗[Qp] F}
     (hr : r ∈ FilV PD (LL := LL) (V := LL) a) (hs : s ∈ FilV PD (LL := LL) (V := LL) b) :
@@ -488,7 +486,7 @@ theorem mul_mem_FilV {a b : ℤ} {r s : LL ⊗[Qp] F}
   exact sm_mem_FilV PD hr hs
 
 /- English proof (translation)
-The claim follows from `FilV_induction PD (p := fun x => ext Qp F f x ∈ FilV PD (LL := LL) (V := V') a) (by simp) (fun v _ hb => tmul_mem_FilV PD (f v) hb) (fun _ _ h h' => by rw [map_add]; exact Submodule.add_mem _ h h') hx`.
+A detailed English derivation is pending.
 -/
 theorem ext_mem_FilV (f : V →ₗ[LL] V') {a : ℤ} {x : V ⊗[Qp] F}
     (hx : x ∈ FilV PD (LL := LL) (V := V) a) : ext Qp F f x ∈ FilV PD (LL := LL) (V := V') a :=
@@ -497,7 +495,7 @@ theorem ext_mem_FilV (f : V →ₗ[LL] V') {a : ℤ} {x : V ⊗[Qp] F}
     (fun _ _ h h' => by rw [map_add]; exact Submodule.add_mem _ h h') hx
 
 /- English proof (translation)
-Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_DdR (ρ : Representation LL G V) (x : V ⊗[Qp] F) :
     x ∈ DdR PD ρ ↔ ∀ g, actVdR PD ρ g x = x := by
@@ -505,7 +503,7 @@ theorem mem_DdR (ρ : Representation LL G V) (x : V ⊗[Qp] F) :
     LinearMap.id_apply, sub_eq_zero]
 
 /- English proof (translation)
-Simplify using `only [DdRE, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero, mulVdR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_DdRE (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) (x : V ⊗[Qp] F) :
     x ∈ DdRE PD ρ τ ↔ x ∈ DdR PD ρ ∧ ∀ c : K, mulR Qp F LL V (algebraMap K F c) x = τ c • x := by
@@ -513,16 +511,16 @@ theorem mem_DdRE (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) (x : V ⊗[
     LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero, mulVdR]
 
 /- English proof (translation)
-Simplify using `[actVdR]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem actVdR_tmul (ρ : Representation LL G V) (g : G) (v : V) (b : F) :
     actVdR PD ρ g (v ⊗ₜ[Qp] b) = ρ g v ⊗ₜ[Qp] PD.actdR g b := by
   simp [actVdR]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add r s hr hs => simp only [map_add, LinearMap.add_apply, hr, hs]`. Consider the case `tmul v b'`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add r s hr hs => simp only [map_add, hr, hs]`. Consider the case `tmul w b'' => simp [hβ]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem act_bil (ρ : Representation LL G V) (ρ' : Representation LL G V') (ρ'' : Representation LL G V'')
     (β : V →ₗ[LL] V' →ₗ[LL] V'') (hβ : ∀ g v w, β (ρ g v) (ρ' g w) = ρ'' g (β v w)) (g : G)
@@ -542,21 +540,21 @@ variable (LL) in
 abbrev actR (g : G) : LL ⊗[Qp] F →ₗ[LL] LL ⊗[Qp] F := actVdR PD (Representation.trivial LL G LL) g
 
 /- English proof (translation)
-The claim follows from `act_bil PD _ ρ ρ _ (fun g v w => by simp) g r x`.
+A detailed English derivation is pending.
 -/
 theorem act_sm (ρ : Representation LL G V) (g : G) (r : LL ⊗[Qp] F) (x : V ⊗[Qp] F) :
     actVdR PD ρ g (sm Qp F LL V r x) = sm Qp F LL V (actR PD LL g r) (actVdR PD ρ g x) :=
   act_bil PD _ ρ ρ _ (fun g v w => by simp) g r x
 
 /- English proof (translation)
-Rewrite using `[← sm_self, act_sm, sm_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem actR_mul (g : G) (r s : LL ⊗[Qp] F) :
     actR PD LL g (r * s) = actR PD LL g r * actR PD LL g s := by
   rw [← sm_self, act_sm, sm_self]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add r s hr hs => simp only [map_add, hr, hs]`. Consider the case `tmul v b' => simp [hf]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem act_ext (ρ : Representation LL G V) (ρ' : Representation LL G V') (f : V →ₗ[LL] V')
     (hf : ∀ g v, f (ρ g v) = ρ' g (f v)) (g : G) (x : V ⊗[Qp] F) :
@@ -567,13 +565,13 @@ theorem act_ext (ρ : Representation LL G V) (ρ' : Representation LL G V') (f :
   | tmul v b' => simp [hf]
 
 /- English proof (translation)
-Set `b` to `Module.Basis.ofVectorSpace Qp LL`. Set `e` to `TensorProduct.equivFinsuppOfBasisLeft (N := F) b`. Establish `he : ∀ g y i, e (actR PD LL g y) i = PD.actdR g (e y i)`. Introduce `g y i`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul v c`. Establish `: ∀ (q : Qp) (z : F), PD.actdR g (q • z) = q • PD.actdR g z` using `fun q z => ((PD.actdR g).toLinearMap.restrictScalars Qp).map_smul q z`. Simplify using `[e, this]`. Consider the case `add a b ha hb => simp only [map_add, Finsupp.add_apply, ha, hb]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `hx' : x = (e x).sum fun i c => b i ⊗ₜ[Qp] c`. Rewrite using `[← TensorProduct.equivFinsuppOfBasisLeft_symm_apply]`. Conclude with `(e.symm_apply_apply x).symm`. Use `choose c hc using fun i => PD.invdR (e x i) fun g => by rw [← he, hx]`. Set `s` to `(e x).support`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨s.card, fun j => b (s.equivFin.symm j), fun j => c (s.equivFin.symm j), ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [hx']`. Rewrite using `[Finsupp.sum, ← Finset.sum_coe_sort]`. Use `Fintype.sum_equiv s.equivFin _ _ fun i => ?_` and prove the remaining obligations. Simplify using `[hc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_of_actR_fixed (x : LL ⊗[Qp] F) (hx : ∀ g, actR PD LL g x = x) :
     ∃ (n : ℕ) (a : Fin n → LL) (c : Fin n → K), x = ∑ i, a i ⊗ₜ[Qp] algebraMap K F (c i) := by
@@ -611,7 +609,7 @@ def FilSpans (ρ : Representation LL G V) : Prop :=
         y = ∑ i, mulR Qp F LL V (b i) (d i)
 
 /- English proof (translation)
-Introduce `y` and use `by obtain ⟨a, ha⟩ := exists_mem_FilV PD (LL := LL) y obtain ⟨m, k, b, d, h1, h2⟩ := h a y ha exact ⟨m, b, d, fun i => (h1 i).1, h2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem FilSpans.spans {ρ : Representation LL G V} (h : FilSpans PD ρ) : Spans PD ρ := fun y => by
   obtain ⟨a, ha⟩ := exists_mem_FilV PD (LL := LL) y
@@ -619,33 +617,31 @@ theorem FilSpans.spans {ρ : Representation LL G V} (h : FilSpans PD ρ) : Spans
   exact ⟨m, b, d, fun i => (h1 i).1, h2⟩
 
 /- English proof (translation)
-Establish `hv : ∀ a (x : V ⊗[Qp] F), bil Qp F β x (w a ⊗ₜ[Qp] (1 : F)) = ext Qp F (v.coord a) x`. Introduce `a x`. Establish `: ∀ x, β x (w a) = v.coord a x` using `fun x => by`. Establish `h : β.flip (w a) = v.coord a` using `v.ext fun b => by`. Simplify using `[hvw, Finsupp.single_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `LinearMap.congr_fun h x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]`. Consider the case `tmul x b => simp [this]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hw : ∀ a (y : V' ⊗[Qp] F), bil Qp F β (v a ⊗ₜ[Qp] (1 : F)) y = ext Qp F (w.coord a) y`. Introduce `a y`. Establish `: ∀ y, β (v a) y = w.coord a y` using `fun y => by`. Establish `h : β (v a) = w.coord a` using `w.ext fun b => by`. Simplify using `[hvw, Finsupp.single_apply, eq_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Proceed by induction.
 
-Conclude with `LinearMap.congr_fun h y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul x b => simp [this]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : ∀ x, sm Qp F LL V e x = ∑ i, sm Qp F LL V (bil Qp F β x (d' i)) (d i)`. Introduce `x`. Establish `h1 : ∀ i, bil Qp F β x (d' i) = e * ∑ a, ext Qp F (v.coord a) x * r a i`. Introduce `i`. Rewrite using `[hd', bil_sm_right, sm_self, map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [bil_sm_right, sm_self, hv, mul_comm]`. Simplify using `only [h1, sm_mul, map_sum, LinearMap.sum_apply]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => rw [eq_sum_basis v x, ← he, sm_mul, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sm_comm e (ext Qp F (v.coord a) x), hr, map_sum, map_sum]`. Establish `hed' : ∀ i, sm Qp F LL V' e (d' i) = d' i` using `fun i => by rw [hd', ← sm_mul, he]`. Establish `hδ : ∀ i j, bil Qp F β (d j) (d' i) = if j = i then e else 0`. Introduce `i j`. Establish `h` using `hind (fun i => bil Qp F β (d j) (d' i) - if j = i then 1 else 0) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_sub, LinearMap.sub_apply, Finset.sum_sub_distrib, ← hx, hed]`. Rewrite using `[Finset.sum_eq_single j (fun b _ hb => by simp [Ne.symm hb]) (by simp)]`. Use the proof step `simp) i`. Rewrite `h` using `[mul_sub, sub_eq_zero, ← sm_self, ← bil_sm_right, hed']`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hz : ∀ z, sm Qp F LL V' e z = z → (∀ j, bil Qp F β (d j) z = 0) → z = 0`. Introduce `z hz h`. Establish `: ∀ a, ext Qp F (w.coord a) z = 0`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hw, ← hz, bil_sm_right, ← bil_sm_left, hr, map_sum, LinearMap.sum_apply]`. Simplify using `[bil_sm_left, h]`. Rewrite using `[eq_sum_basis w z]`. Simplify using `[this]`. Use `⟨fun i => (mem_DdR PD ρ' _).2 fun g => ?_, hδ, fun y => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← sub_eq_zero]`. Use `hz _ ?_ fun j => ?_` and prove the remaining obligations. Rewrite using `[map_sub, hed', ← heG g, ← act_sm, hed']`. Establish `h` using `act_bil PD ρ ρ' (Representation.trivial LL G LL) β (fun g v w => by simp [hβ]) g (d j) (d' i)`. Rewrite `h` using `[(mem_DdR PD ρ _).1 (hd j)]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub, ← h, hδ]`. Use `split_ifs`. Conclude with `sub_eq_zero.2 (heG g)`. Simplify using the standard rewrite rules. Rewrite using `[← sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hz _ ?_ fun j => ?_` and prove the remaining obligations. Rewrite using `[map_sub, ← sm_mul, he, map_sum]`. Simplify using `only [sm_comm e, hed']`. Rewrite using `[map_sub, map_sum]`. Simplify using `only [bil_sm_right, hδ, sm_self]`.
-
-Rewrite using `[Finset.sum_eq_single j (fun b _ hb => by simp [Ne.symm hb]) (by simp)]`. Simplify using `[mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dual_family (ρ : Representation LL G V) (ρ' : Representation LL G V') (β : V →ₗ[LL] V' →ₗ[LL] LL)
     (hβ : ∀ g x y, β (ρ g x) (ρ' g y) = β x y) {α ι : Type} [Fintype α] [Fintype ι] [DecidableEq α]
@@ -728,9 +724,9 @@ theorem dual_family (ρ : Representation LL G V) (ρ' : Representation LL G V') 
       simp [mul_comm]
 
 /- English proof (translation)
-Set `v` to `Module.finBasis LL V`. Set `E` to `LinearEquiv.ofBijective β.flip hβ`. Use `⟨v, v.dualBasis.map E.symm, fun a b => ?_⟩` and prove the remaining obligations. Establish `: β.flip (E.symm (v.dualBasis b)) = v.dualBasis b` using `E.apply_symm_apply _`. Establish `h` using `LinearMap.congr_fun this (v a)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[LinearMap.flip_apply]`. Rewrite using `[Basis.map_apply, h, Basis.dualBasis_apply_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_dual_bases [FiniteDimensional LL V] (β : V →ₗ[LL] V' →ₗ[LL] LL)
     (hβ : Function.Bijective β.flip) : ∃ (v : Basis (Fin (finrank LL V)) LL V)
@@ -746,7 +742,7 @@ theorem exists_dual_bases [FiniteDimensional LL V] (β : V →ₗ[LL] V' →ₗ[
 variable [FiniteDimensional Qp K] [CharZero Qp]
 
 /- English proof (translation)
-Take `⟨n, a, c, h, -⟩` from `idem_repr F τ`. Rewrite using `[h]`. Use `Submodule.sum_mem _ fun i _ => tmul_mem_FilV PD _ ?_` and prove the remaining obligations. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem _ _ PD.one_mem`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_mem_FilV (τ : K →ₐ[Qp] LL) : idem F τ ∈ FilV PD (LL := LL) (V := LL) 0 := by
   obtain ⟨n, a, c, h, -⟩ := idem_repr F τ
@@ -756,7 +752,7 @@ theorem idem_mem_FilV (τ : K →ₐ[Qp] LL) : idem F τ ∈ FilV PD (LL := LL) 
   exact Submodule.smul_mem _ _ PD.one_mem
 
 /- English proof (translation)
-Take `⟨n, a, c, h, -⟩` from `idem_repr F τ`. Rewrite using `[h, map_sum]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem actR_idem (τ : K →ₐ[Qp] LL) (g : G) : actR PD LL g (idem F τ) = idem F τ := by
   obtain ⟨n, a, c, h, -⟩ := idem_repr F τ
@@ -764,7 +760,7 @@ theorem actR_idem (τ : K →ₐ[Qp] LL) (g : G) : actR PD LL g (idem F τ) = id
   simp
 
 /- English proof (translation)
-Simplify using `using sm_mem_FilV PD (idem_mem_FilV PD τ) hx`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sm_idem_mem_FilV (τ : K →ₐ[Qp] LL) {a : ℤ} {x : V ⊗[Qp] F}
     (hx : x ∈ FilV PD (LL := LL) (V := V) a) :
@@ -772,7 +768,7 @@ theorem sm_idem_mem_FilV (τ : K →ₐ[Qp] LL) {a : ℤ} {x : V ⊗[Qp] F}
   simpa using sm_mem_FilV PD (idem_mem_FilV PD τ) hx
 
 /- English proof (translation)
-Rewrite using `[mem_DdRE, mem_DdR]`. Use `⟨fun g => ?_, fun c => mulR_sm_idem τ c x⟩` and prove the remaining obligations. Rewrite using `[act_sm, actR_idem, (mem_DdR PD ρ x).1 hx]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sm_idem_mem_DdRE (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) {x : V ⊗[Qp] F}
     (hx : x ∈ DdR PD ρ) : sm Qp F LL V (idem F τ) x ∈ DdRE PD ρ τ := by
@@ -781,7 +777,7 @@ theorem sm_idem_mem_DdRE (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) {x 
   rw [act_sm, actR_idem, (mem_DdR PD ρ x).1 hx]
 
 /- English proof (translation)
-The claim follows from `sm_idem_of_eigen τ x ((mem_DdRE PD ρ τ x).1 hx).2`.
+A detailed English derivation is pending.
 -/
 theorem sm_idem_of_mem_DdRE (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) {x : V ⊗[Qp] F}
     (hx : x ∈ DdRE PD ρ τ) : sm Qp F LL V (idem F τ) x = x :=
@@ -796,9 +792,9 @@ structure Adapted (ρ : Representation LL G V) (τ : K →ₐ[Qp] LL) {ι : Type
       sm Qp F LL V (idem F τ) y = ∑ i, sm Qp F LL V (r i) (d i)
 
 /- English proof (translation)
-Use `⟨?_, idem_mem_FilV PD τ⟩` and prove the remaining obligations. Use `sm_idem_mem_DdRE PD (Representation.trivial LL G LL) τ (x := 1) ((mem_DdR PD _ _).2 fun g => by simp [Algebra.TensorProduct.one_def])` as an intermediate fact. Rewrite `this` using `[sm_self, mul_one]`. Then use the resulting hypothesis. Use `indep r h i := by`. Rewrite using `[mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `[sm_self]`. Use `span n y hy := ⟨fun _ => y, fun _ => by simpa using hy, by simp [sm_self, mul_comm]⟩`.
+A detailed English derivation is pending.
 -/
 theorem adapted_trivial (τ : K →ₐ[Qp] LL) :
     Adapted PD (Representation.trivial LL G LL) τ (fun _ : Unit => idem F τ) (fun _ => 0) where

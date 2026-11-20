@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.InvSubOneMem
 open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheory.Count GlobalTheory.FlagMeas
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.GaugeSubLip.chart_almost_isometric` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FUnitarySubgroupChartAlmostIsometricNearOne.lean&line=170#L170)
 -/

@@ -5,15 +5,15 @@ import GroundTheory.LocalFields.UnramifiedGalois
 open MeasureTheory ValuativeRel PositivityTheory.Rg.Tf.Loc
 
 /- English proof (translation)
-Introduce `_ k E _ _ _ _ _ _ _ _ _ _ _ n`. Set `_` to `GroundTheory.LocalField.nontriviallyNormedField k`. Use `GroundTheory.LocalField.completeSpace_nontriviallyNormedField k` as an intermediate fact. Use `GroundTheory.LocalField.t2Space_of_isNonarchimedeanLocalField E` as an intermediate fact. Establish `h : Topology.IsClosedEmbedding (algebraMap k E)` using `LinearMap.isClosedEmbedding_of_injective (f := Algebra.linearMap k E) (LinearMap.ker_eq_bot.mpr (algebraMap k E).injective)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : Topology.IsEmbedding ((algebraMap k E).mapMatrix.toMonoidHom : Matrix (Fin n) (Fin n) k →* Matrix (Fin n) (Fin n) E)` using `Topology.IsEmbedding.piMap (f := fun _ : Fin n => Pi.map fun _ : Fin n => algebraMap k E) fun _ => Topology.IsEmbedding.piMap fun _ => h.isEmbedding`. Use `⟨hM.units_map, ?_⟩` and prove the remaining obligations. Establish `e : Set.range (incl : GL (Fin n) k → GL (Fin n) E) = ⋂ i, ⋂ j, (fun g : GL (Fin n) E => (g : Matrix (Fin n) (Fin n) E) i j) ⁻¹' Set.range (algebraMap k E)`. Use extensionality with `g`. Simplify using `only [Set.mem_iInter, Set.mem_preimage]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ i j`. Conclude with `⟨(y : Matrix (Fin n) (Fin n) k) i j, rfl⟩`. Introduce `h choose M hM using h`. Establish `e : (algebraMap k E).mapMatrix (Matrix.of M) = (g : Matrix (Fin n) (Fin n) E)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `i j`. Conclude with `hM i j`. Establish `hd : (Matrix.of M).det ≠ 0` using `fun h0 => by`. Establish `h1` using `RingHom.map_det (algebraMap k E) (Matrix.of M)`. Rewrite `h1` using `[h0, map_zero, e]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `(Matrix.GeneralLinearGroup.det g).ne_zero h1.symm`. Conclude with `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero _ hd, Units.ext e⟩`. Rewrite using `[e]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => h.isClosed_range.preimage (Units.continuous_val.matrix_elem i j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.Orb.inclClosed :
     UpperTheory.V.Z.Tf.Orb.ExtCont → UpperTheory.V.Z.Tf.Orb.InclClosed := by

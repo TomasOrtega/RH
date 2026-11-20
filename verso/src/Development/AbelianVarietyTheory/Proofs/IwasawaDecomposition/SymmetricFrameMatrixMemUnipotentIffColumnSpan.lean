@@ -15,13 +15,13 @@ open Formalism.MainNotions.S Formalism.L2.SG.Pf.RowDictPf Formalism.L2.SG.Pf.Red
 variable {I : AutInst} {w : HeightOneSpectrum (𝓞 I.E)} {p m : ℕ}
 
 /- English proof (translation)
-Establish `: NeZero p` using `⟨hp.ne_zero⟩`. Establish `h2 : ∑ j, (c j : I.E ⊗[I.F] Af I.F) • u j - ∑ j, ((((c j : ℤ) : ZMod p).val : ℕ) : I.E ⊗[I.F] Af I.F) • u j ∈ Lq I w`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← sub_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Wq_smul ?_ (hu j)` and prove the remaining obligations. Establish `hk : c j - ((((c j : ZMod p)).val : ℕ) : ℤ) = (c j / p) * p`. Rewrite using `[ZMod.val_intCast, Int.emod_def]`. Expand and normalize the polynomial expressions, which then agree. Establish `e : (c j : I.E ⊗[I.F] Af I.F) - ((((c j : ℤ) : ZMod p).val : ℕ) : I.E ⊗[I.F] Af I.F) = ((c j / p : ℤ) : I.E ⊗[I.F] Af I.F) * (p : I.E ⊗[I.F] Af I.F)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `congrArg (Int.cast : ℤ → I.E ⊗[I.F] Af I.F) hk` as an intermediate fact. Simplify `this` using `only [Int.cast_sub, Int.cast_natCast, Int.cast_mul]`. Rewrite using `[e]`. Conclude with `Wq_mul (natCast_Wq hp hcard) (intCast_int _)`. Use `add_mem h h2` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `show v - _ ∈ _`. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem rep_of_int (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p)
     {u : Fin m → Fin I.n → I.E ⊗[I.F] Af I.F} (hu : ∀ j, u j ∈ I.Lf) {v : Fin I.n → I.E ⊗[I.F] Af I.F}
@@ -48,21 +48,19 @@ theorem rep_of_int (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p
   abel
 
 /- English proof (translation)
-Take `⟨y1, hy1, y2, hy2, rfl⟩` from `Submodule.mem_sup.1 hy`. Establish `key : ∃ c : Fin m → ℤ, (∀ j, j ∉ S → c j = 0) ∧ y1 - ∑ j, (c j : I.E ⊗[I.F] Af I.F) • u j ∈ Lq I w` using `by clear hy`. Proceed by induction on `hy1 using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, hi, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨Pi.single i 1, fun j hj => Pi.single_eq_of_ne (fun e : j = i => hj (by rw [e]; exact hi)) _, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.sum_eq_single i (fun j hj => by simp [hj])]`. Simplify using the standard rewrite rules. Consider the case `zero => exact ⟨0, fun _ _ => rfl, by simp⟩`. Consider the case `add x z _ _ hx hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Take `⟨c, hc0, hc⟩` from `hx`. Take `⟨d, hd0, hd⟩` from `hz`. Use `⟨c + d, fun j hj => by simp [hc0 j hj, hd0 j hj], ?_⟩` and prove the remaining obligations. Use `add_mem hc hd` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [Pi.add_apply, Int.cast_add, add_smul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws. Consider the case `smul s x _ hx`. Take `⟨c, hc0, hc⟩` from `hx`. Take `⟨_, t, -, ht⟩` from `congW_exists (w := w) hp hcard s.2`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun j => t * c j, fun j hj => by simp [hc0 j hj], ?_⟩` and prove the remaining obligations. Establish `h1` using `(Lq I w).smul_mem s hc`. Establish `h2 : ((s : I.E ⊗[I.F] Af I.F) - (t : I.E ⊗[I.F] Af I.F)) • ∑ j, (c j : I.E ⊗[I.F] Af I.F) • u j ∈ Lq I w`. Use `Wq_smul ht (sum_mem fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Int.cast_smul_eq_zsmul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zsmul_mem (hu j) _`. Use `add_mem h1 h2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `show (s : I.E ⊗[I.F] Af I.F) • x - _ = (s : I.E ⊗[I.F] Af I.F) • (x - _) + _`. Simplify using `only [Int.cast_mul, mul_smul, ← Finset.smul_sum, smul_sub, sub_smul]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result.
 
-Normalize the expressions using the abelian group laws. Take `⟨c, hc0, hc⟩` from `key`. Use `⟨c, hc0, ?_⟩` and prove the remaining obligations. Use `add_mem hc hy2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
-
-Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem int_comb (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p)
     {u : Fin m → Fin I.n → I.E ⊗[I.F] Af I.F} (hu : ∀ j, u j ∈ I.Lf) (S : Set (Fin m))
@@ -110,23 +108,23 @@ theorem int_comb (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p)
   abel
 
 /- English proof (translation)
-Establish `: NeZero p` using `⟨hp.ne_zero⟩`. Establish `: Fact (1 < p)` using `⟨hp.one_lt⟩`. Establish `hu : ∀ j, u j ∈ I.Lf` using `fun j => by`. Establish `h1 : u j - _ ∈ I.Lf` using `lamAf_mono I (wLat0_le I w) (hP j)`. Establish `h2 : ∑ k, ((((P : Matrix (Fin m) (Fin m) (ZMod p)) k j).val : ℕ) : I.E ⊗[I.F] Af I.F) • iv I (b k) ∈ I.Lf` using `sum_mem fun k _ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem (DictLat.iv_mem I (hb.1 k)) _`. Simplify using `using add_mem h1 h2`. Establish `e1 : ∑ j, ((((1 : Matrix (Fin m) (Fin m) (ZMod p)) j i).val : ℕ) : I.E ⊗[I.F] Af I.F) • u j = u i`. Rewrite using `[Fintype.sum_eq_single i (fun j hj => by simp [Matrix.one_apply_ne hj])]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.one_apply_eq, ZMod.val_one, Nat.cast_one, one_smul]`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : ∑ j, (((N j i).val : ℕ) : I.E ⊗[I.F] Af I.F) • u j - u i ∈ Submodule.span (IntAf I.F I.E) (u '' S)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1, ← Finset.sum_sub_distrib]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j ∈ S`. Rewrite using `[Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`. Establish `hm : u j ∈ Submodule.span (IntAf I.F I.E) (u '' S)` using `Submodule.subset_span ⟨j, hj, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_mem (nsmul_mem hm _) (nsmul_mem hm _)`. Rewrite using `[h j hj, sub_self]`. Conclude with `zero_mem _`. Use `Submodule.add_mem_sup h1 hN` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Normalize the expressions using the abelian group laws. Introduce `h j hj`. Take `⟨c, hc0, hc⟩` from `int_comb hp hcard hu S h`. Establish `h2 : A *ᵥ u i - ∑ l, (((c + Pi.single i 1 : Fin m → ℤ) l : ℤ) : I.E ⊗[I.F] Af I.F) • u l ∈ Lq I w`. Use `hc using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, Int.cast_add, add_smul, Finset.sum_add_distrib]`. Rewrite using `[Fintype.sum_eq_single i (f := fun l => (((Pi.single i 1 : Fin m → ℤ) l : ℤ) : I.E ⊗[I.F] Af I.F) • u l) (fun l hl => by simp [hl])]`. Simplify using `only [Pi.single_eq_same, Int.cast_one, one_smul]`. Normalize the expressions using the abelian group laws. Establish `h3` using `rep_unique hp hcard hm hb (rep_comp hp hcard hb.1 hN hP) (rep_comp hp hcard hb.1 (rep_of_int hp hcard hu h2) hP)`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h4` using `congrArg (fun v => ((P⁻¹ : GL (Fin m) (ZMod p)) : Matrix (Fin m) (Fin m) (ZMod p)) *ᵥ v) h3`. Simplify using `only [Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec] at h4`. Establish `h5` using `congrFun h4 j`. Simplify using `only [Pi.add_apply, hc0 j hj, zero_add] at h5`. Rewrite using `[h5]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `e : j = i`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[e]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cols_iff (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p) (hm : m = I.n)
     {b : Fin m → Fin I.n → I.E} (hb : IsRedBasis0 I w b) (P : GL (Fin m) (ZMod p))
@@ -185,13 +183,13 @@ theorem cols_iff (hp : p.Prime) (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p) 
     · simp [e]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i j hj`. Break down `lt_trichotomy j i with h | h | h` into its components or cases. Choose the witnesses or unpack the hypotheses as in `⟨a, b, c⟩ : ρ ≤ j.1 ∧ j.1 < ρ + k ∧ i.1 = ρ + k := by`. Assume the negation of the conclusion as `hh`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hj ⟨h, hh⟩`. Rewrite using `[h2 j i a b c, Matrix.one_apply_ne h.ne]`. Substitute `h` using the available equality. Rewrite using `[unip_diag h1, Matrix.one_apply_eq]`. Rewrite using `[unip_lower h1 h, Matrix.one_apply_ne h.ne']`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `⟨⟨fun i j hij => ?_, fun i => ?_⟩, fun i j ha hb hc => ?_⟩` and prove the remaining obligations. Establish `hij' : j.val < i.val` using `hij`. Rewrite using `[h j i (fun hh => by have := hh.1; omega), Matrix.one_apply_ne (fun e => by rw [e] at hij'; omega)]`. Rewrite using `[h i i (fun hh => lt_irrefl _ hh.1), Matrix.one_apply_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h j i (fun hh => hh.2 ⟨ha, hb, hc⟩), Matrix.one_apply_ne (fun e => by rw [e] at hb; omega)]`.
+A detailed English derivation is pending.
 -/
 theorem mem_unipSym_iff {κ : Type} [CommRing κ] {r ρ k : ℕ} (N : GL (Fin r) κ) :
     N ∈ unipSym κ r ρ k ↔ ∀ i j : Fin r, j ∉ {j | symAllowed ρ k i j} →
@@ -220,11 +218,11 @@ namespace GlobalTheory.Mem.GroupLoc
 open Formalism.L2.SG.Pf.RowDictPf in
 
 /- English proof (translation)
-Introduce `D X h hι hg k _ kv N hN`. Use `choose b hb using fun kv => Formalism.L2.SG.Pf.AllRowsRhoX.exists_b X kv`. Take `⟨P, hP⟩` from `GlobalTheory.T.symmetricFrame_reduces_to_basis_mod_place D X h hι b (fun kv => by`. Unfold `IsRedBasis`. Rewrite using `[wLat_eq X]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb kv) hg 1`. Rewrite using `[Coords.mem_unipSym_iff]`. Unfold `ColCond ModW`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Establish `hP'` using `hP kv`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hN'` using `hN i`. Unfold `wLf at hP' hN' ⊢`. Rewrite `hP'`, `hN'`, the goal using `[wLat_eq X]`. Conclude with `Coords.cols_iff (w := wB X (D.naut.plGw kv.1 kv.2)) (D.host.g_prime kv.1) (by rw [card_wB, card_res_host]) X.n_eq.symm (hb kv) (P kv) hP' (X.B.I.fmat k) _ i hN' _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_unipSym_iff_colCond : ∀ (D : D7) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), (∀ x : X.B.I.E, HEq (X.ιE x) x) → (∀ kv : (Σ k : Fin 2, D.nd.PlG k), ((D.host.g kv.1 : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw kv.1 kv.2).asIdeal) → ∀ k ∈ X.B.I.Kset, ∀ (kv : Σ k : Fin 2, D.nd.PlG k) (N : GL (Fin D.R.r) (ZMod (D.host.g kv.1))), GlobalTheory.Mem.SymFrame.IsMatIn X (D.naut.plGw kv.1 kv.2) (GlobalTheory.Mem.SymFrame.symVec X (D.naut.plGw kv.1 kv.2)) k (N : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1))) → (N ∈ unipSym (ZMod (D.host.g kv.1)) D.R.r D.R.rS D.R.k ↔ GlobalTheory.Mem.GroupLoc.ColCond X (D.naut.plGw kv.1 kv.2) k) := by
   intro D X h hι hg k _ kv N hN

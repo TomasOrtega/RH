@@ -18,11 +18,11 @@ open GlobalTheory.XTermFinParts
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `h0 : ∀ a, ∑ i, ∑ k, incM F H.ι i a * incM F X.J i k * cA σ (incV F H.y k) = 0` using `fun a => by`. Establish `h` using `congrArg (inclR (F := F) (AF F)) (hH.orth (Pi.single a 1)).2`. Rewrite `h` using `[map_zero, Matrix.mulVec_single_one]`. Rewrite using `[← h]`. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, Finset.mul_sum, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `h1 : hTens (cA σ) (incM F X.J) JB (incM F H.ι * z) (l • Matrix.vecMulVec (incV F H.y) y) = ∑ a, ∑ j, ∑ m, (∑ i, ∑ k, incM F H.ι i a * incM F X.J i k * cA σ (incV F H.y k)) * (z a j * JB j m * cA σ l * cA σ (y m))`. Simplify using `only [hTens, Matrix.mul_apply, Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul, map_mul, Finset.sum_mul]`. Simplify using `only [← Finset.sum_product', Finset.univ_product_univ]`. Use `Fintype.sum_equiv ⟨fun p => (p.2.2.2.2, p.2.1, p.2.2.2.1, p.1, p.2.2.1), fun p => (p.2.2.2.1, p.2.1, p.2.2.2.2, p.2.2.1, p.1), fun _ => rfl, fun _ => rfl⟩ _ _ fun p => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Equiv.coe_fn_mk]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[symp, h1]`. Simplify using `[h0]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem symp_dual_eq_zero {B : Base F E} {n n₁ d : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁} {H : Plane E n n₁} {i₀ i₁ : ℕ}
     (hH : H.IsAdapted σ B X X₁ i₀ i₁) (JB : Matrix (Fin d) (Fin d) (AE F E)) (z : Matrix (Fin n₁) (Fin d) (AE F E))
@@ -53,15 +53,13 @@ namespace GlobalTheory.ConeFinSlices
 open GlobalTheory.XTermFinParts
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B a b G G₁ H H' hC e he K _ _ hK _ _ X om om' _ _ hT _ Φ hΦ h`. Establish `hψ` using `hT.base.std`. Establish `hΦ' : Φ ∈ schA F (Fin (b + 2) × Fin (a + (b + 2)))`. Use `(Submodule.span_le.2 ?_ : PolData B G.M' ≤ _) hΦ.1` and prove the remaining obligations. Introduce and unpack `_ ⟨f, -, φ, hφ, hv, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hφ ((hv.and hT.geo.hM'.std).mono fun v h => h.1.trans h.2)`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) (AE F E)`. Establish `hs : Continuous (G₁.M'.co.e.symm : _ → Matrix (Fin b) (Fin (a + b)) (AE F E))` using `IsModuleTopology.continuous_of_linearMap G₁.M'.co.e.symm.toLinearMap`. Establish `c : Continuous fun w => incM F H.ι * G₁.M'.co.e.symm w * (incM F H'.ι)ᵀ` using `(continuous_const.matrix_mul hs).matrix_mul continuous_const`. Establish `hN` using `(c.tendsto' 0 0 (by simp)).eventually (eventually_rho_om_eq hT.base hT.geo.hV' hK G.M' hT.weil' hΦ' h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, c, φ, hφ, hD⟩` from `exists_parts hψ hN`. Use `⟨m, φ, hφ, fun k l s => ?_⟩` and prove the remaining obligations. Establish `key` using `hD (e (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, h) Φ))) fun w hw h0 => by`. Establish `hΨ : om' (k.1, h) Φ ∈ schA F _` using `(IsUWeilPair.isUSplitting hT.weil').pres (k.1, h) Φ hΦ'`. Establish `h1` using `hw (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, ← map_smul, h0, map_zero, Matrix.mul_zero, Matrix.zero_mul]) k.1 k.2`. Establish `h2` using `he.Heisenberg₂ (G₁.M'.co.e.symm w) _ (GlobalTheory.HeisSchA.rho_mem_schA G.M' B.ψ hψ (shiftB σ H H' l) _ hΨ)`. Rewrite `h2` using `[rho_comm G.M'.co B.ψ (by rw [Matrix.mul_assoc]; exact symp_dual_eq_zero hC.hH _ _ _ _), h1, show G₁.M'.co.rho B.ψ (G₁.M'.co.e.symm w) = schr B.ψ w from congrArg (schr B.ψ) (G₁.M'.co.e.apply_symm_apply w)]`. Conclude with `h2.symm`. Use `(Submodule.mem_span_range_iff_exists_fun ℂ).2 ⟨fun j => e (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, h) Φ)) (fun q => ((s q, c j q) : AdeleRing (𝓞 F) F)), ?_⟩` and prove the remaining obligations.
-
-Use function extensionality and compare the values at `z`. Rewrite using `[Finset.sum_apply]`. Conclude with `(key fun i => ((s i, z i) : AdeleRing (𝓞 F) F)).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_slices : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b)
     (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

@@ -5,15 +5,13 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Limits NumberField Recipr
 namespace GlobalTheory.LocM
 
 /- English proof (translation)
-Introduce `s`. Use `t.act.hom a` as an intermediate fact. Use `show dualApp l le_rfl ((omegaMap (t.act.act a)).app T s) = _`. Rewrite using `[hl]`. Take `⟨hT, W, hW, n, f, hf⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `ev (u : TanM (affPt hT) t.G) : Γ(omega t.G, T) →ₗ[Γ(X, T)] Γ(X, T)` to `{ toFun := tanEv t (isTan_tv u) (le_preimage_affPt hT) map_add' := tanEv_add t _ _ map_smul' := fun a s => (tanEv_smul t _ _ a s).trans (congrArg (· * _) ((valR_eq _ _ (le_preimage_affPt hT) a).symm.trans (valR_affPt hT a))) }`. Use `LinearMap.congr_fun (f := ev v ∘ₗ GlobalTheory.QCoh.appLinear (omegaMap (t.act.act a)) T) (g := ev (actR t.act a v)) ((hf.basis le_rfl).ext fun b => ?_) s` and prove the remaining obligations. Rewrite using `[IsFrame.basis_apply, GlobalTheory.Twist.resM_self]`. Establish `e : unitSec t.G ≫ (t.act.act a).left = unitSec t.G` using `congrArg (fun z => z.left) (IsMonHom.one_hom (t.act.act a))`. Establish `hW' : T ≤ unitSec t.G ⁻¹ᵁ ((t.act.act a).left ⁻¹ᵁ W)` using `fun z hz => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hW hz` as an intermediate fact. Rewrite `this` using `[← e]`. Conclude with `this`. Use `show tanEv t (isTan_tv v) (le_preimage_affPt hT) ((omegaMap (t.act.act a)).app T (dUnit t.G hW (f b))) = tanEv t (isTan_tv (actR t.act a v)) (le_preimage_affPt hT) (dUnit t.G hW (f b))`. Use `Eq.trans (congrArg _ (omegaMap_dUnit (t.act.act a) hW hW' le_rfl (f b))) ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hp` using `tanEv_dUnit_eq (t := t) (isTan_tv v) (le_preimage_affPt hT) hW' (((t.act.act a).left.appLE W ((t.act.act a).left ⁻¹ᵁ W) le_rfl).hom (f b))`. Establish `hq` using `tanEv_dUnit_eq (isTan_tv (actR t.act a v)) (le_preimage_affPt hT) hW (f b)`. Take `⟨h₁, h₂⟩` from `hp`. Establish `hv : (tv (actR t.act a v)).left = (tv v).left ≫ (t.act.act a).left`. Rewrite using `[tv_actR]`.
-
-Both sides reduce to the same expression. Use `(h₂.trans ?_).trans hq.2.symm` and prove the remaining obligations. Conclude with `congrArg TrivSqZeroExt.snd ((valR_appLE _ _ _ h₁ _).trans (congrArg (fun y => valR y W (f b)) hv.symm))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsSecOf.act {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}}
     (t : SAB H X) [QuasiSeparated t.G.hom] {T : X.Opens} (h : CoordOpen t T) (v : TanM (affPt h.1) t.G)

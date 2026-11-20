@@ -11,25 +11,21 @@ open NumberField IsDedekindDomain MeasureTheory Filter Formalism.MainNotions.Glo
 namespace GlobalTheory.HaarFactorOffPlace
 
 /- English proof (translation)
-Establish `hχm : Measurable (O.indicator (1 : V → ℝ≥0∞))` using `measurable_one.indicator hOm`. Establish `hcs : ∀ y t, c (y - e t) = c y - t` using `fun y t => by`. Establish `h` using `hce (y - e t) t`. Rewrite `h` using `[sub_add_cancel]`. Rewrite using `[h, add_sub_cancel_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hKs : ∀ y t, K (y - e t) = K y` using `fun y t => by`. Establish `h` using `hKe (y - e t) t`. Rewrite `h` using `[sub_add_cancel]`. Conclude with `h.symm`. Establish `hχneg : ∀ x, O.indicator (1 : V → ℝ≥0∞) (-x) = O.indicator 1 x` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x ∈ O`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem ((hOneg x).1 hx)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (fun h => hx ((hOneg x).2 h))]`. Establish `hχint : ∫⁻ t, O.indicator 1 t ∂ν = 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_indicator_one hOm]`. Conclude with `hO`. Establish `hA : ∀ t, ∫⁻ y, g (c y) * K y ∂μ = ∫⁻ y, g (c y + t) * K y ∂μ` using `fun t => by`. Rewrite using `[← lintegral_add_right_eq_self (fun y => g (c y) * K y) (e t)]`. Simplify using `only [hce, hKe]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hL : ∫⁻ y, g (c y) * K y ∂μ = ∫⁻ y, ∫⁻ s, O.indicator 1 (s - c y) * (g s * K y) ∂ν ∂μ`. Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_lintegral_swap` to reduce the goal to its premises. Conclude with `((hχm.comp measurable_fst).mul ((hg.comp ((hcm.comp measurable_snd).add measurable_fst)).mul (hK.comp measurable_snd))).aemeasurable`. Use `_ = ∫⁻ y, ∫⁻ s, O.indicator 1 (s - c y) * (g s * K y) ∂ν ∂μ := by`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Rewrite using `[← lintegral_sub_right_eq_self (fun t => O.indicator 1 t * (g (c y + t) * K y)) (c y)]`. Use `lintegral_congr fun s => ?_` and prove the remaining obligations. Simplify using `only [add_sub_cancel]`. Establish `hM : ∀ s, ∫⁻ y, O.indicator 1 (c y) * K y ∂μ = ∫⁻ y, O.indicator 1 (s - c y) * K y ∂μ` using `fun s => by`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← lintegral_sub_right_eq_self (fun y => O.indicator 1 (c y) * K y) (e s)]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Simplify using `only [hcs, hKs]`. Rewrite using `[← neg_sub, hχneg]`. Rewrite using `[hL]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `lintegral_lintegral_swap` to reduce the goal to its premises. Conclude with `((hχm.comp (measurable_snd.sub (hcm.comp measurable_fst))).mul ((hg.comp measurable_snd).mul (hK.comp measurable_fst))).aemeasurable`. Use `_ = ∫⁻ s, g s * ∫⁻ y, O.indicator 1 (s - c y) * K y ∂μ ∂ν := by`. Use `lintegral_congr fun s => ?_` and prove the remaining obligations.
-
-Establish `hm : Measurable fun y => O.indicator (1 : V → ℝ≥0∞) (s - c y) * K y` using `(hχm.comp (measurable_const.sub hcm)).mul hK`. Rewrite using `[← lintegral_const_mul _ hm]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫⁻ s, g s * ∫⁻ y, O.indicator 1 (c y) * K y ∂μ ∂ν := lintegral_congr fun s => by rw [← hM s]`.
-
-Use `_ = (∫⁻ t, g t ∂ν) * ∫⁻ y, O.indicator 1 (c y) * K y ∂μ := lintegral_mul_const _ hg`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lintegral_factor {A V : Type} [AddCommGroup A] [MeasurableSpace A] [MeasurableAdd₂ A]
     [MeasurableNeg A] [AddCommGroup V] [MeasurableSpace V] [MeasurableAdd₂ V] [MeasurableNeg V]
@@ -105,13 +101,11 @@ end GlobalTheory.HaarFactorOffPlace
 namespace GlobalTheory.HaarFactorOffPlace
 
 /- English proof (translation)
-Introduce `F _ _ κ _ _ _ w _ _ μf _ μw _ hO K hK hKinv g hg`. Use `haveI := GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion F w`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F`. Use `haveI : SecondCountableTopology (κ → Af F) := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : SecondCountableTopology (κ → Fv F w) := inferInstance`. Use `haveI : LocallyCompactSpace (κ → Af F) := inferInstance`. Use `haveI : LocallyCompactSpace (κ → Fv F w) := inferInstance`. Establish `hcont : Continuous fun (y : κ → Af F) (i : κ) => evalV F w (y i)` using `continuous_pi fun i => (GlobalTheory.GaugeGlue.continuous_evalV w).comp (continuous_apply i)`. Establish `hOc : IsClosed {t : κ → Fv F w | ∀ i, t i ∈ w.adicCompletionIntegers F}`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun i => (Valued.isClosed_integer (Fv F w)).preimage (continuous_apply i)`. Use `lintegral_factor μf μw (fun y i => evalV F w (y i)) (fun t i => singleFin w (t i)) hcont.measurable ?_ _ hOc.measurableSet ?_ hO K hK (fun y t => hKinv y t) g hg` and prove the remaining obligations. Introduce `y t`. Use function extensionality and compare the values at `i`.
-
-Simplify using `only [Pi.add_apply, map_add, evalV_singleFin_self]`. Introduce `x`. Simplify using `only [Set.mem_setOf_eq, Pi.neg_apply, neg_mem_iff]`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_evalV_mul_shiftInvariant : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [MeasurableSpace (κ → Af F)] [BorelSpace (κ → Af F)]
     (w : HeightOneSpectrum (𝓞 F)) [MeasurableSpace (κ → Fv F w)] [BorelSpace (κ → Fv F w)]

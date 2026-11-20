@@ -5,9 +5,9 @@ open GlobalTheory.SmGL GlobalTheory.PRep GlobalTheory.LeviBlockExponent GlobalTh
 namespace GlobalTheory.UnipRadThree
 
 /- English proof (translation)
-Take `⟨⟨a, x⟩, rfl⟩` from `(place3 h2).surjective i`. Rewrite using `[blk_apply]`. Establish `hv` using `stdBlocks_val (sz3 d) (three_block_size_sum h2) a x`. Establish `hx` using `x.2`. Simplify using `only [GlobalTheory.JacBlock₂.blk]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `(((stdBlocks (sz3 d) (three_block_size_sum h2)) ⟨a, x⟩ : Fin d) : ℕ) = _ at hv`. Unfold `place3`. Rewrite using `[hv]`. Apply the tactic sequence `fin_cases a <;> simp [sz3, Fin.sum_univ_succ] at hx ⊢ <;> (try split_ifs) <;> omega`.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blk_place3_val {d : ℕ} (h2 : 2 ≤ d) (i : Fin d) :
     ((blk (place3 h2) i : Fin 3) : ℕ) = GlobalTheory.JacBlock₂.blk i := by
@@ -22,13 +22,13 @@ theorem blk_place3_val {d : ℕ} (h2 : 2 ≤ d) (i : Fin d) :
   fin_cases a <;> simp [sz3, Fin.sum_univ_succ] at hx ⊢ <;> (try split_ifs) <;> omega
 
 /- English proof (translation)
-Introduce `k _ d h2 u hu`. Take `⟨hp, hd⟩` from `mem_unipRad.1 hu`. Establish `hb` using `blk_place3_val h2`. Use `⟨fun i => ?_, fun i j hij hnlt => ?_⟩` and prove the remaining obligations. Take `⟨⟨a, x⟩, rfl⟩` from `(place3 h2).surjective i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using `using hd a x x`. Break down `lt_trichotomy (GlobalTheory.JacBlock₂.blk j) (GlobalTheory.JacBlock₂.blk i) with h | h | h` into its components or cases. Use `mem_parab.1 hp i j ?_` and prove the remaining obligations. Rewrite using `[Fin.lt_iff_val_lt_val, hb, hb]`. Conclude with `h`.
+Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : blk (place3 h2) i = blk (place3 h2) j` using `Fin.ext (by rw [hb, hb, h])`. Take `⟨⟨a, x⟩, rfl⟩` from `(place3 h2).surjective i`. Take `⟨⟨b, y⟩, rfl⟩` from `(place3 h2).surjective j`. Simplify using `only [blk_apply] at he`. Substitute `he` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hxy : x ≠ y` using `fun hxy => hij (by rw [hxy])`. Rewrite using `[hd a x y, Matrix.one_apply_ne hxy]`. Conclude with `absurd h hnlt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnipStd_of_mem_unipRad : ∀ (k : Type) [Field k] (d : ℕ) (h2 : 2 ≤ d) (u : GL (Fin d) k),
     u ∈ unipRad k (place3 h2) → GlobalTheory.JacBlock₂.IsUnipStd u := by

@@ -29,13 +29,13 @@ def LocExt.fixSub (M : LocExt h) : Subgroup (Weil h) where
     rw [AlgEquiv.symm_apply_eq, hσ z]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem LocExt.mem_fixSub (M : LocExt h) (σ : Weil h) :
     σ ∈ M.fixSub ↔ ∀ z : M.L, (σ : G K Ω) (algebraMap M.L Ω z) = algebraMap M.L Ω z := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `EpsUnique.index_eq_finrank K M.L Ω A v h M.loc _ M.mem_fixSub`.
+A detailed English derivation is pending.
 -/
 theorem LocExt.index_fixSub (M : LocExt h) : M.fixSub.index = Module.finrank K M.L :=
   EpsUnique.index_eq_finrank K M.L Ω A v h M.loc _ M.mem_fixSub
@@ -60,7 +60,7 @@ def WeilDeligneFactorsFiniteGalois (n : ℕ) : Prop :=
       (∀ σ : Weil h, (l.map fun t => (t.n : ℂ) * (trW t.indChi σ - trW t.indOne σ)).sum = 0) → val l = 1
 
 /- English proof (translation)
-Introduce `Ω _ A K _ _ _ _ v h ψ hc h1 M hM hd` and use `H Ω A K v h ψ hc h1 M hM (hd.trans hmn)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem WeilDeligneFactorsFiniteGalois.mono {m n : ℕ} (hmn : m ≤ n) (H : WeilDeligneFactorsFiniteGalois n) : WeilDeligneFactorsFiniteGalois m :=
   fun Ω _ A K _ _ _ _ v h ψ hc h1 M hM hd => H Ω A K v h ψ hc h1 M hM (hd.trans hmn)

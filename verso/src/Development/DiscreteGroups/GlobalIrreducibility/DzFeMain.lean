@@ -12,27 +12,23 @@ open scoped Classical
 namespace DiscreteGroups.sglob.DzFe
 
 /- English proof (translation)
-Introduce `g _ m ψ₀ hψ τ hτ γ hγ l hl j hj v hA hB`. Establish `hm : 0 < m` using `by omega`. Establish `hg : (g : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : g.Prime).ne_zero`. Establish `hg1 : (g : ℂ) - 1 ≠ 0`. Establish `: g ≠ 1` using `(Fact.out : g.Prime).ne_one`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `sub_ne_zero.2 (by exact_mod_cast this)`. Use `set K : ℕ := Fintype.card ({i : JIdx m j // i ≠ j0 m j} → ZMod g) with hK`. Establish `hK0 : (K : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `hcardJ : (g : ℂ) ^ Fintype.card (JIdx m j) = (K : ℂ) * g`. Use `sum_split (g := g) (m := m) j (fun _ => (1 : ℂ))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one, Fintype.card_fun, ZMod.card, Nat.cast_pow] at this`. Rewrite using `[hK, Fintype.card_fun, ZMod.card, Nat.cast_pow]`. Conclude with `this`. Use `set X : ℂ := l (τ.ρ (cyc g (m + 1))⁻¹ v) with hX`. Establish `hL : ∑ N : SIdx m → ZMod g, ∑ b : JIdx m j → ZMod g, (ψ₀ (-superDiag (umGL N)) : ℂ) * l (sv ψ₀ τ (Um N * Hm (bcol b)) v) = (g : ℂ) ^ Fintype.card (SIdx m) * ((K : ℂ) * (((g : ℂ) - 1) * (γ * l v)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl (fun N _ => Finset.sum_congr rfl (fun b _ => lhs_term ψ₀ τ hγ hτ hm l hl v hA N b))]`. Establish `hb : ∑ b : JIdx m j → ZMod g, (if b (j0 m j) = 0 then (0 : ℂ) else γ * l v) = (K : ℂ) * (((g : ℂ) - 1) * (γ * l v))`. Establish `hs` using `sum_split (g := g) (m := m) j (fun s => if s = 0 then (0 : ℂ) else γ * l v)`. Rewrite using `[hs]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∑ s : ZMod g, (if s = 0 then (0 : ℂ) else γ * l v) = ∑ _s : ZMod g, γ * l v - ∑ s : ZMod g, (if s = 0 then γ * l v else 0)`. Rewrite using `[← Finset.sum_sub_distrib]`. Apply the tactic sequence `exact Finset.sum_congr rfl (fun s _ => by split_ifs <;> ring)`. Rewrite using `[h2, Finset.sum_const, Finset.card_univ, ZMod.card, Finset.sum_ite_eq' Finset.univ (0 : ZMod g), if_pos (Finset.mem_univ _), nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_congr rfl (fun N _ => hb), Finset.sum_const, Finset.card_univ, Fintype.card_fun, ZMod.card, nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : ∀ (N : SIdx m → ZMod g) (b : JIdx m j → ZMod g), (ψ₀ (-superDiag (umGL N)) : ℂ) * l (sv ψ₀ τ (Um N * Hm (bcol b)) v) = ∑ y : Gn g (m + 1), (ψ₀ (-superDiag (umGL N)) : ℂ) * (ψ₀ (trace (Um N * Hm (bcol b) * (y : Mt g (m + 1)))) : ℂ) * l (τ.ρ y⁻¹ v)`. Introduce `N b`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sv, map_sum, map_smul, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun y _ => by ring)`. Establish `hR : ∑ N : SIdx m → ZMod g, ∑ b : JIdx m j → ZMod g, (ψ₀ (-superDiag (umGL N)) : ℂ) * l (sv ψ₀ τ (Um N * Hm (bcol b)) v) = (g : ℂ) ^ Fintype.card (JIdx m j) * (g : ℂ) ^ Fintype.card (SIdx m) * ((Fintype.card ((SIdx m → ZMod g) × (ZMod g)ˣ × (WIdx m j → ZMod g)) : ℂ) * X)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl (fun N _ => by rw [Finset.sum_mul]))`. Use `_ = ∑ y : Gn g (m + 1), (if IsY j (y : Mt g (m + 1)) then (g : ℂ) ^ Fintype.card (JIdx m j) * (g : ℂ) ^ Fintype.card (SIdx m) * (ψ₀ (trace (y : Mt g (m + 1)) - (y : Mt g (m + 1)) 0 0) : ℂ) else 0) * l (τ.ρ y⁻¹ v) := Finset.sum_congr rfl (fun y _ => by rw [kern ψ₀ hψ j])`. Use `_ = (g : ℂ) ^ Fintype.card (JIdx m j) * (g : ℂ) ^ Fintype.card (SIdx m) * ∑ y : Gn g (m + 1), (if IsY j (y : Mt g (m + 1)) then (ψ₀ (trace (y : Mt g (m + 1)) - (y : Mt g (m + 1)) 0 0) : ℂ) * l (τ.ρ y⁻¹ v) else 0) := by`. Rewrite using `[Finset.mul_sum]`. Apply the tactic sequence `exact Finset.sum_congr rfl (fun y _ => by split_ifs <;> ring)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Use `_ = _ := by rw [rhs_sum ψ₀ τ hj l hl v hB]`. Establish `e` using `hL.symm.trans hR`. Establish `hg1le : 1 ≤ g` using `(Fact.out : g.Prime).one_le`. Rewrite `e` using `[hcardJ, card_P, Nat.cast_mul, Nat.cast_mul, Nat.cast_pow, Nat.cast_pow, Nat.cast_sub hg1le, Nat.cast_one]`. Establish `hne : (g : ℂ) ^ Fintype.card (SIdx m) * (K : ℂ) * ((g : ℂ) - 1) ≠ 0` using `mul_ne_zero (mul_ne_zero (pow_ne_zero _ hg) hK0) hg1`.
-
-Establish `key : γ * l v = (g : ℂ) * (g : ℂ) ^ Fintype.card (SIdx m) * (g : ℂ) ^ Fintype.card (WIdx m j) * X` using `mul_left_cancel₀ hne (by linear_combination e)`. Establish `hexp : (m + 1) * m / 2 + m - j = Fintype.card (SIdx m) + Fintype.card (WIdx m j) + 1`. Rewrite using `[card_SIdx, card_WIdx]`. Generalize the expression as in `(m + 1) * m / 2 = A`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite using `[hexp, pow_add, pow_add, pow_one, key]`. Expand and normalize the polynomial expressions, which then agree.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fe : FunctionalEquationAtIndex := by
   intro g _ m ψ₀ hψ τ hτ γ hγ l hl j hj v hA hB

@@ -23,7 +23,7 @@ variable {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model �
   {r s r' s' : ℕ}
 
 /- English proof (translation)
-Rewrite using `[qht, qht, NNReal.iInf_mul]`. Use `ciInf_mono (OrderBot.bddBelow _) fun γ => ?_` and prove the remaining obligations. Use `heightGL_mul_le F (γ.1 * (x * h)).1 (h⁻¹).1` as an intermediate fact. Rewrite `this` using `[← Subgroup.coe_mul, mul_assoc, mul_inv_cancel_right]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem qht_le (x h : UA σ W.J) : qht x ≤ qht (x * h) * ht h⁻¹ := by
   rw [qht, qht, NNReal.iInf_mul]
@@ -49,7 +49,7 @@ def rapid : Submodule ℂ (UA σ W.J → ℂ) where
 def rt (h : UA σ W.J) : Module.End ℂ (UA σ W.J → ℂ) := LinearMap.funLeft ℂ ℂ (· * h)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨a.1.comp (continuous_mul_const h), fun γ hγ x => by simpa only [rt, LinearMap.funLeft_apply, mul_assoc] using a.2.1 γ hγ (x * h), fun N => by obtain ⟨C, hC⟩ := a.2.2 N refine ⟨C * (ht h⁻¹ : ℝ) ^ N, fun x => le_trans ?_ (mul_le_mul_of_nonneg_right (hC (x * h)) (by positivity))⟩ r …`.
+Supply the required witnesses or components.
 -/
 theorem rapid_rt (h : UA σ W.J) {f} (a : f ∈ rapid σ W) : rt h f ∈ rapid σ W :=
   ⟨a.1.comp (continuous_mul_const h), fun γ hγ x => by simpa only [rt, LinearMap.funLeft_apply, mul_assoc] using a.2.1 γ hγ (x * h),
@@ -60,7 +60,7 @@ theorem rapid_rt (h : UA σ W.J) {f} (a : f ∈ rapid σ W) : rt h f ∈ rapid �
       exact mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (NNReal.coe_nonneg _) (by exact_mod_cast qht_le x h) N) (norm_nonneg _)⟩
 
 /- English proof (translation)
-Take `⟨⟨ι, hι⟩, ν, α, -, -, -, hd⟩` from `hD F E σ n d B X W M om χX χW hp.base ⟨_, _, hp.herm⟩ ⟨_, _, hp.skew⟩ hp.good hp.weil hp.hX hp.hW v t`. Take `⟨j, -, j2⟩` from `exists_inv' hι.bij`. Use `choose g hg using fun h : UAt σ W (evFin F v) => (hd ι hι).right h.1 h.2`. Conclude with `⟨fun h => j ∘ₗ (⟨⟨omB ν α 1 (g h), fun _ _ => funext fun _ => mul_add _ _ _⟩, fun _ _ => funext fun _ => mul_left_comm _ _ _⟩ : _ →ₗ[ℂ] _) ∘ₗ ι, fun h φ hφ => acts_of_reads (hg h) j2 hφ⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_op (hD : DictSt) (hp : IsPair B M χX χW om r s r' s') {v : Pl F} (t : E →ₐ[F] Fv F v) :
     ∃ a : UAt σ W (evFin F v) → Module.End ℂ ((Fin n × Fin d → Fv F v) → ℂ), ∀ h, ∀ φ ∈ SB _, a h φ ∈ SB _ ∧
@@ -73,9 +73,9 @@ theorem exists_op (hD : DictSt) (hp : IsPair B M χX χW om r s r' s') {v : Pl F
     _ →ₗ[ℂ] _) ∘ₗ ι, fun h φ hφ => acts_of_reads (hg h) j2 hφ⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Take `⟨h1, -, h2⟩` from `hU F E σ hp.base.cm n X.J 1 (fun i j => by simpa using hp.herm.herm i j) (hE F E σ B hp.base n X _ _ (Or.inl hp.herm)).1.2`. Use `hp.good.haar` as an intermediate fact. Use `h2 _ this` as an intermediate fact. Establish `: BorelSpace (UA σ X.J)` using `⟨rfl⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∀ g, theta om (om (g₀, 1) Φ) g h = theta om Φ (g * g₀) h` using `fun g => by`. Simplify using `only [theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Simplify using `only [Model.I, e]`. Conclude with `PositivityTheory.ThKF.L2.integral_right hp.good.dom (fun g => theta om Φ g h) (fun γ hγ g => by`. Simplify using `using ((hB F E σ B n d X W M χX χW om r s r' s' hp).1 Φ hΦ).2.1 γ hγ 1 (one_mem _) g h) g₀`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem I_left (hB : ThetaBasic) (hE : EpsOf) (hU : PositivityTheory.ThKF.Unimod) (hp : IsPair B M χX χW om r s r' s') {Φ : Fn F n d}
     (hΦ : Φ ∈ schA F _) (g₀ : UA σ X.J) : M.I om (om (g₀, 1) Φ) = M.I om Φ := by
@@ -92,7 +92,7 @@ theorem I_left (hB : ThetaBasic) (hE : EpsOf) (hU : PositivityTheory.ThKF.Unimod
     simpa using ((hB F E σ B n d X W M χX χW om r s r' s' hp).1 Φ hΦ).2.1 γ hγ 1 (one_mem _) g h) g₀
 
 /- English proof (translation)
-The claim follows from `funext fun h => by simp only [Model.I, theta_add hp a.1 b.1, Pi.add_apply] exact integral_add (a.2 h) (b.2 h)`.
+A detailed English derivation is pending.
 -/
 theorem I_add (hp : IsPair B M χX χW om r s r' s') {Φ Ψ : Fn F n d} (a : Φ ∈ schA F _ ∧ M.Conv om Φ) (b : Ψ ∈ schA F _ ∧ M.Conv om Ψ) :
     M.I om (Φ + Ψ) = M.I om Φ + M.I om Ψ := funext fun h => by
@@ -100,25 +100,23 @@ theorem I_add (hp : IsPair B M χX χW om r s r' s') {Φ Ψ : Fn F n d} (a : Φ 
   exact integral_add (a.2 h) (b.2 h)
 
 /- English proof (translation)
-The claim follows from `funext fun h => by simp only [Model.I, theta, map_smul, thetaSum, Pi.smul_apply, smul_eq_mul, tsum_mul_left, integral_const_mul]`.
+A detailed English derivation is pending.
 -/
 theorem I_smul' (c : ℂ) (Φ : Fn F n d) : M.I om (c • Φ) = c • M.I om Φ := funext fun h => by
   simp only [Model.I, theta, map_smul, thetaSum, Pi.smul_apply, smul_eq_mul, tsum_mul_left, integral_const_mul]
 
 /- English proof (translation)
-Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `zero => rw [← zero_smul ℂ (0 : Fn F n d), I_smul', zero_smul]`. Conclude with `zero_mem _`. Consider the case `add x y a b ha hb => rw [I_add hp (hc x a) (hc y b)]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem ha hb`. Consider the case `smul c x a ha => rw [I_smul']`. Conclude with `Submodule.smul_mem _ c ha`. Consider the case `mem Φ h`. Take `⟨f, φ, p1, p2, rfl, p3⟩` from `hS Φ h`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨T, t1, t2, t3⟩` from `intersection_update_fsHerm_neg_one v f p1 ((p2.and hp.good.std).mono fun _ h => h.1.trans h.2)`. Establish `c : ∀ ψ ∈ SB _, T ψ ∈ schA F _ ∧ M.Conv om (T ψ)` using `fun ψ hψ => hc _ (Submodule.subset_span (t1 ψ ▸ p3 ψ hψ))`. Set `J : SB (Fin n × Fin d → Fv F v) →ₗ[ℂ] (UA σ W.J → ℂ)` to `{ toFun := fun ψ => M.I om (T ψ) map_add' := fun a b => by rw [Submodule.coe_add, map_add, I_add hp (c _ a.2) (c _ b.2)] map_smul' := fun z a => by rw [Submodule.coe_smul, map_smul, I_smul']; rfl }`. Establish `k : augAt om v ≤ (LinearMap.ker J).map (SB _).subtype` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨g, -, ψ, hψ, ψ₁, hψ₁, hA, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨⟨ψ₁, hψ₁⟩ - ⟨ψ, hψ⟩, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, map_sub, sub_eq_zero]`. Express the relevant statement in the definitionally equal form `M.I om (T ψ₁) = M.I om (T ψ)`. Rewrite using `[← t3 _ _ hψ _ hA, I_left hB hE hU hp (t2 _ hψ)])`. Take `⟨q, hq⟩` from `(p.domRestrict (SB _)).exists_rightInverse_of_surjective (by rw [LinearMap.range_domRestrict, onto])`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e : ∀ ψ ∈ SB _, J (q (p ψ)) = M.I om (T ψ)` using `fun ψ hψ => by`. Establish `e1 : p (q (p ψ) : _) = p ψ` using `LinearMap.congr_fun hq _`. Take `⟨z, hz, e2⟩` from `k (ker _ (sub_mem (q (p ψ)).2 hψ) (by rw [map_sub, e1, sub_self]))`. Rewrite `hz` using `[show z = q (p ψ) - ⟨ψ, hψ⟩ from Subtype.ext e2, SetLike.mem_coe, LinearMap.mem_ker, map_sub, sub_eq_zero]`. Conclude with `hz`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.subset_span ⟨J ∘ₗ q, fun h x => ?_, p (φ v), ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ, rfl⟩ : x ∈ (SB _).map p` from `onto ▸ Submodule.mem_top`. Take `⟨ψ₁, h₁, hA, e₁⟩` from `hρ h ψ hψ`. Rewrite using `[e₁, LinearMap.comp_apply, LinearMap.comp_apply, e _ hψ, e _ h₁, ← t3 _ _ hψ _ hA]`. Use function extensionality and compare the values at `x`.
-
-Simplify using `only [rt, LinearMap.funLeft_apply, Model.I, theta, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Rewrite using `[LinearMap.comp_apply, e _ (p1 v), t1, Function.update_eq_self]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_vals (hB : ThetaBasic) (hE : EpsOf) (hU : PositivityTheory.ThKF.Unimod) (hp : IsPair B M χX χW om r s r' s') {v : Pl F}
     {P : Type} [AddCommGroup P] [Module ℂ P] {p : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] P} (onto : (SB _).map p = ⊤)
@@ -162,9 +160,9 @@ theorem mem_vals (hB : ThetaBasic) (hE : EpsOf) (hU : PositivityTheory.ThKF.Unim
     · rw [LinearMap.comp_apply, e _ (p1 v), t1, Function.update_eq_self]
 
 /- English proof (translation)
-Take `⟨m, U, ξ, hU, rfl⟩` from `hf`. Use `choose φ h1 h2 using fun i => (onto ▸ Submodule.mem_top : ξ i ∈ (SB _).map p)`. Use `⟨m, fun i => U i ∘ₗ p, φ, fun i => ⟨⟨fun ψ _ => (hU i).2 _, fun h hh ψ hψ ψ₁ _ hA => ?_⟩, h1 i⟩, by simp [h2]⟩` and prove the remaining obligations. Take `⟨ψ₂, -, hA', e⟩` from `hρ ⟨h, hh⟩ ψ hψ`. Rewrite using `[action_uniqueness F _ v _ ψ hψ _ _ hA hA', LinearMap.comp_apply, ← e, (hU i).1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem comes_of {v : Pl F} {P : Type} [AddCommGroup P] [Module ℂ P] {p : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] P}
     (onto : (SB _).map p = ⊤) {ρ : UAt σ W (evFin F v) → Module.End ℂ P}
@@ -179,7 +177,7 @@ theorem comes_of {v : Pl F} {P : Type} [AddCommGroup P] [Module ℂ P] {p : ((Fi
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne hu]`. Conclude with `h u`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upd_sb {κ : Type} [Fintype κ] {φ : ∀ u : Pl F, (κ → Fv F u) → ℂ} (h : ∀ u, φ u ∈ SB _) {v : Pl F} {x} (hx : x ∈ SB _) (u) :
     Function.update φ v x u ∈ SB _ := by
@@ -188,24 +186,22 @@ theorem upd_sb {κ : Type} [Fintype κ] {φ : ∀ u : Pl F, (κ → Fv F u) → 
   · rw [Function.update_of_ne hu]; exact h u
 
 /- English proof (translation)
-Use `filter_upwards [h, eventually_cofinite_ne v] with w h hw using (Function.update_of_ne hw _ _).trans h`.
+A detailed English derivation is pending.
 -/
 theorem upd_cof {κ : Type} {φ ψ : ∀ u : Pl F, (κ → Fv F u) → ℂ} (h : ∀ᶠ u in cofinite, φ u = ψ u) (v : Pl F) (x) :
     ∀ᶠ u in cofinite, Function.update φ v x u = ψ u := by
   filter_upwards [h, eventually_cofinite_ne v] with w h hw using (Function.update_of_ne hw _ _).trans h
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT f ⟨Φ, hΦ, Φ', hΦ', e⟩ hr v hv hv₁`. Take `⟨p, p', -⟩` from `hP F E σ B a a' G X om om' hT`. Take `⟨R, hR⟩` from `h1 F E σ B a a' G X om om' hT`. Take `⟨Rf, hf⟩` from `h2 F E σ B a a' G X om om' hT`. Take `⟨k, k', -⟩` from `(h3 F E σ B a a' G X om om' R Rf ⟨hT, hR, hf⟩).1 v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d1, d2⟩` from `hK F E σ B a a' G X om om' hT`. Take `⟨⟨t⟩, -⟩` from `hN F E σ B a a' G X om om' hT v hv`. Take `⟨A, hA⟩` from `exists_op hD p t`. Take `⟨A', hA'⟩` from `exists_op hD p' t`. Take `⟨q, hq⟩` from `((Rf.p v).domRestrict (SB _)).exists_rightInverse_of_surjective (by rw [LinearMap.range_domRestrict, hf.onto v])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `ρ : UAt σ G.W (evFin F v) → Module.End ℂ (Rf.Pi v)` to `fun h => Rf.p v ∘ₗ A h ∘ₗ (SB _).subtype ∘ₗ q`. Establish `r' : ∀ h, ∀ φ ∈ SB _, ρ h (Rf.p' v φ) = Rf.p' v (A' h φ)` using `fun h φ hφ => hf.equiv v h.1 h.2 _ (q _).2 φ hφ _ (hA h _ (q _).2).1 _ (hA' h φ hφ).1 (hA h _ (q _).2).2 (hA' h φ hφ).2 (LinearMap.congr_fun hq _)`. Establish `r₀ : ∀ h, ∀ φ ∈ SB _, ρ h (Rf.p v φ) = Rf.p v (A h φ)` using `fun h φ hφ => by`. Take `⟨ψ, hψ, e⟩ : Rf.p v φ ∈ (SB _).map (Rf.p' v)` from `hf.onto' v ▸ Submodule.mem_top`. Rewrite using `[← e, r' h ψ hψ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hf.equiv v h.1 h.2 φ hφ ψ hψ _ (hA h φ hφ).1 _ (hA' h ψ hψ).1 (hA h φ hφ).2 (hA' h ψ hψ).2 e.symm).symm`. Establish `ρ1` using `fun h φ hφ => (⟨_, (hA h φ hφ).1, (hA h φ hφ).2, r₀ h φ hφ⟩ : ∃ φ₁ ∈ SB _, Acts (evFin F v) (om (1, h.1)) φ φ₁ ∧ ρ h (Rf.p v φ) = Rf.p v φ₁)`. Establish `ρ2` using `fun h φ hφ => (⟨_, (hA' h φ hφ).1, (hA' h φ hφ).2, r' h φ hφ⟩ : ∃ φ₁ ∈ SB _, Acts (evFin F v) (om' (1, h.1)) φ φ₁ ∧ ρ h (Rf.p' v φ) = Rf.p' v φ₁)`. Use `hf.nontriv v` as an intermediate fact. Establish `key` using `decomp ρ (fun h => rt h.1) (fun N hN => hf.irred v N fun h hh φ hφ φ₁ _ hA₁ hm => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[action_uniqueness F _ v _ φ hφ _ _ hA₁ (hA ⟨h, hh⟩ φ hφ).2, ← r₀ _ φ hφ]`. Conclude with `hN _ _ hm) (rapid σ G.W) (fun h x hx => rapid_rt h.1 hx) hr (e ▸ sub_mem`. Use the proof step `(mem_vals hB hE hU p (hf.onto v) (fun φ hφ => (k φ hφ).1) ρ1 _ (fun Ψ hΨ => ⟨hS F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p Ψ hΨ, d1 Ψ (hS F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p Ψ hΨ)⟩) (fun _ ⟨f, a, φ, b, c, e⟩ => ⟨f, φ, b, c, e, fun ψ hψ => ⟨f, a, _, upd_sb b hψ, upd_cof c v ψ, rfl⟩⟩) Φ hΦ)`. Use the proof step `(mem_vals hB hE hU p' (hf.onto' v) (fun φ hφ => (k' φ hφ).1) ρ2 _ (fun Ψ hΨ => ⟨(hF F E σ B _ _ _ _ _ _ _ _ _ _ _ _ p').2.2.1 Ψ hΨ, (d2 Ψ hΨ).2.1⟩) (fun _ ⟨f, φ, b, c, o, e⟩ => ⟨f, φ, b, c, e, fun ψ hψ => ⟨f, _, upd_sb b hψ, upd_cof c v ψ, by`. Rewrite using `[Function.update_of_ne hv₁.symm], rfl⟩⟩) Φ' hΦ'.2))` and apply the resulting hypothesis.
-
-Conclude with `⟨comes_of (hf.onto v) ρ1 key, comes_of (hf.onto' v) ρ2 key⟩`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem locDecomp_of (hB : ThetaBasic) (hE : EpsOf) (hU : PositivityTheory.ThKF.Unimod) (hP : TriplePair) (hK : KDecay) (hF : SoFin) (hS : PolSch)
     (hD : DictSt) (hN : GoodNe) (h1 : KReal) (h2 : KFin) (h3 : KCoinv) : LocDecomp := by

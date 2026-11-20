@@ -4,51 +4,45 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k A _ _ _ _ ε hnil`. Use `set I : Ideal A := RingHom.ker ε with hI`. Set `W : Submodule k A` to `(I ^ 2).restrictScalars k`. Set `U : Submodule k (A ⧸ W)` to `(I.restrictScalars k).map W.mkQ`. Set `b : Module.Basis (Fin (Module.finrank k U)) k U` to `Module.finBasis k U`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hx : ∀ j, ∃ y, y ∈ I ∧ W.mkQ y = (b j : A ⧸ W)` using `fun j => by`. Take `⟨y, hy, hy'⟩` from `Submodule.mem_map.mp (b j).2`. Conclude with `⟨y, hy, hy'⟩`. Use `choose x hxI hxq using hx`. Set `P : A →ₗ[k] A` to `LinearMap.id - (Algebra.linearMap k A) ∘ₗ ε.toLinearMap`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPa : ∀ a, P a = a - algebraMap k A (ε a)` using `fun a => rfl`. Establish `hP : ∀ a, P a ∈ I` using `fun a => by`. Rewrite using `[hI, RingHom.mem_ker, hPa, map_sub, AlgHom.commutes]`. Simplify using the standard rewrite rules. Set `T : A →ₗ[k] U` to `LinearMap.codRestrict U (W.mkQ ∘ₗ P) (fun a => Submodule.mem_map_of_mem (show P a ∈ I.restrictScalars k from hP a))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hT : ∀ a, ((T a : U) : A ⧸ W) = W.mkQ (P a)` using `fun a => rfl`. Set `l : Fin (Module.finrank k U) → A →ₗ[k] k` to `fun i => b.coord i ∘ₗ T`. Establish `hspan : ∀ y ∈ I, ∃ s ∈ Submodule.span k (Set.range x), y - s ∈ I ^ 2`. Introduce `y hy`. Set `u : U` to `⟨W.mkQ y, Submodule.mem_map_of_mem (show y ∈ I.restrictScalars k from hy)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨∑ j, b.repr u j • x j, Submodule.sum_mem _ (fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)), ?_⟩` and prove the remaining obligations. Establish `h1 : W.mkQ (∑ j, b.repr u j • x j) = ∑ j, b.repr u j • (b j : A ⧸ W)`. Simplify using `[map_sum, hxq]`. Establish `h2` using `congrArg Subtype.val (b.sum_repr u)`. Move the coercions through the operations in `at h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : W.mkQ (∑ j, b.repr u j • x j) = W.mkQ y` using `by rw [h1, h2]`. Establish `h0 : W.mkQ (y - ∑ j, b.repr u j • x j) = 0` using `by rw [map_sub, hq, sub_self]`. Establish `h3` using `LinearMap.mem_ker.mpr h0`. Rewrite `h3` using `[Submodule.ker_mkQ]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `S` to `Algebra.adjoin k (Set.range x)`. Establish `spanS : Submodule.span k (Set.range x) ≤ Subalgebra.toSubmodule S` using `Submodule.span_le.mpr (fun z hz => Algebra.subset_adjoin hz)`. Establish `spanI : Submodule.span k (Set.range x) ≤ I.restrictScalars k` using `Submodule.span_le.mpr (by rintro _ ⟨j, rfl⟩; exact hxI j)`. Establish `hstep : ∀ n : ℕ, ∀ z ∈ I ^ n, z ∈ Subalgebra.toSubmodule S ⊔ (I ^ (n + 1)).restrictScalars k`. Introduce `n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `z _`. Use `Submodule.mem_sup.mpr ⟨_, S.algebraMap_mem (ε z), P z, ?_, ?_⟩` and prove the remaining obligations. Use `show P z ∈ I ^ (0 + 1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Treat this case separately.
 
-Rewrite using `[zero_add, pow_one]`. Conclude with `hP z`. Rewrite using `[hPa]`. Normalize the expressions using the abelian group laws. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `z hz`. Rewrite `hz` using `[pow_succ']`. Use `Submodule.mul_induction_on hz ?_ (fun a c ha hc => add_mem ha hc)` and prove the remaining obligations. Introduce `y hy w hw`. Take `⟨s, hs, hys⟩` from `hspan y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht, v, hv, htv⟩` from `Submodule.mem_sup.mp (ih w hw)`. Establish `h1 : s * v ∈ I ^ (n + 1 + 1)`. Rewrite using `[pow_succ']`. Conclude with `Ideal.mul_mem_mul (spanI hs) hv`. Establish `h2 : (y - s) * w ∈ I ^ (n + 1 + 1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show n + 1 + 1 = 2 + n by omega, pow_add]; exact Ideal.mul_mem_mul hys hw`. Use `Submodule.mem_sup.mpr ⟨s * t, S.mul_mem (spanS hs) ht, s * v + (y - s) * w, add_mem h1 h2, ?_⟩` and prove the remaining obligations. Rewrite using `[← htv]`. Expand and normalize the polynomial expressions, which then agree. Establish `hall : ∀ n : ℕ, ∀ a : A, a ∈ Subalgebra.toSubmodule S ⊔ (I ^ n).restrictScalars k`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `a`. Use `Submodule.mem_sup.mpr ⟨0, zero_mem _, a, ?_, zero_add a⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show a ∈ I ^ 0`. Rewrite using `[pow_zero, Ideal.one_eq_top]`. Conclude with `Submodule.mem_top`. Consider the case `succ n ih`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨s, hs, w, hw, hsw⟩` from `Submodule.mem_sup.mp (ih a)`. Take `⟨t, ht, v, hv, htv⟩` from `Submodule.mem_sup.mp (hstep n w hw)`. Use `Submodule.mem_sup.mpr ⟨s + t, add_mem hs ht, v, hv, ?_⟩` and prove the remaining obligations. Rewrite using `[← hsw, ← htv]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Module.finrank k U, x, l, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i a c`. Establish `key : P (a * c) - (ε a • P c + ε c • P a) = P a * P c`. Simplify using `only [hPa, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : P (a * c) - (ε a • P c + ε c • P a) ∈ W`. Rewrite using `[key]`. Use `show P a * P c ∈ I ^ 2`. Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mem_mul (hP a) (hP c)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hTac : T (a * c) = ε a • T c + ε c • T a`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Submodule.coe_add, Submodule.coe_smul, Submodule.coe_smul, hT, hT, hT]`. Establish `h0 : W.mkQ (P (a * c) - (ε a • P c + ε c • P a)) = 0`. Rewrite using `[← LinearMap.mem_ker, Submodule.ker_mkQ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `hmem`. Rewrite `h0` using `[map_sub, map_add, map_smul, map_smul, sub_eq_zero]`. Conclude with `h0`. Use `show b.coord i (T (a * c)) = ε a * b.coord i (T c) + ε c * b.coord i (T a)`. Rewrite using `[hTac, map_add, map_smul, map_smul, smul_eq_mul, smul_eq_mul]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i j`. Establish `hTx : T (x j) = b j`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hT, hPa]`. Establish `: ε (x j) = 0` using `(RingHom.mem_ker).mp (hxI j)`.
-
-Rewrite using `[this, map_zero, sub_zero, hxq]`. Use `show b.coord i (T (x j)) = _`. Rewrite using `[hTx, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
-
-Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Take `⟨N, hN⟩` from `hnil`. Establish `hv : (I ^ N).restrictScalars k = ⊥`. Rewrite using `[hI, hN, Submodule.zero_eq_bot, Submodule.restrictScalars_bot]`.
-
-Use `eq_top_iff.mpr (fun a _ => ?_)` and prove the remaining obligations. Use `hall N a` as an intermediate fact. Rewrite `this` using `[hv, sup_bot_eq]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_generators_dual_point_derivations :
     ∀ (k A : Type) [Field k] [CommRing A] [Algebra k A] [Module.Finite k A] (ε : A →ₐ[k] k),

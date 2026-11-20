@@ -17,14 +17,14 @@ namespace GlobalTheory.WeylBij
 open GlobalTheory.WeylFourier GlobalTheory.RatWeilOp
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.adelicSchwartzSpace_mem_span_pureTensors`.
+A detailed English derivation is pending.
 -/
 theorem schA_le_span_pure : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ], ∀ Φ ∈ schA F κ,
     Φ ∈ Submodule.span ℂ {Ψ : (κ → AF F) → ℂ | ∃ (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ),
       GlobalTheory.RatWeilOp.IsFam φ ∧ Ψ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ} := GlobalTheory.T.adelicSchwartzSpace_mem_span_pureTensors
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.local_fourier_inversion_up_to_constant`.
+A detailed English derivation is pending.
 -/
 theorem fourier_twice_loc : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) (χ : AddChar (Fv F v) ℂ), Continuous χ → (∀ t, ‖χ t‖ = 1) →
     χ ≠ 1 → ∀ (κ : Type) [Fintype κ] [MeasurableSpace (κ → Fv F v)] [BorelSpace (κ → Fv F v)]
@@ -32,7 +32,7 @@ theorem fourier_twice_loc : ∀ (F : Type) [Field F] [NumberField F] (v : Pl F) 
       ∫ y, (∫ x, φ x * χ (x ⬝ᵥ y) ∂μ) * χ (y ⬝ᵥ a) ∂μ = d * φ (-a) := GlobalTheory.T.local_fourier_inversion_up_to_constant
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.archimedean_fourier_inversion_constant`.
+A detailed English derivation is pending.
 -/
 theorem fourier_twice_arch : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [MeasurableSpace (κ → mixedEmbedding.mixedSpace F)]
     [BorelSpace (κ → mixedEmbedding.mixedSpace F)] (μ : Measure (κ → mixedEmbedding.mixedSpace F)) [μ.IsAddHaarMeasure],
@@ -43,7 +43,7 @@ theorem fourier_twice_arch : ∀ (F : Type) [Field F] [NumberField F] (κ : Type
       d * f (-a) := GlobalTheory.T.archimedean_fourier_inversion_constant
 
 /- English proof (translation)
-Establish `h1 : ((-1 : Matrix κ κ F).map (algebraMap F R)) = -1`. Rewrite using `[Matrix.map_neg _ (map_neg _), Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using `[GlobalTheory.SympChange.spAct, GlobalTheory.SympChange.weylM, Matrix.fromBlocks_map, h1, Matrix.fromBlocks_mulVec, Matrix.neg_mulVec]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem spAct_weyl {F : Type} [Field F] {κ : Type} [Fintype κ] [DecidableEq κ] {R : Type} [CommRing R] [Algebra F R]
     (w : (κ → R) × (κ → R)) :
@@ -63,67 +63,57 @@ open GlobalTheory.WeylFourier GlobalTheory.RatWeilOp
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ hunr _ κ _ _`. Use `letI mA : MeasurableSpace (κ → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Use `letI mI : MeasurableSpace (κ → mixedEmbedding.mixedSpace F) := borel _`. Use `haveI : BorelSpace (κ → mixedEmbedding.mixedSpace F) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI mV : ∀ v : Pl F, MeasurableSpace (κ → Fv F v) := fun _ => borel _`. Use `haveI bV : ∀ v : Pl F, BorelSpace (κ → Fv F v) := fun _ => ⟨rfl⟩`. Take `⟨μ, hμ⟩ : ∃ μ : Measure (κ → AF F), μ.IsAddHaarMeasure` from `⟨Measure.addHaar, inferInstance⟩`. Take `⟨μi, hμi⟩ : ∃ μ : Measure (κ → mixedEmbedding.mixedSpace F), μ.IsAddHaarMeasure` from `⟨Measure.addHaar, inferInstance⟩`. Choose the witnesses or unpack the hypotheses as in `⟨μv, hμv, hμv1⟩ : ∃ μv : ∀ v : Pl F, Measure (κ → Fv F v), (∀ v, (μv v).IsAddHaarMeasure) ∧ ∀ v, μv v {x | ∀ i, x i ∈ v.adicCompletionIntegers F} = 1 := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Set `K : ∀ v : Pl F, TopologicalSpace.PositiveCompacts (κ → Fv F v)` to `fun v => ⟨⟨Set.pi Set.univ fun _ => (v.adicCompletionIntegers F : Set (Fv F v)), isCompact_univ_pi fun _ => ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isCompact_integers v⟩, by show (interior (Set.pi Set.univ fun _ => (v.adicCompletionIntegers F : Se …`. Rewrite using `[(isOpen_set_pi Set.finite_univ fun _ _ => ReciprocityTheory.GeneralLinearIntegers.GeneralLinearIntegersOpenCompact.isOpen_integers v).interior_eq]`. Conclude with `⟨0, fun i _ => (v.adicCompletionIntegers F).zero_mem⟩⟩`. Use `⟨fun v => Measure.addHaarMeasure (K v), fun v => inferInstance, fun v => ?_⟩` and prove the remaining obligations. Establish `e : {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} = (K v : Set (κ → Fv F v))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Simplify using `[K]`. Rewrite using `[e]`. Conclude with `Measure.addHaarMeasure_self`. Use `haveI := hμv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨c₀, hc₀, hpure⟩` from `GlobalTheory.T.integral_adelic_pureTensor_eq_product_local F κ μ μi μv hμv1`. Take `⟨ei', hei'bij, hei'⟩` from `GlobalTheory.T.exists_archimedeanSchwartz_traceFourier_bijective F κ μi`. Establish `hψc : ∀ v, Continuous (GlobalTheory.LatVac.psiAt ψ v)` using `fun v => GlobalTheory.SchrSB.continuous_psiAt ψ hψ.1 v`. Establish `hsub : ∀ v, ∀ φ ∈ SB (κ → Fv F v), φ ∈ intSub (GlobalTheory.LatVac.psiAt ψ v) (μv v)` using `fun v φ hφ y => (hφ.1.continuous.mul ((hψc v).comp (continuous_id.dotProduct continuous_const))).integrable_of_hasCompactSupport hφ.2.mul_right`. Set `ev : ∀ v : Pl F, ((κ → Fv F v) → ℂ) →ₗ[ℂ] (κ → Fv F v) → ℂ` to `fun v => ftE (GlobalTheory.LatVac.psiAt ψ v) (μv v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hev : ∀ v, ∀ φ ∈ SB (κ → Fv F v), ev v φ = ft (GlobalTheory.LatVac.psiAt ψ v) (μv v) φ` using `fun v φ hφ => ftE_eq _ _ (hsub v φ hφ)`. Establish `hbij : ∀ v, Set.BijOn (ev v) (SB (κ → Fv F v) : Set _) (SB (κ → Fv F v) : Set _)` using `fun v => (GlobalTheory.T.fourier_bijOn_schwartzBruhat_finitePlace F v (GlobalTheory.LatVac.psiAt ψ v) (hψc v) (fun t => GlobalTheory.StdCharFromIsStd.norm_psi hψ _) (GlobalTheory.PsiNontriv.psiAt_ne_one ψ hψ v) κ (μv v)).congr fun φ hφ => (hev v φ hφ).symm`. Establish `hind : ∀ᶠ v in cofinite, ev v (ind κ v) = ind κ v` using `by filter_upwards [hunr] with v hv`. Rewrite using `[hev v (ind κ v) (GlobalTheory.StdVacuum.indicator_mem_SB v)]`. Conclude with `GlobalTheory.T.integralPointsIndicator_fourier_self_unramified F v (GlobalTheory.LatVac.psiAt ψ v) (fun x => hv x) κ (μv v) (hμv1 v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hpureE : ∀ (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ), IsFam φ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ∈ intSub ψ μ ∧ ft ψ μ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensor …`. Introduce `f φ hφ`. Establish `hφ' : ∀ y, IsFam (finT ψ φ y)` using `finT_isFam ψ hψ φ hφ`. Establish `hfun : ∀ y, (fun x => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ x * ψ (x ⬝ᵥ y)) = fun x => archT f (fun i => evI F (y i)) (fun i => evI F (x i)) * ∏ᶠ v, finT ψ φ y v (fun i => evFin F v (x i))` using `fun y => funext fun x => pure_mul_psi ψ hψ f φ hφ x y`. Use `⟨fun y => ?_, funext fun y => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hfun y]`. Conclude with `(hpure _ _ (archT_continuous f _) (archT_integrable μi f _) (hφ' y)).1`. Use `show ∫ x, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ x * ψ (x ⬝ᵥ y) ∂μ = _`. Rewrite using `[hfun y, (hpure _ _ (archT_continuous f _) (archT_integrable μi f _) (hφ' y)).2]`. Establish `h2 : ∀ v, ev v (φ v) (fun i => evFin F v (y i)) = ∫ x, finT ψ φ y v x ∂(μv v)` using `fun v => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hev v _ (hφ.1 v)]`. Both sides reduce to the same expression. Establish `h3 : (c₀ • ei' f) (fun i => evI F (y i)) = c₀ * ∫ x, archT f (fun i => evI F (y i)) x ∂μi`. Establish `h4` using `hei' f (fun i => evI F (y i))`. Simplify using `only [archT]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h4]`. Both sides reduce to the same expression. Use `show _ = (c₀ • ei' f) (fun i => evI F (y i)) * ∏ᶠ v, ev v (φ v) (fun i => evFin F v (y i))`. Rewrite using `[h3, finprod_congr h2]`. Set `T : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ → AF F) → ℂ` to `ftE ψ μ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfam : ∀ φ : ∀ v : Pl F, (κ → Fv F v) → ℂ, IsFam φ → IsFam fun v => ev v (φ v)` using `fun φ hφ => ⟨fun v => (hbij v).mapsTo (hφ.1 v), by filter_upwards [hφ.2, hind] with v h1 h2; rw [h1, h2]⟩`. Establish `hTpure : ∀ (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ), IsFam φ → T (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (c₀ • ei' f) (fun v => ev v (φ v))` using `fun f φ hφ => (ftE_eq ψ μ (hpureE f φ hφ).1).trans (hpureE f φ hφ).2`. Establish `hgen` using `schA_le_span_pure F κ`. Establish `hT_schA : ∀ Φ ∈ schA F κ, T Φ ∈ schA F κ`. Introduce `Φ hΦ`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Submodule.span_le.2 ?_ : _ ≤ (schA F κ).comap T) (hgen Φ hΦ)` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, hφ, rfl⟩`. Use `show T _ ∈ schA F κ`. Rewrite using `[hTpure f φ hφ]`. Conclude with `pure_mem_schA _ _ (hfam φ hφ)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hint : ∀ Φ ∈ schA F κ, Φ ∈ intSub ψ μ` using `fun Φ hΦ => by`. Use `(Submodule.span_le.2 ?_ : _ ≤ intSub ψ μ) (hgen Φ hΦ)` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, hφ, rfl⟩`. Conclude with `(hpureE f φ hφ).1`. Take `⟨dI, hdI, hdIf⟩` from `fourier_twice_arch F κ μi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hloc` using `fun v => fourier_twice_loc F v (GlobalTheory.LatVac.psiAt ψ v) (hψc v) (fun t => GlobalTheory.StdCharFromIsStd.norm_psi hψ _) (GlobalTheory.PsiNontriv.psiAt_ne_one ψ hψ v) κ (μv v)`. Use `choose d hd hdf using hloc`. Establish `hev2 : ∀ v, ∀ φ ∈ SB (κ → Fv F v), ev v (ev v φ) = fun a => d v * φ (-a)`. Introduce `v φ hφ`. Use function extensionality and compare the values at `a`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hev v _ ((hbij v).mapsTo hφ), hev v φ hφ, ← hdf v φ hφ a]`. Both sides reduce to the same expression. Establish `hev4 : ∀ v, ∀ φ ∈ SB (κ → Fv F v), ev v (ev v (ev v (ev v φ))) = (d v ^ 2) • φ`. Introduce `v φ hφ`. Establish `h2 : ev v (ev v φ) ∈ SB (κ → Fv F v)` using `(hbij v).mapsTo ((hbij v).mapsTo hφ)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hev2 v _ h2, hev2 v φ hφ]`. Use function extensionality and compare the values at `a`. Simplify using `only [neg_neg, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd1 : ∀ᶠ v in cofinite, d v = 1` using `by filter_upwards [hind] with v hv`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0` using `congrFun (hev2 v (ind κ v) (GlobalTheory.StdVacuum.indicator_mem_SB v)) 0`. Rewrite `h0` using `[hv, hv]`. Establish `h1 : ind κ v 0 = 1`. Simplify using `only [ind]`. Conclude with `Set.indicator_of_mem (show (0 : κ → Fv F v) ∈ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from fun i => (v.adicCompletionIntegers F).zero_mem) 1`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `h0` using `[neg_zero, h1, mul_one]`. Conclude with `h0.symm`. Establish `hei2 : ∀ (f : SInf F κ) (a : κ → mixedEmbedding.mixedSpace F), ei' (ei' f) a = dI * f (-a)`. Introduce `f a`. Rewrite using `[hei', ← hdIf f a]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Rewrite using `[hei']`. Establish `hei4 : ∀ f : SInf F κ, ei' (ei' (ei' (ei' f))) = (dI ^ 2) • f`. Introduce `f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a`. Rewrite using `[hei2, hei2]`. Simplify using `only [neg_neg, SchwartzMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `set C : ℂ := c₀ ^ 4 * dI ^ 2 * ∏ᶠ v, d v ^ 2 with hC`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hdfin : (Function.mulSupport fun v => d v ^ 2).Finite`. Use `(Filter.eventually_cofinite.1 hd1).subset fun v hv h => hv ?_` and prove the remaining obligations. Use `show d v ^ 2 = 1`. Rewrite using `[h, one_pow]`. Establish `hCne : C ≠ 0`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_ne_zero (mul_ne_zero (pow_ne_zero _ hc₀) (pow_ne_zero _ hdI)) ?_` and prove the remaining obligations. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hdfin.coe_toFinset.symm.subset]`. Conclude with `Finset.prod_ne_zero_iff.2 fun v _ => pow_ne_zero _ (hd v)`. Establish `hT4pure : ∀ (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ), IsFam φ → T (T (T (T (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ)))) = C • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ`. Introduce `f φ hφ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hφ2` using `hfam _ hφ`. Establish `hφ3` using `hfam _ hφ2`. Rewrite using `[hTpure f φ hφ, hTpure _ _ hφ2, hTpure _ _ hφ3, hTpure _ _ (hfam _ hφ3)]`. Establish `e1 : c₀ • ei' (c₀ • ei' (c₀ • ei' (c₀ • ei' f))) = (c₀ ^ 4 * dI ^ 2) • f`. Simplify using `only [map_smul, smul_smul, hei4]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Put the polynomial expressions in normal form. Establish `e2 : (fun v => ev v (ev v (ev v (ev v (φ v))))) = fun v => (d v ^ 2) • φ v`. Use function extensionality and compare the values at `fun v => hev4 v (φ v) (hφ.1 v)`. Rewrite using `[e1, e2]`. Use function extensionality and compare the values at `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hφfin : (Function.mulSupport fun v : Pl F => φ v (fun i => evFin F v (x i))).Finite`. Establish `hev : ∀ᶠ v in cofinite, φ v = ind κ v ∧ ∀ i, evFin F v (x i) ∈ v.adicCompletionIntegers F` using `hφ.2.and (Filter.eventually_all.2 fun i => evFin_mem (x i))`. Use `(Filter.eventually_cofinite.1 hev).subset fun v hv hP => hv ?_` and prove the remaining obligations. Use `show φ v _ = 1`. Rewrite using `[hP.1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ind]`. Conclude with `Set.indicator_of_mem (show (fun i => evFin F v (x i)) ∈ {z : κ → Fv F v | ∀ i, z i ∈ v.adicCompletionIntegers F} from hP.2) 1`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, Pi.smul_apply, smul_eq_mul, SchwartzMap.smul_apply]`. Rewrite using `[finprod_mul_distrib hdfin hφfin, hC]`. Expand and normalize the polynomial expressions, which then agree.
-
-Set `T4 : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ → AF F) → ℂ` to `T ∘ₗ T ∘ₗ T ∘ₗ T`. Establish `hT4 : ∀ Φ ∈ schA F κ, T (T (T (T Φ))) = C • Φ`. Introduce `Φ hΦ`. Use `(Submodule.span_le.2 ?_ : _ ≤ LinearMap.eqLocus T4 (C • LinearMap.id)) (hgen Φ hΦ)` as an intermediate fact. Conclude with `this`.
-
-Introduce and unpack `_ ⟨f, φ, hφ, rfl⟩`. Conclude with `hT4pure f φ hφ`. Set `e' : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ → AF F) → ℂ` to `C⁻¹ • (T ∘ₗ T ∘ₗ T)`. Establish `he' : ∀ Φ, e' Φ = C⁻¹ • T (T (T Φ))` using `fun Φ => rfl`. Use `⟨T, c₀ • ei', ev, fun g => ?_, hT_schA, fun w Φ hΦ => ?_, fun v => ?_, fun v φ hφ h0 => ?_, fun v w φ hφ => ?_, hind, fun f φ h1 h2 => hTpure f φ ⟨h1, h2⟩, ?_⟩` and prove the remaining obligations.
-
-Take `⟨h, hh⟩` from `hei'bij.2 (c₀⁻¹ • g)`. Conclude with `⟨h, by rw [ContinuousLinearMap.smul_apply, hh, smul_smul, mul_inv_cancel₀ hc₀, one_smul]⟩`. Rewrite using `[spAct_weyl, ftE_eq ψ μ (schr_mem μ ψ w (hint Φ hΦ)), ft_schr, ftE_eq ψ μ (hint Φ hΦ)]`. Use `le_antisymm (Submodule.map_le_iff_le_comap.2 fun φ h => (hbij v).mapsTo h) fun g hg => ?_` and prove the remaining obligations. Take `⟨φ, h, e⟩` from `(hbij v).surjOn hg`.
-
-Conclude with `⟨φ, h, e⟩`. Conclude with `(hbij v).injOn hφ (SB (κ → Fv F v)).zero_mem (by rw [h0, map_zero])`. Rewrite using `[spAct_weyl, hev v _ (GlobalTheory.SchrSBFin.schr_mem_SB v _ (hψc v) w φ hφ), hev v φ hφ, ft_schr]`. Use `GlobalTheory.SympChangeBij.bijOn_of_inv T e' hT_schA (fun Φ hΦ => ?_) (fun Φ hΦ => ?_) (fun Φ hΦ => ?_)` and prove the remaining obligations. Rewrite using `[he']`.
-
-Conclude with `Submodule.smul_mem _ _ (hT_schA _ (hT_schA _ (hT_schA _ hΦ)))`. Rewrite using `[he', hT4 Φ hΦ, smul_smul, inv_mul_cancel₀ hCne, one_smul]`. Rewrite using `[he', map_smul, hT4 Φ hΦ, smul_smul, inv_mul_cancel₀ hCne, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weyl_hasOpB : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → (∀ᶠ v in cofinite, PsiUnr ψ v) →
     (∀ v : Pl F, ∃ x, psiLoc ψ v x ≠ 1) → ∀ (κ : Type) [Fintype κ] [DecidableEq κ],

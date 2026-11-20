@@ -18,7 +18,7 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+*
   {A B : LB X} {φ : Weight p σ B} {D : ℕ}
 
 /- English proof (translation)
-Establish `hs : ContDiff ℝ ∞ fun v : Unit → ℂ => ‖v ()‖ ^ 2` using `(contDiff_apply ℝ ℂ ()).norm_sq ℂ`. Use `⟨W, Unit, inferInstance, fun _ => g, fun v => Real.log (‖v ()‖ ^ 2), {v | ‖v ()‖ ^ 2 ≠ 0}, hy, isOpen_ne_fun hs.continuous continuous_const, pow_ne_zero _ (norm_ne_zero_iff.2 h0), hs.contDiffOn.log fun _ h => h, EventuallyEq.rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem cInfAt_log_normSq {W : X.Opens} (g : Γ(X, W)) {y : CxPts p σ} (hy : y ∈ ptsIn p σ W)
     (h0 : ev p σ W g y ≠ 0) : CInfAt (fun z => Real.log (‖ev p σ W g z‖ ^ 2)) y := by
@@ -28,7 +28,7 @@ theorem cInfAt_log_normSq {W : X.Opens} (g : Γ(X, W)) {y : CxPts p σ} (hy : y 
     pow_ne_zero _ (norm_ne_zero_iff.2 h0), hs.contDiffOn.log fun _ h => h, EventuallyEq.rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Weight.ofIso, Weight.ofPairs_φ ha hb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ofIso_apply (hA : A.IsLB) (w : LB.Iso B A) (hw : w.IsGen) {a : A.ι} {b : B.ι}
     {y : CxPts p σ} (ha : y ∈ ptsIn p σ (A.U a)) (hb : y ∈ ptsIn p σ (B.U b)) :
@@ -36,7 +36,7 @@ theorem ofIso_apply (hA : A.IsLB) (w : LB.Iso B A) (hw : w.IsGen) {a : A.ι} {b 
   rw [Weight.ofIso, Weight.ofPairs_φ ha hb]
 
 /- English proof (translation)
-Introduce `a y ha` and use `by have hb := mem_pick φ.isLB y refine ((h _ y hb).add (cInfAt_log_normSq (w.s (a, pick φ.isLB y)).val (mem_ptsIn_inf.2 ⟨ha, hb⟩) (ev_iso_ne_zero w hb ha))).congr ?_ filter_upwards [(isOpen_ptsIn _).mem_nhds ha, (isOpen_ptsIn _).mem_nhds hb] with z h₁ h₂ exact ofIso_apply hA w hw …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isCInf_ofIso (h : φ.IsCInf) (hA : A.IsLB) (w : LB.Iso B A) (hw : w.IsGen) :
     (φ.ofIso hA w hw).IsCInf := fun a y ha => by
@@ -47,11 +47,11 @@ theorem isCInf_ofIso (h : φ.IsCInf) (hA : A.IsLB) (w : LB.Iso B A) (hw : w.IsGe
   exact ofIso_apply hA w hw h₁ h₂
 
 /- English proof (translation)
-Establish `ho` using `isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (A.U a ⊓ B.U b))`. Establish `hm` using `mem_over c.e hy (mem_ptsIn_inf.2 ⟨ha, hb⟩)`. Establish `hg` using `c.holo (A.U a ⊓ B.U b) (w.s (a, b)).val`. Establish `h0 : ∀ v ∈ c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ (A.U a ⊓ B.U b), (ev p σ (A.U a ⊓ B.U b) (w.s (a, b)).val ∘ c.e.symm) v ≠ 0` using `fun v hv => ev_iso_ne_zero w (mem_ptsIn_inf.1 hv.2).2 (mem_ptsIn_inf.1 hv.2).1`. Establish `e` using `ReciprocityTheory.L2DbarEstimates.I.MongeAmpereIntegrability.cHess_add_smul ho ((contDiffOn_chart (h b) c).mono fun v hv => ⟨hv.1, (mem_ptsIn_inf.1 hv.2).2⟩) (contDiffOn_log_normSq ho hg h0) 1 hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₀ : cHess D (fun v => ((Real.log (‖(ev p σ (A.U a ⊓ B.U b) (w.s (a, b)).val ∘ c.e.symm) v‖ ^ 2) : ℝ) : ℂ)) (c.e y) = 0`. Use extensionality with `i j`. Conclude with `ReciprocityTheory.L2DbarEstimates.Y.cmpa_hess_log ho hm hg h0 i j`. Rewrite `e` using `[e₀, smul_zero, add_zero]`. Use `Eq.trans (ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr ?_) e` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [ho.mem_nhds hm] with v hv`. Rewrite using `[ofIso_apply hA w hw (mem_ptsIn_inf.1 hv.2).1 (mem_ptsIn_inf.1 hv.2).2, one_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hess_ofIso (h : φ.IsCInf) (hA : A.IsLB) (w : LB.Iso B A) (hw : w.IsGen)
     (c : AlgChart p σ D) {y : CxPts p σ} (hy : y ∈ c.e.source) {a : A.ι} {b : B.ι}
@@ -77,9 +77,9 @@ theorem hess_ofIso (h : φ.IsCInf) (hA : A.IsLB) (w : LB.Iso B A) (hw : w.IsGen)
   rfl
 
 /- English proof (translation)
-Use `iSup_congr fun c => Measure.ext fun S hS => ?_` and prove the remaining obligations. Rewrite using `[chartMeas_apply _ _ hS, chartMeas_apply _ _ hS]`. Use `setLIntegral_congr_fun (measurableSet_image c.e (c.e.open_source.measurableSet.inter hS) inter_subset_left) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Simplify using `only [c.e.left_inv hy.1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Rewrite using `[AlgChart.chernDens, AlgChart.chernDens, hess_ofIso h hA w hw c hy.1 (mem_pick _ y) (mem_pick φ.isLB y)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chernPart_ofIso (h : φ.IsCInf) (hA : A.IsLB) (w : LB.Iso B A) (hw : w.IsGen) (ε : ℤˣ) :
     (φ.ofIso hA w hw).chernPart D ε = φ.chernPart D ε := by
@@ -93,7 +93,7 @@ theorem chernPart_ofIso (h : φ.IsCInf) (hA : A.IsLB) (w : LB.Iso B A) (hw : w.I
     hess_ofIso h hA w hw c hy.1 (mem_pick _ y) (mem_pick φ.isLB y)]
 
 /- English proof (translation)
-Rewrite using `[Weight.chernInt, Weight.chernInt, chernPart_ofIso h, chernPart_ofIso h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chernInt_ofIso (h : φ.IsCInf) (hA : A.IsLB) (w : LB.Iso B A) (hw : w.IsGen)
     (S : Set (CxPts p σ)) (f : CxPts p σ → ℝ) :
@@ -101,7 +101,7 @@ theorem chernInt_ofIso (h : φ.IsCInf) (hA : A.IsLB) (w : LB.Iso B A) (hw : w.Is
   rw [Weight.chernInt, Weight.chernInt, chernPart_ofIso h, chernPart_ofIso h]
 
 /- English proof (translation)
-Introduce `_ _ _ _ hA w hw h` and use `⟨isCInf_ofIso h hA w hw, chernInt_ofIso h hA w hw _ _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem chernMass_ofIso : ∀ (Y : Var ℂ) (L A : LB Y.X) (φ : Weight Y.str (RingHom.id ℂ) L)
     (hA : A.IsLB) (w : L.Iso A) (hw : w.IsGen), φ.IsCInf → (φ.ofIso hA w hw).IsCInf ∧

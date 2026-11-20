@@ -20,7 +20,7 @@ open GlobalTheory.CechPic
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
 /- English proof (translation)
-Use `forall_congr' fun s => exists_congr fun U => and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[← cls_eq_zero_iff (LB.isLB_linComb hL _ _), cls_linComb hL, Fin.sum_univ_two]`. Express the relevant statement in the definitionally equal form `(1 : ℤ) • pull ((A.hom ⁻¹ᵁ U).ι ≫ (GrpObj.inv : A ⟶ A).left) (cls L hL) + (-1 : ℤ) • pull (A.hom ⁻¹ᵁ U).ι (cls L hL) = 0 ↔ _`. Rewrite using `[one_zsmul, neg_one_zsmul, add_neg_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem sym_iff_cls {L : LB A.left} (hL : L.IsLB) : Out.Sym A L ↔ ∀ s : S, ∃ U : S.Opens, s ∈ U ∧
     pull ((A.hom ⁻¹ᵁ U).ι ≫ (GrpObj.inv : A ⟶ A).left) (cls L hL) = pull (A.hom ⁻¹ᵁ U).ι (cls L hL) := by
@@ -31,7 +31,7 @@ theorem sym_iff_cls {L : LB A.left} (hL : L.IsLB) : Out.Sym A L ↔ ∀ s : S, �
   rw [one_zsmul, neg_one_zsmul, add_neg_eq_zero]
 
 /- English proof (translation)
-Establish `hle : A.hom ⁻¹ᵁ V ≤ A.hom ⁻¹ᵁ U` using `fun _ hx => h hx`. Rewrite using `[← Scheme.homOfLE_ι A.left hle, Category.assoc, pull_comp, e, ← pull_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_restrict {U V : S.Opens} (h : V ≤ U) {c : Pic A.left}
     (e : pull ((A.hom ⁻¹ᵁ U).ι ≫ (GrpObj.inv : A ⟶ A).left) c = pull (A.hom ⁻¹ᵁ U).ι c) :
@@ -40,7 +40,7 @@ theorem pull_restrict {U V : S.Opens} (h : V ≤ U) {c : Pic A.left}
   rw [← Scheme.homOfLE_ι A.left hle, Category.assoc, pull_comp, e, ← pull_comp]
 
 /- English proof (translation)
-Use `(sym_iff_cls hQ).2 fun s => ?_` and prove the remaining obligations. Take `⟨U, hU, eU⟩` from `(sym_iff_cls hL).1 sL s`. Take `⟨V, hV, eV⟩` from `(sym_iff_cls hM).1 sM s`. Use `⟨U ⊓ V, ⟨hU, hV⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e, map_sub, map_sub, pull_restrict inf_le_left eU, pull_restrict inf_le_right eV]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sym_of_cls_eq_sub {L M Q : LB A.left} (hL : L.IsLB) (hM : M.IsLB) (hQ : Q.IsLB)
     (e : cls Q hQ = cls L hL - cls M hM) (sL : Out.Sym A L) (sM : Out.Sym A M) : Out.Sym A Q := by
@@ -51,9 +51,9 @@ theorem sym_of_cls_eq_sub {L M Q : LB A.left} (hL : L.IsLB) (hM : M.IsLB) (hQ : 
   rw [e, map_sub, map_sub, pull_restrict inf_le_left eU, pull_restrict inf_le_right eV]
 
 /- English proof (translation)
-Introduce `laws P₀ u Hm χ hu A' _ ρ j hc M hM sM H`. Establish `hL` using `pull_isLB P₀.isLB ρ`. Establish `hQ : (LB.div (P₀.L.pull ρ) M).IsLB` using `LB.isLB_div hL hM`. Establish `e₀ : cls _ P₀.isLB = pull j (cls M hM)` using `(cls_eq_iff _ (pull_isLB hM j)).2 H`. Establish `triv : ∃ t : ((LB.div (P₀.L.pull ρ) M).pull j).Gen, t.IsGen`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← cls_eq_zero_iff (pull_isLB hQ j), cls_pull hQ, cls_div hL hM, map_sub, cls_pull P₀.isLB, ← pull_comp, hc.2.2, pull_id, e₀, sub_self]`. Take `⟨Q, k, hQ', iso, hk⟩` from `GlobalTheory.T.exists_lineBundle_cocycle_one_add_eps _ _ P₀.A.hom A'.hom ρ j hc.1.1 hc.2.2 hc.2.1.1.w _ hQ triv`. Establish `e : cls Q hQ' = cls _ hL - cls M hM` using `((cls_eq_iff hQ hQ').2 iso).symm.trans (cls_div hL hM hQ)`. Establish `z` using `(cls_eq_zero_iff hQ').2 (GlobalTheory.T.symmetric_bundle_trivial_constant_family_dualNumber laws P₀ u Hm χ hu A' ρ j hc Q k hQ' hk (sym_of_cls_eq_sub hL hM hQ' e (PolBaseChange.sym_pull hc.1 P₀.sym) sM))`. Conclude with `(cls_eq_iff hM hL).1 (sub_eq_zero.1 (e.symm.trans z)).symm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lbIso_pull_of_isConst : Out.Laws → ∀ (P₀ : Out.PolAV (Sp ℂ)) (u : HolUnif P₀.A P₀.L P₀.g) (Hm : Matrix (Fin P₀.g) (Fin P₀.g) ℂ) (χ : u.Λ → ℂ), GoodU u Hm χ → ∀ (A' : Over (Sp (DualNumber ℂ))) [GrpObj A'] (ρ : A'.left ⟶ P₀.A.left) (j : P₀.A.left ⟶ A'.left), IsConst A' P₀.A ρ j → ∀ M : LB A'.left, M.IsLB → Out.Sym A' M → LBIso P₀.L (M.pull j) → LBIso M (P₀.L.pull ρ) := by
   intro laws P₀ u Hm χ hu A' _ ρ j hc M hM sM H

@@ -10,9 +10,9 @@ open UpperTheory.V.Af.Smo (EigAt)
 open scoped ComplexOrder
 
 /- English proof (translation)
-Take `⟨-, -, h3, h4, -, -, -, h8, -⟩` from `UpperTheory.ConvolutionTheory.R2.H.sgLaws ℚ w`. Rewrite using `[pv, h4, map_add, map_one]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[h3, add_sub_cancel]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: H.cp v (H.sg w (((atFin w (unif w) : (H.Kv w)ˣ) : H.Kv w) - 1)) = 0` using `(h8 _).2 v (Ne.symm h)`. Rewrite using `[this, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cp_pv (v w : H.P ℚ) :
     H.cp v ((pv w : (A ℚ)ˣ) : A ℚ) = if w = v then ((atFin v (unif v) : (H.Kv v)ˣ) : H.Kv v) else 1 := by
@@ -25,16 +25,16 @@ private theorem cp_pv (v w : H.P ℚ) :
     rw [this, add_zero]
 
 /- English proof (translation)
-Use `(n.factorization.support.finite_toSet.preimage GlobalTheory.TwAtt.normV_injective.injOn).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Finsupp.mem_support_iff.2 fun (h : n.factorization (normV v) = 0) => hv (by simp only [h, pow_zero])`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem fin_supp {n : ℕ} : (Function.mulSupport fun v : H.P ℚ => pv v ^ n.factorization (normV v)).Finite := by
   refine (n.factorization.support.finite_toSet.preimage GlobalTheory.TwAtt.normV_injective.injOn).subset fun v hv => ?_
   exact Finsupp.mem_support_iff.2 fun (h : n.factorization (normV v) = 0) => hv (by simp only [h, pow_zero])
 
 /- English proof (translation)
-Establish `h` using `((H.cp v).toMonoidHom.comp (Units.coeHom (A ℚ))).map_finprod (fin_supp (n := n))`. Use `h.trans ((finprod_eq_single _ v fun w hw => ?_).trans ?_)` and prove the remaining obligations. Rewrite using `[map_pow]`. Express the relevant statement in the definitionally equal form `H.cp v ((pv w : (A ℚ)ˣ) : A ℚ) ^ _ = 1`. Rewrite using `[cp_pv, if_neg hw, one_pow]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow]`. Express the relevant statement in the definitionally equal form `H.cp v ((pv v : (A ℚ)ˣ) : A ℚ) ^ _ = _`. Rewrite using `[cp_pv, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cp_pin (n : ℕ) (v : H.P ℚ) :
     H.cp v ((pin n : (A ℚ)ˣ) : A ℚ) = ((atFin v (unif v) : (H.Kv v)ˣ) : H.Kv v) ^ n.factorization (normV v) := by
@@ -48,7 +48,7 @@ private theorem cp_pin (n : ℕ) (v : H.P ℚ) :
     rw [cp_pv, if_pos rfl]
 
 /- English proof (translation)
-Establish `h1` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := ℚ) v (n : 𝓞 ℚ)`. Rewrite `h1` using `[HeightOneSpectrum.valuation_of_algebraMap]`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem val_nat (v : H.P ℚ) (n : ℕ) : Valued.v (n : H.Kv v) = v.intValuation (n : 𝓞 ℚ) := by
   have h1 := HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := ℚ) v (n : 𝓞 ℚ)
@@ -56,7 +56,7 @@ private theorem val_nat (v : H.P ℚ) (n : ℕ) : Valued.v (n : H.Kv v) = v.intV
   simpa using h1
 
 /- English proof (translation)
-Establish `h` using `((RingHom.fst (InfiniteAdeleRing ℚ) (FiniteAdeleRing (𝓞 ℚ) ℚ)).toMonoidHom.comp (Units.coeHom (A ℚ))).map_finprod (fin_supp (n := n))`. Use `h.trans (finprod_eq_one_of_forall_eq_one fun w => ?_)` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `one_pow _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fst_pin (n : ℕ) : ((pin n : (A ℚ)ˣ) : A ℚ).1 = 1 := by
   have h := ((RingHom.fst (InfiniteAdeleRing ℚ) (FiniteAdeleRing (𝓞 ℚ) ℚ)).toMonoidHom.comp
@@ -66,9 +66,9 @@ private theorem fst_pin (n : ℕ) : ((pin n : (A ℚ)ˣ) : A ℚ).1 = 1 := by
   exact one_pow _
 
 /- English proof (translation)
-Rewrite using `[iy, dif_neg hr]`. Establish `e : ∀ u : (TR.Rinf ℚ)ˣ, ((TR.infId ℚ u : (A ℚ)ˣ) : A ℚ) = 1 - TR.sInf ℚ 1 + TR.sInf ℚ u` using `fun _ => rfl`. Rewrite using `[e]`. Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `1 - TR.infEq ℚ 1 + TR.infEq ℚ _ = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_one, sub_self, zero_add]`. Rewrite using `[map_add, map_sub, map_one]`. Express the relevant statement in the definitionally equal form `1 - 0 + 0 = _`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem iy_val {r : ℝ} (hr : r ≠ 0) :
     ((iy r : (A ℚ)ˣ) : A ℚ).1 = TR.infEq ℚ (fun _ => r) ∧ ∀ v : H.P ℚ, H.cp v ((iy r : (A ℚ)ˣ) : A ℚ) = 1 := by
@@ -83,35 +83,31 @@ private theorem iy_val {r : ℝ} (hr : r ≠ 0) :
     simp
 
 /- English proof (translation)
-Introduce `L N hN hLN hbad y h1 h2`. Establish `hv : ∀ (M : ℕ) (v : H.P ℚ), (Bad M v → Valued.v (M : H.Kv v) < 1) ∧ (¬ Bad M v → Valued.v (M : H.Kv v) = 1)` using `fun M v => by`. Rewrite using `[val_nat]`. Conclude with `⟨fun h => (v.intValuation_lt_one_iff_mem _).2 h, fun h => HeightOneSpectrum.intValuation_eq_one_iff.2 h⟩`. Establish `hb : ∀ v, Bad N v → Valued.v (H.cp v (y : A ℚ)) = 1` using `fun v h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h3` using `(h1 v h).trans_lt ((hv L v).1 (hbad v h))`. Rewrite `h3` using `[map_sub, map_one]`. Use `Valuation.map_one_add_of_lt Valued.v h3` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Establish `hle : ∀ v, Valued.v (H.cp v (y : A ℚ)) ≤ 1` using `fun v => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Distinguish the cases in `h : Bad N v`. Use `exacts [(hb v h).le, h2 v h]`. Establish `hinv : ∀ v, H.cp v (y : A ℚ) * H.cp v ((y⁻¹ : (A ℚ)ˣ) : A ℚ) = 1` using `fun v => by`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `hne : ∀ v, Valued.v (H.cp v (y : A ℚ)) ≠ 0` using `fun v => (Valuation.ne_zero_iff _).2 (left_ne_zero_of_mul_eq_one (hinv v))`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∀ v, ∃ e : ℕ, Valued.v (H.cp v (y : A ℚ)) = WithZero.exp (-1 : ℤ) ^ e` using `fun v => by`. Establish `h3 : WithZero.log (Valued.v (H.cp v (y : A ℚ))) ≤ 0`. Rewrite using `[← WithZero.exp_le_exp, WithZero.exp_log (hne v)]`. Conclude with `hle v`. Use `⟨(-WithZero.log (Valued.v (H.cp v (y : A ℚ)))).toNat, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← WithZero.exp_nsmul, nsmul_eq_mul, Int.toNat_of_nonneg (by omega), mul_neg_one, neg_neg, WithZero.exp_log (hne v)]`. Use `choose e he using hex`. Establish `he0 : ∀ v, Valued.v (H.cp v (y : A ℚ)) = 1 → e v = 0` using `fun v h => by`. Rewrite `h` using `[he v, ← WithZero.exp_nsmul, WithZero.exp_eq_one]`. Simplify using `using h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfin : (Function.support e).Finite`. Establish `h3 : ∀ᶠ v : H.P ℚ in cofinite, ((y⁻¹ : (A ℚ)ˣ) : A ℚ).2 v ∈ v.adicCompletionIntegers ℚ` using `((y⁻¹ : (A ℚ)ˣ) : A ℚ).2.2`. Use `(Filter.eventually_cofinite.1 h3).subset fun v hv' h4 => hv' (he0 v (le_antisymm (hle v) ?_))` and prove the remaining obligations. Establish `h5` using `congrArg Valued.v (hinv v)`. Rewrite `h5` using `[map_mul, map_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h6 : Valued.v (H.cp v ((y⁻¹ : (A ℚ)ˣ) : A ℚ)) ≤ 1` using `h4`. Conclude with `h5.symm.trans_le (mul_le_of_le_one_right' h6)`. Set `f : ℕ →₀ ℕ` to `Finsupp.mapDomain normV (Finsupp.ofSupportFinite e hfin)`. Establish `hf : ∀ v, f (normV v) = e v` using `fun v => Finsupp.mapDomain_apply GlobalTheory.TwAtt.normV_injective _ v`. Establish `hfs : ∀ p ∈ f.support, ∃ v : H.P ℚ, normV v = p` using `fun p hp => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨v, -, hv'⟩` from `Finset.mem_image.1 (Finsupp.mapDomain_support hp)`. Conclude with `⟨v, hv'⟩`. Establish `hpr : ∀ p ∈ f.support, p.Prime` using `fun p hp => (hfs p hp).elim fun v h => h ▸ GlobalTheory.TwAtt.normV_prime v`. Establish `hfac` using `Nat.prod_pow_factorization_eq_self hpr`. Use `set n := f.prod (· ^ ·) with hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hn0 : 0 < n` using `Finset.prod_pos fun p hp => pow_pos (hpr p hp).pos _`. Establish `hr : re (y : A ℚ) ≠ 0`. Establish `h3` using `congrFun (congrArg (TR.pInf ℚ) y.mul_inv) Rat.infinitePlace`. Rewrite `h3` using `[map_mul, map_one]`. Conclude with `left_ne_zero_of_mul_eq_one h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i1, i2⟩` from `iy_val hr`. Establish `hτ : ∀ v, H.cp v ((pin n : (A ℚ)ˣ) : A ℚ) * H.cp v (((iy (re (y : A ℚ)) * pin n)⁻¹ * y : (A ℚ)ˣ) : A ℚ) = H.cp v (y : A ℚ)` using `fun v => by conv_rhs => rw [← mul_inv_cancel_left (iy (re (y : A ℚ)) * pin n) y, Units.val_mul, Units.val_mul, map_mul, map_mul, i2, one_mul]`. Establish `hu : ∀ v, Valued.v (H.cp v (((iy (re (y : A ℚ)) * pin n)⁻¹ * y : (A ℚ)ˣ) : A ℚ)) = 1` using `fun v => by`. Establish `h3` using `congrArg Valued.v (hτ v)`. Rewrite `h3` using `[map_mul, cp_pin, map_pow, unif_spec v, hfac, hf, ← he v]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_eq_left₀ (hne v)).1 h3`. Use `⟨n, re (y : A ℚ), (iy (re (y : A ℚ)) * pin n)⁻¹ * y, hn0, ?_, hr, ⟨⟨?_, hu⟩, fun v => ?_⟩, (mul_inv_cancel_left _ _).symm⟩` and prove the remaining obligations. Use `Nat.Coprime.prod_left fun p hp => Nat.Coprime.pow_left _ (((hpr p hp).coprime_iff_not_dvd).2 fun hd => ?_)` and prove the remaining obligations. Take `⟨v, rfl⟩` from `hfs p hp`. Conclude with `Finsupp.mem_support_iff.1 hp ((hf v).trans (he0 v (hb v ((GlobalTheory.TwAtt.mem_iff v N).2 hd))))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : ((iy (re (y : A ℚ)) * pin n : (A ℚ)ˣ) : A ℚ).1 = (y : A ℚ).1`. Express the relevant statement in the definitionally equal form `((iy (re (y : A ℚ)) : (A ℚ)ˣ) : A ℚ).1 * ((pin n : (A ℚ)ˣ) : A ℚ).1 = _`. Rewrite using `[i1, fst_pin, mul_one, ← RingEquiv.eq_symm_apply]`. Use function extensionality and compare the values at `w`. Rewrite using `[Subsingleton.elim w Rat.infinitePlace]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `h4 : (((iy (re (y : A ℚ)) * pin n)⁻¹ : (A ℚ)ˣ) : A ℚ).1 * ((iy (re (y : A ℚ)) * pin n : (A ℚ)ˣ) : A ℚ).1 = 1` using `congrArg Prod.fst (Units.inv_mul (iy (re (y : A ℚ)) * pin n))`. Rewrite `h4` using `[h3]`. Conclude with `h4`. Distinguish the cases in `h : Bad N v`.
-
-Establish `h3` using `hτ v`. Rewrite `h3` using `[cp_pin, hfac, hf, he0 v (hb v h), pow_zero, one_mul]`. Establish `h4` using `h1 v h`. Simplify using `only [Dv, map_sub] at h4 ⊢`. Rewrite using `[h3]` and apply the resulting hypothesis.
-
-Establish `h3 : ¬ Bad L v` using `fun h' => h ((GlobalTheory.TwAtt.mem_iff v N).2 (((GlobalTheory.TwAtt.mem_iff v L).1 h').trans hLN))`. Simplify using `only [Dv, map_sub, map_one]`. Rewrite using `[(hv L v).2 h3]`. Conclude with `Valuation.map_sub_le _ (hu v).le (map_one _).le`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_factorization_of_ideleCongruence_divisor_level :
     ∀ (L N : ℕ), 0 < N → L ∣ N → (∀ v, Bad N v → Bad L v) → ∀ y : (A ℚ)ˣ, (∀ v, Bad N v → Dv L v ((y : A ℚ) - 1)) → (∀ v : H.P ℚ, ¬ Bad N v → Valued.v (H.cp v (y : A ℚ)) ≤ 1) → ∃ (n : ℕ) (r : ℝ) (τ : (A ℚ)ˣ), 0 < n ∧ n.Coprime N ∧ r ≠ 0 ∧ τ ∈ TT L ∧ y = iy r * pin n * τ := by

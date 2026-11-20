@@ -9,7 +9,7 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open MvPolynomial Topology Filter
 
 /- English proof (translation)
-Establish `h : zeroSetIn I = ⋂ q ∈ I, {z : σ → ℂ | eval z q = 0}`. Use extensionality with `z`. Simplify using `[zeroSetIn]`. Rewrite using `[h]`. Conclude with `isClosed_biInter fun q _ => isClosed_eq (MvPolynomial.continuous_eval q) continuous_const`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_zeroSetIn_of_ideal {σ : Type*} (I : Ideal (MvPolynomial σ ℂ)) :
     IsClosed (zeroSetIn I) := by
@@ -19,7 +19,7 @@ theorem isClosed_zeroSetIn_of_ideal {σ : Type*} (I : Ideal (MvPolynomial σ ℂ
   exact isClosed_biInter fun q _ => isClosed_eq (MvPolynomial.continuous_eval q) continuous_const
 
 /- English proof (translation)
-Take `⟨V, hV, hzV, F, hF, hgF⟩` from `hg z hz`. Establish `hFc : ContinuousAt F z` using `(hF.differentiableAt (hV.mem_nhds hzV)).continuousAt`. Use `hFc.continuousWithinAt.congr_of_eventuallyEq ?_ (hgF ⟨hz, hzV⟩)` and prove the remaining obligations. Use `filter_upwards [inter_mem_nhdsWithin S (hV.mem_nhds hzV)] with x hx using hgF hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem HolomorphicOnSubset.continuousWithinAt_trace {σ : Type*} [Fintype σ] {g : (σ → ℂ) → ℂ}
     {S : Set (σ → ℂ)} (hg : HolomorphicOnSubset g S) {z : σ → ℂ} (hz : z ∈ S) :
@@ -30,7 +30,7 @@ theorem HolomorphicOnSubset.continuousWithinAt_trace {σ : Type*} [Fintype σ] {
   filter_upwards [inter_mem_nhdsWithin S (hV.mem_nhds hzV)] with x hx using hgF hx
 
 /- English proof (translation)
-Take `⟨V, hV, hzV, F, hF, hgF⟩` from `hg (s y) hS.self_of_nhds`. Establish `hFd : DifferentiableAt ℂ F (s y)` using `hF.differentiableAt (hV.mem_nhds hzV)`. Establish `hev : ∀ᶠ y' in 𝓝 y, s y' ∈ V` using `hs.continuousAt.preimage_mem_nhds (hV.mem_nhds hzV)`. Use `(hFd.comp y hs).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hS, hev] with y' h1 h2 using hgF ⟨h1, h2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem HolomorphicOnSubset.differentiableAt_comp {σ : Type*} [Fintype σ] {k : ℕ}
     {g : (σ → ℂ) → ℂ} {S : Set (σ → ℂ)} (hg : HolomorphicOnSubset g S)
@@ -43,41 +43,37 @@ theorem HolomorphicOnSubset.differentiableAt_comp {σ : Type*} [Fintype σ] {k :
   filter_upwards [hS, hev] with y' h1 h2 using hgF ⟨h1, h2⟩
 
 /- English proof (translation)
-Introduce `σ _ I w U g hI hw hU hg`. Take `⟨k, A, W, D, m, δ, hWo, hwW, hWc, hWU, hDo, hAwD, hwonly, hprop, hδd, hδne, hsheets, hopen⟩` from `hbc σ I w U hI hw hU`. Establish `hZc : IsClosed (zeroSetIn I)` using `isClosed_zeroSetIn_of_ideal I`. Establish `hKc : IsCompact (zeroSetIn I ∩ closure W)` using `hWc.inter_left hZc`. Establish `hgc : ContinuousOn g (zeroSetIn I ∩ U)` using `fun z hz => hg.continuousWithinAt_trace hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨M, hM⟩ : ∃ M, ∀ z ∈ zeroSetIn I ∩ closure W, ‖g z‖ ≤ M` from `hKc.exists_bound_of_continuousOn (hgc.mono (Set.inter_subset_inter_right _ hWU))`. Take `⟨f, hf⟩ : ∃ f : (Fin k → ℂ) → ℂ, ∀ y, f y = ∑ᶠ z ∈ {z | z ∈ zeroSetIn I ∩ W ∧ A z = y}, g z` from `⟨_, fun _ => rfl⟩`. Establish `hfsum : ∀ (s : Fin m → σ → ℂ) (y : Fin k → ℂ), (∀ j, s j ∈ zeroSetIn I ∩ W ∧ A (s j) = y) → Function.Injective s → (∀ z ∈ zeroSetIn I ∩ W, A z = y → z ∈ Set.range s) → f y = ∑ j, g (s j)`. Introduce `s y hs hinj hcov`. Establish `hset : {z | z ∈ zeroSetIn I ∩ W ∧ A z = y} = Set.range s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hAz⟩`. Conclude with `hcov z hz hAz`. Introduce and unpack `⟨j, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs j`. Rewrite using `[hf, hset, finsum_mem_range hinj, finsum_eq_sum_of_fintype]`. Establish `hmemU : ∀ z ∈ zeroSetIn I ∩ W, z ∈ zeroSetIn I ∩ U` using `fun z hz => ⟨hz.1, hWU (subset_closure hz.2)⟩`. Establish `hfd : DifferentiableOn ℂ f (D ∩ {t | δ t ≠ 0})`. Introduce and unpack `y ⟨hyD, hyδ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨O, s, hOo, hyO, hsd, hsO⟩` from `hsheets y hyD hyδ`. Establish `hev : f =ᶠ[𝓝 y] fun y' => ∑ j, g (s j y')` using `by filter_upwards [hOo.mem_nhds hyO] with y' hy'`. Conclude with `hfsum (fun j => s j y') y' (hsO y' hy').1 (hsO y' hy').2.1 (hsO y' hy').2.2`. Use `(DifferentiableAt.congr_of_eventuallyEq ?_ hev).differentiableWithinAt` and prove the remaining obligations. Use `DifferentiableAt.fun_sum fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `hg.differentiableAt_comp ((hsd j).differentiableAt (hOo.mem_nhds hyO)) ?_` and prove the remaining obligations. Use `filter_upwards [hOo.mem_nhds hyO] with y' hy' using hmemU _ ((hsO y' hy').1 j).1`. Establish `hfb : ∀ y ∈ D ∩ {t | δ t ≠ 0}, ‖f y‖ ≤ m * M`. Introduce and unpack `y ⟨hyD, hyδ⟩`. Take `⟨O, s, hOo, hyO, hsd, hsO⟩` from `hsheets y hyD hyδ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hfsum (fun j => s j y) y (hsO y hyO).1 (hsO y hyO).2.1 (hsO y hyO).2.2]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨T, hTd, hTf⟩` from `RiemannExtensionAnalytic.proof k D δ f hDo hδd hδne hfd (fun τ _ => ⟨Set.univ, Filter.univ_mem, isBounded_iff_forall_norm_le.2 ⟨m * M, by`. Introduce and unpack `_ ⟨y, ⟨⟨_, hyD⟩, hyδ⟩, rfl⟩`. Conclude with `hfb y ⟨hyD, hyδ⟩⟩⟩)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨k, A, W ∩ A ⁻¹' D, D, m, T, hWo.inter (hDo.preimage A.continuous), ⟨hwW, hAwD⟩, fun z hz => hWU (subset_closure hz.1), hDo, hAwD, fun z hz hAz => hwonly z ⟨hz.1, hz.2.1⟩ hAz, hTd, ?_⟩` and prove the remaining obligations. Introduce `y hyD`. Establish `hseq : ∀ n : ℕ, ∃ t ∈ D ∩ Metric.ball y (1 / ((n : ℝ) + 1)), δ t ≠ 0` using `fun n => hδne _ (hDo.inter Metric.isOpen_ball) Set.inter_subset_left ⟨y, hyD, Metric.mem_ball_self (by positivity)⟩`. Use `choose t ht htδ using hseq`. Establish `htD : ∀ n, t n ∈ D` using `fun n => (ht n).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `httend : Tendsto t atTop (𝓝 y)`. Rewrite using `[tendsto_iff_dist_tendsto_zero]`. Conclude with `squeeze_zero (fun n => dist_nonneg) (fun n => le_of_lt (ht n).2) tendsto_one_div_add_atTop_nhds_zero_nat`. Establish `hX : ∀ n, ∃ X : Fin m → σ → ℂ, (∀ j, X j ∈ zeroSetIn I ∩ W ∧ A (X j) = t n) ∧ (∀ z ∈ zeroSetIn I ∩ W, A z = t n → z ∈ Set.range X) ∧ T (t n) = ∑ j, g (X j)`. Introduce `n`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨O, s, hOo, hyO, hsd, hsO⟩` from `hsheets (t n) (htD n) (htδ n)`. Take `⟨h1, h2, h3⟩` from `hsO (t n) hyO`. Conclude with `⟨fun j => s j (t n), h1, h3, by rw [hTf ⟨htD n, htδ n⟩, hfsum _ (t n) h1 h2 h3]⟩`. Use `choose X hXmem hXcov hXT using hX`. Establish `hKm : IsCompact (Set.univ.pi fun _ : Fin m => zeroSetIn I ∩ closure W)` using `isCompact_univ_pi fun _ => hKc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hxK, φ, hφ, hXφ⟩` from `hKm.tendsto_subseq (x := X) (fun n => Set.mem_univ_pi.2 fun j => ⟨(hXmem n j).1.1, subset_closure (hXmem n j).1.2⟩)`. Establish `hxK' : ∀ j, x j ∈ zeroSetIn I ∩ closure W` using `fun j => Set.mem_univ_pi.1 hxK j`. Establish `hxj : ∀ j, Tendsto (fun n => X (φ n) j) atTop (𝓝 (x j))` using `fun j => tendsto_pi_nhds.1 hXφ j`. Establish `htφ : Tendsto (fun n => t (φ n)) atTop (𝓝 y)` using `httend.comp hφ.tendsto_atTop`. Establish `hAx : ∀ j, A (x j) = y` using `fun j => tendsto_nhds_unique ((A.continuous.tendsto _).comp (hxj j)) (Tendsto.congr (fun n => ((hXmem (φ n) j).2).symm) htφ)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hxW : ∀ j, x j ∈ W` using `fun j => hprop (x j) (hxK' j) (by rw [hAx j]; exact hyD)`. Establish `hT1 : Tendsto (fun n => T (t (φ n))) atTop (𝓝 (T y))` using `(hTd.differentiableAt (hDo.mem_nhds hyD)).continuousAt.tendsto.comp htφ`. Establish `hT2 : Tendsto (fun n => T (t (φ n))) atTop (𝓝 (∑ j, g (x j)))`. Establish `hs : Tendsto (fun n => ∑ j, g (X (φ n) j)) atTop (𝓝 (∑ j, g (x j)))`. Use `tendsto_finsetSum _ fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(hgc (x j) ⟨(hxK' j).1, hWU (hxK' j).2⟩).tendsto.comp (tendsto_nhdsWithin_iff.2 ⟨hxj j, Filter.Eventually.of_forall fun n => hmemU _ (hXmem (φ n) j).1⟩)`. Conclude with `Tendsto.congr (fun n => (hXT (φ n)).symm) hs`. Use `⟨x, fun j => ⟨⟨(hxK' j).1, hxW j, by show A (x j) ∈ D; rw [hAx j]; exact hyD⟩, hAx j⟩, ?_, tendsto_nhds_unique hT1 hT2⟩` and prove the remaining obligations. Introduce and unpack `z ⟨hzZ, hzW, -⟩ hAz`. Assume the negation of the conclusion as `hz`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : ∀ j, 0 < dist z (x j)` using `fun j => dist_pos.2 fun h => hz ⟨j, h.symm⟩`. Take `⟨r, hr, hrW⟩` from `Metric.isOpen_iff.1 hWo z hzW`. Establish `hε : ∀ᶠ ε in 𝓝[>] (0 : ℝ), 0 < ε ∧ ε ≤ r ∧ ∀ j, 2 * ε < dist z (x j)`. Use `Filter.Eventually.and (self_mem_nhdsWithin : ∀ᶠ ε in 𝓝[>] (0 : ℝ), 0 < ε) (Filter.Eventually.and (nhdsWithin_le_nhds (Iic_mem_nhds hr) : ∀ᶠ ε in 𝓝[>] (0 : ℝ), ε ≤ r) (Filter.eventually_all.2 fun j => nhdsWithin_le_nhds ?_))` and prove the remaining obligations. Establish `h2 : Tendsto (fun ε : ℝ => 2 * ε) (𝓝 0) (𝓝 0)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using (continuous_const_mul (2 : ℝ)).tendsto 0`. Conclude with `h2.eventually (gt_mem_nhds (hne j))`. Take `⟨ε, hε0, hεr, hεd⟩` from `hε.exists`. Establish `hnbhd` using `hopen z ⟨hzZ, hzW⟩ ε hε0`. Rewrite `hnbhd` using `[hAz]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hev1 : ∀ᶠ n in atTop, t (φ n) ∈ A '' (zeroSetIn I ∩ Metric.ball z ε)` using `htφ hnbhd`. Establish `hev2 : ∀ᶠ n in atTop, ∀ j, dist (X (φ n) j) (x j) < ε` using `Filter.eventually_all.2 fun j => Metric.tendsto_nhds.1 (hxj j) ε hε0`. Take `⟨n, ⟨z', ⟨hz'Z, hz'b⟩, hAz'⟩, hd⟩` from `(hev1.and hev2).exists`. Establish `hz'W : z' ∈ W` using `hrW (Metric.ball_subset_ball hεr hz'b)`. Take `⟨j, hj⟩` from `hXcov (φ n) z' ⟨hz'Z, hz'W⟩ hAz'`.
-
-Establish `h1` using `hd j`. Rewrite `h1` using `[hj]`. Rewrite `hz'b` using `[Metric.mem_ball]`. Establish `h3` using `dist_triangle z z' (x j)`. Establish `h4` using `hεd j`.
-
-Rewrite `hz'b` using `[dist_comm]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem LocalTrace.proof (hbc : LocalBranchedCovering.Statement) : LocalTrace.Statement := by
   intro σ _ I w U g hI hw hU hg

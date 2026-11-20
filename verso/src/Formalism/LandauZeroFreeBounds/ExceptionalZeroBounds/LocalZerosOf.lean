@@ -7,7 +7,7 @@ noncomputable section
 namespace Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Rewrite `hw` using `[Metric.mem_closedBall, dist_eq_norm]`. Establish `h1` using `Complex.abs_re_le_norm (w - z₀)`. Establish `h2` using `neg_abs_le (w - z₀).re`. Rewrite `h1`, `h2` using `[Complex.sub_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma re_sub_le_re_of_mem_closedBall {z₀ w : ℂ} {r : ℝ} (hw : w ∈ Metric.closedBall z₀ r) : z₀.re - r ≤ w.re := by
   rw [Metric.mem_closedBall, dist_eq_norm] at hw
@@ -17,7 +17,7 @@ lemma re_sub_le_re_of_mem_closedBall {z₀ w : ℂ} {r : ℝ} (hw : w ∈ Metric
   linarith
 
 /- English proof (translation)
-Rewrite `hw` using `[Metric.mem_closedBall, dist_eq_norm]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma norm_le_norm_add_of_mem_closedBall {z₀ w : ℂ} {r : ℝ} (hw : w ∈ Metric.closedBall z₀ r) : ‖w‖ ≤ ‖z₀‖ + r := by
   rw [Metric.mem_closedBall, dist_eq_norm] at hw
@@ -26,7 +26,7 @@ lemma norm_le_norm_add_of_mem_closedBall {z₀ w : ℂ} {r : ℝ} (hw : w ∈ Me
     _ ≤ ‖z₀‖ + r := by linarith
 
 /- English proof (translation)
-Establish `h1 : ‖(11 / 10 : ℂ)‖ = 11 / 10`. Rewrite using `[show (11 / 10 : ℂ) = ((11 / 10 : ℝ) : ℂ) by push_cast; ring, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by norm_num)]`. Establish `h2 : ‖(t : ℂ) * I‖ = |t|`. Rewrite using `[norm_mul, Complex.norm_I, mul_one, Complex.norm_real, Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma norm_center_le (t : ℝ) : ‖(11 / 10 : ℂ) + t * I‖ ≤ 11 / 10 + |t| := by
   have h1 : ‖(11 / 10 : ℂ)‖ = 11 / 10 := by
@@ -38,7 +38,7 @@ lemma norm_center_le (t : ℝ) : ‖(11 / 10 : ℂ) + t * I‖ ≤ 11 / 10 + |t|
     _ = 11 / 10 + |t| := by rw [h1, h2]
 
 /- English proof (translation)
-Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[div_eq_mul_one_div, show ((m ρ : ℕ) : ℂ) = ((m ρ : ℝ) : ℂ) by norm_cast, Complex.re_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma re_sum_div_sub (Z : Finset ℂ) (m : ℂ → ℕ) (z : ℂ) :
     (∑ ρ ∈ Z, (m ρ : ℂ) / (z - ρ)).re = ∑ ρ ∈ Z, (m ρ : ℝ) * (1 / (z - ρ)).re := by
@@ -47,7 +47,7 @@ lemma re_sum_div_sub (Z : Finset ℂ) (m : ℂ → ℕ) (z : ℂ) :
   rw [div_eq_mul_one_div, show ((m ρ : ℕ) : ℂ) = ((m ρ : ℝ) : ℂ) by norm_cast, Complex.re_ofReal_mul]
 
 /- English proof (translation)
-Establish `h2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`. Establish `ha : 0 ≤ Real.log (22 * C₁)` using `Real.log_nonneg (by linarith)`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ h2]`. Conclude with `mul_le_mul_of_nonneg_left hL ha`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma log_le_div_log_two_mul (C₁ L : ℝ) (hC₁ : 1 ≤ C₁) (hL : Real.log 2 ≤ L) :
     Real.log (22 * C₁) ≤ Real.log (22 * C₁) / Real.log 2 * L := by
@@ -57,35 +57,35 @@ lemma log_le_div_log_two_mul (C₁ L : ℝ) (hC₁ : 1 ≤ C₁) (hL : Real.log 
   exact mul_le_mul_of_nonneg_left hL ha
 
 /- English proof (translation)
-Introduce `hLan hGr hInv`. Take `⟨C, hC⟩` from `hGr`. Use `set C₁ : ℝ := max C 1 with hC₁def`. Establish `hC₁ : 1 ≤ C₁` using `le_max_right _ _`. Establish `hCC : C ≤ C₁` using `le_max_left _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨120 * (1 + Real.log (22 * C₁) / Real.log 2), ?_⟩` and prove the remaining obligations. Introduce `q _ χ hχ t`. Use `set z₀ : ℂ := (11 / 10 : ℂ) + t * I with hz₀`. Establish `hz₀re : z₀.re = 11 / 10`. Rewrite using `[hz₀, Complex.add_re, Complex.re_ofReal_mul, Complex.I_re, mul_zero, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Evaluate the numerical expressions. Establish `hq : (1 : ℝ) ≤ q` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 (NeZero.ne q)`. Establish `ht0 : 0 ≤ |t|` using `abs_nonneg t`. Use `set M : ℝ := 22 * C₁ * q * (|t| + 2) with hM`. Establish `hM1 : 1 ≤ M`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h1 : 1 ≤ C₁ * q` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Establish `hdiff : DifferentiableOn ℂ (DirichletCharacter.LFunction χ) (Metric.closedBall z₀ (3 / 5))` using `(DirichletCharacter.differentiable_LFunction hχ).differentiableOn`. Establish `hnz : ∀ s : ℂ, 1 < s.re → DirichletCharacter.LFunction χ s ≠ 0` using `fun s hs => DirichletCharacter.LFunction_ne_zero_of_one_le_re χ (Or.inl hχ) hs.le`. Establish `hf0 : DirichletCharacter.LFunction χ z₀ ≠ 0` using `hnz z₀ (by rw [hz₀re]; norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlow : 1 / 11 ≤ ‖DirichletCharacter.LFunction χ z₀‖`. Establish `h` using `hInv q χ z₀ (by rw [hz₀re]; norm_num)`. Rewrite `h` using `[hz₀re, show (11 / 10 : ℝ) / (11 / 10 - 1) = 11 by norm_num]`. Establish `hpos : 0 < ‖DirichletCharacter.LFunction χ z₀‖` using `norm_pos_iff.2 hf0`. Rewrite `h` using `[inv_le_comm₀ hpos (by norm_num)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hbound : ∀ z ∈ Metric.closedBall z₀ (3 / 5), ‖DirichletCharacter.LFunction χ z‖ ≤ M * ‖DirichletCharacter.LFunction χ z₀‖`. Introduce `z hz`. Establish `hre : 1 / 2 ≤ z.re`. Use `re_sub_le_re_of_mem_closedBall hz` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `this` using `[hz₀re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `hC q χ hχ z hre`. Establish `hn : ‖z‖ ≤ 11 / 10 + |t| + 3 / 5`. Use `norm_le_norm_add_of_mem_closedBall hz` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `norm_center_le t` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq0 : (0 : ℝ) ≤ q` using `by linarith`. Establish `hz0 : 0 ≤ ‖z‖` using `norm_nonneg z`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Z, m, hZ, hm1, hm2, -, happrox⟩` from `hLan (DirichletCharacter.LFunction χ) z₀ (3 / 5) M (by norm_num) hM1 hdiff hf0 hbound`. Use `⟨Z, m, ?_, hm1, hm2, ?_⟩` and prove the remaining obligations. Introduce `ρ`. Rewrite using `[hZ ρ, show (3 / 5 : ℝ) / 3 = 1 / 5 by norm_num]`. Introduce `σ hσ1 hσ2 set s : ℂ := (σ : ℂ) + t * I with hs`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsre : s.re = σ`. Rewrite using `[hs, Complex.add_re, Complex.ofReal_re, Complex.re_ofReal_mul, Complex.I_re, mul_zero, add_zero]`. Establish `hsball : s ∈ Metric.closedBall z₀ ((3 / 5) / 6)`. Rewrite using `[Metric.mem_closedBall, dist_eq_norm, show (3 / 5 : ℝ) / 6 = 1 / 10 by norm_num]`. Establish `hd : s - z₀ = ((σ - 11 / 10 : ℝ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hs, hz₀]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hd, Complex.norm_real, Real.norm_eq_abs, abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfs : DirichletCharacter.LFunction χ s ≠ 0` using `hnz s (by rw [hsre]; exact hσ1)`. Establish `hA` using `happrox s hsball hfs`. Establish `hpos1 : 0 < 22 * C₁` using `by linarith`. Establish `hpos2 : 0 < (q : ℝ) * (|t| + 2)` using `by positivity`. Establish `hL : Real.log 2 ≤ Real.log ((q : ℝ) * (|t| + 2))` using `Real.log_le_log (by norm_num) (by nlinarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlogM : Real.log M ≤ (1 + Real.log (22 * C₁) / Real.log 2) * Real.log ((q : ℝ) * (|t| + 2))`. Establish `hMe : M = (22 * C₁) * ((q : ℝ) * (|t| + 2))` using `by rw [hM]; ring`. Rewrite using `[hMe, Real.log_mul hpos1.ne' hpos2.ne']`. Use `log_le_div_log_two_mul C₁ _ hC₁ hL` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hre` using `Complex.abs_re_le_norm (deriv (DirichletCharacter.LFunction χ) s / DirichletCharacter.LFunction χ s - ∑ ρ ∈ Z, (m ρ : ℂ) / (s - ρ))`. Establish `hre'` using `neg_abs_le (deriv (DirichletCharacter.LFunction χ) s / DirichletCharacter.LFunction χ s - ∑ ρ ∈ Z, (m ρ : ℂ) / (s - ρ)).re`. Rewrite `hre`, `hre'` using `[Complex.sub_re, re_sum_div_sub]`. Establish `h72 : 72 * Real.log M / (3 / 5) = 120 * Real.log M` using `by ring`. Rewrite `hA` using `[h72]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hneg : (negLD χ s).re = -(deriv (DirichletCharacter.LFunction χ) s / DirichletCharacter.LFunction χ s).re`. Rewrite using `[negLD, Complex.neg_re]`. Rewrite using `[hneg]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem localZeroSumBoundOfBounds : LocalZerosOf := by
   intro hLan hGr hInv

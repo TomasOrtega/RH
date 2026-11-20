@@ -6,7 +6,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.SlabBound.affine`.
+A detailed English derivation is pending.
 -/
 theorem SlabBound.proof : SlabBound.Statement :=
   GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets.SlabBound.affine

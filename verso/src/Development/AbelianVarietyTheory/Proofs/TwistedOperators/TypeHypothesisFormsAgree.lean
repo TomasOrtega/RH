@@ -21,15 +21,13 @@ namespace GlobalTheory.TypeHypForms
 open GlobalTheory.SmGL in
 
 /- English proof (translation)
-Introduce `g hg`. Rewrite using `[SetLike.mem_coe, GlobalTheory.IndefiniteRowSideFullHecke.CuspidalNoRadicalFixed.radicalTwo, mem_unipRad]`. Use `⟨(mem_parab_two k).2 fun j i => ?_, ?_⟩` and prove the remaining obligations. Establish `hj` using `j.isLt`. Establish `hi` using `i.isLt`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hg (stdSum h (.inr j)) (stdSum h (.inl i)) (by simp only [stdSum_inl, stdSum_inr]; omega), Matrix.one_apply_ne]`. Introduce `he`. Use `congrArg Fin.val he` as an intermediate fact. Simplify using `only [stdSum_inl, stdSum_inr] at this`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce and unpack `(_ | _) i j`. Establish `hj` using `j.isLt`. Establish `hi` using `i.isLt`. Use `show (g : Matrix (Fin r) (Fin r) k) (stdSum h (.inl i)) (stdSum h (.inl j)) = (1 : Matrix (Fin a) (Fin a) k) i j`. Rewrite using `[hg _ _ (by simp only [stdSum_inl, stdSum_inr]; omega)]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.one_apply, (stdSum h).injective.eq_iff, Sum.inl.injEq]`. Establish `hj` using `j.isLt`. Establish `hi` using `i.isLt`. Use `show (g : Matrix (Fin r) (Fin r) k) (stdSum h (.inr i)) (stdSum h (.inr j)) = (1 : Matrix (Fin b) (Fin b) k) i j`. Rewrite using `[hg _ _ (by simp only [stdSum_inl, stdSum_inr]; omega)]`.
-
-Simplify using `only [Matrix.one_apply, (stdSum h).injective.eq_iff, Sum.inr.injEq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unipBlock_subset_radicalTwo {k : Type} [Field k] {a b r : ℕ} (h : a + b = r) :
     GlobalTheory.IndefiniteRowSideFullHecke.PlusPolynomialRoots.unipBlock k r a ⊆ (GlobalTheory.IndefiniteRowSideFullHecke.CuspidalNoRadicalFixed.radicalTwo k h : Set (GL (Fin r) k)) := by
@@ -57,7 +55,7 @@ theorem unipBlock_subset_radicalTwo {k : Type} [Field k] {a b r : ℕ} (h : a + 
       simp only [Matrix.one_apply, (stdSum h).injective.eq_iff, Sum.inr.injEq]
 
 /- English proof (translation)
-Introduce `a b h ha hb`. Take `⟨v, hv⟩` from `hT.2 a ha (by omega)`. Use `⟨v, (Submodule.eq_bot_iff _).2 fun y hy => hv y fun g hg => ?_⟩` and prove the remaining obligations. Use `hy ⟨g, unipBlock_subset_radicalTwo h hg⟩` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem noRadicalFixed_of_noFixed {D : D7} {V : HSp D} (T : TypeDataG V) (hT : NoFixed T) :
     GlobalTheory.IndefiniteRowSideFullHecke.CuspidalNoRadicalFixed.NoRadicalFixed T := by
@@ -68,9 +66,9 @@ theorem noRadicalFixed_of_noFixed {D : D7} {V : HSp D} (T : TypeDataG V) (hT : N
   simpa using this
 
 /- English proof (translation)
-Introduce `a ha har`. Take `⟨v, hv⟩` from `h.2 a ha har`. Use `⟨v, fun y hy => hv y fun g hg => hy g ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Assume the negation of the conclusion as `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hij (hg i j hc)`.
+A detailed English derivation is pending.
 -/
 theorem hypH_of_noFixed {D : D7} {V : HSp D} (T : TypeDataG V) (h : NoFixed T) :
     GlobalTheory.IndefiniteRowSideFullHecke.RadicalNoFixedVectors.HypH (k := fun v : T.S => ResF v.1) T.τ := by
@@ -82,7 +80,7 @@ theorem hypH_of_noFixed {D : D7} {V : HSp D} (T : TypeDataG V) (h : NoFixed T) :
   exact hij (hg i j hc)
 
 /- English proof (translation)
-Introduce `_ _ T h` and use `⟨hypH_of_noFixed T h, noRadicalFixed_of_noFixed T h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem hypH_and_noRadicalFixed : ∀ (D : D7) (V : HSp D) (T : TypeDataG V), NoFixed T → GlobalTheory.IndefiniteRowSideFullHecke.RadicalNoFixedVectors.HypH (k := fun v : T.S => ResF v.1) T.τ ∧ GlobalTheory.IndefiniteRowSideFullHecke.CuspidalNoRadicalFixed.NoRadicalFixed T :=
   fun _ _ T h => ⟨hypH_of_noFixed T h, noRadicalFixed_of_noFixed T h⟩

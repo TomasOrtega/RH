@@ -35,9 +35,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {v : HeightOneSpectrum (𝓞 F)}
 
 /- English proof (translation)
-Take `⟨j0, hj0⟩` from `hf`. Use `haveI : Nonempty (Fin k) := ⟨j0⟩`. Take `⟨j, hj⟩` from `Finite.exists_max fun i => ‖f i‖₊`. Use `⟨j, fun h0 => hj0 ?_, fun c => ⟨fun h => h j, fun h i => ?_⟩⟩` and prove the remaining obligations. Use `hj j0` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h0, nnnorm_zero]`. Conclude with `nnnorm_eq_zero.1 (le_antisymm this zero_le)`. Rewrite `h`, the goal using `[← nnnorm_le_one_iff_mem]`. Rewrite `h`, the goal using `[nnnorm_mul]`. Conclude with `(mul_le_mul_of_nonneg_left (hj i) zero_le).trans h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dominant {k : ℕ} (f : Fin k → Fv F v) (hf : ∃ j, f j ≠ 0) :
     ∃ j, f j ≠ 0 ∧ ∀ c : Fv F v,
@@ -54,13 +54,11 @@ theorem exists_dominant {k : ℕ} (f : Fin k → Fv F v) (hf : ∃ j, f j ≠ 0)
     exact (mul_le_mul_of_nonneg_left (hj i) zero_le).trans h
 
 /- English proof (translation)
-Establish `hne : ∀ ρ : E →ₐ[F] Fv F v, ∃ j, splitProj ρ (u j) ≠ 0` using `fun ρ => by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `congrArg (splitProj ρ) hl` as an intermediate fact. Rewrite `this` using `[map_sum, map_one, Finset.sum_eq_zero fun j _ => by rw [map_mul, hc j, mul_zero]]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_ne_one this`. Take `⟨j1, h1, hj1⟩` from `exists_dominant (fun j => splitProj τ (u j)) (hne τ)`. Take `⟨j2, h2, hj2⟩` from `exists_dominant (fun j => splitProj (τ.comp σ) (u j)) (hne _)`. Use `beta_reduce at h1 h2 hj1 hj2`. Use `⟨⟨(splitAlgEquiv h τ).symm ((splitProj τ (u j1))⁻¹, (splitProj (τ.comp σ) (u j2))⁻¹), (splitAlgEquiv h τ).symm (splitProj τ (u j1), splitProj (τ.comp σ) (u j2)), ?_, ?_⟩, fun c => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_mul, Prod.mk_mul_mk, inv_mul_cancel₀ h1, inv_mul_cancel₀ h2]`. Conclude with `map_one _`. Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_inv_cancel₀ h1, mul_inv_cancel₀ h2]`. Conclude with `map_one _`. Use `show _ ↔ (splitAlgEquiv h τ).symm (splitProj τ (u j1), splitProj (τ.comp σ) (u j2)) * c ∈ intLoc F E v`.
-
-Simplify using `only [mem_intLoc_iff_split h τ, map_mul, splitProj_symm, splitProj_comp_symm, forall_and]`. Rewrite using `[hj1 (splitProj τ c), hj2 (splitProj (τ.comp σ) c), mul_comm (splitProj τ c), mul_comm (splitProj (τ.comp σ) c)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_gen (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) {k : ℕ} {u l : Fin k → Fv F v ⊗[F] E}
     (hl : ∑ j, l j * u j = 1) :
@@ -91,15 +89,15 @@ end Local
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D v hτ n L hL g ε hε`. Take `⟨τ⟩` from `hτ`. Take `⟨k, S, Φ, h1, hS, hΦ⟩` from `SelfDual.exists_frame L hL`. Establish `h2` using `SelfDual.map_mul_eq_one (F := D.host.F) (Fv D.host.F v) h1`. Set `w : Fin n → Fv D.host.F v ⊗[D.host.F] D.host.E` to `g.val *ᵥ fun i => (1 : Fv D.host.F v) ⊗ₜ[D.host.F] ε i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l : Fin n → Fv D.host.F v ⊗[D.host.F] D.host.E, l ⬝ᵥ w = 1 := by`. Take `⟨i, hi⟩` from `Function.ne_iff.1 hε`. Use `⟨Pi.single i ((1 : Fv D.host.F v) ⊗ₜ[D.host.F] (ε i)⁻¹) ᵥ* (g⁻¹ : GL (Fin n) _).val, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, single_dotProduct, Algebra.TensorProduct.tmul_mul_tmul, one_mul, inv_mul_cancel₀ (by simpa using hi)]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `u` to `Φ.map (inclR (F := D.host.F) (Fv D.host.F v)) *ᵥ w`. Establish `hl' : ∑ j, (l ᵥ* S.map (inclR (F` using `D.host.F) (Fv D.host.F v))) j * u j = 1 := by`. Express the relevant statement in the definitionally equal form `(l ᵥ* _) ⬝ᵥ u = 1`. Rewrite using `[← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, h2, Matrix.one_mulVec, hl]`. Establish `key : ∀ a : Fv D.host.F v ⊗[D.host.F] D.host.E, a • w ∈ latLoc D.host.F L v ↔ ∀ j, a * u j ∈ intLoc D.host.F D.host.E v` using `fun a => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[SelfDual.mem_latLoc_iff_of_frame h1 hS hΦ v, Matrix.mulVec_smul]`. Both sides reduce to the same expression. Take `⟨α, hα⟩` from `exists_unit_gen (isCMExt_host D) τ hl'`. Use `⟨α, fun c => ?_⟩` and prove the remaining obligations. Establish `hcw : g.val *ᵥ (c • fun i => (1 : Fv D.host.F v) ⊗ₜ[D.host.F] ε i) = c • w` using `Matrix.mulVec_smul _ _ _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hcw, key, hα]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_unit_mult_latLoc : ∀ (D : D7) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F)), Nonempty (D.host.E →ₐ[D.host.F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v) → ∀ (n : ℕ) (L : Submodule (𝓞 D.host.E) (Fin n → D.host.E)), Submodule.IsLattice D.host.E L → ∀ (g : GL (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v ⊗[D.host.F] D.host.E)) (ε : Fin n → D.host.E), ε ≠ 0 → ∃ α : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ, ∀ c : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v ⊗[D.host.F] D.host.E, Matrix.mulVec g.val (c • fun i => (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v) ⊗ₜ[D.host.F] ε i) ∈ GlobalTheory.AdelicU.latLoc D.host.F L v ↔ ((α⁻¹ : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v ⊗[D.host.F] D.host.E)ˣ) : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv D.host.F v ⊗[D.host.F] D.host.E) * c ∈ GlobalTheory.AdelicU.intLoc D.host.F D.host.E v := by
   intro D v hτ n L hL g ε hε

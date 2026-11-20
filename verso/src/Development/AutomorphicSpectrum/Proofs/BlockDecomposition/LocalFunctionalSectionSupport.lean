@@ -10,7 +10,7 @@ open ValuativeRel NNReal
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Ad3.dg, Ad3.uni, Matrix.mul_apply, Fin.sum_univ_three] <;> ring`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dg_mul_uni (a b : Fˣ) (x z : F) :
     Ad3.dg (a * b) b 1 * Ad3.uni x 0 z =
@@ -21,11 +21,11 @@ theorem dg_mul_uni (a b : Fˣ) (x z : F) :
     simp [Ad3.dg, Ad3.uni, Matrix.mul_apply, Fin.sum_univ_three] <;> ring
 
 /- English proof (translation)
-Establish `h1 : valuation F (GLnLocal.uniformizer F : F) ^ m ≤ 1` using `pow_le_one' (GLnLocal.valuation_uniformizer_lt_one F).le m`. Establish `hxO : x ∈ 𝒪[F]` using `(Valuation.mem_integer_iff _ _).mpr (hx.trans h1)`. Establish `hzO : z ∈ 𝒪[F]` using `(Valuation.mem_integer_iff _ _).mpr (hz.trans h1)`. Establish `hnx : -x ∈ 𝒪[F]` using `neg_mem hxO`. Establish `hnz : -z ∈ 𝒪[F]` using `neg_mem hzO`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxz : x * z ∈ 𝒪[F]` using `mul_mem hxO hzO`. Establish `hinv : (((Ad3.uni x 0 z)⁻¹ : GL (Fin 3) F) : Matrix (Fin 3) (Fin 3) F) = !![1, -x, x * z - 0; 0, 1, -z; 0, 0, 1]` using `rfl`. Establish `hval : (((Ad3.uni x 0 z) : GL (Fin 3) F) : Matrix (Fin 3) (Fin 3) F) = !![1, x, 0; 0, 1, z; 0, 0, 1]` using `rfl`. Rewrite using `[GLnLocal.mem_congruenceSubgroup_iff]`. Use `⟨(GLnLocal.mem_integralGL_iff F 3).mpr ⟨fun i j => ?_, fun i j => ?_⟩, fun i j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rw [hval] fin_cases i <;> fin_cases j <;> simp [hxO, hzO, zero_mem, one_mem]`. Apply the tactic sequence `rw [hinv] fin_cases i <;> fin_cases j <;> simp [hnx, hnz, hxz, zero_mem, one_mem]`. Apply the tactic sequence `rw [hval] fin_cases i <;> fin_cases j <;> simp [hx, hz]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem uni_mem_congruenceSubgroup {m : ℕ} {x z : F}
     (hx : valuation F x ≤ valuation F (GLnLocal.uniformizer F : F) ^ m)
@@ -52,7 +52,7 @@ theorem uni_mem_congruenceSubgroup {m : ℕ} {x z : F}
     fin_cases i <;> fin_cases j <;> simp [hx, hz]
 
 /- English proof (translation)
-Establish `h0 : (GLnLocal.uniformizer F : F) ≠ 0` using `fun h => GLnLocal.valuation_uniformizer_ne_zero F (by rw [h, map_zero])`. Take `⟨y, rfl⟩` from `exists_mul_of_mem_valBall (pow_ne_zero m h0) hx`. Rewrite using `[map_mul, map_pow]`. Conclude with `mul_le_of_le_one_right' ((Valuation.mem_integer_iff _ _).mp y.2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_le_of_mem_valBall {m : ℕ} {x : F}
     (hx : x ∈ valBall F (ord ((GLnLocal.uniformizer F : F) ^ m))) :
@@ -64,9 +64,9 @@ theorem valuation_le_of_mem_valBall {m : ℕ} {x : F}
   exact mul_le_of_le_one_right' ((Valuation.mem_integer_iff _ _).mp y.2)
 
 /- English proof (translation)
-Establish `hc : k⁻¹ * Ad3.uni x 0 z * k ∈ GLnLocal.congruenceSubgroup F 3 m`. Simplify using `using GLnLocal.conj_mem_congruenceSubgroup F 3 (inv_mem hk) (uni_mem_congruenceSubgroup hx hz)`. Establish `e1` using `hU (Ad3.dg (a * b) b 1 * k) _ (hm hc)`. Establish `e2 : Ad3.dg (a * b) b 1 * k * (k⁻¹ * Ad3.uni x 0 z * k) = Ad3.uni ((a : F) * x) 0 ((b : F) * z) * (Ad3.dg (a * b) b 1 * k)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite `e1` using `[e2, hW]`. Establish `e3 : (ψ ((a : F) * x + (b : F) * z) : ℂ) = 1` using `mul_right_cancel₀ h (by rw [e1, one_mul])`. Conclude with `Circle.coe_eq_one.mp e3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psi_eq_one {ψ : AddChar F Circle} {W : GL (Fin 3) F → ℂ}
     (hW : ∀ x y z g, W (Ad3.uni x y z * g) = (ψ (x + z) : ℂ) * W g)
@@ -91,9 +91,9 @@ theorem psi_eq_one {ψ : AddChar F Circle} {W : GL (Fin 3) F → ℂ}
   exact Circle.coe_eq_one.mp e3
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le, GroundTheory.LocalField.modulus_of_ne_zero c.ne_zero, (zpow_right_strictMono₀ one_lt_residueCard_nnreal).lt_iff_lt]`. Establish `h1 : (c : F)⁻¹ ∈ valBall F (-ord (c : F))`. Rewrite using `[← ord_inv c.ne_zero]`. Conclude with `mem_valBall_ord`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (c : F)⁻¹ * y ∈ valBall F n` using `valBall_antitone (by omega) (mul_mem_valBall h1 hy)`. Apply `hy1` to reduce the goal to its premises. Simplify `h _ h2` using `[c.ne_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem modulus_le_of_trivial {ψ : AddChar F Circle} {y : F} (hy : y ∈ valBall F (-1))
     (hy1 : ψ y ≠ 1) {n : ℤ} (c : Fˣ) (h : ∀ x ∈ valBall F n, ψ ((c : F) * x) = 1) :
@@ -114,13 +114,13 @@ end GlobalTheory.CompanionTheory.LFSupp
 open GlobalTheory.CompanionTheory.LFSupp in
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ hψ W hW hsm`. Take `⟨U, hU⟩` from `hsm`. Take `⟨m, -, hm⟩` from `(GLnLocal.hasBasis_nhds_one F 3).mem_iff.mp (U.isOpen.mem_nhds (one_mem U))`. Take `⟨hc, h1, h0⟩` from `hψ`. Establish `hnot` using `not_isTrivialOn_addCharConductor_sub_one hc h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hnot` using `[h0]`. Simplify using `only [IsTrivialOn, not_forall] at hnot`. Take `⟨y, hy, hy1⟩` from `hnot`. Establish `hy' : y ∈ valBall F (-1)` using `by simpa using hy`. Use `⟨(((residueCard F : NNReal) ^ (ord ((GLnLocal.uniformizer F : F) ^ m) + 1) : NNReal) : ℝ), fun a b k hk h => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `NNReal.coe_le_coe.mpr (modulus_le_of_trivial hy' hy1 a fun x hx => ?_)` and prove the remaining obligations. Use `psi_eq_one hW (U := (U : Set _)) hU hm a b hk (valuation_le_of_mem_valBall hx) (z := 0) (by simp) h` as an intermediate fact. Simplify using `using this`. Use `NNReal.coe_le_coe.mpr (modulus_le_of_trivial hy' hy1 b fun z hz => ?_)` and prove the remaining obligations. Use `psi_eq_one hW (U := (U : Set _)) hU hm a b hk (x := 0) (by simp) (valuation_le_of_mem_valBall hz) h` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem GlobalTheory.CompanionTheory.LFSupp.sSupp : Ad3.LFS.SSupp := by
   intro F _ _ _ _ _ _ ψ hψ W hW hsm

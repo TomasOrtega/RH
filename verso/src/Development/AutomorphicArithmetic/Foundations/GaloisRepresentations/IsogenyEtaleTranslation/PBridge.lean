@@ -13,9 +13,9 @@ open UpperTheory.Gal.LocalSmoothExtension (qAt al leg cW CxFin StdC)
 namespace UpperTheory.Gal.FixZ
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [GlobalTheory.HeckeCorr.heckeLevel, G3.lev, Subgroup.mem_inf, Subgroup.mem_map, Subgroup.mem_comap]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, y, hy, rfl⟩`. Use `⟨hx, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hy` using `[MulAut.conj_apply, mul_assoc]`. Introduce and unpack `⟨hx, hy⟩`. Use `⟨hx, _, hy, ?_⟩` and prove the remaining obligations. Simplify using `[MulAut.conj_apply, mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem lev_eq {G : Type} [Group G] (K : Subgroup G) (h : G) :
     GlobalTheory.HeckeCorr.heckeLevel K h⁻¹ = G3.lev K h := by
@@ -37,7 +37,7 @@ private theorem ind_eq {G : Type} [Group G] (K : Subgroup G) (g : G) :
   rfl
 
 /- English proof (translation)
-Use `haveI := h`. Use `smoothOfRelativeDimension_comp (n := 0) (m := n) e.hom s` as an intermediate fact. Rewrite `this` using `[Nat.zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem smooth_iso {A B C : Scheme.{0}} (e : A ≅ B) (s : B ⟶ C) (n : ℕ)
     (h : SmoothOfRelativeDimension n s) : SmoothOfRelativeDimension n (e.hom ≫ s) := by
@@ -49,33 +49,31 @@ end UpperTheory.Gal.FixZ
 
 open UpperTheory.Gal UpperTheory.Gal.FixZ in
 /- English proof (translation)
-Introduce `hTr hAl hLeg hWt hTan hDim hCx h0 hZ p _ D G L hSc gb hStd i₀ v hv k T N' N hdvd d hsm h a b hreg α hα`. Establish `hτ : ∀ i, D.tau i = D.tau i₀` using `fun i => by`. Establish `: Subsingleton (Fin D.a)` using `by rw [hSc.a1]; infer_instance`. Rewrite using `[Subsingleton.elim i i₀]`. Establish `hAdm : ∀ u ∈ L.KN N'.1, h * u * h⁻¹ ∈ L.KN N.1` using `fun u hu => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `b.2 u (by rw [T.K_eq]; exact hu)` as an intermediate fact. Rewrite `this` using `[T.K_eq]`. Then use the resulting hypothesis. Establish `hLe : L.KN N'.1 ≤ L.KN N.1` using `fun u hu => by`. Use `a.2 u (by rw [T.K_eq]; exact hu)` as an intermediate fact. Rewrite `this` using `[T.K_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Establish `hLev : W2.LevOk L N.1 N'.1 h` using `⟨N.2.1, N.2.2, N'.2.1, N'.2.2, hdvd, hAdm⟩`. Take `⟨c₁, hc₁, -⟩` from `hLeg p D G L gb k T N' N 1 a`. Take `⟨c₂, -, hc₂'⟩` from `hLeg p D G L gb k T N' N h b`. Establish `hc₂` using `hc₂' α`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hregZ : ∀ g, h * g ∈ L.KN N.1 → GlobalTheory.LKCx.RegAf G g` using `fun g hg => hreg g (by`. Establish `hm : g ∈ DoubleCoset.doubleCoset h⁻¹ (L.KN N.1 : Set G.GAf) (L.KN N.1)` using `DoubleCoset.mem_doubleCoset.2 ⟨1, one_mem _, h * g, hg, by simp⟩`. Rewrite using `[G3.ind, Set.indicator_of_mem hm]`. Conclude with `one_ne_zero)`. Establish `heq : ∀ M : Lv p, (T.e M).hom ≫ W2.sZ (T.M M) k = qAt T M` using `T.e_q`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpw : c₁.pw k = (T.e N').inv ≫ T.X.tr _ _ 1 a.1 a.2 ≫ (T.e N).hom`. Rewrite using `[hc₁, Iso.inv_hom_id_assoc]`. Establish `htw : c₂.tw α = (T.e N').inv ≫ leg T N' N h b α ≫ (T.e N).hom`. Rewrite using `[hc₂, Iso.inv_hom_id_assoc]`. Establish `hEt : Etale (c₁.pw k)` using `by haveI := T.X.etale (T.lev N') (T.lev N) a.1 a.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpw]`. Use `infer_instance`. Establish `h₁ : c₁.pw k ≫ W2.sZ (T.M N) k = W2.sZ (T.M N') k`. Rewrite using `[hpw, Category.assoc, Category.assoc, heq N, T.X.tr_q, Iso.inv_comp_eq]`. Conclude with `(heq N').symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h₂ : c₂.tw α ≫ W2.sZ (T.M N) k = W2.sZ (T.M N') k`. Rewrite using `[htw, Category.assoc, Category.assoc, heq N, LocalSmoothExtension.leg_q, Iso.inv_comp_eq]`. Conclude with `(heq N').symm`. Take `⟨-, -, -, -, -, hfin, hone, -⟩` from `h0 p D G L hSc.a1 hSc.m1 v hv (D.tau i₀) hτ gb hStd N.1 N'.1 h hLev (T.M N) (T.M N') c₁ c₂ hregZ k α (fun s => (hα s).2) hEt h₁ h₂`. Take `⟨hsm₀, Fx, At, hFx, hAt, hSum⟩` from `hZ p D G L hSc.a1 hSc.m1 v hv (D.tau i₀) hτ gb hStd N.1 N'.1 h hLev (T.M N) (T.M N') c₁ c₂ hregZ k α (fun s => (hα s).2) hEt h₁ h₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hRHS : ∀ y : ℂ, ∑ x ∈ Fx, W2.lefTerm (At x) y = (((L.KN N'.1).relIndex (G3.lev (L.KN N.1) h) : ℕ) : ℂ) * GlobalTheory.RootSumWeights.cxTotalM G v (cW L i₀ v α y) (L.KN N.1) (G3.ind ℂ (L.KN N.1) h⁻¹) (LocalSmoothExtension.Kp G) (LocalSmoothExtension.oneP G)`. Introduce `y`. Rewrite using `[hSum y, hWt p D G L hSc.a1 i₀ v hv k α y, lev_eq, ind_eq]`. Both sides reduce to the same expression. Establish `hFT` using `hTr p D G L gb k T N' N h b.1 b.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hFA` using `hAl p D G L gb k T N α (fun s => (hα s).1)`. Establish `hlegF : IsFinite (leg T N' N h b α)` using `by haveI := hFT.1 haveI := hFA.1`. Unfold `leg`. Use `infer_instance`. Establish `hlegE : Etale (leg T N' N h b α)` using `by haveI := hFT.2 haveI := hFA.2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `leg`. Use `infer_instance`. Use `⟨hCx p G v (L.KN N.1) (L.KN N'.1) h hLe hAdm hfin hone, hlegF, hlegE, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hne : Nonempty (T.X.Z (T.lev N))`. Establish `hsm₁ : SmoothOfRelativeDimension (D.n - 1 + k * D.g) (qAt T N)`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← heq N]`. Conclude with `smooth_iso _ _ _ hsm₀`. Establish `hd : d = D.n - 1 + k * D.g` using `hDim _ (qAt T N) _ _ hsm hsm₁ hne`. Substitute `hd` using the available equality. Take `⟨E, -, hE2, hE3⟩` from `hTan _ _ _ _ (qAt T N) (qAt T N') (W2.sZ (T.M N) k) (W2.sZ (T.M N') k) (T.e N) (T.e N') (heq N) (heq N') (D.n - 1 + k * D.g) (T.X.tr _ _ 1 a.1 a.2) (leg T N' N h b α) (c₁.pw k) (c₂.tw α) (T.X.tr_q _ _ 1 a.1 a.2) (LocalSmoothExtension.leg_q T N' N h b α) h₁ h₂ hc₁ hc₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ∀ x, x ∈ Fx.map E.symm.toEmbedding ↔ E x ∈ Fx` using `fun x => by`. Rewrite using `[Finset.mem_map_equiv, Equiv.symm_symm]`. Use `⟨Fx.map E.symm.toEmbedding, fun x => At (E x), fun x => ?_, fun x hx => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hmem, hFx, hE2]`. Use `hAt _ ((hmem x).1 hx)` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hE3 x _ this.1, this.2⟩`. Rewrite using `[← hRHS y, Finset.sum_map]`. Simplify using the standard rewrite rules. Establish `hpt : ∀ _ : Sp ℂ ⟶ T.X.Z (T.lev N'), False` using `fun x => hne ⟨(x ≫ T.X.tr _ _ 1 a.1 a.2) (IsLocalRing.closedPoint ℂ)⟩`. Establish `hFx0 : Fx = ∅` using `Finset.eq_empty_of_forall_notMem fun x _ => hpt (x.1 ≫ (T.e N').inv)`.
-
-Use `⟨∅, fun _ => 0, fun x => (hpt x.1).elim, fun x => (hpt x.1).elim, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← hRHS y, hFx0, Finset.sum_empty, Finset.sum_empty]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FixZ.bridge_of :
     UpperTheory.Gal.FixZ.TrFEt → UpperTheory.Gal.FixZ.AlFEt → UpperTheory.Gal.FixZ.LegOf → UpperTheory.Gal.FixZ.WtEq → UpperTheory.Gal.FixZ.TanIso → UpperTheory.Gal.FixZ.DimUniq → UpperTheory.Gal.FixZ.CxFinOf → UpperTheory.Gal.FixZ.Bridge := by

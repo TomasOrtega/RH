@@ -12,9 +12,9 @@ noncomputable section
 namespace ResolutionSupBound
 
 /- English proof (translation)
-Rewrite using `[eval_eq, eval_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun e he => ?_` and prove the remaining obligations. Establish `hdeg : e.degree = n`. Assume the negation of the conclusion as `h`. Conclude with `(mem_support_iff.mp he) (hf.coeff_eq_zero h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum]`. Establish `hs : e.degree = ∑ i ∈ e.support, e i` using `rfl`. Rewrite using `[← hdeg, hs]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eval_smul_homog {ι : Type*} {f : MvPolynomial ι ℂ} {n : ℕ} (hf : f.IsHomogeneous n) (c : ℂ)
     (z : ι → ℂ) : eval (c • z) f = c ^ n * eval z f := by
@@ -30,7 +30,7 @@ theorem eval_smul_homog {ι : Type*} {f : MvPolynomial ι ℂ} {n : ℕ} (hf : f
   ring
 
 /- English proof (translation)
-Establish `hc' : (0 : ℝ) < ‖c‖ ^ n` using `pow_pos (norm_pos_iff.2 hc) n`. Simplify using `only [ptNorm, MvPolynomial.map_id, eval_smul_homog hf, m.smul, norm_mul, norm_pow, mul_pow]`. Conclude with `mul_div_mul_left _ _ hc'.ne'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ptNorm_smul {ι : Type*} (m : ConeMetric ℂ ι) {n : ℕ} {f : MvPolynomial ι ℂ} (hf : f.IsHomogeneous n)
     {c : ℂ} (hc : c ≠ 0) (z : ι → ℂ) :
@@ -40,17 +40,15 @@ theorem ptNorm_smul {ι : Type*} (m : ConeMetric ℂ ι) {n : ℕ} {f : MvPolyno
   exact mul_div_mul_left _ _ hc'.ne'
 
 /- English proof (translation)
-Introduce `D Ω _ _ κ _ d`. Take `⟨C, hC⟩` from `hI D Ω κ d`. Use `⟨C, fun n hn f hf z hz => ?_⟩` and prove the remaining obligations. Use `set B := C * (n : ℝ) ^ ((D : ℝ) / 2) * resolutionVolumeL2Complex d n f`. Take `⟨g, hgJ, hgP⟩` from `SetLike.not_le_iff_exists.1 d.R.nondeg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set S := {w | w ∈ mcPts (ι := GlobalTheory κ) (coordIdeal ℤ d.x) ∧ eval w (map (Int.castRingHom ℂ) g) ≠ 0}`. Establish `hzm : z ∈ mcPts (ι` using `GlobalTheory κ) (coordIdeal ℤ d.x) := by`. Use `⟨fun _ => ?_, hz.2⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Simplify using `only [not_exists, not_not] at h`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hz.1 (funext fun q => h q.2)`. Establish `hzS : z ∈ closure S` using `hND Unit (GlobalTheory κ) (coordIdeal ℤ d.x) (D + 1) g d.arith hgP hzm`. Establish `key : ∀ w ∈ S, ptNorm d.m (RingHom.id ℂ) n f w ≤ B`. Introduce and unpack `w ⟨hw, hwg⟩`. Take `⟨y, c, hc, hyc⟩` from `d.R.surj w hw fun h => hwg (h.2 g hgJ)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hy : resPt d y = c () • w`. Rewrite using `[resPt, hyc]`. Both sides reduce to the same expression. Rewrite using `[← ptNorm_smul d.m hf (hc ()), ← hy]`. Conclude with `hC n hn f hf y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Establish `hρ : ContinuousAt d.m.ρ z` using `(d.smooth.continuousOn).continuousAt (isOpen_ne.mem_nhds hz.1)`. Establish `hcont : ContinuousAt (ptNorm d.m (RingHom.id ℂ) n f) z`. Unfold `ptNorm`. Simplify using `only [MvPolynomial.map_id]`. Conclude with `((MvPolynomial.continuous_eval f).norm.continuousAt).div (hρ.pow n) (pow_pos (d.m.pos z hz.1) n).ne'`.
-
-Use `mem_closure_iff_nhdsWithin_neBot.1 hzS` as an intermediate fact. Conclude with `le_of_tendsto (hcont.tendsto.mono_left nhdsWithin_le_nhds) (eventually_nhdsWithin_of_forall key)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem proof (hI : ResolutionImageSup.Statement) (hND : NonvanishingDense.Statement) :
     ResolutionSupBound.Statement := by

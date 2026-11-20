@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.HeckeGal GlobalTheory.CuspRep UpperTheory.Gal.TP.Chr
 
 /- English proof (translation)
-Rewrite using `[Equiv.symm_apply_eq, IsCMField.equivInfinitePlace_apply, InfinitePlace.comap_mk, (emb w).2, InfinitePlace.mk_embedding]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem symm_eq_mk {E : Type} [Field E] [NumberField E] [IsCMField E]
     (emb : ∀ w : InfinitePlace (maximalRealSubfield E), EmbOver E w)
@@ -15,9 +15,9 @@ private theorem symm_eq_mk {E : Type} [Field E] [NumberField E] [IsCMField E]
     InfinitePlace.mk_embedding]
 
 /- English proof (translation)
-Establish `hp : ∀ v : InfinitePlace E, v (k : E) ≠ 0` using `fun v => by simp`. Establish `h` using `InfinitePlace.prod_eq_abs_norm (k : E)`. Express the relevant statement in the definitionally equal form `GlobalTheory.Mem.Chr.CharModel.logNorm E (GlobalTheory.Mem.Chr.infDiag k) = _`. Rewrite using `[GlobalTheory.Mem.Chr.CharModel.logNorm, (GlobalTheory.Mem.Chr.CharModel.infDiag_parts k).1, (GlobalTheory.Mem.Chr.CharModel.infDiag_parts k).2, GlobalTheory.Mem.Chr.CharModel.logFin_one, sub_zero, GlobalTheory.Mem.Chr.CharModel.logInf_principal, ← h, Real.log_prod (fun v _ => po …`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Real.log_pow, InfinitePlace.mult, if_neg (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex v))]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 private theorem logNorm_diag {E : Type} [Field E] [NumberField E] [IsCMField E] (k : Eˣ) :
     GlobalTheory.Mem.Chr.CharModel.logNorm E (infDiag k) = ∑ v : InfinitePlace E, 2 * Real.log (v (k : E)) := by
@@ -32,9 +32,9 @@ private theorem logNorm_diag {E : Type} [Field E] [NumberField E] [IsCMField E] 
   norm_num
 
 /- English proof (translation)
-Introduce `E _ _ _ emb z`. Use `⟨fun w => ⟨DiscreteGroups.T1.G.absC_unrAt z w, DiscreteGroups.T1.G.absC_val z w⟩, fun k => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Complex.exp (z * GlobalTheory.Mem.Chr.CharModel.logNorm E (infDiag k)) = _`. Rewrite using `[logNorm_diag, ← (IsCMField.equivInfinitePlace E).symm.sum_comp, Complex.ofReal_sum, Finset.mul_sum, Complex.exp_sum]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : 0 < ‖(emb w).1 (k : E)‖` using `norm_pos_iff.2 ((map_ne_zero _).2 k.ne_zero)`. Rewrite using `[symm_eq_mk emb w, InfinitePlace.apply, Complex.cpow_def_of_ne_zero (by exact_mod_cast h0.ne'), ← Complex.ofReal_log h0.le]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem UpperTheory.Gal.TP.Chr.absFacts :
     UpperTheory.Gal.TP.Chr.AbsFacts := by

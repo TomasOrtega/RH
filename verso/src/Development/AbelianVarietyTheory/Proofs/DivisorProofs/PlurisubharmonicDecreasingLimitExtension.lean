@@ -9,23 +9,21 @@ open scoped ENNReal ContDiff Topology
 namespace GlobalTheory.HormanderLimit
 
 /- English proof (translation)
-Establish `hpt : ∀ c, ∃ a : ℂ, c ∈ U → Tendsto (fun k => F k c) (𝒰 : Filter ℕ) (𝓝 a)`. Introduce `c`. Distinguish the cases in `hc : c ∈ U`. Take `⟨r, hr, M, -, hM⟩` from `hb c hc`. Take `⟨a, -, ha⟩` from `(isCompact_closedBall (0 : ℂ) M).ultrafilter_le_nhds (𝒰.map fun k => F k c) (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[le_principal_iff, Ultrafilter.coe_map, mem_map]`. Conclude with `Eventually.of_forall fun k => by`. Simplify using `using hM k c (mem_ball_self hr))`. Conclude with `⟨a, fun _ => ha⟩`. Conclude with `⟨0, fun h => absurd h hc⟩`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose f hf using hpt`. Use `⟨f, Metric.tendstoLocallyUniformlyOn_iff.2 fun ε hε c hc => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, M, hrU, hM⟩` from `hb c hc`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM 0 c (mem_ball_self hr))`. Use `set L : ℝ := (2 * M + 1) / r with hL`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL0 : 0 < L` using `by positivity`. Establish `hlip : ∀ k, ∀ z ∈ ball c r, dist (F k z) (F k c) ≤ L * dist z c`. Introduce `k z hz`. Use `Complex.dist_le_div_mul_dist_of_mapsTo_ball ((hF k).mono hrU) (fun w hw => ?_) hz` and prove the remaining obligations. Use `norm_sub_le (F k w) (F k c)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2 : dist (F k w) (F k c) < 2 * M + 1`. Rewrite using `[dist_eq_norm]`. Combine the linear relations using `[hM k w hw, hM k c (mem_ball_self hr)]`. Use `first`. Consider the case `exact mem_ball.2 h2`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Consider the case `exact mem_closedBall.2 h2.le`. Establish `hlipf : ∀ z ∈ ball c r, dist (f z) (f c) ≤ L * dist z c` using `fun z hz => le_of_tendsto ((hf z (hrU hz)).dist (hf c hc)) (Eventually.of_forall fun k => hlip k z hz)`. Use `⟨ball c (min r (ε / (3 * L))), nhdsWithin_le_nhds (ball_mem_nhds c (by positivity)), ?_⟩` and prove the remaining obligations. Use `filter_upwards [(Metric.tendsto_nhds.1 (hf c hc)) (ε / 3) (by positivity)] with k hk y hy`. Establish `hy1 : y ∈ ball c r` using `ball_subset_ball (min_le_left _ _) hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hy2 : dist y c < ε / (3 * L)` using `(mem_ball.1 hy).trans_le (min_le_right _ _)`. Establish `hy3 : L * dist y c < ε / 3`. Rewrite `hy2` using `[lt_div_iff₀ (by positivity)]`. Rewrite using `[lt_div_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hlipf y hy1`. Establish `h2` using `hlip k y hy1`. Establish `h3` using `dist_triangle4 (f y) (f c) (F k c) (F k y)`. Rewrite `h2` using `[dist_comm (F k y)]`. Rewrite `hk` using `[dist_comm]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_tendstoLocallyUniformlyOn_ultrafilter {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℂ E] {U : Set E} {F : ℕ → E → ℂ} (hF : ∀ k, DifferentiableOn ℂ (F k) U)
@@ -76,9 +74,9 @@ theorem exists_tendstoLocallyUniformlyOn_ultrafilter {E : Type*} [NormedAddCommG
   linarith
 
 /- English proof (translation)
-Establish `hd : DifferentiableOn ℂ (fun z => g (c + z)) (ball 0 r)` using `hg.comp (by fun_prop) fun z hz => by simpa [mem_ball_iff_norm] using hz`. Take `⟨-, h1, -⟩` from `GlobalTheory.submean_sq_closedBall hr hd`. Establish `h2` using `(measurePreserving_add_left (volume : Measure (V n)) c).setLIntegral_comp_preimage_emb (MeasurableEquiv.addLeft c).measurableEmbedding (fun z => ‖g z‖ₑ ^ 2) (closedBall c r)`. Establish `h3 : (fun z => c + z) ⁻¹' closedBall c r = closedBall 0 r`. Use extensionality with `z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[mem_closedBall_iff_norm]`. Rewrite `h2` using `[h3]`. Rewrite using `[← h2]`. Simplify using `using h1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem enorm_sq_le_lintegral {n : ℕ} {g : V n → ℂ} {c : V n} {r : ℝ} (hr : 0 < r)
     (hg : DifferentiableOn ℂ g (ball c r)) :
@@ -96,13 +94,11 @@ theorem enorm_sq_le_lintegral {n : ℕ} {g : V n → ℂ} {c : V n} {r : ℝ} (h
   simpa using h1
 
 /- English proof (translation)
-Introduce `c hc`. Take `⟨R, hR, hRU⟩` from `Metric.isOpen_iff.mp hU c hc`. Use `set r := R / 4 with hr`. Establish `hr0 : 0 < r` using `by positivity`. Establish `hK : closedBall c (2 * r) ⊆ U` using `(closedBall_subset_ball (by linarith)).trans hRU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC, hCk⟩` from `hb _ hK (isCompact_closedBall _ _)`. Use `set B : ℝ≥0∞ := (volume (closedBall (0 : V n) r))⁻¹ * C with hB`. Establish `hBt : B ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.inv_ne_top.2 (measure_closedBall_pos _ _ hr0).ne') hC`. Use `⟨r, hr0, Real.sqrt B.toReal, (ball_subset_ball (by linarith)).trans hRU, fun k z hz => ?_⟩` and prove the remaining obligations. Establish `hsub : closedBall z r ⊆ closedBall c (2 * r)` using `closedBall_subset_closedBall' (by linarith [mem_ball.1 hz])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `enorm_sq_le_lintegral hr0 ((hF k).mono (ball_subset_closedBall.trans (hsub.trans hK)))`. Establish `h2 : ‖F k z‖ₑ ^ 2 ≤ B` using `h1.trans (by`. Rewrite using `[hB]`. Use `gcongr`. Conclude with `(lintegral_mono_set hsub).trans (hCk k))`.
-
-Use `Real.le_sqrt_of_sq_le ?_` and prove the remaining obligations. Establish `h3` using `ENNReal.toReal_mono hBt h2`. Simplify using `using h3`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem locally_bounded_of_lintegral {n : ℕ} {U : Set (V n)} (hU : IsOpen U) {F : ℕ → V n → ℂ}
     (hF : ∀ k, DifferentiableOn ℂ (F k) U)
@@ -133,33 +129,27 @@ theorem locally_bounded_of_lintegral {n : ℕ} {U : Set (V n)} (hU : IsOpen U) {
   simpa using h3
 
 /- English proof (translation)
-Establish `hanti : ∀ y ∈ U, Antitone fun k => φ k y` using `fun y hy => antitone_nat_of_succ_le fun k => hdec k y hy`. Establish `hloc : ∀ S ⊆ U, IsCompact S → ∃ C : ℝ≥0∞, C ≠ ⊤ ∧ ∀ k, ∫⁻ z in S, ‖F k z‖ₑ ^ 2 ≤ C`. Introduce `S hSU hS`. Take `⟨M, hM⟩` from `hS.exists_bound_of_continuousOn ((hφ 0).mono hSU)`. Take `⟨N, hN⟩` from `hS.exists_bound_of_continuousOn (hF0.mono hSU)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨ENNReal.ofReal (2 * N ^ 2) * volume S + ENNReal.ofReal (2 * Real.exp M) * A, ENNReal.add_ne_top.2 ⟨ENNReal.mul_ne_top ENNReal.ofReal_ne_top hS.measure_lt_top.ne, ENNReal.mul_ne_top ENNReal.ofReal_ne_top hA⟩, fun k => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_mono' hS.measurableSet fun z hz => ?_` and prove the remaining obligations. Rewrite using `[← ofReal_norm_eq_enorm, ← ENNReal.ofReal_pow (norm_nonneg _), ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_add (by positivity) (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : φ k z ≤ M` using `(hanti z (hSU hz) (Nat.zero_le k)).trans ((le_abs_self _).trans (hM z hz))`. Establish `h2 : 1 ≤ Real.exp M * Real.exp (-φ k z)`. Rewrite using `[← Real.exp_add]`. Conclude with `Real.one_le_exp (by linarith)`. Establish `h3 : ‖F k z‖ ≤ N + ‖F0 z - F k z‖`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `norm_sub_le (F0 z) (F0 z - F k z)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Combine the linear relations using `[hN z hz]`. Establish `h4 : ‖F k z‖ ^ 2 ≤ (N + ‖F0 z - F k z‖) ^ 2` using `by gcongr`. Establish `h5 : ‖F0 z - F k z‖ ^ 2 * 1 ≤ ‖F0 z - F k z‖ ^ 2 * (Real.exp M * Real.exp (-φ k z))` using `by gcongr`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[sq_nonneg (N - ‖F0 z - F k z‖)]`. Use `_ ≤ _ := by`. Rewrite using `[lintegral_add_left measurable_const, setLIntegral_const, lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `gcongr`. Conclude with `(lintegral_mono_set hSU).trans (hest k)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f, hf⟩` from `exists_tendstoLocallyUniformlyOn_ultrafilter hF (locally_bounded_of_lintegral hU hF hloc) (hyperfilter ℕ)`. Establish `hfd : DifferentiableOn ℂ f U` using `GlobalTheory.SCV.differentiableOn_of_tendstoLocallyUniformlyOn hU hf (Eventually.of_forall hF)`. Establish `hsel : ∀ j : ℕ, ∃ k, j ≤ k ∧ ∀ y ∈ K j, dist (f y) (F k y) < 1 / ((j : ℝ) + 1)`. Introduce `j`. Establish `h1` using `Metric.tendstoUniformlyOn_iff.1 ((tendstoLocallyUniformlyOn_iff_forall_isCompact hU).1 hf (K j) (hKU j) (hKc j)) (1 / ((j : ℝ) + 1)) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∀ᶠ k in (hyperfilter ℕ : Filter ℕ), j ≤ k` using `Nat.hyperfilter_le_atTop (eventually_ge_atTop j)`. Conclude with `(h2.and h1).exists`. Use `choose σ hσ hσK using hsel`. Establish `hlim : ∀ y ∈ U, Tendsto (fun j => F (σ j) y) atTop (𝓝 (f y))`. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[tendsto_iff_dist_tendsto_zero]`. Use `squeeze_zero' (Eventually.of_forall fun _ => dist_nonneg) ?_ tendsto_one_div_add_atTop_nhds_zero_nat` and prove the remaining obligations. Use `filter_upwards [hK y hy] with j hj`. Rewrite using `[dist_comm]`. Conclude with `(hσK j y hj).le`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmeas : ∀ {g : V n → ℂ}, ContinuousOn g U → ∀ m, AEMeasurable (fun y => ENNReal.ofReal (‖F0 y - g y‖ ^ 2 * Real.exp (-φ m y))) (volume.restrict U)`. Introduce `g hg m`. Conclude with `(ContinuousOn.aemeasurable ((((hF0.sub hg).norm).pow 2).mul (hφ m).neg.rexp) hU.measurableSet).ennreal_ofReal`. Establish `hm : ∀ m, ∫⁻ y in U, ENNReal.ofReal (‖F0 y - f y‖ ^ 2 * Real.exp (-φ m y)) ≤ A`. Introduce `m`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_congr_fun hU.measurableSet fun y hy => ?_` and prove the remaining obligations. Use `(Tendsto.liminf_eq ?_).symm` and prove the remaining obligations. Conclude with `ENNReal.tendsto_ofReal (((tendsto_const_nhds.sub (hlim y hy)).norm.pow 2).mul_const _)`. Use `_ ≤ liminf (fun j => ∫⁻ y in U, ENNReal.ofReal (‖F0 y - F (σ j) y‖ ^ 2 * Real.exp (-φ m y))) atTop := lintegral_liminf_le' fun j => hmeas (hF _).continuousOn m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ ≤ A := by`. Use `liminf_le_of_frequently_le' (Eventually.frequently ?_)` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop m] with j hj`. Use `le_trans (setLIntegral_mono' hU.measurableSet fun y hy => ?_) (hest (σ j))` and prove the remaining obligations. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations.
-
-Use `hanti y hy (hj.trans (hσ j))` as an intermediate fact. Use `gcongr`. Use `⟨f, hfd, ?_⟩` and prove the remaining obligations. Establish `e : ∀ y, ENNReal.ofReal (‖F0 y - f y‖ ^ 2) * ⨆ k, ENNReal.ofReal (Real.exp (-φ k y)) = ⨆ k, ENNReal.ofReal (‖F0 y - f y‖ ^ 2 * Real.exp (-φ k y))`. Introduce `y`.
-
-Rewrite using `[ENNReal.mul_iSup]`. Conclude with `iSup_congr fun k => (ENNReal.ofReal_mul (by positivity)).symm`. Repeatedly rewrite using `[e]`. Rewrite using `[lintegral_iSup' (hmeas hfd.continuousOn)]`. Conclude with `iSup_le hm`.
-
-Use `filter_upwards [ae_restrict_mem hU.measurableSet] with y hy a b hab`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Use `hanti y hy hab` as an intermediate fact. Use `gcongr`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_limit {n : ℕ} {U : Set (V n)} (hU : IsOpen U) (K : ℕ → Set (V n))
     (hKc : ∀ j, IsCompact (K j)) (hKU : ∀ j, K j ⊆ U) (hK : ∀ y ∈ U, ∀ᶠ j in atTop, y ∈ K j)
@@ -264,9 +254,9 @@ theorem exists_limit {n : ℕ} {U : Set (V n)} (hU : IsOpen U) (K : ℕ → Set 
     gcongr
 
 /- English proof (translation)
-Introduce `n U hU e he hel hec φ hφ hφl hdec F0 hF0 h hh hb A hA`. Distinguish the cases in `hAt : A = ⊤`. Conclude with `⟨0, differentiableOn_const 0, hAt ▸ le_top⟩`. Use `choose F hF hest using fun k => ReciprocityTheory.ChartRestriction.G.AR.Up.HE.hormander_open hU e he hel hec (φ k) (hφ k) (hφl k) F0 hF0 h hh (hb k)`. Use `exists_limit hU (fun j => {y | y ∈ U ∧ e y ≤ (j : ℝ)}) (fun j => hec j) (fun j y hy => hy.1) (fun y hy => ?_) (fun k => (hφ k).continuousOn) hdec hF0.continuousOn hAt hF fun k => (hest k).trans (hA k)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Use `filter_upwards [tendsto_natCast_atTop_atTop.eventually_ge_atTop (e y)] with j hj`. Conclude with `⟨hy, hj⟩`.
+A detailed English derivation is pending.
 -/
 theorem hormander_limit : ∀ {n : ℕ} {U : Set (V n)}, IsOpen U → ∀ (e : V n → ℝ), ContDiffOn ℝ ∞ e U → (∀ y ∈ U, ∀ ξ : Fin n → ℂ, 0 ≤ (leviV n (fun w => (e w : ℂ)) y ξ).re) → (∀ a : ℝ, IsCompact {y | y ∈ U ∧ e y ≤ a}) → ∀ (φ : ℕ → V n → ℝ), (∀ k, ContDiffOn ℝ ∞ (φ k) U) → (∀ k, ∀ y ∈ U, ∀ ξ : Fin n → ℂ, 0 ≤ (leviV n (fun w => (φ k w : ℂ)) y ξ).re) → (∀ k, ∀ y ∈ U, φ (k + 1) y ≤ φ k y) → ∀ (F0 : V n → ℂ), ContDiffOn ℝ ∞ F0 U → ∀ (h : V n → ℝ≥0∞), Measurable h → (∀ k, ∀ y ∈ U, ∀ ξ : Fin n → ℂ, ENNReal.ofReal (‖∑ j, wdb n j F0 y * (starRingEnd ℂ) (ξ j)‖ ^ 2) ≤ h y * ENNReal.ofReal (leviV n (fun w => (φ k w : ℂ)) y ξ).re) → ∀ A : ℝ≥0∞, (∀ k, ∫⁻ y in U, h y * ENNReal.ofReal (Real.exp (-φ k y)) ≤ A) → ∃ F : V n → ℂ, DifferentiableOn ℂ F U ∧ ∫⁻ y in U, ENNReal.ofReal (‖F0 y - F y‖ ^ 2) * ⨆ k, ENNReal.ofReal (Real.exp (-φ k y)) ≤ A := by
   intro n U hU e he hel hec φ hφ hφl hdec F0 hF0 h hh hb A hA

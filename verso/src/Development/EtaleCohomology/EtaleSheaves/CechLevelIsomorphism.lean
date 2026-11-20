@@ -9,20 +9,20 @@ namespace LateralTheory.E.CechLevelIsoPf
 abbrev y {A B : CommRingCat.{0}} (f : A ⟶ B) := yoneda.map (Spec.map f)
 
 /- English proof (translation)
-Simplify using `[y]`.
+Simplify using the standard rewrite rules.
 -/
 lemma y_comp {A B C : CommRingCat.{0}} (f : A ⟶ B) (g : B ⟶ C) : y (f ≫ g) = y g ≫ y f := by
   simp [y]
 
 /- English proof (translation)
-The claim follows from `(isPullback_SpecMap_of_isPushout f g inl inr h).map yoneda`.
+A detailed English derivation is pending.
 -/
 lemma ypb {A B C P : CommRingCat.{0}} {f : A ⟶ B} {g : A ⟶ C} {inl : B ⟶ P} {inr : C ⟶ P}
     (h : IsPushout f g inl inr) : IsPullback (y inl) (y inr) (y f) (y g) :=
   (isPullback_SpecMap_of_isPushout f g inl inr h).map yoneda
 
 /- English proof (translation)
-Substitute `hb` using the available equality. Substitute `hπ` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 lemma mk_congr {C : Type*} [Category C] {ι : Type*} {S X W : C} {f : X ⟶ S} {b b' : W ⟶ S}
     {π π' : ι → (W ⟶ X)} (hb : b = b') (hπ : π = π') (h : ∀ i, π i ≫ f = b) (h' : ∀ i, π' i ≫ f = b') :
@@ -52,21 +52,21 @@ Both sides reduce to the same expression.
 lemma ι_zero {D E : CommRingCat.{0}} (e : D ⟶ E) (i : Fin 1) : ι e 0 i = 𝟙 E := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `first | rfl | (dsimp only [ι]; exact Fin.lastCases_last) | (dsimp only [ι]; rw [Fin.lastCases_last])`.
+A detailed English derivation is pending.
 -/
 lemma ι_last {D E : CommRingCat.{0}} (e : D ⟶ E) (p : ℕ) :
     ι e (p+1) (Fin.last _) = pushout.inr (tp e p).2 e := by
   first | rfl | (dsimp only [ι]; exact Fin.lastCases_last) | (dsimp only [ι]; rw [Fin.lastCases_last])
 
 /- English proof (translation)
-Apply the tactic sequence `first | rfl | (dsimp only [ι]; exact Fin.lastCases_castSucc i) | (dsimp only [ι]; rw [Fin.lastCases_castSucc])`.
+A detailed English derivation is pending.
 -/
 lemma ι_cast {D E : CommRingCat.{0}} (e : D ⟶ E) (p : ℕ) (i : Fin (p+1)) :
     ι e (p+1) (Fin.castSucc i) = ι e p i ≫ pushout.inl (tp e p).2 e := by
   first | rfl | (dsimp only [ι]; exact Fin.lastCases_castSucc i) | (dsimp only [ι]; rw [Fin.lastCases_castSucc])
 
 /- English proof (translation)
-The claim follows from `| 0, i => Category.comp_id e | p+1, i => by induction i using Fin.lastCases with | last => rw [ι_last]; exact pushout.condition.symm | cast i => rw [ι_cast] show e ≫ ι e p i ≫ pushout.inl _ _ = (tp e p).2 ≫ pushout.inl _ _ rw [← Category.assoc, ι_w e p i]`.
+A detailed English derivation is pending.
 -/
 lemma ι_w {D E : CommRingCat.{0}} (e : D ⟶ E) : ∀ (p : ℕ) (i : Fin (p+1)), e ≫ ι e p i = (tp e p).2
   | 0, i => Category.comp_id e
@@ -79,7 +79,7 @@ lemma ι_w {D E : CommRingCat.{0}} (e : D ⟶ E) : ∀ (p : ℕ) (i : Fin (p+1))
       rw [← Category.assoc, ι_w e p i]
 
 /- English proof (translation)
-Rewrite using `[← y_comp, ι_w]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma hπE {D E : CommRingCat.{0}} (e : D ⟶ E) (p : ℕ) (i : Fin (p+1)) : y (ι e p i) ≫ y e = y (tp e p).2 := by
   rw [← y_comp, ι_w]
@@ -110,14 +110,14 @@ def κ (hpo : IsPushout φ' e u φ'') (p : ℕ) (i : Fin (p+1)) : Y'' ⟶ pushou
   hpo.desc (pushout.inl _ _) (ι e p i ≫ pushout.inr _ _) (by rw [← Category.assoc, ι_w]; exact pushout.condition)
 
 /- English proof (translation)
-Rewrite using `[← y_comp, κ, hpo.inl_desc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma hπY (hpo : IsPushout φ' e u φ'') (p : ℕ) (i : Fin (p+1)) :
     y (κ hpo p i) ≫ y u = y (pushout.inl φ' (tp e p).2) := by
   rw [← y_comp, κ, hpo.inl_desc]
 
 /- English proof (translation)
-Rewrite using `[← y_comp, κ, hpo.inr_desc, y_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma hgi (hpo : IsPushout φ' e u φ'') (p : ℕ) (i : Fin (p+1)) :
     y (κ hpo p i) ≫ y φ'' = y (pushout.inr φ' (tp e p).2) ≫ y (ι e p i) := by
@@ -132,15 +132,13 @@ def limY (hpo : IsPushout φ' e u φ'') (p : ℕ) :
 end Y
 
 /- English proof (translation)
-Introduce `p D E Y' Y'' e φ' u φ'' hpo`. Set `R` to `(limE e p).conePointUniqueUpToIso (limit.isLimit _)`. Set `L` to `(limY hpo p).conePointUniqueUpToIso (limit.isLimit _)`. Establish `hR : ∀ j, R.hom ≫ WidePullback.π (fun _ : Fin (p+1) => y e) j = y (ι e p j)` using `fun j => (limE e p).conePointUniqueUpToIso_hom_comp (limit.isLimit _) (some j)`. Establish `hRb : R.hom ≫ WidePullback.base (fun _ : Fin (p+1) => y e) = y (tp e p).2` using `(limE e p).conePointUniqueUpToIso_hom_comp (limit.isLimit _) none`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : ∀ j, L.hom ≫ WidePullback.π (fun _ : Fin (p+1) => y u) j = y (κ hpo p j)` using `fun j => (limY hpo p).conePointUniqueUpToIso_hom_comp (limit.isLimit _) (some j)`. Establish `hLb : L.hom ≫ WidePullback.base (fun _ : Fin (p+1) => y u) = y (pushout.inl φ' (tp e p).2)` using `(limY hpo p).conePointUniqueUpToIso_hom_comp (limit.isLimit _) none`. Establish `hw : L.hom ≫ (Arrow.mapCechNerve (sq e φ' u φ'' hpo.w)).app (op (SimplexCategory.mk p)) = y (pushout.inr φ' (tp e p).2) ≫ R.hom`. Apply `WidePullback.hom_ext` to reduce the goal to its premises. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Arrow.mapCechNerve_app, Category.assoc, WidePullback.lift_π]`. Establish `key : (L.hom ≫ WidePullback.π (fun _ : Fin (p+1) => y u) j) ≫ y φ'' = y (pushout.inr φ' (tp e p).2) ≫ R.hom ≫ WidePullback.π (fun _ : Fin (p+1) => y e) j`. Conclude with `(congrArg (· ≫ y φ'') (hL j)).trans ((hgi hpo p j).trans (congrArg (y (pushout.inr φ' (tp e p).2) ≫ ·) (hR j).symm))`. Rewrite using `[← Category.assoc]`. Conclude with `key`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Arrow.mapCechNerve_app, Category.assoc, WidePullback.lift_base]`. Establish `key : (L.hom ≫ WidePullback.base (fun _ : Fin (p+1) => y u)) ≫ y φ' = y (pushout.inr φ' (tp e p).2) ≫ R.hom ≫ WidePullback.base (fun _ : Fin (p+1) => y e)`. Conclude with `(congrArg (· ≫ y φ') hLb).trans (((ypb (IsPushout.of_hasPushout φ' (tp e p).2)).w).trans (congrArg (y (pushout.inr φ' (tp e p).2) ≫ ·) hRb.symm))`. Rewrite using `[← Category.assoc]`. Conclude with `key`.
-
-Conclude with `⟨(Arrow.isoMk (f := Arrow.mk (y (pushout.inr φ' (tp e p).2))) (g := Arrow.mk ((Arrow.mapCechNerve (sq e φ' u φ'' hpo.w)).app (op (SimplexCategory.mk p)))) L R hw).symm⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem CechLevelIso_of : LateralTheory.E.LevelsPf.Tp.CechLevelIso := by
   intro p D E Y' Y'' e φ' u φ'' hpo

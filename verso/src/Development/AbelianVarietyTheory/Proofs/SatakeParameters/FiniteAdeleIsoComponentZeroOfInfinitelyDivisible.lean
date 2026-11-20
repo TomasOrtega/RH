@@ -5,13 +5,11 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsNormOneIde
 open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions Formalism.MainNotions.G Formalism.L2.G Formalism.L2.G.Cmp Formalism.L2.Forms Formalism.L2.DIV Formalism.UG GlobalTheory.TwV GlobalTheory.TwV.Xc TensorProduct
 
 /- English proof (translation)
-Distinguish the cases in `h0 : γ = 0`. Conclude with `⟨1, by simp [h0, zero_lt_iff.2 hx]⟩`. Take `⟨a, rfl⟩` from `WithZero.ne_zero_iff_exists.1 hx`. Take `⟨g, rfl⟩` from `WithZero.ne_zero_iff_exists.1 h0`. Establish `hg : Multiplicative.toAdd g < 0`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: g < 1` using `by exact_mod_cast hγ`. Conclude with `this`. Use `⟨(Multiplicative.toAdd a).natAbs + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[← WithZero.coe_pow, WithZero.coe_lt_coe]`. Use `show Multiplicative.toAdd (g ^ ((Multiplicative.toAdd a).natAbs + 1)) < Multiplicative.toAdd a`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[toAdd_pow, nsmul_eq_mul]`. Use `push_cast`. Establish `h1` using `neg_abs_le (Multiplicative.toAdd a)`. Establish `h2 : Multiplicative.toAdd g ≤ -1` using `by omega`. Establish `h3` using `abs_nonneg (Multiplicative.toAdd a)`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TwV.Xc.exists_pow_lt_of_lt_one_intZ (x γ : WithZero (Multiplicative ℤ)) (hx : x ≠ 0) (hγ : γ < 1) :
     ∃ n : ℕ, γ ^ n < x := by
@@ -33,23 +31,19 @@ theorem GlobalTheory.TwV.Xc.exists_pow_lt_of_lt_one_intZ (x γ : WithZero (Multi
   nlinarith
 
 /- English proof (translation)
-Introduce `F E F' E' _ _ _ _ _ _ _ _ _ _ iE iA hrat hint ι hι z ℓ D hℓ hD hdiv P hP`. Use `set y := ι (iA.symm z) with hy`. Establish `hc : ∀ n : ℕ, iA.symm (((D : E) / (ℓ : E) ^ n) ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F)) = ((D : E') / (ℓ : E') ^ n) ⊗ₜ[F'] (1 : FiniteAdeleRing (𝓞 F') F')`. Introduce `n`. Rewrite using `[RingEquiv.symm_apply_eq, hrat]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[map_div₀, map_pow, map_natCast]`. Establish `hbound : ∀ n : ℕ, Valued.v (((D : E') / (ℓ : E') ^ n : E') : P.adicCompletion E') * Valued.v (y P) ≤ 1`. Introduce `n`. Establish `hmem` using `hdiv n`. Establish `h1 : iA.symm ((((D : E) / (ℓ : E) ^ n) ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F)) * z) ∈ RInt F' E'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hint, RingEquiv.apply_symm_apply]`. Conclude with `hmem`. Establish `h2` using `(hι.2 _).1 h1 P`. Rewrite `h2` using `[map_mul, hc, map_mul, hι.1, ← hy]`. Rewrite using `[← map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using h2`. Establish `hval : ∀ c : E', Valued.v ((c : E') : P.adicCompletion E') = P.valuation E' c` using `fun c => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' P c`. Establish `hℓE : ((ℓ : 𝓞 E') : E') = (ℓ : E')` using `by simp`. Establish `hlt : P.valuation E' (ℓ : E') < 1`. Rewrite using `[← hℓE]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem P _).2 hP`. Establish `hℓ0 : P.valuation E' (ℓ : E') ≠ 0`. Rewrite using `[Ne, map_eq_zero]`. Conclude with `hℓ.ne'` after adjusting the coercions. Establish `hD0 : P.valuation E' (D : E') ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, map_eq_zero]`. Conclude with `hD.ne'` after adjusting the coercions. Assume the negation of the conclusion as `hyP`. Establish `hyv : Valued.v (y P) ≠ 0`. Rewrite using `[Ne, map_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hyP`. Take `⟨n, hn⟩` from `GlobalTheory.TwV.Xc.exists_pow_lt_of_lt_one_intZ (P.valuation E' (D : E') * Valued.v (y P)) (P.valuation E' (ℓ : E')) (mul_ne_zero hD0 hyv) hlt`. Establish `hb` using `hbound n`. Rewrite `hb` using `[hval, map_div₀, map_pow]`. Establish `hpos : (0 : WithZero (Multiplicative ℤ)) < P.valuation E' (ℓ : E') ^ n` using `zero_lt_iff.2 (pow_ne_zero _ hℓ0)`.
-
-Establish `: P.valuation E' (D : E') * Valued.v (y P) ≤ P.valuation E' (ℓ : E') ^ n`. Establish `he : P.valuation E' (D : E') * Valued.v (y P) = P.valuation E' (D : E') / P.valuation E' (ℓ : E') ^ n * Valued.v (y P) * P.valuation E' (ℓ : E') ^ n`. Rewrite using `[div_mul_eq_mul_div, div_mul_cancel₀ _ (pow_ne_zero _ hℓ0)]`. Rewrite using `[he]`. Simplify using `using mul_le_mul' hb (le_refl (P.valuation E' (ℓ : E') ^ n))`.
-
-Conclude with `absurd hn (not_lt.2 this)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TwV.Xc.adIso_comp_zero_of_div : ∀ {F E F' E' : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [Field F'] [NumberField F'] [Field E'] [NumberField E'] [Algebra F' E'] (iE : E' ≃+* E) (iA : AfE F' E' ≃+* AfE F E), (∀ x : E', iA (x ⊗ₜ[F'] 1) = iE x ⊗ₜ[F] 1) → (∀ y, iA y ∈ RInt F E ↔ y ∈ RInt F' E') → ∀ (ι : AfE F' E' ≃+* FiniteAdeleRing (𝓞 E') E'), GlobalTheory.TwU.IsAdIso ι → ∀ (z : AfE F E) (ℓ D : ℕ), 0 < ℓ → 0 < D → (∀ n : ℕ, (((D : E) / (ℓ : E) ^ n) ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F)) * z ∈ RInt F E) → ∀ (P : HeightOneSpectrum (𝓞 E')), ((ℓ : ℕ) : 𝓞 E') ∈ P.asIdeal → ι (iA.symm z) P = 0 := by
   intro F E F' E' _ _ _ _ _ _ _ _ _ _ iE iA hrat hint ι hι z ℓ D hℓ hD hdiv P hP

@@ -21,17 +21,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.ValGeneric
 
 /- English proof (translation)
-Distinguish the cases in `hm : IsLocalRing.maximalIdeal R = ⊥`. Use `⟨1, one_ne_zero, fun b hb => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit b`. Assume the negation of the conclusion as `h`. Establish `hbm : b ∈ IsLocalRing.maximalIdeal R` using `(IsLocalRing.mem_maximalIdeal b).2 h`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `hbm` using `[hm]`. Conclude with `hb (by simpa using hbm)`. Take `⟨u, rfl⟩` from `hu`. Conclude with `⟨0, ((u⁻¹ : Rˣ) : R), by simp⟩`. Take `⟨π, hπ, hπ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hm`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨π, hπ0, fun b hb => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hu : IsUnit b`. Take `⟨u, rfl⟩` from `hu`. Conclude with `⟨0, ((u⁻¹ : Rˣ) : R), by simp⟩`. Establish `hrad : π ∈ (Ideal.span {b}).radical`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.radical_eq_sInf]`. Use `Ideal.mem_sInf.2 ?_` and prove the remaining obligations. Introduce and unpack `J ⟨hbJ, hJ⟩`. Establish `hbJ' : b ∈ J` using `hbJ (Ideal.mem_span_singleton_self b)`. Establish `hJ0 : J ≠ ⊥` using `fun h => hb (by simpa [h] using hbJ')`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmax` using `Ring.DimensionLEOne.maximalOfPrime hJ0 hJ`. Rewrite using `[IsLocalRing.eq_maximalIdeal hmax]`. Conclude with `hπ`. Take `⟨n, hn⟩` from `hrad`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hn`.
-
-Conclude with `⟨n, c, by rw [← hc, mul_comm]⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pow_mem_of_ne_zero (R : Type) [CommRing R] [IsDomain R] [ValuationRing R]
     [Ring.DimensionLEOne R] :
@@ -64,13 +62,11 @@ theorem exists_pow_mem_of_ne_zero (R : Type) [CommRing R] [IsDomain R] [Valuatio
     exact ⟨n, c, by rw [← hc, mul_comm]⟩
 
 /- English proof (translation)
-Introduce `C _ R _ _ _ _ _ _`. Take `⟨π, hπ0, h⟩` from `exists_pow_mem_of_ne_zero R`. Establish `inj` using `IsFractionRing.injective R C`. Use `haveI : IsLocalization.Away π C := by`. Use `IsLocalization.Away.mk π ?_ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((map_ne_zero_iff _ inj).2 hπ0).isUnit`. Introduce `s`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := R) s`. Take `⟨n, c, hc⟩` from `h b (nonZeroDivisors.ne_zero hb)`. Use `⟨n, a * c, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb' : algebraMap R C b ≠ 0` using `(map_ne_zero_iff _ inj).2 (nonZeroDivisors.ne_zero hb)`. Rewrite using `[← map_pow, hc, map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts. Introduce `a b hab`. Conclude with `⟨0, by rw [inj hab]⟩`.
-
-Conclude with `IsOpenImmersion.of_isLocalization π`.
+Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_spMap_fraction :
     ∀ (C : Type) [Field C] (R : Type) [CommRing R] [IsDomain R] [ValuationRing R] [Ring.DimensionLEOne R]

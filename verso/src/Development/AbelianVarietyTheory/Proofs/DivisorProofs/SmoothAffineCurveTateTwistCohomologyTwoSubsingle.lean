@@ -12,11 +12,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Introduce `q _ k B _ _ _ _ _ _ hq i`. Establish `hqB : IsUnit (q : B)` using `by simpa using hq.map (algebraMap k B)`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic q k) (Polynomial.degree_cyclotomic_pos q k (NeZero.pos q)).ne'`. Establish `hζ : ∃ ζ : B, Polynomial.aeval ζ (Polynomial.cyclotomic q ℤ) = 0`. Use `⟨algebraMap k B z, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.aeval_algebraMap_apply, Polynomial.aeval_def, ← Polynomial.eval_map, Polynomial.map_cyclotomic, hz.eq_zero, map_zero]`. Take `⟨e⟩` from `GlobalTheory.T.tateTwistCohomology_spec_twist_independent q B hqB hζ 2 i 1`. Establish `h0 : ∀ x : Ht q (sp B) 2 1, x = 0`. Introduce `x`. Take `⟨f, hf, hxf⟩` from `GlobalTheory.T.exists_localization_away_pull_eq_zero_Ht_two q k B hq 1 x`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨A', _, _, hA', hxA'⟩` from `GlobalTheory.T.exists_etaleNbhd_killing_curveCohomologyClass q k B hq f hf 2 1 (by norm_num) x`. Take `⟨w, hw⟩` from `GlobalTheory.T.etaleExcision_vanishing_under_refinement q B A' f hA' 1 1 x hxf hxA'`. Take `⟨g, hfg, A₂, C, _, _, _, _, _, _, h2, hg, hC, a, haC, hwa⟩` from `GlobalTheory.T.exists_kummerClass_agreeing_near_zeros q k B hq f hf A' hA' w`. Conclude with `hw g hfg A₂ C h2 hg hC a haC hwa`. Conclude with `⟨fun a b => e.injective (by rw [h0 (e a), h0 (e b)])⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smoothAffineCurve_tateTwistCohomology_two_subsingleton : ∀ (q : ℕ) [NeZero q] (k B : Type) [Field k] [IsAlgClosed k] [CommRing B]
     [IsDedekindDomain B] [Algebra k B] [Algebra.FiniteType k B], IsUnit (q : k) → ∀ i : ℤ,

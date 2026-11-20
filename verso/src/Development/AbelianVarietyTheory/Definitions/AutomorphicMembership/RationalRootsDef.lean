@@ -32,7 +32,7 @@ structure MuIsW (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) (Wt : Set X.B.pl
   supp : ∀ w, w ∉ Wt → T.psi w = 1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.inj, h.range, h.mu0, h.star, h.star', h.tw, h.on, h.off, fun _ hw => hw, fun w hw => (T.off w hw).1⟩`.
+Supply the required witnesses or components.
 -/
 theorem muIsW_of_muIs {X : Stages} {f : Fr X.B.toPre} {T : TwDat X.B} {xi : X.C.Tup → HChar X.B.host.E} (h : MuIs X f T xi) :
     MuIsW X f T {w | X.B.places.resChar w ∈ T.pl} xi :=

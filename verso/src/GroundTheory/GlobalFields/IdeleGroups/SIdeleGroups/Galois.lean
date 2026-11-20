@@ -14,7 +14,7 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
 namespace AdeleBaseChange
 
 /- English proof (translation)
-The claim follows from `letI : Algebra M M' := (τ : M →+* M').toAlgebra SemiLocal.continuous_completionMap (below M w') w'`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finiteCompletionMap {M M' : Type*} [Field M] [NumberField M] [Field M']
     [NumberField M'] (τ : M ≃+* M') (w' : HeightOneSpectrum (𝓞 M')) :
@@ -25,13 +25,13 @@ theorem continuous_finiteCompletionMap {M M' : Type*} [Field M] [NumberField M] 
 omit [NumberField K] in
 
 /- English proof (translation)
-Establish `hL : ∀ l : L, Valued.v (finiteCompletionMap (σ : L ≃+* L) w (algebraMap L ((comapPrime (σ : L ≃+* L) w).adicCompletion L) l)) = Valued.v (algebraMap L ((comapPrime (σ : L ≃+* L) w).adicCompletion L) l)`. Introduce `l`. Rewrite using `[finiteCompletionMap_algebraMap]`. Simplify using `only [HeightOneSpectrum.algebraMap_adicCompletion, Function.comp_apply, Algebra.algebraMap_self, RingHom.id_apply, valuedAdicCompletion_eq_valuation']`. Rewrite using `[comapPrime_eq_inv_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← smul_inv_smul σ w]`. Conclude with `SemiLocal.valuation_smul σ (σ⁻¹ • w) l`. Establish `hclosed : IsClosed {y : (comapPrime (σ : L ≃+* L) w).adicCompletion L | Valued.v (finiteCompletionMap (σ : L ≃+* L) w y) = Valued.v y}`. Rewrite using `[← isOpen_compl_iff, isOpen_iff_mem_nhds]`. Introduce `y0 hy0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h0 : y0 ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hy0`. Establish `h1 : Valued.v y0 ≠ 0` using `(Valuation.ne_zero_iff _).2 h0`. Establish `h2 : Valued.v (finiteCompletionMap (σ : L ≃+* L) w y0) ≠ 0` using `(Valuation.ne_zero_iff _).2 ((map_ne_zero_iff _ (finiteCompletionMap (σ : L ≃+* L) w).injective).2 h0)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `filter_upwards [Valued.locally_const h1, (continuous_finiteCompletionMap _ w).continuousAt.preimage_mem_nhds (Valued.locally_const h2)] with y hy hy'`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_preimage, Set.mem_compl_iff] at hy hy' hy0 ⊢`. Rewrite using `[hy, hy']` and apply the resulting hypothesis. Conclude with `(HeightOneSpectrum.denseRange_algebraMap L (comapPrime (σ : L ≃+* L) w)).induction_on (p := fun y ↦ Valued.v (finiteCompletionMap (σ : L ≃+* L) w y) = Valued.v y) y hclosed hL`.
+A detailed English derivation is pending.
 -/
 theorem valued_finiteCompletionMap (σ : L ≃ₐ[K] L) (w : HeightOneSpectrum (𝓞 L))
     (y : (comapPrime (σ : L ≃+* L) w).adicCompletion L) :
@@ -68,7 +68,7 @@ theorem valued_finiteCompletionMap (σ : L ≃ₐ[K] L) (w : HeightOneSpectrum (
 omit [NumberField K] [NumberField L] in
 
 /- English proof (translation)
-The claim follows from `HeightOneSpectrum.ext (Ideal.under_smul (𝓞 K) w.asIdeal σ)`.
+A detailed English derivation is pending.
 -/
 theorem below_smul (σ : L ≃ₐ[K] L) (w : HeightOneSpectrum (𝓞 L)) :
     below K (σ • w) = below K w :=
@@ -81,7 +81,7 @@ namespace IdeleGroup
 omit [NumberField K] in
 
 /- English proof (translation)
-Simplify using `only [ord]`. Rewrite using `[coe_smul_idele, smul_snd, valued_finiteCompletionMap, comapPrime_eq_inv_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_smul (σ : L ≃ₐ[K] L) (x : IdeleGroup L) (w : HeightOneSpectrum (𝓞 L)) :
     ord w (σ • x) = ord (σ⁻¹ • w) x := by
@@ -95,7 +95,7 @@ def placesAbove (S : Set (HeightOneSpectrum (𝓞 K))) : Set (HeightOneSpectrum 
 
 omit [NumberField K] [NumberField L] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_placesAbove {S : Set (HeightOneSpectrum (𝓞 K))} {w : HeightOneSpectrum (𝓞 L)} :
     w ∈ placesAbove L S ↔ below K w ∈ S :=
@@ -103,14 +103,14 @@ theorem mem_placesAbove {S : Set (HeightOneSpectrum (𝓞 K))} {w : HeightOneSpe
 
 omit [NumberField K] [NumberField L] in
 /- English proof (translation)
-The claim follows from `fun _ hw ↦ h hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem placesAbove_mono {S T : Set (HeightOneSpectrum (𝓞 K))} (h : S ⊆ T) :
     placesAbove L S ⊆ placesAbove L T :=
   fun _ hw ↦ h hw
 
 /- English proof (translation)
-The claim follows from `hS.preimage' fun v _ ↦ (Set.finite_range (Subtype.val : SemiLocal.PlacesOver L v → HeightOneSpectrum (𝓞 L))).subset fun w hw ↦ ⟨⟨w, (below_eq_iff w v).1 hw⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem placesAbove_finite {S : Set (HeightOneSpectrum (𝓞 K))} (hS : S.Finite) :
     (placesAbove L S).Finite :=
@@ -121,7 +121,7 @@ theorem placesAbove_finite {S : Set (HeightOneSpectrum (𝓞 K))} (hS : S.Finite
 omit [NumberField K] [NumberField L] in
 
 /- English proof (translation)
-Rewrite using `[mem_placesAbove, mem_placesAbove, below_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_mem_placesAbove_iff (S : Set (HeightOneSpectrum (𝓞 K))) (σ : L ≃ₐ[K] L)
     (w : HeightOneSpectrum (𝓞 L)) : σ • w ∈ placesAbove L S ↔ w ∈ placesAbove L S := by
@@ -132,7 +132,7 @@ variable (S : Set (HeightOneSpectrum (𝓞 K)))
 omit [NumberField K] in
 
 /- English proof (translation)
-The claim follows from `fun w hw ↦ by rw [ord_smul] exact hx _ fun h ↦ hw ((smul_mem_placesAbove_iff S σ⁻¹ w).1 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smul_mem_sIdeles_placesAbove (σ : L ≃ₐ[K] L) {x : IdeleGroup L}
     (hx : x ∈ sIdeles (placesAbove L S)) : σ • x ∈ sIdeles (placesAbove L S) := fun w hw ↦ by
@@ -158,7 +158,7 @@ theorem coe_smul_sIdeles (σ : L ≃ₐ[K] L) (x : sIdeles (placesAbove L S)) :
 omit [NumberField K] in
 
 /- English proof (translation)
-Rewrite using `[sIdelesToIdeleClassGroup_apply, sIdelesToIdeleClassGroup_apply, smul_mk, coe_smul_sIdeles]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sIdelesToIdeleClassGroup_smul (σ : L ≃ₐ[K] L) (x : sIdeles (placesAbove L S)) :
     sIdelesToIdeleClassGroup (placesAbove L S) (σ • x) =
@@ -168,7 +168,7 @@ theorem sIdelesToIdeleClassGroup_smul (σ : L ≃ₐ[K] L) (x : sIdeles (placesA
 omit [NumberField K] in
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `exists_finset_sup_sIdeles_eq_top (K := L)`. Use `⟨S₀ ∪ T.image (below K), Finset.subset_union_left, sup_sIdeles_eq_top_of_subset (fun w hw ↦ ?_) hT⟩` and prove the remaining obligations. Conclude with `Finset.mem_coe.2 (Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_coe.1 hw)))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_finset_superset_sup_sIdeles_placesAbove_eq_top
     (S₀ : Finset (HeightOneSpectrum (𝓞 K))) :
@@ -184,7 +184,7 @@ theorem exists_finset_superset_sup_sIdeles_placesAbove_eq_top
 omit [NumberField K] in
 
 /- English proof (translation)
-The claim follows from `sUnits_sIdeles_exact _ h`.
+A detailed English derivation is pending.
 -/
 theorem sUnits_sIdeles_placesAbove_exact
     (h : (diagonal L).range ⊔ sIdeles (placesAbove L S) = ⊤) :

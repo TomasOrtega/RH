@@ -31,7 +31,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-The claim follows from `orderAtLeastLocus_comap_iso_hom_eq_preimage e J n`.
+A detailed English derivation is pending.
 -/
 theorem orderAtLeastLocus_comap_iso {X Y : Scheme.{u}} (e : X ≅ Y) (J : Y.IdealSheafData) (n : ℕ) :
     orderAtLeastLocus (J.comap e.hom) n = ⇑e.hom ⁻¹' orderAtLeastLocus J n :=
@@ -58,7 +58,7 @@ Both sides reduce to the same expression.
     d.iteratedStrictTransform (i + 1) D = Blowup.strictTransform (d.map i) (d.center i) (d.iteratedStrictTransform i D) := rfl
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp [BlowupSequenceData.boundary_zero]`. Consider the case `succ i ih => simp [BlowupSequenceData.boundary_succ, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem boundary_cons {X : Scheme.{u}} (d : BlowupSequenceData X) (D : X.IdealSheafData)
     (L : List X.IdealSheafData) (i : ℕ) :
@@ -68,7 +68,7 @@ theorem boundary_cons {X : Scheme.{u}} (d : BlowupSequenceData X) (D : X.IdealSh
   | succ i ih => simp [BlowupSequenceData.boundary_succ, ih]
 
 /- English proof (translation)
-Proceed by induction on `L₁ with`. Consider the case `nil => simp`. Consider the case `cons D L ih => simp [BlowupSequenceData.boundary_cons, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem boundary_append {X : Scheme.{u}} (d : BlowupSequenceData X)
     (L₁ L₂ : List X.IdealSheafData) (i : ℕ) :
@@ -85,13 +85,13 @@ variable {k : Type u} [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of
   {I : X.IdealSheafData} {m : ℕ} {E : List X.IdealSheafData}
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 private theorem isLocallyGeneratedByNonZeroDivisor_exceptionalIdeal {Y Y' : Scheme.{u}} (π : Y' ⟶ Y)
     (J : Y.IdealSheafData) (h : Blowup.IsBlowupAlongIdealSheaf π J) : Blowup.IsLocallyGeneratedByNonZeroDivisor (Blowup.exceptionalIdeal π J) := h.1
 
 /- English proof (translation)
-Introduce `i hi A B hA hB`. Conclude with `((isLocallyGeneratedByNonZeroDivisor_exceptionalIdeal (s.map i) (s.center i) (s.isBlowup i hi)).pow m).eq_of_mul_eq_mul (hA.trans hB.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem eq_of_exceptionalIdeal_pow_mul_eq (s : MarkedBlowupSequenceData p I m E) :
     ∀ i < s.length, ∀ A B : (s.obj (i + 1)).IdealSheafData,
@@ -102,16 +102,16 @@ private theorem eq_of_exceptionalIdeal_pow_mul_eq (s : MarkedBlowupSequenceData 
     m).eq_of_mul_eq_mul (hA.trans hB.symm)
 
 /- English proof (translation)
-The claim follows from `(s.controlledTransform_and_boundary_eq_of_cancel (eq_of_exceptionalIdeal_pow_mul_eq s) i hi).1`.
+A detailed English derivation is pending.
 -/
 theorem controlledTransform_eq_ideal (s : MarkedBlowupSequenceData p I m E) (i : ℕ) (hi : i ≤ s.length) :
     s.controlledTransform I m i = s.ideal i :=
   (s.controlledTransform_and_boundary_eq_of_cancel (eq_of_exceptionalIdeal_pow_mul_eq s) i hi).1
 
 /- English proof (translation)
-Use `revert hi`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Simplify using `[BlowupSequenceData.boundary_zero, s.boundary_zero]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ j ih`. Introduce `hi`. Establish `hj : j < s.length` using `hi`. Rewrite using `[BlowupSequenceData.boundary_succ, ih (le_of_lt hj), s.boundary_succ j hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toBlowupSequenceData_boundary_eq (s : MarkedBlowupSequenceData p I m E) (i : ℕ) (hi : i ≤ s.length) :
     s.boundaryFrom E i = s.boundary i := by
@@ -128,9 +128,9 @@ theorem toBlowupSequenceData_boundary_eq (s : MarkedBlowupSequenceData p I m E) 
 end MarkedBlowupSequenceData
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro s _`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Introduce `s hs`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hr : List.range' s (n + 1) 1 = s :: List.range' (s + 1) n 1` using `rfl`. Rewrite using `[hr, List.foldr_cons]`. Conclude with `Nat.lcm_ne_zero hs (ih (s + 1) (by omega))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem foldr_lcm_consecutive_ne_zero (n : ℕ) :
     ∀ s : ℕ, s ≠ 0 → List.foldr Nat.lcm 1 (List.range' s n) ≠ 0 := by
@@ -143,11 +143,9 @@ private theorem foldr_lcm_consecutive_ne_zero (n : ℕ) :
       exact Nat.lcm_ne_zero hs (ih (s + 1) (by omega))
 
 /- English proof (translation)
-Break down `Nat.lt_or_ge m 2 with h | h` into its components or cases. Establish `h1 : m ≤ 1` using `by omega`. Conclude with `le_of_eq (tuningExponent_of_le_one h1).symm`. Establish `hl : lcmUpTo m ≠ 0`. Rewrite using `[lcmUpTo_eq_foldr]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `foldr_lcm_consecutive_ne_zero m 1 one_ne_zero`. Establish `hm : m - 1 ≠ 0` using `by omega`. Establish `hne : tuningExponent m ≠ 0`. Rewrite using `[tuningExponent_of_two_le h]`. Conclude with `Nat.mul_ne_zero hm hl`.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem one_le_tuningExponent (m : ℕ) : 1 ≤ tuningExponent m := by
   rcases Nat.lt_or_ge m 2 with h | h
@@ -172,7 +170,7 @@ def tunedIdealAtLength (S : MarkedIdealWithBoundary.{u})
   balancedTunedSheaf S.base (s.proj s.length ≫ S.structMap) (s.ideal s.length) S.mult
 
 /- English proof (translation)
-The claim follows from `hft balancedTunedSheaf S.base (s.proj s.length ≫ S.structMap) (s.ideal s.length) S.mult := rfl`.
+A detailed English derivation is pending.
 -/
 theorem tunedIdealAtLength_eq_balancedTunedSheaf (S : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
@@ -200,7 +198,7 @@ private theorem tunedMarkedBlowupSeq_eq_derivedTriple_seq (S : MarkedIdealWithBo
   rfl
 
 /- English proof (translation)
-The claim follows from `MaxContactCoverData.derivedTriple_structureMorphism S s hft extra ndrop`.
+A detailed English derivation is pending.
 -/
 theorem structureMorphism_derivedTriple (S : MarkedIdealWithBoundary.{u})
     (s : MarkedBlowupSequenceData S.structMap S.ideal S.mult S.boundary)
@@ -220,7 +218,7 @@ theorem ideal_derivedTriple (S : MarkedIdealWithBoundary.{u})
   rfl
 
 /- English proof (translation)
-Establish `h` using `hstar.orderAt_level_le S hV hO s.toMarkedSequenceOfBlowups s.length (le_of_eq (MarkedBlowupSequenceData.toMarkedSequence_length s).symm)`. Introduce `x`. Conclude with `h x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem orderAt_ideal_length_le (hstar : MaxContactCoverProperties.{u}) (S : MarkedIdealWithBoundary.{u}) (hV : S.IsAdmissible)
     (hO : ∀ x : ↥S.scheme, orderAt S.ideal x ≤ (S.mult : ℕ∞))
@@ -232,7 +230,7 @@ theorem orderAt_ideal_length_le (hstar : MaxContactCoverProperties.{u}) (S : Mar
   exact h x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(orderLE_iff _ _).2 (orderAt_ideal_length_le hstar S hV hO s), hne⟩`.
+Supply the required witnesses or components.
 -/
 theorem maxOrderEq_ideal_length_of_nonempty (hstar : MaxContactCoverProperties.{u}) (S : MarkedIdealWithBoundary.{u}) (hV : S.IsAdmissible)
     (hO : ∀ x : ↥S.scheme, orderAt S.ideal x ≤ (S.mult : ℕ∞))
@@ -242,15 +240,13 @@ theorem maxOrderEq_ideal_length_of_nonempty (hstar : MaxContactCoverProperties.{
   ⟨(orderLE_iff _ _).2 (orderAt_ideal_length_le hstar S hV hO s), hne⟩
 
 /- English proof (translation)
-Use `hV.charZero` as an intermediate fact. Establish `: IsNoetherianRing S.base` using `inferInstance`. Establish `hsm : AlgebraicGeometry.Smooth (s.proj s.length ≫ S.structMap)`. Establish `h` using `hVc.smooth`. Rewrite `h` using `[MaxContactCoverData.derivedTriple_structureMorphism S s hft extra ndrop]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hftI : AlgebraicGeometry.LocallyOfFiniteType (s.proj s.length ≫ S.structMap)` using `hft`. Establish `key : ∀ y : ↥(s.obj s.length), orderAt (tunedIdealAtLength S s hft) y ≤ ((tuningExponent S.mult : ℕ) : ℕ∞)`. Distinguish the cases in `hempty : orderAtLeastLocus (s.ideal s.length) S.mult = ∅`. Establish `htuned : tunedIdealAtLength S s hft = ⊤` using `balancedTunedSheaf_eq_top_of_orderAtLeastLocus_eq_empty S.base (s.proj s.length ≫ S.structMap) (s.ideal s.length) hm hempty`. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[htuned, orderAt_top]`. Conclude with `zero_le`. Establish `hne : (orderAtLeastLocus (s.ideal s.length) S.mult).Nonempty` using `Set.nonempty_iff_ne_empty.mpr hempty`. Establish `hmax : MaxOrderEq (s.ideal s.length) S.mult` using `maxOrderEq_ideal_length_of_nonempty hstar S hV hO s hne`. Establish `htune` using `hstar.tuning.coSupport_tunedSheaf_eq_and_orderLE S.base (s.obj s.length) (s.proj s.length ≫ S.structMap) (s.ideal s.length) S.mult hm hmax (tuningExponent S.mult) (one_le_tuningExponent S.mult)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : tunedIdealAtLength S s hft = tunedSheaf S.base (s.proj s.length ≫ S.structMap) (s.ideal s.length) S.mult (tuningExponent S.mult)` using `balancedTunedSheaf_eq S.base (s.proj s.length ≫ S.structMap) (s.ideal s.length) S.mult`. Introduce `y`. Rewrite using `[heq]`. Conclude with `(orderLE_iff _ _).1 htune.2 y`. Introduce `x`.
-
-Rewrite using `[ideal_derivedTriple S s hft extra ndrop, MaxContactCoverData.derivedTriple_mult S s hft extra ndrop]`. Conclude with `key x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOrderBoundedByMult_derivedTriple (hstar : MaxContactCoverProperties.{u}) (S : MarkedIdealWithBoundary.{u}) (hV : S.IsAdmissible)
     (hm : 1 ≤ S.mult) (hO : ∀ x : ↥S.scheme, orderAt S.ideal x ≤ (S.mult : ℕ∞))
@@ -293,7 +289,7 @@ theorem isOrderBoundedByMult_derivedTriple (hstar : MaxContactCoverProperties.{u
   exact key x
 
 /- English proof (translation)
-Establish `h1 : (1 : X.IdealSheafData) = ⊤` using `by simp`. Rewrite using `[← h1, one_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem idealSheafData_top_pow {X : Scheme.{u}} (n : ℕ) :
     (⊤ : X.IdealSheafData) ^ n = ⊤ := by
@@ -301,19 +297,17 @@ private theorem idealSheafData_top_pow {X : Scheme.{u}} (n : ℕ) :
   rw [← h1, one_pow]
 
 /- English proof (translation)
-Use `hV.charZero` as an intermediate fact. Establish `: IsNoetherianRing S.base` using `inferInstance`. Establish `hsm : AlgebraicGeometry.Smooth (s.proj s.length ≫ S.structMap)`. Establish `h` using `hVc.smooth`. Rewrite `h` using `[MaxContactCoverData.derivedTriple_structureMorphism S s hft extra ndrop]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hftI : AlgebraicGeometry.LocallyOfFiniteType (s.proj s.length ≫ S.structMap)` using `hft`. Establish `key : IsDerivBalanced S.base (s.proj s.length ≫ S.structMap) (tunedIdealAtLength S s hft) (tuningExponent S.mult)`. Break down `Nat.lt_or_ge S.mult 2 with hlt | hge` into its components or cases. Establish `h1 : tuningExponent S.mult = 1` using `tuningExponent_of_le_one (by omega)`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isDerivBalanced_one S.base (s.proj s.length ≫ S.structMap) (tunedIdealAtLength S s hft)`. Break down `Set.eq_empty_or_nonempty (orderAtLeastLocus (s.ideal s.length) S.mult) with hempty | hne` into its components or cases. Establish `htop : tunedIdealAtLength S s hft = ⊤` using `balancedTunedSheaf_eq_top_of_orderAtLeastLocus_eq_empty S.base (s.proj s.length ≫ S.structMap) (s.ideal s.length) hm hempty`. Rewrite using `[htop]`. Use `isDerivBalanced_of_pow_le S.base (s.proj s.length ≫ S.structMap) ?_` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i _`. Rewrite using `[idealSheafData_top_pow]`. Conclude with `le_top`. Establish `hmax : MaxOrderEq (s.ideal s.length) S.mult` using `maxOrderEq_ideal_length_of_nonempty hstar S hV hO s hne`. Establish `hexp : tuningExponent S.mult = (S.mult - 1) * lcmUpTo S.mult` using `tuningExponent_of_two_le hge`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hderivPow` using `hstar.tuning.derivIdealSheafIter_tunedSheaf_pow_le`. Unfold `FunctorialResolution.EmbeddedResolution.IsDerivBalancedTunedSheafMulLcm at hderivPow`. Establish `hderivPowAt` using `hderivPow S.base (s.obj s.length) (s.proj s.length ≫ S.structMap) (s.ideal s.length) S.mult hm hmax (S.mult - 1) le_rfl`. Establish `hset : tunedIdealAtLength S s hft = tunedSheaf S.base (s.proj s.length ≫ S.structMap) (s.ideal s.length) S.mult ((S.mult - 1) * lcmUpTo S.mult)`. Rewrite using `[← hexp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `balancedTunedSheaf_eq S.base (s.proj s.length ≫ S.structMap) (s.ideal s.length) S.mult`. Use `isDerivBalanced_of_pow_le S.base (s.proj s.length ≫ S.structMap) ?_` and prove the remaining obligations. Introduce `i hi`. Rewrite `hi` using `[hexp]`. Rewrite using `[hset, hexp]`.
-
-Conclude with `hderivPowAt i hi`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBalanced_derivedTriple (hstar : MaxContactCoverProperties.{u}) (S : MarkedIdealWithBoundary.{u}) (hV : S.IsAdmissible)
     (hm : 1 ≤ S.mult) (hO : ∀ x : ↥S.scheme, orderAt S.ideal x ≤ (S.mult : ℕ∞))
@@ -363,13 +357,11 @@ theorem isBalanced_derivedTriple (hstar : MaxContactCoverProperties.{u}) (S : Ma
   exact key
 
 /- English proof (translation)
-Use `hV.charZero` as an intermediate fact. Establish `: IsNoetherianRing S.base` using `inferInstance`. Establish `hsm : AlgebraicGeometry.Smooth (s.proj s.length ≫ S.structMap)`. Establish `h` using `hVc.smooth`. Rewrite `h` using `[MaxContactCoverData.derivedTriple_structureMorphism S s hft extra ndrop]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hftI : AlgebraicGeometry.LocallyOfFiniteType (s.proj s.length ≫ S.structMap)` using `hft`. Establish `htuned : tunedIdealAtLength S s hft = ⊤` using `balancedTunedSheaf_eq_top_of_orderAtLeastLocus_eq_empty S.base (s.proj s.length ≫ S.structMap) (s.ideal s.length) hm hempty`. Establish `hjb : j < (MaxContactCoverData.derivedTriple S s hft extra ndrop).boundary.length`. Rewrite using `[MaxContactCoverData.derivedTriple_boundary S s hft extra ndrop]`. Conclude with `hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (MaxContactCoverData.derivedTriple S s hft extra ndrop).ideal = ⊤`. Rewrite using `[ideal_derivedTriple S s hft extra ndrop]`. Conclude with `htuned`. Establish `hcs : orderAtLeastLocus (MaxContactCoverData.derivedTriple S s hft extra ndrop).ideal (MaxContactCoverData.derivedTriple S s hft extra ndrop).mult = ∅`. Rewrite using `[h1, MaxContactCoverData.derivedTriple_mult S s hft extra ndrop]`.
-
-Conclude with `orderAtLeastLocus_top_eq_empty _ (one_le_tuningExponent S.mult)`. Conclude with `hspec.trivial_of_coSupport_empty _ hVc hP (isOrderBoundedByMult_derivedTriple hstar S hV hm hO s hft extra ndrop hVc) (isBalanced_derivedTriple hstar S hV hm hO s hft extra ndrop hVc) hjb hcs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_eq_zero_of_orderAtLeastLocus_eq_empty (hstar : MaxContactCoverProperties.{u}) (P : ℕ → Prop) (j : ℕ)
     (A B : PrincipalizationAssignment.{u}) (hspec : IsBoundaryDivisorReduction P j A B)
@@ -407,13 +399,13 @@ theorem length_eq_zero_of_orderAtLeastLocus_eq_empty (hstar : MaxContactCoverPro
     (isBalanced_derivedTriple hstar S hV hm hO s hft extra ndrop hVc) hjb hcs
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_`. Establish `hsupp : ((D.comap d.isoZero.hom).support : Set ↥(d.obj 0)) = ⇑d.isoZero.hom ⁻¹' (D.support : Set ↥X)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Scheme.IdealSheafData.support_comap]`. Both sides reduce to the same expression. Rewrite using `[BlowupSequenceData.controlledTransform_zero, BlowupSequenceData.iteratedStrictTransform_zero, orderAtLeastLocus_comap_iso, hsupp, ← Set.preimage_inter, hD, Set.preimage_empty]`. Consider the case `succ i ih`. Introduce `hi`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hilt : i < d.length` using `hi`. Establish `hih` using `ih (le_of_lt hilt)`. Apply `Set.eq_empty_of_subset_empty` to reduce the goal to its premises. Introduce and unpack `x ⟨hx1, hx2⟩`. Establish `heq` using `BlowupSequenceData.pow_exceptionalIdeal_mul_controlledTransform_succ d I m i (hmk.divisible i hilt)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hsub` using `hstar.coSupport_le_preimage (d.map i) (d.center i) (d.isBlowup i hilt) (d.controlledTransform I m i) (d.controlledTransform I m (i + 1)) m heq (hmk.center_order i hilt)`. Rewrite `hx2` using `[BlowupSequenceData.iteratedStrictTransform_succ]`. Establish `hmem : ⇑(d.map i) x ∈ orderAtLeastLocus (d.controlledTransform I m i) m ∩ ((d.iteratedStrictTransform i D).support : Set ↥(d.obj i))` using `⟨hsub hx1, support_strictTransform_subset_preimage (d.map i) (d.center i) (d.iteratedStrictTransform i D) hx2⟩`. Rewrite `hmem` using `[hih]`. Simplify using `at hmem`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem orderAtLeastLocus_controlledTransform_disjoint_strictTransform (hstar : MaxContactCoverProperties.{u}) {k : Type u}
     [Field k] {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -448,13 +440,13 @@ private theorem orderAtLeastLocus_controlledTransform_disjoint_strictTransform (
       simp at hmem
 
 /- English proof (translation)
-Use `⟨hmk.divisible, hmk.center_order, hmk.center_smooth, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Establish `h1` using `hmk.center_snc i hi`. Rewrite `h1` using `[BlowupSequenceData.boundary_append]`. Rewrite using `[BlowupSequenceData.boundary_append]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `HasStrictNormalCrossingsWith.append_of_support_disjoint (HasStrictNormalCrossingsWith.of_append h1) ?_` and prove the remaining obligations. Introduce `D hD`. Take `⟨D0, hD0, hDeq⟩` from `List.mem_map.mp hD`. Substitute `hDeq` using the available equality. Establish `hdis` using `orderAtLeastLocus_controlledTransform_disjoint_strictTransform hstar hmk D0 (hsep D0 hD0) i (le_of_lt hi)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Apply `Set.eq_empty_of_subset_empty` to reduce the goal to its premises. Introduce and unpack `x ⟨hx1, hx2⟩`. Establish `hx3 : x ∈ orderAtLeastLocus (d.controlledTransform I m i) m` using `hmk.center_order i hi hx2`. Establish `hmem : x ∈ orderAtLeastLocus (d.controlledTransform I m i) m ∩ ((d.iteratedStrictTransform i D0).support : Set ↥(d.obj i))` using `⟨hx3, hx1⟩`. Rewrite `hmem` using `[hdis]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hmem`.
+Simplify using the standard rewrite rules.
 -/
 private theorem isMarked_append_of_orderAtLeastLocus_disjoint (hstar : MaxContactCoverProperties.{u}) {k : Type u} [Field k]
     {X : Scheme.{u}} {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -481,7 +473,7 @@ private theorem isMarked_append_of_orderAtLeastLocus_disjoint (hstar : MaxContac
   simp at hmem
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `all_goals intro i hi`. Apply the tactic sequence `all_goals rw [hd] at hi`. Apply the tactic sequence `all_goals exact absurd hi (Nat.not_lt_zero i)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem isMarked_of_length_eq_zero {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) (I : X.IdealSheafData) (m : ℕ)
@@ -493,11 +485,9 @@ private theorem isMarked_of_length_eq_zero {k : Type u} [Field k] {X : Scheme.{u
   all_goals exact absurd hi (Nat.not_lt_zero i)
 
 /- English proof (translation)
-Establish `hJempty : orderAtLeastLocus J n' = ∅`. Rewrite using `[hJ]`. Conclude with `orderAtLeastLocus_top_eq_empty n' hn1`. Introduce `i hi`. Rewrite `hi` using `[hlen, Nat.le_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `hi` using the available equality. Establish `h1 : orderAtLeastLocus ((BlowupSequenceData.ofSequenceOfBlowups t.toSequenceOfBlowups).controlledTransform I m 0) m = ∅`. Rewrite using `[BlowupSequenceData.controlledTransform_zero, orderAtLeastLocus_comap_iso, hempty, Set.preimage_empty]`. Establish `h2 : orderAtLeastLocus (t.ideal 0) n' = ∅`. Rewrite using `[t.ideal_zero, orderAtLeastLocus_comap_iso, hJempty, Set.preimage_empty]`.
-
-Conclude with `h1.trans h2.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem orderAtLeastLocus_controlledTransform_eq_of_length_eq_zero {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {J : X.IdealSheafData} {n : ℕ}
@@ -520,9 +510,9 @@ private theorem orderAtLeastLocus_controlledTransform_eq_of_length_eq_zero {k : 
   exact h1.trans h2.symm
 
 /- English proof (translation)
-Substitute `hE₀` using the available equality. Establish `hmarkedIff` using `hstar.tuning.isMarked_tuned_iff k X p I m hm hmax (L₁ ++ L₃) (BlowupSequenceData.ofSequenceOfBlowups t.toSequenceOfBlowups)`. Establish `hmkW : (BlowupSequenceData.ofSequenceOfBlowups t.toSequenceOfBlowups).IsMarked p (balancedTunedSheaf k p I m) (tuningExponent m) (L₁ ++ L₃)` using `(MarkedBlowupSequenceData.ofMarkedSequence t).isMarked_toBlowupSequenceData`. Establish `hmkI : (BlowupSequenceData.ofSequenceOfBlowups t.toSequenceOfBlowups).IsMarked p I m (L₁ ++ L₃)` using `hmarkedIff.1.mpr hmkW`. Use `⟨isMarked_append_of_orderAtLeastLocus_disjoint hstar L₂ hmkI hsep, ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i hi`. Establish `h2` using `hmarkedIff.2.1 hmkI i (by rw [BlowupSequenceData.ofSequenceOfBlowups_length]; exact hi)`. Establish `h3 : (BlowupSequenceData.ofSequenceOfBlowups t.toSequenceOfBlowups).controlledTransform (balancedTunedSheaf k p I m) (tuningExponent m) i = t.ideal i` using `MarkedBlowupSequenceData.toBlowupSequenceData_controlledTransform_eq (MarkedBlowupSequenceData.ofMarkedSequence t) i (by rw [MarkedBlowupSequenceData.ofMarkedSequence_length]; exact hi)`. Conclude with `h2.symm.trans (congrArg (fun Z => orderAtLeastLocus Z (tuningExponent m)) h3)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isMarked_and_orderAtLeastLocus_eq_of_balancedTunedSheaf (hstar : MaxContactCoverProperties.{u}) {k : Type u} [Field k]
     [CharZero k] [IsNoetherianRing k] {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k))
@@ -551,13 +541,13 @@ private theorem isMarked_and_orderAtLeastLocus_eq_of_balancedTunedSheaf (hstar :
   exact h2.symm.trans (congrArg (fun Z => orderAtLeastLocus Z (tuningExponent m)) h3)
 
 /- English proof (translation)
-Establish `happend : MaxContactReduction.appendLowerDimReduction hinv T reduce S s extra ndrop j = MaxContactReduction.concatOfIsMarked hinv s (BlowupSequenceData.ofSequenceOfBlowups (A j (MaxContactCoverData.derivedTriple S s hft extra ndrop)).toSequenceOfBlowups)`. Rewrite using `[MaxContactCoverData.appendLowerDimReduction_eq_concatOfIsMarked hinv T reduce S s extra ndrop j hft hdim, hrc (MaxContactCoverData.derivedTriple S s hft extra ndrop) hdim j]`. Use `hV.charZero` as an intermediate fact. Establish `: IsNoetherianRing S.base` using `inferInstance`. Establish `hsm : AlgebraicGeometry.Smooth (s.proj s.length ≫ S.structMap)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hVc.smooth`. Rewrite `h` using `[MaxContactCoverData.derivedTriple_structureMorphism S s hft extra ndrop]`. Then use the resulting hypothesis. Establish `hftI : AlgebraicGeometry.LocallyOfFiniteType (s.proj s.length ≫ S.structMap)` using `hft`. Distinguish the cases in `hempty : orderAtLeastLocus (s.ideal s.length) S.mult = ∅`. Establish `hlen : (A j (MaxContactCoverData.derivedTriple S s hft extra ndrop)).toSequenceOfBlowups.length = 0` using `length_eq_zero_of_orderAtLeastLocus_eq_empty hstar P j (A j) B hspec S hV hm hO s hft extra ndrop hP hVc hj hempty`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hJtop : (MaxContactCoverData.derivedTriple S s hft extra ndrop).ideal = ⊤`. Rewrite using `[ideal_derivedTriple S s hft extra ndrop]`. Conclude with `balancedTunedSheaf_eq_top_of_orderAtLeastLocus_eq_empty S.base (s.proj s.length ≫ S.structMap) (s.ideal s.length) hm hempty`. Establish `hmk : (BlowupSequenceData.ofSequenceOfBlowups (A j (MaxContactCoverData.derivedTriple S s hft extra ndrop)).toSequenceOfBlowups).IsMarked (s.proj s.length ≫ S.structMap) (s.ideal s.length) S.mult (s.boundary s.length)` using `isMarked_of_length_eq_zero (s.proj s.length ≫ S.structMap) (s.ideal s.length) S.mult (s.boundary s.length) _ ((BlowupSequenceData.ofSequenceOfBlowups_length _).trans hlen)`. Conclude with `⟨hmk, happend.trans (MaxContactCoverData.concatOfIsMarked_eq_append_of_isMarked hinv s _ hmk), orderAtLeastLocus_controlledTransform_eq_of_length_eq_zero (A j (MaxContactCoverData.derivedTriple S s hft extra ndrop)) (s.ideal s.length) S.mult (tuningExponent S.mult) hlen hempty hJ …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hne : (orderAtLeastLocus (s.ideal s.length) S.mult).Nonempty` using `Set.nonempty_iff_ne_empty.mpr hempty`. Establish `hmax : MaxOrderEq (s.ideal s.length) S.mult` using `maxOrderEq_ideal_length_of_nonempty hstar S hV hO s hne`. Take `⟨hmk, hcos⟩` from `isMarked_and_orderAtLeastLocus_eq_of_balancedTunedSheaf hstar (s.proj s.length ≫ S.structMap) (s.ideal s.length) S.mult hm hmax extra ((s.boundary s.length).take ndrop) ((s.boundary s.length).drop ndrop) (s.boundary s.length) (List.take_append_drop ndrop (s.boundary s.length)) hs …`. Conclude with `⟨hmk, happend.trans (MaxContactCoverData.concatOfIsMarked_eq_append_of_isMarked hinv s _ hmk), hcos⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem appendLowerDimReduction_eq_append (hstar : MaxContactCoverProperties.{u}) (hinv : ComapIsoInvariance.{u})
     (T : MarkedIdealWithBoundary.{u}) (P : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u})

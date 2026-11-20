@@ -3,17 +3,15 @@ import Mathlib
 namespace GlobalTheory.LocalHomExtension
 
 /- English proof (translation)
-Set `: Algebra A B` to `φ.toAlgebra`. Set `: Algebra A O` to `ι.toAlgebra`. Set `: Algebra A C` to `((algebraMap O C).comp ι).toAlgebra`. Establish `: IsScalarTower A O C` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `: Module.IsTorsionFree A B` using `Module.isTorsionFree_iff_algebraMap_injective.mpr hφ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.IsTorsionFree A C` using `Module.isTorsionFree_iff_algebraMap_injective.mpr hι`. Establish `: Algebra.IsIntegral A B` using `⟨hint⟩`. Set `f : B →ₐ[A] C` to `IsAlgClosed.lift`. Establish `hO : ∀ b : B, ∃ o : O, algebraMap O C o = f b` using `fun b => by`. Establish `h1 : IsIntegral A (f b)` using `(Algebra.IsIntegral.isIntegral b).map f`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hv.exists_of_le_one (hv.mem_of_integral h1.tower_top)`. Use `choose g hg using hO`. Establish `inj` using `hv.hom_inj`. Set `ι' : B →+* O` to `{ toFun := g map_one' := inj (by rw [hg, map_one, map_one]) map_mul' := fun x y => inj (by rw [hg, map_mul, map_mul, hg, hg]) map_zero' := inj (by rw [hg, map_zero, map_zero]) map_add' := fun x y => inj (by rw [hg, map_add, map_add, hg, hg]) }`. Establish `hcomp : ι'.comp φ = ι`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `a`. Apply `inj` to reduce the goal to its premises. Use `show algebraMap O C (g (φ a)) = algebraMap O C (ι a)`. Rewrite using `[hg]`. Conclude with `f.commutes a`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ι', ?_, hcomp⟩` and prove the remaining obligations. Establish `hA : (IsLocalRing.maximalIdeal O).comap ι = IsLocalRing.maximalIdeal A` using `((IsLocalRing.local_hom_TFAE ι).out 0 4).mp (inferInstance : IsLocalHom ι)`. Establish `hp : (((IsLocalRing.maximalIdeal O).comap ι').comap (algebraMap A B)).IsMaximal`. Rewrite using `[Ideal.comap_comap, show ι'.comp (algebraMap A B) = ι from hcomp, hA]`. Conclude with `IsLocalRing.maximalIdeal.isMaximal A`.
-
-Establish `hpm` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap ((IsLocalRing.maximalIdeal O).comap ι') hp`. Conclude with `((IsLocalRing.local_hom_TFAE ι').out 0 4).mpr (IsLocalRing.eq_maximalIdeal hpm)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isLocalHom_extension {A B O C : Type} [CommRing A] [IsDomain A] [IsLocalRing A]
     [CommRing B] [IsDomain B] [IsLocalRing B] [CommRing O] [IsLocalRing O] [Field C]

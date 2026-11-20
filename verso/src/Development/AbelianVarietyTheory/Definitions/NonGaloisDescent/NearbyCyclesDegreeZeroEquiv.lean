@@ -21,7 +21,7 @@ def galG (i : ℕ) (C : Type) [CommRing C] [Algebra K C] : Representation Λ (Ω
   GlobalTheory.Et.gal Λ Ω (str K C) i
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `f.comp_algebraMap`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem spec_str {C D : Type} [CommRing C] [Algebra K C] [CommRing D] [Algebra K D] (f : C →ₐ[K] D) :
     Spec.map (CommRingCat.ofHom (f : C →+* D)) ≫ str K C = str K D := by
@@ -34,7 +34,7 @@ def mapG (i : ℕ) {C D : Type} [CommRing C] [Algebra K C] [CommRing D] [Algebra
   GlobalTheory.Et.pull Λ i (GlobalTheory.Et.geomMap Ω (str K D) (Spec.map (CommRingCat.ofHom (f : C →+* D))) (spec_str K f))
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `[GlobalTheory.Et.geomMap]`. Simplify using `[GlobalTheory.Et.geomMap]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem geomMap_spec_id (C : Type) [CommRing C] [Algebra K C] :
     GlobalTheory.Et.geomMap Ω (str K C) (Spec.map (CommRingCat.ofHom ((AlgHom.id K C : C →ₐ[K] C) : C →+* C)))
@@ -44,16 +44,16 @@ theorem geomMap_spec_id (C : Type) [CommRing C] [Algebra K C] :
   · simp [GlobalTheory.Et.geomMap]
 
 /- English proof (translation)
-Rewrite using `[mapG, geomMap_spec_id, GlobalTheory.Et.pull_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mapG_id (i : ℕ) (C : Type) [CommRing C] [Algebra K C] :
     mapG Λ K Ω i (AlgHom.id K C) = LinearMap.id := by
   rw [mapG, geomMap_spec_id, GlobalTheory.Et.pull_id]
 
 /- English proof (translation)
-Establish `h : GlobalTheory.Et.geomMap Ω (str K E) (Spec.map (CommRingCat.ofHom ((g.comp f : C →ₐ[K] E) : C →+* E))) (spec_str K (g.comp f)) = GlobalTheory.Et.geomMap Ω (str K E) (Spec.map (CommRingCat.ofHom (g : D →+* E))) (spec_str K g) ≫ GlobalTheory.Et.geomMap Ω (str K D) (Spec.map (Com …`. Establish `hs : Spec.map (CommRingCat.ofHom ((g.comp f : C →ₐ[K] E) : C →+* E)) = Spec.map (CommRingCat.ofHom (g : D →+* E)) ≫ Spec.map (CommRingCat.ofHom (f : C →+* D))`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[GlobalTheory.Et.geomMap, GlobalTheory.Et.geomMap, GlobalTheory.Et.geomMap, pullback.lift_fst, Category.assoc, pullback.lift_fst, pullback.lift_fst_assoc, Category.assoc, hs]`. Rewrite using `[GlobalTheory.Et.geomMap, GlobalTheory.Et.geomMap, GlobalTheory.Et.geomMap, pullback.lift_snd, Category.assoc, pullback.lift_snd, pullback.lift_snd]`. Rewrite using `[mapG, mapG, mapG, h, GlobalTheory.Et.pull_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mapG_comp (i : ℕ) {C D E : Type} [CommRing C] [Algebra K C] [CommRing D] [Algebra K D]
     [CommRing E] [Algebra K E] (g : D →ₐ[K] E) (f : C →ₐ[K] D) :
@@ -73,7 +73,7 @@ theorem mapG_comp (i : ℕ) {C D E : Type} [CommRing C] [Algebra K C] [CommRing 
   rw [mapG, mapG, mapG, h, GlobalTheory.Et.pull_comp]
 
 /- English proof (translation)
-Set `pt : Spec (CommRingCat.of Ω) ⟶ GlobalTheory.Et.geom Ω (str K C)` to `pullback.lift (Spec.map (CommRingCat.ofHom (ψ : C →+* Ω))) (𝟙 _) (by`. Rewrite using `[Category.id_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `ψ.comp_algebraMap)`. Conclude with `⟨pt.base (Classical.arbitrary _)⟩`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_geom (C : Type) [CommRing C] [Algebra K C] (ψ : C →ₐ[K] Ω) :
     Nonempty (GlobalTheory.Et.geom Ω (str K C)) := by
@@ -85,7 +85,7 @@ theorem nonempty_geom (C : Type) [CommRing C] [Algebra K C] (ψ : C →ₐ[K] Ω
   exact ⟨pt.base (Classical.arbitrary _)⟩
 
 /- English proof (translation)
-Use `haveI := nonempty_geom K Ω C ψ`. Conclude with `GlobalTheory.Et.Model.cohomZero_nontrivial Λ _`.
+A detailed English derivation is pending.
 -/
 theorem nontrivial_HG_zero [Nontrivial Λ] (C : Type) [CommRing C] [Algebra K C] (ψ : C →ₐ[K] Ω) :
     Nontrivial (HG Λ K Ω 0 C) := by
@@ -106,14 +106,14 @@ def map (i : ℕ) {A B : Type} [CommRing A] [Algebra O A] [CommRing B] [Algebra 
   mapG Λ K Ω i (Algebra.TensorProduct.map (AlgHom.id K K) f)
 
 /- English proof (translation)
-Rewrite using `[map, Algebra.TensorProduct.map_id, mapG_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_id (i : ℕ) (A : Type) [CommRing A] [Algebra O A] :
     map Λ K Ω O i (AlgHom.id O A) = LinearMap.id := by
   rw [map, Algebra.TensorProduct.map_id, mapG_id]
 
 /- English proof (translation)
-Rewrite using `[map, map, map, ← mapG_comp]`. Use `congr 1`. Rewrite using `[← Algebra.TensorProduct.map_comp, AlgHom.comp_id]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_comp (i : ℕ) {A B D : Type} [CommRing A] [Algebra O A] [CommRing B] [Algebra O B]
     [CommRing D] [Algebra O D] (g : B →ₐ[O] D) (f : A →ₐ[O] B) :
@@ -145,15 +145,15 @@ def act (i : ℕ) {G : Type} [Group G] (A : Type) [CommRing A] [Algebra O A] (ρ
     rfl
 
 /- English proof (translation)
-The claim follows from `nontrivial_HG_zero Λ K Ω _ ((Algebra.ofId K Ω).comp (Algebra.TensorProduct.rid O K K).toAlgHom)`.
+A detailed English derivation is pending.
 -/
 theorem nontrivial_H_zero_self [Nontrivial Λ] [IsAlgClosed Ω] : Nontrivial (H Λ K Ω O 0 O) :=
   nontrivial_HG_zero Λ K Ω _ ((Algebra.ofId K Ω).comp (Algebra.TensorProduct.rid O K K).toAlgHom)
 
 /- English proof (translation)
-Use `haveI : IsIso (CommRingCat.ofHom (algebraMap K (K ⊗[O] O))) := by`. Rewrite using `[ConcreteCategory.isIso_iff_bijective]`. Establish `: (algebraMap K (K ⊗[O] O) : K → K ⊗[O] O) = (Algebra.TensorProduct.rid O K K).symm`. Use extensionality with `x`. Conclude with `((Algebra.TensorProduct.rid O K K).symm.commutes x).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Function.Bijective (algebraMap K (K ⊗[O] O))`. Rewrite using `[this]`. Conclude with `(Algebra.TensorProduct.rid O K K).symm.bijective`. Conclude with `(pullback.snd (str K (K ⊗[O] O)) (Spec.map (CommRingCat.ofHom (algebraMap K Ω)))).homeomorph.injective.subsingleton`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_geom_self : Subsingleton (GlobalTheory.Et.geom Ω (str K (K ⊗[O] O))) := by
   haveI : IsIso (CommRingCat.ofHom (algebraMap K (K ⊗[O] O))) := by
@@ -187,14 +187,14 @@ def nearbyCyclesDegreeZeroEquiv : H Λ K Ω O 0 O ≃ₗ[Λ] Λ :=
       right_inv := fun _ => rfl }
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨nearbyCyclesDegreeZeroEquiv Λ K Ω O⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_equiv_self : Nonempty (H Λ K Ω O 0 O ≃ₗ[Λ] Λ) := ⟨nearbyCyclesDegreeZeroEquiv Λ K Ω O⟩
 
 /- English proof (translation)
-Use `haveI := subsingleton_geom_self K Ω O`. Use extensionality with `x`. Apply `(GlobalTheory.Et.H0.e Λ _).injective` to reduce the goal to its premises. Establish `h` using `GlobalTheory.Et.H0.e_pull Λ (GlobalTheory.Et.galMap Ω (str K (K ⊗[O] O)) σ) x`. Use `h.trans ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Conclude with `congrArg (GlobalTheory.Et.H0.e Λ _ x) (Subsingleton.elim _ _)`.
+A detailed English derivation is pending.
 -/
 theorem gal_self (σ : Ω ≃ₐ[K] Ω) : gal Λ K Ω O 0 O σ = 1 := by
   haveI := subsingleton_geom_self K Ω O
@@ -227,7 +227,7 @@ def smapG (i : ℕ) {C D : Type} [CommRing C] [Algebra K C] [CommRing D] [Algebr
   GlobalTheory.Et.pull Λ i (sgeomMap κ τ hτ f hf)
 
 /- English proof (translation)
-Establish `h : sgeomMap (RingHom.id K) (RingHom.id Ω) hτ (RingHom.id C) hf = 𝟙 _`. Apply the tactic sequence `apply pullback.hom_ext <;> simp [sgeomMap]`. Rewrite using `[smapG, h, GlobalTheory.Et.pull_id]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem smapG_id (i : ℕ) (C : Type) [CommRing C] [Algebra K C]
     (hτ : (RingHom.id Ω).comp (algebraMap K Ω) = (algebraMap K Ω).comp (RingHom.id K))
@@ -238,7 +238,7 @@ theorem smapG_id (i : ℕ) (C : Type) [CommRing C] [Algebra K C]
   rw [smapG, h, GlobalTheory.Et.pull_id]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem smapG_congr (i : ℕ) {C D : Type} [CommRing C] [Algebra K C] [CommRing D] [Algebra K' D]
     {κ : K →+* K'} {τ : Ω →+* Ω'} {hτ : τ.comp (algebraMap K Ω) = (algebraMap K' Ω').comp κ}
@@ -247,9 +247,9 @@ theorem smapG_congr (i : ℕ) {C D : Type} [CommRing C] [Algebra K C] [CommRing 
   subst h; rfl
 
 /- English proof (translation)
-Establish `h : sgeomMap (κ'.comp κ) (τ'.comp τ) (by rw [RingHom.comp_assoc, hτ, ← RingHom.comp_assoc, hτ', RingHom.comp_assoc]) (g.comp f) (by rw [RingHom.comp_assoc, hf, ← RingHom.comp_assoc, hg, RingHom.comp_assoc]) = sgeomMap κ' τ' hτ' g hg ≫ sgeomMap κ τ hτ f hf`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc]`. Simplify using `only [sgeomMap, pullback.map]`. Rewrite using `[pullback.lift_fst, pullback.lift_fst, pullback.lift_fst_assoc, Category.assoc, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc]`. Simplify using `only [sgeomMap, pullback.map]`. Rewrite using `[pullback.lift_snd, pullback.lift_snd, pullback.lift_snd_assoc, Category.assoc, CommRingCat.ofHom_comp, Spec.map_comp]`. Rewrite using `[smapG, smapG, smapG, h, GlobalTheory.Et.pull_comp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem smapG_comp (i : ℕ) {K'' Ω'' : Type} [Field K''] [Field Ω''] [Algebra K'' Ω'']
     {C D E : Type} [CommRing C] [Algebra K C] [CommRing D] [Algebra K' D] [CommRing E] [Algebra K'' E]
@@ -284,7 +284,7 @@ variable {K Ω} {K' : Type} [Field K'] {Ω' : Type} [Field Ω'] [Algebra K' Ω']
 variable {O : Type} [CommRing O] [Algebra O K] {O' : Type} [CommRing O'] [Algebra O' K']
 
 /- English proof (translation)
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul k a => exact h k a`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensor_ringHom_ext {A B : Type} [CommRing A] [Algebra O A] [Ring B] {f g : K ⊗[O] A →+* B}
     (h : ∀ k a, f (k ⊗ₜ a) = g (k ⊗ₜ a)) : f = g := by
@@ -312,7 +312,7 @@ def tmap {A A' : Type} [CommRing A] [Algebra O A] [CommRing A'] [Algebra O' A']
     (fun _ _ => Commute.all _ _)).toRingHom
 
 /- English proof (translation)
-Use `letI : Algebra O (K' ⊗[O'] A') := ((algebraMap O' (K' ⊗[O'] A')).comp ο).toAlgebra`. Express the relevant statement in the definitionally equal form `(κ k ⊗ₜ[O'] (1 : A')) * ((1 : K') ⊗ₜ[O'] φ a) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem tmap_tmul {A A' : Type} [CommRing A] [Algebra O A] [CommRing A'] [Algebra O' A']
     (ο : O →+* O') (κ : K →+* K') (hκ : κ.comp (algebraMap O K) = (algebraMap O' K').comp ο)
@@ -323,7 +323,7 @@ theorem tmap_tmul {A A' : Type} [CommRing A] [Algebra O A] [CommRing A'] [Algebr
   rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]
 
 /- English proof (translation)
-Use `RingHom.ext fun k => ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.algebraMap_apply, tmap_tmul, map_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tmap_algebraMap {A A' : Type} [CommRing A] [Algebra O A] [CommRing A'] [Algebra O' A']
     (ο : O →+* O') (κ : K →+* K') (hκ : κ.comp (algebraMap O K) = (algebraMap O' K').comp ο)
@@ -335,7 +335,7 @@ theorem tmap_algebraMap {A A' : Type} [CommRing A] [Algebra O A] [CommRing A'] [
   rfl
 
 /- English proof (translation)
-The claim follows from `tensor_ringHom_ext fun k a => by rw [tmap_tmul]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem tmap_id {A : Type} [CommRing A] [Algebra O A]
     (hκ : (RingHom.id K).comp (algebraMap O K) = (algebraMap O K).comp (RingHom.id O))
@@ -344,7 +344,7 @@ theorem tmap_id {A : Type} [CommRing A] [Algebra O A]
   tensor_ringHom_ext fun k a => by rw [tmap_tmul]; rfl
 
 /- English proof (translation)
-The claim follows from `tensor_ringHom_ext fun k a => by rw [RingHom.comp_apply, tmap_tmul, tmap_tmul, tmap_tmul]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem tmap_comp {K'' : Type} [Field K''] {O'' : Type} [CommRing O''] [Algebra O'' K'']
     {A A' A'' : Type} [CommRing A] [Algebra O A] [CommRing A'] [Algebra O' A'] [CommRing A''] [Algebra O'' A'']
@@ -365,7 +365,7 @@ def smap (i : ℕ) {A A' : Type} [CommRing A] [Algebra O A] [CommRing A'] [Algeb
   smapG Λ i κ τ hτ (tmap ο κ hκ φ hφ) (tmap_algebraMap ο κ hκ φ hφ)
 
 /- English proof (translation)
-Substitute `e₁ e₂ e₃ e₄` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem smap_congr (i : ℕ) {A A' : Type} [CommRing A] [Algebra O A] [CommRing A'] [Algebra O' A']
     {ο₁ ο₂ : O →+* O'} {κ₁ κ₂ : K →+* K'} {τ₁ τ₂ : Ω →+* Ω'} {φ₁ φ₂ : A →+* A'}
@@ -380,7 +380,7 @@ theorem smap_congr (i : ℕ) {A A' : Type} [CommRing A] [Algebra O A] [CommRing 
   subst e₁ e₂ e₃ e₄; rfl
 
 /- English proof (translation)
-Rewrite using `[smap, smapG_congr Λ i _ (tmap_id hκ hφ), smapG_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smap_id (i : ℕ) (A : Type) [CommRing A] [Algebra O A]
     (hκ : (RingHom.id K).comp (algebraMap O K) = (algebraMap O K).comp (RingHom.id O))
@@ -390,7 +390,7 @@ theorem smap_id (i : ℕ) (A : Type) [CommRing A] [Algebra O A]
   rw [smap, smapG_congr Λ i _ (tmap_id hκ hφ), smapG_id]
 
 /- English proof (translation)
-Rewrite using `[smap, smap, smap, smapG_congr Λ i _ (tmap_comp ο κ hκ φ hφ ο' κ' hκ' φ' hφ'), smapG_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smap_comp (i : ℕ) {K'' Ω'' : Type} [Field K''] [Field Ω''] [Algebra K'' Ω''] {O'' : Type} [CommRing O'']
     [Algebra O'' K''] {A A' A'' : Type} [CommRing A] [Algebra O A] [CommRing A'] [Algebra O' A'] [CommRing A'']
@@ -434,30 +434,30 @@ def wrep (i : ℕ) {W : Type} [Group W] (A : Type) [CommRing A] [Algebra O A]
 end SemilinearFormal
 
 /- English proof (translation)
-The claim follows from `map_one _`.
+A detailed English derivation is pending.
 -/
 example : (gal ℤ_[2] ℚ_[3] (AlgebraicClosure ℚ_[3]) ℤ_[3] 2 ℤ_[3]) 1 = 1 := map_one _
 
 /- English proof (translation)
-The claim follows from `nontrivial_H_zero_self _ _ _ _`.
+A detailed English derivation is pending.
 -/
 example : Nontrivial (H ℤ_[2] ℚ_[3] (AlgebraicClosure ℚ_[3]) ℤ_[3] 0 ℤ_[3]) := nontrivial_H_zero_self _ _ _ _
 
 /- English proof (translation)
-The claim follows from `nonempty_equiv_self _ _ _ _`.
+A detailed English derivation is pending.
 -/
 example : Nonempty (H ℤ_[2] ℚ_[3] (AlgebraicClosure ℚ_[3]) ℤ_[3] 0 ℤ_[3] ≃ₗ[ℤ_[2]] ℤ_[2]) :=
   nonempty_equiv_self _ _ _ _
 
 /- English proof (translation)
-The claim follows from `gal_self _ _ _ _ σ`.
+A detailed English derivation is pending.
 -/
 example (σ : AlgebraicClosure ℚ_[3] ≃ₐ[ℚ_[3]] AlgebraicClosure ℚ_[3]) :
     gal ℤ_[2] ℚ_[3] (AlgebraicClosure ℚ_[3]) ℤ_[3] 0 ℤ_[3] σ = 1 :=
   gal_self _ _ _ _ σ
 
 /- English proof (translation)
-The claim follows from `smap_id _ _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 example : smap ℤ_[2] (K := ℚ_[3]) (Ω := AlgebraicClosure ℚ_[3]) 1 (RingHom.id ℤ_[3]) (RingHom.id ℚ_[3]) rfl
     (RingHom.id _) rfl (RingHom.id ℤ_[3]) rfl = LinearMap.id :=

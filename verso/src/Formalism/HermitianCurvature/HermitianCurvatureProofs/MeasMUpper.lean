@@ -13,9 +13,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Rewrite using `[measM_iff]`. Introduce `i j`. Simplify using `only [lowP, C2.lowOf, Matrix.add_apply, Matrix.of_apply]`. Use `measurable_const.add (Finset.measurable_sum _ fun q _ => ?_)` and prove the remaining obligations. Use `split_ifs`.
-
-Conclude with `(measurable_pi_apply q).comp hy`. Conclude with `measurable_const`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measM_lowP {X : Type*} [MeasurableSpace X] {m : ℕ} (w : Equiv.Perm (Fin m)) {y : X → C2.LPidx w → ℂ}
     (hy : Measurable y) : MeasM (fun x => lowP w (y x)) := by
@@ -28,9 +26,7 @@ theorem measM_lowP {X : Type*} [MeasurableSpace X] {m : ℕ} (w : Equiv.Perm (Fi
   · exact measurable_const
 
 /- English proof (translation)
-Rewrite using `[measM_iff]`. Introduce `i j`. Simplify using `only [G.upper, G.strictUpper, Matrix.add_apply, Matrix.of_apply]`. Use `measurable_const.add ?_` and prove the remaining obligations. Use `split_ifs with h`.
-
-Conclude with `(measurable_pi_apply _).comp hu`. Conclude with `measurable_const`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measM_upper {X : Type*} [MeasurableSpace X] {m : ℕ} {u : X → G.UT m → ℂ} (hu : Measurable u) :
     MeasM (fun x => G.upper (u x)) := by
@@ -43,9 +39,9 @@ theorem measM_upper {X : Type*} [MeasurableSpace X] {m : ℕ} {u : X → G.UT m 
   · exact measurable_const
 
 /- English proof (translation)
-Establish `h` using `measM_of_cont (f := fun y : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → ℂ => C2.uMap k r z (Matrix.of y)) ?_ hA`. Simplify using `using h`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [C2.uMap, herm, Matrix.of_symm_apply]`. Use `split_ifs`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [dotProduct, Matrix.mulVec, Matrix.of_apply] fun_prop`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.of_apply] fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measM_uMap {X : Type*} [MeasurableSpace X] (z : Fin (2 * r + k + 1) → ℂ) {A : X → B.Mat k r}
     (hA : MeasM A) : MeasM (fun x => C2.uMap k r z (A x)) := by
@@ -61,7 +57,7 @@ theorem measM_uMap {X : Type*} [MeasurableSpace X] (z : Fin (2 * r + k + 1) → 
       fun_prop
 
 /- English proof (translation)
-Rewrite `hA` using `[measM_iff]`. Conclude with `measurable_pi_lambda _ fun q => hA q.1.1 q.1.2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem meas_utc {X : Type*} [MeasurableSpace X] {m : ℕ} {A : X → Matrix (Fin m) (Fin m) ℂ} (hA : MeasM A) :
     Measurable fun x => utc (A x) := by
@@ -78,31 +74,27 @@ variable (S : B.RealPlaceData k r Wp Wq) {γ : B.Mat k r} (hγ : γ ∈ B.GV k r
 
 include hγ hd hZw hpos in
 /- English proof (translation)
-Establish `hg : Dx2.Rad.Good S γ w d` using `by first`. Consider the case `exact good S hγ hd hZw hpos`. Consider the case `exact good S hγ hd hZw`. Consider the case `exact good S hγ hZw hd`. Take `⟨-, hinj, -⟩` from `hg`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hs : ∀ x, rhoX S γ w x ∈ C6.Rset γ ∧ C2.uMap k r S.z (rhoX S γ w x) = (lowS w x)ᴴ` using `fun x => by first`. Consider the case `exact rhoX_spec S hγ hd hZw hpos x`. Consider the case `exact rhoX_spec S hγ hd hZw x`. Establish `hR : IsClosed (C6.Rset γ)`. Establish `hN : IsClosed (Nset k r)` using `(Formalism.FourierDecayAlt.P.B2x2.closedN k r).closed`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous fun ρ : B.Mat k r => γ⁻¹ * ρ * γ` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Establish `h2 : IsClosed ((fun ρ : B.Mat k r => γ⁻¹ * ρ * γ) ⁻¹' Nset k r)` using `hN.preimage hc`. Establish `h3 : C6.Rset γ = Nset k r ∩ ((fun ρ : B.Mat k r => γ⁻¹ * ρ * γ) ⁻¹' Nset k r)`. Use extensionality with `ρ`. Simplify using `only [C6.Rset, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_preimage]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[h3]`. Conclude with `hN.inter h2`. Use `set R' : Set (Mt k r) := {y | Matrix.of y ∈ C6.Rset γ} with hR'def`. Establish `hR' : IsClosed R'` using `hR.preimage continuous_id`. Use `set F : Mt k r → Fin (r + 1) → Fin (r + 1) → ℂ := fun y => Matrix.of.symm (C2.uMap k r S.z (Matrix.of y)) with hFdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hF : Continuous F`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [hFdef, C2.uMap, herm, Matrix.of_symm_apply]`. Use `split_ifs`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.of_apply] fun_prop`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [dotProduct, Matrix.mulVec, Matrix.of_apply] fun_prop`. Use `set H : (C2.Lstidx w → ℂ) → Fin (r + 1) → Fin (r + 1) → ℂ := fun x => Matrix.of.symm ((lowS w x)ᴴ) with hHdef`. Establish `hlow : MeasM (fun x : C2.Lstidx w → ℂ => lowS w x)`. Rewrite using `[measM_iff]`. Introduce `i j`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [lowS, C2.lowOf, Matrix.add_apply, Matrix.of_apply]`. Use `measurable_const.add (Finset.measurable_sum _ fun q _ => ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `measurable_pi_apply q`. Conclude with `measurable_const`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hH : Measurable H` using `measM_star hlow`. Establish `hΦ : Measurable fun x : C2.Lstidx w → ℂ => (Matrix.of.symm (rhoX S γ w x) : Mt k r)`. Introduce `B hB`. Establish `hset : (fun x : C2.Lstidx w → ℂ => (Matrix.of.symm (rhoX S γ w x) : Mt k r)) ⁻¹' B = H ⁻¹' (F '' (B ∩ R'))`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_preimage, Set.mem_image, Set.mem_inter_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨Matrix.of.symm (rhoX S γ w x), ⟨hx, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify `(hs x).1` using `[hR'def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [hFdef, hHdef, Equiv.apply_symm_apply, (hs x).2]`. Introduce and unpack `⟨y, ⟨hyB, hyR⟩, hFy⟩`. Establish `hyR2 : Matrix.of y ∈ C6.Rset γ` using `hyR`. Establish `hu : C2.uMap k r S.z (Matrix.of y) = C2.uMap k r S.z (rhoX S γ w x)`. Rewrite using `[(hs x).2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Matrix.of.symm.injective hFy`. Use `hinj hyR2 (hs x).1 hu` as an intermediate fact. Rewrite using `[← this]`. Simplify using `using hyB`. Rewrite using `[hset]`.
-
-Conclude with `hH (MeasurableSet.image_of_continuousOn_injOn (hB.inter hR'.measurableSet) hF.continuousOn (fun a ha b hb hab => by`. Establish `h1 : Matrix.of a ∈ C6.Rset γ` using `ha.2`. Establish `h2 : Matrix.of b ∈ C6.Rset γ` using `hb.2`. Use `hinj h1 h2 (Matrix.of.symm.injective hab)` as an intermediate fact. Simplify using `using this))`.
-
-Conclude with `hΦ.comp hx`.
+A detailed English derivation is pending.
 -/
 theorem measM_rhoX {X : Type*} [MeasurableSpace X] {x : X → C2.Lstidx w → ℂ} (hx : Measurable x) :
     MeasM (fun t => rhoX S γ w (x t)) := by
@@ -179,7 +171,7 @@ theorem measM_rhoX {X : Type*} [MeasurableSpace X] {x : X → C2.Lstidx w → �
 
 include hγ hd hZw hpos in
 /- English proof (translation)
-Simplify using `only [rhoP]`. Conclude with `measM_mul (measM_mul (measM_const _) (measM_inv (measM_rhoX S hγ hd hZw hpos hx))) (measM_const _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measM_rhoP {X : Type*} [MeasurableSpace X] {x : X → C2.Lstidx w → ℂ} (hx : Measurable x) :
     MeasM (fun t => rhoP S γ w (x t)) := by
@@ -188,7 +180,7 @@ theorem measM_rhoP {X : Type*} [MeasurableSpace X] {x : X → C2.Lstidx w → �
 
 include hγ hd hZw hpos in
 /- English proof (translation)
-Simplify using `only [m0L]`. Establish `hxy : Measurable fun t => (x t, y t)` using `hx.prodMk hy`. Conclude with `measM_mul (measM_mul (measM_inv (measM_tau _ (measM_star (measM_lowP w hy)))) (measM_inv (measM_rhoX S hγ hd hZw hpos hx))) (measM_tau _ (measM_upper (e.measurable.comp hxy)))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measM_m0L {X : Type*} [MeasurableSpace X] {x : X → C2.Lstidx w → ℂ} (hx : Measurable x)
     {y : X → C2.LPidx w → ℂ} (hy : Measurable y) : MeasM (fun t => m0L S γ w e (x t) (y t)) := by
@@ -199,7 +191,7 @@ theorem measM_m0L {X : Type*} [MeasurableSpace X] {x : X → C2.Lstidx w → ℂ
 
 include hγ hd hZw hpos in
 /- English proof (translation)
-Simplify using `only [m0R]`. Establish `hP` using `measM_rhoP S hγ hd hZw hpos hx`. Conclude with `measM_mul (measM_mul (measM_inv (measM_tau _ (measM_mul (measM_uMap _ hP) (measM_upper hu)))) hP) (measM_tau _ (measM_upper hu))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measM_m0R {X : Type*} [MeasurableSpace X] {x : X → C2.Lstidx w → ℂ} (hx : Measurable x)
     {u : X → G.UT (r + 1) → ℂ} (hu : Measurable u) : MeasM (fun t => m0R S γ w (x t) (u t)) := by
@@ -210,13 +202,11 @@ theorem measM_m0R {X : Type*} [MeasurableSpace X] {x : X → C2.Lstidx w → ℂ
 
 include hγ hd hZw hpos in
 /- English proof (translation)
-Establish `h1 : Measurable fun p : (C2.Lstidx w → ℂ) × RR k r w => p.1` using `measurable_fst`. Establish `hy : Measurable fun p : (C2.Lstidx w → ℂ) × RR k r w => p.2.1.2.1` using `by fun_prop`. Establish `hu : Measurable fun p : (C2.Lstidx w → ℂ) × RR k r w => p.2.2.2.1` using `by fun_prop`. Establish `hM : MeasM fun p : (C2.Lstidx w → ℂ) × RR k r w => Matrix.of p.2.1.2.2`. Unfold `MeasM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [Equiv.symm_apply_apply]`. Use `fun_prop`. Establish `hM' : MeasM fun p : (C2.Lstidx w → ℂ) × RR k r w => Matrix.of p.2.2.2.2`. Unfold `MeasM`. Simplify using `only [Equiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `fun_prop`. Establish `hA : Measurable fun p : (C2.Lstidx w → ℂ) × RR k r w => Matrix.of.symm (m0L S γ w e p.1 p.2.1.2.1 * Matrix.of p.2.1.2.2)` using `measM_mul (measM_m0L S hγ hd hZw hpos e h1 hy) hM`. Establish `hB : Measurable fun p : (C2.Lstidx w → ℂ) × RR k r w => utc (C2.uMap k r S.z' (rhoP S γ w p.1) * G.upper p.2.2.2.1)` using `meas_utc (measM_mul (measM_uMap _ (measM_rhoP S hγ hd hZw hpos h1)) (measM_upper hu))`. Establish `hC : Measurable fun p : (C2.Lstidx w → ℂ) × RR k r w => Matrix.of.symm (m0R S γ w p.1 p.2.2.2.1 * Matrix.of p.2.2.2.2)` using `measM_mul (measM_m0R S hγ hd hZw hpos h1 hu) hM'`. Establish `ha : Measurable fun p : (C2.Lstidx w → ℂ) × RR k r w => p.2.1.1` using `by fun_prop`.
-
-Establish `hb : Measurable fun p : (C2.Lstidx w → ℂ) × RR k r w => p.2.2.1` using `by fun_prop`. Conclude with `(ha.prodMk (hy.prodMk hA)).prodMk (hb.prodMk ((hB.prodMk hC)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem meas_Tx : Measurable fun p : (C2.Lstidx w → ℂ) × RR k r w => Tx S γ w e p.1 p.2 := by
   have h1 : Measurable fun p : (C2.Lstidx w → ℂ) × RR k r w => p.1 := measurable_fst
@@ -245,7 +235,7 @@ theorem meas_Tx : Measurable fun p : (C2.Lstidx w → ℂ) × RR k r w => Tx S �
 
 include hγ hd hZw hpos in
 /- English proof (translation)
-Apply the tactic sequence `have h := (by apply uP_UT <;> assumption : C2.uMap k r S.z' (rhoP S γ w x) * G.upper (0 : G.UT (r + 1) → ℂ) ∈ C2.UTset (r + 1))`. Establish `h0 : G.upper (0 : G.UT (r + 1) → ℂ) = 1`. Use extensionality with `i j`. Simplify using `[G.upper, G.strictUpper]`. Rewrite `h` using `[h0, mul_one]`. Then use the resulting hypothesis.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem upperUnipotent_mem_upperTriangular (x : C2.Lstidx w → ℂ) : C2.uMap k r S.z' (rhoP S γ w x) ∈ C2.UTset (r + 1) := by
   have h := (by apply uP_UT <;> assumption :
@@ -260,17 +250,13 @@ variable {μ0 μ0' : Measure (Mt k r)} (hμ0 : B.IsHaarOn (C2.N0set k r S.z) μ0
 
 include hγ hd hZw hpos he hμ0 hμ0' in
 /- English proof (translation)
-Establish `sf : ∀ {U : Set (B.Mat k r)} {μ : Measure (Mt k r)}, B.IsHaarOn U μ → SigmaFinite μ`. Introduce `U μ h`. Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨h.finite_compact⟩`. Use `infer_instance`. Use `haveI := sf hμ0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI := sf hμ0'`. Use `haveI := sf S.haarW`. Use `haveI := sf S.haarW'`. Establish `hL : MeasurePreserving (fun p : (C2.LPidx w → ℂ) × Mt k r => (id p.1, lmulM (m0L S γ w e x p.1) p.2)) ((volume : Measure (C2.LPidx w → ℂ)).prod μ0) ((volume : Measure (C2.LPidx w → ℂ)).prod μ0)`. Use `MeasurePreserving.skew_product (μc := μ0) (μd := μ0) (g := fun y M => lmulM (m0L S γ w e x y) M) (MeasurePreserving.id (volume : Measure (C2.LPidx w → ℂ))) ?_ (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `measM_mul (measM_m0L S hγ hd hZw hpos e (measurable_const (a := x)) measurable_fst) (show MeasM fun p : (C2.LPidx w → ℂ) × Mt k r => Matrix.of p.2 by`. Unfold `MeasM`. Simplify using `only [Equiv.symm_apply_apply]`. Use the proof step `fun_prop)`. Conclude with `h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `exact hμ0.left _ (by apply left_stabilizer_mem <;> assumption)`. Establish `hR : MeasurePreserving (fun p : (G.UT (r + 1) → ℂ) × Mt k r => (utc (C2.uMap k r S.z' (rhoP S γ w x) * G.upper p.1), lmulM (m0R S γ w x p.1) p.2)) ((volume : Measure (G.UT (r + 1) → ℂ)).prod μ0') ((volume : Measure (G.UT (r + 1) → ℂ)).prod μ0')`. Use `MeasurePreserving.skew_product (μc := μ0') (μd := μ0') (g := fun u M => lmulM (m0R S γ w x u) M) (Formalism.FourierDecayAlt.P.StabilizerDisintegration.HC.mp_UTleft (upperUnipotent_mem_upperTriangular S hγ hd hZw hpos x)) ?_ (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Establish `h` using `measM_mul (measM_m0R S hγ hd hZw hpos (measurable_const (a := x)) measurable_fst) (show MeasM fun p : (G.UT (r + 1) → ℂ) × Mt k r => Matrix.of p.2 by`. Unfold `MeasM`.
-
-Simplify using `only [Equiv.symm_apply_apply]`. Use the proof step `fun_prop)`. Conclude with `h`. Apply the tactic sequence `exact hμ0'.left _ (by apply right_stabilizer_mem <;> assumption)`. Establish `hall` using `((MeasurePreserving.id S.μW).prod hL).prod ((MeasurePreserving.id S.μW').prod hR)`.
-
-Conclude with `hall`.
+A detailed English derivation is pending.
 -/
 theorem mp_Tx (x : C2.Lstidx w → ℂ) : MeasurePreserving (Tx S γ w e x) (nuR S w μ0 μ0') (nuR S w μ0 μ0') := by
   have sf : ∀ {U : Set (B.Mat k r)} {μ : Measure (Mt k r)}, B.IsHaarOn U μ → SigmaFinite μ := by
@@ -314,11 +300,7 @@ theorem mp_Tx (x : C2.Lstidx w → ℂ) : MeasurePreserving (Tx S γ w e x) (nuR
 
 include hγ hd hZw hpos he hμ0 hμ0' in
 /- English proof (translation)
-Establish `sf : ∀ {U : Set (B.Mat k r)} {μ : Measure (Mt k r)}, B.IsHaarOn U μ → SigmaFinite μ`. Introduce `U μ h`. Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨h.finite_compact⟩`. Use `infer_instance`. Use `haveI := sf hμ0`.
-
-Use `haveI := sf hμ0'`. Use `haveI := sf S.haarW`. Use `haveI := sf S.haarW'`. Use `haveI : SFinite (nuR S w μ0 μ0') := by`. Unfold `nuR`.
-
-Use `infer_instance`. Establish `h` using `MeasurePreserving.skew_product (μc := nuR S w μ0 μ0') (μd := nuR S w μ0 μ0') (g := fun x q => Tx S γ w e x q) (MeasurePreserving.id (volume : Measure (C2.Lstidx w → ℂ))) (meas_Tx S hγ hd hZw hpos e) (Filter.Eventually.of_forall fun x => (mp_Tx S hγ hd hZw hpos e he hμ0 hμ0' x).ma …`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mp_Tt : MeasurePreserving (Tt S γ w e) ((volume : Measure (C2.Lstidx w → ℂ)).prod (nuR S w μ0 μ0'))
     ((volume : Measure (C2.Lstidx w → ℂ)).prod (nuR S w μ0 μ0')) := by
@@ -341,19 +323,19 @@ theorem mp_Tt : MeasurePreserving (Tt S γ w e) ((volume : Measure (C2.Lstidx w 
 
 include hγ hd hZw hpos he in
 /- English proof (translation)
-Introduce and unpack `⟨x, ⟨a, y, M⟩, ⟨b, u, M'⟩⟩ ⟨x', ⟨a', y', N⟩, ⟨b', u', N'⟩⟩ h`. Simplify using `only [Tt, Tx, Prod.mk.injEq] at h`. Take `⟨rfl, ⟨rfl, rfl, hM⟩, rfl, hu, hM'⟩` from `h`. Establish `hc : C2.uMap k r S.z' (rhoP S γ w x) ∈ C2.UTset (r + 1)` using `upperUnipotent_mem_upperTriangular S hγ hd hZw hpos x`. Establish `hcu : IsUnit (C2.uMap k r S.z' (rhoP S γ w x))`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Establish `hdet : (C2.uMap k r S.z' (rhoP S γ w x)).det = 1`. Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => hc.1 i j hij)]`. Simplify using `[hc.2]`. Rewrite using `[hdet]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isUnit_one`. Apply the tactic sequence `have hU : ∀ v : G.UT (r + 1) → ℂ, C2.uMap k r S.z' (rhoP S γ w x) * G.upper v ∈ C2.UTset (r + 1) := fun v => by apply uP_UT <;> assumption`. Establish `huu : u = u'`. Establish `hmat : C2.uMap k r S.z' (rhoP S γ w x) * G.upper u = C2.uMap k r S.z' (rhoP S γ w x) * G.upper u'`. Use extensionality with `i j`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Simplify `congrFun hu ⟨(i, j), hij⟩` using `[utc]`. Rewrite using `[(hU u).2 i, (hU u').2 i]`. Rewrite using `[(hU u).1 i j hij, (hU u').1 i j hij]`. Establish `hup` using `hcu.mul_left_cancel hmat`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Formalism.FourierDecayAlt.P.StabilizerDisintegration.HC.utc_upper u, ← Formalism.FourierDecayAlt.P.StabilizerDisintegration.HC.utc_upper u', hup]`. Substitute `huu` using the available equality. Establish `hL : IsUnit (m0L S γ w e x y)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Apply the tactic sequence `exact (Formalism.FourierDecayAlt.P.B2x2.closedN k r).unit _ (by apply left_stabilizer_mem <;> assumption : m0L S γ w e x y ∈ C2.N0set k r S.z).1`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hR : IsUnit (m0R S γ w x u)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Apply the tactic sequence `exact (Formalism.FourierDecayAlt.P.B2x2.closedN k r).unit _ (by apply right_stabilizer_mem <;> assumption : m0R S γ w x u ∈ C2.N0set k r S.z').1`. Establish `e1 : Matrix.of M = Matrix.of N` using `hL.mul_left_cancel (Matrix.of.symm.injective hM)`. Establish `e2 : Matrix.of M' = Matrix.of N'` using `hR.mul_left_cancel (Matrix.of.symm.injective hM')`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [EmbeddingLike.apply_eq_iff_eq] at e1 e2`. Substitute `e1` using the available equality. Substitute `e2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inj_Tt : Function.Injective (Tt S γ w e) := by
   rintro ⟨x, ⟨a, y, M⟩, ⟨b, u, M'⟩⟩ ⟨x', ⟨a', y', N⟩, ⟨b', u', N'⟩⟩ h
@@ -395,7 +377,7 @@ theorem inj_Tt : Function.Injective (Tt S γ w e) := by
 set_option synthInstance.maxHeartbeats 400000 in
 include hγ hd hZw hpos he in
 /- English proof (translation)
-The claim follows from `set_option maxHeartbeats 800000 in by have hm : Measurable (Tt S γ w e) := by unfold Tt exact measurable_fst.prodMk (meas_Tx S hγ hd hZw hpos e) have hi : Function.Injective (Tt S γ w e) := inj_Tt S hγ hd hZw hpos e he haveI i1 : StandardBorelSpace (C2.Lstidx w → ℂ) := inferInsta …`.
+A detailed English derivation is pending.
 -/
 theorem emb_Tt : MeasurableEmbedding (Tt S γ w e) := set_option maxHeartbeats 800000 in by
   have hm : Measurable (Tt S γ w e) := by

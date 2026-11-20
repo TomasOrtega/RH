@@ -22,7 +22,7 @@ section Dual
 variable {X : Scheme.{0}} (t : SAB H X) {S : Type} [CommRing S] {g : ℕ}
 
 /- English proof (translation)
-Use `⟨tanLin_injective t h c.e le_rfl h (c.isFrame.res le_rfl), fun a => ?_⟩` and prove the remaining obligations. Take `⟨v, ⟨hv, e⟩, -⟩` from `GlobalTheory.TanFibre.existsUnique_tanEv E H X t S x c.U h g c.e c.isFrame a`. Conclude with `⟨tanOf hv, funext e⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tanLin_bijective (c : VB.Chart (LieVB.omega t.G) g) (x : Sp S ⟶ X) (h : ⊤ ≤ x ⁻¹ᵁ c.U) :
     Function.Bijective (tanLin t h c.e) := by
@@ -41,9 +41,9 @@ theorem dualBasis_repr (c : VB.Chart (LieVB.omega t.G) g) (x : Sp S ⟶ X) (h : 
     (i : Fin g) : (dualBasis t c x h).repr v i = tanLin t h c.e v i := rfl
 
 /- English proof (translation)
-Use `show ev x _ hh ((c.isFrame.basis inf_le_left).det (c'.isFrame.basis inf_le_right)) = _`. Rewrite using `[Module.Basis.det_apply, RingHom.map_det, rdet_self, ← Matrix.det_transpose]`. Use `congr 1`. Use extensionality with `l i`. Rewrite using `[Module.Basis.toMatrix_apply, dualBasis_repr, tanLin_apply, ← tanEv_resM t _ hh inf_le_right, sum_frMat c'.isFrame c.isFrame inf_le_right inf_le_left, tanEv_sum_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [tanEv_resM t _ hh inf_le_left]`. Establish `e : ∀ k, tanEv t (isTan_tv (dualBasis t c x h i)) h (c.e k) = if i = k then 1 else 0` using `fun k => by`. Rewrite using `[← tanLin_apply, ← dualBasis_repr, Module.Basis.repr_self, Finsupp.single_apply]`. Simplify using `only [e, mul_ite, _root_.mul_one, MulZeroClass.mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ev_detUnit (c c' : VB.Chart (LieVB.omega t.G) g) (x : Sp S ⟶ X) (h : ⊤ ≤ x ⁻¹ᵁ c.U) (h' : ⊤ ≤ x ⁻¹ᵁ c'.U)
     (hh : ⊤ ≤ x ⁻¹ᵁ (c.U ⊓ c'.U)) :
@@ -66,7 +66,7 @@ def detAff (t : SAB H X) (g : ℕ) : LB X :=
     fun c c' => c.1.isFrame.detUnit c'.1.isFrame inf_le_left inf_le_right⟩
 
 /- English proof (translation)
-Use `⟨top_le_iff.1 fun x _ => ?_, fun c => h.isLB_det.g_self c.1, fun c c' c'' => h.isLB_det.cocycle c.1 c'.1 c''.1⟩` and prove the remaining obligations. Take `⟨U, e, hx, he⟩` from `h x`. Take `⟨V, hV, hxV, hVU⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := U) (x := x) hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨⟨V, _, he.res hVU⟩, hV⟩, hxV⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isLB_detAff (h : VB.IsVB (LieVB.omega t.G) g) : (detAff t g).IsLB := by
   refine ⟨top_le_iff.1 fun x _ => ?_, fun c => h.isLB_det.g_self c.1, fun c c' c'' => h.isLB_det.cocycle c.1 c'.1 c''.1⟩
@@ -75,7 +75,7 @@ theorem isLB_detAff (h : VB.IsVB (LieVB.omega t.G) g) : (detAff t g).IsLB := by
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨⟨V, _, he.res hVU⟩, hV⟩, hxV⟩
 
 /- English proof (translation)
-The claim follows from `(VB.lbIso_det_of_frames (isLB_detAff t h) (fun c => c.1.e) (fun c => c.1.isFrame) fun _ _ => rfl).2`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_detAff (h : VB.IsVB (LieVB.omega t.G) g) : LBIso (detAff t g) (VB.det (LieVB.omega t.G) g) :=
   (VB.lbIso_det_of_frames (isLB_detAff t h) (fun c => c.1.e) (fun c => c.1.isFrame) fun _ _ => rfl).2
@@ -86,7 +86,7 @@ variable {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O : Type} 
   (Y : Model Xo c β) {g : ℕ} {S : Type} [CommRing S]
 
 /- English proof (translation)
-Use `projProper _ _ _ Y.proj` as an intermediate fact. Establish `: Y.X.IsSeparated` using `⟨by`. Rewrite using `[← terminal.comp_from Y.s]`. Use the proof step `infer_instance⟩`. Conclude with `hU.inf hV`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAffineOpen_inf' {U V : Y.X.Opens} (hU : IsAffineOpen U) (hV : IsAffineOpen V) : IsAffineOpen (U ⊓ V) := by
   have := projProper _ _ _ Y.proj
@@ -102,7 +102,7 @@ def pairDet (M : MChart Y) (a : (detAff Y.t g).ι) : Γ(Y.X, M.U ⊓ a.1.U)ˣ :=
     (lieBasis M (tau (isAffineOpen_inf' Y M.hU a.2)) (tau_le _ inf_le_left))).unit
 
 /- English proof (translation)
-Establish `e : spMap (ev x _ hh) ≫ tau (isAffineOpen_inf' Y M.hU a.2) = x` using `spMap_ev x _ hh`. Use `(map_rdet _ _).trans (congrArg rdet ?_)` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Module.Basis.toMatrix_apply, Module.Basis.toMatrix_apply, dualBasis_repr, dualBasis_repr, ← tanPull_lieBasis M _ e (tau_le _ inf_le_left) h, tanLin_tanPull Y.t _ e (tau_le _ inf_le_right) h']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_pairDet (M : MChart Y) (a : (detAff Y.t g).ι) (x : Sp S ⟶ Y.X) (h : ⊤ ≤ x ⁻¹ᵁ M.U) (h' : ⊤ ≤ x ⁻¹ᵁ a.1.U)
     (hh : ⊤ ≤ x ⁻¹ᵁ (M.U ⊓ a.1.U)) :
@@ -117,11 +117,11 @@ theorem ev_pairDet (M : MChart Y) (a : (detAff Y.t g).ι) (x : Sp S ⟶ Y.X) (h 
 variable (Y)
 
 /- English proof (translation)
-Use `⟨⟨fun p => pairDet p.1 p.2⟩, fun p q => ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (mul_right_comm _ _ _)` and prove the remaining obligations. Use `eq_mul_inv_of_mul_eq ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (· * _) (map_inv _ (detChg p.1 q.1)).symm)` and prove the remaining obligations. Use `eq_inv_mul_of_mul_eq (Units.ext (ext_ev fun S _ z hz => ?_))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp` using `le_preimage_mono inf_le_left hz`. Establish `hq` using `le_preimage_mono inf_le_right hz`. Establish `hp1 : ⊤ ≤ z ⁻¹ᵁ (p.1 : MChart Y).U` using `le_preimage_mono inf_le_left hp`. Establish `hq1 : ⊤ ≤ z ⁻¹ᵁ (q.1 : MChart Y).U` using `le_preimage_mono inf_le_left hq`. Establish `hp2 : ⊤ ≤ z ⁻¹ᵁ p.2.1.U` using `le_preimage_mono inf_le_right hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq2 : ⊤ ≤ z ⁻¹ᵁ q.2.1.U` using `le_preimage_mono inf_le_right hq`. Use `(map_mul (ev z _ hz) _ _).trans ?_` and prove the remaining obligations. Use `(congrArg₂ (· * ·) ((ev_res z _ hz (le_preimage_inf hp1 hq1) _).trans (ev_detChg _ _ z hp1 hq1 _)) ((map_mul (ev z _ hz) _ _).trans (congrArg₂ (· * ·) ((ev_res z _ hz hp _).trans (ev_pairDet _ _ z hp1 hp2 hp)) ((ev_res z _ hz (le_preimage_inf hp2 hq2) _).trans (ev_detUnit Y.t _ _ …` and prove the remaining obligations. Rewrite using `[_root_.mul_comm, _root_.mul_comm (rdet _) (rdet _), rdet_toMatrix_mul, rdet_toMatrix_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lbIso_detAff_detOm : LBIso (detAff Y.t g) (detOm Y) := by
   refine ⟨⟨fun p => pairDet p.1 p.2⟩, fun p q => ?_⟩
@@ -143,7 +143,7 @@ theorem lbIso_detAff_detOm : LBIso (detAff Y.t g) (detOm Y) := by
   rw [_root_.mul_comm, _root_.mul_comm (rdet _) (rdet _), rdet_toMatrix_mul, rdet_toMatrix_mul]
 
 /- English proof (translation)
-The claim follows from `(lbIso_detAff_detOm Y).symm.trans hO (isLB_detAff Y.t h) h.isLB_det (lbIso_detAff Y.t h)`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_detOm_det (hO : (detOm Y).IsLB) (h : VB.IsVB (LieVB.omega Y.t.G) g) :
     LBIso (detOm Y) (VB.det (LieVB.omega Y.t.G) g) :=

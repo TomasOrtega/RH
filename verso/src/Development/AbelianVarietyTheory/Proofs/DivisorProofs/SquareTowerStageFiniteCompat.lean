@@ -25,9 +25,9 @@ open scoped TensorProduct
 namespace GlobalTheory.StageFinNonzero
 
 /- English proof (translation)
-Take `⟨a₁, h₁⟩` from `h₁`. Take `⟨a₂, h₂⟩` from `h₂`. Use `⟨max a₁ a₂, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C₁, x₁, h₁⟩` from `h₁ ε CF (le_of_max_le_left hCF)`. Take `⟨C₂, x₂, h₂⟩` from `h₂ ε CF (le_of_max_le_right hCF)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨max C₁ C₂, max x₁ x₂, fun C hC D large₂ he hx r T Lc μ hLc G => H G μ C _ _ (h₁ C (le_of_max_le_left hC) D large₂ he (le_of_max_le_left hx) r T Lc μ hLc G) (h₂ C (le_of_max_le_right hC) D large₂ he (le_of_max_le_right hx) r T Lc μ hLc G)⟩`.
+Supply the required witnesses or components.
 -/
 theorem gBig_of_two {Q₁ Q₂ Q₃ : GlobalTheory.SqTop.GP} (h₁ : GlobalTheory.SqTop.GBig Q₁) (h₂ : GlobalTheory.SqTop.GBig Q₂)
     (H : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (μ₀ : T) (C x b : ℝ),
@@ -42,13 +42,11 @@ theorem gBig_of_two {Q₁ Q₂ Q₃ : GlobalTheory.SqTop.GP} (h₁ : GlobalTheor
       (h₂ C (le_of_max_le_right hC) D large₂ he (le_of_max_le_right hx) r T Lc μ hLc G)⟩
 
 /- English proof (translation)
-Introduce `hP hK hL`. Use `gBig_of_two (GlobalTheory.T.square_tower_finite_frame hP hK hL) (GlobalTheory.T.square_tower_frame_compat hP hK hL) fun {D T Lc sc} G μ₀ C x b₀ hA hB => ?_` and prove the remaining obligations. Introduce `W i j a b A A' WW X hX FA FA' FW t hf hf' Pi rf rl p p' hm Pr Pf q q' r r' e hq hq' hp hp'`. Take `⟨Pi₀, rf₀, rl₀, p₀, p₀', hm₀, P, P', κ, hne, heq⟩` from `hA W i j a b A A' WW X hX FA FA' FW t hf hf'`. Take `⟨E, c, hc, hE, hE'⟩` from `hB W i j a b A A' WW X hX FA FA' FW t Pi₀ rf₀ rl₀ p₀ p₀' Pi rf rl p p' hm₀ hm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `m2 : GlobalTheory.SquareComm.fockF W.ψ W.θ false FA' FW (X.f' t) P' ∈ GlobalTheory.SquareComm.algF W.ψ W.θ false FA' FW` using `Submodule.subset_span ⟨_, P', hf', rfl⟩`. Establish `n0 : p₀' (GlobalTheory.SquareComm.fockF W.ψ W.θ false FA' FW (X.f' t) P') ≠ 0`. Introduce `h0`. Rewrite `heq` using `[h0, smul_zero]`. Conclude with `hne heq`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `n1 : p' (GlobalTheory.SquareComm.fockF W.ψ W.θ false FA' FW (X.f' t) P') ≠ 0`. Rewrite using `[hE' _ m2]`. Conclude with `(LinearEquiv.map_ne_zero_iff E).mpr n0`. Introduce `h0`. Rewrite `n1` using `[hp' _ hf' P', h0, TensorProduct.tmul_zero, map_zero]`.
-
-Conclude with `n1 rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finNonzero : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     GBig fun {D} {T} {Lc} {sc} G _ _ _ _ => ∀ (W : G.Weil) (i j : Fin D.R.m) (p q : ℕ) (A A' WW : HSp D)

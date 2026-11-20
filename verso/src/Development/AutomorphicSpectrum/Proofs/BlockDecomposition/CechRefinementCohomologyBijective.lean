@@ -85,9 +85,9 @@ def modAct (A : C ⥤ CommAlgCat.{0} R) : RAct A (CH.modF A) where
   nat φ c x := map_mul (A.map φ).hom c x
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `y`. Take `⟨z, hz, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 hy`. Take `⟨n, x, hx, e⟩` from `h z hz`. Use `⟨n, sqMk a b x hx, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ ((A.map l).hom (d ^ n)) * Ideal.Quotient.mk _ z = Ideal.Quotient.mk _ ((A.map l).hom x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← map_mul, e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sq_surj (a b : IdF A) {T' L : C} (l : T' ⟶ L) (d : A.obj T')
     (h : ∀ y ∈ a.S L, ∃ (n : ℕ), ∃ x ∈ a.S T', (A.map l).hom (d ^ n) * y = (A.map l).hom x)
@@ -101,9 +101,9 @@ theorem sq_surj (a b : IdF A) {T' L : C} (l : T' ⟶ L) (d : A.obj T')
   rw [← map_mul, e]
 
 /- English proof (translation)
-Take `⟨x, hx'⟩` from `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `h0 : Ideal.Quotient.mk (b.S L) ((A.map l).hom y) = 0` using `congrArg Subtype.val hx`. Take `⟨n, hn⟩` from `h y (Ideal.Quotient.eq_zero_iff_mem.1 h0)`. Use `⟨n, Subtype.ext ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (d ^ n) * Ideal.Quotient.mk _ y = 0`. Rewrite using `[← map_mul]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hn`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_ker (a b : IdF A) {T' L : C} (l : T' ⟶ L) (d : A.obj T')
     (h : ∀ x, (A.map l).hom x ∈ b.S L → ∃ n : ℕ, d ^ n * x ∈ b.S T')
@@ -123,17 +123,17 @@ end Gen
 section Cover
 
 /- English proof (translation)
-Establish `h1 : ∀ x : PrimeSpectrum A, ∃ (V : X.Opens) (c : A), V ∈ 𝒱 ∧ x ∈ PrimeSpectrum.basicOpen c ∧ ∀ z : PrimeSpectrum A, z ∈ PrimeSpectrum.basicOpen c → y z ∈ V`. Introduce `x`. Take `⟨V, hV, hx⟩` from `h x`. Set `U : Set (PrimeSpectrum A)` to `(y ⁻¹ᵁ V).1`. Establish `hU : IsOpen U` using `(y ⁻¹ᵁ V).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hxU : x ∈ U` using `hx`. Take `⟨_, ⟨c, rfl⟩, hc, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open hxU hU`. Conclude with `⟨V, c, hV, hc, fun z hz => hsub hz⟩`. Use `choose V c hV hx hsub using h1`. Establish `hspan : Ideal.span (Set.range c) = ⊤`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`. Use `hx ⟨M, hM.isPrime⟩` as an intermediate fact. Conclude with `this (hle (Ideal.subset_span ⟨_, rfl⟩))`. Take `⟨s', hs', hs⟩` from `(Ideal.span_eq_top_iff_finite _).1 hspan`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨s'.card, fun k => (s'.equivFin.symm k).1, ?_, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[← hs]`. Use `congr 1`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨k, rfl⟩`. Conclude with `(s'.equivFin.symm k).2`. Introduce `ha`. Conclude with `⟨s'.equivFin ⟨a, ha⟩, by simp⟩`. Take `⟨x, hxk⟩` from `hs' (s'.equivFin.symm k).2`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨V x, hV x, fun A' _ g hu z _ => ?_⟩` and prove the remaining obligations. Use `hsub x (PrimeSpectrum.comap g z) ?_` and prove the remaining obligations. Rewrite using `[hxk]`. Introduce `hmem`. Conclude with `z.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ hmem hu)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_cover {A : Type} [CommRing A] {X : Scheme.{0}} (y : Spec (CommRingCat.of A) ⟶ X) (𝒱 : Set X.Opens)
     (h : ∀ x, ∃ V ∈ 𝒱, y x ∈ V) :
@@ -196,27 +196,27 @@ theorem locN_i (T : Thick (nlFun γ p X q κ)) (a : T.B) :
     (locN T a).i = (algebraMap T.B (Localization.Away a)).comp T.i := rfl
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.ThickZar.locT_univ (F := CrystallineSemistableComparison.B.schFn q) (b := nlBase R I γ p) (ht := rfl) (κ := κ) T a ψ hu`.
+A detailed English derivation is pending.
 -/
 theorem locN_univ (T : Thick (nlFun γ p X q κ)) (a : T.B) {T'' : Thick (nlFun γ p X q κ)} (ψ : T ⟶ T'')
     (hu : IsUnit (ψ.φ a)) : ∃! χ : locN T a ⟶ T'', locNHom T a ≫ χ = ψ :=
   GlobalTheory.CompanionTheory.ThickZar.locT_univ (F := CrystallineSemistableComparison.B.schFn q) (b := nlBase R I γ p) (ht := rfl) (κ := κ) T a ψ hu
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.ThickZar.pdPow_locT (F := CrystallineSemistableComparison.B.schFn q) (b := nlBase R I γ p) (ht := rfl) (κ := κ) T a r`.
+A detailed English derivation is pending.
 -/
 theorem pdPow_locN (T : Thick (nlFun γ p X q κ)) (a : T.B) (r : ℕ) :
     (locN T a).pdPow r = (T.pdPow r).map (algebraMap T.B (Localization.Away a)) :=
   GlobalTheory.CompanionTheory.ThickZar.pdPow_locT (F := CrystallineSemistableComparison.B.schFn q) (b := nlBase R I γ p) (ht := rfl) (κ := κ) T a r
 
 /- English proof (translation)
-Take `⟨n, y, e⟩` from `IsLocalization.Away.surj a x`. Establish `hu : IsUnit (algebraMap B (Localization.Away a) a ^ n)` using `(IsLocalization.Away.algebraMap_isUnit a).pow n`. Establish `h1 : algebraMap B (Localization.Away a) ((l : B) * y) ∈ J.map (algebraMap B (Localization.Away a))`. Establish `e2 : algebraMap B (Localization.Away a) ((l : B) * y) = algebraMap B (Localization.Away a) a ^ n * ((l : Localization.Away a) * x)`. Rewrite using `[map_mul, ← e, map_natCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`. Conclude with `Ideal.mul_mem_left _ _ hx`. Take `⟨_, ⟨k, rfl⟩, hk⟩` from `(IsLocalization.algebraMap_mem_map_algebraMap_iff (Submonoid.powers a) _ _ _).1 h1`. Establish `h2 : a ^ k * y ∈ J` using `hJ _ (by`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : (l : B) * (a ^ k * y) = a ^ k * ((l : B) * y)` using `by ring`. Rewrite using `[e3]`. Conclude with `hk)`. Establish `h3 : algebraMap B (Localization.Away a) (a ^ k * y) ∈ J.map (algebraMap B (Localization.Away a))` using `Ideal.mem_map_of_mem _ h2`. Establish `hu2 : IsUnit (algebraMap B (Localization.Away a) a ^ k * algebraMap B (Localization.Away a) a ^ n)` using `((IsLocalization.Away.algebraMap_isUnit a).pow k).mul hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e4 : algebraMap B (Localization.Away a) (a ^ k * y) = (algebraMap B (Localization.Away a) a ^ k * algebraMap B (Localization.Away a) a ^ n) * x`. Rewrite using `[map_mul, map_pow, ← e]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h3` using `[e4]`. Conclude with `(Ideal.unit_mul_mem_iff_mem _ hu2).1 h3`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tf_loc {B : Type} [CommRing B] (a : B) (J : Ideal B) (l : ℕ) (hJ : ∀ x : B, (l : B) * x ∈ J → x ∈ J)
     (x : Localization.Away a) (hx : (l : Localization.Away a) * x ∈ J.map (algebraMap B (Localization.Away a))) :
@@ -245,9 +245,9 @@ theorem tf_loc {B : Type} [CommRing B] (a : B) (J : Ideal B) (l : ℕ) (hJ : ∀
   exact (Ideal.unit_mul_mem_iff_mem _ hu2).1 h3
 
 /- English proof (translation)
-Break down `hQ with ⟨-, l, s, rfl⟩ | ⟨-, rfl | rfl⟩` into its components or cases. Use `⟨by rw [pdPow_locN, h.1, Ideal.map_bot], fun r x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[pdPow_locN]`. Conclude with `tf_loc a _ l (h.2 r) x hx`. Discharge the goal by the elementary cases of `trivial`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Check the elementary cases of the proposition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((algebraMap T.B (Localization.Away a)).comp T.i).Flat`. Establish `h1 : (algebraMap T.B (Localization.Away a)).Flat` using `(RingHom.flat_algebraMap_iff).2 (IsLocalization.flat (Localization.Away a) (Submonoid.powers a))`. Conclude with `RingHom.Flat.comp h h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem used_locN {Q₀ : ObjectProperty (Thick (nlFun γ p X q κ))} (hQ : Used Q₀) (T : Thick (nlFun γ p X q κ))
     (a : T.B) (h : Q₀ T) : Q₀ (locN T a) := by
@@ -262,9 +262,9 @@ theorem used_locN {Q₀ : ObjectProperty (Thick (nlFun γ p X q κ))} (hQ : Used
     exact RingHom.Flat.comp h h1
 
 /- English proof (translation)
-Distinguish the cases in `hp : p = 0`. Take `⟨n, hn⟩` from `T.adm.2 hp`. Use `⟨n, ?_⟩` and prove the remaining obligations. Use `Ideal.pow_mem_pow hx n` as an intermediate fact. Rewrite `this` using `[hn]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Conclude with `GlobalTheory.CompanionTheory.ThickZar.isNilpotent_of_mem_J (b := nlBase R I γ p) hp T hx`.
+A detailed English derivation is pending.
 -/
 theorem isNilpotent_of_mem_J (T : Thick (nlFun γ p X q κ)) {x : T.B} (hx : x ∈ T.J) : IsNilpotent x := by
   by_cases hp : p = 0
@@ -276,11 +276,11 @@ theorem isNilpotent_of_mem_J (T : Thick (nlFun γ p X q κ)) {x : T.B} (hx : x �
   · exact GlobalTheory.CompanionTheory.ThickZar.isNilpotent_of_mem_J (b := nlBase R I γ p) hp T hx
 
 /- English proof (translation)
-Establish `h1 : Ideal.map (Ideal.Quotient.mk T.J) (Ideal.span (Set.range f)) = ⊤`. Rewrite using `[Ideal.map_span, ← Set.range_comp, ← hs]`. Use `congr 2`. Conclude with `funext hf`. Establish `h2 : (1 : T.B ⧸ T.J) ∈ Ideal.map (Ideal.Quotient.mk T.J) (Ideal.span (Set.range f))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨a, ha, ha1⟩` from `(Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective).1 h2`. Establish `hj : a - 1 ∈ T.J` using `Ideal.Quotient.eq.1 (by rw [ha1, map_one])`. Establish `hu : IsUnit a`.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(isNilpotent_of_mem_J T hj).isUnit_add_one` as an intermediate fact. Simplify using `using this`. Conclude with `Ideal.eq_top_of_isUnit_mem _ ha hu`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem span_lift (T : Thick (nlFun γ p X q κ)) {m : ℕ} (f : Fin m → T.B) (s : Fin m → T.B ⧸ T.J)
     (hf : ∀ k, Ideal.Quotient.mk T.J (f k) = s k) (hs : Ideal.span (Set.range s) = ⊤) :
@@ -299,7 +299,7 @@ theorem span_lift (T : Thick (nlFun γ p X q κ)) {m : ℕ} (f : Fin m → T.B) 
   exact Ideal.eq_top_of_isUnit_mem _ ha hu
 
 /- English proof (translation)
-Use `φ.pt` as an intermediate fact. Unfold `pt`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pt_hom {T T' : Thick (nlFun γ p X q κ)} (φ : T ⟶ T') :
     pt T' = Spec.map (CommRingCat.ofHom (Ideal.quotientMap T'.J φ.φ φ.hle)) ≫ pt T := by
@@ -321,19 +321,17 @@ def locOHom {Q : ObjectProperty (Thick (nlFun γ p X q κ))} (hl : ∀ (T : Thic
     (T : Q.FullSubcategory) (a : T.obj.B) : T ⟶ locO hl T a := ObjectProperty.homMk (locNHom T.obj a)
 
 /- English proof (translation)
-Use `⟨fun T T' φ hT => ?_, fun T => ?_⟩` and prove the remaining obligations. Take `⟨-, V, hV, hU⟩` from `hT`. Conclude with `⟨T'.property.1, V, hV, GlobalTheory.CompanionTheory.ThickPt.inU_map V φ.hom hU⟩`. Take `⟨-, W, hW, hTW⟩` from `T.property`. Establish `hpt : ∀ x, ∃ V ∈ 𝒱, pt T.obj x ∈ V` using `fun x => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : pt T.obj x ∈ W` using `hTW (show x ∈ (⊤ : (Spec (CommRingCat.of (T.obj.B ⧸ T.obj.J))).Opens) from trivial)`. Conclude with `(TopologicalSpace.Opens.mem_sSup).1 (hc W hW h1)`. Take `⟨m, s, hs, hcov⟩` from `exists_cover (pt T.obj) 𝒱 hpt`. Use `choose f hf using fun k => Ideal.Quotient.mk_surjective (s k)`. Establish `hspan : Ideal.span (Set.range f) = ⊤` using `span_lift T.obj f s hf hs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨m, fun k _ ψ => IsUnit (ψ.hom.φ (f k)), fun k T₁ T₂ ψ χ h => h.map χ.hom.φ, fun k T₁ ψ h => ?_, fun T' φ => ?_⟩` and prove the remaining obligations. Take `⟨V, hV, hVk⟩` from `hcov k`. Use `⟨T₁.property.1, V, hV, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (Ideal.quotientMap T₁.obj.J ψ.hom.φ ψ.hom.hle (s k))`. Rewrite using `[← hf k]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `h.map (Ideal.Quotient.mk T₁.obj.J)`. Establish `h2` using `hVk _ _ hu`. Unfold `InU`. Rewrite using `[pt_hom ψ.hom]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hg : Ideal.span (Set.range fun k => φ.hom.φ (f k)) = ⊤`. Establish `h` using `congrArg (Ideal.map φ.hom.φ) hspan`. Rewrite `h` using `[Ideal.map_span, Ideal.map_top, ← Set.range_comp]`. Conclude with `h`. Take `⟨hM⟩` from `hF T' (fun k => φ.hom.φ (f k)) hg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun S => locO hl T' (∏ k ∈ S, φ.hom.φ (f k)), fun S => locOHom hl T' _, fun S k hk => ?_, fun S T'' ψ h => ?_, ⟨hM⟩⟩` and prove the remaining obligations. Conclude with `GlobalTheory.CompanionTheory.ThickZar.unit_of_mem (F := CrystallineSemistableComparison.B.schFn q) (b := nlBase R I γ p) (ht := rfl) (κ := κ) T'.obj (fun k => φ.hom.φ (f k)) S hk`. Establish `hu : IsUnit (ψ.hom.φ (∏ k ∈ S, φ.hom.φ (f k)))`. Rewrite using `[map_prod]`. Conclude with `Finset.prod_induction _ IsUnit (fun _ _ => IsUnit.mul) isUnit_one h`.
-
-Take `⟨χ, hχ, hχu⟩` from `locN_univ T'.obj _ ψ.hom hu`. Use `⟨ObjectProperty.homMk χ, ObjectProperty.hom_ext _ hχ, fun χ' h' => ObjectProperty.hom_ext _ (hχu χ'.hom ?_)⟩` and prove the remaining obligations. Conclude with `congrArg (fun t => t.hom) h'`.
+A detailed English derivation is pending.
 -/
 theorem zarCov_of {Q₀ : ObjectProperty (Thick (nlFun γ p X q κ))} (𝒱 𝒲 : Set X.Opens) (hc : ∀ W ∈ 𝒲, W ≤ sSup 𝒱)
     (hl : ∀ (T : Thick (nlFun γ p X q κ)) (a : T.B), St Q₀ 𝒲 T → St Q₀ 𝒲 (locN T a))
@@ -384,24 +382,24 @@ section
 variable {Q : ObjectProperty (Thick (nlFun γ p X q κ))} {hl : ∀ (T : Thick (nlFun γ p X q κ)) (a : T.B), Q T → Q (locN T a)}
 
 /- English proof (translation)
-Introduce `T d` and use `pdPow_locN T.obj d r.toNat`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locI_fil (r : ℤ) : LocI hl (sFil Q r) := fun T d => pdPow_locN T.obj d r.toNat
 
 /- English proof (translation)
-Introduce `T d` and use `(Ideal.map_bot).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locI_bot : LocI hl (IdF.bot (sP Q).A) := fun T d => (Ideal.map_bot).symm
 
 /- English proof (translation)
-Introduce `T d` and use `by change Ideal.span {algebraMap T.obj.B (Localization.Away d) (T.obj.i c)} = Ideal.map _ (Ideal.span {T.obj.i c}) rw [Ideal.map_span, Set.image_singleton]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locI_span (c : R) : LocI hl (IdF.span (sP Q).A c) := fun T d => by
   change Ideal.span {algebraMap T.obj.B (Localization.Away d) (T.obj.i c)} = Ideal.map _ (Ideal.span {T.obj.i c})
   rw [Ideal.map_span, Set.image_singleton]
 
 /- English proof (translation)
-Introduce `T d` and use `by have e1 := ha T d have e2 := hb T d refine Eq.trans ?_ (Ideal.map_sup _ _ _).symm exact congrArg₂ (· ⊔ ·) e1 e2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locI_sup {a b : IdF (sP Q).A} (ha : LocI hl a) (hb : LocI hl b) : LocI hl (a.sup b) := fun T d => by
   have e1 := ha T d
@@ -410,7 +408,7 @@ theorem locI_sup {a b : IdF (sP Q).A} (ha : LocI hl a) (hb : LocI hl b) : LocI h
   exact congrArg₂ (· ⊔ ·) e1 e2
 
 /- English proof (translation)
-Consider the cases of `r`. Conclude with `locI_sup locI_bot (locI_span c)`. Conclude with `locI_sup (locI_fil _) (locI_span c)`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem locI_std (r : Option ℤ) (c : R) : LocI hl (stdI Q r c) := by
   cases r
@@ -418,9 +416,9 @@ theorem locI_std (r : Option ℤ) (c : R) : LocI hl (stdI Q r c) := by
   · exact locI_sup (locI_fil _) (locI_span c)
 
 /- English proof (translation)
-Take `⟨⟨x, s⟩, hx⟩` from `(IsLocalization.mem_map_algebraMap_iff (Submonoid.powers d) _).1 hy`. Take `⟨n, hn⟩` from `s.2`. Use `⟨n, x.1, x.2, ?_⟩` and prove the remaining obligations. Establish `hn' : d ^ n = s` using `hn`. Rewrite using `[mul_comm, hn']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`.
+A detailed English derivation is pending.
 -/
 theorem map_surj {B : Type} [CommRing B] (d : B) (J : Ideal B) (y : Localization.Away d)
     (hy : y ∈ J.map (algebraMap B (Localization.Away d))) :
@@ -433,7 +431,7 @@ theorem map_surj {B : Type} [CommRing B] (d : B) (J : Ideal B) (y : Localization
   exact hx
 
 /- English proof (translation)
-Take `⟨_, ⟨n, rfl⟩, hn⟩` from `(IsLocalization.algebraMap_mem_map_algebraMap_iff (Submonoid.powers d) _ _ _).1 hx`. Conclude with `⟨n, hn⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem map_ker {B : Type} [CommRing B] (d : B) (J : Ideal B) (x : B)
     (hx : algebraMap B (Localization.Away d) x ∈ J.map (algebraMap B (Localization.Away d))) :
@@ -442,14 +440,14 @@ theorem map_ker {B : Type} [CommRing B] (d : B) (J : Ideal B) (x : B)
   exact ⟨n, hn⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.ThickZar.unit_of_mem (F := CrystallineSemistableComparison.B.schFn q) (b := nlBase R I γ p) (ht := rfl) (κ := κ) T'.obj f S hk`.
+A detailed English derivation is pending.
 -/
 theorem unit_locO (T' : Q.FullSubcategory) {m : ℕ} (f : Fin m → T'.obj.B) (S : Finset (Fin m)) (k : Fin m) (hk : k ∈ S) :
     IsUnit (((sP Q).A.map (locOHom hl T' (∏ k ∈ S, f k))).hom (f k)) :=
   GlobalTheory.CompanionTheory.ThickZar.unit_of_mem (F := CrystallineSemistableComparison.B.schFn q) (b := nlBase R I γ p) (ht := rfl) (κ := κ) T'.obj f S hk
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(sqAct a b).locMod T' f hf _ _ (fun S k hk => unit_locO T' f S k hk) (fun S y => sq_surj a b (locOHom hl T' (∏ k ∈ S, f k)) (∏ k ∈ S, f k) (fun y hy => map_surj (∏ k ∈ S, f k) (a.S T') y (by have e := ha T' (∏ k ∈ S, f k) exact e.le hy)) y) (fun S x hx => sq_ker a b (locOHom hl …`.
+Supply the required witnesses or components.
 -/
 theorem locMod_sq {a b : IdF (sP Q).A} (ha : LocI hl a) (hb : LocI hl b) (T' : Q.FullSubcategory) {m : ℕ}
     (f : Fin m → T'.obj.B) (hf : Ideal.span (Set.range f) = ⊤) :
@@ -465,7 +463,7 @@ theorem locMod_sq {a b : IdF (sP Q).A} (ha : LocI hl a) (hb : LocI hl b) (T' : Q
         exact e.le hx)) x hx)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(modAct (sP Q).A).locMod T' f hf _ _ (fun S k hk => unit_locO T' f S k hk) (fun S y => by obtain ⟨n, x, -, e⟩ := map_surj (∏ k ∈ S, f k) (⊤ : Ideal T'.obj.B) y (by rw [Ideal.map_top]; trivial) exact ⟨n, x, e⟩) (fun S x hx => by let x' : T'.obj.B := x obtain ⟨n, hn⟩ := map_ker (∏ …`.
+Supply the required witnesses or components.
 -/
 theorem locMod_o (T' : Q.FullSubcategory) {m : ℕ} (f : Fin m → T'.obj.B) (hf : Ideal.span (Set.range f) = ⊤) :
     Nonempty (CrystallineSemistableComparison.B.LocMod (CH.modF (sP Q).A) T' (fun S => locO hl T' (∏ k ∈ S, f k))
@@ -492,7 +490,7 @@ variable {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPower
     {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
 
 /- English proof (translation)
-Use `⟨(injective_iff_map_eq_zero f).2 fun x hx => ?_, fun y => ?_⟩` and prove the remaining obligations. Simplify using `using h.1 x hx`. Take `⟨x, hx⟩` from `h.2 y`. Conclude with `⟨x, by simpa using hx⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem bij_of_upTo {A : Type} [CommRing A] {M : Type*} {N : Type*} [AddCommGroup M] [AddCommGroup N] [Module A M]
     [Module A N] (f : M →ₗ[A] N) (h : UpTo (1 : A) f) : Function.Bijective f := by
@@ -502,7 +500,7 @@ theorem bij_of_upTo {A : Type} [CommRing A] {M : Type*} {N : Type*} [AddCommGrou
     exact ⟨x, by simpa using hx⟩
 
 /- English proof (translation)
-The claim follows from `inferInstance faithful := inferInstance mem T := T.property ess T hT := ⟨⟨T.obj, hT⟩, ⟨Iso.refl _⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem onto_incl {Q Q' : ObjectProperty (Thick (nlFun γ p X q κ))} (h : Q' ≤ Q) :
     CrystallineSemistableComparison.B.Onto (ObjectProperty.ιOfLE h) (fun T : Q.FullSubcategory => Q' T.obj) where
@@ -512,9 +510,9 @@ theorem onto_incl {Q Q' : ObjectProperty (Thick (nlFun γ p X q κ))} (h : Q' �
   ess T hT := ⟨⟨T.obj, hT⟩, ⟨Iso.refl _⟩⟩
 
 /- English proof (translation)
-Establish `e : ((incl h).sq ha hb).τ = (CrystallineSemistableComparison.CH.Mor.restrict (sq a b) (ObjectProperty.ιOfLE h)).τ`. Use function extensionality and compare the values at `T`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `CrystallineSemistableComparison.CH.Mor.mk _ _ _ = CrystallineSemistableComparison.CH.Mor.mk _ _ _`. Reduce the equality to equality of the corresponding arguments.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem sq_eq_restrict {Q Q' : ObjectProperty (Thick (nlFun γ p X q κ))} (h : Q' ≤ Q) (a b : IdF (sP Q).A)
     (ha : (incl h).Le a (a.res (ObjectProperty.ιOfLE h) : IdF (sP Q').A))
@@ -530,7 +528,7 @@ theorem sq_eq_restrict {Q Q' : ObjectProperty (Thick (nlFun γ p X q κ))} (h : 
   congr
 
 /- English proof (translation)
-Substitute `ea eb` using the available equality. Rewrite using `[sq_eq_restrict]`. Conclude with `hB`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bij_sq_of {Q Q' : ObjectProperty (Thick (nlFun γ p X q κ))} (h : Q' ≤ Q) (a b : IdF (sP Q).A) (a' b' : IdF (sP Q').A)
     (ea : a' = (a.res (ObjectProperty.ιOfLE h) : IdF (sP Q').A)) (eb : b' = (b.res (ObjectProperty.ιOfLE h) : IdF (sP Q').A))
@@ -542,7 +540,7 @@ theorem bij_sq_of {Q Q' : ObjectProperty (Thick (nlFun γ p X q κ))} (h : Q' �
   exact hB
 
 /- English proof (translation)
-Apply the tactic sequence `cases r <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem std_res {Q Q' : ObjectProperty (Thick (nlFun γ p X q κ))} (h : Q' ≤ Q) (r : Option ℤ) (c : R) :
     stdI Q' r c = ((stdI Q r c).res (ObjectProperty.ιOfLE h) : IdF (sP Q').A) := by
@@ -551,9 +549,9 @@ theorem std_res {Q Q' : ObjectProperty (Thick (nlFun γ p X q κ))} (h : Q' ≤ 
 end Main
 
 /- English proof (translation)
-Introduce `O R _ _ I γ p X q κ Q₀ hQ 𝒱 𝒲 h hc j`. Establish `hl : ∀ (T : Thick (nlFun γ p X q κ)) (a : T.B), St Q₀ 𝒲 T → St Q₀ 𝒲 (locN T a)` using `fun T a hT => by`. Take `⟨h0, W, hW, hU⟩` from `hT`. Conclude with `⟨used_locN hQ T a h0, W, hW, GlobalTheory.CompanionTheory.ThickPt.inU_map W (locNHom T a) hU⟩`. Establish `key : ∀ (F : (St Q₀ 𝒲).FullSubcategory ⥤ ModuleCat.{0} R), (∀ (T' : (St Q₀ 𝒲).FullSubcategory) {m : ℕ} (f : Fin m → T'.obj.B), Ideal.span (Set.range f) = ⊤ → Nonempty (CrystallineSemistableComparison.B.LocMod F T' (fun S => locO hl T' (∏ k ∈ S, f k)) (fun S => locOHom hl T' (∏ k …` using `fun F hF => bij_of_upTo _ (CrystallineSemistableComparison.B.P.zar F _ (ObjectProperty.ιOfLE h) (onto_incl h) (zarCov_of 𝒱 𝒲 hc hl F hF) j j le_rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `⟨fun r r' => ?_, fun r r' c c' => ?_, ?_⟩` and prove the remaining obligations. Conclude with `bij_sq_of h _ _ _ _ rfl rfl _ _ j (key _ fun T' _ f hf => locMod_sq (locI_fil r) (locI_fil r') T' f hf)`. Conclude with `bij_sq_of h (stdI _ r c) (stdI _ r' c') _ _ (std_res h r c) (std_res h r' c') _ _ j (key _ fun T' _ f hf => locMod_sq (locI_std r c) (locI_std r' c') T' f hf)`. Conclude with `key (CH.modF (sP (St Q₀ 𝒲)).A) fun T' _ f hf => locMod_o T' f hf`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem zariski_descent : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ} {X : Scheme.{0}}
     {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I} (Q₀ : ObjectProperty (Thick (nlFun γ p X q κ))) (hQ : Used Q₀)

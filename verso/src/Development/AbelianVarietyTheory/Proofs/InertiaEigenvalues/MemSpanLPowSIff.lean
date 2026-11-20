@@ -9,13 +9,11 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebr
   [IsUnitBall O K] (l e : ℕ) [Fact l.Prime] [NormedAlgebra ℚ_[l] K]
 
 /- English proof (translation)
-Establish `h2 : (((l : S O K e) : K⟦X⟧)) = C (l : K)` using `by simp`. Establish `hl : 0 < ‖(l : K)‖ ^ n` using `pow_pos (norm_pos_iff.2 (l_ne_zero l)) n`. Rewrite using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩ m`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Subalgebra.coe_mul, Subalgebra.coe_pow, h2, ← map_pow, coeff_C_mul, norm_mul, norm_pow, mul_assoc]`. Conclude with `mul_le_of_le_one_right hl.le ((mem_S.1 g.2).1 m)`. Introduce `h`. Establish `hc : ∀ m, ‖coeff m (C (((l : K) ^ n)⁻¹) * (f : K⟦X⟧))‖ * wS K e m = (‖(l : K)‖ ^ n)⁻¹ * (‖coeff m (f : K⟦X⟧)‖ * wS K e m)` using `fun m => by`. Rewrite using `[coeff_C_mul, norm_mul, norm_inv, norm_pow, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨C (((l : K) ^ n)⁻¹) * (f : K⟦X⟧), mem_S.2 ⟨fun m => ?_, ?_⟩⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hc, inv_mul_le_iff₀ hl, mul_one]`. Conclude with `h m`. Simplify using `only [hc]`. Simplify using `using (mem_S.1 f.2).2.const_mul (‖(l : K)‖ ^ n)⁻¹`.
-
-Rewrite using `[Subalgebra.coe_mul, Subalgebra.coe_pow, h2, ← map_pow, ← mul_assoc, ← map_mul, mul_inv_cancel₀ (pow_ne_zero _ (l_ne_zero l)), map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_l_pow_S_iff (n : ℕ) (f : S O K e) :
     f ∈ Ideal.span {(l : S O K e)} ^ n ↔
@@ -41,7 +39,7 @@ theorem mem_span_l_pow_S_iff (n : ℕ) (f : S O K e) :
         mul_inv_cancel₀ (pow_ne_zero _ (l_ne_zero l)), map_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, mem_span_l_pow_S_iff]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem smodEq_l_pow_S_iff (n : ℕ) (f g : S O K e) :
     f ≡ g [SMOD (Ideal.span {(l : S O K e)} ^ n • ⊤ : Submodule (S O K e) (S O K e))] ↔
@@ -52,15 +50,15 @@ theorem smodEq_l_pow_S_iff (n : ℕ) (f g : S O K e) :
 omit [IsUltrametricDist K] in
 include l in
 /- English proof (translation)
-The claim follows from `norm_pos_iff.2 (natCast_ne_zero' l (Nat.factorial_ne_zero _))`.
+A detailed English derivation is pending.
 -/
 theorem wS_pos_of_padic (m : ℕ) : 0 < wS K e m :=
   norm_pos_iff.2 (natCast_ne_zero' l (Nat.factorial_ne_zero _))
 
 /- English proof (translation)
-Use `⟨fun f hf => Subtype.ext ?_⟩` and prove the remaining obligations. Use extensionality with `m`. Establish `h` using `fun n => (smodEq_l_pow_S_iff l e n f 0).1 (hf n) m`. Establish `h0` using `ge_of_tendsto' (tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) (norm_l_lt_one (K := K) l)) h`. Establish `h1` using `nonpos_of_mul_nonpos_left h0 (wS_pos_of_padic l e m)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isHausdorff_S : IsHausdorff (Ideal.span {(l : S O K e)}) (S O K e) := by
   refine ⟨fun f hf => Subtype.ext ?_⟩
@@ -72,17 +70,15 @@ theorem isHausdorff_S : IsHausdorff (Ideal.span {(l : S O K e)}) (S O K e) := by
   simpa using h1
 
 /- English proof (translation)
-Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Establish `hf' : ∀ {a b : ℕ}, a ≤ b → ∀ m, ‖coeff m (f a : K⟦X⟧) - coeff m (f b : K⟦X⟧)‖ * wS K e m ≤ ‖(l : K)‖ ^ a` using `fun h => (smodEq_l_pow_S_iff l e _ _ _).1 (hf h)`. Establish `hl0` using `tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) (norm_l_lt_one (K := K) l)`. Establish `hcau : ∀ m, CauchySeq fun n => coeff m (f n : K⟦X⟧)` using `fun m => by`. Use `cauchySeq_of_le_tendsto_0' (fun n => ‖(l : K)‖ ^ n / wS K e m) (fun a b h => ?_) (by simpa using hl0.div_const (wS K e m))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dist_eq_norm, le_div_iff₀ (wS_pos_of_padic l e m)]`. Conclude with `hf' h m`. Use `choose c hc using fun m => cauchySeq_tendsto_of_complete (hcau m)`. Establish `hb : ∀ n m, ‖coeff m (f n : K⟦X⟧) - c m‖ * wS K e m ≤ ‖(l : K)‖ ^ n` using `fun n m => le_of_tendsto ((tendsto_const_nhds.sub (hc m)).norm.mul_const _) ((eventually_ge_atTop n).mono fun b h => hf' h m)`. Establish `hu : ∀ n m, ‖c m‖ * wS K e m ≤ max (‖coeff m (f n : K⟦X⟧)‖ * wS K e m) (‖(l : K)‖ ^ n)` using `fun n m => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `le_trans ?_ (max_le_max le_rfl (hb n m))` and prove the remaining obligations. Rewrite using `[← max_mul_of_nonneg _ _ (wS_nonneg e m)]`. Use `mul_le_mul_of_nonneg_right ?_ (wS_nonneg e m)` and prove the remaining obligations. Use `IsUltrametricDist.norm_add_le_max (coeff m (f n : K⟦X⟧)) (-(coeff m (f n : K⟦X⟧) - c m))` as an intermediate fact. Rewrite `this` using `[norm_neg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hmem : PowerSeries.mk c ∈ S O K e`. Use `mem_S.2 ⟨fun m => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_mk]`. Conclude with `(hu 0 m).trans (max_le ((mem_S.1 (f 0).2).1 m) (by simp))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using `only [coeff_mk]`. Use `tendsto_order.2 ⟨fun a ha => Eventually.of_forall fun m => ha.trans_le (mul_nonneg (norm_nonneg _) (wS_nonneg e m)), fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `(hl0.eventually (gt_mem_nhds ha)).exists`. Use `filter_upwards [(mem_S.1 (f n).2).2.eventually (gt_mem_nhds ha)] with m hm`. Conclude with `(hu n m).trans_lt (max_lt hm hn)`.
-
-Use `⟨⟨_, hmem⟩, fun n => (smodEq_l_pow_S_iff l e _ _ _).2 fun m => ?_⟩` and prove the remaining obligations. Simplify using `using hb n m`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isPrecomplete_S [CompleteSpace K] :
     IsPrecomplete (Ideal.span {(l : S O K e)}) (S O K e) := by
@@ -126,7 +122,7 @@ end GlobalTheory.BK
 namespace GlobalTheory.BK
 
 /- English proof (translation)
-The claim follows from `{ toIsHausdorff := isHausdorff_S l e, toIsPrecomplete := isPrecomplete_S l e }`.
+A detailed English derivation is pending.
 -/
 theorem isAdicComplete_S (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K]
     [Algebra O K] [IsUnitBall O K] (l e : ℕ) [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e]

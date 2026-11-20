@@ -16,7 +16,7 @@ section Gen
 variable {Γ : Type} [Group Γ] [Fintype Γ]
 
 /- English proof (translation)
-Establish `hM : ReciprocityTheory.Ty.Fin.St.MaschkeFacts` using `GlobalTheory.CompanionTheory.TyFin.Maschke.maschkeFacts`. Establish `hS : ReciprocityTheory.Ty.Fin.St.SimpleIffIrr` using `GlobalTheory.CompanionTheory.TyFin.simpleIffIrr`. Take `⟨φ, hφ, hne⟩` from `hc`. Establish `hpos : 0 < Module.finrank ℂ (Intw τ.ρ ρ)` using `Module.finrank_pos_iff_exists_ne_zero.2 ⟨⟨φ, hφ⟩, fun h => hne (congrArg Subtype.val h)⟩`. Conclude with `hM.2.2.2 Γ _ _ τ.ρ ρ ((hS.1 Γ τ).1 hτ) hρ hpos.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem repIso_of_constituent {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (τ : FDRep ℂ Γ) (ρ : Representation ℂ Γ V) (hτ : Simple τ) (hρ : IsIrr ρ)
@@ -30,9 +30,9 @@ theorem repIso_of_constituent {V : Type} [AddCommGroup V] [Module ℂ V] [Finite
   exact hM.2.2.2 Γ _ _ τ.ρ ρ ((hS.1 Γ τ).1 hτ) hρ hpos.ne'
 
 /- English proof (translation)
-Establish `hS : ReciprocityTheory.Ty.Fin.St.SimpleIffIrr` using `GlobalTheory.CompanionTheory.TyFin.simpleIffIrr`. Take `⟨e₁, he₁⟩` from `h₁`. Take `⟨e₂, he₂⟩` from `h₂`. Take `⟨e₃, he₃⟩` from `h₃`. Use `(hS.2 Γ τ τ').2 ⟨(e₁.trans e₂).trans e₃.symm, fun γ v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `e₃.injective` to reduce the goal to its premises. Simplify using `[he₁, he₂, he₃]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem iso_of_repIso {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     (τ τ' : FDRep ℂ Γ) (ρ : Representation ℂ Γ V) (σ : Representation ℂ Γ W)
@@ -50,7 +50,7 @@ end Gen
 variable (K : Type) [Field K] [Fintype K] [DecidableEq K]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.CompanionTheory.TyFin.cuspIsoFacts : ReciprocityTheory.Ty.Fin.St.CuspIsoFacts) K α α α lam lam lam lam (Equiv.refl α) |>.2.2.1 ⟨Iso.refl _⟩`.
+A detailed English derivation is pending.
 -/
 theorem cuspIso_refl {α : Type} [Fintype α] [DecidableEq α] (lam : FDRep ℂ (GL α K)) :
     CuspIso K lam lam :=
@@ -58,7 +58,7 @@ theorem cuspIso_refl {α : Type} [Fintype α] [DecidableEq α] (lam : FDRep ℂ 
     (Equiv.refl α) |>.2.2.1 ⟨Iso.refl _⟩
 
 /- English proof (translation)
-Take `⟨e, -⟩` from `id h`. Conclude with `((GlobalTheory.CompanionTheory.TyFin.cuspIsoFacts : ReciprocityTheory.Ty.Fin.St.CuspIsoFacts) K α β β lam lam mu mu e).1 h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cuspIso_symm {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
     {lam : FDRep ℂ (GL α K)} {mu : FDRep ℂ (GL β K)} (h : CuspIso K lam mu) : CuspIso K mu lam := by
@@ -66,7 +66,7 @@ theorem cuspIso_symm {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [
   exact ((GlobalTheory.CompanionTheory.TyFin.cuspIsoFacts : ReciprocityTheory.Ty.Fin.St.CuspIsoFacts) K α β β lam lam mu mu e).1 h
 
 /- English proof (translation)
-Take `⟨e, -⟩` from `id h`. Conclude with `((GlobalTheory.CompanionTheory.TyFin.cuspIsoFacts : ReciprocityTheory.Ty.Fin.St.CuspIsoFacts) K α β γ lam lam mu nu e).2.1 h h'`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cuspIso_trans {α β γ : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
     [Fintype γ] [DecidableEq γ] {lam : FDRep ℂ (GL α K)} {mu : FDRep ℂ (GL β K)}
@@ -77,9 +77,9 @@ theorem cuspIso_trans {α β γ : Type} [Fintype α] [DecidableEq α] [Fintype �
 variable {K}
 
 /- English proof (translation)
-Introduce `n s s' b b' lam mu τ hτ hl hm`. Establish `hM : ReciprocityTheory.Ty.Fin.St.MaschkeFacts` using `GlobalTheory.CompanionTheory.TyFin.Maschke.maschkeFacts`. Establish `h` using `hM.2.1 (GL (Fin n) K) τ _ _ (hcRep K b lam) (hcRep K b' mu) hτ hl.2.2 hm.2.2`. Rewrite `h` using `[hMk n s s' b b' lam mu hl.1 hm.1 hl.2.1 hm.2.1]`. Take `⟨⟨π, hπ⟩⟩` from `(Nat.card_ne_zero.1 h).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨π, hπ⟩`.
+Supply the required witnesses or components.
 -/
 theorem supportUnique (hMk : MackeyCusp K) : SupportUnique K := by
   intro n s s' b b' lam mu τ hτ hl hm
@@ -90,9 +90,7 @@ theorem supportUnique (hMk : MackeyCusp K) : SupportUnique K := by
   exact ⟨π, hπ⟩
 
 /- English proof (translation)
-Introduce `n s b lam hb hl hd`. Establish `hM : ReciprocityTheory.Ty.Fin.St.MaschkeFacts` using `GlobalTheory.CompanionTheory.TyFin.Maschke.maschkeFacts`. Establish `hcard` using `hMk n s s b b lam lam hb hb hl hl`. Use `haveI : Unique {π : Fin s ≃ Fin s // ∀ c, CuspIso K (lam c) (lam (π c))} := { default := ⟨Equiv.refl _, fun c => cuspIso_refl K (lam c)⟩ uniq := fun ⟨π, h⟩ => Subtype.ext (Equiv.ext fun c => (hd c (π c) (h c)).symm) }`. Rewrite `hcard` using `[Nat.card_unique]`.
-
-Conclude with `hM.2.2.1 (GL (Fin n) K) _ (hcRep K b lam) hcard`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqfreeIrr (hMk : MackeyCusp K) : SqfreeIrr K := by
   intro n s b lam hb hl hd
@@ -105,11 +103,11 @@ theorem sqfreeIrr (hMk : MackeyCusp K) : SqfreeIrr K := by
   exact hM.2.2.1 (GL (Fin n) K) _ (hcRep K b lam) hcard
 
 /- English proof (translation)
-Introduce `n s s' b b' lam mu τ τ' hτ hτ' hl hm hd ⟨π, hπ⟩`. Establish `hM : ReciprocityTheory.Ty.Fin.St.MaschkeFacts` using `GlobalTheory.CompanionTheory.TyFin.Maschke.maschkeFacts`. Establish `hd' : ∀ c c', CuspIso K (mu c) (mu c') → c = c'`. Introduce `c c' h`. Take `⟨d, rfl⟩` from `π.surjective c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨d', rfl⟩` from `π.surjective c'`. Conclude with `congrArg π (hd d d' (cuspIso_trans K (hπ d) (cuspIso_trans K h (cuspIso_symm K (hπ d')))))`. Establish `hI : IsIrr (hcRep K b lam)` using `sqfreeIrr hMk n s b lam hl.1 hl.2.1 hd`. Establish `hI' : IsIrr (hcRep K b' mu)` using `sqfreeIrr hMk n s' b' mu hm.1 hm.2.1 hd'`. Establish `hne : Module.finrank ℂ (Intw (hcRep K b lam) (hcRep K b' mu)) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hMk n s s' b b' lam mu hl.1 hm.1 hl.2.1 hm.2.1]`. Use `haveI : Nonempty {π : Fin s ≃ Fin s' // ∀ c, CuspIso K (lam c) (mu (π c))} := ⟨⟨π, hπ⟩⟩`. Conclude with `Nat.card_ne_zero.2 ⟨inferInstance, inferInstance⟩`. Conclude with `iso_of_repIso τ τ' (hcRep K b lam) (hcRep K b' mu) (repIso_of_constituent τ _ hτ hI hl.2.2) (hM.2.2.2 (GL (Fin n) K) _ _ _ _ hI hI' hne) (repIso_of_constituent τ' _ hτ' hI' hm.2.2)`.
+A detailed English derivation is pending.
 -/
 theorem sqfreeUnique (hMk : MackeyCusp K) : SqfreeUnique K := by
   intro n s s' b b' lam mu τ τ' hτ hτ' hl hm hd ⟨π, hπ⟩
@@ -132,7 +130,7 @@ theorem sqfreeUnique (hMk : MackeyCusp K) : SqfreeUnique K := by
     (repIso_of_constituent τ' _ hτ' hI' hm.2.2)
 
 /- English proof (translation)
-Introduce `_ _ _ _ hMk` and use `⟨supportUnique hMk, sqfreeIrr hMk, sqfreeUnique hMk⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem fromMackey : ReciprocityTheory.Ty.Fin.St.FromMackey :=
   fun _ _ _ _ hMk => ⟨supportUnique hMk, sqfreeIrr hMk, sqfreeUnique hMk⟩

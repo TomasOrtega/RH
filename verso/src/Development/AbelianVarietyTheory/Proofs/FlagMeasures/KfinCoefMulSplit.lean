@@ -13,14 +13,14 @@ namespace GlobalTheory.KFinCoefSplit
 variable {k r : ℕ}
 
 /- English proof (translation)
-Take `⟨S, hfd, hv, hst⟩` from `hv`. Conclude with `⟨S, hfd, S.smul_mem a hv, hst⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem kfin_smul {R : Rep k r} (a : ℂ) {v : R.H} (hv : R.KFin v) : R.KFin (a • v) := by
   obtain ⟨S, hfd, hv, hst⟩ := hv
   exact ⟨S, hfd, S.smul_mem a hv, hst⟩
 
 /- English proof (translation)
-Use `choose S hfd hS hst using hx`. Use `⟨⨆ c, S c, inferInstance, Submodule.sum_mem _ fun c _ => Submodule.mem_iSup_of_mem c (hS c), fun g hg y hy => ?_⟩` and prove the remaining obligations. Establish `hle : (⨆ c, S c) ≤ (⨆ c, S c).comap (R.σ g : R.H →ₗ[ℂ] R.H)` using `iSup_le fun c z hz => Submodule.mem_iSup_of_mem c (hst c g hg z hz)`. Conclude with `hle hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kfin_sum {R : Rep k r} {ι : Type} [Fintype ι] (x : ι → R.H) (hx : ∀ c, R.KFin (x c)) :
     R.KFin (∑ c, x c) := by
@@ -32,9 +32,9 @@ theorem kfin_sum {R : Rep k r} {ι : Type} [Fintype ι] (x : ι → R.H) (hx : �
   exact hle hy
 
 /- English proof (translation)
-Introduce `hK k r ι κ _ _ _ _ ρ Γ d R RI io pr ep ε mu muI om om' v v' hR hRI hF hT hv hv'`. Take `⟨-, -, -, -, hRT, -, hRK, -, -⟩` from `GlobalTheory.rep_basic_of_isDS hK k r ε mu R hR`. Establish `hadj` using `(GlobalTheory.TensAdj.tens_adj hK k r ι κ ρ Γ d R RI io pr ep ε mu muI hR hRI hF hT).2.2.2.2`. Establish `hkf` using `(GlobalTheory.tensor_decomposition_kfinite hK k r ι κ ρ Γ d R RI io pr ε mu muI hR hRI hF hT.raw).2.1`. Establish `hp : ∀ I (a : ι → ℂ) (w : R.H), R.KFin w → (RI I).KFin (∑ c, pr I c (tm R a w c))` using `fun I a w hw => kfin_sum _ fun c => hkf I c _ (kfin_smul (a c) hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨fun I => ⟨hp I om v hv, hp I om' v' hv'⟩, fun g hg => hadj om om' v (hRT v (hRK v hv)) v' (hRT v' (hRK v' hv')) g hg⟩`.
+Supply the required witnesses or components.
 -/
 theorem kfin_coef_mul_split : PI.KFinSmooth → ∀ (k r : ℕ) (ι κ : Type) [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] (ρ : Mx k r → Matrix ι ι ℂ) (Γ : Matrix ι ι ℂ) (d : ℕ) (R : Rep k r) (RI : κ → Rep k r) (io : ∀ I, ι → (RI I).H → R.H) (pr : ∀ I, ι → R.H → (RI I).H) (ep : κ → ℝ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (muI : κ → Fin (2 * r + k + 1) → ℝ) (om om' : ι → ℂ) (v v' : R.H), R.IsDS ε mu → (∀ I, (RI I).IsDS ε (muI I)) → IsFRep ρ Γ d → TensH ρ Γ R RI io pr ep → R.KFin v → R.KFin v' → (∀ I, (RI I).KFin (∑ c, pr I c (tm R om v c)) ∧ (RI I).KFin (∑ c, pr I c (tm R om' v' c))) ∧ ∀ g ∈ GG k r, Formalism.QuantumDeterminants.herm Γ (ρ g *ᵥ om') om * ⟪v, R.σ g v'⟫_ℂ = ∑ I, (ep I : ℂ) * ⟪∑ c, pr I c (tm R om v c), (RI I).σ g (∑ c, pr I c (tm R om' v' c))⟫_ℂ := by
   intro hK k r ι κ _ _ _ _ ρ Γ d R RI io pr ep ε mu muI om om' v v' hR hRI hF hT hv hv'

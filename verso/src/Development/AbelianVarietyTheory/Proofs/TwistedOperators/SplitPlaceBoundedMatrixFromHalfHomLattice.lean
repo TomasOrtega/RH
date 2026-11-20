@@ -22,17 +22,15 @@ open GlobalTheory.SplitHomLattice GlobalTheory.LatticeStable
 variable {D : D7}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `rkHom S T a s t ∈ _`. Proceed by induction on `hs using AddSubgroup.closure_induction with`. Consider the case `mem s hs`. Proceed by induction on `ht using AddSubgroup.closure_induction with`. Consider the case `mem t ht`.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Take `⟨α, hα, x, hx, rfl⟩` from `hs`. Take `⟨β, hβ, y, hy, rfl⟩` from `ht`. Use `AddSubgroup.subset_closure ⟨β * α, fun v => ?_, fun _ h => absurd trivial h, a, ha, x, hx, y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_mem (hβ v) (hα v)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `liftFin D (_ * _ * ∑ k, (α ⊗ₜ[D.host.F] star (x k)) * _) = _`. Rewrite using `[Matrix.of_apply, ← liftFin_tmul]`. Use `congr 1`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← TensorProduct.tmul_sum, Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `neg y _ hy => rw [map_neg]`. Conclude with `neg_mem hy`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
-
-Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [map_neg]`. Conclude with `neg_mem hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rk_mem_latHat (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E))
     (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) {a : D.host.E} (ha : a ∈ D.host.AA)
@@ -64,33 +62,27 @@ theorem rk_mem_latHat (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank
   | neg y _ hy => rw [map_neg]; exact neg_mem hy
 
 /- English proof (translation)
-Introduce `D S T ΛS ΛT βS βT hSd hTd hfS hfT v φ e he a haA ha0 y hy`. Take `⟨hπ, -, hQ, -, -⟩` from `GlobalTheory.SplitProjChart.chart_rdA D v φ e he`. Establish `hsi : IsSplitIdem D e` using `he.1`. Use `set π : AE D →+* Fv D.host.F v := rdA φ with hπdef`. Use `set c : Fv D.host.F v := π (incA D a) with hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc0 : c ≠ 0`. Introduce `h`. Conclude with `ha0 ((π.comp (incA D)).injective (by rw [RingHom.comp_apply, map_zero]; exact h))`. Use `set BS : GL (Fin S.rank) (Fv D.host.F v) := frCo φ βS with hBS`. Use `set BT : GL (Fin T.rank) (Fv D.host.F v) := frCo φ βT with hBT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set G : Matrix (Fin S.rank) (Fin S.rank) (Fv D.host.F v) := S.gram.map (rdQ φ) with hG`. Establish `hGπ : G = S.gram.map fun x => π (incA D x)` using `Matrix.ext fun i j => (hQ _).symm`. Establish `hGu : IsUnit G.det`. Use `(GlobalTheory.LatVac.gram_det_isUnit S).map (π.comp (incA D))` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hGπ]`. Conclude with `this`. Use `choose σ hσ using hπ.1`. Use `set Y : Matrix (Fin T.rank) (Fin S.rank) (Fv D.host.F v) := c⁻¹ • y with hY`. Establish `hYi : ∀ i j, Valued.v (Y i j) ≤ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i j`. Establish `hy'` using `hy i j`. Rewrite `hy'` using `[← hQ]`. Rewrite using `[hY, Matrix.smul_apply, smul_eq_mul, Valuation.map_mul, map_inv₀, hc]`. Conclude with `inv_mul_le_one_of_le₀ hy' zero_le'`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set X : Matrix (Fin T.rank) (Fin S.rank) (Fv D.host.F v) := BT.1 * Y with hX`. Use `set Z : Matrix (Fin S.rank) (Fin S.rank) (Fv D.host.F v) := (BS⁻¹).1 * G⁻¹ with hZ`. Establish `hZ1 : Z * (G * BS.1) = 1`. Rewrite using `[hZ, Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hGu, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hs : ∀ j, (fun k => finPart D (cA D e * cA D (σ (Z j k)))) ∈ latHat D.host.F D.host.E (ΛS : Set (Fin S.rank → D.host.E))`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j`. Use `(GlobalTheory.T.conjPart_mem_completedSelfDualLattice_iff_splitPlace D S ΛS βS hSd hfS v φ e he fun k => cA D (σ (Z j k))).2 fun l => ?_` and prove the remaining obligations. Establish `h1 : (fun i => rdA φ (cA D (cA D (σ (Z j i))))) = fun k => Z j k`. Use function extensionality and compare the values at `k`. Rewrite using `[GlobalTheory.DualPairCheck.cA_cA]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hσ _`. Rewrite using `[h1]`. Establish `: ((fun k => Z j k) ᵥ* (S.gram.map (rdQ φ) * (frCo φ βS).1)) l = (Z * (G * BS.1)) j l` using `rfl`. Rewrite using `[this, hZ1, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : ∀ j, (fun k => finPart D (e * σ (X k j))) ∈ latHat D.host.F D.host.E (ΛT : Set (Fin T.rank → D.host.E))`. Introduce `j`. Use `(GlobalTheory.T.splitPlace_column_mem_completedLattice_iff_frame_integral D T ΛT βT hTd hfT v φ e he fun k => σ (X k j)).2 fun i => ?_` and prove the remaining obligations. Establish `h1 : (fun k => rdA φ (σ (X k j))) = fun k => X k j` using `funext fun k => hσ _`. Rewrite using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (((frCo φ βT)⁻¹ : GL (Fin T.rank) (Fv D.host.F v)).1 *ᵥ fun k => X k j) i = ((BT⁻¹).1 * X) i j` using `rfl`. Rewrite using `[this, hX, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Conclude with `hYi i j`. Use `set u₀ : WO S T := ∑ j, rk S T a (fun k => finPart D (cA D e * cA D (σ (Z j k)))) (fun k => finPart D (e * σ (X k j))) with hu₀`. Establish `hu₀m : u₀ ∈ latO S T ΛS ΛT fun _ => True` using `sum_mem fun j _ => rk_mem_latHat S T ΛS ΛT haA (hs j) (ht j)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨e • u₀, smul_mem_latO D S T _ _ _ e (idem_int hsi) _ hu₀m, fun i j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, ← mul_assoc, hsi.1]`. Establish `hmap : (e • u₀).map π = c • (X * (Z * G))`. Use `Matrix.ext fun i l => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, RingHom.map_mul, pi_idem hsi hπ, one_mul, hu₀, Matrix.sum_apply, map_sum, Matrix.smul_apply, smul_eq_mul, Matrix.mul_apply, Finset.mul_sum]`.
-
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pi_rk hsi hπ S T a (fun k => cA D (σ (Z j k))) (fun k => σ (X k j)) i l]`. Simplify using `only [GlobalTheory.DualPairCheck.cA_cA, hσ]`. Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hGπ, Matrix.map_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hZG : Z * G = (BS⁻¹).1` using `by rw [hZ, Matrix.nonsing_inv_mul_cancel_right _ _ hGu]`. Establish `hXZG : c • (X * (Z * G)) = BT.1 * y * (BS⁻¹).1`. Rewrite using `[hZG, hX, hY, Matrix.mul_smul, Matrix.smul_mul, smul_smul, mul_inv_cancel₀ hc0, one_smul]`.
-
-Use `show (BT⁻¹).1 * ((e • u₀).map π) * BS.1 = y`. Rewrite using `[hmap, hXZG, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul, Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem honto : ∀ (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → Formalism.L2.DIV.IsFrame βS ΛS → Formalism.L2.DIV.IsFrame βT ΛT → ∀ (v : FinPl D) (φ : SplitProj D v) (e : AE D), IsIdemOf φ e → ∀ a : D.host.E, a ∈ D.host.AA → a ≠ 0 → ∀ y : Matrix (Fin T.rank) (Fin S.rank) (Fv D.host.F v), (∀ i j, Valued.v (y i j) ≤ Valued.v (rdQ φ a)) → ∃ u, u ∈ latO S T ΛS ΛT (fun _ => True) ∧ IsHalf e u ∧ mapCo φ S T (frCo φ βS) (frCo φ βT) u = y := by
   intro D S T ΛS ΛT βS βT hSd hTd hfS hfT v φ e he a haA ha0 y hy

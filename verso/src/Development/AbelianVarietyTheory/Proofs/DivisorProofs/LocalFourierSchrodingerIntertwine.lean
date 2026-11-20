@@ -8,21 +8,15 @@ open scoped GlobalTheory.VacAny
 namespace GlobalTheory.WeylFour
 
 /- English proof (translation)
-Introduce `F _ _ ψ _ v κ _ w φ`. Use `haveI hOc : CompactSpace (v.adicCompletionIntegers F) := GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v`. Use `haveI : LocallyCompactSpace (Fv F v) := (isCompact_iff_compactSpace.2 hOc).locallyCompactSpace_of_mem_nhds_of_addGroup ((Valued.isOpen_valuationSubring _).mem_nhds (zero_mem (v.adicCompletionIntegers F)))`. Use `haveI : SecondCountableTopology (Fv F v) := by`. Establish `: Countable F` using `(Module.finBasis ℚ F).equivFun.injective.countable`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `: TopologicalSpace.SeparableSpace (Fv F v)` using `⟨⟨Set.range (algebraMap F (Fv F v)), Set.countable_range _, IsDedekindDomain.HeightOneSpectrum.denseRange_algebraMap F v⟩⟩`. Conclude with `UniformSpace.secondCountable_of_separable (Fv F v)`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Establish `hinv : (measV ψ v).IsAddLeftInvariant ∧ SigmaFinite (measV ψ v)`. Unfold `measV`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h`. Use `haveI := h.choose_spec.1`. Conclude with `⟨inferInstance, inferInstance⟩`. Conclude with `⟨⟨fun g => by simp⟩, inferInstance⟩`. Use `haveI := hinv.1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `haveI := hinv.2`. Establish `h2 : (⅟2 : Fv F v) + ⅟2 = 1` using `by rw [← two_mul, mul_invOf_self]`. Use function extensionality and compare the values at `y`. Simplify using `only [fourV, schr]`. Use `set χ := GlobalTheory.LatVac.psiAt ψ v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set μ := Measure.pi fun _ : κ => measV ψ v`. Set `g : (κ → Fv F v) → ℂ` to `fun x => χ ((x - w.1) ⬝ᵥ w.2 + ⅟(2 : Fv F v) * (w.1 ⬝ᵥ w.2)) * φ x * χ ((x - w.1) ⬝ᵥ y)`. Establish `hg : ∀ x, χ (x ⬝ᵥ w.2 + ⅟(2 : Fv F v) * (w.1 ⬝ᵥ w.2)) * φ (x + w.1) * χ (x ⬝ᵥ y) = g (x + w.1)`. Introduce `x`. Simplify using `only [g, add_sub_cancel_right]`.
-
-Repeatedly rewrite using `[hg]`. Rewrite using `[integral_add_right_eq_self g w.1, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [g]`. Establish `key : (x - w.1) ⬝ᵥ w.2 + ⅟(2 : Fv F v) * (w.1 ⬝ᵥ w.2) + (x - w.1) ⬝ᵥ y = y ⬝ᵥ (-w.1) + ⅟(2 : Fv F v) * (w.2 ⬝ᵥ (-w.1)) + x ⬝ᵥ (y + w.2)`.
-
-Simplify using `only [sub_dotProduct, dotProduct_add, dotProduct_neg]`. Rewrite using `[dotProduct_comm y w.1, dotProduct_comm w.2 w.1]`. Take the linear combination `(w.1 ⬝ᵥ w.2) * h2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← AddChar.map_add_eq_mul, key]`.
-
-Use `_ = _ := by rw [AddChar.map_add_eq_mul]; ring`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem schr_fourV_loc : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (v : Pl F) (κ : Type) [Fintype κ]
     (w : (κ → Fv F v) × (κ → Fv F v)) (φ : (κ → Fv F v) → ℂ),

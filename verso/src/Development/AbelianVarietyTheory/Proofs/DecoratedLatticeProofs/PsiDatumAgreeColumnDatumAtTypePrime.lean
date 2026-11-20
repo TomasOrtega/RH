@@ -10,12 +10,12 @@ section Red
 variable {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E))
 
 /- English proof (translation)
-The claim follows from `Ideal.absNorm_mem P.asIdeal`.
+A detailed English derivation is pending.
 -/
 theorem q_mem : ((qOf P : ℕ) : 𝓞 E) ∈ P.asIdeal := Ideal.absNorm_mem P.asIdeal
 
 /- English proof (translation)
-Establish `h : qOf P ≠ 0`. Unfold `qOf`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `P.ne_bot`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem q_ne_zero : ((qOf P : ℕ) : E) ≠ 0 := by
   have h : qOf P ≠ 0 := by
@@ -25,14 +25,14 @@ theorem q_ne_zero : ((qOf P : ℕ) : E) ≠ 0 := by
   exact_mod_cast h
 
 /- English proof (translation)
-Use `IntAt.coe P ((qOf P : ℕ) : 𝓞 E)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem intAt_q : IntAt P (qOf P : E) := by
   have := IntAt.coe P ((qOf P : ℕ) : 𝓞 E)
   rwa [map_natCast] at this
 
 /- English proof (translation)
-Use `reduction_coe P ((qOf P : ℕ) : 𝓞 E)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Rewrite using `[this]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (q_mem P)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reduction_natCast_eq_zero : redP P (qOf P : E) = 0 := by
   have := reduction_coe P ((qOf P : ℕ) : 𝓞 E)
@@ -41,9 +41,9 @@ theorem reduction_natCast_eq_zero : redP P (qOf P : E) = 0 := by
   exact Ideal.Quotient.eq_zero_iff_mem.2 (q_mem P)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[zero_add, pow_one]`. Conclude with `⟨intAt_q P, reduction_natCast_eq_zero P⟩`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Rewrite using `[pow_succ]`. Conclude with `⟨ih.1.mul (intAt_q P), by rw [reduction_mul ih.1 (intAt_q P), ih.2, zero_mul]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem pow_red (k : ℕ) : IntAt P ((qOf P : E) ^ (k + 1)) ∧ redP P ((qOf P : E) ^ (k + 1)) = 0 := by
   induction k with
@@ -55,20 +55,20 @@ theorem pow_red (k : ℕ) : IntAt P ((qOf P : E) ^ (k + 1)) ∧ redP P ((qOf P :
     exact ⟨ih.1.mul (intAt_q P), by rw [reduction_mul ih.1 (intAt_q P), ih.2, zero_mul]⟩
 
 /- English proof (translation)
-Use `reduction_coe P 1` as an intermediate fact. Rewrite `this` using `[map_one, map_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem reduction_one' : redP P (1 : E) = 1 := by
   have := reduction_coe P 1
   rwa [map_one, map_one] at this
 
 /- English proof (translation)
-Establish `hq0` using `q_ne_zero P`. Establish `hex : ∃ z : ℤ, IsUnit (redP P ((1 : E) / (qOf P : E) ^ z))` using `⟨0, by rw [zpow_zero, div_one, reduction_one']; exact isUnit_one⟩`. Establish `hspec : IsUnit (redP P ((1 : E) / (qOf P : E) ^ LocE.vP P (qOf P) (1 : E)))`. Unfold `LocE.vP`. Conclude with `Classical.epsilon_spec hex`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Take `⟨k, hk | hk⟩` from `Int.eq_nat_or_neg (LocE.vP P (qOf P) (1 : E))`. Take `⟨k', rfl⟩ : ∃ k', k = k' + 1` from `⟨k - 1, by omega⟩`. Rewrite `hspec` using `[hk, zpow_natCast]`. Distinguish the cases in `hI' : IntAt P ((1 : E) / (qOf P : E) ^ (k' + 1))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `e : (qOf P : E) ^ (k' + 1) * (1 / (qOf P : E) ^ (k' + 1)) = 1` using `by field_simp`. Establish `h0 : redP P ((qOf P : E) ^ (k' + 1) * (1 / (qOf P : E) ^ (k' + 1))) = 0`. Rewrite using `[reduction_mul (pow_red P k').1 hI', (pow_red P k').2, zero_mul]`. Rewrite `h0` using `[e, reduction_one']`. Conclude with `one_ne_zero h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hspec` using `[reduction_eq_zero_of_not_integral P hI']`. Conclude with `not_isUnit_zero hspec`. Take `⟨k', rfl⟩ : ∃ k', k = k' + 1` from `⟨k - 1, by omega⟩`. Rewrite `hspec` using `[hk, _root_.zpow_neg, zpow_natCast, div_inv_eq_mul, one_mul, (pow_red P k').2]`. Conclude with `not_isUnit_zero hspec`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_one₂ : LocE.vP P (qOf P) (1 : E) = 0 := by
   have hq0 := q_ne_zero P
@@ -94,7 +94,7 @@ theorem valuation_one₂ : LocE.vP P (qOf P) (1 : E) = 0 := by
     exact not_isUnit_zero hspec
 
 /- English proof (translation)
-Unfold `LocE.locChar`. Rewrite using `[valuation_one₂, zpow_zero, zpow_zero, one_mul, div_one]`. Unfold `LocE.unitV`. Rewrite using `[dif_pos (by rw [reduction_one']; exact isUnit_one)]`. Conclude with `Units.ne_zero _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locChar_one_ne {K : Type} [Field K] (cq : K) (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) :
     LocE.locChar (qOf P) cq χ (1 : E) ≠ 0 := by
@@ -114,7 +114,7 @@ section Mat
 variable {E : Type} [Field E]
 
 /- English proof (translation)
-Simplify using `[joinCol, Loc.inX, LinearMap.funLeft]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem joinCol_apply {n' c' n c : ℕ} (x₀ : HomE E n' n) (y' : Sp E n) (v : Fin (n' + c') → E) (i : Fin n) :
     joinCol (c' := c') (c := c) x₀ y' v (Fin.castAdd c i) =
@@ -125,7 +125,7 @@ theorem joinCol_apply {n' c' n c : ℕ} (x₀ : HomE E n' n) (y' : Sp E n) (v : 
 end Mat
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[om, nabs]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem om_one_one {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ : kˣ →* ℂˣ) (Φ : Matrix b a k → ℂ) :
@@ -138,17 +138,17 @@ end GlobalTheory.SymBridge.PsiStep
 namespace GlobalTheory.SymBridge.PsiStep
 
 /- English proof (translation)
-Substitute `hc' hc` using the available equality. Use extensionality with `(r | r) (j | j)`. Simplify using `only [withCol, fromBlocks_apply₁₁, toLoc, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl, finSumFinEquiv_apply_left, joinCol_apply]`. Establish `h1 : (fun l : Fin n' => (Pi.single (Fin.castAdd (0 + 1) (e' j)) (1 : E) : Fin (n' + (0 + 1)) → E) (Fin.castAdd (0 + 1) l)) = Pi.single (e' j) 1`. Use function extensionality and compare the values at `l`.
+Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.single_apply, Fin.ext_iff, Fin.val_castAdd]`. Establish `h2 : atNL E (n' + (0 + 1)) n' (Pi.single (Fin.castAdd (0 + 1) (e' j)) 1) = 0`. Establish `hj` using `(e' j).isLt`. Unfold `atNL`. Rewrite using `[dif_pos (by omega)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.coe_proj, Function.eval, Pi.single_apply, Fin.ext_iff, Fin.val_castAdd]`. Rewrite using `[if_neg (by omega)]`. Rewrite using `[h1, h2, zero_mul, add_zero]`. Simplify using `only [withCol, fromBlocks_apply₁₂, toLoc, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl, Sum.map_inr, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, joinCol_apply]`. Establish `h1 : (fun l : Fin n' => (Pi.single (Fin.natAdd n' (finCongr (rfl : 0 + 1 = 0 + 1) j)) (1 : E) : Fin (n' + (0 + 1)) → E) (Fin.castAdd (0 + 1) l)) = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `l`. Establish `hl` using `l.isLt`. Simplify using `only [Pi.single_apply, Fin.ext_iff, Fin.val_castAdd, Fin.val_natAdd, Pi.zero_apply]`. Rewrite using `[if_neg (by omega)]`. Establish `h2 : atNL E (n' + (0 + 1)) n' (Pi.single (Fin.natAdd n' (finCongr (rfl : 0 + 1 = 0 + 1) j)) 1) = 1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `atNL`. Rewrite using `[dif_pos (by omega)]`. Simplify using `only [LinearMap.coe_proj, Function.eval, Pi.single_apply, Fin.ext_iff, Fin.val_natAdd]`. Rewrite using `[if_pos (by omega)]`. Rewrite using `[h1, map_zero, Pi.zero_apply, h2, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zero_add (y' (e r))]`. Both sides reduce to the same expression. Conclude with `r.elim0`. Conclude with `r.elim0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem withCol_toLoc {E k : Type} [Field E] [NumberField E] [StarRing E]
     [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : E →+* k)
@@ -201,9 +201,9 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (mu : Tup X.F X.E X.K S₀) (cst : LocCst X (rowSG Pr sel mu)) (P : rowSG Pr sel mu)
 
 /- English proof (translation)
-Establish `hm : muAt Ch sel mu cst i P 1 ≠ 0`. Unfold `muAt`. Conclude with `locChar_one_ne _ _ _`. Unfold `omPhi Loc.om`. Rewrite using `[map_one, map_one, Units.val_one, valuation_one₂]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv_cancel₀ hm]`. Simplify using `only [neg_zero, zero_mul, zpow_zero, one_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem omPhi_one_one (i : ℕ) (x : HomE X.E (R.N i + cOf R i) (R.N (i + 1) + cOf R (i + 1))) :
     omPhi Ch sel mu cst i P 1 1 x = PhiAt Ch mu cst.sharp i P.1 x := by
@@ -225,17 +225,15 @@ namespace GlobalTheory.SymBridge
 open PsiStep in
 
 /- English proof (translation)
-Introduce `X Pr R Ch sel S₀ mu cst σ₀ P k _ _ _ _ ι s S _ _ ν _ hA e' e he' he`. Establish `hc1 : cOf R s = 0 + 1` using `by unfold cOf; rw [hA.steps]; omega`. Establish `hc0 : cOf R (s + 1) = 0` using `by unfold cOf; rw [hA.steps]; omega`. Establish `hrS : R.rS = S.ρ`. Use `S.odd` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Ranks.rS`. Rewrite using `[hA.steps]`. Use linear arithmetic over natural numbers and integers. Establish `hr : R.r = R.k + s + 1` using `by unfold Ranks.r; rw [hA.steps]; omega`. Set `E' : XIx (Fin R.k) (Fin R.t) s ⊕ Fin (0 + 1) ≃ Fin (R.N s + cOf R s)` to `(e'.sumCongr (finCongr hc1.symm)).trans finSumFinEquiv`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `E₁ : XIx (Fin R.k) (Fin R.t) (s + 1) ⊕ Fin 0 ≃ Fin (R.N (s + 1) + cOf R (s + 1))` to `(e.sumCongr (finCongr hc0.symm)).trans finSumFinEquiv`. Establish `hE' : IsOrd (yPos xPos (R.N s)) E'`. Introduce and unpack `(a | a)`. Simplify using `[E', yPos, he' a]`. Simplify using `[E', yPos]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hE₁ : IsOrd (yPos xPos (R.N (s + 1))) E₁`. Introduce and unpack `(a | a)`. Simplify using `[E₁, yPos, he a]`. Conclude with `a.elim0`. Establish `hPhi` using `GlobalTheory.T.symLevelTestFunctions_agree_rationalPoints X.E X.K k P.1 (qOf P.1) ι σ₀ (psi0P Ch P.1) (chiP Ch P.1) s R.k S hA.tie R.t s 0 rfl (R.N s) (cOf R s) (R.N (s + 1)) (cOf R (s + 1)) rfl rfl hc1 hc0 E' E₁ hE' hE₁`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1, one_ne_zero, fun x₀ y' => ?_⟩` and prove the remaining obligations. Establish `hmat : withCol (toLoc ι e e' x₀) (fun a => ι (y' (e a))) = toLoc ι E₁ E' (joinCol (c'` using `cOf R s) (c := cOf R (s + 1)) x₀ y') := by`. Conclude with `withCol_toLoc ι e e' hc1 hc0 x₀ y'`. Rewrite using `[one_mul, Chain.Psi, om_one_one, hmat, hPhi, PsiAt, omPhi_one_one]`. Unfold `PhiAt`.
-
-Rewrite using `[if_pos hA.mem, if_pos hA.sharp, hrS, hr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiAgree_of_atType : ∀ (X : Fields) (Pr : Primes X) (R : Ranks) (Ch : Chars X Pr R.m) (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (S₀ : Set ℕ) (mu : Tup X.F X.E X.K S₀) (cst : LocCst X (rowSG Pr sel mu)) (σ₀ : X.K →+* ℂ) (P : rowSG Pr sel mu) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : X.E →+* k) (s : ℕ) (S : SymData k s R.k) [MeasurableSpace k] [BorelSpace k] (ν : Measure k), IsUnitVol ν → AtType Ch sel mu cst σ₀ P ι S → PsiAgree Ch sel mu cst σ₀ P ι S := by
   intro X Pr R Ch sel S₀ mu cst σ₀ P k _ _ _ _ ι s S _ _ ν _ hA e' e he' he

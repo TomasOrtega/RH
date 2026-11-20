@@ -12,7 +12,7 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 namespace GlobalTheory.CompanionTheory.GE.TwLim
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a - b, map_sub _ a b⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem twSecs_sub_mem {X : Scheme.{0}} (H : ReciprocityTheory.ChartRestriction.G.Semi.LB X) (n : ℤ) {P : X.Modules}
     (S : Subobject P) {x y : Γ(GlobalTheory.twistZ P H n, ⊤)} (hx : x ∈ twSecs H n S)
@@ -22,7 +22,7 @@ theorem twSecs_sub_mem {X : Scheme.{0}} (H : ReciprocityTheory.ChartRestriction.
   exact ⟨a - b, map_sub _ a b⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨a, rfl⟩`. Use `⟨(GlobalTheory.Twist.map (GlobalTheory.lbZPow H n) (Subobject.ofLE S T h)).app ⊤ a, ?_⟩` and prove the remaining obligations. Rewrite using `[← ConcreteCategory.comp_apply, ← Scheme.Modules.Hom.comp_app, ← GlobalTheory.Twist.map_comp, Subobject.ofLE_arrow]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem twSecs_mono {X : Scheme.{0}} (H : ReciprocityTheory.ChartRestriction.G.Semi.LB X) (n : ℤ) {P : X.Modules}
     {S T : Subobject P} (h : S ≤ T) : twSecs H n S ⊆ twSecs H n T := by
@@ -32,7 +32,7 @@ theorem twSecs_mono {X : Scheme.{0}} (H : ReciprocityTheory.ChartRestriction.G.S
     Subobject.ofLE_arrow]
 
 /- English proof (translation)
-The claim follows from `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem zero_mem_twPow {A : Type} [CommRing A] (I : Ideal A) {X : Scheme.{0}} [X.Over (Spec (.of A))]
     (H : ReciprocityTheory.ChartRestriction.G.Semi.LB X) (n : ℤ) (P : X.Modules) (m : ℕ) : (0 : Γ(GlobalTheory.twistZ P H n, ⊤)) ∈ twPow I H n P m :=
@@ -43,17 +43,17 @@ end GlobalTheory.CompanionTheory.GE.TwLim
 namespace GlobalTheory.CompanionTheory.GE.TwLim
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.twisted_ideal_power_le_sections`.
+A detailed English derivation is pending.
 -/
 theorem twPow_sub_twSecs : ∀ {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X : Scheme.{0}} [X.Over (Spec (.of A))] (H : ReciprocityTheory.ChartRestriction.G.Semi.LB X), GlobalTheory.IsAmpleLB H → ∀ {P : X.Modules}, IsCoherent P → ∀ (n : ℤ) (m : ℕ), twPow I H n P m ⊆ twSecs H n (powSub I P m) := GlobalTheory.T.twisted_ideal_power_le_sections
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.twisted_sections_cauchy_limit`.
+A detailed English derivation is pending.
 -/
 theorem twPow_complete : ∀ {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A), IsAdicComplete I A → ∀ {X : Scheme.{0}} [X.Over (Spec (.of A))] [IsProper (X ↘ Spec (.of A))] (H : ReciprocityTheory.ChartRestriction.G.Semi.LB X), GlobalTheory.IsAmpleLB H → ∀ {P : X.Modules}, IsCoherent P → ∀ (n : ℤ) (f : ℕ → Γ(GlobalTheory.twistZ P H n, ⊤)), (∀ m, f m - f (m + 1) ∈ twPow I H n P m) → ∃ L : Γ(GlobalTheory.twistZ P H n, ⊤), ∀ m, f m - L ∈ twPow I H n P m := GlobalTheory.T.twisted_sections_cauchy_limit
 
 /- English proof (translation)
-The claim follows from `antitone_nat_of_succ_le fun m => (hS.succ m).symm ▸ le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem antitone_closedSys {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A) {X : Scheme.{0}}
     [X.Over (Spec (.of A))] {P : X.Modules} {S : ℕ → Subobject P} (hS : ClosedSys I P S) :
@@ -61,19 +61,19 @@ theorem antitone_closedSys {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ide
   antitone_nat_of_succ_le fun m => (hS.succ m).symm ▸ le_sup_left
 
 /- English proof (translation)
-Introduce `A _ _ I hI X _ _ H hH P hP S hS n hstep`. Use `⟨⋂ e, twSecs H n (S e), fun e => Set.iInter_subset _ e, ?_⟩` and prove the remaining obligations. Introduce `e x hx`. Establish `hpow : ∀ m, twPow I H n P (m + 1) ⊆ twSecs H n (S m)` using `fun m => (twPow_sub_twSecs I H hH hP n (m + 1)).trans (twSecs_mono H n (hS.pow_le m))`. Set `seq : ∀ k : ℕ, {y // y ∈ twSecs H n (S (e + k))}` to `fun k => Nat.rec ⟨x, hx⟩ (fun k y => ⟨(hstep (e + k) y.1 y.2).choose, (hstep (e + k) y.1 y.2).choose_spec.1⟩) k`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hseq : ∀ k, (seq k).1 - (seq (k + 1)).1 ∈ twPow I H n P (e + k + 1)` using `fun k => (hstep (e + k) (seq k).1 (seq k).2).choose_spec.2`. Establish `hcg : ∀ a b : ℕ, a = b → (seq a).1 = (seq b).1` using `by rintro _ _ rfl; rfl`. Establish `hs0 : (seq 0).1 = x` using `rfl`. Set `f : ℕ → Γ(GlobalTheory.twistZ P H n, ⊤)` to `fun j => (seq (j - (e + 1))).1`. Establish `hf : ∀ j, f j - f (j + 1) ∈ twPow I H n P j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `j`. Distinguish the cases in `hj : j < e + 1`. Establish `h1 : f j = f (j + 1)` using `hcg _ _ (by omega)`. Rewrite using `[h1, sub_self]`. Conclude with `zero_mem_twPow I H n P j`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩ : ∃ k, j = e + 1 + k` from `⟨j - (e + 1), by omega⟩`. Establish `h1 : f (e + 1 + k) = (seq k).1` using `hcg _ _ (by omega)`. Establish `h2 : f (e + 1 + k + 1) = (seq (k + 1)).1` using `hcg _ _ (by omega)`. Rewrite using `[h1, h2]`. Use `hseq k` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[show e + k + 1 = e + 1 + k by omega]`. Then use the resulting hypothesis. Take `⟨L, hL⟩` from `twPow_complete I hI H hH hP n f hf`. Establish `hk : ∀ k, L ∈ twSecs H n (S (e + k))`. Introduce `k`. Establish `h1 : f (e + k + 1) = (seq k).1` using `hcg _ _ (by omega)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : (seq k).1 - L ∈ twSecs H n (S (e + k))` using `h1 ▸ hpow (e + k) (hL (e + k + 1))`. Use `twSecs_sub_mem H n _ (seq k).2 hd` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Use `⟨L, Set.mem_iInter.2 fun m => ?_, ?_⟩` and prove the remaining obligations. Break down `le_or_gt e m with hm | hm` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hm`. Conclude with `hk k`. Conclude with `twSecs_mono H n (antitone_closedSys I hS hm.le) (by simpa using hk 0)`. Establish `h1 : f (e + 1) = x` using `(hcg (e + 1 - (e + 1)) 0 (by omega)).trans hs0`. Simplify `hL (e + 1)` using `[h1]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_compat_limit : ∀ {A : Type} [CommRing A] [IsNoetherianRing A] (I : Ideal A), IsAdicComplete I A → ∀ {X : Scheme.{0}} [X.Over (Spec (.of A))] [IsProper (X ↘ Spec (.of A))] (H : ReciprocityTheory.ChartRestriction.G.Semi.LB X), GlobalTheory.IsAmpleLB H → ∀ {P : X.Modules}, IsCoherent P → ∀ S : ℕ → Subobject P, ClosedSys I P S → ∀ n : ℤ, (∀ e, ∀ x ∈ twSecs H n (S e), ∃ y ∈ twSecs H n (S (e + 1)), x - y ∈ twPow I H n P (e + 1)) → ∃ W : Set Γ(GlobalTheory.twistZ P H n, ⊤), (∀ e, W ⊆ twSecs H n (S e)) ∧ ∀ e, ∀ x ∈ twSecs H n (S e), ∃ b ∈ W, x - b ∈ twPow I H n P (e + 1) := by
   intro A _ _ I hI X _ _ H hH P hP S hS n hstep

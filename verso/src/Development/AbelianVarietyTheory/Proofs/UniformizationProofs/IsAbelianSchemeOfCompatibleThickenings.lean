@@ -19,11 +19,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ _ _ Y _ β hβ B b hA hc hP hb hβb`. Establish `hprop : IsProper B.hom` using `GlobalTheory.AbLaw.isProper_of_isProjBy V B.left B.hom hP`. Establish `hsm : Smooth B.hom`. Use `GlobalTheory.SmoothLimit.main V B fun e ↦ ?_` and prove the remaining obligations. Establish `h : Smooth (Y e).hom` using `(hA e).smooth`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `he : (thickObj V (IsLocalRing.maximalIdeal V) e B).hom = (hb e).isoPullback.inv ≫ (Y e).hom` using `((hb e).isoPullback_inv_snd).symm`. Establish `h' : Smooth ((hb e).isoPullback.inv ≫ (Y e).hom)` using `inferInstance`. Conclude with `he ▸ h'`. Establish `hconn : GeometricallyConnected B.hom` using `GlobalTheory.ConnFibre.geometricallyConnected_of_closedFibre V B hsm hP (Y 0) (b 0) (hb 0) (hA 0).geomConnected`. Take `⟨mu, io, un, H⟩` from `GlobalTheory.T.exists_algebraization_group_operations_cdvr V Y β hβ B b hP inferInstance hb hβb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨G, hG, hcomm⟩` from `GlobalTheory.grpObj_of_thickenings V Y β hβ B b hb hβb mu io un H`. Conclude with `⟨G, hcomm hc, ⟨hcomm hc, hsm, hprop, hconn⟩, hG⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_of_thickenings : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (V ⧸ (IsLocalRing.maximalIdeal V) ^ (e + 1))))) [∀ e, GrpObj (Y e)] (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left), (∀ e, IsGrpPullback (Y e) (Y (e + 1)) (thickTrans V _ e) (β e)) → ∀ (B : Over (Spec (CommRingCat.of V))) (b : ∀ e, (Y e).left ⟶ B.left), (∀ e, IsAbelianScheme (Y e)) → (∀ e, IsCommMonObj (Y e)) → IsProjBy B.hom → (∀ e, IsPullback (b e) (Y e).hom B.hom (thick V (IsLocalRing.maximalIdeal V) e)) → (∀ e, β e ≫ b (e + 1) = b e) → ∃ _ : GrpObj B, IsCommMonObj B ∧ IsAbelianScheme B ∧ ∀ e, IsGrpPullback (Y e) B (thick V _ e) (b e) := by
   intro V _ _ _ _ Y _ β hβ B b hA hc hP hb hβb

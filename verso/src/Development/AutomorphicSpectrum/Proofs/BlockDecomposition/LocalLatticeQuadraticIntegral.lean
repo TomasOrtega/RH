@@ -5,11 +5,11 @@ open scoped Matrix NNReal ENNReal TensorProduct
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.WhitFree GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.AvgFree MeasureTheory
 
 /- English proof (translation)
-Rewrite using `[Filter.tendsto_def]`. Introduce `U hU`. Take `⟨V, hVU, hVo, h0V⟩` from `mem_nhds_iff.mp hU`. Establish `hsub : ({0} : Set K) ×ˢ L ⊆ (fun q : K × K => q.1 * q.2) ⁻¹' V`. Introduce and unpack `⟨x, y⟩ ⟨hx, -⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Use `show 0 * y ∈ V`. Rewrite using `[zero_mul]`. Conclude with `h0V`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, w, hu, -, h0u, hLw, huw⟩` from `generalized_tube_lemma isCompact_singleton hL (hVo.preimage continuous_mul) hsub`. Establish `hev : ∀ᶠ j in Filter.atTop, f j ∈ u` using `hf (hu.mem_nhds (h0u (Set.mem_singleton 0)))`. Use `filter_upwards [hev] with j hj`. Conclude with `hVU (huw (Set.mk_mem_prod hj (hLw (hg j))))`.
+A detailed English derivation is pending.
 -/
 private theorem tendsto_mul_zero_of_tendsto_zero_of_mem_compact {K : Type} [CommRing K] [TopologicalSpace K]
     [IsTopologicalRing K] {L : Set K} (hL : IsCompact L) {f g : ℕ → K}
@@ -32,27 +32,23 @@ private theorem tendsto_mul_zero_of_tendsto_zero_of_mem_compact {K : Type} [Comm
   exact hVU (huw (Set.mk_mem_prod hj (hLw (hg j))))
 
 /- English proof (translation)
-Introduce `hli`. Use `choose p hpS l a haO hal hmem using hX`. Use `choose w hwL hweq using hmem`. Take `⟨⟨p₀, l₀⟩, hinf⟩` from `Finite.exists_infinite_fiber (fun j : ℕ => ((⟨p j, hpS j⟩ : S), l j))`. Use `set J := (fun j : ℕ => ((⟨p j, hpS j⟩ : S), l j)) ⁻¹' {(p₀, l₀)} with hJdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hJ : Set.Infinite J` using `Set.infinite_coe_iff.mp hinf`. Establish `hJp : ∀ j ∈ J, p j = (p₀ : Kˣ × K) ∧ l j = l₀`. Introduce `j hj`. Establish `h` using `Set.mem_singleton_iff.mp (Set.mem_preimage.mp hj)`. Conclude with `⟨congrArg Subtype.val (Prod.ext_iff.mp h).1, (Prod.ext_iff.mp h).2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI hNe : (Filter.atTop ⊓ Filter.principal J).NeBot := by`. Establish `h` using `Nat.frequently_atTop_iff_infinite.mpr hJ`. Conclude with `Filter.frequently_iff_neBot.mp h`. Establish `hcomp : IsCompact (Set.pi Set.univ (fun _ : Fin n => O))` using `isCompact_univ_pi (fun _ => hO)`. Establish `hin : Filter.Tendsto a (Filter.atTop ⊓ Filter.principal J) (Filter.principal (Set.pi Set.univ (fun _ : Fin n => O)))` using `Filter.tendsto_principal.mpr (Filter.Eventually.of_forall fun j i _ => haO j i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a₀, -, hclus⟩` from `hcomp hin`. Establish `hp₀` using `hS _ p₀.2`. Establish `ha₀l : a₀ l₀ = 1`. Establish `hC : IsClosed {x : Fin n → K | x l₀ = 1}` using `isClosed_eq (continuous_apply l₀) continuous_const`. Establish `hle : Filter.map a (Filter.atTop ⊓ Filter.principal J) ≤ Filter.principal {x : Fin n → K | x l₀ = 1}`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Filter.tendsto_principal.mpr ?_` and prove the remaining obligations. Use `Filter.eventually_inf_principal.mpr (Filter.Eventually.of_forall fun j hj => ?_)` and prove the remaining obligations. Use `show a j l₀ = 1`. Rewrite using `[← (hJp j hj).2]`. Conclude with `hal j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl` using `hclus.mono hle`. Rewrite `hcl` using `[← mem_closure_iff_clusterPt, hC.closure_eq]`. Conclude with `hcl`. Establish `hzero : ∀ k, p₀.1.2 * ∑ i, X i k * a₀ i = 0`. Introduce `k`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hcont : Continuous (fun x : Fin n → K => p₀.1.2 * ∑ i, X i k * x i)` using `by fun_prop`. Establish `htend : Filter.Tendsto (fun j => p₀.1.2 * ∑ i, X i k * a j i) (Filter.atTop ⊓ Filter.principal J) (nhds 0)`. Establish `h0` using `(tendsto_mul_zero_of_tendsto_zero_of_mem_compact hL hp₀.2 (fun j => hwL j k)).mono_left (inf_le_left : Filter.atTop ⊓ Filter.principal J ≤ Filter.atTop)`. Use `h0.congr' ?_` and prove the remaining obligations. Use `Filter.eventually_inf_principal.mpr (Filter.Eventually.of_forall fun j hj => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show p₀.1.2 * (p₀.1.1 : K) ^ j * w j k = p₀.1.2 * ∑ i, X i k * a j i`. Establish `hw` using `hweq j k`. Simplify using `only at hw`. Rewrite using `[← hw, (hJp j hj).1, mul_assoc]`. Establish `hcl` using `hclus.map hcont.continuousAt (Filter.tendsto_map'_iff.mpr htend)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `eq_of_nhds_neBot hcl`. Establish `hsum : ∑ i, (p₀.1.2 * a₀ i) • X i = 0`. Use extensionality with `k`. Rewrite using `[Finset.sum_apply, Pi.zero_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
-
-Rewrite using `[← hzero k, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h0` using `Fintype.linearIndependent_iff.mp hli (fun i => p₀.1.2 * a₀ i) hsum l₀`. Rewrite `h0` using `[ha₀l, mul_one]`.
-
-Conclude with `hp₀.1 h0`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.AvgFree.not_linearIndependent_of_near {K : Type} [CommRing K] [TopologicalSpace K]
     [IsTopologicalRing K] [T2Space K] (S : Finset (Kˣ × K))
@@ -119,11 +115,11 @@ theorem GlobalTheory.CompanionTheory.AvgFree.not_linearIndependent_of_near {K : 
   exact hp₀.1 h0
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ d b v lv hv O S hOrd L hLc hLo n M X hX`. Take `⟨hXin, hXli⟩` from `hX`. Assume the negation of the conclusion as `hnot`. Simplify using `only [Set.mem_iUnion, not_exists] at hnot`. Use `GlobalTheory.CompanionTheory.AvgFree.not_linearIndependent_of_near S (fun p hp => ⟨(hOrd.2.2.2.1 p hp).2.1, (hOrd.2.2.2.1 p hp).2.2.2.1⟩) hOrd.1 hLc X ?_ hXli` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j`. Establish `hmem : X ∈ ⋃ p ∈ S, nearNF (Fv F v) (O : Set (Fv F v ⊗[F] E)) (L : Set (Fv F v ⊗[F] E)) (p.1 : Fv F v ⊗[F] E) j`. Assume the negation of the conclusion as `h'`. Conclude with `hnot j ⟨hXin, h'⟩`. Simplify using `only [Set.mem_iUnion] at hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, -, l, a, haO, hal, hk⟩` from `hmem`. Conclude with `⟨p, hp, l, a, haO, hal, hk⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.AvgFree.free_tuple_mem_goodT : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F)) (lv : Measure (Fv F v)), GlobalTheory.CompanionTheory.SW.IsStdV v lv → ∀ (O : Subring (Fv F v ⊗[F] E)) (S : Finset ((Fv F v ⊗[F] E)ˣ × (Fv F v ⊗[F] E))), IsOrdData (Fv F v) σ b lv O S → ∀ L : Submodule O (Fv F v ⊗[F] E), IsCompact (L : Set (Fv F v ⊗[F] E)) → IsOpen (L : Set (Fv F v ⊗[F] E)) → ∀ (n M : ℕ), tupIn (Fv F v) (L : Set (Fv F v ⊗[F] E)) ∩ {X : (Fin n → Fin M → (Fv F v ⊗[F] E)) | LinearIndependent (Fv F v ⊗[F] E) X} ⊆ ⋃ j, (goodT (M := M) (n := n) (Fv F v) (O : Set (Fv F v ⊗[F] E)) (L : Set (Fv F v ⊗[F] E)) S j) := by
   intro F E _ _ _ _ _ σ hσ d b v lv hv O S hOrd L hLc hLo n M X hX

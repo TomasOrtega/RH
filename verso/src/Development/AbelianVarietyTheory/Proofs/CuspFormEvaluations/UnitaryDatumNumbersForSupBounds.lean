@@ -14,7 +14,7 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.SupDict
 
 /- English proof (translation)
-Rewrite using `[D.host.der.finrank_E]`. Simplify using `only [Ranks.f, Ranks.n]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finrank_host (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
   rw [D.host.der.finrank_E]
@@ -22,11 +22,11 @@ theorem finrank_host (D : D7) : Module.finrank ℚ D.host.E = 2 * D.R.f := by
   ring
 
 /- English proof (translation)
-Unfold `xiR`. Use `norm_pos_iff.mpr ((map_ne_zero _).mpr ?_)` and prove the remaining obligations. Establish `hd : (D.host.d : D.host.E) ≠ 0`. Establish `hlt` using `D.host.qd_big.2`. Conclude with `(Nat.zero_lt_of_lt hlt).ne'` after adjusting the coercions.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : D.host.sqd ≠ 0`. Introduce `h0`. Establish `h2` using `D.host.sqd_sq`. Rewrite `h2` using `[h0]`. Apply `hd` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h3 : -(D.host.d : D.host.E) = 0` using `by rw [← h2]; ring`. Conclude with `neg_eq_zero.mp h3`. Establish `hn : ((Ideal.absNorm D.host.ccK : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.mpr (fun h0 => D.host.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.mp h0))`. Simplify using `only [Host.xi0, Host.sqrtMinusD]`. Conclude with `div_ne_zero (neg_ne_zero.mpr one_ne_zero) (mul_ne_zero hn hs)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem xiR_pos (D : D7) : 0 < xiR D := by
   unfold xiR
@@ -47,7 +47,7 @@ theorem xiR_pos (D : D7) : 0 < xiR D := by
   exact div_ne_zero (neg_ne_zero.mpr one_ne_zero) (mul_ne_zero hn hs)
 
 /- English proof (translation)
-Unfold `dE`. Rewrite using `[← Int.cast_abs]`. Conclude with `Int.one_le_abs (NumberField.discr_ne_zero E)` after adjusting the coercions.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_dE (E : Type) [Field E] [NumberField E] : 1 ≤ dE E := by
   unfold dE
@@ -55,11 +55,11 @@ theorem one_le_dE (E : Type) [Field E] [NumberField E] : 1 ≤ dE E := by
   exact_mod_cast Int.one_le_abs (NumberField.discr_ne_zero E)
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => ext0 a i) M]`. Establish `h1 : ∑ i ∈ Finset.range M, ext0 a i = ∑ i ∈ (Finset.range M).filter (· < l), ext0 a i`. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Use `split_ifs with hi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `[ext0, hi]`. Establish `h2 : ∑ i ∈ (Finset.range M).filter (· < l), ext0 a i ≤ ∑ i ∈ Finset.range l, ext0 a i` using `Finset.sum_le_sum_of_subset (fun i hi => by simp at hi ⊢; omega)`. Establish `h3 : ∑ i ∈ Finset.range l, ext0 a i = ∑ i, a i`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun i => ext0 a i) l]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Simplify using `[ext0, i.isLt]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private lemma sum_ext0_le_sum {l : ℕ} (a : Fin l → ℕ) (M : ℕ) : ∑ i : Fin M, ext0 a (i : ℕ) ≤ ∑ i, a i := by
   rw [Fin.sum_univ_eq_sum_range (fun i => ext0 a i) M]
@@ -78,29 +78,27 @@ private lemma sum_ext0_le_sum {l : ℕ} (a : Fin l → ℕ) (M : ℕ) : ∑ i : 
   omega
 
 /- English proof (translation)
-Introduce `D T h j hj w`. Establish `hfin` using `finrank_host D`. Establish `hdpos : 0 < dE D.host.E` using `lt_of_lt_of_le one_pos (one_le_dE _)`. Use `⟨?_, ?_, ?_, ?_, ?_, xiR_pos D, ?_, ?_, ?_, ?_, ?_, D.host.pde_prime.pos, D.host.pde'_prime.pos, ?_⟩` and prove the remaining obligations. Unfold `fdeg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[hfin]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[rdE, Real.log_rpow hdpos, hfin, lrd, dE]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `rdE`. Conclude with `Real.one_le_rpow (one_le_dE _) (by positivity)`. Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_le_f`. Simplify using `only [Ranks.f, Ranks.n]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `h1` using `D.R.two_le_m`. Simplify using `only [Ranks.r]`. Use linear arithmetic over natural numbers and integers. Unfold `wtA Formalism.L2.Pj.DF WeightAlgebra.DF WeightAlgebra.degP`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_add_distrib]`. Apply `add_le_add` to reduce the goal to its premises. Rewrite using `[Finset.sum_congr rfl (fun τ _ => Finset.sum_comm), Finset.sum_comm]`. Use `Finset.sum_le_sum (fun t _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (DV.tauEmb D t)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [↓reduceIte]`. Conclude with `sum_ext0_le_sum _ _`. Introduce `τ _ hτ`. Simplify using `[hτ]`. Introduce `hn`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd (Finset.mem_univ _) hn`. Rewrite using `[Finset.sum_congr rfl (fun τ _ => Finset.sum_comm), Finset.sum_comm]`. Use `Finset.sum_le_sum (fun t _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (conjEmb (DV.tauEmb D t))]`. Simplify using `only [↓reduceIte]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sum_ext0_le_sum _ _`. Introduce `τ _ hτ`. Simplify using `[hτ]`. Introduce `hn`. Conclude with `absurd (Finset.mem_univ _) hn`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `absA WeightAlgebra.DF WeightAlgebra.degP`. Use `push_cast`. Both sides reduce to the same expression. Introduce `σ hσ k τ`. Unfold `Data.c`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[h.xiAbs j hj σ hσ k τ.1]`. Unfold `lieFac Formalism.L2.Pj.DF`. Rewrite using `[show (2 : ℝ) * Real.pi * xiR D = Real.pi * (2 * xiR D) by ring]`. Use `push_cast`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Take `⟨-, hl, -, -⟩` from `h.pins`. Unfold `Par.PinLevel at hl`. Conclude with `hl.2`. Introduce `ι σ P`. Unfold `l1At goodOf`.
-
-Use `split_ifs with hg`. Both sides reduce to the same expression. Simplify using `only [RingHom.comp_apply, Complex.norm_conj]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem record_dictionary : ∀ (D : D7) (T : Top D) (_h : LawsP T) (j : ℕ) (_hj : InR D j) (w : WeightFamilies.Wt D j), fdeg D.host.E = D.R.f ∧ Real.log (rdE D.host.E) = lrd D ∧ 1 ≤ rdE D.host.E ∧ 1 ≤ D.R.f ∧ 1 ≤ D.R.r ∧ 0 < xiR D ∧ Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w) ≤ WeightAlgebra.DF w ∧ absA w = (WeightAlgebra.DF w : ℝ) ∧ (∀ σ, GoodEmb T.Q.c σ → ∀ k τ, ((T.U j σ).X k).c τ = 2 * xiR D) ∧ lieFac (T.Q.Dw j) (xiR D) (wtA w) = Real.exp (-(((Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w) : ℕ) : ℝ) / 2) * Real.log (Real.pi * (2 * xiR D))) ∧ T.Q.l.A = 1 ∧ 0 < D.host.pde ∧ 0 < D.host.pde' ∧ ∀ (ι : Type) (σ : T.Q.c.F →+* ℂ) (P : MvPolynomial ι T.Q.c.F), l1At (goodOf T.Q.c σ) P = l1At σ P := by
   intro D T h j hj w

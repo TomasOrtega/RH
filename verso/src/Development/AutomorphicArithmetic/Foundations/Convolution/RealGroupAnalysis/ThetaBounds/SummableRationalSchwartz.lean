@@ -8,11 +8,11 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Take `⟨-, K, hK, hB⟩` from `wtBound F φ`. Take `⟨N, hN⟩` from `wtSum F`. Take `⟨B, hB⟩` from `hB N`. Take `⟨C, hC⟩` from `hN K hK 1 one_pos`. Establish `hab : (1 : ℝ) ≤ ab (1 : (A F)ˣ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[ab]`. Establish `hs` using `(hC 1 hab).1`. Use `Summable.of_norm_bounded (g := fun ξ => B * wt K N (sc (1 : (A F)ˣ) ξ)) (hs.mul_left B) ?_` and prove the remaining obligations. Introduce `ξ`. Use `hB () (Set.mem_univ _) (fun i => rt (ξ i))` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsc : sc (1 : (A F)ˣ) ξ = fun i => rt (ξ i)`. Use function extensionality and compare the values at `i`. Conclude with `one_mul _`. Rewrite using `[hsc]`. Conclude with `this`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem summable_rational_schwartz (F : Type) [Field F] [NumberField F] (φ : S4 F) :
     Summable (fun ξ : Fin 4 → F => φ.1 fun i => rt (ξ i)) := by
@@ -33,9 +33,9 @@ private theorem summable_rational_schwartz (F : Type) [Field F] [NumberField F] 
   exact this
 
 /- English proof (translation)
-Introduce `F _ _`. Use `⟨fun φ φ' => ?_, fun c φ => ?_⟩` and prove the remaining obligations. Establish `h : ∀ ξ : Fin 4 → F, (φ + φ').1 (fun i => rt (ξ i)) = φ.1 (fun i => rt (ξ i)) + φ'.1 (fun i => rt (ξ i))` using `fun ξ => rfl`. Simplify using `only [Th, h]`. Conclude with `(summable_rational_schwartz F φ).tsum_add (summable_rational_schwartz F φ')`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h : ∀ ξ : Fin 4 → F, (c • φ).1 (fun i => rt (ξ i)) = c * φ.1 (fun i => rt (ξ i))` using `fun ξ => rfl`. Simplify using `only [Th, h]`. Conclude with `tsum_mul_left`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.thLin :
     ∀ (F : Type) [Field F] [NumberField F], ThLin F := by

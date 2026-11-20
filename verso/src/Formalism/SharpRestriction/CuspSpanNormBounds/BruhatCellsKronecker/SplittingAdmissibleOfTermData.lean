@@ -15,12 +15,12 @@ section Rec
 variable {D : D7} (X : TermTie D)
 
 /- English proof (translation)
-The claim follows from `(D.mem u).A.T_prime.pos`.
+A detailed English derivation is pending.
 -/
 theorem tie_Tu_pos (D : D7) (u : D.what₂.Word) : 0 < Tu D u := (D.mem u).A.T_prime.pos
 
 /- English proof (translation)
-Rewrite using `[← X.G_eq t]`. Conclude with `(map_ne_zero _).2 h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tie_Gval_ne {u u' : D.what₂.Word} (t : D.s.Term u u') (h : D.s.Gterm t ≠ 0) :
     Gval (X.fl t) (X.fl' t) ≠ 0 := by
@@ -28,7 +28,7 @@ theorem tie_Gval_ne {u u' : D.what₂.Word} (t : D.s.Term u u') (h : D.s.Gterm t
   exact (map_ne_zero _).2 h
 
 /- English proof (translation)
-The claim follows from `(b_G_pos (p_starConj D) (tie_Tu_pos D u) (X.fl t) (X.fl' t) (X.fixed t).2.2.1.2 (X.lift' t).2 (tie_Gval_ne X t h) (p_posX D _ (tie_Tu_pos D u) (X.fl t)) τ).1`.
+A detailed English derivation is pending.
 -/
 theorem tie_G_pos {u u' : D.what₂.Word} (t : D.s.Term u u') (h : D.s.Gterm t ≠ 0) (τ : D.host.E →+* ℂ) :
     0 < (τ (Gval (X.fl t) (X.fl' t))).re :=
@@ -36,11 +36,11 @@ theorem tie_G_pos {u u' : D.what₂.Word} (t : D.s.Term u u') (h : D.s.Gterm t �
     (tie_Gval_ne X t h) (p_posX D _ (tie_Tu_pos D u) (X.fl t)) τ).1
 
 /- English proof (translation)
-Introduce `u u' t h`. Establish `hpos` using `tie_G_pos X t h`. Use `⟨fun h1 => ?_, fun _ τ => hpos _⟩` and prove the remaining obligations. Establish `hG : Gval (X.fl t) (X.fl' t) = -(((Tu D u : ℕ) : D.host.E) * ((Tu D u' : ℕ) : D.host.E) * (Dl (X.fl t).fl (X.fl' t).fl D.R.rS * star (Dl (X.fl t).fl (X.fl' t).fl D.R.rS)))`. Simplify using `only [Formalism.MainNotions.S.Lat.Gval, Formalism.MainNotions.S.Gflag, h1, star_zero, mul_zero, zero_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `haveI := D.host.isCMField_hostE`. Establish `hc : ∀ y : D.host.E, D.host.φ₀ (star y) = starRingEnd ℂ (D.host.φ₀ y)` using `fun y => NumberField.IsCMField.complexEmbedding_complexConj D.host.E D.host.φ₀ y`. Establish `h0` using `hpos D.host.φ₀`. Rewrite `h0` using `[hG, map_neg, map_mul, map_mul, map_mul, map_natCast, map_natCast, hc, Complex.mul_conj]`. Establish `key : 0 ≤ ((Tu D u : ℕ) : ℝ) * ((Tu D u' : ℕ) : ℝ) * Complex.normSq (D.host.φ₀ (Dl (X.fl t).fl (X.fl' t).fl D.R.rS))` using `mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) (Complex.normSq_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at h0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GDr_of_tie : PX.GDr D X := by
   intro u u' t h
@@ -62,9 +62,9 @@ theorem GDr_of_tie : PX.GDr D X := by
   linarith
 
 /- English proof (translation)
-Introduce `u u' p h1 _`. Rewrite using `[X.s0_eq p]`. Unfold `Lat.s0`. Establish `hr : finrank D.host.E (Hp (X.abelian₂ (D.s.pfst p)) (X.fl (D.s.pfst p)) (X.fl' (D.s.pfst p))) = D.R.k - 1` using `a_rankHp_k _ (X.fixed _).1 _ _ (X.fixed _).2.2.1.2 (X.lift' _).2 (tie_Gval_ne X _ h1) D.R.k (p_rankV D)`. Establish `hle : Th (X.abelian₂ (D.s.pfst p)) (X.fl (D.s.pfst p)) (X.fl' (D.s.pfst p)) (X.fl' (D.s.psnd p)) (X.beta p) ≤ Hp (X.abelian₂ (D.s.pfst p)) (X.fl (D.s.pfst p)) (X.fl' (D.s.pfst p))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨⟨a, b⟩, hab, rfl⟩`. Conclude with `hab.1.1.1`. Establish `h2` using `Submodule.finrank_mono hle`. Establish `hk` using `D.R.m_add_three_le_k`. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem S0ge1_of_tie (X : TermTie D) : PX.FirstSumAtLeastOne D := by
   intro u u' p h1 _
@@ -83,7 +83,7 @@ theorem S0ge1_of_tie (X : TermTie D) : PX.FirstSumAtLeastOne D := by
 end Rec
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.Dl Formalism.MainNotions.S.leadMinorE`. Rewrite using `[dif_pos hj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem tie_Dl_eq' {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
     (F : FlagG S r T) (F' : FlagG S r T') (j : ℕ) (hj : j ≤ r + 1) :
@@ -96,9 +96,9 @@ section Packets
 variable {D : D7} (X : TermTie D)
 
 /- English proof (translation)
-Introduce `x hx`. Unfold `Formalism.MainNotions.S.FlagG.X at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `h a`. Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => simp [hx, hz]`. Consider the case `smul c x _ hx => simp [hx]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tie_X_le_ker {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
     (F : FlagG S r T) (y : S.V) (h : ∀ a, S.hT (F.e a) y = 0) : ∀ x ∈ F.X, S.hT x y = 0 := by
@@ -113,7 +113,7 @@ theorem tie_X_le_ker {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpa
   | smul c x _ hx => simp [hx]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.FlagG.Xa Formalism.MainNotions.S.FlagG.X`. Conclude with `Submodule.span_mono (Set.image_subset_range _ _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tie_Xa_le_X {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
     (F : FlagG S r T) (a : ℕ) : F.Xa a ≤ F.X := by
@@ -121,11 +121,11 @@ theorem tie_Xa_le_X {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpac
   exact Submodule.span_mono (Set.image_subset_range _ _)
 
 /- English proof (translation)
-Take `⟨n, hn, he, hz⟩` from `(X.isId_iff t).1 h`. Take `⟨_, hj, hw⟩` from `hn`. Use `(X.inS_iff t).2 ⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Establish `hea : (X.fl t).fl.e a ∈ Submodule.span D.host.E ((X.fl t).fl.e '' {i | i.1 < a.val + 1})` using `Submodule.subset_span ⟨a, by simp, rfl⟩`. Establish `ha` using `hj a.val _ hea`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ha` using `[he a]`. Conclude with `ha`. Establish `hzo : (X.fl t).fl.z ∈ orth _ (Xsp (X.fl t))`. Simplify using `only [orth, Submodule.mem_iInf, LinearMap.mem_ker]`. Conclude with `tie_X_le_ker (X.fl t).fl _ (X.fl t).fl.z_orth`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : (X.fl' t).fl.z - (X.fl t).fl.z = (n (X.fl t).fl.z - (X.fl t).fl.z) - (n (X.fl t).fl.z - (X.fl' t).fl.z)` using `by abel`. Rewrite using `[hd]`. Conclude with `Submodule.sub_mem _ (hw _ hzo) hz`.
+A detailed English derivation is pending.
 -/
 theorem tie_isId_inS (X : TermTie D) {u u' : D.what₂.Word} (t : D.s.Term u u') (h : D.s.isId t) : D.s.inS t := by
   obtain ⟨n, hn, he, hz⟩ := (X.isId_iff t).1 h
@@ -145,13 +145,13 @@ theorem tie_isId_inS (X : TermTie D) {u u' : D.what₂.Word} (t : D.s.Term u u')
     exact Submodule.sub_mem _ (hw _ hzo) hz
 
 /- English proof (translation)
-Establish `hker : ∀ v ∈ F.X, S.hT (F.e a) v = 0`. Introduce `v hv`. Unfold `Formalism.MainNotions.S.FlagG.X at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨c, rfl⟩` from `hx`. Conclude with `F.e_iso a c`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul c x _ hx => simp [hx]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Simplify using `only [Formalism.MainNotions.S.Zhat, Formalism.MainNotions.S.brS, Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc, Fin.snoc_last]`. Rewrite using `[show F'.z = F.z + (F'.z - F.z) by abel, map_add, F.z_orth a, hker _ hz, add_zero]`. Consider the case `cast b`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.MainNotions.S.Zhat, Formalism.MainNotions.S.brS, Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_castSucc]`. Rewrite using `[show F'.e b = F.e b + (F'.e b - F.e b) by abel, map_add, F.e_iso a b, hker _ (tie_Xa_le_X F _ (he b)), add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Zhat_castSucc_eq_zero {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
     {T T' : E} (F : FlagG S r T) (F' : FlagG S r T') (he : ∀ a, F'.e a - F.e a ∈ F.Xa a.val)
@@ -177,21 +177,21 @@ private theorem Zhat_castSucc_eq_zero {E : Type} [Field E] [NumberField E] [Star
       hker _ (tie_Xa_le_X F _ (he b)), add_zero]
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Substitute `hr` using the available equality. Establish `hzz : F'.z = F.z`. Establish `h0 : F.X = ⊥`. Unfold `Formalism.MainNotions.S.FlagG.X`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Set.range_eq_empty, Submodule.span_empty]`. Rewrite `hz` using `[h0, Submodule.mem_bot, sub_eq_zero]`. Conclude with `hz`. Establish `kF : ∀ i : Fin (0 + 1), F.fvec i = F.z`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp only [Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_last]`. Consider the case `cast i => exact i.elim0`. Establish `kF' : ∀ i : Fin (0 + 1), F'.fvec i = F'.z`. Introduce `i`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => simp only [Formalism.MainNotions.S.FlagG.fvec, Fin.snoc_last]`. Consider the case `cast i => exact i.elim0`. Establish `h1 : Dl F F' 1 = -T`. Rewrite using `[tie_Dl_eq' F F' 1 le_rfl, Matrix.det_unique]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.submatrix_apply, Formalism.MainNotions.S.Zhat, Formalism.MainNotions.S.brS, kF, kF']`. Rewrite using `[hzz, F.z_norm]`. Establish `h2 : Dl F F' 0 = 1`. Rewrite using `[tie_Dl_eq' F F' 0 (Nat.zero_le _), Matrix.det_isEmpty]`. Simplify using `only [Formalism.MainNotions.S.Gflag, zero_add, h1, h2, star_neg, hT, star_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hrow : ∀ (l : ℕ) (hl : l ≤ r + 1) (h0 : 0 < l), Dl F F' l = 0`. Introduce `l hl h0`. Rewrite using `[tie_Dl_eq' F F' l hl]`. Use `Matrix.det_eq_zero_of_row_eq_zero ⟨0, h0⟩ (fun j => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.submatrix_apply]`. Establish `hc : (Fin.castLE hl ⟨0, h0⟩ : Fin (r + 1)) = Fin.castSucc ⟨0, hr⟩` using `Fin.ext rfl`. Rewrite using `[hc]`. Conclude with `Zhat_castSucc_eq_zero F F' he hz ⟨0, hr⟩ _`. Unfold `Formalism.MainNotions.S.Gflag`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hrow (r + 1) le_rfl (Nat.succ_pos r), hrow r (Nat.le_succ r) hr]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem Gflag_eq_zero_of_sub_mem {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
     {T : E} (F F' : FlagG S r T) (he : ∀ a, F'.e a - F.e a ∈ F.Xa a.val) (hz : F'.z - F.z ∈ F.X)
@@ -235,7 +235,7 @@ private theorem Gflag_eq_zero_of_sub_mem {E : Type} [Field E] [NumberField E] [S
     simp
 
 /- English proof (translation)
-Take `⟨he, hz⟩` from `(X.inS_iff t).1 h`. Establish `hG : Gval (X.fl t) (X.fl' t) = 0` using `Gflag_eq_zero_of_sub_mem (X.fl t).fl (X.fl' t).fl he hz (by simp)`. Establish `h2` using `X.G_eq t`. Rewrite `h2` using `[hG]`. Conclude with `(map_eq_zero_iff _ (algebraMap _ _).injective).1 h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_in_S_vanishes (X : TermTie D) {u : D.what₂.Word} (t : D.s.Term u u) (h : D.s.inS t) : D.s.Gterm t = 0 := by
   obtain ⟨he, hz⟩ := (X.inS_iff t).1 h

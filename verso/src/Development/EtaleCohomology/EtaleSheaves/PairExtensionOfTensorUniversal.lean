@@ -29,11 +29,11 @@ def LeafExtTens : Prop := ∀ (q : ℕ) [NeZero q] (i : ℤ) {S T : Cx (ZMod q)}
   ∀ u : S ⟶ res _ (tw q i), ∃ g : T ⟶ res _ (tw q i), ι ≫ g = u
 
 /- English proof (translation)
-Introduce `q _ i lam`. Set `σ` to `LateralTheory.E.LeafTwTensExPf.tau (sgl (tw q 0)) (res _ (tw q i))`. Set `τ` to `LateralTheory.E.LeafTwTensExPf.tau (res _ (tw q 0)) (res _ (tw q i))`. Establish `hσ : σ.IsTensor` using `LateralTheory.E.LeafTwTensExPf.tau_isTensor _ _`. Establish `hτ : τ.IsTensor` using `LateralTheory.E.LeafTwTensExPf.tau_isTensor _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `hup _ σ hσ lam`. Take `⟨ι, hι⟩` from `hup _ σ hσ (pre τ (resAug (tw q 0)))`. Take `⟨g, hg⟩` from `hext q i σ τ hσ hτ ι hι u`. Use `⟨post τ g, fun U t x b => ?_⟩` and prove the remaining obligations. Establish `e : Sec.map (ι.f t) (σ.mul U 0 t t (zero_add t) x b) = τ.mul U 0 t t (zero_add t) (Sec.map ((resAug (tw q 0)).f 0) x) b` using `hι U 0 t t (zero_add t) x b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[post_mul, ← e, map_map, ← HomologicalComplex.comp_f, hg, hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem LeafExtAlongAug_of (hup : LeafTensUP) (hext : LeafExtTens) : LeafExtAlongAug := by
   intro q _ i lam

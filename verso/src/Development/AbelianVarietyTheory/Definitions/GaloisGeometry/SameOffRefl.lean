@@ -31,7 +31,7 @@ def eMat {a N : ℕ} (hr : a = N) (σ : E →+* E) (J : Matrix (Fin N) (Fin N) E
   (LinearMap.toMatrix' (stdG σ J γ).toLinearMap).submatrix (finCongr hr) (finCongr hr)
 
 /- English proof (translation)
-Establish `hp : prV (E` using `E) (A.pl v).1 (x ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F)) = x ⊗ₜ[F] 1 := by`. Simplify using `[prV]`. Simplify using `only [phiA, LocAt.iw, LocAt.phE, RingHom.comp_apply, hp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem phiA_incl (A : LocAt F E n G) (v : Fin G.P.nV) (x : E) : phiA A v (x ⊗ₜ[F] 1) = A.iw v x := by
   have hp : prV (E := E) (A.pl v).1 (x ⊗ₜ[F] (1 : FiniteAdeleRing (𝓞 F) F)) = x ⊗ₜ[F] 1 := by

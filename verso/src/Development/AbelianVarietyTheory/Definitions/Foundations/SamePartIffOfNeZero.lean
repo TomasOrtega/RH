@@ -48,9 +48,9 @@ open Polynomial Classical in
 variable (g : ℕ) [Fact g.Prime] in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.BadShare.BB _root_.Formalism.CyclotomicNorms.BB _root_.Formalism.CyclotomicNorms.Exc`. Simplify using `only [Set.mem_union, Set.mem_singleton_iff, Set.mem_setOf_eq]`. Use `or_congr Iff.rfl ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨d, h1, h2, hp, hq⟩`. Conclude with `⟨hp, d, h1, h2, hq⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨hp, d, h1, h2, hq⟩`. Conclude with `⟨d, h1, h2, hp, hq⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.BadShare.bb_iff {g N l : ℕ} :
     _root_.GlobalTheory.BadShare.BB g N l ↔
@@ -64,7 +64,7 @@ theorem _root_.GlobalTheory.BadShare.bb_iff {g N l : ℕ} :
     exact ⟨d, h1, h2, hp, hq⟩
 
 /- English proof (translation)
-Use `haveI := Fact.mk hl`. Use `bb_iff.2 (Or.inr ⟨hl, d, h1, h2, h4.trans_le (Nat.pow_le_pow_right hl.pos ?_)⟩)` and prove the remaining obligations. Use `one_le_padicValNat_of_dvd h0 h3` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem bb_of_dvd {g N l d : ℕ} (hl : l.Prime) (h1 : 1 ≤ d) (h2 : d ≤ N) (h0 : g ^ d - 1 ≠ 0) (h3 : l ∣ g ^ d - 1)
     (h4 : g ^ d < l ^ 4) : BB g N l := by
@@ -74,12 +74,12 @@ theorem bb_of_dvd {g N l d : ℕ} (hl : l.Prime) (h1 : 1 ≤ d) (h2 : d ≤ N) (
   omega
 
 /- English proof (translation)
-The claim follows from `bb_of_dvd (d := 1) (by norm_num) le_rfl le_rfl (by norm_num) (by norm_num) (by norm_num)`.
+A detailed English derivation is pending.
 -/
 example : BB 7 1 3 := bb_of_dvd (d := 1) (by norm_num) le_rfl le_rfl (by norm_num) (by norm_num) (by norm_num)
 
 /- English proof (translation)
-Rewrite using `[bb_iff]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 example : ¬ BB 7 1 6 := by
   rw [bb_iff]; norm_num
@@ -90,7 +90,7 @@ variable {k : Type} [Field k] {l : ℕ}
 open Polynomial Classical in
 variable (g : ℕ) [Fact g.Prime] in
 /- English proof (translation)
-Rewrite using `[← pow_mod_orderOf, show a % orderOf x = b % orderOf x from h, pow_mod_orderOf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem pow_eq_pow_of_modEq_orderOf' {G : Type*} [Monoid G] {x : G} {a b : ℕ}
     (h : a ≡ b [MOD orderOf x]) : x ^ a = x ^ b := by
@@ -101,9 +101,9 @@ variable (g : ℕ) [Fact g.Prime] in
 variable {k : Type} [Field k] {l : ℕ} in
 
 /- English proof (translation)
-Use `haveI : NeZero M := ⟨hM0⟩`. Establish `hs : l ^ a * ((l ^ a : ℕ) : ZMod M)⁻¹.val ≡ 1 [MOD M]`. Rewrite using `[← ZMod.natCast_eq_natCast_iff, Nat.cast_mul, ZMod.natCast_zmod_val, Nat.cast_one]`. Conclude with `ZMod.coe_mul_inv_eq_one _ (hM.symm.pow_left a)`. Establish `key : ∀ z : k, z ^ M = 1 → (z ^ (l ^ a)) ^ ((l ^ a : ℕ) : ZMod M)⁻¹.val = z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Rewrite using `[← pow_mul]`. Use `conv_rhs => rw [← pow_one z]`. Conclude with `pow_eq_pow_of_modEq_orderOf' (hs.of_dvd (orderOf_dvd_of_pow_eq_one hz))`. Rewrite using `[← key x hx, ← key y hy, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BadShare.eq_of_pow_eq {M a : ℕ} (hM : M.Coprime l) {x y : k} (hx : x ^ M = 1)
     (hy : y ^ M = 1) (hM0 : M ≠ 0) (h : x ^ (l ^ a) = y ^ (l ^ a)) : x = y := by
@@ -121,13 +121,11 @@ theorem _root_.GlobalTheory.BadShare.eq_of_pow_eq {M a : ℕ} (hM : M.Coprime l)
 open Polynomial Classical in
 variable (g : ℕ) [Fact g.Prime] in
 /- English proof (translation)
-Unfold `_root_.Formalism.CyclotomicNorms.primeToPart`. Use `set n := orderOf x with hndef`. Use `set v := n.factorization l with hvdef`. Use `set m := n / l ^ v with hmdef`. Establish `hn : n ≠ 0` using `hx.orderOf_pos.ne'`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : m ≠ 0` using `(Nat.ordCompl_pos l hn).ne'`. Establish `hcop : Nat.Coprime (l ^ v) m` using `(Nat.coprime_ordCompl hl hn).pow_left v`. Establish `hnm : l ^ v * m = n` using `Nat.ordProj_mul_ordCompl_eq_self n l`. Use `haveI : NeZero m := ⟨hm⟩`. Establish `hinv : l ^ v * ((l ^ v : ℕ) : ZMod m)⁻¹.val ≡ 1 [MOD m]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ZMod.natCast_eq_natCast_iff, Nat.cast_mul, ZMod.natCast_zmod_val, Nat.cast_one]`. Conclude with `ZMod.coe_mul_inv_eq_one _ hcop`. Rewrite using `[← pow_mul]`. Apply `pow_eq_pow_of_modEq_orderOf'` to reduce the goal to its premises. Rewrite using `[← hndef, ← hnm, ← Nat.modEq_and_modEq_iff_modEq_mul hcop]`.
-
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1 : l ^ v ∣ l ^ a` using `pow_dvd_pow l ha`. Conclude with `(Nat.modEq_zero_iff_dvd.2 (Dvd.dvd.mul_left h1 _)).trans (Nat.modEq_zero_iff_dvd.2 h1).symm`. Simplify `hinv.mul_right (l ^ a)` using `only [one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem primeToPart_pow_prime_pow_eq_of_factorization_le {G : Type*} [Monoid G] {l : ℕ} (hl : l.Prime) {x : G}
     (hx : IsOfFinOrder x) {a : ℕ} (ha : (orderOf x).factorization l ≤ a) :
@@ -155,7 +153,7 @@ private theorem primeToPart_pow_prime_pow_eq_of_factorization_le {G : Type*} [Mo
 open Polynomial Classical in
 variable (g : ℕ) [Fact g.Prime] in
 /- English proof (translation)
-Unfold `_root_.Formalism.CyclotomicNorms.primeToPart`. Rewrite using `[← pow_mul, ← orderOf_dvd_iff_pow_eq_one]`. Use `conv_lhs => rw [← Nat.ordProj_mul_ordCompl_eq_self (orderOf x) l]`. Conclude with `mul_dvd_mul_right (dvd_mul_right _ _) _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem primeToPart_pow_orderOf_div_prime_pow_eq_one {G : Type*} [Monoid G] (l : ℕ) (x : G) :
     _root_.Formalism.CyclotomicNorms.primeToPart l x ^ (orderOf x / l ^ (orderOf x).factorization l) = 1 := by
@@ -169,11 +167,11 @@ variable (g : ℕ) [Fact g.Prime] in
 variable {k : Type} [Field k] {l : ℕ} in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.BadShare.SamePart`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨max ((orderOf x).factorization l) ((orderOf y).factorization l), ?_⟩` and prove the remaining obligations. Rewrite using `[← primeToPart_pow_prime_pow_eq_of_factorization_le hl hx (le_max_left _ _), ← primeToPart_pow_prime_pow_eq_of_factorization_le hl hy (le_max_right _ _), h]`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨a, h⟩`. Establish `hab : x ^ (l ^ max a (max ((orderOf x).factorization l) ((orderOf y).factorization l))) = y ^ (l ^ max a (max ((orderOf x).factorization l) ((orderOf y).factorization l)))`. Take `⟨c, hc⟩ : l ^ a ∣ l ^ max a (max ((orderOf x).factorization l) ((orderOf y).factorization l))` from `pow_dvd_pow l (le_max_left _ _)`. Rewrite using `[hc, pow_mul, pow_mul, h]`. Establish `hcx : (orderOf x / l ^ (orderOf x).factorization l).Coprime l` using `(Nat.coprime_ordCompl hl hx.orderOf_pos.ne').symm`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcy : (orderOf y / l ^ (orderOf y).factorization l).Coprime l` using `(Nat.coprime_ordCompl hl hy.orderOf_pos.ne').symm`. Use `_root_.GlobalTheory.BadShare.eq_of_pow_eq (a := max a (max ((orderOf x).factorization l) ((orderOf y).factorization l))) (hcx.mul hcy) ?_ ?_ (mul_ne_zero (Nat.ordCompl_pos l hx.orderOf_pos.ne').ne' (Nat.ordCompl_pos l hy.orderOf_pos.ne').ne') ?_` and prove the remaining obligations. Rewrite using `[pow_mul, primeToPart_pow_orderOf_div_prime_pow_eq_one, one_pow]`. Rewrite using `[mul_comm, pow_mul, primeToPart_pow_orderOf_div_prime_pow_eq_one, one_pow]`. Rewrite using `[primeToPart_pow_prime_pow_eq_of_factorization_le hl hx (le_trans (le_max_left _ _) (le_max_right _ _)), primeToPart_pow_prime_pow_eq_of_factorization_le hl hy (le_trans (le_max_right _ _) (le_max_right _ _)), hab]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.BadShare.samePart_iff (hl : l.Prime) {x y : k} (hx : IsOfFinOrder x) (hy : IsOfFinOrder y) :
     _root_.GlobalTheory.BadShare.SamePart l x y ↔ ∃ a : ℕ, x ^ (l ^ a) = y ^ (l ^ a) := by
@@ -210,9 +208,9 @@ variable (g : ℕ) [Fact g.Prime] in
 variable {g} in
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Rewrite `hx` using `[mem_aroots]`. Apply `h0` to reduce the goal to its premises. Establish `h` using `hx.2`. Rewrite `h` using `[← coeff_zero_eq_aeval_zero']`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(map_eq_zero_iff _ (algebraMap (ZMod g) (AlgebraicClosure (ZMod g))).injective).mp h`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BadShare.root_ne_zero {f : (ZMod g)[X]} (h0 : f.coeff 0 ≠ 0) {x : AlgebraicClosure (ZMod g)}
     (hx : x ∈ f.aroots (AlgebraicClosure (ZMod g))) : x ≠ 0 := by
@@ -226,9 +224,9 @@ theorem _root_.GlobalTheory.BadShare.root_ne_zero {f : (ZMod g)[X]} (h0 : f.coef
 open Polynomial Classical in
 variable (g : ℕ) [Fact g.Prime] in
 /- English proof (translation)
-Establish `hint : IsIntegral (ZMod g) x` using `Algebra.IsIntegral.isIntegral x`. Use `haveI := IntermediateField.adjoin.finiteDimensional hint`. Use `haveI : Finite (IntermediateField.adjoin (ZMod g) {x}) := Module.finite_of_finite (ZMod g)`. Set `y : IntermediateField.adjoin (ZMod g) {x}` to `⟨x, IntermediateField.mem_adjoin_simple_self _ x⟩`. Establish `hy : y ≠ 0` using `fun h => hx (by simpa [y] using congrArg Subtype.val h)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, hn, hpow⟩` from `(isOfFinOrder_of_finite (Units.mk0 y hy)).exists_pow_eq_one`. Use `isOfFinOrder_iff_pow_eq_one.mpr ⟨n, hn, ?_⟩` and prove the remaining obligations. Use `congrArg (fun u : (IntermediateField.adjoin (ZMod g) {x})ˣ => ((u : IntermediateField.adjoin (ZMod g) {x}) : AlgebraicClosure (ZMod g))) hpow` as an intermediate fact. Simplify `this` using `[y]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem isOfFinOrder_of_ne_zero_algebraicClosure_zmod {g : ℕ} [Fact g.Prime]
     {x : AlgebraicClosure (ZMod g)} (hx : x ≠ 0) : IsOfFinOrder x := by
@@ -248,7 +246,7 @@ variable (g : ℕ) [Fact g.Prime] in
 variable {g} in
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.BadShare.samePart_iff hl (isOfFinOrder_of_ne_zero_algebraicClosure_zmod hx) (isOfFinOrder_of_ne_zero_algebraicClosure_zmod hy)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BadShare.samePart_iff_of_ne_zero {l : ℕ} (hl : l.Prime) {x y : AlgebraicClosure (ZMod g)} (hx : x ≠ 0)
     (hy : y ≠ 0) : _root_.GlobalTheory.BadShare.SamePart l x y ↔ ∃ a : ℕ, x ^ (l ^ a) = y ^ (l ^ a) :=
@@ -260,7 +258,7 @@ variable (g : ℕ) [Fact g.Prime] in
 variable {g} in
 
 /- English proof (translation)
-Establish `hc : algebraMap (ZMod g) (AlgebraicClosure (ZMod g)) (c : ZMod g) ≠ 0` using `(_root_.map_ne_zero _).mpr c.ne_zero`. Unfold `_root_.GlobalTheory.BadShare.RootsAvoid`. Use `forall_congr' fun l => forall_congr' fun hl => forall_congr' fun _ => forall_congr' fun x => forall_congr' fun hx => ?_` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.BadShare.samePart_iff_of_ne_zero hl (_root_.GlobalTheory.BadShare.root_ne_zero h0 hx) hc, not_exists]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.BadShare.rootsAvoid_iff {c : (ZMod g)ˣ} {f : (ZMod g)[X]} (h0 : f.coeff 0 ≠ 0) :
     _root_.GlobalTheory.BadShare.RootsAvoid g c f ↔ ∀ l : ℕ, l.Prime → l ≠ g → ∀ x ∈ f.aroots (AlgebraicClosure (ZMod g)), ∀ a : ℕ,
@@ -283,11 +281,11 @@ variable (g : ℕ) [Fact g.Prime] in
 variable {g} in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.BadShare.sqSet`. Simplify using `only [Finset.mem_filter, Finset.mem_image, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨c, rfl⟩, hs, h0⟩`. Establish `hlt` using `degree_sum_fin_lt c`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨monic_X_pow_add hlt, ?_, hs, h0⟩` and prove the remaining obligations. Rewrite using `[natDegree_add_eq_left_of_degree_lt (by rwa [degree_X_pow]), natDegree_X_pow]`. Introduce and unpack `⟨hm, hd, hs, h0⟩`. Use `⟨⟨fun i => f.coeff i, ?_⟩, hs, h0⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => C (f.coeff i) * X ^ i) N, ← hd]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `hm.as_sum.symm`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BadShare.mem_sqSet {N : ℕ} {f : (ZMod g)[X]} :
     f ∈ _root_.GlobalTheory.BadShare.sqSet g N ↔ f.Monic ∧ f.natDegree = N ∧ Squarefree f ∧ f.coeff 0 ≠ 0 := by
@@ -308,13 +306,13 @@ variable (g : ℕ) [Fact g.Prime] in
 variable {g} in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.BadShare.Good`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨h1, h2, h3, h4, h5, h6⟩, ⟨-, -, -, h4', -, -⟩⟩`. Use `⟨fun v => _root_.GlobalTheory.BadShare.mem_sqSet.2 ⟨(h1 v).1, (h1 v).2.1, h2 v, (h1 v).2.2⟩, fun v l hl hB x hx y hy hxy => h3 l hl hB v x hx y hy hxy, fun v j => ⟨fun l hl hlg x hx => h4 l hl hlg v j x hx, fun l hl hlg x hx => h4' l hl hlg v j x hx⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, ha1, ha2, hall⟩`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨v, hv⟩` from `h5 a ha1 ha2`. Conclude with `hv (hall v)`. Take `⟨v, q, hq⟩` from `h6`. Conclude with `⟨v, q, hq⟩`. Introduce and unpack `⟨h1, h2, h3, h4, v, hv⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hA : ∀ w, (F w).Monic ∧ (F w).natDegree = N ∧ (F w).coeff 0 ≠ 0` using `fun w => ⟨(_root_.GlobalTheory.BadShare.mem_sqSet.1 (h1 w)).1, (_root_.GlobalTheory.BadShare.mem_sqSet.1 (h1 w)).2.1, (_root_.GlobalTheory.BadShare.mem_sqSet.1 (h1 w)).2.2.2⟩`. Establish `hS : ∀ w, Squarefree (F w)` using `fun w => (_root_.GlobalTheory.BadShare.mem_sqSet.1 (h1 w)).2.2.1`. Establish `hD : ∀ a : ℕ, 1 ≤ a → 2 * a ≤ N → ∃ w, ¬∃ q : (ZMod g)[X], q ∣ F w ∧ q.natDegree = a`. Introduce `a ha1 ha2`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components.
 
-Use `push_neg at hc`. Conclude with `h4 ⟨a, ha1, ha2, hc⟩`. Conclude with `⟨⟨hA, hS, fun l hl hB w => h2 w l hl hB, fun l hl hlg w j => (h3 w j).1 l hl hlg, hD, v, hv⟩, ⟨hA, hS, fun l hl hB w => h2 w l hl hB, fun l hl hlg w j => (h3 w j).2 l hl hlg, hD, v, hv⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BadShare.good_iff {ι : Type} {m N : ℕ} {ch : ι → Fin m → (ZMod g)ˣ} {F : ι → (ZMod g)[X]} :
     _root_.GlobalTheory.BadShare.Good g N ch F ↔ (∀ v, F v ∈ _root_.GlobalTheory.BadShare.sqSet g N) ∧
@@ -351,7 +349,7 @@ variable (g : ℕ) [Fact g.Prime] in
 variable {g} in
 
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.BadShare.goodSet, Finset.mem_filter, Fintype.mem_piFinset]`. Conclude with `⟨fun h => h.2, fun h => ⟨(_root_.GlobalTheory.BadShare.good_iff.1 h).1, h⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.BadShare.mem_goodSet_iff_good {ι : Type} [Fintype ι] {m N : ℕ} {ch : ι → Fin m → (ZMod g)ˣ}
     {F : ι → (ZMod g)[X]} : F ∈ _root_.GlobalTheory.BadShare.goodSet g N ch ↔ _root_.GlobalTheory.BadShare.Good g N ch F := by
@@ -363,7 +361,7 @@ variable (g : ℕ) [Fact g.Prime] in
 variable {g} in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.BadShare.torusCard _root_.GlobalTheory.BadShare.degType`. Rewrite using `[UniqueFactorizationMonoid.normalizedFactors_irreducible hf, Multiset.map_singleton, Multiset.map_singleton, Multiset.prod_singleton, natDegree_eq_of_degree_eq degree_normalize]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.BadShare.torusCard_irreducible {f : (ZMod g)[X]} (hf : Irreducible f) :
     _root_.GlobalTheory.BadShare.torusCard g f = g ^ f.natDegree - 1 := by
@@ -376,7 +374,7 @@ variable (g : ℕ) [Fact g.Prime] in
 variable {g} in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.BadShare.torusCard _root_.GlobalTheory.BadShare.degType`. Rewrite using `[UniqueFactorizationMonoid.normalizedFactors_mul hf hh, Multiset.map_add, Multiset.map_add, Multiset.prod_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.BadShare.torusCard_mul {f h : (ZMod g)[X]} (hf : f ≠ 0) (hh : h ≠ 0) :
     _root_.GlobalTheory.BadShare.torusCard g (f * h) = _root_.GlobalTheory.BadShare.torusCard g f * _root_.GlobalTheory.BadShare.torusCard g h := by
@@ -388,7 +386,7 @@ variable (g : ℕ) [Fact g.Prime] in
 variable {g} in
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => inv_nonneg.mpr (Nat.cast_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BadShare.mass_nonneg (N : ℕ) (A : (ZMod g)[X] → Prop) : 0 ≤ _root_.GlobalTheory.BadShare.mass g N A :=
   Finset.sum_nonneg fun _ _ => inv_nonneg.mpr (Nat.cast_nonneg _)
@@ -398,9 +396,9 @@ variable (g : ℕ) [Fact g.Prime] in
 variable {g} in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.BadShare.mass`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `f hf`. Rewrite `hf`, the goal using `[Finset.mem_filter]`. Conclude with `⟨hf.1, h f hf.1 hf.2⟩`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `f _ _`. Conclude with `inv_nonneg.mpr (Nat.cast_nonneg _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BadShare.mass_mono {N : ℕ} {A B : (ZMod g)[X] → Prop}
     (h : ∀ f ∈ _root_.GlobalTheory.BadShare.sqSet g N, A f → B f) :
@@ -414,20 +412,20 @@ theorem _root_.GlobalTheory.BadShare.mass_mono {N : ℕ} {A B : (ZMod g)[X] → 
     exact inv_nonneg.mpr (Nat.cast_nonneg _)
 
 /- English proof (translation)
-Rewrite using `[torusCard_irreducible irreducible_X]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example : torusCard g X = g - 1 := by rw [torusCard_irreducible irreducible_X]; simp
 
 /- English proof (translation)
-Use `haveI : Fintype (GaloisField g d) := Fintype.ofFinite _`. Take `⟨α, hα⟩` from `IsCyclic.exists_monoid_generator (α := (GaloisField g d)ˣ)`. Establish `hi : IsIntegral (ZMod g) (α : GaloisField g d)` using `Algebra.IsIntegral.isIntegral _`. Establish `hord : orderOf α = g ^ d - 1`. Rewrite using `[orderOf_eq_card_of_forall_mem_powers hα, Nat.card_units, GaloisField.card g d hd]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htop : IntermediateField.adjoin (ZMod g) {(α : GaloisField g d)} = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Distinguish the cases in `hx : x = 0`. Rewrite using `[hx]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_mem _`. Take `⟨n, hn⟩` from `hα (Units.mk0 x hx)`. Establish `: x = (α : GaloisField g d) ^ n` using `by simpa using (congrArg Units.val hn).symm`. Rewrite using `[this]`. Conclude with `pow_mem (IntermediateField.mem_adjoin_simple_self _ _) n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨minpoly (ZMod g) (α : GaloisField g d), minpoly.monic hi, minpoly.irreducible hi, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(Field.primitive_element_iff_minpoly_natDegree_eq _ _).1 htop, GaloisField.finrank g hd]`. Introduce `x hx n`. Establish `h1` using `minpoly.eq_of_irreducible_of_monic (minpoly.irreducible hi) (mem_aroots.1 hx).2 (minpoly.monic hi)`. Establish `h2 : x ^ n = 1 ↔ minpoly (ZMod g) x ∣ X ^ n - 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[minpoly.dvd_iff]`. Simplify using `[sub_eq_zero]`. Rewrite using `[h2, ← h1, minpoly.dvd_iff, ← hord, orderOf_dvd_iff_pow_eq_one]`. Simplify using `only [map_sub, map_pow, aeval_X, map_one, sub_eq_zero]`. Rewrite using `[← Units.val_pow_eq_pow_val, Units.val_eq_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_primitive (d : ℕ) (hd : d ≠ 0) : ∃ P : (ZMod g)[X], P.Monic ∧ Irreducible P ∧ P.natDegree = d ∧
     ∀ x ∈ P.aroots (AlgebraicClosure (ZMod g)), ∀ n : ℕ, x ^ n = 1 ↔ g ^ d - 1 ∣ n := by
@@ -458,7 +456,7 @@ theorem exists_primitive (d : ℕ) (hd : d ≠ 0) : ∃ P : (ZMod g)[X], P.Monic
 local instance factPrimeThree : Fact (Nat.Prime 3) := ⟨by norm_num⟩
 
 /- English proof (translation)
-Introduce `h`. Establish `e1` using `(Nat.prime_dvd_prime_iff_eq Nat.prime_two hl).1 (Nat.prime_two.dvd_of_dvd_pow (h2.trans h))`. Establish `e2` using `(Nat.prime_dvd_prime_iff_eq hp hl).1 (hp.dvd_of_dvd_pow (h3.trans h))`. Conclude with `hp2 (e2.trans e1.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_two_primes {l a n p : ℕ} (hl : l.Prime) (hp : p.Prime) (hp2 : p ≠ 2) (h2 : 2 ∣ n) (h3 : p ∣ n) : ¬ n ∣ l ^ a := by
   intro h

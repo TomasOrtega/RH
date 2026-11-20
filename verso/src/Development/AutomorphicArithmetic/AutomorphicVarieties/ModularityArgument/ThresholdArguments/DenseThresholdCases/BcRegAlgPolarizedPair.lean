@@ -11,9 +11,9 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace GlobalTheory.BcPolar
 /- English proof (translation)
-Introduce `hL F K _ _ _ _ _ _ _ h2 a ha π χ P hreg hpol hBC`. Use `⟨(GlobalTheory.CuspRep.CG.isRegAlg_iff _).2 fun τ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨m, hm, hnd, hz⟩` from `hreg (InfinitePlace.mk (τ.comp (algebraMap F K)))`. Rewrite using `[CG.HasInfChar.infChar_eq (π := CG.mk P) (hBC.inf τ m hm)]`. Conclude with `⟨hnd, hz⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨χ', hs, hd⟩` from `GlobalTheory.T.base_change_dual_compatible hL.aut.js.1 hL.aut.gk F K h2 a ha π χ P hpol hBC`. Take `⟨k, hk⟩` from `GlobalTheory.BcPolar.exists_sign_twist χ' hs a`. Use `⟨χ' * quadChar K ^ k, fun v => (hk v).trans (zpow_natCast _ _), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, compNorm_quadChar, one_pow, mul_one]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem bc_regAlg_polarizedPair_alt : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → ∀ (F K : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field K] [NumberField K] [IsCMField K] [Algebra F K], Module.finrank F K = 2 → ∀ (a : ℕ), 1 ≤ a → ∀ (π : TR.CuspSub F a) (χ : HChar F) (P : CuspSub K a), π.IsRegAlg → π.Polarized χ → IsBC π P → (CG.mk P).IsRegAlg ∧ ∃ χ' : HChar (maximalRealSubfield K), GlobalTheory.ContraPair.PolarizedPair P χ' := by
   intro hL F K _ _ _ _ _ _ _ h2 a ha π χ P hreg hpol hBC

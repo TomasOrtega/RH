@@ -17,11 +17,11 @@ section Hcl
 variable {e : ℕ}
 
 /- English proof (translation)
-Unfold `hcl`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_zpowers_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`. Break down `Int.even_or_odd k with hk2 | hk2` into its components or cases.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Use `left`. Rewrite `hk` using `[hk2.neg_one_zpow]`. Conclude with `inv_mul_eq_one.mp hk.symm`. Use `right`. Rewrite `hk` using `[hk2.neg_one_zpow]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hv : v = u * -1` using `inv_mul_eq_iff_eq_mul.mp hk.symm`. Rewrite using `[hv, mul_neg_one, neg_neg]`. Introduce and unpack `(rfl | rfl)`. Conclude with `⟨0, by simp⟩`. Conclude with `⟨1, by simp⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hcl_eq_hcl_iff (u v : (ZMod (2 ^ (e + 2)))ˣ) :
     hcl e u = hcl e v ↔ u = v ∨ u = -v := by
@@ -42,7 +42,7 @@ theorem hcl_eq_hcl_iff (u v : (ZMod (2 ^ (e + 2)))ˣ) :
     · exact ⟨1, by simp⟩
 
 /- English proof (translation)
-Unfold `hcl`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_zpowers_iff]`. Conclude with `⟨1, by simp⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem hcl_neg (u : (ZMod (2 ^ (e + 2)))ˣ) : hcl e (-u) = hcl e u := by
   unfold hcl
@@ -55,7 +55,7 @@ Both sides reduce to the same expression.
 theorem hcl_one : hcl e (1 : (ZMod (2 ^ (e + 2)))ˣ) = 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[hcl_neg, hcl_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hcl_neg_one : hcl e (-1 : (ZMod (2 ^ (e + 2)))ˣ) = 1 := by
   rw [hcl_neg, hcl_one]
@@ -73,9 +73,7 @@ section Signs
 variable {e : ℕ} {L : Type*} [Field L] [Algebra ℚ L] {ζ a b : L}
 
 /- English proof (translation)
-Unfold `Formalism.TwoAdicCyclotomicDecomposition.sgn`. Distinguish the cases in `hx : σ x = x`. Rewrite using `[if_pos hx]`. Conclude with `iff_of_true rfl hx`. Rewrite using `[if_neg hx]`.
-
-Conclude with `iff_of_false (by decide) hx`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sgn_eq_one_iff_apply_eq {M : Type*} [Field M] [Algebra ℚ M] (σ : M ≃ₐ[ℚ] M) (x : M) :
     Formalism.TwoAdicCyclotomicDecomposition.sgn σ x = 1 ↔ σ x = x := by
@@ -87,7 +85,7 @@ private lemma sgn_eq_one_iff_apply_eq {M : Type*} [Field M] [Algebra ℚ M] (σ 
     exact iff_of_false (by decide) hx
 
 /- English proof (translation)
-Unfold `galE Psi`. Rewrite using `[MonoidHom.mem_ker]`. Conclude with `sgn_eq_one_iff_apply_eq σ (bE ζ a b)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galE_mem_Psi_iff (σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) :
     galE e ζ a b σ ∈ Psi e ↔ σ (bE ζ a b) = bE ζ a b := by
@@ -102,21 +100,21 @@ section Layer
 variable {e q d : ℕ} {L : Type} [Field L] [NumberField L] {ζ a b : L}
 
 /- English proof (translation)
-The claim follows from `Galois.isGalois_hostE hqd h`.
+A detailed English derivation is pending.
 -/
 theorem hostE_isGalois (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     IsGalois ℚ (hostE ζ a b) :=
   Galois.isGalois_hostE hqd h
 
 /- English proof (translation)
-The claim follows from `Galois.finrank_cmField hqd h`.
+A detailed English derivation is pending.
 -/
 theorem finrank_cmField (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     Module.finrank ℚ (hostE ζ a b) = 2 ^ (e + 2) :=
   Galois.finrank_cmField hqd h
 
 /- English proof (translation)
-The claim follows from `(hostGalois e q d hqd L ζ a b h).2.2.1 σ τ`.
+A detailed English derivation is pending.
 -/
 theorem galE_mul (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     (σ τ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) :
@@ -124,7 +122,7 @@ theorem galE_mul (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
   (hostGalois e q d hqd L ζ a b h).2.2.1 σ τ
 
 /- English proof (translation)
-The claim follows from `(hostGalois e q d hqd L ζ a b h).2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem galE_bijective (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     Function.Bijective (galE e ζ a b) :=
@@ -141,40 +139,40 @@ Both sides reduce to the same expression.
     (σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) : galEquiv hqd h σ = galE e ζ a b σ := rfl
 
 /- English proof (translation)
-Simplify using `using map_one (galEquiv hqd h)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem galE_one (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     galE e ζ a b (1 : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) = 1 := by
   simpa using map_one (galEquiv hqd h)
 
 /- English proof (translation)
-Simplify using `using map_inv (galEquiv hqd h) σ`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem galE_inv (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     (σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) : galE e ζ a b σ⁻¹ = (galE e ζ a b σ)⁻¹ := by
   simpa using map_inv (galEquiv hqd h) σ
 
 /- English proof (translation)
-Simplify using `using map_pow (galEquiv hqd h) σ k`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem galE_pow (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     (σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) (k : ℕ) : galE e ζ a b (σ ^ k) = galE e ζ a b σ ^ k := by
   simpa using map_pow (galEquiv hqd h) σ k
 
 /- English proof (translation)
-The claim follows from `(galE_bijective hqd h).1`.
+A detailed English derivation is pending.
 -/
 theorem galE_injective (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     Function.Injective (galE e ζ a b) := (galE_bijective hqd h).1
 
 /- English proof (translation)
-The claim follows from `(galE_bijective hqd h).2 g`.
+A detailed English derivation is pending.
 -/
 theorem exists_galE_eq (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) (g : GG e) :
     ∃ σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b, galE e ζ a b σ = g := (galE_bijective hqd h).2 g
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hs`. Conclude with `galE_injective hqd h (hs.trans (galE_one hqd h).symm)`. Introduce and unpack `rfl`. Conclude with `galE_one hqd h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem galE_eq_one_iff (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     (σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) : galE e ζ a b σ = 1 ↔ σ = 1 := by
@@ -185,7 +183,7 @@ theorem galE_eq_one_iff (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     exact galE_one hqd h
 
 /- English proof (translation)
-The claim follows from `Galois.exists_lift hqd h σ`.
+A detailed English derivation is pending.
 -/
 theorem galE_exists_lift (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     (σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) :
@@ -193,15 +191,13 @@ theorem galE_exists_lift (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
   Galois.exists_lift hqd h σ
 
 /- English proof (translation)
-Rewrite using `[hcl_eq_hcl_iff]`. Establish `hz : ζ ≠ 0` using `hζ.ne_zero (pow_ne_zero _ two_ne_zero)`. Establish `hx2 : ζ ^ (u : ZMod (2 ^ (e + 2))).val * ζ⁻¹ ^ (u : ZMod (2 ^ (e + 2))).val = 1`. Rewrite using `[← mul_pow, mul_inv_cancel₀ hz, one_pow]`. Establish `hy2 : ζ ^ (v : ZMod (2 ^ (e + 2))).val * ζ⁻¹ ^ (v : ZMod (2 ^ (e + 2))).val = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mul_pow, mul_inv_cancel₀ hz, one_pow]`. Establish `key : (ζ ^ (u : ZMod (2 ^ (e + 2))).val - ζ ^ (v : ZMod (2 ^ (e + 2))).val) * (ζ ^ (u : ZMod (2 ^ (e + 2))).val * ζ ^ (v : ZMod (2 ^ (e + 2))).val - 1) = 0`. Take the linear combination `(ζ ^ (u : ZMod (2 ^ (e + 2))).val * ζ ^ (v : ZMod (2 ^ (e + 2))).val) * huv - ζ ^ (v : ZMod (2 ^ (e + 2))).val * hx2 + ζ ^ (u : ZMod (2 ^ (e + 2))).val * hy2`. Break down `mul_eq_zero.1 key with h1 | h1` into its components or cases. Use `left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h3` using `sub_eq_zero.1 h1`. Establish `hij` using `hζ.pow_inj (ZMod.val_lt _) (ZMod.val_lt _) h3`. Conclude with `Units.ext (ZMod.val_injective _ hij)`. Use `right`. Establish `h3 : ζ ^ ((u : ZMod (2 ^ (e + 2))).val + (v : ZMod (2 ^ (e + 2))).val) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pow_add]`. Conclude with `sub_eq_zero.1 h1`. Establish `h4` using `(hζ.pow_eq_one_iff_dvd _).1 h3`. Establish `h5` using `(CharP.cast_eq_zero_iff (ZMod (2 ^ (e + 2))) (2 ^ (e + 2)) _).2 h4`. Move the coercions through the operations in `at h5`.
-
-Simplify using `only [ZMod.natCast_val, ZMod.cast_id', id] at h5`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_neg]`. Conclude with `eq_neg_of_add_eq_zero_left h5`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma hcl_eq_of_pow_add_inv_pow_eq {M : Type} [Field M] {e : ℕ} {ζ : M} (hζ : IsPrimitiveRoot ζ (2 ^ (e + 2)))
     (u v : (ZMod (2 ^ (e + 2)))ˣ)
@@ -236,9 +232,9 @@ private lemma hcl_eq_of_pow_add_inv_pow_eq {M : Type} [Field M] {e : ℕ} {ζ : 
     exact eq_neg_of_add_eq_zero_left h5
 
 /- English proof (translation)
-Establish `hd : 2 ^ (e + 2) ∣ (-x).val + x.val`. Rewrite using `[← CharP.cast_eq_zero_iff (ZMod (2 ^ (e + 2))) (2 ^ (e + 2))]`. Use `push_cast`. Simplify using `only [ZMod.natCast_val, ZMod.cast_id', id]`. Conclude with `neg_add_cancel x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : ζ ^ ((-x).val + x.val) = 1` using `(hζ.pow_eq_one_iff_dvd _).2 hd`. Rewrite `h1` using `[pow_add]`. Rewrite using `[inv_pow]`. Conclude with `eq_inv_of_mul_eq_one_left h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma zpow_neg_val_eq_inv_pow_val_of_isPrimitiveRoot {M : Type} [Field M] {e : ℕ} {ζ : M} (hζ : IsPrimitiveRoot ζ (2 ^ (e + 2)))
     (x : ZMod (2 ^ (e + 2))) : ζ ^ (-x).val = ζ⁻¹ ^ x.val := by
@@ -253,13 +249,13 @@ private lemma zpow_neg_val_eq_inv_pow_val_of_isPrimitiveRoot {M : Type} [Field M
   exact eq_inv_of_mul_eq_one_left h1
 
 /- English proof (translation)
-Establish `hs : ∀ (x : hostE ζ a b) (y : L), (x : L) = y → Formalism.TwoAdicCyclotomicDecomposition.sgn σ x = Formalism.TwoAdicCyclotomicDecomposition.sgn τ y`. Introduce `x y hxy`. Establish `hiff : σ x = x ↔ τ y = y`. Rewrite using `[Subtype.ext_iff, hστ, hxy]`. Unfold `Formalism.TwoAdicCyclotomicDecomposition.sgn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `h1 : σ x = x`. Rewrite using `[if_pos h1, if_pos (hiff.1 h1)]`. Rewrite using `[if_neg h1, if_neg (fun h2 => h1 (hiff.2 h2))]`. Establish `hθ : ((σ (thE ζ a b) : hostE ζ a b) : L) = ζ ^ ((h.1.autToPow ℚ τ : (ZMod (2 ^ (e + 2)))ˣ) : ZMod (2 ^ (e + 2))).val + ζ⁻¹ ^ ((h.1.autToPow ℚ τ : (ZMod (2 ^ (e + 2)))ˣ) : ZMod (2 ^ (e + 2))).val`. Rewrite using `[hστ]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show τ (ζ + ζ⁻¹) = _`. Rewrite using `[map_add, map_inv₀, ← h.1.autToPow_spec ℚ τ, inv_pow]`. Unfold `galE galMap`. Simplify using `only`. Rewrite using `[hs (aE ζ a b) a rfl, hs (bE ζ a b) b rfl]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Unfold `hPart`. Establish `hex : ∃ u : (ZMod (2 ^ (e + 2)))ˣ, ((σ (thE ζ a b) : hostE ζ a b) : L) = ζ ^ (u : ZMod (2 ^ (e + 2))).val + ζ⁻¹ ^ (u : ZMod (2 ^ (e + 2))).val` using `⟨_, hθ⟩`. Rewrite using `[dif_pos hex]`. Conclude with `hcl_eq_of_pow_add_inv_pow_eq h.1 _ _ ((Classical.choose_spec hex).symm.trans hθ)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galE_of_lift (h : IsLayer (e + 2) q d ζ a b) {σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b}
     {τ : L ≃ₐ[ℚ] L} (hστ : ∀ x : hostE ζ a b, ((σ x : hostE ζ a b) : L) = τ x) :
@@ -290,13 +286,13 @@ theorem galE_of_lift (h : IsLayer (e + 2) q d ζ a b) {σ : hostE ζ a b ≃ₐ[
   exact hcl_eq_of_pow_add_inv_pow_eq h.1 _ _ ((Classical.choose_spec hex).symm.trans hθ)
 
 /- English proof (translation)
-Establish `ha : (aE ζ a b) ^ 2 = -((q : ℕ) : hostE ζ a b)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[aE, h.2.1]`. Establish `hs : (σ (aE ζ a b)) ^ 2 = (aE ζ a b) ^ 2`. Rewrite using `[← map_pow, ha, map_neg, map_natCast]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hor : σ (aE ζ a b) = aE ζ a b ∨ σ (aE ζ a b) = -aE ζ a b` using `sq_eq_sq_iff_eq_or_eq_neg.mp hs`. Unfold `galE`. Simplify using `only`. Unfold `Formalism.TwoAdicCyclotomicDecomposition.sgn`. Distinguish the cases in `hx : σ (aE ζ a b) = aE ζ a b`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hx, hx]`. Simplify using `[aE]`. Rewrite using `[if_neg hx]`. Break down `hor with h1 | h1` into its components or cases. Conclude with `absurd h1 hx`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Simplify using `[aE]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem galE_aE (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     (σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) :
@@ -321,13 +317,13 @@ theorem galE_aE (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
       simp [aE]
 
 /- English proof (translation)
-Establish `ha : (bE ζ a b) ^ 2 = -((d : ℕ) : hostE ζ a b)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[bE, h.2.2.1]`. Establish `hs : (σ (bE ζ a b)) ^ 2 = (bE ζ a b) ^ 2`. Rewrite using `[← map_pow, ha, map_neg, map_natCast]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hor : σ (bE ζ a b) = bE ζ a b ∨ σ (bE ζ a b) = -bE ζ a b` using `sq_eq_sq_iff_eq_or_eq_neg.mp hs`. Unfold `galE`. Simplify using `only`. Unfold `Formalism.TwoAdicCyclotomicDecomposition.sgn`. Distinguish the cases in `hx : σ (bE ζ a b) = bE ζ a b`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hx, hx]`. Simplify using `[bE]`. Rewrite using `[if_neg hx]`. Break down `hor with h1 | h1` into its components or cases. Conclude with `absurd h1 hx`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Simplify using `[bE]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem galE_bE (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     (σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) :
@@ -352,13 +348,11 @@ theorem galE_bE (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
       simp [bE]
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `galE_exists_lift hqd h σ`. Establish `hθ : ((σ (thE ζ a b) : hostE ζ a b) : L) = ζ ^ ((h.1.autToPow ℚ τ : (ZMod (2 ^ (e + 2)))ˣ) : ZMod (2 ^ (e + 2))).val + ζ⁻¹ ^ ((h.1.autToPow ℚ τ : (ZMod (2 ^ (e + 2)))ˣ) : ZMod (2 ^ (e + 2))).val`. Rewrite using `[hτ]`. Use `show τ (ζ + ζ⁻¹) = _`. Rewrite using `[map_add, map_inv₀, ← h.1.autToPow_spec ℚ τ, inv_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[galE_of_lift h hτ]`. Unfold `galMap`. Simplify using `only`. Rewrite using `[hθ]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hk`. Break down `(hcl_eq_hcl_iff _ _).1 hk with h1 | h1` into its components or cases. Rewrite using `[h1]`. Rewrite using `[h1, Units.val_neg, zpow_neg_val_eq_inv_pow_val_of_isPrimitiveRoot h.1, zpow_neg_val_eq_inv_pow_val_of_isPrimitiveRoot h.1.inv, inv_inv, add_comm]`. Introduce `hk`.
-
-Conclude with `hcl_eq_of_pow_add_inv_pow_eq h.1 _ _ hk`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem galE_snd_eq_hcl_iff (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     (σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) (u : (ZMod (2 ^ (e + 2)))ˣ) :
@@ -388,7 +382,7 @@ def conjE (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) : hostE ζ a b ≃
   (galEquiv hqd h).symm (cc e)
 
 /- English proof (translation)
-Rewrite using `[← galEquiv_apply hqd h]`. Conclude with `(galEquiv hqd h).apply_symm_apply (cc e)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galE_conjE (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     galE e ζ a b (conjE hqd h) = cc e := by
@@ -396,7 +390,7 @@ theorem galE_conjE (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
   exact (galEquiv hqd h).apply_symm_apply (cc e)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `galE_conjE hqd h`. Introduce `hs`. Conclude with `galE_injective hqd h (hs.trans (galE_conjE hqd h).symm)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eq_conjE_iff (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     (σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) : σ = conjE hqd h ↔ galE e ζ a b σ = cc e := by
@@ -407,7 +401,7 @@ theorem eq_conjE_iff (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     exact galE_injective hqd h (hs.trans (galE_conjE hqd h).symm)
 
 /- English proof (translation)
-The claim follows from `((hostConj_of hostGalois hostGalSpec e q d hqd L ζ a b h).2 φ (conjE hqd h)).2 (galE_conjE hqd h) x`.
+A detailed English derivation is pending.
 -/
 theorem conjE_apply (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     (φ : hostE ζ a b →+* ℂ) (x : hostE ζ a b) :
@@ -416,9 +410,7 @@ theorem conjE_apply (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     (galE_conjE hqd h) x
 
 /- English proof (translation)
-Rewrite using `[← eq_conjE_iff hqd h]`. Prove the components needed by the constructor for the conclusion. Introduce `hσ`. Conclude with `AlgEquiv.ext fun x => φ.injective (by rw [hσ, conjE_apply hqd h])`. Introduce and unpack `rfl x`.
-
-Conclude with `conjE_apply hqd h φ x`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isConj_iff_galE (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     (φ : hostE ζ a b →+* ℂ) (σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) :
@@ -431,14 +423,14 @@ theorem isConj_iff_galE (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     exact conjE_apply hqd h φ x
 
 /- English proof (translation)
-The claim follows from `(hostConj_of hostGalois hostGalSpec e q d hqd L ζ a b h).1`.
+A detailed English derivation is pending.
 -/
 theorem isCMField_hostE (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     IsCMField (hostE ζ a b) :=
   (hostConj_of hostGalois hostGalSpec e q d hqd L ζ a b h).1
 
 /- English proof (translation)
-The claim follows from `hostReal_of hostGalois hostGalSpec (hostConj_of hostGalois hostGalSpec) e q d hqd L ζ a b h`.
+A detailed English derivation is pending.
 -/
 theorem hostReal_at (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     Module.finrank ℚ (hostF ζ a b) = 2 ^ (e + 1) ∧
@@ -449,15 +441,15 @@ theorem hostReal_at (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
   hostReal_of hostGalois hostGalSpec (hostConj_of hostGalois hostGalSpec) e q d hqd L ζ a b h
 
 /- English proof (translation)
-The claim follows from `(hostReal_at hqd h).1`.
+A detailed English derivation is pending.
 -/
 theorem finrank_hostF (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b) :
     Module.finrank ℚ (hostF ζ a b) = 2 ^ (e + 1) := (hostReal_at hqd h).1
 
 /- English proof (translation)
-Rewrite using `[((hostReal_at hqd h).2 x).1]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `hx _ (galE_conjE hqd h)`. Introduce `hx σ hσ`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(eq_conjE_iff hqd h σ).2 hσ]`. Conclude with `hx`.
+A detailed English derivation is pending.
 -/
 theorem conjE_mem_hostF_iff (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     (x : hostE ζ a b) : x ∈ hostF ζ a b ↔ conjE hqd h x = x := by
@@ -470,7 +462,7 @@ theorem conjE_mem_hostF_iff (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     exact hx
 
 /- English proof (translation)
-The claim follows from `((hostReal_at hqd h).2 x).2`.
+A detailed English derivation is pending.
 -/
 theorem mem_hostF_iff_adjoin (hqd : HypOdd q d) (h : IsLayer (e + 2) q d ζ a b)
     (x : hostE ζ a b) : x ∈ hostF ζ a b ↔ (x : L) ∈ ℚ⟮a * b, ζ + ζ⁻¹⟯ := ((hostReal_at hqd h).2 x).2

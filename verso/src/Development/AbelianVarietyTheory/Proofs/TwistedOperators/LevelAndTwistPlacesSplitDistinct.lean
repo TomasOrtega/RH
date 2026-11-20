@@ -17,15 +17,13 @@ open Classical
 namespace GlobalTheory.TwistTypePlaces
 
 /- English proof (translation)
-Use `set p := (P.under (𝓞 F)).asIdeal with hp`. Establish `hp0 : p ≠ ⊥` using `(P.under (𝓞 F)).ne_bot`. Establish `: p.IsMaximal` using `(P.under (𝓞 F)).isMaximal`. Establish `: P.asIdeal.LiesOver p` using `⟨by rw [hp, HeightOneSpectrum.under_asIdeal]⟩`. Establish `hsum` using `Ideal.sum_ramification_inertia (𝓞 E) F E (p := p) hp0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : (IsDedekindDomain.primesOverFinset p (𝓞 E)).card = 2`. Rewrite using `[← h2, ← IsDedekindDomain.coe_primesOverFinset hp0 (𝓞 E), Set.ncard_coe_finset]`. Establish `hle : ∀ Q ∈ IsDedekindDomain.primesOverFinset p (𝓞 E), 1 ≤ p.ramificationIdx' Q * p.inertiaDeg' Q`. Introduce `Q hQ`. Take `⟨hQp, hQl⟩` from `(IsDedekindDomain.mem_primesOverFinset_iff hp0 (𝓞 E)).1 hQ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : 0 < p.inertiaDeg' Q` using `Ideal.inertiaDeg'_pos p Q`. Establish `h2 : 0 < p.ramificationIdx' Q`. Rewrite using `[Ideal.ramificationIdx'_eq_ramificationIdx p Q hp0]`. Conclude with `Ideal.ramificationIdx_pos Q (𝓞 F)`. Conclude with `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero h2.ne' h1.ne')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq` using `(Finset.sum_eq_sum_iff_of_le hle).1 (by rw [hsum, hr, Finset.sum_const, hcard]; rfl)`. Establish `hPm : P.asIdeal ∈ IsDedekindDomain.primesOverFinset p (𝓞 E)` using `(IsDedekindDomain.mem_primesOverFinset_iff hp0 (𝓞 E)).2 ⟨P.isPrime, inferInstance⟩`. Establish `hf : p.inertiaDeg' P.asIdeal = 1` using `Nat.eq_one_of_mul_eq_one_left (heq _ hPm).symm`. Establish `hn` using `Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver P.asIdeal p (P.under (𝓞 F)).isPrime hp0`. Rewrite `hn` using `[hf, pow_one, Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
-
-Conclude with `hn`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quot_of_two {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (hr : Module.finrank F E = 2) (P : HeightOneSpectrum (𝓞 E))
@@ -60,13 +58,13 @@ end GlobalTheory.TwistTypePlaces
 namespace GlobalTheory.TwistTypePlaces
 
 /- English proof (translation)
-Establish `hfix : ∀ x : 𝓞 D.host.F, Formalism.DivisionValues.cO D.host.E (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x) = algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x`. Introduce `x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show star ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x : 𝓞 D.host.E) : D.host.E) = _`. Conclude with `(D.sp.cm.fixed _).2 ⟨(x : D.host.F), rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hinv : ∀ z, Formalism.DivisionValues.cO D.host.E (Formalism.DivisionValues.cO D.host.E z) = z` using `fun z => RingOfIntegers.ext (star_star (z : D.host.E))`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `only [HeightOneSpectrum.under_asIdeal, Ideal.mem_comap]`. Express the relevant statement in the definitionally equal form `algebraMap _ _ x ∈ P.asIdeal.map (Formalism.DivisionValues.cO D.host.E) ↔ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[Ideal.mem_map_of_equiv]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, hzx⟩`. Establish `e : z = algebraMap _ _ x` using `by rw [← hinv z, hzx, hfix]`. Rewrite using `[← e]` and apply the resulting hypothesis.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `h`. Conclude with `⟨_, h, hfix x⟩`.
+A detailed English derivation is pending.
 -/
 theorem under_conjPl {D : D7} (P : Pl D.host.E) :
     (conjPl P).under (𝓞 D.host.F) = P.under (𝓞 D.host.F) := by
@@ -91,7 +89,7 @@ theorem under_conjPl {D : D7} (P : Pl D.host.E) :
     exact ⟨_, h, hfix x⟩
 
 /- English proof (translation)
-Use `Ideal.mem_map_of_mem (Formalism.DivisionValues.cO D.host.E) h` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem natCast_mem_conjPl {D : D7} (P : Pl D.host.E) (n : ℕ) (h : (n : 𝓞 D.host.E) ∈ P.asIdeal) :
     (n : 𝓞 D.host.E) ∈ (conjPl P).asIdeal := by
@@ -99,9 +97,9 @@ theorem natCast_mem_conjPl {D : D7} (P : Pl D.host.E) (n : ℕ) (h : (n : 𝓞 D
   rwa [map_natCast] at this
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.QuadSignLocal.ncard_primesOver]`. Establish `hs : {u : HeightOneSpectrum (𝓞 D.host.E) | u.under (𝓞 D.host.F) = P.under (𝓞 D.host.F)} = {P, conjPl P}`. Use extensionality with `u`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_insert_iff, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq`. Introduce and unpack `(rfl | rfl)`. Both sides reduce to the same expression. Conclude with `under_conjPl P`. Rewrite using `[hs, Set.ncard_pair h.symm]`.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ncard_primesOver_two {D : D7} (P : Pl D.host.E) (h : conjPl P ≠ P) :
     (Ideal.primesOver (P.under (𝓞 D.host.F)).asIdeal (𝓞 D.host.E)).ncard = 2 := by
@@ -117,11 +115,11 @@ theorem ncard_primesOver_two {D : D7} (P : Pl D.host.E) (h : conjPl P ≠ P) :
   rw [hs, Set.ncard_pair h.symm]
 
 /- English proof (translation)
-Introduce `hm`. Establish `hnt : Nontrivial (kP PP)` using `Ideal.Quotient.nontrivial_iff.2 PP.isPrime.ne_top`. Establish `hq0 : ((q : ℕ) : kP PP) = 0`. Use `card_nsmul_eq_zero' (G := kP PP) (x := 1)` as an intermediate fact. Rewrite `this` using `[hc, nsmul_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hg0 : ((g : ℕ) : kP PP) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk PP.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hm`. Take `⟨a, b, hab⟩ : IsCoprime (q : ℤ) (g : ℤ)` from `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes hq hg).2 hne)`. Establish `h1 : ((a * q + b * g : ℤ) : kP PP) = 1` using `by rw [hab, Int.cast_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h1`. Rewrite `h1` using `[hq0, hg0, mul_zero, mul_zero, add_zero]`. Conclude with `zero_ne_one h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_not_mem_of_card {E : Type} [Field E] [NumberField E] (PP : Pl E) {q g : ℕ} (hq : q.Prime) (hg : g.Prime)
     (hc : Nat.card (kP PP) = q) (hne : q ≠ g) : ((g : ℕ) : 𝓞 E) ∉ PP.asIdeal := by
@@ -145,21 +143,17 @@ end GlobalTheory.TwistTypePlaces
 namespace GlobalTheory.TwistTypePlaces
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hC t`. Establish `hL` using `hC.lev`. Establish `hPg` using `hL.Pg`. Establish `hQ` using `hL.Q_pl t`. Establish `gP : ∀ PP ∈ R.Pg, ∃ k, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `PP h`. Take `⟨k, hk⟩` from `(hPg PP).1 h`. Conclude with `⟨k, R.C.P.overP hk⟩`. Establish `qN : ∀ PP ∈ R.Q t, ∀ k, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal`. Introduce `PP h k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨q, hq, hc, -, hne⟩` from `(hQ PP h).1`. Conclude with `natCast_not_mem_of_card PP hq (D.host.g_prime k) hc (hne k)`. Establish `hdis : Disjoint R.Pg (R.Q t)`. Rewrite using `[Finset.disjoint_left]`. Introduce `PP h1 h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `gP PP h1`. Conclude with `qN PP h2 k hk`. Establish `cross : ∀ PP ∈ R.Pg, ∀ PP' ∈ R.Q t, PP' ≠ conjPl PP`. Introduce and unpack `PP h PP' h' rfl`. Take `⟨k, hk⟩` from `gP PP h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `qN _ h' k (natCast_mem_conjPl PP _ hk)`. Establish `hnc : ∀ PP ∈ R.Pg ∪ R.Q t, ∀ PP' ∈ R.Pg ∪ R.Q t, PP' ≠ conjPl PP`. Introduce `PP h PP' h' e`. Apply the tactic sequence `rcases Finset.mem_union.1 h with h | h <;> rcases Finset.mem_union.1 h' with h' | h'`. Conclude with `GlobalTheory.TypePlaces.not_isConjPl R.C.P R.Pg hPg PP h PP' h' (GlobalTheory.GoodPrimes.isConjPl_iff.2 e)`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `cross PP h PP' h' e`. Use `cross PP' h' PP h ?_` and prove the remaining obligations. Rewrite using `[e, Formalism.DivisionValues.ValuationRepresentative.conjPl_conjPl]`. Conclude with `(hQ PP h).2 PP' h' (GlobalTheory.GoodPrimes.isConjPl_iff.2 e)`. Use `⟨hdis, ?_, ?_⟩` and prove the remaining obligations.
-
-Introduce `PP h PP' h' e`. Break down `GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq e.symm with e' | e'` into its components or cases. Conclude with `e'.symm`. Conclude with `absurd e' (hnc PP h PP' h')`. Introduce `PP h`.
-
-Establish `h2` using `ncard_primesOver_two PP (fun e => hnc PP h PP h e.symm)`. Conclude with `⟨h2, card_quot_of_two D.sp.cm.deg2 PP h2⟩`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem places_split : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → ∀ t : T, Disjoint R.Pg (R.Q t) ∧ Set.InjOn (fun PP : Pl D.host.E => PP.under (𝓞 D.host.F)) ↑(R.Pg ∪ R.Q t) ∧ ∀ PP ∈ R.Pg ∪ R.Q t, (Ideal.primesOver (PP.under (𝓞 D.host.F)).asIdeal (𝓞 D.host.E)).ncard = 2 ∧ Nat.card (kP PP) = Ideal.absNorm (PP.under (𝓞 D.host.F)).asIdeal := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hC t

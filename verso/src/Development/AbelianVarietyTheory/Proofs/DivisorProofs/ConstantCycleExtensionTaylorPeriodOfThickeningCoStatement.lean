@@ -8,7 +8,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AnPer.pTaylor | exact GlobalTheory.AnPer.pTaylor | (intros; apply GlobalTheory.AnPer.pTaylor <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.constantCycleExtension_taylorPeriod_of_thickeningComparison : GlobalTheory.AnPer.PTaylor := by
   first | exact @GlobalTheory.AnPer.pTaylor | exact GlobalTheory.AnPer.pTaylor | (intros; apply GlobalTheory.AnPer.pTaylor <;> assumption)

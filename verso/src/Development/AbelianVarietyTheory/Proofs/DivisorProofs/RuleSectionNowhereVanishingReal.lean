@@ -20,11 +20,11 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory.BdryUnitVal
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y V T io φ hφ y hy`. Use `letI := io.toAlgebra`. Take `⟨χ, h1, h2⟩` from `GlobalTheory.CuspFrom.exists_genPt (K := T.Fr) Y φ hφ y`. Use `⟨χ, h1, h2, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Set `η : Sp T.Fr` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum T.Fr)`. Establish `hη : χ (spMap (algebraMap T.V T.Fr) η) ∈ Y.jQ '' (V : Set (Xo.XF c))`. Rewrite using `[← Scheme.Hom.comp_apply, ← h2, Scheme.Hom.comp_apply]`. Conclude with `⟨_, hy η, rfl⟩`. Establish `hp : p ∈ closure {spMap (algebraMap T.V T.Fr) η}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Apply `(PrimeSpectrum.le_iff_mem_closure _ _).1` to reduce the goal to its premises. Use `show Ideal.comap (algebraMap T.V T.Fr) (⊥ : Ideal T.Fr) ≤ (p : PrimeSpectrum T.V).asIdeal`. Rewrite using `[Ideal.comap_bot_of_injective _ (IsFractionRing.injective T.V T.Fr)]`. Conclude with `bot_le`. Conclude with `map_mem_closure χ.continuous hp (fun z hz => by rw [Set.mem_singleton_iff.1 hz]; exact hη)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_ext : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (V : (Xo.XF c).Opens) (T : CDVR) (io : c.F →+* T.Fr) (φ : c.F →+* T.V), (algebraMap T.V T.Fr).comp φ = io → ∀ (y : letI := io.toAlgebra; FrPt Xo c T.Fr), (letI := io.toAlgebra; ∀ s, GlobalTheory.AllWt.ptF y s ∈ (V : Set (Xo.XF c))) → ∃ χ : Sp T.V ⟶ GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.genFibre Y, χ ≫ pullback.snd _ _ = spMap φ ∧ (letI := io.toAlgebra; GlobalTheory.AllWt.ptF y ≫ Y.jQ = spMap (algebraMap T.V T.Fr) ≫ χ) ∧ Set.range χ ⊆ GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.compactification Y V := by
   intro E _ _ _ H Dw l Xo c Y V T io φ hφ y hy
@@ -48,7 +48,7 @@ end GlobalTheory.BdryUnitVal
 namespace GlobalTheory.BdryUnitVal
 
 /- English proof (translation)
-Establish `h1 : valV T.V (algebraMap T.V T.Fr u) = 1`. Rewrite using `[valV, HeightOneSpectrum.valuation_of_algebraMap]`. Use `le_antisymm (HeightOneSpectrum.intValuation_le_one _ _) (not_lt.1 fun h => ?_)` and prove the remaining obligations. Conclude with `(IsDiscreteValuationRing.maximalIdeal T.V).isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ ((HeightOneSpectrum.intValuation_lt_one_iff_mem _ _).1 h) hu)`. Rewrite using `[vV, h1, WithZero.log_one, neg_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vV_unit (T : CDVR) (u : T.V) (hu : IsUnit u) : vV T.V (algebraMap T.V T.Fr u) = 0 := by
   have h1 : valV T.V (algebraMap T.V T.Fr u) = 1 := by
@@ -59,7 +59,7 @@ theorem vV_unit (T : CDVR) (u : T.V) (hu : IsUnit u) : vV T.V (algebraMap T.V T.
   rw [vV, h1, WithZero.log_one, neg_zero]
 
 /- English proof (translation)
-Establish `hne : algebraMap T.V T.Fr u ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective T.V T.Fr)).2 hu.ne_zero`. Rewrite using `[nval_of_ne hne, vV_unit T u hu]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nval_unit (T : CDVR) (u : T.V) (hu : IsUnit u) : nval T.V 1 (algebraMap T.V T.Fr u) = 0 := by
   have hne : algebraMap T.V T.Fr u ≠ 0 :=
@@ -68,9 +68,9 @@ theorem nval_unit (T : CDVR) (u : T.V) (hu : IsUnit u) : nval T.V 1 (algebraMap 
   simp
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.LiftAndFactorization.exists_factor`. Consider the case `exact _root_.GlobalTheory.LiftAndFactorization.exists_factor`. Consider the case `(apply _root_.GlobalTheory.LiftAndFactorization.exists_factor <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LiftAndFactorization.exists_factor <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.LiftAndFactorization.exists_factor <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LiftAndFactorization.exists_factor ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_factor (T : CDVR) {F : Type} [Field F] (io : F →+* T.Fr) (hio : ∀ a, a ≠ 0 → vV T.V (io a) = 0) :
     ∃ φ : F →+* T.V, (algebraMap T.V T.Fr).comp φ = io := by
@@ -87,7 +87,7 @@ end GlobalTheory.BdryUnitVal
 namespace GlobalTheory.BdryUnitVal
 
 /- English proof (translation)
-Introduce `h3` and use `by have h3' : starRingEnd ℂ (τ.1 (H.rt : E)) = H.rt0 := h3 rw [τ.2] at h3' have h4 := H.sqrt_neg_disc_sq have h5 : H.rt0.im = 0 := Complex.conj_eq_iff_im.1 h3' have h6 := congrArg Complex.re h4 have h7 : (0 : ℝ) < H.d := Nat.cast_pos.2 H.d_prime.pos simp [pow_two, h5] at h6 nlina …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conj_ne {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (τ : Psi H) :
     conjEmb τ.1 (H.rt : E) ≠ H.rt0 := fun h3 => by
@@ -101,21 +101,21 @@ theorem conj_ne {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Reciproc
   nlinarith [mul_self_nonneg H.rt0.re]
 
 /- English proof (translation)
-Introduce `_ E _ _ _ H Dw l Xo c Y Z V τ sig f hVZ hsig hvn hrd T io y₀ hio hlies`. Use `letI := io.toAlgebra`. Take `⟨φ, hφ⟩` from `exists_factor T io hio`. Establish `hy : ∀ s, GlobalTheory.AllWt.ptF y₀.1 s ∈ (V : Set (Xo.XF c))` using `fun s => hVZ ▸ hlies s`. Take `⟨χ, hχ1, hχ2, hχ3⟩` from `pt_ext E H Dw l Xo c Y V T io φ hφ y₀.1 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hp : Dw.mult τ.1 = Dw.p` using `by rw [Datum.mult, if_pos τ.2]`. Establish `hq : Dw.mult (conjEmb τ.1) = Dw.q` using `by rw [Datum.mult, if_neg (conj_ne τ)]`. Take `⟨v, hv, hsv⟩` from `GlobalTheory.T.exists_lieEigenBasis_of_integralFramedPoint E H Dw l Xo c Y T io φ hφ y₀.1 y₀.2.2 χ hχ1 hχ2 τ.1 Dw.p hp`. Take `⟨w, hw, hsw⟩` from `GlobalTheory.T.exists_lieEigenBasis_of_integralFramedPoint E H Dw l Xo c Y T io φ hφ y₀.1 y₀.2.2 χ hχ1 hχ2 (conjEmb τ.1) Dw.q hq`. Set `aT : GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.Framed Y V τ.1 T.V φ` to `⟨χ, hχ1, hχ3, v, w, hv, hw⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hx : (spMap (algebraMap T.V T.Fr) ≫ χ) ≫ pullback.fst _ _ = spMap (algebraMap T.V T.Fr) ≫ (χ ≫ pullback.fst _ _)` using `Category.assoc _ _ _`. Take `⟨v', hv', ev⟩` from `GlobalTheory.DetExtendZero.exists_basis (GlobalTheory.FlatRow.eigStable Y.t c) (algebraMap T.V T.Fr) hx hv`. Take `⟨w', hw', ew⟩` from `GlobalTheory.DetExtendZero.exists_basis (GlobalTheory.FlatRow.eigStable Y.t c) (algebraMap T.V T.Fr) hx hw`. Rewrite `hv'`, `hw'` using `[hφ]`. Set `aK : GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.Framed Y V τ.1 T.Fr io` to `⟨spMap (algebraMap T.V T.Fr) ≫ χ, by rw [Category.assoc, hχ1, ← GlobalTheory.DetExtendZero.spMap_comp, hφ], by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `hχ3 ⟨_, rfl⟩, v', w', hv', hw'⟩`. Establish `hc : GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.IsChange aT aK (algebraMap T.V T.Fr) 1 1`. Use `⟨hφ, rfl, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `GlobalTheory.DetExtendZero.comb_one (fun k => (aK.v_basis.1 k).1) i` as an intermediate fact. Use `this using 2 with k` and compare the differences between its conclusion and the goal. Conclude with `(ev k).symm`. Use `GlobalTheory.DetExtendZero.comb_one (fun k => (aK.w_basis.1 k).1) i` as an intermediate fact. Use `this using 2 with k` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(ew k).symm`. Establish `e` using `hsig T.V T.Fr φ io aT aK (algebraMap T.V T.Fr) 1 1 hc`. Simplify using `only [Matrix.det_one, mul_one] at e`. Establish `hm : Matches Y V τ y₀.1 aK` using `⟨hχ2.symm, fun i => ⟨Fin.cast hp.symm i, rfl, by`. Express the relevant statement in the definitionally equal form `SameVec Y y₀.1 _ (v' i).left`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ev]; exact hsv i⟩, fun i => ⟨Fin.cast hq.symm i, rfl, by`. Express the relevant statement in the definitionally equal form `SameVec Y y₀.1 _ (w' i).left`. Rewrite using `[ew]`. Conclude with `hsw i⟩⟩`. Establish `hr` using `hrd T.Fr y₀.1 y₀.2.1 aK hm`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `nval T.V 1 (evR Xo c f y₀.1) = 0`. Rewrite using `[hr]`. Express the relevant statement in the definitionally equal form `nval T.V 1 (sig T.Fr io aK) = 0`. Rewrite using `[e]`. Conclude with `nval_unit T _ (hvn T.V φ aT)`.
+A detailed English derivation is pending.
 -/
 theorem unit_at_integral : GlobalTheory.CovTop.Hypotheses2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (Z : Comp Xo c) (V : (Xo.XF c).Opens) (τ : Psi H) (sig : GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.Rule Y V τ.1) (f : Rul Xo c), (V : Set (Xo.XF c)) = Z → sig ∈ GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.sections Y V τ.1 → GlobalTheory.IndefiniteRowSideFullHecke.FramedFlatCoordinates.VanishesNowhere sig → Reads Y V τ sig f → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y₀ : IntFr Xo c T io), (∀ a, a ≠ 0 → vV T.V (io a) = 0) → (letI := io.toAlgebra; LiesOn Z y₀.1) → nval T.V 1 (evI y₀ f) = 0 := by
   intro _ E _ _ _ H Dw l Xo c Y Z V τ sig f hVZ hsig hvn hrd T io y₀ hio hlies

@@ -10,7 +10,7 @@ set_option maxHeartbeats 2000000
 set_option synthInstance.maxHeartbeats 400000
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qj2.exists_sum_tmul ω x`.
+A detailed English derivation is pending.
 -/
 private theorem exists_sum_tmul {R O B σ : Type} [CommRing R] [AddCommGroup O] [Module R O]
     [AddCommGroup B] [Module R B] [Fintype σ] (ω : Module.Basis σ R O) (x : O ⊗[R] B) :
@@ -18,9 +18,9 @@ private theorem exists_sum_tmul {R O B σ : Type} [CommRing R] [AddCommGroup O] 
   _root_.UpperTheory.Reformulated.B.Qj2.exists_sum_tmul ω x
 
 /- English proof (translation)
-Use `choose y hy using fun k => exists_sum_tmul ω (d k)`. Establish `h : ∑ p : σ × κ, w p ⊗ₜ[K] f (y p.2 p.1) = 0`. Rewrite using `[← hd, Fintype.sum_prod_type_right]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hy k, map_sum, AddMonoidHom.finset_sum_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun s _ => (hact s k _).symm`. Establish `h0` using `UpperTheory.KN.coeff_eq_zero_of_sum_tmul_linearIndependent_eq_zero K V C (σ × κ) w hw _ h`. Rewrite using `[hy k]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hf _ (h0 (s, k)), TensorProduct.tmul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem abstract_indep {R K O B V C σ κ : Type} [CommRing R] [Field K] [AddCommGroup O]
     [Module R O] [AddCommGroup B] [Module R B] [AddCommGroup V] [Module K V] [AddCommGroup C]
@@ -41,9 +41,9 @@ private theorem abstract_indep {R K O B V C σ κ : Type} [CommRing R] [Field K]
   rw [hf _ (h0 (s, k)), TensorProduct.tmul_zero]
 
 /- English proof (translation)
-Introduce `l _ LL T Pl AI Td act hact κ _ b d hd k`. Use `haveI : Module.Free ℤ_[l] ↥(OL LL) := inferInstance`. Use `haveI : Module.Finite ℤ_[l] ↥(OL LL) := inferInstance`. Establish `hinj` using `(UpperTheory.KN.fil_zero_eq_range_cD_and_cD_injective l Pl AI Td LL).2`. Use `abstract_indep (Module.Free.chooseBasis ℤ_[l] ↥(OL LL)) act (fun k => ((b k : ↥T.L.T) : T.V) ⊗ₜ[ℚ_[l]] (1 : Pl.R.BdR)) _ (fun y => GlobalTheory.BKGal.JumpDR.cD Td y) (fun y hy => hinj (hy.trans (map_zero _).symm)) (UpperTheory.KN.linearIndependent_Ql_integerBasis_smul_latticeBasi …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s k y`. Use `(hact _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.linearIndependent_Ql_productBasis_of_Zl_lattice :
     ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l) (T : QLat LL) (Pl : LocPrime l) (AI : LocAinf l Pl) (Td : LocTied l Pl AI) (act : OD l ↥(OL LL) →+ (T.V ⊗[ℚ_[l]] Pl.R.BdR →+ T.V ⊗[ℚ_[l]] Pl.R.BdR)), (∀ (o : ↥(OL LL)) (b : Per.BdRp l) (v : T.V) (c : Pl.R.BdR), act (o ⊗ₜ[ℤ_[l]] b) (v ⊗ₜ[ℚ_[l]] c) = ((o : ↥LL.1) • v) ⊗ₜ[ℚ_[l]] (GlobalTheory.BKGal.JumpDR.cD Td b * c)) → ∀ (κ : Type) [Fintype κ] (b : Module.Basis κ ↥(OL LL) ↥T.L.T), ∀ d : κ → OD l ↥(OL LL), ∑ k, act (d k) (((b k : ↥T.L.T) : T.V) ⊗ₜ[ℚ_[l]] (1 : Pl.R.BdR)) = 0 → ∀ k, d k = 0 := by

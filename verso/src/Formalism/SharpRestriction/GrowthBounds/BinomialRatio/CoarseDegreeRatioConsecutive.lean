@@ -47,9 +47,9 @@ def KeptThresholdAt (C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ) : Prop :=
           (BD C0 CE1 CE2 X j m (pairMap C0 CE1 CE2 X j rz ry t).1).T.thr (pairMap C0 CE1 CE2 X j rz ry t).2.2
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Establish `hnn : 0 ≤ ∑ t : Fin r, nu t.succ - ∑ t : Fin r, mu t.succ`. Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_nonneg fun t _ => sub_nonneg.mpr (h1 t.succ)`. Use `⟨⟨fun t => h1 t.succ, fun i j hij => h2 i.succ j.succ (by simp only [Fin.val_succ]; omega), ?_⟩, hnn, ?_, h1 0, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Int.toNat_of_nonneg hnn).symm`. Rewrite `h3` using `[Fin.sum_univ_succ, Fin.sum_univ_succ]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `t ht`. Conclude with `h2 0 t.succ (by simp only [Fin.val_succ, Fin.val_zero]; omega)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem strip_tail {r : ℕ} {nu mu : Fin (r + 1) → ℤ} {g : ℕ} (h : Strip nu mu g) :
     Strip (fun t : Fin r => nu t.succ) (fun t : Fin r => mu t.succ)
@@ -70,9 +70,7 @@ theorem strip_tail {r : ℕ} {nu mu : Fin (r + 1) → ℤ} {g : ℕ} (h : Strip 
     exact h2 0 t.succ (by simp only [Fin.val_succ, Fin.val_zero]; omega)
 
 /- English proof (translation)
-Establish `hnn : 0 ≤ ∑ t, lam t - ∑ t : Fin r, mu t.succ`. Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Finset.sum_nonneg fun t _ => sub_nonneg.mpr (h t).1`. Use `⟨⟨fun t => (h t).1, fun i j hij => (h j).2.trans (le_of_eq (congrArg mu (Fin.ext (by simp only [Fin.coe_castSucc, Fin.val_succ]; omega)))), ?_⟩, hnn, ?_⟩` and prove the remaining obligations. Conclude with `(Int.toNat_of_nonneg hnn).symm`.
-
-Introduce `t ht`. Conclude with `(h t).2.trans (le_of_eq (congrArg mu (Fin.ext (by simp only [Fin.coe_castSucc, Fin.val_zero]; omega))))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem inter_strip {r : ℕ} {mu : Fin (r + 1) → ℤ} {lam : Fin r → ℤ} (h : Inter mu lam) :
     Strip lam (fun t : Fin r => mu t.succ) ((∑ t, lam t - ∑ t : Fin r, mu t.succ).toNat) ∧
@@ -87,9 +85,9 @@ theorem inter_strip {r : ℕ} {mu : Fin (r + 1) → ℤ} {lam : Fin r → ℤ} (
     exact (h t).2.trans (le_of_eq (congrArg mu (Fin.ext (by simp only [Fin.coe_castSucc, Fin.val_zero]; omega))))
 
 /- English proof (translation)
-Take `⟨h0, hs⟩` from `h`. Establish `h1` using `hs 0`. Rewrite `h1` using `[if_pos hv]`. Take `⟨a, b, _⟩` from `h1`. Establish `ha` using `a t.succ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb` using `b t.castSucc t.succ (by simp only [Fin.coe_castSucc, Fin.val_succ])`. Simplify using `only [Fin.succ_zero_eq_one, Fin.castSucc_zero, h0, Pi.zero_apply] at ha hb`. Conclude with `le_antisymm hb ha`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chain_first_tail {N r : ℕ} {LL : ChainLetters (N + 1)} {mu : Fin (N + 1 + 1) → Fin (r + 1) → ℤ}
     (h : IsChain LL mu) (hv : LL.vec 0 = true) (t : Fin r) : mu 1 t.succ = 0 := by
@@ -103,14 +101,14 @@ theorem chain_first_tail {N r : ℕ} {LL : ChainLetters (N + 1)} {mu : Fin (N + 
   exact le_antisymm hb ha
 
 /- English proof (translation)
-Unfold `finPos`. Conclude with `Fin.ext (Nat.min_eq_left (by omega))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem finPos_eq (N n : ℕ) (h : n < N + 1) : finPos N n = ⟨n, h⟩ := by
   unfold finPos
   exact Fin.ext (Nat.min_eq_left (by omega))
 
 /- English proof (translation)
-Unfold `pairChain`. Conclude with `dif_pos h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pairChain_lt {s r : ℕ} (mu : Fin (2 * s + 1 + 1) → Fin (r + 1) → ℤ) (lam : Fin r → ℤ) (n : ℕ) (h : n < 2 * s + 1) :
     pairChain mu lam ⟨n, by omega⟩ = fun t : Fin r => mu ⟨n + 1, by omega⟩ t.succ := by
@@ -118,7 +116,7 @@ theorem pairChain_lt {s r : ℕ} (mu : Fin (2 * s + 1 + 1) → Fin (r + 1) → �
   exact dif_pos h
 
 /- English proof (translation)
-Unfold `pairChain`. Conclude with `dif_neg (Nat.lt_irrefl _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pairChain_last {s r : ℕ} (mu : Fin (2 * s + 1 + 1) → Fin (r + 1) → ℤ) (lam : Fin r → ℤ) :
     pairChain mu lam ⟨2 * s + 1, by omega⟩ = lam := by
@@ -126,21 +124,21 @@ theorem pairChain_last {s r : ℕ} (mu : Fin (2 * s + 1 + 1) → Fin (r + 1) →
   exact dif_neg (Nat.lt_irrefl _)
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Establish `hV : Strip (mu ⟨2 * i.val + 2, by omega⟩) (mu ⟨2 * i.val + 1, by omega⟩) (Ai i)`. Use `h.2 ⟨2 * i.val + 1, by omega⟩` as an intermediate fact. Rewrite `this` using `[if_pos (show (kLetters A Ai Ci).vec ⟨2 * i.val + 1, by omega⟩ = true from decide_eq_true (Or.inr (by show (2 * i.val + 1) % 2 = 1; omega))), kLetters_deg_odd]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hC : Strip (mu ⟨2 * i.val + 2, by omega⟩) (mu ⟨2 * i.val + 3, by omega⟩) (Ci i)`. Use `h.2 ⟨2 * i.val + 2, by omega⟩` as an intermediate fact. Rewrite using `[if_neg (show ¬ (kLetters A Ai Ci).vec ⟨2 * i.val + 2, by omega⟩ = true from by`. Introduce `hh`. Break down `of_decide_eq_true hh with h1 | h1` into its components or cases.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `: 2 * i.val + 2 = 0` using `h1`. Use linear arithmetic over natural numbers and integers. Establish `: (2 * i.val + 2) % 2 = 1` using `h1 omega), kLetters_deg_even] at this`. Conclude with `this`. Take `⟨v1, v2, v3, v4, v5⟩` from `strip_tail hV`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c1, c2, c3, c4, c5⟩` from `strip_tail hC`. Establish `eW : pairW mu i.val = ∑ t : Fin r, mu ⟨2 * i.val + 2, by omega⟩ t.succ - ∑ t : Fin r, mu ⟨2 * i.val + 1, by omega⟩ t.succ`. Unfold `pairW pairTail`. Rewrite using `[finPos_eq (2 * s + 1) (2 * i.val + 2) (by omega), finPos_eq (2 * s + 1) (2 * i.val + 1) (by omega)]`. Establish `eC0 : pairC mu i.val = mu ⟨2 * i.val + 1, by omega⟩ 0`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Unfold `pairC`. Rewrite using `[finPos_eq (2 * s + 1) (2 * i.val + 1) (by omega)]`. Establish `eC1 : pairC mu (i.val + 1) = mu ⟨2 * i.val + 3, by omega⟩ 0`. Unfold `pairC`. Rewrite using `[finPos_eq (2 * s + 1) (2 * (i.val + 1) + 1) (by omega)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `eS : pairSg mu Ai i = mu ⟨2 * i.val + 2, by omega⟩ 0 - mu ⟨2 * i.val + 3, by omega⟩ 0`. Unfold `pairSg pairO`. Rewrite using `[eW, eC0, eC1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS0 : 0 ≤ pairSg mu Ai i` using `by rw [eS]; linarith`. Establish `hSC : pairSg mu Ai i ≤ Ci i` using `by rw [eS]; linarith`. Use `⟨by rw [eW]; exact v1, ?_, by rw [eW]; exact v2, by rw [eW]; linarith, hS0, hSC, fun t ht => by rw [eC0]; exact v5 t ht, fun t ht => by rw [eC1]; exact c5 t ht⟩` and prove the remaining obligations. Establish `e : Ci i - (pairSg mu Ai i).toNat = (∑ t : Fin r, mu ⟨2 * i.val + 2, by omega⟩ t.succ - ∑ t : Fin r, mu ⟨2 * i.val + 3, by omega⟩ t.succ).toNat`. Use `Int.toNat_of_nonneg hS0` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Int.toNat_of_nonneg c2` as an intermediate fact. Rewrite `*` using `[eS]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Conclude with `c1`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_top {s r : ℕ} {A : ℕ} {Ai Ci : Fin s → ℕ} {mu : Fin (2 * s + 1 + 1) → Fin (r + 1) → ℤ}
     (h : IsChain (kLetters A Ai Ci) mu) (i : Fin s) :
@@ -198,7 +196,7 @@ theorem pair_top {s r : ℕ} {A : ℕ} {Ai Ci : Fin s → ℕ} {mu : Fin (2 * s 
   exact c1
 
 /- English proof (translation)
-Unfold `jE`. Rewrite using `[dif_pos ⟨h, i.2⟩]`. Simplify using `only [pairLevel]`. Use `congr 2`. Conclude with `Fin.ext (by simp only [uTop]; omega)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem jE_pair {s r : ℕ} (S : SegData s) (Ai : Fin s → ℕ) (mu : Fin (2 * s + 1 + 1) → Fin (r + 1) → ℤ) (i : Fin s)
     (h : S.sigma ≤ i.val) : jE S (pairLevel S Ai mu) i.val = (pairSg mu Ai i).toNat := by
@@ -209,29 +207,25 @@ theorem jE_pair {s r : ℕ} (S : SegData s) (Ai : Fin s → ℕ) (mu : Fin (2 * 
   exact Fin.ext (by simp only [uTop]; omega)
 
 /- English proof (translation)
-Use `set Ai : Fin s → ℕ := fun i => coarseA p S (digitBlock rz ry) i with hAi`. Use `set Ci : Fin s → ℕ := fun i => coarseC p S aTop (digitBlock rz ry) i with hCi`. Establish `hU : Strip (pairChain mu lam ⟨2 * s + 1, by omega⟩) (pairChain mu lam ⟨2 * s, by omega⟩) (((blockData p S aTop aPlus m (pairBlock S rz ry Ai mu lam jp)).lettersAt (pairLevel S Ai mu) jp).deg ⟨2 * s, by omega⟩)`. Rewrite using `[levU, pairChain_last, pairChain_lt mu lam (2 * s) (by omega)]`. Establish `h1` using `(inter_strip hP.2).1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (pairBlock S rz ry Ai mu lam jp).oPlus - jp = (∑ t, lam t - ∑ t : Fin r, mu (Fin.last _) t.succ).toNat` using `by show (pairD mu lam).toNat + jp - jp = _`. Rewrite using `[Nat.add_sub_cancel]`. Unfold `pairD pairTail`. Rewrite using `[finPos_eq (2 * s + 1) (2 * s + 1) (by omega)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `h1`. Establish `hW : ∀ i : Fin s, Strip (pairChain mu lam ⟨2 * i.val + 1, by omega⟩) (pairChain mu lam ⟨2 * i.val, by omega⟩) (((blockData p S aTop aPlus m (pairBlock S rz ry Ai mu lam jp)).lettersAt (pairLevel S Ai mu) jp).deg ⟨2 * i.val, by omega⟩)`. Introduce `i`. Take `⟨t1, t2, t3, t4, t5, t6, -, -⟩` from `pair_top hP.1 i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n3` using `Int.toNat_of_nonneg t3`. Establish `n5` using `Int.toNat_of_nonneg t5`. Establish `eO : pairO mu Ai i = pairW mu i.val + pairSg mu Ai i` using `by unfold pairSg; ring`. Rewrite using `[levW, pairChain_lt mu lam (2 * i.val + 1) (by have := i.2; omega), pairChain_lt mu lam (2 * i.val) (by have := i.2; omega)]`. Establish `e : (if i.val < S.sigma then (pairBlock S rz ry Ai mu lam jp).w i else (pairBlock S rz ry Ai mu lam jp).o i) - jE S (pairLevel S Ai mu) i.val = (pairW mu i.val).toNat`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hσ : i.val < S.sigma`. Rewrite using `[if_pos hσ, jE_S S _ hσ, Nat.sub_zero] show (if i.val < S.sigma then (pairW mu i.val).toNat else 0) = _`. Rewrite using `[if_pos hσ]`. Rewrite using `[if_neg hσ, jE_pair S Ai mu i (by omega)] show (if i.val < S.sigma then 0 else (pairO mu Ai i).toNat) - _ = _`. Rewrite using `[if_neg hσ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `Int.toNat_of_nonneg (show 0 ≤ pairO mu Ai i by rw [eO]; omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Conclude with `t1`. Establish `hE : ∀ i : Fin s, Strip (pairChain mu lam ⟨2 * i.val + 1, by omega⟩) (pairChain mu lam ⟨2 * i.val + 2, by omega⟩) (((blockData p S aTop aPlus m (pairBlock S rz ry Ai mu lam jp)).lettersAt (pairLevel S Ai mu) jp).deg ⟨2 * i.val + 1, by omega⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Take `⟨t1, t2, t3, t4, t5, t6, -, -⟩` from `pair_top hP.1 i`. Rewrite using `[levE, pairChain_lt mu lam (2 * i.val + 1) (by have := i.2; omega), pairChain_lt mu lam (2 * i.val + 2) (by have := i.2; omega)]`. Establish `e : (if i.val < S.sigma then coarseC p S aTop (pairBlock S rz ry Ai mu lam jp) i - (pairBlock S rz ry Ai mu lam jp).sg i else coarseC p S aTop (pairBlock S rz ry Ai mu lam jp) i) - jE S (pairLevel S Ai mu) i.val = Ci i - (pairSg mu Ai i).toNat`. Establish `hcc : coarseC p S aTop (pairBlock S rz ry Ai mu lam jp) i = Ci i` using `rfl`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hσ : i.val < S.sigma`. Rewrite using `[if_pos hσ, jE_S S _ hσ, Nat.sub_zero, hcc] show Ci i - (if i.val < S.sigma then (pairSg mu Ai i).toNat else 0) = _`. Rewrite using `[if_pos hσ]`. Rewrite using `[if_neg hσ, jE_pair S Ai mu i (by omega), hcc]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `t2`. Prove the components needed by the constructor for the conclusion. Use function extensionality and compare the values at `t show pairChain mu lam ⟨0, by omega⟩ t = 0`. Rewrite using `[pairChain_lt mu lam 0 (by omega)]`. Conclude with `chain_first_tail (N := 2 * s) hP.1 (by simp [kLetters]) t`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce and unpack `⟨xv, hxv⟩`. Take `⟨i, rfl | rfl⟩ : ∃ i, xv = 2 * i ∨ xv = 2 * i + 1` from `⟨xv / 2, by omega⟩`. Rewrite using `[if_pos (by show decide ((2 * i) % 2 = 0) = true; exact decide_eq_true (by omega))]`. Distinguish the cases in `hi : i = s`. Substitute `hi` using the available equality.
-
-Conclude with `hU`. Conclude with `hW ⟨i, by omega⟩`. Rewrite using `[if_neg (by show ¬ decide ((2 * i + 1) % 2 = 0) = true`. Introduce `hh`. Use `of_decide_eq_true hh` as an intermediate fact.
-
-Use the proof step `omega)]`. Conclude with `hE ⟨i, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pair_chain (p : ℕ) {s r : ℕ} (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (m : ℝ)
     (rz ry : Fin s → Fin (r + 1) → ℕ) (A : ℕ) (mu : Fin (2 * s + 1 + 1) → Fin (r + 1) → ℤ) (lam : Fin r → ℤ) (jp : ℕ)
@@ -316,7 +310,7 @@ theorem pair_chain (p : ℕ) {s r : ℕ} (S : SegData s) (aTop : Fin s → ℕ) 
       exact hE ⟨i, by omega⟩
 
 /- English proof (translation)
-Introduce `X _ _ _ _ j m _ _ rz ry _ t ht`. Conclude with `pair_chain X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) m rz ry _ t.1 t.2.1 t.2.2 ht.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem kept_chain_at (C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ) : KeptChainAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
   intro X _ _ _ _ j m _ _ rz ry _ t ht
@@ -328,7 +322,7 @@ def KeptChainsBeyond : Prop := TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 _ 
 def KeptThresholdsBeyond : Prop := TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 _ Cc => KeptThresholdAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc
 
 /- English proof (translation)
-Introduce `X _inst hD hH hC j m hm hcm rz ry hd t ht`. Conclude with `⟨⟨h1 X hD hH hC j m hm hcm rz ry hd t ht, rfl, rfl⟩, h2 X hD hH hC j m hm hcm rz ry hd t ht, h3 X hD hH hC j m hm hcm rz ry hd t ht, h4 X hD hH hC j m hm hcm rz ry hd t ht⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem kept_block_at_of_pair_level_chain_threshold {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (h1 : KeptPairAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc)
     (h2 : KeptLevelAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) (h3 : KeptChainAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc)
@@ -338,21 +332,19 @@ theorem kept_block_at_of_pair_level_chain_threshold {C0 CYb Cde Ck CD Cb CE1 CE2
     h3 X hD hH hC j m hm hcm rz ry hd t ht, h4 X hD hH hC j m hm hcm rz ry hd t ht⟩
 
 /- English proof (translation)
-Introduce `Cc _` and use `⟨1, one_pos, fun C0 _ => ⟨1, one_pos, fun CE1 CE2 _ _ _ _ => ⟨1, one_pos, fun CYb Cde Ck CD Cb _ _ _ _ _ => kept_chain_at C0 CYb Cde Ck CD Cb CE1 CE2 Cc⟩⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem kept_chain_holds : KeptChainsBeyond := fun Cc _ => ⟨1, one_pos, fun C0 _ => ⟨1, one_pos, fun CE1 CE2 _ _ _ _ =>
   ⟨1, one_pos, fun CYb Cde Ck CD Cb _ _ _ _ _ => kept_chain_at C0 CYb Cde Ck CD Cb CE1 CE2 Cc⟩⟩⟩
 
 /- English proof (translation)
-Use `set Ai : Fin s → ℕ := fun i => coarseA p S (digitBlock rz ry) i with hAi`. Use `set Ci : Fin s → ℕ := fun i => coarseC p S aTop (digitBlock rz ry) i with hCi`. Use `set b := pairBlock S rz ry Ai mu lam jp with hb`. Use `⟨fun l => ?_, le_min ?_ hjp⟩` and prove the remaining obligations. Establish `hl : l.val < s - S.sigma` using `l.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, t3, -, t5, t6, -, -⟩` from `pair_top hP.1 (uTop S l)`. Establish `hσ : ¬ (uTop S l).val < S.sigma` using `by show ¬ S.sigma + l.val < S.sigma; omega`. Establish `e1` using `segment_chain_degree_even p S aTop b ((blockData p S aTop aPlus m b).letterAt ((blockData p S aTop aPlus m b).T.pos l)) (uTop S l) (by show min (2 * (S.sigma + l.val)) (2 * s + 1 - 1) = 2 * (S.sigma + l.val); omega)`. Establish `e2` using `chain_deg_E p S aTop b ((blockData p S aTop aPlus m b).letterAt ((blockData p S aTop aPlus m b).T.pos l + 1)) (uTop S l) (by show min (2 * (S.sigma + l.val) + 1) (2 * s + 1 - 1) = 2 * (S.sigma + l.val) + 1; omega)`. Rewrite `e1`, `e2` using `[if_neg hσ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eO : pairO mu Ai (uTop S l) = pairW mu (uTop S l).val + pairSg mu Ai (uTop S l)` using `by unfold pairSg; ring`. Establish `n5` using `Int.toNat_of_nonneg t5`. Establish `g1 : pairLevel S Ai mu l ≤ b.o (uTop S l)` using `by show (pairSg mu Ai (uTop S l)).toNat ≤ (if (uTop S l).val < S.sigma then 0 else (pairO mu Ai (uTop S l)).toNat)`. Rewrite using `[if_neg hσ]`. Use `Int.toNat_of_nonneg (show 0 ≤ pairO mu Ai (uTop S l) by rw [eO]; omega)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `g2 : pairLevel S Ai mu l ≤ coarseC p S aTop b (uTop S l)` using `by show (pairSg mu Ai (uTop S l)).toNat ≤ Ci (uTop S l)`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨le_of_le_of_eq g1 e1.symm, le_of_le_of_eq g2 e2.symm⟩`. Establish `e` using `chain_deg_U p S aTop b (blockData p S aTop aPlus m b).uPos rfl`.
-
-Conclude with `le_of_le_of_eq (Nat.le_add_left jp _) e.symm`.
+Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pair_level (p : ℕ) {s r : ℕ} (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (m : ℝ)
     (rz ry : Fin s → Fin (r + 1) → ℕ) (A : ℕ) (mu : Fin (2 * s + 1 + 1) → Fin (r + 1) → ℤ) (lam : Fin r → ℤ) (jp : ℕ)
@@ -390,7 +382,7 @@ theorem pair_level (p : ℕ) {s r : ℕ} (S : SegData s) (aTop : Fin s → ℕ) 
     exact le_of_le_of_eq (Nat.le_add_left jp _) e.symm
 
 /- English proof (translation)
-The claim follows from `TransportedAlt.of_explicit (fun _ => 1) (fun _ _ => 1) (fun Cc _ CE1 CE2 _ => T2 CE1 CE2 Cc 1) fun C0 _ _ _ _ _ CE1 CE2 _ _ hCc hC0 _ h1 h2 _ _ _ _ _ _ _ _ _ t1 t2 t3 t4 t5 => by intro X _ hD hI hc j m _ _ rz ry _ t ht have hs := std_of hCc hC0 h1 h2 le_rfl t1 t2 t3 t4 t5 hD hI h …`.
+A detailed English derivation is pending.
 -/
 theorem kept_levels_hold : KeptLevelsBeyond :=
   TransportedAlt.of_explicit (fun _ => 1) (fun _ _ => 1) (fun Cc _ CE1 CE2 _ => T2 CE1 CE2 Cc 1)
@@ -412,11 +404,11 @@ theorem kept_levels_hold : KeptLevelsBeyond :=
         ht.1.1 hjp
 
 /- English proof (translation)
-Introduce `Cc hCc`. Take `⟨T0, hT0, hP0⟩` from `hP Cc hCc`. Take `⟨U0, _, hQ0⟩` from `hQ Cc hCc`. Use `⟨max T0 U0, lt_max_of_lt_left hT0, fun C0 hC0 => ?_⟩` and prove the remaining obligations. Take `⟨T1, hT1, hP1⟩` from `hP0 C0 (le_trans (le_max_left _ _) hC0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨U1, _, hQ1⟩` from `hQ0 C0 (le_trans (le_max_right _ _) hC0)`. Use `⟨max T1 U1, lt_max_of_lt_left hT1, fun CE1 CE2 Cm a1 a2 a3 => ?_⟩` and prove the remaining obligations. Take `⟨T2, hT2, hP2⟩` from `hP1 CE1 CE2 Cm (le_trans (le_max_left _ _) a1) (le_trans (le_max_left _ _) a2) (le_trans (le_max_left _ _) a3)`. Take `⟨U2, _, hQ2⟩` from `hQ1 CE1 CE2 Cm (le_trans (le_max_right _ _) a1) (le_trans (le_max_right _ _) a2) (le_trans (le_max_right _ _) a3)`. Use `⟨max T2 U2, lt_max_of_lt_left hT2, fun CYb Cde Ck CD Cb b1 b2 b3 b4 b5 => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hP2 CYb Cde Ck CD Cb (le_trans (le_max_left _ _) b1) (le_trans (le_max_left _ _) b2) (le_trans (le_max_left _ _) b3) (le_trans (le_max_left _ _) b4) (le_trans (le_max_left _ _) b5)`. Conclude with `hQ2 CYb Cde Ck CD Cb (le_trans (le_max_right _ _) b1) (le_trans (le_max_right _ _) b2) (le_trans (le_max_right _ _) b3) (le_trans (le_max_right _ _) b4) (le_trans (le_max_right _ _) b5)`.
+A detailed English derivation is pending.
 -/
 private theorem transported_and {P Q : (ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → Prop)} (hP : TransportedAlt P) (hQ : TransportedAlt Q) :
     TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc =>
@@ -439,9 +431,9 @@ private theorem transported_and {P Q : (ℝ → ℝ → ℝ → ℝ → ℝ → 
       (le_trans (le_max_right _ _) b3) (le_trans (le_max_right _ _) b4) (le_trans (le_max_right _ _) b5)
 
 /- English proof (translation)
-Introduce `Cc hCc`. Take `⟨T0, hT0, h0⟩` from `hP Cc hCc`. Use `⟨T0, hT0, fun C0 hC0 => ?_⟩` and prove the remaining obligations. Take `⟨T1, hT1, h1⟩` from `h0 C0 hC0`. Use `⟨T1, hT1, fun CE1 CE2 Cm a1 a2 a3 => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T2, hT2, h2⟩` from `h1 CE1 CE2 Cm a1 a2 a3`. Conclude with `⟨T2, hT2, fun CYb Cde Ck CD Cb b1 b2 b3 b4 b5 => h _ _ _ _ _ _ _ _ _ _ (h2 CYb Cde Ck CD Cb b1 b2 b3 b4 b5)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem transported_mono {P Q : (ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → Prop)}
     (h : ∀ C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc, P C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc → Q C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc)
@@ -455,17 +447,17 @@ private theorem transported_mono {P Q : (ℝ → ℝ → ℝ → ℝ → ℝ →
   exact ⟨T2, hT2, fun CYb Cde Ck CD Cb b1 b2 b3 b4 b5 => h _ _ _ _ _ _ _ _ _ _ (h2 CYb Cde Ck CD Cb b1 b2 b3 b4 b5)⟩
 
 /- English proof (translation)
-The claim follows from `transported_mono (fun _ _ _ _ _ _ _ _ _ _ h => kept_block_at_of_pair_level_chain_threshold h.1 h.2.1 h.2.2.1 h.2.2.2) (transported_and h1 (transported_and h2 (transported_and kept_chain_holds h4)))`.
+A detailed English derivation is pending.
 -/
 theorem kept_blocks_of_parts (h1 : KeptPairsBeyond) (h2 : KeptLevelsBeyond) (h4 : KeptThresholdsBeyond) : KeptBlocksBeyondThreshold := transported_mono (fun _ _ _ _ _ _ _ _ _ _ h => kept_block_at_of_pair_level_chain_threshold h.1 h.2.1 h.2.2.1 h.2.2.2)
   (transported_and h1 (transported_and h2 (transported_and kept_chain_holds h4)))
 
 /- English proof (translation)
-Take `⟨h0, hs⟩` from `h`. Establish `h1` using `hs 0`. Rewrite `h1` using `[if_pos (by simp [kLetters])]`. Take `⟨ha, hb, h3⟩` from `h1`. Simplify using `only [Fin.castSucc_zero, h0, Pi.zero_apply, Finset.sum_const_zero, sub_zero] at ha hb h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `ht : ∀ t : Fin r, mu (0 : Fin (2 * s + 1)).succ t.succ = 0` using `fun t => le_antisymm (hb t.castSucc t.succ (by simp only [Fin.coe_castSucc, Fin.val_succ])) (ha t.succ)`. Rewrite `h3` using `[Fin.sum_univ_succ]`. Simplify using `only [ht, Finset.sum_const_zero, add_zero] at h3`. Establish `e : finPos (2 * s + 1) (2 * 0 + 1) = (0 : Fin (2 * s + 1)).succ` using `Fin.ext (by simp only [finPos, Fin.val_succ, Fin.val_zero]; omega)`. Unfold `pairC`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[e, h3]`. Simplify using `[kLetters]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pairC_zero {s r : ℕ} {A : ℕ} {Ai Ci : Fin s → ℕ} {mu : Fin (2 * s + 1 + 1) → Fin (r + 1) → ℤ}
     (h : IsChain (kLetters A Ai Ci) mu) : pairC mu 0 = A := by
@@ -485,9 +477,9 @@ theorem pairC_zero {s r : ℕ} {A : ℕ} {Ai Ci : Fin s → ℕ} {mu : Fin (2 * 
   simp [kLetters]
 
 /- English proof (translation)
-Take `⟨-, -, hw0, -, hs0, -, -, -⟩` from `pair_top h i`. Establish `hO : pairO mu Ai i = pairW mu i.val + pairSg mu Ai i`. Simplify using `only [pairSg]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [oEff, pairBlock]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Use `split_ifs with hi`. Rewrite using `[Nat.cast_add, Int.toNat_of_nonneg hw0, Int.toNat_of_nonneg hs0]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Int.toNat_of_nonneg (by rw [hO]; linarith)`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem oEff_pair {s r : ℕ} (S : SegData s) (rz ry : Fin s → Fin (r + 1) → ℕ) {A : ℕ} {Ai Ci : Fin s → ℕ}
     {mu : Fin (2 * s + 1 + 1) → Fin (r + 1) → ℤ} (lam : Fin r → ℤ) (jp : ℕ) (h : IsChain (kLetters A Ai Ci) mu) (i : Fin s) :
@@ -502,11 +494,11 @@ theorem oEff_pair {s r : ℕ} (S : SegData s) (rz ry : Fin s → Fin (r + 1) →
   · exact Int.toNat_of_nonneg (by rw [hO]; linarith)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `zero => rw [cap_zero, pairC_zero h]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `succ l ih`. Establish `ih'` using `ih (by omega)`.
+Proceed by induction. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Establish an intermediate fact.
 
-Establish `hc` using `cap_succ p S (pairBlock S rz ry (fun i => coarseA p S (digitBlock rz ry) i) mu lam jp) ⟨l, by omega⟩`. Establish `ho` using `oEff_pair S rz ry lam jp h ⟨l, by omega⟩`. Establish `ha : coarseA p S (pairBlock S rz ry (fun i => coarseA p S (digitBlock rz ry) i) mu lam jp) ⟨l, by omega⟩ = coarseA p S (digitBlock rz ry) ⟨l, by omega⟩` using `rfl`. Establish `hO : pairO mu (fun i => coarseA p S (digitBlock rz ry) i) ⟨l, by omega⟩ = pairC mu l + (coarseA p S (digitBlock rz ry) ⟨l, by omega⟩ : ℤ) - pairC mu (l + 1)` using `rfl`. Simplify using `only at hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc, ih', ho, ha, hO]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cap_pair (p : ℕ) {s r : ℕ} (S : SegData s) (aTop : Fin s → ℕ) (rz ry : Fin s → Fin (r + 1) → ℕ) {A : ℕ}
     {mu : Fin (2 * s + 1 + 1) → Fin (r + 1) → ℤ} (lam : Fin r → ℤ) (jp : ℕ)
@@ -528,19 +520,19 @@ theorem cap_pair (p : ℕ) {s r : ℕ} (S : SegData s) (aTop : Fin s → ℕ) (r
     ring
 
 /- English proof (translation)
-Use `set Ai : Fin s → ℕ := fun i => coarseA p S (digitBlock rz ry) i with hAi`. Use `set b := pairBlock S rz ry Ai mu lam jp with hb`. Establish `h0 : ((0 : Fin r) : ℕ) = 0` using `by simp`. Introduce `k`. Establish `hfl : ∀ l, l ≤ s → pairC mu l ≤ ⌊((cap p S b l : ℤ) : ℝ) - m⌋`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `l hl`. Rewrite using `[Int.le_floor, cap_pair p S aTop rz ry lam jp hP.1 l hl]`. Use `push_cast`. Move the coercions through the operations in `at hm`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `hk : k.val < S.t`. Establish `hks : k.val < s - S.sigma` using `hk`. Establish `eJ : (blockData p S aTop aPlus m b).T.J k = 2 * (S.sigma + k.val) + 1` using `by show (if h : (k : ℕ) < S.t then 2 * (uTop S ⟨k, h⟩ : ℕ) + 1 else 2 * s + 1) = _`. Rewrite using `[dif_pos hk]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `eT : (blockData p S aTop aPlus m b).T.thr k = ((⌊((cap p S b (S.sigma + k.val) : ℤ) : ℝ) - m⌋ : ℤ) : WithTop ℤ)` using `by show (segmentCapacities p S b k).map (fun x : ℤ => ⌊(x : ℝ) - m⌋) = _`. Unfold `segmentCapacities`. Rewrite using `[dif_pos hk]`. Both sides reduce to the same expression. Rewrite using `[eJ, eT, WithTop.coe_le_coe, finPos_eq (2 * s + 1) (2 * (S.sigma + k.val) + 1) (by omega), pairChain_lt mu lam (2 * (S.sigma + k.val) + 1) (by omega)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, -, -, -, -, -, t7, -⟩` from `pair_top hP.1 (⟨S.sigma + k.val, by omega⟩ : Fin s)`. Conclude with `le_trans (t7 0 h0) (hfl _ (by omega))`. Establish `eJ : (blockData p S aTop aPlus m b).T.J k = 2 * s + 1` using `by show (if h : (k : ℕ) < S.t then 2 * (uTop S ⟨k, h⟩ : ℕ) + 1 else 2 * s + 1) = _`. Rewrite using `[dif_neg hk]`. Establish `eT : (blockData p S aTop aPlus m b).T.thr k = ((⌊((cap p S b s : ℤ) : ℝ) - m⌋ : ℤ) : WithTop ℤ)` using `by show (segmentCapacities p S b k).map (fun x : ℤ => ⌊(x : ℝ) - m⌋) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `segmentCapacities`. Rewrite using `[dif_neg hk]`. Both sides reduce to the same expression. Rewrite using `[eJ, eT, WithTop.coe_le_coe, finPos_eq (2 * s + 1) (2 * s + 1) (by omega), pairChain_last]`. Establish `h3` using `(inter_strip hP.2).2.2 0 h0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `eC : pairC mu s = mu (Fin.last _) 0`. Unfold `pairC`. Rewrite using `[finPos_eq (2 * s + 1) (2 * s + 1) (by omega)]`. Both sides reduce to the same expression. Conclude with `le_trans (eC ▸ h3) (hfl s le_rfl)`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pair_thr (p : ℕ) {s r : ℕ} [NeZero r] (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (m : ℝ)
     (rz ry : Fin s → Fin (r + 1) → ℕ) (A : ℕ) (mu : Fin (2 * s + 1 + 1) → Fin (r + 1) → ℤ) (lam : Fin r → ℤ) (jp : ℕ)
@@ -593,7 +585,7 @@ theorem pair_thr (p : ℕ) {s r : ℕ} [NeZero r] (S : SegData s) (aTop : Fin s 
     exact le_trans (eC ▸ h3) (hfl s le_rfl)
 
 /- English proof (translation)
-The claim follows from `TransportedAlt.of_explicit (fun _ => 1) (fun _ _ => 1) (fun Cc _ CE1 CE2 _ => T2 CE1 CE2 Cc 1) fun C0 _ _ _ _ _ CE1 CE2 _ _ hCc hC0 _ h1 h2 _ _ _ _ _ _ _ _ _ t1 t2 t3 t4 t5 => by intro X _ hD hI hc j m _ hmA rz ry _ t ht have hs := std_of hCc hC0 h1 h2 le_rfl t1 t2 t3 t4 t5 hD hI …`.
+A detailed English derivation is pending.
 -/
 theorem kept_thresholds_hold : KeptThresholdsBeyond :=
   TransportedAlt.of_explicit (fun _ => 1) (fun _ _ => 1) (fun Cc _ CE1 CE2 _ => T2 CE1 CE2 Cc 1)
@@ -626,7 +618,7 @@ theorem kept_thresholds_hold : KeptThresholdsBeyond :=
       linarith
 
 /- English proof (translation)
-The claim follows from `kept_blocks_of_parts h1 kept_levels_hold kept_thresholds_hold`.
+A detailed English derivation is pending.
 -/
 theorem kept_blocks_of_kept_pairs (h1 : KeptPairsBeyond) : KeptBlocksBeyondThreshold := kept_blocks_of_parts h1 kept_levels_hold kept_thresholds_hold
 
@@ -676,57 +668,55 @@ def RestPairS : Prop := TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 _ Cc => P
 def RestPairX : Prop := TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 _ Cc => PairXAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc
 
 /- English proof (translation)
-Introduce `X _ hD hI hc j m hm hmA rz ry hd t ht`. Establish `hs` using `hstd X hD hI hc`. Take `⟨⟨hP, hK⟩, hjp⟩` from `ht`. Establish `hk : 0 < X.k` using `by unfold Loc.k; positivity`. Establish `hkk : X.k = (X.m : ℝ) + 1` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLa0 : 0 ≤ X.La C0` using `le_trans zero_le_one hs.La1`. Establish `hA0 : (0 : ℝ) ≤ ((X.seg C0 CE1 CE2 j).A0 X.p : ℝ)`. Use `le_trans ?_ (hs.half_ratio_le_segment_base_of_std j)` and prove the remaining obligations. Use `hs.apos` as an intermediate fact. Use `hs.Q1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `he : (X.N1 : ℝ) * X.La C0 / X.k ≤ 1`. Establish `a1` using `hs.LaK`. Establish `a2` using `hs.de6`. Establish `e : 40 * (X.N1 : ℝ) * X.La C0 / X.k = 40 * ((X.N1 : ℝ) * X.La C0 / X.k)` using `by ring`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a1` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e2 : ((X.seg C0 CE1 CE2 j).A0 X.p : ℝ) * X.N1 * X.La C0 / X.k = ((X.seg C0 CE1 CE2 j).A0 X.p : ℝ) * ((X.N1 : ℝ) * X.La C0 / X.k)` using `by ring`. Establish `hle : (⌈m⌉₊ : ℝ) ≤ ((X.seg C0 CE1 CE2 j).A0 X.p : ℝ)`. Use `le_trans hmA ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e2]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hleZ : ((⌈m⌉₊ : ℕ) : ℤ) ≤ (X.seg C0 CE1 CE2 j).A0 X.p` using `by exact_mod_cast hle`. Use `set A : ℕ := ((X.seg C0 CE1 CE2 j).A0 X.p - (⌈m⌉₊ : ℤ)).toNat with hA`. Establish `hAz : (A : ℤ) = (X.seg C0 CE1 CE2 j).A0 X.p - (⌈m⌉₊ : ℤ)` using `Int.toNat_of_nonneg (by omega)`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAr : (A : ℝ) = ((X.seg C0 CE1 CE2 j).A0 X.p : ℝ) - (⌈m⌉₊ : ℝ)` using `by exact_mod_cast hAz`. Establish `hA1 : ((X.seg C0 CE1 CE2 j).A0 X.p : ℝ) * (1 - X.N1 * X.La C0 / X.k) ≤ (A : ℝ)`. Rewrite using `[hAr]`. Rewrite `hmA` using `[e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hA2 : (A : ℝ) ≤ ((X.seg C0 CE1 CE2 j).A0 X.p : ℝ)`. Rewrite using `[hAr]`. Establish `: (0 : ℝ) ≤ (⌈m⌉₊ : ℝ)` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hUi` using `hU X hD hI hc j rz ry hd A hA1 hA2 t.1 t.2.1 hP hK`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSi` using `hS X hD hI hc j rz ry hd A hA1 hA2 t.1 t.2.1 hP hK`. Establish `hXi` using `hX X hD hI hc j rz ry hd A hA1 hA2 t.1 t.2.1 hP hK`. Establish `hcap : ∀ l, l ≤ segS X.TT j → ((pairC t.1 l : ℤ) : ℝ) ≤ ((cap X.p (X.seg C0 CE1 CE2 j) (pairMap C0 CE1 CE2 X j rz ry t).1 l : ℤ) : ℝ)`. Introduce `l hl`. Use `cap_pair X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) rz ry t.2.1 t.2.2 hP.1 l hl` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : cap X.p (X.seg C0 CE1 CE2 j) (pairMap C0 CE1 CE2 X j rz ry t).1 l = (X.seg C0 CE1 CE2 j).A0 X.p - A + pairC t.1 l` using `this`. Rewrite using `[h2]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hd, fun i hi => ?_, fun i hi => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, t3, -, t5, -, -, -⟩` from `pair_top hP.1 i`. Establish `eO : pairO t.1 (clA C0 CE1 CE2 X j rz ry) i = pairW t.1 i.val + pairSg t.1 (clA C0 CE1 CE2 X j rz ry) i`. Unfold `pairSg`. Expand and normalize the polynomial expressions, which then agree. Establish `n0` using `Int.toNat_of_nonneg (show 0 ≤ pairO t.1 (clA C0 CE1 CE2 X j rz ry) i by rw [eO]; omega)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ : ¬ i.val < (X.seg C0 CE1 CE2 j).sigma` using `by omega`. Establish `eo : (pairMap C0 CE1 CE2 X j rz ry t).1.o i = (pairO t.1 (clA C0 CE1 CE2 X j rz ry) i).toNat` using `if_neg hσ`. Establish `ew : (pairMap C0 CE1 CE2 X j rz ry t).1.w i = 0` using `if_neg hσ`. Establish `esg : (pairMap C0 CE1 CE2 X j rz ry t).1.sg i = 0` using `if_neg hσ`. Take `⟨u1, u2⟩` from `hUi i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ew, esg⟩` and prove the remaining obligations. Rewrite using `[eo] show _ ≤ clA C0 CE1 CE2 X j rz ry i`. Use linear arithmetic over natural numbers and integers. Rewrite using `[eo]`. Establish `c1 : (((pairO t.1 (clA C0 CE1 CE2 X j rz ry) i).toNat : ℕ) : ℝ) = ((pairO t.1 (clA C0 CE1 CE2 X j rz ry) i : ℤ) : ℝ)` using `by exact_mod_cast n0`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[c1]`. Use `hcap i.val i.2.le` as an intermediate fact. Use `show _ ≤ _ + X.La C0 * (clA C0 CE1 CE2 X j rz ry i : ℝ) / X.k`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨-, -, t3, t4, t5, t6, -, -⟩` from `pair_top hP.1 i`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n3` using `Int.toNat_of_nonneg t3`. Establish `n5` using `Int.toNat_of_nonneg t5`. Establish `eO : pairO t.1 (clA C0 CE1 CE2 X j rz ry) i = pairW t.1 i.val + pairSg t.1 (clA C0 CE1 CE2 X j rz ry) i`. Unfold `pairSg`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eo : (pairMap C0 CE1 CE2 X j rz ry t).1.o i = 0` using `if_pos hi`. Establish `ew : (pairMap C0 CE1 CE2 X j rz ry t).1.w i = (pairW t.1 i.val).toNat` using `if_pos hi`. Establish `esg : (pairMap C0 CE1 CE2 X j rz ry t).1.sg i = (pairSg t.1 (clA C0 CE1 CE2 X j rz ry) i).toNat` using `if_pos hi`. Take `⟨s1, s2⟩` from `hSi i hi`. Establish `c5 : (((pairSg t.1 (clA C0 CE1 CE2 X j rz ry) i).toNat : ℕ) : ℝ) = ((pairSg t.1 (clA C0 CE1 CE2 X j rz ry) i : ℤ) : ℝ)` using `by exact_mod_cast n5`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `c3 : (((pairW t.1 i.val).toNat : ℕ) : ℝ) = ((pairW t.1 i.val : ℤ) : ℝ)` using `by exact_mod_cast n3`. Use `⟨eo, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ew] show _ ≤ clA C0 CE1 CE2 X j rz ry i`. Use linear arithmetic over natural numbers and integers. Rewrite using `[esg] show _ ≤ clC C0 CE1 CE2 X j rz ry i`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[ew, esg]`. Use `push_cast`. Rewrite using `[c3, c5]`. Establish `e3 : ((pairO t.1 (clA C0 CE1 CE2 X j rz ry) i : ℤ) : ℝ) = ((pairW t.1 i.val : ℤ) : ℝ) + ((pairSg t.1 (clA C0 CE1 CE2 X j rz ry) i : ℤ) : ℝ)` using `by exact_mod_cast eO`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `hcap i.val i.2.le`. Establish `h5 : X.La C0 * ((pairC t.1 i.val : ℤ) : ℝ) / X.k ≤ X.La C0 * ((cap X.p (X.seg C0 CE1 CE2 j) (pairMap C0 CE1 CE2 X j rz ry t).1 i.val : ℤ) : ℝ) / X.k` using `div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_left h4 hLa0) hk.le`. Use `show _ ≤ (clA C0 CE1 CE2 X j rz ry i : ℝ) * (1 + 4 / (X.p : ℝ) ^ 2) + X.La C0 * ((cap X.p (X.seg C0 CE1 CE2 j) (pairMap C0 CE1 CE2 X j rz ry t).1 i.val : ℤ) : ℝ) / X.k`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[esg, c5]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `s2`. Establish `hd0` using `(inter_strip hP.2).2.1`. Establish `eD : pairD t.1 t.2.1 = ∑ x, t.2.1 x - ∑ x : Fin X.m, t.1 (Fin.last _) x.succ`. Unfold `pairD pairTail`. Rewrite using `[finPos_eq (2 * segS X.TT j + 1) (2 * segS X.TT j + 1) (by omega)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `nD` using `Int.toNat_of_nonneg (show 0 ≤ pairD t.1 t.2.1 by rw [eD]; exact hd0)`. Establish `cD : (((pairD t.1 t.2.1).toNat : ℕ) : ℝ) = ((pairD t.1 t.2.1 : ℤ) : ℝ)` using `by exact_mod_cast nD`. Establish `hB : (0 : ℝ) ≤ ((X.seg C0 CE1 CE2 j).bPlus : ℝ)` using `Nat.cast_nonneg _`. Establish `hj : (t.2.2 : ℝ) ≤ X.La C0 * ((X.seg C0 CE1 CE2 j).bPlus : ℝ) / X.k` using `le_trans (by exact_mod_cast hjp) (Nat.floor_le (by positivity))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hC : ∀ i : Fin (segS X.TT j), (clC C0 CE1 CE2 X j rz ry i : ℝ) ≤ 2 * (X.a : ℝ) / ((X.seg C0 CE1 CE2 j).P X.p i : ℝ)`. Introduce `i`. Take `⟨hP0, -, -, -, -⟩` from `hs.levels j i`. Establish `hcb` using `(coarse_bounds (X.aT (segPos X.TT j i)) (X.p ^ (segG X.TT j - (segDists X.TT j).get i)) (ry i) (fun c => (hd.1 i c).2) (hd.2.2 i).1 (hd.2.2 i).2).1`. Establish `hw` using `(hs.winA _ (pos_mem X.TT j i).1).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkY : 2 / (X.k * X.Y) ≤ 1`. Rewrite using `[div_le_one (by have := hs.Y1; positivity)]`. Use `hs.k5` as an intermediate fact. Use `hs.Y1` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `ha` using `hs.apos`. Use `show (clC C0 CE1 CE2 X j rz ry i : ℝ) ≤ 2 * (X.a : ℝ) / ((X.p ^ (segG X.TT j - (segDists X.TT j).get i) : ℕ) : ℝ)`. Rewrite using `[le_div_iff₀ hP0]`. Use `le_trans hcb (le_trans hw ?_)` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : ∑ i, (clC C0 CE1 CE2 X j rz ry i : ℝ) ≤ ∑ i, 2 * (X.a : ℝ) / ((X.seg C0 CE1 CE2 j).P X.p i : ℝ)` using `Finset.sum_le_sum fun i _ => hC i`. Establish `hsum0 : (0 : ℝ) ≤ ∑ i, 2 * (X.a : ℝ) / ((X.seg C0 CE1 CE2 j).P X.p i : ℝ)` using `Finset.sum_nonneg fun i _ => by positivity`. Establish `hq : X.La C0 / X.k * ∑ i, (clC C0 CE1 CE2 X j rz ry i : ℝ) ≤ (X.La C0 / X.k + 4 / (X.p : ℝ) ^ 2) * ∑ i, 2 * (X.a : ℝ) / ((X.seg C0 CE1 CE2 j).P X.p i : ℝ)`. Establish `a1 : X.La C0 / X.k * ∑ i, (clC C0 CE1 CE2 X j rz ry i : ℝ) ≤ X.La C0 / X.k * ∑ i, 2 * (X.a : ℝ) / ((X.seg C0 CE1 CE2 j).P X.p i : ℝ)` using `mul_le_mul_of_nonneg_left hsum (by positivity)`. Establish `a2 : (0 : ℝ) ≤ 4 / (X.p : ℝ) ^ 2 * ∑ i, 2 * (X.a : ℝ) / ((X.seg C0 CE1 CE2 j).P X.p i : ℝ)` using `by positivity`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h4` using `hcap (segS X.TT j) le_rfl`. Use `show (((pairD t.1 t.2.1).toNat + t.2.2 : ℕ) : ℝ) ≤ ((cap X.p (X.seg C0 CE1 CE2 j) (pairMap C0 CE1 CE2 X j rz ry t).1 (segS X.TT j) : ℤ) : ℝ) + (X.La C0 / X.k + 4 / (X.p : ℝ) ^ 2) * ∑ i, 2 * (X.a : ℝ) / ((X.seg C0 CE1 CE2 j).P X.p i : ℝ) + X.La C0 * ((X.seg C0 CE1 CE2 j).bPlus : ℝ …`. Use `push_cast`. Rewrite using `[cD]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem kept_pair_of_three_lines {C0 CYb Cde Ck CD Cb CE1 CE2 Cc H : ℝ}
     (hstd : ∀ X : Loc, D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X → Std C0 Cde CE1 CE2 H X)
@@ -884,7 +874,7 @@ theorem kept_pair_of_three_lines {C0 CYb Cde Ck CD Cb CE1 CE2 Cc H : ℝ}
     linarith
 
 /- English proof (translation)
-Establish `hstd : TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 _ Cc => ∀ X : Loc, D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X → Std C0 Cde CE1 CE2 1 X` using `TransportedAlt.of_explicit (fun _ => 1) (fun _ _ => 1) (fun Cc _ CE1 CE2 _ => T2 CE1 CE2 Cc 1) fun _ _ _ _ _ _ _ _ _ _ hCc hC0 _ h1 h2 _ _ _ _ _ _ _ _ _ t1 t2 t3 t4 t5 => fun _ hD hI hc => std_of hCc hC0 h1 h2 le_rfl t1 t2 t3 t4 t5 hD hI hc`. Conclude with `TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => kept_pair_of_three_lines h.1.1.1 h.1.1.2 h.1.2 h.2) (((hstd.and hU).and hS).and hX)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kept_pairs_of_three_lines (hU : RestPairU) (hS : RestPairS) (hX : RestPairX) : KeptPairsBeyond := by
   have hstd : TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 _ Cc =>
@@ -895,34 +885,32 @@ theorem kept_pairs_of_three_lines (hU : RestPairU) (hS : RestPairS) (hX : RestPa
   exact TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => kept_pair_of_three_lines h.1.1.1 h.1.1.2 h.1.2 h.2) (((hstd.and hU).and hS).and hX)
 
 /- English proof (translation)
-The claim follows from `kept_blocks_of_kept_pairs (kept_pairs_of_three_lines hU hS hX)`.
+A detailed English derivation is pending.
 -/
 theorem kept_blocks_of_three_lines (hU : RestPairU) (hS : RestPairS) (hX : RestPairX) : KeptBlocksBeyondThreshold := kept_blocks_of_kept_pairs (kept_pairs_of_three_lines hU hS hX)
 
 /- English proof (translation)
-Establish `hm` using `dist_strictMono X.TT j (show l < l' from Fin.lt_def.mpr (by omega))`. Establish `ho1` using `dist_odd hs.nEven X.TT j l`. Establish `ho2` using `dist_odd hs.nEven X.TT j l'`. Establish `hlt` using `(dist_pos_lt X.TT j l').2`. Take `⟨k1, hk1⟩` from `ho1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k2, hk2⟩` from `ho2`. Establish `hdd : (segDists X.TT j).get l + 2 ≤ (segDists X.TT j).get l'` using `by omega`. Use `set P := X.p ^ (segG X.TT j - (segDists X.TT j).get l) with hP`. Use `set P' := X.p ^ (segG X.TT j - (segDists X.TT j).get l') with hP'`. Establish `hp1 : 1 ≤ X.p` using `by have := hs.p5; omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPP : X.p ^ 2 * P' ≤ P`. Rewrite using `[hP, hP', ← pow_add]`. Conclude with `Nat.pow_le_pow_right hp1 (by omega)`. Establish `hPPr : (X.p : ℝ) ^ 2 * (P' : ℝ) ≤ (P : ℝ)` using `by exact_mod_cast hPP`. Take `⟨hP0, -, -, hQ, hPQ⟩` from `hs.levels j l`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hP0', -, -, -, hPQ'⟩` from `hs.levels j l'`. Establish `cb` using `coarse_bounds (X.bT (segPos X.TT j l)) P (rz l) (fun c => (hd.1 l c).1) (hd.2.1 l).1 (hd.2.1 l).2`. Establish `cb'` using `coarse_bounds (X.bT (segPos X.TT j l')) P' (rz l') (fun c => (hd.1 l' c).1) (hd.2.1 l').1 (hd.2.1 l').2`. Establish `wb` using `hs.winB _ (pos_mem X.TT j l).1`. Establish `wb'` using `hs.winB _ (pos_mem X.TT j l').1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbe` using `hs.beLe`. Establish `hbe0` using `hs.be0`. Establish `hde` using `hs.de6`. Establish `hLK` using `hs.LaK`. Establish `hk5` using `hs.k5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkQ` using `hs.kQ hH`. Establish `hb` using `hs.bpos`. Establish `hQ1` using `hs.Q1`. Establish `eA : (clA C0 CE1 CE2 X j rz ry l : ℝ) = (((X.bT (segPos X.TT j l) - ∑ c, rz l c) / P : ℕ) : ℝ)` using `rfl`. Establish `eA' : (clA C0 CE1 CE2 X j rz ry l' : ℝ) = (((X.bT (segPos X.TT j l') - ∑ c, rz l' c) / P' : ℕ) : ℝ)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[eA, eA']`. Establish `hA0 : (0 : ℝ) ≤ (((X.bT (segPos X.TT j l) - ∑ c, rz l c) / P : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Generalize the expression as in `(((X.bT (segPos X.TT j l) - ∑ c, rz l c) / P : ℕ) : ℝ) = A at cb hA0 ⊢`. Generalize the expression as in `(((X.bT (segPos X.TT j l') - ∑ c, rz l' c) / P' : ℕ) : ℝ) = A' at cb' ⊢`. Establish `hbe1 : be X C0 ≤ 1 / 12`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `: 0 ≤ 18 * (X.N1 : ℝ) * X.La C0 / X.k`. Use `hs.La1; have : (0 : ℝ) < X.k := by linarith` as an intermediate fact. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkP : X.k * (P' : ℝ) ≤ X.b' / 12`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : X.k * (P' : ℝ) ≤ X.k * X.Q` using `mul_le_mul_of_nonneg_left (le_trans hPQ' hQ) (by linarith)`. Establish `h2 : X.k ^ 3 * X.Q ≤ X.b'` using `hkQ`. Establish `h3 : 12 * (X.k * X.Q) ≤ X.k ^ 3 * X.Q`. Establish `h12 : (12 : ℝ) ≤ X.k ^ 2` using `by nlinarith`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg (by linarith : (0:ℝ) ≤ X.k) (by linarith : (0:ℝ) ≤ X.Q)) (by linarith : (0:ℝ) ≤ X.k ^ 2 - 12)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkk : ((X.m : ℝ) + 1) = X.k` using `rfl`. Rewrite `cb'` using `[hkk]`. Establish `e1 : (X.p : ℝ) ^ 2 * A * P' ≤ X.b' * (1 + be X C0)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : X.b' * (1 - be X C0) - X.k * P' < A' * P'` using `by linarith [cb'.2, wb'.1]`. Establish `hP'pos : (0 : ℝ) < P'` using `hP0'`. Establish `hbb` using `mul_le_mul_of_nonneg_left hbe1 hb.le`. Establish `key : (X.p : ℝ) ^ 2 * A * P' ≤ 2 * A' * P'` using `by linarith`. Use `le_of_mul_le_mul_right (show (X.p : ℝ) ^ 2 * A * P' ≤ 2 * A' * P' from key) hP'pos` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem coarse_degree_ratio_consecutive {C0 Cde CE1 CE2 H : ℝ} {X : Loc} (hs : Std C0 Cde CE1 CE2 H X) (hH : 1 ≤ H) (j : Fin (numSeg X.TT))
     (rz ry : Fin (segS X.TT j) → Fin (X.m + 1) → ℕ)
@@ -991,17 +979,17 @@ theorem coarse_degree_ratio_consecutive {C0 Cde CE1 CE2 H : ℝ} {X : Loc} (hs :
   linarith
 
 /- English proof (translation)
-Establish `hp : (25 : ℝ) ≤ (X.p : ℝ) ^ 2`. Establish `: (5 : ℝ) ≤ X.p` using `by exact_mod_cast hs.p5`. Use the polynomial consequences of the given equalities and inequalities. Introduce `⟨i, hi⟩`. Proceed by induction on `i with`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Simplify using `only [Nat.not_lt_zero, if_false, Finset.sum_const_zero]`. Check the signs of the components of the expression. Consider the case `succ i ih`. Establish `ih'` using `ih (by omega)`.
+Treat this case separately. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Treat this case separately. Establish an intermediate fact.
 
-Establish `hstep` using `coarse_degree_ratio_consecutive hs hH j rz ry hd ⟨i, by omega⟩ ⟨i + 1, hi⟩ rfl`. Establish `e : (∑ l : Fin (segS X.TT j), if l.val < i + 1 then (clA C0 CE1 CE2 X j rz ry l : ℝ) else 0) = (∑ l : Fin (segS X.TT j), if l.val < i then (clA C0 CE1 CE2 X j rz ry l : ℝ) else 0) + (clA C0 CE1 CE2 X j rz ry ⟨i, by omega⟩ : ℝ)`. Establish `h2 : (∑ l : Fin (segS X.TT j), if l = (⟨i, by omega⟩ : Fin (segS X.TT j)) then (clA C0 CE1 CE2 X j rz ry l : ℝ) else 0) = (clA C0 CE1 CE2 X j rz ry ⟨i, by omega⟩ : ℝ)` using `by simp`. Rewrite using `[← h2, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h1 : l.val < i`. Rewrite using `[if_pos (by omega), if_pos h1, if_neg (fun h => by rw [h] at h1; simp at h1)]; ring`. Distinguish the cases in `h3 : l.val = i`. Rewrite using `[if_pos (by omega), if_neg h1, if_pos (Fin.ext h3)]; ring`. Rewrite using `[if_neg (by omega), if_neg h1, if_neg (fun h => h3 (by rw [h]))]; ring`.
+Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Establish `hA : (0 : ℝ) ≤ (clA C0 CE1 CE2 X j rz ry ⟨i, by omega⟩ : ℝ)` using `Nat.cast_nonneg _`. Establish `hp0 : (0 : ℝ) < (X.p : ℝ) ^ 2` using `by linarith`. Rewrite `ih'`, the goal using `[div_eq_mul_inv]`. Establish `hinv : (X.p : ℝ) ^ 2 * ((X.p : ℝ) ^ 2)⁻¹ = 1` using `mul_inv_cancel₀ hp0.ne'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv0 : ((X.p : ℝ) ^ 2)⁻¹ ≤ 1 / 25`. Rewrite using `[one_div]; exact inv_anti₀ (by norm_num) hp`. Use polynomial arithmetic with `[inv_pos.mpr hp0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem coarse_degree_prefix_sum {C0 Cde CE1 CE2 H : ℝ} {X : Loc} (hs : Std C0 Cde CE1 CE2 H X) (hH : 1 ≤ H) (j : Fin (numSeg X.TT))
     (rz ry : Fin (segS X.TT j) → Fin (X.m + 1) → ℕ)

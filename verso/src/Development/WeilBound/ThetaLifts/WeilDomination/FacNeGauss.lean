@@ -17,13 +17,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 def rep {c : ℕ} (y : Res k c) : k := ((Quotient.out y : 𝒪[k]) : k)
 
 /- English proof (translation)
-Conclude with `(Quotient.out y).2`.
+A detailed English derivation is pending.
 -/
 theorem rep_le_one {c : ℕ} (y : Res k c) : valuation k (rep y) ≤ 1 := by
   exact (Quotient.out y).2
 
 /- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton, (Valuation.integer.integers (valuation k)).dvd_iff_le, map_pow, map_pow]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mk_eq_mk_iff {ϖ : kˣ} (hϖ : IsUnif ϖ) (c : ℕ) (a b : 𝒪[k]) :
     Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c) a = Ideal.Quotient.mk _ b ↔
@@ -33,9 +33,9 @@ theorem mk_eq_mk_iff {ϖ : kˣ} (hϖ : IsUnif ϖ) (c : ℕ) (a b : 𝒪[k]) :
   exact Iff.rfl
 
 /- English proof (translation)
-Establish `h1 : valuation k (ϖ : k) < 1`. Rewrite using `[hϖ]`. Use `first`. Consider the case `exact ValuativeRel.uniformizer_lt_one k`. Consider the case `exact ValuativeRel.uniformizer_lt_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact ValuativeRel.uniformizer_lt_one (R := k)`. Conclude with `pow_lt_one₀ zero_le h1 (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem val_pow_lt_one {ϖ : kˣ} (hϖ : IsUnif ϖ) {c : ℕ} (hc : 1 ≤ c) : valuation k (ϖ : k) ^ c < 1 := by
   have h1 : valuation k (ϖ : k) < 1 := by
@@ -47,11 +47,11 @@ theorem val_pow_lt_one {ϖ : kˣ} (hϖ : IsUnif ϖ) {c : ℕ} (hc : 1 ≤ c) : v
   exact pow_lt_one₀ zero_le h1 (by omega)
 
 /- English proof (translation)
-Establish `hy : Ideal.Quotient.mk _ (Quotient.out (y : Res k c)) = (y : Res k c)` using `Quotient.out_eq _`. Establish `hz : Ideal.Quotient.mk _ (Quotient.out ((y⁻¹ : (Res k c)ˣ) : Res k c)) = ((y⁻¹ : (Res k c)ˣ) : Res k c)` using `Quotient.out_eq _`. Establish `hmk : Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c) (Quotient.out (y : Res k c) * Quotient.out ((y⁻¹ : (Res k c)ˣ) : Res k c)) = Ideal.Quotient.mk _ 1`. Rewrite using `[map_mul, hy, hz, Units.mul_inv, map_one]`. Establish `hv` using `(mk_eq_mk_iff hϖ c _ _).1 hmk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlt : valuation k (((Quotient.out (y : Res k c) * Quotient.out ((y⁻¹ : (Res k c)ˣ) : Res k c) : 𝒪[k]) : k) - 1) < 1` using `lt_of_le_of_lt (by simpa using hv) (val_pow_lt_one hϖ hc)`. Establish `hone` using `Valuation.map_one_add_of_lt (valuation k) hlt`. Rewrite `hone` using `[add_sub_cancel]`. Establish `hb : valuation k (rep ((y⁻¹ : (Res k c)ˣ) : Res k c)) ≤ 1` using `rep_le_one _`. Use `le_antisymm (rep_le_one _) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul]`. Simplify `hone.symm` using `[rep]`. Use `_ ≤ valuation k (rep (y : Res k c)) * 1 := by gcongr`. Use `_ = valuation k (rep (y : Res k c)) := mul_one _`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem val_rep_unit {ϖ : kˣ} (hϖ : IsUnif ϖ) {c : ℕ} (hc : 1 ≤ c) (y : (Res k c)ˣ) :
     valuation k (rep (y : Res k c)) = 1 := by
@@ -75,7 +75,7 @@ theorem val_rep_unit {ϖ : kˣ} (hϖ : IsUnif ϖ) {c : ℕ} (hc : 1 ≤ c) (y : 
     _ = valuation k (rep (y : Res k c)) := mul_one _
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `val_rep_unit hϖ hc y`. Rewrite `h1` using `[h, map_zero]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rep_ne_zero {ϖ : kˣ} (hϖ : IsUnif ϖ) {c : ℕ} (hc : 1 ≤ c) (y : (Res k c)ˣ) : rep (y : Res k c) ≠ 0 := by
   intro h
@@ -92,7 +92,7 @@ Both sides reduce to the same expression.
     (uRep hϖ hc y : k) = rep (y : Res k c) := rfl
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem psi_congr {ψl : k → ℂ} (hadd : ∀ x y, ψl (x + y) = ψl x * ψl y)
     (hO : ∀ x : k, valuation k x ≤ 1 → ψl x = 1) {a b : k} (h : valuation k (a - b) ≤ 1) : ψl a = ψl b := by
@@ -101,11 +101,11 @@ theorem psi_congr {ψl : k → ℂ} (hadd : ∀ x y, ψl (x + y) = ψl x * ψl y
     _ = ψl b := by rw [hO _ h, mul_one]
 
 /- English proof (translation)
-Establish `hlt : valuation k ((a : k) - b) < valuation k (b : k)`. Rewrite using `[hb]`. Conclude with `lt_of_le_of_lt h (val_pow_lt_one hϖ hc1)`. Establish `ha : valuation k (a : k) = 1`. Establish `e : (a : k) = ((a : k) - b) + b` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Valuation.map_add_eq_of_lt_right _ hlt, hb]`. Establish `hmem : a * b⁻¹ ∈ unitCong (ϖ ^ c)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀, ha, hb, inv_one, mul_one]`. Establish `e : (a : k) * (b : k)⁻¹ - 1 = ((a : k) - b) * (b : k)⁻¹`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_mul, mul_inv_cancel₀ b.ne_zero]`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, e, map_mul, map_inv₀, hb, inv_one, mul_one, Units.val_pow_eq_pow_val, map_pow]`. Conclude with `h`. Establish `h1` using `hc _ hmem`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem nu_congr {ϖ : kˣ} (hϖ : IsUnif ϖ) {c : ℕ} (hc1 : 1 ≤ c) {ν : kˣ →* ℂˣ} (hc : CondLE ϖ c ν) {a b : kˣ}
     (hb : valuation k (b : k) = 1) (h : valuation k ((a : k) - b) ≤ valuation k (ϖ : k) ^ c) : ν a = ν b := by
@@ -147,21 +147,19 @@ include hadd hO hc
 open Classical in
 
 /- English proof (translation)
-Establish `hu1 : valuation k (u : k) ≤ 1` using `hu.le`. Establish `hui : valuation k ((u⁻¹ : kˣ) : k) ≤ 1`. Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, hu, inv_one]`. Set `uO : 𝒪[k]ˣ` to `⟨⟨u, hu1⟩, ⟨((u⁻¹ : kˣ) : k), hui⟩, Subtype.ext (by simp), Subtype.ext (by simp)⟩`. Set `ub : (Res k c)ˣ` to `Units.map (Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c)).toMonoidHom uO`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hϖ0 : valuation k (ϖ : k) ≠ 0` using `(valuation k).ne_zero_iff.2 ϖ.ne_zero`. Establish `hpos : 0 < valuation k (ϖ : k) ^ c` using `zero_lt_iff.2 (pow_ne_zero _ hϖ0)`. Establish `hcong : ∀ y : (Res k c)ˣ, valuation k (rep ((y * ub : (Res k c)ˣ) : Res k c) - rep (y : Res k c) * (u : k)) ≤ valuation k (ϖ : k) ^ c`. Introduce `y`. Establish `hmk : Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c) (Quotient.out ((y * ub : (Res k c)ˣ) : Res k c)) = Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c) (Quotient.out (y : Res k c) * (uO : 𝒪[k]))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c) (Quotient.out ((y * ub : (Res k c)ˣ) : Res k c)) = ((y * ub : (Res k c)ˣ) : Res k c)` using `Quotient.out_eq _`. Establish `h2 : Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c) (Quotient.out (y : Res k c)) = (y : Res k c)` using `Quotient.out_eq _`. Rewrite using `[h1, map_mul, h2, Units.val_mul]`. Both sides reduce to the same expression. Use `(mk_eq_mk_iff hϖ c _ _).1 hmk` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify `this` using `[rep, uO]`. Establish `hterm : ∀ y : (Res k c)ˣ, (((ν (uRep hϖ hc1 (y * ub)))⁻¹ : ℂˣ) : ℂ) * ψl (x * rep ((y * ub : (Res k c)ˣ) : Res k c) / (ϖ : k) ^ c) = (((ν u)⁻¹ : ℂˣ) : ℂ) * ((((ν (uRep hϖ hc1 y))⁻¹ : ℂˣ) : ℂ) * ψl (x * u * rep (y : Res k c) / (ϖ : k) ^ c))`. Introduce `y`. Establish `hn : ν (uRep hϖ hc1 (y * ub)) = ν (uRep hϖ hc1 y * u)`. Apply `nu_congr hϖ hc1 hc` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Units.val_mul, map_mul, coe_uRep, val_rep_unit hϖ hc1, hu, one_mul]`. Rewrite using `[Units.val_mul, coe_uRep, coe_uRep]`. Conclude with `hcong y`. Establish `hp : ψl (x * rep ((y * ub : (Res k c)ˣ) : Res k c) / (ϖ : k) ^ c) = ψl (x * u * rep (y : Res k c) / (ϖ : k) ^ c)`. Apply `psi_congr hadd hO` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e : x * rep ((y * ub : (Res k c)ˣ) : Res k c) / (ϖ : k) ^ c - x * u * rep (y : Res k c) / (ϖ : k) ^ c = x * ((rep ((y * ub : (Res k c)ˣ) : Res k c) - rep (y : Res k c) * u) / (ϖ : k) ^ c)` using `by ring`. Rewrite using `[e, map_mul, map_div₀, map_pow]`. Establish `h2 : valuation k (rep ((y * ub : (Res k c)ˣ) : Res k c) - rep (y : Res k c) * u) / valuation k (ϖ : k) ^ c ≤ 1` using `(div_le_one₀ hpos).2 (hcong y)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hn, hp, map_mul, mul_inv, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hsum : gS ψl ν hϖ hc1 x = (((ν u)⁻¹ : ℂˣ) : ℂ) * gS ψl ν hϖ hc1 (x * u)`. Simplify using `only [gS]`. Rewrite using `[← Equiv.sum_comp (Equiv.mulRight ub), Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl (fun y _ => hterm y)`.
-
-Rewrite using `[hsum, ← mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gS_mul_unit (x : k) (hx : valuation k x ≤ 1) (u : kˣ) (hu : valuation k (u : k) = 1) :
     gS ψl ν hϖ hc1 (x * u) = ν u * gS ψl ν hϖ hc1 x := by
@@ -217,25 +215,23 @@ theorem gS_mul_unit (x : k) (hx : valuation k x ≤ 1) (u : kˣ) (hu : valuation
 open Classical in
 
 /- English proof (translation)
-Take `⟨u0, hu0, hne⟩` from `hmin`. Establish `hu0v : valuation k (u0 : k) = 1` using `hu0.1`. Establish `hu0c : valuation k ((u0 : k) - 1) ≤ valuation k (((ϖ ^ (c - 1) : kˣ)) : k)` using `hu0.2`. Establish `hϖ0 : valuation k (ϖ : k) ≠ 0` using `(valuation k).ne_zero_iff.2 ϖ.ne_zero`. Establish `hϖpos : 0 < valuation k (ϖ : k)` using `zero_lt_iff.2 hϖ0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxle : valuation k x ≤ valuation k (ϖ : k)`. Establish `hx1 : valuation k x ≤ 1` using `hx.le`. Set `xO : 𝒪[k]` to `⟨x, hx1⟩`. Establish `hxm : xO ∈ IsLocalRing.maximalIdeal 𝒪[k]`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `hu`. Take `⟨w, hw⟩` from `hu.exists_right_inv`. Establish `h1 : valuation k (x * (w : k)) = 1`. Use `congrArg (fun z : 𝒪[k] => valuation k (z : k)) hw` as an intermediate fact. Simplify `this` using `[xO]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h1` using `[map_mul]`. Establish `hw1 : valuation k (w : k) ≤ 1` using `w.2`. Establish `hlt : valuation k x * valuation k (w : k) < 1`. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd h1 (ne_of_lt hlt)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hxm` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton, (Valuation.integer.integers (valuation k)).dvd_iff_le]`. Conclude with `hxm`. Establish `hmul` using `gS_mul_unit hadd hO hϖ hc1 hc x hx.le u0 hu0v`. Establish `hc' : (ϖ : k) ^ c = (ϖ : k) * (ϖ : k) ^ (c - 1)`. Rewrite using `[← pow_succ']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `heq : gS ψl ν hϖ hc1 (x * u0) = gS ψl ν hϖ hc1 x`. Simplify using `only [gS]`. Use `Finset.sum_congr rfl (fun y _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr 1`. Apply `psi_congr hadd hO` to reduce the goal to its premises. Establish `e : x * (u0 : k) * rep (y : Res k c) / (ϖ : k) ^ c - x * rep (y : Res k c) / (ϖ : k) ^ c = (x / (ϖ : k)) * (((u0 : k) - 1) / (ϖ : k) ^ (c - 1)) * rep (y : Res k c)`. Rewrite using `[hc']`. Establish `: (ϖ : k) ≠ 0` using `ϖ.ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e, map_mul, map_mul, map_div₀, map_div₀, map_pow]`. Establish `h1 : valuation k x / valuation k (ϖ : k) ≤ 1` using `(div_le_one₀ hϖpos).2 hxle`. Establish `h2 : valuation k ((u0 : k) - 1) / valuation k (ϖ : k) ^ (c - 1) ≤ 1`. Rewrite using `[div_le_one₀ (zero_lt_iff.2 (pow_ne_zero _ hϖ0))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hu0c` using `[Units.val_pow_eq_pow_val, map_pow]`. Establish `h3` using `rep_le_one (y : Res k c)`. Combine the equalities or inequalities in the displayed calculation. Establish `h0 : ((ν u0 : ℂ) - 1) * gS ψl ν hϖ hc1 x = 0`. Rewrite using `[sub_mul, ← hmul, heq, one_mul, sub_self]`.
-
-Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `absurd (Units.val_eq_one.1 (sub_eq_zero.1 h)) hne`. Conclude with `h`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem gS_eq_zero_of_lt (hmin : ∃ u ∈ unitCong (ϖ ^ (c - 1)), ν u ≠ 1) (x : k) (hx : valuation k x < 1) :
     gS ψl ν hϖ hc1 x = 0 := by
@@ -304,37 +300,33 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 open Classical in
 
 /- English proof (translation)
-Introduce `hG`. Establish `hpos : 0 < valuation k (ϖ : k) ^ c` using `zero_lt_iff.2 (pow_ne_zero _ ((valuation k).ne_zero_iff.2 ϖ.ne_zero))`. Establish `hψ0 : ψl 0 = 1` using `hO 0 (by simp)`. Establish `hzero : ∀ x : k, valuation k x ≤ 1 → gS ψl ν hϖ hc1 x = 0`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `lt_or_eq_of_le hx with hlt | heq` into its components or cases. Conclude with `gS_eq_zero_of_lt hadd hO hϖ hc1 hc hmin x hlt`. Establish `hx0 : x ≠ 0`. Introduce `h`. Rewrite `heq` using `[h, map_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_ne_one heq`. Establish `hm` using `gS_mul_unit hadd hO hϖ hc1 hc 1 (by simp) (Units.mk0 x hx0) (by simpa using heq)`. Simplify using `only [one_mul, Units.val_mk0] at hm`. Rewrite using `[hm, hG, mul_zero]`. Establish `horth : ∀ d : k, valuation k d ≤ 1 → valuation k (ϖ : k) ^ c < valuation k d → ∑ x : Res k c, ψl (rep x * d / (ϖ : k) ^ c) = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `d hd1 hdlt`. Establish `hz : ¬ valuation k (d / (ϖ : k) ^ c) ≤ 1`. Rewrite using `[map_div₀, map_pow, not_le, lt_div_iff₀ hpos, one_mul]`. Conclude with `hdlt`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht1, htne⟩ : ∃ t : k, valuation k t ≤ 1 ∧ ψl (d / (ϖ : k) ^ c * t) ≠ 1 := by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Conclude with `hz (hcond _ hno)`. Set `tb : Res k c` to `Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c) (⟨t, ht1⟩ : 𝒪[k])`. Establish `hshift : ∀ x : Res k c, ψl (rep (x + tb) * d / (ϖ : k) ^ c) = ψl (rep x * d / (ϖ : k) ^ c) * ψl (d / (ϖ : k) ^ c * t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Establish `hmk : Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c) (Quotient.out (x + tb)) = Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c) (Quotient.out x + (⟨t, ht1⟩ : 𝒪[k]))`. Rewrite using `[map_add]`. Rewrite using `[show Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c) (Quotient.out (x + tb)) = x + tb from Quotient.out_eq _, show Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c) (Quotient.out x) = x from Quotient.out_eq _]`. Establish `hv` using `(mk_eq_mk_iff hϖ c _ _).1 hmk`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← hadd]`. Apply `psi_congr hadd hO` to reduce the goal to its premises. Establish `e : rep (x + tb) * d / (ϖ : k) ^ c - (rep x * d / (ϖ : k) ^ c + d / (ϖ : k) ^ c * t) = ((((Quotient.out (x + tb) : 𝒪[k]) : k) - (((Quotient.out x + (⟨t, ht1⟩ : 𝒪[k])) : 𝒪[k]) : k)) / (ϖ : k) ^ c) * d`. Simplify using `only [rep]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_mul, map_div₀, map_pow]`. Establish `h2 : valuation k ((((Quotient.out (x + tb) : 𝒪[k]) : k) - (((Quotient.out x + (⟨t, ht1⟩ : 𝒪[k])) : 𝒪[k]) : k))) / valuation k (ϖ : k) ^ c ≤ 1` using `(div_le_one₀ hpos).2 hv`. Combine the equalities or inequalities in the displayed calculation. Establish `hsum : ∑ x : Res k c, ψl (rep x * d / (ϖ : k) ^ c) = (∑ x : Res k c, ψl (rep x * d / (ϖ : k) ^ c)) * ψl (d / (ϖ : k) ^ c * t)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_mul, ← Equiv.sum_comp (Equiv.addRight tb)]`. Conclude with `Finset.sum_congr rfl (fun x _ => hshift x)`. Establish `h0 : (∑ x : Res k c, ψl (rep x * d / (ϖ : k) ^ c)) * (ψl (d / (ϖ : k) ^ c * t) - 1) = 0`. Rewrite using `[mul_sub, mul_one, ← hsum, sub_self]`. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Conclude with `absurd (sub_eq_zero.1 h) htne`. Establish `key : ∑ x : Res k c, gS ψl ν hϖ hc1 (rep x) * ψl (-(rep x * rep ((1 : (Res k c)ˣ) : Res k c)) / (ϖ : k) ^ c) = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `x _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hzero _ (rep_le_one x), zero_mul]`. Simplify using `only [gS, Finset.sum_mul] at key`. Rewrite `key` using `[Finset.sum_comm]`. Establish `inner : ∀ y : (Res k c)ˣ, ∑ x : Res k c, (((ν (uRep hϖ hc1 y))⁻¹ : ℂˣ) : ℂ) * ψl (rep x * rep (y : Res k c) / (ϖ : k) ^ c) * ψl (-(rep x * rep ((1 : (Res k c)ˣ) : Res k c)) / (ϖ : k) ^ c) = (((ν (uRep hϖ hc1 y))⁻¹ : ℂˣ) : ℂ) * ∑ x : Res k c, ψl (rep x * (rep (y : Res k c) - rep ( …`. Introduce `y`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc, ← hadd]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `key` using `[Finset.sum_congr rfl (fun y _ => inner y)]`. Rewrite `key` using `[Finset.sum_eq_single (1 : (Res k c)ˣ)]`. Simplify using `only [sub_self, mul_zero, zero_div, hψ0, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one] at key`. Break down `mul_eq_zero.1 key with h | h` into its components or cases. Conclude with `Units.ne_zero _ h`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Nat.cast_ne_zero.2 Fintype.card_ne_zero) h`. Introduce `y _ hy`. Establish `hd1 : valuation k (rep (y : Res k c) - rep ((1 : (Res k c)ˣ) : Res k c)) ≤ 1` using `le_trans ((valuation k).map_sub _ _) (max_le (rep_le_one _) (rep_le_one _))`. Establish `hdlt : valuation k (ϖ : k) ^ c < valuation k (rep (y : Res k c) - rep ((1 : (Res k c)ˣ) : Res k c))`. Assume the negation of the conclusion as `hle`.
-
-Use `push Not at hle`. Apply `hy` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Establish `hm` using `(mk_eq_mk_iff hϖ c (Quotient.out (y : Res k c)) (Quotient.out ((1 : (Res k c)ˣ) : Res k c))).2 hle`. Rewrite `hm` using `[show Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c) (Quotient.out (y : Res k c)) = (y : Res k c) from Quotient.out_eq _, show Ideal.Quotient.mk (IsLocalRing.maximalIdeal 𝒪[k] ^ c) (Quotient.out ((1 : (Res k c)ˣ) : Res k c)) = ((1 : (Res k c)ˣ) : Res k c) from Quotient.out …`. Then use the resulting hypothesis.
-
-Rewrite using `[horth _ hd1 hdlt, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gS_one_ne_zero {ψl : k → ℂ} (hadd : ∀ x y, ψl (x + y) = ψl x * ψl y)
     (hO : ∀ x : k, valuation k x ≤ 1 → ψl x = 1)
@@ -446,27 +438,25 @@ theorem gS_one_ne_zero {ψl : k → ℂ} (hadd : ∀ x y, ψl (x + y) = ψl x * 
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `hϖ1 : valuation k (ϖ : k) < 1`. Use `val_pow_lt_one hϖ (c := 1) le_rfl` as an intermediate fact. Simplify using `using this`. Establish `hS : {x : kˣ | ‖(ν x : ℂ) - 1‖ < 1 / 2} ∈ 𝓝 (1 : kˣ)` using `by filter_upwards [hν.continuousAt (x := 1) (Metric.ball_mem_nhds _ (by norm_num : (0 : ℝ) < 1 / 2))] with x hx`. Simplify `hx` using `[dist_eq_norm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hemb : Topology.IsEmbedding (Units.val : kˣ → k)` using `Units.isEmbedding_val₀`. Rewrite `hS` using `[hemb.toIsInducing.nhds_eq_comap, Filter.mem_comap]`. Take `⟨T, hT, hTS⟩` from `hS`. Take `⟨γ, -, hγ⟩` from `(IsValuativeTopology.hasBasis_nhds ((1 : kˣ) : k)).mem_iff.1 hT`. Take `⟨e, he⟩` from `exists_pow_lt₀ hϖ1 γ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hU : ∀ y ∈ unitCong (ϖ ^ e), ‖(ν y : ℂ) - 1‖ < 1 / 2`. Introduce `y hy`. Apply `hTS` to reduce the goal to its premises. Use `show (y : k) ∈ T`. Apply `hγ` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Use `show valuation k ((y : k) - 1) < γ`. Combine the equalities or inequalities in the displayed calculation. Use `⟨e, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hpow : ∀ n : ℕ, ‖((ν x : ℂ)) ^ n - 1‖ < 1 / 2`. Introduce `n`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hU (x ^ n) (Subgroup.pow_mem _ hx n)` as an intermediate fact. Simplify `this` using `[map_pow, Units.val_pow_eq_pow_val]`. Assume the negation of the conclusion as `hne`. Establish `hne' : (ν x : ℂ) ≠ 1` using `fun h => hne (Units.ext h)`. Use `set z := (ν x : ℂ) with hz`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd : 0 < ‖z - 1‖` using `norm_pos_iff.2 (sub_ne_zero.2 hne')`. Take `⟨N, hN⟩` from `exists_nat_gt (1 / ‖z - 1‖)`. Establish `hre : ∀ n : ℕ, 1 / 2 < (z ^ n).re`. Introduce `n`. Establish `h1` using `hpow n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2 : |(z ^ n - 1).re| ≤ ‖z ^ n - 1‖` using `Complex.abs_re_le_norm _`. Rewrite `h2` using `[Complex.sub_re, Complex.one_re]`. Combine the linear relations using `[(abs_lt.1 (lt_of_le_of_lt h2 h1)).1]`. Establish `hNpos : 0 < N`. Establish `h0 : (0 : ℝ) < 1 / ‖z - 1‖` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_trans h0 hN` after adjusting the coercions. Establish `hlow : (N : ℝ) / 2 < ‖∑ n ∈ Finset.range N, z ^ n‖`. Establish `h1 : (N : ℝ) / 2 = ∑ n ∈ Finset.range N, (1 / 2 : ℝ)`. Rewrite using `[Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h2 : ∑ n ∈ Finset.range N, (1 / 2 : ℝ) < ∑ n ∈ Finset.range N, (z ^ n).re` using `Finset.sum_lt_sum_of_nonempty (Finset.nonempty_range_iff.2 hNpos.ne') (fun n _ => hre n)`. Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation. Establish `hgeom : (∑ n ∈ Finset.range N, z ^ n) * (z - 1) = z ^ N - 1` using `geom_sum_mul z N`. Establish `hup : ‖∑ n ∈ Finset.range N, z ^ n‖ * ‖z - 1‖ < 1 / 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← norm_mul, hgeom]`. Conclude with `hpow N`. Establish `hlt : (N : ℝ) / 2 * ‖z - 1‖ < 1 / 2` using `lt_of_le_of_lt (mul_le_mul_of_nonneg_right hlow.le hd.le) hup`. Establish `hN' : 1 < (N : ℝ) * ‖z - 1‖`. Rewrite `hN` using `[div_lt_iff₀ hd]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_condLE {ϖ : kˣ} (hϖ : IsUnif ϖ) (ν : kˣ →* ℂˣ) (hν : Continuous fun x : kˣ => (ν x : ℂ)) :
     ∃ e, CondLE ϖ e ν := by
@@ -545,7 +535,7 @@ local instance locFieldPl {F : Type} [Field F] [NumberField F] (v : Pl F) : IsNo
   GlobalTheory.LocalData.isLocalField v
 
 /- English proof (translation)
-Rewrite using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, ← map_one (valuation (Fv F v)), ← Valuation.Compatible.vle_iff_le]`. Use `show Valued.v x ≤ Valued.v (1 : Fv F v) ↔ _`. Rewrite using `[map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_le_one_iff {F : Type} [Field F] [NumberField F] (v : Pl F) (x : Fv F v) :
     valuation (Fv F v) x ≤ 1 ↔ x ∈ v.adicCompletionIntegers F := by
@@ -555,29 +545,25 @@ theorem val_le_one_iff {F : Type} [Field F] [NumberField F] (v : Pl F) (x : Fv F
   rw [map_one]
 
 /- English proof (translation)
-Introduce `F _ _ ψ v ν hψ hν hx`. Establish `hϖ : IsUnif (unifAt v)` using `by show IsUnif (Exists.choose _)`. Conclude with `Exists.choose_spec _`. Establish `hne : {c | CondLE (unifAt v) c ν}.Nonempty` using `exists_condLE hϖ ν hν`. Establish `hc : CondLE (unifAt v) (condExp ν) ν` using `Nat.sInf_mem hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x0, hx0a, hx0b, hx0ν⟩` from `hx`. Establish `hc1 : 1 ≤ condExp ν`. Assume the negation of the conclusion as `h0`. Establish `hc0 : condExp ν = 0` using `by omega`. Apply `hx0ν` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hc` to reduce the goal to its premises. Rewrite using `[hc0, pow_zero]`. Establish `ha` using `(val_le_one_iff v _).2 hx0a`. Establish `hb` using `(val_le_one_iff v _).2 hx0b`. Establish `hv1 : valuation (Fv F v) (x0 : Fv F v) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm ha ?_` and prove the remaining obligations. Establish `hm : valuation (Fv F v) (x0 : Fv F v) * valuation (Fv F v) ((x0⁻¹ : (Fv F v)ˣ) : Fv F v) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨hv1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_one, map_one]`. Conclude with `le_trans ((valuation (Fv F v)).map_sub _ _) (max_le ha (le_of_eq (map_one _)))`. Establish `hmin : ∃ u ∈ unitCong (unifAt v ^ (condExp ν - 1)), ν u ≠ 1`. Establish `hnot : condExp ν - 1 ∉ {c | CondLE (unifAt v) c ν}`. Establish `hlt : condExp ν - 1 < condExp ν` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact Nat.not_mem_of_lt_sInf hlt`. Consider the case `exact Nat.notMem_of_lt_sInf hlt`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hnot (fun u hu => hall u hu)`. Establish `hadd : ∀ a b : Fv F v, psiLoc ψ v (a + b) = psiLoc ψ v a * psiLoc ψ v b`. Introduce `a b`. Establish `harg : (LinearMap.inr F (Ainf F) (Af F)) ((singleFin v) (a + b)) = (LinearMap.inr F (Ainf F) (Af F)) ((singleFin v) a) + (LinearMap.inr F (Ainf F) (Af F)) ((singleFin v) b)`. Rewrite using `[map_add, map_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `(congrArg ψ harg).trans (ψ.map_add_eq_mul _ _)`. Establish `hO : ∀ a : Fv F v, valuation (Fv F v) a ≤ 1 → psiLoc ψ v a = 1`. Introduce `a ha`. Establish `h` using `(hψ a).2 ((val_le_one_iff v a).1 ha) 1 (v.adicCompletionIntegers F).one_mem`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcond : ∀ a : Fv F v, (∀ y : Fv F v, valuation (Fv F v) y ≤ 1 → psiLoc ψ v (a * y) = 1) → valuation (Fv F v) a ≤ 1`. Introduce `a h`. Rewrite using `[val_le_one_iff]`. Conclude with `(hψ a).1 (fun y hy => h y ((val_le_one_iff v y).2 hy))`. Establish `hg` using `gS_one_ne_zero hadd hO hcond hϖ hc1 hc hmin`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `heq : gauss ψ ν = gS (psiLoc ψ v) ν hϖ hc1 1` using `by delta GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.gauss gS`. Use `Finset.sum_congr ?_ (fun y _ => ?_)` and prove the remaining obligations. Use `first`. Consider the case `rfl`. Consider the case `congr 1`.
-
-Consider the case `exact Subsingleton.elim _ _`. Use `split_ifs with h`. Conclude with `absurd h (rep_ne_zero hϖ hc1 y)`. Rewrite using `[one_mul]`. Both sides reduce to the same expression.
-
-Rewrite using `[heq]`. Conclude with `hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_ne_zero : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (v : Pl F)
     (ν : (Fv F v)ˣ →* ℂˣ), PsiUnr ψ v → Continuous (fun x : (Fv F v)ˣ => (ν x : ℂ)) →

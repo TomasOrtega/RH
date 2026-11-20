@@ -14,7 +14,7 @@ open scoped TensorProduct
 namespace GlobalTheory.LocCarry
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem prV_mulVec {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     (v : HeightOneSpectrum (𝓞 F)) (M : Matrix (Fin N) (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
@@ -24,7 +24,7 @@ theorem prV_mulVec {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   simp [Matrix.mulVec, dotProduct, map_sum, map_mul]
 
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_bc_inv {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {N : ℕ}
     (v : HeightOneSpectrum (𝓞 F)) (x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) :
@@ -44,15 +44,13 @@ theorem coe_bc {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] 
       (x : Matrix (Fin N) (Fin N) _).map (prV (E := E) v) := rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ N x Lb hfin hspan v z`. Establish `hrec` using `Formalism.UG.P.span_recovery_of_integral_adelic_approx Formalism.UG.P.integral_adele_approximation_holds F E (Fin N) Lb hfin hspan x`. Establish `hpr : ∀ y : Fin N → E ⊗[F] v.adicCompletion F, (fun i => prV (E` using `E) v (Formalism.UG.P.afsplitIE v (y i))) = y := fun y => by`. Use extensionality with `i`. Conclude with `Formalism.UG.P.afsplit_prV_IE v (y i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hlat : Formalism.L2.PairingIndexBounds.F.latAd x Lb = Formalism.UG.CS.globLat x Lb` using `Submodule.span_eq (Formalism.UG.CS.globLat x Lb)`. Rewrite using `[hlat]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `h1` using `Formalism.L2.Geo.Def.PN.IE_latS (Formalism.UG.CS.globLat x Lb) v hz`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(hrec _).1 h1`. Establish `h3` using `Formalism.L2.Geo.Def.PN.prV_latS Lb v h2`. Rewrite `h3` using `[prV_mulVec, hpr, ← coe_bc_inv]`. Conclude with `h3`. Introduce `hz`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Formalism.L2.Geo.Def.PN.IE_latS Lb v hz`. Use `set u : Fin N → E ⊗[F] FiniteAdeleRing (𝓞 F) F := ((x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin N) (Fin N) _) *ᵥ (fun i => Formalism.UG.P.afsplitIE v (((((bc (prV (E := E) v) x)⁻¹ : GL (Fin N) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin N) (Fin N) (E ⊗[F] v.adic …`. Establish `h2 : u ∈ latS (F` using `F) (FiniteAdeleRing (𝓞 F) F) (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) (Formalism.UG.CS.globLat x Lb) := by`. Use `(hrec u).2 ?_` and prove the remaining obligations. Rewrite using `[hu, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
-
-Conclude with `h1`. Establish `h3` using `Formalism.L2.Geo.Def.PN.prV_latS (Formalism.UG.CS.globLat x Lb) v h2`. Rewrite `h3` using `[hu, prV_mulVec, hpr, ← coe_bc, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `h3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_latS_latAd_iff : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {N : ℕ}
     (x : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (Lb : Submodule (𝓞 E) (Fin N → E)),

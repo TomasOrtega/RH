@@ -16,21 +16,19 @@ open GlobalTheory.FlatModel
 namespace GlobalTheory.FlatModel
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw p _ _ l l' Xo Xo' c c' W Y r ν hle hOI _ yb yy P π ψ y hHT β hβ g e hB`. Establish `hPt : PtOn Y yb yy P π ψ` using `hHT.1`. Take `⟨h1, h2, h3, h4⟩` from `GlobalTheory.T.p_adic_point_pairing_compatible E H Dw p l' Xo' c' W Y yb yy P π ψ hPt`. Use `choose x hx using fun b => (h1 (e b) (hB.1 b)).exists`. Use `⟨x, hx, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ U hEig x' hx'`. Take `⟨u', hu'T, hu'X⟩` from `h2 x'`. Establish `hemb` using `GlobalTheory.FlatModel.htAt_embV_eq E H Dw l l' Xo Xo' c c' W Y r ν hle hOI p yb yy P π ψ y hHT β hβ σ`. Establish `hEG : IsEigG Y.t (β.comp (embV c' W σ)) u'`. Rewrite using `[hemb]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(h4 _ x' u' hu'T hu'X).2 hx'`. Establish `hid : spMap (RingHom.id 𝓞_ℂ_[p]) ≫ yb = yb`. Rewrite using `[show spMap (RingHom.id 𝓞_ℂ_[p]) = 𝟙 _ from Spec.map_id _, Category.id_comp]`. Establish `hdual : (fun i => spMap (dualMap (RingHom.id 𝓞_ℂ_[p])) ≫ e i) = e`. Establish `: dualMap (RingHom.id 𝓞_ℂ_[p]) = RingHom.id _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `ext s <;> simp [dualMap]`. Use function extensionality and compare the values at `i`. Rewrite using `[this, show spMap (RingHom.id (DualNumber 𝓞_ℂ_[p])) = 𝟙 _ from Spec.map_id _, Category.id_comp]`. Take `⟨w, hw, -⟩` from `hB.2 𝓞_ℂ_[p] (RingHom.id _) u' (by rw [hid]; exact hu'T)`. Rewrite `hw` using `[hid, hdual]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `h3 g e x w u' x' hB.1 hx hw hu'X`. Establish `hmem` using `hEig.2 w u' hw hEG`. Take `⟨M, hM⟩` from `(Submodule.mem_span_range_iff_exists_fun 𝓞_ℂ_[p]).1 hmem`. Use `⟨M, ?_⟩` and prove the remaining obligations. Establish `hcoord : ∀ b, ((discr E : ℤ) : 𝓞_ℂ_[p]) * w b = ∑ k, M k * U k b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `b`. Use `congrFun hM b` as an intermediate fact. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this`. Conclude with `this.symm`. Rewrite using `[hL, Finset.smul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Repeatedly rewrite using `[Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`.
-
-Use `congrArg (fun z : 𝓞_ℂ_[p] => (z : ℂ_[p])) (hcoord b)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem htAt_discr_smul_eigen_mem_span_rows : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (p : ℕ) [Fact p.Prime]
     [StarRing (𝓞 E)] (l l' : Level H) (Xo : Moduli Dw l) (Xo' : Moduli Dw l') (c : Coeff l) (c' : Coeff l') (W : ValuationSubring ℂ)

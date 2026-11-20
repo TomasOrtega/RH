@@ -10,29 +10,25 @@ open GlobalTheory.WeilM
 noncomputable section
 namespace GlobalTheory.SoPureThetaCont
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' hT hD φ hSB hev hSo h`. Establish `hPair` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT).2`. Establish `hstd : ∀ᶠ v in cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `(hev.and hT.geo.hM'.std).mono fun v hv => hv.1.trans hv.2`. Set `A : (Fin a' × Fin (a + a') → Af F) → ℂ` to `fun z => ∏ᶠ v, φ v fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (z i)`. Establish `hA : A ∈ SB (Fin a' × Fin (a + a') → Af F)` using `GlobalTheory.AdelicCoordSB.finprod_mem_SB F _ φ hSB hstd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `heq : ∀ u : SInf F (Fin a' × Fin (a + a')), pure u φ = pureA F u A` using `fun _ => rfl`. Establish `hso : ∀ u : SInf F (Fin a' × Fin (a + a')), pure u φ ∈ G.M'.So B.ψ B.τ₁` using `fun u => Submodule.subset_span ⟨u, φ, hSB, hev, hSo, rfl⟩`. Establish `hsch : ∀ u : SInf F (Fin a' × Fin (a + a')), pure u φ ∈ schA F _` using `fun u => GlobalTheory.TensUniq.pure_mem_schA u φ hSB hstd`. Establish `hpres : ∀ x, ∀ Φ ∈ schA F (Fin a' × Fin (a + a')), om' x Φ ∈ schA F _` using `fun x Φ hΦ => hPair.weil.isUSplitting.pres x Φ hΦ`. Establish `hconv : ∀ u : SInf F (Fin a' × Fin (a + a')), IntegrableOn (fun g => theta om' (pure u φ) g h) G.M'.dom G.M'.μ` using `fun u => (hD.2 _ (hso u)).2.1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadd : ∀ (u u' : SInf F (Fin a' × Fin (a + a'))) g, theta om' (pure (u + u') φ) g h = theta om' (pure u φ) g h + theta om' (pure u' φ) g h`. Introduce `u u' g`. Establish `e : pure (u + u') φ = pure u φ + pure u' φ` using `funext fun x => by simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, add_mul]`. Simplify using `only [theta, e, map_add]`. Conclude with `thetaSum_add F (hpres _ _ (hsch u)) (hpres _ _ (hsch u'))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsmul : ∀ (c : ℂ) (u : SInf F (Fin a' × Fin (a + a'))) g, theta om' (pure (c • u) φ) g h = c * theta om' (pure u φ) g h`. Introduce `c u g`. Establish `e : pure (c • u) φ = c • pure u φ` using `funext fun x => by simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]`. Simplify using `only [theta, e, map_smul]`. Conclude with `thetaSum_smul F c _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hcontg : ∀ g, Continuous fun u : SInf F (Fin a' × Fin (a + a')) => theta om' (pure u φ) g h` using `fun g => (_root_.GlobalTheory.ThKBasic.theta_kernel_basic_properties hP F E σ B a' (a + a') G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ hPair).2 A hA g h`. Set `μd` to `G.M'.μ.restrict G.M'.dom`. Set `T : SInf F (Fin a' × Fin (a + a')) → UA σ G.V'.J → ℂ` to `fun u g => theta om' (pure u φ) g h`. Establish `hfin : ∀ u, (∫⁻ g, ‖T u g‖ₑ ∂μd) ≠ ⊤` using `fun u => (hconv u).2.ne`. Establish `hν : ∀ u, ∫ g, ‖T u g‖ ∂μd = (∫⁻ g, ‖T u g‖ₑ ∂μd).toReal` using `fun u => integral_norm_eq_lintegral_enorm (hconv u).1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation.
 
-Set `ν : Seminorm ℂ (SInf F (Fin a' × Fin (a + a')))` to `Seminorm.of (fun u => ∫ g, ‖T u g‖ ∂μd) (fun u u' => by`. Combine the equalities or inequalities in the displayed calculation. Use the proof step `(fun c u => by`. Simplify using `only [T, hsmul, norm_mul]`. Conclude with `integral_const_mul _ _)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Use `haveI : BarrelledSpace ℂ (SInf F (Fin a' × Fin (a + a'))) := by classical exact GlobalTheory.schwartzMap_barrelledSpace _`. Establish `hN : LowerSemicontinuous fun u => ∫⁻ g, ‖T u g‖ₑ ∂μd`. Rewrite using `[lowerSemicontinuous_iff_le_liminf]`. Introduce `u`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hνc : Continuous ν`. Use `Seminorm.continuous_of_lowerSemicontinuous ν fun u y hy => ?_` and prove the remaining obligations. Distinguish the cases in `hy0 : y < 0`. Conclude with `Filter.Eventually.of_forall fun u' => hy0.trans_le (apply_nonneg ν u')`. Use `push_neg at hy0`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Establish `hy' : y < (∫⁻ g, ‖T u g‖ₑ ∂μd).toReal` using `by rw [← hν]; exact hy`. Establish `h1 : ENNReal.ofReal y < ∫⁻ g, ‖T u g‖ₑ ∂μd` using `(ENNReal.ofReal_lt_iff_lt_toReal hy0 (hfin _)).2 hy'`. Use `filter_upwards [hN u _ h1] with u' hu'`. Use `show y < ∫ g, ‖T u' g‖ ∂μd`. Rewrite using `[hν]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ENNReal.ofReal_lt_iff_lt_toReal hy0 (hfin _)).1 hu'`. Set `L : SInf F (Fin a' × Fin (a + a')) →+ ℂ` to `{ toFun := fun u => G.M'.I om' (pure u φ) h map_zero' := by show ∫ g, T 0 g ∂μd = 0`. Establish `: ∀ g, T 0 g = 0` using `fun g => by`. Simplify using `using hsmul 0 0 g`. Simplify using `[this]`.
-
-Use the proof step `map_add' := fun u u' => by show ∫ g, T (u + u') g ∂μd = ∫ g, T u g ∂μd + ∫ g, T u' g ∂μd`. Simplify using `only [T, hadd]`. Conclude with `integral_add (hconv u) (hconv u') }`. Establish `hLb : ∀ u, ‖L u‖ ≤ ν u` using `fun u => norm_integral_le_integral_norm _`. Establish `hL : Continuous L`.
-
-Use `continuous_of_continuousAt_zero L ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero, tendsto_zero_iff_norm_tendsto_zero]`. Use `squeeze_zero (fun u => norm_nonneg _) hLb ?_` and prove the remaining obligations. Simplify using `using hνc.tendsto (0 : SInf F (Fin a' × Fin (a + a')))`. Conclude with `hL`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_pure_theta_integral : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),
@@ -129,7 +125,7 @@ section
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels Filter Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SoPureThetaCont.continuous_pure_theta_integral | exact _root_.GlobalTheory.SoPureThetaCont.continuous_pure_theta_integral | (intros; apply _root_.GlobalTheory.SoPureThetaCont.continuous_pure_theta_integral <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.pure_theta_integral_continuous_orthogonal : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

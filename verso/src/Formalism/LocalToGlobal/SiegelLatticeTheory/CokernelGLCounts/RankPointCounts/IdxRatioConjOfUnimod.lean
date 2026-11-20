@@ -12,14 +12,14 @@ namespace Formalism.L2.SG.Pf.ProdEP2Cut
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Rewrite using `[idxCocycle G A (cj s B) (cj s A) (cj_le hBA) (by rw [relIndex_cj]; exact hf), hU, relIndex_cj, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idxRatio_conj_of_unimod {G : Type} [Group G] (A B : Subgroup G) (s : G) (hBA : B ≤ A) (hf : B.relIndex A ≠ 0)
     (hU : IdxRatio A (cj s A) = 1) : IdxRatio A (cj s B) = (B.relIndex A : ℝ) := by
   rw [idxCocycle G A (cj s B) (cj s A) (cj_le hBA) (by rw [relIndex_cj]; exact hf), hU, relIndex_cj, mul_one]
 
 /- English proof (translation)
-Establish `h` using `idxRatio_conj_sub A A B' s le_rfl hAB' hs hf`. Rewrite using `[h, Subgroup.relIndex_self, Nat.cast_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem unimod_of_sub {G : Type} [Group G] (A B' : Subgroup G) (s : G) (hAB' : A ≤ B') (hs : s ∈ B')
     (hf : A.relIndex B' ≠ 0) : IdxRatio A (cj s A) = 1 := by
@@ -33,7 +33,7 @@ def UnimodAt (w : Point D.host.E (D.R.rS + 1)) : Prop :=
   ∀ s ∈ StP M δ u u' w p, IdxRatio (Ag M δ u u' (p := p) w) (cj s (Ag M δ u u' (p := p) w)) = 1
 
 /- English proof (translation)
-Introduce `s hs`. Take `⟨B', hAB', hsB', hf⟩` from `h s hs`. Conclude with `unimod_of_sub _ B' s hAB' hsB' hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem unimod_of_over (w : Point D.host.E (D.R.rS + 1)) (h : OverAt M δ u u' (p := p) w) : UnimodAt M δ u u' (p := p) w := by
   intro s hs
@@ -41,9 +41,9 @@ theorem unimod_of_over (w : Point D.host.E (D.R.rS + 1)) (h : OverAt M δ u u' (
   exact unimod_of_sub _ B' s hAB' hsB' hf
 
 /- English proof (translation)
-Rewrite using `[idxRatio_map]`. Take `⟨N, π, hR, hHN, hg, hBA, hfA, hv⟩` from `hN`. Establish `hC` using `cShape M δ u u' hA L U hL hU w`. Establish `hCS : cj (g0 M δ hA L U hL hU) (KP M p ⊓ StabX p (XP M δ u u' w L U)) ≤ StP M δ u u' w p`. Rewrite using `[← hC]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨x, _, rfl⟩`. Conclude with `x.2`. Use `show IdxRatio (Ag M δ u u' w) (Cg M δ u u' w hA L U hL hU) = v`. Rewrite using `[hC, cj_eq_cj_img hR hHN hg hCS, idxRatio_conj_of_unimod _ _ _ hBA hfA (hO _ (hR.mem _ hg)), hv]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locIdx_at' (w : Point D.host.E (D.R.rS + 1)) (hA : Agree δ M p) (L U : Formalism.L2.SG.PairVal.MatR D)
     (hL : IsLoUni L) (hU : IsUpUni U) (v : ℝ) (hN : CountAt M δ u u' w hA L U hL hU v)
@@ -71,7 +71,7 @@ def StepsU : Prop :=
     UnimodAt M δ u u' (p := p) w
 
 /- English proof (translation)
-Introduce `γ w F' L U hE p`. Take `⟨hN, hO⟩` from `h γ w F' L U hE p`. Conclude with `locIdx_at' M δ u u' w _ L U _ _ _ hN hO`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem locIdxC_of_count (h : StepsU M δ u u' F0 what₂) : LocIdxC M δ u u' F0 what₂ := by
   intro γ w F' L U hE p

@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.HeightParts.BdProof
 
 /- English proof (translation)
-Establish `h1` using `LinearMap.finrank_range_le q`. Rewrite `h1` using `[LinearMap.range_eq_top.mpr hq, finrank_top]`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem le_of_surj (K : Type) [Field K] (a b : ℕ) (q : (Fin a → K) →ₗ[K] (Fin b → K))
     (hq : Function.Surjective q) : b ≤ a := by
@@ -27,7 +27,7 @@ theorem le_of_surj (K : Type) [Field K] (a b : ℕ) (q : (Fin a → K) →ₗ[K]
   simpa using h1
 
 /- English proof (translation)
-Rewrite using `[← Real.log_mul (by positivity) (by positivity)]`. Apply `Real.log_le_log (by positivity)` to reduce the goal to its premises. Establish `: max u 0 ≤ a * X + b` using `max_le hu (by positivity)`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem log_bd (u a b X : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) (hX : 1 ≤ X) (hu : u ≤ a * X + b) :
     Real.log (2 + max u 0) ≤ Real.log (a + b + 2) + Real.log X := by
@@ -41,33 +41,29 @@ end GlobalTheory.HeightParts.BdProof
 namespace GlobalTheory.HeightParts.BdProof
 
 /- English proof (translation)
-Introduce `hP2 hPH hLS hPB hOm D O hcore hN A T H hR`. Use `choose Cc hCc using GlobalTheory.T.abelian_height_bounded_below hP2 hPH D O hcore`. Take `⟨B, hB⟩` from `(Set.finite_range Cc).bddAbove`. Use `set C0 : ℝ := max B 0 with hC0def`. Establish `hC0 : 0 ≤ C0` using `le_max_right _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hAlow : ∀ y : GlobalTheory.ShFam.Pad.Pt O.s, -C0 ≤ H.hA y` using `fun y => by`. Rewrite using `[hR.ht.hA y]`. Establish `h1 : ∀ c, Cc c ≤ C0` using `fun c => (hB ⟨c, rfl⟩).trans (le_max_left _ _)`. Conclude with `(neg_le_neg (h1 _)).trans (hCc _ _ (HtTieRead.isClosed_basePt O y))`. Take `⟨C1, hC1, hPt⟩` from `hPB D O hcore hN A T H hR`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C2, hOm2⟩` from `hOm D O hcore hN A T H hR`. Take `⟨Cs, hCs, hSl⟩` from `hLS (D.R.f * O.N)`. Take `⟨C', hC', hX⟩` from `GlobalTheory.T.torus_extension_degree_slope_bound (D.R.f * O.N) C1 hC1`. Use `set M : ℕ := Finset.univ.sup fun τ : D.host.E →+* ℂ => O.S.Dw.mult τ with hMdef`. Use `set a : ℝ := max C2 0 with hadef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha : 0 ≤ a` using `le_max_right _ _`. Use `set large₂ : ℝ := Real.log (a + (C1 + C') + 2) with hLgdef`. Establish `hLg : 0 ≤ large₂` using `Real.log_nonneg (by linarith)`. Establish `hM : (0 : ℝ) ≤ M` using `Nat.cast_nonneg _`. Use `⟨max (max 1 (2 * C0)) (max (M * Cs) (M * Cs * large₂ + M * C' + C1)), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(le_max_left _ _).trans (le_max_left _ _)`. Introduce `y hy`. Use `set C := max (max 1 (2 * C0)) (max (M * Cs) (M * Cs * large₂ + M * C' + C1)) with hCdef`. Establish `hC1' : 1 ≤ C` using `(le_max_left _ _).trans (le_max_left _ _)`. Establish `hC2 : 2 * C0 ≤ C` using `(le_max_right _ _).trans (le_max_left _ _)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hC3 : M * Cs ≤ C` using `(le_max_left _ _).trans (le_max_right _ _)`. Establish `hC4 : M * Cs * large₂ + M * C' + C1 ≤ C` using `(le_max_right _ _).trans (le_max_right _ _)`. Establish `hy0` using `hAlow y`. Use `⟨by linarith, ?_⟩` and prove the remaining obligations. Introduce `τ k hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨K, _, _, F, h', h, L, r, ε, q, hherm, ⟨hdegL, hsteps⟩, hext⟩` from `hPt y hy`. Establish `hg : F.P₀.g ≤ D.R.f * O.N` using `le_of_surj K _ _ q hext.2.2.2.1`. Take `⟨-, hmu'⟩` from `hSl K F hg h' hherm`. Take `⟨hfl, hmu⟩` from `hX K r F.P₀.g h L ε q h' F.lieLat hext`. Use `set X : ℝ := 2 + C + H.hA y with hXdef`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX1 : 1 ≤ X` using `by linarith`. Establish `hom` using `hOm2 y`. Establish `hOma : |omHt O (ref0 O) y| ≤ a * (|H.hA y| + 1)` using `hom.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity))`. Establish `habs : |H.hA y| ≤ H.hA y + 2 * C0`. Apply the tactic sequence `rcases abs_cases (H.hA y) with ⟨e, -⟩ | ⟨e, -⟩ <;> rw [e] <;> linarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfalt : F.falt h' ≤ a * X + (C1 + C')`. Establish `e1` using `(abs_le.1 hdegL).1`. Establish `e2` using `(abs_le.1 hOma).2`. Establish `e3 : a * (|H.hA y| + 1) ≤ a * X` using `mul_le_mul_of_nonneg_left (by linarith) ha`. Use `show -deg h' F.lieLat ≤ _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog` using `log_bd (F.falt h') a (C1 + C') X ha (by linarith) hX1 hfalt`. Use `set ν : ℝ := Cs * Real.log (2 + max (F.falt h') 0) with hνdef`. Establish `hν0 : 0 ≤ ν` using `mul_nonneg hCs (Real.log_nonneg (by linarith [le_max_right (F.falt h') 0]))`. Establish `hνle : ν ≤ Cs * large₂ + Cs * Real.log X`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left hlog hCs` as an intermediate fact. Rewrite `this` using `[mul_add]`. Conclude with `this`. Establish `hmuL` using `hmu ν hν0 hmu'`. Take `⟨W, hWL, hWr, hWst⟩` from `hsteps τ k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hdegW` using `hmuL W hWL`. Rewrite `hdegW` using `[hWr]`. Establish `hkM : (k : ℝ) ≤ M`. Establish `: O.S.Dw.mult τ ≤ M` using `Finset.le_sup (f := fun τ : D.host.E →+* ℂ => O.S.Dw.mult τ) (Finset.mem_univ τ)`. Conclude with `hk.trans this` after adjusting the coercions.
-
-Establish `hkd : (k : ℝ) * (ν + C') ≤ M * (ν + C')` using `mul_le_mul_of_nonneg_right hkM (by linarith)`. Establish `hlX : 0 ≤ Real.log X` using `Real.log_nonneg hX1`. Establish `e5` using `(abs_le.1 hWst).1`. Establish `e6 : (M : ℝ) * ν ≤ M * Cs * large₂ + M * Cs * Real.log X`. Use `mul_le_mul_of_nonneg_left hνle hM` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `e7 : (M : ℝ) * Cs * Real.log X ≤ C * Real.log X` using `mul_le_mul_of_nonneg_right hC3 hlX`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem main : Hypotheses2 → HypothesesH → LieSlope → PtBd → OmCmp → StepBd := by
   intro hP2 hPH hLS hPB hOm D O hcore hN A T H hR
@@ -144,6 +140,6 @@ theorem main : Hypotheses2 → HypothesesH → LieSlope → PtBd → OmCmp → S
 end GlobalTheory.HeightParts.BdProof
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.HeightParts.BdProof.main`.
+A detailed English derivation is pending.
 -/
 example : Hypotheses2 → HypothesesH → LieSlope → PtBd → OmCmp → StepBd := GlobalTheory.HeightParts.BdProof.main

@@ -14,7 +14,7 @@ def exZ (Dw : Datum H) (G : WTZ E) : Ix Dw → ℤ
   | some x => G.1 (x.1, x.2)
 
 /- English proof (translation)
-Apply the tactic sequence `cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exZ_add (G G' : WTZ E) (i : Ix Dw) : exZ Dw (G + G') i = exZ Dw G i + exZ Dw G' i := by
   cases i <;> rfl
@@ -22,7 +22,7 @@ theorem exZ_add (G G' : WTZ E) (i : Ix Dw) : exZ Dw (G + G') i = exZ Dw G i + ex
 def frW (δ : Ix Dw → ℤ) (G : WTZ E) : ℤ := ∑ i, exZ Dw G i * δ i
 
 /- English proof (translation)
-Simplify using `only [frW, exZ_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frW_add (δ : Ix Dw → ℤ) (G G' : WTZ E) : frW δ (G + G') = frW δ G + frW δ G' := by
   simp only [frW, exZ_add, add_mul, Finset.sum_add_distrib]
@@ -33,7 +33,7 @@ def ordC (δ : Ix Dw → ℤ) (v : AddValuation (Om Z) (WithTop ℤ)) (G : WTZ E
   WithTop.untopD 0 (v (x.coeff G)) + frW δ G
 
 /- English proof (translation)
-Establish `hv : v r ≠ ⊤` using `fun h => hr ((AddValuation.top_iff v).1 h)`. Take `⟨n, hn⟩` from `WithTop.ne_top_iff_exists.1 hv`. Simplify using `only [ordC, AddMonoidAlgebra.coeff_single, Finsupp.single_eq_same, ← hn, WithTop.untopD_coe]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem ordC_single (δ : Ix Dw → ℤ) (v : AddValuation (Om Z) (WithTop ℤ)) (G : WTZ E) {r : Om Z} (hr : r ≠ 0) :
     ((ordC δ v G (AddMonoidAlgebra.single G r) : ℤ) : WithTop ℤ) = v r + (frW δ G : WithTop ℤ) := by
@@ -43,9 +43,9 @@ theorem ordC_single (δ : Ix Dw → ℤ) (v : AddValuation (Om Z) (WithTop ℤ))
   push_cast; rfl
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `mem_AG.1 hf`. Take `⟨s, rfl⟩` from `mem_AG.1 hg`. Establish `hr : r ≠ 0` using `fun h => hf0 (by simp [h])`. Establish `hs : s ≠ 0` using `fun h => hg0 (by simp [h])`. Rewrite using `[AddMonoidAlgebra.single_mul_single]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `WithTop.coe_injective` to reduce the goal to its premises. Rewrite using `[ordC_single δ v _ (mul_ne_zero hr hs)]`. Use `push_cast`. Rewrite using `[ordC_single δ v _ hr, ordC_single δ v _ hs, AddValuation.map_mul, frW_add]`. Use `push_cast`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 The two sides agree by associativity and commutativity.
 -/
@@ -65,7 +65,7 @@ theorem ordC_mul (δ : Ix Dw → ℤ) (v : AddValuation (Om Z) (WithTop ℤ)) {G
   ac_rfl
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `mem_AG.1 hf`. Establish `hr : r ≠ 0` using `fun h => hf0 (by simp [h])`. Rewrite using `[AddMonoidAlgebra.smul_single', ordC_single δ v _ (mul_ne_zero ha hr), ordC_single δ v _ hr, AddValuation.map_mul, add_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ordC_smul (δ : Ix Dw → ℤ) (v : AddValuation (Om Z) (WithTop ℤ)) {G : WTZ E} {f : AC Z} (a : Om Z)
     (hf : f ∈ AG Z G) (hf0 : f ≠ 0) (ha : a ≠ 0) :
@@ -97,20 +97,20 @@ variable (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ)
   (yP : ∀ P : Om Z →+* ℂ, FrPt Xo c (CAt (sgOf P)))
 
 /- English proof (translation)
-Simplify using `only [nrmC, AddMonoidAlgebra.coeff_zero, Finsupp.coe_zero, Pi.zero_apply, map_zero, norm_zero, zero_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nrmC_zero (G : WTZ E) (P : Om Z →+* ℂ) : nrmC fn yP G 0 P = 0 := by
   simp only [nrmC, AddMonoidAlgebra.coeff_zero, Finsupp.coe_zero, Pi.zero_apply, map_zero, norm_zero, zero_mul]
 
 /- English proof (translation)
-Simplify using `only [nrmC, AddMonoidAlgebra.coeff_single, Finsupp.single_eq_same]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nrmC_single (G : WTZ E) (r : Om Z) (P : Om Z →+* ℂ) :
     nrmC fn yP G (AddMonoidAlgebra.single G r) P = ‖P r‖ * ∏ i, |fn _ (yP P) i| ^ (-exZ Dw G i) := by
   simp only [nrmC, AddMonoidAlgebra.coeff_single, Finsupp.single_eq_same]
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `mem_AG.1 hf`. Establish `hr : r ≠ 0` using `fun h => hf0 (by simp [h])`. Rewrite using `[nrmC_single]`. Use `mul_pos (norm_pos_iff.2 ((map_ne_zero P).2 hr)) (Finset.prod_pos fun i _ => ?_)` and prove the remaining obligations. Conclude with `zpow_pos (abs_pos.2 (hfn _ _ i)) _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nrmC_pos (hfn : FnNe Xo c fn) {G : WTZ E} {f : AC Z} (P : Om Z →+* ℂ) (hf : f ∈ AG Z G) (hf0 : f ≠ 0) :
     0 < nrmC fn yP G f P := by
@@ -121,9 +121,9 @@ theorem nrmC_pos (hfn : FnNe Xo c fn) {G : WTZ E} {f : AC Z} (P : Om Z →+* ℂ
   exact zpow_pos (abs_pos.2 (hfn _ _ i)) _
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `mem_AG.1 hf`. Take `⟨s, rfl⟩` from `mem_AG.1 hg`. Rewrite using `[AddMonoidAlgebra.single_mul_single, nrmC_single, nrmC_single, nrmC_single, map_mul, norm_mul]`. Establish `: ∏ i, |fn _ (yP P) i| ^ (-exZ Dw (G + G') i) = (∏ i, |fn _ (yP P) i| ^ (-exZ Dw G i)) * ∏ i, |fn _ (yP P) i| ^ (-exZ Dw G' i)`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[exZ_add, neg_add, zpow_add₀ (abs_ne_zero.2 (hfn _ _ i))]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nrmC_mul (hfn : FnNe Xo c fn) {G G' : WTZ E} {f g : AC Z} (P : Om Z →+* ℂ) (hf : f ∈ AG Z G)
     (hg : g ∈ AG Z G') : nrmC fn yP (G + G') (f * g) P = nrmC fn yP G f P * nrmC fn yP G' g P := by
@@ -138,7 +138,7 @@ theorem nrmC_mul (hfn : FnNe Xo c fn) {G G' : WTZ E} {f g : AC Z} (P : Om Z →+
   rw [this]; ring
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `mem_AG.1 hf`. Rewrite using `[AddMonoidAlgebra.smul_single', nrmC_single, nrmC_single, map_mul, norm_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem nrmC_smul {G : WTZ E} {f : AC Z} (P : Om Z →+* ℂ) (a : Om Z) (hf : f ∈ AG Z G) :
     nrmC fn yP G (a • f) P = ‖P a‖ * nrmC fn yP G f P := by

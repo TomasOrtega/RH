@@ -11,17 +11,17 @@ variable {O L Y : Type} [CommRing O] [StarRing O] [AddCommGroup L] [Module O L] 
   {EF : LinearMap.BilinForm ℤ L} {y : L →ₗ[O] Y}
 
 /- English proof (translation)
-Take `⟨s0, hs0⟩` from `Module.projective_lifting_property y LinearMap.id hy`. Establish `hs0' : ∀ x, y (s0 x) = x` using `fun x => LinearMap.congr_fun hs0 x`. Establish `skew : ∀ a b, EF a b = -EF b a`. Introduce `a b`. Establish `h` using `halt (a + b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [map_add, LinearMap.add_apply, halt a, halt b, zero_add, add_zero] at h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hle' : kerPerp hadj y ≤ LinearMap.ker y` using `fun t ht => hle t (mem_kerPerp.1 ht)`. Take `⟨be, hbe_apply⟩ : ∃ be : LinearMap.BilinForm ℤ Y, ∀ x x', be x x' = EF (s0 x) (s0 (w • x'))` from `⟨EF.compl₁₂ s0.toAddMonoidHom.toIntLinearMap (s0.toAddMonoidHom.toIntLinearMap ∘ₗ (LinearMap.lsmul O Y w).toAddMonoidHom.toIntLinearMap), fun _ _ => rfl⟩`. Establish `hbe : ∀ (a : O) x x', be (a • x) x' = be x (star a • x')`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a x x'`. Rewrite using `[hbe_apply, hbe_apply, map_smul s0 a x, hadj, map_smul s0 w (star a • x'), map_smul s0 w x', map_smul s0 (star a) x', smul_comm]`. Establish `hn` using `neg_apply_nilTo hadj hb hy hbe`. Use `⟨s0 + (kerPerp hadj y).subtype ∘ₗ nilTo hadj hb hy hbe ∘ₗ s0, fun x => ?_, fun x x' => ?_⟩` and prove the remaining obligations. Establish `h0 : y ((nilTo hadj hb hy hbe (s0 x) : L)) = 0` using `LinearMap.mem_ker.1 (hle' (nilTo hadj hb hy hbe (s0 x)).2)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[hs0', h0]`. Simplify using `only [LinearMap.add_apply, LinearMap.comp_apply, Submodule.subtype_apply, map_add]`. Establish `h1` using `hn (s0 x) (s0 x')`. Establish `h2` using `hn (s0 x') (s0 x)`. Rewrite `h1`, `h2` using `[hs0', hs0', hbe_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `isotropic hle' (nilTo hadj hb hy hbe (s0 x)).2 (nilTo hadj hb hy hbe (s0 x')).2`. Establish `h4` using `skew (s0 x) (nilTo hadj hb hy hbe (s0 x'))`. Establish `k1 : EF (s0 x') (s0 (w • x)) = -EF (s0 x) (star w • s0 x')`. Rewrite using `[map_smul s0 w x, skew, hadj]`. Establish `k2 : EF (s0 x) (s0 x') = EF (s0 x) (s0 (w • x')) + EF (s0 x) (star w • s0 x')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_smul s0 w x', ← map_add (EF (s0 x)), ← add_smul, hw, one_smul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exists_isotropic_section [Module.Projective O Y] {w : O} (hw : w + star w = 1) (halt : EF.IsAlt)
     (hb : Function.Bijective EF) (hadj : ∀ (a : O) x x', EF (a • x) x' = EF x (star a • x'))
@@ -64,45 +64,41 @@ theorem exists_isotropic_section [Module.Projective O Y] {w : O} (hw : w + star 
 end KerPerp
 
 /- English proof (translation)
-Take `⟨s, hsy, hsiso⟩` from `KerPerp.exists_isotropic_section (EF := EF) (y := y) hw halt hb hadj hy hle`. Establish `skew : ∀ a b, EF a b = -EF b a`. Introduce `a b`. Establish `h` using `halt (a + b)`. Simplify using `only [map_add, LinearMap.add_apply, halt a, halt b, zero_add, add_zero] at h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hle' : KerPerp.kerPerp hadj y ≤ LinearMap.ker y` using `fun t ht => hle t (KerPerp.mem_kerPerp.1 ht)`. Take `⟨E, hE⟩ : ∃ E : KerPerp.kerPerp hadj y ≃ₗ[ℤ] Module.Dual ℤ Y, ∀ (t : KerPerp.kerPerp hadj y) (v : L), E t (y v) = -EF t v` from `⟨KerPerp.equivDual hadj hb hy, KerPerp.equivDual_apply hadj hb hy⟩`. Take `⟨Φ, hΦ⟩ : ∃ Φ : L →ₗ[ℤ] Module.Dual ℤ Y, ∀ v x, Φ v x = -EF v (s x)` from `⟨-(EF.compl₂ s.toAddMonoidHom.toIntLinearMap), fun _ _ => rfl⟩`. Take `⟨T, hTdef⟩ : ∃ T : L →ₗ[ℤ] L, ∀ v, T v = ((E.symm (Φ v) : KerPerp.kerPerp hadj y) : L)` from `⟨(KerPerp.kerPerp hadj y).subtype.toAddMonoidHom.toIntLinearMap ∘ₗ E.symm.toLinearMap ∘ₗ Φ, fun _ => rfl⟩`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hTK : ∀ v, T v ∈ KerPerp.kerPerp hadj y` using `fun v => by rw [hTdef]; exact (E.symm (Φ v)).2`. Establish `hEF : ∀ (t : KerPerp.kerPerp hadj y) w, EF t w = -E t (y w)` using `fun t w => by rw [hE]; ring`. Establish `hT : ∀ v w, EF (T v) w = EF v (s (y w))` using `fun v w => by`. Rewrite using `[hTdef, hEF, LinearEquiv.apply_symm_apply, hΦ, neg_neg]`. Establish `hTy : ∀ v, y (T v) = 0` using `fun v => LinearMap.mem_ker.1 (hle' (hTK v))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨P, hP⟩ : ∃ P : L →ₗ[ℤ] L, ∀ v, P v = v - s (y v) - T v` from `⟨LinearMap.id - s.toAddMonoidHom.toIntLinearMap ∘ₗ y.toAddMonoidHom.toIntLinearMap - T, fun _ => rfl⟩`. Establish `hPy : ∀ v, y (P v) = 0` using `fun v => by`. Rewrite using `[hP, map_sub, map_sub, hsy, hTy, sub_self, sub_zero]`. Establish `hPs : ∀ v x, EF (P v) (s x) = 0` using `fun v x => by`. Rewrite using `[hP]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sub, LinearMap.sub_apply]`. Rewrite using `[hsiso, hT, hsy]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨N, hN⟩ : ∃ N : Submodule O L, ∀ v, v ∈ N ↔ y v = 0 ∧ ∀ x, EF v (s x) = 0` from `⟨{ carrier := {v | y v = 0 ∧ ∀ x, EF v (s x) = 0} add_mem' := fun {a b} ha hb => ⟨by rw [map_add, ha.1, hb.1, add_zero], fun x => by rw [map_add, LinearMap.add_apply, ha.2, hb.2, add_zero]⟩ zero_mem' := ⟨map_zero y, fun x => by rw [map_zero, LinearMap.zero_apply]⟩ smul_mem' := fu …`. Establish `hPN : ∀ v, P v ∈ N` using `fun v => (hN _).2 ⟨hPy v, hPs v⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hΦN : ∀ m ∈ N, Φ m = 0` using `fun m hm => LinearMap.ext fun x => by`. Rewrite using `[hΦ, ((hN m).1 hm).2, neg_zero, LinearMap.zero_apply]`. Establish `hPfix : ∀ m ∈ N, P m = m` using `fun m hm => by`. Simplify using `[hP, ((hN m).1 hm).1, hTdef, hΦN m hm]`. Establish `hTsmul : ∀ (a : O) v, T (a • v) = a • T v` using `fun a v => hb.1 (LinearMap.ext fun w => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hT, hadj, hadj, hT, map_smul y, map_smul s])`. Establish `hdec : ∀ v, v = s (y v) + T v + P v` using `fun v => by rw [hP]; abel`. Establish `hback : ∀ φ : Module.Dual ℤ Y, φ.toAddMonoidHom.toIntLinearMap = φ` using `fun φ => LinearMap.ext fun _ => rfl`. Set `e : L ≃+ Y × (Y →+ ℤ) × N` to `{ toFun := fun v => (y v, (Φ v).toAddMonoidHom, ⟨P v, hPN v⟩) invFun := fun p => s p.1 + ((E.symm p.2.1.toIntLinearMap : KerPerp.kerPerp hadj y) : L) + (p.2.2 : L) left_inv := fun v => by show s (y v) + ((E.symm (Φ v).toAddMonoidHom.toIntLinearMap : KerPerp.kerPerp hadj y) : L) + …`. Rewrite using `[hback, ← hTdef]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hdec v).symm`. Use `right_inv := fun p => by`. Take `⟨a, φ, m⟩` from `p`. Establish `hyt : y ((E.symm φ.toIntLinearMap : KerPerp.kerPerp hadj y) : L) = 0` using `LinearMap.mem_ker.1 (hle' (E.symm _).2)`. Establish `hym : y (m : L) = 0` using `((hN m).1 m.2).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hyv : y (s a + ((E.symm φ.toIntLinearMap : KerPerp.kerPerp hadj y) : L) + m) = a`. Rewrite using `[map_add, map_add, hsy, hyt, hym, add_zero, add_zero]`. Establish `hΦv : Φ (s a + ((E.symm φ.toIntLinearMap : KerPerp.kerPerp hadj y) : L) + m) = φ.toIntLinearMap`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[hΦ, map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, hsiso, hEF, hsy, LinearEquiv.apply_symm_apply, ((hN m).1 m.2).2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Use `Prod.ext hyv (Prod.ext (AddMonoidHom.ext fun x => ?_) (Subtype.ext ?_))` and prove the remaining obligations. Use `show Φ _ x = φ x`. Rewrite using `[hΦv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show P _ = m`. Rewrite using `[hP, hyv, hTdef, hΦv]`. Conclude with `(fun p q r : L => show p + q + r - p - q = r by abel) _ _ _`. Use the proof step `map_add' := fun a b => by`. Use `Prod.ext (map_add y a b) (Prod.ext (AddMonoidHom.ext fun x => ?_) (Subtype.ext ?_))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show Φ (a + b) x = Φ a x + Φ b x`. Rewrite using `[map_add, LinearMap.add_apply]`. Use `show P (a + b) = P a + P b`. Conclude with `map_add P a b }`. Use `⟨N, inferInstance, inferInstance, EF.compl₁₂ N.subtype.toAddMonoidHom.toIntLinearMap N.subtype.toAddMonoidHom.toIntLinearMap, e, ⟨?_, ?_⟩, fun v => rfl, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `m hm`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `hb.1` to reduce the goal to its premises. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm' : EF (m : L) (P w) = 0`. Simplify using `using LinearMap.congr_fun hm ⟨P w, hPN w⟩`. Establish `hmN` using `(hN m).1 m.2`. Rewrite using `[Submodule.coe_zero, map_zero, LinearMap.zero_apply, hdec w, map_add, map_add, hmN.2, hm', skew, hT, hmN.1, map_zero, map_zero]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Take `⟨v, hv⟩` from `hb.2 (g ∘ₗ (AddMonoidHom.mk' (fun v => (⟨P v, hPN v⟩ : N)) (fun a b => Subtype.ext (map_add P a b))).toIntLinearMap)`. Use `⟨⟨P v, hPN v⟩, LinearMap.ext fun m => ?_⟩` and prove the remaining obligations. Establish `h1 : EF v m = g ⟨P m, hPN m⟩` using `LinearMap.congr_fun hv m`. Establish `h2 : (⟨P m, hPN m⟩ : N) = m` using `Subtype.ext (hPfix m m.2)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmN` using `(hN m).1 m.2`. Use `show EF (P v) m = g m`. Rewrite using `[hP]`. Simplify using `only [map_sub, LinearMap.sub_apply]`. Rewrite using `[h1, h2, skew (s (y v)), hmN.2, hT, hmN.1, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Introduce `a v x show Φ (a • v) x = Φ v (star a • x)`. Rewrite using `[hΦ, hΦ, hadj, map_smul s]`. Introduce `a v`. Use `Subtype.ext ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show P (a • v) = a • P v`. Rewrite using `[hP, hP, map_smul y, map_smul s, hTsmul, smul_sub, smul_sub]`. Introduce `v v' show EF v v' = Φ v' (y v) - Φ v (y v') + EF (P v) (P v')`. Rewrite using `[hΦ, hΦ, hP, hP]`. Simplify using `only [map_sub, LinearMap.sub_apply]`.
-
-Establish `f1` using `hT v v'`. Establish `f2` using `hT v (s (y v'))`. Rewrite `f2` using `[hsy]`. Establish `f3 : EF v (T v') = -EF v' (s (y v))` using `by rw [skew, hT]`. Establish `f4 : EF (s (y v)) (T v') = -EF v' (s (y (s (y v))))` using `by rw [skew, hT]`.
-
-Rewrite `f4` using `[hsy]`. Establish `f5` using `hsiso (y v) (y v')`. Establish `f6 : EF (T v) (T v') = 0` using `KerPerp.isotropic hle' (hTK v) (hTK v')`. Establish `f7` using `skew (s (y v)) v'`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_split_of_coisotropic_ker (O L Y : Type) [CommRing O] [StarRing O] [AddCommGroup L] [Module O L]
     [AddCommGroup Y] [Module O Y] [Module.Free ℤ Y] [Module.Finite ℤ Y] [Module.Projective O Y] (w : O)

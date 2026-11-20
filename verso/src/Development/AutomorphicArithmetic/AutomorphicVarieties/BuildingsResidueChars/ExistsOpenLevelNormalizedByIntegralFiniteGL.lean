@@ -7,15 +7,13 @@ open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Use `haveI : CompactSpace H := isCompact_iff_compactSpace.1 hHc`. Establish `hNo : IsOpen ((L.subgroupOf H : Subgroup H) : Set H)` using `hL.preimage continuous_subtype_val`. Use `haveI : Finite (H ⧸ L.subgroupOf H) := (L.subgroupOf H).quotient_finite_of_isOpen hNo`. Use `haveI : (L.subgroupOf H).FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`. Establish `hCo : IsOpen ((L.subgroupOf H).normalCore : Set H)` using `Subgroup.isOpen_of_isClosed_of_finiteIndex _ ((L.subgroupOf H).normalCore_isClosed (Subgroup.isClosed_of_isOpen _ hNo))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨(L.subgroupOf H).normalCore.map H.subtype, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_map]`. Conclude with `hHo.isOpenMap_subtype_val _ hCo`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Use `(L.subgroupOf H).normalCore_le hu` as an intermediate fact.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `this`. Introduce and unpack `k hk _ ⟨u, hu, rfl⟩`. Use `⟨(⟨k, hk⟩ : H)⁻¹ * u * ⟨k, hk⟩, ?_, by simp⟩` and prove the remaining obligations. Use `(Subgroup.normalCore_normal (L.subgroupOf H)).conj_mem u hu ((⟨k, hk⟩ : H)⁻¹)` as an intermediate fact. Simplify using `using this`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI : Finite (H ⧸ (L.subgroupOf H).normalCore) := Subgroup.finite_quotient_of_finiteIndex`. Use `letI := Fintype.ofFinite (H ⧸ (L.subgroupOf H).normalCore)`. Use `⟨Finset.univ.image (fun q : H ⧸ (L.subgroupOf H).normalCore => ((q.out : H) : G)), ?_⟩` and prove the remaining obligations. Introduce `k hk`. Use `⟨(((QuotientGroup.mk ⟨k, hk⟩ : H ⧸ (L.subgroupOf H).normalCore).out : H) : G), Finset.mem_image_of_mem _ (Finset.mem_univ _), ?_⟩` and prove the remaining obligations.
-
-Use `QuotientGroup.eq.1 (QuotientGroup.out_eq' (QuotientGroup.mk ⟨k, hk⟩ : H ⧸ (L.subgroupOf H).normalCore))` as an intermediate fact. Conclude with `⟨_, this, by simp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_normal_open_level_subgroup {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (H L : Subgroup G) (hHc : IsCompact (H : Set G)) (hHo : IsOpen (H : Set G))
@@ -51,7 +49,7 @@ private theorem exists_normal_open_level_subgroup {G : Type*} [Group G] [Topolog
     exact ⟨_, this, by simp⟩
 
 /- English proof (translation)
-Introduce `K _ _ n L hL`. Conclude with `exists_normal_open_level_subgroup _ L (AdelicGLn.isCompact_integralFiniteGL K n) (AdelicGLn.isOpen_integralFiniteGL K n) hL`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_open_level_normalized_by_integralFiniteGL :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (L : Subgroup (AdelicGLn.FiniteAdelicGL K n)), IsOpen (L : Set (AdelicGLn.FiniteAdelicGL K n)) → ∃ L' : Subgroup (AdelicGLn.FiniteAdelicGL K n), IsOpen (L' : Set (AdelicGLn.FiniteAdelicGL K n)) ∧ L' ≤ L ∧ (∀ k ∈ AdelicGLn.integralFiniteGL K n, ∀ u ∈ L', k⁻¹ * u * k ∈ L') ∧ ∃ t : Finset (AdelicGLn.FiniteAdelicGL K n), ∀ k ∈ AdelicGLn.integralFiniteGL K n, ∃ c ∈ t, c⁻¹ * k ∈ L' := by

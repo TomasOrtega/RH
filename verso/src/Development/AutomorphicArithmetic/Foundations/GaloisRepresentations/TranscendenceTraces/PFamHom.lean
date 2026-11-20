@@ -18,11 +18,11 @@ private noncomputable def preFam {Z S : Scheme.{0}} {p : Z ⟶ S} {R : Type} [Co
     rw [t.nat s, map_res]
 
 /- English proof (translation)
-Introduce `Q Z S p Φ _ e hrep I J`. Prove the components needed by the constructor for the conclusion. Introduce `m`. Use `⟨⟨fun n => postFam (e (I.X n)) (m.f n), fun A s t a => ?_⟩, fun n A a => rfl⟩` and prove the remaining obligations. Establish `hc` using `congrArg (fun φ => Sec.map φ ((e (I.X s)).app A a)) (m.comm s t)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hc.trans (congrArg (Sec.map (m.f t)) (hrep.nat (I.d s t) A a))`. Introduce `τ choose mm hmm _ using fun n => hrep.univ (I.X n) (J.X n) (τ.deg n)`. Use `⟨⟨mm, fun i j _ => ?_⟩, fun n A a => (hmm n A a).symm⟩` and prove the remaining obligations. Apply `(hrep.univ (I.X i) (J.X j) (postFam (τ.deg i) (J.d i j))).unique` to reduce the goal to its premises. Introduce `A a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrArg (Sec.map (J.d i j)) (hmm i A a)`. Introduce `A a`. Conclude with `((congrArg (Sec.map (mm j)) (hrep.nat (I.d i j) A a)).trans (hmm j A _)).trans (τ.comm A i j a).symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.famHom_of :
     FamHom := by

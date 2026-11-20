@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.Ent
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Establish `hf' : ∀ n, Finsupp.weight wt n ≠ j → MvPowerSeries.coeff n f = 0` using `hf`. Use extensionality with `n`. Rewrite using `[coeff_wcomp]`. Distinguish the cases in `h1 : Finsupp.weight wt n = j`. Rewrite using `[if_pos h1]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h1]`. Conclude with `(hf' n h1).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wcomp_self_eq_of_mem_wtPart {O σ X : Type} [CommRing O] [AddCommGroup X] {wt : σ → X} {j : X}
     {f : MvPowerSeries σ O} (hf : f ∈ wtPart O wt j) : wcomp O wt j f = f := by
@@ -18,9 +18,9 @@ private theorem wcomp_self_eq_of_mem_wtPart {O σ X : Type} [CommRing O] [AddCom
     exact (hf' n h1).symm
 
 /- English proof (translation)
-Establish `hf' : ∀ n, Finsupp.weight wt n ≠ j → MvPowerSeries.coeff n f = 0` using `hf`. Use extensionality with `n`. Rewrite using `[coeff_wcomp, map_zero]`. Distinguish the cases in `h1 : Finsupp.weight wt n = j'`. Rewrite using `[if_pos h1]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf' n (by rw [h1]; exact hj)`. Rewrite using `[if_neg h1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem wcomp_eq_zero_of_mem_wtPart_of_ne {O σ X : Type} [CommRing O] [AddCommGroup X] {wt : σ → X} {j : X}
     {f : MvPowerSeries σ O} (hf : f ∈ wtPart O wt j) {j' : X} (hj : j' ≠ j) : wcomp O wt j' f = 0 := by
@@ -33,23 +33,21 @@ private theorem wcomp_eq_zero_of_mem_wtPart_of_ne {O σ X : Type} [CommRing O] [
   · rw [if_neg h1]
 
 /- English proof (translation)
-Establish `key : ∀ (n : ℤ) (x : M.R), x ∈ M.aPart n → x ∈ (⨆ (m : ℤ) (_ : m ≠ n), M.aPart m) → x = 0`. Introduce `n x hx hx'`. Establish `hle : (⨆ (m : ℤ) (_ : m ≠ n), M.aPart m) ≤ Submodule.map M.W.π.toLinearMap (LinearMap.ker (M.W.π.toLinearMap ∘ₗ wcomp c.O M.W.wt ((0 : ℤ), n)))`. Use `iSup₂_le fun m hm => ?_` and prove the remaining obligations. Introduce and unpack `y ⟨h, hh, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨h, ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `M.W.π (wcomp c.O M.W.wt ((0 : ℤ), n) h) = 0`. Rewrite using `[wcomp_eq_zero_of_mem_wtPart_of_ne hh, map_zero]`. Introduce `h'`. Conclude with `hm (Prod.ext_iff.mp h').2.symm`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hgx⟩` from `hle hx'`. Take `⟨f, hf, rfl⟩` from `hx`. Establish `hker : f - g ∈ RingHom.ker M.W.π`. Rewrite using `[RingHom.mem_ker, map_sub]`. Conclude with `sub_eq_zero.mpr hgx.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `M.W.homog _ hker ((0 : ℤ), n)`. Rewrite `h2` using `[RingHom.mem_ker, map_sub, map_sub]`. Establish `hg' : M.W.π (wcomp c.O M.W.wt ((0 : ℤ), n) g) = 0` using `hg`. Establish `h3 : M.W.π (wcomp c.O M.W.wt ((0 : ℤ), n) f) = M.W.π f`. Rewrite using `[wcomp_self_eq_of_mem_wtPart hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation.
 
-Express the relevant statement in the definitionally equal form `M.W.π f = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[iSupIndep_def]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `n`. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hx'`. Establish `h1 : (x : M.R) ∈ M.aPart n` using `hx`. Establish `h2 : (x : M.R) ∈ (⨆ (m : ℤ) (_ : m ≠ n), M.aPart m)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Submodule.mem_map_of_mem (f := M.A.val.toLinearMap) hx'` as an intermediate fact. Simplify using `only [Submodule.map_iSup] at this`. Conclude with `(iSup₂_mono fun m _ => Submodule.map_comap_le _ _) this`. Conclude with `Subtype.ext (key n _ h1 h2)`. Use `eq_top_iff.mpr fun x _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `x`. Establish `main : ∀ (z : M.R) (hz : z ∈ ⨆ n, M.aPart n), (⟨z, hz⟩ : M.A) ∈ ⨆ n, M.gr n`. Introduce `z hz`. Use `Submodule.iSup_induction' M.aPart (motive := fun z hz => (⟨z, hz⟩ : M.A) ∈ ⨆ n, M.gr n) ?_ ?_ ?_ hz` and prove the remaining obligations. Introduce `n w hw`.
-
-Conclude with `Submodule.mem_iSup_of_mem n hw`. Conclude with `zero_mem _`. Introduce `a b ha hb iha ihb`. Conclude with `add_mem iha ihb`. Conclude with `main y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem aGraded_internal {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime]
     {c : Coef l} {D : Raw Ω c} (M : Model D) : DirectSum.IsInternal M.gr := by
@@ -105,7 +103,7 @@ private theorem aGraded_internal {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClos
     exact main y hy
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D _ M`. Conclude with `⟨{ (inferInstance : SetLike.GradedMonoid M.gr), (aGraded_internal M).chooseDecomposition with }⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.aGraded :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ M : Model D, Nonempty (GradedAlgebra M.gr) := by

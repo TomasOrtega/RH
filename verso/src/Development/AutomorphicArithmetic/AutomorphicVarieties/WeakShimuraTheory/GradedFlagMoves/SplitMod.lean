@@ -4,15 +4,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CharacterLevelBoun
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD w hw A hwA hlA hdec`. Establish `hlw : l ≠ w`. Introduce and unpack `rfl`. Conclude with `hlA hwA`. Take `⟨-, -, γ, hγ, -, hcyc⟩` from `UpperTheory.V.Chr.decCyc Ω w A hw hwA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hγl : ((cycZ ℚ Ω l γ : ℤ_[l]ˣ) : ℤ_[l]) = w` using `hcyc l hlw`. Establish `hom : D.om γ = 1` using `hdec hγ`. Establish `hbar` using `hD.om_bar γ`. Simplify using `only [Raw.bar, hom, chiO, MonoidHom.comp_apply, Units.coe_map, Units.val_one, map_one, MonoidHom.coe_coe, hγl] at hbar`. Establish `hbar' : residue c.O (algebraMap ℤ_[l] c.O (w : ℤ_[l])) = 1` using `hbar.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : Algebra.IsIntegral ℤ_[l] c.O` using `by haveI := c.fin infer_instance`. Establish `key : ((w : ℤ_[l]) - 1) ∈ IsLocalRing.maximalIdeal ℤ_[l]`. Establish `h0 : residue c.O (algebraMap ℤ_[l] c.O ((w : ℤ_[l]) - 1)) = 0`. Rewrite using `[map_sub, map_one, map_sub, map_one, hbar', sub_self]`. Establish `hm` using `(IsLocalRing.residue_eq_zero_iff _).mp h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmax : (IsLocalRing.maximalIdeal c.O).comap (algebraMap ℤ_[l] c.O) = IsLocalRing.maximalIdeal ℤ_[l]` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal _)`. Rewrite using `[← hmax]`. Conclude with `hm`. Establish `hcast : ((w : ℤ_[l]) - 1) = (((w : ℤ) - 1 : ℤ) : ℤ_[l])` using `by push_cast; rfl`. Rewrite `key` using `[hcast, IsLocalRing.mem_maximalIdeal, PadicInt.mem_nonunits, PadicInt.norm_int_lt_one_iff_dvd]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ((w - 1 : ℕ) : ℤ) = (w : ℤ) - 1`. Rewrite using `[Nat.cast_sub hw.one_le, Nat.cast_one]`. Rewrite `key` using `[← h1]`. Conclude with `Int.natCast_dvd_natCast.mp key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Rt.splitMod :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ w : ℕ, w.Prime →

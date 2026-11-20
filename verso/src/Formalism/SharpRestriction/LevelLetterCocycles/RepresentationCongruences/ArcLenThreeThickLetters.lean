@@ -22,9 +22,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 namespace ArcLengthThreeFiltration
 
 /- English proof (translation)
-Establish `hφ : Function.Injective (PD.φ.toLinearMap)` using `by simpa using PD.φ_inj`. Establish `h : ⇑(φVB PD (LL` using `LL) (V := T.V)) = ⇑(LinearMap.lTensor T.V PD.φ.toLinearMap) := by`. Use function extensionality and compare the values at `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a c => simp [φVB]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Rewrite using `[h]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ hφ`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem φVB_inj (T : LocLat G Qp LL O) : Function.Injective (φVB PD (LL := LL) (V := T.V)) := by
   have hφ : Function.Injective (PD.φ.toLinearMap) := by simpa using PD.φ_inj
@@ -38,7 +38,7 @@ theorem φVB_inj (T : LocLat G Qp LL O) : Function.Injective (φVB PD (LL := LL)
   exact Module.Flat.lTensor_preserves_injective_linearMap _ hφ
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a c => simp [φVB, Formalism.MainNotions.TruncatedSeriesCountingBounds.crisMap]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem crisMap_φ {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (x : T₁.V ⊗[Qp] B) :
     Formalism.MainNotions.TruncatedSeriesCountingBounds.crisMap B F.f (φVB PD (LL := LL) (V := T₁.V) x) =
@@ -51,7 +51,7 @@ theorem crisMap_φ {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) (x 
 variable (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [dv, pow_succ', Module.End.mul_apply, map_sum, map_smul]; done)`. Consider the case `(simp only [dv, pow_succ', LinearMap.mul_apply, map_sum, map_smul]; done)`. Consider the case `(simp [dv, LinearMap.pow_apply, Function.iterate_succ_apply']; done)`. Consider the case `(simp [dv, pow_succ']; exact (trivial : True))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem dv_succ (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T) (c₀ : Fin d → LL) :
     dv W T (e + 1) b c₀ = φVB PD (LL := LL) (V := T.V) (dv W T e b c₀) := by
@@ -62,21 +62,21 @@ theorem dv_succ (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T
   | (simp [dv, pow_succ']; exact (trivial : True))
 
 /- English proof (translation)
-Simplify using `only [dv, Pi.add_apply, add_smul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dv_add (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T) (c₀ c₁ : Fin d → LL) :
     dv W T e b (c₀ + c₁) = dv W T e b c₀ + dv W T e b c₁ := by
   simp only [dv, Pi.add_apply, add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [dv, Pi.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dv_smul (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T) (t : LL) (c₀ : Fin d → LL) :
     dv W T e b (t • c₀) = t • dv W T e b c₀ := by
   simp only [dv, Pi.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum]
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `using dv_smul W T e b 0 0`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, dv_add, ih]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem dv_sum (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T) {ι : Type*} (s : Finset ι)
     (c₀ : ι → Fin d → LL) : dv W T e b (∑ i ∈ s, c₀ i) = ∑ i ∈ s, dv W T e b (c₀ i) := by
@@ -87,9 +87,9 @@ theorem dv_sum (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T)
     rw [Finset.sum_insert ha, Finset.sum_insert ha, dv_add, ih]
 
 /- English proof (translation)
-Establish `h : c₀ = ∑ m, c₀ m • (Pi.single m 1 : Fin d → LL)`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [h]`. Rewrite using `[dv_sum]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [dv_smul]`.
+A detailed English derivation is pending.
 -/
 theorem dv_eq_sum (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T) (c₀ : Fin d → LL) :
     dv W T e b c₀ = ∑ m, c₀ m • dv W T e b (Pi.single m 1) := by
@@ -101,7 +101,7 @@ theorem dv_eq_sum (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD
   simp only [dv_smul]
 
 /- English proof (translation)
-Use `first`. Consider the case `(unfold dvO; exact dv_eq_sum W T e b _)`. Consider the case `(simp only [dvO]; exact dv_eq_sum W T e b _)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem dvO_eq (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T) (c₀ : Fin d → O) :
     dvO W T e b c₀ = ∑ m, algebraMap O LL (c₀ m) • dv W T e b (Pi.single m 1) := by
@@ -110,7 +110,7 @@ theorem dvO_eq (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T)
   | (simp only [dvO]; exact dv_eq_sum W T e b _)
 
 /- English proof (translation)
-Rewrite using `[dvO_eq]`. Simplify using `[Pi.single_apply, apply_ite (algebraMap O LL), ite_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dvO_single (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.DD T) (k : Fin d) :
     dvO W T e b (Pi.single k 1) = dv W T e b (Pi.single k 1) := by
@@ -118,13 +118,13 @@ theorem dvO_single (T : LocLat G Qp LL O) (e : ℕ) {d : ℕ} (b : Fin d → W.D
   simp [Pi.single_apply, apply_ite (algebraMap O LL), ite_smul]
 
 /- English proof (translation)
-Unfold `FilS`. Apply `Submodule.map_mono` to reduce the goal to its premises. Apply `inf_le_inf_right` to reduce the goal to its premises. Unfold `FilCris`. Apply `inf_le_inf_left` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Submodule.comap_mono` to reduce the goal to its premises. Unfold `FilV`. Establish `hF : PD.Fil u' ≤ PD.Fil u` using `antitone_int_of_succ_le PD.Fil_anti h`. Introduce `y hy`. Rewrite `hy` using `[LinearMap.mem_range]`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z, rfl⟩` from `hy`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a c => exact LinearMap.mem_range.mpr ⟨a ⊗ₜ ⟨c.1, hF c.2⟩, by simp⟩`. Consider the case `add z w hz hw => rw [map_add]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ hz hw`.
+A detailed English derivation is pending.
 -/
 theorem filS_anti (T : LocLat G Qp LL O) (a : ZMod n) (s : ℕ) {u u' : ℤ} (h : u ≤ u') :
     FilS W T a s u' ≤ FilS W T a s u := by
@@ -145,7 +145,7 @@ theorem filS_anti (T : LocLat G Qp LL O) (a : ZMod n) (s : ℕ) {u u' : ℤ} (h 
   | add z w hz hw => rw [map_add]; exact Submodule.add_mem _ hz hw
 
 /- English proof (translation)
-Unfold `FilS`. Simplify using `[pow_zero, Submodule.map_id]`. Apply the tactic sequence `try rfl`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem filS_zero_iff (T : LocLat G Qp LL O) (a : ZMod n) (u : ℤ) (x : T.V ⊗[Qp] B) :
     x ∈ FilS W T a 0 u ↔ x ∈ FilCris PD T.ρ u ⊓ DcrisL PD T.ρ (W.emb a) := by
@@ -154,7 +154,7 @@ theorem filS_zero_iff (T : LocLat G Qp LL O) (a : ZMod n) (u : ℤ) (x : T.V ⊗
   try rfl
 
 /- English proof (translation)
-Rewrite `hx` using `[filS_zero_iff]`. Unfold `FilS`. Rewrite using `[pow_one, Nat.cast_one, add_sub_cancel_right]`. Conclude with `Submodule.mem_map_of_mem hx`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem filS_one_of (T : LocLat G Qp LL O) (a : ZMod n) (u : ℤ) (x : T.V ⊗[Qp] B)
     (hx : x ∈ FilS W T a 0 u) : φVB PD (LL := LL) (V := T.V) x ∈ FilS W T (a + 1) 1 u := by
@@ -164,9 +164,9 @@ theorem filS_one_of (T : LocLat G Qp LL O) (a : ZMod n) (u : ℤ) (x : T.V ⊗[Q
   exact Submodule.mem_map_of_mem hx
 
 /- English proof (translation)
-Rewrite using `[filS_zero_iff]`. Unfold `FilS at hx`. Rewrite `hx` using `[pow_one, Nat.cast_one, add_sub_cancel_right, Submodule.mem_map]`. Take `⟨y, hy, hyx⟩` from `hx`. Rewrite using `[← φVB_inj T hyx]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`.
+A detailed English derivation is pending.
 -/
 theorem filS_zero_of (T : LocLat G Qp LL O) (a : ZMod n) (u : ℤ) (x : T.V ⊗[Qp] B)
     (hx : φVB PD (LL := LL) (V := T.V) x ∈ FilS W T (a + 1) 1 u) : x ∈ FilS W T a 0 u := by
@@ -178,9 +178,9 @@ theorem filS_zero_of (T : LocLat G Qp LL O) (a : ZMod n) (u : ℤ) (x : T.V ⊗[
   exact hy
 
 /- English proof (translation)
-Unfold `RepVV at h ⊢`. Take `⟨κ, κ', Hh, a, hH, ha, hIn⟩` from `h`. Use `⟨κ, κ', Hh, fun k => t * a k, hH, fun k => ⟨mul_mem ht (ha k).1, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[map_mul, ← (ha k).2]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `he : lA W ^ κ' • (lA W ^ κ • Λ • (t • x) - ∑ k, (t * a k) • ((W.φD T) ^ e) (Hh k)) = t • (lA W ^ κ' • (lA W ^ κ • Λ • x - ∑ k, a k • ((W.φD T) ^ e) (Hh k)))`. Simplify using `only [smul_sub, Finset.smul_sum, smul_smul, mul_comm, mul_assoc, mul_left_comm]`. Rewrite using `[he]`. Conclude with `Formalism.MainNotions.N.FrobeniusPowerSeries.TypesA.inMultiple_smul (ha := ht) (h := hIn)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repVV_smulA {T : LocLat G Qp LL O} {c' : ZMod n} {e M : ℕ} {Λ : LetA O n} {d : ℕ}
     {b : Fin d → W.DD T} {sol : Fin d → ℕ → Fin d → LL} {x : W.DD T} {f : Fin d → W.EE}
@@ -208,22 +208,22 @@ theorem arc_ty [NeZero n] (i : ZMod n) :
     (arcOf b w S η up size).ty i = if up i then .up (size i) else .down (size i) := rfl
 
 /- English proof (translation)
-Rewrite using `[arc_ty]`. Apply the tactic sequence `split <;> rfl`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem arc_thick [NeZero n] (i : ZMod n) : ((arcOf b w S η up size).ty i).thick := by
   rw [arc_ty]
   split <;> rfl
 
 /- English proof (translation)
-Unfold `arcOf at hlen`. Simplify using `only at hlen`. Establish `hpos : 0 < sInf {d : ℕ | 1 ≤ d ∧ ¬Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size (c - (d : ZMod n) + 1)}`. Rewrite using `[hlen]`. Evaluate the numerical expressions.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hne` using `Nat.nonempty_of_pos_sInf hpos`. Establish `h3` using `Nat.sInf_mem hne`. Rewrite `h3` using `[hlen]`. Establish `hlt : ∀ d : ℕ, 1 ≤ d → d < 3 → Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size (c - (d : ZMod n) + 1)`. Introduce `d hd1 hd3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hT`. Establish `hle` using `Nat.sInf_le (show d ∈ {d : ℕ | 1 ≤ d ∧ ¬Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size (c - (d : ZMod n) + 1)} from ⟨hd1, hT⟩)`. Rewrite `hle` using `[hlen]`. Use linear arithmetic over natural numbers and integers. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hlt 1 le_rfl (by norm_num)`. Rewrite `h1` using `[show c - ((1 : ℕ) : ZMod n) + 1 = c by push_cast; ring]`. Then use the resulting hypothesis. Establish `h1` using `hlt 2 (by norm_num) (by norm_num)`. Rewrite `h1` using `[show c - ((2 : ℕ) : ZMod n) + 1 = c - 1 by push_cast; ring]`. Then use the resulting hypothesis. Establish `h1` using `h3.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h1` using `[show c - ((3 : ℕ) : ZMod n) + 1 = c - 2 by push_cast; ring]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem arc_len_three_thick_letters [NeZero n] {c : ZMod n} (hlen : (arcOf b w S η up size).len c = 3) :
     Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size c ∧ Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size (c - 1) ∧
@@ -251,9 +251,9 @@ theorem arc_len_three_thick_letters [NeZero n] {c : ZMod n} (hlen : (arcOf b w S
     rwa [show c - ((3 : ℕ) : ZMod n) + 1 = c - 2 by push_cast; ring] at h1
 
 /- English proof (translation)
-Unfold `Alt at halt`. Establish `h1` using `(halt (c - 2)).1`. Establish `h2` using `(halt (c - 1)).1`. Rewrite `h1` using `[show c - 2 + 1 = c - 1 by ring, hD]`. Rewrite `h2` using `[show c - 1 + 1 = c by ring]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : up (c - 1) = true` using `by simpa using h1`. Use `⟨e1, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[e1]`. Simplify using `using h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem arc_types [NeZero n] {c : ZMod n} (halt : Alt b η up size) (hD : up (c - 2) = false) :
     up (c - 1) = true ∧ up c = false := by
@@ -268,11 +268,11 @@ theorem arc_types [NeZero n] {c : ZMod n} (halt : Alt b η up size) (hD : up (c 
   simpa using h2
 
 /- English proof (translation)
-Unfold `abelian₂`. Simplify using `only [Finset.prod_range_succ, Finset.prod_range_zero, one_mul]`. Establish `hs0 : ∀ a : ZMod n, (arcOf b w S η up size).Hs a 2 0 = (arcOf b w S η up size).h`. Introduce `a`. Unfold `Formalism.MainNotions.ArcLiftingSetup.ArcP.Hs`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_neg]`. Introduce and unpack `(hc | hc)`. Apply the tactic sequence `simp only [arcOf] at hc split at hc <;> simp at hc`. Evaluate the numerical expressions using `[arcOf] at hc`. Establish `hs1 : ∀ a : ZMod n, (arcOf b w S η up size).Hs a 2 1 = (arcOf b w S η up size).G₀`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Introduce `a`. Unfold `Formalism.MainNotions.ArcLiftingSetup.ArcP.Hs`. Rewrite using `[if_pos (Or.inr (by simp [arcOf]))]`. Rewrite using `[hs0, hs1]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_inner [NeZero n] {c : ZMod n} (hlen : (arcOf b w S η up size).len c = 3) :
     abelian₂ W (arcOf b w S η up size) (c - (((arcOf b w S η up size).len c : ℕ) : ZMod n) + ((2 : ℕ) : ZMod n)) 2 =

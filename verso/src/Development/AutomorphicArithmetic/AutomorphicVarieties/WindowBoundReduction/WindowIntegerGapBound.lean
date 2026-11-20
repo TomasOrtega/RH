@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Weyl
 open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.WeylC UpperTheory.V.Cj.R
 
 /- English proof (translation)
-Proceed by induction on `m using Multiset.induction_on with`. Consider the case `empty => exact ⟨0, by simp⟩`. Consider the case `cons z m ih`. Take `⟨m', rfl⟩` from `ih (fun w hw => h w (Multiset.mem_cons_of_mem hw))`. Take `⟨n, rfl⟩` from `h z (Multiset.mem_cons_self _ _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n ::ₘ m', by simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem lift_int (c : ℂ) (m : Multiset ℂ) (h : ∀ z ∈ m, ∃ n : ℤ, z = (n : ℂ) + c) :
     ∃ m' : Multiset ℤ, m = m'.map (fun n : ℤ => (n : ℂ) + c) := by
@@ -17,11 +17,11 @@ private theorem lift_int (c : ℂ) (m : Multiset ℂ) (h : ∀ z ∈ m, ∃ n : 
     exact ⟨n ::ₘ m', by simp⟩
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `j hj`. Establish `: j = i` using `Fin.ext (by simpa using hj)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Simplify using the standard rewrite rules. Consider the case `succ d ih`. Introduce `j hj`. Establish `hlt : (i : ℕ) + d < a` using `by have := j.2; omega`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `ih ⟨i + d, hlt⟩ rfl`. Establish `h2 : e ⟨i + d, hlt⟩ < e j` using `he (by rw [Fin.lt_def]; simp only; omega)`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem gap {a : ℕ} (e : Fin a → ℤ) (he : StrictMono e) (i : Fin a) :
     ∀ (d : ℕ) (j : Fin a), (j : ℕ) = i + d → e i + d ≤ e j := by
@@ -39,17 +39,17 @@ private theorem gap {a : ℕ} (e : Fin a → ℤ) (he : StrictMono e) (i : Fin a
     push_cast; omega
 
 /- English proof (translation)
-Introduce and unpack `a m ⟨hc, hn, hz⟩`. Take `⟨m', rfl⟩` from `lift_int _ m hz`. Establish `hn' : m'.Nodup` using `Multiset.Nodup.of_map _ hn`. Set `s : Finset ℤ` to `⟨m', hn'⟩`. Establish `hs : s.card = a` using `by simpa [s, Finset.card] using hc`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e` to `s.orderEmbOfFin hs`. Establish `hm : m' = (Finset.univ : Finset (Fin a)).val.map e`. Use `congrArg Finset.val (Finset.map_orderEmbOfFin_univ s hs)` as an intermediate fact. Rewrite `this` using `[Finset.map_val]`. Conclude with `this.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a + ∑ k : Fin a, (e k).toNat, fun N hN => ?_⟩` and prove the remaining obligations. Establish `hpos : ∀ k : Fin a, 0 ≤ (N : ℤ) + k + 1 - a - e k`. Introduce `k`. Use `Finset.single_le_sum (f := fun k : Fin a => (e k).toNat) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun k => ((N : ℤ) + k + 1 - a - e k).toNat, ?_, fun u => ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Establish `h1` using `gap e e.strictMono i (j - i) j (by have : (i : ℕ) ≤ j := hij; omega)`. Establish `: (i : ℕ) ≤ j` using `hij`. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hm, Multiset.map_map, Multiset.map_map, Multiset.map_map, Finset.prod_eq_multiset_prod]`. Use `congr 1`. Use `Multiset.map_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `h : ((((N : ℤ) + k + 1 - a - e k).toNat : ℕ) : ℂ) = (N : ℂ) + (k : ℕ) + 1 - a - (e k : ℤ)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg (hpos k)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Function.comp, h]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.window_integer_gap_bound :
     ∀ (a : ℕ) (m : Multiset ℂ), IsRegInt a m → ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N → ∃ ν : Fin a → ℕ, Antitone ν ∧ ∀ u : ℂ, ∏ k : Fin a, (u + ((a : ℂ) - 1) / 2 - (N : ℂ) - (k : ℂ) + (ν k : ℂ)) = ((m.map Neg.neg).map (u + ·)).prod := by

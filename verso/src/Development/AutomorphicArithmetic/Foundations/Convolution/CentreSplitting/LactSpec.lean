@@ -8,7 +8,7 @@ open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
 /- English proof (translation)
-Introduce `K _ _ n u β hβ`. Take `⟨h, hl, -⟩` from `UpperTheory.ConvolutionTheory.Tf.lactSpec K n β hβ`. Conclude with `⟨h, hl u⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.ConvolutionTheory.Dp.lactSpec :
     UpperTheory.ConvolutionTheory.Dp.LactSpec := by

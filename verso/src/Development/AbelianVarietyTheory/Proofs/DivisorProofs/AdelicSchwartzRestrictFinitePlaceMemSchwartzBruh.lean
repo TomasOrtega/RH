@@ -24,13 +24,13 @@ noncomputable section
 namespace GlobalTheory.LatVac
 
 /- English proof (translation)
-Introduce `F _ _ κ _ v Φ hΦ`. Use `haveI : T2Space (Af F) := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ hΦ`. Take `⟨f, g, hg, rfl⟩` from `hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `s : (κ → Fv F v) → (κ → Af F)` to `fun t i => GlobalTheory.AdelicU.singleFin v (t i)`. Establish `hs : Continuous s` using `continuous_pi fun i => (GlobalTheory.AdelicU.continuous_singleFin v).comp (continuous_apply i)`. Establish `hinv : Function.LeftInverse (fun x : κ → Af F => fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (x i)) s` using `fun t => funext fun i => GlobalTheory.AdelicU.evalV_singleFin_self v (t i)`. Establish `hev : Continuous (fun x : κ → Af F => fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (x i))` using `continuous_pi fun i => (RestrictedProduct.continuous_eval v).comp (continuous_apply i)`. Establish `hce : Topology.IsClosedEmbedding s` using `hinv.isClosedEmbedding hev hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : g ∘ s ∈ GlobalTheory.WeilM.SB (κ → Fv F v)` using `⟨hg.1.comp_continuous hs, hg.2.comp_isClosedEmbedding hce⟩`. Establish `e : (fun t : κ → Fv F v => GlobalTheory.WeilM.pureA F (⇑f) g (fun i => GlobalTheory.LatVac.liftV v (t i))) = f (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F 0) • (g ∘ s)`. Use function extensionality and compare the values at `t`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.smul_mem _ _ hmem`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => exact Submodule.smul_mem _ a hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem restrict_liftV_mem_SB : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F),
     ∀ Φ ∈ GlobalTheory.WeilM.schA F κ, (fun t : κ → Fv F v => Φ (fun i => GlobalTheory.LatVac.liftV v (t i))) ∈ GlobalTheory.WeilM.SB (κ → Fv F v) := by

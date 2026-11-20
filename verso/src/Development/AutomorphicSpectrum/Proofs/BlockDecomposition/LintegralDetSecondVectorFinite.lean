@@ -14,11 +14,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SingInt
 
 /- English proof (translation)
-Establish `hm : 0 < m` using `hu.trans_le hum`. Establish `hsplit : m ^ e = m ^ (e + 2 - 2 * α) * (m ^ (α - 1) * m ^ (α - 1))`. Rewrite using `[← Real.rpow_add hm, ← Real.rpow_add hm]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hsplit]`. Establish `h1 : m ^ (e + 2 - 2 * α) ≤ |R| ^ (e + 2 - 2 * α)` using `Real.rpow_le_rpow hm.le (hmR.trans (le_abs_self R)) (by linarith)`. Establish `h2 : m ^ (α - 1) ≤ u ^ (α - 1)` using `Real.rpow_le_rpow_of_nonpos hu hum (by linarith)`. Establish `h3 : m ^ (α - 1) ≤ v ^ (α - 1)` using `Real.rpow_le_rpow_of_nonpos hv hvm (by linarith)`. Establish `hp : 0 ≤ m ^ (α - 1)` using `Real.rpow_nonneg hm.le _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul h1 (mul_le_mul h2 h3 hp (hp.trans h2)) (mul_nonneg hp hp) (Real.rpow_nonneg (abs_nonneg R) _)`.
+A detailed English derivation is pending.
 -/
 theorem rpow_bound {u v m R e α : ℝ} (hα1 : α ≤ 1) (he : 2 * α - 2 ≤ e) (hu : 0 < u) (hv : 0 < v)
     (hum : u ≤ m) (hvm : v ≤ m) (hmR : m ≤ R) :
@@ -54,62 +54,60 @@ def fT (R c t : ℝ) : GL (Fin 2) F → ℝ≥0∞ :=
     (fun g => ENNReal.ofReal ((modulus (g.val).det : ℝ) ^ c * mx (e2r g) ^ (-t)))
 
 /- English proof (translation)
-The claim follows from `measurableSet_le measurable_modulus.coe_nnreal_real measurable_const`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_Bl (R : ℝ) : MeasurableSet (Bl F R) :=
   measurableSet_le measurable_modulus.coe_nnreal_real measurable_const
 
 /- English proof (translation)
-The claim follows from `measurable_one.indicator (measurableSet_Bl R)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_Ib (R : ℝ) : Measurable (Ib R : F → ℝ≥0∞) :=
   measurable_one.indicator (measurableSet_Bl R)
 
 /- English proof (translation)
-The claim follows from `ENNReal.measurable_ofReal.comp (measurable_modulus.coe_nnreal_real.pow_const e)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_Pw (e : ℝ) : Measurable (Pw e : F → ℝ≥0∞) :=
   ENNReal.measurable_ofReal.comp (measurable_modulus.coe_nnreal_real.pow_const e)
 
 /- English proof (translation)
-Rewrite using `[Pw, Pw, modulus_mul, NNReal.coe_mul, Real.mul_rpow (NNReal.coe_nonneg _) (NNReal.coe_nonneg _), ENNReal.ofReal_mul (Real.rpow_nonneg (NNReal.coe_nonneg _) _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Pw_mul (e : ℝ) (q w : F) : Pw e (q * w) = ENNReal.ofReal ((modulus q : ℝ) ^ e) * Pw e w := by
   rw [Pw, Pw, modulus_mul, NNReal.coe_mul, Real.mul_rpow (NNReal.coe_nonneg _) (NNReal.coe_nonneg _),
     ENNReal.ofReal_mul (Real.rpow_nonneg (NNReal.coe_nonneg _) _)]
 
 /- English proof (translation)
-Rewrite using `[Pw, Pw, GlobalTheory.CompanionTheory.GL2Coordinates.modulus_neg']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Pw_neg (e : ℝ) (z : F) : Pw e (-z) = Pw e z := by
   rw [Pw, Pw, GlobalTheory.CompanionTheory.GL2Coordinates.modulus_neg']
 
 /- English proof (translation)
-Simplify using `[Ib, Set.indicator_of_mem h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Ib_of_mem {R : ℝ} {z : F} (h : z ∈ Bl F R) : Ib R z = 1 := by
   simp [Ib, Set.indicator_of_mem h]
 
 /- English proof (translation)
-Simplify using `[Ib, Set.indicator_of_notMem h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Ib_of_notMem {R : ℝ} {z : F} (h : z ∉ Bl F R) : Ib R z = 0 := by
   simp [Ib, Set.indicator_of_notMem h]
 
 /- English proof (translation)
-Use `set A := ∫⁻ z, (Bl F R).indicator (Pw e) z ∂μ with hA`. Use `set c := ENNReal.ofReal ((modulus q : ℝ) ^ e) with hc`. Establish `hqp : (0 : ℝ) < modulus q` using `by exact_mod_cast modulus_pos hq`. Establish `key : ∀ b, ∫⁻ a, Ib R a * (Ib R b * Pw e (a * q - b * p)) ∂μ ≤ (Bl F R).indicator (fun _ => c * A) b`. Introduce `b`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Distinguish the cases in `hb : b ∈ Bl F R`. Rewrite using `[Set.indicator_of_mem hb] set w := b * p / q with hw`. Establish `hmw : (modulus w : ℝ) ≤ R`. Establish `h0 : (modulus w : ℝ) = modulus b * (modulus p / modulus q)`. Simplify using `[hw, div_eq_mul_inv, modulus_mul, modulus_inv, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h0]`. Establish `h1 : (modulus p : ℝ) / modulus q ≤ 1` using `(div_le_one hqp).2 hpq`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun a => ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Distinguish the cases in `ha : a ∈ Bl F R`. Establish `h1 : a - w ∈ Bl F R`. Establish `h2` using `GlobalTheory.CompanionTheory.LFCoords.modulus_add_le_max a (-w)`. Rewrite `h2` using `[GlobalTheory.CompanionTheory.GL2Coordinates.modulus_neg']`. Rewrite using `[Bl, Set.mem_setOf_eq, sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2.trans (max_le ha hmw)`. Establish `h2 : a * q - b * p = q * (a - w)`. Rewrite using `[hw]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[Ib_of_mem ha, Ib_of_mem hb, Set.indicator_of_mem h1, h2, Pw_mul]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hc]`. Rewrite using `[Ib_of_notMem ha]`. Simplify using the standard rewrite rules. Use `_ = c * ∫⁻ a, (Bl F R).indicator (Pw e) (a - w) ∂μ := lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`. Use `_ = c * A := by`.
-
-Rewrite using `[lintegral_sub_right_eq_self (fun z => (Bl F R).indicator (Pw e) z) w]`. Rewrite using `[Set.indicator_of_notMem hb]`. Simplify using `[Ib_of_notMem hb]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem half (μ : Measure F) [μ.IsAddHaarMeasure] (R e : ℝ) {p q : F} (hq : q ≠ 0)
     (hpq : (modulus p : ℝ) ≤ modulus q) :
@@ -159,11 +157,11 @@ theorem half (μ : Measure F) [μ.IsAddHaarMeasure] (R e : ℝ) {p q : F} (hq : 
     _ = c * A * μ (Bl F R) := lintegral_indicator_const (measurableSet_Bl R) _
 
 /- English proof (translation)
-Break down `le_total (modulus (r 0) : ℝ) (modulus (r 1)) with h | h` into its components or cases. Establish `hm : mx r = modulus (r 1)` using `max_eq_right h`. Rewrite using `[hm]`. Conclude with `half μ R e h1 h`. Establish `hm : mx r = modulus (r 0)` using `max_eq_left h`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm]`. Establish `hmeas : Measurable (Function.uncurry fun b a : F => Ib R a * (Ib R b * Pw e (a * r 1 - b * r 0)))`. Establish `h3 : Measurable fun p : F × F => p.2 * r 1 - p.1 * r 0` using `by fun_prop`. Conclude with `((measurable_Ib R).comp measurable_snd).mul (((measurable_Ib R).comp measurable_fst).mul ((measurable_Pw e).comp h3))`. Rewrite using `[lintegral_lintegral_swap hmeas.aemeasurable]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans (le_of_eq ?_) (half μ R e h0 h)` and prove the remaining obligations. Use `lintegral_congr fun a => lintegral_congr fun b => ?_` and prove the remaining obligations. Rewrite using `[← Pw_neg e (a * r 1 - b * r 0), neg_sub, mul_left_comm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem both (μ : Measure F) [μ.IsAddHaarMeasure] (R e : ℝ) (r : Fin 2 → F) (h0 : r 0 ≠ 0)
     (h1 : r 1 ≠ 0) :
@@ -186,9 +184,9 @@ theorem both (μ : Measure F) [μ.IsAddHaarMeasure] (R e : ℝ) (r : Fin 2 → F
     rw [← Pw_neg e (a * r 1 - b * r 0), neg_sub, mul_left_comm]
 
 /- English proof (translation)
-Establish `hS : MeasurableSet {g : GL (Fin 2) F | ∀ i j, (modulus (g.val i j) : ℝ) ≤ R}`. Simplify using `only [Set.setOf_forall]`. Apply the tactic sequence `exact MeasurableSet.iInter fun i => MeasurableSet.iInter fun j => measurableSet_le (GlobalTheory.CompanionTheory.GLFinVol.measurable_entry i j).coe_nnreal_real measurable_const`. Establish `hm : Measurable fun g : GL (Fin 2) F => mx (e2r g)`. Establish `h0 : (fun g : GL (Fin 2) F => mx (e2r g)) = fun g => max (modulus (g.val 1 0) : ℝ) (modulus (g.val 1 1) : ℝ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Simplify using `[mx, e2r]`. Rewrite using `[h0]`. Apply the tactic sequence `exact (GlobalTheory.CompanionTheory.GLFinVol.measurable_entry 1 0).coe_nnreal_real.max (GlobalTheory.CompanionTheory.GLFinVol.measurable_entry 1 1).coe_nnreal_real`. Conclude with `(ENNReal.measurable_ofReal.comp ((GlobalTheory.CompanionTheory.GLFinVol.measurable_detm.coe_nnreal_real.pow_const c).mul (hm.pow_const _))).indicator hS`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_fT (R c t : ℝ) : Measurable (fT R c t : GL (Fin 2) F → ℝ≥0∞) := by
   have hS : MeasurableSet {g : GL (Fin 2) F | ∀ i j, (modulus (g.val i j) : ℝ) ≤ R} := by
@@ -209,19 +207,19 @@ theorem measurable_fT (R c t : ℝ) : Measurable (fT R c t : GL (Fin 2) F → �
 open Classical in
 
 /- English proof (translation)
-Distinguish the cases in `hX : ∃ g, GlobalTheory.CompanionTheory.GJHaar.ch g = GlobalTheory.CompanionTheory.GJHaar.ent r b a`. Take `⟨g, hg⟩` from `hX`. Establish `h00 : g.val 0 0 = a` using `by simpa [GlobalTheory.CompanionTheory.GJHaar.ch, GlobalTheory.CompanionTheory.GJHaar.ent] using congrFun hg (0, 0)`. Establish `h01 : g.val 0 1 = b` using `by simpa [GlobalTheory.CompanionTheory.GJHaar.ch, GlobalTheory.CompanionTheory.GJHaar.ent] using congrFun hg (0, 1)`. Establish `h10 : g.val 1 0 = r 0` using `by simpa [GlobalTheory.CompanionTheory.GJHaar.ch, GlobalTheory.CompanionTheory.GJHaar.ent] using congrFun hg (1, 0)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h11 : g.val 1 1 = r 1` using `by simpa [GlobalTheory.CompanionTheory.GJHaar.ch, GlobalTheory.CompanionTheory.GJHaar.ent] using congrFun hg (1, 1)`. Rewrite using `[← hg, GlobalTheory.CompanionTheory.GJHaar.measurableEmbedding_ch.injective.extend_apply, Pi.mul_apply]`. Distinguish the cases in `hS : g ∈ {g : GL (Fin 2) F | ∀ i j, (modulus (g.val i j) : ℝ) ≤ R}`. Establish `ha : a ∈ Bl F R` using `h00 ▸ hS 0 0`. Establish `hb : b ∈ Bl F R` using `h01 ▸ hS 0 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr0 : r 0 ∈ Bl F R` using `h10 ▸ hS 1 0`. Establish `hr1 : r 1 ∈ Bl F R` using `h11 ▸ hS 1 1`. Establish `hd : (g.val).det = a * r 1 - b * r 0`. Rewrite using `[Matrix.det_fin_two, h00, h01, h10, h11]`. Establish `hdne : (g.val).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 g.isUnit).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : e2r g = r`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> simp [e2r, h10, h11]`. Establish `hD : (0 : ℝ) < modulus (g.val).det` using `by exact_mod_cast modulus_pos hdne`. Rewrite using `[if_pos ⟨hr0, hr1⟩, Ib_of_mem ha, Ib_of_mem hb, ← hd, fT, Set.indicator_of_mem hS, he, GlobalTheory.CompanionTheory.GJHaar.rho_eq, Pw, ← ENNReal.ofReal_coe_nnreal, one_mul, one_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm0 : 0 ≤ mx r ^ (-t)`. Use `Real.rpow_nonneg ?_ _` and prove the remaining obligations. Conclude with `le_max_of_le_left (NNReal.coe_nonneg _)`. Use `le_of_eq ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul hm0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Real.rpow_sub_one hD.ne', Real.rpow_sub_one hD.ne']`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[fT, Set.indicator_of_notMem hS, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Function.extend_apply' _ _ _ hX]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ext_le (R c t : ℝ) (r : Fin 2 → F) (b a : F) :
     Function.extend GlobalTheory.CompanionTheory.GJHaar.ch (GlobalTheory.CompanionTheory.GJHaar.rho * fT R c t) 0 (GlobalTheory.CompanionTheory.GJHaar.ent r b a) ≤
@@ -266,31 +264,25 @@ theorem ext_le (R c t : ℝ) (r : Fin 2 → F) (b a : F) :
 end D
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ hψ R c t hc ht htc`. Use `set μ := selfDualMeasure ψ with hμ`. Establish `hf : Measurable (fT (F` using `F) R c t) := measurable_fT R c t`. Establish `hE : Measurable (Function.extend GlobalTheory.CompanionTheory.GJHaar.ch (GlobalTheory.CompanionTheory.GJHaar.rho * fT (F` using `F) R c t) (0 : (Fin 2 × Fin 2 → F) → ℝ≥0∞)) := GlobalTheory.CompanionTheory.GJHaar.measurableEmbedding_ch.measurable_extend (GlobalTheory.CompanionTheory.GJHaar.measurable_rho.mul hf) measurable_const`. Express the relevant statement in the definitionally equal form `∫⁻ g, fT R c t g ∂LFS.hG ψ < ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.CompanionTheory.GJHaar.lintegral_hG ψ _ hf, GlobalTheory.CompanionTheory.GJHaar.lintegral_ent ψ _ hE]`. Use `set A := ∫⁻ z, (Bl F R).indicator (Pw (c - 1 - 1)) z ∂μ with hAdef`. Establish `hA : A ≠ ⊤`. Establish `hi` using `GlobalTheory.CompanionTheory.GJPow.integrableOn_modulus_rpow F ψ hψ (c - 1) R (by linarith)`. Rewrite using `[hAdef, lintegral_indicator (measurableSet_Bl R)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hi.integrable.lintegral_lt_top.ne`. Establish `hV : μ (Bl F R) ≠ ⊤` using `(GlobalTheory.CompanionTheory.GLFinVol.ball_lt_top μ R).ne`. Establish `hAV : A * μ (Bl F R) ≠ ⊤` using `ENNReal.mul_ne_top hA hV`. Use `set α := min ((c - t) / 2) 1 with hαdef`. Establish `hα : 0 < α` using `lt_min (by linarith) one_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hα1 : α ≤ 1` using `min_le_right _ _`. Establish `hα2 : α ≤ (c - t) / 2` using `min_le_left _ _`. Use `set e := -t + (c - 1 - 1) with he`. Use `set C := |R| ^ (e + 2 - 2 * α) with hC`. Set `h : F → ℝ` to `(Bl F R).indicator fun y => (modulus y : ℝ) ^ (α - 1)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hh : Integrable h μ` using `(integrable_indicator_iff (measurableSet_Bl R)).2 (GlobalTheory.CompanionTheory.GJPow.integrableOn_modulus_rpow F ψ hψ α R hα)`. Establish `hP : Integrable (fun r : Fin 2 → F => ∏ i, h (r i)) (LFS.vol2 ψ)`. Unfold `LFS.vol2`. Conclude with `Integrable.fintype_prod (fun _ => hh)`. Establish `ae0 : ∀ᵐ r ∂LFS.vol2 ψ, r (0 : Fin 2) ≠ 0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: LFS.vol2 ψ {r | r (0 : Fin 2) = 0} = 0`. Unfold `LFS.vol2`. Conclude with `Measure.pi_hyperplane _ 0 0`. Conclude with `measure_eq_zero_iff_ae_notMem.1 this`. Establish `hb : ∀ᵐ r ∂LFS.vol2 ψ, ∫⁻ b, ∫⁻ a, Function.extend GlobalTheory.CompanionTheory.GJHaar.ch (GlobalTheory.CompanionTheory.GJHaar.rho * fT (F` using `F) R c t) 0 (GlobalTheory.CompanionTheory.GJHaar.ent r b a) ∂selfDualMeasure ψ ∂selfDualMeasure ψ ≤ ENNReal.ofReal (C * ∏ i, h (r i)) * (A * μ (Bl F R)) := by filter_upwards [ae0, GlobalTheory.CompanionTheory.GJHaar.ae_ne ψ] with r h0 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hr : r 0 ∈ Bl F R ∧ r 1 ∈ Bl F R`. Establish `hu0 : (0 : ℝ) < modulus (r 0)` using `by exact_mod_cast modulus_pos h0`. Establish `hv0 : (0 : ℝ) < modulus (r 1)` using `by exact_mod_cast modulus_pos h1`. Establish `hum : (modulus (r 0) : ℝ) ≤ mx r` using `le_max_left _ _`. Establish `hvm : (modulus (r 1) : ℝ) ≤ mx r` using `le_max_right _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmR : mx r ≤ R` using `max_le hr.1 hr.2`. Establish `hm0 : 0 < mx r` using `hu0.trans_le hum`. Establish `hbd` using `rpow_bound (e := e) hα1 (by rw [he]; linarith) hu0 hv0 hum hvm hmR`. Establish `hprod : ∏ i, h (r i) = (modulus (r 0) : ℝ) ^ (α - 1) * (modulus (r 1) : ℝ) ^ (α - 1)`. Rewrite using `[Fin.prod_univ_two]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h]`. Rewrite using `[Set.indicator_of_mem hr.1, Set.indicator_of_mem hr.2]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun b => lintegral_mono fun a => ?_` and prove the remaining obligations. Simplify `ext_le R c t r b a` using `only [if_pos hr]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = ENNReal.ofReal (mx r ^ (-t)) * ∫⁻ b, ∫⁻ a, Ib R a * (Ib R b * Pw (c - 1 - 1) (a * r 1 - b * r 0)) ∂μ ∂μ := by`. Repeatedly rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `_ ≤ ENNReal.ofReal (mx r ^ (-t)) * (ENNReal.ofReal (mx r ^ (c - 1 - 1)) * A * μ (Bl F R)) := by gcongr`. Conclude with `both μ R (c - 1 - 1) r h0 h1`. Use `_ = ENNReal.ofReal (mx r ^ e) * (A * μ (Bl F R)) := by`.
-
-Rewrite using `[he, Real.rpow_add hm0, ENNReal.ofReal_mul (Real.rpow_nonneg hm0.le _)]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ENNReal.ofReal (C * ∏ i, h (r i)) * (A * μ (Bl F R)) := by`. Rewrite using `[hprod]`. Use `gcongr`.
-
-Establish `hz : ∀ b a, Function.extend GlobalTheory.CompanionTheory.GJHaar.ch (GlobalTheory.CompanionTheory.GJHaar.rho * fT (F` using `F) R c t) 0 (GlobalTheory.CompanionTheory.GJHaar.ent r b a) = 0 := by`. Introduce `b a`. Use `ext_le R c t r b a` as an intermediate fact. Rewrite `this` using `[if_neg hr]`. Conclude with `le_antisymm this (by simp)`.
-
-Simplify using `[hz]`. Use `lt_of_le_of_lt (lintegral_mono_ae hb) ?_` and prove the remaining obligations. Rewrite using `[lintegral_mul_const' _ _ hAV]`. Conclude with `ENNReal.mul_lt_top (hP.const_mul C).lintegral_lt_top hAV.lt_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_det_mx_lt_top : ForS fun F _ _ _ _ _ _ ψ => ∀ R c t : ℝ, 1 < c → 0 ≤ t → t < c →
     ∫⁻ g, Set.indicator {g : GL (Fin 2) F | ∀ i j, (modulus (g.val i j) : ℝ) ≤ R}

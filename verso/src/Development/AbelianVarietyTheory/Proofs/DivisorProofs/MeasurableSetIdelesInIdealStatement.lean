@@ -9,7 +9,7 @@ open MeasureTheory NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheo
 open scoped nonZeroDivisors TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LocIdealMeas.measurableSet_locId` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMeasurableSetIdelesInIdeal.lean&line=42#L42)
 -/

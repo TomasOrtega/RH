@@ -7,49 +7,47 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 open Polynomial in
 
 /- English proof (translation)
-Introduce `k _ _ n e N t T h he hmon hsep htT hte hker himg hchar`. Take `⟨t', ht'⟩ : ∃ t' : Module.End k (Fin n → k), t' = Matrix.toLin' t` from `⟨_, rfl⟩`. Take `⟨T', hT'⟩ : ∃ T' : Module.End k (Fin n → k), T' = Matrix.toLin' T` from `⟨_, rfl⟩`. Establish `htz : ∀ z, t' z = t *ᵥ z` using `fun z => by rw [ht', Matrix.toLin'_apply]`. Establish `hTz : ∀ z, T' z = T *ᵥ z` using `fun z => by rw [hT', Matrix.toLin'_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcz : ∀ z, t' (T' z) = T' (t' z)` using `fun z => by`. Simplify using `only [htz, hTz, Matrix.mulVec_mulVec, htT]`. Establish `hcomm : Commute t' T'` using `LinearMap.ext fun z => hcz z`. Establish `hpow : ∀ (m : ℕ) z, (t' ^ m) z = t ^ m *ᵥ z`. Introduce `m`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `m with`. Consider the case `zero => intro z`. Simplify using the standard rewrite rules. Consider the case `succ m ih`. Introduce `z`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, ih, htz, Matrix.mulVec_mulVec]`. Establish `hte' : t' ^ e = 0` using `LinearMap.ext fun z => by rw [hpow, hte]; simp`. Establish `hker' : ∀ x, t' x = 0 → x ∈ LinearMap.range (t' ^ (e - 1))`. Introduce `x hx`. Take `⟨y, hy⟩` from `hker x (by rw [← htz]; exact hx)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, by rw [hpow, hy]⟩`. Establish `hTW : LinearMap.range t' ≤ (LinearMap.range t').comap T'`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨T' y, hcz y⟩`. Establish `hc` using `GlobalTheory.T.charpoly_eq_quotient_charpoly_pow k (Fin n → k) t' T' hcomm e he hte' hker' hTW`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨Tb, hTb⟩ : ∃ Tb : Module.End k ((Fin n → k) ⧸ LinearMap.range t'), Tb = (LinearMap.range t').mapQ (LinearMap.range t') T' hTW` from `⟨_, rfl⟩`. Rewrite `hc` using `[← hTb]`. Establish `hcT : LinearMap.charpoly T' = T.charpoly` using `by rw [hT', Matrix.charpoly_toLin']`. Establish `hroot : (LinearMap.charpoly Tb) ^ e = (h ^ N) ^ e`. Rewrite using `[← hc, hcT, hchar, mul_comm, pow_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hchb : LinearMap.charpoly Tb = h ^ N` using `Polynomial.eq_of_monic_of_associated (LinearMap.charpoly_monic Tb) (hmon.pow N) (associated_of_dvd_dvd ((IsIntegrallyClosed.pow_dvd_pow_iff he.ne').mp hroot.dvd) ((IsIntegrallyClosed.pow_dvd_pow_iff he.ne').mp hroot.symm.dvd))`. Establish `hb1 : ∀ x, Tb ((LinearMap.range t').mkQ x) = (LinearMap.range t').mkQ (T' x)`. Introduce `x`. Rewrite using `[hTb]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hbm : ∀ (m : ℕ) x, (Tb ^ m) ((LinearMap.range t').mkQ x) = (LinearMap.range t').mkQ ((T' ^ m) x)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ m ih`. Introduce `x`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, hb1, ih]`. Establish `hmk : ∀ (p : k[X]) x, aeval Tb p ((LinearMap.range t').mkQ x) = (LinearMap.range t').mkQ (aeval T' p x)`. Introduce `p x`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, LinearMap.add_apply, hp, hq]`. Consider the case `monomial m c`. Rewrite using `[aeval_monomial, aeval_monomial, Module.End.mul_apply, Module.End.mul_apply, Module.algebraMap_end_apply, Module.algebraMap_end_apply, hbm, map_smul]`. Establish `hA : ∀ x, aeval T' h x = aeval T h *ᵥ x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x`. Establish `h1 : T' = Matrix.toLinAlgEquiv' T` using `hT'`. Rewrite using `[h1, Polynomial.aeval_algHom_apply]`. Conclude with `Matrix.toLin'_apply _ _`. Establish `hTbh : aeval Tb h = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(LinearMap.range t').mkQ_surjective v`. Rewrite using `[hmk, LinearMap.zero_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, hA]`. Take `⟨y, hy⟩` from `himg x`. Conclude with `⟨y, by rw [htz, hy]⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨xb, hgen⟩` from `GlobalTheory.T.exists_cyclic_generators_separable_min k _ Tb h hmon hsep hTbh N hchb`. Use `choose xs hxs using fun j => (LinearMap.range t').mkQ_surjective (xb j)`. Use `⟨xs, fun U hU htU hTU => ?_⟩` and prove the remaining obligations. Establish `hstab : ∀ f : Module.End k (Fin n → k), (∀ z ∈ U, f z ∈ U) → ∀ (m : ℕ), ∀ z ∈ U, (f ^ m) z ∈ U`. Introduce `f hf m`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `m with`. Consider the case `zero => intro z hz`. Simplify using `using hz`. Consider the case `succ m ih`. Introduce `z hz`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pow_succ, Module.End.mul_apply]`. Conclude with `ih _ (hf z hz)`. Establish `htm` using `hstab t' fun z hz => by rw [htz]; exact htU z hz`. Establish `hTm` using `hstab T' fun z hz => by rw [hTz]; exact hTU z hz`. Establish `hUa : ∀ (p : k[X]), ∀ z ∈ U, aeval T' p z ∈ U`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `p z hz`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `U.add_mem hp hq`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `monomial m c`. Rewrite using `[aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply]`. Conclude with `U.smul_mem c (hTm m z hz)`. Establish `step : ∀ v, ∃ u ∈ U, ∃ w, v = u + t' w`. Introduce `v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨p, hp⟩` from `hgen ((LinearMap.range t').mkQ v)`. Use `⟨∑ j, aeval T' (p j) (xs j), U.sum_mem fun j _ => hUa _ _ (hU j), ?_⟩` and prove the remaining obligations. Establish `h0 : (LinearMap.range t').mkQ (v - ∑ j, aeval T' (p j) (xs j)) = 0`. Rewrite using `[map_sub, map_sum, hp, sub_eq_zero]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [← hmk, hxs]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite `h0` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨w, hw⟩` from `h0`. Conclude with `⟨w, by rw [hw]; abel⟩`. Establish `iter : ∀ (m : ℕ) v, ∃ u ∈ U, ∃ w, v = u + (t' ^ m) w`. Introduce `m`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `m with`. Consider the case `zero => intro v; exact ⟨0, U.zero_mem, v, by simp⟩`. Consider the case `succ m ih`. Introduce `v`. Take `⟨u, hu, w, rfl⟩` from `ih v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u', hu', w', rfl⟩` from `step w`. Use `⟨u + (t' ^ m) u', U.add_mem hu (htm m u' hu'), w', ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, pow_succ, Module.End.mul_apply, add_assoc]`. Use `eq_top_iff.mpr fun v _ => ?_` and prove the remaining obligations. Take `⟨u, hu, w, rfl⟩` from `iter e v`.
-
-Rewrite using `[hte']`. Simplify using `using hu`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DetInv.exists_generators_of_charpoly_eq_pow : ∀ (k : Type) [Field k] [IsAlgClosed k] (n e N : ℕ) (t T : Matrix (Fin n) (Fin n) k) (h : Polynomial k), 0 < e → h.Monic → h.Separable → t * T = T * t → t ^ e = 0 → (∀ x, t *ᵥ x = 0 → ∃ y, x = t ^ (e - 1) *ᵥ y) → (∀ x, ∃ y, Polynomial.aeval T h *ᵥ x = t *ᵥ y) → T.charpoly = h ^ (e * N) → ∃ x : Fin N → Fin n → k, ∀ U : Submodule k (Fin n → k), (∀ i, x i ∈ U) → (∀ z ∈ U, t *ᵥ z ∈ U) → (∀ z ∈ U, T *ᵥ z ∈ U) → U = ⊤ := by
   intro k _ _ n e N t T h he hmon hsep htT hte hker himg hchar

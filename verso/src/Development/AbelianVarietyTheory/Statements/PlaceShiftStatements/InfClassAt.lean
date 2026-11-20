@@ -36,14 +36,14 @@ def NrmLe (σ : D.what₂.LL →+* ℂ) (v : VV ℂ lam) (B : ℝ) : Prop :=
   ∃ u : VV D.what₂.LL lam, GlobalTheory.CoefModel.mapVV D.what₂.embLL lam u = v ∧ nrm lam (fun _ => 1) (GlobalTheory.CoefModel.mapVV σ lam u) ≤ B
 
 /- English proof (translation)
-The claim follows from `let ⟨y, e, h⟩ := h ⟨y, e, h.imp_right fun h => (neg_le_neg ha).trans h⟩`.
+A detailed English derivation is pending.
 -/
 theorem LossLe.mono {w : PlL D} {z : ℂ} {a a' : ℝ} (h : LossLe w z a) (ha : a ≤ a') : LossLe w z a' :=
   let ⟨y, e, h⟩ := h
   ⟨y, e, h.imp_right fun h => (neg_le_neg ha).trans h⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨0, map_zero _, Or.inl rfl⟩, 1, map_one _, by simp⟩`.
+Supply the required witnesses or components.
 -/
 example (w : PlL D) (σ : D.what₂.LL →+* ℂ) : LossLe w 0 0 ∧ AbsLe σ 1 0 := ⟨⟨0, map_zero _, Or.inl rfl⟩, 1, map_one _, by simp⟩
 

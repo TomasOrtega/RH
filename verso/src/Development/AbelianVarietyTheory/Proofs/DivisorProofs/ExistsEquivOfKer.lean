@@ -21,15 +21,15 @@ noncomputable section
 namespace GlobalTheory.BotUniq
 
 /- English proof (translation)
-Establish `s₀ : Function.Surjective (p₀.domRestrict S)`. Introduce `y`. Establish `hy : y ∈ S.map p₀` using `h₀ ▸ Submodule.mem_top`. Take `⟨x, hx, rfl⟩` from `hy`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `s : Function.Surjective (p.domRestrict S)`. Introduce `y`. Establish `hy : y ∈ S.map p` using `h ▸ Submodule.mem_top`. Take `⟨x, hx, rfl⟩` from `hy`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hker : LinearMap.ker (p₀.domRestrict S) = LinearMap.ker (p.domRestrict S)`. Use extensionality with `x`. Simplify using `only [LinearMap.mem_ker, LinearMap.domRestrict_apply]`. Conclude with `hk x.1 x.2`. Set `E : P₀ ≃ₗ[ℂ] P` to `((p₀.domRestrict S).quotKerEquivOfSurjective s₀).symm.trans ((Submodule.quotEquivOfEq _ _ hker).trans ((p.domRestrict S).quotKerEquivOfSurjective s))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨E, fun x hx => ?_⟩` and prove the remaining obligations. Establish `e1 : ((p₀.domRestrict S).quotKerEquivOfSurjective s₀).symm (p₀ x) = Submodule.Quotient.mk ⟨x, hx⟩`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Use `show p x = ((p.domRestrict S).quotKerEquivOfSurjective s) ((Submodule.quotEquivOfEq _ _ hker) (((p₀.domRestrict S).quotKerEquivOfSurjective s₀).symm (p₀ x)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e1]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_equiv_of_ker {V P₀ P : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup P₀] [Module ℂ P₀]
     [AddCommGroup P] [Module ℂ P] (S : Submodule ℂ V) (p₀ : V →ₗ[ℂ] P₀) (p : V →ₗ[ℂ] P)
@@ -60,7 +60,7 @@ theorem exists_equiv_of_ker {V P₀ P : Type} [AddCommGroup V] [Module ℂ V] [A
   rfl
 
 /- English proof (translation)
-Establish `hx : x ∈ S.map p₀` using `h₀ ▸ Submodule.mem_top`. Take `⟨Φ, hΦ, rfl⟩` from `hx`. Take `⟨Φ', hΦ', h1, h2⟩` from `H Φ hΦ`. Rewrite using `[← h1, ← hE Φ' hΦ', h2, hE Φ hΦ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem intertwine {V P₀ P : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup P₀] [Module ℂ P₀]
     [AddCommGroup P] [Module ℂ P] (S : Submodule ℂ V) (p₀ : V →ₗ[ℂ] P₀) (p : V →ₗ[ℂ] P) (E : P₀ ≃ₗ[ℂ] P)
@@ -72,7 +72,7 @@ theorem intertwine {V P₀ P : Type} [AddCommGroup V] [Module ℂ V] [AddCommGro
   rw [← h1, ← hE Φ' hΦ', h2, hE Φ hΦ]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Module.End.mul_apply, LinearEquiv.coe_coe, LinearEquiv.trans_apply]`. Rewrite using `[hE, LinearEquiv.symm_apply_eq, hE', LinearEquiv.apply_symm_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_of_intertwine {P₀ P : Type} [AddCommGroup P₀] [Module ℂ P₀] [AddCommGroup P] [Module ℂ P]
     (E E' : P₀ ≃ₗ[ℂ] P) (a : Module.End ℂ P₀) (b : Module.End ℂ P) (hE : ∀ x, E (a x) = b (E x))

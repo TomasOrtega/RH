@@ -9,15 +9,15 @@ section MH
 variable {R : Type*} [CommSemiring R] {B n : ℕ}
 
 /- English proof (translation)
-Introduce `s hs`. Simplify using `at hs`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isMH_zero (a : Fin B → ℕ) : IsMultiHomogeneous a (0 : MvPolynomial (Fin B × Fin n) R) := by
   intro s hs; simp at hs
 
 /- English proof (translation)
-Introduce `s hs b`. Rewrite `hs` using `[mem_support_iff, coeff_C]`. Establish `: (0 : Fin B × Fin n →₀ ℕ) = s`. Assume the negation of the conclusion as `h`. Conclude with `hs (if_neg h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality.
 
-Substitute `this` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMH_C (r : R) : IsMultiHomogeneous (0 : Fin B → ℕ) (C r : MvPolynomial (Fin B × Fin n) R) := by
   intro s hs b
@@ -27,7 +27,7 @@ theorem isMH_C (r : R) : IsMultiHomogeneous (0 : Fin B → ℕ) (C r : MvPolynom
   subst this; simp
 
 /- English proof (translation)
-Introduce `s hs`. Break down `Finset.mem_union.1 (support_add hs) with h | h` into its components or cases. Use `exacts [hf s h, hg s h]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isMH_add {a : Fin B → ℕ} {f g : MvPolynomial (Fin B × Fin n) R}
     (hf : IsMultiHomogeneous a f) (hg : IsMultiHomogeneous a g) : IsMultiHomogeneous a (f + g) := by
@@ -37,9 +37,9 @@ theorem isMH_add {a : Fin B → ℕ} {f g : MvPolynomial (Fin B × Fin n) R}
   exacts [hf s h, hg s h]
 
 /- English proof (translation)
-Introduce `s hs b`. Rewrite `hs` using `[support_mul_X, Finset.mem_map]`. Take `⟨s', hs', rfl⟩` from `hs`. Simplify using `only [addRightEmbedding_apply, Finsupp.add_apply, Finset.sum_add_distrib, hf s' hs' b, Pi.add_apply]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Distinguish the cases in `hb : b = i`. Substitute `hb` using the available equality. Simplify using `[Finsupp.single_apply]`. Simplify using `[hb]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isMH_mul_X {a : Fin B → ℕ} {f : MvPolynomial (Fin B × Fin n) R}
     (hf : IsMultiHomogeneous a f) (i : Fin B) (j : Fin n) :
@@ -58,9 +58,9 @@ theorem isMH_mul_X {a : Fin B → ℕ} {f : MvPolynomial (Fin B × Fin n) R}
 end MH
 
 /- English proof (translation)
-Use `Function.Surjective.countable (f := fun f : (σ →₀ ℕ) →₀ R => f.sum fun m a => monomial m a) ?_` and prove the remaining obligations. Introduce `p`. Use `⟨Finsupp.onFinset p.support (fun m => coeff m p) (fun m hm => mem_support_iff.2 hm), ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[Finsupp.onFinset_sum _ (fun m => by simp)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(MvPolynomial.as_sum p).symm`.
+A detailed English derivation is pending.
 -/
 theorem countable_mvPoly {σ R : Type*} [Countable σ] [CommSemiring R] [Countable R] :
     Countable (MvPolynomial σ R) := by
@@ -81,14 +81,14 @@ noncomputable def hImg (p : Fin (D + 1) × Fin (N + 1)) :
     (fun j => X (Fin.castAdd D j)) (fun i j => X (Fin.natAdd (N + 1) i) * C (X (i, j))) p.1 p.2
 
 /- English proof (translation)
-Simplify using `[hImg]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem hImg_zero (j : Fin (N + 1)) :
     hImg (K := K) (D := D) ((0 : Fin (D + 1)), j) = X (Fin.castAdd D j) := by
   simp [hImg]
 
 /- English proof (translation)
-Simplify using `[hImg]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem hImg_succ (i : Fin D) (j : Fin (N + 1)) :
     hImg (K := K) (i.succ, j) = X (Fin.natAdd (N + 1) i) * C (X (i, j)) := by
@@ -104,9 +104,9 @@ noncomputable def back : MvPolynomial (Fin (N + 1 + D)) (MvPolynomial (Fin D × 
     (Fin.addCases (fun j => X (0, j)) (fun _ => 1))
 
 /- English proof (translation)
-Establish `: (back (K` using `K) (D := D) (N := N)).comp (homog (K := K)).toRingHom = RingHom.id _ := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[back, homog, MvPolynomial.algebraMap_eq]`. Introduce and unpack `⟨i, j⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Consider the cases of `i using Fin.cases with`. Consider the case `zero => simp [back, homog]`. Consider the case `succ i => simp [back, homog]`. Conclude with `congrArg (fun f => f q) this`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem back_homog (q : MvPolynomial (Fin (D + 1) × Fin (N + 1)) K) : back (homog q) = q := by
   have : (back (K := K) (D := D) (N := N)).comp (homog (K := K)).toRingHom = RingHom.id _ := by
@@ -119,35 +119,31 @@ theorem back_homog (q : MvPolynomial (Fin (D + 1) × Fin (N + 1)) K) : back (hom
   exact congrArg (fun f => f q) this
 
 /- English proof (translation)
-The claim follows from `Function.LeftInverse.injective back_homog`.
+A detailed English derivation is pending.
 -/
 theorem homog_injective : Function.Injective (homog (K := K) (D := D) (N := N)) :=
   Function.LeftInverse.injective back_homog
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem castAdd_ne_natAdd (j : Fin (N + 1)) (i : Fin D) : Fin.castAdd D j ≠ Fin.natAdd (N + 1) i := by
   intro h; have := congrArg Fin.val h; simp at this; omega
 
 /- English proof (translation)
-Proceed by induction on `q using MvPolynomial.induction_on`. Name the introduced variables `a`. Introduce `γ`. Rewrite using `[show homog (C a) = C (C a) from by simp [homog, MvPolynomial.algebraMap_eq], coeff_C]`. Use `split_ifs with h`.
+Proceed by induction. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `h` using the available equality. Introduce `s hs b`. Simplify using `using isMH_C (B := D) (n := N + 1) a s hs b`. Conclude with `isMH_zero _`. Name the introduced variables `p q hp hq`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `γ`. Rewrite using `[map_add, coeff_add]`. Conclude with `isMH_add (hp γ) (hq γ)`. Name the introduced variables `p v hp`. Introduce `γ`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨i, j⟩` from `v`. Rewrite using `[map_mul, show homog (X (i, j)) = hImg (K := K) (i, j) from aeval_X _ _]`. Consider the cases of `i using Fin.cases with`. Consider the case `zero`. Rewrite using `[hImg_zero, coeff_mul_X']`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Use `hp (γ - Finsupp.single (Fin.castAdd D j) 1)` as an intermediate fact. Use `this using 2 with b` and compare the differences between its conclusion and the goal. Simplify using `[castAdd_ne_natAdd j b]`. Conclude with `isMH_zero _`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `succ i`. Rewrite using `[hImg_succ, ← mul_assoc, mul_comm _ (C (X (i, j))), coeff_C_mul, coeff_mul_X']`. Use `split_ifs with h`. Rewrite using `[mul_comm]`. Use `isMH_mul_X (hp (γ - Finsupp.single (Fin.natAdd (N + 1) i) 1)) i j` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `b`. Establish `hpos : 1 ≤ γ (Fin.natAdd (N + 1) i)`. Rewrite `h` using `[Finsupp.mem_support_iff]`. Use linear arithmetic over natural numbers and integers.
-
-Distinguish the cases in `hb : b = i`. Substitute `hb` using the available equality. Simplify using `[Finsupp.single_apply]`. Use linear arithmetic over natural numbers and integers. Simplify using `[Finsupp.single_apply, Pi.single_apply, hb, Ne.symm hb]`.
-
-Rewrite using `[mul_zero]`. Conclude with `isMH_zero _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homog_coeff_isMH (q : MvPolynomial (Fin (D + 1) × Fin (N + 1)) K) :
     ∀ γ : Fin (N + 1 + D) →₀ ℕ,
@@ -201,21 +197,21 @@ noncomputable def gpt (tt : Fin D × Fin (N + 1) → ℂ) (y : Fin (N + 1 + D) �
     (fun i j => y (Fin.natAdd (N + 1) i) * tt (i, j)) p.1 p.2
 
 /- English proof (translation)
-Simplify using `[gpt]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem gpt_zero (tt : Fin D × Fin (N + 1) → ℂ) (y : Fin (N + 1 + D) → ℂ) (j : Fin (N + 1)) :
     gpt tt y (0, j) = y (Fin.castAdd D j) := by simp [gpt]
 
 /- English proof (translation)
-Simplify using `[gpt]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem gpt_succ (tt : Fin D × Fin (N + 1) → ℂ) (y : Fin (N + 1 + D) → ℂ) (i : Fin D)
     (j : Fin (N + 1)) : gpt tt y (i.succ, j) = y (Fin.natAdd (N + 1) i) * tt (i, j) := by simp [gpt]
 
 /- English proof (translation)
-Establish `: (eval y).comp (psi sg tt) = eval₂Hom sg (gpt tt y)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[psi, homog, MvPolynomial.algebraMap_eq]`. Introduce and unpack `⟨i, j⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Consider the cases of `i using Fin.cases with`. Consider the case `zero => simp [psi, homog]`. Consider the case `succ i => simp [psi, homog]`. Conclude with `congrArg (fun f => f q) this`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eval_psi (sg : K →+* ℂ) (tt : Fin D × Fin (N + 1) → ℂ) (y : Fin (N + 1 + D) → ℂ)
     (q : MvPolynomial (Fin (D + 1) × Fin (N + 1)) K) :
@@ -230,9 +226,9 @@ theorem eval_psi (sg : K →+* ℂ) (tt : Fin D × Fin (N + 1) → ℂ) (y : Fin
   exact congrArg (fun f => f q) this
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `q hq`. Apply `homog_injective (K := K) (D := D) (N := N)` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use `MvPolynomial.ext _ _ fun γ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coeff_zero]`. Assume the negation of the conclusion as `hne`. Establish `h0 : coeff γ (psi sg tt q) = 0` using `by rw [hq, coeff_zero]`. Rewrite `h0` using `[psi, RingHom.comp_apply, coeff_map]`. Conclude with `hG _ _ (homog_coeff_isMH q γ) hne (by simpa using h0)`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_injective (sg : K →+* ℂ) (tt : Fin D × Fin (N + 1) → ℂ)
     (hG : ∀ (a : Fin D → ℕ) (p : MvPolynomial (Fin D × Fin (N + 1)) K),
@@ -250,11 +246,9 @@ theorem psi_injective (sg : K →+* ℂ) (tt : Fin D × Fin (N + 1) → ℂ)
   exact hG _ _ (homog_coeff_isMH q γ) hne (by simpa using h0)
 
 /- English proof (translation)
-Use `countable_mvPoly (σ := Fin D × Fin (N + 1)) (R := K)` as an intermediate fact. Rewrite using `[ae_all_iff]`. Introduce `a`. Rewrite using `[ae_all_iff]`. Introduce `p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hp : IsMultiHomogeneous a p ∧ p ≠ 0`. Establish `hm : IsMultiHomogeneous a (MvPolynomial.map sg p)` using `fun s hs => hp.1 s (support_map_subset _ _ hs)`. Establish `hm0 : MvPolynomial.map sg p ≠ 0` using `fun h0 => hp.2 (map_injective sg sg.injective (by rw [h0, map_zero]))`. Use `filter_upwards [ae_blockSphere_eval_ne_zero D (N + 1) a _ hm0 hm] with z hz _ _`. Rewrite `hz` using `[eval_map]`. Then use the resulting hypothesis.
-
-Conclude with `Filter.Eventually.of_forall fun z h1 h2 => absurd ⟨h1, h2⟩ hp`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ae_gen (sg : K →+* ℂ) [Countable K] :
     ∀ᵐ z ∂(blockSphereProb D (N + 1)), ∀ (a : Fin D → ℕ) (p : MvPolynomial (Fin D × Fin (N + 1)) K),
@@ -272,11 +266,11 @@ theorem ae_gen (sg : K →+* ℂ) [Countable K] :
   · exact Filter.Eventually.of_forall fun z h1 h2 => absurd ⟨h1, h2⟩ hp
 
 /- English proof (translation)
-Use `countable_mvPoly (σ := Fin (D + 1) × Fin (N + 1)) (R := K)` as an intermediate fact. Establish `h1` using `ae_eval_ne_zero_of_ne_zero_fin _ Q hQ`. Establish `h2 : ∀ᵐ y ∂(volume : Measure (Fin (N + 1 + D) → ℂ)), ∀ q : MvPolynomial (Fin (D + 1) × Fin (N + 1)) K, q ≠ 0 → eval y (psi sg tt q) ≠ 0`. Rewrite using `[ae_all_iff]`. Introduce `q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hq : q = 0`. Conclude with `Filter.Eventually.of_forall fun y h => absurd hq h`. Establish `hq' : psi sg tt q ≠ 0` using `fun h0 => hq (psi_injective sg tt hG (by rw [h0, map_zero])) filter_upwards [ae_eval_ne_zero_of_ne_zero_fin _ _ hq'] with y hy _ using hy`. Establish `: (ae (volume : Measure (Fin (N + 1 + D) → ℂ))).NeBot` using `ae_neBot.2 (NeZero.ne _)`. Take `⟨y, hy1, hy2⟩` from `(h1.and h2).exists`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨y, hy1, fun q hq => by rw [← eval_psi]; exact hy2 q hq⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_gen (sg : K →+* ℂ) [Countable K] (tt : Fin D × Fin (N + 1) → ℂ)
     (hG : ∀ (a : Fin D → ℕ) (p : MvPolynomial (Fin D × Fin (N + 1)) K),

@@ -13,13 +13,13 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.ResSel.SmallSub
 
 /- English proof (translation)
-Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed F`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Establish `: NeZero n` using `⟨hn⟩`. Take `⟨ξ, hξ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω n`. Establish `hp : ∀ ζ : Ω, ζ ^ n = 1 → ∃ k : ℕ, ξ ^ k = ζ` using `fun ζ h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, -, hk⟩` from `hξ.eq_pow_of_pow_eq_one h`. Conclude with `⟨k, hk⟩`. Establish `hc : ∀ a b : G F Ω, a (b ξ) = b (a ξ)` using `fun a b => by`. Take `⟨j, hj⟩` from `hp (a ξ) (by rw [← map_pow, hξ.pow_eq_one, map_one])`. Take `⟨k, hk⟩` from `hp (b ξ) (by rw [← map_pow, hξ.pow_eq_one, map_one])`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `conv_lhs => rw [← hk, map_pow, ← hj]`. Use `conv_rhs => rw [← hj, map_pow, ← hk]`. Rewrite using `[← pow_mul, ← pow_mul, mul_comm]`. Use `⟨MulAction.stabilizer (G F Ω) ξ, stabilizer_isOpen_of_isIntegral ξ, fun a b => ?_, fun g hg ζ h => ?_⟩` and prove the remaining obligations. Use `show a (b (a⁻¹ (b⁻¹ ξ))) = ξ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hc a⁻¹ b⁻¹, mul_inv_apply, mul_inv_apply]`. Take `⟨k, rfl⟩` from `hp ζ h`. Establish `: g ξ = ξ` using `hg`. Rewrite using `[map_pow, this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fix_roots {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {n : ℕ}
     (hn : n ≠ 0) : ∃ K : Subgroup (G F Ω), IsOpen (K : Set (G F Ω)) ∧ (∀ a b : G F Ω, a * b * a⁻¹ * b⁻¹ ∈ K) ∧
@@ -45,19 +45,19 @@ theorem exists_fix_roots {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alg
     rw [map_pow, this]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun k hk g => by simpa using K.mul_mem (h g k) hk⟩`.
+Supply the required witnesses or components.
 -/
 theorem normal_of_comm {Γ : Type} [Group Γ] {K : Subgroup Γ} (h : ∀ a b : Γ, a * b * a⁻¹ * b⁻¹ ∈ K) : K.Normal :=
   ⟨fun k hk g => by simpa using K.mul_mem (h g k) hk⟩
 
 /- English proof (translation)
-Simplify using `[MonoidHom.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comm_mem_ker {Γ A : Type} [Group Γ] [CommGroup A] (φ : Γ →* A) (a b : Γ) : a * b * a⁻¹ * b⁻¹ ∈ φ.ker := by
   simp [MonoidHom.mem_ker]
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible hI hϖ`. Use `(isAdic_iff.1 h).1 n` as an intermediate fact. Rewrite `this` using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, ← hn]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isOpen_ideal {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O]
     [IsTopologicalRing O] (h : IsAdic (IsLocalRing.maximalIdeal O)) {I : Ideal O} (hI : I ≠ ⊥) : IsOpen (I : Set O) := by
@@ -69,9 +69,9 @@ theorem isOpen_ideal {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRi
 variable {D : Formalism.BasicNotions.D7} {N : NData D.R D.host D.what₂} (X : NTw D.R D.host D.what₂ D.LL0 N) (i : X.Tw)
 
 /- English proof (translation)
-Introduce `h`. Establish `: NeZero (X.l i ^ 1)` using `⟨pow_ne_zero _ (X.lPrime i).out.ne_zero⟩`. Establish `h1` using `(X.zk_prim i 1).neZero'.out`. Apply `h1` to reduce the goal to its premises. Use `congrArg (phiK X i 1) h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem l_ne_zero : ((X.l i : ℕ) : X.O0 i) ≠ 0 := by
   intro h
@@ -82,7 +82,7 @@ theorem l_ne_zero : ((X.l i : ℕ) : X.O0 i) ≠ 0 := by
   simpa using this
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `h.map (algebraMap (X.O0 i) (X.O i))`. Rewrite `h2` using `[map_natCast]`. Conclude with `X.O_l i h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_mem : ((X.l i : ℕ) : X.O0 i) ∈ IsLocalRing.maximalIdeal (X.O0 i) := by
   intro h
@@ -91,9 +91,9 @@ theorem l_mem : ((X.l i : ℕ) : X.O0 i) ∈ IsLocalRing.maximalIdeal (X.O0 i) :
   exact X.O_l i h2
 
 /- English proof (translation)
-Use `⟨((Units.map (IsLocalRing.residue (X.O0 i)).toMonoidHom).comp (eps0 X i)).ker, ?_, comm_mem_ker _, fun g hg => congrArg Units.val hg⟩` and prove the remaining obligations. Apply `Subgroup.isOpen_of_mem_nhds (g := 1)` to reduce the goal to its premises. Establish `hc : Continuous fun g : GE N => ‖((cycZ D.host.E N.Om (X.l i) g : ℤ_[X.l i]ˣ) : ℤ_[X.l i]) - 1‖` using `((Units.continuous_val.comp (continuous_cycZ D.host.E N.Om (X.l i))).sub continuous_const).norm`. Use `Filter.mem_of_superset ((isOpen_lt hc (continuous_const (y := (1 : ℝ)))).mem_nhds (by simp)) fun g hg => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `(PadicInt.norm_lt_one_iff_dvd _).1 hg`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `IsLocalRing.residue (X.O0 i) (algebraMap ℤ_[X.l i] (X.O0 i) (cycZ D.host.E N.Om (X.l i) g : ℤ_[X.l i]ˣ)) = 1`. Rewrite using `[sub_eq_iff_eq_add.1 hc, map_add, map_add, map_one, map_one, map_mul, map_natCast, map_mul, (IsLocalRing.residue_eq_zero_iff _).2 (l_mem X i), zero_mul, zero_add]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_eps : ∃ K : Subgroup (GE N), IsOpen (K : Set (GE N)) ∧ (∀ a b : GE N, a * b * a⁻¹ * b⁻¹ ∈ K) ∧
     ∀ g ∈ K, IsLocalRing.residue (X.O0 i) ((eps0 X i g : (X.O0 i)ˣ) : X.O0 i) = 1 := by
@@ -110,7 +110,7 @@ theorem exists_eps : ∃ K : Subgroup (GE N), IsOpen (K : Set (GE N)) ∧ (∀ a
     (IsLocalRing.residue_eq_zero_iff _).2 (l_mem X i), zero_mul, zero_add]
 
 /- English proof (translation)
-Introduce `h2` and use `by have hc : IsCoprime (p : 𝓞 D.host.E) (q : 𝓞 D.host.E) := ((Nat.coprime_primes hp hq).mpr hne).cast obtain ⟨a, b, hab⟩ := hc refine v.isPrime.ne_top ((Ideal.eq_top_iff_one _).mpr ?_) exact hab ▸ v.asIdeal.add_mem (v.asIdeal.mul_mem_left a h1) (v.asIdeal.mul_mem_left b h2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_mem_two {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hne : p ≠ q) (v : PlE D.host)
     (h1 : v ∈ placesOver D.host.E p) : v ∉ placesOver D.host.E q := fun h2 => by
@@ -120,9 +120,9 @@ theorem not_mem_two {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hne : p ≠ q) (v
   exact hab ▸ v.asIdeal.add_mem (v.asIdeal.mul_mem_left a h1) (v.asIdeal.mul_mem_left b h2)
 
 /- English proof (translation)
-Establish `hv' : v ∈ placesOver D.host.E (if X.l i = D.host.pde then D.host.pde' else D.host.pde)`. Rewrite using `[← X.pD_eq i]`. Conclude with `hv`. Establish `hl : (X.l i).Prime` using `(X.lPrime i).out`. Use `split_ifs at hv' with h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨not_mem_two D.host.pde'_prime hl (h ▸ D.host.pde_ne.symm) v hv', fun k => not_mem_two D.host.pde'_prime (D.host.g_prime k) (D.host.pde_ne_g k).2 v hv'⟩`. Conclude with `⟨not_mem_two D.host.pde_prime hl (Ne.symm h) v hv', fun k => not_mem_two D.host.pde_prime (D.host.g_prime k) (D.host.pde_ne_g k).1 v hv'⟩`.
+A detailed English derivation is pending.
 -/
 theorem pD_not_mem {v : PlE D.host} (hv : v ∈ X.pD i) :
     v ∉ placesOver D.host.E (X.l i) ∧ ∀ k, v ∉ placesOver D.host.E (D.host.g k) := by
@@ -136,17 +136,17 @@ theorem pD_not_mem {v : PlE D.host} (hv : v ∈ X.pD i) :
       fun k => not_mem_two D.host.pde_prime (D.host.g_prime k) (D.host.pde_ne_g k).1 v hv'⟩
 
 /- English proof (translation)
-Set `φ : GE N →* GL (Fin D.R.r) (X.O0 i ⧸ I)` to `(Matrix.GeneralLinearGroup.map (Ideal.Quotient.mk I)).comp (Tgl i s)`. Establish `hφ : ∀ g, g ∈ φ.ker ↔ ∀ a b, (Tmat i s g - 1) a b ∈ I`. Introduce `g`. Rewrite using `[MonoidHom.mem_ker, Units.ext_iff, ← Matrix.ext_iff, ← Tgl_coe]`. Use `forall₂_congr fun a b => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.sub_apply, ← Ideal.Quotient.eq]`. Establish `: ((1 : GL (Fin D.R.r) (X.O0 i ⧸ I)) : Matrix _ _ (X.O0 i ⧸ I)) a b = Ideal.Quotient.mk I ((1 : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)) a b)`. Rewrite using `[Units.val_one, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨φ.ker, ?_, inferInstance, fun w hw g => ?_, fun g hg => (hφ g).1 hg⟩` and prove the remaining obligations. Establish `h1 : Continuous fun g : GE N => (((chiS i s g)⁻¹ : (X.O0 i)ˣ) : X.O0 i)`. Simplify using `only [← map_inv]`. Conclude with `(X.twistCharacterFamily_continuous i _ _).comp continuous_inv`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc : Continuous (Tmat i s)` using `h1.smul (X.rhoS_cont i s)`. Establish `e : (φ.ker : Set (GE N)) = ⋂ a, ⋂ b, (fun g => (Tmat i s g - 1) a b) ⁻¹' (I : Set (X.O0 i))`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, hφ, Set.mem_iInter, Set.mem_preimage]`. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => (isOpen_ideal (X.twistBaseCoefficientRing_isAdic i) hI).preimage ((hc.sub continuous_const).matrix_elem a b)`. Establish `h1 : Tgl i s w = scalGL D.R.r (chiS i s w)⁻¹`. Express the relevant statement in the definitionally equal form `scalGL _ _ * X.rhoS i s w = _`. Rewrite using `[hw, mul_one]`. Establish `h2 : Tgl i s (g * w * g⁻¹ * w⁻¹) = 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul, map_mul, map_inv, map_inv, h1, ← scalGL_comm]`. Use `group`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, h2, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_kerT (s : X.Sig i) {I : Ideal (X.O0 i)} (hI : I ≠ ⊥) : ∃ K : Subgroup (GE N), IsOpen (K : Set (GE N)) ∧
     K.Normal ∧ (∀ w, X.rhoS i s w = 1 → ∀ g, g * w * g⁻¹ * w⁻¹ ∈ K) ∧ ∀ g ∈ K, ∀ a b, (Tmat i s g - 1) a b ∈ I := by
@@ -182,21 +182,19 @@ theorem exists_kerT (s : X.Sig i) {I : Ideal (X.O0 i)} (hI : I ≠ ⊥) : ∃ K 
     rw [MonoidHom.mem_ker, MonoidHom.comp_apply, h2, map_one]
 
 /- English proof (translation)
-Introduce `D N X bkP i T hT z hz M H hH hN hI`. Take `⟨K₁, o₁, c₁, f₁⟩` from `exists_fix_roots (F := D.host.E) (Ω := N.Om) (n := 2 * X.l i ^ M) (mul_ne_zero two_ne_zero (pow_ne_zero _ (X.lPrime i).out.ne_zero))`. Take `⟨K₂, o₂, c₂, f₂⟩` from `exists_eps X i`. Establish `hne : Ideal.span {(X.l i : X.O0 i) ^ nu X i} * IsLocalRing.maximalIdeal (X.O0 i) ≠ ⊥` using `mul_ne_zero (fun h => pow_ne_zero _ (l_ne_zero X i) (Ideal.span_singleton_eq_bot.1 h)) (IsDiscreteValuationRing.not_a_field _)`. Use `choose K o n c f using fun s => exists_kerT X i s hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `normal_of_comm c₁` as an intermediate fact. Use `normal_of_comm c₂` as an intermediate fact. Set `H₀ : Subgroup (GE N)` to `H ⊓ (K₁ ⊓ (K₂ ⊓ ⨅ s : T, K s))`. Establish `hK : (⨅ s : T, K s).Normal` using `Subgroup.normal_iInf_normal fun s => n s`. Establish `hn₀ : H₀.Normal` using `inferInstance`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho₀ : IsOpen (H₀ : Set (GE N))`. Use `hH.inter (o₁.inter (o₂.inter ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsOpen ((⨅ s : T, K s : Subgroup (GE N)) : Set (GE N))`. Rewrite using `[Subgroup.coe_iInf]`. Conclude with `isOpen_iInter_of_finite fun s => o s`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : ∀ v ∈ X.pD i, ∀ A : ValuationSubring N.Om, IsPlaceOver A v → ∀ w ∈ Ine (F` using `D.host.E) A, ∀ g, g * w * g⁻¹ * w⁻¹ ∈ H₀ := fun v hv A hA w hw g => ⟨H.mul_mem (hN.conj_mem _ (hI v hv A hA hw) g) (H.inv_mem (hI v hv A hA hw)), c₁ _ _, c₂ _ _, Subgroup.mem_iInf.2 fun s => c s w ((hT s s.2).1.1 v (pD_not_mem X i hv).1 (pD_not_mem X i hv).2 A hA w hw) g⟩`. Establish `hL : IsOpen ((H₀ ⊓ H₀.comap (cConj X) : Subgroup (GE N)) : Set (GE N))` using `ho₀.inter (isOpen_comap_cConj X ho₀)`. Establish `hf : ∀ s ∈ T, ∀ g ∈ H₀ ⊓ H₀.comap (cConj X), ∀ a b, (Tmat i s g - 1) a b ∈ Ideal.span {(X.l i : X.O0 i) ^ nu X i} * IsLocalRing.maximalIdeal (X.O0 i)` using `fun s hs g hg => f s g (Subgroup.mem_iInf.1 hg.1.2.2.2 ⟨s, hs⟩)`. Use `⟨H₀ ⊓ H₀.comap (cConj X), hL, inferInstance, fun g hg => hg.1.1, fun s hs => ⟨hL, inferInstance, fun g g' hg => ?_, fun g => ?_, fun g hg => ⟨?_, f₂ g hg.1.2.2.1⟩⟩, fun g hg => f₁ g hg.1.2.1, hf⟩` and prove the remaining obligations. Take `rfl : g' = cConj X g` from `AlgEquiv.ext hg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Subgroup.mem_inf, Subgroup.mem_comap, cConj_cConj]`. Conclude with `and_comm`. Take `⟨v, hv, A, hA, hzA, -⟩` from `hz`. Use `⟨hw v hv A hA z hzA g, ?_⟩` and prove the remaining obligations. Take `⟨v', hv'⟩` from `exists_isConjPl v`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv'' : v' ∈ X.pD i`. Rewrite `hv`, the goal using `[← Finset.mem_coe, X.pD_eq]`. Conclude with `mem_placesOver_conj hv' hv`. Use `hw v' hv'' _ (isPlaceOver_moveVal_cc X hv' hA) _ (cConj_mem_ine X hzA) (cConj X g)` as an intermediate fact. Express the relevant statement in the definitionally equal form `cConj X _ ∈ H₀`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, map_mul, map_inv, map_inv]` and apply the resulting hypothesis. Use extensionality with `a b`. Establish `h0 : (Tmat i s g - 1) a b ∈ IsLocalRing.maximalIdeal (X.O0 i)` using `Ideal.mul_le_right (hf s hs g hg a b)`. Use `(IsLocalRing.residue_eq_zero_iff _).2 h0` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, map_sub, sub_eq_zero]`.
-
-Rewrite using `[Matrix.map_apply, this, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_small : ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X)
     (i : X.Tw) (T : Set (X.Sig i)), (∀ s ∈ T, GalHyp bkP i s) → ∀ z, IsTameInertiaElementAtTwistPrime X i z → ∀ (M : ℕ) (H : Subgroup (GE N)),

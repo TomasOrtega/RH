@@ -15,7 +15,7 @@ variable {K : Type} [Field K] [CharZero K]
 local notation "A3" => MvPowerSeries (Fin 3) K
 
 /- English proof (translation)
-The claim follows from `PowerSeries.constantCoeff_subst_eq_zero hu _ hf`.
+A detailed English derivation is pending.
 -/
 theorem cc_psubst {ι : Type} {u : MvPowerSeries ι K} (hu : MvPowerSeries.constantCoeff u = 0)
     {f : PowerSeries K} (hf : PowerSeries.constantCoeff f = 0) :
@@ -23,7 +23,7 @@ theorem cc_psubst {ι : Type} {u : MvPowerSeries ι K} (hu : MvPowerSeries.const
   PowerSeries.constantCoeff_subst_eq_zero hu _ hf
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.Th1.B.subst_fExp (ι := Unit) (φ := fun _ => u) (fun _ => hu) hf`.
+A detailed English derivation is pending.
 -/
 theorem psubst_fExp {ι : Type} {u : MvPowerSeries ι K} (hu : MvPowerSeries.constantCoeff u = 0)
     {f : PowerSeries K} (hf : PowerSeries.constantCoeff f = 0) :
@@ -31,12 +31,12 @@ theorem psubst_fExp {ι : Type} {u : MvPowerSeries ι K} (hu : MvPowerSeries.con
   Formalism.L2.Th1.B.subst_fExp (ι := Unit) (φ := fun _ => u) (fun _ => hu) hf
 
 /- English proof (translation)
-The claim follows from `Add0.sigS_cc P`.
+A detailed English derivation is pending.
 -/
 theorem sigS_cc (P : PowerSeries K) : PowerSeries.constantCoeff (sigS P) = 0 := Add0.sigS_cc P
 
 /- English proof (translation)
-Establish `hs` using `PowerSeries.HasSubst.of_constantCoeff_zero hu`. Rewrite using `[sigma, PowerSeries.subst_mul hs, PowerSeries.subst_X hs, psubst_fExp hu (sigS_cc P)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_sigma {ι : Type} (P : PowerSeries K) {u : MvPowerSeries ι K}
     (hu : MvPowerSeries.constantCoeff u = 0) :
@@ -45,7 +45,7 @@ theorem subst_sigma {ι : Type} (P : PowerSeries K) {u : MvPowerSeries ι K}
   rw [sigma, PowerSeries.subst_mul hs, PowerSeries.subst_X hs, psubst_fExp hu (sigS_cc P)]
 
 /- English proof (translation)
-Establish `hs` using `PowerSeries.HasSubst.of_constantCoeff_zero hu`. Rewrite using `[sgStar, PowerSeries.subst_mul hs, psubst_fExp hu (by simp)]`. Use `congr 2`. Rewrite using `[← PowerSeries.coe_substAlgHom hs, map_neg, map_mul, map_pow, PowerSeries.substAlgHom_X, PowerSeries.coe_substAlgHom hs, PowerSeries.subst_C]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_sgStar {ι : Type} (s2 : K) (P : PowerSeries K)
     {u : MvPowerSeries ι K} (hu : MvPowerSeries.constantCoeff u = 0) :
@@ -58,14 +58,14 @@ theorem subst_sgStar {ι : Type} (s2 : K) (P : PowerSeries K)
     PowerSeries.coe_substAlgHom hs, PowerSeries.subst_C]
 
 /- English proof (translation)
-The claim follows from `Formalism.G.LogCR.pderiv_psubst hu f i`.
+A detailed English derivation is pending.
 -/
 theorem pd_psubst (i : Fin 3) {u : A3} (hu : MvPowerSeries.constantCoeff u = 0)
     (f : PowerSeries K) : pd i (PowerSeries.subst u f) = PowerSeries.subst u (dz f) * pd i u :=
   Formalism.G.LogCR.pderiv_psubst hu f i
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero fun s => by fin_cases s <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem hs_emb (j k : Fin 3) :
     MvPowerSeries.HasSubst ![(MvPowerSeries.X j : A3), MvPowerSeries.X k] :=
@@ -74,26 +74,26 @@ theorem hs_emb (j k : Fin 3) :
 def emb (j k : Fin 3) : MvPowerSeries (Fin 2) K →ₐ[K] A3 := MvPowerSeries.substAlgHom (hs_emb j k)
 
 /- English proof (translation)
-Rewrite using `[emb, MvPowerSeries.coe_substAlgHom]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_apply (j k : Fin 3) (h : MvPowerSeries (Fin 2) K) :
     emb j k h = MvPowerSeries.subst ![(MvPowerSeries.X j : A3), MvPowerSeries.X k] h := by
   rw [emb, MvPowerSeries.coe_substAlgHom]
 
 /- English proof (translation)
-Rewrite using `[emb, MvPowerSeries.substAlgHom_X]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem embed_pair_X_zero (j k : Fin 3) : emb (K := K) j k (MvPowerSeries.X 0) = MvPowerSeries.X j := by
   rw [emb, MvPowerSeries.substAlgHom_X]; rfl
 
 /- English proof (translation)
-Rewrite using `[emb, MvPowerSeries.substAlgHom_X]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem embed_pair_X_one (j k : Fin 3) : emb (K := K) j k (MvPowerSeries.X 1) = MvPowerSeries.X k := by
   rw [emb, MvPowerSeries.substAlgHom_X]; rfl
 
 /- English proof (translation)
-Rewrite using `[emb_apply, emb_apply, psubst_msubst f hu (hs_emb j k)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_psubst (j k : Fin 3) (f : PowerSeries K) {u : MvPowerSeries (Fin 2) K}
     (hu : MvPowerSeries.constantCoeff u = 0) :
@@ -101,39 +101,39 @@ theorem emb_psubst (j k : Fin 3) (f : PowerSeries K) {u : MvPowerSeries (Fin 2) 
   rw [emb_apply, emb_apply, psubst_msubst f hu (hs_emb j k)]
 
 /- English proof (translation)
-Rewrite using `[at1, emb_psubst j k f (by simp), embed_pair_X_zero]; rfl`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem embed_pair_at_variable_zero (j k : Fin 3) (f : PowerSeries K) : emb j k (at1 0 f) = at1 j f := by
   rw [at1, emb_psubst j k f (by simp), embed_pair_X_zero]; rfl
 
 /- English proof (translation)
-Rewrite using `[at1, emb_psubst j k f (by simp), embed_pair_X_one]; rfl`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem embed_pair_at_variable_one (j k : Fin 3) (f : PowerSeries K) : emb j k (at1 1 f) = at1 k f := by
   rw [at1, emb_psubst j k f (by simp), embed_pair_X_one]; rfl
 
 /- English proof (translation)
-Rewrite using `[atD, emb_psubst j k f (by simp), map_sub, embed_pair_X_zero, embed_pair_X_one]; rfl`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_atD (j k : Fin 3) (f : PowerSeries K) : emb j k (atD f) = evalDiffThree j k f := by
   rw [atD, emb_psubst j k f (by simp), map_sub, embed_pair_X_zero, embed_pair_X_one]; rfl
 
 /- English proof (translation)
-Rewrite using `[atS, emb_psubst j k f (by simp), map_add, embed_pair_X_zero, embed_pair_X_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem emb_atS (j k : Fin 3) (f : PowerSeries K) :
     emb j k (atS f) = PowerSeries.subst (MvPowerSeries.X j + MvPowerSeries.X k : A3) f := by
   rw [atS, emb_psubst j k f (by simp), map_add, embed_pair_X_zero, embed_pair_X_one]
 
 /- English proof (translation)
-Simplify using `only [wpDiff, wp3, map_add, map_sub, map_mul, map_pow, embed_pair_X_zero, embed_pair_X_one, embed_pair_at_variable_zero, embed_pair_at_variable_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem emb_wpDiff (j k : Fin 3) (P : PowerSeries K) : emb j k (wpDiff P) = wp3 P j k := by
   simp only [wpDiff, wp3, map_add, map_sub, map_mul, map_pow, embed_pair_X_zero, embed_pair_X_one, embed_pair_at_variable_zero,
     embed_pair_at_variable_one]
 
 /- English proof (translation)
-Rewrite using `[emb_apply, emb_apply]`. Apply the tactic sequence `exact Formalism.L2.Th1.B.subst_fExp (fun s => by fin_cases s <;> simp) hf`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem emb_fExp (j k : Fin 3) {f : MvPowerSeries (Fin 2) K}
     (hf : MvPowerSeries.constantCoeff f = 0) : emb j k (fExp f) = fExp (emb j k f) := by
@@ -141,7 +141,7 @@ theorem emb_fExp (j k : Fin 3) {f : MvPowerSeries (Fin 2) K}
   exact Formalism.L2.Th1.B.subst_fExp (fun s => by fin_cases s <;> simp) hf
 
 /- English proof (translation)
-Apply the tactic sequence `rw [emb_apply, emb_apply, pd, Formalism.G.LogCR.pderiv_subst (fun s => by fin_cases s <;> simp) h j, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[MvPowerSeries.pderiv_X_self, MvPowerSeries.pderiv_X_of_ne hjk.symm, mul_one, mul_zero, add_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pd_emb_0 {j k : Fin 3} (hjk : j ≠ k) (h : MvPowerSeries (Fin 2) K) :
     pd j (emb j k h) = emb j k (pd 0 h) := by
@@ -152,7 +152,7 @@ theorem pd_emb_0 {j k : Fin 3} (hjk : j ≠ k) (h : MvPowerSeries (Fin 2) K) :
     add_zero]
 
 /- English proof (translation)
-Apply the tactic sequence `rw [emb_apply, emb_apply, pd, Formalism.G.LogCR.pderiv_subst (fun s => by fin_cases s <;> simp) h k, Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[MvPowerSeries.pderiv_X_self, MvPowerSeries.pderiv_X_of_ne hjk, mul_one, mul_zero, zero_add]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pd_emb_1 {j k : Fin 3} (hjk : j ≠ k) (h : MvPowerSeries (Fin 2) K) :
     pd k (emb j k h) = emb j k (pd 1 h) := by
@@ -163,7 +163,7 @@ theorem pd_emb_1 {j k : Fin 3} (hjk : j ≠ k) (h : MvPowerSeries (Fin 2) K) :
     zero_add]
 
 /- English proof (translation)
-Establish `h` using `congrArg (emb j k) (hT K g2 g3 P hP)`. Simplify using `only [map_add, map_sub, map_mul, map_ofNat, embed_pair_X_zero, embed_pair_X_one, embed_pair_at_variable_zero, embed_pair_at_variable_one, emb_atD, emb_wpDiff, ← pd_emb_0 hjk, ← pd_emb_1 hjk] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tau3 (hT : TauRule) {g2 g3 : K} {P : PowerSeries K} (hP : IsWp g2 g3 P) {j k : Fin 3}
     (hjk : j ≠ k) :
@@ -176,9 +176,9 @@ theorem tau3 (hT : TauRule) {g2 g3 : K} {P : PowerSeries K} (hP : IsWp g2 g3 P) 
   exact h
 
 /- English proof (translation)
-Establish `hN1 : MvPowerSeries.constantCoeff (1 - MvPowerSeries.X 0 ^ 2 * MvPowerSeries.X 1 ^ 2 * dq P : MvPowerSeries (Fin 2) K) = 1`. Simplify using the standard rewrite rules. Establish `c0 : MvPowerSeries.constantCoeff (par0 (sigS P)) = 0`. Rewrite using `[addSigmaLog K g2 g3 P hP]`. Conclude with `constantCoeff_fLog hN1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← emb_wpDiff, Add0.wpDiff_eq dqRule hP.2.1, ← fExp_fLog hN1, ← addSigmaLog K g2 g3 P hP, map_mul, emb_fExp j k c0, map_sub, map_pow, map_pow, embed_pair_X_zero, embed_pair_X_one]`.
+A detailed English derivation is pending.
 -/
 theorem wp3_apply_eq_sq_mul_sub_sq_mul {g2 g3 : K} {P : PowerSeries K} (hP : IsWp g2 g3 P) (j k : Fin 3) :
     wp3 P j k = (MvPowerSeries.X j ^ 2 - MvPowerSeries.X k ^ 2) *
@@ -192,7 +192,7 @@ theorem wp3_apply_eq_sq_mul_sub_sq_mul {g2 g3 : K} {P : PowerSeries K} (hP : IsW
     map_mul, emb_fExp j k c0, map_sub, map_pow, map_pow, embed_pair_X_zero, embed_pair_X_one]
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero fun s => by fin_cases s <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_eval_last_zero :
     MvPowerSeries.HasSubst ![(MvPowerSeries.X 0 : A3), MvPowerSeries.X 1, 0] :=
@@ -201,38 +201,38 @@ theorem hasSubst_eval_last_zero :
 def ev3H : A3 →ₐ[K] A3 := MvPowerSeries.substAlgHom hasSubst_eval_last_zero
 
 /- English proof (translation)
-Rewrite using `[ev3H, MvPowerSeries.coe_substAlgHom]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eval_three_eq_eval_last_zero (h : A3) : ev3 h = ev3H h := by
   rw [ev3H, MvPowerSeries.coe_substAlgHom]; rfl
 
 /- English proof (translation)
-Rewrite using `[ev3H, MvPowerSeries.substAlgHom_X]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eval_last_zero_X_zero : ev3H (K := K) (MvPowerSeries.X 0) = MvPowerSeries.X 0 := by
   rw [ev3H, MvPowerSeries.substAlgHom_X]; rfl
 
 /- English proof (translation)
-Rewrite using `[ev3H, MvPowerSeries.substAlgHom_X]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eval_last_zero_X_one : ev3H (K := K) (MvPowerSeries.X 1) = MvPowerSeries.X 1 := by
   rw [ev3H, MvPowerSeries.substAlgHom_X]; rfl
 
 /- English proof (translation)
-Rewrite using `[ev3H, MvPowerSeries.substAlgHom_X]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eval_last_zero_X_two : ev3H (K := K) (MvPowerSeries.X 2) = 0 := by
   rw [ev3H, MvPowerSeries.substAlgHom_X]; rfl
 
 /- English proof (translation)
-Rewrite using `[← eval_three_eq_eval_last_zero, ← eval_three_eq_eval_last_zero, ev3, ev3, psubst_msubst f hu hasSubst_eval_last_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_last_zero_subst_series (f : PowerSeries K) {u : A3} (hu : MvPowerSeries.constantCoeff u = 0) :
     ev3H (PowerSeries.subst u f) = PowerSeries.subst (ev3H u) f := by
   rw [← eval_three_eq_eval_last_zero, ← eval_three_eq_eval_last_zero, ev3, ev3, psubst_msubst f hu hasSubst_eval_last_zero]
 
 /- English proof (translation)
-Rewrite using `[← eval_three_eq_eval_last_zero, ← eval_three_eq_eval_last_zero]`. Apply the tactic sequence `exact Formalism.L2.Th1.B.subst_fExp (fun s => by fin_cases s <;> simp) hf`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval_last_zero_formal_exp {f : A3} (hf : MvPowerSeries.constantCoeff f = 0) :
     ev3H (fExp f) = fExp (ev3H f) := by
@@ -240,19 +240,19 @@ theorem eval_last_zero_formal_exp {f : A3} (hf : MvPowerSeries.constantCoeff f =
   exact Formalism.L2.Th1.B.subst_fExp (fun s => by fin_cases s <;> simp) hf
 
 /- English proof (translation)
-Rewrite using `[at1, eval_last_zero_subst_series f (by simp), eval_last_zero_X_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_last_zero_at_variable_zero (f : PowerSeries K) : ev3H (at1 0 f) = at1 0 f := by
   rw [at1, eval_last_zero_subst_series f (by simp), eval_last_zero_X_zero]
 
 /- English proof (translation)
-Rewrite using `[at1, eval_last_zero_subst_series f (by simp), eval_last_zero_X_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_last_zero_at_variable_one (f : PowerSeries K) : ev3H (at1 1 f) = at1 1 f := by
   rw [at1, eval_last_zero_subst_series f (by simp), eval_last_zero_X_one]
 
 /- English proof (translation)
-Rewrite using `[det3, Matrix.det_fin_three]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_three_points_eq_expansion (P : PowerSeries K) : det3 P =
     MvPowerSeries.X 0 ^ 3 * (MvPowerSeries.X 1 * (1 + MvPowerSeries.X 1 ^ 2 * at1 1 P)) *
@@ -271,7 +271,7 @@ theorem det_three_points_eq_expansion (P : PowerSeries K) : det3 P =
   simp only [Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val]
 
 /- English proof (translation)
-Rewrite using `[det_three_points_eq_expansion]`. Simplify using `only [map_add, map_sub, map_mul, map_pow, map_neg, map_one, map_ofNat, eval_last_zero_X_zero, eval_last_zero_X_one, eval_last_zero_X_two, eval_last_zero_at_variable_zero, eval_last_zero_at_variable_one, wp3]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_last_zero_det_three_points (P : PowerSeries K) :
     ev3H (det3 P) = -2 * (MvPowerSeries.X 0 * MvPowerSeries.X 1) * wp3 P 0 1 := by
@@ -281,7 +281,7 @@ theorem eval_last_zero_det_three_points (P : PowerSeries K) :
   ring
 
 /- English proof (translation)
-Simplify using `only [vand3, map_add, map_sub, map_mul, eval_last_zero_X_zero, eval_last_zero_X_one, eval_last_zero_X_two]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_last_zero_vandermonde_three : ev3H (vand3 K) =
     (MvPowerSeries.X 0 * MvPowerSeries.X 1) * (MvPowerSeries.X 0 ^ 2 - MvPowerSeries.X 1 ^ 2) := by
@@ -289,7 +289,7 @@ theorem eval_last_zero_vandermonde_three : ev3H (vand3 K) =
   ring
 
 /- English proof (translation)
-Establish `h0 : PowerSeries.subst (0 : A3) f = 0` using `PowerSeries.subst_zero_of_constantCoeff_zero hf`. Simplify using `only [fsE, par0, evalSumThree, evalDiffThree, map_add, map_sub, map_mul, map_ofNat, emb_atS, emb_atD, embed_pair_at_variable_zero, embed_pair_at_variable_one]`. Rewrite using `[eval_last_zero_subst_series f (by simp), eval_last_zero_subst_series f (by simp), eval_last_zero_subst_series f (by simp), eval_last_zero_subst_series f (by simp), eval_last_zero_at_variable_zero, eval_last_zero_at_variable_one, at1, at1, at1, eval_last_zero_subst_series f (by s …`. Simplify using `only [map_add, map_sub, eval_last_zero_X_zero, eval_last_zero_X_one, eval_last_zero_X_two, add_zero, sub_zero, h0]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_last_zero_exp_parallelogram {f : PowerSeries K} (hf : PowerSeries.constantCoeff f = 0) :
     ev3H (fsE f) = emb 0 1 (par0 f) := by
@@ -302,7 +302,7 @@ theorem eval_last_zero_exp_parallelogram {f : PowerSeries K} (hf : PowerSeries.c
   ring
 
 /- English proof (translation)
-Simplify using `only [fsE, evalSumThree, evalDiffThree, at1, map_add, map_sub, map_mul]`. Rewrite using `[cc_psubst (by simp) hf, cc_psubst (by simp) hf, cc_psubst (by simp) hf, cc_psubst (by simp) hf, cc_psubst (by simp) hf, cc_psubst (by simp) hf, cc_psubst (by simp) hf]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fsE_cc {f : PowerSeries K} (hf : PowerSeries.constantCoeff f = 0) :
     MvPowerSeries.constantCoeff (fsE f) = 0 := by
@@ -313,20 +313,20 @@ theorem fsE_cc {f : PowerSeries K} (hf : PowerSeries.constantCoeff f = 0) :
   simp
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Simplify using `at h`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem ne_zero_of_pd {f : A3} (i : Fin 3) (h : pd i f = 1) : f ≠ 0 := by
   rintro rfl
   simp at h
 
 /- English proof (translation)
-The claim follows from `ne_zero_of_pd j MvPowerSeries.pderiv_X_self`.
+A detailed English derivation is pending.
 -/
 theorem X_ne_zero (j : Fin 3) : (MvPowerSeries.X j : A3) ≠ 0 :=
   ne_zero_of_pd j MvPowerSeries.pderiv_X_self
 
 /- English proof (translation)
-The claim follows from `ne_zero_of_pd j (by rw [pd, map_sub, MvPowerSeries.pderiv_X_self, MvPowerSeries.pderiv_X_of_ne hjk.symm, sub_zero])`.
+A detailed English derivation is pending.
 -/
 theorem X_sub_ne_zero {j k : Fin 3} (hjk : j ≠ k) :
     (MvPowerSeries.X j - MvPowerSeries.X k : A3) ≠ 0 :=
@@ -334,7 +334,7 @@ theorem X_sub_ne_zero {j k : Fin 3} (hjk : j ≠ k) :
     rw [pd, map_sub, MvPowerSeries.pderiv_X_self, MvPowerSeries.pderiv_X_of_ne hjk.symm, sub_zero])
 
 /- English proof (translation)
-The claim follows from `ne_zero_of_pd j (by rw [pd, map_add, MvPowerSeries.pderiv_X_self, MvPowerSeries.pderiv_X_of_ne hjk.symm, add_zero])`.
+A detailed English derivation is pending.
 -/
 theorem X_add_ne_zero {j k : Fin 3} (hjk : j ≠ k) :
     (MvPowerSeries.X j + MvPowerSeries.X k : A3) ≠ 0 :=
@@ -342,7 +342,7 @@ theorem X_add_ne_zero {j k : Fin 3} (hjk : j ≠ k) :
     rw [pd, map_add, MvPowerSeries.pderiv_X_self, MvPowerSeries.pderiv_X_of_ne hjk.symm, add_zero])
 
 /- English proof (translation)
-Rewrite using `[sq_sub_sq]`. Conclude with `mul_ne_zero (X_add_ne_zero hjk) (X_sub_ne_zero hjk)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_sub_ne_zero {j k : Fin 3} (hjk : j ≠ k) :
     (MvPowerSeries.X j ^ 2 - MvPowerSeries.X k ^ 2 : A3) ≠ 0 := by
@@ -350,7 +350,7 @@ theorem sq_sub_ne_zero {j k : Fin 3} (hjk : j ≠ k) :
   exact mul_ne_zero (X_add_ne_zero hjk) (X_sub_ne_zero hjk)
 
 /- English proof (translation)
-Introduce `h`. Use `constantCoeff_fExp hf` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fExp_ne_zero {f : A3} (hf : MvPowerSeries.constantCoeff f = 0) : fExp f ≠ 0 := by
   intro h
@@ -359,7 +359,7 @@ theorem fExp_ne_zero {f : A3} (hf : MvPowerSeries.constantCoeff f = 0) : fExp f 
   simp at this
 
 /- English proof (translation)
-Simplify using `only [par0, atS, atD, at1, map_add, map_sub, map_mul]`. Rewrite using `[cc_psubst (by simp) hf, cc_psubst (by simp) hf, cc_psubst (by simp) hf, cc_psubst (by simp) hf]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_parallelogram_defect {f : PowerSeries K} (hf : PowerSeries.constantCoeff f = 0) :
     MvPowerSeries.constantCoeff (par0 f) = 0 := by
@@ -369,7 +369,7 @@ theorem constantCoeff_parallelogram_defect {f : PowerSeries K} (hf : PowerSeries
   simp
 
 /- English proof (translation)
-Rewrite using `[emb_apply]`. Apply the tactic sequence `exact MvPowerSeries.constantCoeff_subst_eq_zero (hs_emb j k) (fun s => by fin_cases s <;> simp) hh`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem emb_cc (j k : Fin 3) {h : MvPowerSeries (Fin 2) K}
     (hh : MvPowerSeries.constantCoeff h = 0) : MvPowerSeries.constantCoeff (emb j k h) = 0 := by
@@ -378,7 +378,7 @@ theorem emb_cc (j k : Fin 3) {h : MvPowerSeries (Fin 2) K}
     (fun s => by fin_cases s <;> simp) hh
 
 /- English proof (translation)
-Rewrite using `[wp3_apply_eq_sq_mul_sub_sq_mul hP]`. Conclude with `mul_ne_zero (sq_sub_ne_zero hjk) (fExp_ne_zero (emb_cc j k (constantCoeff_parallelogram_defect (sigS_cc P))))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weierstrass_pair_ne_zero {g2 g3 : K} {P : PowerSeries K} (hP : IsWp g2 g3 P) {j k : Fin 3}
     (hjk : j ≠ k) : wp3 P j k ≠ 0 := by
@@ -386,7 +386,7 @@ theorem weierstrass_pair_ne_zero {g2 g3 : K} {P : PowerSeries K} (hP : IsWp g2 g
   exact mul_ne_zero (sq_sub_ne_zero hjk) (fExp_ne_zero (emb_cc j k (constantCoeff_parallelogram_defect (sigS_cc P))))
 
 /- English proof (translation)
-Use `split_ifs with h`. Rewrite using `[h, MvPowerSeries.pderiv_X_self]`. Rewrite using `[MvPowerSeries.pderiv_X_of_ne h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pdX (i j : Fin 3) :
     MvPowerSeries.pderiv K i (MvPowerSeries.X j : A3) = if j = i then 1 else 0 := by
@@ -395,26 +395,26 @@ theorem pdX (i j : Fin 3) :
   · rw [MvPowerSeries.pderiv_X_of_ne h]
 
 /- English proof (translation)
-Simplify using `using (MvPowerSeries.pderiv K i).map_natCast 2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pd_two (i : Fin 3) : MvPowerSeries.pderiv K i (2 : A3) = 0 := by
   simpa using (MvPowerSeries.pderiv K i).map_natCast 2
 
 /- English proof (translation)
-Simplify using `using (MvPowerSeries.pderiv K i).map_natCast 3`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pd_three (i : Fin 3) : MvPowerSeries.pderiv K i (3 : A3) = 0 := by
   simpa using (MvPowerSeries.pderiv K i).map_natCast 3
 
 /- English proof (translation)
-Rewrite using `[← pdX]; exact pd_psubst i (by simp) f`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_series_at_variable (i j : Fin 3) (f : PowerSeries K) :
     MvPowerSeries.pderiv K i (at1 j f : A3) = at1 j (dz f) * if j = i then 1 else 0 := by
   rw [← pdX]; exact pd_psubst i (by simp) f
 
 /- English proof (translation)
-Rewrite using `[← pdX, ← pdX, ← map_sub]; exact pd_psubst i (by simp) f`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_series_at_difference_three (i j k : Fin 3) (f : PowerSeries K) :
     MvPowerSeries.pderiv K i (evalDiffThree j k f : A3) =
@@ -422,7 +422,7 @@ theorem pderiv_series_at_difference_three (i j k : Fin 3) (f : PowerSeries K) :
   rw [← pdX, ← pdX, ← map_sub]; exact pd_psubst i (by simp) f
 
 /- English proof (translation)
-Establish `h` using `pd_psubst i (u := MvPowerSeries.X 0 + MvPowerSeries.X 1 + MvPowerSeries.X 2) (by simp) f`. Simplify using `only [pd, map_add, pdX] at h`. Rewrite using `[evalSumThree, h]`. Apply the tactic sequence `fin_cases i <;> simp [evalSumThree]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pderiv_series_at_sum_three (i : Fin 3) (f : PowerSeries K) :
     MvPowerSeries.pderiv K i (evalSumThree f : A3) = evalSumThree (dz f) := by
@@ -433,7 +433,7 @@ theorem pderiv_series_at_sum_three (i : Fin 3) (f : PowerSeries K) :
   fin_cases i <;> simp [evalSumThree]
 
 /- English proof (translation)
-Simplify using `only [vand3, pd, Derivation.leibniz, map_add, map_sub, smul_eq_mul, pdX]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem D_vand3 : pd 1 (vand3 K) - pd 2 (vand3 K) =
     (MvPowerSeries.X 0 + MvPowerSeries.X 1 + MvPowerSeries.X 2) *
@@ -445,7 +445,7 @@ theorem D_vand3 : pd 1 (vand3 K) - pd 2 (vand3 K) =
   ring
 
 /- English proof (translation)
-Simplify using `only [fsE, pd, Derivation.leibniz, map_add, map_sub, smul_eq_mul, pd_three, pderiv_series_at_variable, pderiv_series_at_difference_three, pderiv_series_at_sum_three]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem D_fsE (f : PowerSeries K) : pd 1 (fsE f) - pd 2 (fsE f) =
     -(evalDiffThree 0 1 (dz f) - at1 0 (dz f) + at1 1 (dz f)) +
@@ -457,7 +457,7 @@ theorem D_fsE (f : PowerSeries K) : pd 1 (fsE f) - pd 2 (fsE f) =
   ring
 
 /- English proof (translation)
-Take the linear combination `(-((a + b + c) * (a - b) * (a - c) * (b - c))) * hR + A * M02 * M12 * (a + b + c) * (a - c) * (b - c) * T01 - A * M01 * M12 * (a + b + c) * (a - b) * (b - c) * T02 - 2 * A * M01 * M02 * (a + b + c) * (a - b) * (a - c) * T12`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ring_core {R : Type} [CommRing R] (a b c M01 M02 M12 D01 D02 D12 t01 t02 t12 A DA : R)
     (T01 : (a - b) * D01 = M01 * (2 + 2 * (a - b) * t01))
@@ -477,17 +477,17 @@ theorem ring_core {R : Type} [CommRing R] (a b c M01 M02 M12 D01 D02 D12 t01 t02
 end
 
 /- English proof (translation)
-Introduce `K _ _ g2 g3 P hP`. Establish `cE : MvPowerSeries.constantCoeff (fsE (sigS P)) = 0` using `fsE_cc (sigS_cc P)`. Establish `two_ne : (2 : MvPowerSeries (Fin 3) K) ≠ 0`. Introduce `h`. Use `congrArg MvPowerSeries.constantCoeff h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[map_ofNat, map_zero]`. Conclude with `two_ne_zero this`. Establish `hb : ev3H (-2 * vand3 K * fExp (fsE (sigS P))) = -2 * (MvPowerSeries.X 0 * MvPowerSeries.X 1) * wp3 P 0 1`. Rewrite using `[map_mul, map_mul, map_neg, map_ofNat, eval_last_zero_vandermonde_three, eval_last_zero_formal_exp cE, eval_last_zero_exp_parallelogram (sigS_cc P), wp3_apply_eq_sq_mul_sub_sq_mul hP]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `hS K _ _ ?_ ?_ ?_` and prove the remaining obligations. Establish `hY : ∀ i : Fin 3, pd i (-2 * vand3 K * fExp (fsE (sigS P))) = -2 * (pd i (vand3 K) * fExp (fsE (sigS P)) + vand3 K * (fExp (fsE (sigS P)) * pd i (fsE (sigS P))))`. Introduce `i`. Establish `h1` using `pd_fExp i cE`. Simplify using `only [pd] at h1 ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Derivation.leibniz, Derivation.leibniz, h1, map_neg, pd_two]`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `core` using `ring_core (MvPowerSeries.X 0) (MvPowerSeries.X 1) (MvPowerSeries.X 2) _ _ _ _ _ _ _ _ _ _ _ (tau3 hT hP (j := 0) (k := 1) (by decide)) (tau3 hT hP (j := 0) (k := 2) (by decide)) (tau3 hT hP (j := 1) (k := 2) (by decide)) (hD K g2 g3 P hP)`. Establish `hM : 2 * wp3 P 0 1 * wp3 P 0 2 * wp3 P 1 2 ≠ 0` using `mul_ne_zero (mul_ne_zero (mul_ne_zero two_ne (weierstrass_pair_ne_zero hP (by decide))) (weierstrass_pair_ne_zero hP (by decide))) (weierstrass_pair_ne_zero hP (by decide))`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `core'` using `mul_left_cancel₀ hM core`. Establish `hV : vand3 K = (MvPowerSeries.X 0 + MvPowerSeries.X 1 + MvPowerSeries.X 2) * (MvPowerSeries.X 0 - MvPowerSeries.X 1) * (MvPowerSeries.X 0 - MvPowerSeries.X 2) * (MvPowerSeries.X 1 - MvPowerSeries.X 2)` using `rfl`. Rewrite `core'` using `[← hV]`. Rewrite using `[hY, hY]`. Take the linear combination `(-2 * fExp (fsE (sigS P))) * core' + (-2 * det3 P * fExp (fsE (sigS P))) * D_vand3 (K := K) + (-2 * det3 P * fExp (fsE (sigS P)) * vand3 K) * D_fsE (sigS P)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eval_three_eq_eval_last_zero, eval_three_eq_eval_last_zero, hb, eval_last_zero_det_three_points]`. Rewrite using `[eval_three_eq_eval_last_zero, hb]`. Conclude with `mul_ne_zero (mul_ne_zero (neg_ne_zero.mpr two_ne) (mul_ne_zero (X_ne_zero 0) (X_ne_zero 1))) (weierstrass_pair_ne_zero hP (by decide))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FrobStickLog_of (hS : ShearLemma) (hT : TauRule) (hD : DetRule) : FrobStickLog := by
   intro K _ _ g2 g3 P hP
@@ -533,7 +533,7 @@ theorem FrobStickLog_of (hS : ShearLemma) (hT : TauRule) (hD : DetRule) : FrobSt
       (mul_ne_zero (X_ne_zero 0) (X_ne_zero 1))) (weierstrass_pair_ne_zero hP (by decide))
 
 /- English proof (translation)
-Establish `h3 : 3 * f = f + f + f` using `by ring`. Rewrite using `[h3, fExp_add (by rw [map_add, hf, add_zero]) hf, fExp_add hf hf]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fExp_three {K : Type} [Field K] [CharZero K] {ι : Type} {f : MvPowerSeries ι K}
     (hf : MvPowerSeries.constantCoeff f = 0) : fExp f ^ 3 = fExp (3 * f) := by
@@ -542,13 +542,13 @@ theorem fExp_three {K : Type} [Field K] [CharZero K] {ι : Type} {f : MvPowerSer
   ring
 
 /- English proof (translation)
-Introduce `K _ _ g2 g3 P hP`. Establish `h` using `hL K g2 g3 P hP`. Establish `c0 : ∀ x : Fin 3, MvPowerSeries.constantCoeff (at1 x (sigS P) : MvPowerSeries (Fin 3) K) = 0` using `fun x => cc_psubst (by simp) (sigS_cc P)`. Establish `c3 : ∀ x : Fin 3, MvPowerSeries.constantCoeff (3 * at1 x (sigS P) : MvPowerSeries (Fin 3) K) = 0` using `fun x => by rw [map_mul, c0, mul_zero]`. Establish `cS : MvPowerSeries.constantCoeff (evalSumThree (sigS P)) = 0` using `cc_psubst (by simp) (sigS_cc P)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cD : ∀ j k : Fin 3, MvPowerSeries.constantCoeff (evalDiffThree j k (sigS P)) = 0` using `fun j k => cc_psubst (by simp) (sigS_cc P)`. Establish `cE : MvPowerSeries.constantCoeff (fsE (sigS P)) = 0` using `fsE_cc (sigS_cc P)`. Establish `key : fExp (at1 0 (sigS P)) ^ 3 * fExp (at1 1 (sigS P)) ^ 3 * fExp (at1 2 (sigS P)) ^ 3 * fExp (fsE (sigS P)) = fExp (evalSumThree (sigS P)) * fExp (evalDiffThree 0 1 (sigS P)) * fExp (evalDiffThree 0 2 (sigS P)) * fExp (evalDiffThree 1 2 (sigS P))`. Rewrite using `[fExp_three (c0 0), fExp_three (c0 1), fExp_three (c0 2), ← fExp_add (c3 0) (c3 1), ← fExp_add (by rw [map_add, c3, c3, add_zero]) (c3 2), ← fExp_add (by rw [map_add, map_add, c3, c3, c3, add_zero, add_zero]) cE, ← fExp_add cS (cD 0 1), ← fExp_add (by rw [map_add, cS, cD, add_zer …`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[fsE]`. Expand and normalize the polynomial expressions, which then agree. Establish `eS : evalSumThree (sigma P) = (MvPowerSeries.X 0 + MvPowerSeries.X 1 + MvPowerSeries.X 2) * fExp (evalSumThree (sigS P))` using `subst_sigma P (by simp)`. Establish `eD : ∀ j k : Fin 3, evalDiffThree j k (sigma P) = (MvPowerSeries.X j - MvPowerSeries.X k) * fExp (evalDiffThree j k (sigS P))` using `fun j k => subst_sigma P (by simp)`. Establish `e0 : ∀ x : Fin 3, (at1 x (sigma P) : MvPowerSeries (Fin 3) K) = MvPowerSeries.X x * fExp (at1 x (sigS P))` using `fun x => subst_sigma P (by simp)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eS, eD, eD, eD, e0, e0, e0, h, vand3]`. Take the linear combination `(-2 * (MvPowerSeries.X 0 * MvPowerSeries.X 1 * MvPowerSeries.X 2) ^ 3 * ((MvPowerSeries.X 0 + MvPowerSeries.X 1 + MvPowerSeries.X 2) * (MvPowerSeries.X 0 - MvPowerSeries.X 1) * (MvPowerSeries.X 0 - MvPowerSeries.X 2) * (MvPowerSeries.X 1 - MvPowerSeries.X 2))) * key`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem FrobStick_of (hL : FrobStickLog) : FrobStick := by
   intro K _ _ g2 g3 P hP
@@ -587,13 +587,13 @@ theorem FrobStick_of (hL : FrobStickLog) : FrobStick := by
         (MvPowerSeries.X 1 - MvPowerSeries.X 2))) * key
 
 /- English proof (translation)
-Introduce `K _ _ g2 g3 s2 P hP`. Establish `h` using `hF K g2 g3 P hP`. Establish `cc : ∀ u : MvPowerSeries (Fin 3) K, MvPowerSeries.constantCoeff u = 0 → MvPowerSeries.constantCoeff (-(MvPowerSeries.C (s2 / 2) * u ^ 2)) = 0`. Introduce `u hu`. Simplify using `[hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `z : ∀ x : Fin 3, MvPowerSeries.constantCoeff (-(MvPowerSeries.C (s2 / 2) * (MvPowerSeries.X x : MvPowerSeries (Fin 3) K) ^ 2)) = 0` using `fun x => cc _ (by simp)`. Establish `z3 : ∀ x : Fin 3, MvPowerSeries.constantCoeff (3 * -(MvPowerSeries.C (s2 / 2) * (MvPowerSeries.X x : MvPowerSeries (Fin 3) K) ^ 2)) = 0` using `fun x => by rw [map_mul, z, mul_zero]`. Establish `zS` using `cc (MvPowerSeries.X 0 + MvPowerSeries.X 1 + MvPowerSeries.X 2) (by simp)`. Establish `zD : ∀ j k : Fin 3, MvPowerSeries.constantCoeff (-(MvPowerSeries.C (s2 / 2) * (MvPowerSeries.X j - MvPowerSeries.X k : MvPowerSeries (Fin 3) K) ^ 2)) = 0` using `fun j k => cc _ (by simp)`. Establish `key : (fExp (-(MvPowerSeries.C (s2 / 2) * (MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K) ^ 2)) * fExp (-(MvPowerSeries.C (s2 / 2) * MvPowerSeries.X 1 ^ 2)) * fExp (-(MvPowerSeries.C (s2 / 2) * MvPowerSeries.X 2 ^ 2))) ^ 3 = fExp (-(MvPowerSeries.C (s2 / 2) * (MvPowerSeries.X 0 + M …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_pow, mul_pow, fExp_three (z 0), fExp_three (z 1), fExp_three (z 2), ← fExp_add (z3 0) (z3 1), ← fExp_add (by rw [map_add, z3, z3, add_zero]) (z3 2), ← fExp_add zS (zD 0 1), ← fExp_add (by rw [map_add, zS, zD, add_zero]) (zD 0 2), ← fExp_add (by rw [map_add, map_add, zS, zD, …`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `eS : evalSumThree (sgStar s2 P) = evalSumThree (sigma P) * _` using `subst_sgStar s2 P (by simp)`. Establish `eD : ∀ j k : Fin 3, evalDiffThree j k (sgStar s2 P) = evalDiffThree j k (sigma P) * _` using `fun j k => subst_sgStar s2 P (by simp)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : ∀ x : Fin 3, (at1 x (sgStar s2 P) : MvPowerSeries (Fin 3) K) = at1 x (sigma P) * _` using `fun x => subst_sgStar s2 P (by simp)`. Rewrite using `[eS, eD, eD, eD, e0, e0, e0]`. Take the linear combination `((fExp (-(MvPowerSeries.C (s2 / 2) * (MvPowerSeries.X 0 : MvPowerSeries (Fin 3) K) ^ 2)) * fExp (-(MvPowerSeries.C (s2 / 2) * MvPowerSeries.X 1 ^ 2)) * fExp (-(MvPowerSeries.C (s2 / 2) * MvPowerSeries.X 2 ^ 2))) ^ 3) * h + (-2 * (MvPowerSeries.X 0 * MvPowerSeries.X 1 * MvPowerSer …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem FrobStickStar_of (hF : FrobStick) : FrobStickStar := by
   intro K _ _ g2 g3 s2 P hP

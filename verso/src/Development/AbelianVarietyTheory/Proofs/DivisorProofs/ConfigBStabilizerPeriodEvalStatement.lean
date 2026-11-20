@@ -7,7 +7,7 @@ open MeasureTheory Filter NumberField IsDedekindDomain Formalism.MainNotions.Glo
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ConeEulerGen.cone_pure_factor` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FConfigBStabilizerPeriodEval.lean&line=319#L319)
 -/

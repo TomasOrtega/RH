@@ -17,18 +17,18 @@ noncomputable section
 namespace GlobalTheory.EisM.AtkinLehnerForm
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.HeckeFamilyMatrices.toGL_val A hA]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem toGL_entry (A : M2) (hA : A.det ≠ 0) (i j : Fin 2) :
     (↑(GlobalTheory.HeckeFamilyMatrices.toGL A) : Matrix (Fin 2) (Fin 2) ℝ) i j = (A i j : ℝ) := by
   rw [GlobalTheory.HeckeFamilyMatrices.toGL_val A hA]; simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `hd : 0 < (GlobalTheory.HeckeFamilyMatrices.toGL δ).det.val` using `GlobalTheory.HeckeFamilyMatrices.toGL_det_pos δ hδ`. Establish `hpt : ofComplex ((((δ 0 0 : ℤ) : ℂ) * (τ : ℂ) + ((δ 0 1 : ℤ) : ℂ)) / (((δ 1 0 : ℤ) : ℂ) * (τ : ℂ) + ((δ 1 1 : ℤ) : ℂ))) = GlobalTheory.HeckeFamilyMatrices.toGL δ • τ` using `by ext1`. Rewrite using `[slzMob_coe δ hδ τ, UpperHalfPlane.coe_smul_of_det_pos hd]`. Apply the tactic sequence `simp [UpperHalfPlane.num, UpperHalfPlane.denom, toGL_entry δ hδ.ne']`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ModularForm.slash_apply, GlobalTheory.HeckeFamilyMatrices.sigma_pos hd, slz, hpt]`. Establish `hdet : (GlobalTheory.HeckeFamilyMatrices.toGL δ).det.val = (δ.det : ℝ)` using `GlobalTheory.HeckeFamilyMatrices.toGL_det δ hδ.ne'`. Rewrite using `[hdet, abs_of_pos (by exact_mod_cast hδ)]`. Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`. Establish `e1 : (((m + 1 : ℕ) : ℤ) - 1) = ((m : ℕ) : ℤ)` using `by push_cast; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e1, zpow_natCast, zpow_neg, zpow_natCast]`. Apply the tactic sequence `simp only [Nat.add_sub_cancel, UpperHalfPlane.denom, toGL_entry δ hδ.ne', Complex.ofReal_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem slz_eq_slash (k : ℕ) (hk : 1 ≤ k) (δ : M2) (hδ : 0 < δ.det) (f : ℍ → ℂ) :
     slz k δ f = f ∣[(k : ℤ)] GlobalTheory.HeckeFamilyMatrices.toGL δ := by
@@ -53,9 +53,9 @@ end GlobalTheory.EisM.AtkinLehnerForm
 namespace GlobalTheory.EisM.AtkinLehnerForm
 
 /- English proof (translation)
-Establish `him : 0 < ((τ : ℂ) + m).im` using `by simpa using τ.im_pos`. Establish `hcoe : ((ofComplex ((τ : ℂ) + m) : ℍ) : ℂ) = (τ : ℂ) + m`. Rewrite using `[ofComplex_apply_of_im_pos him]`. Simplify using `only [qs, hcoe]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `n`. Establish `e : cexp (2 * π * Complex.I * n * ((τ : ℂ) + m)) = cexp (2 * π * Complex.I * n * τ)`. Rewrite using `[show 2 * π * Complex.I * n * ((τ : ℂ) + m) = 2 * π * Complex.I * n * τ + ((n * m : ℤ) : ℂ) * (2 * π * Complex.I) by push_cast; ring, Complex.exp_add, Complex.exp_int_mul_two_pi_mul_I, mul_one]`. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem qs_add_int (a : ℕ → ℂ) (τ : ℍ) (m : ℤ) : qs a (ofComplex ((τ : ℂ) + m)) = qs a τ := by
   have him : 0 < ((τ : ℂ) + m).im := by simpa using τ.im_pos
@@ -70,9 +70,9 @@ theorem qs_add_int (a : ℕ → ℂ) (τ : ℍ) (m : ℤ) : qs a (ofComplex ((τ
   rw [e]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Break down `Int.eq_one_or_neg_one_of_mul_eq_one' h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` into its components or cases. Establish `e : (((((1 : ℕ) : ℤ) * 1 : ℤ) : ℂ) * (τ : ℂ) + ((b₀ : ℤ) : ℂ)) / (((((1 : ℕ) : ℤ) * ((0 : ℕ) : ℤ) * c₀ : ℤ) : ℂ) * (τ : ℂ) + ((((1 : ℕ) : ℤ) * 1 : ℤ) : ℂ)) = (τ : ℂ) + ((b₀ : ℤ) : ℂ)` using `by push_cast; ring`. Simplify using `only [slz, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.det_fin_two_of, e, qs_add_int]`. Use `push_cast`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Apply the tactic sequence `try simp`. Establish `e : (((((1 : ℕ) : ℤ) * (-1) : ℤ) : ℂ) * (τ : ℂ) + ((b₀ : ℤ) : ℂ)) / (((((1 : ℕ) : ℤ) * ((0 : ℕ) : ℤ) * c₀ : ℤ) : ℂ) * (τ : ℂ) + ((((1 : ℕ) : ℤ) * (-1) : ℤ) : ℂ)) = (τ : ℂ) + ((-b₀ : ℤ) : ℂ)` using `by push_cast; ring`. Simplify using `only [slz, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.det_fin_two_of, e, qs_add_int]`. Use `push_cast`. Apply the tactic sequence `try simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem slz_levelOne (k : ℕ) (a : ℕ → ℂ) (a₀ b₀ c₀ d₀ : ℤ) (h : a₀ * d₀ = 1) :
     slz k !![((1 : ℕ) : ℤ) * a₀, b₀; ((1 : ℕ) : ℤ) * ((0 : ℕ) : ℤ) * c₀, ((1 : ℕ) : ℤ) * d₀] (qs a)
@@ -97,23 +97,21 @@ end GlobalTheory.EisM.AtkinLehnerForm
 open GlobalTheory.EisM.AtkinLehnerForm in
 
 /- English proof (translation)
-Introduce `k N l χ a a₀ b₀ c₀ d₀ h hk hN ha`. Establish `hinv` using `GlobalTheory.T.atkinLehner_slash_inverse_character k N l χ (qs a) a₀ b₀ c₀ d₀ h hk hN ha.2`. It suffices to establish `hex : ∃ a' : ℕ → ℂ, PolyB a' ∧ qs a' = slz k !![(N : ℤ) * a₀, b₀; N * l * c₀, N * d₀] (qs a) by`. Take `⟨a', h1, h2⟩` from `hex`. Conclude with `⟨a', ⟨h1, h2 ▸ hinv⟩, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Break down `Nat.eq_zero_or_pos l with rfl | hl` into its components or cases. Establish `h' : (N : ℤ) * (a₀ * d₀) = 1` using `by linear_combination h`. Establish `hN1 : N = 1` using `by exact_mod_cast Int.eq_one_of_mul_eq_one_right (by positivity) h'`. Substitute `hN1` using the available equality. Establish `had : a₀ * d₀ = 1` using `by simpa using h'`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[slz_levelOne k a a₀ b₀ c₀ d₀ had]`. Take `⟨C, A, hC⟩` from `ha.1`. Use `⟨fun n => ((d₀ : ℂ) ^ k)⁻¹ * a n, ⟨‖((d₀ : ℂ) ^ k)⁻¹‖ * C, A, fun n => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC n) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `τ`. Simplify using `only [qs]`. Rewrite using `[← tsum_mul_left]`. Use `congr 1`. Use function extensionality and compare the values at `n`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `set δ : M2 := !![(N : ℤ) * a₀, b₀; N * l * c₀, N * d₀] with hδdef`. Establish `hdet : δ.det = N` using `by rw [hδdef, Matrix.det_fin_two_of]; linear_combination (N : ℤ) * h`. Establish `hδ : 0 < δ.det` using `by rw [hdet]; exact_mod_cast hN`. Establish `hL : 0 < N * l` using `Nat.mul_pos hN hl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : NeZero (N * l) := ⟨hL.ne'⟩`. Take `⟨f, hf⟩` from `GlobalTheory.EisM.modularForm_gammaOne_of_MF k (N * l) N χ a hL (dvd_mul_right N l) ha`. Establish `hF : slz k δ (qs a) = ⇑f ∣[(k : ℤ)] GlobalTheory.HeckeFamilyMatrices.toGL δ` using `by rw [hf]; exact slz_eq_slash k hk δ hδ _`. Set `F : ModularForm (Gamma1 (N * l)) (k : ℤ)` to `{ toFun := slz k δ (qs a) slash_action_eq' := by`. Introduce and unpack `_ ⟨A, (hA : A ∈ Gamma1 (N * l)), rfl⟩`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.EisM.OnGammaOne.slash_inv (dvd_mul_right N l) hinv A hA`. Use the proof step `holo' := by show MDifferentiable 𝓘(ℂ) 𝓘(ℂ) (slz k δ (qs a))`. Rewrite using `[hF]`. Conclude with `(ModularFormClass.holo f).slash _ _`. Use the proof step `bdd_at_cusps' := by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `c hc`. Use `show c.IsBoundedAt (slz k δ (qs a)) (k : ℤ)`. Rewrite using `[hF, ← OnePoint.IsBoundedAt.smul_iff]`. Apply `ModularFormClass.bdd_at_cusps f` to reduce the goal to its premises. Rewrite `hc`, the goal using `[Subgroup.IsArithmetic.isCusp_iff_isCusp_SL2Z]`.
-
-Conclude with `GlobalTheory.HeckeFamilyMatrices.isCusp_SL2Z_toGL_smul δ hδ.ne' hc }`. Use `⟨coef F, ?_, qs_coef_of_mfc F⟩` and prove the remaining obligations. Establish `hb` using `ModularFormClass.qExpansion_isBigO (Int.natCast_nonneg k) F`. Simplify using `only [strictWidthInfty_Gamma1, zpow_natCast] at hb`. Conclude with `polyB_of_isBigO hb`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EisM.atkinLehner_MF : ∀ (k N l : ℕ) (χ : DirichletCharacter ℂ N) (a : ℕ → ℂ) (a₀ b₀ c₀ d₀ : ℤ), N * a₀ * d₀ - l * b₀ * c₀ = 1 → 1 ≤ k → 0 < N → MF k (N * l) (ch χ) a → ∃ a' : ℕ → ℂ, MF k (N * l) (ch χ⁻¹) a' ∧ qs a' = slz k !![(N : ℤ) * a₀, b₀; N * l * c₀, N * d₀] (qs a) := by
   intro k N l χ a a₀ b₀ c₀ d₀ h hk hN ha

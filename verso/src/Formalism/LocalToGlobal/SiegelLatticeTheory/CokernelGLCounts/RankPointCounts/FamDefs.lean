@@ -130,7 +130,7 @@ def FamTie {Cl Nu : Type} (TS : Set (TauC Y u u')) (cls : TauC Y u u' → Cl) (n
           ((locH (zOf Y) p).Zhat (locF Y p (lf D (X.Fu u))) (locF' Y p F'1))
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, hV, _⟩` from `hT`. Rewrite using `[hV, dif_pos h]`. Conclude with `h.choose_spec`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbitFamilyIdentity_at_volume {Cl Nu : Type} {TS : Set (TauC Y u u')} {cls : TauC Y u u' → Cl} {nml : TauC Y u u' → Nu}
     {γ : PN.Pts D.host.E D.R.rS} {Fm : LocFam (zOf Y) Cl Nu} (hT : FamTie TS cls nml γ Fm)
@@ -149,9 +149,9 @@ open Formalism.MainNotions.S.LocNG Formalism.L2.SG.NGData Formalism.L2.SG.NGCut 
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Word}
 
 /- English proof (translation)
-Unfold `FPair.Hp`. Apply `Real.rpow_nonneg` to reduce the goal to its premises. Use `mul_nonneg (mul_nonneg ?_ ?_) (Finset.prod_nonneg fun l _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `all_goals first`. Consider the case `positivity`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Consider the case `exact M.modK_nonneg _`. Consider the case `(unfold Loc.Model.modK; positivity)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hp_nonneg {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
@@ -246,9 +246,9 @@ open Formalism.MainNotions.S.LocNG Formalism.L2.SG.NGData Formalism.L2.SG.NGCut 
 variable {D : D7} {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Word}
 
 /- English proof (translation)
-Take `⟨⟨hH0, _, _⟩, _, _⟩` from `hc`. Unfold `Formalism.MainNotions.S.StandingHypotheses at hH0`. Simplify using `only at hH0`. Take `⟨-, -, h3, h4', -⟩` from `hH0`. Establish `hm2` using `D.R.two_le_m`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `D.R.m_even`. Establish `hmr : 2 * D.R.rS + 2 = D.R.m` using `by simp only [Formalism.BasicNotions.Ranks.rS]; omega`. Establish `: 2 * D.R.m + 3 ≤ D.R.m ^ 4` using `by nlinarith [Nat.pow_le_pow_left hm2 3]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem four_rank_add_seven_le_k {Cg cb Cw cT CT C0 C' Cl : ℝ} {large₂ : SizeData₂ D} (hc : Ctx Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u') :
     4 * D.R.rS + 7 ≤ D.R.k := by
@@ -263,9 +263,9 @@ theorem four_rank_add_seven_le_k {Cg cb Cw cT CT C0 C' Cl : ℝ} {large₂ : Siz
   omega
 
 /- English proof (translation)
-Rewrite using `[finrank_Vp]`. Establish `h1` using `D.R.r_eq`. Establish `h2 : 2 * D.R.rS + 2 = D.R.m`. Establish `hm2` using `D.R.two_le_m`. Take `⟨j, hj⟩` from `D.R.m_even`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Formalism.BasicNotions.Ranks.rS]`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rank_Vp (p : PlF D) : Module.finrank (D.s.atP p).Ep (Vp D p) = D.R.k + 2 * D.R.rS + 1 := by
   rw [finrank_Vp]
@@ -277,23 +277,21 @@ theorem rank_Vp (p : PlF D) : Module.finrank (D.s.atP p).Ep (Vp D p) = D.R.k + 2
   omega
 
 /- English proof (translation)
-Take `⟨w, F00, F'0, F'1, hw, -, -, hn0, hZ, hbase, hOm, hgood, hstd, -, hd0P, -, hdat, hAt, hngen⟩` from `hFT`. Take `⟨hV0pos, hV0⟩` from `hG5`. Establish `hG6p : ∀ p ∈ Fm.P, LocalLowerBoundAtCoset 9 (Fm.FP p) (Fm.R p) (Fm.d0 p) (clsLoc ((zOf Y).M p) ((locH (zOf Y) p).Zhat (locF Y p (lf D (X.Fu u))) (locF' Y p F'1)))`. Introduce `p hp`. Take `⟨-, d, t, ht, hm⟩` from `hngen p hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hG6 _ _ ((zOf Y).M p) ((zOf Y).agree p).1 (Vp D p) (locH (zOf Y) p) (rank_Vp p) (Fm.FP p) (hRel p hp) (Fm.R p) (Fm.d0 p) (hd0P p hp) d t ht _ hm`. Establish `hwt : ∀ p : {p // p ∈ Fm.P}, ∀ d : {d // d ∈ Fm.Ds p.1}, 0 ≤ Fm.toL.wt p d`. Introduce `p d`. Use `show 0 ≤ Datum.wt (Fm.d0 p.1) d.1`. Unfold `Datum.wt volRel`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations.
 
-Check the signs of the components of the expression. Use `⟨hRel, hTerm, hOm, hDs, fun p hp => ?_, hV0pos.le, hrw, ⟨fun p hp => ?_, fun p hp => ?_⟩, fun d S' hS' => ?_, htie, hH, hWpos, hWle⟩` and prove the remaining obligations. Take `⟨h0, hfin, -, hle⟩` from `hG6p p hp`. Conclude with `ne_top_of_le_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hfin) hle`. Take `⟨-, -, heq, -⟩` from `hG6p p.1 p.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Establish `hpr : (Fm.FP p.1).PrimeTo`. Assume the negation of the conclusion as `h`. Conclude with `hp ((hOm p).2 h)`. Use `show (LocNG.nn (Fm.R p.1) (Fm.d0 p.1)).toReal = Fm.ngenL p.1`. Rewrite using `[(hngen p.1 p.2).1, heq hpr]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨-, hfin, -, hle⟩` from `hG6p p.1 p.2 show (LocNG.nn (Fm.R p.1) (Fm.d0 p.1)).toReal ≤ 8 * (Fm.FP p.1).Hp ^ (9 * (D.R.rS + 1) ^ 2 + 2 * (2 * D.R.rS + 2)) * Fm.ngenL p.1`. Rewrite using `[(hngen p.1 p.2).1]`. Establish `h8 : 0 ≤ 8 * (Fm.FP p.1).Hp ^ (9 * (D.R.rS + 1) ^ 2 + 2 * (2 * D.R.rS + 2))` using `mul_nonneg (by norm_num) (pow_nonneg (hp_nonneg _) _)`. Use `ENNReal.toReal_mono (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hfin) hle` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal h8]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show ∑ x ∈ S', Fm.rw x.1 ≤ Fm.V0 * ∏ p, Fm.toL.wt p (d p)`. Establish `hS'' : ∀ x ∈ S', Fm.dat x.1 x.2 = some d` using `hS'`. Distinguish the cases in `hne : ∃ x : Cl × Nu, Fm.dat x.1 x.2 = some d`. Establish `hs` using `hV0 d hne`. Establish `e : ∑ x ∈ S', Fm.rw x.1 = ∑ x ∈ S'.subtype (fun x : Cl × Nu => Fm.dat x.1 x.2 = some d), Fm.rw x.1.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_subtype_of_mem (fun x : Cl × Nu => Fm.rw x.1) hS'']`. Rewrite using `[e]`. Establish `h1` using `ENNReal.sum_le_tsum (f := fun x : {x : Cl × Nu // Fm.dat x.1 x.2 = some d} => ENNReal.ofReal (Fm.rw x.1.1)) (S'.subtype (fun x : Cl × Nu => Fm.dat x.1 x.2 = some d))`. Establish `h2` using `ENNReal.toReal_mono ENNReal.ofReal_ne_top (le_of_le_of_eq h1 hs)`. Rewrite `h2` using `[ENNReal.toReal_sum (fun _ _ => ENNReal.ofReal_ne_top)]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : 0 ≤ Fm.V0 * ∏ p, Fm.toL.wt p (d p)` using `mul_nonneg hV0pos.le (Finset.prod_nonneg fun p _ => hwt p (d p))`. Rewrite `h2` using `[ENNReal.toReal_ofReal h3]`. Simplify using `only [ENNReal.toReal_ofReal (hrw _)] at h2`. Conclude with `h2`. Establish `hS0 : S' = ∅`.
-
-Rewrite using `[Finset.eq_empty_iff_forall_notMem]`. Introduce `x hx`. Conclude with `hne ⟨x, hS'' x hx⟩`. Rewrite using `[hS0, Finset.sum_empty]`. Conclude with `mul_nonneg hV0pos.le (Finset.prod_nonneg fun p _ => hwt p (d p))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem famOKS_of {Cl Nu : Type} {TS : Set (TauC Y u u')} {cls : TauC Y u u' → Cl} {nml : TauC Y u u' → Nu}
     (N : PN.NGData (TauC Y u u') D.host.E D.R.rS Cl Nu) (γ : PN.Pts D.host.E D.R.rS) (S : Finset (Cl × Nu))
@@ -359,15 +357,15 @@ theorem famOKS_of {Cl Nu : Type} {TS : Set (TauC Y u u')} {cls : TauC Y u u' →
       exact mul_nonneg hV0pos.le (Finset.prod_nonneg fun p _ => hwt p (d p))
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Take `⟨CSt, hCSt, a4, b4, h4⟩` from `hG4 Cg cb Cw cT CT C0`. Take `⟨aH, bH, hH2⟩` from `hH Cg cb Cw cT CT C0`. Take `⟨a5, b5, h5⟩` from `hG5 Cg cb Cw cT CT C0`. Take `⟨aW, bW, hW2⟩` from `hW Cg cb Cw cT CT C0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨aE, bE, hE2⟩` from `hE Cg cb Cw cT CT C0`. Use `⟨9, CSt, hCSt, max a4 (max aH (max a5 (max aW aE))), max b4 (max bH (max b5 (max bW bE))), fun C' Cl e1 e2 D large₂ X Y u u' hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBk ν hν => ?_⟩` and prove the remaining obligations. Establish `e1a : a4 ≤ C'` using `le_trans (le_max_left _ _) e1`. Establish `e1b : aH ≤ C'` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) e1`. Establish `e1c : a5 ≤ C'` using `le_trans (le_trans (le_max_left _ _) (le_trans (le_max_right _ _) (le_max_right _ _))) e1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1d : aW ≤ C'` using `le_trans (le_trans (le_max_left _ _) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_max_right _ _)))) e1`. Establish `e1e : aE ≤ C'` using `le_trans (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_max_right _ _)))) e1`. Establish `e2a : b4 ≤ Cl` using `le_trans (le_max_left _ _) e2`. Establish `e2b : bH ≤ Cl` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) e2`. Establish `e2c : b5 ≤ Cl` using `le_trans (le_trans (le_max_left _ _) (le_trans (le_max_right _ _) (le_max_right _ _))) e2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2d : bW ≤ Cl` using `le_trans (le_trans (le_max_left _ _) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_max_right _ _)))) e2`. Establish `e2e : bE ≤ Cl` using `le_trans (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_trans (le_max_right _ _) (le_max_right _ _)))) e2`. Take `⟨s, hs1, hs0, hsb, htie⟩` from `h4 C' Cl e1a e2a D large₂ X Y u u' hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBk ν hν`. Use `⟨s, hs1, hs0, hsb, fun γ hγ S => ?_⟩` and prove the remaining obligations. Take `⟨Fm, hFT, hRel, hTerm, hDs, hrw⟩` from `hE2 C' Cl e1e e2e D large₂ X Y u u' hc (sc s ν) ν (fun _ => 0) γ hγ S`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hG5Fm : OrbitFamilyIdentityAt Fm Fm.V0` using `orbitFamilyIdentity_at_volume hFT (h5 C' Cl e1c e2c D large₂ X Y u u' hc (sc s ν) ν (fun _ => 0) γ hγ S Fm hFT)`. Take `⟨hWpos, hWle⟩` from `hW2 C' Cl e1d e2d D large₂ X Y u u' hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBk (sc s ν) ν (fun _ => 0) γ hγ S Fm hFT hRel hTerm hG5Fm`. Establish `hOKS` using `famOKS_of (NOf2 Y u u' (sc s ν) ν (fun _ => 0)) γ S _ (fun L => L.ampNG) Fm hFT hRel hTerm hDs hrw (hG6 D (four_rank_add_seven_le_k hc)) hG5Fm (hH2 C' Cl e1b e2b D large₂ X Y u u' hc _ _ _ γ Fm hFT) hWpos hWle (htie γ hγ S Fm hFT)`. Conclude with `⟨Fm, (famOK_iff _ _ _ _ _ _).2 hOKS⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem stepFamC_of (hG6 : ∀ D : D7, 4 * D.R.rS + 7 ≤ D.R.k → LocalLowerBoundAllCosets D.R.k D.R.rS 9) (hH : HTie) (hG5 : OrbitFamilyIdentityNonGeneric)
     (hW : WeightsNG) (hG4 : ProductStructureNonGeneric) (hE : ExistNG) : StepFamC := by

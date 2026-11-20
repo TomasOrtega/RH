@@ -13,11 +13,11 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 /- English proof (translation)
-Use `haveI : IsFractionRing 𝒪[F] F := (Valuation.integer.integers (valuation F)).isFractionRing`. Use `haveI : Module.Free F E := L.free`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [L.rank]; norm_num)`. Establish `hc : IsIntegral F c` using `Algebra.IsIntegral.isIntegral c`. Take `⟨⟨m, hm⟩, hmc⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (nonZeroDivisors 𝒪[F]) c hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm0 : m ≠ 0` using `nonZeroDivisors.ne_zero hm`. Take `⟨k, u, hu⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hm0 hϖ`. Use `⟨k, (L.O_def _).2 ?_⟩` and prove the remaining obligations. Establish `h2 : IsIntegral 𝒪[F] ((u : 𝒪[F]) • (m • c))` using `hmc.smul _`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e1 : (ϖ : F) ^ k = ((ϖ ^ k : 𝒪[F]) : F)` using `by push_cast; rfl`. Rewrite using `[e1, ← hu, smul_smul, Algebra.smul_def, IsScalarTower.algebraMap_apply 𝒪[F] F E, mul_comm u.1 m]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem_O [IsNonarchimedeanLocalField F] (L : LocE F E)
     (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) (c : E) :
@@ -38,19 +38,19 @@ theorem exists_pow_mul_mem_O [IsNonarchimedeanLocalField F] (L : LocE F E)
   rfl
 
 /- English proof (translation)
-Establish `hpowO : ∀ j : ℕ, algebraMap F E ((ϖ : F) ^ j) ∈ L.O`. Introduce `j`. Use `(L.O_def _).2 ?_` and prove the remaining obligations. Establish `: algebraMap F E ((ϖ : F) ^ j) = algebraMap 𝒪[F] E (ϖ ^ j)`. Rewrite using `[IsScalarTower.algebraMap_apply 𝒪[F] F E]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `isIntegral_algebraMap`. Establish `hsm : ∀ j : ℕ, ∀ x ∈ Λ, algebraMap F E ((ϖ : F) ^ j) • x ∈ Λ`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j x hx`. Conclude with `Λ.smul_mem (⟨_, hpowO j⟩ : L.O) hx`. Establish `hy : y ∈ Submodule.span E (Λ : Set (Fin n → E))` using `by rw [hΛ.2]; trivial`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨0, by simpa using hx⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨i, hi⟩` from `ha`. Take `⟨j, hj⟩` from `hb`. Use `⟨i + j, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : algebraMap F E ((ϖ : F) ^ (i + j)) • (a + b) = algebraMap F E ((ϖ : F) ^ j) • (algebraMap F E ((ϖ : F) ^ i) • a) + algebraMap F E ((ϖ : F) ^ i) • (algebraMap F E ((ϖ : F) ^ j) • b)`. Simplify using `only [smul_add, smul_smul, ← map_mul, ← pow_add]`. Rewrite using `[add_comm j i]`. Rewrite using `[e]`. Conclude with `Λ.add_mem (hsm j _ hi) (hsm i _ hj)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `smul c x _ hx`. Take `⟨i, hi⟩` from `hx`. Take `⟨k, hk⟩` from `exists_pow_mul_mem_O L ϖ hϖ c`. Use `⟨k + i, ?_⟩` and prove the remaining obligations. Establish `e : algebraMap F E ((ϖ : F) ^ (k + i)) • (c • x) = (algebraMap F E ((ϖ : F) ^ k) * c) • (algebraMap F E ((ϖ : F) ^ i) • x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_smul, pow_add, map_mul]`. Put the polynomial expressions in normal form. Rewrite using `[e]`. Conclude with `Λ.smul_mem (⟨_, hk⟩ : L.O) hi`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem_of_isLat [IsNonarchimedeanLocalField F] (L : LocE F E)
     (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) {n : ℕ} (Λ : Submodule L.O (Fin n → E))

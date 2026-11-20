@@ -13,14 +13,14 @@ section
 variable {k R V : Type} [Field k] [CommRing R] [AddCommGroup V] [Module R V]
 
 /- English proof (translation)
-Rewrite using `[hh.smul_right, hh.symm w (r • w), hh.smul_right, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h_smul_smul {c : R →+* R} {h : V → V → R} (hh : IsHerm c h) (r r' : R) (w : V) :
     h (r • w) (r' • w) = r' * (c r * c (h w w)) := by
   rw [hh.smul_right, hh.symm w (r • w), hh.smul_right, map_mul]
 
 /- English proof (translation)
-Rewrite using `[h_smul_smul hh, map_mul, map_mul, hc, hc, hd]`. Apply the tactic sequence `ext <;> simp [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem phi_h {c : R →+* R} {h : V → V → R} (hh : IsHerm c h) (φ : R ≃+* k × k)
     (hc : ∀ r, φ (c r) = (φ r).swap) (r r' : R) (w : V) (δ : k) (hd : φ (h w w) = (δ, δ)) :
@@ -29,9 +29,9 @@ theorem phi_h {c : R →+* R} {h : V → V → R} (hh : IsHerm c h) (φ : R ≃+
   ext <;> simp [mul_assoc]
 
 /- English proof (translation)
-Establish `h1` using `hh.smul_right r w w`. Establish `h2` using `hh.smul_right 0 w w`. Rewrite `h1` using `[h0]`. Rewrite `h2` using `[zero_smul, zero_mul]`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hu.mul_left_eq_zero.1 h1.symm`.
+A detailed English derivation is pending.
 -/
 theorem smul_eq_zero_of_unit {c : R →+* R} {h : V → V → R} (hh : IsHerm c h) (w : V)
     (hu : IsUnit (h w w)) (r : R) (h0 : r • w = 0) : r = 0 := by
@@ -43,11 +43,11 @@ theorem smul_eq_zero_of_unit {c : R →+* R} {h : V → V → R} (hh : IsHerm c 
   exact hu.mul_left_eq_zero.1 h1.symm
 
 /- English proof (translation)
-Set `S : Submodule R V` to `{ carrier := {x | ∃ r : R, x = r • w ∧ p r = 0} add_mem' := by`. Introduce and unpack `_ _ ⟨r, rfl, hr⟩ ⟨s, rfl, hs⟩`. Conclude with `⟨r + s, (add_smul _ _ _).symm, by simp [hr, hs]⟩`. Use the proof step `zero_mem' := ⟨0, (zero_smul _ _).symm, map_zero p⟩`. Use the proof step `smul_mem' := by`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `a _ ⟨r, rfl, hr⟩`. Conclude with `⟨a * r, (mul_smul _ _ _).symm, by simp [hr]⟩ }`. Establish `hle : Submodule.span R (L : Set V) ≤ S` using `Submodule.span_le.2 fun x hx => hL x hx`. Rewrite `hle` using `[hspan]`. Take `⟨r, hr, h0⟩ : w ∈ S` from `hle Submodule.mem_top`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 - r) • w = 0` using `by rw [sub_smul, one_smul, ← hr, sub_self]`. Establish `h2 : r = 1` using `(sub_eq_zero.1 (smul_eq_zero_of_unit hh w hu _ h1)).symm`. Rewrite `h0` using `[h2, map_one]`. Conclude with `one_ne_zero h0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_comp_false (p : R →+* k) {c : R →+* R} {h : V → V → R} (hh : IsHerm c h) (w : V)
     (hu : IsUnit (h w w)) (𝔬 : Subring R) (L : Submodule 𝔬 V)
@@ -86,15 +86,15 @@ def lat (O : ValuationSubring k) (φ : R ≃+* k × k) (𝔬 : Subring R)
     · simp only [map_mul, Prod.snd_mul, h2]; ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `_ ⟨r, rfl, ⟨x, hx, h1⟩, y, hy, h2⟩ _ ⟨r', rfl, ⟨x', hx', h1'⟩, y', hy', h2'⟩`. Rewrite using `[h𝔬, phi_h hh φ hc r r' w δ hd, h1, h2, h1', h2']`. Prove the components needed by the constructor for the conclusion. Establish `: a * x' * (b * y) * δ = x' * y`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify `O.mul_mem _ _ hx' hy` using `[this]`. Establish `: b * y' * (a * x) * δ = y' * x`. Combine the equalities or inequalities in the displayed calculation. Simplify `O.mul_mem _ _ hy' hx` using `[this]`.
+Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `_ ⟨r, rfl, ⟨x, hx, h1⟩, y, hy, h2⟩`. Establish `hxy : (φ r).1 * (φ r).2 * δ = x * y`. Rewrite using `[h1, h2]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨φ.symm (x * y, 0), ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h𝔬]`. Simplify using `using O.mul_mem _ _ hx hy`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[phi_h hh φ hc r r w δ hd, map_add, hc]`. Simplify using `only [RingEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `ext`. Simplify using `using hxy`. Simplify `(by rw [mul_comm (φ r).2 (φ r).1]; exact hxy : (φ r).2 * (φ r).1 * δ = x * y)` using `[mul_comm (φ r).1 (φ r).2]`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lat_even {O : ValuationSubring k} {φ : R ≃+* k × k} {c : R →+* R} {𝔬 : Subring R}
     (hc : ∀ r, φ (c r) = (φ r).swap) (h𝔬 : ∀ r, r ∈ 𝔬 ↔ (φ r).1 ∈ O ∧ (φ r).2 ∈ O)
@@ -130,27 +130,27 @@ theorem lat_even {O : ValuationSubring k} {φ : R ≃+* k × k} {c : R →+* R} 
 end
 
 /- English proof (translation)
-Introduce `k R V _ _ _ _ O φ c 𝔬 hc h𝔬 h hh w₀ hw hu L hL α β hmem`. Take `⟨⟨_, hspan⟩, ⟨hint, _⟩, hmax⟩` from `hL`. Establish `hcd : c (h w₀ w₀) = h w₀ w₀` using `(hh.symm w₀ w₀).symm`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hd⟩ : ∃ δ, φ (h w₀ w₀) = (δ, δ) := by`. Establish `h1` using `hc (h w₀ w₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[hcd]`. Conclude with `⟨(φ (h w₀ w₀)).1, Prod.ext rfl (congrArg Prod.fst h1).symm⟩`. Establish `hδ : δ ≠ 0`. Establish `h1 : IsUnit (φ (h w₀ w₀))` using `hu.map φ`. Rewrite `h1` using `[hd, Prod.isUnit_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.1.ne_zero`. Establish `hα : α ≠ 0`. Introduce and unpack `rfl`. Use `span_comp_false ((RingHom.fst k k).comp (φ : R →+* k × k)) hh w₀ hu 𝔬 L hspan fun x hx => ?_` and prove the remaining obligations. Take `⟨r, rfl⟩` from `hw x`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨y, _, hy⟩, _⟩` from `(hmem r).1 hx`. Conclude with `⟨r, rfl, by simpa using hy⟩`. Establish `hβ : β ≠ 0`. Introduce and unpack `rfl`. Use `span_comp_false ((RingHom.snd k k).comp (φ : R →+* k × k)) hh w₀ hu 𝔬 L hspan fun x hx => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨r, rfl⟩` from `hw x`. Take `⟨_, ⟨y, _, hy⟩⟩` from `(hmem r).1 hx`. Conclude with `⟨r, rfl, by simpa using hy⟩`. Use `⟨hα, hβ, ?_⟩` and prove the remaining obligations. Establish `hγ0 : α * β * δ ≠ 0` using `mul_ne_zero (mul_ne_zero hα hβ) hδ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγ : α * β * δ ∈ O`. Establish `h1 : φ.symm (α, 0) • w₀ ∈ L` using `(hmem _).2 ⟨⟨1, O.one_mem, by simp⟩, 0, O.zero_mem, by simp⟩`. Establish `h2 : φ.symm (0, β) • w₀ ∈ L` using `(hmem _).2 ⟨⟨0, O.zero_mem, by simp⟩, 1, O.one_mem, by simp⟩`. Establish `h3` using `(h𝔬 _).1 (hint _ h1 _ h2)`. Rewrite `h3` using `[phi_h hh φ hc _ _ w₀ δ hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4` using `h3.2`. Simplify using `only [RingEquiv.apply_symm_apply] at h4`. Rewrite `h4` using `[mul_comm β α]`. Then use the resulting hypothesis. Establish `hab : α / (α * β * δ) * β * δ = 1`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hle : L ≤ lat O φ 𝔬 h𝔬 w₀ (α / (α * β * δ)) β`. Introduce `v hv`. Take `⟨r, rfl⟩` from `hw v`. Take `⟨⟨x, hx, h1⟩, y, hy, h2⟩` from `(hmem r).1 hv`. Use `⟨r, rfl, ⟨α * β * δ * x, O.mul_mem _ _ hγ hx, ?_⟩, y, hy, h2⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Clear the denominators using the available nonvanishing facts. Establish `hL₂` using `hmax _ (lat_even hc h𝔬 hh w₀ δ hd _ _ hab) hle`. Establish `hmem₂ : φ.symm (α / (α * β * δ), 0) • w₀ ∈ lat O φ 𝔬 h𝔬 w₀ (α / (α * β * δ)) β` using `⟨_, rfl, ⟨1, O.one_mem, by simp⟩, 0, O.zero_mem, by simp⟩`. Take `⟨⟨x, hx, h1⟩, _⟩` from `(hmem _).1 (hL₂ hmem₂)`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingEquiv.apply_symm_apply] at h1`. Use `⟨α * β * δ, hγ, ?_, ?_⟩` and prove the remaining obligations. Establish `h2 : (α * β * δ)⁻¹ = x`. Apply `mul_left_cancel₀ hα` to reduce the goal to its premises. Rewrite using `[← h1, div_eq_mul_inv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[h2]` and apply the resulting hypothesis. Rewrite using `[hd]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unimodular_coords : ∀ {k R V : Type} [Field k] [CommRing R] [AddCommGroup V] [Module R V] (O : ValuationSubring k) (φ : R ≃+* k × k) (c : R →+* R) (𝔬 : Subring R), (∀ r, φ (c r) = (φ r).swap) → (∀ r, r ∈ 𝔬 ↔ (φ r).1 ∈ O ∧ (φ r).2 ∈ O) → ∀ h : V → V → R, IsHerm c h → ∀ w₀ : V, (∀ x, ∃ r : R, x = r • w₀) → IsUnit (h w₀ w₀) → ∀ L : Submodule 𝔬 V, IsMaxEven c 𝔬 h L → ∀ α β : k, (∀ r : R, r • w₀ ∈ L ↔ (∃ x ∈ O, (φ r).1 = α * x) ∧ (∃ y ∈ O, (φ r).2 = β * y)) → α ≠ 0 ∧ β ≠ 0 ∧ ∃ u : k, u ∈ O ∧ u⁻¹ ∈ O ∧ α * β * (φ (h w₀ w₀)).1 = u := by
   intro k R V _ _ _ _ O φ c 𝔬 hc h𝔬 h hh w₀ hw hu L hL α β hmem

@@ -79,7 +79,7 @@ def residOf : Resid (globOf r V0).frame O n :=
   ⟨r.chib, r.chib_open, r.chib_inj, r.polar, r.psib, r.psib_open, r.th, r.th_comm⟩
 
 /- English proof (translation)
-Introduce and unpack `g ⟨⟨γ, ⟨h1, -⟩, rfl⟩, h2⟩`. Conclude with `⟨⟨Subtype.val γ, h1, rfl⟩, h2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem residOf_Ip_le (u : V0.frame.St) : (residOf r).Ip u ≤ r.Ip u := by
   rintro g ⟨⟨γ, ⟨h1, -⟩, rfl⟩, h2⟩

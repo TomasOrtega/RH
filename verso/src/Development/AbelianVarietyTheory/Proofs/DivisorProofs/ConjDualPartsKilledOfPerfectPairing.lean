@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory.DualParts
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite G`. Set `g : H → (G →* U)` to `fun h => (Units.coeHom U).comp (f h)`. Establish `hg : Function.Injective g`. Introduce `a b hab`. Apply `hf` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `MonoidHom.ext fun x => Units.ext ?_` and prove the remaining obligations. Use `congrArg (fun χ : G →* U => χ x) hab` as an intermediate fact. Simplify `this` using `[g]`. Establish `hli : LinearIndependent U (fun h => (g h : G → U))` using `(linearIndependent_monoidHom G U).comp g hg`. Use `haveI : Finite H := hli.finite`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI := Fintype.ofFinite H`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Use `hli.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[Module.finrank_fintype_fun_eq_card]`. Simplify `this` using `[Nat.card_eq_fintype_card]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem card_le_of_injective_chars (G H : Type) [CommGroup G] [Finite G] (U : Type) [CommRing U]
     [IsDomain U] (f : H → (G →* Uˣ)) (hf : Function.Injective f) :
@@ -31,43 +31,39 @@ theorem card_le_of_injective_chars (G H : Type) [CommGroup G] [Finite G] (U : Ty
   simpa [Nat.card_eq_fintype_card] using this
 
 /- English proof (translation)
-Introduce `O _ bar U _ _ M M' _ _ α α' h1 hmul hadd h1' hmul' hadd' hbb e e' he he' hee hee' u w n huw hcop hkill hw hfin`. Establish `hsurj : Function.Surjective bar` using `fun a => ⟨bar a, hbb a⟩`. Establish `hbarbar : (u.map bar).map bar = u`. Rewrite using `[Ideal.map_map]`. Establish `: bar.comp bar = RingHom.id O` using `RingHom.ext hbb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, Ideal.map_id]`. Establish `hsplit : ∀ k : ℕ, ∃ a₀ ∈ u ^ k, ∃ b₀ ∈ (u.map bar) ^ k, a₀ + b₀ = 1`. Introduce `k`. Establish `hc : IsCoprime u (u.map bar)` using `Ideal.isCoprime_iff_sup_eq.2 hcop`. Establish `hs : u ^ k ⊔ (u.map bar) ^ k = ⊤` using `Ideal.isCoprime_iff_sup_eq.1 (hc.pow)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1mem : (1 : O) ∈ u ^ k ⊔ (u.map bar) ^ k` using `by rw [hs]; exact Submodule.mem_top`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 h1mem`. Conclude with `⟨a, ha, b, hb, hab⟩`. Establish `hbar1 : ∀ k, ∀ a ∈ u ^ k, bar a ∈ (u.map bar) ^ k`. Introduce `k a ha`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem bar ha`. Establish `hbar2 : ∀ k, ∀ b ∈ (u.map bar) ^ k, bar b ∈ u ^ k`. Introduce `k b hb`. Use `Ideal.mem_map_of_mem bar hb` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Ideal.map_pow, hbarbar]`. Then use the resulting hypothesis. Establish `hprod : ∀ k, n ≤ k → ∀ a ∈ u ^ k, ∀ b ∈ (u.map bar) ^ k, a * b ∈ (u * u.map bar) ^ n`. Introduce `k hk a ha b hb`. Establish `: a * b ∈ (u * u.map bar) ^ k` using `by rw [mul_pow]; exact Ideal.mul_mem_mul ha hb`. Conclude with `Ideal.pow_le_pow_right hk this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpowle : ∀ (I : Ideal O) (k m : ℕ), m ≤ k → I ^ k ≤ I ^ m` using `fun I k m h => Ideal.pow_le_pow_right h`. Establish `part1 : ∀ x, (∃ m : ℕ, ∀ a ∈ (u.map bar) ^ m, α' a x = 1) → ∀ a ∈ w.map bar, α' a x = 1`. Introduce and unpack `x ⟨m, hm⟩ c hc`. Take `⟨a, ha, rfl⟩` from `(Ideal.mem_map_iff_of_surjective bar hsurj).1 hc`. Apply `he` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_one]`. Use `MonoidHom.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.one_apply, hee, hbb]`. Take `⟨a₀, ha₀, b₀, hb₀, hab⟩` from `hsplit (m + n)`. Establish `hy : y = α a₀ y * α b₀ y` using `by rw [← hadd, hab, h1]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hy, map_mul, map_mul]`. Establish `t1 : e x (α a (α a₀ y)) = 1`. Rewrite using `[← hmul, ← hbb (a * a₀), ← hee, map_mul bar, hmul', hm (bar a₀) (hpowle _ (m + n) m (by omega) (hbar1 _ a₀ ha₀))]`. Simplify using the standard rewrite rules. Establish `t2 : α a (α b₀ y) = 1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hw (α b₀ y) ⟨m + n, fun c hc => ?_⟩ a ha` and prove the remaining obligations. Rewrite using `[← hmul]; exact (hkill _ (hprod (m + n) (by omega) c hc b₀ hb₀)).1 y`. Rewrite using `[t1, t2, map_one, one_mul]`. Use `⟨part1, ?_⟩` and prove the remaining obligations. Take `⟨a₀, ha₀, b₀, hb₀, hab⟩` from `hsplit (n + 1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `A : Subgroup M` to `{ carrier := {y | ∀ a ∈ w, α a y = 1} one_mem' := fun a _ => map_one (α a) mul_mem' := fun {y z} hy hz a ha => by`. Rewrite using `[map_mul, (show ∀ a ∈ w, α a y = 1 from hy) a ha, (show ∀ a ∈ w, α a z = 1 from hz) a ha, one_mul]`. Use the proof step `inv_mem' := fun {y} hy a ha => by`. Rewrite using `[map_inv, (show ∀ a ∈ w, α a y = 1 from hy) a ha, inv_one] }`. Set `B : Subgroup M'` to `{ carrier := {x | ∀ a ∈ w.map bar, α' a x = 1} one_mem' := fun a _ => map_one (α' a) mul_mem' := fun {y z} hy hz a ha => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, (show ∀ a ∈ w.map bar, α' a y = 1 from hy) a ha, (show ∀ a ∈ w.map bar, α' a z = 1 from hz) a ha, one_mul]`. Use the proof step `inv_mem' := fun {y} hy a ha => by`. Rewrite using `[map_inv, (show ∀ a ∈ w.map bar, α' a y = 1 from hy) a ha, inv_one] }`. Establish `hu1 : u ^ (n + 1) ≤ u` using `Ideal.pow_le_self (by omega)`. Establish `hub1 : (u.map bar) ^ (n + 1) ≤ u.map bar` using `Ideal.pow_le_self (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `F1 : ∀ y, α b₀ y ∈ A`. Introduce `y`. Use `hw (α b₀ y) ⟨n + 1, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[← hmul]; exact (hkill _ (hprod (n + 1) (by omega) c hc b₀ hb₀)).1 y`. Establish `F2 : ∀ x ∈ B, α' (bar a₀) x = 1` using `fun x hx => hx _ (Ideal.map_mono huw (hub1 (hbar1 _ a₀ ha₀)))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `E1 : ∀ x ∈ B, ∀ y, e x y = e x (α b₀ y)`. Introduce `x hx y`. Use `conv_lhs => rw [← h1 y, ← hab, hadd, map_mul]`. Rewrite using `[← hbb a₀, ← hee, F2 x hx]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `F3 : ∀ x, α' a₀ x ∈ B`. Introduce `x`. Use `part1 (α' a₀ x) ⟨n + 1, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[← hmul', mul_comm]; exact (hkill _ (hprod (n + 1) (by omega) a₀ ha₀ c hc)).2 x`. Establish `F4 : ∀ y ∈ A, α (bar b₀) y = 1` using `fun y hy => hy _ (huw (hu1 (hbar2 _ b₀ hb₀)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `E2 : ∀ y ∈ A, ∀ x, e' y x = e' y (α' a₀ x)`. Introduce `y hy x`. Use `conv_lhs => rw [← h1' x, ← hab, hadd', map_mul]`. Rewrite using `[← hbb b₀, ← hee', F4 y hy]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Finite A := hfin`. Establish `hAB : Finite B ∧ Nat.card B ≤ Nat.card A`. Use `card_le_of_injective_chars A B U (fun x => (e x.1).comp A.subtype) ?_` and prove the remaining obligations. Introduce `x₁ x₂ h`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `he` to reduce the goal to its premises. Use `MonoidHom.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[E1 x₁.1 x₁.2, E1 x₂.1 x₂.2]`. Conclude with `congrArg (fun χ : A →* Uˣ => χ ⟨α b₀ y, F1 y⟩) h`. Use `haveI : Finite B := hAB.1`.
-
-Establish `hBA : Finite A ∧ Nat.card A ≤ Nat.card B`. Use `card_le_of_injective_chars B A U (fun y => (e' y.1).comp B.subtype) ?_` and prove the remaining obligations. Introduce `y₁ y₂ h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `he'` to reduce the goal to its premises.
-
-Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[E2 y₁.1 y₁.2, E2 y₂.1 y₂.2]`. Conclude with `congrArg (fun χ : B →* Uˣ => χ ⟨α' a₀ x, F3 x⟩) h`. Conclude with `le_antisymm hAB.2 hBA.2`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_dual_parts : ∀ (O : Type) [CommRing O] (bar : O →+* O) (U : Type) [CommRing U] [IsDomain U] (M M' : Type) [CommGroup M] [CommGroup M'] (α : O → M →* M) (α' : O → M' →* M'), (∀ y, α 1 y = y) → (∀ a b y, α (a * b) y = α a (α b y)) → (∀ a b y, α (a + b) y = α a y * α b y) → (∀ x, α' 1 x = x) → (∀ a b x, α' (a * b) x = α' a (α' b x)) → (∀ a b x, α' (a + b) x = α' a x * α' b x) → (∀ a, bar (bar a) = a) → ∀ (e : M' →* M →* Uˣ) (e' : M →* M' →* Uˣ), Function.Injective e → Function.Injective e' → (∀ a x y, e (α' a x) y = e x (α (bar a) y)) → (∀ a y x, e' (α a y) x = e' y (α' (bar a) x)) → ∀ (u w : Ideal O) (n : ℕ), u ≤ w → u ⊔ u.map bar = ⊤ → (∀ a ∈ (u * u.map bar) ^ n, (∀ y, α a y = 1) ∧ ∀ x, α' a x = 1) → (∀ y, (∃ m : ℕ, ∀ a ∈ u ^ m, α a y = 1) → ∀ a ∈ w, α a y = 1) → Finite {y : M // ∀ a ∈ w, α a y = 1} → (∀ x, (∃ m : ℕ, ∀ a ∈ (u.map bar) ^ m, α' a x = 1) → ∀ a ∈ w.map bar, α' a x = 1) ∧ Nat.card {x : M' // ∀ a ∈ w.map bar, α' a x = 1} = Nat.card {y : M // ∀ a ∈ w, α a y = 1} := by
   intro O _ bar U _ _ M M' _ _ α α' h1 hmul hadd h1' hmul' hadd' hbb e e' he he' hee hee' u w n huw hcop

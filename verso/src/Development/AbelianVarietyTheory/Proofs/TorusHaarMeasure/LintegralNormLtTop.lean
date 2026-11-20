@@ -15,9 +15,9 @@ namespace GlobalTheory.IntegralToOrder
 open Filter Metric
 
 /- English proof (translation)
-Establish `hsk : ∀ k, ∃ C : ℝ, ∀ᶠ z in 𝓝 (0 : V n), ‖s k z‖ ≤ C * ‖z‖` using `fun k => by`. Establish `h` using `(hs k).hasFDerivAt.isBigO_sub`. Simplify using `only [hs0 k, sub_zero] at h`. Conclude with `h.bound`. Use `choose C hC using hsk`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `⟨∑ k, C k ^ 2 + 1, by positivity, ?_⟩` and prove the remaining obligations. Use `filter_upwards [eventually_all.mpr hC] with z hz`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]; exact Finset.sum_congr rfl fun k _ => by ring`. Use `_ ≤ _ := by nlinarith [sq_nonneg ‖z‖]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_sq_upper {n m : ℕ} {s : Fin m → V n → ℂ} (hs : ∀ k, DifferentiableAt ℂ (s k) 0)
     (hs0 : ∀ k, s k 0 = 0) :
@@ -36,17 +36,15 @@ theorem sum_sq_upper {n m : ℕ} {s : Fin m → V n → ℂ} (hs : ∀ k, Differ
     _ ≤ _ := by nlinarith [sq_nonneg ‖z‖]
 
 /- English proof (translation)
-Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff_ball.1 (hlo.and hup)`. Establish `: Nontrivial (V n)` using `⟨⟨EuclideanSpace.single ⟨0, hn⟩ (1 : ℂ), 0, by`. Introduce `h`. Establish `h1` using `congrArg (fun v : V n => v ⟨0, hn⟩) h`. Simplify using `at h1⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨min (min ε ρ) δ, lt_min (lt_min hε hρ) hδ, min_le_right _ _, ?_⟩` and prove the remaining obligations. Establish `hfin : ENNReal.ofReal (B ^ e) * ∫⁻ z in ball (0 : V n) ρ, ENNReal.ofReal (‖g z‖ ^ 2 * S z ^ (-e)) < ⊤` using `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hint`. Use `lt_of_le_of_lt ?_ hfin` and prove the remaining obligations. Rewrite using `[← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `le_trans ?_ (lintegral_mono_set (ball_subset_ball ((min_le_left _ δ).trans (min_le_right ε ρ))))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_mono_ae ?_` and prove the remaining obligations. Establish `h0 : ∀ᵐ z ∂(volume.restrict (ball (0 : V n) (min (min ε ρ) δ))), z ≠ 0` using `ae_restrict_of_ae (compl_mem_ae_iff.2 (measure_singleton (0 : V n)))`. Use `filter_upwards [h0, ae_restrict_mem measurableSet_ball] with z hz0 hz`. Take `⟨h1, h2⟩` from `hball z (ball_subset_ball ((min_le_left _ δ).trans (min_le_left ε ρ)) hz)`. Establish `hz : 0 < ‖z‖` using `norm_pos_iff.2 hz0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSz : 0 < S z` using `lt_of_lt_of_le (by positivity) h1`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `h3 : (B * ‖z‖ ^ 2) ^ (-e) ≤ S z ^ (-e)` using `Real.rpow_le_rpow_of_nonpos hSz h2 (by linarith)`. Establish `h4 : B ^ e * (B * ‖z‖ ^ 2) ^ (-e) = (‖z‖ ^ 2) ^ (-e)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.mul_rpow hB.le (by positivity), ← mul_assoc, ← Real.rpow_add hB]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h4]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ ≤ B ^ e * (‖g z‖ ^ 2 * S z ^ (-e)) := by gcongr`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lintegral_norm_lt_top {n : ℕ} (hn : 0 < n) {g : V n → ℂ} {S : V n → ℝ} {c B e ρ δ : ℝ}
     (hc : 0 < c) (hB : 0 < B) (he : 0 ≤ e) (hρ : 0 < ρ) (hδ : 0 < δ)
@@ -91,17 +89,15 @@ end GlobalTheory.IntegralToOrder
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ r X Xa Fl a g hg hV j`. Establish `hn : 0 < nd X` using `lt_of_lt_of_le (by norm_num) Xa.n_ge`. Establish `hw0 : X.IsSec Xa.L Fl.w0` using `Fl.weightForm_vanishes.1.1.1`. Establish `hs : ∀ k, X.IsSec Xa.L (Fl.s k)` using `fun k => (Fl.s_van k).1.1.1`. Establish `hs0 : ∀ k, Fl.s k (Fl.xs j) = 0` using `(Fl.S_eq _ (Fl.xs_mem j)).2 ⟨j, 1, X.Γ.one_mem, ExtFPf.oneF X, ExtFPf.oneF_mem X, by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[FundSetPf.lact_one, ExtFPf.rmul_oneF]⟩`. Establish `hdom : X.dom ∈ 𝓝 (cpt X (Fl.xs j) 0)`. Rewrite using `[IW.cpt_zero]`. Conclude with `(FourierCoefficientDomain.isOpen_dom X).mem_nhds (Fl.xs_mem j)`. Establish `hcd : Differentiable ℂ (cpt X (Fl.xs j))` using `IW.cpt_diff X (Fl.xs j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hat : ∀ P : Frame X.Ψ r → ℂ, DifferentiableOn ℂ P X.dom → DifferentiableAt ℂ (fun z : V (nd X) => P (cpt X (Fl.xs j) z)) 0` using `fun P hP => (hP.differentiableAt hdom).comp 0 (hcd 0)`. Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Simplify using `only [pow_zero]`. Conclude with `(hat g hg).continuousAt.tendsto.isBigO_one ℝ`. Take `⟨δ, hδ, hsub⟩` from `Metric.mem_nhds_iff.1 (hcd.continuous.continuousAt.preimage_mem_nhds hdom)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hgd : DifferentiableOn ℂ (fun z : V (nd X) => g (cpt X (Fl.xs j) z)) (Metric.ball 0 δ)` using `hg.comp hcd.differentiableOn fun z hz => hsub hz`. Take `⟨c, hc, hlo⟩` from `OrderToIntegral.sum_sq_lower (w := fun z => Fl.w0 (cpt X (Fl.xs j) z)) (s := fun k z => Fl.s k (cpt X (Fl.xs j) z)) hn (hat _ hw0.1).continuousAt (by simpa only [IW.cpt_zero] using Fl.w0_ne j) (by simpa only [IW.cpt_zero] using hs0) (Fl.coord j)`. Take `⟨B, hB, hup⟩` from `IntegralToOrder.sum_sq_upper (s := fun k z => Fl.s k (cpt X (Fl.xs j) z)) (fun k => hat _ (hs k).1) (by simpa only [IW.cpt_zero] using hs0)`. Take `⟨ρ, hρ, hint⟩` from `hV j`. Establish `ha1 : (1 : ℝ) ≤ a` using `by exact_mod_cast ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hn0 : (0 : ℝ) ≤ nd X` using `Nat.cast_nonneg _`. Take `⟨ε, hε, hεδ, hint'⟩` from `IntegralToOrder.lintegral_norm_lt_top (g := fun z => g (cpt X (Fl.xs j) z)) hn hc hB (by linarith) hρ hδ hlo hup hint`. Establish `hexp : (a : ℝ) + (nd X : ℝ) - 1 / 2 = ((a : ℝ) - 1 / 2) + (nd X : ℝ)` using `by ring`. Rewrite `hint'` using `[hexp]`. Establish `hgε` using `hgd.mono (Metric.ball_subset_ball hεδ)`.
-
-Take `⟨C, η, hη, hb⟩` from `GlobalTheory.T.holomorphic_bound_of_weighted_L2 (nd X) _ ε ((a : ℝ) - 1 / 2) hε (by linarith) hgε hint'`. Conclude with `GlobalTheory.T.holomorphic_isBigO_of_half_power_bound (nd X) a _ (min ε η) C hn (lt_min hε hη) (hgε.mono (Metric.ball_subset_ball (min_le_left _ _))) fun z hz0 hz => hb z hz0 (lt_of_lt_of_le hz (min_le_right _ _))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isBigO_of_vanS : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r)
     (Xa : ArchInM X) (Fl : FlatM X Xa) (a : ℕ) (g : Frame X.Ψ r → ℂ), DifferentiableOn ℂ g X.dom →

@@ -11,9 +11,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 namespace GlobalTheory.CompanionTheory.Ar.LieExact
 
 /- English proof (translation)
-Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two]`. Use `le_bot_iff.mp (Ideal.mul_le.mpr fun a ha b hb => ?_)` and prove the remaining obligations. Establish `ha' : TrivSqZeroExt.fst a = 0` using `by rw [← h]; exact ha`. Establish `hb' : TrivSqZeroExt.fst b = 0` using `by rw [← h]; exact hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: a * b = 0`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.fst_mul, TrivSqZeroExt.snd_mul, ha', hb']`. Simplify using `[this]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem ker_fst_isNilpotent {R A : Type} [CommRing R] [CommRing A] [Algebra R A]
     [Algebra R (DualNumber A)] (π : DualNumber A →ₐ[R] A)
@@ -28,11 +28,11 @@ theorem ker_fst_isNilpotent {R A : Type} [CommRing R] [CommRing A] [Algebra R A]
   simp [this]
 
 /- English proof (translation)
-Set `π : CommRingCat.of (DualNumber A) ⟶ CommRingCat.of A` to `CommRingCat.ofHom (TrivSqZeroExt.fstHom A A A).toRingHom`. Establish `hloc : IsLocalHom π.hom` using `⟨fun b hb => TrivSqZeroExt.isUnit_iff_isUnit_fst.mpr hb⟩`. Take `⟨U, V, hU, hV, hVU, -, hxV⟩` from `GlobalTheory.exists_isAffineOpen_pair f (x₀ (IsLocalRing.closedPoint (CommRingCat.of A))) (O := ⊤) trivial`. Use `GlobalTheory.exists_lift_of_smooth_of_isAffineOpen f hU hV hVU π s x₀ h (GlobalTheory.range_subset_opens_of_isLocalRing s ?_) (GlobalTheory.range_subset_opens_of_isLocalRing x₀ hxV) ?_` and prove the remaining obligations. Establish `e : f (x₀ (IsLocalRing.closedPoint (CommRingCat.of A))) = s (Spec.map π (IsLocalRing.closedPoint (CommRingCat.of A)))` using `congr($h (IsLocalRing.closedPoint (CommRingCat.of A)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Spec_closedPoint (f := π), ← e]`. Conclude with `hVU hxV`. Introduce `R B _ _ _ _ _ _ π' hπ' φ`. Establish `hsurj : Function.Surjective π'` using `fun a => ⟨TrivSqZeroExt.inl a, by rw [hπ']; rfl⟩`. Establish `hnil` using `ker_fst_isNilpotent π' (fun b => by rw [hπ']; rfl)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨Algebra.FormallySmooth.liftOfSurjective φ π' hsurj hnil, Algebra.FormallySmooth.comp_liftOfSurjective φ π' hsurj hnil⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift_dual {X S : Scheme.{0}} (f : X ⟶ S) [Smooth f] (A : Type) [Field A]
     (s : Spec (CommRingCat.of (DualNumber A)) ⟶ S) (x₀ : Spec (CommRingCat.of A) ⟶ X)
@@ -60,7 +60,7 @@ theorem exists_lift_dual {X S : Scheme.{0}} (f : X ⟶ S) [Smooth f] (A : Type) 
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Simplify using `[Hom.one_def, IsMonHom.one_hom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_comp_hom {M N T : Over S} [GrpObj M] [GrpObj N] (f : M ⟶ N) [IsMonHom f] :
     (1 : T ⟶ M) ≫ f = 1 := by
@@ -74,7 +74,7 @@ noncomputable def zeroSec {R : Type} [CommRing R] (x : Spec (CommRingCat.of R) �
     rw [this]; simp)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Over.OverMorphism.ext h, fun h => congrArg (fun t : Over.mk x ⟶ G => t.left) h⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTanAt_iff {R : Type} [CommRing R] (x : Spec (CommRingCat.of R) ⟶ S) (G : Over S) [GrpObj G]
     (v : epsAt x ⟶ G) : IsTanAt G x v ↔ zeroSec x ≫ v = 1 :=
@@ -85,15 +85,15 @@ end GlobalTheory.CompanionTheory.Ar.LieExact
 open GlobalTheory.CompanionTheory.Ar.LieExact in
 
 /- English proof (translation)
-Introduce `K _ G _ τ`. Use `letI := τ.addCommGroup`. Use `letI := τ.grpB`. Introduce `A _ c`. Establish `hq : IsMonHom τ.q` using `τ.q_hom`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hi : IsMonHom τ.i` using `τ.i_hom`. Use `⟨fun v hv => ⟨fun h => ?_, ?_⟩, fun w hw => ?_⟩` and prove the remaining obligations. Establish `sq : v ≫ τ.q = toUnit _ ≫ η` using `h.trans Hom.one_def`. Use `⟨τ.isKernel.lift v (toUnit _) sq, ?_, τ.isKernel.lift_fst _ _ _⟩` and prove the remaining obligations. Rewrite using `[isTanAt_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `τ.isKernel.hom_ext ?_ (toUnit_unique _ _)` and prove the remaining obligations. Rewrite using `[Category.assoc, τ.isKernel.lift_fst, one_comp_hom, (isTanAt_iff _ _ _).mp hv]`. Introduce and unpack `⟨w, -, rfl⟩`. Rewrite using `[Category.assoc, τ.isKernel.w, ← Category.assoc, toUnit_unique (w ≫ toUnit _) (toUnit _), Hom.one_def]`. Take `⟨hs, -⟩` from `GlobalTheory.torusExtension_smooth_geometricallyConnected G τ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx1, hx2⟩` from `exists_lift_dual τ.q.left A w.left (1 : Over.mk (spMap c) ⟶ G).left (by`. Establish `h1 : ((1 : Over.mk (spMap c) ⟶ G) ≫ τ.q).left = (1 : Over.mk (spMap c) ⟶ τ.B).left`. Rewrite using `[one_comp_hom]`. Rewrite `h1` using `[Over.comp_left]`. Conclude with `h1.trans hw.symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Over.homMk x ?_, hx1, Over.OverMorphism.ext hx2⟩` and prove the remaining obligations. Rewrite using `[← Over.w τ.q, ← Category.assoc, hx2, Over.w w]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.LieExact.lie_exact_field : ∀ (K : Type) [Field K] (G : Over (Sp K)) [GrpObj G] (τ : TorusExtension G), letI := τ.addCommGroup; letI := τ.grpB; ∀ (A : Type) [Field A] (c : K →+* A), (∀ v : epsAt (spMap c) ⟶ G, IsTanAt G _ v → (v ≫ τ.q = 1 ↔ ∃ w : epsAt (spMap c) ⟶ splitTorus (Sp K) τ.X, IsTanAt _ _ w ∧ w ≫ τ.i = v)) ∧ ∀ w : epsAt (spMap c) ⟶ τ.B, IsTanAt τ.B _ w → ∃ v : epsAt (spMap c) ⟶ G, IsTanAt G _ v ∧ v ≫ τ.q = w := by
   intro K _ G _ τ

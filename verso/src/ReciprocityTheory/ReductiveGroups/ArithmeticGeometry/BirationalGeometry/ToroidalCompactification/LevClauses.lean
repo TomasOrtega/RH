@@ -10,13 +10,13 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open scoped CategoryTheory.Obj
 
 /- English proof (translation)
-Establish `hfin : (irreducibleComponents X).Finite` using `NoetherianSpace.finite_irreducibleComponents`. Establish `key : (connectedComponent x)ᶜ = ⋃₀ {Z | Z ∈ irreducibleComponents X ∧ Disjoint Z (connectedComponent x)}`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨irreducibleComponent y, ⟨irreducibleComponent_mem_irreducibleComponents y, ?_⟩, mem_irreducibleComponent⟩` and prove the remaining obligations. Rewrite using `[Set.disjoint_left]`. Introduce `z hz hzx`. Apply `hy` to reduce the goal to its premises. Establish `hirr : IsIrreducible (irreducibleComponent y)` using `isIrreducible_irreducibleComponent`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hsub : irreducibleComponent y ⊆ connectedComponent z` using `IsPreconnected.subset_connectedComponent (IsPreirreducible.isPreconnected hirr.2) hz`. Rewrite using `[connectedComponent_eq hzx]`. Conclude with `hsub mem_irreducibleComponent`. Introduce and unpack `⟨Z, ⟨_, hdisj⟩, hyZ⟩ hyx`. Conclude with `Set.disjoint_left.mp hdisj hyZ hyx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcl : IsClosed (connectedComponent x)ᶜ`. Rewrite using `[key, Set.sUnion_eq_biUnion]`. Conclude with `Set.Finite.isClosed_biUnion (hfin.subset fun Z hZ => hZ.1) fun Z hZ => isClosed_of_mem_irreducibleComponents Z hZ.1`. Conclude with `isClosed_compl_iff.mp hcl`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_component {X : Type} [TopologicalSpace X] [NoetherianSpace X] (x : X) : IsOpen (connectedComponent x) := by
   have hfin : (irreducibleComponents X).Finite := NoetherianSpace.finite_irreducibleComponents
@@ -46,9 +46,7 @@ theorem isOpen_component {X : Type} [TopologicalSpace X] [NoetherianSpace X] (x 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} (Xo : Moduli D l)
 
 /- English proof (translation)
-Take `⟨N, i, hi, -, hs⟩` from `Xo.qproj`. Use `haveI := hi`. Use `haveI := isProper_str (KA l) N`. Use `haveI : LocallyOfFiniteType Xo.s := by`. Rewrite using `[← hs]`.
-
-Use `infer_instance`. Conclude with `LocallyOfFiniteType.isLocallyNoetherian Xo.s`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moduli_noeth : IsLocallyNoetherian Xo.X := by
   obtain ⟨N, i, hi, -, hs⟩ := Xo.qproj
@@ -60,24 +58,24 @@ theorem moduli_noeth : IsLocallyNoetherian Xo.X := by
   exact LocallyOfFiniteType.isLocallyNoetherian Xo.s
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Xo.univ.t.semi.comm, Xo.univ.t.semi.smooth, Xo.univ.proper, Xo.univ.t.semi.geomConnected⟩`.
+Supply the required witnesses or components.
 -/
 theorem univ_isAb : IsAbelianScheme Xo.univ.t.G :=
   ⟨Xo.univ.t.semi.comm, Xo.univ.t.semi.smooth, Xo.univ.proper, Xo.univ.t.semi.geomConnected⟩
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Use `moduli_noeth Xo` as an intermediate fact. Establish `loc : ∀ y : Xo.univ.t.G.left, ∃ (Y : Scheme.{0}) (φ : Y ⟶ Xo.univ.t.G.left) (m : Y ⟶ Y), IsOpenImmersion φ ∧ (∃ z : Y, φ z = y) ∧ IsPullback φ m (mulA Xo.univ.t.G N).left φ ∧ IsFinite m ∧ Flat m ∧ Surjective m` using `fun y => by`. Take `⟨U, hU, hy, -⟩` from `exists_isAffineOpen_mem_and_subset (X := Xo.X) (U := ⊤) (x := Xo.univ.t.G.hom y) trivial`. Establish `: IsAffine U` using `hU`. Establish `: IsNoetherian U.toScheme` using `{}`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: NoetherianSpace U.toScheme` using `inferInstance`. Set `V : U.toScheme.Opens` to `⟨_, isOpen_component (X := U.toScheme) ⟨_, hy⟩⟩`. Establish `: ConnectedSpace V.toScheme` using `isConnected_iff_connectedSpace.1 isConnected_connectedComponent`. Take `⟨t, ⟨m⟩⟩` from `exists_sab (V.ι ≫ U.ι) Xo.univ.t`. Use `t.semi.smooth` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `t.semi.geomConnected` as an intermediate fact. Take `⟨w, gw', -⟩` from `m.lin`. Establish `: ConnectedSpace t.G.left` using `GeometricallyConnected.connectedSpace t.G.hom t.G.hom.isOpenMap`. Take `⟨z, hz, -⟩` from `Scheme.exists_preimage_of_isPullback m.cart.1 y ⟨⟨_, hy⟩, mem_connectedComponent⟩ rfl`. Take `⟨d, hd⟩` from `exists_dim_of_preconnected t.G.hom z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, ws, gs', -⟩` from `t.sym`. Take `⟨a, b, c, -⟩` from `hM _ { A := t.G, g := d, smoothDim := hd, L := t.PP.L, isLB := t.PP.isLB ample := relAmple_pull m.cart.1 Xo.univ.t.PP.isLB t.PP.isLB ((isGen_iff w).1 gw') U hU (fun y => (V.ι y).2) Xo.univ.ample ktriv := kTriv_pull m.cart Xo.univ.t.PP.isLB t.PP.isLB ((isGen_iff w).1 gw') Xo.univ. …`. Establish `sq : m.φ ≫ (mulA Xo.univ.t.G N).left = (mulA t.G N).left ≫ m.φ`. Establish `e` using `congrArg (fun q => q.left) (map_pow (pushHom m.cart t.G) (𝟙 t.G) N)`. Establish `e'` using `congrArg (fun q => q.left) (MonObj.comp_pow (𝟙 Xo.univ.t.G) N (pushHom m.cart t.G (𝟙 t.G)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e'` using `[Category.comp_id]`. Conclude with `(congrArg (· ≫ _) (Category.id_comp m.φ).symm).trans (e'.trans e.symm)`. Conclude with `⟨_, m.φ, _, MorphismProperty.of_isPullback (P := @IsOpenImmersion) m.cart.1.flip inferInstance, ⟨z, hz⟩, (IsPullback.of_bot (by rw [Over.w, Over.w]; exact m.cart.1) sq m.cart.1), a, b, c⟩`. Use `choose Y φ m o c H a b s using loc`. Set `𝒰 : Xo.univ.t.G.left.OpenCover` to `Scheme.Cover.mkOfCovers (P := @IsOpenImmersion) _ Y φ (fun y => ⟨y, c y⟩) o`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `key : ∀ (P : MorphismProperty Scheme.{0}) [IsZariskiLocalAtTarget P], (∀ y, P (m y)) → P (mulA Xo.univ.t.G N).left` using `fun P _ h => IsZariskiLocalAtTarget.of_openCover (𝒰 := 𝒰) fun y => show P (pullback.snd (mulA Xo.univ.t.G N).left (φ y)) from (H y).isoPullback_inv_snd ▸ (P.cancel_left_of_respectsIso (H y).isoPullback.inv (m y)).2 (h y)`. Conclude with `⟨key @IsFinite.{0} a, key @Flat.{0} b, key @Surjective.{0} s⟩`.
+A detailed English derivation is pending.
 -/
 theorem mulNFin (hM : MulNSt) {N : ℕ} (hN : 1 ≤ N) :
     IsFinite (mulA Xo.univ.t.G N).left ∧ Flat (mulA Xo.univ.t.G N).left ∧ Surjective (mulA Xo.univ.t.G N).left := by
@@ -121,14 +119,14 @@ theorem mulNFin (hM : MulNSt) {N : ℕ} (hN : 1 ≤ N) :
   exact ⟨key @IsFinite.{0} a, key @Flat.{0} b, key @Surjective.{0} s⟩
 
 /- English proof (translation)
-The claim follows from `exists_symLift_odd Xo.univ.t.cub hG (univ_isAb Xo) Xo.univ.t.sym t (k := N ^ 2) (by push_cast; rfl) hN.pow hN.pow ht ht`.
+A detailed English derivation is pending.
 -/
 theorem symLiftN (hG : GlobalFnsSt) {N : ℕ} (hN : Odd N) {T : Over Xo.X} (t : T ⟶ Xo.univ.t.G) (ht : t ^ (N ^ 2) = 1) :
     ∃ U : ThetaGrp Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) T, SymLift Xo.univ.t.G Xo.univ.t.PP.L ((N : ℤ) ^ 2) (N ^ 2) t U :=
   exists_symLift_odd Xo.univ.t.cub hG (univ_isAb Xo) Xo.univ.t.sym t (k := N ^ 2) (by push_cast; rfl) hN.pow hN.pow ht ht
 
 /- English proof (translation)
-Establish `: IsMonHom (mulA Xo.univ.t.G N)` using `isMonHom_of_mul _ fun _ x y => by`. Simplify using `only [mulA, MonObj.comp_pow, Category.comp_id, mul_pow]`. Take `⟨α, hα, v⟩` from `exists_norm (L := Xo.univ.t.PP) (mulA Xo.univ.t.G N) (a := N ^ 2) (b := 1) (a' := (N : ℤ) ^ 2) (b' := 1) (by push_cast; rfl) rfl ((genOf_pow Xo.univ.t.cub Xo.univ.t.sym (𝟙 _) N).congr fun _ _ h => by rw [pow_one]; rfl)`. Conclude with `⟨α, hα, corr_of_val Xo.univ.t.PP.isLB fun y I hI => ((val_pull hI _ _ _).trans (v y I hI)).trans (((val_mul hI _ _ _).trans (congrArg₂ (· * ·) (map_zpow _ _ _) (val_inv _ _))).trans (by rw [zpow_sub, zpow_one]; rfl)).symm⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem normMulN (N : ℕ) : ∃ α₀ : LB.Gen (LB.LinComb Xo.univ.t.PP.L (K := Fin 2)
     ![𝟙 Xo.univ.t.G.left, (mulA Xo.univ.t.G N).left] ![(N : ℤ) ^ 2, -1]), α₀.IsGen ∧
@@ -141,15 +139,15 @@ theorem normMulN (N : ℕ) : ∃ α₀ : LB.Gen (LB.LinComb Xo.univ.t.PP.L (K :=
     (((val_mul hI _ _ _).trans (congrArg₂ (· * ·) (map_zpow _ _ _) (val_inv _ _))).trans (by rw [zpow_sub, zpow_one]; rfl)).symm⟩
 
 /- English proof (translation)
-Use `Xo.smooth` as an intermediate fact. Establish `: Smooth Xo.s` using `SmoothOfRelativeDimension.smooth D.dim _`. Establish `: IsReduced Xo.X` using `isReduced_of_smooth Xo.s`. Use `Xo.univ.proper` as an intermediate fact. Establish `: IsReduced (𝟙_ (Over Xo.X)).left` using `‹IsReduced Xo.X›`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.1 (show (1 : 𝓞 E) ∈ l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) from l.coprime ▸ Submodule.mem_top)`. Establish `ea : Xo.univ.eta a = Xo.univ.eta (v • a)` using `by conv_lhs => rw [← one_smul (𝓞 E) a, ← huv, add_smul, Xo.univ.eta_add, Xo.univ.eta_ker _ (Submodule.smul_mem_smul hu Submodule.mem_top), _root_.one_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : ∃ q : 𝓞 E, r * v = q * l.M := by`. Take `⟨q, hq⟩` from `Ideal.mem_span_singleton'.1 (l.prod ▸ Ideal.mul_mem_mul hr hv)`. Conclude with `⟨q, hq.symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `Over.OverMorphism.ext (ext_of_fromSpecResidueField_eq _ _ Xo.univ.t.G.hom Set.univ dense_univ (fun x _ => ?_) ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Set `k` to `AlgebraicClosure (Xo.X.residueField x)`. Set `i : Sp k ⟶ Spec (Xo.X.residueField x)` to `Spec.map (CommRingCat.ofHom (algebraMap (Xo.X.residueField x) k))`. Establish `: Flat i` using `(HasRingHomProperty.Spec_iff (P := @Flat)).2 (RingHom.flat_algebraMap_iff.2 inferInstance)`. Establish `: Surjective i` using `⟨fun z => ⟨⟨⊥, Ideal.isPrime_bot⟩, Subsingleton.elim (α := PrimeSpectrum _) _ _⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Epi i` using `Flat.epi_of_flat_of_surjective _`. Take `⟨-, I, -, -, hη⟩` from `Xo.univ.geom k (i ≫ Xo.X.fromSpecResidueField x) (Spec.preimage ((i ≫ Xo.X.fromSpecResidueField x) ≫ Xo.s)).hom (Spec.map_preimage _).symm`. Establish `e : (toUnit (Over.mk (i ≫ Xo.X.fromSpecResidueField x)) ≫ Xo.univ.eta a) ≫ Xo.univ.t.act.act r = 1`. Rewrite using `[ea, hη _ (Submodule.smul_mem_smul hv Submodule.mem_top), ← I.lin, smul_smul, hq]`. Conclude with `(I.ker _ (by have := l.three_le; omega) _).2 ⟨q • a, by rw [mul_comm, mul_smul, Nat.cast_smul_eq_nsmul]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_epi i, ← Category.assoc, ← Category.assoc]`. Conclude with `(congrArg (fun q => q.left) ((Category.assoc _ _ _).symm.trans (e.trans (MonObj.comp_one (toUnit _)).symm)))`.
+A detailed English derivation is pending.
 -/
 theorem etaKill (a : D.La) (r : 𝓞 E) (hr : r ∈ l.Mb) : Xo.univ.eta a ≫ Xo.univ.t.act.act r = 1 := by
   have := Xo.smooth

@@ -3,25 +3,23 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `F : (ι → K) → (ι → ℂ)` to `fun v i => f (v i)`. Establish `hFinj : Function.Injective F`. Introduce `v w hvw`. Use function extensionality and compare the values at `i`. Conclude with `f.injective (congrFun hvw i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `choose G hG using h`. Establish `hG' : ∀ v, u (F v) = F (G v)` using `hG`. Establish `hFadd : ∀ v w, F (v + w) = F v + F w`. Introduce `v w`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[F]`. Establish `hFsmul : ∀ (c : K) v, F (c • v) = f c • F v`. Introduce `c v`. Use function extensionality and compare the values at `i`. Simplify using `[F]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Set `Gl : (ι → K) →ₗ[K] (ι → K)` to `{ toFun := G map_add' := fun v w => hFinj (by rw [← hG', hFadd, map_add, hG', hG', hFadd]) map_smul' := fun c v => hFinj (by`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[← hG', hFsmul, map_smul, hG', hFsmul]) }`. Establish `hGl : ∀ v, Gl v = G v` using `fun _ => rfl`. Establish `hinj : Function.Injective Gl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `v w hvw`. Apply `hFinj` to reduce the goal to its premises. Apply `u.injective` to reduce the goal to its premises. Rewrite using `[hG', hG']`. Conclude with `congrArg F hvw`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `g : (ι → K) ≃ₗ[K] (ι → K)` to `LinearEquiv.ofInjectiveEndo Gl hinj`. Establish `hg : ∀ v, g v = G v` using `fun v => by`. Simplify using `[g, hGl]`. Establish `hsingle : ∀ j : ι, F (Pi.single j 1) = Pi.single j 1`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[F]`. Simplify using `[F, Pi.single_eq_of_ne hij]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hmat : LinearMap.toMatrix' (u : (ι → ℂ) →ₗ[ℂ] (ι → ℂ)) = (LinearMap.toMatrix' (g : (ι → K) →ₗ[K] (ι → K))).map f`. Use extensionality with `i j`. Use `congrFun (hG' (Pi.single j 1)) i` as an intermediate fact. Rewrite `this` using `[hsingle j]`. Simplify using `only [LinearMap.toMatrix'_apply, Matrix.map_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearEquiv.coe_coe, hg]`. Conclude with `this`. Use `⟨g, fun v => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hg]`. Conclude with `hG v`.
-
-Rewrite using `[← LinearMap.det_toMatrix', hmat, ← RingHom.mapMatrix_apply, ← RingHom.map_det, LinearMap.det_toMatrix']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linearEquiv_descends_of_preserves_image {K : Type} [Field K] {ι : Type} [Fintype ι]
     [DecidableEq ι] (f : K →+* ℂ) (u : (ι → ℂ) ≃ₗ[ℂ] (ι → ℂ))

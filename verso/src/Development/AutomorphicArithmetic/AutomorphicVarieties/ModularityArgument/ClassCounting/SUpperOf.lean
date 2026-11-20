@@ -9,7 +9,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open NumberField IsDedekindDomain UpperTheory.V UpperTheory.V.KL UpperTheory.V.ZK UpperTheory.V.ZK.Up
 
 /- English proof (translation)
-Take `rfl : inst = AddCommGroup.toIntModule H` from `Subsingleton.elim _ _`. Use `hR H B q r hq hB hH _ hX f S fun s hs => ?_` and prove the remaining obligations. Take `⟨x, hx, u, e⟩` from `hS s hs`. Conclude with `⟨u • x, Submodule.smul_mem _ u (Submodule.subset_span hx), e⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem UpperTheory.V.ZK.rankCount_mod (hR : RankCount) (H B : Type) [AddCommGroup H] [inst : Module ℤ H]
     [AddCommGroup B] (q r : ℕ) (hq : 0 < q) (hB : ∀ b : B, q • b = 0) (hH : Finite (AddCommGroup.torsion H)) (X : Set H)
@@ -22,21 +22,19 @@ private theorem UpperTheory.V.ZK.rankCount_mod (hR : RankCount) (H B : Type) [Ad
   exact ⟨u • x, Submodule.smul_mem _ u (Submodule.subset_span hx), e⟩
 
 /- English proof (translation)
-Introduce `hC hO L _ _ hL k hk hr l ν hl B _ _ Φ hΦ S hSm`. Establish `hl0 : 0 < l` using `hl.out.pos`. Establish `hq : 0 < l ^ ν` using `pow_pos hl0 ν`. Establish `hqB : ∀ b : B, l ^ ν • b = 0` using `fun b => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod (l ^ ν)), ZMod.natCast_self, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨φ, hφ, hφΦ⟩` from `hD (𝓞 L) (l ^ ν) k B Φ hΦ`. Use `choose! nn hnn using hSm`. Take `⟨n, hn0, hnS⟩ : ∃ n, 2 * (k + 1) + 4 ≤ n ∧ ∀ s ∈ S, nn s ≤ n` from `⟨max (2 * (k + 1) + 4) (S.sup nn), le_max_left _ _, fun s hs => le_max_of_le_right (Finset.le_sup hs)⟩`. Take `⟨β, hβ⟩` from `hB (l ^ ν) hq (GL (Fin n) (𝓞 L)) k`. Take `⟨hfin, hcard⟩` from `hS L hL k (2 * (k + 1) + 4) n (by omega) hn0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlev : ∀ t, n ≤ lev l n t` using `fun t => by`. Proceed by induction on `t with`. Consider the case `zero => exact le_rfl`. Consider the case `succ t ih => exact ih.trans (Nat.le_mul_of_pos_left _ hl0)`. Take `⟨hfin', hcard'⟩` from `hS L hL (k + 1) (2 * (k + 1) + 4) (lev l n k) le_rfl (hn0.trans (hlev k))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `hZ (𝓞 L) B (k + 1) l ν hl0 hqB φ hφ n k`. Set `g : LinearMap.ker (bd (ZMod (l ^ ν)) (GL (Fin n) (𝓞 L)) k) →+ B` to `(nsmulAddMonoidHom (l ^ k)).comp ((Φ n).toAddMonoidHom.comp (LinearMap.ker (bd (ZMod (l ^ ν)) (GL (Fin n) (𝓞 L)) k)).subtype.toAddMonoidHom)`. Establish `hg : ∀ y, g y = l ^ k • Φ n y.1` using `fun y => rfl`. Establish `key` using `hF _ _ B β g ((l ^ ν) ^ InfinitePlace.nrComplexPlaces L * tc L (2 * (k + 1) + 4) (k + 1)) ?_ S ?_`. Rewrite `key` using `[hcard]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `key`. Introduce `T hT`. Rewrite using `[← hcard']`. Use `rankCount_mod hR _ B (l ^ ν) _ hq hqB hfin' _ (hO L hL k hk hr l hl0 n hn0) (φ (lev l n k)) T fun s hs => ?_` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `hT s hs`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, hzy⟩` from `hβ y hy`. Take `⟨x, hx⟩` from `hφΦ n z hz`. Use `⟨zSeq (𝓞 L) hl0 x k, ⟨x, rfl⟩, u, ?_⟩` and prove the remaining obligations. Rewrite using `[hg, ← hzy, ← hx, hu]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `s hs`. Take `⟨y, hy, e⟩` from `hnn s hs`. Use `⟨⟨cm _ (stab (𝓞 L) (nn s) n (hnS s hs)) (k + 1) y, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, (hC _).2.1, show bd _ _ k y = 0 from hy, map_zero]`. Rewrite using `[hg, hΦ.stab _ _ _ _ hy]`.
-
-Conclude with `e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.ZK.selmer_upper_bound_of_inputs (hS : TorsStab) (hD : Descend) (hZ : ZVal) (hR : RankCount) (hB : Bock)
     (hF : FibCount) : UpperTheory.V.ZK.SUpperOf := by
@@ -82,7 +80,7 @@ private theorem UpperTheory.V.ZK.selmer_upper_bound_of_inputs (hS : TorsStab) (h
       exact e
 
 /- English proof (translation)
-The claim follows from `selmer_upper_bound_of_inputs torsStab descend zVal rankCount bock fibCount`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ZK.sUpperOf :
     UpperTheory.V.ZK.SUpperOf :=

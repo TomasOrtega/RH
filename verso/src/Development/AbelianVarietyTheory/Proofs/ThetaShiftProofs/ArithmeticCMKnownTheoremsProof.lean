@@ -19,7 +19,7 @@ open scoped LaurentSeries
 namespace GlobalTheory.ArcCM
 
 /- English proof (translation)
-The claim follows from `have hL := GlobalTheory.firstFiveLaws have hh : GlobalTheory.CM.HomExtDvr := GlobalTheory.semiAbelian_hom_extends_uniquely_dvr { laws := hL.1 laws2 := hL.2.1 ubc := hL.2.2.2.1.unifBaseChange laws5 := hL.2.2.2.2 theta := GlobalTheory.thetaUnifAV_all n1ab := GlobalTheory.Moduli.joi …`.
+A detailed English derivation is pending.
 -/
 theorem known_holds : Known :=
   have hL := GlobalTheory.firstFiveLaws

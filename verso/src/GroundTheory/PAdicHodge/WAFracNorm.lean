@@ -13,21 +13,17 @@ section Abstract
 variable {G R F : Type*} [Group G] [CommRing R] [IsDomain R] [CommRing F]
 
 /- English proof (translation)
-Establish `hinj : ∀ σ, Function.Injective (A σ)` using `fun σ x y h => by`. Establish `e : ∀ z, A σ⁻¹ (A σ z) = z` using `fun z => by`. Rewrite using `[← RingHom.comp_apply, ← hAmul, inv_mul_cancel, hA1, RingHom.id_apply]`. Rewrite using `[← e x, ← e y, h]`. Use `set N := H.normalCore with hNdef`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `_ : Fintype (G ⧸ N)` to `Fintype.ofFinite _`. Use `choose! lam hlam using hb`. Establish `hN : ∀ n ∈ N, A n b = s (lam n) * b` using `fun n hn => hlam n (H.normalCore_le hn)`. Use `set f : G ⧸ N → R := fun q => A q.out b with hf`. Use `set P : R := ∏ q, f q with hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hP0 : P ≠ 0` using `Finset.prod_ne_zero_iff.2 fun q _ h => hb0 (hinj _ (by rw [map_zero]; exact h))`. Establish `key : ∀ (g : G) (q : G ⧸ N), A g (f q) = s (lam (((g : G ⧸ N) * q).out⁻¹ * (g * q.out))) * f ((g : G ⧸ N) * q)`. Introduce `g q`. Use `set q' := (g : G ⧸ N) * q`. Establish `hmem : q'.out⁻¹ * (g * q.out) ∈ N`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq', QuotientGroup.mk_mul, QuotientGroup.out_eq']`. Establish `e : g * q.out = q'.out * (q'.out⁻¹ * (g * q.out))` using `by group`. Simplify using `only [hf]`. Rewrite using `[← RingHom.comp_apply, ← hAmul, e, hAmul, RingHom.comp_apply, hN _ hmem, map_mul, hAs, mul_inv_cancel_left]`. Establish `hPeig : ∀ g : G, ∃ c, A g P = s c * P`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Use `⟨∏ q : G ⧸ N, lam (((g : G ⧸ N) * q).out⁻¹ * (g * q.out)), ?_⟩` and prove the remaining obligations. Rewrite using `[hP, map_prod]`. Simplify using `only [key]`. Rewrite using `[Finset.prod_mul_distrib, map_prod]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Conclude with `Fintype.prod_equiv (Equiv.mulLeft (g : G ⧸ N)) _ _ fun q => rfl`. Establish `hPu : IsUnit P` using `hunit P hP0 hPeig`. Establish `h1 : (1 : G ⧸ N).out ∈ N`. Rewrite using `[← QuotientGroup.eq_one_iff, QuotientGroup.out_eq']`.
-
-Establish `hdvd : b ∣ P`. Establish `h2 : f 1 ∣ P` using `Finset.dvd_prod_of_mem f (Finset.mem_univ 1)`. Establish `h3 : f 1 = s (lam (1 : G ⧸ N).out) * b` using `hN _ h1`. Rewrite `h2` using `[h3]`. Conclude with `(Dvd.intro_left _ rfl).trans h2`.
-
-Conclude with `isUnit_of_dvd_unit hdvd hPu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_eigen_of_finiteIndex (A : G → R →+* R) (hA1 : A 1 = RingHom.id R)
     (hAmul : ∀ g h, A (g * h) = (A g).comp (A h)) (s : F →+* R) (hAs : ∀ g c, A g (s c) = s c)
@@ -89,7 +85,7 @@ set_option maxHeartbeats 3200000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-The claim follows from `letI := isDomain_bCris hε hζ isUnit_of_eigen_of_finiteIndex (galB hε) (galB_one hε) (galB_mul hε) (algebraMap ℚ_[p] (BCris hε)) (galB_algebraMap_padic hε) (fun _ hx h => isUnit_of_galB_eigen hε hζ hx h) H hb0 hb`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_galB_eigen_of_finiteIndex [FiniteDimensional ℚ_[p] K]
     (H : Subgroup Gal(PadicAlgCl p/K)) [H.FiniteIndex] {b : BCris hε} (hb0 : b ≠ 0)

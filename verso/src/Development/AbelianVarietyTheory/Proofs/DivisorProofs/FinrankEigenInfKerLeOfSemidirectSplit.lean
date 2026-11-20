@@ -12,7 +12,7 @@ open scoped Classical
 variable {G Γ : Type} [Group G] [Group Γ]
 
 /- English proof (translation)
-Introduce `a b hab`. Use `congrArg π hab` as an intermediate fact. Rewrite `this` using `[h.1, h.1]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isSplit_injective {π : Γ →* G} {ι : G →* Γ} (h : IsSplit π ι) : Function.Injective ι := by
   intro a b hab
@@ -20,16 +20,16 @@ theorem isSplit_injective {π : Γ →* G} {ι : G →* Γ} (h : IsSplit π ι) 
   rwa [h.1, h.1] at this
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, h.1, inv_mul_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mul_mem_ker {π : Γ →* G} {ι : G →* Γ} (h : IsSplit π ι) (γ : Γ) :
     (ι (π γ))⁻¹ * γ ∈ π.ker := by
   rw [MonoidHom.mem_ker, map_mul, map_inv, h.1, inv_mul_cancel]
 
 /- English proof (translation)
-Use `MonoidAlgebra.induction_on (motive := fun x => Commute (MonoidAlgebra.mapDomainAlgHom ℂ ℂ ι x) (MonoidAlgebra.single r c)) x ?_ ?_ ?_` and prove the remaining obligations. Introduce `m show _ * _ = _ * _`. Simplify using `[MonoidAlgebra.of_apply, MonoidAlgebra.single_mul_single, h.2 m r hr]`. Introduce `x y hx hy`. Rewrite using `[map_add]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx.add_left hy`. Introduce `a x hx`. Rewrite using `[map_smul]`. Conclude with `hx.smul_left a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commute_single {π : Γ →* G} {ι : G →* Γ} (h : IsSplit π ι) (x : MonoidAlgebra ℂ G)
     (r : Γ) (hr : r ∈ π.ker) (c : ℂ) :
@@ -47,9 +47,9 @@ theorem commute_single {π : Γ →* G} {ι : G →* Γ} (h : IsSplit π ι) (x 
     exact hx.smul_left a
 
 /- English proof (translation)
-Use `MonoidAlgebra.induction_on (motive := fun e => ρ.asAlgebraHom (MonoidAlgebra.mapDomainAlgHom ℂ ℂ ι e) = Representation.asAlgebraHom (ρ.comp ι : Representation ℂ G V) e) e ?_ ?_ ?_` and prove the remaining obligations. Introduce `m`. Simplify using `[MonoidAlgebra.of_apply, Representation.asAlgebraHom_single]`. Introduce `x y hx hy`. Rewrite using `[map_add, map_add, map_add, hx, hy]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a x hx`. Rewrite using `[map_smul, map_smul, map_smul, hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem asAlgebraHom_map {V : Type} [AddCommGroup V] [Module ℂ V] (ι : G →* Γ)
     (ρ : Representation ℂ Γ V) (e : MonoidAlgebra ℂ G) :
@@ -71,15 +71,15 @@ def eR (π : Γ →* G) : MonoidAlgebra ℂ Γ :=
   ∑ r : π.ker, MonoidAlgebra.single (r : Γ) ((Nat.card π.ker : ℂ)⁻¹)
 
 /- English proof (translation)
-Unfold `eR`. Rewrite using `[Finset.mul_sum, MonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply]`. Repeatedly rewrite using `[MonoidAlgebra.mul_single_apply]`. Set `r0 : π.ker` to `⟨(ι (π γ))⁻¹ * γ, inv_mul_mem_ker h γ⟩`. Establish `key : ∀ r : π.ker, (MonoidAlgebra.mapDomainAlgHom ℂ ℂ ι x).coeff (γ * (r : Γ)⁻¹) = if r = r0 then x.coeff (π γ) else 0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `r`. Rewrite using `[MonoidAlgebra.mapDomainAlgHom_apply, MonoidAlgebra.coeff_mapDomain]`. Use `split_ifs with hr`. Establish `: γ * (r : Γ)⁻¹ = ι (π γ)`. Substitute `hr` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[r0]`. Rewrite using `[this, Finsupp.mapDomain_apply (isSplit_injective h)]`. Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises. Introduce and unpack `⟨g, hg⟩`. Apply `hr` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hr1 : π (r : Γ) = 1` using `r.2`. Establish `hg' : g = π γ`. Use `congrArg π hg` as an intermediate fact. Rewrite `this` using `[h.1, map_mul, map_inv, hr1, inv_one, mul_one]`. Then use the resulting hypothesis. Substitute `hg'` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (r : Γ) = (ι (π γ))⁻¹ * γ`. Rewrite using `[hg]`. Use `group`. Repeatedly rewrite using `[key, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_map_mul_eR {π : Γ →* G} {ι : G →* Γ} (h : IsSplit π ι) (x : MonoidAlgebra ℂ G)
     (γ : Γ) :
@@ -126,7 +126,7 @@ def comapEquiv {π : Γ →* G} {ι : G →* Γ} (h : IsSplit π ι) (P : Subgro
     simp
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_prod]`. Conclude with `(Nat.card_congr (comapEquiv h P)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_comap {π : Γ →* G} {ι : G →* Γ} (h : IsSplit π ι) (P : Subgroup G) :
     Nat.card (P.comap π) = Nat.card P * Nat.card π.ker := by
@@ -142,11 +142,11 @@ open scoped Classical
 variable {G Γ : Type} [Group G] [Group Γ] [Fintype Γ]
 
 /- English proof (translation)
-Establish `hcard` using `card_comap h P`. Simplify using `only [Formalism.L2.DIV.lvlIdem, eR, map_sum, MonoidAlgebra.mapDomainAlgHom_apply, MonoidAlgebra.mapDomain_single, Finset.sum_mul_sum, MonoidAlgebra.single_mul_single]`. Rewrite using `[← Fintype.sum_prod_type' (f := fun (i : P) (j : π.ker) => MonoidAlgebra.single (ι (i : G) * (j : Γ)) ((Nat.card P : ℂ)⁻¹ * ((lam i⁻¹ : ℂˣ) : ℂ) * (Nat.card π.ker : ℂ)⁻¹))]`. Use `(Fintype.sum_equiv (comapEquiv h P) _ _ (fun x => ?_)).symm` and prove the remaining obligations. Establish `hr1 : π (x.2 : Γ) = 1` using `x.2.2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx : lamb ((comapEquiv h P) x)⁻¹ = lam x.1⁻¹`. Rewrite using `[hl]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[comapEquiv, h.1, hr1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [hx, hcard, Nat.cast_mul, mul_inv]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lvlIdem_comap [Fintype G] {π : Γ →* G} {ι : G →* Γ} (h : IsSplit π ι) (P : Subgroup G)
     (lam : P →* ℂˣ) (lamb : P.comap π →* ℂˣ) (hl : ∀ γ : P.comap π, lamb γ = lam ⟨π γ, γ.2⟩) :
@@ -174,19 +174,15 @@ end GlobalTheory.BadCount.Lift
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `G Γ V _ _ _ _ _ _ _ π ι h ρ P lam lamb hl H n e b s c hEmb hcard hidem hcent hsum hsupp hcoeff`. Set `ιA` to `MonoidAlgebra.mapDomainAlgHom ℂ ℂ ι`. Establish `hL` using `GlobalTheory.BadCount.Lift.lvlIdem_comap h P lam lamb hl`. Establish `hR : (Nat.card π.ker : ℂ) ≠ 0` using `by exact_mod_cast Nat.card_pos.ne'`. Establish `hP : (Nat.card P : ℂ) ≠ 0` using `by exact_mod_cast Nat.card_pos.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : ∀ k, ιA (b k) * Formalism.L2.DIV.lvlIdem (P.comap π) lamb = ιA (b k * Formalism.L2.DIV.lvlIdem P lam) * GlobalTheory.BadCount.Lift.eR π`. Introduce `k`. Rewrite using `[hL, map_mul, mul_assoc]`. Establish `hco : ∀ k γ, (ιA (b k) * Formalism.L2.DIV.lvlIdem (P.comap π) lamb).coeff γ = (b k * Formalism.L2.DIV.lvlIdem P lam).coeff (π γ) * (Nat.card π.ker : ℂ)⁻¹`. Introduce `k γ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hprod]`. Conclude with `GlobalTheory.BadCount.Lift.coeff_map_mul_eR h _ γ`. Establish `key` using `GlobalTheory.T.finrank_characterEigenspace_inf_ker_le Γ V ρ (P.comap π) lamb (fun k => (H k).comap π) n (ιA e) (fun k => ιA (b k)) s c hEmb hcard (fun k => by rw [← map_mul, hidem]) (fun k => by`. Rewrite using `[hL]`. Use `Commute.mul_right ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Conclude with `Commute.map (show Commute (b k) (Formalism.L2.DIV.lvlIdem P lam) from hcent k _) ιA`. Unfold `GlobalTheory.BadCount.Lift.eR`. Use `Commute.sum_right _ _ _ (fun r _ => ?_)` and prove the remaining obligations. Conclude with `GlobalTheory.BadCount.Lift.commute_single h _ r r.2 _)`. Use the proof step `(by rw [← map_one ιA, ← map_sub, hsum, map_sub, map_add, map_mul])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use the proof step `(fun k γ hne => by`. Rewrite `hne` using `[hco]`. Use `show π γ ∈ H k`. Apply `hsupp k` to reduce the goal to its premises. Introduce `h0`.
-
-Apply `hne` to reduce the goal to its premises. Rewrite using `[h0, zero_mul])`. Use the proof step `(fun k => by`. Rewrite using `[hco, map_one, hcoeff, GlobalTheory.BadCount.Lift.card_comap h P, Nat.cast_mul]`. Use the proof step `field_simp)`.
-
-Rewrite `key` using `[GlobalTheory.BadCount.Lift.asAlgebraHom_map]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BadCount.finrank_eig_inf_ker_le_of_isSplit : ∀ (G Γ V : Type) [Group G] [Fintype G] [Group Γ] [Fintype Γ] [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (π : Γ →* G) (ι : G →* Γ), IsSplit π ι → ∀ (ρ : Representation ℂ Γ V) (P : Subgroup G) (lam : P →* ℂˣ) (lamb : P.comap π →* ℂˣ), (∀ γ : P.comap π, lamb γ = lam ⟨π γ, γ.2⟩) → ∀ (H : Fin 2 → Subgroup G) (n : Fin 2 → ℕ) (e : MonoidAlgebra ℂ G) (b : Fin 2 → MonoidAlgebra ℂ G) (s : Fin 2 → ℝ) (c : ℝ), (∀ k, EmbReg ρ ((H k).comap π) (n k)) → (∀ k, (n k : ℝ) * Nat.card ((H k).comap π) ≤ c * Nat.card (P.comap π) * finrank ℂ (eig ρ (P.comap π) lamb)) → (∀ k, b k * b k = b k) → (∀ k a, b k * a = a * b k) → 1 - e = b 0 + b 1 - b 0 * b 1 → (∀ k g, (b k * Formalism.L2.DIV.lvlIdem P lam).coeff g ≠ 0 → g ∈ H k) → (∀ k, (b k * Formalism.L2.DIV.lvlIdem P lam).coeff 1 = (s k : ℂ) / (Nat.card P : ℂ)) → (finrank ℂ (eig ρ (P.comap π) lamb ⊓ LinearMap.ker (Representation.asAlgebraHom (ρ.comp ι : Representation ℂ G V) e) : Submodule ℂ V) : ℝ) ≤ c * (s 0 + s 1) * finrank ℂ (eig ρ (P.comap π) lamb) := by
   intro G Γ V _ _ _ _ _ _ _ π ι h ρ P lam lamb hl H n e b s c hEmb hcard hidem hcent hsum hsupp hcoeff

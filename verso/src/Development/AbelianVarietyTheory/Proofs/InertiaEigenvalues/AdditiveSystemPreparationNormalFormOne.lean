@@ -32,27 +32,27 @@ variable [IsUltrametricDist F]
 
 omit [Fintype m] in
 /- English proof (translation)
-Introduce `i j` and use `(IsUltrametricDist.norm_add_le_max (X i j) (Y i j)).trans (max_le (hX i j) (hY i j))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem PrepBd.add {c : ℝ} {X Y : Matrix m m F} (hX : PrepBd c X) (hY : PrepBd c Y) : PrepBd c (X + Y) :=
   fun i j => (IsUltrametricDist.norm_add_le_max (X i j) (Y i j)).trans (max_le (hX i j) (hY i j))
 
 omit [Fintype m] [IsUltrametricDist F] in
 /- English proof (translation)
-Introduce `i j` and use `by simpa using hX i j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem PrepBd.neg {c : ℝ} {X : Matrix m m F} (hX : PrepBd c X) : PrepBd c (-X) :=
   fun i j => by simpa using hX i j
 
 omit [Fintype m] [IsUltrametricDist F] in
 /- English proof (translation)
-Introduce `i j` and use `(hX i j).trans h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem PrepBd.mono {c d : ℝ} {X : Matrix m m F} (hX : PrepBd c X) (h : c ≤ d) : PrepBd d X :=
   fun i j => (hX i j).trans h
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg hc hd) fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hX i k) (hY k j) (norm_nonneg _) hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PrepBd.mul {c d : ℝ} {X Y : Matrix m m F} (hc : 0 ≤ c) (hd : 0 ≤ d) (hX : PrepBd c X) (hY : PrepBd d Y) :
     PrepBd (c * d) (X * Y) := by
@@ -64,7 +64,7 @@ theorem PrepBd.mul {c d : ℝ} {X Y : Matrix m m F} (hc : 0 ≤ c) (hd : 0 ≤ d
 
 omit [Fintype m] [IsUltrametricDist F] in
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.map_apply, norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) (hX i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PrepBd.map_pow {X : Matrix m m F} (hX : PrepBd 1 X) (N : ℕ) : PrepBd 1 (X.map (fun a => a ^ N)) := by
   intro i j
@@ -72,9 +72,9 @@ theorem PrepBd.map_pow {X : Matrix m m F} (hX : PrepBd 1 X) (N : ℕ) : PrepBd 1
   exact pow_le_one₀ (norm_nonneg _) (hX i j)
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro n _ _ i j`. Simplify `hδ` using `[prepV_zero]`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `n hn hk`. Rewrite using `[prepV_succ]`. Use `(hM _ (by omega) (by omega)).add ?_` and prove the remaining obligations. Simplify using `using PrepBd.mul hδ zero_le_one (ih (n + 1) (by omega) (by omega)) (hA.map_pow _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem prepV_bd {q D : ℕ} {M : ℕ → Matrix m m F} {δ : ℝ} (hδ : 0 ≤ δ)
     (hM : ∀ n, 2 ≤ n → n ≤ D → PrepBd δ (M n)) {A : Matrix m m F} (hA : PrepBd 1 A) :
@@ -90,9 +90,9 @@ theorem prepV_bd {q D : ℕ} {M : ℕ → Matrix m m F} {δ : ℝ} (hδ : 0 ≤ 
 
 omit [Fintype m] in
 /- English proof (translation)
-Introduce `i j`. Establish `h1 : ‖A i j - B i j‖ ≤ 1`. Use `(hA.add hB.neg) i j` as an intermediate fact. Simplify `this` using `[sub_eq_add_neg]`. Establish `h2 : ‖A i j - B i j‖ ≤ ε` using `h i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[Matrix.sub_apply, Matrix.map_apply, Matrix.map_apply, ← pow_mul, ← sub_pow_char_pow, norm_pow]`. Conclude with `(pow_le_of_le_one (norm_nonneg _) h1 (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)).trans h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PrepBd.map_pow_sub (p : ℕ) [Fact p.Prime] [CharP F p] (e n : ℕ) {A B : Matrix m m F} {ε : ℝ}
     (hA : PrepBd 1 A) (hB : PrepBd 1 B) (h : PrepBd ε (A - B)) :
@@ -106,11 +106,11 @@ theorem PrepBd.map_pow_sub (p : ℕ) [Fact p.Prime] [CharP F p] (e n : ℕ) {A B
   exact (pow_le_of_le_one (norm_nonneg _) h1 (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)).trans h2
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro n _ _ i j`. Simplify `mul_nonneg hδ hε` using `[prepV_zero]`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `n hn hk`. Rewrite using `[prepV_succ, prepV_succ]`. Establish `e1 : M (n + 1) + prepV (p ^ e) M A k (n + 1) * A.map (fun a => a ^ (p ^ e) ^ (n + 1)) - (M (n + 1) + prepV (p ^ e) M B k (n + 1) * B.map (fun a => a ^ (p ^ e) ^ (n + 1))) = (prepV (p ^ e) M A k (n + 1) - prepV (p ^ e) M B k (n + 1)) * A.map (fun a => a ^ (p ^ e) ^ (n + 1)) + prep …`. Rewrite using `[Matrix.sub_mul, Matrix.mul_sub]`. Normalize the expressions using the abelian group laws.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e1]`. Use `PrepBd.add ?_ ?_` and prove the remaining obligations. Simplify using `using PrepBd.mul (mul_nonneg hδ hε) zero_le_one (ih (n + 1) (by omega) (by omega)) (hA.map_pow _)`. Conclude with `PrepBd.mul hδ hε (prepV_bd hδ hM hB k (n + 1) (by omega) (by omega)) (PrepBd.map_pow_sub p e _ hA hB h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem prepV_sub_bd (p : ℕ) [Fact p.Prime] [CharP F p] {e D : ℕ} {M : ℕ → Matrix m m F} {δ ε : ℝ} (hδ : 0 ≤ δ)
     (hε : 0 ≤ ε) (hM : ∀ n, 2 ≤ n → n ≤ D → PrepBd δ (M n)) {A B : Matrix m m F} (hA : PrepBd 1 A)
@@ -135,21 +135,19 @@ theorem prepV_sub_bd (p : ℕ) [Fact p.Prime] [CharP F p] {e D : ℕ} {M : ℕ �
         (PrepBd.map_pow_sub p e _ hA hB h)
 
 /- English proof (translation)
-Set `s : Set (m → m → F)` to `{A | ∀ i j, ‖A i j‖ ≤ 1}`. Set `f : (m → m → F) → (m → m → F)` to `fun A => fun i j => (-M0 - W (Matrix.of A) * (Matrix.of A)) i j`. Establish `hs : IsClosed s`. Simplify using `only [s, Set.ofPred_forall]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_le (by fun_prop) continuous_const`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hf : Set.MapsTo f s s`. Introduce `A hA`. Establish `hA' : PrepBd 1 (Matrix.of A)` using `hA`. Establish `: PrepBd 1 (-M0 - W (Matrix.of A) * (Matrix.of A))`. Rewrite using `[sub_eq_add_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `h0.neg.add (PrepBd.neg ?_)` and prove the remaining obligations. Conclude with `(PrepBd.mul hδ zero_le_one (hW _ hA') hA').mono (by simpa using hδ1.le)`. Conclude with `this`. Establish `hc : ContractingWith ⟨δ, hδ⟩ (hf.restrict f s s)`. Use `⟨hδ1, LipschitzWith.of_dist_le_mul fun A B => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA' : PrepBd 1 (Matrix.of A.1)` using `A.2`. Establish `hB' : PrepBd 1 (Matrix.of B.1)` using `B.2`. Establish `hε : 0 ≤ dist A B` using `dist_nonneg`. Establish `hAB : PrepBd (dist A B) (Matrix.of A.1 - Matrix.of B.1)`. Introduce `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.sub_apply, Matrix.of_apply, Matrix.of_apply, ← dist_eq_norm, Subtype.dist_eq]`. Conclude with `(dist_le_pi_dist _ _ j).trans (dist_le_pi_dist A.1 B.1 i)`. Establish `key : PrepBd (δ * dist A B) ((-M0 - W (Matrix.of A.1) * (Matrix.of A.1)) - (-M0 - W (Matrix.of B.1) * (Matrix.of B.1)))`. Establish `e1 : (-M0 - W (Matrix.of A.1) * (Matrix.of A.1)) - (-M0 - W (Matrix.of B.1) * (Matrix.of B.1)) = -((W (Matrix.of A.1) - W (Matrix.of B.1)) * (Matrix.of A.1) + W (Matrix.of B.1) * (Matrix.of A.1 - Matrix.of B.1))`. Rewrite using `[Matrix.sub_mul, Matrix.mul_sub]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e1]`. Use `PrepBd.neg (PrepBd.add ?_ ?_)` and prove the remaining obligations. Simplify using `using PrepBd.mul (mul_nonneg hδ hε) zero_le_one (hW2 _ _ _ hε hA' hB' hAB) hA'`. Conclude with `PrepBd.mul hδ hε (hW _ hB') hAB`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `dist (f A.1) (f B.1) ≤ δ * dist A B`. Use `(dist_pi_le_iff (mul_nonneg hδ hε)).2 fun i => (dist_pi_le_iff (mul_nonneg hδ hε)).2 fun j => ?_` and prove the remaining obligations. Rewrite using `[dist_eq_norm]`. Conclude with `key i j`. Take `⟨y, hy, hfix, -⟩` from `hc.exists_fixedPoint' hs.isComplete hf (x := 0) (by intro i j; simp) (edist_ne_top _ _)`.
-
-Use `⟨Matrix.of y, hy, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `(congrFun (congrFun hfix i) j).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem prep_fixed [CompleteSpace F] {δ : ℝ} (hδ : 0 ≤ δ) (hδ1 : δ < 1) (M0 : Matrix m m F) (h0 : PrepBd 1 M0)
     (W : Matrix m m F → Matrix m m F) (hW : ∀ A, PrepBd 1 A → PrepBd δ (W A))
@@ -198,7 +196,7 @@ theorem prep_fixed [CompleteSpace F] {δ : ℝ} (hδ : 0 ≤ δ) (hδ1 : δ < 1)
 
 omit [IsUltrametricDist F] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `hq : (p ^ e) ^ n = p ^ (e * n)` using `(pow_mul p e n).symm`. Simplify using `only [Pi.sub_apply, Matrix.mulVec, dotProduct, Matrix.map_apply]`. Rewrite using `[pow_succ' (p ^ e) n, pow_mul (x i), hq, sub_pow_char_pow, sum_pow_char_pow]`. Simplify using `only [mul_pow]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prep_pow_sub_mulVec (p : ℕ) [Fact p.Prime] [CharP F p] (e n : ℕ) (A : Matrix m m F) (x : m → F) :
     (fun i => (x i ^ p ^ e - A.mulVec x i) ^ (p ^ e) ^ n) =
@@ -211,9 +209,9 @@ theorem prep_pow_sub_mulVec (p : ℕ) [Fact p.Prime] [CharP F p] (e n : ℕ) (A 
 
 omit [IsUltrametricDist F] in
 /- English proof (translation)
-Unfold `gsum`. Simplify using `only [prep_pow_sub_mulVec, Matrix.mulVec_sub, Matrix.mulVec_mulVec, sum_sub_distrib]`. Rewrite using `[sum_range_succ', sum_range_succ, sum_range_succ', hD, h0]`. Establish `: ∑ n ∈ range D, (U n).mulVec (fun i => x i ^ (p ^ e) ^ (n + 1)) = ∑ n ∈ range D, (M (n + 1)).mulVec (fun i => x i ^ (p ^ e) ^ (n + 1)) + ∑ n ∈ range D, (U (n + 1) * A.map (fun a => a ^ (p ^ e) ^ (n + 1))).mulVec (fun i => x i ^ (p ^ e) ^ (n + 1))`. Rewrite using `[← sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.add_mulVec, ← hU n (mem_range.1 hn)]`. Rewrite using `[this]`. Establish `hA : A.map (fun a => a ^ (p ^ e) ^ 0) = A` using `by ext i j; simp`. Rewrite using `[hA, Matrix.neg_mulVec, Matrix.zero_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -239,25 +237,21 @@ theorem prep_identity (p : ℕ) [Fact p.Prime] [CharP F p] (e D : ℕ) (M U : �
 end Prep
 
 /- English proof (translation)
-Introduce `F _ _ _ p _ _ m _ _ e D _ hD M hM`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ, hδ1, hMδ⟩ : ∃ δ : ℝ, 0 ≤ δ ∧ δ < 1 ∧ ∀ n, 2 ≤ n → n ≤ D → PrepBd δ (M n) := by`. Set `S : Finset (ℕ × m × m)` to `Icc 2 D ×ˢ univ`. Use `⟨((S.sup fun t => ‖M t.1 t.2.1 t.2.2‖₊ : NNReal) : ℝ), NNReal.coe_nonneg _, ?_, ?_⟩` and prove the remaining obligations. Establish `: (S.sup fun t => ‖M t.1 t.2.1 t.2.2‖₊) < 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Finset.sup_lt_iff (by simp)]`. Introduce `t ht`. Establish `h2 : 2 ≤ t.1` using `(mem_Icc.1 (mem_product.1 ht).1).1`. Conclude with `hM.small t.1 (by omega) t.2.1 t.2.2` after adjusting the coercions. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n h2 hn i j`. Establish `: ‖M n i j‖₊ ≤ S.sup fun t => ‖M t.1 t.2.1 t.2.2‖₊` using `Finset.le_sup (f := fun t : ℕ × m × m => ‖M t.1 t.2.1 t.2.2‖₊) (b := (n, i, j)) (mem_product.2 ⟨mem_Icc.2 ⟨h2, hn⟩, mem_univ _⟩)`. Conclude with `this` after adjusting the coercions. Take `⟨k, rfl⟩ : ∃ k, D = k + 1` from `⟨D - 1, by omega⟩`. Establish `hW : ∀ A : Matrix m m F, PrepBd 1 A → PrepBd δ (prepV (p ^ e) M A k 1 * A.map (fun a => a ^ (p ^ e) ^ 1))` using `fun A hA => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `PrepBd.mul hδ zero_le_one (prepV_bd (q := p ^ e) hδ hMδ hA k 1 le_rfl (by omega)) (hA.map_pow ((p ^ e) ^ 1))` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Take `⟨A, hA, hfix⟩` from `prep_fixed hδ hδ1 (M 0) (hM.int 0) (fun A => prepV (p ^ e) M A k 1 * A.map (fun a => a ^ (p ^ e) ^ 1)) hW (by`. Introduce `A B ε hε hA hB h`. Establish `e1 : prepV (p ^ e) M A k 1 * A.map (fun a => a ^ (p ^ e) ^ 1) - prepV (p ^ e) M B k 1 * B.map (fun a => a ^ (p ^ e) ^ 1) = (prepV (p ^ e) M A k 1 - prepV (p ^ e) M B k 1) * A.map (fun a => a ^ (p ^ e) ^ 1) + prepV (p ^ e) M B k 1 * (A.map (fun a => a ^ (p ^ e) ^ 1) - B.map (fun a …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sub_mul, Matrix.mul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[e1]`. Use `PrepBd.add ?_ ?_` and prove the remaining obligations. Use `PrepBd.mul (mul_nonneg hδ hε) zero_le_one (prepV_sub_bd p (e := e) hδ hε hMδ hA hB h k 1 le_rfl (by omega)) (hA.map_pow ((p ^ e) ^ 1))` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Conclude with `PrepBd.mul hδ hε (prepV_bd hδ hMδ hB k 1 le_rfl (by omega)) (PrepBd.map_pow_sub p e _ hA hB h))`. Establish `hU0 : prepV (p ^ e) M A (k + 1 - 0) 0 = 1 + prepV (p ^ e) M A k 1 * A.map (fun a => a ^ (p ^ e) ^ 1)`. Rewrite using `[Nat.sub_zero, prepV_succ, zero_add, hM.top]`. Establish `h0 : M 0 = -(prepV (p ^ e) M A (k + 1 - 0) 0 * A)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hU0, Matrix.add_mul, Matrix.one_mul]`. Use `eq_sub_iff_add_eq.1 hfix` as an intermediate fact. Rewrite using `[this, neg_neg]`. Use `⟨A, fun n => prepV (p ^ e) M A (k + 1 - n) n, hA, ?_, ?_, h0, ?_⟩` and prove the remaining obligations. Introduce `i j beta_reduce`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[hU0, add_sub_cancel_left]`. Conclude with `(hW A hA i j).trans_lt hδ1`. Introduce `n hn i j beta_reduce`. Distinguish the cases in `h : n ≤ k + 1`. Conclude with `(prepV_bd hδ hMδ hA _ n hn (by omega) i j).trans_lt hδ1`.
-
-Establish `: k + 1 - n = 0` using `by omega`. Simplify using `[this, prepV_zero]`. Use `prep_identity p e (k + 1) M _ A (by simp [prepV_zero]) (fun n hn => ?_) h0` and prove the remaining obligations. Establish `: k + 1 - n = (k + 1 - (n + 1)) + 1` using `by omega`. Use `beta_reduce`.
-
-Rewrite using `[this, prepV_succ]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preparation : ∀ (F : Type) [NontriviallyNormedField F] [IsUltrametricDist F] [CompleteSpace F] (p : ℕ)
     [Fact p.Prime] [CharP F p] (m : Type) [Fintype m] [DecidableEq m] (e D : ℕ), 0 < e → 1 ≤ D →

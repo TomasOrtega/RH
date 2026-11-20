@@ -22,7 +22,7 @@ variable {m : ℕ} {L : Lev (per l K) m} (hL : L.Good) {M N : Model l K} (u : M.
   (rHM : ∀ n j, M.Hc false n j →ₛₗ[L.lam] HM (QA L M s) none ((l : L.A) ^ n) j)
 
 /- English proof (translation)
-The claim follows from `rfl lam _ := rfl ι _ := rfl o _ := rfl tS n j x := ((Model.pullH u hu false j).comm n x).symm r n j x := hr n j x red n j z := nmHM_redM _ l s none n j z b j z := nmHO_nmPullB_bMap hL u hu s hQN hQM j z μ j v := nm_muB (nmPullB L u hu) (Model.genMap_q u hu) 1 s (fun _ => rfl) j v`.
+A detailed English derivation is pending.
 -/
 theorem homPull_good_of_nmHM_pull
     (hr : ∀ n j x, nmHM (nmPullA L u hu) l s none n j (rHN n j x) =
@@ -41,7 +41,7 @@ theorem homPull_good_of_nmHM_pull
 end
 
 /- English proof (translation)
-The claim follows from `homPull_good_of_nmHM_pull hL u hu s hQN hQM _ _ (rHof_pull d hc u hu s)`.
+A detailed English derivation is pending.
 -/
 theorem homPull_rHof_good {m : ℕ} {L : Lev (per l K) m}
     (d : ∀ n, RedIn (B.DD false (PAlg.base l) n) (B.κb (okToOC l K) false n) L.γ l n)

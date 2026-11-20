@@ -21,7 +21,7 @@ def tmap (π : A →ₐ[ℚ] B) : L ⊗[ℚ] A →ₐ[ℚ] B ⊗[ℚ] L :=
     (fun _ _ => Commute.all _ _)
 
 /- English proof (translation)
-Simplify using `[tmap]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem tmap_tmul (π : A →ₐ[ℚ] B) (l : L) (a : A) : tmap π (l ⊗ₜ[ℚ] a) = π a ⊗ₜ[ℚ] l := by
   simp [tmap]
@@ -37,7 +37,7 @@ end GlobalTheory.CentTorus.ClassSplit
 namespace GlobalTheory.CentTorus.ClassSplit
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `GlobalTheory.T.exists_continuous_finiteAdele_equiv_rat_int`. Take `⟨π, hπc, hπb⟩` from `GlobalTheory.T.ratFiniteAdeles_split_awayFromPrime_padic p`. Set `r : FiniteAdeleRing ℤ ℚ →ₐ[ℚ] AfP p` to `{ AfP.restr p with commutes' := fun _ => rfl }`. Conclude with `⟨r.comp e.toAlgHom, π.comp e.toAlgHom, (GlobalTheory.T.continuous_afP_restr p).comp he, hπc.comp he, hπb.comp e.bijective⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem adele_split (p : ℕ) [Fact p.Prime] :
     ∃ (π₁ : FiniteAdeleRing (𝓞 ℚ) ℚ →ₐ[ℚ] AfP p) (π₂ : FiniteAdeleRing (𝓞 ℚ) ℚ →ₐ[ℚ] ℚ_[p]),

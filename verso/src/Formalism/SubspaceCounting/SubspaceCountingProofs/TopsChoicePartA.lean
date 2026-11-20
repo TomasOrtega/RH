@@ -14,13 +14,13 @@ def P (U : Finset ℕ) (δ : ℝ) (A : Finset ℕ → Prop) : ℝ :=
   ∑ t ∈ U.powerset, if A t then δ ^ t.card * (1 - δ) ^ (U.card - t.card) else 0
 
 /- English proof (translation)
-Establish `h0 : 0 ∈ range n` using `mem_range.2 hn`. Establish `hU : range n = insert 0 ((range n).erase 0)` using `(insert_erase h0).symm`. Establish `hc : ((range n).erase 0).card = n - 1` using `by rw [card_erase_of_mem h0, card_range]`. Unfold `condProb P`. Use `conv_lhs => rw [hU]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_powerset_insert (notMem_erase 0 _)]`. Rewrite using `[sum_eq_zero (fun t ht => ?_), zero_add]`. Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `t ht`. Establish `h0t : 0 ∉ t` using `fun h => notMem_erase 0 (range n) (mem_powerset.1 ht h)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnt : n - (t.card + 1) = n - 1 - t.card` using `by omega`. Rewrite using `[card_insert_of_notMem h0t, hc, hnt]`. Distinguish the cases in `hA : A (insert 0 t)`. Rewrite using `[if_pos ⟨mem_insert_self 0 t, hA⟩, if_pos hA]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (fun h => hA h.2), if_neg hA]`. Establish `h0t : 0 ∉ t` using `fun h => notMem_erase 0 (range n) (mem_powerset.1 ht h)`. Rewrite using `[if_neg (fun h => h0t h.1)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem condProb_eq (n : ℕ) (hn : 1 ≤ n) (δ : ℝ) (A : Finset ℕ → Prop) :
     condProb n δ A = P ((range n).erase 0) δ (fun t => A (insert 0 t)) := by
@@ -45,16 +45,16 @@ theorem condProb_eq (n : ℕ) (hn : 1 ≤ n) (δ : ℝ) (A : Finset ℕ → Prop
     rw [if_neg (fun h => h0t h.1)]
 
 /- English proof (translation)
-Establish `: 0 ≤ 1 - δ` using `by linarith`. Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem w_nonneg {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (a b : ℕ) : 0 ≤ δ ^ a * (1 - δ) ^ b := by
   have : 0 ≤ 1 - δ := by linarith
   positivity
 
 /- English proof (translation)
-Unfold `P`. Apply `sum_le_sum` to reduce the goal to its premises. Introduce `t ht`. Distinguish the cases in `hA : A t`. Rewrite using `[if_pos hA, if_pos (h t ht hA)]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hA] split_ifs`. Conclude with `w_nonneg h0 h1 _ _`. Conclude with `le_rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem P_mono {U : Finset ℕ} {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) {A B : Finset ℕ → Prop}
     (h : ∀ t ∈ U.powerset, A t → B t) : P U δ A ≤ P U δ B := by
@@ -70,11 +70,11 @@ theorem P_mono {U : Finset ℕ} {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) {A B 
     · exact le_rfl
 
 /- English proof (translation)
-Unfold `P`. Rewrite using `[sum_comm]`. Apply `sum_le_sum` to reduce the goal to its premises. Introduce `t _`. Establish `hnn : ∀ j ∈ s, 0 ≤ (if A j t then δ ^ t.card * (1 - δ) ^ (U.card - t.card) else 0)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j _`. Use `split_ifs`. Conclude with `w_nonneg h0 h1 _ _`. Conclude with `le_rfl`. Distinguish the cases in `h : ∃ j ∈ s, A j t`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[if_pos h]`. Take `⟨j, hj, hA⟩` from `h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[if_neg h]`. Conclude with `sum_nonneg hnn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prob_exists_le_sum {ι : Type*} {U : Finset ℕ} {δ : ℝ} (h0 : 0 ≤ δ) (h1 : δ ≤ 1) (s : Finset ι)
     (A : ι → Finset ℕ → Prop) :
@@ -100,15 +100,15 @@ theorem prob_exists_le_sum {ι : Type*} {U : Finset ℕ} {δ : ℝ} (h0 : 0 ≤ 
     exact sum_nonneg hnn
 
 /- English proof (translation)
-Set `g : ℕ → ℝ` to `fun i => if i ∈ S then 0 else 1 - δ`. Establish `hprod : ∏ i ∈ U, ((fun _ => δ) i + g i) = δ ^ S.card`. Establish `: ∀ i ∈ U, ((fun _ => δ) i + g i) = if i ∈ S then δ else 1`. Introduce `i _`. Simplify using `only [g]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[prod_congr rfl this, prod_ite_mem, inter_eq_right.2 hS, prod_const]`. Rewrite using `[← hprod, prod_add]`. Unfold `P`. Apply `sum_congr rfl` to reduce the goal to its premises.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `t ht`. Establish `htU : t ⊆ U` using `mem_powerset.1 ht`. Rewrite using `[prod_const]`. Distinguish the cases in `hSt : S ⊆ t`. Rewrite using `[if_pos hSt]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∀ i ∈ U \ t, g i = 1 - δ`. Introduce `i hi`. Establish `hit : i ∉ S` using `fun h => (mem_sdiff.1 hi).2 (hSt h)`. Simplify using `only [g, if_neg hit]`. Rewrite using `[prod_congr rfl this, prod_const, card_sdiff_of_subset htU]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hSt]`. Take `⟨i, hiS, hit⟩` from `not_subset.1 hSt`. Establish `: ∏ i ∈ U \ t, g i = 0` using `prod_eq_zero (mem_sdiff.2 ⟨hS hiS, hit⟩) (by simp only [g, if_pos hiS])`. Rewrite using `[this, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem prob_subset_eq_pow_card {U S : Finset ℕ} (δ : ℝ) (hS : S ⊆ U) :
     P U δ (fun t => S ⊆ t) = δ ^ S.card := by
@@ -140,7 +140,7 @@ theorem prob_subset_eq_pow_card {U S : Finset ℕ} (δ : ℝ) (hS : S ⊆ U) :
     rw [this, mul_zero]
 
 /- English proof (translation)
-Introduce `x hx`. Unfold `window at hx`. Take `⟨j, _, rfl⟩` from `mem_image.1 hx`. Conclude with `mem_range.2 (Nat.mod_lt _ (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem window_subset (n i L : ℕ) (hn : 1 ≤ n) : window n i L ⊆ range n := by
   intro x hx
@@ -149,22 +149,20 @@ theorem window_subset (n i L : ℕ) (hn : 1 ≤ n) : window n i L ⊆ range n :=
   exact mem_range.2 (Nat.mod_lt _ (by omega))
 
 /- English proof (translation)
-Unfold `window`. Conclude with `card_image_le.trans (card_range L).le`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem window_card (n i L : ℕ) : (window n i L).card ≤ L := by
   unfold window
   exact card_image_le.trans (card_range L).le
 
 /- English proof (translation)
-Establish `hs : ∀ m : ℕ, ∑ S ∈ powersetCard m (W.erase 0), δ ^ S.card = ((W.erase 0).card.choose m : ℝ) * δ ^ m`. Introduce `m`. Rewrite using `[sum_congr rfl (fun S hS => by rw [(mem_powersetCard.1 hS).2]), sum_const, card_powersetCard, nsmul_eq_mul]`. Establish `hE : (W.erase 0).card ≤ L` using `card_erase_le.trans hW`. Establish `hδK : 0 ≤ δ ^ K` using `by positivity`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hw : 0 ∈ W`. Rewrite using `[if_pos hw, hs]`. Establish `: (((W.erase 0).card.choose K : ℕ) : ℝ) ≤ (L.choose K : ℝ)`. Conclude with `Nat.choose_le_choose K hE` after adjusting the coercions. Conclude with `mul_le_mul_of_nonneg_right this hδK`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg hw, hs]`. Establish `h1 : (((W.erase 0).card.choose (K + 1) : ℕ) : ℝ) ≤ (L.choose (K + 1) : ℝ)`. Conclude with `Nat.choose_le_choose (K + 1) hE` after adjusting the coercions. Establish `h2 : (L.choose (K + 1) : ℝ) * δ ^ (K + 1) ≤ (L.choose K : ℝ) * δ ^ K`. Establish `e : (L.choose (K + 1) : ℝ) * ((K : ℝ) + 1) = (L.choose K : ℝ) * ((L - K : ℕ) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.choose_succ_right_eq L K` after adjusting the coercions. Establish `hle : ((L - K : ℕ) : ℝ) ≤ L` using `by exact_mod_cast Nat.sub_le L K`. Establish `hC : 0 ≤ (L.choose K : ℝ)` using `Nat.cast_nonneg _`. Establish `hK : (0 : ℝ) ≤ K` using `Nat.cast_nonneg _`. Establish `key : (L.choose (K + 1) : ℝ) * δ ^ (K + 1) * ((K : ℝ) + 1) ≤ (L.choose K : ℝ) * δ ^ K * ((K : ℝ) + 1)`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_right key (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem window_bound (δ : ℝ) (h0 : 0 ≤ δ) (L K : ℕ) (hLδ : (L : ℝ) * δ ≤ 1) (W : Finset ℕ)
     (hW : W.card ≤ L) :
@@ -209,19 +207,17 @@ theorem window_bound (δ : ℝ) (h0 : 0 ≤ δ) (L K : ℕ) (hLδ : (L : ℝ) * 
       _ ≤ _ := h2
 
 /- English proof (translation)
-Unfold `CondA at h`. Use `push Not at h`. Take `⟨i, hi, hK⟩` from `h`. Use `⟨i, mem_range.2 hi, ?_⟩` and prove the remaining obligations. Use `set W := window n i L`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `set s := t ∩ W.erase 0 with hs_def`. Establish `hm : (if 0 ∈ W then K else K + 1) ≤ s.card`. Distinguish the cases in `hw : 0 ∈ W`. Rewrite using `[if_pos hw]`. Establish `hsub : insert 0 t ∩ W ⊆ insert 0 s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `x hx`. Break down `mem_inter.1 hx with ⟨hx1, hx2⟩` into its components or cases. Break down `mem_insert.1 hx1 with rfl | hxt` into its components or cases. Conclude with `mem_insert_self _ _`. Use `mem_insert_of_mem (mem_inter.2 ⟨hxt, mem_erase.2 ⟨?_, hx2⟩⟩)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `h0t hxt`. Use `(card_le_card hsub).trans (card_insert_le 0 s)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hw]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hsub : insert 0 t ∩ W ⊆ s`. Introduce `x hx`. Break down `mem_inter.1 hx with ⟨hx1, hx2⟩` into its components or cases. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hw hx2`. Break down `mem_insert.1 hx1 with hx | hxt` into its components or cases. Conclude with `absurd hx hx0`. Conclude with `mem_inter.2 ⟨hxt, mem_erase.2 ⟨hx0, hx2⟩⟩`. Use `card_le_card hsub` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers. Take `⟨S, hSs, hSc⟩` from `exists_subset_card_eq hm`. Use `⟨S, mem_powersetCard.2 ⟨?_, hSc⟩, ?_⟩` and prove the remaining obligations. Conclude with `fun x hx => (mem_inter.1 (hSs hx)).2`. Conclude with `fun x hx => (mem_inter.1 (hSs hx)).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem key (n L K : ℕ) (t : Finset ℕ) (h0t : 0 ∉ t) (h : ¬ CondA n (insert 0 t) L K) :
     ∃ i ∈ range n, ∃ S ∈ powersetCard (if 0 ∈ window n i L then K else K + 1)
@@ -267,17 +263,13 @@ end TopsConditionalProbabilityWindows
 
 open TopsConditionalProbabilityWindows in
 /- English proof (translation)
-Introduce `n δ L₂ K hn hδ hL hLδ`. Establish `hL' : (1 : ℝ) ≤ L₂` using `by exact_mod_cast hL`. Establish `hδ1 : δ ≤ 1` using `by nlinarith`. Establish `hn1 : 1 ≤ n` using `by omega`. Rewrite using `[condProb_eq n hn1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set U := (range n).erase 0 with hU`. Set `F : ℕ → Finset (Finset ℕ)` to `fun i => powersetCard (if 0 ∈ window n i L₂ then K else K + 1) ((window n i L₂).erase 0)`. Combine the equalities or inequalities in the displayed calculation. Apply `P_mono hδ hδ1` to reduce the goal to its premises. Introduce `t ht h`.
+Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0t : 0 ∉ t` using `fun h => notMem_erase 0 (range n) (mem_powerset.1 ht h)`. Conclude with `key n L₂ K t h0t h`. Use `_ ≤ ∑ i ∈ range n, P U δ (fun t => ∃ S ∈ F i, S ⊆ t) := prob_exists_le_sum hδ hδ1 (range n) (fun i t => ∃ S ∈ F i, S ⊆ t)`. Use `_ ≤ ∑ i ∈ range n, ∑ S ∈ F i, P U δ (fun t => S ⊆ t) := sum_le_sum fun i _ => prob_exists_le_sum hδ hδ1 (F i) (fun S t => S ⊆ t)`. Use `_ = ∑ i ∈ range n, ∑ S ∈ F i, δ ^ S.card := by`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Apply `sum_congr rfl` to reduce the goal to its premises. Introduce `S hS`. Apply `prob_subset_eq_pow_card` to reduce the goal to its premises.
-
-Introduce `x hx`. Establish `hx'` using `(mem_powersetCard.1 hS).1 hx`. Conclude with `mem_erase.2 ⟨(mem_erase.1 hx').1, window_subset n i L₂ hn1 (mem_erase.1 hx').2⟩`. Use `_ ≤ ∑ i ∈ range n, (L₂.choose K : ℝ) * δ ^ K := sum_le_sum fun i _ => window_bound δ hδ L₂ K hLδ _ (window_card n i L₂)`. Use `_ = n * (L₂.choose K : ℝ) * δ ^ K := by`.
-
-Rewrite using `[sum_const, card_range, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tops_choice_part_a : TopsChoicePartA := by
   classical

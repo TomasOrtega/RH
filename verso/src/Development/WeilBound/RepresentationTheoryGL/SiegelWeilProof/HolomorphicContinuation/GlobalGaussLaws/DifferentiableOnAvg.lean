@@ -24,19 +24,19 @@ def dF (f : ℂ → Mx D V.rank n → ℂ) : ℂ → Mx D V.rank n → ℂ := fu
 def iF (f : ℂ → Mx D V.rank n → ℂ) (r : ℕ) : ℂ → Mx D V.rank n → ℂ := fun z x => iteratedDeriv r (fun w => f w x) z
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z x`. Simplify using `[iF]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem iF_zero (f : ℂ → Mx D V.rank n → ℂ) : iF f 0 = f := by
   funext z x; simp [iF]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z x`. Simplify using `only [iF, dF, iteratedDeriv_succ]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem iF_succ (f : ℂ → Mx D V.rank n → ℂ) (r : ℕ) : iF f (r + 1) = dF (iF f r) := by
   funext z x; simp only [iF, dF, iteratedDeriv_succ]
 
 /- English proof (translation)
-Use `Complex.norm_deriv_le_of_forall_mem_sphere_norm_le hr ?_ hC` and prove the remaining obligations. Apply `DifferentiableOn.diffContOnCl` to reduce the goal to its premises. Rewrite using `[closure_ball z hr.ne']`. Conclude with `hg.mono hsub`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cauchy_le {g : ℂ → ℂ} {U : Set ℂ} (hg : DifferentiableOn ℂ g U) {z : ℂ} {r C : ℝ} (hr : 0 < r)
     (hsub : Metric.closedBall z r ⊆ U) (hC : ∀ w ∈ Metric.sphere z r, ‖g w‖ ≤ C) : ‖deriv g z‖ ≤ C / r := by
@@ -46,33 +46,31 @@ theorem cauchy_le {g : ℂ → ℂ} {U : Set ℂ} (hg : DifferentiableOn ℂ g U
   exact hg.mono hsub
 
 /- English proof (translation)
-Take `⟨ε, hε, hball, M, hMc, hMfin, hMb⟩` from `hf.maj z₀ hz₀`. Use `set r := ε / 4 with hr`. Establish `hr0 : 0 < r` using `by positivity`. Establish `hsubU : ∀ z ∈ Metric.ball z₀ r, Metric.closedBall z r ⊆ U`. Introduce `z hz w hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hball` to reduce the goal to its premises. Rewrite `hz`, the goal using `[Metric.mem_ball]`. Rewrite `hw` using `[Metric.mem_closedBall]`. Combine the equalities or inequalities in the displayed calculation. Establish `hmemM : ∀ z ∈ Metric.ball z₀ r, ∀ w ∈ Metric.sphere z r, w ∈ Metric.ball z₀ ε`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz w hw`. Rewrite `hz`, the goal using `[Metric.mem_ball]`. Rewrite `hw` using `[Metric.mem_sphere]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcb : ∀ z ∈ Metric.ball z₀ r, ∀ x, ‖dF f z x‖ ≤ ‖M x‖ / r` using `fun z hz x => cauchy_le (hf.diff x) hr0 (hsubU z hz) fun w hw => hMb w (hmemM z hz w hw) x`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hballU : Metric.ball z₀ r ⊆ U` using `fun z hz => hsubU z hz (Metric.mem_closedBall_self hr0.le)`. Establish `hz₀r : z₀ ∈ Metric.ball z₀ r` using `Metric.mem_ball_self hr0`. Establish `hz₀ε : z₀ ∈ Metric.ball z₀ ε` using `Metric.mem_ball_self hε`. Establish `hfinq` using `ae_absTheta_lt V ν hMc hMfin`. Establish `hsumM : ∀ q : Quot (GQ V), descend (GQ V) (absTheta V M) q < ⊤ → Summable fun ξ : Matrix (Fin V.rank) (Fin n) D.host.E => ‖M (invPt V q.out ξ)‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q hq`. Use `Summable.of_enorm ?_` and prove the remaining obligations. Simplify `hq.ne` using `[GlobalTheory.AutomorphicL2Unitary.descend, absTheta]`. Establish `htsM : ∀ q : Quot (GQ V), descend (GQ V) (absTheta V M) q < ⊤ → ∑' ξ : Matrix (Fin V.rank) (Fin n) D.host.E, ‖M (invPt V q.out ξ)‖ = (descend (GQ V) (absTheta V M) q).toReal`. Introduce `q hq`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.AutomorphicL2Unitary.descend, absTheta]`. Rewrite using `[ENNReal.tsum_toReal_eq fun ξ => enorm_ne_top]`. Simplify using the standard rewrite rules. Establish `hdiff : ∀ᵐ q ∂autMeasure V ν, ∀ z ∈ Metric.ball z₀ r, HasDerivAt (fun z => descend (GQ V) (thS V (f z)) q) (descend (GQ V) (thS V (dF f z)) q) z` using `by filter_upwards [hfinq] with q hq z hz`. Establish `hs` using `hsumM q hq`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.AutomorphicL2Unitary.descend, thS]`. Use `hasDerivAt_tsum_of_isPreconnected (u := fun ξ => ‖M (invPt V q.out ξ)‖ / r) (hs.div_const r) Metric.isOpen_ball (convex_ball z₀ r).isPreconnected (fun ξ y hy => ?_) (fun ξ y hy => hcb y hy _) hz₀r ?_ hz` and prove the remaining obligations. Conclude with `((hf.diff _).differentiableAt (hU.mem_nhds (hballU hy))).hasDerivAt`. Conclude with `Summable.of_norm_bounded hs fun ξ => hMb z₀ hz₀ε _`. Establish `hmeas' : AEStronglyMeasurable (descend (GQ V) (thS V (dF f z₀))) (autMeasure V ν)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `s : ℕ → ℂ` to `fun k => z₀ + ((r / 2 / ((k : ℝ) + 1) : ℝ) : ℂ)`. Establish `hs_ne : ∀ k, s k ≠ z₀`. Introduce `k h`. Establish `: ((r / 2 / ((k : ℝ) + 1) : ℝ) : ℂ) = 0` using `by simpa [s] using h`. Establish `h2 : r / 2 / ((k : ℝ) + 1) ≠ 0` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 (by exact_mod_cast this)`. Establish `hs_mem : ∀ k, s k ∈ Metric.ball z₀ r`. Introduce `k`. Rewrite using `[Metric.mem_ball, dist_eq_norm]`. Simplify using `only [s, add_sub_cancel_left, Complex.norm_real, Real.norm_eq_abs]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[abs_of_pos (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hs_lim : Tendsto s atTop (𝓝[≠] z₀)`. Use `tendsto_nhdsWithin_iff.2 ⟨?_, Eventually.of_forall hs_ne⟩` and prove the remaining obligations. Establish `: Tendsto (fun k : ℕ => r / 2 / ((k : ℝ) + 1)) atTop (𝓝 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h0` using `(tendsto_one_div_add_atTop_nhds_zero_nat).const_mul (r / 2)`. Rewrite `h0` using `[mul_zero]`. Use `h0.congr fun k => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `(Complex.continuous_ofReal.tendsto 0).comp this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `(tendsto_const_nhds (x := z₀)).add h2` using `[s]`. Use `aestronglyMeasurable_of_tendsto_ae (u := atTop) (f := fun k q => (s k - z₀)⁻¹ • (descend (GQ V) (thS V (f (s k))) q - descend (GQ V) (thS V (f z₀)) q)) (fun k => ((hf.meas _ (hballU (hs_mem k))).sub (hf.meas _ hz₀)).const_smul (s k - z₀)⁻¹) ?_` and prove the remaining obligations. Use `filter_upwards [hdiff] with q hq`. Establish `hd` using `hq z₀ hz₀r`. Conclude with `(hasDerivAt_iff_tendsto_slope.1 hd).comp hs_lim`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hmeas', ?_⟩` and prove the remaining obligations. Establish `hint0 : Integrable (descend (GQ V) (thS V (f z₀))) (autMeasure V ν)`. Use `⟨hf.meas _ hz₀, lt_of_le_of_lt (lintegral_mono fun q => ?_) (lt_of_le_of_lt (le_refl _) hMfin)⟩` and prove the remaining obligations. Conclude with `(enorm_thS_le V _ q.out).trans (absTheta_mono V (hMb z₀ hz₀ε) q.out)`. Establish `hbound : ∀ᵐ q ∂autMeasure V ν, ∀ z ∈ Metric.ball z₀ r, ‖descend (GQ V) (thS V (dF f z)) q‖ ≤ (descend (GQ V) (absTheta V M) q).toReal / r` using `by filter_upwards [hfinq] with q hq z hz`.
-
-Establish `hs` using `hsumM q hq`. Establish `hs' : Summable fun ξ => ‖dF f z (invPt V q.out ξ)‖` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun ξ => hcb z hz _) (hs.div_const r)`. Simplify using `only [GlobalTheory.AutomorphicL2Unitary.descend, thS] at *`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (Metric.ball_mem_nhds z₀ hr0) (Eventually.mono (hU.mem_nhds hz₀) fun z hz => hf.meas z hz) hint0 hmeas' hbound ((integrable_absTheta_toReal V ν hMc hMfin).div_const r) hdiff).2`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem fam_hasDeriv (V : HSp D) (ν : Measure (GA D V)) [ν.IsHaarMeasure] {U : Set ℂ} (hU : IsOpen U)
     {f : ℂ → Mx D V.rank n → ℂ} (hf : Fam V ν U f) {z₀ : ℂ} (hz₀ : z₀ ∈ U) :
@@ -174,7 +172,7 @@ theorem fam_hasDeriv (V : HSp D) (ν : Measure (GA D V)) [ν.IsHaarMeasure] {U :
     hint0 hmeas' hbound ((integrable_absTheta_toReal V ν hMc hMfin).div_const r) hdiff).2
 
 /- English proof (translation)
-The claim follows from `(hf.diff x).deriv hU maj z₀ hz₀ := by obtain ⟨ε, hε, hball, M, hMc, hMfin, hMb⟩ := hf.maj z₀ hz₀ refine ⟨ε / 2, by positivity, (Metric.ball_subset_ball (by linarith)).trans hball, ((2 / ε : ℝ) : ℂ) • M, hMc.const_smul _, absThetaInt_smul_lt V ν _ hMfin, ?_⟩ intro z hz x have hsub …`.
+A detailed English derivation is pending.
 -/
 theorem fam_dF (V : HSp D) (ν : Measure (GA D V)) [ν.IsHaarMeasure] {U : Set ℂ} (hU : IsOpen U)
     {f : ℂ → Mx D V.rank n → ℂ} (hf : Fam V ν U f) : Fam V ν U (dF f) where
@@ -207,7 +205,7 @@ theorem fam_dF (V : HSp D) (ν : Measure (GA D V)) [ν.IsHaarMeasure] {U : Set �
   meas z hz := (fam_hasDeriv V ν hU hf hz).1
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => rwa [iF_zero]`. Consider the case `succ r ih => rw [iF_succ]`. Conclude with `fam_dF V ν hU ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fam_iF (V : HSp D) (ν : Measure (GA D V)) [ν.IsHaarMeasure] {U : Set ℂ} (hU : IsOpen U)
     {f : ℂ → Mx D V.rank n → ℂ} (hf : Fam V ν U f) (r : ℕ) : Fam V ν U (iF f r) := by
@@ -216,11 +214,11 @@ theorem fam_iF (V : HSp D) (ν : Measure (GA D V)) [ν.IsHaarMeasure] {U : Set �
   | succ r ih => rw [iF_succ]; exact fam_dF V ν hU ih
 
 /- English proof (translation)
-Establish `hder : ∀ r, ∀ z ∈ U, HasDerivAt (fun z => ⨍ q, descend (GQ V) (thS V (iF f r z)) q ∂autMeasure V ν) (⨍ q, descend (GQ V) (thS V (iF f (r + 1) z)) q ∂autMeasure V ν) z`. Introduce `r z hz`. Simplify using `only [average_eq]`. Rewrite using `[iF_succ]`. Conclude with `(fam_hasDeriv V ν hU (fam_iF V ν hU hf r) hz).2.const_smul _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Proceed by induction on `r with`. Consider the case `zero => intro z _`. Simplify using `[iF_zero]`. Consider the case `succ r ih`. Introduce `z hz`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iteratedDeriv_succ]`. Establish `heq : iteratedDeriv r (fun z => ⨍ q, descend (GQ V) (thS V (f z)) q ∂autMeasure V ν) =ᶠ[𝓝 z] fun z => ⨍ q, descend (GQ V) (thS V (iF f r z)) q ∂autMeasure V ν` using `Eventually.mono (hU.mem_nhds hz) fun w hw => ih w hw`. Rewrite using `[heq.deriv_eq]`. Conclude with `(hder r z hz).deriv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_avg (V : HSp D) (ν : Measure (GA D V)) [ν.IsHaarMeasure] {U : Set ℂ} (hU : IsOpen U)
     {f : ℂ → Mx D V.rank n → ℂ} (hf : Fam V ν U f) (r : ℕ) :
@@ -244,7 +242,7 @@ theorem iteratedDeriv_avg (V : HSp D) (ν : Measure (GA D V)) [ν.IsHaarMeasure]
     exact (hder r z hz).deriv
 
 /- English proof (translation)
-Introduce `z hz`. Simplify using `only [average_eq]`. Conclude with `((fam_hasDeriv V ν hU hf hz).2.const_smul _).differentiableAt.differentiableWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableOn_avg (V : HSp D) (ν : Measure (GA D V)) [ν.IsHaarMeasure] {U : Set ℂ} (hU : IsOpen U)
     {f : ℂ → Mx D V.rank n → ℂ} (hf : Fam V ν U f) :

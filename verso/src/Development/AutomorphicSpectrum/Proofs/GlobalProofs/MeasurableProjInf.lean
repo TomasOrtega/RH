@@ -16,9 +16,9 @@ section SlopeTestRemainingChoices
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Establish `e` using `TopK.coordHomeo (E := E) (AF F) b`. Establish `: SecondCountableTopology (AF F ⊗[F] E)` using `e.secondCountableTopology`. Establish `: BorelSpace (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `: BorelSpace (Ainf F ⊗[F] E)` using `⟨rfl⟩`. Establish `hc : Continuous (HeckeCharacterZeroLocus.SiegelWeilU.projInf : (Fin n → Fin M → AF F ⊗[F] E) → _)` using `MeasProj.continuous_mapTup b (HeckeCharacterZeroLocus.SiegelWeilU.fstA F) MeasProj.continuous_fstA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `measurable_pi_iff.2 fun a => measurable_pi_iff.2 fun i => ?_` and prove the remaining obligations. Conclude with `(((continuous_apply i).comp (continuous_apply a)).comp hc).measurable`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_projInf [Module.Finite F E] {d : ℕ} (b : Module.Basis (Fin d) F E) (n M : ℕ) :
     Measurable (HeckeCharacterZeroLocus.SiegelWeilU.projInf : (Fin n → Fin M → AF F ⊗[F] E) → _) := by
@@ -32,9 +32,9 @@ theorem measurable_projInf [Module.Finite F E] {d : ℕ} (b : Module.Basis (Fin 
   exact (((continuous_apply i).comp (continuous_apply a)).comp hc).measurable
 
 /- English proof (translation)
-Establish `e` using `TopK.coordHomeo (E := E) (AF F) b`. Establish `: SecondCountableTopology (AF F ⊗[F] E)` using `e.secondCountableTopology`. Establish `: BorelSpace (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `: BorelSpace (Fv F v ⊗[F] E)` using `⟨rfl⟩`. Establish `h1 : Continuous (HeckeCharacterZeroLocus.SiegelWeilU.projFin : (Fin n → Fin M → AF F ⊗[F] E) → _)` using `MeasProj.continuous_mapTup b (HeckeCharacterZeroLocus.SiegelWeilU.sndA F) MeasProj.continuous_sndA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Continuous (HeckeCharacterZeroLocus.SiegelWeilU.projV v : (Fin n → Fin M → Af F ⊗[F] E) → _)` using `MeasProj.continuous_mapTup b (HeckeCharacterZeroLocus.SiegelWeilU.evalV F v) (MeasProj.continuous_evalV v)`. Use `measurable_pi_iff.2 fun a => measurable_pi_iff.2 fun i => ?_` and prove the remaining obligations. Conclude with `(((continuous_apply i).comp (continuous_apply a)).comp (h2.comp h1)).measurable`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_projV [Module.Finite F E] {d : ℕ} (b : Module.Basis (Fin d) F E) (n M : ℕ)
     (v : HeightOneSpectrum (𝓞 F)) :
@@ -52,7 +52,7 @@ theorem measurable_projV [Module.Finite F E] {d : ℕ} (b : Module.Basis (Fin d)
   exact (((continuous_apply i).comp (continuous_apply a)).comp (h2.comp h1)).measurable
 
 /- English proof (translation)
-Establish `e` using `TopK.coordHomeo (E := E) (AF F) b`. Establish `: SecondCountableTopology (AF F ⊗[F] E)` using `e.secondCountableTopology`. Establish `: BorelSpace (AF F ⊗[F] E)` using `⟨rfl⟩`. Rewrite using `[EulerBox.box_eq b S A hS]`. Conclude with `(MeasProj.isOpen_intOff b S).measurableSet.inter (Finset.measurableSet_biInter S fun v _ => measurable_projV b n M v (hA v))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurableSet_box [Module.Finite F E] {d : ℕ} (b : Module.Basis (Fin d) F E) (n M : ℕ)
     (S : Finset (HeightOneSpectrum (𝓞 F)))

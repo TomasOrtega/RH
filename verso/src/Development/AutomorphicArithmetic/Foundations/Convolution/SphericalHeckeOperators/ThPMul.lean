@@ -5,11 +5,11 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.SphericalHeckeO
 open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical GroundTheory.Automorphic.GLnLocal GroundTheory.Automorphic.Iwasawa UpperTheory.ConvolutionTheory.H
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `hint : ∀ i ∈ S, ∀ j ∈ T, Integrable (fun y => (c i * d j) * (f i y * g j (y⁻¹ * x))) μ` using `fun i hi j hj => (integrable_mul_of_mem (hf i hi) ((hg j hj).1.continuous.comp (continuous_inv.mul continuous_const))).const_mul _`. Establish `h1 : ∀ y, (∑ i ∈ S, c i • f i) y * (∑ j ∈ T, d j • g j) (y⁻¹ * x) = ∑ i ∈ S, ∑ j ∈ T, (c i * d j) * (f i y * g j (y⁻¹ * x))`. Introduce `y`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations. Simplify using `only [groupConv, h1]`. Rewrite using `[integral_finsetSum _ fun i hi => integrable_finsetSum _ fun j hj => hint i hi j hj]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[integral_finsetSum _ fun j hj => hint i hi j hj]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem groupConv_sum_sum {G ι κ : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [IsFiniteMeasureOnCompacts μ]
@@ -38,17 +38,15 @@ private theorem groupConv_sum_sum {G ι κ : Type*} [Group G] [TopologicalSpace 
   rfl
 
 /- English proof (translation)
-Introduce `F _ _ _ _ n _ _ μ _ r s hr hs`. Establish `hth : ∀ a : Fin n → ℤ, Antitone a → th μ a ∈ locallyConstantCompactSupport (GL (Fin n) F) ℂ ℂ` using `fun a ha => Submodule.smul_mem _ _ (dcoShape F n a ha).2.2.1`. Use `⟨fun a ha => ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨b, hb, c, hc, rfl⟩` from `Finset.mem_add.1 (AddMonoidAlgebra.support_coeff_mul_subset r s ha)`. Conclude with `(hr b hb).add (hs c hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.sum_mem _ fun a ha => Submodule.smul_mem _ _ (hth a (hr a ha))`. Introduce `g y hy`. Simplify using `only [thP, Finsupp.sum, Finset.sum_apply, Pi.smul_apply, th]`. Prove the components needed by the constructor for the conclusion. Conclude with `Finset.sum_congr rfl fun a ha => by`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[((dcoShape F n a (hr a ha)).2.2.2 g y hy).1]`. Conclude with `Finset.sum_congr rfl fun a ha => by`. Rewrite using `[((dcoShape F n a (hr a ha)).2.2.2 g y hy).2]`. Establish `hz : ∀ a : Fin n → ℤ, (0 : ℂ) • th μ a = 0` using `fun a => zero_smul _ _`. Establish `ha : ∀ (a : Fin n → ℤ) (c d : ℂ), (c + d) • th μ a = c • th μ a + d • th μ a` using `fun a c d => add_smul _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : thP μ (r * s) = ∑ a ∈ r.coeff.support, ∑ b ∈ s.coeff.support, (r.coeff a * s.coeff b) • th μ (a + b)`. Unfold `thP`. Rewrite using `[AddMonoidAlgebra.mul_def]`. Simplify using `only [AddMonoidAlgebra.coeff_finsuppSum, AddMonoidAlgebra.coeff_single]`. Rewrite using `[Finsupp.sum_sum_index hz ha]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[Finsupp.sum_sum_index hz ha]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Conclude with `Finsupp.sum_single_index (hz _)`.
-
-Rewrite using `[h1]`. Unfold `thP Finsupp.sum`. Rewrite using `[groupConv_sum_sum μ _ _ _ _ _ _ (fun a ha => hth a (hr a ha)) (fun b hb => hth b (hs b hb))]`. Use `Finset.sum_congr rfl fun a ha => Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Rewrite using `[thMul F n μ a b (hr a ha) (hs b hb)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.H.thPMul :
     ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (n : ℕ)

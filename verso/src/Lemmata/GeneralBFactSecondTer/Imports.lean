@@ -3,15 +3,15 @@ import Mathlib
 namespace Bl.general_b_fact_second_ter
 
 /- English proof (translation)
-Introduce `n Q _ hQ p`. Prove the components needed by the constructor for the conclusion. Introduce `hp`. Establish `h : Finset.Iic p ⊆ Finset.filter Q Finset.univ`. Introduce `q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hq` using `[Finset.mem_Iic]`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `hQ p q hq hp`. Establish `hc` using `Finset.card_le_card h`. Rewrite `hc` using `[Fin.card_Iic]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Introduce `hlt`. Assume the negation of the conclusion as `hp`. Establish `h : Finset.filter Q Finset.univ ⊆ Finset.Iio p`. Introduce `q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hq`. Rewrite using `[Finset.mem_Iio]`. Assume the negation of the conclusion as `hqp`. Conclude with `hp (hQ q p (not_lt.mp hqp) hq)`. Establish `hc` using `Finset.card_le_card h`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `hc` using `[Fin.card_Iio]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {n : Nat} (Q : Fin n → Prop) [inst : DecidablePred.{1} Q],

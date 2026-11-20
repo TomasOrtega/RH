@@ -31,7 +31,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.RefAway
 
 /- English proof (translation)
-Rewrite using `[vLa, ← map_natCast (algebraMap (𝓞 K) K) N, HeightOneSpectrum.valuation_of_algebraMap, (la.intValuation_eq_one_iff_mem_primeCompl _).2 hN]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vLa_nat_eq_zero {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) {N : ℕ}
     (hN : ((N : ℕ) : 𝓞 K) ∉ la.asIdeal) : vLa la (N : K) = 0 := by
@@ -40,9 +40,9 @@ theorem vLa_nat_eq_zero {K : Type} [Field K] [NumberField K] (la : HeightOneSpec
   simp
 
 /- English proof (translation)
-Establish `h1 : la.valuation K (N : K) < 1`. Rewrite using `[← map_natCast (algebraMap (𝓞 K) K) N]`. Conclude with `(la.valuation_lt_one_iff_mem _).2 hN`. Establish `h2 : la.valuation K (N : K) ≠ 0`. Rewrite using `[Ne, Valuation.zero_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h0` after adjusting the coercions. Establish `h3` using `(WithZero.log_lt_log h2 one_ne_zero).2 h1`. Rewrite `h3` using `[WithZero.log_one]`. Unfold `vLa`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem vLa_nat_pos {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) {N : ℕ} (h0 : N ≠ 0)
     (hN : ((N : ℕ) : 𝓞 K) ∈ la.asIdeal) : 0 < vLa la (N : K) := by
@@ -58,13 +58,11 @@ theorem vLa_nat_pos {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum
   omega
 
 /- English proof (translation)
-Establish `hN0 : N ≠ 0`. Introduce and unpack `rfl`. Conclude with `hN (by simp)`. Establish `h3` using `ho.2 (N : K)`. Rewrite `h3` using `[vLa_nat_eq_zero la hN, mul_zero, map_natCast, ← map_natCast (algebraMap S.V S.Fr)]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : algebraMap S.V S.Fr (N : S.V) ≠ 0`. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `hN0` after adjusting the coercions. Establish `hne` using `valV_ne_zero (V := S.V) hx`. Establish `h4 : valV S.V (algebraMap S.V S.Fr (N : S.V)) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `vV at h3`. Rewrite using `[← WithZero.exp_log hne, neg_eq_zero.1 h3, WithZero.exp_zero]`. Unfold `valV at h4`. Rewrite `h4` using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl]`. Assume the negation of the conclusion as `hu`.
-
-Conclude with `h4 ((IsLocalRing.mem_maximalIdeal _).2 hu)`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem isUnit_nat {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) (S : CDVR)
     (io : K →+* S.Fr) (e : ℕ) (ho : OverLa la S.V io e) (N : ℕ) (hN : ((N : ℕ) : 𝓞 K) ∉ la.asIdeal) :
@@ -87,7 +85,7 @@ theorem isUnit_nat {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum 
   exact h4 ((IsLocalRing.mem_maximalIdeal _).2 hu)
 
 /- English proof (translation)
-Introduce `hN`. Take `⟨u, v, huv⟩` from `(Nat.isCoprime_iff_coprime.2 h).map (Int.castRingHom (𝓞 K))`. Simplify using `only [eq_intCast, Int.cast_natCast] at huv`. Conclude with `la.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (huv ▸ la.asIdeal.add_mem (la.asIdeal.mul_mem_left _ hp) (la.asIdeal.mul_mem_left _ hN)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nat_not_mem {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) {p N : ℕ}
     (hp : ((p : ℕ) : 𝓞 K) ∈ la.asIdeal) (h : Nat.Coprime p N) : ((N : ℕ) : 𝓞 K) ∉ la.asIdeal := by
@@ -98,7 +96,7 @@ theorem nat_not_mem {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum
     (huv ▸ la.asIdeal.add_mem (la.asIdeal.mul_mem_left _ hp) (la.asIdeal.mul_mem_left _ hN)))
 
 /- English proof (translation)
-Rewrite using `[← ho.2, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vV_nat_eq {K : Type} [Field K] [NumberField K] {la : HeightOneSpectrum (𝓞 K)} {S : CDVR}
     {io : K →+* S.Fr} {e : ℕ} (ho : OverLa la S.V io e) (p : ℕ) :
@@ -106,13 +104,13 @@ theorem vV_nat_eq {K : Type} [Field K] [NumberField K] {la : HeightOneSpectrum (
   rw [← ho.2, map_natCast]
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Rewrite using `[hx, nval_zero]`. Conclude with `le_top`. Establish `he : (0 : ℤ) < e` using `by exact_mod_cast ho.1`. Establish `h1 : (((vV S.V (p : S.Fr)).toNat : ℕ) : ℝ) = (e : ℝ) * (vLa la (p : K) : ℝ)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (((vV S.V (p : S.Fr)).toNat : ℕ) : ℤ) = (e : ℤ) * vLa la (p : K)`. Rewrite using `[Int.toNat_of_nonneg, vV_nat_eq ho]`. Rewrite using `[vV_nat_eq ho]`. Check the signs of the components of the expression. Conclude with `h2` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he' : (0 : ℝ) < e` using `by exact_mod_cast ho.1`. Establish `hp' : (0 : ℝ) < (vLa la (p : K) : ℝ)` using `by exact_mod_cast hp`. Rewrite `h`, the goal using `[nval_of_ne hx, EReal.coe_le_coe_iff]`. Rewrite `h` using `[h1, le_div_iff₀ (by positivity)]`. Rewrite using `[le_div_iff₀ he']`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem le_nval_place {K : Type} [Field K] [NumberField K] {la : HeightOneSpectrum (𝓞 K)} {S : CDVR}
     {io : K →+* S.Fr} {e : ℕ} (ho : OverLa la S.V io e) {p : ℕ} (hp : 0 < vLa la (p : K)) (A : ℕ) (x : S.Fr)
@@ -135,9 +133,7 @@ theorem le_nval_place {K : Type} [Field K] [NumberField K] {la : HeightOneSpectr
   linarith
 
 /- English proof (translation)
-Establish `h (k : Fin 2) : Nat.Coprime (D.host.g k) (D.host.QS * D.host.q * D.host.d)`. Establish `hc` using `D.ntypes.g_cond k`. Establish `h1 : Nat.Coprime (D.host.g k) (D.host.QS * D.host.q * D.host.d)`. Rewrite using `[Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, hc, Nat.gcd_one_left]`. Conclude with `h1`.
-
-Conclude with `Nat.Coprime.mul_left (h 0) (h 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coprime_type (D : D7) : Nat.Coprime (D.host.g 0 * D.host.g 1) (D.host.QS * D.host.q * D.host.d) := by
   have h (k : Fin 2) : Nat.Coprime (D.host.g k) (D.host.QS * D.host.q * D.host.d) := by
@@ -148,7 +144,7 @@ theorem coprime_type (D : D7) : Nat.Coprime (D.host.g 0 * D.host.g 1) (D.host.QS
   exact Nat.Coprime.mul_left (h 0) (h 1)
 
 /- English proof (translation)
-Establish `hN : 0 ≤ N` using `hρ0.trans hρ`. Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[sq_nonneg Dg]`. Use `_ ≤ _ := by gcongr`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem err_le (R N ρ u Dg φ c r v g₀ g₁ : ℝ) (hR : 0 ≤ R) (hρ0 : 0 ≤ ρ) (hρ : ρ ≤ N) (hu : 0 ≤ u) (hr : 0 < r)
     (hv : 0 < v) (hg₀ : 0 < g₀) (hg₁ : 1 ≤ g₁) (hφ : 0 ≤ φ) (hc : R * N ^ 3 * (u + 2 * Dg ^ 2) / g₀ ≤ c) :
@@ -163,43 +159,39 @@ theorem err_le (R N ρ u Dg φ c r v g₀ g₁ : ℝ) (hR : 0 ≤ R) (hρ0 : 0 �
     _ ≤ _ := by gcongr
 
 /- English proof (translation)
-Introduce `D T hL EX j hj a n cst hD hLP hs hr hJ q hq' hq b hO`. Use `letI := T.Q.H.starRing`. Establish `hqp : q.Prime` using `hq'.out`. Use `(refExp_vp_le_iff _).2 fun la S io e ho y hy φ hφ => ?_` and prove the remaining obligations. Take `⟨st, nab, hnab⟩` from `GlobalTheory.CanonConn.exists_isNab_uncond _ T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `GlobalTheory.PowGerm.starSt _ T.Q.H st hnab.1`. Take `⟨A, hA⟩` from `hO la`. Take `⟨P₁, hP₁, hPB⟩` from `GlobalTheory.T.exists_harmonicPolynomial_localDepth_between D T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c q la a hD.1 n hs _ _ hA`. Take `⟨S', io', y', r, C, P, hy', hr0, hC, hP, hφ', hov, hvm, hsc⟩` from `GlobalTheory.T.exists_finiteExtension_uniformisedChart_scale _ T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c S io y hy φ hφ`. Establish `ho'` using `hov la.1 e ho`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible S'.V`. Take `⟨⟨Q, hQ⟩, -⟩` from `GlobalTheory.PowData.exists_powData _ T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c S' io' y' C P ϖ hϖ`. Take `⟨ρ, hρ, hSB⟩` from `GlobalTheory.T.exists_short_periodLattice_basis_balanced_slope _ T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c S' io' y' _ hφ' C P ϖ hϖ Q hQ`. Take `⟨⟨α, hα1, hα2⟩, -⟩` from `GlobalTheory.HalfGen.half_principal_and_split D T hL EX`. Take `⟨π, π', hsplit⟩` from `GlobalTheory.SplitLevel.level_halfSplit D T hL EX`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hM : T.Q.l.M = D.host.g 0 * D.host.g 1` using `hL.pins.2.1.1`. Establish `hcop : Nat.Coprime q T.Q.l.M`. Rewrite using `[hM]`. Conclude with `Nat.Coprime.mul_right ((Nat.coprime_primes hqp (D.host.g_prime 0)).2 (hq 0)) ((Nat.coprime_primes hqp (D.host.g_prime 1)).2 (hq 1))`. Establish `hMu : IsUnit ((T.Q.l.M : ℕ) : S'.V)` using `isUnit_nat la.1 S' _ _ ho' _ (nat_not_mem la.1 la.2 hcop)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr1 : 1 ≤ D.R.r`. Establish `h1` using `D.R.two_le_m`. Establish `h2` using `D.R.m_add_three_le_k`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hn1 : 1 ≤ n` using `by omega`. Establish `hρN : ρ ≤ 2 * D.R.f * D.R.m`. Use `hρ.trans ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.DepthLink.finrank_host D, (hL.pins.2.2.2 j hj).2.1]`. Conclude with `Nat.mul_le_mul_left _ (Nat.sub_le _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρN' : (ρ : ℝ) ≤ 2 * D.R.f * D.R.m` using `by exact_mod_cast hρN`. Establish `hg0 : 2 ≤ D.host.g 0` using `(D.host.g_prime 0).two_le`. Establish `hg1 : 2 ≤ D.host.g 1` using `(D.host.g_prime 1).two_le`. Establish `hle : D.host.g 0 ≤ T.Q.l.M` using `hM ▸ Nat.le_mul_of_pos_right _ (by omega)`. Establish `hg0' : (2 : ℝ) ≤ D.host.g 0` using `by exact_mod_cast hg0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg1' : (2 : ℝ) ≤ D.host.g 1` using `by exact_mod_cast hg1`. Establish `hle' : (D.host.g 0 : ℝ) ≤ (T.Q.l.M : ℕ)` using `by exact_mod_cast hle`. Establish `hDM : (DF (T.Q.Dw j) a : ℝ) * (2 * Real.sqrt ρ) < (T.Q.l.M : ℕ)`. Use `lt_of_le_of_lt ?_ ((hJ 0).2.1.trans_le hle')` and prove the remaining obligations. Use `gcongr`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hε : 0 < vLa la.1 (q : T.Q.c.F)` using `vLa_nat_pos la.1 hqp.ne_zero la.2`. Establish `hv0 : 0 < vV S.V (q : S.Fr)`. Rewrite using `[vV_nat_eq ho]`. Conclude with `mul_pos (by exact_mod_cast ho.1) hε`. Take `⟨v, hv⟩ : ∃ v : ℕ, vV S.V (q : S.Fr) = v` from `⟨_, (Int.toNat_of_nonneg hv0.le).symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hvpos : 0 < v` using `by omega`. Establish `hv' : (vV S'.V (q : S'.Fr)).toNat = r * v`. Rewrite using `[hvm q hqp.ne_zero, hv, ← Nat.cast_mul, Int.toNat_natCast]`. Establish `hrv : ((r * v : ℕ) : ℤ) = ((r * e : ℕ) : ℤ) * vLa la.1 (q : T.Q.c.F)`. Rewrite using `[← vV_nat_eq ho', hvm q hqp.ne_zero, hv, Nat.cast_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr0' : (0 : ℝ) < r` using `by exact_mod_cast hr0`. Establish `hvpos' : (0 : ℝ) < v` using `by exact_mod_cast hvpos`. Establish `hup` using `GlobalTheory.RefSum.iInf_thRule_le_nuLocOf _ T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c nab hnab S' io' y' C hC P hP hy' ϖ hϖ Q hQ ρ _ _ hSB α hα1 hα2 hMu a n (r * v) hn1 (Nat.mul_pos hr0 hvpos) ((hJ 0).1.trans hle) hDM P₁ hP₁`. Establish `hloc` using `(hPB S' io' _ ho' y' hy' C T.Q.l.M).2`. Rewrite `hloc` using `[hv']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Establish `hnum : (DF (T.Q.Dw j) a : ℝ) ^ 2 * (rr0 D * (ρ : ℝ) ^ 3 * (r * φ)) / (T.Q.l.M : ℕ) / ((r * v : ℕ) : ℝ) ≤ cst * φ / v`. Rewrite using `[hM, Nat.cast_mul, Nat.cast_mul]`. Use `err_le (rr0 D) _ ρ _ _ φ cst r v _ _ ?_ (Nat.cast_nonneg _) hρN' ?_ hr0' hvpos' (by linarith) (by linarith) hφ.nonneg (hJ 0).2.2` and prove the remaining obligations. Unfold `rr0`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. Check the signs of the components of the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hinf` using `hup.trans (add_le_add hloc (EReal.coe_le_coe_iff.2 hnum))`. Take `⟨m, hm, hmlow, -⟩` from `GlobalTheory.ThetaLow.thetaRule_bounded_below D T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c nab hnab _ _ π π' hsplit (coprime_type D) a n`. Establish `hdep : depthAt_vp (T.U j) (wtZ a n) q y + ((A : ℝ) : EReal) ≤ ⨅ (f : Rul (T.Q.Xo j) T.Q.c) (_ : ∃ x : Fin n → (T.Q.Dw j).La, IsThRule (T.Q.Xo j) T.Q.c nab x P₁ f), nval S'.V (r * v) (evI y' f)`. Use `le_iInf₂ fun f ⟨x, hx⟩ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hf : f ∈ thGen (T.Q.Xo j) T.Q.c nab a n` using `⟨x, P₁, hP₁, hx⟩`. Establish `hcusp` using `(GlobalTheory.thetaRules_exist_and_cusp _ T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c D.R.r (T.U j) hr1 (hL.unf j hj) nab hnab).2 a n hD hLP f hf`. Establish `hlow` using `GlobalTheory.RefSum.LowP.thRule_lower _ T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c nab hnab q hqp (hqp.coprime_iff_not_dvd.1 hcop) la a n P₁ hP₁ _ _ hPB x f hx`. Take `⟨s, hs0, hsv, g, hg, hgs⟩` from `GlobalTheory.T.cuspForm_clear_denominators_away_from_place _ T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c D.R.r (T.U j) (wtZ a n) ⟨f, hcusp⟩ m hm (hmlow f hf) la.1 (vLa la.1 (q : T.Q.c.F) * A) (by`. Introduce and unpack `_ ⟨⟨_, S₁, io₁, e₁, ho₁, y₁, hy₁, η, hη, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `le_nval_place ho₁ hε A _ (hlow S₁ io₁ e₁ ho₁ y₁ hy₁))`. Establish `h1 : depthAt_vp (T.U j) (wtZ a n) q y ≤ nval S.V v (io s * evI y f)`. Use `(iInf₂_le g hg).trans (le_of_eq ?_)` and prove the remaining obligations. Use `show nval S.V (vV S.V (q : S.Fr)).toNat (evI y (g : Rul (T.Q.Xo j) T.Q.c)) = _`. Rewrite using `[hv, Int.toNat_natCast, hgs, evI_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : nval S'.V (r * v) (io' s) = ((-(A : ℝ) : ℝ) : EReal)`. Rewrite using `[nval_of_ne ((map_ne_zero io').2 hs0), ho'.2 s, hsv]`. Use `congr 1`. Establish `h3 : ((r * v : ℕ) : ℝ) = ((r * e : ℕ) : ℝ) * (vLa la.1 (q : T.Q.c.F) : ℝ)` using `by exact_mod_cast hrv`. Establish `h4 : ((r * v : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast (Nat.mul_pos hr0 hvpos).ne'`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_eq_iff h4, h3]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[← hsc nab hnab a n v s f hf, nval_mul, h2]`. Use `(add_le_add h1 le_rfl).trans (le_of_eq ?_)` and prove the remaining obligations.
-
-Rewrite using `[add_right_comm, ← EReal.coe_add, neg_add_cancel, EReal.coe_zero, zero_add]`. Establish `hfin` using `hdep.trans hinf`. Rewrite using `[hv, Int.cast_natCast]`. Rewrite `hfin` using `[← EReal.le_sub_iff_add_le (Or.inl (EReal.coe_ne_bot _)) (Or.inl (EReal.coe_ne_top _)), ← EReal.coe_add, ← EReal.coe_sub]`. Rewrite using `[← EReal.coe_add]`.
-
-Conclude with `hfin.trans (EReal.coe_le_coe_iff.2 (by linarith))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem refExp_le_of_oscLe : ∀ (D : D7) (T : Core D), LawsM T → ∀ (_ : ErrX D) (j : ℕ), InR D j → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ) (cst : ℝ), Dom a n → LastPos (T.Q.Dw j) a → ∑ f : Lt1 (T.Q.Dw j), 2 * rk f ≤ n → 2 * D.R.r ≤ n → JetNum D (DF (T.Q.Dw j) a) cst → ∀ (q : ℕ) [Fact q.Prime], (∀ k, q ≠ D.host.g k) → ∀ b : ℝ, OscLe (T.Q.Xo j) T.Q.c q (gap (T.Q.Dw j) a) b → refExp_vp (T.U j) cst (wtZ a n) q ≤ (b : EReal) := by
   intro D T hL EX j hj a n cst hD hLP hs hr hJ q hq' hq b hO

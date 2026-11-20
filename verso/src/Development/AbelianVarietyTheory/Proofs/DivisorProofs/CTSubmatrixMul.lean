@@ -6,11 +6,11 @@ open scoped TensorProduct
 namespace GlobalTheory.TieStd
 
 /- English proof (translation)
-Rewrite using `[hd, hd]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `absurd h (not_lt.2 (Finset.card_le_card fun k hk => ?_))` and prove the remaining obligations. Rewrite `hk`, the goal using `[Finset.mem_filter]`. Conclude with `⟨hk.1, lt_of_not_ge fun h' => absurd hk.2 (not_lt.2 (hne k hk.1 h'))⟩`. Introduce and unpack `⟨k, hk, h1, h2⟩`. Use `Finset.card_lt_card ⟨fun x hx => ?_, fun h => ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[Finset.mem_filter]`. Conclude with `⟨hx.1, lt_of_lt_of_le hx.2 (h1.trans h2.le)⟩`. Use `h (Finset.mem_filter.2 ⟨hk, h2⟩)` as an intermediate fact. Conclude with `absurd (Finset.mem_filter.1 this).2 (not_lt.2 h1)`.
+Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem depth_lt_iff {r : ℕ} (S : Finset (Fin r)) (s : ℕ) (hs : s ≤ r) (d : Fin s → ℕ)
     (hd : ∀ i, d i = (S.filter (· < Fin.castLE hs i)).card) (i j : Fin s) :
@@ -31,7 +31,7 @@ theorem depth_lt_iff {r : ℕ} (S : Finset (Fin r)) (s : ℕ) (hs : s ≤ r) (d 
       exact absurd (Finset.mem_filter.1 this).2 (not_lt.2 h1)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.mul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_submatrix_mul {E : Type} [Field E] (σ : E →+* E) {n r s : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (A B : Matrix (Fin n) (Fin r) E) (f g : Fin s → Fin r) :

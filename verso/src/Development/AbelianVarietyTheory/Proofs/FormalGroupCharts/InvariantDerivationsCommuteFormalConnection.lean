@@ -24,7 +24,7 @@ variable {k : Type} [CommRing k] {τ : Type} [Fintype τ]
 def vf (c : τ → MvPowerSeries τ k) (G : MvPowerSeries τ k) : MvPowerSeries τ k := ∑ t, c t * pderiv k t G
 
 /- English proof (translation)
-Simplify using `only [vf, map_sum, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vf_sum {ι : Type} (s : Finset ι) (c : τ → MvPowerSeries τ k) (f : ι → MvPowerSeries τ k) :
     vf c (∑ i ∈ s, f i) = ∑ i ∈ s, vf c (f i) := by
@@ -32,19 +32,19 @@ theorem vf_sum {ι : Type} (s : Finset ι) (c : τ → MvPowerSeries τ k) (f : 
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `[vf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vf_C (c : τ → MvPowerSeries τ k) (a : k) : vf c (C a) = 0 := by
   simp [vf]
 
 /- English proof (translation)
-Simplify using `[vf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vf_zeroc (G : MvPowerSeries τ k) : vf (fun _ => (0 : MvPowerSeries τ k)) G = 0 := by
   simp [vf]
 
 /- English proof (translation)
-Simplify using `only [vf, Derivation.leibniz, smul_eq_mul, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vf_mul (c : τ → MvPowerSeries τ k) (f G : MvPowerSeries τ k) :
     vf c (f * G) = vf c f * G + f * vf c G := by
@@ -57,7 +57,7 @@ variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
 variable (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k]
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`.
+A detailed English derivation is pending.
 -/
 theorem liftX_hs : HasSubst (fun p : Fin 1 × Fin d => (X (Sum.inl p.2) : AA k d)) :=
   hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _
@@ -79,11 +79,11 @@ section VF
 variable {k : Type} [CommRing k] {τ : Type} [Fintype τ]
 
 /- English proof (translation)
-Establish `hL : vf c (vf c' G) = ∑ s, ∑ t, (c s * c' t * pderiv k s (pderiv k t G) + c s * pderiv k s (c' t) * pderiv k t G)`. Simplify using `only [vf, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hR : vf (fun t => vf c (c' t)) G = ∑ s, ∑ t, c s * pderiv k s (c' t) * pderiv k t G`. Simplify using `only [vf, Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Rewrite using `[hL, hR, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun t _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem vf_vf (c c' : τ → MvPowerSeries τ k) (G : MvPowerSeries τ k) :
     vf c (vf c' G) = vf (fun t => vf c (c' t)) G + ∑ s, ∑ t, c s * c' t * pderiv k s (pderiv k t G) := by
@@ -102,9 +102,9 @@ theorem vf_vf (c c' : τ → MvPowerSeries τ k) (G : MvPowerSeries τ k) :
   exact Finset.sum_congr rfl fun t _ => by ring
 
 /- English proof (translation)
-Rewrite using `[vf_vf, vf_vf]`. Establish `hsym : ∑ s, ∑ t, c' s * c t * pderiv k s (pderiv k t G) = ∑ s, ∑ t, c s * c' t * pderiv k s (pderiv k t G)`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[FormalLog.pderiv_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsym]`. Simplify using `only [vf, sub_mul, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vf_comm (c c' : τ → MvPowerSeries τ k) (G : MvPowerSeries τ k) :
     vf c (vf c' G) - vf c' (vf c G) = vf (fun t => vf c (c' t) - vf c' (c t)) G := by
@@ -120,7 +120,7 @@ theorem vf_comm (c c' : τ → MvPowerSeries τ k) (G : MvPowerSeries τ k) :
   ring
 
 /- English proof (translation)
-Rewrite using `[vf_mul, vf_C, zero_mul, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vf_Cmul (c : τ → MvPowerSeries τ k) (a : k) (g : MvPowerSeries τ k) : vf c (C a * g) = C a * vf c g := by
   rw [vf_mul, vf_C, zero_mul, zero_add]
@@ -132,9 +132,7 @@ section Law
 variable {k : Type} [CommRing k] {d : ℕ} (G : FGLaw k d)
 
 /- English proof (translation)
-Rewrite using `[ev_ev cz1 (czFF G)]`. Use `conv_rhs => rw [← ev_pt h]`. Use `congr 1`. Use function extensionality and compare the values at `j c`. Use `fin_cases j`.
-
-Conclude with `formalGroupLaw_ev_x_zero G c`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ezF (h : PS k 1 d) : ev (n := 1) ![pt k d 0, 0] (ev (n := 2) ![G.F] h) = h := by
   rw [ev_ev cz1 (czFF G)]
@@ -145,9 +143,9 @@ theorem ezF (h : PS k 1 d) : ev (n := 1) ![pt k d 0, 0] (ev (n := 2) ![G.F] h) =
   exact formalGroupLaw_ev_x_zero G c
 
 /- English proof (translation)
-Rewrite using `[ev_ev cz1 czY]`. Establish `e : (fun j c => ev (n` using `1) ![pt k d 0, 0] ((![pt k (n := 2) d 1] : Fin 1 → Pt k 2 d) j c)) = fun _ _ => (0 : PS k 1 d) := by`. Use function extensionality and compare the values at `j c`. Use `fin_cases j`. Simplify using `[pt_apply, ev_X cz1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ev_zeroFam]`.
+A detailed English derivation is pending.
 -/
 theorem ez_y (h : PS k 1 d) : ev (n := 1) ![pt k d 0, 0] (ev (n := 2) ![pt k d 1] h) = C (constantCoeff h) := by
   rw [ev_ev cz1 czY]
@@ -159,7 +157,7 @@ theorem ez_y (h : PS k 1 d) : ev (n := 1) ![pt k d 0, 0] (ev (n := 2) ![pt k d 1
   rw [e, ev_zeroFam]
 
 /- English proof (translation)
-Rewrite using `[pderiv_ev czY, Fintype.sum_prod_type, Fin.sum_univ_one]`. Simplify using `[pderiv_pt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem d_y (h : PS k 1 d) (b : Fin d) :
     pderiv k ((1 : Fin 2), b) (ev (n := 2) ![pt k d 1] h) = ev (n := 2) ![pt k d 1] (pderiv k ((0 : Fin 1), b) h) := by
@@ -167,7 +165,7 @@ theorem d_y (h : PS k 1 d) (b : Fin d) :
   simp [pderiv_pt]
 
 /- English proof (translation)
-Rewrite using `[pderiv_ev (czFF G), Fintype.sum_prod_type, Fin.sum_univ_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem d_F (h : PS k 1 d) (v : Fin 2 × Fin d) :
     pderiv k v (ev (n := 2) ![G.F] h) = ∑ c, ev (n := 2) ![G.F] (pderiv k ((0 : Fin 1), c) h) * pderiv k v (G.F c) := by
@@ -185,9 +183,9 @@ Both sides reduce to the same expression.
 theorem ez_dF (c b : Fin d) : ev (n := 1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), b) (G.F c)) = Jac G c b := rfl
 
 /- English proof (translation)
-Establish `h` using `congrArg (coeff (Finsupp.single ((0 : Fin 1), i) 1)) (G.unit c)`. Rewrite `h` using `[coeff_ev_zero_left, Finsupp.embDomain_single]`. Rewrite `h` using `[show (eZ d) ((0 : Fin 1), i) = ((1 : Fin 2), i) from rfl]`. Rewrite using `[h, coeff_X]`. Distinguish the cases in `hci : c = i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hci` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg, if_neg hci]`. Introduce `he`. Conclude with `hci (congrArg Prod.snd (Finsupp.single_left_injective one_ne_zero he)).symm`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coeff_F_y (c i : Fin d) : coeff (Finsupp.single ((1 : Fin 2), i) 1) (G.F c) = if c = i then 1 else 0 := by
   classical
@@ -202,21 +200,21 @@ theorem coeff_F_y (c i : Fin d) : coeff (Finsupp.single ((1 : Fin 2), i) 1) (G.F
     exact hci (congrArg Prod.snd (Finsupp.single_left_injective one_ne_zero he)).symm
 
 /- English proof (translation)
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, Jac, coeff_ev_zero_right, Finsupp.embDomain_zero, coeff_pderiv]`. Simplify using `using coeff_F_y G c i`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cc_jac' (c i : Fin d) : constantCoeff (Jac G c i) = if c = i then 1 else 0 := by
   rw [← coeff_zero_eq_constantCoeff_apply, Jac, coeff_ev_zero_right, Finsupp.embDomain_zero, coeff_pderiv]
   simpa using coeff_F_y G c i
 
 /- English proof (translation)
-Rewrite using `[cc_jac']`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem C_cc_jac (c i : Fin d) : (C (constantCoeff (Jac G c i)) : PS k 1 d) = if c = i then 1 else 0 := by
   rw [cc_jac']
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `e : (eXv d) ((0 : Fin 1), b) = ((0 : Fin 2), b)` using `rfl`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_pderiv, Jac, coeff_ev_zero_right, coeff_pderiv]`. Simplify using `[e, Finsupp.embDomain_single]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cc_d_jac (b c i : Fin d) : constantCoeff (pderiv k ((0 : Fin 1), b) (Jac G c i)) =
     coeff (Finsupp.single ((0 : Fin 2), b) 1 + Finsupp.single ((1 : Fin 2), i) 1) (G.F c) := by
@@ -225,7 +223,7 @@ theorem cc_d_jac (b c i : Fin d) : constantCoeff (pderiv k ((0 : Fin 1), b) (Jac
   simp [e, Finsupp.embDomain_single]
 
 /- English proof (translation)
-Establish `h` using `coeff_ev_swap (G.F c) (Finsupp.single ((0 : Fin 2), i) 1 + Finsupp.single ((1 : Fin 2), b) 1)`. Rewrite `h` using `[G.comm c, Finsupp.embDomain_add, Finsupp.embDomain_single, Finsupp.embDomain_single]`. Rewrite `h` using `[show (swE d) ((0 : Fin 2), i) = ((1 : Fin 2), i) from rfl, show (swE d) ((1 : Fin 2), b) = ((0 : Fin 2), b) from rfl]`. Rewrite using `[← h, add_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem kappa_symm (b i c : Fin d) :
     coeff (Finsupp.single ((0 : Fin 2), b) 1 + Finsupp.single ((1 : Fin 2), i) 1) (G.F c) =
@@ -237,7 +235,7 @@ theorem kappa_symm (b i c : Fin d) :
   rw [← h, add_comm]
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun g => ev (n := 1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), b) g)) (jac_F G j i)`. Use `beta_reduce at h`. Simplify using `only [d_F, map_sum, ev_sum cz1, Derivation.leibniz, smul_eq_mul, ev_add cz1, ev_mul cz1, ezF, d_y, ez_y, ez_Ar, ez_dF, C_cc_jac, ite_mul, one_mul, zero_mul, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h`. Establish `hs : ∑ c, Jac G c b * pderiv k ((0 : Fin 1), c) (Jac G j i) = ∑ c, pderiv k ((0 : Fin 1), c) (Jac G j i) * Jac G c b` using `Finset.sum_congr rfl fun c _ => mul_comm _ _`. Rewrite using `[hs, h, add_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_eq (b i j : Fin d) :
     ∑ c, Jac G c b * pderiv k ((0 : Fin 1), c) (Jac G j i) =
@@ -253,9 +251,9 @@ theorem T_eq (b i j : Fin d) :
   rw [hs, h, add_comm]
 
 /- English proof (translation)
-Rewrite using `[T_eq, T_eq]`. Use `congr 1`. Simplify using `only [Ar]`. Rewrite using `[FormalLog.pderiv_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[cc_d_jac, cc_d_jac, kappa_symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem T_symm (b i j : Fin d) :
     ∑ c, Jac G c b * pderiv k ((0 : Fin 1), c) (Jac G j i) = ∑ c, Jac G c i * pderiv k ((0 : Fin 1), c) (Jac G j b) := by
@@ -269,13 +267,13 @@ theorem T_symm (b i j : Fin d) :
 def co (v : Fin d → k) : Fin 1 × Fin d → PS k 1 d := fun p => ∑ i, C (v i) * Jac G p.2 i
 
 /- English proof (translation)
-Simplify using `only [Dof, vf, co, Fintype.sum_prod_type, Fin.sum_univ_one, Jac]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dof_vf (v : Fin d → k) (g : PS k 1 d) : Dof G.F v g = vf (co G v) g := by
   simp only [Dof, vf, co, Fintype.sum_prod_type, Fin.sum_univ_one, Jac]
 
 /- English proof (translation)
-Simplify using `only [vf, co, Fintype.sum_prod_type, Fin.sum_univ_one, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vf_co_jac (u : Fin d → k) (j i : Fin d) :
     vf (co G u) (Jac G j i) = ∑ b, C (u b) * ∑ c, Jac G c b * pderiv k ((0 : Fin 1), c) (Jac G j i) := by
@@ -284,7 +282,7 @@ theorem vf_co_jac (u : Fin d → k) (j i : Fin d) :
   exact Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => by ring
 
 /- English proof (translation)
-Simplify using `only [co, vf_sum, vf_Cmul, vf_co_jac, Finset.mul_sum]`. Rewrite using `[sub_eq_zero, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [← Finset.mul_sum]`. Rewrite using `[T_symm G b i p.2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -298,7 +296,7 @@ theorem co_bracket (u v : Fin d → k) (p : Fin 1 × Fin d) :
   ring
 
 /- English proof (translation)
-Simplify using `only [dof_vf]`. Rewrite using `[← sub_eq_zero, vf_comm]`. Establish `hb : (fun p => vf (co G u) (co G v p) - vf (co G v) (co G u p)) = fun _ => (0 : PS k 1 d)`. Use function extensionality and compare the values at `(co_bracket G u v)`. Rewrite using `[hb, vf_zeroc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem dof_comm_law (u v : Fin d → k) (g : PS k 1 d) : Dof G.F u (Dof G.F v g) = Dof G.F v (Dof G.F u g) := by
   simp only [dof_vf]
@@ -312,7 +310,7 @@ end Law
 section Transfer
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[MvPowerSeries.map_subst ha.hasSubst]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_ev {R k : Type} [CommRing R] [CommRing k] (φ : R →+* k) {d m n : ℕ} {a : Fin m → Pt R n d} (ha : CZ a)
     (f : PS R m d) : MvPowerSeries.map φ (ev a f) = ev (fun j i => MvPowerSeries.map φ (a j i)) (MvPowerSeries.map φ f) := by
@@ -323,7 +321,7 @@ variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
 variable (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k]
 
 /- English proof (translation)
-Simplify using `[pt_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_pt {n : ℕ} (j : Fin n) (i : Fin d) :
     MvPowerSeries.map (algebraMap R k) (pt R d j i) = pt k d j i := by
@@ -386,7 +384,7 @@ def lawK (B : FB R d O) : FGLaw k d where
     exact h
 
 /- English proof (translation)
-Introduce `R _ d O _ _ k _ _ _ B u v g`. Conclude with `dof_comm_law (lawK k B) u v g`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem invariantDerivations_commute_formal_connection : GE.DofCommSt := by
   intro R _ d O _ _ k _ _ _ B u v g

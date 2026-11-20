@@ -20,7 +20,7 @@ section Emb
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qh26.isInfEmb_unique .. | (apply UpperTheory.Reformulated.B.Qh26.isInfEmb_unique <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qh26.isInfEmb_unique <;> assumption) | (apply @UpperTheory.Reformulated.B.Qh26.isInfEmb_unique <;> …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isInfEmb_unique (τ : E →+* ℂ) {θ θ' : Ainf F ⊗[F] E →+* ℂ} (h : IsInfEmb τ θ) (h' : IsInfEmb τ θ') : θ = θ' := by
   first | exact UpperTheory.Reformulated.B.Qh26.isInfEmb_unique .. | (apply UpperTheory.Reformulated.B.Qh26.isInfEmb_unique <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qh26.isInfEmb_unique <;> assumption) | (apply @UpperTheory.Reformulated.B.Qh26.isInfEmb_unique <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qh26.isInfEmb_unique <;> assumption) | (apply @UpperTheory.Reformulated.B.Qh26.isInfEmb_unique <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qh26.isInfEmb_unique F E ‹_› ‹_› ‹_› ‹_› ‹_› τ θ θ' h h' | exact @UpperTheory.Reformulated.B.Qh26.isInfEmb_unique F E ‹_› ‹_› ‹_› ‹_› ‹_› τ θ θ' h | exact @UpperTheory.Reformulated.B.Qh26.isInfEmb_unique F E ‹_› ‹_› ‹_› ‹_› ‹_› τ θ θ' | exact @UpperTheory.Reformulated.B.Qh26.isInfEmb_unique F E ‹_› ‹_› ‹_› ‹_› ‹_› τ θ | exact @UpperTheory.Reformulated.B.Qh26.isInfEmb_unique F E ‹_› ‹_› ‹_› ‹_› ‹_› τ | exact @UpperTheory.Reformulated.B.Qh26.isInfEmb_unique F E ‹_› ‹_› ‹_› ‹_› ‹_› | exact @UpperTheory.Reformulated.B.Qh26.isInfEmb_unique F E ‹_› ‹_› ‹_› ‹_› | exact @UpperTheory.Reformulated.B.Qh26.isInfEmb_unique F E ‹_› ‹_› ‹_› | exact @UpperTheory.Reformulated.B.Qh26.isInfEmb_unique F E ‹_› ‹_› | exact @UpperTheory.Reformulated.B.Qh26.isInfEmb_unique F E ‹_› | exact @UpperTheory.Reformulated.B.Qh26.isInfEmb_unique F E | exact @UpperTheory.Reformulated.B.Qh26.isInfEmb_unique F
@@ -32,13 +32,13 @@ def compF (τ : E →+* ℂ) : Ainf F →+* ℂ :=
     (Pi.evalRingHom (fun w : InfinitePlace F => w.Completion) (plF (F := F) τ))
 
 /- English proof (translation)
-The claim follows from `(InfinitePlace.Completion.isometry_extensionEmbedding (plF (F := F) τ)).continuous.comp (continuous_apply _)`.
+A detailed English derivation is pending.
 -/
 theorem compF_cont (τ : E →+* ℂ) : Continuous (compF (F := F) τ) :=
   (InfinitePlace.Completion.isometry_extensionEmbedding (plF (F := F) τ)).continuous.comp (continuous_apply _)
 
 /- English proof (translation)
-Establish `h1 : compF (F` using `F) τ (algebraMap F (Ainf F) x) = (plF (F := F) τ).embedding x := InfinitePlace.Completion.extensionEmbedding_coe (plF (F := F) τ) _`. Rewrite using `[h1]`. Establish `hr : ComplexEmbedding.IsReal (τ.comp (algebraMap F E))` using `IsTotallyReal.complexEmbedding_isReal _`. Unfold `plF`. Rewrite using `[InfinitePlace.embedding_mk_eq_of_isReal hr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -64,7 +64,7 @@ theorem projAt_tmul [IsTotallyReal F] (τ : E →+* ℂ) (a : Ainf F) (x : E) :
     projAt (F := F) τ (a ⊗ₜ[F] x) = compF (F := F) τ a * τ x := rfl
 
 /- English proof (translation)
-Use `⟨fun x => by rw [projAt_tmul, map_one, one_mul], ?_⟩` and prove the remaining obligations. Simplify using `only [projAt_tmul, map_one, mul_one]`. Conclude with `compF_cont τ`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem projAt_isInfEmb [IsTotallyReal F] (τ : E →+* ℂ) : IsInfEmb τ (projAt (F := F) τ) := by
   refine ⟨fun x => by rw [projAt_tmul, map_one, one_mul], ?_⟩
@@ -85,9 +85,9 @@ def pairE (a : Ainf F ⊗[F] E) (b : Af F ⊗[F] E) : AF F ⊗[F] E :=
   TensorProduct.map (inlA (F := F)) LinearMap.id a + TensorProduct.map (inrA (F := F)) LinearMap.id b
 
 /- English proof (translation)
-Unfold `pairE`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul, TensorProduct.map_tmul, TensorProduct.map_tmul, LinearMap.id_apply, AlgHom.id_apply, ← TensorProduct.add_tmul]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Prod.ext (add_zero (fstA F a)) (zero_add (sndA F a))`. Consider the case `add a b ha hb => rw [map_add, map_add, map_add, map_add, add_add_add_comm, ha, hb]`.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pairE_eta (z : AF F ⊗[F] E) :
     pairE (Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) z) (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) z) = z := by
@@ -102,11 +102,11 @@ theorem pairE_eta (z : AF F ⊗[F] E) :
   | add a b ha hb => rw [map_add, map_add, map_add, map_add, add_add_add_comm, ha, hb]
 
 /- English proof (translation)
-Unfold `pairE`. Establish `h1 : Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) (TensorProduct.map (inlA (F` using `F)) LinearMap.id a) = a := by`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x e => rw [TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `h2 : Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) (TensorProduct.map (inrA (F` using `F)) LinearMap.id b) = 0 := by`. Proceed by induction on `b using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul x e`. Rewrite using `[TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul]`. Conclude with `TensorProduct.zero_tmul _ _`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`. Rewrite using `[map_add, h1, h2, add_zero]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fst_pairE (a : Ainf F ⊗[F] E) (b : Af F ⊗[F] E) :
     Algebra.TensorProduct.map (fstA F) (AlgHom.id F E) (pairE a b) = a := by
@@ -126,11 +126,11 @@ theorem fst_pairE (a : Ainf F ⊗[F] E) (b : Af F ⊗[F] E) :
   rw [map_add, h1, h2, add_zero]
 
 /- English proof (translation)
-Unfold `pairE`. Establish `h1 : Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) (TensorProduct.map (inlA (F` using `F)) LinearMap.id a) = 0 := by`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x e`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul]`. Conclude with `TensorProduct.zero_tmul _ _`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`. Establish `h2 : Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) (TensorProduct.map (inrA (F` using `F)) LinearMap.id b) = b := by`. Proceed by induction on `b using TensorProduct.induction_on with`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul x e => rw [TensorProduct.map_tmul, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Rewrite using `[map_add, h1, h2, zero_add]`.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem snd_pairE (a : Ainf F ⊗[F] E) (b : Af F ⊗[F] E) :
     Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) (pairE a b) = b := by
@@ -186,35 +186,33 @@ abbrev InfF : Type := D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E �
 def th0 : InfF D := fun τ => haveI := D.sp.cm.totReal; projAt (F := D.host.F) (tauE D τ)
 
 /- English proof (translation)
-Introduce `τ` and use `haveI := D.sp.cm.totReal; projAt_isInfEmb (tauE D τ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem theta_infinite_family : IsInfFam (D := D) (th0 D) := fun τ => haveI := D.sp.cm.totReal; projAt_isInfEmb (tauE D τ)
 
 variable {D}
 
 /- English proof (translation)
-The claim follows from `funext fun τ => isInfEmb_unique _ (h τ) (theta_infinite_family D τ)`.
+A detailed English derivation is pending.
 -/
 theorem fam_eq {θ : InfF D} (h : IsInfFam (D := D) θ) : θ = th0 D :=
   funext fun τ => isInfEmb_unique _ (h τ) (theta_infinite_family D τ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.2 _ (theta_infinite_family D), fun h => ⟨⟨_, theta_infinite_family D⟩, fun _ hθ => fam_eq hθ ▸ h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem allSome_fam {Q : InfF D → Prop} : AllSome (IsInfFam (D := D)) Q ↔ Q (th0 D) :=
   ⟨fun h => h.2 _ (theta_infinite_family D), fun h => ⟨⟨_, theta_infinite_family D⟩, fun _ hθ => fam_eq hθ ▸ h⟩⟩
 
 /- English proof (translation)
-Establish `key : ∀ z : AE D, pairE (infPart D z) (finPart D z) = z` using `fun z => pairE_eta z`. Rewrite using `[← key x, ← key y, h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ae_ext {x y : AE D} (h1 : infPart D x = infPart D y) (h2 : finPart D x = finPart D y) : x = y := by
   have key : ∀ z : AE D, pairE (infPart D z) (finPart D z) = z := fun z => pairE_eta z
   rw [← key x, ← key y, h1, h2]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply `ae_ext` to reduce the goal to its premises. Conclude with `congrArg (fun u : GL (Fin V.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E) => u.1 i j) h1`.
-
-Conclude with `congrArg (fun u : GL (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E) => u.1 i j) h2`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem ga_ext {V : HSp D} {g h : GA D V} (h1 : infHom V g = infHom V h) (h2 : finHom V g = finHom V h) : g = h := by
   apply Subtype.ext
@@ -225,7 +223,7 @@ theorem ga_ext {V : HSp D} {g h : GA D V} (h1 : infHom V g = infHom V h) (h2 : f
   · exact congrArg (fun u : GL (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E) => u.1 i j) h2
 
 /- English proof (translation)
-Establish `a : infHom V k = 1` using `hk`. Establish `b : finHom V h = 1` using `hh`. Apply `ga_ext` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, a, one_mul, mul_one]`. Rewrite using `[map_mul, map_mul, b, one_mul, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem fin_inf_comm {V : HSp D} {k h : GA D V} (hk : k ∈ GfC V) (hh : h ∈ GinfC V) : k * h = h * k := by
   have a : infHom V k = 1 := hk
@@ -235,7 +233,7 @@ theorem fin_inf_comm {V : HSp D} {k h : GA D V} (hk : k ∈ GfC V) (hh : h ∈ G
   · rw [map_mul, map_mul, b, one_mul, mul_one]
 
 /- English proof (translation)
-Unfold `atTau`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Conclude with `one_mem _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem atTau_mem (θ : InfF D) (V : HSp D) (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     atTau θ V τ g ∈ GinfC V := by
@@ -245,7 +243,7 @@ theorem atTau_mem (θ : InfF D) (V : HSp D) (τ : D.what₂.Tau) (g : Matrix (Fi
   · exact one_mem _
 
 /- English proof (translation)
-Establish `e : ∀ x : GA D V, infMat D.sp.cm.sig V.gram θ x = ((infHom V x).1).map θ` using `fun _ => rfl`. Rewrite using `[e, e, e, map_mul, Units.val_mul, Matrix.map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem infMat_mul (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (V : HSp D) (g h : GA D V) :
     infMat D.sp.cm.sig V.gram θ (g * h) = infMat D.sp.cm.sig V.gram θ g * infMat D.sp.cm.sig V.gram θ h := by
@@ -253,7 +251,7 @@ theorem infMat_mul (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (V : HS
   rw [e, e, e, map_mul, Units.val_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Establish `e : ∀ x : GA D V, infMat D.sp.cm.sig V.gram θ x = ((infHom V x).1).map θ` using `fun _ => rfl`. Rewrite using `[e, map_one, Units.val_one, Matrix.map_one _ (map_zero θ) (map_one θ)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem infMat_one (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (V : HSp D) :
     infMat D.sp.cm.sig V.gram θ 1 = 1 := by

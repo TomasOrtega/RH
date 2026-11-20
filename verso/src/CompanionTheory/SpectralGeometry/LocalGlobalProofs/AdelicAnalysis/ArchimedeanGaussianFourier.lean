@@ -15,7 +15,7 @@ def g1 {ι : Type} [Fintype ι] (S P : Matrix ι ι ℝ) (τ : ℂ) (x : ι → 
 variable {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Simplify using `only [gauss, g1, Complex.exp_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gauss_eq_prod (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ))
     (P : InfinitePlace F → Matrix ι ι ℝ) (τ : InfinitePlace F → ℂ) (x : InfinitePlace F → ι → ℝ) :
@@ -23,7 +23,7 @@ theorem gauss_eq_prod (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* �
   simp only [gauss, g1, Complex.exp_sum]
 
 /- English proof (translation)
-Establish `hne : τ ≠ 0` using `fun h0 => by simp [h0] at h`. Rewrite using `[Complex.neg_im, Complex.inv_im, neg_div, neg_neg]`. Conclude with `div_pos h (Complex.normSq_pos.2 hne)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem neg_inv_im_pos {τ : ℂ} (h : 0 < τ.im) : 0 < (-τ⁻¹).im := by
   have hne : τ ≠ 0 := fun h0 => by simp [h0] at h
@@ -31,7 +31,7 @@ theorem neg_inv_im_pos {τ : ℂ} (h : 0 < τ.im) : 0 < (-τ⁻¹).im := by
   exact div_pos h (Complex.normSq_pos.2 hne)
 
 /- English proof (translation)
-The claim follows from `|((Algebra.norm ℚ a : ℚ) : ℝ)| = ∏ w, |ρ w a| := by have h := InfinitePlace.prod_eq_abs_norm a rw [show |((Algebra.norm ℚ a : ℚ) : ℝ)| = ((|Algebra.norm ℚ a| : ℚ) : ℝ) by push_cast; rfl, ← h] refine Finset.prod_congr rfl fun w _ => ?_ have hw : w.mult = 1 := InfinitePlace.mult_is …`.
+A detailed English derivation is pending.
 -/
 theorem abs_norm_eq_prod (hF : IsTotallyReal F) (ρ : InfinitePlace F → (F →+* ℝ))
     (hρ : ∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x) (a : F) :
@@ -43,7 +43,7 @@ theorem abs_norm_eq_prod (hF : IsTotallyReal F) (ρ : InfinitePlace F → (F →
   rw [hw, pow_one, ← InfinitePlace.norm_embedding_eq, ← hρ, Complex.norm_real, Real.norm_eq_abs]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, Real.sqrt_mul (abs_nonneg _), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem sqrt_prod_abs {α : Type} (s : Finset α) (f : α → ℝ) :
     Real.sqrt (∏ w ∈ s, |f w|) = ∏ w ∈ s, Real.sqrt |f w| := by
@@ -54,7 +54,7 @@ theorem sqrt_prod_abs {α : Type} (s : Finset α) (f : α → ℝ) :
     rw [Finset.prod_insert ha, Finset.prod_insert ha, Real.sqrt_mul (abs_nonneg _), ih]
 
 /- English proof (translation)
-Rewrite using `[abs_norm_eq_prod hF ρ hρ, sqrt_prod_abs]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sqrt_norm_det (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (hF : IsTotallyReal F)
     (hρ : ∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x) :
@@ -65,19 +65,17 @@ theorem sqrt_norm_det (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* �
   rfl
 
 /- English proof (translation)
-Introduce `F _ _ ι _ _ M B ρ P hQ τ hτ`. Take `⟨hF, hcard, hsym, hdet, hρ, hP, hrel⟩` from `hQ`. Establish `hdetw : ∀ w, (B.map (ρ w)).det ≠ 0` using `fun w => by`. Establish `: (B.map (ρ w)).det = ρ w B.det` using `by rw [RingHom.map_det]; rfl`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_ne_zero (ρ w)).2 hdet`. Establish `one` using `fun w => GlobalTheory.T.real_gaussian_fourier_transform ι (B.map (ρ w)) (P w) (hsym.map _) (hdetw w) (hP w) (hrel w)`. Use `choose c hc using one`. Establish `hfou : ∀ σ : InfinitePlace F → ℂ, (∀ w, 0 < (σ w).im) → ∀ y : InfinitePlace F → ι → ℝ, ((Real.sqrt |((Algebra.norm ℚ B.det : ℚ) : ℝ)| : ℝ) : ℂ) * ∫ x, gauss B ρ P σ x * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * ((∑ w, x w ⬝ᵥ (B.map (ρ w) *ᵥ y w) : ℝ) : ℂ)) = ∏ w, (c w (σ w) * …`. Introduce `σ hσ y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hint : ∀ x : InfinitePlace F → ι → ℝ, gauss B ρ P σ x * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * ((∑ w, x w ⬝ᵥ (B.map (ρ w) *ᵥ y w) : ℝ) : ℂ)) = ∏ w, (g1 (B.map (ρ w)) (P w) (σ w) (x w) * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * ((x w ⬝ᵥ (B.map (ρ w) *ᵥ y w) : ℝ) : ℂ)))`. Introduce `x`. Rewrite using `[gauss_eq_prod, Complex.ofReal_sum, Finset.mul_sum, Complex.exp_sum, Finset.prod_mul_distrib]`. Repeatedly rewrite using `[hint]`. Rewrite using `[integral_fintype_prod_volume_eq_prod (f := fun w (x : ι → ℝ) => g1 (B.map (ρ w)) (P w) (σ w) x * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * ((x ⬝ᵥ (B.map (ρ w) *ᵥ y w) : ℝ) : ℂ))), sqrt_norm_det B ρ hF hρ, Complex.ofReal_prod, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Conclude with `(hc w (σ w) (hσ w)).2.2.2 (y w)`. Establish `hcG : ∀ σ : InfinitePlace F → ℂ, (∀ w, 0 < (σ w).im) → cG B ρ P σ = ∏ w, c w (σ w)`. Introduce `σ hσ`. Establish `h0` using `hfou σ hσ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `h0` using `[cG, g1]`. Establish `hσ' : ∀ w, 0 < (-(τ w)⁻¹).im` using `fun w => neg_inv_im_pos (hτ w)`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: gauss B ρ P τ = fun x => ∏ w, g1 (B.map (ρ w)) (P w) (τ w) (x w)`. Use function extensionality and compare the values at `fun x => gauss_eq_prod B ρ P τ x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Conclude with `Integrable.fintype_prod (f := fun w => g1 (B.map (ρ w)) (P w) (τ w)) fun w => (hc w (τ w) (hτ w)).2.2.1`. Rewrite using `[hcG τ hτ, norm_prod, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[(hc w (τ w) (hτ w)).1, hcard, pow_mul, Real.sq_sqrt (norm_nonneg _)]`.
-
-Rewrite using `[hcG τ hτ, hcG _ hσ', ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun w _ => (hc w (τ w) (hτ w)).2.1`. Introduce `y`. Rewrite using `[hfou τ hτ y, hcG τ hτ, gauss_eq_prod, Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_fourier : ∀ (F : Type) [Field F] [NumberField F], ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (M : ℕ) (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ), QSetup M B ρ P → ∀ τ : InfinitePlace F → ℂ, (∀ w, 0 < (τ w).im) → Integrable (gauss B ρ P τ) ∧ ‖cG B ρ P τ‖ = (∏ w, ‖τ w‖ ^ M)⁻¹ ∧ cG B ρ P τ * cG B ρ P (fun w => -(τ w)⁻¹) = 1 ∧ ∀ y : InfinitePlace F → ι → ℝ, ((Real.sqrt |((Algebra.norm ℚ B.det : ℚ) : ℝ)| : ℝ) : ℂ) * ∫ x, gauss B ρ P τ x * Complex.exp (2 * (Real.pi : ℂ) * Complex.I * ((∑ w, x w ⬝ᵥ (B.map (ρ w) *ᵥ y w) : ℝ) : ℂ)) = cG B ρ P τ * gauss B ρ P (fun w => -(τ w)⁻¹) y := by
   intro F _ _ ι _ _ M B ρ P hQ τ hτ

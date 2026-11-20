@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.ConsGeo
 
 /- English proof (translation)
-Unfold `embDeg`. Use `letI := ε.toRingHom.toAlgebra`. Establish `e : K ≃ₗ[K] L` using `LinearEquiv.ofBijective (Algebra.linearMap K L) ε.bijective`. Rewrite using `[← e.finrank_eq, Module.finrank_self]`.
+Replace the relevant objects with their definitions. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem embDeg_equiv {K L : Type} [Field K] [Field L] (ε : K ≃+* L) : embDeg ε.toRingHom = 1 := by
   unfold embDeg
@@ -20,7 +20,7 @@ private theorem embDeg_equiv {K L : Type} [Field K] [Field L] (ε : K ≃+* L) :
   rw [← e.finrank_eq, Module.finrank_self]
 
 /- English proof (translation)
-Unfold `embDeg`. Use `letI := θ.toAlgebra`. Use `letI := (ε.toRingHom.comp θ).toAlgebra`. Establish `e : L ≃ₐ[K] M` using `AlgEquiv.ofRingEquiv (f := ε) (fun _ => rfl)`. Conclude with `e.toLinearEquiv.finrank_eq.symm`.
+Replace the relevant objects with their definitions. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem embDeg_comp_equiv {K L M : Type} [Field K] [Field L] [Field M] (θ : K →+* L) (ε : L ≃+* M) :
     embDeg (ε.toRingHom.comp θ) = embDeg θ := by
@@ -31,7 +31,7 @@ private theorem embDeg_comp_equiv {K L M : Type} [Field K] [Field L] [Field M] (
   exact e.toLinearEquiv.finrank_eq.symm
 
 /- English proof (translation)
-Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem spectrumMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -40,13 +40,11 @@ private theorem spectrumMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommR
   rfl
 
 /- English proof (translation)
-Introduce `k _ _ X₁ X₂ _ _ s₁ s₂ θ d h₁ h₂ hd₁ hd₂ hθ hpos D₁ D₂ hD`. Take `⟨W, _, p₁, p₂, ε, hn, hp, hs, hg₁, hg₂⟩` from `UpperTheory.exists_normal_proj_common_model k X₁ X₂ s₁ s₂ θ h₁ h₂ hθ`. Use `haveI := isNoetherian_of_isProjOver hp`. Take `⟨a₁, b₁⟩` from `UpperTheory.generic_point_residueDegree X₁ W p₁ ε.toRingHom hg₁`. Take `⟨a₂, b₂⟩` from `UpperTheory.generic_point_residueDegree X₂ W p₂ (ε.toRingHom.comp θ) (by rw [hg₂, spectrumMap_comp, Category.assoc])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b₁` using `[embDeg_equiv]`. Rewrite `b₂` using `[embDeg_comp_equiv]`. Establish `e₁` using `UpperTheory.intersection_number_pullback_degree k X₁ W s₁ p₁ d h₁ hp hd₁ a₁ (by rw [b₁]; exact one_ne_zero) (fun i => toLB (D₁ i)) (fun i => isLB_toLB _)`. Establish `e₂` using `UpperTheory.intersection_number_pullback_degree k X₂ W s₂ p₂ d h₂ (hs ▸ hp) hd₂ a₂ (by rw [b₂]; exact hpos.ne') (fun i => toLB (D₂ i)) (fun i => isLB_toLB _)`. Rewrite `e₁` using `[b₁, Nat.cast_one, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e₂` using `[b₂, hs]`. Rewrite using `[← e₁, ← e₂]`. Use `letI := algebraΓOfHom (p₁ ≫ s₁)`. Use `interNum_congr_cls k _ (fun i => LB.isLB_pull (isLB_toLB _) _) (fun i => LB.isLB_pull (isLB_toLB _) _) fun i => ?_` and prove the remaining obligations. Rewrite using `[cls_pull (isLB_toLB _), cls_pull (isLB_toLB _), ← toPic_apply, ← toPic_apply]`.
-
-Conclude with `UpperTheory.pull_cartier_pic_agree X₁ X₂ W p₁ p₂ θ ε hn hg₁ hg₂ _ _ (hD i)`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.intersection_numbers_agree_model :
     ∀ (k : Type) [Field k] [CharZero k] (X₁ X₂ : Scheme.{0}) [IsIntegral X₁] [IsIntegral X₂] (s₁ : X₁ ⟶ Sp k) (s₂ : X₂ ⟶ Sp k) (θ : X₂.functionField →+* X₁.functionField) (d : ℕ), IsProjOver s₁ → IsProjOver s₂ → topologicalKrullDim X₁ = d → topologicalKrullDim X₂ = d → spMap θ ≫ gpt X₂ ≫ s₂ = gpt X₁ ≫ s₁ → 0 < embDeg θ → ∀ (D₁ : Fin d → CartierDiv X₁) (D₂ : Fin d → CartierDiv X₂), (∀ i, DvrAgree θ (D₁ i) (D₂ i)) → (letI := algebraΓOfHom s₁; interNum k (GlobalTheory.structureModule X₁) fun i => toLB (D₁ i)) = (embDeg θ : ℤ) * (letI := algebraΓOfHom s₂; interNum k (GlobalTheory.structureModule X₂) fun i => toLB (D₂ i)) := by

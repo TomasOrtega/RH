@@ -14,7 +14,7 @@ namespace Formalism.FourierDecayAlt.P.CutEX
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `E _ _ k ρ hρ J c g`. Substitute `hρ` using the available equality. Simplify using `[Q.resG, Q.wCell]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem residue_top_exceptional : ResTop := by
   intro E _ _ k ρ hρ J c g
@@ -22,9 +22,9 @@ theorem residue_top_exceptional : ResTop := by
   simp [Q.resG, Q.wCell]
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ k ρ z z' π π' Ψ Ψ' h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c g`. Distinguish the cases in `hx : ((c, g) : (Fin ρ → ℂ) × Q.Mx k ρ) ∈ Q.DomR k ρ z z'`. Conclude with `h _ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ψ.2.1 (c, g) hx, Ψ'.2.1 (c, g) hx]`.
+A detailed English derivation is pending.
 -/
 theorem radial_extension_holds : RadExt := by
   intro Wp Wq _ _ _ _ k ρ z z' π π' Ψ Ψ' h
@@ -35,17 +35,13 @@ theorem radial_extension_holds : RadExt := by
   · rw [Ψ.2.1 (c, g) hx, Ψ'.2.1 (c, g) hx]
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ k ρ z z' π π' f hloc hequiv`. Establish `hUW : ∀ {w : Fin (2 * ρ + k + 1) → ℂ} {h : Mx k ρ}, h ∈ UWset k ρ w → h ∈ Glev k ρ (Fin.last ρ)` using `fun hh => ⟨hh.1, fun a _ => hh.2.1 a⟩`. Use `⟨⟨fun c g => if (c, g) ∈ DomR k ρ z z' then f g else 0, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `x hx show (if (x.1, x.2) ∈ DomR k ρ z z' then f x.2 else 0) = 0`. Conclude with `if_neg hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x₀ hx₀`. Take `⟨hΩ, hG, hpos⟩` from `hx₀`. Take `⟨U, F, hU, hgU, hF, hFe⟩` from `hloc x₀.2 hG hpos`. Use `⟨OmX ρ ×ˢ (U ∩ {g | 0 < GGl k ρ z z' g}), fun x => F x.2, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Formalism.FourierDecayAlt.P.Qx5.isOpen_OmX ρ).prod (hU.inter (isOpen_lt continuous_const (Formalism.FourierDecayAlt.P.Qx5.GGl_continuous k ρ z z')))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨hΩ, hgU, hpos⟩`. Conclude with `hF.comp contDiff_snd.contDiffOn (fun x hx => hx.2.1)`. Introduce `x hx hxG`. Establish `hxD : (x.1, x.2) ∈ DomR k ρ z z'` using `⟨hx.1, hxG, hx.2.2⟩`. Use `show (if (x.1, x.2) ∈ DomR k ρ z z' then f x.2 else 0) = F x.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[if_pos hxD]`. Conclude with `hFe x.2 hx.2.1 hxG`. Introduce `x hx h hh h' hh'`. Take `⟨hΩ, hG, hpos⟩` from `hx`. Establish `hD : (x.1, h * x.2 * h') ∈ DomR k ρ z z'` using `⟨hΩ, Formalism.FourierDecayAlt.P.Qx5.Glev_mul (Formalism.FourierDecayAlt.P.Qx5.Glev_mul (hUW hh) hG) (hUW hh'), by rw [Formalism.FourierDecayAlt.P5.Rad.GGl_uw hh hh']; exact hpos⟩`.
-
-Establish `hD0 : (x.1, x.2) ∈ DomR k ρ z z'` using `⟨hΩ, hG, hpos⟩`. Use `show (if (x.1, h * x.2 * h') ∈ DomR k ρ z z' then f (h * x.2 * h') else 0) = π h ∘SL (if (x.1, x.2) ∈ DomR k ρ z z' then f x.2 else 0) ∘SL π' h'`. Rewrite using `[if_pos hD, if_pos hD0]`. Conclude with `hequiv x.2 hG hpos h hh h' hh'`. Introduce `x hx show (if (x.1, x.2) ∈ DomR k ρ z z' then f x.2 else 0) = f x.2`.
-
-Conclude with `if_pos hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem radial_of_function_holds : RadOfFun := by
   classical
@@ -84,7 +80,7 @@ theorem radial_of_function_holds : RadOfFun := by
     exact if_pos hx
 
 /- English proof (translation)
-Introduce `r h hh v`. Unfold `PBQ.zxH`. Rewrite using `[Matrix.det_reindex_self, Matrix.det_mul]`. Conclude with `mul_ne_zero (LeftFubiniLemmas.lh_unit _ v).ne_zero (Formalism.FourierDecayAlt.P.PBM.hMat_det_ne _ _ (fun a => Formalism.FourierDecayAlt.P.PBJ.Asm.ptScal_ne h hh.1 a a.isLt))`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem determinant_vanishing_holds : ZxDet := by
   intro r h hh v
@@ -98,19 +94,19 @@ end Formalism.FourierDecayAlt.P.CutEX
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `CutEX.residue_top_exceptional`.
+A detailed English derivation is pending.
 -/
 theorem residue_top_exceptional_level : CutEX.ResTop := CutEX.residue_top_exceptional
 /- English proof (translation)
-The claim follows from `CutEX.radial_extension_holds`.
+A detailed English derivation is pending.
 -/
 theorem radial_extension_exceptional : CutEX.RadExt := CutEX.radial_extension_holds
 /- English proof (translation)
-The claim follows from `CutEX.radial_of_function_holds`.
+A detailed English derivation is pending.
 -/
 theorem radial_of_function_exceptional : CutEX.RadOfFun := CutEX.radial_of_function_holds
 /- English proof (translation)
-The claim follows from `CutEX.determinant_vanishing_holds`.
+A detailed English derivation is pending.
 -/
 theorem determinant_exceptional_holds : CutEX.ZxDet := CutEX.determinant_vanishing_holds
 

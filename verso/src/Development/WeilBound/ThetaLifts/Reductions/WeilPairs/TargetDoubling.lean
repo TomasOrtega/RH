@@ -57,18 +57,16 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Rewrite using `[Matrix.transpose_transpose, Matrix.nonsing_inv_mul _ (Ne.isUnit h.2)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem invT_mul {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (h : IsHermND σ J) : (J⁻¹ᵀ)ᵀ * J = 1 := by
   rw [Matrix.transpose_transpose, Matrix.nonsing_inv_mul _ (Ne.isUnit h.2)]
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Establish `hu : IsUnit J.det` using `Ne.isUnit h.2`. Establish `e1 : J.map (σ : E →+* E) = Jᵀ`. Use extensionality with `i j`. Conclude with `h.1 j i`. Establish `e2 : (Jᵀ)⁻¹ = J⁻¹.map (σ : E →+* E)` using `Matrix.inv_eq_left_inv (by`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ hu, Matrix.map_one _ (map_zero _) (map_one _)])`. Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Use `congrFun (congrFun e2 i) j` as an intermediate fact. Rewrite `this` using `[← Matrix.transpose_nonsing_inv]`. Conclude with `this.symm`.
-
-Rewrite using `[Matrix.det_transpose]`. Conclude with `(Matrix.isUnit_nonsing_inv_det _ hu).ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHermND_invT {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (h : IsHermND σ J) : IsHermND σ J⁻¹ᵀ := by
   have hu : IsUnit J.det := Ne.isUnit h.2
@@ -85,14 +83,14 @@ theorem isHermND_invT {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n)
     exact (Matrix.isUnit_nonsing_inv_det _ hu).ne_zero
 
 /- English proof (translation)
-The claim follows from `Sw.latH_swap σ (invT_mul hS) (invT_mul hT) ξ₀ h`.
+A detailed English derivation is pending.
 -/
 theorem LatH.swap {σ : E →ₐ[F] E} {nS nT : ℕ} {JS : Matrix (Fin nS) (Fin nS) E} {JT : Matrix (Fin nT) (Fin nT) E} {ξ₀ : E}
     (hS : IsHermND σ JS) (hT : IsHermND σ JT) (h : LatH σ JS JT ξ₀) : LatH σ JT⁻¹ᵀ JS⁻¹ᵀ ξ₀ :=
   Sw.latH_swap σ (invT_mul hS) (invT_mul hT) ξ₀ h
 
 /- English proof (translation)
-Introduce `w₁ w₂` and use `H w₁ w₂`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isDblCoord_cast₂ {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A) {α β : Type} [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] [Invertible (2 : R)] {ξ ξ' : A} {J J' : Matrix β β A} (h : ξ • J = ξ' • J')
@@ -110,17 +108,17 @@ theorem swapHom_fst {A α G M : Type} [CommRing A] [Fintype α] [DecidableEq α]
 open Formalism.IndefR.DatumF Sw in
 set_option maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ hL χS χT cS cT rS rT ω hω JA JB ξ hA hBm κ _ co hrat om hom`. Establish `lS` using `invT_mul hS`. Establish `lT` using `invT_mul hT`. Establish `hsm : ∀ {n : ℕ} (M : Matrix (Fin n) (Fin n) E), incM F (ξ₀ • M) = incAF F E ξ₀ • incM F M` using `fun M => by`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `map_mul (incAF F E) _ _`. Establish `hB' : ξ • incM F JB = incAF F E ξ₀ • incM F JS⁻¹` using `hBm.trans (hsm _)`. Establish `hx : IsUnit (incAF F E ξ₀)` using `(IsUnit.mk0 _ hξ).map _`. Establish `hd : IsUnit (incM F JS⁻¹).det`. Establish `h1 : IsUnit (JS⁻¹).det` using `Matrix.isUnit_nonsing_inv_det _ (Ne.isUnit hS.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (incM F JS⁻¹).det = incAF F E (JS⁻¹).det` using `(RingHom.map_det (incAF F E) _).symm`. Rewrite using `[h2]`. Conclude with `h1.map _`. Establish `hle` using `ug_le (cA σ) hB' hx hd`. Establish `hge` using `ug_ge (cA σ) hB' hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD` using `smul_dbl hB'`. Establish `hge'` using `ug_ge (cA σ) hD hx`. Establish `htr` using `swap_transport σ lS lT B.ψ hle co _ (castD_transD_rho _ hB' co B.ψ) hom _ (swapHom_apply hle om)`. Establish `hrat' : ∀ x : Matrix (Fin nS) (Fin nT) E, ∃ y z : κ → F, (castD _ hB' (GlobalTheory.WeilSchrodinger.transD (cA σ) co)).e (incM F x) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))` using `fun x => by`. Take `⟨y, z, h⟩` from `hrat xᵀ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨y, z, (castD_transD_e _ hB' co _).trans h⟩`. Establish `g1 : JS⁻¹ = (JS⁻¹ᵀ)ᵀ` using `(Matrix.transpose_transpose _).symm`. Establish `g2 : incAF F E ξ₀ • incM F JA = incM F (ξ₀ • (JT⁻¹ᵀ)⁻¹)`. Rewrite using `[(dual_inv lT).2, hsm, hA]`. Take `⟨dd, omd, k1, k2, k3⟩` from `H F E σ B hB nT nS JT⁻¹ᵀ JS⁻¹ᵀ (isHermND_invT hT) (isHermND_invT hS) ξ₀ hξ hσξ (LatH.swap hS hT hL) χT χS cT cS rT rS _ (swap_datum σ lS lT ξ₀ B.ψ hω) JS⁻¹ JA (incAF F E ξ₀) g1 g2 κ _ hrat' _ htr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨castD₂ _ hD dd, omd.comp (Subgroup.inclusion hge'), isDblCoord_cast₂ _ hB' co k1, isUWeilSplit_cast₂ _ hD hge' (isLagr_diagCols _ _) k2, fun g gd hgd φ₁ hφ₁ φ₂ hφ₂ => ?_⟩` and prove the remaining obligations. Establish `k4` using `k3 (Subgroup.inclusion hge g) (Subgroup.inclusion hge' gd) hgd φ₁ hφ₁ φ₂ hφ₂`. Rewrite `k4` using `[swapHom_fst]`. Rewrite using `[MonoidHom.comp_apply]`. Conclude with `k4`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dblS_of_dblT (H : TargetDoubling) : SourceDoubling := by
   intro F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ hσξ hL χS χT cS cT rS rT ω hω JA JB ξ hA hBm κ _ co hrat om hom

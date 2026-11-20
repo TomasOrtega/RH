@@ -19,19 +19,19 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.GoodCharacterSum
 
 /- English proof (translation)
-Establish `h1 : GlobalTheoryTheory.sumLamChi χ x = ∑ n ∈ Icc 1 ⌊z⌋₊, ((Λ n : ℝ) : ℂ) * χ (n : ZMod q) * ((max (x / n - 1) 0 : ℝ) : ℂ)`. Unfold `GlobalTheoryTheory.sumLamChi`. Apply `Finset.sum_subset (Finset.Icc_subset_Icc_right (Nat.floor_le_floor hz))` to reduce the goal to its premises. Introduce `n hn hn'`. Establish `h1n : 1 ≤ n` using `(Finset.mem_Icc.1 hn).1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hlt : ⌊x⌋₊ < n`. Assume the negation of the conclusion as `h`. Conclude with `hn' (Finset.mem_Icc.2 ⟨h1n, not_lt.1 h⟩)`. Establish `hxn : x < n` using `(Nat.floor_lt hx).1 hlt`. Establish `hn0 : (0 : ℝ) < n` using `by exact_mod_cast h1n`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: x / n - 1 ≤ 0`. Use `(div_le_one hn0).2 hxn.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[max_eq_right this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ∀ n ∈ Icc 1 ⌊z⌋₊, ((Λ n : ℝ) : ℂ) * χ (n : ZMod q) * ((max (x / n - 1) 0 : ℝ) : ℂ) + (GlobalTheoryTheory.cn x n : ℂ) * χ (n : ZMod q) = (x : ℂ) * (((Λ n : ℝ) : ℂ) * χ (n : ZMod q) / (n : ℂ))`. Introduce `n _`. Establish `hm : max (x / n - 1) 0 + min 1 (x / n) = x / n`. Break down `le_total 1 (x / n) with h | h` into its components or cases. Rewrite using `[max_eq_left (by linarith), min_eq_left h]; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[max_eq_right (by linarith), min_eq_right h]; ring`. Establish `hm' : ((max (x / n - 1) 0 : ℝ) : ℂ) + ((min 1 (x / n) : ℝ) : ℂ) = (x : ℂ) / (n : ℂ)`. Rewrite using `[← Complex.ofReal_add, hm]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Unfold `GlobalTheoryTheory.cn`. Rewrite using `[Complex.ofReal_mul]`. Take the linear combination `(((Λ n : ℝ) : ℂ) * χ (n : ZMod q)) * hm'`. Unfold `GlobalTheoryTheory.gChi`. Rewrite using `[if_neg hχ, h1, mul_sub, Finset.mul_sum, ← Finset.sum_congr rfl h2, Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem gChi_add_sum_eq {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1) (x z : ℝ)
     (hx : 0 ≤ x) (hz : x ≤ z) :
@@ -73,23 +73,21 @@ theorem gChi_add_sum_eq {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (h�
   ring
 
 /- English proof (translation)
-Introduce `hZ hC hL hN hF eps h0 h1`. Take `⟨C₁, hC₁, H1⟩` from `GlobalTheory.T.psi_chi_power_saving_bound hC hL hN hF hZ`. Take `⟨C₂, c₂, hC₂, hc₂, H2⟩` from `GlobalTheory.T.psi_chi_sqrt_log_bound hC hL hN hF hZ`. Take `⟨CM, hCM, HM⟩ : ∃ CM : ℝ, 0 ≤ CM ∧ ∀ y : ℝ, 1 ≤ y → |∑ n ∈ Icc 1 ⌊y⌋₊, Λ n / (n : ℝ) - Real.log y| ≤ CM` from `GlobalTheory.mertens_first_vonMangoldt`. Establish `HS` using `GlobalTheory.T.log_deriv_series_of_explicit hZ hC hL hN hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x₀, C, HT⟩` from `GlobalTheory.GoodCharacterTail.tail_and_sum_bound eps h0 (by linarith) (max C₁ C₂) c₂ CM (lt_max_of_lt_left hC₁) hc₂ hCM`. Use `⟨max x₀ (max 1 ((2 : ℝ) ^ (6 / eps))), max C 1, lt_max_of_lt_right one_pos, ?_⟩` and prove the remaining obligations. Introduce `x hx Q q _ χ hQ hl hu hχ hg`. Establish `hx0 : x₀ ≤ x` using `le_trans (le_max_left _ _) hx`. Establish `hx1 : 1 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx2 : (2 : ℝ) ^ (6 / eps) ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx`. Establish `h2 : (2 : ℝ) ≤ x ^ (eps / 6)`. Use `Real.rpow_le_rpow (by positivity) hx2 (by positivity : 0 ≤ eps / 6)` as an intermediate fact. Rewrite `this` using `[← Real.rpow_mul (by norm_num), show 6 / eps * (eps / 6) = 1 by field_simp, Real.rpow_one]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hQ3 : 3 ≤ Q`. Use `Real.log_le_sub_one_of_pos hQ` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `HT x hx0 Q hQ hl hu (fun n => ((Λ n : ℝ) : ℂ) * χ (n : ZMod q)) (-GlobalTheoryTheory.logDerivativeAtOne χ) (HS q χ hχ) ?_ ?_ ?_`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hz : x ≤ x ^ (400 : ℝ)`. Use `Real.rpow_le_rpow_of_exponent_le hx1 (by norm_num : (1 : ℝ) ≤ 400)` as an intermediate fact. Rewrite `this` using `[Real.rpow_one]`. Then use the resulting hypothesis. Rewrite using `[gChi_add_sum_eq χ hχ x _ (by linarith) hz, norm_neg]`. Conclude with `key.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `key.2` as an intermediate fact. Rewrite `this` using `[norm_neg]`. Conclude with `this.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (Real.log_nonneg hx1))`. Introduce `y hy`. Use `(abs_le.1 (HM y hy)).2` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `le_trans (Finset.sum_le_sum fun n _ => ?_) (by linarith : ∑ n ∈ Icc 1 ⌊y⌋₊, Λ n / (n : ℝ) ≤ _)` and prove the remaining obligations. Apply `div_le_div_of_nonneg_right _ (Nat.cast_nonneg n)` to reduce the goal to its premises. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg vonMangoldt_nonneg]`. Conclude with `mul_le_of_le_one_right vonMangoldt_nonneg (χ.norm_le_one _)`. Introduce `u hu2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Check the signs of the components of the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `le_trans (H1 Q q χ hQ3 hχ hg u hu2) (mul_le_mul_of_nonneg_right (le_max_left _ _) ?_)` and prove the remaining obligations. Establish `: 0 < u` using `by linarith`. Check the signs of the components of the expression. Introduce `u hu2`. Establish `: 0 < u` using `lt_of_lt_of_le (Real.exp_pos _) hu2`.
-
-Use `le_trans (H2 Q q χ hQ3 hχ hg u hu2) ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `le_max_right _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gChi_add_sum_bound : GlobalTheory.Mem.An.ExplZeta → GlobalTheory.Mem.An.ExplChi → GlobalTheory.Mem.An.LogDerOne → GlobalTheory.Mem.An.ZeroCount → Formalism.ZeroFreeDirichlet.ZFRDirichlet → ∀ eps : ℝ, 0 < eps → eps < 1 / 52 → ∃ x₀ C : ℝ, 0 < C ∧ ∀ x : ℝ, x₀ ≤ x → ∀ (Q : ℝ) (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q), 0 < Q → x ^ (eps / 6) ≤ Real.log Q → Real.log Q ≤ x ^ (eps / 4) → χ ≠ 1 → GlobalTheoryTheory.GoodFor Q χ → ‖GlobalTheoryTheory.gChi χ x + ∑ n ∈ Icc 1 ⌊x ^ (400 : ℝ)⌋₊, (GlobalTheoryTheory.cn x n : ℂ) * χ (n : ZMod q)‖ ≤ x ^ eps ∧ ‖GlobalTheoryTheory.logDerivativeAtOne χ‖ ≤ C * Real.log x := by
   intro hZ hC hL hN hF eps h0 h1

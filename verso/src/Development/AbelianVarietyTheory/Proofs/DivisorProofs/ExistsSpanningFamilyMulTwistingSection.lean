@@ -38,11 +38,11 @@ noncomputable section
 namespace GlobalTheory.SpanShortProd
 
 /- English proof (translation)
-Establish `hb : ∀ q : AutQ W, ‖GlobalTheory.AllWt.homN V x G f (dict q.out)‖ₑ ≤ ENNReal.ofReal (GlobalTheory.AllWt.lieFacZ Dw x G) * supE V.X (GlobalTheory.AllWt.modelWt V G) (rdU V f)`. Introduce `q`. Rewrite using `[Real.enorm_eq_ofReal (GlobalTheory.AllWt.homN_nonneg _ _ _ _ _), GlobalTheory.AllWt.homN, ENNReal.ofReal_mul (GlobalTheory.AllWt.lieFacZ_pos _ _).le]`. Use `gcongr`. Distinguish the cases in `h : (dict q.out).2 ∈ (V.X (dict q.out).1).dom`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `le_iSup (fun p : FPt V.X => ENNReal.ofReal ((V.X p.1).pnorm (GlobalTheory.AllWt.modelWt V G p.1) (rdU V f p.1) p.2)) ⟨(dict q.out).1, ⟨(dict q.out).2, h⟩⟩`. Establish `h0 : rdU V f (dict q.out).1 (dict q.out).2 = 0` using `by simp [rdU, h]`. Establish `h1 : GlobalTheory.AllWt.ptN (GlobalTheory.AllWt.modelWt V G) (rdU V f) (dict q.out) = 0` using `by show ‖rdU V f (dict q.out).1 (dict q.out).2‖ * _ = 0`. Rewrite using `[h0, norm_zero, zero_mul]`. Rewrite using `[h1, ENNReal.ofReal_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `bot_le`. Use `ne_top_of_le_ne_top ?_ (MeasureTheory.eLpNorm_le_of_ae_enorm_bound (Filter.Eventually.of_forall hb))` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`. Conclude with `ENNReal.mul_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top (supE_ne_top _ _ hf)) (ENNReal.rpow_ne_top_of_nonneg (inv_nonneg.2 ENNReal.toReal_nonneg) (ne_top_of_le_ne_top ENNReal.one_ne_top hμ))`.
+A detailed English derivation is pending.
 -/
 theorem eLpNorm_homN_ne_top {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ} {σ : c.F →+* ℂ} (V : Unf Xo c σ r) (x : ℝ)
@@ -69,13 +69,13 @@ theorem eLpNorm_homN_ne_top {E : Type} [Field E] [NumberField E] [IsCMField E] {
     (ENNReal.rpow_ne_top_of_nonneg (inv_nonneg.2 ENNReal.toReal_nonneg) (ne_top_of_le_ne_top ENNReal.one_ne_top hμ))
 
 /- English proof (translation)
-Unfold `petOn`. Rewrite using `[GlobalTheory.AllWt.petAt_eq, GlobalTheory.AllWt.petAt_eq]`. Establish `hpt : ∀ q : AutQ (V (goodOf c σ)), ‖GlobalTheory.AllWt.homN (U (goodOf c σ)) x (G + G₀) (F * t.sig) (dict (goodOf c σ) q.out)‖ ≤ (t.cInf σ • fun q : AutQ (V (goodOf c σ)) => GlobalTheory.AllWt.homN (U (goodOf c σ)) x G F (dict (goodOf c σ) q.out)) q`. Introduce `q`. Rewrite using `[Real.norm_of_nonneg (GlobalTheory.AllWt.homN_nonneg _ _ _ _ _), Pi.smul_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hz : dict (goodOf c σ) q.out ∈ GlobalTheory.AllWt.framesOn (U (goodOf c σ)) Z`. Rewrite using `[t.homN_mul_sig hG F hz, mul_comm]`. Establish `h0 : rdU (U (goodOf c σ)) (F * t.sig) (dict (goodOf c σ) q.out).1 (dict (goodOf c σ) q.out).2 = 0` using `GlobalTheory.AllWt.rdU_eq_zero _ (GlobalTheory.AllWt.mul_mem_suppOn F t.sig_mem_suppOn) hz`. Establish `h1 : GlobalTheory.AllWt.homN (U (goodOf c σ)) x (G + G₀) (F * t.sig) (dict (goodOf c σ) q.out) = 0` using `by show _ * (‖rdU (U (goodOf c σ)) (F * t.sig) (dict (goodOf c σ) q.out).1 (dict (goodOf c σ) q.out).2‖ * _) = 0`. Rewrite using `[h0, norm_zero, zero_mul, mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Conclude with `mul_nonneg (t.cInf_pos σ).le (GlobalTheory.AllWt.homN_nonneg _ _ _ _ _)`. Establish `h1` using `MeasureTheory.eLpNorm_mono_real (p := 2) (μ := GlobalTheory.AllWt.muOn (U (goodOf c σ)) (V (goodOf c σ)) (dict (goodOf c σ)) Z) hpt`. Rewrite `h1` using `[MeasureTheory.eLpNorm_const_smul, Real.enorm_eq_ofReal (t.cInf_pos σ).le]`. Establish `hfin` using `eLpNorm_homN_ne_top (U (goodOf c σ)) x (dict (goodOf c σ)) (GlobalTheory.AllWt.muOn (U (goodOf c σ)) (V (goodOf c σ)) (dict (goodOf c σ)) Z) (GlobalTheory.AllWt.muPart_univ_le _ _ _) G F ((GlobalTheory.AllWt.mem_cuspW.1 hF).2 _ (goodEmb_goodOf c σ))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem petOn_mul_sig_le {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) (V : (c.F →+* ℂ) → HSp D)
@@ -111,21 +111,17 @@ theorem petOn_mul_sig_le {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.
     _ = _ := by rw [ENNReal.toReal_mul, ENNReal.toReal_ofReal (t.cInf_pos σ).le]
 
 /- English proof (translation)
-Introduce `D H Dw l Xo c r U x V dict Z G G₀ t hU hG hlo s₀ hsub hval hspan`. Set `Q : cuspW Xo c U G →ₗ[c.F] cuspOn U Z G` to `LinearMap.codRestrict (cuspOn U Z G) ((LinearMap.mulLeft c.F (idem Z)).comp (cuspW Xo c U G).subtype) (fun F => GlobalTheory.CuspSplit.idem_mul_mem_cuspOn hU Z F)`. Set `ψ : cuspW Xo c U G →ₗ[c.F] cuspOn U Z (G + G₀)` to `(GlobalTheory.FlatTw.Mul.mulEquiv t G hG).toLinearMap ∘ₗ Q`. Set `s₁ : Set (cuspW Xo c U G)` to `{F | (F : Rul Xo c) ∈ s₀}`. Establish `hQ : Function.Surjective Q` using `fun g => ⟨⟨g, GlobalTheory.AllWt.cuspOn_le U Z G g.2⟩, Subtype.ext (GlobalTheory.CuspSplit.idem_mul_of_mem_cuspOn g.2)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hψ : Function.Surjective ψ` using `(GlobalTheory.FlatTw.Mul.mulEquiv t G hG).surjective.comp hQ`. Establish `hs₁ : Submodule.span c.F s₁ = ⊤`. Apply `Submodule.map_injective_of_injective (cuspW Xo c U G).injective_subtype` to reduce the goal to its premises. Rewrite using `[Submodule.map_span, Submodule.map_top, Submodule.range_subtype]`. Establish `e : (cuspW Xo c U G).subtype '' s₁ = s₀`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F, hF, rfl⟩`. Conclude with `hF`. Introduce `hf`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨⟨f, hsub hf⟩, hf, rfl⟩`. Rewrite using `[e]`. Conclude with `le_antisymm (Submodule.span_le.2 hsub) hspan`. Use `⟨ψ '' s₁, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨F, hF, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFl : F ∈ GlobalTheory.AllWt.latW U G` using `hval F hF`. Establish `hQF : Q F ∈ latOn U Z G` using `GlobalTheory.CuspSplit.mem_latOn_part hU F hFl Z`. Conclude with `GlobalTheory.FlatTw.Mul.mem_latOn_of_mul t 1 one_ne_zero (fun w => by`. Establish `h1 : vAdd w (1 : c.F) = 0` using `by simp [vAdd]`. Rewrite using `[h1, Int.cast_zero, zero_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hlo w)`. Use the proof step `(Q F) hQF (ψ F) (by rw [one_smul]; rfl)`. Rewrite using `[Submodule.span_image, hs₁, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `hψ`. Introduce and unpack `_ ⟨F, hF, rfl⟩`.
-
-Use `⟨F, hF, fun σ => ?_⟩` and prove the remaining obligations. Establish `e : ((ψ F : cuspOn U Z (G + G₀)) : Rul Xo c) = (F : Rul Xo c) * t.sig` using `by show idem Z * (F : Rul Xo c) * t.sig = _`. Rewrite using `[mul_comm (idem Z), mul_assoc, t.idem_sig]`. Use `show petOn U x V dict Z (G + G₀) σ _ ≤ _`. Rewrite using `[e]`.
-
-Conclude with `petOn_mul_sig_le U x V dict t hG F.2 σ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_span_mul_twSec : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) (V : (c.F →+* ℂ) → HSp D) (dict : ∀ σ, GA D (V σ) → Σ k, Frame ((U σ).X k).Ψ r) (Z : Comp Xo c) (G G₀ : WTZ D.host.E) (t : GlobalTheory.FlatTw.TwSec U x Z G₀), (∀ σ, GoodEmb c σ → IsUnf (U σ)) → Even G.2 → (∀ w, 0 ≤ t.lo w) → ∀ s₀ : Set (Rul Xo c), s₀ ⊆ (cuspW Xo c U G : Set (Rul Xo c)) → (∀ f ∈ s₀, ∀ la, ∀ v ∈ valSet Xo c (algCls Xo c) la, 0 ≤ v f) → cuspW Xo c U G ≤ Submodule.span c.F s₀ → ∃ s : Set (cuspOn U Z (G + G₀)), s ⊆ (latOn U Z (G + G₀) : Set (cuspOn U Z (G + G₀))) ∧ Submodule.span c.F s = ⊤ ∧ ∀ y ∈ s, ∃ f ∈ s₀, ∀ σ, normOn U x V dict Z (G + G₀) σ y ≤ t.cInf σ * petOn U x V dict Z G σ f := by
   intro D H Dw l Xo c r U x V dict Z G G₀ t hU hG hlo s₀ hsub hval hspan

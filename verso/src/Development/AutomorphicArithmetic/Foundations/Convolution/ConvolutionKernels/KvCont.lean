@@ -15,35 +15,29 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   [IsFiniteMeasureOnCompacts μ]
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun x₀ => ?_` and prove the remaining obligations. Take `⟨V, hVc, hV⟩` from `exists_compact_mem_nhds x₀`. Establish `hx₀ : x₀ ∈ V` using `mem_of_mem_nhds hV`. Establish `hS : IsCompact (V * tsupport (f : G → ℂ))` using `hVc.mul f.hasCompactSupport`. Take `⟨N, hN⟩` from `exists_encard_le_of_isCompact Γ hS`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `f.continuous.bounded_above_of_compact_support f.hasCompactSupport`. Establish `hzero : ∀ x ∈ V, ∀ y ∉ V * tsupport (f : G → ℂ), f (x⁻¹ * y) = 0` using `fun x hx y hy => by`. Establish `: x⁻¹ * y ∉ tsupport (f : G → ℂ)` using `fun h => hy ⟨x, hx, x⁻¹ * y, h, by simp⟩`. Conclude with `image_eq_zero_of_notMem_tsupport this`. Establish `hcont : ∀ x : G, Continuous fun y => f (x⁻¹ * y)` using `fun x => f.continuous.comp (continuous_const_mul x⁻¹)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `A : G → ℝ≥0∞` to `fun x => ∫⁻ y, ‖f (x⁻¹ * y) - f (x₀⁻¹ * y)‖ₑ ^ 2 ∂μ`. Establish `hA : Tendsto A (𝓝 x₀) (𝓝 0)`. Establish `h0 : (0 : ℝ≥0∞) = ∫⁻ _, 0 ∂μ` using `by simp`. Rewrite using `[h0]`. Use `tendsto_lintegral_filter_of_dominated_convergence ((V * tsupport (f : G → ℂ)).indicator fun _ => ENNReal.ofReal (M + M) ^ 2) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Eventually.of_forall fun x => ((hcont x).sub (hcont x₀)).measurable.enorm.pow_const 2`. Use `filter_upwards [hV] with x hx`. Use `Eventually.of_forall fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ V * tsupport (f : G → ℂ)`. Rewrite using `[indicator_of_mem hy] gcongr`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal ((norm_sub_le _ _).trans (add_le_add (hM _) (hM _)))`. Simplify using `[hzero x hx y hy, hzero x₀ hx₀ y hy]`. Rewrite using `[lintegral_indicator hS.measurableSet, lintegral_const]`. Conclude with `(ENNReal.mul_lt_top (ENNReal.pow_lt_top ENNReal.ofReal_lt_top) (by rw [Measure.restrict_apply_univ]; exact hS.measure_lt_top)).ne`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Eventually.of_forall fun y => ?_` and prove the remaining obligations. Establish `hc : Continuous fun x : G => ‖f (x⁻¹ * y) - f (x₀⁻¹ * y)‖ₑ ^ 2` using `(ENNReal.continuous_pow 2).comp ((f.continuous.comp (continuous_inv.mul continuous_const)).sub continuous_const).enorm`. Simplify using `using hc.tendsto x₀`. Establish `hkey : ∀ x ∈ V, ∀ φ : Lp ℂ 2 (quotientMeasure Γ μ), ‖rconv Γ μ f φ x - rconv Γ μ f φ x₀‖ₑ ^ 2 ≤ (A x * N) * ‖φ‖ₑ ^ 2`. Introduce `x hx φ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsub : rconv Γ μ f φ x - rconv Γ μ f φ x₀ = ∫ y, (f (x⁻¹ * y) - f (x₀⁻¹ * y)) * φ (mk Γ y) ∂μ`. Unfold `rconv`. Rewrite using `[← integral_sub (integrable_rconv Γ μ f φ x) (integrable_rconv Γ μ f φ x₀)]`. Simplify using `only [sub_mul]`. Establish `hm1 : AEMeasurable (fun y => ‖f (x⁻¹ * y) - f (x₀⁻¹ * y)‖ₑ) μ` using `((hcont x).sub (hcont x₀)).measurable.enorm.aemeasurable`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hm2 : AEMeasurable ((V * tsupport (f : G → ℂ)).indicator fun y => ‖φ (mk Γ y)‖ₑ) μ` using `((stronglyMeasurable_lift Γ μ φ).measurable.enorm.indicator hS.measurableSet).aemeasurable`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsub]`. Use `gcongr`. Use `(enorm_integral_le_lintegral_enorm _).trans (le_of_eq ?_)` and prove the remaining obligations.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use extensionality with `y`. Distinguish the cases in `hy : y ∈ V * tsupport (f : G → ℂ)`. Rewrite using `[indicator_of_mem hy, enorm_mul]`. Rewrite using `[indicator_of_notMem hy, hzero x hx y hy, hzero x₀ hx₀ y hy]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Simplify using the standard rewrite rules. Use `_ ≤ A x * ∫⁻ y, (V * tsupport (f : G → ℂ)).indicator (fun y => ‖φ (mk Γ y)‖ₑ) y ^ 2 ∂μ := L2Kernel.lintegral_mul_sq_le μ hm1 hm2`. Use `_ = A x * ∫⁻ y in V * tsupport (f : G → ℂ), ‖φ (mk Γ y)‖ₑ ^ 2 ∂μ := by`. Use `congr 1`. Rewrite using `[← lintegral_indicator hS.measurableSet]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congr 1`. Use extensionality with `y`. Distinguish the cases in `hy : y ∈ V * tsupport (f : G → ℂ)`. Simplify using `[hy]`. Simplify using `[hy]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ ≤ A x * (N * ‖φ‖ₑ ^ 2) := by gcongr`. Conclude with `lintegral_lift_sq_le Γ μ φ hS.measurableSet hN`. Use `_ = (A x * N) * ‖φ‖ₑ ^ 2 := by rw [mul_assoc]`. Establish `hAN : Tendsto (fun x => A x * N) (𝓝 x₀) (𝓝 0)`. Simplify using `using ENNReal.Tendsto.mul_const hA (Or.inr (ENNReal.natCast_ne_top N))`.
-
-Establish `hlim : Tendsto (fun x => √(A x * N).toReal) (𝓝 x₀) (𝓝 0)`. Use `(Real.continuous_sqrt.tendsto _).comp ((ENNReal.tendsto_toReal ENNReal.zero_ne_top).comp hAN)` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_zero, Real.sqrt_zero]`. Conclude with `this`. Establish `hfin : ∀ᶠ x in 𝓝 x₀, A x * N < 1` using `hAN.eventually_lt_const zero_lt_one`.
-
-Use `tendsto_iff_norm_sub_tendsto_zero.2 ?_` and prove the remaining obligations. Use `squeeze_zero' (Eventually.of_forall fun _ => norm_nonneg _) ?_ hlim` and prove the remaining obligations. Use `filter_upwards [hV, hfin] with x hx hxf`. Use `ContinuousLinearMap.opNorm_le_bound _ (Real.sqrt_nonneg _) fun φ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.sub_apply, rconvCLM_apply, rconvCLM_apply]`.
-
-Conclude with `norm_le_of_enorm_sq_le (ne_top_of_lt hxf) (hkey x hx φ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem continuous_rightConvolutionCLM (f : CompactlySupportedContinuousMap G ℂ) :
     Continuous (rconvCLM Γ μ f) := by
@@ -140,7 +134,7 @@ private theorem continuous_rightConvolutionCLM (f : CompactlySupportedContinuous
 end
 
 /- English proof (translation)
-Introduce `K _ _ n μ _ f`. Conclude with `(InnerProductSpace.toDual ℂ (L2 μ)).symm.continuous.comp (continuous_rightConvolutionCLM (Gam K n) μ f)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.K.kvCont :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (f : CC K n),

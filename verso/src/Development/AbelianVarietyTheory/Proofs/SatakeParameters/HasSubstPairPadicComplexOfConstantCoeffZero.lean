@@ -12,16 +12,16 @@ open MvPowerSeries Formalism.FG.InjVAux GlobalTheory.SubringSeries Formalism.Mai
 variable {l : ℕ} [hl : Fact l.Prime] {κ : Type}
 
 /- English proof (translation)
-Use `Nat.pow_right_injective hl.out.two_le h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pow_two_mul_inj {i j : ℕ} (h : l ^ (2 * i) = l ^ (2 * j)) : i = j := by
   have := Nat.pow_right_injective hl.out.two_le h
   omega
 
 /- English proof (translation)
-Rewrite using `[logF, PowerSeries.coeff_mk, Finset.sum_eq_single j, if_pos rfl]`. Introduce `i _ hi`. Rewrite using `[if_neg fun h => hi (pow_two_mul_inj h).symm]`. Introduce `h`. It suffices to derive a contradiction.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction.
 
-Apply `h` to reduce the goal to its premises. Use `Nat.lt_pow_self (n := 2 * j) hl.out.one_lt` as an intermediate fact. Simplify using `only [Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem coeff_logF_pow (j : ℕ) : PowerSeries.coeff (l ^ (2 * j)) (logF l) = ((l : ℂ_[l]) ^ j)⁻¹ := by
   rw [logF, PowerSeries.coeff_mk, Finset.sum_eq_single j, if_pos rfl]
@@ -35,9 +35,7 @@ theorem coeff_logF_pow (j : ℕ) : PowerSeries.coeff (l ^ (2 * j)) (logF l) = ((
     omega
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ j, n = l ^ (2 * j)`. Conclude with `Or.inr h`. Use `push Not at h`. Use `Or.inl ⟨?_, h⟩` and prove the remaining obligations. Rewrite using `[logF, PowerSeries.coeff_mk]`.
-
-Conclude with `Finset.sum_eq_zero fun j _ => if_neg (h j)`.
+Consider separately whether the proposition holds or fails. Prove the second alternative. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_logF_cases (n : ℕ) : (PowerSeries.coeff n (logF l) = 0 ∧ ∀ j, n ≠ l ^ (2 * j)) ∨
     ∃ j, n = l ^ (2 * j) := by
@@ -49,13 +47,13 @@ theorem coeff_logF_cases (n : ℕ) : (PowerSeries.coeff n (logF l) = 0 ∧ ∀ j
     exact Finset.sum_eq_zero fun j _ => if_neg (h j)
 
 /- English proof (translation)
-Simplify using `using coeff_logF_pow (l := l) 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coeff_one_logF : PowerSeries.coeff 1 (logF l) = 1 := by
   simpa using coeff_logF_pow (l := l) 0
 
 /- English proof (translation)
-Break down `coeff_logF_cases (l := l) 0 with h | ⟨j, h⟩` into its components or cases. Conclude with `h.1`. Conclude with `absurd h.symm (pow_ne_zero _ hl.out.ne_zero)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem coeff_zero_logF : PowerSeries.coeff 0 (logF l) = 0 := by
   rcases coeff_logF_cases (l := l) 0 with h | ⟨j, h⟩
@@ -63,7 +61,7 @@ theorem coeff_zero_logF : PowerSeries.coeff 0 (logF l) = 0 := by
   · exact absurd h.symm (pow_ne_zero _ hl.out.ne_zero)
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_zero_logF]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_logF : PowerSeries.constantCoeff (logF l) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, coeff_zero_logF]
@@ -72,14 +70,14 @@ def serM (l : ℕ) [Fact l.Prime] : MvPowerSeries (Fin 2) ℂ_[l] :=
   fun d => if d 0 ≤ d 1 then PowerSeries.coeff (d 0) (logF l) * PowerSeries.coeff (d 1) (logF l) else 0
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero fun i => by split_ifs <;> assumption`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_pair_padicComplex_of_constantCoeff_zero {x y : MvPowerSeries κ ℂ_[l]} (hx : constantCoeff x = 0) (hy : constantCoeff y = 0) :
     HasSubst (fun i : Fin 2 => if i = 0 then x else y) :=
   hasSubst_of_constantCoeff_zero fun i => by split_ifs <;> assumption
 
 /- English proof (translation)
-Rewrite using `[at2, at2, subst_comp_subst_apply (hasSubst_pair_padicComplex_of_constantCoeff_zero hx hy) ha]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem subst_powerSeriesEvalTwoGroups {κ' : Type} {a : κ → MvPowerSeries κ' ℂ_[l]} (ha : HasSubst a)
     {x y : MvPowerSeries κ ℂ_[l]} (hx : constantCoeff x = 0) (hy : constantCoeff y = 0)
@@ -90,7 +88,7 @@ theorem subst_powerSeriesEvalTwoGroups {κ' : Type} {a : κ → MvPowerSeries κ
   split_ifs <;> rfl
 
 /- English proof (translation)
-The claim follows from `subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero hx).const ha f`.
+A detailed English derivation is pending.
 -/
 theorem subst_psubst {κ' : Type} {a : κ → MvPowerSeries κ' ℂ_[l]} (ha : HasSubst a)
     {x : MvPowerSeries κ ℂ_[l]} (hx : constantCoeff x = 0) (f : PowerSeries ℂ_[l]) :
@@ -98,7 +96,7 @@ theorem subst_psubst {κ' : Type} {a : κ → MvPowerSeries κ' ℂ_[l]} (ha : H
   subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero hx).const ha f
 
 /- English proof (translation)
-Rewrite using `[coeff_one_logF]`. Conclude with `isUnit_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_coeff_one : IsUnit (PowerSeries.coeff 1 (logF l)) := by
   rw [coeff_one_logF]; exact isUnit_one
@@ -107,7 +105,7 @@ def ex (u : MvPowerSeries κ ℂ_[l]) : MvPowerSeries κ ℂ_[l] :=
   ((logF l).substInvOfIsUnit isUnit_coeff_one).subst u
 
 /- English proof (translation)
-The claim follows from `PowerSeries.constantCoeff_subst_eq_zero (constantCoeff_X k) _ cc_logF`.
+A detailed English derivation is pending.
 -/
 theorem cc_lg (k : κ) : constantCoeff (lg k : MvPowerSeries κ ℂ_[l]) = 0 :=
   PowerSeries.constantCoeff_subst_eq_zero (constantCoeff_X k) _ cc_logF

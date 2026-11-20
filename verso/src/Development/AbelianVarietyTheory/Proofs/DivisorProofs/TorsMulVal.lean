@@ -53,7 +53,7 @@ def torsIncl {N' : ℕ} (h : N ∣ N') {B : Type} [CommRing B] [Algebra R B] (z 
 end Tors
 
 /- English proof (translation)
-Discharge the goal by the elementary cases of `trivial`.
+A detailed English derivation is pending.
 -/
 example : True := trivial
 
@@ -170,7 +170,7 @@ def PreChart.IsGrp {q : PrimeSpectrum R} (c : PreChart G N q) : Prop :=
 end Chart
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨⊤, fun B _ _ => by refine ⟨fun _ _ => ?_, (TorsionMap.ofTower_bijective (muTower p R) n B).1.injOn, fun φ _ => ?_⟩ · intro x _; exact trivial · obtain ⟨z, hz⟩ := (TorsionMap.ofTower_bijective (muTower p R) n B).2 φ exact ⟨z, trivial, hz⟩⟩, TorsionMap.ofTower_bijective (muTower …`.
+Supply the required witnesses or components.
 -/
 example (p : ℕ) [Fact p.Prime] (K : Type) [Field K] [Algebra R K] (n : ℕ) :
     IsLevel K ((TorsionMap.ofTower (muTower p R)).level n) :=

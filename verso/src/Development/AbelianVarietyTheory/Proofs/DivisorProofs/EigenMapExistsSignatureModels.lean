@@ -12,19 +12,17 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hB hXW hM hM₁ hH e₀ he₀ Ψ₁ hΨ₁`. Take `⟨r, s, r', s', hX, hW⟩` from `hXW`. Take `⟨ei, ev, hei, hv, hl⟩` from `he₀.loc`. Establish `hR` using `GlobalTheory.ThK.EvUniq.infRel_of_isEv F E σ B n d d₁ r s r' s' i₀ i₁ X W W₁ H' M M₁ hB hX hW hM hH hM₁ e₀ he₀ ei ev hei hv hl`. Establish `hsurj` using `GlobalTheory.ThK.EvTwoNe.infRel_surjective hK.base B hB hX hW hM hH hM₁ ei hei hR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloc : ∀ (v : Pl F) (φ₁ : (Fin n × Fin d₁ → Fv F v) → ℂ), φ₁ ∈ SB (Fin n × Fin d₁ → Fv F v) → ∃ φ, φ ∈ SB (Fin n × Fin d → Fv F v) ∧ ev v φ = φ₁ ∧ (φ₁ = M₁.vac v → φ = M.vac v)`. Introduce `v φ₁ h`. Distinguish the cases in `hc : φ₁ = M₁.vac v`. Conclude with `⟨M.vac v, (hM.vac v).1, hc ▸ (hv v).1, fun _ => rfl⟩`. Establish `hm : φ₁ ∈ (SB (Fin n × Fin d → Fv F v)).map (ev v)` using `by rw [(hv v).2]; exact h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨φ, hφ, hφe⟩` from `hm`. Conclude with `⟨φ, hφ, hφe, fun h' => absurd h' hc⟩`. Use `choose pre hpreSB hpreEv hpreVac using hloc`. Take `⟨T, m, f, φ, hφSB, hφstd, rfl⟩` from `GlobalTheory.SchADecomp.exists_sum_pure F _ Ψ₁ hΨ₁`. Use `choose f' hf' using fun i => hsurj (f i)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ' : Fin m → ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ` to `fun i v => pre v (φ i v) (hφSB i v)`. Establish `hcof : ∀ i, ∀ᶠ v in cofinite, φ i v = M₁.vac v` using `fun i => by`. Establish `hT : ∀ᶠ v in cofinite, v ∉ T` using `Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => by simpa using hv)`. Use `filter_upwards [hM₁.std, hT] with v h1 h2`. Rewrite using `[hφstd i v h2, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcof' : ∀ i, ∀ᶠ v in cofinite, φ' i v = M.vac v` using `fun i => (hcof i).mono fun v h => hpreVac v _ _ h`. Establish `hSB' : ∀ i v, φ' i v ∈ SB (Fin n × Fin d → Fv F v)` using `fun i v => hpreSB v _ _`. Use `⟨∑ i, pure (f' i) (φ' i), Submodule.sum_mem _ fun i _ => ?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.TensUniq.pure_mem_schA (f' i) (φ' i) (hSB' i) ?_ filter_upwards [hcof' i, hM.std] with v h1 h2` and prove the remaining obligations. Rewrite using `[h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hl (f' i) (φ' i) (hSB' i) (hcof' i), hf' i]`. Use `congr 1`. Use function extensionality and compare the values at `v`.
-
-Conclude with `hpreEv v _ _`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThK.EvOnto.main : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),

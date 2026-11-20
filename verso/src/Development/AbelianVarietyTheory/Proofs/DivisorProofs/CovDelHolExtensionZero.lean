@@ -17,9 +17,9 @@ variable {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedSpace ℝ 
   [IsScalarTower ℝ ℂ V]
 
 /- English proof (translation)
-Establish `h1 : MContDiffAt 1 H z` using `h2.of_le one_le_two`. Establish `hu' : IsUnit (H z)ᵀ.det` using `by rwa [det_transpose]`. Establish `e : ∀ ζ ζ', mdel (fun x => conn H x ζ) z ζ' = (H z)ᵀ⁻¹ * (mdel (fun x => mdel H x ζ) z ζ')ᵀ + -((H z)ᵀ⁻¹ * (mdel H z ζ')ᵀ * (H z)ᵀ⁻¹) * (mdel H z ζ)ᵀ`. Introduce `ζ ζ'`. Simplify using `only [conn]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[mdel_mul (h1.transpose.inv hu') (h2.mdel (by norm_num) ζ).transpose, mdel_inv h1.transpose hu', mdel_transpose (fun x => mdel H x ζ), mdel_transpose]`. Rewrite using `[e, e, mdel_mdel_comm h2 ξ₁ ξ₂]`. Simplify using `only [conn, Matrix.mul_add, Matrix.add_mul, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem conn_flat {n : Type*} [Fintype n] [DecidableEq n] {H : V → Matrix n n ℂ} {z : V}
     (h2 : MContDiffAt 2 H z) (hu : IsUnit (H z).det) (ξ₁ ξ₂ : V) :
@@ -42,15 +42,15 @@ theorem conn_flat {n : Type*} [Fintype n] [DecidableEq n] {H : V → Matrix n n 
 variable {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l]
 
 /- English proof (translation)
-Establish `hu` using `h.isUnit z hz`. Establish `hsz` using `hs z hz`. Establish `h2` using `h.two hz`. Establish `h1` using `h.one hz`. Establish `hγ : ∀ ζ, (fun x => extFormAdj H x ζ) =ᶠ[𝓝 z] fun x => -(quotMap m l * conn H x ζ * incl m l)` using `fun ζ => by filter_upwards [h.isOpen.mem_nhds hz] with x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[extFormAdj_eq_neg_secondForm (h.one hx) (h.eventually_herm hx) (h.isUnit x hx) (hs x hx), secondForm, blockQS]`. Establish `hc : ∀ ζ, MContDiffAt 1 (fun x => conn H x ζ) z` using `fun ζ => h2.conn hu (by norm_num) ζ`. Establish `hd : ∀ ζ ζ', mdel (fun x => extFormAdj H x ζ) z ζ' = -(quotMap m l * mdel (fun x => conn H x ζ) z ζ' * incl m l)`. Introduce `ζ ζ'`. Rewrite using `[mdel_congr (hγ ζ), mdel_neg, mdel_mul ((mContDiffAt_const _).mul (hc ζ)) (mContDiffAt_const _), mdel_mul (mContDiffAt_const _) (hc ζ)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hv : ∀ ζ, extFormAdj H z ζ = -(quotMap m l * conn H z ζ * incl m l)` using `fun ζ => (hγ ζ).self_of_nhds`. Establish `hS : ∀ ζ, conn (gramS H) z ζ = orthProj (H z) * conn H z ζ * incl m l` using `fun ζ => Model.conn_sub hu hsz ζ`. Establish `hQ : ∀ ζ, conn (gramQ H) z ζ = quotMap m l * conn H z ζ * orthLift (H z)` using `fun ζ => Model.conn_quot h1 hu hsz ζ`. Establish `hF` using `conn_flat h2 hu ξ₁ ξ₂`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : quotMap m l * (mdel (fun x => conn H x ξ₂) z ξ₁ - mdel (fun x => conn H x ξ₁) z ξ₂ + conn H z ξ₁ * (incl m l * orthProj (H z) + orthLift (H z) * quotMap m l) * conn H z ξ₂ - conn H z ξ₂ * (incl m l * orthProj (H z) + orthLift (H z) * quotMap m l) * conn H z ξ₁) * incl m l = …`. Rewrite using `[incl_mul_orthProj_add, Matrix.mul_one, Matrix.mul_one, hF]`. Simplify using the standard rewrite rules. Simplify using `only [covDelHol, homDel, hd, hv, hS, hQ]`. Rewrite using `[← neg_eq_zero, ← key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc, neg_neg, neg_sub, neg_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem covDelHol_extFormAdj_eq_zero {U : Set V} {H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : V}
     (h : IsHermFrame U H) (hs : ∀ x ∈ U, IsUnit (subGram (H x)).det) (hz : z ∈ U) (ξ₁ ξ₂ : V) :

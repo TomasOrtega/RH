@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.SncBase.Mdl
 
 /- English proof (translation)
-Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a ha => exact Algebra.subset_adjoin ha`. Consider the case `algebraMap r => simpa using intCast_mem (chartQ x c) r`. Consider the case `add a b _ _ ha hb => exact (chartQ x c).add_mem ha hb`. Consider the case `mul a b _ _ ha hb => exact (chartQ x c).mul_mem ha hb`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem adjoin_int_le_chartQ {Ω : Type} [Field Ω] [Algebra ℚ Ω] {κ : Type} (x : κ → Ω) (c : κ) {a : Ω}
     (ha : a ∈ Algebra.adjoin ℤ (Set.range fun j => x j / x c)) : a ∈ chartQ x c := by
@@ -24,17 +24,15 @@ theorem adjoin_int_le_chartQ {Ω : Type} [Field Ω] [Algebra ℚ Ω] {κ : Type}
   | mul a b _ _ ha hb => exact (chartQ x c).mul_mem ha hb
 
 /- English proof (translation)
-Use `haveI hloc : IsLocalRing (regAt ξ p) := (regAt_isLocalRing_isFractionRing_stalk X Ω ξ hξ p).1`. Establish `hmem : ∀ s : chartQ x c, (s : Ω) ∈ regAt ξ p` using `fun s => hle _ s.2`. Set `f : chartQ x c →+* regAt ξ p` to `((chartQ x c).val : chartQ x c →+* Ω).codRestrict (regAt ξ p) hmem`. Establish `hI : (Ideal.comap f (IsLocalRing.maximalIdeal (regAt ξ p))).IsPrime` using `inferInstance`. Establish `hu : ∀ s : chartQ x c, s ∉ Ideal.comap f (IsLocalRing.maximalIdeal (regAt ξ p)) ↔ unitAt ξ p (s : Ω)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Take `⟨b, hb⟩` from `hu.exists_right_inv`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : (s : Ω) * (b : Ω) = 1` using `congrArg Subtype.val hb`. Establish `h0 : (s : Ω) ≠ 0` using `fun h0 => by simp [h0] at e1`. Use `⟨h0, hmem s, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_eq_of_mul_eq_one_right e1]`. Conclude with `b.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨h0, -, hinv⟩`. Conclude with `isUnit_iff_exists_inv.2 ⟨⟨_, hinv⟩, Subtype.ext (mul_inv_cancel₀ h0)⟩`. Use `⟨_, hI, hu, fun a => ⟨fun ha => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨s, hs, hus, hsa⟩` from `hdict a ha`. Conclude with `⟨⟨s, hs⟩, (hu ⟨s, hs⟩).2 hus, hsa⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨s, hs, hsa⟩`. Establish `hus` using `(hu s).1 hs`. Establish `e : a = ((s : Ω) * a) * (s : Ω)⁻¹`. Clear denominators, using `[hus.1]` for the nonvanishing conditions. Rewrite using `[e]`.
-
-Conclude with `(regAt ξ p).mul_mem (hle _ hsa) hus.2.2`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prime_of_chart {Ω : Type} [Field Ω] [Algebra ℚ Ω] {X : Scheme.{0}}
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} {κ : Type} {x : κ → Ω} {c : κ} (hξ : IsCptGen ξ) {p : Cpt ξ}
@@ -72,7 +70,7 @@ theorem exists_prime_of_chart {Ω : Type} [Field Ω] [Algebra ℚ Ω] {X : Schem
     exact (regAt ξ p).mul_mem (hle _ hsa) hus.2.2
 
 /- English proof (translation)
-Introduce `Ω _ _ X ξ κ x c hT p hp hc`. Use `exists_prime_of_chart hT.gen (fun s hs => chartQ_le hp hc hs) fun a ha => ?_` and prove the remaining obligations. Take `⟨s, hs, hus, hsa⟩` from `(GlobalTheory.T.regAt_iff_chart_localization X Ω ξ ℤ κ x hT c p hc a).1 ha`. Conclude with `⟨s, adjoin_int_le_chartQ x c hs, hus, adjoin_int_le_chartQ x c hsa⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_prime_chartQ : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (X : Scheme.{0}) (ξ : Sp Ω ⟶ X) (κ : Type) (x : κ → Ω) (c : κ), CoordTie ℤ ξ x → ∀ p : Cpt ξ, Char0 ξ p → InChart ξ x c p → ∃ I : Ideal (Mdl.chartQ x c), I.IsPrime ∧ (∀ s : Mdl.chartQ x c, s ∉ I ↔ unitAt ξ p (s : Ω)) ∧ IsLocAt (Mdl.chartQ x c) I (regAt ξ p) := by
   intro Ω _ _ X ξ κ x c hT p hp hc

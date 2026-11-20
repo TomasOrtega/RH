@@ -8,13 +8,13 @@ open MeasureTheory Formalism.MainNotions.S GlobalTheory.Count
 namespace GlobalTheory.FlagRareProof
 
 /- English proof (translation)
-Introduce `h`. Use `⟨⌈Real.exp 15⌉₊, ?_⟩` and prove the remaining obligations. Introduce `B p q hsig hn hq hrd hf`. Establish `hn' : Real.exp 15 ≤ (B.I.n : ℝ)` using `Nat.ceil_le.1 hn`. Establish `hn1 : 1 ≤ B.I.n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 < ⌈Real.exp 15⌉₊` using `Nat.ceil_pos.2 (Real.exp_pos 15)`. Use linear arithmetic over natural numbers and integers. Establish `hlog : 15 ≤ Real.log B.I.n`. Use `Real.log_le_log (Real.exp_pos 15) hn'` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `key` using `h B.I B.μf B.fund B.fund_spec p q hsig hlog hq hrd hf`. Establish `hset : {x | least B.I x < 1 / 2} = {x | stepLt B.I x (1 / 2) ≠ ⊥}`. Use extensionality with `x`. Establish `hx` using `((GlobalTheory.CountSteps.steps B.I x (1 / 2) (by norm_num)).2.2.2.2.2.2.2.2 hn1).2.2`. Simplify using `only [Set.mem_ofPred_eq, ne_eq, hx, not_le]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hnf : 0 ≤ (B.I.n : ℝ) * (B.I.f : ℝ) * Real.log B.I.n` using `mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) (by linarith)`. Rewrite using `[prob, hset, Formalism.MainNotions.S.AutInst.vol, ← ENNReal.toReal_div]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem flagRare_of_nonzeroFlagBound : GlobalTheory.FlagMeas.NonzeroFlagBound → GlobalTheory.IndefiniteRowSideFullHecke.RareFlags.FlagRare := by
   intro h

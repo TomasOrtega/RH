@@ -12,31 +12,31 @@ namespace GlobalTheory.PtExt
 open Algebra.TensorProduct in
 
 /- English proof (translation)
-Use `set H := G.A n`. Establish `V : ∀ (D : Type) [CommRing D] [Algebra R D] (φ ψ : H →ₐ[R] D), lift φ ψ (fun _ _ ↦ Commute.all _ _) (d.coc n) = d.g D (spOver φ ≫ t.y n) (spOver ψ ≫ t.y n) - ((fv d.f H D (toConv φ * toConv ψ).ofConv (t.y n) + (toConv φ * toConv ψ).ofConv (d.h n)) - (fv d.f H D φ (t.y n) + φ (d.h …` using `fun D _ _ φ ψ ↦ GlobalTheory.T.cocycle_tensorLift_apply_eq_twoPointValue R A p G t c d n D φ ψ`. Establish `M : ∀ (D : Type) [CommRing D] [Algebra R D] (φ ψ : H →ₐ[R] D), spOver (toConv φ * toConv ψ).ofConv ≫ t.y n = (spOver φ ≫ t.y n) * (spOver ψ ≫ t.y n)` using `fun D _ _ φ ψ ↦ t.mul n D (toConv φ) (toConv ψ)`. Rewrite using `[mem_symCocycles]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression.
 
-Set `T` to `H ⊗[R] (H ⊗[R] H)`. Set `i1 : H →ₐ[R] H ⊗[R] (H ⊗[R] H)` to `includeLeft`. Set `i2 : H →ₐ[R] H ⊗[R] (H ⊗[R] H)` to `(includeRight : H ⊗[R] H →ₐ[R] H ⊗[R] (H ⊗[R] H)).comp includeLeft`. Set `i3 : H →ₐ[R] H ⊗[R] (H ⊗[R] H)` to `(includeRight : H ⊗[R] H →ₐ[R] H ⊗[R] (H ⊗[R] H)).comp includeRight`. Set `i12` to `(toConv i1 * toConv i2).ofConv`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `i23` to `(toConv i2 * toConv i3).ofConv`. Establish `e1 : ∀ x : H ⊗[R] H, (1 : H) ⊗ₜ[R] x = lift i2 i3 (fun _ _ ↦ Commute.all _ _) x`. Introduce `x`. Proceed by induction on `x with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [tmul_add, map_add, hx, hy]`. Consider the case `tmul a b => simp [i2, i3, Algebra.TensorProduct.tmul_mul_tmul, includeLeft_apply, includeRight_apply]`. Establish `e2 : ∀ x : H ⊗[R] H, TensorProduct.assoc R H H H ((Coalgebra.comul (R` using `R) (A := H)).rTensor H x) = lift i12 i3 (fun _ _ ↦ Commute.all _ _) x := by`. Introduce `x`. Proceed by induction on `x with`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add]`. Consider the case `tmul a b`. Rewrite using `[LinearMap.rTensor_tmul, lift_tmul]`. Simplify using `only [i12, AlgHom.convMul_apply, ofConv_toConv]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Proceed by induction.
 
-Proceed by induction on `(Coalgebra.comul (R := R) a : H ⊗[R] H) with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [add_tmul, map_add, hx, hy, add_mul]`. Consider the case `tmul a1 a2 => simp [i1, i2, i3, Algebra.TensorProduct.tmul_mul_tmul, includeLeft_apply, includeRight_apply]`. Establish `e3 : ∀ x : H ⊗[R] H, (Coalgebra.comul (R` using `R) (A := H)).lTensor H x = lift i1 i23 (fun _ _ ↦ Commute.all _ _) x := by`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul a b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.lTensor_tmul, lift_tmul]`. Simplify using `only [i23, AlgHom.convMul_apply, ofConv_toConv]`. Proceed by induction on `(Coalgebra.comul (R := R) b : H ⊗[R] H) with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [tmul_add, map_add, hx, hy, mul_add]`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul b1 b2 => simp [i1, i2, i3, Algebra.TensorProduct.tmul_mul_tmul, includeLeft_apply, includeRight_apply]`. Establish `e4 : ∀ x : H ⊗[R] H, ((TensorProduct.mk R H H).flip 1).lTensor H x = lift i1 i2 (fun _ _ ↦ Commute.all _ _) x`. Introduce `x`. Proceed by induction on `x with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul a b => simp [i1, i2, Algebra.TensorProduct.tmul_mul_tmul, includeLeft_apply, includeRight_apply]`. Rewrite using `[cobTwo_apply, e1, e2, e3, e4, V, V, V, V]`. Simplify using `only [i12, i23, toConv_ofConv, M, mul_assoc]`. Establish `hc` using `(hg (H ⊗[R] (H ⊗[R] H))).2 (spOver i1 ≫ t.y n) (spOver i2 ≫ t.y n) (spOver i3 ≫ t.y n)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc (toConv i1)]`. Take the linear combination `hc`. Establish `e : ∀ x : H ⊗[R] H, TensorProduct.comm R H H x = lift (includeRight : H →ₐ[R] H ⊗[R] H) (includeLeft : H →ₐ[R] H ⊗[R] H) (fun _ _ ↦ Commute.all _ _) x`. Introduce `x`. Proceed by induction on `x with`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul a b => simp [Algebra.TensorProduct.tmul_mul_tmul, includeLeft_apply, includeRight_apply]`. Establish `e' : d.coc n = lift (includeLeft : H →ₐ[R] H ⊗[R] H) includeRight (fun _ _ ↦ Commute.all _ _) (d.coc n)`. Conclude with `(DFunLike.congr_fun (lift_includeLeft_includeRight (R := R) (S := R) (A := H) (B := H)) (d.coc n)).symm`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, V]`. Use `conv_rhs => rw [e', V]`. Rewrite using `[mul_comm (toConv (includeRight : H →ₐ[R] H ⊗[R] H)), (hg _).1]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem coc_mem_symCocycles (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (p : ℕ) (G : PDivGroup p R)
     (t : G.TorsionTower A) (c : primDR A) (d : Dat t c) (hg : IsSymCoc d.g) (n : ℕ) :

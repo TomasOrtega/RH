@@ -5,7 +5,7 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R A _ _ _ _ _ _ p _`. Conclude with `isDomain_and_isIntegrallyClosed_atPrime_of_etale R p (Localization.AtPrime p)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem etale_localization_atPrime_isDomain_isIntegrallyClosed :
     ∀ (R A : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [CommRing A] [Algebra R A]

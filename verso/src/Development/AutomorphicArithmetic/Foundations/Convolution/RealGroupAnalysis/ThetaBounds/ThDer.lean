@@ -8,15 +8,13 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F _ _ Ψ Ψ' hD t hDom`. Take `⟨K, hK, hB⟩` from `hDom`. Take `⟨N, hN⟩` from `wtSum F`. Take `⟨C, hC⟩` from `hN K hK 1 one_pos`. Establish `hab : (1 : ℝ) ≤ ab (1 : (A F)ˣ)` using `by simp [ab]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsum` using `(hC 1 hab).1`. Take `⟨B, hB⟩` from `hB N`. Establish `hsc : ∀ ξ : Fin 4 → F, sc (1 : (A F)ˣ) ξ = fun i => rt (ξ i)`. Introduce `ξ`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[sc]`. Take `⟨-, K', hK', hB'⟩` from `wtBound F (Ψ t)`. Establish `hs0 : Summable (fun ξ : Fin 4 → F => (Ψ t).1 fun i => rt (ξ i))`. Take `⟨B', hB'⟩` from `hB' N`. Take `⟨C', hC'⟩` from `hN K' hK' 1 one_pos`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `Summable.of_norm_bounded (g := fun ξ : Fin 4 → F => B' * wt K' N (sc (1 : (A F)ˣ) ξ)) ((hC' 1 hab).1.mul_left B') ?_` and prove the remaining obligations. Introduce `ξ`. Rewrite using `[hsc]`. Conclude with `hB' () (Set.mem_univ _) _`. Establish `key` using `hasDerivAt_tsum_of_isPreconnected (𝕜 := ℝ) (F := ℂ) (u := fun ξ : Fin 4 → F => B * wt K N (sc (1 : (A F)ˣ) ξ)) (g := fun (ξ : Fin 4 → F) (s : ℝ) => (Ψ s).1 fun i => rt (ξ i)) (g' := fun (ξ : Fin 4 → F) (s : ℝ) => (Ψ' s).1 fun i => rt (ξ i)) (t := Metric.ball t 1) (y₀ := t) (y := …`.
-
-Conclude with `key`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.thDer :
     ∀ (F : Type) [Field F] [NumberField F], ThDer F := by

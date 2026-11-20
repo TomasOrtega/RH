@@ -15,7 +15,7 @@ namespace AnMono
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Introduce `x j y hy w`. Distinguish the cases in `hw : w = 0`. Substitute `hw` using the available equality. Simplify using `[levi]`. Conclude with `(h x j y hy w hw).le`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPsh_of_isPosPot (A : FinHolAtlas e X) (Θ : LocPot X) (h : IsPosPot A Θ) : IsPsh A Θ := by
   intro x j y hy w
@@ -25,9 +25,9 @@ theorem isPsh_of_isPosPot (A : FinHolAtlas e X) (Θ : LocPot X) (h : IsPosPot A 
   · exact (h x j y hy w hw).le
 
 /- English proof (translation)
-Establish `h1 : 1 ≤ Real.log (1 / t)`. Rewrite using `[one_div, Real.log_inv]`. Use `Real.log_le_log ht hte` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `⟨h1, Real.log_nonneg h1⟩`.
+Supply the required witnesses or components.
 -/
 theorem log_inv_ge {t : ℝ} (ht : 0 < t) (hte : t ≤ Real.exp (-1)) :
     1 ≤ Real.log (1 / t) ∧ 0 ≤ Real.log (Real.log (1 / t)) := by
@@ -39,7 +39,7 @@ theorem log_inv_ge {t : ℝ} (ht : 0 < t) (hte : t ≤ Real.exp (-1)) :
   exact ⟨h1, Real.log_nonneg h1⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `log_inv_ge ht hte`. Conclude with `div_nonneg h2 (by linarith)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem quot_nonneg {t : ℝ} (ht : 0 < t) (hte : t ≤ Real.exp (-1)) :
     0 ≤ Real.log (Real.log (1 / t)) / Real.log (1 / t) := by
@@ -47,7 +47,7 @@ theorem quot_nonneg {t : ℝ} (ht : 0 < t) (hte : t ≤ Real.exp (-1)) :
   exact div_nonneg h2 (by linarith)
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.Ar.Giv.epsT_eq_mul, GlobalTheory.CompanionTheory.Ar.Giv.epsT_eq_mul]`. Conclude with `mul_le_mul_of_nonneg_right hC (quot_nonneg ht hte)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epsT_mono {C C' t : ℝ} (hC : C ≤ C') (ht : 0 < t) (hte : t ≤ Real.exp (-1)) :
     epsT C t ≤ epsT C' t := by
@@ -55,9 +55,9 @@ theorem epsT_mono {C C' t : ℝ} (hC : C ≤ C') (ht : 0 < t) (hte : t ≤ Real.
   exact mul_le_mul_of_nonneg_right hC (quot_nonneg ht hte)
 
 /- English proof (translation)
-Establish `hx` using `quot_nonneg ht hte`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.Giv.epsT_eq_mul, GlobalTheory.CompanionTheory.Ar.Giv.epsT_eq_mul, ← mul_assoc, ← mul_assoc]`. Use `mul_le_mul_of_nonneg_right ?_ hx` and prove the remaining obligations. Establish `h2 : C ^ 2 ≤ C' ^ 2`. Rewrite using `[← sq_abs C]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_le_pow_left₀ (abs_nonneg C) hC 2`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem mul_epsT_mono {C C' t : ℝ} (hC : |C| ≤ C') (ht : 0 < t) (hte : t ≤ Real.exp (-1)) :
     C * epsT C t ≤ C' * epsT C' t := by
@@ -70,7 +70,7 @@ theorem mul_epsT_mono {C C' t : ℝ} (hC : |C| ≤ C') (ht : 0 < t) (hte : t ≤
   nlinarith
 
 /- English proof (translation)
-Use `hs y` as an intermediate fact. Unfold `rW`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exp_one_le_rW (L : LocPot X) (s : X → X → ℂ) (hs : ∀ y, logNormSec L s y ≤ 0) (y : X) :
     Real.exp 1 ≤ rW L s y := by
@@ -79,7 +79,7 @@ theorem exp_one_le_rW (L : LocPot X) (s : X → X → ℂ) (hs : ∀ y, logNormS
   linarith
 
 /- English proof (translation)
-Use `Real.log_le_log (Real.exp_pos 1) (exp_one_le_rW L s hs y)` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem one_le_log_rW (L : LocPot X) (s : X → X → ℂ) (hs : ∀ y, logNormSec L s y ≤ 0) (y : X) :
     1 ≤ Real.log (rW L s y) := by
@@ -87,7 +87,7 @@ theorem one_le_log_rW (L : LocPot X) (s : X → X → ℂ) (hs : ∀ y, logNormS
   rwa [Real.log_exp] at this
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Use `⟨h1, h2, h3, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨h5, h6⟩` from `h4 y hy`. Establish `hl` using `one_le_log_rW L s hs y`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
 Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -103,13 +103,13 @@ theorem isSingWeight_mono (A : FinHolAtlas e X) (L : LocPot X) (s : X → X → 
   · linarith
 
 /- English proof (translation)
-Take `⟨-, ht₀1, hF⟩` from `hF`. Establish `hCC : C ≤ C'` using `(le_abs_self C).trans hC`. Establish `hr : ∀ y, 0 ≤ rW L s y` using `fun y => (Real.exp_pos 1).le.trans (exp_one_le_rW L s hs y)`. Use `⟨ht₁, ht₁₀.trans_lt ht₀1, fun t ht htt => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8⟩` from `hF t ht (htt.trans ht₁₀)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hte' : t ≤ Real.exp (-1)` using `htt.trans hte`. Establish `hε` using `epsT_mono hCC ht hte'`. Establish `hll` using `(log_inv_ge ht hte').2`. Use `⟨h1, fun y => (h2 y).trans hCC, h3, fun y => ?_, GlobalTheory.CompanionTheory.Ar.Giv.isPsh_rsmul_mono A Θ th (phT t) hΘ hΘp hth h1 hε h5, fun y hy hyr => ?_, fun y hy => ?_, fun t' htt' ht' y => ?_⟩` and prove the remaining obligations. Use `h4 y` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `h6 y hy hyr` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `h7 y hy` as an intermediate fact. Use `mul_le_mul_of_nonneg_right hε (hr y)` as an intermediate fact.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `h8 t' htt' (ht'.trans ht₁₀) y` as an intermediate fact. Use `mul_epsT_mono hC (ht.trans_le htt') (ht'.trans hte)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem isRegFamily_enlarge (A : FinHolAtlas e X) (Θ L : LocPot X) (s : X → X → ℂ) (th : LocPot X)
     (ph : X → ℝ) (phT : ℝ → X → ℝ) {C t₀ C' t₁ : ℝ} (hΘ : IsPotential A Θ) (hΘp : IsPsh A Θ)
@@ -140,11 +140,11 @@ theorem isRegFamily_enlarge (A : FinHolAtlas e X) (Θ L : LocPot X) (s : X → X
     linarith
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Take `⟨j, hj⟩` from `A.cover x`. Establish `h1 : ContinuousOn (u ∘ (A.chart j).symm) (A.chart j).target`. Use `(h j).continuousOn` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hx : (A.chart j) x ∈ (A.chart j).target` using `(A.chart j).map_source hj`. Establish `h2 : ContinuousAt (u ∘ (A.chart j).symm) (A.chart j x)` using `h1.continuousAt ((A.chart j).open_target.mem_nhds hx)`. Establish `h3 : ContinuousAt (A.chart j) x` using `(A.chart j).continuousAt hj`. Establish `h4 : ContinuousAt ((u ∘ (A.chart j).symm) ∘ (A.chart j)) x` using `ContinuousAt.comp (g := u ∘ (A.chart j).symm) h2 h3`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h4.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with z hz`. Simplify using `[(A.chart j).left_inv hz]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_of_smooth (A : FinHolAtlas e X) (u : X → ℝ) (h : A.Smooth u) : Continuous u := by
   rw [continuous_iff_continuousAt]
@@ -164,7 +164,7 @@ theorem continuous_of_smooth (A : FinHolAtlas e X) (u : X → ℝ) (h : A.Smooth
   simp [(A.chart j).left_inv hz]
 
 /- English proof (translation)
-Introduce `v hv`. Conclude with `Filter.Eventually.of_forall fun _ y _ => refl_mem_uniformity hv`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tendstoUniformlyOn_self {α β : Type*} [UniformSpace β] (f : α → β) (p : Filter ℝ)
     (K : Set α) : TendstoUniformlyOn (fun _ : ℝ => f) f p K := by
@@ -172,16 +172,16 @@ theorem tendstoUniformlyOn_self {α β : Type*} [UniformSpace β] (f : α → β
   exact Filter.Eventually.of_forall fun _ y _ => refl_mem_uniformity hv
 
 /- English proof (translation)
-Introduce `j K _ _` and use `⟨tendstoUniformlyOn_self _ _ _, tendstoUniformlyOn_self _ _ _, tendstoUniformlyOn_self _ _ _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isRegFamilyC2_const (A : FinHolAtlas e X) (s : X → X → ℂ) (u : X → ℝ) :
     IsRegFamilyC2 A s u (fun _ => u) := fun j K _ _ =>
   ⟨tendstoUniformlyOn_self _ _ _, tendstoUniformlyOn_self _ _ _, tendstoUniformlyOn_self _ _ _⟩
 
 /- English proof (translation)
-Use `GlobalTheory.CompanionTheory.Ar.Giv.isPsh_rsmul_mono A Θ th u hΘ hΘp hth hu hε ?_` and prove the remaining obligations. Introduce `x j y hy w`. Establish `hfun : (th + LocPot.ofFun u + Θ.rsmul 0).φ x ∘ (A.chart j).symm = (th + LocPot.ofFun u).φ x ∘ (A.chart j).symm`. Use function extensionality and compare the values at `z`. Use `show th.φ x _ + u _ + 0 * Θ.φ x _ = th.φ x _ + u _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`. Conclude with `h x j y ⟨hy.1, hy.2.1⟩ w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPsh_add_rsmul (A : FinHolAtlas e X) (Θ th : LocPot X) (u : X → ℝ) {ε : ℝ}
     (hΘ : IsPotential A Θ) (hΘp : IsPsh A Θ) (hth : IsPotential A th) (hu : A.Smooth u)
@@ -198,19 +198,17 @@ theorem isPsh_add_rsmul (A : FinHolAtlas e X) (Θ th : LocPot X) (u : X → ℝ)
   exact h x j y ⟨hy.1, hy.2.1⟩ w
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `isCompact_univ.exists_bound_of_continuousOn (continuous_of_smooth A u hu).continuousOn`. Establish `hb : ∀ y, |u y| ≤ |M| + 1` using `fun y => by`. Use `hM y (Set.mem_univ y)` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs]`. Combine the linear relations using `[le_abs_self M]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `set C₀ : ℝ := |M| + 1 with hC₀`. Establish `hC0 : 0 ≤ C₀` using `by positivity`. Use `⟨C₀, ⟨hth, fun j => (hu j).mono ?_, fun x j y hy w => ?_, fun y _ => ?_⟩, ?_, isRegFamilyC2_const A s u⟩` and prove the remaining obligations. Conclude with `fun z hz => ⟨hz.1, Set.mem_univ _⟩`. Conclude with `hp x j y ⟨hy.1, hy.2.1⟩ w`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl` using `one_le_log_rW L s hs y`. Establish `h` using `abs_le.1 (hb y)`. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Conclude with `h.2`.
+Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `he : 0 < Real.exp 1` using `Real.exp_pos 1`. Use `⟨Real.exp_pos _, ?_, fun t ht htt => ?_⟩` and prove the remaining obligations. Conclude with `Real.exp_lt_one_iff.2 (by linarith)`. Establish `hl` using `GlobalTheory.CompanionTheory.Ar.Giv.log_inv_bounds ht htt`. Establish `hq` using `GlobalTheory.CompanionTheory.Ar.Giv.loglog_quot_nonneg ht htt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hε : 0 ≤ epsT C₀ t`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.Giv.epsT_eq_mul]`. Conclude with `mul_nonneg hC0 hq`. Establish `hε' : ∀ t', 0 < t' → t' ≤ Real.exp (-Real.exp 1) → 0 ≤ C₀ * epsT C₀ t'` using `fun t' h0 h1 => by`. Rewrite using `[GlobalTheory.CompanionTheory.Ar.Giv.epsT_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Conclude with `mul_nonneg hC0 (mul_nonneg hC0 (GlobalTheory.CompanionTheory.Ar.Giv.loglog_quot_nonneg h0 h1))`. Establish `h3 : 0 ≤ t ^ ((1 : ℝ) / 3)` using `Real.rpow_nonneg ht.le _`. Use `⟨hu, fun y => (abs_le.1 (hb y)).2, fun y _ => le_rfl, fun y => ?_, isPsh_add_rsmul A Θ th u hΘ hΘp hth hu hε hp, fun y _ _ => by linarith, fun y _ => ?_, fun t' htt' ht' y => ?_⟩` and prove the remaining obligations. Establish `h` using `abs_le.1 (hb y)`. Use polynomial arithmetic with `[hl.2]`.
-
-Use `mul_nonneg hε (he.le.trans (exp_one_le_rW L s hs y))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `hε' t' (ht.trans_le htt') ht'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem smooth_member [CompactSpace X] (A : FinHolAtlas e X) (Θ L : LocPot X) (s : X → X → ℂ)
     (hΘ : IsPotential A Θ) (hΘp : IsPsh A Θ) (hs : ∀ y, logNormSec L s y ≤ 0) (th : LocPot X)
@@ -260,7 +258,7 @@ theorem smooth_member [CompactSpace X] (A : FinHolAtlas e X) (Θ L : LocPot X) (
 end AnMono
 
 /- English proof (translation)
-Introduce `e X _ _ _ A Θ L s nb m W _ _ _ hs hΘ hΘpos`. Establish `hΘp` using `AnMono.isPsh_of_isPosPot A Θ hΘpos`. Use `⟨fun th ph C₅ C₅' hC h => AnMono.isSingWeight_mono A L s hs th ph hC h, fun th ph phT C t₀ C' t₀' hC h0 h1 h2 hF hth => ?_, fun th u hth hu hp => AnMono.smooth_member A Θ L s hΘ hΘp hs th u hth hu hp⟩` and prove the remaining obligations. Conclude with `AnMono.isRegFamily_enlarge A Θ L s th ph phT hΘ hΘp hth hs hF hC h0 h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem enlarging_constants_smooth_members :
     ∀ (e : ℕ) (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X] (A : FinHolAtlas e X)

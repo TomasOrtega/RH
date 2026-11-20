@@ -22,9 +22,9 @@ namespace GlobalTheory.FrameIsot
 variable {H S X : Type} [Group H] [AddCommGroup S] [Module ℂ S] [AddCommGroup X] [Module ℂ X]
 
 /- English proof (translation)
-Use `iSup₂_le fun f hf => ?_` and prove the remaining obligations. Establish `hm : f ∘ₗ T ∈ homInto σ₂ ρ C`. Use `⟨fun s => hf.1 (T s), fun g s => ?_⟩` and prove the remaining obligations. Use `show f (T (σ₂ g s)) = ρ g (f (T s))`. Rewrite using `[← hc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hf.2 g (T s)`. Establish `hr : LinearMap.range (f ∘ₗ T) = LinearMap.range f`. Rewrite using `[LinearMap.range_comp, LinearMap.range_eq_top.2 hT, Submodule.map_top]`. Conclude with `hr ▸ le_iSup₂_of_le (f ∘ₗ T) hm le_rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iSup_le_of_intertwine (σ₁ σ₂ : Representation ℂ H S) (ρ : Representation ℂ H X) (C : Submodule ℂ X)
     (T : S →ₗ[ℂ] S) (hT : Function.Surjective T) (hc : ∀ g s, σ₁ g (T s) = T (σ₂ g s)) :
@@ -42,17 +42,15 @@ end GlobalTheory.FrameIsot
 
 open GlobalTheory.FrameIsot in
 /- English proof (translation)
-Introduce `D Y W n PY PW Φ h hΦ X _ _ ρ C π`. Rewrite using `[GlobalTheory.PartDims.homInto_comp]`. Use `set eY := GlobalTheory.KapIsot.eqv PY`. Use `set eW := GlobalTheory.KapIsot.eqv PW`. Establish `key : ∀ κ', eY.symm (Φ.toMulEquiv.symm (eW κ')) = h⁻¹ * κ' * h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `κ'`. Rewrite using `[MulEquiv.symm_apply_eq, MulEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `hΦ (h⁻¹ * κ' * h)` as an intermediate fact. Rewrite `this` using `[show h * (h⁻¹ * κ' * h) * h⁻¹ = κ' by group]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `this.symm`. Establish `hW : ∀ κ', eW.symm (eW κ') = κ'` using `fun κ' => MulEquiv.symm_apply_apply _ _`. Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le_of_intertwine _ _ ρ C (GlobalTheory.OccRowVec.finRep π h⁻¹) ?_ ?_` and prove the remaining obligations. Introduce `s; exact ⟨GlobalTheory.OccRowVec.finRep π h s, by rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `g s`. Take `⟨κ', rfl⟩` from `eW.surjective g`. Use `show GlobalTheory.OccRowVec.finRep π (eY.symm (Φ.toMulEquiv.symm (eW κ'))) _ = GlobalTheory.OccRowVec.finRep π h⁻¹ (GlobalTheory.OccRowVec.finRep π (eW.symm (eW κ')) s)`. Rewrite using `[key, hW, ← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `group`. Use `iSup_le_of_intertwine _ _ ρ C (GlobalTheory.OccRowVec.finRep π h) ?_ ?_` and prove the remaining obligations. Introduce `s; exact ⟨GlobalTheory.OccRowVec.finRep π h⁻¹ s, by rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]⟩`. Introduce `g s`. Take `⟨κ', rfl⟩` from `eW.surjective g`.
-
-Use `show GlobalTheory.OccRowVec.finRep π (eW.symm (eW κ')) _ = GlobalTheory.OccRowVec.finRep π h (GlobalTheory.OccRowVec.finRep π (eY.symm (Φ.toMulEquiv.symm (eW κ'))) s)`. Rewrite using `[key, hW, ← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FrameIsot.iSup_homInto_frame_conj : ∀ {D : D7} (Y W : HSp D) {n : ℕ} (PY : principalLevelFrame.RowPsi Y n) (PW : principalLevelFrame.RowPsi W n) (Φ : GfC Y ≃ₜ* GfC W) (h : Formalism.AUTREP.GAf D.host.E n), (∀ κ, ((Φ ⟨PY.ψ κ, PY.into κ⟩ : GfC W) : GA D W) = PW.ψ (h * κ * h⁻¹)) → ∀ (X : Type) [AddCommGroup X] [Module ℂ X] (ρ : Representation ℂ (GfC W) X) (C : Submodule ℂ X) (π : Formalism.L2.NG.FinTyp D.host.E n), (⨆ f ∈ homInto ((GlobalTheory.OccRowVec.finRep π).comp (GlobalTheory.KapIsot.eqv PY).symm.toMonoidHom) (ρ.comp Φ.toMulEquiv.toMonoidHom) C, LinearMap.range f) = ⨆ f ∈ homInto ((GlobalTheory.OccRowVec.finRep π).comp (GlobalTheory.KapIsot.eqv PW).symm.toMonoidHom) ρ C, LinearMap.range f := by
   intro D Y W n PY PW Φ h hΦ X _ _ ρ C π

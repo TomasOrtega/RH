@@ -8,11 +8,9 @@ namespace GlobalTheory
 open CategoryTheory CategoryTheory.Limits AlgebraicGeometry in
 
 /- English proof (translation)
-Establish `hk : J ^ (k + 1) ≤ J'` using `le_trans (Ideal.pow_le_pow_right (Nat.le_succ k)) h1`. Establish `hl : J' ^ (l + 1) ≤ J` using `le_trans (Ideal.pow_le_pow_right (Nat.le_succ l)) h2`. Establish `hJ : ∀ m, J ^ ((k + 1) * m) ≤ J' ^ m` using `fun m => by`. Rewrite using `[pow_mul]`. Conclude with `Ideal.pow_right_mono hk m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hJ' : ∀ m, J' ^ ((l + 1) * m) ≤ J ^ m` using `fun m => by`. Rewrite using `[pow_mul]`. Conclude with `Ideal.pow_right_mono hl m`. Conclude with `{ haus' := fun x hx => h.toIsHausdorff.haus' x fun m => (hx ((l + 1) * m)).mono (Submodule.smul_mono_left (hJ' m)) prec' := fun f hf => by`. Take `⟨L, hL⟩` from `h.toIsPrecomplete.prec' (fun m => f ((l + 1) * m)) (fun {m n} hmn => (hf (Nat.mul_le_mul_left (l + 1) hmn)).mono (Submodule.smul_mono_left (hJ' m)))`.
-
-Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Establish `hn : n ≤ (l + 1) * ((k + 1) * n)` using `(Nat.le_mul_of_pos_left n (Nat.succ_pos k)).trans (Nat.le_mul_of_pos_left _ (Nat.succ_pos l))`. Conclude with `(hf hn).trans ((hL ((k + 1) * n)).mono (Submodule.smul_mono_left (hJ n))) }`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.isAdicComplete_of_pow_le_of_pow_le (A : Type) [CommRing A] (J J' : Ideal A) (k l : ℕ)
     (h1 : J ^ k ≤ J') (h2 : J' ^ l ≤ J) (h : IsAdicComplete J A) : IsAdicComplete J' A := by

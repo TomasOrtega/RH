@@ -13,7 +13,7 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a r : ℕ}
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_id.matrix_map (continuous_snd : Continuous fun x : InfiniteAdeleRing E × IsDedekindDomain.FiniteAdeleRing (𝓞 E) E => x.2))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_map_pFin :
     Continuous (GeneralLinearGroup.map (n := Fin a) (pFin E)) :=
@@ -21,7 +21,7 @@ theorem continuous_map_pFin :
     Continuous fun x : InfiniteAdeleRing E × IsDedekindDomain.FiniteAdeleRing (𝓞 E) E => x.2))
 
 /- English proof (translation)
-The claim follows from `(continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)).comp (continuous_fst : Continuous fun x : InfiniteAdeleRing E × IsDedekindDomain.FiniteAdeleRing (𝓞 E) E => x.1)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pInf : Continuous (pInf E) :=
   (continuous_pi fun w =>
@@ -30,22 +30,22 @@ theorem continuous_pInf : Continuous (pInf E) :=
     (continuous_fst : Continuous fun x : InfiniteAdeleRing E × IsDedekindDomain.FiniteAdeleRing (𝓞 E) E => x.1)
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_id.matrix_map continuous_pInf)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_map_pInf :
     Continuous (GeneralLinearGroup.map (n := Fin a) (pInf E)) :=
   Continuous.units_map _ (continuous_id.matrix_map continuous_pInf)
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `g`. Establish `hF : ContinuousAt (fun h : GA E a => chart φ.1 g (toL (GeneralLinearGroup.map (pInf E) h).val)) 1`. Establish `h1 : ContinuousAt (chart φ.1 g) (toL ((GeneralLinearGroup.map (pInf E) (1 : GA E a)).val))`. Rewrite using `[map_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(contDiffAt_chart φ.2 g isUnit_one).continuousAt`. Establish `h0 : Continuous (fun h : GA E a => ((GeneralLinearGroup.map (n` using `Fin a) (pInf E) h : GL (Fin a) (Cinf E)) : Matrix (Fin a) (Fin a) (Cinf E))) := Units.continuous_val.comp continuous_map_pInf`. Establish `h2 : Continuous (fun h : GA E a => toL (GeneralLinearGroup.map (pInf E) h).val)` using `h0`. Conclude with `ContinuousAt.comp (f := fun h : GA E a => toL (GeneralLinearGroup.map (pInf E) h).val) h1 h2.continuousAt`. Establish `hev : ∀ᶠ h in 𝓝 (1 : GA E a), GeneralLinearGroup.map (pFin E) h ∈ {k | finRep E a k φ = φ}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(continuous_map_pFin.continuousAt (x := (1 : GA E a))).eventually (hU.mem_nhds ?_)` and prove the remaining obligations. Rewrite using `[map_one]`. Express the relevant statement in the definitionally equal form `finRep E a 1 φ = φ`. Simplify using the standard rewrite rules. Establish `hG : ContinuousAt (fun h : GA E a => φ.1 (g * h)) 1`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hF.congr ?_` and prove the remaining obligations. Use `filter_upwards [hev] with h hh`. Establish `e` using `congrArg (fun ψ : Sm E a => ψ.1 (g * infGL E a (GeneralLinearGroup.map (pInf E) h))) hh`. Express the relevant statement in the definitionally equal form `φ.1 (g * infGL E a _ * finGL E a _) = φ.1 _ at e`. Rewrite `e` using `[mul_assoc, infGL_mul_finGL]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, chart_val]`. Establish `h2 : ContinuousAt (fun x : GA E a => g⁻¹ * x) g` using `(continuous_const.mul continuous_id).continuousAt`. Establish `h3 : ContinuousAt (fun h : GA E a => φ.1 (g * h)) (g⁻¹ * g)` using `by rwa [inv_mul_cancel]`. Simplify `h3.comp h2` using `[Function.comp_def]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_of_isOpen_stab (φ : Sm E a) (hU : IsOpen {k | finRep E a k φ = φ}) : Continuous φ.1 := by
   rw [continuous_iff_continuousAt]
@@ -78,9 +78,7 @@ theorem continuous_of_isOpen_stab (φ : Sm E a) (hU : IsOpen {k | finRep E a k �
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Establish `hn : Continuous (fun x : BlockIx a r → Ad E => (nilM x : Matrix (Fin a) (Fin a) (Ad E)))` using `continuous_matrix fun i j => by`. Simplify using `only [nilM, Matrix.of_apply]`. Use `split_ifs with h`. Conclude with `continuous_apply _`. Conclude with `continuous_const`.
-
-Conclude with `Units.continuous_iff.2 ⟨continuous_const.add hn, continuous_const.sub hn⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_unip : Continuous (unip : (BlockIx a r → Ad E) → GA E a) := by
   have hn : Continuous (fun x : BlockIx a r → Ad E => (nilM x : Matrix (Fin a) (Fin a) (Ad E))) :=
@@ -94,7 +92,7 @@ theorem continuous_unip : Continuous (unip : (BlockIx a r → Ad E) → GA E a) 
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Take `⟨K, hK, h⟩` from `Formalism.IndefR.Eqv.G5.adl_cocompact (F := E)`. Use `choose y hy using h`. Use `⟨Set.pi Set.univ fun _ => K, isCompact_univ_pi fun _ => hK, fun x => ?_⟩` and prove the remaining obligations. Conclude with `⟨fun p => algebraMap E (Ad E) (y (x p)), ⟨fun p => y (x p), rfl⟩, fun p _ => hy (x p)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isCompact_sub_mem :
     ∃ C : Set (BlockIx a r → Ad E), IsCompact C ∧ ∀ x, ∃ n ∈ ratN E a r, x - n ∈ C := by
@@ -106,7 +104,7 @@ theorem exists_isCompact_sub_mem :
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hn`. Establish `e : (AddMonoidHom.compLeft (algebraMap E (Ad E)).toAddMonoidHom (BlockIx a r)) y = fun p => algebraMap E (Ad E) (y p)` using `rfl`. Rewrite using `[e, unip_add, unip_algebraMap, mul_assoc, hl]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem periodic_integrand (φ : GA E a → ℂ) (hl : ∀ (γ : GL (Fin a) E) (g : GA E a), φ (ratGL E a γ * g) = φ g)
     (g : GA E a) {n : BlockIx a r → Ad E} (hn : n ∈ ratN E a r) (x : BlockIx a r → Ad E) :
@@ -117,15 +115,13 @@ theorem periodic_integrand (φ : GA E a → ℂ) (hl : ∀ (γ : GL (Fin a) E) (
   rw [e, unip_add, unip_algebraMap, mul_assoc, hl]
 
 /- English proof (translation)
-Introduce `E _ _ _ a r φ hl hU _ _ μ 𝓕 hμ hF`. Take `⟨C, hC, hcov⟩` from `exists_isCompact_sub_mem (E := E) (a := a) (r := r)`. Establish `hφ` using `continuous_of_isOpen_stab φ hU`. Use `haveI : Countable (ratN E a r) := by`. Establish `: Countable E` using `(Module.finBasis ℚ E).equivFun.toEquiv.countable_iff.2 inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Function.Surjective.countable (f := (AddMonoidHom.compLeft (algebraMap E (Ad E)).toAddMonoidHom (BlockIx a r)).rangeRestrict) (AddMonoidHom.rangeRestrict_surjective _)`. Establish `hfin : μ 𝓕 < ⊤`. Establish `h1 : 𝓕 ⊆ ⋃ n : ratN E a r, (n +ᵥ C) ∩ 𝓕` using `fun x hx => by`. Take `⟨n, hn, h⟩` from `hcov x`. Use `Set.mem_iUnion.2 ⟨⟨n, hn⟩, ⟨x - n, h, ?_⟩, hx⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `[AddSubgroup.vadd_def]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨hfin, fun g => ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun x : BlockIx a r → Ad E => φ.1 (unip x * g)` using `hφ.comp (continuous_unip.mul continuous_const)`. Take `⟨B, hB⟩` from `hC.exists_bound_of_continuousOn hc.continuousOn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Measure.integrableOn_of_bounded hfin.ne hc.aestronglyMeasurable (M := B) (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Take `⟨n, hn, h⟩` from `hcov x`. Use `periodic_integrand φ.1 hl g hn (x - n)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Rewrite using `[this]`.
-
-Conclude with `hB _ h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrableOn_fundamentalDomain :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a r : ℕ) (φ : Sm E a),

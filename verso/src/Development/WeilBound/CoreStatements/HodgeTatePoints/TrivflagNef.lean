@@ -10,15 +10,15 @@ open CategoryTheory AlgebraicGeometry NumberField MvPolynomial GlobalTheory.Comp
 namespace PositivityTheory.HtPt.Gf
 
 /- English proof (translation)
-Introduce `Ψ _ N M _ p _ o _ _ ho hτ mu hmu`. Introduce `W hW`. Take `⟨h1, h2, h3, h4⟩` from `hW`. Establish `key : ∀ τ : Ψ, 0 ≤ ∑ i : Fin N, mu τ i * (-(geoNum 1 W (fun _ : Fin 1 => M.xdeg (τ, i)) : ℝ))`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hp, ht⟩` from `trivflag_deg M.Ω M.K M.ι M.y p o ho W N (fun i => M.xdeg (τ, i)) h1 h2 h3 h4 (hτ τ)`. Apply `abel_sum N (mu τ) (fun i => -(geoNum 1 W (fun _ : Fin 1 => M.xdeg (τ, i)) : ℝ))` to reduce the goal to its premises. Introduce `a b hab`. Conclude with `hmu τ a b hab`. Introduce `i hi`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hp i hi` as an intermediate fact. Simplify using `only [Finset.sum_neg_distrib, neg_nonneg]`. Conclude with `this` after adjusting the coercions. Simplify using `only [Finset.sum_neg_distrib, neg_eq_zero]`. Conclude with `ht` after adjusting the coercions.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `Top.RootModel.curveDeg`. Rewrite using `[Fintype.sum_option]`. Simplify using `only [Top.RootModel.coef, Top.RootModel.line, zero_div, zero_mul, zero_add, M.x_deg]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_nonneg fun τ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `le_of_le_of_eq (key τ) ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem trivflag_nef : ∀ (Ψ : Type) [Fintype Ψ] (N : ℕ) (M : Top.RootModel Ψ N) [CharZero M.Ω] (p : ℕ) [Fact p.Prime] (o : Type) [CommRing o] [Algebra o M.Ω] (ho : ∀ x : M.Ω, x ∈ (algebraMap o M.Ω).range ↔ ∃ (a : ℤ) (b : ℕ), ¬ p ∣ b ∧ x = (a : M.Ω) / (b : M.Ω)), (∀ τ, Num.TrivFlagMod o (p : o) M.y N (fun i => M.xdeg (τ, i))) → ∀ mu : Top.Wt Ψ N, Top.Dominant mu → M.NefAt p mu 0 := by
   intro Ψ _ N M _ p _ o _ _ ho hτ mu hmu

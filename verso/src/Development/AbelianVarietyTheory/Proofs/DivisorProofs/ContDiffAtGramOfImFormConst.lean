@@ -25,7 +25,7 @@ theorem imForm_apply {g : ℕ} (H : Matrix (Fin g) (Fin g) ℂ) (v w : Fin g →
     imForm H v w = (HermFrame.form H v w).im := rfl
 
 /- English proof (translation)
-Rewrite using `[map_sum (imForm H), LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul (imForm H), LinearMap.smul_apply, map_sum, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s' _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -41,7 +41,7 @@ theorem imForm_sum_sum {g : ℕ} {ι : Type*} [Fintype ι] (H : Matrix (Fin g) (
   ring
 
 /- English proof (translation)
-Rewrite using `[imForm_apply, imForm_apply, HermFrame.form_smul_left, HermFrame.form_single]`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gram_entry_eq {g : ℕ} (H : Matrix (Fin g) (Fin g) ℂ) (i i' : Fin g) :
     H i i' = ((imForm H (Complex.I • Pi.single i 1) (Pi.single i' 1) : ℝ) : ℂ)
@@ -50,25 +50,21 @@ theorem gram_entry_eq {g : ℕ} (H : Matrix (Fin g) (Fin g) ℂ) (i i' : Fin g) 
   apply Complex.ext <;> simp
 
 /- English proof (translation)
-Take `⟨S, hS, hSspan, hSli⟩` from `exists_linearIndependent ℝ (Set.range fun j => ζ j b₀)`. Establish `hfin : S.Finite` using `hSli.setFinite`. Use `haveI : Fintype S := hfin.fintype`. Use `choose t ht using (fun s : S => hS s.2)`. Set `B : Module.Basis S ℝ (Fin g → ℂ)` to `Module.Basis.mk hSli (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Subtype.range_coe, hSspan, hspan])`. Set `Z : (Fin m → ℂ) → ((S → ℝ) →L[ℝ] (Fin g → ℂ))` to `fun b => ∑ s, (ContinuousLinearMap.proj s : (S → ℝ) →L[ℝ] ℝ).smulRight (ζ (t s) b)`. Establish `hZapp : ∀ b c, Z b c = ∑ s, c s • ζ (t s) b` using `fun b c => by`. Simplify using `[Z, ContinuousLinearMap.sum_apply]`. Establish `hZ : ContDiffAt ℝ ∞ Z b₀`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `ContDiffAt.sum fun s _ => ?_` and prove the remaining obligations. Conclude with `(ContinuousLinearMap.smulRightL ℝ (S → ℝ) (Fin g → ℂ) (ContinuousLinearMap.proj s)).contDiff.contDiffAt.comp b₀ (hζ (t s))`. Set `e : (S → ℝ) ≃L[ℝ] (Fin g → ℂ)` to `B.equivFun.symm.toContinuousLinearEquiv`. Establish `hZ0 : Z b₀ = (e : (S → ℝ) →L[ℝ] (Fin g → ℂ))` using `by ext1 c`. Rewrite using `[hZapp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [e, LinearEquiv.coe_toContinuousLinearEquiv', ContinuousLinearEquiv.coe_coe]`. Simplify using `[Module.Basis.equivFun_symm_apply, B, ht]`. Establish `hinv : ContDiffAt ℝ ∞ (fun b => (Z b).inverse) b₀`. Establish `h1` using `contDiffAt_map_inverse (n := ∞) e`. Rewrite `h1` using `[← hZ0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.comp b₀ hZ`. Establish `hev : ∀ᶠ b in nhds b₀, ∀ v, Z b ((Z b).inverse v) = v`. Establish `h1 : Set.range ((↑) : ((S → ℝ) ≃L[ℝ] (Fin g → ℂ)) → ((S → ℝ) →L[ℝ] (Fin g → ℂ))) ∈ nhds (Z b₀)`. Rewrite using `[hZ0]`. Conclude with `e.nhds`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hZ.continuousAt h1] with b hb v`. Take `⟨e', he'⟩` from `hb`. Rewrite using `[← he']`. Simplify using the standard rewrite rules. Establish `hE : ∀ᶠ b in nhds b₀, ∀ s s', imForm (H b) (ζ (t s) b) (ζ (t s') b) = imForm (H b₀) (ζ (t s) b₀) (ζ (t s') b₀)` using `Filter.eventually_all.2 fun s => Filter.eventually_all.2 fun s' => hconst (t s) (t s')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcoord : ∀ (v : Fin g → ℂ) (s : S), ContDiffAt ℝ ∞ (fun b => (Z b).inverse v s) b₀` using `fun v s => (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : S => ℝ) s).contDiff.contDiffAt.comp b₀ (hinv.clm_apply contDiffAt_const)`. Establish `key : ∀ v w, ContDiffAt ℝ ∞ (fun b => imForm (H b) v w) b₀`. Introduce `v w`. Establish `hR : ContDiffAt ℝ ∞ (fun b => ∑ s, ∑ s', (Z b).inverse v s * (Z b).inverse w s' * imForm (H b₀) (ζ (t s) b₀) (ζ (t s') b₀)) b₀` using `ContDiffAt.sum fun s _ => ContDiffAt.sum fun s' _ => ((hcoord v s).mul (hcoord w s')).mul contDiffAt_const`. Use `hR.congr_of_eventuallyEq ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `filter_upwards [hev, hE] with b h1 h2`. Establish `h4 : imForm (H b) v w = imForm (H b) (Z b ((Z b).inverse v)) (Z b ((Z b).inverse w))`. Rewrite using `[h1 v, h1 w]`. Use `show imForm (H b) v w = _`. Rewrite using `[h4, hZapp, hZapp, imForm_sum_sum]`.
-
-Use `Finset.sum_congr rfl fun s _ => Finset.sum_congr rfl fun s' _ => ?_` and prove the remaining obligations. Rewrite using `[h2]`. Establish `hc : ∀ {f : (Fin m → ℂ) → ℝ}, ContDiffAt ℝ ∞ f b₀ → ContDiffAt ℝ ∞ (fun b => (f b : ℂ)) b₀` using `fun h => Complex.ofRealCLM.contDiff.contDiffAt.comp b₀ h`. Establish `h3 : (fun b => H b i i') = fun b => ((imForm (H b) (Complex.I • Pi.single i 1) (Pi.single i' 1) : ℝ) : ℂ) + Complex.I * ((imForm (H b) (Pi.single i 1) (Pi.single i' 1) : ℝ) : ℂ)`. Use function extensionality and compare the values at `fun b => gram_entry_eq (H b) i i'`.
-
-Rewrite using `[h3]`. Conclude with `(hc (key _ _)).add (contDiffAt_const.mul (hc (key _ _)))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiffAt_gram_of_im_form_const (g m : ℕ) (J : Type)
     (ζ : J → (Fin m → ℂ) → (Fin g → ℂ)) (H : (Fin m → ℂ) → Matrix (Fin g) (Fin g) ℂ)

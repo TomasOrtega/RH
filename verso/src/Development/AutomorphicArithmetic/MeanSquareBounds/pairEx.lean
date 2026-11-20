@@ -9,7 +9,7 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 namespace QH
 
 /- English proof (translation)
-Establish `ha : IsCoprime (n : ℤ) (L : ℤ)` using `Nat.isCoprime_iff_coprime.mpr hn`. Establish `key` using `DirichletCharacter.changeLevel_eq_cast_of_dvd' ξ h ha`. Simplify using `using key`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem pairEx_lift {N L : ℕ} [NeZero L] (h : N ∣ L) (ξ : DirichletCharacter ℂ N) (n : ℕ) (hn : n.Coprime L) :
     DirichletCharacter.changeLevel h ξ (n : ZMod L) = ξ (n : ZMod N) := by
@@ -18,21 +18,19 @@ private theorem pairEx_lift {N L : ℕ} [NeZero L] (h : N ∣ L) (ξ : Dirichlet
   simpa using key
 
 /- English proof (translation)
-Establish `hq2 : q ≠ 2`. Introduce `h2`. Establish `hm` using `hR.q_mod`. Rewrite `hm` using `[h2]`. Evaluate the numerical expressions using `at hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hqN : ¬ q ∣ 8 * M`. Introduce `hd`. Establish `hle` using `Nat.le_of_dvd (by omega) hd`. Use linear arithmetic over natural numbers and integers. Establish `h8 : ∀ n : ℕ, n.Coprime (2 * M * q * d) → n.Coprime (8 * M)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `n hn`. Establish `h2 : n.Coprime 2` using `Nat.Coprime.coprime_dvd_right ⟨M * q * d, by ring⟩ hn`. Establish `hM' : n.Coprime M` using `Nat.Coprime.coprime_dvd_right ⟨2 * q * d, by ring⟩ hn`. Establish `h8' : n.Coprime 8` using `by simpa using Nat.Coprime.pow_right 3 h2`. Conclude with `Nat.Coprime.mul_right h8' hM'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlev : 2 * M * q * d ≠ 0` using `(Nat.mul_pos (Nat.mul_pos (Nat.mul_pos (by norm_num) hM) hR.q_prime.pos) hR.d_prime.pos).ne'`. Take `⟨hprim, hval⟩` from `hI`. Use `fin_cases j`. Use `fin_cases i`. Simplify using `at hij`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hInd : Ind χ (fun n ↦ ξ n * J q n) (2 * M * q * d)`. Use `⟨hprim, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[hval n hn]`. Simplify using `[UpperTheory.Top.tw, J, hf n (h8 n hn)]`. Establish `hInd'` using `ind_drop (8 * M) q (2 * M * q * d) ξ N χ (by omega) hR.q_prime hq2 hqN hlev hInd`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hB` using `hQ ξ N χ hInd'`. Use `(congrArg (fun Q => Box Q C τ Y X χ) ?_).mpr hB` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hInd : Ind χ (fun n ↦ ξ n * J q n ^ (i : ℕ) * J d n) (8 * M * q * d)`. Use `⟨hprim, fun n hn => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hn' : n.Coprime (2 * M * q * d)` using `Nat.Coprime.coprime_dvd_right ⟨4, by ring⟩ hn`. Rewrite using `[hval n hn']`. Simplify using `[UpperTheory.Top.tw, J, hf n (h8 n hn')]`. Establish `hB` using `hD ξ (i : ℕ) (Nat.lt_succ_iff.mp i.isLt) N χ hInd`. Use `(congrArg (fun Q => Box Q C τ Y X χ) ?_).mpr hB` and prove the remaining obligations.
-
-Simplify using `[Real.exp_add, mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem pairEx_box (M : ℕ) (hM : 0 < M) (C τ Y X z z' : ℝ) (q d : ℕ) (hR : Rows z z' q d) (hq : 8 * M < q)
     (hQ : GoodQ (8 * M) C τ Y X z q) (hD : GoodD (8 * M) C τ Y X z z' q d)
@@ -79,11 +77,11 @@ private theorem pairEx_box (M : ℕ) (hM : 0 < M) (C τ Y X z z' : ℝ) (q d : �
     simp [Real.exp_add, mul_assoc]
 
 /- English proof (translation)
-Unfold `Formalism.HC.An.gChi`. Rewrite using `[if_neg h]`. Unfold `Formalism.HC.An.sumLamChi Gchi`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `n hn`. Rewrite `hn` using `[Finset.mem_Icc]`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn.1`. Establish `hfl : 0 < ⌊y⌋₊` using `lt_of_lt_of_le Nat.zero_lt_one (le_trans hn.1 hn.2)`. Establish `hy1 : 1 ≤ y` using `Nat.floor_pos.mp hfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hny : (n : ℝ) ≤ y` using `le_trans (by exact_mod_cast hn.2) (Nat.floor_le (by linarith))`. Establish `hnn : 0 ≤ y / n - 1`. Rewrite using `[sub_nonneg, le_div_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[max_eq_left hnn]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pairEx_g {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (h : χ ≠ 1) (y : ℝ) :
     Formalism.HC.An.gChi χ y = Gchi χ y := by
@@ -104,15 +102,15 @@ private theorem pairEx_g {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (h
   rw [max_eq_left hnn]
 
 /- English proof (translation)
-Establish `hM1 : (1 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hM8 : (1 : ℝ) ≤ 8 * M` using `by linarith`. Establish `hlog8 : 0 ≤ Real.log (8 * M)` using `Real.log_nonneg hM8`. Establish `hY1 : 1 ≤ Y` using `le_trans (Real.one_le_exp (by linarith)) hY`. Establish `hYpos : 0 < Y` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : 1 + Real.log (8 * M) ≤ Real.log Y` using `(Real.le_log_iff_exp_le hYpos).mpr hY`. Establish `hw1 : 1 ≤ Y ^ (ε / 5)` using `Real.one_le_rpow hY1 (by linarith)`. Establish `h65 : Y ^ (ε / 6) ≤ Y ^ (ε / 5)` using `Real.rpow_le_rpow_of_exponent_le hY1 (by linarith)`. Use `set w := Y ^ (ε / 5) with hw`. Use `set L := Real.log Y with hLdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL1 : 1 ≤ L` using `by linarith`. Establish `hL2 : L ≤ L ^ 2` using `by nlinarith`. Establish `hwL : L ^ 2 ≤ w * L ^ 2` using `by nlinarith`. Establish `hlogQ : Real.log (8 * M * Real.exp w * Real.exp (w * L ^ 2) ^ j) = Real.log (8 * M) + w + j * (w * L ^ 2)`. Rewrite using `[← Real.exp_nat_mul, mul_assoc, ← Real.exp_add, Real.log_mul (ne_of_gt (by linarith)) (Real.exp_pos _).ne', Real.log_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hj' : (j : ℝ) ≤ 1` using `by exact_mod_cast hj`. Establish `hj0 : (0 : ℝ) ≤ j` using `Nat.cast_nonneg j`. Establish `hz0 : 0 ≤ w * L ^ 2` using `by positivity`. Rewrite using `[hlogQ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities.
 
-Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Establish `a1 : w ≤ w * L ^ 2` using `by nlinarith`. Establish `a2 : (j : ℝ) * (w * L ^ 2) ≤ w * L ^ 2` using `by nlinarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem log_exp_product_bounds (M : ℕ) (hM : 0 < M) (ε Y : ℝ) (hε : 0 < ε)
     (hY : Real.exp (1 + Real.log (8 * M)) ≤ Y) (j : ℕ) (hj : j ≤ 1) :
@@ -148,25 +146,23 @@ private theorem log_exp_product_bounds (M : ℕ) (hM : 0 < M) (ε Y : ℝ) (hε 
     linarith
 
 /- English proof (translation)
-Introduce `M hM eps A heps heps' hA`. Take `⟨C, hC, hpair⟩` from `pair_exists`. Take `⟨Y₀, hY₀⟩` from `hpair eps (eps / 2) A (8 * M) heps heps' (by linarith) hA (by omega)`. Take `⟨Y₁, hY₁⟩` from `kappa4 eps 3 heps heps' (by norm_num)`. Use `⟨max (max Y₀ Y₁) (Real.exp (1 + Real.log (8 * M))), fun Y hY => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hYa : Y₀ ≤ Y` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hY`. Establish `hYb : Y₁ ≤ Y` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hY`. Establish `hYc : Real.exp (1 + Real.log (8 * M)) ≤ Y` using `le_trans (le_max_right _ _) hY`. Establish `hM1 : (1 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hlog8 : 0 ≤ Real.log (8 * M)` using `Real.log_nonneg (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY1 : 1 ≤ Y` using `le_trans (Real.one_le_exp (by linarith)) hYc`. Establish `hz0 : 0 ≤ Y ^ (eps / 5) * Real.log Y ^ 2`. Use `Real.log_nonneg hY1` as an intermediate fact. Check the signs of the components of the expression. Establish `hA2 : 1 ≤ A ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Take `⟨q, d, hR, hq, hQ, hD⟩` from `hY₀ Y hYa (Y ^ A) (Y ^ (eps / 5) * Real.log Y ^ 2) le_rfl le_rfl (le_mul_of_one_le_left hz0 hA2)`. Establish `hq2 : q ≠ 2`. Introduce `h2`. Establish `hm` using `hR.q_mod`. Rewrite `hm` using `[h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `at hm`. Use `haveI : NeZero (8 * M) := ⟨by omega⟩`. Establish `hM8 : M ∣ 8 * M` using `Dvd.intro_left 8 rfl`. Use `⟨q, d, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨hR.q_prime, hR.q_mod, hR.q_gt, hR.q_le, hR.d_prime, hR.d_mod, hR.d_gt, hR.d_le, ?_, ?_⟩` and prove the remaining obligations.
+Evaluate the numerical expressions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Nat.dvd_of_mod_eq_zero (hR.d_class q hR.q_prime hq2 (Or.inr rfl))`. Introduce `p hp hp2 hpl`. Conclude with `Nat.dvd_of_mod_eq_zero (hR.d_class p hp hp2 (Or.inl hpl))`. Establish `hqM : ¬ q ∣ M` using `fun h => by`. Use `Nat.le_of_dvd hM h` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hdM : ¬ d ∣ M` using `fun h => by`. Use `Nat.le_of_dvd hM h` as an intermediate fact. Use `hR.q_lt_d` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Nat.Coprime.mul_right ((Nat.Prime.coprime_iff_not_dvd hR.q_prime).mpr hqM).symm ((Nat.Prime.coprime_iff_not_dvd hR.d_prime).mpr hdM).symm`. Introduce `ξ i j hij N _ χ hI y hy1 hy2`. Establish `hB` using `pairEx_box M hM C (eps / 2) Y (Y ^ A) (Y ^ (eps / 5)) (Y ^ (eps / 5) * Real.log Y ^ 2) q d hR hq hQ hD (fun a ↦ ξ a) (DirichletCharacter.changeLevel hM8 ξ) (fun n hn => pairEx_lift hM8 ξ n hn) i j hij N χ hI`. Take `⟨hgood, _, hG⟩` from `hB`. Establish `hne : χ ≠ 1` using `hgood.1`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[pairEx_g χ hne]`. Conclude with `hG y ⟨hy1, hy2⟩`. Take `⟨hk1, hk2⟩` from `log_exp_product_bounds M hM eps Y heps hYc (j : ℕ) (Nat.lt_succ_iff.mp j.isLt)`. Establish `hk` using `hY₁ Y hYb _ N χ hk1 hk2 hgood`.
-
-Establish `hlog : Real.log Y ≤ Real.log y` using `Real.log_le_log (by linarith) hy1`. Conclude with `le_trans hk (by linarith)`. Introduce `ρ hρ hρN i j hij N _ χ hI`. Establish `hB` using `pairEx_box M hM C (eps / 2) Y (Y ^ A) (Y ^ (eps / 5)) (Y ^ (eps / 5) * Real.log Y ^ 2) q d hR hq hQ hD ρ.val (DirichletCharacter.changeLevel hρN ρ.χ) (fun n hn => pairEx_lift hρN ρ.χ n hn) i j hij N χ hI`. Conclude with `hB.1.2.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pairEx :
     UpperTheory.Top.PairEx := by

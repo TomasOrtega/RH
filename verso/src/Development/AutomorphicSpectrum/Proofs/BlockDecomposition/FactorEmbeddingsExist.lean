@@ -27,26 +27,26 @@ def localization₂ (a b : ℕ) (w : Pl E) : (GLw a w × GLw b w) →* Hf E a b 
   (locGL E a w).prodMap (locGL E b w)
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.EulerTw.continuous_locGL_spl E a w).comp continuous_fst).prodMk ((GlobalTheory.EulerTw.continuous_locGL_spl E b w).comp continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_locP (w : Pl E) : Continuous (localization₂ (E := E) a b w) :=
   ((GlobalTheory.EulerTw.continuous_locGL_spl E a w).comp continuous_fst).prodMk
     ((GlobalTheory.EulerTw.continuous_locGL_spl E b w).comp continuous_snd)
 
 /- English proof (translation)
-The claim follows from `Prod.ext (pLoc_locGL w m.1) (pLoc_locGL w m.2)`.
+A detailed English derivation is pending.
 -/
 theorem atW_locP (w : Pl E) (m : GLw a w × GLw b w) : atW w (localization₂ a b w m) = m :=
   Prod.ext (pLoc_locGL w m.1) (pLoc_locGL w m.2)
 
 /- English proof (translation)
-The claim follows from `Prod.ext (pLoc_locGL_of_ne h m.1) (pLoc_locGL_of_ne h m.2)`.
+A detailed English derivation is pending.
 -/
 theorem component_localEmbedding_eq_one_of_ne {v w : Pl E} (h : v ≠ w) (m : GLw a w × GLw b w) : atW v (localization₂ a b w m) = 1 :=
   Prod.ext (pLoc_locGL_of_ne h m.1) (pLoc_locGL_of_ne h m.2)
 
 /- English proof (translation)
-Use `(GlobalTheory.EulerTwU.pc_thF v x).trans ?_` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `(congrArg _ (map_one (GeneralLinearGroup.map (conjLoc (IsCMField.complexConj E).toRingEquiv v)))).trans (map_one _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pc_thF_of_one {n : ℕ} {v : Pl E} {x : GL (Fin n) (Af E)}
     (h : GeneralLinearGroup.map (pLoc E (GlobalTheory.EulerTw.cPl E v)) x = 1) :
@@ -56,7 +56,7 @@ theorem pc_thF_of_one {n : ℕ} {v : Pl E} {x : GL (Fin n) (Af E)}
   exact (congrArg _ (map_one (GeneralLinearGroup.map (conjLoc (IsCMField.complexConj E).toRingEquiv v)))).trans (map_one _)
 
 /- English proof (translation)
-Conclude with `Prod.ext (pc_thF_of_one (pLoc_locGL_of_ne h m.1)) (pc_thF_of_one (pLoc_locGL_of_ne h m.2))`.
+A detailed English derivation is pending.
 -/
 theorem component_conj_localEmbedding_eq_one_of_ne {v w : Pl E} (h : GlobalTheory.EulerTw.cPl E v ≠ w) (m : GLw a w × GLw b w) :
     atW v (thP E a b (localization₂ a b w m)) = 1 := by
@@ -67,7 +67,7 @@ def localEmb (a b : ℕ) {S : Set (Pl E)} : ∀ i : Slot S, (GLw a i.pl × GLw b
   | .inr w => (thP E a b).comp (localization₂ a b w.1)
 
 /- English proof (translation)
-Break down `i with w | w` into its components or cases. Conclude with `continuous_locP w.1`. Conclude with `GlobalTheory.CompanionTheory.FinLevelTw.continuous_thP.comp (continuous_locP w.1)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem continuous_factorEmb {S : Set (Pl E)} (i : Slot S) : Continuous (localEmb (E := E) a b i) := by
   rcases i with w | w
@@ -75,7 +75,7 @@ theorem continuous_factorEmb {S : Set (Pl E)} (i : Slot S) : Continuous (localEm
   · exact GlobalTheory.CompanionTheory.FinLevelTw.continuous_thP.comp (continuous_locP w.1)
 
 /- English proof (translation)
-Break down `i with w | w` into its components or cases. Conclude with `atW_locP w.1 m`. Express the relevant statement in the definitionally equal form `atW w.1 (thP E a b (thP E a b (localization₂ a b w.1 m))) = m`. Rewrite using `[GlobalTheory.CompanionTheory.FinLevelTw.thP_thP]`. Conclude with `atW_locP w.1 m`.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cp_factorEmb {S : Set (Pl E)} (i : Slot S) (m : GLw a i.pl × GLw b i.pl) : i.cp a b (localEmb a b i m) = m := by
   rcases i with w | w
@@ -85,11 +85,9 @@ theorem cp_factorEmb {S : Set (Pl E)} (i : Slot S) (m : GLw a i.pl × GLw b i.pl
     exact atW_locP w.1 m
 
 /- English proof (translation)
-Apply the tactic sequence `rcases i with w | w <;> rcases j with v | v`. Conclude with `component_localEmbedding_eq_one_of_ne (fun h => hij (congrArg Sum.inl (Subtype.ext h.symm))) m`. Use `component_conj_localEmbedding_eq_one_of_ne (fun h => ?_) m` and prove the remaining obligations. Conclude with `GlobalTheory.CompanionTheory.SuppFinTw.conj_not_mem hS v.2.1 v.2.2 (h ▸ w.2)`. Use `component_conj_localEmbedding_eq_one_of_ne (fun h => ?_) m` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `GlobalTheory.CompanionTheory.SuppFinTw.conj_not_mem hS w.2.1 w.2.2 ?_` and prove the remaining obligations. Establish `h' : GlobalTheory.EulerTw.cPl E v.1 = w.1` using `h`. Rewrite using `[← h', GlobalTheory.CompanionTheory.SuppFinTw.cPl_cPl]`. Conclude with `v.2`. Express the relevant statement in the definitionally equal form `atW v.1 (thP E a b (thP E a b (localization₂ a b w.1 m))) = 1`.
-
-Rewrite using `[GlobalTheory.CompanionTheory.FinLevelTw.thP_thP]`. Conclude with `component_localEmbedding_eq_one_of_ne (fun h => hij (congrArg Sum.inr (Subtype.ext h.symm))) m`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cp_factorEmb_of_ne {S : Set (Pl E)} (hS : IsSection S) (i j : Slot S) (m : GLw a i.pl × GLw b i.pl) (hij : i ≠ j) :
     j.cp a b (localEmb a b i m) = 1 := by
@@ -107,7 +105,7 @@ theorem cp_factorEmb_of_ne {S : Set (Pl E)} (hS : IsSection S) (i j : Slot S) (m
     exact component_localEmbedding_eq_one_of_ne (fun h => hij (congrArg Sum.inr (Subtype.ext h.symm))) m
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.ThetaPull.thetaA_finGL k).symm`.
+A detailed English derivation is pending.
 -/
 theorem finGL_thF (n : ℕ) (k : GL (Fin n) (Af E)) :
     finGL E n (thF E n k) = thetaGL n (conjAd E) (finGL E n k) :=
@@ -116,7 +114,7 @@ theorem finGL_thF (n : ℕ) (k : GL (Fin n) (Af E)) :
 end GlobalTheory.CompanionTheory.FinActS
 
 /- English proof (translation)
-Introduce `E _ _ _ a b S hS`. Use `⟨localEmb a b, continuous_factorEmb, cp_factorEmb, fun i j m h => cp_factorEmb_of_ne hS i j m h, fun w m => rfl, fun w m => ?_⟩` and prove the remaining obligations. Conclude with `Prod.ext (finGL_thF a _) (finGL_thF b _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.FinActS.exists_factorEmb : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (a b : ℕ) {S : Set (Pl E)} (hS : IsSection S),
     ∃ e : ∀ i : Slot S, (GLw a i.pl × GLw b i.pl) →* Hf E a b,

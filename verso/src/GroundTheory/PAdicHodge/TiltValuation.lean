@@ -16,7 +16,7 @@ section Integers
 variable {K' : Type*} [NormedField K'] [IsUltrametricDist K']
 
 /- English proof (translation)
-Simplify using `using mem_span_singleton_pow_iff (a := a) (x := x) 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_span_singleton_iff_norm_le {a x : normInteger K'} :
     x ∈ Ideal.span {a} ↔ ‖(x : K')‖ ≤ ‖(a : K')‖ := by
@@ -27,7 +27,7 @@ end Integers
 omit [Fact p.Prime] [IsPerfectoidField K p] in
 
 /- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq, mem_span_singleton_iff_norm_le]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mk_eq_mk_iff_norm_sub_le {a b : normInteger K} :
     Ideal.Quotient.mk (Ideal.span {(p : normInteger K)}) a =
@@ -39,7 +39,7 @@ theorem mk_eq_mk_iff_norm_sub_le {a b : normInteger K} :
 omit [Fact p.Prime] [IsPerfectoidField K p] in
 
 /- English proof (translation)
-Rewrite using `[← map_zero (Ideal.Quotient.mk (Ideal.span {(p : normInteger K)})), mk_eq_mk_iff_norm_sub_le]`. Simplify using the standard rewrite rules. Use the proof step `@[simp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mk_eq_zero_iff_norm_le {a : normInteger K} :
     Ideal.Quotient.mk (Ideal.span {(p : normInteger K)}) a = 0 ↔ ‖(a : K)‖ ≤ ‖(p : K)‖ := by
@@ -49,20 +49,20 @@ theorem mk_eq_zero_iff_norm_le {a : normInteger K} :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `Perfection.teichmuller_zero`.
+A detailed English derivation is pending.
 -/
 theorem untilt_zero : PreTilt.untilt (0 : PreTilt (normInteger K) p) = 0 :=
   Perfection.teichmuller_zero
 
 /- English proof (translation)
-The claim follows from `map_mul _ x y`.
+A detailed English derivation is pending.
 -/
 theorem untilt_mul (x y : PreTilt (normInteger K) p) :
     (x * y).untilt = x.untilt * y.untilt :=
   map_mul _ x y
 
 /- English proof (translation)
-Rewrite using `[PreTilt.mk_untilt_eq_coeff_zero, PreTilt.coeff_iterate_frobeniusEquiv_symm, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_eq_mk_untilt (x : PreTilt (normInteger K) p) (n : ℕ) :
     PreTilt.coeff n x = Ideal.Quotient.mk (Ideal.span {(p : normInteger K)})
@@ -70,7 +70,7 @@ theorem coeff_eq_mk_untilt (x : PreTilt (normInteger K) p) (n : ℕ) :
   rw [PreTilt.mk_untilt_eq_coeff_zero, PreTilt.coeff_iterate_frobeniusEquiv_symm, zero_add]
 
 /- English proof (translation)
-Rewrite using `[← norm_pow, ← SubmonoidClass.coe_pow, PreTilt.untilt_iterate_frobeniusEquiv_symm_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_untilt_iterate_pow (x : PreTilt (normInteger K) p) (n : ℕ) :
     ‖((((frobeniusEquiv (PreTilt (normInteger K) p) p).symm^[n] x).untilt : normInteger K) : K)‖
@@ -78,9 +78,9 @@ theorem norm_untilt_iterate_pow (x : PreTilt (normInteger K) p) (n : ℕ) :
   rw [← norm_pow, ← SubmonoidClass.coe_pow, PreTilt.untilt_iterate_frobeniusEquiv_symm_pow]
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Take `⟨n, hn⟩ : ∃ n, PreTilt.coeff n x ≠ 0` from `not_forall.1 fun h => hx <| Perfection.ext h`. Express the relevant statement in the definitionally equal form `PreTilt.valAux K _ _ p x = _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[PreTilt.valAux_eq normInteger_integers hn, coeff_eq_mk_untilt, ModP.preVal_mk normInteger_integers (by rwa [← coeff_eq_mk_untilt])]`. Use `ext`. Use `push_cast`. Rewrite using `[NormedField.valuation_apply, coe_nnnorm]`. Conclude with `norm_untilt_iterate_pow x n`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_eq_nnnorm_untilt (x : PreTilt (normInteger K) p) :
     PreTilt.val K NormedField.valuation (normInteger K) normInteger_integers p x =
@@ -98,14 +98,14 @@ theorem val_eq_nnnorm_untilt (x : PreTilt (normInteger K) p) :
   exact norm_untilt_iterate_pow x n
 
 /- English proof (translation)
-Rewrite using `[← nnnorm_eq_zero, ← val_eq_nnnorm_untilt, PreTilt.map_eq_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem untilt_eq_zero_iff {x : PreTilt (normInteger K) p} :
     ((x.untilt : normInteger K) : K) = 0 ↔ x = 0 := by
   rw [← nnnorm_eq_zero, ← val_eq_nnnorm_untilt, PreTilt.map_eq_zero]
 
 /- English proof (translation)
-Use `(PreTilt.val K NormedField.valuation (normInteger K) normInteger_integers p).map_add x y` as an intermediate fact. Simplify using `only [val_eq_nnnorm_untilt] at this`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_untilt_add_le (x y : PreTilt (normInteger K) p) :
     ‖(((x + y).untilt : normInteger K) : K)‖ ≤
@@ -115,7 +115,7 @@ theorem norm_untilt_add_le (x y : PreTilt (normInteger K) p) :
   exact_mod_cast this
 
 /- English proof (translation)
-Use `(PreTilt.val K NormedField.valuation (normInteger K) normInteger_integers p).map_neg x` as an intermediate fact. Simplify using `only [val_eq_nnnorm_untilt] at this`. Conclude with `congrArg NNReal.toReal this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_untilt_neg (x : PreTilt (normInteger K) p) :
     ‖(((-x).untilt : normInteger K) : K)‖ = ‖((x.untilt : normInteger K) : K)‖ := by
@@ -124,7 +124,7 @@ theorem norm_untilt_neg (x : PreTilt (normInteger K) p) :
   exact congrArg NNReal.toReal this
 
 /- English proof (translation)
-The claim follows from `mem_normInteger.1 (x.untilt).2`.
+A detailed English derivation is pending.
 -/
 theorem norm_untilt_le_one (x : PreTilt (normInteger K) p) :
     ‖((x.untilt : normInteger K) : K)‖ ≤ 1 :=
@@ -154,7 +154,7 @@ theorem preTilt_norm_def (x : PreTilt (normInteger K) p) :
     ‖x‖ = ‖((x.untilt : normInteger K) : K)‖ := rfl
 
 /- English proof (translation)
-Rewrite using `[val_eq_nnnorm_untilt]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem nnnorm_eq_val (x : PreTilt (normInteger K) p) :
     ‖x‖₊ = PreTilt.val K NormedField.valuation (normInteger K) normInteger_integers p x := by
@@ -170,13 +170,13 @@ instance : IsUltrametricDist (PreTilt (normInteger K) p) :=
   IsUltrametricDist.isUltrametricDist_of_forall_norm_add_le_max_norm norm_untilt_add_le
 
 /- English proof (translation)
-The claim follows from `norm_untilt_le_one x`.
+A detailed English derivation is pending.
 -/
 theorem preTilt_norm_le_one (x : PreTilt (normInteger K) p) : ‖x‖ ≤ 1 :=
   norm_untilt_le_one x
 
 /- English proof (translation)
-Establish `h` using `(mk_eq_mk_iff_norm_sub_le (p := p) (a := (x + y).untilt) (b := x.untilt + y.untilt)).1 (by simp)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_untilt_add_sub_le (x y : PreTilt (normInteger K) p) :
     ‖(((x + y).untilt : normInteger K) : K) - (x.untilt + y.untilt)‖ ≤ ‖(p : K)‖ := by
@@ -185,7 +185,7 @@ theorem norm_untilt_add_sub_le (x y : PreTilt (normInteger K) p) :
   simpa using h
 
 /- English proof (translation)
-Rewrite using `[coeff_eq_mk_untilt, mk_eq_zero_iff_norm_le, preTilt_norm_def, ← norm_untilt_iterate_pow x n]`. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (norm_nonneg _) (pow_ne_zero n (Fact.out : p.Prime).ne_zero)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_eq_zero_iff_norm_le (x : PreTilt (normInteger K) p) (n : ℕ) :
     PreTilt.coeff n x = 0 ↔ ‖x‖ ≤ ‖(p : K)‖ ^ p ^ n := by
@@ -194,7 +194,7 @@ theorem coeff_eq_zero_iff_norm_le (x : PreTilt (normInteger K) p) (n : ℕ) :
     (pow_ne_zero n (Fact.out : p.Prime).ne_zero)).symm
 
 /- English proof (translation)
-Take `⟨x, hx⟩ : ∃ x : PreTilt (normInteger K) p, PreTilt.coeff 0 x = Ideal.Quotient.mk _ a` from `Perfection.coeff_surjective (IsPerfectoidField.surjective_frobenius (K := K) p) 0 _`. Conclude with `⟨x, by rw [PreTilt.mk_untilt_eq_coeff_zero]; exact hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mk_untilt_eq (a : normInteger K) :
     ∃ x : PreTilt (normInteger K) p, Ideal.Quotient.mk (Ideal.span {(p : normInteger K)})
@@ -204,7 +204,7 @@ theorem exists_mk_untilt_eq (a : normInteger K) :
   exact ⟨x, by rw [PreTilt.mk_untilt_eq_coeff_zero]; exact hx⟩
 
 /- English proof (translation)
-Use `norm_untilt_add_sub_le x y` as an intermediate fact. Rewrite `this` using `[hp, norm_zero, norm_le_zero_iff, sub_eq_zero]`. Conclude with `Subtype.ext (by simpa using this)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem untilt_add_of_natCast_eq_zero (hp : (p : K) = 0) (x y : PreTilt (normInteger K) p) :
     (x + y).untilt = x.untilt + y.untilt := by
@@ -265,21 +265,19 @@ instance completeSpace_preTilt : CompleteSpace (PreTilt (normInteger K) p) := by
     rw [map_sub, hL, hN n m hm, sub_self]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Rewrite using `[norm_mul]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (preTilt_norm_le_one c)`. Introduce `hxy`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Rewrite `hxy` using `[norm_zero, norm_le_zero_iff]`. Rewrite using `[hxy]`. Use `set ψ := (frobeniusEquiv (PreTilt (normInteger K) p) p).symm`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : ∀ n, (((ψ^[n] x).untilt : normInteger K) : K) ≠ 0` using `fun n h => by`. Use `norm_untilt_iterate_pow x n` as an intermediate fact. Rewrite `this` using `[h, norm_zero, zero_pow (pow_ne_zero n (Fact.out : p.Prime).ne_zero), eq_comm, norm_eq_zero, untilt_eq_zero_iff]`. Conclude with `hx this`. Establish `hle : ∀ n, ‖(((ψ^[n] y).untilt : normInteger K) : K)‖ ≤ ‖(((ψ^[n] x).untilt : normInteger K) : K)‖` using `fun n => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_le_pow_iff_left₀ (norm_nonneg _) (norm_nonneg _) (pow_ne_zero n (Fact.out : p.Prime).ne_zero), norm_untilt_iterate_pow, norm_untilt_iterate_pow]`. Conclude with `hxy`. Set `z : ℕ → normInteger K` to `fun n => ⟨((ψ^[n] y).untilt : K) / (ψ^[n] x).untilt, mem_normInteger.2 (by`. Rewrite using `[norm_div]`. Conclude with `div_le_one_of_le₀ (hle n) (norm_nonneg _))⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hroot : ∀ (w : PreTilt (normInteger K) p) (n : ℕ), (((ψ^[n + 1] w).untilt : normInteger K) : K) ^ p = (ψ^[n] w).untilt` using `fun w n => by`. Rewrite using `[Function.iterate_succ_apply']`. Use `PreTilt.untilt_iterate_frobeniusEquiv_symm_pow (ψ^[n] w) 1` as an intermediate fact. Rewrite `this` using `[pow_one]`. Conclude with `congrArg Subtype.val this`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hz : ∀ n, z (n + 1) ^ p = z n` using `fun n => by`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [z, SubmonoidClass.coe_pow, div_pow, hroot]`. Set `Z : PreTilt (normInteger K) p` to `⟨fun n => Ideal.Quotient.mk _ (z n), fun n => by rw [← map_pow, hz]⟩`. Use `⟨Z, Perfection.ext fun n => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `PreTilt.coeff n y = PreTilt.coeff n (x * Z)`. Rewrite using `[map_mul, coeff_eq_mk_untilt, coeff_eq_mk_untilt]`. Express the relevant statement in the definitionally equal form `_ = _ * Ideal.Quotient.mk _ (z n)`. Rewrite using `[← map_mul]`. Use `congr 1`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [z, Subring.coe_mul]`. Rewrite using `[mul_div_cancel₀ _ (hx0 n)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem preTilt_dvd_iff_norm_le {x y : PreTilt (normInteger K) p} : x ∣ y ↔ ‖y‖ ≤ ‖x‖ := by
   constructor
@@ -334,7 +332,7 @@ def untiltModHom (ϖ : normInteger K) (hp : ‖(p : K)‖ ≤ ‖(ϖ : K)‖) :
     simpa using hp))).comp (PreTilt.coeff 0)
 
 /- English proof (translation)
-Rewrite using `[untiltModHom, RingHom.comp_apply, ← PreTilt.mk_untilt_eq_coeff_zero, Ideal.Quotient.factor_mk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem untiltModHom_apply (ϖ : normInteger K) (hp : ‖(p : K)‖ ≤ ‖(ϖ : K)‖)
     (x : PreTilt (normInteger K) p) :
@@ -343,7 +341,7 @@ theorem untiltModHom_apply (ϖ : normInteger K) (hp : ‖(p : K)‖ ≤ ‖(ϖ :
     Ideal.Quotient.factor_mk]
 
 /- English proof (translation)
-Rewrite using `[untiltModHom, RingHom.coe_comp]`. Conclude with `(Ideal.Quotient.factor_surjective _).comp (Perfection.coeff_surjective (IsPerfectoidField.surjective_frobenius (K := K) p) 0)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem untiltModHom_surjective (ϖ : normInteger K) (hp : ‖(p : K)‖ ≤ ‖(ϖ : K)‖) :
     Function.Surjective (untiltModHom (p := p) ϖ hp) := by
@@ -352,7 +350,7 @@ theorem untiltModHom_surjective (ϖ : normInteger K) (hp : ‖(p : K)‖ ≤ ‖
     (Perfection.coeff_surjective (IsPerfectoidField.surjective_frobenius (K := K) p) 0)
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[RingHom.mem_ker, untiltModHom_apply, Ideal.Quotient.eq_zero_iff_mem, mem_span_singleton_iff_norm_le, Ideal.mem_span_singleton, preTilt_dvd_iff_norm_le, ← h]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ker_untiltModHom (ϖ' : PreTilt (normInteger K) p) (ϖ : normInteger K)
     (h : ‖((ϖ'.untilt : normInteger K) : K)‖ = ‖(ϖ : K)‖) (hp : ‖(p : K)‖ ≤ ‖(ϖ : K)‖) :
@@ -369,9 +367,9 @@ def tiltQuotientEquiv (ϖ' : PreTilt (normInteger K) p) (ϖ : normInteger K)
     (RingHom.quotientKerEquivOfSurjective (untiltModHom_surjective ϖ hp))
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_mk_untilt_eq (p := p) a`. Rewrite `hx` using `[mk_eq_mk_iff_norm_sub_le]`. Use `⟨x, ?_⟩` and prove the remaining obligations. Establish `hne : ‖(a : K)‖ ≠ ‖((x.untilt : normInteger K) : K) - a‖` using `(hx.trans_lt ha).ne'`. Use `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hne` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[add_sub_cancel]`. Rewrite using `[this, max_eq_left (hx.trans ha.le)]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_norm_untilt_eq (a : normInteger K) (ha : ‖(p : K)‖ < ‖(a : K)‖) :
     ∃ x : PreTilt (normInteger K) p, ‖((x.untilt : normInteger K) : K)‖ = ‖(a : K)‖ := by
@@ -384,11 +382,11 @@ theorem exists_norm_untilt_eq (a : normInteger K) (ha : ‖(p : K)‖ < ‖(a : 
   rw [this, max_eq_left (hx.trans ha.le)]
 
 /- English proof (translation)
-Distinguish the cases in `hp : (p : K) = 0`. Conclude with `⟨0, by simp [hp]⟩`. Establish `hp0 : 0 < ‖(p : K)‖` using `norm_pos_iff.2 hp`. Take `⟨ϖ, hϖ, hϖ1⟩` from `IsPerfectoidField.exists_norm_mem_Ioo (K := K) (p := p) _ (IsPerfectoidField.norm_natCast_lt_one (K := K) (p := p))`. Establish `hϖ0 : 0 < ‖ϖ‖` using `hp0.trans hϖ`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : ‖(p : K) / ϖ‖ = ‖(p : K)‖ / ‖ϖ‖` using `norm_div _ _`. Take `⟨x, hx⟩` from `exists_norm_untilt_eq (p := p) ⟨ϖ, mem_normInteger.2 hϖ1.le⟩ hϖ`. Take `⟨y, hy⟩` from `exists_norm_untilt_eq (p := p) ⟨(p : K) / ϖ, mem_normInteger.2 (by rw [hb]; exact div_le_one_of_le₀ hϖ.le hϖ0.le)⟩ (by`. Express the relevant statement in the definitionally equal form `‖(p : K)‖ < ‖(p : K) / ϖ‖`. Rewrite using `[hb, lt_div_iff₀ hϖ0]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_lt_of_lt_one_right hp0 hϖ1)`. Use `⟨x * y, ?_⟩` and prove the remaining obligations. Rewrite using `[untilt_mul, Subring.coe_mul, norm_mul, hx, hy]`. Express the relevant statement in the definitionally equal form `‖ϖ‖ * ‖(p : K) / ϖ‖ = _`. Rewrite using `[hb, mul_div_cancel₀ _ hϖ0.ne']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_norm_untilt_eq_norm_natCast :
     ∃ x : PreTilt (normInteger K) p, ‖((x.untilt : normInteger K) : K)‖ = ‖(p : K)‖ := by

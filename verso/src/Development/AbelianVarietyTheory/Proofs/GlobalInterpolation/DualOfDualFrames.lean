@@ -8,7 +8,7 @@ namespace GlobalTheory.DualFrames
 variable {A : Type} [CommRing A] {k : ℕ}
 
 /- English proof (translation)
-Unfold `hform`. Simplify using `[dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hform_eq_dot (τ : A →+* A) (J : Matrix (Fin k) (Fin k) A) (x y : Fin k → A) :
     hform τ J x y = (τ ∘ x) ⬝ᵥ (J *ᵥ y) := by
@@ -16,9 +16,9 @@ theorem hform_eq_dot (τ : A →+* A) (J : Matrix (Fin k) (Fin k) A) (x y : Fin 
   simp [dotProduct, mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[hform_eq_dot]`. Establish `hmap : (τ ∘ (B *ᵥ x)) = (B.map τ) *ᵥ (τ ∘ x)`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`. Establish `hct : (B.map τ)ᵀ = cT τ B`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `cT`. Both sides reduce to the same expression. Rewrite using `[hmap, ← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hct, h, Matrix.one_mulVec]`. Simplify using `[dotProduct]`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hform_frames (τ : A →+* A) (J B C : Matrix (Fin k) (Fin k) A)
     (h : cT τ B * J * C = 1) (x y : Fin k → A) :
@@ -35,9 +35,9 @@ theorem hform_frames (τ : A →+* A) (J B C : Matrix (Fin k) (Fin k) A)
   simp [dotProduct]
 
 /- English proof (translation)
-Unfold `IsHerm cT at hJ`. Establish `hJ' : ∀ i j, τ (J i j) = J j i`. Introduce `i j`. Simplify using `using congrFun (congrFun hJ j) i`. Unfold `hform`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions.
 
-Simplify using `only [map_sum, map_mul, hτ, hJ']`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hform_swap (τ : A →+* A) (hτ : ∀ a, τ (τ a) = a) (J : Matrix (Fin k) (Fin k) A)
     (hJ : IsHerm τ J) (x y : Fin k → A) : τ (hform τ J x y) = hform τ J y x := by
@@ -52,7 +52,7 @@ theorem hform_swap (τ : A →+* A) (hτ : ∀ a, τ (τ a) = a) (J : Matrix (Fi
   ring
 
 /- English proof (translation)
-Use `⟨((B⁻¹ : GL (Fin k) A) : Matrix (Fin k) (Fin k) A) *ᵥ y, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_mulVec (B : GL (Fin k) A) (y : Fin k → A) :
     ∃ z, (B : Matrix (Fin k) (Fin k) A) *ᵥ z = y := by
@@ -60,23 +60,23 @@ theorem exists_mulVec (B : GL (Fin k) A) (y : Fin k → A) :
   rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Introduce `A _ S τ hτ hS k J hJ B C L₁ L₂ h hL₁ hL₂`. Establish `pair : ∀ u v : Fin k → A, hform τ J ((B : Matrix (Fin k) (Fin k) A) *ᵥ u) ((C : Matrix (Fin k) (Fin k) A) *ᵥ v) = ∑ i, τ (u i) * v i` using `fun u v => hform_frames τ J B C h u v`. Establish `flip : ∀ x y, hform τ J x y = τ (hform τ J y x)` using `fun x y => (hform_swap τ hτ J hJ y x).symm`. Establish `memS_iff : ∀ a, τ a ∈ S ↔ a ∈ S` using `fun a => ⟨fun ha => hτ a ▸ hS _ ha, hS a⟩`. Establish `single_mem : ∀ i j, (Pi.single i (1 : A) : Fin k → A) j ∈ S`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj, S.zero_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `coord : ∀ u v : Fin k → A, (∀ i, u i ∈ S) → (∀ i, v i ∈ S) → ∑ i, τ (u i) * v i ∈ S` using `fun u v hu hv => sum_mem fun i _ => mul_mem (hS _ (hu i)) (hv i)`. Establish `part1 : ∀ y, y ∈ L₂ ↔ ∀ x ∈ L₁, hform τ J x y ∈ S`. Introduce `y`. Take `⟨v, rfl⟩` from `exists_mulVec C y`. Rewrite using `[hL₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hv x hx`. Take `⟨u, rfl⟩` from `exists_mulVec B x`. Rewrite using `[pair]`. Conclude with `coord u v ((hL₁ u).1 hx) hv`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hall i`. Establish `key` using `hall ((B : Matrix (Fin k) (Fin k) A) *ᵥ Pi.single i 1) ((hL₁ _).2 (single_mem i))`. Establish `e : ∑ j, τ ((Pi.single i (1 : A) : Fin k → A) j) * v j = v i`. Simplify using `[Pi.single_apply]`. Rewrite `key` using `[pair, e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `part2 : ∀ y, y ∈ L₁ ↔ ∀ x ∈ L₂, hform τ J x y ∈ S`. Introduce `y`. Take `⟨v, rfl⟩` from `exists_mulVec B y`. Rewrite using `[hL₁]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hv x hx`. Take `⟨u, rfl⟩` from `exists_mulVec C x`. Rewrite using `[flip, pair, memS_iff]`. Conclude with `coord v u hv ((hL₂ u).1 hx)`. Introduce `hall i`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `hall ((C : Matrix (Fin k) (Fin k) A) *ᵥ Pi.single i 1) ((hL₂ _).2 (single_mem i))`. Establish `e : ∑ j, τ (v j) * (Pi.single i (1 : A) : Fin k → A) j = τ (v i)`. Simplify using `[Pi.single_apply]`. Rewrite `key` using `[flip, pair, memS_iff, e, memS_iff]`. Then use the resulting hypothesis. Establish `part3 : ∀ x, x ∈ L₁ ↔ ∀ y ∈ L₂, hform τ J x y ∈ S`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[part2]`. Use `forall₂_congr fun y _ => ?_` and prove the remaining obligations. Rewrite using `[flip x y, memS_iff]`. Conclude with `⟨part1, part2, part3⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dual_of_dual_frames :
     ∀ (A : Type) [CommRing A] (S : Subring A) (τ : A →+* A), (∀ a, τ (τ a) = a) →

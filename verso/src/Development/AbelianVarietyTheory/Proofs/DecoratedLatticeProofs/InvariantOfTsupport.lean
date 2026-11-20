@@ -12,19 +12,19 @@ section Abstract
 variable {G : Type} [AddCommGroup G] {χ : G → G → ℂ} {N : Submodule ℂ (G → ℂ)} {K : AddSubgroup G}
 
 /- English proof (translation)
-Proceed by induction on `R using Finset.induction_on with`. Consider the case `empty`. Introduce `Φ hΦ h1 h2 h3`. Use `N.smul_mem (Φ 0)⁻¹ hΦ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `ht : t ∈ K`. Use `h1 t ht 0` as an intermediate fact. Rewrite `this` using `[zero_add]`. Simplify using `[ind, ht, this, h2]`. Establish `: Φ t = 0` using `by_contra fun hh => by simpa [ht] using h3 t hh`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[ind, ht, this]`. Consider the case `insert r R _ ih`. Introduce `Φ hΦ h1 h2 h3`. Distinguish the cases in `hr : r ∈ K`. Use `ih Φ hΦ h1 h2 fun t ht => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Break down `h3 t ht with hh | ⟨s, hs, hh⟩` into its components or cases. Conclude with `Or.inl hh`. Break down `Finset.mem_insert.1 hs with rfl | hs` into its components or cases. Conclude with `Or.inl (by simpa using add_mem hh hr)`. Conclude with `Or.inr ⟨s, hs, hh⟩`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Take `⟨y, hy, hne⟩` from `hsep r hr`. Use `ih _ (N.sub_mem (hN y Φ hΦ) (N.smul_mem (χ r y) hΦ)) (fun u hu t => ?_) ?_ fun t ht => ?_` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Pi.smul_apply, h.left, hy u hu, h1 u hu, mul_one]`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, h.zero_left, ← sub_mul]`. Conclude with `mul_ne_zero (sub_ne_zero.2 hne.symm) h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul, ← sub_mul] at ht`. Break down `h3 t (right_ne_zero_of_mul ht) with hh | ⟨s, hs, hh⟩` into its components or cases. Conclude with `Or.inl hh`. Break down `Finset.mem_insert.1 hs with rfl | hs` into its components or cases. Use `absurd ?_ (left_ne_zero_of_mul ht)` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← add_sub_cancel s t, h.left, hy _ hh, mul_one, sub_self]`. Conclude with `Or.inr ⟨s, hs, hh⟩`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem ind_mem (h : IsBichar χ) (hN : ∀ y, ∀ Φ ∈ N, (fun t => χ t y * Φ t) ∈ N)
     (hsep : ∀ u, u ∉ K → ∃ y, (∀ κ ∈ K, χ κ y = 1) ∧ χ u y ≠ 1) (R : Finset G) :
@@ -64,15 +64,15 @@ theorem ind_mem (h : IsBichar χ) (hN : ∀ y, ∀ Φ ∈ N, (fun t => χ t y * 
           · exact Or.inr ⟨s, hs, hh⟩
 
 /- English proof (translation)
-Proceed by induction on `R using Finset.induction_on with`. Consider the case `empty`. Introduce `Φ _ h3`. Use `N.zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Assume the negation of the conclusion as `ht`. Simplify using `using h3 t ht`. Consider the case `insert s R _ ih`. Introduce `Φ h2 h3`. Establish `hm` using `N.smul_mem (Φ s) (hN (-s) _ hK)`.
+Assume the negation of the conclusion and derive a contradiction. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hval : ∀ t, (Φ - Φ s • fun t => ind K (t + -s)) t ≠ 0 → Φ t ≠ 0 ∧ t + -s ∉ K`. Introduce `t ht`. Establish `hn : t + -s ∉ K` using `fun hh => ht (by`. Use `h2 _ hh s` as an intermediate fact. Rewrite `this` using `[show s + (t + -s) = t by abel]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[ind, hh, this])`. Conclude with `⟨by simpa [ind, hn] using ht, hn⟩`. Use `ih (Φ - Φ s • fun t => ind K (t + -s)) (fun u hu t => by` as an intermediate fact. Simplify using `only [Pi.sub_apply, Pi.smul_apply, h2 u hu]`. Rewrite using `[add_right_comm, ind_add K _ hu]) fun t ht => by`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s', hs', hu⟩` from `h3 t (hval t ht).1`. Break down `Finset.mem_insert.1 hs' with rfl | hs'` into its components or cases. Conclude with `absurd (by rwa [← sub_eq_add_neg]) (hval _ ht).2`. Conclude with `⟨s', hs', hu⟩`. Simplify using `using add_mem this hm`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_of_ind_mem (hN : ∀ x, ∀ Φ ∈ N, (fun t => Φ (t + x)) ∈ N) (hK : ind K ∈ N) (R : Finset G) :
     ∀ Φ : G → ℂ, (∀ u ∈ K, ∀ t, Φ (t + u) = Φ t) → (∀ t, Φ t ≠ 0 → ∃ r ∈ R, t - r ∈ K) → Φ ∈ N := by
@@ -104,13 +104,13 @@ theorem mem_of_ind_mem (hN : ∀ x, ∀ Φ ∈ N, (fun t => Φ (t + x)) ∈ N) (
     simpa using add_mem this hm
 
 /- English proof (translation)
-Establish `hli` using `linearIndependent_wave (X := ⊤) (Y := ⊤) (L := L) (L' := L') h fun y _ => hY y`. Take `⟨T, hT⟩` from `LinearMap.exists_extend ((Module.Basis.span hli).constr ℂ fun i => ρ (i.1.out : (⊤ : AddSubgroup G)) (σ (i.2.out : (⊤ : AddSubgroup G)) f₀))`. Establish `hT' : ∀ i : ((⊤ : AddSubgroup G) ⧸ L.addSubgroupOf ⊤) × ((⊤ : AddSubgroup G) ⧸ L'.addSubgroupOf ⊤), T (wave χ L (i.1.out : (⊤ : AddSubgroup G)) (i.2.out : (⊤ : AddSubgroup G))) = ρ (i.1.out : (⊤ : AddSubgroup G)) (σ (i.2.out : (⊤ : AddSubgroup G)) f₀)` using `fun i => by`. Use `LinearMap.congr_fun hT (Module.Basis.span hli i)` as an intermediate fact. Rewrite `this` using `[Module.Basis.constr_basis]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Use `⟨T, fun x y => ?_⟩` and prove the remaining obligations. Set `p : (⊤ : AddSubgroup G) ⧸ L.addSubgroupOf ⊤` to `QuotientAddGroup.mk ⟨x, trivial⟩`. Set `q : (⊤ : AddSubgroup G) ⧸ L'.addSubgroupOf ⊤` to `QuotientAddGroup.mk ⟨y, trivial⟩`. Establish `hp : -((p.out : (⊤ : AddSubgroup G)) : G) + x ∈ L` using `(QuotientAddGroup.eq (s := L.addSubgroupOf ⊤) (a := p.out) (b := ⟨x, trivial⟩)).1 p.out_eq'`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hq : -((q.out : (⊤ : AddSubgroup G)) : G) + y ∈ L'` using `(QuotientAddGroup.eq (s := L'.addSubgroupOf ⊤) (a := q.out) (b := ⟨y, trivial⟩)).1 q.out_eq'`. Use `hT' (p, q)` as an intermediate fact. Simplify using `only at this`. Generalize the expression as in `((p.out : (⊤ : AddSubgroup G)) : G) = x0 at *`. Generalize the expression as in `((q.out : (⊤ : AddSubgroup G)) : G) = y0 at *`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `ex : x = x0 + (-x0 + x)` using `by abel`. Establish `ey : y = y0 + (-y0 + y)` using `by abel`. Generalize the expression as in `-x0 + x = l at *`. Generalize the expression as in `-y0 + y = l' at *`. Rewrite using `[ex, ey, wave_add h hLL' _ _ hp hq, map_smul, this, ← hρ, ← hσ, hf' _ hq, hc l, hf _ hp, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_map_wave₂ {V : Type} [AddCommGroup V] [Module ℂ V] (h : IsBichar χ) {L L' : AddSubgroup G}
     (hLL' : ∀ u ∈ L, ∀ y ∈ L', χ u y = 1) (hY : ∀ y, (∀ u ∈ L, χ u y = 1) → y ∈ L')
@@ -150,7 +150,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y']
 
 /- English proof (translation)
-The claim follows from `hΦ.2.isCompact.eventually_forall_of_forall_eventually (P := fun u t => Φ (t + u) = Φ t) fun x _ => by have h1 := ((continuous_snd.add continuous_fst).tendsto' ((0 : Matrix Y Y' k), x) x (add_zero x)).eventually (hΦ.1.eventually_eq x) have h2 := (continuous_snd.tendsto ((0 : Matri …`.
+A detailed English derivation is pending.
 -/
 theorem eventually_invariant {Φ : Matrix Y Y' k → ℂ} (hΦ : Φ ∈ SB (Matrix Y Y' k)) :
     ∀ᶠ u in 𝓝 (0 : Matrix Y Y' k), ∀ t ∈ tsupport Φ, Φ (t + u) = Φ t :=
@@ -161,7 +161,7 @@ theorem eventually_invariant {Φ : Matrix Y Y' k → ℂ} (hΦ : Φ ∈ SB (Matr
     filter_upwards [h1, h2] with z a b using a.trans b.symm
 
 /- English proof (translation)
-Distinguish the cases in `ht : t ∈ tsupport Φ`. Conclude with `h u hu t ht`. Distinguish the cases in `ht' : t + u ∈ tsupport Φ`. Rewrite using `[← h _ (neg_mem hu) _ ht', add_neg_cancel_right]`. Rewrite using `[image_eq_zero_of_notMem_tsupport ht, image_eq_zero_of_notMem_tsupport ht']`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariant_of_tsupport {Φ : Matrix Y Y' k → ℂ} {K : AddSubgroup (Matrix Y Y' k)}
     (h : ∀ u ∈ K, ∀ t ∈ tsupport Φ, Φ (t + u) = Φ t) (u : Matrix Y Y' k) (hu : u ∈ K) (t : Matrix Y Y' k) :
@@ -173,7 +173,7 @@ theorem invariant_of_tsupport {Φ : Matrix Y Y' k → ℂ} {K : AddSubgroup (Mat
   · rw [image_eq_zero_of_notMem_tsupport ht, image_eq_zero_of_notMem_tsupport ht']
 
 /- English proof (translation)
-Take `⟨R, -, hR⟩` from `hΦ.2.isCompact.elim_nhds_subcover (fun r => {t | t - r ∈ box Y Y' a}) fun r _ => ((isOpen_box a).preimage (continuous_sub_right r)).mem_nhds (by simp)`. Conclude with `⟨R, fun t ht => by simpa using hR (subset_tsupport Φ ht)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cosets {Φ : Matrix Y Y' k → ℂ} (hΦ : Φ ∈ SB (Matrix Y Y' k)) (a : kˣ) :
     ∃ R : Finset (Matrix Y Y' k), ∀ t, Φ t ≠ 0 → ∃ r ∈ R, t - r ∈ box Y Y' a := by
@@ -182,9 +182,9 @@ theorem exists_cosets {Φ : Matrix Y Y' k → ℂ} (hΦ : Φ ∈ SB (Matrix Y Y'
   exact ⟨R, fun t ht => by simpa using hR (subset_tsupport Φ ht)⟩
 
 /- English proof (translation)
-Introduce `Ψ hΨ`. Take `⟨a, ha⟩` from `exists_box_subset ((eventually_invariant hΦ).and (eventually_invariant hΨ))`. Take `⟨x, hx⟩` from `Function.ne_iff.1 h0`. Take `⟨R, hR⟩` from `exists_cosets hΦ a`. Take `⟨R', hR'⟩` from `exists_cosets hΨ a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `mem_of_ind_mem hN (ind_mem (isBichar_pairing ψ) hN' (fun u hu => let ⟨y, hy, hne⟩ := exists_sep hd a hu; ⟨y, fun κ hκ => pairing_box hd hκ hy, hne⟩) (R.image (· - x)) _ (hN x Φ hΦN) (fun u hu t => ?_) (by rwa [zero_add]) fun t ht => ?_) R' Ψ (invariant_of_tsupport fun u hu => (ha …` and prove the remaining obligations. Rewrite using `[add_right_comm]`. Conclude with `invariant_of_tsupport (fun u hu => (ha u hu).1) u hu _`. Take `⟨r, hr, h⟩` from `hR _ ht`. Conclude with `Or.inr ⟨_, Finset.mem_image_of_mem _ hr, by convert h using 1; abel⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem sb_le {ψ : AddChar k Circle} {d : kˣ} (hd : HasConductor ψ d) {N : Submodule ℂ (Matrix Y Y' k → ℂ)}
     (hN : ∀ x, ∀ Φ ∈ N, (fun t => Φ (t + x)) ∈ N) (hN' : ∀ y, ∀ Φ ∈ N, (fun t => pairing ψ t y * Φ t) ∈ N)
@@ -205,9 +205,9 @@ theorem sb_le {ψ : AddChar k Circle} {d : kˣ} (hd : HasConductor ψ d) {N : Su
     exact Or.inr ⟨_, Finset.mem_image_of_mem _ hr, by convert h using 1; abel⟩
 
 /- English proof (translation)
-Establish `hcl : IsClopen (box Y Y' a : Set (Matrix Y Y' k))` using `⟨AddSubgroup.isClosed_of_isOpen _ (isOpen_box a), isOpen_box a⟩`. Establish `e : ind (box Y Y' a) = (box Y Y' a : Set (Matrix Y Y' k)).indicator fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `t`. Apply the tactic sequence `by_cases ht : t ∈ box Y Y' a <;> simp [ind, ht]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨(LocallyConstant.indicator (LocallyConstant.const _ (1 : ℂ)) hcl).isLocallyConstant, HasCompactSupport.intro (isCompact_box a) fun x hx => Set.indicator_of_notMem hx _⟩`.
+Supply the required witnesses or components.
 -/
 theorem ind_box_mem (a : kˣ) : ind (box Y Y' a) ∈ SB (Matrix Y Y' k) := by
   have hcl : IsClopen (box Y Y' a : Set (Matrix Y Y' k)) := ⟨AddSubgroup.isClosed_of_isOpen _ (isOpen_box a), isOpen_box a⟩
@@ -219,27 +219,25 @@ theorem ind_box_mem (a : kˣ) : ind (box Y Y' a) ∈ SB (Matrix Y Y' k) := by
     HasCompactSupport.intro (isCompact_box a) fun x hx => Set.indicator_of_notMem hx _⟩
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `exists_hasConductor_of_continuous ψ hψ h1`. Establish `hb` using `isBichar_pairing (Y := Y) (Y' := Y') ψ`. Take `⟨T, hT⟩` from `exists_map_wave₂ hb (L := box Y Y' 1) (L' := box Y Y' (d / 1)) (fun u hu y hy => pairing_box hd hu hy) (fun y hy => by_contra fun hn => by`. Take `⟨x, hx, hne⟩` from `exists_sep hd _ hn`. Rewrite `hx` using `[div_one, div_self']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hne ((pairing_comm ψ y x).trans (hy x hx)))`. Use `ρ σ hρ hσ hc g hg1 fun u hu => hg2 u fun x hx => pairing_box hd hx hu`. Establish `h0 : T (ind (box Y Y' 1)) = g`. Rewrite using `[← wave_zero hb, hT, hg2 0 fun x _ => hb.zero_right x, hg1 0 (zero_mem _)]`. Establish `hne : ind (box Y Y' (1 : kˣ)) ≠ 0` using `fun e => g0 (by rw [← h0, e, map_zero])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Establish `key : ∀ Φ ∈ waveSpan (pairing ψ) ⊤ ⊤ (box Y Y' (1 : kˣ)), T Φ ∈ P ∧ (∀ x, T (fun t => Φ (t + x)) = ρ x (T Φ)) ∧ ∀ y, T (fun t => pairing ψ t y * Φ t) = σ y (T Φ)` using `fun Φ hΦ => by`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem _ hh`. Take `⟨a, -, b, -, rfl⟩` from `hh`. Use `⟨hT a b ▸ hP _ _ (hP' _ _ hg), fun x => ?_, fun y => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[wave_trans, hT, hT, hρ]`. Rewrite using `[wave_modul hb, map_smul, hT, hT, ← hσ, hc a y, smul_smul, hb.neg_mul, one_smul]`. Consider the case `zero`. Use `⟨by rw [map_zero]; exact P.zero_mem, fun x => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, map_zero]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `map_zero T`. Rewrite using `[map_zero, map_zero, ← map_zero T]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add f g _ _ hf hg`. Use `⟨by rw [map_add]; exact P.add_mem hf.1 hg.1, fun x => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_add, ← hf.2.1 x, ← hg.2.1 x, ← map_add]`. Both sides reduce to the same expression. Rewrite using `[map_add, map_add, ← hf.2.2 y, ← hg.2.2 y, ← map_add]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `[mul_add]`. Consider the case `smul c f _ hf`. Use `⟨by rw [map_smul]; exact P.smul_mem c hf.1, fun x => ?_, fun y => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, map_smul, ← hf.2.1 x, ← map_smul]`. Both sides reduce to the same expression. Rewrite using `[map_smul, map_smul, ← hf.2.2 y, ← map_smul]`. Use `congr 1`. Use function extensionality and compare the values at `t`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[mul_left_comm]`. Establish `hle : SB (Matrix Y Y' k) ≤ waveSpan (pairing ψ) ⊤ ⊤ (box Y Y' (1 : kˣ))` using `sb_le hd (fun x _ h => trans_mem h trivial) (fun y _ h => modul_mem hb h trivial) (ind_box_mem 1) hne (Submodule.subset_span ⟨0, trivial, 0, trivial, (wave_zero hb).symm⟩)`. Use `⟨T, fun Φ hΦ => ⟨fun hz => by_contra fun hn => g0 ?_, key Φ (hle hΦ)⟩⟩` and prove the remaining obligations. Use `sb_le hd (N := waveSpan (pairing ψ) ⊤ ⊤ (box Y Y' (1 : kˣ)) ⊓ LinearMap.ker T) (fun x Ψ h => ⟨trans_mem h.1 trivial, by` as an intermediate fact. Express the relevant statement in the definitionally equal form `T _ = 0`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(key Ψ h.1).2.1, show T Ψ = 0 from h.2, map_zero]⟩)`. Use the proof step `(fun y Ψ h => ⟨modul_mem hb h.1 trivial, by`. Express the relevant statement in the definitionally equal form `T _ = 0`. Rewrite using `[(key Ψ h.1).2.2, show T Ψ = 0 from h.2, map_zero]⟩) hΦ hn ⟨hle hΦ, hz⟩ (ind_box_mem 1)`. Rewrite using `[← h0]`.
-
-Conclude with `this.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_embedding {V : Type} [AddCommGroup V] [Module ℂ V] {ψ : AddChar k Circle} (hψ : Continuous ψ) (h1 : ψ ≠ 1)
     (ρ σ : Matrix Y Y' k → V →ₗ[ℂ] V) (hρ : ∀ x x' f, ρ x (ρ x' f) = ρ (x + x') f)

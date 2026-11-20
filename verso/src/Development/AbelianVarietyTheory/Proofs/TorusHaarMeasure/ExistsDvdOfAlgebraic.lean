@@ -25,7 +25,7 @@ Both sides reduce to the same expression.
 theorem incl_apply (ω : Ω) : incl K Kl K' ω = (1 : K') ⊗ₜ[Kl] ((1 : Kl) ⊗ₜ[K] ω) := rfl
 
 /- English proof (translation)
-Use `show Algebra.TensorProduct.includeRight (Algebra.TensorProduct.includeRight (algebraMap K Ω c) : Kl ⊗[K] Ω) = _`. Rewrite using `[AlgHom.commutes, IsScalarTower.algebraMap_apply K Kl (Kl ⊗[K] Ω), AlgHom.commutes, IsScalarTower.algebraMap_apply Kl K' (K' ⊗[Kl] (Kl ⊗[K] Ω)), ← IsScalarTower.algebraMap_apply K Kl K']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incl_algebraMap (c : K) :
     incl K Kl K' (algebraMap K Ω c) = algebraMap K' (K' ⊗[Kl] (Kl ⊗[K] Ω)) (algebraMap K K' c) := by
@@ -35,7 +35,7 @@ theorem incl_algebraMap (c : K) :
     IsScalarTower.algebraMap_apply Kl K' (K' ⊗[Kl] (Kl ⊗[K] Ω)), ← IsScalarTower.algebraMap_apply K Kl K']
 
 /- English proof (translation)
-Rewrite using `[incl_apply, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tmul_eq (a : K') (ω : Ω) : a ⊗ₜ[Kl] ((1 : Kl) ⊗ₜ[K] ω) =
     algebraMap K' (K' ⊗[Kl] (Kl ⊗[K] Ω)) a * incl K Kl K' ω := by
@@ -43,11 +43,11 @@ theorem tmul_eq (a : K') (ω : Ω) : a ⊗ₜ[Kl] ((1 : Kl) ⊗ₜ[K] ω) =
   simp
 
 /- English proof (translation)
-Use `letI : Algebra K' R := a.toAlgebra`. Use `letI : Algebra Kl R := (a.comp (algebraMap Kl K')).toAlgebra`. Use `letI : Algebra K R := (a.comp (algebraMap K K')).toAlgebra`. Use `haveI : IsScalarTower Kl K' R := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : IsScalarTower K Kl R := IsScalarTower.of_algebraMap_eq fun c => by show a (algebraMap K K' c) = a (algebraMap Kl K' (algebraMap K Kl c))`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← IsScalarTower.algebraMap_apply]`. Set `ε : Ω →ₐ[K] R` to `{ ψ with commutes' := hc }`. Set `α₁ : Kl ⊗[K] Ω →ₐ[Kl] R` to `Algebra.TensorProduct.lift (Algebra.ofId Kl _) ε fun _ _ => Commute.all _ _`. Set `α₀ : K' ⊗[Kl] (Kl ⊗[K] Ω) →ₐ[K'] R` to `Algebra.TensorProduct.lift (Algebra.ofId K' _) α₁ fun _ _ => Commute.all _ _`. Use `⟨α₀.toRingHom, fun y => α₀.commutes y, fun ω => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show α₀ _ = _`. Rewrite using `[incl_apply, Algebra.TensorProduct.lift_tmul, Algebra.TensorProduct.lift_tmul, map_one, map_one, one_mul, one_mul]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_lift_tensor {R : Type} [CommRing R] (a : K' →+* R) (ψ : Ω →+* R)
     (hc : ∀ c : K, ψ (algebraMap K Ω c) = a (algebraMap K K' c)) :
@@ -71,11 +71,11 @@ theorem exists_lift_tensor {R : Type} [CommRing R] (a : K' →+* R) (ψ : Ω →
   rfl
 
 /- English proof (translation)
-Set `g₀ : Localization.Away (s 0) →+* R` to `IsLocalization.Away.lift (s 0) h0`. Establish `hg₀ : ∀ z, g₀ (algebraMap A _ z) = f z` using `fun z => IsLocalization.Away.lift_eq _ _ _`. Establish `hJ : ∀ r ∈ I, g₀ r = 0`. Introduce `r hr`. Establish `hle : I ≤ RingHom.ker g₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hI]`. Use `Ideal.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, map_mul, hg₀, h1, zero_mul]`. Conclude with `hle hr`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨Ideal.Quotient.lift I g₀ hJ, fun z => hg₀ z⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift_quot {A R : Type} [CommRing A] [CommRing R] {D : ℕ} (s : Fin (D + 1) → A)
     (I : Ideal (Localization.Away (s 0)))
@@ -97,7 +97,7 @@ theorem exists_lift_quot {A R : Type} [CommRing A] [CommRing R] {D : ℕ} (s : F
   exact ⟨Ideal.Quotient.lift I g₀ hJ, fun z => hg₀ z⟩
 
 /- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Establish `e : algebraMap A (Localization.Away (s 0)) (s i.succ) = (algebraMap A (Localization.Away (s 0)) (s i.succ) * IsLocalization.Away.invSelf (s 0)) * algebraMap A (Localization.Away (s 0)) (s 0)`. Rewrite using `[mul_assoc, mul_comm (IsLocalization.Away.invSelf _), IsLocalization.Away.mul_invSelf, mul_one]`. Rewrite using `[e, hI]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_succ_eq_zero {A : Type} [CommRing A] {D : ℕ} (s : Fin (D + 1) → A)
     (I : Ideal (Localization.Away (s 0)))
@@ -119,7 +119,7 @@ section Comp
 variable {K Ω K' : Type} [Field K] [Field Ω] [Algebra K Ω] [Field K'] [Algebra K K'] {D N : ℕ}
 
 /- English proof (translation)
-Establish `: (sHom j0 x : MvPolynomial (TVar D N) K →ₐ[K] OmS Ω D N) = (IsScalarTower.toAlgHom K (MvPolynomial (SVar D N) Ω) (OmS Ω D N)).comp (aeval (polyImg j0 x))`. Use `MvPolynomial.algHom_ext fun p => ?_` and prove the remaining obligations. Simplify using `only [sHom, aeval_X, AlgHom.comp_apply, IsScalarTower.coe_toAlgHom']`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -135,7 +135,7 @@ theorem sHom_eq (j0 : Fin (N + 1)) (x : Fin N → Ω) (q : MvPolynomial (TVar D 
   rfl
 
 /- English proof (translation)
-Break down `s with ⟨⟨⟩⟩ | ⟨i, k⟩` into its components or cases. Use `show polyImg j0 x (0, j0) = _`. Rewrite using `[polyImg_same, if_pos rfl]`. Conclude with `polyImg_succAbove j0 x i k`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyImg_freeVar (j0 : Fin (N + 1)) (x : Fin N → Ω) (s : SVar D N) :
     polyImg j0 x (freeVar j0 s) = X s := by
@@ -145,7 +145,7 @@ theorem polyImg_freeVar (j0 : Fin (N + 1)) (x : Fin N → Ω) (s : SVar D N) :
   · exact polyImg_succAbove j0 x i k
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_succAbove _ j0, mul_add, Finset.mul_sum, mul_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[polyImg_succAbove, mul_left_comm, ← C_mul, hx, mul_div_cancel₀ _ hv]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_polyImg (j0 : Fin (N + 1)) (v : Fin (N + 1) → Ω) (x : Fin N → Ω) (hv : v j0 ≠ 0)
     (hx : ∀ k, x k = v (j0.succAbove k) / v j0) (i : Fin (D + 1)) :
@@ -157,7 +157,7 @@ theorem sum_polyImg (j0 : Fin (N + 1)) (v : Fin (N + 1) → Ω) (x : Fin N → �
   rw [polyImg_succAbove, mul_left_comm, ← C_mul, hx, mul_div_cancel₀ _ hv]
 
 /- English proof (translation)
-Rewrite using `[sum_polyImg j0 v x hv hx, polyImg_same, if_neg (Fin.succ_ne_zero i), neg_add_cancel, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_polyImg_succ (j0 : Fin (N + 1)) (v : Fin (N + 1) → Ω) (x : Fin N → Ω) (hv : v j0 ≠ 0)
     (hx : ∀ k, x k = v (j0.succAbove k) / v j0) (i : Fin D) :
@@ -165,7 +165,7 @@ theorem sum_polyImg_succ (j0 : Fin (N + 1)) (v : Fin (N + 1) → Ω) (x : Fin N 
   rw [sum_polyImg j0 v x hv hx, polyImg_same, if_neg (Fin.succ_ne_zero i), neg_add_cancel, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[sum_polyImg j0 v x hv hx, polyImg_same, if_pos rfl]`. Introduce `h`. Use `congrArg (eval (Sum.elim (fun _ => (1 : Ω)) (fun _ => 0))) h` as an intermediate fact. Simplify using `[hv] at this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sum_polyImg_zero (j0 : Fin (N + 1)) (v : Fin (N + 1) → Ω) (x : Fin N → Ω) (hv : v j0 ≠ 0)
     (hx : ∀ k, x k = v (j0.succAbove k) / v j0) :
@@ -176,9 +176,9 @@ theorem sum_polyImg_zero (j0 : Fin (N + 1)) (v : Fin (N + 1) → Ω) (x : Fin N 
   simp [hv] at this
 
 /- English proof (translation)
-Use `letI : Algebra P S := φ.toAlgebra`. Use `letI : Algebra S L := i.toAlgebra`. Use `letI : Algebra P L := (i.comp φ).toAlgebra`. Use `haveI : IsScalarTower P F L := IsScalarTower.of_algebraMap_eq fun q => (h q).symm`. Use `haveI : IsScalarTower P S L := IsScalarTower.of_algebraMap_eq fun q => rfl`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsAlgebraic F (algebraMap S L f)` using `Algebra.IsAlgebraic.isAlgebraic _`. Establish `h2` using `(IsFractionRing.isAlgebraic_iff P F L).2 h1`. Establish `h3` using `(isAlgebraic_algebraMap_iff hi).1 h2`. Conclude with `h3.exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero hf)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_dvd_of_algebraic {P F S L : Type} [CommRing P] [IsDomain P] [Field F] [Algebra P F]
     [IsFractionRing P F] [CommRing S] [IsDomain S] [Field L] [Algebra F L] [FiniteDimensional F L]
@@ -196,7 +196,7 @@ theorem exists_dvd_of_algebraic {P F S L : Type} [CommRing P] [IsDomain P] [Fiel
   exact h3.exists_nonzero_dvd (mem_nonZeroDivisors_of_ne_zero hf)
 
 /- English proof (translation)
-Conclude with `exists_dvd_of_algebraic (F := FractionRing (MvPolynomial (TVar D N) K)) (L := OmS Ω D N) (aeval (R := K) (polyImg (D := D) j0 x)).toRingHom (algebraMap _ _) (IsFractionRing.injective _ _) (fun q => (hL q).trans (sHom_eq j0 x q)) f hf`.
+A detailed English derivation is pending.
 -/
 theorem exists_dvd (j0 : Fin (N + 1)) (x : Fin N → Ω)
     [Algebra (FractionRing (MvPolynomial (TVar D N) K)) (OmS Ω D N)]
@@ -209,37 +209,35 @@ theorem exists_dvd (j0 : Fin (N + 1)) (x : Fin N → Ω)
     (fun q => (hL q).trans (sHom_eq j0 x q)) f hf
 
 /- English proof (translation)
-Set `β₀ : MvPolynomial (SVar D N) Ω →+* Q` to `eval₂Hom ψ fun s => a (t (freeVar j0 s))`. Establish `hX : ∀ s, β₀ (X s) = a (t (freeVar j0 s))` using `fun s => eval₂Hom_X' _ _ _`. Establish `hC : ∀ ω, β₀ (C ω) = ψ ω` using `fun ω => eval₂Hom_C _ _ _`. Establish `hp : ∀ p, β₀ (polyImg j0 x p) = a (t p)`. Introduce and unpack `⟨i, j⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Break down `Fin.eq_self_or_eq_succAbove j0 j with rfl | ⟨k, rfl⟩` into its components or cases. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[polyImg_same, if_pos rfl, hX]`. Both sides reduce to the same expression. Establish `h1` using `congrArg β₀ (sum_polyImg_succ j v x hv hx i)`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h2` using `hrel i`. Rewrite `h1` using `[map_sum, map_zero, Fin.sum_univ_succAbove _ j]`. Rewrite `h2` using `[Fin.sum_univ_succAbove _ j]`. Simplify using `only [map_mul, hC, polyImg_succAbove, hX] at h1`. Establish `h3 : β₀ (polyImg j x (i.succ, j)) * ψ (v j) = a (t (i.succ, j)) * ψ (v j)` using `add_right_cancel (h1.trans h2.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `((isUnit_iff_ne_zero.2 hv).map ψ).mul_right_cancel h3`. Rewrite using `[polyImg_succAbove, hX]`. Both sides reduce to the same expression. Establish `hq : ∀ q : MvPolynomial (TVar D N) K, β₀ (aeval (polyImg j0 x) q) = a (aeval t q)`. Introduce `q`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C c => rw [aeval_C, aeval_C, MvPolynomial.algebraMap_apply, hC, hc]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X q n hq => simp only [map_mul, aeval_X, hq, hp]`. Establish `hunit : ∀ y : nonZeroDivisors (MvPolynomial (SVar D N) Ω), IsUnit (β₀ y)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Take `⟨q, hq0, hd⟩` from `exists_dvd j0 x hL y.1 (nonZeroDivisors.ne_zero y.2)`. Establish `h1` using `map_dvd β₀ hd`. Rewrite `h1` using `[hq]`. Use `isUnit_of_dvd_unit h1 ((isUnit_iff_ne_zero.2 fun h => hq0 ?_).map a)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Conclude with `algebraicIndependent_iff.mp ht q h`. Set `β : OmS Ω D N →+* Q` to `IsLocalization.lift hunit`. Establish `hβ : ∀ f, β (algebraMap (MvPolynomial (SVar D N) Ω) _ f) = β₀ f` using `fun f => IsLocalization.lift_eq _ _`. Establish `hΩ : ∀ ω : Ω, algebraMap Ω (OmS Ω D N) ω = algebraMap (MvPolynomial (SVar D N) Ω) _ (C ω)` using `fun ω => IsScalarTower.algebraMap_apply Ω (MvPolynomial (SVar D N) Ω) _ ω`. Use `⟨β, fun q => by rw [sHom_eq, hβ, hq], fun ω => by rw [hΩ, hβ, hC], ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `iR : OmS Ω D N →+* K' ⊗[FractionRing (MvPolynomial (TVar D N) K)] OmS Ω D N` to `(Algebra.TensorProduct.includeRight : OmS Ω D N →ₐ[FractionRing (MvPolynomial (TVar D N) K)] _).toRingHom`. Establish `hT : ∀ q : MvPolynomial (TVar D N) K, algebraMap K' (K' ⊗[FractionRing (MvPolynomial (TVar D N) K)] OmS Ω D N) (aeval t q) = iR (sHom j0 x q)`. Introduce `q`. Rewrite using `[← hL, ← hK, ← IsScalarTower.algebraMap_apply]`. Conclude with `(AlgHom.commutes _ _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hTX : ∀ p, algebraMap K' (K' ⊗[FractionRing (MvPolynomial (TVar D N) K)] OmS Ω D N) (t p) = iR (algebraMap (MvPolynomial (SVar D N) Ω) _ (polyImg j0 x p))`. Introduce `p`. Use `hT (X p)` as an intermediate fact. Rewrite `this` using `[sHom_eq, aeval_X, aeval_X]`. Then use the resulting hypothesis. Establish `hsum : ∀ i, ∑ j, algebraMap K' (K' ⊗[FractionRing (MvPolynomial (TVar D N) K)] OmS Ω D N) (t (i, j)) * (iR.comp (algebraMap Ω _)) (v j) = iR (algebraMap (MvPolynomial (SVar D N) Ω) _ (∑ j, polyImg j0 x (i, j) * C (v j)))`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hTX, RingHom.comp_apply, hΩ, map_mul, map_mul]`. Take `⟨α, hα1, hα2⟩` from `huniv _ (algebraMap K' _) (iR.comp (algebraMap Ω _)) (fun c => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hT (C c)` as an intermediate fact. Rewrite `this` using `[aeval_C, sHom, aeval_C, IsScalarTower.algebraMap_apply K Ω (OmS Ω D N)]`. Conclude with `this.symm)`. Use the proof step `(by`. Rewrite using `[hsum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(isUnit_iff_ne_zero.2 ?_).map iR` and prove the remaining obligations. Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective _ _)]`. Conclude with `sum_polyImg_zero j0 v x hv hx)`. Use the proof step `(fun i => by rw [hsum, sum_polyImg_succ j0 v x hv hx, map_zero, map_zero])`. Use `⟨α, hα1, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hαβ : α.comp β = iR`. Use `IsLocalization.ringHom_ext (nonZeroDivisors (MvPolynomial (SVar D N) Ω)) ?_` and prove the remaining obligations. Use `MvPolynomial.ringHom_ext (fun ω => ?_) (fun s => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[hβ, hC, hα2, RingHom.comp_apply, hΩ]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify using `only [RingHom.comp_apply]`. Rewrite using `[hβ, hX, hα1, hTX, polyImg_freeVar]`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add y z hy hz`. Take `⟨y, rfl⟩` from `hy`. Take `⟨z, rfl⟩` from `hz`. Conclude with `⟨y + z, map_add _ _ _⟩`. Consider the case `tmul b y`.
-
-Use `⟨a b * β y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hα1, ← RingHom.comp_apply α β, hαβ, Algebra.TensorProduct.algebraMap_apply]`. Use `show (_ ⊗ₜ _) * ((1 : K') ⊗ₜ y) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_maps (j0 : Fin (N + 1)) (v : Fin (N + 1) → Ω) (x : Fin N → Ω) (hv : v j0 ≠ 0)
     (hx : ∀ k, x k = v (j0.succAbove k) / v j0) (t : TVar D N → K') (ht : AlgebraicIndependent K t)
@@ -357,33 +355,31 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `letI iL : ∀ Z, Algebra (FractionRing (MvPolynomial (TVar D N) K)) (OmS (Ω Z) D N) := fun Z => ((algebraMap (IntermediateField.adjoin K (Set.range (sImg (D := D) (j0 Z) (x Z)))) (OmS (Ω Z) D N)).comp (hind Z).aevalEquivField.toRingEquiv.toRingHom).toAlgebra`. Establish `hL : ∀ Z (q : MvPolynomial (TVar D N) K), algebraMap (FractionRing (MvPolynomial (TVar D N) K)) (OmS (Ω Z) D N) (algebraMap (MvPolynomial (TVar D N) K) _ q) = sHom (j0 Z) (x Z) q` using `fun Z q => (hind Z).aevalEquivField_algebraMap_apply_coe q`. Establish `hrk : ∀ Z, Module.finrank (FractionRing (MvPolynomial (TVar D N) K)) (OmS (Ω Z) D N) = Module.finrank (IntermediateField.adjoin K (Set.range (sImg (D` using `D) (j0 Z) (x Z)))) (OmS (Ω Z) D N) := fun Z => Algebra.finrank_eq_of_equiv_equiv (hind Z).aevalEquivField.toRingEquiv (RingEquiv.refl _) rfl`. Use `haveI hfd : ∀ Z, FiniteDimensional (FractionRing (MvPolynomial (TVar D N) K)) (OmS (Ω Z) D N) := fun Z => by`. Apply `Module.finite_of_finrank_pos` to reduce the goal to its premises.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrk]`. Conclude with `Module.finrank_pos`. Establish `hinjt : Function.Injective (aeval t : MvPolynomial (TVar D N) K →ₐ[K] K').toRingHom` using `ht`. Use `letI iK : Algebra (FractionRing (MvPolynomial (TVar D N) K)) K' := (IsFractionRing.lift (K := FractionRing (MvPolynomial (TVar D N) K)) hinjt).toAlgebra`. Establish `hK : ∀ q : MvPolynomial (TVar D N) K, algebraMap (FractionRing (MvPolynomial (TVar D N) K)) K' (algebraMap (MvPolynomial (TVar D N) K) _ q) = aeval t q` using `fun q => IsFractionRing.lift_algebraMap hinjt q`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose β hβ1 hβ2 α hα1 hα2 using fun Z => exists_maps (j0 Z) (v Z) (x Z) (hv Z) (hx Z) t ht (hL Z) hK (a Z) (ψ Z) (hc Z) (hrel Z) (huniv Z)`. Establish `hβF : ∀ Z (y : FractionRing (MvPolynomial (TVar D N) K)), β Z (algebraMap _ _ y) = a Z (algebraMap _ _ y)`. Introduce `Z`. Establish `: (β Z).comp (algebraMap (FractionRing (MvPolynomial (TVar D N) K)) _) = (a Z).comp (algebraMap _ _)`. Use `IsLocalization.ringHom_ext (nonZeroDivisors (MvPolynomial (TVar D N) K)) (RingHom.ext fun q => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Simplify using `only [RingHom.comp_apply]`. Rewrite using `[hL, hK, hβ1]`. Conclude with `fun y => RingHom.congr_fun this y`. Set `u : Fin n → ∀ Z, OmS (Ω Z) D N` to `fun k Z => algebraMap (Ω Z) _ (θ k Z)`. Establish `hu : LinearIndependent (FractionRing (MvPolynomial (TVar D N) K)) u`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg k`. Use `hli (fun k => algebraMap _ K' (g k)) (fun Z => by` as an intermediate fact. Establish `h1` using `congrArg (β Z) (congrFun hg Z)`. Rewrite `h1` using `[Finset.sum_apply, map_sum, Pi.zero_apply, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Algebra.smul_def, map_mul, hβF, hβ2]) k`. Conclude with `(map_eq_zero_iff _ (algebraMap _ K').injective).1 this`. Establish `hpi : Module.finrank (FractionRing (MvPolynomial (TVar D N) K)) (∀ Z, OmS (Ω Z) D N) = ∑ Z, Module.finrank (FractionRing (MvPolynomial (TVar D N) K)) (OmS (Ω Z) D N)` using `Module.finrank_pi_fintype _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hle : n ≤ Module.finrank (FractionRing (MvPolynomial (TVar D N) K)) (∀ Z, OmS (Ω Z) D N)`. Simplify using `using hu.fintype_card_le_finrank`. Establish `hge : Module.finrank (FractionRing (MvPolynomial (TVar D N) K)) (∀ Z, OmS (Ω Z) D N) ≤ n`. Set `u' : Fin n → ∀ Z, K' ⊗[FractionRing (MvPolynomial (TVar D N) K)] OmS (Ω Z) D N` to `fun k Z => α Z (ψ Z (θ k Z))`. Establish `hs : Submodule.span K' (Set.range u') = ⊤`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff]`. Introduce `z _`. Use `choose y hy using fun Z => hα2 Z (z Z)`. Take `⟨c, hc⟩` from `hsp y`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨c, funext fun Z => ?_⟩` and prove the remaining obligations. Rewrite using `[← hy, hc, map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Algebra.smul_def, map_mul, hα1]`. Establish `h1` using `finrank_le_of_span_eq_top hs`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[Module.finrank_pi_fintype, Fintype.card_fin]`. Rewrite using `[hpi]`. Use `le_trans (le_of_eq (Finset.sum_congr rfl fun Z _ => ?_)) h1` and prove the remaining obligations. Rewrite using `[Module.finrank_baseChange]`. Establish `heq` using `le_antisymm hge hle`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : ∀ Z (q : MvPolynomial (TVar D N) K), sHom (j0 Z) (x Z) q = 0 → q = 0` using `fun Z q h => algebraicIndependent_iff.mp (hind Z) q h`. Use `⟨?_, fun p hp k => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← heq, hpi]`. Conclude with `Finset.sum_congr rfl fun Z _ => (hrk Z).symm`. Use `Fintype.linearIndependent_iff.1 hu (fun k => algebraMap _ _ (p k)) (funext fun Z => by` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.sum_apply, Pi.zero_apply, ← hp Z]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Algebra.smul_def, hL]) k`. Conclude with `(map_eq_zero_iff _ (IsFractionRing.injective _ _)).1 this`. Establish `hs` using `hu.span_eq_top_of_card_eq_finrank' (by rw [heq, Fintype.card_fin])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : y ∈ Submodule.span (FractionRing (MvPolynomial (TVar D N) K)) (Set.range u)` using `hs ▸ Submodule.mem_top`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hy`. Take `⟨q, hq⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (MvPolynomial (TVar D N) K)) c`. Use `choose p hp using hq`. Use `⟨q, fun Z h => nonZeroDivisors.ne_zero q.2 (hinj Z _ h), p, fun Z => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hc, Finset.sum_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Algebra.smul_def, ← hL, ← hL, hp, Algebra.smul_def, map_mul, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem basis_descends (j0 : ι → Fin (N + 1)) (v : ∀ Z, Fin (N + 1) → Ω Z) (x : ∀ Z, Fin N → Ω Z)
     (hv : ∀ Z, v Z (j0 Z) ≠ 0) (hx : ∀ Z k, x Z k = v Z ((j0 Z).succAbove k) / v Z (j0 Z))
@@ -496,11 +492,11 @@ end All
 section Loc
 
 /- English proof (translation)
-Use `letI : ∀ Z, Module K' (Q Z) := fun Z => (a Z).toModule`. Establish `key : ∀ (c : Fin n → K') Z, E (∑ k, c k • b k) Z = ∑ k, a Z (c k) * E (b k) Z`. Introduce `c Z`. Rewrite using `[map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul]`. Both sides reduce to the same expression. Use `⟨fun c hc => Fintype.linearIndependent_iff.1 hli c ?_, fun y => ?_⟩` and prove the remaining obligations. Apply `E.injective` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `funext fun Z => (key c Z).trans (hc Z)`. Establish `hy : E.symm y ∈ Submodule.span K' (Set.range b)` using `hsp ▸ Submodule.mem_top`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hy`. Conclude with `⟨c, fun Z => by rw [← key, hc, LinearEquiv.apply_symm_apply]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coords_of_equiv {K' M ι : Type} [Field K'] [AddCommGroup M] [Module K' M] {Q : ι → Type}
     [∀ Z, CommRing (Q Z)] (a : ∀ Z, K' →+* Q Z) {n : ℕ} (b : Fin n → M) (hli : LinearIndependent K' b)
@@ -530,19 +526,17 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Substitute `hD` using the available equality. Set `π : ∀ Z, K' ⊗[Kl] (Kl ⊗[K] Ω Z) →+* Localization.Away (s Z 0) ⧸ I Z` to `fun Z => (Ideal.Quotient.mk (I Z)).comp (algebraMap _ _)`. Set `ψ : ∀ Z, Ω Z →+* Localization.Away (s Z 0) ⧸ I Z` to `fun Z => (π Z).comp (incl K Kl K')`. Establish `ha' : ∀ Z y, a Z y = π Z (algebraMap K' _ y)` using `fun Z y => by`. Rewrite using `[ha, IsScalarTower.algebraMap_apply K' (K' ⊗[Kl] (Kl ⊗[K] Ω Z)) (Localization.Away (s Z 0))]`.
+Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hwψ : ∀ k Z, w k Z = ψ Z (θ k Z / g Z)`. Introduce `k Z`. Establish `h1 : w k Z * ψ Z (g Z) = ψ Z (θ k Z)` using `hw k Z`. Use `((isUnit_iff_ne_zero.2 (hg Z)).map (ψ Z)).mul_right_cancel ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, ← map_mul, div_mul_cancel₀ _ (hg Z)]`. Set `ε : TVar D N ≃ Fin (D + 1) × Fin m` to `(Equiv.refl _).prodCongr e.symm`. Establish `hs' : ∀ Z i, s Z i = ∑ j, algebraMap K' _ ((t ∘ ε) (i, j)) * incl K Kl K' (v Z (e.symm j))`. Introduce `Z i`. Rewrite using `[hs, ← e.symm.sum_comp]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => tmul_eq _ _`. Establish `hf : ∀ Z {R : Type} [CommRing R] (f : K' ⊗[Kl] (Kl ⊗[K] Ω Z) →+* R) (a' : K' →+* R) (ψ' : Ω Z →+* R), (∀ y, f (algebraMap K' _ y) = a' y) → (∀ ω, f (incl K Kl K' ω) = ψ' ω) → ∀ i, f (s Z i) = ∑ j, a' ((t ∘ ε) (i, j)) * ψ' (v Z (e.symm j))`. Introduce `Z R _ f a' ψ' h1 h2 i`. Rewrite using `[hs', map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [map_mul, h1, h2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `basis_descends j0 (fun Z j => v Z (e.symm j)) x hv hx hind hfin (t ∘ ε) ((algebraicIndependent_equiv ε).2 ht) a ψ (fun Z c => ?_) (fun Z i => ?_) (fun Z R _ a' ψ' hc h0 h1 => ?_) (fun k Z => θ k Z / g Z) (fun c hc => hli c fun Z => ?_) (fun y => ?_)` and prove the remaining obligations. Rewrite using `[ha', ← incl_algebraMap]`. Both sides reduce to the same expression. Rewrite using `[← hf Z (π Z) (a Z) (ψ Z) (fun y => (ha' Z y).symm) (fun _ => rfl)]`. Conclude with `mk_succ_eq_zero (s Z) (I Z) (hI Z) i`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨f, hf1, hf2⟩` from `exists_lift_tensor (Kl := Kl) a' ψ' hc`. Take `⟨G, hG⟩` from `exists_lift_quot (s Z) (I Z) (hI Z) f (by rw [hf Z f a' ψ' hf1 hf2]; exact h0) (fun i => by rw [hf Z f a' ψ' hf1 hf2]; exact h1 i)`. Conclude with `⟨G, fun y => by rw [ha']; exact (hG _).trans (hf1 y), fun ω => (hG _).trans (hf2 ω)⟩`. Simplify using `only [hwψ]`. Conclude with `hc Z`.
-
-Take `⟨c, hc⟩` from `hsp y`. Conclude with `⟨c, fun Z => by rw [hc]; simp only [hwψ]⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem basis_descends_loc {D D' N m n : ℕ} (hD : D = D') (e : Fin m ≃ Fin (N + 1)) (j0 : ι → Fin (N + 1))
     (v : ∀ Z, Fin m → Ω Z) (x : ∀ Z, Fin N → Ω Z)

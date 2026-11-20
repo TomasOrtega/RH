@@ -20,11 +20,9 @@ namespace GlobalTheory.GalClosure
 variable {R : Type} [CommRing R] [IsDomain R] {E : Type} [Field E] [Algebra (FractionRing R) E]
 
 /- English proof (translation)
-Use `letI := (baseMap R E).toAlgebra`. Use `haveI : IsScalarTower R (FractionRing R) E := IsScalarTower.of_algebraMap_eq' rfl`. Take `⟨⟨hN, -, hI, hC⟩, -⟩` from `hR`. Use `set R₂ := integralClosure R E`. Use `haveI : Module.Finite R R₂ := IsIntegralClosure.finite R (FractionRing R) E R₂`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : HenselianLocalRing R := GlobalTheory.henselianLocalRing_of_isAdicComplete R`. Use `haveI : IsLocalRing R₂ := GlobalTheory.TameKummer.isLocalRing_of_finite R R₂`. Use `⟨inferInstance, ⟨IsNoetherianRing.of_finite R R₂, inferInstance, integralClosure.isIntegrallyClosedOfFiniteExtension (FractionRing R), GlobalTheory.CompleteFiniteExtension.isAdicComplete_of_finite_local R R₂⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b h`. Use `congrArg (algebraMap R₂ E) h` as an intermediate fact.
-
-Conclude with `IsFractionRing.injective R (FractionRing R) ((algebraMap (FractionRing R) E).injective this)`. Conclude with `RingHom.finite_algebraMap.2 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem finExt_integralClosure [IsLocalRing R] (hR : Base R) [FiniteDimensional (FractionRing R) E]
     [IsGalois (FractionRing R) E] :

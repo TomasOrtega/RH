@@ -11,11 +11,11 @@ namespace GlobalTheory.FrameDet
 open GlobalTheory.BorelAlg
 
 /- English proof (translation)
-Establish `hrow : ∀ i, i ≠ l → ∀ j, (y * x⁻¹) i j = (1 : Matrix _ _ K) i j`. Introduce `i hi j`. Rewrite using `[← Matrix.mul_nonsing_inv _ hx.isUnit]`. Simplify using `only [Matrix.mul_apply, h i hi]`. Establish `hb : ∀ i j, i < j → (y * x⁻¹) i j = 0` using `fun i j hij => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hrow i (hij.trans_le (hl j)).ne, Matrix.one_apply_ne hij.ne]`. Use `⟨y * x⁻¹, ?_, hb, fun i hi => by rw [hrow i hi, Matrix.one_apply_eq], ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hx.isUnit, Matrix.mul_one]`. Rewrite using `[Matrix.det_of_lowerTriangular _ (fun i j hij => hb i j hij), Finset.prod_eq_single l]`. Introduce `i _ hi`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hrow i hi, Matrix.one_apply_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_lower {K : Type} [Field K] {n : ℕ} (x y : Matrix (Fin n) (Fin n) K) (l : Fin n) (hl : ∀ i, i ≤ l)
     (hx : x.det ≠ 0) (h : ∀ i, i ≠ l → y i = x i) :
@@ -34,39 +34,37 @@ theorem exists_lower {K : Type} [Field K] {n : ℕ} (x y : Matrix (Fin n) (Fin n
     · simp
 
 /- English proof (translation)
-Introduce `K _ _ B _ _ m P a hP τ₀ ha`. Establish `hT : (Matrix.of fun i k : Fin (m τ₀) => (MvPolynomial.X ⟨τ₀, (k, i)⟩ : MvPolynomial (FrVar m) K)).det = (gen m K τ₀).det`. Rewrite using `[← Matrix.det_transpose]`. Both sides reduce to the same expression. Rewrite using `[hT]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(gen m K τ₀).det ∣ P`. Distinguish the cases in `h0 : m τ₀ = 0`. Use `haveI : IsEmpty (Fin (m τ₀)) := by rw [h0]; infer_instance`. Rewrite using `[Matrix.det_isEmpty]`. Conclude with `one_dvd _`.
+Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `l : Fin (m τ₀)` to `⟨m τ₀ - 1, by omega⟩`. Establish `hl : ∀ i, i ≤ l` using `fun i => by`. Use `i.2` as an intermediate fact. Simplify using `only [Fin.le_def, l]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨hM0, hrel⟩` from `minor_isRelPrime' (R := K) _ (inj_block m τ₀) l hl`. Express the relevant statement in the definitionally equal form `((gen m K τ₀).updateRow l (Pi.single l 1)).det ≠ 0 at hM0`. Express the relevant statement in the definitionally equal form `IsRelPrime ((gen m K τ₀).updateRow l (Pi.single l 1)).det (gen m K τ₀).det at hrel`. Use `set M := (gen m K τ₀).updateRow l (Pi.single l 1) with hM`. Set `x₀ : ∀ τ, Matrix (Fin (m τ)) (Fin (m τ)) (MvPolynomial (Lt m) K)` to `Function.update (gen m K) τ₀ M`.
+Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `P₀ : MvPolynomial (Lt m) K` to `eval₂Hom C (fun p : Lt m => x₀ p.1 p.2.1 p.2.2) P`. Set `D : MvPolynomial (Lt m) K` to `(∏ τ, (gen m K τ).det) * M.det`. Establish `hD : D ≠ 0` using `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun τ _ => gen_det_ne_zero m K τ) hM0`. Establish `k3 : P * M.det ^ a τ₀ l = (gen m K τ₀).det ^ a τ₀ l * P₀`. Apply `mul_left_cancel₀ hD` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `z`. Distinguish the cases in `hz : eval z D = 0`. Rewrite using `[map_mul, map_mul (eval z) D, hz, zero_mul, zero_mul]`. Rewrite using `[map_mul, map_mul (eval z) D]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `congr 1`. Set `g : MvPolynomial (Lt m) K →+* K` to `eval z`. Set `x` to `fun τ => g.mapMatrix (x₀ τ)`. Set `y` to `fun τ => g.mapMatrix (gen m K τ)`. Establish `hxd : ∀ τ, (x τ).det = g (x₀ τ).det` using `fun τ => (RingHom.map_det _ _).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyd : ∀ τ, (y τ).det = g (gen m K τ).det` using `fun τ => (RingHom.map_det _ _).symm`. Establish `hxM : (x τ₀).det = g M.det` using `by rw [hxd]; simp [x₀]`. Establish `hz' : (∏ τ, g (gen m K τ).det) * g M.det ≠ 0`. Rewrite using `[← map_prod, ← map_mul]`. Conclude with `hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hy : ∀ τ, (y τ).det ≠ 0` using `fun τ => hyd τ ▸ Finset.prod_ne_zero_iff.1 (left_ne_zero_of_mul hz') τ (Finset.mem_univ _)`. Establish `hne : ∀ τ, τ ≠ τ₀ → y τ = x τ` using `fun τ h => by simp [x, y, x₀, h]`. Establish `hx : ∀ τ, (x τ).det ≠ 0` using `fun τ => by`. Distinguish the cases in `h : τ = τ₀`. Substitute `h` using the available equality.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hxM]`. Conclude with `right_ne_zero_of_mul hz'`. Rewrite using `[← hne τ h]`. Conclude with `hy τ`. Establish `hl' : ∀ i, i ≠ l → y τ₀ i = x τ₀ i` using `fun i h => by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `j`. Simplify using `[x, y, x₀, M, Matrix.updateRow_ne h]`. Take `⟨b, hxy, hb, hb1, hdet⟩` from `exists_lower (x τ₀) (y τ₀) l hl (hx τ₀) hl'`. Establish `hs : (y τ₀).det = b l l * (x τ₀).det` using `by rw [← hdet, ← Matrix.det_mul, ← hxy]`. Establish `key` using `hP (fun τ => (x τ).transpose) τ₀ b.transpose (fun τ => by rw [Matrix.det_transpose]; exact hx τ) (by rw [Matrix.det_transpose, hdet]; exact left_ne_zero_of_mul (hs ▸ hy τ₀)) (fun i j hij => hb j i hij)`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e0 : Function.update (fun τ => (x τ).transpose) τ₀ ((x τ₀).transpose * b.transpose) = fun τ => (y τ).transpose`. Use function extensionality and compare the values at `τ`. Distinguish the cases in `h : τ = τ₀`. Substitute `h` using the available equality. Rewrite using `[Function.update_self, ← Matrix.transpose_mul, ← hxy]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[Function.update_of_ne h, hne τ h]`. Establish `e1 : evalFr P (fun τ => (y τ).transpose) = g P`. Unfold `evalFr`. Use `congr 2`. Use function extensionality and compare the values at `v`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[y, g, gen]`. Establish `e2 : evalFr P (fun τ => (x τ).transpose) = g P₀`. Establish `: (eval (fun v : FrVar m => (x v.1).transpose v.2.2 v.2.1) : MvPolynomial (Lt m) K →+* K) = g.comp (eval₂Hom C (fun p : Lt m => x₀ p.1 p.2.1 p.2.2))`. Apply the tactic sequence `ext <;> simp [x, g]`. Unfold `evalFr`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Both sides reduce to the same expression. Establish `hc : (∏ i, b.transpose i i ^ a τ₀ i) = b l l ^ a τ₀ l`. Rewrite using `[Finset.prod_eq_single l]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `i _ hi`. Rewrite using `[Matrix.transpose_apply, hb1 i hi, one_pow]`. Simplify using the standard rewrite rules. Rewrite `key` using `[e0, e1, e2, hc]`. Express the relevant statement in the definitionally equal form `g _ = g _`.
-
-Rewrite using `[map_mul, map_mul, map_pow, map_pow, ← hxM, ← hyd, key, hs]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd : (gen m K τ₀).det ^ a τ₀ l ∣ P` using `(hrel.symm.pow (m := a τ₀ l) (n := a τ₀ l)).dvd_of_dvd_mul_right ⟨_, k3⟩`. Conclude with `(dvd_pow_self _ (by have := ha l; omega)).trans hd`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem det_dvd_of_equivariant : ∀ (K : Type) [Field K] [Infinite K] (B : Type) [Fintype B] [DecidableEq B] (m : B → ℕ) (P : MvPolynomial (FrVar m) K) (a : ∀ b, Fin (m b) → ℕ), (∀ (X : ∀ b, Matrix (Fin (m b)) (Fin (m b)) K) (b : B) (t : Matrix (Fin (m b)) (Fin (m b)) K), (∀ b', (X b').det ≠ 0) → t.det ≠ 0 → t.BlockTriangular id → evalFr P (Function.update X b (X b * t)) = (∏ i, t i i ^ (a b i)) * evalFr P X) → ∀ b : B, (∀ i, 1 ≤ a b i) → ∃ Q : MvPolynomial (FrVar m) K, P = (Matrix.of fun i k : Fin (m b) => (MvPolynomial.X ⟨b, (k, i)⟩ : MvPolynomial (FrVar m) K)).det * Q := by
   intro K _ _ B _ _ m P a hP τ₀ ha

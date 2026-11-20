@@ -4,33 +4,31 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `r g rk Mq V ε hskew hli horth hperp j hj`. Establish `skew : ∀ x y : Fin r → ℚ, x ⬝ᵥ Mq *ᵥ y = -(y ⬝ᵥ Mq *ᵥ x)`. Introduce `x y`. Rewrite using `[dotProduct_mulVec x Mq y, dotProduct_comm y, ← vecMul_transpose, hskew, vecMul_neg, neg_dotProduct, neg_neg]`. Set `Φ : (Fin r → ℚ) →ₗ[ℚ] (Fin g → ℚ)` to `{ toFun := fun x i => x ⬝ᵥ Mq *ᵥ ε i map_add' := by intro x y; funext i; simp [add_dotProduct] map_smul' := by intro c x; funext i; simp [smul_dotProduct] }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hΦ : ∀ x i, Φ x i = x ⬝ᵥ Mq *ᵥ ε i` using `fun _ _ => rfl`. It suffices to establish `h : Pi.single j (1 : ℚ) ∈ V.map Φ by`. Take `⟨x, hx, hxe⟩` from `h`. Use `⟨x, hx, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← hΦ, hxe, Pi.single_apply]`.
+Establish an intermediate fact. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hnot`. Take `⟨f, hfj, hfS⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hnot inferInstance`. Establish `hf0 : ∀ s ∈ V.map Φ, f s = 0`. Introduce `s hs`. Establish `: f s ∈ (V.map Φ).map f` using `Submodule.mem_map_of_mem hs`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[hfS]`. Simplify using `using this`. Use `set a : Fin g → ℚ := fun i => f (Pi.single i 1) with ha`. Establish `hfsum : ∀ s : Fin g → ℚ, f s = ∑ i, a i * s i`. Introduce `s`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [pi_eq_sum_univ s]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, mul_comm]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [ha]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[Pi.single_apply, eq_comm]`. Use `set a' : Fin g → ℚ := fun i => if rk ≤ i.val then a i else 0 with ha'`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hΦlow : ∀ w ∈ V, ∀ i : Fin g, i.val < rk → Φ w i = 0`. Introduce `w hw i hi`. Rewrite using `[hΦ, skew, horth i hi w hw, neg_zero]`. Establish `hsum' : ∀ w ∈ V, ∑ i, a' i * Φ w i = 0`. Introduce `w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `h1 : ∑ i, a' i * Φ w i = ∑ i, a i * Φ w i`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : rk ≤ i.val`. Simplify using `[ha', hi]`. Simplify using `[ha', hi, hΦlow w hw i (by omega)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1, ← hfsum]`. Conclude with `hf0 _ (Submodule.mem_map_of_mem hw)`. Use `set e : Fin r → ℚ := ∑ i, a' i • ε i with he`. Establish `heV : ∀ w ∈ V, e ⬝ᵥ Mq *ᵥ w = 0`. Introduce `w hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, sum_dotProduct]`. Establish `: ∑ i, (a' i • ε i) ⬝ᵥ Mq *ᵥ w = -∑ i, a' i * Φ w i`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_dotProduct, smul_eq_mul, hΦ, skew w, mul_neg, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[this, hsum' w hw, neg_zero]`. Establish `hespan` using `hperp e heV`. Rewrite `hespan` using `[Finsupp.mem_span_image_iff_linearCombination]`. Take `⟨l, hl, hc⟩` from `hespan`. Set `c' : Fin g → ℚ` to `fun i => l i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc' : ∑ i, c' i • ε i = e`. Rewrite using `[← hc, Finsupp.linearCombination_apply, Finsupp.sum_fintype]`. Introduce `i`. Simplify using the standard rewrite rules. Establish `hzero : ∑ i, (a' i - c' i) • ε i = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [sub_smul, Finset.sum_sub_distrib, hc', he, sub_self]`. Use `Fintype.linearIndependent_iff.mp hli _ hzero j` as an intermediate fact. Establish `hcj : c' j = 0` using `(Finsupp.mem_supported' ℚ l).mp hl j (by simp; omega)`. Establish `haj : a' j = a j` using `by simp [ha', hj]`. Rewrite `this` using `[hcj, haj, sub_zero]`.
-
-Conclude with `hfj this`.
+A detailed English derivation is pending.
 -/
 theorem dualV_pairing_exists : ∀ (r g rk : ℕ) (Mq : Matrix (Fin r) (Fin r) ℚ) (V : Submodule ℚ (Fin r → ℚ)) (ε : Fin g → Fin r → ℚ), Mqᵀ = -Mq → LinearIndependent ℚ ε → (∀ i : Fin g, i.val < rk → ∀ w ∈ V, ε i ⬝ᵥ Mq *ᵥ w = 0) → (∀ y : Fin r → ℚ, (∀ w ∈ V, y ⬝ᵥ Mq *ᵥ w = 0) → y ∈ Submodule.span ℚ (ε '' {i | i.val < rk})) → ∀ j : Fin g, rk ≤ j.val → ∃ x ∈ V, ∀ i, x ⬝ᵥ Mq *ᵥ ε i = if i = j then 1 else 0 := by
   intro r g rk Mq V ε hskew hli horth hperp j hj

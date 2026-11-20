@@ -4,7 +4,7 @@ import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 namespace Formalism.L2.SG.Pf.CarrierXAll
 
 /- English proof (translation)
-The claim follows from `Fact.out`.
+A detailed English derivation is pending.
 -/
 theorem kFinDense_holds [Fact Formalism.L2.SG.Pf.CarrierXAll.KFinDense] : KFinDense := Fact.out
 

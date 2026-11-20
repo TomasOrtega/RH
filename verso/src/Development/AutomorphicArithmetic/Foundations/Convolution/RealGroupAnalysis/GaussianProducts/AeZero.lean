@@ -7,15 +7,13 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨hKs, hC⟩` from `UpperTheory.ConvolutionTheory.R2.M.kkCpt F`. Establish `hmem : ∀ x ∈ KK F, ∀ y ∈ KK F, x * y⁻¹ ∈ KK F`. Introduce `x hx y hy`. Rewrite `hx`, `hy`, the goal using `[hKs]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `(UpperTheory.ConvolutionTheory.R2.M.Ks F).mul_mem hx ((UpperTheory.ConvolutionTheory.R2.M.Ks F).inv_mem hy)`. Establish `hnull : ∀ c ∈ KK F, M.κ ((fun x => c * x) ⁻¹' U) = 0`. Introduce `c hc`. Establish `hm : Measurable (fun x : G1 F => c * x)` using `(continuous_const.mul continuous_id).measurable`. Rewrite using `[← Measure.map_apply hm hU.measurableSet, M.κ_left c hc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h0`. Take `⟨t, ht, hcov⟩` from `hC.elim_nhds_subcover (fun x => (fun y => (k * x⁻¹) * y) ⁻¹' U) (by`. Introduce `x hx`. Use `((continuous_const.mul continuous_id).isOpen_preimage _ hU).mem_nhds ?_` and prove the remaining obligations. Simplify using `using hkU)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hK0 : M.κ (KK F) = 0`. Use `measure_mono_null hcov ?_` and prove the remaining obligations. Conclude with `(measure_biUnion_null_iff t.countable_toSet).2 fun x hx => hnull _ (hmem k hk x (ht x hx))`. Use `haveI := M.prob`. Establish `hle : M.κ Set.univ ≤ M.κ (KK F) + M.κ (KK F)ᶜ`.
-
-Rewrite using `[← Set.union_compl_self (KK F)]`. Conclude with `measure_union_le _ _`. Rewrite `hle` using `[hK0, M.supp, measure_univ]`. Simplify using `at hle`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem kappa_ne_zero {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (M : Meas F)
     {U : Set (G1 F)} (hU : IsOpen U) {k : G1 F} (hk : k ∈ KK F) (hkU : k ∈ U) : M.κ U ≠ 0 := by
@@ -45,17 +43,15 @@ private theorem kappa_ne_zero {F : Type} [Field F] [NumberField F] [IsTotallyRea
   simp at hle
 
 /- English proof (translation)
-Introduce `F _ _ _ M u hu h a k hk`. Assume the negation of the conclusion as `hne`. Use `haveI := M.prob`. Establish `hc : ContinuousWithinAt u (Set.univ ×ˢ KK F) (a, k)` using `hu (a, k) ⟨Set.mem_univ _, hk⟩`. Establish `h1 : {p | u p ≠ 0} ∈ 𝓝[Set.univ ×ˢ KK F] (a, k)` using `hc.eventually_ne hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[nhdsWithin_prod_eq, Filter.mem_prod_iff]`. Take `⟨t₁, ht₁, t₂, ht₂, hsub⟩` from `h1`. Rewrite `ht₁` using `[nhdsWithin_univ, mem_nhds_iff]`. Take `⟨V, hVt, hVo, haV⟩` from `ht₁`. Take `⟨U, hUo, hkU, hUt⟩` from `mem_nhdsWithin.1 ht₂`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnull : M.ν (V ×ˢ (U ∩ KK F)) = 0`. Use `measure_mono_null ?_ (ae_iff.1 h)` and prove the remaining obligations. Introduce `p hp`. Conclude with `hsub ⟨hVt hp.1, hUt hp.2⟩`. Establish `hprod : ideleMeasure F V * M.κ (U ∩ KK F) = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Measure.prod_prod]`. Conclude with `hnull`. Establish `hV : ideleMeasure F V ≠ 0` using `hVo.measure_ne_zero _ ⟨a, haV⟩`. Establish `hU : M.κ (U ∩ KK F) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `kappa_ne_zero M hUo hk hkU (measure_mono_null (t := (U ∩ KK F) ∪ (KK F)ᶜ) ?_ ?_)` and prove the remaining obligations. Introduce `x hx`. Distinguish the cases in `hxK : x ∈ KK F`. Conclude with `Or.inl ⟨hx, hxK⟩`. Conclude with `Or.inr hxK`.
-
-Conclude with `measure_union_null h0 M.supp`. Conclude with `(mul_ne_zero hV hU) hprod`.
+Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.aeZero :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (M : Meas F) (u : IdeleGroup F × G1 F → ℂ), ContinuousOn u (Set.univ ×ˢ KK F) → (∀ᵐ p ∂M.ν, u p = 0) →

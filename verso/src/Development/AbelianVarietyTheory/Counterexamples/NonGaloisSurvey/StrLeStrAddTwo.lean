@@ -18,15 +18,15 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Establish `hk : 1 ≤ D.R.k`. Use `D.R.m_add_three_le_k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hn : D.R.k + (i : ℕ) - 1 < D.R.k + (i : ℕ)` using `by omega`. Establish `hlam : Formalism.L2.NTheta.lamAt (D.hc τ) (D.R.k + (i : ℕ) - 1) = -(D.hc τ).b i`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `Formalism.L2.NTheta.lamAt`. Rewrite using `[dif_neg (by omega), dif_pos (by omega)]`. Use `congr 2`. Use `ext`. Simplify using `only`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hc : ((D.R.k + (i : ℕ) - 1 : ℕ) : ℚ) + 1 = ((D.R.k + (i : ℕ) : ℕ) : ℚ)`. Establish `: D.R.k + (i : ℕ) - 1 + 1 = D.R.k + (i : ℕ)` using `by omega`. Conclude with `this` after adjusting the coercions. Establish `hgap` using `(D.hc τ).gap_be i`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 : ℚ) ≤ -(D.hc τ).b i + (D.hc τ).e i - (((D.R.k + (i : ℕ) : ℕ) : ℚ) - (((D.R.k + (i : ℕ) - 1 : ℕ) : ℚ) + 1)) - ((D.R.t : ℚ) + 1) / 2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `Int.floor_pos.2 h1`. Unfold `aPl`. Rewrite using `[if_pos hn, hlam]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem aPl_last_pos (i : Fin D.R.m) (τ : D.what₂.Tau) : 0 < aPl D i (D.R.k + i) τ (D.R.k + i - 1) := by
   have hk : 1 ≤ D.R.k := by
@@ -53,13 +53,13 @@ theorem aPl_last_pos (i : Fin D.R.m) (τ : D.what₂.Tau) : 0 < aPl D i (D.R.k +
   omega
 
 /- English proof (translation)
-Establish `hsub : (Multiset.range n).map Nat.succ ≤ Multiset.range (n + 2)`. Rewrite using `[Multiset.le_iff_subset ((Multiset.nodup_range n).map Nat.succ_injective)]`. Introduce `a ha`. Simplify using `only [Multiset.mem_map, Multiset.mem_range] at ha`. Take `⟨b, hb, rfl⟩` from `ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Multiset.mem_range]`. Use linear arithmetic over natural numbers and integers. Unfold `str`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Multiset.map_map]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `Multiset.map_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Nat.succ_eq_add_one]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ ≤ _ := Multiset.map_le_map hsub`.
+A detailed English derivation is pending.
 -/
 theorem str_le_str_add_two (q : ℕ) (z : ℂ) (n : ℕ) : str q z n ≤ str q z (n + 2) := by
   have hsub : (Multiset.range n).map Nat.succ ≤ Multiset.range (n + 2) := by

@@ -41,7 +41,7 @@ def WC : WordData 2 where
   J2 i := if i = 1 then {501, 0} else {-500, 1}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨0, rfl⟩, by rintro _ ⟨i, rfl⟩; exact le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem WC_isGreatest : IsGreatest (Set.range WC.sz) 500 :=
   ⟨⟨0, rfl⟩, by rintro _ ⟨i, rfl⟩; exact le_rfl⟩

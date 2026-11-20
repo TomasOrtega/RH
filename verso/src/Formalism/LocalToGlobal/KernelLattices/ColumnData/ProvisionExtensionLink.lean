@@ -39,24 +39,24 @@ def LinkExistsBase : Prop :=
     aux₃ D C
 
 /- English proof (translation)
-Introduce `_ _ hcc _ hδ B` and use `SO.stdOK B hcc hδ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem standard_basis_ok_link : LinkStdOK := fun _ _ hcc _ hδ B => SO.stdOK B hcc hδ
 
 /- English proof (translation)
-Introduce `D cc hcc δ hδ B` and use `vector_link_holds D cc hcc δ hδ B (SO.stdOK B hcc hδ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vector_bound_link : LinkVecB :=
   fun D cc hcc δ hδ B => vector_link_holds D cc hcc δ hδ B (SO.stdOK B hcc hδ)
 
 /- English proof (translation)
-Introduce `D cc hcc δ hδ B` and use `theta_link_holds D cc hcc δ hδ B (SO.stdOK B hcc hδ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem theta_bound_link : LinkThB :=
   fun D cc hcc δ hδ B => theta_link_holds D cc hcc δ hδ B (SO.stdOK B hcc hδ)
 
 /- English proof (translation)
-Introduce `D C hA hper h`. Use `eigen_linkage_holds D C hA hper fun cc hcc δ hδ => ?_` and prove the remaining obligations. Take `⟨B, hB⟩` from `h cc hcc δ hδ`. Conclude with `⟨B, SO.stdOK B hcc hδ, hB⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem provision_bound_link : LinkExistsBase := by
   intro D C hA hper h
@@ -83,25 +83,23 @@ def LinkBase : Prop :=
   ∀ D : Car, IsoExists D → IsoPExists D → BaseExists D
 
 /- English proof (translation)
-Take `⟨c1, hc1, c2, hc2, hspan, hind⟩` from `CS.cc_basis D cc hcc`. Use `set w1 := δ * D.host.φ₀ (((c1 : D.host.K) : D.host.E)) with hw1`. Use `set w2 := δ * D.host.φ₀ (((c2 : D.host.K) : D.host.E)) with hw2`. Establish `h1 : w1 ∈ lamOf D cc δ` using `AddSubgroup.subset_closure ⟨c1, hc1, rfl⟩`. Establish `h2 : w2 ∈ lamOf D cc δ` using `AddSubgroup.subset_closure ⟨c2, hc2, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : ∀ w ∈ lamOf D cc δ, ∃ m n : ℤ, w = (m : ℂ) * w1 + (n : ℂ) * w2`. Introduce `w hw`. Take `⟨c, hc, rfl⟩` from `FL.lam_mem D cc δ w hw`. Take `⟨m, n, rfl⟩` from `hspan c hc`. Use `⟨m, n, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((((m : 𝓞 D.host.K) * c1 + (n : 𝓞 D.host.K) * c2 : 𝓞 D.host.K) : D.host.K) : D.host.E) = (m : D.host.E) * ((c1 : D.host.K) : D.host.E) + (n : D.host.E) * ((c2 : D.host.K) : D.host.E)`. Rewrite using `[← CS.coe_intO D m, ← CS.coe_intO D n]`. Both sides reduce to the same expression. Rewrite using `[e, hw1, hw2, map_add, map_mul, map_mul, map_intCast, map_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨w1, h1, w2, h2, hb, ?_⟩` and prove the remaining obligations. Take `⟨p1, q1, e1⟩` from `CS.K_repr D _ (c1 : D.host.K).2`. Take `⟨p2, q2, e2⟩` from `CS.K_repr D _ (c2 : D.host.K).2`. Establish `hφ1 : D.host.φ₀ ((c1 : D.host.K) : D.host.E) = (p1 : ℂ) + (q1 : ℂ) * (Complex.I * (Real.sqrt D.host.d : ℂ))`. Rewrite using `[e1, map_add, map_mul, map_ratCast, map_ratCast, CS.embedding_sqrt_neg_d]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hφ2 : D.host.φ₀ ((c2 : D.host.K) : D.host.E) = (p2 : ℂ) + (q2 : ℂ) * (Complex.I * (Real.sqrt D.host.d : ℂ))`. Rewrite using `[e2, map_add, map_mul, map_ratCast, map_ratCast, CS.embedding_sqrt_neg_d]`. Establish `him : (starRingEnd ℂ w1 * w2).im = Complex.normSq δ * (((p1 * q2 - q1 * p2 : ℚ) : ℝ) * Real.sqrt D.host.d)`. Rewrite using `[hw1, hw2, CS.im_conj_mul, hφ1, hφ2]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [map_add, map_mul, Complex.conj_ofReal, Complex.conj_I, Complex.mul_im, Complex.mul_re, Complex.add_im, Complex.add_re, Complex.ratCast_re, Complex.ratCast_im, Complex.ofReal_re, Complex.ofReal_im, Complex.I_re, Complex.I_im, Complex.neg_re, Complex.neg_im, map_ratCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[him]`. Establish `hsd : 0 < Real.sqrt D.host.d` using `IO.sqrt_d_pos D`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnδ : 0 < Complex.normSq δ` using `Complex.normSq_pos.mpr hδ`. Introduce `h0`. Establish `hpqR : ((p1 * q2 - q1 * p2 : ℚ) : ℝ) = 0`. Break down `mul_eq_zero.mp h0 with h | h` into its components or cases. Conclude with `absurd h hnδ.ne'`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `mul_eq_zero.mp h with h' | h'` into its components or cases. Conclude with `h'`. Conclude with `absurd h' hsd.ne'`. Establish `hpq : p1 * q2 - q1 * p2 = 0` using `by exact_mod_cast hpqR`. Establish `hpqE : (p1 : D.host.E) * q2 - q1 * p2 = 0`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun t : ℚ => (t : D.host.E)) hpq` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Distinguish the cases in `hq : q1 = 0 ∧ q2 = 0`. Establish `r` using `hind p2 (-p1) (by rw [e1, e2, hq.1, hq.2]; push_cast; ring)`.
-
-Establish `hp1 : p1 = 0` using `by linarith [r.2]`. Establish `r2` using `hind 1 0 (by rw [e1, hp1, hq.1]; push_cast; ring)`. Conclude with `one_ne_zero r2.1`. Establish `r` using `hind q2 (-q1) (by rw [e1, e2]; push_cast; linear_combination hpqE)`. Conclude with `hq ⟨by linarith [r.2], r.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lam_basis (D : Car) (cc : Ideal (𝓞 D.host.K)) (hcc : cc ≠ ⊥) (δ : ℂ) (hδ : δ ≠ 0) :
     ∃ w1 ∈ lamOf D cc δ, ∃ w2 ∈ lamOf D cc δ,
@@ -165,19 +163,17 @@ theorem lam_basis (D : Car) (cc : Ideal (𝓞 D.host.K)) (hcc : cc ≠ ⊥) (δ 
     exact hq ⟨by linarith [r.2], r.1⟩
 
 /- English proof (translation)
-Introduce `D cc hcc δ hδ`. Take `⟨w1, h1, w2, h2, hb, hD⟩` from `lam_basis D cc hcc δ hδ`. Establish `hind : LinearIndependent ℝ ![w1, w2]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Complex.real_smul] at hst`. Establish `a1 : (starRingEnd ℂ w1 * ((s : ℂ) * w1 + (t : ℂ) * w2)).im = t * (starRingEnd ℂ w1 * w2).im`. Establish `: starRingEnd ℂ w1 * ((s : ℂ) * w1 + (t : ℂ) * w2) = ((s * Complex.normSq w1 : ℝ) : ℂ) + (t : ℂ) * (starRingEnd ℂ w1 * w2)` using `by push_cast; rw [Complex.normSq_eq_conj_mul_self]; ring`. Rewrite using `[this, Complex.add_im, Complex.ofReal_im, Complex.im_ofReal_mul, zero_add]`. Establish `a2 : (((s : ℂ) * w1 + (t : ℂ) * w2) * starRingEnd ℂ w2).im = -(s * (starRingEnd ℂ w1 * w2).im)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ((s : ℂ) * w1 + (t : ℂ) * w2) * starRingEnd ℂ w2 = (s : ℂ) * starRingEnd ℂ (starRingEnd ℂ w1 * w2) + ((t * Complex.normSq w2 : ℝ) : ℂ)` using `by push_cast; rw [Complex.normSq_eq_conj_mul_self, map_mul, Complex.conj_conj]; ring`. Rewrite using `[this, Complex.add_im, Complex.ofReal_im, Complex.im_ofReal_mul, Complex.conj_im, add_zero]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `a1`, `a2` using `[hst]`. Simplify using `only [mul_zero, zero_mul, Complex.zero_im] at a1 a2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Break down `mul_eq_zero.mp (neg_eq_zero.mp a2.symm) with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hD`. Break down `mul_eq_zero.mp a1.symm with h | h` into its components or cases.
+Prove the components needed by the constructor for the conclusion. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Conclude with `h`. Conclude with `absurd h hD`. Use `⟨⟨w1, w2, hind⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hw`. Take `⟨m, n, rfl⟩` from `PeriodPair.mem_lattice.mp hw`. Establish `e1 : (m : ℂ) * w1 = m • w1` using `by simp`. Establish `e2 : (n : ℂ) * w2 = n • w2` using `by simp`. Use `show (m : ℂ) * w1 + (n : ℂ) * w2 ∈ lamOf D cc δ`.
-
-Rewrite using `[e1, e2]`. Conclude with `add_mem (AddSubgroup.zsmul_mem _ h1 m) (AddSubgroup.zsmul_mem _ h2 n)`. Introduce `hw`. Take `⟨m, n, rfl⟩` from `hb w hw`. Conclude with `PeriodPair.mem_lattice.mpr ⟨m, n, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem period_pair_link : LinkPeriodPair := by
   intro D cc hcc δ hδ
@@ -220,23 +216,21 @@ theorem period_pair_link : LinkPeriodPair := by
     exact PeriodPair.mem_lattice.mpr ⟨m, n, rfl⟩
 
 /- English proof (translation)
-Introduce `D cc hcc δ hδ`. Use `set n : ℕ := Ideal.absNorm cc with hn`. Establish `hodd : Odd n`. Establish `h` using `Nat.Coprime.coprime_mul_right_right hcc.2`. Break down `Nat.even_or_odd n with he | ho` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Establish `h2` using `Nat.dvd_gcd he.two_dvd (dvd_refl 2)`. Rewrite `h2` using `[show Nat.gcd n 2 = 1 from h]`. Use linear arithmetic over natural numbers and integers. Conclude with `ho`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : (n : 𝓞 D.host.K) ∈ cc` using `Ideal.absNorm_mem cc`. Establish `hφ : D.host.φ₀ ((((n : 𝓞 D.host.K)) : D.host.K) : D.host.E) = (n : ℂ)`. Establish `e : ((n : ℕ) : 𝓞 D.host.K) = (((n : ℤ)) : 𝓞 D.host.K)` using `(Int.cast_natCast n).symm`. Rewrite using `[e, CS.coe_intO, map_intCast, Int.cast_natCast]`. Establish `hs : (0 : ℝ) < Real.sqrt D.host.d` using `IO.sqrt_d_pos D`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ ε : ℂ, ε.re = 1 / 2 → ε * (δ * (n : ℂ) / 2) ∉ lamOf D cc δ`. Introduce `ε hε hmem'`. Take `⟨c, -, hc⟩` from `FL.lam_mem D cc δ _ hmem'`. Establish `h1 : D.host.φ₀ ((c : D.host.K) : D.host.E) = ε * (n : ℂ) / 2`. Apply `mul_left_cancel₀ hδ` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hc]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨x, y, -, hxy⟩` from `AR.okc_of D c`. Rewrite `hxy` using `[h1]`. Establish `h2` using `congrArg Complex.re hxy`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l : (ε * (n : ℂ) / 2).re = (n : ℝ) / 4`. Establish `: ε * (n : ℂ) / 2 = (((n : ℝ) / 2 : ℝ) : ℂ) * ε` using `by push_cast; ring`. Rewrite using `[this, Complex.re_ofReal_mul, hε]`. Expand and normalize the polynomial expressions, which then agree. Establish `r : (((x : ℂ) + (y : ℂ) * AR.be D) / 2).re = (x : ℝ) / 2`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((x : ℂ) + (y : ℂ) * AR.be D) / 2 = (((x : ℝ) / 2 : ℝ) : ℂ) + (((y : ℝ) * Real.sqrt D.host.d / 2 : ℝ) : ℂ) * Complex.I` using `by push_cast; ring`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[l, r]`. Establish `h3 : (n : ℤ) = 2 * x`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: (n : ℝ) = 2 * (x : ℝ)` using `by linarith`. Conclude with `this` after adjusting the coercions. Take `⟨j, hj⟩` from `hodd`. Use linear arithmetic over natural numbers and integers. Use `⟨δ * (n : ℂ) / 2, ?_, key _ (by simp), key _ (by simp)⟩` and prove the remaining obligations.
-
-Establish `: 2 * (δ * (n : ℂ) / 2) = δ * D.host.φ₀ ((((n : 𝓞 D.host.K)) : D.host.K) : D.host.E)` using `by rw [hφ]; ring`. Rewrite using `[this]`. Conclude with `AddSubgroup.subset_closure ⟨_, hmem, rfl⟩`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basePointExists : BasePointExists := by
   intro D cc hcc δ hδ
@@ -283,22 +277,22 @@ theorem basePointExists : BasePointExists := by
   exact AddSubgroup.subset_closure ⟨_, hmem, rfl⟩
 
 /- English proof (translation)
-Introduce `D h1 h2 cc hcc δ hδ` and use `Base.nonempty_of cc δ (period_pair_link D cc hcc.1 δ hδ) (basePointExists D cc hcc δ hδ) h1 h2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem base_exists_link : LinkBase :=
   fun D h1 h2 cc hcc δ hδ =>
     Base.nonempty_of cc δ (period_pair_link D cc hcc.1 δ hδ) (basePointExists D cc hcc δ hδ) h1 h2
 
 /- English proof (translation)
-Establish `repr : ∀ x, x = ∑ v, (g x v) • g.symm (Pi.single v 1)`. Introduce `x`. Apply `g.injective` to reduce the goal to its premises. Rewrite using `[map_sum]`. Repeatedly rewrite using `[map_smul, LinearEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use function extensionality and compare the values at `w`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Set `hC : (I → ℂ) →ₗ[ℂ] (I → ℂ)` to `{ toFun := fun c => ∑ v, c v • em (g.symm (Pi.single v 1)) map_add' := by intro a b; simp [add_smul, Finset.sum_add_distrib] map_smul' := by intro a b; simp [Finset.smul_sum, mul_smul] }`. Establish `key : ∀ x, hC (fun w => φ (g x w)) = em x`. Introduce `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_rhs => rw [repr x]`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[hem]`. Both sides reduce to the same expression. Establish `hsurj : Function.Surjective hC`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hspan, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨_, key x⟩`. Establish `hinj : Function.Injective hC` using `LinearMap.injective_iff_surjective.2 hsurj`. Use `⟨(LinearEquiv.ofBijective hC ⟨hinj, hsurj⟩).symm, fun x => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key x]`. Conclude with `LinearEquiv.symm_apply_apply (LinearEquiv.ofBijective hC ⟨hinj, hsurj⟩) _`.
+A detailed English derivation is pending.
 -/
 theorem ext_exists {K E : Type} [Field K] [Field E] [Algebra K E] {I : Type} [Fintype I] [DecidableEq I]
     (g : (Fin 4 → E) ≃ₗ[K] (I → K)) (φ : K →+* ℂ) (em : (Fin 4 → E) →+ (I → ℂ))
@@ -334,9 +328,9 @@ theorem ext_exists {K E : Type} [Field K] [Field E] [Algebra K E] {I : Type} [Fi
 def LinkIsoExt : Prop := ∀ D : Car, Nonempty (IsoK D) → IsoExists D
 
 /- English proof (translation)
-Introduce and unpack `D ⟨γ⟩`. Set `em : (Fin 4 → D.host.E) →+ (Fin 4 × D.what₂.Tau → ℂ)` to `{ toFun := emb4 D map_zero' := by funext w; simp [emb4] map_add' := by intro x y; funext w; simp [emb4] }`. Take `⟨G, hG⟩` from `ext_exists γ.g (D.host.φ₀.comp (algebraMap D.host.K D.host.E)) em (by`. Introduce `k y`. Use function extensionality and compare the values at `w`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show embT D w.2 (k • y w.1) = D.host.φ₀ (algebraMap D.host.K D.host.E k) * embT D w.2 (y w.1)`. Rewrite using `[Algebra.smul_def, map_mul]`. Conclude with `congrArg (· * embT D w.2 (y w.1)) (FL.embT_K D w.2 _ k.2))`. Use the proof step `(span_range_emb4_eq_top D)`. Conclude with `⟨γ, G, hG⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isometry_extension_link : LinkIsoExt := by
   rintro D ⟨γ⟩
@@ -366,9 +360,9 @@ def IsometryExtensionLink : Prop :=
     aux₃ D C
 
 /- English proof (translation)
-Introduce `D C hA hper hΔ hγ hp h`. Use `provision_bound_link D C hA hper fun cc hcc δ hδ => ?_` and prove the remaining obligations. Establish `h0 : δ ≠ 0`. Introduce `e`. Apply `hΔ cc hcc.1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← (show δ ^ 12 = discr (lamOf D cc 1) from hδ), e]`. Evaluate the numerical expressions. Take `⟨B⟩` from `base_exists_link D (isometry_extension_link D hγ) hp cc hcc δ h0`. Conclude with `⟨B, h cc hcc δ hδ B⟩`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem provision_extension_link : IsometryExtensionLink := by
   intro D C hA hper hΔ hγ hp h

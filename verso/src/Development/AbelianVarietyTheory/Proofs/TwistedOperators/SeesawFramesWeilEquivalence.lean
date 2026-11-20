@@ -18,9 +18,9 @@ open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 namespace GlobalTheory.TripleAssembly.Onto
 
 /- English proof (translation)
-Take `⟨hn, A, hA⟩` from `h`. Substitute `hn` using the available equality. Introduce `h0`. Establish `h1 : Aᵀ * M * A.map star = (A.submatrix finSumFinEquiv id)ᵀ * M.submatrix finSumFinEquiv finSumFinEquiv * (A.map star).submatrix finSumFinEquiv id`. Rewrite using `[Matrix.transpose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id]`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `congrArg Matrix.det hA`. Rewrite `h2` using `[h1, Matrix.det_mul, Matrix.det_mul, Matrix.det_submatrix_equiv_self, h0, Matrix.det_fromBlocks_zero₂₁, Matrix.det_neg]`. Simplify using `only [mul_zero, zero_mul, Matrix.det_one, one_mul, mul_one] at h2`. Conclude with `pow_ne_zero _ (neg_ne_zero.2 one_ne_zero) h2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_ne_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hn, A, hA⟩ := h
@@ -36,7 +36,7 @@ theorem det_ne_of_hasSig {n r s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : Glo
   exact pow_ne_zero _ (neg_ne_zero.2 one_ne_zero) h2.symm
 
 /- English proof (translation)
-Introduce `h0`. Use `det_ne_of_hasSig h ?_` and prove the remaining obligations. Establish `: (J.map τ).det = τ J.det` using `(RingHom.map_det τ J).symm`. Rewrite using `[Matrix.det_smul, this, h0, map_zero, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_ne_of_hasSig_map {E : Type} [Field E] {n r s : ℕ} {J : Matrix (Fin n) (Fin n) E} (τ : E →+* ℂ) (c : ℂ)
     (h : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.HasSig (c • J.map τ) r s) : J.det ≠ 0 := by
@@ -46,9 +46,9 @@ theorem det_ne_of_hasSig_map {E : Type} [Field E] {n r s : ℕ} {J : Matrix (Fin
   rw [Matrix.det_smul, this, h0, map_zero, mul_zero]
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `(T.comp S.subtype).exists_leftInverse_of_injective (by`. Rewrite using `[LinearMap.ker_eq_bot']`. Conclude with `fun x hx => Subtype.ext (hT x.1 x.2 hx))`. Use `⟨p.comp (S.subtype.comp r), fun x hx => ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun hr ⟨x, hx⟩` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `r (T x) = ⟨x, hx⟩ at this`. Simplify using `[this]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem exists_factor {U V P : Type} [AddCommGroup U] [Module ℂ U] [AddCommGroup V] [Module ℂ V] [AddCommGroup P]
     [Module ℂ P] (T : U →ₗ[ℂ] V) (S : Submodule ℂ U) (hT : ∀ x ∈ S, T x = 0 → x = 0) (p : U →ₗ[ℂ] P) :
@@ -62,19 +62,17 @@ theorem exists_factor {U V P : Type} [AddCommGroup U] [Module ℂ U] [AddCommGro
   simp [this]
 
 /- English proof (translation)
-Establish `H` using `GlobalTheory.T.weil_model_projection_factorisation σ Y Z M ψ hM P pr N pv s hs`. Establish `hq : ∀ (f : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d)) (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (Fin n × Fin d → Fv F v) → ℂ), (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) → (∀ᶠ v in Filter.cofinite, φ v = M.vac v) → …`. Unfold `liftPure`. Rewrite using `[dif_pos H]`. Conclude with `H.choose_spec`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ (x : P) (ξ : ∀ v, N v), Formalism.MainNotions.KudlaSiegelWeil.Restr s ξ → x ⊗ₜ[ℂ] GlobalTheory.SmallThetaModules.pureT s ξ ∈ (darbAlg M ψ τ).map (liftPure M pr pv s)`. Introduce `x ξ hξ`. Take `⟨f, hf, rfl⟩ : x ∈ (M.Pol ψ τ).map pr` from `hpr ▸ Submodule.mem_top`. Establish `h1 : ∀ v, ∃ φ ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → Fv F v), pv v φ = ξ v ∧ (pv v (M.vac v) = ξ v → φ = M.vac v)`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hv : pv v (M.vac v) = ξ v`. Conclude with `⟨M.vac v, (hM.vac v).1, hv, fun _ => rfl⟩`. Take `⟨φ, hφ, e⟩ : ξ v ∈ (GlobalTheory.WeilM.SB _).map (pv v)` from `(hpv v) ▸ Submodule.mem_top`. Conclude with `⟨φ, hφ, e, fun k => absurd k hv⟩`. Use `choose φ hφ hφ1 hφ2 using h1`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ᶠ v in Filter.cofinite, φ v = M.vac v`. Establish `h3 : ∀ᶠ v in Filter.cofinite, ξ v = s v` using `hξ`. Use `filter_upwards [hs, h3] with v a b using hφ2 v (a.trans b.symm)`. Use `⟨GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ, Submodule.subset_span ⟨f, φ, hf, hφ, h2, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hq f φ hφ h2, funext hφ1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff, ← TensorProduct.span_tmul_eq_top, Submodule.span_le]`. Introduce and unpack `_ ⟨x, y, rfl⟩`. Establish `hy : y ∈ Submodule.span ℂ {z | ∃ ξ, Formalism.MainNotions.KudlaSiegelWeil.Restr s ξ ∧ z = GlobalTheory.SmallThetaModules.pureT s ξ}`. Rewrite using `[GlobalTheory.SmallThetaModules.pureT_span]`. Discharge the goal by the elementary cases of `trivial`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Rewrite using `[SetLike.mem_coe]`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz => obtain ⟨ξ, hξ, rfl⟩ := hz`. Conclude with `key x ξ hξ`. Consider the case `zero => rw [TensorProduct.tmul_zero]`.
-
-Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [TensorProduct.tmul_add]`. Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [TensorProduct.tmul_smul]`. Conclude with `Submodule.smul_mem _ c ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem map_darbAlg_eq_top {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {Z : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d} (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Z)
@@ -121,11 +119,11 @@ theorem map_darbAlg_eq_top {F E : Type} [Field F] [NumberField F] [Field E] [Num
   | smul c a _ ha => rw [TensorProduct.tmul_smul]; exact Submodule.smul_mem _ c ha
 
 /- English proof (translation)
-Establish `H : ∃ q : (Matrix (Fin d) (Fin m) (AE D) → ℂ) →ₗ[ℂ] P, ∀ Ψ ∈ S, q (GlobalTheory.TripleRead.thO Mo ψ G e Ψ) = pD Ψ`. Take `⟨q, hq⟩` from `exists_factor T S (fun x hx => hinj x (hS hx)) pD`. Conclude with `⟨q, fun Ψ hΨ => by rw [← hT Ψ (hS hΨ)]; exact hq Ψ hΨ⟩`. Establish `hq : ∀ Ψ ∈ S, thetaLift Mo ψ G e S pD (T Ψ) = pD Ψ`. Introduce `Ψ hΨ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hT Ψ (hS hΨ)]`. Unfold `thetaLift`. Rewrite using `[dif_pos H]`. Conclude with `H.choose_spec Ψ hΨ`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨Ψ, hΨ, rfl⟩, rfl⟩`. Conclude with `⟨Ψ, hΨ, (hq Ψ hΨ).symm⟩`. Introduce and unpack `⟨Ψ, hΨ, rfl⟩`. Conclude with `⟨T Ψ, ⟨Ψ, hΨ, rfl⟩, hq Ψ hΨ⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_thetaLift {D : D7} {m k d : ℕ} {Y : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E m}
     {Z : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E k}
@@ -154,17 +152,17 @@ theorem map_thetaLift {D : D7} {m k d : ℕ} {Y : GlobalTheory.IndefiniteRowSide
     exact ⟨T Ψ, ⟨Ψ, hΨ, rfl⟩, hq Ψ hΨ⟩
 
 /- English proof (translation)
-Introduce `hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hA hB e Bs Γ Xc om om' h tA tB R Rf hm`. Take `⟨iA, iB⟩` from `GlobalTheory.T.seesaw_weil_factorization hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hA hB e Bs Γ Xc om om' h tA tB R Rf hm`. Establish `hg` using `hm.triple.geo`. Establish `hψ' : Bs.ψ = ψ` using `h.ψ`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `hψ' ▸ hm.triple.base.std`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w⟩ : Nonempty (InfinitePlace D.host.F)` from `inferInstance`. Establish `dV : Γ.V.J.det ≠ 0` using `det_ne_of_hasSig_map (Bs.emb w).1 1 (by rw [one_smul]; exact hg.hV.sig w)`. Establish `dV' : Γ.V'.J.det ≠ 0` using `det_ne_of_hasSig_map (Bs.emb w).1 1 (by rw [one_smul]; exact hg.hV'.sig w)`. Establish `dW : Γ.W.J.det ≠ 0` using `det_ne_of_hasSig_map (Bs.emb w).1 Complex.I (hg.hW.sig w)`. Establish `gA : (sgn true W).gram.det ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (sgn true W).gram = -W.gram` using `rfl`. Rewrite `dV` using `[h.JW, one_smul]`. Rewrite using `[e1, Matrix.det_neg]`. Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) dV`. Establish `gB : (sgn false W₁).gram.det ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (sgn false W₁).gram = W₁.gram` using `rfl`. Rewrite `dV'` using `[h.JW₁, Matrix.det_smul]`. Rewrite using `[e1]`. Conclude with `right_ne_zero_of_mul dV'`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨T, hT, hinj⟩` from `GlobalTheory.T.thetaTransform_darbouxModel_linear_injective D Γ.M ψ (sgn true W).gram e (hψ' ▸ hg.hM) hstd dV dW gA`. Rewrite using `[← iA T hT]`. Use `(map_thetaLift Γ.M ψ _ e _ _ (GlobalTheory.T.darbouxModelAlgebraicVectors_le_adelicSchwartz _ _ _ Γ.M Bs.ψ Bs.emb hg.hM) T hT hinj).trans ?_` and prove the remaining obligations. Conclude with `map_darbAlg_eq_top Γ.M Bs.ψ Bs.emb hg.hM R.p Rf.p _ (Filter.Eventually.of_forall fun _ => rfl) hm.real.quot.onto hm.fin.onto`. Take `⟨T, hT, hinj⟩` from `GlobalTheory.T.thetaTransform_darbouxModel_linear_injective D Γ.M' ψ (sgn false W₁).gram e (hψ' ▸ hg.hM') hstd dV' dW gB`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← iB T hT]`. Use `(map_thetaLift Γ.M' ψ _ e _ _ (GlobalTheory.T.darbouxModelAlgebraicVectors_le_adelicSchwartz _ _ _ Γ.M' Bs.ψ Bs.emb hg.hM') T hT hinj).trans ?_` and prove the remaining obligations. Use `map_darbAlg_eq_top Γ.M' Bs.ψ Bs.emb hg.hM' R.p' Rf.p' _ ?_ hm.real.quot'.onto hm.fin.onto'` and prove the remaining obligations. Use `filter_upwards [Xc.T.eventually_cofinite_notMem] with v hv using (hm.fin.sph v hv).1.symm`.
+A detailed English derivation is pending.
 -/
 theorem map_algF_eq_top : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

@@ -10,26 +10,26 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
 /- English proof (translation)
-Simplify using `[rt, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dot_rt {n : ℕ} (x : Wt n) (a b : Fin n) : ∑ c, x c * rt a b c = x a - x b := by
   simp [rt, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `[mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dot_add {n : ℕ} (x u v : Wt n) :
     ∑ c, x c * (u + v) c = ∑ c, x c * u c + ∑ c, x c * v c := by
   simp [mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Introduce `c`. Establish `h` using `LinearMap.congr_fun (hg c c a b) y`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h`. Rewrite `h` using `[hy c, map_smul, sub_eq_iff_eq_add]`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases hca : c = a <;> by_cases hcb : c = b`. Substitute `hca` using the available equality. Substitute `hcb` using the available equality. Simplify using `[rt]`. Substitute `hca` using the available equality.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `[rt, Pi.single_apply, hcb, Ne.symm hcb, add_smul]`. Normalize the expressions using the abelian group laws. Substitute `hcb` using the available equality. Simplify using `[rt, Pi.single_apply, hca, Ne.symm hca, add_smul, sub_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Substitute using the available equality. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `[rt, Pi.single_apply, hca, hcb, Ne.symm hcb]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem wt_shift {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {F : Fin n → Fin n → Module.End ℂ V} (hg : GlRel F) {μ : Wt n} {y : V}
@@ -51,9 +51,9 @@ private theorem wt_shift {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
   · simp [rt, Pi.single_apply, hca, hcb, Ne.symm hcb]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => simpa [Formalism.REAL.ew] using hx`. Consider the case `cons p w ih`. Establish `h` using `wt_shift hg ih p.1 p.2`. Rewrite using `[Formalism.REAL.ew.eq_2]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [List.map_cons, List.sum_cons, Module.End.mul_apply]`. Rewrite using `[show ∀ u v : Wt n, μ + (u + v) = (μ + v) + u from fun u v => by abel]` and apply the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem wt_word {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {F : Fin n → Fin n → Module.End ℂ V} (hg : GlRel F) {μ : Wt n} {x : V}
@@ -68,9 +68,9 @@ private theorem wt_word {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     rwa [show ∀ u v : Wt n, μ + (u + v) = (μ + v) + u from fun u v => by abel]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => simp`. Consider the case `cons p w ih`. Establish `hp` using `hw p (by simp)`. Establish `ih'` using `ih (fun q hq => hw q (by simp [hq]))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [List.map_cons, List.sum_cons]`. Rewrite using `[show ∀ u v : Wt n, ν + (u + v) = (ν + v) + u from fun u v => by abel, dot_add, dot_rt]`. Use `hx hp.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem maj_word {n : ℕ} (ν x : Wt n) (hx : Antitone x) (w : List (Fin n × Fin n))
     (hw : ∀ p ∈ w, p.2 < p.1) :
@@ -86,9 +86,9 @@ private theorem maj_word {n : ℕ} (ν x : Wt n) (hx : Antitone x) (w : List (Fi
     linarith
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [Formalism.REAL.rhoC, rhoV]`. Simplify using `only [and_true, Finset.filter_lt_eq_Ioi, Finset.filter_gt_eq_Iio, Fin.card_Ioi, Fin.card_Iio]`. Establish `ha` using `a.isLt`. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem rhoC_true (n : ℕ) : Formalism.REAL.rhoC (fun _ : Fin n => true) = rhoV n := by
   funext a
@@ -100,13 +100,13 @@ private theorem rhoC_true (n : ℕ) : Formalism.REAL.rhoC (fun _ : Fin n => true
   ring
 
 /- English proof (translation)
-Simplify using `[Formalism.REAL.nsq, Formalism.REAL.dot, nsq, sq]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem nsq_eq {n : ℕ} (u : Fin n → ℝ) : Formalism.REAL.nsq u = nsq u := by
   simp [Formalism.REAL.nsq, Formalism.REAL.dot, nsq, sq]
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `: ((a : ℕ) : ℝ) ≤ ((b : ℕ) : ℝ)` using `by exact_mod_cast hab`. Simplify using `only [rhoV]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem rhoV_anti (n : ℕ) : Antitone (rhoV n) := by
   intro a b hab
@@ -115,35 +115,33 @@ private theorem rhoV_anti (n : ℕ) : Antitone (rhoV n) := by
   linarith
 
 /- English proof (translation)
-Introduce `n V _ _ F hF S hS hst ν hν`. Establish `hK : Formalism.REAL.KRel (fun _ : Fin n => true) F` using `Formalism.REAL.glRel_kRel _ F hF.gl`. Establish `hU : Formalism.REAL.KUnit (fun _ : Fin n => true) F` using `fun a b _ x y => hF.unit a b x y`. Establish `hSt : Formalism.REAL.KStable (fun _ : Fin n => true) F S` using `fun a b _ x hx => hst a b x hx`. Take `⟨m, x, μ, hx, horth, hsup⟩` from `Formalism.REAL.kDecomp V n (fun _ => true) F S hS hK hU hSt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hμ : ∀ i, μ i = ν`. Introduce `i`. Assume the negation of the conclusion as `h`. Establish `h0` using `hν (μ i) h`. Establish `hi : x i ∈ hw F (μ i) ⊓ S` using `Submodule.mem_inf.mpr ⟨(hx i).2.2, (hx i).1⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hi` using `[h0]`. Conclude with `(hx i).2.1 ((Submodule.mem_bot ℂ).mp hi)`. Establish `hC : ∀ y ∈ S, Cas F y = ((nsq (ν + rhoV n) - nsq (rhoV n) : ℝ) : ℂ) • y`. Establish `hCas : Formalism.REAL.CasK (fun _ : Fin n => true) F = Cas F`. Simplify using `[Formalism.REAL.CasK, Formalism.REAL.Cas]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hck : Formalism.REAL.ckv (fun _ : Fin n => true) ν = nsq (ν + rhoV n) - nsq (rhoV n)`. Simplify using `only [Formalism.REAL.ckv, rhoC_true, nsq_eq]`. Introduce `y hy`. Rewrite `hy` using `[← hsup]`. Use `Submodule.iSup_induction _ (motive := fun y => Cas F y = ((nsq (ν + rhoV n) - nsq (rhoV n) : ℝ) : ℂ) • y) hy ?_ ?_ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i z hz`. Establish `hz'` using `Formalism.REAL.kCasSpan V n _ F (μ i) (x i) hK (hx i).2.2 z hz`. Rewrite `hz'` using `[hCas, hμ i, hck]`. Conclude with `hz'`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b ha hb`. Rewrite using `[map_add, ha, hb, smul_add]`. Establish `hM : ∀ μ', wsp F μ' ⊓ S ≠ ⊥ → Maj μ' ν`. Introduce `μ' hne`. Assume the negation of the conclusion as `hnot`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hne` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `y hy`. Take `⟨hyw, hyS⟩` from `Submodule.mem_inf.mp hy`. Rewrite using `[Submodule.mem_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : S ≤ LinearMap.ker (innerₛₗ ℂ y)`. Rewrite using `[← hsup]`. Apply `iSup_le` to reduce the goal to its premises. Introduce `i`. Rewrite using `[(Formalism.REAL.kLow V n _ F (μ i) (x i) hK (hx i).2.2).1, Formalism.REAL.lowSpan, Submodule.span_le]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `z ⟨w, hwl, rfl⟩`. Establish `hwt` using `wt_word hF.gl (hx i).2.2.1 w`. Rewrite `hwt` using `[hμ i]`. Establish `hne' : μ' ≠ ν + (w.map fun p => rt p.1 p.2).sum`. Introduce and unpack `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hnot (fun t ht => maj_word ν t ht w (fun p hp => (hwl p hp).2))`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, innerₛₗ_apply_apply]`. Conclude with `Formalism.REAL.kWtOrth V n _ F μ' _ y _ hU hyw hwt hne'`. Establish `h0` using `hle hyS`. Rewrite `h0` using `[LinearMap.mem_ker, innerₛₗ_apply_apply, inner_self_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `h0`. Use `⟨hC, hM, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Take `⟨hyw, hyS⟩` from `Submodule.mem_inf.mp hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hk : KHighest (fun _ : Fin n => true) F ν y`. Use `⟨hyw, ?_⟩` and prove the remaining obligations. Introduce `a b hab _`. Assume the negation of the conclusion as `hne`. Establish `hmem : F a b y ∈ wsp F (ν + rt a b) ⊓ S` using `Submodule.mem_inf.mpr ⟨wt_shift hF.gl hyw a b, hst a b y hyS⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hM'` using `hM (ν + rt a b) (by`. Introduce `h`. Rewrite `hmem` using `[h]`. Conclude with `hne ((Submodule.mem_bot ℂ).mp hmem))`. Establish `h1` using `hM' (rhoV n) (rhoV_anti n)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h1` using `[dot_add, dot_rt]`. Establish `hlt : (a : ℝ) < (b : ℝ)` using `by exact_mod_cast hab`. Establish `h2 : rhoV n b < rhoV n a`. Simplify using `only [rhoV]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Submodule.mem_inf.mpr ⟨hk, hyS⟩`. Introduce `y hy`. Take `⟨h1, h2⟩` from `Submodule.mem_inf.mp hy`. Conclude with `Submodule.mem_inf.mpr ⟨(show KHighest (fun _ : Fin n => true) F ν y from h1).1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.isoFacts :
     ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (F : Fin n → Fin n → Module.End ℂ V), UF F → ∀ S : Submodule ℂ V, FiniteDimensional ℂ S → Stb F S → ∀ ν : Wt n, (∀ μ, μ ≠ ν → hw F μ ⊓ S = ⊥) →

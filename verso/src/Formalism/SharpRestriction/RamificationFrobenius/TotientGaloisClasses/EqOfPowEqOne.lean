@@ -14,7 +14,7 @@ variable {e q d : ℕ} (hH : HostHyp q d) {L : Type} [Field L] [NumberField L] {
   (h : IsLayer (e + 2) q d ζ a b)
 
 /- English proof (translation)
-Establish `: Fact p.Prime` using `⟨hp⟩`. Take `⟨⟨P, h1, h2⟩⟩ : Nonempty ((span {(p : ℤ)}).primesOver (𝓞 M))` from `inferInstance`. Conclude with `⟨P, h1, h2, (odd_intCast_mem_iff p P _).mpr dvd_rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_prime_mem (M : Type) [Field M] [NumberField M] (p : ℕ) (hp : p.Prime) :
     ∃ P : Ideal (𝓞 M), P.IsPrime ∧ P.LiesOver (span {(p : ℤ)}) ∧ ((p : ℤ) : 𝓞 M) ∈ P := by
@@ -23,11 +23,11 @@ theorem exists_prime_mem (M : Type) [Field M] [NumberField M] (p : ℕ) (hp : p.
   exact ⟨P, h1, h2, (odd_intCast_mem_iff p P _).mpr dvd_rfl⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h1` using `geom_sum₂_mul x y m`. Rewrite `h1` using `[hx, hy, sub_self, mul_eq_zero, sub_eq_zero]`. Establish `h2` using `congrArg (Ideal.Quotient.mk P) (h1.resolve_right hne)`. Establish `h3 : Ideal.Quotient.mk P x = Ideal.Quotient.mk P y` using `Ideal.Quotient.eq.mpr hxy`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[RingHom.map_geom_sum₂, h3, geom_sum₂_self, map_zero, ← map_pow, ← map_natCast (Ideal.Quotient.mk P), ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Break down `hP.mem_or_mem h2 with h4 | h4` into its components or cases. Conclude with `hm h4`. Establish `h5 : y ∈ P` using `hP.mem_of_pow_mem _ h4`. Establish `hm0 : m ≠ 0` using `by rintro rfl; exact hm (by simp)`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6` using `P.pow_mem_of_mem h5 m (Nat.pos_of_ne_zero hm0)`. Rewrite `h6` using `[hy]`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one P).mpr h6)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_pow_eq_one {S : Type*} [CommRing S] [IsDomain S] (P : Ideal S) [hP : P.IsPrime] {m : ℕ} (hm : (m : S) ∉ P)
     {x y : S} (hx : x ^ m = 1) (hy : y ^ m = 1) (hxy : x - y ∈ P) : x = y := by
@@ -49,7 +49,7 @@ theorem eq_of_pow_eq_one {S : Type*} [CommRing S] [IsDomain S] (P : Ideal S) [hP
 include hH h
 
 /- English proof (translation)
-Establish `: Fact d.Prime` using `⟨hH.2.1⟩`. Take `⟨Q, hQp, hQl, -⟩` from `exists_prime_mem L d hH.2.1`. Establish `hge` using `Mu.mu_le_ram d Q (d - 1) (Mu.mu_mem_pow d Q η hη)`. Establish `hd` using `hH.2.2.2.1`. Establish `hle` using `(Mu.mu_ram_bound hH.toHypOdd h d (by omega) Q).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -62,15 +62,15 @@ theorem no_root_d (η : L) (hη : IsPrimitiveRoot η d) : False := by
   omega
 
 /- English proof (translation)
-Take `⟨n, hn, hxn⟩` from `hx`. Establish `hfin : IsOfFinOrder x` using `isOfFinOrder_iff_pow_eq_one.2 ⟨n, hn, hxn⟩`. Establish `hmpos : 0 < orderOf x` using `orderOf_pos_iff.2 hfin`. Establish `hprim : IsPrimitiveRoot x (orderOf x)` using `IsPrimitiveRoot.orderOf x`. Establish `hd : ¬ d ∣ orderOf x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨k, hk⟩`. Establish `hη : IsPrimitiveRoot (x ^ k) d` using `hprim.pow hmpos (by rw [hk, mul_comm])`. Conclude with `no_root_d hH h _ (hη.map_of_injective (algebraMap (hostE ζ a b) L).injective)`. Establish `: Fact d.Prime` using `⟨hH.2.1⟩`. Take `⟨P, hPp, hPl, -⟩` from `exists_prime_mem (hostE ζ a b) d hH.2.1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hin` using `((hostInertia e q d hH L ζ a b h σ).2.2 P).mpr (Or.inr hσ)`. Establish `hint : IsIntegral ℤ x` using `hprim.isIntegral hmpos`. Set `X : 𝓞 (hostE ζ a b)` to `⟨x, hint⟩`. Establish `hX : X ^ orderOf x = 1`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: ((X ^ orderOf x : 𝓞 (hostE ζ a b)) : hostE ζ a b) = (X : hostE ζ a b) ^ orderOf x` using `by push_cast; rfl`. Rewrite using `[this]`. Conclude with `hprim.pow_eq_one`. Establish `hX' : (σ • X) ^ orderOf x = 1` using `by rw [← smul_pow', hX, smul_one]`. Establish `hm : ((orderOf x : ℕ) : 𝓞 (hostE ζ a b)) ∉ P`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h1` using `(odd_intCast_mem_iff d P ((orderOf x : ℕ) : ℤ)).mp (by exact_mod_cast h0)`. Conclude with `hd (by exact_mod_cast h1)`. Use `eq_of_pow_eq_one P hm hX' hX (hin X)` as an intermediate fact. Conclude with `congrArg (fun y : 𝓞 (hostE ζ a b) => (y : hostE ζ a b)) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iod_fix (σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) (hσ : galE e ζ a b σ = ((1, -1), 1)) (x : hostE ζ a b)
     (hx : ∃ m : ℕ, 0 < m ∧ x ^ m = 1) : σ x = x := by
@@ -101,7 +101,7 @@ theorem iod_fix (σ : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) (hσ : galE e ζ a 
   exact congrArg (fun y : 𝓞 (hostE ζ a b) => (y : hostE ζ a b)) this
 
 /- English proof (translation)
-Take `⟨n, hn, hxn⟩` from `hx`. Set `ψ : hostE ζ a b →+* ℂ` to `Classical.choice inferInstance`. Apply `ψ.injective` to reduce the goal to its premises. Establish `h1 : ‖ψ x‖ = 1` using `Complex.norm_eq_one_of_pow_eq_one (by rw [← map_pow, hxn, map_one]) hn.ne'`. Rewrite using `[map_mul, conjE_apply, Complex.mul_conj', h1, map_one]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -114,17 +114,17 @@ theorem conj_mul_self (x : hostE ζ a b) (hx : ∃ m : ℕ, 0 < m ∧ x ^ m = 1)
   simp
 
 /- English proof (translation)
-Establish `hqd` using `hH.toHypOdd`. Use `hostE_isGalois hqd h` as an intermediate fact. Establish `: IsGalois (KinE ζ a b) (hostE ζ a b)` using `IsGalois.tower_top_of_isGalois ℚ _ _`. Take `⟨ι, hι⟩` from `exists_galE_eq hqd h (((1, -1), 1) : FrobeniusOrbits.GG e)`. Use `set s₀ := conjE hqd h * ι with hs₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg : galE e ζ a b s₀ = sg e`. Rewrite using `[hs₀, galE_mul hqd h, galE_conjE, hι]`. Conclude with `Prod.ext (show c0 * ((1, -1) : G0) = (-1, 1) by decide) (mul_one _)`. Establish `hΨ : galE e ζ a b s₀ ∈ Psi e` using `by rw [hg]; rfl`. Set `s : hostE ζ a b ≃ₐ[KinE ζ a b] hostE ζ a b` to `AlgEquiv.ofRingEquiv (f := s₀.toRingEquiv) (fun y => Formalism.HermitianLattices.FiltrationBoundaryCriterion.PfN.fixK s₀ hΨ y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ y, s y = s₀ y` using `fun _ => rfl`. Establish `hsx : x * s x = 1`. Rewrite using `[hs, hs₀, AlgEquiv.mul_apply, iod_fix hH h ι hι x hx]`. Conclude with `conj_mul_self hH h x hx`. Establish `hss0 : s₀ * s₀ = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `galE_injective (e := e) hqd h` to reduce the goal to its premises. Rewrite using `[galE_mul hqd h, hg, galE_one hqd h]`. Conclude with `Prod.ext (show ((-1, 1) : G0) * (-1, 1) = 1 by decide) (mul_one _)`. Establish `hss : s * s = 1` using `AlgEquiv.ext fun y => DFunLike.congr_fun hss0 y`. Establish `hs1 : s ≠ 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h1`. Establish `h2 : s₀ = 1` using `AlgEquiv.ext fun y => DFunLike.congr_fun h1 y`. Rewrite `hg` using `[h2, galE_one hqd h]`. Conclude with `absurd (congrArg (fun g : FrobeniusOrbits.GG e => g.1) hg) (show ¬ (1 : G0) = (-1, 1) by decide)`. Apply `(algebraMap (KinE ζ a b) (hostE ζ a b)).injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.norm_eq_prod_automorphisms, map_one]`. Use `Finset.prod_involution (fun σ _ => σ * s) (fun σ _ => ?_) (fun σ _ _ => ?_) (fun _ _ => Finset.mem_univ _) (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[AlgEquiv.mul_apply, ← map_mul, hsx, map_one]`. Conclude with `fun h1 => hs1 (mul_eq_left.mp h1)`. Rewrite using `[mul_assoc, hss, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem norm_mu (x : hostE ζ a b) (hx : ∃ m : ℕ, 0 < m ∧ x ^ m = 1) : Algebra.norm (KinE ζ a b) x = 1 := by
   classical
@@ -162,7 +162,7 @@ theorem norm_mu (x : hostE ζ a b) (hx : ∃ m : ℕ, 0 < m ∧ x ^ m = 1) : Alg
   · rw [mul_assoc, hss, mul_one]
 
 /- English proof (translation)
-Take `⟨P2, h2, -, m2⟩` from `exists_prime_mem (KinE ζ a b) 2 Nat.prime_two`. Take `⟨Pq, hq, -, mq⟩` from `exists_prime_mem (KinE ζ a b) q hH.1`. Take `⟨B, h1, -, h3, h4, -⟩` from `Formalism.HermitianLattices.FiltrationBoundaryCriterion.PfN.principalStable e q d hH L ζ a b h c hc P2 Pq h2 hq (by exact_mod_cast m2) mq`. Conclude with `⟨B, h1, h3, h4⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem principal_stable (c : hostE ζ a b ≃ₐ[ℚ] hostE ζ a b) (hc : galE e ζ a b c = cc e) :
     ∃ 𝔟 : Ideal (𝓞 (hostE ζ a b)),

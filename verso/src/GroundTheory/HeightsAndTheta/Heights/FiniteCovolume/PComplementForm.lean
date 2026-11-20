@@ -13,14 +13,14 @@ variable {W : Type*} [AddCommGroup W] [Module E W]
 namespace ComplementForm
 
 /- English proof (translation)
-The claim follows from `LinearMap.isSymm_def.1 h.isSymm x y`.
+A detailed English derivation is pending.
 -/
 theorem conj_apply (h : HermitianForm F E W) (x y : W) :
     conjHom F E (h.toSesq x y) = h.toSesq y x :=
   LinearMap.isSymm_def.1 h.isSymm x y
 
 /- English proof (translation)
-Rewrite using `[← conj_apply h v w, hp.2.2, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_w_v {h : HermitianForm F E W} {v w : W} (hp : IsHyperbolicPair h v w) :
     h.toSesq w v = 1 := by
@@ -42,14 +42,14 @@ theorem proj_apply (h : HermitianForm F E W) (v w : W) (hp : IsHyperbolicPair h 
     (proj h v w hp x : W) = x - h.toSesq w x • v - h.toSesq v x • w := rfl
 
 /- English proof (translation)
-Rewrite using `[proj_apply]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem eq_add_proj (h : HermitianForm F E W) (v w : W) (hp : IsHyperbolicPair h v w) (x : W) :
     x = h.toSesq w x • v + (proj h v w hp x : W) + h.toSesq v x • w := by
   rw [proj_apply]; abel
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `mem_hypComplement.1 x.2`. Use `ext`. Rewrite using `[proj_apply, h1, h2, zero_smul, zero_smul, sub_zero, sub_zero]`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_of_mem (h : HermitianForm F E W) (v w : W) (hp : IsHyperbolicPair h v w)
     (x : hypComplement h v w) : proj h v w hp x = x := by
@@ -110,7 +110,7 @@ def form (h : HermitianForm F E W) (v w : W) (hp : IsHyperbolicPair h v w) :
 end ComplementForm
 
 /- English proof (translation)
-Introduce `v w hp` and use `⟨ComplementForm.form h v w hp, fun _ _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ComplementForm.proof (h : HermitianForm F E W) : ComplementForm.Statement h :=
   fun v w hp => ⟨ComplementForm.form h v w hp, fun _ _ => rfl⟩

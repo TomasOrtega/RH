@@ -15,7 +15,7 @@ variable {K L : FiniteSubfield} [Fact (K ≤ L)] {S : Set (HeightOneSpectrum (�
   (hL : ∀ x : L.1, algebraMap L.1 ℚ̄ x ∈ maxUnramifiedOutside K.1 ℚ̄ S)
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_congr rfl fun i _ => h i, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_eq_card_mul_sub {ι : Type*} [Fintype ι] (a b : ι → ℤ) (m : ℤ) (h : ∀ i, a i = m - b i) :
     ∑ i, a i = Fintype.card ι * m - ∑ i, b i := by
@@ -24,11 +24,11 @@ theorem sum_eq_card_mul_sub {ι : Type*} [Fintype ι] (a b : ι → ℤ) (m : �
 open scoped Classical in
 
 /- English proof (translation)
-Establish `: Normal K.1 L.1` using `normal_of_gsOpenSubgroup_normal hL hPn`. Establish `hΓ : Nat.Coprime (Nat.card (L.1 ≃ₐ[K.1] L.1)) ℓ` using `by rw [card_gal_eq_index hL]; exact hcop`. Use `finite_modN_AA (ℓ := ℓ) hL 0 (by norm_num)` as an intermediate fact. Use `finite_torsN_AA (ℓ := ℓ) hL 0 (by norm_num)` as an intermediate fact. Use `finite_modN_AA (ℓ := ℓ) hL 1 le_rfl` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `finite_torsN_AA (ℓ := ℓ) hL 1 le_rfl` as an intermediate fact. Establish `e0` using `h0_eq hL hζ M hM hΓ hℓS hcop`. Establish `e1` using `finrank_H1_euler_formula hL hζ M hM hΓ hℓS hcop`. Establish `e2` using `finrank_H2_euler_formula hL hζ M hM hΓ hℓS hcop hK`. Establish `u0` using `S_units_euler_difference hL (dN hL hζ M hM hΓ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u1` using `class_group_mod_eq_torsion hL (dN hL hζ M hM hΓ)`. Establish `ei` using `dInf_eq hL hζ M hM hΓ ιr hℓS`. Establish `hsr` using `sum_eq_card_mul_sub (fun v : {v : InfinitePlace K.1 // v.IsReal} => (Module.finrank (ZMod ℓ) (cohomology (Rep.res (gsRealFamily S ιr v).toMonoidHom M) 0) : ℤ)) (fun v : {v : InfinitePlace K.1 // v.IsReal} => (Module.finrank (ZMod ℓ) (Representation.invariants ((nRep hL hζ M hM).c …`. Establish `hc : (Fintype.card (InfinitePlace K.1) : ℤ) = Fintype.card {v : InfinitePlace K.1 // v.IsReal} + Fintype.card {v : InfinitePlace K.1 // v.IsComplex}` using `by exact_mod_cast card_infinitePlace_eq K`. Take the linear combination `e0 - e1 + e2 - hsr + (Module.finrank (ZMod ℓ) M : ℤ) * hc - u0 + u1 - ei`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem altSum [Finite S] (hℓS : ∀ v ∉ S, ((ℓ : ℕ) : 𝓞 K.1) ∉ v.asIdeal)
     (hPn : (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).Normal)

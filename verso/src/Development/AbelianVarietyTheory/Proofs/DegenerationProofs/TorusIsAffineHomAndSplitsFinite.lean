@@ -12,11 +12,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ T _ hT`. Take `⟨Ω, _, _, X, _, _, _, e, he⟩` from `hT.splits`. Establish `hflat : Flat (Spec.map (CommRingCat.ofHom (algebraMap k Ω)))` using `Flat.SpecMap_iff.2 (RingHom.flat_algebraMap_iff.2 inferInstance)`. Establish `hsurj : Surjective (Spec.map (CommRingCat.ofHom (algebraMap k Ω)))` using `⟨fun x => ⟨(default : Spec (.of Ω)), Subsingleton.elim (α := Spec (.of k)) _ _⟩⟩`. Establish `haff : IsAffineHom T.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isAffineHom_of_isAffineHom_pullback_snd_of_fpqc _ _ _ T.hom _ hsurj hflat inferInstance ?_` and prove the remaining obligations. Establish `: IsIso e.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map e.hom))`. Establish `h : IsAffineHom (e.hom.left ≫ (splitTorus (Spec (.of Ω)) X).hom)` using `inferInstance`. Rewrite `h` using `[Over.w]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨haff, ?_⟩` and prove the remaining obligations. Take `⟨k', _, _, _, e', he'⟩` from `IsoFinite.exists_finite_iso k Ω T (splitTorus (Spec (.of k)) X) haff inferInstance hT.finiteType inferInstance ⟨e ≪≫ (Diag.baseChangeIso _ X).symm, inferInstanceAs (IsMonHom (e.hom ≫ (Diag.baseChangeIso _ X).inv))⟩`. Conclude with `⟨k', inferInstance, inferInstance, inferInstance, X, inferInstance, inferInstance, inferInstance, e' ≪≫ Diag.baseChangeIso _ X, inferInstanceAs (IsMonHom (e'.hom ≫ (Diag.baseChangeIso _ X).hom))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem torus_isAffineHom_and_splits_finite : NaSt.{0} := by
   intro k _ T _ hT

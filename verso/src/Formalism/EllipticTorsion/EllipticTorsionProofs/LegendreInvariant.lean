@@ -3,7 +3,7 @@ import Formalism.EllipticTorsion.Statement
 namespace Formalism.ELL
 
 /- English proof (translation)
-Introduce `K _ l`. Apply the tactic sequence `refine ⟨?_, ?_⟩ <;>`. Apply the tactic sequence `simp only [legendre, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈, WeierstrassCurve.c₄] <;> ring`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem legendre_invariant : LegendreInv := by
   intro K _ l
@@ -12,7 +12,7 @@ theorem legendre_invariant : LegendreInv := by
     WeierstrassCurve.b₆, WeierstrassCurve.b₈, WeierstrassCurve.c₄] <;> ring
 
 /- English proof (translation)
-Introduce `K _ a`. Apply the tactic sequence `refine ⟨?_, ?_⟩ <;>`. Apply the tactic sequence `simp only [deuring, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈, WeierstrassCurve.c₄] <;> ring`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem deuring_invariant : DeuringInv := by
   intro K _ a

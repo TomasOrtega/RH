@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.FlatLevel
 
 /- English proof (translation)
-Establish `h' : ∑ i : Unit, (fun _ : Unit => f) i • (fun _ : Unit => y) i = 0` using `by simpa using h`. Take `⟨n, a, z, hx, ha⟩` from `Module.Flat.isTrivialRelation_of_sum_smul_eq_zero h'`. Use `⟨n, fun j => a () j, z, ?_, fun j => ?_⟩` and prove the remaining obligations. Simplify using `using hx ()`. Simplify using `using ha j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_trivial_of_smul_eq_zero {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] [Module.Flat A M]
     (f : A) (y : M) (h : f • y = 0) :
@@ -22,17 +22,15 @@ theorem exists_trivial_of_smul_eq_zero {A M : Type} [CommRing A] [AddCommGroup M
   · simpa using ha j
 
 /- English proof (translation)
-Set `_` to `c.toAlgebra`. Establish `: Module.Flat (W ⧸ Ideal.span {t ^ m}) B` using `hc`. Establish `hb : Ideal.Quotient.mk (Ideal.span {t ^ m}) (t ^ b) • y = 0`. Rewrite using `[Algebra.smul_def]`. Conclude with `hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨n, u, v, hyv, hu⟩` from `exists_trivial_of_smul_eq_zero (A := W ⧸ Ideal.span {t ^ m}) (M := B) _ y hb`. Establish `key : ∀ j, ∃ s : W, u j = Ideal.Quotient.mk (Ideal.span {t ^ m}) (t ^ a * s)`. Introduce `j`. Take `⟨w, hw⟩` from `Ideal.Quotient.mk_surjective (u j)`. Establish `h1` using `hu j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← hw, ← map_mul, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Take `⟨s, hs⟩` from `h1`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[← hw]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hb' : t ^ b ∈ nonZeroDivisors W` using `pow_mem ht b`. Establish `h2 : (w - t ^ a * s) * t ^ b = 0`. Rewrite `hs` using `[← h, pow_add]`. Take the linear combination `(-1 : W) * hs`. Conclude with `sub_eq_zero.mp ((mul_right_mem_nonZeroDivisors_eq_zero_iff hb').mp h2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose s hs using key`. Use `⟨∑ j, c (Ideal.Quotient.mk _ (s j)) * v j, ?_⟩` and prove the remaining obligations. Rewrite using `[hyv, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, hs j, ← mul_assoc, ← map_mul, ← map_mul]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_mul_of_flat {W B : Type} [CommRing W] [CommRing B] {t : W} (ht : t ∈ nonZeroDivisors W)
     {a b m : ℕ} (h : a + b = m) (c : W ⧸ Ideal.span {t ^ m} →+* B) (hc : c.Flat) (y : B)
@@ -65,7 +63,7 @@ theorem exists_mul_of_flat {W B : Type} [CommRing W] [CommRing B] {t : W} (ht : 
   rfl
 
 /- English proof (translation)
-Conclude with `mem_nonZeroDivisors_of_ne_zero (WittVector.p_nonzero l k)`.
+A detailed English derivation is pending.
 -/
 theorem natCast_mem_nonZeroDivisors (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP k l] :
     (l : WittVector l k) ∈ nonZeroDivisors (WittVector l k) := by
@@ -73,13 +71,13 @@ theorem natCast_mem_nonZeroDivisors (l : ℕ) [Fact l.Prime] (k : Type) [Field k
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Introduce `l _ k _ _ _ O _ F ρ m`. Use `show FlatL l m (CrystallineSemistableComparison.CH.cx (CrystallineSemistableComparison.CH.modF (CrystallineSemistableComparison.Pb.LsG.sW l F ρ m).A))`. Rewrite using `[CrystallineSemistableComparison.Pb.LsG.modF_sW]`. Introduce `i`. Use `⟨fun x => ?_, fun a b hab x hx => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `s`. Establish `h0 : Ideal.Quotient.mk (Ideal.span {(l : WittVector l k) ^ m}) ((l : WittVector l k) ^ m) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton_self _)`. Express the relevant statement in the definitionally equal form `((s.obj (Fin.last i)).obj.i (Ideal.Quotient.mk (Ideal.span {(l : WittVector l k) ^ m}) ((l : WittVector l k) ^ m))) * (show (s.obj (Fin.last i)).obj.B from x s) = 0`. Rewrite using `[h0, map_zero, zero_mul]`. Establish `key : ∀ s : ComposableArrows (fl l F ρ m).FullSubcategory i, ∃ z : ((fl l F ρ m).ι ⋙ Wc.OM l F ρ m).obj (s.obj (Fin.last i)), (l : WittVector l k) ^ a • z = x s`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Establish `hs : (s.obj (Fin.last i)).obj.i.Flat` using `(s.obj (Fin.last i)).property`. Establish `h0 : (l : WittVector l k) ^ b • x s = 0` using `congrFun hx s`. Take `⟨z, hz⟩` from `exists_mul_of_flat (natCast_mem_nonZeroDivisors l k) hab (s.obj (Fin.last i)).obj.i hs (x s) h0`. Conclude with `⟨z, hz⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `choose z hz using key`. Rewrite using `[CrystallineSemistableComparison.Ls.lpow, LinearMap.mem_range]`. Conclude with `⟨z, funext fun s => hz s⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem flatL_Kt : ∀ (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [CharP k l] [PerfectRing k l] (O : Type) [CommRing O] (F : B.Fn O) (ρ : O →+* k) (m : ℕ), FlatL l m (Kt l F ρ m) := by
   intro l _ k _ _ _ O _ F ρ m

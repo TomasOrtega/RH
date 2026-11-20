@@ -7,7 +7,7 @@ open Filter Topology
 namespace GlobalTheory.PeriodFamily
 
 /- English proof (translation)
-Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hk`. Rewrite using `[Fin.prod_univ_add, h (fun a => s (Fin.castAdd j a)), zero_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_eq_zero_of_succ_le {I : Type} {D : Type} [CommRing D] (N : ℕ) (t : I → D)
     (h : ∀ s : Fin (N + 1) → I, ∏ a, t (s a) = 0) (k : ℕ) (hk : N + 1 ≤ k) (s : Fin k → I) :
@@ -16,9 +16,9 @@ theorem prod_eq_zero_of_succ_le {I : Type} {D : Type} [CommRing D] (N : ℕ) (t 
   rw [Fin.prod_univ_add, h (fun a => s (Fin.castAdd j a)), zero_mul]
 
 /- English proof (translation)
-Introduce `I _ _ D _ _ N t h N' hN f`. Proceed by induction on `N', hN using Nat.le_induction with`. Consider the case `base => rfl`. Consider the case `succ n hn ih`. Rewrite using `[← ih]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Unfold `taylor`. Rewrite using `[Finset.sum_range_succ _ (n + 1)]`. Simplify using `[prod_eq_zero_of_succ_le N t h (n + 1) (by omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem taylor_eq_of_le : ∀ {I : Type} [Fintype I] [DecidableEq I] {D : Type} [CommRing D] [Algebra ℂ D] (N : ℕ) (t : I → D), (∀ s : Fin (N + 1) → I, ∏ a, t (s a) = 0) → ∀ (N' : ℕ), N ≤ N' → ∀ f : (I → ℂ) → ℂ, GlobalTheory.PeriodFamily.taylor N' t f = GlobalTheory.PeriodFamily.taylor N t f := by
   intro I _ _ D _ _ N t h N' hN f

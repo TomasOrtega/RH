@@ -17,23 +17,21 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory.SplitVacAny
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v hsp₀ hv k hk c hc`. Take `⟨d', hd', -, dd, omd, hdc, hsp, hbox⟩` from `hT.weil.2.1`. Establish `hvac` using `hT.geo.hM.vac v`. Take `⟨r, hr, hr0⟩` from `GlobalTheory.T.exists_complementaryAdelicSchwartz_tensor_ne_zero _ v (G.M.vac v) hvac.1 hvac.2.1`. Use `set V₀ := tens (evFin F v) (G.M.vac v) r with hV₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set S := boxFun V₀ (fun x => star (V₀ x)) with hS`. Establish `hS0 : ∃ x, S x ≠ 0`. Take `⟨x, hx⟩` from `Function.ne_iff.mp hr0`. Use `⟨Sum.elim x x, ?_⟩` and prove the remaining obligations. Simplify using `only [hS, boxFun, Sum.elim_comp_inl, Sum.elim_comp_inr, Pi.zero_apply] at hx ⊢`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero hx (star_ne_zero.mpr hx)`. Take `⟨gd, hgd, hgdK⟩` from `GlobalTheory.T.exists_diag_mem_doubledVacuumLatticeStabilizer σ G.V v k hk`. Establish `hb` using `hbox k gd hgd V₀ hr.2 (fun x => star (V₀ x)) (GlobalTheory.T.conj_mem_adelicSchwartzSpaceNumberField_of_mem _ V₀ hr.2)`. Establish `hk1 : (om.comp (MonoidHom.inl _ _)) k V₀ = c • V₀`. Rewrite using `[MonoidHom.comp_apply, MonoidHom.inl_apply, hV₀, hc r hr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Simplify using `[tens, mul_assoc]`. Rewrite `hb` using `[hk1]`. Establish `hgS : omd gd S = c • S`. Rewrite using `[hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [hS, boxFun, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨e, θ, he1, he2, he3, hθ1, hθ2, hθ3, hθ4⟩` from `GlobalTheory.T.split_place_idempotent_lattice σ B hT.base v hsp₀`. Take `⟨w₀, hw₀, hW⟩` from `GlobalTheory.T.split_lattice_double_vector σ G.V v e θ he1 he2 he3 hθ1 hθ2 hθ3 (hθ4 G.V)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `hW k hk gd hgd hgdK`. Take `⟨μ, hμ⟩` from `GlobalTheory.T.split_place_darboux_weil F E σ B a a' G X om om' hT v hsp₀ hv d' hd' dd omd hdc hsp r hr w₀ hw₀`. Establish `hSne : S ≠ 0` using `fun h => by`. Take `⟨x, hx⟩` from `hS0`. Conclude with `hx (by rw [h]; rfl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hμ0 : μ ≠ 0` using `fun h0 => by`. Apply `hSne` to reduce the goal to its premises. Establish `e : omd w₀⁻¹ (omd w₀ S) = S`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite using `[← e, hμ, h0, zero_smul, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hinv : omd w₀⁻¹ S = μ⁻¹ • S`. Establish `e : omd w₀⁻¹ (omd w₀ S) = S`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite `e` using `[hμ, LinearMap.map_smul]`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hp : omd (w₀ * gd * w₀⁻¹) S = c • S`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hinv, LinearMap.map_smul, hgS, LinearMap.map_smul, LinearMap.map_smul, hμ, smul_smul, smul_smul]`. Rewrite using `[show μ⁻¹ * c * μ = c by field_simp]`. Conclude with `GlobalTheory.SplitVacV.siegel_eigen_eq_one_any F E σ B a a' G X om om' hT v hv d' dd omd hdc hsp r hr hr0 _ h1 h2 c hp`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigen_eq_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

@@ -18,7 +18,7 @@ namespace GlobalTheory.GermRatio
 open GlobalTheory.BoxFamily GlobalTheory.PowGerm.FrameN
 
 /- English proof (translation)
-Establish `hy : r y ∈ LB.wchart M' (fun _ : PUnit.{1} => z ≫ g) (fun _ => J (r ≫ z ≫ g))` using `hJ.mem _ r`. Establish `e` using `congrArg (gs r y _) (H (fun _ => J (r ≫ z ≫ g)))`. Rewrite using `[sval_of σ (r ≫ z) y J (fun _ => J (r ≫ z ≫ g)) (fun _ => by rw [Category.assoc])]`. Conclude with `((gs_res _ y _ hy _).trans (gs_pull r z y _ (ExpBijectiveUniformisation.wchart_comp_le M' g z (fun _ => J (r ≫ z ≫ g)) hy) _)).symm.trans (e.trans ((gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) (gs_res _ y le_top hy _) (gs_unit _ y _ hy _))))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clause_along {X' Y Y₁ Z : Scheme.{0}} {M' : LB X'} (g : Y₁ ⟶ X') (z : Y ⟶ Y₁) (q : ℤ)
     (σ : LB.Sec (LB.LinComb M' (K := Fin 1) (fun _ => g) (fun _ => q))) (a : Γ(Y, ⊤))
@@ -35,7 +35,7 @@ theorem clause_along {X' Y Y₁ Z : Scheme.{0}} {M' : LB X'} (g : Y₁ ⟶ X') (
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {V : Type} [CommRing V]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `show val (GeneratorPullback.finProdGen t.PP.L (J := Fin n) _ _ fun i => LB.pullGen t.PP.L _ _ (genPowG t _ _ e q) (r i)) ρ y J = ∏ i, val e (ρ ≫ r i) y J ^ q`. Rewrite using `[val_finProd _ _ _ _ _ hJ]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[val_pull hJ, GermD.val_genPowG]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_cast_prod_along (t : SAB H (Sp V)) {n : ℕ}
     (L : LB t.G.left) (h : t.PP.L = L) {Y Y₀ Z : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y₀ ⟶ t.G.left)) (ε : K → ℤ)
@@ -50,9 +50,9 @@ theorem val_cast_prod_along (t : SAB H (Sp V)) {n : ℕ}
   rw [val_pull hJ, GermD.val_genPowG]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hx : (GermD.ρT (𝟙 (Sp V)) d m).left ≫ (x (m + 1)).left = (x m).left`. Rewrite using `[← Over.comp_left, hch.trunc m]`. Establish `hs : (GermD.ρT (𝟙 (Sp V)) d m).left ≫ (homAt (𝟙 (Sp V)) (GermD.sL (m + 1) (act H.w0))).left = (homAt (𝟙 (Sp V)) (GermD.sL m (act H.w0))).left ≫ (homAt (𝟙 (Sp V)) (jetTrunc : Jet V (Fin 2 × Fin d) (m + 1) →ₐ[V] _)).left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, GermD.homAt_comp, GermD.homAt_comp, GermD.sL_trunc]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(val_mul hJ _ _ _).trans (Eq.trans ?_ (congrArg (_ * ·) (val_mul hJ _ _ _).symm))` and prove the remaining obligations. Rewrite using `[mul_left_comm]`. Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations. Conclude with `(val_pull hJ wP _ _).trans ((congrArg (fun s => val wP s y J) ((Category.assoc _ _ _).trans (congrArg (r ≫ ·) hx))).trans (val_pull hJ wP _ _).symm)`. Conclude with `(val_pull hJ (e (m + 1)) _ _).trans ((congrArg (fun s => val (e (m + 1)) s y J) ((Category.assoc _ _ _).trans ((congrArg (r ≫ ·) hs).trans (Category.assoc _ _ _).symm))).trans ((val_pull hJ (e (m + 1)) _ _).symm.trans ((val_corr hJ hU _).trans ((GermB.val_scale t _ _ _ _ _ y J hJ …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem val_eL_ratio {t : SAB H (Sp V)} {d : ℕ} {x : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ t.G} {FT : Fin d → PS V 2 d}
     {act : 𝓞 E → Fin d → PS V 1 d} {tg : Fin d → (Sp (DualNumber V) ⟶ t.G.left)} {uv : Fin d → Fin d → V}
@@ -83,7 +83,7 @@ theorem val_eL_ratio {t : SAB H (Sp V)} {d : ℕ} {x : ∀ m, jOG (𝟙 (Sp V)) 
         ((GermB.val_scale t _ _ _ _ _ y J hJ).trans (congrArg (_ * ·) (val_pull hJ (e m) _ _).symm)))))
 
 /- English proof (translation)
-Rewrite using `[← coef_cpy, ← coef_cpy, ← Category.assoc, GermBasic.spMap_comp_eq, JetTr.jetCoef_trunc, ← GermBasic.spMap_comp_eq, Category.assoc, trunc_cpy, Category.assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem trunc_jcN (F : Type) [Field F] [Algebra V F] (d n m : ℕ) (i : Fin n) :
     spMap ((jetTrunc : Jet F (Fin n × Fin d) (m + 1) →ₐ[F] Jet F (Fin n × Fin d) m) :
@@ -94,7 +94,7 @@ theorem trunc_jcN (F : Type) [Field F] [Algebra V F] (d n m : ℕ) (i : Fin n) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [cst, gs_eq r y ⊤ trivial, map_prod, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cst_prod_pow {A : Type} [CommRing A] {Z : Scheme.{0}} (r : Z ⟶ Sp A) (y : Z) {n : ℕ} (a : Fin n → A) (q : ℕ) :
     cst r y (∏ i, a i ^ q) = ∏ i, cst r y (a i) ^ q := by
@@ -110,7 +110,7 @@ variable [IsDomain V] {I : Ideal V} {t : SAB H (Sp V)} {P : PELUnif I t} {d : �
   {F : Type} [Field F] [Algebra (FractionRing V) F] [Algebra V F] {q : ℕ} {σ' : U'.toUnifPre.SecGF F q} {f : PS F n d}
 
 /- English proof (translation)
-Take `⟨z, τ, b, h₀, h₁, h₂, h₃, h₄⟩` from `h m`. Use `⟨z, h₀, h₁, fun Z r y J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Establish `e₁` using `mapsAt_val (pr := fun i => (pG.pr i).left) PU.wL _ _ τ b h₂ r y hJ hJ'`. Establish `e₂` using `(val_corr hJ ((corr_genCast _ _ _).1 h₃) r).trans (val_cast_prod_along t _ _ _ _ _ q _ r y J hJ)`. Rewrite using `[clause_along _ z _ σ' _ τ h₄ r y J' hJ', mul_left_comm, e₂.symm.trans e₁, Category.assoc, zpow_natCast, Units.val_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -134,7 +134,7 @@ theorem val_of_germ (h : IsGermN P xT act eT wPT pG PU F q σ' f) (m : ℕ) :
 
 omit [IsCommMonObj G'] in
 /- English proof (translation)
-Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, ← Category.assoc, Over.w]`. Conclude with `congrArg (· ≫ jK V) (Over.w (snd (TFK (R := V) F) ((Over.pullback (jK V)).obj G')))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gFK_hom : UnifPre.gFK (R := V) (G := G') F ≫ G'.hom =
     (CartesianMonoidalCategory.fst (TFK (R := V) F) ((Over.pullback (jK V)).obj G')).left ≫
@@ -145,17 +145,17 @@ theorem gFK_hom : UnifPre.gFK (R := V) (G := G') F ≫ G'.hom =
 end Germ
 
 /- English proof (translation)
-Introduce `E _ _ _ H V _ _ I t P d n xT FT act tg uv hch wPT _ D' A' G' _ _ pD pA pG U' PU F _ _ _ _ q σ' h eT _ hg m U hU`. Take `⟨z₁, a₁, b₁, c₁⟩` from `val_of_germ hg (m + 1)`. Take `⟨z₀, a₀, b₀, c₀⟩` from `val_of_germ hg m`. Set `ρ` to `spMap ((jetTrunc : Jet F (Fin n × Fin d) (m + 1) →ₐ[F] Jet F (Fin n × Fin d) m) : Jet F (Fin n × Fin d) (m + 1) →+* Jet F (Fin n × Fin d) m)`. Establish `hf : (ρ ≫ z₁) ≫ (CartesianMonoidalCategory.fst (TFK (R` using `V) F) ((Over.pullback (jK V)).obj G')).left = (𝟙 _ ≫ z₀) ≫ (CartesianMonoidalCategory.fst (TFK (R := V) F) ((Over.pullback (jK V)).obj G')).left := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, a₁, Category.id_comp, a₀]`. Conclude with `spMap_comp_alg _`. Establish `hz : ρ ≫ z₁ = 𝟙 _ ≫ z₀`. Use `GermBasic.gf_ext hf (pow_ext pG _ _ ?_ fun i => ?_)` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc _ (UnifPre.gFK (R := V) (G := G') F), gFK_hom, ← Category.assoc, hf, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : (GermD.ρT (𝟙 (Sp V)) d m).left ≫ (xT (m + 1)).left = (xT m).left`. Rewrite using `[← Over.comp_left, hch.trunc m]`. Rewrite using `[Category.id_comp, Category.assoc, Category.assoc, b₁, Category.assoc, b₀, jptN, jptN, ← Category.assoc, trunc_jcN, Category.assoc, hx]`. Use `H1.cst_ext fun y => ?_` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good_at P.U.LG.isLB y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨J', hJ'⟩` from `exists_good_at U'.LG.isLB y`. Establish `e₁` using `c₁ _ ρ y J J' hJ hJ'`. Establish `e₀` using `c₀ _ (𝟙 _) y J J' hJ hJ'`. Rewrite `e₁` using `[hz, e₀]`. Establish `k : cst ρ y (psJet (m + 1) h) = cst (𝟙 _) y (psJet m h)` using `(H1.gs_spec _ y _).trans (congrArg (cst (𝟙 _) y) (FrRatio.psJet_trunc m h))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l` using `fun i => (congrArg (fun s => val (genCast (congrArg RigLB.L P.bundle).symm _ _ (eLG t (𝟙 (Sp V)) d xT act eT wPT (m + 1))) s y J) (trunc_jcN F d n m i)).trans (val_eL_ratio hch wPT eT m U hU _ (congrArg RigLB.L P.bundle).symm (jcN V F d n m i) y J hJ)`. Rewrite `e₁` using `[k, Finset.prod_congr rfl fun i _ => congrArg (· ^ q) (l i)]`. Simplify using `only [Category.id_comp, mul_pow, Finset.prod_mul_distrib, Units.val_mul, ← _root_.mul_assoc] at e₁`. Use `Eq.trans ?_ ((Units.mul_left_inj _).1 e₁).symm` and prove the remaining obligations. Rewrite using `[H1.cst_mul, cst_prod_pow, Units.coe_prod]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (_ * ·) (Finset.prod_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val]`. Use `congrArg (· ^ q) (Eq.trans ?_ (gs_unit _ y ⊤ trivial _))` and prove the remaining obligations. Conclude with `((ExpansionValueZero.cst_comp (jcN V F d n m i) _ y _).trans (H1.gs_spec _ y _)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (V : Type) [CommRing V] [IsDomain V] (I : Ideal V) (t : SAB H (Sp V)) (P : PELUnif I t) (d n : ℕ) (xT : ∀ m, jOG (𝟙 (Sp V)) d m 1 ⟶ t.G) (FT : Fin d → PS V 2 d) (act : 𝓞 E → Fin d → PS V 1 d) (tg : Fin d → (Sp (DualNumber V) ⟶ t.G.left)) (uv : Fin d → Fin d → V), IsChartG t (𝟙 (Sp V)) d FT act tg uv xT → ∀ (wPT : PrimTyG t), IsPrimG t wPT → ∀ (D' : DegData V I) (A' : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G' : Over (Sp V)) [GrpObj G'] [IsCommMonObj G'] (pD : IsPowDeg D'.toPre P.D.toPre n) (pA : IsPowPolAV A' P.A n) (pG : IsPowGrp G' t.G n) (U' : Unif I D' A' G') (PU : UnifPowOf pD pA pG U' P.U) (F : Type) [Field F] [Algebra (FractionRing V) F] [Algebra V F] [IsScalarTower V (FractionRing V) F] (q : ℕ) (σ' : U'.toUnifPre.SecGF F q) (h : PS F n d) (eT : ∀ m, FrTyG t (𝟙 (Sp V)) d xT m), (∀ m, (eT m).IsGen) → IsGermN P xT act eT wPT pG PU F q σ' h → ∀ (m : ℕ) (U : (Jet V (Fin 2 × Fin d) m)ˣ), LB.Gen.Corr t.PP.L _ _ _ _ (LB.pullGen t.PP.L _ _ (eT (m + 1)) (homAt (𝟙 (Sp V)) (jetTrunc : Jet V (Fin 2 × Fin d) (m + 1) →ₐ[V] _)).left) (scaleGenG t _ _ (unitΓ U) (eT m)) → psJet m h * ∏ i : Fin n, (jetCopy (S := F) d m i : Jet F (Fin 1 × Fin d) m →ₐ[F] Jet F (Fin n × Fin d) m) (jetCoef (algebraMap V F) (Fin 1 × Fin d) m (jetSubstP m (fun p : Fin 2 × Fin d => (![fun j => MvPolynomial.X ((0 : Fin 1), j), fun j => psIn d m ![0] (act H.w0 j)] : Fin 2 → Fin d → MvPolynomial (Fin 1 × Fin d) V) p.1 p.2) (U : Jet V (Fin 2 × Fin d) m))) ^ q = psJet m h := by
   intro E _ _ _ H V _ _ I t P d n xT FT act tg uv hch wPT _ D' A' G' _ _ pD pA pG U' PU F _ _ _ _ q σ' h eT _ hg m U hU

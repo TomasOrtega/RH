@@ -21,19 +21,19 @@ section Centre
 variable {A : Type} [Ring A] [Algebra ℂ A] {n : ℕ} {E : Fin n → Fin n → A}
 
 /- English proof (translation)
-The claim follows from `le_iSup₂_of_le (f := fun d' (_ : d' < d) => LinearMap.range (wordMap E d')) d' h le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem range_le_filt {d d' : ℕ} (h : d' < d) : LinearMap.range (wordMap E d') ≤ filt E d :=
   le_iSup₂_of_le (f := fun d' (_ : d' < d) => LinearMap.range (wordMap E d')) d' h le_rfl
 
 /- English proof (translation)
-The claim follows from `iSup₂_le fun _ hk => range_le_filt (hk.trans_le h)`.
+A detailed English derivation is pending.
 -/
 theorem filt_mono {d d' : ℕ} (h : d ≤ d') : filt E d ≤ filt E d' :=
   iSup₂_le fun _ hk => range_le_filt (hk.trans_le h)
 
 /- English proof (translation)
-The claim follows from `iSup₂_le fun k hk => by rcases (Nat.lt_succ_iff.1 hk).eq_or_lt with rfl | h · exact le_sup_left · exact (range_le_filt h).trans le_sup_right`.
+A detailed English derivation is pending.
 -/
 theorem filt_succ (d : ℕ) : filt E (d + 1) ≤ LinearMap.range (wordMap E d) ⊔ filt E d :=
   iSup₂_le fun k hk => by
@@ -42,9 +42,7 @@ theorem filt_succ (d : ℕ) : filt E (d + 1) ≤ LinearMap.range (wordMap E d) �
     · exact (range_le_filt h).trans le_sup_right
 
 /- English proof (translation)
-Establish `: filt E d ≤ (filt E d).comap (LinearMap.mulLeft ℂ (E a b) - LinearMap.mulRight ℂ (E a b))` using `iSup₂_le fun k hk => by`. Introduce and unpack `_ ⟨M, rfl⟩`. Express the relevant statement in the definitionally equal form `E a b * wordMap E k M - wordMap E k M * E a b ∈ filt E d`. Rewrite using `[GlobalTheory.T.commutator_glGenerator_tensorWordMapMatrixUnits A n E hE]`. Conclude with `range_le_filt hk ⟨_, rfl⟩`.
-
-Conclude with `this hy`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem filt_ad (hE : Formalism.REAL.GlRel E) (d : ℕ) (a b : Fin n) {y : A} (hy : y ∈ filt E d) :
     E a b * y - y * E a b ∈ filt E d := by
@@ -57,9 +55,9 @@ theorem filt_ad (hE : Formalism.REAL.GlRel E) (d : ℕ) (a b : Fin n) {y : A} (h
   exact this hy
 
 /- English proof (translation)
-Use extensionality with `I K`. Simplify using `only [polar, conjTranspose_apply, of_apply, star_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Establish `: (K p = a ∧ I p = b ∧ ∀ q, q ≠ p → K q = I q) ↔ (I p = b ∧ K p = a ∧ ∀ q, q ≠ p → I q = K q)` using `⟨fun h => ⟨h.2.1, h.1, fun q hq => (h.2.2 q hq).symm⟩, fun h => ⟨h.2.1, h.1, fun q hq => (h.2.2 q hq).symm⟩⟩`. Simplify using `only [this]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem polar_conjTranspose (d : ℕ) (a b : Fin n) : (polar n d a b)ᴴ = polar n d b a := by
   ext I K
@@ -71,7 +69,7 @@ theorem polar_conjTranspose (d : ℕ) (a b : Fin n) : (polar n d a b)ᴴ = polar
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `: Algebra.adjoin ℂ (Set.range (gelfA E)) ≤ Subalgebra.centralizer ℂ {E a b}`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩ _ rfl`. Conclude with `GlobalTheory.T.commute_gelfandInvariantMatrixUnits_of_glRel A n E hE k a b`. Conclude with `this hc _ rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem gelf_adjoin_comm (hE : Formalism.REAL.GlRel E) {c : A} (hc : c ∈ Algebra.adjoin ℂ (Set.range (gelfA E)))
     (a b : Fin n) : E a b * c = c * E a b := by
@@ -82,23 +80,21 @@ theorem gelf_adjoin_comm (hE : Formalism.REAL.GlRel E) {c : A} (hc : c ∈ Algeb
   exact this hc _ rfl
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero`. Introduce `z hz _`. Establish `: filt E 0 ≤ ⊥` using `iSup₂_le fun k hk => absurd hk (Nat.not_lt_zero k)`. Rewrite using `[(Submodule.mem_bot ℂ).1 (this hz)]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Consider the case `succ d ih`. Introduce `z hz hc`. Take `⟨_, ⟨M, rfl⟩, y, hy, rfl⟩` from `Submodule.mem_sup.1 (filt_succ d hz)`. Take `⟨M₀, h1, h2⟩` from `GlobalTheory.T.commutant_lift_mod_stable_selfAdjoint _ (Set.range fun p : Fin n × Fin n => polar n d p.1 p.2) ((filt E d).comap (wordMap E d)) (by rintro _ ⟨p, rfl⟩; exact ⟨(p.2, p.1), (polar_conjTranspose d p.1 p.2).symm⟩) (by`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨p, rfl⟩ N hN`. Rewrite using `[Submodule.mem_comap, ← GlobalTheory.T.commutator_glGenerator_tensorWordMapMatrixUnits A n E hE]`. Conclude with `filt_ad hE d _ _ hN) M`. Use the proof step `(by`. Introduce and unpack `_ ⟨p, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_comap, ← GlobalTheory.T.commutator_glGenerator_tensorWordMapMatrixUnits A n E hE]`. Establish `h3` using `neg_mem (filt_ad hE d p.1 p.2 hy)`. Establish `h4` using `hc p.1 p.2`. Rewrite `h4` using `[mul_add, add_mul]`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[neg_sub, sub_eq_sub_iff_add_eq_add, h4, add_comm])`. Establish `h3 : M₀ ∈ Submodule.span ℂ (Set.range (permMat n d))`. Use `GlobalTheory.T.bicommutant_tensorFactorPerm_mem_span n d M₀ fun T hT => ?_` and prove the remaining obligations. Establish `: Algebra.adjoin ℂ (Set.range fun p : Fin n × Fin n => polar n d p.1 p.2) ≤ Subalgebra.centralizer ℂ {M₀}`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `x hx _ rfl`. Conclude with `(h2 x hx).symm`. Conclude with `this (GlobalTheory.T.mem_adjoin_glAction_of_commute_tensorPerm n d T hT) _ rfl`. Establish `h4 : Submodule.span ℂ (Set.range (permMat n d)) ≤ (Subalgebra.toSubmodule (Algebra.adjoin ℂ (Set.range (gelfA E))) ⊔ filt E d).comap (wordMap E d)`. Rewrite using `[Submodule.span_le]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨π, rfl⟩`. Take `⟨c, hc1, hc2⟩` from `GlobalTheory.T.permutationWord_gelfandPolynomial_mod_shorter A n E hE d π`. Conclude with `Submodule.mem_sup.2 ⟨c, hc1, _, hc2, by abel⟩`. Take `⟨c, hc1, u, hu, hcu⟩` from `Submodule.mem_sup.1 (h4 h3)`. Establish `h5 : wordMap E d M + y - c ∈ filt E d`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `h6 : wordMap E d (M - M₀) ∈ filt E d` using `h1`. Use `add_mem (add_mem h6 hu) hy` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub, ← hcu]`. Normalize the expressions using the abelian group laws.
-
-Establish `h7` using `ih _ h5 fun a b => by rw [mul_sub, sub_mul, hc, gelf_adjoin_comm hE hc1]`. Simplify using `using add_mem h7 hc1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem central_of_filt (hE : Formalism.REAL.GlRel E) (d : ℕ) : ∀ z ∈ filt E d, (∀ a b, E a b * z = z * E a b) →
     z ∈ Algebra.adjoin ℂ (Set.range (gelfA E)) := by
@@ -150,13 +146,13 @@ theorem central_of_filt (hE : Formalism.REAL.GlRel E) (d : ℕ) : ∀ z ∈ filt
     simpa using add_mem h7 hc1
 
 /- English proof (translation)
-Establish `h : z ∈ Submodule.span ℂ (Submonoid.closure (Set.range fun p : Fin n × Fin n => E p.1 p.2) : Set A)`. Rewrite using `[← Algebra.adjoin_eq_span]`. Conclude with `hz`. Use `clear hz`. Proceed by induction on `h using Submodule.span_induction with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨l, hl, rfl⟩` from `Submonoid.exists_list_of_mem_closure hx`. Use `choose p hp using fun i : Fin l.length => hl (l.get i) (List.get_mem l i)`. Use `⟨l.length + 1, range_le_filt (Nat.lt_succ_self _) ⟨Matrix.single (fun i => (p i).1) (fun i => (p i).2) 1, ?_⟩⟩` and prove the remaining obligations. Establish `e : (List.ofFn fun i => E (p i).1 (p i).2) = l`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hp]`. Conclude with `List.ofFn_get l`. Simplify using `only [wordMap, LinearMap.coe_mk, AddHom.coe_mk, Matrix.single, of_apply, ite_smul, one_smul, zero_smul, ite_and]`. Simplify using `[e]`. Consider the case `zero => exact ⟨0, zero_mem _⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨max a b, add_mem (filt_mono (le_max_left _ _) ha) (filt_mono (le_max_right _ _) hb)⟩`. Consider the case `smul c x _ hx => exact ⟨_, Submodule.smul_mem _ c hx.choose_spec⟩`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_filt {z : A} (hz : z ∈ Algebra.adjoin ℂ (Set.range fun p : Fin n × Fin n => E p.1 p.2)) :
     ∃ d, z ∈ filt E d := by
@@ -182,9 +178,9 @@ theorem exists_filt {z : A} (hz : z ∈ Algebra.adjoin ℂ (Set.range fun p : Fi
   | smul c x _ hx => exact ⟨_, Submodule.smul_mem _ c hx.choose_spec⟩
 
 /- English proof (translation)
-Use `le_antisymm (fun z hz => ?_) fun c hc => ?_` and prove the remaining obligations. Take `⟨d, hd⟩` from `exists_filt (E := E) (z := z) (hgen ▸ Algebra.mem_top)`. Conclude with `central_of_filt hE d z hd fun a b => Subalgebra.mem_center_iff.1 hz _`. Use `Subalgebra.mem_center_iff.2 fun b => ?_` and prove the remaining obligations. Establish `: Algebra.adjoin ℂ (Set.range fun p : Fin n × Fin n => E p.1 p.2) ≤ Subalgebra.centralizer ℂ {c}`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩ _ rfl`. Conclude with `(gelf_adjoin_comm hE hc p.1 p.2).symm`. Conclude with `(this (hgen ▸ Algebra.mem_top : b ∈ _) _ rfl).symm`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem center_eq_adjoin (hE : Formalism.REAL.GlRel E)
     (hgen : Algebra.adjoin ℂ (Set.range fun p : Fin n × Fin n => E p.1 p.2) = ⊤) :
@@ -213,7 +209,7 @@ def smSub (e : L → G) : Submodule ℂ (G → ℂ) where
   smul_mem' := fun c _ h g => (h g).const_smul c
 
 /- English proof (translation)
-The claim follows from `(((h g).comp (contDiff_id.smul contDiff_const : ContDiff ℝ ∞ fun t : ℝ => t • X)).differentiable (by simp)).differentiableAt`.
+A detailed English derivation is pending.
 -/
 theorem Sm.differentiableAt {e : L → G} {φ : G → ℂ} (h : Sm e φ) (g : G) (X : L) :
     DifferentiableAt ℝ (fun t : ℝ => φ (g * e (t • X))) 0 :=
@@ -226,28 +222,28 @@ def derOp (H : IsLieData σ j s) (hl : HasLog σ j) (X : L) : Module.End ℂ (sm
   map_smul' c φ := Subtype.ext (funext fun g => deriv_const_smul c (Sm.differentiableAt φ.2 g X))
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun φ => Subtype.ext ((GlobalTheory.T.rightDerivativeAlongLie_smooth_and_linear 𝔸 L G σ j s H hl φ.1 φ.2).2.1 X Y)`.
+A detailed English derivation is pending.
 -/
 theorem derOp_add (H : IsLieData σ j s) (hl : HasLog σ j) (X Y : L) :
     derOp H hl (X + Y) = derOp H hl X + derOp H hl Y :=
   LinearMap.ext fun φ => Subtype.ext ((GlobalTheory.T.rightDerivativeAlongLie_smooth_and_linear 𝔸 L G σ j s H hl φ.1 φ.2).2.1 X Y)
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun φ => Subtype.ext ((GlobalTheory.T.rightDerivativeAlongLie_smooth_and_linear 𝔸 L G σ j s H hl φ.1 φ.2).2.2 c X)`.
+A detailed English derivation is pending.
 -/
 theorem derOp_smul (H : IsLieData σ j s) (hl : HasLog σ j) (c : ℝ) (X : L) :
     derOp H hl (c • X) = (c : ℂ) • derOp H hl X :=
   LinearMap.ext fun φ => Subtype.ext ((GlobalTheory.T.rightDerivativeAlongLie_smooth_and_linear 𝔸 L G σ j s H hl φ.1 φ.2).2.2 c X)
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun φ => Subtype.ext (GlobalTheory.T.rightDerivativeAlongLie_commutator_eq_bracket 𝔸 L G σ j s H hl φ.1 φ.2 X Y Z h).symm`.
+A detailed English derivation is pending.
 -/
 theorem derOp_bracket (H : IsLieData σ j s) (hl : HasLog σ j) (X Y Z : L) (h : j Z = j X * j Y - j Y * j X) :
     derOp H hl Z = derOp H hl X * derOp H hl Y - derOp H hl Y * derOp H hl X :=
   LinearMap.ext fun φ => Subtype.ext (GlobalTheory.T.rightDerivativeAlongLie_commutator_eq_bracket 𝔸 L G σ j s H hl φ.1 φ.2 X Y Z h).symm
 
 /- English proof (translation)
-Simplify using `using derOp_smul H hl 0 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem derOp_zero (H : IsLieData σ j s) (hl : HasLog σ j) : derOp H hl 0 = 0 := by
   simpa using derOp_smul H hl 0 0

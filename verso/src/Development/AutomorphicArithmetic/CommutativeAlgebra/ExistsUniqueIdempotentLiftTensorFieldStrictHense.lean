@@ -5,7 +5,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `hm : Ideal.comap (algebraMap O K) ⊥ = IsLocalRing.maximalIdeal O` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal ⊥)`. Establish `h : a ∈ Ideal.comap (algebraMap O K) ⊥` using `hm ▸ ha`. Simplify using `using h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma algebraMap_eq_zero_of_mem (O K : Type) [CommRing O] [IsLocalRing O] [Field K]
     [Algebra O K] [Algebra.IsIntegral O K] {a : O} (ha : a ∈ IsLocalRing.maximalIdeal O) :
@@ -21,15 +21,13 @@ private noncomputable def resMap (O K : Type) [CommRing O] [IsLocalRing O] [Fiel
     (fun _ ha ↦ algebraMap_eq_zero_of_mem O K ha)
 
 /- English proof (translation)
-Use `letI : Field (R ⧸ M) := Ideal.Quotient.field M`. Use `haveI : Algebra.IsIntegral O (R ⧸ M) := inferInstance`. Use `letI : Algebra (IsLocalRing.ResidueField O) K := (resMap O K).toAlgebra`. Use `letI : Algebra (IsLocalRing.ResidueField O) (AlgebraicClosure (R ⧸ M)) := ((algebraMap (R ⧸ M) (AlgebraicClosure (R ⧸ M))).comp (resMap O (R ⧸ M))).toAlgebra`. Use `haveI : IsScalarTower O (IsLocalRing.ResidueField O) K := IsScalarTower.of_algebraMap_eq (fun _ ↦ rfl)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : Algebra.IsIntegral (IsLocalRing.ResidueField O) K := Algebra.IsIntegral.tower_top O`. Use `haveI : Algebra.IsAlgebraic (IsLocalRing.ResidueField O) K := inferInstance`. Set `g : K →ₐ[IsLocalRing.ResidueField O] AlgebraicClosure (R ⧸ M)` to `IsAlgClosed.lift`. Set `fR : R →+* AlgebraicClosure (R ⧸ M)` to `(algebraMap (R ⧸ M) (AlgebraicClosure (R ⧸ M))).comp (Ideal.Quotient.mk M)`. Establish `hc : ∀ o : O, g (algebraMap O K o) = fR (algebraMap O R o)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `o`. Establish `h1 : algebraMap O K o = algebraMap (IsLocalRing.ResidueField O) K (IsLocalRing.residue O o)` using `rfl`. Rewrite using `[h1, g.commutes]`. Both sides reduce to the same expression. Use `letI : Algebra O (AlgebraicClosure (R ⧸ M)) := (fR.comp (algebraMap O R)).toAlgebra`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `FR : R →ₐ[O] AlgebraicClosure (R ⧸ M)` to `{ fR with commutes' := fun _ ↦ rfl }`. Set `G : K →ₐ[O] AlgebraicClosure (R ⧸ M)` to `{ g.toRingHom with commutes' := fun o ↦ hc o }`. Establish `h2` using `congrArg (Algebra.TensorProduct.productMap FR G) hx`. Establish `h3 : fR x = 0`. Simplify `h2` using `[FR, G]`.
-
-Establish `h4 : Ideal.Quotient.mk M x = 0` using `(algebraMap (R ⧸ M) (AlgebraicClosure (R ⧸ M))).injective (by simpa [fR] using h3)`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h4`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem mem_maximal_of_includeLeft_eq_zero (O R K : Type) [CommRing O] [IsLocalRing O] [CommRing R] [Field K]
     [Algebra O R] [Algebra O K] [Algebra.IsIntegral O R] [Algebra.IsIntegral O K]
@@ -66,15 +64,13 @@ private theorem mem_maximal_of_includeLeft_eq_zero (O R K : Type) [CommRing O] [
   exact Ideal.Quotient.eq_zero_iff_mem.mp h4
 
 /- English proof (translation)
-Use `letI : Algebra (IsLocalRing.ResidueField O) K := (resMap O K).toAlgebra`. Use `haveI : IsScalarTower O (IsLocalRing.ResidueField O) K := IsScalarTower.of_algebraMap_eq (fun _ ↦ rfl)`. Use `haveI : Algebra.IsIntegral (IsLocalRing.ResidueField O) K := Algebra.IsIntegral.tower_top O`. Use `haveI : Algebra.IsAlgebraic (IsLocalRing.ResidueField O) K := inferInstance`. Use `haveI : IsPurelyInseparable (IsLocalRing.ResidueField O) K := inferInstance`.
+Equip the data with the indicated structure. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Proceed by induction. Treat this case separately.
 
-Use `haveI : ExpChar K q := expChar_of_injective_algebraMap (algebraMap (IsLocalRing.ResidueField O) K).injective q`. Break down `subsingleton_or_nontrivial (R ⊗[O] K) with hs | hs` into its components or cases. Conclude with `⟨0, 0, Subsingleton.elim _ _⟩`. Use `haveI : ExpChar (R ⊗[O] K) q := expChar_of_injective_ringHom (f := (Algebra.TensorProduct.includeRight : K →ₐ[O] R ⊗[O] K).toRingHom) (RingHom.injective _) q`. Proceed by induction on `t using TensorProduct.induction_on with`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul r y`. Take `⟨n, c, hc⟩` from `IsPurelyInseparable.pow_mem (IsLocalRing.ResidueField O) q y`. Take `⟨o, rfl⟩` from `IsLocalRing.residue_surjective c`. Use `⟨n, algebraMap O R o * r ^ q ^ n, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.TensorProduct.tmul_pow, ← hc, Algebra.TensorProduct.includeLeftRingHom_apply]`. Use `show (algebraMap O R o * r ^ q ^ n) ⊗ₜ[O] (1 : K) = (r ^ q ^ n) ⊗ₜ[O] (algebraMap O K o)`. Rewrite using `[← Algebra.smul_def, TensorProduct.smul_tmul, Algebra.smul_def, mul_one]`. Consider the case `add a b ha hb`. Take `⟨n1, r1, h1⟩` from `ha`.
-
-Take `⟨n2, r2, h2⟩` from `hb`. Use `⟨n1 + n2, r1 ^ q ^ n2 + r2 ^ q ^ n1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_pow, map_pow, h1, h2, ← pow_mul, ← pow_mul, ← pow_add, ← pow_add, add_comm n2 n1, add_pow_expChar_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_includeLeft_eq_pow_expChar_pow (O R K : Type) [CommRing O] [IsLocalRing O] [CommRing R] [Field K]
     [Algebra O R] [Algebra O K] [Algebra.IsIntegral O K]
@@ -113,25 +109,25 @@ private theorem exists_includeLeft_eq_pow_expChar_pow (O R K : Type) [CommRing O
       add_comm n2 n1, add_pow_expChar_pow]
 
 /- English proof (translation)
-Introduce `O R K _ _ _ _ _ _ _ hO e' he'`. Take `⟨hH, hsep⟩` from `hO`. Take `⟨q, hq⟩` from `ExpChar.exists (IsLocalRing.ResidueField O)`. Establish `hjac : ∀ y : R, (Algebra.TensorProduct.includeLeftRingHom : R →+* R ⊗[O] K) y = 0 → ∀ Q : Ideal R, Q.IsMaximal → y ∈ Q` using `fun y hy Q hQ ↦ by haveI := hQ`. Conclude with `mem_maximal_of_includeLeft_eq_zero O R K Q y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, x, hx⟩` from `exists_includeLeft_eq_pow_expChar_pow O R K q e'`. Establish `hx' : (Algebra.TensorProduct.includeLeftRingHom : R →+* R ⊗[O] K) x = e'`. Establish `hpos : 0 < q ^ n` using `pow_pos (expChar_pos (IsLocalRing.ResidueField O) q) n`. Take `⟨m, hm⟩ : ∃ m, q ^ n = m + 1` from `⟨q ^ n - 1, by omega⟩`. Rewrite using `[hx, hm, he'.pow_succ_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `existsUnique_of_exists_of_unique ?_ ?_` and prove the remaining obligations. Set `S` to `Algebra.adjoin O {x} haveI : Module.Finite O S := Algebra.finite_adjoin_simple_of_isIntegral (Algebra.IsIntegral.isIntegral x)`. Set `ψ : S →+* R ⊗[O] K` to `(Algebra.TensorProduct.includeLeftRingHom : R →+* R ⊗[O] K).comp S.val.toRingHom`. Establish `hxS : x ∈ S` using `Algebra.subset_adjoin (Set.mem_singleton x)`. Set `c : ψ.range` to `⟨e', ⟨⟨x, hxS⟩, hx'⟩⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc : IsIdempotentElem c` using `Subtype.ext he'`. Establish `hker : RingHom.ker ψ.rangeRestrict ≤ Ideal.jacobson ⊥`. Rewrite using `[RingHom.ker_rangeRestrict]`. Introduce `s hs`. Rewrite `hs` using `[RingHom.mem_ker]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.mem_sInf.mpr ?_` and prove the remaining obligations. Introduce and unpack `P ⟨-, hP⟩`. Use `haveI := hP`. Use `haveI : Algebra.IsIntegral S R := Algebra.IsIntegral.tower_top O`. Take `⟨Q, hQ, hQP⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral (S := R) P (by`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `z hz`. Rewrite `hz` using `[RingHom.mem_ker]`. Establish `: z = 0` using `Subtype.ext hz`. Simplify using `[this])`. Rewrite using `[← hQP, Ideal.mem_comap]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hjac _ hs Q hQ`. Take `⟨e, ⟨he, hec⟩, -⟩` from `GlobalTheory.existsUnique_idempotent_lift_of_henselian O ψ.rangeRestrict ψ.rangeRestrict_surjective hker hc`. Use `⟨(e : R), he.map S.val, ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val hec`. Introduce and unpack `y z ⟨hy, hyc⟩ ⟨hz, hzc⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy2 : y * y = y` using `hy`. Establish `hz2 : z * z = z` using `hz`. Establish `he2 : e' * e' = e'` using `he'`. Establish `hf0 : (Algebra.TensorProduct.includeLeftRingHom : R →+* R ⊗[O] K) (y + z - 2 * y * z) = 0`. Rewrite using `[map_sub, map_add, map_mul, map_mul, hyc, hzc, map_ofNat]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take the linear combination `(-2 : R ⊗[O] K) * he2`. Establish `hfj : ∀ Q : Ideal R, Q.IsMaximal → y + z - 2 * y * z ∈ Q` using `hjac _ hf0`. Establish `hmem : y + z - 2 * y * z ∈ Ideal.jacobson (⊥ : Ideal R)` using `Ideal.mem_sInf.mpr (fun Q hQ ↦ hfj Q hQ.2)`. Establish `hu` using `Ideal.mem_jacobson_bot.mp hmem (-1)`. Establish `hfid : (y + z - 2 * y * z) * (y + z - 2 * y * z) = y + z - 2 * y * z`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(1 + 4 * z * z - 4 * z) * hy2 + hz2`. Establish `hff : (y + z - 2 * y * z) * ((y + z - 2 * y * z) * -1 + 1) = 0`. Take the linear combination `(-1 : R) * hfid`. Establish `hf : y + z - 2 * y * z = 0` using `(hu.mul_left_eq_zero).mp hff`. Take the linear combination `(-1 + 2 * z) * hy2 + (1 - 2 * y) * hz2 + (y - z) * hf`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.existsUnique_idempotent_lift_tensor_field_strictHenselian :
     ∀ (O R K : Type) [CommRing O] [CommRing R] [Field K] [Algebra O R] [Algebra O K] [Algebra.IsIntegral O R] [Algebra.IsIntegral O K], SH O → ∀ e' : R ⊗[O] K, IsIdempotentElem e' → ∃! e : R, IsIdempotentElem e ∧ (Algebra.TensorProduct.includeLeftRingHom : R →+* R ⊗[O] K) e = e' := by

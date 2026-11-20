@@ -14,7 +14,7 @@ open GlobalTheory.Doubling (absE)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Introduce `w hw x hx` and use `by have a := h w hw x hx have b := h' w hw x hx have : locChar (χ / χ') w x = locChar χ w x / locChar χ' w x := map_div Circle.toUnits _ _ rw [this, a, b, div_one]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unr_div {χ χ' : Chr F E} {S : Set (Pl F)} (h : UnrOff χ S) (h' : UnrOff χ' S) : UnrOff (χ / χ') S := fun w hw x hx => by
   have a := h w hw x hx
@@ -25,12 +25,12 @@ theorem unr_div {χ χ' : Chr F E} {S : Set (Pl F)} (h : UnrOff χ S) (h' : UnrO
 variable {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
 
 /- English proof (translation)
-The claim follows from `(isHecke_div t.chars.heckeα t.chars.heckeβ).1`.
+A detailed English derivation is pending.
 -/
 theorem nu_cont (t : IsTriple B G X om om') : Continuous X.ν := (isHecke_div t.chars.heckeα t.chars.heckeβ).1
 
 /- English proof (translation)
-Introduce `x` and use `by have h := resEtaPow_div t.chars.resα t.chars.resβ x rw [(add_comm a a' ▸ t.geo.even : Even (a' + a)).neg_one_pow] at h rw [pow_zero] exact h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nu_res (t : IsTriple B G X om om') : ResEtaPow (Units.map (algebraMap F (AF F)).toMonoidHom).range X.ν 0 := fun x => by
   have h := resEtaPow_div t.chars.resα t.chars.resβ x
@@ -39,13 +39,13 @@ theorem nu_res (t : IsTriple B G X om om') : ResEtaPow (Units.map (algebraMap F 
   exact h
 
 /- English proof (translation)
-Take `⟨a₁, a₂, b₁, b₂, hId⟩` from `hId`. Use `⟨a₁, a₂, ?_⟩` and prove the remaining obligations. Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' c e ei ev he hE K μK μ m hK h1 h2 hm`. Distinguish the cases in `ex : ∃ X om om' om₁ om₁', IsTriple B G X om om' ∧ IsTriple B G₁ X om₁ om₁'`. Use `swap`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨1, one_ne_zero, fun X om om' om₁ om₁' t t₁ => (ex ⟨X, om, om', om₁, om₁', t, t₁⟩).elim⟩`. Take `⟨X₀, o, o', o₁, o₁', t₀, t₀₁⟩` from `ex`. Establish `hC : Cfg B G.M G₁.M H H' e (shiftA H H')` using `⟨t₀.base, ⟨_, _, t₀.geo.hV⟩, ⟨_, _, t₀.geo.hW⟩, ⟨_, _, t₀₁.geo.hV⟩, ⟨_, _, t₀₁.geo.hW⟩, t₀.geo.hM, t₀₁.geo.hM, ⟨_, _, c.hH⟩, ⟨_, _, c.hH'⟩, .inl ⟨he, rfl⟩⟩`. Take `⟨𝔞, h0, hlat, hcnt, hval⟩` from `hId F E σ B _ _ _ _ _ _ _ _ H H' _ _ _ _ _ _ _ _ t₀.base t₀.geo.hV t₀.geo.hW c.hH c.hH' (by omega) (by omega) (by omega) (by omega) _ _ _ (.inl ⟨rfl, rfl, rfl⟩)`. Establish `hz : 2 ≤ (b + 2 - a') / 2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `t₀.geo.eBig` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨κ, hκ, HG⟩` from `gen hA hI hKF hV hS hAr hF hP hSp hC hE hK h1 h2 hm h0 hlat hz`. Use `⟨κ, hκ, fun X om om' om₁ om₁' t _ => ?_⟩` and prove the remaining obligations. Use `HG _ _ _ _ _ _ _ (pairV t) X.ν X.S₀ X.T (nu_cont t) (by classical exact Finset.subset_union_left) (unr_div t.chars.unrα t.chars.unrβ) t.chars.unrβ (unr_div t.chars.unrβ t.chars.unrα) fun w hw => ⟨t.chars.ram w hw, hcnt w (t.chars.sub hw)⟩` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hval X.ν (nu_cont t) (nu_res t) fun w hw => unr_div t.chars.unrα t.chars.unrβ w fun h => hw (t.chars.sub h)]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem coneIntegralFactorisation_of (hA : ActsEx) (hI : IdeleFub) (hKF : KFub) (hV : VacFixX) (hS : VacShift) (hAr : ArchCone) (hF : FinM)
     (hP : PureFac) (hSp : SchSpan) (hId : IdealM) : PositivityTheory.ThKEnd.Comp.ConeIntegralFactorisation := by
@@ -73,13 +73,13 @@ theorem coneIntegralFactorisation_of (hA : ActsEx) (hI : IdeleFub) (hKF : KFub) 
   exact this
 
 /- English proof (translation)
-Take `⟨a₁, a₂, b₁, b₂, hId⟩` from `hId`. Use `⟨b₁, b₂, ?_⟩` and prove the remaining obligations. Introduce `F E _ _ _ _ _ σ B a b G G₁ H H' c e ei ev he hE K μK μ m hK h1 h2 hm`. Distinguish the cases in `ex : ∃ X om om' om₁ om₁', IsTriple B G X om om' ∧ IsTriple B G₁ X om₁ om₁'`. Use `swap`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨1, one_ne_zero, fun X om om' om₁ om₁' t t₁ => (ex ⟨X, om, om', om₁, om₁', t, t₁⟩).elim⟩`. Take `⟨X₀, o, o', o₁, o₁', t₀, t₀₁⟩` from `ex`. Establish `hC : Cfg B G.M' G₁.M' H H' e (shiftB σ H H')` using `⟨t₀.base, ⟨_, _, t₀.geo.hV'⟩, ⟨_, _, t₀.geo.hW⟩, ⟨_, _, t₀₁.geo.hV'⟩, ⟨_, _, t₀₁.geo.hW⟩, t₀.geo.hM', t₀₁.geo.hM', ⟨_, _, c.hH⟩, ⟨_, _, c.hH'⟩, .inr ⟨he, rfl⟩⟩`. Take `⟨𝔞, h0, hlat, hcnt, hval⟩` from `hId F E σ B _ _ _ _ _ _ _ _ H H' _ _ _ _ _ _ _ _ t₀.base t₀.geo.hV' t₀.geo.hW c.hH c.hH' (by omega) (by omega) (by omega) (by omega) _ _ _ (.inr ⟨rfl, rfl, rfl⟩)`. Establish `hz : 2 ≤ (a - (b + 2)) / 2 + 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `t₀.geo.eBig` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨κ, hκ, HG⟩` from `gen hA hI hKF hV hS hAr hF hP hSp hC hE hK h1 h2 hm h0 hlat hz`. Use `⟨κ, hκ, fun X om om' om₁ om₁' t _ => ?_⟩` and prove the remaining obligations. Use `HG _ _ _ _ _ _ _ (pairV' t) X.ν X.S₀ X.T (nu_cont t) (by classical exact Finset.subset_union_left) (unr_div t.chars.unrα t.chars.unrβ) t.chars.unrα (unr_div t.chars.unrα t.chars.unrβ) fun w hw => ⟨t.chars.ram w hw, hcnt w (t.chars.sub hw)⟩` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hval X.ν (nu_cont t) (nu_res t) fun w hw => unr_div t.chars.unrα t.chars.unrβ w fun h => hw (t.chars.sub h)]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem coneFacB_of (hA : ActsEx) (hI : IdeleFub) (hKF : KFub) (hV : VacFixX) (hS : VacShift) (hAr : ArchCone) (hF : FinM)
     (hP : PureFac) (hSp : SchSpan) (hId : IdealM) : ConeFacB := by
@@ -107,7 +107,7 @@ theorem coneFacB_of (hA : ActsEx) (hI : IdeleFub) (hKF : KFub) (hV : VacFixX) (h
   exact this
 
 /- English proof (translation)
-Take `⟨e₁, e₂, h⟩` from `h`. Conclude with `⟨e₁, e₂, fun F E _ _ _ _ _ σ B b a' G G₁ H H' c => h F E σ B b a' G G₁ H H' ⟨c.eV, c.q1.trans c.q0.symm, c.ep, c.hH, c.hH'⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coneFactorisation_of_codimension_two (h : PositivityTheory.ThKEnd.Comp.ConeIntegralFactorisation) : ConeFacA := by
   obtain ⟨e₁, e₂, h⟩ := h

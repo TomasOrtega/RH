@@ -18,7 +18,7 @@ variable {S : Type} [CommRing S] {K : Type} [Fintype K] [LinearOrder K] {ι : K 
   [∀ k, LinearOrder (ι k)]
 
 /- English proof (translation)
-Establish `hI : ∀ k, negSet a k ⊆ I k` using `fun k => (hJ k).trans (hJI k)`. Unfold `monoFrac`. Rewrite using `[dif_pos hJ, dif_pos hI, cellRes_mk (cellMon_mono hJI)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cellRes_monoFrac {J I : ∀ k, Finset (ι k)} (hJI : ∀ k, J k ⊆ I k) (a : (Σ k, ι k) → ℤ)
     (hJ : ∀ k, negSet a k ⊆ J k) :
@@ -28,7 +28,7 @@ theorem cellRes_monoFrac {J I : ∀ k, Finset (ι k)} (hJI : ∀ k, J k ⊆ I k)
   rw [dif_pos hJ, dif_pos hI, cellRes_mk (cellMon_mono hJI)]
 
 /- English proof (translation)
-Unfold `blockSum`. Use `push_cast`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [negExp, posExp, Finsupp.coe_equivFunOnFinite_symm]`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -42,16 +42,16 @@ theorem blockSum_add_negExp (a : (Σ k, ι k) → ℤ) (k : K) :
   omega
 
 /- English proof (translation)
-The claim follows from `isMultiHomog_monomial _ _ _ fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomog_posExp (a : (Σ k, ι k) → ℤ) :
     IsMultiHomog (monomial (posExp a) (1 : S) : MRingOver S ι) fun k => ∑ i, posExp a ⟨k, i⟩ :=
   isMultiHomog_monomial _ _ _ fun _ => rfl
 
 /- English proof (translation)
-Unfold `KH.quotPart`. Use `Submodule.subset_span ⟨_, ⟨fun k => ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[he k]`. Conclude with `Int.natCast_nonneg _`. Establish `: (fun k => (e k).toNat) = fun k => ∑ i, posExp a ⟨k, i⟩` using `funext fun k => by rw [he k]; rfl`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `isMultiHomog_posExp a`.
+A detailed English derivation is pending.
 -/
 theorem mk_posExp_mem (a : (Σ k, ι k) → ℤ) (e : K → ℤ) (he : ∀ k, e k = ((∑ i, posExp a ⟨k, i⟩ : ℕ) : ℤ)) :
     Ideal.Quotient.mk (⊥ : Ideal (MRingOver S ι)) (monomial (posExp a) 1) ∈
@@ -64,7 +64,7 @@ theorem mk_posExp_mem (a : (Σ k, ι k) → ℤ) (e : K → ℤ) (he : ∀ k, e 
     exact isMultiHomog_posExp a
 
 /- English proof (translation)
-Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `Finset.erase_subset _ _`. Rewrite using `[Function.update_of_ne hl]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem update_erase_subset (I : ∀ k, Finset (ι k)) (k : K) (i : ι k) (l : K) :
     Function.update I k ((I k).erase i) l ⊆ I l := by
@@ -75,7 +75,7 @@ theorem update_erase_subset (I : ∀ k, Finset (ι k)) (k : K) (i : ι k) (l : K
 open Classical in
 
 /- English proof (translation)
-Unfold `embed`. Rewrite using `[LinearMap.pi_apply]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem embed_apply (a : (Σ k, ι k) → ℤ) (n : ℕ) (f : CombC S (negSet a) n) (I : KH.Cell K ι n) :
     embed S a n f I = if h : ∀ k, negSet a k ⊆ I.1 k then f ⟨I, h⟩ • monoFrac S I.1 a else 0 := by
@@ -86,9 +86,9 @@ theorem embed_apply (a : (Σ k, ι k) → ℤ) (n : ℕ) (f : CombC S (negSet a)
 open Classical in
 
 /- English proof (translation)
-Unfold `KH.cechD`. Rewrite using `[LinearMap.pi_apply, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `split_ifs <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cechD_apply (n : ℕ) (x : KH.CechC S ι (MRingOver S ι ⧸ (⊥ : Ideal (MRingOver S ι))) n)
     (I : KH.Cell K ι (n + 1)) :
@@ -108,9 +108,9 @@ theorem cechD_apply (n : ℕ) (x : KH.CechC S ι (MRingOver S ι ⧸ (⊥ : Idea
 open Classical in
 
 /- English proof (translation)
-Unfold `combD`. Rewrite using `[LinearMap.pi_apply, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `split_ifs <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem combD_apply (J : ∀ k, Finset (ι k)) (n : ℕ) (f : CombC S J n) (I : CombCell ι J (n + 1)) :
     combD S J n f I = ∑ k, ∑ i ∈ I.1.1 k,
@@ -127,15 +127,15 @@ theorem combD_apply (J : ∀ k, Finset (ι k)) (n : ℕ) (f : CombC S J n) (I : 
   split_ifs <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Rewrite using `[cechD_apply, embed_apply]`. Distinguish the cases in `hI : ∀ k, negSet a k ⊆ I.1 k`. Rewrite using `[dif_pos hI] erw [combD_apply]`. Rewrite using `[Finset.sum_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : (∀ l, (Function.update I.1 k ((I.1 k).erase i) l).Nonempty) ∧ ∑ l, ((Function.update I.1 k ((I.1 k).erase i) l).card - 1) = n`. Rewrite using `[dif_pos hc] erw [embed_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hJ : ∀ l, negSet a l ⊆ Function.update I.1 k ((I.1 k).erase i) l`. Rewrite using `[dif_pos hJ, dif_pos ⟨hc, hJ⟩, LinearMap.map_smul_of_tower, cellRes_monoFrac (update_erase_subset I.1 k i) a hJ, smul_assoc]`. Rewrite using `[dif_neg hJ, dif_neg (fun h => hJ h.2), map_zero]`. Simplify using the standard rewrite rules. Rewrite using `[dif_neg hc, dif_neg (fun h => hc h.1), zero_smul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg hI]`. Use `Finset.sum_eq_zero fun k _ => Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with hc`. Use `erw [embed_apply]`. Rewrite using `[dif_neg (fun hJ => hI fun l => (hJ l).trans (update_erase_subset I.1 k i l)), map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem embed_comm (a : (Σ k, ι k) → ℤ) (n : ℕ) (f : CombC S (negSet a) n) :
     KH.cechD S ι (MRingOver S ι ⧸ (⊥ : Ideal (MRingOver S ι))) n (embed S a n f) =
@@ -169,11 +169,11 @@ theorem embed_comm (a : (Σ k, ι k) → ℤ) (n : ℕ) (f : CombC S (negSet a) 
     · rfl
 
 /- English proof (translation)
-Unfold `KH.cechCc`. Use `Submodule.mem_pi.mpr fun I _ => ?_` and prove the remaining obligations. Use `erw [embed_apply]`. Use `split_ifs with hI`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `monoFrac`. Rewrite using `[dif_pos hI]`. Use `Submodule.subset_span ⟨_, _, fun k => ∑ i, negExp a ⟨k, i⟩, isMultiHomog_monomial _ _ _ fun _ => rfl, ?_, rfl⟩` and prove the remaining obligations. Use `mk_posExp_mem a _ fun k => ?_` and prove the remaining obligations. Establish `hk` using `blockSum_add_negExp a k`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hk` using `[h]`. Simplify using `only [Pi.add_apply] at hk ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `zero_mem _`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem embed_mem (a : (Σ k, ι k) → ℤ) (c d : K → ℤ) (h : blockSum a = c + d) (n : ℕ)
     (f : CombC S (negSet a) n) :
@@ -196,11 +196,11 @@ theorem embed_mem (a : (Σ k, ι k) → ℤ) (c d : K → ℤ) (h : blockSum a =
   · exact zero_mem _
 
 /- English proof (translation)
-Establish `hneg : ∀ k, negSet a k = ∅` using `fun k => Finset.filter_eq_empty_iff.mpr fun i _ => not_lt.mpr (ha _)`. Establish `hnegExp : negExp a = 0`. Use extensionality with `p`. Simplify using `only [negExp, Finsupp.coe_equivFunOnFinite_symm, Finsupp.coe_zero, Pi.zero_apply]`. Use `ha p` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨_, mk_posExp_mem a _ fun k => ?_, fun I => ?_⟩` and prove the remaining obligations. Establish `hk` using `blockSum_add_negExp a k`. Rewrite `hk` using `[hnegExp]`. Simplify using `using hk`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hI : ∀ k, negSet a k ⊆ I k` using `fun k => by rw [hneg k]; exact Finset.empty_subset _`. Unfold `monoFrac`. Rewrite using `[dif_pos hI]`. Use `congr 1`. Conclude with `Subtype.ext (by simp [hnegExp])`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem monoFrac_of_nonneg (a : (Σ k, ι k) → ℤ) (ha : ∀ p, 0 ≤ a p) :
     ∃ m ∈ KH.quotPart S (⊥ : Ideal (MRingOver S ι)) (blockSum a),
@@ -224,7 +224,7 @@ theorem monoFrac_of_nonneg (a : (Σ k, ι k) → ℤ) (ha : ∀ p, 0 ≤ a p) :
     exact Subtype.ext (by simp [hnegExp])
 
 /- English proof (translation)
-Introduce `S _ K _ _ ι _ _ a`. Conclude with `⟨fun n f => embed_comm a n f, fun c d h n f => embed_mem a c d h n f, monoFrac_of_nonneg a⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem full : KHFreeEmbed.Statement := by
   intro S _ K _ _ ι _ _ a

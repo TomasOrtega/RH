@@ -22,11 +22,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.GridJoin.ArrX
 
 /- English proof (translation)
-Break down `i with _ | i` into its components or cases. Rewrite using `[GlobalTheory.Grid.parV_zero D hj] show (GlobalTheory.Grid.row0 R j).S = _`. Break down `j with _ | j` into its components or cases. Both sides reduce to the same expression. Distinguish the cases in `hlt : j + 1 < D.R.m`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← GlobalTheory.Grid.nodeY_eq_chainVertexAtRowZero_of_lt R hlt] dsimp only [GlobalTheory.Grid.nodeY]`. Rewrite using `[Nat.min_eq_left hlt.le]`. Rewrite using `[← GlobalTheory.Grid.nodeX_eq_chainVertexAtRowZero_of_ge R hlt]`. Establish `hm : j + 1 = D.R.m` using `by omega`. Rewrite using `[hm]`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hS.vert i j hi hj).par`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vertex_par {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type}
     [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (G : GlobalTheory.Grid.GridPre R) (hS : G.IsSpaces)
@@ -46,15 +46,15 @@ theorem vertex_par {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {
   · exact (hS.vert i j hi hj).par
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R sc hDS hHC hHost hSz F hCore hgap G' W hW G hS hC hSp hTh i j hi hj ω f hω hf`. Establish `hθ : IsInfFam R.θ` using `hCore.models.inf`. Take `⟨M₁, hcart, honb, hback⟩` from `GlobalTheory.T.exists_discreteSeriesModel_negSpace_transfer (G.V (i + 1) j).M`. Use `choose aS aT haS haT be de hdat hflip hlow using fun τ => GlobalTheory.GridJoin.ArrXPar.arrowX_par hSz hCore G hC i j hi hj τ`. Establish `hSn` using `vertex_par G hS (i + 1) j hi hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSo` using `vertex_par G hS i j hi.le hj`. Establish `hc : cart M₁ = GlobalTheory.Grid.cartS true (G.V (i + 1) j)` using `funext fun τ => (hcart τ).trans rfl`. Establish `ho : onb M₁ = onb (G.V (i + 1) j).M` using `funext honb`. Establish `hfin` using `hf.isFinVec`. Establish `hne : f ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `GlobalTheory.Grid.IsVac IsVacO at hf`. Take `⟨-, ⟨-, -, -, -, ⟨⟨p, hp⟩, hq⟩⟩⟩` from `hf`. Introduce `h0`. Establish `h1` using `hq p hp`. Rewrite `h1` using `[h0]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[nrm2] at h1`. Establish `hvac : GlobalTheory.Chain.IsVacVec R.ψ R.θ M₁ (G.V i j).M f` using `⟨hfin.1, hne, fun τ => by rw [hc]; exact hfin.2 τ⟩`. Take `⟨It₁, hIt₁⟩` from `GlobalTheory.T.exists_realIntertwiner_largerSource_mirrorCase (GlobalTheory.Grid.sgn true (G.V (i + 1) j).V) (G.V i j).V (fun τ => ((G.V (i + 1) j).S τ).image fun x => (x.1, !x.2)) (G.V i j).S M₁ (G.V i j).M R.θ R.ψ (GlobalTheory.Grid.sLen D) aS aT hDS hHC hθ (fun τ => ⟨be τ, de …`. Take `⟨It, hIt⟩` from `hback (G.V i j).M R.θ hθ ω _ It₁ hIt₁`. Establish `hpt : GlobalTheory.Chain.ptOf R.ψ R.θ M₁ (G.V i j).M f = ⇑(GlobalTheory.Grid.fock R.ψ R.θ true (G.V (i + 1) j) (G.V i j) f)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `GlobalTheory.Chain.ptOf GlobalTheory.Grid.fock`. Rewrite using `[hc, ho]`. Conclude with `⟨It, hpt ▸ hIt⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_intertwiner : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {sc : GlobalTheory.ChiGrid.Consts}, GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → HostHyp D → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D → ∀ {F : Face D A}, GlobalTheory.Hk3.Core R F → sc.cGap = 1 → ∀ {G' : GlobalTheory.ChiGrid.GridData R.toLevCh sc} (W : G'.Weil), W.Over R → ∀ G : GlobalTheory.Grid.GridPre R, G.IsSpaces → G.IsChars → SpAgree G W → (∀ i, i < D.R.m → ∀ κ : G'.CosAt i, IsThetaAt W.ψ (symplO _ _) (heisO W.ψ _ _) G.idem (latO (G'.pS (.chi i 0)) (G'.pT (.chi i 0)) (G'.latS (.chi i 0) : Set _) (G'.latT (.chi i 0) : Set _) fun _ => True) 1 (W.vac i) (cosInd G.idem κ) (W.cosVec i κ)) → ∀ i j, i < D.R.m → j ≤ D.R.m → ∀ (ω : GlobalTheory.Grid.WRep (G.V (i + 1) j).V (G.V i j).V) (f : WO (G.V (i + 1) j).V (G.V i j).V → ℂ), GlobalTheory.Grid.IsWeil R.ψ true (G.V (i + 1) j).V (G.V i j).V (G.chiAt (D.R.m - i) (rkV D (i + 1) j)) (G.chiAt (D.R.m - i) (rkV D i j)) ω → GlobalTheory.Grid.IsVac R.ψ R.θ true (G.V (i + 1) j) (G.V i j) f → ∃ It : GlobalTheory.Grid.Pol (G.V (i + 1) j) (G.V i j) →ₗ[ℂ] SmT (G.V i j).M →ₗ[ℂ] SmT (G.V (i + 1) j).M, IsItW R.θ (G.V (i + 1) j).M (G.V i j).M ω (GlobalTheory.Grid.fock R.ψ R.θ true (G.V (i + 1) j) (G.V i j) f) It := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R sc hDS hHC hHost hSz F hCore hgap G' W hW G hS hC hSp hTh i j hi hj ω f hω hf

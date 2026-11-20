@@ -18,7 +18,7 @@ namespace GlobalTheory.DownLift.GenFinite.TypeSpan
 variable {D : D7} {V W : HSp D}
 
 /- English proof (translation)
-Establish `e` using `(Formalism.L2.DIV.levChar D.sp.cm V.gram β L).map_mul ⟨_, hk.2⟩ ⟨_, hk'.2⟩`. Establish `e' : Formalism.L2.DIV.levFn β L (finE V k * finE V k') = Formalism.L2.DIV.levFn β L (finE V k) * Formalism.L2.DIV.levFn β L (finE V k')` using `e`. Unfold `levChi`. Rewrite using `[map_mul, e', Units.val_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem levChi_mul' {β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)} {L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank} {k k' : GA D V}
     (hk : k ∈ levG V β L) (hk' : k' ∈ levG V β L) :
@@ -30,7 +30,7 @@ theorem levChi_mul' {β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)} {L : For
   rw [map_mul, e', Units.val_mul]
 
 /- English proof (translation)
-Unfold `levChi`. Conclude with `Units.ne_zero _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem levChi_ne_zero (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) (k : GA D V) :
     levChi V β L k ≠ 0 := by
@@ -38,7 +38,7 @@ theorem levChi_ne_zero (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (L : 
   exact Units.ne_zero _
 
 /- English proof (translation)
-Use `filter_upwards [GlobalTheory.ThetaIntegrand.eventually_princ V β (L.Pg ∪ L.Q)] with κ hh`. Take `⟨-, -, h3⟩` from `hh`. Unfold `levChi`. Apply the tactic sequence `rw [GlobalTheory.LevSplit.levFn_eq_one β L _ fun PP hP => h3 PP (by rcases hP with h | h <;> simp [h]), Units.val_one]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem eventually_levChi_one (β : GL (Fin V.rank) (Formalism.IndefR.Lev.EAf D)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) :
     ∀ᶠ κ in nhds (1 : GA D V), levChi V β L κ = 1 := by
@@ -55,47 +55,35 @@ namespace GlobalTheory.DownLift.GenFinite
 open GlobalTheory.DownLift.GenFinite.TypeSpan
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F _ hP i t f hf`. Establish `hW` using `(hP i t).datum`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig (Vc D i).gram`. Take `⟨U, U', hUo, -, hfix⟩` from `GlobalTheory.Mem.ThetaLevel.exists_level D R.ψ hW.std (Vc D i) (Wc D i) (R.ωP i t) (GlobalTheory.Ker.isWeak_of_datum hW) hW.om_cont f hf`. Use `set J := levG (Vc D i) (R.βV i) (R.datVt i t) with hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set lam := levChi (Vc D i) (R.βV i) (R.datVt i t) with hlam`. Use `set om := R.ωP i t with hom`. Establish `hmul : ∀ a b : GA D (Vc D i), om (a * b, 1) = om (a, 1) * om (b, 1)` using `fun a b => by`. Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one]`. Establish `hone : om (1, 1) = 1` using `by rw [← Prod.one_eq_mk, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlm : ∀ {a b : GA D (Vc D i)}, a ∈ J → b ∈ J → lam (a * b) = lam a * lam b` using `fun ha hb => levChi_mul' ha hb`. Establish `hlne : ∀ a : GA D (Vc D i), lam a ≠ 0` using `fun a => levChi_ne_zero _ _ a`. Establish `hlam1 : lam 1 = 1`. Establish `e` using `hlm (one_mem J) (one_mem J)`. Rewrite `e` using `[mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Establish `h0` using `hlne 1`. Establish `e' : lam 1 * 1 = lam 1 * lam 1` using `by rw [mul_one]; exact e`. Conclude with `(mul_left_cancel₀ h0 e').symm`. Set `N : Subgroup J` to `{ carrier := {κ | om ((κ : GA D (Vc D i)), 1) f = f ∧ lam κ = 1} mul_mem' := by`. Introduce and unpack `a b ⟨ha1, ha2⟩ ⟨hb1, hb2⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show om ((a : GA D (Vc D i)) * b, 1) f = f`. Rewrite using `[hmul, Module.End.mul_apply, hb1, ha1]`. Use `show lam ((a : GA D (Vc D i)) * b) = 1`. Rewrite using `[hlm a.2 b.2, ha2, hb2, one_mul]`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use the proof step `one_mem' := by`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show om (1, 1) f = f`. Rewrite using `[hone]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hlam1`. Use the proof step `inv_mem' := by`. Introduce and unpack `a ⟨ha1, ha2⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show om ((a : GA D (Vc D i))⁻¹, 1) f = f conv_lhs => rw [← ha1]`.
+Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← Module.End.mul_apply, ← hmul, inv_mul_cancel, hone]`. Both sides reduce to the same expression. Use `show lam ((a : GA D (Vc D i))⁻¹) = 1`. Establish `e` using `hlm (inv_mem a.2) a.2`. Rewrite `e` using `[inv_mul_cancel, hlam1, ha2, mul_one]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `e.symm }`. Establish `hNo : IsOpen (N : Set J)`. Use `Subgroup.isOpen_of_mem_nhds N (g := 1) ?_` and prove the remaining obligations. Establish `h1 : {x : GA D (Vc D i) | x ∈ U ∧ lam x = 1} ∈ nhds (1 : GA D (Vc D i))` using `Filter.inter_mem (hUo.mem_nhds U.one_mem) (eventually_levChi_one _ _)`. Establish `h2` using `(continuous_subtype_val (p := fun x => x ∈ J)).continuousAt (x := (1 : J)).preimage_mem_nhds h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `Filter.mem_of_superset h2 fun κ hκ => ⟨hfix _ hκ.1 κ.2.1 1 U'.one_mem (one_mem _), hκ.2⟩`. Use `haveI : CompactSpace J := isCompact_iff_compactSpace.mp (GlobalTheory.ParahoricCompact.isCompact_levG _ _ _)`. Use `haveI : Finite (J ⧸ N) := Subgroup.quotient_finite_of_isOpen N hNo`. Use `letI : Fintype (J ⧸ N) := Fintype.ofFinite _`. Set `Fv : J → (WO (Vc D i) (Wc D i) → ℂ)` to `fun κ => lam κ • om ((κ : GA D (Vc D i)), 1) f`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hFvN : ∀ (a n : J), n ∈ N → Fv (a * n) = Fv a`. Introduce and unpack `a n ⟨hn1, hn2⟩`. Use `show lam ((a : GA D (Vc D i)) * n) • om ((a : GA D (Vc D i)) * n, 1) f = lam a • om ((a : GA D (Vc D i)), 1) f`. Rewrite using `[hlm a.2 n.2, hn2, mul_one, hmul, Module.End.mul_apply, hn1]`. Set `Fb : J ⧸ N → (WO (Vc D i) (Wc D i) → ℂ)` to `fun q => Fv q.out`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hFb : ∀ κ : J, Fb (κ : J ⧸ N) = Fv κ`. Introduce `κ`. Take `⟨n, hn⟩` from `QuotientGroup.mk_out_eq_mul N κ`. Use `show Fv (κ : J ⧸ N).out = Fv κ`. Rewrite using `[hn]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `hFvN κ n n.2`. Establish `hFbTh : ∀ q, IsThetaFunO R.ψ (Vc D i) (Wc D i) (Fb q)` using `fun q => theta_smul _ (hW.om_pres _ _ hf)`. Establish `hact : ∀ (κ' : J) (q : J ⧸ N), om ((κ' : GA D (Vc D i)), 1) (Fb q) = (lam κ')⁻¹ • Fb (κ' • q)`. Introduce `κ' q`. Proceed by induction on `q using QuotientGroup.induction_on with`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `H κ`. Rewrite using `[MulAction.Quotient.smul_mk, hFb, hFb]`. Use `show om ((κ' : GA D (Vc D i)), 1) (lam κ • om ((κ : GA D (Vc D i)), 1) f) = (lam κ')⁻¹ • (lam ((κ' : GA D (Vc D i)) * κ) • om ((κ' : GA D (Vc D i)) * κ, 1) f)`. Rewrite using `[map_smul, hmul, Module.End.mul_apply, hlm κ'.2 κ.2, smul_smul, ← mul_assoc, inv_mul_cancel₀ (hlne _), one_mul]`. Use `set c : ℂ := ((Fintype.card (J ⧸ N) : ℕ) : ℂ)⁻¹ with hc`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set fJ := c • ∑ q, Fb q with hfJ`. Establish `hfJv : TypeVec R i t fJ`. Use `⟨theta_smul _ (theta_sum Finset.univ Fb f hf fun q _ => hFbTh q), fun κ hκ => ?_⟩` and prove the remaining obligations. Use `show om (κ, 1) fJ = (lam κ)⁻¹ • fJ`. Establish `e : om (κ, 1) (∑ q, Fb q) = (lam κ)⁻¹ • ∑ q, Fb q`.
-
-Rewrite using `[map_sum]`. Use `fun q => hact ⟨κ, hκ⟩ q` as an intermediate fact. Simplify using `only [] at this`. Rewrite using `[Finset.sum_congr rfl fun q _ => this q, ← Finset.smul_sum]`. Use `congr 1`.
-
-Conclude with `Equiv.sum_comp (MulAction.toPerm (⟨κ, hκ⟩ : J)) Fb`. Rewrite using `[hfJ, map_smul, e, smul_comm]`. Establish `hdiff : ∀ q, f - Fb q ∈ Submodule.span ℂ ({φ | TypeVec R i t φ} ∪ TypeDiff R i t)`. Introduce `q`. Proceed by induction on `q using QuotientGroup.induction_on with`.
-
-Consider the case `H κ`. Rewrite using `[hFb]`. Establish `e : f - Fv κ = (-lam κ) • (om ((κ : GA D (Vc D i)), 1) f - (lam κ)⁻¹ • f)` using `by show f - lam κ • om ((κ : GA D (Vc D i)), 1) f = _`. Rewrite using `[smul_sub, smul_smul, neg_mul, mul_inv_cancel₀ (hlne _)]`. Simplify using `only [neg_smul, one_smul]`.
-
-Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Or.inr ⟨κ, κ.2, f, hf, rfl⟩))`. Establish `hcard : ((Fintype.card (J ⧸ N) : ℕ) : ℂ) ≠ 0`. Establish `: 0 < Fintype.card (J ⧸ N)` using `Fintype.card_pos`.
-
-Conclude with `this.ne'` after adjusting the coercions. Establish `hsplit : f = fJ + c • ∑ q, (f - Fb q)`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, smul_sub, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, hc, inv_mul_cancel₀ hcard, one_smul, hfJ]`. Normalize the expressions using the abelian group laws. Rewrite using `[hsplit]`.
-
-Conclude with `Submodule.add_mem _ (Submodule.subset_span (Or.inl hfJv)) (Submodule.smul_mem _ _ (Submodule.sum_mem _ fun q _ => hdiff q))`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typeSpan : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ (i : Fin D.R.m) (t : T) (f : WO (Vc D i) (Wc D i) → ℂ), IsThetaFunO R.ψ (Vc D i) (Wc D i) f → f ∈ Submodule.span ℂ ({φ | GlobalTheory.DownLift.GenFinite.TypeVec R i t φ} ∪ GlobalTheory.DownLift.GenFinite.TypeDiff R i t) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F _ hP i t f hf

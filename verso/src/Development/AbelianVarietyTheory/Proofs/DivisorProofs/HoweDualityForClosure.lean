@@ -23,7 +23,7 @@ noncomputable section
 namespace GlobalTheory.HoweLocal
 
 /- English proof (translation)
-Simplify using `only [hTens, Matrix.transpose_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -38,7 +38,7 @@ theorem hTens_transpose {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c 
   ring
 
 /- English proof (translation)
-Simplify using `only [symp, hTens_transpose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symp_transpose {R E : Type} [CommRing R] [CommRing E] [Algebra R E] (c : E →ₐ[R] E) (ξ : E) {α β : Type} [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] (JA : Matrix α α E) (JB : Matrix β β E) (x y : Matrix α β E) :
@@ -61,13 +61,13 @@ theorem dTr_e {R E : Type} [CommRing R] [Invertible (2 : R)] [CommRing E] [Algeb
     (co : Darboux (symp c ξ JA JB) κ) (y : Matrix β α E) : (dTr c ξ JA JB co).e y = co.e yᵀ := rfl
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ hcm n d X W M ψ χX χW om hstd hXh hXd hWh hWd hrX hrW hhX hhW hweil v hv _ om' hom' eX heX eW heW co hco χXv χWv hlX hlW`. Take `⟨-, ⟨dA, hdA, hB⟩, -⟩` from `hweil`. Use `⟨dTr _ _ _ _ co, fun x => by rw [dTr_e, Matrix.transpose_transpose], ?_⟩` and prove the remaining obligations. Establish `hL : ∀ g, ∀ φ ∈ SB (Fin n × Fin d → Fv F v), ((om'.comp (eX.symm.toMonoidHom.prodMap eW.symm.toMonoidHom)).comp (MonoidHom.inl _ _)) g φ ∈ SB _ ∧ Acts (evFin F v) ((om.comp (MonoidHom.inl _ _)) (eX.symm g).1) φ (((om'.comp (eX.symm.toMonoidHom.prodMap eW.symm.toMonoidHom)).comp ( …`. Introduce `g φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hom' (eX.symm g) 1 φ hφ`. Simplify using `using h`. Establish `hc : ∀ y, (dTr _ _ _ _ co).e y = GlobalTheory.LatVac.locCo dA v (y.map (GlobalTheory.HoweLocal.liftE v))`. Introduce `y`. Rewrite using `[dTr_e, hco]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `hdA (yᵀ.map (GlobalTheory.HoweLocal.liftE v))` as an intermediate fact. Simplify using `only [GlobalTheory.LatVac.locCo, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[← this]`. Both sides reduce to the same expression. Establish `hS` using `hB.1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨dd, omd, h1, h2, h3⟩` from `GlobalTheory.HoweLocal.DblLocal.exists_dbl_local F E σ hcm d n W.J X (Fin n × Fin d) dA ψ χW (om.comp (MonoidHom.inl _ _)) hstd hWd hXd hrW hhW hB v hv eX heX _ hL _ hc χWv hlW`. Conclude with `⟨⟨⟨fun g φ hφ => (hL g φ hφ).1, GlobalTheory.HoweLocal.WeilImpl.impl_local F E σ d n W.J X (Fin n × Fin d) dA ψ (om.comp (MonoidHom.inl _ _)) hstd hS v hv eX heX _ hL _ hc, fun _ _ _ => Set.mem_univ _⟩, GlobalTheory.HoweLocal.LocUnitNonsplit.isUnitaryOn_local F E σ d n W.J X (Fin …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem weilX : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),
@@ -119,9 +119,9 @@ theorem weilX : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] 
     dd, omd, h1, h2, h3⟩
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ hcm n d X W M ψ χX χW om hstd hXh hXd hWh hWd hrX hrW hhX hhW hweil v hv _ om' hom' eX heX eW heW co hco χXv χWv hlX hlW`. Take `⟨hB, -, -⟩` from `hweil`. Establish `hL : ∀ g, ∀ φ ∈ SB (Fin n × Fin d → Fv F v), ((om'.comp (eX.symm.toMonoidHom.prodMap eW.symm.toMonoidHom)).comp (MonoidHom.inr _ _)) g φ ∈ SB _ ∧ Acts (evFin F v) ((om.comp (MonoidHom.inr _ _)) (eW.symm g).1) φ (((om'.comp (eX.symm.toMonoidHom.prodMap eW.symm.toMonoidHom)).comp ( …`. Introduce `g φ hφ`. Establish `h` using `hom' 1 (eW.symm g) φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using h`. Establish `hS` using `hB.1`. Take `⟨dd, omd, h1, h2, h3⟩` from `GlobalTheory.HoweLocal.DblLocal.exists_dbl_local F E σ hcm n d X.J W (Fin n × Fin d) M.co ψ χX (om.comp (MonoidHom.inr _ _)) hstd hXd hWd hrX hhX hB v hv eW heW _ hL _ hco χXv hlX`. Conclude with `⟨⟨⟨fun g φ hφ => (hL g φ hφ).1, GlobalTheory.HoweLocal.WeilImpl.impl_local F E σ n d X.J W (Fin n × Fin d) M.co ψ (om.comp (MonoidHom.inr _ _)) hstd hS v hv eW heW _ hL _ hco, fun _ _ _ => Set.mem_univ _⟩, GlobalTheory.HoweLocal.LocUnitNonsplit.isUnitaryOn_local F E σ n d X.J W ( …`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem weilW : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),
@@ -163,21 +163,19 @@ theorem weilW : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] 
     dd, omd, h1, h2, h3⟩
 
 /- English proof (translation)
-Introduce `hP hHD F E _ _ _ _ _ σ hCM n d X W M ψ χX χW om hψ hX hXd hW hWd hrX hrW hhX hhW hom v hv om' hom'`. Establish `hinj : Function.Injective (algebraMap F (Fv F v))` using `(algebraMap F (Fv F v)).injective`. Use `haveI : CharZero (Fv F v) := charZero_of_injective_algebraMap hinj`. Use `letI : Invertible (2 : Fv F v) := invertibleOfNonzero two_ne_zero`. Use `letI : Field (Fv F v ⊗[F] E) := (GlobalTheory.HoweLocal.Fld.isField_of_isEmpty F E σ hCM v hv).toField`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ⟩` from `GlobalTheory.HoweLocal.quad_exists F E σ hCM v`. Take `⟨eX, heX⟩` from `GlobalTheory.HoweLocal.compIso_exists F E σ hCM n X v`. Take `⟨eW, heW⟩` from `GlobalTheory.HoweLocal.compIso_exists F E σ hCM d W v`. Take `⟨co, hco⟩` from `GlobalTheory.HoweLocal.exists_isLocCo F E σ hCM n d X W M v`. Take `⟨χXv, hcX, hrXv, hlX⟩` from `GlobalTheory.HoweLocal.exists_locChr_of_resEtaPow hP F E σ hCM n χX hhX hrX v hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨χWv, hcW, hrWv, hlW⟩` from `GlobalTheory.HoweLocal.exists_locChr_of_resEtaPow hP F E σ hCM d χW hhW hrW v hv`. Take `⟨hψc, hψn, hψ1⟩` from `GlobalTheory.HoweLocal.Psi.psiAt_cont_norm_nontriv F ψ hψ v`. Establish `hcv : ∀ x : E, GlobalTheory.HoweLocal.cv σ v (Algebra.TensorProduct.includeRight x) = Algebra.TensorProduct.includeRight (σ x)` using `fun x => by`. Simplify using `[GlobalTheory.HoweLocal.cv]`. Establish `hdet : ∀ {m : ℕ} (J : Matrix (Fin m) (Fin m) E), (GlobalTheory.HoweLocal.Jv v J).det = Algebra.TensorProduct.includeRight (R` using `F) (A := Fv F v) J.det := fun J => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.HoweLocal.Jv]`. Conclude with `(AlgHom.map_det _ J).symm`. Establish `hiR : Function.Injective (Algebra.TensorProduct.includeRight (R` using `F) (A := Fv F v) (B := E)) := Algebra.TensorProduct.includeRight_injective hinj`. Establish `hHX : IsHerm (GlobalTheory.HoweLocal.cv σ v) (GlobalTheory.HoweLocal.Jv v X.J)`. Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.HoweLocal.Jv, Matrix.map_apply, hcv, hX]`. Rewrite using `[hdet]`. Conclude with `(isUnit_iff_ne_zero.mpr hXd).map _`. Establish `hWs : ∀ i j, GlobalTheory.HoweLocal.cv σ v ((-1) * GlobalTheory.HoweLocal.Jv v W.J j i) = -((-1) * GlobalTheory.HoweLocal.Jv v W.J i j)` using `fun i j => by`. Simplify using `only [GlobalTheory.HoweLocal.Jv, Matrix.map_apply, map_mul, map_neg, map_one, hcv, hW]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hWd' : (GlobalTheory.HoweLocal.Jv v W.J).det ≠ 0`. Rewrite using `[hdet]`. Introduce `h`. Conclude with `hWd (hiR (h.trans (map_zero _).symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hWeil : IsUWeilPair (GlobalTheory.HoweLocal.cv σ v) (sbClass (Fv F v)) (GlobalTheory.LatVac.psiAt ψ v) (-1) (GlobalTheory.HoweLocal.Jv v X.J) (GlobalTheory.HoweLocal.Jv v W.J) co χXv χWv (om'.comp (eX.symm.toMonoidHom.prodMap eW.symm.toMonoidHom))` using `⟨weilW hP F E σ hCM n d X W M ψ χX χW om hψ hX hXd hW hWd hrX hrW hhX hhW hom v hv om' hom' eX heX eW heW co hco χXv χWv hlX hlW, weilX hP F E σ hCM n d X W M ψ χX χW om hψ hX hXd hW hWd hrX hrW hhX hhW hom v hv om' hom' eX heX eW heW co hco χXv χWv hlX hlW, GlobalTheory.HoweLoca …`. Establish `hHD'` using `(hHD (Fv F v) (Fv F v ⊗[F] E) (GlobalTheory.HoweLocal.cv σ v) δ hδ (GlobalTheory.LatVac.psiAt ψ v) hψc hψn hψ1 n d (-1) (GlobalTheory.HoweLocal.Jv v X.J) (GlobalTheory.HoweLocal.Jv v W.J) hHX (neg_ne_zero.mpr one_ne_zero) hWs hWd' χXv χWv hcX hcW hrXv hrWv (Fin n × Fin d) co _ hW …`. Establish `e : (om'.comp (eX.symm.toMonoidHom.prodMap eW.symm.toMonoidHom)).comp (eX.toMonoidHom.prodMap eW.toMonoidHom) = om'`. Use extensionality with `⟨a, b⟩ : 1`. Simplify using the standard rewrite rules.
-
-Use `GlobalTheory.HoweLocal.HoweTransport.howeDualityFor_transport eX eW heX.2.1 heX.2.2 heW.2.1 heW.2.2 _ hHD'` as an intermediate fact. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem howeDualityFor_locOps : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.Published.HoweDualityUnitary → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),
@@ -239,7 +237,7 @@ theorem howeDualityFor_locOps : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheor
   rwa [e] at this
 
 /- English proof (translation)
-Introduce `hP hHD F E _ _ _ _ _ σ hCM n d X W M ψ χX χW om hψ hX hXd hW hWd hrX hrW hhX hhW hom v hv`. Establish `key` using `howeDualityFor_locOps hP hHD F E σ hCM n d X W M ψ χX χW om hψ hX hXd hW hWd hrX hrW hhX hhW hom v hv`. Rewrite using `[closure_UAt σ X (evFin F v), closure_UAt σ W (evFin F v)]`. Conclude with `key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem howeDualityFor_closure : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.Published.HoweDualityUnitary → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),

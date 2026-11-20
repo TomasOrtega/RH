@@ -8,9 +8,9 @@ open scoped Classical TensorProduct
 namespace PositivityTheory.Rg.BcB.G3.FinCl2P
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `rel a b hab => exact hab`. Consider the case `refl a => exact ⟨1, by simp⟩`. Consider the case `symm a b _ ih`. Take `⟨g, rfl⟩` from `ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨g⁻¹, by rw [map_inv]; group⟩`. Consider the case `trans a b c _ _ ih1 ih2`. Take `⟨g, rfl⟩` from `ih1`. Take `⟨k, rfl⟩` from `ih2`. Conclude with `⟨g * k, by rw [map_mul]; group⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rel_of_eqvGen {G : Type} [Group G] (θ : G →* G) {x y : G}
     (h : Relation.EqvGen (fun x y : G => ∃ g, y = g⁻¹ * x * θ g) x y) : ∃ g, y = g⁻¹ * x * θ g := by
@@ -26,21 +26,21 @@ theorem rel_of_eqvGen {G : Type} [Group G] (θ : G →* G) {x y : G}
     exact ⟨g * k, by rw [map_mul]; group⟩
 
 /- English proof (translation)
-The claim follows from `rel_of_eqvGen θ (Quot.eqvGen_exact h)`.
+A detailed English derivation is pending.
 -/
 theorem twConj_of_mk_eq {G : Type} [Group G] {θ : G →* G} {x y : G}
     (h : (Quot.mk _ x : TwCl θ) = Quot.mk _ y) : ∃ g, y = g⁻¹ * x * θ g :=
   rel_of_eqvGen θ (Quot.eqvGen_exact h)
 
 /- English proof (translation)
-The claim follows from `twConj_of_mk_eq (θ := θ) (Quot.out_eq (Quot.mk _ y : TwCl θ)).symm`.
+A detailed English derivation is pending.
 -/
 theorem rep_mk {G : Type} [Group G] {θ : G →* G} (y : G) :
     ∃ g, TwCl.rep (Quot.mk _ y : TwCl θ) = g⁻¹ * y * θ g :=
   twConj_of_mk_eq (θ := θ) (Quot.out_eq (Quot.mk _ y : TwCl θ)).symm
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `rep_mk (θ := thL n w) y`. Rewrite using `[hg, GlobalTheory.BCT.ThBasic.nrmL_twist hU n w g y, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_rep_mk {E : Type} [Field E] [NumberField E] [IsCMField E] (hU : Unr E) (n : ℕ) (w : Pl E)
     (y : GLw n w) : (nrmL n w (TwCl.rep (Quot.mk _ y : TwCl (thL n w)))).val.charpoly = (nrmL n w y).val.charpoly := by
@@ -52,13 +52,13 @@ end PositivityTheory.Rg.BcB.G3.FinCl2P
 
 open PositivityTheory.Rg.BcB.G3.FinCl2P in
 /- English proof (translation)
-Introduce `E _ _ _ hU a b w Q₁ Q₂ h₁ h₂`. Use `set θ := (thL a w).prodMap (thL b w) with hθ`. Set `f : TwCl θ → TwCl (thL a w) × TwCl (thL b w)` to `fun l => (Quot.mk _ l.rep.1, Quot.mk _ l.rep.2)`. Establish `hinj : Function.Injective f`. Introduce `l l' hll'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g₁, hg₁⟩` from `twConj_of_mk_eq (congrArg Prod.fst hll')`. Take `⟨g₂, hg₂⟩` from `twConj_of_mk_eq (congrArg Prod.snd hll')`. Establish `hq : (Quot.mk _ l.rep : TwCl θ) = Quot.mk _ l'.rep` using `Quot.sound ⟨(g₁, g₂), Prod.ext (by simpa [hθ] using hg₁) (by simpa [hθ] using hg₂)⟩`. Establish `e1 : (Quot.mk _ l.rep : TwCl θ) = l` using `Quot.out_eq l`. Establish `e2 : (Quot.mk _ l'.rep : TwCl θ) = l'` using `Quot.out_eq l'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1, ← e2, hq]`. Establish `hA` using `(GlobalTheory.BCT.ClsFin.classes_finite E hU a w Q₁ h₁).1`. Establish `hB` using `(GlobalTheory.BCT.ClsFin.classes_finite E hU b w Q₂ h₂).1`. Use `((hA.prod hB).preimage hinj.injOn).subset ?_` and prove the remaining obligations. Introduce and unpack `l ⟨hl₁, hl₂⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(nrmL a w (TwCl.rep (Quot.mk _ l.rep.1 : TwCl (thL a w)))).val.charpoly = Q₁`. Rewrite using `[charpoly_rep_mk hU a w, hl₁]`. Express the relevant statement in the definitionally equal form `(nrmL b w (TwCl.rep (Quot.mk _ l.rep.2 : TwCl (thL b w)))).val.charpoly = Q₂`. Rewrite using `[charpoly_rep_mk hU b w, hl₂]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Rg.BcB.G3.finCl2_pf : FinCl2 := by
   intro E _ _ _ hU a b w Q₁ Q₂ h₁ h₂

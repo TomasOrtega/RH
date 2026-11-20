@@ -5,7 +5,7 @@ import Development.AutomorphicSpectrum.Proofs.GlobalProofs.ParabolicInductionFin
 namespace PositivityTheory.Tls2.BZGL
 
 /- English proof (translation)
-Introduce `k _ _ _ _ r d _`. Use `⟨fun V _ _ π hπ hl => ?_, fun W _ _ ρ hρ hl => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.jacquet_module_finite_length k (Fin r) (Fin (∑ a, d a)) (fun a => Fin (d a)) finSigmaFinEquiv V π hπ hl`. Conclude with `GlobalTheory.T.parabolic_induction_finite_length k (Fin r) (Fin (∑ a, d a)) (fun a => Fin (d a)) finSigmaFinEquiv W ρ hρ hl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem standardFunctorsFiniteLength_top : GlobalTheory.Published.StandardFunctorsFiniteLength := by
   intro k _ _ _ _ r d _

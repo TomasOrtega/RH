@@ -17,7 +17,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AnPer
 
 /- English proof (translation)
-Establish `h1 : IsProper A.hom` using `h.proper`. Establish `h2 : IsSeparated A.hom` using `inferInstance`. Rewrite using `[Scheme.isSeparated_iff, ← terminal.comp_from A.hom]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSeparated_left_of_isAbelianScheme {R : Type} [CommRing R] (A : Over (Sp R)) [GrpObj A]
     (h : IsAbelianScheme A) : A.left.IsSeparated := by
@@ -27,15 +27,15 @@ theorem isSeparated_left_of_isAbelianScheme {R : Type} [CommRing R] (A : Over (S
   infer_instance
 
 /- English proof (translation)
-Introduce `I _ _ g B _ _ 𝒜 _ hA hg y₀ A₀ _ φ₀ hφ₀ L₀ u₀ F σ e h0 hy hE hτ P₀ hP₀ D _ _ π κ hκ hπ N t ht htN j hj A' _ φ' _ m' i h hi k x d hd c per hper`. Take `⟨hA₀, hg₀⟩` from `GlobalTheory.AbBaseChange.isAbelianScheme_and_relDim_of_isGrpPullback _ 𝒜 A₀ φ₀ g hφ₀ hA hg`. Establish `hspan` using `(GlobalTheory.T.primitiveCrystalline_baseChange_nilpotent_thickening A₀ g hA₀ hg₀ D π κ hκ hπ k).2`. Establish `hmem : (liftMor κ h).pull (m'.pull c) ∈ Submodule.span D (Set.range k.pull)`. Rewrite using `[hspan]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_top`. Take `⟨n, f, v, hv⟩` from `Submodule.mem_span_set'.1 hmem`. Use `choose a ha using fun r : Fin n ↦ (v r).2`. Establish `hsum : (liftMor κ h).pull (m'.pull c) = ∑ r, f r • k.pull (a r)`. Rewrite using `[← hv]; exact Finset.sum_congr rfl fun r _ ↦ by rw [ha]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `πa : D →ₐ[ℂ] ℂ` to `{ π with commutes' := hπ }`. Establish `M` using `(m'.comp (liftMor κ h)).isMor`. Establish `nn : IsMor (dp0 B) (𝒜.hom ≫ 𝟙 _) κ (A₀.hom ≫ spMap π) (j : B →+* D) φ₀`. Rewrite `M` using `[RingHom.id_comp, hi]`. Conclude with `M`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpull : nn.pull1 c.1 = ∑ r ∈ Finset.univ, f r • k.isMor.pull1 (a r).1`. Establish `e1` using `IsMor.pullback1_comp m'.isMor (liftMor κ h).isMor nn (fun _ ↦ rfl) hi c.1`. Establish `e2` using `congrArg (Submodule.subtype _) hsum`. Rewrite `e2` using `[map_sum]`. Conclude with `e1.symm.trans e2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `GlobalTheory.T.taylor_period_eq_period_over_thickening_alt (F := F) (F₀ := fibFam u₀) e (fibUnif u₀) (isSeparated_left_of_isAbelianScheme 𝒜 hA) (isSeparated_left_of_isAbelianScheme A₀ hA₀) h0 (fun _ ↦ trivial) (fun l _ ↦ (hτ l).symm) φ₀ (fun p ↦ (hE p.2).symm) πa (GlobalTheory.T. …`. Rewrite using `[crysToDR_apply, hsum, map_sum, ← key]`. Use `Finset.sum_congr rfl fun r _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_smul, hd (a r), smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem pTaylor : PTaylor := by
   intro I _ _ g B _ _ 𝒜 _ hA hg y₀ A₀ _ φ₀ hφ₀ L₀ u₀ F σ e h0 hy hE hτ P₀ hP₀ D _ _ π κ hκ hπ N t ht htN

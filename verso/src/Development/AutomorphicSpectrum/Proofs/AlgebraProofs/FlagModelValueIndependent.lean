@@ -16,7 +16,7 @@ namespace GlobalTheory.CompanionTheory.CommAlg.FlagModelValue
 open GroundTheory.Heights₂.Heights.NumbersDVR in
 
 /- English proof (translation)
-The claim follows from `FlagModelValueIndependence.proof (FlagPairValueIndependence.proof GlobalTheory.T.flag_plain_value_independent GlobalTheory.T.flag_further_term_independent_statement) (FlagModelCommonModel.proof GlobalTheory.CompanionTheory.CommAlg.joinTwoModels GlobalTheory.CompanionTheory.CommAl …`.
+A detailed English derivation is pending.
 -/
 theorem main : FlagModelValueIndependence.Statement :=
   FlagModelValueIndependence.proof

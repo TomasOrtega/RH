@@ -33,9 +33,9 @@ variable {D : D7} (X : Formalism.L2.Herm.Herm0 D)
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Substitute `hL` using the available equality. Establish `h1 : (((X.g u w hg).yG i).1)⁻¹ * bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) ((X.g u w hg).gamI i γ).1 * ((X.g u w hg).yG i).1 ∈ Formalism.L2.Herm.awayFrom₂ (X.lev0 u) (D.what₂.places.resChar w) := (mem_map_conj _ _ _).1 (((X.g u w hg).gamI_range i _).1 ⟨γ, rfl⟩)`. Establish `ee : ((locAt X u w hg B).yG i)⁻¹ * bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) ((locAt X u w hg B).gamI i γ) * (locAt X u w hg B).yG i = reGL (rank_eq_first_level D.R) _ ((((X.g u w hg).yG i).1)⁻¹ * bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) ((X.g u w hg).gamI i γ).1 * ((X.g u w hg). …`. Rewrite using `[map_mul, map_mul, map_inv, ← bc_reGL]`. Both sides reduce to the same expression.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hχ i γ ⟨_, h1⟩ rfl]`. Use `hψ ⟨_, h1⟩ κ (fun v hv => ?_) (fun w' hw' => ?_)` and prove the remaining obligations. Take `⟨v', rfl⟩` from `LocGood.exists_pl (locAt X u w hg B) v hv`. Conclude with `hκ.1 v'`. Rewrite using `[hκ.2 w' hw', ee]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_rec (T : ∀ u : D.what₂.Word, Forms0 D u) (u : D.what₂.Word) (w : D.what₂.places.Pl)
     (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (B : GL (Fin D.R.k) D.host.E)

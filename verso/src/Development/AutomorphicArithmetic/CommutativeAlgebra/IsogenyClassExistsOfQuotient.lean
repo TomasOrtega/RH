@@ -6,15 +6,15 @@ open AlgebraicGeometry CategoryTheory Limits
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheory.UPel.HT.EtLev GlobalTheory.LKTrip GlobalTheory.LKGeo
 
 /- English proof (translation)
-Introduce `hObj hComp hUniq hLev q _ D R R' _ _ _ b gb β hM N N₀ c a 𝔞 hN hpos h3 hcop hgen Y X s o`. Take `⟨o₀, ⟨n⟩⟩` from `hObj q D R R' b gb β hM N N₀ c hN hpos hcop X s o`. Take `⟨l, hl, hln⟩` from `hLev q D R R' b gb N N₀ c a 𝔞 hpos hgen X s _ o o₀ n`. Take `⟨f, ⟨hfs, m, hm⟩, hfu⟩` from `Y.rep X _ o₀ l hl`. Establish `key : ∀ (j : X ⟶ Y.X), j ≫ Y.s = s ≫ spMap β → ∀ (k : QMap o Y.univ j c), (∀ y : D.La, Over.Hom.left (o.eta ((algebraMap (NumberField.RingOfIntegers D.F) D.O) a • y)) ≫ k.φ = j ≫ Over.Hom.left (Y.lv y)) → j = f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `j hj k hk`. Choose the witnesses or unpack the hypotheses as in `⟨k', hk'⟩ : ∃ k' : QMap o Y.univ (𝟙 X ≫ j) c, k'.φ = k.φ := by`. Rewrite using `[Category.id_comp]`. Conclude with `⟨k, rfl⟩`. Take `⟨m', hm'⟩` from `(hComp q D R R' b gb N N₀ c X X Y.X s _ _ o o₀ Y.univ (𝟙 X) j).2.2.1 inferInstance n k'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Apply `hfu` to reduce the goal to its premises. Use `⟨hj, m', fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← hln y, Category.assoc, ← hm', hk']`. Conclude with `hk y`. Take `⟨n', hn'⟩` from `(hComp q D R R' b gb N N₀ c X X Y.X s _ _ o o₀ Y.univ (𝟙 X) f).1 n m`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨⟨𝟙 X ≫ f, by rw [Category.id_comp, hfs], n', fun y => ?_⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hn', ← Category.assoc, hln y, hm y, Category.id_comp]`. Introduce `C C'`. Take `⟨j, ov, k, hk⟩` from `C`. Take `⟨j', ov', k', hk'⟩` from `C'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1` using `key j ov k hk`. Establish `e2` using `key j' ov' k' hk'`. Substitute `e1` using the available equality. Substitute `e2` using the available equality. Conclude with `⟨rfl, hUniq q D R R' b gb N N₀ c h3 hcop X Y.X s Y.s o Y.univ _ k k'⟩`.
+Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.isogeny_class_exists_of_quotient :
     QObj → QComp → QUniq → QLev → ClsEx := by

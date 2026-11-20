@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.PsiRing
 
 /- English proof (translation)
-Use `D.P.isAb.comm` as an intermediate fact. Rewrite using `[PsiExists.famφT_eq, PsiExists.cT_zero, _root_.mul_one]`. Simplify using `[Fin.prod_univ_four, DegPre.famε]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem basis_prod_famφT_zero {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (T : Over (Spec (CommRingCat.of R)))
     (U : Type) [CommGroup U] (h : ((T ⊗ D.P.A).left ⟶ D.P.A.left) → U) :
@@ -30,21 +30,19 @@ theorem basis_prod_famφT_zero {R : Type} [CommRing R] [IsDomain R] (D : DegPre 
   simp [Fin.prod_univ_four, DegPre.famε]
 
 /- English proof (translation)
-Introduce `hT R _ _ _ D`. Use `D.P.isAb.comm` as an intermediate fact. Set `T : Over (Spec (CommRingCat.of R))` to `𝟙_ _`. Establish `e : translPt D.P.A (1 : T ⟶ D.P.A) = snd T D.P.A` using `by show (fst T D.P.A ≫ 1) * snd T D.P.A = _`. Rewrite using `[MonObj.comp_one, _root_.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨b, hb⟩, -⟩` from `hT _ D.P 1 le_rfl R (𝟙 _) (1 : T ⟶ D.P.A)`. Express the relevant statement in the definitionally equal form `Fin (1 ^ D.P.g) → LB.Sec (twistLB D.P.A D.P.L 1 (1 : T ⟶ D.P.A)) at b`. Express the relevant statement in the definitionally equal form `IsSecBasis (T := T) (A := D.P.A) _ b at hb`. Establish `: Subsingleton (Fin (1 ^ D.P.g))` using `by rw [one_pow]; infer_instance`. Set `i₀ : Fin (1 ^ D.P.g)` to `⟨0, by simp⟩`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `H : FormEq (K` using `Fin 2) ![(snd T D.P.A).left, (translPt D.P.A (1 : T ⟶ D.P.A)).left] ![((1 : ℕ) : ℤ) - 1, 1] (famφT D T 0) (DegPre.famε 1) := fun U _ h => by`. Rewrite using `[basis_prod_famφT_zero, e]`. Simplify using `[Fin.prod_univ_two]`. Take `⟨th, hth⟩` from `exists_sec D.P.isLB H (b i₀)`. Establish `hf : (fst T D.P.A).left = (T ⊗ D.P.A).hom` using `(Category.comp_id _).symm.trans (Over.w (fst T D.P.A))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ g : SecBT D T 1 0, ∃ c : R, Mult D th g c` using `fun g => by`. Take `⟨s, hs⟩` from `exists_sec D.P.isLB (fun U _ h => (H U h).symm) g`. Take `⟨c, hc, -⟩` from `hb s`. Establish `hc'` using `fun j => (hc j).trans (Fintype.sum_subsingleton _ i₀)`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom (c i₀), fun Z r z J hJ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hs Z r z J hJ).symm.trans (Eq.trans ?_ (congrArg _ (hth Z r z J hJ).symm))` and prove the remaining obligations. Use `(congrArg (gs r z _) (hc' _)).trans ((gs_mul r z _ (hJ.mem _ r) _ _).trans (congrArg₂ (· * ·) ((gs_res r z le_top (hJ.mem _ r) _).trans ((gs_pull r (fst T D.P.A).left z ⊤ trivial _).trans ?_)) rfl))` and prove the remaining obligations. Conclude with `congrArg₂ (fun (q : Z ⟶ Spec (CommRingCat.of R)) (a : Γ(Spec (CommRingCat.of R), ⊤)) => gs q z ⊤ a) (congrArg (r ≫ ·) hf) ((Scheme.ΓSpecIso (CommRingCat.of R)).hom_inv_id_apply (c i₀)).symm`. Use `⟨th, fun y => ?_, key⟩` and prove the remaining obligations. Establish `hp : IsPullback (snd T D.P.A).left (T ⊗ D.P.A).hom D.P.A.hom (𝟙 _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hf]`. Conclude with `(IsPullback.of_hasPullback T.hom D.P.A.hom).flip`. Take `⟨t, ht⟩` from `KeyPow.exists_sec_fibre_ne_zero hT D.P hp`. Take `⟨z, hz, hz'⟩` from `ht y`. Take `⟨g, hg⟩` from `exists_sec D.P.isLB (K := PUnit) (φ := fun _ => (snd T D.P.A).left) (ε := fun _ => 1) (φ' := famφT D T 0) (ε' := DegPre.famε 1) (fun U _ h => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[basis_prod_famφT_zero]`. Use the proof step `simp) t`. Take `⟨c, hc⟩` from `key g`. Use `choose J hJ using fun χ : (T ⊗ D.P.A).left ⟶ D.P.A.left => exists_chart D.P.isLB (χ z)`. Use `⟨z, hz, (MulPullSec.mem_nonzeroLocus_iff th (𝟙 _) z hJ).2 ?_⟩` and prove the remaining obligations.
-
-Establish `u` using `(MulPullSec.mem_nonzeroLocus_iff (K := PUnit) (φ := fun _ => (snd T D.P.A).left) (ε := fun _ => 1) t (𝟙 _) z hJ).1 hz'`. Rewrite `u` using `[← hg _ _ z J hJ, hc _ _ z J hJ]`. Conclude with `isUnit_of_mul_isUnit_right u`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basis_fibNZ : SecTwistSt → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegPre R), ∃ th : SecBT D (𝟙_ _) 1 0, FibNZ (𝟙_ _ ⊗ D.P.A).hom th ∧ ∀ g : SecBT D (𝟙_ _) 1 0, ∃ b : R, Mult D th g b := by
   intro hT R _ _ _ D

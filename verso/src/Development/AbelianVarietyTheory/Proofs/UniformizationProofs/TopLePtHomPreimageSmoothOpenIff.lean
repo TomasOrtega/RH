@@ -17,7 +17,7 @@ def pderivClass (j : Fin 3) : HomRing W :=
   Ideal.Quotient.mk _ (MvPolynomial.pderiv j W.toProjective.polynomial)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, (isHomogeneous_polynomial W).pderiv, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem pderivClass_mem (j : Fin 3) : pderivClass W j ∈ grading W 2 :=
   ⟨_, (isHomogeneous_polynomial W).pderiv, rfl⟩
@@ -25,7 +25,7 @@ theorem pderivClass_mem (j : Fin 3) : pderivClass W j ∈ grading W 2 :=
 def pderivOpen (j : Fin 3) : (scheme W).Opens := Proj.basicOpen (grading W) (pderivClass W j)
 
 /- English proof (translation)
-The claim follows from `ProjPoint.ofHom_preimage_basicOpen (grading W) _ _ two_pos (pderivClass_mem W j)`.
+A detailed English derivation is pending.
 -/
 theorem ptHom_preimage_pderivOpen {A : Type u} [CommRing A] (ρ : R →+* A) (P : Fin 3 → A)
     (h : IsUnimodularSol (W.map ρ) P) (j : Fin 3) :
@@ -37,15 +37,13 @@ def smoothOpen : (scheme W).Opens :=
   ⨆ p : {p : Fin 3 × Fin 3 // p.2 ≠ p.1}, coordOpen W p.1.1 ⊓ pderivOpen W p.1.2
 
 /- English proof (translation)
-Use `set D : Fin 3 → k := fun j => MvPolynomial.eval P (MvPolynomial.pderiv j V.toProjective.polynomial) with hD`. Express the relevant statement in the definitionally equal form `(_ ∧ (D 0 ≠ 0 ∨ D 1 ≠ 0 ∨ D 2 ≠ 0)) ↔ ∃ i j : Fin 3, j ≠ i ∧ P i ≠ 0 ∧ D j ≠ 0`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hns⟩`. Take `⟨i, hi⟩ : ∃ i, P i ≠ 0` from `by by_contra! h0`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `h.span_eq_top` as an intermediate fact. Rewrite `this` using `[Ideal.span_eq_bot.mpr (by rintro _ ⟨i, rfl⟩; exact h0 i)]`. Conclude with `bot_ne_top this`. Use `by_contra! hc`. Establish `hj : ∀ j, j ≠ i → D j = 0` using `fun j hj => hc i j hj hi`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `euler : 3 * _ = P 0 * D 0 + P 1 * D 1 + P 2 * D 2` using `V.toProjective.polynomial_relation P`. Establish `h0 : MvPolynomial.eval P V.toProjective.polynomial = 0` using `h.equation`. Rewrite `euler` using `[h0, mul_zero, ← Fin.sum_univ_three (fun j => P j * D j), Finset.sum_eq_single i (fun j _ h => by rw [hj j h, mul_zero]) (by simp)]`. Establish `hall : ∀ j, D j = 0` using `fun j => by`. Distinguish the cases in `h : j = i`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h ▸ (mul_eq_zero.mp euler.symm).resolve_left hi`. Conclude with `hj j h`. Break down `hns with h | h | h` into its components or cases. Use `exacts [h (hall 0), h (hall 1), h (hall 2)]`. Introduce and unpack `⟨i, j, -, -, hj⟩`.
-
-Use `⟨h.equation, ?_⟩` and prove the remaining obligations. Use `fin_cases j`. Use `exacts [Or.inl hj, Or.inr (Or.inl hj), Or.inr (Or.inr hj)]`.
+A detailed English derivation is pending.
 -/
 theorem nonsingular_iff_exists_pderiv {k : Type*} [Field k] {V : WeierstrassCurve k}
     {P : Fin 3 → k} (h : IsUnimodularSol V P) :
@@ -80,11 +78,11 @@ theorem nonsingular_iff_exists_pderiv {k : Type*} [Field k] {V : WeierstrassCurv
     exacts [Or.inl hj, Or.inr (Or.inl hj), Or.inr (Or.inr hj)]
 
 /- English proof (translation)
-Establish `e : (W.map ρ).toProjective.polynomial = MvPolynomial.map ρ W.toProjective.polynomial` using `WeierstrassCurve.Projective.map_polynomial ..`. Establish `hb : ∀ (x : PrimeSpectrum k) (a : k), x ∈ PrimeSpectrum.basicOpen a ↔ a ≠ 0`. Introduce `x a`. Rewrite using `[PrimeSpectrum.mem_basicOpen, Ideal.eq_bot_of_prime x.asIdeal, Ideal.mem_bot]`. Rewrite using `[nonsingular_iff_exists_pderiv h, e, smoothOpen, Scheme.Hom.preimage_iSup]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MvPolynomial.pderiv_map, MvPolynomial.eval_map, Scheme.Hom.preimage_inf, ptHom_preimage_coordOpen, ptHom_preimage_pderivOpen]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Take `⟨⟨⟨i, j⟩, hij⟩, h1, h2⟩` from `TopologicalSpace.Opens.mem_iSup.mp (H (Set.mem_univ (⟨⊥, inferInstance⟩ : PrimeSpectrum k)))`. Conclude with `⟨i, j, hij, (hb _ _).mp h1, (hb _ _).mp h2⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨i, j, hij, h1, h2⟩ x -`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨⟨⟨i, j⟩, hij⟩, (hb _ _).mpr h1, (hb _ _).mpr h2⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem top_le_ptHom_preimage_smoothOpen_iff {k : Type u} [Field k] (ρ : R →+* k) (P : Fin 3 → k)
     (h : IsUnimodularSol (W.map ρ) P) :
@@ -121,11 +119,11 @@ instance (i j : Fin 3) : IsOpenImmersion (pderivChart W i j) := by
   infer_instance
 
 /- English proof (translation)
-Establish `hp : dehomChart W i ⁻¹ᵁ pderivOpen W j = PrimeSpectrum.basicOpen (Ideal.Quotient.mk _ (MvPolynomial.pderiv j W.toProjective.polynomial) : DehomRing W i)`. Rewrite using `[← eval₂_dehomCoord]`. Conclude with `ptHom_preimage_pderivOpen W _ _ (.of_isUnit (equation_dehomCoord W i) i (by simp)) j`. Establish `hr` using `PrimeSpectrum.localization_away_comap_range (PderivRing W i j) (Ideal.Quotient.mk _ (MvPolynomial.pderiv j W.toProjective.polynomial) : DehomRing W i)`. Rewrite `hr` using `[← hp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← opensRange_dehomChart]`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[pderivChart, Scheme.Hom.comp_apply]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨_, rfl⟩, hr.le ⟨y, rfl⟩⟩`. Introduce and unpack `⟨⟨y, rfl⟩, hy⟩`. Take `⟨z, rfl⟩` from `hr.ge hy`. Conclude with `⟨z, Scheme.Hom.comp_apply (Spec.map (CommRingCat.ofHom (algebraMap (DehomRing W i) (PderivRing W i j)))) (dehomChart W i) z⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem range_pderivChart (i j : Fin 3) :
     Set.range (pderivChart W i j) = (coordOpen W i ⊓ pderivOpen W j : (scheme W).Opens) := by
@@ -149,7 +147,7 @@ theorem range_pderivChart (i j : Fin 3) :
       (algebraMap (DehomRing W i) (PderivRing W i j)))) (dehomChart W i) z⟩
 
 /- English proof (translation)
-Simplify using `only [smoothOpen, TopologicalSpace.Opens.coe_iSup, range_pderivChart]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_smoothOpen : (smoothOpen W : Set (scheme W)) =
     ⋃ p : {p : Fin 3 × Fin 3 // p.2 ≠ p.1}, Set.range (pderivChart W p.1.1 p.1.2) := by
@@ -219,7 +217,7 @@ instance geometricallyIntegral_smoothOpen :
   exact isIntegral_of_isOpenImmersion g
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨smoothOpen W, fun _ _ ρ P h => top_le_ptHom_preimage_smoothOpen_iff W ρ P h, inferInstance, inferInstance, inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_smoothLocus (R : Type) [CommRing R] (W : WeierstrassCurve R) :
     ∃ U : (scheme W).Opens, (∀ (k : Type) [Field k] (ρ : R →+* k) (P : Fin 3 → k)

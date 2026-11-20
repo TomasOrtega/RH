@@ -10,9 +10,9 @@ open scoped WithZero TensorProduct
 namespace GlobalTheory.CNorm
 
 /- English proof (translation)
-Use `haveI : Fact p.Prime := ⟨hp⟩`. Rewrite using `[Subgroup.relIndex_sup_left]`. Establish `h` using `Subgroup.relIndex_ker (Subgroup.zpowers d) (QuotientGroup.mk' Q)`. Rewrite `h` using `[QuotientGroup.ker_mk', MonoidHom.map_zpowers, Nat.card_zpowers]`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `orderOf_eq_prime ?_ ?_` and prove the remaining obligations. Rewrite using `[← map_pow]`. Conclude with `(QuotientGroup.eq_one_iff _).2 hd`. Conclude with `fun e => hn ((QuotientGroup.eq_one_iff _).1 e)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem relIndex_sup_zpowers_chooseT (p : ℕ) {G : Type} [CommGroup G] (Q : Subgroup G) (d : G)
     (hp : p.Prime) (hd : d ^ p ∈ Q) (hn : d ∉ Q) :
@@ -28,11 +28,9 @@ theorem relIndex_sup_zpowers_chooseT (p : ℕ) {G : Type} [CommGroup G] (Q : Sub
   · exact fun e => hn ((QuotientGroup.eq_one_iff _).1 e)
 
 /- English proof (translation)
-Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Conclude with `x.ne_zero (by rw [← hr, zero_pow hp])`. Use `⟨Units.mk0 r hr0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, mem_sUnits]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Establish `h` using `(mem_sUnits F S x).1 hx v hv`. Rewrite `h` using `[← hr, map_pow]`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le hp).1 h`. Use `ext`.
-
-Simplify using `[hr]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_pows_sUnits_chooseT (p : ℕ) (hp : p ≠ 0) (F : Type) [Field F] [NumberField F]
     (S : Finset (HeightOneSpectrum (𝓞 F))) (x : Fˣ) (hx : x ∈ sUnits F S) (r : F)
@@ -50,23 +48,21 @@ theorem mem_pows_sUnits_chooseT (p : ℕ) (hp : p ≠ 0) (F : Type) [Field F] [N
     simp [hr]
 
 /- English proof (translation)
-Introduce `p F _ _ _ ζ δ S hp hζ hS hδ hns`. Establish `hQU : pows p (sUnits F S) ≤ sUnits F S`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `(sUnits F S).pow_mem hy p`. Establish `hdd : δ ^ p ∈ pows p (sUnits F S)` using `⟨δ, hδ, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdn : δ ∉ pows p (sUnits F S)`. Introduce and unpack `⟨y, -, hy⟩`. Conclude with `hns (y : F) (by rw [← hy]; simp)`. Establish `hHU : pows p (sUnits F S) ⊔ Subgroup.zpowers δ ≤ sUnits F S` using `sup_le hQU ((Subgroup.zpowers_le).2 hδ)`. Establish `hpos : 0 < Fintype.card (InfinitePlace F)` using `Fintype.card_pos`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, hm⟩ : ∃ m, m + 1 = S.card + Fintype.card (InfinitePlace F)` from `⟨S.card + Fintype.card (InfinitePlace F) - 1, by omega⟩`. Establish `hidx : (pows p (sUnits F S) ⊔ Subgroup.zpowers δ).relIndex (sUnits F S) = p ^ m`. Establish `h` using `Subgroup.relIndex_mul_relIndex _ _ _ le_sup_left hHU`. Establish `h2 : (pows p (sUnits F S)).relIndex (sUnits F S) = _` using `(pTor_pIdx_sUnits p F ζ S hp hζ).2`. Rewrite `h` using `[relIndex_sup_zpowers_chooseT p _ _ hp hdd hdn, h2, ← hm, pow_succ']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Nat.eq_of_mul_eq_mul_left hp.pos h`. Establish `hval : ∀ (v : HeightOneSpectrum (𝓞 F)) (x : F), Valued.v (algebraMap F (v.adicCompletion F) x) = v.valuation F x` using `fun v x => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x`. Establish `hpw : ∀ (v : HeightOneSpectrum (𝓞 F)) (x : Fˣ), x ^ p ∈ powSub p (algebraMap F (v.adicCompletion F))` using `fun v x => ⟨algebraMap F (v.adicCompletion F) x, by rw [Units.val_pow_eq_pow_val, map_pow]⟩`. Take `⟨T, hT, hgood, hA⟩` from `exists_indep_prime_index p Fˣ (HeightOneSpectrum (𝓞 F)) (sUnits F S) (pows p (sUnits F S) ⊔ Subgroup.zpowers δ) (fun v => powSub p (algebraMap F (v.adicCompletion F))) (fun v => v ∉ S ∧ ∃ r : v.adicCompletion F, r ^ p = algebraMap F (v.adicCompletion F) (δ : F)) m hp hidx (by`. Introduce and unpack `v ⟨-, hv⟩`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Use `le_trans inf_le_right (sup_le ?_ ((Subgroup.zpowers_le).2 hv))` and prove the remaining obligations. Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `hpw v y)`. Use the proof step `(fun v _ x _ => hpw v x)`. Use the proof step `(by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `v ⟨hv, -⟩ x hx hx' y hy`. Take `⟨k, r, hr⟩` from `GlobalTheory.T.exists_eq_pow_mul_pth_pow_adicCompletion_unit p F v (algebraMap F (v.adicCompletion F) x) (algebraMap F (v.adicCompletion F) y) hp (hS.2 v hv) (by rw [hval]; exact (mem_sUnits F S x).1 hx v hv) (by rw [hval]; exact (mem_sUnits F S y).1 hy v hv) (fun r hr => hx' ⟨r, …`. Use `⟨k, r, ?_⟩` and prove the remaining obligations. Establish `hx0 : algebraMap F (v.adicCompletion F) x ≠ 0` using `by simp`. Rewrite using `[Units.val_div_eq_div_val, Units.val_pow_eq_pow_val, map_div₀, map_pow, hr]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `field_simp)`. Use the proof step `(by`. Introduce `x hx hxH`. Take `⟨v, h1, h2, h3⟩` from `GlobalTheory.T.exists_place_pow_and_not_pow' p F ζ δ x S hp hζ δ.ne_zero x.ne_zero hns (fun k r h => hxH (by`. Establish `h4 : x / δ ^ k ∈ pows p (sUnits F S)`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_pows_sUnits_chooseT p hp.ne_zero F S _ ((sUnits F S).div_mem hx ((sUnits F S).pow_mem hδ k)) r ?_` and prove the remaining obligations. Establish `hδ0` using `δ.ne_zero`. Rewrite using `[Units.val_div_eq_div_val, Units.val_pow_eq_pow_val, h]`. Clear the denominators using the available nonvanishing facts. Establish `h5` using `Subgroup.mul_mem_sup h4 (Subgroup.pow_mem _ (Subgroup.mem_zpowers δ) k)`.
-
-Rewrite using `[div_mul_cancel] at h5))` and apply the resulting hypothesis. Conclude with `⟨v, ⟨h1, h2⟩, fun ⟨r, hr⟩ => h3 r hr⟩)`. Use `⟨T, ?_, by rw [hT, hm], fun v hv => (hgood v hv).2, hA⟩` and prove the remaining obligations. Rewrite using `[Finset.disjoint_right]`. Conclude with `fun v hv => (hgood v hv).1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem exists_auxiliary_places_prime : ∀ (p : ℕ) (F : Type) [Field F] [NumberField F] [IsTotallyComplex F] (ζ : F) (δ : Fˣ) (S : Finset (HeightOneSpectrum (𝓞 F))), p.Prime → IsPrimitiveRoot ζ p → AdmP p F S → δ ∈ sUnits F S → (∀ r : F, r ^ p ≠ (δ : F)) → ∃ T : Finset (HeightOneSpectrum (𝓞 F)), Disjoint S T ∧ T.card + 1 = S.card + Fintype.card (InfinitePlace F) ∧ (∀ v ∈ T, ∃ r : v.adicCompletion F, r ^ p = algebraMap F (v.adicCompletion F) (δ : F)) ∧ ∀ v ∈ T, ∃ u ∈ sUnits F S, u ∉ powSub p (algebraMap F (v.adicCompletion F)) ∧ ∀ v' ∈ T, v' ≠ v → u ∈ powSub p (algebraMap F (v'.adicCompletion F)) := by
   intro p F _ _ _ ζ δ S hp hζ hS hδ hns

@@ -20,13 +20,13 @@ variable {X : Scheme.{0}} {G : Over X} [GrpObj G] [IsCommMonObj G] {Ω : Type} [
   {ξ : Spec (CommRingCat.of Ω) ⟶ X} {E : Type} [AddCommGroup E] [Module Ω E]
 
 /- English proof (translation)
-Establish `car` using `(lieLat_carrier X G Ω ξ E M p).1`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `e he`. Take `⟨v, hv⟩` from `(car e).1 he`. Set `y : ExtE hx M` to `⟨e, v, hv⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hy : y ∈ Submodule.span (X.presheaf.stalk p.1) (Set.range b)`. Rewrite using `[hsp]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hy`. Establish `he' : e = ∑ k, genMap ξ p (c k) • val (b k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : val y = e` using `rfl`. Rewrite using `[← h1, ← hc, map_sum]`. Both sides reduce to the same expression. Rewrite using `[he']`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.smul_mem _ (⟨genMap ξ p (c k), c k, rfl⟩ : regAt ξ p) (Submodule.subset_span ⟨k, rfl⟩)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `(car _).2 (val_spec (b k))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem lat_eq_span (M : LieModel G ξ E) (p : Cpt ξ)
     (hx : Spec.map (CommRingCat.ofHom (genMap ξ p)) ≫ X.fromSpecStalk p.1 = ξ) {r : ℕ}
@@ -52,7 +52,7 @@ theorem lat_eq_span (M : LieModel G ξ E) (p : Cpt ξ)
     exact (car _).2 (val_spec (b k))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.lie_model_free_over_local_ring X G hs A x (ExtE hx M) (extModel hg hx M)`.
+A detailed English derivation is pending.
 -/
 theorem ext_basis {A : Type} [CommRing A] [IsLocalRing A] {g : A →+* Ω} {x : Spec (CommRingCat.of A) ⟶ X}
     (hs : Smooth G.hom) (hg : Function.Injective g) (hx : Spec.map (CommRingCat.ofHom g) ≫ x = ξ)
@@ -62,21 +62,17 @@ theorem ext_basis {A : Type} [CommRing A] [IsLocalRing A] {g : A →+* Ω} {x : 
 end Lat
 
 /- English proof (translation)
-Introduce `X X' Ω Ω' _ _ ξ ξ' hξ hξ' f i hd G _ _ G' _ _ φ hG hs E _ _ M E' _ _ M' j hj q'`. Establish `hp : genPt ξ ⤳ f q'.1` using `hd.specializes q'`. Establish `hx` using `LieCarrier.genMap_fromSpecStalk (ξ := ξ) ⟨f q'.1, hp⟩`. Establish `hx'` using `LieCarrier.genMap_fromSpecStalk (ξ := ξ') q'`. Establish `hρ : Spec.map (CommRingCat.ofHom (f.stalkMap q'.1).hom) ≫ X.fromSpecStalk (f q'.1) = X'.fromSpecStalk q'.1 ≫ f` using `Scheme.SpecMap_stalkMap_fromSpecStalk f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ' : (genMap ξ' q').comp (f.stalkMap q'.1).hom = i.comp (genMap ξ ⟨f q'.1, hp⟩)` using `RingHom.ext (RegAtDom.genMap_stalkMap hd q'.1 q'.2 hp)`. Establish `hg` using `hξ.inj ⟨f q'.1, hp⟩`. Establish `hg'` using `hξ'.inj q'`. Take `⟨r, ⟨b⟩⟩` from `ext_basis (A := X.presheaf.stalk (f q'.1)) hs hg hx M`. Take `⟨hli, hsp⟩` from `bc hs (genMap ξ ⟨f q'.1, hp⟩) (X.fromSpecStalk (f q'.1)) ξ hx (extModel hg hx M) M b (fun k => val (b k)) (fun k => (vec_spec (b k)).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `B : Module.Basis (Fin r) Ω E` to `Module.Basis.mk hli hsp.ge`. Establish `hB : ∀ k, B k = val (b k)` using `fun k => by simp [B]`. Take `⟨hli', hsp'⟩` from `bc hs i ξ (ξ' ≫ f) hd.symm M (LieMove.pushModel hG M') B (fun k => j (B k)) (fun k => hj _)`. Set `B' : Module.Basis (Fin r) Ω' E'` to `Module.Basis.mk hli' hsp'.ge`. Establish `hB' : ∀ k, B' k = j (B k)` using `fun k => by simp [B']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `up : ∀ k, ∃ u : epsAt (X'.fromSpecStalk q'.1) ⟶ G', Ext (genMap ξ' q') (X'.fromSpecStalk q'.1) M' (j (val (b k))) u ∧ u.left ≫ φ = spMap (dualMap (f.stalkMap q'.1).hom) ≫ (vec (b k)).left` using `fun k => ext_up hG hj hρ hρ' hx' (vec_spec (b k))`. Use `choose u hu huφ using up`. Set `b' : Fin r → ExtE hx' M'` to `fun k => ⟨j (val (b k)), u k, hu k⟩`. Take `⟨-, hsp''⟩` from `bc hs (f.stalkMap q'.1).hom (X.fromSpecStalk (f q'.1)) (X'.fromSpecStalk q'.1 ≫ f) hρ (extModel hg hx M) (LieMove.pushModel hG (extModel hg' hx' M')) b b' (fun k => by`. Establish `e₁ : vec (b' k) = u k` using `(vec_spec (b' k)).unique hg' (hu k)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (vec (b' k)).left ≫ φ = _`. Rewrite using `[e₁]`. Conclude with `huφ k)`. Use `⟨r, B, B', fun k => vec (b k), u, hB', ?_, ?_, ?_, ?_, huφ⟩` and prove the remaining obligations. Rewrite using `[lat_eq_span M _ hx b b.span_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Conclude with `funext fun k => (hB k).symm`. Rewrite using `[lat_eq_span M' q' hx' b' hsp'']`. Use `congr 2`. Conclude with `funext fun k => by rw [hB', hB]; rfl`.
-
-Introduce `k`. Rewrite using `[hB]`. Conclude with `vec_spec (b k)`. Introduce `k`. Rewrite using `[hB', hB]`.
-
-Conclude with `hu k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame : ∀ (X X' : Scheme.{0}) (Ω Ω' : Type) [Field Ω] [Field Ω'] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (ξ' : Spec (CommRingCat.of Ω') ⟶ X'), IsCptGen ξ → IsCptGen ξ' → ∀ (f : X' ⟶ X) (i : Ω →+* Ω') (hd : GlobalTheory.CompanionTheory.Ar.Dominates ξ' ξ f i) (G : Over X) [GrpObj G] [IsCommMonObj G] (G' : Over X') [GrpObj G'] [IsCommMonObj G'] (φ : G'.left ⟶ G.left), IsGrpPullback G' G f φ → Smooth G.hom → ∀ (E : Type) [AddCommGroup E] [Module Ω E] (M : LieModel G ξ E) (E' : Type) [AddCommGroup E'] [Module Ω' E'] (M' : LieModel G' ξ' E') (j : E →+ E'), (∀ v, (M'.pt (j v)).left ≫ φ = spMap (dualMap i) ≫ (M.pt v).left) → ∀ q' : Cpt ξ', ∃ (r : ℕ) (B : Module.Basis (Fin r) Ω E) (B' : Module.Basis (Fin r) Ω' E') (v : Fin r → (epsAt (X.fromSpecStalk (f q'.1)) ⟶ G)) (v' : Fin r → (epsAt (X'.fromSpecStalk q'.1) ⟶ G')), (∀ k, B' k = j (B k)) ∧ M.lat ⟨f q'.1, hd.specializes q'⟩ = Submodule.span (regAt ξ ⟨f q'.1, hd.specializes q'⟩) (Set.range B) ∧ M'.lat q' = Submodule.span (regAt ξ' q') (Set.range B') ∧ (∀ k, M.Extends ⟨f q'.1, hd.specializes q'⟩ (B k) (v k)) ∧ (∀ k, M'.Extends q' (B' k) (v' k)) ∧ ∀ k, (v' k).left ≫ φ = spMap (dualMap (f.stalkMap q'.1).hom) ≫ (v k).left := by
   intro X X' Ω Ω' _ _ ξ ξ' hξ hξ' f i hd G _ _ G' _ _ φ hG hs E _ _ M E' _ _ M' j hj q'

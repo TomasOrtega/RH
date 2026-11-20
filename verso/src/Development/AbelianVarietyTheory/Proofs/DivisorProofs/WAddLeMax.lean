@@ -7,13 +7,13 @@ open GlobalTheory.Cartier GlobalTheory.ProjVar Formalism.BasicNotions GlobalTheo
 namespace GlobalTheory.TrueGeo
 
 /- English proof (translation)
-Establish `key : ∀ a b : AlgebraicClosure F, e.w a ≤ e.w b → e.w (a + b) ≤ e.w b`. Introduce `a b hab`. Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Establish `ha : a = 0` using `e.w.eq_zero.1 (le_antisymm (by simpa using hab) (e.w.nonneg a))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Simplify using `[ha]`. Establish `hwb : 0 < e.w b` using `e.w.pos hb`. Establish `h1 : a / b ∈ e.O`. Rewrite using `[e.mem_O, map_div₀]`. Conclude with `(div_le_one hwb).2 hab`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : 1 + a / b ∈ e.O` using `e.O.add_mem _ _ e.O.one_mem h1`. Establish `h3 : e.w (1 + a / b) ≤ 1` using `(e.mem_O _).1 h2`. Establish `h4 : a + b = b * (1 + a / b)` using `by field_simp; ring`. Rewrite using `[h4, map_mul]`. Conclude with `mul_le_of_le_one_right (e.w.nonneg b) h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `le_total (e.w x) (e.w y) with h | h` into its components or cases. Conclude with `(key x y h).trans (le_max_right _ _)`. Rewrite using `[add_comm]`. Conclude with `(key y x h).trans (le_max_left _ _)`.
+A detailed English derivation is pending.
 -/
 theorem Ext.w_add_le_max (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (e : Ext v)
     (x y : AlgebraicClosure F) : e.w (x + y) ≤ max (e.w x) (e.w y) := by
@@ -37,7 +37,7 @@ theorem Ext.w_add_le_max (F : Type) [Field F] [NumberField F] (v : HeightOneSpec
   · rw [add_comm]; exact (key y x h).trans (le_max_left _ _)
 
 /- English proof (translation)
-The claim follows from `Ext.w_add_le_max`.
+A detailed English derivation is pending.
 -/
 example : ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (e : Ext v) (x y : AlgebraicClosure F),
     e.w (x + y) ≤ max (e.w x) (e.w y) := Ext.w_add_le_max

@@ -16,17 +16,15 @@ open Classical
 namespace GlobalTheory.CplDiv
 
 /- English proof (translation)
-Introduce `O R _ _ _ _ j hj c s hs`. Take `⟨e, he⟩` from `hj`. Use `haveI : IsNoetherianRing (AdicCompletion (maximalIdeal O) O) := GlobalTheory.AdicNoeth.isNoetherianRing_adicCompletion O (maximalIdeal O)`. Use `haveI : IsNoetherianRing R := isNoetherianRing_of_ringEquiv _ e`. Use `haveI : IsLocalRing R := e.isLocalRing`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hjl : (maximalIdeal O).map j ≤ maximalIdeal R`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `a ha hu`. Establish `h1 : IsUnit (algebraMap O (AdicCompletion (maximalIdeal O) O) a)`. Use `hu.map e.symm.toRingHom` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `this` using `[← he a]`. Simplify using `using this`. Conclude with `ha (isUnit_of_map_unit _ _ h1)`. Establish `hJ : (maximalIdeal O).map j ≠ ⊤` using `fun h => by`. Use `hjl` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[h, top_le_iff]`. Conclude with `(maximalIdeal.isMaximal R).ne_top this`. Establish `hK` using `Ideal.iInf_pow_smul_eq_bot_of_isLocalRing (M := R ⧸ Ideal.span {c}) ((maximalIdeal O).map j) hJ`. Establish `hmem : (Ideal.Quotient.mk (Ideal.span {c}) s : R ⧸ Ideal.span {c}) ∈ (⨅ i : ℕ, ((maximalIdeal O).map j) ^ i • ⊤ : Submodule R (R ⧸ Ideal.span {c}))`. Rewrite using `[Submodule.mem_iInf]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.1 (hs i)`. Rewrite `hv` using `[Ideal.map_pow]`. Establish `: (Ideal.Quotient.mk (Ideal.span {c}) s : R ⧸ Ideal.span {c}) = v • (Ideal.Quotient.mk (Ideal.span {c}) 1)`. Rewrite using `[← huv, Algebra.smul_def, map_one, _root_.mul_one, map_add, Ideal.Quotient.eq_zero_iff_mem.2 hu, _root_.zero_add]`.
-
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem_smul hv trivial`. Rewrite `hmem` using `[hK, Submodule.mem_bot, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Conclude with `hmem`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_forall_mem_sup_pow : ∀ (O R : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [CommRing R] (j : O →+* R), IsCpl j → ∀ (c s : R), (∀ e : ℕ, s ∈ Ideal.span {c} ⊔ (maximalIdeal O ^ e).map j) → c ∣ s := by
   intro O R _ _ _ _ j hj c s hs
@@ -62,11 +60,11 @@ theorem dvd_of_forall_mem_sup_pow : ∀ (O R : Type) [CommRing O] [IsLocalRing O
   exact hmem
 
 /- English proof (translation)
-Introduce `O R _ _ _ _ j hj s n`. Take `⟨e, he⟩` from `hj`. Establish `fg : (maximalIdeal O).FG` using `(maximalIdeal O).fg_of_isNoetherianRing`. Take `⟨t, ht⟩` from `Submodule.Quotient.mk_surjective _ ((e.symm s).val n)`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hker : e.symm s - algebraMap O _ t ∈ (AdicCompletion.eval (maximalIdeal O) O n).ker`. Rewrite using `[LinearMap.mem_ker, map_sub, AdicCompletion.algebraMap_apply, AdicCompletion.eval_of]`. Rewrite using `[Algebra.algebraMap_self, RingHom.id_apply, Submodule.mkQ_apply, ht, AdicCompletion.eval_apply, sub_self]`. Rewrite `hker` using `[← AdicCompletion.pow_smul_top_eq_ker_eval fg, Ideal.smul_top_eq_map]`. Establish `h2` using `Ideal.mem_map_of_mem e.toRingHom hker`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Ideal.map_map]`. Establish `hc : e.toRingHom.comp (algebraMap O _) = j` using `RingHom.ext fun a => he a`. Rewrite `h2` using `[hc]`. Simplify `h2` using `[he]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_sub_mem_map_pow : ∀ (O R : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [CommRing R] (j : O →+* R), IsCpl j → ∀ (s : R) (n : ℕ), ∃ t : O, s - j t ∈ (maximalIdeal O ^ n).map j := by
   intro O R _ _ _ _ j hj s n
@@ -85,29 +83,25 @@ theorem exists_sub_mem_map_pow : ∀ (O R : Type) [CommRing O] [IsLocalRing O] [
   simpa [he] using h2
 
 /- English proof (translation)
-Introduce `O R _ _ _ _ j p _ ev n t ht`. Establish `hle1 : ∀ r : R, ‖(ev r : PadicAlgCl p)‖ ≤ 1` using `fun r => (mem_OO_iff _).1 (ev r).2`. Establish `hadd : ∀ (x y : R) (B : ℝ), ‖(ev x : PadicAlgCl p)‖ ≤ B → ‖(ev y : PadicAlgCl p)‖ ≤ B → ‖(ev (x + y) : PadicAlgCl p)‖ ≤ B`. Introduce `x y B hx hy`. Rewrite using `[map_add, AddMemClass.coe_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)`. Establish `hmul : ∀ (x y : R) (B : ℝ), ‖(ev y : PadicAlgCl p)‖ ≤ B → ‖(ev (x * y) : PadicAlgCl p)‖ ≤ B`. Introduce `x y B hy`. Rewrite using `[map_mul, MulMemClass.coe_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS⟩` from `(maximalIdeal O).fg_of_isNoetherianRing`. Set `N : O → ℝ` to `fun g => ‖(ev (j g) : PadicAlgCl p)‖`. Take `⟨g, hgS, hgmax⟩` from `(insert 0 S).exists_max_image N ⟨0, Finset.mem_insert_self _ _⟩`. Establish `hgm : g ∈ maximalIdeal O`. Break down `Finset.mem_insert.1 hgS with h | h` into its components or cases.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `Ideal.zero_mem _`. Rewrite using `[← hS]`. Conclude with `Ideal.subset_span h`. Use `⟨g, hgm, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `c1 : ∀ a ∈ maximalIdeal O, N a ≤ N g`. Introduce `a ha`. Rewrite `ha` using `[← hS]`. Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx => exact hgmax x (Finset.mem_insert_of_mem hx)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => exact hgmax 0 (Finset.mem_insert_self _ _)`. Consider the case `add x y _ _ hx hy => show ‖(ev (j (x + y)) : PadicAlgCl p)‖ ≤ N g`. Rewrite using `[map_add]`. Conclude with `hadd _ _ _ hx hy`. Consider the case `smul r x _ hx => show ‖(ev (j (r • x)) : PadicAlgCl p)‖ ≤ N g`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[smul_eq_mul, map_mul]`. Conclude with `hmul _ _ _ hx`. Establish `c2 : ∀ k : ℕ, ∀ a ∈ maximalIdeal O ^ k, N a ≤ N g ^ k`. Introduce `k`. Proceed by induction on `k with`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `zero => intro a _`. Rewrite using `[pow_zero]`. Conclude with `hle1 _`. Consider the case `succ k ih`. Introduce `a ha`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `ha` using `[pow_succ]`. Use `Submodule.mul_induction_on ha ?_ ?_` and prove the remaining obligations. Introduce `x hx y hy show ‖(ev (j (x * y)) : PadicAlgCl p)‖ ≤ N g ^ (k + 1)`. Rewrite using `[map_mul, map_mul, MulMemClass.coe_mul, norm_mul, pow_succ]`. Conclude with `mul_le_mul (ih x hx) (c1 y hy) (norm_nonneg _) (pow_nonneg (norm_nonneg _) _)`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Introduce `x y hx hy show ‖(ev (j (x + y)) : PadicAlgCl p)‖ ≤ N g ^ (k + 1)`. Rewrite using `[map_add]`. Conclude with `hadd _ _ _ hx hy`. Unfold `Ideal.map at ht`. Proceed by induction on `ht using Submodule.span_induction with`.
-
-Consider the case `mem x hx`. Take `⟨a, ha, rfl⟩` from `hx`. Conclude with `c2 n a ha`. Consider the case `zero => rw [map_zero, ZeroMemClass.coe_zero, norm_zero]`. Conclude with `pow_nonneg (norm_nonneg _) _`.
-
-Consider the case `add x y _ _ hx hy => exact hadd _ _ _ hx hy`. Consider the case `smul r x _ hx => rw [smul_eq_mul]`. Conclude with `hmul _ _ _ hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_norm_le_of_mem_map_pow : ∀ (O R : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [CommRing R] (j : O →+* R) (p : ℕ) [Fact p.Prime] (ev : R →+* OO p) (n : ℕ) (t : R), t ∈ (maximalIdeal O ^ n).map j → ∃ g ∈ maximalIdeal O, ‖(ev t : PadicAlgCl p)‖ ≤ ‖(ev (j g) : PadicAlgCl p)‖ ^ n := by
   intro O R _ _ _ _ j p _ ev n t ht
@@ -168,11 +162,11 @@ theorem exists_norm_le_of_mem_map_pow : ∀ (O R : Type) [CommRing O] [IsLocalRi
   | smul r x _ hx => rw [smul_eq_mul]; exact hmul _ _ _ hx
 
 /- English proof (translation)
-Introduce `o' Ω _ _ _ M x p _ y φ hy hφ a`. Establish `h : y (cPt p) ⤳ x` using `hy ▸ specializes_rfl`. Establish `hψ : Spec.map (M.Z.presheaf.stalkSpecializes h ≫ Scheme.stalkClosedPointTo y) ≫ M.Z.fromSpecStalk x = y`. Rewrite using `[Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.Spec_stalkClosedPointTo_fromSpecStalk]`. Use `haveI : Mono (M.Z.fromSpecStalk x) := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `heq : spMap φ = Spec.map (M.Z.presheaf.stalkSpecializes h ≫ Scheme.stalkClosedPointTo y)`. Rewrite using `[← cancel_mono (M.Z.fromSpecStalk x), hφ, hψ]`. Establish `hφψ` using `Spec.map_injective heq`. Establish `e1 : M.stalkHom x a = (M.stalkEquiv x a : Ω)` using `rfl`. Rewrite using `[e1, RatModel.val_gPt hy (M.stalkEquiv x a)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [RatModel.valLoc, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, RingEquiv.symm_apply_apply]`. Use `congrArg (fun g => ((g.hom a : OO p) : PadicAlgCl p)) hφψ` as an intermediate fact. Conclude with `this.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_stalkHom_eq : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] (M : RatModel o' Ω) (x : M.Z) (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (φ : M.Z.presheaf.stalk x →+* OO p), y (cPt p) = x → spMap φ ≫ M.Z.fromSpecStalk x = y → ∀ a : M.Z.presheaf.stalk x, M.val (gPt p ≫ y) (M.stalkHom x a) = ((φ a : OO p) : PadicAlgCl p) := by
   intro o' Ω _ _ _ M x p _ y φ hy hφ a
@@ -192,31 +186,27 @@ theorem val_stalkHom_eq : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o
   exact this.symm
 
 /- English proof (translation)
-Introduce `o' Ω _ _ _ _ M hN U₀ hU₀ x hx R _ j hj b s hb hs`. Use `haveI : IsNoetherianRing (M.O x) := GlobalTheory.FibreCorr.isNoetherianRing_O M x`. Use `haveI : IsNoetherianRing (M.Z.presheaf.stalk x) := isNoetherianRing_of_ringEquiv _ (M.stalkEquiv x).symm`. Establish `hfO : M.stalkHom x b ∈ M.O x` using `(M.stalkEquiv x b).2`. Establish `hf0 : M.stalkHom x b ≠ 0` using `fun h => hb ((map_eq_zero_iff _ (M.stalkHom_injective x)).1 h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C, hC⟩` from `GlobalTheory.T.izumi_bound_mod_principal_ideal o' Ω M hN U₀ hU₀ x hx _ hfO hf0`. Use `dvd_of_forall_mem_sup_pow _ _ j hj (j b) s fun e => ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `exists_sub_mem_map_pow _ _ j hj s (max e (C e))`. Take `⟨a, c, hac, hc⟩` from `hC e (M.stalkEquiv x t) (by`. Introduce `p _ y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨V, _, _, _, ev₀, i, -, -, -, -, hev, -⟩` from `GlobalTheory.ClassicalPt.extend_completion o' Ω M x R j hj p y hy.1`. Establish `hsb` using `hs p y (i.comp ev₀) hy hev`. Establish `hφ : spMap ((i.comp ev₀).comp j) ≫ M.Z.fromSpecStalk x = y`. Rewrite using `[← hev, ← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `hval` using `val_stalkHom_eq o' Ω M x p y _ hy.1 hφ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : M.val (gPt p ≫ y) (M.stalkEquiv x t : Ω) = ((i.comp ev₀) (j t) : PadicAlgCl p)` using `hval t`. Establish `e2 : M.val (gPt p ≫ y) (M.stalkHom x b) = ((i.comp ev₀) (j b) : PadicAlgCl p)` using `hval b`. Take `⟨g, hg, hgn⟩` from `exists_norm_le_of_mem_map_pow _ _ j p (i.comp ev₀) _ _ ht`. Rewrite using `[e1, e2]`. Establish `key : ((i.comp ev₀) (j t) : PadicAlgCl p) = ((i.comp ev₀) s : PadicAlgCl p) - ((i.comp ev₀) (s - j t) : PadicAlgCl p)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hmax : ‖((i.comp ev₀) s : PadicAlgCl p) - ((i.comp ev₀) (s - j t) : PadicAlgCl p)‖ ≤ max ‖((i.comp ev₀) s : PadicAlgCl p)‖ ‖((i.comp ev₀) (s - j t) : PadicAlgCl p)‖`. Rewrite using `[sub_eq_add_neg, ← norm_neg ((i.comp ev₀) (s - j t) : PadicAlgCl p)]`. Conclude with `IsUltrametricDist.norm_add_le_max _ _`. Distinguish the cases in `hle : ‖((i.comp ev₀) (s - j t) : PadicAlgCl p)‖ ≤ ‖((i.comp ev₀) s : PadicAlgCl p)‖`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `left`. Rewrite using `[key]`. Conclude with `hmax.trans ((max_le le_rfl hle).trans hsb)`. Use `right`. Use `⟨M.stalkHom x g, ⟨(M.stalkEquiv x g).2, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Rewrite the conclusion using the stated equalities.
 
-Establish `hnu : ¬ IsUnit (M.stalkEquiv x g)` using `fun h => hg (by simpa using h.map (M.stalkEquiv x).symm)`. Rewrite `hnu` using `[RatModel.isUnit_O_iff]`. Distinguish the cases in `h0 : (M.stalkEquiv x g : Ω) = 0`. Conclude with `Or.inl h0`. Conclude with `Or.inr fun h => hnu ⟨h0, h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hval g, key]`. Establish `h1 : ‖((i.comp ev₀) (j g) : PadicAlgCl p)‖ ≤ 1` using `(mem_OO_iff _).1 ((i.comp ev₀) (j g)).2`. Establish `h2` using `pow_le_pow_of_le_one (norm_nonneg _) h1 (le_max_right e (C e))`. Conclude with `hmax.trans ((max_le (le_of_not_ge hle) le_rfl).trans (hgn.trans h2)))`. Establish `hmax : maximalIdeal (M.O x) = (maximalIdeal (M.Z.presheaf.stalk x)).map (M.stalkEquiv x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: ((maximalIdeal (M.Z.presheaf.stalk x)).map (M.stalkEquiv x)).IsMaximal` using `Ideal.map_isMaximal_of_equiv (M.stalkEquiv x)`. Conclude with `(IsLocalRing.eq_maximalIdeal this).symm`. Establish `hspan : Ideal.span {c : M.O x | ¬ IsUnit c} = maximalIdeal (M.O x)`. Establish `: {c : M.O x | ¬ IsUnit c} = (maximalIdeal (M.O x) : Set (M.O x))` using `rfl`. Rewrite using `[this, Ideal.span_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hc` using `[hspan, hmax, ← Ideal.map_pow]`. Establish `hc' : (M.stalkEquiv x).symm c ∈ maximalIdeal (M.Z.presheaf.stalk x) ^ e`. Take `⟨c₀, hc₀, hc₀e⟩` from `(Ideal.mem_map_of_equiv (M.stalkEquiv x) c).1 hc`. Rewrite using `[← hc₀e, RingEquiv.symm_apply_apply]`. Conclude with `hc₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht' : t = (M.stalkEquiv x).symm a * b + (M.stalkEquiv x).symm c`. Apply `(M.stalkEquiv x).injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[map_add, map_mul, RingEquiv.apply_symm_apply, RingEquiv.apply_symm_apply]`. Conclude with `hac`.
-
-Establish `hle : (maximalIdeal (M.Z.presheaf.stalk x) ^ max e (C e)).map j ≤ (maximalIdeal (M.Z.presheaf.stalk x) ^ e).map j` using `Ideal.map_mono (Ideal.pow_le_pow_right (le_max_left _ _))`. Establish `hs' : s = (j t + (s - j t))` using `by ring`. Establish `hd` using `hle ht`. Rewrite using `[hs']`. Use `Ideal.add_mem _ ?_ (Ideal.mem_sup_right hd)` and prove the remaining obligations.
-
-Rewrite using `[ht', map_add, map_mul]`. Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _))) (Ideal.mem_sup_right (Ideal.mem_map_of_mem _ hc'))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_norm_le_at_classical : ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] [ArithBase o' Ω] (M : RatModel o' Ω), ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.Z → ∀ (U₀ : M.Z.Opens), (U₀ : Set M.Z).Nonempty → ∀ (x : M.Z), IsClosed ({x} : Set M.Z) → ∀ (R : Type) [CommRing R] (j : M.Z.presheaf.stalk x →+* R), IsCpl j → ∀ (b : M.Z.presheaf.stalk x) (s : R), b ≠ 0 → (∀ (p : ℕ) [Fact p.Prime] (y : Sp (OO p) ⟶ M.Z) (ev : R →+* OO p), M.Cen U₀ x y → spMap ev ≫ (spMap j ≫ M.Z.fromSpecStalk x) = y → ‖(ev s : PadicAlgCl p)‖ ≤ ‖(ev (j b) : PadicAlgCl p)‖) → j b ∣ s := by
   intro o' Ω _ _ _ _ M hN U₀ hU₀ x hx R _ j hj b s hb hs

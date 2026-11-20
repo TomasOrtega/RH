@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.ThetaDeriv
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM γ hγ Φ hΦ Φ₁ hd g h`. Take `⟨m, φ, f, f₁, hφ, hf, hf₁, hlim⟩` from `GlobalTheory.T.matched_pair_line_derivative_theta hP F E σ B a a' G X om om' R Rf hM γ hγ Φ hΦ Φ₁ hd`. Use `GlobalTheory.T.pair_theta_uniform_bound_family hP F E σ B _ _ _ _ _ _ _ om' _ _ _ _ (GlobalTheory.KDecayProof.isPair_small hM.triple) m φ f f₁ hφ hlim g h` as an intermediate fact. Rewrite `this` using `[← hf₁]`. Simplify `this` using `only [hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem kernel_deriv : KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf → ∀ γ ∈ Lines σ G.W, ∀ Φ ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁, ∀ Φ₁ : (Fin a' × Fin (a + a') → AF F) → ℂ, (∀ x, HasDerivAt (fun t : ℝ => om' (1, γ (Multiplicative.ofAdd t)) Φ x) (Φ₁ x) 0) → ∀ g h, HasDerivAt (fun t : ℝ => theta om' (om' (1, γ (Multiplicative.ofAdd t)) Φ) g h) (theta om' Φ₁ g h) 0 := by
   intro hP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM γ hγ Φ hΦ Φ₁ hd g h
@@ -27,31 +27,27 @@ theorem kernel_deriv : KP → ∀ (F E : Type) [Field F] [NumberField F] [Field 
   simpa only [hf] using this
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM γ hγ Φ hΦ Φ₁ hΦ₁ hd h`. Use `haveI : BorelSpace (UA σ G.V'.J) := ⟨rfl⟩`. Establish `hT` using `hM.triple`. Establish `hPair` using `GlobalTheory.KDecayProof.isPair_small hT`. Establish `key : ∀ (Ψ : (Fin a' × Fin (a + a') → AF F) → ℂ) k g h', theta om' (om' (1, k) Ψ) g h' = theta om' Ψ g (h' * k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Ψ k g h'`. Unfold `theta`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Use `set γt : ℝ → UA σ G.W.J := fun t => γ (Multiplicative.ofAdd t) with hγt`. Establish `hγ0 : γt 0 = 1` using `by simp [hγt]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hγadd : ∀ s t, γt (s + t) = γt s * γt t`. Introduce `s t`. Simplify using `[hγt, ofAdd_add, map_mul]`. Use `set K : ℝ → UA σ G.V'.J → ℂ := fun t g => theta om' Φ g (h * γt t) with hK`. Use `set K' : ℝ → UA σ G.V'.J → ℂ := fun t g => theta om' Φ₁ g (h * γt t) with hK'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiff : ∀ g t, HasDerivAt (fun s => K s g) (K' t g) t`. Introduce `g t`. Establish `h0` using `kernel_deriv hP F E σ B a a' G X om om' R Rf hM γ hγ Φ hΦ Φ₁ hd g (h * γt t)`. Establish `e : (fun u : ℝ => theta om' (om' (1, γ (Multiplicative.ofAdd u)) Φ) g (h * γt t)) = fun u => K (t + u) g`. Use function extensionality and compare the values at `u`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[key]`. Use `show theta om' Φ g (h * γt t * γt u) = theta om' Φ g (h * γt (t + u))`. Rewrite using `[hγadd, mul_assoc]`. Rewrite `h0` using `[e]`. Establish `h1` using `HasDerivAt.comp_sub_const t t (by rw [sub_self]; exact h0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show (fun s => K s g) = fun s => K (t + (s - t)) g from funext fun s => by rw [add_sub_cancel]]`. Conclude with `h1`. Establish `hB` using `GlobalTheory.T.theta_basic_properties hP.base F E σ B _ _ _ _ _ _ _ om' _ _ _ _ hPair`. Establish `hsch : ∀ Ψ ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁, Ψ ∈ schA F (Fin a' × Fin (a + a'))` using `fun Ψ hΨ => GlobalTheory.KDecayProof.so_le_schA hT.geo.hM' B.τ₁ (Submodule.mem_inf.1 hΨ).2`. Establish `hcont : ∀ Ψ ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁, ∀ h', Continuous fun g => theta om' Ψ g h'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `Ψ hΨ h'`. Conclude with `((hB.1 Ψ (hsch Ψ hΨ)).1).comp (continuous_id.prodMk continuous_const)`. Establish `hD` using `GlobalTheory.T.schwartz_orbit_decay hP F E σ B _ _ _ _ _ _ _ om' _ _ _ _ hPair`. Take `⟨C, k, hC⟩` from `hD Φ (Submodule.mem_inf.1 hΦ).2 0`. Take `⟨C₁, k₁, hC₁⟩` from `hD Φ₁ (Submodule.mem_inf.1 hΦ₁).2 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hγc : Continuous γt` using `hγ.1.comp (by exact continuous_ofAdd)`. Choose the witnesses or unpack the hypotheses as in `⟨Cγ, hCγ⟩ : ∃ Cγ : ℝ, ∀ t ∈ Set.Icc (-1 : ℝ) 1, (ht (γt t) : ℝ) ≤ Cγ := by`. Establish `hc : Continuous fun t => (ht (γt t) : ℝ)` using `NNReal.continuous_coe.comp ((GlobalTheory.Grow.continuous_heightGL F).comp (continuous_subtype_val.comp hγc))`. Take `⟨Cγ, hCγ⟩` from `(isCompact_Icc.image hc).isBounded.bddAbove`. Conclude with `⟨Cγ, fun t ht => hCγ ⟨t, ht, rfl⟩⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbd : ∀ (C : ℝ) (k : ℕ) (Ψ : (Fin a' × Fin (a + a') → AF F) → ℂ), (∀ g h', ‖theta om' Ψ g h'‖ * (qht g : ℝ) ^ 0 ≤ C * (ht h' : ℝ) ^ k) → ∀ t ∈ Set.Icc (-1 : ℝ) 1, ∀ g, ‖theta om' Ψ g (h * γt t)‖ ≤ |C| * ((ht h : ℝ) * max Cγ 1) ^ k`. Introduce `C k Ψ hCk t htt g`. Establish `e1` using `hCk g (h * γt t)`. Rewrite `e1` using `[pow_zero, mul_one]`. Use `e1.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(mul_le_mul_of_nonneg_right (le_abs_self C) (pow_nonneg (NNReal.coe_nonneg _) k)).trans ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (NNReal.coe_nonneg _) ?_ k) (abs_nonneg C)` and prove the remaining obligations. Establish `h2 : (ht (h * γt t) : ℝ) ≤ (ht h : ℝ) * ht (γt t)`. Conclude with `heightGL_mul_le F h.1 (γt t).1` after adjusting the coercions. Use `h2.trans (mul_le_mul_of_nonneg_left ((hCγ t htt).trans (le_max_left _ _)) (NNReal.coe_nonneg _))` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : G.M'.μ G.M'.dom ≠ ⊤` using `(GlobalTheory.KDecayProof.measure_dom_lt_top hP.siegelSetUnitary hT.base hT.geo.hV' hT.geo.hM').ne`. Establish `hmain` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := G.M'.μ.restrict G.M'.dom) (F := K) (F' := K') (x₀ := 0) (bound := fun _ => |C₁| * ((ht h : ℝ) * max Cγ 1) ^ k₁) (Icc_mem_nhds (by norm_num : (-1 : ℝ) < 0) (by norm_num : (0 : ℝ) < 1)) (Eventually.of_forall fun t => (hcont Φ h …`. Establish `e1 : (fun t : ℝ => G.M'.I om' (om' (1, γ (Multiplicative.ofAdd t)) Φ) h) = fun t => ∫ g, K t g ∂(G.M'.μ.restrict G.M'.dom)`. Use function extensionality and compare the values at `t`. Use `show ∫ g in G.M'.dom, theta om' (om' (1, γt t) Φ) g h ∂G.M'.μ = ∫ g, K t g ∂(G.M'.μ.restrict G.M'.dom)`.
-
-Conclude with `integral_congr_ae (Eventually.of_forall fun g => key Φ (γt t) g h)`. Establish `e2 : G.M'.I om' Φ₁ h = ∫ g, K' 0 g ∂(G.M'.μ.restrict G.M'.dom)` using `by show ∫ g in G.M'.dom, theta om' Φ₁ g h ∂G.M'.μ = ∫ g, K' 0 g ∂(G.M'.μ.restrict G.M'.dom)`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `show theta om' Φ₁ g h = theta om' Φ₁ g (h * γt 0)`. Rewrite using `[hγ0, mul_one]`.
-
-Rewrite using `[e1, e2]`. Conclude with `hmain.2`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_thetaIntegral : KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf → ∀ γ ∈ Lines σ G.W, ∀ Φ ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁, ∀ Φ₁ ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁, (∀ x, HasDerivAt (fun t : ℝ => om' (1, γ (Multiplicative.ofAdd t)) Φ x) (Φ₁ x) 0) → ∀ h, HasDerivAt (fun t : ℝ => G.M'.I om' (om' (1, γ (Multiplicative.ofAdd t)) Φ) h) (G.M'.I om' Φ₁ h) 0 := by
   intro hP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM γ hγ Φ hΦ Φ₁ hΦ₁ hd h

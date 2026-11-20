@@ -19,15 +19,15 @@ def Low (m : ℕ) (x : MvPowerSeries ι K) : Prop :=
   ∀ d : ι →₀ ℕ, d.degree < m → MvPowerSeries.coeff d x = 0
 
 /- English proof (translation)
-Conclude with `fun d hd => h d (lt_of_lt_of_le hd hk)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Low.mono {m k : ℕ} {x : MvPowerSeries ι K} (h : Low m x) (hk : k ≤ m) : Low k x := by
   exact fun d hd => h d (lt_of_lt_of_le hd hk)
 
 /- English proof (translation)
-Introduce `d hd`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `Finset.sum_eq_zero fun ab hab => ?_` and prove the remaining obligations. Establish `hab' : ab.1 + ab.2 = d` using `by simpa using hab`. Establish `hdeg : ab.1.degree + ab.2.degree = d.degree` using `by rw [← hab', map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `h1 : ab.1.degree < m`. Rewrite using `[hx _ h1, zero_mul]`. Rewrite using `[hy _ (by omega), mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Low.mul {m k : ℕ} {x y : MvPowerSeries ι K} (hx : Low m x) (hy : Low k y) :
     Low (m + k) (x * y) := by
@@ -42,7 +42,7 @@ theorem Low.mul {m k : ℕ} {x y : MvPowerSeries ι K} (hx : Low m x) (hy : Low 
   · rw [hy _ (by omega), mul_zero]
 
 /- English proof (translation)
-Introduce `d hd`. Rewrite using `[map_add, hx d hd, hy d hd, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem Low.add {m : ℕ} {x y : MvPowerSeries ι K} (hx : Low m x) (hy : Low m y) :
     Low m (x + y) := by
@@ -50,7 +50,7 @@ theorem Low.add {m : ℕ} {x y : MvPowerSeries ι K} (hx : Low m x) (hy : Low m 
   rw [map_add, hx d hd, hy d hd, add_zero]
 
 /- English proof (translation)
-Introduce `d hd`. Rewrite using `[map_sub, hx d hd, hy d hd, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem Low.sub {m : ℕ} {x y : MvPowerSeries ι K} (hx : Low m x) (hy : Low m y) :
     Low m (x - y) := by
@@ -58,14 +58,14 @@ theorem Low.sub {m : ℕ} {x y : MvPowerSeries ι K} (hx : Low m x) (hy : Low m 
   rw [map_sub, hx d hd, hy d hd, sub_zero]
 
 /- English proof (translation)
-Introduce `d hd`. Conclude with `absurd hd (Nat.not_lt_zero _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem low_zero (x : MvPowerSeries ι K) : Low 0 x := by
   intro d hd
   exact absurd hd (Nat.not_lt_zero _)
 
 /- English proof (translation)
-Introduce `d hd`. Establish `h0 : d = 0` using `(Finsupp.degree_eq_zero_iff d).1 (by omega)`. Substitute `h0` using the available equality. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem low_one {x : MvPowerSeries ι K} (hx : MvPowerSeries.constantCoeff x = 0) : Low 1 x := by
   intro d hd
@@ -80,7 +80,7 @@ section Ultra
 variable {K : Type u} [NormedField K] [IsUltrametricDist K] {ι : Type v}
 
 /- English proof (translation)
-Introduce `d`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun ab _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hA _) (norm_nonneg _) (hB _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_mul {A B : MvPowerSeries ι K} (hA : IntegralMv A) (hB : IntegralMv B) :
     IntegralMv (A * B) := by
@@ -92,7 +92,7 @@ theorem integral_mul {A B : MvPowerSeries ι K} (hA : IntegralMv A) (hB : Integr
   exact mul_le_one₀ (hA _) (norm_nonneg _) (hB _)
 
 /- English proof (translation)
-Introduce `d`. Rewrite using `[MvPowerSeries.coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem integral_one : IntegralMv (1 : MvPowerSeries ι K) := by
   classical
@@ -101,9 +101,9 @@ theorem integral_one : IntegralMv (1 : MvPowerSeries ι K) := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero]`. Conclude with `integral_one`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ]`. Conclude with `integral_mul ih hA`.
+A detailed English derivation is pending.
 -/
 theorem integral_pow {A : MvPowerSeries ι K} (hA : IntegralMv A) (n : ℕ) :
     IntegralMv (A ^ n) := by
@@ -116,9 +116,9 @@ theorem integral_pow {A : MvPowerSeries ι K} (hA : IntegralMv A) (n : ℕ) :
     exact integral_mul ih hA
 
 /- English proof (translation)
-Introduce `e`. Rewrite using `[PowerSeries.coeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero hP0)]`. Distinguish the cases in `hfin : (Function.support fun n : ℕ => PowerSeries.coeff n f • MvPowerSeries.coeff e (P ^ n)).Finite`. Rewrite using `[finsum_eq_sum _ hfin]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun n _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_smul]`. Conclude with `mul_le_one₀ (hf n) (norm_nonneg _) (integral_pow hP n e)`. Rewrite using `[finsum_of_infinite_support hfin, norm_zero]`. Conclude with `zero_le_one`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integralSubst (f : PowerSeries K) (P : MvPowerSeries ι K)
     (hf : IntegralPS f) (hP0 : MvPowerSeries.constantCoeff P = 0) (hP : IntegralMv P) :
@@ -136,11 +136,11 @@ theorem integralSubst (f : PowerSeries K) (P : MvPowerSeries ι K)
 end Ultra
 
 /- English proof (translation)
-Distinguish the cases in `hall : ∀ i, q ∣ d i`. Use `set m : ι →₀ ℕ := Finsupp.mapRange (fun k => k / q) (Nat.zero_div q) d with hm`. Establish `hdm : d = q • m`. Use extensionality with `i`. Simplify using `only [Finsupp.smul_apply, smul_eq_mul, hm, Finsupp.mapRange_apply]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(Nat.mul_div_cancel' (hall i)).symm`. Establish `hdeg : d.degree = q * m.degree` using `by rw [hdm, map_nsmul, smul_eq_mul]`. Establish `hmlt : m.degree < N`. Break down `Nat.eq_zero_or_pos m.degree with h0 | hpos` into its components or cases. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[hdm, MvPowerSeries.coeff_expand_smul, MvPowerSeries.coeff_map, hlow m hmlt, map_zero]`. Use `push_neg at hall`. Take `⟨i, hi⟩` from `hall`. Conclude with `MvPowerSeries.coeff_expand_of_not_dvd q hq _ hi`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem coeff_expand_low {K : Type u} [NormedField K] {ι : Type v} (q : ℕ) (hq : q ≠ 0)
     (hq2 : 2 ≤ q) (σ : K →+* K) (D : MvPowerSeries ι K) (N : ℕ) (hN : 1 ≤ N)
@@ -165,7 +165,7 @@ theorem coeff_expand_low {K : Type u} [NormedField K] {ι : Type v} (q : ℕ) (h
     exact MvPowerSeries.coeff_expand_of_not_dvd q hq _ hi
 
 /- English proof (translation)
-Establish `h` using `hD d`. Rewrite `h` using `[map_sub, map_smul, coeff_expand_low q hq hq2 σ D N hN hlow d hd, smul_zero, sub_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem funEqLowCoeff {K : Type u} [NormedField K] {ι : Type v} (p q : ℕ) (hq : q ≠ 0)
     (σ : K →+* K) (hq2 : 2 ≤ q) (D : MvPowerSeries ι K) (hD : IsFunEqTypeMv p q hq σ D)
@@ -181,7 +181,7 @@ variable {K : Type u} [NormedField K] {ι : Type v}
 def tail2 (f : PowerSeries K) : PowerSeries K := PowerSeries.mk fun n => coeff (n + 2) f
 
 /- English proof (translation)
-Use extensionality with `n`. Apply the tactic sequence `rcases n with _ | _ | n <;>`. Simplify using `[tail2, PowerSeries.coeff_X_pow_mul', PowerSeries.coeff_X, h0, h1]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem decomp (f : PowerSeries K) (h0 : constantCoeff f = 0) (h1 : coeff 1 f = 1) :
     f = X + X ^ 2 * tail2 f := by
@@ -190,7 +190,7 @@ theorem decomp (f : PowerSeries K) (h0 : constantCoeff f = 0) (h1 : coeff 1 f = 
     simp [tail2, PowerSeries.coeff_X_pow_mul', PowerSeries.coeff_X, h0, h1]
 
 /- English proof (translation)
-Establish `ha : PowerSeries.HasSubst a` using `PowerSeries.HasSubst.of_constantCoeff_zero ha0`. Use `conv_lhs => rw [decomp f h0 h1]`. Rewrite using `[PowerSeries.subst_add ha, PowerSeries.subst_mul ha, PowerSeries.subst_pow ha, PowerSeries.subst_X ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_eq (f : PowerSeries K) (h0 : constantCoeff f = 0) (h1 : coeff 1 f = 1)
     {a : MvPowerSeries ι K} (ha0 : MvPowerSeries.constantCoeff a = 0) :
@@ -200,7 +200,7 @@ theorem subst_eq (f : PowerSeries K) (h0 : constantCoeff f = 0) (h1 : coeff 1 f 
   rw [PowerSeries.subst_add ha, PowerSeries.subst_mul ha, PowerSeries.subst_pow ha, PowerSeries.subst_X ha]
 
 /- English proof (translation)
-Conclude with `Agree.subst (f := g) (f' := g) (a := fun _ : Unit => a) (a' := fun _ : Unit => b) (fun _ => ha0) (fun _ => hb0) (fun _ _ => rfl) (fun _ => hab)`.
+A detailed English derivation is pending.
 -/
 theorem agree_psubst [Finite ι] (g : PowerSeries K) {N : ℕ} {a b : MvPowerSeries ι K}
     (ha0 : MvPowerSeries.constantCoeff a = 0) (hb0 : MvPowerSeries.constantCoeff b = 0)
@@ -209,18 +209,18 @@ theorem agree_psubst [Finite ι] (g : PowerSeries K) {N : ℕ} {a b : MvPowerSer
     (fun _ => ha0) (fun _ => hb0) (fun _ _ => rfl) (fun _ => hab)
 
 /- English proof (translation)
-Introduce `d hd`. Rewrite using `[map_sub, hab d hd, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem low_of_agree {N : ℕ} {a b : MvPowerSeries ι K} (hab : Agree N a b) : Low N (a - b) := by
   intro d hd
   rw [map_sub, hab d hd, sub_self]
 
 /- English proof (translation)
-Rewrite using `[subst_eq f h0 h1 ha0, subst_eq f h0 h1 hb0]`. Establish `e : a + a ^ 2 * (tail2 f).subst a - (b + b ^ 2 * (tail2 f).subst b) - (a - b) = (a - b) * (a + b) * (tail2 f).subst a + b ^ 2 * ((tail2 f).subst a - (tail2 f).subst b)` using `by ring`. Rewrite using `[e]`. Establish `hd : Low N (a - b)` using `low_of_agree hab`. Establish `hs : Low 1 (a + b)` using `low_one (by simp [ha0, hb0])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb2 : Low 2 (b ^ 2)`. Use `(low_one hb0).mul (low_one hb0)` as an intermediate fact. Rewrite using `[pow_two]`. Conclude with `this`. Use `Low.add ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hd.mul hs).mul (low_zero ((tail2 f).subst a))` as an intermediate fact. Simplify using `using this`. Conclude with `(hb2.mul (low_of_agree (agree_psubst _ ha0 hb0 hab))).mono (by omega)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem key [Finite ι] (f : PowerSeries K) (h0 : constantCoeff f = 0) (h1 : coeff 1 f = 1)
     {N : ℕ} {a b : MvPowerSeries ι K}
@@ -244,23 +244,21 @@ theorem key [Finite ι] (f : PowerSeries K) (h0 : constantCoeff f = 0) (h1 : coe
 end Inv
 
 /- English proof (translation)
-Establish `main : ∀ N : ℕ, ∀ d : ι →₀ ℕ, d.degree < N → ‖MvPowerSeries.coeff d h‖ ≤ 1`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `d hd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `succ N ih`. Introduce `d hd`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hd with hlt | heq` into its components or cases. Conclude with `ih d hlt`.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.eq_zero_or_pos N with hN0 | hNpos` into its components or cases. Substitute `hN0` using the available equality. Establish `hd0 : d = 0` using `(Finsupp.degree_eq_zero_iff d).1 heq`. Substitute `hd0` using the available equality. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hh0, norm_zero]`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `zero_le_one`. Set `T : MvPowerSeries ι K` to `fun e => if e.degree < N then MvPowerSeries.coeff e h else 0`. Establish `hTc : ∀ e, MvPowerSeries.coeff e T = if e.degree < N then MvPowerSeries.coeff e h else 0` using `fun e => rfl`. Establish `hT0 : MvPowerSeries.constantCoeff T = 0`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hTc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hNpos, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hh0]`. Establish `hTint : IntegralMv T`. Introduce `e`. Rewrite using `[hTc]`. Use `split_ifs with he`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ih e he`. Simplify using the standard rewrite rules. Establish `hAg : Agree N h T`. Introduce `e he`. Rewrite using `[hTc, if_pos he]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCD` using `hsub _ _ hCh (hP T hT0 hTint)`. Establish `hLowD : Low N (f.subst h - f.subst T)` using `low_of_agree (agree_psubst f hh0 hT0 hAg)`. Establish `hk` using `key f h0 h1 hh0 hT0 hAg d (by omega)`. Establish `hb` using `hlowC _ hCD N hNpos hLowD d heq`. Rewrite `hk` using `[map_sub, map_sub, map_sub, hTc, if_neg (by omega), sub_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hcd : MvPowerSeries.coeff d h = MvPowerSeries.coeff d (f.subst h - f.subst T)`. Rewrite using `[map_sub]`. Take the linear combination `-hk`. Rewrite using `[hcd]`. Conclude with `hb`.
-
-Introduce `d`. Conclude with `main (d.degree + 1) d (Nat.lt_succ_self _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem invIntegralOfClass (K : Type u) [NormedField K] [IsUltrametricDist K] (ι : Type v)
     [Finite ι] (C : MvPowerSeries ι K → Prop) (f : PowerSeries K)
@@ -320,38 +318,38 @@ theorem invIntegralOfClass (K : Type u) [NormedField K] [IsUltrametricDist K] (�
 end Formalism.LT.InvIntP
 
 /- English proof (translation)
-Introduce `K _ _ ι _ C f h0 h1 hsub hP hlowC h hh0 hCh`. Conclude with `Formalism.LT.InvIntP.invIntegralOfClass K ι C f h0 h1 hsub hP hlowC h hh0 hCh`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Formalism.LT.InvIntP.InvIntegralOfClass_proof : Formalism.LT.InvIntegralOfClass.{u, v} := by
   intro K _ _ ι _ C f h0 h1 hsub hP hlowC h hh0 hCh
   exact Formalism.LT.InvIntP.invIntegralOfClass K ι C f h0 h1 hsub hP hlowC h hh0 hCh
 
 /- English proof (translation)
-Introduce `K _ ι p q hq σ hq2 D hD N hN hlow d hd`. Conclude with `Formalism.LT.InvIntP.funEqLowCoeff p q hq σ hq2 D hD N hN hlow d hd`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Formalism.LT.InvIntP.FunEqLowCoeff_proof : Formalism.LT.FunEqLowCoeff.{u, v} := by
   intro K _ ι p q hq σ hq2 D hD N hN hlow d hd
   exact Formalism.LT.InvIntP.funEqLowCoeff p q hq σ hq2 D hD N hN hlow d hd
 
 /- English proof (translation)
-Introduce `K _ _ ι f P hf hP0 hP`. Conclude with `Formalism.LT.InvIntP.integralSubst f P hf hP0 hP`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Formalism.LT.InvIntP.IntegralSubst_proof : Formalism.LT.IntegralSubst.{u, v} := by
   intro K _ _ ι f P hf hP0 hP
   exact Formalism.LT.InvIntP.integralSubst f P hf hP0 hP
 
 /- English proof (translation)
-Conclude with `Formalism.LT.InvIntP.InvIntegralOfClass_proof`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.LT.InvIntegralOfClass_proof : Formalism.LT.InvIntegralOfClass.{u, v} := by
   exact Formalism.LT.InvIntP.InvIntegralOfClass_proof
 /- English proof (translation)
-Conclude with `Formalism.LT.InvIntP.FunEqLowCoeff_proof`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.LT.FunEqLowCoeff_proof : Formalism.LT.FunEqLowCoeff.{u, v} := by
   exact Formalism.LT.InvIntP.FunEqLowCoeff_proof
 /- English proof (translation)
-Conclude with `Formalism.LT.InvIntP.IntegralSubst_proof`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.LT.IntegralSubst_proof : Formalism.LT.IntegralSubst.{u, v} := by
   exact Formalism.LT.InvIntP.IntegralSubst_proof

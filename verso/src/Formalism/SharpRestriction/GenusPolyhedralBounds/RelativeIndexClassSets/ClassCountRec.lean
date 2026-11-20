@@ -32,7 +32,7 @@ Both sides reduce to the same expression.
 theorem massI_eq (M : ℕ) : massI D M = massH D.host M := rfl
 
 /- English proof (translation)
-Rewrite using `[Nat.card_congr (X.e u), classCount_par D.host (D.mem u).A.T (X.pz u) X.piG (X.hyp u) (X.P u) (X.charpoly_eq_of_isIso u) (X.S u)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem card_classes_level_zero (X : ClsTie D) (u : D.what₂.Word) :
     (Nat.card ((D.mem u).C.cls 0) : ℝ) =
@@ -41,23 +41,23 @@ theorem card_classes_level_zero (X : ClsTie D) (u : D.what₂.Word) :
   rfl
 
 /- English proof (translation)
-Introduce `_ _ u _` and use `card_classes_level_zero X u`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem class_number_of_class_data (X : ClsTie D) (Lv : LevelData D) : ClassNumberFormula₂ D Lv := fun _ _ u _ => card_classes_level_zero X u
 
 /- English proof (translation)
-Introduce `_ u` and use `hst u`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivial_stabilisers_of_step_zero (Lv : LevelData D) (hst : ∀ u, (D.mem u).C.StabZero) : SmallOrderPrimeLogSumBound D Lv := fun _ u => hst u
 
 /- English proof (translation)
-The claim follows from `level_rank_of_trivial_stabilisers D Lv (trivial_stabilisers_of_step_zero Lv hst) (class_number_of_class_data X Lv)`.
+A detailed English derivation is pending.
 -/
 theorem forms_rank_of_class_data (X : ClsTie D) (Lv : LevelData D) (hst : ∀ u, (D.mem u).C.StabZero) : Conclusion4f D Lv :=
   level_rank_of_trivial_stabilisers D Lv (trivial_stabilisers_of_step_zero Lv hst) (class_number_of_class_data X Lv)
 
 /- English proof (translation)
-Introduce `u`. Establish `h` using `hM u (hst u)`. Establish `h2 : (D.duS u : ℝ) = (Nat.card ((D.mem u).C.cls 0) : ℝ) * ∏ ρ, dimV (uColR D u ρ)` using `h`. Rewrite using `[h2, card_classes_level_zero X u]`. Unfold `duStarU duStarP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -70,7 +70,7 @@ theorem rankM_of_tie (X : ClsTie D) (hst : ∀ u, (D.mem u).C.StabZero) (hM : �
   ring
 
 /- English proof (translation)
-Introduce `_`. Establish `h2 : ((D.duS u : ℕ) : ℝ) = (Nat.card ((D.mem u).C.cls 0) : ℝ) * ∏ ρ, dimV (uColR D u ρ)`. Rewrite using `[hr, Nat.cast_mul, hn]`. Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu0Tie_of_rank (u : D.what₂.Word) (n : ℕ) (hr : D.duS u = Nat.card ((D.mem u).C.cls 0) * n)
     (hn : (n : ℝ) = ∏ ρ, dimV (uColR D u ρ)) : Mu0Tie D u := by
@@ -80,13 +80,13 @@ theorem mu0Tie_of_rank (u : D.what₂.Word) (n : ℕ) (hr : D.duS u = Nat.card (
   exact h2
 
 /- English proof (translation)
-The claim follows from `FR.fibreDim_eq (D.hcW u)`.
+A detailed English derivation is pending.
 -/
 theorem fibreDim_uColR (u : D.what₂.Word) : (FR.fibreDim (D.hcW u) : ℝ) = ∏ ρ, dimV (uColR D u ρ) :=
   FR.fibreDim_eq (D.hcW u)
 
 /- English proof (translation)
-Introduce `u`. Rewrite using `[hr u, Nat.cast_mul, card_classes_level_zero X u, fibreDim_uColR u]`. Unfold `duStarU duStarP`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rankM_of_cls (X : ClsTie D)
     (hr : ∀ u, D.duS u = Nat.card ((D.mem u).C.cls 0) * FR.fibreDim (D.hcW u)) : LinkB.RankM D := by
@@ -96,14 +96,14 @@ theorem rankM_of_cls (X : ClsTie D)
   ring
 
 /- English proof (translation)
-The claim follows from `rankM_of_cls X fun u => by rw [hr u, Nat.card_eq_fintype_card]`.
+A detailed English derivation is pending.
 -/
 theorem rankM_of_cls' (X : ClsTie D)
     (hr : ∀ u, D.duS u = Fintype.card ((D.mem u).C.cls 0) * FR.fibreDim (D.hcW u)) : LinkB.RankM D :=
   rankM_of_cls X fun u => by rw [hr u, Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-The claim follows from `proviso_e L (rankM_of_cls X hr) hDu hDs`.
+A detailed English derivation is pending.
 -/
 theorem proviso_of_cls (X : ClsTie D) (L : SizeData₂ D)
     (hr : ∀ u, D.duS u = Nat.card ((D.mem u).C.cls 0) * FR.fibreDim (D.hcW u))
@@ -111,7 +111,7 @@ theorem proviso_of_cls (X : ClsTie D) (L : SizeData₂ D)
   proviso_e L (rankM_of_cls X hr) hDu hDs
 
 /- English proof (translation)
-The claim follows from `LinkB.proviso_mono L (Real.exp_pos 1) hC (proviso_of_cls X L hr hDu hDs)`.
+A detailed English derivation is pending.
 -/
 theorem proviso_of_cls_le (X : ClsTie D) (L : SizeData₂ D)
     (hr : ∀ u, D.duS u = Nat.card ((D.mem u).C.cls 0) * FR.fibreDim (D.hcW u))
@@ -119,7 +119,7 @@ theorem proviso_of_cls_le (X : ClsTie D) (L : SizeData₂ D)
   LinkB.proviso_mono L (Real.exp_pos 1) hC (proviso_of_cls X L hr hDu hDs)
 
 /- English proof (translation)
-The claim follows from `proviso_of_cls_le X L hr hDu hDs (by have := Real.exp_one_lt_d9; linarith)`.
+A detailed English derivation is pending.
 -/
 theorem proviso_three (X : ClsTie D) (L : SizeData₂ D)
     (hr : ∀ u, D.duS u = Nat.card ((D.mem u).C.cls 0) * FR.fibreDim (D.hcW u))
@@ -134,7 +134,7 @@ variable {R : Ranks} (H : Host R) (T0 : ℕ) [hT0 : Fact T0.Prime] (pz0 : 𝓞 H
   (hpz0 : (pz0 : H.E) * H.conj (pz0 : H.E) = (T0 : H.E))
 
 /- English proof (translation)
-The claim follows from `classCount_par H T pz piG hyp _ (parOf_eq_base H T0 pz0 hpz0 T pz piG) S`.
+A detailed English derivation is pending.
 -/
 theorem card_cls_base (T : ℕ) (pz : 𝓞 H.E) (piG : Fin 2 → 𝓞 H.E) (hyp : LevHyp H T pz piG)
     (S : (letI := H.cmStar; parOf (hostSpacesOfNorm H T0 pz0 hpz0) H.g T pz (fun i => H.conj (piG i : H.E))).Splits) :

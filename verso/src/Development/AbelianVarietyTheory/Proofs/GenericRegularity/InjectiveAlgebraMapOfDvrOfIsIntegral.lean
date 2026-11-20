@@ -8,35 +8,31 @@ open IsLocalRing
 open IsLocalRing in
 
 /- English proof (translation)
-Introduce `O V _ _ _ _ _ _ _ _ _ _`. Use `haveI : Algebra.IsIntegral O V := Algebra.IsIntegral.of_finite O V`. Establish `hinj : Function.Injective (algebraMap O V)`. Rewrite using `[injective_iff_map_eq_zero]`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Use `push_neg at h`. Take `⟨a, ha, ha0⟩` from `h`. Establish `hker : (RingHom.ker (algebraMap O V)).IsMaximal`. Use `Ideal.IsPrime.isMaximal (RingHom.ker_isPrime _) ?_` and prove the remaining obligations. Introduce `hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `ha0` to reduce the goal to its premises. Establish `hmem : a ∈ RingHom.ker (algebraMap O V)` using `ha`. Rewrite `hmem` using `[hb]`. Conclude with `(Ideal.mem_bot).1 hmem`. Establish `hbot : (⊥ : Ideal V).IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := O) ⊥ (by rwa [← RingHom.ker_eq_comap_bot])`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `IsDiscreteValuationRing.not_a_field V (IsLocalRing.eq_maximalIdeal hbot).symm`. Establish `hloc : IsLocalHom (algebraMap O V)` using `RingHom.IsIntegral.isLocalHom (fun x => Algebra.IsIntegral.isIntegral x) hinj`. Use `haveI := hloc`. Use `⟨hinj, hloc, ?_, charZero_of_injective_algebraMap hinj, fun h => ?_⟩` and prove the remaining obligations. Use `swap`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Module.finite_of_finite (ResidueField O)`. Use `haveI : Module.IsTorsionFree O V := Module.isTorsionFree_iff_algebraMap_injective.mpr hinj`. Use `haveI : Module.Free O V := Module.free_of_finite_type_torsion_free'`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨q, hq⟩` from `IsDiscreteValuationRing.exists_irreducible V`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hπm : π ∈ maximalIdeal O` using `(mem_maximalIdeal _).2 (mem_nonunits_iff.2 hπ.not_isUnit)`. Establish `hp0 : algebraMap O V π ≠ 0` using `(map_ne_zero_iff _ hinj).2 hπ.ne_zero`. Establish `hpm : algebraMap O V π ∈ maximalIdeal V` using `(mem_maximalIdeal _).2 (mem_nonunits_iff.2 fun hu => hπ.not_isUnit ((isUnit_map_iff _ _).1 hu))`. Take `⟨e, he⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible (s := Ideal.span {algebraMap O V π}) (by simpa using hp0) hq`. Establish `hpow : ∀ k, maximalIdeal V ^ (e * k) = Ideal.span {algebraMap O V π ^ k}`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[hq.maximalIdeal_eq, Ideal.span_singleton_pow, pow_mul, ← Ideal.span_singleton_pow, ← he, Ideal.span_singleton_pow]`. Use `{ toIsHausdorff := IsHausdorff.of_isLocalRing _ _ (maximalIdeal.isMaximal V).ne_top toIsPrecomplete := ⟨fun f hf => ?_⟩ }` and prove the remaining obligations. Establish `hf' : ∀ m n, m ≤ n → f m - f n ∈ maximalIdeal V ^ m` using `fun m n h => by`. Simplify using `using SModEq.sub_mem.1 (hf h)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : ∀ m n, m ≤ n → ∃ y, f (e * m + m) - f (e * n + n) = algebraMap O V π ^ m * y`. Introduce `m n h`. Establish `h1` using `hf' _ _ (Nat.add_le_add (Nat.mul_le_mul_left e h) h)`. Establish `h2 : f (e * m + m) - f (e * n + n) ∈ Ideal.span {algebraMap O V π ^ m}`. Rewrite using `[← hpow]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.pow_le_pow_right (Nat.le_add_right _ _) h1`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 h2`. Conclude with `⟨y, by rw [← hy, mul_comm]⟩`. Set `b` to `Module.Free.chooseBasis O V`. Establish `hc : ∀ i, ∀ {m n : ℕ}, m ≤ n → b.repr (f (e * m + m)) i ≡ b.repr (f (e * n + n)) i [SMOD (maximalIdeal O ^ m • ⊤ : Submodule O O)]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i m n h`. Take `⟨y, hy⟩` from `hg m n h`. Establish `hdiff : b.repr (f (e * m + m)) i - b.repr (f (e * n + n)) i = π ^ m * b.repr y i`. Rewrite using `[← Finsupp.sub_apply, ← map_sub, hy, ← map_pow, ← Algebra.smul_def, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Establish `hmem : π ^ m * b.repr y i ∈ maximalIdeal O ^ m` using `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hπm m)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[SModEq.sub_mem, hdiff]`. Simplify using `using hmem`. Use `choose l hl using fun i => (inferInstance : IsPrecomplete (maximalIdeal O) O).prec (f := fun k => b.repr (f (e * k + k)) i) (hc i)`. Use `⟨∑ i, l i • b i, fun n => ?_⟩` and prove the remaining obligations. Establish `hgn : f (e * n + n) - ∑ i, l i • b i ∈ maximalIdeal V ^ n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hex : ∀ i, ∃ t, b.repr (f (e * n + n)) i - l i = π ^ n * t` using `fun i => by`. Establish `hmem` using `SModEq.sub_mem.1 (hl i n)`. Simplify using `only [smul_eq_mul, Ideal.mul_top] at hmem`. Rewrite `hmem` using `[hπ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`. Take `⟨t, ht⟩` from `hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `⟨t, by rw [← ht, mul_comm]⟩`. Use `choose t ht using hex`. Establish `hsum : f (e * n + n) - ∑ i, l i • b i = algebraMap O V π ^ n * ∑ i, t i • b i` using `by conv_lhs => rw [← b.sum_repr (f (e * n + n))]`. Rewrite using `[← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← sub_smul, ht, mul_smul, Algebra.smul_def, map_pow]`. Rewrite using `[hsum]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hpm n)`. Establish `hfg : f n - f (e * n + n) ∈ maximalIdeal V ^ n` using `hf' n (e * n + n) (Nat.le_add_left _ _)`. Establish `hsum` using `Ideal.add_mem _ hfg hgn`.
-
-Rewrite `hsum` using `[sub_add_sub_cancel]`. Rewrite using `[SModEq.sub_mem]`. Simplify using `using hsum`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.dvr_finite_over_complete_dvr :
     ∀ (O V : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]

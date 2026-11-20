@@ -18,9 +18,9 @@ namespace GlobalTheory.AdjPolLocal
 open GlobalTheory.MulPull GlobalTheory.PrimNorm GlobalTheory.PrimNormPol
 
 /- English proof (translation)
-Establish `h'` using `mul_right_cancel h`. Establish `e : p ^ (1 : ℤ) * (q ^ (-1 : ℤ) * (r ^ (-1 : ℤ) * (s ^ (-1 : ℤ) * (t ^ (1 : ℤ) * u ^ (1 : ℤ))))) = (p * q⁻¹ * r⁻¹) * (s * t⁻¹ * u⁻¹)⁻¹`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e, h', mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem commGroup_sixTerm_relation_to_zpow_form {G : Type} [CommGroup G] {p q r s t u o : G}
     (h : p * q⁻¹ * r⁻¹ * o = s * t⁻¹ * u⁻¹ * o) :
@@ -34,9 +34,9 @@ theorem commGroup_sixTerm_relation_to_zpow_form {G : Type} [CommGroup G] {p q r 
   rw [e, h', mul_inv_cancel]
 
 /- English proof (translation)
-Use `congr 1`. Establish `e : p ^ (1 : ℤ) * (q ^ (-1 : ℤ) * (r ^ (-1 : ℤ) * (s ^ (-1 : ℤ) * (t ^ (1 : ℤ) * u ^ (1 : ℤ))))) = (p * q⁻¹ * r⁻¹) * (s * t⁻¹ * u⁻¹)⁻¹`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`. Normalize the expressions using the abelian group laws.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite `h` using `[e, mul_inv_eq_one]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commGroup_sixTerm_zpow_form_to_relation {G : Type} [CommGroup G] {p q r s t u o : G}
     (h : p ^ (1 : ℤ) * (q ^ (-1 : ℤ) * (r ^ (-1 : ℤ) * (s ^ (-1 : ℤ) * (t ^ (1 : ℤ) * u ^ (1 : ℤ))))) = 1) :
@@ -51,18 +51,18 @@ theorem commGroup_sixTerm_zpow_form_to_relation {G : Type} [CommGroup G] {p q r 
   exact h
 
 /- English proof (translation)
-Rewrite `h` using `[_root_.one_mul, _root_.mul_one, eq_comm, ← mul_inv, mul_inv_eq_one]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_val_one_add_pow_sub {G : Type} [CommGroup G] {D a b : G} (h : 1 = D * (1 * a⁻¹ * b⁻¹ * 1)) : D = a * b := by
   rw [_root_.one_mul, _root_.mul_one, eq_comm, ← mul_inv, mul_inv_eq_one] at h
   exact h
 
 /- English proof (translation)
-Introduce `R _ _ B _ _ M f g hM h`. Take `⟨U, hU, t, ht⟩` from `h (closedPoint R)`. Establish `hall : ∀ p : Sp R, p ∈ U` using `fun p => Specializes.mem_open ((PrimeSpectrum.le_iff_specializes p (closedPoint R)).1 (le_maximalIdeal p.2.ne_top)) U.isOpen hU`. Establish `H : KerPow.HasGen M (rosatiφ B f g) rosatiε` using `KerPow.HasGen.of_range (W := (B ⊗ B).hom ⁻¹ᵁ U) ⟨t, ht⟩ (𝟙 _) (fun y => hall _) (fun k => Category.id_comp _)`. Establish `h6` using `(hasGen_iff hM _ _).1 H`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, rosatiφ, rosatiε] at h6`. Establish `ea : (padd B (fst B B ≫ f) (snd B B)).left = ((fst B B ≫ f) * snd B B).left` using `rfl`. Establish `eb : (padd B (fst B B) (snd B B ≫ g)).left = (fst B B * (snd B B ≫ g)).left` using `rfl`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_succ, ea, eb, _root_.mul_one] at h6`. Use `(lbIso_iff hM _ _ _ _).2 ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[prod_square_id, prod_square_id]`. Simplify using `only [diff₂]`. Conclude with `commGroup_sixTerm_zpow_form_to_relation h6`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lbIso_of_rosatiAdj_local : ∀ (R : Type) [CommRing R] [IsLocalRing R] (B : Over (Sp R)) [GrpObj B] [IsCommMonObj B] (M : LB B.left) (f g : B ⟶ B), M.IsLB → RosatiAdj B M f g → LBIso (cubeLB B ![fst B B ≫ f, snd B B] M) (cubeLB B ![fst B B, snd B B ≫ g] M) := by
   intro R _ _ B _ _ M f g hM h
@@ -83,11 +83,11 @@ theorem lbIso_of_rosatiAdj_local : ∀ (R : Type) [CommRing R] [IsLocalRing R] (
   exact commGroup_sixTerm_zpow_form_to_relation h6
 
 /- English proof (translation)
-Introduce `S B _ _ M f g hM h`. Establish `h1` using `(lbIso_iff hM _ _ _ _).1 h`. Rewrite `h1` using `[prod_square_id, prod_square_id]`. Establish `H : KerPow.HasGen M (rosatiφ B f g) rosatiε`. Use `(hasGen_iff hM _ _).2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, rosatiφ, rosatiε]`. Simplify using `only [diff₂] at h1`. Establish `ea : (padd B (fst B B ≫ f) (snd B B)).left = ((fst B B ≫ f) * snd B B).left` using `rfl`. Establish `eb : (padd B (fst B B) (snd B B ≫ g)).left = (fst B B * (snd B B ≫ g)).left` using `rfl`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_succ, ea, eb, _root_.mul_one]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `commGroup_sixTerm_relation_to_zpow_form h1`. Introduce `s`. Conclude with `⟨⊤, trivial, H.pull ((B ⊗ B).hom ⁻¹ᵁ ⊤).ι fun _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rosatiAdj_of_lbIso : ∀ (S : Scheme.{0}) (B : Over S) [GrpObj B] [IsCommMonObj B] (M : LB B.left) (f g : B ⟶ B), M.IsLB → LBIso (cubeLB B ![fst B B ≫ f, snd B B] M) (cubeLB B ![fst B B, snd B B ≫ g] M) → RosatiAdj B M f g := by
   intro S B _ _ M f g hM h

@@ -9,9 +9,9 @@ namespace GlobalTheory.Mem.Top
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Introduce `D c hc hG w hw`. Unfold `_root_.Formalism.BasicNotions.NTw.NonzeroIndexPlace`. Use `⟨if c.sd w = true then w else D.what₂.places.conj w, ?_, ?_⟩` and prove the remaining obligations. Use `split_ifs`. Conclude with `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[_root_.Formalism.BasicNotions.Rows.Data.muAt_conj]`. Conclude with `hw`. Establish `h` using `_root_.GlobalTheory.TwistGoodCompare.liesUnder_of_tie hG hc w`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.GoodPairSystems.LiesUnder at h`. Conclude with `h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Mem.Top.twistedPlaceIndex_mem_firstPair_of_compatibleChoice : ∀ (D : _root_.Formalism.BasicNotions.D7) (c : _root_.Formalism.BasicNotions.NChoice D),
     _root_.Formalism.BasicNotions.NChTie D c → IsGalois ℚ ↥D.LL0 →

@@ -23,7 +23,7 @@ abbrev tU (s : X ⟶ Sp R) (U : AffOp X) : Thick (dp0 R) s :=
 include hR in
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap R (Sec s U)), hR, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cast_sec (U : X.Opens) : (p : Sec s U) = 0 := by
   rw [← map_natCast (algebraMap R (Sec s U)), hR, map_zero]
@@ -51,7 +51,7 @@ def eta (U : AffOp X) : tU s U ⟶ h.obj (tU s U) :=
       rw [← frob_sp p _ _ h0, GlobalTheory.VB.frob_naturality p hX _ h0])
 
 /- English proof (translation)
-The claim follows from `frobR_apply p _ (cast_sec p hR U.unop.1) b`.
+A detailed English derivation is pending.
 -/
 theorem eta_φ (U : AffOp X) (b : Sec s U.unop.1) : (eta p hR h U).φ b = b ^ p :=
   frobR_apply p _ (cast_sec p hR U.unop.1) b
@@ -59,19 +59,19 @@ theorem eta_φ (U : AffOp X) (b : Sec s U.unop.1) : (eta p hR h U).φ b = b ^ p 
 attribute [local instance] opModule isCentralScalar_kaehler isScalarTower_kaehler
 
 /- English proof (translation)
-Introduce `p _ R _ hR X s hX h f hf`. Take `⟨g, hg⟩` from `H1.mk_eq_zero.1 hf`. Establish `hg' : ∀ {T T' : Thick (dp0 R) s} (φ : T ⟶ T'), g T' - φ.φ (g T) = ev f (h.functor.map φ)` using `fun {T T'} φ ↦ congrFun (congrFun (congrFun hg T) T') φ`. Use `⟨fun U ↦ (show Sec s U.unop.1 from g (tU s U)) - (show Sec s U.unop.1 from ev f (eta p hR h U)), fun U ↦ ?_, fun U V a ↦ ?_⟩` and prove the remaining obligations. Set `p₁` to `(diagExt R (Sec s U.unop.1)).secHom (affPt_w s U.unop) (diagExt R (Sec s U.unop.1)).i fun _ ↦ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `p₂` to `(diagExt R (Sec s U.unop.1)).secHom (affPt_w s U.unop) (diagSec R (Sec s U.unop.1)) (fst_derSec _)`. Set `P` to `(diagExt R (Sec s U.unop.1)).thick (affPt s U.unop) (affPt_w s U.unop)`. Establish `e : eta p hR h U ≫ h.functor.map p₁ = eta p hR h U ≫ h.functor.map p₂` using `Thick.hom_ext fun b ↦ by`. Express the relevant statement in the definitionally equal form `(diagExt R (Sec s U.unop.1)).i ((eta p hR h U).φ b) = diagSec R (Sec s U.unop.1) ((eta p hR h U).φ b)`. Rewrite using `[eta_φ]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Simplify using the standard rewrite rules. Rewrite using `[snd_derSec, Derivation.leibniz_pow, ← Nat.cast_smul_eq_nsmul (Sec s U.unop.1), cast_sec p hR, zero_smul]`. Simplify using the standard rewrite rules. Establish `k` using `(ev_comp f (eta p hR h U) (h.functor.map p₁)).symm.trans ((congrArg (ev f) e).trans (ev_comp f (eta p hR h U) (h.functor.map p₂)))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `k' : p₁.φ (show Sec s U.unop.1 from ev f (eta p hR h U)) + (show TrivSqZeroExt (Sec s U.unop.1) Ω[Sec s U.unop.1⁄R] from ev f (h.functor.map p₁)) = p₂.φ (show Sec s U.unop.1 from ev f (eta p hR h U)) + (show TrivSqZeroExt (Sec s U.unop.1) Ω[Sec s U.unop.1⁄R] from ev f (h.functor. …` using `k`. Establish `h1 : (show TrivSqZeroExt (Sec s U.unop.1) Ω[Sec s U.unop.1⁄R] from g P) - p₁.φ (show Sec s U.unop.1 from g (tU s U)) = (show TrivSqZeroExt (Sec s U.unop.1) Ω[Sec s U.unop.1⁄R] from ev f (h.functor.map p₁))` using `hg' p₁`. Establish `h2 : (show TrivSqZeroExt (Sec s U.unop.1) Ω[Sec s U.unop.1⁄R] from g P) - p₂.φ (show Sec s U.unop.1 from g (tU s U)) = (show TrivSqZeroExt (Sec s U.unop.1) Ω[Sec s U.unop.1⁄R] from ev f (h.functor.map p₂))` using `hg' p₂`. Establish `key : p₁.φ ((show Sec s U.unop.1 from g (tU s U)) - (show Sec s U.unop.1 from ev f (eta p hR h U))) = p₂.φ ((show Sec s U.unop.1 from g (tU s U)) - (show Sec s U.unop.1 from ev f (eta p hR h U)))`. Rewrite using `[map_sub, map_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-h1 + h2 - k'`. Establish `l` using `congrArg (TrivSqZeroExt.snd (R := Sec s U.unop.1)) key`. Express the relevant statement in the definitionally equal form `((diagExt R (Sec s U.unop.1)).i _).snd = (diagSec R (Sec s U.unop.1) _).snd at l`. Rewrite `l` using `[snd_derSec]`. Conclude with `l.symm.trans (by simp)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `k` using `ev_sq f (eta p hR h U) (h.functor.map (resHom s a)) (resHom s a) (eta p hR h V) fun c ↦ by`. Express the relevant statement in the definitionally equal form `Sec.res s (leOfHom a.unop) ((eta p hR h U).φ c) = (eta p hR h V).φ (Sec.res s (leOfHom a.unop) c)`. Rewrite using `[eta_φ, eta_φ, map_pow]`. Establish `k' : Sec.res s (leOfHom a.unop) (show Sec s U.unop.1 from ev f (eta p hR h U)) + (show Sec s V.unop.1 from ev f (h.functor.map (resHom s a))) = (ev f (resHom s a)) ^ p + (show Sec s V.unop.1 from ev f (eta p hR h V))`. Rewrite using `[← eta_φ p hR h V]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `k`. Establish `hg'' : (show Sec s V.unop.1 from g (tU s V)) - Sec.res s (leOfHom a.unop) (show Sec s U.unop.1 from g (tU s U)) = (show Sec s V.unop.1 from ev f (h.functor.map (resHom s a)))` using `hg' (resHom s a)`. Express the relevant statement in the definitionally equal form `(ev f (resHom s a)) ^ p = _`. Rewrite using `[map_sub]`. Take the linear combination `-hg'' - k'`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_closed_pow : ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] (hR : (p : R) = 0) (X : Scheme.{0}) (s : X ⟶ Sp R) (hX : (p : Γ(X, ⊤)) = 0) (h : IsMor (dp0 R) s (dp0 R) s (frobR p R hR) (GlobalTheory.VB.frob X p hX)) (f : Z1 (O (dp0 R) s)), h.pull1 (GlobalTheory.CatCoh.H1.mk _ f) = 0 → ∃ u : ∀ U : GlobalTheory.CechDR.AffOp X, GlobalTheory.CechDR.Sec s U.unop.1, (∀ U, KaehlerDifferential.D R (GlobalTheory.CechDR.Sec s U.unop.1) (u U) = 0) ∧ ∀ (U V : GlobalTheory.CechDR.AffOp X) (a : U ⟶ V), (show GlobalTheory.CechDR.Sec s V.unop.1 from (GlobalTheory.CechDR.cmpZZ s f).1.1 U V a) ^ p = u V - GlobalTheory.CechDR.Sec.res s (leOfHom a.unop) (u U) := by
   intro p _ R _ hR X s hX h f hf

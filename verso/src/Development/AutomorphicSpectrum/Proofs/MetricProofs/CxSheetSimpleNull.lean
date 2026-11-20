@@ -39,7 +39,7 @@ open ReciprocityTheory.AnForm.R (conePts)
 open MeasureTheory CxInt CxComp
 
 /- English proof (translation)
-Introduce `K _ ι _ Q e Ψ hQ hΨ`. Take `⟨d, hbd, hnull⟩` from `cxGenericCount hQ Ψ hΨ`. Use `measure_mono_null (fun y hy => ?_) hnull` and prove the remaining obligations. Take `⟨w, hw, -, hns⟩` from `hy`. Conclude with `fun hgood => hns (cxSimple_of_count hbd hgood.1 hgood.2 hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cxSheetSimpleNull : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)]
     (Q : Ideal (MRingOver ℂ ι)) (e : ℕ) (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)),

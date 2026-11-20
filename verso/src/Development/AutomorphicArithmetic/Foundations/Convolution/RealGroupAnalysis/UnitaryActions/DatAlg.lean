@@ -6,37 +6,31 @@ open scoped Classical
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ h2`. Use `haveI : Algebra.IsQuadraticExtension F E := ⟨h2⟩`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`. Use `haveI : IsGalois F E := inferInstance`. Use `haveI : CharZero E := charZero_of_injective_algebraMap (algebraMap F E).injective`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcard : Nat.card (E ≃ₐ[F] E) = 2`. Rewrite using `[IsGalois.card_aut_eq_finrank, h2]`. Take `⟨σ, hσ⟩ : ∃ σ : E ≃ₐ[F] E, σ ≠ 1` from `by haveI : Finite (E ≃ₐ[F] E) := inferInstance haveI : Nontrivial (E ≃ₐ[F] E) := by`. Apply `Finite.one_lt_card_iff_nontrivial.mp` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `exists_ne 1`. Establish `hall : ∀ τ : E ≃ₐ[F] E, τ = 1 ∨ τ = σ`. Introduce `τ`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : 3 ≤ Nat.card (E ≃ₐ[F] E)` using `by haveI : Fintype (E ≃ₐ[F] E) := Fintype.ofFinite _`. Rewrite using `[Nat.card_eq_fintype_card]`. Establish `: ({1, σ, τ} : Finset (E ≃ₐ[F] E)).card = 3`. Rewrite using `[Finset.card_eq_three]`. Conclude with `⟨1, σ, τ, hσ.symm, hc.1.symm, hc.2.symm, rfl⟩`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Conclude with `Finset.card_le_univ _`. Use linear arithmetic over natural numbers and integers. Establish `hσσ : σ * σ = 1`. Establish `: Monoid.exponent (E ≃ₐ[F] E) ∣ 2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hcard]`. Conclude with `Group.exponent_dvd_nat_card`. Establish `h` using `Monoid.exponent_dvd_iff_forall_pow_eq_one.mp this σ`. Rewrite `h` using `[pow_two]`. Then use the resulting hypothesis. Choose the witnesses or unpack the hypotheses as in `⟨α, hα⟩ : ∃ α : E, σ α ≠ α := by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hσ (AlgEquiv.ext hc)`. Establish `hσσα : ∀ x : E, σ (σ x) = x` using `fun x => by`. Use `congrArg (fun τ : E ≃ₐ[F] E => τ x) hσσ` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `using this`. Use `set θ : E := α - σ α with hθ`. Establish `hθ0 : θ ≠ 0` using `fun h => hα (sub_eq_zero.mp h).symm`. Establish `hσθ : σ θ = -θ`. Simplify using `[hθ, hσσα]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfix : θ ^ 2 ∈ Set.range (algebraMap F E)`. Establish `hb : θ ^ 2 ∈ (⊥ : IntermediateField F E)`. Rewrite using `[IsGalois.mem_bot_iff_fixed]`. Introduce `τ`. Break down `hall τ with rfl | rfl` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[map_pow, hσθ]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `IntermediateField.mem_bot.mp hb`. Take `⟨δ, hδ⟩` from `hfix`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent F ![(1 : E), θ]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `h1 : algebraMap F E s + algebraMap F E t * θ = 0`. Simplify `hst` using `[Algebra.smul_def]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h2' : algebraMap F E s - algebraMap F E t * θ = 0`. Use `congrArg σ h1` as an intermediate fact. Simplify `this` using `[hσθ, sub_eq_add_neg]`. Establish `hs2 : (2 : E) * algebraMap F E s = 0` using `by linear_combination h1 + h2'`. Establish `ht2 : (2 : E) * (algebraMap F E t * θ) = 0` using `by linear_combination h1 - h2'`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hs : s = 0`. Establish `: algebraMap F E s = 0`. Break down `mul_eq_zero.mp hs2 with h | h` into its components or cases. Conclude with `absurd h two_ne_zero`. Conclude with `h`.
-
-Simplify using `using this`. Establish `ht : t = 0`. Establish `: algebraMap F E t = 0`. Break down `mul_eq_zero.mp ht2 with h | h` into its components or cases. Conclude with `absurd h two_ne_zero`.
-
-Break down `mul_eq_zero.mp h with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hθ0`. Simplify using `using this`. Conclude with `⟨hs, ht⟩`.
-
-Use `⟨δ, θ, σ, basisOfLinearIndependentOfCardEqFinrank hli (by simp [h2]), ?_, ?_, hδ.symm, hσθ⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.datAlg :
     ∀ (F E : Type) [Field F] [CharZero F] [Field E] [Algebra F E], Module.finrank F E = 2 →

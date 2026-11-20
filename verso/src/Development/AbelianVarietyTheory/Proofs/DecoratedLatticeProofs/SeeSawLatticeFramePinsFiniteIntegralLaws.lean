@@ -23,26 +23,24 @@ namespace GlobalTheory.SeeSawAll
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `ENNReal.toReal_pos (ho.measure_ne_zero μ hn) hc.measure_lt_top.ne`.
+A detailed English derivation is pending.
 -/
 theorem real_pos_of_open_compact {X : Type} [TopologicalSpace X] [MeasurableSpace X] (μ : Measure X) [μ.IsOpenPosMeasure]
     [IsFiniteMeasureOnCompacts μ] {S : Set X} (ho : IsOpen S) (hc : IsCompact S) (hn : S.Nonempty) : 0 < μ.real S :=
   ENNReal.toReal_pos (ho.measure_ne_zero μ hn) hc.measure_lt_top.ne
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hcomm, ⟨e, he⟩, -, -, hK, -⟩` from `GlobalTheory.FinPl.SetCut.grp_split D V gP`. Take `⟨⟨K₁, hK₁, hK₁c, hK₁o⟩, -⟩` from `hK L hL (· ∉ gP)`. Establish `hS : {g : GfC V | ∃ κ, InK V L (· ∉ gP) κ ∧ ∃ k ∈ JG, g.1 = κ * k} = e '' ((((JG.subgroupOf (grpAt V (· ∈ gP))) : Subgroup _) : Set (grpAt V (· ∈ gP))) ×ˢ (((K₁.subgroupOf (grpAt V (· ∉ gP))) : Subgroup _) : Set (grpAt V (· ∉ gP))))`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨κ, hκ, k, hk, hg⟩`. Establish `hκ' : κ ∈ grpAt V (· ∉ gP)` using `hκ.1`. Use `⟨(⟨k, hJ hk⟩, ⟨κ, hκ'⟩), ⟨Subgroup.mem_subgroupOf.2 hk, Subgroup.mem_subgroupOf.2 ((hK₁ κ).2 hκ)⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[he, hg, hcomm k (hJ hk) κ hκ']`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨p, ⟨hp1, hp2⟩, rfl⟩`. Use `⟨p.2.1, (hK₁ _).1 (Subgroup.mem_subgroupOf.1 hp2), p.1.1, Subgroup.mem_subgroupOf.1 hp1, ?_⟩` and prove the remaining obligations. Rewrite using `[he, hcomm p.1.1 p.1.2 p.2.1 p.2.2]`. Establish `hAc : IsCompact (((JG.subgroupOf (grpAt V (· ∈ gP))) : Subgroup _) : Set (grpAt V (· ∈ gP)))`. Establish `h1 : ((JG.subgroupOf (grpAt V (· ∈ gP)) : Subgroup _) : Set (grpAt V (· ∈ gP))) = Subtype.val ⁻¹' (JG : Set (GA D V))` using `rfl`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, Topology.IsInducing.subtypeVal.isCompact_preimage_iff]`. Conclude with `hJc`. Introduce `x hx`. Conclude with `⟨⟨x, hJ hx⟩, rfl⟩`. Establish `hBc : IsCompact (((K₁.subgroupOf (grpAt V (· ∉ gP))) : Subgroup _) : Set (grpAt V (· ∉ gP)))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((K₁.subgroupOf (grpAt V (· ∉ gP)) : Subgroup _) : Set (grpAt V (· ∉ gP))) = Subtype.val ⁻¹' (K₁ : Set (GA D V))` using `rfl`. Rewrite using `[h1, Topology.IsInducing.subtypeVal.isCompact_preimage_iff]`. Conclude with `hK₁c`. Introduce `x hx`. Conclude with `⟨⟨x, ((hK₁ x).1 hx).1⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hS]`. Conclude with `e.isOpenMap _ (hJo.prod hK₁o)`. Rewrite using `[hS]`. Conclude with `(hAc.prod hBc).image e.continuous`.
-
-Conclude with `⟨1, (hK₁ 1).1 (one_mem _), 1, one_mem _, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem level_open_compact (V : HSp D) (L : Lat V) (hL : IsSelfDualC V L) (gP : Finset (Pl D)) (JG : Subgroup (GA D V))
     (hJ : JG ≤ grpAt V (· ∈ gP)) (hJc : IsCompact (JG : Set (GA D V)))
@@ -85,9 +83,9 @@ theorem level_open_compact (V : HSp D) (L : Lat V) (hL : IsSelfDualC V L) (gP : 
 variable {c : Comm D}
 
 /- English proof (translation)
-Take `⟨hJle, hJc, hJo⟩` from `hv.JG j hj`. Take `⟨hSo, hSc, hS1⟩` from `level_open_compact (c.V j) (v.N j) (hv.sd j hj) v.gP (v.JG j) hJle hJc hJo`. Establish `h1 : 0 < (c.μf j).real {g | g.1 ∈ v.K j}`. Conclude with `real_pos_of_open_compact (c.μf j) hSo hSc ⟨1, hS1⟩`. Establish `hT : IsClosed (((R.subgroupOf (GfC (c.V j))) : Subgroup _) : Set (GfC (c.V j)))` using `hR.preimage continuous_subtype_val`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 0 < ρ.real {g | g.1.1 ∈ v.K j}`. Conclude with `real_pos_of_open_compact ρ (hSo.preimage continuous_subtype_val) (hT.isClosedEmbedding_subtypeVal.isCompact_preimage hSc) ⟨1, hS1⟩`. Unfold `VCom.vr`. Conclude with `(div_pos h1 h2).ne'` after adjusting the coercions.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem vr_ne_zero (v : VCom c) (hv : v.Is) (j : ℕ) (hj : j < D.R.m) (hμ : (c.μf j).IsHaarMeasure)
     (R : Subgroup (GA D (c.V j))) (hR : IsClosed (R : Set (GA D (c.V j))))
@@ -105,7 +103,7 @@ theorem vr_ne_zero (v : VCom c) (hv : v.Is) (j : ℕ) (hj : j < D.R.m) (hμ : (c
   exact_mod_cast (div_pos h1 h2).ne'
 
 /- English proof (translation)
-Introduce `j σ h`. Unfold `VCom.kap`. Use `mul_ne_zero ?_ ?_` and prove the remaining obligations. Conclude with `vr_ne_zero v hv (j + 1) (by omega) (hc.μf _) _ (GlobalTheory.jacGrp_isClosed _ _ _ _ _) _ (hc.ρJ _ _ _)`. Conclude with `vr_ne_zero v hv (j + 1 + 1) (by omega) (hc.μf _) _ (GlobalTheory.BesClosed.besGrp_isClosed _ _ _ _ _ _ _ _) _ (hc.ρB _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kap_ne_zero (v : VCom c) (hc : c.Is) (hv : v.Is) : ∀ j σ h, v.kap j σ h ≠ 0 := by
   intro j σ h
@@ -115,20 +113,20 @@ theorem kap_ne_zero (v : VCom c) (hc : c.Is) (hv : v.Is) : ∀ j σ h, v.kap j �
   · exact vr_ne_zero v hv (j + 1 + 1) (by omega) (hc.μf _) _ (GlobalTheory.BesClosed.besGrp_isClosed _ _ _ _ _ _ _ _) _ (hc.ρB _ _ _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.disj, h.sd, h.sdT, h.b, h.bT, h.Ψ, h.ΨT, h.JG, h.atG, h.atT, h.ram⟩`.
+Supply the required witnesses or components.
 -/
 theorem is_withCG (v : VCom c) (a : ℕ → ℂ) (h : v.Is) : (v.withCG a).Is :=
   ⟨h.disj, h.sd, h.sdT, h.b, h.bT, h.Ψ, h.ΨT, h.JG, h.atG, h.atT, h.ram⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Conclude with `⟨h1, h2, by rw [hτ]; exact h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem weilOK_of_tau {t : Tup c} (v v' : VCom c) (hτ : v'.τ = v.τ) (h : WeilOK (t := t) v) : WeilOK (t := t) v' := by
   obtain ⟨h1, h2, h3⟩ := h
   exact ⟨h1, h2, by rw [hτ]; exact h3⟩
 
 /- English proof (translation)
-The claim follows from `h.bf j ρ hh x (hPP x hx) fb j σ hh x hx := h.fb j σ hh x (hPP x hx) top j hh := by obtain ⟨χS, χT, h1, h2⟩ := h.top j hh exact ⟨χS, χT, h1, fun x hx => h2 x (hPP x hx)⟩`.
+A detailed English derivation is pending.
 -/
 theorem unrOn_mono {t : Tup c} {P P' : Pl D → Prop} (h : t.UnrOn P) (hPP : ∀ x, P' x → P x) : t.UnrOn P' where
   bf j ρ hh x hx := h.bf j ρ hh x (hPP x hx)
@@ -142,11 +140,11 @@ end GlobalTheory.SeeSawAll
 namespace GlobalTheory.SeeSaw
 
 /- English proof (translation)
-Introduce `D c v k _ _ _ _ ι o n G hc hvl hv hsh hG`. Take `⟨ε, op, r, e, hr, hvT, hT⟩` from `GlobalTheory.T.seesaw_levelPrime_law_all_tuples D c v k ι o hc hv hsh`. Take `⟨a, ha, hGa⟩` from `GlobalTheory.T.seeSawUnfolded_support_and_value_at_fixed_level D c v n G hc hv hG`. Establish `hv' : ((v.withT (o.S ε) op).withCG a).Is` using `GlobalTheory.SeeSawAll.is_withCG _ a hvT`. Use `⟨ε, op, r, e, a, hr, ha, GlobalTheory.SeeSawAll.kap_ne_zero v hc hv, hv', ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `𝒯 t w hw`. Use `GlobalTheory.T.seesaw_place_laws_give_finite_integral_laws D c ((v.withT (o.S ε) op).withCG a) 𝒯 t w hc hvl hv' (fun s => (hw s).1) (fun s => ?_)` and prove the remaining obligations. Take `⟨hts, hform, hweil, hsph, hunr, hunrK, hch, hql, hqlast, hqfin, hcT, hcv⟩` from `hw s`. Establish `hdisjT : Disjoint (w s).Q v.tP` using `hform.disjT`. Establish `hoff : OffLaw v (w s)` using `GlobalTheory.T.seesaw_support_off_level_of_lattice_shape D c v k ι o hc hv hsh (t s) (w s) hts hdisjT hunr`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvac : VacLaw (t` using `t s) v := GlobalTheory.T.seeSawUnfoldedVacuaOfShape_proof D c v k ι o hc hv hsh (t s)`. Establish `hunrT : (t s).UnrOn (· ∈ v.tP)` using `GlobalTheory.SeeSawAll.unrOn_mono hunr fun x hx => ⟨fun hg => Finset.disjoint_left.mp hv.disj hg hx, fun hq => Finset.disjoint_left.mp hdisjT hq hx⟩`. Establish `htl : TLaw (v.withT (o.S ε) op) (w s)` using `hT (t s) (w s) hts hweil hunrT hunrK hcT`. Take `⟨hgs, hgv⟩` from `hGa (t s) hts hweil hch`. Conclude with `⟨hform, GlobalTheory.SeeSawAll.weilOK_of_tau v _ rfl hweil, hoff, hgs, hgv, hvac, htl, hql, hqlast, hqfin, hcv, hsph⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pins_finiteIntegrals : ∀ (D : D7) (c : Comm D) (v : VCom c) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (o : TDat c k ι) (n : ℕ) (G : Fin n → GLoc v), c.Is → c.VolLast → v.Is → ShapeOff v o → GPin G → ∃ (ε : ℕ → ι → 𝓀[k]ˣ) (op : ∀ j, BiOp (c.X j) (c.X (j + 1)) (c.X (j + 1 + 1))) (r : ℕ → ι → ℝ) (e : ℕ → ι → ℤ) (a : ℕ → ℂ), (∀ j i, 0 < r j i) ∧ (∀ j, a j ≠ 0) ∧ (∀ j σ h, v.kap j σ h ≠ 0) ∧ ((v.withT (o.S ε) op).withCG a).Is ∧ ∀ (𝒯 : Type) (t : 𝒯 → Tup c) (w : ∀ s, VTup (t s)), (∀ s, (t s).Is ∧ VForm ((v.withT (o.S ε) op).withCG a) (w s) ∧ WeilOK (t := t s) v ∧ TopSph (t := t s) v ∧ (t s).UnrOn (offP v (w s)) ∧ (t s).UnrK (· ∈ v.tP) ∧ (∀ i, (G i).Chars (t s)) ∧ QLaw v (w s) ∧ QLast v (w s) ∧ QFin v (w s) ∧ (∀ j ρ h, (w s).cT j = o.mono (r j) (e j) ((t s).sBF j ρ h).χW) ∧ CVEq ((v.withT (o.S ε) op).withCG a) (w s)) → (∀ s, (t s).LocFin) ∧ ValX t ∧ ValLastX t := by
   intro D c v k _ _ _ _ ι o n G hc hvl hv hsh hG

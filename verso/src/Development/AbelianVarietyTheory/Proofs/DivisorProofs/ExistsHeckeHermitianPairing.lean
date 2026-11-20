@@ -24,7 +24,7 @@ namespace GlobalTheory.MultPetersson
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CocompactIntegrable.integrableOn_fundamentalDomain V μ 𝓕 C hμ h𝓕 hC hcov _ ((continuous_star.comp hf).mul hf') (fun γ hγ g => by simp only [hl γ hγ, hl' γ hγ])`.
+A detailed English derivation is pending.
 -/
 theorem integrableOn_star_mul (μ : Measure (GA D V)) (𝓕 C : Set (GA D V)) (hμ : μ.IsHaarMeasure)
     (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 μ) (hC : IsCompact C)

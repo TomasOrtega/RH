@@ -30,7 +30,7 @@ def chi (c : Coeff l) (S : Type) [CommRing S] [Algebra c.F S] (σ : E →+* ℂ)
   (algebraMap c.F S).comp (embK c σ)
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (ComplexEmbedding.conjugate σ) (a : E) = σ ((H.bar a : 𝓞 E) : E)`. Rewrite using `[H.bar_eq, ComplexEmbedding.conjugate_coe_eq, NumberField.IsCMField.complexEmbedding_complexConj]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embK_conj (c : Coeff l) (σ : E →+* ℂ) (a : 𝓞 E) :
     embK c (ComplexEmbedding.conjugate σ) a = embK c σ (H.bar a) := by
@@ -39,13 +39,11 @@ theorem embK_conj (c : Coeff l) (σ : E →+* ℂ) (a : 𝓞 E) :
   rw [H.bar_eq, ComplexEmbedding.conjugate_coe_eq, NumberField.IsCMField.complexEmbedding_complexConj]
 
 /- English proof (translation)
-Establish `hex : ∃ a : 𝓞 E, σ (a : E) ≠ τ (a : E)`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `h` to reduce the goal to its premises. Use extensionality with `x`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) x`. Rewrite using `[map_div₀, map_div₀]`. Conclude with `congrArg₂ (· / ·) (hc a) (hc b)`. Take `⟨a, ha⟩` from `hex`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : embK c σ a - embK c τ a ≠ 0`. Introduce `h0`. Apply `ha` to reduce the goal to its premises. Conclude with `congrArg (fun z : c.F => (z : ℂ)) (sub_eq_zero.mp h0)`. Establish `hu` using `(hne.isUnit).map (algebraMap c.F S)`.
-
-Simplify `hu` using `[chi, map_sub]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hunit_chi (c : Coeff l) (S : Type) [CommRing S] [Algebra c.F S] (σ τ : E →+* ℂ) (h : σ ≠ τ) :
     ∃ a, IsUnit (chi c S σ a - chi c S τ a) := by
@@ -74,7 +72,7 @@ def nu (Dw : Datum H) : Lt1 Dw ≃ Fin 1 × Fin (dL Dw) where
   right_inv p := Prod.ext (Subsingleton.elim _ _) (by simp)
 
 /- English proof (translation)
-Use `⟨Finsupp.equivMapDomain (nu Dw).symm x, ?_⟩` and prove the remaining obligations. Rewrite using `[Finsupp.embDomain_eq_mapDomain, Equiv.coe_toEmbedding, ← Finsupp.equivMapDomain_eq_mapDomain]`. Use extensionality with `p`. Simplify using `[Finsupp.equivMapDomain_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem exists_embDomain (x : Fin 1 × Fin (dL Dw) →₀ ℕ) : ∃ y, Finsupp.embDomain (nu Dw).toEmbedding y = x := by
   refine ⟨Finsupp.equivMapDomain (nu Dw).symm x, ?_⟩
@@ -83,7 +81,7 @@ theorem exists_embDomain (x : Fin 1 × Fin (dL Dw) →₀ ℕ) : ∃ y, Finsupp.
   simp [Finsupp.equivMapDomain_apply]
 
 /- English proof (translation)
-Use `show ∑ i ∈ (Finsupp.embDomain f y).support, (Finsupp.embDomain f y) i = ∑ i ∈ y.support, y i`. Rewrite using `[Finsupp.support_embDomain, Finset.sum_map]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem degree_embDomain {α β : Type} (f : α ↪ β) (y : α →₀ ℕ) : (Finsupp.embDomain f y).degree = y.degree := by
   classical
@@ -92,7 +90,7 @@ theorem degree_embDomain {α β : Type} (f : α ↪ β) (y : α →₀ ℕ) : (F
   simp
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.coeff_embDomain_rename _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem coeff_rename_emb_lemma {S : Type} [CommRing S] (p : MvPowerSeries (Lt1 Dw) S)
     (y : Lt1 Dw →₀ ℕ) :
@@ -101,7 +99,7 @@ private theorem coeff_rename_emb_lemma {S : Type} [CommRing S] (p : MvPowerSerie
   MvPowerSeries.coeff_embDomain_rename _ _ _
 
 /- English proof (translation)
-Use extensionality with `x`. Take `⟨y, rfl⟩` from `exists_embDomain (Dw := Dw) x`. Apply the tactic sequence `simp only [coeff_rename_emb_lemma, MvPowerSeries.coeff_rescale, Finsupp.prod_embDomain] <;> rfl`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rename_rescale {S : Type} [CommRing S] (s : Fin 1 × Fin (dL Dw) → S) (p : MvPowerSeries (Lt1 Dw) S) :
     MvPowerSeries.rename (nu Dw).toEmbedding (MvPowerSeries.rescale (fun ℓ => s (nu Dw ℓ)) p) =
@@ -114,25 +112,25 @@ def sc (c : Coeff l) (S : Type) [CommRing S] [Algebra c.F S] (a : 𝓞 E) : Fin 
   fun p => algebraMap c.F S (embK c ((ltIdx Dw).symm p.2).1 a)
 
 /- English proof (translation)
-Use `letI : StarRing (𝓞 E) := barStar H`. Set `r' : MvPowerSeries (Lt1 Dw) S` to `fun y => MvPowerSeries.coeff (Finsupp.embDomain (nu Dw).toEmbedding y) r`. Establish `hcr' : ∀ y, MvPowerSeries.coeff y r' = MvPowerSeries.coeff (Finsupp.embDomain (nu Dw).toEmbedding y) r` using `fun y => rfl`. Establish `hrr : MvPowerSeries.rename (nu Dw).toEmbedding r' = r`. Use extensionality with `x`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Take `⟨y, rfl⟩` from `exists_embDomain (Dw := Dw) x`. Rewrite using `[coeff_rename_emb_lemma, hcr']`. Establish `hinj : ∀ p p' : MvPowerSeries (Lt1 Dw) S, MvPowerSeries.rename (nu Dw).toEmbedding p = MvPowerSeries.rename (nu Dw).toEmbedding p' → p = p'`. Introduce `p p' hpp`. Use extensionality with `y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hc` using `congrArg (MvPowerSeries.coeff (Finsupp.embDomain (nu Dw).toEmbedding y)) hpp`. Simplify `hc` using `only [coeff_rename_emb_lemma]`. Establish `hsc : ∀ b : 𝓞 E, (fun ℓ : Lt1 Dw => sc (Dw` using `Dw) c S b (nu Dw ℓ)) = fun ℓ => chi c S ℓ.1 b := by`. Introduce `b`. Use function extensionality and compare the values at `ℓ`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[sc, chi, nu]`. Establish `hscale : ∀ (b : 𝓞 E) (p : MvPowerSeries (Lt1 Dw) S), MvPowerSeries.rename (nu Dw).toEmbedding (scaleBy (rk` using `Dw.mult) (chi c S) b p) = MvPowerSeries.rescale (sc (Dw := Dw) c S b) (MvPowerSeries.rename (nu Dw).toEmbedding p) := by`. Introduce `b p`. Apply the tactic sequence `(rw [← rename_rescale, hsc b]) <;> rfl`. Establish `hr0' : MvPowerSeries.constantCoeff r' = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hcr', Finsupp.embDomain_zero, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, h1]`. Establish `hr' : ∀ a : 𝓞 E, scaleBy (rk` using `Dw.mult) (chi c S) (1 + a * star a) r' = scaleBy (rk := Dw.mult) (chi c S) a r' ^ 2 * r' * scaleBy (rk := Dw.mult) (chi c S) (a * star a) r' := by`. Introduce `a`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, map_pow, hscale, hscale, hscale, hrr]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hr a`. Establish `hcc : ∀ (σ : E →+* ℂ) (a : 𝓞 E), chi c S (ComplexEmbedding.conjugate σ) a = chi c S σ (star a)`. Introduce `σ a`. Simplify using `only [chi, RingHom.comp_apply]`. Apply the tactic sequence `(rw [embK_conj]) <;> rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨q', hq0, hqdeg, hqpair, hqexp⟩` from `hR (𝓞 E) S (E →+* ℂ) Dw.mult (chi c S) ComplexEmbedding.conjugate hcc (fun σ τ hστ => hunit_chi c S σ τ hστ) r' hr0' hr'`. Establish `hq0r : MvPowerSeries.constantCoeff (MvPowerSeries.rename (nu Dw).toEmbedding q') = 0`. Rewrite using `[MvPowerSeries.constantCoeff_rename, hq0]`. Use `⟨MvPowerSeries.rename (nu Dw).toEmbedding q', hq0r, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `m hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `exists_embDomain (Dw := Dw) m`. Rewrite `hm` using `[coeff_rename_emb_lemma]`. Rewrite using `[degree_embDomain]`. Conclude with `hqdeg y hm`. Introduce `ℓ ℓ' hm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `have hsum : Finsupp.single ((0 : Fin 1), ltIdx Dw ℓ) 1 + Finsupp.single ((0 : Fin 1), ltIdx Dw ℓ') 1 = Finsupp.embDomain (nu Dw).toEmbedding (Finsupp.single ℓ 1 + Finsupp.single ℓ' 1) := by (rw [Finsupp.embDomain_add, Finsupp.embDomain_single, Finsupp.embDomain_single]) <;> rfl`. Rewrite `hm` using `[hsum, coeff_rename_emb_lemma]`. Conclude with `hqpair ℓ ℓ' hm`. Use extensionality with `m`. Take `⟨y, rfl⟩` from `exists_embDomain (Dw := Dw) m`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← hrr, coeff_rename_emb_lemma, hqexp, PowerSeries.coeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero hq0), PowerSeries.coeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero hq0r)]`. Use `congr 1`. Use function extensionality and compare the values at `d`. Rewrite using `[← map_pow, coeff_rename_emb_lemma]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_exp (hR : GaugeRatioSt) (c : Coeff l) (S : Type) [CommRing S] [Algebra c.F S] [Algebra ℚ S]
     (r : MvPowerSeries (Fin 1 × Fin (dL Dw)) S) (h1 : MvPowerSeries.constantCoeff r = 1)

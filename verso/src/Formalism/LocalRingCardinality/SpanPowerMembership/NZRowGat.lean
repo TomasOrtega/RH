@@ -18,7 +18,7 @@ def localDataAtServedPlace' : ∀ (u : W) (w : (@placesOf H.E _ _ H.cmStar).Pl),
     (fun ψ => lamOf (hcW u ψ) 0) ((K u).cls 0) (eOf ((@placesOf H.E _ _ H.cmStar).resChar w))
 
 /- English proof (translation)
-Introduce `_ _ _` and use `by classical exact gatNZ_d _ _ _ _ _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem localData_rank_eq_classes : ∀ u w h, (localDataAtServedPlace' H hcW K T rOf eOf bs u w h).d = Fintype.card ((K u).cls 0) := fun _ _ _ => by
   classical

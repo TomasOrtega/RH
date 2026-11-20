@@ -3,15 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Establish `hinj : ∀ p q : R[X], p.comp (C c * X) = q.comp (C c * X) → p = q`. Introduce `p q h`. Use extensionality with `i`. Establish `hi` using `congrArg (fun r => r.coeff i) h`. Simplify using `only [comp_C_mul_X_coeff] at hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(hc.pow i).mul_right_cancel hi`. Establish `key : (Polynomial.eval₂RingHom C (C c * X)).mapMatrix (Matrix.charmatrix (c • M)) = C c • Matrix.charmatrix M`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.charmatrix_apply_eq, Matrix.smul_apply, C_mul, mul_sub]`. Simplify using `[Matrix.charmatrix_apply_ne _ _ _ h, Matrix.smul_apply, C_mul]`. Establish `hL : (c • M).charpoly.comp (C c * X) = C c ^ Fintype.card n * M.charpoly`. Combine the equalities or inequalities in the displayed calculation. Establish `hR : (M.charpoly.scaleRoots c).comp (C c * X) = C c ^ Fintype.card n * M.charpoly`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i`. Rewrite using `[comp_C_mul_X_coeff, coeff_scaleRoots, ← C_pow, coeff_C_mul, Matrix.charpoly_natDegree_eq_dim]`. Distinguish the cases in `hi : i ≤ Fintype.card n`. Rewrite using `[mul_assoc, ← pow_add, Nat.sub_add_cancel hi, mul_comm]`. Rewrite using `[coeff_eq_zero_of_natDegree_lt (by rw [Matrix.charpoly_natDegree_eq_dim]; omega)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hL, hR]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem charpoly_smul_unit {R n : Type} [CommRing R] [Nontrivial R] [Fintype n] [DecidableEq n]
     (M : Matrix n n R) (c : R) (hc : IsUnit c) : (c • M).charpoly = M.charpoly.scaleRoots c := by
@@ -44,13 +44,11 @@ private theorem charpoly_smul_unit {R n : Type} [CommRing R] [Nontrivial R] [Fin
   rw [hL, hR]
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T c' h K X n g`. Establish `hinj : Function.Injective (algebraMap X.B X.A)` using `X.inj`. Use `haveI : Nontrivial X.A := hinj.nontrivial`. Establish `hmap` using `X.cp_map (resLe T.F_le g)`. Establish `hmon : (X.cp (resLe T.F_le g)).Monic` using `monic_of_injective hinj (by rw [hmap]; exact Matrix.charpoly_monic _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : (X.cp (resLe T.F_le g)).natDegree = 4`. Rewrite using `[← natDegree_map_eq_of_injective hinj, hmap, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `hmonT : (K.cpT X n g).Monic` using `by show ((X.cp (resLe T.F_le g)).scaleRoots _).leadingCoeff = 1`. Rewrite using `[leadingCoeff, natDegree_scaleRoots, coeff_scaleRoots_natDegree]`. Conclude with `hmon`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hmon, hdeg, hmonT, ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (K.sc n g)`. Simplify using `only [UpperTheory.V.Ws.Link.sc]`. Conclude with `(Units.isUnit _).mul ((Units.isUnit _).pow n)`. Use `show ((X.cp (resLe T.F_le g)).scaleRoots _).map (algebraMap X.B X.A) = _`.
-
-Rewrite using `[map_scaleRoots _ _ _ (by rw [hmon.leadingCoeff, map_one]; exact one_ne_zero), hmap, UpperTheory.V.Ws.Link.rho_apply, charpoly_smul_unit _ _ (hu.map _), ← IsScalarTower.algebraMap_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.phiCpMap :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (K : Link T c' h) (X : Space (T.fr ∅) (inc h)) (n : ℕ), ∀ g, (X.cp (resLe T.F_le g)).Monic ∧ (X.cp (resLe T.F_le g)).natDegree = 4 ∧ (K.cpT X n g).Monic ∧ (K.cpT X n g).map (algebraMap X.B X.A) = (K.rho X n g).charpoly := by

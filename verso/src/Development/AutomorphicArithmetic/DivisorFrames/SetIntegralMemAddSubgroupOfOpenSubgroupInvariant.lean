@@ -5,27 +5,25 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.Split
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ μ _ J hJ hμ S hS hSJ f hf M hM`. Set `C : G → Set G` to `fun a => (fun x => x * a⁻¹) ⁻¹' (J : Set G)`. Establish `hCo : ∀ a, IsOpen (C a)` using `fun a => hJ.preimage (continuous_id.mul continuous_const)`. Establish `hCμ : ∀ a, μ (C a) = 1` using `fun a => by`. Simplify using `only [C]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[measure_preimage_mul_right, hμ]`. Establish `hCf : ∀ a, Set.EqOn f (fun _ => f a) (C a)` using `fun a x hx => by`. Use `hf (x * a⁻¹) hx a` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel_right]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hCi : ∀ a, IntegrableOn f (C a) μ` using `fun a => by`. Use `IntegrableOn.congr_fun ?_ (hCf a).symm (hCo a).measurableSet` and prove the remaining obligations. Conclude with `integrableOn_const (by rw [hCμ]; simp)`. Establish `hCint : ∀ a, ∫ g in C a, f g ∂μ = f a` using `fun a => by`. Rewrite using `[setIntegral_congr_fun (hCo a).measurableSet (hCf a), setIntegral_const]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Measure.real, hCμ]`. Establish `key : ∀ t : Finset G, (∀ g ∈ t, f g ∈ M) → IntegrableOn f (⋃ g ∈ t, C g) μ ∧ ∫ g in ⋃ g ∈ t, C g, f g ∂μ ∈ M`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => intro _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `insert a t ha ih`. Introduce `h`. Take `⟨h1, h2⟩` from `ih fun g hg => h g (Finset.mem_insert_of_mem hg)`. Rewrite using `[Finset.set_biUnion_insert]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `⟨(hCi a).union h1, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hd : Disjoint (C a) (⋃ g ∈ t, C g)`. Rewrite using `[setIntegral_union hd (isOpen_biUnion fun g _ => hCo g).measurableSet (hCi a) h1, hCint]`. Conclude with `M.add_mem (h a (Finset.mem_insert_self _ _)) h2`. Rewrite `hd` using `[Set.not_disjoint_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx1, hx2⟩` from `hd`. Simplify using `only [Set.mem_iUnion] at hx2`. Take `⟨b, hb, hxb⟩` from `hx2`. Establish `hsub : C a ⊆ ⋃ g ∈ t, C g`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_iUnion]`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Use `J.mul_mem (J.mul_mem hy (J.inv_mem hx1)) hxb` as an intermediate fact. Use `show y * b⁻¹ ∈ (J : Set G)`. Simplify `this` using `[mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Set.union_eq_self_of_subset_left hsub]`. Conclude with `h2`. Take `⟨t, ht, hcov⟩` from `hS.elim_nhds_subcover C (fun x _ => (hCo x).mem_nhds (by show x * x⁻¹ ∈ (J : Set G) simp))`. Establish `hEq : S = ⋃ g ∈ t, C g`. Use `Set.Subset.antisymm hcov ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `y hy`. Simplify using `only [Set.mem_iUnion] at hy`. Take `⟨b, hb, hyb⟩` from `hy`. Use `hSJ _ hyb b (ht b hb)` as an intermediate fact. Simplify using `using this`.
-
-Rewrite using `[hEq]`. Conclude with `(key t fun g hg => hM g (ht g hg)).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.setIntegral_mem_addSubgroup_of_openSubgroup_invariant :
     ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsMulRightInvariant] (J : Subgroup G), IsOpen (J : Set G) → μ (J : Set G) = 1 → ∀ S : Set G, IsCompact S → (∀ j ∈ J, ∀ g ∈ S, j * g ∈ S) → ∀ f : G → ℂ, (∀ j ∈ J, ∀ g, f (j * g) = f g) → ∀ M : AddSubgroup ℂ, (∀ g ∈ S, f g ∈ M) → ∫ g in S, f g ∂μ ∈ M := by

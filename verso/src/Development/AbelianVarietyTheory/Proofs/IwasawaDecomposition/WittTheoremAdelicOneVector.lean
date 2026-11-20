@@ -12,11 +12,11 @@ open scoped TensorProduct NNReal ENNReal
 namespace GlobalTheory.AdelicWitt
 
 /- English proof (translation)
-Establish `h1 : hR R σ J (ratTup (F` using `F) R x 0) (ratTup (F := F) R x 0) = inclR (F := F) R (hE σ J (x 0) (x 0)) := by`. Simplify using `only [hR, hE, Formalism.UG.hform, map_sum, map_mul, ratTup, JR, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `congr 2`. Establish `h2 : inclR (F` using `F) R (algebraMap F E β) = algebraMap R (R ⊗[F] E) (algebraMap F R β) := by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `(Algebra.TensorProduct.includeRight : E →ₐ[F] R ⊗[F] E).commutes β`. Rewrite using `[qR, h1, h, h2, Algebra.trace_algebraMap_of_basis (Algebra.TensorProduct.basis R b), Fintype.card_fin, ← map_nsmul, ← map_mul]`. Use `congr 1`. Rewrite using `[nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem qR_ratTup {F E : Type} [Field F] [CharZero F] [Field E] [Algebra F E]
     (b : Module.Basis (Fin 2) F E) (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) {M : ℕ}
@@ -40,7 +40,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`. Consider the case `add a c ha hc => simp only [map_add, ha, hc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem prInf_sigR (σ : E →ₐ[F] E) (z : AF F ⊗[F] E) :
     prInf (sigR (AF F) σ z) = sigR (Ainf F) σ (prInf z) := by
@@ -51,7 +51,7 @@ theorem prInf_sigR (σ : E →ₐ[F] E) (z : AF F ⊗[F] E) :
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => rfl`. Consider the case `add a c ha hc => simp only [map_add, ha, hc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem prV_sigR (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (z : AF F ⊗[F] E) :
     prV v (sigR (AF F) σ z) = sigR (Fv F v) σ (prV v z) := by
@@ -62,23 +62,21 @@ theorem prV_sigR (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (z : AF F
 
 omit [NumberField E] in
 /- English proof (translation)
-Simplify using `[prInf, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prInf_inclR (e : E) : prInf (inclR (F := F) (AF F) e) = inclR (F := F) (Ainf F) e := by
   simp [prInf, inclR]
 
 omit [NumberField E] in
 /- English proof (translation)
-Simplify using `[prV, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prV_inclR (v : HeightOneSpectrum (𝓞 F)) (e : E) :
     prV v (inclR (F := F) (AF F) e) = inclR (F := F) (Fv F v) e := by
   simp [prV, inclR]
 
 /- English proof (translation)
-Apply `(GlobalTheory.T.measurableEmbedding_adelicTuple_localComponents F E d b n M).1.injective` to reduce the goal to its premises. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `a i`. Conclude with `hi a i`. Use function extensionality and compare the values at `v a i`.
-
-Conclude with `hv v a i`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ext_comp {d : ℕ} (b : Module.Basis (Fin d) F E) {n M : ℕ} (X Y : Fin n → Fin M → AF F ⊗[F] E)
     (hi : ∀ a i, prInf (X a i) = prInf (Y a i))
@@ -89,7 +87,7 @@ theorem ext_comp {d : ℕ} (b : Module.Basis (Fin d) F E) {n M : ℕ} (X Y : Fin
   · funext v a i; exact hv v a i
 
 /- English proof (translation)
-The claim follows from `ext_comp b X Y (fun a i => congrFun (congrFun hi a) i) (fun v a i => congrFun (congrFun (hv v) a) i)`.
+A detailed English derivation is pending.
 -/
 theorem mat_ext {d : ℕ} (b : Module.Basis (Fin d) F E) {M : ℕ}
     (X Y : Matrix (Fin M) (Fin M) (AF F ⊗[F] E))
@@ -98,7 +96,7 @@ theorem mat_ext {d : ℕ} (b : Module.Basis (Fin d) F E) {M : ℕ}
   ext_comp b X Y (fun a i => congrFun (congrFun hi a) i) (fun v a i => congrFun (congrFun (hv v) a) i)
 
 /- English proof (translation)
-Use `((Set.ext_iff.1 (GlobalTheory.T.measurableEmbedding_adelicTuple_localComponents F E d b M M).2.1) (Xi, Xv)).2 h` as an intermediate fact. Take `⟨X, hX⟩` from `this`. Conclude with `⟨X, congrArg Prod.fst hX, fun v => congrFun (congrArg Prod.snd hX) v⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mat {d : ℕ} (b : Module.Basis (Fin d) F E) {M : ℕ}
     (Xi : Matrix (Fin M) (Fin M) (Ainf F ⊗[F] E))
@@ -110,7 +108,7 @@ theorem exists_mat {d : ℕ} (b : Module.Basis (Fin d) F E) {M : ℕ}
   exact ⟨X, congrArg Prod.fst hX, fun v => congrFun (congrArg Prod.snd hX) v⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Use `congr 2`. Use extensionality with `i j`. Conclude with `h _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_unit {A B : Type} [CommRing A] [CommRing B] {M : ℕ} (φ : A →+* B) (s : A →+* A)
     (t : B →+* B) (h : ∀ z, φ (s z) = t (φ z)) (X J : Matrix (Fin M) (Fin M) A) :
@@ -121,15 +119,15 @@ theorem map_unit {A B : Type} [CommRing A] [CommRing B] {M : ℕ} (φ : A →+* 
   exact h _
 
 /- English proof (translation)
-Take `⟨X, hXi, hXv⟩` from `exists_mat b (HA.mat (Ainf F) σ J gi).val (fun v => (HA.mat (Fv F v) σ J (gv v)).val) (h.mono fun v hv i j => (hv i j).1)`. Take `⟨Y, hYi, hYv⟩` from `exists_mat b (HA.mat (Ainf F) σ J gi).inv (fun v => (HA.mat (Fv F v) σ J (gv v)).inv) (h.mono fun v hv i j => (hv i j).2)`. Establish `hXY : X * Y = 1`. Use `mat_ext b _ _ ?_ fun v => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, hXi, hYi, Units.val_inv, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_mul, hXv, hYv, Units.val_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hYX : Y * X = 1`. Use `mat_ext b _ _ ?_ fun v => ?_` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, hXi, hYi, Units.inv_val, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[Matrix.map_mul, hXv, hYv, Units.inv_val, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hJi : (JR (F` using `F) (AF F) J).map prInf = JR (F := F) (Ainf F) J := by`. Use extensionality with `i j`. Conclude with `prInf_inclR _`. Establish `hJv : ∀ v, (JR (F` using `F) (AF F) J).map (prV v) = JR (F := F) (Fv F v) J := by`. Introduce `v`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Conclude with `prV_inclR v _`. Establish `hU : Formalism.UG.cT (sigR (AF F) σ) X * JR (F` using `F) (AF F) J * X = JR (F := F) (AF F) J := by`. Use `mat_ext b _ _ ?_ fun v => ?_` and prove the remaining obligations. Rewrite using `[map_unit _ _ _ (prInf_sigR σ), hXi, hJi]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `(show HR (Ainf F) σ J from gi).2`. Rewrite using `[map_unit _ _ _ (prV_sigR σ v), hXv, hJv]`. Conclude with `(show HR (Fv F v) σ J from gv v).2`. Conclude with `⟨(show HR (AF F) σ J from ⟨⟨X, Y, hXY, hYX⟩, hU⟩), hXi, hXv⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_HA {d : ℕ} (b : Module.Basis (Fin d) F E) (σ : E →ₐ[F] E) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (gi : HA (Ainf F) σ J)
@@ -164,19 +162,17 @@ theorem exists_HA {d : ℕ} (b : Module.Basis (Fin d) F E) (σ : E →ₐ[F] E) 
   exact ⟨(show HR (AF F) σ J from ⟨⟨X, Y, hXY, hYX⟩, hU⟩), hXi, hXv⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J x β hJ hβ hx y hy`. Set `b : Module.Basis (Fin 2) F E` to `Module.finBasisOfFinrankEq F E hCM.2.2.1`. Take `⟨hyi, hyv⟩` from `((GlobalTheory.T.hermitianQuadratic_unitary_local_components F E σ M J).1 (y 0) β).1 hy`. Establish `hu : IsUnit β` using `hβ.isUnit`. Take `⟨gi, hgi⟩` from `GlobalTheory.T.cmExtension_localFieldProductRing_exists_smul_eq F E σ hCM (Ainf F) (GlobalTheory.T.isNiceLocalFieldProductRing_infiniteAdeles_completions F).1 M J hJ (algebraMap F _ β) (ratTup (F := F) (Ainf F) x) (projInf y) (hu.map _) (qR_ratTup b _ σ J x β hx) hyi`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hlat : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, projV v (projFin y) ∈ latV b v`. Establish `h` using `(GlobalTheory.T.measurableEmbedding_adelicTuple_localComponents F E 2 b 1 M).2.1 ▸ Set.mem_range_self (f := fun X : (Fin 1 → Fin M → AF F ⊗[F] E) => (projInf X, fun v : HeightOneSpectrum (𝓞 F) => projV v (projFin X))) y`. Conclude with `h`. Establish `hae` using `GlobalTheory.T.integral_witt_theorem_almost_all_places F E σ hCM 2 b M J x β hJ hβ hx`. Set `P : ∀ v : HeightOneSpectrum (𝓞 F), HA (Fv F v) σ J → Prop` to `fun v g => ∀ i j, (HA.mat (Fv F v) σ J g).val i j ∈ intV b v ∧ (HA.mat (Fv F v) σ J g⁻¹).val i j ∈ intV b v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hloc : ∀ v : HeightOneSpectrum (𝓞 F), ∃ g : HA (Fv F v) σ J, g • ratTup (F` using `F) (Fv F v) x = projV v (projFin y) ∧ ((∃ g' : HA (Fv F v) σ J, g' • ratTup (F := F) (Fv F v) x = projV v (projFin y) ∧ P v g') → P v g) := by`. Introduce `v`. Distinguish the cases in `h : ∃ g' : HA (Fv F v) σ J, g' • ratTup (F := F) (Fv F v) x = projV v (projFin y) ∧ P v g'`. Take `⟨g, h1, h2⟩` from `h`. Conclude with `⟨g, h1, fun _ => h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `GlobalTheory.T.cmExtension_localFieldProductRing_exists_smul_eq F E σ hCM (Fv F v) ((GlobalTheory.T.isNiceLocalFieldProductRing_infiniteAdeles_completions F).2 v) M J hJ (algebraMap F _ β) (ratTup (F := F) (Fv F v) x) (projV v (projFin y)) (hu.map _) (qR_ratTup b _ σ J x β hx) (h …`. Conclude with `⟨g, hg, fun h' => absurd h' h⟩`. Use `choose gv hgv hP using hloc`. Take `⟨g, hi, hv⟩` from `exists_HA b σ J gi gv (by filter_upwards [hlat, hae] with v h1 h2`. Conclude with `hP v (h2 _ h1 (hyv v)))`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨g, ext_comp b _ _ (fun a i => ?_) (fun v a i => ?_)⟩` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun hgi a) i`. Rewrite `h1` using `[projInf_apply]`. Rewrite using `[← h1]`. Use `show prInf ((HA.mat (AF F) σ J g).val.mulVec (ratTup (F := F) (AF F) x a) i) = (HA.mat (Ainf F) σ J gi).val.mulVec (ratTup (F := F) (Ainf F) x a) i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_mulVec, hi]`. Conclude with `congrArg (fun w => (HA.mat (Ainf F) σ J gi).val.mulVec w i) (funext fun k => prInf_inclR (x a k))`. Establish `h1` using `congrFun (congrFun (hgv v) a) i`. Rewrite `h1` using `[projV_apply]`. Rewrite using `[← h1]`.
-
-Use `show prV v ((HA.mat (AF F) σ J g).val.mulVec (ratTup (F := F) (AF F) x a) i) = (HA.mat (Fv F v) σ J (gv v)).val.mulVec (ratTup (F := F) (Fv F v) x a) i`. Rewrite using `[RingHom.map_mulVec, hv]`. Conclude with `congrArg (fun w => (HA.mat (Fv F v) σ J (gv v)).val.mulVec w i) (funext fun k => prV_inclR v (x a k))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem witt_adelic : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (x : Fin 1 → Fin M → E) (β : F), IsHermND σ J → β ≠ 0 → hE σ J (x 0) (x 0) = algebraMap F E β → ∀ y : (Fin 1 → Fin M → AF F ⊗[F] E), qR (AF F) σ J (y 0) = algebraMap F (AF F) β → ∃ g : HA (AF F) σ J, g • ratTup (F := F) (AF F) x = y := by
   intro F E _ _ _ _ _ σ hCM M J x β hJ hβ hx y hy

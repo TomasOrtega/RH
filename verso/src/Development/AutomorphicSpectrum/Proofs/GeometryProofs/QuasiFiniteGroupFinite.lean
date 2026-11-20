@@ -11,17 +11,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.CompanionTheory.Ar.BT
 
 /- English proof (translation)
-Introduce `R _ _ T _ Γ`. Establish `hqf : LocallyQuasiFinite Γ.G.hom` using `Γ.quasiFinite`. Establish `hqc : QuasiCompact Γ.G.hom` using `Γ.quasiCompact`. Set `F` to `pullback Γ.G.hom (genPt R).hom`. Set `g : F ⟶ Spec (CommRingCat.of (FractionRing R))` to `pullback.snd Γ.G.hom (genPt R).hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hK : ∀ u v : Spec (CommRingCat.of (FractionRing R)), u = v` using `fun u v => Subsingleton.elim (α := PrimeSpectrum (FractionRing R)) u v`. Set `b : Spec (CommRingCat.of (FractionRing R))` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (FractionRing R))`. Establish `hgqf : LocallyQuasiFinite g` using `inferInstance`. Establish `hgqc : QuasiCompact g` using `inferInstance`. Establish `huniv : g ⁻¹' {b} = Set.univ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `[hK (g x) b]`. Establish `hfin : Finite F`. Establish `h` using `g.finite_preimage_singleton b`. Rewrite `h` using `[huniv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Set.finite_univ_iff.mp h`. Establish `hw : ∀ t, (Γ.pt t).left ≫ Γ.G.hom = 𝟙 _ ≫ (genPt R).hom` using `fun t => by`. Rewrite using `[Category.id_comp]`. Conclude with `Over.w (Γ.pt t)`. Set `f : T → F` to `fun t => (pullback.lift _ _ (hw t)) b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finite.of_injective f ?_` and prove the remaining obligations. Introduce `s t hst`. Establish `h` using `congrArg (pullback.fst Γ.G.hom (genPt R).hom) hst`. Simplify using `only [f] at h`. Rewrite `h` using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, pullback.lift_fst, pullback.lift_fst]`.
-
-Conclude with `Γ.pt_inj s t b b h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem QFGroup.finite_of_qfGroup : ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] (Γ : BT.QFGroup R T), Finite T := by
   intro R _ _ T _ Γ

@@ -15,7 +15,7 @@ variable {A K V T : Type} [CommRing A] [IsDomain A] [Field K] [Algebra A K] [IsF
   [AddCommGroup V] [Module A V] [AddCommGroup T] [Module K T] [Module A T] [IsScalarTower A K T]
 
 /- English proof (translation)
-Establish `h1` using `IsLocalizedModule.finrank_eq (nonZeroDivisors A) j le_rfl`. Establish `h2 : Module.finrank K T = Module.finrank A T` using `congrArg Cardinal.toNat (IsLocalization.rank_eq K (N := T) (nonZeroDivisors A) le_rfl)`. Conclude with `h1.symm.trans h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_eq_of_isLocalized (K : Type) [Field K] [Algebra A K] [IsFractionRing A K] [Module K T]
     [IsScalarTower A K T] (j : V →ₗ[A] T) [IsLocalizedModule (nonZeroDivisors A) j] :
@@ -26,7 +26,7 @@ theorem finrank_eq_of_isLocalized (K : Type) [Field K] [Algebra A K] [IsFraction
   exact h1.symm.trans h2.symm
 
 /- English proof (translation)
-Introduce `x y h`. Take `⟨c, hc⟩` from `(IsLocalizedModule.eq_iff_exists (nonZeroDivisors A) j).1 h`. Conclude with `smul_right_injective V (nonZeroDivisors.ne_zero c.2) hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem injective_of_isLocalized [Module.IsTorsionFree A V] (j : V →ₗ[A] T)
     [IsLocalizedModule (nonZeroDivisors A) j] : Function.Injective j := by
@@ -40,13 +40,11 @@ def resMap (j : V →ₗ[A] T) (W : Submodule K T) : (W.restrictScalars A).comap
   map_smul' c x := Subtype.ext (map_smul j c _)
 
 /- English proof (translation)
-Establish `hk : algebraMap A K a ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors a.2`. Establish `key : ∀ w : W, algebraMap A (Module.End A W) a w = algebraMap A K a • w` using `fun w => by`. Rewrite using `[Module.algebraMap_end_apply, algebraMap_smul]`. Use `(Module.End.isUnit_iff _).2 ⟨fun w w' h => ?_, fun w => ⟨(algebraMap A K a)⁻¹ • w, ?_⟩⟩` and prove the remaining obligations. Rewrite `h` using `[key, key]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `smul_right_injective W hk h`. Rewrite using `[key, smul_smul, mul_inv_cancel₀ hk, one_smul]`. Use `surj w := by`. Take `⟨⟨y, a⟩, h⟩` from `IsLocalizedModule.surj (nonZeroDivisors A) j (w : T)`. Establish `h' : (a : A) • (w : T) = j y` using `h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : j y ∈ W`. Rewrite using `[← h', ← algebraMap_smul K (a : A) (w : T)]`. Conclude with `W.smul_mem _ w.2`. Conclude with `⟨(⟨y, hy⟩, a), Subtype.ext h⟩`. Use `exists_of_eq {x y} h := by`.
-
-Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul, one_smul]`. Conclude with `Subtype.ext (injective_of_isLocalized j (congrArg Subtype.val h))`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalized_resMap [Module.IsTorsionFree A V] (j : V →ₗ[A] T)
     [IsLocalizedModule (nonZeroDivisors A) j] (W : Submodule K T) :
@@ -72,7 +70,7 @@ theorem isLocalized_resMap [Module.IsTorsionFree A V] (j : V →ₗ[A] T)
     exact Subtype.ext (injective_of_isLocalized j (congrArg Subtype.val h))
 
 /- English proof (translation)
-Use `haveI := isLocalized_resMap j W`. Conclude with `finrank_eq_of_isLocalized K (resMap j W)`.
+A detailed English derivation is pending.
 -/
 theorem finrank_comap_eq [Module.IsTorsionFree A V] (j : V →ₗ[A] T)
     [IsLocalizedModule (nonZeroDivisors A) j] (W : Submodule K T) :
@@ -81,13 +79,13 @@ theorem finrank_comap_eq [Module.IsTorsionFree A V] (j : V →ₗ[A] T)
   exact finrank_eq_of_isLocalized K (resMap j W)
 
 /- English proof (translation)
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw => exact hB w hw`. Consider the case `zero => exact ⟨1, one_ne_zero, 0, S.zero_mem, by simp⟩`. Consider the case `add u v _ _ hu hv`. Take `⟨a, ha, y, hy, e⟩` from `hu`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, y', hy', e'⟩` from `hv`. Use `⟨a * b, mul_ne_zero ha hb, b • y + a • y', S.add_mem (S.smul_mem _ hy) (S.smul_mem _ hy'), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smul, map_smul, ← e, ← e', smul_add, smul_smul, smul_smul, mul_comm a b, mul_comm b a, mul_comm a b]`. Consider the case `smul c u _ hu`. Take `⟨a, ha, y, hy, e⟩` from `hu`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := A) c`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Establish `hk : algebraMap A K d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd`. Use `⟨d * a, mul_ne_zero hd0 ha, b • y, S.smul_mem _ hy, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, ← e, ← algebraMap_smul K (d * a), ← algebraMap_smul K b, ← algebraMap_smul K a, smul_smul, smul_smul, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 -/
 theorem exists_smul_mem (j : V →ₗ[A] T) (S : Submodule A V) (B : Set T)
     (hB : ∀ w ∈ B, ∃ a : A, a ≠ 0 ∧ ∃ y ∈ S, a • w = j y) {w : T} (hw : w ∈ Submodule.span K B) :
@@ -120,9 +118,9 @@ variable {L V T : Type} [Field L] [NumberField L] [AddCommGroup V] [Module (𝓞
   [Module (𝓞 L) T]
 
 /- English proof (translation)
-Take `⟨⟨y, a⟩, h⟩` from `IsLocalizedModule.surj (nonZeroDivisors (𝓞 L)) j w`. Establish `ha : (a : 𝓞 L) ≠ 0` using `nonZeroDivisors.ne_zero a.2`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {(a : 𝓞 L)}))`. Use `⟨Ideal.absNorm (Ideal.span {(a : 𝓞 L)}), ?_, b • y, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha`. Establish `h' : (a : 𝓞 L) • w = j y` using `h`. Rewrite using `[← hb, mul_smul, map_smul, ← h']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_smul (j : V →ₗ[𝓞 L] T) [IsLocalizedModule (nonZeroDivisors (𝓞 L)) j] (w : T) :
     ∃ n : ℕ, n ≠ 0 ∧ ∃ y : V, (n : 𝓞 L) • w = j y := by
@@ -144,7 +142,7 @@ variable {X : Scheme.{0}} {G : Over X} [GrpObj G] {Ω : Type} [Field Ω] {ξ : S
   [Module (𝓞 L) V] {T : Type} [AddCommGroup T] [Module L T] [Module (𝓞 L) T] [IsScalarTower (𝓞 L) L T]
 
 /- English proof (translation)
-Establish `e : v.left ≫ 𝟙 G.left = (TL.pt (j x)).left ≫ 𝟙 G.left` using `h.trans (hl x).symm`. Rewrite `e` using `[Category.comp_id, Category.comp_id]`. Conclude with `Over.OverMorphism.ext e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_pt_of_lifts {MB : LieModel G z V} {TL : LieModel G (spMap (algebraMap (𝓞 L) L) ≫ z) T}
     {j : V →ₗ[𝓞 L] T} (hl : ∀ x, MB.Lifts (algebraMap (𝓞 L) L) (𝟙 G.left) x (TL.pt (j x))) {x : V}
@@ -155,9 +153,9 @@ theorem eq_pt_of_lifts {MB : LieModel G z V} {TL : LieModel G (spMap (algebraMap
   exact Over.OverMorphism.ext e
 
 /- English proof (translation)
-Take `⟨h1, -⟩` from `id hv`. Establish `key` using `hv.smul h1 (n : X.presheaf.stalk (centre (spMap (algebraMap (𝓞 L) L) ≫ z)))`. Establish `e1 : (Scheme.stalkClosedPointTo (spMap (algebraMap (𝓞 L) L) ≫ z)).hom (n : X.presheaf.stalk (centre (spMap (algebraMap (𝓞 L) L) ≫ z))) = (n : L)` using `map_natCast _ n`. Rewrite `key` using `[map_natCast, e1, ← TL.pt_smul]`. Establish `e2 : (n : L) • w = j y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hy, ← algebraMap_smul L (n : 𝓞 L) w, map_natCast]`. Rewrite `key` using `[e2]`. Conclude with `⟨_, U.smul_mem _ he, _, key, hl y⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_subGens_of_nat {M : LieModel G ξ Li} {U : Submodule Ω Li} {MB : LieModel G z V}
     {TL : LieModel G (spMap (algebraMap (𝓞 L) L) ≫ z) T} {j : V →ₗ[𝓞 L] T}
@@ -177,21 +175,19 @@ theorem mem_subGens_of_nat {M : LieModel G ξ Li} {U : Submodule Ω Li} {MB : Li
 end Geo
 
 /- English proof (translation)
-Introduce `X G _ Ω _ ξ Li _ _ M L _ _ z V _ _ _ _ MB T _ _ _ _ TL j U _ hl hj`. Use `haveI : IsLocalizedModule (nonZeroDivisors (𝓞 L)) j := (isLocalizedModule_iff_isBaseChange (nonZeroDivisors (𝓞 L)) L j).2 hj`. Use `⟨finrank_eq_of_isLocalized L j, ?_⟩` and prove the remaining obligations. Use `set B : Set T := {w | ∃ e ∈ U, M.ValAt (spMap (algebraMap (𝓞 L) L) ≫ z) e (TL.pt w)} with hBdef`. Establish `hinj : Function.Injective j` using `injective_of_isLocalized j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS : ∀ y ∈ Submodule.span (𝓞 L) (subGens M U z MB), j y ∈ Submodule.span L B`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨e, he, v, hv, hlift⟩` from `hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately.
 
-Establish `hv'` using `eq_pt_of_lifts hl hlift`. Conclude with `Submodule.subset_span ⟨e, he, hv' ▸ hv⟩`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Consider the case `smul c a _ ha`. Rewrite using `[map_smul, ← algebraMap_smul L c (j a)]`. Conclude with `Submodule.smul_mem _ _ ha`. Establish `hB : ∀ w ∈ B, ∃ a : 𝓞 L, a ≠ 0 ∧ ∃ y ∈ Submodule.span (𝓞 L) (subGens M U z MB), a • w = j y`. Introduce and unpack `w ⟨e, he, hv⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, hn, y, hy⟩` from `exists_nat_smul j w`. Conclude with `⟨n, Nat.cast_ne_zero.2 hn, y, Submodule.subset_span (mem_subGens_of_nat hl he hv n hy), hy⟩`. Establish `e : subFib M U z MB = ((Submodule.span L B).restrictScalars (𝓞 L)).comap j`. Use extensionality with `x`. Rewrite using `[mem_subFib]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, hx⟩`. Establish `h1` using `hS _ hx`. Rewrite `h1` using `[map_smul, ← algebraMap_smul L a (j x)]`. Establish `hk : algebraMap (𝓞 L) L a ≠ 0` using `fun h0 => ha (by simpa using h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Submodule.smul_mem_iff (Submodule.span L B) hk).1 h1`. Introduce `hx`. Take `⟨a, ha, y, hy, h⟩` from `exists_smul_mem j _ B hB (K := L) hx`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[hinj (by rw [map_smul]; exact h : j (a • x) = j y)]` and apply the resulting hypothesis.
-
-Rewrite using `[e]`. Conclude with `finrank_comap_eq j _`.
+A detailed English derivation is pending.
 -/
 theorem finrank_subFib : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li) (L : Type) [Field L] [NumberField L] (z : Sp (𝓞 L) ⟶ X) (V : Type) [AddCommGroup V] [Module (𝓞 L) V] [Module.Finite (𝓞 L) V] [Module.Projective (𝓞 L) V] (MB : LieModel G z V) (T : Type) [AddCommGroup T] [Module L T] [Module (𝓞 L) T] [IsScalarTower (𝓞 L) L T] (TL : LieModel G (spMap (algebraMap (𝓞 L) L) ≫ z) T) (j : V →ₗ[𝓞 L] T) (U : Submodule Ω Li), IsCptGen ξ → (∀ x, MB.Lifts (algebraMap (𝓞 L) L) (𝟙 G.left) x (TL.pt (j x))) → IsBaseChange L j → Module.finrank (𝓞 L) V = Module.finrank L T ∧ Module.finrank (𝓞 L) (FlagFib.subFib M U z MB) = Module.finrank L (Submodule.span L {w | ∃ e ∈ U, M.ValAt (spMap (algebraMap (𝓞 L) L) ≫ z) e (TL.pt w)}) := by
   intro X G _ Ω _ ξ Li _ _ M L _ _ z V _ _ _ _ MB T _ _ _ _ TL j U _ hl hj

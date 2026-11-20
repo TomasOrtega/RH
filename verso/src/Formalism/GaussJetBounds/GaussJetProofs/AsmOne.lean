@@ -10,13 +10,13 @@ namespace Formalism.DworkPowerSeriesWeights
 open Formalism.IncomingBounds
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨m, rfl⟩` from `hodd`. Establish `hnat : ∀ k : ℕ, ‖(k : K)‖ ≤ 1`. Introduce `k`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Use `push_cast`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ih (by simp))`.
+Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `h1 : (1 : K) = ((2 * m + 1 : ℕ) : K) - 2 * (m : K)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ‖(2 : K) * (m : K)‖ < 1`. Rewrite using `[norm_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h3 : ‖(1 : K)‖ < 1`. Rewrite using `[h1, sub_eq_add_neg]`. Conclude with `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt hpi (by rwa [norm_neg]))`. Simplify using `at h3`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem asmOne_one_le_norm_two {K : Type u} [NormedField K] [IsUltrametricDist K] {l : ℕ}
     (hodd : Odd l) (hpi : ‖(l : K)‖ < 1) : 1 ≤ ‖(2 : K)‖ := by
@@ -44,13 +44,11 @@ theorem asmOne_one_le_norm_two {K : Type u} [NormedField K] [IsUltrametricDist K
   simp at h3
 
 /- English proof (translation)
-Introduce `n`. Unfold `MonoWtGe`. Rewrite using `[map_sum]`. Simplify using `only [MvPowerSeries.coeff_C_mul, MvPowerSeries.coeff_X]`. Distinguish the cases in `hn : ∃ i, n = Finsupp.single i 1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Take `⟨i, rfl⟩` from `hn`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[if_pos rfl, mul_one, asmR_dot_single]`. Simplify using `only [Nat.cast_one, one_mul, sub_self, Real.rpow_zero]`. Conclude with `hc i`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _ hj`. Rewrite using `[if_neg, mul_zero]`. Introduce `h`. Conclude with `hj ((Finsupp.single_left_injective one_ne_zero) h).symm`. Simplify using the standard rewrite rules.
-
-Use `push_neg at hn`. Rewrite using `[Finset.sum_eq_zero (fun i _ => by rw [if_neg (hn i), mul_zero]), norm_zero]`. Conclude with `Real.rpow_nonneg h0.le _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem asmOne_lin_wt {K : Type u} [NormedField K] [IsUltrametricDist K] {ι : Type v} [Fintype ι]
     {pi : ℝ} (h0 : 0 < pi) (c : ι → K) (hc : ∀ i, ‖c i‖ ≤ 1) (t : ℝ) :
@@ -76,14 +74,14 @@ theorem asmOne_lin_wt {K : Type u} [NormedField K] [IsUltrametricDist K] {ι : T
     exact Real.rpow_nonneg h0.le _
 
 /- English proof (translation)
-Simplify using `[map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem asmOne_lin_const {K : Type u} [NormedField K] {ι : Type v} [Fintype ι] (c : ι → K) :
     MvPowerSeries.constantCoeff (∑ i, MvPowerSeries.C (c i) * MvPowerSeries.X i) = 0 := by
   simp [map_sum]
 
 /- English proof (translation)
-Introduce `n`. Establish `h` using `hf n`. Unfold `MonoWtGe at h ⊢`. Rewrite using `[map_smul, smul_eq_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem asmOne_smul_wt {K : Type u} [NormedField K] {ι : Type v} {pi : ℝ} {r : ι → ℝ} {w : ℝ}
     {c : K} (hc : ‖c‖ ≤ 1) {f : MvPowerSeries ι K} (hf : WtGe pi r w f) :
@@ -97,7 +95,7 @@ theorem asmOne_smul_wt {K : Type u} [NormedField K] {ι : Type v} {pi : ℝ} {r 
     _ ≤ _ := by rw [one_mul]; exact h
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [hf]`. Consider the case `rw [MvPowerSeries.smul_eq_C_mul, map_mul, hf, mul_zero]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem asmOne_smul_const {K : Type u} [NormedField K] {ι : Type v} (c : K)
     {f : MvPowerSeries ι K} (hf : MvPowerSeries.constantCoeff f = 0) :
@@ -114,63 +112,57 @@ theorem asmOne_zmod2 : ∀ s s' a b : ZMod 2, s.val % 2 = 0 → s'.val % 2 = 1 �
   decide
 
 /- English proof (translation)
-Introduce `K _ _ _ l N0 N1 hl hodd hpi K0 hK0 ζ hζ be hbe ep hep ι _ _ M hM g hg0 hgl U hU sgn hsgn κ`. Establish `h2n : 1 ≤ ‖(2 : K)‖` using `asmOne_one_le_norm_two hodd hpi`. Use `set π : ℝ := ‖(l : K)‖ with hπdef`. Establish `hl3 : 3 ≤ l`. Take `⟨m, rfl⟩` from `hodd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `m with _ | m` into its components or cases. Conclude with `absurd hl Nat.not_prime_one`. Use linear arithmetic over natural numbers and integers. Establish `hπ0 : 0 < π`. Rewrite using `[hπdef, norm_pos_iff]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hl.ne_zero` after adjusting the coercions. Establish `hπ1 : π ≤ 1` using `hpi.le`. Establish `hlR : (3 : ℝ) ≤ l` using `by exact_mod_cast hl3`. Establish `hl1 : (l : ℝ) - 1 ≠ 0` using `by linarith`. Establish `hl2 : (l : ℝ) ^ 2 - 1 ≠ 0` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hl2p : 0 < (l : ℝ) ^ 2 - 1` using `by nlinarith`. Take `⟨hOR1, hOR2⟩` from `hOR l hl3`. Establish `hrho0 : 0 ≤ rho l`. Unfold `rho`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hrg : rho l ≤ gam l`. Unfold `rho gam`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key : 1 / ((l : ℝ) - 1) - gam l = rho l`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Unfold `rho gam`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `wt_sum : ∀ (r : ι → ℝ) (w : ℝ) (s : Finset (Fin N0 × Fin N1)) (f : Fin N0 × Fin N1 → MvPowerSeries ι K), (∀ x ∈ s, WtGe π r w (f x)) → WtGe π r w (∑ x ∈ s, f x)`. Introduce `r w s f`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_ n`. Unfold `MonoWtGe`. Rewrite using `[Finset.sum_empty, map_zero, norm_zero]`. Conclude with `Real.rpow_nonneg hπ0.le _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce `a s ha ih hf n`. Rewrite using `[Finset.sum_insert ha]`. Establish `h1` using `hf a (Finset.mem_insert_self a s) n`. Establish `h2` using `ih (fun x hx => hf x (Finset.mem_insert_of_mem hx)) n`. Unfold `MonoWtGe at h1 h2 ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately.
 
-Rewrite using `[map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 h2)`. Establish `cc_subst : ∀ (a : ZMod 2 → MvPowerSeries ι K), (∀ s, MvPowerSeries.constantCoeff (a s) = 0) → ∀ f : MvPowerSeries (ZMod 2) K, MvPowerSeries.constantCoeff f = 0 → MvPowerSeries.constantCoeff (MvPowerSeries.subst a f) = 0`. Introduce `a ha f hf`. Establish `hs : MvPowerSeries.HasSubst a` using `by first`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero ha`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent fun s => by rw [ha s]; exact IsNilpotent.zero`. Rewrite using `[MvPowerSeries.constantCoeff_subst hs]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `d`. Distinguish the cases in `hd : d = 0`. Substitute `hd` using the available equality. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hf, zero_smul]`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs'⟩ : ∃ s, d s ≠ 0 := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hd (Finsupp.ext h)`. Establish `h0 : MvPowerSeries.constantCoeff (d.prod fun s e => a s ^ e) = 0`. Rewrite using `[Finsupp.prod, map_prod]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.prod_eq_zero (Finsupp.mem_support_iff.2 hs') (by rw [map_pow, ha, zero_pow hs'])`. Rewrite using `[h0, smul_zero]`. Establish `hbe0 : MvPowerSeries.constantCoeff be = 0`. Assume the negation of the conclusion as `h`. Establish `h'` using `hbe.2.2.1 0 (by rwa [MvPowerSeries.coeff_zero_eq_constantCoeff_apply])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd h'.1 (by simp [degE])`. Establish `hUw : WtGe π (fun _ => rho l) 0 U`. Introduce `n`. Unfold `MonoWtGe`. Use `(hU n).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `Real.one_le_rpow_of_pos_of_le_one_of_nonpos hπ0 hπ1 (by linarith [asmR_dot_nonneg n (r := fun _ => rho l) (fun _ => hrho0)])`. Establish `hlog : ∀ x, oneLog (K` using `K) l x = genLog (K := K) l id x := fun x => (hB K l 2 N0 N1).2.2 x`. Establish `hgw : ∀ x, WtGe π (fun _ => rho l) (rho l) (g x)` using `hG K l hl hpi (Fin N0 × Fin N1) id g hg0 (fun x => by rw [← hlog x]; exact hgl x)`. Establish `hGU : WtGe π (fun _ => rho l) 0 (MvPowerSeries.subst g U)` using `hW0 K π hπ0 hpi (Fin N0 × Fin N1) (Fin N0 × Fin N1) g (fun _ => rho l) (fun _ => rho l) 0 U hg0 hgw hUw`. Establish `hlinw : ∀ (t : ℝ) x, WtGe π (fun _ : ι => t) t (∑ i, MvPowerSeries.C (M x i) * MvPowerSeries.X i)` using `fun t x => asmOne_lin_wt hπ0 (M x) (hM x) t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlinA : ∀ x, WtGe π (fun _ : ι => gam l) (rho l) (∑ i, MvPowerSeries.C (M x i) * MvPowerSeries.X i)` using `fun x => (hRM K π hπ0 hpi ι (fun _ => rho l) (fun _ => gam l) (rho l) (fun _ => hrg)).1 _ (hlinw (rho l) x)`. Establish `hA : WtGe π (fun _ : ι => gam l) 0 (MvPowerSeries.subst (fun x => ∑ i, MvPowerSeries.C (M x i) * MvPowerSeries.X i) (MvPowerSeries.subst g U))` using `hW1 K π hπ0 hpi (Fin N0 × Fin N1) ι _ (fun _ => rho l) (fun _ => gam l) 0 _ (fun x => asmOne_lin_const (M x)) hlinA hGU`. Take `⟨hS1, hS2⟩` from `hS K l 2 hl hodd le_rfl even_two hpi K0 hK0 ζ hζ be hbe`. Establish `hbeW : WtGe π (fun _ : ZMod 2 => gam l) (1 / ((l : ℝ) - 1)) be`. Introduce `n`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hbi : IsBiPower l n`. Take `⟨s, s', α, β, hs, hs', _, hsum, rfl⟩` from `hbi`. Establish `h1` using `hS1 (Finsupp.single s (l ^ α) + Finsupp.single s' (l ^ β))`. Unfold `MonoWtGe at h1 ⊢`. Establish `hodd' : Odd (α + β)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `asmOne_zmod2 s s' α β hs hs' hsum`. Establish `h' : ((α + β : ℕ) : ZMod 2) = 1`. Use `push_cast`. Conclude with `h`. Establish `h''` using `congrArg ZMod.val h'`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h''` using `[ZMod.val_natCast]`. Conclude with `Nat.odd_iff.2 (h''.trans (by decide))`. Establish `hD` using `hOR1 α β hodd'`. Establish `e1 : dot (Finsupp.single s (l ^ α) + Finsupp.single s' (l ^ β)) (fun _ : ZMod 2 => rho l) = ((l : ℝ) ^ α + (l : ℝ) ^ β) * rho l`. Rewrite using `[show Finsupp.single s (l ^ α) + Finsupp.single s' (l ^ β) = pureMon l s s' α β from rfl, asmR_dot_pureMon]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e2 : dot (Finsupp.single s (l ^ α) + Finsupp.single s' (l ^ β)) (fun _ : ZMod 2 => gam l) = ((l : ℝ) ^ α + (l : ℝ) ^ β) * gam l`. Rewrite using `[show Finsupp.single s (l ^ α) + Finsupp.single s' (l ^ β) = pureMon l s s' α β from rfl, asmR_dot_pureMon]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[e1]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[e2]`. Use `h1.trans (Real.rpow_le_rpow_of_exponent_ge hπ0 hπ1 ?_)` and prove the remaining obligations. Establish `hg : gam l - rho l = 1 / ((l : ℝ) + 1)` using `by linarith [hOR2]`. Establish `h3 : 1 ≤ ((l : ℝ) ^ α + (l : ℝ) ^ β) * (gam l - rho l)`. Rewrite using `[hg, mul_one_div]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hD`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `asmR_monoWtGe_rad hπ0 hπ1 (fun _ => hrg) (hS2 n hbi)`. Establish `haw : ∀ x (s : ZMod 2), WtGe π (fun _ : ι => gam l) (gam l) ((if s = 0 then (1 : K) else ep) • ∑ i, MvPowerSeries.C (M x i) * MvPowerSeries.X i)`. Introduce `x s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `asmOne_smul_wt ?_ (hlinw (gam l) x)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [hep]`. Establish `hac : ∀ x (s : ZMod 2), MvPowerSeries.constantCoeff ((if s = 0 then (1 : K) else ep) • ∑ i, MvPowerSeries.C (M x i) * MvPowerSeries.X i) = 0` using `fun x s => asmOne_smul_const _ (asmOne_lin_const (M x))`. Establish `hBx : ∀ x, WtGe π (fun _ : ι => gam l) (1 / ((l : ℝ) - 1)) (MvPowerSeries.subst (fun s : ZMod 2 => (if s = 0 then (1 : K) else ep) • ∑ i, MvPowerSeries.C (M x i) * MvPowerSeries.X i) be)` using `fun x => hW1 K π hπ0 hpi (ZMod 2) ι _ (fun _ => gam l) (fun _ => gam l) _ be (hac x) (haw x) hbeW`. Apply the tactic sequence `have hsgn1 : ‖sgn‖ = 1 := by rcases hsgn with rfl | rfl <;> simp`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Establish `hsgn2 : ‖sgn / 2‖ ≤ 1`. Rewrite using `[norm_div, hsgn1]`. Conclude with `div_le_one_of_le₀ h2n (by positivity)`. Establish `hBw` using `asmOne_smul_wt hsgn2 (wt_sum _ _ Finset.univ _ (fun x _ => hBx x))`. Establish `hBc : MvPowerSeries.constantCoeff ((sgn / 2) • ∑ x : Fin N0 × Fin N1, MvPowerSeries.subst (fun s : ZMod 2 => (if s = 0 then (1 : K) else ep) • ∑ i, MvPowerSeries.C (M x i) * MvPowerSeries.X i) be) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `asmOne_smul_const _ ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun x _ => cc_subst _ (hac x) be hbe0`. Establish `hExp` using `hE K l hl hpi ι (fun _ => gam l) κ _ hBc (fun n _ => hBw n)`. Establish `hMul` using `hMW K π hπ0 ι (fun _ => gam l) 0 0 κ _ _ (fun n _ => hA n) hExp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hk` using `hMul κ le_rfl`. Establish `hf` using `hF K l hl hpi ι κ`. Unfold `MonoWtGe at hk`. Establish `hdeg : (κ.degree : ℝ) = ∑ i, (κ i : ℝ)`. Rewrite using `[Finsupp.degree_eq_sum]`.
-
-Use `push_cast`. Both sides reduce to the same expression. Establish `e : (∑ i, (κ i : ℝ) / ((l : ℝ) - 1)) - ∑ i, (κ i : ℝ) * gam l = rho l * ∑ i, (κ i : ℝ)`. Rewrite using `[← Finset.sum_sub_distrib, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← key]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[norm_mul]`. Use `(mul_le_mul hf hk (norm_nonneg _) (Real.rpow_nonneg hπ0.le _)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← Real.rpow_add hπ0, asmR_dot_fintype, hdeg]`.
-
-Use `congr 1`. Use `beta_reduce`. Combine the linear relations using `[e]`.
+A detailed English derivation is pending.
 -/
 theorem oneLetterR_of (hS : LemmaS.{u}) (hG : GenLogWeight.{u, 0}) (hB : LogBridges.{u})
     (hW1 : SubstWt.{u, 0, v}) (hW0 : SubstWt.{u, 0, 0}) (hRM : RadMono.{u, v})

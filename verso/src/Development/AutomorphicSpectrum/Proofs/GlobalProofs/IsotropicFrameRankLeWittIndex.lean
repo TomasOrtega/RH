@@ -16,7 +16,7 @@ open Formalism.UG (cT)
 variable {D : D7} {V V' : HSp D} {ι : V'.V →ₗ[D.host.E] V.V}
 
 /- English proof (translation)
-Establish `h` using `LinearMap.toMatrix_mulVec_repr V'.frame V.frame ι (V'.frame.equivFun.symm z)`. Establish `hz : ⇑(V'.frame.repr (V'.frame.equivFun.symm z)) = z` using `funext fun i => repr_symm V' z i`. Rewrite `h` using `[hz]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameMat_mulVec (z : Fin V'.rank → D.host.E) :
     frameMat V V' ι *ᵥ z = ⇑(V.frame.repr (ι (V'.frame.equivFun.symm z))) := by
@@ -26,7 +26,7 @@ theorem frameMat_mulVec (z : Fin V'.rank → D.host.E) :
   exact h
 
 /- English proof (translation)
-Rewrite using `[frameMat_mulVec]`. Establish `h` using `V.frame.equivFun.symm_apply_apply (ι (V'.frame.equivFun.symm z))`. Rewrite `h` using `[Module.Basis.equivFun_apply]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem symm_frameMat_mulVec (z : Fin V'.rank → D.host.E) :
     V.frame.equivFun.symm (frameMat V V' ι *ᵥ z) = ι (V'.frame.equivFun.symm z) := by
@@ -35,7 +35,7 @@ theorem symm_frameMat_mulVec (z : Fin V'.rank → D.host.E) :
   rwa [Module.Basis.equivFun_apply] at h
 
 /- English proof (translation)
-Rewrite using `[hT_frame]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hE_eq_hT (V : HSp D) (a b : Fin V.rank → D.host.E) :
     hE D.sp.cm.sig V.gram a b = V.hT (V.frame.equivFun.symm a) (V.frame.equivFun.symm b) := by
@@ -43,16 +43,16 @@ theorem hE_eq_hT (V : HSp D) (a b : Fin V.rank → D.host.E) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[cT_frameMat_mul_gram, Matrix.mul_assoc, prM_mul_frameMat hι, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frameMat_isom (hι : HSpace.IsIsomEmb V' V ι) :
     cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat V V' ι) * V.gram * frameMat V V' ι = V'.gram := by
   rw [cT_frameMat_mul_gram, Matrix.mul_assoc, prM_mul_frameMat hι, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hc : cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat V V' ι * A') = cT (D.sp.cm.sig : D.host.E →+* D.host.E) A' * cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat V V' ι)`. Simplify using `only [Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]`. Establish `h1 : cT (D.sp.cm.sig : D.host.E →+* D.host.E) A' * V'.gram * B' = cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat V V' ι * A') * V.gram * (frameMat V V' ι * B')`. Rewrite using `[← frameMat_isom hι, hc]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, hA, hB]`. Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, Matrix.mul_apply, Matrix.submatrix_apply, Matrix.transpose_apply, Matrix.map_apply, id]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pairing_submatrix (hι : HSpace.IsIsomEmb V' V ι) {m m' : ℕ} {e : Fin m' → Fin m}
     {A B : Matrix (Fin V.rank) (Fin m) D.host.E} {A' B' : Matrix (Fin V'.rank) (Fin m') D.host.E}
@@ -71,37 +71,33 @@ theorem pairing_submatrix (hι : HSpace.IsIsomEmb V' V ι) {m m' : ℕ} {e : Fin
   simp only [Formalism.UG.cT, Matrix.mul_apply, Matrix.submatrix_apply, Matrix.transpose_apply, Matrix.map_apply, id]
 
 /- English proof (translation)
-Introduce `D V m X Y hW T V' ι hι hrange`. Take `⟨hxx, hyy, hxy, hani⟩` from `hW`. Establish `hpair : ∀ {p q : ℕ} (A : Matrix (Fin V.rank) (Fin p) D.host.E) (B : Matrix (Fin V.rank) (Fin q) D.host.E) (k : Fin p) (i : Fin q), V.hT (V.frame.equivFun.symm fun j => A j k) (V.frame.equivFun.symm fun j => B j i) = (cT (D.sp.cm.sig : D.host.E →+* D.host.E) A * V.gram * B) k i`. Introduce `p q A B k i`. Rewrite using `[hT_col V A (fun j => B j i) k]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hne : ∀ i k, i ∉ upTo T → k ∈ upTo T → i ≠ k`. Introduce and unpack `i k hi hk rfl`. Conclude with `hi hk`. Establish `hxmem : ∀ i, i ∉ upTo T → (V.frame.equivFun.symm fun j => X j i) ∈ LinearMap.range ι`.
+Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Rewrite using `[hrange]`. Introduce `k hk`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hpair X X k i, hxx, Matrix.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← V.herm.eq (V.frame.equivFun.symm fun j => X j i) (V.frame.equivFun.symm fun j => Y j k), hpair X Y i k, hxy, Matrix.one_apply_ne (hne i k hi hk), map_zero]`. Establish `hymem : ∀ i, i ∉ upTo T → (V.frame.equivFun.symm fun j => Y j i) ∈ LinearMap.range ι`. Introduce `i hi`. Rewrite using `[hrange]`. Introduce `k hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[hpair X Y k i, hxy, Matrix.one_apply_ne (hne i k hi hk).symm]`. Rewrite using `[hpair Y Y k i, hyy, Matrix.zero_apply]`. Use `set S : Finset (Fin m) := Finset.univ.filter (fun i => i ∉ upTo T) with hS`. Establish `he_mono : StrictMono (fun k => S.orderEmbOfFin rfl k)` using `(S.orderEmbOfFin rfl).strictMono`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `he_range : ∀ i, i ∉ upTo T ↔ i ∈ Set.range (fun k => S.orderEmbOfFin rfl k)`. Introduce `i`. Establish `h : Set.range (fun k => S.orderEmbOfFin rfl k) = (S : Set (Fin m))` using `Finset.range_orderEmbOfFin S rfl`. Rewrite using `[h, hS]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he_out : ∀ k, S.orderEmbOfFin rfl k ∉ upTo T` using `fun k => (he_range _).2 ⟨k, rfl⟩`. Establish `hx' : ∀ k, ∃ w : V'.V, ι w = V.frame.equivFun.symm fun j => X j (S.orderEmbOfFin rfl k)` using `fun k => LinearMap.mem_range.1 (hxmem _ (he_out k))`. Establish `hy' : ∀ k, ∃ w : V'.V, ι w = V.frame.equivFun.symm fun j => Y j (S.orderEmbOfFin rfl k)` using `fun k => LinearMap.mem_range.1 (hymem _ (he_out k))`. Use `choose wx hwx using hx'`. Use `choose wy hwy using hy'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsym : ∀ w : V'.V, V'.frame.equivFun.symm (fun a => V'.frame.repr w a) = w`. Introduce `w`. Establish `h` using `V'.frame.equivFun.symm_apply_apply w`. Rewrite `h` using `[Module.Basis.equivFun_apply]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcol : ∀ (Z : Matrix (Fin V.rank) (Fin m) D.host.E) (w : Fin S.card → V'.V), (∀ k, ι (w k) = V.frame.equivFun.symm fun j => Z j (S.orderEmbOfFin rfl k)) → frameMat V V' ι * Matrix.of (fun a k => V'.frame.repr (w k) a) = Z.submatrix id (fun k => S.orderEmbOfFin rfl k)`. Introduce `Z w hw`. Use extensionality with `a k`. Establish `h` using `congrFun (frameMat_mulVec (V := V) (V' := V') (ι := ι) (fun b => V'.frame.repr (w k) b)) a`. Rewrite `h` using `[hsym (w k), hw k, repr_symm]`.
+Reduce the conclusion to the remaining proof obligations. Prove both required implications or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Use `⟨S.card, fun k => S.orderEmbOfFin rfl k, Matrix.of (fun a k => V'.frame.repr (wx k) a), Matrix.of (fun a k => V'.frame.repr (wy k) a), ?_, ?_⟩` and prove the remaining obligations. Conclude with `And.intro he_mono (And.intro he_range (And.intro (hcol X wx hwx) (hcol Y wy hwy)))`. Establish `hXX` using `pairing_submatrix hι (hcol X wx hwx) (hcol X wx hwx)`. Establish `hYY` using `pairing_submatrix hι (hcol Y wy hwy) (hcol Y wy hwy)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hXY` using `pairing_submatrix hι (hcol X wx hwx) (hcol Y wy hwy)`. Use `GlobalTheory.SiegelSet.IsWittFrame.mk ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[hXX, hxx]`. Both sides reduce to the same expression. Rewrite using `[hYY, hyy]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Rewrite using `[hXY, hxy]`. Conclude with `Matrix.submatrix_one _ he_mono.injective`. Introduce `z' h1 h2 h3`. Establish `hz : frameMat V V' ι *ᵥ z' = 0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `hani` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Rewrite using `[← hT_col, symm_frameMat_mulVec]`. Distinguish the cases in `hi : i ∈ upTo T`. Conclude with `((hrange _).1 (LinearMap.mem_range_self ι _) i hi).1`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, rfl⟩` from `(he_range i).1 hi`. Rewrite using `[← hwx k, hι (wx k) (V'.frame.equivFun.symm z'), ← hsym (wx k)]`. Conclude with `(hT_col V' (Matrix.of fun a k => V'.frame.repr (wx k) a) z' k).trans (congrFun h1 k)`. Use function extensionality and compare the values at `i`. Rewrite using `[← hT_col, symm_frameMat_mulVec]`.
-
-Distinguish the cases in `hi : i ∈ upTo T`. Conclude with `((hrange _).1 (LinearMap.mem_range_self ι _) i hi).2`. Take `⟨k, rfl⟩` from `(he_range i).1 hi`. Rewrite using `[← hwy k, hι (wy k) (V'.frame.equivFun.symm z'), ← hsym (wy k)]`. Conclude with `(hT_col V' (Matrix.of fun a k => V'.frame.repr (wy k) a) z' k).trans (congrFun h2 k)`.
-
-Rewrite using `[hE_eq_hT, symm_frameMat_mulVec, hι (V'.frame.equivFun.symm z') (V'.frame.equivFun.symm z'), ← hE_eq_hT V' z' z']`. Conclude with `h3`. Establish `h` using `congrArg (fun w => prM V V' ι *ᵥ w) hz`. Simplify using `only [Matrix.mulVec_mulVec, prM_mul_frameMat hι, Matrix.one_mulVec, Matrix.mulVec_zero] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sliceFrame : ∀ (D : D7) (V : HSp D) (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → ∀ (T : Finset (Fin m)) (V' : HSp D) (ι : V'.V →ₗ[D.host.E] V.V), HSpace.IsIsomEmb V' V ι → (∀ v : V.V, v ∈ LinearMap.range ι ↔ ∀ i ∈ GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.upTo T, V.hT (V.frame.equivFun.symm fun j => X j i) v = 0 ∧ V.hT (V.frame.equivFun.symm fun j => Y j i) v = 0) → ∃ (m' : ℕ) (e : Fin m' → Fin m) (X' Y' : Matrix (Fin V'.rank) (Fin m') D.host.E), GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.Slice.IsSliceFrame V V' ι X Y T e X' Y' ∧ GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V'.gram X' Y' := by
   intro D V m X Y hW T V' ι hι hrange

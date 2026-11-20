@@ -18,11 +18,11 @@ section Reps
 variable {V : Type} [AddCommGroup V]
 
 /- English proof (translation)
-Establish `h2` using `hS.2.1`. Establish `h3` using `hS.2.2`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩ ⟨y, hy⟩ hxy`. Simplify using `only [QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf, AddSubgroup.coe_add, AddSubgroup.coe_neg] at hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `h'` using `Λ₁.neg_mem hxy`. Rewrite `h'` using `[neg_add, neg_neg, ← sub_eq_add_neg]`. Conclude with `Subtype.ext (h2 x hx y hy h')`. Introduce `q`. Take `⟨⟨z, hz⟩, rfl⟩` from `QuotientAddGroup.mk_surjective q`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hzx⟩` from `h3 z hz`. Use `⟨⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf, AddSubgroup.coe_add, AddSubgroup.coe_neg]`. Rewrite using `[neg_add_eq_sub]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem bijective_mk_of_isReps {Λ₁ Λ₂ : AddSubgroup V} {S : Finset V} (hS : IsReps Λ₁ Λ₂ S) :
     Function.Bijective (fun x : {x // x ∈ S} =>
@@ -45,7 +45,7 @@ private theorem bijective_mk_of_isReps {Λ₁ Λ₂ : AddSubgroup V} {S : Finset
     rwa [neg_add_eq_sub]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem relIdx_eq_card {Λ₁ Λ₂ : AddSubgroup V} {S : Finset V} (hS : IsReps Λ₁ Λ₂ S) :
     relIdx Λ₁ Λ₂ = S.card := by
@@ -55,9 +55,9 @@ theorem relIdx_eq_card {Λ₁ Λ₂ : AddSubgroup V} {S : Finset V} (hS : IsReps
     _ = S.card := by rw [Nat.card_eq_fintype_card, Fintype.card_coe]
 
 /- English proof (translation)
-Simplify using `only [imgLat, AddSubgroup.mem_map, LinearMap.toAddMonoidHom_coe, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify using `using hx`. Introduce `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨g.symm y, h, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_imgLat' [Module ℂ V] (g : V ≃ₗ[ℂ] V) (Λ : AddSubgroup V) (y : V) :
     y ∈ imgLat (g : V →ₗ[ℂ] V) Λ ↔ g.symm y ∈ Λ := by
@@ -71,13 +71,13 @@ theorem mem_imgLat' [Module ℂ V] (g : V ≃ₗ[ℂ] V) (Λ : AddSubgroup V) (y
 end Reps
 
 /- English proof (translation)
-Establish `hfin : Finite (B ⧸ A.addSubgroupOf B)` using `Nat.finite_of_card_ne_zero hAB`. Use `Fintype.ofFinite (B ⧸ A.addSubgroupOf B)` as an intermediate fact. Use `choose r hr using (QuotientAddGroup.mk_surjective : Function.Surjective (QuotientAddGroup.mk : B → B ⧸ A.addSubgroupOf B))`. Use `⟨Finset.univ.image fun q => ((r q : B) : V), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `(r q).2`. Introduce `x hx y hy hxy`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨q', -, rfl⟩` from `Finset.mem_image.1 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hqq : q = q'`. Rewrite using `[← hr q, ← hr q', QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf, AddSubgroup.coe_add, AddSubgroup.coe_neg]`. Establish `h'` using `A.neg_mem hxy`. Rewrite `h'` using `[neg_sub, sub_eq_neg_add]`. Then use the resulting hypothesis. Rewrite using `[hqq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Use `⟨(r (QuotientAddGroup.mk ⟨y, hy⟩) : V), Finset.mem_image.2 ⟨_, Finset.mem_univ _, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h'` using `hr (QuotientAddGroup.mk ⟨y, hy⟩)`. Rewrite `h'` using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf, AddSubgroup.coe_add, AddSubgroup.coe_neg]`. Rewrite `h'` using `[neg_add_eq_sub]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem exists_isReps_of_relIdx_ne_zero {V : Type} [AddCommGroup V] {A B : AddSubgroup V}
     (hAB : relIdx A B ≠ 0) : ∃ S : Finset V, IsReps A B S := by
@@ -107,23 +107,21 @@ private theorem exists_isReps_of_relIdx_ne_zero {V : Type} [AddCommGroup V] {A B
     rwa [neg_add_eq_sub] at h'
 
 /- English proof (translation)
-Establish `hF' : ∀ y ∈ A, ∀ w, α y * opU H y F w = F w` using `hF`. Establish `h1` using `hα.1`. Establish `hxa` using `hα.2 x hx a haB`. Establish `hax` using `hα.2 a haB x hx`. Rewrite `hax` using `[add_comm a x]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `have hx0 : α x ≠ 0 := by rcases h1 x hx with h | h <;> rw [h] <;> norm_num`. Apply the tactic sequence `have ha0 : α a ≠ 0 := by rcases h1 a haB with h | h <;> rw [h] <;> norm_num`. Establish `hE : altE H a x = -altE H x a`. Simplify using `only [altE]`. Rewrite using `[hH x a, Complex.conj_im]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : Complex.exp ((Real.pi : ℂ) * Complex.I * ((altE H x a : ℝ) : ℂ)) = Complex.exp ((Real.pi : ℂ) * Complex.I * ((altE H a x : ℝ) : ℂ))`. Establish `h3 : α x * α a * Complex.exp ((Real.pi : ℂ) * Complex.I * ((altE H x a : ℝ) : ℂ)) = α x * α a * Complex.exp ((Real.pi : ℂ) * Complex.I * ((altE H a x : ℝ) : ℂ))`. Rewrite using `[← hxa, hax]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_left_cancel₀ (mul_ne_zero hx0 ha0) h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hexp : Complex.exp ((Real.pi : ℂ) * Complex.I * ((altE H x a : ℝ) : ℂ)) * Complex.exp ((Real.pi : ℂ) * Complex.I * ((altE H x a : ℝ) : ℂ)) = 1` using `by conv_lhs => arg 2; rw [h4]`. Rewrite using `[← Complex.exp_add, hE, Complex.ofReal_neg]`. Use `Complex.exp_zero using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hFa` using `hF' a ha (z + x)`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [opU] at hFa ⊢`. Establish `hPQ : ((Real.pi : ℂ) * H (z + x) a + (Real.pi : ℂ) * H a a / 2) + (-(Real.pi : ℂ) * H z (x + a) - (Real.pi : ℂ) * H (x + a) (x + a) / 2) = (-(Real.pi : ℂ) * H z x - (Real.pi : ℂ) * H x x / 2) + (Real.pi : ℂ) * Complex.I * ((altE H x a : ℝ) : ℂ)`. Establish `hc : H x a - conj (H x a) = 2 * Complex.I * (((H x a).im : ℝ) : ℂ)`. Rewrite using `[Complex.sub_conj]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [map_add, LinearMap.add_apply, altE]`. Rewrite using `[hH x a]`. Take the linear combination `((Real.pi : ℂ) / 2) * hc`. Establish `hinv : Complex.exp (-(Real.pi : ℂ) * H (z + x) a - (Real.pi : ℂ) * H a a / 2) * Complex.exp ((Real.pi : ℂ) * H (z + x) a + (Real.pi : ℂ) * H a a / 2) = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.exp_add]`. Use `Complex.exp_zero using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `key : Complex.exp ((Real.pi : ℂ) * H (z + x) a + (Real.pi : ℂ) * H a a / 2) * Complex.exp (-(Real.pi : ℂ) * H z (x + a) - (Real.pi : ℂ) * H (x + a) (x + a) / 2) = Complex.exp (-(Real.pi : ℂ) * H z x - (Real.pi : ℂ) * H x x / 2) * Complex.exp ((Real.pi : ℂ) * Complex.I * ((altE H …`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add, hPQ]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← add_assoc]`. Use `set E1 := Complex.exp (-(Real.pi : ℂ) * H (z + x) a - (Real.pi : ℂ) * H a a / 2)`. Use `set E2 := Complex.exp ((Real.pi : ℂ) * H (z + x) a + (Real.pi : ℂ) * H a a / 2)`. Use `set EQ := Complex.exp (-(Real.pi : ℂ) * H z (x + a) - (Real.pi : ℂ) * H (x + a) (x + a) / 2)`. Use `set eR := Complex.exp (-(Real.pi : ℂ) * H z x - (Real.pi : ℂ) * H x x / 2)`.
-
-Use `set eE := Complex.exp ((Real.pi : ℂ) * Complex.I * ((altE H x a : ℝ) : ℂ))`. Take the linear combination `(F (z + x + a) * EQ) * hxa + (α x * eR) * hFa + (-(α x * α a * F (z + x + a) * eE * EQ)) * hinv + (α x * α a * F (z + x + a) * eE * E1) * key + (α x * α a * F (z + x + a) * eR * E1) * hexp`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem mul_opU_add_eq_of_mem_fixedBy {V : Type} [AddCommGroup V] [Module ℂ V] {H : Sesq V}
     {A B : AddSubgroup V} {α : V → ℂ} {F : V → ℂ} (hH : IsHerm H) (hα : IsSemiChar H B α)
@@ -183,9 +181,9 @@ private theorem mul_opU_add_eq_of_mem_fixedBy {V : Type} [AddCommGroup V] [Modul
     + (α x * α a * F (z + x + a) * eR * E1) * hexp
 
 /- English proof (translation)
-Rewrite using `[← finsum_comp_equiv (Equiv.ofBijective _ (bijective_mk_of_isReps hS)), finsum_eq_sum_of_fintype, ← Finset.sum_coe_sort S]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `set q := (Equiv.ofBijective _ (bijective_mk_of_isReps hS)) x with hqdef`. Establish `hq : (QuotientAddGroup.mk (Quotient.out q) : B ⧸ A.addSubgroupOf B) = QuotientAddGroup.mk (⟨x.1, hS.1 x.1 x.2⟩ : B)` using `QuotientAddGroup.out_eq' q`. Rewrite `hq` using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf, AddSubgroup.coe_add, AddSubgroup.coe_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hoB : ((Quotient.out q : B) : V) ∈ B` using `(Quotient.out q).2`. Establish `haB : -((Quotient.out q : B) : V) + x.1 ∈ B` using `B.add_mem (B.neg_mem hoB) (hS.1 x.1 x.2)`. Establish `hxo : (x.1 : V) = ((Quotient.out q : B) : V) + (-((Quotient.out q : B) : V) + x.1)` using `by abel`. Rewrite using `[hxo]`. Conclude with `(mul_opU_add_eq_of_mem_fixedBy hH hα hF hoB hq haB z).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finsum_quotient_eq_sum_reps {V : Type} [AddCommGroup V] [Module ℂ V] {H : Sesq V}
     {A B : AddSubgroup V} {α : V → ℂ} {F : V → ℂ} (hH : IsHerm H) (hα : IsSemiChar H B α)
@@ -208,7 +206,7 @@ private theorem finsum_quotient_eq_sum_reps {V : Type} [AddCommGroup V] [Module 
   exact (mul_opU_add_eq_of_mem_fixedBy hH hα hF hoB hq haB z).symm
 
 /- English proof (translation)
-Simplify using `only [stdH, matH, LinearMap.mk₂'ₛₗ_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem stdH_apply_algebraic (L : PeriodPair) (N : Type) [Fintype N] [DecidableEq N] (u v : N → ℂ) :
     stdH L N u v = ∑ m, u m * ((Formalism.L2.Th1.F.area L : ℝ) : ℂ)⁻¹ * conj (v m) := by
@@ -216,7 +214,7 @@ private theorem stdH_apply_algebraic (L : PeriodPair) (N : Type) [Fintype N] [De
     mul_ite, mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte]
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_prod_type, Finset.sum_comm, Finset.sum_eq_single b]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[Ne.symm hc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem sum_ite_eq_snd {α β : Type} [Fintype α] [Fintype β] [DecidableEq β] (b : β)
     (f : α × β → ℂ) : ∑ w : α × β, (if b = w.2 then f w else 0) = ∑ k, f (k, b) := by
@@ -227,7 +225,7 @@ private theorem sum_ite_eq_snd {α β : Type} [Fintype α] [Fintype β] [Decidab
   · simp
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `c _ hc`. Simplify using `[Ne.symm hc]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem sum_ite_eq_fst {α β : Type} [Fintype α] [Fintype β] [DecidableEq α] (a : α)
     (f : α × β → ℂ) : ∑ w : α × β, (if a = w.1 then f w else 0) = ∑ k, f (a, k) := by
@@ -238,7 +236,7 @@ private theorem sum_ite_eq_fst {α β : Type} [Fintype α] [Fintype β] [Decidab
   · simp
 
 /- English proof (translation)
-Simplify using `only [matH, LinearMap.mk₂'ₛₗ_apply, blk4, mul_ite, ite_mul, mul_zero, zero_mul, sum_ite_eq_fst]`. Rewrite using `[Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem matH_blk4 {N : Type} [Fintype N] (g : Matrix N N ℂ) (u v : Fin 4 × N → ℂ) :
     matH (blk4 g) u v = ∑ a, matH g (slice a u) (slice a v) := by
@@ -247,7 +245,7 @@ private theorem matH_blk4 {N : Type} [Fintype N] (g : Matrix N N ℂ) (u v : Fin
   rfl
 
 /- English proof (translation)
-Establish `h : Real.sqrt ((r ^ k : ℕ) : ℝ) = Real.sqrt r ^ k` using `by conv_lhs => rw [Nat.cast_pow, ← Real.sq_sqrt (Nat.cast_nonneg r)]`. Rewrite using `[← pow_mul, mul_comm 2 k, pow_mul, Real.sqrt_sq (pow_nonneg (Real.sqrt_nonneg _) _)]`. Rewrite using `[h, Complex.ofReal_pow, inv_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sqrt_pow_inv (r k : ℕ) :
     ((Real.sqrt ((r ^ k : ℕ) : ℝ) : ℝ) : ℂ)⁻¹ = (((Real.sqrt r : ℝ) : ℂ)⁻¹) ^ k := by
@@ -265,14 +263,14 @@ def sl (i : I) (w : M' → ℂ) : M → ℂ := fun m => w (e.symm (m, i))
 def asm (f : I → M → ℂ) : M' → ℂ := fun m' => f (e m').2 (e m').1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Simplify using `[sl, asm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sl_asm (f : I → M → ℂ) (i : I) : sl e i (asm e f) = f i := by
   funext m
   simp [sl, asm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m'`. Simplify using `[sl, asm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem asm_sl (w : M' → ℂ) : asm e (fun i => sl e i w) = w := by
   funext m'
@@ -292,7 +290,7 @@ Both sides reduce to the same expression.
 theorem sl_smul (i : I) (c : ℂ) (x : M' → ℂ) : sl e i (c • x) = c • sl e i x := rfl
 
 /- English proof (translation)
-Introduce `f g h`. Use function extensionality and compare the values at `i`. Use `congrArg (sl e i) h` as an intermediate fact. Rewrite `this` using `[sl_asm, sl_asm]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem asm_injective : Function.Injective (asm e) := by
   intro f g h
@@ -301,13 +299,13 @@ theorem asm_injective : Function.Injective (asm e) := by
   rwa [sl_asm, sl_asm] at this
 
 /- English proof (translation)
-Rewrite using `[← Equiv.sum_comp e.symm G, Fintype.sum_prod_type, Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_e (G : M' → ℂ) : ∑ m', G m' = ∑ i, ∑ m, G (e.symm (m, i)) := by
   rw [← Equiv.sum_comp e.symm G, Fintype.sum_prod_type, Finset.sum_comm]
 
 /- English proof (translation)
-Rewrite using `[← Equiv.prod_comp e.symm G, Fintype.prod_prod_type, Finset.prod_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_e (G : M' → ℂ) : ∏ m', G m' = ∏ i, ∏ m, G (e.symm (m, i)) := by
   rw [← Equiv.prod_comp e.symm G, Fintype.prod_prod_type, Finset.prod_comm]
@@ -319,24 +317,24 @@ def prodSub (A : AddSubgroup (M → ℂ)) : AddSubgroup (M' → ℂ) where
   neg_mem' := fun hx i => A.neg_mem (hx i)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_prodSub (A : AddSubgroup (M → ℂ)) (w : M' → ℂ) : w ∈ prodSub e A ↔ ∀ i, sl e i w ∈ A := Iff.rfl
 
 variable [DecidableEq I]
 
 /- English proof (translation)
-Establish `h1` using `hS.1`. Establish `h2` using `hS.2.1`. Establish `h3` using `hS.2.2`. Use `⟨(Fintype.piFinset fun _ : I => S).image (asm e), ⟨?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f, hf, rfl⟩` from `Finset.mem_image.1 hx`. Rewrite `hf` using `[Fintype.mem_piFinset]`. Use `(mem_prodSub e B _).2 fun i => ?_` and prove the remaining obligations. Rewrite using `[sl_asm]`. Conclude with `h1 _ (hf i)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx y hy hxy`. Take `⟨f, hf, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨g, hg, rfl⟩` from `Finset.mem_image.1 hy`. Rewrite `hf`, `hg` using `[Fintype.mem_piFinset]`. Establish `hfg : f = g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Use `(mem_prodSub e A _).1 hxy i` as an intermediate fact. Rewrite `this` using `[sl_sub, sl_asm, sl_asm]`. Conclude with `h2 _ (hf i) _ (hg i) this`. Rewrite using `[hfg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `: ∀ i, ∃ x ∈ S, sl e i y - x ∈ A` using `fun i => h3 _ ((mem_prodSub e B y).1 hy i)`. Use `choose f hfS hfA using this`. Use `⟨asm e f, Finset.mem_image.2 ⟨f, Fintype.mem_piFinset.2 hfS, rfl⟩, ?_⟩` and prove the remaining obligations. Use `(mem_prodSub e A _).2 fun i => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[sl_sub, sl_asm]`. Conclude with `hfA i`. Rewrite using `[Finset.card_image_of_injective _ (asm_injective e), Fintype.card_piFinset, Finset.prod_const, Finset.card_univ]`. Introduce `G`. Rewrite using `[Finset.sum_image fun x _ y _ h => asm_injective e h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reps_prod {A B : AddSubgroup (M → ℂ)} {S : Finset (M → ℂ)} (hS : IsReps A B S) :
     ∃ S' : Finset (M' → ℂ), IsReps (prodSub e A) (prodSub e B) S' ∧ S'.card = S.card ^ Fintype.card I ∧
@@ -375,7 +373,7 @@ theorem reps_prod {A B : AddSubgroup (M → ℂ)} {S : Finset (M → ℂ)} (hS :
     rw [Finset.sum_image fun x _ y _ h => asm_injective e h]
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `exists_isReps_of_relIdx_ne_zero hAB`. Take `⟨S', hS', hcard, -⟩` from `reps_prod e hS`. Rewrite using `[relIdx_eq_card hS', relIdx_eq_card hS, hcard]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem relIdx_prod {A B : AddSubgroup (M → ℂ)} (hAB : relIdx A B ≠ 0) :
     relIdx (prodSub e A) (prodSub e B) = relIdx A B ^ Fintype.card I := by
@@ -387,7 +385,7 @@ variable (H : Sesq (M → ℂ)) (H' : Sesq (M' → ℂ)) (hHd : ∀ x y, H' x y 
 include hHd
 
 /- English proof (translation)
-Introduce `x y`. Rewrite using `[hHd, hHd, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hH _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_prod (hH : IsHerm H) : IsHerm H' := by
   intro x y
@@ -395,19 +393,19 @@ theorem herm_prod (hH : IsHerm H) : IsHerm H' := by
   exact Finset.sum_congr rfl fun i _ => hH _ _
 
 /- English proof (translation)
-Simplify using `only [altE, hHd, Complex.im_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem altE_prod (x y : M' → ℂ) : altE H' x y = ∑ i, altE H (sl e i x) (sl e i y) := by
   simp only [altE, hHd, Complex.im_sum]
 
 /- English proof (translation)
-Simplify using `only [alphaQ, qOf, hHd, Complex.re_sum, Finset.mul_sum, Complex.ofReal_sum, Complex.exp_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem alphaQ_prod (c : ℝ) (x : M' → ℂ) : alphaQ c H' x = ∏ i, alphaQ c H (sl e i x) := by
   simp only [alphaQ, qOf, hHd, Complex.re_sum, Finset.mul_sum, Complex.ofReal_sum, Complex.exp_sum]
 
 /- English proof (translation)
-Simplify using `only [opU, hHd, sl_add, Finset.prod_mul_distrib]`. Use `congr 1`. Rewrite using `[← Complex.exp_sum]`. Use `congr 1`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.sum_div, ← Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem opU_prod (x : M' → ℂ) (F : (M → ℂ) → ℂ) (z : M' → ℂ) :
     opU H' x (fun w => ∏ i, F (sl e i w)) z = ∏ i, opU H (sl e i x) F (sl e i z) := by
@@ -418,9 +416,9 @@ theorem opU_prod (x : M' → ℂ) (F : (M → ℂ) → ℂ) (z : M' → ℂ) :
   rw [Finset.mul_sum, Finset.mul_sum, Finset.sum_div, ← Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hα`. Use `⟨fun x hx => ?_, fun x hx y hy => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[mem_prodSub]`. Use `Finset.prod_induction _ (fun z => z = 1 ∨ z = -1) ?_ (Or.inl rfl) fun i _ => h1 _ (hx i)` and prove the remaining obligations. Apply the tactic sequence `rintro a b (rfl | rfl) (rfl | rfl) <;> norm_num`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `hx`, `hy` using `[mem_prodSub]`. Simplify using `only [sl_add]`. Rewrite using `[Finset.prod_congr rfl fun i _ => h2 _ (hx i) _ (hy i), Finset.prod_mul_distrib, Finset.prod_mul_distrib, altE_prod (hHd := hHd), Complex.ofReal_sum, Finset.mul_sum, Complex.exp_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem semiChar_prod {B : AddSubgroup (M → ℂ)} {α : (M → ℂ) → ℂ} (hα : IsSemiChar H B α) :
     IsSemiChar H' (prodSub e B) (fun x => ∏ i, α (sl e i x)) := by
@@ -436,9 +434,7 @@ theorem semiChar_prod {B : AddSubgroup (M → ℂ)} {α : (M → ℂ) → ℂ} (
       Complex.exp_sum]
 
 /- English proof (translation)
-Establish `hF' : ∀ x ∈ A, ∀ z, α x * opU H x F z = F z` using `hF`. Use `show ∀ x ∈ prodSub e A, ∀ z, (∏ i, α (sl e i x)) * opU H' x (fun w => ∏ i, F (sl e i w)) z = ∏ i, F (sl e i z)`. Introduce `x hx z`. Rewrite `hx` using `[mem_prodSub]`. Rewrite using `[opU_prod (hHd := hHd), ← Finset.prod_mul_distrib]`.
-
-Conclude with `Finset.prod_congr rfl fun i _ => hF' _ (hx i) _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_prod {A : AddSubgroup (M → ℂ)} {α : (M → ℂ) → ℂ} {F : (M → ℂ) → ℂ} (hF : F ∈ fixedBy H α A) :
     (fun w => ∏ i, F (sl e i w)) ∈ fixedBy H' (fun x => ∏ i, α (sl e i x)) (prodSub e A) := by
@@ -451,11 +447,11 @@ theorem fixed_prod {A : AddSubgroup (M → ℂ)} {α : (M → ℂ) → ℂ} {F :
   exact Finset.prod_congr rfl fun i _ => hF' _ (hx i) _
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `exists_isReps_of_relIdx_ne_zero hAB`. Take `⟨S', hS', hcard, hsum⟩` from `reps_prod e hS`. Establish `hR : ∀ i, inter H α A B F (sl e i z) = ((Real.sqrt (relIdx A B) : ℝ) : ℂ)⁻¹ * ∑ x ∈ S, α x * opU H x F (sl e i z)` using `fun i => by`. Simplify using `only [inter]`. Rewrite using `[finsum_quotient_eq_sum_reps hH hα hF hS]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_congr rfl fun i _ => hR i, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Simplify using `only [inter]`. Rewrite using `[finsum_quotient_eq_sum_reps (herm_prod e H H' hHd hH) (semiChar_prod e H H' hHd hα) (fixed_prod e H H' hHd hF) hS' z, hsum, relIdx_prod e hAB, sqrt_pow_inv]`. Use `congr 1`. Rewrite using `[Finset.prod_univ_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[opU_prod (hHd := hHd), ← Finset.prod_mul_distrib]`. Simplify using `only [sl_asm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inter_prod (hH : IsHerm H) (A B : AddSubgroup (M → ℂ)) (α : (M → ℂ) → ℂ) (hα : IsSemiChar H B α)
     (F : (M → ℂ) → ℂ) (hF : F ∈ fixedBy H α A) (hAB : relIdx A B ≠ 0) (z : M' → ℂ) :
@@ -486,7 +482,7 @@ section Std
 variable {M M' I : Type} [Fintype M] [Fintype M'] [Fintype I] [DecidableEq M] [DecidableEq M'] (e : M' ≃ M × I)
 
 /- English proof (translation)
-Simplify using `only [stdH_apply_algebraic]`. Rewrite using `[sum_e e]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem stdH_prod (L : PeriodPair) (x y : M' → ℂ) :
     stdH L M' x y = ∑ i, stdH L M (sl e i x) (sl e i y) := by
@@ -495,9 +491,9 @@ theorem stdH_prod (L : PeriodPair) (x y : M' → ℂ) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `w`. Rewrite using `[mem_prodSub]`. Simplify using `only [stdLat, AddSubgroup.mem_pi, Set.mem_univ, true_implies, sl]`. Prove the components needed by the constructor for the conclusion. Introduce `h i m`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h _`. Introduce `h m'`. Use `h (e m').2 (e m').1` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem stdLat_prod (L : PeriodPair) : stdLat L M' = prodSub e (stdLat L M) := by
   ext w
@@ -511,7 +507,7 @@ theorem stdLat_prod (L : PeriodPair) : stdLat L M' = prodSub e (stdLat L M) := b
     simpa using this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [F0, prodFn]`. Conclude with `prod_e e _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gaussianVacuum_prod_blocks (L : PeriodPair) (ω₀ : ℂ) : F0 L ω₀ M' = fun w => ∏ i, F0 L ω₀ M (sl e i w) := by
   funext w
@@ -545,7 +541,7 @@ def powEquiv {M M' : Type} [Fintype M] [Fintype M'] (e : M' ≃ M × I) (g : (M 
     simp only [sl_asm, LinearEquiv.apply_symm_apply, asm_sl]
 
 /- English proof (translation)
-Use `show sl e i (asm e fun i => g (sl e i z)) = g (sl e i z)`. Rewrite using `[sl_asm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sl_powEquiv {M M' : Type} [Fintype M] [Fintype M'] (e : M' ≃ M × I) (g : (M → ℂ) ≃ₗ[ℂ] (M → ℂ)) (i : I) (z : M' → ℂ) :
     sl e i (powEquiv e g z) = g (sl e i z) := by
@@ -553,7 +549,7 @@ theorem sl_powEquiv {M M' : Type} [Fintype M] [Fintype M'] (e : M' ≃ M × I) (
   rw [sl_asm]
 
 /- English proof (translation)
-Simplify using `only [matH, LinearMap.mk₂'ₛₗ_apply, hPow, mul_ite, ite_mul, mul_zero, zero_mul, sum_ite_eq_snd]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem matH_hPow (h : Matrix n n ℂ) (u v : n × I → ℂ) :
     matH (hPow I h) u v = ∑ i, matH h (fun k => u (k, i)) (fun k => v (k, i)) := by
@@ -561,7 +557,7 @@ theorem matH_hPow (h : Matrix n n ℂ) (u v : n × I → ℂ) :
   rw [Fintype.sum_prod_type, Finset.sum_comm]
 
 /- English proof (translation)
-Rewrite using `[matH_blk4]`. Simplify using `only [matH_hPow]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[matH_blk4]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -575,9 +571,9 @@ theorem hermitian_block_power_sum (h : Matrix n n ℂ) (x y : Fin 4 × (n × I) 
   rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[mem_imgLat', mem_prodSub]`. Simplify using `only [mem_imgLat']`. Prove the components needed by the constructor for the conclusion. Introduce `h i show ∀ a, _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Conclude with `h a i`. Introduce `h a show ∀ i, _`. Introduce `i`. Conclude with `h i a`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem img_prod (g : (Fin 4 × n → ℂ) ≃ₗ[ℂ] (Fin 4 × n → ℂ)) (Λ : AddSubgroup (n → ℂ)) :
     imgLat ((powEquiv (eP n I) g : (Fin 4 × (n × I) → ℂ) ≃ₗ[ℂ] (Fin 4 × (n × I) → ℂ)) :
@@ -603,9 +599,9 @@ end RepresentativeBijection
 open RepresentativeBijection
 
 /- English proof (translation)
-Introduce `a₀ b₀ dK ha hdK lam hlam n _ _ h Λ θ p _ ι c hc hL`. Take `⟨g₁, ε, h1, h2, h3, h4, h5⟩` from `hL`. Use `⟨g₁, c ^ 4 * ε, h1, h2, h3, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use function extensionality and compare the values at `z`. Establish `hz` using `congrFun h5 z`. Simplify using `only [Formalism.L2.Th1.H.tens4, Pi.smul_apply, smul_eq_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin] at hz ⊢`. Rewrite using `[hz]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem local_norm_scaling : LocNormScale := by
   intro a₀ b₀ dK ha hdK lam hlam n _ _ h Λ θ p _ ι c hc hL
@@ -622,21 +618,19 @@ theorem local_norm_scaling : LocNormScale := by
     ring
 
 /- English proof (translation)
-Introduce `a₀ b₀ c₀ dK ha hdK lam hlam hOK n _ _ h Λ hΛ hΛθ θ hθ p _ ι hN I _ _`. Take `⟨g₁, ε, hiso, hp, hidx, hε, hT⟩` from `hN`. Establish `hidx1 : relIdx (stdLat (cmL a₀ b₀ dK ha hdK lam hlam) (Fin 4 × n)) (imgLat (g₁ : (Fin 4 × n → ℂ) →ₗ[ℂ] (Fin 4 × n → ℂ)) (pow4 Λ)) ≠ 0`. Introduce `h0`. Rewrite `hp` using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hp (dvd_zero p)`. Establish `hSD` using `Formalism.L2.Th1.H.stdDataCm a₀ b₀ c₀ dK ha hdK lam hlam hOK.1 hOK.2.1 hOK.2.2.1 n h Λ g₁ hiso hΛ hΛθ hidx1 hidx`. Establish `hH : IsHerm (stdH (cmL a₀ b₀ dK ha hdK lam hlam) (Fin 4 × n))` using `(Formalism.L2.Th1.H.stdHBasic (cmL a₀ b₀ dK ha hdK lam hlam) (Fin 4 × n)).2.1`. Establish `hF` using `(Formalism.L2.Th1.H.product_theta_mem' (cmL a₀ b₀ dK ha hdK lam hlam) (lam * a₀) (Fin 4 × n) hSD.per hSD.half _ hSD.betaStd).1.2`. Establish `hHd` using `stdH_prod (eP n I) (cmL a₀ b₀ dK ha hdK lam hlam)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨powEquiv (eP n I) g₁, ε ^ Fintype.card I, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`. Simplify using `only [LinearEquiv.coe_coe]`. Rewrite using `[hHd, hermitian_block_power_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sl_powEquiv, sl_powEquiv]`. Conclude with `hiso _ _`. Rewrite using `[stdLat_prod (eP n I), img_prod, relIdx_prod _ hidx1]`. Introduce `hd`. Conclude with `hp ((Fact.out : p.Prime).dvd_of_dvd_pow hd)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[stdLat_prod (eP n I), img_prod, relIdx_prod _ hidx]`. Conclude with `pow_ne_zero _ hidx`. Rewrite using `[map_pow, norm_pow]`. Conclude with `pow_le_one₀ (norm_nonneg _) hε`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : tens4 (fnPow I θ) z = ∏ i, tens4 θ (sl (eP n I) i z)`. Simplify using `only [tens4, fnPow]`. Rewrite using `[Finset.prod_comm]`. Both sides reduce to the same expression. Rewrite using `[hL, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [hT, Pi.smul_apply, smul_eq_mul, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Use `congr 1`. Simplify using `only [kernel4]`. Establish `hα : alphaQ (Real.sqrt dK / 2) (stdH (cmL a₀ b₀ dK ha hdK lam hlam) (Fin 4 × (n × I))) = fun x => ∏ i, alphaQ (Real.sqrt dK / 2) (stdH (cmL a₀ b₀ dK ha hdK lam hlam) (Fin 4 × n)) (sl (eP n I) i x)`. Use function extensionality and compare the values at `fun x => alphaQ_prod (eP n I) _ _ hHd _ x`.
-
-Rewrite using `[stdLat_prod (eP n I), img_prod, hα, gaussianVacuum_prod_blocks (eP n I), inter_prod (eP n I) _ _ hHd hH _ _ _ hSD.betaSemi _ hF hidx1]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[sl_powEquiv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_norm_power : LocNormPow := by
   intro a₀ b₀ c₀ dK ha hdK lam hlam hOK n _ _ h Λ hΛ hΛθ θ hθ p _ ι hN I _ _

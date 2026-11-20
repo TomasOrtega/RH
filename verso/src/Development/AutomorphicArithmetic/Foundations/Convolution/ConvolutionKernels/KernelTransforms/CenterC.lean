@@ -13,11 +13,11 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `tmul c x`. Use `⟨c.re • x, c.im • x, ?_⟩` and prove the remaining obligations. Rewrite using `[← TensorProduct.smul_tmul, ← TensorProduct.smul_tmul, ← TensorProduct.add_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply the tactic sequence `apply Complex.ext <;> simp`. Consider the case `add x y hx hy`. Take `⟨a, b, rfl⟩` from `hx`. Take `⟨c, d, rfl⟩` from `hy`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨a + c, b + d, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_add, TensorProduct.tmul_add]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 private theorem centerC_ex (A : Type) [Ring A] [Algebra ℝ A] (z : ℂ ⊗[ℝ] A) :
     ∃ a b : A, z = (1 : ℂ) ⊗ₜ[ℝ] a + Complex.I ⊗ₜ[ℝ] b := by
@@ -36,7 +36,7 @@ private theorem centerC_ex (A : Type) [Ring A] [Algebra ℝ A] (z : ℂ ⊗[ℝ]
     abel
 
 /- English proof (translation)
-Establish `h1` using `congrArg (fun w => TensorProduct.lid ℝ A (LinearMap.rTensor A Complex.reLm w)) h`. Establish `h2` using `congrArg (fun w => TensorProduct.lid ℝ A (LinearMap.rTensor A Complex.imLm w)) h`. Simplify using `at h1 h2`. Conclude with `⟨h1, h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem centerC_uniq (A : Type) [Ring A] [Algebra ℝ A] (a b c d : A)
     (h : (1 : ℂ) ⊗ₜ[ℝ] a + Complex.I ⊗ₜ[ℝ] b = (1 : ℂ) ⊗ₜ[ℝ] c + Complex.I ⊗ₜ[ℝ] d) :
@@ -47,13 +47,13 @@ private theorem centerC_uniq (A : Type) [Ring A] [Algebra ℝ A] (a b c d : A)
   exact ⟨h1, h2⟩
 
 /- English proof (translation)
-Introduce `A _ _ z`. Use `⟨centerC_ex A z, ?_⟩` and prove the remaining obligations. Introduce and unpack `a b rfl`. Simplify using `only [Subalgebra.mem_center_iff]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Establish `key : ∀ x : A, x * a = a * x ∧ x * b = b * x`. Introduce `x`. Establish `hx` using `h ((1 : ℂ) ⊗ₜ[ℝ] x)`. Simplify using `only [mul_add, add_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul] at hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `centerC_uniq A _ _ _ _ hx`. Conclude with `⟨fun x => (key x).1, fun x => (key x).2⟩`. Introduce and unpack `⟨ha, hb⟩ w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul c x`. Simplify using `only [mul_add, add_mul, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, ha x, hb x, mul_comm c Complex.I]`. Consider the case `add x y hx hy => rw [add_mul, mul_add (_ + _) x y, hx, hy]`.
+Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Tf.centerC :
     ∀ (A : Type) [Ring A] [Algebra ℝ A] (z : ℂ ⊗[ℝ] A), (∃ a b : A, z = (1 : ℂ) ⊗ₜ[ℝ] a + Complex.I ⊗ₜ[ℝ] b) ∧

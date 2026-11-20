@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.IwasawaDecompComplex
 namespace GlobalTheory.IwaInt
 
 /- English proof (translation)
-The claim follows from `iwasawaInt_of GlobalTheory.T.iwasawa_decomp_complexifiedMaxCompact`.
+A detailed English derivation is pending.
 -/
 theorem iwasawaInt : GlobalTheory.Dec.IwasawaInt := iwasawaInt_of GlobalTheory.T.iwasawa_decomp_complexifiedMaxCompact
 

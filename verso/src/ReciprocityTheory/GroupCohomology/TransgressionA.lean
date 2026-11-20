@@ -12,21 +12,19 @@ noncomputable section
 variable {R : Type u} [CommRing R] {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Establish `hb : TopologicalSpace.IsTopologicalBasis {s : Set X | IsClopen s}` using `by first`. Consider the case `exact isTopologicalBasis_isClopen`. Consider the case `exact isTopologicalBasis_clopen`. Use `choose yx hyx using hex`. Establish `hnb : ∀ x, ∃ C : Set X, IsClopen C ∧ x ∈ C ∧ C ⊆ {x' | P x' (yx x)}`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Take `⟨C, hC, hxC, hCs⟩` from `hb.exists_subset_of_mem_open (hyx x) (hP (yx x))`. Conclude with `⟨C, hC, hxC, hCs⟩`. Use `choose C hCc hxC hCs using hnb`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover C (fun x => (hCc x).isOpen) (fun x _ => Set.mem_iUnion.2 ⟨x, hxC x⟩)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ s : Finset X, ∃ ψ : X → Y, Continuous ψ ∧ ∀ x ∈ s, ∀ z ∈ C x, P z (ψ z)`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Conclude with `⟨fun _ => Classical.arbitrary Y, continuous_const, by simp⟩`. Introduce `a s _ ih`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ψ, hψc, hψ⟩` from `ih`. Use `⟨fun z => if z ∈ C a then yx a else ψ z, ?_, ?_⟩` and prove the remaining obligations. Apply `continuous_if` to reduce the goal to its premises. Introduce `x hx`. Establish `hfr : frontier {x | x ∈ C a} = ∅` using `(hCc a).frontier_eq`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hx` using `[hfr]`. Simplify using `at hx`. Conclude with `continuous_const.continuousOn`. Conclude with `hψc.continuousOn`. Introduce `x hx z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Distinguish the cases in `hza : z ∈ C a`. Simplify using `only`. Rewrite using `[if_pos hza]`. Conclude with `hCs a hza`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_neg hza]`. Break down `Finset.mem_insert.1 hx with rfl | hx'` into its components or cases. Conclude with `absurd hz hza`. Conclude with `hψ x hx' z hz`. Take `⟨ψ, hψc, hψ⟩` from `key t`.
-
-Use `⟨ψ, hψc, fun z => ?_⟩` and prove the remaining obligations. Take `⟨x, hx, hz⟩ : ∃ x ∈ t, z ∈ C x` from `by simpa using ht (Set.mem_univ z)`. Conclude with `hψ x hx z hz`.
+A detailed English derivation is pending.
 -/
 theorem exists_cont_select {X : Type u} [TopologicalSpace X] [CompactSpace X] [T2Space X]
     [TotallyDisconnectedSpace X] {Y : Type u} [TopologicalSpace Y] [DiscreteTopology Y] [Nonempty Y]
@@ -83,13 +81,11 @@ Both sides reduce to the same expression.
 @[simp] theorem cj_coe (N : Subgroup G) [N.Normal] (s : G) (n : N) : (cj N s n : G) = s⁻¹ * n * s := rfl
 
 /- English proof (translation)
-Establish `hact : Continuous (fun q : G × M.V => M.rho q.1 q.2)` using `M.cont`. Use `haveI : CompactSpace N := isCompact_iff_compactSpace.mp hNc.isCompact`. Establish `hcj : Continuous (fun p : G × N => cj N p.1 p.2)`. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Conclude with `(continuous_fst.inv.mul (continuous_subtype_val.comp continuous_snd)).mul continuous_fst`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hΦ : Continuous (fun p : G × N => M.rho p.1 (f (cj N p.1 p.2)) - f p.2 - (M.rho (p.2 : G) m - m))`. Use `((hact.comp (continuous_fst.prodMk (hf.comp hcj))).sub (hf.comp continuous_snd)).sub ?_` and prove the remaining obligations. Conclude with `(hact.comp ((continuous_subtype_val.comp continuous_snd).prodMk continuous_const)).sub continuous_const`. Establish `hO : IsOpen {p : G × N | M.rho p.1 (f (cj N p.1 p.2)) - f p.2 - (M.rho (p.2 : G) m - m) = 0}` using `hΦ.isOpen_preimage {0} (isOpen_discrete _)`. Rewrite using `[isOpen_iff_mem_nhds]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `s0 hs0`. Establish `hev : ∀ᶠ s in nhds s0, ∀ n ∈ (Set.univ : Set N), M.rho s (f (cj N s n)) - f n - (M.rho (n : G) m - m) = 0`. Apply `isCompact_univ.eventually_forall_of_forall_eventually` to reduce the goal to its premises. Introduce `n _`. Conclude with `hO.mem_nhds (sub_eq_zero.mpr (hs0 n))`.
-
-Use `filter_upwards [hev] with s hs n`. Conclude with `sub_eq_zero.mp (hs n (Set.mem_univ n))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isOpen_setOf_conj_eq (M : TRep R G) [DiscreteTopology M.V] (N : Subgroup G) [N.Normal]
     (hNc : IsClosed (N : Set G)) [CompactSpace G] (f : N → M.V) (hf : Continuous f) (m : M.V) :
@@ -117,27 +113,23 @@ theorem isOpen_setOf_conj_eq (M : TRep R G) [DiscreteTopology M.V] (N : Subgroup
   exact sub_eq_zero.mp (hs n (Set.mem_univ n))
 
 /- English proof (translation)
-Establish `: Nonempty M.V` using `⟨0⟩`. Take `⟨ψ, hψc, hψ⟩` from `exists_cont_select (fun s m => ∀ n : N, M.rho s (f (cj N s n)) - f n = M.rho n m - m) (isOpen_setOf_conj_eq M N hNc f hf) hinv`. Take `⟨r, hrc, hr1, hr⟩` from `groupSection_holds G N hNc`. Establish `hf1 : f 1 = 0`. Establish `e` using `hfc 1 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mul_one, OneMemClass.coe_one, map_one, Module.End.one_apply] at e`. Conclude with `(left_eq_add.1 e)`. Establish `hψ1 : ∀ n : N, M.rho n (ψ 1) = ψ 1` using `fun n => by`. Establish `e` using `hψ 1 n`. Establish `hc : cj N 1 n = n` using `Subtype.ext (by simp)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hc, map_one, Module.End.one_apply, sub_self]`. Conclude with `(sub_eq_zero.1 e.symm)`. Establish `hrσ : ∀ g, r ((r g : G)⁻¹ * g) = 1` using `fun g => by`. Establish `e` using `hr (r g)⁻¹ g`. Rewrite `e` using `[InvMemClass.coe_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, inv_mul_cancel]`. Use `set σ : G → G := fun g => (r g : G)⁻¹ * g with hσ`. Use `set y : G → M.V := fun g => f (r g) + M.rho (r g) (ψ (σ g)) - ψ 1 with hy`. Establish `hσn : ∀ (n : N) g, σ (n * g) = σ g` using `fun n g => by`. Simplify using `only [hσ, hr n g, Subgroup.coe_mul, mul_inv_rev]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Use `group`. Establish `h3 : ∀ (n : N) g, y (n * g) = f n + M.rho n (y g)` using `fun n g => by`. Simplify using `only [hy, hσn, hr n g, hfc, Subgroup.coe_mul, map_mul, Module.End.mul_apply, map_add, map_sub, hψ1]`. Normalize the expressions using the abelian group laws. Establish `h2 : ∀ g (n : N), y (g * n) = y g + M.rho g (f n)` using `fun g n => by set t := σ g with ht`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Set `n'' : N` to `⟨t * n * t⁻¹, (inferInstance : N.Normal).conj_mem n n.2 t⟩`. Establish `hg : (r g : G) * t = g` using `by simp [ht, hσ]`. Establish `e1 : g * n = ((r g * n'' : N) : G) * t`. Simplify using `only [Subgroup.coe_mul, n'']`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrgn : r (g * n) = r g * n''` using `by rw [e1, hr, hrσ g, mul_one]`. Establish `hσgn : σ (g * n) = t` using `by show ((r (g * n) : G))⁻¹ * (g * n) = t`. Rewrite using `[hrgn, e1]`. Use `group`. Establish `hc : cj N t n'' = n` using `Subtype.ext (by simp [n'']; group)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `hψ t n''`. Rewrite `e2` using `[hc]`. Establish `e3 : f n'' + M.rho n'' (ψ t) = M.rho t (f n) + ψ t`. Rewrite `e2` using `[sub_eq_sub_iff_add_eq_add]`. Rewrite using `[add_comm (f n''), ← e2]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hrg : M.rho g = M.rho (r g) * M.rho t` using `by rw [← map_mul, hg]`. Use `show f (r (g * n)) + M.rho (r (g * n)) (ψ (σ (g * n))) - ψ 1 = y g + M.rho g (f n)`. Rewrite using `[hrgn, hσgn, hfc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Subgroup.coe_mul, map_mul, Module.End.mul_apply, map_add]`.
-
-Normalize the expressions using the abelian group laws. Use `_ = f (r g) + M.rho (r g) (M.rho t (f n) + ψ t) - ψ 1 := by rw [e3]`. Use `_ = _ := by rw [map_add, hrg, Module.End.mul_apply, hy]; simp only [← ht]; abel`. Establish `hy1 : y 1 = 0` using `by simp [hy, hr1, hf1, hσ]`. Use `⟨y, ?_, fun n => by simpa [hy1] using h3 n 1, h2, h3⟩` and prove the remaining obligations.
-
-Establish `hr' : Continuous fun g => (r g : G)` using `continuous_subtype_val.comp hrc`. Conclude with `((hf.comp hrc).add (M.cont.comp (hr'.prodMk (hψc.comp (hr'.inv.mul continuous_id))))).sub continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_ext_cochain [CompactSpace G] [T2Space G] [TotallyDisconnectedSpace G]
     (M : TRep R G) [DiscreteTopology M.V] (N : Subgroup G) [N.Normal] (hNc : IsClosed (N : Set G))
@@ -211,19 +203,19 @@ structure InflD (M : TRep R G) (N : Subgroup G) (D : G → G → M.V) : Prop whe
   inv : ∀ a b (n : N), M.rho n (D a b) = D a b
 
 /- English proof (translation)
-Establish `hc : ∀ (c : G) (n : N), M.rho n (y c) = y c + M.rho c (f (cj N c n)) - f n`. Introduce `c n`. Establish `e : (n : G) * c = c * (cj N c n : G)` using `by rw [cj_coe]; group`. Establish `h` using `h3 n c`. Rewrite `h` using `[e, h2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.mp (Eq.trans (by abel) (sub_eq_zero.mpr h.symm))`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b n`. Simplify using `only [D1]`. Rewrite using `[h2 b n, ← mul_assoc, h2 (a * b) n]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, map_sub, map_mul, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws. Introduce `a b n`. Simplify using `only [D1]`. Establish `e : a * (n : G) * b = a * b * (cj N b n : G)` using `by rw [cj_coe]; group`.
+Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[e, h2 (a * b), h2 a n]`. Simplify using `only [map_mul, Module.End.mul_apply]`. Rewrite using `[hc b n]`. Simplify using `only [map_add, map_sub, map_mul, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b n`. Simplify using `only [D1, map_add, map_sub]`. Rewrite using `[hc (a * b) n, hc a n]`. Establish `e : (n : G) * a = a * (cj N a n : G)` using `by rw [cj_coe]; group`. Establish `e2 : M.rho n (M.rho a (y b)) = M.rho a (M.rho (cj N a n) (y b))`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, e, map_mul, Module.End.mul_apply]`. Establish `e3 : cj N b (cj N a n) = cj N (a * b) n`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [cj_coe]`. Use `group`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2, hc b (cj N a n), e3]`. Simplify using `only [map_add, map_sub, map_mul, Module.End.mul_apply]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem inflD_of_ext (M : TRep R G) (N : Subgroup G) [N.Normal] (f : N → M.V) (y : G → M.V)
     (h2 : ∀ g (n : N), y (g * n) = y g + M.rho g (f n))
@@ -268,7 +260,7 @@ variable (M : TRep R G) (N : Subgroup G) [N.Normal] (y : G → M.V) (hy1 : y 1 =
 include hy1 hD
 
 /- English proof (translation)
-Establish `h` using `hD.right a 1 n`. Simplify using `only [D1, one_mul, mul_one, hy1, map_zero] at h`. Conclude with `sub_eq_zero.mp (Eq.trans (by abel) (sub_eq_zero.mpr h.symm))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inflD_mul_right (a : G) (n : N) : y (a * n) = y a + M.rho a (y n) := by
   have h := hD.right a 1 n
@@ -276,7 +268,7 @@ theorem inflD_mul_right (a : G) (n : N) : y (a * n) = y a + M.rho a (y n) := by
   exact sub_eq_zero.mp (Eq.trans (by abel) (sub_eq_zero.mpr h.symm))
 
 /- English proof (translation)
-Establish `h` using `hD.left 1 a n`. Simplify using `only [D1, one_mul, hy1, map_one, Module.End.one_apply] at h`. Conclude with `sub_eq_zero.mp (Eq.trans (by abel) (sub_eq_zero.mpr h.symm))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inflD_mul_left (n : N) (a : G) : y (n * a) = y n + M.rho n (y a) := by
   have h := hD.left 1 a n
@@ -284,7 +276,7 @@ theorem inflD_mul_left (n : N) (a : G) : y (n * a) = y n + M.rho n (y a) := by
   exact sub_eq_zero.mp (Eq.trans (by abel) (sub_eq_zero.mpr h.symm))
 
 /- English proof (translation)
-Establish `h1` using `inflD_mul_right M N y hy1 hD s (cj N s n)`. Establish `h2` using `inflD_mul_left M N y hy1 hD n s`. Establish `he : s * (cj N s n : G) = (n : G) * s` using `by rw [cj_coe]; group`. Rewrite `h1` using `[he, h2]`. Conclude with `sub_eq_zero.mp (Eq.trans (by abel) (sub_eq_zero.mpr h1.symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inflD_conj (s : G) (n : N) : M.rho s (y (cj N s n)) - y n = M.rho n (y s) - y s := by
   have h1 := inflD_mul_right M N y hy1 hD s (cj N s n)
@@ -294,7 +286,7 @@ theorem inflD_conj (s : G) (n : N) : M.rho s (y (cj N s n)) - y n = M.rho n (y s
   exact sub_eq_zero.mp (Eq.trans (by abel) (sub_eq_zero.mpr h1.symm))
 
 /- English proof (translation)
-Use `⟨fun a n => ?_, fun a n => ?_⟩` and prove the remaining obligations. Rewrite using `[inflD_mul_right M N y hy1 hD a n, hz, map_zero, add_zero]`. Establish `h` using `inflD_conj M N y hy1 hD a n`. Simplify using `only [hz, map_zero, sub_zero] at h`. Conclude with `sub_eq_zero.mp h.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inflD_of_zero (hz : ∀ n : N, y n = 0) :
     (∀ a (n : N), y (a * n) = y a) ∧ ∀ a (n : N), M.rho n (y a) = y a := by

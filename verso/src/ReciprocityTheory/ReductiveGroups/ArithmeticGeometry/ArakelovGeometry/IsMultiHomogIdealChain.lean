@@ -11,9 +11,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo MvPolynomial
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Use `show (((Submodule.IsPrincipal.generator (W.comap (C : ℤ →+* MRing ι))).natAbs : ℕ) : MRing ι) ∈ W`. Establish `hg` using `Submodule.IsPrincipal.generator_mem (W.comap (C : ℤ →+* MRing ι))`. Establish `hn : (((Submodule.IsPrincipal.generator (W.comap (C : ℤ →+* MRing ι))).natAbs : ℕ) : ℤ) ∈ W.comap (C : ℤ →+* MRing ι)`. Take `⟨u, hu⟩ : Submodule.IsPrincipal.generator (W.comap (C : ℤ →+* MRing ι)) ∣ ((Submodule.IsPrincipal.generator (W.comap (C : ℤ →+* MRing ι))).natAbs : ℤ)` from `Int.dvd_natAbs.2 dvd_rfl`. Rewrite using `[hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mem_right u _ hg`. Establish `h` using `Ideal.mem_comap.1 hn`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem natCast_mem_of_charOf (W : Ideal (MRing ι)) : ((charOf W : ℕ) : MRing ι) ∈ W := by
   show (((Submodule.IsPrincipal.generator (W.comap (C : ℤ →+* MRing ι))).natAbs : ℕ) : MRing ι) ∈ W
@@ -29,9 +29,9 @@ theorem natCast_mem_of_charOf (W : Ideal (MRing ι)) : ((charOf W : ℕ) : MRing
   rwa [map_natCast] at h
 
 /- English proof (translation)
-Introduce `h0`. Establish `hp' : (p : ℤ) ∈ W.comap (C : ℤ →+* MRing ι)`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hpW`. Establish `hg0 : Submodule.IsPrincipal.generator (W.comap (C : ℤ →+* MRing ι)) = 0` using `Int.natAbs_eq_zero.1 h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `(Submodule.IsPrincipal.mem_iff_eq_smul_generator _).1 hp'`. Rewrite `hs` using `[hg0, smul_zero]`. Conclude with `hp (by exact_mod_cast hs)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charOf_ne_zero_of_mem {W : Ideal (MRing ι)} {p : ℕ} (hp : p ≠ 0)
     (hpW : (p : MRing ι) ∈ W) : charOf W ≠ 0 := by
@@ -44,11 +44,9 @@ theorem charOf_ne_zero_of_mem {W : Ideal (MRing ι)} {p : ℕ} (hp : p ≠ 0)
   exact hp (by exact_mod_cast hs)
 
 /- English proof (translation)
-Establish `hp' : (p : ℤ) ∈ W.comap (C : ℤ →+* MRing ι)`. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hpW`. Establish `hdvd` using `(Submodule.IsPrincipal.mem_iff_generator_dvd _).1 hp'`. Establish `hd : charOf W ∣ p` using `Int.natAbs_dvd_natAbs.2 hdvd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hp.eq_one_or_self_of_dvd _ hd with h1 | h1` into its components or cases. It suffices to derive a contradiction. Establish `hu : IsUnit (Submodule.IsPrincipal.generator (W.comap (C : ℤ →+* MRing ι)))` using `Int.isUnit_iff_natAbs_eq.2 h1`. Establish `h1m : (1 : ℤ) ∈ W.comap (C : ℤ →+* MRing ι)` using `(Submodule.IsPrincipal.mem_iff_generator_dvd _).2 hu.dvd`. Rewrite `h1m` using `[Ideal.mem_comap, map_one]`.
-
-Conclude with `hW.ne_top ((Ideal.eq_top_iff_one _).2 h1m)`. Conclude with `h1`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charOf_eq_of_mem {W : Ideal (MRing ι)} (hW : W.IsPrime) {p : ℕ} (hp : p.Prime)
     (hpW : (p : MRing ι) ∈ W) : charOf W = p := by
@@ -67,11 +65,11 @@ theorem charOf_eq_of_mem {W : Ideal (MRing ι)} (hW : W.IsPrime) {p : ℕ} (hp :
   · exact h1
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j using Fin.induction with`. Consider the case `zero => exact h0`. Consider the case `succ i ih`. Take `⟨S, hS, hSe⟩` from `ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨S ∪ {f i}, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `g (hg | hg)`. Conclude with `hS g hg`. Rewrite using `[Set.mem_singleton_iff.1 hg]`. Conclude with `⟨c i, (hj i).1⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hj i).2, hSe, Ideal.span_union]`.
+A detailed English derivation is pending.
 -/
 theorem isMultiHomogIdeal_chain {N : ℕ} {F : Fin (N + 1) → Ideal (MRing ι)} {f : Fin N → MRing ι}
     {c : Fin N → K → ℕ} (h0 : IsMultiHomogIdeal (F 0))
@@ -89,7 +87,7 @@ theorem isMultiHomogIdeal_chain {N : ℕ} {F : Fin (N + 1) → Ideal (MRing ι)}
     · rw [(hj i).2, hSe, Ideal.span_union]
 
 /- English proof (translation)
-Introduce `j`. Proceed by induction on `j using Fin.induction with`. Consider the case `zero => exact le_rfl`. Consider the case `succ i ih => rw [hj i]`. Conclude with `ih.trans le_sup_left`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem le_chain {N : ℕ} {F : Fin (N + 1) → Ideal (MRing ι)} {f : Fin N → MRing ι}
     (hj : ∀ j : Fin N, F j.succ = F j.castSucc ⊔ Ideal.span {f j}) :
@@ -100,14 +98,14 @@ theorem le_chain {N : ℕ} {F : Fin (N + 1) → Ideal (MRing ι)} {f : Fin N →
   | succ i ih => rw [hj i]; exact ih.trans le_sup_left
 
 /- English proof (translation)
-Establish `: Subsingleton (MRing ι ⧸ (⊤ : Ideal (MRing ι)))` using `Ideal.Quotient.subsingleton_iff.2 rfl`. Conclude with `Nat.card_eq_one_iff_unique.2 ⟨inferInstance, ⟨0⟩⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_mPiece_top (a : K → ℕ) : Nat.card (mPiece (⊤ : Ideal (MRing ι)) a) = 1 := by
   have : Subsingleton (MRing ι ⧸ (⊤ : Ideal (MRing ι))) := Ideal.Quotient.subsingleton_iff.2 rfl
   exact Nat.card_eq_one_iff_unique.2 ⟨inferInstance, ⟨0⟩⟩
 
 /- English proof (translation)
-The claim follows from `| 0, F, f, c, q, _, hlast, _, _ => by have : F 0 = ⊤ := hlast rw [this, card_mPiece_top, Fin.prod_univ_zero] | N + 1, F, f, c, q, h0, hlast, hj, ha => by have ih := card_mPiece_chain a N (fun j => F j.succ) (fun j => f j.succ) (fun j => c j.succ) (fun j => q j.succ) (isMultiHomog …`.
+A detailed English derivation is pending.
 -/
 theorem card_mPiece_chain (a : K → ℕ) : ∀ (N : ℕ) (F : Fin (N + 1) → Ideal (MRing ι))
     (f : Fin N → MRing ι) (c : Fin N → K → ℕ) (q : Fin N → Ideal (MRing ι)),

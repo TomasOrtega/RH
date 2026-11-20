@@ -18,15 +18,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TorsionMapInj
 
 /- English proof (translation)
-Introduce `hL hL₂ R _ _ I hR D A G _ _ hG U F _ _ _ n hn p p' x hp hp'`. Take `⟨w₀, hw₀⟩` from `U.ext`. Take `⟨hx, H⟩` from `hp w₀ hw₀`. Take `⟨-, H'⟩` from `hp' w₀ hw₀`. Take `⟨θ, hθ, hact⟩` from `GlobalTheory.TorsionTheta.exists_theta_acts hL.kerPow _ A F (jFK (R := R) F) n hn x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, Hw⟩` from `H θ hθ`. Take `⟨w', hw', Hw'⟩` from `H' θ hθ`. Take `⟨E₁, E₂⟩` from `GlobalTheory.T.expansion_extensionField_total hL hL₂ R I hR D A G hG U F n hn w₀ hw₀`. Establish `key : ∀ s : Fam D.toPre F n, ∃ s' : Fam D.toPre F n, PhiRel D.toPre F n p w s s' ∧ PhiRel D.toPre F n p' w' s s'` using `fun s => by`. Take `⟨t, ht⟩` from `E₁ s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t', ht'⟩` from `hact t`. Take `⟨s', hs'⟩` from `E₂ t'`. Conclude with `⟨s', Hw t t' s s' ht hs' ht', Hw' t t' s s' ht hs' ht'⟩`. Establish `hB` using `D.tau_bimult`. Take `⟨z, hz⟩` from `GlobalTheory.lattice_part_congr_of_phiRel hL.globalFns hL₂.secTwist R D.toPre hB F n hn p p' w w' hw hw' key`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w₂, hw₂, Hs⟩` from `GlobalTheory.QkShift.qk_shift hL.globalFns R D.toPre hB F n hn p (GlobalTheory.TorusExt.qkShift hB p z) z (GlobalTheory.TorusExt.iota hB F z) rfl (GlobalTheory.TorusExt.isIota_iota hB z) ((GlobalTheory.TorusExt.isAdd_iff_eq _ _ _).2 rfl) w hw`. Establish `key₂ : ∀ s : Fam D.toPre F n, ∃ s' : Fam D.toPre F n, PhiRel D.toPre F n (GlobalTheory.TorusExt.qkShift hB p z) w₂ s s' ∧ PhiRel D.toPre F n p' w' s s'` using `fun s => by`. Take `⟨s', h, h'⟩` from `key s`. Conclude with `⟨s', Hs s s' h, h'⟩`. Establish `hb` using `GlobalTheory.T.abelianPart_eq_of_thetaOperator_eq hL.globalFns hL₂.secTwist R D.toPre hB F n hn _ p' w₂ w' hw₂ hw' key₂ hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hg` using `GlobalTheory.T.torsionPair_eq_of_thetaOperator_rel hL.globalFns hL₂.secTwist R D.toPre hB F n hn _ p' w₂ w' hw₂ hw' key₂ hz hb`. Conclude with `(GlobalTheory.TorusExt.equiv_iff hB p p').2 ⟨z, hz, hg.symm⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem qkToAk_injective : Laws → Laws2 → QkToAkInjSt := by
   intro hL hL₂ R _ _ I hR D A G _ _ hG U F _ _ _ n hn p p' x hp hp'

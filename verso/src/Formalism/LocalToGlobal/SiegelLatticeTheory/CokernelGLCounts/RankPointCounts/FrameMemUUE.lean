@@ -21,9 +21,7 @@ variable {D : Formalism.BasicNotions.D7} (Zd : LocDat D) {u u' : D.what₂.Word}
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-Unfold `TermLoc.sgnP`. Use `split`. Name the introduced variables `sg _`. Rewrite using `[← map_mul, Prod.mk_mul_mk, Formalism.L2.SG.Pf.FibD.neg_one_pow_sq, one_mul]`. Conclude with `map_one sg.e.symm`.
-
-Conclude with `one_mul 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localSign_sq (p : PlF D) (a : Fin (D.R.rS + 1)) : TermLoc.sgnP D p a * TermLoc.sgnP D p a = 1 := by
   unfold TermLoc.sgnP
@@ -34,22 +32,18 @@ theorem localSign_sq (p : PlF D) (a : Fin (D.R.rS + 1)) : TermLoc.sgnP D p a * T
   · exact one_mul 1
 
 /- English proof (translation)
-The claim follows from `IsUnit.mul ⟨Units.mkOfMulEqOne _ _ (localSign_sq p a), rfl⟩ (Formalism.L2.SG.Pf.StabShape.frFac_unit Zd.δ Zd.M (Zd.agree p) a)`.
+A detailed English derivation is pending.
 -/
 theorem hu_all (p : PlF D) (a : Fin (D.R.rS + 1)) : IsUnit (TermLoc.sgnP D p a * frFac Zd.δ p a) :=
   IsUnit.mul ⟨Units.mkOfMulEqOne _ _ (localSign_sq p a), rfl⟩
     (Formalism.L2.SG.Pf.StabShape.frFac_unit Zd.δ Zd.M (Zd.agree p) a)
 
 /- English proof (translation)
-Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Rewrite using `[frame_lastG]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `show G.fl.z ∈ (UU Λ F (liftF G) : Set (VS D).V)`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Treat this case separately.
 
-Conclude with `Submodule.mem_sup_right (Submodule.subset_span rfl)`. Consider the case `cast i`. Rewrite using `[frame_csG]`. Use `haveI := hΛ`. Take `⟨s, hs, hsv⟩` from `Formalism.L2.SG.Pf.exists_smul_mem Λ (G.fl.e i)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hX : s • G.fl.e i ∈ UU Λ F (liftF G)`. Use `Submodule.mem_sup_left (Submodule.mem_sup_right ⟨hsv, ?_⟩)` and prove the remaining obligations. Use `show s • G.fl.e i ∈ (Xsp (liftF G) : Set (VS D).V)`. Conclude with `Submodule.smul_of_tower_mem _ s (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hs' : ((s : D.host.E)) ≠ 0` using `by exact_mod_cast hs`.
-
-Establish `e : G.fl.e i = ((s : D.host.E))⁻¹ • (s • G.fl.e i)`. Rewrite using `[← algebraMap_smul (R := 𝓞 D.host.E) D.host.E s (G.fl.e i), smul_smul]`. Use `show G.fl.e i = (((s : D.host.E))⁻¹ * algebraMap (𝓞 D.host.E) D.host.E s) • G.fl.e i`. Rewrite using `[show algebraMap (𝓞 D.host.E) D.host.E s = (s : D.host.E) from rfl, inv_mul_cancel₀ hs', one_smul]`. Rewrite using `[e]`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hX)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_mem_UUE {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : Submodule.IsLattice D.host.E Λ) {T T' : D.host.E}
     (F : LFlag (VS D) D.R.rS T) (G : LFlag (VS D) D.R.rS T') (b : Fin (D.R.rS + 1)) :

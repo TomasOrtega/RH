@@ -13,7 +13,7 @@ noncomputable section
 namespace TubeCollarComparison
 
 /- English proof (translation)
-Establish `h1 : ContDiffAt ℝ 2 (fun z => ‖eval z P‖ ^ 2) (A *ᵥ x)` using `(((TubeFormComparison.analyticAt_eval P _).contDiffAt (n := 2)).restrict_scalars ℝ).norm_sq ℝ`. Establish `hv : ContDiffAt ℝ 2 (logAbsSq P) (A *ᵥ x)` using `h1.log (pow_ne_zero 2 (norm_ne_zero_iff.2 hP))`. Establish `hA : ContDiff ℝ 2 (fun x : Fin n → ℂ => A *ᵥ x)` using `(LinearMap.toContinuousLinearMap (Matrix.mulVecLin A)).contDiff.restrict_scalars ℝ`. Conclude with `((hv.comp x hA.contDiffAt).pow 2).div_const 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffAt_logSq_comp {n m : ℕ} (A : Matrix (Fin m) (Fin n) ℂ) (P : MvPolynomial (Fin m) ℂ)
     (x : Fin n → ℂ) (hP : eval (A *ᵥ x) P ≠ 0) :
@@ -26,7 +26,7 @@ theorem contDiffAt_logSq_comp {n m : ℕ} (A : Matrix (Fin m) (Fin n) ℂ) (P : 
   exact ((hv.comp x hA.contDiffAt).pow 2).div_const 2
 
 /- English proof (translation)
-The claim follows from `|maDens (fun k => vecCons g (fun _ => euclPot) k ∘ s) y| ≤ 3 ^ (d + 1) * c * maDens (fun _ : Fin (d + 1) => euclPot ∘ s) y := by set Jc := ReciprocityTheory.AnForm.A.jacC s y with hJc set B := Jc.map (starRingEnd ℂ) with hB have hBJ : Bᴴ = Jcᵀ := by ext a b simp [hB] have hE2 : C …`.
+A detailed English derivation is pending.
 -/
 theorem abs_maDens_collar_le {n d : ℕ} (g : (Fin n → ℂ) → ℝ) (s : (Fin (d + 1) → ℂ) → Fin n → ℂ)
     (y : Fin (d + 1) → ℂ) (hs : AnalyticAt ℂ s y) (hg : ContDiffAt ℝ 2 g (s y)) {c : ℝ}
@@ -98,33 +98,27 @@ end TubeCollarComparison
 open TubeFormComparison TubeCollarComparison in
 
 /- English proof (translation)
-Introduce `n d J A P R _hJ _hdim hA _hP`. Use `set g : (Fin n → ℂ) → ℝ := fun x => logAbsSq P (A *ᵥ x) ^ 2 / 2 with hgdef`. Use `set U : Set (Fin n → ℂ) := {x | eval (A *ᵥ x) P ≠ 0} with hUdef`. Use `set K : Set (Fin n → ℂ) := Metric.closedBall 0 R ∩ {x | Real.exp (-Real.exp 1) ≤ ‖eval (A *ᵥ x) P‖ ^ 2} with hKdef`. Establish `hcont : Continuous fun x : Fin n → ℂ => eval (A *ᵥ x) P` using `(MvPolynomial.continuous_eval P).comp (LinearMap.toContinuousLinearMap (Matrix.mulVecLin A)).continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : IsOpen U` using `isOpen_ne_fun hcont continuous_const`. Establish `hK : IsCompact K` using `(isCompact_closedBall 0 R).inter_right (isClosed_le continuous_const (hcont.norm.pow 2))`. Establish `hKU : K ⊆ U` using `fun x hx h0 => by`. Establish `h : Real.exp (-Real.exp 1) ≤ ‖eval (A *ᵥ x) P‖ ^ 2` using `hx.2`. Rewrite `h` using `[h0, norm_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Combine the linear relations using `[Real.exp_pos (-Real.exp 1), show (0 : ℝ) ^ 2 = 0 by norm_num]`. Establish `hgU : ContDiffOn ℝ 2 g U` using `fun x hx => (contDiffAt_logSq_comp A P x hx).contDiffWithinAt`. Take `⟨c, hc, hb⟩` from `exists_hessC_bound (fun _ : Fin 1 => g) K hK (fun _ => U) (fun _ => hU) (fun _ => hKU) (fun _ => hgU)`. Establish `hC : 0 ≤ (3 : ℝ) ^ (d + 1) * c` using `by positivity`. Use `⟨3 ^ (d + 1) * c, fun y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Distinguish the cases in `hy : y ∈ {y | -Real.exp 1 ≤ logAbsSq P y}`. Use `swap`. Rewrite using `[Set.indicator_of_notMem hy]`. Apply the tactic sequence `exact mul_nonneg hC (finsum_nonneg fun _ => finsum_nonneg fun _ => by split_ifs <;> positivity)`. Rewrite using `[Set.indicator_of_mem hy]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `tubeDens chartAbsDens sheetSum`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA y), finsum_mem_eq_finite_toFinset_sum _ (IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA y), Finset.mul_sum]`. Use `Finset.sum_le_sum fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`. Take `⟨hxZ, hxy⟩` from `hx`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify by unfolding definitions. Extract witnesses or component facts from the available result.
 
-Substitute `hxy` using the available equality. Use `split_ifs with hsx`. Use `swap`. Simplify using the standard rewrite rules. Simplify using `only`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Take `⟨V, hV, hyV, hsd, hsx', hsec, -⟩` from `hsx.choose_spec`. Use `set s := hsx.choose with hsdef`. Use `set f := (Metric.closedBall (0 : Fin n → ℂ) R).indicator fun x => tubeWeight P (A *ᵥ x) with hfdef`. Distinguish the cases in `hf : f x = 0`. Rewrite using `[hf, zero_mul, abs_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `mul_nonneg hC (abs_nonneg _)`. Establish `hxB : x ∈ Metric.closedBall (0 : Fin n → ℂ) R`. Assume the negation of the conclusion as `h`. Conclude with `hf (Set.indicator_of_notMem h _)`. Establish `hv1 : logAbsSq P (A *ᵥ x) ≤ -1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Assume the negation of the conclusion as `h`. Conclude with `hf (by simp [hfdef, Set.indicator_of_mem hxB, tubeWeight, h])`. Establish `hP : eval (A *ᵥ x) P ≠ 0`. Introduce `h0`. Simplify using `[logAbsSq, h0] at hv1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hxK : x ∈ K`. Use `⟨hxB, ?_⟩` and prove the remaining obligations. Establish `h2 : 0 < ‖eval (A *ᵥ x) P‖ ^ 2` using `by positivity`. Establish `h3` using `Real.exp_le_exp.2 (show -Real.exp 1 ≤ logAbsSq P (A *ᵥ x) from hy)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[logAbsSq, Real.exp_log h2]`. Then use the resulting hypothesis. Establish `hw : |f x| ≤ 1`. Rewrite using `[hfdef, Set.indicator_of_mem hxB]`. Simplify using `only [tubeWeight, if_pos hv1]`. Rewrite using `[abs_of_nonneg (by positivity)]`.
-
-Conclude with `inv_le_one_of_one_le₀ (by nlinarith)`. Establish `hsa : AnalyticAt ℂ s (A *ᵥ x)` using `analyticAt_pi_iff.2 fun i => ReciprocityTheory.AnForm.Osgood.osgood _ V (fun z => s z i) hV (differentiableOn_pi.1 hsd i) _ hyV`. Establish `hg2 : ContDiffAt ℝ 2 g (s (A *ᵥ x))`. Rewrite using `[hsx']`. Conclude with `contDiffAt_logSq_comp A P x hP`.
-
-Establish `hbx` using `hb 0 (s (A *ᵥ x)) (by rw [hsx']; exact hxK)`. Establish `key` using `abs_maDens_collar_le g s (A *ᵥ x) hsa hg2 hbx`. Rewrite using `[abs_mul, abs_mul, Set.indicator_of_mem hxB, abs_one, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul]`.
-
-Conclude with `mul_le_mul_of_nonneg_left (le_abs_self _) hC`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TubeCollarCompare.proof : TubeCollarCompare.Statement := by
   intro n d J A P R _hJ _hdim hA _hP

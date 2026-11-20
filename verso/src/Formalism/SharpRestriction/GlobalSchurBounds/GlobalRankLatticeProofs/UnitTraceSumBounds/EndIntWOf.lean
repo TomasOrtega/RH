@@ -21,9 +21,7 @@ def EndIntWG : Prop :=
     IntegralW (g.mulBy α.1 (Xv ()) : MvPowerSeries Unit ℂ_[p])
 
 /- English proof (translation)
-Introduce `hE p _ cc δ g hA h5 hI hM α hα`. Establish `hp2 : p ≠ 2` using `by omega`. Establish `hW : α ∈ W2pair p`. Rewrite using `[← hO p g.lam hp2 hI]`. Conclude with `hα`.
-
-Conclude with `H p g hA.2.2.2.2 hM α hW (hE p cc δ g hA α hα)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem endIntW_of (H : EndIntWG) (D : D7) (hO : okpInert D) : StatementEndomorphismIntegralWitt D := by
   intro hE p _ cc δ g hA h5 hI hM α hα

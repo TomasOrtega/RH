@@ -19,7 +19,7 @@ namespace GlobalTheory.SiegelDens
 variable {g : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Complex.im_sum, Complex.re_sum, Finset.sum_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem im_congr (A X : Matrix (Fin g) (Fin g) ℝ) (τ : Matrix (Fin g) (Fin g) ℂ) :
     ((A.map (fun t : ℝ => (t : ℂ)) * τ * (A.map (fun t : ℝ => (t : ℂ)))ᵀ
@@ -30,7 +30,7 @@ theorem im_congr (A X : Matrix (Fin g) (Fin g) ℝ) (τ : Matrix (Fin g) (Fin g)
   simp [Matrix.mul_apply, Complex.im_sum, Complex.re_sum, Finset.sum_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Finset.sum_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem star_congr (A : Matrix (Fin g) (Fin g) ℝ) (Z : Matrix (Fin g) (Fin g) ℂ) :
     (A.map (fun t : ℝ => (t : ℂ)) * Z * (A.map (fun t : ℝ => (t : ℂ)))ᵀ).map star
@@ -39,7 +39,7 @@ theorem star_congr (A : Matrix (Fin g) (Fin g) ℝ) (Z : Matrix (Fin g) (Fin g) 
   simp [Matrix.mul_apply, Finset.sum_mul]
 
 /- English proof (translation)
-Establish `hT : IsUnit Bᵀ.det` using `by rwa [Matrix.det_transpose]`. Establish `e : (B * Y * Bᵀ)⁻¹ * (B * Z * Bᵀ) * (B * Y * Bᵀ)⁻¹ * (B * W * Bᵀ) = Bᵀ⁻¹ * ((Y⁻¹ * Z * Y⁻¹ * W) * Bᵀ)`. Simplify using `only [Matrix.mul_inv_rev, Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hB, Matrix.mul_nonsing_inv_cancel_left _ _ hT]`. Rewrite using `[e, Matrix.trace_mul_comm, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hT, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_congr (B Y Z W : Matrix (Fin g) (Fin g) ℂ) (hB : IsUnit B.det) :
     ((B * Y * Bᵀ)⁻¹ * (B * Z * Bᵀ) * (B * Y * Bᵀ)⁻¹ * (B * W * Bᵀ)).trace
@@ -52,9 +52,9 @@ theorem trace_congr (B Y Z W : Matrix (Fin g) (Fin g) ℂ) (hB : IsUnit B.det) :
   rw [e, Matrix.trace_mul_comm, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hT, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `g A X τ Z hA`. Establish `hB : IsUnit (A.map (fun t : ℝ => (t : ℂ))).det`. Establish `h` using `(Matrix.isUnit_iff_isUnit_det A).1 hA`. Establish `e : (A.map (fun t : ℝ => (t : ℂ))).det = ((A.det : ℝ) : ℂ)` using `(Complex.ofRealHom.map_det A).symm`. Rewrite using `[e, isUnit_iff_ne_zero, Complex.ofReal_ne_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.ne_zero`. Unfold `sdens`. Rewrite using `[im_congr, star_congr, trace_congr _ _ _ _ hB]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sdens_congr : ∀ (g : ℕ) (A X : Matrix (Fin g) (Fin g) ℝ) (τ Z : Matrix (Fin g) (Fin g) ℂ), IsUnit A → sdens (A.map (fun t : ℝ => (t : ℂ)) * τ * (A.map (fun t : ℝ => (t : ℂ)))ᵀ + X.map (fun t : ℝ => (t : ℂ))) (A.map (fun t : ℝ => (t : ℂ)) * Z * (A.map (fun t : ℝ => (t : ℂ)))ᵀ) = sdens τ Z := by
   intro g A X τ Z hA

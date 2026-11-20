@@ -22,7 +22,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChainPts.SysB.FormAct
 
 /- English proof (translation)
-Establish `e : resM F (inf_le_left : V ⊓ V' ≤ V) (u.app V σ) = ∑ j, (resG X inf_le_right (c j) * crd hs σ j) • hs.basis (inf_le_right : V ⊓ V' ≤ V') j`. Rewrite using `[← app_resM, ← (hs.basis (inf_le_right : V ⊓ V' ≤ V')).sum_repr (resM F inf_le_left σ)]`. Simplify using `only [map_sum, Scheme.Modules.Hom.app_smul, GlobalTheory.VB.IsFrame.basis_apply, app_resM, hu, resM_smul, smul_smul]`. Conclude with `Finset.sum_congr rfl fun j _ => congrArg (· • resM F inf_le_right (s j)) (mul_comm _ _)`. Rewrite using `[crd, e, Module.Basis.repr_sum_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_app {X : Scheme.{0}} {F : X.Modules} {r : ℕ} {V V' : X.Opens} {s : Fin r → Γ(F, V')} (hs : GlobalTheory.VB.IsFrame s)
     (u : F ⟶ F) (c : Fin r → Γ(X, V')) (hu : ∀ i, u.app V' (s i) = c i • s i) (σ : Γ(F, V)) (i : Fin r) :
@@ -35,7 +35,7 @@ theorem crd_app {X : Scheme.{0}} {F : X.Modules} {r : ℕ} {V V' : X.Opens} {s :
   rw [crd, e, Module.Basis.repr_sum_self]
 
 /- English proof (translation)
-Apply the tactic sequence `have : epsMul (1 : k) = RingHom.id _ := by ext z <;> simp [epsMul]`. Rewrite using `[this]`. Conclude with `Spec.map_id _`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_epsMul_one (k : Type) [CommRing k] : spMap (epsMul (1 : k)) = 𝟙 _ := by
   have : epsMul (1 : k) = RingHom.id _ := by ext z <;> simp [epsMul]
@@ -48,7 +48,7 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections (TanM tv)
 open scoped MonObj
 
 /- English proof (translation)
-Set `U : Fin r → TanM y t.G` to `fun i => tanOf (hu.1 (x i).1 (x i).2).1`. Set `e` to `Equiv.ofBijective x hx`. Take `⟨d, hd, -⟩` from `GlobalTheory.TanSec.Frame.exists_unique_coords hu (tanOf hv)`. Establish `key : ∑ i, d (e i) • U i = ∑ q, d q • tanOf (hu.1 q.1 q.2).1` using `e.sum_comp fun q => d q • tanOf (hu.1 q.1 q.2).1`. Conclude with `⟨fun i => d (e i), (comb_iff U _ _).2 (congrArg (fun m => (tv m).left) (hd.trans key.symm))⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_coeff {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
     {X : Scheme.{0}} {t : SAB H X} {l : Level H} {c : Coeff l} {k : Type} [Field k] {y : Sp k ⟶ X} {r : ℕ}
@@ -65,17 +65,17 @@ theorem exists_coeff {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Rec
 end Tan
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ Z O _ _ _ B h r x hx hopn F s k U t φt hφt hact lam hl a σ v v' hv'`. Take `⟨a₀, ha₀⟩` from `GlobalTheory.TestPts.exists_chart_of_maximal h hopn (η := genericPoint B.X) fun y hy => (hy.antisymm ((genericPoint_spec B.X).specializes (Set.mem_univ y))).eq`. Set `κ : U.Bp →+* GlobalTheory.GroupBplus.Kbar B.X` to `algebraMap _ _`. Establish `hκ : Function.Injective κ` using `Subtype.val_injective`. Establish `hw : ⊤ ≤ (spMap κ ≫ U.toX) ⁻¹ᵁ (U.1 ⊓ h ⁻¹ᵁ (Z.U a₀).1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[U.val_toX]`. Introduce `q _`. Establish `hg : genericPoint B.X ∈ U.1` using `((genericPoint_spec B.X).mem_open_set_iff U.1.isOpen).2 (by simpa using U.2.2)`. Establish `hq : GlobalTheory.GroupBplus.genPt B.X q ⤳ genericPoint B.X`. Establish `: GlobalTheory.GroupBplus.genPt B.X q ∈ Set.range (B.X.fromSpecStalk (genericPoint B.X))` using `⟨_, (Scheme.Hom.comp_apply _ _ _).symm⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Conclude with `hq.mem_open (U.1 ⊓ h ⁻¹ᵁ (Z.U a₀).1).isOpen ⟨hg, ha₀⟩`. Take `⟨φ, hφ⟩` from `exists_fromSpec (Z.U a₀).2 ((spMap κ ≫ U.toX) ≫ h) fun q hq => (hw hq).2`. Establish `hφ' : spMap φ ≫ Z.chart a₀ = spMap κ ≫ U.toX ≫ h` using `hφ.trans (Category.assoc ..)`. Establish `f` using `chart_frame Z (a := a₀) hφ'`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc] at f`. Establish `hT` using `isTan_map κ rfl (GlobalTheory.LocM.TanPair.isTanAtG_lieG hφt v)`. Take `⟨cf, hcf⟩` from `exists_coeff f hx hT`. Establish `h₂` using `(GlobalTheory.OmegaHT.Transpose.comb_op f hcf 1 (H.bar a)).2`. Rewrite `h₂` using `[spMap_epsMul_one, Category.id_comp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (spMap (dualMap κ) ≫ v.1.left ≫ φt) ≫ ((Y Z.i).t.act.act (H.bar a)).left = spMap (dualMap κ) ≫ v'.1.left ≫ φt`. Rewrite using `[hv', Over.comp_left, Category.assoc, Category.assoc, Category.assoc, hact]`. Rewrite `h₂` using `[e]`. Apply `hκ` to reduce the goal to its premises. Rewrite using `[hl _ v _ κ a₀ φ hφ' cf hcf, hl _ v' _ κ a₀ φ hφ' _ h₂]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e₁` using `crd_app (k.2.2.1.frame a₀) (F.ρ a : F.V ⟶ F.V) (fun i => GlobalTheory.OmegaHT.Transpose.eig h 1 (H.bar a) a₀ (x i)) (fun i => by rw [GlobalTheory.OmegaHT.Transpose.eig, map_one, one_mul]; exact k.2.2.2 a₀ i a) σ i`. Take `⟨ev, hev⟩` from `GlobalTheory.ChainPts.LatUniq.exists_ev (le_top.trans (le_refl _) : ⊤ ≤ (spMap κ ≫ U.toX) ⁻¹ᵁ ⊤)`. Rewrite using `[e₁, valF_mul hw, GlobalTheory.OmegaHT.Transpose.valF_eig 1 _ _ hφ _ hw, hev, map_one]`. Conclude with `(mul_assoc _ _ _).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formActSt : FormActSt := by
   intro E _ _ _ H Dw Xo p W Y i₀ Z O _ _ _ B h r x hx hopn F s k U t φt hφt hact lam hl a σ v v' hv'

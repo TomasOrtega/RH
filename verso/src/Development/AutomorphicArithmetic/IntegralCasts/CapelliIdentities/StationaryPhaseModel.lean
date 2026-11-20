@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups
 import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ImportsTerMore
 
 /- English proof (translation)
-Introduce `Γ k _ _ n U a a' hirr h hconj`. Use `UpperTheory.Reformulated.B.G5.matIrr_conj h (fun g hg => ?_) hirr` and prove the remaining obligations. Rewrite using `[hconj g hg, mul_assoc, mul_assoc, Units.inv_mul, mul_one, ← mul_assoc, Units.inv_mul, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.StationaryPhaseModel.matIrr_conj :
     ∀ {Γ k : Type} [inst : Group Γ] [inst_1 : Field k] {n : ℕ} {U : Subgroup Γ} {a a' : Γ → Matrix (Fin n) (Fin n) k},

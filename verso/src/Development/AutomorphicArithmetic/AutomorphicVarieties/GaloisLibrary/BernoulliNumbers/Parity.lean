@@ -4,15 +4,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 open Finset UpperTheory.V.Bern
 
 /- English proof (translation)
-Introduce `Ω _ _ N _ k χ`. Establish `hne : (-1 : Ω) ≠ 1` using `by norm_num`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hval : χ.toUnitHom (-1) = 1 ↔ χ (-1) = 1`. Rewrite using `[← Units.val_inj, MulChar.coe_toUnitHom, Units.val_neg, Units.val_one, Units.val_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show ((-1 : (ZMod N)ˣ) ∈ χ.toUnitHom.ker ↔ Even k) ↔ _`. Rewrite using `[MonoidHom.mem_ker, hval]`. Break down `Nat.even_or_odd k with hk | hk` into its components or cases. Rewrite using `[hk.neg_one_pow]`. Simplify using `[hk]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk.neg_one_pow]`. Establish `hk' : ¬ Even k` using `Nat.not_even_iff_odd.mpr hk`. Break down `χ.even_or_odd with h | h` into its components or cases. Establish `h1 : χ (-1) = 1` using `h`. Simplify using `[hk', h1, hne.symm]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : χ (-1) = -1` using `h`. Simplify using `[hk', h1, hne]`. Establish `hd` using `DirichletCharacter.conductor_dvd_level χ`. Establish `h` using `DirichletCharacter.changeLevel_eq_cast_of_dvd χ.primitiveCharacter hd (-1)`. Rewrite `h` using `[DirichletCharacter.changeLevel_primitiveCharacter, Units.val_neg, Units.val_one, ZMod.cast_neg hd, ZMod.cast_one hd]`.
-
-Conclude with `h.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Bern.b_parity :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] {N : ℕ} [NeZero N] (k : ℕ) (χ : DirichletCharacter Ω N), (χ.toUnitHom.ker ∈ parKer N k ↔ χ (-1) = (-1) ^ k) ∧ (χ.primitiveCharacter (-1) = χ (-1)) := by

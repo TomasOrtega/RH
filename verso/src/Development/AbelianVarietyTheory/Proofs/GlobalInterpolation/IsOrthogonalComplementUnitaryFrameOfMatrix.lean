@@ -12,7 +12,7 @@ open scoped ENNReal TensorProduct
 namespace GlobalTheory.PerpFrameOfMatrix
 
 /- English proof (translation)
-Simplify using `[ActionCoordinates.herm, ActionCoordinates.sgn, Formalism.UG.Jpq, fromBlocks_mulVec, dotProduct, Fintype.sum_sum_type, mul_comm, neg_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_eq_dot {P Q : ℕ} (u v : ActionCoordinates.Wsp P Q) :
     ActionCoordinates.herm u v = star v ⬝ᵥ Formalism.UG.Jpq P Q *ᵥ u := by
@@ -20,15 +20,15 @@ theorem herm_eq_dot {P Q : ℕ} (u v : ActionCoordinates.Wsp P Q) :
     mul_comm, neg_mulVec]
 
 /- English proof (translation)
-Introduce `P Q P' Q' hc x hx C h1 h2 ι hι`. Establish `hx' : star x ⬝ᵥ Formalism.UG.Jpq P Q *ᵥ x ≠ 0`. Rewrite using `[← herm_eq_dot, ActionCoordinates.herm_self]`. Conclude with `hx` after adjusting the coercions. Establish `hperp : ∀ v, star x ⬝ᵥ Formalism.UG.Jpq P Q *ᵥ (C *ᵥ v) = 0` using `fun v => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : star x ᵥ* (Formalism.UG.Jpq P Q * C) = 0`. Use `congrArg star h2` as an intermediate fact. Rewrite `this` using `[star_mulVec, conjTranspose_mul, conjTranspose_conjTranspose, GlobalTheory.UnfoldingCompare.Jpq_conjTranspose, star_zero]`. Then use the resulting hypothesis. Rewrite using `[mulVec_mulVec, dotProduct_mulVec, h3, zero_dotProduct]`. Use `⟨fun v w => ?_, fun y => ⟨fun hy => ?_, ?_⟩, fun g => ⟨(hι g).2, fun v => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[herm_eq_dot, herm_eq_dot, toLin'_apply, toLin'_apply, star_mulVec, mulVec_mulVec, ← dotProduct_mulVec, mulVec_mulVec, ← Matrix.mul_assoc, h1]`. Take `⟨N, B, -, hN, -⟩` from `GlobalTheory.UnfoldingCompare.exists_frame_inv hc hx' h1 h2`. Establish `e : y = C *ᵥ ((N *ᵥ y) ∘ Sum.inl) + (N *ᵥ y) (Sum.inr ()) • x` using `by conv_lhs => rw [← one_mulVec y, ← hN, ← mulVec_mulVec, fromCols_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[mulVec, dotProduct, mul_comm]`. Establish `ha : (N *ᵥ y) (Sum.inr ()) = 0`. Rewrite `hy` using `[herm_eq_dot, e, mulVec_add, mulVec_smul, dotProduct_add, hperp, zero_add, dotProduct_smul, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 hy).resolve_right hx'`. Use `⟨(N *ᵥ y) ∘ Sum.inl, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[ha, zero_smul, add_zero]`. Rewrite using `[toLin'_apply, ← e]`. Introduce and unpack `⟨v, rfl⟩`. Rewrite using `[herm_eq_dot, toLin'_apply, hperp]`. Simplify using `only [ActionCoordinates.act, toLin'_apply, mulVec_mulVec, (hι g).1]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPerpFrame_of_matrix : ∀ (P Q P' Q' : ℕ), P' + Q' + 1 = P + Q → ∀ x : ActionCoordinates.Wsp P Q, ActionCoordinates.qf x ≠ 0 → ∀ C : Matrix (Fin P ⊕ Fin Q) (Fin P' ⊕ Fin Q') ℂ, Cᴴ * Formalism.UG.Jpq P Q * C = Formalism.UG.Jpq P' Q' → (Cᴴ * Formalism.UG.Jpq P Q) *ᵥ x = 0 → ∀ ι : UpqT P' Q' → UpqT P Q, (∀ b, UpqT.mat (ι b) * C = C * UpqT.mat b ∧ UpqT.mat (ι b) *ᵥ x = x) → ActionCoordinates.IsPerpFrame x (Matrix.toLin' C) ι := by
   intro P Q P' Q' hc x hx C h1 h2 ι hι

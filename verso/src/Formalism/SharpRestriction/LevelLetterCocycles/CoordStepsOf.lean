@@ -88,13 +88,11 @@ theorem toL_coe (i : ZMod n) (c : ι → D.M) :
     ((toL D b hb i c : ↥(DDl W T i)) : W.DD T) = lc (b i) (fun j => D.κ i (c j)) := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `c c' h`. Establish `h1` using `congrArg Subtype.val h`. Rewrite `h1` using `[toL_coe, toL_coe]`. Establish `h2` using `(hb i).2.1 _ _ (fun j => D.mem i _) (fun j => D.mem i _) h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Conclude with `D.inj i (congrFun h2 j)`. Introduce and unpack `⟨x, hx⟩`. Take `⟨c, hc, hcx⟩` from `(hb i).2.2 x hx`. Use `choose m hm using fun j => D.surj i (c j) (hc j)`.
+Apply function extensionality and compare values at an arbitrary argument. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨m, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[toL_coe]`. Express the relevant statement in the definitionally equal form `lc (b i) (fun j => D.κ i (m j)) = x`. Rewrite using `[← hcx]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `j`. Conclude with `hm j`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem toL_bij (i : ZMod n) : Function.Bijective (toL D b hb i) := by
   constructor
@@ -131,9 +129,9 @@ theorem coordOf_t_apply_eq_sum_kappa_smul (i : ZMod n) (c : ι → D.M) :
 end Build
 
 /- English proof (translation)
-Introduce `T₁ T₂ F hc₁ hc₂ hon`. Take `⟨D⟩` from `hK`. Take `⟨r, k, hb⟩` from `hS T₁ T₂ F hc₁ hc₂ hon`. Use `choose b₁ b₂ h₁ h₂ hin hout using hb`. Use `⟨coordOf D b₁ h₁, coordOf D b₂ h₂, coordOf (ι := Unit) D (fun (_ : ZMod n) (_ : Unit) => e) (fun i => hU i), { f := LinearMap.funLeft (PowerSeries O) D.M Sum.inl coord_hom_map_trace := fun i c => ?_ crys := hc₁.2.2.2 crys' := hc₂.2.2.2 }, fun _ => D.m₁, fun i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `∑ j, D.κ i (c (Sum.inl j)) • b₂ i j = W.map F (∑ j, D.κ i (c j) • b₁ i j)`. Rewrite using `[map_sum, Fintype.sum_sum_type]`. Simplify using `only [map_smul, hin, hout, smul_zero, Finset.sum_const_zero, add_zero]`. Express the relevant statement in the definitionally equal form `∑ _u : Unit, D.κ i D.m₁ • e = (letE i : LetA O n) • e`. Rewrite using `[Fintype.sum_unique, D.unit, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordSteps_of (hR : Ring9 W) (e : W.DD W.one) (hK : CoeffStep hR) (hS : SplitStep W)
     (hU : UnitStep W e) : CoordSteps hR e := by

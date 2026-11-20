@@ -11,7 +11,7 @@ namespace GlobalTheory.RowReal.WeightsX
 open GlobalTheory.SignedHC
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SignedHC.mem_block]`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.block, List.mem_map, List.mem_range]`. Conclude with `⟨fun ⟨a, h, e⟩ => ⟨a, h, e.symm⟩, fun ⟨a, h, e⟩ => ⟨a, h, e.symm⟩⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mem_listBlock_iff {c x : ℚ} {n : ℕ} : x ∈ GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.block c n ↔ x ∈ TPar.block c n := by
   rw [GlobalTheory.SignedHC.mem_block]
@@ -19,7 +19,7 @@ theorem mem_listBlock_iff {c x : ℚ} {n : ℕ} : x ∈ GlobalTheory.IndefiniteR
   exact ⟨fun ⟨a, h, e⟩ => ⟨a, h, e.symm⟩, fun ⟨a, h, e⟩ => ⟨a, h, e.symm⟩⟩
 
 /- English proof (translation)
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.block`. Rewrite using `[List.pairwise_map]`. Use `(List.pairwise_lt_range (n := n)).imp fun {a b} h => ?_` and prove the remaining obligations. Establish `: (a : ℚ) < b` using `by exact_mod_cast h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem pairwise_listBlock (c : ℚ) (n : ℕ) : (GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.block c n).Pairwise (· > ·) := by
   unfold GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.block
@@ -37,35 +37,33 @@ theorem psiPar_eq (D : D7) (C : ℝ) (τ : D.what₂.Tau) : (rowEntries D C τ).
       (List.finRange (D.R.k - 1)).map fun i : Fin (D.R.k - 1) => (num D C τ).vHalf ((i : ℕ) + 2)) := rfl
 
 /- English proof (translation)
-Establish `hm : (num D C τ).NearMid` using `num_nearMid D C τ`. Establish `hs : 1 ≤ (num D C τ).s` using `(odd_sLen D).pos`. Establish `hg : (num D C τ).s < (num D C τ).ga` using `sLen_lt_gap D C`. Establish `hGm : (num D C τ).m = D.R.m` using `rfl`. Establish `hGk : (num D C τ).k = D.R.k` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hga : (0 : ℚ) < (num D C τ).ga` using `by exact_mod_cast (by omega : 0 < (num D C τ).ga)`. Establish `hle : ∀ {i j : ℕ}, i ≤ j → (num D C τ).a j ≤ (num D C τ).a i` using `fun h => by`. Break down `h.eq_or_lt with rfl | h` into its components or cases. Conclude with `le_rfl`. Combine the linear relations using `[a_add_le (G := num D C τ) h]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hB : ∀ (i : Fin D.R.m) x, x ∈ GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.block (((num D C τ).cen ((i : ℕ) + 1) : ℤ) : ℚ) (sLen D - 1) → (num D C τ).a ((i : ℕ) + 1) < x ∧ x < (num D C τ).a ((i : ℕ) + 1) + (num D C τ).ga` using `fun i x hx => blockC'_between hm hs hg (by omega) (by have := i.2; omega) (mem_listBlock_iff.1 hx)`. Establish `piece : ∀ (i : Fin D.R.m) y, y ∈ GlobalTheory.IndefiniteRowSideFullHecke.MinorOrderedEntries.block (((num D C τ).cen ((i : ℕ) + 1) : ℤ) : ℚ) (sLen D - 1) ++ [(num D C τ).a ((i : ℕ) + 1)] → (num D C τ).a ((i : ℕ) + 1) ≤ y ∧ y < (num D C τ).a i`. Introduce `i y hy`. Rewrite using `[(num D C τ).a_eq_succ_add i]`. Break down `List.mem_append.1 hy with h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `hB i y h` as an intermediate fact. Conclude with `⟨this.1.le, this.2⟩`. Rewrite `h` using `[List.mem_singleton]`. Substitute `h` using the available equality. Conclude with `⟨le_rfl, by linarith⟩`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hU : ∀ y ∈ (List.finRange (D.R.k - 1)).map (fun i : Fin (D.R.k - 1) => (num D C τ).vHalf ((i : ℕ) + 2)), y ∈ (num D C τ).cloudHalf`. Introduce `y hy`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hy`. Conclude with `GridData.mem_cloudHalf.2 ⟨(i : ℕ) + 2, by omega, by have := i.2; omega, rfl⟩`. Rewrite using `[psiPar_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[List.pairwise_cons, List.pairwise_append, List.pairwise_flatMap, List.pairwise_map]`. Use `⟨?_, ⟨⟨?_, ?_⟩, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `y hy`. Break down `List.mem_append.1 hy with h | h` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, -, h⟩` from `List.mem_flatMap.1 h`. Use `piece i y h` as an intermediate fact. Combine the linear relations using `[hle (Nat.zero_le (i : ℕ))]`. Use `cloudHalf_lt (hU y h)` as an intermediate fact. Combine the linear relations using `[hle (Nat.zero_le (num D C τ).m)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i _`. Rewrite using `[List.pairwise_append]`. Use `⟨pairwise_listBlock _ _, List.pairwise_singleton _ _, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy`. Rewrite `hy` using `[List.mem_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hy` using the available equality. Conclude with `(hB i x hx).1`. Use `(List.pairwise_lt_finRange D.R.m).imp fun {i j} hij => ?_` and prove the remaining obligations. Introduce `x hx y hy`. Establish `h1` using `piece i x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2` using `piece j y hy`. Establish `h3 : (i : ℕ) + 1 ≤ j` using `hij`. Combine the linear relations using `[hle h3]`. Use `(List.pairwise_lt_finRange (D.R.k - 1)).imp fun {i j} hij => ?_` and prove the remaining obligations. Establish `hij' : (i : ℕ) < j` using `hij`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(num D C τ).v_anti ((i : ℕ) + 2) ((j : ℕ) + 2) (by omega) (by omega) (by have := j.2; omega)` as an intermediate fact. Establish `h' : ((num D C τ).v ((j : ℕ) + 2) : ℚ) < (num D C τ).v ((i : ℕ) + 2)` using `by exact_mod_cast this`. Simplify using `only [GridData.vHalf]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `x hx y hy`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i, -, h⟩` from `List.mem_flatMap.1 hx`. Establish `h1` using `piece i x h`. Establish `h2` using `cloudHalf_lt (hU y hy)`. Establish `h3 : (i : ℕ) + 1 ≤ (num D C τ).m` using `by have := i.2; omega`. Combine the linear relations using `[hle h3]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `y hy`. Rewrite using `[GridData.mem_weightX]`. Break down `List.mem_cons.1 hy with rfl | hy` into its components or cases. Conclude with `Or.inl (GridData.mem_tops.2 ⟨0, by omega, rfl⟩)`. Break down `List.mem_append.1 hy with h | h` into its components or cases.
+Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative.
 
-Take `⟨i, -, h⟩` from `List.mem_flatMap.1 h`. Break down `List.mem_append.1 h with h | h` into its components or cases. Conclude with `Or.inr (Or.inr (Or.inl ⟨(i : ℕ) + 1, by omega, by have := i.2; omega, mem_listBlock_iff.1 h⟩))`. Rewrite `h` using `[List.mem_singleton]`. Substitute `h` using the available equality.
-
-Conclude with `Or.inl (GridData.mem_tops.2 ⟨(i : ℕ) + 1, by have := i.2; omega, rfl⟩)`. Conclude with `Or.inr (Or.inl (hU y h))`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem psiPar_props (D : D7) (C : ℝ) (τ : D.what₂.Tau) :
     (rowEntries D C τ).psiPar.Pairwise (· > ·) ∧ ∀ x ∈ (rowEntries D C τ).psiPar, x ∈ (num D C τ).weightX 0 := by
@@ -142,7 +140,7 @@ theorem psiPar_props (D : D7) (C : ℝ) (τ : D.what₂.Tau) :
     · exact Or.inr (Or.inl (hU y h))
 
 /- English proof (translation)
-Rewrite using `[length_psi, rowSizes_nR]`. Simplify using `[rankX]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem length_psiPar (D : D7) (C : ℝ) (τ : D.what₂.Tau) : (rowEntries D C τ).psiPar.length = rankP D D.R.m := by
   rw [length_psi, rowSizes_nR]; simp [rankX]

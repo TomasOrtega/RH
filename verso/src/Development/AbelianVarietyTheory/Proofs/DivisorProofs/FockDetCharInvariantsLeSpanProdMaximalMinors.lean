@@ -12,13 +12,13 @@ namespace GlobalTheory.MinorFrame
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Establish `h : (eval (fun v : ι × Fin a × Fin a => g v.1 v.2.1 v.2.2)).comp (rsub (frameMat x₀) : Pol ι d a →ₐ[ℂ] _).toRingHom = (eval x₀).comp (colSub g : Pol ι d a →ₐ[ℂ] Pol ι d a).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using the standard rewrite rules. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨τ, r, j⟩` from `v`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, rsub_X, colSub, aeval_X, map_sum, map_mul, eval_C, eval_X]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single τ]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_eq_single j]`. Simplify using `[frameMat, mul_comm]`. Introduce `b _ hb`. Simplify using `[frameMat, hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[frameMat, hb]`. Simplify using the standard rewrite rules. Conclude with `congrArg (fun φ : Pol ι d a →+* ℂ => φ P) h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_rsub_frameMat {a d : ℕ} (x₀ : Var ι d a → ℂ) (g : ι → Matrix (Fin a) (Fin a) ℂ) (P : Pol ι d a) :
     eval (fun v : ι × Fin a × Fin a => g v.1 v.2.1 v.2.2) (rsub (frameMat x₀) P) = eval x₀ (colSub g P) := by
@@ -43,7 +43,7 @@ theorem eval_rsub_frameMat {a d : ℕ} (x₀ : Var ι d a → ℂ) (g : ι → M
   exact congrArg (fun φ : Pol ι d a →+* ℂ => φ P) h
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Apply `GlobalTheory.T.unitaryGroup_family_zariski_dense` to reduce the goal to its premises. Introduce `g`. Rewrite using `[map_sub, eval_rsub_frameMat x₀ (fun τ => (g τ : Matrix (Fin a) (Fin a) ℂ)) P, hP g, smul_eval, smul_eval, eval_detG a n (fun τ => (g τ : Matrix (Fin a) (Fin a) ℂ))]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rsub_frameMat_of_mem_inv {a d : ℕ} {n : ι → ℕ} (x₀ : Var ι d a → ℂ) {P : Pol ι d a}
     (hP : P ∈ inv a d n) : rsub (frameMat x₀) P = eval x₀ P • detG a n := by
@@ -55,15 +55,15 @@ theorem rsub_frameMat_of_mem_inv {a d : ℕ} {n : ι → ℕ} (x₀ : Var ι d a
   ring
 
 /- English proof (translation)
-Introduce `ι _ a d n P hP`. Use `set c := Formalism.L2.DIV.fockS (detG (ι := ι) a n) (detG a n) with hc`. Establish `hc0 : c ≠ 0` using `fun h => by`. Use `fockS_self_re_pos (detG_ne_zero (ι := ι) a n)` as an intermediate fact. Rewrite `this` using `[← hc, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Establish `key : c • P = ∑ T : Tup ι a d n, Formalism.L2.DIV.fockS (prodMinors T) P • prodMinors T`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `x₀`. Establish `h1` using `GlobalTheory.T.fockPairing_linearSubstitution_adjoint (frameMat x₀).conjTranspose (detG a n) P`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Matrix.conjTranspose_conjTranspose, rsub_frameMat_of_mem_inv x₀ hP, GlobalTheory.T.cauchyBinet_columnFrame_prodDetPow_eq_sum]`. Rewrite `h1` using `[← Formalism.L2.DIV.fockL_apply, ← Formalism.L2.DIV.fockL_apply, map_sum, map_smul, LinearMap.sum_apply]`. Simplify using `only [LinearMap.map_smulₛₗ, LinearMap.smul_apply, Formalism.L2.DIV.fockL_apply, smul_eq_mul, starRingEnd_apply, star_star] at h1`. Rewrite using `[smul_eval, map_sum]`. Simplify using `only [smul_eval]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, ← h1]`. Use `Finset.sum_congr rfl fun T _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hP' : P = c⁻¹ • ∑ T : Tup ι a d n, Formalism.L2.DIV.fockS (prodMinors T) P • prodMinors T`. Rewrite using `[← key, smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP']`. Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ fun T _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨T, rfl⟩))`.
+A detailed English derivation is pending.
 -/
 theorem inv_le_span_prodMinors : ∀ {ι : Type} [Fintype ι] (a d : ℕ) (n : ι → ℕ), GlobalTheory.MinorFrame.inv a d n ≤ Submodule.span ℂ (Set.range (GlobalTheory.MinorFrame.prodMinors (ι := ι) (a := a) (d := d) (n := n))) := by
   intro ι _ a d n P hP

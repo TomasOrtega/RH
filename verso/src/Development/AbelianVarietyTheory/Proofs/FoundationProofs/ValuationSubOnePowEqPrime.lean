@@ -6,9 +6,9 @@ open scoped NNReal
 namespace GlobalTheory.AlmostEt
 
 /- English proof (translation)
-Rewrite using `[← mul_neg_geom_sum, v.map_mul]`. Establish `hs : v (∑ i ∈ Finset.range n, η ^ i) ≤ 1`. Apply `Valuation.map_sum_le` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[v.map_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_le_one₀ (zero_le') hη`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem valuation_one_sub_pow_le {L : Type} [Field L] (v : Valuation L ℝ≥0) (η : L)
     (hη : v η ≤ 1) (n : ℕ) : v (1 - η ^ n) ≤ v (1 - η) := by
@@ -22,13 +22,13 @@ theorem valuation_one_sub_pow_le {L : Type} [Field L] (v : Valuation L ℝ≥0) 
     _ = v (1 - η) := mul_one _
 
 /- English proof (translation)
-Introduce `L _ v p hp ζ hζ`. Establish `hone : ∀ η : L, η ^ p = 1 → v η ≤ 1`. Introduce `η hη`. Establish `h1 : v η ^ p = 1` using `by rw [← v.map_pow, hη, v.map_one]`. Conclude with `le_of_eq ((pow_eq_one_iff_of_nonneg (zero_le') hp.ne_zero).mp h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, rfl⟩ : ∃ n, p = n + 1` from `⟨p - 1, (Nat.succ_pred_eq_of_pos hp.pos).symm⟩`. Establish `hprod` using `hζ.prod_one_sub_pow_eq_order`. Establish `hterm : ∀ k ∈ Finset.range n, v (1 - ζ ^ (k + 1)) = v (ζ - 1)`. Introduce `k hk`. Rewrite `hk` using `[Finset.mem_range]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Valuation.map_sub_swap v ζ 1]`. Establish `hc : (k + 1).Coprime (n + 1)`. Establish `h` using `Nat.coprime_of_lt_prime (Nat.succ_ne_zero k) (by omega : k + 1 < n + 1) hp`. Apply the tactic sequence `first | exact h | exact h.symm`. Establish `hprim : IsPrimitiveRoot (ζ ^ (k + 1)) (n + 1)` using `hζ.pow_of_coprime _ hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `valuation_one_sub_pow_le v ζ (hone ζ hζ.pow_eq_one) (k + 1)`. Take `⟨i, -, hi⟩` from `hprim.eq_pow_of_pow_eq_one hζ.pow_eq_one`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.add_sub_cancel, Nat.cast_add, Nat.cast_one, ← hprod, map_prod, Finset.prod_congr rfl hterm, Finset.prod_const, Finset.card_range]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_sub_one_pow_eq_prime :
     ∀ (L : Type) [Field L] (v : Valuation L ℝ≥0) (p : ℕ), p.Prime → ∀ ζ : L,

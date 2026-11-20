@@ -24,7 +24,7 @@ namespace SectionLocal
 open Filter Topology
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.SmoothPolynomialEvaluation.main p x₀ a ha ha'`.
+A detailed English derivation is pending.
 -/
 theorem exists_continuousOn_root {d : ℕ} (p : Polynomial (MvPolynomial (Fin d) ℂ))
     (x₀ : Fin d → ℂ) (a : ℂ) (ha : (p.map (MvPolynomial.eval x₀)).eval a = 0)
@@ -34,19 +34,17 @@ theorem exists_continuousOn_root {d : ℕ} (p : Polynomial (MvPolynomial (Fin d)
   _root_.GlobalTheory.SmoothPolynomialEvaluation.main p x₀ a ha ha'
 
 /- English proof (translation)
-Establish `hc` using `FiniteCoverGrowth.card_roots (hp.map (MvPolynomial.eval x₀)) hs`. Rewrite `hc` using `[hp.natDegree_map]`. Set `e` to `(Finset.equivFinOfCardEq hc).symm`. Establish `hroot : ∀ i, (p.map (MvPolynomial.eval x₀)).eval (e i : ℂ) = 0` using `fun i => Polynomial.isRoot_of_mem_roots (Multiset.mem_toFinset.1 (e i).2)`. Use `choose y hy0 hyd hyr using fun i => exists_continuousOn_root p x₀ (e i) (hroot i) (by simpa using hs.eval₂_derivative_ne_zero (RingHom.id ℂ) (x := (e i : ℂ)) (by simpa using hroot i))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose s hs hyd using hyd`. Establish `hne : ∀ᶠ x in 𝓝 x₀, ∀ i j, i ≠ j → y i x ≠ y j x`. Simplify using `only [eventually_all]`. Introduce `i j hij`. Use `(((hyd i).continuousAt (hs i)).ne_iff_eventually_ne ((hyd j).continuousAt (hs j))).1 ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[hy0, hy0]`. Conclude with `fun h => hij (e.injective (Subtype.ext h))`. Establish `hall` using `(hne.and (eventually_all.2 hyr)).and (eventually_all.2 hs)`. Use `⟨y, _, hall, fun i => (hyd i).mono fun x hx => hx.2 i, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨⟨h1, h2⟩, -⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hinj : Function.Injective (fun i => y i x)` using `fun i j h => by`. Assume the negation of the conclusion as `hij`. Conclude with `h1 i j hij h`. Establish `hset : (p.map (MvPolynomial.eval x)).roots.toFinset = Finset.univ.image (fun i => y i x)`. Use `(Finset.eq_of_subset_of_card_le ?_ ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 ha`. Conclude with `Multiset.mem_toFinset.2 ((Polynomial.mem_roots (hp.map _).ne_zero).2 (h2 i))`. Rewrite using `[Finset.card_image_of_injective _ hinj, Finset.card_univ, Fintype.card_fin]`. Use `(Multiset.toFinset_card_le _).trans ((Polynomial.card_roots' _).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hp.natDegree_map]`. Use `⟨hinj, fun z => ⟨fun hz => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `: z ∈ (p.map (MvPolynomial.eval x)).roots.toFinset` using `Multiset.mem_toFinset.2 ((Polynomial.mem_roots (hp.map _).ne_zero).2 hz)`. Rewrite `this` using `[hset]`. Simplify using `using this`.
-
-Introduce and unpack `⟨i, rfl⟩`. Conclude with `h2 i`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_continuousOn_roots {d : ℕ} (p : Polynomial (MvPolynomial (Fin d) ℂ)) (hp : p.Monic)
     (x₀ : Fin d → ℂ) (hs : (p.map (MvPolynomial.eval x₀)).Separable) :
@@ -94,15 +92,15 @@ theorem exists_continuousOn_roots {d : ℕ} (p : Polynomial (MvPolynomial (Fin d
 open Polynomial in
 
 /- English proof (translation)
-Use `letI : Algebra F ℂ := τ.toAlgebra`. Establish `hτ : algebraMap F ℂ = τ` using `rfl`. Establish `hroot : ∀ k, aeval (r k) (minpoly F pb.gen) = 0`. Introduce `k`. Rewrite using `[aeval_def, eval₂_eq_eval_map, hτ]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hr _).2 ⟨k, rfl⟩`. Use `⟨fun k => (pb.lift (r k) (hroot k)).toRingHom, fun k => pb.lift_gen (r k) (hroot k), ?_⟩` and prove the remaining obligations. Use extensionality with `Q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Conclude with `(pb.lift (r k) (hroot k)).commutes x`. Introduce `hQ`. Establish `hQ' : Q.comp (algebraMap F L) = τ` using `hQ`. Set `Q' : L →ₐ[F] ℂ` to `{ Q with commutes' := fun x => by rw [hτ, ← hQ']; rfl }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : aeval (Q' pb.gen) (minpoly F pb.gen) = 0`. Rewrite using `[aeval_algHom_apply, minpoly.aeval, map_zero]`. Rewrite `h0` using `[aeval_def, eval₂_eq_eval_map, hτ]`. Take `⟨k, hk⟩` from `(hr _).1 h0`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: pb.lift (r k) (hroot k) = Q'`. Apply `pb.algHom_ext` to reduce the goal to its premises. Rewrite using `[pb.lift_gen, hk]`. Use `show (pb.lift (r k) (hroot k)).toRingHom = Q`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_embeddings_of_roots {F L : Type} [Field F] [Field L] [Algebra F L]
     (pb : PowerBasis F L) (τ : F →+* ℂ) {n : ℕ} (r : Fin n → ℂ)
@@ -136,35 +134,29 @@ theorem exists_embeddings_of_roots {F L : Type} [Field F] [Field L] [Algebra F L
     rw [this]
 
 /- English proof (translation)
-Use `set R := MvPolynomial σ K with hR`. Use `set F := FractionRing R with hF`. Use `haveI : CharZero F := charZero_of_injective_algebraMap (IsFractionRing.injective R F)`. Set `pb : PowerBasis F L` to `Field.powerBasisOfFiniteOfSeparable F L`. Use `choose nu de hde hfr using fun z : F => IsFractionRing.div_surjective (A := R) z`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities.
 
-Set `ev : F → (σ → ℂ) → ℂ` to `fun f t => MvPolynomial.eval₂ sg t (nu f) / MvPolynomial.eval₂ sg t (de f)`. Establish `hpc : ∀ p : R, Continuous fun t : σ → ℂ => MvPolynomial.eval₂ sg t p`. Introduce `p`. Repeatedly rewrite using `[MvPolynomial.eval₂_eq_eval_map]`. Conclude with `MvPolynomial.continuous_eval _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hev : ∀ f, ∀ t ∈ G, ContinuousAt (ev f) t` using `fun f t ht => (hpc _).continuousAt.div (hpc _).continuousAt (hG t ht _ (nonZeroDivisors.ne_zero (hde f)))`. Set `cf : (σ → ℂ) → Fin pb.dim → ℂ` to `fun t i => ev ((minpoly F pb.gen).coeff i) t`. Establish `hcf : ∀ t ∈ G, ContinuousAt cf t` using `fun t ht => continuousAt_pi.2 fun i => hev _ t ht`. Set `p : Polynomial (MvPolynomial (Fin pb.dim) ℂ)` to `Polynomial.X ^ pb.dim + ∑ i : Fin pb.dim, Polynomial.C (MvPolynomial.X i) * Polynomial.X ^ (i : ℕ)`. Establish `hp : p.Monic` using `Polynomial.monic_X_pow_add (Polynomial.degree_sum_fin_lt _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hτ : ∀ t ∈ G, ∃ τ : F →+* ℂ, (∀ q : R, τ (algebraMap R F q) = MvPolynomial.eval₂ sg t q) ∧ (∀ f, τ f = ev f t) ∧ p.map (MvPolynomial.eval (cf t)) = (minpoly F pb.gen).map τ`. Introduce `t ht`. Establish `hinj : Function.Injective (MvPolynomial.eval₂Hom sg t : R →+* ℂ)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `q hq`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Conclude with `hG t ht q h hq`. Establish `hτa : ∀ q : R, (IsFractionRing.lift hinj : F →+* ℂ) (algebraMap R F q) = MvPolynomial.eval₂ sg t q` using `fun q => IsFractionRing.lift_algebraMap hinj q`. Establish `hτ : ∀ f, (IsFractionRing.lift hinj : F →+* ℂ) f = ev f t`. Introduce `f`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `conv_lhs => rw [← hfr f]`. Rewrite using `[map_div₀, hτa, hτa]`. Use `⟨IsFractionRing.lift hinj, hτa, hτ, ?_⟩` and prove the remaining obligations. Establish `hmon : (minpoly F pb.gen).Monic` using `minpoly.monic pb.isIntegral_gen`. Use `conv_rhs => rw [hmon.as_sum, pb.natDegree_minpoly]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Polynomial.map_add, Polynomial.map_pow, Polynomial.map_X, Polynomial.map_sum, Polynomial.map_add, Polynomial.map_pow, Polynomial.map_X, Polynomial.map_sum, Finset.sum_range]`. Simplify using `[cf, hτ]`. Take `⟨y, V, hV, hyc, hy⟩` from `exists_continuousOn_roots p hp (cf t₀) (by`. Take `⟨τ, -, -, h⟩` from `hτ t₀ ht₀`. Rewrite using `[h]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Polynomial.Separable.map (Algebra.IsSeparable.isSeparable F pb.gen))`. Establish `key : ∀ t ∈ cf ⁻¹' V ∩ G, ∃ P : Fin p.natDegree → (L →+* ℂ), (∀ k, P k pb.gen = y k (cf t)) ∧ (∀ k f, P k (algebraMap F L f) = ev f t) ∧ Set.range P = {P : L →+* ℂ | ∀ q : R, P (algebraMap F L (algebraMap R F q)) = MvPolynomial.eval₂ sg t q}`. Introduce `t ht`. Take `⟨τ, hτa, hτe, h⟩` from `hτ t ht.2`. Take `⟨P, hP, hPr⟩` from `exists_embeddings_of_roots pb τ (fun k => y k (cf t)) (by rw [← h]; exact (hy _ ht.1).2)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨P, hP, fun k f => ?_, ?_⟩` and prove the remaining obligations. Establish `hk : P k ∈ Set.range P` using `⟨k, rfl⟩`. Rewrite `hk` using `[hPr]`. Rewrite using `[← hτe]`. Conclude with `DFunLike.congr_fun hk f`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hPr]`. Use extensionality with `Q`. Prove the components needed by the constructor for the conclusion. Introduce `hQ q`. Rewrite using `[← hτa]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `DFunLike.congr_fun hQ _`. Introduce `hQ`. Apply `IsFractionRing.ringHom_ext (A := R)` to reduce the goal to its premises. Introduce `q`. Rewrite using `[hτa]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hQ q`. Establish `hU : cf ⁻¹' V ∈ 𝓝 t₀` using `hcf t₀ ht₀ hV`. Use `haveI : Nonempty (Fin p.natDegree → (L →+* ℂ)) := ⟨(key t₀ ⟨mem_of_mem_nhds hU, ht₀⟩).choose⟩`. Use `choose! P hP1 hP2 hP3 using key`. Use `⟨_, hU, p.natDegree, fun k t => P t k, fun k a => ?_, fun t ht => ⟨?_, hP3 t ht⟩⟩` and prove the remaining obligations.
-
-Establish `hc : ContinuousOn (fun t => ∑ l : Fin pb.dim, ev (pb.basis.repr a l) t * y k (cf t) ^ (l : ℕ)) (cf ⁻¹' V ∩ G)`. Use `continuousOn_finsetSum _ fun l _ => ContinuousOn.mul (fun t ht => (hev _ t ht.2).continuousWithinAt) (ContinuousOn.pow ?_ _)` and prove the remaining obligations. Conclude with `(hyc k).comp (fun t ht => (hcf t ht.2).continuousWithinAt) fun t ht => ht.1`. Use `hc.congr fun t ht => ?_` and prove the remaining obligations. Use `show P t k a = _`.
-
-Use `conv_lhs => rw [← pb.basis.sum_repr a]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul, pb.basis_eq_pow, map_pow, hP1 t ht, hP2 t ht]`. Introduce `k l hkl`.
-
-Apply `(hy _ ht.1).1` to reduce the goal to its premises. Use `show y k (cf t) = y l (cf t)`. Rewrite using `[← hP1 t ht, ← hP1 t ht]`. Conclude with `DFunLike.congr_fun hkl _`.
+A detailed English derivation is pending.
 -/
 theorem exists_continuousOn_embeddings (K : Type) [Field K] [CharZero K] (σ : Type) (L : Type)
     [Field L] [Algebra (FractionRing (MvPolynomial σ K)) L]
@@ -272,31 +264,29 @@ theorem exists_continuousOn_embeddings (K : Type) [Field K] [CharZero K] (σ : T
 open MeasureTheory ReciprocityTheory.ChartRestriction.G.T0 SectionSum in
 
 /- English proof (translation)
-Set `x : Fin N → Ω` to `fun k => w (j₀.succAbove k)`. Establish `hadj : IntermediateField.adjoin K (Set.range w) = IntermediateField.adjoin K (Set.range x)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `rfl | ⟨k, rfl⟩` from `Fin.eq_self_or_eq_succAbove j₀ j`. Rewrite using `[hw]`. Conclude with `one_mem _`. Conclude with `IntermediateField.subset_adjoin K _ ⟨k, rfl⟩`. Apply `IntermediateField.adjoin.mono` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, rfl⟩`. Rewrite `hw'` using `[hadj]`. Establish `hJ` using `(exists_linearIndependent_D_iff_trdeg_adjoin_eq htr x).2 hw'`. Take `⟨hinj, hfin⟩` from `sImg_indep_finite K Ω D N j₀ x hfg htr hJ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI : Algebra (FractionRing (MvPolynomial (TVar D N) K)) (OmS Ω D N) := (liftS hinj).toAlgebra`. Use `haveI := liftS_finite hinj hfin`. Take `⟨s₀, hs₀⟩` from `exists_ae_cons _ (Measure.toSphere_ne_zero _) D _ (ae_eval₂_ne_zero_pi_toSphere K sg (D + 1) N)`. Set `F : (Fin D → Metric.sphere (0 : EuclideanSpace ℂ (Fin (N + 1))) 1) → TVar D N → ℂ` to `fun t q => ((Fin.cons s₀ t : Fin (D + 1) → Metric.sphere (0 : EuclideanSpace ℂ (Fin (N + 1))) 1) q.1 : EuclideanSpace ℂ (Fin (N + 1))) q.2`. Establish `hF : Continuous F`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_pi fun q => ?_` and prove the remaining obligations. Take `⟨i, j⟩` from `q`. Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Simplify using `only [F, Fin.cons_zero]`. Conclude with `continuous_const`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [F, Fin.cons_succ] fun_prop`. Set `G : Set (TVar D N → ℂ)` to `{τ | ∀ p : MvPolynomial (TVar D N) K, p ≠ 0 → MvPolynomial.eval₂ sg τ p ≠ 0}`. Establish `hGm : MeasurableSet G` using `by haveI := NPB.countable_mvPoly (σ := TVar D N) (R := K)`. Establish `: G = ⋂ p : MvPolynomial (TVar D N) K, ⋂ _ : p ≠ 0, {τ | MvPolynomial.eval τ (MvPolynomial.map sg p) ≠ 0}`. Use extensionality with `τ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [G, Set.mem_setOf_eq, Set.mem_iInter, MvPolynomial.eval_map]`. Rewrite using `[this]`. Conclude with `MeasurableSet.iInter fun p => MeasurableSet.iInter fun _ => (isOpen_ne_fun (MvPolynomial.continuous_eval _) continuous_const).measurableSet`. Use `⟨(F ⁻¹' G)ᶜ, (hF.measurable hGm).compl, hs₀, ?_⟩` and prove the remaining obligations. Rewrite using `[compl_compl]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Introduce `t0 ht0`. Take `⟨U, hU, n, Q, hQc, hQ⟩` from `exists_continuousOn_embeddings K (TVar D N) (OmS Ω D N) sg G (fun _ h => h) (F t0) ht0`. Use `⟨F ⁻¹' U, hF.continuousAt hU, n, fun k t => (Q k (F t)).comp (algebraMap Ω (OmS Ω D N)), fun k a => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Conclude with `(hQc k (algebraMap Ω (OmS Ω D N) a)).comp hF.continuousOn fun t ht => ht`. Establish `hb` using `bijOn_restrict (K := K) j₀ x sg (F t) (fun Q hQ hrel => by`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use `letI : Algebra K ℂ := sg.toAlgebra`. Set `φ : Ω →ₐ[K] ℂ` to `{ Q with commutes' := fun r => DFunLike.congr_fun hQ r }`. Use `existsUnique_ringHom_OmS K Ω ℂ D N j₀ x (F t) φ htr ?_ hrel` and prove the remaining obligations. Rewrite using `[algebraicIndependent_iff]`. Introduce `p hp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `h0`. Conclude with `ht.2 p h0 hp)`. Take `⟨hQi, hQr⟩` from `hQ (F t) ht`. Establish `hset : Set.range (fun k => Q k (F t)) = {P | ∀ p : MvPolynomial (TVar D N) K, P (sHom (K` using `K) j₀ x p) = MvPolynomial.eval₂ sg (F t) p} := by`. Rewrite using `[hQr]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `P`. Use `forall_congr' fun p => ?_` and prove the remaining obligations. Rewrite using `[← liftS_algebraMap hinj p]`. Both sides reduce to the same expression. Rewrite `hb` using `[← hset]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun k l hkl => hQi (hb.injOn ⟨k, rfl⟩ ⟨l, rfl⟩ hkl), ?_⟩` and prove the remaining obligations. Use `hb.image_eq` as an intermediate fact. Rewrite `this` using `[← Set.range_comp]`. Use `Eq.trans this ?_` and prove the remaining obligations. Use extensionality with `P`.
-
-Simplify using `only [Set.mem_setOf_eq, F, Fin.cons_succ]`. Use `and_congr_right fun _ => forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_succAbove _ j₀, hw, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local_families (K Ω : Type) [Field K] [CharZero K] [Countable K] [Field Ω]
     [Algebra K Ω] (D N : ℕ) (j₀ : Fin (N + 1)) (w : Fin (N + 1) → Ω) (hw : w j₀ = 1)
@@ -396,9 +386,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Reg
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ h Dd N uL wR jc hfg htr hw hw' _ _ _ Z sg`. Use `haveI : Countable c.F := Countable.of_equiv _ (Module.finBasis ℚ c.F).equivFun.toEquiv.symm`. Establish `hr : ∀ j, T0.ratio (Ω` using `Om Z) (valG h uL (wR j) Z) (valG h uL (wR (jc Z)) Z) = evC h Z (wR j) / evC h Z (wR (jc Z)) := by`. Introduce `j`. Apply `T0.ValuationResidueLemmas.ratio_eq (valC_ne_zero (hw Z))` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [valG, valC]`. Rewrite using `[AddMonoidAlgebra.smul_single', div_mul_cancel₀ _ (hw Z)]`. Simplify using `only [hr]`. Conclude with `SectionLocal.exists_local_families c.F (Om Z) Dd N (jc Z) (fun j => evC h Z (wR j) / evC h Z (wR (jc Z))) (div_self (hw Z)) (hfg Z) (htr Z) (hw' Z) sg`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stLoc_of_trdeg : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ [Fintype (Comp Xo c)] (h : GenFrEx Xo c) (Dd N : ℕ) (uL : WtR E) (wR : Fin (N + 1) → Rul Xo c) (jc : Comp Xo c → Fin (N + 1)), FnFG Xo c → FnTrdeg Xo c Dd → (∀ Z, evC h Z (wR (jc Z)) ≠ 0) → (∀ Z, Algebra.trdeg c.F (IntermediateField.adjoin c.F (Set.range fun j => evC h Z (wR j) / evC h Z (wR (jc Z)))) = Dd) → STLoc h Dd N uL wR jc := by
   intro E _ _ _ H Dw l Xo c _ h Dd N uL wR jc hfg htr hw hw' _ _ _ Z sg

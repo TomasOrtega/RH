@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.CubeLocal
 
 /- English proof (translation)
-Unfold `TrivAt`. Simplify using `only [Category.comp_id]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem trivAt_id_iff {X W : Scheme.{0}} (M : LB X) (r : W ⟶ X) :
     TrivAt M (fun _ : PUnit => 𝟙 X) (fun _ => 1) r ↔ Triv (M.pull r) := by
@@ -31,11 +31,11 @@ theorem trivAt_id_iff {X W : Scheme.{0}} (M : LB X) (r : W ⟶ X) :
 variable {S : Scheme.{0}} (X Y Z : Over S)
 
 /- English proof (translation)
-Use `set B := (Over.pullback t).obj X`. Use `set C := (Over.pullback t).obj Y`. Establish `hB : IsPullback (pullback.fst X.hom t) B.hom X.hom t` using `IsPullback.of_hasPullback _ _`. Establish `hC : IsPullback (pullback.fst Y.hom t) C.hom Y.hom t` using `IsPullback.of_hasPullback _ _`. Establish `h2 : IsPullback (fst X Y).left (snd X Y).left X.hom Y.hom` using `IsPullback.of_hasPullback _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBC : IsPullback (fst B C).left (snd B C).left B.hom C.hom` using `IsPullback.of_hasPullback _ _`. Establish `ho : IsPullback ((fst B C).left ≫ pullback.fst X.hom t) (snd B C).left X.hom (pullback.fst Y.hom t ≫ Y.hom)`. Rewrite using `[hC.w]`. Conclude with `hBC.paste_horiz hB`. Take `⟨m, m₁, m₂⟩ : ∃ m : (B ⊗ C).left ⟶ (X ⊗ Y).left, m ≫ (fst X Y).left = (fst B C).left ≫ pullback.fst X.hom t ∧ m ≫ (snd X Y).left = (snd B C).left ≫ pullback.fst Y.hom t` from `⟨h2.lift _ _ (by rw [ho.w, Category.assoc]), h2.lift_fst _ _ _, h2.lift_snd _ _ _⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : IsPullback m (snd B C).left (snd X Y).left (pullback.fst Y.hom t)` using `IsPullback.of_right (by rw [m₁]; exact ho) m₂ h2`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[← Over.w (snd B C), ← Over.w (snd X Y)]`. Conclude with `hm.paste_vert hC`.
+A detailed English derivation is pending.
 -/
 theorem exists_pair_chart {T : Scheme.{0}} (t : T ⟶ S) :
     ∃ m : ((Over.pullback t).obj X ⊗ (Over.pullback t).obj Y).left ⟶ (X ⊗ Y).left,
@@ -60,15 +60,13 @@ theorem exists_pair_chart {T : Scheme.{0}} (t : T ⟶ S) :
   exact hm.paste_vert hC
 
 /- English proof (translation)
-Use `set B := (Over.pullback (j ≫ Z.hom)).obj X`. Use `set C := (Over.pullback (j ≫ Z.hom)).obj Y`. Establish `hB : IsPullback (pullback.fst X.hom (j ≫ Z.hom)) B.hom X.hom (j ≫ Z.hom)` using `IsPullback.of_hasPullback _ _`. Establish `hC : IsPullback (pullback.fst Y.hom (j ≫ Z.hom)) C.hom Y.hom (j ≫ Z.hom)` using `IsPullback.of_hasPullback _ _`. Establish `h2 : IsPullback (fst Y Z).left (snd Y Z).left Y.hom Z.hom` using `IsPullback.of_hasPullback _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : IsPullback (fst X (Y ⊗ Z)).left (snd X (Y ⊗ Z)).left X.hom (Y ⊗ Z).hom` using `IsPullback.of_hasPullback _ _`. Establish `hBB : IsPullback (fst B C).left (snd B C).left B.hom C.hom` using `IsPullback.of_hasPullback _ _`. Take `⟨m, m₁, m₂⟩ : ∃ m : C.left ⟶ (Y ⊗ Z).left, m ≫ (fst Y Z).left = pullback.fst Y.hom (j ≫ Z.hom) ∧ m ≫ (snd Y Z).left = C.hom ≫ j` from `⟨h2.lift _ _ (by rw [hC.w, Category.assoc]), h2.lift_fst _ _ _, h2.lift_snd _ _ _⟩`. Establish `hm : IsPullback m C.hom (snd Y Z).left j` using `IsPullback.of_right (by rw [m₁]; exact hC) m₂ h2`. Establish `mw : m ≫ (Y ⊗ Z).hom = C.hom ≫ j ≫ Z.hom`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Over.w (snd Y Z), ← Category.assoc, m₂, Category.assoc]`. Establish `ho : IsPullback ((fst B C).left ≫ pullback.fst X.hom (j ≫ Z.hom)) (snd B C).left X.hom (m ≫ (Y ⊗ Z).hom)`. Rewrite using `[mw]`. Conclude with `hBB.paste_horiz hB`. Take `⟨q, q₁, q₂⟩ : ∃ q : (B ⊗ C).left ⟶ (X ⊗ Y ⊗ Z).left, q ≫ (fst X (Y ⊗ Z)).left = (fst B C).left ≫ pullback.fst X.hom (j ≫ Z.hom) ∧ q ≫ (snd X (Y ⊗ Z)).left = (snd B C).left ≫ m` from `⟨h3.lift _ _ (by rw [ho.w, Category.assoc]), h3.lift_fst _ _ _, h3.lift_snd _ _ _⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : IsPullback q (snd B C).left (snd X (Y ⊗ Z)).left m` using `IsPullback.of_right (by rw [q₁]; exact ho) q₂ h3`. Use `⟨q, ?_, q₁, ?_⟩` and prove the remaining obligations. Rewrite using `[← Over.w (snd B C)]`. Conclude with `hq.paste_vert hm`. Use `show q ≫ (snd X (Y ⊗ Z)).left ≫ (fst Y Z).left = _`.
-
-Rewrite using `[← Category.assoc, q₂, Category.assoc, m₁]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_triple_chart {T : Scheme.{0}} (j : T ⟶ Z.left) :
     ∃ q : ((Over.pullback (j ≫ Z.hom)).obj X ⊗ (Over.pullback (j ≫ Z.hom)).obj Y).left ⟶ (X ⊗ Y ⊗ Z).left,
@@ -108,9 +106,7 @@ theorem exists_triple_chart {T : Scheme.{0}} (j : T ⟶ Z.left) :
 variable {X Y Z}
 
 /- English proof (translation)
-Establish `hb : b = r ≫ P.hom`. Use `congrArg (· ≫ A.hom) h` as an intermediate fact. Simplify using `only [Category.assoc, Over.w] at this`. Conclude with `(this.trans (Category.comp_id _)).symm`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
-
-Conclude with `h.trans (by rw [hb]; rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem coord_eq {P A : Over S} {W : Scheme.{0}} (r : W ⟶ P.left) (c : P ⟶ A) (a : 𝟙_ (Over S) ⟶ A)
     (b : W ⟶ S) (h : r ≫ c.left = b ≫ a.left) :
@@ -123,7 +119,7 @@ theorem coord_eq {P A : Over S} {W : Scheme.{0}} (r : W ⟶ P.left) (c : P ⟶ A
   exact h.trans (by rw [hb]; rfl)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `((trivAt_id_iff M i.left).2 H).comp h.left`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem trivAt_of_factor {P F T : Over S} {M : LB P.left} {i : F ⟶ P} (H : Triv (M.pull i.left))
     (x : T ⟶ P) (h : T ⟶ F) (e : h ≫ i = x) :
@@ -132,9 +128,9 @@ theorem trivAt_of_factor {P F T : Over S} {M : LB P.left} {i : F ⟶ P} (H : Tri
   exact ((trivAt_id_iff M i.left).2 H).comp h.left
 
 /- English proof (translation)
-Set `x : Over.mk (r ≫ (X ⊗ Y ⊗ Z).hom) ⟶ X ⊗ Y ⊗ Z` to `Over.homMk r rfl`. Establish `e : x ≫ _ = _` using `coord_eq r _ x₀ b h`. Use `trivAt_of_factor H x (x ≫ snd _ _) ?_` and prove the remaining obligations. Use `clear_value x`. Use `CartesianMonoidalCategory.hom_ext _ _ ?_ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[e]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trivAt_face₁ {x₀ : 𝟙_ (Over S) ⟶ X} {M : LB (X ⊗ Y ⊗ Z).left}
     (H : Triv (M.pull (lift (toUnit (Y ⊗ Z) ≫ x₀) (𝟙 (Y ⊗ Z))).left)) {W : Scheme.{0}}
@@ -149,9 +145,9 @@ theorem trivAt_face₁ {x₀ : 𝟙_ (Over S) ⟶ X} {M : LB (X ⊗ Y ⊗ Z).lef
   · simp
 
 /- English proof (translation)
-Set `x : Over.mk (r ≫ (X ⊗ Y ⊗ Z).hom) ⟶ X ⊗ Y ⊗ Z` to `Over.homMk r rfl`. Establish `e : x ≫ _ = _` using `coord_eq r _ y₀ b h`. Use `trivAt_of_factor H x (lift (x ≫ fst _ _) (x ≫ snd _ _ ≫ snd _ _)) ?_` and prove the remaining obligations. Use `clear_value x`. Use `CartesianMonoidalCategory.hom_ext _ _ ?_ (CartesianMonoidalCategory.hom_ext _ _ ?_ ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[e]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trivAt_face₂ {y₀ : 𝟙_ (Over S) ⟶ Y} {M : LB (X ⊗ Y ⊗ Z).left}
     (H : Triv (M.pull (lift (fst X Z) (lift (toUnit (X ⊗ Z) ≫ y₀) (snd X Z))).left)) {W : Scheme.{0}}
@@ -167,9 +163,9 @@ theorem trivAt_face₂ {y₀ : 𝟙_ (Over S) ⟶ Y} {M : LB (X ⊗ Y ⊗ Z).lef
   · simp
 
 /- English proof (translation)
-Set `x : Over.mk (r ≫ (X ⊗ Y ⊗ Z).hom) ⟶ X ⊗ Y ⊗ Z` to `Over.homMk r rfl`. Establish `e : x ≫ _ = _` using `coord_eq r _ z₀ b h`. Use `trivAt_of_factor H x (lift (x ≫ fst _ _) (x ≫ snd _ _ ≫ fst _ _)) ?_` and prove the remaining obligations. Use `clear_value x`. Use `CartesianMonoidalCategory.hom_ext _ _ ?_ (CartesianMonoidalCategory.hom_ext _ _ ?_ ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `[e]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trivAt_face₃ {z₀ : 𝟙_ (Over S) ⟶ Z} {M : LB (X ⊗ Y ⊗ Z).left}
     (H : Triv (M.pull (lift (fst X Y) (lift (snd X Y) (toUnit (X ⊗ Y) ≫ z₀))).left)) {W : Scheme.{0}}
@@ -185,7 +181,7 @@ theorem trivAt_face₃ {z₀ : 𝟙_ (Over S) ⟶ Z} {M : LB (X ⊗ Y ⊗ Z).lef
   · simp [e]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ y W a b h => by have : IsIntegral W := GeometricallyIntegral.geometrically_isIntegral y a b h infer_instance⟩`.
+Supply the required witnesses or components.
 -/
 theorem geometricallyConnected_of_integral {A B : Scheme.{0}} (f : A ⟶ B) [GeometricallyIntegral f] :
     GeometricallyConnected f :=
@@ -194,9 +190,9 @@ theorem geometricallyConnected_of_integral {A B : Scheme.{0}} (f : A ⟶ B) [Geo
     infer_instance⟩
 
 /- English proof (translation)
-Establish `w : (t ≫ a.left) ≫ A.hom = 𝟙 T ≫ t`. Rewrite using `[Category.assoc, Over.w]`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`. Use `⟨Over.homMk (pullback.lift (t ≫ a.left) (𝟙 T) w) (pullback.lift_snd _ _ _), fun W => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(W.hom ≫ pullback.lift (t ≫ a.left) (𝟙 T) w) ≫ _ = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, pullback.lift_fst, Category.assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_section_baseChange {T : Scheme.{0}} (t : T ⟶ S) {A : Over S} (a : 𝟙_ (Over S) ⟶ A) :
     ∃ a' : 𝟙_ (Over T) ⟶ (Over.pullback t).obj A, ∀ W : Over T,
@@ -209,7 +205,7 @@ theorem exists_section_baseChange {T : Scheme.{0}} (t : T ⟶ S) {A : Over S} (a
   rw [Category.assoc, pullback.lift_fst, Category.assoc]
 
 /- English proof (translation)
-Take `⟨g₀, hg⟩` from `Spec.map_surjective (Spec.map (CommRingCat.ofHom g) ≫ t)`. Use `H'.paste_horiz H` as an intermediate fact. Rewrite `this` using `[← hg]`. Conclude with `GlobalTheory.UniversalConstants.bijective_appTop_baseChange k A a hp hi R' g₀.hom W' _ f' this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_appTop_baseChange {k : Type} [Field k] (A : Over (Sp k)) (a : 𝟙_ (Over (Sp k)) ⟶ A)
     (hp : IsProper A.hom) (hi : GeometricallyIntegral A.hom) {R : Type} [CommRing R]
@@ -223,27 +219,25 @@ theorem bijective_appTop_baseChange {k : Type} [Field k] (A : Over (Sp k)) (a : 
   exact GlobalTheory.UniversalConstants.bijective_appTop_baseChange k A a hp hi R' g₀.hom W' _ f' this
 
 /- English proof (translation)
-Introduce `k _ X Y Z x₀ y₀ z₀ sX sY pX pY jX jY iX iY cZ M hM f₁ f₂ f₃`. Establish `smXY : Smooth (X ⊗ Y).hom`. Express the relevant statement in the definitionally equal form `Smooth (pullback.fst X.hom Y.hom ≫ X.hom)`. Use `infer_instance`. Establish `prXY : IsProper (X ⊗ Y).hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `IsProper (pullback.fst X.hom Y.hom ≫ X.hom)`. Use `infer_instance`. Establish `gcXY : GeometricallyConnected (X ⊗ Y).hom`. Express the relevant statement in the definitionally equal form `GeometricallyConnected (pullback.fst X.hom Y.hom ≫ X.hom)`. Use `geometricallyConnected_of_integral X.hom` as an intermediate fact.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `geometricallyConnected_of_integral Y.hom` as an intermediate fact. Conclude with `GeometricallyConnected.comp _ _`. Establish `giXY : GeometricallyIntegral (X ⊗ Y).hom` using `GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected _ _ _ smXY gcXY`. Establish `H` using `fibTriv_clopen M (fun _ : PUnit => 𝟙 _) (fun _ => 1) (snd X (Y ⊗ Z) ≫ snd Y Z).left (fun R _ j => by`. Take `⟨q, hq, q₀, q₁⟩` from `exists_triple_chart X Y Z j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `exists_pair_chart X Y (j ≫ Z.hom)`. Take `⟨x₁, hx⟩` from `exists_section_baseChange (j ≫ Z.hom) x₀`. Take `⟨y₁, hy⟩` from `exists_section_baseChange (j ≫ Z.hom) y₀`. Set `B` to `(Over.pullback (j ≫ Z.hom)).obj X`. Set `C` to `(Over.pullback (j ≫ Z.hom)).obj Y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : IsPullback (pullback.fst X.hom (j ≫ Z.hom)) B.hom X.hom (j ≫ Z.hom)` using `IsPullback.of_hasPullback _ _`. Establish `hC : IsPullback (pullback.fst Y.hom (j ≫ Z.hom)) C.hom Y.hom (j ≫ Z.hom)` using `IsPullback.of_hasPullback _ _`. Establish `sB : Smooth B.hom` using `MorphismProperty.of_isPullback hB sX`. Establish `sC : Smooth C.hom` using `MorphismProperty.of_isPullback hC sY`. Establish `pB : IsProper B.hom` using `MorphismProperty.of_isPullback hB pX`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pC : IsProper C.hom` using `MorphismProperty.of_isPullback hC pY`. Establish `sm : Smooth (B ⊗ C).hom` using `MorphismProperty.of_isPullback hm smXY`. Establish `pr : IsProper (B ⊗ C).hom` using `MorphismProperty.of_isPullback hm prXY`. Establish `gi : GeometricallyIntegral (B ⊗ C).hom` using `MorphismProperty.of_isPullback hm giXY`. Establish `pj : IsProjBy (B ⊗ C).hom`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g₀, hg⟩` from `Spec.map_surjective (j ≫ Z.hom)`. Establish `hm'` using `hm`. Use `conv at hm' => arg 4`. Rewrite using `[← hg]`. Conclude with `GlobalTheory.AbLaw.isProjBy_baseChange k R g₀.hom _ _ _ _ _ hm' (GlobalTheory.AbLaw.isProjBy_tensor k X Y jX jY)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hN : (LB.LinComb M (fun _ : PUnit => q ≫ 𝟙 _) (fun _ => 1)).IsLB` using `DVR.linComb_isLB _ hM _ _`. Establish `pf` using `GlobalTheory.AbLaw.nonempty_perf_of_smooth_isProjBy R _ _ sm pj`. Use `⟨_, q, (B ⊗ C).hom, hq, GlobalTheory.TrivLocus.isClosed_trivLocus R _ _ _ hN (pf _ hN) (pf _ (isLB_pw hN _)) pr gi, fun F _ g W π f' => GlobalTheory.T.lineBundle_trivial_basicOpen_of_trivial_fibre_product R B C x₁ y₁ inferInstance inferInstance pB pC (bijective_appTop_baseChange …` and prove the remaining obligations. Rewrite using `[triv_pull_comp_iff]`. Use `trivAt_face₂ f₂ _ (B.hom ≫ j ≫ Z.hom) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, q₁, ← Category.assoc, ← Over.comp_left, lift_snd]`. Conclude with `hy B`. Rewrite using `[triv_pull_comp_iff]`. Use `trivAt_face₁ f₁ _ (C.hom ≫ j ≫ Z.hom) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, q₀, ← Category.assoc, ← Over.comp_left, lift_fst]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hx C)`. Establish `hclopen : IsClopen (fibTriv M (fun _ : PUnit => 𝟙 _) (fun _ => 1) (snd X (Y ⊗ Z) ≫ snd Y Z).left)` using `⟨H.2, by rw [H.1.antisymm (locTriv_subset _ _ _ _)]; exact isOpen_locTriv _ _ _ _⟩`. Establish `ne : (fibTriv M (fun _ : PUnit => 𝟙 _) (fun _ => 1) (snd X (Y ⊗ Z) ≫ snd Y Z).left).Nonempty`. Set `g : Spec (CommRingCat.of k) ⟶ Z.left` to `z₀.left`. Use `⟨g (default : PrimeSpectrum k), k, inferInstance, g, _, _, _, ⟨_, rfl⟩, IsPullback.of_hasPullback (snd X (Y ⊗ Z) ≫ snd Y Z).left g, ?_⟩` and prove the remaining obligations.
-
-Conclude with `trivAt_face₃ f₃ _ (pullback.snd _ g) pullback.condition`. Introduce `z`. Take `⟨V, hV, hT⟩` from `H.1 ((hclopen.eq_univ ne).ge (Set.mem_univ z))`. Conclude with `⟨V, hV, (trivAt_id_iff M _).1 hT⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem triv_locally_of_faces :
     ∀ (k : Type) [Field k] (X Y Z : Over (Sp k)) (x₀ : 𝟙_ (Over (Sp k)) ⟶ X) (y₀ : 𝟙_ (Over (Sp k)) ⟶ Y) (z₀ : 𝟙_ (Over (Sp k)) ⟶ Z), Smooth X.hom → Smooth Y.hom → IsProper X.hom → IsProper Y.hom → IsProjBy X.hom → IsProjBy Y.hom → GeometricallyIntegral X.hom → GeometricallyIntegral Y.hom → ConnectedSpace Z.left → ∀ M : LB (X ⊗ Y ⊗ Z).left, M.IsLB → Triv (M.pull (lift (toUnit (Y ⊗ Z) ≫ x₀) (𝟙 (Y ⊗ Z))).left) → Triv (M.pull (lift (fst X Z) (lift (toUnit (X ⊗ Z) ≫ y₀) (snd X Z))).left) → Triv (M.pull (lift (fst X Y) (lift (snd X Y) (toUnit (X ⊗ Y) ≫ z₀))).left) → ∀ z : Z.left, ∃ V : Z.left.Opens, z ∈ V ∧ Triv (M.pull ((snd X (Y ⊗ Z) ≫ snd Y Z).left ⁻¹ᵁ V).ι) := by

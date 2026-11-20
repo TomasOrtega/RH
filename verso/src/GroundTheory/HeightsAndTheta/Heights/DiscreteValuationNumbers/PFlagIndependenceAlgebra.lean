@@ -14,9 +14,9 @@ variable {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {R :
   [IsNoetherianRing R]
 
 /- English proof (translation)
-Use `((P ⊔ Ideal.span {f}).finite_minimalPrimes_of_isNoetherianRing).subset ?_` and prove the remaining obligations. Introduce `W hW`. Assume the negation of the conclusion as `h`. Rewrite `hW` using `[Function.mem_support]`. Unfold `divCycle at hW`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `hW` using `[dif_neg (fun h' => h h'.1)]`. Conclude with `hW rfl`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divCycle_finite_support (P : Ideal (MRing ι R)) (f : MRing ι R) :
     (Function.support (divCycle P f)).Finite := by
@@ -29,7 +29,7 @@ theorem divCycle_finite_support (P : Ideal (MRing ι R)) (f : MRing ι R) :
   exact hW rfl
 
 /- English proof (translation)
-The claim follows from `((divCycle_finite_support P f).union (divCycle_finite_support P g)).subset (Function.support_sub (divCycle P f) (divCycle P g))`.
+A detailed English derivation is pending.
 -/
 theorem ratDiv_finite_support (P : Ideal (MRing ι R)) (f g : MRing ι R) :
     (Function.support (ratDiv P f g)).Finite :=
@@ -43,7 +43,7 @@ section CycEval
 variable {K : Type*} {ι : K → Type*} {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Unfold `cycEval`. Apply `finsum_eq_sum_of_support_subset` to reduce the goal to its premises. Introduce `W hW`. Rewrite using `[Set.Finite.coe_toFinset]`. Conclude with `Function.support_mul_subset_left _ _ hW`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycEval_eq_sum {Z : Ideal (MRing ι R) → ℤ} (hZ : (Function.support Z).Finite)
     (n : Ideal (MRing ι R) → ℤ) : cycEval n Z = ∑ W ∈ hZ.toFinset, Z W * n W := by
@@ -61,7 +61,7 @@ variable {K : Type*} [DecidableEq K] {ι : K → Type*}
   {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-The claim follows from `Finset.sum_subset hS fun μ _ hμ => by rw [notMem_support_iff.mp hμ, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem classNum_eq_sum {σ : Type*} (cls : σ → K → ℤ) (H : MvPolynomial σ ℤ) (Q : List (K → ℤ))
     (W : Ideal (MRing ι O)) {S : Finset (σ →₀ ℕ)} (hS : H.support ⊆ S) :
@@ -69,14 +69,14 @@ theorem classNum_eq_sum {σ : Type*} (cls : σ → K → ℤ) (H : MvPolynomial 
   Finset.sum_subset hS fun μ _ hμ => by rw [notMem_support_iff.mp hμ, zero_mul]
 
 /- English proof (translation)
-Simplify using `[classNum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem classNum_zero_poly {σ : Type*} (cls : σ → K → ℤ) (Q : List (K → ℤ)) (W : Ideal (MRing ι O)) :
     classNum cls (0 : MvPolynomial σ ℤ) Q W = 0 := by
   simp [classNum]
 
 /- English proof (translation)
-Rewrite using `[classNum_eq_sum cls (H₁ + H₂) Q W support_add, classNum_eq_sum cls H₁ Q W (S := H₁.support ∪ H₂.support) Finset.subset_union_left, classNum_eq_sum cls H₂ Q W (S := H₁.support ∪ H₂.support) Finset.subset_union_right]`. Simplify using `only [coeff_add, add_mul, Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem classNum_add_poly {σ : Type*} [DecidableEq σ] (cls : σ → K → ℤ) (H₁ H₂ : MvPolynomial σ ℤ)
     (Q : List (K → ℤ)) (W : Ideal (MRing ι O)) :
@@ -93,7 +93,7 @@ def classNumAddHom {σ : Type*} [DecidableEq σ] (cls : σ → K → ℤ) (Q : L
   map_add' H₁ H₂ := classNum_add_poly cls H₁ H₂ Q W
 
 /- English proof (translation)
-Rewrite using `[classNum_eq_sum cls _ Q W support_monomial_subset, Finset.sum_singleton, coeff_monomial, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem classNum_monomial_eq {σ : Type*} (cls : σ → K → ℤ) (μ : σ →₀ ℕ) (c : ℤ) (Q : List (K → ℤ))
     (W : Ideal (MRing ι O)) :
@@ -104,7 +104,7 @@ theorem classNum_monomial_eq {σ : Type*} (cls : σ → K → ℤ) (μ : σ →�
 
 omit [DecidableEq K] in
 /- English proof (translation)
-Unfold `classList`. Use `congr 1`. Rewrite using `[← Finsupp.toMultiset_map μ φ, Multiset.map_map]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem classList_mapDomain {σ τ : Type*} (cls : τ → K → ℤ) (φ : σ → τ) (μ : σ →₀ ℕ) :
     classList cls (μ.mapDomain φ) = classList (cls ∘ φ) μ := by
@@ -113,7 +113,7 @@ theorem classList_mapDomain {σ τ : Type*} (cls : τ → K → ℤ) (φ : σ �
   rw [← Finsupp.toMultiset_map μ φ, Multiset.map_map]
 
 /- English proof (translation)
-Proceed by induction on `H using MvPolynomial.induction_on' with`. Consider the case `monomial μ c => rw [rename_monomial, classNum_monomial_eq, classNum_monomial_eq, classList_mapDomain]`. Consider the case `add p q hp hq => rw [map_add, classNum_add_poly, classNum_add_poly, hp, hq]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem classNum_rename_vars {σ τ : Type*} [DecidableEq σ] [DecidableEq τ] (cls : τ → K → ℤ) (φ : σ → τ) (H : MvPolynomial σ ℤ)
     (Q : List (K → ℤ)) (W : Ideal (MRing ι O)) :
@@ -156,15 +156,15 @@ def pushExpansion {n n' : ℕ} (σ : Fin n → Fin n') (Gs : Fin n → MvPolynom
   fun j => ∑ i ∈ Finset.univ.filter (fun i => σ i = j), rename (Sum.map σ σ) (Gs i)
 
 /- English proof (translation)
-Establish `hcls : Sum.elim x x' ∘ Sum.map σ σ = Sum.elim (x ∘ σ) (x' ∘ σ)`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `cases s <;> rfl`. Unfold `pairNum pushExpansion`. Establish `h1 : ∀ j, cycEval (fun (W : Ideal (MRing ι O)) => classNum (Sum.elim x x') (∑ i ∈ Finset.univ.filter (fun i => σ i = j), rename (Sum.map σ σ) (Gs i)) Q W) (ratDiv P (f j) (g j)) = ∑ i ∈ Finset.univ.filter (fun i => σ i = j), cycEval (fun (W : Ideal (MRing ι O)) => classNum (Sum.e …`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Introduce `j`. Establish `hsum : ∀ W : Ideal (MRing ι O), classNum (Sum.elim x x') (∑ i ∈ Finset.univ.filter (fun i => σ i = j), rename (Sum.map σ σ) (Gs i)) Q W = ∑ i ∈ Finset.univ.filter (fun i => σ i = j), classNum (Sum.elim (x ∘ σ) (x' ∘ σ)) (Gs i) Q W`. Introduce `W`. Use `map_sum (classNumAddHom (Sum.elim x x') Q W) (fun i => rename (Sum.map σ σ) (Gs i)) (Finset.univ.filter (fun i => σ i = j))` as an intermediate fact. Simplify using `only [classNumAddHom, AddMonoidHom.coe_mk, ZeroHom.coe_mk] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[classNum_rename_vars, hcls]`. Simplify using `only [hsum]`. Rewrite using `[cycEval_eq_sum (ratDiv_finite_support P (f j) (g j))]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.mp hi).2, cycEval_eq_sum (ratDiv_finite_support P (f j) (g j))]`. Simplify using `only [h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_fiberwise Finset.univ σ (fun i => cycEval (fun (W : Ideal (MRing ι O)) => classNum (Sum.elim (x ∘ σ) (x' ∘ σ)) (Gs i) Q W) (ratDiv P (f (σ i)) (g (σ i))))`.
+A detailed English derivation is pending.
 -/
 theorem pairNum_pushExpansion {n n' : ℕ} (σ : Fin n → Fin n') (P : Ideal (MRing ι O))
     (x x' : Fin n' → K → ℤ) (f g : Fin n' → MRing ι O)
@@ -209,7 +209,7 @@ end PairNum
 section Expansions
 
 /- English proof (translation)
-Use `⟨?_, fun i => (hA.homogeneous i).add (hB.homogeneous i)⟩` and prove the remaining obligations. Simplify using `only [map_add, Pi.add_apply, mul_add, Finset.sum_add_distrib, ← hA.expansion, ← hB.expansion]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isPairExpansion_add {n m : ℕ} {A B : MvPolynomial (Fin n) ℤ}
     {As Bs : Fin n → MvPolynomial (Fin n ⊕ Fin n) ℤ} (hA : IsPairExpansion m A As)
@@ -220,11 +220,11 @@ theorem isPairExpansion_add {n m : ℕ} {A B : MvPolynomial (Fin n) ℤ}
   ring
 
 /- English proof (translation)
-Use `⟨?_, fun j => IsHomogeneous.sum _ _ _ fun i _ => (h.homogeneous i).rename_isHomogeneous⟩` and prove the remaining obligations. Establish `e1 : rename Sum.inl (rename σ A) = rename (Sum.map σ σ) (rename Sum.inl A)`. Rewrite using `[rename_rename, rename_rename]`. Both sides reduce to the same expression. Establish `e2 : rename Sum.inr (rename σ A) = rename (Sum.map σ σ) (rename Sum.inr A)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[rename_rename, rename_rename]`. Both sides reduce to the same expression. Rewrite using `[e1, e2, ← map_sub, h.expansion, map_sum]`. Simplify using `only [map_mul, map_sub, rename_X, Sum.map_inl, Sum.map_inr, pushExpansion, Finset.mul_sum]`. Use `(Finset.sum_fiberwise Finset.univ σ _).symm.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.mp hi).2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPairExpansion_push {n n' m : ℕ} (σ : Fin n → Fin n') {A : MvPolynomial (Fin n) ℤ}
     {Gs : Fin n → MvPolynomial (Fin n ⊕ Fin n) ℤ} (h : IsPairExpansion m A Gs) :
@@ -243,13 +243,13 @@ theorem isPairExpansion_push {n n' m : ℕ} (σ : Fin n → Fin n') {A : MvPolyn
   rw [(Finset.mem_filter.mp hi).2]
 
 /- English proof (translation)
-Proceed by induction on `A using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨0, by simp⟩`. Consider the case `add p q hp hq`. Take `⟨Ps, hP⟩` from `hp`. Take `⟨Qs, hQ⟩` from `hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Ps + Qs, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, Pi.add_apply, mul_add, Finset.sum_add_distrib, ← hP, ← hQ]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p j hp`. Take `⟨Ps, hP⟩` from `hp`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨fun i => X (Sum.inl j) * Ps i + if i = j then rename Sum.inr p else 0, ?_⟩` and prove the remaining obligations. Simplify using `only [mul_add, Finset.sum_add_distrib, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `: ∑ i, (X (Sum.inl i) - X (Sum.inr i)) * (X (Sum.inl j) * Ps i) = X (Sum.inl j) * ∑ i, (X (Sum.inl i) - X (Sum.inr i)) * Ps i`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, ← hP]`. Simplify using `only [map_mul, rename_X]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_expansion {n : ℕ} (A : MvPolynomial (Fin n) ℤ) :
     ∃ Gs : Fin n → MvPolynomial (Fin n ⊕ Fin n) ℤ,
@@ -277,13 +277,13 @@ theorem exists_expansion {n : ℕ} (A : MvPolynomial (Fin n) ℤ) :
     ring
 
 /- English proof (translation)
-Use `conv_lhs => rw [← sum_homogeneousComponent P, Finset.mul_sum, map_sum]`. Establish `h : ∀ j, homogeneousComponent t (L * homogeneousComponent j P) = if j = t - 1 ∧ t ≠ 0 then L * homogeneousComponent j P else 0`. Introduce `j`. Establish `hm` using `hL.mul (homogeneousComponent_isHomogeneous j P)`. Rewrite using `[homogeneousComponent_of_mem ((mem_homogeneousSubmodule _ _).mpr hm)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hjt : j = t - 1 ∧ t ≠ 0`. Rewrite using `[if_pos (by omega), if_pos hjt]`. Rewrite using `[if_neg (by omega), if_neg hjt]`. Simplify using `only [h]`. Distinguish the cases in `ht : t = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[ht]`. Simplify using `only [ht, ne_eq, not_false_eq_true, and_true, if_false]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with hmem`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[homogeneousComponent_eq_zero, mul_zero]`. Rewrite `hmem` using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem homogeneousComponent_linear_mul {σ : Type*} {L : MvPolynomial σ ℤ} (hL : L.IsHomogeneous 1)
     (P : MvPolynomial σ ℤ) (t : ℕ) :
@@ -309,11 +309,11 @@ theorem homogeneousComponent_linear_mul {σ : Type*} {L : MvPolynomial σ ℤ} (
       omega
 
 /- English proof (translation)
-Take `⟨Gs, hG⟩` from `exists_expansion A`. Establish `hL : ∀ i, (X (Sum.inl i) - X (Sum.inr i) : MvPolynomial (Fin n ⊕ Fin n) ℤ).IsHomogeneous 1` using `fun i => (isHomogeneous_X _ _).sub (isHomogeneous_X _ _)`. Establish `hD : (rename Sum.inl A - rename Sum.inr A).IsHomogeneous m` using `hA.rename_isHomogeneous.sub hA.rename_isHomogeneous`. Establish `key` using `congrArg (homogeneousComponent m) hG`. Rewrite `key` using `[homogeneousComponent_of_mem ((mem_homogeneousSubmodule _ _).mpr hD), if_pos rfl, map_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [homogeneousComponent_linear_mul (hL _)] at key`. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Use `⟨0, ?_, fun i => isHomogeneous_zero _ _ _⟩` and prove the remaining obligations. Simplify using `using key`. Use `⟨fun i => homogeneousComponent (m - 1) (Gs i), ?_, fun i => homogeneousComponent_isHomogeneous _ _⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[key]`. Simplify using `only [hm.ne', if_false]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_isPairExpansion {n m : ℕ} {A : MvPolynomial (Fin n) ℤ} (hA : A.IsHomogeneous m) :
     ∃ Gs, IsPairExpansion m A Gs := by

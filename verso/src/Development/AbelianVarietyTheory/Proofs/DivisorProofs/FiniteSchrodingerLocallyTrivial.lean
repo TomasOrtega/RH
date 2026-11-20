@@ -24,44 +24,44 @@ open GlobalTheory.HeisSchA
 variable {R : Type} [CommRing R] [Invertible (2 : R)] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.add_apply, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem schr_add (ψ : AddChar R ℂ) (w : (κ → R) × (κ → R)) (Φ Ψ : (κ → R) → ℂ) :
     schr ψ w (Φ + Ψ) = schr ψ w Φ + schr ψ w Ψ := by
   funext x; simp only [schr, Pi.add_apply, mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem schr_smul (ψ : AddChar R ℂ) (w : (κ → R) × (κ → R)) (c : ℂ) (Φ : (κ → R) → ℂ) :
     schr ψ w (c • Φ) = c • schr ψ w Φ := by
   funext x; simp only [schr, Pi.smul_apply, smul_eq_mul]; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.zero_apply, mul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem schr_zero (ψ : AddChar R ℂ) (w : (κ → R) × (κ → R)) :
     schr ψ w (0 : (κ → R) → ℂ) = 0 := by
   funext x; simp only [schr, Pi.zero_apply, mul_zero]
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `zero => exact ⟨Set.univ, Filter.univ_mem, fun p _ => schr_zero ψ _⟩`. Consider the case `add Φ Ψ _ _ h1 h2`. Take `⟨N₁, hN₁, e₁⟩` from `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨N₂, hN₂, e₂⟩` from `h2`. Conclude with `⟨N₁ ∩ N₂, Filter.inter_mem hN₁ hN₂, fun p hp => by rw [schr_add, e₁ p hp.1, e₂ p hp.2]⟩`. Consider the case `smul c Φ _ h`. Take `⟨N, hN, e⟩` from `h`. Conclude with `⟨N, hN, fun p hp => by rw [schr_smul, e p hp]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Set `fe : (κ → FiniteAdeleRing (𝓞 F) F) → κ → AF F` to `fun a i => pairA F 0 (a i)`. Establish `cfe : Continuous fe` using `continuous_pi fun i => (show Continuous fun y : FiniteAdeleRing (𝓞 F) F => ((0 : InfiniteAdeleRing F), y) from continuous_const.prodMk continuous_id).comp (continuous_apply i)`. Set `w' : (κ → FiniteAdeleRing (𝓞 F) F) × (κ → FiniteAdeleRing (𝓞 F) F) → (κ → FiniteAdeleRing (𝓞 F) F) × (κ → FiniteAdeleRing (𝓞 F) F) × FiniteAdeleRing (𝓞 F) F` to `fun p => (p.2, p.1, p2 (⅟(2 : AF F) * (fe p.1 ⬝ᵥ fe p.2)))`.
+Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `cw : Continuous w'` using `continuous_snd.prodMk (continuous_fst.prodMk (continuous_snd.comp (continuous_const.mul ((cfe.comp continuous_fst).dotProduct (cfe.comp continuous_snd)))))`. Establish `w0 : w' 0 = 0`. Establish `: fe 0 = 0` using `funext fun i => rfl`. Simplify using `only [w', Prod.fst_zero, Prod.snd_zero, this, zero_dotProduct, mul_zero, map_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hev` using `(cw.tendsto' 0 0 w0).eventually (GlobalTheory.ConeMeasSmall.eventually_fixed (finChar ψ) (finChar_isLocallyConstant ψ hψ) hg)`. Use `⟨_, hev, fun p hp => ?_⟩` and prove the remaining obligations. Establish `hp'` using `fun z => (hp : ∀ z, finChar ψ (z ⬝ᵥ (w' p).1 + (w' p).2.2) * g (z + (w' p).2.1) = g z) z`. Use function extensionality and compare the values at `x`. Establish `hp1 : ∀ a : κ → FiniteAdeleRing (𝓞 F) F, (⇑p1 ∘ fe a) = 0` using `fun a => funext fun i => rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `harch : p1 (x ⬝ᵥ fe p.2 + ⅟(2 : AF F) * (fe p.1 ⬝ᵥ fe p.2)) = 0`. Rewrite using `[map_add, map_mul, RingHom.map_dotProduct, RingHom.map_dotProduct, hp1, hp1]`. Simplify using the standard rewrite rules. Establish `hfin : p2 (x ⬝ᵥ fe p.2 + ⅟(2 : AF F) * (fe p.1 ⬝ᵥ fe p.2)) = (fun i => (x i).2) ⬝ᵥ p.2 + p2 (⅟(2 : AF F) * (fe p.1 ⬝ᵥ fe p.2))`. Rewrite using `[map_add, RingHom.map_dotProduct]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hx1 : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((x + fe p.1) i).1) = fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1`. Use function extensionality and compare the values at `i`. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F ((x i).1 + 0) = _`. Rewrite using `[add_zero]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx2 : (fun i => ((x + fe p.1) i).2) = (fun i => (x i).2) + p.1` using `funext fun i => rfl`. Use `show ψ (x ⬝ᵥ fe p.2 + ⅟(2 : AF F) * (fe p.1 ⬝ᵥ fe p.2)) * (f _ * g _) = f _ * g _`. Rewrite using `[map_eq_mul ψ, harch, hfin, hx1, hx2, ← hp' (fun i => (x i).2)]`. Establish `h0 : ψ (mk 0 0) = 1`. Rewrite using `[show (mk 0 0 : AF F) = 0 from rfl, AddChar.map_zero_eq_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h0]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem schr_fixed_small : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), Continuous ψ →
     ∀ (κ : Type) [Fintype κ], ∀ Ψ ∈ schA F κ, ∃ N ∈ 𝓝 (0 : (κ → FiniteAdeleRing (𝓞 F) F) × (κ → FiniteAdeleRing (𝓞 F) F)),

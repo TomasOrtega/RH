@@ -7,7 +7,7 @@ namespace LateralTheory.E.ChernClassEvaluation
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use `(HomologicalComplex.extend_d_eq ((chainsN R).obj E) ComplexShape.embeddingDownNat (i := p + 1) (j := p) rfl rfl).trans ?_` and prove the remaining obligations. Unfold `chainsXIso`. Use `congr 2`. Simplify using `[chainsN]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem chains_d (E : Spc) (p : ℕ) :
     ((chains R).obj E).d (-((p + 1 : ℕ) : ℤ)) (-(p : ℤ)) =
@@ -19,7 +19,7 @@ theorem chains_d (E : Spc) (p : ℕ) :
   rfl
 
 /- English proof (translation)
-Unfold `freeGen`. Express the relevant statement in the definitionally equal form `((((toSheafify _ ((freeP R).obj P)) ≫ sheafifyMap _ ((freeP R).map f)).app (op U)).hom _) = _`. Rewrite using `[← toSheafify_naturality, NatTrans.comp_app, ModuleCat.hom_comp]`. Conclude with `congrArg (fun y => ((toSheafify Scheme.etaleTopology ((freeP R).obj Q)).app (op U)).hom y) (by erw [ModuleCat.free_map_apply]; rfl)`.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem freeGen_nat {P Q : PSh} (f : P ⟶ Q) (U : Scheme.{0}) (x : P.obj (op U)) :
     (((free R).map f).hom.app (op U)).hom (freeGen R P U x) = freeGen R Q U (f.app (op U) x) := by
@@ -41,13 +41,13 @@ theorem evH_apply {A B : Shv R} (U : Scheme.{0}) (y : Sec A U) (f : A ⟶ B) :
     (f.hom.app (op U)).hom y = evH U y f := rfl
 
 /- English proof (translation)
-Introduce `R _ E I n m hm α U`. Prove the components needed by the constructor for the conclusion. Introduce `x`. Unfold `ev`. Rewrite using `[δ_v n m hm α (-((0 : ℕ) : ℤ)) m (by simp) n 1 (by omega) (by simp)]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : ((chains R).obj E).d (-((0 : ℕ) : ℤ)) 1 = 0` using `(HomologicalComplex.isZero_extend_X _ _ 1 (fun i => by show -(i : ℤ) ≠ 1; omega)).eq_of_tgt _ _`. Rewrite using `[hz]`. Simplify using `[Sec.map]`. Introduce `p s t hs ht x`. Unfold `ev`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[δ_v n m hm α _ t ht s (-(p : ℤ)) (by omega) (by push_cast; omega), chains_d]`. Simplify using `only [Preadditive.comp_add, Preadditive.comp_zsmul, Category.assoc, Iso.inv_hom_id_assoc]`. Simplify using `[Sec.map, Units.smul_def, Preadditive.comp_sum, Preadditive.sum_comp, Preadditive.zsmul_comp, Preadditive.comp_zsmul, freeGen_nat, Sx.face]`. Rewrite using `[evH_apply, map_zsmul, map_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`. Use `congr 1`. Rewrite using `[← evH_apply]`. Simplify using `[freeGen_nat]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem evDelta_pf : ChernClassExistence.LeafEvDelta := by
   intro R _ E I n m hm α U
@@ -73,7 +73,7 @@ theorem evDelta_pf : ChernClassExistence.LeafEvDelta := by
     simp [freeGen_nat]
 
 /- English proof (translation)
-The claim follows from `ChernClassExistence.etale_kummer_chern_cocycle_exists_of_evaluation_values_and_closedness hmk evDelta_pf h1 h2 c1 c2 c3`.
+A detailed English derivation is pending.
 -/
 theorem etale_kummer_chern_cocycle_exists_of_evaluation_values_and_closedness (hmk : ChernClassExistence.LeafEvMk) (h1 : ChernClassExistence.EtaleKummerChernEdgeValuesExistNatural) (h2 : ChernClassExistence.EtaleKummerChernTriangleValuesExistNatural)
     (c1 : ChernClassExistence.EtaleKummerChernCochainCoboundaryVanishesOnEdges) (c2 : ChernClassExistence.EtaleKummerChernCochainCoboundaryVanishesOnTriangles) (c3 : ChernClassExistence.EtaleKummerChernCochainCoboundaryVanishesOnTetrahedra) :

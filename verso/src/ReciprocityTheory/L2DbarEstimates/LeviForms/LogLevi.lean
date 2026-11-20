@@ -8,27 +8,25 @@ open MeasureTheory Metric Filter Topology
 open scoped ENNReal ContDiff
 
 /- English proof (translation)
-Introduce `z g ph r ε hz hg hph hpsh hr hε x ξ`. Use `set c : ℝ := ε ^ 2 with hc_def`. Establish `hc : 0 < c` using `by positivity`. Establish `hvs : SmoothR n z (ev n g ph r)` using `llSmoothR_ev n z g ph r hg hph`. Establish `hk : ContDiff ℝ ∞ (llLog c)` using `llLog_contDiff hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlw : lw n g ph r ε = fun y => llLog c (ev n g ph r y)`. Use function extensionality and compare the values at `y`. Establish `hy : -c / 2 ≤ ev n g ph r y` using `by linarith [llEv_nonneg n g ph r y]`. Simplify using `only [lw, llLog]`. Rewrite using `[llShift_eq hc hy]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set e := ev n g ph r x with he_def`. Establish `he0 : 0 ≤ e` using `llEv_nonneg n g ph r x`. Establish `ht : -c / 2 < e` using `by linarith`. Establish `hQ : 0 < e + c` using `by linarith`. Establish `hL : (Levi n z (lw n g ph r ε) x ξ).re = (e + c)⁻¹ * (Levi n z (ev n g ph r) x ξ).re - ((e + c) ^ 2)⁻¹ * ‖dDot n z (fun y => (ev n g ph r y : ℂ)) x ξ‖ ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hlw, hCh z hz (llLog c) (ev n g ph r) (by simpa using contDiff_infty.mp hk 2) hvs x ξ, llLog_deriv hc ht, llLog_deriv2 hc ht]`. Simplify using `only [Complex.add_re, Complex.re_ofReal_mul, Complex.ofReal_re]`. Expand and normalize the polynomial expressions, which then agree. Establish `hD : dDot n z (fun y => (lw n g ph r ε y : ℂ)) x ξ = (((e + c)⁻¹ : ℝ) : ℂ) * dDot n z (fun y => (ev n g ph r y : ℂ)) x ξ`. Rewrite using `[hlw]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `dDot`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[d_comp_real n z (llLog c) hk (ev n g ph r) (SmoothR.ckR n z 1 _ hvs) j x, llLog_deriv hc ht]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hN : ‖dDot n z (fun y => (lw n g ph r ε y : ℂ)) x ξ‖ ^ 2 = ((e + c) ^ 2)⁻¹ * ‖dDot n z (fun y => (ev n g ph r y : ℂ)) x ξ‖ ^ 2`. Rewrite using `[hD, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hQ)]`. Rewrite using `[mul_pow, inv_pow]`. Take `⟨h1, h2⟩` from `hEv z g ph r hz hg hph hr x ξ`. Establish `hLp : 0 ≤ (Levi n z ph x ξ).re` using `hpsh x ξ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hN, hL]`. Rewrite `h1`, `h2` using `[← he_def]`. Generalize the expression as in `(Levi n z (ev n g ph r) x ξ).re = A at h1 h2 ⊢`. Generalize the expression as in `‖dDot n z (fun y => (ev n g ph r y : ℂ)) x ξ‖ ^ 2 = N at h1 h2 ⊢`. Generalize the expression as in `(Levi n z ph x ξ).re = P at h1 h2 hLp ⊢`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hQne : e + c ≠ 0` using `hQ.ne'`. Prove the components needed by the constructor for the conclusion. Establish `key : N ≤ e * A + e * (e + c) * P`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg he0 hc.le) hLp]`. Rewrite using `[← sub_nonneg]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `hid : e * ((e + c)⁻¹ * A - ((e + c) ^ 2)⁻¹ * N + P) - c * (((e + c) ^ 2)⁻¹ * N) = (e * A + e * (e + c) * P - N) * (e + c)⁻¹`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hid]`. Conclude with `mul_nonneg (by linarith) (inv_nonneg.mpr hQ.le)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `key : 0 ≤ (e + c) * A + (e + c) ^ 2 * P - N`. Use polynomial arithmetic with `[mul_nonneg hc.le h2, mul_nonneg (mul_nonneg hQ.le hc.le) hLp]`. Establish `hid : (e + c)⁻¹ * A - ((e + c) ^ 2)⁻¹ * N + P = ((e + c) * A + (e + c) ^ 2 * P - N) * ((e + c) ^ 2)⁻¹`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hid]`. Conclude with `mul_nonneg key (inv_nonneg.mpr (sq_nonneg _))`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logLevi (n : ℕ) (M : Type u) [TopologicalSpace M]
     (hEv : EvLeviStatement n M) (hCh : ChainStatement n M) : LogLeviStatement n M := by

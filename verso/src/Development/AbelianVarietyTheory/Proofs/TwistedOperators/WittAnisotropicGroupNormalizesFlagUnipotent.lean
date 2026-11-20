@@ -7,9 +7,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.MixPer
 
 /- English proof (translation)
-Introduce `D S S₀ ρ d n hn h`. Establish `he : Formalism.L2.Theta.mt S (d.emb0 h) ⬝ d.e.map (incA D) = d.e.map (incA D)` using `d.wittDecomp_anisotropicEmbedding_inclX h`. Establish `he'` using `GlobalTheory.BesselChar.inv_fix_cols (GlobalTheory.BesselChar.mt_inv_mul S (d.emb0 h)) he`. Unfold `flagN at hn ⊢`. Rewrite `hn`, the goal using `[GlobalTheory.BesselChar.mem_NFlag_iff S d.e (isIsoSub_e d).1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.BesselChar.mt_mul, GlobalTheory.BesselChar.mt_mul]`. Conclude with `hn.conj he he' (GlobalTheory.BesselChar.mt_mul_inv S _) (GlobalTheory.BesselChar.perp_fixed d.e _ he')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem witt_anisotropic_group_normalizes_flag_unipotent : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ), ∀ n ∈ flagN d, ∀ h : GA D S₀,
     d.emb0 h * n * (d.emb0 h)⁻¹ ∈ flagN d := by

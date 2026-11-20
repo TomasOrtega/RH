@@ -6,9 +6,9 @@ namespace GlobalTheory.ProjectiveRetraction
 open NumberField
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.projective_lifting_property N.mkQ (LinearMap.id : (M ⧸ N) →ₗ[R] (M ⧸ N)) N.mkQ_surjective`. Use `⟨LinearMap.id - s ∘ₗ N.mkQ, fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : N.mkQ (s (N.mkQ x)) = N.mkQ x` using `LinearMap.congr_fun hs (N.mkQ x)`. Establish `h2 : N.mkQ (x - s (N.mkQ x)) = 0` using `by rw [map_sub, h1, sub_self]`. Conclude with `(Submodule.Quotient.mk_eq_zero N).1 h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : N.mkQ x = 0` using `(Submodule.Quotient.mk_eq_zero N).2 hx show x - s (N.mkQ x) = x`. Rewrite using `[h0, map_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_retraction_of_projective {R M : Type*} [Ring R] [AddCommGroup M] [Module R M]
     (N : Submodule R M) [Module.Projective R (M ⧸ N)] :
@@ -24,19 +24,15 @@ theorem exists_retraction_of_projective {R M : Type*} [Ring R] [AddCommGroup M] 
     rw [h0, map_zero, sub_zero]
 
 /- English proof (translation)
-Use `set N : Submodule (𝓞 E) L := M0.comap L.subtype with hN`. Establish `hsat : ∀ (a : 𝓞 E), a ≠ 0 → ∀ x : L, a • x ∈ N → x ∈ N`. Introduce `a ha x hx`. Establish `hx' : a • (x : V) ∈ M0` using `hx`. Establish `ha' : (algebraMap (𝓞 E) E a) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Conclude with `ha ((IsFractionRing.injective (𝓞 E) E) (by rw [h0, map_zero]))`. Establish `h1 : (algebraMap (𝓞 E) E a) • (x : V) ∈ Submodule.span E (M0 : Set V)`. Rewrite using `[algebraMap_smul]`. Conclude with `Submodule.subset_span hx'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `h2 : (x : V) ∈ Submodule.span E (M0 : Set V)` using `(Submodule.smul_mem_iff _ ha').1 h1`. Use `show (x : V) ∈ M0`. Rewrite using `[h.2]`. Conclude with `⟨x.2, h2⟩`. Establish `htor : Submodule.torsion (𝓞 E) (L ⧸ N) = ⊥`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_bot_iff]`. Introduce `q hq`. Take `⟨x, rfl⟩` from `N.mkQ_surjective q`. Take `⟨a, ha⟩` from `(Submodule.mem_torsion_iff _).1 hq`. Establish `ha2 : N.mkQ ((a : 𝓞 E) • x) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul]`. Conclude with `ha`. Establish `hx : x ∈ N` using `hsat a (nonZeroDivisors.ne_zero a.2) x ((Submodule.Quotient.mk_eq_zero N).1 ha2)`. Conclude with `(Submodule.Quotient.mk_eq_zero N).2 hx`. Use `haveI : Module.Finite (𝓞 E) L := Module.Finite.iff_fg.2 hL`.
-
-Use `haveI : Module.Flat (𝓞 E) (L ⧸ N) := IsDedekindDomain.flat_iff_torsion_eq_bot.2 htor`. Use `haveI : Module.FinitePresentation (𝓞 E) (L ⧸ N) := Module.finitePresentation_of_finite _ _`. Use `haveI : Module.Projective (𝓞 E) (L ⧸ N) := Module.Flat.projective_of_finitePresentation`. Take `⟨p, hp1, hp2⟩` from `exists_retraction_of_projective N`. Use `⟨LinearMap.codRestrict M0 (L.subtype ∘ₗ p) (fun x => hp1 x), fun x => ?_⟩` and prove the remaining obligations.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `hx : (⟨(x : V), h.1 x.2⟩ : L) ∈ N` using `x.2`. Use `show ((p ⟨(x : V), h.1 x.2⟩ : L) : V) = x`. Rewrite using `[hp2 _ hx]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_retraction {E : Type} [Field E] [NumberField E] {V : Type} [AddCommGroup V] [Module E V]
     [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V] (M0 L : Submodule (𝓞 E) V) (hL : L.FG)

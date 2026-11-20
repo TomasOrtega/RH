@@ -12,15 +12,13 @@ open UpperTheory.V.Lit.Geo
 open scoped TensorProduct
 
 /- English proof (translation)
-Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨φ, v, hφ, rfl⟩` from `hx`. Set `S : Subgroup (GL (Fin a) (Af E))` to `{ carrier := {k | finRep E a k φ = φ} one_mem' := by simp mul_mem' := fun {x y} hx hy => by`. Establish `hx' : finRep E a x φ = φ` using `hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hy' : finRep E a y φ = φ` using `hy`. Express the relevant statement in the definitionally equal form `finRep E a (x * y) φ = φ`. Rewrite using `[map_mul, Module.End.mul_apply, hy', hx']`. Use the proof step `inv_mem' := fun {x} hx => by`. Establish `hx' : finRep E a x φ = φ` using `hx`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `finRep E a x⁻¹ φ = φ`. Use `conv_lhs => rw [← hx']`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hS : IsOpen (S : Set (GL (Fin a) (Af E)))` using `Subgroup.isOpen_mono (H₁ := U) (fun u hu => hφ.2.1 u hu) hU`. Conclude with `(ContAut.continuous_of_isOpen_stab E a φ hS).smul continuous_const`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `continuous_const`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `hx.add hy`. Consider the case `smul c x _ hx => rw [map_smul]`.
-
-Conclude with `hx.const_smul c`.
+A detailed English derivation is pending.
 -/
 private theorem cont_ev {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
     {U : Subgroup (GL (Fin a) (Af E))} (hU : IsOpen (U : Set (GL (Fin a) (Af E)))) {Ξ : AlgRep E a}
@@ -49,9 +47,9 @@ private theorem cont_ev {E : Type} [Field E] [NumberField E] [IsTotallyComplex E
   | smul c x _ hx => rw [map_smul]; exact hx.const_smul c
 
 /- English proof (translation)
-Introduce `E _ _ _ a U hU Ξ q α hα R`. Take `⟨T, B, hB, hT⟩` from `bdBasis E a Ξ q`. Take `⟨K, hK, hR⟩` from `(qhtFacts E a).2.2.2 R`. Establish `hb : ∀ X : Fin q → Herm E a, ∃ c : ℝ, ∀ g ∈ K, ‖ev (α X) (retractOne g : KernelIndexFullLattice.G1 E a).1‖ ≤ c` using `fun X => hK.exists_bound_of_continuousOn ((cont_ev hU (hα.val X)).comp (continuous_subtype_val.comp continuous_retractOne)).continuousOn`. Use `choose c hc using hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B * ∑ X ∈ T, |c X|, by positivity, fun g hg => hT α g _ (by positivity) fun X hX => ?_⟩` and prove the remaining obligations. Take `⟨γ, t, h⟩` from `hR g hg`. Establish `e` using `hc X _ h`. Rewrite `e` using `[(retrFacts E a).2.1, ((levelVal E a U Ξ _).1 (hα.val X)).1]`. Conclude with `(e.trans (le_abs_self _)).trans (Finset.single_le_sum (f := fun X => |c X|) (fun _ _ => abs_nonneg _) hX)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.bdCompact :
     BdCompact := by

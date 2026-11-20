@@ -31,7 +31,7 @@ def conjHomeomorphOfUnitDet (P : Mat k r) (hu : IsUnit P.det) : Mat k r ≃ₜ M
 def cayleyEmbedding (P : Mat k r) (g : Formalism.REAL.UJ ε) : Formalism.QuantumDeterminants.Mt k r := P⁻¹ * umat g * P
 
 /- English proof (translation)
-Establish `hu : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det _).1 hP.1.1`. Establish `h1 : Topology.IsClosedEmbedding (fun g : Formalism.REAL.UJ ε => (conjHomeomorphOfUnitDet P hu) (umat g))` using `(conjHomeomorphOfUnitDet P hu).isClosedEmbedding.comp (Formalism.REAL.isClosedEmbeddingMatrix _ ε).1`. Establish `h2 : Topology.IsClosedEmbedding (cayleyEmbedding (ε` using `ε) P) := h1`. Conclude with `h2.measurableEmbedding`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cayleyEmbedding_measurable {P : Mat k r} (hP : IsCayleyU k r ε P) : MeasurableEmbedding (cayleyEmbedding (ε := ε) P) := by
   have hu : IsUnit P.det := (Matrix.isUnit_iff_isUnit_det _).1 hP.1.1
@@ -41,9 +41,9 @@ theorem cayleyEmbedding_measurable {P : Mat k r} (hP : IsCayleyU k r ε P) : Mea
   exact h2.measurableEmbedding
 
 /- English proof (translation)
-Establish `hu : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det _).1 hP.1.1`. Establish `h2 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `hH : Pᴴ * Formalism.REAL.Jm ε * P = Formalism.QuantumDeterminants.Hpk k r` using `hP.1.2`. Establish `hg : (umat g)ᴴ * Formalism.REAL.Jm ε * umat g = Formalism.REAL.Jm ε` using `g.2`. Use `show (P⁻¹ * umat g * P)ᴴ * Formalism.QuantumDeterminants.Hpk k r * (P⁻¹ * umat g * P) = Formalism.QuantumDeterminants.Hpk k r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hH]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Pᴴ * ((umat g)ᴴ * Formalism.REAL.Jm ε * umat g) * P := by rw [h2]; simp`. Use `_ = Pᴴ * Formalism.REAL.Jm ε * P := by rw [hg]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cayleyEmbedding_mem_unitary {P : Mat k r} (hP : IsCayleyU k r ε P) (g : Formalism.REAL.UJ ε) :
     Matrix.of (cayleyEmbedding P g) ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r) := by
@@ -60,17 +60,15 @@ theorem cayleyEmbedding_mem_unitary {P : Mat k r} (hP : IsCayleyU k r ε P) (g :
     _ = Pᴴ * Formalism.REAL.Jm ε * P := by rw [hg]
 
 /- English proof (translation)
-Establish `hemb` using `cayleyEmbedding_measurable hP`. Establish `hu : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det _).1 hP.1.1`. Establish `h1 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul _ hu`. Use `⟨hemb.sigmaFinite_map, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h0` using `[Measure.map_eq_zero_iff hemb.measurable.aemeasurable]`. Conclude with `(NeZero.ne (Formalism.REAL.muG ε)) h0`. Rewrite using `[hemb.map_apply]`. Establish `: cayleyEmbedding P ⁻¹' {x | Matrix.of x ∉ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)} = (∅ : Set (Formalism.REAL.UJ ε))`. Use extensionality with `g`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false, not_not]`. Conclude with `cayleyEmbedding_mem_unitary hP g`. Rewrite using `[this, measure_empty]`. Introduce `s hs`. Establish `hm : Measurable (Formalism.QuantumDeterminants.lmulM (k` using `k) (r := r) s) := by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Formalism.QuantumDeterminants.lmulM`. Use `measurable_pi_iff.2 fun i => measurable_pi_iff.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `Finset.measurable_sum _ fun l _ => ?_` and prove the remaining obligations. Establish `h0 : Measurable fun x : Formalism.QuantumDeterminants.Mt k r => x l j` using `by fun_prop`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h0.const_mul _`. Rewrite using `[Measure.map_map hm hemb.measurable]`. Use `set s' : Formalism.REAL.UJ ε := Formalism.REAL.indefiniteUnitaryMk ε (P * s * P⁻¹) (cayley_conj_mem_diagonal_model hP hs).1 with hs'`. Establish `hcomp : Formalism.QuantumDeterminants.lmulM s ∘ cayleyEmbedding (ε` using `ε) P = cayleyEmbedding P ∘ fun g => s' * g := by`. Use function extensionality and compare the values at `g`.
-
-Use `show s * (P⁻¹ * umat g * P) = P⁻¹ * (P * s * P⁻¹ * umat g) * P`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcomp, ← Measure.map_map hemb.measurable (measurable_const_mul s'), map_mul_left_eq_self]`.
+Apply function extensionality and compare values at an arbitrary argument. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cayleyEmbedding_map_haar {P : Mat k r} (hP : IsCayleyU k r ε P) :
     IsHaarOn (Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) ((Formalism.REAL.muG ε).map (cayleyEmbedding P)) := by
@@ -105,7 +103,7 @@ theorem cayleyEmbedding_map_haar {P : Mat k r} (hP : IsCayleyU k r ε P) :
     rw [hcomp, ← Measure.map_map hemb.measurable (measurable_const_mul s'), map_mul_left_eq_self]
 
 /- English proof (translation)
-Take `⟨ν, hν⟩` from `Formalism.FourierDecayAlt.P.unitary_group_haar_exists k r`. Take `⟨c1, a1, a2, e1⟩` from `left_haar_eq_smul_biinvariant (Formalism.FourierDecayAlt.P.unitary_group_closed k r) hν hμ`. Take `⟨c2, b1, b2, e2⟩` from `left_haar_eq_smul_biinvariant (Formalism.FourierDecayAlt.P.unitary_group_closed k r) hν (cayleyEmbedding_map_haar hP)`. Use `⟨c1 / c2, ENNReal.div_ne_zero.2 ⟨a1, b2⟩, ENNReal.div_ne_top a2 b1, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, e2, smul_smul, ENNReal.div_mul_cancel b1 b2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem haar_eq_smul_cayley_image {P : Mat k r} (hP : IsCayleyU k r ε P) {μ : Measure (Formalism.QuantumDeterminants.Mt k r)}
     (hμ : IsHaarOn (Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) μ) :

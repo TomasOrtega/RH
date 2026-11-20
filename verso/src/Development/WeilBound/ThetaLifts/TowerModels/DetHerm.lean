@@ -9,11 +9,11 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 /- English proof (translation)
-Take `⟨hrs, A, hA⟩` from `h`. Substitute `hrs` using the available equality. Introduce `hM`. Establish `key` using `congrArg Matrix.det hA`. Rewrite `key` using `[Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, one_mul, Matrix.det_neg, Matrix.det_one, mul_one, Fintype.card_fin]`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `e : Fin r ⊕ Fin s ≃ Fin (r + s)` to `finSumFinEquiv`. Establish `hsub : (Aᵀ * M * A.map star).submatrix e.symm e.symm = (A.submatrix id e.symm)ᵀ * M * (A.submatrix id e.symm).map star`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.submatrix, Matrix.transpose_apply]`. Establish `h2` using `congrArg Matrix.det hsub`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h2` using `[Matrix.det_submatrix_equiv_self, key, Matrix.det_mul, Matrix.det_mul, hM, mul_zero, zero_mul]`. Conclude with `pow_ne_zero _ (by norm_num) h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_hasSig {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} {r s : ℕ} (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hrs, A, hA⟩ := h
@@ -34,7 +34,7 @@ theorem det_ne_zero_of_hasSig {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} {r s : 
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {B : Base F E}
 
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `h` using `det_ne_zero_of_hasSig (hX.sig w)`. Rewrite `h` using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `fun h0 => h (by rw [h0, map_zero])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem det_herm {n : ℕ} {X : Spc F E n} {r s : ℕ} (hX : X.IsHerm σ B r s) : X.J.det ≠ 0 := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance
@@ -43,7 +43,7 @@ theorem det_herm {n : ℕ} {X : Spc F E n} {r s : ℕ} (hX : X.IsHerm σ B r s) 
   exact fun h0 => h (by rw [h0, map_zero])
 
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `h` using `det_ne_zero_of_hasSig (hX.sig w)`. Rewrite `h` using `[Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `fun h0 => h (by rw [h0, map_zero, mul_zero])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem det_skew {n : ℕ} {X : Spc F E n} {r s : ℕ} (hX : X.IsSkew σ B r s) : X.J.det ≠ 0 := by
   obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance

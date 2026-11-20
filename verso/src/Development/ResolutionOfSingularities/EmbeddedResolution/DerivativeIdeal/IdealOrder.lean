@@ -10,17 +10,15 @@ noncomputable def idealOrder (I : Ideal R) : ℕ∞ :=
   sSup ((fun n : ℕ => (n : ℕ∞)) '' {n : ℕ | I ≤ IsLocalRing.maximalIdeal R ^ n})
 
 /- English proof (translation)
-Establish `hdef : idealOrder I = sSup ((fun k : ℕ => (k : ℕ∞)) '' {k : ℕ | I ≤ IsLocalRing.maximalIdeal R ^ k})` using `rfl`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hI`. Rewrite `h` using `[hdef]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn : n ≠ 0`. Introduce and unpack `rfl`. Apply `hI` to reduce the goal to its premises. Rewrite using `[pow_zero, Ideal.one_eq_top]`. Conclude with `le_top`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsup : sSup ((fun k : ℕ => (k : ℕ∞)) '' {k : ℕ | I ≤ IsLocalRing.maximalIdeal R ^ k}) ≤ ((n - 1 : ℕ) : ℕ∞)`. Apply `sSup_le` to reduce the goal to its premises. Introduce and unpack `x ⟨k, hk, rfl⟩`. Establish `hk' : I ≤ IsLocalRing.maximalIdeal R ^ k` using `hk`. Establish `hkn : k < n`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hkn`. Use `push Not at hkn`. Conclude with `hI (le_trans hk' (Ideal.pow_le_pow_right hkn))`. Establish `hk2 : k ≤ n - 1` using `by omega`. Use `show (k : ℕ∞) ≤ ((n - 1 : ℕ) : ℕ∞)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk2` after adjusting the coercions. Establish `hcon : n ≤ n - 1` using `by exact_mod_cast h.trans hsup`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Rewrite using `[hdef]`.
-
-Conclude with `le_sSup ⟨n, h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem le_idealOrder_iff (I : Ideal R) (n : ℕ) :
     (n : ℕ∞) ≤ idealOrder I ↔ I ≤ IsLocalRing.maximalIdeal R ^ n := by
@@ -54,9 +52,9 @@ theorem le_idealOrder_iff (I : Ideal R) (n : ℕ) :
     exact le_sSup ⟨n, h, rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h n`. Rewrite using `[← le_idealOrder_iff, h]`. Conclude with `le_top`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENat.eq_top_iff_forall_ge]`. Introduce `n`. Conclude with `(le_idealOrder_iff I n).mpr (h n)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem idealOrder_eq_top_iff (I : Ideal R) :
     idealOrder I = ⊤ ↔ ∀ n : ℕ, I ≤ IsLocalRing.maximalIdeal R ^ n := by
@@ -70,7 +68,7 @@ theorem idealOrder_eq_top_iff (I : Ideal R) :
     exact (le_idealOrder_iff I n).mpr (h n)
 
 /- English proof (translation)
-Establish `h` using `le_idealOrder_iff I 1`. Rewrite `h` using `[Nat.cast_one, pow_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_idealOrder_iff (I : Ideal R) :
     1 ≤ idealOrder I ↔ I ≤ IsLocalRing.maximalIdeal R := by
@@ -79,9 +77,9 @@ theorem one_le_idealOrder_iff (I : Ideal R) :
   exact h
 
 /- English proof (translation)
-Rewrite using `[one_le_idealOrder_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h hI`. Rewrite `h` using `[hI]`. Conclude with `(maximalIdeal.isMaximal R).ne_top (top_le_iff.mp h)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `IsLocalRing.le_maximalIdeal h`.
+A detailed English derivation is pending.
 -/
 theorem one_le_idealOrder_iff_ne_top (I : Ideal R) :
     1 ≤ idealOrder I ↔ I ≠ ⊤ := by
@@ -94,16 +92,14 @@ theorem one_le_idealOrder_iff_ne_top (I : Ideal R) :
     exact IsLocalRing.le_maximalIdeal h
 
 /- English proof (translation)
-Rewrite using `[← one_le_idealOrder_iff, not_le, Order.lt_one_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idealOrder_eq_zero_iff (I : Ideal R) :
     idealOrder I = 0 ↔ ¬ I ≤ IsLocalRing.maximalIdeal R := by
   rw [← one_le_idealOrder_iff, not_le, Order.lt_one_iff]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `h1 : (1 : ℕ∞) ≤ idealOrder (⊤ : Ideal R)`. Rewrite using `[Order.one_le_iff_ne_zero]`. Conclude with `h`. Rewrite `h1` using `[one_le_idealOrder_iff_ne_top]`.
-
-Conclude with `h1 rfl`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idealOrder_top : idealOrder (⊤ : Ideal R) = 0 := by
   by_contra h
@@ -114,7 +110,7 @@ theorem idealOrder_top : idealOrder (⊤ : Ideal R) = 0 := by
   exact h1 rfl
 
 /- English proof (translation)
-Rewrite using `[idealOrder_eq_top_iff]`. Introduce `n`. Conclude with `bot_le`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem idealOrder_bot : idealOrder (⊥ : Ideal R) = ⊤ := by
   rw [idealOrder_eq_top_iff]
@@ -122,9 +118,9 @@ theorem idealOrder_bot : idealOrder (⊥ : Ideal R) = ⊤ := by
   exact bot_le
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[idealOrder_eq_top_iff]`. Establish `key : (⨅ n : ℕ, IsLocalRing.maximalIdeal R ^ n) = ⊥` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (I := IsLocalRing.maximalIdeal R) (IsLocalRing.maximalIdeal.isMaximal R).ne_top`. Establish `hle : I ≤ ⊥`. Rewrite using `[← key]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_iInf h`. Conclude with `hI (le_bot_iff.mp hle)`.
+A detailed English derivation is pending.
 -/
 theorem idealOrder_ne_top_of_ne_bot [IsNoetherianRing R] {I : Ideal R} (hI : I ≠ ⊥) :
     idealOrder I ≠ ⊤ := by
@@ -139,7 +135,7 @@ theorem idealOrder_ne_top_of_ne_bot [IsNoetherianRing R] {I : Ideal R} (hI : I �
   exact hI (le_bot_iff.mp hle)
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.mp (idealOrder_ne_top_of_ne_bot hI)`. Conclude with `⟨n, hn.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_idealOrder_eq_coe [IsNoetherianRing R] {I : Ideal R} (hI : I ≠ ⊥) :
     ∃ n : ℕ, idealOrder I = (n : ℕ∞) := by
@@ -147,9 +143,9 @@ theorem exists_idealOrder_eq_coe [IsNoetherianRing R] {I : Ideal R} (hI : I ≠ 
   exact ⟨n, hn.symm⟩
 
 /- English proof (translation)
-Establish `hI : idealOrder I = sSup ((fun k : ℕ => (k : ℕ∞)) '' {k : ℕ | I ≤ IsLocalRing.maximalIdeal R ^ k})` using `rfl`. Establish `hJ : idealOrder J = sSup ((fun k : ℕ => (k : ℕ∞)) '' {k : ℕ | J ≤ IsLocalRing.maximalIdeal R ^ k})` using `rfl`. Rewrite using `[hI, hJ]`. Apply `sSup_le` to reduce the goal to its premises. Introduce and unpack `x ⟨n, hn, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Establish `hn' : I ≤ IsLocalRing.maximalIdeal R ^ n` using `le_trans h hn`. Conclude with `le_sSup ⟨n, hn', rfl⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem idealOrder_le_of_le {I J : Ideal R} (h : I ≤ J) : idealOrder J ≤ idealOrder I := by
   have hI : idealOrder I
@@ -163,9 +159,9 @@ theorem idealOrder_le_of_le {I J : Ideal R} (h : I ≤ J) : idealOrder J ≤ ide
   exact le_sSup ⟨n, hn', rfl⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `le_min (idealOrder_le_of_le (le_sup_left : I ≤ I ⊔ J)) (idealOrder_le_of_le (le_sup_right : J ≤ I ⊔ J))`. Apply `ENat.forall_natCast_le_iff_le.mp` to reduce the goal to its premises. Introduce `n hn`. Rewrite `hn` using `[le_min_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[le_idealOrder_iff]`. Conclude with `sup_le ((le_idealOrder_iff I n).mp hn.1) ((le_idealOrder_iff J n).mp hn.2)`.
+A detailed English derivation is pending.
 -/
 theorem idealOrder_sup (I J : Ideal R) :
     idealOrder (I ⊔ J) = min (idealOrder I) (idealOrder J) := by
@@ -179,13 +175,13 @@ theorem idealOrder_sup (I J : Ideal R) :
     exact sup_le ((le_idealOrder_iff I n).mp hn.1) ((le_idealOrder_iff J n).mp hn.2)
 
 /- English proof (translation)
-Break down `eq_or_ne a ⊤ with rfl | ha` into its components or cases. Establish `hc : c = ⊤`. Rewrite using `[ENat.eq_top_iff_forall_ge]`. Introduce `n`. Establish `hn` using `h n 0 le_top (by simp)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using hn`. Rewrite using `[hc]`. Conclude with `le_top`. Break down `eq_or_ne b ⊤ with rfl | hb` into its components or cases. Establish `hc : c = ⊤`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENat.eq_top_iff_forall_ge]`. Introduce `n`. Establish `hn` using `h 0 n (by simp) le_top`. Simplify using `using hn`. Rewrite using `[hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `le_top`. Use `lift a to ℕ using ha`. Use `lift b to ℕ using hb`. Establish `hab` using `h a b le_rfl le_rfl`. Simplify using `using hab`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem enat_add_le_of_forall_natCast_add_le {a b c : ℕ∞}
     (h : ∀ m n : ℕ, (m : ℕ∞) ≤ a → (n : ℕ∞) ≤ b → ((m + n : ℕ) : ℕ∞) ≤ c) : a + b ≤ c := by
@@ -211,7 +207,7 @@ private theorem enat_add_le_of_forall_natCast_add_le {a b c : ℕ∞}
   simpa using hab
 
 /- English proof (translation)
-Use `enat_add_le_of_forall_natCast_add_le (fun m n hm hn => ?_)` and prove the remaining obligations. Rewrite `hm`, `hn`, the goal using `[le_idealOrder_iff]`. Rewrite using `[pow_add]`. Conclude with `Ideal.mul_mono hm hn`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_idealOrder_le_idealOrder_mul (I J : Ideal R) :
     idealOrder I + idealOrder J ≤ idealOrder (I * J) := by
@@ -221,13 +217,13 @@ theorem add_idealOrder_le_idealOrder_mul (I J : Ideal R) :
   exact Ideal.mul_mono hm hn
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos c with rfl | hc` into its components or cases. Rewrite using `[Nat.cast_zero, zero_mul]`. Conclude with `zero_le`. Establish `hc1 : 1 ≤ c` using `hc`. Break down `eq_or_ne (idealOrder I) ⊤ with hI | hI` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hIall : ∀ n : ℕ, I ≤ IsLocalRing.maximalIdeal R ^ n` using `(idealOrder_eq_top_iff I).mp hI`. Establish `htop : idealOrder (I ^ c) = ⊤`. Rewrite using `[idealOrder_eq_top_iff]`. Introduce `n`. Establish `h1 : I ^ c ≤ I ^ 1` using `Ideal.pow_le_pow_right hc1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[pow_one]`. Conclude with `le_trans h1 (hIall n)`. Rewrite using `[htop]`. Conclude with `le_top`. Take `⟨k, hk⟩` from `ENat.ne_top_iff_exists.mp hI`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hIk : I ≤ IsLocalRing.maximalIdeal R ^ k` using `(le_idealOrder_iff I k).mp hk.le`. Rewrite using `[← hk, ← Nat.cast_mul, le_idealOrder_iff]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem mul_idealOrder_le_idealOrder_pow (I : Ideal R) (c : ℕ) :
     (c : ℕ∞) * idealOrder I ≤ idealOrder (I ^ c) := by
@@ -254,9 +250,9 @@ theorem mul_idealOrder_le_idealOrder_pow (I : Ideal R) (c : ℕ) :
         _ = IsLocalRing.maximalIdeal R ^ (c * k) := by rw [← pow_mul, mul_comm k c]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `hS : (IsLocalRing.maximalIdeal S) ^ 0 = (⊤ : Ideal S)`. Rewrite using `[pow_zero, Ideal.one_eq_top]`. Rewrite using `[hS]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_top`. Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ, Ideal.map_mul]`. Conclude with `Ideal.mul_mono ih hf`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_maximalIdeal_pow_le_pow (f : R →+* S)
     (hf : (IsLocalRing.maximalIdeal R).map f ≤ IsLocalRing.maximalIdeal S) (n : ℕ) :
@@ -272,7 +268,7 @@ private theorem map_maximalIdeal_pow_le_pow (f : R →+* S)
       exact Ideal.mul_mono ih hf
 
 /- English proof (translation)
-Use `ENat.forall_natCast_le_iff_le.mp (fun n hn => ?_)` and prove the remaining obligations. Rewrite `hn`, the goal using `[le_idealOrder_iff]`. Conclude with `le_trans (Ideal.map_mono hn) (map_maximalIdeal_pow_le_pow f hf n)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idealOrder_le_idealOrder_map (f : R →+* S)
     (hf : (IsLocalRing.maximalIdeal R).map f ≤ IsLocalRing.maximalIdeal S) (I : Ideal R) :

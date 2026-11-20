@@ -10,7 +10,7 @@ namespace PurRedPf
 open PurPf
 
 /- English proof (translation)
-Apply `hr.1` to reduce the goal to its premises. Rewrite using `[AddEquiv.ofBijective_apply_symm_apply]`. Rewrite using `[GlobalTheory.EtC.pull_red]`. Use `congr 1`. Conclude with `((AddEquiv.ofBijective _ hq).apply_symm_apply y).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem inv_red (q r : ℕ) {E E' : Spc} (f : E ⟶ E') (n i : ℤ)
     (hq : Function.Bijective (pull (ZMod q) f (tw q i) n)) (hr : Function.Bijective (pull (ZMod r) f (tw r i) n))
@@ -34,7 +34,7 @@ Both sides reduce to the same expression.
 theorem redS_coe (q r : ℕ) (P : Arrow Spc) (n i : ℤ) (x : Hs q P n i) : (redS q r P n i x).1 = red q r _ n i x.1 := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `pull _ (dbl.map φ) (tw r i) n (red q r _ n i x.1) = red q r _ n i (pull _ (dbl.map φ) (tw q i) n x.1)`. Rewrite using `[GlobalTheory.EtC.pull_red]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem Hs.pullS_red (q r : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P) (n i : ℤ) (x : Hs q P n i) :
     Hs.pull r φ n i (redS q r P n i x) = redS q r P' n i (Hs.pull q φ n i x) := by
@@ -43,7 +43,7 @@ theorem Hs.pullS_red (q r : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P) (n i : ℤ) 
   rw [GlobalTheory.EtC.pull_red]
 
 /- English proof (translation)
-Apply `hr.1` to reduce the goal to its premises. Rewrite using `[AddEquiv.ofBijective_apply_symm_apply, Hs.pullS_red]`. Use `congr 1`. Conclude with `((AddEquiv.ofBijective _ hq).apply_symm_apply y).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem Hs.inv_red (q r : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P) (n i : ℤ)
     (hq : Function.Bijective (Hs.pull q φ n i)) (hr : Function.Bijective (Hs.pull r φ n i)) (y : Hs q P' n i) :
@@ -54,7 +54,7 @@ theorem Hs.inv_red (q r : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P) (n i : ℤ)
   exact ((AddEquiv.ofBijective _ hq).apply_symm_apply y).symm
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `hc : cup r (pull _ (dbl.fold P) (tw r i) n (red q r _ n i a)) (red q r _ m j b.1) = red q r _ _ _ (cup q (pull _ (dbl.fold P) (tw q i) n a) b.1)`. Rewrite using `[(hA q r hrq (dbl P)).1, GlobalTheory.EtC.pull_red]`. Simplify using `only [Hs.act, Hs.proj, redS_coe]`. Rewrite using `[hc, map_sub, GlobalTheory.EtC.pull_red, GlobalTheory.EtC.pull_red]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Hs.act_red (hA : A11) (q r : ℕ) [NeZero q] (hrq : r ∣ q) {P : Arrow Spc} {n m i j : ℤ}
     (a : Ht q P.right n i) (b : Hs q P m j) :
@@ -67,14 +67,14 @@ theorem Hs.act_red (hA : A11) (q r : ℕ) [NeZero q] (hrq : r ∣ q) {P : Arrow 
   rw [hc, map_sub, GlobalTheory.EtC.pull_red, GlobalTheory.EtC.pull_red]
 
 /- English proof (translation)
-Unfold `fcl`. Conclude with `pick_spec (hCl hH d)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fcl_isCl (hH : Hyp) (hCl : LeafCl) (d : ℕ) : IsCl d (fcl d) := by
   unfold fcl
   exact pick_spec (hCl hH d)
 
 /- English proof (translation)
-Unfold `purT`. Rewrite using `[dif_pos ⟨NeZero.ne q, hq⟩]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem purT_eq {d : ℕ} (T : ∀ P : SP d, Tube P) (q : ℕ) [NeZero q] (P : SP d) (hq : IsUnit (q : Γ(P.X, ⊤)))
     (n i : ℤ) (a : Ht q (sch.obj P.Z) n i) :
@@ -87,7 +87,7 @@ theorem purT_eq {d : ℕ} (T : ∀ P : SP d, Tube P) (q : ℕ) [NeZero q] (P : S
   rfl
 
 /- English proof (translation)
-Establish `hfr : fcl d r P = redS q r _ _ _ (fcl d q P)` using `Subtype.ext (((fcl_isCl hH hCl d) q).2.2 r hrq P hq)`. Rewrite using `[hfr, Hs.pullS_red]`. Conclude with `Hs.act_red hH.2.2.2.2.2.2.2.1 q r hrq _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_fcl (hH : Hyp) (hCl : LeafCl) {d : ℕ} (T : ∀ P : SP d, Tube P) (q : ℕ) [NeZero q] (P : SP d)
     (hq : IsUnit (q : Γ(P.X, ⊤))) (r : ℕ) (hrq : r ∣ q) (n i : ℤ) (x : Ht q (T P).E n i) :
@@ -102,9 +102,9 @@ end PurRedPf
 open PurPf PurRedPf
 
 /- English proof (translation)
-Introduce `hH hCl d T q _ P hq r hrq n i a`. Establish `hq0 : q ≠ 0` using `NeZero.ne q`. Establish `hr0 : r ≠ 0` using `by rintro rfl; exact hq0 (zero_dvd_iff.mp hrq)`. Establish `: NeZero r` using `⟨hr0⟩`. Establish `hru : IsUnit (r : Γ(P.X, ⊤))` using `isUnit_of_dvd_unit (Nat.cast_dvd_cast hrq) hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[purT_eq T r P hru, purT_eq T q P hq, GlobalTheory.EtC.pull_red, inv_red q r _ n i (((T P).ok q hq).1 i n) (((T P).ok r hru).1 i n), act_fcl hH hCl T q P hq r hrq, Hs.inv_red q r _ _ _, redS_coe]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem LeafPurRed_of : EtalePurityReduction := by
   intro hH hCl d T q _ P hq r hrq n i a

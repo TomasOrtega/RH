@@ -4,7 +4,7 @@ open UpperTheory.V.Z.Kato.Joint
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2 GlobalTheory.KZ
 
 /- English proof (translation)
-Establish `h : ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (PadicAlgCl l) ((l : ℕ) : ℚ_[l])` using `by simp`. Rewrite using `[h, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_l_lt_one (l : ℕ) [Fact l.Prime] : ‖((l : ℕ) : Qbar l)‖ < 1 := by
   have h : ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (PadicAlgCl l) ((l : ℕ) : ℚ_[l]) := by simp
@@ -12,13 +12,13 @@ private theorem norm_l_lt_one (l : ℕ) [Fact l.Prime] : ‖((l : ℕ) : Qbar l)
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-Establish `hl0 : 0 ≤ ‖((l : ℕ) : Qbar l)‖` using `norm_nonneg _`. Establish `hl1` using `norm_l_lt_one l`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N : ℕ, ‖((l : ℕ) : Qbar l)‖ ^ N * ‖K‖ ≤ 1 := by`. Break down `eq_or_ne ‖K‖ 0 with hK | hK` into its components or cases. Conclude with `⟨0, by rw [hK, mul_zero]; exact zero_le_one⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one (inv_pos.2 (lt_of_le_of_ne (norm_nonneg K) (Ne.symm hK))) hl1`. Use `⟨N, ?_⟩` and prove the remaining obligations. Establish `hKpos : 0 < ‖K‖` using `lt_of_le_of_ne (norm_nonneg K) (Ne.symm hK)`. Combine the equalities or inequalities in the displayed calculation. Use `⟨N, fun m hm c₀ u x y hu hxy => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Cg at hxy ⊢`. Rewrite `hxy`, the goal using `[norm_pow]`. Establish `hdiff : u * K * y - u * K * x = -(u * K * (x - y))` using `by ring`. Rewrite using `[hdiff, norm_neg, norm_mul, norm_mul, hu, one_mul]`. Establish `hmN : ‖((l : ℕ) : Qbar l)‖ ^ m ≤ ‖((l : ℕ) : Qbar l)‖ ^ N` using `pow_le_pow_of_le_one hl0 hl1.le hm`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmc : ‖((l : ℕ) : Qbar l)‖ ^ m ≤ ‖((l : ℕ) : Qbar l)‖ ^ (m - c₀)` using `pow_le_pow_of_le_one hl0 hl1.le (Nat.sub_le m c₀)`. Establish `hKm : ‖((l : ℕ) : Qbar l)‖ ^ m * ‖K‖ ≤ 1` using `le_trans (mul_le_mul_of_nonneg_right hmN (norm_nonneg K)) hN`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem cg_scale {l : ℕ} [Fact l.Prime] (K : Qbar l) : ∃ N : ℕ, ∀ m, N ≤ m → ∀ (c₀ : ℕ) (u x y : Qbar l),
     ‖u‖ = 1 → Cg (2 * m) x y → Cg (m - c₀) (u * K * y) (u * K * x) := by
@@ -51,7 +51,7 @@ private theorem cg_scale {l : ℕ} [Fact l.Prime] (K : Qbar l) : ∃ N : ℕ, �
     _ ≤ ‖((l : ℕ) : Qbar l)‖ ^ (m - c₀) := by rw [one_mul]; exact hmc
 
 /- English proof (translation)
-Take `⟨ζ, hζ, hlaw⟩` from `h`. Conclude with `⟨ζ, hζ, fun m hm' => hlaw m (hm.trans hm')⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem law_mono {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime] {A : ValuationSubring Ω} {c : Coef l}
     {Z : ∀ r : ℕ, G ℚ Ω → (ZMod (l ^ r))ˣ → Qbar l} {j : Ω →+* Qbar l} {m₀ m₁ c₀ : ℕ}
@@ -62,13 +62,13 @@ private theorem law_mono {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact
 
 open Classical in
 /- English proof (translation)
-Take `⟨N, hN⟩` from `cg_scale (κ₀ / κ)`. Use `⟨N, fun m hm c₀ v a p s X b g w hv ha hp hs h1 h2 => ?_⟩` and prove the remaining obligations. Establish `hu : ‖v * a ^ m‖ = 1` using `by rw [norm_mul, norm_pow, hv, ha, one_pow, one_mul]`. Distinguish the cases in `hE : p = s`. Rewrite using `[if_pos hE]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `hN m hm c₀ (v * a ^ m) X (κ * b * g * w) hu (h1 hE)`. Establish `e1 : v * a ^ m * (κ₀ / κ) * (κ * b * g * w) = v * κ₀ * a ^ m * (b * g * w)`. Clear the denominators using the available nonvanishing facts. Establish `e2 : v * a ^ m * (κ₀ / κ) * X = v * (κ₀ / κ) * a ^ m * X` using `by ring`. Rewrite `h3` using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h3`. Establish `hps : p ^ 2 = s ^ 2` using `by rw [hp, hs]`. Establish `hO : p = -s` using `(sq_eq_sq_iff_eq_or_eq_neg.1 hps).resolve_left hE`. Rewrite using `[if_neg hE]`. Establish `h3` using `hN m hm c₀ (v * a ^ m) X 0 hu (h2 hO)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : v * a ^ m * (κ₀ / κ) * X = v * (κ₀ / κ) * a ^ m * X` using `by ring`. Rewrite `h3` using `[mul_zero, e2]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cg_cases {l : ℕ} [Fact l.Prime] {κ₀ κ : Qbar l} (hκ : κ ≠ 0) : ∃ N : ℕ, ∀ m, N ≤ m →
     ∀ (c₀ : ℕ) (v a p s X b g w : Qbar l), ‖v‖ = 1 → ‖a‖ = 1 → p ^ 2 = 1 → s ^ 2 = 1 →
@@ -94,15 +94,13 @@ private theorem cg_cases {l : ℕ} [Fact l.Prime] {κ₀ κ : Qbar l} (hκ : κ 
     exact h3
 
 /- English proof (translation)
-Introduce `hM hU hMo l _ Ω _ _ ι e A W c ν Z j u w ψ α B cc v n β t hl he hα hj hν hσ hμ hv ht hne hE`. Take `⟨cO, L, κ, φ, n₀, r₁, hκ, hL, hφ, h1, h2, h3⟩` from `hM l ι e _ u w ψ α B cc v n β t hl he rfl hμ hv ht hne`. Take `⟨c', hc, hcO, -⟩` from `hU l c cO ∅ (fun x hx => absurd hx (Finset.notMem_empty x))`. Take `⟨κ₀, vv, m₀, c₀, hκ₀, hvv, hH⟩` from `hE`. Take `⟨σ, hσ1, hσ2, hσ3⟩` from `hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩` from `cg_cases (κ₀ := κ₀) hκ`. Establish `hH'` using `law_mono (le_max_left m₀ (max N 1)) ((hMo l Ω c c' hc).2.2 A Z j m₀ c₀ _ hH)`. Use `⟨c', hc, ?_⟩` and prove the remaining obligations. Unfold `Pin7`. Use `⟨ν σ, ι.symm α, κ₀ / κ, vv, j, _, L, φ, max m₀ (max N 1), c₀, n₀, hν, ⟨σ, hσ1, hσ2, rfl⟩, hσ3, hα, hvv, div_ne_zero hκ₀ hκ, hj, fun k => hcO (hL k), hH', ?_, ?_, r₁, h3⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m hm ψ' _ z hz`. Establish `hm1 : 1 ≤ m` using `by omega`. Establish `hmN : N ≤ m` using `by omega`. Establish `ha : ψ' (-1) ^ 2 = 1` using `by rw [← map_pow, neg_one_sq, map_one]`. Establish `hb : (ι.symm ((-1) ^ e * ψ (-1))) ^ 2 = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, mul_pow, ← map_pow, ← pow_mul, mul_comm e 2, pow_mul, neg_one_sq, neg_one_sq, one_pow, map_one, one_mul, map_one]`. Conclude with `hN m hmN c₀ _ _ _ _ _ _ _ _ (hvv m).1 hα ha hb (fun hs => h1 m hm1 ψ' hs z hz) (fun hs => h2 m hm1 ψ' hs z hz)`. Introduce `r _ x`. Apply `ι.injective` to reduce the goal to its premises. Rewrite using `[map_inv₀, hφ, MulChar.inv_apply_eq_inv', inv_inv]`.
-
-Conclude with `ι.apply_symm_apply _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Joint.pinOf :
     UpperTheory.V.Z.Kato.Joint.PinOf := by

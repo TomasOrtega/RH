@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DecoratedLatticeProofs.TwistTrans
 import Development.AbelianVarietyTheory.Definitions.LatticeFrames.TwTransAlt
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdForm.TransAct.twTransAct | exact GlobalTheory.AdForm.TransAct.twTransAct | (intros; apply GlobalTheory.AdForm.TransAct.twTransAct <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.twistTranslationsActAtLevelPrime_proof : GlobalTheory.AdForm.TwTrans' := by
   first | exact @GlobalTheory.AdForm.TransAct.twTransAct | exact GlobalTheory.AdForm.TransAct.twTransAct | (intros; apply GlobalTheory.AdForm.TransAct.twTransAct <;> assumption)

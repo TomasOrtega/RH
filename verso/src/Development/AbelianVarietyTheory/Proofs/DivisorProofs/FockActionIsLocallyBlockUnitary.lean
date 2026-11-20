@@ -12,9 +12,9 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift Global
 namespace GlobalTheory.HoweR
 
 /- English proof (translation)
-Establish `hs : sameBlock a b`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp_all [sameBlock]`. Use extensionality with `i j`. Rewrite using `[GlobalTheory.FockAdj.adjZ_apply]`. Simplify using `only [Eab, Matrix.single_apply]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `e : a = j ∧ b = i`. Take `⟨rfl, rfl⟩` from `e`. Simplify using `[hs]`. Establish `e' : ¬ (b = i ∧ a = j)` using `fun ⟨h1, h2⟩ => e ⟨h2, h1⟩`. Simplify using `[e, e']`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem adjZ_Eab_of_isLeft {p q : ℕ} {a b : Ix p q} (h : a.isLeft = b.isLeft) :
     adjZ (Eab a b) = Eab b a := by
@@ -30,9 +30,9 @@ theorem adjZ_Eab_of_isLeft {p q : ℕ} {a b : Ix p q} (h : a.isLeft = b.isLeft) 
     simp [e, e']
 
 /- English proof (translation)
-Introduce `i j hij`. Simplify using `only [Eab, Matrix.single_apply]`. Rewrite using `[if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Apply `hij` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp_all [sameBlock]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isKC_Eab_of_isLeft {p q : ℕ} {a b : Ix p q} (h : a.isLeft = b.isLeft) : IsKC (Eab a b) := by
   intro i j hij
@@ -43,11 +43,11 @@ theorem isKC_Eab_of_isLeft {p q : ℕ} {a b : Ix p q} (h : a.isLeft = b.isLeft) 
   rcases a with a | a <;> rcases b with b | b <;> simp_all [sameBlock]
 
 /- English proof (translation)
-Introduce `P Q R S t`. Take `⟨ι, hι, hinj⟩` from `GlobalTheory.FischerParts.exists_fockIP (Ln P Q R S)`. Use `⟨restrictTotalDegree (Ln P Q R S) ℂ (t.sup totalDegree), fun x hx => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_restrictTotalDegree]`. Conclude with `Finset.le_sup hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨inferInstance, fun a b hab u hu => ?_, ((innerₛₗ ℂ).comp ι).compl₂ ι, fun x _ y _ => ?_, fun x _ hx => ?_, fun a b hab x _ y _ => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.DegKeep.stable_restrict _ (Eab a b) (isKC_Eab_of_isLeft hab) u hu`. Simplify using `[inner_conj_symm]`. Establish `hx' : ι x ≠ 0` using `fun h0 => hx (hinj (h0.trans (map_zero ι).symm))`. Use `(re_inner_self_pos (𝕜 := ℂ)).2 hx'` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Use `(GlobalTheory.FockAdj.fock_adjoints P Q R S _ ι hι).2.2 (Eab a b) x y` as an intermediate fact. Simplify using `only [LinearMap.compl₂_apply, LinearMap.comp_apply, innerₛₗ_apply_apply, units]`. Rewrite using `[this, adjZ_Eab_of_isLeft hab]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_locU : ∀ P Q R S : ℕ, LocU (fun a : Ix R S => a.isLeft) (units (fockAct2 P Q R S)) := by
   intro P Q R S t

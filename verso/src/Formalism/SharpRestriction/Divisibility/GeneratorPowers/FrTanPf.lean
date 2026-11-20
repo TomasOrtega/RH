@@ -39,14 +39,14 @@ variable {x0 G}
 def tv (m : TanM x0 G) : overAt x0 (DualNumber S) ⟶ G := (Additive.toMul m : tanSub x0 G)
 
 /- English proof (translation)
-The claim follows from `(Additive.toMul m).2`.
+A detailed English derivation is pending.
 -/
 theorem tv_zero' (m : TanM x0 G) : smT x0 0 (tv m) = 1 := (Additive.toMul m).2
 
 def mkT (W : overAt x0 (DualNumber S) ⟶ G) (h : smT x0 0 W = 1) : TanM x0 G := Additive.ofMul ⟨W, h⟩
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Subtype.ext h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tv_injective : Function.Injective (tv (x0 := x0) (G := G)) := fun _ _ h => Subtype.ext h
 
@@ -56,7 +56,7 @@ Both sides reduce to the same expression.
 theorem tv_add (m m' : TanM x0 G) : tv (m + m') = tv m * tv m' := rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rfl`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, tv_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem tv_sum {κ : Type} (s : Finset κ) (f : κ → TanM x0 G) : tv (∑ i ∈ s, f i) = ∏ i ∈ s, tv (f i) := by
   classical
@@ -100,7 +100,7 @@ def actL {O : Type} [CommRing O] (ρ : OAct O G) : O →+* Module.End S (TanM x0
     rw [LinearMap.add_apply, tv_add, tv_postL, tv_postL, tv_postL, ρ.add, MonObj.comp_mul])
 
 /- English proof (translation)
-Rewrite using `[tv_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tv_comb {κ : Type} [Fintype κ] (v : κ → TanM x0 G) (a : κ → S) :
     tv (∑ k, a k • v k) = ∏ k, smT x0 (a k) (tv (v k)) := by
@@ -111,23 +111,21 @@ end Tan
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
 /- English proof (translation)
-Introduce `S _ _ y w hw`. Use `haveI : CharZero S := charZero_of_injective_algebraMap (algebraMap c.F S).injective`. Set `G` to `Xo.univ.t.G`. Set `ρ : 𝓞 E →+* Module.End S (TanM y.x G)` to `actL Xo.univ.t.act`. Set `χ : (E →+* ℂ) → (E →+* S)` to `fun σ => (algebraMap c.F S).comp (embF c σ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hχ : Function.Injective χ`. Introduce `σ τ h`. Use extensionality with `x`. Establish `h1` using `RingHom.congr_fun h x`. Establish `h2 : embF c σ x = embF c τ x` using `(algebraMap c.F S).injective h1`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (fun z : c.F => (z : ℂ)) h2`. Establish `hcard : Fintype.card (E →+* ℂ) = Module.finrank ℚ E`. Use `NumberField.Embeddings.card E ℂ` and compare the differences between its conclusion and the goal. Set `U : Lt1 Dw → TanM y.x G` to `fun ℓ => mkT (ovT (t := Xo.univ.t) (y.tan ℓ.1 ℓ.2)) (smT_zero_ovT (y.tan ℓ.1 ℓ.2))`. Establish `hU : ∀ σ i (a : 𝓞 E), ρ a (U ⟨σ, i⟩) = χ σ (a : E) • U ⟨σ, i⟩` using `fun σ i a => tv_injective ((isEigAt_iff σ (ovT (t := Xo.univ.t) (y.tan σ i))).1 (y.eig σ i) a)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcombσ : ∀ σ (cf : Fin (Dw.mult σ) → S) (W : TanM y.x G), IsCombAt y.x (y.u σ) cf (tv W).left ↔ ∑ i, cf i • U ⟨σ, i⟩ = W`. Introduce `σ cf W`. Establish `e` using `isCombAtG_iff Xo.univ.t y.x (fun j => ovT (t := Xo.univ.t) (y.tan σ j)) cf (tv W).left`. Use `e.trans ⟨fun h => tv_injective ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[tv_comb]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Over.OverMorphism.ext h`. Rewrite using `[← h, tv_comb]`. Both sides reduce to the same expression. Establish `hb : ∀ σ (W : TanM y.x G), (∀ a : 𝓞 E, ρ a W = χ σ (a : E) • W) → ∃! cf : Fin (Dw.mult σ) → S, ∑ i, cf i • U ⟨σ, i⟩ = W`. Introduce `σ W hW`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hT : IsTanAt y.x (tv W).left` using `isTanAtG_of (t := Xo.univ.t) (tv W) (tv_zero' W)`. Establish `hE : IsEigAt c σ (tv W).left` using `(isEigAt_iff σ (tv W)).2 fun a => congrArg tv (hW a)`. Take `⟨cf, hcf, hu⟩` from `y.basis σ _ hT hE`. Conclude with `⟨cf, (hcombσ σ cf W).1 hcf, fun cf' h => hu cf' ((hcombσ σ cf' W).2 h)⟩`. Set `W0 : TanM y.x G` to `mkT (ovT (t := Xo.univ.t) hw) (smT_zero_ovT hw)`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨a, ha, hu⟩` from `FrTanAlg.global_basis χ hχ hcard ρ U hU hb W0`. Set `e` to `Fintype.equivFin (Lt1 Dw)`. Establish `hiff : ∀ a' : Lt1 Dw → S, IsCombAt y.x (m` using `Fintype.card (Lt1 Dw)) (fun i => y.u (e.symm i).1 (e.symm i).2) (fun i => a' (e.symm i)) w ↔ ∑ ℓ, a' ℓ • U ℓ = W0 := by`. Introduce `a'`. Establish `e1` using `isCombAtG_iff Xo.univ.t y.x (fun i => ovT (t := Xo.univ.t) (y.tan (e.symm i).1 (e.symm i).2)) (fun i => a' (e.symm i)) w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hprod : combT y.x (fun i => ovT (t` using `Xo.univ.t) (y.tan (e.symm i).1 (e.symm i).2)) (fun i => a' (e.symm i)) = tv (∑ ℓ, a' ℓ • U ℓ) := by`. Rewrite using `[tv_comb]`. Conclude with `Equiv.prod_comp e.symm (fun ℓ => smT y.x (a' ℓ) (tv (U ℓ)))`. Use `e1.trans ⟨fun h => tv_injective ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← hprod]`.
-
-Conclude with `Over.OverMorphism.ext h`. Rewrite using `[hprod, h]`. Both sides reduce to the same expression. Conclude with `⟨a, (hiff a).2 ha, fun a' h => hu a' ((hiff a').1 h)⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frTanBasis_holds (Xo : Moduli Dw l) (c : Coeff l) : FrTanBasisSt Xo c := by
   classical

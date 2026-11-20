@@ -72,7 +72,7 @@ structure PublishedUnitaryGroupTheorems : Prop where
   localTateDuality : ReciprocityTheory.Gal.LocalTateDuality
   localEulerChar : ReciprocityTheory.Gal.LocalEulerChar
 /- English proof (translation)
-The claim follows from `GlobalTheory.geometricLemma_of_filtration P.bernsteinZelevinskyFiniteness P.geometricLemmaFiltration`.
+A detailed English derivation is pending.
 -/
 theorem PublishedUnitaryGroupTheorems.geometricLemma (P : _root_.GlobalTheory.Fc.S0.PublishedUnitaryGroupTheorems) : GlobalTheory.Published.GeometricLemma :=
   GlobalTheory.geometricLemma_of_filtration P.bernsteinZelevinskyFiniteness P.geometricLemmaFiltration

@@ -13,7 +13,7 @@ open GlobalTheory.PhiGam GlobalTheory.AdmLoc GlobalTheory.Models GlobalTheory.To
 open scoped LaurentSeries PowerSeries
 
 /- English proof (translation)
-Establish `hcl : S.Closed` using `GlobalTheory.AdmClosure.admissible_closed S`. Establish `hL : S.Lem0 (S.Γ.Wchi c)` using `(GlobalTheory.AdmClasses.admissibleLocalSituation_admissible_classes S hcl (GlobalTheory.TopSteps.StdAdm.stdAdm S hC hcl)).2 c (by omega) ht`. Conclude with `GlobalTheory.TopSteps.CharAllCoef.main S c hL ((GlobalTheory.TopSteps.CharBound.resBound_chars S hR).1 c h2 ht hL) X`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cls_eq_zero {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P) (hC : S.CrysCalc) (hR : S.Real)
     (c : ℕ) (h2 : 2 ≤ c) (ht : c ≤ S.D.t) (X : Type) [AddCommGroup X] [Module S.O X] [Finite X] :
@@ -25,7 +25,7 @@ theorem cls_eq_zero {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P) (hC
     ((GlobalTheory.TopSteps.CharBound.resBound_chars S hR).1 c h2 ht hL) X
 
 /- English proof (translation)
-Introduce `l _ P AI hT hR K LL n r emb D Γ hyp c h2 ht X _ _ _`. Establish `: NeZero n` using `⟨GlobalTheory.IndefiniteRowSideFullHecke.InvariantsVanishing.letters_ne_zero hyp.1⟩`. Set `S : TopSit P` to `⟨K, LL, n, r, emb, D, Γ, hyp⟩`. Conclude with `cls_eq_zero S (GlobalTheory.T.crystalline_sums_twists_characters_expected_jumps AI hT S) (hR S) c h2 ht X`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem stmt_of_real : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P),
     Nonempty (LocTied l P AI) → (∀ S : TopSit P, S.Real) → GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleTwistedCharClasses.Stmt P := by

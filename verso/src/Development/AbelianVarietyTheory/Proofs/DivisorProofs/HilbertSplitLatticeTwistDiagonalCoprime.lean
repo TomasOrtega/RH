@@ -10,35 +10,29 @@ open scoped Classical MatrixGroups nonZeroDivisors
 namespace GlobalTheory.HilbFam
 
 /- English proof (translation)
-Introduce `F _ _ _ N 𝔞 𝔟 x a hcop hlev`. Establish `hstd : ∀ w : Fin 2 → F, w ∈ stdLat F ↔ ∀ i, w i ∈ (1 : Submodule (𝓞 F) F)`. Introduce `w`. Simplify using `only [stdLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff]`. Establish `hsp : ∀ (z : F) (w : Fin 2 → F), w ∈ split 𝔞 𝔟 z ↔ w 0 ∈ ((𝔟 : FractionalIdeal (nonZeroDivisors (𝓞 F)) F) : Submodule (𝓞 F) F) ∧ w 1 - w 0 * z ∈ (latM 𝔞 : Submodule (𝓞 F) F)` using `fun _ _ ↦ Iff.rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hA : (Matrix.diagonal ![1, (a : ZMod N)]) = (Matrix.diagonal ![(1 : ℤ), a]).map (Int.cast : ℤ → ZMod N)`. Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp`. Establish `hv0 : ∀ y : Fin 2 → F, Matrix.vecMul y ((Matrix.diagonal ![(1 : ℤ), a]).map (Int.cast : ℤ → F)) = ![y 0, a * y 1]`. Introduce `y`. Apply the tactic sequence `ext j; fin_cases j <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_two, mul_comm]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hN : ∀ w ∈ stdLat F, (N : F) • w ∈ split 𝔞 𝔟 x`. Introduce `w hw`. Establish `h` using `hlev.1 w hw`. Rewrite `h`, the goal using `[Nat.cast_smul_eq_nsmul]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : ∀ (n : ℤ) (S : Submodule (𝓞 F) F) (m : F), m ∈ S → (n : F) * m ∈ S`. Introduce `n S m hm`. Rewrite using `[← zsmul_eq_mul]`. Conclude with `zsmul_mem hm n`. Use extensionality with `v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hA, GlobalTheory.T.mem_hilbertLatticeTwist_iff_lift F N _ _ v hlev.2]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, w, hw, rfl⟩`. Rewrite using `[hv0]`. Establish `hw'` using `(hstd w).1 hw`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0` using `(hsp _ _).1 (hN ![w 0, 0] ((hstd _).2 (by`. Introduce `i`. Use `fin_cases i`. Conclude with `hw' 0`. Conclude with `Submodule.zero_mem _)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(hsp _ _).1 (hN ![0, w 1] ((hstd _).2 (by`. Introduce `i`. Use `fin_cases i`. Conclude with `Submodule.zero_mem _`. Conclude with `hw' 1)))`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hy'` using `(hsp _ _).1 hy`. Rewrite using `[hsp]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Submodule.add_mem _ hy'.1 h0.1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Use `Submodule.add_mem _ (Submodule.add_mem _ (hz a _ _ hy'.2) h1.2) (hz a _ _ h0.2)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Introduce `hv`. Establish `hv'` using `(hsp _ _).1 hv`. Take `⟨u, t, hut⟩` from `hcop`. Establish `hut' : (u : F) * a + t * N = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → F) hut`. Establish `hm : ![0, v 1 - v 0 * (a * x)] ∈ split 𝔞 𝔟 x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsp]`. Use `⟨Submodule.zero_mem _, ?_⟩` and prove the remaining obligations. Use `hv'.2 using 1` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Establish `hm'` using `(hstd _).1 (hlev.2 hm) 1`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨![v 0, v 0 * x + u * (v 1 - v 0 * (a * x))], ?_, ![0, t * (v 1 - v 0 * (a * x))], ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsp]`. Use `⟨hv'.1, ?_⟩` and prove the remaining obligations. Use `hz u _ _ hv'.2 using 1` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules.
-
-Rewrite using `[hstd]`. Introduce `i`. Use `fin_cases i`. Conclude with `Submodule.zero_mem _`. Conclude with `hz t _ _ hm'`.
-
-Rewrite using `[hv0]`. Use extensionality with `j`. Use `fin_cases j`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
-
-Take the linear combination `(-(v 1 - v 0 * (a * x))) * hut'`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem twist_split_diagonal : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (N : ℕ) (𝔞 𝔟 : Frac F) (x : F) (a : ℤ), IsCoprime a (N : ℤ) → HasLevel N (split 𝔞 𝔟 x) → twist N (split 𝔞 𝔟 x) (Matrix.diagonal ![1, (a : ZMod N)]) = split 𝔞 𝔟 (a * x) := by
   intro F _ _ _ N 𝔞 𝔟 x a hcop hlev

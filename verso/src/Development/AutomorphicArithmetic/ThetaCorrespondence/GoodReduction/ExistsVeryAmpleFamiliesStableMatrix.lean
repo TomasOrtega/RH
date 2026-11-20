@@ -26,9 +26,9 @@ namespace UpperTheory.Lit.Nos.C2
 open GlobalTheory
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.AbLaw.cst, RingHom.comp_apply, GlobalTheory.AbLaw.rs_self]`. Establish `h1` using `congrArg (fun φ : Y ⟶ Sp R => φ.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv r)) h`. Simplify using `only [Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply] at h1`. Rewrite using `[h1]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h2` using `congrArg (fun φ => φ.hom r) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom c))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at h2`. Conclude with `h2.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem appTop_cst' {X Y : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R'] (β : Y ⟶ X)
     (f : X ⟶ Sp R) (f' : Y ⟶ Sp R') (c : R →+* R') (h : β ≫ f = f' ≫ spMap c) (r : R) :
@@ -43,14 +43,14 @@ theorem appTop_cst' {X Y : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R'] 
   exact h2.symm
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LB.f_injective (funext fun i => by simp only [Cartier.secPull, GlobalTheory.LB.add_f, map_add])`.
+A detailed English derivation is pending.
 -/
 theorem secPull_add' {X Y : Scheme.{0}} {L : LB X} (s t : L.Sec) (φ : Y ⟶ X) :
     Cartier.secPull (s + t) φ = Cartier.secPull s φ + Cartier.secPull t φ :=
   GlobalTheory.LB.f_injective (funext fun i => by simp only [Cartier.secPull, GlobalTheory.LB.add_f, map_add])
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LB.f_injective (funext fun i => by simp only [Cartier.secPull, GlobalTheory.LB.smul_f, map_mul, Cartier.app_resG, Cartier.resG_resG] rfl)`.
+A detailed English derivation is pending.
 -/
 theorem secPull_smul' {X Y : Scheme.{0}} {L : LB X} (c : Γ(X, ⊤)) (s : L.Sec) (φ : Y ⟶ X) :
     Cartier.secPull (c • s) φ = φ.appTop c • Cartier.secPull s φ :=
@@ -59,7 +59,7 @@ theorem secPull_smul' {X Y : Scheme.{0}} {L : LB X} (c : Γ(X, ⊤)) (s : L.Sec)
     rfl)
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `GlobalTheory.LB.f_injective (funext fun i => by simp [Cartier.secPull, GlobalTheory.LB.zero_f])`. Consider the case `insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, secPull_add', secPull_smul', ih]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem secPull_sum_smul' {X Y : Scheme.{0}} {L : LB X} {J : Type} (S : Finset J) (c : J → Γ(X, ⊤))
     (s : J → L.Sec) (φ : Y ⟶ X) :
@@ -72,9 +72,9 @@ theorem secPull_sum_smul' {X Y : Scheme.{0}} {L : LB X} {J : Type} (S : Finset J
   | insert a S ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, secPull_add', secPull_smul', ih]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `p`. Simplify using `[GlobalTheory.LB.zero_f]`. Consider the case `insert x S hx ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `p`. Rewrite using `[Finset.sum_insert hx, Finset.sum_insert hx]`. Simplify using `only [GlobalTheory.LB.add_f, GlobalTheory.LB.smul_f, map_add, map_mul, ih p, h x p, Cartier.resG_resG]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem secMaps_sum_smul' {X : Scheme.{0}} {A B : LB X} (w : LB.Iso A B) {J : Type} (S : Finset J)
     (c : J → Γ(X, ⊤)) (a : J → A.Sec) (b : J → B.Sec) (h : ∀ i, Cartier.SecMaps w (a i) (b i)) :
@@ -91,17 +91,17 @@ theorem secMaps_sum_smul' {X : Scheme.{0}} {A B : LB X} (w : LB.Iso A B) {J : Ty
     ring
 
 /- English proof (translation)
-Introduce `R K W K' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hm D hD1 hD2 hres A _ _ hA G _ hG e he hφ`. Take `⟨H₀, hH₀, m₀, s₀, hs₀⟩` from `GlobalTheory.ProjField.isProjBy_of_isAbelianScheme K A hA`. Take `⟨M₀, w₀, hM₀, hw₀⟩` from `GlobalTheory.T.exists_lineBundle_extension_of_genericFiber W K' G hG (H₀.pull (e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K')))) (pull_isLB hH₀ _)`. Take `⟨n, hn, m₂, t₀, ht₀⟩` from `GlobalTheory.T.veryAmple_power_of_extension_genericFibre_abelianModel K W K' A hA G hG e H₀ m₀ s₀ M₀ w₀ hH₀ hs₀ hM₀ hw₀`. Take `⟨m₁, s₁, hs₁⟩` from `GlobalTheory.AbLaw.veryAmpleBy_pw K A.left A.hom H₀ m₀ s₀ hH₀ hs₀ n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `GlobalTheory.T.exists_isGen_iso_pullback_lineBundle_zpow M₀ H₀ _ _ w₀ hM₀ hH₀ hw₀ n`. Establish `hH` using `GlobalTheory.AbLaw.isLB_pw hH₀ n`. Establish `hM` using `GlobalTheory.AbLaw.isLB_pw hM₀ n`. Take `⟨N, t, ht, htb⟩` from `GlobalTheory.T.exists_veryAmple_basis_sections_abelianScheme_over_dvr W G hG _ m₂ t₀ hM ht₀`. Take `⟨s, g, hs, hg, hgw, huniq⟩` from `GlobalTheory.T.abelian_scheme_iso_line_bundle_sections_transfer K W K' A hA G hG e _ m₁ s₁ _ w N t hH hs₁ hM hw htb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨N, _, s, _, t, w, g, hH, hM, hs, ht, hg, hgw, ?_⟩` and prove the remaining obligations. Introduce `σ hσ`. Establish `key : ∀ j, ∃ c : Fin (N + 1) → W, ∀ k, σ (g j k) = ∑ l, algebraMap W K' (c l) * g l k`. Introduce `j`. Take `⟨u', hu'⟩` from `UpperTheory.Lit.Nos.C1.twisted_sections_extend K W K' D hD1 hD2 A hA G hG e he hφ _ _ w hH hM hw σ hσ (N + 1) s (t j) (g j) (hgw j)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, -⟩` from `htb u'`. Use `⟨c, fun k => ?_⟩` and prove the remaining obligations. Establish `h2 : Cartier.SecMaps w (Cartier.secPull u' (pullback.fst G.hom (spMap (algebraMap W K')))) (∑ k, GlobalTheory.AbLaw.cst (pullback.snd G.hom (spMap (algebraMap W K'))) ⊤ (∑ l, algebraMap W K' (c l) * g l k) • Cartier.secPull (s k) (e.hom.left ≫ pullback.fst A.hom (spMap (algebraMa …`. Establish `e2 : ∑ k, GlobalTheory.AbLaw.cst (pullback.snd G.hom (spMap (algebraMap W K'))) ⊤ (∑ l, algebraMap W K' (c l) * g l k) • Cartier.secPull (s k) (e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K'))) = ∑ l, (pullback.fst G.hom (spMap (algebraMap W K'))).appTop (GlobalTheory.Ab …`. Simplify using `only [appTop_cst' (pullback.fst G.hom (spMap (algebraMap W K'))) G.hom (pullback.snd G.hom (spMap (algebraMap W K'))) (algebraMap W K') pullback.condition, Finset.smul_sum, smul_smul, map_sum, map_mul, Finset.sum_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_comm`. Rewrite using `[e2, hc, secPull_sum_smul']`. Conclude with `secMaps_sum_smul' w _ _ _ _ hgw`. Establish `h3` using `Cartier.SecMaps.eq (pull_isLB hM _) hu' h2`. Conclude with `congrFun (huniq _ _ h3) k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `choose c hc using key`. Use `⟨Matrix.of c, ?_⟩` and prove the remaining obligations. Use extensionality with `j k`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, Matrix.of_apply, hc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_veryAmple_families_stable_matrix : ∀ (R K W K' : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field K'] [Algebra W K'] [IsFractionRing W K'] [Algebra R W] [Algebra K K'] [Algebra R K'] [IsScalarTower R W K'] [IsScalarTower R K K'], (maximalIdeal R).map (algebraMap R W) = maximalIdeal W → ∀ D : Set (K' ≃ₐ[K] K'), (∀ σ ∈ D, ∀ x : W, ∃ y : W, σ (algebraMap W K' x) = algebraMap W K' y) → (∀ σ ∈ D, ∀ x : W, ∃ y : W, σ.symm (algebraMap W K' x) = algebraMap W K' y) → (∀ x : W, (∀ σ ∈ D, ∀ y : W, σ (algebraMap W K' x) = algebraMap W K' y → y - x ∈ maximalIdeal W) → ∃ r : R, x - algebraMap R W r ∈ maximalIdeal W) → ∀ (A : Over (Sp K)) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (G : Over (Sp W)) [GrpObj G], IsAbelianScheme G → ∀ e : (Over.pullback (spMap (algebraMap W K'))).obj G ≅ (Over.pullback (spMap (algebraMap K K'))).obj A, IsMonHom e.hom → (∀ σ ∈ D, ∃ (τ : W →+* W) (φ : G.left ⟶ G.left), (∀ x : W, σ (algebraMap W K' x) = algebraMap W K' (τ x)) ∧ φ ≫ G.hom = G.hom ≫ spMap τ ∧ pullback.fst G.hom (spMap (algebraMap W K')) ≫ φ = (e.hom.left ≫ pullback.map A.hom (spMap (algebraMap K K')) A.hom (spMap (algebraMap K K')) (𝟙 _) (spMap (σ : K' →+* K')) (𝟙 _) (by simp) (by rw [Category.comp_id, ← Spec.map_comp]; congr 1; ext x; exact (σ.commutes x).symm) ≫ e.inv.left) ≫ pullback.fst G.hom (spMap (algebraMap W K'))) → ∃ (N : ℕ) (H : LB A.left) (s : Fin (N + 1) → H.Sec) (M : LB G.left) (t : Fin (N + 1) → M.Sec) (w : LB.Iso (M.pull (pullback.fst G.hom (spMap (algebraMap W K')))) (H.pull (e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K'))))) (g : Matrix (Fin (N + 1)) (Fin (N + 1)) K'), H.IsLB ∧ M.IsLB ∧ GlobalTheory.AbLaw.VeryAmpleBy A.hom H s ∧ GlobalTheory.AbLaw.VeryAmpleBy G.hom M t ∧ IsUnit g.det ∧ (∀ j, GlobalTheory.Cartier.SecMaps w (GlobalTheory.Cartier.secPull (t j) (pullback.fst G.hom (spMap (algebraMap W K')))) (∑ k, GlobalTheory.AbLaw.cst (pullback.snd G.hom (spMap (algebraMap W K'))) ⊤ (g j k) • GlobalTheory.Cartier.secPull (s k) (e.hom.left ≫ pullback.fst A.hom (spMap (algebraMap K K'))))) ∧ ∀ σ ∈ D, ∃ h : Matrix (Fin (N + 1)) (Fin (N + 1)) W, g.map σ = h.map (algebraMap W K') * g := by
   intro R K W K' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hm D hD1 hD2 hres A _ _ hA G _ hG e he hφ

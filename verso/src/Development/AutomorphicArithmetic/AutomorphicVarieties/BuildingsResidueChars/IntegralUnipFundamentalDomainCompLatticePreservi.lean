@@ -5,17 +5,15 @@ open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Introduce `K _ _ n r α hα F hF`. Use `haveI : TopologicalSpace.MetrizableSpace (UPos n r → AdeleRing (𝓞 K) K) := TopologicalSpace.metrizableSpace_of_t3_secondCountable _`. Use `haveI : (unipMeasure K n r).Regular := Measure.Regular.of_sigmaCompactSpace_of_isLocallyFiniteMeasure _`. Establish `hfd : IsAddFundamentalDomain (unipLattice K n r) (unipFundamentalDomain K n r) (unipMeasure K n r)` using `isAddFundamentalDomain_unipFundamentalDomain`. Establish `hsm` using `addEquivAddHaarChar_smul_map (unipMeasure K n r) α.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos` using `addEquivAddHaarChar_pos α.symm`. Establish `hmap : (unipMeasure K n r).map α.symm = (addEquivAddHaarChar α.symm)⁻¹ • unipMeasure K n r` using `by conv_rhs => rw [← hsm]`. Rewrite using `[smul_smul, inv_mul_cancel₀ hpos.ne', one_smul]`. Establish `hqmp : Measure.QuasiMeasurePreserving α.symm (unipMeasure K n r) (unipMeasure K n r)` using `⟨α.symm.continuous.measurable, by rw [hmap]; exact Measure.smul_absolutelyContinuous⟩`. Set `e : unipLattice K n r → unipLattice K n r` to `fun g => ⟨α g, (hα g).2 g.2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : Function.Bijective e`. Use `⟨fun g h hgh => ?_, fun g => ⟨⟨α.symm g, (hα (α.symm g)).1 (by simpa using g.2)⟩, ?_⟩⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `α.injective` to reduce the goal to its premises. Conclude with `congrArg Subtype.val hgh`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[e]`. Establish `hfd' : IsAddFundamentalDomain (unipLattice K n r) (α.symm ⁻¹' unipFundamentalDomain K n r) (unipMeasure K n r)` using `hfd.preimage_of_equiv hqmp he (fun g x => by show α.symm (α g + x) = g + α.symm x`. Simplify using `[map_add])`. Establish `hmeas` using `hfd'.measure_eq hfd`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hpre` using `addEquivAddHaarChar_smul_preimage (unipMeasure K n r) (X := unipFundamentalDomain K n r) α.symm`. Rewrite `hpre` using `[hmeas, unipMeasure_unipFundamentalDomain, ENNReal.smul_def, smul_eq_mul, mul_one, ENNReal.coe_eq_one]`. Establish `hmp : MeasurePreserving α.symm (unipMeasure K n r) (unipMeasure K n r)` using `⟨α.symm.continuous.measurable, by rw [hmap, hpre, inv_one, one_smul]⟩`. Establish `key` using `hmp.setIntegral_preimage_emb α.symm.toHomeomorph.measurableEmbedding (fun y => F (α y)) (unipFundamentalDomain K n r)`. Simplify using `only [ContinuousAddEquiv.apply_symm_apply] at key`.
-
-Rewrite using `[← key]`. Conclude with `hfd'.setIntegral_eq hfd (fun g x => hF g g.2 x)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.integral_unipFundamentalDomain_comp_lattice_preserving :
     ∀ (K : Type) [Field K] [NumberField K] (n r : ℕ) (α : (UPos n r → AdeleRing (𝓞 K) K) ≃ₜ+ (UPos n r → AdeleRing (𝓞 K) K)), (∀ X, α X ∈ unipLattice K n r ↔ X ∈ unipLattice K n r) → ∀ F : (UPos n r → AdeleRing (𝓞 K) K) → ℂ, (∀ ξ ∈ unipLattice K n r, ∀ X, F (ξ + X) = F X) → ∫ X in unipFundamentalDomain K n r, F (α X) ∂unipMeasure K n r = ∫ X in unipFundamentalDomain K n r, F X ∂unipMeasure K n r := by

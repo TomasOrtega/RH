@@ -12,13 +12,13 @@ namespace GlobalTheory.CompanionTheory.SW.Core.AfTop
 variable (F : Type) [Field F] [NumberField F]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.IntegralFinAdele.integral_finiteAdele_properties F).1`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_Oh : IsCompact (Oh F) :=
   (GlobalTheory.IntegralFinAdele.integral_finiteAdele_properties F).1
 
 /- English proof (translation)
-Use `haveI : Fact (∀ v : HeightOneSpectrum (𝓞 F), IsOpen (v.adicCompletionIntegers F : Set (v.adicCompletion F))) := ⟨fun _ ↦ Valued.isOpen_valuationSubring _⟩`. Conclude with `RestrictedProduct.isOpen_forall_mem (R := fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Fact.out`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_Oh : IsOpen (Oh F) := by
   haveI : Fact (∀ v : HeightOneSpectrum (𝓞 F),
@@ -29,9 +29,9 @@ theorem isOpen_Oh : IsOpen (Oh F) := by
     (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) Fact.out
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Introduce `v`. Rewrite using `[Nat.cast_zero, zero_mul]`. Conclude with `zero_mem (v.adicCompletionIntegers F)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `v`. Rewrite using `[Nat.cast_succ, add_mul, one_mul]`. Conclude with `add_mem (ih v) (hx v)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_mul_mem_Oh (N : ℕ) {x : A F} (hx : x ∈ Oh F) : (N : A F) * x ∈ Oh F := by
   induction N with
@@ -45,9 +45,9 @@ theorem natCast_mul_mem_Oh (N : ℕ) {x : A F} (hx : x ∈ Oh F) : (N : A F) * x
     exact add_mem (ih v) (hx v)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨y, hy⟩` from `(GlobalTheory.IntegralFinAdele.integral_finiteAdele_properties F).2.2.2.1 b h`. Conclude with `⟨y, hy.symm⟩`. Introduce and unpack `⟨r, rfl⟩ v`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `HeightOneSpectrum.coe_mem_adicCompletionIntegers v r`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_Oh_iff (b : F) : algebraMap F (A F) b ∈ Oh F ↔ ∃ r : 𝓞 F, (r : F) = b := by
   constructor
@@ -58,15 +58,15 @@ theorem algebraMap_mem_Oh_iff (b : F) : algebraMap F (A F) b ∈ Oh F ↔ ∃ r 
     exact HeightOneSpectrum.coe_mem_adicCompletionIntegers v r
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, -⟩` from `GlobalTheory.IntegralFinAdele.integral_finiteAdele_properties F`. Set `V : ℕ+ → Set (A F)` to `fun N => {a | ∃ c ∈ Oh F, a = ((N : ℕ) : A F) * c}`. Establish `hV : Directed (· ⊇ ·) V`. Introduce `M N`. Use `⟨M * N, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `⟨_, natCast_mul_mem_Oh F N hc, by push_cast; ring⟩`. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `⟨_, natCast_mul_mem_Oh F M hc, by push_cast; ring⟩`. Establish `hc : ∀ N, IsCompact (V N)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `N`. Establish `: V N = (fun c => ((N : ℕ) : A F) * c) '' Oh F`. Use extensionality with `a`. Simplify using `only [V, Set.mem_setOf_eq, Set.mem_image, eq_comm]`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isCompact_Oh F).image (continuous_const.mul continuous_id)`. Take `⟨N, hN⟩` from `exists_subset_nhds_of_isCompact' hV hc (fun N => h2 N N.pos) (U := U) (by`. Introduce `x hx`. Establish `: x = 0` using `h3 x fun M hM => Set.mem_iInter.1 hx ⟨M, hM⟩`. Rewrite using `[this])` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 
-Conclude with `⟨N, N.pos, fun x hx => hN ⟨x, hx, rfl⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_Oh_subset (U : Set (A F)) (hU : U ∈ 𝓝 (0 : A F)) :
     ∃ N : ℕ, 0 < N ∧ ∀ x ∈ Oh F, (N : A F) * x ∈ U := by
@@ -93,13 +93,13 @@ theorem exists_mul_Oh_subset (U : Set (A F)) (hU : U ∈ 𝓝 (0 : A F)) :
   exact ⟨N, N.pos, fun x hx => hN ⟨x, hx, rfl⟩⟩
 
 /- English proof (translation)
-Set `V : ℕ+ → Set (A F)` to `fun N => {a | ((N : ℕ) : A F) * a ∈ Oh F}`. Establish `hV : Directed (· ⊆ ·) V`. Introduce `M N`. Use `⟨M * N, fun a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Use `natCast_mul_mem_Oh F N ha show (((M * N : ℕ+) : ℕ) : A F) * a ∈ Oh F` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `natCast_mul_mem_Oh F M ha show (((M * N : ℕ+) : ℕ) : A F) * a ∈ Oh F` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨N, hN⟩` from `hK.elim_directed_cover V (fun N => (isOpen_Oh F).preimage (continuous_const.mul continuous_id)) (fun a _ => by`. Take `⟨M, hM, h⟩` from `(GlobalTheory.IntegralFinAdele.integral_finiteAdele_properties F).2.2.2.2.1 a`. Conclude with `Set.mem_iUnion.2 ⟨⟨M, hM⟩, h⟩) hV`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨N, N.pos, fun x hx => hN hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_mem_Oh_of_isCompact (K : Set (A F)) (hK : IsCompact K) :
     ∃ N : ℕ, 0 < N ∧ ∀ x ∈ K, (N : A F) * x ∈ Oh F := by
@@ -122,11 +122,11 @@ theorem exists_mul_mem_Oh_of_isCompact (K : Set (A F)) (hK : IsCompact K) :
   exact ⟨N, N.pos, fun x hx => hN hx⟩
 
 /- English proof (translation)
-Establish `hN' : (N : F) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `h1 : (N : A F) * algebraMap F (A F) (N : F)⁻¹ = 1`. Rewrite using `[← map_natCast (algebraMap F (A F)), ← map_mul, mul_inv_cancel₀ hN', map_one]`. Establish `: {x : A F | ∃ y ∈ Oh F, x = (N : A F) * y} = (fun x => algebraMap F (A F) (N : F)⁻¹ * x) ⁻¹' Oh F`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ show _ * (_ * y) ∈ Oh F`. Rewrite using `[← mul_assoc, mul_comm _ (N : A F), h1, one_mul]` and apply the resulting hypothesis. Introduce `hx`. Conclude with `⟨_, hx, by rw [← mul_assoc, h1, one_mul]⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Rewrite using `[this]`. Conclude with `(isOpen_Oh F).preimage (continuous_const.mul continuous_id)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_mul_Oh (N : ℕ) (hN : 0 < N) :
     IsOpen {x : A F | ∃ y ∈ Oh F, x = (N : A F) * y} := by
@@ -146,11 +146,11 @@ theorem isOpen_mul_Oh (N : ℕ) (hN : 0 < N) :
   exact (isOpen_Oh F).preimage (continuous_const.mul continuous_id)
 
 /- English proof (translation)
-Introduce `y`. Rewrite using `[mem_closure_iff_nhds]`. Introduce `U hU`. Establish `hc : Continuous fun z : A F => y - z` using `continuous_const.sub continuous_id`. Establish `hU' : (fun z : A F => y - z) ⁻¹' U ∈ 𝓝 (0 : A F)` using `hc.continuousAt.preimage_mem_nhds (by simpa using hU)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨N, hN, h⟩` from `exists_mul_Oh_subset F _ hU'`. Take `⟨x, a, ha, hy⟩` from `(GlobalTheory.AdLat.strong_approximation_mod_nat F N hN).1 y`. Use `⟨algebraMap F (A F) x, ?_, x, rfl⟩` and prove the remaining obligations. Establish `h2 : y - (N : A F) * a ∈ U` using `h a ha`. Establish `h3 : y - (N : A F) * a = algebraMap F (A F) x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sub_eq_iff_eq_add, ← nsmul_eq_mul]`. Conclude with `hy`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem denseRange_algebraMap : DenseRange (algebraMap F (A F)) := by
   intro y
@@ -169,7 +169,7 @@ theorem denseRange_algebraMap : DenseRange (algebraMap F (A F)) := by
   rwa [h3] at h2
 
 /- English proof (translation)
-Introduce `F _ _` and use `⟨GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F, GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele F, GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField F, isCompact_Oh F, isOpen_Oh F, denseRange_algebraMap F, algebraMap_mem_Oh_iff F, exists_ …`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem finiteAdele_topology : ∀ (F : Type) [Field F] [NumberField F], LocallyCompactSpace (A F) ∧ SecondCountableTopology (A F) ∧ T2Space (A F) ∧ IsCompact (Oh F) ∧ IsOpen (Oh F) ∧ DenseRange (algebraMap F (A F)) ∧ (∀ b : F, algebraMap F (A F) b ∈ Oh F ↔ ∃ r : 𝓞 F, (r : F) = b) ∧ (∀ U ∈ 𝓝 (0 : A F), ∃ N : ℕ, 0 < N ∧ ∀ x ∈ Oh F, (N : A F) * x ∈ U) ∧ (∀ K : Set (A F), IsCompact K → ∃ N : ℕ, 0 < N ∧ ∀ x ∈ K, (N : A F) * x ∈ Oh F) ∧ ∀ N : ℕ, 0 < N → IsOpen {x : A F | ∃ y ∈ Oh F, x = (N : A F) * y} :=
   fun F _ _ => ⟨GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele F,

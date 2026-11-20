@@ -12,7 +12,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Unfold `fib`. Rewrite using `[← Fin.cons_snoc_eq_snoc_cons]`. Use `congr 2`. Simplify using `[List.ofFn_succ, mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 private lemma fib_cons {m : ℕ} (a : G) (y : Fin m → G) (x : G) :
     fib (Fin.cons (α := fun _ => G) a y) x = Fin.cons (α := fun _ => G) a (fib y (a⁻¹ * x)) := by
@@ -22,9 +22,9 @@ private lemma fib_cons {m : ℕ} (a : G) (y : Fin m → G) (x : G) :
   simp [List.ofFn_succ, mul_assoc]
 
 /- English proof (translation)
-Establish `hp : Continuous fun y : Fin m → G => (List.ofFn y).prod`. Simplify using `only [List.ofFn_eq_map]`. Conclude with `continuous_list_prod _ fun i _ => continuous_apply i`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [fib, Fin.snoc_last]`. Conclude with `(hp.inv).mul continuous_const`. Simplify using `only [fib, Fin.snoc_castSucc]`. Conclude with `continuous_apply j`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma continuous_fib {m : ℕ} (x : G) : Continuous fun y : Fin m → G => fib y x := by
   have hp : Continuous fun y : Fin m → G => (List.ofFn y).prod := by
@@ -38,9 +38,9 @@ private lemma continuous_fib {m : ℕ} (x : G) : Continuous fun y : Fin m → G 
     exact continuous_apply j
 
 /- English proof (translation)
-Establish `hcont : Continuous fun y : Fin m → G => ∏ i, φ i (fib y x i)` using `continuous_finset_prod _ fun i _ => (hc i).comp ((continuous_apply i).comp (continuous_fib x))`. Use `hcont.integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Use `HasCompactSupport.intro (K := Set.pi Set.univ fun i : Fin m => tsupport (φ i.castSucc)) (isCompact_univ_pi fun i => hs _) fun y hy => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_pi, Set.mem_univ, forall_const, not_forall] at hy`. Take `⟨i, hi⟩` from `hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `Finset.prod_eq_zero (Finset.mem_univ i.castSucc) ?_` and prove the remaining obligations. Simplify using `only [fib, Fin.snoc_castSucc]`. Conclude with `image_eq_zero_of_notMem_tsupport hi`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma integrable_fib (μ : Measure G) [μ.IsHaarMeasure] (m : ℕ) (φ : Fin (m + 1) → G → ℂ)
     (hc : ∀ i, Continuous (φ i)) (hs : ∀ i, HasCompactSupport (φ i)) (x : G) :
@@ -59,17 +59,17 @@ private lemma integrable_fib (μ : Measure G) [μ.IsHaarMeasure] (m : ℕ) (φ :
   exact image_eq_zero_of_notMem_tsupport hi
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `φ _ _`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[push, cvAll, fib, Measure.real, Measure.pi_empty_univ, Fin.snoc]`. Consider the case `succ m ih`. Introduce `φ hc hs`. Use function extensionality and compare the values at `x`. Establish `hmp` using `measurePreserving_piFinSuccAbove (fun _ : Fin (m + 1) => μ) 0`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hint` using `integrable_fib μ (m + 1) φ hc hs x`. Use `set F : (Fin (m + 1) → G) → ℂ := fun y => ∏ i, φ i (fib y x i) with hF`. Establish `hsymm` using `hmp.symm`. Establish `hint' : Integrable (F ∘ (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (m + 1) => G) 0).symm) (μ.prod (Measure.pi fun _ => μ))` using `(hsymm.integrable_comp_emb (MeasurableEquiv.measurableEmbedding _)).2 hint`. Establish `hval : ∀ (a : G) (y : Fin m → G), (F ∘ (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (m + 1) => G) 0).symm) (a, y) = φ 0 a * ∏ i, Fin.tail φ i (fib y (a⁻¹ * x) i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a y`. Establish `: (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (m + 1) => G) 0).symm (a, y) = Fin.cons (α` using `fun _ => G) a y := by`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun j => ?_) i <;> simp [MeasurableEquiv.piFinSuccAbove]`. Simplify using `only [Function.comp, this, hF, fib_cons, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ, Fin.tail]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ∫ y, F y ∂(Measure.pi fun _ => μ) = _`. Use `(hsymm.integral_comp' F).symm.trans ((integral_prod _ hint').trans ?_)` and prove the remaining obligations. Simplify using `only [cvAll, cv]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Simplify using `only [hval, integral_const_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun (ih (Fin.tail φ) (fun i => hc _) (fun i => hs _)) (a⁻¹ * x)` as an intermediate fact. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma push_tens (μ : Measure G) [μ.IsHaarMeasure] : ∀ (m : ℕ) (φ : Fin (m + 1) → G → ℂ),
     (∀ i, Continuous (φ i)) → (∀ i, HasCompactSupport (φ i)) →
@@ -113,7 +113,7 @@ end
 end UpperTheory.ConvolutionTheory.L1
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ μ _ m φ hc hs`. Conclude with `UpperTheory.ConvolutionTheory.L1.push_tens μ m φ hc hs`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.L1.pushTens :
     UpperTheory.ConvolutionTheory.L1.PushTens := by

@@ -25,7 +25,7 @@ variable {k : ℕ} {S : Type*} [CommRing S]
 def UT (B : Matrix (Fin k) (Fin k) S) : Prop := B.BlockTriangular id ∧ ∀ i, B i i = 1
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `j _ hji`. Break down `lt_or_gt_of_ne hji with h | h` into its components or cases. Rewrite using `[hA h, zero_mul]`. Rewrite using `[hB h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -39,13 +39,13 @@ theorem diag_mul {A B : Matrix (Fin k) (Fin k) S} (hA : A.BlockTriangular id)
   · simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hA.1.mul hB.1, fun i => by rw [diag_mul hA.1 hB.1, hA.2, hB.2, one_mul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem UT.mul {A B : Matrix (Fin k) (Fin k) S} (hA : UT A) (hB : UT B) : UT (A * B) :=
   ⟨hA.1.mul hB.1, fun i => by rw [diag_mul hA.1 hB.1, hA.2, hB.2, one_mul]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Matrix.blockTriangular_one, fun i => Matrix.one_apply_eq i⟩`.
+Supply the required witnesses or components.
 -/
 theorem UT.one : UT (1 : Matrix (Fin k) (Fin k) S) :=
   ⟨Matrix.blockTriangular_one, fun i => Matrix.one_apply_eq i⟩
@@ -70,7 +70,7 @@ def Uk (k : ℕ) (S : Type*) [CommRing S] : Subgroup (GL (Fin k) S) where
     exact h1.symm
 
 /- English proof (translation)
-Establish `h` using `Matrix.aeval_self_charpoly B`. Rewrite `h` using `[Matrix.charpoly_of_isUpperTriangular B hB.1]`. Simplify `h` using `[hB.2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UT.nilp {B : Matrix (Fin k) (Fin k) S} (hB : UT B) : (B - 1) ^ k = 0 := by
   have h := Matrix.aeval_self_charpoly B
@@ -82,9 +82,9 @@ end UT
 variable (g k : ℕ) [Fact g.Prime]
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Conclude with `Subsingleton.elim _ _`. Establish `: Nonempty (Fin k)` using `Fin.pos_iff_nonempty.1 hk`. Establish `: CharP (Matrix (Fin k) (Fin k) (ZMod g)) g` using `Matrix.charP g`. Establish `h1 : (B - 1) ^ g ^ k = B ^ g ^ k - 1 ^ g ^ k` using `sub_pow_char_pow_of_commute g k (Commute.one_right B)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (B - 1) ^ g ^ k = 0` using `pow_eq_zero_of_le (Nat.lt_pow_self (Fact.out : g.Prime).one_lt).le hB.nilp`. Rewrite `h1` using `[h2, one_pow]`. Conclude with `(sub_eq_zero.1 h1.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_pow {B : Matrix (Fin k) (Fin k) (ZMod g)} (hB : UT B) : B ^ g ^ k = 1 := by
   rcases Nat.eq_zero_or_pos k with rfl | hk
@@ -99,13 +99,11 @@ theorem red_pow {B : Matrix (Fin k) (Fin k) (ZMod g)} (hB : UT B) : B ^ g ^ k = 
     exact (sub_eq_zero.1 h1.symm)
 
 /- English proof (translation)
-Establish `h : ∀ i j, ∃ y : ℤ_[g], (C - 1) i j = (g : ℤ_[g]) * y`. Introduce `i j`. Establish `h0 : PadicInt.toZMod ((C - 1) i j) = 0`. Establish `h1 : (PadicInt.toZMod (p` using `g)).mapMatrix (C - 1) = 0 := by`. Rewrite using `[map_sub, map_one, RingHom.mapMatrix_apply, hC, sub_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `congrFun (congrFun h1 i) j`. Simplify `h2` using `[RingHom.mapMatrix_apply]`. Rewrite `h0` using `[← RingHom.mem_ker, PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`. Conclude with `h0`. Use `choose Y hY using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `⟨Matrix.of Y, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Establish `h1 : ((g : Matrix (Fin k) (Fin k) ℤ_[g]) * Matrix.of Y) i j = (g : ℤ_[g]) * Y i j`. Rewrite using `[← nsmul_eq_mul, Matrix.smul_apply, nsmul_eq_mul, Matrix.of_apply]`. Rewrite using `[Matrix.add_apply, h1, ← hY i j, Matrix.sub_apply]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lift_one (C : Matrix (Fin k) (Fin k) ℤ_[g])
     (hC : C.map (PadicInt.toZMod (p := g)) = 1) :
@@ -129,9 +127,9 @@ theorem lift_one (C : Matrix (Fin k) (Fin k) ℤ_[g])
   ring
 
 /- English proof (translation)
-Establish `hd : ((g : ℕ) : ℤ_[g][X]) ^ (b + 1) ∣ (1 + ((g : ℕ) : ℤ_[g][X]) * X) ^ g ^ b - 1 ^ g ^ b` using `dvd_sub_pow_of_dvd_sub ⟨X, by ring⟩ b`. Take `⟨Q, hQ⟩` from `hd`. Use `⟨aeval Y Q, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (aeval Y) hQ`. Simplify using `only [map_sub, map_pow, map_add, map_one, map_mul, map_natCast, aeval_X] at h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[one_pow, sub_eq_iff_eq_add]`. Rewrite using `[h, nsmul_eq_mul, add_comm]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem pow_one_add (Y : Matrix (Fin k) (Fin k) ℤ_[g]) (b : ℕ) :
     ∃ Z : Matrix (Fin k) (Fin k) ℤ_[g],
@@ -149,11 +147,11 @@ theorem pow_one_add (Y : Matrix (Fin k) (Fin k) ℤ_[g]) (b : ℕ) :
   rfl
 
 /- English proof (translation)
-Take `⟨Y, hY⟩` from `lift_one g k (A ^ g ^ k) (by rw [Matrix.map_pow]; exact red_pow g k hA)`. Rewrite using `[← tendsto_add_atTop_iff_nat k]`. Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Establish `hg1 : (1 : ℝ) < g` using `by exact_mod_cast (Fact.out : g.Prime).one_lt`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlim : Tendsto (fun b : ℕ => ((g : ℝ)⁻¹) ^ (b + 1)) atTop (𝓝 0)` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (by positivity) (inv_lt_one_of_one_lt₀ hg1)).comp (tendsto_add_atTop_nat 1)`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun b => ?_) hlim` and prove the remaining obligations. Take `⟨Z, hZ⟩` from `pow_one_add g k Y b`. Establish `e : A ^ g ^ (b + k) = 1 + (g ^ (b + 1)) • Z`. Rewrite using `[pow_add, mul_comm, pow_mul, hY, hZ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Matrix.add_apply, add_sub_cancel_left, Matrix.smul_apply, nsmul_eq_mul, norm_mul]`. Use `push_cast`. Rewrite using `[norm_pow, PadicInt.norm_p]`. Conclude with `mul_le_of_le_one_right (by positivity) (PadicInt.norm_le_one _)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_pow (A : Matrix (Fin k) (Fin k) ℤ_[g])
     (hA : UT (A.map (PadicInt.toZMod (p := g)))) :

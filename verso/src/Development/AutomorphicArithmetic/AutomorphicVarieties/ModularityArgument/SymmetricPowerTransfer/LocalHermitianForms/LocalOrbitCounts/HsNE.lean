@@ -3,19 +3,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ τ hL _ t`. Establish `h2 : (2 : K) ≠ 0`. Establish `h` using `hL.two.map (algebraMap O K)`. Rewrite `h` using `[map_ofNat]`. Conclude with `h.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hiff : hs (τ ^ 2 - 4) (t : K) = 1 ↔ ∃ a b : K, a ^ 2 - (τ ^ 2 - 4) * b ^ 2 = t`. Unfold `hs`. Use `split_ifs with h`. Simplify using `[h]`. Simplify using `only [h, iff_false]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Rewrite using `[hiff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Establish `hz' : QuadraticAlgebra.norm (z : QuadraticAlgebra K (-1) τ) = (t : K)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `congrArg Units.val hz`. Rewrite `h` using `[Units.coe_map]`. Then use the resulting hypothesis. Use `⟨((z : QuadraticAlgebra K (-1) τ).re * 2 + τ * (z : QuadraticAlgebra K (-1) τ).im) / 2, (z : QuadraticAlgebra K (-1) τ).im / 2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz', norm_def]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨a, b, hab⟩`. Establish `hw : QuadraticAlgebra.norm (⟨a - τ * b, 2 * b⟩ : QuadraticAlgebra K (-1) τ) = (t : K)`. Rewrite using `[← hab, norm_def]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : IsUnit (⟨a - τ * b, 2 * b⟩ : QuadraticAlgebra K (-1) τ)`. Rewrite using `[isUnit_iff_norm_isUnit, hw]`. Conclude with `t.isUnit`. Use `⟨hu.unit, ?_⟩` and prove the remaining obligations. Use `ext`.
-
-Rewrite using `[Units.coe_map, IsUnit.unit_spec]`. Conclude with `hw`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Loc.hsNE : UpperTheory.V.Z.Sym.Loc.HsNE := by
   intro O K _ _ _ _ _ Δ τ hL _ t

@@ -1,35 +1,33 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `L _ _ n r h0 h1`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `A _`. Conclude with `⟨1, 1, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, fun i => i.elim0, Subsingleton.elim _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `succ n ih`. Introduce `A hA`. Establish `hlc : ∀ i : Fin n, Fin.last n ≠ i.castSucc` using `fun i => (Fin.castSucc_lt_last i).ne'`. Establish `hcl : ∀ i : Fin n, i.castSucc ≠ Fin.last n` using `fun i => (Fin.castSucc_lt_last i).ne`. Establish `hd1 : ‖A (Fin.last n) (Fin.last n) - 1‖ ≤ r`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using hA (Fin.last n) (Fin.last n)`. Establish `hd : ‖A (Fin.last n) (Fin.last n)‖ = 1`. Establish `hne : ‖A (Fin.last n) (Fin.last n) - 1‖ ≠ ‖(1 : L)‖`. Rewrite using `[norm_one]`. Conclude with `(hd1.trans_lt h1).ne`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hne` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, norm_one]`. Rewrite using `[this]`. Conclude with `max_eq_right (hd1.trans h1.le)`. Establish `hd0 : A (Fin.last n) (Fin.last n) ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Rewrite `hd` using `[h, norm_zero]`. Conclude with `zero_ne_one hd`. Establish `hb : ∀ i : Fin n, ‖A i.castSucc (Fin.last n)‖ ≤ r` using `fun i => by`. Simplify `hA i.castSucc (Fin.last n)` using `[Matrix.one_apply_ne (hcl i)]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hc : ∀ i : Fin n, ‖A (Fin.last n) i.castSucc‖ ≤ r` using `fun i => by`. Simplify `hA (Fin.last n) i.castSucc` using `[Matrix.one_apply_ne (hlc i)]`. Establish `hu : ∀ i : Fin n, ‖A i.castSucc (Fin.last n) / A (Fin.last n) (Fin.last n)‖ ≤ r` using `fun i => by rw [norm_div, hd, div_one]; exact hb i`. Establish `hone : ∀ i j : Fin n, (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) L) i.castSucc j.castSucc = (1 : Matrix (Fin n) (Fin n) L) i j` using `fun i j => by`. Simplify using `[Matrix.one_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨U, W, hU, hW, hU1, hW1, hUW⟩` from `ih (Matrix.of fun i j : Fin n => A i.castSucc j.castSucc - A i.castSucc (Fin.last n) / A (Fin.last n) (Fin.last n) * A (Fin.last n) j.castSucc) (fun i j => by`. Establish `h2` using `hA i.castSucc j.castSucc`. Rewrite `h2` using `[Matrix.sub_apply, hone]`. Rewrite using `[Matrix.sub_apply, Matrix.of_apply, sub_right_comm, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h2 ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_neg, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨Matrix.of fun i j => Fin.lastCases (motive := fun _ => L) (Fin.lastCases (motive := fun _ => L) 1 (fun _ => 0) j) (fun i' => Fin.lastCases (motive := fun _ => L) (A i'.castSucc (Fin.last n) / A (Fin.last n) (Fin.last n)) (fun j' => U i' j') j) i, Matrix.of fun i j => Fin.lastCas …` and prove the remaining obligations. Introduce `i j hij`. Apply the tactic sequence `induction i using Fin.lastCases <;> induction j using Fin.lastCases`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd hij (lt_irrefl _)`. Simplify using the standard rewrite rules. Conclude with `absurd hij (Fin.le_last _).not_gt`. Simplify `hij)` using `using hU _ _ (by simpa`. Introduce `i j hij`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `induction i using Fin.lastCases <;> induction j using Fin.lastCases`. Conclude with `absurd hij (lt_irrefl _)`. Conclude with `absurd hij (Fin.le_last _).not_gt`. Simplify using the standard rewrite rules. Simplify `hij)` using `using hW _ _ (by simpa`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `i j`. Apply the tactic sequence `induction i using Fin.lastCases <;> induction j using Fin.lastCases`. Simplify using `using h0`. Simplify `h0` using `[Matrix.one_apply_ne (hlc _)]`. Simplify `hb _` using `[Matrix.one_apply_ne (hcl _), hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Matrix.sub_apply, hone]`. Simplify using `using hU1 _ _`. Introduce `i j`. Apply the tactic sequence `induction i using Fin.lastCases <;> induction j using Fin.lastCases`. Simplify using `using hd1`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify `hc _` using `[Matrix.one_apply_ne (hlc _)]`. Simplify `h0` using `[Matrix.one_apply_ne (hcl _)]`. Rewrite using `[Matrix.sub_apply, hone]`. Simplify using `using hW1 _ _`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply, Fin.sum_univ_castSucc]`. Apply the tactic sequence `induction i using Fin.lastCases <;> induction j using Fin.lastCases`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using `[hd0]`.
-
-Name the introduced variables `i j`. Use `congrFun (congrFun hUW i) j` as an intermediate fact. Rewrite `this` using `[Matrix.of_apply, Matrix.mul_apply]`. Simplify using `only [Matrix.of_apply, Fin.lastCases_castSucc, Fin.lastCases_last]`. Rewrite using `[← this, sub_add_cancel]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.TriangularFactorizationNearIdentity.factor :
     ∀ {L : Type} [inst : NontriviallyNormedField L] [IsUltrametricDist L] (n : ℕ) (r : ℝ),

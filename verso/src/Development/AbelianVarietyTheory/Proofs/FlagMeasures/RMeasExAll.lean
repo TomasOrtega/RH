@@ -7,9 +7,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RMeasAll
 
 /- English proof (translation)
-Introduce `D X Y hF hI C u u' hW t hG hr τ`. Take `⟨_, _, h3, h4, h5, h6, h7, _⟩` from `hW τ`. Establish `hTu : 0 < Formalism.MainNotions.S.Tr D u` using `Nat.cast_pos.2 (D.mem u).A.T_prime.pos`. Establish `hTu' : 0 < Formalism.MainNotions.S.Tr D u'` using `Nat.cast_pos.2 (D.mem u').A.T_prime.pos`. Take `⟨p, hp⟩` from `Formalism.L2.SG.LoopTerm.relPtEx_holds hI C u u' t hG hr τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.Amp.RootQuot.exists_rMeas D (locW C u u' τ) _ p h3 h4 (by rw [h5]; exact hTu) (by rw [h6]; exact hTu') h7 hp`.
+A detailed English derivation is pending.
 -/
 theorem rMeasEx_all : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (hF : FinX Y) (hI : SIso D.s (sOf hF)) (C : Choice X 1) (u u' : D.what₂.Word), (∀ τ, GoodW D τ u u' 1 (locW C u u' τ)) → RMeasEx hI C u u' := by
   intro D X Y hF hI C u u' hW t hG hr τ

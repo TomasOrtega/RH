@@ -10,9 +10,9 @@ noncomputable def subst (D : ℕ) : Polynomial (Polynomial κ) →+* Polynomial 
   eval₂RingHom (mapRingHom (C : κ →+* Polynomial κ)) (C X * X ^ D)
 
 /- English proof (translation)
-Establish `hC : (C (X : Polynomial κ) : Polynomial (Polynomial κ)) ^ j = C (X ^ j)` using `(C_pow ..).symm`. Rewrite using `[mul_pow, hC, ← pow_mul, ← mul_assoc, coeff_mul_X_pow']`. Use `split_ifs with h1 h2`. Substitute `h2` using the available equality. Rewrite using `[coeff_mul_C, coe_mapRingHom, coeff_map, coeff_C_mul_X_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[coeff_mul_C, coe_mapRingHom, coeff_map, coeff_C_mul_X_pow]`. Simplify using `[h2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma term_coeff (D j m i : ℕ) (p : Polynomial κ) :
     (((mapRingHom (C : κ →+* Polynomial κ)) p * (C X * X ^ D) ^ j).coeff m).coeff i =
@@ -25,9 +25,9 @@ lemma term_coeff (D j m i : ℕ) (p : Polynomial κ) :
   · simp
 
 /- English proof (translation)
-Simplify using `only [subst, coe_eval₂RingHom, eval₂_eq_sum, Polynomial.sum, finset_sum_coeff, term_coeff]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Ne.symm hj]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `hi`. Simplify using `[notMem_support_iff.mp hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 lemma subst_coeff_coeff (D : ℕ) (P : Polynomial (Polynomial κ)) (i k : ℕ) :
     ((subst D P).coeff (k + D * i)).coeff i = (P.coeff i).coeff k := by
@@ -38,21 +38,21 @@ lemma subst_coeff_coeff (D : ℕ) (P : Polynomial (Polynomial κ)) (i k : ℕ) :
   · intro hi; simp [notMem_support_iff.mp hi]
 
 /- English proof (translation)
-Introduce `κ _ Φ A B D hΦ _ hB hAB hD i`. Distinguish the cases in `hi : A.coeff i = 0`. Simplify using `[hi]`. Establish `key : ∀ P : Polynomial (Polynomial κ), ∀ j, P.coeff j ≠ 0 → (P.coeff j).natDegree + D * j ≤ (subst D P).natDegree ∧ subst D P ≠ 0`. Introduce `P j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `subst_coeff_coeff D P j (P.coeff j).natDegree`. Establish `hne : (subst D P).coeff ((P.coeff j).natDegree + D * j) ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, coeff_zero]`. Conclude with `hj (leadingCoeff_eq_zero.mp h.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨le_natDegree_of_ne_zero hne, fun h0 => hne (by simp [h0])⟩`. Establish `hAi` using `key A i hi`. Establish `hB0` using `(key B B.natDegree (by rw [hB.coeff_natDegree]; exact one_ne_zero)).2`. Establish `hmul : (subst D Φ).natDegree = (subst D A).natDegree + (subst D B).natDegree`. Rewrite using `[hAB, map_mul, natDegree_mul hAi.2 hB0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hup : (subst D Φ).natDegree ≤ Φ.natDegree * D`. Simplify using `only [subst, coe_eval₂RingHom, eval₂_eq_sum, Polynomial.sum]`. Apply `natDegree_sum_le_of_forall_le` to reduce the goal to its premises. Introduce `j hj`. Establish `hjd : j ≤ Φ.natDegree` using `le_natDegree_of_mem_supp j hj`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (mapRingHom (C : κ →+* Polynomial κ) (Φ.coeff j)).natDegree ≤ (Φ.coeff j).natDegree`. Rewrite using `[coe_mapRingHom]`. Conclude with `natDegree_map_le`. Establish `h2 : ((C X * X ^ D : Polynomial (Polynomial κ)) ^ j).natDegree ≤ j * D`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Apply `Nat.mul_le_mul_left` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : (Φ.coeff j).natDegree + j * D ≤ Φ.natDegree * D`. Break down `hjd.lt_or_eq with h | h` into its components or cases. Establish `h4` using `hD j`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5 : (j + 1) * D ≤ Φ.natDegree * D` using `Nat.mul_le_mul_right _ h`. Rewrite `h5` using `[add_mul, one_mul]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[h, hΦ.coeff_natDegree, natDegree_one, zero_add]`. Conclude with `(natDegree_mul_le).trans (by omega)`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `hAi.1` as an intermediate fact. Establish `h6 : (A.coeff i).natDegree ≤ (subst D A).natDegree` using `by omega`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem monic_factor_coeff_natDegree_le : ∀ {κ : Type} [Field κ] (Φ A B : Polynomial (Polynomial κ))
     (D : ℕ), Φ.Monic → A.Monic → B.Monic → Φ = A * B → (∀ i, (Φ.coeff i).natDegree ≤ D) →

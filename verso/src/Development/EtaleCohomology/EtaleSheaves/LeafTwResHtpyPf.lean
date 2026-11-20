@@ -6,16 +6,16 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace LateralTheory.E.LeafTwResHtpyPf
 
 /- English proof (translation)
-Unfold `res InjectiveResolution.cochainComplex`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem res_isKInj (R : Type) [CommRing R] (F : Shv R) : (res R F).IsKInjective := by
   unfold res InjectiveResolution.cochainComplex
   infer_instance
 
 /- English proof (translation)
-Establish `hY` using `IsKInjective.rightOrthogonal I`. Rewrite `hY` using `[← ObjectProperty.isLocal_trW]`. Establish `hf : (HomotopyCategory.subcategoryAcyclic C).trW ((HomotopyCategory.quotient C _).map f)`. Rewrite using `[← HomotopyCategory.quasiIso_eq_trW_subcategoryAcyclic, HomotopyCategory.quotient_map_mem_quasiIso_iff]`. Use the matching hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the matching hypothesis.
 
-Establish `hb` using `(hY _ hf).1`. Establish `: (HomotopyCategory.quotient C _).map u = (HomotopyCategory.quotient C _).map u'`. Apply `hb` to reduce the goal to its premises. Simplify using `only [← Functor.map_comp, h]`. Conclude with `⟨HomotopyCategory.homotopyOfEq _ _ this⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem htpy_of_qiso {C : Type*} [Category C] [Abelian C] {K L I : CochainComplex C ℤ}
     (f : K ⟶ L) [QuasiIso f] [I.IsKInjective] (u u' : L ⟶ I) (h : f ≫ u = f ≫ u') :
@@ -34,7 +34,7 @@ theorem htpy_of_qiso {C : Type*} [Category C] [Abelian C] {K L I : CochainComple
   exact ⟨HomotopyCategory.homotopyOfEq _ _ this⟩
 
 /- English proof (translation)
-Apply `((sheafificationAdjunction Scheme.etaleTopology.{0} _).homEquiv P X).injective` to reduce the goal to its premises. Rewrite using `[Adjunction.homEquiv_unit, Adjunction.homEquiv_unit]`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sh_ext {R : Type} [CommRing R] {P : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)} {X : Shv R}
     (φ ψ : (presheafToSheaf Scheme.etaleTopology.{0} _).obj P ⟶ X)
@@ -44,7 +44,7 @@ theorem sh_ext {R : Type} [CommRing R] {P : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (
   exact h
 
 /- English proof (translation)
-Apply `sh_ext` to reduce the goal to its premises. Use extensionality with `U : 2`. Apply `ModuleCat.hom_ext` to reduce the goal to its premises. Use `Submodule.linearMap_qext _ (Finsupp.lhom_ext' fun ζ => LinearMap.ext_ring ?_)` and prove the remaining obligations. Conclude with `h U.unop ζ`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tw_hom_ext (q : ℕ) (i : ℤ) {X : Shv (ZMod q)} (φ ψ : tw q i ⟶ X)
     (h : ∀ (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)), Sec.map φ (twGen i ζ) = Sec.map ψ (twGen i ζ)) : φ = ψ := by
@@ -58,13 +58,13 @@ end LateralTheory.E.LeafTwResHtpyPf
 
 open LateralTheory.E.LeafTwResHtpyPf in
 /- English proof (translation)
-Introduce `q _ k T e hT u u' hu`. Take `⟨_, ε, hε, he⟩` from `hT`. Use `res_isKInj (ZMod q) (tw q k)` as an intermediate fact. Use `htpy_of_qiso ε u u' ?_` and prove the remaining obligations. Apply `HomologicalComplex.from_single_hom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[HomologicalComplex.comp_f, HomologicalComplex.comp_f]`. Establish `key : sglι (tw q k) ≫ ε.f 0 ≫ u.f 0 = sglι (tw q k) ≫ ε.f 0 ≫ u'.f 0`. Apply `tw_hom_ext` to reduce the goal to its premises. Introduce `U ζ`. Use `hu U ζ` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[← he U ζ]`. Conclude with `this`. Establish `h1 : ε.f 0 ≫ u.f 0 = (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 (tw q k)).hom ≫ (sglι (tw q k) ≫ ε.f 0 ≫ u.f 0)`. Unfold `sglι`. Conclude with `(Iso.hom_inv_id_assoc _ _).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h2 : ε.f 0 ≫ u'.f 0 = (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 (tw q k)).hom ≫ (sglι (tw q k) ≫ ε.f 0 ≫ u'.f 0)`. Unfold `sglι`. Conclude with `(Iso.hom_inv_id_assoc _ _).symm`. Conclude with `h1.trans ((congrArg _ key).trans h2.symm)`.
+A detailed English derivation is pending.
 -/
 theorem LateralTheory.E.LeafTwPairHtpyPf.LeafTwResHtpy_of : LateralTheory.E.LeafTwPairHtpyPf.LeafTwResHtpy := by
   intro q _ k T e hT u u' hu

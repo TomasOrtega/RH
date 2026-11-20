@@ -18,13 +18,13 @@ def rowProj (O : Type) [CommRing O] (N : ℕ) (ν : Fin N → ℕ) (w : Fin N �
     (fun x hx => dualWeylModuleRowGraded O N N ν w x hx)
 
 /- English proof (translation)
-Introduce `O _ N ι _ _ lam τ w`. Establish `hP : IsProj O N lam τ w (atFactor τ (rowProj O N (res N (lam τ)) w))`. Introduce `x y hy`. Unfold `atFactor`. Rewrite using `[PiTensorProduct.map_tprod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `σ`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using `only [Function.update_self, LinearMap.restrict_apply, rowProj]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `Subtype.ext hy.symm`. Simplify using `[Function.update_of_ne h]`. Use `⟨_, hP, fun a' ha' => ?_⟩` and prove the remaining obligations. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Simplify using `only [LinearMap.compMultilinearMap_apply]`. Set `y : dualWeyl O N N (res N (lam τ))` to `rowProj O N (res N (lam τ)) w (x τ)`. Conclude with `(ha' x y rfl).trans (hP x y rfl).symm`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem exists_unique_isProj : ∀ (O : Type) [CommRing O] (N : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] (lam : ι → ℕ → ℕ) (τ : ι)
     (w : Fin N → ℕ), ∃ a, IsProj O N lam τ w a ∧ ∀ a', IsProj O N lam τ w a' → a' = a := by

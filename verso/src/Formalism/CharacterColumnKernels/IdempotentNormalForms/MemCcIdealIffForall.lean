@@ -7,9 +7,9 @@ noncomputable section
 namespace Formalism.NG
 
 /- English proof (translation)
-Unfold `ccIdeal`. Rewrite using `[RingHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Use `congrFun h ⟨x, hx⟩` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[resOff]`. Introduce `h`. Use function extensionality and compare the values at `x`. Simplify using `[resOff, h x.1 x.2]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mem_ccIdeal_iff_forall {O : Type*} [CommRing O] {X : Type*} (T : Subalgebra O (X → O))
     (Z : Set X) (c : T) : c ∈ ccIdeal T Z ↔ ∀ x ∉ Z, (c : X → O) x = 0 := by
@@ -24,41 +24,35 @@ theorem mem_ccIdeal_iff_forall {O : Type*} [CommRing O] {X : Type*} (T : Subalge
     simp [resOff, h x.1 x.2]
 
 /- English proof (translation)
-Introduce `O O' _ _ _ _ _ _ _ _ _ e he X T T' hT' Z x`. Use `set b := Module.Free.chooseBasis O O' with hb`. Use `set φ : (X → O) → (X → O') := fun f => algebraMap O O' ∘ f with hφ`. Establish `hdec : ∀ f ∈ Submodule.span O' (φ '' (T : Set (X → O))), ∃ g : Module.Free.ChooseBasisIndex O O' → (X → O), (∀ j, g j ∈ T) ∧ f = ∑ j, b j • φ (g j)`. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨t, ht, rfl⟩` from `hf`. Use `⟨fun j => b.repr 1 j • t, fun j => T.smul_mem ht _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [hφ, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Function.comp_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[b.sum_repr, mul_one]`. Use `_ = ∑ j, b j * algebraMap O O' (b.repr 1 j * t x') := by`. Rewrite using `[Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`. Use `⟨0, fun j => T.zero_mem, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use function extensionality and compare the values at `x'`. Simplify using `[hφ]`. Consider the case `add f f' _ _ hf hf'`. Take `⟨g, hg, rfl⟩` from `hf`. Take `⟨g', hg', rfl⟩` from `hf'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `⟨g + g', fun j => T.add_mem (hg j) (hg' j), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x'`. Simplify using `only [hφ, Finset.sum_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Function.comp_apply, map_add, mul_add, Finset.sum_add_distrib]`. Consider the case `smul o f _ hf`. Take `⟨g, hg, rfl⟩` from `hf`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `⟨fun k => ∑ j, b.repr (o * b j) k • g j, fun k => T.sum_mem fun j _ => T.smul_mem (hg j) _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x'`. Simplify using `only [hφ, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Function.comp_apply, map_sum, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Use `_ = ∑ j, (∑ k, b.repr (o * b j) k • b k) * algebraMap O O' (g j x') := by`. Repeatedly rewrite using `[b.sum_repr]`. Use `_ = ∑ k, b k * ∑ j, algebraMap O O' (b.repr (o * b j) k) * algebraMap O O' (g j x') := by`. Simplify using `only [Finset.sum_mul, Finset.mul_sum, Algebra.smul_def]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => by ring`. Establish `hvan : ∀ (g : Module.Free.ChooseBasisIndex O O' → X → O) (x' : X), ∑ j, b j * algebraMap O O' (g j x') = 0 → ∀ j, g j x' = 0`. Introduce `g x' h`. Establish `h2 : ∑ j, g j x' • b j = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← h]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [Algebra.smul_def, mul_comm]`. Conclude with `Fintype.linearIndependent_iff.mp b.linearIndependent _ h2`. Apply `le_antisymm` to reduce the goal to its premises. Establish `hne : ((fun c : T => IsDiscreteValuationRing.addVal O ((c : X → O) x)) '' (ccIdeal T Z : Set T)).Nonempty` using `⟨_, 0, (ccIdeal T Z).zero_mem, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c0, hc0, hc0eq⟩` from `csInf_mem hne`. Establish `hvcc : vcc T Z x = IsDiscreteValuationRing.addVal O ((c0 : X → O) x)`. Rewrite using `[show IsDiscreteValuationRing.addVal O ((c0 : X → O) x) = _ from hc0eq, sInf_image]`. Both sides reduce to the same expression. Rewrite using `[hvcc, ← he]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Establish `hmem : φ (c0 : X → O) ∈ T'`. Establish `h1 : φ (c0 : X → O) ∈ (T' : Set (X → O'))`. Rewrite using `[hT']`. Conclude with `Submodule.subset_span ⟨c0, c0.2, rfl⟩`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hc0' : (⟨φ (c0 : X → O), hmem⟩ : T') ∈ ccIdeal T' Z`. Rewrite using `[mem_ccIdeal_iff_forall]`. Introduce `x' hx'`. Establish `h0` using `(mem_ccIdeal_iff_forall T Z c0).mp hc0 x' hx'`. Simplify using `[hφ, h0]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `iInf₂_le _ hc0'`. Unfold `vcc`. Use `le_iInf₂ fun c' hc' => ?_` and prove the remaining obligations. Establish `hc'span : (c' : X → O') ∈ Submodule.span O' (φ '' (T : Set (X → O)))`. Establish `h1 : (c' : X → O') ∈ (T' : Set (X → O'))` using `c'.2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[hT']`. Conclude with `h1`. Take `⟨g, hg, hgeq⟩` from `hdec _ hc'span`. Establish `hgZ : ∀ j, (⟨g j, hg j⟩ : T) ∈ ccIdeal T Z`. Introduce `j`.
-
-Rewrite using `[mem_ccIdeal_iff_forall]`. Introduce `x' hx'`. Establish `h0` using `(mem_ccIdeal_iff_forall T' Z c').mp hc' x' hx'`. Rewrite `h0` using `[hgeq]`. Simplify using `only [hφ, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Function.comp_apply] at h0`.
-
-Conclude with `hvan g x' h0 j`. Rewrite using `[hgeq]`. Simplify using `only [hφ, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Function.comp_apply]`. Use `AddValuation.map_le_sum _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[AddValuation.map_mul, he]`.
-
-Use `le_trans ?_ le_add_self` and prove the remaining obligations. Conclude with `mul_le_mul_of_nonneg_left (iInf₂_le (⟨g j, hg j⟩ : T) (hgZ j)) (zero_le)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem vccBaseChange : StatVccBaseChange := by
   intro O O' _ _ _ _ _ _ _ _ _ e he X T T' hT' Z x

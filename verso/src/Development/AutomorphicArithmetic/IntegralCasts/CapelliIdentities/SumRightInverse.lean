@@ -1,23 +1,23 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ μ _ K hK hμ S hS hSK`. Use `haveI : DiscreteTopology (G ⧸ K) := QuotientGroup.discreteTopology hK`. Establish `hfin : ((QuotientGroup.mk : G → G ⧸ K) '' S).Finite` using `(hS.image QuotientGroup.continuous_mk).finite_of_discrete`. Set `C : G ⧸ K → Set G` to `fun Q => (fun g => (Quotient.out Q)⁻¹ * g) ⁻¹' (K : Set G)`. Establish `hC : ∀ Q g, g ∈ C Q ↔ (QuotientGroup.mk g : G ⧸ K) = Q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Q g`. Establish `h` using `QuotientGroup.eq (s := K) (a := Quotient.out Q) (b := g)`. Rewrite `h` using `[QuotientGroup.out_eq']`. Rewrite using `[eq_comm, h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hout : ∀ Q ∈ hfin.toFinset, Quotient.out Q ∈ S`. Introduce `Q hQ`. Take `⟨s, hs, rfl⟩` from `hfin.mem_toFinset.1 hQ`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K s`. Rewrite using `[hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hSK s hs k k.2`. Establish `hmeas : ∀ Q, MeasurableSet (C Q)` using `fun Q => (hK.preimage (continuous_const.mul continuous_id)).measurableSet`. Establish `hμC : ∀ Q, μ (C Q) = μ K` using `fun Q => MeasureTheory.measure_preimage_mul μ _ _`. Establish `hU : S = ⋃ Q ∈ hfin.toFinset, C Q`. Use extensionality with `g`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [Set.mem_iUnion, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Conclude with `⟨_, hfin.mem_toFinset.2 ⟨g, hg, rfl⟩, (hC _ g).2 rfl⟩`. Introduce and unpack `⟨Q, hQ, hg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hSK _ (hout Q hQ) _ hg` as an intermediate fact. Simplify using `using this`. Use `⟨hfin.toFinset, hout, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hconst : ∀ Q ∈ hfin.toFinset, Set.EqOn f (fun _ => f (Quotient.out Q)) (C Q)`. Introduce `Q hQ g hg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hf _ (hout Q hQ) _ hg` as an intermediate fact. Simplify using `using this`. Establish `hsplit : ∫ g in ⋃ Q ∈ hfin.toFinset, C Q, f g ∂μ = ∑ Q ∈ hfin.toFinset, ∫ g in C Q, f g ∂μ`. Use `MeasureTheory.integral_biUnion_finset _ (fun Q _ => hmeas Q) ?_ ?_` and prove the remaining obligations. Introduce `Q _ R _ hQR`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Set.disjoint_left.2 fun g h1 h2 => hQR ?_` and prove the remaining obligations. Rewrite using `[← (hC Q g).1 h1, (hC R g).1 h2]`. Introduce `Q hQ`. Use `(MeasureTheory.integrableOn_congr_fun (hconst Q hQ) (hmeas Q)).2 ?_` and prove the remaining obligations. Conclude with `MeasureTheory.integrableOn_const (by rw [hμC]; exact hμ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hsplit` using `[← hU]`. Rewrite using `[hsplit]`. Use `Finset.sum_congr rfl fun Q hQ => ?_` and prove the remaining obligations. Rewrite using `[MeasureTheory.setIntegral_congr_fun (hmeas Q) (hconst Q hQ), MeasureTheory.setIntegral_const, MeasureTheory.measureReal_def, hμC, MeasureTheory.measureReal_def, Complex.real_smul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.SumRightInverse.sum_rightInv :
     ∀ {G : Type} [inst : Group G] [inst_1 : TopologicalSpace G]

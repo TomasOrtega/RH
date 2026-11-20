@@ -16,7 +16,7 @@ def ambU (g g' : Sch l) (p : EuclideanSpace ℝ l) : Sch l :=
     (SchwartzMap.compSubConstCLM ℂ (-p) (GlobalTheory.ConjSch.conjSch g))
 
 /- English proof (translation)
-Simplify using `[ambU, SchwartzMap.bilinLeftCLM_apply, GlobalTheory.ConjSch.conjSch_apply, sub_neg_eq_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ambU_apply (g g' : Sch l) (p t : EuclideanSpace ℝ l) :
     ambU g g' p t = starRingEnd ℂ (g (t + p)) * g' t := by
@@ -34,15 +34,15 @@ open scoped Real RealInnerProductSpace FourierTransform
 variable {l : Type} [Fintype l]
 
 /- English proof (translation)
-Establish `h1 : ∀ t, starRingEnd ℂ (rhoFun w ⇑g t * starRingEnd ℂ (g' t)) = cexp (((-π * ⟪pPart w, qPart w⟫ : ℝ) : ℂ) * I) * (cexp (((-2 * π * ⟪t, qPart w⟫ : ℝ) : ℂ) * I) • ambU g g' (pPart w) t)`. Introduce `t`. Rewrite using `[ambU_apply, smul_eq_mul, rhoFun, phase, map_mul, map_mul, Complex.conj_conj, ← Complex.exp_conj, map_mul, Complex.conj_ofReal, Complex.conj_I]`. Establish `e : cexp (((2 * π * ⟪qPart w, t⟫ + π * ⟪pPart w, qPart w⟫ : ℝ) : ℂ) * -I) = cexp (((-π * ⟪pPart w, qPart w⟫ : ℝ) : ℂ) * I) * cexp (((-2 * π * ⟪t, qPart w⟫ : ℝ) : ℂ) * I)`. Rewrite using `[← Complex.exp_add, real_inner_comm t (qPart w)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : 𝓕 (ambU g g' (pPart w)) (qPart w) = ∫ t, cexp (((-2 * π * ⟪t, qPart w⟫ : ℝ) : ℂ) * I) • ambU g g' (pPart w) t`. Rewrite using `[SchwartzMap.fourier_coe, Real.fourier_eq']`. Establish `h3 : starRingEnd ℂ (∫ t, rhoFun w ⇑g t * starRingEnd ℂ (g' t)) = cexp (((-π * ⟪pPart w, qPart w⟫ : ℝ) : ℂ) * I) * 𝓕 (ambU g g' (pPart w)) (qPart w)`. Rewrite using `[← integral_conj, integral_congr_ae (Filter.Eventually.of_forall h1), integral_const_mul, h2]`. Establish `key : cexp (((-π * ⟪pPart w, qPart w⟫ : ℝ) : ℂ) * I) * cexp (((2 * π * ⟪qPart w, x⟫ + π * ⟪pPart w, qPart w⟫ : ℝ) : ℂ) * I) = cexp (((2 * π * ⟪qPart w, x⟫ : ℝ) : ℂ) * I)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, rhoFun, phase]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(𝓕 (ambU g g' (pPart w)) (qPart w) * f (x + pPart w)) * key`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem integrand_eq (g g' f : Sch l) (x : EuclideanSpace ℝ l) (w : l ⊕ l → ℝ) :
     starRingEnd ℂ (∫ t, rhoFun w ⇑g t * starRingEnd ℂ (g' t)) * rhoFun w ⇑f x =
@@ -78,7 +78,7 @@ theorem integrand_eq (g g' f : Sch l) (x : EuclideanSpace ℝ l) (w : l ⊕ l �
   linear_combination (𝓕 (ambU g g' (pPart w)) (qPart w) * f (x + pPart w)) * key
 
 /- English proof (translation)
-Set `e : (l ⊕ l → ℝ) ≃ᵐ EuclideanSpace ℝ l × EuclideanSpace ℝ l` to `(MeasurableEquiv.sumPiEquivProdPi (fun _ : l ⊕ l => ℝ)).trans (MeasurableEquiv.prodCongr (MeasurableEquiv.toLp 2 (l → ℝ)) (MeasurableEquiv.toLp 2 (l → ℝ)))`. Establish `he : ⇑e = fun w : l ⊕ l → ℝ => (pPart w, qPart w)` using `rfl`. Rewrite using `[← he]`. Use `⟨?_, e.measurableEmbedding⟩` and prove the remaining obligations. Conclude with `((PiLp.volume_preserving_toLp l).prod (PiLp.volume_preserving_toLp l)).comp (volume_measurePreserving_sumPiEquivProdPi (fun _ : l ⊕ l => ℝ))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurePreserving_pq :
     MeasurePreserving (fun w : l ⊕ l → ℝ => (pPart w, qPart w)) volume volume ∧
@@ -93,7 +93,7 @@ theorem measurePreserving_pq :
     (volume_measurePreserving_sumPiEquivProdPi (fun _ : l ⊕ l => ℝ))
 
 /- English proof (translation)
-Establish `h` using `congrFun (u.continuous.fourierInv_fourier_eq u.integrable (𝓕 u).integrable) x`. Rewrite `h` using `[Real.fourierInv_eq']`. Simplify `h` using `[SchwartzMap.fourier_coe]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem integral_phase_fourier (u : Sch l) (x : EuclideanSpace ℝ l) :
     ∫ q, cexp (((2 * π * ⟪q, x⟫ : ℝ) : ℂ) * I) * 𝓕 u q = u x := by
@@ -102,23 +102,21 @@ theorem integral_phase_fourier (u : Sch l) (x : EuclideanSpace ℝ l) :
   simpa [SchwartzMap.fourier_coe] using h
 
 /- English proof (translation)
-Introduce `n f g g' x`. Take `⟨hmp, hme⟩` from `measurePreserving_pq (l := Fin n)`. Use `set G : EuclideanSpace ℝ (Fin n) × EuclideanSpace ℝ (Fin n) → ℂ := fun z => cexp (((2 * π * ⟪z.2, x⟫ : ℝ) : ℂ) * I) * 𝓕 (ambU g g' z.1) z.2 * f (x + z.1) with hG`. Establish `hI : (fun w : Fin n ⊕ Fin n → ℝ => starRingEnd ℂ (∫ t, rhoFun w ⇑g t * starRingEnd ℂ (g' t)) * rhoFun w ⇑f x) = G ∘ fun w => (pPart w, qPart w)`. Use function extensionality and compare the values at `w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `integrand_eq g g' f x w`. Establish `hint : Integrable (fun w : Fin n ⊕ Fin n → ℝ => starRingEnd ℂ (∫ t, rhoFun w ⇑g t * starRingEnd ℂ (g' t)) * rhoFun w ⇑f x)`. Take `⟨hc, hd⟩` from `GlobalTheory.T.matrix_coeff_continuous_rapid_decay n g g'`. Take `⟨C, hC⟩` from `hd (2 * n + 1)`. Establish `hr : (Module.finrank ℝ (Fin n ⊕ Fin n → ℝ) : ℝ) < ((2 * n + 1 : ℕ) : ℝ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Module.finrank_fintype_fun_eq_card, Fintype.card_sum, Fintype.card_fin]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB` using `(integrable_one_add_norm (E := Fin n ⊕ Fin n → ℝ) (μ := volume) hr).const_mul (C * SchwartzMap.seminorm ℂ 0 0 f)`. Establish `hp : Continuous (fun w : Fin n ⊕ Fin n → ℝ => pPart w)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `pPart`. Use `fun_prop`. Establish `hq : Continuous (fun w : Fin n ⊕ Fin n → ℝ => qPart w)`. Unfold `qPart`. Use `fun_prop`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcont : Continuous (fun w : Fin n ⊕ Fin n → ℝ => rhoFun w ⇑f x)`. Simplify using `only [rhoFun, phase]`. Use `f.continuous` as an intermediate fact. Use `fun_prop`. Use `hB.mono' (((Complex.continuous_conj.comp hc).mul hcont).aestronglyMeasurable) (.of_forall fun w => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hpos : 0 < 1 + ‖w‖` using `by positivity`. Establish `e1 : ‖∫ t, rhoFun w ⇑g t * starRingEnd ℂ (g' t)‖ ≤ C * (1 + ‖w‖) ^ (-((2 * n + 1 : ℕ) : ℝ))`. Rewrite using `[Real.rpow_neg hpos.le, Real.rpow_natCast, ← div_eq_mul_inv, le_div_iff₀ (pow_pos hpos _)]`. Conclude with `hC w`. Establish `e2 : ‖f (x + pPart w)‖ ≤ SchwartzMap.seminorm ℂ 0 0 f` using `SchwartzMap.norm_le_seminorm ℂ f _`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply, norm_mul, RCLike.norm_conj, rhoFun, norm_phase, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hGint : Integrable G` using `(hmp.integrable_comp_emb hme).1 (hI ▸ hint)`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Use function extensionality and compare the values at `p`. Simplify using `only [hG]`. Rewrite using `[integral_mul_const, integral_phase_fourier, ambU_apply]`. Use `_ = ∫ p, (fun y => f y * starRingEnd ℂ (g y)) (x + p) * g' x := by`. Use `congr 1`.
-
-Use function extensionality and compare the values at `p`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`. Rewrite using `[integral_mul_const]`. Conclude with `congrArg (· * g' x) (integral_add_left_eq_self (fun y => f y * starRingEnd ℂ (g y)) x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moyal_pointwise : ∀ (n : ℕ) (f g g' : Sch (Fin n)) (x : EuclideanSpace ℝ (Fin n)),
     ∫ w : Fin n ⊕ Fin n → ℝ, starRingEnd ℂ (∫ t, rhoFun w ⇑g t * starRingEnd ℂ (g' t)) * rhoFun w ⇑f x =

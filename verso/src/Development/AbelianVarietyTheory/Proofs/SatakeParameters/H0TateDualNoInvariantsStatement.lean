@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.WeightRegularOfE
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.TateDualCoef.H0_coefRep_T2_comp_subtype_eq_bot_of_noInv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FH0TateDualNoInvariants.lean&line=62#L62)
 -/

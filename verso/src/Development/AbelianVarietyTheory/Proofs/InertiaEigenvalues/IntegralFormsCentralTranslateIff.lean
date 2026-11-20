@@ -24,13 +24,13 @@ open GlobalTheory.StdFrames (cpt)
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-Establish `hβ` using `hF.frS`. Apply the tactic sequence `choose m hm using fun ij : Fin S.rank × Fin S.rank => GlobalTheory.StdFrames.exists_pow_mul_mem (N := N) (((B.F.βS⁻¹).1 * (Formalism.L2.Theta.mt S k).map (toEAf D) * B.F.βS.1) ij.1 ij.2) fun PP hPP => conj_entry (toEAf D) B.F.βS hk (cpt PP) (ha PP hPP) (PP.adicCompletionIntegers …`. Use `⟨Finset.univ.sup m, fun l hl h x hx => ?_⟩` and prove the remaining obligations. Establish `hx' : ((Formalism.UG.bc (Lev.swapAE D) h.1)⁻¹).1 *ᵥ (fun i => eToEAf D (x i)) ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) B.F.ΛS := hx`. Establish `h3` using `(hβ _).1 hx'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `(hβ _).2 (conj_mulVec _ B.F.βS _ (fun i j => hm (i, j) l ((Finset.le_sup (Finset.mem_univ _)).trans hl)) h3)`. Express the relevant statement in the definitionally equal form `((Formalism.UG.bc (Lev.swapAE D) (h * (finPt S k)⁻¹).1)⁻¹).1 *ᵥ (fun i => eToEAf D ((((N ^ l : ℕ) : 𝓞 D.host.E) • x) i)) ∈ Formalism.L2.Herm.hatL (F := D.host.F) B.F.ΛS`. Establish `e1 : (Formalism.UG.bc (Lev.swapAE D) (h * (finPt S k)⁻¹).1)⁻¹ = Formalism.UG.bc (Lev.swapAE D) (finPt S k).1 * (Formalism.UG.bc (Lev.swapAE D) h.1)⁻¹`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_inv, MonoidHom.map_mul, MonoidHom.map_inv, _root_.mul_inv_rev, inv_inv]`. Establish `e2 : (fun i => eToEAf D ((((N ^ l : ℕ) : 𝓞 D.host.E) • x) i)) = (N ^ l) • fun i => eToEAf D (x i)`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Nat.cast_smul_eq_nsmul, Pi.smul_apply, Pi.smul_apply, map_nsmul]`. Rewrite using `[e1, e2, Units.val_mul, mulVec_nsmul]`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, nsmul_eq_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_pow_latAt {B : Base S T} (hF : B.F.Good) {a : AE D} {k : GA D S} (hk : SuppAt a S k) {N : ℕ}
     (ha : ∀ PP : Pl D.host.E, (N : 𝓞 D.host.E) ∉ PP.asIdeal → cpt PP (toEAf D (a + cA D a)) = 0) :
@@ -61,9 +61,9 @@ theorem exists_pow_latAt {B : Base S T} (hF : B.F.Good) {a : AE D} {k : GA D S} 
   rfl
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Establish `h3 : coefFn σ lam (((N : K) ^ GlobalTheory.NabScale.scaleExp lam • F : VV K lam) : Pol K D.what₂.Tau n) ∈ coefLatFn σ emb O lam M'` using `Submodule.subset_span ⟨_, nabAtr_scale emb lam N hM h1 h2 F hF, rfl⟩`. Establish `h4` using `Submodule.smul_mem _ ((⟨_, hO⟩ : O) ^ GlobalTheory.NabScale.scaleExp lam) h3`. Establish `h0 : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hN`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[SetLike.mem_coe]`. Use `h4 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `_ = ((N : ℂ)⁻¹) ^ GlobalTheory.NabScale.scaleExp lam * coefFn σ lam ((N : K) ^ GlobalTheory.NabScale.scaleExp lam • F.1) x`. Rewrite using `[coefFn, coefFn, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.eval₂Hom_C, map_pow, map_natCast, inv_pow]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -85,11 +85,11 @@ theorem coefLatFn_le {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ) (em
   field_simp
 
 /- English proof (translation)
-Take `⟨m₁, h₁⟩` from `exists_pow_latAt hF hk ha`. Take `⟨m₂, h₂⟩` from `exists_pow_latAt hF (GlobalTheory.SplitLinear.suppAt_inv hk) ha`. Establish `e1` using `h₁ (m₁ + m₂) (Nat.le_add_right _ _) (h * finPt S k)`. Establish `e2` using `h₂ (m₁ + m₂) (Nat.le_add_left _ _) h`. Rewrite `e1` using `[mul_inv_cancel_right]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[show finPt S k⁻¹ = (finPt S k)⁻¹ from MonoidHom.map_inv _ k, inv_inv]`. Establish `hL : ∀ y : Bridge.Gf S, Submodule.IsLattice D.host.E (B.latAt y)` using `fun y => Formalism.UG.P.global_lattice_isLattice_holds _ _ _ _ (Module.Finite.iff_fg.2 hF.sdS.1.fg) hF.sdS.1.span_eq_top _`. Establish `hO' : ((N ^ (m₁ + m₂) : ℕ) : ℂ)⁻¹ ∈ O`. Rewrite using `[Nat.cast_pow, ← inv_pow]`. Conclude with `pow_mem hO _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `le_antisymm (coefLatFn_le σ emb O B.w.lam (pow_ne_zero _ hN) hO' (hL _) e1 e2) (coefLatFn_le σ emb O B.w.lam (pow_ne_zero _ hN) hO' (hL _) e2 e1)`. Unfold `Base.coefLat harmLat`. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefLat_mul {B : Base S T} (hF : B.F.Good) {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ)
     (emb : D.what₂.Tau → (D.host.E →+* K)) (O : Subring ℂ) {a : AE D} {k : GA D S} (hk : SuppAt a S k) {N : ℕ} (hN : N ≠ 0)
@@ -113,7 +113,7 @@ theorem coefLat_mul {B : Base S T} (hF : B.F.Good) {K : Type} [Field K] [NumberF
   rw [e]
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[Base.mem_formsC]`. Use `⟨fun h => hf.1 _, fun γ h k => ?_⟩` and prove the remaining obligations. Use `hf.2 γ (h * c) k` as an intermediate fact. Rewrite `this` using `[← mul_assoc, mul_assoc _ c, ← hc, ← mul_assoc]`. Conclude with `this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem translate_mem_formsC {B : Base S T} {ψ : Twist D Circle} {c : Bridge.Gf S} (hc : ∀ g, g * c = c * g)
     {f : Bridge.Gf S → PolF D T.rank S.rank} (hf : f ∈ B.formsC ψ) : (fun h => f (h * c)) ∈ B.formsC ψ := by
@@ -124,15 +124,15 @@ theorem translate_mem_formsC {B : Base S T} {ψ : Twist D Circle} {c : Bridge.Gf
   exact this
 
 /- English proof (translation)
-Introduce `D j B hB ψ K _ _ σ emb O _ Q z hz N hN hQ hO F`. Take `⟨hzc, -, e, he, hsupp⟩` from `hz`. Establish `ha : ∀ PP : Pl D.host.E, (N : 𝓞 D.host.E) ∉ PP.asIdeal → cpt PP (toEAf D (e + cA D e)) = 0` using `fun PP hPP => by`. Rewrite using `[RingHom.map_add, RingHom.map_add, (cpt_sum he PP).2 fun h => hPP (hQ PP h), zero_add, GlobalTheory.StdFrames.toEAf_cA]`. Conclude with `GlobalTheory.StdFrames.cpt_sg_eq_zero ((cpt_sum he _).2 fun h => hPP ((GlobalTheory.StdFrames.natCast_mem_cP PP N).1 (hQ _ h)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ∀ g : Bridge.Gf (Vc D j), g * finPt (Vc D j) z = finPt (Vc D j) z * g` using `fun g => by`. Take `⟨y, rfl⟩` from `(finHom (Vc D j)).rangeRestrict_surjective g`. Rewrite using `[← MonoidHom.map_mul, ← MonoidHom.map_mul, Subgroup.mem_center_iff.1 hzc y]`. Establish `hc' : ∀ g : Bridge.Gf (Vc D j), g * (finPt (Vc D j) z)⁻¹ = (finPt (Vc D j) z)⁻¹ * g` using `fun g => (Commute.inv_right (hc g)).eq`. Establish `hl` using `coefLat_mul hB.frame σ emb O hsupp hN hO ha`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Base.mem_mtLat, Base.mem_mtLat]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨translate_mem_formsC hc h1, fun h => hl h ▸ h2 _⟩`. Introduce and unpack `⟨h1, h2⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun h => ?_⟩` and prove the remaining obligations. Use `translate_mem_formsC hc' h1` as an intermediate fact. Simplify using `only [inv_mul_cancel_right] at this`. Conclude with `this`. Use `h2 (h * (finPt (Vc D j) z)⁻¹)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[← hl]`. Simplify using `only [inv_mul_cancel_right] at this`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem mem_mtLat_iff_translate : ∀ (D : D7) (j : Fin D.R.m) (B : Base (Vc D j) (Wc D j)), B.Good → ∀ (ψ : Twist D Circle) (K : Type) [Field K] [NumberField K] (σ : K →+* ℂ) (emb : D.what₂.Tau → (D.host.E →+* K)) (O : Subring ℂ), IsCoefRing σ emb O →
   ∀ (Q : Finset (Pl D.host.E)) (z : GA D (Vc D j)), IsCentAt j Q z → ∀ N : ℕ, N ≠ 0 → (∀ P ∈ Q, (N : 𝓞 D.host.E) ∈ P.asIdeal) → (N : ℂ)⁻¹ ∈ O →

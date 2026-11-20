@@ -12,9 +12,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Establish `h1 : ‖toDisc l u' ρ' (f u)‖ ≤ ρ`. Use `norm_toDisc_pow_le (l := l) (u := u') 1 h0` as an intermediate fact. Rewrite `this` using `[pow_one, pow_one]`. Rewrite using `[hu]`. Conclude with `this.trans (by exact_mod_cast h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨_, isDiscMap_map f h1⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_discMap_of_map_eq (l : ℕ) [Fact l.Prime] {A A' : Type} [CommRing A] [CommRing A'] (f : A →+* A')
     (u : A) (u' : A') (ρ ρ' : ℝ≥0) (h0 : 0 < ρ') (hu : f u = u') (h : ρ' ≤ ρ) :
@@ -27,17 +27,17 @@ theorem exists_discMap_of_map_eq (l : ℕ) [Fact l.Prime] {A A' : Type} [CommRin
   exact ⟨_, isDiscMap_map f h1⟩
 
 /- English proof (translation)
-The claim follows from `NNReal.rpow_pos (Nat.cast_pos.2 hl.out.pos)`.
+A detailed English derivation is pending.
 -/
 theorem BK.rho_zero_pos {l : ℕ} [hl : Fact l.Prime] {K : FinExt l} (bk : BK K) : 0 < bk.ρ₀ :=
   NNReal.rpow_pos (Nat.cast_pos.2 hl.out.pos)
 
 /- English proof (translation)
-Establish `hρ : 0 < ρ` using `bk.rho_zero_pos.trans_le h0`. Establish `hρ' : (0 : ℝ) < (ρ : ℝ) ^ bk.Ep.natDegree` using `pow_pos (by exact_mod_cast hρ) _`. Take `⟨j, hj⟩` from `exists_discMap_of_map_eq l s X (s X) ρ ρ hρ rfl le_rfl`. Take `⟨cD, -, hmul, hle, -, -, hsup, -, -⟩` from `GlobalTheory.T.closedDisc_coefficients_topologicallyFree l K bk A s ι TB ρ hρ h1 j hj`. Establish `key : ∀ i, ‖cD i (toDisc l (s X) ρ (s bk.E) * y)‖ = (ρ : ℝ) ^ bk.Ep.natDegree * ‖cD i y‖` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hj.ext, hmul, GlobalTheory.T.norm_eisenstein_mul_closedDisc_eq_rpow l K bk ρ h0 h1]`. Use `le_antisymm (hsup _ _ (by positivity) fun i => ?_) ?_` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `mul_le_mul_of_nonneg_left (hle i y) hρ'.le`. Rewrite using `[← le_div_iff₀' hρ']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hsup _ _ (by positivity) fun i => ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀' hρ', ← key]`. Conclude with `hle _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_E_mul_of_topBasis (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (A : Type) [CommRing A]
     (s : bk.S →+* A) (ι : Type) (TB : TopBasis s bk.J ι) (ρ : ℝ≥0) (h0 : bk.ρ₀ ≤ ρ) (h1 : ρ < 1)
@@ -58,19 +58,17 @@ theorem norm_E_mul_of_topBasis (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK 
     exact hle _ _
 
 /- English proof (translation)
-Establish `hρ₀` using `bk.rho_zero_pos`. Establish `hρ : 0 < ρ` using `hρ₀.trans_le h0`. Establish `hρ' : (0 : ℝ) < (ρ : ℝ) ^ bk.Ep.natDegree` using `pow_pos (by exact_mod_cast hρ) _`. Take `⟨j, hj⟩` from `exists_discMap_of_map_eq l s X (s X) ρ ρ hρ rfl le_rfl`. Take `⟨j₀, hj₀⟩` from `exists_discMap_of_map_eq l s X (s X) bk.ρ₀ bk.ρ₀ hρ₀ rfl le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨RS, hRS⟩` from `exists_discMap_of_map_eq l (RingHom.id bk.S) X X ρ bk.ρ₀ hρ₀ rfl h0`. Take `⟨cD, hc, hmul, hle, hnull, -, hsup, hex, -⟩` from `GlobalTheory.T.closedDisc_coefficients_topologicallyFree l K bk A s ι TB ρ hρ h1 j hj`. Take `⟨cD₀, hc₀, hmul₀, hle₀, -, -, -, -, -⟩` from `GlobalTheory.T.closedDisc_coefficients_topologicallyFree l K bk A s ι TB bk.ρ₀ hρ₀ (h0.trans_lt h1) j₀ hj₀`. Establish `comm : ∀ i x, cD₀ i (R x) = RS (cD i x)` using `fun i => by`. Establish `h` using `(GlobalTheory.T.closedDiscGaugeCompletion_basic_properties l A (s X) ρ).2.2.1 (bk.DS bk.ρ₀) (fun z hz => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hz` using `[nsmul_eq_mul]`. Conclude with `(isUnit_l_disc l (X : bk.S) bk.ρ₀).mul_right_eq_zero.1 hz)`. Use the proof step `((cD₀ i).comp R.toAddMonoidHom) (RS.toAddMonoidHom.comp (cD i))`. Use the proof step `(AddMonoidHomClass.continuous_of_bound _ 1 fun x => ((hle₀ i (R x)).trans (hR.norm_le x)).trans (one_mul _).ge)`. Use the proof step `(AddMonoidHomClass.continuous_of_bound _ 1 fun x => ((hRS.norm_le (cD i x)).trans (hle i x)).trans (one_mul _).ge)`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun a => by`. Express the relevant statement in the definitionally equal form `cD₀ i (R (toDisc l (s X) ρ a)) = RS (cD i (toDisc l (s X) ρ a))`. Rewrite using `[hR.ext, hc, hRS.ext, RingHom.id_apply, RingHom.id_apply, hc₀])`. Conclude with `fun x => DFunLike.congr_fun h x`. Take `⟨w, hw⟩` from `hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hd : ∀ i, ∃ z, cD i y = toDisc l (X : bk.S) ρ bk.E * z` using `fun i => GlobalTheory.T.eisenstein_dvd_of_dvd_restrict_closedDisc l K bk ρ h0 h1 RS hRS _ ⟨cD₀ i w, by rw [← comm, hw, ← hj₀.ext, hmul₀]⟩`. Use `choose z hz using hd`. Establish `hzn : Filter.Tendsto z Filter.cofinite (nhds 0)`. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Establish `h` using `(tendsto_zero_iff_norm_tendsto_zero.1 (hnull y)).div_const ((ρ : ℝ) ^ bk.Ep.natDegree)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[zero_div]`. Use `h.congr fun i => ?_` and prove the remaining obligations. Rewrite using `[hz, GlobalTheory.T.norm_eisenstein_mul_closedDisc_eq_rpow l K bk ρ h0 h1, mul_div_cancel_left₀ _ hρ'.ne']`. Take `⟨y', hy'⟩` from `hex z hzn`. Use `⟨y', ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← sub_eq_zero, ← norm_le_zero_iff]`. Use `hsup _ 0 le_rfl fun i => ?_` and prove the remaining obligations. Rewrite using `[map_sub, ← hj.ext, hmul, hy', hz, sub_self, norm_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem E_dvd_of_topBasis (l : ℕ) [hl : Fact l.Prime] (K : FinExt l) (bk : BK K) (A : Type) [CommRing A]
     (s : bk.S →+* A) (ι : Type) (TB : TopBasis s bk.J ι) (ρ : ℝ≥0) (h0 : bk.ρ₀ ≤ ρ) (h1 : ρ < 1)
@@ -115,13 +113,13 @@ theorem E_dvd_of_topBasis (l : ℕ) [hl : Fact l.Prime] (K : FinExt l) (bk : BK 
   rw [map_sub, ← hj.ext, hmul, hy', hz, sub_self, norm_zero]
 
 /- English proof (translation)
-Introduce `l _ K bk A _ s ι TB ρ h0 h1`. Use `⟨norm_E_mul_of_topBasis l K bk A s ι TB ρ h0 h1, fun R hR h => ?_⟩` and prove the remaining obligations. Establish `hρ' : (0 : ℝ) < (bk.ρ₀ : ℝ) ^ bk.Ep.natDegree` using `pow_pos (by exact_mod_cast bk.rho_zero_pos) _`. Proceed by induction on `h with`. Consider the case `zero => intro y _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Rewrite using `[pow_zero]`. Conclude with `one_dvd _`. Consider the case `succ h ih`. Introduce `y hy`. Take `⟨y', rfl⟩` from `E_dvd_of_topBasis l K bk A s ι TB ρ h0 h1 R hR y ((dvd_pow_self _ (Nat.succ_ne_zero h)).trans hy)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hy`. Rewrite using `[pow_succ']`. Use `mul_dvd_mul_left _ (ih y' ⟨w, ?_⟩)` and prove the remaining obligations. Rewrite `hw` using `[map_mul, hR.ext, RingHom.id_apply, pow_succ', mul_assoc, ← sub_eq_zero, ← mul_sub]`. Establish `h2` using `norm_E_mul_of_topBasis l K bk A s ι TB bk.ρ₀ le_rfl (h0.trans_lt h1) (R y' - toDisc l (s X) bk.ρ₀ (s bk.E) ^ h * w)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hw, norm_zero]`. Conclude with `sub_eq_zero.1 (norm_eq_zero.1 ((mul_eq_zero.1 h2.symm).resolve_left hρ'.ne'))`.
+A detailed English derivation is pending.
 -/
 theorem div_E_of_topBasis : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (A : Type) [CommRing A]
     (s : bk.S →+* A) (ι : Type), TopBasis s bk.J ι → ∀ ρ : ℝ≥0, bk.ρ₀ ≤ ρ → ρ < 1 →

@@ -20,14 +20,14 @@ section At
 variable (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Rewrite using `[← Submodule.mem_comap, Submodule.comap_map_mkQ, sup_eq_right.2 hK]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mkQ_mem_map_iff {M : Type} [AddCommGroup M] [Module O M] {K X : Submodule O M}
     (hK : K ≤ X) (z : M) : K.mkQ z ∈ X.map K.mkQ ↔ z ∈ X := by
   rw [← Submodule.mem_comap, Submodule.comap_map_mkQ, sup_eq_right.2 hK]
 
 /- English proof (translation)
-Establish `h` using `cmpD_add W T ((W.N T).sub_mem hx hy) hy`. Rewrite `h` using `[sub_add_cancel]`. Rewrite using `[h, add_sub_cancel_right]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cmpD_sub (T : LocLat G Qp LL O) {x y : W.DD T} (hx : x ∈ W.N T) (hy : y ∈ W.N T) :
     Formalism.MainNotions.ArcLiftingSetup.cmpD W T (x - y) = Formalism.MainNotions.ArcLiftingSetup.cmpD W T x - Formalism.MainNotions.ArcLiftingSetup.cmpD W T y := by
@@ -36,9 +36,9 @@ theorem cmpD_sub (T : LocLat G Qp LL O) {x y : W.DD T} (hx : x ∈ W.N T) (hy : 
   rw [h, add_sub_cancel_right]
 
 /- English proof (translation)
-Establish `h0 : Formalism.MainNotions.ArcLiftingSetup.cmpD W T y ∈ DcrisL PD T.ρ (W.emb (c - 1 - 1 - 1))`. Rewrite using `[Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T (NDl_N W T hy)]`. Conclude with `Formalism.MainNotions.UnusedSlot80.ArcF.cmp_mem_letter W T _ (NDl_N W T hy) (NDl_DL W T hy).1`. Establish `h2` using `Formalism.MainNotions.UnusedSlot80.ArcF.φVB_letter W T _ (Formalism.MainNotions.UnusedSlot80.ArcF.φVB_letter W T _ h0)`. Establish `e : c - 1 - 1 - 1 + 1 + 1 = c - 1` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[e]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem frobenius_sq_comparison_letter (T : LocLat G Qp LL O) (c : ZMod n) {y : W.DD T}
     (hy : y ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T (c - 1 - 1 - 1)) :
@@ -53,7 +53,7 @@ theorem frobenius_sq_comparison_letter (T : LocLat G Qp LL O) (c : ZMod n) {y : 
   exact h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.MainNotions.ArcLiftingSetup.cmpD W T y, ⟨y, NDl_N W T hy, NDl_DL W T hy, Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T (NDl_N W T hy)⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem frobenius_sq_mem_lattice_image (T : LocLat G Qp LL O) (c : ZMod n) {y : W.DD T}
     (hy : y ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T (c - 1 - 1 - 1)) :
@@ -66,55 +66,47 @@ theorem frobenius_sq_mem_lattice_image (T : LocLat G Qp LL O) (c : ZMod n) {y : 
 variable [IsDomain O] [IsPrincipalIdealRing O] [IsFractionRing O LL]
 
 /- English proof (translation)
-Establish `hp : (PD.p : LL) ≠ 0` using `Formalism.MainNotions.UnusedSlot80.ArcF.p_ne_zero W`. Establish `φinj` using `Formalism.MainNotions.UnusedSlot80.ArcF.φVB_inj (PD := PD) T₂`. Establish `hwN : ∀ f, w f ∈ W.N T₂` using `fun f => NDl_N W T₂ (hw f)`. Use `set K5 := Kc W T₂ c with hK5def`. Establish `hK5` using `Kc_le W T₂ c kB h3₂ hmod₂ hR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set ψ5 : ↥Fs →ₗ[O] ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T₂ c) ⧸ K5 := K5.mkQ ∘ₗ LinearMap.codRestrict (Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T₂ c) w hw with hψ5`. Take `⟨s5, hs5, hs5N, L5, kO5, hL5, hkO5, hLc5⟩` from `hDc`. Establish `ch5` using `pchain_DN W T₂ c kB K5 hK5 s5 hs5 hs5N L5 kO5 hL5 hkO5 hLc5 Fs ψ5`. Use `set F5 := kerSub Fs ψ5 (((Xd W T₂ c kB).comap (Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T₂ c).subtype).map K5.mkQ)`. Establish `hF5 : F5 ≤ Fs` using `kerSub_le _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `mem5 : ∀ f : ↥F5, w ⟨f, hF5 f.2⟩ ∈ Xd W T₂ c kB`. Introduce `f`. Establish `h` using `(mem_kerSub_coe Fs ψ5 _ ⟨f, hF5 f.2⟩).1 f.2`. Conclude with `(mkQ_mem_map_iff hK5 _).1 h`. Establish `ex1 : ∀ f : ↥F5, ∃ y ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T₂ (c - 1), Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (w ⟨f, hF5 f.2⟩) = (PD.p : LL) ^ kB • φVB PD (LL` using `LL) (V := T₂.V) (Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ y) := fun f => cmp_of_mem_X W T₂ hs hR h3₂ hM₂ (mem5 f)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose y1 hy1 e1 using ex1`. Establish `ex2 : ∀ f : ↥F5, ∃ y ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T₂ (c - 1 - 1), (PD.p : LL) ^ bb • Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y1 f) = φVB PD (LL` using `LL) (V := T₂.V) (Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ y) := fun f => cmp_up W T₂ hs h3₂ hmod₂ hU hMη (hy1 f)`. Use `choose y2 hy2 e2 using ex2`. Establish `hy1N : ∀ f, y1 f ∈ W.N T₂` using `fun f => NDl_N W T₂ (hy1 f)`. Establish `hy2N : ∀ f, y2 f ∈ W.N T₂` using `fun f => NDl_N W T₂ (hy2 f)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `add1 : ∀ f g : ↥F5, Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y1 (f + g)) = Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y1 f) + Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y1 g)`. Introduce `f g`. Apply `φinj` to reduce the goal to its premises. Apply `smul_right_injective _ (pow_ne_zero kB hp)` to reduce the goal to its premises. Establish `hwa : w ⟨((f + g : ↥F5) : FF), hF5 (f + g).2⟩ = w ⟨f, hF5 f.2⟩ + w ⟨g, hF5 g.2⟩`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_add]`. Both sides reduce to the same expression. Simplify using `only`. Rewrite using `[← e1 (f + g), hwa, cmpD_add W T₂ (hwN _) (hwN _), e1 f, e1 g, map_add, smul_add]`. Establish `smul1 : ∀ (o : O) (f : ↥F5), Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y1 (o • f)) = algebraMap O LL o • Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y1 f)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `o f`. Apply `φinj` to reduce the goal to its premises. Apply `smul_right_injective _ (pow_ne_zero kB hp)` to reduce the goal to its premises. Establish `hwa : w ⟨((o • f : ↥F5) : FF), hF5 (o • f).2⟩ = o • w ⟨f, hF5 f.2⟩`. Rewrite using `[← map_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Simplify using `only`. Rewrite using `[← e1 (o • f), hwa, cmpD_osmul W T₂ o (hwN _), e1 f, map_smul, smul_comm]`. Establish `add2 : ∀ f g : ↥F5, Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y2 (f + g)) = Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y2 f) + Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y2 g)`. Introduce `f g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `φinj` to reduce the goal to its premises. Rewrite using `[map_add, ← e2, ← e2, ← e2, add1, smul_add]`. Establish `smul2 : ∀ (o : O) (f : ↥F5), Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y2 (o • f)) = algebraMap O LL o • Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y2 f)`. Introduce `o f`. Apply `φinj` to reduce the goal to its premises.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, ← e2, ← e2, smul1, smul_comm]`. Use `set K6 := Kc W T₂ (c - 1 - 1) with hK6def`. Establish `hK6` using `Kc_le W T₂ (c - 1 - 1) hh h3₂ hmod₂ hR`. Set `ψ6 : ↥F5 →ₗ[O] ↥(Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T₂ (c - 1 - 1)) ⧸ K6` to `{ toFun := fun f => K6.mkQ ⟨y2 f, hy2 f⟩ map_add' := fun f g => by`. Rewrite using `[← map_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `(Submodule.Quotient.eq _).2` to reduce the goal to its premises. Use `show Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y2 (f + g) - (y2 f + y2 g)) = 0`. Rewrite using `[cmpD_sub W T₂ (hy2N _) ((W.N T₂).add_mem (hy2N _) (hy2N _)), cmpD_add W T₂ (hy2N _) (hy2N _), add2, sub_self]`. Use the proof step `map_smul' := fun o f => by`. Rewrite using `[RingHom.id_apply, ← map_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `(Submodule.Quotient.eq _).2` to reduce the goal to its premises. Use `show Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y2 (o • f) - o • y2 f) = 0`. Establish `hoN : o • y2 f ∈ W.N T₂`. Rewrite using `[← algebraMap_smul (LetA O n)]`. Conclude with `(W.N T₂).smul_mem _ (hy2N f)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[cmpD_sub W T₂ (hy2N _) hoN, cmpD_osmul W T₂ o (hy2N f), smul2, sub_self] }`. Take `⟨s6, hs6, hs6N, L6, kO6, hL6, hkO6, hLc6⟩` from `hDc2`. Establish `ch6` using `pchain_DN W T₂ (c - 1 - 1) hh K6 hK6 s6 hs6 hs6N L6 kO6 hL6 hkO6 hLc6 F5 ψ6`. Use `set F6 := kerSub F5 ψ6 (((Xd W T₂ (c - 1 - 1) hh).comap (Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T₂ (c - 1 - 1)).subtype).map K6.mkQ)`. Establish `hF6 : F6 ≤ F5` using `kerSub_le _ _ _`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `mem6 : ∀ f : ↥F6, y2 ⟨f, hF6 f.2⟩ ∈ Xd W T₂ (c - 1 - 1) hh`. Introduce `f`. Establish `h` using `(mem_kerSub_coe F5 ψ6 _ ⟨f, hF6 f.2⟩).1 f.2`. Conclude with `(mkQ_mem_map_iff hK6 _).1 h`. Establish `ex3 : ∀ f : ↥F6, ∃ y ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T₂ (c - 1 - 1 - 1), Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y2 ⟨f, hF6 f.2⟩) = (PD.p : LL) ^ hh • φVB PD (LL` using `LL) (V := T₂.V) (Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ y) := fun f => cmp_of_mem_X W T₂ hs hR h3₂ hM₂' (mem6 f)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `choose y3 hy3 e3 using ex3`. Use `set ell : ↥F6 → T₂.V ⊗[Qp] B := fun f => φVB PD (LL := LL) (V := T₂.V) (φVB PD (LL := LL) (V := T₂.V) (Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y3 f))) with hell`. Establish `add3 : ∀ f g : ↥F6, ell (f + g) = ell f + ell g`. Introduce `f g`. Establish `h : Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y3 (f + g)) = Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y3 f) + Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y3 g)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `φinj` to reduce the goal to its premises. Apply `smul_right_injective _ (pow_ne_zero hh hp)` to reduce the goal to its premises. Establish `h5 : (⟨((f + g : ↥F6) : FF), hF6 (f + g).2⟩ : ↥F5) = ⟨f, hF6 f.2⟩ + ⟨g, hF6 g.2⟩` using `rfl`. Simplify using `only`. Rewrite using `[← e3 (f + g), h5, add2, e3 f, e3 g, map_add, smul_add]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hell, h, map_add]`. Establish `smul3 : ∀ (o : O) (f : ↥F6), ell (o • f) = algebraMap O LL o • ell f`. Introduce `o f`. Establish `h : Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y3 (o • f)) = algebraMap O LL o • Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y3 f)`. Apply `φinj` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `smul_right_injective _ (pow_ne_zero hh hp)` to reduce the goal to its premises. Establish `h5 : (⟨((o • f : ↥F6) : FF), hF6 (o • f).2⟩ : ↥F5) = o • ⟨f, hF6 f.2⟩` using `rfl`. Simplify using `only`. Rewrite using `[← e3 (o • f), h5, smul2, e3 f, map_smul, smul_comm]`. Simplify using `only [hell, h, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Set `ψ7 : ↥F6 →+ (T₂.V ⊗[Qp] B) ⧸ FilCris PD T₂.ρ (b' : ℤ)` to `{ toFun := fun f => (FilCris PD T₂.ρ (b' : ℤ)).mkQ (ell f) map_zero' := by`. Establish `h` using `add3 0 0`. Rewrite `h` using `[add_zero]`. Establish `h0 : ell 0 = 0`. Use `congrArg (fun z => z - ell 0) h` as an intermediate fact.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using this.symm`. Rewrite using `[h0, map_zero]`. Use the proof step `map_add' := fun f g => by rw [add3, map_add] }`. Establish `hψ7 : ∀ (o : O) (x : ↥F6), ψ7 (o • x) = algebraMap O LL o • ψ7 x`. Introduce `o x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `show (FilCris PD T₂.ρ (b' : ℤ)).mkQ (ell (o • x)) = algebraMap O LL o • (FilCris PD T₂.ρ (b' : ℤ)).mkQ (ell x)`. Rewrite using `[smul3, map_smul]`. Establish `hletter : ∀ f : ↥F6, ell f ∈ DcrisL PD T₂.ρ (W.emb (c - 1))` using `fun f => frobenius_sq_comparison_letter W T₂ c (hy3 f)`. Establish `hrank : Module.finrank LL ↥(Submodule.span LL (Set.range ψ7)) ≤ m`. Establish `hsub : Submodule.span LL (Set.range ψ7) ≤ (DcrisL PD T₂.ρ (W.emb (c - 1))).map (FilCris PD T₂.ρ (b' : ℤ)).mkQ`.
-
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, rfl⟩`. Conclude with `⟨ell f, hletter f, rfl⟩`. Conclude with `(Submodule.finrank_mono hsub).trans hRk`. Establish `ch7` using `pchain_of_gen (pstep_rank (lenO := lenOl PD (O := O)) (m := m) (c := cc) F6 ψ7 hψ7 hrank)`.
-
-Use `set F7 := zeroSub F6 ψ7 hψ7`. Establish `hF7 : F7 ≤ F6` using `zeroSub_le _ _ _`. Establish `chain : Formalism.MainNotions.RamifiedCoefficientChains.S9.PChain (lenOl PD (O` using `O)) m cc Fs F7 3 2 := ((ch5.trans ch6).trans ch7).mono (by norm_num) (by norm_num)`. Use `⟨F7, chain.le, chain, fun f => ?_⟩` and prove the remaining obligations. Use `set f6 : ↥F6 := ⟨f, hF7 f.2⟩`.
-
-Use `set f5 : ↥F5 := ⟨f, hF6 (hF7 f.2)⟩`. Establish `hz : ψ7 f6 = 0` using `(mem_zeroSub_coe F6 ψ7 hψ7 f6).1 f.2`. Establish `hFil : ell f6 ∈ FilCris PD T₂.ρ (b' : ℤ)` using `(Submodule.Quotient.mk_eq_zero _).1 hz`. Establish `hG` using `hGc (ell f6) (frobenius_sq_mem_lattice_image W T₂ c (hy3 f6)) hFil`. Establish `hy : w ⟨f, hF5 f5.2⟩ ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.NDl W T₂ c` using `hw _`.
-
-Take `⟨x, hx1, hx2⟩` from `exists_inI_inPN_pow_smul_sub_map W hs hR F h3₁ h3₂ hmod₁ hmod₂ hM₁ hM₂ hy (d1 := Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y1 f5)) (d2 := Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y2 f5)) (d3 := Formalism.MainNotions.ArcLiftingSetup.cmpD W T₂ (y3 f6)) (s₁ := 0) (s₂ …`. Use `⟨x, hx1, ?_⟩` and prove the remaining obligations. Establish `hxe : ((PD.p : O) ^ (e + 0 + 0)) = (PD.p : O) ^ e` using `by simp`. Rewrite `hx2` using `[hxe]`. Conclude with `hx2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobenius_sq_bound_at (hs : W.s = 1) (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W)
     {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)

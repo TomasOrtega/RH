@@ -13,15 +13,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {d : SD σ}
 
 /- English proof (translation)
-Use `set W := Submodule.span ℂ (Set.range fun k' : d.K => d.om k'.1 Φ) with hW`. Use `haveI : FiniteDimensional ℂ W := hΦ.2`. Use `set φ := Polynomial.lsum (R := ℂ) (fun n => LinearMap.toSpanSingleton ℂ _ (d.om (k ^ n) Φ)) with hφ`. Establish `hmem : ∀ p, φ p ∈ W`. Introduce `p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ, Polynomial.lsum_apply, Polynomial.sum_def]`. Use `Submodule.sum_mem _ (fun n _ => ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.toSpanSingleton_apply]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨k ^ n, pow_mem hk n⟩, rfl⟩)`. Establish `hni : ¬ Function.Injective φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hinj`. Establish `hinj' : Function.Injective (φ.codRestrict W hmem)` using `fun a b h => hinj (congrArg Subtype.val h)`. Use `haveI : Module.Finite ℂ (Polynomial ℂ) := Module.Finite.of_injective _ hinj'`. Establish `hfin : Finite ℕ` using `(Polynomial.basisMonomials ℂ).linearIndependent.finite`. Conclude with `not_finite ℕ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hni` using `[injective_iff_map_eq_zero]`. Use `push_neg at hni`. Take `⟨q, hq0, hq⟩` from `hni`. Use `⟨q, hq, ?_⟩` and prove the remaining obligations. Rewrite `hq0` using `[hφ, Polynomial.lsum_apply, Polynomial.sum_over_range]`.
-
-Simplify using `using hq0`. Introduce `n`. Conclude with `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem exists_poly {Φ : d.Fn} (hΦ : d.KFin Φ) {k : d.G} (hk : k ∈ d.K) :
     ∃ q : Polynomial ℂ, q ≠ 0 ∧ ∑ i ∈ Finset.range (q.natDegree + 1), q.coeff i • d.om (k ^ i) Φ = 0 := by

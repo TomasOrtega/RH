@@ -8,7 +8,7 @@ noncomputable section
 namespace Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Establish `h : (fun s : ℂ => (s - 1)⁻¹) = fun x => (1 * x - 1)⁻¹` using `by simp`. Rewrite using `[iteratedDeriv_eq_iterate, h, iter_deriv_inv_linear_sub]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 lemma iteratedDeriv_inv_sub_one_at_two (m : ℕ) :
     iteratedDeriv m (fun s : ℂ => (s - 1)⁻¹) 2 = (-1) ^ m * (m ! : ℂ) := by
@@ -17,7 +17,7 @@ lemma iteratedDeriv_inv_sub_one_at_two (m : ℕ) :
   norm_num
 
 /- English proof (translation)
-Establish `hU : {s : ℂ | 1 < s.re} ∈ nhds (2 : ℂ)` using `(isOpen_lt continuous_const Complex.continuous_re).mem_nhds (by norm_num)`. Establish `hev : LSeries a =ᶠ[nhds (2 : ℂ)] fun s => G s + lam * (s - 1)⁻¹` using `by filter_upwards [hU] with s hs using hFG s hs`. Establish `hinv : ContDiffAt ℂ m (fun s : ℂ => lam * (s - 1)⁻¹) 2` using `contDiffAt_const.mul ((contDiffAt_id.sub contDiffAt_const).inv (by norm_num))`. Rewrite using `[(hev.iteratedDeriv m).eq_of_nhds, iteratedDeriv_fun_add hG.contDiff.contDiffAt hinv, iteratedDeriv_const_mul_field, iteratedDeriv_inv_sub_one_at_two]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma iteratedDeriv_lseries_at_two {a : ℕ → ℂ} {G : ℂ → ℂ} {lam : ℂ} (hG : Differentiable ℂ G)
     (hFG : ∀ s : ℂ, 1 < s.re → LSeries a s = G s + lam * (s - 1)⁻¹) (m : ℕ) :

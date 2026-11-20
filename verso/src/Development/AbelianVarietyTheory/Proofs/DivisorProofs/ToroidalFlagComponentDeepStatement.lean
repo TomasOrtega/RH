@@ -25,7 +25,7 @@ open GlobalTheory.HSApp
 open GlobalTheory.Vanishing.H0
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HSApp.geoHyp_of_parts` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FToroidalFlagComponentDeep.lean&line=33#L33)
 -/

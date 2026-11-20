@@ -22,9 +22,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.EisCont.MaxIso
 
 /- English proof (translation)
-Use `haveI := D.host.isCMField_hostE`. Conclude with `Formalism.L2.Pj.unramBridge_holds D.host.E fun P hP => by`. Take `⟨θ, t, ht, hθ⟩` from `D.sp.cm.cmUnram.2.2 P hP`. Use `⟨θ, ?_⟩` and prove the remaining obligations. Establish `: RingOfIntegers.mapRingEquiv (IsCMField.complexConj D.host.E : D.host.E ≃+* D.host.E) θ = t` using `RingOfIntegers.ext ht.symm`.
-
-Rewrite using `[this]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem unramified_host (D : D7) : Algebra.Unramified (𝓞 D.host.F) (𝓞 D.host.E) := by
   haveI := D.host.isCMField_hostE

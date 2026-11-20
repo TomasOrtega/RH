@@ -10,29 +10,29 @@ open Formalism.FourierDecayAlt
 noncomputable section
 
 /- English proof (translation)
-Introduce `E _ _ _ Wp Wq _ _ _ _ S Λ' hpos _ hloc ε hε s hs2 hsr w _ hcnt`. Establish `hcnt' : w.1.cnt + C.Kst ≤ S.Ntop` using `hcnt`. Establish `hlen : ∀ v, (w.1 v).length + C.Kst ≤ S.Ntop` using `fun v => le_trans (Nat.add_le_add_right (len_le_cnt S w.1 v) _) hcnt'`. Use `choose U θ hUθ using fun v => hloc v s hs2 hsr (w.1 v) ⟨w, rfl⟩ (hlen v)`. Establish `hU : ∀ v, ∀ a ∈ U v, D.AdmAt S v a ∧ a.length ≤ w.1.cnt + C.Kst` using `fun v a ha => ⟨((hUθ v).1.2 a ha).1, le_trans ((hUθ v).1.2 a ha).2 (Nat.add_le_add_right (len_le_cnt S w.1 v) _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : w.1.cnt ≤ w.1.cnt + C.Kst` using `Nat.le_add_right _ _`. Use `⟨fun B => pθ S B w θ, fun B => pθ_prob (fun v _ => (hUθ v).1.1) (fun v _ => hU v) hw hcnt', ?_⟩` and prove the remaining obligations. Introduce `Y hY κ hκ t ht B`. Set `g : Fin S.f → TB.Pt E → C.LPt` to `fun v h => C.loc (S.σ v) h ++ [(s, S.σ v t)]`. Set `G : Fin S.f → TB.Pt E → TB.Pt E → ℂ` to `fun v h h' => KB.gN S v ε (S.G.r + 1) (w.1 v) (g v h) (g v h')`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `M : Fin S.f → TB.Pt E → TB.Pt E → ℂ` to `fun v h h' => KB.mix S v ε (S.G.r + 1) (U v) (θ v) (g v h) (g v h')`. Set `c : Fin S.f → ℝ` to `fun v => (‖S.σ v t‖ * Λ' (S.G.r + 2 - s) s v) ^ (2 * C.Kst)`. Set `A : Fin S.f → TB.Pt E → TB.Pt E → ℂ` to `fun v h h' => if v ∈ B then (c v : ℂ) * M v h h' else G v h h'`. Establish `hG : ∀ v ∈ (univ : Finset (Fin S.f)), TB.PSDOn Y (G v)` using `fun v _ => psd_comp _ _ (gN_psd S hpos v hε le_rfl w (Y.image (g v))) Y (g v) (fun h hh => mem_image_of_mem _ hh)`. Establish `hAG : ∀ v ∈ (univ : Finset (Fin S.f)), TB.PSDOn Y (fun x y => A v x y - G v x y)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v _`. Distinguish the cases in `hv : v ∈ B`. Establish `hσ : S.σ v t ≠ 0` using `(map_ne_zero (S.σ v)).mpr ht`. Establish `hY' : ∀ p ∈ Y.image (C.loc (S.σ v)), D.ptSize p = S.G.r + 1 - s`. Introduce `p hp`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh, rfl⟩` from `mem_image.mp hp`. Rewrite using `[ptSize_loc]`. Conclude with `hY h hh`. Establish `h1` using `psd_comp _ _ ((hUθ v).2 ε hε (S.σ v t) _ hσ hY') Y (C.loc (S.σ v)) (fun h hh => mem_image_of_mem _ hh)`. Use `Jx8.psd_congr ?_ h1` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x _ y _`. Simplify using `only [A, if_pos hv]`. Both sides reduce to the same expression. Use `Jx8.psd_congr ?_ (Jx8.zero_psd Y)` and prove the remaining obligations. Introduce `x _ y _`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [A, if_neg hv, sub_self]`. Establish `hle` using `BaseGramNonnegativity.sum_re_nonneg Y κ _ hκ (Jx7.psd_prod_dom univ G A hG hAG)`. Establish `hprod : ∀ h h', ∏ v, A v h h' = (∏ v ∈ B, (c v : ℂ)) * ∏ v, (if v ∈ B then M v h h' else G v h h')`. Introduce `h h'`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexp : ∀ h h', ∑ w' ∈ S.base.Wb (w.1.cnt + C.Kst), (pθ S B w θ w' : ℂ) * ∏ v, KB.gN S v ε (S.G.r + 1) (w'.1 v) (g v h) (g v h') = ∏ v, (if v ∈ B then M v h h' else G v h h')` using `fun h h' => expand (fun v _ => (hUθ v).1.1) (fun v _ => hU v) hw hcnt' (fun v a => KB.gN S v ε (S.G.r + 1) a (g v h) (g v h'))`. Establish `hR : ∑ w' ∈ S.base.Wb (w.1.cnt + C.Kst), (pθ S B w θ w' : ℂ) * S.base.Nst ε (S.G.r + 1) s w' Y κ t t = ∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * ∏ v, (if v ∈ B then M v h h' else G v h h')`. Simplify using `only [Nst_eq S (i := S.G.r + 1) le_rfl]`. Establish `hm` using `mix_sum Y (S.base.Wb (w.1.cnt + C.Kst)) κ 1 (fun w' => (pθ S B w θ w' : ℂ)) (fun w' h h' => ∏ v, KB.gN S v ε (S.G.r + 1) (w'.1 v) (g v h) (g v h'))`. Simplify using `only [one_mul] at hm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hm]`. Use `sum_congr rfl fun h _ => sum_congr rfl fun h' _ => ?_` and prove the remaining obligations. Rewrite using `[hexp h h']`. Establish `hC : ∏ v ∈ B, (S.base.av v t * Λ' (S.G.r + 2 - s) s v) ^ (2 * S.base.K) = ∏ v ∈ B, c v` using `prod_congr rfl fun v _ => by rw [av_eq]; rfl`. Establish `hsum : ∑ w' ∈ S.base.Wb (S.base.cnt w + S.base.K), pθ S B w θ w' * (S.base.Nst ε (S.G.r + 1) s w' Y κ t t).re = (∑ w' ∈ S.base.Wb (w.1.cnt + C.Kst), (pθ S B w θ w' : ℂ) * S.base.Nst ε (S.G.r + 1) s w' Y κ t t).re`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Complex.re_sum]`. Use `sum_congr rfl fun w' _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.re_ofReal_mul]`. Rewrite using `[hC, hsum, hR, Nst_eq S (i := S.G.r + 1) le_rfl s w Y κ t t, ← Complex.re_ofReal_mul, Complex.ofReal_prod]`. Establish `hA : (∏ v ∈ B, (c v : ℂ)) * ∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * ∏ v, (if v ∈ B then M v h h' else G v h h') = ∑ h ∈ Y, ∑ h' ∈ Y, κ h h' * ∏ v, A v h h'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_sum]`. Use `sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[mul_sum]`. Use `sum_congr rfl fun h' _ => ?_` and prove the remaining obligations. Rewrite using `[hprod h h', mul_left_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hA]`. Simplify using `only [mul_sub, sum_sub_distrib, Complex.sub_re] at hle`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem top_of_local : KB.TopOfLoc := by
   intro E _ _ _ Wp Wq _ _ _ _ S Λ' hpos _ hloc ε hε s hs2 hsr w _ hcnt

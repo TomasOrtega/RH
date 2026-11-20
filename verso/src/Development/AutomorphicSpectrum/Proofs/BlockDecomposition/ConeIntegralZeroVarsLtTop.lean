@@ -13,9 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.SiegelCone
 
 /- English proof (translation)
-Introduce `F _ _ n d c`. Establish `h : ∀ t : Fin 0 → ℝ, ENNReal.ofReal (∏ i, t i ^ (Module.finrank ℚ F * d)) * ENNReal.ofReal ((GlobalTheory.SiegelSet.modulus F n t * ∏ i, t i)⁻¹) = 1`. Introduce `t`. Simplify using `[GlobalTheory.SiegelSet.modulus]`. Repeatedly rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[setLIntegral_const, one_mul]`. Conclude with `measure_lt_top _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cone_integral_zero_vars_lt_top :
     ∀ (F : Type) [Field F] [NumberField F] (n d : ℕ) (c : ℝ),

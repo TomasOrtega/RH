@@ -28,11 +28,11 @@ open ValuativeRel Topology
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Unfold `intC`. Establish `e : (fun d : Fin (t + 1) → k => (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ) • evX f (dEmb k i t d * y)) = fun _ => 0`. Use function extensionality and compare the values at `d`. Rewrite using `[h, smul_zero]`. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `GlobalTheory.CompanionTheory.Rodier.smInt`. Use `finsum_eq_zero_of_forall_eq_zero fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v = 0`. Rewrite using `[hv, smul_zero]`. Establish `e2 : (fun _ : Fin (t + 1) → k => (0 : τ.V ⊗[ℂ] σ.V)) ⁻¹' {v} = ∅`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `d`. Simplify using `[Ne.symm hv]`. Rewrite using `[e2]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem intC_eq_zero {i t : ℕ} (ψ : AddChar k Circle) {τ : MRep k (i + 1)} {σ : GRep k (t + 1)} (f : XS τ σ)
     (y : Mir k ((i + 1) + t + 1)) (h : ∀ d, evX f (dEmb k i t d * y) = 0) : intC ψ f y = 0 := by
@@ -60,7 +60,7 @@ theorem evX_cInd {i t : ℕ} {τ : MRep k (i + 1)} {σ : GRep k (t + 1)} (f : XS
     evX (cInd (HPG k (i + 1) (t + 1)) (sigX τ σ) g f) p = evX f (p * g) := rfl
 
 /- English proof (translation)
-Unfold `intC`. Establish `e : (fun d : Fin (t + 1) → k => (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ) • evX (cInd (HPG k (i + 1) (t + 1)) (sigX τ σ) g f) (dEmb k i t d * y)) = fun d => (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ) • evX f (dEmb k i t d * (y * g))`. Use function extensionality and compare the values at `d`. Rewrite using `[evX_cInd, mul_assoc]`. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem intC_translate {i t : ℕ} (ψ : AddChar k Circle) {τ : MRep k (i + 1)} {σ : GRep k (t + 1)} (f : XS τ σ)
     (g y : Mir k ((i + 1) + t + 1)) :
@@ -77,7 +77,7 @@ def rtr {i t : ℕ} {τ : MRep k (i + 1)} {σ : GRep k (t + 1)} (g : Mir k ((i +
   cInd (HPG k (i + 1) (t + 1)) (sigX τ σ) (sEmb k ((i + 1) + t) g) f
 
 /- English proof (translation)
-Establish `e1 : sEmb k ((i + 1) + t) (x * g) = sEmb k ((i + 1) + t) x * sEmb k ((i + 1) + t) g` using `map_mul _ _ _`. Unfold `eC rtr`. Rewrite using `[intC_translate, e1, map_mul (dpowM ((i + 1) + t) (-1 / 2)) x g, smul_smul, Units.val_mul, mul_comm]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eC_translate {i t : ℕ} (ψ : AddChar k Circle) {τ : MRep k (i + 1)} {σ : GRep k (t + 1)} (f : XS τ σ)
     (g x : Mir k ((i + 1) + t)) :
@@ -88,7 +88,7 @@ theorem eC_translate {i t : ℕ} (ψ : AddChar k Circle) {τ : MRep k (i + 1)} {
   rw [intC_translate, e1, map_mul (dpowM ((i + 1) + t) (-1 / 2)) x g, smul_smul, Units.val_mul, mul_comm]
 
 /- English proof (translation)
-Break down `le_total (valuation k (a : k)) (valuation k (b : k)) with h | h` into its components or cases. Conclude with `⟨a, le_rfl, h⟩`. Conclude with `⟨b, h, le_rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_small (a b : kˣ) : ∃ c : kˣ, valuation k (c : k) ≤ valuation k (a : k) ∧
     valuation k (c : k) ≤ valuation k (b : k) := by
@@ -97,9 +97,9 @@ theorem exists_small (a b : kˣ) : ∃ c : kˣ, valuation k (c : k) ≤ valuatio
   · exact ⟨b, h, le_rfl⟩
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Establish `h : ({1}ᶜ : Set k) ∈ 𝓝 (0 : k)` using `isOpen_compl_singleton.mem_nhds (by simp)`. Take `⟨s, hs⟩` from `GlobalTheory.SplitWeil.exists_cball_subset h`. Use `⟨s, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `: (1 : k) ∈ GlobalTheory.SplitWeil.cball s` using `by show valuation k (1 : k) ≤ valuation k (s : k)`. Rewrite using `[map_one]`. Conclude with `not_lt.1 hc`. Conclude with `hs this rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lt_one : ∃ s : kˣ, valuation k (s : k) < 1 := by
   obtain ⟨_, _⟩ := GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)
@@ -114,14 +114,14 @@ theorem exists_lt_one : ∃ s : kˣ, valuation k (s : k) < 1 := by
   exact hs this rfl
 
 /- English proof (translation)
-The claim follows from `show valuation k y ≤ valuation k (s' : k) from le_trans (show valuation k y ≤ valuation k (s : k) from hy) h`.
+A detailed English derivation is pending.
 -/
 theorem mem_ball_mono {s s' : kˣ} (h : valuation k (s : k) ≤ valuation k (s' : k)) {y : k}
     (hy : y ∈ GlobalTheory.SplitWeil.cball s) : y ∈ GlobalTheory.SplitWeil.cball s' :=
   show valuation k y ≤ valuation k (s' : k) from le_trans (show valuation k y ≤ valuation k (s : k) from hy) h
 
 /- English proof (translation)
-Establish `h : IsSmoothChar (dpow (k` using `k) (n + 1) r) := IsSmoothChar.detChar (GlobalTheory.LocGL.isSmoothChar_absPow ((r : ℝ) : ℂ))`. Establish `h2 : IsOpen {g : Mir k n | dpowM n r g = 1}` using `h.preimage continuous_subtype_val`. Conclude with `h2.mem_nhds (map_one _)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dpowM_nhds (n : ℕ) (r : ℝ) : {g : Mir k n | dpowM n r g = 1} ∈ 𝓝 (1 : Mir k n) := by
   have h : IsSmoothChar (dpow (k := k) (n + 1) r) := IsSmoothChar.detChar (GlobalTheory.LocGL.isSmoothChar_absPow ((r : ℝ) : ℂ))
@@ -155,7 +155,7 @@ Both sides reduce to the same expression.
 theorem ev_cInd (g x : G) (a : cIndSpace H ρ) : (cInd H ρ g a).1.1.1 x = a.1.1.1 (x * g) := rfl
 
 /- English proof (translation)
-Use `⟨c⁻¹ • y, I.smul_mem _ hy, ?_, ?_⟩` and prove the remaining obligations. Introduce `a x hx`. Rewrite using `[ev_smul, Pi.smul_apply, y.1.1.2 a x, hval x hx, map_smul, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Introduce `g hg`. Rewrite using `[ev_smul, Pi.smul_apply, h0 g hg, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem scale_bump (I : Submodule ℂ (cIndSpace H ρ)) (y : cIndSpace H ρ) (hy : y ∈ I) (c : ℂ) (hc : c ≠ 0)
     (v : W) (K : Subgroup G) (hval : ∀ x ∈ K, y.1.1.1 x = c • v)
@@ -190,7 +190,7 @@ def imGen (he1 : ∀ f g, e (f + g) = e f + e g) (he2 : ∀ (c : ℂ) f, e (c �
     exact ⟨z • f, by rw [he2, hf, ev_smul]⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_imGen (he1 : ∀ f g, e (f + g) = e f + e g) (he2 : ∀ (c : ℂ) f, e (c • f) = c • e f)
     (y : cIndSpace H ρ) : y ∈ imGen H ρ e he1 he2 ↔ ∃ f, e f = y.1.1.1 := Iff.rfl
@@ -204,7 +204,7 @@ def imC {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (
     (fun c f => (GlobalTheory.T.evaluation_maps_linear k i t ψ hψ τ σ hτ hσ f f c).2.1)
 
 /- English proof (translation)
-The claim follows from `mem_imGen _ _ _ _ _ y`.
+A detailed English derivation is pending.
 -/
 theorem mem_imC {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1))
     (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) (y : cIndSpace (MirabolicParabolic k (i + 1) t) (sigC τ σ)) :
@@ -222,9 +222,9 @@ structure IsBump (s : kˣ) (hs : valuation k (s : k) ≤ 1) (w : τ.V ⊗[ℂ] �
     g = (a : Mir k ((i + 1) + (t + 1))) * 1 * x) → evX F g = 0
 
 /- English proof (translation)
-Distinguish the cases in `hg : ∃ a : HPG k (i + 1) (t + 1), ∃ x ∈ congM k s hs ((i + 1) + t + 1), g = (a : Mir k ((i + 1) + (t + 1))) * 1 * x`. Take `⟨a, x, hx, rfl⟩` from `hg`. Rewrite using `[mul_assoc _ x κ]`. Conclude with `(hF.one a _ (mul_mem hx hκ)).trans (hF.one a x hx).symm`. Use `(hF.zero _ fun ⟨a, x, hx, e⟩ => hg ⟨a, x * κ⁻¹, mul_mem hx (inv_mem hκ), ?_⟩).trans (hF.zero _ hg).symm` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, ← e]`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem IsBump.right (hF : IsBump s hs w F) (g κ : Mir k ((i + 1) + t + 1))
     (hκ : κ ∈ congM k s hs ((i + 1) + t + 1)) : evX F (g * κ) = evX F g := by
@@ -238,7 +238,7 @@ theorem IsBump.right (hF : IsBump s hs w F) (g κ : Mir k ((i + 1) + t + 1))
     group
 
 /- English proof (translation)
-Establish `h` using `hF.one 1 _ ((GlobalTheory.T.unipotent_ball_mem_congruence k i t s hs d).1 hd)`. Rewrite `h` using `[map_one, Module.End.one_apply]`. Rewrite using `[← h]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem IsBump.on_ball (hF : IsBump s hs w F) (d : Fin (t + 1) → k) (hd : ∀ j, d j ∈ GlobalTheory.SplitWeil.cball s) :
     evX F (dEmb k i t d) = w := by
@@ -249,7 +249,7 @@ theorem IsBump.on_ball (hF : IsBump s hs w F) (d : Fin (t + 1) → k) (hd : ∀ 
   simp
 
 /- English proof (translation)
-Use `hF.zero _ fun ⟨a, x, hx, e⟩ => hd ((GlobalTheory.T.unipotent_ball_mem_congruence k i t s hs d).2 a a.2 x hx ?_)` and prove the remaining obligations. Rewrite using `[e, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsBump.off_ball (hF : IsBump s hs w F) (d : Fin (t + 1) → k) (hd : ¬ ∀ j, d j ∈ GlobalTheory.SplitWeil.cball s) :
     evX F (dEmb k i t d) = 0 := by
@@ -257,9 +257,9 @@ theorem IsBump.off_ball (hF : IsBump s hs w F) (d : Fin (t + 1) → k) (hd : ¬ 
   rw [e, mul_one]
 
 /- English proof (translation)
-Establish `hsx` using `(GlobalTheory.T.shifted_embedding_mem_congruence_iff k _ s hs x).2 hx`. Unfold `intC`. Establish `: (fun d : Fin (t + 1) → k => (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ) • evX F (dEmb k i t d * sEmb k ((i + 1) + t) x)) = fun d => (((Circle.toUnits (ψ (d (Fin.last t))))⁻¹ : ℂˣ) : ℂ) • evX F (dEmb k i t d * 1)`. Use function extensionality and compare the values at `d`. Rewrite using `[hF.right _ _ hsx, mul_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsBump.intC_sEmb (ψ : AddChar k Circle) (hF : IsBump s hs w F) (x : Mir k ((i + 1) + t))
     (hx : x ∈ congM k s hs ((i + 1) + t)) : intC ψ F (sEmb k ((i + 1) + t) x) = intC ψ F 1 := by
@@ -273,9 +273,9 @@ theorem IsBump.intC_sEmb (ψ : AddChar k Circle) (hF : IsBump s hs w F) (x : Mir
   rw [this]
 
 /- English proof (translation)
-Use `intC_eq_zero ψ F _ fun d => hF.zero _ fun ⟨a, x, hx, e⟩ => ?_` and prove the remaining obligations. Establish `e' : dEmb k i t d * sEmb k ((i + 1) + t) g = (a : Mir k ((i + 1) + (t + 1))) * x`. Rewrite using `[e, mul_one]`. Establish `h` using `GlobalTheory.T.unipotent_congruence_factorization k i t s hs hs1 d g a a.2 x hx e'`. Take `⟨b, hb, z, hz, e2⟩` from `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hg ⟨⟨b, hb⟩, z, hz, e2⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsBump.intC_off (ψ : AddChar k Circle) (hs1 : valuation k (s : k) < 1) (hF : IsBump s hs w F)
     (g : Mir k ((i + 1) + t))
@@ -291,13 +291,13 @@ theorem IsBump.intC_off (ψ : AddChar k Circle) (hs1 : valuation k (s : k) < 1) 
 end Local
 
 /- English proof (translation)
-Establish `hv` using `GlobalTheory.T.bump_section_value_local_integral k i t ψ τ σ s hψ1 w F hF.on_ball hF.off_ball`. Take `⟨c, hc0, hc⟩` from `hv`. Establish `hy` using `GlobalTheory.T.closed_evaluation_induced k i t ψ hψ τ σ hτ hσ F`. Take `⟨yF, hyF⟩` from `hy`. Establish `hval : ∀ x ∈ congM k s hs ((i + 1) + t), yF.1.1.1 x = c • qC τ σ w`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `e2 : yF.1.1.1 x = eC ψ F x` using `congrFun hyF x`. Rewrite using `[e2]`. Unfold `eC`. Rewrite using `[hF.intC_sEmb ψ x hx, hc, hdp x hx, Units.val_one, one_smul, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hzero : ∀ g, (¬ ∃ a : MirabolicParabolic k (i + 1) t, ∃ x ∈ congM k s hs ((i + 1) + t), g = (a : Mir k ((i + 1) + t)) * x) → yF.1.1.1 g = 0`. Introduce `g hg`. Establish `e2 : yF.1.1.1 g = eC ψ F g` using `congrFun hyF g`. Rewrite using `[e2]`. Unfold `eC`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hF.intC_off ψ hs1 g hg, map_zero, smul_zero]`. Conclude with `scale_bump (MirabolicParabolic k (i + 1) t) (sigC τ σ) (imC ψ hψ τ σ hτ hσ) yF ((mem_imC ψ hψ τ σ hτ hσ yF).2 ⟨F, hyF.symm⟩) c hc0 (qC τ σ w) (congM k s hs ((i + 1) + t)) hval hzero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_core {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1))
     (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) (w : τ.V ⊗[ℂ] σ.V) (s : kˣ) (hs : valuation k (s : k) ≤ 1)
@@ -337,9 +337,9 @@ def LocB {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k 
       ∀ g, (¬ ∃ a : MirabolicParabolic k (i + 1) t, ∃ x ∈ K, g = (a : Mir k ((i + 1) + t)) * x) → B.1.1.1 g = 0
 
 /- English proof (translation)
-Take `⟨s₁, hs₁⟩` from `GlobalTheory.T.congruence_subgroups_basis_nhds k _ O₁ hO₁`. Take `⟨s₂, hs₂⟩` from `GlobalTheory.SplitWeil.exists_cball_addChar_eq_one ψ hψ`. Take `⟨s₃, hs₃⟩` from `GlobalTheory.T.congruence_subgroups_basis_nhds k _ _ (Filter.inter_mem hO (dpowM_nhds ((i + 1) + t) (-1 / 2)))`. Take `⟨s₄, hs₄⟩` from `exists_lt_one (k := k)`. Take `⟨a₁, ha₁, ha₂⟩` from `exists_small s₁ s₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a₂, ha₃, ha₄⟩` from `exists_small s₃ s₄`. Take `⟨s, h12, h34⟩` from `exists_small a₁ a₂`. Establish `hs1 : valuation k (s : k) < 1` using `lt_of_le_of_lt (h34.trans ha₄) hs₄`. Conclude with `⟨s, hs1.le, hs1, fun y hy => hs₂ y (mem_ball_mono (h12.trans ha₂) hy), fun x hx => hs₃ s hs1.le (h34.trans ha₃) hx, hs₁ s hs1.le (h12.trans ha₁)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_radius {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (O : Set (Mir k ((i + 1) + t)))
     (hO : O ∈ 𝓝 (1 : Mir k ((i + 1) + t))) (O₁ : Set (Mir k ((i + 1) + t + 1))) (hO₁ : O₁ ∈ 𝓝 (1 : Mir k ((i + 1) + t + 1))) :
@@ -358,11 +358,11 @@ theorem exists_radius {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) 
     fun x hx => hs₃ s hs1.le (h34.trans ha₃) hx, hs₁ s hs1.le (h12.trans ha₁)⟩
 
 /- English proof (translation)
-Establish `hsurj : ∃ w, qC τ σ w = v` using `LinearMap.rTensor_surjective σ.V (Submodule.mkQ_surjective _) v`. Take `⟨w, hw⟩` from `hsurj`. Substitute `hw` using the available equality. Establish `hfx` using `GlobalTheory.T.smooth_vector_fixed_near_identity k i t τ σ hτ hσ w`. Take `⟨O₁, hO₁, hfix⟩` from `hfx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hs1, hψ1, hsO, hsO₁⟩` from `exists_radius ψ hψ O hO O₁ hO₁`. Take `⟨hKo, hKc⟩` from `GlobalTheory.T.congruence_subgroup_open_compact k ((i + 1) + t + 1) s hs`. Establish `hb` using `GlobalTheory.CompanionTheory.BZMirOnto.exists_bump (HPG k (i + 1) (t + 1)) (sigX τ σ) (congM k s hs ((i + 1) + t + 1)) hKo hKc 1 w (fun a x hx e => hfix a (by`. Establish `e' : (a : Mir k ((i + 1) + (t + 1))) = x` using `by rw [e]; group`. Rewrite using `[e']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hsO₁ hx))`. Take `⟨F, hF1, hF0⟩` from `hb`. Establish `hbump : IsBump s hs w F` using `⟨hF1, hF0⟩`. Establish `hc` using `local_core ψ hψ τ σ hτ hσ w s hs hs1 hψ1 (fun x hx => (hsO x hx).2) F hbump`. Conclude with `⟨congM k s hs ((i + 1) + t), (GlobalTheory.T.congruence_subgroup_open_compact k _ s hs).1, fun x hx => (hsO x hx).1, hc⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_local {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1))
     (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) (v : (psiN τ).V ⊗[ℂ] σ.V) (O : Set (Mir k ((i + 1) + t)))
@@ -386,9 +386,9 @@ theorem exists_local {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (
   exact ⟨congM k s hs ((i + 1) + t), (GlobalTheory.T.congruence_subgroup_open_compact k _ s hs).1, fun x hx => (hsO x hx).1, hc⟩
 
 /- English proof (translation)
-Establish `hB'` using `(mem_imC ψ hψ τ σ hτ hσ B).1 hB`. Take `⟨f, hf⟩` from `hB'`. Establish `e` using `(GlobalTheory.T.evaluation_maps_linear k i t ψ hψ τ σ hτ hσ (rtr g f) (rtr g f) ((dpowM ((i + 1) + t) (-1 / 2) g : ℂˣ) : ℂ)).2.1`. Use `(mem_imC ψ hψ τ σ hτ hσ _).2 ⟨((dpowM ((i + 1) + t) (-1 / 2) g : ℂˣ) : ℂ) • rtr g f, e.trans ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[ev_cInd, ← hf, Pi.smul_apply]`. Conclude with `eC_translate ψ f g x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem imC_translate {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1))
     (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) (g : Mir k ((i + 1) + t)) (B : cIndSpace (MirabolicParabolic k (i + 1) t) (sigC τ σ))
@@ -402,7 +402,7 @@ theorem imC_translate {i t : ℕ} (ψ : AddChar k Circle) (hψ : Continuous ψ) 
   exact eC_translate ψ f g x
 
 /- English proof (translation)
-Introduce `k _ _ _ _ i t ψ hψ τ σ hτ hσ y`. Conclude with `GlobalTheory.T.smooth_subrep_compact_induction_span (MirabolicParabolic k (i + 1) t) (sigC τ σ) (GlobalTheory.CompanionTheory.BZMirOnto.exists_compactOpen k _) (imC ψ hψ τ σ hτ hσ) (imC_translate ψ hψ τ σ hτ hσ) (exists_local ψ hψ τ σ hτ hσ) y |> (mem_imC ψ hψ τ σ hτ hσ y).1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eC_onto : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (i t : ℕ) (ψ : AddChar k Circle) (hψ : Continuous ψ) (τ : MRep k (i + 1)) (σ : GRep k (t + 1)) (hτ : IsSmooth τ.ρ) (hσ : IsSmooth σ.ρ) (y : cIndSpace (MirabolicParabolic k (i + 1) t) (sigC τ σ)),
     ∃ f : XS τ σ, eC ψ f = (y : smoothPart (ind (MirabolicParabolic k (i + 1) t) (sigC τ σ))).1.1 := by

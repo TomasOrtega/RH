@@ -6,15 +6,13 @@ open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.Mai
 namespace GlobalTheory.HubLoc
 
 /- English proof (translation)
-Introduce `S Y h r n t _ _ hs hcard hn hg hv hth hU`. Use `choose U hUc hUb hUj using hU`. Establish `hpos : 0 < finrank S.Qp S.K` using `finrank_pos`. Establish `hfin : Finite (S.K →ₐ[S.Qp] S.LL)` using `Nat.finite_of_card_ne_zero (by omega)`. Use `letI : Fintype (S.K →ₐ[S.Qp] S.LL) := Fintype.ofFinite _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hsub : LocalSituation.Jset S Y ⊆ ((Finset.univ.biUnion U : Finset ℤ) : Set ℤ)`. Introduce `a ha`. Take `⟨τ, hτ⟩` from `jump_of_total S.PD Y.ρ hcard a ha`. Conclude with `Finset.mem_coe.2 (Finset.mem_biUnion.2 ⟨τ, Finset.mem_univ _, hUj τ a hτ⟩)`. Establish `hb : ∀ u ∈ Finset.univ.biUnion U, -(h : ℤ) ≤ u ∧ u + 1 ≤ h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `u hu`. Take `⟨τ, -, hτ⟩` from `Finset.mem_biUnion.1 hu`. Conclude with `hUb τ u hτ`. Establish `hc : (Finset.univ.biUnion U).card ≤ n * r`. Use `(Finset.card_biUnion_le_card_mul _ _ r fun τ _ => hUc τ).trans (Nat.mul_le_mul_right _ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Finset.card_univ, ← Nat.card_eq_fintype_card, hcard]`. Conclude with `hn`. Use `⟨fun a ha => ?_, fun e he => ?_⟩` and prove the remaining obligations. Use `hb a (Finset.mem_coe.1 (hsub ha))` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Unfold `LocalSituation.cTBY`. Rewrite using `[hg, hs, hv]`. Conclude with `cTB_le (LocalSituation.ell S) h t (n * r) e S.PD.hp _ _ hsub hc hb he hth`.
+Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem window_and_cTB_of_jumps_at_embeddings :
     ∀ (S : LocalSituation.Sit) (Y : LocLat S.G S.Qp S.LL S.O) (h r n t : ℕ) [CharZero S.Qp] [FiniteDimensional S.Qp S.K], S.W.s = 1 → Nat.card (S.K →ₐ[S.Qp] S.LL) = finrank S.Qp S.K → finrank S.Qp S.K ≤ n → LocalSituation.gK S = 0 → LocalSituation.vdegMs S (LocalSituation.mN (LocalSituation.ell S) 1 (h + h)) = LocalSituation.mN (LocalSituation.ell S) 1 (h + h) - 1 → t ≤ h → (∀ τ : S.K →ₐ[S.Qp] S.LL, ∃ U : Finset ℤ, U.card ≤ r ∧ (∀ u ∈ U, -(h : ℤ) ≤ u ∧ u + 1 ≤ h) ∧ ∀ a, IsJumpV S.PD Y.ρ τ a → a ∈ U) → (∀ a ∈ LocalSituation.Jset S Y, -(h : ℤ) ≤ a ∧ a ≤ h) ∧ ∀ e < t, LocalSituation.cTBY S Y h h e ≤ cBnum (LocalSituation.ell S) h t (n * r) := by

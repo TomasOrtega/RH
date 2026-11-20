@@ -9,7 +9,7 @@ open BranchingSupport GlobalTheory.CellAmp GlobalTheory.Amp Formalism.BasicNotio
 open scoped InnerProductSpace ENNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.DegreeTie.deg_eq_mul_fdegH` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFlagMeasures%2FFormalDegreeProportional.lean&line=75#L75)
 -/

@@ -13,13 +13,13 @@ section Abstract
 variable {Γ G V V' : Type} [Group Γ] [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
 
 /- English proof (translation)
-Establish `key : ∀ (γ : Γ) (v : V), T (τ (γ, 1) v - (ψ γ : ℂ) • v) = τ' (θ γ, 1) (T v) - (ψ' (θ γ) : ℂ) • T v` using `fun γ v => by`. Rewrite using `[map_sub, map_smul, hT, map_one, hψ]`. Establish `hrel : (twRel (τ.comp (MonoidHom.inl Γ G)) ψ).map (T : V →ₗ[ℂ] V') = twRel (τ'.comp (MonoidHom.inl Γ G)) ψ'`. Unfold `twRel`. Rewrite using `[Submodule.map_span]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨γ, v, rfl⟩, rfl⟩`. Conclude with `⟨θ γ, T v, key γ v⟩`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨γ', v', rfl⟩`. Take `⟨γ, rfl⟩` from `hθ γ'`. Use `⟨_, ⟨γ, T.symm v', rfl⟩, ?_⟩` and prove the remaining obligations. Use `key γ (T.symm v')` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Set `E : (coinv τ ψ).Equiv ((coinv τ' ψ').comp θ' : Representation ℂ G _)` to `Representation.Equiv.mk (Submodule.Quotient.equiv _ _ T hrel) fun g => Submodule.linearMap_qext _ (LinearMap.ext fun v => by show Submodule.Quotient.mk (T (τ (1, g) v)) = Submodule.Quotient.mk (τ' (1, θ' g) (T v))`. Rewrite using `[hT, map_one])`. Conclude with `HasFiniteLength.of_equiv ((hasFiniteLength_comp_iff _ θ' hθ').2 h) E.symm`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coinv_of_intertwine (τ : Representation ℂ (Γ × G) V) (τ' : Representation ℂ (Γ × G) V')
     (ψ ψ' : Γ →* ℂˣ) (T : V ≃ₗ[ℂ] V') (θ : Γ →* Γ) (θ' : G →* G)
@@ -66,20 +66,20 @@ variable {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-The claim follows from `Units.ext (transpose_transpose _)`.
+A detailed English derivation is pending.
 -/
 theorem invT_invT (g : GL a k) : invT a (invT a g) = g := Units.ext (transpose_transpose _)
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Introduce `g` and use `⟨invT a g, invT_invT g⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem invT_surjective : Function.Surjective (invT a : GL a k → GL a k) :=
   fun g => ⟨invT a g, invT_invT g⟩
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Use `Units.ext ?_` and prove the remaining obligations. Use `show ((g⁻¹).valᵀ).det = ((g⁻¹ : GL a k).val).det`. Rewrite using `[det_transpose]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_invT (g : GL a k) :
     GeneralLinearGroup.det (invT a g) = (GeneralLinearGroup.det g)⁻¹ := by
@@ -107,7 +107,7 @@ def trSB (a b : Type) : SB (Matrix b a k) ≃ₗ[ℂ] SB (Matrix a b k) where
   right_inv Φ := Subtype.ext (funext fun y => congrArg Φ.1 (transpose_transpose y))
 
 /- English proof (translation)
-Simplify using `only [omChar, MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.coe_fst, MonoidHom.coe_snd, detChar_apply, det_invT, MonoidHom.inv_apply, map_inv, neg_div, absPow_neg, inv_inv, mul_inv]`. Conclude with `mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem omChar_swap (μ : kˣ →* ℂˣ) (g : GL a k) (h : GL b k) :
     omChar b a μ (invT b h, invT a g) = omChar a b μ (g, h) := by
@@ -116,7 +116,7 @@ theorem omChar_swap (μ : kˣ →* ℂˣ) (g : GL a k) (h : GL b k) :
   exact mul_comm _ _
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Use `show (omChar a b μ (g, h) : ℂ) * Φ.1 (act yᵀ (g, h)) = (omChar b a μ (invT b h, invT a g) : ℂ) * Φ.1 (act y (invT b h, invT a g))ᵀ`. Establish `e : act yᵀ (g, h) = (act y (invT b h, invT a g))ᵀ` using `by show (h⁻¹).val * yᵀ * g.val = (g.valᵀ * y * (h⁻¹).valᵀ)ᵀ`. Simplify using `only [transpose_mul, transpose_transpose, Matrix.mul_assoc]`. Rewrite using `[omChar_swap, e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trSB_omega (μ : kˣ →* ℂˣ) (g : GL a k) (h : GL b k) (Φ : SB (Matrix b a k)) :
     trSB a b (omega a b μ (g, h) Φ) = omega b a μ (invT b h, invT a g) (trSB a b Φ) := by
@@ -131,7 +131,7 @@ theorem trSB_omega (μ : kˣ →* ℂˣ) (g : GL a k) (h : GL b k) (Φ : SB (Mat
 end Model
 
 /- English proof (translation)
-Introduce `k _ _ _ _ a b _ _ _ _ μ χ h`. Use `coinv_of_intertwine _ _ _ _ (trSB a b) (invT b) (invT a) invT_surjective invT_surjective (fun γ g v => trSB_omega μ⁻¹ g γ v) (fun γ => ?_) h` and prove the remaining obligations. Simplify using `[det_invT]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem coinv_swap_finiteLength : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a b : Type) [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ χ : kˣ →* ℂˣ), HasFiniteLength (coinv (omega b a μ⁻¹) (detChar b χ⁻¹)) → HasFiniteLength (coinv ((omega a b μ⁻¹).comp (MulEquiv.prodComm (M := GL b k) (N := GL a k)).toMonoidHom) (detChar b χ)) := by
   intro k _ _ _ _ a b _ _ _ _ μ χ h

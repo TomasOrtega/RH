@@ -7,49 +7,47 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Establish `hlM' : (l : ℤ) ∣ (M : ℤ)` using `by exact_mod_cast hlM`. Establish `hpZ : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp hl`. Establish `hl0 : (l : ℤ) ≠ 0` using `by exact_mod_cast hl.ne_zero`. Establish `key : ∀ γ : SL(2, ℤ), (M : ℤ) ∣ (γ : M2) 1 0 → ¬ (l : ℤ) ∣ (γ : M2) 0 0`. Introduce `γ hc ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdet : (γ : M2).det = 1` using `γ.2`. Rewrite `hdet` using `[Matrix.det_fin_two]`. Establish `: (l : ℤ) ∣ 1`. Rewrite using `[← hdet]`. Conclude with `dvd_sub (dvd_mul_of_dvd_left ha _) (dvd_mul_of_dvd_right (hlM'.trans hc) _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hpZ.not_dvd_one this`. Establish `ent : ∀ (A : M2) (j : Fin l), (A * repU l j) 0 0 = A 0 0 ∧ (A * repU l j) 1 0 = A 1 0 ∧ (A * repU l j) 0 1 = A 0 0 * (j : ℕ) + A 0 1 * l ∧ (A * repU l j) 1 1 = A 1 0 * (j : ℕ) + A 1 1 * l`. Introduce `A j`. Simplify using `[repU, Matrix.mul_apply, Fin.sum_univ_two]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨⟨γ, hγ⟩, j⟩ -`. Establish `hc : (M : ℤ) ∣ (γ : M2) 1 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mp (Gamma0_mem.mp hγ)`. Take `⟨e1, e2, -, -⟩` from `ent (γ : M2) j`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.det_mul, repU, Matrix.det_fin_two_of]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[show (γ : M2).det = 1 from γ.2]`. Simplify using the standard rewrite rules. Simplify `hc` using `[e2]`. Simplify `key γ hc` using `[e1]`. Introduce and unpack `⟨⟨γ, hγ⟩, j⟩ - ⟨⟨γ', hγ'⟩, j'⟩ - h`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only at h`. Establish `hc : (M : ℤ) ∣ (γ : M2) 1 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mp (Gamma0_mem.mp hγ)`. Take `⟨e1, e2, e3, e4⟩` from `ent (γ : M2) j`. Take `⟨f1, f2, f3, f4⟩` from `ent (γ' : M2) j'`. Establish `h00 : (γ : M2) 0 0 = (γ' : M2) 0 0` using `by rw [← e1, ← f1, h]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h10 : (γ : M2) 1 0 = (γ' : M2) 1 0` using `by rw [← e2, ← f2, h]`. Establish `h01 : (γ : M2) 0 0 * (j : ℕ) + (γ : M2) 0 1 * l = (γ' : M2) 0 0 * (j' : ℕ) + (γ' : M2) 0 1 * l`. Rewrite using `[← e3, ← f3, h]`. Establish `h11 : (γ : M2) 1 0 * (j : ℕ) + (γ : M2) 1 1 * l = (γ' : M2) 1 0 * (j' : ℕ) + (γ' : M2) 1 1 * l`. Rewrite using `[← e4, ← f4, h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiv : (l : ℤ) ∣ (γ : M2) 0 0 * (((j : ℕ) : ℤ) - ((j' : ℕ) : ℤ))` using `⟨(γ' : M2) 0 1 - (γ : M2) 0 1, by rw [h00] at h01 ⊢; linear_combination h01⟩`. Establish `hd2 : (l : ℤ) ∣ ((j : ℕ) : ℤ) - ((j' : ℕ) : ℤ)` using `(hpZ.dvd_or_dvd hdiv).resolve_left (key γ hc)`. Establish `hjj : j = j'`. Establish `hj` using `j.2`. Establish `hj'` using `j'.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `hd2`. Establish `hk0 : k = 0`. Break down `lt_trichotomy k 0 with h | h | h` into its components or cases. Use the polynomial consequences of the given equalities and inequalities. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Substitute using the available equality. By extensionality, compare the relevant components.
 
-Use the polynomial consequences of the given equalities and inequalities. Substitute `hk0` using the available equality. Use `ext`. Use linear arithmetic over natural numbers and integers. Substitute `hjj` using the available equality.
+Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `g01 : (γ : M2) 0 1 = (γ' : M2) 0 1`. Apply `mul_right_cancel₀ hl0` to reduce the goal to its premises. Rewrite `h01` using `[h00]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `g11 : (γ : M2) 1 1 = (γ' : M2) 1 1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Apply `mul_right_cancel₀ hl0` to reduce the goal to its premises. Rewrite `h11` using `[h10]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: γ = γ'`. Apply the tactic sequence `ext i k; fin_cases i <;> fin_cases k <;> simp [h00, h10, g01, g11]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Substitute `this` using the available equality. Both sides reduce to the same expression. Introduce and unpack `δ ⟨hdet, hc, ha⟩ haveI : Fact l.Prime := ⟨hl⟩`. Establish `hlc : (l : ℤ) ∣ δ 1 0` using `hlM'.trans hc`. Rewrite `hdet` using `[Matrix.det_fin_two]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hld : (l : ℤ) ∣ δ 1 1`. Establish `: (l : ℤ) ∣ δ 0 0 * δ 1 1` using `⟨1 + (δ 0 1) * ((δ 1 0) / l), by`. Take `⟨t, ht⟩` from `hlc`. Rewrite using `[ht, Int.mul_ediv_cancel_left _ hl0]`. Take the linear combination `hdet + (δ 0 1) * ht⟩`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(hpZ.dvd_or_dvd this).resolve_left ha`. Establish `haZ : ((δ 0 0 : ℤ) : ZMod l) ≠ 0`. Rewrite using `[Ne, ZMod.intCast_zmod_eq_zero_iff_dvd]`. Conclude with `ha`. Set `j : Fin l` to `⟨(((δ 0 1 : ℤ) : ZMod l) * ((δ 0 0 : ℤ) : ZMod l)⁻¹).val, ZMod.val_lt _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `hjZ : ((j : ℕ) : ZMod l) = ((δ 0 1 : ℤ) : ZMod l) * ((δ 0 0 : ℤ) : ZMod l)⁻¹` using `ZMod.natCast_zmod_val _`. Establish `hb : (l : ℤ) ∣ δ 0 1 - δ 0 0 * (j : ℕ)`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Use `push_cast`. Rewrite using `[hjZ]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hdd : (l : ℤ) ∣ δ 1 1 - δ 1 0 * (j : ℕ)` using `dvd_sub hld (dvd_mul_of_dvd_left hlc _)`. Take `⟨e, he⟩` from `hb`. Take `⟨f, hf⟩` from `hdd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression.
 
-Establish `hγdet : (!![δ 0 0, e; δ 1 0, f] : M2).det = 1`. Rewrite using `[Matrix.det_fin_two_of]`. Apply `mul_left_cancel₀ hl0` to reduce the goal to its premises. Take the linear combination `-(δ 0 0) * hf + (δ 1 0) * he + hdet`. Set `γ : SL(2, ℤ)` to `⟨!![δ 0 0, e; δ 1 0, f], hγdet⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hγ : γ ∈ Gamma0 M`. Rewrite using `[Gamma0_mem]`. Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mpr (by simpa [γ] using hc)`. Use `⟨(⟨γ, hγ⟩, j), Set.mem_univ _, ?_⟩` and prove the remaining obligations. Take `⟨e1, e2, e3, e4⟩` from `ent (γ : M2) j`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Apply the tactic sequence `ext i k; fin_cases i <;> fin_cases k`. Simplify `e1` using `[γ]`. Simplify using `only [Fin.zero_eta, Fin.isValue, Fin.mk_one] at e3 ⊢`. Rewrite using `[e3]`. Simplify using `[γ]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Simplify `e2` using `[γ]`. Simplify using `only [Fin.zero_eta, Fin.isValue, Fin.mk_one] at e4 ⊢`. Rewrite using `[e4]`. Simplify using `[γ]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem lrep_repU_of_dvd (M l : ℕ) (hl : l.Prime) (hlM : l ∣ M) :
     LRep M {δ : M2 | δ.det = l ∧ (M : ℤ) ∣ δ 1 0 ∧ ¬ (l : ℤ) ∣ δ 0 0} (repU l) := by
@@ -158,11 +156,11 @@ theorem lrep_repU_of_dvd (M l : ℕ) (hl : l.Prime) (hlM : l ∣ M) :
       rw [e4]; simp [γ]; linarith
 
 /- English proof (translation)
-Use `⟨fun h => lrep_repU_of_dvd L l hl h, fun _ => ?_⟩` and prove the remaining obligations. Establish `hs : {δ | δ ∈ DU L l ∧ ((L * l : ℕ) : ℤ) ∣ δ 1 0} = {δ : M2 | δ.det = l ∧ ((L * l : ℕ) : ℤ) ∣ δ 1 0 ∧ ¬ (l : ℤ) ∣ δ 0 0}`. Use extensionality with `δ`. Simplify using `only [DU, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨⟨h1, -, h3⟩, h4⟩`. Conclude with `⟨h1, h4, h3⟩`. Introduce and unpack `⟨h1, h4, h3⟩`. Conclude with `⟨⟨h1, (Int.natCast_dvd_natCast.mpr (dvd_mul_right L l)).trans h4, h3⟩, h4⟩`. Rewrite using `[hs]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lrep_repU_of_dvd (L * l) l hl (dvd_mul_left l L)`.
+A detailed English derivation is pending.
 -/
 theorem lrep_repU (L l : ℕ) (hl : l.Prime) :
     (l ∣ L → LRep L (DU L l) (repU l)) ∧
@@ -180,7 +178,7 @@ theorem lrep_repU (L l : ℕ) (hl : l.Prime) :
   exact lrep_repU_of_dvd (L * l) l hl (dvd_mul_left l L)
 
 /- English proof (translation)
-Introduce `L l hl` and use `lrep_repU L l hl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zrepU : ∀ L l : ℕ, l.Prime → (l ∣ L → LRep L (DU L l) (repU l)) ∧
     (l ∣ L → LRep (L * l) {δ | δ ∈ DU L l ∧ ((L * l : ℕ) : ℤ) ∣ δ 1 0} (repU l)) :=

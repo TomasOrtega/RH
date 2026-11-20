@@ -28,14 +28,14 @@ section Generic
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Simplify using `[herm, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_neg (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → E) : herm (-G) x y = -herm G x y := by
   simp [herm, Finset.sum_neg_distrib]
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Simplify using `[hermC, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermC_neg (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x y : Fin r → ℂ) :
     hermC τ (-G) x y = -hermC τ G x y := by
@@ -43,7 +43,7 @@ theorem hermC_neg (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (x y : Fin r
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[FD.gram, hermC_neg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gram_neg (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (P : Matrix (Fin r) (Fin r) ℂ) :
     FD.gram τ (-G) P = -FD.gram τ G P := by
@@ -58,7 +58,7 @@ theorem gram_submatrix (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (P : Ma
     (π : Fin r → Fin r) : FD.gram τ G (P.submatrix id π) = (FD.gram τ G P).submatrix π π := rfl
 
 /- English proof (translation)
-Simplify using `only [IsUStab, herm_neg, neg_inj]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isUStab_neg (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)) (γ : GL (Fin r) E) :
     IsUStab (-G) Λ γ ↔ IsUStab G Λ γ := by
@@ -67,7 +67,7 @@ theorem isUStab_neg (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin
 abbrev sg (r p : ℕ) : Matrix (Fin r) (Fin r) ℂ := diagonal fun a : Fin r => ((sgn p (a : ℕ) : ℝ) : ℂ)
 
 /- English proof (translation)
-Rewrite using `[submatrix_diagonal_equiv, diagonal_neg]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [Function.comp_apply, sgn, h]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_submatrix {p q : ℕ} (π : Fin r ≃ Fin r) (h : ∀ i, ((π i : ℕ) < p ↔ ¬ (i : ℕ) < q)) :
     (sg r p).submatrix π π = -sg r q := by
@@ -78,7 +78,7 @@ theorem sg_submatrix {p q : ℕ} (π : Fin r ≃ Fin r) (h : ∀ i, ((π i : ℕ
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_sq (p : ℕ) : sg r p * sg r p = 1 := by
   rw [Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -88,7 +88,7 @@ theorem sg_sq (p : ℕ) : sg r p * sg r p = 1 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_permute']`. Use `mul_ne_zero ?_ h` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign π) with h | h <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem det_submatrix_ne {P : Matrix (Fin r) (Fin r) ℂ} (h : P.det ≠ 0) (π : Fin r ≃ Fin r) :
     (P.submatrix id π).det ≠ 0 := by
@@ -97,11 +97,11 @@ theorem det_submatrix_ne {P : Matrix (Fin r) (Fin r) ℂ} (h : P.det ≠ 0) (π 
   rcases Int.units_eq_one_or (Equiv.Perm.sign π) with h | h <;> simp [h]
 
 /- English proof (translation)
-Establish `h1 : (sg r p * cᵀ * sg r p) * c.map (starRingEnd ℂ) = 1`. Rewrite using `[Matrix.mul_assoc (sg r p), Matrix.mul_assoc (sg r p), h, sg_sq]`. Establish `hc' : (c.map (starRingEnd ℂ)).BlockTriangular id` using `fun i j hij => by`. Rewrite using `[map_apply, hc hij, map_zero]`. Use `invertibleOfLeftInverse _ _ h1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `Matrix.blockTriangular_inv_of_blockTriangular hc' (show id a < id b from hab)`. Rewrite `h2` using `[Matrix.inv_eq_left_inv h1, mul_diagonal, diagonal_mul, transpose_apply]`. Establish `hs : ∀ i : Fin r, ((sgn p (i : ℕ) : ℝ) : ℂ) ≠ 0` using `fun i => by`. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify `h2` using `[hs]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lower_of_isometry {p : ℕ} {c : Matrix (Fin r) (Fin r) ℂ} (hc : c.BlockTriangular id)
     (h : cᵀ * sg r p * c.map (starRingEnd ℂ) = sg r p) {a b : Fin r} (hab : a < b) : c a b = 0 := by
@@ -118,7 +118,7 @@ theorem lower_of_isometry {p : ℕ} {c : Matrix (Fin r) (Fin r) ℂ} (hc : c.Blo
   simpa [hs] using h2
 
 /- English proof (translation)
-Simplify using `only [Fin.revPerm_apply, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rev_blocks {p : ℕ} (hp : p ≤ r) (i : Fin r) :
     (((Fin.revPerm i : Fin r) : ℕ) < r - p ↔ ¬ (i : ℕ) < p) := by
@@ -126,19 +126,17 @@ theorem rev_blocks {p : ℕ} (hp : p ≤ r) (i : Fin r) :
   omega
 
 /- English proof (translation)
-Establish `hG : ∀ a b, cc ((-X.Gm) a b) = (-X.Gm) b a` using `fun a b => by`. Rewrite using `[neg_apply, neg_apply, ← X.Gm_herm a b, cc, cc, map_neg]`. Use `choose b0 h0 h1 h2 using fun τ : X.Ψ => GlobalTheory.UnitFrames.exists_upper_conj_eq_signature (r - X.p0) _ (gram_isHermitian τ.1 hG (mat x τ)) (hx τ).2`. Simplify using `only [← FrameDegreeData.gram_mul] at h2`. Establish `hu : ∀ τ, IsUnit (b0 τ).det` using `fun τ => isUnit_iff_ne_zero.2 (h0 τ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `c : X.Ψ → Matrix (Fin r) (Fin r) ℂ` to `fun τ => (b0 τ)⁻¹ * mat b τ * b0 τ`. Establish `hc : ∀ τ : X.Ψ, (γ : Matrix (Fin r) (Fin r) E).map τ.1 * (mat x τ * b0 τ) = mat x τ * b0 τ * c τ`. Introduce `τ`. Establish `h3 : (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = mat x τ * mat b τ` using `congrFun h τ`. Simplify using `only [c, ← Matrix.mul_assoc, h3]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_nonsing_inv_cancel_right _ _ (hu τ)]`. Establish `hlow : ∀ τ a a', a < a' → c τ a a' = 0`. Introduce `τ a a' haa`. Apply the tactic sequence `refine lower_of_isometry (p := r - X.p0) ?_ ?_ haa`. Use `Matrix.invertibleOfIsUnitDet _ (hu τ)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((Matrix.blockTriangular_inv_of_blockTriangular (h1 τ)).mul (fun i j hij => (hb τ).2 i j hij)).mul (h1 τ)`. Establish `h4` using `FrameDegreeData.gram_mul τ.1 (-X.Gm) (mat x τ * b0 τ) (c τ)`. Rewrite `h4` using `[← hc, gram_neg, CompactEntryBounds.gram_stab X (X.Γ_stab γ hγ).1, ← gram_neg, h2]`. Conclude with `h4.symm`. Use `X.Γ_free γ hγ (fun τ => (mat x τ * b0 τ).submatrix id Fin.revPerm) (PIW.FdPA.orthonormal_domain r X _ ?_) (fun τ => (c τ).submatrix Fin.revPerm Fin.revPerm) (fun τ => ⟨?_, fun a a' haa => ?_⟩) ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ`. Express the relevant statement in the definitionally equal form `FD.gram τ.1 X.Gm ((mat x τ * b0 τ).submatrix id Fin.revPerm) = sg r X.p0`. Rewrite using `[gram_submatrix, ← neg_neg (FD.gram _ _ _), ← gram_neg, h2]`. Conclude with `(congrArg Neg.neg (sg_submatrix _ (rev_blocks X.p0_le))).trans (neg_neg _)`. Express the relevant statement in the definitionally equal form `((c τ).submatrix Fin.revPerm Fin.revPerm).det ≠ 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_submatrix_equiv_self, det_mul, det_mul]`. Conclude with `mul_ne_zero (mul_ne_zero (Matrix.isUnit_nonsing_inv_det _ (hu τ)).ne_zero (hb τ).1) (h0 τ)`. Conclude with `hlow τ _ _ (Fin.rev_lt_rev.2 haa)`. Use function extensionality and compare the values at `τ`. Express the relevant statement in the definitionally equal form `(γ : Matrix (Fin r) (Fin r) E).map τ.1 * (mat x τ * b0 τ).submatrix id Fin.revPerm = (mat x τ * b0 τ).submatrix id Fin.revPerm * (c τ).submatrix Fin.revPerm Fin.revPerm`.
-
-Rewrite using `[submatrix_mul_equiv, ← hc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem free_neg (X : Data E r) (γ : GL (Fin r) E) (hγ : γ ∈ X.Γ) (x : Frame X.Ψ r)
     (hx : x ∈ GG X.Ψ (-X.Gm) (r - X.p0)) (b : Frame X.Ψ r) (hb : b ∈ Bor X.Ψ r) (h : lact γ x = rmul x b) :
@@ -231,17 +229,15 @@ def negData (X : Data E r) : Data E r where
     simp [transvMat, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Establish `hd : P.det ≠ 0` using `PIW.FdPA.det_ne_of_gram τ G P (by`. Rewrite using `[hP]`. Conclude with `(Matrix.isUnit_det_of_left_inverse (sg_sq p)).ne_zero)`. Establish `hu : u = ∑ k, (P⁻¹ *ᵥ u) k • FD.col P k`. Rewrite using `[← Data.mulVec_eq_sum_col, mulVec_mulVec, mul_nonsing_inv _ (isUnit_iff_ne_zero.2 hd), one_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∀ a, hermC τ G (FD.col P a) u = (sgn p a : ℝ) * conj ((P⁻¹ *ᵥ u) a)`. Introduce `a`. Use `conv_lhs => rw [hu]`. Rewrite using `[hermC_sum_right]`. Establish `: ∀ k, hermC τ G (FD.col P a) (FD.col P k) = sg r p a k` using `fun k => congrFun (congrFun hP a) k`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hermC_smul_right, this, diagonal_apply]`. Simplify using `[mul_comm]`. Establish `h2 : hermC (ComplexEmbedding.conjugate τ) (-G) (FD.col ((P.submatrix id π).map (starRingEnd ℂ)) i) (fun a => conj (u a)) = -conj (hermC τ G (FD.col P (π i)) u)`. Rewrite using `[hermC_neg]`. Simplify using `[hermC, FD.col, ComplexEmbedding.conjugate_coe_eq, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (((P.submatrix id π).map (starRingEnd ℂ))⁻¹ *ᵥ fun a => conj (u a)) i = conj ((P⁻¹ *ᵥ u) (π i))`. Rewrite using `[GlobalTheory.Ker.ONBasis.inv_map_conj (isUnit_iff_ne_zero.2 (det_submatrix_ne hd π))]`. Use `Matrix.inv_submatrix_equiv P (Equiv.refl _) π` as an intermediate fact. Rewrite `this` using `[Equiv.coe_refl]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mulVec, dotProduct]`. Rewrite using `[h2, h3, h1]`. Distinguish the cases in `hi : (i : ℕ) < q`. Establish `h4 : ¬ (π i : ℕ) < p` using `fun h' => (h i).1 h' hi`. Simplify using `[hi, h4, sgn]`.
-
-Simplify using `[hi, (h i).2 hi, sgn]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coord_conj {τ : E →+* ℂ} {G : Matrix (Fin r) (Fin r) E} {p q : ℕ}
     (π : Fin r ≃ Fin r) (h : ∀ i, ((π i : ℕ) < p ↔ ¬ (i : ℕ) < q)) {P : Matrix (Fin r) (Fin r) ℂ}
@@ -289,14 +285,14 @@ def blockPerm (hq : p + q = r) : Fin r ≃ Fin r :=
   (finSumFinEquiv.trans (finCongr ((add_comm q p).trans hq))).symm.trans (rowIdx hq)
 
 /- English proof (translation)
-Apply the tactic sequence `rcases k with k | k <;> simp [blockPerm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockPerm_symm (hq : p + q = r) (k : Fin q ⊕ Fin p) :
     ((blockPerm hq).symm (rowIdx hq k) : ℕ) = Sum.elim (fun i : Fin q => (i : ℕ)) (fun i : Fin p => q + (i : ℕ)) k := by
   rcases k with k | k <;> simp [blockPerm]
 
 /- English proof (translation)
-Rewrite `h` using `[← blockPerm_symm hq]`. Rewrite using `[Fin.ext h, Equiv.apply_symm_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockPerm_eq (hq : p + q = r) (k : Fin q ⊕ Fin p) (i : Fin r)
     (h : (i : ℕ) = Sum.elim (fun i : Fin q => (i : ℕ)) (fun i : Fin p => q + (i : ℕ)) k) :
@@ -305,9 +301,9 @@ theorem blockPerm_eq (hq : p + q = r) (k : Fin q ⊕ Fin p) (i : Fin r)
   rw [Fin.ext h, Equiv.apply_symm_apply]
 
 /- English proof (translation)
-Take `⟨j, rfl⟩` from `(blockPerm hq).symm.surjective i`. Take `⟨k, rfl⟩` from `(rowIdx hq).surjective j`. Rewrite using `[Equiv.apply_symm_apply, blockPerm_symm]`. Break down `k with k | k` into its components or cases. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Use `k.2` as an intermediate fact. Simplify using `only [rowIdx_inr, Sum.elim_inr]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem blockPerm_lt (hq : p + q = r) (i : Fin r) : (blockPerm hq i : ℕ) < p ↔ ¬ (i : ℕ) < q := by
   obtain ⟨j, rfl⟩ := (blockPerm hq).symm.surjective i
@@ -326,7 +322,7 @@ section Junction
 variable {D : D7} {V W : HSp D} {X : Data D.host.E W.rank}
 
 /- English proof (translation)
-Establish `h : ∃ ρ', tauE D ρ = tauE D ρ'` using `⟨ρ, rfl⟩`. Rewrite using `[realM, dif_pos h, ← GlobalTheory.StdRat.tauE_injective D h.choose_spec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem realM_tauE (θ : InfFam D) {m n : ℕ} (w : Mx D m n) (ρ : D.what₂.Tau) :
     realM θ w (tauE D ρ) = compAt θ ρ w := by
@@ -334,7 +330,7 @@ theorem realM_tauE (θ : InfFam D) {m n : ℕ} (w : Mx D m n) (ρ : D.what₂.Ta
   rw [realM, dif_pos h, ← GlobalTheory.StdRat.tauE_injective D h.choose_spec]
 
 /- English proof (translation)
-Establish `hG : X.Gm.map (tauE D ρ) = -(gramAt D W ρ)ᵀ`. Rewrite using `[hM.model.1]`. Use extensionality with `a b`. Simplify using `[gramAt]`. Rewrite using `[FrameDegreeData.gram_eq, hG, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -351,9 +347,9 @@ variable (t : D.what₂.Tau ≃ X.Ψ) (ht : ∀ ρ, (t ρ).1 = tauE D ρ)
 include ht
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h ρ`. Use extensionality with `a i`. Take `⟨j, rfl⟩` from `(blockPerm hq).symm.surjective i`. Take `⟨k, rfl⟩` from `(rowIdx hq).surjective j`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h ρ (t ρ) (ht ρ) k _ a (blockPerm_symm hq k), submatrix_apply, Equiv.apply_symm_apply]`. Both sides reduce to the same expression. Introduce `h ρ τ hτ k i a hi`. Take `rfl : τ = t ρ` from `Subtype.ext (hτ.trans (ht ρ).symm)`. Rewrite using `[h ρ, submatrix_apply, blockPerm_eq hq k i hi]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -373,7 +369,7 @@ theorem isBasOf_iff {q : ℕ} (hq : X.p0 + q = W.rank) (x : Frame X.Ψ W.rank)
     rfl
 
 /- English proof (translation)
-Rewrite using `[← realM_tauE, ← ht]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mat_frMove (θ : InfFam D) (u : GA D W) (x : Frame X.Ψ W.rank) (ρ : D.what₂.Tau) :
     mat (frMove θ W rfl X u x) (t ρ) = compAt θ ρ (Formalism.L2.Theta.mt W u) * mat x (t ρ) := by
@@ -381,7 +377,7 @@ theorem mat_frMove (θ : InfFam D) (u : GA D W) (x : Frame X.Ψ W.rank) (ρ : D.
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Conclude with `fun h ρ => h ρ (t ρ) (ht ρ)`. Introduce `h ρ τ hτ`. Take `rfl : τ = t ρ` from `Subtype.ext (hτ.trans (ht ρ).symm)`. Conclude with `h ρ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isInvOf_iff (x : Frame X.Ψ W.rank) (s : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) :
     IsInvOf W rfl X x s ↔ ∀ ρ, s ρ * mat x (t ρ) = -(mat x (t ρ) * sgnM X) := by
@@ -397,9 +393,9 @@ variable (C : GlobalTheory.Ker.Ctx V W) (hM : IsMod W rfl X) (hq : X.p0 + C.X.p0
 include hM hx hB
 
 /- English proof (translation)
-Introduce `ρ`. Establish `h` using `gram_model hM ρ (B ρ)`. Rewrite `h` using `[hB, gram_submatrix, ← ht, hx, ← hB]`. Establish `h2 : (sgnM X).submatrix (blockPerm hq) (blockPerm hq) = -sgnM C.X` using `sg_submatrix _ (blockPerm_lt hq)`. Rewrite `h` using `[h2, neg_inj]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← transpose_transpose (_ * B ρ), ← h, sgnM, diagonal_transpose]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem isB : C.IsB B := by
   intro ρ
@@ -410,15 +406,15 @@ theorem isB : C.IsB B := by
   rw [← transpose_transpose (_ * B ρ), ← h, sgnM, diagonal_transpose]
 
 /- English proof (translation)
-Rewrite using `[isInvOf_iff t ht, funext_iff]`. Use `forall_congr' fun ρ => ?_` and prove the remaining obligations. Establish `hu` using `GlobalTheory.Ker.ONBasis.isUnit_det (GlobalTheory.Ker.ONBasis.sgnM_sq C.X) (isB t ht C hM hq hx hB ρ)`. Establish `h2 : (sgnM X).submatrix (blockPerm hq) (blockPerm hq) = -sgnM C.X` using `sg_submatrix _ (blockPerm_lt hq)`. Establish `h3 : B ρ * sgnM C.X = (-(mat x (t ρ) * sgnM X)).submatrix id (blockPerm hq)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← neg_neg (sgnM C.X), ← h2, hB, Matrix.mul_neg, submatrix_mul_equiv]`. Both sides reduce to the same expression. Establish `h4 : s ρ * B ρ = (s ρ * mat x (t ρ)).submatrix id (blockPerm hq)`. Rewrite using `[hB]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h5 : s ρ = C.sB B ρ ↔ s ρ * B ρ = B ρ * sgnM C.X`. Unfold `GlobalTheory.Ker.Ctx.sB`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, Matrix.nonsing_inv_mul_cancel_right _ _ hu]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite using `[← h, Matrix.mul_nonsing_inv_cancel_right _ _ hu]`. Rewrite using `[h5, h3, h4]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h]`. Introduce `h`. Use extensionality with `a i`. Take `⟨j, rfl⟩` from `(blockPerm hq).surjective i`. Conclude with `congrFun (congrFun h a) j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isInvOf_iff_eq (s : C.Bas) : IsInvOf W rfl X x s ↔ s = C.sB B := by
   rw [isInvOf_iff t ht, funext_iff]
@@ -449,7 +445,7 @@ theorem isInvOf_iff_eq (s : C.Bas) : IsInvOf W rfl X x s ↔ s = C.sB B := by
 
 omit hB in
 /- English proof (translation)
-Introduce `τ`. Take `⟨ρ, rfl⟩` from `t.surjective τ`. Rewrite using `[mat_frMove t ht, ← hx (t ρ), ht, gram_model hM, gram_model hM, conjTranspose_mul]`. Use `conv_rhs => rw [← GlobalTheory.Ker.ONBasis.compAt_unitary C ρ u]`. Simplify using `only [Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isONFr_frMove (u : GA D W) : IsONFr X (frMove C.θ W rfl X u x) := by
   intro τ
@@ -463,11 +459,11 @@ variable (idx : Fin C.g ≃ X.Ψ × Fin W.rank)
 include hi
 
 /- English proof (translation)
-Establish `hG : C.X.Gm = -X.Gm`. Rewrite using `[C.m.gT, hM.model.1, neg_neg]`. Both sides reduce to the same expression. Unfold `GlobalTheory.Ker.zR perC`. Rewrite using `[hi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `idx j = p`. Take `⟨τ, a⟩` from `p`. Take `⟨ρ, rfl⟩` from `t.surjective τ`. Take `⟨i, rfl⟩` from `(blockPerm hq).surjective a`. Establish `hv' : v (C.m.e ρ) k = fun a => conj (u (t ρ) k a)` using `funext (hv ρ k)`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Equiv.symm_apply_apply]`. Rewrite using `[GlobalTheory.Ker.ONBasis.mat_xB, hB, hv', C.m.e_emb, hG, ← ht]`. Conclude with `coord_conj _ (blockPerm_lt hq) (hx (t ρ)) _ i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zR_eq {n : ℕ} (u : X.Ψ → Fin n → Fin W.rank → ℂ) (v : GlobalTheory.Ker.WR C.X n)
     (hv : ∀ ρ k a, v (C.m.e ρ) k a = conj (u (t ρ) k a)) (k : Fin n) (j : Fin C.g) :
@@ -487,7 +483,7 @@ theorem zR_eq {n : ℕ} (u : X.Ψ → Fin n → Fin W.rank → ℂ) (v : GlobalT
   exact coord_conj _ (blockPerm_lt hq) (hx (t ρ)) _ i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k j`. Use `zR_eq t ht C hM hq hx hB idx hi (fun τ b a => realM C.θ w τ.1 a b) _ (fun ρ k a => ?_) k j` and prove the remaining obligations. Simplify using `only [GlobalTheory.Ker.Ctx.realPt, Equiv.symm_apply_apply, ht, realM_tauE]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem zOf_eq (w : WO V W) : C.zOf (C.xB B) w = zOf C.θ V W rfl X idx x w := by
   funext k j
@@ -495,7 +491,7 @@ theorem zOf_eq (w : WO V W) : C.zOf (C.xB B) w = zOf C.θ V W rfl X idx x w := b
   simp only [GlobalTheory.Ker.Ctx.realPt, Equiv.symm_apply_apply, ht, realM_tauE]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `zR_eq t ht C hM hq hx hB idx hi (fun τ (_ : Fin 1) => Data.emb τ.1 v) (GlobalTheory.Ker.embR C.X (of fun _ => v)) (fun ρ k a => ?_) 0 j` and prove the remaining obligations. Simplify using `only [GlobalTheory.Ker.embR, C.m.e_emb, ht, Data.emb, of_apply, ComplexEmbedding.conjugate_coe_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem pv_eq (v : Fin W.rank → D.host.E) : pv C.X C.idx (C.xB B) v = pv X idx x v := by
   funext j
@@ -507,7 +503,7 @@ variable (bas : (Fin C.g ⊕ Fin C.g → ℤ) ≃ₗ[ℤ] X.Λ) (hb : ∀ a, (C.
 include hb
 
 /- English proof (translation)
-Use extensionality with `i k`. Rewrite using `[perMat_apply, perMat_apply, hb]`. Conclude with `congrFun (pv_eq t ht C hM hq hx hB idx hi _) i`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perMat_eq (s : Fin C.g → Fin C.g ⊕ Fin C.g) : perMat C.X C.bas C.idx s (C.xB B) = perMat X bas idx s x := by
   ext i k
@@ -515,22 +511,22 @@ theorem perMat_eq (s : Fin C.g → Fin C.g ⊕ Fin C.g) : perMat C.X C.bas C.idx
   exact congrFun (pv_eq t ht C hM hq hx hB idx hi _) i
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.Dict.hx, imInv, tauMat, hMat, perMat_eq t ht C hM hq hx hB idx hi bas hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hx_eq (z z' : Fin C.g → ℂ) : GlobalTheory.Dict.hx C.X C.bas C.idx (C.xB B) z z' = GlobalTheory.Dict.hx X bas idx x z z' := by
   simp only [GlobalTheory.Dict.hx, imInv, tauMat, hMat, perMat_eq t ht C hM hq hx hB idx hi bas hb]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [thA, imInv, tauMat, hMat, perMat_eq t ht C hM hq hx hB idx hi bas hb]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem thA_eq {n : ℕ} (φ : TF n C.g) : thA C.X C.bas C.idx φ (C.xB B) = thA X bas idx φ x := by
   funext z
   simp only [thA, imInv, tauMat, hMat, perMat_eq t ht C hM hq hx hB idx hi bas hb]
 
 /- English proof (translation)
-Establish `hd` using `GlobalTheory.Ker.ONBasis.mem_dom C.X (GlobalTheory.Ker.ONBasis.isONFr_xB C (isB t ht C hM hq hx hB))`. Take `⟨h1, h2⟩` from `GlobalTheory.Ker.ZakEx.isZak_Th D V W C _ hd φ hφ`. Establish `h3 : (IsThetaFunO C.ψ V W f ∧ Reads C.θ V W rfl X bas idx f φ x) ↔ C.IsZak (C.xB B) φ f`. Use `and_congr Iff.rfl ((and_iff_right hφ).trans (forall_congr' fun w => imp_congr Iff.rfl ?_))` and prove the remaining obligations. Establish `h4` using `zOf_eq t ht C hM hq hx hB idx hi w`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `GlobalTheory.Ker.Ctx.zOf at h4`. Simplify using `only [GlobalTheory.Ker.thR, GlobalTheory.Ker.gaussR, h4, hx_eq t ht C hM hq hx hB idx hi bas hb, thA_eq t ht C hM hq hx hB idx hi bas hb, neg_mul]`. Rewrite using `[h3]`. Conclude with `⟨h2 f, fun h => h ▸ h1⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem reads_iff (f : WO V W → ℂ) (φ : TF V.rank C.g) (hφ : GlobalTheory.SW.IsSB φ) :
     (IsThetaFunO C.ψ V W f ∧ Reads C.θ V W rfl X bas idx f φ x) ↔ f = C.Th (C.xB B) φ := by
@@ -552,17 +548,17 @@ end GlobalTheory.AdTh.ToKer
 open GlobalTheory.AdTh.ToKer GlobalTheory.Ker.ConjDatum in
 
 /- English proof (translation)
-Introduce `D ψ θ V W g X bas idx hstd hinf he hV hM hS`. Establish `hf : Function.Bijective fun ρ : D.what₂.Tau => (⟨tauE D ρ, (hM.psi _).2 ⟨ρ, rfl⟩⟩ : X.Ψ)` using `⟨fun a b h => GlobalTheory.StdRat.tauE_injective D (congrArg Subtype.val h), fun τ => ((hM.psi τ.1).1 τ.2).imp fun ρ h => Subtype.ext h.symm⟩`. Establish `hc : Function.Bijective (cpl X.Ψ)` using `⟨fun a b h => Subtype.ext ((ComplexEmbedding.involutive_conjugate _).injective (congrArg Subtype.val h)), fun σ => ⟨⟨_, (mem_image_conjugate _ _).1 σ.2⟩, Subtype.ext (conjugate_twice _)⟩⟩`. Set `t` to `Equiv.ofBijective _ hf`. Establish `ht : ∀ ρ, (t ρ).1 = tauE D ρ` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `c` to `Equiv.ofBijective _ hc`. Establish `hq : X.p0 + (negData (conjData X)).p0 = W.rank` using `Nat.add_sub_cancel' X.p0_le`. Establish `hE : ∀ u v, EF (negData (conjData X)) u v = EF X u v` using `fun u v => by`. Simplify using `only [EF, EFf, negData, conjData, herm_neg, neg_div, neg_mul, mul_neg, neg_neg]`. Set `m : GlobalTheory.Ker.Match V W (negData (conjData X))` to `⟨hV, by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `-X.Gm = _`. Rewrite using `[hM.model.1, neg_neg]`. Use the proof step `rfl, t.trans c, fun _ => rfl, by`. Express the relevant statement in the definitionally equal form `-X.κ0 = _`. Rewrite using `[hM.kap, neg_neg]⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨negData (conjData X), m, (add_comm _ _).trans hq, hq, bas, idx.trans (c.prodCongr (blockPerm hq).symm), fun a b => (hE _ _).trans (hS a b), rfl, fun _ => rfl, hE, fun _ _ => rfl, fun j _ k hk => ?_, fun _ => rfl, fun x hx => ⟨⟨_, (isBasOf_iff t ht hq x _).2 fun _ => rfl⟩, fun B …` and prove the remaining obligations. Rewrite using `[← blockPerm_symm hq, ← hk]`. Both sides reduce to the same expression. Introduce `C`. Rewrite `hB` using `[isBasOf_iff t ht]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hi : ∀ j, C.idx j = (C.m.e (t.symm (idx j).1), (blockPerm hq).symm (idx j).2)` using `fun j => by`. Express the relevant statement in the definitionally equal form `_ = (c (t (t.symm (idx j).1)), _)`. Rewrite using `[Equiv.apply_symm_apply]`. Both sides reduce to the same expression. Establish `hb : ∀ a, (C.bas a : Fin W.rank → D.host.E) = bas a` using `fun _ => rfl`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨isB t ht C hM hq hx hB, (isInvOf_iff_eq t ht C hM hq hx hB _).2 rfl, fun s => (isInvOf_iff_eq t ht C hM hq hx hB s).1, zOf_eq t ht C hM hq hx hB idx hi, pv_eq t ht C hM hq hx hB idx hi, hx_eq t ht C hM hq hx hB idx hi bas hb, thA_eq t ht C hM hq hx hB idx hi bas hb, fun u => ⟨is …` and prove the remaining obligations. Use `(isBasOf_iff t ht hq _ _).2 fun ρ => ?_` and prove the remaining obligations. Rewrite using `[mat_frMove t ht, GlobalTheory.Ker.Ctx.mvB, hB]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AdTh.reads_iff_eq_th : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (g : ℕ) (X : Data D.host.E W.rank) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin W.rank) (hstd : IsStdChar D ψ (-1)) (hinf : IsInfFam θ) (he : Even V.rank), V.gram = 1 → IsMod W rfl X → IsSympl X bas → ∃ (X' : Data D.host.E W.rank) (m : GlobalTheory.Ker.Match V W X') (hq' : X'.p0 + X.p0 = W.rank) (hq : X.p0 + X'.p0 = W.rank) (bas' : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X'.Λ) (idx' : Fin g ≃ X'.Ψ × Fin W.rank) (hs : IsSympl X' bas'), X'.Λ = X.Λ ∧ (∀ a, (bas' a : Fin W.rank → D.host.E) = bas a) ∧ (∀ u v, EF X' u v = EF X u v) ∧ (∀ (y : Matrix (Fin V.rank) (Fin W.rank) D.host.E) (φ : TF V.rank g), heisG X' bas' y φ = heisG X bas y φ) ∧ (∀ j (a : Fin W.rank) (k : Fin X'.p0 ⊕ Fin X.p0), (idx j).2 = rowIdx hq k → ((idx' j).2 : ℕ) = Sum.elim (fun i : Fin X'.p0 => (i : ℕ)) (fun i : Fin X.p0 => X'.p0 + (i : ℕ)) k) ∧ (∀ j, (idx' j).1.1 = ComplexEmbedding.conjugate (idx j).1.1) ∧ ∀ x : Frame X.Ψ W.rank, IsONFr X x → (∃ B, IsBasOf W rfl X hq x B) ∧ ∀ B, IsBasOf W rfl X hq x B → let C : GlobalTheory.Ker.Ctx V W := ⟨ψ, hstd, θ, hinf, X', m, g, X.p0, hq', bas', idx', hs, he⟩; C.IsB B ∧ IsInvOf W rfl X x (C.sB B) ∧ (∀ s, IsInvOf W rfl X x s → s = C.sB B) ∧ (∀ w, C.zOf (C.xB B) w = zOf θ V W rfl X idx x w) ∧ (∀ v, pv X' idx' (C.xB B) v = pv X idx x v) ∧ (∀ z z', hx X' bas' idx' (C.xB B) z z' = hx X bas idx x z z') ∧ (∀ φ : TF V.rank g, thA X' bas' idx' φ (C.xB B) = thA X bas idx φ x) ∧ (∀ u : GA D W, IsONFr X (frMove θ W rfl X u x) ∧ IsBasOf W rfl X hq (frMove θ W rfl X u x) (C.mvB u B)) ∧ ∀ (f : WO V W → ℂ) (φ : TF V.rank g), GlobalTheory.SW.IsSB φ → ((IsThetaFunO ψ V W f ∧ Reads θ V W rfl X bas idx f φ x) ↔ f = C.Th (C.xB B) φ) := by
   intro D ψ θ V W g X bas idx hstd hinf he hV hM hS

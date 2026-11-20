@@ -10,15 +10,15 @@ open GlobalTheory.LieSmooth
 namespace GlobalTheory.LieSmooth
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨d₁, hd₁, h₁⟩` from `hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨d₂, hd₂, h₂⟩` from `hz`. Use `⟨d₁ * d₂, mul_ne_zero hd₁ hd₂, ?_⟩` and prove the remaining obligations. Establish `e1 : (d₁ * d₂) • y = d₂ • (d₁ • y)` using `by rw [mul_comm, mul_smul]`. Establish `e2 : (d₁ * d₂) • z = d₁ • (d₂ • z)` using `by rw [mul_smul]`. Rewrite using `[smul_add, e1, e2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `E.add_mem (E.smul_mem _ h₁) (E.smul_mem _ h₂)`. Consider the case `smul c y _ hy`. Take `⟨d, hd, h⟩` from `hy`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) c`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbK : (algebraMap (𝓞 K) K b) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Use `⟨b * d, mul_ne_zero hb0 hd, ?_⟩` and prove the remaining obligations. Establish `key : (b * d) • ((algebraMap (𝓞 K) K a / algebraMap (𝓞 K) K b) • y) = a • (d • y)`. Rewrite using `[← algebraMap_smul K (b * d), ← algebraMap_smul K a, ← algebraMap_smul K d, smul_smul, smul_smul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[key]`. Conclude with `E.smul_mem _ h`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_smul_mem_of_mem_kspan {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V]
     [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (E : Submodule (𝓞 K) V) (x : V)
@@ -51,15 +51,15 @@ theorem exists_ne_zero_smul_mem_of_mem_kspan {K : Type} [Field K] [NumberField K
     exact E.smul_mem _ h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Take `⟨g, hg⟩` from `LinearMap.exists_extend ((Module.Basis.span hv).coord i)`. Establish `hgv : ∀ k, g (v k) = if k = i then 1 else 0`. Introduce `k`. Establish `h1 : g (v k) = (Module.Basis.span hv).coord i (Module.Basis.span hv k)`.
+Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hg, LinearMap.comp_apply, Submodule.subtype_apply, Module.Basis.span_apply]`. Rewrite using `[h1, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Use `Submodule.FG.of_le (hE.map (g.restrictScalars (𝓞 K))) ?_` and prove the remaining obligations. Introduce and unpack `a ⟨c, rfl, hc, hmem⟩`. Use `⟨_, hmem, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.restrictScalars_apply, map_sum]`. Simplify using `only [map_smul, hgv, smul_eq_mul, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `hvi : v i ∈ Submodule.span K (E : Set V)` using `hspan (Submodule.subset_span ⟨i, rfl⟩)`. Take `⟨d, hd, hdE⟩` from `exists_ne_zero_smul_mem_of_mem_kspan E (v i) hvi`. Introduce `hbot`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : algebraMap (𝓞 K) K d ∈ grIdeal E v i`. Use `⟨Pi.single i (algebraMap (𝓞 K) K d), by simp, fun k hk => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[Pi.single_apply, (ne_of_lt hk).symm]`. Rewrite using `[Finset.sum_eq_single i (fun k _ hk => by simp [Pi.single_apply, hk]) (by simp)]`. Simplify `hdE` using `[algebraMap_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hmem` using `[hbot, Submodule.mem_bot]`. Conclude with `hd (by simpa using hmem)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grIdeal_fg_ne_bot (K : Type) [Field K] [NumberField K] (V : Type) [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (E : Submodule (𝓞 K) V) (r : ℕ) (v : Fin r → V) (i : Fin r)

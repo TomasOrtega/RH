@@ -18,20 +18,20 @@ attribute [local instance] Ideal.Quotient.field
 namespace UpperTheory.Gal.Int.Geo.Pl
 
 /- English proof (translation)
-Introduce `E _ _ _ n d x hd hx w _ _` and use `(UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂.cenEx E n d x hd hx w).imp fun _ h => h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cenEx_holds : CenEx := fun E _ _ _ n d x hd hx w _ _ =>
   (UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂.cenEx E n d x hd hx w).imp fun _ h => h.1
 
 /- English proof (translation)
-The claim follows from `σ.atp.le (Ideal.subset_span (Set.mem_insert _ _))`.
+A detailed English derivation is pending.
 -/
 private theorem q_mem {E : Type} [Field E] [NumberField E] [IsCMField E] {A : Arith E} {n p : ℕ} [Fact p.Prime] {S : Setup A n p}
     {N : Lv p} {w : Plc E} (σ : Site S N w) : ((σ.q : ℕ) : 𝓞 E) ∈ w.asIdeal :=
   σ.atp.le (Ideal.subset_span (Set.mem_insert _ _))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Take `⟨a, b, e⟩ : IsCoprime (q : 𝓞 E) (c : 𝓞 E)` from `(hq.coprime_iff_not_dvd.2 h).cast`. Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (e ▸ add_mem (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem dvd_of {E : Type} [Field E] [NumberField E] (w : Plc E) {q c : ℕ} (hq : q.Prime) (h1 : (q : 𝓞 E) ∈ w.asIdeal)
     (h2 : (c : 𝓞 E) ∈ w.asIdeal) : q ∣ c := by
@@ -40,7 +40,7 @@ private theorem dvd_of {E : Type} [Field E] [NumberField E] (w : Plc E) {q c : �
   exact w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (e ▸ add_mem (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)))
 
 /- English proof (translation)
-Introduce and unpack `E _ _ _ A n p _ S F x hx N w σ i hi _ ⟨hw, t, z, ht, hz, rfl⟩`. Establish `s` using `shpOf h1 E A n x hx σ.q σ.atp.prime σ.good.1 w (q_mem σ) hw i hi t z ht hz`. Take `⟨a1, a2⟩` from `tCong h1 h2 h3 E A n p S F x hx N w σ i hi _ s`. Take `⟨m1, m2, m3⟩` from `tMult h1 h2 h3 E A n p S F x hx N w σ i hi _ s`. Conclude with `⟨m1, a1, a2, tKill h1 h2 h3 E A n p S F x hx N w σ i hi _ s, tCard h1 h2 h3 E A n p S F x hx N w σ i hi _ s, by rw [F.mult]; exact m2, m3⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tjOK_of (h1 : Sides) (h2 : Dict) (h3 : LevBasic) : TjOK := by
   rintro E _ _ _ A n p _ S F x hx N w σ i hi _ ⟨hw, t, z, ht, hz, rfl⟩
@@ -51,11 +51,11 @@ theorem tjOK_of (h1 : Sides) (h2 : Dict) (h3 : LevBasic) : TjOK := by
     by rw [F.mult]; exact m2, m3⟩
 
 /- English proof (translation)
-Introduce and unpack `E _ _ _ A n p _ S F x hx N w σ i hi _ ⟨hw, t, z, ht, hz, rfl⟩ _`. Establish `s` using `shpOf h1 E A n x hx σ.q σ.atp.prime σ.good.1 w (q_mem σ) hw i hi t z ht hz`. Generalize the expression as in `loc hw t * z ^ i = g at s`. Take `⟨l1, l2, l3⟩` from `levLoc h1 h2 h3 E A n p S F x hx N w σ i hi g s`. Rewrite using `[← locIdx E n w i hi _ s.at_w, Subgroup.inf_relIndex_left]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (σ.K₀.comap F.j).map F.j = σ.K₀` using `Subgroup.map_comap_eq_self_of_surjective F.surj _`. Establish `e2 : (σ.K₀.comap F.j).map (comp w) = KGL w n` using `le_antisymm (by rintro _ ⟨k, hk, rfl⟩; exact l1 k hk) fun κ hκ => l2 κ hκ`. Use `conv_lhs => rw [← e1]`. Use `conv_rhs => rw [← e2]`. Rewrite using `[← Subgroup.relIndex_comap, ← Subgroup.relIndex_comap, e1, e2, ← Subgroup.inf_relIndex_right, ← Subgroup.inf_relIndex_right (Subgroup.comap (comp w) _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 1`. Use extensionality with `k`. Simplify using `only [Subgroup.mem_inf, Subgroup.mem_comap, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, and_congr_left_iff]`. Introduce `hk`. Simplify `l3 k hk` using `only [map_mul, map_inv]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tjIdx_of (h1 : Sides) (h2 : Dict) (h3 : LevBasic) : TjIdx := by
   rintro E _ _ _ A n p _ S F x hx N w σ i hi _ ⟨hw, t, z, ht, hz, rfl⟩ _
@@ -77,17 +77,15 @@ theorem tjIdx_of (h1 : Sides) (h2 : Dict) (h3 : LevBasic) : TjIdx := by
   simpa only [map_mul, map_inv] using l3 k hk
 
 /- English proof (translation)
-Introduce `E _ _ _ A n p _ S F d x hd hx2 hx N`. Take `⟨-, b2, b3, -, b5, b6⟩` from `h3 p S.D S.G S.L`. Use `⟨fun k hk => ⟨⟨S.L.KN N.1, k, N, le_rfl, KN_anti (one_dvd _), integ_of_mem hk, dvd_rfl, fun k' hk' u hu => b5 _ _ (b3 N.1) _ (mul_mem hk (KN_anti (one_dvd _) hk')) u hu⟩, ⟨rfl, rfl, hk⟩, rfl⟩, fun w σ i hi => ?_⟩` and prove the remaining obligations. Take `⟨s1, hw, s3, -⟩` from `h1 E A x hx σ.q σ.atp.prime σ.good.1 w (q_mem σ)`. Take `⟨z, hz⟩` from `cenEx_holds E n d x hd hx2 w s1 fun q hq hqw u hu => s3 u (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[(Nat.prime_dvd_prime_iff_eq hq σ.atp.prime).1 (dvd_of w hq hqw (q_mem σ))] at hu)` and apply the resulting hypothesis. Take `⟨ϖ, hϖ⟩ : ∃ ϖ : w.adicCompletion E, Formalism.UG.IsUnifV E w ϖ` from `w.valuedAdicCompletion_surjective E _`. Establish `h0 : ϖ ≠ 0` using `fun h => by`. Rewrite `hϖ` using `[h, Formalism.UG.IsUnifV, map_zero]`. Conclude with `WithZero.zero_ne_coe hϖ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `t : GLw n w` to `Matrix.GeneralLinearGroup.mkOfDetNeZero (Matrix.diagonal fun k : Fin n => if (k : ℕ) < i then ϖ else 1) (by`. Rewrite using `[Matrix.det_diagonal]`. Apply the tactic sequence `exact Finset.prod_ne_zero_iff.2 fun k _ => by split_ifs <;> simp [h0])`. Establish `hH : IsH F x w i (F.j (loc hw t * z ^ i))` using `⟨hw, t, z, ⟨ϖ, hϖ, rfl⟩, hz, rfl⟩`. Take `⟨t1, t2⟩` from `tjOK_of h1 h2 h3 E A n p S F x hx N w σ i hi _ hH`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hN0 : Ideal.absNorm w.asIdeal ≠ 0` using `fun h => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `hc : 0 < Ideal.absNorm w.asIdeal ^ i` using `pow_pos (Nat.pos_of_ne_zero hN0) i`. Establish `hp : (Ideal.absNorm w.asIdeal).Coprime p`. Use `((Fact.out : p.Prime).coprime_iff_not_dvd.2 fun h => σ.atp.ne ?_).symm` and prove the remaining obligations. Establish `h4 : Ideal.absNorm w.asIdeal ∣ σ.q ^ Module.finrank ℤ (𝓞 E)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.absNorm_span_natCast]`. Conclude with `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).2 (q_mem σ))`. Conclude with `((Nat.prime_dvd_prime_iff_eq Fact.out σ.atp.prime).1 ((Fact.out : p.Prime).dvd_of_dvd_pow (h.trans h4))).symm`. Establish `hK1 : σ.K₀ ≤ S.L.KN 1` using `fun k hk => ((σ.isLev k).1 hk).1`. Use `⟨⟨σ.K₀, _, ⟨N.1 * Ideal.absNorm w.asIdeal ^ i, N.2.1.trans (Nat.le_mul_of_pos_right _ hc), N.2.2.mul_left (hp.pow_left i)⟩, b2 _ _ _ _ (b3 N.1) σ.isLev ((Ideal.span_singleton_le_iff_mem _).2 σ.mem), hK1, t1, Dvd.intro _ rfl, fun k hk u hu => ?_⟩, hi, rfl, hH, rfl⟩` and prove the remaining obligations.
-
-Use `b6 N.1 _ _ t1 t2.back hc _ (b5 _ _ (b3 _) k (hK1 hk) u hu)` as an intermediate fact. Simplify `this` using `only [mul_assoc, _root_.mul_inv_rev]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem memEx_of (h1 : Sides) (h2 : Dict) (h3 : LevBasic) : MemEx := by
   intro E _ _ _ A n p _ S F d x hd hx2 hx N

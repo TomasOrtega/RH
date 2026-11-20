@@ -6,13 +6,11 @@ open IsLocalRing GlobalTheory.Toroidal TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hcomp : algebraMap R K = (algebraMap B K).comp (algebraMap R B)` using `IsScalarTower.algebraMap_eq R B K`. Establish `hinjK : Function.Injective (algebraMap R K)`. Rewrite using `[hcomp]`. Conclude with `(IsFractionRing.injective B K).comp hinj`. Use `haveI : FaithfulSMul R K := (faithfulSMul_iff_algebraMap_injective R K).mpr hinjK`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `IsFractionRing.of_field R K (fun z => ?_)` and prove the remaining obligations. Take `⟨b₁, b₂, -, rfl⟩` from `IsFractionRing.div_surjective (A := B) z`. Take `⟨a₁, s₁, hs₁, e₁⟩` from `h b₁`. Take `⟨a₂, s₂, hs₂, e₂⟩` from `h b₂`. Use `⟨a₁ * s₂, s₁ * a₂, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `n₁ : algebraMap B K (algebraMap R B s₁) ≠ 0`. Rewrite using `[map_ne_zero_iff _ (IsFractionRing.injective B K), map_ne_zero_iff _ hinj]`. Conclude with `hs₁`. Establish `n₂ : algebraMap B K (algebraMap R B s₂) ≠ 0`. Rewrite using `[map_ne_zero_iff _ (IsFractionRing.injective B K), map_ne_zero_iff _ hinj]`.
-
-Conclude with `hs₂`. Simplify using `only [hcomp, RingHom.comp_apply, map_mul, ← e₁, ← e₂]`. Use `set u := algebraMap B K (algebraMap R B s₁)`. Use `set v := algebraMap B K (algebraMap R B s₂)`. Rewrite using `[show u * algebraMap B K b₁ * v = (u * v) * algebraMap B K b₁ by ring, show u * (v * algebraMap B K b₂) = (u * v) * algebraMap B K b₂ by ring, mul_div_mul_left _ _ (mul_ne_zero n₁ n₂)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFractionRing_of_forall_eq_div {B : Type} [CommRing B] [IsDomain B]
     (K : Type) [Field K] [Algebra B K] [IsFractionRing B K]
@@ -42,21 +40,19 @@ theorem isFractionRing_of_forall_eq_div {B : Type} [CommRing B] [IsDomain B]
     mul_div_mul_left _ _ (mul_ne_zero n₁ n₂)]
 
 /- English proof (translation)
-Introduce `A B _ _ _ _ _ _ C hC hfrac`. Use `haveI : Algebra.FiniteType A C := hC`. Use `haveI : Algebra.EssFiniteType ℤ C := Algebra.EssFiniteType.comp ℤ A C`. Use `haveI : IsNoetherianRing C := Algebra.EssFiniteType.isNoetherianRing ℤ C`. Use `set K := FractionRing B`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set D : Subalgebra C B := integralClosure C B with hD`. Use `haveI hCK : IsFractionRing C K := by`. Use `isFractionRing_of_forall_eq_div (B := B) K C Subtype.val_injective (fun b => ?_)` and prove the remaining obligations. Take `⟨a, ha, s, hs, hne, e⟩` from `hfrac b`. Use `⟨⟨a, ha⟩, ⟨s, hs⟩, ?_, e⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h0`. Apply `hne` to reduce the goal to its premises. Simplify using `using congrArg Subtype.val h0`. Use `haveI hDK : IsFractionRing D K := by`. Use `isFractionRing_of_forall_eq_div (B := B) K D Subtype.val_injective (fun b => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha, s, hs, hne, e⟩` from `hfrac b`. Use `⟨⟨a, D.algebraMap_mem ⟨a, ha⟩⟩, ⟨s, D.algebraMap_mem ⟨s, hs⟩⟩, ?_, e⟩` and prove the remaining obligations. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Simplify using `using congrArg Subtype.val h0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hinjBK : Function.Injective (IsScalarTower.toAlgHom C B K)` using `IsFractionRing.injective B K`. Establish `hfinK : Module.Finite C (integralClosure C K)` using `by haveI := finite_integralClosure_of_essFiniteType_int C`. Set `e : FractionRing C ≃ₐ[C] K` to `IsLocalization.algEquiv (nonZeroDivisors C) _ _`. Conclude with `Module.Finite.equiv e.mapIntegralClosure.toLinearEquiv`. Establish `hfinD : Module.Finite C D`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `f : D →ₗ[C] integralClosure C K` to `{ toFun := fun x => ⟨algebraMap B K x, x.2.map (IsScalarTower.toAlgHom C B K)⟩ map_add' := fun x y => by ext; simp map_smul' := fun c x => by ext; simp [Algebra.smul_def]; left; exact (IsScalarTower.algebraMap_apply C B K c).symm }`. Use `Module.Finite.of_injective f (fun x y hxy => ?_)` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `IsFractionRing.injective B K` to reduce the goal to its premises. Conclude with `congrArg Subtype.val hxy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hftD : Algebra.FiniteType A D` using `Algebra.FiniteType.trans hC inferInstance`. Establish `hicD : IsIntegrallyClosed D`. Use `(isIntegrallyClosed_iff K).mpr (fun {x} hx => ?_)` and prove the remaining obligations. Establish `hxB : IsIntegral B x` using `hx.tower_top`. Take `⟨y, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hxB`.
-
-Establish `hxC : IsIntegral C (algebraMap B K y)` using `isIntegral_trans _ hx`. Establish `hyC : IsIntegral C y` using `(isIntegral_algHom_iff _ hinjBK).mp hxC`. Conclude with `⟨⟨y, hyC⟩, rfl⟩`. Use `⟨D.restrictScalars A, fun x hx => ?_, hftD, hicD, fun x hx => hx⟩` and prove the remaining obligations. Conclude with `isIntegral_algebraMap (R := C) (A := B) (x := ⟨x, hx⟩)`.
+A detailed English derivation is pending.
 -/
 theorem exists_finiteType_isIntegrallyClosed_integral_over :
     ∀ (A B : Type) [CommRing A] [Algebra.EssFiniteType ℤ A] [CommRing B] [IsDomain B]

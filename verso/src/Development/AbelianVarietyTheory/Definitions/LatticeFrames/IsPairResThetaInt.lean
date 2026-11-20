@@ -27,15 +27,15 @@ def IsPairRes {S T' : HSp D} (ω' : GA D S × GA D T' →* Module.End ℂ (WO S 
     ∀ g, ResidueAt (fun s => c s * thetaPair ω' m Ψ (fun h => E h s) g) s₀ (B g)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, isExtAt_const 0 s₀, laurentConst_of_tendsto (by simp)⟩`.
+Supply the required witnesses or components.
 -/
 theorem residueAt_zero (s₀ : ℂ) : ResidueAt (fun _ : ℂ => (0 : ℂ)) s₀ 0 :=
   ⟨_, isExtAt_const 0 s₀, laurentConst_of_tendsto (by simp)⟩
 
 /- English proof (translation)
-Take `⟨E, c, s₀, σ, -, hr⟩` from `h`. Establish `e : (fun s => c s * thetaPair ω' m Ψ (fun h => E h s) g) = fun _ => 0` using `funext fun s => by`. Establish `: (descend (GQ T') fun h => thetaKO ω' g h Ψ * E h s) = fun _ => 0` using `funext fun q => by simp [AutomorphicL2Unitary.descend, h0]`. Simplify using `[thetaPair, this]`. Use `hr g` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[e]`. Conclude with `CoeffAt.unique this (residueAt_zero s₀)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsPairRes.eq_zero {S T' : HSp D} {ω' : GA D S × GA D T' →* Module.End ℂ (WO S T' → ℂ)} {m : Measure (GA D T')}
     {Ψ : WO S T' → ℂ} {B : GA D S → ℂ} (h : IsPairRes ω' m Ψ B) {g : GA D S} (h0 : ∀ x, thetaKO ω' g x Ψ = 0) : B g = 0 := by
@@ -48,9 +48,9 @@ theorem IsPairRes.eq_zero {S T' : HSp D} {ω' : GA D S × GA D T' →* Module.En
   exact CoeffAt.unique this (residueAt_zero s₀)
 
 /- English proof (translation)
-Take `⟨E, c, s₀, σ, -, hr⟩` from `h`. Establish `h1` using `hr g`. Establish `h2` using `hr g'`. Unfold `thetaPair at h1 h2`. Simplify using `only [h0] at h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Conclude with `CoeffAt.unique h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem IsPairRes.eq_of_kernel {S T' : HSp D} {ω' : GA D S × GA D T' →* Module.End ℂ (WO S T' → ℂ)} {m : Measure (GA D T')}
     {Ψ : WO S T' → ℂ} {B : GA D S → ℂ} (h : IsPairRes ω' m Ψ B) {g g' : GA D S}
@@ -63,7 +63,7 @@ theorem IsPairRes.eq_of_kernel {S T' : HSp D} {ω' : GA D S × GA D T' →* Modu
   exact CoeffAt.unique h1 h2
 
 /- English proof (translation)
-Use `⟨fun _ _ => 1, fun s => κ * s⁻¹, 0, 0, fun _ _ g => h g, fun g => ?_⟩` and prove the remaining obligations. Establish `h3 : IsMerExt (fun s : ℂ => κ * s⁻¹ * thetaInt ω' m Ψ g) Set.univ fun s => κ * s⁻¹ * thetaInt ω' m Ψ g` using `⟨isRightDomain_univ, fun s _ => by fun_prop, 0, fun s _ => rfl⟩`. Use `(h3.isExtAt trivial).coeffAt_of_tendsto (k := 1) (tendsto_const_nhds.congr' (eventually_nhdsWithin_of_forall fun s hs => ?_))` and prove the remaining obligations. Establish `: s ≠ 0` using `hs`. Simplify using `only [Pi.smul_apply, smul_eq_mul, sub_zero, pow_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -88,9 +88,9 @@ def Met (A T T' : HSp D) : Prop :=
       IsPairRes ω' m Ψ B ∧ EisCoeffAt A (flat A a (swSec A T ω μ₀ 𝓕₀ φ) (sZero A T)) (sZero A T) (-1) B
 
 /- English proof (translation)
-Take `⟨ψ, χ, ω, a, θ, sS, sT, ν, 𝓕, -, φ, hω, ha, hθ, hS, hsT, hK, hν, -, hφ, h1⟩` from `GlobalTheory.Core.Rk.IP.FockModel.hyp A T hA hT (by omega) (by omega)`. Take `⟨η, hη⟩` from `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`. Take `⟨ω', hω'⟩` from `GlobalTheory.WeilExist.exists_isWeilDatumO D ψ hω.std (dblSp A) T' 1 χ ⟨η, hη⟩ hω.hecS hω.hecT hω.resS (resEta_parity hω.resT (by omega))`. Take `⟨b, hb⟩` from `exists_isMaj T`. Take `⟨b', hb'⟩` from `exists_isMaj T'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `fun v => GlobalTheory.Core.Rk.IP.Model.isSplit_two (D := D) v`. Take `⟨Ψ, B, p1, p2, p3, p4⟩` from `h D ψ A T T' t d hr hlt h0 χ ω ω' hω hω' a b ha hb (GlobalTheory.Core.Rk.IP.hasIwasawa_Khat D A a ha) (GlobalTheory.Core.Rk.IwAd.hasIw_Kmax D T T' t d b h2 hb) ν 𝓕 hν Measure.haar inferInstance θ hθ sS sT hS hsT hK (hc.imp_right fun ⟨T₀, r', d₀, e1, e2⟩ => ⟨T₀, r', d₀, b', e1, e2 …`. Conclude with `⟨ψ, χ, ω, ω', a, ν, 𝓕, Measure.haar, φ, hω, hω', inferInstance, hν, h1, Ψ, B, p1, p2, p3, p4⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem met_of (h : FirstTermWeak) (A T T' : HSp D) (t : ℕ) (d : HypDec T T' t) (hA : HSpace.SigOK A) (hT : HSpace.SigOK T)
     (hr : T.rank + T'.rank = 2 * A.rank) (hlt : T'.rank < T.rank) (h0 : 0 < T'.rank)
@@ -110,20 +110,20 @@ theorem met_of (h : FirstTermWeak) (A T T' : HSp D) (t : ℕ) (d : HypDec T T' t
   exact ⟨ψ, χ, ω, ω', a, ν, 𝓕, Measure.haar, φ, hω, hω', inferInstance, hν, h1, Ψ, B, p1, p2, p3, p4⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.BesselConvDefinite.isAniso_of_isDefinite _ (posSp_sigOK D n) fun _ => .inl rfl`.
+A detailed English derivation is pending.
 -/
 theorem isAniso_pos (D : D7) (n : ℕ) : IsAniso (posSp D n) :=
   GlobalTheory.BesselConvDefinite.isAniso_of_isDefinite _ (posSp_sigOK D n) fun _ => .inl rfl
 
 /- English proof (translation)
-The claim follows from `met_of h _ _ _ 1 (hypSumDec D _ 1) (posSp_sigOK D 2) (sigOK_hsum (posSp_sigOK D 1) (hypSp_sigOK D 1)) rfl (by show 1 < 1 + (1 + 1); omega) Nat.one_pos (.inl (isAniso_pos D 1))`.
+A detailed English derivation is pending.
 -/
 theorem met_aniso (h : FirstTermWeak) (D : D7) : Met (posSp D 2) (hsum (posSp D 1) (hypSp D 1)) (posSp D 1) :=
   met_of h _ _ _ 1 (hypSumDec D _ 1) (posSp_sigOK D 2) (sigOK_hsum (posSp_sigOK D 1) (hypSp_sigOK D 1)) rfl
     (by show 1 < 1 + (1 + 1); omega) Nat.one_pos (.inl (isAniso_pos D 1))
 
 /- English proof (translation)
-The claim follows from `met_of h _ _ _ 1 (hypSumDec D _ 1) (posSp_sigOK D 4) (sigOK_hsum (sigOK_hsum (posSp_sigOK D 1) (hypSp_sigOK D 1)) (hypSp_sigOK D 1)) rfl (by show 1 + (1 + 1) < 1 + (1 + 1) + (1 + 1); omega) (by show 0 < 1 + (1 + 1); omega) (.inr ⟨_, 1, hypSumDec D _ 1, isAniso_pos D 1, Nat.one_po …`.
+A detailed English derivation is pending.
 -/
 theorem met_iso (h : FirstTermWeak) (D : D7) :
     Met (posSp D 4) (hsum (hsum (posSp D 1) (hypSp D 1)) (hypSp D 1)) (hsum (posSp D 1) (hypSp D 1)) :=

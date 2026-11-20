@@ -10,7 +10,7 @@ namespace GroundTheory.Heights₂.Heights.LowerBoundFree
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [genMat0Fr, genMatFr, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem genMat0Fr_eq_map (F : Type) [Field F] (Ψ : Type) (n j : ℕ) (τ : Ψ) :
     genMat0Fr F Ψ n j τ = (algebraMap (MvPolynomial (Ψ × Fin n × Fin n) F) (GenFrac F Ψ n)).mapMatrix
@@ -21,13 +21,13 @@ theorem genMat0Fr_eq_map (F : Type) [Field F] (Ψ : Type) (n j : ℕ) (τ : Ψ) 
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `F _ Ψ n j τ a`. Rewrite using `[genMat0Fr_eq_map, ← leadMinor_map]`. Use `(map_ne_zero_iff _ (IsFractionRing.injective (MvPolynomial (Ψ × Fin n × Fin n) F) (GenFrac F Ψ n))).2 ?_` and prove the remaining obligations. Introduce `h0`. Establish `h1` using `congrArg (MvPolynomial.eval (fun q : Ψ × Fin n × Fin n => if q.2.1 = q.2.2 then (1 : F) else 0)) h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[leadMinor_map, map_zero]`. Establish `hP : (MvPolynomial.eval (fun q : Ψ × Fin n × Fin n => if q.2.1 = q.2.2 then (1 : F) else 0)).mapMatrix (Matrix.of fun (p q : Fin n) => if (p : ℕ) < j ∧ j ≤ (q : ℕ) then 0 else (X (τ, p, q) : MvPolynomial (Ψ × Fin n × Fin n) F)) = 1`. Use extensionality with `p q`. Distinguish the cases in `hc : (p : ℕ) < j ∧ j ≤ (q : ℕ)`. Establish `hpq : p ≠ q`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Take `⟨hc₁, hc₂⟩` from `hc`. Use linear arithmetic over natural numbers and integers. Simplify using `[hc, hpq]`. Simplify using `[hc, Matrix.one_apply]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[hP, leadMinor_one]`. Conclude with `one_ne_zero h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GenLeadMinor0NeZero.full : GenLeadMinor0NeZero.Statement := by
   intro F _ Ψ n j τ a

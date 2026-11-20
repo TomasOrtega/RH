@@ -10,9 +10,7 @@ namespace GlobalTheory.CompanionTheory.BZMirabolic
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Establish `key : (unipEquiv k n).symm ((Subgroup.subgroupOfEquivOfLe (MirU_le_Mir k n)) x) = w`. Rewrite using `[MulEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hx`. Use `show Circle.toUnits (ψ (a ⬝ᵥ ((unipEquiv k n).symm ((Subgroup.subgroupOfEquivOfLe (MirU_le_Mir k n)) x)).toAdd)) = _`.
-
-Rewrite using `[key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaA_eq_of_unip (ψ : AddChar k Circle) {n : ℕ} (a : Fin n → k) (x : MirUin k n)
     (w : Multiplicative (Fin n → k))
@@ -27,11 +25,11 @@ theorem thetaA_eq_of_unip (ψ : AddChar k Circle) {n : ℕ} (a : Fin n → k) (x
   rw [key]
 
 /- English proof (translation)
-Introduce `ψ n a m u`. Take `⟨v, hv⟩` from `(u.2 : ((u : Mir k n) : GL (Fin (n + 1)) k) ∈ MirU k n)`. Establish `hv' : ((u : Mir k n) : GL (Fin (n + 1)) k) = unip k n v` using `hv.symm`. Establish `e : glEmb k n m * ((u : Mir k n) : GL (Fin (n + 1)) k) * (glEmb k n m)⁻¹ = unip k n (Multiplicative.ofAdd ((m : Matrix (Fin n) (Fin n) k).mulVec v.toAdd))`. Rewrite using `[hv', glEmb_mul_unip', mul_inv_cancel_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : levi k n m * (u : Mir k n) * (levi k n m)⁻¹ ∈ MirUin k n` using `by show glEmb k n m * ((u : Mir k n) : GL (Fin (n + 1)) k) * (glEmb k n m)⁻¹ ∈ MirU k n`. Rewrite using `[e]`. Conclude with `⟨_, rfl⟩`. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[thetaA_eq_of_unip ψ _ u v hv', thetaA_eq_of_unip ψ a ⟨_, h⟩ _ e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [toAdd_ofAdd]`. Rewrite using `[dotProduct_mulVec]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaConj (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] : ThetaConj k := by

@@ -12,7 +12,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Number
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.NFacts.AtMemFacts
 /- English proof (translation)
-Establish `key : ∀ X : Σ (D₁ : D7) (c₁ : Formalism.L2.Host.CharFrame D₁) (C₁ : NChoice D₁), Formalism.L2.Host.TupTied D₁ c₁ C₁, X = ⟨withLoc a.nt.L, cfL a.nt.L a.nt.cf, chL a.nt.L a.nt.C, tpL a.nt.L a.nt.tp⟩ → GlobalTheory.HeightCounting.SameTw.OneField X.1 X.2.2.1`. Introduce and unpack `_ rfl`. Conclude with `(GlobalTheory.HeightCounting.SameTw.oneField_withLoc a.nt.L a.nt.C).2 a.nt.Sp.tw_reads`. Conclude with `key _ a.nt.pack`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem oneField_of_nAt_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} {cf : Formalism.L2.Host.CharFrame D} {C : NChoice D} {tp : Formalism.L2.Host.TupTied D cf C}
     (a : _root_.GlobalTheory.Mem.Top.Bl.NAtData hL D cf C tp) : GlobalTheory.HeightCounting.SameTw.OneField D C := by

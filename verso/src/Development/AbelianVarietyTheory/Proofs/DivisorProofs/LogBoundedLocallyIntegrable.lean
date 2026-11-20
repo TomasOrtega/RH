@@ -9,15 +9,15 @@ open scoped ContDiff
 namespace GlobalTheory.Mean4O
 
 /- English proof (translation)
-Take `⟨hZ, hnull, hpot, hpos, -, hr, -, hint, -⟩` from `h`. Establish `hD` using `locDensPos A (fun _ => Om) (fun _ => hpot) (fun _ => hpos) j`. Establish `hDc` using `locDensCont A (fun _ => Om) (fun _ => hpot) j`. Rewrite using `[locallyIntegrableOn_iff (A.chart j).open_target.isLocallyClosed]`. Introduce `K hK hKc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinv : ContinuousOn (fun y => |C| * (locDens A (fun _ => Om) j y)⁻¹) K` using `continuousOn_const.mul ((hDc.mono hK).inv₀ fun y hy => (hD y (hK hy)).ne')`. Establish `h1` using `(hint j K hK hKc).mul_continuousOn hinv hKc`. Establish `hVo : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' Zᶜ)` using `(A.chart j).isOpen_inter_preimage_symm hZ.isOpen_compl`. Establish `hae : ∀ᵐ y ∂(volume : Measure (Fin e → ℂ)), y ∉ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Z` using `measure_eq_zero_iff_ae_notMem.1 (hnull j)`. Establish `hKV : K =ᵐ[volume] (K ∩ ((A.chart j).target ∩ (A.chart j).symm ⁻¹' Zᶜ) : Set _)` using `by filter_upwards [hae] with y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `propext ⟨fun hyK => ⟨hyK, hK hyK, fun hz => hy ⟨hK hyK, hz⟩⟩, fun hyK => hyK.1⟩` and prove the remaining obligations. Use `Integrable.mono' h1 ?_ ?_` and prove the remaining obligations. Rewrite using `[Measure.restrict_congr_set hKV]`. Conclude with `((hu j).continuousOn.mono inter_subset_right).aestronglyMeasurable (hKc.measurableSet.inter hVo.measurableSet)`. Rewrite using `[ae_restrict_iff' hKc.measurableSet] filter_upwards [hae] with y hy hyK`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : (A.chart j).symm y ∉ Z` using `fun hz => hy ⟨hK hyK, hz⟩`. Establish `hr1` using `hr _ hz`. Establish `hr0 : 1 ≤ r ((A.chart j).symm y)` using `le_trans (Real.one_le_exp zero_le_one) hr1`. Establish `hc : cut Z univ r ((A.chart j).symm y) = r ((A.chart j).symm y)` using `indicator_of_mem (show _ ∈ univ ∩ Zᶜ from ⟨mem_univ _, hz⟩) _`. Establish `hDy` using `(hD y (hK hyK)).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : cut Z univ r ((A.chart j).symm y) * locDens A (fun _ => Om) j y * (|C| * (locDens A (fun _ => Om) j y)⁻¹) = |C| * r ((A.chart j).symm y)`. Rewrite using `[hc]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[he, Function.comp_apply, Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem locallyIntegrableOn_of_log_bound (e : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas e X) (Z : Set X)
     (r : X → ℝ) (Om : LocPot X) (h : IsBd A Z r Om) (u : X → ℝ) (C : ℝ) (hu : A.SmoothOn Zᶜ u)

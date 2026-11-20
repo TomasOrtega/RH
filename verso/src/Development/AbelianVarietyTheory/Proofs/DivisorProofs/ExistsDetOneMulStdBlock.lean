@@ -5,31 +5,29 @@ namespace GlobalTheory
 open Matrix
 
 /- English proof (translation)
-Establish `hli : LinearIndependent K y.col`. Rewrite using `[linearIndependent_iff_card_eq_finrank_span, Fintype.card_fin]`. Rewrite `hy` using `[Matrix.rank_eq_finrank_span_cols]`. Conclude with `hy.symm`. Set `b` to `Module.Basis.sumExtend hli`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfin : Finite (Fin r ⊕ Module.Basis.sumExtendIndex hli)` using `Module.Finite.finite_basis b`. Establish `: Finite (Module.Basis.sumExtendIndex hli)` using `Finite.of_injective (Sum.inr : _ → Fin r ⊕ _) Sum.inr_injective`. Establish `: Fintype (Module.Basis.sumExtendIndex hli)` using `Fintype.ofFinite _`. Establish `hcard : Fintype.card (Fin r ⊕ Module.Basis.sumExtendIndex hli) = n`. Rewrite using `[← Module.finrank_eq_card_basis b, Module.finrank_fin_fun]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : ∀ i, b (Sum.inl i) = y.col i`. Introduce `i`. Simplify using `only [b, Module.Basis.sumExtend, Module.Basis.reindex_apply, Module.Basis.coe_extend, Equiv.symm_symm, Equiv.trans_apply, Equiv.sumCongr_apply]`. Both sides reduce to the same expression. Establish `hS : Fintype.card (Module.Basis.sumExtendIndex hli) = n - r`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcard` using `[Fintype.card_sum, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Set `e : Fin (n - r) ≃ Module.Basis.sumExtendIndex hli` to `(Fintype.equivFinOfCardEq hS).symm`. Set `τ : Fin n → Fin r ⊕ Module.Basis.sumExtendIndex hli` to `fun c => if h : (c : ℕ) < r then Sum.inl ⟨c, h⟩ else Sum.inr (e ⟨c - r, by omega⟩)`. Establish `hτ : Function.Injective τ`.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c c' h`. Simplify using `only [τ] at h`. Use `split_ifs at h`. Apply the tactic sequence `all_goals first`. Consider the case `(simp only [Sum.inl.injEq, Fin.mk.injEq] at h; ext; omega)`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp only [Sum.inr.injEq, EmbeddingLike.apply_eq_iff_eq, Fin.mk.injEq] at h; ext; omega)`. Consider the case `exact absurd h Sum.inl_ne_inr`. Consider the case `exact absurd h.symm Sum.inl_ne_inr`. Set `s : Fin n → Fin n → K` to `b ∘ τ`. Establish `hs : LinearIndependent K s` using `b.linearIndependent.comp τ hτ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g₀ : Matrix (Fin n) (Fin n) K` to `Matrix.of fun i a => s a i`. Establish `hg₀col : g₀.col = s` using `by ext a i; rfl`. Establish `hu : IsUnit g₀` using `Matrix.linearIndependent_cols_iff_isUnit.mp (hg₀col ▸ hs)`. Establish `hdet : g₀.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp hu).ne_zero`. Set `last : Fin n` to `⟨n - 1, by omega⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `D : Matrix (Fin n) (Fin n) K` to `Matrix.diagonal fun a => if a = last then g₀.det⁻¹ else 1`. Set `g` to `g₀ * D`. Establish `hgdet : g.det = 1`. Simplify using `only [g, D, Matrix.det_mul, Matrix.det_diagonal, Finset.prod_ite_eq', Finset.mem_univ, if_true]`. Conclude with `mul_inv_cancel₀ hdet`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hU : IsUnit g` using `(Matrix.isUnit_iff_isUnit_det g).mpr (by rw [hgdet]; exact isUnit_one)`. Use `⟨hU.unit, ?_, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, hgdet]`. Establish `hE : ∀ (a : Fin n) (c : Fin r), ((a : ℕ) = (c : ℕ)) ↔ a = Fin.castLE hrn.le c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a c`. Rewrite using `[Fin.ext_iff, Fin.coe_castLE]`. Establish `hτc : ∀ c : Fin r, τ (Fin.castLE hrn.le c) = Sum.inl c`. Introduce `c`. Simplify using `only [τ, Fin.coe_castLE, dif_pos c.isLt]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[IsUnit.unit_spec]`. Use extensionality with `i c`. Simplify using `only [g, D, Matrix.mul_assoc, Matrix.mul_apply, Matrix.diagonal_apply, Matrix.of_apply, hE]`. Simplify using `only [mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Establish `hne : Fin.castLE hrn.le c ≠ last`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `h`. Establish `h2` using `congrArg Fin.val h`. Simplify using `only [Fin.coe_castLE, last] at h2`. Use linear arithmetic over natural numbers and integers. Simplify using `only [if_neg hne, mul_one]`.
-
-Use `show b (τ (Fin.castLE hrn.le c)) i = y i c`. Rewrite using `[hτc, hb]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_det_one_mul_stdBlock {K : Type} [Field K] {n r : ℕ} (hrn : r < n)
     (y : Matrix (Fin n) (Fin r) K) (hy : y.rank = r) :

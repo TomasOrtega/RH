@@ -12,25 +12,21 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
 /- English proof (translation)
-Introduce `K _ _ n r w hw f hf x`. Establish `hfin : {v : Pl K | finAt v (finEmb K n x) ∉ GLnLocal.integralGL (v.adicCompletion K) n}.Finite`. Establish `hB : {v : Pl K | AdelicGLn.finiteRestrictedEquiv K n x v ∉ GLnLocal.integralGL (v.adicCompletion K) n}.Finite` using `Filter.eventually_cofinite.1 (AdelicGLn.finiteRestrictedEquiv K n x).2`. Use `hB.subset ?_` and prove the remaining obligations. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : finAt v (finEmb K n x) = AdelicGLn.finiteRestrictedEquiv K n x v` using `by show (AdelicGLn.finiteRestrictedEquiv K n (AdelicGLn.prodEquiv K n (finEmb K n x)).2) v = _`. Rewrite using `[prodEquiv_finEmb]`. Simplify `hv` using `[e]`. Use `set S : Finset (Pl K) := hfin.toFinset ∪ Finset.univ.image w with hS`. Establish `hoff : ∀ v, v ∉ Set.range w → f v (finAt v (finEmb K n x)) = if finAt v (finEmb K n x) ∈ GLnLocal.integralGL (v.adicCompletion K) n then 1 else 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Rewrite using `[hf v hv]`. Distinguish the cases in `h : finAt v (finEmb K n x) ∈ GLnLocal.integralGL (v.adicCompletion K) n`. Rewrite using `[if_pos h]`. Conclude with `Set.indicator_of_mem (s := (GLnLocal.integralGL (v.adicCompletion K) n : Set (Gw n v))) h _`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg h]`. Conclude with `Set.indicator_of_notMem (s := (GLnLocal.integralGL (v.adicCompletion K) n : Set (Gw n v))) h _`. Establish `hsupp : Function.mulSupport (fun v => f v (finAt v (finEmb K n x))) ⊆ (S : Set (Pl K))`. Introduce `v hv`. Assume the negation of the conclusion as `hvS`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : v ∉ Set.range w`. Introduce and unpack `⟨i, rfl⟩`. Conclude with `hvS (by simp [hS])`. Establish `h2 : finAt v (finEmb K n x) ∈ GLnLocal.integralGL (v.adicCompletion K) n`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hvS (by simp only [hS, Finset.coe_union, Set.mem_union, Finset.mem_coe, Set.Finite.mem_toFinset]; exact Or.inl h)`. Conclude with `hv ((hoff v h1).trans (if_pos h2))`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsupp]`. Distinguish the cases in `hx : x ∈ ({y | ∀ v, v ∉ Set.range w → finAt v (finEmb K n y) ∈ GLnLocal.integralGL (v.adicCompletion K) n} : Set (AdelicGLn.FiniteAdelicGL K n))`. Rewrite using `[Set.indicator_of_mem hx, Pi.one_apply, one_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : Finset.univ.image w ⊆ S` using `Finset.subset_union_right`. Rewrite using `[← Finset.prod_subset hsub, Finset.prod_image (fun a _ b _ h => hw h)]`. Introduce `v _ hv`. Establish `h1 : v ∉ Set.range w`. Introduce and unpack `⟨i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hv (by simp)`. Rewrite using `[hoff v h1, if_pos (hx v h1)]`. Rewrite using `[Set.indicator_of_notMem hx, zero_mul]`. Establish `hx' : ∃ v, v ∉ Set.range w ∧ finAt v (finEmb K n x) ∉ GLnLocal.integralGL (v.adicCompletion K) n`. Assume the negation of the conclusion as `hc`.
-
-Use `push_neg at hc`. Conclude with `hx hc`. Take `⟨v, h1, h2⟩` from `hx'`. Use `Finset.prod_eq_zero (i := v) ?_ ?_` and prove the remaining obligations. Simplify using `only [hS, Finset.mem_union, Set.Finite.mem_toFinset]`.
-
-Conclude with `Or.inl h2`. Rewrite using `[hoff v h1, if_neg h2]`.
+Simplify using the standard rewrite rules. Prove the first alternative. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.finprod_local_eq_indicator_mul_prod :
     ∀ (K : Type) [Field K] [NumberField K] (n r : ℕ) (w : Fin r → Pl K), Function.Injective w → ∀ (f : ∀ v : Pl K, Gw n v → ℂ),

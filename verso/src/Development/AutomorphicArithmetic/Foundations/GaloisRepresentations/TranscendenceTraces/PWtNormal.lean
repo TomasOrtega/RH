@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Introduce `hAff hGlue Z S p _ hS`. Establish `h : ∃ w, IsNwt p w`. Use `hGlue p (fun s => ?_)` and prove the remaining obligations. Take `⟨U, hU, hs, hd, hi⟩` from `hS s`. Take `⟨A, w, ho, hr, hw⟩` from `hAff p U hU hd hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨A, w, ho, by rw [hr]; exact hs, hw⟩`. Unfold `nwt`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.wtNormal_of :
     NormAff → NwtGlue → WtNormal := by

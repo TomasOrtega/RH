@@ -8,17 +8,17 @@ open scoped TensorProduct Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ n X P hP hdeg hX hli`. Break down `subsingleton_or_nontrivial K with hK | hK` into its components or cases. Conclude with `Subsingleton.elim _ _`. Establish `hc : X.charpoly.Monic` using `Matrix.charpoly_monic X`. Establish `hcd : X.charpoly.natDegree = n`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using Matrix.charpoly_natDegree_eq_dim X`. Establish `hcdeg : X.charpoly.degree = n`. Rewrite using `[Polynomial.degree_eq_natDegree hc.ne_zero, hcd]`. Establish `hPdeg : P.degree = n`. Rewrite using `[Polynomial.degree_eq_natDegree hP.ne_zero, hdeg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hDdeg : (X.charpoly - P).degree < n`. Establish `h` using `Polynomial.degree_sub_lt (p := X.charpoly) (q := P) (by rw [hcdeg, hPdeg]) hc.ne_zero (by rw [hc.leadingCoeff, hP.leadingCoeff])`. Rewrite `h` using `[hcdeg]`. Then use the resulting hypothesis. Establish `hDaeval : Polynomial.aeval X (X.charpoly - P) = 0`. Rewrite using `[map_sub, Matrix.aeval_self_charpoly, hX, sub_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero]`. Assume the negation of the conclusion as `hD0`. Establish `hnat : (X.charpoly - P).natDegree < n` using `(Polynomial.natDegree_lt_iff_degree_lt hD0).mpr hDdeg`. Establish `hsum : ∑ i : Fin n, (X.charpoly - P).coeff (i : ℕ) • X ^ (i : ℕ) = 0`. Establish `h` using `Polynomial.aeval_eq_sum_range' hnat X`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hDaeval, Finset.sum_range (fun i => (X.charpoly - P).coeff i • X ^ i)]`. Conclude with `h.symm`. Establish `hcoeff` using `Fintype.linearIndependent_iff.mp hli (fun i : Fin n => (X.charpoly - P).coeff (i : ℕ)) hsum`. Apply `hD0` to reduce the goal to its premises. Use extensionality with `k`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Polynomial.coeff_zero]`. Distinguish the cases in `hk : k < n`. Conclude with `hcoeff ⟨k, hk⟩`. Conclude with `Polynomial.coeff_eq_zero_of_natDegree_lt (lt_of_lt_of_le hnat (not_lt.mp hk))`.
+A detailed English derivation is pending.
 -/
 theorem charpoly_eq_of_monic_aeval_linearIndependent :
     ∀ (K : Type) [CommRing K] (n : ℕ) (X : Matrix (Fin n) (Fin n) K) (P : Polynomial K),

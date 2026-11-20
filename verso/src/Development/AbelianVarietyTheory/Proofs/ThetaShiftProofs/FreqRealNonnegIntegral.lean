@@ -17,13 +17,13 @@ open ReciprocityTheory.ChartRestriction.G.FD.EmbeddingHermitianPairs Reciprocity
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Use `X.exists_emb_eq (fun τ => (ν τ : ℂ)) fun γ => ?_` and prove the remaining obligations. Establish `hN : ((X.m * X.chiOrd la : ℕ) : ℝ) ≠ 0`. Use `Nat.mul_pos X.m_pos (chiOrd_pos X la)` as an intermediate fact. Check the signs of the components of the expression. Establish `hγ : IsIntegral ℤ (γ : E)` using `RingOfIntegers.isIntegral_coe γ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `hcγ : IsIntegral ℤ (cc (γ : E))` using `map_isIntegral_int (IsCMField.complexConj E) hγ`. Establish `ha : cc ((γ : E) + cc (γ : E)) = (γ : E) + cc (γ : E)`. Rewrite using `[cc_add', cc_cc', add_comm]`. Take `⟨k, hk⟩` from `hν _ ((mem_periods_iff X la _).2 ⟨_, ha, hγ.add hcγ, rfl⟩)`. Use `⟨(k : ℚ) / (4 * (X.m * X.chiOrd la : ℕ)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∑ τ, ν τ * per X la ((γ : E) + cc (γ : E)) τ = 2 * ((X.m * X.chiOrd la : ℕ) : ℝ) * ∑ τ : X.Ψ, ν τ * (τ.1 (γ : E)).re`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [per, map_add, emb_cc', Complex.add_re, Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `hk` using `[h1]`. Simplify using `only [Complex.re_sum, Complex.re_ofReal_mul]`. Rewrite using `[Rat.cast_div, Rat.cast_mul, Rat.cast_natCast, Rat.cast_intCast, ← hk]`. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Evaluate the numerical expressions.
 -/
 theorem exists_emb_of_freq (la : Wt X.Ψ r) (ν : X.Ψ → ℝ)
     (hν : ∀ p ∈ X.periods la, ∃ k : ℤ, 2 * ∑ τ, ν τ * p τ = k) :
@@ -50,11 +50,11 @@ theorem exists_emb_of_freq (la : Wt X.Ψ r) (ν : X.Ψ → ℝ)
   norm_num
 
 /- English proof (translation)
-Establish `hact : ∀ y, lact γ y = X.flow ξ (fun τ => (((τ.1 s).re : ℝ) : ℂ)) y`. Introduce `y`. Use function extensionality and compare the values at `τ`. Simplify using `only [lact, Data.flow]`. Rewrite using `[hγm, transvMat_map X ξ τ _ _ ?_]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, emb_kappa, ← emb_real hs]`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ t : X.Ψ → ℝ, P (X.flow ξ (fun τ => (t τ : ℂ)) (X.flow ξ (fun τ => (((τ.1 s).re : ℝ) : ℂ)) x)) = P (X.flow ξ (fun τ => (t τ : ℂ)) x)`. Introduce `t`. Rewrite using `[flow_flow X hξ.2.1, add_comm, ← flow_flow X hξ.2.1, ← hact]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hP.2.2 γ hγ _ (flow_real_mem_dom X hξ.2.1 t x hx)).trans (by rw [hχ, one_mul]; rfl)`. Unfold `Data.fj`. Simplify using `only [key]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fj_transv (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) (hP : X.IsSec la P) {ξ : Fin r → E} (hξ : X.IsIso ξ)
     (ν : X.Ψ → ℝ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) {s : E} (hs : cc s = s) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ)
@@ -82,21 +82,19 @@ namespace GlobalTheory.FjFreq
 open ReciprocityTheory.ChartRestriction.G.FD.EmbeddingHermitianPairs ReciprocityTheory.ChartRestriction.G.FD.TransvectionPeriodicity ReciprocityTheory.ChartRestriction.G.FD.RealEmbeddingCharacters
 
 /- English proof (translation)
-Introduce `E _ _ _ r X la P hP ξ hξ ν x hx hne`. Establish `hν : ∀ p ∈ X.periods la, ∃ k : ℤ, 2 * ∑ τ, ν τ * p τ = k`. Assume the negation of the conclusion as `h`. Conclude with `hne (by unfold Data.fj; rw [if_neg h])`. Take `⟨ω, hω⟩` from `exists_emb_of_freq X la ν hν`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hre : ∀ τ : X.Ψ, ν τ = (τ.1 ω).re` using `fun τ => by rw [← hω, Complex.ofReal_re]`. Take `⟨C, hC⟩` from `hP.2`. Establish `hnn` using `(moderateCoefficientPositivity_holds r X la P C 0 hP.1 (fun y hy => by simpa using hC y hy)).1 ξ hξ ν x hx hne`. Use `⟨ω, ?_, hre, ?_, ?_⟩` and prove the remaining obligations. Take `⟨τ⟩` from `X.nonempty_Psi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `τ.1.injective` to reduce the goal to its premises. Rewrite using `[emb_cc', ← hω, Complex.conj_ofReal]`. Introduce `σ`. Distinguish the cases in `hσ : σ ∈ X.Ψ`. Conclude with `(hre ⟨σ, hσ⟩) ▸ hnn ⟨σ, hσ⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ComplexEmbedding.conjugate σ ∈ X.Ψ` using `(X.conj_mem_iff σ).2 hσ`. Establish `h1` using `hnn ⟨_, hc⟩`. Rewrite `h1` using `[hre]`. Simplify `h1` using `[ComplexEmbedding.conjugate_coe_eq]`. Introduce and unpack `s hs ⟨γ, hγ, hγm, hχ⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `X.fj_flow_real la ξ hξ ν P hP.1 hP.2 x hx (fun τ => (τ.1 s).re)`. Rewrite `h1` using `[fj_transv X la P hP.1 hξ ν hx hs hγ hγm hχ]`. Establish `h2 : Complex.exp (4 * Real.pi * Complex.I * ∑ τ, (ν τ : ℂ) * (((τ.1 s).re : ℝ) : ℂ)) = 1` using `mul_right_cancel₀ hne (by rw [one_mul]; exact h1.symm)`. Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.1 h2`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ((Algebra.trace ℚ E (ω * s) : ℚ) : ℂ) = 2 * ∑ τ, (ν τ : ℂ) * (((τ.1 s).re : ℝ) : ℂ)`. Rewrite using `[X.trace_eq_Psi, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← hω, emb_real hs, Complex.ofReal_re, map_mul, Complex.conj_ofReal, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpi : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`. Establish `h4 : ((Algebra.trace ℚ E (ω * s) : ℚ) : ℂ) = (n : ℂ)`. Apply `mul_right_cancel₀ hpi` to reduce the goal to its premises. Rewrite using `[h3, ← hn]`. Expand and normalize the polynomial expressions, which then agree.
-
-Conclude with `h4` after adjusting the coercions.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem freq_real_nonneg_integral : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ), X.IsBddSec la P → ∀ ξ, X.IsIso ξ → ∀ (ν : X.Ψ → ℝ), ∀ x ∈ X.dom, X.fj la ξ ν P x ≠ 0 → ∃ ν₀ : E, cc ν₀ = ν₀ ∧ (∀ τ : X.Ψ, ν τ = (τ.1 ν₀).re) ∧ (∀ τ : E →+* ℂ, 0 ≤ (τ ν₀).re) ∧ ∀ s : E, cc s = s → (∃ γ ∈ X.Γ, (γ : Matrix (Fin r) (Fin r) E) = transvMat X.Gm ξ (s * X.κ0) ∧ X.χ la γ = 1) → ∃ m : ℤ, Algebra.trace ℚ E (ν₀ * s) = m := by
   intro E _ _ _ r X la P hP ξ hξ ν x hx hne

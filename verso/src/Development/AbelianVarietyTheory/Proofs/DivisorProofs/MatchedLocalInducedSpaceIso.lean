@@ -25,11 +25,11 @@ open Filter Topology Matrix GlobalTheory.SplitWeil GlobalTheory.SplitFlip Global
 open scoped TensorProduct
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `q.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hq)`. Establish `key : ∀ g x, q (ρ g (s (q x))) = q (ρ g x)` using `fun g x => by`. Rewrite using `[← sub_eq_zero, ← map_sub, ← map_sub]`. Use `hk g _ ?_` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearMap.congr_fun hs (q x)`. Use `⟨{ toFun := fun g => q ∘ₗ ρ g ∘ₗ s, map_one' := ?_, map_mul' := fun g h => ?_ }, key⟩` and prove the remaining obligations. Use extensionality with `y`. Take `⟨x, rfl⟩` from `hq y`. Simplify using `using key 1 x`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Take `⟨x, rfl⟩` from `hq y`. Simplify using `only [LinearMap.comp_apply, Module.End.mul_apply, key]`. Rewrite using `[map_mul, Module.End.mul_apply]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rep_of_surj {G S P : Type} [Group G] [AddCommGroup S] [Module ℂ S] [AddCommGroup P] [Module ℂ P]
     (ρ : Representation ℂ G S) (q : S →ₗ[ℂ] P) (hq : Function.Surjective q) (hk : ∀ g x, q x = 0 → q (ρ g x) = 0) :
@@ -52,11 +52,11 @@ theorem exists_rep_of_surj {G S P : Type} [Group G] [AddCommGroup S] [Module ℂ
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {a d : ℕ}
 
 /- English proof (translation)
-Establish `h1 : ∀ᶠ g in 𝓝 (1 : GL (Fin d) k), ∀ X ∈ tsupport Φ, Φ (X * g.val) = Φ X`. Use `hΦ.2.isCompact.eventually_forall_of_forall_eventually fun X _ => ?_` and prove the remaining obligations. Establish `c1 : Continuous fun z : GL (Fin d) k × Matrix (Fin a) (Fin d) k => z.2 * z.1.val` using `continuous_snd.matrix_mul (Units.continuous_val.comp continuous_fst)`. Use `filter_upwards [(hΦ.1.comp_continuous c1).eventually_eq (1, X), (hΦ.1.comp_continuous continuous_snd).eventually_eq ((1 : GL (Fin d) k), X)] with z h h'`. Simplify using `only [Function.comp_apply, Units.val_one, Matrix.mul_one] at h h'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, h']`. Establish `h2` using `(continuous_inv.tendsto' (1 : GL (Fin d) k) 1 inv_one).eventually h1`. Use `filter_upwards [h1, h2] with g hg hg' X`. Distinguish the cases in `hX : X ∈ tsupport Φ`. Conclude with `hg X hX`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hX' : X * g.val ∈ tsupport Φ`. Rewrite using `[← hg' _ hX', Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hX, image_eq_zero_of_notMem_tsupport hX']`.
+A detailed English derivation is pending.
 -/
 theorem eventually_comp_mul {Φ : Matrix (Fin a) (Fin d) k → ℂ} (hΦ : Φ ∈ SB (Matrix (Fin a) (Fin d) k)) :
     ∀ᶠ g in 𝓝 (1 : GL (Fin d) k), ∀ X, Φ (X * g.val) = Φ X := by
@@ -77,7 +77,7 @@ theorem eventually_comp_mul {Φ : Matrix (Fin a) (Fin d) k → ℂ} (hΦ : Φ �
   · rw [image_eq_zero_of_notMem_tsupport hX, image_eq_zero_of_notMem_tsupport hX']
 
 /- English proof (translation)
-Use function extensionality and compare the values at `X`. Establish `e : ∀ (x : kˣ) (r : ℝ), ((nabs k x ^ r : ℝ) : ℂ) = apow x (r : ℂ)` using `fun x r => Complex.ofReal_cpow (GlobalTheory.SplitWeil.Model.nabs_pos x).le r`. Establish `hβ : (β (gdet g) : ℂ) ≠ 0` using `Units.ne_zero _`. Simplify using `only [om, omA, e, Pi.smul_apply, smul_eq_mul, gdet_invT, apow_inv, invT_invT, map_inv, MonoidHom.mul_apply, Units.val_mul, Units.val_inv_eq_inv_val, neg_div, neg_neg]`. Use `push_cast`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -124,17 +124,17 @@ structure IsQuot (ν β : kˣ →* ℂˣ) {P : Type} [AddCommGroup P] [Module �
   irred : ∀ N : Submodule ℂ P, (∀ h Φ, q Φ ∈ N → q (repS ν β (1, h) Φ) ∈ N) → N = ⊥ ∨ N = ⊤
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨l, hl, hl0⟩ : ∃ l : (Matrix (Fin a) (Fin a) k → ℂ) → ℂ, IsEqv (α / β) (((a + a' : ℕ) : ℂ) / 2) l ∧ ∃ φ ∈ SB _, l φ ≠ 0 := by`. Distinguish the cases in `hu : IsUnram (α / β)`. Take `⟨l, hl, hl1⟩` from `GlobalTheory.T.unramified_character_normalized_equivariant_functional k a _ (((a + a' : ℕ) : ℂ) / 2) (hα.div hβ) hu`. Conclude with `⟨l, hl, _, indicator_intM_mem_SB, hl1 ▸ one_ne_zero⟩`. Use `borelize k`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨_, GlobalTheory.T.shell_sum_equivariant_nonzero k ϖ a e _ (((a + a' : ℕ) : ℂ) / 2) hϖ (hα.div hβ) hu he⟩`. Establish `hI` using `GlobalTheory.KSplit.indSp_irreducible HB k a a' α β hα hβ`. Set `q : SB (Matrix (Fin a) (Fin (a + a')) k) →ₗ[ℂ] indSp a a' α β` to `{ toFun := fun Φ => ⟨mapA a' l (α / β) β Φ, GlobalTheory.KSplitInd.mapA_mem_indSp k a a' α β l hβ hl _ Φ.2⟩ map_add' := fun Φ Φ' => Subtype.ext (mapA_add hl Φ.2 Φ'.2) map_smul' := fun c Φ => Subtype.ext (mapA_smul hl c Φ.2) }`. Establish `tr : ∀ h Φ g, (q (repS (α / β) β (1, h) Φ) : GL (Fin (a + a')) k → ℂ) g = (q Φ : GL (Fin (a + a')) k → ℂ) (g * h)` using `fun h Φ g => mapA_omA_right l _ h g`. Establish `ne : ∃ Φ, q Φ ≠ 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ, hΦ, h0⟩` from `mapA_ne_zero (a' := a') (ν := α / β) (β := β) hl0`. Conclude with `⟨⟨Φ, hΦ⟩, fun h => h0 (congrFun (congrArg Subtype.val h) 1)⟩`. Establish `onto : Function.Surjective q`. Take `⟨Φ, h0⟩` from `ne`. Rewrite using `[← LinearMap.range_eq_top, ← Submodule.map_top]`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `map_eq_top ⊤ _ hI q (fun φ _ x => ⟨_, trivial, funext (tr x φ)⟩) ⟨Φ, trivial, h0⟩`. Use `⟨q, ⟨onto, fun g Φ => Subtype.ext (mapA_omA_left hl g Φ.2), fun h Φ H => ?_, ?_, fun N hN => ?_⟩, tr⟩` and prove the remaining obligations. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Rewrite using `[tr, H]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨Φ, h0⟩` from `ne`. Conclude with `⟨⟨_, _, h0⟩⟩`. Break down `hI (Submodule.map (indSp a a' α β).subtype N) (Submodule.map_subtype_le _ _) (by` into its components or cases. Introduce and unpack `_ ⟨f, hf, rfl⟩ x`. Take `⟨Φ, rfl⟩` from `onto f`.
+Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Prove the first alternative.
 
-Conclude with `⟨_, hN x Φ hf, funext (tr x Φ)⟩) with h | h`. Conclude with `Or.inl (Submodule.map_injective_of_injective (indSp a a' α β).injective_subtype (h.trans (Submodule.map_bot _).symm))`. Conclude with `Or.inr (Submodule.map_injective_of_injective (indSp a a' α β).injective_subtype (h.trans (Submodule.map_subtype_top _).symm))`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem exists_quot_ind (HB : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) (a a' : ℕ) {α β : kˣ →* ℂˣ} (hα : IsSmU α)
     (hβ : IsSmU β) {ϖ : kˣ} (hϖ : IsUnif ϖ) {e : ℕ} (he : CondLE ϖ e (α / β)) :
@@ -177,7 +177,7 @@ theorem exists_quot_ind (HB : GlobalTheory.Published.BernsteinUnitaryProductIrre
         (h.trans (Submodule.map_subtype_top _).symm))
 
 /- English proof (translation)
-Use `haveI : Nontrivial (Subrepresentation (Representation.trivial ℂ G ℂ)) := ⟨⟨⊥, ⊤, fun h => bot_ne_top (congrArg Subrepresentation.toSubmodule h)⟩⟩`. Use `⟨fun N => (eq_bot_or_eq_top N.toSubmodule).imp (fun h => ?_) fun h => ?_⟩` and prove the remaining obligations. Conclude with `Subrepresentation.toSubmodule_injective h`. Conclude with `Subrepresentation.toSubmodule_injective h`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem trivial_isIrreducible (G : Type) [Group G] : (Representation.trivial ℂ G ℂ).IsIrreducible := by
   haveI : Nontrivial (Subrepresentation (Representation.trivial ℂ G ℂ)) :=
@@ -187,23 +187,19 @@ theorem trivial_isIrreducible (G : Type) [Group G] : (Representation.trivial ℂ
   · exact Subrepresentation.toSubmodule_injective h
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `exists_rep_of_surj (repD ν β) q hq.onto fun g x h => by`. Rewrite using `[repD_apply, map_smul, hq.ker _ _ h, smul_zero]`. Establish `hD : ∀ g (Φ : SB (Matrix (Fin a) (Fin d) k)), (repD ν β g Φ : Matrix (Fin a) (Fin d) k → ℂ) = om ν g 1 Φ` using `fun g Φ => by rw [om_eq ν β, repD_apply, Submodule.coe_smul, repS_val]`. Use `haveI := hq.nontriv`. Use `⟨τ, fun x => ?_, ?_, ?_, hτ⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ, rfl⟩` from `hq.onto x`. Set `K : Subgroup (GL (Fin d) k)` to `{ carrier := {g | τ g (q Φ) = q Φ} one_mem' := by simp mul_mem' := fun {g h} hg hh => by`. Simplify using `only [Set.mem_ofPred_eq] at hg hh ⊢`. Rewrite using `[map_mul, Module.End.mul_apply, hh, hg]`. Use the proof step `inv_mem' := fun {g} hg => by`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_ofPred_eq] at hg ⊢`. Use `nth_rewrite 1 [← hg]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Use `K.isOpen_of_mem_nhds (g := 1) ?_` and prove the remaining obligations. Establish `c : Continuous fun g : GL (Fin d) k => gdet g` using `Matrix.GeneralLinearGroup.continuous_det`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ᶠ g in 𝓝 (1 : GL (Fin d) k), gdet g ∈ ν.ker` using `(hν.1.preimage c).mem_nhds (by simp)`. Establish `h2 : ∀ᶠ g in 𝓝 (1 : GL (Fin d) k), g ∈ KO k (Fin d)` using `(GlobalTheory.SplitFlip.isOpen_KO).mem_nhds (one_mem _)`. Use `filter_upwards [h1, h2, eventually_comp_mul Φ.2] with g hg hg' hg''`. Use `show τ g (q Φ) = q Φ`. Rewrite using `[hτ]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congr 1`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[hD]`. Use function extensionality and compare the values at `X`. Establish `e1 : ν (Matrix.GeneralLinearGroup.det g) = 1` using `hg`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : nabs k (Matrix.GeneralLinearGroup.det g) = 1` using `nabs_of_valuation_eq_one (valuation_gdet_of_mem_KO hg')`. Simplify using `[om, e1, e2, hg'', GlobalTheory.SplitWeil.Model.nabs_one]`. Use `haveI : Nontrivial (Subrepresentation τ) := ⟨⟨⊥, ⊤, fun h => bot_ne_top (congrArg Subrepresentation.toSubmodule h)⟩⟩`. Use `⟨fun N => (hq.irred N.toSubmodule fun h Φ hΦ => ?_).imp (fun h => ?_) fun h => ?_⟩` and prove the remaining obligations. Use `N.apply_mem_toSubmodule (invT h) hΦ` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[hτ]`. Rewrite `this` using `[repD_apply, map_smul, invT_invT, Submodule.smul_mem_iff _ (Units.ne_zero _)]`. Then use the resulting hypothesis. Conclude with `Subrepresentation.toSubmodule_injective h`. Conclude with `Subrepresentation.toSubmodule_injective h`. Use `⟨(TensorProduct.rid ℂ P).symm.toLinearMap ∘ₗ q, fun h => ?_, fun g h Φ Φ' H => ?_⟩` and prove the remaining obligations.
-
-Take `⟨x, hx⟩` from `exists_ne (0 : P)`. Take `⟨Φ, rfl⟩` from `hq.onto x`. Conclude with `hx ((TensorProduct.rid ℂ P).symm.map_eq_zero_iff.1 (LinearMap.congr_fun h Φ))`. Establish `e : Φ' = repS ν β (h, 1) (repD ν β g Φ)`. Use `Subtype.ext ?_` and prove the remaining obligations.
-
-Rewrite using `[H, om_eq ν β, repD_apply, map_smul, Submodule.coe_smul, repS_val, repS_val, ← omA_mul, mul_one, one_mul]`. Simplify using `[e, hq.inv, hτ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsQuot.exists_rep {ν β : kˣ →* ℂˣ} (hν : IsSmU ν) {P : Type} [AddCommGroup P] [Module ℂ P]
     {q : SB (Matrix (Fin a) (Fin d) k) →ₗ[ℂ] P} (hq : IsQuot ν β q) :
@@ -259,9 +255,9 @@ theorem IsQuot.exists_rep {ν β : kˣ →* ℂˣ} (hν : IsSmU ν) {P : Type} [
       simp [e, hq.inv, hτ]
 
 /- English proof (translation)
-Take `⟨τ, h1, h2, h3, h4⟩` from `hq.exists_rep hν`. Take `⟨τ', h1', h2', h3', h4'⟩` from `hq'.exists_rep hν`. Take `⟨e⟩` from `(HD k d a ν hν.1).2 P P' ℂ τ τ' _ h1 h2 h1' h2' (fun _ => by simp) (trivial_isIrreducible _) h3 h3'`. Use `⟨e.toLinearEquiv, fun h Φ Φ' H => ?_⟩` and prove the remaining obligations. Establish `key : e.toLinearEquiv (τ (invT h) (q Φ)) = τ' (invT h) (e.toLinearEquiv (q Φ))` using `LinearMap.congr_fun (e.toIntertwiningMap.isIntertwining' (invT h)) (q Φ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `key` using `[H, h4, h4']`. Rewrite `key` using `[repD_apply, repD_apply, map_smul, map_smul, map_smul, invT_invT]`. Conclude with `smul_right_injective _ (Units.ne_zero _) key`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsQuot.exists_equiv (HD : GlobalTheory.Published.HoweDualityGL) {ν β : kˣ →* ℂˣ} (hν : IsSmU ν)
     {P P' : Type} [AddCommGroup P] [Module ℂ P] [AddCommGroup P'] [Module ℂ P']
@@ -289,9 +285,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `hJ : IsUnit (X.J.map t).det`. Take `⟨φ⟩ : Nonempty (F →+* ℂ)` from `inferInstance`. Establish `h0` using `GlobalTheory.LeviAtPlace.det_ne_zero_of_sig (hX.sig (InfinitePlace.mk φ))`. Establish `h1 : X.J.det ≠ 0` using `fun e => h0 (by`. Rewrite using `[show X.J.map _ = RingHom.mapMatrix _ X.J from rfl, ← RingHom.map_det, e, map_zero])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show X.J.map t = (t : E →+* Fv F v).mapMatrix X.J from rfl, ← RingHom.map_det]`. Conclude with `isUnit_iff_ne_zero.2 ((map_ne_zero _).2 h1)`. Use `⟨GlobalTheory.LeviAtPlace.leviHom hB.cm t X.J hJ hX.herm g, GlobalTheory.LeviAtPlace.lift_sub_one_at v _, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[locMat_val, GlobalTheory.LeviAtPlace.leviHom_map_piW, GlobalTheory.LeviAtPlace.locMat, GlobalTheory.LeviAtPlace.pairMat_fst]`. Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem surj_herm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : Base F E} {n r s : ℕ} {X : Spc F E n} (hB : B.IsGood σ) (hX : X.IsHerm σ B r s) {v : Pl F}
@@ -308,7 +304,7 @@ theorem surj_herm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   simp
 
 /- English proof (translation)
-Introduce `r _` and use `by have e : tens (evFin F v) (0 : (κ → Fv F v) → ℂ) r = 0 := funext fun x => zero_mul _ rw [e, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem acts_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : Pl F)
     (T : Module.End ℂ ((κ → AF F) → ℂ)) : Acts (evFin F v) T 0 0 := fun r _ => by
@@ -316,29 +312,29 @@ theorem acts_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] 
   rw [e, map_zero]
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hM v t c`. Establish `hT` using `hM.triple`. Establish `hF` using `hM.fin`. Establish `hP` using `hK.base`. Take `⟨ι, hι⟩` from `GlobalTheory.T.exists_linear_witt_model_local hP F E σ B _ _ _ _ _ _ _ om _ _ _ _ (isPair_big hT) v t 1 c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `act` using `GlobalTheory.T.linear_witt_model_unitary_action hP F E σ B _ _ _ _ _ _ _ om _ _ _ _ (isPair_big hT) v t 1 c ι hι`. Establish `hex` using `(GlobalTheory.T.theta_action_exists hP F E σ B _ _ _ _ _ _ _ om _ _ _ _ (isPair_big hT) v).1`. Establish `hb` using `Model.IsLin.bij hι`. Establish `hα` using `(GlobalTheory.ChrWLocal.chrW_local F E X.α hT.chars.heckeα v t).1`. Establish `hβ` using `(GlobalTheory.ChrWLocal.chrW_local F E X.β hT.chars.heckeβ v t).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `(GlobalTheory.ChrWLocal.chrW_local F E _ (isHecke_div hT.chars.heckeα hT.chars.heckeβ) v t).2.1`. Rewrite `act` using `[chrW_div, inv_div]`. Rewrite `hn` using `[chrW_div]`. Use `set α := chrW X.α t`. Use `set β := chrW X.β t`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `j : SB (Fin a × Fin (a + a') → Fv F v) ≃ₗ[ℂ] GlobalTheory.SplitWeil.SB (Matrix (Fin a) (Fin (a + a')) (Fv F v))` to `LinearEquiv.ofBijective (ι.restrict fun φ h => hb.mapsTo h) ⟨fun φ φ' h => Subtype.ext (hb.injOn φ.2 φ'.2 (congrArg Subtype.val h)), fun Φ => by`. Take `⟨φ, hφ, h⟩` from `hb.surjOn Φ.2`. Conclude with `⟨⟨φ, hφ⟩, Subtype.ext h⟩⟩`. Set `q : GlobalTheory.SplitWeil.SB (Matrix (Fin a) (Fin (a + a')) (Fv F v)) →ₗ[ℂ] Rf.Pi v` to `Rf.p v ∘ₗ (SB _).subtype ∘ₗ j.symm.toLinearMap`. Establish `hq : ∀ φ, q (j φ) = Rf.p v φ` using `fun φ => by simp [q]`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : ∀ g ∈ UAt σ G.V (evFin F v), ∀ h ∈ UAt σ G.W (evFin F v), ∀ φ φ₁ : SB (Fin a × Fin (a + a') → Fv F v), Acts (evFin F v) (om (g, h)) φ φ₁ → repS (α / β) β (locMat t 1 g, locMat t c h) (j φ) = j φ₁` using `fun g hg h hh φ φ₁ H => Subtype.ext (act g hg h hh φ φ.2 φ₁ φ₁.2 H).symm`. Establish `hW : ∀ x (φ : SB (Fin a × Fin (a + a') → Fv F v)), ∃ h ∈ UAt σ G.W (evFin F v), ∃ φ₁ ∈ SB _, Acts (evFin F v) (om (1, h)) φ φ₁ ∧ q (repS (α / β) β (1, x) (j φ)) = Rf.p v φ₁` using `fun x φ => by`. Take `⟨h, hh, rfl⟩` from `GlobalTheory.T.local_unitary_matrix_surjective F E σ B _ G.W _ _ hT.base hT.geo.hW v t c x`. Take `⟨φ₁, ⟨h1, H⟩, -⟩` from `hex 1 (one_mem_UAt _ v) h hh φ φ.2`. Use `⟨h, hh, φ₁, h1, H, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hj 1 (one_mem_UAt _ v) h hh φ ⟨φ₁, h1⟩ H` as an intermediate fact. Rewrite `this` using `[map_one]`. Rewrite using `[this, hq]`. Establish `hQ : IsQuot (α / β) β q`. Use `⟨fun y => ?_, fun g Φ => ?_, fun x Φ H => ?_, hF.nontriv v, fun N hN => hF.irred v N ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨φ, hφ, rfl⟩ : y ∈ (SB _).map (Rf.p v)` from `hF.onto v ▸ Submodule.mem_top`. Conclude with `⟨j ⟨φ, hφ⟩, hq _⟩`. Take `⟨φ, rfl⟩` from `j.surjective Φ`. Take `⟨x, hx, rfl⟩` from `surj_herm hT.base hT.geo.hV t g`. Take `⟨φ₁, ⟨h1, H⟩, -⟩` from `hex x hx 1 (one_mem_UAt _ v) φ φ.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hj x hx 1 (one_mem_UAt _ v) φ ⟨φ₁, h1⟩ H` as an intermediate fact. Rewrite `this` using `[map_one]`. Rewrite using `[this, hq, hq, ← sub_eq_zero, ← map_sub]`. Conclude with `hF.inv v (Submodule.subset_span ⟨x, hx, φ, φ.2, φ₁, h1, H, rfl⟩)`. Take `⟨φ, rfl⟩` from `j.surjective Φ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h, hh, φ₁, h1, H1, e⟩` from `hW x φ`. Rewrite `H` using `[hq]`. Rewrite using `[e, hF.equiv v h hh φ φ.2 0 (zero_mem _) φ₁ h1 0 (zero_mem _) H1 (acts_zero v _) (by rw [H, map_zero]), map_zero]`. Introduce `h hh φ hφ φ₁ h1 H hm`. Use `hj 1 (one_mem_UAt _ v) h hh ⟨φ, hφ⟩ ⟨φ₁, h1⟩ H` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[map_one]`. Establish `h2` using `hN (locMat t c h) (j ⟨φ, hφ⟩) (by rw [hq]; exact hm)`. Rewrite `h2` using `[this, hq]`. Then use the resulting hypothesis. Take `⟨q', hQ', tr⟩` from `exists_quot_ind hP.bernsteinUnitaryProductIrreducible a a' hα hβ (GlobalTheory.SplitFlip.exists_isUnif (k := Fv F v)).choose_spec hn`. Take `⟨e, he⟩` from `hQ.exists_equiv (GlobalTheory.T.howe_duality_of_minguez hK.minguezThetaGL) (hα.div hβ) hQ'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨e, fun h hh φ hφ φ₁ h1 H g => ?_⟩` and prove the remaining obligations. Establish `h2` using `hj 1 (one_mem_UAt _ v) h hh ⟨φ, hφ⟩ ⟨φ₁, h1⟩ H`. Rewrite `h2` using `[map_one]`. Take `⟨Φ', h3⟩` from `hQ'.onto (e (q (j ⟨φ, hφ⟩)))`. Establish `h4` using `he (locMat t c h) _ Φ' h3.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h4` using `[h2, hq]`. Rewrite `h3` using `[hq]`. Rewrite using `[h4, tr, h3]`.
+A detailed English derivation is pending.
 -/
 theorem exists_equiv_indSp : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W)

@@ -7,7 +7,7 @@ set_option autoImplicit false
 namespace GlobalTheory.Mean4O
 
 /- English proof (translation)
-Introduce `c σ _ _ _ hf` and use `h.referenceMetric_mul_dual_eq_one c σ _ hf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Setup.Core.dualRef {D : Formalism.BasicNotions.D7} {O : Setup D} (h : O.Core) : O.DualRef :=
   fun c σ _ _ _ hf => h.referenceMetric_mul_dual_eq_one c σ _ hf

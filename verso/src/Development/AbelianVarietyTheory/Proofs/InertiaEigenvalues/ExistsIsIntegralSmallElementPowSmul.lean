@@ -7,9 +7,9 @@ open GlobalTheory.UnitLemma GlobalTheory.UnitLemma.Desc Polynomial
 namespace GlobalTheory.UnitLemma.Desc
 
 /- English proof (translation)
-Establish `hyt : IsDiscreteValuationRing.addVal O y ≠ ⊤`. Rewrite using `[Ne, IsDiscreteValuationRing.addVal_eq_top_iff]` and apply the resulting hypothesis. Take `⟨n, hn⟩` from `WithTop.ne_top_iff_exists.1 hyt`. Establish `ha1 : 1 ≤ IsDiscreteValuationRing.addVal O a`. Rewrite using `[ENat.one_le_iff_ne_zero, Ne, IsDiscreteValuationRing.addVal_eq_zero_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha`. Use `⟨n, IsDiscreteValuationRing.addVal_le_iff_dvd.1 ?_⟩` and prove the remaining obligations. Rewrite using `[IsDiscreteValuationRing.addVal_pow, ← hn]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem dvr_dvd_pow {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {a y : O}
     (ha : a ∈ IsLocalRing.maximalIdeal O) (hy : y ≠ 0) : ∃ k : ℕ, y ∣ a ^ k := by
@@ -25,9 +25,9 @@ theorem dvr_dvd_pow {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRin
     _ ≤ n • IsDiscreteValuationRing.addVal O a := nsmul_le_nsmul_right ha1 n
 
 /- English proof (translation)
-Establish `hxE : IsIntegral K.E x` using `Algebra.IsIntegral.isIntegral x`. Take `⟨⟨m, hm⟩, hmx⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (nonZeroDivisors K.O) x hxE`. Establish `hm0 : m ≠ 0` using `nonZeroDivisors.ne_zero hm`. Take `⟨k, w, hw⟩` from `dvr_dvd_pow ha.2.1 hm0`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsm : (m • x : B.A) = (⟨m, hm⟩ : nonZeroDivisors K.O) • x` using `rfl`. Establish `: (al K a ^ k) • x = algebraMap K.O B.A w * (m • x)`. Rewrite using `[← map_pow, algebraMap_smul, hw, mul_comm, mul_smul, Algebra.smul_def]`. Rewrite using `[this]`. Conclude with `isIntegral_algebraMap.mul (hsm ▸ hmx)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_pow_integral (K : UQ) (B : InvAlg K) (a : K.O) (ha : K.Small a) (x : B.A) :
     ∃ k : ℕ, IsIntegral K.O ((al K a ^ k) • x) := by

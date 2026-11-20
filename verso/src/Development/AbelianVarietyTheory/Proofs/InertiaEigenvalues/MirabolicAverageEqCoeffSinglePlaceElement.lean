@@ -20,9 +20,9 @@ noncomputable section
 namespace GlobalTheory.MirAvg
 
 /- English proof (translation)
-Use `⟨fun H => ?_, fun H => by rw [H, map_one]⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `congrArg (fun u : GL (Fin r) K' => (u : Matrix (Fin r) (Fin r) K') i j) H` as an intermediate fact. Apply `e.injective` to reduce the goal to its premises. Establish `h1 : ((Formalism.UG.bc (e : K →+* K') h : GL (Fin r) K') : Matrix (Fin r) (Fin r) K') i j = e ((h : Matrix (Fin r) (Fin r) K) i j)` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [h1] at this`. Rewrite using `[this]`. Simplify using `only [Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bc_ringEquiv_eq_one_iff {r : ℕ} {K K' : Type} [CommRing K] [CommRing K'] (e : K ≃+* K') (h : GL (Fin r) K) :
     Formalism.UG.bc (e : K →+* K') h = 1 ↔ h = 1 := by
@@ -38,7 +38,7 @@ theorem bc_ringEquiv_eq_one_iff {r : ℕ} {K K' : Type} [CommRing K] [CommRing K
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Establish `h1 : ∀ i j, ((Formalism.UG.bc (e : K →+* K') h : GL (Fin r) K') : Matrix (Fin r) (Fin r) K') i j = e ((h : Matrix (Fin r) (Fin r) K) i j)` using `fun _ _ => rfl`. Simplify using `only [Matrix.mulVec, dotProduct, h1, map_sum, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem bc_ringEquiv_mulVec {r : ℕ} {K K' : Type} [CommRing K] [CommRing K'] (e : K ≃+* K') (h : GL (Fin r) K)
     (x : Fin r → K) :
@@ -50,7 +50,7 @@ theorem bc_ringEquiv_mulVec {r : ℕ} {K K' : Type} [CommRing K] [CommRing K'] (
   simp only [Matrix.mulVec, dotProduct, h1, map_sum, map_mul]
 
 /- English proof (translation)
-Use `ext`. Conclude with `((e : K →+* K').map_det (h : Matrix (Fin r) (Fin r) K)).symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem det_bc_ringEquiv {r : ℕ} {K K' : Type} [CommRing K] [CommRing K'] (e : K ≃+* K') (h : GL (Fin r) K) :
     Matrix.GeneralLinearGroup.det (Formalism.UG.bc (e : K →+* K') h) =
@@ -59,13 +59,13 @@ theorem det_bc_ringEquiv {r : ℕ} {K K' : Type} [CommRing K] [CommRing K'] (e :
   exact ((e : K →+* K').map_det (h : Matrix (Fin r) (Fin r) K)).symm
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (fun (x : Fin r → ZMod g) j => e (x j))` using `fun x => ⟨fun j => e.symm (x j), by funext j; simp⟩`. Consider the cases of `b with`. Consider the case `true`. Simplify using `only [mirSet, if_true]`. Rewrite using `[hs.forall]`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `forall_congr' fun x => ?_` and prove the remaining obligations. Rewrite using `[bc_ringEquiv_mulVec, e.surjective.exists]`. Use `exists_congr fun c => ?_` and prove the remaining obligations. Simplify using `only [funext_iff, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Use `forall_congr' fun j => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e.injective.eq_iff (a := _ - _), map_sub, map_mul, e.apply_symm_apply]`. Consider the case `false`. Simplify using `only [mirSet, Bool.false_eq_true, if_false]`. Rewrite using `[hs.forall]`. Use `forall_congr' fun x => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[bc_ringEquiv_mulVec]`. Use `imp_congr ?_ ?_` and prove the remaining obligations. Rewrite using `[← e.injective.eq_iff (b := 0), map_zero]`. Simplify using `only [dotProduct, map_sum, map_mul, e.apply_symm_apply]`. Simplify using `only [funext_iff, e.injective.eq_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mirSet_iff_bc {g : ℕ} [Fact g.Prime] {r : ℕ} {K' : Type} [CommRing K'] (e : ZMod g ≃+* K')
     (h : GL (Fin r) (ZMod g)) (a : Fin r → K') (b : Bool) :
@@ -96,7 +96,7 @@ theorem mirSet_iff_bc {g : ℕ} [Fact g.Prime] {r : ℕ} {K' : Type} [CommRing K
     · simp only [funext_iff, e.injective.eq_iff]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨D.host.g_prime kv0.1⟩ GlobalTheory.DownLift.mirC R i (plg kv0) a b ε y = (open Classical in if ∀ kv, kv ≠ kv0 → eR y kv = 1 then (GlobalTheory.MirAvg.mirEl ((zpowGroupHom ε).comp ((R.chi ((i : ℕ) + 1) (plg kv0).1).comp (Units.map (iso kv0 : ZMod (D.host.g kv0.1) →* kP (plg kv0). …`.
+Supply the required witnesses or components.
 -/
 theorem mirC_eq_coeff_mirEl : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m)
     (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (eR : G ≃* G0g D.nd)

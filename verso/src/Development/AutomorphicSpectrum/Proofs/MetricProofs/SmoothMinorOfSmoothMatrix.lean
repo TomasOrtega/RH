@@ -10,7 +10,7 @@ open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.W
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.MinorSmooth
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (contDiffOn_const : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun _ : Fin e → ℂ => (1 : ℂ)) Un)`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffOn_finsetProd {e : ℕ} {Un : Set (Fin e → ℂ)} {ι : Type} (s : Finset ι)
     (f : ι → (Fin e → ℂ) → ℂ)
@@ -23,7 +23,7 @@ theorem contDiffOn_finsetProd {e : ℕ} {Un : Set (Fin e → ℂ)} {ι : Type} (
     exact (h a (Finset.mem_insert_self a s)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Establish `hdet : (fun w => (m w).det) = fun w => ∑ τ : Equiv.Perm σ, ((Equiv.Perm.sign τ : ℤ) : ℂ) * ∏ i, m w (τ i) i`. Use function extensionality and compare the values at `w`. Conclude with `Matrix.det_apply' _`. Rewrite using `[hdet]`. Conclude with `ContDiffOn.sum fun τ _ => contDiffOn_const.mul (contDiffOn_finsetProd Finset.univ (fun i w => m w (τ i) i) fun i _ => h _ _)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiffOn_det {e : ℕ} {Un : Set (Fin e → ℂ)} {σ : Type} [Fintype σ] [DecidableEq σ]
     (m : (Fin e → ℂ) → Matrix σ σ ℂ)
@@ -38,11 +38,9 @@ theorem contDiffOn_det {e : ℕ} {Un : Set (Fin e → ℂ)} {σ : Type} [Fintype
     (contDiffOn_finsetProd Finset.univ (fun i w => m w (τ i) i) fun i _ => h _ _)
 
 /- English proof (translation)
-Distinguish the cases in `hc : I.card = J.card`. Establish `hm : (fun w => minorIJ (A w) I J) = fun w => ((A w).submatrix (I.orderEmbOfFin hc) (J.orderEmbOfFin rfl)).det`. Use function extensionality and compare the values at `w`. Rewrite using `[minorIJ, dif_pos hc]`. Rewrite using `[hm]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `contDiffOn_det _ fun a b => h _ _`. Establish `hm : (fun w => minorIJ (A w) I J) = fun _ => (0 : ℂ)`. Use function extensionality and compare the values at `w`. Rewrite using `[minorIJ, dif_neg hc]`. Rewrite using `[hm]`.
-
-Conclude with `contDiffOn_const`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiffOn_minorIJ (N e : ℕ) (Un : Set (Fin e → ℂ))
     (A : (Fin e → ℂ) → Matrix (Fin N) (Fin N) ℂ) (I J : Finset (Fin N))

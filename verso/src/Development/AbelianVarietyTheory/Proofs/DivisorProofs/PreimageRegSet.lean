@@ -14,11 +14,11 @@ namespace GlobalTheory.Desc.GaussPt
 variable {Y X : Scheme.{0}} [IsIntegral Y] [IsIntegral X]
 
 /- English proof (translation)
-Take `⟨l, h₁, h₂⟩` from `h`. Rewrite `h₁` using `[Category.comp_id]`. Substitute `h₁` using the available equality. Set `sY` to `Y.presheaf.stalkSpecializes (genericPoint_specializes y)`. Set `sX` to `X.presheaf.stalkSpecializes (genericPoint_specializes (π y))`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `e₁ : Spec.map sY ≫ Y.fromSpecStalk y = gp Y` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk _`. Set `t : X.presheaf.stalk (genericPoint X) ⟶ Y.presheaf.stalk (genericPoint Y)` to `CommRingCat.ofHom θ`. Establish `e₂ : π.stalkMap y ≫ sY = sX ≫ t`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono (X.fromSpecStalk (π y)), Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkMap_fromSpecStalk, ← Category.assoc, e₁, h₂, Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `(congrArg (fun f => CommRingCat.Hom.hom f a) e₂).symm`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem theta_stalk {π : Y ⟶ X} {θ : X.functionField →+* Y.functionField} (h : PFF (𝟙 _) π θ) (y : Y)
     (a : X.presheaf.stalk (π y)) :
@@ -40,7 +40,7 @@ theorem theta_stalk {π : Y ⟶ X} {θ : X.functionField →+* Y.functionField} 
   exact (congrArg (fun f => CommRingCat.Hom.hom f a) e₂).symm
 
 /- English proof (translation)
-Establish `hU'' : π (genericPoint Y) ∈ U` using `hU'`. Rewrite using `[← algebraMap_germ (x := π (genericPoint Y)) hU'' s, theta_stalk h, Scheme.Hom.germ_stalkMap_apply]`. Conclude with `algebraMap_germ hU' _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_fnOf {π : Y ⟶ X} {θ : X.functionField →+* Y.functionField} (h : PFF (𝟙 _) π θ)
     (U : X.Opens) (hU : genericPoint X ∈ U) (hU' : genericPoint Y ∈ π ⁻¹ᵁ U) (s : Γ(X, U)) :
@@ -51,7 +51,7 @@ theorem theta_fnOf {π : Y ⟶ X} {θ : X.functionField →+* Y.functionField} (
   exact algebraMap_germ hU' _
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hu`. Conclude with `⟨_, (theta_stalk h y a).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem regAt_theta {π : Y ⟶ X} {θ : X.functionField →+* Y.functionField} (h : PFF (𝟙 _) π θ) (y : Y)
     {u : X.functionField} (hu : RegAt (π y) u) : RegAt y (θ u) := by
@@ -59,7 +59,7 @@ theorem regAt_theta {π : Y ⟶ X} {θ : X.functionField →+* Y.functionField} 
   exact ⟨_, (theta_stalk h y a).symm⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hu`. Conclude with `⟨_, ha.map _, (theta_stalk h y a).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem unitAt_theta {π : Y ⟶ X} {θ : X.functionField →+* Y.functionField} (h : PFF (𝟙 _) π θ) (y : Y)
     {u : X.functionField} (hu : UnitAt (π y) u) : UnitAt y (θ u) := by
@@ -67,13 +67,13 @@ theorem unitAt_theta {π : Y ⟶ X} {θ : X.functionField →+* Y.functionField}
   exact ⟨_, ha.map _, (theta_stalk h y a).symm⟩
 
 /- English proof (translation)
-Use extensionality with `u`. Use `⟨fun ⟨c, hc⟩ => ?_, fun hu => regAt_theta h y hu⟩` and prove the remaining obligations. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := X.presheaf.stalk (π y)) u`. Establish `hb0 : algebraMap _ X.functionField b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Use `letI := (π.stalkMap y).hom.toAlgebra`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `: Module.Flat (X.presheaf.stalk (π y)) (Y.presheaf.stalk y)` using `Flat.stalkMap π y`. Establish `: IsLocalHom (algebraMap (X.presheaf.stalk (π y)) (Y.presheaf.stalk y))` using `inferInstanceAs (IsLocalHom (π.stalkMap y).hom)`. Use `Module.FaithfullyFlat.of_flat_of_isLocalHom (A := X.presheaf.stalk (π y)) (B := Y.presheaf.stalk y)` as an intermediate fact. Establish `e : π.stalkMap y a = c * π.stalkMap y b`. Apply `IsFractionRing.injective (Y.presheaf.stalk y) Y.functionField` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_mul, hc, ← theta_stalk h, ← theta_stalk h, ← map_mul, div_mul_cancel₀ _ hb0]`. Establish `hm : a ∈ Ideal.span {b}`. Rewrite using `[← Ideal.comap_map_eq_self_of_faithfullyFlat (B := Y.presheaf.stalk y) (Ideal.span {b}), Ideal.mem_comap, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton']`. Conclude with `⟨c, e.symm⟩`. Take `⟨d, rfl⟩` from `Ideal.mem_span_singleton'.1 hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨d, by rw [map_mul, mul_div_cancel_right₀ _ hb0]⟩`.
+Supply the required witnesses or components.
 -/
 theorem preimage_regSet {π : Y ⟶ X} [Flat π] {θ : X.functionField →+* Y.functionField}
     (h : PFF (𝟙 _) π θ) (y : Y) : θ ⁻¹' (regSet y) = regSet (π y) := by
@@ -99,7 +99,7 @@ theorem preimage_regSet {π : Y ⟶ X} [Flat π] {θ : X.functionField →+* Y.f
   exact ⟨d, by rw [map_mul, mul_div_cancel_right₀ _ hb0]⟩
 
 /- English proof (translation)
-Establish `h : p = X.toSpecΓ ≫ Spec.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ p.appTop)`. Rewrite using `[Spec.map_comp, ← Scheme.toSpecΓ_naturality_assoc, ← SpecMap_ΓSpecIso_hom, ← Spec.map_comp]`. Simplify using the standard rewrite rules. Use `conv_rhs => rw [h, gp, ← Category.assoc, Scheme.fromSpecStalk_toSpecΓ, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem spMap_cst {R : Type} [CommRing R] (p : X ⟶ Sp R) : spMap (GlobalTheory.Desc.cst p) = gp X ≫ p := by
   have h : p = X.toSpecΓ ≫ Spec.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ p.appTop) := by
@@ -109,11 +109,11 @@ theorem spMap_cst {R : Type} [CommRing R] (p : X ⟶ Sp R) : spMap (GlobalTheory
   rfl
 
 /- English proof (translation)
-Take `⟨l, h₁, h₂⟩` from `h`. Establish `: spMap (θ.comp (GlobalTheory.Desc.cst p)) = spMap ((GlobalTheory.Desc.cst q).comp ρ)`. Establish `e1 : spMap (θ.comp (GlobalTheory.Desc.cst p)) = spMap θ ≫ spMap (GlobalTheory.Desc.cst p)`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e2 : spMap ((GlobalTheory.Desc.cst q).comp ρ) = spMap (GlobalTheory.Desc.cst q) ≫ spMap ρ`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[e1, e2, spMap_cst, spMap_cst, ← Category.assoc, ← h₂, ← h₁]`. Simplify using `only [Category.assoc, w]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective this)`.
+A detailed English derivation is pending.
 -/
 theorem comp_cst {V : Scheme.{0}} {R R₁ : Type} [CommRing R] [CommRing R₁] {ρ : R →+* R₁} {p : X ⟶ Sp R}
     {q : Y ⟶ Sp R₁} {i : V ⟶ Y} {φ : V ⟶ X} {θ : X.functionField →+* Y.functionField} (h : PFF i φ θ)
@@ -129,13 +129,13 @@ theorem comp_cst {V : Scheme.{0}} {R R₁ : Type} [CommRing R] [CommRing R₁] {
   exact congrArg CommRingCat.Hom.hom (Spec.map_injective this)
 
 /- English proof (translation)
-The claim follows from `regAt_fnOf (U := ⊤) trivial trivial _`.
+A detailed English derivation is pending.
 -/
 theorem regAt_cst {R : Type} [CommRing R] (p : X ⟶ Sp R) (x : X) (r : R) : RegAt x (GlobalTheory.Desc.cst p r) :=
   regAt_fnOf (U := ⊤) trivial trivial _
 
 /- English proof (translation)
-Use `(unitAt_fnOf_iff (U := ⊤) trivial trivial _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x ∈ X.basicOpen (p.appTop ((Scheme.ΓSpecIso (CommRingCat.of R)).inv r)) ↔ _`. Rewrite using `[← Scheme.preimage_basicOpen_top, basicOpen_eq_of_affine]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unitAt_cst_iff {R : Type} [CommRing R] (p : X ⟶ Sp R) (x : X) (r : R) :
     UnitAt x (GlobalTheory.Desc.cst p r) ↔ r ∉ (p x).asIdeal := by

@@ -9,23 +9,19 @@ open Metric
 namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `hcont : ContinuousOn (fun x => ‖x - g x‖) (closedBall (0 : Fin n → ℝ) 2)` using `(continuous_id.sub hg.continuous).norm.continuousOn`. Take `⟨x₀, -, hmin⟩` from `(isCompact_closedBall (0 : Fin n → ℝ) 2).exists_isMinOn (nonempty_closedBall.2 zero_le_two) hcont`. Establish `hε : 0 < ‖x₀ - g x₀‖` using `norm_pos_iff.2 (sub_ne_zero.2 (hne x₀).symm)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set δ := min ‖x₀ - g x₀‖ 1 with hδ_def`. Establish `hδ : 0 < δ` using `lt_min hε one_pos`. Set `χ : ContDiffBump (0 : Fin n → ℝ)` to `⟨2, 3, two_pos, by norm_num⟩`. Set `φ : (Fin n → ℝ) → Fin n → ℝ` to `fun x => x - χ x • g x`. Establish `hφ : ContDiff ℝ ∞ φ` using `contDiff_id.sub (χ.contDiff.smul hg)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφc : HasCompactSupport (fun x => φ x - x)`. Establish `h : (fun x => φ x - x) = -((fun x => χ x) • g)`. Use function extensionality and compare the values at `x`. Simplify using `[φ]`. Rewrite using `[h]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `χ.hasCompactSupport.smul_right.neg`. Establish `hφδ : ∀ x, δ ≤ ‖φ x‖`. Introduce `x`. Distinguish the cases in `hx : ‖x‖ ≤ 2`. Establish `hχ : χ x = 1` using `χ.one_of_mem_closedBall (mem_closedBall_zero_iff.2 hx)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ‖x₀ - g x₀‖ ≤ ‖x - g x‖` using `isMinOn_iff.1 hmin x (mem_closedBall_zero_iff.2 hx)`. Simplify using `only [φ, hχ, one_smul]`. Conclude with `(min_le_left _ _).trans h2`. Use `push Not at hx`. Establish `h1 : ‖χ x • g x‖ ≤ 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression.
 
-Rewrite using `[norm_smul, Real.norm_of_nonneg χ.nonneg]`. Conclude with `mul_le_one₀ χ.le_one (norm_nonneg _) (hgb x)`. Establish `h3 : ‖x‖ - ‖χ x • g x‖ ≤ ‖φ x‖` using `norm_sub_norm_le _ _`. Establish `h4 : δ ≤ 1` using `min_le_right _ _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `ψ : ContDiffBump (0 : Fin n → ℝ)` to `⟨δ / 2, δ, half_pos hδ, half_lt_self hδ⟩`. Establish `hzero : ∀ x, ψ (φ x) = 0`. Introduce `x`. Assume the negation of the conclusion as `h`. Establish `hmem : φ x ∈ ball (0 : Fin n → ℝ) δ`.
-
-Rewrite using `[← ψ.support_eq]`. Conclude with `h`. Rewrite `hmem` using `[mem_ball_zero_iff]`. Conclude with `absurd (hφδ x) (not_le.2 hmem)`. Establish `hL'` using `hL n φ hφ hφc ψ ψ.contDiff ψ.hasCompactSupport`.
-
-Simplify using `only [hzero, zero_mul, MeasureTheory.integral_zero] at hL'`. Conclude with `(ψ.integral_pos (μ := MeasureTheory.volume)).ne hL'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem BrouwerFixedPoint.smooth_of_changeOfVariablesDegree
     (hL : ChangeOfVariablesDegree.Statement) (n : ℕ) (g : (Fin n → ℝ) → Fin n → ℝ)
@@ -77,33 +73,31 @@ theorem BrouwerFixedPoint.smooth_of_changeOfVariablesDegree
   exact (ψ.integral_pos (μ := MeasureTheory.volume)).ne hL'
 
 /- English proof (translation)
-Introduce `n f hf hmaps`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Use `set B := closedBall (0 : Fin n → ℝ) 1 with hB_def`. Establish `hB : IsCompact B` using `isCompact_closedBall _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcont : ContinuousOn (fun x => ‖f x - x‖) B` using `(hf.sub continuousOn_id).norm`. Take `⟨x₀, hx₀, hmin⟩` from `hB.exists_isMinOn (nonempty_closedBall.2 zero_le_one) hcont`. Establish `hε : 0 < ‖f x₀ - x₀‖` using `norm_pos_iff.2 (sub_ne_zero.2 (hne x₀ hx₀))`. Set `P : (Fin n → ℝ) → Fin n → ℝ` to `fun x i => max (min (x i) 1) (-1)`. Establish `hPB : ∀ x, P x ∈ B`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[hB_def, mem_closedBall_zero_iff]`. Use `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun i => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_le]`. Conclude with `⟨le_max_right _ _, max_le (min_le_right _ _) (by norm_num)⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPid : ∀ x ∈ B, P x = x`. Introduce `x hx`. Use function extensionality and compare the values at `i`. Establish `hi : |x i| ≤ 1`. Establish `h` using `(norm_le_pi_norm x i).trans (mem_closedBall_zero_iff.1 hx)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Real.norm_eq_abs]`. Then use the resulting hypothesis. Rewrite `hi` using `[abs_le]`. Simplify using `only [P, min_eq_left hi.2, max_eq_left hi.1]`. Establish `hPlip : ∀ x y, dist (P x) (P y) ≤ dist x y`. Introduce `x y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `(dist_pi_le_iff dist_nonneg).2 fun i => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Set `F : (Fin n → ℝ) → Fin n → ℝ` to `fun x => f (P x)`. Establish `hFu : UniformContinuous F`. Establish `hfu : UniformContinuousOn f B` using `hB.uniformContinuousOn_of_continuous hf`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Metric.uniformContinuous_iff]`. Introduce `η hη`. Take `⟨d, hd, hfd⟩` from `Metric.uniformContinuousOn_iff.1 hfu η hη`. Conclude with `⟨d, hd, fun {a b} hab => hfd _ (hPB a) _ (hPB b) ((hPlip a b).trans_lt hab)⟩`. Establish `hFB : ∀ x, ‖F x‖ ≤ 1` using `fun x => mem_closedBall_zero_iff.1 (hmaps (hPB x))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set a := ‖f x₀ - x₀‖ / 3 with ha_def`. Establish `ha : 0 < a` using `by positivity`. Take `⟨G, hG, hGF⟩` from `hFu.exists_contDiff_dist_le ha`. Use `set c := (1 + a)⁻¹ with hc_def`. Establish `hc : c * (1 + a) = 1` using `inv_mul_cancel₀ (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc0 : 0 < c` using `by positivity`. Establish `hc1 : c ≤ 1` using `inv_le_one_of_one_le₀ (by linarith)`. Establish `hGb : ∀ x, ‖G x‖ ≤ 1 + a`. Introduce `x`. Establish `h1 : ‖G x‖ ≤ ‖F x‖ + ‖G x - F x‖` using `norm_le_norm_add_norm_sub' _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : ‖G x - F x‖ < a` using `by rw [← dist_eq_norm]; exact hGF x`. Combine the linear relations using `[hFB x]`. Establish `hgb : ∀ x, ‖c • G x‖ ≤ 1`. Introduce `x`. Rewrite using `[norm_smul, Real.norm_of_nonneg hc0.le]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨x, hx⟩` from `BrouwerFixedPoint.smooth_of_changeOfVariablesDegree hL n (fun x => c • G x) (hG.const_smul c) hgb`. Establish `hx' : c • G x = x` using `hx`. Establish `hxB : x ∈ B`. Rewrite using `[hB_def, mem_closedBall_zero_iff, ← hx']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hgb x`. Establish `hFx : F x = f x` using `by simp only [F, hPid x hxB]`. Establish `h1 : ‖f x - G x‖ < a`. Rewrite using `[← hFx, ← dist_eq_norm, dist_comm]`. Conclude with `hGF x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h2 : ‖G x - x‖ ≤ a`. Establish `h : G x - x = (1 - c) • G x`. Rewrite using `[sub_smul, one_smul, hx']`. Rewrite using `[h, norm_smul, Real.norm_of_nonneg (by linarith)]`. Use `hGb x` as an intermediate fact.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : ‖f x - x‖ ≤ ‖f x - G x‖ + ‖G x - x‖` using `norm_sub_le_norm_sub_add_norm_sub _ _ _`. Establish `h4 : ‖f x₀ - x₀‖ ≤ ‖f x - x‖` using `isMinOn_iff.1 hmin x hxB`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem BrouwerFixedPoint.proof (hL : ChangeOfVariablesDegree.Statement) :
     BrouwerFixedPoint.Statement := by

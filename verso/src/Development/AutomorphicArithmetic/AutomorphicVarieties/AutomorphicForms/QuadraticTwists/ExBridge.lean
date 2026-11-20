@@ -6,17 +6,17 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `F K Ω _ _ _ _ _ _ _ _ _ _ _ l _ A O _ _ _ Bw hK`. Use `haveI : IsGalois K Ω := {}`. Use `haveI : IsGalois F Ω := {}`. Use `haveI : T2Space (G F Ω) := krullTopology_t2`. Set `r : G K Ω →* G F Ω` to `AlgEquiv.restrictScalarsHom F`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : Continuous r` using `continuous_restrictScalarsHom F K Ω`. Establish `hinj : Function.Injective r` using `fun a b h => AlgEquiv.ext fun x => congrArg (fun g : G F Ω => g x) h`. Establish `hind : Topology.IsInducing r` using `(hr.isClosedEmbedding hinj).isInducing`. Establish `hmem : ∀ σ : G K Ω, σ ∈ Dec (F` using `K) A ↔ r σ ∈ Dec (F := F) A := fun σ => by`. Rewrite using `[mem_Dec, mem_Dec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Iff.rfl`. Establish `hfix : ∀ (g : ↥(Dec (F` using `F) A)) (x : K), (g : G F Ω) (algebraMap K Ω x) = algebraMap K Ω x := fun g x => by`. Apply `Bw.j.injective` to reduce the goal to its premises. Rewrite using `[← Bw.e_comm]`. Conclude with `(IntermediateField.mem_fixingSubgroup_iff _ _).1 (Bw.e g).2 _ (hK x)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `f : ↥(Dec (F` to `K) A) →* ↥(Dec (F := F) A) := (r.comp (Dec (F := K) A).subtype).codRestrict _ fun σ => (hmem σ).1 σ.2`. Establish `hf : Function.Bijective f`. Use `⟨fun a b h => Subtype.ext (hinj (congrArg Subtype.val h)), fun g => ?_⟩` and prove the remaining obligations. Set `σ : G K Ω` to `AlgEquiv.ofRingEquiv (f := (g : G F Ω).toRingEquiv) (hfix g)`. Establish `hσ : r σ = g` using `AlgEquiv.ext fun _ => rfl`.
+Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨⟨σ, (hmem σ).2 (hσ ▸ g.2)⟩, Subtype.ext hσ⟩`. Set `φ : ↥(Dec (F` to `K) A) ≃* ↥(Dec (F := F) A) := MulEquiv.ofBijective f hf`. Establish `hφ : Continuous φ` using `(hr.comp continuous_subtype_val).subtype_mk _`. Establish `hφs : Continuous φ.symm`. Rewrite using `[(hind.comp Topology.IsInducing.subtypeVal).continuous_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `continuous_subtype_val.congr fun g => (congrArg Subtype.val (φ.apply_symm_apply g)).symm`. Use `⟨{ Kw := Bw.Kw, j := Bw.j, j_E := hK, j_dense := ?_, e := φ.trans Bw.e e_cont := Bw.e_cont.comp hφ, e_symm_cont := hφs.comp Bw.e_symm_cont e_comm := fun g x => Bw.e_comm (φ g) x LL := Bw.LL, LL_split := Bw.LL_split, eO := Bw.eO, eO_alg := Bw.eO_alg eO_cont := Bw.eO_cont, eO_symm_ …` and prove the remaining obligations. Use `Bw.j_dense.trans (closure_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨algebraMap F K x, by simp only [← IsScalarTower.algebraMap_apply]⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Cq.exBridge :
     ∀ (F K Ω : Type) [Field F] [NumberField F] [Field K] [NumberField K] [Field Ω] [Algebra F K] [Algebra F Ω] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure F Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω) (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F := F) A) O), (∀ x : K, Bw.j (algebraMap K Ω x) ∈ Bw.Kw.1) →

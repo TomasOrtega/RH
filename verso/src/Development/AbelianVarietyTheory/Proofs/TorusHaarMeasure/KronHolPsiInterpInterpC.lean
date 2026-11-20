@@ -21,7 +21,7 @@ namespace GlobalTheory.InterpolationClosed
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.KronAssembly.kronHolPsi_of GlobalTheory.FrameMeasureClosed.measure_statements.2.2.2 (GlobalTheory.OrbitCoord.det_fderiv_ne_zero_orbit GlobalTheory.FrameMeasureClosed.measure_statements.1) (GlobalTheory.KronMetric.kronMetric GlobalTheory.NormFactor.nfac_transform) Glo …`.
+A detailed English derivation is pending.
 -/
 theorem kronHolPsi : KronHolPsiStatement (E := E) :=
   GlobalTheory.KronAssembly.kronHolPsi_of
@@ -34,19 +34,19 @@ theorem kronHolPsi : KronHolPsiStatement (E := E) :=
     (GlobalTheory.KronValue.value_and_integrability GlobalTheory.vanishAtS_holds)
 
 /- English proof (translation)
-The claim follows from `interp_of GlobalTheory.PoincareClosed.unfold_poincare_onto.2.2.2.1 kronHolPsi`.
+A detailed English derivation is pending.
 -/
 theorem interp : InterpStatement (E := E) :=
   interp_of GlobalTheory.PoincareClosed.unfold_poincare_onto.2.2.2.1 kronHolPsi
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.InterpC.main GlobalTheory.PoincareClosed.unfold_poincare_onto.2.2.2.1 kronHolPsi`.
+A detailed English derivation is pending.
 -/
 theorem interpC : InterpCStatement (E := E) :=
   GlobalTheory.InterpC.main GlobalTheory.PoincareClosed.unfold_poincare_onto.2.2.2.1 kronHolPsi
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨kronHolPsi, interp, interpC⟩`.
+Supply the required witnesses or components.
 -/
 theorem kronHolPsi_interp_interpC :
     (KronHolPsiStatement (E := E)) ∧ (InterpStatement (E := E)) ∧ (InterpCStatement (E := E)) :=

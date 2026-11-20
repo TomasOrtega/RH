@@ -20,19 +20,19 @@ section Princ
 variable (F : IntermediateField ℚ ℂ)
 
 /- English proof (translation)
-Rewrite using `[span_pow, Set.singleton_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma span_single_pow (x : ℂ) (n : ℕ) : span (𝓞 F) {x} ^ n = span (𝓞 F) {x ^ n} := by
   rw [span_pow, Set.singleton_pow]
 
 /- English proof (translation)
-Rewrite using `[span_mul_span, Set.singleton_mul_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma span_single_mul (x y : ℂ) : span (𝓞 F) {x} * span (𝓞 F) {y} = span (𝓞 F) {x * y} := by
   rw [span_mul_span, Set.singleton_mul_singleton]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `mul_le_mul' ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma sub_pow_le {S T : Submodule (𝓞 F) ℂ} (h : S ≤ T) (n : ℕ) : S ^ n ≤ T ^ n := by
   induction n with
@@ -40,7 +40,7 @@ lemma sub_pow_le {S T : Submodule (𝓞 F) ℂ} (h : S ≤ T) (n : ℕ) : S ^ n 
   | succ n ih => rw [pow_succ, pow_succ]; exact mul_le_mul' ih h
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply (𝓞 F) F ℂ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma algebraMap_O_apply (o : 𝓞 F) : algebraMap (𝓞 F) ℂ o = ((algebraMap (𝓞 F) F o : F) : ℂ) := by
   rw [IsScalarTower.algebraMap_apply (𝓞 F) F ℂ]; rfl
@@ -50,11 +50,11 @@ variable [NumberField F]
 abbrev hF : ℕ := Fintype.card (ClassGroup (𝓞 F))
 
 /- English proof (translation)
-Establish `hI' : I ∈ (Ideal (𝓞 F))⁰` using `mem_nonZeroDivisors_of_ne_zero hI`. Establish `hIh : I ^ hF F ∈ (Ideal (𝓞 F))⁰` using `pow_mem hI' _`. Establish `h1 : ClassGroup.mk0 ⟨I ^ hF F, hIh⟩ = 1`. Establish `e : (⟨I ^ hF F, hIh⟩ : (Ideal (𝓞 F))⁰) = ⟨I, hI'⟩ ^ hF F` using `Subtype.ext (by simp)`. Rewrite using `[e, map_pow, pow_card_eq_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[ClassGroup.mk0_eq_one_iff]`. Take `⟨⟨a, ha⟩⟩` from `h1`. Use `⟨a, ?_, ha⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Establish `h0 : I ^ hF F = 0` using `by rw [ha]; simp`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `zero_notMem_nonZeroDivisors (h0 ▸ hIh)`.
+A detailed English derivation is pending.
 -/
 lemma ideal_pow_principal (I : Ideal (𝓞 F)) (hI : I ≠ ⊥) :
     ∃ a : 𝓞 F, a ≠ 0 ∧ I ^ hF F = span (𝓞 F) {a} := by
@@ -71,15 +71,15 @@ lemma ideal_pow_principal (I : Ideal (𝓞 F)) (hI : I ≠ ⊥) :
   exact zero_notMem_nonZeroDivisors (h0 ▸ hIh)
 
 /- English proof (translation)
-Use `set S0 := span (𝓞 F) {t⁻¹} * S with hS0def`. Establish `hS0 : S0 ≤ LinearMap.range (Algebra.linearMap (𝓞 F) ℂ)`. Rewrite using `[← Submodule.one_eq_range, Submodule.one_eq_span]`. Combine the equalities or inequalities in the displayed calculation. Establish `hSS0 : S = span (𝓞 F) {t} * S0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS0def, ← mul_assoc, span_single_mul, mul_inv_cancel₀ ht, ← Submodule.one_eq_span, one_mul]`. Use `set I : Ideal (𝓞 F) := Submodule.comap (Algebra.linearMap (𝓞 F) ℂ) S0 with hIdef`. Establish `hI : Submodule.map (Algebra.linearMap (𝓞 F) ℂ) I = S0` using `Submodule.map_comap_eq_of_le hS0`. Establish `hI0 : I ≠ ⊥`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hS` to reduce the goal to its premises. Rewrite using `[hSS0, ← hI, h, Submodule.map_bot, Submodule.mul_bot]`. Take `⟨a, ha0, ha⟩` from `ideal_pow_principal F I hI0`. Use `⟨algebraMap (𝓞 F) F a, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `ha0` to reduce the goal to its premises. Conclude with `RingOfIntegers.ext (by simpa using h)`. Establish `hmap : S0 ^ hF F = span (𝓞 F) {algebraMap (𝓞 F) ℂ a}`. Establish `hp : Submodule.map (Algebra.linearMap (𝓞 F) ℂ) (I ^ hF F) = S0 ^ hF F`. Rewrite using `[← hI]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.map_pow (M := I) (f := Algebra.ofId (𝓞 F) ℂ) (n := hF F)`. Rewrite using `[← hp, ha, Submodule.map_span, Set.image_singleton]`. Both sides reduce to the same expression. Rewrite using `[hSS0, mul_pow, hmap, span_single_pow, span_single_mul, algebraMap_O_apply]`.
+A detailed English derivation is pending.
 -/
 lemma sub_pow_principal (S : Submodule (𝓞 F) ℂ) (hS : S ≠ ⊥) (t : ℂ) (ht : t ≠ 0)
     (hle : S ≤ span (𝓞 F) {t}) :

@@ -37,11 +37,11 @@ def FrameVolAt : Prop :=
       (X.B.g : ℝ) ^ (D.R.f * (D.R.rS + 1) * (2 * D.R.rS + 3))
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.MassDataConc.kapN`. Establish `hr : 0 < D.host.rdE`. Unfold `Formalism.BasicNotions.Host.rdE`. Apply `Real.rpow_pos_of_pos` to reduce the goal to its premises. Conclude with `abs_pos.2 (Int.cast_ne_zero.2 (NumberField.discr_ne_zero _))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hgS : 0 < (Formalism.MainNotions.S.Lat.gS D : ℝ)`. Unfold `Formalism.MainNotions.S.Lat.gS`. Use `first`. Consider the case `exact Nat.cast_pos.2 (Nat.mul_pos (D.host.g_prime 0).pos (D.host.g_prime 1).pos)`. Consider the case `exact Nat.cast_pos.2 (Nat.mul_pos D.host.g_prime.1.pos D.host.g_prime.2.pos)`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Treat this case separately. Check the signs of the components of the expression.
 
-Consider the case `exact Nat.cast_pos.2 (Nat.mul_pos (D.host.g_prime 0).one_lt.le (D.host.g_prime 1).one_lt.le)`. Check the signs of the components of the expression.
+A detailed English derivation is pending.
 -/
 theorem kapN_pos (hg : 0 < (X.B.g : ℝ)) : 0 < Formalism.L2.SG.MassDataConc.kapN D := by
   unfold Formalism.L2.SG.MassDataConc.kapN
@@ -58,21 +58,17 @@ theorem kapN_pos (hg : 0 < (X.B.g : ℝ)) : 0 < Formalism.L2.SG.MassDataConc.kap
   positivity
 
 /- English proof (translation)
-Take `⟨hM, hψ, hStd, hMC, hLC, -, hdet⟩` from `hT`. Establish `hH : HypX X hb (Y.FN u) (Y.FN u') u u'` using `⟨hM, hc.2.2.1, Y.FN_fund u, Y.FN_fund u'⟩`. Establish `hk` using `kapN_pos X hg`. Establish `hDst : (bk X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq).Dstar = DstC X` using `Formalism.L2.SG.IntegralApproximation.MassDataDstarX_holds X hb Y.hK (Y.FN u) (Y.FN u') u u' X0 ψ (Y.tO u u') sd C Th vR Q Y.M Y.δ i0 i0' νq (locOf X u u' ψ) (anY X Y u u' ψ sd C Th vR Q i0 i0' νq) hH hKpp`. Use `set B := bk X hb Y u u' X0 ψ sd C Th vR Q i0 i0' νq with hB`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCoo : 0 ≤ Formalism.L2.SG.RealObj.DisintegrationConstant X u u' 1`. Unfold `Formalism.L2.SG.RealObj.DisintegrationConstant`. Use `split_ifs with h`. Conclude with `h.choose_spec.1.le`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdeg : 0 < B.deg`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, h, -⟩` from `hPos`. Conclude with `h`. Establish `hNI : PN.NormInputs B`. Use `⟨hPos, rfl, ?_, ?_, ?_, hLS hH, hMs hH, hCol hH, ?_, ?_, hInd hH⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show Formalism.L2.SG.RealObj.IntOO X u u' 1 = Formalism.L2.SG.MassDataConc.kapN D * Formalism.L2.SG.RealObj.DisintegrationConstant X u u' 1 * (Formalism.L2.SG.RealObj.IntC X u u' 1 / Formalism.L2.SG.MassDataConc.kapN D)`. Unfold `Formalism.L2.SG.RealObj.IntOO Formalism.L2.SG.RealObj.IntC`. Rewrite using `[hNu, ENNReal.toReal_mul, ENNReal.toReal_ofReal hCoo]`. Clear the denominators using the available nonvanishing facts. Use `show Formalism.L2.SG.RealObj.IntOO X u u' 1 ≤ 1 / Formalism.L2.SG.RealObj.degX X`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hd : 0 < Formalism.L2.SG.RealObj.degX X` using `hdeg`. Conclude with `ENNReal.toReal_le_of_le_ofReal (by positivity) hInf.2.2`. Conclude with `inVolumes_of_compat X hb Y.hK (Y.FN u) (Y.FN u') u u' X0 (locOf X u u' ψ) (anY X Y u u' ψ sd C Th vR Q i0 i0' νq) hVol hH ⟨ψ, hψ, hStd, hMC⟩ hdet`. Conclude with `inOrdinary_bCF X hb Y.hK (Y.FN u) (Y.FN u') u u' X0 ψ (Y.tO u u') sd C Th vR Q Y.M Y.δ i0 i0' νq hPC`. Conclude with `hTy hH hPC (locTieX_of X ψ u (hLC u) hPr) (locTieX_of X ψ u' (hLC u') hPr') (typFacts_of X u u' (Formalism.L2.SG.Pf.gSplitX_holds X) (tCongX X u u') hKap)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Clear the denominators using the available nonvanishing facts.
 
-Establish `hLam : 0 < PN.abelian₂ (2 * D.host.v) D.R.rS D.R.k D.R.f * (2 * D.host.v) ^ (((D.R.f * D.R.rS * (D.R.rS + 1) * (8 * D.R.rS + 10) : ℕ) : ℝ) / 3)`. Unfold `PN.abelian₂`. Conclude with `mul_pos (pow_pos hrd _) (Real.rpow_pos_of_pos hrd _)`. Use `⟨(B.c0 * B.c0')⁻¹ * B.IntC / 2 ^ (D.R.f * (D.R.rS + 1)), (B.c0 * B.c0')⁻¹ * B.IntC / 2 ^ (D.R.f * (D.R.rS + 1)) / (PN.abelian₂ (2 * D.host.v) D.R.rS D.R.k D.R.f * (2 * D.host.v) ^ (((D.R.f * D.R.rS * (D.R.rS + 1) * (8 * D.R.rS + 10) : ℕ) : ℝ) / 3)), ?_, ?_, hNI, ?_⟩` and prove the remaining obligations. Conclude with `Formalism.L2.SG.IntegralApproximation.Gam1TieC_holds X hb Y.hK (Y.FN u) (Y.FN u') u u' X0 ψ sd C Th vR Q Y.M Y.δ i0 i0' νq Y`.
-
-Use `show B.d * B.d' / B.Dstar = duC X Y u * duC X Y u' / DstC X`. Rewrite using `[hDst]`. Both sides reduce to the same expression. Establish `hL1 : PN.abelian₂ (2 * D.host.v) D.R.rS D.R.k D.R.f ≠ 0`. Unfold `PN.abelian₂`.
-
-Conclude with `(pow_pos hrd _).ne'`. Establish `hL2 : (2 * D.host.v) ^ (((D.R.f * D.R.rS * (D.R.rS + 1) * (8 * D.R.rS + 10) : ℕ) : ℝ) / 3) ≠ 0` using `(Real.rpow_pos_of_pos hrd _).ne'`. Use `⟨hrd, hg, hFV, ?_, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem massDataValid_bk_of {large₂ : SizeData₂ D} {Cg cb Cw cT CT C0 C' Cl : ℝ} (hc : Ctx Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u')
     (hrd : 0 < 2 * D.host.v) (hg : 0 < (X.B.g : ℝ)) (hT : MassDataTie X hb X0 ψ)
@@ -168,9 +164,9 @@ def OnTied (P : ∀ (D : D7) (X : HidaSetting D), Formalism.L2.SG.AdBridge.AdBri
       (ψ : AddChar (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF X.B.I.F) ℂ), MassDataTie X hb X0 ψ → P D X hb Y u u' X0 ψ
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Take `⟨Cgs, CTs, _, _, C'₀, Cl₀, hsz⟩` from `Formalism.L2.SG.NGCut.sizes_of_hypotheses Cg cb Cw cT CT C0`. Use `⟨C'₀, Cl₀, fun C' Cl h1 h2 D large₂ X Y u u' hc hb X0 ψ hT => ?_⟩` and prove the remaining obligations. Establish `hS` using `hsz C' Cl h1 h2 D large₂ X Y u u' hc`. Unfold `SizesRec at hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨_, _, hrd, _, hg1, _⟩` from `hS`. Establish `hg : 0 < (X.B.g : ℝ)` using `lt_of_lt_of_le one_pos hg1`. Use `⟨0, 0, 1, X.Fu u, Y.what₂ u, fun _ => 0, pairSys0 u u' (X.Fu u) (Y.what₂ u), fun _ => idx0 D, fun _ => idx0 D, fun _ => 0, ?_⟩` and prove the remaining obligations. Conclude with `massDataValid_bk_of X hb Y u u' X0 ψ 0 0 1 (F0 := X.Fu u) (what₂ := Y.what₂ u) (fun _ => 0) (pairSys0 u u' (X.Fu u) (Y.what₂ u)) (fun _ => idx0 D) (fun _ => idx0 D) (fun _ => 0) hc hrd hg hT (hLS Cg cb Cw cT CT C0 C' Cl D large₂ X Y u u' hc hb X0 ψ hT) (hMs Cg cb Cw cT CT C0 C' C …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stepChoiceDataC_of
     (hLS : OnTied fun _ X hb Y u u' X0 ψ =>

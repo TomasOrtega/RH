@@ -16,7 +16,7 @@ def QuadColDerivSt : Prop :=
       C (if b = b' then dotProduct u (β.mulVec v) + dotProduct v (β.mulVec u) else 0)
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.pderiv_X, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem pderiv_X_eq_C_ite {k : Type} [CommRing k] {n d : ℕ} (p q : Fin n × Fin d) :
     pderiv k p (X q : PS k n d) = C (if q = p then (1 : k) else 0) := by
@@ -25,14 +25,14 @@ private theorem pderiv_X_eq_C_ite {k : Type} [CommRing k] {n d : ℕ} (p q : Fin
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[Derivation.leibniz, MvPowerSeries.pderiv_C, smul_zero, add_zero, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem pderiv_C_mul' {k : Type} [CommRing k] {n d : ℕ} (p : Fin n × Fin d) (a : k)
     (Y : PS k n d) : pderiv k p (C a * Y) = C a * pderiv k p Y := by
   rw [Derivation.leibniz, MvPowerSeries.pderiv_C, smul_zero, add_zero, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[Derivation.leibniz, pderiv_C_mul', pderiv_X_eq_C_ite, pderiv_X_eq_C_ite, smul_eq_mul, smul_eq_mul, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem pderiv_C_mul_X_mul_X {k : Type} [CommRing k] {n d : ℕ} (p q r : Fin n × Fin d) (a : k) :
     pderiv k p (C a * X q * X r : PS k n d) =
@@ -42,11 +42,11 @@ private theorem pderiv_C_mul_X_mul_X {k : Type} [CommRing k] {n d : ℕ} (p q r 
   ring
 
 /- English proof (translation)
-Distinguish the cases in `hb : b = b'`. Substitute `hb` using the available equality. Simplify using `only [Prod.mk.injEq, ite_and, mul_ite, ite_mul, mul_one, mul_zero, zero_mul, Finset.sum_add_distrib, if_true]`. Simplify using `[Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.sum_ite_irrel]`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Conclude with `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => by ring`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => by ring`. Rewrite using `[if_neg hb]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `Finset.sum_eq_zero fun x _ => Finset.sum_eq_zero fun y _ => Finset.sum_eq_zero fun c _ => Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c = b`. Substitute `hc` using the available equality. Simplify using `[Prod.mk.injEq, hb]`. Simplify using `[Prod.mk.injEq, hc]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sum_quadratic_column_indicator_eq_dotProduct_mulVec {k : Type} [CommRing k] {d n : ℕ} (β : Matrix (Fin d) (Fin d) k)
     (u v : Fin d → k) (b b' : Fin n) :
@@ -75,11 +75,11 @@ private theorem sum_quadratic_column_indicator_eq_dotProduct_mulVec {k : Type} [
     · simp [Prod.mk.injEq, hc]
 
 /- English proof (translation)
-Introduce `k _ d n β`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[quadCol, map_sum]`. Introduce `u b`. Simplify using `only [dAdd, quadCol, map_sum, pderiv_C_mul_X_mul_X, pderiv_C_mul', map_add, map_mul, MvPowerSeries.constantCoeff_X, mul_zero, add_zero, Finset.sum_const_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `u v b b'`. Simplify using `only [dAdd, quadCol, map_sum, pderiv_C_mul_X_mul_X, pderiv_C_mul', map_add, Finset.mul_sum, mul_add, pderiv_X_eq_C_ite]`. Simplify using `only [← mul_assoc, ← map_mul]`. Simplify using `only [← map_add, ← map_sum]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← sum_quadratic_column_indicator_eq_dotProduct_mulVec β u v b b']`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => by ring` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem quadratic_column_derivative : QuadColDerivSt := by
   intro k _ d n β

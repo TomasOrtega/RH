@@ -29,7 +29,7 @@ variable {E : Type} [Field E] [NumberField E]
 
 omit [NumberField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[Matrix.vecMul, dotProduct, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem single_last_vecMul {m : ℕ} {R : Type} [CommRing R] (M : Matrix (Fin (m + 1)) (Fin (m + 1)) R) :
     (Pi.single (Fin.last m) 1 : Fin (m + 1) → R) ᵥ* M = M (Fin.last m) := by
@@ -37,7 +37,7 @@ theorem single_last_vecMul {m : ℕ} {R : Type} [CommRing R] (M : Matrix (Fin (m
   simp [Matrix.vecMul, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = Fin.last m`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem algebraMap_comp_single {m : ℕ} :
     (algebraMap E (Ad E) ∘ (Pi.single (Fin.last m) 1 : Fin (m + 1) → E)) = Pi.single (Fin.last m) 1 := by
@@ -47,7 +47,7 @@ theorem algebraMap_comp_single {m : ℕ} :
   · simp [Pi.single_apply, h]
 
 /- English proof (translation)
-Rewrite using `[algebraMap_comp_single, single_last_vecMul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lastRow_eq {m : ℕ} (g : GA E (m + 1)) :
     GlobalTheory.ZEul.lastRow g = Matrix.vecMul (algebraMap E (Ad E) ∘ (Pi.single (Fin.last m) 1 : Fin (m + 1) → E)) g.val := by
@@ -55,11 +55,11 @@ theorem lastRow_eq {m : ℕ} (g : GA E (m + 1)) :
   rfl
 
 /- English proof (translation)
-Establish `hz : ∀ i j : Fin a, j ≤ i → posM p x i j = 0`. Introduce `i j hij`. Simplify using `only [posM, Matrix.sum_apply, Matrix.single_apply]`. Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨rfl, rfl, -⟩`. Conclude with `absurd (hp t) (not_lt.2 hij)`. Establish `hT : (1 + posM p x).IsUpperTriangular`. Introduce `i j hij`. Establish `hne : i ≠ j` using `ne_of_gt hij`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne hne, hz i j (le_of_lt hij), add_zero]`. Rewrite using `[Matrix.det_of_isUpperTriangular hT]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, Matrix.one_apply_eq, hz i i le_rfl, add_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_posM_eq_one {R : Type} [CommRing R] {a : ℕ} {ι : Type} [Fintype ι] {p : ι → Fin a × Fin a}
     (hp : ∀ t, (p t).1 < (p t).2) (x : ι → R) : (1 + posM p x).det = 1 := by
@@ -79,7 +79,7 @@ theorem det_posM_eq_one {R : Type} [CommRing R] {a : ℕ} {ι : Type} [Fintype �
   rw [Matrix.add_apply, Matrix.one_apply_eq, hz i i le_rfl, add_zero]
 
 /- English proof (translation)
-Establish `h : GeneralLinearGroup.det u = 1` using `Units.ext (by rw [GeneralLinearGroup.val_det_apply, hu, Units.val_one])`. Simplify using `[GlobalTheory.RSnm.detAbs, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem detAbs_of_det_one {a : ℕ} (u : GA E a) (hu : (u : Matrix (Fin a) (Fin a) (Ad E)).det = 1) :
     GlobalTheory.RSnm.detAbs u = 1 := by
@@ -87,21 +87,21 @@ theorem detAbs_of_det_one {a : ℕ} (u : GA E a) (hu : (u : Matrix (Fin a) (Fin 
   simp [GlobalTheory.RSnm.detAbs, h]
 
 /- English proof (translation)
-Introduce `E _ _ _ m`. Use `⟨?_, lastRow_eq, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ g`. Rewrite using `[lastRow_eq, GlobalTheory.ThetaUnfold.vecMul_ratGL_mul]`. Introduce `γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[single_last_vecMul]`. Use function extensionality and compare the values at `k`. Use `hγ (Fin.last m) k (Or.inl (by simp))` as an intermediate fact. Rewrite using `[this]`. Distinguish the cases in `h : k = Fin.last m`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply, Pi.single_apply, h, Ne.symm h]`. Introduce `r l y g`. Establish `hp : ∀ t : UnipotentBlockColumnIndex (m + 1) r l, t.1.1 < t.1.2` using `fun t => by`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `t.2; exact Fin.lt_def.2 (by omega)` as an intermediate fact. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Express the relevant statement in the definitionally equal form `((blkU y).val * g.val) (Fin.last m) j = g.val (Fin.last m) j`. Rewrite using `[blkU, posU_val, add_mul, one_mul, Matrix.add_apply, add_eq_left]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [posM, Finset.sum_mul, Matrix.sum_apply]`. Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.single_mul_apply_of_ne]`. Introduce `h`. Establish `h1` using `t.2.1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `t.1.2.isLt`. Establish `h3` using `t.2.2.1`. Rewrite `h1` using `[← h]`. Simplify using `only [Fin.val_last] at h1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[GlobalTheory.RSnm.detAbs_mul, detAbs_of_det_one, one_mul]`. Rewrite using `[blkU, posU_val]`. Conclude with `det_posM_eq_one (p := Subtype.val) hp y`. Introduce `X g`. Rewrite using `[GlobalTheory.RSnm.detAbs_mul, detAbs_of_det_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GroundTheory.Automorphic.FourierWhittaker.coe_uGL, GroundTheory.Automorphic.FourierWhittaker.det_uMat]`.
+A detailed English derivation is pending.
 -/
 theorem rows_main : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ),
     (∀ (γ : GL (Fin (m + 1)) E) (g : GA E (m + 1)), GlobalTheory.ZEul.lastRow (ratGL E (m + 1) γ * g) =

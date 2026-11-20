@@ -20,9 +20,9 @@ section General
 variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {Hm : Mt n} {σ : Mt n → (H →L[ℂ] H)} {v : H}
 
 /- English proof (translation)
-Introduce `k τs Xs hX u hu`. Establish `hmem : ∀ t : Fin k → ℝ, (List.ofFn fun i => (Pi.mulSingle (τs i) (NormedSpace.exp (t i • Xs i)) : Unit → Mt n)).prod ∈ UG (fun _ : Unit => Hm)` using `fun t => prod_mem_UG _ fun v hv => by`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hv`. Conclude with `single_mem_UG (fun _ : Unit => Hm) _ (hX i) _`. Simplify using `only [Pi.mul_apply, hσ.2 _ (hu ()) _ (hmem _ ()), ContinuousLinearMap.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [prod_single_apply, if_true]`. Establish `h1` using `hv k Xs hX`. Conclude with `(((innerSL ℂ l).comp (σ (u ()))).restrictScalars ℝ).contDiff.comp h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smFn_coef (hσ : Formalism.QuantumDeterminants.IsCRepOn (Formalism.QuantumDeterminants.UH Hm) σ) (hv : SmoothVec (lieH Hm) σ v) (l : H) :
     SmFn (fun _ : Unit => Hm) fun u => ⟪l, σ (u ()) v⟫_ℂ := by
@@ -38,9 +38,9 @@ theorem smFn_coef (hσ : Formalism.QuantumDeterminants.IsCRepOn (Formalism.Quant
   exact (((innerSL ℂ l).comp (σ (u ()))).restrictScalars ℝ).contDiff.comp h1
 
 /- English proof (translation)
-Unfold `der`. Establish `e : (fun t : ℝ => ⟪l, σ ((u * (Pi.mulSingle () (NormedSpace.exp (t • X)) : Unit → Mt n)) ()) v⟫_ℂ) = fun t : ℝ => ⟪l, σ (u ()) (σ (NormedSpace.exp (t • X)) v)⟫_ℂ`. Use function extensionality and compare the values at `t`. Rewrite using `[Pi.mul_apply, hσ.2 _ (hu ()) _ (single_mem_UG (fun _ : Unit => Hm) () hX t ()), Pi.mulSingle_eq_same]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `((((innerSL ℂ l).comp (σ (u ()))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_of_smooth hv hX)).deriv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem der_coef (hσ : Formalism.QuantumDeterminants.IsCRepOn (Formalism.QuantumDeterminants.UH Hm) σ) (hv : SmoothVec (lieH Hm) σ v) (l : H) {X : Mt n}
     (hX : X ∈ lieH Hm) {u : Unit → Mt n} (hu : u ∈ UG (fun _ : Unit => Hm)) :
@@ -56,11 +56,11 @@ theorem der_coef (hσ : Formalism.QuantumDeterminants.IsCRepOn (Formalism.Quantu
     (hasDerivAt_of_smooth hv hX)).deriv
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `conj_facts (herm_of_orth h) (dets_ne h).1 Z`. Establish `hA : (1 / 2 : ℂ) • (Z + conjH Hm Z) ∈ lieH Hm` using `by show _ = _`. Rewrite using `[conjTranspose_smul, conjTranspose_add, Matrix.smul_mul, Matrix.mul_smul, Matrix.add_mul, Matrix.mul_add, h1, h2]`. Establish `: star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Rewrite using `[this, ← smul_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `abel_nf`. Simplify using the standard rewrite rules. Establish `hB : (1 / (2 * Complex.I) : ℂ) • (Z - conjH Hm Z) ∈ lieH Hm` using `by show _ = _`. Rewrite using `[conjTranspose_smul, conjTranspose_sub, Matrix.smul_mul, Matrix.mul_smul, Matrix.sub_mul, Matrix.mul_sub, h1, h2]`. Establish `: star (1 / (2 * Complex.I) : ℂ) = -(1 / (2 * Complex.I))` using `by simp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, neg_smul, ← smul_neg, ← smul_add]`. Use `abel_nf`. Simplify using the standard rewrite rules. Unfold `derC dRepC`. Rewrite using `[der_coef hσ hv l hA hu, der_coef hσ hv l hB hu, map_add, map_smul, inner_add_right, inner_smul_right]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derC_coef {q : ℕ} {x₀ : Mt n} (h : OrthFr Hm q x₀)
     (hσ : Formalism.QuantumDeterminants.IsCRepOn (Formalism.QuantumDeterminants.UH Hm) σ) (hv : SmoothVec (lieH Hm) σ v) (l : H) (Z : Mt n) {u : Unit → Mt n}
@@ -85,31 +85,27 @@ theorem derC_coef {q : ℕ} {x₀ : Mt n} (h : OrthFr Hm q x₀)
   rw [der_coef hσ hv l hA hu, der_coef hσ hv l hB hu, map_add, map_smul, inner_add_right, inner_smul_right]
 
 /- English proof (translation)
-The claim follows from `(⟨T.toLinearMap, hT⟩ : H →ₗᵢ[ℂ] H).inner_map_map x y`.
+A detailed English derivation is pending.
 -/
 theorem inner_iso (T : H →L[ℂ] H) (hT : ∀ x, ‖T x‖ = ‖x‖) (x y : H) : ⟪T x, T y⟫_ℂ = ⟪x, y⟫_ℂ :=
   (⟨T.toLinearMap, hT⟩ : H →ₗᵢ[ℂ] H).inner_map_map x y
 
 /- English proof (translation)
-Establish `hf : HolFn (fun _ : Unit => Hm) (fun _ => q) (fun _ => x₀) (fun _ => w) fun u => ⟪l, σ (u ()) v⟫_ℂ`. Use `GlobalTheory.HolDict.holFn_of_killed _ _ _ _ _ _ (fun _ => h) _ (smFn_coef hσ.1 hv l) ?_` and prove the remaining obligations. Introduce and unpack `⟨⟩ a c hac u hu`. Rewrite using `[derC_coef h hσ.1 hv l _ hu, hk a c hac]`. Use `split_ifs`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, inner_smul_right]`. Simplify using the standard rewrite rules. Establish `hz` using `GlobalTheory.HolDict.Uniq.eq_zero_of_torus_law _ _ _ _ _ _ (fun _ => h) _ hf (fun u hu s => by`. Establish `hn : (starRingEnd ℂ) (torCh (fun _ : Unit => w) s) * torCh (fun _ : Unit => w) s = 1`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[torCh, norm_prod, norm_zpow, Complex.norm_exp_ofReal_mul_I]`. Establish `e` using `inner_iso _ (hσ.2.1 _ (hmem s)) l (σ (u ()) v)`. Rewrite `e` using `[hl, inner_smul_left]`. Simplify using `only [Pi.mul_apply]`. Rewrite using `[hσ.1.2 _ (hmem s) _ (hu ()), ← e, ← mul_assoc, mul_comm (torCh _ s), hn, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `rfl) (by`. Simplify using `only [Pi.one_apply]`. Rewrite using `[hσ.1.1]`. Conclude with `h0)`. Set `P : Submodule ℂ H` to `⨅ g ∈ Formalism.QuantumDeterminants.UH Hm, LinearMap.ker ((innerSL ℂ l).comp (σ g)).toLinearMap`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hP : ∀ y, y ∈ P ↔ ∀ g ∈ Formalism.QuantumDeterminants.UH Hm, ⟪l, σ g y⟫_ℂ = 0` using `fun y => by`. Simplify using `only [P, Submodule.mem_iInf, LinearMap.mem_ker]`. Both sides reduce to the same expression. Establish `hcl : IsClosed (P : Set H)`. Establish `: (P : Set H) = ⋂ g ∈ Formalism.QuantumDeterminants.UH Hm, {y | ⟪l, σ g y⟫_ℂ = 0}`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `y`. Simplify using `only [SetLike.mem_coe, hP, Set.mem_iInter, Set.mem_setOf_eq]`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun g _ => isClosed_eq (by fun_prop) continuous_const`. Establish `hone : (1 : Mt n) ∈ Formalism.QuantumDeterminants.UH Hm` using `by show _ = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Break down `hirr P hcl (fun g hg y hy => (hP _).2 fun g' hg' => by` into its components or cases. Establish `hgg : g' * g ∈ Formalism.QuantumDeterminants.UH Hm`. Establish `e1 : gᴴ * Hm * g = Hm` using `hg`. Establish `e2 : g'ᴴ * Hm * g' = Hm` using `hg'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `show _ = _`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `(hP y).1 hy _ hgg` as an intermediate fact. Rewrite using `[hσ.1.2 _ hg' _ hg] at this) with hb | ht` and apply the resulting hypothesis.
-
-Establish `: v ∈ P` using `(hP v).2 fun g hg => hz (fun _ => g) fun _ => hg`. Rewrite `this` using `[hb]`. Conclude with `absurd this hv0`. Use `(hP l).1 (ht ▸ Submodule.mem_top) 1 hone` as an intermediate fact. Rewrite `this` using `[hσ.1.1]`.
-
-Conclude with `inner_self_eq_zero.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_orth [CompleteSpace H] {q : ℕ} {x₀ : Mt n} {w : Fin n → ℤ} (h : OrthFr Hm q x₀)
     (hσ : IsURepOn (Formalism.QuantumDeterminants.UH Hm) σ) (hirr : IsIrredOn (Formalism.QuantumDeterminants.UH Hm) σ) (hv : SmoothVec (lieH Hm) σ v) (hv0 : v ≠ 0)
@@ -166,11 +162,11 @@ theorem eq_zero_of_orth [CompleteSpace H] {q : ℕ} {x₀ : Mt n} {w : Fin n →
     exact inner_self_eq_zero.1 this
 
 /- English proof (translation)
-Establish `hx : IsUnit x₀.det` using `(dets_ne h).2.isUnit`. Establish `hx' : IsUnit x₀ᴴ.det` using `by rw [det_conjTranspose]; exact hx.star`. Use `set d : Mt n := diagonal fun a => Complex.exp ((s () a : ℂ) * Complex.I) with hd`. Establish `e : dᴴ * (x₀ᴴ * Hm * x₀) * d = x₀ᴴ * Hm * x₀`. Rewrite using `[h.2, hd, diagonal_conjTranspose, diagonal_mul_diagonal, diagonal_mul_diagonal]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.star_apply, Complex.star_def]`. Rewrite using `[mul_right_comm, mul_comm ((starRingEnd ℂ) _), Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.norm_exp_ofReal_mul_I]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Use `show (x₀ * d * x₀⁻¹)ᴴ * Hm * (x₀ * d * x₀⁻¹) = Hm`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, conjTranspose_nonsing_inv, Matrix.mul_assoc]`. Use `_ = Hm := by`. Rewrite using `[e, Matrix.mul_assoc x₀ᴴ, Matrix.nonsing_inv_mul_cancel_left _ _ hx', Matrix.mul_nonsing_inv_cancel_right _ _ hx]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torEl_mem {q : ℕ} {x₀ : Mt n} (h : OrthFr Hm q x₀) (s : Unit → Fin n → ℝ) :
     torEl (fun _ : Unit => x₀) s () ∈ Formalism.QuantumDeterminants.UH Hm := by
@@ -192,13 +188,13 @@ theorem torEl_mem {q : ℕ} {x₀ : Mt n} (h : OrthFr Hm q x₀) (s : Unit → F
       rw [e, Matrix.mul_assoc x₀ᴴ, Matrix.nonsing_inv_mul_cancel_left _ _ hx', Matrix.mul_nonsing_inv_cancel_right _ _ hx]
 
 /- English proof (translation)
-Establish `h` using `hv (Pi.single a (2 * Real.pi)) (diag_mem _)`. Establish `e : (diagonal fun b => Complex.exp ((((Pi.single a (2 * Real.pi) : Fin n → ℝ) b : ℝ) : ℂ) * Complex.I)) = (1 : Mt n)`. Rewrite using `[← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hb]`. Rewrite `h` using `[e, h1, Finset.sum_eq_single a (fun b _ hb => by simp [hb]) (by simp), Pi.single_eq_same]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : Complex.exp (((μ a * (2 * Real.pi) : ℝ) : ℂ) * Complex.I) = 1` using `(smul_left_injective ℂ hv0 (h.symm.trans (one_smul ℂ v).symm))`. Take `⟨m, hm⟩` from `Complex.exp_eq_one_iff.1 h2`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `h3 : ((μ a : ℝ) : ℂ) * (2 * Real.pi * Complex.I) = m * (2 * Real.pi * Complex.I)`. Rewrite using `[← hm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(mul_right_cancel₀ Complex.two_pi_I_ne_zero h3).symm` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem wt_int {ε : Fin n → Bool} {μ : Fin n → ℝ} (h1 : σ 1 = 1) (hv0 : v ≠ 0) (hv : IsWtOn (Formalism.REAL.Kset ε) σ μ v)
     (a : Fin n) : ∃ m : ℤ, (m : ℝ) = μ a := by
@@ -221,9 +217,9 @@ theorem wt_int {ε : Fin n → Bool} {μ : Fin n → ℝ} (h1 : σ 1 = 1) (hv0 :
   exact_mod_cast (mul_right_cancel₀ Complex.two_pi_I_ne_zero h3).symm
 
 /- English proof (translation)
-Take `⟨v, hvS, hv0, hv⟩` from `hS.2.2.2.1`. Establish `hK` using `pM_mem (revNeg ε) (eps_revNeg ε)`. Establish `hn : ‖σ (pM (revNeg ε)) v‖ = ‖v‖` using `hU.2.1 _ (kset_uj hK) v`. Establish `hp : ‖v‖ ≠ 0` using `norm_ne_zero_iff.2 hv0`. Use `⟨((‖v‖⁻¹ : ℝ) : ℂ) • σ (pM (revNeg ε)) v, Submodule.smul_mem _ _ (hS.2.1 _ hK v hvS), ?_, isWtOn_smul (isWtOn_perm hU _ (eps_revNeg ε) hv) _⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_smul, hn, Complex.norm_real, norm_inv, norm_norm, inv_mul_cancel₀ hp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_ext_mem {ε : Fin n → Bool} {Λ : Fin n → ℝ} (hU : IsURepOn (UJset ε) σ) {S : Submodule ℂ H}
     (hS : IsKTypeOf ε σ Λ S) : ∃ w ∈ S, ‖w‖ = 1 ∧ IsWtOn (Formalism.REAL.Kset ε) σ (fun a => Λ (revNeg ε a)) w := by
@@ -238,15 +234,15 @@ theorem exists_ext_mem {ε : Fin n → Bool} {Λ : Fin n → ℝ} (hU : IsURepOn
 end General
 
 /- English proof (translation)
-Use `set e := Equiv.ofBijective _ (arr_bijective (nNeg_le (M.ε τ))) with he`. Establish `hfr : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ)`. Establish `h1` using `torus_x0Mat M τ fun a => Complex.exp ((s () (e.symm a) : ℂ) * Complex.I)`. Establish `h2 : ∀ c, e.symm (arr (nNeg (M.ε τ)) c) = c` using `fun c => e.symm_apply_apply c`. Simplify using `only [h2] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3 : M.fr τ * torEl (fun _ : Unit => x0Mat M τ) s () * (M.fr τ)⁻¹ = diagonal fun a => Complex.exp ((s () (e.symm a) : ℂ) * Complex.I)`. Unfold `torEl`. Rewrite using `[← h1, Matrix.mul_nonsing_inv_cancel_right _ _ hx.isUnit, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hfr, Matrix.mul_nonsing_inv_cancel_right _ _ hfr]`. Unfold `DSModel.rep torCh`. Rewrite using `[h3, hl (fun a => s () (e.symm a)) (diagonal_mem_Kset _ _), Fintype.prod_unique]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[← e.sum_comp]`. Simplify using `only [← Complex.exp_int_mul, ← Complex.exp_sum, Equiv.symm_apply_apply]`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `h4 : extWt M τ (e c) = (w τ c : ℝ)` using `(hw τ c).symm`. Rewrite using `[h4]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem torus_wt {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) {w : D.what₂.Tau → Fin V.rank → ℤ}
     (hw : WtIs M w) (τ : D.what₂.Tau) {l : M.H τ} (hl : IsWtOn (Formalism.REAL.Kset (M.ε τ)) (M.σ τ) (extWt M τ) l)
@@ -277,19 +273,17 @@ theorem torus_wt {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel 
   ring
 
 /- English proof (translation)
-Introduce `D V S M hM`. Use `choose S₀ hS₀ hsm using GlobalTheory.SmoothLowType.exists_lowK_le_sm D V S M`. Establish `hU` using `fun τ => (M.ds τ).2.2.1`. Use `choose v hvS hv1 hvw using fun τ => exists_ext_mem (hU τ) (hS₀ τ)`. Establish `hv0 : ∀ τ, v τ ≠ 0` using `fun τ h => by simpa [h] using hv1 τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose w hw using fun τ c => wt_int (hU τ).1.1 (hv0 τ) (hvw τ) (arr (nNeg (M.ε τ)) c)`. Establish `hW : WtIs M w` using `hw`. Establish `hle : ∀ τ, S₀ τ ≤ lowKSub (M.ε τ) (M.lam τ) (M.σ τ)` using `fun τ => le_sSup (s := {S | IsKTypeOf (M.ε τ) (M.σ τ) (Formalism.QuantumDeterminants.lowK (M.ε τ) (M.lam τ)) S}) (hS₀ τ)`. Establish `hE : IsExtVec M fun τ => ⟨v τ, hsm τ (hvS τ)⟩` using `fun τ => ⟨hv1 τ, hle τ (hvS τ), hvw τ⟩`. Take `⟨θ, hθ⟩` from `GlobalTheory.DualPairCompare.exists_infFam D`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : ∀ τ, lowKSub (M.ε τ) (M.lam τ) (M.σ τ) = S₀ τ` using `fun τ => by`. Use `le_antisymm (sSup_le fun T hT => ?_) (hle τ)` and prove the remaining obligations. Establish `hT : IsKTypeOf (M.ε τ) (M.σ τ) (Formalism.QuantumDeterminants.lowK (M.ε τ) (M.lam τ)) T` using `hT`. Take `⟨v', hv'T, hv'1, hv'w⟩` from `exists_ext_mem (hU τ) hT`. Take `⟨hc, hR, hI, hx⟩` from `GlobalTheory.HolDict.ModelRep.model_rep D V S M τ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ho, -⟩` from `hx hM`. Take `⟨hs, hk⟩` from `GlobalTheory.HolDict.VKill.borel_extVec D θ V S M w _ hθ hM hW hE τ`. Establish `hl : IsWtOn (Formalism.REAL.Kset (M.ε τ)) (M.σ τ) (extWt M τ) (v' - ⟪v τ, v'⟫_ℂ • v τ)` using `fun t ht => by`. Rewrite using `[map_sub, map_smul, hv'w t ht, hvw τ t ht, smul_sub, smul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz : v' - ⟪v τ, v'⟫_ℂ • v τ = 0` using `eq_zero_of_orth ho hR hI hs (hv0 τ) hk _ (torEl_mem ho) (fun s => torus_wt M hW τ hl s (dets_ne ho).2) (by`. Rewrite using `[← inner_conj_symm, inner_sub_right, inner_smul_right, inner_self_eq_norm_sq_to_K, hv1]`. Use the proof step `simp)`. Establish `hv'S : v' ∈ S₀ τ`. Rewrite using `[sub_eq_zero.1 hz]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Submodule.smul_mem _ _ (hvS τ)`. Break down `hT.2.2.1 (T ⊓ S₀ τ) inf_le_left (fun g hg y hy => ⟨hT.2.1 g hg y hy.1, (hS₀ τ).2.1 g hg y hy.2⟩) with h | h` into its components or cases. Establish `: v' ∈ T ⊓ S₀ τ` using `⟨hv'T, hv'S⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Simplify using `[this] at hv'1`.
-
-Conclude with `h ▸ inf_le_right`. Conclude with `⟨fun τ => key τ ▸ hsm τ, fun τ => key τ ▸ hS₀ τ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lowSm_and_lowIrr : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S), HolShape M →
     LowSm M ∧ GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.LowIrr M := by

@@ -20,9 +20,9 @@ section Res
 variable {κ K : Type} [CommRing κ] [Field K]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter]`. Use `congr 1`. Use extensionality with `p`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `(h p h1).1 h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `h1`. Conclude with `⟨by omega, (h p (by omega)).2 (by omega)⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem sum_pred (n : ℕ) (f : ℕ → κ) (c : ℕ → Prop) [DecidablePred c] (h : ∀ p, p < n → (c p ↔ p + 1 < n)) :
     (∑ p ∈ Finset.range n, if c p then f p else 0) = ∑ p ∈ Finset.range (n - 1), f p := by
@@ -38,15 +38,15 @@ theorem sum_pred (n : ℕ) (f : ℕ → κ) (c : ℕ → Prop) [DecidablePred c]
     exact ⟨by omega, (h p (by omega)).2 (by omega)⟩
 
 /- English proof (translation)
-Establish `h0 : ((chiSymF ψ r k rS M : Kˣ) : K) = ψ (supSum r (SPsym r k rS) ((toSymOrd κ r k rS M.1 : GL (Fin r) κ) : Matrix (Fin r) (Fin r) κ)) * ψ (offSum k rS ((toSymOrd κ r k rS M.1 : GL (Fin r) κ) : Matrix (Fin r) (Fin r) κ))` using `rfl`. Rewrite using `[h0, ← AddChar.map_add_eq_mul]`. Use `congr 1`. Unfold `supSum offSum`. Rewrite using `[← Finset.sum_add_distrib, ← Equiv.sum_comp (symPerm r k rS)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ p : Fin r, ((∑ j : Fin r, if (symPerm r k rS p).1 + 1 = j.1 ∧ j.1 < r ∧ (symPerm r k rS p).1 ∈ SPsym r k rS then ((toSymOrd κ r k rS M.1 : GL (Fin r) κ) : Matrix (Fin r) (Fin r) κ) (symPerm r k rS p) j else 0) + ∑ j : Fin r, if (symPerm r k rS p).1 + 1 = rS ∧ j.1 = rS + k …` using `fun p => by`. Rewrite using `[← Finset.sum_add_distrib, ← Equiv.sum_comp (symPerm r k rS)]`. Establish `h2 : ∀ p' : Fin r, ((if (symPerm r k rS p).1 + 1 = (symPerm r k rS p').1 ∧ (symPerm r k rS p').1 < r ∧ (symPerm r k rS p).1 ∈ SPsym r k rS then ((toSymOrd κ r k rS M.1 : GL (Fin r) κ) : Matrix (Fin r) (Fin r) κ) (symPerm r k rS p) (symPerm r k rS p') else 0) + if (symPerm r k rS …` using `fun p' => by`. Rewrite using `[toSymOrd_val', ← hA, symPerm_val hr, symPerm_val hr]`. Establish `e1` using `SymLevelInv.symIdx_cases k rS p.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `SymLevelInv.symIdx_cases k rS p'.1`. Use `p.2` as an intermediate fact. Use `p'.2` as an intermediate fact. Simplify using `only [SPsym, Finset.mem_filter, Finset.mem_range]`. Apply the tactic sequence `split_ifs <;> first | omega | simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Finset.sum_congr rfl fun p' _ => h2 p', Fin.sum_univ_eq_sum_range (fun p' => if p.1 + 1 = p' then (if p.1 + 1 ≠ k then A p.1 p' else 0) else 0) r, Finset.sum_ite_eq]`. Simplify using `only [Finset.mem_range, ite_and]`. Rewrite using `[Finset.sum_congr rfl fun p _ => h1 p, Fin.sum_univ_eq_sum_range (fun p => if p + 1 < r ∧ p + 1 ≠ k then A p (p + 1) else 0) r]`. Take `⟨d, rfl⟩ : ∃ d, r = k + d` from `⟨r - k, by omega⟩`. Rewrite using `[Finset.sum_range_add, Nat.add_sub_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hd : d = 0`. Substitute `hd` using the available equality. Rewrite using `[sum_pred k _ _ fun p hp => by omega]`. Simplify using the standard rewrite rules. Rewrite using `[sum_pred k _ _ fun p hp => by omega, sum_pred d (fun p => A (k + p) (k + p + 1)) (fun p => k + p + 1 < k + d ∧ k + p + 1 ≠ k) fun p hp => by omega]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiSymF_val (ψ : AddChar κ K) {r k rS : ℕ} (hr : k + rS ≤ r) (M : HPsymF κ r k rS) (A : ℕ → ℕ → κ)
     (hA : ∀ i j : Fin r, A i.1 j.1 = (M.1 : Matrix (Fin r) (Fin r) κ) i j) :
@@ -94,18 +94,18 @@ theorem chiSymF_val (ψ : AddChar κ K) {r k rS : ℕ} (hr : k + rS ≤ r) (M : 
       sum_pred d (fun p => A (k + p) (k + p + 1)) (fun p => k + p + 1 < k + d ∧ k + p + 1 ≠ k) fun p hp => by omega]
 
 /- English proof (translation)
-Rewrite using `[coarse_of_le h1, blkIdx_replicate ht _ _ (by omega)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coarse_eq {r m t i : ℕ} (ht : 0 < t) (h1 : r ≤ i) (h2 : i < r + m * t) :
     coarse r (List.replicate m t) i = (i - r) / t + 1 := by
   rw [coarse_of_le h1, blkIdx_replicate ht _ _ (by omega)]
 
 /- English proof (translation)
-Establish `h0 : ((lamPar h (List.replicate m t) (chiSymF ψ r k rS) χ M : Kˣ) : K) = ((chiSymF ψ r k rS (HPar0 h _ _ M) : Kˣ) : K) * ((detChar χ n r (List.replicate m t) ⟨M.1, HPar_le h _ _ M.2⟩ : Kˣ) : K)` using `rfl`. Rewrite using `[h0, chiSymF_val ψ hr (HPar0 h _ _ M) A fun i j => hA (Fin.castLE h i) (Fin.castLE h j), detChar_apply, List.length_replicate, Units.coe_prod]`. Unfold `lamF`. Use `congr 1`. Use `Finset.prod_congr rfl fun s hs => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hs` using `[Finset.mem_range]`. Establish `hb` using `blk_le hs hn.ge`. Rewrite using `[← GlobalTheory.TopLaw.blkDet_eq_dB (coarse r (List.replicate m t)) (s + 1) (r + s * t) t hb ?_ ⟨M.1, HPar_le h _ _ M.2⟩ A hA]`. Unfold `ext0`. Rewrite using `[dif_pos (Units.isUnit _), IsUnit.unit_of_val_units]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `i hi`. Distinguish the cases in `hir : i < r`. Rewrite using `[coarse_of_lt hir]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[coarse_eq ht (by omega) (by omega), Nat.add_right_cancel_iff, Nat.div_eq_iff ht]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -140,7 +140,7 @@ section Lev
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {P : HeightOneSpectrum (𝓞 E)} {n : ℕ}
 
 /- English proof (translation)
-Unfold `red`. Rewrite using `[entB_zero _ _ _ _ _ rfl, dif_pos ⟨i.2, j.2⟩]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem red_entB (k₀ : ℕ) (ex : ℕ → ℕ) (g : GLint E n P) (i j : Fin n) :
     red P (LocE.entB (N' := n + 0) (N := n + 0) (qOf P) k₀ 0 n 0 n ex ex g.1.toLinearMap) i.1 j.1 =
@@ -150,9 +150,9 @@ theorem red_entB (k₀ : ℕ) (ex : ℕ → ℕ) (g : GLint E n P) (i j : Fin n)
   rfl
 
 /- English proof (translation)
-Rewrite using `[show stdAt E n P = LocE.lamY P (qOf P) n 0 0 from stdAt_eq (c := 0)]`. Use extensionality with `v`. Unfold `LocE.lamY`. Rewrite using `[LastSteps.mem_sclLat, LastSteps.mem_sclLat]`. Use `forall_congr' fun l => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl : l.1 < n` using `l.2`. Simplify using `only [LocE.scE, if_pos hl]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem lamY_eq (ex : ℕ → ℕ) : LocE.lamY P (qOf P) n 0 ex = stdAt E n P := by
   rw [show stdAt E n P = LocE.lamY P (qOf P) n 0 0 from stdAt_eq (c := 0)]
@@ -164,17 +164,15 @@ theorem lamY_eq (ex : ℕ → ℕ) : LocE.lamY P (qOf P) n 0 ex = stdAt E n P :=
   simp only [LocE.scE, if_pos hl]
 
 /- English proof (translation)
-Take `⟨hB, h0⟩` from `mem_HPar.1 hg`. Rewrite `hB` using `[mem_btG]`. Take `⟨s1, s2, s3⟩` from `(mem_HPsymF_iff hr).1 h0`. Establish `hI : IntM P (n + 0) (n + 0) (LocE.entB (N'` using `n + 0) (N := n + 0) (qOf P) k 0 n 0 n ex ex g.1.toLinearMap) := ent_int (c := 0) (g := g.1) (by rw [lamY_eq]; exact g.2)`. Establish `e : ∀ p p' (hp : p < n) (hp' : p' < n), redP P (LocE.entB (N'` using `n + 0) (N := n + 0) (qOf P) k 0 n 0 n ex ex g.1.toLinearMap p p') = (redGL n P g : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)) ⟨p, hp⟩ ⟨p', hp'⟩ := fun p p' hp hp' => red_entB k ex g ⟨p, hp⟩ ⟨p', hp'⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hI, fun p' hp' => ⟨?_, fun p hp hne hz => ?_⟩, fun i p p' h1 h2 h3 => ?_⟩` and prove the remaining obligations. Rewrite using `[e _ _ (by omega) (by omega)]`. Conclude with `s2 ⟨p', hp'⟩`. Rewrite using `[e _ _ hp (by omega)]`. Distinguish the cases in `hpr : p < r`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hz with hz | hz | hz` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `s1 ⟨p, hpr⟩ ⟨p', hp'⟩ hz`. Conclude with `s3 ⟨p, hpr⟩ ⟨p', hp'⟩ hz.2 hz.1`. Use `hB _ _ ?_ show coarse r _ p' < coarse r _ p` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[coarse_of_lt hp', coarse_of_le (by omega)]`. Use linear arithmetic over natural numbers and integers. Use `intAt_div_of_redP hq (hI _ _ h2 (by omega)) ?_` and prove the remaining obligations. Rewrite using `[e _ _ h2 (by omega)]`. Use `hB _ _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `show coarse r _ p' < coarse r _ p`. Distinguish the cases in `hpr : p' < r`. Rewrite using `[coarse_of_lt hpr, coarse_of_le (by omega)]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[coarse_eq ht (by omega) (by omega), coarse_eq ht (by omega) (by omega), Nat.add_lt_add_iff_right]`.
-
-Establish `a1 : (p' - r) / t < i` using `by rw [Nat.div_lt_iff_lt_mul ht]; omega`. Establish `a2 : i ≤ (p - r) / t` using `by rw [Nat.le_div_iff_mul_le ht]; omega`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem levG_of_HPar (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {r k rS m t : ℕ} (hn : n = r + m * t) (h : r ≤ n) (ht : 0 < t)
     (hr : k + rS ≤ r) (ex : ℕ → ℕ) (g : GLint E n P)
@@ -217,9 +215,9 @@ theorem levG_of_HPar (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {r k rS m
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Establish `hL` using `levG_of_HPar hq hn h ht hr (fun i => i + 1) g hg`. Rewrite using `[lamPar_val ψ χ hn h ht hr ⟨_, hg⟩ _ (red_entB k (fun i => i + 1) g), ← lamGvS_eq ψ χ (by omega) hL.1 (by omega) (by omega)]`. Substitute `hm` using the available equality. Rewrite using `[phiGS_eq]`. Use `phiM_target (c := 0) ψ χ (by omega) hr (by rw [hn, add_mul]; omega) (((HPar n (𝓞 E ⧸ P.asIdeal) h (List.replicate (i + 1) t) (HPsymF _ r k rS)).comap (redGL n P)).map (GLint E n P).subtype) ?_ ?_ ⟨g, hg, rfl⟩ x` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨g', -, rfl⟩`. Rewrite using `[lamY_eq]`. Conclude with `g'.2`. Introduce and unpack `_ ⟨g', hg', rfl⟩`. Conclude with `levG_of_HPar hq hn h ht hr _ g' hg'`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem phiGS_target (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (ψ : AddChar (𝓞 E ⧸ P.asIdeal) K)
     (χ : ℕ → (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {r k rS m i t c' n' : ℕ} (hm : m = i + 1) (hn : n = r + m * t) (h : r ≤ n) (ht : 0 < t)
@@ -244,9 +242,9 @@ theorem phiGS_target (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) (ψ : Add
 end Lev
 
 /- English proof (translation)
-Introduce `X Pr R Ch S mu m2 P hm hq hP j h x`. Establish `e1 : psi0P Ch P = Ch.psi0 ⟨P, hP⟩` using `dif_pos hP`. Establish `e2 : chiP Ch P = chiAt Ch ⟨P, hP⟩` using `dif_pos hP`. Establish `ht : 0 < R.t` using `R.t_odd.pos`. Take `⟨-, -, -, a4⟩` from `ranks R (j := 0) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Unfold `PhiTop`. Rewrite using `[if_pos hP, if_pos rfl, e1, e2]`. Conclude with `phiGS_target hq _ _ hm (rank_X'_eq R) (r_le_X' R) ht a4.le j h x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiTop_target_sym : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m) {S : Set ℕ} (mu : Tup X.F X.E X.K S) (m2 : ℕ) (P : HeightOneSpectrum (𝓞 X.E)), R.m = m2 + 2 → ((qOf P : ℕ) : 𝓞 X.E) ∉ P.asIdeal ^ 2 → ∀ (hP : P ∈ Pr.vGs) (j : GLint X.E (R.N R.m - 1) P) (h : redGL _ P j ∈ (rowTyG Ch (rPsymF Ch) ⟨P, hP⟩).H) (x : HomE X.E (R.N (m2 + 1) + cOf R (m2 + 1)) (R.N R.m - 1)), PhiTop Ch mu true m2 P (j.1.toLinearMap ∘ₗ x) * LocE.unitV (chiP Ch P (m2 + 1)) ((LinearEquiv.det j.1 : X.Eˣ) : X.E) = (((rowTyG Ch (rPsymF Ch) ⟨P, hP⟩).lam ⟨_, h⟩ : X.Kˣ) : X.K) * PhiTop Ch mu true m2 P x := by
   intro X Pr R Ch S mu m2 P hm hq hP j h x

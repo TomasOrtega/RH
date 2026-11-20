@@ -7,9 +7,7 @@ namespace UpperTheory
 universe v u w
 
 /- English proof (translation)
-Establish `hk : Module.Finite R (LinearMap.ker g)`. Rewrite using `[LinearMap.exact_iff.1 h]`. Conclude with `Module.Finite.range f`. Establish `: IsNoetherian R M₃` using `isNoetherian_of_isNoetherianRing_of_finite R M₃`. Establish `hq : Module.Finite R (M₂ ⧸ LinearMap.ker g)` using `Module.Finite.equiv g.quotKerEquivRange.symm`.
-
-Conclude with `Module.Finite.of_submodule_quotient (LinearMap.ker g)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma finite_middle {R : Type u} [Ring R] {M₁ M₂ M₃ : Type v}
     [AddCommGroup M₁] [AddCommGroup M₂] [AddCommGroup M₃]
@@ -26,7 +24,7 @@ private lemma finite_middle {R : Type u} [Ring R] {M₁ M₂ M₃ : Type v}
   exact Module.Finite.of_submodule_quotient (LinearMap.ker g)
 
 /- English proof (translation)
-Establish `hE` using `hS.homology_exact₂ i`. Use `⟨fun h₁ h₃ ↦ ?_, fun _ h₁ h₃ ↦ ?_⟩` and prove the remaining obligations. Conclude with `AddCommGrpCat.isFinite.prop_X₂_of_exact (hE.map (forget₂ (ModuleCat.{v} R) AddCommGrpCat.{v})) h₁ h₃`. Conclude with `finite_middle _ _ ((ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1 hE)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem homology_finite_short_exact {R : Type u} [Ring R] {ι : Type w} {c : ComplexShape ι}
     {S : ShortComplex (HomologicalComplex (ModuleCat.{v} R) c)} (hS : S.ShortExact) (i : ι) :

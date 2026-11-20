@@ -10,11 +10,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-Introduce `S _ K _ _ ι _ _ V α p q hV hα hp`. Use `⟨1, le_rfl, ?_, fun e => ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`. Conclude with `hGen S K ι V α q p hα`. Take `⟨c₀, hc₀⟩` from `hVan S K ι V α hV hα e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c₀, fun c hc => ?_⟩` and prove the remaining obligations. Establish `hN : e + (c * 1) • ((q : ℤ) • α + fun _ => (p : ℤ)) = e + ((c * q : ℕ) : ℤ) • α + fun _ => ((c * p : ℕ) : ℤ)`. Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `e k + (c * 1) • ((q : ℤ) • α k + (p : ℤ)) = e k + ((c * q : ℕ) : ℤ) • α k + ((c * p : ℕ) : ℤ)`. Simplify using `only [nsmul_eq_mul, smul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hN]`. Conclude with `hc₀ (c * q) (c * p) (le_trans hc (Nat.le_mul_of_pos_right c hp))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AmpleOfGenTwist.proof (hGen : GenTwistGenerated.Statement) (hVan : GenTwistVanish.Statement) :
     AmpleOfGenTwist.Statement := by

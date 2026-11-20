@@ -30,7 +30,7 @@ def LevelCongruenceLocal : Prop :=
         haMap X.B.I.cm.sig X.B.I.J (evalV X.B.I.F p.1) (finHA X hb κ')) → κ ∈ X.K2
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `tensMap (E := X.B.I.E) (evalV X.B.I.F v) (∑ j, ((HA.mat (Af X.B.I.F) X.B.I.cm.sig X.B.I.J h : GL (Fin X.B.I.n) (Af X.B.I.F ⊗[X.B.I.F] X.B.I.E)) : Matrix (Fin X.B.I.n) (Fin X.B.I.n) (Af X.B.I.F ⊗[X.B.I.F] X.B.I.E)) i j * inclR (Af X.B.I.F) (x j)) = ∑ j, ((HA.mat (Fv X.B.I.F v) X.B …`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, tensMap_inclR]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tens_lin {D : D7} (X : HidaSetting D) (v : HeightOneSpectrum (𝓞 X.B.I.F))
     (h : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J) (x : Fin X.B.I.n → X.B.I.E) (i : Fin X.B.I.n) :
@@ -50,15 +50,15 @@ theorem tens_lin {D : D7} (X : HidaSetting D) (v : HeightOneSpectrum (𝓞 X.B.I
   rfl
 
 /- English proof (translation)
-Introduce `D X w t htH htK`. Take `⟨h, hT, hO⟩` from `hg X t`. Establish `hloc : ∀ v : HeightOneSpectrum (𝓞 X.B.I.F), haMap X.B.I.cm.sig X.B.I.J (evalV X.B.I.F v) h ∈ Hsub (Fv X.B.I.F v) X.B.I.cm.sig X.B.I.J (frameOf X w) ∧ haMap X.B.I.cm.sig X.B.I.J (evalV X.B.I.F v) h ∈ Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) v`. Introduce `v`. Distinguish the cases in `hv : v ∈ typSet X.B.I.F (D.host.g 0) (D.host.g 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `e` using `hT ⟨v, hv⟩`. Simplify using `only at e`. Rewrite using `[e]`. Conclude with `⟨htH ⟨v, hv⟩, htK ⟨v, hv⟩⟩`. Rewrite using `[hO v hv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Subgroup.one_mem _, Subgroup.one_mem (Kloc (E := X.B.I.E) v (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)))⟩`. Use `⟨h, ?_, ?_, hT⟩` and prove the remaining obligations. Unfold `Hsub`. Rewrite using `[mem_stabT]`. Introduce `b`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `i`. Apply `hi X` to reduce the goal to its premises. Introduce `v`. Rewrite using `[tens_lin X v h]`. Establish `hv` using `(hloc v).1`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `Hsub at hv`. Rewrite `hv` using `[mem_stabT]`. Rewrite using `[hv b]`. Simplify using `only [ratV, tensMap_inclR]`. Conclude with `Subgroup.mem_iInf.2 fun v => (hloc v).2`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem surjKH_of (hg : GlueHA) (hi : TensInj) : SurjKH := by
   intro D X w t htH htK
@@ -93,13 +93,13 @@ theorem surjKH_of (hg : GlueHA) (hi : TensInj) : SurjKH := by
   · exact Subgroup.mem_iInf.2 fun v => (hloc v).2
 
 /- English proof (translation)
-Introduce `D X hb hK hL w h _ hKf hp`. Establish `hc : finHA X hb (X.xu w) ∈ Kf X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))` using `finHA_mem_Kf X hb (X.xu w) (X.xu_K w)`. Take `⟨κ, hκ⟩` from `PI.MassDataKppVolLemmas.Bridge_tf_surjective X.B.I hb ((finHA X hb (X.xu w))⁻¹ * h * finHA X hb (X.xu w))`. Establish `hκf : finHA X hb κ = (finHA X hb (X.xu w))⁻¹ * h * finHA X hb (X.xu w)` using `hκ`. Establish `hκK : κ ∈ X.B.I.Kset`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(PI.MassDataKppVolLemmas.Bridge_mem_Kf_iff X.B.I hb κ).1 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finHA X hb κ ∈ _`. Rewrite using `[hκf]`. Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ (Subgroup.inv_mem _ hc) hKf) hc`. Establish `hmem : κ ∈ X.K2`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hl X hb hK hL κ hκK (fun p => ?_)` and prove the remaining obligations. Take `⟨y, ⟨_, ⟨k, hk, rfl⟩, rfl⟩, hy⟩` from `hp p`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[hκf]`. Simplify using `only [map_mul, map_inv] at hy ⊢`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy]`. Use `group`. Conclude with `⟨finHA X hb κ, ⟨κ, hmem, rfl⟩, by rw [hκf]; group⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem conjugate_level_congruence_of (hl : LevelCongruenceLocal) : ConjugateLevelLocalCongruence := by
   intro D X hb hK hL w h _ hKf hp
@@ -124,7 +124,7 @@ theorem conjugate_level_congruence_of (hl : LevelCongruenceLocal) : ConjugateLev
   exact ⟨finHA X hb κ, ⟨κ, hmem, rfl⟩, by rw [hκf]; group⟩
 
 /- English proof (translation)
-The claim follows from `globProd_of compH_holds compK_holds k2uGrp_holds (surjKH_of hg hi) (conjugate_level_congruence_of hl)`.
+A detailed English derivation is pending.
 -/
 theorem global_product_of_local (hg : GlueHA) (hi : TensInj) (hl : LevelCongruenceLocal) : GlobProd :=
   globProd_of compH_holds compK_holds k2uGrp_holds (surjKH_of hg hi) (conjugate_level_congruence_of hl)

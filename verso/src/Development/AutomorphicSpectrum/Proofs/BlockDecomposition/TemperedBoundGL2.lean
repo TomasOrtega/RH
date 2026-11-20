@@ -23,25 +23,25 @@ def TemperedBoundGL2 (W : GL (Fin 2) F → ℂ) : Prop :=
       (W (dg2 x y * k) ≠ 0 → (modulus ((x / y : Fˣ) : F) : ℝ) ≤ B)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_const, fun _ _ _ => ⟨0, 0, fun _ _ _ _ _ => by simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem TemperedBoundGL3.zero : TemperedBoundGL3 (0 : GL (Fin 3) F → ℂ) :=
   ⟨continuous_const, fun _ _ _ => ⟨0, 0, fun _ _ _ _ _ => by simp⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨measurable_const, fun _ _ _ => ⟨0, 0, fun _ _ _ _ => by simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem TemperedBoundGL2.zero : TemperedBoundGL2 (0 : GL (Fin 2) F → ℂ) :=
   ⟨measurable_const, fun _ _ _ => ⟨0, 0, fun _ _ _ _ => by simp⟩⟩
 
 /- English proof (translation)
-Use `⟨h.1.add h'.1, fun ε h0 h1 => ?_⟩` and prove the remaining obligations. Take `⟨C, B, hb⟩` from `h.2 ε h0 h1`. Take `⟨C', B', hb'⟩` from `h'.2 ε h0 h1`. Use `⟨C + C', max B B', fun t₁ t₂ t₃ k hk => ⟨?_, fun hne => ?_⟩⟩` and prove the remaining obligations. Establish `e1` using `(hb t₁ t₂ t₃ k hk).1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2` using `(hb' t₁ t₂ t₃ k hk).1`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hz : W (dg t₁ t₂ t₃ * k) = 0`. Establish `hz' : W' (dg t₁ t₂ t₃ * k) ≠ 0`. Introduce `h2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hne` to reduce the goal to its premises. Simplify using `[hz, h2]`. Take `⟨a, b⟩` from `(hb' t₁ t₂ t₃ k hk).2 hz'`. Conclude with `⟨a.trans (le_max_right _ _), b.trans (le_max_right _ _)⟩`. Take `⟨a, b⟩` from `(hb t₁ t₂ t₃ k hk).2 hz`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a.trans (le_max_left _ _), b.trans (le_max_left _ _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem TemperedBoundGL3.add {W W' : GL (Fin 3) F → ℂ} (h : TemperedBoundGL3 W) (h' : TemperedBoundGL3 W') : TemperedBoundGL3 (W + W') := by
   refine ⟨h.1.add h'.1, fun ε h0 h1 => ?_⟩
@@ -61,11 +61,11 @@ theorem TemperedBoundGL3.add {W W' : GL (Fin 3) F → ℂ} (h : TemperedBoundGL3
       exact ⟨a.trans (le_max_left _ _), b.trans (le_max_left _ _)⟩
 
 /- English proof (translation)
-Use `⟨h.1.add h'.1, fun ε h0 h1 => ?_⟩` and prove the remaining obligations. Take `⟨C, B, hb⟩` from `h.2 ε h0 h1`. Take `⟨C', B', hb'⟩` from `h'.2 ε h0 h1`. Use `⟨C + C', max B B', fun x y k hk => ⟨?_, fun hne => ?_⟩⟩` and prove the remaining obligations. Establish `e1` using `(hb x y k hk).1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2` using `(hb' x y k hk).1`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hz : W (dg2 x y * k) = 0`. Establish `hz' : W' (dg2 x y * k) ≠ 0`. Introduce `h2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hne` to reduce the goal to its premises. Simplify using `[hz, h2]`. Conclude with `((hb' x y k hk).2 hz').trans (le_max_right _ _)`. Conclude with `((hb x y k hk).2 hz).trans (le_max_left _ _)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem TemperedBoundGL2.add {W W' : GL (Fin 2) F → ℂ} (h : TemperedBoundGL2 W) (h' : TemperedBoundGL2 W') : TemperedBoundGL2 (W + W') := by
   refine ⟨h.1.add h'.1, fun ε h0 h1 => ?_⟩
@@ -83,9 +83,9 @@ theorem TemperedBoundGL2.add {W W' : GL (Fin 2) F → ℂ} (h : TemperedBoundGL2
     · exact ((hb x y k hk).2 hz).trans (le_max_left _ _)
 
 /- English proof (translation)
-Use `⟨h.1.const_smul c, fun ε h0 h1 => ?_⟩` and prove the remaining obligations. Take `⟨C, B, hb⟩` from `h.2 ε h0 h1`. Use `⟨‖c‖ * C, B, fun t₁ t₂ t₃ k hk => ⟨?_, fun hne => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hb t₁ t₂ t₃ k hk).1 (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hb t₁ t₂ t₃ k hk).2 fun hz => hne ?_` and prove the remaining obligations. Simplify using `[hz]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem TemperedBoundGL3.smul {W : GL (Fin 3) F → ℂ} (c : ℂ) (h : TemperedBoundGL3 W) : TemperedBoundGL3 (c • W) := by
   refine ⟨h.1.const_smul c, fun ε h0 h1 => ?_⟩
@@ -97,9 +97,9 @@ theorem TemperedBoundGL3.smul {W : GL (Fin 3) F → ℂ} (c : ℂ) (h : Tempered
     simp [hz]
 
 /- English proof (translation)
-Use `⟨h.1.const_smul c, fun ε h0 h1 => ?_⟩` and prove the remaining obligations. Take `⟨C, B, hb⟩` from `h.2 ε h0 h1`. Use `⟨‖c‖ * C, B, fun x y k hk => ⟨?_, fun hne => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hb x y k hk).1 (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hb x y k hk).2 fun hz => hne ?_` and prove the remaining obligations. Simplify using `[hz]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem TemperedBoundGL2.smul {W : GL (Fin 2) F → ℂ} (c : ℂ) (h : TemperedBoundGL2 W) : TemperedBoundGL2 (c • W) := by
   refine ⟨h.1.const_smul c, fun ε h0 h1 => ?_⟩
@@ -111,7 +111,7 @@ theorem TemperedBoundGL2.smul {W : GL (Fin 2) F → ℂ} (c : ℂ) (h : Tempered
     simp [hz]
 
 /- English proof (translation)
-Proceed by induction on `hW using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => exact TemperedBoundGL3.zero`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul c x _ hx => exact hx.smul c`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem TemperedBoundGL3.span {S : Set (GL (Fin 3) F → ℂ)} (h : ∀ W ∈ S, TemperedBoundGL3 W) {W : GL (Fin 3) F → ℂ}
     (hW : W ∈ Submodule.span ℂ S) : TemperedBoundGL3 W := by
@@ -122,7 +122,7 @@ theorem TemperedBoundGL3.span {S : Set (GL (Fin 3) F → ℂ)} (h : ∀ W ∈ S,
   | smul c x _ hx => exact hx.smul c
 
 /- English proof (translation)
-Proceed by induction on `hW using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => exact TemperedBoundGL2.zero`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul c x _ hx => exact hx.smul c`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem TemperedBoundGL2.span {S : Set (GL (Fin 2) F → ℂ)} (h : ∀ W ∈ S, TemperedBoundGL2 W) {W : GL (Fin 2) F → ℂ}
     (hW : W ∈ Submodule.span ℂ S) : TemperedBoundGL2 W := by

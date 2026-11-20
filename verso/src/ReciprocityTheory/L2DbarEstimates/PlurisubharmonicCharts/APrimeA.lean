@@ -11,7 +11,7 @@ def apraW (d : ℕ) (ε τ : ℝ) (t : ℝ) : ℝ≥0∞ :=
   if t < ε then ENNReal.ofReal ((max (t ^ 2) τ) ^ (-(d : ℝ))) else 0
 
 /- English proof (translation)
-Unfold `apraW`. Use `Measurable.ite measurableSet_Iio ?_ measurable_const` and prove the remaining obligations. Conclude with `ENNReal.measurable_ofReal.comp (((measurable_id.pow_const 2).max measurable_const).pow_const _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma apraW_meas (d : ℕ) (ε τ : ℝ) : Measurable (apraW d ε τ) := by
   unfold apraW
@@ -20,7 +20,7 @@ lemma apraW_meas (d : ℕ) (ε τ : ℝ) : Measurable (apraW d ε τ) := by
     (((measurable_id.pow_const 2).max measurable_const).pow_const _)
 
 /- English proof (translation)
-Unfold `apraW`. Use `split_ifs`. Conclude with `ENNReal.ofReal_le_ofReal (Real.rpow_le_rpow_of_nonpos (lt_max_of_lt_right hτ) (max_le_max le_rfl h) (neg_nonpos.mpr (Nat.cast_nonneg d)))`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma apraW_anti (d : ℕ) (ε : ℝ) {τ τ' : ℝ} (hτ : 0 < τ) (h : τ ≤ τ') (t : ℝ) :
     apraW d ε τ' t ≤ apraW d ε τ t := by
@@ -31,11 +31,11 @@ lemma apraW_anti (d : ℕ) (ε : ℝ) {τ τ' : ℝ} (hτ : 0 < τ) (h : τ ≤ 
   · exact le_rfl
 
 /- English proof (translation)
-Establish `hdiff : DifferentiableOn ℂ (fun x : V d => u (x, ζ)) (ball 0 ε)` using `hu.comp (differentiableOn_id.prodMk (differentiableOn_const ζ)) (fun x hx => ⟨hx, hζ⟩)`. Establish `h` using `hMVd ε (fun x => u (x, ζ)) (apraW d ε τ) hdiff (apraW_meas d ε τ) (fun t ht => by simp [apraW, not_lt.mpr ht])`. Use `h.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← lintegral_indicator measurableSet_ball]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hx : ‖x‖ < ε`. Establish `hx' : x ∈ ball (0 : V d) ε` using `mem_ball_zero_iff.mpr hx`. Simplify using `only [apraW, if_pos hx, Set.indicator_of_mem hx']`. Rewrite using `[ENNReal.ofReal_mul (by positivity)]`. Establish `hx' : x ∉ ball (0 : V d) ε` using `fun h => hx (mem_ball_zero_iff.mp h)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[apraW, hx]`.
+Simplify using the standard rewrite rules.
 -/
 lemma apra_slice (d k : ℕ) (hMVd : MVStatement d) (ε τ : ℝ) (u : V d × V k → ℂ)
     (hu : DifferentiableOn ℂ u (ball (0 : V d) ε ×ˢ ball (0 : V k) ε)) (ζ : V k)
@@ -58,11 +58,11 @@ lemma apra_slice (d k : ℕ) (hMVd : MVStatement d) (ε τ : ℝ) (u : V d × V 
     simp [apraW, hx]
 
 /- English proof (translation)
-Establish `h` using `hMVk ε g (fun t => if t < ε then 1 else 0) hg (Measurable.ite measurableSet_Iio measurable_const measurable_const) (fun t ht => by simp [not_lt.mpr ht])`. Establish `e1 : ∫⁻ y : V k, (fun t : ℝ => if t < ε then (1 : ℝ≥0∞) else 0) ‖y‖ = volume (ball (0 : V k) ε)`. Rewrite using `[← lintegral_indicator_one measurableSet_ball]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hy : ‖y‖ < ε <;> simp [hy, Set.indicator]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e2 : ∫⁻ y : V k, ENNReal.ofReal (‖g y‖ ^ 2) * (fun t : ℝ => if t < ε then (1 : ℝ≥0∞) else 0) ‖y‖ = ∫⁻ ζ in ball (0 : V k) ε, ENNReal.ofReal (‖g ζ‖ ^ 2)`. Rewrite using `[← lintegral_indicator measurableSet_ball]`. Use `lintegral_congr fun y => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hy : ‖y‖ < ε <;> simp [hy, Set.indicator]`. Rewrite `h` using `[e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 lemma apra_base (k : ℕ) (hMVk : MVStatement k) (ε : ℝ) (g : V k → ℂ)
     (hg : DifferentiableOn ℂ g (ball 0 ε)) :
@@ -86,29 +86,23 @@ lemma apra_base (k : ℕ) (hMVk : MVStatement k) (ε : ℝ) (g : V k → ℂ)
   exact h
 
 /- English proof (translation)
-Establish `: Nontrivial (V d)`. Establish `: Nonempty (Fin d)` using `⟨⟨0, hd⟩⟩`. Use `infer_instance`. Use `set f : ℕ → V d → ℝ≥0∞ := fun n x => apraW d ε (1 / ((n : ℝ) + 1)) ‖x‖ with hf`. Establish `hmeas : ∀ n, Measurable (f n)` using `fun n => (apraW_meas _ _ _).comp measurable_norm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmono : Monotone f`. Introduce `m n hmn x`. Establish `h1 : (1 : ℝ) / ((n : ℝ) + 1) ≤ 1 / ((m : ℝ) + 1)`. Establish `hmn' : (m : ℝ) ≤ n` using `Nat.cast_le.mpr hmn`. Conclude with `one_div_le_one_div_of_le (by positivity) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (0 : ℝ) < 1 / ((n : ℝ) + 1)` using `by positivity`. Use `show apraW d ε (1 / ((m : ℝ) + 1)) ‖x‖ ≤ apraW d ε (1 / ((n : ℝ) + 1)) ‖x‖`. Conclude with `apraW_anti d ε h2 h1 _`. Rewrite using `[← lintegral_iSup hmeas hmono]`. Use `set g : V d → ℝ≥0∞ := fun x => ENNReal.ofReal ‖x‖ ^ (-2 * (d : ℝ)) with hg`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpt : ∀ x : V d, x ≠ 0 → (ball (0 : V d) ε).indicator g x ≤ ⨆ n, f n x`. Introduce `x hx0`. Distinguish the cases in `hx : ‖x‖ < ε`. Rewrite using `[Set.indicator_of_mem (mem_ball_zero_iff.mpr hx)]`. Establish `hpos : 0 < ‖x‖` using `norm_pos_iff.mpr hx0`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨n, hn⟩` from `exists_nat_one_div_lt (pow_pos hpos 2)`. Use `le_trans ?_ (le_iSup _ n)` and prove the remaining obligations. Simplify using `only [hf, hg, apraW, if_pos hx]`. Rewrite using `[max_eq_left hn.le, ENNReal.ofReal_rpow_of_pos hpos, ← Real.rpow_natCast, ← Real.rpow_mul hpos.le]`. Apply `le_of_eq` to reduce the goal to its premises.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Set.indicator_of_notMem (fun h => hx (mem_ball_zero_iff.mp h))]`. Conclude with `bot_le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ x ∂(volume : Measure (V d)), (ball (0 : V d) ε).indicator g x ≤ ⨆ n, f n x`. Establish `h0 : ∀ᵐ x ∂(volume : Measure (V d)), x ∉ ({0} : Set (V d))` using `measure_eq_zero_iff_ae_notMem.1 (measure_singleton 0)`. Use `filter_upwards [h0] with x hx using hpt x (by simpa using hx)`. Establish `hT : ∫⁻ y in ball (0 : V d) 1, g y = ⊤` using `not_lt_top_iff.mp (fun h => lt_irrefl _ ((hMVI hd d).1 h))`. Establish `hdn : -2 * (d : ℝ) ≤ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) ≤ d` using `Nat.cast_nonneg d`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpt2 : ∀ y : V d, g y ≤ (ball (0 : V d) ε).indicator g y + ENNReal.ofReal ε ^ (-2 * (d : ℝ))`. Introduce `y`. Distinguish the cases in `hy : y ∈ ball (0 : V d) ε`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Set.indicator_of_mem hy]`. Conclude with `le_self_add`. Rewrite using `[Set.indicator_of_notMem hy, zero_add]`. Establish `: ε ≤ ‖y‖` using `by simpa [mem_ball_zero_iff] using hy`. Simplify using `only [hg]`.
-
-Rewrite using `[ENNReal.ofReal_rpow_of_pos (hε.trans_le this), ENNReal.ofReal_rpow_of_pos hε]`. Conclude with `ENNReal.ofReal_le_ofReal (Real.rpow_le_rpow_of_nonpos hε this hdn)`. Establish `hc : ENNReal.ofReal ε ^ (-2 * (d : ℝ)) * volume (ball (0 : V d) 1) ≠ ⊤` using `ENNReal.mul_ne_top (by simp [ENNReal.rpow_eq_top_iff, hε]) measure_ball_lt_top.ne`. Establish `hle : ∫⁻ y in ball (0 : V d) 1, g y ≤ (∫⁻ y, (ball (0 : V d) ε).indicator g y) + ENNReal.ofReal ε ^ (-2 * (d : ℝ)) * volume (ball (0 : V d) 1)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[lintegral_add_right _ measurable_const, setLIntegral_const]`. Use `_ ≤ _ := add_le_add (setLIntegral_le_lintegral _ _) le_rfl`. Establish `hind : ∫⁻ y, (ball (0 : V d) ε).indicator g y = ⊤`. Assume the negation of the conclusion as `hne`. Conclude with `(ENNReal.add_ne_top.2 ⟨hne, hc⟩) (eq_top_iff.2 (hT ▸ hle))`.
-
-Conclude with `eq_top_iff.2 (hind ▸ lintegral_mono_ae hae)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 lemma apra_blow (d : ℕ) (hd : 1 ≤ d) (hMVI : MVIntStatement d) (ε : ℝ) (hε : 0 < ε) :
     ⨆ n : ℕ, ∫⁻ x : V d, apraW d ε (1 / ((n : ℝ) + 1)) ‖x‖ = ⊤ := by
@@ -179,17 +173,13 @@ lemma apra_blow (d : ℕ) (hd : 1 ≤ d) (hMVI : MVIntStatement d) (ε : ℝ) (h
   exact eq_top_iff.2 (hind ▸ lintegral_mono_ae hae)
 
 /- English proof (translation)
-Establish `hvol : volume (ball (0 : V k) ε) ≠ 0` using `(measure_ball_pos volume (0 : V k) hε).ne'`. Establish `hsup : ⨆ n : ℕ, volume (ball (0 : V k) ε) * ∫⁻ x : V d, apraW d ε (1 / ((n : ℝ) + 1)) ‖x‖ = ⊤`. Rewrite using `[← ENNReal.mul_iSup, apra_blow d hd hMVI ε hε, ENNReal.mul_top hvol]`. Establish `hlt : ENNReal.ofReal M < ⨆ n : ℕ, volume (ball (0 : V k) ε) * ∫⁻ x : V d, apraW d ε (1 / ((n : ℝ) + 1)) ‖x‖`. Rewrite using `[hsup]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.ofReal_lt_top`. Take `⟨n, hn⟩` from `lt_iSup_iff.1 hlt`. Use `⟨1 / ((n : ℝ) + 1), by positivity, fun τ hτ hτ0 u hu => ?_⟩` and prove the remaining obligations. Establish `hIτ : ∫⁻ x : V d, apraW d ε (1 / ((n : ℝ) + 1)) ‖x‖ ≤ ∫⁻ x : V d, apraW d ε τ ‖x‖` using `lintegral_mono fun x => apraW_anti d ε hτ hτ0 _`. Establish `hslice : ∀ ζ ∈ ball (0 : V k) ε, ENNReal.ofReal (‖u (0, ζ)‖ ^ 2) * ∫⁻ x : V d, apraW d ε τ ‖x‖ ≤ ∫⁻ x in ball (0 : V d) ε, ENNReal.ofReal (‖u (x, ζ)‖ ^ 2 * (max (‖x‖ ^ 2) τ) ^ (-(d : ℝ)))` using `fun ζ hζ => apra_slice d k hMVd ε τ u hu ζ hζ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbase` using `apra_base k hMVk ε (fun ζ => u (0, ζ)) (hu.comp ((differentiableOn_const (0 : V d)).prodMk differentiableOn_id) (fun ζ hζ => ⟨mem_ball_self hε, hζ⟩))`. Establish `hmeasF : AEMeasurable (fun z : V d × V k => ENNReal.ofReal (‖u z‖ ^ 2 * (max (‖z.1‖ ^ 2) τ) ^ (-(d : ℝ)))) ((volume.restrict (ball (0 : V d) ε)).prod (volume.restrict (ball (0 : V k) ε)))`. Rewrite using `[Measure.prod_restrict, ← Measure.volume_eq_prod]`. Establish `hu' : AEMeasurable u (volume.restrict (ball (0 : V d) ε ×ˢ ball (0 : V k) ε))` using `hu.continuousOn.aemeasurable (measurableSet_ball.prod measurableSet_ball)`. Conclude with `((hu'.norm.pow_const 2).mul (((measurable_fst.norm.pow_const 2).max measurable_const).pow_const _).aemeasurable).ennreal_ofReal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfub : ∫⁻ z in ball (0 : V d) ε ×ˢ ball (0 : V k) ε, ENNReal.ofReal (‖u z‖ ^ 2 * (max (‖z.1‖ ^ 2) τ) ^ (-(d : ℝ))) = ∫⁻ ζ in ball (0 : V k) ε, ∫⁻ x in ball (0 : V d) ε, ENNReal.ofReal (‖u (x, ζ)‖ ^ 2 * (max (‖x‖ ^ 2) τ) ^ (-(d : ℝ)))`. Rewrite using `[Measure.volume_eq_prod, ← Measure.prod_restrict, lintegral_prod_symm _ hmeasF]`. Rewrite using `[hfub]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul' (by positivity), mul_comm]`.
-
-Both sides reduce to the same expression. Use `_ ≤ ENNReal.ofReal (‖u (0, 0)‖ ^ 2) * (volume (ball (0 : V k) ε) * ∫⁻ x : V d, apraW d ε τ ‖x‖) := mul_le_mul' le_rfl (hn.le.trans (mul_le_mul' le_rfl hIτ))`. Use `_ = (ENNReal.ofReal (‖u (0, 0)‖ ^ 2) * volume (ball (0 : V k) ε)) * ∫⁻ x : V d, apraW d ε τ ‖x‖ := (mul_assoc _ _ _).symm`. Use `_ ≤ (∫⁻ ζ in ball (0 : V k) ε, ENNReal.ofReal (‖u (0, ζ)‖ ^ 2)) * ∫⁻ x : V d, apraW d ε τ ‖x‖ := mul_le_mul' hbase le_rfl`. Use `_ ≤ ∫⁻ ζ in ball (0 : V k) ε, ENNReal.ofReal (‖u (0, ζ)‖ ^ 2) * ∫⁻ x : V d, apraW d ε τ ‖x‖ := lintegral_mul_const_le _ _`.
-
-Use `_ ≤ _ := setLIntegral_mono' measurableSet_ball hslice`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ap_prod_blowup (d k : ℕ) (hd : 1 ≤ d) (hMVd : MVStatement d) (hMVk : MVStatement k)
     (hMVI : MVIntStatement d) (ε : ℝ) (hε : 0 < ε) (M : ℝ) :

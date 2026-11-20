@@ -10,15 +10,15 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `H _ X _ _ _ c f hc hf hloc`. Use `choose V hVo hcV Φ hΦ hfΦ using hloc`. Establish `hs : IsClosed (c '' tsupport f)` using `(hf.isCompact.image hc).isClosed`. Establish `hcov : c '' tsupport f ⊆ ⋃ a, V a`. Introduce and unpack `_ ⟨a, -, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `Set.mem_iUnion.2 ⟨a, hcV a⟩`. Take `⟨χ, hχ⟩` from `SmoothPartitionOfUnity.exists_isSubordinate 𝓘(ℝ, X) hs V hVo hcov`. Use `⟨fun y => ∑ᶠ a, χ a y • Φ a y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `χ.contDiffAt_finsum fun a hy => ?_` and prove the remaining obligations. Conclude with `(hΦ a).contDiffAt ((hVo a).mem_nhds (hχ a hy))`. Introduce `g`. Establish `hterm : ∀ a, χ a (c g) • Φ a (c g) = χ a (c g) • f g`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `h0 : χ a (c g) = 0`. Simplify using `[h0]`. Establish `hmem : c g ∈ V a` using `hχ a (subset_tsupport _ h0)`. Rewrite using `[hfΦ a g hmem]`. Simplify using `only [hterm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hg : g ∈ tsupport f`. Rewrite using `[← finsum_smul, χ.sum_eq_one ⟨g, hg, rfl⟩, one_smul]`. Establish `: f g = 0` using `image_eq_zero_of_notMem_tsupport hg`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem glue_smooth_of_compactSupport : ∀ (H : Type) [TopologicalSpace H] (X : Type) [NormedAddCommGroup X]
     [NormedSpace ℝ X] [FiniteDimensional ℝ X] (c : H → X) (f : H → ℂ), Continuous c →

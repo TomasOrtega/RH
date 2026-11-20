@@ -3,11 +3,11 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.Interla
 namespace ReciprocityTheory.ChartRestriction.DS.Lap
 
 /- English proof (translation)
-Introduce `n Q x s d N hx hstep`. Establish `key : ∀ m : ℕ, m ≤ N → Q (x + ((m : ℝ) * d) • Pi.single s 1)`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using `using hx`. Consider the case `succ m ih`. Introduce `hm`. Establish `h` using `hstep m (by omega) (ih (by omega))`. Rewrite using `[Nat.cast_succ]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Conclude with `key N le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem seg : SegStatement := by
   intro n Q x s d N hx hstep

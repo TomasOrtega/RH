@@ -17,16 +17,16 @@ def Mmat : Matrix (Fin r) (Fin r) ℂ :=
     ∑ k, (eps p k * (g k - f k) a) * ∑ m, τ (G b m) * conj (f k m)
 
 /- English proof (translation)
-Unfold `eps`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eps_sq (k : Fin n) : eps p k * eps p k = 1 := by
   unfold eps
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [Matrix.mulVec, dotProduct, Mmat, Matrix.of_apply, add_mul, Finset.sum_add_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true, Pi.add_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hermC, Pi.sub_apply]`. Use `congr 1`. Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Mmat_mulVec (v : Fin r → ℂ) :
     Mmat τ G p f g *ᵥ v = v + ∑ k, (eps p k * hermC τ G v (f k)) • (g k - f k) := by
@@ -41,7 +41,7 @@ theorem Mmat_mulVec (v : Fin r → ℂ) :
   ring
 
 /- English proof (translation)
-Unfold `hermC`. Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma hermC_add_left' (u u' v : Fin r → ℂ) :
     hermC τ G (u + u') v = hermC τ G u v + hermC τ G u' v := by
@@ -49,7 +49,7 @@ private lemma hermC_add_left' (u u' v : Fin r → ℂ) :
   simp only [Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `hermC`. Simplify using `only [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma hermC_add_right_fundamental_domains' (u v v' : Fin r → ℂ) :
     hermC τ G u (v + v') = hermC τ G u v + hermC τ G u v' := by
@@ -57,7 +57,7 @@ private lemma hermC_add_right_fundamental_domains' (u v v' : Fin r → ℂ) :
   simp only [Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Unfold `hermC`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma hermC_sum_smul_left {m : ℕ} (c : Fin m → ℂ) (q : Fin m → Fin r → ℂ) (v : Fin r → ℂ) :
     hermC τ G (∑ k, c k • q k) v = ∑ k, c k * hermC τ G (q k) v := by
@@ -72,7 +72,7 @@ private lemma hermC_sum_smul_left {m : ℕ} (c : Fin m → ℂ) (q : Fin m → F
         ring
 
 /- English proof (translation)
-Unfold `hermC`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma hermC_sum_smul_right {m : ℕ} (u : Fin r → ℂ) (d : Fin m → ℂ) (q : Fin m → Fin r → ℂ) :
     hermC τ G u (∑ l, d l • q l) = ∑ l, conj (d l) * hermC τ G u (q l) := by
@@ -87,7 +87,7 @@ private lemma hermC_sum_smul_right {m : ℕ} (u : Fin r → ℂ) (d : Fin m → 
         ring
 
 /- English proof (translation)
-Rewrite using `[hermC_add_left', hermC_add_right_fundamental_domains', hermC_add_right_fundamental_domains']`. Simplify using `only [hermC_sum_smul_right, hermC_sum_smul_left, hx, hy, mul_zero, Finset.sum_const_zero, add_zero, Finset.mul_sum]`. Rewrite using `[zero_add, Finset.sum_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -108,14 +108,14 @@ variable (hG : ∀ a b, cc (G a b) = G b a)
 include hG hf
 
 /- English proof (translation)
-Rewrite using `[hf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hf_eps (k l : Fin n) : hermC τ G (f k) (f l) = if k = l then eps p k else 0 := by
   rw [hf]
   rfl
 
 /- English proof (translation)
-Rewrite using `[Mmat_mulVec]`. Simplify using `only [hf_eps τ G p f hG hf, mul_ite, mul_zero, ite_smul, zero_smul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, eps_sq, one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Mmat_f (l : Fin n) : Mmat τ G p f g *ᵥ f l = g l := by
   rw [Mmat_mulVec]
@@ -124,14 +124,14 @@ theorem Mmat_f (l : Fin n) : Mmat τ G p f g *ᵥ f l = g l := by
   abel
 
 /- English proof (translation)
-Rewrite using `[Mmat_mulVec]`. Simplify using `[hv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Mmat_fix (v : Fin r → ℂ) (hv : ∀ k, hermC τ G v (f k) = 0) : Mmat τ G p f g *ᵥ v = v := by
   rw [Mmat_mulVec]
   simp [hv]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, Mmat_f τ G p f g hG hf]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Mmat_comb (β : Fin n → ℂ) : Mmat τ G p f g *ᵥ (∑ c, β c • f c) = ∑ c, β c • g c := by
   rw [Matrix.mulVec_sum]
@@ -139,9 +139,9 @@ theorem Mmat_comb (β : Fin n → ℂ) : Mmat τ G p f g *ᵥ (∑ c, β c • f
   rw [Matrix.mulVec_smul, Mmat_f τ G p f g hG hf]
 
 /- English proof (translation)
-Unfold `hermC`. Simplify using `only [map_sum, map_mul, Complex.conj_conj]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hG i j]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cc, IsCMField.complexEmbedding_complexConj]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma hermC_eq_conj_hermC_swap (u v : Fin r → ℂ) : hermC τ G u v = conj (hermC τ G v u) := by
   unfold hermC
@@ -153,15 +153,15 @@ private lemma hermC_eq_conj_hermC_swap (u v : Fin r → ℂ) : hermC τ G u v = 
   ring
 
 /- English proof (translation)
-Establish `hconj : ∀ u u', hermC τ G u u' = conj (hermC τ G u' u)` using `hermC_eq_conj_hermC_swap τ G p f hG hf`. Establish `hdec : ∀ u : Fin r → ℂ, ∃ (x : Fin r → ℂ) (cu : Fin n → ℂ), u = x + ∑ k, cu k • f k ∧ ∀ l, hermC τ G x (f l) = 0`. Introduce `u`. Use `⟨u + ∑ k, (-(eps p k * hermC τ G u (f k))) • f k, fun k => eps p k * hermC τ G u (f k), ?_, fun l => ?_⟩` and prove the remaining obligations. Simplify using `only [neg_smul, Finset.sum_neg_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[hermC_add_left', hermC_sum_smul_left]`. Simplify using `only [hf_eps τ G p f hG hf, mul_ite, mul_zero, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Take the linear combination `(-hermC τ G u (f l)) * eps_sq p l`. Establish `hperp : ∀ x : Fin r → ℂ, (∀ l, hermC τ G x (f l) = 0) → ∀ k, hermC τ G x (g k) = 0`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `x hx k`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun (R := ℂ)).mp (hgf k)`. Rewrite using `[← ha, hermC_sum_smul_right]`. Simplify using `[hx]`. Take `⟨xv, cv, hv, hxv⟩` from `hdec v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨xw, cw, hw, hxw⟩` from `hdec w`. Establish `hMv : Mmat τ G p f g *ᵥ v = xv + ∑ k, cv k • g k`. Rewrite using `[hv, Matrix.mulVec_add, Mmat_fix τ G p f g hG hf xv hxv, Mmat_comb τ G p f g hG hf]`. Establish `hMw : Mmat τ G p f g *ᵥ w = xw + ∑ k, cw k • g k`. Rewrite using `[hw, Matrix.mulVec_add, Mmat_fix τ G p f g hG hf xw hxw, Mmat_comb τ G p f g hG hf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hMv, hMw, hv, hw]`. Rewrite using `[expand τ G g xv xw cv cw (hperp xv hxv) (fun k => by rw [hconj, hperp xw hxw k, map_zero]), expand τ G f xv xw cv cw hxv (fun k => by rw [hconj, hxw k, map_zero])]`. Simplify using `only [hg, hf]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Mmat_unitary (hgf : ∀ k, g k ∈ Submodule.span ℂ (Set.range f))
     (hg : ∀ k l, hermC τ G (g k) (g l) = if k = l then (if (k : ℕ) < p then 1 else -1) else 0)
@@ -196,7 +196,7 @@ theorem Mmat_unitary (hgf : ∀ k, g k ∈ Submodule.span ℂ (Set.range f))
   simp only [hg, hf]
 
 /- English proof (translation)
-Rewrite using `[Mmat_mulVec]`. Conclude with `Submodule.add_mem _ hv (Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.sub_mem _ (hgf k) (Submodule.subset_span ⟨k, rfl⟩)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Mmat_span (hgf : ∀ k, g k ∈ Submodule.span ℂ (Set.range f)) (v : Fin r → ℂ)
     (hv : v ∈ Submodule.span ℂ (Set.range f)) :

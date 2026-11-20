@@ -12,11 +12,11 @@ section Transport
 variable {O : Type} [CommRing O] {B B' : NumB O} (I : NumB.Iso B B')
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [cubN, I.h_one]`. Consider the case `succ k ih`. Establish `a` using `I.θ_eq (y ^ k) y x`. Simplify using `only [cubN, Finset.prod_range_succ, one_mul] at ih ⊢`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `a` using `[map_pow]`. Rewrite using `[pow_succ y]`. Use `replace a := congrArg Additive.ofMul a`. Use `replace ih := congrArg Additive.ofMul ih`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [ofMul_mul, ofMul_pow] at a ih ⊢`. Take the linear combination `(norm := module) a + ih`.
+A detailed English derivation is pending.
 -/
 theorem cubN_iso (k : ℕ) (y x : B.A) :
     cubN B'.θ k 1 (I.φ y) (I.φ x) * I.h (y ^ k) * I.h x * I.h (y * x) ^ k =
@@ -35,9 +35,9 @@ theorem cubN_iso (k : ℕ) (y x : B.A) :
     linear_combination (norm := module) a + ih
 
 /- English proof (translation)
-Establish `a` using `I.θ_eq x x⁻¹ x`. Establish `b` using `I.σ_eq x`. Rewrite `a` using `[mul_inv_cancel, inv_mul_cancel, one_mul, I.h_one, map_inv]`. Use `replace a := congrArg Additive.ofMul a`. Use `replace b := congrArg Additive.ofMul b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [dbl, ofMul_mul, ofMul_pow, ofMul_div, ofMul_one] at a b ⊢`. Take the linear combination `(norm := module) a - b`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem dbl_iso (x : B.A) : dbl B'.θ B'.σ (I.φ x) * I.h (x * x) = dbl B.θ B.σ x * I.h x ^ 4 := by
   have a := I.θ_eq x x⁻¹ x
@@ -50,11 +50,11 @@ theorem dbl_iso (x : B.A) : dbl B'.θ B'.σ (I.φ x) * I.h (x * x) = dbl B.θ B.
   linear_combination (norm := module) a - b
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [mulq, I.h_one]`. Consider the case `succ k ih`. Establish `a` using `cubN_iso I k x x`. Establish `b` using `dbl_iso I x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mulq, Finset.prod_range_succ] at ih ⊢`. Rewrite using `[pow_succ x, show (k + 1) ^ 2 = k ^ 2 + 2 * k + 1 by ring]`. Use `replace a := congrArg Additive.ofMul a`. Use `replace b := congrArg (fun u => k • Additive.ofMul u) b`. Use `replace ih := congrArg Additive.ofMul ih`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_pow, ofMul_div] at a b ih ⊢`. Take the linear combination `(norm := module) a - b + ih`.
+A detailed English derivation is pending.
 -/
 theorem mulq_iso (k : ℕ) (x : B.A) :
     mulq B'.θ B'.σ k (I.φ x) * I.h x ^ (k ^ 2) = mulq B.θ B.σ k x * I.h (x ^ k) := by
@@ -73,11 +73,11 @@ theorem mulq_iso (k : ℕ) (x : B.A) :
     linear_combination (norm := module) a - b + ih
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `hk`. Establish `a` using `cubN_iso I (2 * r + 1) x x`. Establish `b` using `dbl_iso I x`. Establish `c` using `mulq_iso I (2 * r + 1) x`. Rewrite `a`, `c` using `[hx, I.h_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a` using `[one_mul]`. Establish `e : (2 * r + 1 - 1) / 2 = r` using `by omega`. Simplify using `only [NumB.wS, e, one_mul]`. Use `replace a := congrArg (fun u => r • Additive.ofMul u) a`. Use `replace b := congrArg (fun u => (r * (2 * r + 1)) • Additive.ofMul u) b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `replace c := congrArg Additive.ofMul c`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_pow, ofMul_div, ofMul_one] at a b c ⊢`. Take the linear combination `(norm := module) c - a + b`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem wS_iso (k : ℕ) (hk : Odd k) (x : B.A) (hx : x ^ k = 1) :
     B'.wS k (I.φ x) 1 1 * I.h x ^ k = B.wS k x 1 1 := by
@@ -97,13 +97,11 @@ theorem wS_iso (k : ℕ) (hk : Odd k) (x : B.A) (hx : x ^ k = 1) :
   linear_combination (norm := module) c - a + b
 
 /- English proof (translation)
-Establish `a` using `cubN_iso I (m ^ 2) b x`. Establish `w` using `wS_iso I (m ^ 2) hm.pow b hb`. Establish `c` using `mulq_iso I m (x * b)`. Rewrite `a` using `[hb, I.h_one, one_mul, mul_comm b x]`. Establish `key : B'.uV (m ^ 2) 1 (I.φ b) (I.φ x) * B'.wS (m ^ 2) (I.φ b) 1 1 * (I.lam * I.h ((x * b) ^ m)) * (mulq B'.θ B'.σ m (I.φ (x * b)))⁻¹ = I.lam * I.h x ^ m ^ 2 * (B.uV (m ^ 2) 1 b x * B.wS (m ^ 2) b 1 1) * (mulq B.θ B.σ m (x * b))⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [NumB.uV, B.cub.face, B'.cub.face, div_one]`. Use `replace a := congrArg Additive.ofMul a`. Use `replace w := congrArg Additive.ofMul w`. Use `replace c := congrArg Additive.ofMul c`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [ofMul_mul, ofMul_pow, ofMul_inv, ofMul_one] at a w c ⊢`. Take the linear combination `(norm := module) a + w - c`. Use `replace key := congrArg Units.val key`. Simplify using `only [NumB.uth, NumB.mth, ← map_mul, ← map_pow, I.th_eq]`. Simplify using `only [Units.val_mul] at key ⊢`.
-
-Take the linear combination `B.th ((x * b) ^ m) * key`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem uth_iso (m : ℕ) (hm : Odd m) (b x : B.A) (hb : b ^ m ^ 2 = 1) :
     B'.uth m (I.φ b) (I.φ x) = (I.lam * I.h x ^ m ^ 2 : Oˣ) * B.uth m b x := by
@@ -128,9 +126,9 @@ theorem uth_iso (m : ℕ) (hm : Odd m) (b x : B.A) (hb : b ^ m ^ 2 = 1) :
 end Transport
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero => simp [cubN]`. Consider the case `succ a ih`. Establish `s` using `h.N_split b (y ^ (b * a)) y x`. Establish `e : cubN θ (b * (a + 1)) 1 y x = cubN θ (b * a) 1 y x * cubN θ b (y ^ (b * a)) y x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [cubN, mul_add, mul_one, Finset.prod_range_add, one_mul, pow_add]`. Establish `f : cubN θ (a + 1) 1 (y ^ b) x = cubN θ a 1 (y ^ b) x * θ (y ^ (b * a)) (y ^ b) x`. Simplify using `only [cubN, Finset.prod_range_succ, one_mul, pow_mul]`. Rewrite using `[e, f, ih, s, pow_succ]`. The two sides agree by associativity and commutativity.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. The two sides agree by associativity and commutativity.
 -/
 theorem cubN_mul_exp {A U : Type} [CommGroup A] [CommGroup U] {θ : A → A → A → U} (h : IsCub θ) (a b : ℕ) (y x : A) :
     cubN θ (b * a) 1 y x = cubN θ a 1 (y ^ b) x * cubN θ b 1 y x ^ a := by
@@ -146,11 +144,11 @@ theorem cubN_mul_exp {A U : Type} [CommGroup A] [CommGroup U] {θ : A → A → 
     ac_rfl
 
 /- English proof (translation)
-Establish `a` using `(GlobalTheory.T.mulq_dbl_cubN_relations O N.toNumB m m p₁.1.2.b p.1.2.b).2.1`. Establish `c` using `cubN_mul_exp N.cub m m p.1.2.b p₁.1.2.b`. Rewrite `c` using `[← sq]`. Establish `key : N.wQ p / mulq N.θ N.σ m p.1.2.b * (N.ψ p₁.1.1.toAdd * (p.1.2 ^ m).s p₁.1.1.toAdd) = N.ψ p₁.1.1.toAdd * N.wp q p₁ * mulq N.θ N.σ m p₁.1.2.b * (N.uV (m ^ 2) 1 p.1.2.b p₁.1.2.b * N.wS (m ^ 2) p.1.2.b 1 1) * (mulq N.θ N.σ m (p₁.1.2.b * p.1.2.b))⁻¹`. Simplify using `only [NumB.uV, N.cub.face, div_one, NumD.wQ, NumD.wp, NumD.tk, hp, hq, hq', toAdd_one, NumD.ψ_zero, NumD.Gt.s_zero, NumD.Gt.pow_b, a, c]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_pow, ofMul_inv, ofMul_div, ofMul_one]`. Use `module`. Use `replace key := congrArg Units.val key`. Simplify using `only [NumD.txT, NumD.vt, NumB.uth, NumB.mth, mul_pow, N.QT_pow_b p₁, NumD.Gt.pow_b]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [Units.val_mul] at key ⊢`. Take the linear combination `N.th (N.c p₁.1.1.toAdd * p.1.2.b ^ m) * key`.
+A detailed English derivation is pending.
 -/
 theorem txT_eq {O : Type} [CommRing O] (N : NumD O) (m : ℕ) (p : N.QT (m ^ 2)) (hp : p.1.1 = 1)
     (q p₁ : N.QT m) (hq : q.1.1 = 1) (hq' : q.1.2 = p.1.2 ^ m) :
@@ -174,11 +172,11 @@ theorem txT_eq {O : Type} [CommRing O] (N : NumD O) (m : ℕ) (p : N.QT (m ^ 2))
   linear_combination N.th (N.c p₁.1.1.toAdd * p.1.2.b ^ m) * key
 
 /- English proof (translation)
-Establish `hs : Function.Surjective ((k : ℤ) • (LinearMap.id : Additive Cˣ →ₗ[ℤ] Additive Cˣ))` using `fun u => by`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq ((Additive.toMul u : Cˣ) : C) (Nat.pos_of_ne_zero hk)`. Establish `z0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz` using `[zero_pow hk]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Additive.toMul u).ne_zero hz.symm`. Use `⟨Additive.ofMul (Units.mk0 z z0), ?_⟩` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Simplify using `using hz`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `Module.projective_lifting_property _ (MonoidHom.toAdditiveRight t).toIntLinearMap hs`. Use `⟨AddMonoidHom.toMultiplicativeLeft f.toAddMonoidHom, MonoidHom.ext fun x => ?_⟩` and prove the remaining obligations. Use `congrArg Additive.toMul (LinearMap.congr_fun hf x.toAdd)` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_torus_root {C : Type} [Field C] [IsAlgClosed C] {X : Type} [AddCommGroup X] [Module.Free ℤ X]
     (k : ℕ) (hk : k ≠ 0) (t : Multiplicative X →* Cˣ) : ∃ t' : Multiplicative X →* Cˣ, t' ^ k = t := by
@@ -198,9 +196,9 @@ theorem exists_torus_root {C : Type} [Field C] [IsAlgClosed C] {X : Type} [AddCo
   simpa using this
 
 /- English proof (translation)
-Take `⟨γ, rfl⟩` from `hN b`. Take `⟨t, ht⟩` from `(N.exists_tor_iff (γ ^ k)).2 (by rw [NumD.Gt.pow_b, hb])`. Take `⟨t', rfl⟩` from `exists_torus_root k hk t`. Use `⟨⟨(1, γ * (N.tor t')⁻¹), ?_⟩, rfl, by simp⟩` and prove the remaining obligations. Rewrite using `[NumD.mem_QT, mul_pow, inv_pow, ← N.tor_pow, ht, mul_inv_cancel]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `N.io_zero.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift {C : Type} [Field C] [IsAlgClosed C] (N : NumD C) (hN : ∀ b : N.A, ∃ γ : N.Gt, γ.b = b)
     (k : ℕ) (hk : k ≠ 0) (b : N.A) (hb : b ^ k = 1) : ∃ p : N.QT k, p.1.1 = 1 ∧ p.1.2.b = b := by
@@ -218,9 +216,9 @@ section Match
 variable {C : Type} [NormedField C] {N N' : NumD C} {n : ℕ} (μ : Match N N' n)
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Take `⟨p', h⟩` from `μ.tot j p`. Take `⟨z, hz⟩` from `hB j p p' h`. Use `⟨p' * N'.qTriv _ (-z), (μ.eqv _ p p p' _ h ((N.qEq_equivalence _).refl p)).2 ((N'.qEq_iff _ _).2 ⟨-z, rfl⟩), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p'.1.1.toAdd + n ^ j • (-z) = _`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hz, smul_neg, add_neg_cancel_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_partner {e : N.X ≃+ N'.X} (hB : μ.B e) (j k : ℕ) (hk : k = n ^ j) (p : N.QT k) :
     ∃ p', μ.r k p p' ∧ p'.1.1.toAdd = e p.1.1.toAdd := by
@@ -233,7 +231,7 @@ theorem exists_partner {e : N.X ≃+ N'.X} (hB : μ.B e) (j k : ℕ) (hk : k = n
   rw [hz, smul_neg, add_neg_cancel_right]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero ha`. Proceed by induction on `a with`. Consider the case `zero => simpa using h`. Consider the case `succ a ih => rw [Nat.succ_eq_add_one, pow_succ, pow_succ p']`. Conclude with `μ.mul _ _ _ _ _ (ih (Nat.succ_ne_zero _)) h`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem r_pow {k : ℕ} {p : N.QT k} {p' : N'.QT k} (h : μ.r k p p') (a : ℕ) (ha : a ≠ 0) : μ.r k (p ^ a) (p' ^ a) := by
   obtain ⟨a, rfl⟩ := Nat.exists_eq_succ_of_ne_zero ha
@@ -242,9 +240,9 @@ theorem r_pow {k : ℕ} {p : N.QT k} {p' : N'.QT k} (h : μ.r k p p') (a : ℕ) 
   | succ a ih => rw [Nat.succ_eq_add_one, pow_succ, pow_succ p']; exact μ.mul _ _ _ _ _ (ih (Nat.succ_ne_zero _)) h
 
 /- English proof (translation)
-Establish `key : ∀ K, K = m * m → ∀ (a : N.QT m) (a' : N'.QT m) (q : N.QT K) (q' : N'.QT K), q.1.1 = a.1.1 ^ m → q.1.2 = a.1.2 → q'.1.1 = a'.1.1 ^ m → q'.1.2 = a'.1.2 → μ.r K q q' → μ.r m a a'`. Introduce and unpack `K rfl a a' q q' h₁ h₂ h₃ h₄ h`. Conclude with `(μ.incl m m a a' q q' hm h₁ h₂ h₃ h₄).2 h`. Use `key _ (sq m) _ _ _ _ ?_ rfl ?_ rfl (r_pow μ h m hm)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p.1.1 ^ m = 1 ^ m`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp]`. Express the relevant statement in the definitionally equal form `p'.1.1 ^ m = 1 ^ m`. Rewrite using `[hp']`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem r_powRep {m : ℕ} (hm : m ≠ 0) {p : N.QT (m ^ 2)} {p' : N'.QT (m ^ 2)} (h : μ.r (m ^ 2) p p')
     (hp : p.1.1 = 1) (hp' : p'.1.1 = 1) : μ.r m (powRep N m p hp) (powRep N' m p' hp') := by
@@ -259,13 +257,11 @@ theorem r_powRep {m : ℕ} (hm : m ≠ 0) {p : N.QT (m ^ 2)} {p' : N'.QT (m ^ 2)
     rw [hp']
 
 /- English proof (translation)
-Establish `hm : n ^ j ≠ 0` using `hn.pow.pos.ne'`. Take `⟨p, hp, rfl⟩` from `exists_lift N hN _ (pow_ne_zero 2 hm) b hb`. Take `⟨p', h, hp'⟩` from `exists_partner μ hB (j * 2) _ (pow_mul n j 2).symm p`. Use `replace hp' : p'.1.1 = 1 := by`. Rewrite `hp'` using `[hp, toAdd_one, map_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hp'`. Establish `hb' : p'.1.2.b = I.φ p.1.2.b`. Establish `key : ∀ K, K = n ^ (j * 2) → ∀ (q : N.QT K) (q' : N'.QT K), μ.r K q q' → q.1.1 = 1 → q'.1.1 = 1 → q'.1.2.b = I.φ q.1.2.b`. Introduce and unpack `K rfl`. Conclude with `hI _`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `key _ (pow_mul n j 2).symm p p' h hp hp'`. Establish `t` using `hT j p p' h hp hp' p₁.1.1.toAdd`. Establish `w` using `μ.wp _ _ _ _ _ (r_powRep μ hm h hp hp') h₁`. Rewrite `t` using `[← he, txT_eq N' _ p' hp' (powRep N' _ p' hp') p₁' rfl rfl, txT_eq N _ p hp (powRep N _ p hp) p₁ rfl rfl, w, he, hb']`. Rewrite using `[uth_iso I _ hn.pow _ _ hb]`.
-
-Use `mul_left_cancel₀ (N.wp (powRep N _ p hp) p₁).ne_zero ?_` and prove the remaining obligations. Simplify using `only [Units.val_mul] at t ⊢`. Take the linear combination `((I.lam : C) * ((I.h p₁.1.2.b ^ (n ^ j) ^ 2 : Cˣ) : C)) * t`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem uth_prop [IsAlgClosed C] (hn : Odd n) (hN : ∀ b : N.A, ∃ γ : N.Gt, γ.b = b) {e : N.X ≃+ N'.X} (hB : μ.B e)
     (hT : μ.Term e) {I : NumB.Iso N.toNumB N'.toNumB} (hI : μ.OnB I) (j : ℕ) (p₁ : N.QT (n ^ j)) (p₁' : N'.QT (n ^ j))
@@ -295,7 +291,7 @@ theorem uth_prop [IsAlgClosed C] (hn : Odd n) (hN : ∀ b : N.A, ∃ γ : N.Gt, 
   linear_combination ((I.lam : C) * ((I.h p₁.1.2.b ^ (n ^ j) ^ 2 : Cˣ) : C)) * t
 
 /- English proof (translation)
-Use `ht.sep j hj _ _ (μ.c₀ * (N.ψ p₁.1.1.toAdd * mulq N.θ N.σ (n ^ j) p₁.1.2.b : Cˣ) / (N'.ψ (e p₁.1.1.toAdd) * mulq N'.θ N'.σ (n ^ j) p₁'.1.2.b * (I.lam * I.h p₁.1.2.b ^ (n ^ j) ^ 2) : Cˣ)) (div_ne_zero (mul_ne_zero μ.c₀_ne (Units.ne_zero _)) (Units.ne_zero _)) fun b' hb' => ?_` and prove the remaining obligations. Take `⟨b, rfl⟩` from `I.φ.surjective b'`. Rewrite `hb'` using `[← map_pow, map_eq_one_iff _ I.φ.injective]`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff (Units.ne_zero _), ← uth_prop μ hn hN hB hT hI j p₁ p₁' h₁ he b hb', mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem root_eq [IsAlgClosed C] (hn : Odd n) (hN : ∀ b : N.A, ∃ γ : N.Gt, γ.b = b) {g' : ℕ} (ht : N'.Tors n g')
     {e : N.X ≃+ N'.X} (hB : μ.B e) (hT : μ.Term e) {I : NumB.Iso N.toNumB N'.toNumB} (hI : μ.OnB I) (j : ℕ) (hj : 1 ≤ j)
@@ -309,15 +305,15 @@ theorem root_eq [IsAlgClosed C] (hn : Odd n) (hN : ∀ b : N.A, ∃ γ : N.Gt, �
   rw [div_mul_eq_mul_div, eq_div_iff (Units.ne_zero _), ← uth_prop μ hn hN hB hT hI j p₁ p₁' h₁ he b hb', mul_comm]
 
 /- English proof (translation)
-Take `⟨p₁', h₁, he⟩` from `exists_partner μ hB 1 _ rfl p₁`. Establish `hr` using `root_eq μ hn hN ht hB hT hI 1 le_rfl p₁ p₁' h₁ he`. Establish `hc : N'.c (e p₁.1.1.toAdd) = I.φ (N.c p₁.1.1.toAdd)`. Rewrite using `[← he, ← N'.QT_pow_b, ← N.QT_pow_b, hr, map_pow]`. Use `⟨hc, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht₁, ht₂⟩` from `ht.good (I.φ (N.c p₁.1.1.toAdd))`. Take `⟨b', rfl⟩` from `ht.div t`. Take `⟨b, rfl⟩` from `I.φ.surjective b'`. Establish `hb : b ^ (n ^ 1) ^ 2 = 1`. Apply `I.φ.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_pow, map_one, pow_one, sq, pow_mul, ht₁]`. Establish `u` using `uth_prop μ hn hN hB hT hI 1 p₁ p₁' h₁ he b hb`. Establish `u0 : N'.uth (n ^ 1) (I.φ b) (I.φ p₁.1.2.b) ≠ 0`. Use `mul_ne_zero (Units.ne_zero _) (mul_ne_zero ?_ (Units.ne_zero _))` and prove the remaining obligations. Rewrite using `[mul_pow, ← map_pow, N.QT_pow_b, show I.φ b ^ n ^ 1 = I.φ b ^ n by rw [pow_one], ← norm_ne_zero_iff, ht₂]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_ne_zero`. Rewrite `u` using `[hr]`. Use `replace u := mul_right_cancel₀ u0 u`. Establish `q` using `congrArg Units.val (mulq_iso I (n ^ 1) p₁.1.2.b)`. Rewrite `q` using `[N.QT_pow_b]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `mul_left_cancel₀ (mulq N.θ N.σ (n ^ 1) p₁.1.2.b).ne_zero ?_` and prove the remaining obligations. Simplify using `only [Units.val_mul] at u q ⊢`. Take the linear combination `u - (I.lam : C) * (N'.ψ (e p₁.1.1.toAdd) : C) * q`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem c_psi [IsAlgClosed C] (hn : Odd n) (hN : ∀ b : N.A, ∃ γ : N.Gt, γ.b = b) {g' : ℕ} (ht : N'.Tors n g')
     {e : N.X ≃+ N'.X} (hB : μ.B e) (hT : μ.Term e) {I : NumB.Iso N.toNumB N'.toNumB} (hI : μ.OnB I)
@@ -350,23 +346,21 @@ theorem c_psi [IsAlgClosed C] (hn : Odd n) (hN : ∀ b : N.A, ∃ γ : N.Gt, γ.
 end Match
 
 /- English proof (translation)
-Introduce `C _ _ _ _ N N' q q' n g g' _ hn _ _ _ ht ht' μ _ e hB hT I hI`. Establish `hN` using `QStr.exists_lift N`. Establish `hQ : ∀ (j : ℕ) (y : N.X), ∃ p : N.QT (n ^ j), p.1.1.toAdd = y` using `fun j y => by`. Establish `hd : ∀ (i : ℕ) (x : N.A), ∃ b, b ^ n ^ i = x` using `fun i => by`. Proceed by induction on `i with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => exact fun x => ⟨x, pow_one x⟩`. Consider the case `succ i ih`. Introduce `x`. Take `⟨a, rfl⟩` from `ih x`. Take `⟨b, rfl⟩` from `ht.div a`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b, by rw [pow_succ', pow_mul]⟩`. Take `⟨b, hb⟩` from `hd j (N.io y).b`. Take `⟨γ, -, hγ⟩` from `QStr.root_over N hn.pow.pos.ne' (N.io y) b hb`. Conclude with `⟨⟨(Multiplicative.ofAdd y, γ), hγ⟩, rfl⟩`. Establish `main : ∀ χ, N'.c (e χ) = I.φ (N.c χ) ∧ (I.lam * (N'.ψ (e χ) * I.h (N.c χ)) : Cˣ) = μ.c₀ * N.ψ χ` using `fun χ => by`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨p₁, rfl⟩` from `hQ 1 χ`. Conclude with `c_psi μ hn hN ht' hB hT hI p₁`. Establish `hl : (I.lam : C) = μ.c₀` using `by simpa [I.h_one] using (main 0).2`. Use `⟨⟨I, e, fun χ => (main χ).1, fun χ => ?_⟩, rfl, rfl, fun j p p' h hp hp' => ?_⟩` and prove the remaining obligations. Use `(main χ).2` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← hl, ← Units.val_mul, Units.val_inj]`. Conclude with `mul_left_cancel this`. Establish `hb` using `hI j p p' h hp hp'`. Establish `h1 : p.1.2 ^ n ^ j = 1` using `by rw [N.mem_QT.1 p.2, hp]; exact N.io_zero`. Break down `Nat.eq_zero_or_pos j with rfl | hj` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1' : p'.1.2 ^ n ^ 0 = 1` using `by rw [N'.mem_QT.1 p'.2, hp']; exact N'.io_zero`. Rewrite using `[(pow_one p.1.2).symm.trans h1, (pow_one p'.1.2).symm.trans h1']`. Conclude with `NumD.Iso.rel_one _`. Use `⟨hb, fun χ => ?_⟩` and prove the remaining obligations. Take `⟨p₁, rfl⟩` from `hQ j χ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨p₁', h₁, he⟩` from `exists_partner μ hB j _ rfl p₁`. Establish `hr` using `root_eq μ hn hN ht' hB hT hI j hj p₁ p₁' h₁ he`. Establish `w` using `μ.wp _ _ _ _ _ h h₁`. Establish `a` using `cubN_iso I (n ^ j) p₁.1.2.b p.1.2.b`. Establish `b` using `cubN_iso I (n ^ j) p.1.2.b p₁.1.2.b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `a` using `[N.QT_pow_b]`. Rewrite `b` using `[← NumD.Gt.pow_b, h1, NumD.Gt.one_b, I.h_one, one_mul, mul_comm p.1.2.b]`. Simplify using `only [NumD.wp, NumD.tk, hp, hp', he, hr, hb, toAdd_one, NumD.Gt.s_zero] at w`. Express the relevant statement in the definitionally equal form `p'.1.2.s (e p₁.1.1.toAdd) * I.h (N.c p₁.1.1.toAdd * p.1.2.b) = p.1.2.s p₁.1.1.toAdd * I.h (N.c p₁.1.1.toAdd) * I.h p.1.2.b`. Use `replace a := congrArg Additive.ofMul a`.
-
-Use `replace b := congrArg Additive.ofMul b`. Use `replace w := congrArg Additive.ofMul w`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_pow, ofMul_div, ofMul_one] at a b w ⊢`. Take the linear combination `(norm := module) w - a + b`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_iso_onG : AllMatch fun {_} _ {N} {N'} {_} μ _ _ => μ.A → ∀ e, μ.B e → μ.Term e → ∀ I : NumB.Iso N.toNumB N'.toNumB, μ.OnB I → ∃ J : NumD.Iso N N', J.toIso = I ∧ J.e = e ∧ μ.OnG J := by
   intro C _ _ _ _ N N' q q' n g g' _ hn _ _ _ ht ht' μ _ e hB hT I hI

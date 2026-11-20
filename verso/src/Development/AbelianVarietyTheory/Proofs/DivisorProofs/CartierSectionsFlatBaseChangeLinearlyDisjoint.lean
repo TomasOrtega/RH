@@ -19,15 +19,15 @@ section Helpers
 variable {R₁ F₁ : Type} [CommRing R₁] [CommRing F₁]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem zero_mem_spanBy (c : R₁ →+* F₁) (T : Set F₁) : (0 : F₁) ∈ spanBy c T :=
   ⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, by simp⟩
 
 /- English proof (translation)
-Take `⟨n, r, t, ht, rfl⟩` from `ha`. Take `⟨m, r', t', ht', rfl⟩` from `hb`. Use `⟨n + m, Fin.append r r', Fin.append t t', fun i => ?_, ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Simplify using `using ht i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using ht' i`. Rewrite using `[Fin.sum_univ_add]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem add_mem_spanBy (c : R₁ →+* F₁) (T : Set F₁) {a b : F₁} (ha : a ∈ spanBy c T) (hb : b ∈ spanBy c T) :
     a + b ∈ spanBy c T := by
@@ -40,11 +40,11 @@ theorem add_mem_spanBy (c : R₁ →+* F₁) (T : Set F₁) {a b : F₁} (ha : a
   · rw [Fin.sum_univ_add]; simp
 
 /- English proof (translation)
-Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, r, t, ht, rfl⟩ choose s hs e using ht`. Use `⟨∑ i, c (r i) * s i, ⟨n, r, s, hs, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [← e i]; ring`. Introduce and unpack `⟨_, ⟨n, r, t, ht, rfl⟩, rfl⟩`. Use `⟨n, r, fun i => w * t i, fun i => ⟨_, ht i, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+A detailed English derivation is pending.
 -/
 theorem spanBy_mul (c : R₁ →+* F₁) (T : Set F₁) (w : F₁) :
     spanBy c ((w * ·) '' T) = (w * ·) '' spanBy c T := by
@@ -64,7 +64,7 @@ theorem spanBy_mul (c : R₁ →+* F₁) (T : Set F₁) (w : F₁) :
 end Helpers
 
 /- English proof (translation)
-Simplify using `only [ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX, GlobalTheory.Desc.cst, RingHom.comp_apply]`. Use `X.presheaf.germ_res_apply (homOfLE (show U ≤ p ⁻¹ᵁ ⊤ from le_top)) (genericPoint X) hg ((p.app ⊤).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom a))` as an intermediate fact. Conclude with `this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fnOf_algX {R : Type} [CommRing R] {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ Sp R) (U : X.Opens)
     (hg : genericPoint X ∈ U) (a : R) :
@@ -75,13 +75,13 @@ theorem fnOf_algX {R : Type} [CommRing R] {X : Scheme.{0}} [IsIntegral X] (p : X
   exact this
 
 /- English proof (translation)
-Use `letI := (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p U).toAlgebra`. Use `letI := ρ.toAlgebra`. Take `⟨β, -, hβ, hr⟩` from `GlobalTheory.T.exists_tensor_sections_embed_functionField_regular R R₁ ρ X Y V p q i φ θ H hP U hU hg`. Rewrite using `[← hr]`. Use extensionality with `v`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, r, t, ht, rfl⟩ choose a ha e using ht choose b hb using ha`. Use `⟨∑ j, b j ⊗ₜ[R] r j, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [hβ, hb, e, _root_.mul_comm]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, rfl⟩`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem_spanBy _ _`. Consider the case `tmul b r`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨1, fun _ => r, fun _ => θ (GlobalTheory.Cartier.fnOf U hg b), fun _ => ⟨_, ⟨b, rfl⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hβ, Fin.sum_univ_one, _root_.mul_comm]`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `add_mem_spanBy _ _ hx hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_chart {R R₁ : Type} [CommRing R] [CommRing R₁] {ρ : R →+* R₁} {X Y V : Scheme.{0}} [IsIntegral X]
     [IsIntegral Y] {p : X ⟶ Sp R} {q : Y ⟶ Sp R₁} {i : V ⟶ Y} [IsOpenImmersion i] {φ : V ⟶ X}
@@ -109,41 +109,35 @@ theorem span_chart {R R₁ : Type} [CommRing R] [CommRing R₁] {ρ : R →+* R�
     | add x y hx hy => rw [map_add]; exact add_mem_spanBy _ _ hx hy
 
 /- English proof (translation)
-Introduce `R R₁ _ _ ρ hρ X Y V _ _ p q i _ φ θ _ _ H hP D D₁ hD`. Use `letI : Algebra R X.functionField := (GlobalTheory.Desc.cst p).toAlgebra`. Use `letI : Algebra R R₁ := ρ.toAlgebra`. Use `haveI : Module.Flat R R₁ := hρ`. Take `⟨U₀, hU₀, hg₀, -⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens (show genericPoint X ∈ (⊤ : X.Opens) from trivial)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : ∀ a : R, θ (algebraMap R X.functionField a) = GlobalTheory.Desc.cst q (algebraMap R R₁ a)`. Introduce `a`. Use `letI := (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p U₀).toAlgebra`. Take `⟨β, -, hβ, -⟩` from `GlobalTheory.T.exists_tensor_sections_embed_functionField_regular R R₁ ρ X Y V p q i φ θ H hP U₀ hU₀ hg₀`. Establish `e : (algebraMap R Γ(X, U₀) a) ⊗ₜ[R] (1 : R₁) = (1 : Γ(X, U₀)) ⊗ₜ[R] (algebraMap R R₁ a)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one a, TensorProduct.smul_tmul]`. Establish `e'` using `congrArg β e`. Simplify using `only [hβ, _root_.map_one, _root_.mul_one, _root_.one_mul] at e'`. Rewrite using `[← e']`. Conclude with `congrArg θ (fnOf_algX p U₀ hg₀ a).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hinj : ∀ (n : ℕ) (u : Fin n → X.functionField) (r : Fin n → R₁), ∑ j, GlobalTheory.Desc.cst q (r j) * θ (u j) = 0 → ∑ j, u j ⊗ₜ[R] r j = 0`. Use `letI := (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p U₀).toAlgebra`. Use `haveI : Nonempty U₀ := ⟨⟨_, hg₀⟩⟩`. Use `haveI : IsFractionRing Γ(X, U₀) X.functionField := functionField_isFractionRing_of_isAffineOpen X U₀ hU₀`. Establish `hal : ∀ b, algebraMap Γ(X, U₀) X.functionField b = GlobalTheory.Cartier.fnOf U₀ hg₀ b` using `fun b => rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsScalarTower R Γ(X, U₀) X.functionField := IsScalarTower.of_algebraMap_eq fun a => ((hal _).trans (fnOf_algX p U₀ hg₀ a)).symm`. Take `⟨β, hβi, hβ, -⟩` from `GlobalTheory.T.exists_tensor_sections_embed_functionField_regular R R₁ ρ X Y V p q i φ θ H hP U₀ hU₀ hg₀`. Conclude with `GlobalTheory.T.tensor_fraction_injective_of_tensor_injective R R₁ Γ(X, U₀) X.functionField Y.functionField θ (GlobalTheory.Desc.cst q) β hβi (fun b r => (hβ b r).trans (by rw [hal]))`. Use `⟨GlobalTheory.T.linearlyDisjoint_of_flat_baseChange_embeds R R₁ X.functionField Y.functionField θ (GlobalTheory.Desc.cst q) hinj, fun k => ?_⟩` and prove the remaining obligations. Establish `hloc : ∀ x : X, ∃ (U : X.Opens) (g : X.functionFieldˣ), IsAffineOpen U ∧ x ∈ U ∧ ∀ y ∈ U, D.IsEqn y g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x`. Take `⟨W, hxW, g, hg⟩` from `D.exists_isEqn_nhds x`. Take `⟨U, hU, hxU, hUW⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 X.isBasis_affineOpens hxW`. Conclude with `⟨U, g, hU, hxU, fun y hy => hg y (hUW hy)⟩`. Use `choose U g hUa hxU hUg using hloc`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : CompactSpace X := QuasiCompact.compactSpace_of_compactSpace p`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x => (U x : Set X)) (fun x => (U x).isOpen) (fun x _ => Set.mem_iUnion.2 ⟨x, hxU x⟩)`. Establish `cov : ∀ y : X, ∃ j : t, y ∈ U j.1` using `fun y => by`. Take `⟨a, ha, h⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ y))`. Conclude with `⟨⟨a, ha⟩, h⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `haveI : Nonempty t := ⟨(cov (genericPoint X)).choose⟩`. Establish `hgen : ∀ j : t, genericPoint X ∈ U j.1` using `fun j => GlobalTheory.Cartier.gen_mem (hxU j.1)`. Set `N : t → Submodule R X.functionField` to `fun j => { carrier := {u | ∀ y ∈ U j.1, (k • D).RegularAt y u} add_mem' := fun ha hb y hy => (ha y hy).add (hb y hy) zero_mem' := fun y _ => ((k • D).vanishesAt_zero y).regularAt smul_mem' := fun a u hu y hy => by`. Rewrite using `[Algebra.smul_def]`. Conclude with `(hu y hy).regAt_mul (GlobalTheory.Cartier.regAt_fnOf (U := ⊤) trivial trivial _) }`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hSec : Sec D k = ⋂ j, (N j : Set X.functionField)`. Use extensionality with `u`. Rewrite using `[Set.mem_iInter]`. Conclude with `⟨fun h j y _ => h y, fun h y => let ⟨j, hj⟩ := cov y; h j y hj⟩`. Establish `hG : ∀ j : t, ∀ z : V, φ z ∈ U j.1 → (k • D₁).IsEqn (i z) (Units.map θ.toMonoidHom (g j.1 ^ k))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `j z hz`. Rewrite using `[map_pow]`. Conclude with `(hD z _ (hUg j.1 _ hz)).nsmul k`. Establish `hN : ∀ j : t, (N j : Set X.functionField) = ((((g j.1 ^ k : X.functionFieldˣ) : X.functionField)⁻¹ * ·) '' Set.range (GlobalTheory.Cartier.fnOf (U j.1) (hgen j)))`. Introduce `j`.
+Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `u`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Establish `hreg : ∀ y ∈ U j.1, GlobalTheory.Cartier.RegAt y (u * ((g j.1 ^ k : X.functionFieldˣ) : X.functionField))` using `fun y hy => ((hUg j.1 y hy).nsmul k).regularAt_iff.1 (hu y hy)`. Take `⟨b, hb⟩` from `GlobalTheory.Cartier.exists_fnOf_eq (hgen j) hreg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨_, ⟨b, rfl⟩, by dsimp only; rw [hb, _root_.mul_comm u, ← _root_.mul_assoc, inv_mul_cancel₀ (Units.ne_zero _), _root_.one_mul]⟩`. Introduce and unpack `⟨_, ⟨b, rfl⟩, rfl⟩ y hy dsimp only`. Rewrite using `[((hUg j.1 y hy).nsmul k).regularAt_iff, _root_.mul_comm _ ((g j.1 ^ k : X.functionFieldˣ) : X.functionField), ← _root_.mul_assoc, mul_inv_cancel₀ (Units.ne_zero _), _root_.one_mul]`. Conclude with `GlobalTheory.Cartier.regAt_fnOf hy (hgen j) b`. Establish `hspan : ∀ j : t, spanBy (GlobalTheory.Desc.cst q) (θ '' (N j : Set X.functionField)) = {v | ∀ z : V, φ z ∈ U j.1 → (k • D₁).RegularAt (i z) v}`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce `j`. Use `set G : X.functionField := ((g j.1 ^ k : X.functionFieldˣ) : X.functionField) with hGdef`. Establish `himg : θ '' ((G⁻¹ * ·) '' Set.range (GlobalTheory.Cartier.fnOf (U j.1) (hgen j))) = (θ G⁻¹ * ·) '' (θ '' Set.range (GlobalTheory.Cartier.fnOf (U j.1) (hgen j)))`. Rewrite using `[Set.image_image, Set.image_image]`. Simplify using `only [map_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hN j, himg, spanBy_mul, span_chart H hP (hUa j.1) (hgen j)]`. Establish `hGne : G ≠ 0` using `Units.ne_zero _`. Establish `hθG : θ G ≠ 0` using `(map_ne_zero θ).2 hGne`. Establish `hval : ∀ z : V, (((Units.map θ.toMonoidHom (g j.1 ^ k)) : Y.functionFieldˣ) : Y.functionField) = θ G` using `fun _ => rfl`. Use extensionality with `v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩ z hz`. Rewrite using `[(hG j z hz).regularAt_iff, hval z, map_inv₀, _root_.mul_comm, ← _root_.mul_assoc, mul_inv_cancel₀ hθG, _root_.one_mul]`. Conclude with `hw z hz`. Introduce `hv`.
-
-Use `⟨v * θ G, fun z hz => ?_, ?_⟩` and prove the remaining obligations. Use `(hG j z hz).regularAt_iff.1 (hv z hz)` as an intermediate fact. Rewrite `this` using `[hval z]`. Then use the resulting hypothesis. Use `show θ G⁻¹ * (v * θ G) = v`. Rewrite using `[map_inv₀, _root_.mul_comm, _root_.mul_assoc, mul_inv_cancel₀ hθG, _root_.mul_one]`.
-
-Establish `hT : {v | ∀ z : V, (k • D₁).RegularAt (i z) v} = ⋂ j : t, {v | ∀ z : V, φ z ∈ U j.1 → (k • D₁).RegularAt (i z) v}`. Use extensionality with `v`. Rewrite using `[Set.mem_iInter]`. Conclude with `⟨fun h j z _ => h z, fun h z => let ⟨j, hj⟩ := cov (φ z); h j z hj⟩`. Rewrite using `[hT, hSec, GlobalTheory.T.span_iInter_submodules_of_flat_baseChange R R₁ X.functionField Y.functionField θ (GlobalTheory.Desc.cst q) hc hinj t N]`.
-
-Conclude with `Set.iInter_congr fun j => (hspan j).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sections_linDisj_flatBaseChange : ∀ (R R₁ : Type) [CommRing R] [CommRing R₁] (ρ : R →+* R₁), ρ.Flat → ∀ (X Y V : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (p : X ⟶ Sp R) (q : Y ⟶ Sp R₁) (i : V ⟶ Y) [IsOpenImmersion i] (φ : V ⟶ X) (θ : X.functionField →+* Y.functionField), QuasiCompact p → QuasiSeparated p → IsPullback φ (i ≫ q) p (spMap ρ) → PFF i φ θ → ∀ (D : CartierDiv X) (D₁ : CartierDiv Y), PPull i φ θ D D₁ → LinDisj (GlobalTheory.Desc.cst p) (GlobalTheory.Desc.cst q) θ ∧ ∀ k : ℕ, {v | ∀ z : V, (k • D₁).RegularAt (i z) v} = spanBy (GlobalTheory.Desc.cst q) (θ '' Sec D k) := by
   intro R R₁ _ _ ρ hρ X Y V _ _ p q i _ φ θ _ _ H hP D D₁ hD

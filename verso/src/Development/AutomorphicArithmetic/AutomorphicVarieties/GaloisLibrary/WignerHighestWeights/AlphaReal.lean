@@ -15,7 +15,7 @@ variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
 omit [NumberField E] [IsScalarTower ℝ ℂ N] [IsScalarTower ℝ ℂ N'] in
 /- English proof (translation)
-Simplify using `only [hol_apply, eL, map_sum, map_smul, map_sub, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hol_nat (τ : E →+* ℂ) (φ : N →ₗ[ℂ] N') (L : Lie E a →ₗ[ℝ] N) (L' : Lie E a →ₗ[ℝ] N')
     (h : ∀ X, φ (L (toL X)) = L' (toL X)) (x : Matrix (Fin a) (Fin a) ℂ) : φ (hol τ L x) = hol τ L' x := by
@@ -23,7 +23,7 @@ private theorem hol_nat (τ : E →+* ℂ) (φ : N →ₗ[ℂ] N') (L : Lie E a 
 
 omit [NumberField E] [IsScalarTower ℝ ℂ N] in
 /- English proof (translation)
-Use `ext1 x`. Simplify using `only [hol_apply, eL, LinearMap.add_apply, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `module`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem hol_add (τ : E →+* ℂ) (L L' : Lie E a →ₗ[ℝ] N) : hol τ (L + L') = hol τ L + hol τ L' := by
   ext1 x
@@ -33,7 +33,7 @@ private theorem hol_add (τ : E →+* ℂ) (L L' : Lie E a →ₗ[ℝ] N) : hol 
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `ext1 x`. Establish `e : ∀ v : N, r • v = (r : ℂ) • v` using `fun v => (algebraMap_smul ℂ r v).symm`. Simplify using `only [hol_apply, eL, LinearMap.smul_apply, Finset.smul_sum, e]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `module`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem hol_smul (τ : E →+* ℂ) (r : ℝ) (L : Lie E a →ₗ[ℝ] N) : hol τ (r • L) = (r : ℂ) • hol τ L := by
   ext1 x
@@ -45,7 +45,7 @@ private theorem hol_smul (τ : E →+* ℂ) (r : ℝ) (L : Lie E a →ₗ[ℝ] N
 variable [IsTotallyComplex E]
 
 /- English proof (translation)
-Rewrite using `[hol_nat τ φ L (φ.restrictScalars ℝ ∘ₗ L) (fun _ => rfl)]`. Conclude with `(holMul E a N' τ L' _).1 p q h x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hol_grp (τ : E →+* ℂ) (φ : N →ₗ[ℂ] N') (L : Lie E a →ₗ[ℝ] N) (L' : Lie E a →ₗ[ℝ] N')
     (p q : Matrix (Fin a) (Fin a) (Cinf E)) (h : ∀ X, φ (L (toL X)) = L' (toL (p * X * q)))
@@ -54,7 +54,7 @@ private theorem hol_grp (τ : E →+* ℂ) (φ : N →ₗ[ℂ] N') (L : Lie E a 
   exact (holMul E a N' τ L' _).1 p q h x
 
 /- English proof (translation)
-Rewrite using `[hol_nat τ φ L (φ.restrictScalars ℝ ∘ₗ L) (fun _ => rfl), ← (holMul E a N' τ L'' (φ.restrictScalars ℝ ∘ₗ L - L')).2 Y (fun X => sub_eq_of_eq_add' (h X)) x, ← LinearMap.add_apply, ← hol_add, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem hol_der (τ : E →+* ℂ) (φ : N →ₗ[ℂ] N') (L : Lie E a →ₗ[ℝ] N) (L' L'' : Lie E a →ₗ[ℝ] N')
     (Y : Matrix (Fin a) (Fin a) (Cinf E)) (h : ∀ X, φ (L (toL X)) = L' (toL X) + L'' (toL (Y * X - X * Y)))
@@ -67,7 +67,7 @@ private theorem hol_der (τ : E →+* ℂ) (φ : N →ₗ[ℂ] N') (L : Lie E a 
 variable {M : Type} [AddCommGroup M] [Module ℂ M] [Module ℝ M] [IsScalarTower ℝ ℂ M]
 
 /- English proof (translation)
-Establish `h1` using `hol_grp τ (LinearMap.mulLeft ℂ u) L ((LinearMap.mulRight ℂ u).restrictScalars ℝ ∘ₗ L) p q h x`. Rewrite `h1` using `[← hol_nat τ (LinearMap.mulRight ℂ u) L ((LinearMap.mulRight ℂ u).restrictScalars ℝ ∘ₗ L) (fun _ => rfl)]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hol_grp_end (τ : E →+* ℂ) (u : Module.End ℂ M) (L : Lie E a →ₗ[ℝ] Module.End ℂ M)
     (p q : Matrix (Fin a) (Fin a) (Cinf E)) (h : ∀ X, u * L (toL X) = L (toL (p * X * q)) * u)
@@ -77,7 +77,7 @@ private theorem hol_grp_end (τ : E →+* ℂ) (u : Module.End ℂ M) (L : Lie E
   exact h1
 
 /- English proof (translation)
-Establish `h1` using `hol_der τ (LinearMap.mulLeft ℂ u - LinearMap.mulRight ℂ u) L 0 L Y (fun X => (h X).trans (zero_add _).symm) x`. Establish `h0 : hol τ (0 : Lie E a →ₗ[ℝ] Module.End ℂ M) x = 0` using `by simp [hol_apply, eL]`. Rewrite `h1` using `[h0, zero_add]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hol_der_end (τ : E →+* ℂ) (u : Module.End ℂ M) (L : Lie E a →ₗ[ℝ] Module.End ℂ M)
     (Y : Matrix (Fin a) (Fin a) (Cinf E)) (h : ∀ X, u * L (toL X) - L (toL X) * u = L (toL (Y * X - X * Y)))
@@ -92,19 +92,19 @@ private theorem hol_der_end (τ : E →+* ℂ) (u : Module.End ℂ M) (L : Lie E
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `E _ _ _ a M _ _ _ _ κ LA LB hA hB hc hκA hκB τ x c c' hqA hqB hne`. Establish `hcomm : ∀ y z, Commute (hol τ LA y) (hol τ LB z)` using `fun y z => by`. Simplify using `only [hol_apply, eL]`. Use `Commute.sum_left _ _ _ fun i _ => Commute.sum_left _ _ _ fun j _ => Commute.sum_right _ _ _ fun k _ => Commute.sum_right _ _ _ fun l _ => ?_` and prove the remaining obligations. Conclude with `(((((hc _ _).sub_right ((hc _ _).smul_right _)).sub_left (((hc _ _).sub_right ((hc _ _).smul_right _)).smul_left _)).smul_right _).smul_left _ |>.smul_right _).smul_left _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨α₀, h1, h2, h3⟩` from `alphaAbs M a (hol τ LA) (hol τ LB) (fun k => x - (k : ℂ)) hcomm`. Use `set s : ℂ := ((a.factorial : ℂ) * (c - c'))⁻¹ with hs`. Establish `e : ∀ (r : ℝ) (v : M), r • v = (r : ℂ) • v` using `fun r v => (algebraMap_smul ℂ r v).symm`. Set `α : (Lie E a →ₗ[ℝ] M) →ₗ[ℝ] M` to `{ toFun := fun f => s • α₀ (hol τ f) map_add' := fun f g => by rw [hol_add, map_add, smul_add] map_smul' := fun r f => by rw [hol_smul, map_smul, RingHom.id_apply, e, smul_comm] }`. Establish `hα : ∀ f, α f = s • α₀ (hol τ f)` using `fun _ => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨α, fun Y f f' hf => ?_, fun k f f' hf => ?_, fun m f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[hα, hα, map_smul]`. Use `congr 1`. Use `h3 _ (Y.map (coord τ)) (hol_der_end τ _ LA Y fun X => ?_) (hol_der_end τ _ LB Y fun X => ?_) _ _ (hol_der τ _ f f' f Y hf)` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, add_mul, mul_add, ← hA Y X, (hc (toL X) (toL Y)).eq]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[LinearMap.add_apply, add_mul, mul_add, ← hB Y X, (hc (toL Y) (toL X)).eq]`. Normalize the expressions using the abelian group laws. Rewrite using `[hα, hα, map_smul]`. Use `congr 1`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h2 _ (k.1.map (coord τ)) ((star k.1).map (coord τ)) ?_ (hol_grp_end τ _ LA _ _ (hκA k)) (hol_grp_end τ _ LB _ _ (hκB k)) _ _ (hol_grp τ _ f f' _ _ hf)` and prove the remaining obligations. Establish `hk : star k.1 * k.1 = 1` using `k.2.1`. Rewrite using `[← Matrix.map_mul, hk, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hx : ∀ y, hol τ f y = hol τ LA y m + hol τ LB y m` using `fun y => by`. Rewrite using `[← hol_nat τ (LinearMap.applyₗ m) (LA + LB) f (fun X => (hf _).symm), hol_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hα, h1 m _ hx]`. Simplify using `only [hol_single]`. Establish `gA` using `(eLRel E a _ LA hA).1 τ`. Establish `gB` using `(glNegOp _ a _ ((eLRel E a _ LB hB).1 τ)).1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Formalism.HermitianLatticeCounting.P.antisymmetrizedProduct_eq_factorial_smul_qdet _ gB, hqB, show (fun i j => eL LA τ i j) = eL LA τ from rfl, Formalism.HermitianLatticeCounting.P.antisymmetrizedProduct_eq_factorial_smul_qdet _ gA, hqA]`. Establish `hz : (a.factorial : ℂ) * (c - c') ≠ 0` using `mul_ne_zero (by exact_mod_cast a.factorial_ne_zero) (sub_ne_zero.2 hne)`. Simplify using `only [MulOpposite.unop_smul, MulOpposite.unop_op, LinearMap.smul_apply, Module.End.one_apply, smul_smul, ← sub_smul]`. Rewrite using `[← mul_sub, hs, inv_mul_cancel₀ hz, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgRepEndIrreducible.alphaReal :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (M : Type) [AddCommGroup M] [Module ℂ M] [Module ℝ M] [IsScalarTower ℝ ℂ M] (κ : Kinf E a → Module.End ℂ M) (LA LB : Lie E a →ₗ[ℝ] Module.End ℂ M),

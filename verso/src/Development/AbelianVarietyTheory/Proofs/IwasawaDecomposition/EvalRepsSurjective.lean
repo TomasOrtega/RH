@@ -11,7 +11,7 @@ variable {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationR
   {P : Places p O Kf}
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Places.gPos, Matrix.mul_apply, map_sum, map_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gPos_mul (v : Fin P.nV) (s : Fin (P.n' v)) (A B : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) (P.Qq v)) :
     P.gPos v s (A * B) = P.gPos v s A * P.gPos v s B := by
@@ -19,14 +19,14 @@ theorem gPos_mul (v : Fin P.nV) (s : Fin (P.n' v)) (A B : Matrix (Fin (P.m + 1))
   simp only [Places.gPos, Matrix.mul_apply, map_sum, map_mul]
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `by_cases h : a = b <;> simp [Places.gPos, Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gPos_one (v : Fin P.nV) (s : Fin (P.n' v)) : P.gPos v s 1 = 1 := by
   ext a b
   by_cases h : a = b <;> simp [Places.gPos, Matrix.one_apply, h]
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [Places.subst, AlgHom.comp_apply, aeval_X, map_sum, map_mul, algHom_C, algebraMap_eq, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem subst_comp (G H : ∀ v, Fin (P.n' v) → Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) Kf) :
     (P.subst G).comp (P.subst H) = P.subst fun v s => H v s * G v s := by
@@ -38,9 +38,9 @@ theorem subst_comp (G H : ∀ v, Fin (P.n' v) → Matrix (Fin (P.m + 1)) (Fin (P
   simp only [mul_assoc]
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [Places.subst, aeval_X, AlgHom.id_apply, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single x.2.2.1]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[Ne.symm hb]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem subst_one : (P.subst fun _ _ => 1) = AlgHom.id Kf _ := by
   apply MvPolynomial.algHom_ext
@@ -53,7 +53,7 @@ theorem subst_one : (P.subst fun _ _ => 1) = AlgHom.id Kf _ := by
   · simp
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun φ => φ F) (subst_comp (P := P) (fun v s => P.gPos v s ((A v)⁻¹ : GL (Fin (P.m + 1)) (P.Qq v))) (fun v s => P.gPos v s ((B v)⁻¹ : GL (Fin (P.m + 1)) (P.Qq v))))`. Simplify using `only [AlgHom.comp_apply] at h`. Simplify using `only [Places.natAct, LinearMap.smul_apply, AlgHom.toLinearMap_apply, map_smul, smul_smul, h, mul_inv_rev, Units.val_mul, gPos_mul, Matrix.det_mul, mul_zpow, Finset.prod_mul_distrib]`. Apply the tactic sequence `first | rfl | (congr 1; exact mul_comm _ _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem natAct_mul (A B : ∀ v, GL (Fin (P.m + 1)) (P.Qq v)) (F : P.Xsp) :
     P.natAct (fun v => A v * B v) F = P.natAct A (P.natAct B F) := by
@@ -66,7 +66,7 @@ theorem natAct_mul (A B : ∀ v, GL (Fin (P.m + 1)) (P.Qq v)) (F : P.Xsp) :
   first | rfl | (congr 1; exact mul_comm _ _)
 
 /- English proof (translation)
-Simplify using `only [Places.natAct, inv_one, Units.val_one, gPos_one, Matrix.det_one, one_zpow, Finset.prod_const_one, one_smul, subst_one, AlgHom.toLinearMap_apply, AlgHom.id_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem natAct_one (F : P.Xsp) : P.natAct (fun _ => 1) F = F := by
   simp only [Places.natAct, inv_one, Units.val_one, gPos_one, Matrix.det_one, one_zpow, Finset.prod_const_one,
@@ -75,21 +75,21 @@ theorem natAct_one (F : P.Xsp) : P.natAct (fun _ => 1) F = F := by
 variable (C : Level P)
 
 /- English proof (translation)
-Simplify using `only [Level.actX, map_mul]`. Conclude with `natAct_mul _ _ F`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actX_mul (γ δ : C.Γ) (F : P.Xsp) : C.actX (γ * δ) F = C.actX γ (C.actX δ F) := by
   simp only [Level.actX, map_mul]
   exact natAct_mul _ _ F
 
 /- English proof (translation)
-Simplify using `only [Level.actX, map_one]`. Conclude with `natAct_one F`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actX_one (F : P.Xsp) : C.actX 1 F = F := by
   simp only [Level.actX, map_one]
   exact natAct_one F
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `only [Level.smul, map_mul, Units.val_mul, Matrix.mulVecLin_mul, ← Submodule.map_comp]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem smul_mul (γ δ : C.Γ) (L : P.Tup) : C.smul (γ * δ) L = C.smul γ (C.smul δ L) := by
   funext v
@@ -97,7 +97,7 @@ theorem smul_mul (γ δ : C.Γ) (L : P.Tup) : C.smul (γ * δ) L = C.smul γ (C.
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `only [Level.smul, map_one, Units.val_one, Matrix.mulVecLin_one]`. Conclude with `Submodule.map_id _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smul_one (L : P.Tup) : C.smul 1 L = L := by
   funext v
@@ -105,9 +105,9 @@ theorem smul_one (L : P.Tup) : C.smul 1 L = L := by
   exact Submodule.map_id _
 
 /- English proof (translation)
-Introduce `v`. Take `⟨g, hg, e⟩` from `hL v`. Use `⟨(C.act v γ : Matrix _ _ _) * g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 (C.act v γ).isUnit).mul hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Level.smul, e, colSpan, Submodule.map_span, ← Set.range_comp]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isLatTup_smul (γ : C.Γ) {L : P.Tup} (hL : P.IsLatTup L) : P.IsLatTup (C.smul γ L) := by
   intro v
@@ -119,7 +119,7 @@ theorem isLatTup_smul (γ : C.Γ) {L : P.Tup} (hL : P.IsLatTup L) : P.IsLatTup (
     congr 2
 
 /- English proof (translation)
-Use `⟨fun h => ?_, isLatTup_smul C γ⟩` and prove the remaining obligations. Use `isLatTup_smul C γ⁻¹ h` as an intermediate fact. Rewrite `this` using `[← smul_mul, inv_mul_cancel, smul_one]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isLatTup_smul_iff (γ : C.Γ) (L : P.Tup) : P.IsLatTup (C.smul γ L) ↔ P.IsLatTup L := by
   refine ⟨fun h => ?_, isLatTup_smul C γ⟩
@@ -127,7 +127,7 @@ theorem isLatTup_smul_iff (γ : C.Γ) (L : P.Tup) : P.IsLatTup (C.smul γ L) ↔
   rwa [← smul_mul, inv_mul_cancel, smul_one] at this
 
 /- English proof (translation)
-Simplify using `only [Level.funMod, Submodule.mem_inf, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mem_ker, LinearMap.proj_apply, LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.smul_apply, sub_eq_zero, and_assoc, LinearMap.restrictScalars_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_funMod_iff (Hv : P.Tup → Submodule O P.Xsp) (F : P.Tup → P.Xsp) :
     F ∈ C.funMod Hv ↔ (∀ L, P.IsLatTup L → F L ∈ Hv L) ∧ (∀ L, ¬ P.IsLatTup L → F L = 0) ∧
@@ -148,11 +148,11 @@ def evalReps (Hv : P.Tup → Submodule O P.Xsp) {ι : Type} {rep : ι → P.Tup}
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `F hF`. Take `⟨-, h0, hγ⟩` from `(mem_funMod_iff C Hv F.1).1 F.2`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `L`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hL : P.IsLatTup L`. Take `⟨i, γ, rfl⟩` from `hr.surj L hL`. Establish `: F.1 (rep i) = 0` using `congrArg Subtype.val (congrFun hF i)`. Rewrite using `[hγ, this, map_zero, smul_zero]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `h0 L hL`.
+A detailed English derivation is pending.
 -/
 theorem evalReps_injective (Hv : P.Tup → Submodule O P.Xsp) {ι : Type} {rep : ι → P.Tup} (hr : IsReps C rep) :
     Function.Injective (evalReps C Hv hr) := by
@@ -169,19 +169,17 @@ theorem evalReps_injective (Hv : P.Tup → Submodule O P.Xsp) {ι : Type} {rep :
   · exact h0 L hL
 
 /- English proof (translation)
-Introduce `x`. Use `choose idx gam hgam using hr.surj`. Set `F : P.Tup → P.Xsp` to `fun L => if h : P.IsLatTup L then (C.χ (gam L h) : O) • C.actX (gam L h) (x (idx L h) : P.Xsp) else 0`. Establish `key : ∀ i γ, F (C.smul γ (rep i)) = (C.χ γ : O) • C.actX γ (x i : P.Xsp)`. Introduce `i γ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `isLatTup_smul C γ (hr.lat i)`. Establish `e` using `hgam _ h`. Simplify using `only [F, dif_pos h]`. Generalize the expression as in `idx _ h = j at e ⊢`. Generalize the expression as in `gam _ h = δ at e ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `e' : C.smul (δ⁻¹ * γ) (rep i) = rep j`. Rewrite using `[smul_mul, e, ← smul_mul, inv_mul_cancel, smul_one]`. Take `rfl` from `hr.inj _ _ _ e'`. Take `rfl : δ = γ` from `inv_mul_eq_one.1 (htriv _ _ (hr.lat i) e')`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨F, (mem_funMod_iff C Hv F).2 ⟨fun L hL => ?_, fun L hL => dif_neg hL, fun γ L => ?_⟩⟩, ?_⟩` and prove the remaining obligations. Take `⟨i, γ, rfl⟩` from `hr.surj L hL`. Rewrite using `[key, ← hact γ _ (hr.lat i)]`. Conclude with `Submodule.smul_mem _ _ ⟨_, (x i).2, rfl⟩`. Distinguish the cases in `hL : P.IsLatTup L`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, δ, rfl⟩` from `hr.surj L hL`. Rewrite using `[← smul_mul, key, key, map_mul, Units.val_mul, mul_smul, actX_mul]`. Use `congr 1`. Conclude with `(((C.actX γ).restrictScalars O).map_smul _ _).symm`. Establish `h1 : F L = 0` using `dif_neg hL`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h2 : F (C.smul γ L) = 0` using `dif_neg (fun h => hL ((isLatTup_smul_iff C γ L).1 h))`. Rewrite using `[h1, h2, map_zero, smul_zero]`. Use function extensionality and compare the values at `i`. Apply `Subtype.ext` to reduce the goal to its premises. Use `key i 1` as an intermediate fact.
-
-Rewrite `this` using `[smul_one, map_one, Units.val_one, one_smul, actX_one]`. Conclude with `this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalReps_surjective (Hv : P.Tup → Submodule O P.Xsp)
     (hact : ∀ (γ : C.Γ) (L : P.Tup), P.IsLatTup L →
@@ -231,9 +229,9 @@ def evalRepsEquiv (Hv : P.Tup → Submodule O P.Xsp)
   LinearEquiv.ofBijective (evalReps C Hv hr) ⟨evalReps_injective C Hv hr, evalReps_surjective C Hv hact htriv hr⟩
 
 /- English proof (translation)
-Establish `: FaithfulSMul G.O G.Kf` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Establish `: Module.IsTorsionFree G.O G.P.Xsp` using `Module.IsTorsionFree.trans G.Kf`. Establish `: ∀ c i, Module.Finite G.O (G.P.HtupW (rep c i))` using `fun c i => Module.Finite.iff_fg.2 (hfg c i)`. Establish `: ∀ c i, Module.Free G.O (G.P.HtupW (rep c i))` using `fun c i => inferInstance`. Set `e0 : G.M ≃ₗ[G.O] ∀ c, (G.lev c).funMod G.P.HtupW` to `{ toFun := fun F c => ⟨F.1 c, F.2 c (Set.mem_univ c)⟩ invFun := fun F => ⟨fun c => (F c).1, fun c _ => (F c).2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun _ => rfl right_inv := fun _ => rfl }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e1` to `e0.trans (LinearEquiv.piCongrRight fun c => evalRepsEquiv (G.lev c) G.P.HtupW (hact c) (htriv c) (hr c))`. Rewrite using `[GAtP.d, e1.finrank_eq, Module.finrank_pi_fintype, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[hn]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem d_eq_card_mul (G : GAtP p) (hinj : Function.Injective (algebraMap G.O G.Kf)) (htriv : G.TrivStab)
     (hact : ∀ c, (G.lev c).ActHW) {ι : G.comp → Type} [∀ c, Fintype (ι c)] (rep : ∀ c, ι c → G.P.Tup)

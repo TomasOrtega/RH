@@ -14,15 +14,13 @@ open Set Topology
 namespace GlobalTheory.SpecGenClopen
 
 /- English proof (translation)
-Rewrite using `[← isOpen_compl_iff, isOpen_iff_forall_mem_open]`. Introduce `x hx`. Take `⟨U, hU, hxU, -⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := ⊤) (x := x) trivial`. Use `haveI : IsNoetherianRing Γ(X, U) := IsLocallyNoetherian.component_noetherian ⟨U, hU⟩`. Use `haveI : TopologicalSpace.NoetherianSpace (U : Set X) := noetherianSpace_of_isAffineOpen U hU`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `T' : Set (U : Set X)` to `Subtype.val ⁻¹' T`. Establish `key : ∀ Z : Set (U : Set X), IsIrreducible Z → (Z ∩ T').Nonempty → Z ⊆ T'`. Introduce and unpack `Z hZ ⟨t, htZ, htT⟩ z hz`. Establish `hI : IsIrreducible (closure (Subtype.val '' Z : Set X))` using `(hZ.image _ continuous_subtype_val.continuousOn).closure`. Take `⟨g₀, hg₀⟩` from `QuasiSober.sober hI isClosed_closure`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : g₀ ⤳ (t : X)` using `hg₀.specializes (subset_closure ⟨t, htZ, rfl⟩)`. Establish `h2 : g₀ ⤳ (z : X)` using `hg₀.specializes (subset_closure ⟨z, hz, rfl⟩)`. Conclude with `hs h2 (hg h1 htT)`. Establish `hT' : T' = ⋃ Z ∈ {Z ∈ irreducibleComponents (U : Set X) | (Z ∩ T').Nonempty}, Z`. Use extensionality with `t`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun ht => Set.mem_biUnion ⟨irreducibleComponent_mem_irreducibleComponents t, ⟨t, mem_irreducibleComponent, ht⟩⟩ mem_irreducibleComponent, fun ht => ?_⟩` and prove the remaining obligations. Take `⟨Z, ⟨hZ, hZT⟩, htZ⟩` from `Set.mem_iUnion₂.1 ht`. Conclude with `key Z hZ.1 hZT htZ`. Establish `hc : IsClosed T'`. Rewrite using `[hT']`.
-
-Conclude with `(TopologicalSpace.NoetherianSpace.finite_irreducibleComponents.subset fun _ h => h.1).isClosed_biUnion fun Z h => isClosed_of_mem_irreducibleComponents Z h.1`. Use `⟨Subtype.val '' T'ᶜ, ?_, U.isOpen.isOpenEmbedding_subtypeVal.isOpenMap _ hc.isOpen_compl, ⟨x, hxU⟩, hx, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `ht`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isClosed_of_stable (X : Scheme.{0}) [IsLocallyNoetherian X] (T : Set X)
     (hs : StableUnderSpecialization T) (hg : StableUnderGeneralization T) : IsClosed T := by
@@ -55,7 +53,7 @@ theorem isClosed_of_stable (X : Scheme.{0}) [IsLocallyNoetherian X] (T : Set X)
   exact ht
 
 /- English proof (translation)
-Introduce `X _ Z h`. Establish `hs : StableUnderSpecialization Z` using `fun x y hxy hx => (h x y hxy).1 hx`. Establish `hg : StableUnderGeneralization Z` using `fun x y hxy hx => (h y x hxy).2 hx`. Conclude with `⟨isClosed_of_stable X Z hs hg, isClosed_compl_iff.1 (isClosed_of_stable X Zᶜ (stableUnderSpecialization_compl_iff.2 hg) (stableUnderGeneralization_compl_iff.2 hs))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isClopen_of_specializes_iff : ∀ (X : Scheme.{0}) [IsLocallyNoetherian X] (Z : Set X),
     (∀ x y : X, x ⤳ y → (x ∈ Z ↔ y ∈ Z)) → IsClopen Z := by

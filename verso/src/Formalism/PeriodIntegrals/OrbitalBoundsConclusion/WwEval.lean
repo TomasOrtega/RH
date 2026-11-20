@@ -3,6 +3,6 @@ import Formalism.PeriodIntegrals.WwEval
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LFunctionEvaluation.LsumEqOfSubset
 
 /- English proof (translation)
-The claim follows from `PI.WwEvalWork.wwEval`.
+A detailed English derivation is pending.
 -/
 theorem minor_evaluation : PI.WwEval.WwEval := PI.WwEvalWork.wwEval

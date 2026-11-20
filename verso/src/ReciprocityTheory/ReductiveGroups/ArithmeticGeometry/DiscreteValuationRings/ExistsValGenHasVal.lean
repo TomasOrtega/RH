@@ -15,7 +15,7 @@ namespace ReciprocityTheory.ChartRestriction.G.DVR.SectionScalarValuation
 open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor IsLocalRing QForm
 
 /- English proof (translation)
-Conclude with `ReciprocityTheory.ChartRestriction.G.DVR.powGen_isGen L φ ε t ht n`.
+A detailed English derivation is pending.
 -/
 theorem powGen_isGen' {X Y : Scheme.{0}} (L : LB X) {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (n : ℕ) : (GeneratorPullback.powGen L φ ε t n).IsGen := by
@@ -26,11 +26,11 @@ section Val
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : V}
 
 /- English proof (translation)
-Take `⟨e, he, c, hc, hte⟩` from `hn`. Use `⟨GeneratorPullback.powGen L φ ε e k, ReciprocityTheory.ChartRestriction.G.DVR.powGen_isGen L φ ε e he k, c ^ k, ?_, ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `hc`. Use `⟨u ^ k, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, ← zpow_natCast (_ ^ n), ← zpow_mul, mul_comm n, Units.val_pow_eq_pow_val, map_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Establish `h1 : (GeneratorPullback.powGen L φ' ε t k).s j = t.s j ^ k` using `rfl`. Establish `h2 : (GeneratorPullback.powGen L φ ε e k).s j = e.s j ^ k` using `rfl`. Rewrite using `[h1, h2, Units.val_pow_eq_pow_val, hte j]`. Use `erw [mul_pow, map_pow, map_pow, Units.val_pow_eq_pow_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [scal, resTop, map_pow]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem genHasVal_powGen {X : Scheme.{0}} (L : LB X) {Ix : Type} [Fintype Ix]
     (φ : Ix → (Spec (CommRingCat.of V) ⟶ X)) (φ' : Ix → (Spec (CommRingCat.of (FractionRing V)) ⟶ X))
@@ -52,11 +52,11 @@ theorem genHasVal_powGen {X : Scheme.{0}} (L : LB X) {Ix : Type} [Fintype Ix]
     rfl
 
 /- English proof (translation)
-Establish `hz : r z ∈ LB.wchart L φ' (fun k => J (r ≫ φ' k))` using `hJ.mem φ' r`. Establish `hj : (fun k => J ((r ≫ jK V) ≫ φ k)) = fun k => J (r ≫ φ' k)`. Use function extensionality and compare the values at `k`. Rewrite using `[hφ k, Category.assoc]`. Establish `hz' : (r ≫ jK V) z ∈ LB.wchart L φ (fun k => J (r ≫ φ' k))`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hJ.mem φ (r ≫ jK V)` as an intermediate fact. Rewrite `this` using `[hj]`. Then use the resulting hypothesis. Establish `he` using `congrArg (fun j : Ix → L.ι => (gm (r ≫ jK V) z (LB.wchart L φ j) (e.s j)).val) hj`. Unfold `val`. Use `erw [he, ← gs_unit _ _ _ hz, ← gs_unit _ _ _ hz', hte, gs_mul _ _ _ hz]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `gs_res r z le_top hz _`. Simplify using `only [res, pullU, Units.coe_map, MonoidHom.coe_coe] erw [gs_res r z _ hz, gs_pull r (jK V) z _ hz']`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem val_genHasVal {X : Scheme.{0}} {L : LB X} {Ix : Type} [Fintype Ix]
     {φ : Ix → (Spec (CommRingCat.of V) ⟶ X)} {φ' : Ix → (Spec (CommRingCat.of (FractionRing V)) ⟶ X)}
@@ -84,7 +84,7 @@ theorem val_genHasVal {X : Scheme.{0}} {L : LB X} {Ix : Type} [Fintype Ix]
     erw [gs_res r z _ hz, gs_pull r (jK V) z _ hz']
 
 /- English proof (translation)
-Take `⟨e, he, c, hc, hte⟩` from `hn`. Conclude with `⟨e, c, he, hc, fun Z r z J hJ => val_genHasVal (hφ := hφ) hte r z hJ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_val_genHasVal {X : Scheme.{0}} {L : LB X} {Ix : Type} [Fintype Ix]
     {φ : Ix → (Spec (CommRingCat.of V) ⟶ X)} {φ' : Ix → (Spec (CommRingCat.of (FractionRing V)) ⟶ X)}
@@ -105,29 +105,27 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
   (D : DegData V (maximalIdeal V)) {Q : D.toPre.X → ℤ}
 
 /- English proof (translation)
-Simplify using `[cQ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ahom_c (χ : D.toPre.X) :
     D.toPre.P.A.hom ≫ (D.toPre.c χ).left = (cQ D.toPre D.toPre.P.A χ).left := by
   simp [cQ]
 
 /- English proof (translation)
-Rewrite using `[Category.id_comp, CategoryTheory.Hom.one_def, Over.comp_left, Over.toUnit_left]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ahom_e : D.toPre.P.A.hom ≫ 𝟙 _ ≫ eSec D.toPre.P.A = (1 : D.toPre.P.A ⟶ D.toPre.P.A).left := by
   rw [Category.id_comp, CategoryTheory.Hom.one_def, Over.comp_left, Over.toUnit_left]
   rfl
 
 /- English proof (translation)
-Establish `hL` using `D.toPre.P.isLB`. Establish `hp` using `genHasVal_powGen D.toPre.P.L _ _ _ _ _ (hQ mu) k`. Establish `h1` using `genHasVal_mulGen hϖ D.toPre.P.L hL _ _ _ _ _ _ _ _ _ _ (hQ (mu + α)) (genHasVal_invGen D.toPre.P.L hL _ _ _ _ _ (hQ mu))`. Establish `h2` using `genHasVal_mulGen hϖ D.toPre.P.L hL _ _ _ _ _ _ _ _ _ _ h1 (genHasVal_invGen D.toPre.P.L hL _ _ _ _ _ (hQ α))`. Establish `h3` using `genHasVal_mulGen hϖ D.toPre.P.L hL _ _ _ _ _ _ _ _ _ _ h2 (genHasVal_invGen D.toPre.P.L hL _ _ _ _ _ (rigK_val D))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `genHasVal_powGen D.toPre.P.L _ _ _ _ _ (rigK_val (ϖ := ϖ) D) k`. Establish `h4` using `genHasVal_mulGen hϖ D.toPre.P.L hL _ _ _ _ _ _ _ _ _ _ (genHasVal_mulGen hϖ D.toPre.P.L hL _ _ _ _ _ _ _ _ _ _ hp h3) hr`. Take `⟨e', c₀, he', hc₀, hv⟩` from `exists_val_genHasVal h4`. Use `⟨_, _, _, _, e', he', fun U _ h => ?_, c₀, ?_, fun F _ _ Z r z J hJ => ?_⟩` and prove the remaining obligations. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, ahom_c, ahom_e, cQ_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_comm (cQ D.toPre D.toPre.P.A mu)]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow]`. Use `module`. Establish `e : (k : ℤ) * Q mu + (Q (mu + α) + -Q mu + -Q α + -0) + (k : ℤ) * 0 = k * Q mu + bOf D.toPre Q mu α`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [bOf]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `e ▸ hc₀`. Establish `H` using `hv Z (r ≫ jFK (R := V) F) z J hJ`. Unfold `DegPre.famMult`.
-
-Rewrite using `[val_pull hJ]`. Conclude with `H.trans (by rw [Category.assoc]; rfl)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem famMult_data (hϖ : Irreducible ϖ) (hQ : IsQ D.toPre ϖ Q) (k : ℕ) (mu α : D.toPre.X) :
     ∃ (Ix : Type) (_ : Fintype Ix) (φV : Ix → (Spec (CommRingCat.of V) ⟶ D.toPre.P.A.left)) (εV : Ix → ℤ)

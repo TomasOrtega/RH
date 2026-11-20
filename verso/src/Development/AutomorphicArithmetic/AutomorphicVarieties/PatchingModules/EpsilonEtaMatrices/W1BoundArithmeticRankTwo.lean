@@ -13,7 +13,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_coe_set_eq]`. Use `Nat.card_le_card_of_injective (fun y : r.invariants => (⟨((y : V) : Matrix (Fin n) (Fin n) R), h (y : V) ((Representation.mem_invariants r _).1 y.2)⟩ : S)) ?_` and prove the remaining obligations. Introduce `a b hab`. Establish `e` using `congrArg Subtype.val hab`. Conclude with `Subtype.ext (Subtype.ext e)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem card_inv_le {A R Γ : Type} [CommRing A] [CommRing R] [Algebra A R] [Finite R] [Group Γ] {n : ℕ}
     {V : Submodule A (Matrix (Fin n) (Fin n) R)} (r : Representation A Γ V) (S : Set (Matrix (Fin n) (Fin n) R))
@@ -27,14 +27,14 @@ private theorem card_inv_le {A R Γ : Type} [CommRing A] [CommRing R] [Algebra A
   exact Subtype.ext (Subtype.ext e)
 
 /- English proof (translation)
-Rewrite `h` using `[pow_add, ← mul_assoc]`. Conclude with `Nat.le_of_mul_le_mul_right h (pow_pos hK u)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cancel_pow {s b K u w : ℕ} (hK : 0 < K) (h : s * K ^ u ≤ b * K ^ (w + u)) : s ≤ b * K ^ w := by
   rw [pow_add, ← mul_assoc] at h
   exact Nat.le_of_mul_le_mul_right h (pow_pos hK u)
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_option]`. Simplify using `only [Option.elim, mul_add, add_mul, mul_one, Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_const, Finset.card_univ, smul_eq_mul, Fintype.card_fin, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem sum_exp {V : Type} [Fintype V] (m n ν d q c₁ c₂ c₀ : ℕ) (d' dv C : V → ℕ) (Cq : Fin q → ℕ)
     (h1 : ∑ v, d' v = d) (h2 : ∑ v, dv v = d) :
@@ -47,49 +47,41 @@ private theorem sum_exp {V : Type} [Fintype V] (m n ν d q c₁ c₂ c₀ : ℕ)
   ring
 
 /- English proof (translation)
-Introduce `l _ L G0 T n x k al d D0 A d' hl hd' hLoc hphi hPL hN4 hEig hDet`. Take `⟨c₁, hc₁⟩` from `h0G l L G0 G0 (Glob.Hom.refl G0) n x k hl`. Take `⟨c₂, hc₂⟩` from `dualN l L G0 T n x k hl hphi hPL hDet`. Take `⟨c₀, hc₀⟩` from `h0v0 l G0.frame n x k D0 hN4`. Establish `hq` using `fun j => h0q l G0.frame n x k (T.sg j) (al j) (hEig j).1 (hEig j).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose Cq hCq using hq`. Establish `hv : ∀ v, ∃ C, ∀ m, Finite (k.Zb (x.Am m) v) ∧ Nat.card (k.Zb (x.Am m) v) ≤ Nat.card x.K ^ (m * (n * (d' v + 1) + nu n x.a k.g * (1 + A.dv v)) + C)`. Introduce `v`. Use `locV l G0.frame n x k v (A.dv v) (d' v) ?_ (hLoc v).some` and prove the remaining obligations. Establish `h0` using `(A.counts 0).locV v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[A.dv_eq 0]`. Use `h0 using 2` and compare the differences between its conclusion and the goal. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Use `show G0.ε (G0.φ v g : G0.Γ) = (T.GN 0).ε ((T.GN 0).φ v g : (T.GN 0).Γ)`. Rewrite using `[← (T.h 0).ε]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `congrArg G0.ε ((T.h 0).φ v g).symm`. Use `choose Cv hCv using hv`. Use `⟨c₁ + c₂ + c₀ + ∑ v, Cv v + ∑ j, Cq j, fun m => ?_⟩` and prove the remaining obligations. Use `filter_upwards [hc₂ m, phEq l L G0 T n x k m hphi hPL] with N hN2 hNph`. Establish `r1` using `rho1 l G0.frame n x k (x.Am m)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `inv_eq : ∀ g σ : G0.G₀, k.ρ1 (x.Am m) g = k.ρ1 (x.Am m) σ → k.ρ1 (x.Am m) g⁻¹ = k.ρ1 (x.Am m) σ⁻¹`. Introduce `g σ e`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv_cancel, r1.1, mul_one]`. Use `_ = k.ρ1 (x.Am m) (g⁻¹ * g) * k.ρ1 (x.Am m) σ⁻¹ := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[r1.2.1, r1.2.1, e, mul_assoc]`. Use `_ = k.ρ1 (x.Am m) σ⁻¹ := by`. Rewrite using `[inv_mul_cancel, r1.1, one_mul]`. Establish `hok1` using `(ok1 l L (T.GN N) G0 (T.h N) n x k (x.Am m) 1).1`. Simplify using `only [MonoidHom.one_apply, map_one] at hok1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨rep, hrep⟩` from `adEx l (T.GN N).frame x.A (DD (x.Am m) k.g) n (fun g => k.ρ1 (x.Am m) ((T.h N).p₀ g)) (fun _ => 1) (k.M1 (x.Am m)) hok1`. Set `χ' : (T.GN N).Γ →* x.A` to `(algebraMap ℤ_[l] x.A : ℤ_[l] →* x.A).comp ((Units.coeHom ℤ_[l]).comp (G0.ε.comp (T.h N).p))`. Take `⟨rep', hrep'⟩` from `adEx l (T.GN N).frame x.A (DD (x.Am m) k.g) n (fun g => k.ρ1 (x.Am m) ((T.h N).p₀ g)) (fun g => epsD k (x.Am m) ((T.h N).p g)) (k.EpsilonEtaTensorDual (x.Am m)) (ok1 l L (T.GN N) G0 (T.h N) n x k (x.Am m) χ').2.1`. Establish `hKpos : 0 < Nat.card x.K` using `by haveI := x.fin`. Conclude with `Nat.card_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `haveI : Finite (DD (x.Am m) k.g) := (finAm l G0.frame n x m k.g).2.2.1`. Establish `hsum : ∑ v, A.dv v = d`. Rewrite using `[← A.dv_eq N]`. Conclude with `(A.a N).sum_dv`. Establish `hsurj0 : ∀ g : G0.G₀, ∃ g' : (T.GN N).G₀, (T.h N).p₀ g' = g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g`. Take `⟨y, hy⟩` from `(T.h N).surj (g : G0.Γ)`. Establish `hy1 : y ∈ (T.GN N).η.ker`. Rewrite using `[MonoidHom.mem_ker, ← (T.h N).η, hy]`. Conclude with `g.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨⟨y, hy1⟩, Subtype.ext hy⟩`. Establish `hinv : ∀ j : Option (Fin T.q), Nat.card (Representation.invariants (rep'.comp ((A.a N).ι (Sum.inr (Sum.inr j))))) ≤ Nat.card x.K ^ (j.elim c₀ fun i => m * n + Cq i)`. Introduce `j`. Consider the cases of `j with`. Consider the case `none`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `(card_inv_le _ {Y | Y ∈ k.EpsilonEtaTensorDual (x.Am m) ∧ ∀ g ∈ D0, epsD k (x.Am m) ↑g • (k.ρ1 (x.Am m) g * Y * k.ρ1 (x.Am m) g⁻¹) = Y} ?_).trans (hc₀ m)` and prove the remaining obligations. Introduce `y hy`. Use `⟨y.2, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite `hg` using `[← A.d0 N]`. Take `⟨t, rfl⟩` from `hg`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy' : rep' ((A.a N).φq none t : (T.GN N).Γ) y = y` using `hy t`. Establish `e` using `hrep'.1 ((A.a N).φq none t) y`. Rewrite `e` using `[hy']`. Use `beta_reduce at e`. Rewrite `e` using `[map_inv]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.comp_apply]`. Conclude with `e.symm`. Consider the case `some i`. Use `(card_inv_le _ {Y | Y ∈ k.EpsilonEtaTensorDual (x.Am m) ∧ k.ρ1 (x.Am m) (T.sg i) * Y * k.ρ1 (x.Am m) (T.sg i)⁻¹ = Y} ?_).trans (hCq i m)` and prove the remaining obligations. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨y.2, ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `A.ph N i`. Establish `hy' : rep' ((A.a N).φq (some i) t : (T.GN N).Γ) y = y` using `hy t`. Rewrite `hy'` using `[ht]`. Establish `e` using `hrep'.1 (T.ph N i) y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hy']`. Use `beta_reduce at e`. Rewrite `e` using `[map_inv, inv_eq _ _ (hNph i).1, (hNph i).1, (hNph i).2.1, one_smul]`. Conclude with `e.symm`. Establish `h0inv : Nat.card rep.invariants ≤ Nat.card x.K ^ c₁`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(card_inv_le rep {Y | Y ∈ k.M1 (x.Am m) ∧ Yᵀ = -Y ∧ ∀ g : G0.G₀, k.ρ1 (x.Am m) g * Y * k.ρ1 (x.Am m) g⁻¹ = Y} ?_).trans (hc₁ m)` and prove the remaining obligations. Introduce `y hy`. Use `⟨y.2, ?_, fun g => ?_⟩` and prove the remaining obligations. Establish `e` using `hrep.2 y`. Rewrite `e` using `[hy, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e2` using `congrArg Matrix.transpose e`. Rewrite `e2` using `[Matrix.transpose_neg, Matrix.transpose_transpose]`. Conclude with `e2`. Take `⟨g', rfl⟩` from `hsurj0 g`. Establish `e` using `hrep.1 g' y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `e` using `[hy]`. Use `beta_reduce at e`. Rewrite `e` using `[one_smul, map_inv]`. Conclude with `e.symm`. Establish `hdual : Finite (Zl rep') → {y | y ∈ Zl rep' ∧ ∀ j : Fin T.q, y ∘ ((A.a N).ι (Sum.inr (Sum.inr (some j)))) ∈ Bl (rep'.comp ((A.a N).ι (Sum.inr (Sum.inr (some j)))))}.ncard ≤ Nat.card (Bl rep') * Nat.card x.K ^ c₂`.
-
-Introduce `hfinZ`. Use `le_trans (Set.ncard_le_ncard ?_ ?_) (hN2 rep' hrep' hfinZ)` and prove the remaining obligations. Introduce `y hy`. Use `⟨hy.1, fun j => ?_⟩` and prove the remaining obligations. Take `⟨Y, hY⟩` from `(mem_Bl _).1 (hy.2 j)`.
-
-Take `⟨t1, ht1⟩` from `A.ph N j`. Take `⟨t2, ht2⟩` from `A.ta N j`. Use `⟨Y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← ht1]`. Conclude with `hY t1`.
-
-Rewrite using `[← ht2]`. Conclude with `hY t2`. Conclude with `(Set.toFinite (Zl rep' : Set _)).subset (fun y hy => hy.1)`. Take `⟨hfin, hle⟩` from `oneLevel l L (T.GN N) G0 (T.h N) n x k m T.q d (A.a N) rep rep' (fun v => m * (n * (d' v + 1) + nu n x.a k.g * (1 + A.dv v)) + Cv v) (fun j => j.elim c₀ fun i => m * n + Cq i) c₁ c₂ hl (A.counts N) hrep hrep' (fun v => hCv v m) hinv h0inv hdual`. Rewrite `hle` using `[sum_exp m n (nu n x.a k.g) d T.q c₁ c₂ c₀ d' A.dv Cv Cq hd' hsum]`.
-
-Conclude with `⟨hfin, cancel_pow hKpos hle⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.W1_bound_arithmetic_rank_two :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (n : ℕ) (x : NP G0.frame n) (k : Kap x) (al : Fin T.q → Fin n → x.A) (d : ℕ) (D0 : Subgroup G0.G₀) (_ : ArSys T d D0) (d' : L.Vl → ℕ), l ≠ 2 → ∑ v, d' v = d → (∀ v, Nonempty (LocAb l (L.Gv v) (L.Iv v) (d' v))) → PhiCond G0.Γ l → (∀ g : G0.G₀, (g : G0.Γ) ∈ PL l T.H.toSubgroup → x.ρ g = 1) → x.N4 D0 → T.Eig x al → Detects k (Set.range T.sg) → T.B1 k (n * d + n * T.q) := by

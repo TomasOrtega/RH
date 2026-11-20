@@ -17,16 +17,16 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [
   [TopologicalSpace E] [MeasurableSpace E]
 
 /- English proof (translation)
-Rewrite using `[H.h_herm (c • y) x, H.h_smul_left, map_mul, ← H.h_herm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h_smul_right {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : Loc.HermSp M V)
     (c : E) (x y : V) : H.h x (c • y) = M.L.cj c * H.h x y := by
   rw [H.h_herm (c • y) x, H.h_smul_left, map_mul, ← H.h_herm]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Use `H.h_smul_left 0 0 y` as an intermediate fact. Simplify using `using this`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, H.h_add_left, ih]`.
+Treat this case separately.
 -/
 theorem h_sum_left {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : Loc.HermSp M V)
     {ι : Type} (s : Finset ι) (v : ι → V) (y : V) : H.h (∑ i ∈ s, v i) y = ∑ i ∈ s, H.h (v i) y := by
@@ -39,7 +39,7 @@ theorem h_sum_left {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] 
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, H.h_add_left, ih]
 
 /- English proof (translation)
-Rewrite using `[H.h_herm, h_sum_left, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← H.h_herm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem h_sum_right {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : Loc.HermSp M V)
     {ι : Type} (s : Finset ι) (v : ι → V) (x : V) : H.h x (∑ i ∈ s, v i) = ∑ i ∈ s, H.h x (v i) := by
@@ -48,9 +48,9 @@ theorem h_sum_right {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V]
   rw [← H.h_herm]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Loc.HermSp.Zhat, Matrix.of_apply, Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply]`. Rewrite using `[hg a, hg' b, h_sum_left]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[H.h_smul_left, h_sum_right, Finset.sum_mul, Finset.mul_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[h_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem zhat_chg {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : Loc.HermSp M V) (r : ℕ)
     (f f' g g' : Fin (r + 1) → V) (A A' : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
@@ -66,13 +66,11 @@ theorem zhat_chg {M : Loc.Model F E} {V : Type} [AddCommGroup V] [Module E V] (H
   ring
 
 /- English proof (translation)
-Use `⟨fun a b hab => ?_, fun a => ?_, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Break down `lt_or_ge c a with h | h` into its components or cases. Rewrite using `[hB.1 a c h, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA.1 c b (lt_of_lt_of_le hab h), mul_zero]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`. Rewrite using `[hB.2.1, hA.2.1, one_mul]`. Introduce `c _ hc`. Break down `lt_or_gt_of_ne hc with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hB.1 a c h, zero_mul]`. Rewrite using `[hA.1 c a h, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`. Rewrite using `[Matrix.mul_apply]`.
-
-Conclude with `Subring.sum_mem _ fun c _ => Subring.mul_mem _ (hB.2.2 a c) (hA.2.2 c b)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intUni_mul {M : Loc.Model F E} {r : ℕ} {B A : Matrix (Fin (r + 1)) (Fin (r + 1)) E}
     (hB : IntUni M B) (hA : IntUni M A) : IntUni M (B * A) := by
@@ -93,7 +91,7 @@ theorem intUni_mul {M : Loc.Model F E} {r : ℕ} {B A : Matrix (Fin (r + 1)) (Fi
     exact Subring.sum_mem _ fun c _ => Subring.mul_mem _ (hB.2.2 a c) (hA.2.2 c b)
 
 /- English proof (translation)
-Establish `h1 : (⟨o, ho⟩ : M.L.O) • x ∈ Submodule.span M.L.O {t}` using `Submodule.smul_mem _ _ hx`. Establish `h2 : (⟨o, ho⟩ : M.L.O) • x = o * x` using `rfl`. Rewrite `h1` using `[h2]`. Conclude with `⟨by rw [mul_comm]; exact h1, h1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem span_mul_mem {M : Loc.Model F E} {t x o : E} (hx : x ∈ Submodule.span M.L.O {t}) (ho : o ∈ M.L.O) :
     x * o ∈ Submodule.span M.L.O {t} ∧ o * x ∈ Submodule.span M.L.O {t} := by
@@ -103,13 +101,11 @@ theorem span_mul_mem {M : Loc.Model F E} {t x o : E} (hx : x ∈ Submodule.span 
   exact ⟨by rw [mul_comm]; exact h1, h1⟩
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M V _ _ H r Y0 f f' g g' A A' hA hA' hint hg hg' hY`. Take `⟨B, B', hB, hB', hBB, hZ⟩` from `hY`. Establish `hIA : IntUni M A` using `⟨hA.1, hA.2, fun a b => (hint a b).1⟩`. Establish `hIA' : IntUni M A'` using `⟨hA'.1, hA'.2, fun a b => (hint a b).2.1⟩`. Use `⟨B * A, B' * A', intUni_mul hB hIA, intUni_mul hB' hIA', fun a b => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (B * A) a b - (B' * A') a b = ∑ c, (B a c - B' a c) * A c b + ∑ c, B' a c * (A c b - A' c b)`. Simplify using `only [Matrix.mul_apply, ← Finset.sum_add_distrib]`. Rewrite using `[← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Use `Submodule.add_mem _ (Submodule.sum_mem _ fun c _ => ?_) (Submodule.sum_mem _ fun c _ => ?_)` and prove the remaining obligations. Conclude with `(span_mul_mem (hBB a c) (hIA.2.2 c b)).1`. Conclude with `(span_mul_mem (hint c b).2.2 (hB'.2.2 a c)).2`. Rewrite using `[zhat_chg H r f f' g g' A A' hg hg', hZ, Matrix.transpose_mul, Matrix.map_mul]`.
-
-Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zhat_mem_clsLoc_of_chg : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E] (M : Loc.Model F E) {V : Type} [AddCommGroup V] [Module E V] (H : Loc.HermSp M V) (r : ℕ) (Y0 : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (f f' g g' : Fin (r + 1) → V) (A A' : Matrix (Fin (r + 1)) (Fin (r + 1)) E), Uni A → Uni A' → (∀ a b, A a b ∈ M.L.O ∧ A' a b ∈ M.L.O ∧ A a b - A' a b ∈ Submodule.span M.L.O {algebraMap F E (LocNG.theta M)}) → Chg f A g → Chg f' A' g' → H.Zhat f f' ∈ clsLoc M Y0 → H.Zhat g g' ∈ clsLoc M Y0 := by
   intro F _ _ _ E _ _ _ _ M V _ _ H r Y0 f f' g g' A A' hA hA' hint hg hg' hY

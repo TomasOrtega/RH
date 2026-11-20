@@ -16,9 +16,9 @@ def dGlue (em : B → σ → τ) (p : B → σ →₀ ℕ) : τ →₀ ℕ :=
   ∑ b, (p b).mapDomain (em b)
 
 /- English proof (translation)
-Unfold `dGlue`. Rewrite using `[Finsupp.finsetSum_apply, Finset.sum_eq_single b]`. Conclude with `Finsupp.mapDomain_apply (fun x y h => congrArg Prod.snd (hem (a₁ := (b, x)) (a₂ := (b, y)) h)) _ _`. Introduce `b' _ hb`. Apply `Finsupp.mapDomain_of_notMem_range` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨w, hw⟩`. Conclude with `hb (congrArg Prod.fst (hem (a₁ := (b', w)) (a₂ := (b, s)) hw))`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma dGlue_apply (em : B → σ → τ) (hem : Function.Injective fun x : B × σ => em x.1 x.2)
     (p : B → σ →₀ ℕ) (b : B) (s : σ) : dGlue em p (em b s) = p b s := by
@@ -33,20 +33,20 @@ lemma dGlue_apply (em : B → σ → τ) (hem : Function.Injective fun x : B × 
   · simp
 
 /- English proof (translation)
-Introduce `p q h` and use `funext fun b => Finsupp.ext fun s => by rw [← dGlue_apply em hem p, h, dGlue_apply em hem]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma dGlue_injective (em : B → σ → τ) (hem : Function.Injective fun x : B × σ => em x.1 x.2) :
     Function.Injective (dGlue em) := fun p q h =>
   funext fun b => Finsupp.ext fun s => by rw [← dGlue_apply em hem p, h, dGlue_apply em hem]
 
 /- English proof (translation)
-Establish `key : ∀ t : Finset B, (∑ b ∈ t, (p b).mapDomain (em b)).prod (fun _ k => k.factorial) = ∏ b ∈ t, (p b).prod (fun _ k => k.factorial)`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a t ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hinj : Function.Injective (em a)` using `fun x y h => congrArg Prod.snd (hem (a₁ := (a, x)) (a₂ := (a, y)) h)`. Establish `hd : Disjoint ((p a).mapDomain (em a)).support (∑ b ∈ t, (p b).mapDomain (em b)).support`. Rewrite using `[Finset.disjoint_left]`. Introduce `x hx1 hx2`. Rewrite `hx1`, `hx2` using `[Finsupp.mem_support_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨s, rfl⟩` from `Finsupp.mem_range_of_mapDomain_ne_zero hx1`. Apply `hx2` to reduce the goal to its premises. Rewrite using `[Finsupp.finsetSum_apply]`. Use `Finset.sum_eq_zero fun b hb => ?_` and prove the remaining obligations. Apply `Finsupp.mapDomain_of_notMem_range` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨w, hw⟩`. Establish `hba : b = a` using `congrArg Prod.fst (hem (a₁ := (b, w)) (a₂ := (a, s)) hw)`. Conclude with `ha (hba ▸ hb)`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, Finsupp.prod_add_index_of_disjoint hd, ih, Finsupp.prod_mapDomain_index_inj hinj]`. Conclude with `key Finset.univ`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dGlue_fact (em : B → σ → τ) (hem : Function.Injective fun x : B × σ => em x.1 x.2)
     (p : B → σ →₀ ℕ) :
@@ -77,9 +77,7 @@ lemma dGlue_fact (em : B → σ → τ) (hem : Function.Injective fun x : B × �
   exact key Finset.univ
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [(F b).as_sum]`. Rewrite using `[map_sum]`. Use `_ = ∑ p ∈ Fintype.piFinset (fun b => (F b).support), ∏ b, rename (em b) (monomial (p b) (coeff (p b) (F b))) := Finset.prod_univ_sum _ _`.
-
-Use `_ = _ := Finset.sum_congr rfl fun p _ => by`. Simplify using `only [rename_monomial]`. Conclude with `prod_monomial_eq _ _ _`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma rename_prod_expand [DecidableEq B] (em : B → σ → τ) (F : B → MvPolynomial σ R) :
     ∏ b, rename (em b) (F b) = ∑ p ∈ Fintype.piFinset (fun b => (F b).support),
@@ -98,11 +96,11 @@ lemma rename_prod_expand [DecidableEq B] (em : B → σ → τ) (F : B → MvPol
 end disjointProducts
 
 /- English proof (translation)
-Introduce `K B σ τ _ _ em hem F G`. Rewrite using `[rename_prod_expand em F, rename_prod_expand em G, fockR_sum_left]`. Repeatedly rewrite using `[fockR_sum_right, fockR_expand (F _) (G _)]`. Rewrite using `[Finset.prod_univ_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.prod_univ_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[fockR_monomial]`. Distinguish the cases in `h : p = q`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [if_true, dGlue_fact em hem, Finset.prod_mul_distrib, Nat.cast_prod]`. Establish `h' : dGlue em p ≠ dGlue em q` using `fun e => h (dGlue_injective em hem e)`. Rewrite using `[if_neg h']`. Take `⟨s, hs⟩` from `Function.ne_iff.mp h`. Conclude with `(Finset.prod_eq_zero (Finset.mem_univ s) (if_neg hs)).symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fock_product_holds : FockProd := by
   intro K B σ τ _ _ em hem F G
@@ -123,13 +121,11 @@ theorem fock_product_holds : FockProd := by
     exact (Finset.prod_eq_zero (Finset.mem_univ s) (if_neg hs)).symm
 
 /- English proof (translation)
-Introduce `R B σ τ _ _ xm hxm H p`. Rewrite using `[show (∑ b, (p b).mapDomain (xm b)) = dGlue xm p from rfl, rename_prod_expand xm H, coeff_sum]`. Distinguish the cases in `hp : p ∈ Fintype.piFinset fun b => (H b).support`. Rewrite using `[Finset.sum_eq_single p]`. Rewrite using `[coeff_monomial, if_pos rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `q _ hq`. Rewrite using `[coeff_monomial, if_neg (fun e => hq (dGlue_injective xm hxm e))]`. Introduce `h`. Conclude with `absurd hp h`. Rewrite using `[Finset.sum_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hp` using `[Fintype.mem_piFinset] at hp push Not`. Take `⟨b, hb⟩` from `hp`. Conclude with `(Finset.prod_eq_zero (Finset.mem_univ b) (notMem_support_iff.mp hb)).symm`. Introduce `q hq`. Rewrite using `[coeff_monomial, if_neg]`.
-
-Introduce `e`. Conclude with `hp (dGlue_injective xm hxm e ▸ hq)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coefficient_product_holds : CoefProd := by
   intro R B σ τ _ _ xm hxm H p

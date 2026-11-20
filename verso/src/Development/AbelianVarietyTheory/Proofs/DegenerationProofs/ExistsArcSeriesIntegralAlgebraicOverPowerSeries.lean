@@ -28,17 +28,17 @@ noncomputable section
 namespace GlobalTheory.ArcSeries
 
 /- English proof (translation)
-Establish `hs : ∀ (n : ℕ) (x : Kˣ), ∃ y : Kˣ, y ^ (n + 1) = x` using `fun n x => by`. Take `⟨y, hy⟩` from `IsAlgClosed.exists_pow_nat_eq (x : K) n.succ_pos`. Conclude with `⟨Units.mk0 y fun e => x.ne_zero (by rw [← hy, e]; simp), Units.ext hy⟩`. Use `choose rt hrt using hs`. Set `s : ℕ → Kˣ` to `fun n => Nat.rec u (fun n x => rt n x) n`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : ∀ n d, s (n + d) ^ ((n + d).factorial / n.factorial) = s n` using `fun n d => by`. Proceed by induction on `d with`. Consider the case `zero => simp [Nat.div_self n.factorial_pos]`. Consider the case `succ d ih`. Rewrite using `[← add_assoc, Nat.factorial_succ, Nat.mul_div_assoc _ (Nat.factorial_dvd_factorial (Nat.le_add_right _ _)), pow_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (· ^ _) (hrt _ _)).trans ih`. Use `⟨fun n => s n ^ (n.factorial / n), ?_, fun n m hn hm => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `s 1 ^ 1 = u`. Conclude with `hrt 0 u`. Take `⟨d, hd⟩` from `Nat.exists_eq_add_of_le (Nat.le_mul_of_pos_right n hm)`.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `a` using `h1 n d`. Rewrite `a` using `[← hd]`. Express the relevant statement in the definitionally equal form `(s (n * m) ^ ((n * m).factorial / (n * m))) ^ m = s n ^ (n.factorial / n)`. Rewrite using `[← a, ← pow_mul, ← pow_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp⟩` from `Nat.dvd_factorial (Nat.mul_pos hn hm) le_rfl`. Take `⟨q, hq⟩` from `Nat.dvd_factorial hn le_rfl`. Take `⟨t, ht⟩` from `Nat.factorial_dvd_factorial (Nat.le_mul_of_pos_right n hm)`. Establish `e1 : (n * m).factorial / (n * m) = p` using `by rw [hp]; exact Nat.mul_div_cancel_left _ (Nat.mul_pos hn hm)`. Establish `e2 : n.factorial / n = q` using `by rw [hq]; exact Nat.mul_div_cancel_left _ hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e3 : (n * m).factorial / n.factorial = t` using `by rw [ht]; exact Nat.mul_div_cancel_left _ n.factorial_pos`. Rewrite using `[e1, e2, e3]`. Use `Nat.eq_of_mul_eq_mul_left hn ?_` and prove the remaining obligations. Rewrite `ht` using `[hp, hq]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_root_system {K : Type} [Field K] [IsAlgClosed K] (u : Kˣ) : ∃ r, Roots u r := by
   have hs : ∀ (n : ℕ) (x : Kˣ), ∃ y : Kˣ, y ^ (n + 1) = x := fun n x => by
@@ -74,7 +74,7 @@ theorem exists_root_system {K : Type} [Field K] [IsAlgClosed K] (u : Kˣ) : ∃ 
     linarith
 
 /- English proof (translation)
-Break down `h with ⟨h, -⟩ | ⟨h, -⟩` into its components or cases. Use `letI := h.toField`. Conclude with `⟨inferInstance, inferInstance⟩`. Conclude with `⟨inferInstance, inferInstance⟩`.
+Separate the alternatives or extract the components of the hypothesis. Equip the data with the indicated structure. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem base_local {O : Type} [CommRing O] [IsDomain O] {ϖ : O} (h : GlobalTheory.LN.ArcBase O ϖ) :
     IsLocalRing O ∧ IsPrincipalIdealRing O := by
@@ -86,11 +86,11 @@ theorem base_local {O : Type} [CommRing O] [IsDomain O] {ϖ : O} (h : GlobalTheo
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H)
 
 /- English proof (translation)
-Use `D.fin` as an intermediate fact. Establish `: Module.Finite ℤ D.La` using `Module.Finite.trans (𝓞 E) D.La`. Set `P : Submodule ℤ D.La` to `LinearMap.range ((n : ℤ) • LinearMap.id)`. Establish `: Finite (D.La ⧸ P)` using `Module.finite_of_fg_torsion (M := D.La ⧸ P) fun x => by`. Take `⟨x, rfl⟩` from `P.mkQ_surjective x`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨n, mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hn.ne')⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(n : ℤ) • P.mkQ x = 0`. Rewrite using `[← map_smul]`. Conclude with `(Submodule.Quotient.mk_eq_zero P).2 ⟨x, rfl⟩`. Use `⟨D.La ⧸ P, this, Quotient.out, fun a => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `(Submodule.Quotient.eq P).1 (Quotient.out_eq (Submodule.Quotient.mk a : D.La ⧸ P))`. Conclude with `⟨_, e, by rw [← natCast_zsmul]; exact (eq_add_of_sub_eq' he.symm)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_reps {n : ℕ} (hn : 0 < n) : ∃ (Ix : Type) (_ : Finite Ix) (t : Ix → D.La), ∀ a, ∃ i e, t i = a + n • e := by
   have := D.fin
@@ -107,7 +107,7 @@ theorem exists_reps {n : ℕ} (hn : 0 < n) : ∃ (Ix : Type) (_ : Finite Ix) (t 
   exact ⟨_, e, by rw [← natCast_zsmul]; exact (eq_add_of_sub_eq' he.symm)⟩
 
 /- English proof (translation)
-Use `D.unimod.1 (LinearMap.ext fun y => ?_)` and prove the remaining obligations. Use `congrArg (fun x => D.EF x y) h` as an intermediate fact. Simplify using `only [map_nsmul, LinearMap.smul_apply, map_zero, LinearMap.zero_apply, nsmul_eq_mul, mul_eq_zero, Nat.cast_eq_zero, hn, false_or] at this`. Rewrite using `[this, map_zero, LinearMap.zero_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_nsmul {n : ℕ} (hn : n ≠ 0) (a : D.La) (h : n • a = 0) : a = 0 := by
   refine D.unimod.1 (LinearMap.ext fun y => ?_)
@@ -117,47 +117,43 @@ theorem eq_zero_of_nsmul {n : ℕ} (hn : n ≠ 0) (a : D.La) (h : n • a = 0) :
   rw [this, map_zero, LinearMap.zero_apply]
 
 /- English proof (translation)
-Introduce `hHV _ _ _ _ _ _ E _ _ _ H D l Xo c W₀ Y O' _ _ _ b ϖ a hB K _ _ _ _ _ _ hK`. Establish `hL : Laws` using `hHV.1.1`. Establish `hL2 : Laws2` using `hHV.1.2.1`. Establish `gt` using `GlobalTheory.T.torus_torsion_points_correspond_values`. Establish `wp` using `GlobalTheory.T.torsionPairing_values_of_familiesValues gt (GlobalTheory.T.families_values_correspond hL hL2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨_, _⟩` from `base_local hB`. Set `F` to `AlgebraicClosure (FractionRing O')`. Take `⟨S₀, hS₀⟩` from `GlobalTheory.T.exists_valuationSubring_integral_closure_completeDVR O' ϖ hB F`. Establish `hin : ∀ r : O', algebraMap (FractionRing O') F (algebraMap O' _ r) ∈ S₀` using `fun r => (hS₀ _).2 (by rw [← IsScalarTower.algebraMap_apply]; exact isIntegral_algebraMap)`. Take `⟨A₀, hA₀⟩` from `GlobalTheory.T.exists_arcIsometry_torsion_integralGauge hL gt E H D l Xo c W₀ Y O' b ϖ a hB F S₀ hin`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `io : F →+* K` to `(IsAlgClosed.lift : F →ₐ[FractionRing O'] K).toRingHom`. Establish `hio : io.comp (algebraMap (FractionRing O') F) = algebraMap (FractionRing O') K` using `(IsAlgClosed.lift : F →ₐ[FractionRing O'] K).comp_algebraMap`. Take `⟨A, -, I₀, l₀, -, -, x₀, q₀⟩` from `GlobalTheory.T.exists_arcLift_extension_larger_closed_field hL gt wp E H D l Xo c W₀ Y O' b ϖ a hB F K io hio ⊤ (fun _ => trivial) A₀`. Establish `hinj` using `FaithfulSMul.algebraMap_injective (PowerSeries O') K`. Establish `hX : algebraMap (PowerSeries O') K PowerSeries.X ≠ 0` using `(map_ne_zero_iff _ hinj).2 PowerSeries.X_ne_zero`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `exists_root_system (Units.mk0 _ hX)`. Establish `hr1 : (r 1 : K) = algebraMap (PowerSeries O') K PowerSeries.X` using `by rw [hr.1]; rfl`. Take `⟨iθ, iσ, ith, iψ⟩` from `GlobalTheory.T.integralGauge_values_are_valuationUnits O' a.D₀ F S₀ hin A₀.N A₀.ν hA₀`. Establish `level : ∀ (m j : ℕ) (z : D.La), ∃ (R₁ : Subalgebra (PowerSeries O') K) (v w : D.La → K), Odd m → 0 < j → Module.Finite (PowerSeries O') R₁ ∧ (∀ x, v x ∈ R₁) ∧ Sums (PowerSeries.X : PowerSeries O') io A₀.N A₀.be.be m j (A₀.q (m ^ 2)) (A₀.q j z) (r (m ^ 2 * j)) v w`. Introduce `m j z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h : Odd m ∧ 0 < j`. Use `swap`. Conclude with `⟨⊥, 0, 0, fun a b => (h ⟨a, b⟩).elim⟩`. Take `⟨hm, hj⟩` from `h`. Establish `hm2 : 0 < m ^ 2` using `pow_pos hm.pos 2`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Ix, _, t, ht⟩` from `exists_reps D hm2`. Set `k : Option Ix → ℕ` to `fun i => i.elim j fun _ => m ^ 2`. Set `p : ∀ i, A₀.N.QT (k i)` to `fun i => match i with`. Consider the case `none => A₀.q j z`. Consider the case `some i => A₀.q (m ^ 2) (t i)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨K₁, A₁, f1, f2, f3, f4, f5, f6, f7⟩` from `GlobalTheory.T.exists_finiteDimensional_field_degenerationValues O' a.D₀ F A₀.N A₀.ν (Set.range fun i => (p i).1.2.b) (Set.finite_range _)`. Take `⟨O₁, _, N₀, I, hI, hp⟩` from `GlobalTheory.T.torsionClasses_descend_finite_algebra O' F S₀ hS₀ A₀.N K₁ A₁ f1 f3 f4 f5 f6 f7 iθ iσ ith (iψ a.gen) (Option Ix) k p (fun i => by cases i; exacts [hj, hm2]) fun i => f2 _ ⟨i, rfl⟩`. Establish `: FaithfulSMul O' F` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (by`. Rewrite using `[IsScalarTower.algebraMap_eq O' (FractionRing O') F]`. Conclude with `(algebraMap (FractionRing O') F).injective.comp (IsFractionRing.injective O' _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Module.Free O' O₁` using `Module.free_of_finite_type_torsion_free'`. Take `⟨R₁, v, w, h⟩` from `exists_sums (O := O') O₁.val.toRingHom io (fun x => by`. Rewrite using `[← hK, ← hio]`. Use the proof step `rfl) A₀.be.be hm hj (A₀.q (m ^ 2)) (A₀.q j z) (r (m ^ 2 * j))`. Use the proof step `(by rw [← Units.val_pow_eq_pow_val, hr.pow (Nat.mul_pos hm2 hj)]; rfl) I hI`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `(fun x => by`. Take `⟨i, e, he⟩` from `ht x`. Conclude with `hp (some i) _ (((GlobalTheory.T.labelledTorsionValues_additive_kernel_surjective gt E H D O' F A₀.arc _ hm2).2.1 _ _).2 ⟨e, he⟩))`. Use the proof step `(hp none _ ((A₀.N.qEq_equivalence _).refl _))`. Conclude with `⟨R₁, v, w, fun _ _ => h⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Use `choose R₁ v w hlev using level`. Establish `ext : ∀ (C : Type) [NontriviallyNormedField C] [IsUltrametricDist C] [IsAlgClosed C] [Algebra (FractionRing O') C] (gam : K →+* C), (∀ x, algebraMap (FractionRing O') C (algebraMap O' _ x) = gam (algebraMap (PowerSeries O') K (PowerSeries.C x))) → (∀ f, ‖gam (algebraMap (PowerSer …`. Introduce `C _ _ _ _ gam h1 h2`. Take `⟨S, hS⟩` from `exists_ball C`. Take `⟨A', hA', I₁, l₁, r₁, z₁, x₁, q₁⟩` from `GlobalTheory.T.exists_arcLift_extension_larger_closed_field hL gt wp E H D l Xo c W₀ Y O' b ϖ a hB K C gam (IsLocalization.ringHom_ext (nonZeroDivisors O') (RingHom.ext fun x => (congrArg gam (hK x)).trans (h1 x).symm)) S (fun x => (hS _).2 (by rw [h1]; exact h2 _)) A`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨A', ⟨S, hS, hA'⟩, ⟨I₁, r₁, z₁, fun s y => A'.ν.eX.injective ?_, fun n x _ => ⟨A'.q n x, (q₁ n x).1, (q₁ n x).2, (A'.N.qEq_equivalence _).refl _⟩⟩, homComp I₀ I₁ _ fun _ => rfl, ?_, fun y z => ?_, fun n x => ⟨(q₁ n x).1.trans (congrArg I₁.e (q₀ n x).1), homComp_rel _ _ _ _ (q₀ n …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `A'.ν.eX (I₁.e (A.ν.eX.symm (s • A.ν.eX y))) = A'.ν.eX (A'.ν.eX.symm (s • A'.ν.eX (I₁.e y)))`. Conclude with `((x₁ _).trans (A.ν.eX.apply_symm_apply _)).trans ((A'.ν.eX.apply_symm_apply _).trans (congrArg (s • ·) (x₁ y))).symm`. Express the relevant statement in the definitionally equal form `I₁.lam * Units.map _ I₀.lam = 1`. Rewrite using `[l₁, l₀, map_one, _root_.mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `A'.be.be (I₁.e (I₀.e y)) (I₁.e (I₀.e z)) = _`. Rewrite using `[A'.be_eq, A₀.be_eq, x₁, x₁, x₀, x₀]`. Establish `hrm : ∀ m j, Odd m → 0 < j → r (m ^ 2) = r (m ^ 2 * j) ^ j ∧ r j = r (m ^ 2 * j) ^ m ^ 2` using `fun m j hm hj => ⟨(hr.2 _ _ (pow_pos hm.pos 2) hj).symm, by rw [mul_comm]; exact (hr.2 _ _ hj (pow_pos hm.pos 2)).symm⟩`. Use `⟨⟨⟨inferInstance, hinj, fun x => Algebra.IsAlgebraic.isAlgebraic (R := PowerSeries O') x, hK⟩, A, r, hr1, ⟨rfl, hr.2⟩, fun m => v m 1 0, w, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `n j hp ho hu hj S hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : Odd (n ^ j)` using `ho.pow`. Take `⟨hfin, hmem, hsum⟩` from `hlev (n ^ j) 1 0 hm one_pos`. Establish `hvS : ∀ x, v (n ^ j) 1 0 x ∈ S` using `fun x => mem_of_isIntegral S hS ((Algebra.IsIntegral.isIntegral (⟨_, hmem x⟩ : R₁ (n ^ j) 1 0)).map (R₁ _ _ _).val)`. Establish `key : ∀ e : ℕ, ∃ (C : Type) (_ : NormedField C) (gam : K →+* C) (u : ℝ), 0 < u ∧ u < 1 ∧ (∀ x, S.valuation (v (n ^ j) 1 0 x) < 1 → ‖gam (v (n ^ j) 1 0 x)‖ < 1 ∧ (S.valuation (algebraMap (PowerSeries O') K PowerSeries.X) = 1 → ‖gam (v (n ^ j) 1 0 x)‖ ≤ u ^ e)) ∧ (∃ x, 1 ≤ ‖gam (v …`. Introduce `e`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨C, _, _, _, _, gam, g1, g2, g3⟩` from `GlobalTheory.T.exists_valuedField_valuationCentre_le_pow (PowerSeries O') K PowerSeries.X (fun h => not_isUnit_zero (by simpa using h.map PowerSeries.constantCoeff : IsUnit (0 : O'))) PowerSeries.X_ne_zero _ hfin S hS e`. Use `letI : Algebra (FractionRing O') C := (gam.comp (algebraMap _ K)).toAlgebra`. Establish `h1 : ∀ x, algebraMap (FractionRing O') C (algebraMap O' _ x) = gam (algebraMap (PowerSeries O') K (PowerSeries.C x))` using `fun x => congrArg gam (hK x)`. Establish `hce : CExt O' ⊥ C` using `⟨fun x => by rw [h1]; exact g1 _, fun x hx => by`. Rewrite using `[(Submodule.mem_bot _).1 hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `simp⟩`. Take `⟨A', hN, -, I, hI, hβ, hq⟩` from `ext C gam h1 g1`. Set `r' : ℕ → Cˣ` to `fun n => Units.map gam.toMonoidHom (r n)`. Establish `hu' : (r' 1 : C) = gam (algebraMap (PowerSeries O') K PowerSeries.X)` using `congrArg gam hr1`. Establish `hu1 : ‖(r' 1 : C)‖ < 1` using `hu' ▸ g2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Establish `hpow : r' ((n ^ j) ^ 2) ^ (n ^ j) ^ 2 = r' 1`. Rewrite using `[← map_pow, hr.pow (pow_pos hm.pos 2), ← hr.1]`. Establish `hn : ‖(n : C)‖ = 1`. Take `⟨y, hy⟩` from `hu.exists_right_inv`. Establish `a1` using `hce.1 n`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `a2` using `hce.1 y`. Establish `a3` using `congrArg (fun x => ‖algebraMap (FractionRing O') C (algebraMap O' _ x)‖) hy`. Simplify using `only [map_mul, map_natCast, map_one, norm_mul, norm_one] at a1 a3`. Use polynomial arithmetic with `[norm_nonneg (n : C)]`. Take `⟨qf, hq1, hq2⟩` from `(GlobalTheory.T.arcTorsionValues_norms_integral_positive E H D l Xo c W₀ Y O' b ϖ a hB C hce A' hN).2.2 (r' 1) hu1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `choose p hp' using fun x => (existsUnique_twRel A'.be (r' 1) _ hpow (A'.q _ x)).exists`. Take `⟨t1, t2, t3⟩` from `GlobalTheory.T.labelledTorsionValues_additive_kernel_surjective gt E H D O' C A'.arc _ (pow_pos hm.pos 2)`. Take `⟨c1, c2⟩` from `GlobalTheory.T.twist_tx_coset_norm_ge_alt C A'.N _ A'.be (r' 1) _ qf n _ j hp ho hn hj hu1 hpow hq1 hq2 (GlobalTheory.T.abelianPartValues_torsion_pairing_separation_integral hL hL2 (GlobalTheory.T.abelianPartValues_of_expansionLaws hL) O' a.D₀ a.even a.bimult C hce A'.N A'.ν hN n …`. Establish `hv` using `(hsum C gam g1 g2 A'.N I _ A'.be hI hβ (r' 1) (r' ((n ^ j) ^ 2)) (r' 1) hu' (by rw [← (hrm _ 1 hm one_pos).1]; rfl) (by rw [← (hrm _ 1 hm one_pos).2]; rfl) (A'.q _) p (hq _) hp').1`. Use `⟨C, inferInstance, gam, ‖(r' 1 : C)‖, norm_pos_iff.2 (r' 1).ne_zero, hu1, fun x hx => hu' ▸ g3 _ (hmem x) hx, by simpa only [hv] using c1, fun x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `c2 x` using `only [hv, (hq _ x).1, hβ]`. Establish `hlt : ∀ x, S.valuation (v (n ^ j) 1 0 x) ≠ 1 → S.valuation (v (n ^ j) 1 0 x) < 1` using `fun x h => lt_of_le_of_ne ((S.valuation_le_one_iff _).2 (hvS x)) h`. Use `⟨hvS, ?_, fun hXu x => ?_⟩` and prove the remaining obligations. Take `⟨C, _, gam, u, -, -, k1, ⟨x, hx⟩, -⟩` from `key 0`. Conclude with `⟨x, not_not.1 fun h => (k1 x (hlt x h)).1.not_ge hx⟩`.
-
-Take `⟨C, _, gam, u, u0, u1, k1, -, k2⟩` from `key ((A₀.be.be (A₀.q ((n ^ j) ^ 2) x).1.1.toAdd (A₀.q ((n ^ j) ^ 2) x).1.1.toAdd).toNat + 1)`. Take `⟨h, hh⟩` from `k2 x`. Conclude with `⟨h, not_not.1 fun hne => (hh.trans ((k1 _ (hlt _ hne)).2 hXu)).not_gt (pow_lt_pow_right_of_lt_one₀ u0 u1 (Nat.lt_succ_self _))⟩`. Introduce `C _ _ _ _ _ gam u h1 g1 hu hu1`. Take `⟨A', hN, hO, I, hI, hβ, hq⟩` from `ext C gam h1 g1`.
-
-Use `⟨A', fun n => Units.map gam.toMonoidHom (r n), hN, hO, fun _ => rfl, fun m hm p hp => ?_⟩` and prove the remaining obligations. Establish `S` using `fun j z hj => (hlev m j z hm hj).2.2 C gam g1 (by rw [hu] at hu1; exact hu1) A'.N I _ A'.be hI hβ u (Units.map gam.toMonoidHom (r (m ^ 2))) (Units.map gam.toMonoidHom (r j)) hu (by rw [← (hrm _ j hm hj).1]; rfl) (by rw [← (hrm _ j hm hj).2]; rfl) (A'.q _) p (hq _) hp`. Conclude with `⟨⟨1, fun x => by rw [Units.val_one, _root_.one_mul]; exact (S 1 0 one_pos).1 x⟩, fun j hj z q hq' => (S j z hj).2 (A'.q j z) q (hq j z).1 (hq j z).2 hq'⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_series : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory.LN.HomExtSt → ThetaPtDeterminesSt → EndDeterminedOnTorsionSt → ThetaUnifAV → AllA fun {E} _ _ _ {H} {D} {l} {Xo} {c} {W₀} Y {O'} _ _ {b} a => ∀ (K : Type) [Field K] [IsAlgClosed K] [Algebra (FractionRing O') K] [Algebra (PowerSeries O') K] [FaithfulSMul (PowerSeries O') K] [Algebra.IsAlgebraic (PowerSeries O') K], (∀ x, algebraMap (FractionRing O') K (algebraMap O' _ x) = algebraMap (PowerSeries O') K (PowerSeries.C x)) → Nonempty (Ser a K (algebraMap _ K)) := by
   intro hHV _ _ _ _ _ _ E _ _ _ H D l Xo c W₀ Y O' _ _ _ b ϖ a hB K _ _ _ _ _ _ hK

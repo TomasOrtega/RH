@@ -17,9 +17,9 @@ namespace GlobalTheory.SmallSecHeight
 variable {k : Type} [CommRing k] {Z : Scheme.{0}} [IsIntegral Z] {q : Z ⟶ Sp k}
 
 /- English proof (translation)
-Set `C (w : Z) : IrreducibleCloseds Z` to `⟨closure {w}, isIrreducible_singleton.closure, isClosed_closure⟩`. Break down `Order.krullDim_le_one_iff.1 (show Order.krullDim (IrreducibleCloseds Z) ≤ 1 from hd.le) (C z) with h | h` into its components or cases. Rewrite using `[← closure_subset_iff_isClosed]`. Introduce `w hw`. Establish `h1 : C w ≤ C z` using `closure_minimal (singleton_subset_iff.2 hw) isClosed_closure`.
+Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : z ∈ closure ({w} : Set Z)` using `h h1 (subset_closure rfl)`. Conclude with `((specializes_iff_mem_closure.2 h2).antisymm (specializes_iff_mem_closure.2 hw)).eq`. Conclude with `absurd (IsGenericPoint.eq (eq_univ_of_univ_subset (@h ⟨univ, IrreducibleSpace.isIrreducible_univ Z, isClosed_univ⟩ (subset_univ _))) (genericPoint_spec Z)) hz`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_of_ne (hd : topologicalKrullDim Z = 1) {z : Z} (hz : z ≠ genericPoint Z) :
     IsClosed ({z} : Set Z) := by
@@ -34,7 +34,7 @@ theorem isClosed_of_ne (hd : topologicalKrullDim Z = 1) {z : Z} (hz : z ≠ gene
       ⟨univ, IrreducibleSpace.isIrreducible_univ Z, isClosed_univ⟩ (subset_univ _))) (genericPoint_spec Z)) hz
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hz`. Use `hZ.finite_residueField (isClosed_of_ne hZ.dim_eq hz)` as an intermediate fact. Conclude with `not_finite (Z.residueField z)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_genericPoint (hZ : IsArithVar q 0) {z : Z} (h : CharZero (Z.residueField z)) :
     z = genericPoint Z := by
@@ -43,24 +43,22 @@ theorem eq_genericPoint (hZ : IsArithVar q 0) {z : Z} (h : CharZero (Z.residueFi
   exact not_finite (Z.residueField z)
 
 /- English proof (translation)
-The claim follows from `eq_genericPoint hZ (Scheme.SpecToEquivOfField ℂ Z y).2.hom.charZero`.
+A detailed English derivation is pending.
 -/
 theorem apply_closedPoint (hZ : IsArithVar q 0) (y : Sp ℂ ⟶ Z) :
     y (IsLocalRing.closedPoint ℂ) = genericPoint Z :=
   eq_genericPoint hZ (Scheme.SpecToEquivOfField ℂ Z y).2.hom.charZero
 
 /- English proof (translation)
-Take `⟨N, j, _, hj⟩` from `hZ.isProjOver`. Use `isProper_str k N` as an intermediate fact. Establish `: IsProper q` using `hj ▸ inferInstance`. Establish `: IsFinite (spMap (Int.castRingHom k))` using `(IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 hZ.finite)`. Set `t` to `q ≫ spMap (Int.castRingHom k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h0 (z : Z) (n : ℤ) : n ∈ (t z).asIdeal ↔ (n : Z.residueField z) = 0`. Establish `e : Z.fromSpecResidueField z ≫ t = spMap (Int.castRingHom (Z.residueField z))`. Rewrite using `[← Spec.map_preimage (Z.fromSpecResidueField z ≫ t)]`. Use `congr 1`. Conclude with `CommRingCat.hom_ext (RingHom.ext_int _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `e2 : t z = spMap (Int.castRingHom (Z.residueField z)) (IsLocalRing.closedPoint _)`. Rewrite using `[← e]`. Conclude with `congrArg t (Scheme.fromSpecResidueField_apply _ _).symm`. Rewrite using `[e2]`. Express the relevant statement in the definitionally equal form `(n : Z.residueField z) ∈ IsLocalRing.maximalIdeal _ ↔ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.mem_bot]`. Establish `h1 (z : Z) (hz : t z = t (genericPoint Z)) : z = genericPoint Z` using `eq_genericPoint hZ (charZero_of_inj_zero fun n hn => by`. Use `(h0 _ n).1 (hz ▸ (h0 z n).2 (by exact_mod_cast hn))` as an intermediate fact. Conclude with `this)` after adjusting the coercions. Establish `h2 : t.QuasiFiniteAt (genericPoint Z)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Scheme.Hom.quasiFiniteAt_iff_isOpen_singleton_asFiber]`. Establish `: Subsingleton (t.fiber (t (genericPoint Z)))` using `⟨fun a b => (t.fiberHomeo _).injective (Subtype.ext ((h1 _ (t.fiberHomeo _ a).2).trans (h1 _ (t.fiberHomeo _ b).2).symm))⟩`. Conclude with `isOpen_discrete _`. Rewrite `h2` using `[Scheme.Hom.quasiFiniteAt_iff]`. Establish `hf : LocallyQuasiFinite (Z.fromSpecResidueField (genericPoint Z) ≫ t)`.
-
-Rewrite using `[Scheme.fromSpecResidueField, Category.assoc]`. Use `infer_instance`. Rewrite `hf` using `[← Spec.map_preimage (Z.fromSpecResidueField _ ≫ _), HasRingHomProperty.Spec_iff (P := @LocallyQuasiFinite), RingHom.ext_int (Spec.preimage (Z.fromSpecResidueField _ ≫ t)).hom ((algebraMap ℚ (Z.residueField (genericPoint Z))).comp (algebraMap ℤ ℚ))]`. Use `RingHom.quasiFinite_algebraMap.1 hf.of_comp` as an intermediate fact. Conclude with `{ to_finiteDimensional := Module.Finite.of_quasiFinite }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem numberField (hZ : IsArithVar q 0) (hc : CharZero (Z.residueField (genericPoint Z))) :
     NumberField (Z.residueField (genericPoint Z)) := by
@@ -115,9 +113,9 @@ def ptsEquiv (hZ : IsArithVar q 0) :
     exact ⟨f.hom, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[zero_nsmul, (CartierDiv.isEqn_zero z).mult_eq, Units.val_one, (unitAt_one z).ord_eq_zero]`. Simplify using the standard rewrite rules. Consider the case `succ n ih => rw [succ_nsmul, CartierDiv.mult_add, ih]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mult_nsmul [IsLocallyNoetherian Z] (D : CartierDiv Z) (n : ℕ) (z : Z) :
     (n • D).mult z = n * D.mult z := by
@@ -128,9 +126,9 @@ theorem mult_nsmul [IsLocallyNoetherian Z] (D : CartierDiv Z) (n : ℕ) (z : Z) 
   | succ n ih => rw [succ_nsmul, CartierDiv.mult_add, ih]; push_cast; ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `e` using `ratVal_fnOf (y := y) mem_ptsIn_top trivial 1`. Rewrite `e` using `[map_one, ev_one mem_ptsIn_top]`. Rewrite using `[pow_zero, pow_zero, e]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ, ratVal_mul (hy ▸ regAt_genericPoint _) (hy ▸ regAt_genericPoint _), ih]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem ratVal_pow {σ : k →+* ℂ} {y : CxPts q σ} (hy : under y = genericPoint Z)
     (f : Z.functionField) (n : ℕ) : ratVal (f ^ n) y = ratVal f y ^ n := by
@@ -143,23 +141,23 @@ theorem ratVal_pow {σ : k →+* ℂ} {y : CxPts q σ} (hy : under y = genericPo
     rw [pow_succ, pow_succ, ratVal_mul (hy ▸ regAt_genericPoint _) (hy ▸ regAt_genericPoint _), ih]
 
 /- English proof (translation)
-Use `hZ.isNoetherian` as an intermediate fact. Take `⟨r, hr⟩` from `exists_isRatSec M.isLB`. Take `⟨j₀, h₀⟩` from `exists_chart M.isLB (genericPoint Z)`. Set `r' (j : M.B.ι) : Z.functionFieldˣ` to `t (a j₀) / r j₀ ^ (n + 1) * r j`. Establish `hr' : IsRatSec M.B r'` using `fun i j h => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [r', Units.val_mul, hr i j h]`. Expand and normalize the polynomial expressions, which then agree. Establish `key (j) (hj : genericPoint Z ∈ M.B.U j) : t (a j) = r' j * r j ^ n`. Apply `Units.ext` to reduce the goal to its premises. Establish `e₁` using `hr j j₀ (memInf hj h₀)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `(r j₀).ne_zero` as an intermediate fact. Rewrite using `[ht _ (a j₀) (memInf (hU _ hj) (hU _ h₀)), hg j j₀ (memInf hj h₀)]`. Simplify using `only [r', Units.val_mul, Units.val_pow_eq_pow_val, Units.val_div_eq_div_val, e₁]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h₁ (z : Z) : (N.div ht).mult z = (M.div hr').mult z + n * (M.div hr).mult z`. Take `⟨j, hj⟩` from `exists_chart M.isLB z`. Rewrite using `[← mult_nsmul, ← CartierDiv.mult_add, ((presents_divOfRatSec N.isLB ht).isEqn _ z (hU _ hj)).mult_eq, key j (gen_mem hj), (((presents_divOfRatSec M.isLB hr').isEqn _ z hj).add (((presents_divOfRatSec M.isLB hr).isEqn _ z hj).nsmul n)).mult_eq]`. Establish `h₂ (σ) (y : CxPts q σ) : logNorm (N.φ σ) t y = logNorm (M.φ σ) r' y + n * logNorm (M.φ σ) r y + (n + 1) * c`. Establish `hy : under y = genericPoint Z` using `apply_closedPoint hZ y.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho (D : CartierDiv Z) : y ∈ offSupp q σ D` using `mem_offSupp.2 (hy ▸ D.genericPoint_notMem_supp)`. Establish `hj` using `mem_pick (M.φ σ).isLB y`. Establish `hu (g : Z.functionFieldˣ) : ‖ratVal (g : Z.functionField) y‖ ≠ 0` using `norm_ne_zero_iff.2 (ratVal_ne_zero (hy ▸ unitAt_genericPoint g.ne_zero))`. Rewrite using `[logNorm_eq _ ht (ho _) (ptsIn_mono (hU _) hj), logNorm, logNorm, hφ, key _ (gen_mem (mem_ptsIn.1 hj)), Units.val_mul, Units.val_pow_eq_pow_val, ratVal_mul (hy ▸ regAt_genericPoint _) (hy ▸ regAt_genericPoint _), ratVal_pow hy, norm_mul, norm_pow, Real.log_mul (hu _) (pow_ne_zero …`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hfin (D : CartierDiv Z) : (Function.support fun z => (D.mult z : ℝ) * Real.log (Nat.card (Z.residueField z))).Finite` using `D.finite_support_mult.subset fun z hz h0 => hz (by simp [h0])`. Use `numberField hZ hc` as an intermediate fact. Establish `: Finite (Σ σ : k →+* ℂ, CxPts q σ)` using `.of_equiv _ (ptsEquiv hZ).symm`. Establish `(σ : k →+* ℂ) : Finite (CxPts q σ)` using `.of_injective _ (sigma_mk_injective (i := σ))`. Use `hZ.finite_emb` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact. Establish `(σ : k →+* ℂ)` using `Fintype.ofFinite (CxPts q σ)`. Establish `e` using `hd _ hr`. Establish `e'` using `hd _ hr'`. Establish `e₀ : ∑ᶠ z, ((N.div ht).mult z : ℝ) * Real.log (Nat.card (Z.residueField z)) = ∑ᶠ z, ((M.div hr').mult z : ℝ) * Real.log (Nat.card (Z.residueField z)) + n * ∑ᶠ z, ((M.div hr).mult z : ℝ) * Real.log (Nat.card (Z.residueField z))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_finsum, ← finsum_add_distrib (hfin _) ((hfin (M.div hr)).subset fun z hz h0 => hz (by`. Simplify using `only [h0, mul_zero]))]`. Use `finsum_congr fun z => ?_` and prove the remaining obligations. Rewrite using `[h₁]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[HermLB.curveDeg, e₀, ← Nat.card_congr (ptsEquiv hZ), Nat.card_sigma]`. Rewrite `e`, `e'` using `[HermLB.curveDeg]`. Simplify using `only [finsum_eq_sum_of_fintype, h₂, Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Finset.sum_mul, Nat.card_eq_fintype_card, Nat.cast_sum] at e e' ⊢`. Take the linear combination `e' + n * e`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem curveDeg_pow [IsLocallyNoetherian Z] (hZ : IsArithVar q 0)
     (hc : CharZero (Z.residueField (genericPoint Z))) (M N : HermLB q) (n : ℕ) (c d : ℝ)
@@ -229,27 +227,25 @@ theorem curveDeg_pow [IsLocallyNoetherian Z] (hZ : IsArithVar q 0)
   linear_combination e' + n * e
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX L m c b x s hm hs hx ⟨hc, hd⟩ ⟨h, H, hb⟩`. Take `⟨n, rfl⟩` from `Nat.exists_eq_add_of_le' hm`. Take `⟨Z, i, _, _, rfl⟩` from `exists_isClosedImmersion_genericPoint x`. Use `hX.isNoetherian_sub i` as an intermediate fact. Establish `hr : range i = closure {i (genericPoint Z)}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁` using `(genericPoint_spec Z).image i.continuous`. Rewrite `h₁` using `[image_univ, i.isClosedEmbedding.isClosed_range.closure_eq]`. Conclude with `h₁.def.symm`. Rewrite `hd` using `[topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding hr]`. Establish `hbij : Function.Bijective (i.residueFieldMap (genericPoint Z)).hom`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨RingHom.injective _, fun u => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `Z.residue_surjective _ u`. Take `⟨u, rfl⟩` from `i.stalkMap_surjective _ u`. Conclude with `⟨X.residue _ u, ConcreteCategory.congr_hom (Scheme.residue_residueFieldMap i _) u⟩`. Set `E` to `RingEquiv.ofBijective _ hbij`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc' : CharZero (Z.residueField (genericPoint Z))` using `(RingHom.charZero_iff hbij.1).1 hc`. Establish `hcΓ : CharZero Γ(Z, ⊤)` using `(Z.Γevaluation (genericPoint Z)).hom.charZero`. Establish `hZ : IsArithVar (i ≫ p) 0` using `hX.of_isClosedImmersion i hcΓ hd`. Establish `hcard : Nat.card (X.residueField (i (genericPoint Z)) →+* ℂ) = Nat.card (Z.residueField (genericPoint Z) →+* ℂ)` using `Nat.card_congr ⟨fun f => f.comp E.symm.toRingHom, fun f => f.comp E.toRingHom, fun f => by ext; simp, fun f => by ext; simp⟩`. Use `numberField hZ hc'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : (0 : ℝ) < Nat.card (Z.residueField (genericPoint Z) →+* ℂ)`. Conclude with `Nat.card_pos` after adjusting the coercions. Set `P` to `(L.shift (fun _ => -c) fun _ => rfl).pow (n + 1)`. Establish `hu : genericPoint Z ∈ nonzeroLocus (GlobalTheory.secPull s i)`. Rewrite using `[GlobalTheory.nonzeroLocus_secPull]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hx`. Establish `key` using `curveDeg_pow hZ hc' (L.restr i) (P.restr i) n c (h (i (genericPoint Z))) (fun j _ => j) (fun j z hz => mem_iInter.2 fun _ => mem_iInter.2 fun u => mem_iInter.1 hz u) (fun j j' h h' => ?_) (fun σ j y => ?_) (fun r hr => (H.point Z i hcΓ hd r hr).symm) (isRatSec_ratOfSec _ hu)`. Establish `h0 : 0 ≤ (P.restr i).curveDeg (isRatSec_ratOfSec _ hu)`. Use `le_of_le_of_eq ?_ (HermLB.curveDeg_sec (L := P) i s hu fun σ y => mem_ptsIn.2 ((apply_closedPoint hZ y.1).symm ▸ hu)).symm` and prove the remaining obligations. Use `sub_nonneg.2 (le_trans (b := 0) ?_ (finsum_nonneg fun z => mul_nonneg (Int.cast_nonneg (mult_divOfSec_nonneg z)) (Real.log_natCast_nonneg _)))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `np {α : Type} {f : α → ℝ} (hf : ∀ a, f a ≤ 0) : ∑ᶠ a, f a ≤ 0` using `finsum_induction (· ≤ 0) le_rfl (fun _ _ => add_nonpos) hf`. Use `np fun σ => np fun y => ?_` and prove the remaining obligations. Conclude with `div_nonpos_of_nonpos_of_nonneg (Real.log_nonpos (Weight.nsq_nonneg _ _ _) (hs σ _)) zero_le_two`. Rewrite `h0` using `[key, hb, hcard, ← sub_mul]`. Conclude with `sub_nonneg.1 (nonneg_of_mul_nonneg_left (nonneg_of_mul_nonneg_right h0 (by positivity)) hpos)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e (u : PUnit → L.B.ι) (z : Z) (hz : z ∈ (P.restr i).B.U fun _ => u) : z ∈ i ⁻¹ᵁ L.B.U (u ⟨⟩)` using `mem_iInter.1 (mem_iInter.1 hz ⟨⟩) ⟨⟩`. Establish `e₁ : (P.restr i).B.g (fun _ => j) (fun _ => j') = res (X` using `Z) (U := i ⁻¹ᵁ (L.B.U (j ⟨⟩) ⊓ L.B.U (j' ⟨⟩))) (V := (P.restr i).B.U (fun _ => j) ⊓ (P.restr i).B.U fun _ => j') (fun z hz => ⟨e _ z hz.1, e _ z hz.2⟩) (pullU i _ (L.B.g (j ⟨⟩) (j' ⟨⟩))) ^ (n + 1) := by`. Use `(pull_g _ i _ _).trans ?_` and prove the remaining obligations. Establish `e₂ : P.B.g j j' = res (X` using `X) (U := L.B.U (j ⟨⟩) ⊓ L.B.U (j' ⟨⟩)) (V := P.B.U j ⊓ P.B.U j') (fun _ hz => ⟨mem_iInter.1 hz.1 ⟨⟩, mem_iInter.1 hz.2 ⟨⟩⟩) (L.B.g (j ⟨⟩) (j' ⟨⟩)) ^ (n + 1) := by`. Express the relevant statement in the definitionally equal form `∏ _k : PUnit, _ = _`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Fintype.prod_unique _).trans ((zpow_natCast _ _).trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Use `(congrArg (fun u => res _ (pullU i _ u)) e₂).trans ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_pow]`. Use `congrArg (· ^ (n + 1)) (Units.ext ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(congrArg (resG Z _) (app_resG _ _ _)).trans (resG_resG _ _ _)`. Rewrite using `[e₁, Units.val_pow_eq_pow_val, map_pow]`. Use `congrArg (· ^ (n + 1)) ?_` and prove the remaining obligations. Conclude with `(fnOf_resG _ h' _).trans ((congrArg (fun u : Γ(Z, _)ˣ => fnOf _ h u.val) (pull_g L.B i j j')).trans (fnOf_resG _ h _)).symm`. Use `((P.φ σ).pull_φ i rfl _ y).trans ((Weight.zpow_φ _ _ _ _).trans ?_)` and prove the remaining obligations.
-
-Rewrite using `[show ((L.restr i).φ σ).φ j y = _ from (L.φ σ).pull_φ i rfl j y]`. Express the relevant statement in the definitionally equal form `_ * (_ + 2 * -c) = _`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem le_ptHt : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D →
     ∀ (L : HermLB p) (m : ℕ) (c b : ℝ) (x : X) (s : ((L.shift (fun _ => -c) fun _ => rfl).pow m).B.Sec), 1 ≤ m →

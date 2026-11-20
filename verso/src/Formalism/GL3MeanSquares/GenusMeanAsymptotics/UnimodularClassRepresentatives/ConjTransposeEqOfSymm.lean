@@ -17,14 +17,14 @@ local notation "ι" => algebraMap (𝓞 F) (𝓞 K)
 local notation "jK" => algebraMap (𝓞 K) K
 
 /- English proof (translation)
-Introduce `x hx t ht` and use `he x hx t (Ideal.pow_le_pow_right hec ht)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsE.mono {h : V →ₗ⋆[K] V →ₗ[K] K} {A : Submodule (𝓞 K) V} {𝔭 : Ideal (𝓞 F)} {e c : ℕ}
     (he : IsE h A 𝔭 e) (hec : e ≤ c) : IsE h A 𝔭 c :=
   fun x hx t ht => he x hx t (Ideal.pow_le_pow_right hec ht)
 
 /- English proof (translation)
-Rewrite using `[localizedQuotients.akCount_locF hFF.out h _ 𝔭 h𝔭, akCount_free h b hH h𝔭]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem akCount_basis [hFF : Fact (IsFixF K F)] (h : V →ₗ⋆[K] V →ₗ[K] K) (b : Basis κ K V)
     {H : Matrix κ κ (𝓞 K)} (hH : ∀ i j, jK (H i j) = h (b i) (b j)) {𝔭 : Ideal (𝓞 F)}
@@ -34,7 +34,7 @@ theorem akCount_basis [hFF : Fact (IsFixF K F)] (h : V →ₗ⋆[K] V →ₗ[K] 
   rw [localizedQuotients.akCount_locF hFF.out h _ 𝔭 h𝔭, akCount_free h b hH h𝔭]
 
 /- English proof (translation)
-Use extensionality with `i l`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem map_factor_map_mk (𝔭 : Ideal (𝓞 F)) {j k : ℕ} (hjk : j ≤ k) (Y : Matrix κ κ (𝓞 K)) :
     (Y.map (Ideal.Quotient.mk (extP K 𝔭 ^ k))).map
@@ -43,17 +43,17 @@ theorem map_factor_map_mk (𝔭 : Ideal (𝓞 F)) {j k : ℕ} (hjk : j ≤ k) (Y
   rfl
 
 /- English proof (translation)
-Use `h𝔭.isPrime` as an intermediate fact. Establish `hF : IsFixF K F` using `hFF.out`. Unfold `redCount`. Use `Nat.card_congr ((eL h𝔭 b j).subtypeEquiv fun X => ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨g, hg, hgX⟩`. Take `⟨Y, hY1, hY2⟩` from `exists_matrix_of_isom hF b hH h𝔭 hg (j + c)`. Use `⟨Y.map (Ideal.Quotient.mk _), (mk_form_iff 𝔭 _ H Y).2 hY1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_factor_map_mk 𝔭 (Nat.le_add_right j c), eq_comm, eL_eq_iff]`. Introduce `i`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy1, hy2⟩` from `hgX (inA 𝔭 b (cmb b (Pi.single i 1)))`. Rewrite using `[hy2, mk_eq_iff, hy1, coe_inA, coe_cmb_single, coe_inA, coe_cmb]`. Conclude with `smul_mono_pow (Nat.le_add_right j c) (hY2 i)`. Introduce and unpack `⟨X', hX', hmap⟩`. Take `⟨Y, rfl⟩` from `exists_map_mk 𝔭 _ X'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmap` using `[map_factor_map_mk 𝔭 (Nat.le_add_right j c), eq_comm, eL_eq_iff]`. Take `⟨g, hg, hgY⟩` from `exists_isom_matrix hK hF hs hd b hH h𝔭 he (by omega : c + 1 ≤ j + c) Y ((mk_form_iff 𝔭 _ H Y).1 hX')`. Rewrite `hgY` using `[Nat.add_sub_cancel]`. Use `⟨g, hg, fun x => ⟨⟨g x, aut_mem hg x.2⟩, rfl, ?_⟩⟩` and prove the remaining obligations. Take `⟨c₀, hc⟩` from `exists_cmb h𝔭 b j (Submodule.Quotient.mk x)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, end_apply_cmb b j X Y hmap c₀, mk_eq_iff]`. Rewrite `hc` using `[mk_eq_iff]`. Establish `e1 : (inA 𝔭 b (cmb b (Y *ᵥ c₀)) : V) - g (x : V) = -(g ((x : V) - (inA 𝔭 b (cmb b c₀) : V)) + (g (cmb b c₀ : V) - (cmb b (Y *ᵥ c₀) : V)))`. Rewrite using `[map_sub, coe_inA, coe_inA]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Use `show (inA 𝔭 b (cmb b (Y *ᵥ c₀)) : V) - g (x : V) ∈ _`. Rewrite using `[e1]`. Conclude with `neg_mem (add_mem (aut_mem_smul hg _ hc) (aut_cmb b hgY c₀))`.
+A detailed English derivation is pending.
 -/
 theorem redCount_basis [hFF : Fact (IsFixF K F)] (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hs : h.IsSymm) (hd : ∀ x, h x x = 0 → x = 0) (b : Basis κ K V) {H : Matrix κ κ (𝓞 K)}
@@ -94,7 +94,7 @@ theorem redCount_basis [hFF : Fact (IsFixF K F)] (hK : Formalism.HermitianLattic
     exact neg_mem (add_mem (aut_mem_smul hg _ hc) (aut_cmb b hgY c₀))
 
 /- English proof (translation)
-Take `⟨Y, rfl⟩` from `exists_map_mk 𝔭 _ X`. Establish `h1` using `isUnit_det_mk hK hFF.out hs hd b hH h𝔭 he hk Y ((mk_form_iff 𝔭 _ H Y).1 hX) k`. Establish `h2` using `RingHom.map_det (Ideal.Quotient.mk (extP K 𝔭 ^ k)) Y`. Rewrite `h2` using `[RingHom.mapMatrix_apply]`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_det_of_form [hFF : Fact (IsFixF K F)] (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : ∀ x, h x x = 0 → x = 0) (b : Basis κ K V)
@@ -108,7 +108,7 @@ theorem isUnit_det_of_form [hFF : Fact (IsFixF K F)] (hK : Formalism.HermitianLa
   rwa [h2] at h1
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply `jK_inj` to reduce the goal to its premises. Establish `: jK (Hᴴ i j) = star (jK (H j i))` using `rfl`. Rewrite using `[this, hH, hH]`. Conclude with `hs.eq (b j) (b i)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjTranspose_eq_of_symm {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (b : Basis κ K V)
     {H : Matrix κ κ (𝓞 K)} (hH : ∀ i j, jK (H i j) = h (b i) (b j)) : Hᴴ = H := by
@@ -119,7 +119,7 @@ theorem conjTranspose_eq_of_symm {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSy
   exact hs.eq (b j) (b i)
 
 /- English proof (translation)
-Rewrite using `[akCount_basis h b hH h𝔭, redCount_basis hK hs hd b hH h𝔭 he hj, sigmaCount_basis h b hH h𝔭]`. Conclude with `card_cell h𝔭 (conjTranspose_eq_of_symm hs b hH) hcj (isUnit_det_of_form hK hs hd b hH h𝔭 he (by omega))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem akCount_eq_mul_basis [hFF : Fact (IsFixF K F)] (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : ∀ x, h x x = 0 → x = 0) (b : Basis κ K V)
@@ -132,9 +132,9 @@ theorem akCount_eq_mul_basis [hFF : Fact (IsFixF K F)] (hK : Formalism.Hermitian
     (isUnit_det_of_form hK hs hd b hH h𝔭 he (by omega))
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero`. Rewrite using `[pow_zero, zero_add, pow_one]`. Conclude with `fun h => h𝔭.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Consider the case `succ e ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately.
 
-Use `mul_notMem h𝔭.isPrime (ne_bot h𝔭) ih hπ` as an intermediate fact. Rewrite `this` using `[← pow_succ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem pow_notMem {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {π₀ : 𝓞 F} (hπ : π₀ ∉ 𝔭 ^ 2) (e : ℕ) :
     π₀ ^ e ∉ 𝔭 ^ (e + 1) := by
@@ -147,9 +147,9 @@ theorem pow_notMem {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {π₀ : �
     rwa [← pow_succ] at this
 
 /- English proof (translation)
-Use `choose t ht z hz using fun a => mem_SP.1 (hf a)`. Use `⟨∏ a, t a, ?_, fun a => ⟨ι (∏ a' ∈ Finset.univ.erase a, t a') * z a, ?_⟩⟩` and prove the remaining obligations. Introduce `hmem`. Take `⟨a, -, ha⟩` from `(Ideal.IsPrime.prod_mem_iff).1 hmem`. Conclude with `ht a ha`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ a), map_mul, hz, map_mul ι, map_mul jK]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_common_den {𝔭 : Ideal (𝓞 F)} [hp : 𝔭.IsPrime] {α : Type*} [Fintype α] (f : α → K)
     (hf : ∀ a, f a ∈ SP K 𝔭) : ∃ t : 𝓞 F, t ∉ 𝔭 ∧ ∀ a, ∃ z : 𝓞 K, jK z = jK (ι t) * f a := by
@@ -163,13 +163,13 @@ theorem exists_common_den {𝔭 : Ideal (𝓞 F)} [hp : 𝔭.IsPrime] {α : Type
     ring
 
 /- English proof (translation)
-Use `h𝔭.isPrime` as an intermediate fact. Take `⟨π₀, s₀, hu⟩` from `exists_isUnif0 h𝔭`. Take `⟨E, hE, hHE⟩` from `exists_E hF hd b he hu.mem`. Take `⟨t, ht, hz⟩` from `exists_common_den (fun p : κ × κ => E p.1 p.2) (fun p => hE p.1 p.2)`. Use `choose z hz using hz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Matrix.of fun i j => z (i, j), t * π₀ ^ e, ?_, ?_⟩` and prove the remaining obligations. Use `mul_notMem h𝔭.isPrime (ne_bot h𝔭) (i := 0) (by rwa [zero_add, pow_one]) (pow_notMem h𝔭 hu.notMem e)` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Establish `h1 : (Matrix.of fun i j => z (i, j)).map jK = jK (ι t) • E`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `hz (i, j)`. Establish `h2 : (H * Matrix.of fun i j => z (i, j)).map jK = (ι (t * π₀ ^ e) • (1 : Matrix κ κ (𝓞 K))).map jK`. Rewrite using `[Matrix.map_mul, h1, ← gramK_eq_map hH, Matrix.mul_smul, hHE, smul_smul]`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`. Conclude with `Matrix.ext fun i j => jK_inj (congrFun (congrFun h2 i) j)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_E₀ (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (hd : ∀ x, h x x = 0 → x = 0)
     (b : Basis κ K V) {H : Matrix κ κ (𝓞 K)} (hH : ∀ i j, jK (H i j) = h (b i) (b j))
@@ -196,7 +196,7 @@ theorem exists_E₀ (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (hd : �
     exact Matrix.ext fun i j => jK_inj (congrFun (congrFun h2 i) j)
 
 /- English proof (translation)
-Take `⟨E₀, d, hd1, hHE⟩` from `exists_E₀ hFF.out hd b hH h𝔭 he`. Rewrite using `[sigmaCount_basis h b hH h𝔭, sigmaCount_basis h b hH h𝔭]`. Conclude with `card_sigma_succ hK h𝔭 (conjTranspose_eq_of_symm hs b hH) hd1 hHE hj`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigmaCount_succ_basis [hFF : Fact (IsFixF K F)] (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : ∀ x, h x x = 0 → x = 0) (b : Basis κ K V)

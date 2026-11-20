@@ -23,14 +23,14 @@ namespace GlobalTheory.StdUnn.CartanMove
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Theta.mt, map_mul, Units.val_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_mul' (V : HSp D) (g h : GA D V) :
     Formalism.L2.Theta.mt V (g * h) = Formalism.L2.Theta.mt V g * Formalism.L2.Theta.mt V h := by
   simp [Formalism.L2.Theta.mt, map_mul, Units.val_mul]
 
 /- English proof (translation)
-Establish `: Formalism.L2.Theta.mt V 1 = 1` using `by simp [Formalism.L2.Theta.mt]`. Rewrite using `[this]`. Conclude with `Matrix.map_one (f := (θ τ).comp (infPart D)) (map_zero _) (map_one _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compAt_mt_one (θ : InfFam D) (τ : D.what₂.Tau) (V : HSp D) :
     compAt θ τ (Formalism.L2.Theta.mt V 1) = 1 := by
@@ -39,7 +39,7 @@ theorem compAt_mt_one (θ : InfFam D) (τ : D.what₂.Tau) (V : HSp D) :
   exact Matrix.map_one (f := (θ τ).comp (infPart D)) (map_zero _) (map_one _)
 
 /- English proof (translation)
-Rewrite using `[mt_mul']`. Conclude with `GlobalTheory.AdForm.RatMove.compAt_mul θ τ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compAt_mt_mul (θ : InfFam D) (τ : D.what₂.Tau) (V : HSp D) (g h : GA D V) :
     compAt θ τ (Formalism.L2.Theta.mt V (g * h)) = compAt θ τ (Formalism.L2.Theta.mt V g) * compAt θ τ (Formalism.L2.Theta.mt V h) := by
@@ -47,20 +47,20 @@ theorem compAt_mt_mul (θ : InfFam D) (τ : D.what₂.Tau) (V : HSp D) (g h : GA
   exact GlobalTheory.AdForm.RatMove.compAt_mul θ τ _ _
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V g τ`.
+A detailed English derivation is pending.
 -/
 theorem compAt_isom {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (g : GA D V) (τ : D.what₂.Tau) :
     (compAt θ τ (Formalism.L2.Theta.mt V g))ᴴ * gramAt D V τ * compAt θ τ (Formalism.L2.Theta.mt V g) = gramAt D V τ :=
   GlobalTheory.FockCompare.RealAction.infMat_mem_UH hθ V g τ
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hs`. Establish `hP : Pᴴ * G * P = G`. Combine the equalities or inequalities in the displayed calculation. Establish `hGPi : G * Pi = Pᴴ * G`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = G := by rw [hiso, h2, hP]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : G * (Pi * s * P) = Pᴴ * (G * s) * P`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Use `h3.conjTranspose_mul_mul_same ?_` and prove the remaining obligations. Introduce `v w hvw`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (fun x => Pi.mulVec x) hvw` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, hPi]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isCartanInv_conj {k : ℕ} {G s P Pi : Matrix (Fin k) (Fin k) ℂ} (hs : IsCartanInv G s)
     (hPi : Pi * P = 1) (hPPi : P * Pi = 1) (hiso : Piᴴ * G * Pi = G) : IsCartanInv G (Pi * s * P) := by
@@ -96,19 +96,17 @@ namespace GlobalTheory.StdUnn.CartanMove
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `D A μ hμ κ hκ a p hp θ hθ sS hsS hcomm`. Take `⟨k₀, hk₀K, hk₀⟩` from `GlobalTheory.T.exists_maximalCompactUnn_component_standardCartanInv D θ hθ A.rank μ hμ`. Establish `hstd : IsStdInv A μ (fun τ => compAt θ τ (Formalism.L2.Theta.mt (dblSp A) (κ.symm k₀)))`. Introduce `τ`. Establish `h` using `hκ (κ.symm k₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[κ.apply_symm_apply k₀]`. Establish `h2` using `congrArg (compAt θ τ) h`. Rewrite `h2` using `[GlobalTheory.AdForm.RatMove.compAt_mul, GlobalTheory.AdForm.RatMove.compAt_mul]`. Establish `hr : compAt θ τ (rat (Tm A μ)) = (Tm A μ).map (tauE D τ)` using `GlobalTheory.AdForm.RatMove.compAt_rat hθ τ _`. Rewrite `h2` using `[hr, hk₀]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2.symm`. Use `⟨_, hstd, fun τ => ?_⟩` and prove the remaining obligations. Simplify using `only`. Use `set k₁ := κ.symm k₀ with hk₁`. Use `set P := compAt θ τ (Formalism.L2.Theta.mt (dblSp A) (p : GA D (dblSp A))) with hPdef`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Pi := compAt θ τ (Formalism.L2.Theta.mt (dblSp A) (p : GA D (dblSp A))⁻¹) with hPidef`. Use `set S1 := compAt θ τ (Formalism.L2.Theta.mt (dblSp A) k₁) with hS1`. Establish `hPi : Pi * P = 1` using `by rw [hPidef, hPdef, ← compAt_mt_mul, inv_mul_cancel, compAt_mt_one]`. Establish `hPPi : P * Pi = 1` using `by rw [hPidef, hPdef, ← compAt_mt_mul, mul_inv_cancel, compAt_mt_one]`. Establish `hmem : (p : GA D (dblSp A)) * k₁ * (p : GA D (dblSp A))⁻¹ ∈ Khat A a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hp]`. Establish `e : (p : GA D (dblSp A))⁻¹ * ((p : GA D (dblSp A)) * k₁ * (p : GA D (dblSp A))⁻¹) * (p : GA D (dblSp A)) = k₁` using `by group`. Rewrite using `[e, hk₁, κ.apply_symm_apply]`. Conclude with `hk₀K`. Establish `hc` using `hcomm _ hmem τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite `hc` using `[compAt_mt_mul, compAt_mt_mul]`. Establish `hcar' : IsCartanInv (gramAt D (dblSp A) τ) (Pi * sS τ * P)` using `isCartanInv_conj (hsS τ) hPi hPPi (compAt_isom hθ _ _ τ)`. Establish `hcar : IsCartanInv (gramAt D (dblSp A) τ) S1` using `GlobalTheory.T.isCartanInv_standardInvolution_doubledGram D A μ hμ _ hstd τ`. Establish `hcm : S1 * (Pi * sS τ * P) = Pi * sS τ * P * S1`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `heq : S1 = Pi * sS τ * P` using `GlobalTheory.T.cartanInvolution_eq_of_commute _ _ _ _ hcar hcar' hcm`. Rewrite using `[heq, Matrix.mul_assoc (Pi * sS τ) P Pi, hPPi, Matrix.mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cartan_move_std : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → ∀ κ : GA D (dblSp A) ≃* G D A.rank, IsChart A μ κ → ∀ (a : GL (Fin A.rank) (AE D)) (p : siegel A), IsConj A a κ p → ∀ θ : InfFam D, IsInfFam θ → ∀ sS : RealMat (dblSp A), (∀ τ, IsCartanInv (gramAt D (dblSp A) τ) (sS τ)) → (∀ k ∈ Khat A a, ∀ τ, compAt θ τ (mt (dblSp A) k) * sS τ = sS τ * compAt θ τ (mt (dblSp A) k)) → ∃ s' : RealMat (dblSp A), IsStdInv A μ s' ∧ ∀ τ, s' τ * compAt θ τ (mt (dblSp A) (p : GA D (dblSp A))⁻¹) = compAt θ τ (mt (dblSp A) (p : GA D (dblSp A))⁻¹) * sS τ := by
   intro D A μ hμ κ hκ a p hp θ hθ sS hsS hcomm

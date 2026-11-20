@@ -14,7 +14,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ConstLift
 
 /- English proof (translation)
-Substitute `hf hφ` using the available equality. Use `⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Conclude with `(mul_left_congr (Category.comp_id T.hom) x₀ y₀ x y (hx.trans (Category.comp_id _)) (hy.trans (Category.comp_id _))).trans (Category.comp_id _).symm`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isGrpPullback_of_eq_id {S : Scheme.{0}} (G : Over S) [GrpObj G] {f : S ⟶ S} {φ : G.left ⟶ G.left}
     (hf : f = 𝟙 S) (hφ : φ = 𝟙 _) : IsGrpPullback G G f φ := by
@@ -24,11 +24,11 @@ theorem isGrpPullback_of_eq_id {S : Scheme.{0}} (G : Over S) [GrpObj G] {f : S �
     (hy.trans (Category.comp_id _))).trans (Category.comp_id _).symm
 
 /- English proof (translation)
-Introduce `A₀ _ g h hg D _ _ π hπ`. Establish `e : spMap π ≫ spMap (algebraMap ℂ D) = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, show π.comp (algebraMap ℂ D) = RingHom.id ℂ from RingHom.ext hπ, CommRingCat.ofHom_id, Spec.map_id]`. Establish `w : 𝟙 A₀.left ≫ A₀.hom = (A₀.hom ≫ spMap π) ≫ spMap (algebraMap ℂ D)`. Rewrite using `[Category.assoc, e, Category.id_comp, Category.comp_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq` using `isGrpPullback_pullback A₀ (spMap (algebraMap ℂ D))`. Use `⟨(Over.pullback (spMap (algebraMap ℂ D))).obj A₀, inferInstance, pullback.fst A₀.hom (spMap (algebraMap ℂ D)), pullback.lift _ _ w, ?_, ?_, hq, ?_, pullback.lift_fst _ _ w⟩` and prove the remaining obligations. Conclude with `{ comm := by have := h.comm; infer_instance smooth := by have := h.smooth; change Smooth (pullback.snd A₀.hom _); infer_instance proper := by have := h.proper; change IsProper (pullback.snd A₀.hom _); infer_instance geomConnected := by`. Use `h.geomConnected` as an intermediate fact. Express the relevant statement in the definitionally equal form `GeometricallyConnected (pullback.snd A₀.hom _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Use `infer_instance }`. Express the relevant statement in the definitionally equal form `SmoothOfRelativeDimension g (pullback.snd A₀.hom _)`. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange (n := g)).of_isPullback (IsPullback.of_hasPullback A₀.hom _) hg`. Conclude with `hq.cancel (isGrpPullback_of_eq_id A₀ e (pullback.lift_fst _ _ w)) (pullback.lift_snd _ _ w)`.
+A detailed English derivation is pending.
 -/
 theorem exists_constLift : ∀ (A₀ : Over (Sp ℂ)) [GrpObj A₀] (g : ℕ), IsAbelianScheme A₀ →
     SmoothOfRelativeDimension g A₀.hom → ∀ (D : Type) [CommRing D] [Algebra ℂ D] (π : D →+* ℂ),

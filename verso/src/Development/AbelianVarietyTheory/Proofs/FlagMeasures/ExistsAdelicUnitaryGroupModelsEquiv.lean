@@ -21,19 +21,17 @@ open GlobalTheory.Mem.Vol.Scale
 open scoped Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 /- English proof (translation)
-Take `⟨e, he, hc, hc', hs⟩` from `GlobalTheory.Mem.VolInfIso.exists_infAdele_equiv I.F I.E I.cm.sig _ I.φ θ hcm (GlobalTheory.GaussDecay.isCMFam_of_over _ hcm I.φ I.φ_over) hθ`. Use `choose p q s hsort using fun v => exists_sorts (I.ε v)`. Establish `hd : ∀ v, IsUnit (I.P v).det` using `fun v => (Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)`. Establish `h1 : ∀ v, (I.P v)⁻¹ * I.P v = 1` using `fun v => Matrix.nonsing_inv_mul _ (hd v)`. Establish `h2 : ∀ v, I.P v * (I.P v)⁻¹ = 1` using `fun v => Matrix.mul_nonsing_inv _ (hd v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : ∀ v, Formalism.UG.Jpq (p v) (q v) = (Formalism.REAL.Jm (I.ε v)).submatrix (s v) (s v)` using `fun v => by`. Rewrite using `[← (hsort v).reindex_Jpq]`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Take `⟨f, hf⟩` from `GlobalTheory.Mem.InfGroup.exists_equiv he hc hc' (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Ainf I.F) I.cm.sig) (fun x i => by rw [← he, ← he, hs]) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (Ainf I.F) I.J) p q (fun v => (I.P v)⁻¹.submatri …`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3 : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (Ainf I.F) I.J).map (θ v) = I.J.map (I.φ v)`. Use extensionality with `a b`. Conclude with `(hθ v).1 (I.J a b)`. Rewrite using `[h3, hJ, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, ← I.P_spec v]`. Express the relevant statement in the definitionally equal form `(I.P v)⁻¹ᴴ * ((I.P v)ᴴ * I.J.map (I.φ v) * I.P v) * (I.P v)⁻¹ = _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [h2]; simp)`. Set `g : (∀ v, Formalism.BasicNotions.UpqT (p v) (q v)) ≃ₜ* I.Ginf` to `{ toFun := fun x v => (hsort v).equiv (x v) invFun := fun y v => (hsort v).equiv.symm (y v) left_inv := fun x => funext fun v => (hsort v).equiv.symm_apply_apply _ right_inv := fun x => funext fun v => (hsort v).equiv.apply_symm_apply _ map_mul' := fun x y => funext fun v => map_ …`. Use `⟨f.trans g, fun h v => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable.
 
-Establish `h4` using `hf h v`. Express the relevant statement in the definitionally equal form `Matrix.reindex (s v) (s v) (Formalism.BasicNotions.UpqT.mat (f h v)) = (I.P v)⁻¹ * (h.1.1).map (θ v) * I.P v`. Generalize the expression as in `Formalism.BasicNotions.UpqT.mat (f h v) = X at h4 ⊢`. Generalize the expression as in `(h.1.1).map (θ v) = Y at h4 ⊢`. Establish `h5 : Matrix.reindex (s v) (s v) X * (I.P v)⁻¹ = (I.P v)⁻¹ * Y`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use extensionality with `a b`. Use `congrFun (congrFun h4 ((s v).symm a)) b` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply, Equiv.apply_symm_apply, Equiv.coe_refl, id] at this`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply, ← this, ← (s v).sum_comp]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[← h5, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_real_equiv (I : AutInst) (hcm : IsCMExt I.F I.E I.cm.sig)
     (θ : InfinitePlace I.F → (Ainf I.F ⊗[I.F] I.E →+* ℂ)) (hθ : ∀ v, IsInfEmb (I.φ v) (θ v)) :
@@ -87,9 +85,9 @@ theorem exists_real_equiv (I : AutInst) (hcm : IsCMExt I.F I.E I.cm.sig)
   rw [← h5, Matrix.mul_assoc, h1, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `h : Formalism.UG.cT (σ : E →+* E) γ.1 * J * γ.1 = J` using `hγ`. Establish `h2` using `congrArg (fun X => Matrix.map X (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) R)) h`. Simplify using `only [Matrix.map_mul] at h2`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT _ (γ.1.map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) R)) * J.map _ * γ.1.map _ = J.map _`. Rewrite using `[← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments.
 -/
 theorem bc_mem {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) {γ : GL (Fin M) E}
@@ -103,27 +101,25 @@ theorem bc_mem {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRi
   congr 2
 
 /- English proof (translation)
-Introduce `I`. Establish `hcm : IsCMExt I.F I.E I.cm.sig` using `(GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND I.F I.E I.cm).1`. Use `⟨hcm, ⟨fun i j => congrFun (congrFun I.J_herm i) j, I.J_det⟩, ?_⟩` and prove the remaining obligations. Establish `hex` using `GlobalTheory.Mem.VolEmb.existsUnique_infEmb I.F I.E I.cm.sig hcm`. Use `choose θ hθ hθu using fun v => hex (I.φ v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨er, her⟩` from `exists_real_equiv I hcm θ hθ`. Take `⟨ef, hef, -⟩` from `GlobalTheory.T.exists_continuousMulEquiv_congruenceTopology_adelicUnitary I`. Take `⟨sp, hsp⟩` from `GlobalTheory.Mem.VolSplit.exists_adelic_split I.F I.E I.cm.sig I.n I.J`. Set `g : HA (Ainf I.F) I.cm.sig I.J × HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af I.F) I.cm.sig I.J ≃ₜ* I.GA` to `{ toFun := fun x => (er x.1, ef.symm x.2) invFun := fun y => (er.symm y.1, ef y.2) left_inv := fun x => Prod.ext (er.symm_apply_apply _) (ef.apply_symm_apply _) right_inv := fun x => Prod.ext (er.apply_symm_apply _) (ef.symm_apply_apply _) map_mul' := fun x y => Prod.ext (map_mul …`. Establish `hfin : ∀ h, I.fmat ((sp.trans g) h).2 = (finMat I.cm.sig I.J h).map (Algebra.TensorProduct.comm I.F _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h1` using `hef (ef.symm (sp h).2)`. Rewrite `h1` using `[ef.apply_symm_apply, (hsp h).1]`. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `I.fmat (ef.symm (sp h).2) = _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Conclude with `((Algebra.TensorProduct.comm I.F I.E (Af I.F)).symm_apply_apply _).symm`. Establish `hinf : ∀ v h, uMat (((sp.trans g) h).1 v) = (I.P v)⁻¹ * infMat I.cm.sig I.J (θ v) h * I.P v`. Introduce `v h`. Establish `h1` using `her (sp h).1 v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[(hsp h).2]`. Conclude with `h1`. Establish `hrat : ∀ (γ : GL (Fin I.n) I.E) (h : HA (AF I.F) I.cm.sig I.J), Formalism.UG.bc (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F` using `I.F) (AF I.F)) γ = HA.mat _ _ _ h → (∀ v, uMat (((sp.trans g) h).1 v) = (I.P v)⁻¹ * (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) * I.P v) ∧ I.fmat ((sp.trans g) h).2 = (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (Formalism.UG.inclE (F := I.F) (Af I.F)) := by`. Introduce `γ h hh`. Use `⟨fun v => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Rewrite using `[hinf]`. Use `congr 2`. Unfold `infMat`. Rewrite using `[← hh]`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.map_apply, Matrix.map_apply, Matrix.map_apply, ← (hθ v).1]`. Express the relevant statement in the definitionally equal form `θ v (Algebra.TensorProduct.map _ _ ((1 : AF I.F) ⊗ₜ[I.F] γ.1 a b)) = _`. Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression. Rewrite using `[hfin]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Unfold `finMat`. Rewrite using `[← hh]`. Use extensionality with `a b`. Rewrite using `[Matrix.map_apply, Matrix.map_apply, Matrix.map_apply]`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.comm I.F _ _ (Algebra.TensorProduct.map _ _ ((1 : AF I.F) ⊗ₜ[I.F] γ.1 a b)) = _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression. Use `⟨sp.trans g, fun h => ⟨?_, ?_⟩, hfin, fun v θ' hθ' h => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨γ, hγ, hh⟩`. Conclude with `⟨γ, hγ, hrat γ h hh⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨γ, hγ, h1, h2⟩`. Set `h' : HA (AF I.F) I.cm.sig I.J` to `(⟨_, bc_mem (AF I.F) I.cm.sig I.J hγ⟩ : HR (AF I.F) I.cm.sig I.J)`. Take `⟨h3, h4⟩` from `hrat γ h' rfl`. Establish `: h = h'` using `(sp.trans g).injective (Prod.ext (funext fun v => Subtype.ext (Units.ext ((h1 v).trans (h3 v).symm))) (Subtype.ext (Units.ext (h2.trans h4.symm))))`. Rewrite using `[this]`.
-
-Conclude with `⟨γ, hγ, rfl⟩`. Rewrite using `[hθu v θ' hθ']`. Conclude with `hinf v h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adelic_equiv : ∀ I : AutInst, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsCMExt I.F I.E I.cm.sig ∧ Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsHermND I.cm.sig I.J ∧ ∃ T : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig I.J ≃ₜ* I.GA, (∀ h, (show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig I.J from h) ∈ Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HFinIn (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig I.J ↔ T h ∈ I.GFset) ∧ (∀ h, I.fmat (T h).2 = (Formalism.MainNotions.StandardLattice.finMat I.cm.sig I.J h).map (Algebra.TensorProduct.comm I.F _ _)) ∧ ∀ v θ, Formalism.MainNotions.StandardLattice.IsInfEmb (I.φ v) θ → ∀ h, uMat ((T h).1 v) = (I.P v)⁻¹ * Formalism.MainNotions.StandardLattice.infMat I.cm.sig I.J θ h * I.P v := by
   intro I

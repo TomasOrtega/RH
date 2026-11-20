@@ -31,13 +31,13 @@ def locInt (m n : ℕ) : AddSubgroup (Matrix (Fin m) (Fin n) (w.adicCompletion E
     simpa using neg_mem (hX i j)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_locDiv {N m n : ℕ} {X : Matrix (Fin m) (Fin n) (w.adicCompletion E)} :
     X ∈ locDiv w N m n ↔ ∀ i j, (N : w.adicCompletion E) * X i j ∈ w.adicCompletionIntegers E := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_locInt {m n : ℕ} {X : Matrix (Fin m) (Fin n) (w.adicCompletion E)} :
     X ∈ locInt w m n ↔ ∀ i j, X i j ∈ w.adicCompletionIntegers E := Iff.rfl
@@ -57,7 +57,7 @@ def IsIotaAt {D : D7} {q : GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolu
     IsSplitIdem D (ι 1) ∧ Continuous (GlobalTheory.Core.Rk.SWQ.cw h)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Core.Rk.SplitIota.exists_iota D q w h hs`.
+A detailed English derivation is pending.
 -/
 theorem exists_isIotaAt {D : D7} {q : GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.FinPl D} {w : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.E)}
     (h : w.under (𝓞 D.host.F) = q) (hs : Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) q) :

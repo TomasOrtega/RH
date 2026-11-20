@@ -10,9 +10,9 @@ open PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.D1
 namespace GlobalTheory.CompanionTheory.DegreeSubmod
 
 /- English proof (translation)
-Establish `hinj : Function.Injective M.mulVecLin`. Establish `: Function.Injective M.mulVec` using `Matrix.mulVec_injective_iff.2 h`. Conclude with `this`. Take `⟨g, hg⟩` from `M.mulVecLin.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hinj)`. Use `⟨LinearMap.toMatrix' g, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : LinearMap.toMatrix' (g ∘ₗ M.mulVecLin) = LinearMap.toMatrix' g * M`. Rewrite using `[LinearMap.toMatrix'_comp, ← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin']`. Rewrite using `[← h2, hg]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_leftInv {K ι κ : Type} [Field K] [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
     (M : Matrix ι κ K) (h : LinearIndependent K Mᵀ) : ∃ Y : Matrix κ ι K, Y * M = 1 := by
@@ -27,14 +27,14 @@ theorem exists_leftInv {K ι κ : Type} [Field K] [Fintype ι] [DecidableEq ι] 
   simp
 
 /- English proof (translation)
-Apply the tactic sequence `ext i (j | j) <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_fromCols {R S ι κ κ' : Type} (f : R → S) (P : Matrix ι κ R) (Q : Matrix ι κ' R) :
     (fromCols P Q).map f = fromCols (P.map f) (Q.map f) := by
   ext i (j | j) <;> rfl
 
 /- English proof (translation)
-Establish `p0` using `lt_of_le_of_ne (hN.nonneg _ (fromCols B (fromCols A C))) h0.symm`. Establish `p1` using `lt_of_le_of_ne (hN.nonneg _ B) h1.symm`. Rewrite using `[← Real.log_mul h0 h1, ← Real.log_mul h2 h3]`. Conclude with `Real.log_le_log (mul_pos p0 p1) (hS K ι N hN _ _ _ B A C)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_ineq {K ι : Type} [Field K] [Fintype ι] [DecidableEq ι] (N : Fam K ι) (hN : IsWedge N) (hS : WedgeSub)
     {κ₀ κ₁ κ₂ : Type} [Fintype κ₀] [DecidableEq κ₀] [Fintype κ₁] [DecidableEq κ₁] [Fintype κ₂] [DecidableEq κ₂]
@@ -51,9 +51,9 @@ theorem log_ineq {K ι : Type} [Field K] [Fintype ι] [DecidableEq ι] (N : Fam 
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨Y, hY⟩` from `exists_leftInv M h`. Use `⟨Y.map (algebraMap E (Ad E)) * x.val, ?_⟩` and prove the remaining obligations. Establish `hx : x.val * (x⁻¹ : GA E n).val = 1` using `Units.mul_inv x`. Establish `hm : Y.map (algebraMap E (Ad E)) * M.map (algebraMap E (Ad E)) = 1`. Rewrite using `[← Matrix.map_mul, hY, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hx, Matrix.mul_one, hm]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frame_leftInv {κ : Type} [Fintype κ] [DecidableEq κ] (x : GA E n) (M : Matrix (Fin n) κ E)
     (h : LinearIndependent E Mᵀ) :
@@ -69,7 +69,7 @@ theorem frame_leftInv {κ : Type} [Fintype κ] [DecidableEq κ] (x : GA E n) (M 
     _ = 1 := by rw [hx, Matrix.mul_one, hm]
 
 /- English proof (translation)
-Rewrite using `[map_fromCols, Matrix.mul_fromCols]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_fromCols {κ κ' : Type} [Fintype κ] [Fintype κ'] (x : GA E n) (P : Matrix (Fin n) κ E)
     (Q : Matrix (Fin n) κ' E) :
@@ -78,19 +78,17 @@ theorem frame_fromCols {κ κ' : Type} [Fintype κ] [Fintype κ'] (x : GA E n) (
   rw [map_fromCols, Matrix.mul_fromCols]
 
 /- English proof (translation)
-Take `⟨i₀, f₀, s₀⟩` from `hFS E _ _ _ Y₀ h₀`. Take `⟨i₁, f₁, s₁⟩` from `hFS E _ _ _ Y₁ h₁`. Take `⟨i₂, f₂, s₂⟩` from `hFS E _ _ _ Y₂ h₂`. Take `⟨i₃, f₃, s₃⟩` from `hFS E _ _ _ Y₃ h₃`. Establish `fin : ∀ {κ : Type} [Fintype κ] [DecidableEq κ] (T : Matrix (Fin n) κ (Ad E)), {w | nF (T.map (cW w)) ≠ 1}.Finite → (Function.support fun w => Real.log (nF (T.map (cW w)))).Finite`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `κ _ _ T hT`. Use `hT.subset fun w hw h1 => hw ?_` and prove the remaining obligations. Simplify using `only [Function.mem_support] at hw`. Conclude with `absurd (by rw [h1, Real.log_one]) hw`. Establish `inf : ∑ v, Real.log (nI ((fromCols P (fromCols Q R)).map (cV v))) + ∑ v, Real.log (nI (P.map (cV v))) ≤ ∑ v, Real.log (nI ((fromCols P Q).map (cV v))) + ∑ v, Real.log (nI ((fromCols P R).map (cV v)))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_add_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun v _ => ?_` and prove the remaining obligations. Establish `a₀` using `i₀ v`. Establish `a₂` using `i₂ v`. Establish `a₃` using `i₃ v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a₂`, `a₃` using `[map_fromCols]`. Rewrite `a₀` using `[map_fromCols, map_fromCols]`. Rewrite using `[map_fromCols, map_fromCols, map_fromCols, map_fromCols]`. Conclude with `log_ineq (fun _ _ _ A => nI A) (hI _) hS _ _ _ a₀ (i₁ v) a₂ a₃`. Establish `finp : ∑ᶠ w, Real.log (nF ((fromCols P (fromCols Q R)).map (cW w))) + ∑ᶠ w, Real.log (nF (P.map (cW w))) ≤ ∑ᶠ w, Real.log (nF ((fromCols P Q).map (cW w))) + ∑ᶠ w, Real.log (nF ((fromCols P R).map (cW w)))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← finsum_add_distrib (fin _ s₀) (fin _ s₁), ← finsum_add_distrib (fin _ s₂) (fin _ s₃)]`. Use `finsum_le_finsum' ((fin _ s₀).union (fin _ s₁) |>.subset (Function.support_add _ _)) ((fin _ s₂).union (fin _ s₃) |>.subset (Function.support_add _ _)) fun w => ?_` and prove the remaining obligations. Establish `a₀` using `f₀ w`. Establish `a₂` using `f₂ w`. Establish `a₃` using `f₃ w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a₂`, `a₃` using `[map_fromCols]`. Rewrite `a₀` using `[map_fromCols, map_fromCols]`. Simplify using `only [Pi.add_apply]`. Rewrite using `[map_fromCols, map_fromCols, map_fromCols, map_fromCols]`. Conclude with `log_ineq (fun _ _ _ A => nF A) (hF _ _) hS _ _ _ a₀ (f₁ w) a₂ a₃`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_ineq (hF : WedgeF) (hI : WedgeI) (hS : WedgeSub) (hFS : FinSupp)
     {κ₀ κ₁ κ₂ : Type} [Fintype κ₀] [DecidableEq κ₀] [Fintype κ₁] [DecidableEq κ₁] [Fintype κ₂] [DecidableEq κ₂]
@@ -142,9 +140,9 @@ theorem sum_ineq (hF : WedgeF) (hI : WedgeI) (hS : WedgeSub) (hFS : FinSupp)
   linarith
 
 /- English proof (translation)
-Take `⟨Y₀, h₀⟩` from `frame_leftInv x _ l₀`. Take `⟨Y₁, h₁⟩` from `frame_leftInv x _ l₁`. Take `⟨Y₂, h₂⟩` from `frame_leftInv x _ l₂`. Take `⟨Y₃, h₃⟩` from `frame_leftInv x _ l₃`. Rewrite `h₀` using `[frame_fromCols, frame_fromCols]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₂`, `h₃` using `[frame_fromCols]`. Establish `key` using `sum_ineq hF hI hS hFS _ _ _ h₀ h₁ h₂ h₃`. Simplify using `only [degG, frame_fromCols]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem degG_ineq (hF : WedgeF) (hI : WedgeI) (hS : WedgeSub) (hFS : FinSupp) (x : GA E n)
     {κ₀ κ₁ κ₂ : Type} [Fintype κ₀] [DecidableEq κ₀] [Fintype κ₁] [DecidableEq κ₁] [Fintype κ₂] [DecidableEq κ₂]
@@ -163,17 +161,15 @@ theorem degG_ineq (hF : WedgeF) (hI : WedgeI) (hS : WedgeSub) (hFS : FinSupp) (x
   linarith
 
 /- English proof (translation)
-Introduce `E _ _ _ n x W W'`. Take `⟨a, b, c, B, A, C, l₀, e₁, e₂, e₃, e₄⟩` from `hT E n W W'`. Establish `l₂ : LinearIndependent E (fromCols B A)ᵀ`. Establish `: (fromCols B A)ᵀ = (fromCols B (fromCols A C))ᵀ ∘ Sum.map id Sum.inl`. Apply the tactic sequence `funext j; rcases j with j | j <;> rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this]`. Conclude with `l₀.comp _ (Sum.map_injective.2 ⟨Function.injective_id, Sum.inl_injective⟩)`. Establish `l₃ : LinearIndependent E (fromCols B C)ᵀ`. Establish `: (fromCols B C)ᵀ = (fromCols B (fromCols A C))ᵀ ∘ Sum.map id Sum.inr`. Apply the tactic sequence `funext j; rcases j with j | j <;> rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `l₀.comp _ (Sum.map_injective.2 ⟨Function.injective_id, Sum.inr_injective⟩)`. Establish `l₁ : LinearIndependent E Bᵀ`. Establish `: Bᵀ = (fromCols B (fromCols A C))ᵀ ∘ Sum.inl`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `l₀.comp _ Sum.inl_injective`. Establish `d₀` using `hB E n _ x _ l₀`. Establish `d₁` using `hB E n _ x _ l₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `d₂` using `hB E n _ x _ l₂`. Establish `d₃` using `hB E n _ x _ l₃`. Rewrite `d₀` using `[e₄]`. Rewrite `d₁` using `[e₁]`. Rewrite `d₂` using `[e₂]`.
-
-Rewrite `d₃` using `[e₃]`. Rewrite using `[← d₀, ← d₁, ← d₂, ← d₃]`. Conclude with `degG_ineq hF hI hS hFS x B A C l₀ l₁ l₂ l₃`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degSubmod_of (hF : WedgeF) (hI : WedgeI) (hS : WedgeSub) (hFS : FinSupp) (hB : DegBasisG) (hT : TwoBases) :
     DegSubmod := by

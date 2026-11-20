@@ -13,13 +13,13 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `F _ V T _ _ g hg W' _ _ _ io hioi hiof Ω _ iF e he hi y w hy`. Use `haveI : IsLocalHom io := RingHom.IsIntegral.isLocalHom hiof.to_isIntegral hioi`. Assume the negation of the conclusion as `hyV`. Establish `hy0 : y ≠ 0` using `fun h => hyV (h ▸ V.zero_mem)`. Establish `hinv : y⁻¹ ∈ V` using `(V.mem_or_inv_mem y).resolve_left hyV`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `u : V` to `⟨y⁻¹, hinv⟩`. Establish `hu : ¬ IsUnit u`. Introduce `hu`. Take `⟨v, hv⟩` from `hu.exists_right_inv`. Establish `h' : y⁻¹ * (v : F) = 1` using `by simpa [u] using congrArg Subtype.val hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv' : (v : F) = y`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hyV (hv' ▸ v.2)`. Establish `hprod : io (g u) * w = 1`. Apply `he` to reduce the goal to its premises.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, map_one, ← hi u, ← hy, ← map_mul]`. Simplify using `[u, inv_mul_cancel₀ hy0]`. Conclude with `hu ((isUnit_map_iff g u).1 ((isUnit_map_iff io (g u)).1 (IsUnit.of_mul_eq_one _ hprod)))`.
+A detailed English derivation is pending.
 -/
 theorem mem_valuationSubring_of_image : ∀ (F : Type) [Field F] (V : ValuationSubring F) (T : Type) [CommRing T] [IsLocalRing T] (g : V →+* T), IsLocalHom g → ∀ (W' : Type) [CommRing W'] [IsDomain W'] [IsLocalRing W'] (io : T →+* W'), Function.Injective io → io.Finite → ∀ (Ω : Type) [Field Ω] (iF : F →+* Ω) (e : W' →+* Ω), Function.Injective e → (∀ v : V, iF v = e (io (g v))) → ∀ (y : F) (w : W'), iF y = e w → y ∈ V := by
   intro F _ V T _ _ g hg W' _ _ _ io hioi hiof Ω _ iF e he hi y w hy
@@ -43,11 +43,11 @@ theorem mem_valuationSubring_of_image : ∀ (F : Type) [Field F] (V : ValuationS
   exact hu ((isUnit_map_iff g u).1 ((isUnit_map_iff io (g u)).1 (IsUnit.of_mul_eq_one _ hprod)))
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ M G hsm hqc hgi L hL Y α t hpb k s hs j U W hW hWU hWa hUa x hx hcl F _ β V hV h1 h2`. Take `⟨T, _, _, _, lam, g, φ, hT, hgi', hgl, hgl', hφi, hφl, hξ⟩` from `GlobalTheory.T.completed_dominating_dvr_closedFibre_point_is_trait R M G Y α t hpb.w W hWa x hx hcl F β V hV h1 h2`. Take `⟨W', _, _, _, io, σ, hW', hioi, hiof, hag⟩` from `hs T hT φ _ hφi hφl hξ`. Set `e : W' →+* FractionRing W'` to `algebraMap W' (FractionRing W')`. Establish `he : Function.Injective e` using `IsFractionRing.injective W' (FractionRing W')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hgg : Function.Injective ((e.comp io).comp g)` using `he.comp (hioi.comp hgi')`. Set `iF : F →+* FractionRing W'` to `IsFractionRing.lift hgg`. Establish `hi : ∀ v : V, iF v = e (io (g v))` using `fun v => IsFractionRing.lift_algebraMap hgg v`. Establish `hαW` using `GlobalTheory.Mum.isAffineOpen_preimage_genericBaseChange R M G Y α t hpb W hWa`. Take `⟨w, hw⟩` from `GlobalTheory.T.chartValue_mem_range_of_agree_traitExtension G.left M.S Y G.hom L hL α k s j W hW hWa hαW T lam W' io σ hag (FractionRing W') (iF.comp β) e (fun c => (hi ⟨_, h1 c⟩).trans (by rw [hgl' c]))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hw' : iF (β (chartVal L α s j W hW)) = e w` using `hw`. Conclude with `mem_valuationSubring_of_image F V T g hgl W' io hioi hiof (FractionRing W') iF e he hi (β (chartVal L α s j W hW)) w hw'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chartVal_mem_of_dominates : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [CharZero R] (M : Modif R) (G : Over M.S), Smooth G.hom → QuasiCompact G.hom → GeometricallyIrreducible G.hom → ∀ (L : LB G.left), L.IsLB → ∀ (Y : Scheme.{0}) (α : Y ⟶ G.left) (t : Y ⟶ Sp (FractionRing R)), IsPullback α t G.hom M.gp → ∀ (k : ℕ) (s : SecK L α k), TraitReg M G L s → ∀ (j : L.ι) (U : M.S.Opens) (W : G.left.Opens) (hW : W ≤ L.U j), W ≤ G.hom ⁻¹ᵁ U → IsAffineOpen W → IsAffineOpen U → ∀ (x : G.left) (hx : x ∈ W), M.π (G.hom x) = closedPoint R → ∀ (F : Type) [Field F] (β : Γ(Y, α ⁻¹ᵁ W) →+* F) (V : ValuationSubring F), IsDiscreteValuationRing V → (∀ c, β ((α.app W).hom c) ∈ V) → (∀ c, (G.left.residue x).hom ((G.left.presheaf.germ W x hx).hom c) = 0 → β ((α.app W).hom c) ∈ V.nonunits) → β (chartVal L α s j W hW) ∈ V := by
   intro R _ _ _ _ _ M G hsm hqc hgi L hL Y α t hpb k s hs j U W hW hWU hWa hUa x hx hcl F _ β V hV h1 h2

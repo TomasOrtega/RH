@@ -6,27 +6,23 @@ open IsLocalRing GlobalTheory.LN Polynomial IntermediateField
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A _ _ L _ φ hφ hK W _ _ _ hW α hα`. Take `⟨hd, hc, h0⟩` from `(cDvr_iff W).1 hW`. Set `K` to `ResidueField A`. Use `letI : Algebra K L := φ.toAlgebra`. Use `haveI : FiniteDimensional K L := hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `⟨θ, hθ⟩` from `Field.exists_primitive_element K L`. Establish `hθi : IsIntegral K θ` using `.of_finite K θ`. Set `β : K →+* ResidueField W` to `ResidueField.map α`. Take `⟨q, hq1, hq2, hq3⟩` from `Polynomial.lifts_and_degree_eq_and_monic (Polynomial.map_surjective (residue W) residue_surjective ((minpoly K θ).map β)) ((minpoly.monic hθi).map β)`. Set `F` to `FractionRing W`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : CharZero F := IsFractionRing.charZero_of_isFractionRing W`. Set `M` to `(q.map (algebraMap W F)).SplittingField`. Use `haveI : FaithfulSMul W M := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_faithful W F M`. Use `haveI : Module.Finite W (integralClosure W M) := IsIntegralClosure.finite W F M (integralClosure W M)`. Use `haveI hVd : IsDiscreteValuationRing (integralClosure W M) := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_dvr W F M`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : CharZero M := charZero_of_injective_algebraMap (algebraMap F M).injective`. Establish `hdeg : ((q.map (algebraMap W F)).map (algebraMap F M)).degree ≠ 0`. Rewrite using `[degree_map_eq_of_injective (algebraMap F M).injective, degree_map_eq_of_injective (IsFractionRing.injective W F), hq2, degree_map, degree_eq_natDegree (minpoly.ne_zero hθi)]`. Conclude with `(minpoly.natDegree_pos hθi).ne'` after adjusting the coercions. Take `⟨x, hx⟩` from `Splits.exists_eval_eq_zero (SplittingField.splits _) hdeg`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hxq : aeval x q = 0`. Rewrite `hx` using `[Polynomial.map_map, eval_map, ← IsScalarTower.algebraMap_eq]`. Rewrite using `[aeval_def]`. Conclude with `hx`. Set `V` to `integralClosure W M`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `y : V` to `⟨x, q, hq3, hxq⟩`. Establish `hyq : aeval y q = 0` using `Subtype.ext (by`. Express the relevant statement in the definitionally equal form `(integralClosure W M).val (aeval y q) = 0`. Rewrite using `[← Polynomial.aeval_algHom_apply]`. Conclude with `hxq)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `f : W →+* V` to `algebraMap W V`. Use `haveI hfl : IsLocalHom f := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_isLocalHom W M`. Set `ψ : K →+* ResidueField V` to `(ResidueField.map f).comp β`. Establish `hψ : eval₂ ψ (residue V y) (minpoly K θ) = 0`. Establish `e1` using `congrArg (residue V) hyq`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `e1` using `[map_zero, aeval_def, hom_eval₂]`. Establish `e2 : (residue V).comp (algebraMap W V) = (ResidueField.map f).comp (residue W)`. Use extensionality with `w`. Simplify using `[f]`. Rewrite `e1` using `[e2, ← eval₂_map, hq1, eval₂_map]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Conclude with `e1`. Use `letI : Algebra K (ResidueField V) := ψ.toAlgebra`. Set `pb` to `IntermediateField.adjoin.powerBasis hθi`. Set `τ : K⟮θ⟯ →ₐ[K] ResidueField V` to `pb.lift (residue V y) (by`. Rewrite using `[IntermediateField.adjoin.powerBasis_gen, IntermediateField.minpoly_gen, aeval_def]`.
-
-Conclude with `hψ)`. Set `σ : L →ₐ[K] ResidueField V` to `τ.comp ((IntermediateField.equivOfEq hθ).trans IntermediateField.topEquiv).symm.toAlgHom`. Use `⟨V, inferInstance, inferInstance, inferInstance, f, (cDvr_iff V).2 ⟨hVd, GlobalTheory.CompleteFiniteExtension.isAdicComplete_of_finite_local W V, inferInstance⟩, ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_inj W M, hfl, σ.toRingHom, fun a => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `σ (algebraMap K L (residue A a)) = _`. Rewrite using `[σ.commutes]`.
-
-Express the relevant statement in the definitionally equal form `ResidueField.map f (ResidueField.map α (residue A a)) = _`. Simplify using `[ResidueField.map_residue]`.
+A detailed English derivation is pending.
 -/
 theorem exists_cDvr_residue_lift : ∀ {A : Type} [CommRing A] [IsLocalRing A] {L : Type} [Field L] (φ : ResidueField A →+* L), φ.Finite → CharZero (ResidueField A) → ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W], CDvr W → ∀ (α : A →+* W), IsLocalHom α → ∃ (V : Type) (_ : CommRing V) (_ : IsDomain V) (_ : IsLocalRing V) (f : W →+* V), CDvr V ∧ Function.Injective f ∧ IsLocalHom f ∧ ∃ σ : L →+* ResidueField V, ∀ a : A, σ (φ (residue A a)) = residue V (f (α a)) := by
   intro A _ _ L _ φ hφ hK W _ _ _ hW α hα

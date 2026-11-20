@@ -8,17 +8,15 @@ open GlobalTheory.BI
 namespace GlobalTheory.BI
 
 /- English proof (translation)
-Introduce `L _ _ G _ _ V _ _ _ ρ T e hirr he0 hee hT hoff`. Establish `: Fintype G` using `Fintype.ofFinite G`. Use `⟨fun t => LinearMap.trace L V (ρ t * e), ?_, ?_⟩` and prove the remaining obligations. Conclude with `isChar_trace_mul_idempotent L T V (ρ.comp T.subtype) e hee (fun t => hT t t.2)`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsum` using `GlobalTheory.sum_conj_idempotent_eq_card_smul L G V ρ T e hirr he0 hee hT hoff`. Establish `hcard : (Nat.card T : L) ≠ 0`. Conclude with `(Nat.card_pos (α := T)).ne'` after adjusting the coercions. Establish `hkey : ∀ h : G, LinearMap.trace L V (ρ h * e) = ext0 T (fun t : T => LinearMap.trace L V (ρ t * e)) h`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Unfold `ext0`. Use `split_ifs with hh`. Both sides reduce to the same expression. Establish `h2 : ρ h * e = ρ h * e * e` using `by rw [mul_assoc, hee]`. Rewrite using `[h2, LinearMap.trace_mul_comm, ← mul_assoc, hoff h hh, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hterm : ∀ x : G, LinearMap.trace L V (ρ g * (ρ x * e * ρ x⁻¹)) = LinearMap.trace L V (ρ (x⁻¹ * g * x) * e)`. Introduce `x`. Rewrite using `[show ρ g * (ρ x * e * ρ x⁻¹) = (ρ g * ρ x * e) * ρ x⁻¹ by simp only [mul_assoc], LinearMap.trace_mul_comm]`. Simplify using `only [map_mul, mul_assoc]`. Establish `htr : (Nat.card T : L) * LinearMap.trace L V (ρ g) = ∑ x : G, LinearMap.trace L V (ρ (x⁻¹ * g * x) * e)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (Nat.card T : L) * LinearMap.trace L V (ρ g) = LinearMap.trace L V (ρ g * ∑ x : G, ρ x * e * ρ x⁻¹)`. Rewrite using `[hsum, mul_smul_comm, mul_one, map_smul, smul_eq_mul]`. Rewrite using `[h3, Finset.mul_sum, map_sum]`. Conclude with `Finset.sum_congr rfl (fun x _ => hterm x)`. Rewrite using `[Representation.character, ind, finsum_eq_sum_of_fintype]`.
-
-Simplify using `only [← hkey]`. Rewrite using `[← htr, ← mul_assoc, inv_mul_cancel₀ hcard, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem character_eq_ind_of_imprimitive :
     ∀ (L : Type) [Field L] [CharZero L] (G : Type) [Group G] [Finite G] (V : Type) [AddCommGroup V] [Module L V] [FiniteDimensional L V] (ρ : Representation L G V) (T : Subgroup G) (e : Module.End L V), ρ.IsIrreducible → e ≠ 0 → e * e = e → (∀ t ∈ T, ρ t * e = e * ρ t) → (∀ g ∉ T, e * ρ g * e = 0) → ∃ ψ : T → L, IsChar L L ψ ∧ ∀ g, ρ.character g = ind T ψ g := by

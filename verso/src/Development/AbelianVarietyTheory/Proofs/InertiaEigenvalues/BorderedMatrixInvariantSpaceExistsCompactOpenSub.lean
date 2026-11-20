@@ -6,11 +6,9 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.InverseCompactOpen
 
 /- English proof (translation)
-Establish `hUn : Unram F E` using `inferInstance`. Use `haveI : LocallyCompactSpace F := hUn.lcF`. Use `haveI : IsUltrametricDist F := hUn.ultraF`. Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hU a₀ ha`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hε2 : 0 < ε / 2` using `half_pos hε`. Use `⟨Metric.closedBall a₀ (ε / 2), isCompact_closedBall _ _, ?_, Metric.mem_closedBall_self hε2.le, ?_⟩` and prove the remaining obligations. Establish `hpi : ∀ x : Fin r → F, IsOpen (Metric.closedBall x (ε / 2))`. Introduce `x`. Rewrite using `[closedBall_pi x hε2.le]`.
-
-Conclude with `isOpen_set_pi Set.finite_univ (fun i _ => IsUltrametricDist.isOpen_closedBall (x i) hε2.ne')`. Take `⟨p, q, l⟩` from `a₀`. Rewrite using `[← closedBall_prod_same, ← closedBall_prod_same]`. Conclude with `(hpi p).prod ((hpi q).prod (IsUltrametricDist.isOpen_closedBall l hε2.ne'))`. Conclude with `(Metric.closedBall_subset_ball (half_lt_self hε)).trans hball`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_exists_compact_open (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [Unram F E] (r : ℕ) (U : Set (Inv r F)) (a₀ : Inv r F)

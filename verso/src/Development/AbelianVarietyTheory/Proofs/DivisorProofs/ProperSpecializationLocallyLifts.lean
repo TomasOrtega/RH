@@ -10,13 +10,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ImgSpec
 
 /- English proof (translation)
-Proceed by induction on `hC using Topology.IsConstructible.empty_union_induction with`. Consider the case `open_retrocompact U hUo _`. Distinguish the cases in `hx₀ : x₀ ∈ U`. Conclude with `⟨U, hUo, hx₀, Or.inl fun z hz _ => hz⟩`. Conclude with `⟨Set.univ, isOpen_univ, trivial, Or.inr fun z _ hs hz => hx₀ (hs.mem_open hUo hz)⟩`.
+Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Consider the case `union s _ t _ hs ht`. Take `⟨U₁, o₁, m₁, h₁⟩` from `hs`. Take `⟨U₂, o₂, m₂, h₂⟩` from `ht`. Use `⟨U₁ ∩ U₂, o₁.inter o₂, ⟨m₁, m₂⟩, ?_⟩` and prove the remaining obligations. Break down `h₁ with h₁ | h₁` into its components or cases.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl fun z hz hs => Or.inl (h₁ z hz.1 hs)`. Break down `h₂ with h₂ | h₂` into its components or cases. Conclude with `Or.inl fun z hz hs => Or.inr (h₂ z hz.2 hs)`. Conclude with `Or.inr fun z hz hs hm => hm.elim (h₁ z hz.1 hs) (h₂ z hz.2 hs)`. Consider the case `compl s _ hs`.
+Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Treat this case separately.
 
-Take `⟨U, o, m, h⟩` from `hs`. Conclude with `⟨U, o, m, h.symm.imp (fun h z hz hs => h z hz hs) (fun h z hz hs hm => hm (h z hz hs))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem constructible_local {X : Type*} [TopologicalSpace X] {C : Set X}
     (hC : Topology.IsConstructible C) (x₀ : X) :
@@ -45,13 +45,13 @@ end GlobalTheory.ImgSpec
 open GlobalTheory.ImgSpec in
 
 /- English proof (translation)
-Introduce `F _ _ Y p hp V π hπ ν`. Establish `: IsLocallyNoetherian Y` using `LocallyOfFiniteType.isLocallyNoetherian p`. Establish `: CompactSpace Y` using `QuasiCompact.compactSpace_of_compactSpace p`. Establish `: IsNoetherian Y` using `{}`. Set `g` to `V.affineCover.f (V.affineCover.idx ν)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨w₀, hw₀⟩` from `V.affineCover.covers ν`. Set `f` to `g ≫ π`. Establish `: QuasiCompact f` using `inferInstance`. Establish `: LocallyOfFinitePresentation f` using `inferInstance`. Establish `hC` using `f.isConstructible_image (s := Set.univ) Topology.IsConstructible.univ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨U, hUo, hx₀U, h⟩` from `constructible_local hC (π ν)`. Establish `hx₀ : π ν ∈ f '' Set.univ` using `⟨w₀, trivial, by simp [f, g, hw₀]⟩`. Break down `h with h | h` into its components or cases. Use `⟨⟨U, hUo⟩, hx₀U, fun z hz hs => ?_⟩` and prove the remaining obligations. Take `⟨w, -, rfl⟩` from `h z hz hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨g w, by simp [f]⟩`. Conclude with `absurd hx₀ (h _ hx₀U (specializes_refl _))`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.image_contains_specializations_near : ∀ (F : Type) [Field F] [NumberField F] (Y : Scheme.{0}) (p : Y ⟶ Sp F), IsProper p → ∀ (V : Scheme.{0}) (π : V ⟶ Y), LocallyOfFiniteType π → ∀ ν : V, ∃ U : Y.Opens, π ν ∈ U ∧ ∀ z : Y, z ∈ U → π ν ⤳ z → ∃ u : V, π u = z := by
   intro F _ _ Y p hp V π hπ ν

@@ -7,7 +7,7 @@ namespace GlobalTheory
 open NumberField IsDedekindDomain NumberField.mixedEmbedding Complex Classical in
 open scoped TensorProduct ContDiff nonZeroDivisors in
 /- English proof (translation)
-Rewrite using `[FiniteAdeleRing.algebraMap_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', map_inv₀, HeightOneSpectrum.valuation_of_algebraMap, ← HeightOneSpectrum.intValuation_lt_one_iff_mem]`. Conclude with `one_lt_inv₀ (zero_lt_iff.mpr (Q.intValuation_ne_zero x hx))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma one_lt_valued_inv_iff_mem {E : Type} [Field E] [NumberField E]
     (Q : HeightOneSpectrum (𝓞 E)) (x : 𝓞 E) (hx : x ≠ 0) :
@@ -21,27 +21,23 @@ open NumberField IsDedekindDomain NumberField.mixedEmbedding Complex Classical i
 open scoped TensorProduct ContDiff nonZeroDivisors in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ Φ hΦ hint hplace e P v ε hε he heε`. Take `⟨h0, -⟩` from `hplace v ε hε`. Establish `ha : (Φ e).1 = 0`. Establish `h` using `congrArg (fun z => (Φ z).1) heε`. Simplify using `only [map_mul, Prod.fst_mul, h0, mul_zero] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h.symm`. Establish `hidem : ∀ Q, (Φ e).2 Q = 0 ∨ (Φ e).2 Q = 1`. Introduce `Q`. Establish `h` using `congrArg (fun z => (Φ z).2 Q) he`. Rewrite `h` using `[map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `IsIdempotentElem.iff_eq_zero_or_one.mp h`. Establish `key : ∀ x : 𝓞 E, x ≠ 0 → (_root_.HeckeCharacterZeroLocus.ThmBIn.finPart F E (e * _root_.HeckeCharacterZeroLocus.ThmBIn.incA F E ((x : E)⁻¹)) ∉ _root_.HeckeCharacterZeroLocus.ThmBIn.intAE F E ↔ ∃ Q, (Φ e).2 Q = 1 ∧ x ∈ Q.asIdeal)`. Introduce `x hx`. Rewrite using `[hint, map_mul, hΦ]`. Use `push_neg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Q, hQ⟩`. Express the relevant statement in the definitionally equal form `1 < Valued.v ((Φ e).2 Q * (algebraMap E (FiniteAdeleRing (𝓞 E) E) (x : E)⁻¹) Q) at hQ`. Break down `hidem Q with h | h` into its components or cases. Rewrite `hQ` using `[h, zero_mul, map_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `absurd hQ (not_lt.mpr zero_le')`. Rewrite `hQ` using `[h, one_mul, one_lt_valued_inv_iff_mem Q x hx]`. Conclude with `⟨Q, h, hQ⟩`. Introduce and unpack `⟨Q, h, hQ⟩`. Use `⟨Q, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `1 < Valued.v ((Φ e).2 Q * (algebraMap E (FiniteAdeleRing (𝓞 E) E) (x : E)⁻¹) Q)`. Rewrite using `[h, one_mul, one_lt_valued_inv_iff_mem Q x hx]`. Conclude with `hQ`. Prove the components needed by the constructor for the conclusion. Introduce `hcrit`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hS : ∀ Q, (Φ e).2 Q = 1 → Q = P`. Introduce `Q hQ`. Assume the negation of the conclusion as `hne`. Establish `hnle : ¬ Q.asIdeal ≤ P.asIdeal` using `fun hle => hne (HeightOneSpectrum.ext (Q.isMaximal.eq_of_le P.isPrime.ne_top hle))`. Take `⟨x, hxQ, hxP⟩` from `Set.not_subset.mp hnle`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hx : x ≠ 0` using `fun h => hxP (h ▸ P.asIdeal.zero_mem)`. Conclude with `hxP ((hcrit x hx).mpr ((key x hx).mpr ⟨Q, hQ, hxQ⟩))`. Take `⟨x, hxP, hx⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot P.ne_bot`. Take `⟨Q, hQ, -⟩` from `(key x hx).mp ((hcrit x hx).mp hxP)`. Establish `hQP` using `hS Q hQ`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Substitute `hQP` using the available equality. Use `⟨ha, hQ, fun R hR => ?_⟩` and prove the remaining obligations. Break down `hidem R with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (hS R h) hR`.
-
-Introduce and unpack `⟨-, hP, hQ⟩ x hx`. Rewrite using `[key x hx]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun hxP => ⟨P, hP, hxP⟩`. Introduce and unpack `⟨Q, h, hxQ⟩`.
-
-Distinguish the cases in `hQP : Q = P`. Conclude with `hQP ▸ hxQ`. Rewrite `h` using `[hQ Q hQP]`. Conclude with `absurd h zero_ne_one`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.adele_idem_prime_criterion : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (Φ : _root_.HeckeCharacterZeroLocus.ThmBIn.AE F E ≃+* (mixedSpace E × FiniteAdeleRing (𝓞 E) E)), (∀ x : E, Φ (_root_.HeckeCharacterZeroLocus.ThmBIn.incA F E x) = (mixedEmbedding E x, algebraMap E _ x)) → (∀ y, _root_.HeckeCharacterZeroLocus.ThmBIn.finPart F E y ∈ _root_.HeckeCharacterZeroLocus.ThmBIn.intAE F E ↔ ∀ P, Valued.v ((Φ y).2 P) ≤ 1) → (∀ v ε, _root_.HeckeCharacterZeroLocus.ThmBIn.IsPlaceIdem F v ε → (Φ (algebraMap (_root_.HeckeCharacterZeroLocus.ThmBIn.AF F) (_root_.HeckeCharacterZeroLocus.ThmBIn.AE F E) ε)).1 = 0 ∧ ∀ P : HeightOneSpectrum (𝓞 E), (Φ (algebraMap (_root_.HeckeCharacterZeroLocus.ThmBIn.AF F) (_root_.HeckeCharacterZeroLocus.ThmBIn.AE F E) ε)).2 P = if P.under (𝓞 F) = v then 1 else 0) → ∀ (e : _root_.HeckeCharacterZeroLocus.ThmBIn.AE F E) (P : HeightOneSpectrum (𝓞 E)) (v : HeightOneSpectrum (𝓞 F)) (ε : _root_.HeckeCharacterZeroLocus.ThmBIn.AF F), _root_.HeckeCharacterZeroLocus.ThmBIn.IsPlaceIdem F v ε → e * e = e → e * algebraMap (_root_.HeckeCharacterZeroLocus.ThmBIn.AF F) (_root_.HeckeCharacterZeroLocus.ThmBIn.AE F E) ε = e → ((∀ x : 𝓞 E, x ≠ 0 → (x ∈ P.asIdeal ↔ _root_.HeckeCharacterZeroLocus.ThmBIn.finPart F E (e * _root_.HeckeCharacterZeroLocus.ThmBIn.incA F E ((x : E)⁻¹)) ∉ _root_.HeckeCharacterZeroLocus.ThmBIn.intAE F E)) ↔ ((Φ e).1 = 0 ∧ (Φ e).2 P = 1 ∧ ∀ Q, Q ≠ P → (Φ e).2 Q = 0)) := by
   intro F E _ _ _ _ _ Φ hΦ hint hplace e P v ε hε he heε

@@ -9,9 +9,7 @@ noncomputable section
 namespace GlobalTheory.CharpolyBound
 
 /- English proof (translation)
-Establish `h : (fun M : Matrix (Fin n) (Fin n) K => M.charpoly.coeff i) = fun M => MvPolynomial.eval (fun ij : Fin n × Fin n => M ij.1 ij.2) ((Matrix.charpoly.univ K (Fin n)).coeff i)`. Use function extensionality and compare the values at `M`. Conclude with `(Matrix.charpoly.univ_coeff_eval₂Hom (Fin n) (RingHom.id K) (fun ij : Fin n × Fin n => M ij.1 ij.2) i).symm`. Rewrite using `[h]`. Use `(MvPolynomial.continuous_eval _).comp ?_` and prove the remaining obligations.
-
-Conclude with `continuous_pi fun ij => (continuous_apply ij.2).comp (continuous_apply ij.1)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_coeff {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] (n i : ℕ) :
     Continuous fun M : Matrix (Fin n) (Fin n) K => M.charpoly.coeff i := by
@@ -27,9 +25,9 @@ theorem continuous_coeff {K : Type} [CommRing K] [TopologicalSpace K] [IsTopolog
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `HeightOneSpectrum.valuedAdicCompletion_surjective E w (WithZero.exp m)`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `hc` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hc.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: {y : w.adicCompletion E | Valued.v y ≤ WithZero.exp m} = {y | Valued.v.restrict y ≤ Valued.v.restrict c}`. Use extensionality with `y`. Simplify using `only [Set.mem_ofPred_eq, Valuation.restrict_le_iff, hc]`. Rewrite using `[this]`. Conclude with `Valued.isOpen_closedBall _ (by simp [hc0])`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_vle (w : Pl E) (m : ℤ) : IsOpen {y : w.adicCompletion E | Valued.v y ≤ WithZero.exp m} := by
   obtain ⟨c, hc⟩ := HeightOneSpectrum.valuedAdicCompletion_surjective E w (WithZero.exp m)
@@ -44,11 +42,11 @@ theorem isOpen_vle (w : Pl E) (m : ℤ) : IsOpen {y : w.adicCompletion E | Value
   exact Valued.isOpen_closedBall _ (by simp [hc0])
 
 /- English proof (translation)
-Establish `hcov : C ⊆ ⋃ m : ℤ, f ⁻¹' {y | Valued.v y ≤ WithZero.exp m}`. Introduce `x _`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, Set.mem_setOf_eq]`. Break down `eq_or_ne (Valued.v (f x)) 0 with h | h` into its components or cases. Conclude with `⟨0, by rw [h]; exact zero_le'⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Conclude with `⟨WithZero.log (Valued.v (f x)), (WithZero.exp_log h).ge⟩`. Establish `hmono : Monotone fun m : ℤ => f ⁻¹' {y | Valued.v y ≤ WithZero.exp m}`. Introduce `a b hab x hx`. Conclude with `le_trans hx (WithZero.exp_le_exp.2 hab)`. Take `⟨m, hm⟩` from `hC.elim_directed_cover _ (fun m => (isOpen_vle w m).preimage hf) hcov hmono.directed_le`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨WithZero.exp m, fun x hx => hm hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_bound {X : Type} [TopologicalSpace X] (w : Pl E) {f : X → w.adicCompletion E} (hf : Continuous f)
     {C : Set X} (hC : IsCompact C) : ∃ B : WithZero (Multiplicative ℤ), ∀ x ∈ C, Valued.v (f x) ≤ B := by
@@ -68,13 +66,13 @@ end GlobalTheory.CharpolyBound
 
 open GlobalTheory.CharpolyBound in
 /- English proof (translation)
-Introduce `E _ _ _ n w C hC`. Establish `hval : Continuous fun g : GLw n w => g.val` using `Units.continuous_val`. Establish `hinv : Continuous fun g : GLw n w => ((g⁻¹ : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E))` using `Units.continuous_coe_inv`. Establish `hk : ∀ k : ℕ, ∃ B : WithZero (Multiplicative ℤ), ∀ g ∈ C, Valued.v (g.val.charpoly.coeff k) ≤ B` using `fun k => exists_bound w ((continuous_coeff n k).comp hval) hC`. Use `choose Bk hBk using hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Bi, hBi⟩` from `exists_bound w (hinv.matrix_det) hC`. Use `⟨(Finset.range (n + 1)).sup Bk ⊔ Bi, fun g hg => ⟨fun k => ?_, ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `hkn : k ≤ n`. Conclude with `le_sup_of_le_left ((hBk k g hg).trans (Finset.le_sup (f := Bk) (Finset.mem_range.2 (by omega))))`. Rewrite using `[coeff_eq_zero_of_natDegree_lt (by rw [charpoly_natDegree_eq_dim, Fintype.card_fin]; omega), map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_le'`. Establish `h0 : g.val.charpoly.coeff 0 = (-1) ^ n * g.val.det`. Rewrite using `[det_eq_sign_charpoly_coeff, Fintype.card_fin, ← mul_assoc, ← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules. Establish `hdet : g.val.det * ((g⁻¹ : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).det = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← det_mul, Units.mul_inv, det_one]`. Establish `hc : (g.val.charpoly.coeff 0)⁻¹ = (-1) ^ n * ((g⁻¹ : GLw n w) : Matrix (Fin n) (Fin n) (w.adicCompletion E)).det`. Rewrite using `[h0, mul_inv, inv_eq_of_mul_eq_one_right hdet, ← inv_pow, inv_neg_one]`. Rewrite using `[hc, map_mul, map_pow, Valuation.map_neg, map_one, one_pow, one_mul]`. Conclude with `le_sup_of_le_right (hBi g hg)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CharpolyBound.bound : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E) (C : Set (GLw n w)), IsCompact C → ∃ B : WithZero (Multiplicative ℤ), ∀ g ∈ C, (∀ k, Valued.v (g.val.charpoly.coeff k) ≤ B) ∧ Valued.v ((g.val.charpoly.coeff 0)⁻¹) ≤ B := by
   intro E _ _ _ n w C hC

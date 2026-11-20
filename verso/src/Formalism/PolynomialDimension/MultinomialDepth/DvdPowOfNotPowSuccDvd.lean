@@ -8,11 +8,11 @@ open Finset
 namespace Formalism.CountingSumsFrames
 
 /- English proof (translation)
-Establish `hP : ∀ t : Finset ι, 1 - ∑ j ∈ t, κ j ≤ ∏ j ∈ t, (1 - κ j)`. Introduce `t`. Use `Finset.induction_on t (by simp) ?_` and prove the remaining obligations. Introduce `i t hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.prod_insert hi]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : 0 ≤ 1 - κ i` using `by linarith [(hκ i).2]`. Establish `h2 : 0 ≤ ∑ j ∈ t, κ j` using `Finset.sum_nonneg fun j _ => (hκ j).1`. Establish `h3` using `mul_le_mul_of_nonneg_left ih h1`. Use polynomial arithmetic with `[mul_nonneg (hκ i).1 h2]`. Establish `hd0 : 0 ≤ ∏ j ∈ s, d j` using `Finset.prod_nonneg fun j _ => hd j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem one_sub_sum_mul_prod_le_prod {ι : Type} (s : Finset ι) (κ n d : ι → ℝ) (hκ : ∀ j, 0 ≤ κ j ∧ κ j ≤ 1)
     (hd : ∀ j, 0 ≤ d j) (h : ∀ j, (1 - κ j) * d j ≤ n j) :
@@ -35,7 +35,7 @@ theorem one_sub_sum_mul_prod_le_prod {ι : Type} (s : Finset ι) (κ n d : ι �
         (fun j _ => mul_nonneg (by linarith [(hκ j).2]) (hd j)) (fun j _ => h j)
 
 /- English proof (translation)
-Introduce `J κ n d hκ h`. Use `push_cast`. Conclude with `one_sub_sum_mul_prod_le_prod Finset.univ κ (fun j => (n j : ℝ)) (fun j => (d j : ℝ)) hκ (fun j => Nat.cast_nonneg _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem share_product_bound : ShareProd := by
   intro J κ n d hκ h

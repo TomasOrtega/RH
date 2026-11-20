@@ -14,7 +14,7 @@ def IsDer (O : Module.End ℂ (Fock n)) (L : (Fin n × Fin n → ℂ) →ₗ[ℂ
     O (ExteriorAlgebra.ιMulti ℂ p v) = ∑ i, ExteriorAlgebra.ιMulti ℂ p (Function.update v i (L (v i)))
 
 /- English proof (translation)
-Introduce `p v`. Simplify using `only [LinearMap.zero_apply]`. Use `(Finset.sum_eq_zero fun i _ => ?_).symm` and prove the remaining obligations. Conclude with `(ExteriorAlgebra.ιMulti ℂ p).map_update_zero v i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isDer_zero : IsDer (0 : Module.End ℂ (Fock n)) 0 := by
   intro p v
@@ -23,7 +23,7 @@ theorem isDer_zero : IsDer (0 : Module.End ℂ (Fock n)) 0 := by
   exact (ExteriorAlgebra.ιMulti ℂ p).map_update_zero v i
 
 /- English proof (translation)
-Introduce `p v`. Rewrite using `[LinearMap.add_apply, h, h', ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, (ExteriorAlgebra.ιMulti ℂ p).map_update_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isDer_add {O O' : Module.End ℂ (Fock n)} {L L' : (Fin n × Fin n → ℂ) →ₗ[ℂ] (Fin n × Fin n → ℂ)}
     (h : IsDer O L) (h' : IsDer O' L') : IsDer (O + O') (L + L') := by
@@ -33,7 +33,7 @@ theorem isDer_add {O O' : Module.End ℂ (Fock n)} {L L' : (Fin n × Fin n → �
   rw [LinearMap.add_apply, (ExteriorAlgebra.ιMulti ℂ p).map_update_add]
 
 /- English proof (translation)
-Introduce `p v`. Rewrite using `[LinearMap.smul_apply, h, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, (ExteriorAlgebra.ιMulti ℂ p).map_update_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isDer_smul (c : ℂ) {O : Module.End ℂ (Fock n)} {L : (Fin n × Fin n → ℂ) →ₗ[ℂ] (Fin n × Fin n → ℂ)}
     (h : IsDer O L) : IsDer (c • O) (c • L) := by
@@ -43,7 +43,7 @@ theorem isDer_smul (c : ℂ) {O : Module.End ℂ (Fock n)} {L : (Fin n × Fin n 
   rw [LinearMap.smul_apply, (ExteriorAlgebra.ιMulti ℂ p).map_update_smul]
 
 /- English proof (translation)
-Use `isDer_smul (-1) h` as an intermediate fact. Simplify `this` using `only [neg_one_smul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isDer_neg {O : Module.End ℂ (Fock n)} {L : (Fin n × Fin n → ℂ) →ₗ[ℂ] (Fin n × Fin n → ℂ)}
     (h : IsDer O L) : IsDer (-O) (-L) := by
@@ -51,7 +51,7 @@ theorem isDer_neg {O : Module.End ℂ (Fock n)} {L : (Fin n × Fin n → ℂ) �
   simpa only [neg_one_smul] using this
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (isDer_zero (n := n))`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj]`. Conclude with `isDer_add (h j (Finset.mem_insert_self j s)) (ih fun k hk => h k (Finset.mem_insert_of_mem hk))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDer_sum {ι : Type*} (s : Finset ι) {O : ι → Module.End ℂ (Fock n)}
     {L : ι → (Fin n × Fin n → ℂ) →ₗ[ℂ] (Fin n × Fin n → ℂ)} (h : ∀ j ∈ s, IsDer (O j) (L j)) :
@@ -64,7 +64,7 @@ theorem isDer_sum {ι : Type*} (s : Finset ι) {O : ι → Module.End ℂ (Fock 
     exact isDer_add (h j (Finset.mem_insert_self j s)) (ih fun k hk => h k (Finset.mem_insert_of_mem hk))
 
 /- English proof (translation)
-The claim follows from `| 0, v => by simp only [cmV, ExteriorAlgebra.ιMulti_zero_apply, CliffordAlgebra.contractLeft_one, map_zero] rw [Fin.sum_univ_zero] | p + 1, v => by have ih := cpV_cmV_ιMulti u w p (Matrix.vecTail v) simp only [cmV, cpV, LinearMap.mulLeft_apply] at ih ⊢ have hanti : ExteriorAlgebr …`.
+A detailed English derivation is pending.
 -/
 theorem cpV_cmV_ιMulti (u w : Fin n × Fin n → ℂ) : ∀ (p : ℕ) (v : Fin p → (Fin n × Fin n → ℂ)),
     cpV u (cmV w (ExteriorAlgebra.ιMulti ℂ p v)) =
@@ -92,7 +92,7 @@ theorem cpV_cmV_ιMulti (u w : Fin n × Fin n → ℂ) : ∀ (p : ℕ) (v : Fin 
       simp only [Matrix.vecTail, Function.comp_apply, Function.update_apply, Fin.succ_inj]
 
 /- English proof (translation)
-Introduce `p v`. Rewrite using `[Module.End.mul_apply, cpV_cmV_ιMulti]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smulRight_apply, (ExteriorAlgebra.ιMulti ℂ p).map_update_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isDer_cpV_cmV (u w : Fin n × Fin n → ℂ) :
     IsDer (cpV u * cmV w) (LinearMap.smulRight (dualV w) u) := by
@@ -109,7 +109,7 @@ def Lab (ε : Fin n → Bool) (a b : Fin n) : (Fin n × Fin n → ℂ) →ₗ[�
   else 0
 
 /- English proof (translation)
-Unfold `sgE Lab`. Use `split_ifs`. Conclude with `isDer_sum _ fun x _ => by rw [cpFock_eq_cpV, cmFock_eq_cmV]; exact isDer_cpV_cmV _ _`. Conclude with `isDer_neg (isDer_sum _ fun i _ => by rw [cpFock_eq_cpV, cmFock_eq_cmV]; exact isDer_cpV_cmV _ _)`. Conclude with `isDer_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isDer_sgE (a b : Fin n) : IsDer (sgE ε (cpFock (n := n)) cmFock a b) (Lab ε a b) := by
   unfold sgE Lab
@@ -125,13 +125,13 @@ def LX (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) : (Fin n × Fin n 
   ∑ a, ∑ b, X a b • Lab ε a b
 
 /- English proof (translation)
-The claim follows from `isDer_sum _ fun a _ => isDer_sum _ fun b _ => isDer_smul _ (isDer_sgE a b)`.
+A detailed English derivation is pending.
 -/
 theorem isDer_sgX (X : Matrix (Fin n) (Fin n) ℂ) : IsDer (sgX ε X) (LX ε X) :=
   isDer_sum _ fun a _ => isDer_sum _ fun b _ => isDer_smul _ (isDer_sgE a b)
 
 /- English proof (translation)
-Take `⟨y1, y2⟩` from `y`. Unfold `Lab`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;>`. Apply the tactic sequence `simp [LinearMap.sum_apply, Finset.sum_apply, dualV_single, Pi.single_apply, minusIdx, plusIdx, Prod.ext_iff, ite_and, Finset.sum_ite_eq] <;>`. Apply the tactic sequence `by_cases h1 : ε y1 = true <;> simp [h1]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Lab_apply (a b : Fin n) (w : Fin n × Fin n → ℂ) (y : Fin n × Fin n) :
     Lab ε a b w y =
@@ -145,11 +145,11 @@ theorem Lab_apply (a b : Fin n) (w : Fin n × Fin n → ℂ) (y : Fin n × Fin n
     by_cases h1 : ε y1 = true <;> simp [h1]
 
 /- English proof (translation)
-Take `⟨y1, y2⟩` from `y`. Simplify using `only [LX, LinearMap.sum_apply, LinearMap.smul_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Lab_apply, mul_sub, Finset.sum_sub_distrib]`. Establish `h1 : ∑ a, ∑ b, X a b * (if ε a = true ∧ ε b = true ∧ y1 = a ∧ ε y2 = false then w (b, y2) else 0) = if IsPhys ε (y1, y2) then ∑ b ∈ plusIdx ε, X y1 b * w (b, y2) else 0`. Rewrite using `[Finset.sum_eq_single y1 (fun a _ ha => Finset.sum_eq_zero fun b _ => by simp [Ne.symm ha]) (by simp)]`. Unfold `IsPhys`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `by_cases hy1 : ε y1 = true <;> by_cases hy2 : ε y2 = false <;>`. Simplify using `[hy1, hy2, plusIdx, Finset.sum_filter]`. Establish `h2 : ∑ a, ∑ b, X a b * (if ε a = false ∧ ε b = false ∧ y2 = b ∧ ε y1 = true then w (y1, a) else 0) = if IsPhys ε (y1, y2) then ∑ a ∈ minusIdx ε, X a y2 * w (y1, a) else 0`. Rewrite using `[Finset.sum_congr rfl fun a _ => Finset.sum_eq_single y2 (fun b _ hb => by simp [Ne.symm hb]) (by simp)]`. Unfold `IsPhys`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `by_cases hy1 : ε y1 = true <;> by_cases hy2 : ε y2 = false <;>`. Simplify using `[hy1, hy2, minusIdx, Finset.sum_filter]`. Rewrite using `[h1, h2]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem LX_apply (X : Matrix (Fin n) (Fin n) ℂ) (w : Fin n × Fin n → ℂ) (y : Fin n × Fin n) :
     LX ε X w y = if IsPhys ε y then
@@ -180,13 +180,13 @@ def adD (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n × F
   else 0
 
 /- English proof (translation)
-Establish `he : ∀ c d, HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) c d) (X c d) 0`. Introduce `c d`. Apply the tactic sequence `have := hasDerivAt_exp_curve_entry (1 : Matrix (Fin n) (Fin n) ℂ) X c d`. Simplify `this` using `only [Matrix.one_mul]`. Establish `h0 : ∀ c d, NormedSpace.exp (((0 : ℝ) : ℂ) • X) c d = (1 : Matrix (Fin n) (Fin n) ℂ) c d`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `c d`. Simplify using the standard rewrite rules. Unfold `adMat adD`. Apply the tactic sequence `by_cases hx : IsPhys ε x <;> by_cases hy : IsPhys ε y`. Simplify using `only [hx, hy, if_true, and_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `h` using `(he x.1 y.1).fun_mul (he x.2 y.2).star`. Rewrite `h` using `[h0, h0]`. Conclude with `h`. Simplify using `only [hx, hy, if_true, if_false, and_false]`. Conclude with `hasDerivAt_const _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hx, if_false, false_and]`. Conclude with `hasDerivAt_const _ _`. Simplify using `only [hx, if_false, false_and]`. Conclude with `hasDerivAt_const _ _`.
+A detailed English derivation is pending.
 -/
 theorem adMat_exp_hasDeriv (X : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n × Fin n) :
     HasDerivAt (fun t : ℝ => adMat ε (NormedSpace.exp ((t : ℂ) • X)) x y) (adD ε X x y) 0 := by
@@ -211,7 +211,7 @@ theorem adMat_exp_hasDeriv (X : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n × Fin 
     exact hasDerivAt_const _ _
 
 /- English proof (translation)
-Simplify using `only [adPhys, Matrix.mulVecLin_apply, Matrix.mulVec, dotProduct]`. Conclude with `HasDerivAt.fun_sum fun y _ => (adMat_exp_hasDeriv X x y).mul_const (w y)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adPhys_exp_hasDeriv (X : Matrix (Fin n) (Fin n) ℂ) (w : Fin n × Fin n → ℂ) (x : Fin n × Fin n) :
     HasDerivAt (fun t : ℝ => adPhys ε (NormedSpace.exp ((t : ℂ) • X)) w x) (∑ y, adD ε X x y * w y) 0 := by
@@ -219,15 +219,15 @@ theorem adPhys_exp_hasDeriv (X : Matrix (Fin n) (Fin n) ℂ) (w : Fin n × Fin n
   exact HasDerivAt.fun_sum fun y _ => (adMat_exp_hasDeriv X x y).mul_const (w y)
 
 /- English proof (translation)
-Establish `hs : ∀ c d, star (X c d) = -X d c`. Introduce `c d`. Use `congrFun (congrFun hX d) c` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_apply]`. Rewrite using `[LX_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x1, x2⟩` from `x`. Unfold `adD IsPhys`. Establish `hst : ∀ c d : Fin n, star ((1 : Matrix (Fin n) (Fin n) ℂ) c d) = (1 : Matrix (Fin n) (Fin n) ℂ) c d`. Introduce `c d`. Rewrite using `[Matrix.one_apply]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Distinguish the cases in `hx : ε x1 = true ∧ ε x2 = false`. Simplify using `only [hx, true_and, if_true]`. Rewrite using `[Fintype.sum_prod_type]`. Use `trans ∑ b, ∑ c, ((if ε b = true ∧ c = x2 then X x1 b * w (b, c) else 0) + (if b = x1 ∧ ε c = false then -X c x2 * w (b, c) else 0))`.
+Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hb : ε b = true <;> by_cases hc : c = x2 <;> by_cases hb1 : b = x1 <;>`. Apply the tactic sequence `simp_all [Matrix.one_apply, Ne.symm] <;> ring`. Simplify using `only [Finset.sum_add_distrib]`. Simplify using `[ite_and, plusIdx, minusIdx, Finset.sum_filter, sub_eq_add_neg]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [hx, false_and, if_false, zero_mul, Finset.sum_const_zero]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_adD_eq_LX {X : Matrix (Fin n) (Fin n) ℂ} (hX : Xᴴ = -X) (w : Fin n × Fin n → ℂ)
     (x : Fin n × Fin n) : ∑ y, adD ε X x y * w y = LX ε X w x := by
@@ -258,7 +258,7 @@ theorem sum_adD_eq_LX {X : Matrix (Fin n) (Fin n) ℂ} (hX : Xᴴ = -X) (w : Fin
   · simp only [hx, false_and, if_false, zero_mul, Finset.sum_const_zero]
 
 /- English proof (translation)
-Simplify using `[adPhys, adMat_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adPhys_one' (w : Fin n × Fin n → ℂ) : adPhys ε 1 w = w := by
   simp [adPhys, adMat_one]
@@ -268,9 +268,9 @@ def wedgeCoord (p : ℕ) :
   (fockBasis n).equivFun.toLinearMap.compMultilinearMap (ExteriorAlgebra.ιMulti ℂ p).toMultilinearMap
 
 /- English proof (translation)
-Establish `hv : v = fun i => ∑ x, v i x • Pi.single x (1 : ℂ)`. Use function extensionality and compare the values at `i y`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hv]`. Rewrite using `[MultilinearMap.map_sum]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wedgeCoord_eq_sum (p : ℕ) (v : Fin p → (Fin n × Fin n → ℂ)) :
     wedgeCoord p v = ∑ r : Fin p → Fin n × Fin n,
@@ -285,7 +285,7 @@ theorem wedgeCoord_eq_sum (p : ℕ) (v : Fin p → (Fin n × Fin n → ℂ)) :
   rw [MultilinearMap.map_smul_univ]
 
 /- English proof (translation)
-Establish `h : (wedgeCoord (n` using `n) p : (Fin p → (Fin n × Fin n → ℂ)) → (Finset (Fin (n * n)) → ℂ)) = fun v => ∑ r : Fin p → Fin n × Fin n, (∏ i, v i (r i)) • wedgeCoord p (fun i => Pi.single (r i) (1 : ℂ)) :=`. Use function extensionality and compare the values at `(wedgeCoord_eq_sum p)`. Rewrite using `[h]`. Use `fun_prop`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wedgeCoord_continuous (p : ℕ) : Continuous (wedgeCoord (n := n) p) := by
   have h : (wedgeCoord (n := n) p : (Fin p → (Fin n × Fin n → ℂ)) → (Finset (Fin (n * n)) → ℂ)) =
@@ -300,13 +300,13 @@ def wedgeCoordC (p : ℕ) :
   { toMultilinearMap := wedgeCoord p, cont := wedgeCoord_continuous p }
 
 /- English proof (translation)
-Use `set c : ℝ → (Fin p → (Fin n × Fin n → ℂ)) := fun t i => adPhys ε (NormedSpace.exp ((t : ℂ) • X)) (v i) with hcdef`. Establish `hc : HasDerivAt c (fun i => LX ε X (v i)) 0`. Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun x => ?_` and prove the remaining obligations. Rewrite using `[← sum_adD_eq_LX hX]`. Conclude with `adPhys_exp_hasDeriv X (v i) x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hc0 : c 0 = v`. Use function extensionality and compare the values at `i`. Simplify using `[c, adPhys_one']`. Establish `hF` using `(wedgeCoordC (n := n) p).hasFDerivAt (c 0)`. Establish `h` using `(hF.restrictScalars ℝ).comp_hasDerivAt (0 : ℝ) hc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hfun : (fun t : ℝ => (fockBasis n).equivFun (ff ε (NormedSpace.exp ((t : ℂ) • X)) (ExteriorAlgebra.ιMulti ℂ p v))) = (wedgeCoordC (n` using `n) p) ∘ c := by`. Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp_apply, ff, ExteriorAlgebra.map_apply_ιMulti]`. Both sides reduce to the same expression. Rewrite using `[hfun]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `all_goals try rfl`. Rewrite using `[ContinuousLinearMap.coe_restrictScalars', ContinuousMultilinearMap.linearDeriv_apply, hc0, isDer_sgX, map_sum]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ff_exp_wedge_hasDeriv {X : Matrix (Fin n) (Fin n) ℂ} (hX : Xᴴ = -X) (p : ℕ)
     (v : Fin p → (Fin n × Fin n → ℂ)) :
@@ -338,9 +338,9 @@ theorem ff_exp_wedge_hasDeriv {X : Matrix (Fin n) (Fin n) ℂ} (hX : Xᴴ = -X) 
   rfl
 
 /- English proof (translation)
-Establish `hf : f = ∑ S, (fockBasis n).repr f S • fockBasis n S` using `((fockBasis n).sum_repr f).symm`. Rewrite using `[hf]`. Simplify using `only [map_sum, map_smul]`. Use `HasDerivAt.fun_sum fun S _ => ?_` and prove the remaining obligations. Use `HasDerivAt.const_smul ((fockBasis n).repr f S) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[fockBasis_eq]`. Conclude with `ff_exp_wedge_hasDeriv hX _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ff_exp_hasDeriv {X : Matrix (Fin n) (Fin n) ℂ} (hX : Xᴴ = -X) (f : Fock n) :
     HasDerivAt (fun t : ℝ => (fockBasis n).equivFun (ff ε (NormedSpace.exp ((t : ℂ) • X)) f))

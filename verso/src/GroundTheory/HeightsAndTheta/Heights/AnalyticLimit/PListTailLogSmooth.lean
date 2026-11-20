@@ -17,13 +17,11 @@ noncomputable section
 variable {D : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas D X}
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨j, hxs, hxW⟩` from `R.cover x`. Establish `hW : R.ψ j x ∈ R.W j` using `R.closure_W'_subset j (subset_closure (R.closure_W''_subset j (subset_closure hxW)))`. Establish `hnd : R.ψ j x ∉ coordDiv (R.S j)` using `(R.mem_Yo_iff j _ hW).1 (by rw [(R.ψ j).left_inv hxs]; exact hx)`. Establish `hne : ∀ i ∈ R.S j, R.ψ j x i ≠ 0` using `fun i hi h0 => hnd ⟨i, hi, h0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : (Fin D → ℂ) → ℝ` to `fun z => Real.exp 1 + R.f j z - ∑ i ∈ R.S j, Real.log (‖z i‖ ^ 2)`. Establish `hg : ContinuousAt g (R.ψ j x)`. Use `(continuousAt_const.add ((R.f_cont j).continuousAt ((R.isOpen_kappaOpenNeighbourhood j).mem_nhds hW))).sub (tendsto_finsetSum (R.S j) fun i hi => ?_)` and prove the remaining obligations. Conclude with `((continuous_apply i).continuousAt.norm.pow 2).log (pow_pos (norm_pos_iff.2 (hne i hi)) 2).ne'`. Establish `hz : ∀ᶠ z in 𝓝 (R.ψ j x), z ∈ R.W j ∧ z ∉ coordDiv (R.S j)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(show ∀ᶠ z in 𝓝 (R.ψ j x), z ∈ R.W j from (R.isOpen_kappaOpenNeighbourhood j).mem_nhds hW).and ?_` and prove the remaining obligations. Establish `: ∀ᶠ z in 𝓝 (R.ψ j x), ∀ i ∈ R.S j, z i ≠ 0` using `(eventually_all_finset _).2 fun i hi => (continuous_apply i).continuousAt.eventually_ne (hne i hi)`. Conclude with `this.mono fun z hz ⟨i, hi, h0⟩ => hz i hi h0`. Establish `hev : R.r =ᶠ[𝓝 x] g ∘ R.ψ j` using `by filter_upwards [((R.ψ j).continuousAt hxs).eventually hz, (R.ψ j).open_source.mem_nhds hxs] with y hy hys`. Use `R.r_chart j (R.ψ j y) ⟨hy.1, hy.2⟩` as an intermediate fact.
-
-Rewrite `this` using `[(R.ψ j).left_inv hys]`. Conclude with `this`. Conclude with `((hg.comp ((R.ψ j).continuousAt hxs)).congr hev.symm).continuousWithinAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regChartData_continuousOn_r (R : RegChartData A) : ContinuousOn R.r R.Yo := by
   intro x hx
@@ -52,7 +50,7 @@ theorem regChartData_continuousOn_r (R : RegChartData A) : ContinuousOn R.r R.Yo
   exact ((hg.comp ((R.ψ j).continuousAt hxs)).congr hev.symm).continuousWithinAt
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `h1` using `R.le_φ x hx`. Establish `h2` using `R.φ_le x hx`. Establish `h3 : 0 ≤ Real.log (R.r x)` using `Real.log_nonneg (R.one_le_r x hx)`. Use the polynomial consequences of the given equalities and inequalities.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem regChartData_C_nonneg (R : RegChartData A) {x : X} (hx : x ∈ R.Yo) : 0 ≤ R.C := by
   by_contra h
@@ -91,29 +89,25 @@ def regChartShift (R : RegChartData A) : RegChartData A :=
         (Real.exp_le_exp.2 (by linarith)) (Real.exp_pos _).le (by positivity)) }
 
 /- English proof (translation)
-Introduce `R₀ hR₀`. Take `⟨hI, hB⟩` from `h R₀ hR₀`. Establish `he : (1 : ℝ) ≤ R₀` using `le_trans (by linarith [Real.add_one_le_exp (1 : ℝ)]) hR₀`. Use `set gs := (tail Yo r R₀).indicator fun x => Real.log (r x) with hgs`. Use `set gb := (tail Yo r' R₀).indicator fun x => Real.log (r' x) with hgb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : ∀ x, 0 ≤ gs x ∧ gs x ≤ gb x`. Introduce `x`. Distinguish the cases in `hx : x ∈ tail Yo r R₀`. Establish `hx' : x ∈ tail Yo r' R₀` using `⟨hx.1, hx.2.trans (hle x hx.1)⟩`. Rewrite using `[hgs, hgb, indicator_of_mem hx, indicator_of_mem hx']`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Real.log_nonneg (he.trans hx.2), Real.log_le_log (by linarith [hx.2]) (hle x hx.1)⟩`. Rewrite using `[hgs, indicator_of_notMem hx]`. Use `⟨le_rfl, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx' : x ∈ tail Yo r' R₀`. Rewrite using `[hgb, indicator_of_mem hx']`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Real.log_nonneg (he.trans hx'.2)`. Rewrite using `[hgb, indicator_of_notMem hx']`. Establish `hI' : MIntegrable A T gs`. Introduce `k K hK hKc`. Use `set U := (A.chart k).target ∩ (A.chart k).symm ⁻¹' Yo with hUdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : IsOpen U` using `(A.chart k).isOpen_inter_preimage_symm hYo`. Establish `hF : ContinuousOn (fun y => r ((A.chart k).symm y)) U` using `hr.comp ((A.chart k).continuousOn_symm.mono inter_subset_left) fun y hy => hy.2`. Use `set Ms := U ∩ (fun y => r ((A.chart k).symm y)) ⁻¹' Ici R₀ with hMs`. Establish `hM : MeasurableSet Ms`. Establish `ho` using `hF.isOpen_inter_preimage hU (isOpen_Iio (a := R₀))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `e : Ms = U \ (U ∩ (fun y => r ((A.chart k).symm y)) ⁻¹' Iio R₀)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hu, hge⟩`. Conclude with `⟨hu, fun hm => (not_le.2 (show r ((A.chart k).symm y) < R₀ from hm.2)) (show R₀ ≤ r ((A.chart k).symm y) from hge)⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨hu, hn⟩`. Conclude with `⟨hu, show R₀ ≤ r ((A.chart k).symm y) from not_lt.1 fun hlt => hn ⟨hu, hlt⟩⟩`. Rewrite using `[e]`. Conclude with `hU.measurableSet.diff ho.measurableSet`. Establish `hlog : ContinuousOn (fun y => Real.log (r ((A.chart k).symm y))) Ms` using `(hF.mono inter_subset_left).log fun y hy => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `: R₀ ≤ r ((A.chart k).symm y)` using `hy.2`. Conclude with `(by linarith : (0 : ℝ) < _).ne'`. Establish `hcongr : (fun y => gs ((A.chart k).symm y)) =ᵐ[volume.restrict K] Ms.indicator fun y => Real.log (r ((A.chart k).symm y))`. Use `ae_restrict_of_forall_mem hKc.measurableSet fun y hy => ?_` and prove the remaining obligations. Establish `hyt` using `hK hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hc : (A.chart k).symm y ∈ tail Yo r R₀`. Use `show (tail Yo r R₀).indicator (fun x => Real.log (r x)) ((A.chart k).symm y) = _`. Rewrite using `[indicator_of_mem hc, indicator_of_mem (show y ∈ Ms from ⟨⟨hyt, hc.1⟩, hc.2⟩)]`. Use `show (tail Yo r R₀).indicator (fun x => Real.log (r x)) ((A.chart k).symm y) = _`. Rewrite using `[indicator_of_notMem hc, indicator_of_notMem (show y ∉ Ms from fun hm => hc ⟨hm.1.2, hm.2⟩)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmeas : AEStronglyMeasurable (fun y => gs ((A.chart k).symm y) * ReciprocityTheory.AnForm.M.locDens A T k y) (volume.restrict K)` using `(((aestronglyMeasurable_indicator_iff hM).2 (hlog.aestronglyMeasurable hM)).congr hcongr.symm).mul (((ReciprocityTheory.AnForm.M.locDensCont A T hpot k).mono hK).aestronglyMeasurable hKc.measurableSet)`. Use `(hI k K hK hKc).norm.mono' hmeas (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Simplify using `only [norm_mul]`. Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (hg _).1, Real.norm_of_nonneg ((hg _).1.trans (hg _).2)]`.
-
-Conclude with `(hg _).2`. Use `⟨hI', ?_⟩` and prove the remaining obligations. Establish `hlin` using `ReciprocityTheory.AnForm.M.mIntLinear A T hpot (-1) gs gb hI' hI`. Establish `h0` using `SystemIndependence.mInt_nonneg_on A Yo T hpot hnn (fun x => -1 * gs x + gb x) (fun x => by linarith [hg x]) (fun x hx => by`. Rewrite using `[hgs, hgb, indicator_of_notMem (fun h => hx h.1), indicator_of_notMem (fun h => hx h.1)]`.
-
-Use the proof step `ring)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tailLogBound_of_le [CompactSpace X] [T2Space X] {Yo : Set X} (hYo : IsOpen Yo)
     {r r' : X → ℝ} (hr : ContinuousOn r Yo) (hle : ∀ x ∈ Yo, r x ≤ r' x) {T : Fin D → LocPot X}
@@ -188,11 +182,11 @@ theorem tailLogBound_of_le [CompactSpace X] [T2Space X] {Yo : Set X} (hYo : IsOp
   linarith
 
 /- English proof (translation)
-Introduce `D X _ _ _ A R Om C₁`. Establish `he1 : 0 ≤ Real.exp 1 - 1` using `by linarith [Real.add_one_le_exp (1 : ℝ)]`. Take `⟨CE, hCE⟩` from `h D A (regChartShift R) (fun x hx => by show Real.exp 1 ≤ R.r x + (Real.exp 1 - 1)`. Combine the linear relations using `[R.one_le_r x hx]) Om (max C₁ 0)`. Use `⟨CE, fun th u hT => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpot : ∀ i, IsPotential A (potForm (th i) (u i))` using `fun i => ReciprocityTheory.AnForm.M.isPotentialAdd A _ _ (hT i).1.th_pot (ReciprocityTheory.AnForm.M.isPotential_ofFun A _ (hT i).2)`. Use `tailLogBound_of_le R.isOpen_Yo (regChartData_continuousOn_r R) (r' := (regChartShift R).r) (fun x _ => by show R.r x ≤ R.r x + (Real.exp 1 - 1); linarith) hpot (fun i => (hT i).1.nonneg) (hCE th u fun j => ?_)` and prove the remaining obligations. Conclude with `{ (hT j).1 with le_u := fun x hx => by`. Establish `h1` using `R.one_le_r x hx`. Establish `hl : Real.log (R.r x) ≤ Real.log (R.r x + (Real.exp 1 - 1))` using `Real.log_le_log (by linarith) (by linarith)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `Real.log_nonneg h1`. Establish `hu` using `(hT j).1.le_u x hx`. Use `show -(max C₁ 0 * Real.log (R.r x + (Real.exp 1 - 1))) ≤ u j x`. Use polynomial arithmetic with `[le_max_left C₁ 0, le_max_right C₁ 0] }`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem ListTailLogSmooth.proof (h : ListTailLog.Statement) : ListTailLogSmooth.Statement := by
   intro D X _ _ _ A R Om C₁

@@ -43,9 +43,9 @@ open Formalism.GradedWeylDivisibility TF
 open Formalism.L2.G.Model (dE dual_edgeBasis pQ_ne edgeBasis dual_edge Th0)
 
 /- English proof (translation)
-Introduce `p n' _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS φ hφ m TT aT bT hm e he`. Use `letI : Algebra (WF p n') O := algOfIdent jO φ`. Take `⟨b, hb⟩` from `edgeBasis hS m 1 e he`. Establish `hb'` using `dual_edgeBasis p 1 (pQ_ne hS) e b hb`. Take `⟨Θ, hΘ1, hΘ2⟩` from `flatTheta hS φ hφ m TT aT bT hm b hb.1`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Θ', hΘ1', hΘ2'⟩` from `flatTheta hS φ hφ m TT aT bT hm _ hb'.1`. Take `⟨thK, hthK⟩` from `exists_thK Kf hm (vecH TT) (hhDegs TT aT bT)`. Establish `hpO : (p : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 (settingCZ p n' W Qq O Kf ι σ jO w hS).2`. Establish `hMD : MultDiv O p (kapZ p m TT aT bT) (k` using `m + 1) (hhDegs TT aT bT) := multDiv_kapFl O p hpO (k := m + 1) (hhDegs TT aT bT)`. Use `⟨b, _, Θ, Θ', XiH thK (zK Kf p (kapZ p m TT aT bT) TT aT bT), ⟨hΘ1, hb.2.1, by rw [mul_matQ_one]; exact hb⟩, ⟨(dual_edge hS m 1 e he).1, hΘ1', hb'.2.1, by rw [mul_matQ_one]; exact hb'⟩, fun t c v hv => Xi_CC thK hS hm hthK _ hMD e he t c v hv, fun F => lift_Pol hS φ hφ m TT aT bT …` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem testFlatAt1 : TestFlatAt1 := by
   intro p n' _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS φ hφ m TT aT bT hm e he
@@ -88,31 +88,27 @@ def SrcHalfAt1 (C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc : ℝ) : Prop :=
            (F : MvPolynomial ((X.TT × Bool) × Fin (X.m + 1)) (KK O)) - symFam (KK O) X.p C0 CE1 CE2 X β s) X.c)
 
 /- English proof (translation)
-Introduce `X _ _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hH hc hc1 φ hφ h Θ hΘ e he hsrc hgE β hβ s hs`. Use `letI : Algebra (WF X.p X.n') O := algOfIdent jO φ`. Establish `hD1 : D1num X` using `⟨hS.1.prime, hS.1.five_le, hS.1.two_le, hS.1.even⟩`. Establish `St` using `hstd X hD1 hH hc`. Establish `hw0 : w ≠ 0` using `hS.2.1.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsFractionRing O Kf := hS.1.frac_O`. Establish `hmar : 13 * X.k * X.N1 * X.Q * (X.c : ℝ) + 12 * (X.c : ℝ) ≤ X.m0 Cm`. Establish `hk : 0 ≤ X.k` using `by unfold Loc.k; positivity`. Establish `hQ : 0 ≤ X.Q` using `by unfold Loc.Q; positivity`. Establish `h1 : 0 ≤ X.k * X.N1 * X.Q * (X.c : ℝ)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Loc.m0 m0G4 m1G4`. Use the polynomial consequences of the given equalities and inequalities. Establish `hs' : ∀ j, s j ∈ (blockData X.p (X.seg C0 CE1 CE2 j) (segATop X.TT X.aT j) (segAPlus X.TT X.aT j) (13 * X.k * X.N1 * X.Q * (X.c : ℝ) + 12 * (X.c : ℝ)) (β j)).SSZ O (r` using `X.m) := fun j => hM O X.p X.m _ _ _ (β j) _ _ hmar (hs j)`. Establish `h44'` using `h44 X O (dvrOfStd hS) (dvrOfStd_sq hS) hD1 hH hc (12 * (X.c : ℝ)) (Or.inr rfl) β hβ s hs'`. Establish `hg : IsGLW (1 : Matrix (Fin (X.m + 1)) (Fin (X.m + 1)) (WF X.p X.n'))` using `TF.isGLW_one _`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `hg1 : (1 : Matrix (Fin (X.m + 1)) (Fin (X.m + 1)) (WF X.p X.n')) = g at hgE h44' hg ⊢`. Take `⟨F, hFP, hA, hcong, hg'⟩` from `h44'`. Set `F' : ↥((Pol (KK O) (ι` to `X.TT × Bool) (X.m + 1) (hhDegs X.TT X.aT X.bT)).restrictScalars O) := ⟨F, hFP⟩`. Use `⟨F', ?_, hcong⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `hΘ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set o := ∑ j, blockOrd X.p (X.seg C0 CE1 CE2 j) (β j) with ho`. Establish `hot : o ≤ ⌊X.t0 C0 Ct⌋₊` using `Nat.le_floor (ord_all St hCt β hβ)`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hAo : InA (O` using `O) (((w ^ o : O) • F' : ↥((Pol (KK O) (ι := X.TT × Bool) (X.m + 1) (hhDegs X.TT X.aT X.bT)).restrictScalars O)) : MvPolynomial ((X.TT × Bool) × Fin (X.m + 1)) (KK O)) := by`. Establish `: (((w ^ o : O) • F' : ↥((Pol (KK O) (ι` using `X.TT × Bool) (X.m + 1) (hhDegs X.TT X.aT X.bT)).restrictScalars O)) : MvPolynomial ((X.TT × Bool) × Fin (X.m + 1)) (KK O)) = C (algebraMap O (KK O) ((dvrOfStd hS).w ^ o)) * F := by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Submodule.coe_smul, Algebra.smul_def, MvPolynomial.algebraMap_apply]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hA`. Establish `hmem` using `(h1 _).1 hAo`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hmem` using `[map_smul]`. Rewrite using `[hsrc]`. Establish `hne : algebraMap O Kf w ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O Kf)).2 hw0`. Establish `key : ∀ v : ↥(VHH (m` using `X.m) Kf X.TT X.aT X.bT), (algebraMap O Kf w ^ (-(⌊X.t0 C0 Ct⌋₊ : ℤ))) • ((w ^ ⌊X.t0 C0 Ct⌋₊ : O) • v) = v := by`. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul Kf (w ^ ⌊X.t0 C0 Ct⌋₊) v, smul_smul, map_pow, zpow_neg, zpow_natCast, inv_mul_cancel₀ (pow_ne_zero _ hne), one_smul]`. Use `⟨(w ^ (⌊X.t0 C0 Ct⌋₊ - o)) • ((w ^ o) • Θ F'), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.smul_mem _ _ hmem`. Use `show (algebraMap O Kf w ^ (-(⌊X.t0 C0 Ct⌋₊ : ℤ))) • ((w ^ (⌊X.t0 C0 Ct⌋₊ - o)) • ((w ^ o) • Θ F')) = Θ F'`. Rewrite using `[smul_smul, ← pow_add, Nat.sub_add_cancel hot]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `key _`. Establish `hint : InWjRg X.p X.n' O w 1 (hhLetters X.TT) g F 0`. Introduce `mm`. Take `⟨a, ha⟩` from `hI X O _ β s hs' mm`. Take `⟨b, hb⟩` from `hcong mm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a + w ^ X.c * b, ?_⟩` and prove the remaining obligations. Establish `e1` using `congrArg (fun P => P) (sub_add_cancel (liftSubst X.p X.n' O w 1 (hhLetters X.TT) g F) (symFam (KK O) X.p C0 CE1 CE2 X β s))`. Rewrite using `[pow_zero, one_mul, map_add, ← ha]`. Establish `: (dvrOfStd hS).w = w` using `rfl`. Rewrite `hb` using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hb, ← MvPolynomial.coeff_add, add_sub_cancel]`. Use `(h2 g hg e hgE F' 0).1 hint` as an intermediate fact. Establish `h0 : (algebraMap O Kf w ^ ((0 : ℕ) : ℤ)) = 1` using `by simp`. Rewrite `this` using `[h0]`. Conclude with `scale_one_mem this`.
-
-Use `(Submodule.mem_iInf _).2 fun e' => (Submodule.mem_iInf _).2 fun hh => ?_` and prove the remaining obligations. Take `⟨he', hsrc', hne⟩` from `hh`. Take `⟨g', hg'1, hg'E⟩` from `h3 e' he' (hsrc'.trans hsrc)`. Establish `hpl : ratPlane X.p X.n' 1 g' ≠ ratPlane X.p X.n' 1 g` using `fun heq => hne (hP X.p X.n' W Qq X.m φ h g g' e e' hS.1.frac_alt hg hg'1 hgE hg'E heq)`. Use `hg' g' hg'1 hpl` as an intermediate fact.
-
-Conclude with `(h2 g' hg'1 e' hg'E F' X.c).1 this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem srcHalf1_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc H : ℝ} (hCm : 13 ≤ Cm) (hCt : 30 ≤ Ct)
     (hstd : ∀ X : Loc, D1num X → HIext C0 CYb Cde Ck CD Cb X → CBound Cc X → Std C0 Cde CE1 CE2 H X)
@@ -193,27 +189,25 @@ theorem srcHalf1_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc H : ℝ} (hCm : 13 ≤
     exact (h2 g' hg'1 e' hg'E F' X.c).1 this
 
 /- English proof (translation)
-Introduce `X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS hH hc hc1 e he`. Use `haveI : Fact X.p.Prime := ⟨hS.1.prime⟩`. Use `haveI := hS.1.frac_O`. Take `⟨φ, hφ⟩` from `hW X.p X.n' W Qq O Kf ι σ jO w hS.1`. Use `letI : Algebra (WF X.p X.n') O := algOfIdent jO φ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm : 1 ≤ X.m` using `Nat.one_le_iff_ne_zero.2 (NeZero.ne X.m)`. Take `⟨h, h', Θ, Θ', Ξ, ⟨hΘ, hsrc, hgE⟩, ⟨he', hΘ', hsrc', hgE'⟩, hΞ, hPol, hpair⟩` from `hT X.p X.n' W Qq O Kf ι σ jO w hS.1 φ hφ X.m X.TT X.aT X.bT hm e he`. Take `⟨κ, s, s', hκ, hmem, hform⟩` from `hForm X W Qq O Kf ι σ jO w hS hH hc hc1`. Establish `hF : ∀ (β : GlobalTheory X) (u : Vecs O C0 CE1 CE2 X), ∃ Fv : ↥(VHH (m` using `X.m) Kf X.TT X.aT X.bT), (¬ (KeptAll C0 CE1 CE2 X β ∧ FamOK O C0 CE1 CE2 Cm X β u) → Fv = 0) ∧ (KeptAll C0 CE1 CE2 X β → FamOK O C0 CE1 CE2 Cm X β u → Fv ∈ CCe X.p ι σ w X.TT X.aT X.bT ⌊X.t0 C0 Ct⌋₊ X.c e ∧ ∃ F, Fv = Θ F ∧ InWj w (liftSubst X.p X.n' O w 1 (hhLetters X.TT) (1 : Ma …`. Introduce `β u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hk : KeptAll C0 CE1 CE2 X β ∧ FamOK O C0 CE1 CE2 Cm X β u`. Take `⟨F, hF1, hF2⟩` from `hSrc X W Qq O Kf ι σ jO w hS hH hc hc1 φ hφ h Θ hΘ e he hsrc hgE β hk.1 (s β u) (hmem β u hk.1 hk.2).1`. Conclude with `⟨Θ F, fun hn => absurd hk hn, fun _ _ => ⟨hF1, F, rfl, hF2⟩⟩`. Conclude with `⟨0, fun _ => rfl, fun a b => absurd ⟨a, b⟩ hk⟩`. Establish `hG : ∀ (β : GlobalTheory X) (u : Vecs O C0 CE1 CE2 X), ∃ Gv : Module.Dual Kf ↥(VHH (m` using `X.m) Kf X.TT X.aT X.bT), (¬ (KeptAll C0 CE1 CE2 X β ∧ FamOK O C0 CE1 CE2 Cm X β u) → Gv = 0) ∧ (KeptAll C0 CE1 CE2 X β → FamOK O C0 CE1 CE2 Cm X β u → Gv ∈ CCe' X.p ι σ w X.TT X.aT X.bT ⌊X.t0 C0 Ct⌋₊ X.c e ∧ ∃ F, Gv = Ξ (Θ' F) ∧ InWj w (liftSubst X.p X.n' O w 1 (hhLetters X.TT) ( …`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `β u`. Distinguish the cases in `hk : KeptAll C0 CE1 CE2 X β ∧ FamOK O C0 CE1 CE2 Cm X β u`. Take `⟨F, hF1, hF2⟩` from `hSrc X W Qq O Kf ι σ jO w hS hH hc hc1 φ hφ h' Θ' hΘ' e.dual he' hsrc' hgE' β hk.1 (s' β u) (hmem β u hk.1 hk.2).2`. Conclude with `⟨Ξ (Θ' F), fun hn => absurd hk hn, fun _ _ => ⟨hΞ _ _ _ hF1, F, rfl, hF2⟩⟩`. Conclude with `⟨0, fun _ => rfl, fun a b => absurd ⟨a, b⟩ hk⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose Fv hFv0 hFv using hF`. Use `choose Gv hGv0 hGv using hG`. Use `⟨κ, Fv, Gv, hκ, ?_, ?_⟩` and prove the remaining obligations. Introduce `β u hu`. Distinguish the cases in `hk : KeptAll C0 CE1 CE2 X β`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨(hFv β u hk hu).1, (hGv β u hk hu).1⟩`. Rewrite using `[hFv0 β u fun hh => hk hh.1, hGv0 β u fun hh => hk hh.1]`. Conclude with `⟨Submodule.zero_mem _, Submodule.zero_mem _⟩`. Introduce `β u β' u' hu hu' a ha`. Establish `hinj : Function.Injective (algebraMap O (KK O))` using `IsFractionRing.injective O (KK O)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hk : KeptAll C0 CE1 CE2 X β`. Distinguish the cases in `hk' : KeptAll C0 CE1 CE2 X β'`. Take `⟨-, F, hF1, hF2⟩` from `hFv β u hk hu`. Take `⟨-, F', hF1', hF2'⟩` from `hGv β' u' hk' hu'`. Take `⟨ν, hν⟩` from `hform β u β' u' hk hk' hu hu' a ha _ (hPol F) _ (hPol F') hF2 hF2'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨ν, by rw [hF1, hF1']; exact hpair F F' _ hν⟩`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[hGv0 β' u' fun hh => hk' hh.1]`. Establish `hne : β ≠ β'` using `fun hh => hk' (hh ▸ hk)`. Rewrite using `[if_neg hne]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `[beHH]`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[hFv0 β u fun hh => hk hh.1]`. Take `⟨j0, hj0⟩` from `not_forall.1 hk`. Establish `hu0 : u j0 = 0` using `famOK_zero hu hj0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ha0 : a j0 = 0`. Use `ha j0` as an intermediate fact. Rewrite `this` using `[hu0, segForm_zero_left]`. Conclude with `hinj (by rw [← this, map_zero])`. Establish `hprod : ∏ j, a j = 0` using `Finset.prod_eq_zero (Finset.mem_univ j0) ha0`.
-
-Rewrite using `[hprod]`. Simplify using `[beHH]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem paired_lift_at_of_identity {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc : ℝ} (hW : WittIdent) (hT : TestFlatAt1)
     (hSrc : SrcHalfAt1 C0 CYb Cde Ck CD Cb CE1 CE2 13 Ct Cc) (hForm : FormAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc) :
@@ -289,7 +283,7 @@ theorem paired_lift_at_of_identity {C0 CYb Cde Ck CD Cb CE1 CE2 Cm Ct Cc : ℝ} 
       simp [beHH]
 
 /- English proof (translation)
-Establish `hAll` using `TransportedAlt.and (TransportedAlt.and (TransportedAlt.and hRT restKeptBL) hForm) thr_std`. Use `TransportedAlt.mono ?_ hAll` and prove the remaining obligations. Introduce and unpack `C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc ⟨⟨⟨hR, hK⟩, hF⟩, -, hstd⟩`. Use `⟨30, by norm_num, fun Ct hCt => ?_⟩` and prove the remaining obligations. Conclude with `paired_lift_at_of_identity hW testFlatAt1 (srcHalf1_of (le_refl 13) hCt hstd (lemma44_identity_of_raw_tail hR hK) monoAt planeAt (symIntAt C0 CE1 CE2)) hF`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem paired_lifts_of_identity (hW : WittIdent) (hRT : RestRawTail1) (hForm : RestForm) : RestPairLift := by
   have hAll := TransportedAlt.and (TransportedAlt.and (TransportedAlt.and hRT restKeptBL) hForm) thr_std

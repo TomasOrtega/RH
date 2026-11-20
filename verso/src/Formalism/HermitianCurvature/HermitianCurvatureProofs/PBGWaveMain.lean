@@ -11,11 +11,11 @@ namespace Formalism.FourierDecayAlt.P.PBG
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Distinguish the cases in `he : e = 0`. Substitute `he` using the available equality. Establish `hD0 : Dmin k r z z' g 0 = 1` using `by simp [Dmin]`. Break down `l with ⟨b, Y⟩` into its components or cases.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Apply the tactic sequence `cases b <;>`. Apply the tactic sequence `simp [D.vLet, C3.AAop, C3.AAvop, qminorOp, Matrix.det_isEmpty, Finset.univ_unique] <;>`. Apply the tactic sequence `rw [if_pos (show StrictMono _ from fun a => a.elim0)] <;> simp [hD0]`. Establish `he1 : e = 1` using `by omega`. Substitute `he1` using the available equality.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Substitute using the available equality.
 
-Simplify using `[D.vLet]`.
+Simplify using the standard rewrite rules.
 -/
 theorem letter_level_zero_eq {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (z z' : Fin (2 * r + k + 1) → ℂ)
     (hj : 0 ≤ r) (l : C.Letter) (e : Fin 2) (G : B.Mat k r → E) :
@@ -33,15 +33,15 @@ theorem letter_level_zero_eq {k r : ℕ} {E : Type} [NormedAddCommGroup E] [Norm
     simp [D.vLet]
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p F hF j hj h hh w' b δ e`. Distinguish the cases in `hj0 : j = 0`. Substitute `hj0` using the available equality. Use `⟨fun _ => if e = 0 then KB.slv p.T F 0 hj w' h hh.2 else 0, rfl, fun l => ?_, fun t => ?_⟩` and prove the remaining obligations. Distinguish the cases in `he : e = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [he, if_true]`. Conclude with `nice_vec_of_cpt (p.T.bs 0) (fun a => Formalism.FourierDecayAlt.P.slice_compact_support_coefficient Wp Wq P p F 0 hj w' h hh hF a)`. Simplify using `only [he, if_false]`. Conclude with `⟨0, fun a => Formalism.FourierDecayAlt.P.JCx2.mn_nice_zero⟩`. Introduce `a g hg show D.castF _ (D.sliceAt P.k P.r p.T.base.z p.T.base.z' (D.vLet P.k P.r p.T.base.z p.T.base.z' 0 hj (b, t + δ) e (D.uwG P.k P.r p.T.base.z p.T.base.z' F 0 hj w' a)) h) g = _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[letter_level_zero_eq]`. Distinguish the cases in `he : e = 0`. Simplify using `[he, Finset.sum_apply, Fin.sum_univ_succ, KB.slv]`. Simplify using `[he, sliceAt_zero, Finset.sum_apply, D.castF]`. Use `slicePoly_of_pt p.T F hF j hj (by omega) h hh w' b δ e (fun a g hg hD => ?_)` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hcl, hc⟩` from `uwG_letter_poly p.T.base.z p.T.base.z' j hj hF.1 w' a g hg hD b e`. Take `⟨c', hc'l, hsh⟩` from `poly_shift j c (δ : ℂ)`. Use `⟨c', hc'l.trans hcl, fun t => ?_⟩` and prove the remaining obligations. Use `show D.vLet P.k P.r p.T.base.z p.T.base.z' j hj (b, t + δ) e (D.uwG P.k P.r p.T.base.z p.T.base.z' F j hj w' a) g = _`. Rewrite using `[hc (t + δ), ← hsh (t : ℂ)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Use `push_cast`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem slicePolyAll : SlicePolyAll := by
   intro Wp Wq _ _ _ _ _ _ P p F hF j hj h hh w' b δ e
@@ -71,7 +71,7 @@ theorem slicePolyAll : SlicePolyAll := by
     rfl
 
 /- English proof (translation)
-The claim follows from `degWave_of slicePolyAll`.
+A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.FourierDecayAlt.P.degree_of_plane_wave : KB.DegWave := degWave_of slicePolyAll
 

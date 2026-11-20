@@ -53,7 +53,7 @@ def Ext.ev (z : Φ.Ext) : B := Prod.fst z
 def Ext.od (z : Φ.Ext) : N := Prod.snd z
 
 /- English proof (translation)
-The claim follows from `Prod.ext h h'`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem Ext.ext {z w : Φ.Ext} (h : z.ev = w.ev) (h' : z.od = w.od) : z = w := Prod.ext h h'
 
@@ -198,7 +198,7 @@ namespace TrInv.Units
 variable {T : TrInv B E} {ι : Type*} [Fintype ι] {o : ι → ι} (U : T.Units ι o)
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `U.rank_one i y`. Rewrite using `[hb, map_smul, U.tr_ep, smul_eq_mul, mul_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem corner_eq (i : ι) (y : E) : U.ep i * y * U.ep i = T.tr (U.ep i * y * U.ep i) • U.ep i := by
   obtain ⟨b, hb⟩ := U.rank_one i y

@@ -4,7 +4,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.TaylorDiscriminants.
 open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ ReciprocityTheory.ChartRestriction.G.TB
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.nabVal_character_columns_of_canonGauge` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FCovariantDerivativeValueCharacterGerms.lean&line=11#L11)
 -/

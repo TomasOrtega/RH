@@ -10,25 +10,23 @@ namespace GlobalTheory.Core.One
 open Formalism.L2.SG.NGCut.CorankRelation in
 
 /- English proof (translation)
-Introduce `D X Y u u' _hT`. Establish `hdim` using `Formalism.L2.SG.Corank.finrank_VS D`. Establish `hGv : ∀ t ∈ (Y.tO u u').nzSet, Gval (lf D (X.Fu u)) t.frame ≠ 0`. Introduce `t ht h`. Apply `ht` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show Formalism.L2.SG.TermOp.Gt t = 0`. Unfold `Formalism.L2.SG.TermOp.Gt`. Rewrite using `[if_pos ((Formalism.L2.SG.Pf.SatGram.gterm_G Y t).trans h)]`. Establish `hlat : ∀ t : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'), Submodule.IsLattice D.host.E t.lam` using `fun t => ((Y.rowsOK u).1 t.lam t.mem).2.1.1`. Establish `hLF : ∀ t : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'), IsLift t.lam (lf D (X.Fu u))` using `fun t => ((Y.rowsOK u).1 t.lam t.mem).2.1.2.2.1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLt : ∀ t : Formalism.L2.SG.TermOp.GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u'), IsLift t.lam t.frame` using `fun t => t.rep.2.2.2.2.1`. Use `⟨fun t ht => ?_, fun t ht t' ht' hr h1 => ?_, fun t ht t' ht' t'' ht'' hr1 hr2 h1 h2 => ?_⟩` and prove the remaining obligations. Use `show Formalism.L2.SG.TermOp.s0T t t = 1`. Unfold `Formalism.L2.SG.TermOp.s0T`. Rewrite using `[if_pos ⟨rfl, rfl⟩, mul_inv_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(s0_eq_one_iff_Th_eq_Hp D.R.k hdim t.lam (hlat t) _ t.frame t.frame 1 (hLF t) (hLt t) (hGv t ht)).2 (Th_one _ _ _)`. Establish `hlam : t.lam = t'.lam` using `congrArg (fun r => (r.1 : Submodule (𝓞 D.host.E) (VS D).V)) hr`. Establish `hlam' : t.lam' = t'.lam'` using `congrArg (fun r => (r.2.1 : Submodule (𝓞 D.host.E) (VS D).V)) hr`. Establish `h1' : Formalism.L2.SG.TermOp.s0T t t' = 1` using `h1`. Use `show Formalism.L2.SG.TermOp.s0T t' t = 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `Formalism.L2.SG.TermOp.s0T at h1' ⊢`. Rewrite `h1'` using `[if_pos ⟨hlam, hlam'⟩]`. Rewrite using `[if_pos ⟨hlam.symm, hlam'.symm⟩, ← hlam]`. Establish `hth` using `(s0_eq_one_iff_Th_eq_Hp D.R.k hdim t.lam (hlat t) _ t.frame t'.frame _ (hLF t) (hLt t) (hGv t ht)).1 h1'`. Establish `hL' : IsLift t.lam t'.frame` using `by rw [hlam]; exact hLt t'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsym` using `Th_symm D.R.k hdim t.lam (hlat t) _ t.frame t'.frame (t'.lin * t.lin⁻¹) (hLF t) (hLt t) hL' (hGv t ht) (hGv t' ht') (frame_mem_iff t t') hth`. Establish `hinv : (t'.lin * t.lin⁻¹)⁻¹ = t.lin * t'.lin⁻¹` using `by group`. Rewrite `hsym` using `[hinv]`. Conclude with `(s0_eq_one_iff_Th_eq_Hp D.R.k hdim t.lam (hlat t) _ t'.frame t.frame _ (hLF t) hL' (hGv t' ht')).2 hsym`. Establish `hl1 : t.lam = t'.lam` using `congrArg (fun r => (r.1 : Submodule (𝓞 D.host.E) (VS D).V)) hr1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl1' : t.lam' = t'.lam'` using `congrArg (fun r => (r.2.1 : Submodule (𝓞 D.host.E) (VS D).V)) hr1`. Establish `hl2 : t'.lam = t''.lam` using `congrArg (fun r => (r.1 : Submodule (𝓞 D.host.E) (VS D).V)) hr2`. Establish `hl2' : t'.lam' = t''.lam'` using `congrArg (fun r => (r.2.1 : Submodule (𝓞 D.host.E) (VS D).V)) hr2`. Establish `h1' : Formalism.L2.SG.TermOp.s0T t t' = 1` using `h1`. Establish `h2' : Formalism.L2.SG.TermOp.s0T t' t'' = 1` using `h2`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show Formalism.L2.SG.TermOp.s0T t t'' = 1`. Unfold `Formalism.L2.SG.TermOp.s0T at h1' h2' ⊢`. Rewrite `h1'` using `[if_pos ⟨hl1, hl1'⟩]`. Rewrite `h2'` using `[if_pos ⟨hl2, hl2'⟩, ← hl1]`. Rewrite using `[if_pos ⟨hl1.trans hl2, hl1'.trans hl2'⟩]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hL' : IsLift t.lam t'.frame` using `by rw [hl1]; exact hLt t'`. Establish `hth1` using `(s0_eq_one_iff_Th_eq_Hp D.R.k hdim t.lam (hlat t) _ t.frame t'.frame _ (hLF t) (hLt t) (hGv t ht)).1 h1'`. Establish `hth2` using `(s0_eq_one_iff_Th_eq_Hp D.R.k hdim t.lam (hlat t) _ t'.frame t''.frame _ (hLF t) hL' (hGv t' ht')).1 h2'`. Establish `htr` using `Th_trans t.lam _ t.frame t'.frame t''.frame (t'.lin * t.lin⁻¹) (t''.lin * t'.lin⁻¹) (fun x hx => (frame_mem_iff t' t'' x).1 hx) hth1 hth2`. Establish `hmul : (t''.lin * t'.lin⁻¹) * (t'.lin * t.lin⁻¹) = t''.lin * t.lin⁻¹` using `by group`.
-
-Rewrite `htr` using `[hmul]`. Conclude with `(s0_eq_one_iff_Th_eq_Hp D.R.k hdim t.lam (hlat t) _ t.frame t''.frame _ (hLF t) (hLt t) (hGv t ht)).2 htr`.
+A detailed English derivation is pending.
 -/
 theorem corankOne_isEquivalence_nonzeroGram_terms : CorankOneIsEquivalenceOnRow := by
   intro D X Y u u' _hT

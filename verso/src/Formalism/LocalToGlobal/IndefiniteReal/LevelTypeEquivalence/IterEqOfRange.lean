@@ -13,9 +13,9 @@ variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
 def ev {k : ℕ} (j : Fin k) : Fin k → ℝ := Pi.single j 1
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `(pi_norm_le_iff_of_nonneg zero_le_one).mpr fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[ev]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[ev, h]`. Use `norm_le_pi_norm (ev j) j` as an intermediate fact. Simplify `this` using `[ev]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_ev {k : ℕ} (j : Fin k) : ‖ev j‖ = 1 := by
   apply le_antisymm
@@ -27,7 +27,7 @@ theorem norm_ev {k : ℕ} (j : Fin k) : ‖ev j‖ = 1 := by
     simpa [ev] using this
 
 /- English proof (translation)
-Conclude with `ENat.natCast_lt_top m` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem natCast_lt_inf (m : ℕ) : (m : WithTop ℕ∞) < ∞ := by
   exact_mod_cast ENat.natCast_lt_top m

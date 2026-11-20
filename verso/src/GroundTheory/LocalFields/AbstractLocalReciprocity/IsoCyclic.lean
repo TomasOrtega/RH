@@ -12,21 +12,17 @@ section Augmentation
 variable {G : Type*} [Group G] {A : Type*} [CommGroup A] [MulDistribMulAction G A]
 
 /- English proof (translation)
-Set `S : Subgroup A` to `{ carrier := {y | ∃ b ∈ fixedModule A L, y = τ • b / b} one_mem' := ⟨1, Subgroup.one_mem _, by rw [smul_one, div_one]⟩ mul_mem' := by`. Introduce and unpack `_ _ ⟨b, hb, rfl⟩ ⟨c, hc, rfl⟩`. Conclude with `⟨b * c, Subgroup.mul_mem _ hb hc, by rw [smul_mul', mul_div_mul_comm]⟩`. Use the proof step `inv_mem' := by`. Introduce and unpack `_ ⟨b, hb, rfl⟩`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨b⁻¹, Subgroup.inv_mem _ hb, by rw [smul_inv', inv_div_inv, inv_div]⟩ }`. Set `T : Subgroup K` to `{ carrier := {g | ∀ a ∈ fixedModule A L, (g : G) • a / a ∈ S} one_mem' := fun a _ => by`. Rewrite using `[OneMemClass.coe_one, one_smul, div_self']`. Conclude with `S.one_mem`. Use the proof step `mul_mem' := by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g h hg hh a ha`. Establish `hha : (h : G) • a ∈ fixedModule A L` using `smul_mem_fixedModule_of_normal hLK h.2 ha`. Establish `e : ((g * h : K) : G) • a / a = ((g : G) • ((h : G) • a) / ((h : G) • a)) * ((h : G) • a / a)`. Rewrite using `[Subgroup.coe_mul, mul_smul]`. Simplify using `only [div_eq_mul_inv, mul_assoc, inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `S.mul_mem (hg _ hha) (hh a ha)`. Use the proof step `inv_mem' := by`. Introduce `g hg a ha`. Establish `hga : ((g⁻¹ : K) : G) • a ∈ fixedModule A L` using `smul_mem_fixedModule_of_normal hLK (g⁻¹).2 ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ((g⁻¹ : K) : G) • a / a = ((g : G) • (((g⁻¹ : K) : G) • a) / (((g⁻¹ : K) : G) • a))⁻¹`. Rewrite using `[smul_smul, InvMemClass.coe_inv, mul_inv_cancel, one_smul, inv_div]`. Rewrite using `[e]`. Conclude with `S.inv_mem (hg _ hga) }`. Establish `hτT : (⟨τ, hτ⟩ : K) ∈ T` using `fun a ha => ⟨a, ha, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLT : ∀ ρ : K, (ρ : G) ∈ L → ρ ∈ T` using `fun ρ hρ a ha => by`. Rewrite using `[ha ρ hρ, div_self']`. Conclude with `S.one_mem`. Establish `hTop : ∀ g : K, g ∈ T`. Introduce `g`.
-
-Take `⟨m, hm⟩` from `hgen g g.2`. Establish `hg : g = (⟨τ, hτ⟩ : K) ^ m * (((⟨τ, hτ⟩ : K) ^ m)⁻¹ * g)` using `by group`. Rewrite using `[hg]`. Conclude with `T.mul_mem (T.pow_mem hτT m) (hLT _ (by simpa using hm))`. Establish `hle : augmentation A K L ≤ S`.
-
-Rewrite using `[augmentation, Subgroup.closure_le]`. Introduce and unpack `_ ⟨g, hg, a, ha, rfl⟩`. Conclude with `hTop ⟨g, hg⟩ a ha`. Conclude with `hle hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_eq_smul_div_of_mem_augmentation_of_generator {K L : Subgroup G} (hLK : L ≤ K)
     [(L.subgroupOf K).Normal] {τ : G} (hτ : τ ∈ K) (hgen : ∀ g ∈ K, ∃ m : ℕ, (τ ^ m)⁻¹ * g ∈ L)
@@ -83,7 +79,7 @@ theorem exists_eq_smul_div_of_mem_augmentation_of_generator {K L : Subgroup G} (
 end Augmentation
 
 /- English proof (translation)
-Establish `hx : x ∈ Subgroup.zpowers g` using `Subgroup.mem_zpowers_iff.2 h`. Rewrite `hx` using `[← mem_powers_iff_mem_zpowers]`. Conclude with `(Submonoid.mem_powers_iff _ _).1 hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_of_exists_zpow_eq {α : Type*} [Group α] [Finite α] {g x : α}
     (h : ∃ n : ℤ, g ^ n = x) : ∃ k : ℕ, g ^ k = x := by
@@ -102,9 +98,9 @@ section Galois
 omit [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Rewrite using `[valuation_eq_iff, valuation_pow]`. Use `congr 1`. Use `ext`. Establish `htop : (⊤ : Subgroup G).map (MulAut.conj g).toMonoidHom = ⊤` using `Subgroup.map_top_of_surjective _ (MulAut.conj g).surjective`. Establish `h` using `smul_norm_of_map_eq (A := A) g htop hg a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h.symm.trans ?_` and prove the remaining obligations. Conclude with `(norm A ⊤ (S : Subgroup G) a).2 g trivial`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem valuation_smul_of_map_eq (S : OpenSubgroup G) {g : G}
     (hg : (S : Subgroup G).map (MulAut.conj g).toMonoidHom = S) (a : fixedModule A (S : Subgroup G))
@@ -124,9 +120,9 @@ variable {K L : OpenSubgroup G}
 omit [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Use `Subgroup.mem_inf.2 ⟨?_, MonoidHom.mem_ker.2 ?_⟩` and prove the remaining obligations. Use `hcyc` as an intermediate fact. Establish `hc : ((⟨b, hb⟩ : (K : Subgroup G)) : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) * ((⟨a, ha⟩ : (K : Subgroup G)) : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) = ((⟨a, ha⟩ : (K : Subgroup G)) : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) * ((⟨b, hb⟩ : (K : Subgro …` using `IsCyclic.commGroup.mul_comm _ _`. Rewrite `hc` using `[← QuotientGroup.mk_mul, ← QuotientGroup.mk_mul, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify `hc` using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[map_mul, map_mul, map_mul, map_inv, map_inv, mul_right_comm (D.deg a)⁻¹, inv_mul_cancel, one_mul, inv_mul_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem commutator_mem_of_isCyclic [((L : Subgroup G).subgroupOf K).Normal]
     (hcyc : IsCyclic ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)) {a b : G}
@@ -147,7 +143,7 @@ theorem commutator_mem_of_isCyclic [((L : Subgroup G).subgroupOf K).Normal]
 omit [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Establish `hc` using `commutator_mem_of_isCyclic (D := D) hcyc hh (K.inv_mem hg)`. Establish `e : g * h * g⁻¹ = h * (h⁻¹ * g⁻¹⁻¹ * h * g⁻¹)` using `by group`. Rewrite using `[e]`. Conclude with `H.mul_mem hhH (hH hc)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_of_isCyclic [((L : Subgroup G).subgroupOf K).Normal]
     (hcyc : IsCyclic ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)) {H : Subgroup G}
@@ -173,7 +169,7 @@ variable {K L : OpenSubgroup G}
 
 omit [TotallyDisconnectedSpace G] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_maxUnramified {g : G} :
     g ∈ (D.maxUnramified K L : Subgroup G) ↔
@@ -182,13 +178,13 @@ theorem mem_maxUnramified {g : G} :
 
 omit [TotallyDisconnectedSpace G] in
 /- English proof (translation)
-Introduce `_ hx` and use `hx.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem maxUnramified_le : D.maxUnramified K L ≤ K := fun _ hx => hx.1
 
 omit [TotallyDisconnectedSpace G] in
 /- English proof (translation)
-Introduce `x hx` and use `⟨hLK hx, x, hx, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem le_maxUnramified (hLK : L ≤ K) : L ≤ D.maxUnramified K L :=
   fun x hx => ⟨hLK hx, x, hx, rfl⟩
@@ -196,7 +192,7 @@ theorem le_maxUnramified (hLK : L ≤ K) : L ≤ D.maxUnramified K L :=
 omit [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Introduce `x hx` and use `⟨hx.1, 1, (L : Subgroup G).one_mem, by rw [map_one, (MonoidHom.mem_ker.1 hx.2)]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem inf_ker_le_maxUnramified :
     (K : Subgroup G) ⊓ D.deg.ker ≤ (D.maxUnramified K L : Subgroup G) :=
@@ -205,7 +201,7 @@ theorem inf_ker_le_maxUnramified :
 omit [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Rewrite using `[relInertiaDegree, Subgroup.relIndex_eq_one]`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Take `⟨l, hl, e⟩` from `hg.2`. Conclude with `⟨l, hl, e⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem relInertiaDegree_maxUnramified :
     relInertiaDegree D.deg (D.maxUnramified K L) L = 1 := by
@@ -222,13 +218,13 @@ variable {K L : OpenSubgroup G} (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K)
   (hax : ClassFieldAxiom G A) [IsDiscreteModule G A]
 
 /- English proof (translation)
-Establish `hdφ : D.deg φ = Multiplicative.ofAdd (inertiaDegree D.deg K : ℤ̂)`. Rewrite using `[← D.relDeg_pow, hφ, ← ofAdd_nsmul, nsmul_one]`. Use `set s : D.FrobeniusLift K := FrobeniusLift.ofDegOne φ.2 hdφ with hs`. Establish `hSK` using `s.field_le hLK`. Establish `he : relRamificationIndex D.deg K (s.field L hLK) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[relRamificationIndex, Subgroup.relIndex_eq_one]`. Introduce `x hx`. Conclude with `le_frobeniusClosure ⟨hu ⟨hx.2, hx.1⟩, hx.1⟩`. Establish `hrel : ((s.field L hLK : OpenSubgroup G) : Subgroup G).relIndex K = 1`. Rewrite using `[relIndex_eq_mul (d := D.deg) hSK, he, FrobeniusLift.relInertiaDegree_field hLK s]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hπ' : D.valuation (s.field L hLK) ⟨π, fixedModule_anti hSK π.2⟩ = Multiplicative.ofAdd 1`. Rewrite using `[D.valuation_of_mem hSK π.2, he, pow_one]`. Conclude with `hπ`. Establish `h` using `reciprocity_mk_eq_norm hLK hax s hπ'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `h.trans ?_` and prove the remaining obligations. Use `congr 1`. Use `ext`. Rewrite using `[coe_norm_of_mem hSK π.2, hrel, pow_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reciprocity_frobenius_of_unramified (hu : (K : Subgroup G) ⊓ D.deg.ker ≤ L)
     {φ : (K : Subgroup G)} (hφ : D.relDeg K φ = Multiplicative.ofAdd 1)
@@ -264,81 +260,73 @@ variable {K L : OpenSubgroup G} (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K)
   (hax : ClassFieldAxiom G A) [IsDiscreteModule G A]
 
 /- English proof (translation)
-Establish `hdeg : ∀ k ∈ (K : Subgroup G), ∃ l ∈ (L : Subgroup G), D.deg l = D.deg k`. Introduce `k hk`. Take `⟨l, hl, e⟩` from `(Subgroup.relIndex_eq_one.1 htot) ⟨k, hk, rfl⟩`. Conclude with `⟨l, hl, e⟩`. Take `⟨φ0, hφ0K, hdφ0⟩` from `D.exists_deg_eq K`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφL, hdφ⟩` from `hdeg φ0 hφ0K`. Use `hcyc` as an intermediate fact. Take `⟨γ, hγ⟩` from `exists_zpow_surjective ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)`. Take `⟨g0, rfl⟩` from `QuotientGroup.mk_surjective γ`. Take `⟨l0, hl0L, hl0⟩` from `hdeg g0 g0.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, hτdef⟩ : ∃ τ : G, τ = (g0 : G) * l0⁻¹` from `⟨_, rfl⟩`. Establish `hτK : τ ∈ (K : Subgroup G)` using `hτdef ▸ K.mul_mem g0.2 (K.inv_mem (hLK hl0L))`. Establish `hτker : D.deg τ = 1` using `by rw [hτdef, map_mul, map_inv, hl0, mul_inv_cancel]`. Establish `hτγ : (((⟨τ, hτK⟩ : (K : Subgroup G))) : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) = (g0 : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `hl0L` using `[hτdef, mul_assoc]`. Establish `hpow : ∀ q : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K, ∃ m : ℕ, (((⟨τ, hτK⟩ : (K : Subgroup G))) : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) ^ m = q`. Introduce `q`. Rewrite using `[hτγ]`. Conclude with `exists_pow_eq_of_exists_zpow_eq (hγ q)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgen : ∀ k ∈ (K : Subgroup G), ∃ m : ℕ, (τ ^ m)⁻¹ * k ∈ (L : Subgroup G)`. Introduce `k hk`. Take `⟨m, hm⟩` from `hpow (⟨k, hk⟩ : (K : Subgroup G))`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[← QuotientGroup.mk_pow, QuotientGroup.eq, Subgroup.mem_subgroupOf]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hm`. Rewrite using `[injective_iff_map_eq_one]`. Introduce `σ hσ`. Take `⟨k, rfl⟩` from `hpow σ`. Rewrite `hσ`, the goal using `[← QuotientGroup.mk_pow]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs_elt, hs_deg⟩ : ∃ s : D.FrobeniusLift K, s.elt = τ ^ k * φ ∧ s.deg = 1` from `⟨{ elt := τ ^ k * φ mem := K.mul_mem (K.pow_mem hτK k) (hLK hφL) deg := 1 deg_pos := one_pos deg_eq := by rw [map_mul, map_pow, hτker, one_pow, one_mul, hdφ, hdφ0, one_mul] }, rfl, rfl⟩`. Establish `hs : ((((⟨τ, hτK⟩ : (K : Subgroup G)) ^ k : (K : Subgroup G))) : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) = ((⟨s.elt, s.mem⟩ : (K : Subgroup G)) : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)`. Rewrite using `[QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify `hφL` using `[hs_elt]`. Rewrite `hσ` using `[hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨π0, hπ0⟩` from `D.exists_prime (s.field L hLK)`. Rewrite `hσ` using `[reciprocity_mk_eq_norm hLK hax s hπ0, QuotientGroup.eq_one_iff]`. Take `⟨b, hb⟩` from `hσ`. Establish `hvb : D.valuation L b = Multiplicative.ofAdd 1`. Establish `h1` using `D.valuation_norm hLK b`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[htot, pow_one, hb, valuation_norm_prime hLK s hπ0, hs_deg, Nat.cast_one]`. Conclude with `h1.symm`. Take `⟨L1, hL1L, hL1S, hIL⟩ : ∃ L1 : OpenSubgroup G, L1 ≤ L ∧ L1 ≤ s.field L hLK ∧ (L : Subgroup G) ⊓ D.deg.ker ≤ L1` from `⟨L ⊓ s.field L hLK, inf_le_left, inf_le_right, fun x hx => ⟨hx.1, le_frobeniusClosure hx⟩⟩`. Establish `hL1K : L1 ≤ K` using `hL1L.trans hLK`. Take `⟨K1, hL1K1, hK1K, hIK1, hK1deg⟩ : ∃ K1 : OpenSubgroup G, L1 ≤ K1 ∧ K1 ≤ K ∧ (K : Subgroup G) ⊓ D.deg.ker ≤ K1 ∧ ∀ g ∈ (K1 : Subgroup G), ∃ l ∈ (L1 : Subgroup G), D.deg l = D.deg g` from `⟨D.maxUnramified K L1, le_maxUnramified hL1K, maxUnramified_le, inf_ker_le_maxUnramified, fun g hg => (mem_maxUnramified.1 hg).2⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconj : ∀ g ∈ (K : Subgroup G), ∀ h ∈ (L1 : Subgroup G), g * h * g⁻¹ ∈ (L1 : Subgroup G)` using `fun g hg h hh => conj_mem_of_isCyclic (D := D) hcyc hIL hg (hL1K hh) hh`. Establish `hmapL1 : ∀ g ∈ (K : Subgroup G), (L1 : Subgroup G).map (MulAut.conj g).toMonoidHom = L1`. Introduce `g hg`. Use `le_antisymm ?_ fun h hh => ⟨g⁻¹ * h * g, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨h, hh, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Conclude with `hconj g hg h hh`. Simplify using `using hconj g⁻¹ (K.inv_mem hg) h hh`. Simplify using `[MulAut.conj_apply, mul_assoc]`. Establish `hsmulL1 : ∀ g ∈ (K : Subgroup G), ∀ a ∈ fixedModule A (L1 : Subgroup G), g • a ∈ fixedModule A (L1 : Subgroup G)`. Introduce `g hg a ha h hh`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : g⁻¹ * h * g ∈ (L1 : Subgroup G)` using `by simpa using hconj g⁻¹ (K.inv_mem hg) h hh`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`. Use `group`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `_ = g • a := by rw [ha _ hc]`. Establish `hN1 : ((L1 : Subgroup G).subgroupOf K1).Normal` using `⟨fun n hn g => by`. Rewrite `hn`, the goal using `[Subgroup.mem_subgroupOf]`. Simplify using `using hconj g (hK1K g.2) n hn⟩`. Establish `hτK1 : τ ∈ (K1 : Subgroup G)` using `hIK1 (Subgroup.mem_inf.2 ⟨hτK, MonoidHom.mem_ker.2 hτker⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgen1 : ∀ g ∈ (K1 : Subgroup G), ∃ m : ℕ, (τ ^ m)⁻¹ * g ∈ (L1 : Subgroup G)`. Introduce `g hg`. Take `⟨l, hl, hdl⟩` from `hK1deg g hg`. Take `⟨m, hm⟩` from `hgen (g * l⁻¹) (K.mul_mem (hK1K hg) (K.inv_mem (hL1K hl)))`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hker : (τ ^ m)⁻¹ * (g * l⁻¹) ∈ D.deg.ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, map_pow, hτker, one_pow, inv_one, one_mul, map_mul, map_inv, hdl, mul_inv_cancel]`. Establish `h` using `(L1 : Subgroup G).mul_mem (hIL (Subgroup.mem_inf.2 ⟨hm, hker⟩)) hl`. Simplify `h` using `[mul_assoc]`. Establish `hcyc1 : IsCyclic ((K1 : Subgroup G) ⧸ (L1 : Subgroup G).subgroupOf K1)`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨((⟨τ, hτK1⟩ : (K1 : Subgroup G)) : (K1 : Subgroup G) ⧸ (L1 : Subgroup G).subgroupOf K1), fun q => ?_⟩⟩` and prove the remaining obligations. Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g`. Take `⟨m, hm⟩` from `hgen1 g g.2`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show _ ^ ((m : ℕ) : ℤ) = _`. Rewrite using `[zpow_natCast, ← QuotientGroup.mk_pow, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `using hm`. Establish `hNS : (norm A (K : Subgroup G) (s.field L hLK : Subgroup G) π0 : A) = (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker) ⟨π0, fixedModule_anti le_frobeniusClosure π0.2⟩ : A)`. Rewrite using `[coe_norm_field_eq hLK s hφ0K hdφ0 π0, Fintype.prod_eq_single (⟨0, by rw [hs_deg]; exact one_pos⟩ : Fin s.deg) (fun ν hν => absurd (Fin.ext (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `ν.2` as an intermediate fact. Use the proof step `omega)) hν), Fin.val_mk, pow_zero, one_smul]`. Establish `hNL : (norm A (K : Subgroup G) (L : Subgroup G) b : A) = (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker) ⟨b, fixedModule_anti inf_le_left b.2⟩ : A)`. Establish `h` using `coe_norm_eq_prod_smul_norm (A := A) D.deg (n := 1) one_pos (Nat.pos_of_ne_zero (D.inertiaDegree_ne_zero K)) (fun x hx => hLK hx) (fun x hx => by rw [one_mul]; exact toAdd_deg_mem_multiples (D := D) K (hLK hx)) (fun k hk _ => hdeg k hk) (fun k hk => toAdd_deg_mem_multiples (D := D …`. Rewrite using `[h]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hNK1 : ∀ a : fixedModule A (L1 : Subgroup G), (norm A (K1 : Subgroup G) (L1 : Subgroup G) a : A) = (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker) ⟨a, fixedModule_anti hIL a.2⟩ : A)` using `fun a => coe_norm_eq_of_mul_eq (fun x hx => hIK1 hx) (fun k hk => by`. Take `⟨l, hl, hdl⟩` from `hK1deg k hk`. Use `⟨k * l⁻¹, Subgroup.mem_inf.2 ⟨K.mul_mem (hK1K hk) (K.inv_mem (hL1K hl)), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, hdl, mul_inv_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hl)`. Use the proof step `(fun q hq => ⟨fun h => Subgroup.mem_inf.2 ⟨hL1L h, (Subgroup.mem_inf.1 hq).2⟩, fun h => hIL h⟩) a _`. Establish `hπ0L1 : (π0 : A) ∈ fixedModule A (L1 : Subgroup G)` using `fixedModule_anti hL1S π0.2`. Establish `hbL1 : (b : A) ∈ fixedModule A (L1 : Subgroup G)` using `fixedModule_anti hL1L b.2`. Establish `hy : norm A (K1 : Subgroup G) (L1 : Subgroup G) ((⟨π0, hπ0L1⟩ : fixedModule A (L1 : Subgroup G)) / ⟨b, hbL1⟩) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_div, div_eq_one]`. Use `ext`. Rewrite using `[hNK1, hNK1]`. Conclude with `(hNS.symm.trans (congrArg Subtype.val hb).symm).trans hNL`. Take `⟨-, hH1⟩` from `hax K1 L1 hL1K1 hcyc1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub` using `(Nat.card_eq_one_iff_unique.1 hH1).1`. Establish `haug : (((⟨π0, hπ0L1⟩ : fixedModule A (L1 : Subgroup G)) / ⟨b, hbL1⟩ : fixedModule A (L1 : Subgroup G)) : A) ∈ augmentation A (K1 : Subgroup G) (L1 : Subgroup G)` using `(QuotientGroup.eq_one_iff (N := (augmentation A (K1 : Subgroup G) (L1 : Subgroup G)).comap ((fixedModule A (L1 : Subgroup G)).subtype.comp (norm A (K1 : Subgroup G) (L1 : Subgroup G)).ker.subtype)) (⟨_, hy⟩ : (norm A (K1 : Subgroup G) (L1 : Subgroup G)).ker)).1 (Subsingleton.elim …`. Take `⟨x, hxL1, hxy⟩` from `exists_eq_smul_div_of_mem_augmentation_of_generator (fun z hz => hL1K1 hz) hτK1 hgen1 haug`. Establish `hπ0x : (π0 : A) = τ • x / x * b`. Rewrite using `[← hxy, Subgroup.coe_div, div_mul_cancel]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσπ : s.elt • (π0 : A) = π0` using `π0.2 s.elt (s.elt_mem_field hLK)`. Establish `hσb : s.elt • (b : A) = τ ^ k • (b : A)` using `by rw [hs_elt, mul_smul, b.2 φ hφL]`. Establish `hcomm : s.elt • τ • x = τ • s.elt • x`. Establish `hc : s.elt⁻¹ * τ⁻¹ * s.elt * τ ∈ (L1 : Subgroup G)` using `hIL (commutator_mem_of_isCyclic (D := D) hcyc s.mem hτK)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, smul_smul]`. Use `congr 1`. Use `group`. Use `_ = τ • s.elt • x := by rw [hxL1 _ hc, mul_smul]`. Establish `e1 : τ • (s.elt • x) / s.elt • x * τ ^ k • (b : A) = τ • x / x * b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hσπ`. Rewrite `h` using `[hπ0x, smul_mul', smul_div', hcomm, hσb]`. Conclude with `h`. Take `⟨c, hcdef⟩ : ∃ c : A, c = ∏ ν : Fin k, τ ^ (ν : ℕ) • (b : A)` from `⟨_, rfl⟩`. Take `⟨z, hzdef⟩ : ∃ z : A, z = x / s.elt • x` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτc : τ • c / c = τ ^ k • (b : A) / b` using `by rw [hcdef]; exact smul_prod_pow_div τ (b : A) k`. Establish `hkb : τ ^ k • (b : A) / b = τ • x / x / (τ • (s.elt • x) / s.elt • x)`. Rewrite using `[div_eq_div_iff_mul_eq_mul, mul_comm (τ ^ k • (b : A))]`. Conclude with `e1`. Establish `hτz : τ • z / z = τ • x / x / (τ • (s.elt • x) / s.elt • x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[hzdef, smul_div', div_div_div_comm]`. Establish `hτw : τ • (c / z) = c / z`. Establish `h : τ • (c / z) / (c / z) = 1`. Rewrite using `[smul_div', div_div_div_comm, hτc, hτz, hkb, div_self']`. Conclude with `div_eq_one.1 h`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hcL1 : c ∈ fixedModule A (L1 : Subgroup G)`. Rewrite using `[hcdef]`. Conclude with `Subgroup.prod_mem _ fun ν _ => hsmulL1 _ (K.pow_mem hτK _) _ hbL1`. Establish `hσxL1 : s.elt • x ∈ fixedModule A (L1 : Subgroup G)` using `hsmulL1 _ s.mem x hxL1`. Establish `hzL1 : z ∈ fixedModule A (L1 : Subgroup G)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hzdef]`. Conclude with `Subgroup.div_mem _ hxL1 hσxL1`. Establish `hwL1 : c / z ∈ fixedModule A (L1 : Subgroup G)` using `Subgroup.div_mem _ hcL1 hzL1`. Establish `hpw : ∀ m : ℕ, τ ^ m • (c / z) = c / z`. Introduce `m`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Proceed by induction on `m with`. Consider the case `zero => rw [pow_zero, one_smul]`. Consider the case `succ m ih => rw [pow_succ, mul_smul, hτw, ih]`. Establish `hwK1 : c / z ∈ fixedModule A (K1 : Subgroup G)`. Introduce `g hg`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨m, hm⟩` from `hgen1 g hg`. Establish `e : g = τ ^ m * ((τ ^ m)⁻¹ * g)` using `by group`. Rewrite using `[e, mul_smul, hwL1 _ hm, hpw]`. Establish `he1L : relRamificationIndex D.deg L L1 = 1`. Rewrite using `[relRamificationIndex, Subgroup.relIndex_eq_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Conclude with `hIL (Subgroup.mem_inf.2 ⟨(Subgroup.mem_inf.1 hy).2, (Subgroup.mem_inf.1 hy).1⟩)`. Establish `hvb1 : D.valuation L1 ⟨(b : A), hbL1⟩ = Multiplicative.ofAdd 1`. Rewrite using `[D.valuation_of_mem hL1L b.2, he1L, pow_one]`. Conclude with `hvb`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hvτb : ∀ ν : ℕ, D.valuation L1 ⟨τ ^ ν • (b : A), hsmulL1 _ (K.pow_mem hτK ν) _ hbL1⟩ = Multiplicative.ofAdd 1` using `fun ν => (valuation_smul_of_map_eq L1 (hmapL1 _ (K.pow_mem hτK ν)) ⟨(b : A), hbL1⟩ _).trans hvb1`. Establish `hvσx : D.valuation L1 ⟨s.elt • x, hσxL1⟩ = D.valuation L1 ⟨x, hxL1⟩` using `valuation_smul_of_map_eq L1 (hmapL1 _ s.mem) ⟨x, hxL1⟩ _`. Establish `hweq : (⟨c / z, hwL1⟩ : fixedModule A (L1 : Subgroup G)) = (∏ ν : Fin k, (⟨τ ^ (ν : ℕ) • (b : A), hsmulL1 _ (K.pow_mem hτK _) _ hbL1⟩ : fixedModule A (L1 : Subgroup G))) / ((⟨x, hxL1⟩ : fixedModule A (L1 : Subgroup G)) / ⟨s.elt • x, hσxL1⟩)`. Use `ext`. Simplify using `[hcdef, hzdef]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hvw : D.valuation L1 ⟨c / z, hwL1⟩ = Multiplicative.ofAdd (k : ℤ̂)`. Rewrite using `[hweq, map_div, map_div, map_prod, hvσx, div_self', div_one]`. Simplify using `only [hvτb, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← ofAdd_nsmul, nsmul_one]`. Establish `hval` using `D.valuation_of_mem hL1K1 hwK1`. Rewrite `hval` using `[hvw]`.
-
-Establish `he1 : 0 < relRamificationIndex D.deg K1 L1` using `Nat.pos_of_ne_zero Subgroup.FiniteIndex.index_ne_zero`. Establish `hk : ((k : ℤ) : ℤ̂) = relRamificationIndex D.deg K1 L1 • Multiplicative.toAdd (D.valuation K1 ⟨c / z, hwK1⟩)`. Establish `h` using `congrArg Multiplicative.toAdd hval`. Rewrite `h` using `[toAdd_ofAdd, toAdd_pow]`. Rewrite using `[Int.cast_natCast]`.
-
-Conclude with `h`. Establish `hdvd : relRamificationIndex D.deg K1 L1 ∣ k` using `Int.natCast_dvd_natCast.1 (dvd_of_intCast_eq_nsmul he1 hk)`. Establish `hNker : ((L1 : Subgroup G).subgroupOf (D.deg.ker ⊓ (K1 : Subgroup G))).Normal` using `⟨fun n hn g => by`. Rewrite `hn`, the goal using `[Subgroup.mem_subgroupOf]`. Simplify using `using hconj g (hK1K (Subgroup.mem_inf.1 g.2).2) n hn⟩`.
-
-Establish `hτe : τ ^ relRamificationIndex D.deg K1 L1 ∈ (L1 : Subgroup G)`. Establish `h` using `Subgroup.pow_index_mem ((L1 : Subgroup G).subgroupOf (D.deg.ker ⊓ (K1 : Subgroup G))) (⟨τ, Subgroup.mem_inf.2 ⟨MonoidHom.mem_ker.2 hτker, hτK1⟩⟩ : (D.deg.ker ⊓ (K1 : Subgroup G) : Subgroup G))`. Rewrite `h` using `[Subgroup.mem_subgroupOf, SubgroupClass.coe_pow]`. Conclude with `h`. Take `⟨j, hj⟩` from `hdvd`.
-
-Rewrite using `[QuotientGroup.eq_one_iff, Subgroup.mem_subgroupOf, SubgroupClass.coe_pow, hj, pow_mul]`. Conclude with `hL1L (Subgroup.pow_mem _ hτe j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reciprocity_injective_of_totallyRamified
     (hcyc : IsCyclic ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K))
@@ -605,7 +593,7 @@ theorem reciprocity_injective_of_totallyRamified
   exact hL1L (Subgroup.pow_mem _ hτe j)
 
 /- English proof (translation)
-Establish `hcard` using `(hax K L hLK hcyc).1`. Establish `: Finite (tateZero A (K : Subgroup G) (L : Subgroup G))` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact Subgroup.FiniteIndex.index_ne_zero)`. Use `(reciprocity_injective_of_totallyRamified hLK hax hcyc htot).bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[hcard]`. Conclude with `le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reciprocity_bijective_of_totallyRamified
     (hcyc : IsCyclic ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K))
@@ -625,27 +613,25 @@ variable {K L : OpenSubgroup G} (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K)
   (hax : ClassFieldAxiom G A) [IsDiscreteModule G A]
 
 /- English proof (translation)
-Take `⟨M, hLM, hMK, huM, htotM⟩ : ∃ M : OpenSubgroup G, L ≤ M ∧ M ≤ K ∧ (K : Subgroup G) ⊓ D.deg.ker ≤ M ∧ relInertiaDegree D.deg M L = 1` from `⟨D.maxUnramified K L, le_maxUnramified hLK, maxUnramified_le, inf_ker_le_maxUnramified, relInertiaDegree_maxUnramified⟩`. Establish `hNM : ((L : Subgroup G).subgroupOf M).Normal` using `⟨fun n hn g => by`. Rewrite `hn`, the goal using `[Subgroup.mem_subgroupOf]`. Establish `h` using `(inferInstance : ((L : Subgroup G).subgroupOf K).Normal).conj_mem ⟨n, hMK n.2⟩ (by rw [Subgroup.mem_subgroupOf]; exact hn) ⟨g, hMK g.2⟩`. Rewrite `h` using `[Subgroup.mem_subgroupOf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h⟩`. Establish `hcycM : IsCyclic ((M : Subgroup G) ⧸ (L : Subgroup G).subgroupOf M)`. Use `hcyc` as an intermediate fact. Use `isCyclic_of_injective (QuotientGroup.map ((L : Subgroup G).subgroupOf M) ((L : Subgroup G).subgroupOf K) (Subgroup.inclusion (fun x hx => hMK hx)) ?_) ?_` and prove the remaining obligations. Introduce `x hx`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Subgroup.mem_comap, Subgroup.mem_subgroupOf]`. Rewrite `hx` using `[Subgroup.mem_subgroupOf]`. Conclude with `hx`. Rewrite using `[injective_iff_map_eq_one]`. Introduce `q hq`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H g`. Rewrite `hq` using `[QuotientGroup.map_mk, QuotientGroup.eq_one_iff, Subgroup.mem_subgroupOf]`. Rewrite using `[QuotientGroup.eq_one_iff, Subgroup.mem_subgroupOf]`. Conclude with `hq`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hbijLM` using `reciprocity_bijective_of_totallyRamified hLM hax hcycM htotM`. Take `⟨φ0, hφ0K, hdφ0⟩` from `D.exists_deg_eq K`. Take `⟨s1, hs1⟩ : ∃ s1 : D.FrobeniusLift K, s1.deg = 1` from `⟨FrobeniusLift.ofDegOne hφ0K hdφ0, rfl⟩`. Take `⟨π1, hπ1⟩` from `D.exists_prime (s1.field L hLK)`. Establish `hr1` using `reciprocity_mk_eq_norm hLK hax s1 hπ1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvc : D.valuation K (norm A (K : Subgroup G) (s1.field L hLK : Subgroup G) π1) = Multiplicative.ofAdd 1`. Rewrite using `[valuation_norm_prime hLK s1 hπ1, hs1, Nat.cast_one]`. Introduce `x`. Proceed by induction on `x using QuotientGroup.induction_on with`. Consider the case `H a`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j, hj⟩ : ∃ j : ℕ, (j : ZMod (D.relInertiaDegreePNat hMK)) = proj (D.relInertiaDegreePNat hMK) (Multiplicative.toAdd (D.valuation K a))` from `⟨_, ZMod.natCast_zmod_val _⟩`. Establish `hker : D.tateZeroVal hMK ((a / norm A (K : Subgroup G) (s1.field L hLK : Subgroup G) π1 ^ j : fixedModule A (K : Subgroup G)) : tateZero A (K : Subgroup G) (M : Subgroup G)) = 1`. Rewrite using `[tateZeroVal_mk, valuationMod_apply, map_div, map_pow, hvc, toAdd_div, toAdd_pow, toAdd_ofAdd, nsmul_one, map_sub, map_natCast, hj, sub_self, ofAdd_zero]`. Establish `h0 : ((a / norm A (K : Subgroup G) (s1.field L hLK : Subgroup G) π1 ^ j : fixedModule A (K : Subgroup G)) : tateZero A (K : Subgroup G) (M : Subgroup G)) = 1` using `(D.tateZeroVal_bijective hax hMK huM).1 (by rw [hker, map_one])`. Take `⟨a0, ha0⟩` from `(QuotientGroup.eq_one_iff _).1 h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `hbijLM.2 (a0 : tateZero A (M : Subgroup G) (L : Subgroup G))`. Take `⟨s, rfl⟩` from `exists_frobeniusLift_mk (D := D) hLM q`. Take `⟨π2, hπ2⟩` from `D.exists_prime (s.field L hLM)`. Rewrite `hq` using `[reciprocity_mk_eq_norm hLM hax s hπ2, QuotientGroup.eq]`. Take `⟨b, hb⟩` from `hq`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `s' : D.FrobeniusLift K` to `{ elt := s.elt mem := hMK s.mem deg := s.deg * relInertiaDegree D.deg K M deg_pos := Nat.mul_pos s.deg_pos (Nat.pos_of_ne_zero (D.relInertiaDegree_ne_zero hMK)) deg_eq := by`. Rewrite using `[s.deg_eq, inertiaDegree_eq_mul D.surjective_deg (K := (K : Subgroup G)) (L := (M : Subgroup G)) (fun x hx => hMK hx), mul_assoc] }`. Establish `hr'` using `reciprocity_mk_eq_norm hLK hax s' (π := π2) hπ2`. Establish `hnn : norm A (K : Subgroup G) (M : Subgroup G) (norm A (M : Subgroup G) (s.field L hLM : Subgroup G) π2) = norm A (K : Subgroup G) (s.field L hLM : Subgroup G) π2` using `norm_norm (fun x hx => s.field_le hLM hx) (fun x hx => hMK hx) π2`. Use `⟨((⟨s'.elt, s'.mem⟩ : (K : Subgroup G)) : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) * ((⟨s1.elt, s1.mem⟩ : (K : Subgroup G)) : (K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K) ^ j, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_pow, hr', hr1, ← QuotientGroup.mk_pow, ← QuotientGroup.mk_mul, QuotientGroup.eq]`. Use `⟨b, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (norm A (K : Subgroup G) (M : Subgroup G)) hb`. Rewrite `h1` using `[norm_norm (fun x hx => hLM hx) (fun x hx => hMK hx), map_mul, map_inv, hnn, ha0]`. Rewrite using `[h1, div_eq_mul_inv, mul_inv_rev]`.
-
-The two sides agree by associativity and commutativity.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. The two sides agree by associativity and commutativity. A detailed English derivation is pending.
 -/
 theorem reciprocity_surjective_of_isCyclic
     (hcyc : IsCyclic ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)) :
@@ -734,7 +720,7 @@ theorem reciprocity_surjective_of_isCyclic
     ac_rfl
 
 /- English proof (translation)
-Establish `hcard` using `(hax K L hLK hcyc).1`. Use `(reciprocity_surjective_of_isCyclic hLK hax hcyc).bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[hcard]`. Conclude with `le_rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reciprocity_bijective_of_isCyclic
     (hcyc : IsCyclic ((K : Subgroup G) ⧸ (L : Subgroup G).subgroupOf K)) :

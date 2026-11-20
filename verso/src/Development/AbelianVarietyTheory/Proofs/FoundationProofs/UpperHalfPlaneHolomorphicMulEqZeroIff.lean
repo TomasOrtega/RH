@@ -10,11 +10,11 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `f g hf hg hfg`. Establish `hF` using `(UpperHalfPlane.mdifferentiable_iff.mp hf).analyticOnNhd UpperHalfPlane.isOpen_upperHalfPlaneSet`. Establish `hG` using `(UpperHalfPlane.mdifferentiable_iff.mp hg).analyticOnNhd UpperHalfPlane.isOpen_upperHalfPlaneSet`. Establish `hU : IsPreconnected {z : ℂ | 0 < z.im}` using `(convex_halfSpace_im_gt 0).isPreconnected`. Establish `hne : ({z : ℂ | 0 < z.im}).Nonempty` using `⟨Complex.I, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `AnalyticOnNhd.eq_zero_or_eq_zero_of_mul_eq_zero hF hG (fun z _ => by simp [Function.comp_apply, hfg]) hU with h | h` into its components or cases. Use `left`. Use function extensionality and compare the values at `τ`. Use `h (τ : ℂ) τ.im_pos` as an intermediate fact. Simplify `this` using `[Function.comp_apply, UpperHalfPlane.ofComplex_apply]`.
+Separate the alternatives or extract the components of the hypothesis. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `right`. Use function extensionality and compare the values at `τ`. Use `h (τ : ℂ) τ.im_pos` as an intermediate fact. Simplify `this` using `[Function.comp_apply, UpperHalfPlane.ofComplex_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem fn_mul_eq_zero_dom : ∀ f g : ℍ → ℂ, MDifferentiable 𝓘(ℂ) 𝓘(ℂ) f → MDifferentiable 𝓘(ℂ) 𝓘(ℂ) g → (∀ τ, f τ * g τ = 0) → f = 0 ∨ g = 0 := by
   intro f g hf hg hfg

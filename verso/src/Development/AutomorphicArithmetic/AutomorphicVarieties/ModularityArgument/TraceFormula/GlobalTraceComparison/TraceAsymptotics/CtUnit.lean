@@ -13,13 +13,13 @@ namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Use `⟨fun i j => (a.val i j).2, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `((a⁻¹).val i j).2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩`. Set `A : Matrix (Fin n) (Fin n) (Ov E w)` to `fun i j => ⟨g.val i j, h1 i j⟩`. Set `B : Matrix (Fin n) (Fin n) (Ov E w)` to `fun i j => ⟨(g⁻¹).val i j, h2 i j⟩`. Establish `hA : A.map (Ov E w).subtype = g.val` using `by ext i j; rfl`. Establish `hB : B.map (Ov E w).subtype = (g⁻¹).val` using `by ext i j; rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `inj : Function.Injective (fun M : Matrix (Fin n) (Fin n) (Ov E w) => M.map (Ov E w).subtype)` using `Matrix.map_injective Subtype.val_injective`. Establish `hAB : A * B = 1` using `inj (by`. Express the relevant statement in the definitionally equal form `(A * B).map (Ov E w).subtype = (1 : Matrix (Fin n) (Fin n) (Ov E w)).map (Ov E w).subtype`. Rewrite using `[Matrix.map_mul, hA, hB, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `congrArg Units.val (mul_inv_cancel g))`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hBA : B * A = 1` using `inj (by`. Express the relevant statement in the definitionally equal form `(B * A).map (Ov E w).subtype = (1 : Matrix (Fin n) (Fin n) (Ov E w)).map (Ov E w).subtype`. Rewrite using `[Matrix.map_mul, hA, hB, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `congrArg Units.val (inv_mul_cancel g))`. Conclude with `⟨⟨A, B, hAB, hBA⟩, Units.ext hA⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma mem_K {n : ℕ} {w : Pl E} (g : GLw n w) :
     g ∈ KGL w n ↔ (∀ i j, Valued.v (g.val i j) ≤ 1) ∧ (∀ i j, Valued.v ((g⁻¹).val i j) ≤ 1) := by
@@ -46,7 +46,7 @@ private lemma mem_K {n : ℕ} {w : Pl E} (g : GLw n w) :
     exact ⟨⟨A, B, hAB, hBA⟩, Units.ext hA⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hA i k) (hB k j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma int_mul {w : Pl E} {α β γ : Type} [Fintype β] (A : Matrix α β (w.adicCompletion E))
     (B : Matrix β γ (w.adicCompletion E)) (hA : ∀ i j, Valued.v (A i j) ≤ 1) (hB : ∀ i j, Valued.v (B i j) ≤ 1) (i : α) (j : γ) :
@@ -57,11 +57,11 @@ private lemma int_mul {w : Pl E} {α β γ : Type} [Fintype β] (A : Matrix α �
   exact mul_le_one' (hA i k) (hB k j)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Proceed by induction on `h using Subgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `one => intro i j`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `mul x y _ _ hx hy`. Introduce `i j`. Simplify using `using Valuation.map_add_le _ (hx i j) (hy i j)`. Consider the case `inv x _ hx`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `i j`. Simplify using `using hx i j`. Conclude with `fun h => Subgroup.subset_closure h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private lemma mem_intMat {a b : ℕ} {w : Pl E} (X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E))) :
     X ∈ intMat a b w ↔ ∀ i j, Valued.v (Multiplicative.toAdd X i j) ≤ 1 := by
@@ -79,9 +79,9 @@ private lemma mem_intMat {a b : ℕ} {w : Pl E} (X : Multiplicative (Matrix (Fin
   · exact fun h => Subgroup.subset_closure h
 
 /- English proof (translation)
-Establish `h : rStab (fun _ : H => c) = ⊤`. Use extensionality with `k`. Simplify using `[rStab]`. Unfold `avg`. Rewrite using `[h, Subgroup.index_top]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Subsingleton (H ⧸ (⊤ : Subgroup H)) := QuotientGroup.subsingleton_quotient_top`. Use `haveI : Unique (H ⧸ (⊤ : Subgroup H)) := ⟨⟨QuotientGroup.mk 1⟩, fun _ => Subsingleton.elim _ _⟩`. Rewrite using `[finsum_unique]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma avg_const {H : Type} [Group H] (c : ℂ) : avg (fun _ : H => c) = c := by
   have h : rStab (fun _ : H => c) = ⊤ := by
@@ -95,19 +95,19 @@ private lemma avg_const {H : Type} [Group H] (c : ℂ) : avg (fun _ : H => c) = 
   simp
 
 /- English proof (translation)
-Simplify using `[hint]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma hint_zero {H : Type} [Group H] (K : Subgroup H) : hint K (fun _ : H => (0 : ℂ)) = 0 := by
   simp [hint]
 
 /- English proof (translation)
-Establish `hs : rStab ((K : Set H).indicator (1 : H → ℂ)) ⊓ K = K`. Use `inf_eq_right.2 fun k hk x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ K`. Rewrite using `[Set.indicator_of_mem (show x * k ∈ (K : Set H) from K.mul_mem hx hk), Set.indicator_of_mem (show x ∈ (K : Set H) from hx)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Set.indicator_of_notMem (show x * k ∉ (K : Set H) from fun h => hx (by simpa using K.mul_mem h (K.inv_mem hk))), Set.indicator_of_notMem (show x ∉ (K : Set H) from hx)]`. Unfold `hint`. Rewrite using `[hs, Subgroup.relIndex_self]`. Rewrite using `[finsum_eq_single _ (QuotientGroup.mk 1 : H ⧸ K)]`. Establish `: Quotient.out (QuotientGroup.mk 1 : H ⧸ K) ∈ K`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' (QuotientGroup.mk 1 : H ⧸ K))`. Simplify using `using h`. Rewrite using `[Set.indicator_of_mem (show _ ∈ (K : Set H) from this)]`. Simplify using the standard rewrite rules. Introduce `q hq`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Set.indicator_of_notMem (fun h => hq ?_) _` and prove the remaining obligations. Rewrite using `[← QuotientGroup.out_eq' q]`. Conclude with `QuotientGroup.eq.2 (by simpa using h)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma hint_ind {H : Type} [Group H] (K : Subgroup H) : hint K ((K : Set H).indicator 1) = 1 := by
   have hs : rStab ((K : Set H).indicator (1 : H → ℂ)) ⊓ K = K := by
@@ -132,15 +132,15 @@ private lemma hint_ind {H : Type} [Group H] (K : Subgroup H) : hint K ((K : Set 
     exact QuotientGroup.eq.2 (by simpa using h)
 
 /- English proof (translation)
-Establish `h1 : m.1.val * (m.1⁻¹).val = 1` using `Units.mul_inv m.1`. Establish `h1' : (m.1⁻¹).val * m.1.val = 1` using `Units.inv_mul m.1`. Establish `h2 : m.2.val * (m.2⁻¹).val = 1` using `Units.mul_inv m.2`. Establish `h2' : (m.2⁻¹).val * m.2.val = 1` using `Units.inv_mul m.2`. Use `set e := finSumFinEquiv.trans (finCongr h) with he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAB : Matrix.fromBlocks m.1.val (m.1.val * X) 0 m.2.val * Matrix.fromBlocks (m.1⁻¹).val (-(X * (m.2⁻¹).val)) 0 (m.2⁻¹).val = 1`. Rewrite using `[Matrix.fromBlocks_multiply]`. Simplify using `[h1, h2, Matrix.mul_assoc]`. Establish `hBA : Matrix.fromBlocks (m.1⁻¹).val (-(X * (m.2⁻¹).val)) 0 (m.2⁻¹).val * Matrix.fromBlocks m.1.val (m.1.val * X) 0 m.2.val = 1`. Rewrite using `[Matrix.fromBlocks_multiply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[h1', h2', Matrix.mul_assoc, ← Matrix.mul_assoc (m.1⁻¹).val]`. Establish `hMN : Matrix.reindex e e (Matrix.fromBlocks m.1.val (m.1.val * X) 0 m.2.val) * Matrix.reindex e e (Matrix.fromBlocks (m.1⁻¹).val (-(X * (m.2⁻¹).val)) 0 (m.2⁻¹).val) = 1`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv, hAB, Matrix.submatrix_one_equiv]`. Establish `hNM : Matrix.reindex e e (Matrix.fromBlocks (m.1⁻¹).val (-(X * (m.2⁻¹).val)) 0 (m.2⁻¹).val) * Matrix.reindex e e (Matrix.fromBlocks m.1.val (m.1.val * X) 0 m.2.val) = 1`. Simplify using `only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv, hBA, Matrix.submatrix_one_equiv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hU : IsUnit (Matrix.reindex e e (Matrix.fromBlocks m.1.val (m.1.val * X) 0 m.2.val))` using `(⟨_, _, hMN, hNM⟩ : (Matrix (Fin n) (Fin n) (w.adicCompletion E))ˣ).isUnit`. Establish `hv : (blk h w m X).val = Matrix.reindex e e (Matrix.fromBlocks m.1.val (m.1.val * X) 0 m.2.val)`. Unfold `blk`. Simplify using `only [← he]`. Rewrite using `[dif_pos hU]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hU.unit_spec`. Use `⟨hv, Units.inv_eq_of_mul_eq_one_right ?_⟩` and prove the remaining obligations. Rewrite using `[hv]`. Conclude with `hMN`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma blk_eq {a b n : ℕ} (h : a + b = n) (w : Pl E) (m : GLw a w × GLw b w)
     (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)) :
@@ -179,29 +179,27 @@ private lemma blk_eq {a b n : ℕ} (h : a + b = n) (w : Pl E) (m : GLw a w × GL
   exact hMN
 
 /- English proof (translation)
-Take `⟨hv, hi⟩` from `blk_eq h w m X`. Use `set e := finSumFinEquiv.trans (finCongr h) with he`. Establish `e1 : ∀ (A : Matrix (Fin a) (Fin a) (w.adicCompletion E)) (B : Matrix (Fin a) (Fin b) (w.adicCompletion E)) (C : Matrix (Fin b) (Fin a) (w.adicCompletion E)) (D : Matrix (Fin b) (Fin b) (w.adicCompletion E)) p q, Matrix.reindex e e (Matrix.fromBlocks A B C D) (e p) (e q) = Matrix. …`. Introduce `A B C D p q`. Simplify using `[Matrix.reindex_apply, Matrix.submatrix_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_K, hv, hi]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g1, g2⟩`. Establish `m1 : ∀ i j, Valued.v (m.1.val i j) ≤ 1` using `fun i j => by`. Use `g1 (e (Sum.inl i)) (e (Sum.inl j))` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[e1]`. Simplify using `using this`. Establish `m2 : ∀ i j, Valued.v (m.2.val i j) ≤ 1` using `fun i j => by`. Use `g1 (e (Sum.inr i)) (e (Sum.inr j))` as an intermediate fact. Rewrite `this` using `[e1]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `m1X : ∀ i j, Valued.v ((m.1.val * X) i j) ≤ 1` using `fun i j => by`. Use `g1 (e (Sum.inl i)) (e (Sum.inr j))` as an intermediate fact. Rewrite `this` using `[e1]`. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `i1 : ∀ i j, Valued.v ((m.1⁻¹).val i j) ≤ 1` using `fun i j => by`. Use `g2 (e (Sum.inl i)) (e (Sum.inl j))` as an intermediate fact. Rewrite `this` using `[e1]`. Simplify using `using this`. Establish `i2 : ∀ i j, Valued.v ((m.2⁻¹).val i j) ≤ 1` using `fun i j => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `g2 (e (Sum.inr i)) (e (Sum.inr j))` as an intermediate fact. Rewrite `this` using `[e1]`. Simplify using `using this`. Use `⟨Subgroup.mem_prod.2 ⟨(mem_K _).2 ⟨m1, i1⟩, (mem_K _).2 ⟨m2, i2⟩⟩, fun i j => ?_⟩` and prove the remaining obligations. Establish `hX : X = (m.1⁻¹).val * (m.1.val * X)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, Units.inv_mul m.1, Matrix.one_mul]`. Rewrite using `[hX]`. Conclude with `int_mul _ _ i1 m1X i j`. Introduce and unpack `⟨hm, hX⟩`. Take `⟨k1, k2⟩` from `Subgroup.mem_prod.1 hm`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m1, i1⟩` from `(mem_K _).1 k1`. Take `⟨m2, i2⟩` from `(mem_K _).1 k2`. Prove the components needed by the constructor for the conclusion. Introduce `i j`. Take `⟨p, rfl⟩` from `e.surjective i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q, rfl⟩` from `e.surjective j`. Rewrite using `[e1]`. Apply the tactic sequence `rcases p with p | p <;> rcases q with q | q`. Simplify using `using m1 p q`. Simplify using `using int_mul _ _ m1 hX p q`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using the standard rewrite rules. Simplify using `using m2 p q`. Introduce `i j`. Take `⟨p, rfl⟩` from `e.surjective i`. Take `⟨q, rfl⟩` from `e.surjective j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[e1]`. Apply the tactic sequence `rcases p with p | p <;> rcases q with q | q`. Simplify using `using i1 p q`. Simplify using `using int_mul _ _ hX i2 p q`. Simplify using the standard rewrite rules.
-
-Simplify using `using i2 p q`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma blk_mem_iff {a b n : ℕ} (h : a + b = n) (w : Pl E) (m : GLw a w × GLw b w)
     (X : Matrix (Fin a) (Fin b) (w.adicCompletion E)) :
@@ -266,11 +264,11 @@ private lemma blk_mem_iff {a b n : ℕ} (h : a + b = n) (w : Pl E) (m : GLw a w 
       · simpa using i2 p q
 
 /- English proof (translation)
-Establish `h1 : ∀ k ∈ KGL w r, Valued.v (k : GLw r w).val.det ≤ 1`. Introduce and unpack `_ ⟨c, rfl⟩`. Establish `: (GeneralLinearGroup.map (Ov E w).subtype c).val.det = ((c.val.det : Ov E w) : w.adicCompletion E)` using `((Ov E w).subtype.map_det c.val).symm`. Express the relevant statement in the definitionally equal form `Valued.v (GeneralLinearGroup.map (Ov E w).subtype c).val.det ≤ 1`. Rewrite using `[this]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `c.val.det.2`. Establish `hm : k.val.det * (k⁻¹).val.det = 1`. Rewrite using `[← Matrix.det_mul, Units.mul_inv, Matrix.det_one]`. Establish `hv : Valued.v k.val.det * Valued.v (k⁻¹).val.det = 1`. Rewrite using `[← map_mul, hm, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm (h1 k hk) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private lemma det_K {r : ℕ} {w : Pl E} {k : GLw r w} (hk : k ∈ KGL w r) : Valued.v k.val.det = 1 := by
   have h1 : ∀ k ∈ KGL w r, Valued.v (k : GLw r w).val.det ≤ 1 := by
@@ -289,11 +287,11 @@ private lemma det_K {r : ℕ} {w : Pl E} {k : GLw r w} (hk : k ∈ KGL w r) : Va
     _ ≤ Valued.v k.val.det := mul_le_of_le_one_right' (h1 _ (inv_mem hk))
 
 /- English proof (translation)
-Establish `h0 : ordL x = 0`. Establish `hne : Valued.v x ≠ 0` using `by rw [hx]; exact one_ne_zero`. Unfold `ordL`. Rewrite using `[dif_neg hne]`. Establish `: WithZero.unzero hne = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `WithZero.coe_injective` to reduce the goal to its premises. Rewrite using `[WithZero.coe_unzero, hx]`. Both sides reduce to the same expression. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[absHalf, h0]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma absHalf_one {w : Pl E} {x : w.adicCompletion E} (hx : Valued.v x = 1) : absHalf w x = 1 := by
   have h0 : ordL x = 0 := by
@@ -312,21 +310,21 @@ end UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm
 
 open UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm in
 /- English proof (translation)
-Introduce `E _ _ _ w n a b h`. Use function extensionality and compare the values at `m`. Unfold `ct`. Establish `hconj : ∀ y : GLw n w, (avg fun k : KGL w n => (KGL w n : Set (GLw n w)).indicator (1 : GLw n w → ℂ) ((k : GLw n w)⁻¹ * y * k)) = (KGL w n : Set (GLw n w)).indicator (1 : GLw n w → ℂ) y`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf : (fun k : KGL w n => (KGL w n : Set (GLw n w)).indicator (1 : GLw n w → ℂ) ((k : GLw n w)⁻¹ * y * k)) = fun _ => (KGL w n : Set (GLw n w)).indicator (1 : GLw n w → ℂ) y`. Use function extensionality and compare the values at `k`. Establish `hiff : (k : GLw n w)⁻¹ * y * k ∈ KGL w n ↔ y ∈ KGL w n`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(KGL w n).mul_mem ((KGL w n).mul_mem k.2 hy) ((KGL w n).inv_mem k.2)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Introduce `hy`. Conclude with `(KGL w n).mul_mem ((KGL w n).mul_mem ((KGL w n).inv_mem k.2) hy) k.2`. Distinguish the cases in `hy : y ∈ KGL w n`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem (show _ ∈ (KGL w n : Set (GLw n w)) from hiff.2 hy), Set.indicator_of_mem (show _ ∈ (KGL w n : Set (GLw n w)) from hy)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (show _ ∉ (KGL w n : Set (GLw n w)) from fun h' => hy (hiff.1 h')), Set.indicator_of_notMem (show _ ∉ (KGL w n : Set (GLw n w)) from hy)]`. Rewrite using `[hf, avg_const]`. Simplify using `only [hconj]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hm : m ∈ K2 a b w`. Establish `hu : (fun X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) => (KGL w n : Set (GLw n w)).indicator (1 : GLw n w → ℂ) (blk h w m (Multiplicative.toAdd X))) = (intMat a b w : Set _).indicator 1`. Use function extensionality and compare the values at `X`. Distinguish the cases in `hX : X ∈ intMat a b w`. Rewrite using `[Set.indicator_of_mem (show _ ∈ (KGL w n : Set (GLw n w)) from (blk_mem_iff h w m _).2 ⟨hm, (mem_intMat X).1 hX⟩), Set.indicator_of_mem (show X ∈ (intMat a b w : Set _) from hX)]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (show _ ∉ (KGL w n : Set (GLw n w)) from fun h' => hX ((mem_intMat X).2 ((blk_mem_iff h w m _).1 h').2)), Set.indicator_of_notMem (show X ∉ (intMat a b w : Set _) from hX)]`. Take `⟨k1, k2⟩` from `Subgroup.mem_prod.1 hm`. Establish `hx : Valued.v (m.1.val.det ^ b / m.2.val.det ^ a) = 1`. Rewrite using `[map_div₀, map_pow, map_pow, det_K k1, det_K k2]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hu, hint_ind, absHalf_one hx, Set.indicator_of_mem (show m ∈ (K2 a b w : Set _) from hm)]`. Simplify using the standard rewrite rules. Establish `hu : (fun X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) => (KGL w n : Set (GLw n w)).indicator (1 : GLw n w → ℂ) (blk h w m (Multiplicative.toAdd X))) = fun _ => 0`. Use function extensionality and compare the values at `X`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.indicator_of_notMem (fun h' => hm ((blk_mem_iff h w m _).1 h').1) _`. Rewrite using `[hu, hint_zero, mul_zero, Set.indicator_of_notMem (show m ∉ (K2 a b w : Set _) from hm)]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.ctUnit :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.CtUnit := by

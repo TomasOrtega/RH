@@ -10,19 +10,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BCT.GlobHecke
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n _ S hS K' hK' f hf`. Use `⟨?_, globFn_inv S K' f fun w => (hf.1 w).2⟩` and prove the remaining obligations. Establish `hC : ∀ᶠ w in cofinite, tsupport (f w) = (KL n w : Set (UL n w))` using `by filter_upwards [hK'.2, hf.2] with w h1 h2`. Establish `ho : IsOpen (KL n w : Set (UL n w))` using `h1 ▸ (hK'.1 w).1`. Establish `hc : IsClosed (KL n w : Set (UL n w))` using `Subgroup.isClosed_of_isOpen _ ho`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2, tsupport, Set.support_indicator]`. Establish `: Function.support (1 : UL n w → ℂ) = Set.univ`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this, Set.inter_univ, hc.closure_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hcpt` using `GlobalTheory.BCT.LocCpt.loc_cpt E hU n S hS (fun w => tsupport (f w)) (fun w => (hf.1 w).1) hC`. Use `HasCompactSupport.intro hcpt fun x hx => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_forall] at hx`. Take `⟨w, hw, hxw⟩` from `hx`. Establish `hfin : (S ∩ Function.mulSupport fun w : Pl E => f w (toSub (UL n w) (cLoc w (x : UA E n)))).Finite`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `(GlobalTheory.BCT.LocAE.eventually_mem_KL E hU n x).and hf.2`. Rewrite `h` using `[Filter.eventually_cofinite]`. Use `h.subset ?_` and prove the remaining obligations. Introduce and unpack `u ⟨-, hu⟩ ⟨h1, h2⟩`. Apply `hu` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show f u _ = 1`. Rewrite using `[h2, Set.indicator_of_mem (show _ ∈ (KL n u : Set (UL n u)) from h1)]`. Both sides reduce to the same expression. Unfold `globFn`. Rewrite using `[finprod_mem_eq_prod _ hfin]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : f w (toSub (UL n w) (cLoc w (x : UA E n))) = 0` using `image_eq_zero_of_notMem_tsupport hxw`. Use `Finset.prod_eq_zero (i := w) ?_ h0` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Use `⟨hw, ?_⟩` and prove the remaining obligations. Use `show f w _ ≠ 1`.
-
-Rewrite using `[h0]`. Conclude with `zero_ne_one`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHecke_globFn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n →
     ∀ (S : Set (Pl E)), IsSection S → ∀ (K' : ∀ w : Pl E, Subgroup (UL n w)),

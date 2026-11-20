@@ -5,13 +5,13 @@ open AlgebraicGeometry CategoryTheory MvPolynomial NumberField ReciprocityTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C r => simp [aeval_C]`. Consider the case `add p q hp hq`. Establish `h` using `dvd_add hp hq`. Rewrite using `[map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p c hp`. Rewrite using `[map_mul, aeval_X]`. Establish `h2 : (X b - X a : MvPolynomial σ ℝ) ∣ X c - Function.update X b (X a) c`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `h : c = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h]`. Establish `e : p * X c - aeval (Function.update X b (X a)) p * Function.update X b (X a) c = (p - aeval (Function.update X b (X a)) p) * X c + aeval (Function.update X b (X a)) p * (X c - Function.update X b (X a) c)` using `by ring`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `dvd_add (dvd_mul_of_dvd_left hp _) (dvd_mul_of_dvd_right h2 _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem X_sub_X_dvd_sub_aeval_update_variable {σ : Type} [DecidableEq σ] (a b : σ) (P : MvPolynomial σ ℝ) :
     (X b - X a : MvPolynomial σ ℝ) ∣ P - aeval (Function.update (X : σ → MvPolynomial σ ℝ) b (X a)) P := by
@@ -35,13 +35,13 @@ theorem X_sub_X_dvd_sub_aeval_update_variable {σ : Type} [DecidableEq σ] (a b 
     exact dvd_add (dvd_mul_of_dvd_left hp _) (dvd_mul_of_dvd_right h2 _)
 
 /- English proof (translation)
-Introduce `σ _ a b hab P hP`. Establish `hcomp : (Function.update (X : σ → MvPolynomial σ ℝ) b (X a)) ∘ (Equiv.swap a b) = Function.update X b (X a)`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply]`. Distinguish the cases in `hia : i = a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hia` using the available equality. Rewrite using `[Equiv.swap_apply_left, Function.update_self, Function.update_of_ne hab]`. Distinguish the cases in `hib : i = b`. Substitute `hib` using the available equality. Rewrite using `[Equiv.swap_apply_right, Function.update_of_ne hab, Function.update_self]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Equiv.swap_apply_of_ne_of_ne hia hib]`. Establish `h1 : aeval (Function.update (X : σ → MvPolynomial σ ℝ) b (X a)) P = - aeval (Function.update (X : σ → MvPolynomial σ ℝ) b (X a)) P`. Use `congrArg (aeval (Function.update (X : σ → MvPolynomial σ ℝ) b (X a))) hP` as an intermediate fact. Rewrite `this` using `[aeval_rename, hcomp, map_neg]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : aeval (Function.update (X : σ → MvPolynomial σ ℝ) b (X a)) P = 0` using `self_eq_neg.mp h1`. Use `X_sub_X_dvd_sub_aeval_update_variable a b P` as an intermediate fact. Rewrite `this` using `[h0, sub_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem swap_odd_dvd : ∀ {σ : Type} [DecidableEq σ] (a b : σ), a ≠ b → ∀ P : MvPolynomial σ ℝ,
     rename (Equiv.swap a b) P = -P → (X b - X a : MvPolynomial σ ℝ) ∣ P := by

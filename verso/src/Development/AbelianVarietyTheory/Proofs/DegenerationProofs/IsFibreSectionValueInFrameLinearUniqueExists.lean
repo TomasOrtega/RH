@@ -28,7 +28,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {A : PolAV (Spec (CommRingCat.of (
   {F : Type} [Field F] [Algebra (FractionRing R) F] {k : ℕ} {x : TFK (R := R) F ⟶ A.A} {e : FrameAt A x}
 
 /- English proof (translation)
-Introduce `z I hI` and use `by have e₀ : SecM.ofSec A.A t = ∑ l, cF R (b l) • SecM.ofSec A.A (s l) := by refine Subtype.ext (funext fun j => (h j).trans ?_) rw [Submodule.coe_sum, Finset.sum_apply] rfl let φ : SecM A.A A.L k (TFK (R := R) F) →+ (TFK (R := R) F).left.presheaf.stalk z := AddMonoidHom.mk' (fun …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem valIs_comb {J : Type} [Fintype J] {s : J → SecA A F k} {b c : J → F} {t : SecA A F k} (h : IsComb A s b t)
     (hs : ∀ i, ValIs A (s i) x e (c i)) : ValIs A t x e (∑ i, b i * c i) := fun z I hI => by
@@ -47,7 +47,7 @@ theorem valIs_comb {J : Type} [Fintype J] {s : J → SecA A F k} {b c : J → F}
   exact congrArg (@id ((TFK (R := R) F).left.presheaf.stalk z) (cst (R := R) F z (b i)) * ·) (hs i z I hI)
 
 /- English proof (translation)
-Use `valIs_comb (J := Unit) (s := fun _ => t) (b := fun _ => a) (c := fun _ => c) (t := t') (fun j => (h j).trans (by rw [Fintype.sum_unique])) fun _ => ht` as an intermediate fact. Rewrite `this` using `[Fintype.sum_unique]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem valIs_smul {t t' : SecA A F k} {a c : F} (h : ∀ j, t'.f j = liftFun A.A _ (cF R a) * t.f j)
     (ht : ValIs A t x e c) : ValIs A t' x e (a * c) := by
@@ -56,7 +56,7 @@ theorem valIs_smul {t t' : SecA A F k} {a c : F} (h : ∀ j, t'.f j = liftFun A.
   rwa [Fintype.sum_unique] at this
 
 /- English proof (translation)
-Take `⟨z⟩` from `exists_pt (R := R) (F := F)`. Take `⟨J, hJ⟩` from `exists_good' (Z := (TFK (R := R) F).left) A.isLB z`. Use `(Units.mul_left_inj _).1 ((h z J hJ).symm.trans (h' z J hJ))` as an intermediate fact. Simplify using `only [id, cst_eq] at this`. Conclude with `cstH_inj z this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valIs_unique {t : SecA A F k} {c c' : F} (h : ValIs A t x e c) (h' : ValIs A t x e c') : c = c' := by
   obtain ⟨z⟩ := exists_pt (R := R) (F := F)
@@ -66,9 +66,9 @@ theorem valIs_unique {t : SecA A F k} {c c' : F} (h : ValIs A t x e c) (h' : Val
   exact cstH_inj z this
 
 /- English proof (translation)
-Take `⟨w, hw, -⟩` from `hL.evVal _ A k x e he t`. Take `⟨c, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of F)).inv).2 w`. Use `⟨c, fun z J hJ => ?_⟩` and prove the remaining obligations. Use `ThetaPtMove.sv_of_isValueAt hw (𝟙 _) z hJ` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_valIs (hL : Laws) (he : e.IsGen) (t : SecA A F k) : ∃ c, ValIs A t x e c := by
   obtain ⟨w, hw, -⟩ := hL.evVal _ A k x e he t
@@ -79,7 +79,7 @@ theorem exists_valIs (hL : Laws) (he : e.IsGen) (t : SecA A F k) : ∃ c, ValIs 
   exact this
 
 /- English proof (translation)
-Introduce `hL _ _ _ _ _ _ _ _ _ _` and use `⟨fun _ _ _ _ _ _ h hs => valIs_comb h hs, fun _ _ _ _ h ht => valIs_smul h ht, fun _ _ _ h h' => valIs_unique h h', fun he t => exists_valIs hL he t⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem valIs_linear : Laws → ∀ (R : Type) [CommRing R] [IsDomain R] (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (F : Type) [Field F] [Algebra (FractionRing R) F] (k : ℕ) (x : TFK (R := R) F ⟶ A.A) (e : FrameAt A x), (∀ (J : Type) [Fintype J] (s : J → SecA A F k) (b c : J → F) (t : SecA A F k), IsComb A s b t → (∀ i, ValIs A (s i) x e (c i)) → ValIs A t x e (∑ i, b i * c i)) ∧ (∀ (t t' : SecA A F k) (a c : F), (∀ j, t'.f j = liftFun A.A _ (cF R a) * t.f j) → ValIs A t x e c → ValIs A t' x e (a * c)) ∧ (∀ (t : SecA A F k) c c', ValIs A t x e c → ValIs A t x e c' → c = c') ∧ (e.IsGen → ∀ t : SecA A F k, ∃ c, ValIs A t x e c) :=
   fun hL _ _ _ _ _ _ _ _ _ _ =>

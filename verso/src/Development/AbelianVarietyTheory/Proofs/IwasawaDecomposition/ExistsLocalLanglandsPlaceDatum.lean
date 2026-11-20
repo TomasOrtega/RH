@@ -22,17 +22,15 @@ namespace GlobalTheory.PinLayer
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Break down `a with ⟨nt, all, chr_eq, host, frameN, chrN, chrGal, Pq', Pq_over, pq, jE_eq, mt_eq, Pq_eq, low', split, ratIn, ratIn_hL, ratIn_eig, ratIn_θ, depth⟩` into its components or cases. Take `⟨⟨D0, cf0, jE, A, cg, au, rep, row, low, Pq, S, hLm, eig, θ, Bs, M, C0, tp0, ch, mt, big, L, Sp, Au, ss, heq⟩, pack⟩` from `nt`. Simplify using `only at pack heq hrep labc zeta mt_eq ⊢`. Substitute `heq` using the available equality. Consider the cases of `pack`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hrep`. Take `⟨Hk, hHk⟩` from `GlobalTheory.FitHecke.heckeOpen_withLoc D0 cf0 jE A low Pq S hLm eig θ Bs M C0 tp0 ch mt hE.star hE.int hE.split hcheb big L Sp Au`. Take `⟨ty⟩` from `GlobalTheory.HeightCounting.typesOpen_withLoc D0 cf0 jE A low Pq S hLm eig θ Bs M C0 tp0 ch mt hE.star hE.int hE.split hcheb big L Sp Au ss`. Take `⟨tw⟩` from `GlobalTheory.T.side_multiplicity_character D0 cf0 jE A low Pq S hLm eig θ Bs M C0 tp0 ch mt hE.star hE.int hE.split hcheb big L Sp Au`. Take `⟨Γ, hΓ, -⟩` from `GlobalTheory.T.exists_green_cuspidal_labelling_same_generators hG (withLoc L) (cfL L cf0) { A.grp with } hT zeta`.
+Split into cases according to the possible forms of the given data. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨{ cf := cfL L cf0, C := chL L C0, tp := tpL L tp0, chr := tw.chrN, val := hval, Q_eq := ?Q, T := { A.wdT with }, lab := A.lab, cg := { cg with }, M := mtL L M, H := Hk, au := ?au, rep := rep, rep_inj := hinj, row := ?row, locW_eq := fun i i' σ w => (Au.locW i σ w).trans (Au.locW …` and prove the remaining obligations. Use `case Q =>`. Introduce `i`. Establish `hm : i ∈ L.X.nd.locs (L.X.nd.j i) (L.X.nd.w i)` using `(L.X.nd.locs_mem _ _ i).2 ⟨rfl, rfl⟩`. Conclude with `(Sp.Q_eq _ _ i hm).trans (Sp.Qc_eq _ _)`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately.
 
-Use `case au =>`. Introduce `j h1 h2 π s σ h`. Rewrite using `[hHk]`. Conclude with `au j h1 h2 π s σ h`. Use `case row =>`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Use `⟨fun σ s τ h => ?_, fun σ v w hvw Dv hα => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (A.wdT.e s.w) (Au.locW i σ s.w)).trans (row.1 σ s τ h)`. Take `⟨α, h1, h2⟩` from `row.2 σ v w hvw Dv hα`. Conclude with `⟨α, h1, (Au.satW i σ w).trans h2⟩`.
-
-Use `case lab =>`. Conclude with `GlobalTheory.T.weilDeligneLabels_all_places_of_fixed_and_conj _ _ A.lab labc`. Use `case chiT =>`. Conclude with `A.chiT`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pinAt_of_side {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf nch}
     (a : NAt hL D cf nch tp) (hG : GlobalTheory.Published.GreenCuspidal) (hT : TypesTrue D.ntypes cf.P cf.W) (hval : ValLL0 D cf)
@@ -74,11 +72,11 @@ theorem pinAt_of_side {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {c
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hP hL`. Use `GlobalTheory.HeightCounting.JumpsAt.evLgG_of_forall fun K B f T _ w Z Wt p0 t nch n xd c hE _ _ => ?_` and prove the remaining obligations. Take `⟨e⟩` from `hE`. Establish `e' : NMore (D` using `(w.st Z).toD7) c.row t.r.z.geo xd := e`. Establish `hT : TypesTrue (w.D Z).ntypes (TC.cf w.I w.l Z).P (TC.cf w.I w.l Z).W` using `by show TypesTrue _ w.I.C.P w.I.C.W`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[w.C_eq]`. Conclude with `t.grp`. Establish `hEl : Elem (w.D Z)`. Use `⟨fun y => ?_, fun j g => ((w.D Z).hc ((w.D Z).eTau.symm g)).e_int j, fun v hv => ?_⟩` and prove the remaining obligations. Conclude with `(IntermediateField.normal_iff_forall_map_le.1 B.coeffGaloisSubfield_isGalois.to_normal (starRingEnd (w.D Z).what₂.LL).toRatAlgHom) ⟨_, y.2, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hc : ∀ p ∈ (w.D Z).host.levelPrimes, p.Prime ∧ p % ((w.D Z).host.QS * (w.D Z).host.q * (w.D Z).host.d) = 1` using `(w.st Z).B.level_cond`. Break down `hv with hv | hv` into its components or cases. Conclude with `GlobalTheory.HeightCounting.Up.isSplitPl_of_mem_levelPrimes _ hc (w.D Z).host.pde_level.1 v hv`. Conclude with `GlobalTheory.HeightCounting.Up.isSplitPl_of_mem_levelPrimes _ hc (w.D Z).host.pde_level.2 v hv`. Conclude with `pinAt_of_side c.a hP.greenC hT (GlobalTheory.HeightCounting.Up.valLL0_colW w Z) (fun σ => Formalism.IndefR.principalLevelFrame.rowRepR t.r.z.R.θ (t.r.Y.eFT σ)) c.row.rep_eq (fun σ σ' h => t.r.Y.eFT.injective (Formalism.IndefR.principalLevelFrame.rowRepR_inj _ _ _ h)) hEl (GlobalT …`.
+A detailed English derivation is pending.
 -/
 theorem pin_atMem : PrN → ∀ hL : GlobalTheory.Published.LocalLanglandsGL,
     AtMem hL fun _ _ _ _ w Z _ _ t nch n c => ∃ P : GlobalTheory.NPin.Pin hL (w.D Z), PinAt c.a P := by

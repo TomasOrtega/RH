@@ -12,14 +12,14 @@ section Units
 variable {K : Type} [Field K] [NumberField K] [StarRing K] (v : HeightOneSpectrum (𝓞 K))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mul_ne_zero hx.1 hy.1, by rw [Formalism.DivisionValues.ValuationRepresentative.vw_mul v _ _ hx.1 hy.1, hx.2, hy.2, add_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem vwUnit_mul {x y : K} (hx : x ≠ 0 ∧ Formalism.DivisionValues.vw v x = 0) (hy : y ≠ 0 ∧ Formalism.DivisionValues.vw v y = 0) :
     x * y ≠ 0 ∧ Formalism.DivisionValues.vw v (x * y) = 0 :=
   ⟨mul_ne_zero hx.1 hy.1, by rw [Formalism.DivisionValues.ValuationRepresentative.vw_mul v _ _ hx.1 hy.1, hx.2, hy.2, add_zero]⟩
 
 /- English proof (translation)
-Establish `h0 : N ≠ 0` using `by rintro rfl; exact hN (dvd_zero _)`. Use `⟨by exact_mod_cast h0, ?_⟩` and prove the remaining obligations. Rewrite using `[DepthTie.vw_N v N h0, padicValNat.eq_zero_of_not_dvd hN]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vwUnit_nat {N : ℕ} (hN : ¬ plc v ∣ N) : (N : K) ≠ 0 ∧ Formalism.DivisionValues.vw v (N : K) = 0 := by
   have h0 : N ≠ 0 := by rintro rfl; exact hN (dvd_zero _)
@@ -28,9 +28,9 @@ theorem vwUnit_nat {N : ℕ} (hN : ¬ plc v ∣ N) : (N : K) ≠ 0 ∧ Formalism
   simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use `vwUnit_nat v (N := 1) (by simpa using (plc_prime v).ne_one)` as an intermediate fact. Simplify using `using this`. Consider the case `succ n ih => rw [pow_succ]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Conclude with `vwUnit_mul v ih hx`.
+A detailed English derivation is pending.
 -/
 theorem vwUnit_pow {x : K} (hx : x ≠ 0 ∧ Formalism.DivisionValues.vw v x = 0) (n : ℕ) :
     x ^ n ≠ 0 ∧ Formalism.DivisionValues.vw v (x ^ n) = 0 := by
@@ -41,15 +41,15 @@ theorem vwUnit_pow {x : K} (hx : x ≠ 0 ∧ Formalism.DivisionValues.vw v x = 0
   | succ n ih => rw [pow_succ]; exact vwUnit_mul v ih hx
 
 /- English proof (translation)
-The claim follows from `vwUnit_nat v fun hd => h ((Nat.prime_dvd_prime_iff_eq (plc_prime v) hp).1 hd)`.
+A detailed English derivation is pending.
 -/
 theorem vwUnit_prime {p : ℕ} (hp : p.Prime) (h : plc v ≠ p) : (p : K) ≠ 0 ∧ Formalism.DivisionValues.vw v (p : K) = 0 :=
   vwUnit_nat v fun hd => h ((Nat.prime_dvd_prime_iff_eq (plc_prime v) hp).1 hd)
 
 /- English proof (translation)
-Establish `x0` using `left_ne_zero_of_mul h.1`. Establish `y0` using `right_ne_zero_of_mul h.1`. Establish `h2` using `h.2`. Rewrite `h2` using `[Formalism.DivisionValues.ValuationRepresentative.vw_mul v _ _ x0 y0]`. Establish `a` using `DepthTie.vw_nonneg_of_isIntegral v x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `b` using `DepthTie.vw_nonneg_of_isIntegral v y hy`. Conclude with `⟨⟨x0, by omega⟩, ⟨y0, by omega⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem vwUnit_factor {x y : K} (hx : IsIntegral ℤ x) (hy : IsIntegral ℤ y)
     (h : x * y ≠ 0 ∧ Formalism.DivisionValues.vw v (x * y) = 0) :
@@ -65,13 +65,13 @@ theorem vwUnit_factor {x y : K} (hx : IsIntegral ℤ x) (hy : IsIntegral ℤ y)
 end Units
 
 /- English proof (translation)
-Take `⟨e0, e1, -⟩` from `DepthTie.alg_pi_ne_zero (K := K) Dd hsp ⟨hprime.1, hprime.2.1⟩`. Establish `u1` using `vwUnit_prime v hprime.1 hg1`. Establish `u2` using `vwUnit_prime v hprime.2.1 hg2`. Establish `uq` using `vwUnit_prime v hprime.2.2.1 hq`. Establish `ud` using `vwUnit_prime v hprime.2.2.2 hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ut : ∀ a : ℕ → ℕ, ((∏ p ∈ Dd.Q.sm.filter Nat.Prime, p ^ a p : ℕ) : K) ≠ 0 ∧ Formalism.DivisionValues.vw v ((∏ p ∈ Dd.Q.sm.filter Nat.Prime, p ^ a p : ℕ) : K) = 0` using `fun a => vwUnit_nat v fun hdv => by`. Take `⟨p, hp, h⟩` from `(Prime.dvd_finset_prod_iff (plc_prime v).prime _).1 hdv`. Take `⟨hp1, hp2⟩` from `Finset.mem_filter.1 hp`. Conclude with `h2 ((Nat.prime_dvd_prime_iff_eq (plc_prime v) hp2).1 ((plc_prime v).dvd_of_dvd_pow h) ▸ hp1)`. Take `⟨a0, b0⟩` from `vwUnit_factor v (DepthTie.isIntegral_alg _) (DepthTie.isIntegral_alg _) (e0 ▸ u1)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, b1⟩` from `vwUnit_factor v (DepthTie.isIntegral_alg _) (DepthTie.isIntegral_alg _) (e1 ▸ u2)`. Rewrite using `[DepthTie.sigAt_eq]`. Use `(vwUnit_mul v ?_ ?_).2` and prove the remaining obligations. Unfold `nnKAt nnOf`. Rewrite using `[Fin.prod_univ_two]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `vwUnit_mul v (vwUnit_mul v (vwUnit_pow v b0 _) (vwUnit_pow v a0 _)) (vwUnit_mul v (vwUnit_pow v b1 _) (vwUnit_pow v a1 _))`. Unfold `DepthTie.Nsig DepPage.Z1 DepPage.q`. Simplify using `only [Nat.cast_mul, Nat.cast_pow]`. Conclude with `vwUnit_mul v (vwUnit_pow v (vwUnit_mul v u1 u2) _) (vwUnit_mul v (vwUnit_mul v (ut _) (vwUnit_pow v uq _)) (vwUnit_pow v ud _))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vw_sigAt_good {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dd : DepData E) {K : Type} [Field K] [NumberField K] [StarRing K] [Algebra (𝓞 E) K]
@@ -103,19 +103,19 @@ theorem vw_sigAt_good {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Re
       (vwUnit_mul v (vwUnit_mul v (ut _) (vwUnit_pow v uq _)) (vwUnit_pow v ud _))
 
 /- English proof (translation)
-Introduce `E _ _ _ H lv Dw Xo c _ Dd K _ _ _ _ _ _ Bs Df S P _ _ oc O ι hE hσ hpr hsp hPg v j hv`. Take `⟨hprime, -, -⟩` from `DepthTie.page_facts Dd O hPg hpr`. Take `⟨p1, p2, p3, p4, p5⟩` from `hpr`. Rewrite `hv` using `[p1, p2, p3, p4, p5]`. Simplify using `only [not_or] at hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨h2, hq, hd, hg1, hg2⟩` from `hv`. Establish `hs` using `vw_sigAt_good Dd hsp hprime v h2 hq hd hg1 hg2 (Dw (ι j)) (ι j)`. Take `⟨o1, o2⟩` from `DepthTie.one_le_ramOver_below (F := c.F) v`. Establish `hW : 0 ≤ (nuWAt (Xo` using `Xo (ι j)) (c := c) Dd (placeBelow (K := c.F) v) (ι j)).toReal := EReal.toReal_nonneg (le_max_left _ _)`. Establish `hram : ¬ Dd.Q.IsRam (plc v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `DepPage.IsRam`. The claim follows by propositional logic. Establish `hbad : ¬ Dd.Q.IsBad (plc v)`. Unfold `DepPage.IsBad`. The claim follows by propositional logic.
+Replace the relevant objects with their definitions. The claim follows by propositional logic. Establish an intermediate fact. Replace the relevant objects with their definitions. The claim follows by propositional logic.
 
-Establish `r1 : (1 : ℝ) ≤ (ramOver (K` using `c.F) v : ℝ) := by exact_mod_cast o1`. Establish `r2 : (1 : ℝ) ≤ (ramOverZ (placeBelow (K` using `c.F) v) : ℝ) := by exact_mod_cast o2`. Establish `key : O.e0 v j = (⌈(ramOverZ (placeBelow (K` using `c.F) v) : ℝ) * (Dd.Q.T : ℝ) * ((nuWAt (Xo := Xo (ι j)) (c := c) Dd (placeBelow (K := c.F) v) (ι j)).toReal / (ramOverZ (placeBelow (K := c.F) v) : ℝ))⌉ : ℝ) / (ramOverZ (placeBelow (K := c.F) v) : ℝ) := by`. Unfold `OnObj.e0`. Rewrite using `[hE v j, hσ v j, hs, DepthTie.ramw_eq_below (F := c.F) v]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `EAt expE DepPage.eLam nuStarAt DepPage.nuN DepPage.cP`. Simplify using `only []`. Rewrite using `[DepthTie.resChar_below (F := c.F) v, if_neg hg1, if_neg hg2, if_neg hram, if_neg hbad]`. Simplify using `only [Nat.cast_zero, add_zero, Int.cast_zero, sub_zero, Nat.cast_mul, Int.cast_mul, Int.cast_natCast]`. Rewrite using `[mul_div_mul_left _ _ (by linarith)]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg (Int.ceil_nonneg (by positivity))]`. Use `⟨?_, fun h0 => ?_⟩` and prove the remaining obligations. Rewrite using `[key, div_le_iff₀ (by linarith)]`. Use `(Int.ceil_lt_add_one _).le.trans ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[key, h0]`. Simplify using the standard rewrite rules.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem normalizedLattice_exponent_eq_roundedDepth_goodPlace : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (lv : Level H) (Dw : ℕ → Datum H) (Xo : ∀ j, Moduli (Dw j) lv) (c : Coeff lv) [StarRing (𝓞 E)] (Dd : DepData E)
   (K : Type) [Field K] [NumberField K] [StarRing K] [Algebra (𝓞 c.F) (𝓞 K)] [Algebra.IsIntegral (𝓞 c.F) (𝓞 K)] [Algebra (𝓞 E) K] (Bs : DefBase K) (Df : DefSide Bs) (S : IndefData Df) (P : Type) [Group P] [Finite P] (oc : OnConst) (O : OnObj S P oc) (ι : Bs.J → ℕ),

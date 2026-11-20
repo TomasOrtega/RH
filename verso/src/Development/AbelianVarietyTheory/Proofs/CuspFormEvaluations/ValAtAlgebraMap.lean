@@ -32,7 +32,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 omit [IsCMField E] in
 /- English proof (translation)
-Unfold `PT.rd`. Use `Real.one_le_rpow ?_ (by positivity)` and prove the remaining obligations. Establish `h : (1 : ℤ) ≤ |NumberField.discr E|` using `Int.one_le_abs (NumberField.discr_ne_zero E)`. Conclude with `h` after adjusting the coercions.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_le_rd : 1 ≤ PT.rd E := by
   unfold PT.rd
@@ -41,7 +41,7 @@ theorem one_le_rd : 1 ≤ PT.rd E := by
   exact_mod_cast h
 
 /- English proof (translation)
-Unfold `phiFD`. Use `split_ifs`. Check the signs of the components of the expression. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem phi_nonneg (X : Data E r) (th : ℝ) (x : Frame X.Ψ r) : 0 ≤ phiFD X th x := by
   unfold phiFD
@@ -50,7 +50,7 @@ theorem phi_nonneg (X : Data E r) (th : ℝ) (x : Frame X.Ψ r) : 0 ≤ phiFD X 
   · exact le_rfl
 
 /- English proof (translation)
-Introduce `γ hγ x hx b hb`. Unfold `phiFD`. Rewrite using `[(GlobalTheory.ClosedDiscontinuity.firstMinimum_invariant_continuous_pos_on_frames r X hr).1 γ hγ x hx b hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_inv (X : Data E r) (hr : 0 < r) (th : ℝ) : IsInvFn X (phiFD X th) := by
   intro γ hγ x hx b hb
@@ -58,7 +58,7 @@ theorem phi_inv (X : Data E r) (hr : 0 < r) (th : ℝ) : IsInvFn X (phiFD X th) 
   rw [(GlobalTheory.ClosedDiscontinuity.firstMinimum_invariant_continuous_pos_on_frames r X hr).1 γ hγ x hx b hb]
 
 /- English proof (translation)
-Establish `h1` using `one_le_rd (E := E)`. Use `⟨2 * PT.f E / PT.rd E ^ 2, th, by positivity, hth, fun x _ hx => ?_⟩` and prove the remaining obligations. Unfold `phiFD`. Rewrite using `[if_pos hx, div_div]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_lower (X : Data E r) (hf : 0 < PT.f E) {th : ℝ} (hth : 0 < th) :
     ∃ ca ε0 : ℝ, 0 < ca ∧ 0 < ε0 ∧ ∀ x ∈ X.dom, X.la1 x < ε0 → ca / X.la1 x ^ 2 ≤ phiFD X th x := by
@@ -68,9 +68,9 @@ theorem phi_lower (X : Data E r) (hf : 0 < PT.f E) {th : ℝ} (hth : 0 < th) :
   rw [if_pos hx, div_div]
 
 /- English proof (translation)
-Establish `h1` using `one_le_rd (E := E)`. Unfold `phiFD`. Use `split_ifs`. Rewrite using `[← div_div]`. Use `div_le_div_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Check the signs of the components of the expression.
 
-Conclude with `div_le_self (by positivity) (one_le_pow₀ h1)`. Check the signs of the components of the expression.
+A detailed English derivation is pending.
 -/
 theorem phi_le (X : Data E r) (th : ℝ) (x : Frame X.Ψ r) : phiFD X th x ≤ 2 * PT.f E / X.la1 x ^ 2 := by
   have h1 := one_le_rd (E := E)
@@ -82,11 +82,11 @@ theorem phi_le (X : Data E r) (th : ℝ) (x : Frame X.Ψ r) : phiFD X th x ≤ 2
   · positivity
 
 /- English proof (translation)
-Use `⟨2 * PT.f E / th' ^ 2, fun x => ?_⟩` and prove the remaining obligations. Establish `hC : (0 : ℝ) ≤ 2 * PT.f E / th' ^ 2` using `by positivity`. Distinguish the cases in `hx : X.la1 x < th'`. Establish `: phiFD X th x ≤ phiFD X th' x`. Establish `h0` using `phi_nonneg X th' x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `phiFD at h0 ⊢`. Rewrite `h0`, the goal using `[if_pos hx]`. Use `split_ifs`. Conclude with `le_rfl`. Conclude with `h0`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h0` using `phi_nonneg X th' x`. Establish `h1` using `phi_le X th x`. Establish `h2 : 2 * PT.f E / X.la1 x ^ 2 ≤ 2 * PT.f E / th' ^ 2` using `div_le_div_of_nonneg_left (by positivity) (by positivity) (pow_le_pow_left₀ h'.le (not_lt.1 hx) 2)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem phi_threshold (X : Data E r) (th : ℝ) {th' : ℝ} (h' : 0 < th') :
     ∃ C : ℝ, ∀ x, phiFD X th x ≤ phiFD X th' x + C := by
@@ -108,7 +108,7 @@ theorem phi_threshold (X : Data E r) (th : ℝ) {th' : ℝ} (h' : 0 < th') :
     linarith
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `phi_threshold X th h'`. Use `⟨|K| * Real.exp (2 * i * C), fun x hx => (hK x hx).trans ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc |K|, ← Real.exp_add]`. Use `mul_le_mul (le_abs_self K) (Real.exp_le_exp.2 ?_) (Real.exp_pos _).le (abs_nonneg _)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left (hC x) (show (0 : ℝ) ≤ 2 * i by positivity)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -123,9 +123,9 @@ theorem decay_threshold (X : Data E r) (th : ℝ) {th' : ℝ} (h' : 0 < th') (i 
   linarith
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `b`. Establish `hab' : (a : ℕ) ≤ b` using `hab`. Proceed by induction on `b, hab' using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hn ih`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h1` using `ih (by omega) hn (by simp only at hp ⊢; omega)`. Establish `h2` using `h ⟨n, by omega⟩ ⟨n + 1, hb⟩ rfl (by simp only at hp ⊢; omega)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem gap_of_adjacent {p : ℕ} (G L : Fin r → ℤ)
     (h : ∀ a b : Fin r, (b : ℕ) = a + 1 → (b : ℕ) ≠ p → G b + 2 * (L a - L b) ≤ G a) (a b : Fin r) (hab : a ≤ b)
@@ -140,23 +140,21 @@ theorem gap_of_adjacent {p : ℕ} (G L : Fin r → ℤ)
     linarith
 
 /- English proof (translation)
-Establish `hg : ∀ τ (a b : Fin r), a ≤ b → ((b : ℕ) < X.p0 ∨ X.p0 ≤ (a : ℕ)) → G τ b + 2 * (L τ a - L τ b) ≤ G τ a ∧ L τ b ≤ L τ a`. Introduce `τ a b hab hp`. Use `⟨gap_of_adjacent (G τ) (L τ) (h τ).1 a b hab hp, ?_⟩` and prove the remaining obligations. Break down `hab.eq_or_lt with rfl | h'` into its components or cases. Conclude with `le_rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hp with hp | hp` into its components or cases. Conclude with `((hL τ).1 a b h' hp).le`. Conclude with `((hL τ).2.1 a b hp h').le`. Establish `hn : ∀ τ (a b : Fin r), (a : ℕ) < X.p0 → X.p0 ≤ (b : ℕ) → 38 * (T : ℤ) ≤ 10 * (G τ b - G τ a) ∧ 19 * (T : ℤ) ≤ 10 * (L τ b - L τ a) ∧ 57 * (T : ℤ) ≤ 10 * (2 * (G τ b - G τ a) - (L τ b - L τ a))`. Introduce `τ a b ha hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hr0 : 0 < r` using `by have := a.2; omega`. Establish `hr1 : r - 1 < r` using `by omega`. Take `⟨h1, h2⟩` from `(h τ).2 a b ha hb`. Take `⟨h3, -⟩` from `(h τ).2 ⟨0, hr0⟩ ⟨r - 1, hr1⟩ (by simp only; omega) (by have := b.2; simp only; omega)`. Take `⟨h4, h5⟩` from `hg τ ⟨0, hr0⟩ a (Nat.zero_le _) (Or.inl ha)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h6, h7⟩` from `hg τ b ⟨r - 1, hr1⟩ (by have := b.2; rw [Fin.le_def]; simp only; omega) (Or.inr hb)`. Use `⟨by linarith, h1, by linarith⟩` and prove the remaining obligations. Use `⟨fun τ a b hab hp => ?_, fun τ a b ha hb => ?_, fun s hs0 hs τ => ⟨fun a b hab hb => ?_, fun a b ha hab => ?_, fun a b ha hb => ?_⟩⟩` and prove the remaining obligations. Use `hg τ a b hab hp` as an intermediate fact. Combine the linear relations using `[this.1, this.2]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, h2, -⟩` from `hn τ a b ha hb`. Establish `h1' : 38 * (T : ℝ) ≤ 10 * ((G τ b : ℝ) - G τ a)` using `by exact_mod_cast h1`. Establish `h2' : 19 * (T : ℝ) ≤ 10 * ((L τ b : ℝ) - L τ a)` using `by exact_mod_cast h2`. Apply the tactic sequence `constructor <;> linarith`. Take `⟨h1, h2⟩` from `hg τ a b hab (Or.inl hb)`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : (a : ℕ) < X.p0` using `lt_of_le_of_lt hab hb`. Establish `h1' : (G τ b : ℝ) + 2 * (L τ a - L τ b) ≤ G τ a` using `by exact_mod_cast h1`. Establish `h2' : (L τ b : ℝ) ≤ L τ a` using `by exact_mod_cast h2`. Simplify using `only [de2W, if_neg (not_le.2 ha), if_neg (not_le.2 hb)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `hg τ a b hab (Or.inr ha)`. Establish `hb : X.p0 ≤ (b : ℕ)` using `ha.trans hab`. Establish `h1' : (G τ b : ℝ) + 2 * (L τ a - L τ b) ≤ G τ a` using `by exact_mod_cast h1`. Establish `h2' : (L τ b : ℝ) ≤ L τ a` using `by exact_mod_cast h2`. Simplify using `only [de2W, if_pos ha, if_pos hb]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨-, -, h3⟩` from `hn τ a b ha hb`. Establish `h3' : 57 * (T : ℝ) ≤ 10 * (2 * ((G τ b : ℝ) - G τ a) - (L τ b - L τ a))` using `by exact_mod_cast h3`. Simplify using `only [de2W, if_neg (not_le.2 ha), if_pos hb]`. Use `push_cast`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gaps_all (X : Data E r) (L G : Wt X.Ψ r) (T : ℕ) (hL : IsStrictDom X L)
     (h : ∀ τ : X.Ψ, (∀ a b : Fin r, (b : ℕ) = a + 1 → (b : ℕ) ≠ X.p0 → G τ b + 2 * (L τ a - L τ b) ≤ G τ a) ∧
@@ -215,15 +213,15 @@ theorem gaps_all (X : Data E r) (L G : Wt X.Ψ r) (T : ℕ) (hL : IsStrictDom X 
     linarith
 
 /- English proof (translation)
-Establish `hr0 : 0 < r` using `by linarith`. Establish `hf0 : 0 < f` using `by linarith`. Establish `hfr : 0 < f * r` using `by positivity`. Establish `h1 : 7 * (f * r) ≤ 2 * D` using `by rw [hD]; nlinarith`. Establish `hD0 : 0 < D` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : f * r ^ 2 ≤ (f * r) ^ 2` using `by nlinarith [sq_nonneg r, mul_pos hf0 (pow_pos hr0 2)]`. Establish `h3 : 49 * (f * r) ^ 2 ≤ 4 * D ^ 2` using `by nlinarith`. Establish `h4 : 0 < f * r ^ 2` using `by positivity`. Establish `h5 : r ≤ f * r ^ 2` using `by nlinarith`. Establish `h6 : 5 * r ^ 2 ≤ (r - 1) ^ 3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s, rfl⟩ : ∃ s, r = s + 8` from `⟨r - 8, by ring⟩`. Establish `hs : 0 ≤ s` using `by linarith`. Use polynomial arithmetic with `[pow_nonneg hs 2, pow_nonneg hs 3]`. Establish `h7 : 5 * r ^ 2 * (f * r) ^ 3 ≤ 8 * D ^ 3`. Establish `: 8 * D ^ 3 = (r - 1) ^ 3 * (f * r) ^ 3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show 8 * D ^ 3 = (2 * D) ^ 3 by ring, hD]; ring`. Rewrite using `[this]`. Conclude with `mul_le_mul_of_nonneg_right h6 (by positivity)`. Establish `h8 : (5 * f * r ^ 2) ^ 2 * (2 * u) ≤ (5 * f * r ^ 2) ^ 2 * (f * r)` using `mul_le_mul_of_nonneg_left hu (by positivity)`. Establish `h9 : D * (11 * D ^ 2) ≤ D * T` using `mul_le_mul_of_nonneg_left hT hD0.le`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h10 : 0 < D ^ 3` using `by positivity`. Use `⟨by linarith, by linarith, by nlinarith, by linarith⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem margin_numbers {f r D T u : ℝ} (hf : 1 ≤ f) (hr : 8 ≤ r) (hD : 2 * D = f * (r * (r - 1))) (hT : 11 * D ^ 2 ≤ T)
     (hu0 : 0 ≤ u) (hu : 2 * u ≤ f * r) :
@@ -259,9 +257,9 @@ section Record
 variable {D : D7} {T : Top D} (h : LawsP T) (j : ℕ) (hj : InR D j)
 
 /- English proof (translation)
-Establish `h : (Module.finrank ℚ D.host.E : ℝ) = 2 * (D.R.f : ℝ)`. Rewrite using `[D.host.finrank_cmField]`. Unfold `Ranks.f Ranks.n`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h' : Module.finrank ℚ D.host.E = 2 * D.R.f` using `by exact_mod_cast h`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_host (D : D7) : Module.finrank ℚ D.host.E / 2 = D.R.f := by
   have h : (Module.finrank ℚ D.host.E : ℝ) = 2 * (D.R.f : ℝ) := by
@@ -273,23 +271,23 @@ theorem finrank_host (D : D7) : Module.finrank ℚ D.host.E / 2 = D.R.f := by
   omega
 
 /- English proof (translation)
-Unfold `Ranks.f Ranks.n`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem f_pos (D : D7) : 0 < D.R.f := by unfold Ranks.f Ranks.n; positivity
 
 /- English proof (translation)
-Rewrite using `[← Nat.choose_two_right, Nat.cast_choose_two]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem two_mul_half (p : ℕ) : (2 : ℝ) * ((p * (p - 1) / 2 : ℕ) : ℝ) = p * (p - 1) := by
   rw [← Nat.choose_two_right, Nat.cast_choose_two]; ring
 
 include hj in
 /- English proof (translation)
-Establish `hr : D.R.r = (D.R.sigW j).1 + (D.R.sigW j).2`. Use `hj.1` as an intermediate fact. Use `hj.2` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [Ranks.r, Ranks.sigW]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `h1` using `two_mul_half (D.R.sigW j).1`. Establish `h2` using `two_mul_half (D.R.sigW j).2`. Rewrite using `[hr, WeightFamilies.dimY]`. Simplify using `only [Nat.cast_mul, Nat.cast_add]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `(D.R.f : ℝ) * h1 + (D.R.f : ℝ) * h2`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem two_mul_dimY : (2 : ℝ) * WeightFamilies.dimY D j = D.R.f * (D.R.r * (D.R.r - 1)) := by
   have hr : D.R.r = (D.R.sigW j).1 + (D.R.sigW j).2 := by
@@ -302,7 +300,7 @@ theorem two_mul_dimY : (2 : ℝ) * WeightFamilies.dimY D j = D.R.f * (D.R.r * (D
   linear_combination (D.R.f : ℝ) * h1 + (D.R.f : ℝ) * h2
 
 /- English proof (translation)
-Consider the cases of `u`. Consider the cases of `v`. Simplify the hypotheses and the goal together.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify the hypotheses and the goal together.
 -/
 theorem wt_ext {u v : WeightFamilies.Wt D j} (h1 : u.aP = v.aP) (h2 : u.aM = v.aM) (h3 : u.n = v.n) : u = v := by
   cases u; cases v; simp_all
@@ -317,9 +315,9 @@ def valAt (k : (T.U j T.σ₀).Comp) (x : ((T.U j T.σ₀).X k).dom) : T.R j →
     exact congrArg (toC (σ := T.σ₀)) (evalAt_one _ _ ((T.U j T.σ₀).un k x) (h.unTest j hj T.σ₀ T.good_σ₀ k x))
 
 /- English proof (translation)
-Establish `h1 : rdU (T.U j T.σ₀) 1 k x.1 = 1` using `(valAt h j hj k x).map_one`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Express the relevant statement in the definitionally equal form `rdU (T.U j T.σ₀) (a • 1) k x.1 = _`. Rewrite using `[map_smulₛₗ]`. Express the relevant statement in the definitionally equal form `T.σ₀ a * rdU (T.U j T.σ₀) 1 k x.1 = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt_algebraMap (k : (T.U j T.σ₀).Comp) (x : ((T.U j T.σ₀).X k).dom) (a : T.Q.c.F) :
     valAt h j hj k x (algebraMap T.Q.c.F (T.R j) a) = T.σ₀ a := by
@@ -333,11 +331,9 @@ theorem valAt_algebraMap (k : (T.U j T.σ₀).Comp) (x : ((T.U j T.σ₀).X k).d
 include h hj in
 
 /- English proof (translation)
-Take `⟨hp, hq, -⟩` from `h.pins.2.2.2 j hj`. Take `⟨Q, d, h1, h2, h3⟩` from `GlobalTheory.SecRelation.exists_homogeneous_relation D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c (wtA u) u.n m (by rw [finrank_host, hp, hq]; exact hm) F (fun a => cusp_le_sec (T.Q.Xo j) T.Q.c (T.U j) _ _ (hF a))`. Use `⟨Q, d, h1, h2, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h4` using `congrArg (valAt h j hj k ⟨x, hx⟩) h3`. Rewrite `h4` using `[map_zero, MvPolynomial.aeval_def, MvPolynomial.eval₂_comp_left]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h4]`. Use `congr 1`. Use extensionality with `a`. Conclude with `(valAt_algebraMap h j hj k _ a).symm`. Use function extensionality and compare the values at `a`.
-
-Conclude with `hv a ⟨x, hx⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem homRel_of_cusp (u : WeightFamilies.Wt D j) {m : ℕ} (hm : WeightFamilies.dimY D j + 2 ≤ m) (F : Fin m → T.R j)
     (hF : ∀ a, F a ∈ T.C j u) (k : (T.U j T.σ₀).Comp) (v : Fin m → Frame ((T.U j T.σ₀).X k).Ψ D.R.r → ℂ)
@@ -358,9 +354,9 @@ theorem homRel_of_cusp (u : WeightFamilies.Wt D j) {m : ℕ} (hm : WeightFamilie
 
 include h hj in
 /- English proof (translation)
-Proceed by induction on `n, hn using Nat.le_induction with`. Consider the case `base`. Rewrite using `[pow_one, show wsmul 1 u = u from wt_ext j (by funext τ i; simp [wsmul]) (by funext τ i; simp [wsmul]) (by simp [wsmul])]`. Conclude with `hf`. Consider the case `succ n _ ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, show wsmul (n + 1) u = wadd (wsmul n u) u from wt_ext j (by funext τ i; simp [wsmul, wadd, add_mul]) (by funext τ i; simp [wsmul, wadd, add_mul]) (by simp [wsmul, wadd, add_mul])]`. Conclude with `h.toLawsCore.mul j hj _ _ _ ih _ hf`.
+A detailed English derivation is pending.
 -/
 theorem pow_mem_cusp (u : WeightFamilies.Wt D j) {f : T.R j} (hf : f ∈ T.C j u) {n : ℕ} (hn : 1 ≤ n) :
     f ^ n ∈ T.C j (wsmul n u) := by
@@ -378,51 +374,39 @@ theorem pow_mem_cusp (u : WeightFamilies.Wt D j) {f : T.R j} (hf : f ∈ T.C j u
 end Record
 
 /- English proof (translation)
-Introduce `D T h j hj large₂ H C2 A2 CR CT ka wL wF Tn nP nW h0 CRm c N w i et w1 w2 th1 th2 hP hjm hr hc hTc hRR hrr hD2 hi hG1 hG2 hw het hth1 hth2 hthp hI1 hI2 hPsi`. Take `⟨R, e, hR⟩` from `GlobalTheory.Shares.exists_isRdgU D T h j hj (SecNorm.sup _)`. Establish `hSS` using `fun u => (GlobalTheory.Shares.span_readings_components D T h j hj _ R e hR u).2.2`. Take `⟨-, ⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, hIsL, -, -, hT0, -, -, -, -, -, hT11, -⟩, -⟩` from `id hP`. Establish `hLn : wL.n = nW` using `hIsL.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf` using `f_pos D`. Establish `hq : 0 < (D.R.sigW j).2` using `by simp only [Ranks.sigW]; omega`. Establish `hqr : (D.R.sigW j).2 < D.R.r`. Use `hj.1` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Ranks.r, Ranks.sigW]`. Use linear arithmetic over natural numbers and integers. Establish `hg2 : g0 D = 2 * (g0 D / 2)` using `by unfold g0; omega`. Establish `hg1 : 1 ≤ g0 D / 2` using `by unfold g0; omega`. Establish `hn1 : 1 ≤ i * (g0 D / 2)` using `Nat.mul_pos hi hg1`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW1 : wadd w1 (wscalar D j 2 even_two) = wsmul 2 wL` using `wt_ext j (by funext τ a; simp [wadd, wsmul, wscalar, hG1.2.1]) (by funext τ a; simp [wadd, wsmul, wscalar, hG1.2.2]) (by simp [wadd, wsmul, wscalar, hG1.1, hLn])`. Establish `hW2 : wadd w2 wF = wsmul (WeightFamilies.dimY D j + 4) wL` using `wt_ext j (by funext τ a; exact hG2.2.1 τ a) (by funext τ a; exact hG2.2.2 τ a) hG2.1`. Establish `hW3 : wadd (etWt D j i) (wsmul (i * (g0 D / 2)) w1) = wsmul (2 * (i * (g0 D / 2))) wL`. Use `wt_ext j ?_ ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `τ a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [wadd, wsmul, wscalar, etWt, hG1.2.1]`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `τ a`. Simplify using `only [wadd, wsmul, wscalar, etWt, hG1.2.2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Express the relevant statement in the definitionally equal form `g0 D * i + i * (g0 D / 2) * w1.n = 2 * (i * (g0 D / 2)) * wL.n`. Establish `h1` using `hG1.1`. Rewrite using `[hLn, show 2 * (i * (g0 D / 2)) * nW = i * (g0 D / 2) * (2 * nW) by ring, ← h1]`. Use `nth_rewrite 1 [hg2]`. Expand and normalize the polynomial expressions, which then agree.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hc1 : (Tn : ℝ) * c * (2 * D.R.f) ≤ WeightFamilies.c1 D CRm Tn c j`. Unfold `WeightFamilies.c1 WeightFamilies.dP WeightFamilies.rho`. Establish `a1 : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf`. Establish `a2 : (1 : ℝ) ≤ (D.R.sigW j).2` using `by exact_mod_cast hq`. Establish `a3 : (0 : ℝ) ≤ (Tn : ℝ) * c * (2 * D.R.f)` using `by positivity`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a4 : (1 : ℝ) ≤ WeightFamilies.RRv D CRm * (D.R.f * ((D.R.sigW j).2 : ℝ) ^ 3)` using `one_le_mul_of_one_le_of_one_le hRR (one_le_mul_of_one_le_of_one_le a1 (one_le_pow₀ a2))`. Use `mul_le_mul_of_nonneg_left a4 a3` as an intermediate fact. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc1' : 0 < WeightFamilies.c1 D CRm Tn c j` using `lt_of_lt_of_le (by positivity) hc1`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ k : (T.U j T.σ₀).Comp, ∃ (Xa : ArchInM ((T.U j T.σ₀).X k)) (hN : Xa.N = N), Xa.L = laR T j wL k ∧ Xa.Fp = laR T j wF k ∧ Xa.T = Tn ∧ Xa.c1 = WeightFamilies.c1 D CRm Tn c j ∧ (∀ a, Xa.w a = rdR h j (w (Fin.cast hN a)) k) ∧ RelIn T.σ₀ ((T.U j T.σ₀).X k) Xa ∧ Margins ((T.U j …`. Introduce `k`. Take `⟨ladd, lsmul, -, let', hnd, hp0, hcard, tt, htt⟩` from `GlobalTheory.Shares.WtDic.weights_dictionary D T h j hj k`. Take `⟨hsL, hsL2, hgap⟩` from `GlobalTheory.RunWeightDom.run_weight_dom D T h j hj large₂ H C2 A2 CR CT ka wL wF Tn nP nW h0 hP hjm hr k`. Rewrite `hgap` using `[← hnd]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g1, g2, g3⟩` from `gaps_all _ _ _ Tn hsL hgap`. Establish `hr0 : (0 : ℝ) < D.R.r` using `by positivity`. Take `⟨q1, q2, q3⟩` from `curvNumStatement_holds D.R.r ((T.U j T.σ₀).X k) (laR T j wL k) (de2W _) (laR T j wF k) Tn D.R.r (1 / 4) (by norm_num) hr0 (by positivity) hsL hsL2 (by`. Introduce and unpack `t (rfl | rfl)`. Conclude with `g3 _ (by simp) (by simp)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `g3 _ (by positivity) (le_of_eq (by field_simp)))`. Establish `hde : laR T j (wscalar D j 2 even_two) k = de2W _`. Use function extensionality and compare the values at `τ a`. Rewrite using `[htt]`. Simplify using `[wscalar, ext0, de2W]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : laR T j w1 k = 2 • laR T j wL k - de2W _`. Rewrite using `[← lsmul, ← hW1, ladd, hde, add_sub_cancel_right]`. Establish `e2 : laR T j w2 k = (nd ((T.U j T.σ₀).X k) + 4) • laR T j wL k - laR T j wF k`. Rewrite using `[← lsmul, hnd, ← hW2, ladd, add_sub_cancel_right]`. Take `⟨th, K, hth, hK⟩` from `hI1 k`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨th', K', hth', hK'⟩` from `hI2 k`. Take `⟨G, hG⟩` from `hthp k`. Take `⟨ps0, s1, s2, s3, s4⟩` from `hPsi k`. Establish `hfE : ReciprocityTheory.ChartRestriction.G.I2.PT.f D.host.E = D.R.f` using `finrank_host D`. Establish `hdisc : (0 : ℝ) < |(NumberField.discr D.host.E : ℝ)|` using `abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero D.host.E)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `Xa : ArchInM ((T.U j T.σ₀).X k)` to `{ L := laR T j wL k de := de2W _ Fp := laR T j wF k T := Tn i := i g0 := g0 D N := N c := c c1 := WeightFamilies.c1 D CRm Tn c j a1 := 1 / (2 * (5 : ℝ) ^ 4 * |(NumberField.discr D.host.E : ℝ)| ^ ((1 : ℝ) / D.R.f)) rr := D.R.r n_ge := by rw [hnd]; exact hD2 T_ge := by rw [hnd]; ex …`. Establish `a1` using `mul_le_mul_of_nonneg_left (phi_le _ th x) (show 0 ≤ (Tn : ℝ) * c by positivity)`. Rewrite `a1` using `[hfE, ← mul_div_assoc]`. Conclude with `a1.trans (div_le_div_of_nonneg_right hc1 (sq_nonneg _))`. Use `p3 := ⟨K, hK⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `et := rdR h j et k`. Use `genus_even := ⟨g0 D / 2, by omega⟩`. Use `et_sec := by rw [← let']; exact (hSS _ et k).1.1.1`. Use `et_ne := het k`. Use `p4 := by rw [← let']; exact decay_threshold _ th hth' i _ K' hK'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `th1 := rdR h j th1 k`. Use `firstTheta_vanishes := by rw [← e1]; exact hSS _ th1 k`. Use `firstTheta_ne_zero := hth1 k`. Use `th2 := rdR h j th2 k`. Use `secondTheta_vanishes := by rw [← e2]; exact hSS _ th2 k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `secondTheta_ne_zero := hth2 k`. Use `thp := rdR h j G k`. Use `thp_van := hSS _ G k`. Use `thp_ne := hG`. Use `ps0 := ps0`.
-
-Use `potential_invariant := s1`. Use `potential_smooth := s2`. Use `base_psi_levi_lower_bound := s3`. Use `base_psi_weighted_cf := s4`. Use `posL := q1`.
-
-Use `posLde := q2`. Use `posF := ⟨1 / 4, by norm_num, q3⟩ }`. Use `⟨Xa, rfl, rfl, rfl, rfl, rfl, fun _ => rfl, ⟨fun jj => ?_, fun jj => ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `homRel_of_cusp h j hj wL (by rw [hnd]) (fun a => (w (jj a)).1) (fun a => cutR_le T.C j _ (w (jj a)).2) k _ fun _ _ => rfl`. Use `homRel_of_cusp h j hj (wsmul (2 * (i * (g0 D / 2))) wL) (by rw [hnd]) (Fin.cons (et.1 * th1.1 ^ (i * (g0 D / 2))) fun a => (w (jj a)).1 ^ (2 * (i * (g0 D / 2)))) (fun a => ?_) k _ fun a x => ?_` and prove the remaining obligations.
-
-Use `Fin.cases ?_ (fun a => ?_) a` and prove the remaining obligations. Rewrite using `[Fin.cons_zero, ← hW3]`. Conclude with `h.toLawsCore.mul j hj _ _ _ (cutR_le T.C j _ et.2) _ (pow_mem_cusp h j hj _ (cutR_le T.C j _ th1.2) hn1)`. Rewrite using `[Fin.cons_succ]`. Conclude with `pow_mem_cusp h j hj _ (cutR_le T.C j _ (w (jj a)).2) (by omega)`.
-
-Use `Fin.cases ?_ (fun a => ?_) a` and prove the remaining obligations. Rewrite using `[Fin.cons_zero, Fin.cons_zero, map_mul, map_pow]`. Both sides reduce to the same expression. Rewrite using `[Fin.cons_succ, Fin.cons_succ, map_pow]`. Both sides reduce to the same expression.
-
-Establish `hu : 2 * (D.R.f * min (D.R.sigW j).2 (D.R.r - (D.R.sigW j).2)) ≤ D.R.f * D.R.r`. Rewrite using `[mul_left_comm]`. Conclude with `Nat.mul_le_mul_left _ (by omega)`. Take `⟨m1, m2, m3, m4⟩` from `margin_numbers (f := D.R.f) (r := D.R.r) (D := WeightFamilies.dimY D j) (T := Tn) (u := ((D.R.f * min (D.R.sigW j).2 (D.R.r - (D.R.sigW j).2) : ℕ) : ℝ)) (by exact_mod_cast hf) (by exact_mod_cast hr) (two_mul_dimY j hj) (by exact_mod_cast hT11) (Nat.cast_nonneg _) (by exact_mod_ca …`. Use `GlobalTheory.Shares.margins_of_gaps _ _ _ Xa (by rw [hp0]; exact hq) (by rw [hp0]; exact hqr) (by obtain ⟨τ, hτ⟩ := Finset.card_pos.1 (hcard.symm ▸ hf); exact ⟨⟨τ, hτ⟩⟩) rfl hsL g1 (5 * D.R.f * (D.R.r : ℝ) ^ 2) (19 / 5 * Tn) (19 / 10 * Tn) (by rw [hcard]; exact m1) g2 m2 ?_ m4` and prove the remaining obligations.
-
-Rewrite using `[hcard, hp0, hnd]`. Conclude with `m3`. Use `choose Xa hN h1 h2 h3 h4 h5 h6 h7 using key`. Conclude with `⟨⟨Xa, fun k => (GlobalTheory.Shares.WtDic.weights_dictionary D T h j hj k).2.2.2.2.1, hN, h1, h2, h3, h4, h5, h6, h7⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem archAt_nonempty : ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CR CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ) (CRm c : ℝ) (N : ℕ) (w : Fin N → (recB h.toLawsCore).Cusp j wL) (i : ℕ) (et : (recB h.toLawsCore).Cusp j (etWt D j i)) (w1 w2 : WeightFamilies.Wt D j) (th1 : (recB h.toLawsCore).Cusp j w1) (th2 : (recB h.toLawsCore).Cusp j w2), FamilyHypotheses.HypPage large₂ (recPJ h j hj) H C2 A2 CR CT ka wL wF Tn nP nW h0 → j < D.R.m → 8 ≤ D.R.r → 0 < c → (Tn : ℝ) * c * g0 D ≤ 1 → 1 ≤ WeightFamilies.RRv D CRm → (D.R.r : ℝ) * (1 + WeightFamilies.c1 D CRm Tn c j / (1 / (2 * (5 : ℝ) ^ 4 * |(NumberField.discr D.host.E : ℝ)| ^ ((1 : ℝ) / D.R.f)))) ≤ 2 * Tn → 2 ≤ WeightFamilies.dimY D j → 0 < i → IsDoubledWeightWithShift wL w1 nW → IsG2 wL wF w2 → (∀ k : (T.U j T.σ₀).Comp, ∀ x ∈ ((T.U j T.σ₀).X k).dom, ∃ a, rdR h j (w a) k x ≠ 0) → (∀ k : (T.U j T.σ₀).Comp, ∃ x ∈ ((T.U j T.σ₀).X k).dom, rdR h j et k x ≠ 0) → (∀ k : (T.U j T.σ₀).Comp, ∃ x ∈ ((T.U j T.σ₀).X k).dom, rdR h j th1 k x ≠ 0) → (∀ k : (T.U j T.σ₀).Comp, ∃ x ∈ ((T.U j T.σ₀).X k).dom, rdR h j th2 k x ≠ 0) → (∀ k : (T.U j T.σ₀).Comp, ∃ G : (recB h.toLawsCore).Cusp j wF, ∃ x ∈ ((T.U j T.σ₀).X k).dom, rdR h j G k x ≠ 0) → (∀ k : (T.U j T.σ₀).Comp, ∃ th K : ℝ, 0 < th ∧ ∀ x ∈ ((T.U j T.σ₀).X k).dom, Real.exp (-(2 * c * ReciprocityTheory.ChartRestriction.G.I2.phiFD ((T.U j T.σ₀).X k) th x)) ≤ K * ∑ i, ((T.U j T.σ₀).X k).pnorm (laR T j wL k) (rdR h j (w i) k) x ^ 2) → (∀ k : (T.U j T.σ₀).Comp, ∃ th K : ℝ, 0 < th ∧ ∀ x ∈ ((T.U j T.σ₀).X k).dom, ((T.U j T.σ₀).X k).pnorm (laR T j (etWt D j i) k) (rdR h j et k) x ^ 2 ≤ K * Real.exp (-(2 * (i : ℝ) * ReciprocityTheory.ChartRestriction.G.I2.phiFD ((T.U j T.σ₀).X k) th x))) → (∀ k : (T.U j T.σ₀).Comp, BasePotentialExistence ((T.U j T.σ₀).X k) (de2W ((T.U j T.σ₀).X k)) D.R.r (1 / (2 * (5 : ℝ) ^ 4 * |(NumberField.discr D.host.E : ℝ)| ^ ((1 : ℝ) / D.R.f)))) → Nonempty (ArchAt h j w wF Tn (WeightFamilies.c1 D CRm Tn c j)) := by
   intro D T h j hj large₂ H C2 A2 CR CT ka wL wF Tn nP nW h0 CRm c N w i et w1 w2 th1 th2 hP hjm hr hc hTc hRR hrr hD2 hi

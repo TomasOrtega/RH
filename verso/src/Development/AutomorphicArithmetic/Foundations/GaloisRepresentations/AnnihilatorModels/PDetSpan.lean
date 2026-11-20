@@ -7,21 +7,19 @@ open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.GalOfCusp TensorProd
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `hco l _ P AI hT K LL a ρ hρ S _ π`. Take `⟨T⟩` from `hT`. Use `haveI := LL.2`. Use `haveI : FiniteDimensional ℚ_[l] (Fin a → ↥LL.1) := Module.Finite.trans ↥LL.1 (Fin a → ↥LL.1)`. Establish `honB : ∀ (f : End ℚ_[l] (Bst P)) (y : (Fin a → ↥LL.1) ⊗[ℚ_[l]] Bst P), onB P ℚ_[l] (Fin a → ↥LL.1) f y = AlgebraTensorModule.map (LinearMap.id : (Fin a → ↥LL.1) →ₗ[↥LL.1] (Fin a → ↥LL.1)) f y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `f y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => rw [onB_tmul]`. Both sides reduce to the same expression.
+Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Establish `hsumco : ∀ {k : ℕ} (Y : Fin k → (Fin a → ↥LL.1) ⊗[ℚ_[l]] Bst P) (m : Fin a), co (∑ j, Y j) m = ∑ j, co (Y j) m`. Introduce `k Y m`. Unfold `co`. Conclude with `map_sum _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hone : ∀ i m : Fin a, π (co ((Pi.single i 1 : Fin a → ↥LL.1) ⊗ₜ[ℚ_[l]] (1 : Bst P)) m) = (Pi.single i 1 : Fin a → S) m`. Introduce `i m`. Rewrite using `[co_tmul, Pi.single_apply, Pi.single_apply]`. Use `split_ifs`. Rewrite using `[← Algebra.TensorProduct.one_def, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[zero_tmul, map_zero]`. Establish `key : ∀ i : Fin a, (Pi.single i 1 : Fin a → S) ∈ Submodule.span S (Set.range fun (x : ↥(Dpst P ρ)) i => π (co (x : (Fin a → ↥LL.1) ⊗[ℚ_[l]] Bst P) i))`. Introduce `i`. Take `⟨k, b, x, hx, hsum⟩` from `GlobalTheory.T.semistableDieudonneModule_spans_tensor_periodRing l P AI T K (Fin a → ↥LL.1) (GlobalTheory.PstCoeff.resQ ρ) (GlobalTheory.GalCut.IwaTwist.isSst_resQ P ρ hρ) (Pi.single i 1)`. Establish `hxD : ∀ j, x j ∈ Dpst P ρ` using `fun j => (mem_Dpst P ρ).mpr ⟨K, fun g _ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h` using `(mem_Dst P _).mp (hx j) g`. Rewrite using `[GlobalTheory.PstCoeff.stRep_resQ] at h⟩` and apply the resulting hypothesis. Establish `hfin : (Pi.single i 1 : Fin a → S) = ∑ j, π ((1 : ↥LL.1) ⊗ₜ[ℚ_[l]] b j) • (fun m => π (co (x j) m))`. Use function extensionality and compare the values at `m`. Rewrite using `[← hone i m, hsum, hsumco, map_sum, Finset.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[honB, (hco ℚ_[l] ↥LL.1 (Bst P) a).2.2.1 (b j) (x j)]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[hfin]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨x j, hxD j⟩, rfl⟩)`.
-
-Rewrite using `[eq_top_iff, ← (Pi.basisFun S (Fin a)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[Pi.basisFun_apply]`. Conclude with `key i`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.detSpan_of :
     CoFacts → SpanS := by

@@ -8,7 +8,7 @@ import Development.AutomorphicArithmetic.IwahoriCommensurability.IsCommensurated
 open Formalism.UG
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n`. Rewrite using `[GlobalTheory.IwEq.iwahori_eq_glnLocal_iwahori k n]`. Conclude with `UpperTheory.isCommensurated_iwahori_gl k n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.isCommensurated_iwahoriSubgroup_gl_fin :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ), Formalism.UG.IsCommensurated (GlobalTheory.SmGL.iwahori k (Fin n)) := by

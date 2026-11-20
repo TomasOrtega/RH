@@ -18,7 +18,7 @@ variable {R R' M N : Type} [CommRing R] [CommRing R'] [Algebra R R'] [AddCommGro
   [AddCommGroup N] [Module R' N]
 
 /- English proof (translation)
-Set `c` to `(Algebra.TensorProduct.basis R' b).map (LinearEquiv.ofBijective _ hf)`. Establish `e : (fun j => f (b j)) = c` using `funext fun j => by`. Simplify using `[c, Algebra.TensorProduct.basis_apply]`. Rewrite using `[e]`. Conclude with `⟨c.linearIndependent, c.span_eq⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem basis_of_liftSemi_bijective {ι : Type} (f : M →ₛₗ[algebraMap R R'] N)
     (hf : Function.Bijective (liftSemi f)) (b : Module.Basis ι R M) :
@@ -31,9 +31,9 @@ theorem basis_of_liftSemi_bijective {ι : Type} (f : M →ₛₗ[algebraMap R R'
   exact ⟨c.linearIndependent, c.span_eq⟩
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hf z`. Proceed by induction on `y with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem (hx trivial) (hy trivial)`. Consider the case `tmul r m => exact Submodule.smul_mem _ r (Submodule.subset_span ⟨m, rfl⟩)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_range_of_liftSemi_surjective (f : M →ₛₗ[algebraMap R R'] N)
     (hf : Function.Surjective (liftSemi f)) : Submodule.span R' (Set.range f) = ⊤ := by
@@ -45,7 +45,7 @@ theorem span_range_of_liftSemi_surjective (f : M →ₛₗ[algebraMap R R'] N)
   | tmul r m => exact Submodule.smul_mem _ r (Submodule.subset_span ⟨m, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `haveI : FaithfulSMul R R' := (faithfulSMul_iff_algebraMap_injective R R').2 hi Module.Flat.flat_iff_torsion_eq_bot_of_isBezout.2 (Submodule.isTorsionFree_iff_torsion_eq_bot.1 inferInstance)`.
+A detailed English derivation is pending.
 -/
 theorem flat_of_injective_of_isBezout [IsDomain R] [IsBezout R] [IsDomain R']
     (hi : Function.Injective (algebraMap R R')) : Module.Flat R R' :=
@@ -54,7 +54,7 @@ theorem flat_of_injective_of_isBezout [IsDomain R] [IsBezout R] [IsDomain R']
     (Submodule.isTorsionFree_iff_torsion_eq_bot.1 inferInstance)
 
 /- English proof (translation)
-The claim follows from `@flat_of_injective_of_isBezout R R _ _ (frobRing h).toAlgebra _ _ _ ((injective_iff_map_eq_zero (frobRing h)).2 fun r hr => (pow_eq_zero_iff hp.out.ne_zero).1 ((frobRing_apply h r).symm.trans hr))`.
+A detailed English derivation is pending.
 -/
 theorem flat_frobRing {p : ℕ} [hp : Fact p.Prime] {R : Type} [CommRing R] [IsDomain R] [IsBezout R]
     (h : (p : R) = 0) : @Module.Flat R R _ _ (frobRing h).toAlgebra.toModule :=
@@ -67,9 +67,9 @@ end PDiv
 namespace PDivGroup
 
 /- English proof (translation)
-Rewrite using `[LinearMap.range_eq_map G'.rigOfOmega, ← hs, Submodule.map_span]`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨w, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, ⟨w, rfl⟩, s.rig_rigOfOmega w⟩`. Introduce and unpack `⟨_, ⟨w, rfl⟩, rfl⟩`. Conclude with `⟨_, ⟨w, rfl⟩, (s.rig_rigOfOmega w).symm⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem SemiHom.range_rigOfOmega_eq_span {p : ℕ} {R R' : Type} [CommRing R] [CommRing R']
     {σ : R →+* R'} {G : PDivGroup p R} {G' : PDivGroup p R'} (s : SemiHom σ G' G)
@@ -86,7 +86,7 @@ theorem SemiHom.range_rigOfOmega_eq_span {p : ℕ} {R R' : Type} [CommRing R] [C
     exact ⟨_, ⟨w, rfl⟩, (s.rig_rigOfOmega w).symm⟩
 
 /- English proof (translation)
-Introduce `_ p _ R _ _ _ h G`. Use `⟨fun n b => ?_, (frobProj h G).range_rigOfOmega_eq_span ?_⟩` and prove the remaining obligations. Conclude with `@basis_of_liftSemi_bijective R R _ _ _ _ (frobRing h).toAlgebra _ _ _ _ _ _ (@liftSemi_rig_bijective p R R _ _ G _ (frobRing h).toAlgebra h (Or.inl (flat_frobRing h))) b`. Conclude with `@span_range_of_liftSemi_surjective R R _ _ _ _ (frobRing h).toAlgebra _ _ _ _ _ (@T.omega_baseChange_bijective_of_p_eq_zero p R _ G R _ (frobRing h).toAlgebra h).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rigExt_frobTwist : GlobalTheory.Published.BarsottiTateDieudonne.WittModule → ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (h : (p : R) = 0) (G : PDivGroup p R), (∀ (n : ℕ) (b : Module.Basis (Fin n) R G.RigExt), LinearIndependent R (fun j => (frobProj h G).rig (b j)) ∧ Submodule.span R (Set.range fun j => (frobProj h G).rig (b j)) = ⊤) ∧ LinearMap.range (frobTwist h G).rigOfOmega = Submodule.span R ((frobProj h G).rig '' (LinearMap.range G.rigOfOmega : Set G.RigExt)) := by
   intro _ p _ R _ _ _ h G

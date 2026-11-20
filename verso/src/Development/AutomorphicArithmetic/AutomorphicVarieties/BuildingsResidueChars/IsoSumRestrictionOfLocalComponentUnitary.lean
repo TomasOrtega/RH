@@ -10,15 +10,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Introduce `E _ _ _ n π hπ w j hj1 hj2 hj3 τ hc`. Take `⟨hirr, f, hf0, hfm, hf⟩` from `hc`. Set `Ψ : GlobalTheory.DefU.AutSub E n` to `⟨π, hπ⟩`. Set `F : Representation.IntertwiningMap τ.ρ (Ψ.rep.comp j)` to `⟨f.codRestrict _ hfm, fun g => LinearMap.ext fun v => Subtype.ext (by`. Establish `h` using `hf ⟨j g, hj1 g⟩ v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [MonoidHom.comp_apply, Subgroup.coe_subtype, hj2] at h`. Conclude with `h)⟩`. Establish `hF0 : F ≠ 0` using `fun h => hf0 (LinearMap.ext fun v => by`. Use `congrArg Subtype.val (DFunLike.congr_fun h v)` as an intermediate fact. Conclude with `this)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, -, -, hr⟩` from `GlobalTheory.DefU.LocRet.exists_ret E n w`. Establish `htop` using `(GlobalTheory.CuspRep.CompUniq.isotypic (UA E n) (GLw n w) Ψ.V τ.V τ.V Ψ.rep j τ.ρ τ.ρ Ψ.isIrreducible_rep hirr hirr (fun g => ⟨cLoc w (r g).1, fun y => by`. Rewrite using `[← hj3 _ (r g).2]`. Conclude with `hr g ⟨j y, hj1 y⟩⟩) F hF0).1`. Introduce `φ hφ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hmem : φ ∈ (⨆ i : Representation.IntertwiningMap τ.ρ (Ψ.rep.comp j), LinearMap.range i.toLinearMap).map π.subtype`. Rewrite using `[htop]`. Conclude with `⟨⟨φ, hφ⟩, Submodule.mem_top, rfl⟩`. Rewrite `hmem` using `[Submodule.map_iSup]`. Use `SetLike.le_def.1 (iSup_le fun i => ?_) hmem` and prove the remaining obligations.
-
-Use `le_iSup_of_le ⟨π.subtype ∘ₗ i.toLinearMap, fun g v => congrArg Subtype.val (Representation.IntertwiningMap.isIntertwining _ _ i g v), ?_⟩ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `(i.toLinearMap v).2`. Conclude with `(LinearMap.range_comp _ _).ge`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.isoSum_restriction_of_local_component_unitary :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (σ : Submodule ℂ (UA E n → ℂ)), IsAutRepU σ → ∀ (w : Plc E) (j : GLw n w →* UA E n), (∀ g, j g ∈ locU n w) → (∀ g, cLoc w (j g) = g) → (∀ x ∈ locU n w, x = j (cLoc w x)) → ∀ τ : SmIrr (GLw n w), IsCompAlong σ (locU n w) ((cLoc w).comp (locU n w).subtype) τ.ρ → IsoSum ((RU E n).comp j) σ τ := by

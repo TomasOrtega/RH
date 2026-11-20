@@ -4,19 +4,17 @@ open IsLocalRing TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `b`. Use `set L := Localization.AtPrime p`. Use `set N : Submodule R B := LinearMap.range ψ.toLinearMap`. Set `π` to `N.mkQ`. Set `g : L ⊗[R] B →ₗ[R] L ⊗[R] (B ⧸ N)` to `LinearMap.lTensor L π`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `hs ((1 : L) ⊗ₜ[R] b)`. Establish `key : ∀ w : L ⊗[R] A, g (Algebra.TensorProduct.map (AlgHom.id L L) ψ w) = 0`. Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `tmul x y`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Simplify using `only [g, LinearMap.lTensor_tmul]`. Establish `: π (ψ y) = 0`. Simplify using `only [π, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨y, rfl⟩`. Rewrite using `[this, TensorProduct.tmul_zero]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`. Establish `h0 : (TensorProduct.mk R L (B ⧸ N) 1) (π b) = 0`. Use `key z` as an intermediate fact.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[hz]`. Simplify `this` using `[g]`. Establish `hloc : IsLocalizedModule p.primeCompl (TensorProduct.mk R L (B ⧸ N) 1)` using `(isLocalizedModule_iff_isBaseChange p.primeCompl L _).mpr (TensorProduct.isBaseChange R _ L)`. Take `⟨s, hs'⟩` from `(IsLocalizedModule.eq_zero_iff p.primeCompl _).mp h0`. Use `⟨s, s.2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: π ((s : R) • b) = 0`. Rewrite using `[map_smul]`. Conclude with `hs'`. Simplify using `only [π, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, N] at this`. Take `⟨a, ha⟩` from `this`.
-
-Conclude with `⟨a, ha⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_range_of_surjective_localization_map
     (R A B : Type) [CommRing R] [CommRing A] [Algebra R A] [CommRing B] [Algebra R B]

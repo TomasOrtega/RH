@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ProdPri
 open MvPolynomial Equiv UpperTheory.V.AlgebraTools.Hk
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qi3.finset_prod_dvd_of_prime_of_dvd_imp_eq f y s hp hn hd`.
+A detailed English derivation is pending.
 -/
 private theorem finset_prod_dvd_of_prime_of_dvd_imp_eq {M ι : Type} [CommRing M] (f : ι → M) (y : M) (s : Finset ι)
     (hp : ∀ a ∈ s, Prime (f a)) (hn : ∀ a ∈ s, ∀ b ∈ s, f a ∣ f b → a = b) (hd : ∀ a ∈ s, f a ∣ y) :
@@ -14,13 +14,13 @@ private theorem finset_prod_dvd_of_prime_of_dvd_imp_eq {M ι : Type} [CommRing M
 private def sb {n : ℕ} (i j : Fin n) : Fin n → Fin n := fun k => if k = j then i else k
 
 /- English proof (translation)
-Proceed by induction on `y using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq`. Use `dvd_add hp hq` as an intermediate fact. Rewrite using `[map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul_X p k hp`. Establish `hk : (X j - X i : MvPolynomial (Fin n) R) ∣ X k - X (sb i j k)`. Unfold `sb`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `split_ifs with h`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Use `dvd_add (hp.mul_right (X k)) (hk.mul_left (rename (sb i j) p))` as an intermediate fact. Rewrite using `[map_mul, rename_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem dvd_sub_sb {R : Type} [CommRing R] {n : ℕ} (i j : Fin n) (y : MvPolynomial (Fin n) R) :
     (X j - X i : MvPolynomial (Fin n) R) ∣ y - rename (sb i j) y := by
@@ -43,9 +43,9 @@ private theorem dvd_sub_sb {R : Type} [CommRing R] {n : ℕ} (i j : Fin n) (y : 
     ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Establish `: sb i j j = sb i j i` using `by simp [sb]`. Rewrite using `[map_mul, map_sub, rename_X, rename_X, this, sub_self, zero_mul]`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `dvd_sub_sb i j y` as an intermediate fact. Rewrite `this` using `[h, sub_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem dvd_iff_sb {R : Type} [CommRing R] {n : ℕ} (i j : Fin n) (y : MvPolynomial (Fin n) R) :
     (X j - X i : MvPolynomial (Fin n) R) ∣ y ↔ rename (sb i j) y = 0 := by
@@ -58,7 +58,7 @@ private theorem dvd_iff_sb {R : Type} [CommRing R] {n : ℕ} (i j : Fin n) (y : 
     rwa [h, sub_zero] at this
 
 /- English proof (translation)
-Use `⟨fun e => h.symm (X_injective (sub_eq_zero.1 e)), fun hu => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Use `(dvd_iff_sb i j (1 : MvPolynomial (Fin n) R)).1 hu.dvd` as an intermediate fact. Simplify using `at this`. Rewrite `hab` using `[dvd_iff_sb, map_mul, mul_eq_zero]`. Rewrite using `[dvd_iff_sb, dvd_iff_sb]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem prime_sb {R : Type} [CommRing R] [IsDomain R] {n : ℕ} {i j : Fin n} (h : i ≠ j) :
     Prime (X j - X i : MvPolynomial (Fin n) R) := by
@@ -69,13 +69,13 @@ private theorem prime_sb {R : Type} [CommRing R] [IsDomain R] {n : ℕ} {i j : F
     rwa [dvd_iff_sb, dvd_iff_sb]
 
 /- English proof (translation)
-Establish `hs : ∀ k, sb i j (swap i j k) = sb i j k`. Introduce `k`. Distinguish the cases in `h1 : k = i`. Substitute `h1` using the available equality. Simplify using `[sb]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h2 : k = j`. Substitute `h2` using the available equality. Simplify using `[sb]`. Rewrite using `[swap_apply_of_ne_of_ne h1 h2]`. Rewrite using `[alt, map_sum]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_involution (fun w _ => swap i j * w) (fun w _ => ?_) (fun w _ _ e => ?_) (fun w _ => Finset.mem_univ _) (fun w _ => ?_)` and prove the remaining obligations. Establish `e : sb i j ∘ (swap i j * w : Perm (Fin n)) = sb i j ∘ w` using `funext fun k => hs _`. Rewrite using `[Units.smul_def, Units.smul_def, map_zsmul, map_zsmul, rename_rename, rename_rename, e, Perm.sign_mul, Perm.sign_swap h]`. Simplify using the standard rewrite rules. Use `mul_eq_right.1 e` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h (swap_eq_one_iff.1 this)`. Simplify using `[← mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem alt_sb {R : Type} [CommRing R] {n : ℕ} {i j : Fin n} (h : i ≠ j) (x : MvPolynomial (Fin n) R) :
     rename (sb i j) (alt x) = 0 := by
@@ -98,13 +98,11 @@ private theorem alt_sb {R : Type} [CommRing R] {n : ℕ} {i j : Fin n} (h : i �
   · simp [← mul_assoc]
 
 /- English proof (translation)
-Introduce `R _ _ n x`. Establish `hlt : ∀ p ∈ pairs n, p.1 < p.2` using `fun p hp => by simpa [pairs] using hp`. Establish `hd : De R n ∣ alt x`. Use `finset_prod_dvd_of_prime_of_dvd_imp_eq _ _ _ (fun p hp => prime_sb (hlt p hp).ne) (fun p hp q hq hpq => ?_) (fun p hp => (dvd_iff_sb _ _ _).2 (alt_sb (hlt p hp).ne x))` and prove the remaining obligations. Rewrite `hpq` using `[dvd_iff_sb, map_sub, rename_X, rename_X, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `X_injective hpq`. Establish `h1` using `hlt p hp`. Establish `h2` using `hlt q hq`. Unfold `sb at e`. Use `split_ifs at e with a b b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd (b.trans a.symm) h2.ne`. Conclude with `Prod.ext e a.symm`. Rewrite `h2` using `[e, b]`. Conclude with `absurd h1 h2.not_gt`. Conclude with `absurd e h2.ne'`.
-
-Take `⟨y, hy⟩` from `hd`. Establish `h : ∃ y, De R n * y = alt x` using `⟨y, hy.symm⟩`. Rewrite using `[dd, dif_pos h]`. Conclude with `h.choose_spec`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.hkDdSpec :
     ∀ (R : Type) [CommRing R] [IsDomain R] (n : ℕ) (x : MvPolynomial (Fin n) R), De R n * dd x = alt x := by

@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.ConstLat.CramerFrame
 
 /- English proof (translation)
-Establish `e : S = Finset.univ.filter fun l : Fin g => (l : ℕ) < k`. Use extensionality with `l`. Simplify using `[hS]`. Rewrite using `[e, colMinor_filter_lt_eq_iSup_minorAt w M k hk]`. Conclude with `le_antisymm (Real.iSup_le h (w.nonneg _)) (le_ciSup (f := fun τ => w (minorAt M k hk τ)) (Set.finite_range _).bddAbove σ)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colMinor_eq_of_max {K : Type} [Field K] (w : AbsoluteValue K ℝ) {n g : ℕ} (M : Matrix (Fin n) (Fin g) K)
     (k : ℕ) (hk : k ≤ g) (σ : Fin k → Fin n) (h : ∀ τ, w (minorAt M k hk τ) ≤ w (minorAt M k hk σ))
@@ -29,19 +29,17 @@ theorem colMinor_eq_of_max {K : Type} [Field K] (w : AbsoluteValue K ℝ) {n g :
     (le_ciSup (f := fun τ => w (minorAt M k hk τ)) (Set.finite_range _).bddAbove σ)
 
 /- English proof (translation)
-Introduce `F _ _ Y V W p _ _ g C A U' H d T σ hT hreg _ hunit hmax hgen hnorm v hv e y hy z yt hz hyt hU i`. Establish `hπ : V.π (below z) = below y.1` using `by rw [← hz]; rfl`. Establish `hin : V.j (below z) ∈ U'`. Establish `e2 : V.j (below z) = yt ((spMap e.O.subtype) (IsLocalRing.closedPoint (AlgebraicClosure F)))`. Express the relevant statement in the definitionally equal form `(z ≫ V.j) _ = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← hyt]`. Both sides reduce to the same expression. Rewrite using `[e2]`. Conclude with `hU trivial`. Establish `hu` using `hunit (below z) hin`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `hreg (below z) hin`. Rewrite `hu`, `hr` using `[hπ]`. Establish `hm` using `hmax v hv e y hy z yt hz hyt hU`. Establish `hl` using `(hnorm v hv e y hy z yt hz hyt hU).2 i`. Take `⟨hTt, hTd⟩` from `hT (below y.1)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htri : ((T (below y.1)).map V.φ).BlockTriangular id` using `fun a b hab => by`. Rewrite using `[Matrix.map_apply, hTt hab, map_zero]`. Establish `hdiag : ∀ j, (T (below y.1)).map V.φ j j = V.φ (d (below y.1) j : Y.Fn)` using `fun j => by`. Rewrite using `[Matrix.map_apply, hTd]`. Establish `hne : ∀ k hk, minorAt (H * ((T (below y.1)).map V.φ)⁻¹) k hk (σ k) ≠ 0` using `fun k hk h0 => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `SmallSec.valAt_ne_zero (hu k hk)`. Rewrite `h1` using `[h0, Res.valAt_zero]`. Conclude with `h1 rfl`. Establish `hc` using `(triChange H _ htri (fun j => by rw [hdiag]; exact (map_ne_zero _).2 (Units.ne_zero _)) σ).2.2 hne i`. Establish `hgu : UnitAt (V.π (below z)) (genAt (A i).D (below y.1) * d (below y.1) i)` using `by rw [hπ]; exact hgen i _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, hmin, hdiv⟩` from `CramerValues.values_regular z`. Establish `hval : ∀ k hk, valAt z (minorAt (H * ((T (below y.1)).map V.φ)⁻¹) k hk (σ k)) = minorAt (valMat V H (T (below y.1)) z) k hk (σ k)` using `fun k hk => (hmin _ hr k hk (σ k)).2`. Establish `hw : ∀ k hk, e.w (minorAt (valMat V H (T (below y.1)) z) k hk (σ k)) ≠ 0` using `fun k hk => by`. Rewrite using `[← hval]`. Conclude with `(AbsoluteValue.ne_zero_iff e.w).2 (SmallSec.valAt_ne_zero (hu k hk))`.
-
-Establish `hg0 : e.w (valAt y.1 (genAt (A i).D (below y.1) * d (below y.1) i)) ≠ 0` using `(AbsoluteValue.ne_zero_iff e.w).2 (SmallSec.valAt_ne_zero (hgen i _))`. Rewrite using `[hl, colMinor_eq_of_max e.w _ ((i : ℕ) + 1) i.2 _ (hm _ _) _ (fun l => Finset.mem_Iic.trans Nat.lt_succ_iff.symm), colMinor_eq_of_max e.w _ (i : ℕ) i.2.le _ (hm _ _) _ (fun l => Finset.mem_Iio), hc, hdiag, ← mul_div_assoc, ← mul_assoc, ← map_mul, (hdiv _ _ ((V.unitAt_φ hgu).mul ( …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lg_eq_log_frameC : ∀ {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Cover Y) (W : Y.X.Opens) (p : ℕ), p.Prime → genericPoint Y.X ∈ W → ∀ {g : ℕ} {C : CxSt F} (A : Fin g → Adl C Y) (U' : V.X.Opens) (H : Matrix (Fin (g + g)) (Fin g) V.G.functionField) (d : Y.X → Fin g → Y.Fnˣ) (T : Y.X → Matrix (Fin g) (Fin g) Y.Fn) (σ : ∀ k : ℕ, Fin k → Fin (g + g)), (∀ y, (T y).BlockTriangular id ∧ ∀ i, T y i i = (d y i : Y.Fn)) → ChartReg V U' H T → (∀ (k : ℕ) (hk : k ≤ g), minorAt H k hk (σ k) ≠ 0) → (∀ z : V.G, V.j z ∈ U' → ∀ (k : ℕ) (hk : k ≤ g), UnitAt z (minorAt (H * ((T (V.π z)).map V.φ)⁻¹) k hk (σ k))) → (AtTest V W p fun _ e y z yt => ⊤ ≤ yt ⁻¹ᵁ U' → ∀ (k : ℕ) (hk : k ≤ g) (τ : Fin k → Fin (g + g)), e.w (minorAt (valMat V H (T (below y.1)) z) k hk τ) ≤ e.w (minorAt (valMat V H (T (below y.1)) z) k hk (σ k))) → (∀ i y, UnitAt y (genAt (A i).D y * d y i)) → MinorNorm V W U' H d T A p → AtTest V W p fun v e y z yt => ⊤ ≤ yt ⁻¹ᵁ U' → ∀ i, (A i).lg v e y = Real.log (e.w (valAt z (V.φ (genAt (A i).D (below y.1)) * (frameC H σ i : V.G.functionField)))) := by
   intro F _ _ Y V W p _ _ g C A U' H d T σ hT hreg _ hunit hmax hgen hnorm v hv e y hy z yt hz hyt hU i

@@ -16,7 +16,7 @@ namespace ToZ
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Th1.G.phSum Formalism.L2.Th1.E.phSum Formalism.InvariantFactorPaths.G7.at1`. Conclude with `Finset.sum_congr rfl fun i _ => one_smul _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem phSum_one {n : Type} [Fintype n] (ph : PowerSeries K) :
     phSum (fun _ : n => (1 : K)) ph = Formalism.L2.Th1.E.phSum ph := by
@@ -24,16 +24,16 @@ theorem phSum_one {n : Type} [Fintype n] (ph : PowerSeries K) :
   exact Finset.sum_congr rfl fun i _ => one_smul _ _
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => MvPowerSeries.constantCoeff_X _`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_block {n : Type} [Finite n] (a : Fin 4) :
     MvPowerSeries.HasSubst (fun i : n => (MvPowerSeries.X (a, i) : MvPowerSeries (Fin 4 × n) K)) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero fun _ => MvPowerSeries.constantCoeff_X _
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.substAlgHom_apply hb, map_prod]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.substAlgHom_apply, MvPowerSeries.subst_comp_subst_apply (hasSubst_block a) hb]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `MvPowerSeries.subst_X hb (a, i)`.
+A detailed English derivation is pending.
 -/
 theorem subst_four {n m : Type} [Finite n] {b : Fin 4 × n → MvPowerSeries m K}
     (hb : MvPowerSeries.HasSubst b) (f : MvPowerSeries n K) :
@@ -49,7 +49,7 @@ theorem subst_four {n m : Type} [Finite n] {b : Fin 4 × n → MvPowerSeries m K
   exact MvPowerSeries.subst_X hb (a, i)
 
 /- English proof (translation)
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun j _ => by`. Rewrite using `[map_mul, PowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.constantCoeff_X j) l hl0, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_logForm {m : Type} [Fintype m] {l : PowerSeries K} (hl0 : PowerSeries.constantCoeff l = 0)
     (c : m → K) :
@@ -61,7 +61,7 @@ theorem cc_logForm {m : Type} [Fintype m] {l : PowerSeries K} (hl0 : PowerSeries
       mul_zero]
 
 /- English proof (translation)
-The claim follows from `PowerSeries.constantCoeff_subst_eq_zero (cc_logForm hl0 c) linv hv0`.
+A detailed English derivation is pending.
 -/
 theorem cc_flin {m : Type} [Fintype m] {l linv : PowerSeries K}
     (hl0 : PowerSeries.constantCoeff l = 0) (hv0 : PowerSeries.constantCoeff linv = 0) (c : m → K) :
@@ -70,9 +70,9 @@ theorem cc_flin {m : Type} [Fintype m] {l linv : PowerSeries K}
   PowerSeries.constantCoeff_subst_eq_zero (cc_logForm hl0 c) linv hv0
 
 /- English proof (translation)
-Establish `e : toZ linv (∑ j, MvPowerSeries.C (c j) * PowerSeries.subst (MvPowerSeries.X j : MvPowerSeries m K) l : MvPowerSeries m K) = ∑ x, MvPowerSeries.C (c x) * MvPowerSeries.X x`. Rewrite using `[← Formalism.L2.Th1.G.toZHom_apply hv0, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, MvPowerSeries.c_eq_algebraMap, AlgHom.commutes, Formalism.L2.Th1.G.toZHom_apply, Formalism.L2.Th1.G.toZ_subst_X hv0, hlv, PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X j))]`. Rewrite using `[← e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.L2.Th1.G.mvSubst_subst (Formalism.L2.Th1.G.hasSubst_zPt hv0) (cc_logForm hl0 c) linv`.
+A detailed English derivation is pending.
 -/
 theorem toZ_flin {m : Type} [Fintype m] {l linv : PowerSeries K}
     (hl0 : PowerSeries.constantCoeff l = 0) (hv0 : PowerSeries.constantCoeff linv = 0)
@@ -91,13 +91,13 @@ theorem toZ_flin {m : Type} [Fintype m] {l linv : PowerSeries K}
   exact Formalism.L2.Th1.G.mvSubst_subst (Formalism.L2.Th1.G.hasSubst_zPt hv0) (cc_logForm hl0 c) linv
 
 /- English proof (translation)
-Take `⟨hl0, -, hv0, -, hlv⟩` from `h`. Establish `hmc : MvPowerSeries.HasSubst (Formalism.L2.Th1.E.matCoord l linv (RingHom.id K) γ)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun w => cc_flin hl0 hv0 _`. Establish `hat : MvPowerSeries.HasSubst (fun i : n => (Formalism.InvariantFactorPaths.G7.at1 i l : MvPowerSeries n K))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => PowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.constantCoeff_X i) l hl0`. Establish `hb : MvPowerSeries.HasSubst (fun w : Fin 4 × n => toZ linv (Formalism.L2.Th1.E.matCoord l linv (RingHom.id K) γ w))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun w => Formalism.L2.Th1.G.cc_toZ hv0 (cc_flin hl0 hv0 _)`. Unfold `Formalism.L2.Th1.G.toZ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[MvPowerSeries.subst_comp_subst_apply hmc (Formalism.L2.Th1.G.hasSubst_zPt hv0)]`. Express the relevant statement in the definitionally equal form `MvPowerSeries.subst (fun w : Fin 4 × n => toZ linv (Formalism.L2.Th1.E.matCoord l linv (RingHom.id K) γ w)) _ = _`. Unfold `Formalism.L2.Th1.E.tensor4 Formalism.L2.Th1.G.linSub Formalism.L2.Th1.G.tens4 Formalism.L2.Th1.G.inBlock`. Rewrite using `[subst_four hb, subst_four (Formalism.L2.Th1.G.hasSubst_lin _)]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb' : MvPowerSeries.HasSubst (fun i : n => toZ linv (Formalism.L2.Th1.E.matCoord l linv (RingHom.id K) γ (a, i)))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => Formalism.L2.Th1.G.cc_toZ hv0 (cc_flin hl0 hv0 _)`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hat hb']`. Use `congr 1`. Use function extensionality and compare the values at `i`. Unfold `Formalism.InvariantFactorPaths.G7.at1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Rewrite using `[Formalism.L2.Th1.G.mvSubst_subst hb' (MvPowerSeries.constantCoeff_X i), MvPowerSeries.subst_X hb']`. Unfold `Formalism.L2.Th1.E.matCoord`. Rewrite using `[toZ_flin hl0 hv0 hlv, ← PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hv0) (PowerSeries.HasSubst.of_constantCoeff_zero (Formalism.L2.Th1.G.cc_linForm _)), hlv, PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero (Formalism.L2.Th1.G.c …`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toZ_tensor4 {n : Type} [Fintype n] {l linv : PowerSeries K} (h : IsLogPair l linv)
     (T : MvPowerSeries n K) (γ : Matrix (Fin 4 × n) (Fin 4 × n) K) :
@@ -140,7 +140,7 @@ theorem toZ_tensor4 {n : Type} [Fintype n] {l linv : PowerSeries K} (h : IsLogPa
 end ToZ
 
 /- English proof (translation)
-Introduce `K _ _ _ l linv ph hlp hph n _ T γ hS`. Take `⟨κ, _, r, V, hr, hV, e⟩` from `hS`. Take `⟨e1, hInt⟩` from `Formalism.L2.Th1.E.prodInt K κ (Fin 4 × n) ph r V hph hr hV`. Use `⟨Formalism.L2.Th1.E.thetaProd r V, fun d => hInt d, ?_⟩` and prove the remaining obligations. Rewrite using `[← ToZ.toZ_tensor4 hlp, e, e1, ToZ.phSum_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

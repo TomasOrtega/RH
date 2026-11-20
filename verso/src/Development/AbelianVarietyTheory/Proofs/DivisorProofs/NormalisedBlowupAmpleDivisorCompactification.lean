@@ -16,19 +16,17 @@ open GlobalTheory.SiegelTor
 namespace GlobalTheory.PoincTop
 
 /- English proof (translation)
-Introduce `g hg n hn hodd F Z z i hth OZ hOZ hamp φ hφ`. Take `⟨hproj, hnorm, hoi, hiz, hdense, W8, hW8, hthi⟩` from `hth`. Take `⟨d, J, hd, hJ, hval⟩` from `GlobalTheory.T.exists_fanOrder_ideal_thetaCompactification g hg n hn hodd F Z z i ⟨hproj, hnorm, hoi, hiz, hdense, W8, hW8, hthi⟩ φ hφ`. Use `haveI := hoi`. Set `W : Z.Opens` to `i.opensRange`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hWset : (W : Set Z) = Set.range i` using `by simp [W]`. Take `⟨S, π, BD, hbl, hpS, hBD, hiso, hdS⟩` from `GlobalTheory.T.exists_normalised_blowup_cyclotomicAway_projective n Z z hproj (GlobalTheory.IsNormalScheme.pred Z) J W (by rw [hWset]; exact hdense) (fun x hx hxW => hJ x hx (by have h : x ∈ (W : Set Z) := hxW; rwa [hWset] at h))`. Use `haveI := hiso`. Set `A : F.X ⟶ (π ⁻¹ᵁ W).toScheme` to `i.isoOpensRange.hom ≫ inv (π ∣_ W)`. Set `j : F.X ⟶ S` to `A ≫ (π ⁻¹ᵁ W).ι`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hjπ : j ≫ π = i`. Simplify using `only [j, A, Category.assoc, ← morphismRestrict_ι, IsIso.inv_hom_id_assoc]`. Simplify using `[W]`. Establish `hrj : Set.range j = π ⁻¹' Set.range i`. Establish `hA : Function.Surjective A` using `A.surjective`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Set.range ((π ⁻¹ᵁ W).ι ∘ A) = _`. Rewrite using `[Set.range_comp, hA.range_eq, Set.image_univ, Scheme.Opens.range_ι, ← hWset]`. Both sides reduce to the same expression. Use `⟨d, J, S, π, j, BD, hd, hJ, hval, hbl, hpS, inferInstance, ?_, hjπ, hrj.symm, hBD, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hrj, ← hWset]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hdS`. Introduce `T ξ hξ`. Take `⟨a, ha, hid⟩` from `hval T (ξ ≫ π) (by rw [← Category.assoc, hξ, Category.assoc, hjπ])`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[hBD, GlobalTheory.PullAlong.idlAlong_comap_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hid`. Take `⟨S₀, π₀, ν, U, hb, hνπ, hfin, -⟩` from `hbl.2 haveI : Algebra.FiniteType ℤ (cycAway n) := finiteType_cycAway n haveI : IsNoetherianRing (cycAway n) := Algebra.FiniteType.isNoetherianRing ℤ _`. Take `⟨T₀, hT⟩` from `GlobalTheory.T.ample_twist_normalisedBlowup_noetherian_domain (cycAway n) Z S₀ S z J π₀ ν BD hproj hb hfin (by rw [hνπ]; exact hBD) OZ hamp`. Use `⟨T₀, fun k hk => ?_⟩` and prove the remaining obligations. Establish `h` using `hT k hk`.
-
-Rewrite `h` using `[hνπ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem poinSt : PoinSt := by
   intro g hg n hn hodd F Z z i hth OZ hOZ hamp φ hφ

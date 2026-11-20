@@ -12,7 +12,7 @@ namespace GlobalTheory.LatStabNbhd
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h : IsOpen {a : FiniteAdeleRing (𝓞 F) F | ∀ v : Pl F, a v ∈ (v.adicCompletionIntegers F : Set (v.adicCompletion F))}` using `RestrictedProduct.isOpen_forall_mem fun v => Valued.isOpen_valuationSubring _`. Conclude with `h.preimage continuous_snd`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_integral : IsOpen {a : AF F | ∀ w : Pl F, evFin F w a ∈ w.adicCompletionIntegers F} := by
   have h : IsOpen {a : FiniteAdeleRing (𝓞 F) F | ∀ v : Pl F,

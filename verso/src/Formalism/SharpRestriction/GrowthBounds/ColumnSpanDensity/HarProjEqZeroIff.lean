@@ -7,9 +7,9 @@ namespace Formalism.MainNotions.flipOneThree.Pf
 open Formalism.CountingSumsFrames MvPolynomial
 
 /- English proof (translation)
-Simplify using `only [Formalism.CountingSumsFrames.latOf, Set.mem_image] at hf ⊢`. Take `⟨h, hh, rfl⟩` from `hf`. Use `⟨c • h, ?_, map_smul (Formalism.CountingSumsFrames.glAct g) c h⟩` and prove the remaining obligations. Use `show ∀ m, coeff m (c • h) ∈ R`. Introduce `m`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`. Conclude with `R.mul_mem hc (hh m)`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_latOf {K : Type} [Field K] {k : ℕ} (R : Subring K) (g : GL (Fin k) K) {c : K} (hc : c ∈ R)
     {f : PolXY K k} (hf : f ∈ latOf g (GaussLat R)) : c • f ∈ latOf g (GaussLat R) := by
@@ -22,11 +22,11 @@ theorem smul_mem_latOf {K : Type} [Field K] {k : ℕ} (R : Subring K) (g : GL (F
   exact R.mul_mem hc (hh m)
 
 /- English proof (translation)
-Establish `HP : Formalism.CountingSumsFrames.HarProj` using `Formalism.CountingSumsFrames.Top.harProj`. Establish `HQ : Formalism.CountingSumsFrames.HarQuot` using `Formalism.CountingSumsFrames.Top.harQuot`. Take `⟨hf1, g, hg, hfg⟩` from `(HP K k a b hk).1 f hf`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Rewrite `hfg` using `[h0, sub_zero]`. Conclude with `hfg`. Introduce and unpack `⟨G, -, rfl⟩`. Use `(HQ K k a b p Ov 1 hk hp hloc).1 _ (G - g) hf1 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_sub, ← hfg, sub_sub_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem harProj_eq_zero_iff {K : Type} [Field K] [CharZero K] {k : ℕ} (hk : 1 ≤ k) (p : ℕ) (hp : p.Prime)
     (Ov : ValuationSubring K) (hloc : PLocal Ov.toSubring p) {a b : ℕ} {f : PolXY K k} (hf : f ∈ PolAB K k a b) :
@@ -44,15 +44,15 @@ theorem harProj_eq_zero_iff {K : Type} [Field K] [CharZero K] {k : ℕ} (hk : 1 
     rw [mul_sub, ← hfg, sub_sub_cancel]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_PolAB_iff_xDeg_yDeg {K : Type} [Field K] {k A B : ℕ} {f : Formalism.CountingSumsFrames.PolXY K k} :
     f ∈ Formalism.CountingSumsFrames.PolAB K k A B ↔ ∀ m ∈ f.support, Formalism.CountingSumsFrames.xDeg m = A ∧ Formalism.CountingSumsFrames.yDeg m = B := Iff.rfl
 
 /- English proof (translation)
-Rewrite `hf`, `hg`, the goal using `[mem_PolAB_iff_xDeg_yDeg]`. Introduce `m hm`. Take `⟨a, ha, b, hb, rfl⟩` from `Finset.mem_add.1 (MvPolynomial.support_mul f g hm)`. Take `⟨h1, h2⟩` from `hf a ha`. Take `⟨h3, h4⟩` from `hg b hb`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Simplify using `only [Formalism.CountingSumsFrames.xDeg, Finsupp.add_apply, Finset.sum_add_distrib] at h1 h3 ⊢`. Rewrite using `[h1, h3]`. Simplify using `only [Formalism.CountingSumsFrames.yDeg, Finsupp.add_apply, Finset.sum_add_distrib] at h2 h4 ⊢`. Rewrite using `[h2, h4]`.
+Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mul_mem_PolAB_add {K : Type} [Field K] {k A B C E : ℕ} {f g : Formalism.CountingSumsFrames.PolXY K k}
     (hf : f ∈ Formalism.CountingSumsFrames.PolAB K k A B) (hg : g ∈ Formalism.CountingSumsFrames.PolAB K k C E) :
@@ -70,7 +70,7 @@ private theorem mul_mem_PolAB_add {K : Type} [Field K] {k A B C E : ℕ} {f g : 
     rw [h2, h4]
 
 /- English proof (translation)
-Rewrite using `[mem_PolAB_iff_xDeg_yDeg]`. Introduce `m hm`. Rewrite `hm` using `[support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality. Simplify using `[Formalism.CountingSumsFrames.xDeg, Formalism.CountingSumsFrames.yDeg, Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 private theorem X_inl_mem_PolAB_one_zero {K : Type} [Field K] {k : ℕ} (i : Fin k) :
     (X (Sum.inl i) : Formalism.CountingSumsFrames.PolXY K k) ∈ Formalism.CountingSumsFrames.PolAB K k 1 0 := by
@@ -81,7 +81,7 @@ private theorem X_inl_mem_PolAB_one_zero {K : Type} [Field K] {k : ℕ} (i : Fin
   simp [Formalism.CountingSumsFrames.xDeg, Formalism.CountingSumsFrames.yDeg, Finsupp.single_apply]
 
 /- English proof (translation)
-Rewrite using `[mem_PolAB_iff_xDeg_yDeg]`. Introduce `m hm`. Rewrite `hm` using `[support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality. Simplify using `[Formalism.CountingSumsFrames.xDeg, Formalism.CountingSumsFrames.yDeg, Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 private theorem X_inr_mem_PolAB_zero_one {K : Type} [Field K] {k : ℕ} (i : Fin k) :
     (X (Sum.inr i) : Formalism.CountingSumsFrames.PolXY K k) ∈ Formalism.CountingSumsFrames.PolAB K k 0 1 := by
@@ -92,7 +92,7 @@ private theorem X_inr_mem_PolAB_zero_one {K : Type} [Field K] {k : ℕ} (i : Fin
   simp [Formalism.CountingSumsFrames.xDeg, Formalism.CountingSumsFrames.yDeg, Finsupp.single_apply]
 
 /- English proof (translation)
-Unfold `Formalism.CountingSumsFrames.hXY`. Use `Submodule.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations. Conclude with `mul_mem_PolAB_add (X_inl_mem_PolAB_one_zero (K := K) i) (X_inr_mem_PolAB_zero_one i)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem hXY_mem_PolAB_one_one {K : Type} [Field K] {k : ℕ} : Formalism.CountingSumsFrames.hXY K k ∈ Formalism.CountingSumsFrames.PolAB K k 1 1 := by
   unfold Formalism.CountingSumsFrames.hXY
@@ -100,11 +100,9 @@ private theorem hXY_mem_PolAB_one_one {K : Type} [Field K] {k : ℕ} : Formalism
   exact mul_mem_PolAB_add (X_inl_mem_PolAB_one_zero (K := K) i) (X_inr_mem_PolAB_zero_one i)
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Rewrite using `[pow_zero, mem_PolAB_iff_xDeg_yDeg]`. Introduce `m hm`. Rewrite `hm` using `[mem_support_iff, coeff_one]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `split_ifs at hm with h`. Substitute `h` using the available equality. Simplify using `[Formalism.CountingSumsFrames.xDeg, Formalism.CountingSumsFrames.yDeg]`. Conclude with `(hm rfl).elim`. Consider the case `succ n ih`.
-
-Rewrite using `[pow_succ]`. Conclude with `mul_mem_PolAB_add ih hXY_mem_PolAB_one_one`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hXY_pow_mem_PolAB {K : Type} [Field K] {k : ℕ} (j : ℕ) :
     Formalism.CountingSumsFrames.hXY K k ^ j ∈ Formalism.CountingSumsFrames.PolAB K k j j := by
@@ -121,43 +119,41 @@ private theorem hXY_pow_mem_PolAB {K : Type} [Field K] {k : ℕ} (j : ℕ) :
     exact mul_mem_PolAB_add ih hXY_mem_PolAB_one_one
 
 /- English proof (translation)
-Establish `HP : Formalism.CountingSumsFrames.HarProj` using `Formalism.CountingSumsFrames.Top.harProj`. Establish `IP : Formalism.CountingSumsFrames.LevelProj` using `Formalism.CountingSumsFrames.Top.levelProj`. Establish `GP : Formalism.CountingSumsFrames.GaussProj` using `Formalism.CountingSumsFrames.Top.gaussProj`. Establish `GLP : Formalism.CountingSumsFrames.GaussLemmaH` using `Formalism.CountingSumsFrames.Top.gaussLemmaH`. Establish `IL : Formalism.CountingSumsFrames.LevelLattice` using `Formalism.CountingSumsFrames.Top.levelLattice`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `SC : Formalism.CountingSumsFrames.SlTwo` using `Formalism.CountingSumsFrames.Top.slTwo`. Establish `hpair : Formalism.CountingSumsFrames.hXY K k ≠ 0`. Introduce `h0`. Establish `h1 : (1 : Formalism.CountingSumsFrames.PolXY K k) ∈ Formalism.CountingSumsFrames.PolAB K k 0 0`. Simplify using `using hXY_pow_mem_PolAB (K := K) (k := k) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `SC K k 0 0 1 h1`. Rewrite `h2` using `[h0]`. Simplify using `only [zero_mul, map_zero, sub_self, zero_add] at h2`. Establish `h3 : ((k : ℕ) : K) = 0`. Establish `h4` using `congrArg (MvPolynomial.coeff 0) h2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h4`. Conclude with `absurd (Nat.cast_eq_zero.1 h3) (by omega)`. Establish `hle : ∀ A B, Formalism.CountingSumsFrames.HarAB K k A B ≤ Formalism.CountingSumsFrames.PolAB K k A B` using `fun A B => inf_le_left`. Set `D : ℕ → Formalism.CountingSumsFrames.PolXY K k →ₗ[K] Formalism.CountingSumsFrames.PolXY K k` to `fun j => ((((P + Q + k - 2 * j + j - 1).choose j : ℕ) : K)⁻¹ * ((j.factorial : K))⁻¹) • (Formalism.CountingSumsFrames.harProj K k (P - j) (Q - j) ∘ₗ Formalism.CountingSumsFrames.ctrDiv K k j)`. Establish `hD : ∀ j F, Formalism.CountingSumsFrames.levelProj K k P Q j F = Formalism.CountingSumsFrames.hXY K k ^ j * D j F`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j F`. Simplify using `only [D, Formalism.CountingSumsFrames.levelProj, Formalism.CountingSumsFrames.hDiv, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.mulLeft_apply]`. Rewrite using `[mul_smul_comm, smul_smul]`. Establish `hDmem : ∀ j, j ≤ min P Q → ∀ F ∈ Formalism.CountingSumsFrames.PolAB K k P Q, D j F ∈ Formalism.CountingSumsFrames.HarAB K k (P - j) (Q - j)`. Introduce `j hj F hF`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, hw'⟩` from `(IP K k P Q hk).1 F hF j hj`. Rewrite `hw'` using `[hD]`. Rewrite using `[mul_left_cancel₀ (pow_ne_zero j hpair) hw']`. Conclude with `hw`. Establish `hjP : ∀ j, j ≤ min P Q → j ≤ P` using `fun j hj => le_trans hj (min_le_left _ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hjQ : ∀ j, j ≤ min P Q → j ≤ Q` using `fun j hj => le_trans hj (min_le_right _ _)`. Set `Dc : ∀ j, j ≤ min P Q → V2 →ₗ[K] Formalism.CountingSumsFrames.PolAB K k (P - j) (Q - j)` to `fun j hj => LinearMap.codRestrict _ (D j ∘ₗ (Formalism.CountingSumsFrames.PolAB K k P Q).subtype ∘ₗ α.toLinearMap) (fun x => hle _ _ (hDmem j hj _ (α x).2))`. Establish `hEmem : ∀ j, j ≤ min P Q → ∀ f : Formalism.CountingSumsFrames.PolAB K k (P - j) (Q - j), Formalism.CountingSumsFrames.hXY K k ^ j * Formalism.CountingSumsFrames.harProj K k (P - j) (Q - j) f ∈ Formalism.CountingSumsFrames.PolAB K k P Q`. Introduce `j hj f`. Establish `h` using `mul_mem_PolAB_add (hXY_pow_mem_PolAB (K := K) (k := k) j) (hle _ _ ((HP K k (P - j) (Q - j) hk).1 f f.2).1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Rewrite `h` using `[Nat.add_sub_of_le (hjP j hj), Nat.add_sub_of_le (hjQ j hj)]`. Then use the resulting hypothesis. Set `E : ∀ j, j ≤ min P Q → Formalism.CountingSumsFrames.PolAB K k (P - j) (Q - j) →ₗ[K] V2` to `fun j hj => α.symm.toLinearMap ∘ₗ LinearMap.codRestrict _ (LinearMap.mulLeft K (Formalism.CountingSumsFrames.hXY K k ^ j) ∘ₗ Formalism.CountingSumsFrames.harProj K k (P - j) (Q - j) ∘ₗ (Formalism.CountingSumsFrames.PolAB K k (P - j) (Q - j)).subtype) (fun f => hEmem j hj f)`. Use `choose s hs using fun j => LinearMap.exists_rightInverse_of_surjective (β j) (LinearMap.range_eq_top.2 (hsurj j))`. Establish `hβs : ∀ j w, β j (s j w) = w` using `fun j w => LinearMap.congr_fun (hs j) w`. Establish `hEcoe : ∀ j (hj : j ≤ min P Q) f, ((α (E j hj f) : Formalism.CountingSumsFrames.PolAB K k P Q) : Formalism.CountingSumsFrames.PolXY K k) = Formalism.CountingSumsFrames.hXY K k ^ j * Formalism.CountingSumsFrames.harProj K k (P - j) (Q - j) f`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Introduce `j hj f`. Simplify using `only [E, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Establish `hEker : ∀ j (hj : j ≤ min P Q) f, β j f = 0 → E j hj f = 0`. Introduce `j hj f h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `α.injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hEcoe j hj, (harProj_eq_zero_iff hk p hp Ov hloc f.2).2 ((hker j f).1 h0)]`. Simplify using the standard rewrite rules. Establish `hEβ : ∀ j (hj : j ≤ min P Q) f, E j hj (s j (β j f)) = E j hj f`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `j hj f`. Establish `h` using `hEker j hj (s j (β j f) - f) (by rw [map_sub, hβs, sub_self])`. Rewrite `h` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Set `pr : ∀ j, V2 →ₗ[K] W j` to `fun j => if hj : j ≤ min P Q then β j ∘ₗ Dc j hj else 0`. Set `io : ∀ j, W j →ₗ[K] V2` to `fun j => if hj : j ≤ min P Q then E j hj ∘ₗ s j else 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hpr : ∀ j (hj : j ≤ min P Q) x, pr j x = β j (Dc j hj x)`. Introduce `j hj x`. Simplify using `only [pr, dif_pos hj, LinearMap.comp_apply]`. Establish `hio : ∀ j (hj : j ≤ min P Q) f, io j (β j f) = E j hj f`. Introduce `j hj f`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [io, dif_pos hj, LinearMap.comp_apply]`. Conclude with `hEβ j hj f`. Establish `hterm : ∀ j (hj : j ≤ min P Q) x, ((α (io j (pr j x)) : Formalism.CountingSumsFrames.PolAB K k P Q) : Formalism.CountingSumsFrames.PolXY K k) = Formalism.CountingSumsFrames.levelProj K k P Q j (α x)`. Introduce `j hj x`. Rewrite using `[hpr j hj, hio j hj, hEcoe j hj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hDc : ((Dc j hj x : Formalism.CountingSumsFrames.PolAB K k (P - j) (Q - j)) : Formalism.CountingSumsFrames.PolXY K k) = D j (α x)` using `rfl`. Rewrite using `[hDc, (HP K k (P - j) (Q - j) hk).2.1 _ (hDmem j hj _ (α x).2), hD]`. Use `⟨io, pr, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Apply `α.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[map_sum, Submodule.coe_sum, Finset.sum_congr rfl (fun j hj => hterm j (Nat.lt_succ_iff.1 (Finset.mem_range.1 hj)) x)]`. Conclude with `(IP K k P Q hk).2.1 _ (α x).2`. Introduce `g j hj`. Use `⟨fun x hx => ?_, fun f hf => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨((p : K) ^ ((k + 1) * Nat.log p (P + Q + k))) • Dc j hj x, ?_, ?_⟩` and prove the remaining obligations. Apply `GLP K k Ov g j _ hk` to reduce the goal to its premises. Establish `h` using `((GP K k P Q p Ov.toSubring g hk hp hloc (α x) (α x).2).1 hx).2 j hj`. Rewrite `h` using `[hD, ← mul_smul_comm]`. Rewrite using `[Submodule.coe_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Rewrite using `[map_smul, hpr j hj]`. Establish `hw : ((p : K) ^ ((k + 1) * Nat.log p (P + Q + k))) • Formalism.CountingSumsFrames.harProj K k (P - j) (Q - j) f ∈ Formalism.CountingSumsFrames.HarAB K k (P - j) (Q - j)` using `Submodule.smul_mem _ _ ((HP K k (P - j) (Q - j) hk).1 f f.2).1`. Establish `he : (k + 1) * Nat.log p (P - j + (Q - j) + k) ≤ (k + 1) * Nat.log p (P + Q + k)` using `Nat.mul_le_mul_left _ (Nat.log_mono_right (by omega))`. Establish `hL : ((p : K) ^ ((k + 1) * Nat.log p (P + Q + k))) • Formalism.CountingSumsFrames.harProj K k (P - j) (Q - j) f ∈ Formalism.CountingSumsFrames.latOf g (Formalism.CountingSumsFrames.GaussLat Ov.toSubring)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `((GP K k (P - j) (Q - j) p Ov.toSubring g hk hp hloc f f.2).1 hf).1`. Establish `h1` using `smul_mem_latOf Ov.toSubring g (pow_mem (natCast_mem Ov.toSubring p) ((k + 1) * Nat.log p (P + Q + k) - (k + 1) * Nat.log p (P - j + (Q - j) + k))) h0`. Rewrite `h1` using `[smul_smul, ← pow_add, Nat.sub_add_cancel he]`. Then use the resulting hypothesis. Establish `hmem : Formalism.CountingSumsFrames.hXY K k ^ j * (((p : K) ^ ((k + 1) * Nat.log p (P + Q + k))) • Formalism.CountingSumsFrames.harProj K k (P - j) (Q - j) f) ∈ (fun w => Formalism.CountingSumsFrames.hXY K k ^ j * w) '' (Formalism.CountingSumsFrames.latOf g (Formalism.CountingSum …` using `⟨_, ⟨hL, hw⟩, rfl⟩`. Rewrite `hmem` using `[← IL K k (P - j) (Q - j) j Ov g hk]`.
-
-Rewrite using `[map_smul, hio j hj, Submodule.coe_smul, hEcoe j hj, ← mul_smul_comm]`. Conclude with `hmem.1`.
+A detailed English derivation is pending.
 -/
 theorem oneTop_abs (K : Type) [Field K] [CharZero K] (k P Q p : ℕ) (hk : 1 ≤ k) (hp : p.Prime)
     (Ov : ValuationSubring K) (hloc : PLocal Ov.toSubring p)

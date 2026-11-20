@@ -16,7 +16,7 @@ section TransportLinComb
 variable {X X' Y Z : Scheme.{0}} {L : LB X} {L' : LB X'} {K I : Type} [Fintype K] [Fintype I]
 
 /- English proof (translation)
-Introduce `_ hy` and use `⟨Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.1 (i, k), Set.mem_iInter.1 hy.2 i⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem transChart_le (ψ : K → (X' ⟶ X)) (σ : I → (Y ⟶ X')) (jN : I × K → L.ι) (jM : I → L'.ι) (i : I) :
     LB.wchart L (fun p : I × K => σ p.1 ≫ ψ p.2) jN ⊓ LB.wchart L' σ jM ≤
@@ -28,7 +28,7 @@ def transIso (ψ : K → (X' ⟶ X)) (δ : K → ℤ) (w : LB.Iso L' (LB.LinComb
   s P := ∏ i, res (transChart_le ψ σ P.1 P.2 i) (pullU (σ i) _ (w.s (fun k => P.1 (i, k), P.2 i))) ^ e i
 
 /- English proof (translation)
-Use `(map_prod _ _ _).trans (Finset.prod_congr rfl fun i _ => (map_zpow _ _ _).trans (congrArg (· ^ e i) ?_))` and prove the remaining obligations. Conclude with `(gm_res r z _ hP _).trans (gm_pull r (σ i) z _ (transChart_le ψ σ P.1 P.2 i hP) _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gm_transIso (ψ : K → (X' ⟶ X)) (δ : K → ℤ) (w : LB.Iso L' (LB.LinComb L ψ δ)) (σ : I → (Y ⟶ X'))
     (e : I → ℤ) (r : Z ⟶ Y) (z : Z) (P : (I × K → L.ι) × (I → L'.ι))
@@ -38,7 +38,7 @@ theorem gm_transIso (ψ : K → (X' ⟶ X)) (δ : K → ℤ) (w : LB.Iso L' (LB.
   exact (gm_res r z _ hP _).trans (gm_pull r (σ i) z _ (transChart_le ψ σ P.1 P.2 i hP) _)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j y hy`. Conclude with `(gm_res (𝟙 Y) y _ hy _).symm.trans ((congrArg (gm (𝟙 Y) y _) (h i j)).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) rfl (gm_res (𝟙 Y) y _ hy _))))`. Introduce `h i j`. Conclude with `unit_ext fun y hy => (gm_res (𝟙 Y) y _ hy _).trans ((h i j y hy).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) rfl (gm_res (𝟙 Y) y _ hy _))).symm)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isGen_iff_gm' {M : LB Y} (t : LB.Gen M) :
     t.IsGen ↔ ∀ i j y, y ∈ M.U i ⊓ M.U j →
@@ -52,7 +52,7 @@ theorem isGen_iff_gm' {M : LB Y} (t : LB.Gen M) :
       ((map_mul _ _ _).trans (congrArg₂ (· * ·) rfl (gm_res (𝟙 Y) y _ hy _))).symm)
 
 /- English proof (translation)
-Establish `h` using `congrArg (gm r z _) (hw P Q)`. Conclude with `(gm_res r z _ hm _).symm.trans (h.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) ((gm_div L' (LB.LinComb L ψ δ) r z P Q hm).trans (congrArg (· * _) (gm_linComb L ψ δ r z _ _ hm.1.1 hm.2.1))) (gm_res r z _ hm _))))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gm_of_isGen (ψ : K → (X' ⟶ X)) (δ : K → ℤ) {w : LB.Iso L' (LB.LinComb L ψ δ)} (hw : w.IsGen)
     (r : Z ⟶ X') (z : Z) (P Q : (K → L.ι) × L'.ι)
@@ -65,9 +65,9 @@ theorem gm_of_isGen (ψ : K → (X' ⟶ X)) (δ : K → ℤ) {w : LB.Iso L' (LB.
     (gm_res r z _ hm _))))
 
 /- English proof (translation)
-Use `(isGen_iff_gm' _).2 fun P Q y hy => ?_` and prove the remaining obligations. Establish `hd : gm (𝟙 Y) y ((LB.div (LB.LinComb L (fun p : I × K => σ p.1 ≫ ψ p.2) (fun p => e p.1 * δ p.2)) (LB.LinComb L' σ e)).U P ⊓ (LB.div (LB.LinComb L (fun p : I × K => σ p.1 ≫ ψ p.2) (fun p => e p.1 * δ p.2)) (LB.LinComb L' σ e)).U Q) ((LB.div (LB.LinComb L (fun p : I × K => σ p.1 ≫ …` using `gm_div (LB.LinComb L' σ e) (LB.LinComb L (fun p : I × K => σ p.1 ≫ ψ p.2) (fun p => e p.1 * δ p.2)) (𝟙 Y) y P Q hy`. Rewrite using `[gm_transIso ψ δ w σ e (𝟙 Y) y P hy.1, gm_transIso ψ δ w σ e (𝟙 Y) y Q hy.2, hd]`. Use `erw [gm_linComb L (fun p : I × K => σ p.1 ≫ ψ p.2) (fun p => e p.1 * δ p.2) (𝟙 Y) y P.1 Q.1 hy.1.1 hy.2.1, gm_linComb L' σ e (𝟙 Y) y P.2 Q.2 hy.1.2 hy.2.2, Finset.prod_congr rfl fun i _ => congrArg (· ^ e i) (gm_of_isGen ψ δ hw (𝟙 Y ≫ σ i) y (fun k => P.1 (i, k), P.2 i) (fun k => …`. Rewrite using `[Fintype.prod_prod_type]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Category.assoc, mul_zpow, Finset.prod_mul_distrib, ← Finset.prod_zpow, ← zpow_mul, inv_zpow', Finset.prod_inv_distrib]`. Simplify using `only [mul_comm (δ _) (e _)]`. Simplify using `only [zpow_neg, Finset.prod_inv_distrib]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isGen_transIso (ψ : K → (X' ⟶ X)) (δ : K → ℤ) {w : LB.Iso L' (LB.LinComb L ψ δ)} (hw : w.IsGen)
     (σ : I → (Y ⟶ X')) (e : I → ℤ) : (transIso ψ δ w σ e).IsGen := by
@@ -94,7 +94,7 @@ theorem isGen_transIso (ψ : K → (X' ⟶ X)) (δ : K → ℤ) {w : LB.Iso L' (
 end TransportLinComb
 
 /- English proof (translation)
-Introduce `X X' Y L L' K I _ _ ψ δ w hw _ _ σ e`. Use `⟨transIso ψ δ w σ e, isGen_transIso ψ δ hw σ e, fun Z q z J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Conclude with `gm_transIso ψ δ w σ e q z _ ⟨hJ.mem (fun p : I × K => σ p.1 ≫ ψ p.2) q, hJ'.mem σ q⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_transIso_linComb : ∀ {X X' Y : Scheme.{0}} {L : LB X} {L' : LB X'} {K I : Type} [Fintype K] [Fintype I]
     (ψ : K → (X' ⟶ X)) (δ : K → ℤ) (w : LB.Iso L' (LB.LinComb L ψ δ)), w.IsGen → L.IsLB → L'.IsLB →

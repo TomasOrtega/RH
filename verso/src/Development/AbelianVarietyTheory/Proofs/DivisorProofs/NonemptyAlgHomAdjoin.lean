@@ -3,19 +3,19 @@ import Mathlib
 namespace GlobalTheory.AdjoinAlgebraHomNonempty
 
 /- English proof (translation)
-Establish `h0 : h ≠ 0` using `fun e => hh (by rw [e, map_zero])`. Establish `h0F : (h : F) ≠ 0` using `fun e => h0 (Subtype.ext e)`. Establish `hu : ∀ y : Submonoid.powers h, IsUnit (S.val y)`. Introduce and unpack `⟨y, n, rfl⟩`. Simplify using `only [map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `(IsUnit.mk0 _ h0F).pow n`. Establish `hv : ∀ y : Submonoid.powers h, IsUnit (ψ y)`. Introduce and unpack `⟨y, n, rfl⟩`. Simplify using `only [map_pow]`. Conclude with `(IsUnit.mk0 _ hh).pow n`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f : Localization.Away h →ₐ[k] F` to `IsLocalization.liftAlgHom (M := Submonoid.powers h) hu`. Set `g : Localization.Away h →ₐ[k] Ω` to `IsLocalization.liftAlgHom (M := Submonoid.powers h) hv`. Establish `hf : ∀ s : S, f (algebraMap S (Localization.Away h) s) = (s : F)` using `fun s => by`. Simplify using `[f, IsLocalization.liftAlgHom_apply]`. Establish `hinj : Function.Injective f`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj (Submonoid.powers h) z`. Establish `h1` using `congrArg f hab`. Rewrite `h1` using `[map_mul, hz, zero_mul, hf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ha : a = 0` using `Subtype.ext h1.symm`. Rewrite `hab` using `[ha, map_zero]`. Conclude with `(IsLocalization.map_units (Localization.Away h) b).mul_left_eq_zero.mp hab`. Establish `hle : Algebra.adjoin k T ≤ f.range`. Use `Algebra.adjoin_le fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨u, hu'⟩` from `IsLocalization.map_units (Localization.Away h) (⟨h, Submonoid.mem_powers h⟩ : Submonoid.powers h)`. Use `⟨(↑u⁻¹ : Localization.Away h) * algebraMap S _ ⟨_, hT x hx⟩, ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ h0F` to reduce the goal to its premises. Establish `e : f u = (h : F)` using `by rw [hu']; exact hf h`. Express the relevant statement in the definitionally equal form `(h : F) * f _ = _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hf, ← mul_assoc]`. Establish `e2 : (h : F) * f (↑u⁻¹ : Localization.Away h) = 1`. Rewrite using `[← e, ← map_mul, Units.mul_inv, map_one]`. Rewrite using `[e2, one_mul]`. Conclude with `⟨(g.comp (AlgEquiv.ofInjective f hinj).symm.toAlgHom).comp (Subalgebra.inclusion hle)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_algHom_adjoin (k F Ω : Type) [Field k] [Field F] [Algebra k F] [Field Ω]
     [Algebra k Ω] (S : Subalgebra k F) (ψ : S →ₐ[k] Ω) (h : S) (hh : ψ h ≠ 0) (T : Set F)

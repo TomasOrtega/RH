@@ -21,9 +21,9 @@ def MonOK (lam : ι → DomWeight n) (m : (ι × Fin n × Fin n) →₀ ℕ) : P
 def MonI (lam : ι → DomWeight n) : Type := {m : (ι × Fin n × Fin n) →₀ ℕ // MonOK lam m}
 
 /- English proof (translation)
-Set `M : (ι × Fin n × Fin n) →₀ ℕ` to `Finsupp.equivFunOnFinite.symm fun v => (lam v.1).natW v.2.2`. Use `(Set.finite_Icc (0 : (ι × Fin n × Fin n) →₀ ℕ) M).subset ?_` and prove the remaining obligations. Introduce `m hm`. Use `⟨zero_le, fun v => ?_⟩` and prove the remaining obligations. Take `⟨τ, a, s⟩` from `v`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `show m (τ, a, s) ≤ (lam τ).natW s`. Rewrite using `[← hm τ s]`. Conclude with `Finset.single_le_sum (f := fun a => m (τ, a, s)) (fun _ _ => Nat.zero_le _) (Finset.mem_univ a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monOK_finite (lam : ι → DomWeight n) : {m | MonOK lam m}.Finite := by
   classical
@@ -43,7 +43,7 @@ instance (lam : ι → DomWeight n) : Fintype (MonI lam) := Fintype.ofFinite _
 instance (lam : ι → DomWeight n) : DecidableEq (MonI lam) := Classical.decEq _
 
 /- English proof (translation)
-Establish `e : u.sum (fun i c => c • Formalism.GradedWeylDivisibility.colW r n i) = ∑ i, u i • Formalism.GradedWeylDivisibility.colW r n i` using `Finsupp.sum_fintype _ _ (fun i => zero_smul ℕ _)`. Rewrite using `[← h, Finsupp.weight_apply, e, Finset.sum_apply, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `[Formalism.GradedWeylDivisibility.colW, Pi.single_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem column_sum_eq_weight {r : ℕ} (ν : Fin n → ℕ) (u : (Fin r × Fin n) →₀ ℕ) (h : Finsupp.weight (Formalism.GradedWeylDivisibility.colW r n) u = ν) (s : Fin n) :
     ∑ a, u (a, s) = ν s := by
@@ -56,19 +56,17 @@ theorem column_sum_eq_weight {r : ℕ} (ν : Fin n → ℕ) (u : (Fin r × Fin n
 
 open Classical in
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Introduce `m hm τ s`. Rewrite `hm` using `[Finset.prod_empty, coeff_one]`. Establish `: m = 0`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hm (if_neg fun h' => h h'.symm)`. Substitute `this` using the available equality. Simplify using the standard rewrite rules. Consider the case `insert t T ht ih`.
+Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm τ s`. Rewrite `hm` using `[Finset.prod_insert ht]`. Establish `hm'` using `support_mul _ _ (mem_support_iff.2 hm)`. Take `⟨m1, h1, m2, h2, rfl⟩` from `Finset.mem_add.1 hm'`. Establish `i2` using `ih m2 (mem_support_iff.1 h2) τ s`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hu0⟩` from `coeff_rename_ne_zero _ _ _ (mem_support_iff.1 h1)`. Establish `hinj : Function.Injective (fun v : Fin n × Fin n => (t, v))` using `fun a b h => (Prod.mk.inj h).2`. Establish `hw : Finsupp.weight (Formalism.GradedWeylDivisibility.colW n n) u = (lam t).natW`. Use `(hf t).1` as an intermediate fact. Conclude with `this hu0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, i2]`. Distinguish the cases in `hτ : τ = t`. Substitute `hτ` using the available equality. Establish `: ∀ a, m1 (τ, a, s) = u (a, s)` using `fun a => by`. Rewrite using `[← hu]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Finsupp.mapDomain_apply hinj u (a, s)`. Simplify using `only [this, column_sum_eq_weight _ u hw s, if_neg ht, Finset.mem_insert, true_or, if_true, add_zero]`. Establish `: ∀ a, m1 (τ, a, s) = 0` using `fun a => by`. Rewrite using `[← hu]`. Use `Finsupp.mapDomain_of_notMem_range _ _ ?_` and prove the remaining obligations.
-
-Introduce and unpack `⟨v, hv⟩`. Conclude with `hτ (Prod.mk.inj hv).1.symm`. Simplify using `only [this, Finset.sum_const_zero, zero_add, Finset.mem_insert, hτ, false_or]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem product_support_weights (K : Type) [Field K] (lam : ι → DomWeight n) (f : ι → MvPolynomial (Fin n × Fin n) K)
     (hf : ∀ τ, f τ ∈ nablaSq K n (lam τ)) (T : Finset ι) :
@@ -108,13 +106,13 @@ theorem product_support_weights (K : Type) [Field K] (lam : ι → DomWeight n) 
       simp only [this, Finset.sum_const_zero, zero_add, Finset.mem_insert, hτ, false_or]
 
 /- English proof (translation)
-Unfold `VV Formalism.GradedWeylDivisibility.tensorLat at hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, rfl⟩` from `hx`. Introduce `m hm τ s`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `product_support_weights K lam f hf Finset.univ m hm τ s` as an intermediate fact. Simplify using `using this`. Consider the case `zero => intro m hm`. Conclude with `absurd (coeff_zero m) hm`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m hm`. Rewrite `hm` using `[coeff_add]`. Distinguish the cases in `h : coeff m x = 0`. Conclude with `hy m (by rw [h, zero_add] at hm; exact hm)`. Conclude with `hx m h`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `smul c x _ hx`. Introduce `m hm`. Rewrite `hm` using `[coeff_smul]`. Conclude with `hx m (fun h => hm (by rw [h, smul_zero]))`.
+A detailed English derivation is pending.
 -/
 theorem coefficient_space_support (K : Type) [Field K] (lam : ι → DomWeight n) {F : Pol K ι n} (hF : F ∈ VV K lam) :
     ∀ m, coeff m F ≠ 0 → MonOK lam m := by
@@ -151,7 +149,7 @@ theorem cfMap_apply (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) (x : VV
     cfMap lam g x m = coeff m.1 (trAct g x.1) := rfl
 
 /- English proof (translation)
-The claim follows from `(Formalism.GradedWeylDivisibility.blockActTensor K K ι n n (fun τ => ((g τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᵀ)).2 (fun τ => nablaSq K n (lam τ)) (fun τ => nablaSq K n (lam τ)) (fun _ f hf => Formalism.GradedWeylDivisibility.dualWeylRowStable K n n _ _ f hf) F hF`.
+A detailed English derivation is pending.
 -/
 theorem transpose_action_mem (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) {F : Pol K ι n} (hF : F ∈ VV K lam) : trAct g F ∈ VV K lam :=
   (Formalism.GradedWeylDivisibility.blockActTensor K K ι n n (fun τ => ((g τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᵀ)).2
@@ -159,25 +157,25 @@ theorem transpose_action_mem (lam : ι → DomWeight n) (g : ι → GL (Fin n) K
     (fun _ f hf => Formalism.GradedWeylDivisibility.dualWeylRowStable K n n _ _ f hf) F hF
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply, ← trAct_mul, mul_inv_cancel, trAct_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem transpose_action_inv_right (g : ι → GL (Fin n) K) (F : Pol K ι n) : trAct g (trAct g⁻¹ F) = F := by
   rw [← AlgHom.comp_apply, ← trAct_mul, mul_inv_cancel, trAct_one]
   rfl
 
 /- English proof (translation)
-Rewrite using `[← AlgHom.comp_apply, ← trAct_mul, inv_mul_cancel, trAct_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem transpose_action_inv_left (g : ι → GL (Fin n) K) (F : Pol K ι n) : trAct g⁻¹ (trAct g F) = F := by
   rw [← AlgHom.comp_apply, ← trAct_mul, inv_mul_cancel, trAct_one]
   rfl
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `h0 : trAct g x.1 = 0`. Use extensionality with `m`. Rewrite using `[coeff_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Establish `hm` using `coefficient_space_support K lam (transpose_action_mem lam g x.2) m h`. Conclude with `h (congrFun hx ⟨m, hm⟩)`. Apply `Subtype.ext` to reduce the goal to its premises. Use `transpose_action_inv_left g x.1` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h0, map_zero]`. Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem cfMap_injective (lam : ι → DomWeight n) (g : ι → GL (Fin n) K) : Function.Injective (cfMap lam g) := by
   rw [injective_iff_map_eq_zero]
@@ -214,12 +212,12 @@ def locRing (w : HeightOneSpectrum (𝓞 K)) : Subring K where
   neg_mem' := fun {x} hx => (localization₂ w.asIdeal (1 : Submodule (𝓞 K) K)).neg_mem hx
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_locRing (w : HeightOneSpectrum (𝓞 K)) (x : K) : x ∈ locRing w ↔ x ∈ localization₂ w.asIdeal (1 : Submodule (𝓞 K) K) := Iff.rfl
 
 /- English proof (translation)
-Use `⟨∑ m ∈ P.support, monomial m ⟨coeff m P, h m⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Simplify using `only [map_monomial, Subring.coe_subtype]`. Conclude with `P.support_sum_monomial_coeff`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_range_of_coeff_mem {σ : Type} (R0 : Subring K) {P : MvPolynomial σ K} (h : ∀ m, coeff m P ∈ R0) :
     P ∈ (map (σ := σ) R0.subtype).range := by
@@ -229,7 +227,7 @@ theorem mem_range_of_coeff_mem {σ : Type} (R0 : Subring K) {P : MvPolynomial σ
   exact P.support_sum_monomial_coeff
 
 /- English proof (translation)
-Take `⟨Q, rfl⟩` from `hP`. Rewrite using `[coeff_map]`. Conclude with `(coeff m Q).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_mem_of_mem_range {σ : Type} (R0 : Subring K) {P : MvPolynomial σ K} (hP : P ∈ (map (σ := σ) R0.subtype).range) (m : σ →₀ ℕ) :
     coeff m P ∈ R0 := by
@@ -238,11 +236,9 @@ theorem coeff_mem_of_mem_range {σ : Type} (R0 : Subring K) {P : MvPolynomial σ
   exact (coeff m Q).2
 
 /- English proof (translation)
-Take `⟨Q, rfl⟩` from `hP`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[map_C, algHom_C]`. Conclude with `⟨C a, by simp⟩`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Consider the case `add p q hp hq`. Rewrite using `[map_add (map R0.subtype), map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p v hp`. Rewrite using `[map_mul (map R0.subtype), map_X, map_mul, blockAct_X]`.
-
-Conclude with `mul_mem hp (sum_mem fun b _ => mul_mem ⟨C ⟨_, hU v.1 v.2.1 b⟩, by simp⟩ ⟨X (v.1, b, v.2.2), by simp⟩)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem block_action_integral (R0 : Subring K) {ι : Type} [Fintype ι] {n : ℕ} (U : ι → Matrix (Fin n) (Fin n) K) (hU : ∀ τ a b, U τ a b ∈ R0)
     {P : MvPolynomial (ι × Fin n × Fin n) K} (hP : P ∈ (map (σ := ι × Fin n × Fin n) R0.subtype).range) :
@@ -262,13 +258,11 @@ theorem block_action_integral (R0 : Subring K) {ι : Type} [Fintype ι] {n : ℕ
 variable {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Unfold `delStd Formalism.GradedWeylDivisibility.tensorLat at hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, rfl⟩` from `hx`. Use `choose f0 _ hf0 using fun s => Submodule.mem_map.1 (hf s)`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : (∏ s, Formalism.GradedWeylDivisibility.blockEmb K s (f s)) = map (algebraMap (𝓞 K) K) (∏ s, Formalism.GradedWeylDivisibility.blockEmb (𝓞 K) s (f0 s))`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← hf0 s]`. Simplify using `only [Formalism.GradedWeylDivisibility.blockEmb, toK, AlgHom.toLinearMap_apply, mapAlgHom_apply, map_rename]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e, coeff_map]`. Conclude with `Submodule.mem_one.2 ⟨_, rfl⟩`. Consider the case `zero => rw [coeff_zero]`. Conclude with `zero_mem _`.
-
-Consider the case `add x y _ _ hx hy => rw [coeff_add]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [coeff_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem standard_delta_integral_coeffs (lam : ι → DomWeight n) {F : Pol K ι n} (hF : F ∈ delStd K lam) (m : (ι × Fin n × Fin n) →₀ ℕ) :
     coeff m F ∈ (1 : Submodule (𝓞 K) K) := by
@@ -294,7 +288,7 @@ def twId (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)
     (localization₂ w.asIdeal (1 : Submodule (𝓞 K) K)).comap ((LinearMap.mulLeft K (detTwK lam B⁻¹)).restrictScalars (𝓞 K))
 
 /- English proof (translation)
-Simplify using `only [twId, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, LinearMap.mulLeft_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_twId (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)) (a : K) :
     a ∈ twId lam M ↔ ∀ (w : HeightOneSpectrum (𝓞 K)) (B : ι → GL (Fin n) K), (∀ τ, IsBasisAt w (M τ) (B τ)) →
@@ -302,25 +296,23 @@ theorem mem_twId (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin 
   simp only [twId, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, LinearMap.mulLeft_apply]
 
 /- English proof (translation)
-Introduce `x hx` and use `⟨1, one_mem _, by rwa [one_smul]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem le_localisation {W : Type} [AddCommGroup W] [Module (𝓞 K) W] (w : HeightOneSpectrum (𝓞 K)) (L : Submodule (𝓞 K) W) :
     L ≤ localization₂ w.asIdeal L := fun x hx => ⟨1, one_mem _, by rwa [one_smul]⟩
 
 /- English proof (translation)
-Rewrite using `[mem_twId]`. Introduce `w B hB`. Establish `hx' : actP lam B⁻¹ x.1 ∈ localization₂ w.asIdeal (delStd K lam)`. Establish `h` using `hx`. Simplify using `only [delK, delP, transLat, Submodule.mem_comap, Submodule.mem_iInf] at h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h w B hB`. Establish `hF0 : actP lam B⁻¹ x.1 ∈ (map (σ` using `ι × Fin n × Fin n) (locRing w).subtype).range := by`. Use `mem_range_of_coeff_mem _ fun m' => ?_` and prove the remaining obligations. Take `⟨s, hs, hsF⟩` from `hx'`. Rewrite using `[mem_locRing]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← coeff_smul]`. Conclude with `standard_delta_integral_coeffs lam hsF m'`. Establish `hU : ∀ τ a b, (((g * B) τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᵀ a b ∈ locRing w`. Introduce `τ a b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcol : (fun c => (B τ : Matrix (Fin n) (Fin n) K) c a) ∈ localization₂ w.asIdeal (M τ)`. Rewrite using `[hB τ]`. Conclude with `le_localisation w _ (Submodule.subset_span ⟨a, rfl⟩)`. Take `⟨s, hs, hsx⟩` from `hcol`. Rewrite using `[mem_locRing]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Use `hg τ _ hsx b` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_smul]`. Establish `e : (((g * B) τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᵀ a b = ((g τ : Matrix (Fin n) (Fin n) K) *ᵥ fun c => (B τ : Matrix (Fin n) (Fin n) K) c a) b`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `this`. Establish `hkey` using `coeff_mem_of_mem_range _ (block_action_integral (locRing w) _ hU hF0) m.1`. Establish `e : Formalism.GradedWeylDivisibility.blockAct K (fun τ => (((g * B) τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)ᵀ) (actP lam B⁻¹ x.1) = detTwK lam B⁻¹ • trAct g x.1` using `by show trAct (g * B) (actP lam B⁻¹ x.1) = _`. Rewrite using `[trAct_mul]`.
-
-Simplify using `only [actP, LinearMap.smul_apply, AlgHom.toLinearMap_apply, AlgHom.comp_apply, map_smul, transpose_action_inv_right]`. Rewrite `hkey` using `[e, coeff_smul, smul_eq_mul, mem_locRing]`. Conclude with `hkey`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefficient_map_mem_twisted (lam : ι → DomWeight n) (M : ι → Submodule (𝓞 K) (Fin n → K)) (g : ι → GL (Fin n) K)
     (hg : ∀ τ, ∀ x ∈ M τ, ∀ a, ((g τ : Matrix (Fin n) (Fin n) K) *ᵥ x) a ∈ (1 : Submodule (𝓞 K) K))

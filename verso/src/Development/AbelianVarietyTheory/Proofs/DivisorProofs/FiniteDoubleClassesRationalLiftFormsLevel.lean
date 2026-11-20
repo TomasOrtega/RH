@@ -9,7 +9,7 @@ open scoped TensorProduct
 namespace GlobalTheory.FrameOf
 
 /- English proof (translation)
-Establish `hf : (Set.range P.y).Finite` using `Set.finite_range _`. Use `⟨hf.toFinset, fun g => ?_⟩` and prove the remaining obligations. Take `⟨c, ⟨γ, k, e⟩, -⟩` from `P.reps g`. Conclude with `⟨ι γ, ⟨γ, rfl⟩, P.y c, hf.mem_toFinset.2 ⟨c, rfl⟩, k, k.2, e⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem finite_classes_of_pres {G Γ : Type} [Group G] [Group Γ] {ι : Γ →* G} {W : Type} [NormedAddCommGroup W]
     [InnerProductSpace ℂ W] {K : Type} [Field K] [NumberField K] [StarRing K] {S : CSD K} {σ : K →+* ℂ}
@@ -22,7 +22,7 @@ theorem finite_classes_of_pres {G Γ : Type} [Group G] [Group Γ] {ι : Γ →* 
   exact ⟨ι γ, ⟨γ, rfl⟩, P.y c, hf.mem_toFinset.2 ⟨c, rfl⟩, k, k.2, e⟩
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex Csz p j t`. Conclude with `finite_classes_of_pres (p.R.B.L j t).pres`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem classesAt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
     {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz) (j : Fin D.R.m) (t : p.P.T),

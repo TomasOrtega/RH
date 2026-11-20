@@ -95,9 +95,9 @@ def GrassDegFlagInt.Statement : Prop :=
           (GroundTheory.Heights₂.Heights.fsMulti (plBlocks (Fintype.card Ψ) j (N - j))) (dimN Ψ N j)
 
 /- English proof (translation)
-Use `⟨⟨()⟩, le_rfl, le_rfl, le_rfl, ?_, rfl⟩` and prove the remaining obligations. Unfold `vandCount`. Rewrite using `[Fintype.card_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨u, a, b⟩, hab, hh⟩`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : Nonempty Unit ∧ 2 ≤ 2 ∧ 1 ≤ 1 ∧ 1 ≤ 2 - 1 ∧ vandCount Unit 2 1 = 0 ∧ dimFl Unit 2 + 1 = 2 := by
   refine ⟨⟨()⟩, le_rfl, le_rfl, le_rfl, ?_, rfl⟩
@@ -108,14 +108,14 @@ example : Nonempty Unit ∧ 2 ≤ 2 ∧ 1 ≤ 1 ∧ 1 ≤ 2 - 1 ∧ vandCount Un
   fin_cases a <;> fin_cases b <;> simp_all
 
 /- English proof (translation)
-The claim follows from `Inter.isArithVar_projLine`.
+A detailed English derivation is pending.
 -/
 example : IsArithVar (⊥ : Ideal (MRing (PBlk 2))) 2 := Inter.isArithVar_projLine
 
 /- English proof (translation)
-Use `⟨⟨()⟩, le_rfl, rfl, ?_⟩` and prove the remaining obligations. Unfold `linForm`. Rewrite using `[Fintype.sum_eq_single ((), 1)]`. Simplify using the standard rewrite rules. Introduce `p hp`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hp]`.
+Simplify using the standard rewrite rules.
 -/
 example : Nonempty Unit ∧ 2 ≤ 2 ∧ (2 = dimFl Unit 2 + 1) ∧
     linForm Unit 2 (fun p => if p = ((), 1) then 1 else 0) = X ((), 1) := by

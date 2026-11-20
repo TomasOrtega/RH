@@ -8,7 +8,7 @@ open GlobalTheory.Desc
 namespace GlobalTheory.Desc
 
 /- English proof (translation)
-Apply `ext_of_isAffine` to reduce the goal to its premises. Rewrite using `[gp, Scheme.Hom.comp_appTop, Scheme.fromSpecStalk_appTop, ← cancel_epi (Scheme.ΓSpecIso (CommRingCat.of R)).inv, ← Scheme.ΓSpecIso_inv_naturality]`. Use extensionality with `a`. Establish `e : CommRingCat.ofHom (cst h) = (Scheme.ΓSpecIso _).inv ≫ h.appTop ≫ X.presheaf.germ ⊤ (genericPoint X) trivial` using `rfl`. Simplify using `[e]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem gp_comp {X : Scheme.{0}} [IsIntegral X] {R : Type} [CommRing R] (h : X ⟶ Sp R) :
     gp X ≫ h = spMap (cst h) := by
@@ -21,13 +21,13 @@ theorem gp_comp {X : Scheme.{0}} [IsIntegral X] {R : Type} [CommRing R] (h : X �
   simp [e]
 
 /- English proof (translation)
-Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := O) v`. Establish `hy0 : y ≠ 0` using `nonZeroDivisors.ne_zero hy`. Use `haveI : Ring.KrullDimLE 1 O := Ring.krullDimLE_iff.2 (by exact_mod_cast hd)`. Establish `hrad : a ∈ (Ideal.span {y}).radical`. Rewrite using `[Ideal.radical_eq_sInf, Ideal.mem_sInf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `J ⟨hJ, hJp⟩`. Establish `hne : J ≠ ⊥` using `fun h => hy0 (by`. Use `hJ (Ideal.mem_span_singleton_self y)` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `(Submodule.mem_bot _).1 this)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: J.IsMaximal` using `Ideal.isMaximal_of_isPrime_of_ne_bot J hne`. Rewrite using `[IsLocalRing.eq_maximalIdeal this]`. Conclude with `ha`. Take `⟨N, hN⟩` from `hrad`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hN`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨N, c * x, ?_⟩` and prove the remaining obligations. Establish `hy' : algebraMap O K y ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hy`. Rewrite using `[← map_pow, ← hc, map_mul, map_mul]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem {O K : Type} [CommRing O] [IsDomain O] [IsLocalRing O] [Field K] [Algebra O K]
     [IsFractionRing O K] (hd : ringKrullDim O ≤ 1) {a : O} (ha : a ∈ maximalIdeal O) (v : K) :
@@ -50,7 +50,7 @@ theorem exists_pow_mul_mem {O K : Type} [CommRing O] [IsDomain O] [IsLocalRing O
   field_simp
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `(unitAt_one z).regAt`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem regAt_pow {X : Scheme.{0}} [IsIntegral X] {z : X} {g : X.functionField} (h : RegAt z g) (n : ℕ) :
     RegAt z (g ^ n) := by
@@ -59,13 +59,13 @@ theorem regAt_pow {X : Scheme.{0}} [IsIntegral X] {z : X} {g : X.functionField} 
   | succ n ih => rw [pow_succ]; exact ih.mul h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hw' : w ∈ Set.range (X.fromSpecStalk z)` using `by rw [Scheme.range_fromSpecStalk]; exact hwz`. Take `⟨p, rfl⟩` from `hw'`. Establish `hη : genericPoint X ∈ Set.range (X.fromSpecStalk z)`. Rewrite using `[Scheme.range_fromSpecStalk]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(genericPoint_spec X).specializes trivial`. Take `⟨q, hq⟩` from `hη`. Use `haveI : Ring.KrullDimLE 1 (X.presheaf.stalk z) := Ring.krullDimLE_iff.2 (by exact_mod_cast hd)`. Establish `hp : p.asIdeal = ⊥`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := p.isPrime`. Establish `hm` using `Ideal.isMaximal_of_isPrime_of_ne_bot p.asIdeal h`. Establish `: p = closedPoint _` using `PrimeSpectrum.ext (IsLocalRing.eq_maximalIdeal hm)`. Apply `hne` to reduce the goal to its premises. Rewrite using `[this, Scheme.fromSpecStalk_closedPoint]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpq : p ⤳ q` using `(PrimeSpectrum.le_iff_specializes p q).1 (by show p.asIdeal ≤ q.asIdeal; rw [hp]; exact bot_le)`. Establish `h1 : X.fromSpecStalk z p ⤳ genericPoint X` using `hq ▸ hpq.map (X.fromSpecStalk z).continuous`. Establish `h2 : genericPoint X ⤳ X.fromSpecStalk z p` using `(genericPoint_spec X).specializes trivial`. Conclude with `hw (h1.antisymm h2).eq`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_specializes {X : Scheme.{0}} [IsIntegral X] {z w : X} (hd : ringKrullDim (X.presheaf.stalk z) ≤ 1)
     (hwz : w ⤳ z) (hw : w ≠ genericPoint X) : w = z := by
@@ -89,13 +89,11 @@ theorem eq_of_specializes {X : Scheme.{0}} [IsIntegral X] {z w : X} (hd : ringKr
   exact hw (h1.antisymm h2).eq
 
 /- English proof (translation)
-Take `⟨l, hl₁, hl₂⟩` from `σ.hθ x`. Establish `w` using `(σ.cart x).w`. Simplify using `only [Category.assoc] at w`. Establish `e : spMap ((σ.θ x).comp σ.c₀) = spMap ((cst (σ.C x).G.hom).comp (σ.ρ x))`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Use `_ = l ≫ σ.φ x ≫ σ.A.hom ≫ awayMap σ.f := by`. Rewrite using `[Setup.c₀, ← gp_comp, ← Category.assoc, ← hl₂]`. Simplify using `only [Category.assoc]`. Use `_ = l ≫ (σ.V x).ι ≫ (σ.C x).G.hom ≫ spMap (σ.ρ x) := by rw [w]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = gp _ ≫ (σ.C x).G.hom ≫ spMap (σ.ρ x) := by rw [← Category.assoc l, hl₁]`. Use `_ = spMap ((cst (σ.C x).G.hom).comp (σ.ρ x)) := by`. Rewrite using `[← Category.assoc, gp_comp]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Establish `e'` using `congrArg CommRingCat.Hom.hom (Spec.map_inj.1 e)`.
-
-Simplify using `using e'`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem θ_comp_c₀ (σ : Setup) (x : Sp σ.R) :
     (σ.θ x).comp σ.c₀ = (cst (σ.C x).G.hom).comp (σ.ρ x) := by
@@ -115,7 +113,7 @@ theorem θ_comp_c₀ (σ : Setup) (x : Sp σ.R) :
   simpa using e'
 
 /- English proof (translation)
-Rewrite using `[zeroAt_iff]`. Use `⟨regAt_fnOf (U := ⊤) trivial trivial _, fun hu => ?_⟩` and prove the remaining obligations. Establish `h1` using `(unitAt_fnOf_iff (x := z) (U := ⊤) trivial (gen_mem (x := z) trivial) _).1 hu`. Rewrite `h1` using `[RingHom.comp_apply, ← Scheme.preimage_basicOpen_top, basicOpen_eq_of_affine]`. Conclude with `h1 hz`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zeroAt_cst {R : Type} [CommRing R] {Y : Scheme.{0}} [IsIntegral Y] (h : Y ⟶ Sp R) (r : R) (z : Y)
     (hz : r ∈ (h z).asIdeal) : ZeroAt z (cst h r) := by
@@ -126,29 +124,23 @@ theorem zeroAt_cst {R : Type} [CommRing R] {Y : Scheme.{0}} [IsIntegral Y] (h : 
   exact h1 hz
 
 /- English proof (translation)
-Introduce `σ x u`. Use `haveI := (σ.C x).semi`. Use `haveI : Smooth (σ.C x).G.hom := IsSemiAbelian.smooth`. Use `haveI : QuasiCompact (σ.C x).G.hom := IsSemiAbelian.quasiCompact`. Use `haveI : IsLocallyNoetherian (σ.C x).G.left := LocallyOfFiniteType.isLocallyNoetherian (σ.C x).G.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : CompactSpace (σ.C x).G.left := QuasiCompact.compactSpace_of_compactSpace (σ.C x).G.hom`. Use `haveI : IsNoetherian (σ.C x).G.left := {}`. Use `haveI : TopologicalSpace.NoetherianSpace (σ.C x).G.left := IsNoetherian.noetherianSpace`. Establish `hg : σ.θ x (σ.c₀ σ.f) = cst (σ.C x).G.hom (σ.ρ x σ.f)` using `RingHom.congr_fun (θ_comp_c₀ σ x) σ.f`. Use `set g := cst (σ.C x).G.hom (σ.ρ x σ.f)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `set v := σ.θ x u`. Set `P : Set (σ.C x).G.left` to `{z | ¬ RegAt z v}`. Establish `hP : IsClosed P`. Rewrite using `[← isOpen_compl_iff, isOpen_iff_forall_mem_open]`. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨U, hzU, a, ha⟩` from `RegAt.exists_fnOf (not_not.1 hz)`. Conclude with `⟨U, fun y hy => not_not.2 (ha ▸ regAt_fnOf hy _ a), U.isOpen, hzU⟩`. Take `⟨S, hS, hirr, hPS⟩` from `TopologicalSpace.NoetherianSpace.exists_finite_set_closeds_irreducible ⟨P, hP⟩`. Set `F : Set (σ.C x).G.left` to `⋃ t ∈ S, {w | IsGenericPoint w (t : Set _)}`. Establish `hF : F.Finite` using `hS.biUnion fun t _ => Set.Subsingleton.finite fun a ha b hb => ha.eq hb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPt : ∀ t ∈ S, (t : Set (σ.C x).G.left) ⊆ P` using `fun t ht => by`. Establish `: t ≤ sSup S` using `le_sSup ht`. Rewrite `this` using `[← hPS]`. Conclude with `this`. Set `C : TopologicalSpace.Closeds (σ.C x).G.left` to `⟨⋃ t ∈ S, (t : Set _), hS.isClosed_biUnion fun t _ => t.isClosed⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hPC : P ⊆ (C : Set _)`. Establish `: sSup S ≤ C` using `sSup_le fun t ht y hy => Set.mem_iUnion₂.2 ⟨t, ht, hy⟩`. Rewrite `this` using `[← hPS]`. Conclude with `this`. Establish `key : ∀ z, Vert (σ.C x).G.hom (σ.ρ x σ.f) z → z ∈ P → z ∈ F`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `z hz hzP`. Take `⟨t, ht, hzt⟩` from `Set.mem_iUnion₂.1 (hPC hzP)`. Establish `hw : IsGenericPoint (hirr t ht).genericPoint (t : Set _)`. Use `(hirr t ht).isGenericPoint_genericPoint_closure` as an intermediate fact. Rewrite `this` using `[t.isClosed.closure_eq]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hwP : (hirr t ht).genericPoint ∈ P` using `hPt t ht hw.mem`. Establish `hwη : (hirr t ht).genericPoint ≠ genericPoint _` using `fun h => hwP (h ▸ regAt_genericPoint v)`. Use `eq_of_specializes hz.1.le (hw.specializes hzt) hwη` as an intermediate fact. Conclude with `Set.mem_iUnion₂.2 ⟨t, ht, this ▸ hw⟩`. Establish `hpt : ∀ z, Vert (σ.C x).G.hom (σ.ρ x σ.f) z → ∃ N : ℕ, RegAt z (g ^ N * v)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `z hz`. Take `⟨a, ha, hag⟩` from `zeroAt_cst (σ.C x).G.hom (σ.ρ x σ.f) z hz.2`. Take `⟨N, c, hc⟩` from `exists_pow_mul_mem hz.1.le ha v`. Conclude with `⟨N, c, by rw [← hc, hag]⟩`. Set `N : (σ.C x).G.left → ℕ` to `fun z => if h : Vert (σ.C x).G.hom (σ.ρ x σ.f) z then Classical.choose (hpt z h) else 0`.
-
-Use `⟨hF.toFinset.sup N, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hgz : RegAt z g` using `(zeroAt_cst (σ.C x).G.hom (σ.ρ x σ.f) z hz.2).regAt`. Rewrite using `[map_mul, map_pow, hg]`. Distinguish the cases in `hzP : z ∈ P`. Establish `hle : N z ≤ hF.toFinset.sup N` using `Finset.le_sup (hF.mem_toFinset.2 (key z hz hzP))`.
-
-Establish `hN : RegAt z (g ^ N z * v)`. Simplify using `only [N, dif_pos hz]`. Conclude with `Classical.choose_spec (hpt z hz)`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, _root_.mul_assoc]`. Conclude with `(regAt_pow hgz _).mul hN`.
-
-Conclude with `(regAt_pow hgz _).mul (not_not.1 hzP)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem_codimOne_regular_chart : ∀ (σ : Setup) (x : Sp σ.R) (u : σ.A.left.functionField), ∃ m : ℕ, σ.c₀ σ.f ^ m * u ∈ σ.W x := by
   intro σ x u

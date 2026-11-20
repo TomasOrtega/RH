@@ -9,9 +9,9 @@ namespace PositivityTheory.RgUd.T.Nil.Orb.BReps
 variable {E W : Type} [Field E] [AddCommGroup W] [Module E W]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Consider the cases of `h`. Simplify using the standard rewrite rules. Introduce and unpack `⟨rfl, h⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Fin.ext h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_fin_eq_iff {ι : Type} {l : ι → ℕ} {b a : ι} {j : Fin (l b)} {i : Fin (l a)} :
     (⟨b, j⟩ : Σ a, Fin (l a)) = ⟨a, i⟩ ↔ b = a ∧ (j : ℕ) = i := by
@@ -23,19 +23,19 @@ theorem sigma_fin_eq_iff {ι : Type} {l : ι → ℕ} {b a : ι} {j : Fin (l b)}
     rw [Fin.ext h]
 
 /- English proof (translation)
-Establish `key : (B.coord ⟨a, i⟩).comp N = if h : 0 < (i : ℕ) then B.coord ⟨a, ⟨i - 1, by omega⟩⟩ else 0`. Apply `B.ext` to reduce the goal to its premises. Introduce and unpack `⟨b, j⟩`. Rewrite using `[LinearMap.comp_apply, hB]`. Distinguish the cases in `hi : 0 < (i : ℕ)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_pos hi]`. Distinguish the cases in `hj : (j : ℕ) + 1 < l b`. Rewrite using `[dif_pos hj, Module.Basis.coord_apply, Module.Basis.coord_apply, Module.Basis.repr_self_apply, Module.Basis.repr_self_apply]`. Establish `hiff : ((⟨b, ⟨j + 1, hj⟩⟩ : Σ a, Fin (l a)) = ⟨a, i⟩) ↔ ((⟨b, j⟩ : Σ a, Fin (l a)) = ⟨a, ⟨i - 1, by omega⟩⟩)`. Rewrite using `[sigma_fin_eq_iff, sigma_fin_eq_iff]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `constructor <;> rintro ⟨h1, h2⟩ <;> exact ⟨h1, by simp only at h2 ⊢; omega⟩`. Conclude with `if_congr hiff rfl rfl`. Rewrite using `[dif_neg hj, map_zero, Module.Basis.coord_apply, Module.Basis.repr_self_apply, if_neg]`. Introduce `h`. Rewrite `h` using `[sigma_fin_eq_iff]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨rfl, h2⟩` from `h`. Simplify using `only at h2`. Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg hi] split_ifs with hj`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.Basis.coord_apply, Module.Basis.repr_self_apply, if_neg, LinearMap.zero_apply]`. Introduce `h`. Rewrite `h` using `[sigma_fin_eq_iff]`. Take `⟨rfl, h2⟩` from `h`. Simplify using `only at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use `LinearMap.congr_fun key z` as an intermediate fact. Rewrite `this` using `[LinearMap.comp_apply, Module.Basis.coord_apply]`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem chain_repr_N {N : W →ₗ[E] W} {ι : Type} {l : ι → ℕ} {B : Module.Basis (Σ a, Fin (l a)) E W}
     (hB : IsChain N l B) (z : W) (a : ι) (i : Fin (l a)) :
@@ -78,9 +78,9 @@ theorem chain_repr_N {N : W →ₗ[E] W} {ι : Type} {l : ι → ℕ} {B : Modul
   split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `m generalizing z with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ, Module.End.mul_apply, ih]`. Distinguish the cases in `h1 : m + 1 ≤ (i : ℕ)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_pos (by omega), dif_pos h1, chain_repr_N hB, dif_pos (by simp; omega)]`. Use `congr 2`. Rewrite using `[dif_neg h1] split_ifs with h2`. Rewrite using `[chain_repr_N hB, dif_neg]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
 -/
@@ -102,9 +102,9 @@ theorem chain_repr_Npow {N : W →ₗ[E] W} {ι : Type} {l : ι → ℕ} {B : Mo
       · rfl
 
 /- English proof (translation)
-Establish `h` using `chain_repr_Npow hB m z a ⟨i + m, hi⟩`. Rewrite `h` using `[hz, map_zero, dif_pos (by simp)]`. Rewrite `h` using `[Finsupp.zero_apply]`. Rewrite using `[h]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem chain_repr_of_ker {N : W →ₗ[E] W} {ι : Type} {l : ι → ℕ} {B : Module.Basis (Σ a, Fin (l a)) E W}
     (hB : IsChain N l B) (m : ℕ) (z : W) (hz : (N ^ m) z = 0) (a : ι) (i : Fin (l a))
@@ -118,9 +118,9 @@ theorem chain_repr_of_ker {N : W →ₗ[E] W} {ι : Type} {l : ι → ℕ} {B : 
   simp
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp [hb]`. Consider the case `succ j ih`. Rewrite using `[pow_succ', Module.End.mul_apply, ih]`. Distinguish the cases in `hj : j < l b`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_pos hj, hB]`. Rewrite using `[dif_neg hj, map_zero, dif_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem chain_Npow_zero {N : W →ₗ[E] W} {ι : Type} {l : ι → ℕ} {B : Module.Basis (Σ a, Fin (l a)) E W}
     (hB : IsChain N l B) (b : ι) (hb : 0 < l b) (j : ℕ) :
@@ -134,13 +134,13 @@ theorem chain_Npow_zero {N : W →ₗ[E] W} {ι : Type} {l : ι → ℕ} {B : Mo
     · rw [dif_neg hj, map_zero, dif_neg (by omega)]
 
 /- English proof (translation)
-Establish `hc : Commute A N` using `hA`. Rewrite using `[hv, map_sum, map_sum, Finsupp.finsetSum_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Distinguish the cases in `hb : s b < l b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[dif_pos hb]`. Establish `hlb : 0 < l b` using `by omega`. Establish `h1 : B ⟨b, ⟨s b, hb⟩⟩ = (N ^ s b) (B ⟨b, ⟨0, hlb⟩⟩)`. Rewrite using `[chain_Npow_zero hB b hlb, dif_pos hb]`. Establish `hcomm : ∀ m : ℕ, ∀ x, A ((N ^ m) x) = (N ^ m) (A x)` using `fun m x => LinearMap.congr_fun (hc.pow_right m).eq x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, hcomm, chain_repr_Npow hB]`. Use `split_ifs with h2`. Use `chain_repr_of_ker hB (l b) _ ?_ a _ ?_` and prove the remaining obligations. Rewrite using `[← hcomm, chain_Npow_zero hB b hlb, dif_neg (lt_irrefl _), map_zero]`. Use `hC a b show (i : ℕ) - s b + l b < l a` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Rewrite using `[dif_neg hb, map_zero, map_zero, Finsupp.zero_apply]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem repr_centralizer_eq_zero (N : W →ₗ[E] W) {ι : Type} [Fintype ι] (l : ι → ℕ)
     (B : Module.Basis (Σ a, Fin (l a)) E W) (hB : IsChain N l B) (s : ι → ℕ) (_hs : ∀ a, s a ≤ l a)

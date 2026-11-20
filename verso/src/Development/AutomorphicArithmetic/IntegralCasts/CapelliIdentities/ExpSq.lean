@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `n N h`. Establish `hz : ∀ k : ℕ, k ∉ Finset.range 2 → ((k.factorial : ℂ)⁻¹) • N ^ k = 0`. Introduce `k hk`. Establish `hk2 : 2 ≤ k`. Rewrite `hk` using `[Finset.mem_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le hk2`. Rewrite using `[pow_add, pow_two, h, zero_mul, smul_zero]`. Rewrite using `[NormedSpace.exp_eq_tsum ℂ]`. Use `beta_reduce`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tsum_eq_sum hz]`. Simplify using `[Finset.sum_range_succ]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qf11.expSq :
     ∀ {n : ℕ} (N : Matrix (Fin n) (Fin n) ℂ),

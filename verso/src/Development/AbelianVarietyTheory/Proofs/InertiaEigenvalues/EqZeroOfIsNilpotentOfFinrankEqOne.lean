@@ -14,11 +14,11 @@ noncomputable section
 namespace GlobalTheory.PotCrysRankOne
 
 /- English proof (translation)
-Take `⟨v, hv0, hv⟩` from `finrank_eq_one_iff'.1 h1`. Take `⟨c, hc⟩` from `hv (f v)`. Take `⟨n, hn⟩` from `hf`. Establish `hp : ∀ m : ℕ, (f ^ m) v = c ^ m • v`. Introduce `m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [pow_succ', Module.End.mul_apply, ih, map_smul, ← hc, smul_smul, pow_succ]`. Establish `h0 : c ^ n • v = 0` using `by rw [← hp, hn]; rfl`. Establish `hc0 : c = 0` using `IsNilpotent.eq_zero ⟨n, (smul_eq_zero.mp h0).resolve_right hv0⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Take `⟨a, rfl⟩` from `hv x`. Rewrite using `[map_smul, ← hc, hc0, zero_smul, smul_zero]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eq_zero_of_isNilpotent_of_finrank_eq_one {k V : Type} [Field k] [AddCommGroup V] [Module k V]
     (h1 : Module.finrank k V = 1) {f : Module.End k V} (hf : IsNilpotent f) : f = 0 := by
@@ -39,13 +39,11 @@ theorem eq_zero_of_isNilpotent_of_finrank_eq_one {k V : Type} [Field k] [AddComm
 end GlobalTheory.PotCrysRankOne
 
 /- English proof (translation)
-Introduce `hB E Ω _ _ _ _ _ l _ P AI hT μ hμ A O _ _ _ Bw _ hd`. Take `⟨T⟩` from `hT`. Establish `hc : Continuous fun g : ↥(Dec (F` using `E) A) => ((((rk1 μ).comp (Dec (F := E) A).subtype) g : GL (Fin 1) (Om l)) : Matrix (Fin 1) (Fin 1) (Om l)) := by`. Establish `e : (fun g : ↥(Dec (F` using `E) A) => ((((rk1 μ).comp (Dec (F := E) A).subtype) g : GL (Fin 1) (Om l)) : Matrix (Fin 1) (Fin 1) (Om l))) = fun g : ↥(Dec (F := E) A) => Matrix.diagonal fun _ : Fin 1 => ((μ (g : G E Ω) : (Qbar l)ˣ) : Qbar l) := by`. Use function extensionality and compare the values at `g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Continuous.matrix_diagonal (continuous_pi fun _ => (Units.continuous_val.comp hμ).comp continuous_subtype_val)`. Take `⟨LL', r', hm, hp⟩` from `hB.isPstAt T Bw _ hc hd`. Use `haveI := hp.finite`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ι⟩` from `GlobalTheory.nonempty_padicAlgCl_ringEquiv_complex l`. Establish `h1 : Module.finrank ℂ (WDSpace P ι (Bw.repE LL' r')) = 1`. Rewrite using `[GlobalTheory.Pst.LetterDim.finrank_wdSpace l P ι _ LL' _ _ hp, Module.finrank_fin_fun]`. Establish `hN : wdN P ι (Bw.repE LL' r') = 0` using `GlobalTheory.PotCrysRankOne.eq_zero_of_isNilpotent_of_finrank_eq_one h1 (isNilpotent_wdN P ι _)`. Take `⟨K', hK, hcr⟩` from `(GlobalTheory.PstLaws.isPotCrys_iff P _ hp).2 ((GlobalTheory.PstLaws.wdN_eq_zero_iff P _ ι).1 hN)`.
-
-Conclude with `⟨LL', r', hm, K', hK, hcr⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PotCrysRankOne.isPotCrystalline_of_deRham_character : DeRhamPotSemistable → ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) → ∀ (μ : G E Ω →* (Qbar l)ˣ), Continuous μ → ∀ (A : ValuationSubring Ω) (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω (Dec (F := E) A) O), GlobalTheory.Pst.Induces Bw → IsdRAt P Bw ((rk1 μ).comp (Dec (F := E) A).subtype) → IsPotCrysAt P Bw ((rk1 μ).comp (Dec (F := E) A).subtype) := by
   intro hB E Ω _ _ _ _ _ l _ P AI hT μ hμ A O _ _ _ Bw _ hd

@@ -17,7 +17,7 @@ def PseudoCoefficientUpq : Prop :=
     ∃ f : Formalism.REAL.UJ ε → ℂ, IsBiFinite (Formalism.REAL.KG ε) f ∧ IsPseudoCoeff (ujMat ε) μ (ujRep h.2.2.1) f
 
 /- English proof (translation)
-The claim follows from `h.1 ∃ f : Formalism.REAL.UJ ε → ℂ, IsBiFinite (Formalism.REAL.KG ε) f ∧ IsPseudoCoeff (ujMat ε) μ (ujRep h.2.2.1) f := hP n ε X σ ⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1, h.2.2.2.2.1⟩ μ`.
+A detailed English derivation is pending.
 -/
 theorem PseudoCoefficientUpq.of_isDS (hP : PseudoCoefficientUpq) {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ}
     {X : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ X] {σ : Matrix (Fin n) (Fin n) ℂ → (X →L[ℂ] X)}
@@ -29,7 +29,7 @@ theorem PseudoCoefficientUpq.of_isDS (hP : PseudoCoefficientUpq) {n : ℕ} {ε :
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formalism.IndefR.Mult NumberField in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Orb.exists_isTestArchG M (fun ρ => have ⟨f, hf⟩ := hP.of_isDS (M.ds ρ) (Formalism.REAL.muG _) ⟨Formalism.REAL.muG _, inferInstance, f, hf.2⟩) μa`.
+A detailed English derivation is pending.
 -/
 theorem PseudoCoefficientUpq.exists_isTestArchG (hP : PseudoCoefficientUpq) {D : D7} {V : HSp D}
     {S : D.what₂.Tau → SPar} (M : DSModel V S) (μa : ∀ w, Measure (GArch D.sp.cm.sig V.gram w))
@@ -39,15 +39,13 @@ theorem PseudoCoefficientUpq.exists_isTestArchG (hP : PseudoCoefficientUpq) {D :
     ⟨Formalism.REAL.muG _, inferInstance, f, hf.2⟩) μa
 
 /- English proof (translation)
-Establish `hJ : Formalism.REAL.Jm (allPos n) = 1` using `by simp [Formalism.REAL.Jm, allPos]`. Establish `hK : Formalism.REAL.KG (allPos n) = ⊤`. Use `eq_top_iff.2 fun g _ => ⟨?_, by simp [hJ]⟩` and prove the remaining obligations. Use `g.2` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ * _ * _ = _ at this`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `this` using `[hJ, mul_one]`. Conclude with `Matrix.mem_unitaryGroup_iff'.2 this`. Establish `: CompactSpace (Formalism.REAL.UJ (allPos n))`. Establish `: CompactSpace (Formalism.REAL.KG (allPos n))` using `inferInstance`. Rewrite `this` using `[hK]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Homeomorph.Set.univ _).compactSpace`. Use `⟨⟨inferInstance, inferInstance, ⟨⟨rfl, fun _ _ _ _ => rfl⟩, fun _ _ _ => rfl, fun _ => continuousOn_const⟩, fun S _ _ => eq_bot_or_eq_top S, fun v w => memLp_const _⟩, fun _ => (μ.real Set.univ : ℂ)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.finiteDimensional_of_le (S₂ := ℂ ∙ fun _ => (μ.real Set.univ : ℂ)⁻¹) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, -, k', -, rfl⟩`. Conclude with `Submodule.mem_span_singleton_self _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use `isPseudoCoeff_char (ι := ujMat (allPos n)) (μ := μ) (χ := 1) (isEmbedding_ujMat _).continuous ⟨(isClosed_tsupport _).isCompact, fun _ => 1, contDiff_const, fun _ => by simp⟩` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `[ujRep, repVia, GlobalTheory.OpTrace.charRep]`. Use extensionality with `g`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pseudoCoefficientUpq_trivial (n : ℕ) (μ : Measure (Formalism.REAL.UJ (allPos n))) [μ.IsHaarMeasure] :
     ∃ h : GlobalTheory.Dec.IsSqIntIrr (allPos n) (fun _ => ContinuousLinearMap.id ℂ ℂ),

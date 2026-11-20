@@ -23,20 +23,20 @@ def monomialChar (l : Fin n → ℤ) : (Fin n → ℂˣ) →* ℂ where
     simp only [Pi.mul_apply, mul_zpow, Units.val_mul, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem monomialChar_apply (l : Fin n → ℤ) (w : Fin n → ℂˣ) :
     monomialChar l w = ∏ i, ((w i ^ l i : ℂˣ) : ℂ) := rfl
 
 @[simp]
 /- English proof (translation)
-Simplify using `[monomialChar_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem monomialChar_zero (w : Fin n → ℂˣ) : monomialChar 0 w = 1 := by
   simp [monomialChar_apply]
 
 /- English proof (translation)
-Simplify using `only [monomialChar_apply, Pi.add_apply, zpow_add, Units.val_mul, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem monomialChar_add (l l' : Fin n → ℤ) (w : Fin n → ℂˣ) :
     monomialChar (l + l') w = monomialChar l w * monomialChar l' w := by
@@ -53,7 +53,7 @@ def evalAt (w : Fin n → ℂˣ) : LaurentRing n →ₐ[ℂ] ℂ :=
   AddMonoidAlgebra.lift ℂ ℂ (Fin n → ℤ) (pointHom w)
 
 /- English proof (translation)
-Rewrite using `[evalAt, AddMonoidAlgebra.lift_single, smul_eq_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evalAt_single (w : Fin n → ℂˣ) (l : Fin n → ℤ) (c : ℂ) :
     evalAt w (single l c) = c * monomialChar l w := by
@@ -61,7 +61,7 @@ theorem evalAt_single (w : Fin n → ℂˣ) (l : Fin n → ℤ) (c : ℂ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[evalAt, AddMonoidAlgebra.lift_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evalAt_apply (w : Fin n → ℂˣ) (p : LaurentRing n) :
     evalAt w p = p.coeff.sum fun l c => c * monomialChar l w := by
@@ -69,9 +69,9 @@ theorem evalAt_apply (w : Fin n → ℂˣ) (p : LaurentRing n) :
   rfl
 
 /- English proof (translation)
-Introduce `l l' h`. Use function extensionality and compare the values at `i`. Establish `h2` using `DFunLike.congr_fun h (Pi.mulSingle i (Units.mk0 (2 : ℂ) two_ne_zero))`. Simplify using `only [monomialChar_apply] at h2`. Rewrite `h2` using `[Finset.prod_eq_single i (fun j _ hj => by simp [Pi.mulSingle_eq_of_ne hj]) (by simp), Finset.prod_eq_single i (fun j _ hj => by simp [Pi.mulSingle_eq_of_ne hj]) (by simp)]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Pi.mulSingle_eq_same, Units.val_zpow_eq_zpow_val, Units.val_mk0] at h2`. Establish `hn : ‖(2 : ℂ) ^ l i‖ = ‖(2 : ℂ) ^ l' i‖` using `by rw [h2]`. Rewrite `hn` using `[norm_zpow, norm_zpow, Complex.norm_two]`. Conclude with `zpow_right_injective₀ (by norm_num : (0 : ℝ) < 2) (by norm_num) hn`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monomialChar_injective : Function.Injective (monomialChar : (Fin n → ℤ) → _) := by
   intro l l' h
@@ -87,9 +87,9 @@ theorem monomialChar_injective : Function.Injective (monomialChar : (Fin n → �
   exact zpow_right_injective₀ (by norm_num : (0 : ℝ) < 2) (by norm_num) hn
 
 /- English proof (translation)
-Establish `hli : LinearIndependent ℂ (fun l : Fin n → ℤ => ((monomialChar l : (Fin n → ℂˣ) →* ℂ) : (Fin n → ℂˣ) → ℂ))` using `(linearIndependent_monoidHom (Fin n → ℂˣ) ℂ).comp _ monomialChar_injective`. Establish `hz : Finsupp.linearCombination ℂ (fun l : Fin n → ℤ => ((monomialChar l : (Fin n → ℂˣ) →* ℂ) : (Fin n → ℂˣ) → ℂ)) p.coeff = Finsupp.linearCombination ℂ (fun l : Fin n → ℤ => ((monomialChar l : (Fin n → ℂˣ) →* ℂ) : (Fin n → ℂˣ) → ℂ)) 0`. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `w`. Rewrite using `[Finsupp.linearCombination_apply, Pi.zero_apply, ← h w, evalAt_apply, Finsupp.sum, Finsupp.sum, Finset.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `AddMonoidAlgebra.coeff_eq_zero.1 (hli hz)`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_evalAt {p : LaurentRing n} (h : ∀ w, evalAt w p = 0) : p = 0 := by
   have hli : LinearIndependent ℂ (fun l : Fin n → ℤ => ((monomialChar l : (Fin n → ℂˣ) →* ℂ) :
@@ -107,19 +107,19 @@ theorem eq_zero_of_forall_evalAt {p : LaurentRing n} (h : ∀ w, evalAt w p = 0)
   exact AddMonoidAlgebra.coeff_eq_zero.1 (hli hz)
 
 /- English proof (translation)
-The claim follows from `sub_eq_zero.1 (eq_zero_of_forall_evalAt fun w => by rw [map_sub, h, sub_self])`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_forall_evalAt {p q : LaurentRing n} (h : ∀ w, evalAt w p = evalAt w q) : p = q :=
   sub_eq_zero.1 (eq_zero_of_forall_evalAt fun w => by rw [map_sub, h, sub_self])
 
 /- English proof (translation)
-Use `set M : Multiplicative (Fin n → ℤ) →* ℂ := (AddMonoidAlgebra.lift ℂ ℂ (Fin n → ℤ)).symm ψ`. Set `U : Multiplicative (Fin n → ℤ) →* ℂˣ` to `M.toHomUnits`. Use `set w : Fin n → ℂˣ := fun i => U (Multiplicative.ofAdd (Pi.single i 1))`. Use `⟨w, ?_⟩` and prove the remaining obligations. Establish `hl : ∀ l : Multiplicative (Fin n → ℤ), l = ∏ i, (Multiplicative.ofAdd (Pi.single i 1 : Fin n → ℤ)) ^ (Multiplicative.toAdd l i)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `l`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[toAdd_prod]`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hM : M = pointHom w`. Use `MonoidHom.ext fun l => ?_` and prove the remaining obligations. Establish `h1 : M l = (U l : ℂ)` using `rfl`. Rewrite using `[h1]`. Use `conv_lhs => rw [hl l]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[map_prod, Units.coe_prod]`. Simplify using `only [map_zpow]`. Both sides reduce to the same expression. Rewrite using `[evalAt, ← hM, Equiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_evalAt (ψ : LaurentRing n →ₐ[ℂ] ℂ) : ∃ w : Fin n → ℂˣ, ψ = evalAt w := by
   set M : Multiplicative (Fin n → ℤ) →* ℂ := (AddMonoidAlgebra.lift ℂ ℂ (Fin n → ℤ)).symm ψ
@@ -147,17 +147,15 @@ instance : Algebra.FiniteType ℂ (LaurentRing n) := by
   infer_instance
 
 /- English proof (translation)
-Set `e : A ≃ₐ[ℂ] Φ.range` to `AlgEquiv.ofInjective Φ hΦ`. Set `P : Ideal Φ.range` to `I.comap (e.symm : Φ.range →+* A)`. Use `haveI : P.IsMaximal := Ideal.comap_isMaximal_of_surjective _ e.symm.surjective`. Establish `hP : RingHom.ker (algebraMap Φ.range (LaurentRing n)) ≤ P`. Introduce `x hx`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: x = 0` using `Subtype.ext hx`. Rewrite using `[this]`. Conclude with `P.zero_mem`. Take `⟨Q, hQ, hQP⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral P hP`. Use `letI := Ideal.Quotient.field Q`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : Algebra.FiniteType ℂ (LaurentRing n ⧸ Q) := Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℂ Q) (Ideal.Quotient.mkₐ_surjective ℂ Q)`. Use `haveI := finite_of_finite_type_of_isJacobsonRing ℂ (LaurentRing n ⧸ Q)`. Establish `hbij : Function.Bijective (Algebra.ofId ℂ (LaurentRing n ⧸ Q))` using `IsAlgClosed.algebraMap_bijective_of_isIntegral (k := ℂ) (K := LaurentRing n ⧸ Q)`. Set `e' : ℂ ≃ₐ[ℂ] LaurentRing n ⧸ Q` to `AlgEquiv.ofBijective (Algebra.ofId ℂ (LaurentRing n ⧸ Q)) hbij`. Set `ψ : LaurentRing n →ₐ[ℂ] ℂ` to `e'.symm.toAlgHom.comp (Ideal.Quotient.mkₐ ℂ Q)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hker : ∀ p, ψ p = 0 ↔ p ∈ Q`. Introduce `p`. Simplify using `only [ψ, AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgEquiv.coe_algHom, Ideal.Quotient.mkₐ_eq_mk]`. Rewrite using `[AlgEquiv.symm_apply_eq, map_zero, Ideal.Quotient.eq_zero_iff_mem]`. Take `⟨w, hw⟩` from `exists_eq_evalAt ψ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨w, Ideal.ext fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker, AlgHom.comp_apply, ← hw, hker]`. Establish `h1 : Φ a = algebraMap Φ.range (LaurentRing n) (e a)` using `rfl`. Rewrite using `[h1, ← Ideal.mem_comap, hQP]`. Express the relevant statement in the definitionally equal form `e.symm (e a) ∈ I ↔ a ∈ I`.
-
-Rewrite using `[AlgEquiv.symm_apply_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ker_evalAt_comp_eq {A : Type*} [CommRing A] [Algebra ℂ A]
     (Φ : A →ₐ[ℂ] LaurentRing n) (hΦ : Function.Injective Φ)
@@ -195,19 +193,19 @@ theorem exists_ker_evalAt_comp_eq {A : Type*} [CommRing A] [Algebra ℂ A]
   rw [AlgEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Set `S : Subalgebra ℂ (LaurentRing n)` to `(integralClosure A (LaurentRing n)).restrictScalars ℂ`. Establish `hmono : ∀ l : Fin n → ℤ, monomial l ∈ S`. Introduce `l`. Establish `hl : monomial l = ∏ i, monomial (Pi.single i (l i) : Fin n → ℤ)`. Rewrite using `[AddMonoidAlgebra.prod_single]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.prod_const_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hl]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Subalgebra.prod_mem _ fun i _ => ?_` and prove the remaining obligations. Break down `le_or_gt 0 (l i) with h | h` into its components or cases. Take `⟨k, hk⟩` from `Int.eq_ofNat_of_zero_le h`. Establish `: monomial (Pi.single i (l i) : Fin n → ℤ) = monomial (Pi.single i 1) ^ k`. Rewrite using `[AddMonoidAlgebra.single_pow, one_pow, hk, ← Pi.single_smul]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `Subalgebra.pow_mem _ (h₁ i) k`. Take `⟨k, hk⟩` from `Int.eq_ofNat_of_zero_le (neg_nonneg.2 h.le)`. Establish `: monomial (Pi.single i (l i) : Fin n → ℤ) = monomial (Pi.single i (-1)) ^ k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddMonoidAlgebra.single_pow, one_pow, ← Pi.single_smul]`. Use `congr 2`. Simplify using `only [nsmul_eq_mul, mul_neg, mul_one]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Subalgebra.pow_mem _ (h₂ i) k`. Use `⟨fun p => ?_⟩` and prove the remaining obligations. Establish `: p ∈ S`. Rewrite using `[← AddMonoidAlgebra.sum_coeff_single p]`. Use `Subalgebra.sum_mem _ fun l _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (single l (p.coeff l) : LaurentRing n) = p.coeff l • monomial l`. Rewrite using `[AddMonoidAlgebra.smul_single', mul_one]`. Rewrite using `[this]`. Conclude with `Subalgebra.smul_mem _ (hmono l) _`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_forall (A : Subalgebra ℂ (LaurentRing n))
     (h₁ : ∀ i, IsIntegral A (monomial (Pi.single i 1 : Fin n → ℤ)))

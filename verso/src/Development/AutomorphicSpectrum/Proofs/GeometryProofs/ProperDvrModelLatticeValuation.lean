@@ -20,7 +20,7 @@ def tr {A B : Subring Ω} (h : A = B) (N : Submodule B Ω) : Submodule A Ω wher
   smul_mem' := fun c _ hx => N.smul_mem ⟨c.1, h ▸ c.2⟩ hx
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `: tr rfl N = N` using `by ext; rfl`. Rewrite using `[this]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_eq_span_iff {A B : Subring Ω} (h : A = B) (N : Submodule B Ω) (S : Set Ω) :
     tr h N = Submodule.span A S ↔ N = Submodule.span B S := by
@@ -29,7 +29,7 @@ theorem tr_eq_span_iff {A B : Subring Ω} (h : A = B) (N : Submodule B Ω) (S : 
   rw [this]
 
 /- English proof (translation)
-Establish `e` using `Scheme.Hom.stalkSpecializes_stalkMap g _ _ q.2`. Establish `e2` using `congrArg (fun t => (t ≫ Scheme.stalkClosedPointTo ξ').hom s) e`. Establish `e3` using `Scheme.stalkClosedPointTo_comp ξ' g`. Establish `e4` using `congrArg (fun t => (X.presheaf.stalkSpecializes h ≫ t).hom s) e3`. Conclude with `e2.symm.trans e4.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem genMap_stalkMap₀ (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (g : X' ⟶ X) (q : Cpt ξ')
     (h : genPt (ξ' ≫ g) ⤳ g q.1) (s : X.presheaf.stalk (g q.1)) :
@@ -54,14 +54,14 @@ variable (hr : ∀ p, regAt ξ' p = regAt (ξ' ≫ g) (push ξ' g p)) {L : Lat (
 include hr
 
 /- English proof (translation)
-Unfold `unitAt`. Rewrite using `[hr p]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_iff (p : Cpt ξ') (a : Ω) : unitAt ξ' p a ↔ unitAt (ξ' ≫ g) (push ξ' g p) a := by
   unfold unitAt
   rw [hr p]
 
 /- English proof (translation)
-The claim follows from `tr_eq_span_iff _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem pull_span_iff (p : Cpt ξ') (S : Set Ω) :
     pullL hr L p = Submodule.span (regAt ξ' p) S ↔
@@ -69,7 +69,7 @@ theorem pull_span_iff (p : Cpt ξ') (S : Set Ω) :
   tr_eq_span_iff _ _ _
 
 /- English proof (translation)
-Introduce `p _`. Take `⟨U, hU, b, hb, h⟩` from `hL (push ξ' g p) trivial`. Use `⟨g ⁻¹ᵁ U, hU, b, hb, fun q _ hq => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `h (push ξ' g q) trivial hq`. Conclude with `⟨h1, (pull_span_iff hr q _).2 h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isVB_pull (hL : L.IsVB 1 ⊤) : (pullL hr L).IsVB 1 ⊤ := by
   intro p _
@@ -80,27 +80,27 @@ theorem isVB_pull (hL : L.IsVB 1 ⊤) : (pullL hr L).IsVB 1 ⊤ := by
 
 omit hr in
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `ha`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isIntegral_congr {A B : Subring Ω} (h : A = B) {a : Ω} (ha : IsIntegral A a) : IsIntegral B a := by
   subst h
   exact ha
 
 /- English proof (translation)
-Introduce `p a ha` and use `by rw [hr p] exact hN _ a (isIntegral_congr (hr p) ha)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem normal_pull (hN : NormalCpt (ξ' ≫ g)) : NormalCpt ξ' := fun p a ha => by
   rw [hr p]
   exact hN _ a (isIntegral_congr (hr p) ha)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, (pull_span_iff hr p _).2 h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isGenAt_pull {p : Cpt ξ'} {t : Ω} (h : L.IsGenAt (push ξ' g p) t) : (pullL hr L).IsGenAt p t :=
   ⟨h.1, (pull_span_iff hr p _).2 h.2⟩
 
 /- English proof (translation)
-Take `⟨e, c, he, h1, h2, h3⟩` from `h`. Conclude with `⟨e, c, he, (pull_span_iff hr p _).1 h1, h2, (unit_iff hr p _).1 h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem order_back {σ ϖ : Ω} {M : ℕ} {a : ℤ} {p : Cpt ξ'} (h : OrderAt (pullL hr L) σ ϖ M a p) :
     OrderAt L σ ϖ M a (push ξ' g p) := by
@@ -108,9 +108,9 @@ theorem order_back {σ ϖ : Ω} {M : ℕ} {a : ℤ} {p : Cpt ξ'} (h : OrderAt (
   exact ⟨e, c, he, (pull_span_iff hr p _).1 h1, h2, (unit_iff hr p _).1 h3⟩
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hT`. Establish `key : ∀ p, ¬ unitAt ξ' p ϖ → ¬ unitAt (ξ' ≫ g) (push ξ' g p) l` using `fun p hp hl => hp (ZUnit.of_mul (hϖ p) (hu p) ((unit_iff hr p _).2 (e ▸ hl)))`. Use `⟨fun p => t (push ξ' g p), fun p hp => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, H⟩` from `ht _ (key p hp)`. Use `⟨g ⁻¹ᵁ U, hU, fun q hq hq' => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h0, h1, y, hy, hty⟩` from `H (push ξ' g q) hq (key q hq')`. Use `⟨h0, (pull_span_iff hr q _).2 h1, u • y, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(L (push ξ' g q)).smul_mem ⟨u, hr q ▸ hu q⟩ hy`. Express the relevant statement in the definitionally equal form `t (push ξ' g p) - t (push ξ' g q) = ϖ • u • y`. Rewrite using `[hty, e, mul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trivMod_pull {ϖ l u : Ω} (e : l = ϖ * u) (hϖ : ∀ p, ϖ ∈ regAt ξ' p) (hu : ∀ p, u ∈ regAt ξ' p)
     (hT : TrivMod L l) : TrivMod (pullL hr L) ϖ := by
@@ -129,11 +129,11 @@ theorem trivMod_pull {ϖ l u : Ω} (e : l = ϖ * u) (hϖ : ∀ p, ϖ ∈ regAt �
 end
 
 /- English proof (translation)
-Take `⟨h', s, hs, h0⟩` from `hv`. Take `⟨t, ht⟩ : ∃ t : X'.presheaf.stalk (centre z), genMap ξ' ⟨centre z, h⟩ t = u` from `hu`. Take `⟨w, hw⟩` from `hl`. Establish `e1 : (g.stalkMap (centre z)).hom w = s * t`. Apply `hc.inj ⟨centre z, h⟩` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[genMap_stalkMap₀ ξ' g ⟨centre z, h⟩ (push ξ' g ⟨centre z, h⟩).2 w, map_mul, ht]`. Use `hw.trans ?_` and prove the remaining obligations. Rewrite using `[e, ← hs]`. Establish `e2 : (Scheme.stalkClosedPointTo (z ≫ g)).hom w = (Scheme.stalkClosedPointTo z).hom ((g.stalkMap (centre z)).hom w)` using `congrArg (fun t => t.hom w) (Scheme.stalkClosedPointTo_comp z g)`. Use `⟨(push ξ' g ⟨centre z, h⟩).2, w, hw, e2.trans ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1]`. Conclude with `(map_mul (Scheme.stalkClosedPointTo z).hom s t).trans ((congrArg (fun x : R => x * (Scheme.stalkClosedPointTo z).hom t) h0).trans (zero_mul _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_zero_down {R : Type} [CommRing R] [IsLocalRing R] (hc : IsCptGen ξ')
     (z : Spec (CommRingCat.of R) ⟶ X') {ϖ u l : Ω} (e : l = ϖ * u) (h : genPt ξ' ⤳ centre z)
@@ -156,7 +156,7 @@ theorem valAt_zero_down {R : Type} [CommRing R] [IsLocalRing R] (hc : IsCptGen �
     ((congrArg (fun x : R => x * (Scheme.stalkClosedPointTo z).hom t) h0).trans (zero_mul _))
 
 /- English proof (translation)
-Take `⟨h', s, hs, rfl⟩` from `hv`. Conclude with `⟨h, (g.stalkMap (centre z)).hom s, (genMap_stalkMap₀ ξ' g ⟨centre z, h⟩ h' s).trans hs, (congrArg (fun t => t.hom s) (Scheme.stalkClosedPointTo_comp z g)).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem valAt_up {R : Type} [CommRing R] [IsLocalRing R] (z : Spec (CommRingCat.of R) ⟶ X')
     (h : genPt ξ' ⤳ centre z) {a : Ω} {r : R} (hv : ValAt (ξ' ≫ g) (z ≫ g) a r) : ValAt ξ' z a r := by
@@ -180,7 +180,7 @@ def curvePush {ϖ l : Ω} (Γ : FibreCurve ξ' ϖ) (hz : ValAt (ξ' ≫ g) (Γ.�
   z_gen := fun i => by rw [← Category.assoc, Γ.z_gen]
 
 /- English proof (translation)
-Take `⟨e, f, r, he, hf, hv, hfin, hd⟩` from `h`. Use `⟨e, f, r, isGenAt_pull hr he, fun i => ⟨Γ.z_spec i, ?_⟩, fun i => ⟨(hv i).1, ?_⟩, hfin, hd⟩` and prove the remaining obligations. Take `⟨_, h2⟩` from `hf i`. Conclude with `isGenAt_pull hr h2`. Conclude with `valAt_up _ Γ.η_spec (hv i).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hasDeg_back (hr : ∀ p, regAt ξ' p = regAt (ξ' ≫ g) (push ξ' g p)) {L : Lat (ξ' ≫ g) Ω} {ϖ l : Ω}
     (Γ : FibreCurve ξ' ϖ) (hz : ValAt (ξ' ≫ g) (Γ.η ≫ g) l 0) (h : (curvePush Γ hz).HasDeg L 0) :
@@ -192,7 +192,7 @@ theorem hasDeg_back (hr : ∀ p, regAt ξ' p = regAt (ξ' ≫ g) (push ξ' g p))
   · exact valAt_up _ Γ.η_spec (hv i).2
 
 /- English proof (translation)
-Introduce `Γ` and use `by let p : Cpt ξ' := ⟨centre Γ.η, Γ.η_spec⟩ have hl : l ∈ regAt (ξ' ≫ g) (push ξ' g p) := by have h1 := mul_mem (hϖ p) (hu p) rwa [← e, hr p] at h1 have hz := valAt_zero_down (g := g) hc Γ.η e Γ.η_spec Γ.η_zero (hu p) hl exact hasDeg_back hr Γ hz (hT (curvePush Γ hz))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem numTrivMod_pull (hr : ∀ p, regAt ξ' p = regAt (ξ' ≫ g) (push ξ' g p)) (hc : IsCptGen ξ')
     {L : Lat (ξ' ≫ g) Ω} {ϖ l u : Ω} (e : l = ϖ * u) (hϖ : ∀ p, ϖ ∈ regAt ξ' p) (hu : ∀ p, u ∈ regAt ξ' p)
@@ -205,15 +205,15 @@ theorem numTrivMod_pull (hr : ∀ p, regAt ξ' p = regAt (ξ' ≫ g) (push ξ' g
   exact hasDeg_back hr Γ hz (hT (curvePush Γ hz))
 
 /- English proof (translation)
-Introduce `X X' Ω _ _ ξ ξ' g O _ _ _ _ s _ ϖ L σ ℓ u hZ hirr hinj hs hcomp hc hc' hall hN hcc hreg hVB hgen hℓ hT`. Substitute `hcomp` using the available equality. Establish `hr : ∀ p, regAt ξ' p = regAt (ξ' ≫ g) (push ξ' g p)` using `fun p => SetLike.ext (hreg p (push ξ' g p) rfl)`. Establish `hconst : ∀ (o : O) (p : Cpt ξ'), algebraMap O Ω o ∈ regAt ξ' p` using `fun o p => (ConstReg.regular_const X' Ω ξ' O s hs p o).1`. Establish `hconn` using `GlobalTheory.T.isConnected_zeroSet_uniformizer X' Ω ξ' O s ϖ hirr hinj hs hc' hcc`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgen' : ∀ p ∈ genFibre O ξ', (pullL hr L).IsGenAt p σ` using `fun p hp => by`. Use `isGenAt_pull hr (hgen _ fun o ho => ?_)` and prove the remaining obligations. Establish `e : algebraMap ℤ Ω o = algebraMap O Ω (o : O)` using `by simp`. Rewrite using `[e, ← unit_iff hr]`. Use `hp _ fun h0 => ho ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (algebraMap O Ω) h0` as an intermediate fact. Simplify using `using this`. Establish `e : (ℓ : Ω) = algebraMap O Ω ϖ * algebraMap O Ω u` using `by rw [hℓ, map_mul]`. Establish `main : ∃ (M : ℕ) (a : ℤ), 0 < M ∧ ∀ p : Cpt ξ', OrderAt (pullL hr L) σ (algebraMap O Ω ϖ) M a p`. Break down `hT with hT | hT` into its components or cases.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hZ X' Ω ξ' O s ϖ hirr hinj hs hc' (normal_pull hr hN) hconn (pullL hr L) σ (isVB_pull hr hVB) (trivMod_pull hr e (hconst ϖ) (hconst u) hT) hgen'`. Conclude with `GlobalTheory.T.line_degree_special_fibre X' Ω ξ' O s ϖ hirr hinj hs hc' (normal_pull hr hN) hconn (pullL hr L) σ (isVB_pull hr hVB) (numTrivMod_pull hr hc' e (hconst ϖ) (hconst u) hT) hgen'`. Take `⟨M, a, hM, H⟩` from `main`. Use `⟨M, a, hM, ?_⟩` and prove the remaining obligations. Introduce and unpack `p ⟨p', hp⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: p = push ξ' g p'` using `Subtype.ext hp.symm`. Rewrite using `[this]`. Conclude with `order_back hr (H p')`.
+A detailed English derivation is pending.
 -/
 theorem order_at_place : ∀ (X X' : Scheme.{0}) (Ω : Type) [Field Ω] [CharZero Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (g : X' ⟶ X) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra O Ω] (s : X' ⟶ Spec (CommRingCat.of O)) [IsProper s] (ϖ : O) (L : Lat ξ Ω) (σ : Ω) (ℓ : ℕ) (u : O), PropZ → Irreducible ϖ → Function.Injective (algebraMap O Ω) → ξ' ≫ s = Spec.map (CommRingCat.ofHom (algebraMap O Ω)) → ξ' ≫ g = ξ → IsCptGen ξ → IsCptGen ξ' → (∀ q' : X', genPt ξ' ⤳ q') → NormalCpt ξ → ConstClosed O Ω → (∀ (p' : Cpt ξ') (p : Cpt ξ), p.1 = g p'.1 → ∀ a : Ω, a ∈ regAt ξ' p' ↔ a ∈ regAt ξ p) → L.IsVB 1 ⊤ → (∀ p ∈ genFibre ℤ ξ, L.IsGenAt p σ) → (ℓ : Ω) = algebraMap O Ω (ϖ * u) → (TrivMod L (ℓ : Ω) ∨ NumTrivMod L (ℓ : Ω)) → ∃ (M : ℕ) (a : ℤ), 0 < M ∧ ∀ p : Cpt ξ, (∃ p' : Cpt ξ', g p'.1 = p.1) → OrderAt L σ (algebraMap O Ω ϖ) M a p := by
   intro X X' Ω _ _ ξ ξ' g O _ _ _ _ s _ ϖ L σ ℓ u hZ hirr hinj hs hcomp hc hc' hall hN hcc hreg hVB hgen hℓ hT

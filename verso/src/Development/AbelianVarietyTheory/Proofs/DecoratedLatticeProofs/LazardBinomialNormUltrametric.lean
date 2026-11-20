@@ -4,13 +4,11 @@ open PowerSeries GlobalTheory.Honda
 namespace GlobalTheory.Honda.Lazard
 
 /- English proof (translation)
-Establish `hcop : IsCoprime (l : ℤ) (m : ℤ)` using `Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd hp).2 hm)`. Take `⟨u, v, huv⟩` from `hcop`. Establish `h1 : (u : K) * l + v * m = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → K) huv`. Establish `hu : ‖(u : K)‖ ≤ 1` using `IsUltrametricDist.norm_intCast_le_one K u`. Establish `hv : ‖(v : K)‖ ≤ 1` using `IsUltrametricDist.norm_intCast_le_one K v`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmle : ‖(m : K)‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one K m`. Use `le_antisymm hmle ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `h2 : ‖(1 : K)‖ ≤ max ‖(u : K) * l‖ ‖(v : K) * m‖`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Conclude with `IsUltrametricDist.norm_add_le_max _ _`. Rewrite `h2` using `[norm_one, norm_mul, norm_mul]`. Establish `ha : ‖(u : K)‖ * ‖(l : K)‖ < 1` using `lt_of_le_of_lt (mul_le_of_le_one_left (norm_nonneg _) hu) hl`. Establish `hb : ‖(v : K)‖ * ‖(m : K)‖ < 1` using `lt_of_le_of_lt (mul_le_of_le_one_left (norm_nonneg _) hv) hlt`.
-
-Conclude with `absurd h2 (not_le.2 (max_lt ha hb))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_natCast_eq_one_of_not_dvd {K : Type} [NormedField K] [IsUltrametricDist K] {l m : ℕ}
     (hp : l.Prime) (hl : ‖(l : K)‖ < 1) (hm : ¬ l ∣ m) : ‖(m : K)‖ = 1 := by
@@ -34,11 +32,11 @@ theorem norm_natCast_eq_one_of_not_dvd {K : Type} [NormedField K] [IsUltrametric
   exact absurd h2 (not_le.2 (max_lt ha hb))
 
 /- English proof (translation)
-Use `haveI := Fact.mk hp`. Introduce `v`. Proceed by induction on `v with`. Consider the case `zero => simpa using hm`. Consider the case `succ v ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h` using `@Choose.choose_modEq_choose_mod_mul_choose_div_nat (l ^ (v + 1) * m) (l ^ (v + 1)) l _`. Establish `e1 : l ^ (v + 1) * m = l * (l ^ v * m)` using `by ring`. Establish `e2 : l ^ (v + 1) = l * l ^ v` using `by ring`. Rewrite `h` using `[e1, e2, Nat.mul_mod_right, Nat.mul_mod_right, Nat.mul_div_cancel_left _ hp.pos, Nat.mul_div_cancel_left _ hp.pos, Nat.choose_zero_right, one_mul]`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hd`. Conclude with `ih ((Nat.modEq_zero_iff_dvd.1 (h.symm.trans (Nat.modEq_zero_iff_dvd.2 hd))))`.
+A detailed English derivation is pending.
 -/
 theorem not_dvd_choose_pow_mul {l : ℕ} (hp : l.Prime) (m : ℕ) (hm : ¬ l ∣ m) :
     ∀ v : ℕ, ¬ l ∣ (l ^ v * m).choose (l ^ v) := by
@@ -57,13 +55,13 @@ theorem not_dvd_choose_pow_mul {l : ℕ} (hp : l.Prime) (m : ℕ) (hm : ¬ l ∣
     exact ih ((Nat.modEq_zero_iff_dvd.1 (h.symm.trans (Nat.modEq_zero_iff_dvd.2 hd))))
 
 /- English proof (translation)
-Establish `hle : l ^ (i - 1) ≤ l ^ i` using `Nat.pow_le_pow_right hp.pos (Nat.sub_le _ _)`. Establish `h` using `hp.emultiplicity_choose_prime_pow_add_emultiplicity hle (pow_ne_zero _ hp.ne_zero)`. Rewrite `h` using `[emultiplicity_pow_self_of_prime hp.prime]`. Establish `h1 : emultiplicity l ((l ^ i).choose (l ^ (i - 1))) = ((1 : ℕ) : ℕ∞)`. Establish `: ((i : ℕ) : ℕ∞) = ((1 : ℕ) : ℕ∞) + ((i - 1 : ℕ) : ℕ∞)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Nat.cast_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[this]`. Conclude with `WithTop.add_right_cancel (ENat.coe_ne_top _) h`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[emultiplicity_eq_coe]`. Take `⟨⟨m, hm⟩, hn⟩` from `h1`. Use `⟨m, ?_, by simpa using hm⟩` and prove the remaining obligations. Introduce and unpack `⟨c, rfl⟩`. Apply `hn` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 
-Conclude with `⟨c, by rw [hm]; ring⟩`.
+A detailed English derivation is pending.
 -/
 theorem choose_prime_pow_pred {l : ℕ} (hp : l.Prime) (i : ℕ) (hi : 0 < i) :
     ∃ m : ℕ, ¬ l ∣ m ∧ (l ^ i).choose (l ^ (i - 1)) = l * m := by
@@ -83,13 +81,13 @@ theorem choose_prime_pow_pred {l : ℕ} (hp : l.Prime) (i : ℕ) (hi : 0 < i) :
   exact ⟨c, by rw [hm]; ring⟩
 
 /- English proof (translation)
-Introduce `K _ _ _ l hp hl a n hn h`. Take `⟨e, m, hm, rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (by omega : n ≠ 0) l hp.one_lt.ne'`. Establish `hlpos : 0 < ‖(l : K)‖` using `norm_pos_iff.2 (Nat.cast_ne_zero.2 hp.ne_zero)`. Distinguish the cases in `hm1 : m = 1`. Substitute `hm1` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [mul_one] at h hn ⊢`. Establish `he : 0 < e`. Break down `Nat.eq_zero_or_pos e with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Simplify using `at hn`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `h0`. Use `Or.inr ⟨?_, e, he, rfl⟩` and prove the remaining obligations. Take `⟨c, hc, hch⟩` from `choose_prime_pow_pred hp e he`. Establish `hk` using `h (l ^ (e - 1)) (pow_pos hp.pos _) (Nat.pow_lt_pow_right hp.one_lt (by omega))`. Rewrite `hk` using `[hch, Nat.cast_mul, norm_mul, norm_mul, norm_natCast_eq_one_of_not_dvd hp hl hc, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `le_of_mul_le_mul_right (by rwa [one_mul]) hlpos`. Use `left`. Establish `hm0 : m ≠ 0` using `by rintro rfl; simp at hn`. Establish `hk` using `h (l ^ e) (pow_pos hp.pos e) (lt_mul_of_one_lt_right (pow_pos hp.pos e) (by omega))`. Rewrite `hk` using `[norm_mul, norm_natCast_eq_one_of_not_dvd hp hl (not_dvd_choose_pow_mul hp m hm e), mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lazard_binomial : ∀ (K : Type) [NormedField K] [IsUltrametricDist K] [CharZero K] (l : ℕ), l.Prime →
     ‖(l : K)‖ < 1 → ∀ (a : K) (n : ℕ), 2 ≤ n →

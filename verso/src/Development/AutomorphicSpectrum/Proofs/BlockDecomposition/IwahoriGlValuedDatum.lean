@@ -23,9 +23,9 @@ def btSub {α : Type} [LinearOrder α] (b : Fin n → α) : Subgroup (GL (Fin n)
     simpa [Matrix.coe_units_inv] using this
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne (hb.ne hk) with h | h` into its components or cases. Rewrite using `[hA h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hB h]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mul_diag {α : Type} [LinearOrder α] {b : Fin n → α} (hb : Function.Injective b)
     {A B : Matrix (Fin n) (Fin n) L} (hA : A.BlockTriangular b) (hB : B.BlockTriangular b) (i : Fin n) :
@@ -53,9 +53,9 @@ def triSub {α : Type} [LinearOrder α] (b : Fin n → α) (hb : Function.Inject
     simpa using this.symm
 
 /- English proof (translation)
-Establish `h1 : t * h ∈ btSub b` using `(btSub b).mul_mem ht hh.1`. Establish `h2 : t⁻¹ ∈ btSub b` using `(btSub b).inv_mem ht`. Use `⟨(btSub b).mul_mem h1 h2, fun i => ?_⟩` and prove the remaining obligations. Establish `e1` using `mul_diag hb h1 h2 i`. Establish `e2` using `mul_diag hb ht hh.1 i`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `mul_diag hb ht h2 i`. Rewrite using `[Units.val_mul, e1, Units.val_mul, e2, hh.2 i, mul_one, ← e3, ← Units.val_mul, mul_inv_cancel]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_mem {α : Type} [LinearOrder α] {b : Fin n → α} (hb : Function.Injective b)
     {t h : GL (Fin n) L} (ht : t ∈ btSub b) (hh : h ∈ triSub b hb) : t * h * t⁻¹ ∈ triSub b hb := by
@@ -77,21 +77,21 @@ def lowSub : Subgroup (GL (Fin n) L) :=
   triSub (OrderDual.toDual : Fin n → (Fin n)ᵒᵈ) OrderDual.toDual.injective
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨fun _ _ hij => h.1 hij, h.2⟩, fun h => ⟨fun i j hij => h.1 i j hij, h.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_upSub {g : GL (Fin n) L} : g ∈ upSub ↔ IsUniM g :=
   ⟨fun h => ⟨fun _ _ hij => h.1 hij, h.2⟩, fun h => ⟨fun i j hij => h.1 i j hij, h.2⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨fun _ _ hij => h.1 hij, h.2⟩, fun h => ⟨fun i j hij => h.1 i j hij, h.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_lowSub {g : GL (Fin n) L} : g ∈ lowSub ↔ IsLowUniM g :=
   ⟨fun h => ⟨fun _ _ hij => h.1 hij, h.2⟩, fun h => ⟨fun i j hij => h.1 i j hij, h.2⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ i j hij`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Conclude with `h2 (show OrderDual.toDual j < OrderDual.toDual i from h)`. Conclude with `h1 h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `h`. Conclude with `⟨fun i j hij => h i j (ne_of_gt hij), fun i j hij => h i j (ne_of_lt (show i < j from hij))⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_diagSub {g : GL (Fin n) L} : g ∈ diagSub ↔ IsDiagM g := by
   constructor
@@ -108,7 +108,7 @@ section Top
 variable [TopologicalSpace L]
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.matrix_elem i j`.
+A detailed English derivation is pending.
 -/
 theorem continuous_entry (i j : Fin n) :
     Continuous fun g : GL (Fin n) L => (g : Matrix (Fin n) (Fin n) L) i j :=
@@ -117,9 +117,9 @@ theorem continuous_entry (i j : Fin n) :
 variable [T2Space L]
 
 /- English proof (translation)
-Establish `: ((btSub b : Subgroup (GL (Fin n) L)) : Set (GL (Fin n) L)) = ⋂ (i : Fin n) (j : Fin n) (_ : b j < b i), {g : GL (Fin n) L | (g : Matrix (Fin n) (Fin n) L) i j = 0}`. Use extensionality with `g`. Simplify using `only [Set.mem_iInter, Set.mem_setOf_eq]`. Conclude with `⟨fun h i j hij => h hij, fun h i j hij => h i j hij⟩`. Rewrite using `[this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `exact isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq (continuous_entry i j) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_btSub {α : Type} [LinearOrder α] (b : Fin n → α) :
     IsClosed ((btSub b : Subgroup (GL (Fin n) L)) : Set (GL (Fin n) L)) := by
@@ -133,9 +133,9 @@ theorem isClosed_btSub {α : Type} [LinearOrder α] (b : Fin n → α) :
     isClosed_eq (continuous_entry i j) continuous_const
 
 /- English proof (translation)
-Establish `: ((triSub b hb : Subgroup (GL (Fin n) L)) : Set (GL (Fin n) L)) = ((btSub b : Subgroup (GL (Fin n) L)) : Set (GL (Fin n) L)) ∩ ⋂ i : Fin n, {g : GL (Fin n) L | (g : Matrix (Fin n) (Fin n) L) i i = 1}`. Use extensionality with `g`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq]`. Conclude with `Iff.rfl`. Rewrite using `[this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `exact (isClosed_btSub b).inter (isClosed_iInter fun i => isClosed_eq (continuous_entry i i) continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_triSub {α : Type} [LinearOrder α] (b : Fin n → α) (hb : Function.Injective b) :
     IsClosed ((triSub b hb : Subgroup (GL (Fin n) L)) : Set (GL (Fin n) L)) := by
@@ -162,13 +162,13 @@ def IsIw (m : Matrix (Fin n) (Fin n) L) : Prop :=
   IsInt m ∧ ∀ i j, j < i → Valued.v (m i j) < 1
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_latK {k : ℕ} {x : Fin n → L} : x ∈ latK L n k ↔
     ∀ i : Fin n, if i.val < k then Valued.v (x i) ≤ 1 else Valued.v (x i) < 1 := Iff.rfl
 
 /- English proof (translation)
-Use `hx j` as an intermediate fact. Use `split_ifs at this`. Conclude with `this`. Conclude with `this.le`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_one_of_mem_latK {k : ℕ} {x : Fin n → L} (hx : x ∈ latK L n k) (j : Fin n) :
     Valued.v (x j) ≤ 1 := by
@@ -178,13 +178,11 @@ theorem le_one_of_mem_latK {k : ℕ} {x : Fin n → L} (hx : x ∈ latK L n k) (
   · exact this.le
 
 /- English proof (translation)
-Rewrite using `[mem_latK]`. Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `split_ifs with hi`. Use `Valuation.map_sum_le _ fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hm.1 i j) (le_one_of_mem_latK hx j)`. Use `Valuation.map_sum_lt _ one_ne_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Establish `hj` using `hx j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs at hj with hjk`. Establish `hji : j < i`. Rewrite using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left zero_le' (hm.2 i j hji) hj`.
-
-Conclude with `mul_lt_one_of_nonneg_of_lt_one_right (hm.1 i j) zero_le' hj`.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem isIw_mulVec {m : Matrix (Fin n) (Fin n) L} (hm : IsIw m) {k : ℕ} {x : Fin n → L}
     (hx : x ∈ latK L n k) : m *ᵥ x ∈ latK L n k := by
@@ -205,9 +203,9 @@ theorem isIw_mulVec {m : Matrix (Fin n) (Fin n) L} (hm : IsIw m) {k : ℕ} {x : 
     · exact mul_lt_one_of_nonneg_of_lt_one_right (hm.1 i j) zero_le' hj
 
 /- English proof (translation)
-Rewrite using `[mem_latK]`. Introduce `i`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[hj]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rw [Pi.single_eq_of_ne hij] split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem single_mem_latK {k : ℕ} {j : Fin n} (hj : j.val < k) :
     (Pi.single j 1 : Fin n → L) ∈ latK L n k := by
@@ -220,11 +218,11 @@ theorem single_mem_latK {k : ℕ} {j : Fin n} (hj : j.val < k) :
     split_ifs <;> simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `i j`. Establish `h1` using `h (Fin.last n) _ (single_mem_latK (L := L) (k := n) (j := j) j.2) i`. Rewrite `h1` using `[Matrix.mulVec_single_one]`. Simplify `h1` using `[Matrix.col]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `i j hji`. Establish `hk : j.val + 1 < n + 1` using `by have := j.2; omega`. Establish `h1` using `h ⟨j.val + 1, hk⟩ _ (single_mem_latK (L := L) (k := j.val + 1) (j := j) (by omega)) i`. Rewrite `h1` using `[Matrix.mulVec_single_one]`. Establish `hi : ¬ i.val < j.val + 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: j.val < i.val` using `hji`. Use linear arithmetic over natural numbers and integers. Simplify `h1` using `[Matrix.col, hi]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isIw_of_pres {m : Matrix (Fin n) (Fin n) L}
     (h : ∀ k : Fin (n + 1), ∀ x ∈ latK L n k, m *ᵥ x ∈ latK L n k) : IsIw m := by
@@ -243,9 +241,9 @@ theorem isIw_of_pres {m : Matrix (Fin n) (Fin n) L}
     simpa [Matrix.col, hi] using h1
 
 /- English proof (translation)
-Rewrite using `[MulAction.mem_stabilizer_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h x conv_lhs => rw [← h]`. Conclude with `Set.smul_mem_smul_set_iff`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, ← h, smul_inv_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_iff {G X : Type*} [Group G] [MulAction G X] (f : G) (S : Set X) :
     f ∈ MulAction.stabilizer G S ↔ ∀ x, f • x ∈ S ↔ x ∈ S := by
@@ -259,7 +257,7 @@ theorem stab_iff {G X : Type*} [Group G] [MulAction G X] (f : G) (S : Set X) :
     rw [Set.mem_smul_set_iff_inv_smul_mem, ← h, smul_inv_smul]
 
 /- English proof (translation)
-Simplify using `only [IwGL, Subgroup.mem_iInf, Subgroup.mem_comap, stab_iff]`. Conclude with `Iff.rfl`.
+Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_IwGL_iff_pres {g : GL (Fin n) L} : g ∈ IwGL L n ↔
     ∀ k : Fin (n + 1), ∀ x, (g : Matrix (Fin n) (Fin n) L) *ᵥ x ∈ latK L n k ↔ x ∈ latK L n k := by
@@ -267,11 +265,11 @@ theorem mem_IwGL_iff_pres {g : GL (Fin n) L} : g ∈ IwGL L n ↔
   exact Iff.rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h'` using `(IwGL L n).inv_mem h`. Rewrite `h`, `h'` using `[mem_IwGL_iff_pres]`. Conclude with `⟨isIw_of_pres fun k x hx => (h k x).2 hx, isIw_of_pres fun k x hx => (h' k x).2 hx⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Rewrite using `[mem_IwGL_iff_pres]`. Introduce `k x`. Use `⟨fun hx => ?_, isIw_mulVec h1⟩` and prove the remaining obligations. Use `isIw_mulVec h2 hx` as an intermediate fact.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_IwGL_iff_isIw {g : GL (Fin n) L} : g ∈ IwGL L n ↔
     IsIw (g : Matrix (Fin n) (Fin n) L) ∧ IsIw ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) := by
@@ -307,7 +305,7 @@ variable (L n) in
 abbrev iO : GL (Fin n) (OL L) →* GL (Fin n) L := Matrix.GeneralLinearGroup.map (OL L).subtype
 
 /- English proof (translation)
-The claim follows from `Matrix.GeneralLinearGroup.map_apply _ i j h`.
+A detailed English derivation is pending.
 -/
 theorem iO_apply (h : GL (Fin n) (OL L)) (i j : Fin n) :
     ((iO L n h : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j =
@@ -315,11 +313,11 @@ theorem iO_apply (h : GL (Fin n) (OL L)) (i j : Fin n) :
   Matrix.GeneralLinearGroup.map_apply _ i j h
 
 /- English proof (translation)
-Set `a : Matrix (Fin n) (Fin n) (OL L)` to `fun i j => ⟨(g : Matrix (Fin n) (Fin n) L) i j, h1 i j⟩`. Set `b : Matrix (Fin n) (Fin n) (OL L)` to `fun i j => ⟨((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i j, h2 i j⟩`. Establish `ha : (OL L).subtype.mapMatrix a = g` using `by ext i j; rfl`. Establish `hb : (OL L).subtype.mapMatrix b = ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Establish `inj : Function.Injective ((OL L).subtype.mapMatrix : Matrix (Fin n) (Fin n) (OL L) → Matrix (Fin n) (Fin n) L)` using `Matrix.map_injective Subtype.val_injective`. Establish `hab : a * b = 1` using `inj (by`. Rewrite using `[map_mul, map_one, ha, hb, ← Units.val_mul, mul_inv_cancel, Units.val_one])`. Establish `hba : b * a = 1` using `inj (by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_one, ha, hb, ← Units.val_mul, inv_mul_cancel, Units.val_one])`. Use `⟨⟨a, b, hab, hba⟩, Units.ext ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem exists_lift {g : GL (Fin n) L} (h1 : IsInt (g : Matrix (Fin n) (Fin n) L))
     (h2 : IsInt ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) :
@@ -347,22 +345,22 @@ variable {ϖ : L}
 include hϖ
 
 /- English proof (translation)
-Rewrite using `[hϖ, ← WithZero.coe_one, WithZero.coe_lt_coe]`. Conclude with `Multiplicative.ofAdd_lt.2 (by norm_num)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_pi_lt : Valued.v ϖ < 1 := by
   rw [hϖ, ← WithZero.coe_one, WithZero.coe_lt_coe]
   exact Multiplicative.ofAdd_lt.2 (by norm_num)
 
 /- English proof (translation)
-Rewrite using `[hϖ]`. Conclude with `WithZero.coe_ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_pi_ne : Valued.v ϖ ≠ 0 := by
   rw [hϖ]; exact WithZero.coe_ne_zero
 
 /- English proof (translation)
-Rewrite using `[hϖ]`. Generalize the expression as in `Valued.v x = a at hx ⊢`. Proceed by induction on `a using WithZero.recZeroCoe with`. Consider the case `zero => exact zero_le'`. Consider the case `coe a`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[WithZero.coe_le_coe]`. Rewrite `hx` using `[← WithZero.coe_one, WithZero.coe_lt_coe]`. Establish `h0 : Multiplicative.toAdd a < 0` using `hx`. Use `show Multiplicative.toAdd a ≤ -1`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem le_pi_of_lt_one {x : L} (hx : Valued.v x < 1) : Valued.v x ≤ Valued.v ϖ := by
   rw [hϖ]
@@ -379,11 +377,9 @@ theorem le_pi_of_lt_one {x : L} (hx : Valued.v x < 1) : Valued.v x ≤ Valued.v 
 def piO : OL L := ⟨ϖ, (v_pi_lt hϖ).le⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩ show Valued.v (ϖ * (c : L)) < 1`. Rewrite using `[map_mul]`. Conclude with `mul_lt_one_of_nonneg_of_lt_one_left zero_le' (v_pi_lt hϖ) c.2`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hv0` using `v_pi_ne hϖ`. Establish `h0 : ϖ ≠ 0` using `fun e => hv0 (by rw [e, map_zero])`. Use `⟨⟨ϖ⁻¹ * x, ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show Valued.v (ϖ⁻¹ * (x : L)) ≤ 1`. Rewrite using `[map_mul, map_inv₀]`.
-
-Conclude with `(inv_mul_le_one₀ (zero_lt_iff.2 hv0)).2 (le_pi_of_lt_one hϖ h)`. Use `show (x : L) = ϖ * (ϖ⁻¹ * x)`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem dvd_iff (x : OL L) : piO hϖ ∣ x ↔ Valued.v (x : L) < 1 := by
   constructor
@@ -402,14 +398,14 @@ theorem dvd_iff (x : OL L) : piO hϖ ∣ x ↔ Valued.v (x : L) < 1 := by
       field_simp
 
 /- English proof (translation)
-Introduce `hu` and use `by have := (dvd_iff hϖ 1).1 (isUnit_iff_dvd_one.1 hu) simp at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isUnit_piO : ¬ IsUnit (piO hϖ) := fun hu => by
   have := (dvd_iff hϖ 1).1 (isUnit_iff_dvd_one.1 hu)
   simp at this
 
 /- English proof (translation)
-Introduce `i j` and use `⟨fun _ => one_dvd _, fun hji => (dvd_iff hϖ _).2 (by have := h.2 i j hji rwa [iO_apply] at this)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem shape_of_isIw {g : GL (Fin n) (OL L)}
     (h : IsIw ((iO L n g : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) :
@@ -419,7 +415,7 @@ theorem shape_of_isIw {g : GL (Fin n) (OL L)}
     rwa [iO_apply] at this)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i j => by rw [iO_apply]; exact ((g : Matrix (Fin n) (Fin n) (OL L)) i j).2, fun i j hji => by rw [iO_apply]; exact (dvd_iff hϖ _).1 ((hs i j).2 hji)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIw_of_shape {g : GL (Fin n) (OL L)}
     (hs : Shape 1 (piO hϖ) (g : Matrix (Fin n) (Fin n) (OL L))) :
@@ -428,7 +424,7 @@ theorem isIw_of_shape {g : GL (Fin n) (OL L)}
     fun i j hji => by rw [iO_apply]; exact (dvd_iff hϖ _).1 ((hs i j).2 hji)⟩
 
 /- English proof (translation)
-The claim follows from `mem_IwGL_iff_isIw.2 ⟨isIw_of_shape hϖ hs, by rw [← map_inv] exact isIw_of_shape hϖ (Shape.inv hs)⟩`.
+A detailed English derivation is pending.
 -/
 theorem iO_mem {g : GL (Fin n) (OL L)}
     (hs : Shape 1 (piO hϖ) (g : Matrix (Fin n) (Fin n) (OL L))) : iO L n g ∈ IwGL L n :=
@@ -437,9 +433,9 @@ theorem iO_mem {g : GL (Fin n) (OL L)}
     exact isIw_of_shape hϖ (Shape.inv hs)⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨h1, h2⟩` from `mem_IwGL_iff_isIw.1 h`. Conclude with `⟨h1.1, h2.1, h1.2⟩`. Introduce and unpack `⟨h1, h2, h3⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨g', rfl⟩` from `exists_lift h1 h2`. Conclude with `iO_mem hϖ (shape_of_isIw hϖ ⟨h1, h3⟩)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_IwGL_iff {g : GL (Fin n) L} : g ∈ IwGL L n ↔
     IsInt (g : Matrix (Fin n) (Fin n) L) ∧
@@ -454,7 +450,7 @@ theorem mem_IwGL_iff {g : GL (Fin n) L} : g ∈ IwGL L n ↔
     exact iO_mem hϖ (shape_of_isIw hϖ ⟨h1, h3⟩)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `(mem_IwGL_iff hϖ).1 hg`. Take `⟨g', rfl⟩` from `exists_lift h1 h2`. Conclude with `⟨g', rfl, shape_of_isIw hϖ ⟨h1, h3⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of_mem {g : GL (Fin n) L} (hg : g ∈ IwGL L n) :
     ∃ g' : GL (Fin n) (OL L), iO L n g' = g ∧
@@ -464,7 +460,7 @@ theorem exists_of_mem {g : GL (Fin n) L} (hg : g ∈ IwGL L n) :
   exact ⟨g', rfl, shape_of_isIw hϖ ⟨h1, h3⟩⟩
 
 /- English proof (translation)
-Take `⟨U, rfl⟩ : ∃ U : GL (Fin n) (OL L), (U : Matrix (Fin n) (Fin n) (OL L)) = u` from `⟨Matrix.nonsingInvUnit u (by rw [hu.det]; exact isUnit_one), rfl⟩`. Use `⟨U, rfl, iO_mem hϖ (hu.shape _), mem_upSub.2 ⟨fun i j hji => ?_, fun i => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[iO_apply, (hu i j).1 hji]`. Both sides reduce to the same expression. Rewrite using `[iO_apply, (hu i i).2.1 rfl]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -478,7 +474,7 @@ theorem up_fac {u : Matrix (Fin n) (Fin n) (OL L)} (hu : UpperUnip 1 u) :
   · rw [iO_apply, (hu i i).2.1 rfl]; rfl
 
 /- English proof (translation)
-Take `⟨U, rfl⟩ : ∃ U : GL (Fin n) (OL L), (U : Matrix (Fin n) (Fin n) (OL L)) = l` from `⟨Matrix.nonsingInvUnit l (by rw [hl.det]; exact isUnit_one), rfl⟩`. Use `⟨U, rfl, iO_mem hϖ (hl.shape _), mem_lowSub.2 ⟨fun i j hji => ?_, fun i => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[iO_apply, (hl i j).1 hji]`. Both sides reduce to the same expression. Rewrite using `[iO_apply, (hl i i).2.1 rfl]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -492,9 +488,9 @@ theorem low_fac {l : Matrix (Fin n) (Fin n) (OL L)} (hl : LowerUnip (piO hϖ) l)
   · rw [iO_apply, (hl i i).2.1 rfl]; rfl
 
 /- English proof (translation)
-Take `⟨U, hU⟩ : ∃ U : GL (Fin n) (OL L), (U : Matrix (Fin n) (Fin n) (OL L)) = Matrix.diagonal (fun i => (d i : OL L))` from `⟨⟨Matrix.diagonal (fun i => (d i : OL L)), Matrix.diagonal (fun i => ((d i)⁻¹ : (OL L)ˣ)), by simp [Matrix.diagonal_mul_diagonal], by simp [Matrix.diagonal_mul_diagonal]⟩, rfl⟩`. Use `⟨U, hU, iO_mem hϖ ?_, mem_diagSub.2 fun i j hij => ?_⟩` and prove the remaining obligations. Rewrite using `[hU]`. Conclude with `Shape.diagonal _ _ _`. Rewrite using `[iO_apply, hU, Matrix.diagonal_apply_ne _ hij]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem diag_fac (d : Fin n → (OL L)ˣ) :
     ∃ U : GL (Fin n) (OL L),
@@ -509,11 +505,11 @@ theorem diag_fac (d : Fin n → (OL L)ˣ) :
   · rw [iO_apply, hU, Matrix.diagonal_apply_ne _ hij]; rfl
 
 /- English proof (translation)
-Take `⟨x', rfl, hs⟩` from `exists_of_mem hϖ hx`. Take `⟨⟨u, d, l⟩, ⟨hu, hl, hf⟩, -⟩` from `existsUnique_factor (not_isUnit_piO hϖ) x' hs`. Take `⟨U, rfl, hU⟩` from `up_fac hϖ hu`. Take `⟨D, hD, hD'⟩` from `diag_fac hϖ d`. Take `⟨W, rfl, hW⟩` from `low_fac hϖ hl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨_, hU, _, hD', _, hW, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, hD]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf`.
+A detailed English derivation is pending.
 -/
 theorem fact_up {x : GL (Fin n) L} (hx : x ∈ IwGL L n) :
     ∃ c ∈ IwGL L n ⊓ upSub, ∃ b ∈ IwGL L n ⊓ diagSub, ∃ a ∈ IwGL L n ⊓ lowSub, x = c * b * a := by
@@ -530,11 +526,11 @@ theorem fact_up {x : GL (Fin n) L} (hx : x ∈ IwGL L n) :
   exact hf
 
 /- English proof (translation)
-Take `⟨x', rfl, hs⟩` from `exists_of_mem hϖ hx`. Take `⟨⟨l, d, u⟩, ⟨hl, hu, hf⟩, -⟩` from `existsUnique_factor_opp (not_isUnit_piO hϖ) x' hs`. Take `⟨U, rfl, hU⟩` from `up_fac hϖ hu`. Take `⟨D, hD, hD'⟩` from `diag_fac hϖ d`. Take `⟨W, rfl, hW⟩` from `low_fac hϖ hl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨_, hW, _, hD', _, hU, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_mul]`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, hD]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf`.
+A detailed English derivation is pending.
 -/
 theorem fact_low {x : GL (Fin n) L} (hx : x ∈ IwGL L n) :
     ∃ a ∈ IwGL L n ⊓ lowSub, ∃ b ∈ IwGL L n ⊓ diagSub, ∃ c ∈ IwGL L n ⊓ upSub, x = a * b * c := by
@@ -557,19 +553,19 @@ section Top
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Valued.isOpen_integer L`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_le : IsOpen {x : L | Valued.v x ≤ 1} := Valued.isOpen_integer L
 
 /- English proof (translation)
-Use `Valued.isOpen_ball L (Γ₀ := WithZero (Multiplicative ℤ)) 1` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isOpen_lt : IsOpen {x : L | Valued.v x < 1} := by
   have := Valued.isOpen_ball L (Γ₀ := WithZero (Multiplicative ℤ)) 1
   simpa using this
 
 /- English proof (translation)
-Establish `: {g | IsInt (f g)} = ⋂ (i : Fin n) (j : Fin n), {g | Valued.v (f g i j) ≤ 1}`. Use extensionality with `g`. Simplify using `[IsInt]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => isOpen_le.preimage (hf.matrix_elem i j)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_isInt_set (f : GL (Fin n) L → Matrix (Fin n) (Fin n) L) (hf : Continuous f) :
     IsOpen {g | IsInt (f g)} := by
@@ -580,7 +576,7 @@ theorem isOpen_isInt_set (f : GL (Fin n) L → Matrix (Fin n) (Fin n) L) (hf : C
     isOpen_le.preimage (hf.matrix_elem i j)
 
 /- English proof (translation)
-Establish `: {g | IsIw (f g)} = {g | IsInt (f g)} ∩ ⋂ (i : Fin n) (j : Fin n) (_ : j < i), {g | Valued.v (f g i j) < 1}`. Use extensionality with `g`. Simplify using `[IsIw]`. Rewrite using `[this]`. Conclude with `(isOpen_isInt_set f hf).inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => isOpen_iInter_of_finite fun _ => isOpen_lt.preimage (hf.matrix_elem i j))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_isIw_set (f : GL (Fin n) L → Matrix (Fin n) (Fin n) L) (hf : Continuous f) :
     IsOpen {g | IsIw (f g)} := by
@@ -592,7 +588,7 @@ theorem isOpen_isIw_set (f : GL (Fin n) L → Matrix (Fin n) (Fin n) L) (hf : Co
     isOpen_iInter_of_finite fun _ => isOpen_lt.preimage (hf.matrix_elem i j))
 
 /- English proof (translation)
-Establish `: ((IwGL L n : Subgroup (GL (Fin n) L)) : Set (GL (Fin n) L)) = {g : GL (Fin n) L | IsIw (g : Matrix (Fin n) (Fin n) L)} ∩ {g : GL (Fin n) L | IsIw ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)}`. Use extensionality with `g`. Conclude with `mem_IwGL_iff_isIw`. Rewrite using `[this]`. Conclude with `(isOpen_isIw_set _ Units.continuous_val).inter (isOpen_isIw_set _ (Units.continuous_val.comp continuous_inv))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_IwGL : IsOpen ((IwGL L n : Subgroup (GL (Fin n) L)) : Set (GL (Fin n) L)) := by
   have : ((IwGL L n : Subgroup (GL (Fin n) L)) : Set (GL (Fin n) L)) =
@@ -604,9 +600,7 @@ theorem isOpen_IwGL : IsOpen ((IwGL L n : Subgroup (GL (Fin n) L)) : Set (GL (Fi
     (isOpen_isIw_set _ (Units.continuous_val.comp continuous_inv))
 
 /- English proof (translation)
-Take `⟨-, hv, -, hϖ, -, hq, hcard⟩` from `h`. Use `haveI : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).IsNontrivial := ⟨ϖ, by rw [hϖ]; exact WithZero.coe_ne_zero, by rw [hϖ, ← WithZero.coe_one, ne_eq, WithZero.coe_inj]; decide⟩`. Use `letI : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).RankOne := Valuation.IsRankOneDiscrete.rankOne _ (e := 2) (by norm_num)`. Establish `hp` using `(Valued.integer.compactSpace_iff_completeSpace_and_isDiscreteValuationRing_and_finite_residueField (K := L)).2 ⟨(Valued.isClosed_integer L).completeSpace_coe, (Valued.v : Valuation L _).valuationSubring_isDiscreteValuationRing, Nat.finite_of_card_ne_zero (by`. Use `ne_of_eq_of_ne hcard (pow_ne_zero _ (by omega)))⟩` and prove the remaining obligations.
-
-Conclude with `isCompact_iff_compactSpace.2 hp`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isCompact_le [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) :
     IsCompact {x : L | Valued.v x ≤ 1} := by
@@ -624,9 +618,9 @@ theorem isCompact_le [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (h : 
   exact isCompact_iff_compactSpace.2 hp
 
 /- English proof (translation)
-Establish `hc` using `isCompact_univ_pi fun _ : Fin n => isCompact_univ_pi fun _ : Fin n => isCompact_le h`. Establish `: {m : Matrix (Fin n) (Fin n) L | IsInt m} = Set.univ.pi fun _ : Fin n => Set.univ.pi fun _ : Fin n => {x : L | Valued.v x ≤ 1}`. Use extensionality with `m`. Conclude with `⟨fun hm i _ j _ => hm i j, fun hm i j => hm i trivial j trivial⟩`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_isInt [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) :
     IsCompact {m : Matrix (Fin n) (Fin n) L | IsInt m} := by
@@ -639,9 +633,9 @@ theorem isCompact_isInt [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (h
   exact hc
 
 /- English proof (translation)
-Establish `hK` using `isCompact_isInt (n := n) h`. Establish `hK' : IsCompact (MulOpposite.unop ⁻¹' {m : Matrix (Fin n) (Fin n) L | IsInt m})` using `(MulOpposite.opHomeomorph (M := Matrix (Fin n) (Fin n) L)).symm.isCompact_preimage.2 hK`. Establish `hc` using `Units.isClosedEmbedding_embedProduct (α := Matrix (Fin n) (Fin n) L) |>.isCompact_preimage (hK.prod hK')`. Use `hc.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ isOpen_IwGL) ?_` and prove the remaining obligations. Introduce `g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, h2⟩` from `mem_IwGL_iff_isIw.1 hg`. Conclude with `⟨h1.1, h2.1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isCompact_IwGL [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) :
     IsCompact ((IwGL L n : Subgroup (GL (Fin n) L)) : Set (GL (Fin n) L)) := by
@@ -656,7 +650,7 @@ theorem isCompact_IwGL [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (h 
   exact ⟨h1.1, h2.1⟩
 
 /- English proof (translation)
-Use `Subgroup.mem_normalizer_iff.2 fun h => ⟨fun hh => conj_mem hb ht hh, fun hh => ?_⟩` and prove the remaining obligations. Use `conj_mem hb ((btSub b).inv_mem ht) hh` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_tri {α : Type} [LinearOrder α] {b : Fin n → α} (hb : Function.Injective b)
     {t : GL (Fin n) L} (ht : t ∈ btSub b) :

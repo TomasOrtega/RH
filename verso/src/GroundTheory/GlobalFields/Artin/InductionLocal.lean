@@ -16,14 +16,14 @@ section Transfer
 variable {G Γ : Type*} [Group G] [Group Γ]
 
 /- English proof (translation)
-Rewrite using `[cosetAverage_eq_sum, cosetAvg, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cosetAverage_pow_eq_cosetAvg (J : Subgroup G) [Fintype J] (a : G) (F : G → ℂ) (k : ℕ) :
     cosetAverage J F (a ^ k) = cosetAvg J a F k := by
   rw [cosetAverage_eq_sum, cosetAvg, zpow_natCast]
 
 /- English proof (translation)
-Establish `h` using `cosetAverage_comp J e.toMonoidHom (F ∘ e.symm) g`. Establish `h2 : (F ∘ e.symm) ∘ e.toMonoidHom = F` using `funext fun x ↦ by simp`. Rewrite `h` using `[h2]`. Conclude with `h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cosetAverage_map_mulEquiv (e : G ≃* Γ) (J : Subgroup G) [Finite J] (F : G → ℂ) (g : G) :
     cosetAverage (J.map e.toMonoidHom) (F ∘ e.symm) (e g) = cosetAverage J F g := by
@@ -43,7 +43,7 @@ def fixedFieldFun (f : H → ℂ) : Gal(L/fixedField H) → ℂ :=
 omit [IsGalois K L] in
 @[simp]
 /- English proof (translation)
-Simplify using `[fixedFieldFun]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fixedFieldFun_apply (f : H → ℂ) (h : H) :
     fixedFieldFun H f (fixedFieldMulEquiv H h) = f h := by
@@ -52,7 +52,7 @@ theorem fixedFieldFun_apply (f : H → ℂ) (h : H) :
 omit [IsGalois K L] in
 
 /- English proof (translation)
-Simplify using `only [fixedFieldFun, Function.comp_apply, map_mul, map_inv]`. Conclude with `hf _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fixedFieldFun_conj {f : H → ℂ} (hf : IsClassFun f) (g h : Gal(L/fixedField H)) :
     fixedFieldFun H f (h * g * h⁻¹) = fixedFieldFun H f g := by
@@ -60,7 +60,7 @@ theorem fixedFieldFun_conj {f : H → ℂ} (hf : IsClassFun f) (g h : Gal(L/fixe
   exact hf _ _
 
 /- English proof (translation)
-Establish `: (x • w).asIdeal.LiesOver (subfieldPlace H w x).asIdeal` using `liesOver_subfieldPlace H w x`. Rewrite using `[localAverage_eq (subfieldPlace H w x) (fixedFieldFun H f) (fixedFieldFun_conj H hf) (x • w) (φ := fixedFieldMulEquiv H φx) ((isArithFrobAt_fixedFieldMulEquiv_iff H φx _).2 hφx) k, asIdeal_smul, inertia_fixedField_smul_eq, ← map_pow, fixedFieldFun, cosetAverage_map_mulEquiv, cose …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem localAverage_subfieldPlace {f : H → ℂ} (hf : IsClassFun f) (w : HeightOneSpectrum (𝓞 L))
     (x : Gal(L/K)) (φx : H) (hφx : IsArithFrobAt (𝓞 (fixedField H)) φx (x • w.asIdeal))
@@ -76,7 +76,7 @@ theorem localAverage_subfieldPlace {f : H → ℂ} (hf : IsClassFun f) (w : Heig
     cosetAverage_map_mulEquiv, cosetAverage_pow_eq_cosetAvg]
 
 /- English proof (translation)
-Establish `h` using `card_mul_card_eq (H := H) hID x`. Use `Nat.pos_of_ne_zero fun h0 ↦ ?_` and prove the remaining obligations. Rewrite `h` using `[h0, zero_mul, zero_mul]`. Conclude with `(Nat.mul_pos Nat.card_pos Nat.card_pos).ne' h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobIndex_pos {G : Type*} [Group G] [Finite G] {H D I : Subgroup G} (hID : I ≤ D)
     [(I.subgroupOf D).Normal] (x : G) : 0 < frobIndex H D I x := by
@@ -86,7 +86,7 @@ theorem frobIndex_pos {G : Type*} [Group G] [Finite G] {H D I : Subgroup G} (hID
   exact (Nat.mul_pos Nat.card_pos Nat.card_pos).ne' h
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_pow, ← Complex.natCast_cpow_natCast_mul, Complex.cpow_nat_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_pow_cpow_neg (N r : ℕ) (s : ℂ) :
     ((N ^ r : ℕ) : ℂ) ^ (-s) = ((N : ℂ) ^ (-s)) ^ r := by
@@ -95,29 +95,23 @@ theorem natCast_pow_cpow_neg (N r : ℕ) (s : ℂ) :
 open Classical in
 
 /- English proof (translation)
-Use `set w := placeAbove (L := L) v with hw`. Use `set D := MulAction.stabilizer Gal(L/K) w.asIdeal with hD`. Use `set I := w.asIdeal.inertia Gal(L/K) with hI`. Use `set φ := arithFrobAt (𝓞 K) Gal(L/K) w.asIdeal with hφdef`. Establish `hφ : IsArithFrobAt (𝓞 K) φ w.asIdeal` using `IsArithFrobAt.arithFrobAt _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hID : I ≤ D` using `Ideal.inertia_le_stabilizer w.asIdeal`. Establish `hgen` using `zpowers_arithFrob_eq_top w hφ`. Use `set r : DoubleCoset.Quotient (H : Set Gal(L/K)) D → ℕ := fun q ↦ frobIndex H D I q.out with hr`. Establish `hr0 : ∀ q, 0 < r q` using `fun q ↦ frobIndex_pos hID q.out`. Use `set φx : DoubleCoset.Quotient (H : Set Gal(L/K)) D → H := fun q ↦ (exists_frobElem_isArithFrobAt H w hφ q.out).choose with hφx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Establish `hφx1` using `fun q : DoubleCoset.Quotient (H : Set Gal(L/K)) D ↦ (exists_frobElem_isArithFrobAt H w hφ (Quotient.out q)).choose_spec.1`. Establish `hφx2` using `fun q : DoubleCoset.Quotient (H : Set Gal(L/K)) D ↦ (exists_frobElem_isArithFrobAt H w hφ (Quotient.out q)).choose_spec.2`. Use `set u : DoubleCoset.Quotient (H : Set Gal(L/K)) D → HeightOneSpectrum (𝓞 (fixedField H)) := fun q ↦ subfieldPlace H w q.out with hu`. Use `set f' := fixedFieldFun H f`. Use `set T : DoubleCoset.Quotient (H : Set Gal(L/K)) D → ℕ → ℂ := fun q m ↦ if r q ∣ m then artinTerm (fixedField H) L f' s (u q) (m / r q) else 0 with hT`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hkey : ∀ (R k : ℕ) (A X : ℂ), 0 < R → (R : ℂ) * A * X ^ (R * k) / ((R * k : ℕ) : ℂ) = A * X ^ (R * k) / k`. Introduce `R k A X hR`. Break down `Nat.eq_zero_or_pos k with rfl | hk0` into its components or cases. Simplify using the standard rewrite rules. Establish `: (R : ℂ) ≠ 0` using `by exact_mod_cast hR.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `: (k : ℂ) ≠ 0` using `by exact_mod_cast hk0.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Establish `hA : ∀ m : ℕ, artinTerm K L (indFun H.subtype f) s v m = ∑ q, T q m`. Introduce `m`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hloc : localAverage L v (indFun H.subtype f) m = cosetAvg I φ (indFun H.subtype f) (m : ℤ)` using `cosetAverage_pow_eq_cosetAvg _ _ _ _`. Rewrite using `[artinTerm, hloc, cosetAvg_indFun hID hφ.mem_stabilizer hgen hf (fun q ↦ q.out) (DoubleCoset.out_eq' _ _) φx hφx1 (m : ℤ), Finset.sum_mul, Finset.sum_div]`. Use `Finset.sum_congr rfl fun q _ ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = if r q ∣ m then artinTerm (fixedField H) L f' s (u q) (m / r q) else 0`. Establish `hdvd : ((r q : ℕ) : ℤ) ∣ (m : ℤ) ↔ r q ∣ m` using `Int.natCast_dvd_natCast`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hr] at hdvd`. Use `split_ifs with h1 h2 h2`. Take `⟨k, rfl⟩` from `h2`. Establish `hk : (((r q * k : ℕ) : ℤ) / (r q : ℤ)) = k`. Use `push_cast`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Int.mul_ediv_cancel_left _ (by exact_mod_cast (hr0 q).ne')`. Simplify using `only [hr] at hk ⊢`. Rewrite using `[hk, Nat.mul_div_cancel_left _ (hr0 q), artinTerm, localAverage_subfieldPlace H hf w _ _ (hφx2 q), absNorm_subfieldPlace H v w, natCast_pow_cpow_neg, ← pow_mul]`. Conclude with `hkey _ k _ _ (hr0 q)`. Conclude with `absurd (hdvd.1 h1) h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd (hdvd.2 h2) h1`. Simplify using the standard rewrite rules. Establish `hinj : ∀ q, Function.Injective fun k : ℕ ↦ r q * k` using `fun q ↦ fun a b h ↦ Nat.eq_of_mul_eq_mul_left (hr0 q) h`. Establish `hcomp : ∀ q, (T q ∘ fun k : ℕ ↦ r q * k) = fun k ↦ artinTerm (fixedField H) L f' s (u q) k` using `fun q ↦ funext fun k ↦ by`. Simplify using `only [hT, Function.comp_apply, dvd_mul_right, if_true, Nat.mul_div_cancel_left _ (hr0 q)]`.
-
-Establish `hsupp : ∀ q, Function.support (T q) ⊆ Set.range fun k : ℕ ↦ r q * k`. Introduce `q m hm`. Assume the negation of the conclusion as `hnot`. Apply `hm` to reduce the goal to its premises. Simplify using `only [hT]`.
-
-Rewrite using `[if_neg]`. Introduce and unpack `⟨k, rfl⟩`. Conclude with `hnot ⟨k, rfl⟩`. Establish `hsum : ∀ q, Summable (T q)` using `fun q ↦ ((hinj q).summable_iff fun m hm ↦ Function.notMem_support.1 fun h ↦ hm (hsupp q h)).1 (by rw [hcomp q]; exact (hasSum_artinLocalLog f' hs (u q)).summable)`. Establish `htsum : ∀ q, ∑' m, T q m = artinLocalLog (fixedField H) L f' s (u q)` using `fun q ↦ by`.
-
-Rewrite using `[← (hinj q).tsum_eq (hsupp q)]`. Conclude with `congrArg tsum (hcomp q)`. Rewrite using `[artinLocalLog, tsum_congr hA, Summable.tsum_finsetSum fun q _ ↦ hsum q]`. Conclude with `Finset.sum_congr rfl fun q _ ↦ htsum q`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem artinLocalLog_indFun [Fintype Gal(L/K)] [Fintype H] {f : H → ℂ} (hf : IsClassFun f)
     {s : ℂ} (hs : 1 < s.re) (v : HeightOneSpectrum (𝓞 K)) :

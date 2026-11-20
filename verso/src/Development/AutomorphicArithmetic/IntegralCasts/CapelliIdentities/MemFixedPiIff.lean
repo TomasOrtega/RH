@@ -46,9 +46,9 @@ private def UpperTheory.Reformulated.B.Gr29.stab {A P M : Type} [CommRing A] [Gr
     rwa [ha'] at h
 
 /- English proof (translation)
-Establish `key : m ∈ UpperTheory.Reformulated.B.SubgroupFixedSubmodule.fixd ρ (Subgroup.pi Set.univ H) ↔ Subgroup.pi Set.univ H ≤ UpperTheory.Reformulated.B.Gr29.stab ρ m` using `Iff.rfl`. Rewrite using `[key, Subgroup.pi_le_iff]`. Use `forall_congr' fun j => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h k hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h (Subgroup.mem_map_of_mem _ hk)`. Introduce and unpack `h _ ⟨k, hk, rfl⟩`. Conclude with `h k hk`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Gr29.mem_fixed_pi_iff {q : ℕ} {G : Fin q → Type} [∀ j, Group (G j)]
     {A M : Type} [CommRing A] [AddCommGroup M] [_root_.Module A M]
@@ -66,7 +66,7 @@ private theorem UpperTheory.Reformulated.B.Gr29.mem_fixed_pi_iff {q : ℕ} {G : 
     exact h k hk
 
 /- English proof (translation)
-Introduce `L _ _ n q w A M _ _ _ ρ H m`. Conclude with `UpperTheory.Reformulated.B.Gr29.mem_fixed_pi_iff (G := fun j : Fin q => UpperTheory.Reformulated.B.Gr29.GLw n (w j)) ρ H m`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Gr29.mem_pi :
     ∀ {L : Type} [inst : Field L] [inst_1 : NumberField L] {n q : ℕ} {w : Fin q → UpperTheory.Reformulated.B.Gr29.Plc L} {A M : Type}

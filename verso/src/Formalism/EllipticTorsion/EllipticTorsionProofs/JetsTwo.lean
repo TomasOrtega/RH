@@ -18,13 +18,13 @@ def Q (H : MvPowerSeries (Fin 2) K) : K :=
   MvPowerSeries.constantCoeff (MvPowerSeries.pderiv K 1 (MvPowerSeries.pderiv K 0 H))
 
 /- English proof (translation)
-Simplify using `[Q, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Q_sub (f g : MvPowerSeries (Fin 2) K) : Q (f - g) = Q f - Q g := by
   simp [Q, map_sub]
 
 /- English proof (translation)
-Conclude with `Formalism.G.LogP.constantCoeff_subst_of_zero (f : MvPowerSeries Unit K) (b := fun _ => a) (fun _ => ha)`.
+A detailed English derivation is pending.
 -/
 theorem cc_psubst {τ : Type*} [Finite τ] {a : MvPowerSeries τ K}
     (ha : MvPowerSeries.constantCoeff a = 0) (f : PowerSeries K) :
@@ -32,7 +32,7 @@ theorem cc_psubst {τ : Type*} [Finite τ] {a : MvPowerSeries τ K}
   exact Formalism.G.LogP.constantCoeff_subst_of_zero (f : MvPowerSeries Unit K) (b := fun _ => a) (fun _ => ha)
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_derivative]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cc_derivative (f : PowerSeries K) :
     PowerSeries.constantCoeff (PowerSeries.derivative K f) = PowerSeries.coeff 1 f := by
@@ -40,7 +40,7 @@ theorem cc_derivative (f : PowerSeries K) :
   simp
 
 /- English proof (translation)
-Rewrite using `[pderiv_psubst (MvPowerSeries.constantCoeff_X _)]`. Simplify using `[MvPowerSeries.pderiv_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_one_subst_X0 (g : PowerSeries K) :
     MvPowerSeries.pderiv K 1 (g.subst (MvPowerSeries.X (0 : Fin 2) : MvPowerSeries (Fin 2) K))
@@ -49,7 +49,7 @@ theorem pderiv_one_subst_X0 (g : PowerSeries K) :
   simp [MvPowerSeries.pderiv_X]
 
 /- English proof (translation)
-Rewrite using `[pderiv_psubst (MvPowerSeries.constantCoeff_X _)]`. Simplify using `[MvPowerSeries.pderiv_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_zero_subst_X1 (g : PowerSeries K) :
     MvPowerSeries.pderiv K 0 (g.subst (MvPowerSeries.X (1 : Fin 2) : MvPowerSeries (Fin 2) K))
@@ -58,7 +58,7 @@ theorem pderiv_zero_subst_X1 (g : PowerSeries K) :
   simp [MvPowerSeries.pderiv_X]
 
 /- English proof (translation)
-Unfold `Q`. Rewrite using `[pderiv_psubst (MvPowerSeries.constantCoeff_X _)]`. Simplify using `[MvPowerSeries.pderiv_X, pderiv_one_subst_X0]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem quadraticJet_subst_X0 (g : PowerSeries K) :
     Q (g.subst (MvPowerSeries.X (0 : Fin 2) : MvPowerSeries (Fin 2) K)) = 0 := by
@@ -67,7 +67,7 @@ theorem quadraticJet_subst_X0 (g : PowerSeries K) :
   simp [MvPowerSeries.pderiv_X, pderiv_one_subst_X0]
 
 /- English proof (translation)
-Unfold `Q`. Rewrite using `[pderiv_zero_subst_X1]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem quadraticJet_subst_X1 (g : PowerSeries K) :
     Q (g.subst (MvPowerSeries.X (1 : Fin 2) : MvPowerSeries (Fin 2) K)) = 0 := by
@@ -76,7 +76,7 @@ theorem quadraticJet_subst_X1 (g : PowerSeries K) :
   simp
 
 /- English proof (translation)
-Unfold `ccd`. Rewrite using `[pderiv_psubst (MvPowerSeries.constantCoeff_X _)]`. Simplify using `[MvPowerSeries.pderiv_X, cc_psubst (MvPowerSeries.constantCoeff_X _), cc_derivative]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem linearCoeff_zero_subst_X0 (g : PowerSeries K) :
     ccd 0 (g.subst (MvPowerSeries.X (0 : Fin 2) : MvPowerSeries (Fin 2) K)) =
@@ -86,7 +86,7 @@ theorem linearCoeff_zero_subst_X0 (g : PowerSeries K) :
   simp [MvPowerSeries.pderiv_X, cc_psubst (MvPowerSeries.constantCoeff_X _), cc_derivative]
 
 /- English proof (translation)
-Unfold `ccd`. Rewrite using `[pderiv_psubst (MvPowerSeries.constantCoeff_X _)]`. Simplify using `[MvPowerSeries.pderiv_X, cc_psubst (MvPowerSeries.constantCoeff_X _), cc_derivative]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem linearCoeff_one_subst_X1 (g : PowerSeries K) :
     ccd 1 (g.subst (MvPowerSeries.X (1 : Fin 2) : MvPowerSeries (Fin 2) K)) =
@@ -96,7 +96,7 @@ theorem linearCoeff_one_subst_X1 (g : PowerSeries K) :
   simp [MvPowerSeries.pderiv_X, cc_psubst (MvPowerSeries.constantCoeff_X _), cc_derivative]
 
 /- English proof (translation)
-Unfold `ccd`. Rewrite using `[pderiv_one_subst_X0]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem linearCoeff_one_subst_X0 (g : PowerSeries K) :
     ccd 1 (g.subst (MvPowerSeries.X (0 : Fin 2) : MvPowerSeries (Fin 2) K)) = 0 := by
@@ -105,7 +105,7 @@ theorem linearCoeff_one_subst_X0 (g : PowerSeries K) :
   simp
 
 /- English proof (translation)
-Unfold `ccd`. Rewrite using `[pderiv_zero_subst_X1]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem linearCoeff_zero_subst_X1 (g : PowerSeries K) :
     ccd 0 (g.subst (MvPowerSeries.X (1 : Fin 2) : MvPowerSeries (Fin 2) K)) = 0 := by
@@ -114,7 +114,7 @@ theorem linearCoeff_zero_subst_X1 (g : PowerSeries K) :
   simp
 
 /- English proof (translation)
-Unfold `Q ccd`. Rewrite using `[pderiv_psubst hS, Derivation.leibniz, pderiv_psubst hS]`. Simplify using `only [smul_eq_mul, map_add, map_mul, cc_psubst hS]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Q_phi (φ : PowerSeries K) {S : MvPowerSeries (Fin 2) K}
     (hS : MvPowerSeries.constantCoeff S = 0) :
@@ -128,7 +128,7 @@ theorem Q_phi (φ : PowerSeries K) {S : MvPowerSeries (Fin 2) K}
   ring
 
 /- English proof (translation)
-Introduce `j`. Apply the tactic sequence `fin_cases j <;> simp [hx, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hv {x y : MvPowerSeries (Fin 2) K} (hx : MvPowerSeries.constantCoeff x = 0)
     (hy : MvPowerSeries.constantCoeff y = 0) :
@@ -137,7 +137,7 @@ theorem hv {x y : MvPowerSeries (Fin 2) K} (hx : MvPowerSeries.constantCoeff x =
   fin_cases j <;> simp [hx, hy]
 
 /- English proof (translation)
-Unfold `ccd`. Rewrite using `[pderiv_subst (hv hx hy), map_sum, Fin.sum_univ_two]`. Simplify using `only [map_mul, Formalism.G.LogP.constantCoeff_subst_of_zero _ (hv hx hy), Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ccd_F (F : MvPowerSeries (Fin 2) K) {x y : MvPowerSeries (Fin 2) K}
     (hx : MvPowerSeries.constantCoeff x = 0) (hy : MvPowerSeries.constantCoeff y = 0)
@@ -149,7 +149,7 @@ theorem ccd_F (F : MvPowerSeries (Fin 2) K) {x y : MvPowerSeries (Fin 2) K}
     Matrix.cons_val_one, Matrix.head_cons]
 
 /- English proof (translation)
-Unfold `Q`. Rewrite using `[pderiv_subst (hv hx hy), map_sum, Fin.sum_univ_two]`. Simplify using `only [Derivation.leibniz, smul_eq_mul, map_add, map_mul]`. Rewrite using `[pderiv_subst (hv hx hy), pderiv_subst (hv hx hy)]`. Simplify using `only [Fin.sum_univ_two, map_add, map_mul, Formalism.G.LogP.constantCoeff_subst_of_zero _ (hv hx hy), Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, ccd]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -169,7 +169,7 @@ theorem Q_F (F : MvPowerSeries (Fin 2) K) {x y : MvPowerSeries (Fin 2) K}
   ring
 
 /- English proof (translation)
-Unfold `ccd`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_pderiv]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ccd_single (F : MvPowerSeries (Fin 2) K) (i : Fin 2) :
     ccd i F = MvPowerSeries.coeff (Finsupp.single i 1) F := by
@@ -178,7 +178,7 @@ theorem ccd_single (F : MvPowerSeries (Fin 2) K) (i : Fin 2) :
   simp
 
 /- English proof (translation)
-Rewrite using `[ccd_single, ccd_single, MvPowerSeries.coeff_pderiv, MvPowerSeries.coeff_pderiv, add_comm (Finsupp.single (1 : Fin 2) 1)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ccd_mixed (F : MvPowerSeries (Fin 2) K) :
     ccd 1 (MvPowerSeries.pderiv K 0 F) = ccd 0 (MvPowerSeries.pderiv K 1 F) := by
@@ -195,7 +195,7 @@ open Formalism.G.LogCR
 variable {K : Type u} [NormedField K] [IsUltrametricDist K] [CharZero K]
 
 /- English proof (translation)
-Introduce `j`. Use `fin_cases j`. Conclude with `MvPowerSeries.constantCoeff_X _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hb : ∀ j, MvPowerSeries.constantCoeff
     ((![PowerSeries.X, (0 : PowerSeries K)] : Fin 2 → PowerSeries K) j) = 0 := by
@@ -205,7 +205,7 @@ theorem hb : ∀ j, MvPowerSeries.constantCoeff
   · simp
 
 /- English proof (translation)
-Unfold `Formalism.ELL.omegaF`. Conclude with `Formalism.G.LogP.constantCoeff_subst_of_zero _ hb`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cc_omega (F : FormalGroup (Formalism.G.unitBall K)) :
     PowerSeries.constantCoeff (omegaF F) = ccd 1 (FK F).toPowerSeries := by
@@ -213,18 +213,18 @@ theorem cc_omega (F : FormalGroup (Formalism.G.unitBall K)) :
   exact Formalism.G.LogP.constantCoeff_subst_of_zero _ hb
 
 /- English proof (translation)
-Use `show MvPowerSeries.pderiv K () (MvPowerSeries.X ()) = 1`. Simplify using `[MvPowerSeries.pderiv_X]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pd_unit_X : MvPowerSeries.pderiv K () (PowerSeries.X : PowerSeries K) = 1 := by
   show MvPowerSeries.pderiv K () (MvPowerSeries.X ()) = 1
   simp [MvPowerSeries.pderiv_X]
 
 /- English proof (translation)
-Establish `hd : ∀ g : PowerSeries K, PowerSeries.derivative K g = MvPowerSeries.pderiv K () g`. Introduce `g`. Use extensionality with `n`. Rewrite using `[PowerSeries.coeff_derivative]`. Use `show _ = MvPowerSeries.coeff (Finsupp.single () n) (MvPowerSeries.pderiv K () g)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPowerSeries.coeff_pderiv, ← Finsupp.single_add]`. Simplify using `only [Finsupp.single_eq_same]`. Both sides reduce to the same expression. Rewrite using `[hd]`. Express the relevant statement in the definitionally equal form `MvPowerSeries.constantCoeff (MvPowerSeries.pderiv K () (Formalism.ELL.omegaF F)) = _`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.ELL.omegaF`. Rewrite using `[pderiv_subst hb, Fin.sum_univ_two]`. Simplify using `only [map_add, map_mul, Formalism.G.LogP.constantCoeff_subst_of_zero _ hb, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, pd_unit_X, map_zero, mul_zero, add_zero, map_one, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cc_domega (F : FormalGroup (Formalism.G.unitBall K)) :
     PowerSeries.constantCoeff (PowerSeries.derivative K (omegaF F)) =
@@ -246,7 +246,7 @@ theorem cc_domega (F : FormalGroup (Formalism.G.unitBall K)) :
   rfl
 
 /- English proof (translation)
-Unfold `Formalism.ELL.invD`. Use `show PowerSeries.constantCoeff (Formalism.ELL.omegaF F * PowerSeries.derivative K (Formalism.ELL.omegaF F * PowerSeries.derivative K φ)) = _`. Rewrite using `[map_mul, Derivation.leibniz]`. Simplify using `only [map_add, map_mul, smul_eq_mul, cc_omega, cc_domega]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem constantCoeff_second_derivative_law (F : FormalGroup (Formalism.G.unitBall K)) (φ : PowerSeries K) :
     PowerSeries.constantCoeff ((invD F)^[2] φ) =
@@ -263,14 +263,14 @@ theorem constantCoeff_second_derivative_law (F : FormalGroup (Formalism.G.unitBa
   ring
 
 /- English proof (translation)
-Rewrite using `[ccd_single]`. Simplify using `[Formalism.ELL.FK, FormalGroup.map, MvPowerSeries.coeff_map, F.lin_coeff_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem linearCoeff_zero_formal_group_law (F : FormalGroup (Formalism.G.unitBall K)) : ccd 0 (FK F).toPowerSeries = 1 := by
   rw [ccd_single]
   simp [Formalism.ELL.FK, FormalGroup.map, MvPowerSeries.coeff_map, F.lin_coeff_X]
 
 /- English proof (translation)
-Rewrite using `[ccd_single]`. Simplify using `[Formalism.ELL.FK, FormalGroup.map, MvPowerSeries.coeff_map, F.lin_coeff_Y]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem linearCoeff_one_formal_group_law (F : FormalGroup (Formalism.G.unitBall K)) : ccd 1 (FK F).toPowerSeries = 1 := by
   rw [ccd_single]
@@ -283,25 +283,25 @@ namespace Formalism.ELL
 open Formalism.G Formalism.ELL.FormalGroupQuadraticJets Formalism.G.LogCR
 
 /- English proof (translation)
-Introduce `K _ _ _ F φ a a' ha ha' hG`. Establish `ha0 : PowerSeries.constantCoeff a = 0` using `ha.1`. Establish `ha0' : PowerSeries.constantCoeff a' = 0` using `ha'.1`. Establish `hβ : ∀ x y : MvPowerSeries (Fin 2) K, betaF F φ x y = φ.subst (MvPowerSeries.subst ![x, y] (FK F).toPowerSeries) - φ.subst x - φ.subst y` using `fun x y => rfl`. Establish `cX0 : MvPowerSeries.constantCoeff (MvPowerSeries.X (0 : Fin 2) : MvPowerSeries (Fin 2) K) = 0` using `MvPowerSeries.constantCoeff_X _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `constantCoeff_threeGroupsFirstVariables_eq_zero : MvPowerSeries.constantCoeff (MvPowerSeries.X (1 : Fin 2) : MvPowerSeries (Fin 2) K) = 0` using `MvPowerSeries.constantCoeff_X _`. Establish `cu : MvPowerSeries.constantCoeff (a.subst (MvPowerSeries.X (0 : Fin 2) : MvPowerSeries (Fin 2) K)) = 0`. Rewrite using `[cc_psubst cX0]`. Conclude with `ha0`. Establish `cv : MvPowerSeries.constantCoeff (a'.subst (MvPowerSeries.X (1 : Fin 2) : MvPowerSeries (Fin 2) K)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cc_psubst constantCoeff_threeGroupsFirstVariables_eq_zero]`. Conclude with `ha0'`. Establish `hX00 : ccd 0 (MvPowerSeries.X (0 : Fin 2) : MvPowerSeries (Fin 2) K) = 1`. Rewrite using `[ccd_single, MvPowerSeries.coeff_X, if_pos rfl]`. Establish `hX10 : ccd 1 (MvPowerSeries.X (0 : Fin 2) : MvPowerSeries (Fin 2) K) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ccd_single, MvPowerSeries.coeff_X, if_neg]`. Rewrite using `[Finsupp.single_left_inj one_ne_zero]`. Evaluate the decidable proposition. Establish `hX01 : ccd 0 (MvPowerSeries.X (1 : Fin 2) : MvPowerSeries (Fin 2) K) = 0`. Rewrite using `[ccd_single, MvPowerSeries.coeff_X, if_neg]`.
+Evaluate the decidable proposition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 
-Rewrite using `[Finsupp.single_left_inj one_ne_zero]`. Evaluate the decidable proposition. Establish `hX11 : ccd 1 (MvPowerSeries.X (1 : Fin 2) : MvPowerSeries (Fin 2) K) = 1`. Rewrite using `[ccd_single, MvPowerSeries.coeff_X, if_pos rfl]`. Establish `hQX : ∀ j : Fin 2, Q (MvPowerSeries.X j : MvPowerSeries (Fin 2) K) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `j`. Unfold `Q`. Rewrite using `[MvPowerSeries.pderiv_X]`. Apply the tactic sequence `fin_cases j <;> simp [Pi.single_apply, Derivation.map_one_eq_zero]`. Establish `cS : ∀ x y : MvPowerSeries (Fin 2) K, MvPowerSeries.constantCoeff x = 0 → MvPowerSeries.constantCoeff y = 0 → MvPowerSeries.constantCoeff (MvPowerSeries.subst ![x, y] (FK F).toPowerSeries) = 0`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y hx hy`. Rewrite using `[Formalism.G.LogP.constantCoeff_subst_of_zero _ (hv hx hy)]`. Conclude with `(FK F).zero_constantCoeff`. Establish `h1 : Q (betaF F φ (a.subst (MvPowerSeries.X (0 : Fin 2) : MvPowerSeries (Fin 2) K)) (MvPowerSeries.X 1)) = PowerSeries.coeff 1 a * (PowerSeries.constantCoeff (PowerSeries.derivative K (PowerSeries.derivative K φ)) + PowerSeries.constantCoeff (PowerSeries.derivative K φ) * ccd 0 ( …`. Rewrite using `[hβ, Q_sub, Q_sub, Q_phi φ (cS _ _ cu constantCoeff_threeGroupsFirstVariables_eq_zero), Q_phi φ cu, Q_phi φ constantCoeff_threeGroupsFirstVariables_eq_zero, ccd_F _ cu constantCoeff_threeGroupsFirstVariables_eq_zero, ccd_F _ cu constantCoeff_threeGroupsFirstVariables_eq_zero, Q_F …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [linearCoeff_zero_formal_group_law, linearCoeff_one_formal_group_law, linearCoeff_zero_subst_X0, linearCoeff_one_subst_X0, quadraticJet_subst_X0, hX01, hX11, hQX, ccd_mixed]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : Q (betaF F φ (MvPowerSeries.X 0) (a'.subst (MvPowerSeries.X (1 : Fin 2) : MvPowerSeries (Fin 2) K))) = PowerSeries.coeff 1 a' * (PowerSeries.constantCoeff (PowerSeries.derivative K (PowerSeries.derivative K φ)) + PowerSeries.constantCoeff (PowerSeries.derivative K φ) * ccd 0 …`. Rewrite using `[hβ, Q_sub, Q_sub, Q_phi φ (cS _ _ cX0 cv), Q_phi φ cX0, Q_phi φ cv, ccd_F _ cX0 cv, ccd_F _ cX0 cv, Q_F _ cX0 cv]`. Simplify using `only [linearCoeff_zero_formal_group_law, linearCoeff_one_formal_group_law, linearCoeff_one_subst_X1, linearCoeff_zero_subst_X1, quadraticJet_subst_X1, hX00, hX10, hQX, ccd_mixed]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hQG` using `hN K (Fin 2) _ hG 0`. Establish `key : Q (betaF F φ (a.subst (MvPowerSeries.X (0 : Fin 2) : MvPowerSeries (Fin 2) K)) (MvPowerSeries.X 1) - betaF F φ (MvPowerSeries.X 0) (a'.subst (MvPowerSeries.X (1 : Fin 2) : MvPowerSeries (Fin 2) K))) = (PowerSeries.coeff 1 a - PowerSeries.coeff 1 a') * PowerSeries.constantCo …`. Rewrite using `[Q_sub, h1, h2, constantCoeff_second_derivative_law, linearCoeff_one_formal_group_law]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← key]`. Unfold `Q`. Rewrite using `[show ∀ Z : MvPowerSeries (Fin 2) K, MvPowerSeries.constantCoeff (MvPowerSeries.pderiv K 1 Z) = MvPowerSeries.coeff (Finsupp.single 1 1) Z from fun Z => ccd_single Z 1]`. Conclude with `hQG _`.
+A detailed English derivation is pending.
 -/
 theorem jetsTwo_of (hN : Formalism.ELL.NPderiv.{u}) : Formalism.ELL.JetsTwo.{u} := by
   intro K _ _ _ F φ a a' ha ha' hG

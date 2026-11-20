@@ -7,7 +7,7 @@ open Classical
 namespace GlobalTheory.FlagPush
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [shear, Matrix.transvection, Matrix.add_apply, Matrix.of_apply, Sigma.mk.inj_iff, heq_eq_eq, true_and]`. Rewrite using `[Matrix.single_apply]`. Simplify using `only [@eq_comm _ a i, @eq_comm _ b j]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem shear_self {ι : Type} {m : ι → ℕ} (τ : ι) (a b : Fin (m τ)) {R : Type} [CommRing R] (t : R) :
     shear τ a b t τ = Matrix.transvection a b t := by
@@ -17,7 +17,7 @@ theorem shear_self {ι : Type} {m : ι → ℕ} (τ : ι) (a b : Fin (m τ)) {R 
   simp only [@eq_comm _ a i, @eq_comm _ b j]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[shear, Sigma.mk.inj_iff, h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem shear_ne {ι : Type} {m : ι → ℕ} (τ : ι) (a b : Fin (m τ)) {R : Type} [CommRing R] (t : R) (σ : ι)
     (h : σ ≠ τ) : shear τ a b t σ = 1 := by
@@ -25,15 +25,15 @@ theorem shear_ne {ι : Type} {m : ι → ℕ} (τ : ι) (a b : Fin (m τ)) {R : 
   simp [shear, Sigma.mk.inj_iff, h]
 
 /- English proof (translation)
-Introduce `ι m τ a b hab R _ t`. Establish `hne : a ≠ b` using `hab.ne`. Use `⟨fun σ => ?_, ?_, ?_, fun S _ g => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[shear_self]`. Conclude with `Matrix.det_transvection_of_ne a b hne t`. Rewrite using `[shear_ne τ a b t σ h, Matrix.det_one]`. Use function extensionality and compare the values at `σ`. Rewrite using `[Pi.mul_apply, Pi.one_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Rewrite using `[shear_self, shear_self, Matrix.transvection_mul_transvection_same (h := hne), add_neg_cancel, Matrix.transvection_zero]`. Rewrite using `[shear_ne τ a b _ σ h, shear_ne τ a b _ σ h, mul_one]`. Use function extensionality and compare the values at `σ`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.one_apply]`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Rewrite using `[shear_self, Matrix.transvection_zero]`. Rewrite using `[shear_ne τ a b _ σ h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `σ i j`. Simplify using `only [Mat.map, shear, Matrix.map_apply, Matrix.add_apply, Matrix.of_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem shear_props : ∀ (ι : Type) (m : ι → ℕ) (τ : ι) (a b : Fin (m τ)), a < b → ∀ (R : Type) [CommRing R] (t : R), (∀ σ, (shear τ a b t σ).det = 1) ∧ shear τ a b t * shear τ a b (-t) = 1 ∧ shear τ a b (0 : R) = 1 ∧ ∀ (S : Type) [CommRing S] (g : R →+* S), (shear τ a b t).map g = shear τ a b (g t) := by
   intro ι m τ a b hab R _ t

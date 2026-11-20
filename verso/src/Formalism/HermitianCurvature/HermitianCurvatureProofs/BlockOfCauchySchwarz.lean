@@ -24,7 +24,7 @@ def blockK (a : α → α → ℂ) (w : α → β → ℂ) (b : β → β → �
     | .inr p, .inr q => b p q
 
 /- English proof (translation)
-Unfold `KB.BlockPSD blockK`. Conclude with `Iff.rfl`.
+Replace the relevant objects with their definitions. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem blockPSD_iff (a : α → α → ℂ) (w : α → β → ℂ) (b : β → β → ℂ) :
     KB.BlockPSD Y₁ Y₂ a w b ↔ TB.PSDOn (Y₁.disjSum Y₂) (blockK a w b) := by
@@ -32,9 +32,9 @@ theorem blockPSD_iff (a : α → α → ℂ) (w : α → β → ℂ) (b : β →
   exact Iff.rfl
 
 /- English proof (translation)
-Establish `hconj : (∑ x ∈ Y₂, ∑ y ∈ Y₁, conj (c (.inr x)) * conj (w y x) * c (.inl y)) = conj (∑ p ∈ Y₁, ∑ q ∈ Y₂, conj (c (.inl p)) * w p q * c (.inr q))`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [map_sum, map_mul, Complex.conj_conj]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [qf, Finset.sum_disjSum, blockK, Finset.sum_add_distrib]`. Rewrite using `[hconj]`. Simplify using `only [Complex.add_re, Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qf_block (a : α → α → ℂ) (w : α → β → ℂ) (b : β → β → ℂ) (c : α ⊕ β → ℂ) :
     (qf (Y₁.disjSum Y₂) (blockK a w b) c).re =
@@ -52,21 +52,21 @@ theorem qf_block (a : α → α → ℂ) (w : α → β → ℂ) (b : β → β 
   ring
 
 /- English proof (translation)
-Establish `hqf : ∀ c : γ → ℂ, qf Y k c = ∑ i : Y, ∑ j : Y, conj (c i) * k i j * c j`. Introduce `c`. Unfold `qf`. Rewrite using `[← Finset.sum_coe_sort Y]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_coe_sort Y]`. Establish `hsum : ∀ x : Y →₀ ℂ, (x.sum fun i xi => x.sum fun j xj => star xi * Matrix.of (fun x y : Y => k x y) i j * xj) = ∑ i : Y, ∑ j : Y, conj (x i) * k i j * x j`. Introduce `x`. Rewrite using `[Finsupp.sum_fintype _ _ (fun i => by simp)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finsupp.sum_fintype _ _ (fun j => by simp)]`. Both sides reduce to the same expression. Unfold `TB.PSDOn Matrix.PosSemidef`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hH, hpos⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨fun x hx y hy => ?_, fun c => ?_⟩` and prove the remaining obligations. Establish `h1` using `hH.apply ⟨y, hy⟩ ⟨x, hx⟩`. Conclude with `h1.symm`. Establish `h2` using `hpos (Finsupp.equivFunOnFinite.symm fun i : Y => c i)`. Rewrite `h2` using `[hsum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hqf]`. Simplify using `using (Complex.le_def.mp h2).1`. Introduce and unpack `⟨hh, hq⟩`. Use `⟨Matrix.IsHermitian.ext fun i j => ?_, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh j j.2 i i.2]`. Both sides reduce to the same expression. Rewrite using `[hsum]`. Establish `hre` using `hq (fun g => if h : g ∈ Y then x ⟨g, h⟩ else 0)`. Rewrite `hre` using `[hqf]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ∀ i : Y, (if h : (i : γ) ∈ Y then x ⟨i, h⟩ else 0) = x i` using `fun i => by simp`. Simplify using `only [hc] at hre`. Establish `him : (∑ i : Y, ∑ j : Y, conj (x i) * k i j * x j).im = 0`. Rewrite using `[← Complex.conj_eq_iff_im]`. Simplify using `only [map_sum, map_mul, Complex.conj_conj]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hh i i.2 j j.2, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `Complex.le_def.mpr ⟨by simpa using hre, by rw [Complex.zero_im, him]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem psd_iff_qf {γ : Type} (Y : Finset γ) (k : γ → γ → ℂ) :
     TB.PSDOn Y k ↔ (∀ x ∈ Y, ∀ y ∈ Y, k y x = conj (k x y)) ∧ ∀ c, 0 ≤ (qf Y k c).re := by
@@ -115,7 +115,7 @@ theorem psd_iff_qf {γ : Type} (Y : Finset γ) (k : γ → γ → ℂ) :
       exact Complex.le_def.mpr ⟨by simpa using hre, by rw [Complex.zero_im, him]⟩
 
 /- English proof (translation)
-Establish `h1` using `((psd_iff_qf _ _).1 ((blockPSD_iff Y₁ Y₂ a w b).1 h)).2 (Sum.elim c d)`. Rewrite `h1` using `[qf_block]`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem block_quad {a : α → α → ℂ} {w : α → β → ℂ} {b : β → β → ℂ} (h : KB.BlockPSD Y₁ Y₂ a w b)
     (c : α → ℂ) (d : β → ℂ) :
@@ -127,7 +127,7 @@ theorem block_quad {a : α → α → ℂ} {w : α → β → ℂ} {b : β → �
 end block
 
 /- English proof (translation)
-Establish `hAB : 0 ≤ A + B` using `by linarith`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use polynomial arithmetic with `[sq_nonneg (A - B), mul_nonneg hAB hx]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem cross_le {A B x : ℝ} (hA : 0 ≤ A) (hB : 0 ≤ B) (h : x ^ 2 ≤ A * B) (hx : 0 ≤ x) : 2 * x ≤ A + B := by
   have hAB : 0 ≤ A + B := by linarith
@@ -136,19 +136,19 @@ theorem cross_le {A B x : ℝ} (hA : 0 ≤ A) (hB : 0 ≤ B) (h : x ^ 2 ≤ A * 
   nlinarith [sq_nonneg (A - B), mul_nonneg hAB hx]
 
 /- English proof (translation)
-Introduce `α β Y₁ Y₂ a w b ha hb hcs`. Establish `ha'` using `(psd_iff_qf Y₁ a).1 ha`. Establish `hb'` using `(psd_iff_qf Y₂ b).1 hb`. Rewrite using `[blockPSD_iff, psd_iff_qf]`. Use `⟨fun x hx y hy => ?_, fun c => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rcases x with p | q <;> rcases y with p' | q'`. Simplify `ha'.1 p (by simpa using hx) p' (by simpa using hy)` using `[blockK]`. Simplify using `[blockK]`. Simplify using `[blockK]`. Simplify `hb'.1 q (by simpa using hx) q' (by simpa using hy)` using `[blockK]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[qf_block] set X := ∑ p ∈ Y₁, ∑ q ∈ Y₂, conj (c (.inl p)) * w p q * c (.inr q) with hX`. Establish `hA` using `ha'.2 (fun p => c (.inl p))`. Establish `hB` using `hb'.2 (fun q => c (.inr q))`. Establish `h1` using `hcs (fun p => conj (c (.inl p))) (fun q => conj (c (.inr q)))`. Establish `eX : (∑ p ∈ Y₁, ∑ q ∈ Y₂, conj (c (.inl p)) * conj (conj (c (.inr q))) * w p q) = X`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hX]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Establish `eA : (∑ p ∈ Y₁, ∑ p' ∈ Y₁, conj (c (.inl p)) * conj (conj (c (.inl p'))) * a p p') = qf Y₁ a (fun p => c (.inl p))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [qf, Complex.conj_conj]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `eB : (∑ q ∈ Y₂, ∑ q' ∈ Y₂, conj (c (.inr q)) * conj (conj (c (.inr q'))) * b q q') = qf Y₂ b (fun q => c (.inr q))`. Simplify using `only [qf, Complex.conj_conj]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[eX, eA, eB]`. Establish `hx` using `cross_le hA hB h1 (norm_nonneg X)`. Establish `hre : -‖X‖ ≤ X.re`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Complex.normSq_eq_norm_sq X`. Rewrite `h2` using `[Complex.normSq_apply]`. Use polynomial arithmetic with `[sq_nonneg X.im, norm_nonneg X]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem block_of_cauchy_schwarz : KB.BlockOfCS := by
   intro α β Y₁ Y₂ a w b ha hb hcs
@@ -190,7 +190,7 @@ theorem block_of_cauchy_schwarz : KB.BlockOfCS := by
     linarith
 
 /- English proof (translation)
-Rewrite `*` using `[blockPSD_iff]`. Use `Jx7.psd_congr ?_ (Jx7.psd_mul h h')` and prove the remaining obligations. Introduce `x _ y _`. Apply the tactic sequence `rcases x with p | q <;> rcases y with p' | q' <;> simp [blockK, map_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem blockPSD_mul {α β : Type} {Y₁ : Finset α} {Y₂ : Finset β} {a a' : α → α → ℂ} {w w' : α → β → ℂ}
     {b b' : β → β → ℂ} (h : KB.BlockPSD Y₁ Y₂ a w b) (h' : KB.BlockPSD Y₁ Y₂ a' w' b') :
@@ -201,9 +201,9 @@ theorem blockPSD_mul {α β : Type} {Y₁ : Finset α} {Y₂ : Finset β} {a a' 
   rcases x with p | q <;> rcases y with p' | q' <;> simp [blockK, map_mul]
 
 /- English proof (translation)
-Rewrite using `[blockPSD_iff, psd_iff_qf]`. Use `⟨fun x _ y _ => ?_, fun c => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `cases x <;> cases y <;> simp [blockK]`. Establish `hq : qf (Y₁.disjSum Y₂) (blockK (fun _ _ => (1 : ℂ)) (fun _ _ => 1) (fun _ _ => 1)) c = conj (∑ x ∈ Y₁.disjSum Y₂, c x) * ∑ x ∈ Y₁.disjSum Y₂, c x`. Unfold `qf`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_sum, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun x _ => Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases x <;> cases y <;> simp [blockK]`. Rewrite using `[hq, ← Complex.normSq_eq_conj_mul_self]`. Simplify using `[Complex.normSq_nonneg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blockPSD_ones {α β : Type} (Y₁ : Finset α) (Y₂ : Finset β) :
     KB.BlockPSD Y₁ Y₂ (fun _ _ => 1) (fun _ _ => 1) (fun _ _ => 1) := by
@@ -220,9 +220,9 @@ theorem blockPSD_ones {α β : Type} (Y₁ : Finset α) (Y₂ : Finset β) :
     simp [Complex.normSq_nonneg]
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using `using blockPSD_ones Y₁ Y₂`. Introduce `v t hv ih h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.prod_insert hv]`. Conclude with `blockPSD_mul (h v (Finset.mem_insert_self v t)) (ih fun u hu => h u (Finset.mem_insert_of_mem hu))`.
+A detailed English derivation is pending.
 -/
 theorem blockPSD_prod {α β ι : Type} {Y₁ : Finset α} {Y₂ : Finset β} (s : Finset ι) (a : ι → α → α → ℂ)
     (w : ι → α → β → ℂ) (b : ι → β → β → ℂ) (h : ∀ v ∈ s, KB.BlockPSD Y₁ Y₂ (a v) (w v) (b v)) :
@@ -238,25 +238,25 @@ theorem blockPSD_prod {α β ι : Type} {Y₁ : Finset α} {Y₂ : Finset β} (s
     exact blockPSD_mul (h v (Finset.mem_insert_self v t)) (ih fun u hu => h u (Finset.mem_insert_of_mem hu))
 
 /- English proof (translation)
-Establish `key : ∀ u v : ℂ, 0 ≤ Complex.normSq u * (∑ p ∈ Y₁, ∑ p' ∈ Y₁, a p p').re + Complex.normSq v * (∑ q ∈ Y₂, ∑ q' ∈ Y₂, b q q').re + 2 * (conj u * v * ∑ p ∈ Y₁, ∑ q ∈ Y₂, w p q).re`. Introduce `u v`. Establish `h1` using `block_quad Y₁ Y₂ h (fun _ => u) (fun _ => v)`. Establish `e1 : qf Y₁ a (fun _ => u) = conj u * u * ∑ p ∈ Y₁, ∑ p' ∈ Y₁, a p p'`. Simplify using `only [qf]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : qf Y₂ b (fun _ => v) = conj v * v * ∑ q ∈ Y₂, ∑ q' ∈ Y₂, b q q'`. Simplify using `only [qf]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `e3 : (∑ p ∈ Y₁, ∑ q ∈ Y₂, conj u * w p q * v) = conj u * v * ∑ p ∈ Y₁, ∑ q ∈ Y₂, w p q`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[e1, e2, e3, ← Complex.normSq_eq_conj_mul_self, ← Complex.normSq_eq_conj_mul_self, Complex.re_ofReal_mul, Complex.re_ofReal_mul]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `set S := ∑ p ∈ Y₁, ∑ q ∈ Y₂, w p q with hS`. Distinguish the cases in `h0 : S = 0`. Establish `k1` using `key 1 (-1)`. Rewrite `k1` using `[h0]`. Simplify using `at k1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0, norm_zero]`. Simplify using `only [Complex.re_sum]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hn : 0 < ‖S‖` using `norm_pos_iff.mpr h0`. Establish `k2` using `key S (-(‖S‖ : ℂ))`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hns : Complex.normSq S = ‖S‖ ^ 2` using `Complex.normSq_eq_norm_sq S`. Establish `hnr : Complex.normSq (-(‖S‖ : ℂ)) = ‖S‖ ^ 2`. Rewrite using `[Complex.normSq_neg, Complex.normSq_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcr : (conj S * -(‖S‖ : ℂ) * S).re = -(‖S‖ ^ 3)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : conj S * -(‖S‖ : ℂ) * S = -((‖S‖ : ℂ) * (Complex.normSq S : ℂ))`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hns, Complex.neg_re, Complex.re_ofReal_mul, Complex.ofReal_re]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite `k2` using `[hns, hnr, hcr]`. Use polynomial arithmetic with `[mul_pos hn hn, k2]`.
+A detailed English derivation is pending.
 -/
 theorem block_cross_le {α β : Type} {Y₁ : Finset α} {Y₂ : Finset β} {a : α → α → ℂ} {w : α → β → ℂ}
     {b : β → β → ℂ} (h : KB.BlockPSD Y₁ Y₂ a w b) :
@@ -313,7 +313,7 @@ theorem block_cross_le {α β : Type} {Y₁ : Finset α} {Y₂ : Finset β} {a :
     nlinarith [mul_pos hn hn, k2]
 
 /- English proof (translation)
-Introduce `ι α β _ Y₁ Y₂ κa κw κb a w b hκ hv`. Conclude with `block_cross_le (blockPSD_mul hκ (blockPSD_prod Finset.univ a w b (fun v _ => hv v)))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem blockSchur_true : KB.BlockSchur := by
   intro ι α β _ Y₁ Y₂ κa κw κb a w b hκ hv

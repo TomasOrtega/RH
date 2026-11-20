@@ -14,14 +14,14 @@ abbrev dI (I : Cx R) (U : Scheme.{0}) (s : ℤ) : Sec (I.X s) U →ₗ[ULift.{1}
   ((I.d s (s + 1)).hom.app (op U)).hom
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun f => ((f.hom.app (op U)).hom a)) (I.d_comp_d s (s + 1) (s + 1 + 1))`. Conclude with `h.trans (by simp)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dI_dI (I : Cx R) (U : Scheme.{0}) (s : ℤ) (a : Sec (I.X s) U) : dI I U (s + 1) (dI I U s a) = 0 := by
   have h := congrArg (fun f => ((f.hom.app (op U)).hom a)) (I.d_comp_d s (s + 1) (s + 1 + 1))
   exact h.trans (by simp)
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun f => ModuleCat.Hom.hom f a) ((I.d s (s + 1)).hom.naturality g.op)`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dI_res (I : Cx R) {V U : Scheme.{0}} (g : V ⟶ U) (s : ℤ) (a : Sec (I.X s) U) :
     dI I V s (((I.X s).obj.map g.op).hom a) = ((I.X (s + 1)).obj.map g.op).hom (dI I U s a) := by
@@ -40,7 +40,7 @@ def dT (I J : Cx R) (U : Scheme.{0}) (w : ℤ) : Tens I J U w →ₗ[ULift.{1} R
       TensorProduct.map LinearMap.id (dI J U p.1.2)))
 
 /- English proof (translation)
-Rewrite using `[← DirectSum.lof_eq_of (ULift.{1} R), dT, DirectSum.toModule_lof]`. Simplify using `[DirectSum.lof_eq_of]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dT_of (I J : Cx R) (U : Scheme.{0}) (s t w : ℤ) (h : s + t = w) (a : Sec (I.X s) U) (b : Sec (J.X t) U) :
     dT I J U w (DirectSum.of (fun q : {q : ℤ × ℤ // q.1 + q.2 = w} => Sec (I.X q.1.1) U ⊗[ULift.{1} R] Sec (J.X q.1.2) U)
@@ -53,9 +53,9 @@ theorem dT_of (I J : Cx R) (U : Scheme.{0}) (s t w : ℤ) (h : s + t = w) (a : S
   simp [DirectSum.lof_eq_of]
 
 /- English proof (translation)
-Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce and unpack `⟨⟨s, t⟩, h⟩`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `only [LinearMap.comp_apply, DirectSum.lof_eq_of, LinearMap.zero_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[dT_of, map_add, map_zsmul, dT_of, dT_of]`. Simplify using `[dI_dI, Int.negOnePow_succ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dT_dT (I J : Cx R) (U : Scheme.{0}) (w : ℤ) : (dT I J U (w + 1)).comp (dT I J U w) = 0 := by
   apply DirectSum.linearMap_ext; rintro ⟨⟨s, t⟩, h⟩; apply TensorProduct.ext'; intro a b
@@ -64,7 +64,7 @@ theorem dT_dT (I J : Cx R) (U : Scheme.{0}) (w : ℤ) : (dT I J U (w + 1)).comp 
   simp [dI_dI, Int.negOnePow_succ]
 
 /- English proof (translation)
-Rewrite using `[← DirectSum.lof_eq_of (ULift.{1} R), Tens.res, DirectSum.lmap_lof, TensorProduct.map_tmul, DirectSum.lof_eq_of]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_of (I J : Cx R) {V U : Scheme.{0}} (g : V ⟶ U) (s t w : ℤ) (h : s + t = w)
     (a : Sec (I.X s) U) (b : Sec (J.X t) U) :
@@ -75,9 +75,9 @@ theorem res_of (I J : Cx R) {V U : Scheme.{0}} (g : V ⟶ U) (s t w : ℤ) (h : 
   rw [← DirectSum.lof_eq_of (ULift.{1} R), Tens.res, DirectSum.lmap_lof, TensorProduct.map_tmul, DirectSum.lof_eq_of]
 
 /- English proof (translation)
-Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce and unpack `⟨⟨s, t⟩, h⟩`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `only [LinearMap.comp_apply, DirectSum.lof_eq_of, LinearMap.id_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[res_of]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem res_id (I J : Cx R) (U : Scheme.{0}) (w : ℤ) : Tens.res (I := I) (J := J) (𝟙 U) w = LinearMap.id := by
   apply DirectSum.linearMap_ext; rintro ⟨⟨s, t⟩, h⟩; apply TensorProduct.ext'; intro a b
@@ -86,9 +86,9 @@ theorem res_id (I J : Cx R) (U : Scheme.{0}) (w : ℤ) : Tens.res (I := I) (J :=
   simp
 
 /- English proof (translation)
-Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce and unpack `⟨⟨s, t⟩, h⟩`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `only [LinearMap.comp_apply, DirectSum.lof_eq_of]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[res_of, res_of, res_of]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem res_comp (I J : Cx R) {W V U : Scheme.{0}} (f : W ⟶ V) (g : V ⟶ U) (w : ℤ) :
     Tens.res (I := I) (J := J) (f ≫ g) w = Tens.res f w ∘ₗ Tens.res g w := by
@@ -98,9 +98,9 @@ theorem res_comp (I J : Cx R) {W V U : Scheme.{0}} (f : W ⟶ V) (g : V ⟶ U) (
   simp
 
 /- English proof (translation)
-Apply `DirectSum.linearMap_ext` to reduce the goal to its premises. Introduce and unpack `⟨⟨s, t⟩, h⟩`. Apply `TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `only [LinearMap.comp_apply, DirectSum.lof_eq_of]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[res_of, dT_of, dT_of, map_add, map_zsmul, res_of, res_of, dI_res, dI_res]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dT_res (I J : Cx R) {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) :
     dT I J V w ∘ₗ Tens.res g w = Tens.res g (w + 1) ∘ₗ dT I J U w := by
@@ -128,7 +128,7 @@ def dN (I J : Cx R) (w : ℤ) : PF I J w ⟶ PF I J (w + 1) where
     exact dT_res I J g.unop w
 
 /- English proof (translation)
-Use extensionality with `U : 2`. Apply `ModuleCat.hom_ext` to reduce the goal to its premises. Simplify using `only [NatTrans.comp_app, dN, NatTrans.app_zero, ModuleCat.hom_zero]`. Conclude with `dT_dT I J U.unop w`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dN_dN (I J : Cx R) (w : ℤ) : dN I J w ≫ dN I J (w + 1) = 0 := by
   ext U : 2
@@ -153,7 +153,7 @@ end
 end TTP
 
 /- English proof (translation)
-Introduce `_ _ I J` and use `⟨TTP.tensPre I J⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem tt_tens_pre_of : tt_tens_pre := fun _ _ I J => ⟨TTP.tensPre I J⟩
 

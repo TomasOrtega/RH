@@ -26,9 +26,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SqTower
 
 /- English proof (translation)
-Take `⟨F1, h1⟩` from `h₁`. Take `⟨F2, h2⟩` from `h₂`. Use `⟨max F1 F2, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C1, x1, k1⟩` from `h1 ε CF (le_of_max_le_left hCF)`. Take `⟨C2, x2, k2⟩` from `h2 ε CF (le_of_max_le_right hCF)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨max C1 C2, max x1 x2, fun C hC D large₂ he hx hR T Lc μ₀ hμ G => ⟨k1 C (le_of_max_le_left hC) D large₂ he (le_of_max_le_left hx) hR T Lc μ₀ hμ G, k2 C (le_of_max_le_right hC) D large₂ he (le_of_max_le_right hx) hR T Lc μ₀ hμ G⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem gbig_and {Q₁ Q₂ : GP} (h₁ : GBig Q₁) (h₂ : GBig Q₂) : GBig (fun G μ C x b => Q₁ G μ C x b ∧ Q₂ G μ C x b) := by
   obtain ⟨F1, h1⟩ := h₁
@@ -41,7 +41,7 @@ theorem gbig_and {Q₁ Q₂ : GP} (h₁ : GBig Q₁) (h₂ : GBig Q₂) : GBig (
       k2 C (le_of_max_le_right hC) D large₂ he (le_of_max_le_right hx) hR T Lc μ₀ hμ G⟩⟩
 
 /- English proof (translation)
-Take `⟨F, h⟩` from `h`. Use `⟨F, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, x0, k⟩` from `h ε CF hCF`. Conclude with `⟨C0, x0, fun C hC D large₂ he hx hR T Lc μ₀ hμ G => H G μ₀ C _ _ hμ (k C hC D large₂ he hx hR T Lc μ₀ hμ G)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gbig_mono {Q₁ Q₂ : GP} (h : GBig Q₁)
     (H : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (μ₀ : T) (C x b : ℝ),
@@ -56,9 +56,9 @@ section Units
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Take `⟨a, k, k', ⟨b, hb⟩, e⟩` from `h`. Use `⟨(m : 𝓞 K) ^ k * b, k', k + k', ⟨a, by rw [pow_add, hb]; ring⟩, ?_⟩` and prove the remaining obligations. Establish `e2 : ((m : 𝓞 K) : K) ^ k' = (a : K) * (b : K)`. Rewrite using `[← map_pow, hb]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e3 : ((m : 𝓞 K) : K) = (m : K)` using `by simp`. Rewrite `e2` using `[e3]`. Rewrite using `[e2, ← e]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -74,14 +74,14 @@ theorem isAwayUnit_inv {m : ℕ} {x : K} (h : GlobalTheory.Square.IsAwayUnit m x
   field_simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, fun _ => 1, fun _ => 1, GlobalTheory.Square.IsAwayUnit.one Qn, fun _ _ => ⟨one_dvd _, one_dvd _⟩, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem stepRatio_self {T' : Type} (σ₀ : K →+* ℂ) (Qn : ℕ) (S0 : Finset T') (cc qq : T' → ℕ) (x : ℂ) :
     GlobalTheory.Square.StepRatio σ₀ Qn S0 cc qq x x :=
   ⟨1, fun _ => 1, fun _ => 1, GlobalTheory.Square.IsAwayUnit.one Qn, fun _ _ => ⟨one_dvd _, one_dvd _⟩, by simp⟩
 
 /- English proof (translation)
-Take `⟨b, g, g', hb, hg, e⟩` from `h`. Conclude with `⟨b, g, g', hb, hg, by rw [e, mul_div_assoc, div_self h₀]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem stepRatio_div {T' : Type} {σ₀ : K →+* ℂ} {Qn : ℕ} {S0 : Finset T'} {cc qq : T' → ℕ} {y y₀ : ℂ}
     (h : GlobalTheory.Square.StepRatio σ₀ Qn S0 cc qq y y₀) (h₀ : y₀ ≠ 0) : GlobalTheory.Square.StepRatio σ₀ Qn S0 cc qq (y / y₀) 1 := by
@@ -124,27 +124,27 @@ Both sides reduce to the same expression.
 theorem cons_succ (y : T → ℂ) (u : ℕ → T → ℂ) (k : ℕ) : cons y u (k + 1) = u k := rfl
 
 /- English proof (translation)
-Introduce `q`. Proceed by induction on `q with`. Consider the case `zero`. Introduce `p`. Proceed by induction on `p with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `e A A' WW X c hX hc _ _`. Use `⟨A, A', WW, X, c, fun _ _ => 1, 1, hX, hc, one_ne_zero, fun k t => ⟨one_ne_zero, stepRatio_self _ _ _ _ _ _⟩, fun t => by simp⟩` and prove the remaining obligations. Consider the case `succ p ih`. Introduce `e A A' WW X c hX hc he hpe`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨lam, hl⟩` from `hF i j _ _ A A' WW X hX`. Take `⟨κ₁, hκ₁, e1⟩` from `hl.eq_mul hc`. Take `⟨B, B', W₁, Y, cY', y, hY, hcY', hy, hyr⟩` from `hb i j p A A' WW X lam e Lf hX hl he hL`. Establish `hr : B.rank = B'.rank + 2 * (e - 1)`. Take `⟨-, -, a1, a2, -⟩` from `hX`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, b1, b2, -⟩` from `hY`. Use linear arithmetic over natural numbers and integers. Take `⟨B₂, B₂', W₂, Y₂, cY, u, κ, hY₂, hcY, hκ, hu, hid⟩` from `ih (e - 1) Y cY' hY hcY' hr (by omega)`. Use `⟨B₂, B₂', W₂, Y₂, cY, cons y u, κ₁ * κ, hY₂, hcY, mul_ne_zero hκ₁ hκ, fun k t => ?_, fun t => ?_⟩` and prove the remaining obligations. Break down `k with _ | k` into its components or cases.
+Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨(hy t).1, hyr t⟩`. Conclude with `hu k t`. Establish `h1` using `hid t`. Establish `h2` using `(hy t).2`. Simplify using `only [range_zero, prod_empty, mul_one, add_zero] at h1 ⊢`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [prod_range_succ', cons_succ, cons_zero, Nat.sub_zero]`. Establish `e3 : ∏ k ∈ range p, Lf t ((e - (k + 1) : ℕ) : ℂ) = ∏ k ∈ range p, Lf t ((e - 1 - k : ℕ) : ℂ)` using `prod_congr rfl fun k _ => by rw [show e - (k + 1) = e - 1 - k by omega]`. Rewrite using `[e3, e1 t]`. Take the linear combination `κ₁ * h2 + (κ₁ * y t * Lf t (e : ℂ)) * h1`. Consider the case `succ q ih`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p e A A' WW X c hX hc he hpe`. Take `⟨lam, hl⟩` from `hF i j _ _ A A' WW X hX`. Take `⟨κ₁, hκ₁, e1⟩` from `hl.eq_mul hc`. Take `⟨B, B', W₁, Y, cY', y, hY, hcY', hy, hyr⟩` from `hs i j p q A A' WW X lam e Lf hX hl he hL`. Establish `hr : B.rank = B'.rank + 2 * (e + 1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, a1, a2, -⟩` from `hX`. Take `⟨-, -, b1, b2, -⟩` from `hY`. Use linear arithmetic over natural numbers and integers. Take `⟨B₂, B₂', W₂, Y₂, cY, u, κ, hY₂, hcY, hκ, hu, hid⟩` from `ih p (e + 1) Y cY' hY hcY' hr (by omega)`. Use `⟨B₂, B₂', W₂, Y₂, cY, cons y u, κ₁ * κ, hY₂, hcY, mul_ne_zero hκ₁ hκ, fun k t => ?_, fun t => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `k with _ | k` into its components or cases. Conclude with `⟨(hy t).1, hyr t⟩`. Conclude with `hu k t`. Establish `h1` using `hid t`. Establish `h2` using `(hy t).2`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[show p + (q + 1) = p + q + 1 by omega]`. Simplify using `only [prod_range_succ', cons_succ, cons_zero]`. Establish `e3 : ∏ k ∈ range q, Lf t ((e + (k + 1) + 1 : ℕ) : ℂ) = ∏ k ∈ range q, Lf t ((e + 1 + k + 1 : ℕ) : ℂ)` using `prod_congr rfl fun k _ => by rw [show e + (k + 1) + 1 = e + 1 + k + 1 by omega]`. Establish `e4 : ∏ k ∈ range p, Lf t ((e + (q + 1) - k : ℕ) : ℂ) = ∏ k ∈ range p, Lf t ((e + 1 + q - k : ℕ) : ℂ)` using `prod_congr rfl fun k _ => by rw [show e + (q + 1) - k = e + 1 + q - k by omega]`. Simplify using `only [add_zero] at e3 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[e3, e4, e1 t]`. Take the linear combination `(κ₁ * ∏ k ∈ range q, Lf t ((e + 1 + k + 1 : ℕ) : ℂ)) * h2 + (κ₁ * y t) * h1`.
+A detailed English derivation is pending.
 -/
 theorem descent (hF : FacIn W) (hs : SmallIn W μ₀) (hb : BigIn W μ₀) (i j : Fin D.R.m) (Lf : T → ℂ → ℂ)
     (hL : ∀ t, IsHeckeL (nuH G t i j) (Lf t)) :
@@ -222,33 +222,33 @@ namespace GlobalTheory.SqTower
 open GlobalTheory.SqTower
 
 /- English proof (translation)
-Introduce `hP hK hM hL`. Establish `H` using `gbig_and (GlobalTheory.T.exists_stage_constant_triangle hP hK hM) (gbig_and (GlobalTheory.T.exists_factor_of_stage_triangle hP hK hM) (gbig_and (GlobalTheory.T.stage_triangle_factor_step_second hP hK hM) (gbig_and (GlobalTheory.T.stage_triangle_factor_step_first hP hK hM) (gbig_a …`. Unfold `Tower`. Use `gbig_mono H ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b hμ hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨htop, hfac, hsm, hbig, hbot, hlne⟩` from `hQ`. Introduce `W S ρ hψ hN i j t c c₀ A A' WW X c0 Λ Λ₀ hnz hc hnz₀ hc₀ hX hc0 hΛ hΛ₀`. Use `choose Lf hLf using (hlne i j).1`. Establish `eΛ : Λ = Lf t` using `hΛ.unique (hLf t).1`. Establish `eΛ₀ : Λ₀ = Lf μ₀` using `hΛ₀.unique (hLf μ₀).1`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `eΛ eΛ₀` using the available equality. Establish `rk` using `ranks_exact D i j`. Take `⟨u1, hu1⟩` from `D.R.t_odd`. Take `⟨v1, hv1⟩` from `odd_sLen D`. Establish `e2 : rankV D (↑i + 1) (↑j + 1) = rankV D ↑i ↑j + D.R.t + sLen D` using `by simp only [rankV]; ring`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `D.R.three_m_lt_t`. Establish `hm : D.R.m ≤ rankV D ↑i ↑j`. Use `D.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [rankV]`. Unfold `Ranks.r`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hpp : pp D j ≤ D.R.m` using `by unfold pp; omega`. Establish `hqq : qq D j ≤ D.R.m` using `by unfold qq; omega`. Establish `hpe : pp D j ≤ eTop D i j` using `by unfold eTop; omega`. Establish `hqh : eTop D i j + qq D j ≤ halfRank D i j` using `by unfold eTop; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨A1, A1', WW1, X1, ct, κT, hst, hct, hκT, hsq⟩` from `htop W S hψ hN ρ i j`. Establish `ec` using `hsq t c hnz hc`. Establish `ec₀` using `hsq μ₀ c₀ hnz₀ hc₀`. Take `⟨lamT, hlamT⟩` from `hfac W S hψ hN i j _ _ A1 A1' WW1 X1 hst`. Take `⟨κ1, hκ1, e1⟩` from `hlamT.eq_mul hct`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hct0 : ∀ t, ct t ≠ 0` using `fun t => by rw [e1 t]; exact mul_ne_zero hκ1 (hlamT.1 t)`. Establish `hrk : A1.rank = A1'.rank + 2 * eTop D i j`. Take `⟨-, -, a1, a2, -⟩` from `hst`. Unfold `eTop`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨B, B', W₁, Y, cY, u, κ, hY, hcY, hκ, hu, hid⟩` from `descent (W := W) (μ₀ := μ₀) (hfac W S hψ hN) (hsm W S hψ hN) (hbig W S hψ hN) i j Lf (fun t => (hLf t).1) (qq D j) (pp D j) (eTop D i j) X1 ct hst hct hrk hpe`. Take `⟨v, hv, hvr⟩` from `hbot W S hψ hN i j A A' WW X B B' W₁ Y cY hX hY hcY`. Take `⟨lam0, hlam0⟩` from `hfac W S hψ hN i j 0 0 A A' WW X (IsBottomTri.isStageC hX)`. Take `⟨a, ha, ea⟩` from `hlam0.eq_mul hc0`. Take `⟨b', hb', eb⟩` from `hlam0.eq_mul hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ec0 : ∀ t, c0 t = a / b' * (v t * cY t)` using `fun t => by`. Rewrite using `[ea t, eb t]`. Clear the denominators using the available nonvanishing facts. Establish `hLne : ∀ n : ℕ, 1 ≤ n → n ≤ halfRank D i j → Lf μ₀ (n : ℂ) ≠ 0` using `fun n h1 h2 => by`. Use `(hLf μ₀).2 (n : ℤ) (by omega) (by exact_mod_cast h2)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Int.cast_natCast]`. Then use the resulting hypothesis. Establish `hP0 : ∏ k ∈ range (qq D j), Lf μ₀ ((eTop D i j + k + 1 : ℕ) : ℂ) ≠ 0` using `prod_ne_zero_iff.2 fun k hk => hLne _ (by omega) (by rw [mem_range] at hk; omega)`. Establish `hP0' : ∏ k ∈ range (pp D j), Lf μ₀ ((eTop D i j + qq D j - k : ℕ) : ℂ) ≠ 0` using `prod_ne_zero_iff.2 fun k hk => by rw [mem_range] at hk; exact hLne _ (by omega) (by omega)`. Establish `hU0 : ∏ k ∈ range (pp D j + qq D j), u k μ₀ ≠ 0` using `prod_ne_zero_iff.2 fun k _ => (hu k μ₀).1`. Establish `hcY0 : cY μ₀ ≠ 0` using `fun h0 => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hid μ₀` as an intermediate fact. Rewrite `this` using `[h0, mul_zero, zero_mul]`. Conclude with `mul_ne_zero (hct0 μ₀) hP0 this`. Establish `hκT0` using `(hκT μ₀).1`. Establish `hv0` using `(hvr μ₀).1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, ζT, hζT, eκT⟩` from `hκT t`. Take `⟨hvt, ζv, hζv, ev⟩` from `hvr t`. Establish `hζv0 : ζv ≠ 0` using `fun h0 => hvt (by rw [ev, h0, map_zero, zero_mul])`. Establish `hσv : D.what₂.embLL ζv ≠ 0` using `(map_ne_zero _).2 hζv0`. Use `⟨fun k => u k t / u k μ₀, fun k => stepRatio_div (hu k t).2 (hu k μ₀).1, ζT * ζv⁻¹, hζT.mul (isAwayUnit_inv hζv hζv0), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Fin.prod_univ_eq_prod_range (fun k => u k t / u k μ₀), prod_div_distrib, prod_div_distrib, prod_div_distrib, map_mul, map_inv₀, ec0, ec0]`. Establish `L1 : c / c₀ * ((∏ k ∈ range (qq D j), Lf t ((eTop D i j + k + 1 : ℕ) : ℂ)) / ∏ k ∈ range (qq D j), Lf μ₀ ((eTop D i j + k + 1 : ℕ) : ℂ)) = κT t / κT μ₀ * ((ct t * ∏ k ∈ range (qq D j), Lf t ((eTop D i j + k + 1 : ℕ) : ℂ)) / (ct μ₀ * ∏ k ∈ range (qq D j), Lf μ₀ ((eTop D i j + k + …`. Rewrite using `[ec, ec₀]`. Use `hct0 μ₀` as an intermediate fact. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[L1, hid t, hid μ₀, eκT, ev]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem tower : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → LNe → Tower := by
   intro hP hK hM hL

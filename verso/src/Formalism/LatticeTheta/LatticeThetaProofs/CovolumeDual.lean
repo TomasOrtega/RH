@@ -11,19 +11,19 @@ variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
   [MeasurableSpace V] [BorelSpace V] [FiniteDimensional ℝ V]
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> intro m hm <;> simpa using hm m`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma covolDual_nondegenerate : (innerₗ V).Nondegenerate := by
   constructor <;> intro m hm <;> simpa using hm m
 
 /- English proof (translation)
-Rewrite using `[Module.Basis.det_apply, Module.Basis.det_apply]`. Use `set P := o.toBasis.toMatrix e with hP`. Use `set Q := o.toBasis.toMatrix (LinearMap.BilinForm.dualBasis (innerₗ V) covolDual_nondegenerate e) with hQ`. Establish `hM : Qᵀ * P = 1`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `hsum : ∑ k, Qᵀ i k * P k j = ⟪LinearMap.BilinForm.dualBasis (innerₗ V) covolDual_nondegenerate e i, e j⟫`. Simplify using `only [hP, hQ, Matrix.transpose_apply, Module.Basis.toMatrix_apply, OrthonormalBasis.coe_toBasis_repr_apply, OrthonormalBasis.repr_apply_apply]`. Rewrite using `[← o.sum_inner_mul_inner]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[real_inner_comm (o k)]`. Rewrite using `[hsum]`. Establish `h` using `LinearMap.BilinForm.apply_dualBasis_left covolDual_nondegenerate e i j`. Simplify using `only [innerₗ_apply_apply] at h`. Rewrite using `[h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hij : i = j`. Simplify using `[hij]`. Simplify using `[hij, Ne.symm hij]`. Rewrite using `[← Matrix.det_transpose Q, ← Matrix.det_mul, hM, Matrix.det_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma covolDual_det_mul {ι : Type*} [Fintype ι] [DecidableEq ι]
     (o : OrthonormalBasis ι ℝ V) (e : Module.Basis ι ℝ V) :
@@ -51,7 +51,7 @@ lemma covolDual_det_mul {ι : Type*} [Fintype ι] [DecidableEq ι]
   rw [← Matrix.det_transpose Q, ← Matrix.det_mul, hM, Matrix.det_one]
 
 /- English proof (translation)
-Rewrite using `[MeasureTheory.measureReal_def, MeasureTheory.measure_congr (ZSpan.fundamentalDomain_ae_parallelepiped o.toBasis volume), OrthonormalBasis.coe_toBasis, o.volume_parallelepiped, ENNReal.toReal_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma covolDual_vol_fd {ι : Type*} [Fintype ι] (o : OrthonormalBasis ι ℝ V) :
     volume.real (ZSpan.fundamentalDomain o.toBasis) = 1 := by

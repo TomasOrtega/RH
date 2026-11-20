@@ -20,7 +20,7 @@ def Hf (m : ℕ) (e : ℤ) (ψ : (Fin n → Fin n → ℝ) → ℂ) (a b : M2 n)
   ∫ t, fz m e z (y * a * nU (herm t) * b) * ψ t
 
 /- English proof (translation)
-Use `show IsClosed {x : M2 n | xᴴ * JJ n * x = JJ n}`. Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_G : IsClosed {x : M2 n | InG x} := by
   show IsClosed {x : M2 n | xᴴ * JJ n * x = JJ n}
@@ -36,15 +36,13 @@ instance instFC : FirstCountableTopology (M2 n) :=
 def Gs (n : ℕ) : Set (M2 n) := {x | InG x}
 
 /- English proof (translation)
-Establish `hdx : x.det ≠ 0` using `(LoweringDerivative.isUnit_det_of_inG hx).ne_zero`. Establish `hdet : Continuous (fun y : M2 n => y.det)` using `continuous_id.matrix_det`. Establish `hdetn : Continuous (fun M : Matrix (Fin n) (Fin n) ℂ => M.det)` using `continuous_id.matrix_det`. Establish `hu1 : Continuous (fun y : M2 n => u1 y)`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [u1, Matrix.add_apply, Matrix.smul_apply, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.of_apply, smul_eq_mul]`. Use `fun_prop`. Establish `hub : ContinuousAt (fun y : M2 n => ub1 y) x` using `continuousAt_pi.2 fun i => continuousAt_pi.2 fun j => (contDiffOn_inverse_first_block i j).continuousOn.continuousAt (isOpen_det_ne.mem_nhds hdx)`. Establish `hw : (u1 x).det * (ub1 x).det = ((Complex.normSq (u1 x).det : ℝ) : ℂ)`. Rewrite using `[inverse_first_block_eq_conjTranspose hx, Matrix.det_conjTranspose, Complex.star_def, Complex.normSq_eq_conj_mul_self]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hslit : (u1 x).det * (ub1 x).det ∈ Complex.slitPlane`. Rewrite using `[hw, Complex.ofReal_mem_slitPlane]`. Conclude with `Complex.normSq_pos.2 (det_first_block_ne_zero_group hx)`. Use `show ContinuousAt (fun p : M2 n × ℂ => p.1.det ^ e * (u1 p.1).det ^ (-(m : ℤ)) * ((u1 p.1).det * (ub1 p.1).det) ^ (-p.2)) (x, z)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ContinuousAt (fun p : M2 n × ℂ => p.1.det) (x, z)` using `(hdet.comp continuous_fst).continuousAt`. Establish `hB : ContinuousAt (fun p : M2 n × ℂ => (u1 p.1).det) (x, z)` using `((hu1.comp continuous_fst).matrix_det).continuousAt`. Establish `hub' : ContinuousAt (fun y : M2 n => (ub1 y).det) x` using `hdetn.continuousAt.comp hub`. Establish `hC : ContinuousAt (fun p : M2 n × ℂ => (ub1 p.1).det) (x, z)` using `ContinuousAt.comp (g := fun y : M2 n => (ub1 y).det) (f := Prod.fst) (x := (x, z)) hub' continuous_fst.continuousAt`. Use `((hA.zpow₀ e (Or.inl hdx)).mul (hB.zpow₀ _ (Or.inl (det_first_block_ne_zero_group hx)))).mul ?_` and prove the remaining obligations.
-
-Conclude with `(hB.mul hC).cpow continuous_snd.neg.continuousAt hslit`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuousAt_fz {x : M2 n} (hx : InG x) (m : ℕ) (e : ℤ) (z : ℂ) :
     ContinuousAt (fun p : M2 n × ℂ => fz m e p.2 p.1) (x, z) := by
@@ -78,9 +76,9 @@ theorem continuousAt_fz {x : M2 n} (hx : InG x) (m : ℕ) (e : ℤ) (z : ℂ) :
   exact (hB.mul hC).cpow continuous_snd.neg.continuousAt hslit
 
 /- English proof (translation)
-Establish `hH : (herm t)ᴴ = herm t`. Use extensionality with `i j`. Simplify using `only [herm, Matrix.conjTranspose_apply, Complex.star_def, map_add, map_div₀, map_mul, Complex.conj_ofReal, Complex.conj_I, map_ofNat]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hN : InG (nU (herm t))` using `by show (nU (herm t))ᴴ * JJ n * nU (herm t) = JJ n`. Simplify using `[nU, JJ, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, hH]`. Conclude with `inG_mul (inG_mul (inG_mul hy ha) hN) hb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inG_path {y a b : M2 n} (hy : InG y) (ha : InG a) (hb : InG b) (t : Fin n → Fin n → ℝ) :
     InG (y * a * nU (herm t) * b) := by
@@ -96,9 +94,7 @@ theorem inG_path {y a b : M2 n} (hy : InG y) (ha : InG a) (hb : InG b) (t : Fin 
   exact inG_mul (inG_mul (inG_mul hy ha) hN) hb
 
 /- English proof (translation)
-Establish `hherm : Continuous (fun t : Fin n → Fin n → ℝ => herm t)`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [herm]`. Use `fun_prop`. Unfold `nU`.
-
-Conclude with `continuous_const.matrix_fromBlocks hherm continuous_const continuous_const`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem continuous_nU_herm : Continuous (fun t : Fin n → Fin n → ℝ => nU (herm t)) := by
   have hherm : Continuous (fun t : Fin n → Fin n → ℝ => herm t) := by
@@ -109,7 +105,7 @@ private theorem continuous_nU_herm : Continuous (fun t : Fin n → Fin n → ℝ
   exact continuous_const.matrix_fromBlocks hherm continuous_const continuous_const
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Use `ContinuousAt.mul ?_ (hψ.comp hT).continuousAt` and prove the remaining obligations. Establish `hG` using `inG_path (hYG x) ha hb (T x)`. Establish `hP : Continuous fun x => (Y x * a * nU (herm (T x)) * b, Z x)` using `(((hY.matrix_mul continuous_const).matrix_mul (continuous_nU_herm.comp hT)).matrix_mul continuous_const).prodMk hZ`. Conclude with `ContinuousAt.comp (g := fun p : M2 n × ℂ => fz m e p.2 p.1) (f := fun x => (Y x * a * nU (herm (T x)) * b, Z x)) (x := x) (continuousAt_fz hG m e (Z x)) hP.continuousAt`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem continuous_fz_mul_nU_herm_mul {X : Type} [TopologicalSpace X] (m : ℕ) (e : ℤ)
     {ψ : (Fin n → Fin n → ℝ) → ℂ} (hψ : Continuous ψ) {a b : M2 n} (ha : InG a) (hb : InG b)
@@ -127,9 +123,9 @@ private theorem continuous_fz_mul_nU_herm_mul {X : Type} [TopologicalSpace X] (m
     (continuousAt_fz hG m e (Z x)) hP.continuousAt
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace ↥(Gs n) := (isClosed_G (n := n)).locallyCompactSpace`. Establish `hF` using `continuous_fz_mul_nU_herm_mul (X := (↥(Gs n) × ℂ) × (Fin n → Fin n → ℝ)) m e hψ ha hb (fun p => p.1.1.1) (continuous_subtype_val.comp (continuous_fst.comp continuous_fst)) (fun p => p.1.1.2) (fun p => p.1.2) (continuous_snd.comp continuous_fst) (fun p => p.2) continuous_snd`. Establish `key` using `continuous_parametric_integral_of_continuous (μ := (volume : Measure (Fin n → Fin n → ℝ))) (f := fun (q : ↥(Gs n) × ℂ) t => fz m e q.2 (q.1.1 * a * nU (herm t) * b) * ψ t) hF hψc`. Use `key.congr fun q => ?_` and prove the remaining obligations. Unfold `Hf`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `setIntegral_eq_integral_of_forall_compl_eq_zero fun t ht => by`. Rewrite using `[image_eq_zero_of_notMem_tsupport ht, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem continuous_Hf (m : ℕ) (e : ℤ) {ψ : (Fin n → Fin n → ℝ) → ℂ} (hψ : Continuous ψ) (hψc : HasCompactSupport ψ)
     {a b : M2 n} (ha : InG a) (hb : InG b) :
@@ -146,15 +142,13 @@ theorem continuous_Hf (m : ℕ) (e : ℤ) {ψ : (Fin n → Fin n → ℝ) → �
     rw [image_eq_zero_of_notMem_tsupport ht, mul_zero]
 
 /- English proof (translation)
-Establish `hC : IsCompact (tsupport ψ)` using `hψc`. Use `haveI : IsFiniteMeasure ((volume : Measure (Fin n → Fin n → ℝ)).restrict (tsupport ψ)) := isFiniteMeasure_restrict.2 hC.measure_lt_top.ne`. Establish `hnull : ((volume : Measure (Fin n → Fin n → ℝ)).restrict (tsupport ψ)) (tsupport ψ)ᶜ = 0`. Rewrite using `[Measure.restrict_apply' (isClosed_tsupport ψ).measurableSet, Set.compl_inter_self, measure_empty]`. Establish `hF` using `continuous_fz_mul_nU_herm_mul (X := (Fin n → Fin n → ℝ) × ℂ) m e hψ ha hb (fun _ => y) continuous_const (fun _ => hy) (fun p => p.2) continuous_snd (fun p => p.1) continuous_fst`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiff : ∀ t ∈ tsupport ψ, DifferentiableOn ℂ (fun z => fz m e z (y * a * nU (herm t) * b) * ψ t) Set.univ`. Introduce `t _ z _`. Establish `hG` using `inG_path hy ha hb t`. Establish `hc : (u1 (y * a * nU (herm t) * b)).det * (ub1 (y * a * nU (herm t) * b)).det ≠ 0`. Use `mul_ne_zero (det_first_block_ne_zero_group hG) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inverse_first_block_eq_conjTranspose hG, Matrix.det_conjTranspose]`. Conclude with `star_ne_zero.2 (det_first_block_ne_zero_group hG)`. Simplify using `only [fz]`. Conclude with `(((differentiableAt_const _).mul (differentiableAt_id.neg.const_cpow (Or.inl hc))).mul_const _).differentiableWithinAt`. Establish `main` using `(AbsSt.holParam (Fin n → Fin n → ℝ) ((volume : Measure (Fin n → Fin n → ℝ)).restrict (tsupport ψ)) (tsupport ψ) hC hnull Set.univ (fun t z => fz m e z (y * a * nU (herm t) * b) * ψ t) isOpen_univ hF.continuousOn hdiff).1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `main` using `[differentiableOn_univ]`. Establish `hEq : ∀ z, Hf m e ψ a b z y = ∫ t in tsupport ψ, fz m e z (y * a * nU (herm t) * b) * ψ t`. Introduce `z`. Unfold `Hf`. Conclude with `(setIntegral_eq_integral_of_forall_compl_eq_zero fun t ht => by`.
-
-Rewrite using `[image_eq_zero_of_notMem_tsupport ht, mul_zero]).symm`. Simplify using `only [hEq]`. Conclude with `main`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_Hf (m : ℕ) (e : ℤ) {ψ : (Fin n → Fin n → ℝ) → ℂ} (hψ : Continuous ψ) (hψc : HasCompactSupport ψ)
     {a b y : M2 n} (ha : InG a) (hb : InG b) (hy : InG y) : Differentiable ℂ fun z => Hf m e ψ a b z y := by

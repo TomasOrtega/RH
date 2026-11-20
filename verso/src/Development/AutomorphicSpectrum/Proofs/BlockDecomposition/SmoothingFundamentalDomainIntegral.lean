@@ -15,17 +15,17 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Conc
 
 /- English proof (translation)
-Use `set p := ν.withDensity b with hp`. Use `haveI : IsProbabilityMeasure p := ⟨by rw [hp, withDensity_apply _ MeasurableSet.univ]; simpa using hmass⟩`. Establish `hm : ∀ x, Continuous fun y => f (x * k y)` using `fun x => hf.comp (continuous_const.mul hk)`. Establish `hsq : ∀ {X : Type _} [MeasurableSpace X] (m : Measure X) (g : X → ℂ), eLpNorm g 2 m ^ 2 = ∫⁻ x, ‖g x‖ₑ ^ 2 ∂m`. Introduce `X _ m g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[eLpNorm_eq_lintegral_rpow_enorm_toReal two_ne_zero ENNReal.ofNat_ne_top, ENNReal.toReal_ofNat, ← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions using `[ENNReal.rpow_two]`. Establish `hpt : ∀ x, ‖s x‖ₑ ^ 2 ≤ ∫⁻ y, ‖f (x * k y)‖ₑ ^ 2 ∂p`. Introduce `x`. Establish `h1 : ∫⁻ y, b y * ‖f (x * k y)‖ₑ ∂ν = ∫⁻ y, ‖f (x * k y)‖ₑ ∂p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hp, lintegral_withDensity_eq_lintegral_mul ν hb (hm x).measurable.enorm]`. Both sides reduce to the same expression. Establish `h2` using `eLpNorm_le_eLpNorm_of_exponent_le (p := 1) (q := 2) (μ := p) (by norm_num) (hm x).measurable.aestronglyMeasurable`. Rewrite `h2` using `[eLpNorm_one_eq_lintegral_enorm]`. Rewrite using `[← hsq p]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_le_pow_left' ((hs x).trans (h1.le.trans h2)) 2`. Establish `hΓ : ∀ (γ : Γ) (x : G), ‖f (γ • x)‖ₑ ^ 2 = ‖f x‖ₑ ^ 2` using `fun γ x => by`. Rewrite using `[Subgroup.smul_def, smul_eq_mul, hinv _ γ.2]`. Establish `htr : ∀ h : G, ∫⁻ x in F, ‖f (x * h)‖ₑ ^ 2 ∂μ = ∫⁻ x in F, ‖f x‖ₑ ^ 2 ∂μ`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF' : IsFundamentalDomain Γ (MulOpposite.op h • F) μ` using `hF.smul_of_comm _`. Establish `e1` using `(measurePreserving_mul_right μ h).setLIntegral_comp_preimage_emb (MeasurableEquiv.mulRight h).measurableEmbedding (fun z => ‖f z‖ₑ ^ 2) (MulOpposite.op h • F)`. Establish `e2 : (fun x => x * h) ⁻¹' (MulOpposite.op h • F) = F`. Use extensionality with `x`. Simplify using `[Set.mem_smul_set_iff_inv_smul_mem]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e1` using `[e2]`. Rewrite using `[e1]`. Conclude with `hF'.setLIntegral_eq hF _ hΓ`. Establish `hjoint : Measurable (Function.uncurry fun (x : G) (y : Y) => ‖f (x * k y)‖ₑ ^ 2)` using `((hf.comp (continuous_fst.mul (hk.comp continuous_snd))).measurable.enorm).pow_const 2`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lintegral_sq_le_of_average {G Y : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] [TopologicalSpace Y] [MeasurableSpace Y]
@@ -76,11 +76,9 @@ theorem lintegral_sq_le_of_average {G Y : Type*} [Group G] [TopologicalSpace G] 
     _ = ∫⁻ x in F, ‖f x‖ₑ ^ 2 ∂μ := by simp
 
 /- English proof (translation)
-Introduce `E _ _ _ N _ _ μ _ _ _ ν _ F β hF hβ f hf hinv`. Use `haveI : Countable (latticeGL E N) := GlobalTheory.DiscreteUnit.countable_latticeGL`. Use `haveI : SecondCountableTopology (GA E N) := GlobalTheory.CuspRep.CuspidalL2GL.secondCountableTopology_GA E N`. Use `haveI : LocallyCompactSpace (GA E N) := GlobalTheory.CuspRep.CuspidalL2GL.locallyCompactSpace_GA E N`. Use `haveI : μ.IsMulRightInvariant := GlobalTheory.T.haar_right_invariant_totally_complex E N μ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `lintegral_sq_le_of_average μ (latticeGL E N) F hF ν (fun y => ENNReal.ofReal (β y)) hβ.cont.measurable.ennreal_ofReal ?_ (infEmb E N) continuous_infEmb f hf hinv (sm ν β f) ?_` and prove the remaining obligations. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal (hβ.cont.integrable_of_hasCompactSupport hβ.cpt) (Eventually.of_forall hβ.nonneg), hβ.mass]`. Simplify using the standard rewrite rules. Introduce `x`. Use `(enorm_integral_le_lintegral_enorm _).trans (le_of_eq (lintegral_congr fun y => ?_))` and prove the remaining obligations.
-
-Rewrite using `[enorm_mul]`. Use `congr 1`. Rewrite using `[← ofReal_norm_eq_enorm, Complex.norm_real, Real.norm_of_nonneg (hβ.nonneg y)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sm_sq_mass_le : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (N : ℕ) [MeasurableSpace (GA E N)] [BorelSpace (GA E N)] (μ : Measure (GA E N)) [μ.IsHaarMeasure] [MeasurableSpace (archGroup E N)] [BorelSpace (archGroup E N)] (ν : Measure (archGroup E N)) [ν.IsHaarMeasure] (F : Set (GA E N)) (β : archGroup E N → ℝ), IsFundamentalDomain (latticeGL E N) F μ → Ker ν β →
   ∀ f : GA E N → ℂ, Continuous f → (∀ γ ∈ latticeGL E N, ∀ g, f (γ * g) = f g) →

@@ -10,17 +10,15 @@ namespace Formalism.MainNotions.J
 open Formalism.BasicNotions Formalism.MainNotions.G Formalism.FrobeniusOrbits NumberField
 
 /- English proof (translation)
-Establish `hp2 : p ≠ 2`. Introduce and unpack `rfl`. Establish `h2 : D.host.cls 2 = PrimeClass.ram2` using `Formalism.BasicNotions.primeClass_two D.host.toHostRaw`. Establish `hc' : D.host.cls 2 = PrimeClass.inertClass` using `hc`. Rewrite `hc'` using `[h2]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the cases of `hc'`. Establish `hcop : Nat.Coprime p 2` using `(Nat.coprime_primes hp Nat.prime_two).mpr hp2`. Use `⟨hcop, ?_⟩` and prove the remaining obligations. Establish `hN : ¬ p ∣ D.host.condN` using `Formalism.BasicNotions.not_dvd_conductor_of_inert hp (show D.host.cls p = PrimeClass.inertClass from hc)`. Use `haveI : Fact p.Prime := ⟨hp⟩`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : (Ideal.span {(p : ℤ)}).IsMaximal := PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`. Take `⟨P, hPm, hPl⟩ : ∃ P : Ideal (𝓞 D.host.E), P.IsMaximal ∧ P.LiesOver (Ideal.span {(p : ℤ)})` from `by first`. Consider the case `exact Ideal.exists_maximal_ideal_liesOver_of_isIntegral _`. Consider the case `exact Ideal.exists_maximal_ideal_liesOver_of_isIntegral _ _`. Consider the case `exact Ideal.exists_ideal_liesOver_maximal_of_isIntegral _`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `(obtain ⟨Q, hQm, hQc⟩ := Ideal.exists_ideal_over_maximal_of_isIntegral (S := 𝓞 D.host.E) (Ideal.span {(p : ℤ)}) (by simp)`. Conclude with `⟨Q, hQm, ⟨hQc.symm⟩⟩)`. Use `haveI : P.IsPrime := hPm.isPrime`. Take `⟨⟨σ, hσ⟩, -, -, -⟩` from `D.host.der.frob p hN P`. Establish `hmem : D.host.galE σ ∈ frobSet D p` using `⟨P, inferInstance, hPl, σ, hσ, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P', hP'p, hP'l, σ', hσ', hgal⟩` from `Classical.epsilon_spec ⟨_, hmem⟩`. Take `⟨-, -, h3, -⟩` from `D.host.der.frob p hN P'`. Take `⟨-, -, v, hv, hvh⟩` from `h3 σ' hσ'`. Unfold `hP`. Simplify using `only [Formalism.HC.Frame.iota_iotaInv]`.
-
-Rewrite using `[← hgal, show ZMod.unitOfCoprime p (Nat.Coprime.pow_right (D.R.e + 2) hcop) = v from Units.ext (by rw [ZMod.coe_unitOfCoprime, hv])]`. Conclude with `hvh`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hH_hP (D : D7) (p : ℕ) (hp : p.Prime) (hc : IsResidueClassZero D p) :
     ∃ h : Nat.Coprime p 2, D.R.hH (D.R.iota (hP D p)) =
@@ -58,9 +56,9 @@ private theorem hH_hP (D : D7) (p : ℕ) (hp : p.Prime) (hc : IsResidueClassZero
   exact hvh
 
 /- English proof (translation)
-Introduce `p hp hc`. Take `⟨h2, hh⟩` from `hH_hP D p hp hc`. Use `⟨fun h => ?_, ?_⟩` and prove the remaining obligations. Substitute `h` using the available equality. Conclude with `absurd h2 (by decide)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.MainNotions.GlobalTheoryTheory.hOf`. Use `split_ifs with hcond`. Rewrite using `[Formalism.BasicNotions.iotaH_iotaHInv, ← hh]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem two_readings_of_Frobenius (D : D7) : Formalism.MainNotions.CornerGLContinuity.FrobeniusClassCompatibility D := by
   intro p hp hc

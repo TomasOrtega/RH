@@ -51,7 +51,7 @@ variable {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n] {K
 def RatM (r : ℕ) {a b : Type} (X : Matrix a b ↥(MaximalUnramifiedExtension l)) : Prop := ∀ i j, fr l r (X i j) = X i j
 
 /- English proof (translation)
-Conclude with `Matrix.ext fun i j => h i j`.
+A detailed English derivation is pending.
 -/
 theorem map_fr {a b : Type} {X : Matrix a b ↥(MaximalUnramifiedExtension l)} (h : RatM r X) : X.map (fr l r) = X := by
   exact Matrix.ext fun i j => h i j
@@ -62,7 +62,7 @@ variable (X : Matrix m n ↥(MaximalUnramifiedExtension l)) (Y : Matrix n m ↥(
 
 include hX hY h in
 /- English proof (translation)
-The claim follows from `hρ.pos le := hρ.le rat g i j := by have hρg : (ρ g : Matrix n n ↥(MaximalUnramifiedExtension l)).map (fr l r) = ρ g := Matrix.ext fun a b => hρ.rat g a b have e : (X * (ρ g : Matrix n n ↥(MaximalUnramifiedExtension l)) * Y).map (fr l r) = X * (ρ g : Matrix n n ↥(MaximalUnramified …`.
+A detailed English derivation is pending.
 -/
 theorem isRat_of (hρ : IsRat r ρ) : IsRat r ρ' where
   pos := hρ.pos
@@ -89,13 +89,13 @@ theorem isRat_of (hρ : IsRat r ρ) : IsRat r ρ' where
 
 include hXY hYX hX hY h in
 /- English proof (translation)
-Introduce `k`. Take `⟨Q, hQ⟩` from `hρ k`. Set `f : ↥(MaximalUnramifiedExtension l) →+* P.R.BdR` to `(kd P).comp (fr l k)`. Establish `hf : ∀ {a b : Type} (M : Matrix a b ↥(MaximalUnramifiedExtension l)), M.map (fun c => kd P (fr l k c)) = M.map f` using `fun _ => rfl`. Establish `h1 : X.map f * Y.map f = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.map_mul, hXY, Matrix.map_one _ (map_zero f) (map_one f)]`. Establish `h2 : Y.map f * X.map f = 1`. Rewrite using `[← Matrix.map_mul, hYX, Matrix.map_one _ (map_zero f) (map_one f)]`. Establish `hfix : ∀ g : ↥(GK K), (X.map f).map (P.actQdR (g : GQ l)) = X.map f` using `fun g => Matrix.ext fun i j => act_kd P g (hle _ (fr_comm (hX i j) k))`. Establish `hfixY : ∀ g : ↥(GK K), (Y.map f).map (P.actQdR (g : GQ l)) = Y.map f` using `fun g => Matrix.ext fun i j => act_kd P g (hle _ (fr_comm (hY i j) k))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨conjHom (X.map f) (Y.map f) h1 h2 Q, fun g => ?_⟩` and prove the remaining obligations. Establish `hm : matD P ρ' k g = X.map f * matD P ρ k g * Y.map f`. Rewrite using `[matD, hf, h g, Matrix.map_mul, Matrix.map_mul, matD, hf]`. Rewrite using `[conjHom_val, hm, Matrix.map_mul, Matrix.map_mul, hfix, hfixY]`. Simplify using `only [Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc (Y.map f) (X.map f), h2, Matrix.one_mul, ← Matrix.mul_assoc (matD P ρ k g), hQ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem deRham_of_conjugate_unramified_rational (hle : ∀ c : ↥(MaximalUnramifiedExtension l), fr l r c = c → (c : Om l) ∈ K.1) (hρ : AdmDR P ρ) : AdmDR P ρ' := by
   intro k
@@ -119,11 +119,11 @@ theorem deRham_of_conjugate_unramified_rational (hle : ∀ c : ↥(MaximalUnrami
 
 include hXY hYX hX hY h in
 /- English proof (translation)
-Take `⟨K', hK, Q, hQ⟩` from `hρ`. Set `f : ↥(MaximalUnramifiedExtension l) →+* Bst P` to `ks P`. Establish `h1 : X.map f * Y.map f = 1`. Rewrite using `[← Matrix.map_mul, hXY, Matrix.map_one _ (map_zero f) (map_one f)]`. Establish `h2 : Y.map f * X.map f = 1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.map_mul, hYX, Matrix.map_one _ (map_zero f) (map_one f)]`. Establish `hfix : ∀ g : ↥(GK K'), (X.map f).map (actSt P (g : GQ l)) = X.map f` using `fun g => Matrix.ext fun i j => act_ks P g (hK (hle _ (hX i j)))`. Establish `hfixY : ∀ g : ↥(GK K'), (Y.map f).map (actSt P (g : GQ l)) = Y.map f` using `fun g => Matrix.ext fun i j => act_ks P g (hK (hle _ (hY i j)))`. Use `⟨K', hK, conjHom (X.map f) (Y.map f) h1 h2 Q, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[conjHom_val, h, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, hfix, hfixY]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Y.map f) (X.map f), h2, Matrix.one_mul, ← Matrix.mul_assoc (((ρ ⟨g, GK_le hK g.2⟩ : GL n ↥(MaximalUnramifiedExtension l)) : Matrix n n ↥(MaximalUnramifiedExtension l)).map (ks P)), hQ g]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem semistable_of_conjugate_unramified_rational (hle : ∀ c : ↥(MaximalUnramifiedExtension l), fr l r c = c → (c : Om l) ∈ K.1) (hρ : AdmSt P ρ) : AdmSt P ρ' := by
   obtain ⟨K', hK, Q, hQ⟩ := hρ
@@ -149,7 +149,7 @@ variable {G : Type} [Group G] {a b : Type} [Fintype a] [DecidableEq a] [Fintype 
   {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₁₁, Matrix.mul_apply, Fintype.sum_sum_type, hB]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toBlocks₁₁_mul (A B : Matrix (a ⊕ b) (a ⊕ b) R) (hB : ∀ i j, B (Sum.inr i) (Sum.inl j) = 0) :
     (A * B).toBlocks₁₁ = A.toBlocks₁₁ * B.toBlocks₁₁ := by
@@ -157,7 +157,7 @@ theorem toBlocks₁₁_mul (A B : Matrix (a ⊕ b) (a ⊕ b) R) (hB : ∀ i j, B
   simp [Matrix.toBlocks₁₁, Matrix.mul_apply, Fintype.sum_sum_type, hB]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₂₂, Matrix.mul_apply, Fintype.sum_sum_type, hA]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toBlocks₂₂_mul (A B : Matrix (a ⊕ b) (a ⊕ b) R) (hA : ∀ i j, A (Sum.inr i) (Sum.inl j) = 0) :
     (A * B).toBlocks₂₂ = A.toBlocks₂₂ * B.toBlocks₂₂ := by
@@ -165,13 +165,13 @@ theorem toBlocks₂₂_mul (A B : Matrix (a ⊕ b) (a ⊕ b) R) (hA : ∀ i j, A
   simp [Matrix.toBlocks₂₂, Matrix.mul_apply, Fintype.sum_sum_type, hA]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₁₁, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toBlocks₁₁_one : (1 : Matrix (a ⊕ b) (a ⊕ b) R).toBlocks₁₁ = 1 := by
   ext i j; simp [Matrix.toBlocks₁₁, Matrix.one_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.toBlocks₂₂, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toBlocks₂₂_one : (1 : Matrix (a ⊕ b) (a ⊕ b) R).toBlocks₂₂ = 1 := by
   ext i j; simp [Matrix.toBlocks₂₂, Matrix.one_apply]
@@ -180,7 +180,7 @@ variable (ρ : G →* GL (a ⊕ b) R) (hz : ∀ g i j, (ρ g : Matrix (a ⊕ b) 
 
 include hz in
 /- English proof (translation)
-Rewrite using `[map_mul, Units.val_mul, toBlocks₁₁_mul _ _ (hz h)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_mul₁ (g h : G) : (ρ (g * h) : Matrix (a ⊕ b) (a ⊕ b) R).toBlocks₁₁ =
     (ρ g : Matrix (a ⊕ b) (a ⊕ b) R).toBlocks₁₁ * (ρ h : Matrix (a ⊕ b) (a ⊕ b) R).toBlocks₁₁ := by
@@ -188,7 +188,7 @@ theorem blk_mul₁ (g h : G) : (ρ (g * h) : Matrix (a ⊕ b) (a ⊕ b) R).toBlo
 
 include hz in
 /- English proof (translation)
-Rewrite using `[map_mul, Units.val_mul, toBlocks₂₂_mul _ _ (hz g)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blk_mul₂ (g h : G) : (ρ (g * h) : Matrix (a ⊕ b) (a ⊕ b) R).toBlocks₂₂ =
     (ρ g : Matrix (a ⊕ b) (a ⊕ b) R).toBlocks₂₂ * (ρ h : Matrix (a ⊕ b) (a ⊕ b) R).toBlocks₂₂ := by
@@ -219,7 +219,7 @@ def blk₂ : G →* GL b R where
     exact blk_mul₂ ρ hz g h
 
 /- English proof (translation)
-Establish `h0 : (ρ g : Matrix (a ⊕ b) (a ⊕ b) R).toBlocks₂₁ = 0` using `Matrix.ext fun i j => hz g i j`. Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks (ρ g : Matrix (a ⊕ b) (a ⊕ b) R), h0]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem blk_form (g : G) : (ρ g : Matrix (a ⊕ b) (a ⊕ b) R) = Matrix.fromBlocks (blk₁ ρ hz g : Matrix a a R)
     ((ρ g : Matrix (a ⊕ b) (a ⊕ b) R).toBlocks₁₂) 0 (blk₂ ρ hz g : Matrix b b R) := by
@@ -236,7 +236,7 @@ variable {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] {K
   (hz : ∀ g i j, (ρ g : Matrix (a ⊕ b) (a ⊕ b) ↥(MaximalUnramifiedExtension l)) (Sum.inr i) (Sum.inl j) = 0)
 
 /- English proof (translation)
-The claim follows from `hρ.pos le := hρ.le rat g i j := hρ.rat g _ _ cont i j := hρ.cont _ _`.
+A detailed English derivation is pending.
 -/
 theorem isRat_blk₁ (hρ : IsRat r ρ) : IsRat r (blk₁ ρ hz) where
   pos := hρ.pos
@@ -245,7 +245,7 @@ theorem isRat_blk₁ (hρ : IsRat r ρ) : IsRat r (blk₁ ρ hz) where
   cont i j := hρ.cont _ _
 
 /- English proof (translation)
-The claim follows from `hρ.pos le := hρ.le rat g i j := hρ.rat g _ _ cont i j := hρ.cont _ _`.
+A detailed English derivation is pending.
 -/
 theorem isRat_blk₂ (hρ : IsRat r ρ) : IsRat r (blk₂ ρ hz) where
   pos := hρ.pos
@@ -256,11 +256,9 @@ theorem isRat_blk₂ (hρ : IsRat r ρ) : IsRat r (blk₂ ρ hz) where
 end BlocksRat
 
 /- English proof (translation)
-Establish `hp' : (p : Matrix n n ↥(MaximalUnramifiedExtension l)).map (fr l r) = p` using `Matrix.ext hp`. Use `set M := ((p⁻¹ : GL n ↥(MaximalUnramifiedExtension l)) : Matrix n n ↥(MaximalUnramifiedExtension l)).map (fr l r) with hM`. Establish `h1 : M * (p : Matrix n n ↥(MaximalUnramifiedExtension l)) = 1`. Rewrite using `[← hp', hM, ← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h2 : M = ((p⁻¹ : GL n ↥(MaximalUnramifiedExtension l)) : Matrix n n ↥(MaximalUnramifiedExtension l))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one, mul_one]`. Use `_ = M * (p : Matrix n n ↥(MaximalUnramifiedExtension l)) * ((p⁻¹ : GL n ↥(MaximalUnramifiedExtension l)) : Matrix n n ↥(MaximalUnramifiedExtension l)) := (mul_assoc _ _ _).symm`. Use `_ = _ := by rw [h1, one_mul]`. Introduce `i j`.
-
-Conclude with `congrFun (congrFun h2 i) j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rat_inv {n : Type} [Fintype n] [DecidableEq n] {r : ℕ} (p : GL n ↥(MaximalUnramifiedExtension l))
     (hp : ∀ i j, fr l r ((p : Matrix n n ↥(MaximalUnramifiedExtension l)) i j) = (p : Matrix n n ↥(MaximalUnramifiedExtension l)) i j) :
@@ -279,21 +277,21 @@ theorem rat_inv {n : Type} [Fintype n] [DecidableEq n] {r : ℕ} (p : GL n ↥(M
   exact congrFun (congrFun h2 i) j
 
 /- English proof (translation)
-Introduce `l _ P AI T n _ _ K r ρ hR hD hS IH`. Take `⟨s, p, ⟨x, hx⟩, hs, hp, hz⟩` from `hS`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, y ∉ s := by`. Assume the negation of the conclusion as `hc`. Conclude with `hs (Finset.eq_univ_iff_forall.2 fun y => by_contra fun h => hc ⟨y, h⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Set `e : {i // i ∈ s} ⊕ {i // i ∉ s} ≃ n` to `Equiv.sumCompl (· ∈ s)`. Set `X : Matrix ({i // i ∈ s} ⊕ {i // i ∉ s}) n ↥(MaximalUnramifiedExtension l)` to `fun i j => ((p⁻¹ : GL n ↥(MaximalUnramifiedExtension l)) : Matrix n n ↥(MaximalUnramifiedExtension l)) (e i) j`. Set `Y : Matrix n ({i // i ∈ s} ⊕ {i // i ∉ s}) ↥(MaximalUnramifiedExtension l)` to `fun i j => (p : Matrix n n ↥(MaximalUnramifiedExtension l)) i (e j)`. Establish `hXY : X * Y = 1`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h1 : ((p⁻¹ : GL n ↥(MaximalUnramifiedExtension l)) : Matrix n n ↥(MaximalUnramifiedExtension l)) * (p : Matrix n n ↥(MaximalUnramifiedExtension l)) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `h2` using `congrFun (congrFun h1 (e i)) (e j)`. Rewrite `h2` using `[Matrix.mul_apply]`. Rewrite using `[Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [X, Y]`. Rewrite using `[h2]`. Simplify using `only [Matrix.one_apply, e.injective.eq_iff]`. Establish `hYX : Y * X = 1`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [X, Y]`. Rewrite using `[Equiv.sum_comp e (fun k => (p : Matrix n n ↥(MaximalUnramifiedExtension l)) i k * ((p⁻¹ : GL n ↥(MaximalUnramifiedExtension l)) : Matrix n n ↥(MaximalUnramifiedExtension l)) k j), ← Matrix.mul_apply, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hX : RatM r X` using `fun i j => rat_inv p hp (e i) j`. Establish `hY : RatM r Y` using `fun i j => hp i (e j)`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `ρ'` to `(conjHom X Y hXY hYX).comp ρ`. Establish `h : ∀ g, (ρ' g : Matrix ({i // i ∈ s} ⊕ {i // i ∉ s}) ({i // i ∈ s} ⊕ {i // i ∉ s}) ↥(MaximalUnramifiedExtension l)) = X * (ρ g : Matrix n n ↥(MaximalUnramifiedExtension l)) * Y` using `fun g => rfl`. Establish `h' : ∀ g, (ρ g : Matrix n n ↥(MaximalUnramifiedExtension l)) = Y * (ρ' g : Matrix ({i // i ∈ s} ⊕ {i // i ∉ s}) ({i // i ∈ s} ⊕ {i // i ∉ s}) ↥(MaximalUnramifiedExtension l)) * X` using `fun g => by`. Rewrite using `[h g]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hYX, Matrix.mul_one, ← Matrix.mul_assoc Y X, hYX, Matrix.one_mul]`. Establish `hR' : IsRat r ρ'` using `isRat_of (X := X) (Y := Y) hX hY ρ ρ' h hR`. Establish `hD' : AdmDR P ρ'` using `deRham_of_conjugate_unramified_rational P X Y hXY hYX hX hY ρ ρ' h hR.le hD`. Establish `hz' : ∀ g i j, (ρ' g : Matrix ({i // i ∈ s} ⊕ {i // i ∉ s}) ({i // i ∈ s} ⊕ {i // i ∉ s}) ↥(MaximalUnramifiedExtension l)) (Sum.inr i) (Sum.inl j) = 0` using `fun g i j => hz g i.1 j.1 i.2 j.2`. Establish `hform` using `blk_form ρ' hz'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub` using `GlobalTheory.T.deRham_blockTriangular_diagonal_blocks l P AI T _ _ K r ρ' (blk₁ ρ' hz') (blk₂ ρ' hz') _ hR' hform hD'`. Establish `hS1 : AdmSt P (blk₁ ρ' hz')` using `IH _ (Fintype.card_subtype_lt (x := y) hy) _ (isRat_blk₁ ρ' hz' hR') hsub.1`. Establish `hS2 : AdmSt P (blk₂ ρ' hz')` using `IH _ (Fintype.card_subtype_lt (p := fun i => i ∉ s) (x := x) (not_not.2 hx)) _ (isRat_blk₂ ρ' hz' hR') hsub.2`. Establish `hS'` using `GlobalTheory.T.deRhamExtension_potentiallySemistable l P AI T _ _ K r ρ' (blk₁ ρ' hz') (blk₂ ρ' hz') _ hR' hform hD' hS1 hS2`. Conclude with `semistable_of_conjugate_unramified_rational P Y X hYX hXY hY hX ρ' ρ h' hR.le hS'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem redStep : RedStep := by
   intro l _ P AI T n _ _ K r ρ hR hD hS IH

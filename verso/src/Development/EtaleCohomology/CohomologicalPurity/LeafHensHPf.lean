@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC CochainCo
 namespace LateralTheory.CohomologicalPurity.TubeCut
 
 /- English proof (translation)
-Introduce `hH q _ C _ K hK hq i`. Conclude with `hH.2.2.2.2.2.2.2.2.2.2.2 q C K hq i`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LeafHensH_of : LeafHensH := by
   intro hH q _ C _ K hK hq i

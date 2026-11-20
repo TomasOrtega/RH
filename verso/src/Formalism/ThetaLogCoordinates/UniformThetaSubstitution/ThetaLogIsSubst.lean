@@ -8,15 +8,15 @@ namespace Formalism.InvariantFactorPaths.G7.Top
 open Formalism.InvariantFactorPaths.G7
 
 /- English proof (translation)
-Introduce `K _ ν r0 r1 _ om oms ϖ μ Tht hμ`. Establish `hz0 : ∀ x : Bool × EV ν r0 r1, MvPowerSeries.constantCoeff (zLin om oms x) = 0`. Introduce `x`. Unfold `zLin`. Rewrite using `[map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `s _`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hz : ∀ x : Bool × EV ν r0 r1, PowerSeries.HasSubst (zLin om oms x)` using `fun x => PowerSeries.HasSubst.of_constantCoeff_zero (hz0 x)`. Establish `hs : ∀ x : Bool × EV ν r0 r1, MvPowerSeries.constantCoeff (sSub om oms μ x) = 0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Unfold `sSub`. Rewrite using `[PowerSeries.constantCoeff_subst (hz x)]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `d`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `d with _ | d` into its components or cases. Simplify using `[hμ]`. Simplify using `[map_pow, hz0 x]`. Establish `ha : MvPowerSeries.HasSubst (fun x : Bool × EV ν r0 r1 => MvPowerSeries.C ϖ * sSub om oms μ x)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun x => by simp [hs x])`. Establish `hb : MvPowerSeries.HasSubst (fun y : ZV ν r0 r1 => MvPowerSeries.C ϖ⁻¹ * (MvPowerSeries.X y : MvPowerSeries (ZV ν r0 r1) K))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun y => by simp)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `MvPowerSeries.subst_comp_subst_apply ha hb Tht`.
+A detailed English derivation is pending.
 -/
 theorem thetaLogIsSubst : ThetaLogIsSubst := by
   intro K _ ν r0 r1 _ om oms ϖ μ Tht hμ

@@ -13,7 +13,7 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.GGGenRatio
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.GGCardUni
 
 /- English proof (translation)
-The claim follows from `PI.GGMatBoundW.ggMatrixBoundOfLit_of PI.GGMatBoundW.matrix_coefficient_equation PI.GGMatBoundW.totally_hermitian_form (PI.GGMatBoundW.eigBound_of PI.GGMatBoundW.local_place_bound PI.GGMatBoundW.joint_eigenvector_exists PI.GGMatBoundW.prod_formula') PI.GGMatBoundW.spectrum_positiv …`.
+A detailed English derivation is pending.
 -/
 theorem gg_matrix_bound : Formalism.L2.SG.GGMirabolic.GGMatrixBoundOfLit :=
   PI.GGMatBoundW.ggMatrixBoundOfLit_of PI.GGMatBoundW.matrix_coefficient_equation PI.GGMatBoundW.totally_hermitian_form

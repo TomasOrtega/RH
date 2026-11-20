@@ -9,15 +9,13 @@ set_option autoImplicit false
 namespace GlobalTheory.HSAmp
 
 /- English proof (translation)
-Introduce `k _ X _ p P a b σ f hf i j`. Establish `key : ∀ y ∈ ptsIn p σ (P.L.B.U i) ∩ ptsIn p σ (P.A.B.U j), ∃ (W : X.Opens) (hW : genericPoint X ∈ W) (g : Γ(X, W)), y ∈ ptsIn p σ W ∧ P.loc a b f i j = fnOf W hW g`. Introduce `y hy`. Establish `hr : RegAt (under y) (P.loc a b f i j)` using `hf _ i j (mem_ptsIn.1 hy.1) (mem_ptsIn.1 hy.2)`. Take `⟨W, hx, g, e⟩` from `hr.exists_fnOf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨W, gen_mem hx, g, mem_ptsIn.2 hx, e.symm⟩`. Use `⟨fun y hy => ?_, fun D c => ?_⟩` and prove the remaining obligations. Take `⟨W, hW, g, hy', e⟩` from `key y hy`. Establish `hc : ContinuousAt (ratVal (q` using `p) (σ := σ) (P.loc a b f i j)) y := by`. Use `((continuousOn_ev (p := p) (σ := σ) g).continuousAt ((isOpen_ptsIn W).mem_nhds hy')).congr ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [(isOpen_ptsIn W).mem_nhds hy'] with z hz`. Rewrite using `[e, ratVal_fnOf hz]`. Conclude with `hc.continuousWithinAt`. Introduce `v hv`. Take `⟨W, hW, g, hy', e⟩` from `key _ hv.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hO : IsOpen (c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ W)` using `c.e.isOpen_inter_preimage_symm (isOpen_ptsIn W)`. Establish `hm : v ∈ c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ W` using `⟨hv.1, hy'⟩`. Establish `hd` using `(c.holo W g).differentiableAt (hO.mem_nhds hm)`. Use `(hd.congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations. Use `filter_upwards [hO.mem_nhds hm] with w hw`.
-
-Rewrite using `[e, ratVal_fnOf hw.2]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem loc_continuousOn_holo : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (P : Pair p), ∀ (a b : ℤ) (σ : k →+* ℂ) (f : X.functionField), f ∈ P.H a b → ∀ i j, ContinuousOn (ratVal (q := p) (σ := σ) (P.loc a b f i j)) (ptsIn p σ (P.L.B.U i) ∩ ptsIn p σ (P.A.B.U j)) ∧ ∀ (D : ℕ) (c : AlgChart p σ D), DifferentiableOn ℂ (fun v => ratVal (P.loc a b f i j) (c.e.symm v)) (c.e.target ∩ c.e.symm ⁻¹' (ptsIn p σ (P.L.B.U i) ∩ ptsIn p σ (P.A.B.U j))) := by
   intro k _ X _ p P a b σ f hf i j

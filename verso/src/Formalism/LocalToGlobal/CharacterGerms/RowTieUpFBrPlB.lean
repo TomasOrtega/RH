@@ -12,7 +12,7 @@ namespace UpFBr
 open ReciprocityTheory.ChartRestriction.G.Pdiv.AvDefs
 
 /- English proof (translation)
-Introduce `l _ OE _ _ _ _ _ R _ _ _ _ _ hl hd d _ em h1 h2 h3`. Take `⟨e, he1, he2, he3, iN, t, jj, hj, ht, b, hb⟩` from `h l OE R hl hd d em h1 h2 h3`. Conclude with `⟨⟨e, he1, he2, he3⟩, iN, t, jj, hj, ht, b, hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem placeSt_of_X (h : Pl.PlaceCriterionOfIdempotent) : PlaceSt := by
   intro l _ OE _ _ _ _ _ R _ _ _ _ _ hl hd d _ em h1 h2 h3

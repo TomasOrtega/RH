@@ -33,13 +33,13 @@ noncomputable section
 namespace GlobalTheory.CuspSmoothLift
 
 /- English proof (translation)
-Introduce `hL hP D hS G₀ _ _ Pl0 T A Ks _ _ _ R G hR hG`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t i j hi hj Φ hΦ φ hφ`. Establish `hc` using `GlobalTheory.T.negative_theta_level_first hL hP D hS G₀ Pl0 T A Ks R G hR hG t i j hi hj Φ hΦ φ hφ`. Conclude with `⟨hc, GlobalTheory.T.negative_theta_level_second hL hP D hS G₀ Pl0 T A Ks R G hR hG t i j hi hj Φ hΦ φ hφ hc, GlobalTheory.T.negative_theta_level_third hL hP D hS G₀ Pl0 T A Ks R G hR hG t i j hi hj Φ hΦ φ hφ hc, GlobalTheory.T.negative_theta_level_fourth hL hP D hS G₀ Pl0 T A Ks …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce `t i j hi hj Φ hΦ φ hφ`. Establish `hc` using `GlobalTheory.T.horizontal_theta_level_first hL hP D hS G₀ Pl0 T A Ks R G hR hG t i j hi hj Φ hΦ φ hφ`. Conclude with `⟨hc, GlobalTheory.T.horizontal_theta_level_second hL hP D hS G₀ Pl0 T A Ks R G hR hG t i j hi hj Φ hΦ φ hφ hc, GlobalTheory.T.isCuspFun_theta_integral_of_integrableOn hL hP D hS G₀ Pl0 T A Ks R G hR hG t i j hi hj Φ hΦ φ hφ hc, GlobalTheory.T.horizontal_theta_level_fourth hL hP D …`. Introduce `i hi Φ hΦ φ hφ`. Establish `hc` using `GlobalTheory.T.negative_parabolic_theta_first hL hP D hS G₀ Pl0 T A Ks R G hR hG i hi Φ hΦ φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨hc, GlobalTheory.T.isAutFunSm_thetaLift_of_isCuspOfType hL hP D hS G₀ Pl0 T A Ks R G hR hG i hi Φ hΦ φ hφ hc, GlobalTheory.T.negative_parabolic_theta_third hL hP D hS G₀ Pl0 T A Ks R G hR hG i hi Φ hΦ φ hφ hc, GlobalTheory.T.negative_parabolic_theta_fourth hL hP D hS G₀ Pl0 T A …`. Introduce `i hi Φ hΦ φ hφ`. Establish `hc` using `GlobalTheory.T.negative_parabolic_theta_fifth hL hP D hS G₀ Pl0 T A Ks R G hR hG i hi Φ hΦ φ hφ`. Conclude with `⟨hc, GlobalTheory.T.negative_parabolic_theta_sixth hL hP D hS G₀ Pl0 T A Ks R G hR hG i hi Φ hΦ φ hφ hc, GlobalTheory.T.negative_parabolic_theta_seventh hL hP D hS G₀ Pl0 T A Ks R G hR hG i hi Φ hΦ φ hφ hc, GlobalTheory.T.negative_parabolic_theta_eighth hL hP D hS G₀ Pl0 T A Ks R …`. Introduce `t j hj Φ hΦ φ hφ`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc` using `GlobalTheory.T.vertical_theta_level_first hL hP D hS G₀ Pl0 T A Ks R G hR hG t j hj Φ hΦ φ hφ`. Conclude with `⟨hc, GlobalTheory.T.vertical_theta_level_second hL hP D hS G₀ Pl0 T A Ks R G hR hG t j hj Φ hΦ φ hφ hc, GlobalTheory.T.vertical_theta_level_third hL hP D hS G₀ Pl0 T A Ks R G hR hG t j hj Φ hΦ φ hφ hc, GlobalTheory.T.vertical_theta_level_fourth hL hP D hS G₀ Pl0 T A Ks R G hR hG …`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem liftsCuspidalSmoothAt_of_liftsCuspidal : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → GlobalTheory.FunPr.Hypotheses₂ → ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidalSmoothAt D := by
   intro hL hP D hS G₀ _ _ Pl0 T A Ks _ _ _ R G hR hG

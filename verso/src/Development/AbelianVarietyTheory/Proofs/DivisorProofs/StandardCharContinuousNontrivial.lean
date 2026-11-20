@@ -14,13 +14,13 @@ namespace GlobalTheory.PsiLocal
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (differentIdeal_ne_bot (A := ℤ) (B := 𝓞 F))`. Take `⟨t, ht, ht0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Establish `hy0' : algebraMap (𝓞 F) F y ≠ 0`. Rewrite using `[ne_eq, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 F) F)]` and apply the resulting hypothesis. Establish `ht0' : algebraMap (𝓞 F) F t ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[ne_eq, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 F) F)]` and apply the resulting hypothesis. Use `⟨((algebraMap (𝓞 F) F y * algebraMap (𝓞 F) F t)⁻¹ : F), fun h => ?_⟩` and prove the remaining obligations. Establish `h1` using `(GroundTheory.Global.coe_mem_localInvDifferent_iff v _).1 h y hy`. Establish `e : (algebraMap (𝓞 F) F y * algebraMap (𝓞 F) F t)⁻¹ * algebraMap (𝓞 F) F y = (algebraMap (𝓞 F) F t)⁻¹`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite `h1` using `[e, map_inv₀]`. Establish `hlt : v.valuation F (algebraMap (𝓞 F) F t) < 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `(v.intValuation_lt_one_iff_mem t).2 ht`. Establish `hne : v.valuation F (algebraMap (𝓞 F) F t) ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[ne_eq, map_eq_zero]` and apply the resulting hypothesis. Use `one_lt_inv_iff₀.2 ⟨zero_lt_iff.2 hne, hlt⟩` as an intermediate fact. Conclude with `absurd h1 (not_le.2 this)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_not_mem_localInvDifferent (v : Pl F) :
     ∃ x : Fv F v, x ∉ GroundTheory.Global.localInvDifferent v := by
@@ -46,11 +46,9 @@ theorem exists_not_mem_localInvDifferent (v : Pl F) :
   exact absurd h1 (not_le.2 this)
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ v`. Establish `hval : ∀ x, psiLoc ψ v x = (GroundTheory.Global.localAdelicChar F v x : ℂ)`. Introduce `x`. Use `show ψ (GroundTheory.Global.finitePlaceIncl v x) = _`. Conclude with `GlobalTheory.AdelicSvN.Weyl.isStd_eq hψ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `hψ.1.comp (continuous_const.prodMk (continuous_singleFin v))`. Assume the negation of the conclusion as `hc push_neg at hc`. Establish `h1 : ∀ x, GroundTheory.Global.localAdelicChar F v x = 1` using `fun x => by`. Use `hc x` as an intermediate fact.
-
-Rewrite `this` using `[hval]`. Conclude with `Circle.ext (by simpa using this)`. Take `⟨x, hx⟩` from `exists_not_mem_localInvDifferent v`. Conclude with `hx ((GroundTheory.Global.forall_localAdelicChar_mul_eq_one_iff v x).1 fun a _ => h1 _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem psi_loc_main : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ v : Pl F,
     Continuous (psiLoc ψ v) ∧ ∃ x : Fv F v, psiLoc ψ v x ≠ 1 := by

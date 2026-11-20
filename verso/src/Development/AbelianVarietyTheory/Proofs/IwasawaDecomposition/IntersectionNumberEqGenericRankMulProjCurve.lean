@@ -19,7 +19,7 @@ section Generic
 variable {X : Scheme.{0}} [IsIntegral X]
 
 /- English proof (translation)
-The claim follows from `have ⟨e⟩ := Twist.nonempty_stalkEquiv (F := F) hM (genericPoint X) e.finrank_eq`.
+A detailed English derivation is pending.
 -/
 theorem genRank_twist {F : X.Modules} {M : LB X} (hM : M.IsLB) :
     genRank (twist F M) = genRank F :=
@@ -27,9 +27,9 @@ theorem genRank_twist {F : X.Modules} {M : LB X} (hM : M.IsLB) :
   e.finrank_eq
 
 /- English proof (translation)
-Take `⟨n, s, hs⟩` from `QCoh.isGloballyGenerated_iff_spanStalks.1 h`. Use `by_contra! H`. Establish `: Subsingleton (genStalk F)` using `subsingleton_of_forall_eq 0 fun t => by`. Establish `ht` using `(hs (genericPoint X)).ge (Submodule.mem_top (x := t))`. Establish `e : (Set.range fun i => ((F.presheaf.germ ⊤ (genericPoint X) trivial (s i) : (F.presheaf.stalk (genericPoint X) :)))) ⊆ {0}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `H _`. Simplify using `using Submodule.span_mono e ht`. Conclude with `hr Module.finrank_zero_of_subsingleton`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_germ_ne_zero {F : X.Modules} (h : QCoh.IsGloballyGenerated F)
     (hr : genRank F ≠ 0) :
@@ -46,9 +46,9 @@ theorem exists_germ_ne_zero {F : X.Modules} (h : QCoh.IsGloballyGenerated F)
   exact hr Module.finrank_zero_of_subsingleton
 
 /- English proof (translation)
-Use `QCoh.mono_of_locally_app_injective _ fun W x hx => ⟨W, hx, le_rfl, fun a b e => ?_⟩` and prove the remaining obligations. Establish `hη` using `genericPoint_mem hx`. Apply `(QCoh.structureModuleSectionsEquiv W).injective` to reduce the goal to its premises. Establish `e' : (QCoh.structureModuleSectionsEquiv W a - QCoh.structureModuleSectionsEquiv W b) • Twist.resM F (le_top : W ≤ ⊤) s = 0`. Rewrite using `[sub_smul, sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`. Establish `e''` using `congrArg (F.presheaf.germ W _ hη) e'`. Rewrite `e''` using `[QCoh.germ_smul, Twist.germ_resM, map_zero]`. Use `(smul_eq_zero.1 e'').resolve_right hs` as an intermediate fact. Conclude with `sub_eq_zero.1 (germ_injective_of_isIntegral X _ hη (this.trans (map_zero _).symm))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mono_sectionHom {F : X.Modules} (s : Γ(F, ⊤))
     (hs : F.presheaf.germ ⊤ (genericPoint X) trivial s ≠ 0) : Mono (QCoh.sectionHom s) := by
@@ -69,15 +69,15 @@ end Generic
 variable {κ : Type} [Field κ] {Z : Scheme.{0}} [IsIntegral Z] [Algebra κ Γ(Z, ⊤)]
 
 /- English proof (translation)
-Establish `hf` using `algebraMap_eq_strHom κ Z`. Establish `hL` using `isLB_vecOne hN`. Establish `h1 : ∀ {F : Z.Modules} [QCoh.IsFiniteQC F], FiniteCohTwists κ F` using `fun {F} _ => finiteCohTwists_of_isProjOver hf F hp`. Take `⟨_, A, hA⟩` from `isProper_and_exists_isAmpleLB_of_isProjOver hp`. Proceed by induction on `r with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `zero`. Introduce `G _ h`. Establish `h0 : QCoh.suppDim G ≤ 0` using `suppDim_le_zero hd h`. Establish `: QCoh.suppDim G < Fintype.card (Fin 1)` using `h0.trans_lt (by simp)`. Rewrite using `[interNum_eq_zero_of_isProjOver hf G hp this hL]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ r ih`. Introduce `G _ h`. Take `⟨n, hn⟩` from `(hA.eventually_isGloballyGenerated_twist G).exists`. Establish `hM` using `isLB_lbPow hA.isLB n`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Twist.isFiniteQC_twist (F := G) hM` as an intermediate fact. Establish `hr : genRank (twist G (lbPow A n)) = r + 1` using `(genRank_twist hM).trans h`. Take `⟨s, hs⟩` from `exists_germ_ne_zero hn (by omega)`. Use `mono_sectionHom s hs` as an intermediate fact. Establish `e₁ : interNum κ (twist G (lbPow A n)) ![N] = interNum κ G ![N]` using `(diffVanish_chiPic_of_isProjOver (d := 1) hf G hp ((QCoh.suppDim_le G).trans_eq (by rw [hd]; rfl))).interNum_twist (by simp) hL hM`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂` using `interNum_cokernel (k := κ) (QCoh.sectionHom s) hL h1 h1`. Establish `e₃` using `genRank_cokernel (QCoh.sectionHom s)`. Rewrite `e₃` using `[(isVB_structureModule Z).genRank_eq, hr]`. Rewrite `e₂` using `[ih _ (by omega)]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -116,7 +116,7 @@ theorem interNum_one_of_genRank_eq (hp : IsProjOver (strHom κ Z)) (hd : topolog
     linarith
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ hp hd G _ _ hN` and use `interNum_one_of_genRank_eq hp hd hN _ G rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem interNum_one_eq_genRank_mul : ∀ (κ : Type) [Field κ] (Z : Scheme.{0}) [IsIntegral Z]
     [Algebra κ Γ(Z, ⊤)], IsProjOver (strHom κ Z) → topologicalKrullDim Z = 1 →

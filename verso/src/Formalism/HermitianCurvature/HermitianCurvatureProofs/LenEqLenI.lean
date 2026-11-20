@@ -16,19 +16,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   {f : ∀ v : Fin S.f, B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} {χ : ℝ → ℝ} {A₀ : ℝ}
 
 /- English proof (translation)
-Simplify using `only [C.HidaSetting.Ntop, Sz.Glob.N, C.Kst]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ntop_eq_N'' (S : C.HidaSetting E Wp Wq) : (S.Ntop : ℝ) = S.G.N := by
   simp only [C.HidaSetting.Ntop, Sz.Glob.N, C.Kst]; push_cast; ring
 
 /- English proof (translation)
-Simplify using `only [C.HidaSetting.cutHi, C.HidaSetting.cutLo, Sz.Glob.lenI, Sz.Glob.place]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem len_eq_lenI' (S : C.HidaSetting E Wp Wq) (v : Fin S.f) : S.cutHi v - S.cutLo v = S.G.lenI := by
   simp only [C.HidaSetting.cutHi, C.HidaSetting.cutLo, Sz.Glob.lenI, Sz.Glob.place]; ring
 
 /- English proof (translation)
-Take `⟨hg1, hg2, -⟩` from `hB`. Use `⟨by unfold Sz.Glob.g; exact_mod_cast Nat.mul_pos hg1 hg2, ?_⟩` and prove the remaining obligations. Unfold `Sz.Glob.ka; rw [S.hv]; exact div_pos Real.pi_pos (by linarith [PBD.rd_pos' E])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 -/
 theorem glob_posT (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) : 0 < S.G.g ∧ 0 < S.G.ka := by
   obtain ⟨hg1, hg2, -⟩ := hB
@@ -36,9 +36,9 @@ theorem glob_posT (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) : 0 < S.G.g
   unfold Sz.Glob.ka; rw [S.hv]; exact div_pos Real.pi_pos (by linarith [PBD.rd_pos' E])
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, -, hG, -⟩` from `hB`. Take `⟨hlen, -⟩` from `hG ⟨0, hS⟩`. Rewrite `hlen` using `[len_eq_lenI']`. Establish `hN : (0 : ℝ) ≤ S.Ntop` using `Nat.cast_nonneg _`. Establish `hN1 : (1 : ℝ) ≤ S.Ntop`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 1 ≤ S.Ntop` using `by unfold C.HidaSetting.Ntop C.Kst; omega`. Conclude with `this` after adjusting the coercions. Establish `h6 : (0 : ℝ) < 6 * (S.Ntop : ℝ) ^ 3 + 6 * S.Ntop` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lenI_posT (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (hS : 0 < S.f) : 0 < S.G.lenI := by
   obtain ⟨-, -, -, -, -, -, -, -, -, -, hG, -⟩ := hB
@@ -52,11 +52,11 @@ theorem lenI_posT (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (hS : 0 < S
   linarith
 
 /- English proof (translation)
-Use `⟨Real.sqrt_nonneg _, ?_⟩` and prove the remaining obligations. Establish `hB'` using `hB`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, hCA, -⟩` from `hB'`. Take `⟨hg, hk⟩` from `glob_posT hB`. Establish `hlen` using `lenI_posT hB (Fin.pos v)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsz : S.base.szL (S.G.r + 2 - s) s v = 2 * J.thrP S.G S.CA S.de S.de' S.T S.T' S.l (S.G.r + 2 - s) (S.pl v)` using `by show (if S.G.r + 2 - s + s ≤ S.G.r + 1 then _ else _) = _`. Rewrite using `[if_neg (by omega)]`. Rewrite using `[hsz]`. Establish `hsA : ∀ one, 0 ≤ J.supA S.G S.de S.de' S.T S.T' S.l one (S.pl v)` using `fun one => supA_nonneg S hg hk v one`. Establish `hFT` using `(Formalism.FourierDecayAlt.P.frame_threshold_bound_holds (InfinitePlace E) S.G S.CA S.de S.de' S.T S.T' S.l (S.pl v) hg hlen (hC.trans hCA) hsA).2 (S.G.r + 2 - s) (Real.exp 1) ((28 * S.G.N / S.G.lenI) ^ (2 * (S.G.r + 2 - s - 1))) (by omega) (Real.exp_pos 1).le le_rfl (pow_nonneg …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `lamTop`. Establish `e : ((S.G.r : ℤ) + 2 - ((S.G.r + 2 - s : ℕ) : ℤ)) = ((S.G.r : ℤ) + 2 - ((S.G.r + 2 - s : ℕ) : ℤ))` using `rfl`. Combine the linear relations using `[hFT]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem lamTop_thr (hC : 28 * Real.exp 1 ≤ Cc) (hB : KB.IsLeadingFormSetting Cb Cc S p f χ A₀) (s : ℕ) (hs2 : 2 ≤ s)
     (hsr : s ≤ S.G.r + 1) (v : Fin S.f) :

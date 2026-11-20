@@ -11,11 +11,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ChiGrid
 
 /- English proof (translation)
-Establish `hτ : ∀ a, τ (star a) = starRingEnd ℂ (τ a)` using `D.sp.cm.cmUnram.2.1 τ`. Establish `hw : (Matrix.of fun i j => (D.sp.Y D.R.m).hT (D.sp.eYm (D.sp.X'.frame i)) (D.sp.eYm (D.sp.X'.frame j))) = D.sp.X'.gram`. Conclude with `Matrix.ext fun i j => D.sp.eYm_isom _ _`. Establish `hs` using `D.sp.X'_sig τ`. Rewrite `hs` using `[← hw]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `k` using `sig_family (D.sp.Y D.R.m) τ hτ _ hs (D.sp.Y_sig D.R.m τ)`. Establish `h3` using `sig_sum _ D.sp.X'_sig τ`. Establish `h4` using `sig_sum _ (D.sp.Y_sig D.R.m) τ`. Establish `hYr : (D.sp.Y D.R.m).rank = D.sp.X'.rank`. Rewrite using `[D.sp.Y_rank D.R.m le_rfl, D.sp.X'_rank]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `k`, `h4` using `[hYr]`. Conclude with `Prod.ext (by omega) (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sig_X'_eq_sig_Y (D : D7) (τ : D.host.E →+* ℂ) : D.sp.X'.sig τ = (D.sp.Y D.R.m).sig τ := by
   have hτ : ∀ a, τ (star a) = starRingEnd ℂ (τ a) := D.sp.cm.cmUnram.2.1 τ
@@ -33,11 +33,11 @@ theorem sig_X'_eq_sig_Y (D : D7) (τ : D.host.E →+* ℂ) : D.sp.X'.sig τ = (D
   exact Prod.ext (by omega) (by omega)
 
 /- English proof (translation)
-Introduce `D T L μ0 hL j hj`. Establish `hr : rankV D 0 j = D.R.rankY j`. Simplify using `only [rankV, zero_mul, add_zero]`. Both sides reduce to the same expression. Rewrite using `[hr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Break down `hj.eq_or_lt with rfl | hlt` into its components or cases. Rewrite using `[colY_m]`. Use `⟨D.sp.X'_rank, D.sp.X'_sig, fun τ => ?_, GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ hL.βX⟩` and prove the remaining obligations. Conclude with `(sig_X'_eq_sig_Y D τ).trans (D.Y_sigval _ le_rfl τ)`. Rewrite using `[colY_lt L hlt]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : min j D.R.m = j` using `min_eq_left hj`. Use `⟨?_, D.sp.Y_sig _, fun τ => ?_, GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hL.βY j hlt)⟩` and prove the remaining obligations. Conclude with `(D.sp.Y_rank _ (min_le_right _ _)).trans (by rw [e])`. Conclude with `(D.Y_sigval _ (min_le_right _ _) τ).trans (by rw [e]; rfl)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem colY_isV : ∀ (D : D7) (T : Type) (L : LevCh D T) (μ0 : T), L.Is μ0 → ∀ j, j ≤ D.R.m → (columnBlock L j).IsV (rankV D 0 j) ((D.R.m - j) / 2) := by
   intro D T L μ0 hL j hj

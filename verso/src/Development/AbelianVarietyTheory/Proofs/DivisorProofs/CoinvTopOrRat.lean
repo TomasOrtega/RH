@@ -5,25 +5,21 @@ open Formalism.BasicNotions.TH GlobalTheory.FockAlg GlobalTheory.RealLift Global
 namespace GlobalTheory.HoweR
 
 /- English proof (translation)
-Distinguish the cases in `hx : ∃ x' : ℚ, x = x'`. Take `⟨x', rfl⟩` from `hx`. Conclude with `Or.inr ⟨x', rfl⟩`. Use `push_neg at hx`. Distinguish the cases in `hI : IsEmpty (Ix P Q)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Prove the second alternative. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `right`. Use `⟨0, ?_⟩` and prove the remaining obligations. Unfold `coinv`. Use `congr 1`. Use extensionality with `g`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[Matrix.trace, Finset.univ_eq_empty]`. Use `left`. Rewrite `hI` using `[not_isEmpty_iff]`. Take `⟨a⟩` from `hI`. Set `K : Subring ℂ` to `(Rat.castHom ℂ).range`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hxK : x ∉ K`. Introduce and unpack `⟨q, hq⟩`. Conclude with `hx q hq.symm`. Establish `hsign : ∀ c : Ix R S, lineSign a c ∈ K`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rcases a with a | a <;> rcases c with c | c <;> simp only [lineSign] <;> first | exact K.one_mem | exact K.neg_mem K.one_mem`. Establish `hc : ∀ α : Ln P Q R S →₀ ℕ, (∑ c, lineSign a c * (((α (a, c) : ℕ) : ℂ) + 1 / 2)) ∈ K`. Introduce `α`. Use `K.sum_mem fun c _ => K.mul_mem (hsign c) (K.add_mem (natCast_mem K _) ?_)` and prove the remaining obligations. Conclude with `RingHom.mem_range.mpr ⟨1 / 2, by simp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hmon : ∀ α : Ln P Q R S →₀ ℕ, (MvPolynomial.monomial α (1 : ℂ) : Pol P Q R S) ∈ coinv P Q R S x`. Introduce `α`. Establish `hne : (∑ c, lineSign a c * (((α (a, c) : ℕ) : ℂ) + 1 / 2)) - x ≠ 0`. Introduce `h`. Apply `hxK` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[sub_eq_zero]`. Rewrite using `[← h]`. Conclude with `hc α`. Establish `hg : fockAct1 P Q R S (Eab a a) (MvPolynomial.monomial α 1) - (x * (Eab a a : Mat P Q).trace) • MvPolynomial.monomial α 1 ∈ coinv P Q R S x` using `Submodule.subset_span ⟨Eab a a, _, rfl⟩`. Establish `htr : (Eab a a : Mat P Q).trace = 1` using `by simp [Eab]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hg` using `[cartan1, htr, mul_one, ← sub_smul]`. Establish `h2` using `(coinv P Q R S x).smul_mem ((∑ c, lineSign a c * (((α (a, c) : ℕ) : ℂ) + 1 / 2)) - x)⁻¹ hg`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hne, one_smul]`. Then use the resulting hypothesis. Rewrite using `[eq_top_iff]`. Introduce `f _`.
-
-Rewrite using `[f.as_sum]`. Use `Submodule.sum_mem _ fun α _ => ?_` and prove the remaining obligations. Establish `he : (MvPolynomial.monomial α (MvPolynomial.coeff α f) : Pol P Q R S) = MvPolynomial.coeff α f • MvPolynomial.monomial α 1`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[he]`.
-
-Conclude with `(coinv P Q R S x).smul_mem _ (hmon α)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coinv_top_or_rat (P Q R S : ℕ) (x : ℂ) :
     coinv P Q R S x = ⊤ ∨ ∃ x' : ℚ, coinv P Q R S x = coinv P Q R S (x' : ℂ) := by

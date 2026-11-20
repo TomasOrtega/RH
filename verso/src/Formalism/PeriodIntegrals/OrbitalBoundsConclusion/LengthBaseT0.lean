@@ -1,7 +1,7 @@
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.BaseLengthBound.LenBaseHolds
 
 /- English proof (translation)
-The claim follows from `PoleLengthBounds.lenBase_holds`.
+A detailed English derivation is pending.
 -/
 theorem length_base_t0 : ∀ {D : Formalism.BasicNotions.D7} {B : Formalism.MainNotions.WeightFamilies.Prov D} {P : Formalism.MainNotions.ModuliIntegralCharts.Prov D} {j : ℕ}
     {X : Formalism.MainNotions.WeightAlgebra.PJ D B P j} {ka wL wF : Formalism.MainNotions.WeightFamilies.Wt D j},

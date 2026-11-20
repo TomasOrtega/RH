@@ -6,7 +6,7 @@ open GlobalTheory.FinGL Formalism.L2.DIV Module
 namespace GlobalTheory.FinGL.MackeyRadical
 
 /- English proof (translation)
-Use `⟨⟨Matrix.transvection i j t, Matrix.transvection i j (-t), ?_, ?_⟩, fun k l => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.transvection_mul_transvection_same _ _ h, add_neg_cancel, Matrix.transvection_zero]`. Rewrite using `[Matrix.transvection_mul_transvection_same _ _ h, neg_add_cancel, Matrix.transvection_zero]`. Simplify using `[Matrix.transvection, Matrix.single]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_elem {F : Type} [Field F] {r : ℕ} {i j : Fin r} (h : i ≠ j) (t : F) :
     ∃ g : GL (Fin r) F, ∀ k l, (g : Matrix (Fin r) (Fin r) F) k l =
@@ -17,27 +17,25 @@ theorem exists_elem {F : Type} [Field F] {r : ℕ} {i j : Fin r} (h : i ≠ j) (
   · simp [Matrix.transvection, Matrix.single]
 
 /- English proof (translation)
-Introduce `F _ ψ r V _ _ b σ hσ j w x hx hψ a c hac hb`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, ψ t ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hψ (DFunLike.ext _ _ fun t => by simpa using h t)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : w a ≠ w c` using `fun h => by rw [h] at hb; exact lt_irrefl _ hb`. Establish `hlt : a.val < c.val` using `by have := hac.1; omega`. Take `⟨g, hg⟩` from `exists_elem hne t`. Establish `hgb : g ∈ blockTri (κ` using `F) b := by`. Use `mem_blockTri.2 fun k l hkl => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hkl' : k ≠ l` using `fun h => by rw [h] at hkl; exact lt_irrefl _ hkl`. Rewrite using `[hg, Matrix.one_apply_ne hkl', if_neg, add_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `lt_asymm hb hkl`. Establish `h1 : σ ⟨g, hgb⟩ = 1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `hσ.infl _ fun k l hkl => ?_` and prove the remaining obligations. Use `show (g : Matrix (Fin r) (Fin r) F) k l = _`. Rewrite using `[hg, if_neg, add_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hb.ne hkl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc : ∀ k l, ((x⁻¹ * g * x : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) k l = (1 : Matrix (Fin r) (Fin r) F) k l + if a = k ∧ c = l then t else 0`. Introduce `k l`. Rewrite using `[hx, hg]`. Simplify using `[Matrix.one_apply]`. Establish `hu : x⁻¹ * g * x ∈ unip F r`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨mem_blockTri.2 fun k l hkl => ?_, fun k => ?_⟩` and prove the remaining obligations. Establish `hkl' : k ≠ l` using `fun h => by rw [h] at hkl; exact lt_irrefl _ hkl`. Rewrite using `[hc, Matrix.one_apply_ne hkl', if_neg, add_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `lt_asymm hlt hkl`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hc, Matrix.one_apply_eq, if_neg, add_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `lt_irrefl _ hlt`. Establish `hs : edgeSum (cutEdge j) (x⁻¹ * g * x) = t`. Unfold `edgeSum`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ k l : Fin r, (if cutEdge j k l then ((x⁻¹ * g * x : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) k l else 0) = if l = c then (if k = a then t else 0) else 0`. Introduce `k l`. Distinguish the cases in `h : cutEdge j k l`. Establish `hkl : k ≠ l` using `fun e => by have := h.1; rw [e] at this; omega`. Rewrite using `[if_pos h, hc, Matrix.one_apply_ne hkl, zero_add]`.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `by_cases h1 : l = c <;> by_cases h2 : k = a <;> simp [h1, h2, @eq_comm _ a k, @eq_comm _ c l]`. Rewrite using `[if_neg h]`. Apply the tactic sequence `by_cases h1 : l = c <;> by_cases h2 : k = a <;> simp [h1, h2]`. Substitute `h1 h2` using the available equality. Conclude with `absurd hac h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [key]`. Simplify using the standard rewrite rules. Use `eq_bot_iff.2 fun v hv => ?_` and prove the remaining obligations. Simplify using `only [eig, Submodule.mem_iInf, LinearMap.mem_ker] at hv`. Use `hv ⟨g, hgb⟩ hu` as an intermediate fact.
-
-Simplify using `only [h1, hs, LinearMap.sub_apply, Module.End.one_apply, LinearMap.smul_apply, LinearMap.id_apply] at this`. Establish `h2 : (1 - ψ t) • v = 0` using `by rw [sub_smul, one_smul]; exact this`. Break down `smul_eq_zero.1 h2 with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h).symm ht`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem eig_eq_bot_of_radical : ∀ (F : Type) [Field F] (ψ : AddChar F ℂ) (r : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (b : Fin r → ℕ) (σ : Representation ℂ (blockTri (κ := F) b) V), IsCuspDatum b σ → ∀ (j : ℕ) (w : Equiv.Perm (Fin r)) (x : GL (Fin r) F), (∀ (g : GL (Fin r) F) (a c : Fin r), ((x⁻¹ * g * x : GL (Fin r) F) : Matrix (Fin r) (Fin r) F) a c = (g : Matrix (Fin r) (Fin r) F) (w a) (w c)) → ψ ≠ 1 → ∀ a c : Fin r, cutEdge j a c → b (w a) < b (w c) → eig σ {p | x⁻¹ * (p : GL (Fin r) F) * x ∈ unip F r} (fun p => ψ (edgeSum (cutEdge j) (x⁻¹ * (p : GL (Fin r) F) * x))) = ⊥ := by
   intro F _ ψ r V _ _ b σ hσ j w x hx hψ a c hac hb

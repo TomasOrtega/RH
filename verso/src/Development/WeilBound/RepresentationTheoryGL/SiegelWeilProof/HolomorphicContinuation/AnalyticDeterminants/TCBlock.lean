@@ -23,23 +23,23 @@ def epsE (j : ℕ) : Fin (Fintype.card (blkA (n := n) j) + Fintype.card (blkB (n
       (((Equiv.refl _).sumCongr (eBq j)).trans (Equiv.sumCompl fun x => x ∈ blkA (n := n) j)))
 
 /- English proof (translation)
-Simplify using `[epsE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem epsE_left (j : ℕ) (i : Fin (Fintype.card (blkA (n := n) j))) :
     epsE j (Fin.castAdd _ i) = ((Fintype.equivFin (blkA (n := n) j)).symm i : Fin n) := by
   simp [epsE]
 
 /- English proof (translation)
-Simplify using `[epsE, eBq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem epsE_right (j : ℕ) (i : Fin (Fintype.card (blkB (n := n) j))) :
     epsE j (Fin.natAdd _ i) = ((Fintype.equivFin (blkB (n := n) j)).symm i : Fin n) := by
   simp [epsE, eBq]
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_ite, Finset.prod_const, Finset.prod_const]`. Use `congr 2`. Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use extensionality with `x`. Simplify using `[blkB]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem prod_coef (j : ℕ) (c c' : ℂ) :
     (∏ r : Fin n, if r ∈ blkA (n := n) j then c else c') = c ^ (blkA (n := n) j).card * c' ^ (blkB (n := n) j).card := by
@@ -54,23 +54,21 @@ theorem prod_coef (j : ℕ) (c c' : ℂ) :
     simp [blkB]
 
 /- English proof (translation)
-Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℂ] Matrix (Fin n) (Fin n) ℂ` to `LinearMap.toContinuousLinearMap { toFun := bdiag j c c' map_add' := fun x y => by`. Apply the tactic sequence `ext a b; simp only [bdiag, Matrix.add_apply]; split_ifs <;> ring`. Use the proof step `map_smul' := fun m x => by`. Apply the tactic sequence `ext a b; simp only [bdiag, Matrix.smul_apply, smul_eq_mul, RingHom.id_apply]; split_ifs <;> ring }`. Establish `hL : ∀ t, L t = bdiag j c c' t` using `fun t => rfl`.
+Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfun : (fun t => ψ (bdiag j c c' t)) = fun w => ψ (0 + L w)`. Use function extensionality and compare the values at `w`. Rewrite using `[zero_add, hL]`. Establish `hκ : ∀ (σ : Equiv.Perm (Fin n)) (r : Fin n), L (vv σ r) = (if r ∈ blkA (n` using `n) j ∧ σ r ∈ blkA (n := n) j then c else if r ∈ blkB (n := n) j ∧ σ r ∈ blkB (n := n) j then c' else 0) • vv σ r := by`. Introduce `σ r`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Rewrite using `[hL]`. Simplify using `only [bdiag, vv, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul]`. Distinguish the cases in `hab : r = a ∧ σ r = b`. Take `⟨rfl, rfl⟩` from `hab`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[hab]`. Establish `hD` using `hA (Matrix (Fin n) (Fin n) ℂ) (Matrix (Fin n) (Fin n) ℂ) ψ Ω hΩ hψ 0 h0 L (Fintype.card (Fin n))`. Unfold `detD`. Rewrite using `[hfun]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `erw [hD]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `erw [ContinuousMultilinearMap.compContinuousLinearMap_apply]`. Establish `hv : (fun i => L (single ((Fintype.equivFin (Fin n)).symm i) (σ ((Fintype.equivFin (Fin n)).symm i)) 1)) = fun i => (fun r => if r ∈ blkA (n` using `n) j ∧ σ r ∈ blkA (n := n) j then c else if r ∈ blkB (n := n) j ∧ σ r ∈ blkB (n := n) j then c' else 0) ((Fintype.equivFin (Fin n)).symm i) • (vv σ ∘ (Fintype.equivFin (Fin n)).symm) i := by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Conclude with `hκ σ _`. Use `erw [hv, ContinuousMultilinearMap.map_smul_univ, Equiv.prod_comp (Fintype.equivFin (Fin n)).symm (fun r => if r ∈ blkA (n := n) j ∧ σ r ∈ blkA (n := n) j then c else if r ∈ blkB (n := n) j ∧ σ r ∈ blkB (n := n) j then c' else 0)]`. Use `split_ifs with hp`. Establish `hprod : (∏ r : Fin n, if r ∈ blkA (n` using `n) j ∧ σ r ∈ blkA (n := n) j then c else if r ∈ blkB (n := n) j ∧ σ r ∈ blkB (n := n) j then c' else 0) = ∏ r : Fin n, if r ∈ blkA (n := n) j then c else c' := by`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun r _ => ?_` and prove the remaining obligations. Distinguish the cases in `hr : r ∈ blkA (n := n) j`. Simplify using `[hr, (hp r).mp hr]`. Establish `hr' : σ r ∉ blkA (n` using `n) j := fun h => hr ((hp r).mpr h)`. Simplify using `[hr, hr', blkB]`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hprod, prod_coef, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `push_neg at hp`. Take `⟨r, hr⟩` from `hp`. Establish `hz : (∏ r : Fin n, if r ∈ blkA (n` using `n) j ∧ σ r ∈ blkA (n := n) j then c else if r ∈ blkB (n := n) j ∧ σ r ∈ blkB (n := n) j then c' else 0) = 0 := by`.
-
-Use `Finset.prod_eq_zero (Finset.mem_univ r) ?_` and prove the remaining obligations. Break down `hr with ⟨h1, h2⟩ | ⟨h1, h2⟩` into its components or cases. Simplify using `[h1, h2, blkB]`. Simplify using `[h1, h2, blkB]`. Rewrite using `[hz, zero_smul, mul_zero, mul_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lhs_eq (hA : IterAffine) (j : ℕ) (c c' : ℂ) (ψ : Matrix (Fin n) (Fin n) ℂ → ℂ)
     (Ω : Set (Matrix (Fin n) (Fin n) ℂ)) (hΩ : IsOpen Ω) (h0 : 0 ∈ Ω) (hψ : ContDiffOn ℂ ∞ ψ Ω) :
@@ -138,19 +136,19 @@ theorem lhs_eq (hA : IterAffine) (j : ℕ) (c c' : ℂ) (ψ : Matrix (Fin n) (Fi
     rw [hz, zero_smul, mul_zero, mul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.append_left, Function.comp_apply, epsE_left]`. Generalize the expression as in `(Fintype.equivFin (blkA (n := n) j)).symm i = a`. Establish `hp : piP j σA τ a = σA a`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Simplify using `[piP, Equiv.Perm.subtypeCongr.left_apply _ _ a.2]`. Use extensionality with `p q`. Simplify using `only [vv, hp, embL]`. Simplify using `only [embOn, Matrix.single_apply, LinearMap.coe_toContinuousLinearMap', LinearMap.coe_mk, AddHom.coe_mk]`. Distinguish the cases in `hpq : (a : Fin n) = p ∧ (σA a : Fin n) = q`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Take `⟨rfl, rfl⟩` from `hpq`. Simplify using the standard rewrite rules. Rewrite using `[if_neg hpq] split_ifs with h1 h2`. Conclude with `absurd ⟨by rw [h2.1], by rw [h2.2]⟩ hpq`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `only [Fin.append_right, Function.comp_apply, epsE_right]`. Generalize the expression as in `(Fintype.equivFin (blkB (n := n) j)).symm i = b`. Establish `hp : piP j σA τ b = τ b`. Establish `hb : (b : Fin n) ∉ blkA (n` using `n) j := by`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `b.2` as an intermediate fact. Simplify `this` using `[blkB]`. Simplify using `[piP, Equiv.Perm.subtypeCongr.right_apply _ _ hb, eBq]`. Conclude with `Subtype.ext rfl`. Use extensionality with `p q`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [vv, hp, embL]`. Simplify using `only [embOn, Matrix.single_apply, LinearMap.coe_toContinuousLinearMap', LinearMap.coe_mk, AddHom.coe_mk]`. Distinguish the cases in `hpq : (b : Fin n) = p ∧ (τ b : Fin n) = q`. Take `⟨rfl, rfl⟩` from `hpq`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[if_neg hpq] split_ifs with h1 h2`. Conclude with `absurd ⟨by rw [h2.1], by rw [h2.2]⟩ hpq`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem append_eq (j : ℕ) (σA : Equiv.Perm (blkA (n := n) j)) (τ : Equiv.Perm (blkB (n := n) j)) :
     Fin.append (fun i => embL (blkA (n := n) j) (single ((Fintype.equivFin (blkA (n := n) j)).symm i)
@@ -194,7 +192,7 @@ theorem append_eq (j : ℕ) (σA : Equiv.Perm (blkA (n := n) j)) (τ : Equiv.Per
       · rfl
 
 /- English proof (translation)
-Take `rfl : k = m` from `Fin.equiv_iff_eq.mp ⟨e1.trans e2.symm⟩`. Rewrite using `[← hS V ψ Ω hΩ hψ c hc k (v ∘ e2) (e1.trans e2.symm)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem iteratedFDeriv_comp_equiv_eq_of_contDiffOn (hS : IterSymm) {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     (ψ : V → ℂ) (Ω : Set V) (hΩ : IsOpen Ω) (hψ : ContDiffOn ℂ ∞ ψ Ω) (c : V) (hc : c ∈ Ω)
@@ -207,9 +205,9 @@ private theorem iteratedFDeriv_comp_equiv_eq_of_contDiffOn (hS : IterSymm) {V : 
   simp
 
 /- English proof (translation)
-Establish `h1 : (fun y => ∑ i ∈ u, a i * f i y) = ∑ i ∈ u, (fun y => a i • f i y)`. Use function extensionality and compare the values at `y`. Simplify using `[Finset.sum_apply]`. Rewrite using `[h1, ← iteratedFDerivWithin_univ, iteratedFDerivWithin_sum_apply uniqueDiffOn_univ (Set.mem_univ _)]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[iteratedFDerivWithin_univ]`. Conclude with `iteratedFDeriv_const_smul_apply' (h i hi)`. Introduce `i hi`. Conclude with `((h i hi).const_smul (a i)).contDiffWithinAt`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem iteratedFDeriv_sum_mul_eq_sum_smul {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {ι : Type} (u : Finset ι)
     (f : ι → E → ℂ) (a : ι → ℂ) (x : E) (k : ℕ) (h : ∀ i ∈ u, ContDiffAt ℂ k (f i) x) :
@@ -225,15 +223,15 @@ private theorem iteratedFDeriv_sum_mul_eq_sum_smul {E : Type} [NormedAddCommGrou
     exact ((h i hi).const_smul (a i)).contDiffWithinAt
 
 /- English proof (translation)
-Establish `hψ0 : ContDiffAt ℂ ∞ ψ 0` using `hψ.contDiffAt (hΩ.mem_nhds h0)`. Establish `hG : ∀ w : Fin (Fintype.card (blkB (n` using `n) j)) → Matrix (blkB (n := n) j) (blkB (n := n) j) ℂ, ContDiffAt ℂ (Fintype.card (blkA (n := n) j)) (fun T : Matrix (blkA (n := n) j) (blkA (n := n) j) ℂ => iteratedFDeriv ℂ (Fintype.card (blkB (n := n) j)) (fun S : Matrix (blkB (n := n) j) (blkB (n := n) j) ℂ => ψ (embOn (blkA …`. Introduce `w`. Establish `hmem : ∀ᶠ T in 𝓝 (0 : Matrix (blkA (n` using `n) j) (blkA (n := n) j) ℂ), embL (blkA (n := n) j) T ∈ Ω := by`. Apply `(embL (blkA (n := n) j)).continuous.continuousAt.preimage_mem_nhds` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using hΩ.mem_nhds h0`. Establish `hev : (fun T : Matrix (blkA (n` using `n) j) (blkA (n := n) j) ℂ => iteratedFDeriv ℂ (Fintype.card (blkB (n := n) j)) (fun S : Matrix (blkB (n := n) j) (blkB (n := n) j) ℂ => ψ (embOn (blkA j) T + embOn (blkB j) S)) 0 w) =ᶠ[𝓝 0] fun T => iteratedFDeriv ℂ (Fintype.card (blkB (n := n) j)) ψ (embL (blkA (n := n) j) T) (f …`. Use `hA (Matrix (Fin n) (Fin n) ℂ) (Matrix (blkB (n := n) j) (blkB (n := n) j) ℂ) ψ Ω hΩ hψ (embL (blkA (n := n) j) T) hT (embL (blkB (n := n) j)) (Fintype.card (blkB (n := n) j))` as an intermediate fact. Conclude with `congrArg (fun M => M w) this`. Use `ContDiffAt.congr_of_eventuallyEq ?_ hev` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ContDiffAt ℂ (Fintype.card (blkA (n` using `n) j)) (iteratedFDeriv ℂ (Fintype.card (blkB (n := n) j)) ψ) (embL (blkA (n := n) j) 0) := by`. Rewrite using `[map_zero]`. Apply the tactic sequence `exact hψ0.iteratedFDeriv_right (by first | exact_mod_cast le_top | (norm_cast; exact le_top) | (exact WithTop.coe_le_coe.mpr le_top) | simp [← Nat.cast_add]; exact_mod_cast le_top)`. Establish `h2` using `h1.comp (0 : Matrix (blkA (n := n) j) (blkA (n := n) j) ℂ) (embL (blkA (n := n) j)).contDiff.contDiffAt`. Conclude with `(ContinuousMultilinearMap.apply ℂ _ ℂ (fun i => embL (blkB (n := n) j) (w i))).contDiff.contDiffAt.comp _ h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Unfold `detD`. Use `Finset.sum_congr rfl fun σA _ => ?_` and prove the remaining obligations. Rewrite using `[iteratedFDeriv_sum_mul_eq_sum_smul _ _ _ _ _ (fun τ _ => hG _), ContinuousMultilinearMap.sum_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousMultilinearMap.smul_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hN'` using `hN (Matrix (Fin n) (Fin n) ℂ) (Matrix (blkA (n := n) j) (blkA (n := n) j) ℂ) (Matrix (blkB (n := n) j) (blkB (n := n) j) ℂ) ψ Ω hΩ hψ 0 h0 (embL (blkA (n := n) j)) (embL (blkB (n := n) j)) (Fintype.card (blkA (n := n) j)) (Fintype.card (blkB (n := n) j)) (fun i => single ((Fintyp …`. Simplify using `only [zero_add] at hN'`. Use `erw [hN', append_eq j σA τ, iteratedFDeriv_comp_equiv_eq_of_contDiffOn hS ψ Ω hΩ hψ 0 h0 (epsE j) (Fintype.equivFin (Fin n)).symm (vv (piP j σA τ))]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem rhs_eq (hA : IterAffine) (hS : IterSymm) (hN : IterNested) (j : ℕ) (ψ : Matrix (Fin n) (Fin n) ℂ → ℂ)
     (Ω : Set (Matrix (Fin n) (Fin n) ℂ)) (hΩ : IsOpen Ω) (h0 : 0 ∈ Ω) (hψ : ContDiffOn ℂ ∞ ψ Ω) :
@@ -283,23 +281,21 @@ theorem rhs_eq (hA : IterAffine) (hS : IterSymm) (hN : IterNested) (j : ℕ) (ψ
   ring
 
 /- English proof (translation)
-Introduce `m j c c' ψ Ω hΩ h0 hψ`. Rewrite using `[lhs_eq hA j c c' ψ Ω hΩ h0 hψ, rhs_eq hA hS hN j ψ Ω hΩ h0 hψ]`. Use `congr 1`. Rewrite using `[← Finset.sum_filter, ← Finset.sum_product']`. Use `symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Use `Finset.sum_bij (fun p _ => piP j p.1 p.2) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `p _`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Introduce `r`. Distinguish the cases in `hr : r ∈ blkA (n := m) j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[piP, Equiv.Perm.subtypeCongr.left_apply _ _ hr]`. Conclude with `iff_of_true hr (p.1 ⟨r, hr⟩).2`. Rewrite using `[piP, Equiv.Perm.subtypeCongr.right_apply _ _ hr]`. Conclude with `iff_of_false hr ((eBq j).permCongr p.2 ⟨r, hr⟩).2`. Introduce and unpack `⟨a1, b1⟩ _ ⟨a2, b2⟩ _ h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only at h`. Use `Prod.ext (Equiv.ext fun ⟨x, hx⟩ => Subtype.ext ?_) (Equiv.ext fun ⟨x, hx⟩ => ?_)` and prove the remaining obligations. Establish `h1` using `DFunLike.congr_fun h x`. Rewrite `h1` using `[piP, piP, Equiv.Perm.subtypeCongr.left_apply _ _ hx, Equiv.Perm.subtypeCongr.left_apply _ _ hx]`. Then use the resulting hypothesis. Establish `hx' : x ∉ blkA (n` using `m) j := by simpa [blkB] using hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `DFunLike.congr_fun h x`. Rewrite `h1` using `[piP, piP, Equiv.Perm.subtypeCongr.right_apply _ _ hx', Equiv.Perm.subtypeCongr.right_apply _ _ hx']`. Establish `he : (eBq j).symm ⟨x, hx'⟩ = ⟨x, hx⟩` using `rfl`. Establish `h2` using `Subtype.ext h1`. Rewrite `h2` using `[Equiv.permCongr_apply, Equiv.permCongr_apply, he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `(eBq j).injective h2`. Introduce `σ hσ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hσ`. Use `⟨(σ.subtypePerm (fun x => (hσ x).symm), (eBq j).symm.permCongr (σ.subtypePerm (p := fun x => x ∉ blkA (n := m) j) (fun x => not_congr (hσ x).symm))), by simp, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hx : x ∈ blkA (n := m) j`. Simplify using `only [piP]`. Rewrite using `[Equiv.Perm.subtypeCongr.left_apply _ _ hx]`. Both sides reduce to the same expression. Simplify using `only [piP]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Equiv.Perm.subtypeCongr.right_apply _ _ hx]`. Both sides reduce to the same expression. Introduce `p _`. Simplify using `only [piP, Equiv.Perm.sign_subtypeCongr, Equiv.Perm.sign_permCongr, Units.val_mul, Int.cast_mul]`. Reduce the equality to equality of the corresponding arguments.
-
-Conclude with `Subsingleton.elim _ _`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem detDBlock_of (hA : IterAffine) (hS : IterSymm) (hN : IterNested) : DetDBlock := by
   intro m j c c' ψ Ω hΩ h0 hψ

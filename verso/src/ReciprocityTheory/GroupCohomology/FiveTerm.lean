@@ -5,7 +5,7 @@ namespace ReciprocityTheory.Coh
 universe u
 
 /- English proof (translation)
-Introduce `R _ G _ _ _ _ _ _ M _ N _ hN Q P hP I hI`. Take `⟨tg, -, -, h₁, h₂⟩` from `transgression_holds R G M N hN Q P hP I hI`. Conclude with `⟨tg, h₁, h₂⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fiveTerm_holds : FiveTermStatement.{u} := by
   intro R _ G _ _ _ _ _ _ M _ N _ hN Q P hP I hI

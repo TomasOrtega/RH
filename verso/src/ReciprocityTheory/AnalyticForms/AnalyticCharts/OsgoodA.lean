@@ -9,9 +9,7 @@ open Complex Metric MeasureTheory Set Filter Topology
 open scoped Real
 
 /- English proof (translation)
-Use `differentiable_pi.2 fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Conclude with `differentiable_const x`. Simplify using `only [Fin.cons_succ]`.
-
-Conclude with `differentiable_pi.1 differentiable_id j`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_cons_right {n : ℕ} (x : ℂ) :
     Differentiable ℂ (fun y : Fin n → ℂ => (Fin.cons x y : Fin (n + 1) → ℂ)) := by
@@ -23,9 +21,7 @@ theorem differentiable_cons_right {n : ℕ} (x : ℂ) :
     exact differentiable_pi.1 differentiable_id j
 
 /- English proof (translation)
-Use `differentiable_pi.2 fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Conclude with `differentiable_id`. Simplify using `only [Fin.cons_succ]`.
-
-Conclude with `differentiable_const _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_cons_left {n : ℕ} (y : Fin n → ℂ) :
     Differentiable ℂ (fun x : ℂ => (Fin.cons x y : Fin (n + 1) → ℂ)) := by
@@ -37,23 +33,23 @@ theorem differentiable_cons_left {n : ℕ} (y : Fin n → ℂ) :
     exact differentiable_const _
 
 /- English proof (translation)
-Rewrite using `[closedBall_pi c hr, Set.mem_univ_pi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_closedBall_pi_iff {n : ℕ} {c z : Fin n → ℂ} {r : ℝ} (hr : 0 ≤ r) :
     z ∈ closedBall c r ↔ ∀ i, z i ∈ closedBall (c i) r := by
   rw [closedBall_pi c hr, Set.mem_univ_pi]
 
 /- English proof (translation)
-Rewrite using `[ball_pi c hr, Set.mem_univ_pi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_ball_pi_iff {n : ℕ} {c z : Fin n → ℂ} {r : ℝ} (hr : 0 < r) :
     z ∈ ball c r ↔ ∀ i, z i ∈ ball (c i) r := by
   rw [ball_pi c hr, Set.mem_univ_pi]
 
 /- English proof (translation)
-Establish `h : torusMap c (fun _ => r) θ i - c i = (r : ℂ) * exp ((θ i : ℂ) * I)`. Simplify using `only [torusMap]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : ‖exp ((θ i : ℂ) * I)‖ = 1`. Conclude with `Complex.norm_exp_ofReal_mul_I _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ‖(r : ℂ)‖ = r`. Conclude with `Complex.norm_of_nonneg hr`. Rewrite using `[h, norm_mul, h1, h2, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_torusMap_sub {n : ℕ} (c : Fin n → ℂ) {r : ℝ} (hr : 0 ≤ r) (θ : Fin n → ℝ) (i : Fin n) :
     ‖torusMap c (fun _ => r) θ i - c i‖ = r := by
@@ -67,7 +63,7 @@ theorem norm_torusMap_sub {n : ℕ} (c : Fin n → ℂ) {r : ℝ} (hr : 0 ≤ r)
   rw [h, norm_mul, h1, h2, mul_one]
 
 /- English proof (translation)
-Use `(mem_closedBall_pi_iff hr).2 fun i => ?_` and prove the remaining obligations. Rewrite using `[mem_closedBall, dist_eq_norm]`. Conclude with `(norm_torusMap_sub c hr θ i).le`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torusMap_mem_closedBall {n : ℕ} (c : Fin n → ℂ) {r : ℝ} (hr : 0 ≤ r) (θ : Fin n → ℝ) :
     torusMap c (fun _ => r) θ ∈ closedBall c r := by
@@ -76,9 +72,9 @@ theorem torusMap_mem_closedBall {n : ℕ} (c : Fin n → ℂ) {r : ℝ} (hr : 0 
   exact (norm_torusMap_sub c hr θ i).le
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `(mem_ball_pi_iff hr).1 hz i`. Rewrite `h1` using `[mem_ball, dist_eq_norm]`. Establish `h2` using `norm_torusMap_sub c hr.le θ i`. Rewrite `h` using `[sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem torusMap_sub_ne {n : ℕ} {c z : Fin n → ℂ} {r : ℝ} (hr : 0 < r) (hz : z ∈ ball c r)
     (θ : Fin n → ℝ) (i : Fin n) : torusMap c (fun _ => r) θ i - z i ≠ 0 := by
@@ -91,7 +87,7 @@ theorem torusMap_sub_ne {n : ℕ} {c z : Fin n → ℂ} {r : ℝ} (hr : 0 < r) (
   linarith
 
 /- English proof (translation)
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Simplify using `only [torusMap]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_torusMap {n : ℕ} (c : Fin n → ℂ) (r : ℝ) :
     Continuous (torusMap c (fun _ => r)) := by
@@ -100,7 +96,7 @@ theorem continuous_torusMap {n : ℕ} (c : Fin n → ℂ) (r : ℝ) :
   fun_prop
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun θ => ?_` and prove the remaining obligations. Conclude with `(hf _ (torusMap_mem_closedBall c hr θ)).continuousAt.comp (continuous_torusMap c r).continuousAt`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_comp_torusMap {n : ℕ} {f : (Fin n → ℂ) → ℂ} {c : Fin n → ℂ} {r : ℝ} (hr : 0 ≤ r)
     (hf : ∀ ζ ∈ closedBall c r, DifferentiableAt ℂ f ζ) :
@@ -110,9 +106,9 @@ theorem continuous_comp_torusMap {n : ℕ} {f : (Fin n → ℂ) → ℂ} {c : Fi
     (continuous_torusMap c r).continuousAt
 
 /- English proof (translation)
-Establish `hK : Continuous fun θ => ∏ i, (torusMap c (fun _ => r) θ i - z i)⁻¹`. Use `continuous_finsetProd Finset.univ fun i _ => ?_` and prove the remaining obligations. Use `Continuous.inv₀ ?_ ?_` and prove the remaining obligations. Conclude with `((continuous_apply i).comp (continuous_torusMap c r)).sub continuous_const`. Introduce `θ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `torusMap_sub_ne hr hz θ i`. Establish `hcont : Continuous fun θ => (∏ i, (torusMap c (fun _ => r) θ i - z i)⁻¹) * f (torusMap c (fun _ => r) θ)` using `hK.mul (continuous_comp_torusMap hr.le hf)`. Unfold `TorusIntegrable`. Conclude with `hcont.continuousOn.integrableOn_compact isCompact_Icc`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem torusIntegrable_kernel {n : ℕ} {f : (Fin n → ℂ) → ℂ} {c z : Fin n → ℂ} {r : ℝ} (hr : 0 < r)
     (hf : ∀ ζ ∈ closedBall c r, DifferentiableAt ℂ f ζ) (hz : z ∈ ball c r) :
@@ -130,7 +126,7 @@ theorem torusIntegrable_kernel {n : ℕ} {f : (Fin n → ℂ) → ℂ} {c z : Fi
   exact hcont.continuousOn.integrableOn_compact isCompact_Icc
 
 /- English proof (translation)
-The claim follows from `| 0, f, c, r, _, _, z, _ => by rw [torusIntegral_dim0] simp [Subsingleton.elim z c] | n + 1, f, c, r, hr, hf, z, hz => by rw [torusIntegral_succ (torusIntegrable_kernel hr hf hz)] have hz0 : z 0 ∈ ball (c 0) r := (mem_ball_pi_iff hr).mp hz 0 have hz' : Fin.tail z ∈ ball (fun i => …`.
+A detailed English derivation is pending.
 -/
 theorem cauchy_polydisc : ∀ (n : ℕ) (f : (Fin n → ℂ) → ℂ) (c : Fin n → ℂ) (r : ℝ), 0 < r →
     (∀ ζ ∈ closedBall c r, DifferentiableAt ℂ f ζ) → ∀ z ∈ ball c r,

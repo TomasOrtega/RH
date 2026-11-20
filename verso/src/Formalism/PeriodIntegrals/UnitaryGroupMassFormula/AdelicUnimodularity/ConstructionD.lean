@@ -8,7 +8,7 @@ namespace PI.WAU
 open Formalism.MainNotions.S MeasureTheory Matrix Pointwise
 
 /- English proof (translation)
-Use extensionality with `x`. Use `⟨fun h => h.1, fun h => ⟨h, fun y hy => ⟨(I.fmat x - 1) *ᵥ y, ?_, by simp⟩⟩⟩` and prove the remaining obligations. Establish `h' : ∀ y, y ∈ I.Lf ↔ I.fmat x *ᵥ y ∈ I.Lf` using `h`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`. Conclude with `I.Lf.sub_mem ((h' y).1 hy) hy`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kg_one_eq (I : AutInst) : I.Kg 1 = I.Kset := by
   ext x
@@ -18,7 +18,7 @@ theorem kg_one_eq (I : AutInst) : I.Kg 1 = I.Kset := by
   exact I.Lf.sub_mem ((h' y).1 hy) hy
 
 /- English proof (translation)
-Rewrite using `[← kg_one_eq]`. Conclude with `I.topf_open 1 le_rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kset_open (I : AutInst) : IsOpen I.Kset := by
   rw [← kg_one_eq]
@@ -30,9 +30,9 @@ Both sides reduce to the same expression.
 theorem ksub_coe (I : AutInst) : ((Ksub I : Subgroup I.Gf) : Set I.Gf) = I.Kset := rfl
 
 /- English proof (translation)
-Use `haveI := hμ`. Take `⟨s, hs, hcov⟩` from `hQ`. Use `Measure.sigmaFinite_of_countable (S := (fun y => (fun x => y * x) '' I.Kset) '' s) (hs.image _) ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, -, rfl⟩ show μ ((fun x => y * x) '' I.Kset) < ⊤`. Rewrite using `[Set.image_mul_left, measure_preimage_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hKc.measure_lt_top`. Rewrite using `[Set.sUnion_image, Set.eq_univ_iff_forall]`. Introduce `x`. Take `⟨y, hy, hyx⟩` from `hcov x`. Conclude with `Set.mem_biUnion hy ⟨y⁻¹ * x, hyx, mul_inv_cancel_left y x⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sigmaFinite_of_K (I : AutInst) (μ : Measure I.Gf) (hμ : μ.IsHaarMeasure)
     (hKc : IsCompact I.Kset) (hQ : ∃ s : Set I.Gf, s.Countable ∧ ∀ x : I.Gf, ∃ y ∈ s, y⁻¹ * x ∈ I.Kset) :
@@ -51,11 +51,9 @@ theorem sigmaFinite_of_K (I : AutInst) (μ : Measure I.Gf) (hμ : μ.IsHaarMeasu
     exact Set.mem_biUnion hy ⟨y⁻¹ * x, hyx, mul_inv_cancel_left y x⟩
 
 /- English proof (translation)
-Introduce `I μ hμ`. Use `haveI := sigmaFinite_of_K I μ hμ (hC I) (hQ I)`. Use `choose U hU using fun n : ℕ => hA I (n + 1) (by omega)`. Use `PI.UnimodIdxWork.unimodIdx_main I.Gf μ hμ U (fun n => ?_) (fun V hV => ?_) (Ksub I) ?_ ?_ (hI I)` and prove the remaining obligations. Rewrite using `[hU n]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `I.topf_open (n + 1) (by omega)`. Take `⟨g, hg1, hgV⟩` from `I.topf_basis V hV`. Use `⟨g - 1, ?_⟩` and prove the remaining obligations. Rewrite using `[hU (g - 1), show g - 1 + 1 = g by omega]`. Conclude with `hgV`.
-
-Rewrite using `[ksub_coe]`. Conclude with `kset_open I`. Rewrite using `[ksub_coe]`. Conclude with `hC I`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adUnimod_of (hA : KgSubgroup) (hC : KCompact) (hQ : KCountable) (hI : IndexEq) :
     PI.AdUnimod := by

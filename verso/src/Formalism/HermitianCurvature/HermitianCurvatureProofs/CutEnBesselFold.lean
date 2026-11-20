@@ -13,7 +13,7 @@ namespace Formalism.FourierDecayAlt.P.CutMP.En
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-The claim follows from `| [] => hJ | x :: a => hcl _ (foldCV_memB hcl hJ s a) x.2 s`.
+A detailed English derivation is pending.
 -/
 theorem foldCV_memB {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] {z z' : Fin (2 * r + k + 1) → ℂ} {π : Q.Mx k r → (Wp →L[ℂ] Wp)}
@@ -25,13 +25,13 @@ theorem foldCV_memB {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerPro
   | x :: a => hcl _ (foldCV_memB hcl hJ s a) x.2 s
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hg, fun a ha => absurd ha (Nat.not_lt_zero _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_level_zero_of_mem_group {k r : ℕ} {g : B.Mat k r} (hg : g ∈ B.GV k r) : g ∈ Q.Glev k r 0 :=
   ⟨hg, fun a ha => absurd ha (Nat.not_lt_zero _)⟩
 
 /- English proof (translation)
-Use `show ∫ p, JF.xiP D p • B.rho D p (c • G) g ∂D.μSS = c • ∫ p, JF.xiP D p • B.rho D p G g ∂D.μSS`. Rewrite using `[← integral_smul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [B.rho, Pi.smul_apply, ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul]`. Rewrite using `[smul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem JF_smul' {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (D : B.RealPlaceData k r Wp Wq) (c : ℂ)
@@ -43,23 +43,21 @@ theorem JF_smul' {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProduc
   rw [smul_comm]
 
 /- English proof (translation)
-Unfold `JF.TransportedAlt`. Establish `hR : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Establish `hK : (2 : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `hN0 : (0 : ℝ) ≤ N` using `Nat.cast_nonneg N`. Use `set n : ℝ := 2 * (r : ℝ) + k + 1 with hn`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set R : ℝ := (r : ℝ) + 1 with hRdef`. Establish `hcast : ((2 * r + k + 1 : ℕ) : ℝ) = n` using `by rw [hn]; push_cast; ring`. Establish `hMc : (((2 * r + k + 1) * (N + 1) : ℕ) : ℝ) = n * ((N : ℝ) + 1)` using `by rw [hn]; push_cast; ring`. Establish `hmr : (m : ℝ) ≤ n * ((N : ℝ) + 1)` using `by rw [← hMc]; exact_mod_cast hm`. Establish `hn3 : (3 : ℝ) ≤ n` using `by rw [hn]; linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn0 : (0 : ℝ) ≤ n` using `by linarith`. Establish `hR1 : (1 : ℝ) ≤ R` using `by rw [hRdef]; linarith`. Establish `hR0 : (0 : ℝ) < R` using `by linarith`. Establish `h4 : R ≤ R ^ 4`. Establish `: (1 : ℝ) ≤ R ^ 3` using `one_le_pow₀ hR1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `set P : ℝ := (N : ℝ) * n ^ 2 + n ^ 3 with hP`. Establish `hP0 : 0 ≤ P` using `by positivity`. Establish `hA' : 100 * R * P ≤ A₀` using `le_trans (by gcongr) hA`. Establish `hnn : n ≤ n ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left (show (1 : ℝ) ≤ n by linarith) hn0` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hn23 : 3 * n ^ 2 ≤ n ^ 3`. Use `mul_le_mul_of_nonneg_right hn3 (sq_nonneg n)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hn1 : 3 * n ≤ n ^ 2`. Use `mul_le_mul_of_nonneg_right hn3 hn0` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `i1 : 8 * (n * (N : ℝ)) ≤ 100 * ((N : ℝ) * n ^ 2)`. Use `mul_le_mul_of_nonneg_right hnn hN0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `i2 : 8 * n + 9 * n ^ 2 < 100 * n ^ 3` using `by nlinarith`. Establish `inner : 8 * (n * ((N : ℝ) + 1)) + 9 * n ^ 2 < 100 * P` using `by rw [hP]; nlinarith`. Establish `key : R * (8 * (n * ((N : ℝ) + 1)) + 9 * n ^ 2) < R * (100 * P)` using `mul_lt_mul_of_pos_left inner hR0`. Establish `hrm : 6 * (r : ℝ) * (m : ℝ) ≤ 6 * R * (n * ((N : ℝ) + 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `h6 : 6 * (r : ℝ) ≤ 6 * R` using `by rw [hRdef]; linarith`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcast, hMc, lt_div_iff₀ (by positivity)]`. Establish `e1 : R * (100 * P) = 100 * R * P` using `by ring`. Establish `e2 : R * (8 * (n * ((N : ℝ) + 1)) + 9 * n ^ 2) = 2 * R * (n * ((N : ℝ) + 1)) + 6 * R * (n * ((N : ℝ) + 1)) + n ^ 2 * (9 * R)` using `by ring`.
-
-Rewrite `key` using `[e1, e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem thr_budget (k r N : ℕ) (A₀ : ℝ) (hk : 2 ≤ k)
     (hA : 100 * ((r : ℝ) + 1) ^ 4 * ((N : ℝ) * (2 * (r : ℝ) + k + 1) ^ 2 + (2 * (r : ℝ) + k + 1) ^ 3) ≤ A₀)
@@ -117,31 +115,27 @@ theorem thr_budget (k r N : ℕ) (A₀ : ℝ) (hk : 2 ≤ k)
   linarith
 
 /- English proof (translation)
-Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v hcl ε hε hJF`. Take `⟨⟨_, _, _, hbuilt, _, _, _, _, _, _, hk2, hA, _⟩, _, _, _⟩` from `hB`. Take `⟨hcut, hv⟩` from `hbuilt`. Take `⟨_, _, _, _, hCC, _⟩` from `hv v`. Use `set Db := (T v).base with hDb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set s : ℂ := M.sgn (D.parOf S v) (S.l + 1) with hs`. Use `set F := D.cutF Db χ (f v) ε with hF`. Use `set n : ℕ := 2 * S.G.r + S.G.k + 1 with hn`. Use `set N : ℕ := S.Ntop with hN`. Use `set A : ℝ := A₀ - 2 * ((S.G.r : ℝ) + 1) * ((n * (N + 1) : ℕ) : ℝ) with hAdef`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hThr : ∀ m, m ≤ n * (N + 1) → JF.TransportedAlt S.G.k S.G.r A m` using `fun m hm => thr_budget S.G.k S.G.r N A₀ hk2 hA m hm`. Establish `hFcc : B.InCC A (n * (N + 1)) F` using `Formalism.FourierDecayAlt.P.PBE.cutF_inCC Db hcut hCC hε A (n * (N + 1)) (by rw [hAdef]; linarith)`. Establish `hreg : ∀ a : List C.Letter, a.length ≤ N → B.InCC A (n * (N + 1 - a.length)) (foldCV S.G.k S.G.r s a F)`. Introduce `a`. Proceed by induction on `a with`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the case `nil => intro _`. Simplify using `only [List.length_nil, Nat.sub_zero]`. Conclude with `hFcc`. Consider the case `cons x a ih`. Introduce `hl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [List.length_cons] at hl`. Establish `h1` using `ih (by omega)`. Establish `e : n * (N + 1 - a.length) = n * (N + 1 - (a.length + 1)) + (2 * S.G.r + S.G.k + 1)`. Rewrite using `[← hn, ← Nat.mul_succ]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[e]`. Establish `h2` using `hC S.G.k S.G.r _ A _ _ (x.2 : ℂ) s h1`. Simplify using `only [List.length_cons]`. Conclude with `h2`.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hOp : IsOpen (Q.OmPlus S.G.k S.G.r Db.z Db.z')` using `Formalism.FourierDecayAlt.P.SmoothnessOnGoodSet.isOpen_OmPlus _ _`. Introduce `a`. Proceed by induction on `a with`. Consider the case `nil => intro _ g _`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `cons x a ih`. Introduce `hl g hg`. Simplify using `only [List.length_cons] at hl`. Establish `ih'` using `ih (by omega)`. Use `set H := foldCV S.G.k S.G.r s a F with hH`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set m : ℕ := n * (N + 1 - a.length) with hm`. Establish `hHcc : B.InCC A m H` using `hreg a (by omega)`. Establish `hnm : 2 * S.G.r + S.G.k + 1 ≤ m`. Rewrite using `[hm, ← hn]; exact Nat.le_mul_of_pos_right n (by omega)`. Establish `hmM : m ≤ n * (N + 1)` using `by rw [hm]; exact Nat.mul_le_mul_left n (by omega)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hThm` using `hThr m hmM`. Establish `hCkn : B.CkOn ((2 * S.G.r + S.G.k + 1 : ℕ) : ℕ∞) (B.GV S.G.k S.G.r) H` using `Formalism.FourierDecayAlt.P.B5.ckOn_mono (by exact_mod_cast hnm) hHcc.choose_spec.1`. Establish `hswap : B.JF Db (Q.CV S.G.k S.G.r (x.2 : ℂ) H) g = Q.CV S.G.k S.G.r (x.2 : ℂ) (B.JF Db H) g`. Rewrite using `[Formalism.FourierDecayAlt.P.casimir_under_jacquet_integral S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) Db A m H (x.2 : ℂ) hnm hThm hHcc g hg]`. Use `show ∫ p, JF.xiP Db p • B.rho Db p (Q.CV S.G.k S.G.r (x.2 : ℂ) H) g ∂Db.μSS = _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 
-Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [Formalism.FourierDecayAlt.P.B7.ae_inSS Db] with p hp`. Rewrite using `[Formalism.FourierDecayAlt.P.capelli_rho_commute S.G.k S.G.r _ _ Db (x.2 : ℂ) H p hp hCkn g hg.1]`. Establish `hJHk : B.CkOn ((2 * S.G.r + S.G.k + 1 : ℕ) : ℕ∞) (Q.OmPlus S.G.k S.G.r Db.z Db.z' ∩ B.GV S.G.k S.G.r) (B.JF Db H)`. Introduce `g₀ hg₀`.
-
-Take `⟨U, F', hU, hgU, hc, he⟩` from `(Formalism.FourierDecayAlt.P.jacquet_derivative_formula S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)) Db A m H hThm hHcc).1 g₀ ⟨mem_level_zero_of_mem_group hg₀.2, hg₀.1⟩`. Conclude with `⟨U, F', hU, hgU, hc.of_le (by exact_mod_cast hnm), fun g hgU hgG => he g hgU (mem_level_zero_of_mem_group hgG)⟩`. Establish `hfold : foldCV S.G.k S.G.r s a (B.JF Db F) ∈ Q.FFl S.G.k S.G.r Db.z Db.z' Db.π Db.π' 0 (OmP S T v)` using `foldCV_memB hcl hJF s a`. Establish `hfk : B.CkOn ((2 * S.G.r + S.G.k + 1 : ℕ) : ℕ∞) (Q.OmPlus S.G.k S.G.r Db.z Db.z' ∩ B.GV S.G.k S.G.r) (foldCV S.G.k S.G.r s a (B.JF Db F))`. Introduce `g₀ hg₀`.
-
-Apply the tactic sequence `obtain ⟨U, F', hU, hgU, hc, he⟩ := hfold.1 g₀ ⟨mem_level_zero_of_mem_group hg₀.2, hg₀.1.2, fun b => hg₀.1.1 _ (by simp <;> omega)⟩`. Conclude with `⟨U, F', hU, hgU, hc.of_le (by exact_mod_cast le_top), fun g hgU hgG => he g hgU (mem_level_zero_of_mem_group hgG)⟩`. Establish `hloc` using `coefficient_vector_locality S.G.k S.G.r _ (Q.OmPlus S.G.k S.G.r Db.z Db.z') (B.JF Db H) (foldCV S.G.k S.G.r s a (B.JF Db F)) (x.2 : ℂ) hOp hJHk hfk (fun g' hg' => ih' g' ⟨hg'.2, hg'.1⟩) g ⟨hg.2, hg.1⟩`. Use `show B.JF Db (s • Q.CV S.G.k S.G.r (x.2 : ℂ) H) g = (s • Q.CV S.G.k S.G.r (x.2 : ℂ) (foldCV S.G.k S.G.r s a (B.JF Db F))) g`. Rewrite using `[JF_smul', hswap, hloc, Pi.smul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem besselFoldBuilt_of (hC : CVInCC) : BesselFoldBuilt := by
   intro E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ hB v hcl ε hε hJF

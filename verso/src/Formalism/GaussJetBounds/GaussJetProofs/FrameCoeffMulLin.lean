@@ -17,15 +17,15 @@ end Rank
 section Pure
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty, zero_pow (pow_ne_zero _ hl.ne_zero), sub_zero, norm_zero]`. Conclude with `norm_nonneg _`. Consider the case `insert a S ha ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Establish `hV : ‖∑ b ∈ S, U b‖ ≤ 1` using `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one (fun b _ => hU b)`. Choose the witnesses or unpack the hypotheses as in `⟨R, hReq, hRle⟩ : ∃ R : K, (U a + ∑ b ∈ S, U b) ^ (l ^ e) = U a ^ (l ^ e) + (∑ b ∈ S, U b) ^ (l ^ e) + (l : K) * R ∧ ‖R‖ ≤ 1 := by`. Use `⟨_, add_pow_prime_pow_eq' hl (U a) (∑ b ∈ S, U b) e, ?_⟩` and prove the remaining obligations. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one (fun k _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_mul, norm_pow, norm_pow]`. Establish `h1 : ‖U a‖ ^ k ≤ 1` using `pow_le_one₀ (norm_nonneg _) (hU a)`. Establish `h2 : ‖∑ b ∈ S, U b‖ ^ (l ^ e - k) ≤ 1` using `pow_le_one₀ (norm_nonneg _) hV`. Establish `h3` using `IsUltrametricDist.norm_natCast_le_one K ((l ^ e).choose k / l)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `heq : (U a + ∑ b ∈ S, U b) ^ (l ^ e) - (U a ^ (l ^ e) + ∑ b ∈ S, U b ^ (l ^ e)) = ((∑ b ∈ S, U b) ^ (l ^ e) - ∑ b ∈ S, U b ^ (l ^ e)) + (l : K) * R`. Rewrite using `[hReq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ih ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem frame_frob_norm {K : Type*} [NormedField K] [IsUltrametricDist K] {l : ℕ}
     (hl : l.Prime) {ι : Type*} (U : ι → K) (hU : ∀ a, ‖U a‖ ≤ 1) (e : ℕ) (S : Finset ι) :
@@ -61,7 +61,7 @@ private theorem frame_frob_norm {K : Type*} [NormedField K] [IsUltrametricDist K
       _ = ‖(l : K)‖ := mul_one _
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum, MvPolynomial.coeff_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, MvPolynomial.coeff_C_mul, MvPolynomial.coeff_mul_X']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem frame_coeff_mul_lin {R ι : Type*} [CommSemiring R] [Fintype ι] [DecidableEq ι]
     (Q : MvPolynomial ι R) (c : ι → R) (m : ι →₀ ℕ) :
@@ -72,9 +72,9 @@ private theorem frame_coeff_mul_lin {R ι : Type*} [CommSemiring R] [Fintype ι]
   rw [mul_left_comm, MvPolynomial.coeff_C_mul, MvPolynomial.coeff_mul_X']
 
 /- English proof (translation)
-Proceed by induction on `B with`. Consider the case `zero => simp`. Consider the case `succ B ih`. Rewrite using `[pow_succ, frame_coeff_mul_lin, Finset.sum_eq_single j]`. Rewrite using `[if_pos (by simp), ← Finsupp.single_tsub, Nat.add_sub_cancel, ih, pow_succ, mul_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `y _ hy`. Rewrite using `[if_neg (by simp [Ne.symm hy]), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ j) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem frame_coeff_pow_lin {R ι : Type*} [CommSemiring R] [Fintype ι] [DecidableEq ι]
     (c : ι → R) (j : ι) (B : ℕ) :
@@ -90,15 +90,15 @@ private theorem frame_coeff_pow_lin {R ι : Type*} [CommSemiring R] [Fintype ι]
     · intro h; exact absurd (Finset.mem_univ j) h
 
 /- English proof (translation)
-Proceed by induction on `A with`. Consider the case `zero => simp [frame_coeff_pow_lin]`. Consider the case `succ A ih`. Rewrite using `[pow_succ, ← mul_assoc, frame_coeff_mul_lin, Finset.sum_eq_single i]`. Establish `hmem : i ∈ (Finsupp.single i (A + 1) + Finsupp.single j B).support`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finsupp.mem_support_iff, Finsupp.add_apply, Finsupp.single_eq_same]`. Use linear arithmetic over natural numbers and integers. Establish `hsub : Finsupp.single i (A + 1) + Finsupp.single j B - Finsupp.single i 1 = Finsupp.single i A + Finsupp.single j B`. Use extensionality with `y`. Simplify using `only [Finsupp.coe_tsub, Pi.sub_apply, Finsupp.add_apply, Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h1 : i = y`. Substitute `h1` using the available equality. Simplify using `[Ne.symm hij]`. Simplify using `[h1]`. Rewrite using `[if_pos hmem, hsub, ih, pow_succ]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `y _ hy`. Distinguish the cases in `hcy : c y = 0`. Rewrite using `[hcy, zero_mul]`. Rewrite using `[if_neg, mul_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.mem_support_iff, Finsupp.add_apply, Finsupp.single_apply, Finsupp.single_apply, if_neg (Ne.symm hy), if_neg (Ne.symm (hc y hcy))]`. Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem frame_coeff_two {R ι : Type*} [CommSemiring R] [Fintype ι] [DecidableEq ι]
     (c c' : ι → R) (i j : ι) (hij : i ≠ j) (hc : ∀ y, c y ≠ 0 → y ≠ j) (A B : ℕ) :
@@ -129,9 +129,9 @@ private theorem frame_coeff_two {R ι : Type*} [CommSemiring R] [Fintype ι] [De
     · intro h; exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Use `MvPolynomial.IsWeightedHomogeneous.sum _ _ _ fun y _ => ?_` and prove the remaining obligations. Distinguish the cases in `hcy : c y = 0`. Rewrite using `[hcy, map_zero, zero_mul]`. Conclude with `MvPolynomial.isWeightedHomogeneous_zero R _ _`. Establish `h1` using `(MvPolynomial.isWeightedHomogeneous_X R (fun y => Finsupp.single (lt y) 1) y).C_mul (c y)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Finsupp.single t 1 = (fun y => Finsupp.single (lt y) 1) y` using `by simp [hc y hcy]`. Rewrite using `[h2]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem frame_lin_hom {R ι τ : Type*} [CommSemiring R] [Fintype ι] (lt : ι → τ)
     (c : ι → R) (t : τ) (hc : ∀ y, c y ≠ 0 → lt y = t) :
@@ -146,9 +146,7 @@ private theorem frame_lin_hom {R ι τ : Type*} [CommSemiring R] [Fintype ι] (l
     rw [h2]; exact h1
 
 /- English proof (translation)
-Establish `h1` using `MvPolynomial.IsWeightedHomogeneous.prod e.support (fun t => P t ^ e t) (fun t => e t • Finsupp.single t 1) (fun t _ => (hP t).pow (e t))`. Establish `h2 : (∑ t ∈ e.support, e t • Finsupp.single t 1) = e`. Repeatedly rewrite using `[Finsupp.smul_single_one]`. Conclude with `Finsupp.sum_single e`. Rewrite `h1` using `[h2]`.
-
-Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem frame_prod_hom {R ι τ : Type*} [CommSemiring R] (lt : ι → τ)
     (P : τ → MvPolynomial ι R)
@@ -165,17 +163,15 @@ private theorem frame_prod_hom {R ι τ : Type*} [CommSemiring R] (lt : ι → �
   exact h1
 
 /- English proof (translation)
-Unfold `bSum`. Rewrite using `[map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun ab _ => ?_` and prove the remaining obligations. Use `set φ : MvPolynomial ι K →+* MvPowerSeries ι K := MvPolynomial.coeToMvPowerSeries.ringHom with hφ`. Use `set P : ZMod d → MvPolynomial ι K := fun t => ∑ y, MvPolynomial.C (M (t, ab.1, ab.2) y) * MvPolynomial.X y with hPdef`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL : ∀ t, linSub M (t, ab.1, ab.2) = φ (P t)`. Introduce `t`. Simplify using `only [linSub, hPdef, hφ, map_sum, map_mul, MvPolynomial.coeToMvPowerSeries.ringHom_apply, MvPolynomial.coe_C, MvPolynomial.coe_X]`. Establish `hsub : MvPowerSeries.HasSubst (fun t => linSub (K` using `K) M (t, ab.1, ab.2)) := by`. Apply `MvPowerSeries.hasSubst_of_constantCoeff_zero` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `t`. Simplify using `[linSub]`. Establish `hPh : ∀ t, MvPolynomial.IsWeightedHomogeneous (fun y => Finsupp.single (lt y) 1) (P t) (Finsupp.single t 1)` using `fun t => frame_lin_hom lt (fun y => M (t, ab.1, ab.2) y) t (fun y hy => hM _ y hy)`. Establish `hwt : Finsupp.weight (fun y => Finsupp.single (lt y) 1) (Finsupp.single i A + Finsupp.single j B) = Finsupp.single (lt i) A + Finsupp.single (lt j) B`. Simplify using `only [map_add, Finsupp.weight_single, Finsupp.smul_single_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hij' : i ≠ j` using `fun h => hij (congrArg lt h)`. Establish `hterm : ∀ e : ZMod d →₀ ℕ, MvPowerSeries.coeff (Finsupp.single i A + Finsupp.single j B) (e.prod fun t k => linSub M (t, ab.1, ab.2) ^ k) = if e = Finsupp.single (lt i) A + Finsupp.single (lt j) B then M (lt i, ab.1, ab.2) i ^ A * M (lt j, ab.1, ab.2) j ^ B else 0`. Introduce `e`. Establish `hprod : (e.prod fun t k => linSub M (t, ab.1, ab.2) ^ k) = φ (e.prod fun t k => P t ^ k)`. Simplify using `only [hL, ← map_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(map_finsuppProd φ e _).symm`. Rewrite using `[hprod, hφ, MvPolynomial.coeToMvPowerSeries.ringHom_apply, MvPolynomial.coeff_coe]`. Use `split_ifs with he`. Rewrite using `[he, Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _), Finsupp.prod_single_index (h := fun t k => P t ^ k) (by simp), Finsupp.prod_single_index (h := fun t k => P t ^ k) (by simp), mul_comm]`. Conclude with `frame_coeff_two (fun y => M (lt i, ab.1, ab.2) y) (fun y => M (lt j, ab.1, ab.2) y) i j hij' (fun y hy hyj => hij ((hM _ y hy).symm.trans (by rw [hyj]))) A B`.
-
-Assume the negation of the conclusion as `hne`. Conclude with `he ((frame_prod_hom lt P hPh e hne).symm.trans hwt)`. Rewrite using `[MvPowerSeries.coeff_subst hsub, finsum_eq_single _ (Finsupp.single (lt i) A + Finsupp.single (lt j) B) (fun e he => by rw [hterm, if_neg he, smul_zero]), hterm, if_pos rfl, smul_eq_mul]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem frame_pure_formula {K : Type u} [Field K] {d N0 N1 : ℕ} [NeZero d]
     {ι : Type} [Fintype ι] [DecidableEq ι] (lt : ι → ZMod d) (M : ZV d N0 N1 → ι → K)
@@ -230,31 +226,27 @@ private theorem frame_pure_formula {K : Type u} [Field K] {d N0 N1 : ℕ} [NeZer
     (fun e he => by rw [hterm, if_neg he, smul_zero]), hterm, if_pos rfl, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `K _ _ _ l d N0 N1 _ hl hpi h0 x hx be hbe s s' hss' k b b' α β`. Establish `hM : ∀ (z y : ZV d N0 N1), frameM (N1` using `N1) x z y ≠ 0 → y.1 = z.1 := by`. Introduce `z y h`. Unfold `frameM at h`. Use `split_ifs at h with h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `h1.1`. Conclude with `absurd rfl h`. Establish `hform : ∀ b1 b2 : Fin N1, MvPowerSeries.coeff (pureMon l ((s, ⟨0, h0⟩, b1) : ZV d N0 N1) (s', k, b2) α β) (bSum (frameM (N1` using `N1) x) be) = MvPowerSeries.coeff (pureMon l s s' α β) be * ∑ ab : Fin N0 × Fin N1, frameM (N1 := N1) x (s, ab.1, ab.2) (s, ⟨0, h0⟩, b1) ^ (l ^ α) * frameM (N1 := N1) x (s', ab.1, ab.2) (s', k, b2) ^ (l ^ β) := by`. Introduce `b1 b2`. Unfold `pureMon`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `frame_pure_formula Prod.fst (frameM (N1 := N1) x) hM be _ _ _ _ hss'`. Establish `hz : ∀ m : ℕ, (0 : K) ^ (l ^ m) = 0` using `fun m => zero_pow (pow_ne_zero _ hl.ne_zero)`. Use `⟨fun hbb' => ?_, fun hyp => ?_⟩` and prove the remaining obligations. Rewrite using `[hform]`. Use `mul_eq_zero_of_right _ (Finset.sum_eq_zero fun ab _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [frameM, true_and]`. Distinguish the cases in `h1 : b = ab.2`. Rewrite using `[if_pos h1, if_neg (fun h2 => hbb' (h1.trans h2.symm)), hz, mul_zero]`. Rewrite using `[if_neg h1, hz, zero_mul]`. Unfold `MonoWtGe`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hform b b]`. Establish `hS : (∑ ab : Fin N0 × Fin N1, frameM (N1` using `N1) x (s, ab.1, ab.2) (s, ⟨0, h0⟩, b) ^ (l ^ α) * frameM (N1 := N1) x (s', ab.1, ab.2) (s', k, b) ^ (l ^ β)) = ∑ a : Fin N0, x (s, ⟨0, h0⟩, a) ^ (l ^ α) * x (s', k, a) ^ (l ^ β) := by`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [frameM, true_and]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_eq_single b (fun b'' _ hb'' => by rw [if_neg (Ne.symm hb''), hz, zero_mul]) (fun h => absurd (Finset.mem_univ b) h), if_pos rfl, if_pos rfl]`. Rewrite using `[hS]`. Establish `hsum1 : ∀ (U : Fin N0 → K), (∀ a, ‖U a‖ ≤ 1) → ‖∑ a, U a‖ ≤ ‖(l : K)‖ → ∀ e : ℕ, ‖∑ a, U a ^ (l ^ e)‖ ≤ ‖(l : K)‖`. Introduce `U hU hsU e`. Establish `hfr` using `frame_frob_norm hl U hU e Finset.univ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ‖(∑ a, U a) ^ (l ^ e)‖ ≤ ‖(l : K)‖`. Rewrite using `[norm_pow]`. Establish `hle1 : ‖∑ a, U a‖ ≤ 1` using `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one (fun a _ => hU a)`. Conclude with `(pow_le_of_le_one (norm_nonneg _) hle1 (pow_ne_zero _ hl.ne_zero)).trans hsU`. Establish `heq : ∑ a, U a ^ (l ^ e) = (∑ a, U a) ^ (l ^ e) + -((∑ a, U a) ^ (l ^ e) - ∑ a, U a ^ (l ^ e))` using `by ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[heq]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le h1 ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`. Conclude with `hfr`. Establish `hSn : ‖∑ a : Fin N0, x (s, ⟨0, h0⟩, a) ^ (l ^ α) * x (s', k, a) ^ (l ^ β)‖ ≤ ‖(l : K)‖` using `by split_ifs at hyp with hba`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hU : ∀ a, ‖x (s, ⟨0, h0⟩, a) ^ (l ^ (α - β)) * x (s', k, a)‖ ≤ 1` using `fun a => by`. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_one₀ (pow_le_one₀ (norm_nonneg _) (hx _)) (norm_nonneg _) (hx _)`. Establish `h` using `hsum1 _ hU hyp β`. Establish `hpow : ∀ a, (x (s, ⟨0, h0⟩, a) ^ (l ^ (α - β)) * x (s', k, a)) ^ (l ^ β) = x (s, ⟨0, h0⟩, a) ^ (l ^ α) * x (s', k, a) ^ (l ^ β)` using `fun a => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_pow, ← pow_mul, ← pow_add, Nat.sub_add_cancel hba]`. Simplify `h` using `only [hpow]`. Establish `hU : ∀ a, ‖x (s, ⟨0, h0⟩, a) * x (s', k, a) ^ (l ^ (β - α))‖ ≤ 1` using `fun a => by`. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_one₀ (hx _) (pow_nonneg (norm_nonneg _) _) (pow_le_one₀ (norm_nonneg _) (hx _))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hsum1 _ hU hyp α`. Establish `hpow : ∀ a, (x (s, ⟨0, h0⟩, a) * x (s', k, a) ^ (l ^ (β - α))) ^ (l ^ α) = x (s, ⟨0, h0⟩, a) ^ (l ^ α) * x (s', k, a) ^ (l ^ β)` using `fun a => by`. Rewrite using `[mul_pow, ← pow_mul, ← pow_add, Nat.sub_add_cancel (le_of_lt (not_le.mp hba))]`. Simplify `h` using `only [hpow]`. Establish `hc` using `hbe (pureMon l s s' α β)`.
-
-Unfold `MonoWtGe at hc`. Rewrite `hc`, the goal using `[asmR_dot_pureMon]`. Establish `hπ : 0 < ‖(l : K)‖` using `norm_pos_iff.mpr (Nat.cast_ne_zero.mpr hl.ne_zero)`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `he : 1 / ((l : ℝ) - 1) - ((l : ℝ) ^ α * rho l + (l : ℝ) ^ β * rho l) = (1 / ((l : ℝ) - 1) - 1 - ((l : ℝ) ^ α * rho l + (l : ℝ) ^ β * rho l)) + 1` using `by ring`. Rewrite using `[he, Real.rpow_add hπ, Real.rpow_one]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_pure_weight : FramePure.{u} := by
   intro K _ _ _ l d N0 N1 _ hl hpi h0 x hx be hbe s s' hss' k b b' α β

@@ -8,7 +8,7 @@ namespace GlobalTheory.OriginBox
 open GlobalTheory.FunObj GlobalTheory.SplitFlip GlobalTheory.SplitWeil GlobalTheory.RootEx
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem abs_lin_le (a a' u w M : ℤ) (hu : |u| ≤ M) (hw : |w| ≤ M) : |a * u - a' * w| ≤ M * (|a| + |a'|) := by
   calc |a * u - a' * w| ≤ |a * u| + |a' * w| := abs_sub _ _
@@ -18,7 +18,7 @@ theorem abs_lin_le (a a' u w M : ℤ) (hu : |u| ≤ M) (hw : |w| ≤ M) : |a * u
     _ = M * (|a| + |a'|) := by ring
 
 /- English proof (translation)
-The claim follows from `| [], _ => by simp | b :: l, h => by have h1 := h b (by simp) have h2 := abs_list_sum_le f C l fun x hx => h x (by simp [hx]) rw [List.map_cons, List.sum_cons, List.length_cons] calc |f b + (l.map f).sum| ≤ |f b| + |(l.map f).sum| := abs_add_le _ _ _ ≤ C + l.length * C := add_le_ …`.
+A detailed English derivation is pending.
 -/
 theorem abs_list_sum_le {α : Type*} (f : α → ℤ) (C : ℤ) :
     ∀ l : List α, (∀ b ∈ l, |f b| ≤ C) → |(l.map f).sum| ≤ l.length * C
@@ -32,7 +32,7 @@ theorem abs_list_sum_le {α : Type*} (f : α → ℤ) (C : ℤ) :
       _ = ((l.length + 1 : ℕ) : ℤ) * C := by push_cast; ring
 
 /- English proof (translation)
-The claim follows from `|auxiliaryVectorUniformizerExponent a a' c y| ≤ (M : ℤ) * (|a| + |a'|) := by rcases y with x | p · simp only [auxiliaryVectorUniformizerExponent, abs_zero]; positivity · simp only [auxiliaryVectorUniformizerExponent] have hp := p.2 apply abs_lin_le · rw [abs_of_nonneg (by omega)] …`.
+A detailed English derivation is pending.
 -/
 theorem abs_auxiliaryVectorUniformizerExponent_le (a a' : ℤ) {n : Type*} (c M : ℕ) (hc : c ≤ M) (y : n ⊕ Fin c) :
     |auxiliaryVectorUniformizerExponent a a' c y| ≤ (M : ℤ) * (|a| + |a'|) := by
@@ -47,7 +47,7 @@ theorem abs_auxiliaryVectorUniformizerExponent_le (a a' : ℤ) {n : Type*} (c M 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `|vtxExp a a' (G.m - 1 - j) (topRank G j) x| ≤ (G.m : ℤ) * (|a| + |a'|) := by have key := topRank_add hs j unfold vtxExp split_ifs with h · apply abs_lin_le · rw [abs_of_nonneg (by omega)]; omega · rw [abs_of_nonneg (by omega)]; omega · simp only [abs_zero]; positivity`.
+A detailed English derivation is pending.
 -/
 theorem abs_vtxExp_le (G : Grid k) (hs : 1 ≤ G.s) (a a' : ℤ) (j x : ℕ) (hx : x < G.rank (G.m, j)) :
     |vtxExp a a' (G.m - 1 - j) (topRank G j) x| ≤ (G.m : ℤ) * (|a| + |a'|) := by
@@ -60,7 +60,7 @@ theorem abs_vtxExp_le (G : Grid k) (hs : 1 ≤ G.s) (a a' : ℤ) (j x : ℕ) (hx
   · simp only [abs_zero]; positivity
 
 /- English proof (translation)
-The claim follows from `|vtxDet G a a' X| ≤ (N : ℤ) * ((G.m : ℤ) * (|a| + |a'|)) := by unfold vtxDet split_ifs with h · calc |∑ x : Fin (G.rank (G.m, X.2)), vtxExp a a' (G.m - 1 - X.2) (topRank G X.2) x| ≤ ∑ x : Fin (G.rank (G.m, X.2)), |vtxExp a a' (G.m - 1 - X.2) (topRank G X.2) x| := Finset.abs_sum_l …`.
+A detailed English derivation is pending.
 -/
 theorem abs_vtxDet_le (G : Grid k) (hs : 1 ≤ G.s) (a a' : ℤ) (N : ℕ)
     (hN : ∀ i j, i ≤ G.m → j ≤ G.m → G.rank (i, j) ≤ N) (X : ℕ × ℕ) (hX : X.2 ≤ G.m) :
@@ -79,7 +79,7 @@ theorem abs_vtxDet_le (G : Grid k) (hs : 1 ≤ G.s) (a a' : ℤ) (N : ℕ)
   · simp only [abs_zero]; positivity
 
 /- English proof (translation)
-Simplify using `only [oppositePath, List.mem_append, List.mem_map, List.mem_range, List.mem_reverse] at hb`. Break down `hb with ⟨i, hi, rfl⟩ | ⟨j, hj, rfl⟩` into its components or cases. Simplify using `only [Edge.src, Edge.tgt]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Edge.src, Edge.tgt]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -91,13 +91,13 @@ theorem mem_oppositePath_bound {m : ℕ} {b : Edge} (hb : b ∈ oppositePath m) 
   · simp only [Edge.src, Edge.tgt]; omega
 
 /- English proof (translation)
-Simplify using `[oppositePath]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem length_oppositePath (m : ℕ) : (oppositePath m).length = 2 * m := by
   simp [oppositePath]; ring
 
 /- English proof (translation)
-The claim follows from `|((oppositePath G.m).map fun b => vtxDet G a a' b.src * G.rank b.tgt - vtxDet G a a' b.tgt * G.rank b.src).sum| ≤ ((2 * G.m : ℕ) : ℤ) * (2 * ((N : ℤ) * ((N : ℤ) * ((G.m : ℤ) * (|a| + |a'|))))) := by rw [← length_oppositePath] apply abs_list_sum_le intro b hb obtain ⟨h1, h2, h3, h …`.
+A detailed English derivation is pending.
 -/
 theorem abs_pathSum_le (G : Grid k) (hs : 1 ≤ G.s) (a a' : ℤ) (N : ℕ)
     (hN : ∀ i j, i ≤ G.m → j ≤ G.m → G.rank (i, j) ≤ N) :
@@ -121,7 +121,7 @@ theorem abs_pathSum_le (G : Grid k) (hs : 1 ≤ G.s) (a a' : ℤ) (N : ℕ)
     _ = 2 * ((N : ℤ) * ((N : ℤ) * ((G.m : ℤ) * (|a| + |a'|)))) := by ring
 
 /- English proof (translation)
-The claim follows from `|boxExp G a a' j v| ≤ (2 * (G.m : ℤ) + 1) * (|a| + |a'|) := by have hj := j.2 have e1 := abs_auxiliaryVectorUniformizerExponent_le a a' (G.m - 2 - j + 1) G.m (by omega) v.1.2 have e2 := abs_auxiliaryVectorUniformizerExponent_le a a' (G.m - 2 - j) G.m (by omega) v.1.1 unfold boxEx …`.
+A detailed English derivation is pending.
 -/
 theorem abs_boxExp_le (G : Grid k) (a a' : ℤ) (j : Fin (G.m - 1))
     (v : StepVar (Fin (topRank G ((j : ℕ) + 1))) (G.m - 2 - j) (Fin (topRank G j))) :
@@ -140,9 +140,9 @@ theorem abs_boxExp_le (G : Grid k) (a a' : ℤ) (j : Fin (G.m - 1))
 
 open Classical in
 /- English proof (translation)
-Establish `hj` using `j.2`. Establish `k0` using `topRank_add hs j`. Establish `k1` using `topRank_add hs ((j : ℕ) + 1)`. Establish `n0` using `hN G.m j le_rfl (by omega)`. Establish `n1` using `hN G.m (j + 1) le_rfl (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Fintype.card_le_of_injective Subtype.val Subtype.val_injective).trans ?_` and prove the remaining obligations. Simplify using `only [Fintype.card_prod, Fintype.card_sum, Fintype.card_fin]`. Conclude with `Nat.mul_le_mul (by omega) (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_stepVar_le (G : Grid k) (hs : 1 ≤ G.s) (N : ℕ)
     (hN : ∀ i j, i ≤ G.m → j ≤ G.m → G.rank (i, j) ≤ N) (j : Fin (G.m - 1)) :
@@ -158,7 +158,7 @@ theorem card_stepVar_le (G : Grid k) (hs : 1 ≤ G.s) (N : ℕ)
 
 open Classical in
 /- English proof (translation)
-The claim follows from `|∑ j, ∑ v, boxExp G a a' j v| ≤ ((G.m - 1 : ℕ) : ℤ) * ((N : ℤ) * N * ((2 * (G.m : ℤ) + 1) * (|a| + |a'|))) := by have hC : 0 ≤ (2 * (G.m : ℤ) + 1) * (|a| + |a'|) := by positivity calc |∑ j, ∑ v, boxExp G a a' j v| ≤ ∑ j, |∑ v, boxExp G a a' j v| := Finset.abs_sum_le_sum_abs _ _ _ …`.
+A detailed English derivation is pending.
 -/
 theorem abs_boxSum_le (G : Grid k) (hs : 1 ≤ G.s) (a a' : ℤ) (N : ℕ)
     (hN : ∀ i j, i ≤ G.m → j ≤ G.m → G.rank (i, j) ≤ N) :
@@ -178,7 +178,7 @@ theorem abs_boxSum_le (G : Grid k) (hs : 1 ≤ G.s) (a a' : ℤ) (N : ℕ)
     _ = ((G.m - 1 : ℕ) : ℤ) * ((N : ℤ) * N * ((2 * (G.m : ℤ) + 1) * (|a| + |a'|))) := by simp
 
 /- English proof (translation)
-The claim follows from `|expo G a a'| ≤ 8 * ((G.m : ℤ) ^ 3 * (N : ℤ) ^ 2 * (|a| + |a'|)) := by intro k _ _ _ _ G hs a a' N hN classical have hP := abs_pathSum_le G hs a a' N hN have hB := abs_boxSum_le G hs a a' N hN have hpoly : 4 * (G.m : ℤ) ^ 2 + 2 * ((G.m - 1 : ℕ) : ℤ) * (2 * (G.m : ℤ) + 1) ≤ 8 * (G …`.
+A detailed English derivation is pending.
 -/
 theorem abs_expo_le : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (G : Grid k), 1 ≤ G.s → ∀ (a a' : ℤ) (N : ℕ), (∀ i j, i ≤ G.m → j ≤ G.m → G.rank (i, j) ≤ N) →

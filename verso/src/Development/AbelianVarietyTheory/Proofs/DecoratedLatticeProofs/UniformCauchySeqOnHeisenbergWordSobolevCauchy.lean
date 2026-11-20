@@ -24,7 +24,7 @@ section
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`. Rewrite using `[GlobalTheory.Size.wordAct_cons, ih]`. Conclude with `GlobalTheory.Size.dRho_add hψ hθ a.1 _ (GlobalTheory.Size.theta_word hψ hθ l h) (GlobalTheory.Size.theta_word hψ hθ l h')`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem word_add (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool))
     {f f' : WO S T → ℂ} (h : IsThetaFunO ψ S T f) (h' : IsThetaFunO ψ S T f') :
@@ -37,7 +37,7 @@ theorem word_add (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (l : List (D.wh
     exact GlobalTheory.Size.dRho_add hψ hθ a.1 _ (GlobalTheory.Size.theta_word hψ hθ l h) (GlobalTheory.Size.theta_word hψ hθ l h')
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact h`. Consider the case `cons a l ih`. Rewrite using `[GlobalTheory.Size.wordAct_cons]`. Conclude with `GlobalTheory.Size.dRho_mem_thetaLevel hψ hθ ih a.1 _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem word_mem (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool))
     {U : AddSubgroup (WO S T)} {f : WO S T → ℂ} (h : f ∈ thetaLevel ψ S T U) :
@@ -49,9 +49,9 @@ theorem word_mem (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (l : List (D.wh
     exact GlobalTheory.Size.dRho_mem_thetaLevel hψ hθ ih a.1 _
 
 /- English proof (translation)
-Proceed by induction on `l generalizing d with`. Consider the case `nil => exact le_rfl`. Consider the case `cons a l ih`. Rewrite using `[GlobalTheory.Size.wordAct_cons]`. Use `(GlobalTheory.Size.sobO_heisDer_le d a).trans ((ih (d + 1)).trans (le_of_eq ?_))` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Simplify using `only [List.length_cons]`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sobO_word_le (μ : Measure (WO S T)) (𝓕 : Set (WO S T))
     (l : List (D.what₂.Tau × Fin T.rank × Fin S.rank × Bool)) (f : WO S T → ℂ) (d : ℕ) :
@@ -68,11 +68,11 @@ theorem sobO_word_le (μ : Measure (WO S T)) (𝓕 : Set (WO S T))
 end
 
 /- English proof (translation)
-Introduce `D ψ hψ θ hθ S T μ 𝓕 hm U hU u hu hC l`. Take `⟨d₀, C, hb⟩` from `GlobalTheory.ThetaDensSup.sup_le_sobO D ψ hψ θ hθ S T μ 𝓕 hm U hU`. Rewrite using `[Metric.uniformCauchySeqOn_iff]`. Introduce `ε hε`. Establish `hη : (0 : ℝ) < ε / (C + 1)` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨J, hJ⟩` from `hC (d₀ + l.length) (ENNReal.ofReal (ε / (C + 1))) (ENNReal.ofReal_pos.2 hη)`. Use `⟨J, fun i hi j hj w _ => ?_⟩` and prove the remaining obligations. Establish `hd : u i - u j ∈ thetaLevel ψ S T U` using `Submodule.sub_mem _ (hu i) (hu j)`. Establish `he` using `word_add hψ hθ l hd.1 (hu j).1`. Rewrite `he` using `[sub_add_cancel]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `(hb _ (word_mem hψ hθ l hd) w).trans (mul_le_mul_right ((sobO_word_le μ 𝓕 l _ d₀).trans (hJ i hi j hj).le) _)`. Rewrite using `[dist_eq_norm, he, Pi.add_apply, add_sub_cancel_right]`. Rewrite `h1` using `[← ofReal_norm, ← ENNReal.ofReal_coe_nnreal, ← ENNReal.ofReal_mul C.coe_nonneg, ENNReal.ofReal_le_ofReal_iff (by positivity)]`. Use `h1.trans_lt ?_` and prove the remaining obligations. Rewrite using `[← mul_div_assoc, div_lt_iff₀ (by positivity)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/

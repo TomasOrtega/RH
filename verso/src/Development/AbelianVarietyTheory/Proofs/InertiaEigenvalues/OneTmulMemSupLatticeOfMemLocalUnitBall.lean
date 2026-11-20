@@ -26,11 +26,11 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T1 : Type}
   (j : Fin D.R.m)
 
 /- English proof (translation)
-Rewrite using `[fw.nrm_eq, Core.nrmM_le_one_iff]`. Take `⟨q, hq⟩` from `(fw.pt j (placeC YS iC b) y).2`. Break down `q with ⟨qv, T, io, e, ho, y', hy', eta, heta, rfl⟩` into its components or cases. Take `⟨k, hk⟩` from `ReadExist.exists_isReading (D.ntw.l i) T0.Q.c.F (embC YS iC b) T io e ho hy'`. Take `⟨z, hz⟩` from `PtC.exists_of_reading hk y' hy'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hf z`. Rewrite `h1` using `[hz _ _ _ (cuspOf_mem_sec YS fw j f)]`. Take `⟨a, ha⟩` from `(hk.int _).1 h1`. Rewrite using `[← hq]`. Express the relevant statement in the definitionally equal form `0 ≤ nval T.V e (evI y' _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Distinguish the cases in `hx : evI y' (cuspOf YS fw j f : T0.R ((j : ℕ) + 1)) = 0`. Rewrite using `[hx, nval_zero]`. Conclude with `le_top`. Rewrite using `[nval_of_ne hx]`. Conclude with `EReal.coe_nonneg.2 (div_nonneg (Int.cast_nonneg ((GlobalTheory.CompleteValExt.exists_algebraMap_eq_iff _).1 ⟨a, ha⟩)) (Nat.cast_nonneg _))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nrm_le_one_of_mem_locBall {f : NX.FmK S ((j : ℕ) + 1)} (hf : f ∈ locBall YS fw iC b j)
     (y : (Rl.FW j).Pt (placeC YS iC b)) :
@@ -52,19 +52,17 @@ theorem nrm_le_one_of_mem_locBall {f : NX.FmK S ((j : ℕ) + 1)} (hf : f ∈ loc
       ((GlobalTheory.CompleteValExt.exists_algebraMap_eq_iff _).1 ⟨a, ha⟩)) (Nat.cast_nonneg _))
 
 /- English proof (translation)
-Take `⟨s, hs, hsM⟩` from `GlobalTheory.supLattice_localisation_of_unitBall D.what₂.LL T0.Q.c.F _ _ _ (Rl.FW j) (GlobalTheory.GoodLat.Obj.mkFull_of_tie fw j).2 (placeC YS iC b) (fw.e j (cuspOf YS fw j f)) (nrm_le_one_of_mem_locBall YS fw iC b j hf)`. Rewrite `hsM` using `[e_cuspOf]`. Use `set c : S.Ks := (YS.fi j).eK.symm (s : T0.Q.c.F) with hcdef`. Establish `hc : (YS.fi j).e (c • (show ↥(S.A ((j : ℕ) + 1)).WK from f).1) = s • (YS.fi j).e (show ↥(S.A ((j : ℕ) + 1)).WK from f).1`. Rewrite using `[← algebraMap_smul D.what₂.LL c, LinearEquiv.map_smul, ← (YS.fi j).eK_LL c, hcdef, RingEquiv.apply_symm_apply, algebraMap_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(algebraMap_smul T0.Q.c.F s _)`. Establish `hcM : c • (show ↥(S.A ((j : ℕ) + 1)).WK from f).1 ∈ (S.A ((j : ℕ) + 1)).MK`. Rewrite using `[(YS.fi j).mkK, hc]`. Conclude with `hsM`. Establish `hgen : (show NX.Fm S i ((j : ℕ) + 1) b from (1 : NX.KB S i b) ⊗ₜ[S.Ks] (c • f)) ∈ NX.Bsup S i ((j : ℕ) + 1) b` using `Submodule.subset_span ⟨c • f, hcM, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `heK : eKs YS c = (s : T0.Q.c.F)`. Apply `(algebraMap T0.Q.c.F D.what₂.LL).injective` to reduce the goal to its premises. Rewrite using `[eKs_LL, ← (YS.fi j).eK_LL c, hcdef, RingEquiv.apply_symm_apply]`. Take `⟨x, hx⟩ : ∃ x : FractionRing (D.ntw.O i), x = NX.ιK S i b c` from `⟨_, rfl⟩`. Establish `hn1 : ‖iC x‖ = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx]`. Express the relevant statement in the definitionally equal form `‖embS S iC b c‖ = 1`. Rewrite using `[← embC_eKs YS iC b, heK]`. Use `le_antisymm (norm_int_le_one _ s) (not_lt.1 fun h => hs ?_)` and prove the remaining obligations. Conclude with `(mem_placeAt _ s).2 h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : x ≠ 0` using `fun h => by`. Rewrite `hn1` using `[h, map_zero, norm_zero]`. Conclude with `zero_ne_one hn1`. Take `⟨u, hu⟩` from `(hiC x⁻¹).1 (by rw [map_inv₀, norm_inv, hn1, inv_one])`. Establish `key : (show NX.Fm S i ((j : ℕ) + 1) b from (1 : NX.KB S i b) ⊗ₜ[S.Ks] f) = u • (show NX.Fm S i ((j : ℕ) + 1) b from (1 : NX.KB S i b) ⊗ₜ[S.Ks] (c • f))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← algebraMap_smul (FractionRing (D.ntw.O i)) u, hu]`. Establish `h1 : (c • (1 : NX.KB S i b)) = (show NX.KB S i b from x)`. Rewrite using `[Algebra.smul_def, mul_one, hx]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(1 : NX.KB S i b) ⊗ₜ[S.Ks] f = (show NX.KB S i b from x⁻¹) • ((1 : NX.KB S i b) ⊗ₜ[S.Ks] (c • f) : NX.KB S i b ⊗[S.Ks] NX.FmK S ((j : ℕ) + 1))`.
-
-Rewrite using `[← TensorProduct.smul_tmul, h1, TensorProduct.smul_tmul', smul_eq_mul]`. Use `congr 1`. Conclude with `(inv_mul_cancel₀ hne).symm`. Rewrite using `[key]`. Conclude with `Submodule.smul_mem _ u hgen`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_tmul_mem_Bsup_of_mem_locBall
     (hiC : ∀ x, ‖iC x‖ ≤ 1 ↔ x ∈ (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i))).range)
@@ -113,7 +111,7 @@ theorem one_tmul_mem_Bsup_of_mem_locBall
 end BallSup
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 I0 T1 A3 T0 _ Rl cG S YS κ v₀ fw i iC hiC b j f hf`. Conclude with `one_tmul_mem_Bsup_of_mem_locBall YS fw iC b j hiC f hf`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem one_tmul_mem_Bsup : ∀ (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 I0 T1 : Type) (A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T1 D.R.m) (T0 : CoreJ D) [Algebra T0.Q.c.F D.what₂.LL] (Rl : RealDat3 D A3 T0.Q.c.F) (cG : Formalism.L2.DIV.G0 Rl.Pg D.R.r ≃* G0g D.nd) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS Rl cG S) (κ : ∀ j : Fin D.R.m, WeightFamilies.Wt D ((j : ℕ) + 1)) (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec) (fw : FWTie T0 Rl.toRealDat κ v₀) (i : D.ntw.Tw) (iC : FractionRing (D.ntw.O i) →+* ℂ_[D.ntw.l i]), (∀ x, ‖iC x‖ ≤ 1 ↔ x ∈ (algebraMap (D.ntw.O i) (FractionRing (D.ntw.O i))).range) → ∀ (b : Bool) (j : Fin D.R.m), ∀ f ∈ locBall YS fw iC b j, (show NX.Fm S i ((j : ℕ) + 1) b from (1 : NX.KB S i b) ⊗ₜ[S.Ks] f) ∈ NX.Bsup S i ((j : ℕ) + 1) b := by
   intro D Γ _ _ Pl0 I0 T1 A3 T0 _ Rl cG S YS κ v₀ fw i iC hiC b j f hf

@@ -23,9 +23,9 @@ def locBlocks (ρ : ℕ → ℕ → ℝ) (v : D.what₂.Tau) (bs : List (D.host.
   locBlocksFrom D ρ v 0 bs
 
 /- English proof (translation)
-Proceed by induction on `bs with`. Consider the case `nil => intro a`. Both sides reduce to the same expression. Consider the case `cons b bs ih => intro a`. Take `⟨t, s⟩` from `b`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify using `[locBlocksFrom, ih]`.
+Simplify using the standard rewrite rules.
 -/
 theorem locBlocksFrom_snd (ρ : ℕ → ℕ → ℝ) (v : D.what₂.Tau) (bs : List (D.host.E × ℕ)) :
     ∀ a, (locBlocksFrom D ρ v a bs).map Prod.snd = bs.map Prod.snd := by
@@ -34,11 +34,11 @@ theorem locBlocksFrom_snd (ρ : ℕ → ℕ → ℝ) (v : D.what₂.Tau) (bs : L
   | cons b bs ih => intro a; obtain ⟨t, s⟩ := b; simp [locBlocksFrom, ih]
 
 /- English proof (translation)
-Proceed by induction on `bs with`. Consider the case `nil => intro a _ p hp`. Simplify using `[locBlocksFrom] at hp`. Consider the case `cons b bs ih`. Introduce `a h p hp`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t, s⟩` from `b`. Simplify using `only [locBlocksFrom, List.mem_cons] at hp`. Break down `hp with rfl | hp` into its components or cases. Establish `hb` using `h (t, s) (by simp)`. Conclude with `⟨mul_ne_zero (by exact_mod_cast hρ (a + 1) s) ((map_ne_zero (plEmb D v)).2 hb.1), hb.2⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `ih (a + s) (fun b hb => h b (by simp [hb])) p hp`.
+A detailed English derivation is pending.
 -/
 theorem locBlocksFrom_ok (ρ : ℕ → ℕ → ℝ) (hρ : ∀ i s, ρ i s ≠ 0) (v : D.what₂.Tau) (bs : List (D.host.E × ℕ)) :
     ∀ a, (∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2) → ∀ p ∈ locBlocksFrom D ρ v a bs, p.1 ≠ 0 ∧ 1 ≤ p.2 := by
@@ -58,7 +58,7 @@ def ptLocS (ρ : ℕ → ℕ → ℝ) (hρ : ∀ i s, ρ i s ≠ 0) (v : D.what�
     rw [locBlocks, locBlocksFrom_snd]; exact γ.2.2⟩
 
 /- English proof (translation)
-Unfold `Formalism.BasicNotions.Host.rdE`. Apply `Real.rpow_pos_of_pos` to reduce the goal to its premises. Conclude with `abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero D.host.E)`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem rdE_pos : 0 < D.host.rdE := by
   unfold Formalism.BasicNotions.Host.rdE
@@ -66,12 +66,12 @@ theorem rdE_pos : 0 < D.host.rdE := by
   exact abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero D.host.E)
 
 /- English proof (translation)
-The claim follows from `zpow_ne_zero _ (rdE_pos D).ne'`.
+A detailed English derivation is pending.
 -/
 theorem rhoReal_ne (i s : ℕ) : rhoReal D i s ≠ 0 := zpow_ne_zero _ (rdE_pos D).ne'
 
 /- English proof (translation)
-The claim follows from `zpow_pos (rdE_pos D) _`.
+A detailed English derivation is pending.
 -/
 theorem rhoReal_pos (i s : ℕ) : 0 < rhoReal D i s := zpow_pos (rdE_pos D) _
 

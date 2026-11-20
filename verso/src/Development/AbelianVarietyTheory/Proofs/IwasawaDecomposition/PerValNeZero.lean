@@ -26,7 +26,7 @@ def horVal (K : Matrix (m ⊕ n) m ℂ) (C : Matrix n (m ⊕ n) ℂ) : ℂ :=
 variable {K : Matrix (m ⊕ n) m ℂ} {C : Matrix n (m ⊕ n) ℂ} {R : Matrix m (m ⊕ n) ℂ} {S : Matrix (m ⊕ n) n ℂ}
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_mul, Matrix.fromRows_mul_fromCols, hR, hS, h, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, Matrix.det_one, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_mul_det (h : C * K = 0) (hR : R * K = 1) (hS : C * S = 1) :
     (Matrix.fromRows R C).det * (Matrix.fromCols K S).det = 1 := by
@@ -34,7 +34,7 @@ theorem det_mul_det (h : C * K = 0) (hR : R * K = 1) (hS : C * S = 1) :
     Matrix.det_one, Matrix.det_one, _root_.one_mul]
 
 /- English proof (translation)
-Establish `hR0 : Classical.epsilon (fun R : Matrix m (m ⊕ n) ℂ => R * K = 1) * K = 1` using `Classical.epsilon_spec (p := fun R : Matrix m (m ⊕ n) ℂ => R * K = 1) ⟨R, hR⟩`. Unfold `horVal`. Conclude with `det_mul_det h hR0 hS`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem horVal_mul (h : C * K = 0) (hR : R * K = 1) (hS : C * S = 1) :
     horVal K C * (Matrix.fromCols K S).det = 1 := by
@@ -45,7 +45,7 @@ theorem horVal_mul (h : C * K = 0) (hR : R * K = 1) (hS : C * S = 1) :
   exact det_mul_det h hR0 hS
 
 /- English proof (translation)
-Establish `h1` using `horVal_mul h hR hS`. Establish `h2` using `det_mul_det h hR hS`. Conclude with `mul_right_cancel₀ (right_ne_zero_of_mul_eq_one h2) (h1.trans h2.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem horVal_eq (h : C * K = 0) (hR : R * K = 1) (hS : C * S = 1) : horVal K C = (Matrix.fromRows R C).det := by
   have h1 := horVal_mul h hR hS
@@ -53,7 +53,7 @@ theorem horVal_eq (h : C * K = 0) (hR : R * K = 1) (hS : C * S = 1) : horVal K C
   exact mul_right_cancel₀ (right_ne_zero_of_mul_eq_one h2) (h1.trans h2.symm)
 
 /- English proof (translation)
-The claim follows from `left_ne_zero_of_mul_eq_one (horVal_mul h hR hS)`.
+A detailed English derivation is pending.
 -/
 theorem horVal_ne_zero (h : C * K = 0) (hR : R * K = 1) (hS : C * S = 1) : horVal K C ≠ 0 :=
   left_ne_zero_of_mul_eq_one (horVal_mul h hR hS)
@@ -116,7 +116,7 @@ def GoodPer (Q : Di.La →+ (Letter Dw → ℂ)) : Prop :=
 variable {c σ τ x hm}
 
 /- English proof (translation)
-Take `⟨-, h1, ⟨R, hR⟩, ⟨S, hS⟩⟩` from `h`. Conclude with `horVal_ne_zero h1 hR hS`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GoodPer.perVal_ne_zero {Q : Di.La →+ (Letter Dw → ℂ)} (h : GoodPer c σ τ x hm Q) : perVal c σ τ x hm Q ≠ 0 := by
   obtain ⟨-, h1, ⟨R, hR⟩, ⟨S, hS⟩⟩ := h

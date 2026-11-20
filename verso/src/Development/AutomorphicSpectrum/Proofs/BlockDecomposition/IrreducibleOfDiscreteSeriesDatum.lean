@@ -12,21 +12,19 @@ open ReciprocityTheory.ChartRestriction.DS PositivityTheory.RgDs PositivityTheor
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℂ S := hS.1`. Establish `hirr : ∀ S' : Submodule ℂ H, S' ≤ S.map A → Formalism.MainNotions.S.IsKStableOn ε σ S' → S' = ⊥ ∨ S' = S.map A`. Introduce `S' hS' hK'`. Establish `hTK : Formalism.MainNotions.S.IsKStableOn ε σ (S ⊓ S'.comap A)`. Introduce `g hg v hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hv`, the goal using `[Submodule.mem_inf]`. Use `⟨hS.2.1 g hg v hv.1, ?_⟩` and prove the remaining obligations. Use `show A (σ g v) ∈ S'`. Rewrite using `[← hcomm g hg v]`. Conclude with `hK' g hg _ hv.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hS.2.2.1 (S ⊓ S'.comap A) inf_le_left hTK with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Take `⟨w, hw, rfl⟩` from `hS' hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hwT : w ∈ S ⊓ S'.comap A` using `Submodule.mem_inf.2 ⟨hw, hx⟩`. Rewrite `hwT` using `[h]`. Rewrite using `[(Submodule.mem_bot ℂ).1 hwT, map_zero]`. Conclude with `Submodule.zero_mem _`. Use `right`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `le_antisymm hS' ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Establish `hwT : w ∈ S ⊓ S'.comap A` using `by rw [h]; exact hw`. Conclude with `(Submodule.mem_inf.1 hwT).2`. Use `⟨inferInstance, ?_, hirr, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `g hg _ ⟨w, hw, rfl⟩`. Conclude with `⟨σ g w, hS.2.1 g hg w hw, (hcomm g hg w).symm⟩`. Take `⟨v, hv, hv0, hwt⟩` from `hS.2.2.2.1`. Use `⟨A v, ⟨v, hv, rfl⟩, fun h => hv0 (hinj v hv h), ?_⟩` and prove the remaining obligations. Introduce `θ hθ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcomm _ hθ, hwt θ hθ, map_smul]`. Introduce and unpack `μ _ ⟨w, hw, rfl⟩ hne hwt`. Use `hS.2.2.2.2 μ w hw (fun h => hne (by rw [h, map_zero])) ?_` and prove the remaining obligations. Introduce `θ hθ`. Establish `h1 : A (σ (Matrix.diagonal (fun a => Complex.exp ((θ a : ℂ) * Complex.I))) w - Complex.exp (((∑ a, μ a * θ a : ℝ) : ℂ) * Complex.I) • w) = 0`.
-
-Rewrite using `[map_sub, map_smul, ← hcomm _ hθ, hwt θ hθ, sub_self]`. Establish `h2` using `hinj _ (Submodule.sub_mem _ (hS.2.1 _ hθ w hw) (Submodule.smul_mem _ _ hw)) h1`. Conclude with `sub_eq_zero.1 h2`.
+A detailed English derivation is pending.
 -/
 theorem isKTypeOf_map_of_injOn {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {Λ : Fin n → ℝ} {S : Submodule ℂ H}
@@ -76,23 +74,19 @@ theorem isKTypeOf_map_of_injOn {H : Type*} [NormedAddCommGroup H] [InnerProductS
     exact sub_eq_zero.1 h2
 
 /- English proof (translation)
-Introduce `hDatum n ε lam T Ψ hP _hst huniq W hWle hWc hWG`. Establish `hσ` using `rreg_isURepOn ε`. Establish `hD` using `isDerivedOn_smE hσ`. Establish `hV1 : Formalism.MainNotions.S.IsKTypeOf ε (rreg ε) (lowK ε lam) (V1 ε Ψ)` using `hDatum n ε lam T Ψ hP`. Establish `: CompleteSpace W` using `hWc.completeSpace_coe`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWo : ∀ g ∈ UJset ε, ∀ x ∈ Wᗮ, rreg ε g x ∈ Wᗮ`. Introduce `g hg`. Take `⟨g', hg', hgg⟩` from `UnitaryGroupOfForm.inv_mem_UJ hg`. Conclude with `UnitaryGroupOfForm.orth_stable hσ hg hg' hgg W (hWG g' hg')`. Establish `hK : Formalism.MainNotions.S.IsKStableOn ε (rreg ε) (V1 ε Ψ ⊓ Wᗮ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk x hx`. Conclude with `⟨hV1.2.1 k hk x hx.1, hWo k (UnitaryGroupOfForm.K_mem_UJ hk) x hx.2⟩`. Establish `hmem : ∀ v ∈ datumV ε Ψ T.w, ((v : smD ε (rreg ε)) : L2 ε) ∈ V1 ε Ψ` using `fun v hv => Submodule.mem_map_of_mem hv`. Break down `hV1.2.2.1 (V1 ε Ψ ⊓ Wᗮ) inf_le_left hK with h0 | hV'` into its components or cases. Use `right`.
+Supply the required witnesses or components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_antisymm hWle (UnitaryGroupOfForm.closGen_le hD W hWc hWG _ ?_)` and prove the remaining obligations. Establish `hcomm : ∀ k ∈ Kset ε, ∀ v, rreg ε k (W.starProjection.toLinearMap v) = W.starProjection.toLinearMap (rreg ε k v)`. Introduce `k hk v`. Establish `hkU` using `UnitaryGroupOfForm.K_mem_UJ hk`. Conclude with `(UnitaryGroupOfForm.proj_comm W (rreg ε k) (hWG k hkU) (hWo k hkU) v).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hinj : ∀ w ∈ V1 ε Ψ, W.starProjection.toLinearMap w = 0 → w = 0`. Introduce `w hw h`. Establish `hwo : w ∈ Wᗮ`. Use `W.sub_starProjection_mem_orthogonal w` as an intermediate fact. Establish `h' : W.starProjection w = 0` using `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h', sub_zero]`. Then use the resulting hypothesis. Establish `: w ∈ V1 ε Ψ ⊓ Wᗮ` using `⟨hw, hwo⟩`. Rewrite `this` using `[h0]`. Conclude with `(Submodule.mem_bot ℂ).1 this`. Establish `hle : (V1 ε Ψ).map W.starProjection.toLinearMap ≤ W`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨w, -, rfl⟩`. Conclude with `W.starProjection_apply_mem w`. Establish `heq` using `huniq _ (hle.trans hWle) (isKTypeOf_map_of_injOn hV1 _ hcomm hinj)`. Introduce `v hv`. Establish `hv' : ((v : smD ε (rreg ε)) : L2 ε) ∈ (V1 ε Ψ).map W.starProjection.toLinearMap`.
-
-Rewrite using `[heq]`. Conclude with `hmem v hv`. Conclude with `hle hv'`. Use `left`. Establish `hle : Hlam ε Ψ T.w ≤ Wᗮ` using `UnitaryGroupOfForm.closGen_le hD Wᗮ (Submodule.isClosed_orthogonal W) hWo _ (fun v hv => (show ((v : smD ε (rreg ε)) : L2 ε) ∈ V1 ε Ψ ⊓ Wᗮ by`.
-
-Rewrite using `[hV']`. Conclude with `hmem v hv).2)`. Rewrite using `[eq_bot_iff, ← Submodule.inf_orthogonal_eq_bot W]`. Conclude with `le_inf le_rfl (hWle.trans hle)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepIrred_of_stepDatum : StepDatum → StepIrred := by
   intro hDatum n ε lam T Ψ hP _hst huniq W hWle hWc hWG

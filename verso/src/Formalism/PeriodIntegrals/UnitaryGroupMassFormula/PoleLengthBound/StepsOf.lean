@@ -15,7 +15,7 @@ open Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.BasicNo
 namespace PI.PoleLengthCount
 
 /- English proof (translation)
-Introduce `D B P j X ka wL wF G la Q S CRm T e c hOk hw hL`. Establish `h3` using `unit_columns_holds G la Q S CRm T c hOk hw`. Conclude with `⟨image_filtration_decreasing G la T, pole_length_assemble G la Q S CRm T e c hOk hw hL (hasse_preserves_kernel G la) (vanishingOnQuadric G la) h3 (taylor_holds G la) (column_derivative G la) (restricted_derivative_linear G la) (liftMul_of Q T hOk.2.1 h3), ball_product_length piLe …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem steps_of (hBQ : BallQuot) : Steps := by
   intro D B P j X ka wL wF G la Q S CRm T e c hOk hw hL
@@ -26,7 +26,7 @@ theorem steps_of (hBQ : BallQuot) : Steps := by
     ball_product_length piLen_holds hBQ G la Q S CRm T e c hOk⟩
 
 /- English proof (translation)
-The claim follows from `target filtration_length_bound sum_antidiagonalTuple (steps_of hBQ)`.
+A detailed English derivation is pending.
 -/
 theorem pole_length_bound_of_balls (hBQ : BallQuot) : PI.LengthPoleInLift := target filtration_length_bound sum_antidiagonalTuple (steps_of hBQ)
 

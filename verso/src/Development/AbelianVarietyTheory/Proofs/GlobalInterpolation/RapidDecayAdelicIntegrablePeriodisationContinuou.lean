@@ -9,29 +9,25 @@ open scoped TensorProduct NNReal ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F _ _ N hF Φ hΦ`. Take `⟨hc, ⟨K, hK, hKz⟩, hdec⟩` from `hΦ`. Take `⟨k, hk⟩` from `GlobalTheory.T.exists_summableMajorant_rationalVectors_locallyUniform F N hF K hK`. Take `⟨C, hC⟩` from `hdec k`. Establish `hsz : ∀ u : Fin N → AF F, 0 ≤ sz u` using `fun u => Finset.sum_nonneg fun l _ => Finset.sum_nonneg fun w _ => abs_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hC0 : 0 ≤ C` using `le_trans (mul_nonneg (norm_nonneg _) (pow_nonneg (by linarith [hsz 0]) k)) (hC 0)`. Establish `key : ∀ ω : Set (Fin N → AF F), IsCompact ω → ∃ c : (Fin N → F) → ℝ, Summable c ∧ (∀ ξ, 0 ≤ c ξ) ∧ ∀ ξ, ∀ y ∈ ω, ‖Φ (rat ξ + y)‖ ≤ C * c ξ`. Introduce `ω hω`. Take `⟨c, hcs, hc0, hcb⟩` from `hk ω hω`. Use `⟨c, hcs, hc0, fun ξ y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hmem : fin (rat ξ + y) ∈ K`. Establish `h1` using `hcb ξ y hy hmem`. Establish `h2` using `hC (rat ξ + y)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hKz _ hmem, norm_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_nonneg hC0 (hc0 ξ)`. Use `haveI : Countable F := Finsupp.Countable.of_moduleFinite (R := ℚ) (M := F)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `μ hμ`. Take `⟨ν, hν⟩` from `GlobalTheory.T.exists_measure_isCov1 F`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, ⟨K₀, hK₀, hcov⟩, -⟩` from `GlobalTheory.T.rationalVectors_adeles_fundamentalDomain_mass_one F N ν hν`. Take `⟨c, hcs, hc0, hcb⟩` from `key K₀ hK₀`. Use `⟨hc.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Set `S : (Fin N → F) → Set (Fin N → AF F)` to `fun ξ => (fun u => u + -rat ξ) ⁻¹' K₀`. Establish `hSm : ∀ ξ, MeasurableSet (S ξ)` using `fun ξ => hK₀.measurableSet.preimage (measurable_add_const _)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSμ : ∀ ξ, μ (S ξ) = μ K₀` using `fun ξ => measure_preimage_add_right μ (-rat ξ) K₀`. Establish `hpt : ∀ u, ‖Φ u‖ₑ ≤ ∑' ξ, (S ξ).indicator (fun _ => ENNReal.ofReal (C * c ξ)) u`. Introduce `u`. Take `⟨ξ, hξ⟩` from `hcov u`. Establish `hu : u ∈ S ξ` using `by show u + -rat ξ ∈ K₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← sub_eq_add_neg]`. Conclude with `hξ`. Use `le_trans ?_ (ENNReal.le_tsum ξ)` and prove the remaining obligations. Rewrite using `[Set.indicator_of_mem hu]`. Establish `h3` using `hcb ξ (u - rat ξ) hξ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[add_sub_cancel]`. Rewrite using `[← ofReal_norm_eq_enorm]`. Conclude with `ENNReal.ofReal_le_ofReal h3`. Establish `hfin : (∑' ξ, ENNReal.ofReal (C * c ξ)) < ∞`. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun ξ => mul_nonneg hC0 (hc0 ξ)) (hcs.mul_left C)]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `ENNReal.ofReal_lt_top`. Unfold `HasFiniteIntegral`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use extensionality with `ξ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[lintegral_indicator_const (hSm ξ), hSμ]`. Use `_ = (∑' ξ, ENNReal.ofReal (C * c ξ)) * μ K₀ := ENNReal.tsum_mul_right`. Use `_ < ∞ := ENNReal.mul_lt_top hfin hK₀.measure_lt_top`. Introduce `u`. Take `⟨c, hcs, hc0, hcb⟩` from `key {u} isCompact_singleton`.
-
-Conclude with `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun ξ => hcb ξ u rfl) (hcs.mul_left C)`. Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Take `⟨ω, hωc, hωn⟩` from `exists_compact_mem_nhds x`. Take `⟨c, hcs, hc0, hcb⟩` from `key ω hωc`. Establish `hon : ContinuousOn (fun u => ∑' ξ : Fin N → F, Φ (rat ξ + u)) ω` using `continuousOn_tsum (fun ξ => (hc.comp (continuous_const.add continuous_id)).continuousOn) (hcs.mul_left C) (fun ξ y hy => hcb ξ y hy)`.
-
-Conclude with `hon.continuousAt hωn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem decay_integrable_periodise : ∀ (F : Type) [Field F] [NumberField F] (N : ℕ), IsTotallyReal F →
     ∀ Φ : (Fin N → AF F) → ℂ, Decay Φ →

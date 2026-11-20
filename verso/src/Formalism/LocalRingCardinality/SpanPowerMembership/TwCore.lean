@@ -94,7 +94,7 @@ structure TwCore (R : Ranks) (H : Host R) (what₂ : Rows.Data R) [NumberField w
 attribute [instance] TwCore.lPrime TwCore.crO0 TwCore.twistBaseCoefficientRing_isDomain TwCore.twistBaseCoefficientRing_isDVR TwCore.algO0 TwCore.twistBaseCoefficientRing_finite_padic TwCore.topO0 TwCore.twistBaseCoefficientRing_topologicalRing TwCore.crO TwCore.domO TwCore.dvrO TwCore.algO TwCore.topO TwCore.trO TwCore.crOk TwCore.domOk TwCore.dvrOk TwCore.algOk TwCore.grpRCG TwCore.finRCG
 
 /- English proof (translation)
-Establish `h : Ideal.span {(p : 𝓞 E)} ≠ 0`. Rewrite using `[Ne, Ideal.zero_eq_bot, Ideal.span_singleton_eq_bot]`. Conclude with `hp` after adjusting the coercions. Use `(Ideal.finite_factors h).subset fun v hv => ?_` and prove the remaining obligations. Conclude with `Ideal.dvd_span_singleton.mpr hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem placesOver_finite (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p ≠ 0) :
     (placesOver E p).Finite := by
@@ -104,7 +104,7 @@ theorem placesOver_finite (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p
   exact Ideal.dvd_span_singleton.mpr hv
 
 /- English proof (translation)
-Introduce `h2` and use `h (PlacesToy.prime_mem_unique v hp hq h1 h2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem placesOver_disj (E : Type) [Field E] [NumberField E] {p q : ℕ} (hp : p.Prime) (hq : q.Prime)
     (h : p ≠ q) {v} (h1 : v ∈ placesOver E p) : v ∉ placesOver E q :=
@@ -116,7 +116,7 @@ variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} [NumberField what₂.L
   {LL0 : IntermediateField ℚ what₂.LL} {N : NData R H what₂} (C : TwCore R H what₂ LL0 N)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Conclude with `hv ((C.delta_ram i v A hA).mp ⟨σ, hσ, hne⟩)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem delta_unr (i) (v) (hv : v ∉ C.pD i) (A : ValuationSubring N.Om) (hA : IsPlaceOver A v)
     (σ) (hσ : σ ∈ Ine (F := H.E) A) : C.delta i σ = 1 := by
@@ -124,9 +124,7 @@ theorem delta_unr (i) (v) (hv : v ∉ C.pD i) (A : ValuationSubring N.Om) (hA : 
   exact hv ((C.delta_ram i v A hA).mp ⟨σ, hσ, hne⟩)
 
 /- English proof (translation)
-Introduce `h`. Establish `h2 : v ∈ (C.pD i : Set _)` using `h`. Rewrite `h2` using `[C.pD_eq]`. Use `split_ifs at h2`. Conclude with `placesOver_disj _ (H.g_prime k) H.pde'_prime (H.pde_ne_g k).2.symm hv h2`.
-
-Conclude with `placesOver_disj _ (H.g_prime k) H.pde_prime (H.pde_ne_g k).1.symm hv h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem g_not_pD (i k v) (hv : v ∈ placesOver H.E (H.g k)) : v ∉ C.pD i := by
   intro h
@@ -139,15 +137,15 @@ theorem g_not_pD (i k v) (hv : v ∈ placesOver H.E (H.g k)) : v ∉ C.pD i := b
 def chi (i) (b : Bool) : Formalism.ConjugateSelfDual.G H.E N.Om →* (C.O0 i)ˣ := if b then C.delta i else (C.delta i)⁻¹
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chi_apply (i b σ) : C.chi i b σ = if b then C.delta i σ else (C.delta i σ)⁻¹ := by
   cases b <;> rfl
 
 /- English proof (translation)
-Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_eventually_eq _).mpr fun g => ?_)` and prove the remaining obligations. Establish `ho : IsOpen ((fun x => g⁻¹ * x) ⁻¹' ((C.delta i).ker : Set (Formalism.ConjugateSelfDual.G H.E N.Om)))` using `(C.delta_open i).preimage (continuous_const.mul continuous_id)`. Use `filter_upwards [ho.mem_nhds (show g⁻¹ * g ∈ (C.delta i).ker by simp)] with x hx`. Establish `h1 : C.delta i (g⁻¹ * x) = 1` using `hx`. Rewrite `h1` using `[map_mul, map_inv, inv_mul_eq_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chi_apply, chi_apply, h1]`.
+A detailed English derivation is pending.
 -/
 theorem chi_cont (i b) : Continuous (fun g => ((C.chi i b g : (C.O0 i)ˣ) : C.O0 i)) := by
   refine IsLocallyConstant.continuous ((IsLocallyConstant.iff_eventually_eq _).mpr fun g => ?_)

@@ -19,9 +19,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.FJE
 
 /- English proof (translation)
-Introduce `D ρ p ψ hψ b₀ Φ hΦ hs`. Use `haveI := (GlobalTheory.T.countable_matrices_and_cosets D ρ p).1`. Use `haveI : BorelSpace (Mx D ρ p) := ⟨rfl⟩`. Take `⟨_, _, _, _, _, hc⟩` from `GlobalTheory.T.heisenberg_character_bilinear_laws ψ hψ b₀`. Establish `hterm : ∀ ξ : Matrix (Fin ρ) (Fin p) D.host.E, Measurable fun v : Mx D ρ p × Mx D ρ p => GlobalTheory.CompanionTheory.FJE.chv ψ b₀ v.2 (GlobalTheory.CompanionTheory.FJE.rt ξ) * Φ (GlobalTheory.CompanionTheory.FJE.rt ξ + v.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `ξ`. Establish `h1 : Measurable fun y : Mx D ρ p => GlobalTheory.CompanionTheory.FJE.chv ψ b₀ y (GlobalTheory.CompanionTheory.FJE.rt ξ)` using `(hc.comp (continuous_id.prodMk continuous_const)).measurable`. Establish `h2 : Measurable fun y : Mx D ρ p => Φ (GlobalTheory.CompanionTheory.FJE.rt ξ + y)` using `hΦ.measurable.comp (continuous_const_add (GlobalTheory.CompanionTheory.FJE.rt ξ)).measurable`. Conclude with `(h1.comp measurable_snd).mul (h2.comp measurable_fst)`. Conclude with `(Measurable.tsum hterm).stronglyMeasurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dsum_stronglyMeasurable : ∀ {D : D7} {ρ p : ℕ} (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ (b₀ : HermE D ρ) (Φ : Mx D ρ p → ℂ), StronglyMeasurable Φ → (∀ y, Summable (fun ξ : Matrix (Fin ρ) (Fin p) D.host.E => ‖Φ (GlobalTheory.CompanionTheory.FJE.rt ξ + y)‖)) → StronglyMeasurable (fun v : Mx D ρ p × Mx D ρ p => GlobalTheory.CompanionTheory.FJE.dsum ψ b₀ Φ v.2 v.1) := by
   intro D ρ p ψ hψ b₀ Φ hΦ hs

@@ -19,23 +19,21 @@ noncomputable section
 namespace GlobalTheory.HeckeToGal
 
 /- English proof (translation)
-Introduce `Ω _ K _ _ _ _ η n hn hη`. Take `⟨art, ha⟩` from `GlobalTheory.globalArtinReciprocity_holds K Ω`. Establish `hηn : ∀ x, η.1 x ^ n = 1` using `fun x => congrArg (fun ξ : HChar K => ξ.1 x) hη`. Establish `hopen : IsOpen (η.1.ker : Set (Ideles K))` using `isOpen_ker_of_pow η.1 η.2.1 hn hηn`. Establish `hinf : infConn K ≤ η.1.ker`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Set `φ : (InfiniteAdeleRing K)ˣ →* ℂˣ` to `η.1.comp (Units.map (MonoidHom.inl (InfiniteAdeleRing K) (FiniteAdeleRing (𝓞 K) K)))`. Establish `hc : Continuous fun z : InfiniteAdeleRing K => (z, (1 : FiniteAdeleRing (𝓞 K) K))` using `continuous_id.prodMk continuous_const`. Establish `hφ : Continuous φ` using `η.2.1.comp (Continuous.units_map _ hc)`. Establish `hop : IsOpen (φ.ker : Set (InfiniteAdeleRing K)ˣ)` using `isOpen_ker_of_pow φ hφ hn (fun x => hηn _)`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : IsClopen (φ.ker : Set (InfiniteAdeleRing K)ˣ)` using `⟨Subgroup.isClosed_of_isOpen _ hop, hop⟩`. Conclude with `hcl.connectedComponent_subset (one_mem φ.ker) hy`. Establish `hker : art.ker ≤ η.1.ker`. Rewrite using `[ha.ker]`. Use `Subgroup.topologicalClosure_minimal _ (sup_le ?_ hinf) (Subgroup.isClosed_of_isOpen _ hopen)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `MonoidHom.mem_ker.mpr (η.2.2 k)`. Establish `hs : Function.Surjective art` using `ha.quot.surjective`. Set `ηb : Gab K Ω →* ℂˣ` to `art.liftOfRightInverse (Function.surjInv hs) (Function.rightInverse_surjInv hs) ⟨η.1, hker⟩`. Establish `hηb : ∀ x, ηb (art x) = η.1 x` using `fun x => MonoidHom.liftOfRightInverse_comp_apply art (Function.surjInv hs) (Function.rightInverse_surjInv hs) ⟨η.1, hker⟩ x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hηbc : Continuous ηb`. Use `ha.quot.isQuotientMap.continuous_iff.mpr ?_` and prove the remaining obligations. Establish `e : (ηb ∘ art) = η.1` using `funext hηb`. Rewrite using `[e]`. Conclude with `η.2.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `χ : G K Ω →* ℂˣ` to `(ηb.comp (toAb K Ω))⁻¹`. Establish `hχ : ∀ σ, χ σ = (ηb (toAb K Ω σ))⁻¹` using `fun σ => rfl`. Establish `hχc : Continuous χ`. Establish `ht : Continuous (toAb K Ω)` using `(QuotientGroup.isQuotientMap_mk _).continuous`. Conclude with `(hηbc.comp ht).inv`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hχn : ∀ σ, χ σ ^ n = 1` using `fun σ => by`. Take `⟨x, hx⟩` from `hs (toAb K Ω σ)`. Rewrite using `[hχ, ← hx, hηb, inv_pow, hηn, inv_one]`. Use `⟨χ, isOpen_ker_of_pow χ hχc hn hχn, fun h1 => ?_, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `toAb_surjective (E := K) (Ω := Ω) (art x)`. Establish `e` using `DFunLike.congr_fun h1 σ`. Rewrite `e` using `[hχ, hσ, hηb, MonoidHom.one_apply, inv_eq_one]`. Conclude with `e`.
-
-Use `filter_upwards [(GlobalTheory.Mem.UnrAe.unr_ae_and_level K η).1] with v hv`. Introduce `A σ hA hσ`. Take `⟨x, hx, e⟩` from `(ha.frob v A hA _).mpr ⟨σ, hσ, rfl⟩`. Rewrite using `[hχ, ← map_inv, ← map_inv, ← e, hηb, ← η.val_eq hv x hx]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_galChar_of_finite_order : ∀ (Ω : Type) [Field Ω] (K : Type) [Field K] [NumberField K] [Algebra K Ω]
     [IsAlgClosure K Ω] (η : HChar K) (n : ℕ), 0 < n → η ^ n = 1 → ∃ χ : G K Ω →* ℂˣ,

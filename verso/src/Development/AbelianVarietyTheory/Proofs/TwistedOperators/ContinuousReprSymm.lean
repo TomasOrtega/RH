@@ -18,7 +18,7 @@ namespace GlobalTheory.AscFinInhab
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [upSum, Matrix.add_apply, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem upSum_add' {ρ : ℕ} (A B : Mx D ρ ρ) : upSum (A + B) = upSum A + upSum B := by
   simp only [upSum, Matrix.add_apply, ← Finset.sum_add_distrib]
@@ -26,9 +26,9 @@ theorem upSum_add' {ρ : ℕ} (A B : Mx D ρ ρ) : upSum (A + B) = upSum A + upS
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[Matrix.one_apply_ne]`. Introduce `hij`. Rewrite `h` using `[hij]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem upSum_one' {ρ : ℕ} : upSum (1 : Mx D ρ ρ) = 0 := by
   refine Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun j _ => ?_
@@ -38,7 +38,7 @@ theorem upSum_one' {ρ : ℕ} : upSum (1 : Mx D ρ ρ) = 0 := by
   · rfl
 
 /- English proof (translation)
-Simplify using `[Formalism.L2.Theta.mt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mt_one_ (V : HSp D) : Formalism.L2.Theta.mt V 1 = 1 := by simp [Formalism.L2.Theta.mt]
 
@@ -48,19 +48,17 @@ variable {V V₀ W W₀ : HSp D} {ρ σ : ℕ} {dV : HypDec V V₀ ρ} {dW : Hyp
   {p : Pieces V₀ W W₀ ρ σ} {x : Mx D W.rank ρ} {ψ : AddChar (AF D.host.F) ℂ}
 
 /- English proof (translation)
-Use `⟨⟨1, 0, zero_mem _, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Simplify using `[mt_one_]`. Introduce `N h1 h2 h3`. Rewrite `h3` using `[inv_one, mt_one_, Matrix.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdet : (1 + N).det = 1`. Rewrite using `[Matrix.det_of_upperTriangular]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.add_apply, h2 i i le_rfl, Matrix.one_apply_eq, add_zero]`. Introduce `i j hij`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `j < i at hij`. Rewrite using `[Matrix.add_apply, h2 i j hij.le, Matrix.one_apply_ne (ne_of_gt hij), add_zero]`. Establish `hu : IsUnit (1 + N)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, hdet]`. Conclude with `isUnit_one`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : hu.unit ∈ UX D ρ`. Rewrite using `[UX, GlobalTheory.UniIndexPrime.mem_uniSub]`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `show (1 + N) i j = 0`. Rewrite using `[Matrix.add_apply, h2 i j hij.le, Matrix.one_apply_ne (ne_of_gt hij), add_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show (1 + N) i i = 1`. Rewrite using `[Matrix.add_apply, h2 i i le_rfl, Matrix.one_apply_eq, add_zero]`. Establish `hN : (hu.unit.1 : Mx D ρ ρ) = 1 + N` using `rfl`. Establish `key` using `hp.uni ⟨hu.unit, hm⟩ (by show MxAt (fun _ => True) ((hu.unit.1 : Mx D ρ ρ) - 1)`. Rewrite using `[hN, add_sub_cancel_left]; exact h1) (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show x ⬝ (hu.unit.1 : Mx D ρ ρ) - x ∈ p.A₁`. Rewrite using `[hN, Matrix.mul_add, Matrix.mul_one, add_sub_cancel_left]`. Conclude with `h3)`. Establish `e : psiUni ψ (⟨hu.unit, hm⟩ : UX D ρ).1 = psiE ψ (upSum N)` using `by show psiE ψ (upSum (1 + N)) = _`. Rewrite using `[upSum_add', upSum_one', zero_add]`.
-
-Rewrite using `[← e]`. Conclude with `key`. Introduce `ξ _ ξ' _ h`. Rewrite `h` using `[mt_one_, Matrix.one_mul]`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.AscFin.cond_one (hp : p.Is dV dW x ψ) (y : Mx D V₀.rank σ) : Cond dW p x y ψ (fun _ => True) 1 := by
   refine ⟨⟨1, 0, zero_mem _, ?_⟩, ?_, ?_⟩
@@ -121,23 +119,23 @@ def bFin (D : D7) : Module.Basis (Fin (dimE D)) (Af D.host.F) (Af D.host.F ⊗[D
   Algebra.TensorProduct.basis (Af D.host.F) (Module.finBasis D.host.F D.host.E)
 
 /- English proof (translation)
-Simplify using `only [infPart, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem infPart_tmul (r : AF D.host.F) (e : D.host.E) :
     infPart D (r ⊗ₜ[D.host.F] e) = fstA D.host.F r ⊗ₜ[D.host.F] e := by
   simp only [infPart, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]
 
 /- English proof (translation)
-Simplify using `only [finPart, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem finPart_tmul (r : AF D.host.F) (e : D.host.E) :
     finPart D (r ⊗ₜ[D.host.F] e) = sndA D.host.F r ⊗ₜ[D.host.F] e := by
   simp only [finPart, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb`. Rewrite using `[(infPart D).map_add, LinearEquiv.map_add, LinearEquiv.map_add, Finsupp.add_apply, Finsupp.add_apply, ha, hb]`. Conclude with `(map_add (fstA D.host.F) _ _).symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `tmul r e`. Rewrite using `[infPart_tmul, bInf, bAE, Algebra.TensorProduct.basis_repr_tmul, Algebra.TensorProduct.basis_repr_tmul]`. Simplify using `[Finsupp.mapRange_apply, map_mul, AlgHom.commutes]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bInf_repr_infPart (a : AE D) (k : Fin (dimE D)) :
     (bInf D).repr (infPart D a) k = fstA D.host.F ((bAE D).repr a k) := by
@@ -152,9 +150,9 @@ theorem bInf_repr_infPart (a : AE D) (k : Fin (dimE D)) :
     simp [Finsupp.mapRange_apply, map_mul, AlgHom.commutes]
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb`. Rewrite using `[(finPart D).map_add, LinearEquiv.map_add, LinearEquiv.map_add, Finsupp.add_apply, Finsupp.add_apply, ha, hb]`. Conclude with `(map_add (sndA D.host.F) _ _).symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `tmul r e`. Rewrite using `[finPart_tmul, bFin, bAE, Algebra.TensorProduct.basis_repr_tmul, Algebra.TensorProduct.basis_repr_tmul]`. Simplify using `[Finsupp.mapRange_apply, map_mul, AlgHom.commutes]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bFin_repr_finPart (a : AE D) (k : Fin (dimE D)) :
     (bFin D).repr (finPart D a) k = sndA D.host.F ((bAE D).repr a k) := by
@@ -169,14 +167,14 @@ theorem bFin_repr_finPart (a : AE D) (k : Fin (dimE D)) :
     simp [Finsupp.mapRange_apply, map_mul, AlgHom.commutes]
 
 /- English proof (translation)
-Rewrite using `[← (bInf D).repr.map_eq_zero_iff, Finsupp.ext_iff]`. Simplify using `only [bInf_repr_infPart, Finsupp.coe_zero, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem infPart_eq_zero_iff (a : AE D) : infPart D a = 0 ↔ ∀ k, fstA D.host.F ((bAE D).repr a k) = 0 := by
   rw [← (bInf D).repr.map_eq_zero_iff, Finsupp.ext_iff]
   simp only [bInf_repr_infPart, Finsupp.coe_zero, Pi.zero_apply]
 
 /- English proof (translation)
-Rewrite using `[← (bFin D).repr.map_eq_zero_iff, Finsupp.ext_iff]`. Simplify using `only [bFin_repr_finPart, Finsupp.coe_zero, Pi.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finPart_eq_zero_iff (a : AE D) : finPart D a = 0 ↔ ∀ k, sndA D.host.F ((bAE D).repr a k) = 0 := by
   rw [← (bFin D).repr.map_eq_zero_iff, Finsupp.ext_iff]
@@ -196,13 +194,13 @@ abbrev XR (D : D7) (m n : ℕ) : Type := Fin m → Fin n → Fin (dimE D) → mi
 abbrev XF (D : D7) (m n : ℕ) : Type := Fin m → Fin n → Fin (dimE D) → Af D.host.F
 
 /- English proof (translation)
-Rewrite using `[GroundTheory.Global.homeomorphMixedSpace_apply, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hms_zero : GroundTheory.Global.homeomorphMixedSpace D.host.F 0 = 0 := by
   rw [GroundTheory.Global.homeomorphMixedSpace_apply, map_zero]
 
 /- English proof (translation)
-Rewrite using `[GroundTheory.Global.homeomorphMixedSpace_apply, GroundTheory.Global.homeomorphMixedSpace_apply, GroundTheory.Global.homeomorphMixedSpace_apply, map_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hms_add (a b : Ainf D.host.F) : GroundTheory.Global.homeomorphMixedSpace D.host.F (a + b) =
     GroundTheory.Global.homeomorphMixedSpace D.host.F a + GroundTheory.Global.homeomorphMixedSpace D.host.F b := by
@@ -240,13 +238,11 @@ def FCh (D : D7) (m n : ℕ) : Mx D m n →+ XF D m n where
     rw [map_add, Finsupp.add_apply, map_add]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.zero_apply, infPart_eq_zero_iff]`. Introduce `k`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrFun (congrFun (congrFun h i) j) k`. Apply `(GroundTheory.Global.homeomorphMixedSpace D.host.F).injective` to reduce the goal to its premises. Rewrite using `[hms_zero]`. Conclude with `h1`. Introduce `h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i j k`. Establish `h1 : infPart D (u i j) = 0`. Conclude with `congrFun (congrFun h i) j`. Rewrite `h1` using `[infPart_eq_zero_iff]`. Use `show GroundTheory.Global.homeomorphMixedSpace D.host.F (fstA D.host.F ((bAE D).repr (u i j) k)) = 0`.
-
-Rewrite using `[h1 k, hms_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RCh_eq_zero_iff {m n : ℕ} (u : Mx D m n) : RCh D m n u = 0 ↔ u.map (infPart D) = 0 := by
   constructor
@@ -267,11 +263,9 @@ theorem RCh_eq_zero_iff {m n : ℕ} (u : Mx D m n) : RCh D m n u = 0 ↔ u.map (
     rw [h1 k, hms_zero]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.zero_apply, finPart_eq_zero_iff]`. Introduce `k`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrFun (congrFun (congrFun h i) j) k`. Introduce `h`. Use function extensionality and compare the values at `i j k`. Establish `h1 : finPart D (u i j) = 0`. Conclude with `congrFun (congrFun h i) j`.
-
-Rewrite `h1` using `[finPart_eq_zero_iff]`. Conclude with `h1 k`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FCh_eq_zero_iff {m n : ℕ} (u : Mx D m n) : FCh D m n u = 0 ↔ u.map (finPart D) = 0 := by
   constructor
@@ -288,14 +282,14 @@ theorem FCh_eq_zero_iff {m n : ℕ} (u : Mx D m n) : FCh D m n u = 0 ↔ u.map (
     exact h1 k
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Conclude with `IsModuleTopology.continuous_of_linearMap (bAE D).equivFun.toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem continuous_repr : Continuous fun a : AE D => (bAE D).equivFun a := by
   haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩
   exact IsModuleTopology.continuous_of_linearMap (bAE D).equivFun.toLinearMap
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Use `haveI := IsModuleTopology.toContinuousAdd (AF D.host.F) (AE D)`. Conclude with `IsModuleTopology.continuous_of_linearMap (bAE D).equivFun.symm.toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem continuous_repr_symm : Continuous fun f : Fin (dimE D) → AF D.host.F => (bAE D).equivFun.symm f := by
   haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩
@@ -303,7 +297,7 @@ theorem continuous_repr_symm : Continuous fun f : Fin (dimE D) → AF D.host.F =
   exact IsModuleTopology.continuous_of_linearMap (bAE D).equivFun.symm.toLinearMap
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => continuous_pi fun k => ?_` and prove the remaining obligations. Conclude with `(GroundTheory.Global.homeomorphMixedSpace D.host.F).continuous.comp (continuous_fst.comp ((continuous_apply k).comp (continuous_repr.comp (continuous_id.matrix_elem i j))))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_RCh (m n : ℕ) : Continuous (RCh D m n) := by
   refine continuous_pi fun i => continuous_pi fun j => continuous_pi fun k => ?_
@@ -311,14 +305,14 @@ theorem continuous_RCh (m n : ℕ) : Continuous (RCh D m n) := by
     ((continuous_apply k).comp (continuous_repr.comp (continuous_id.matrix_elem i j))))
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => continuous_pi fun k => ?_` and prove the remaining obligations. Conclude with `continuous_snd.comp ((continuous_apply k).comp (continuous_repr.comp (continuous_id.matrix_elem i j)))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_FCh (m n : ℕ) : Continuous (FCh D m n) := by
   refine continuous_pi fun i => continuous_pi fun j => continuous_pi fun k => ?_
   exact continuous_snd.comp ((continuous_apply k).comp (continuous_repr.comp (continuous_id.matrix_elem i j)))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [rc, fc, Homeomorph.symm_apply_apply, Module.Basis.equivFun_apply]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem pair_eq (a : AE D) : (fun k => (show AF D.host.F from ((GroundTheory.Global.homeomorphMixedSpace D.host.F).symm
     (rc a k), fc a k))) = (bAE D).equivFun a := by
@@ -372,33 +366,31 @@ variable {D : D7}
 set_option synthInstance.maxSize 1024 in
 
 /- English proof (translation)
-Set `φ : ContDiffBump (0 : XR D m n)` to `⟨ε / 2, ε, by positivity, by linarith⟩`. Set `g : XR D m n → ℝ` to `φ.toFun`. Establish `hg1 : Continuous g` using `φ.continuous`. Establish `hg2 : ContDiff ℝ ∞ g` using `φ.contDiff`. Establish `hg3 : ∀ p, g p ≠ 0 → ‖p‖ < ε` using `fun p hp => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : p ∈ ball (0 : XR D m n) ε` using `φ.support_eq.subset hp`. Rewrite `h3` using `[mem_ball, dist_zero_right]`. Then use the resulting hypothesis. Establish `hg4 : g 0 = 1` using `φ.one_of_mem_closedBall (mem_closedBall_self (by positivity))`. Establish `hg5 : ∀ p, 0 ≤ g p` using `fun p => φ.nonneg`. Establish `hg6 : ∀ p, g p ≤ 1` using `fun p => φ.le_one`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `S : Set (Mx D m n)` to `{z | FCh D m n z - FCh D m n x ∈ A'}`. Set `b : Mx D m n → ℝ` to `fun z => g (RCh D m n z - RCh D m n x) * S.indicator 1 z`. Establish `hcl : IsClosed (A' : Set (XF D m n))` using `AddSubgroup.isClosed_of_isOpen A' ho`. Establish `hS : IsClopen S` using `IsClopen.preimage ⟨hcl, ho⟩ ((continuous_FCh m n).sub continuous_const)`. Establish `hb : Continuous b` using `(hg1.comp ((continuous_RCh m n).sub continuous_const)).mul (IsClopen.continuous_indicator hS continuous_const)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsupp : ∀ z, b z ≠ 0 → ‖RCh D m n z - RCh D m n x‖ < ε ∧ FCh D m n z - FCh D m n x ∈ A'`. Introduce `z hz`. Establish `h1 : g (RCh D m n z - RCh D m n x) ≠ 0` using `fun h => hz (by simp only [b, h, zero_mul])`. Establish `h2 : z ∈ S`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hz (by simp only [b, Set.indicator_of_notMem h, mul_zero])`. Conclude with `⟨hg3 _ h1, h2⟩`. Establish `hper : ∀ u z, RCh D m n u = 0 → FCh D m n u ∈ A' → b (z + u) = b z`. Introduce `u z hu hu'`. Establish `e1 : RCh D m n (z + u) - RCh D m n x = RCh D m n z - RCh D m n x`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, hu, add_zero]`. Establish `e2 : (z + u ∈ S) ↔ (z ∈ S)` using `by show FCh D m n (z + u) - FCh D m n x ∈ A' ↔ FCh D m n z - FCh D m n x ∈ A'`. Rewrite using `[map_add, add_sub_right_comm]`. Conclude with `A'.add_mem_cancel_right hu'`. Simplify using `only [b, e1, Set.indicator_apply, e2, Pi.one_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `⟨b, ⟨Complex.continuous_ofReal.comp hb, ?_, ?_, ?_⟩, ?_, fun z => ?_, hsupp, hper⟩` and prove the remaining obligations. Set `K : Set (Mx D m n)` to `coordH D m n ⁻¹' (closedBall (RCh D m n x) ε ×ˢ ((fun q => q - FCh D m n x) ⁻¹' (A' : Set (XF D m n))))`. Establish `hK : IsCompact K`. Use `(coordH D m n).isCompact_preimage.2 ((isCompact_closedBall _ _).prod ?_)` and prove the remaining obligations. Conclude with `(Homeomorph.subRight (FCh D m n x)).isCompact_preimage.2 hc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hKc : IsClosed K` using `(isClosed_closedBall.prod (hcl.preimage (continuous_id.sub continuous_const))).preimage (coordH D m n).continuous`. Use `HasCompactSupport.intro' hK hKc fun z hz => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `h' : b z ≠ 0` using `fun h0 => h (by simp only [h0, Complex.ofReal_zero])`. Take `⟨h1, h2⟩` from `hsupp z h'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Apply `hz` to reduce the goal to its premises. Rewrite using `[Set.mem_preimage, coordH_apply]`. Conclude with `⟨mem_closedBall_iff_norm.2 h1.le, h2⟩`. Use `⟨A'.comap (FCh D m n), ho.preimage (continuous_FCh m n), fun u hu hu0 z => ?_⟩` and prove the remaining obligations. Rewrite using `[hper u z ((RCh_eq_zero_iff u).2 hu0) hu]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `k l hl hl0 w`. Set `L : (Fin k → ℝ) →L[ℝ] XR D m n` to `((RCh D m n).comp l).toRealLinearMap ((continuous_RCh m n).comp hl)`. Establish `hL : ∀ t, RCh D m n (l t) = L t` using `fun t => rfl`. Establish `hF : ∀ t, FCh D m n (l t) = 0` using `fun t => (FCh_eq_zero_iff _).2 (hl0 t)`. Establish `e : (fun t => ((b (w + l t) : ℝ) : ℂ)) = fun t => (((g (RCh D m n w - RCh D m n x + L t)) * S.indicator 1 w : ℝ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `t`. Establish `e2 : (w + l t ∈ S) ↔ (w ∈ S)` using `by show FCh D m n (w + l t) - FCh D m n x ∈ A' ↔ FCh D m n w - FCh D m n x ∈ A'`. Rewrite using `[map_add, hF t, add_zero]`. Simplify using `only [b, map_add, hL, Set.indicator_apply, e2, add_sub_right_comm, Pi.one_apply]`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Complex.ofRealCLM.contDiff.comp ((hg2.comp (contDiff_const.add L.contDiff)).mul contDiff_const)`. Use `show g (RCh D m n x - RCh D m n x) * S.indicator 1 x = 1`. Establish `hx : x ∈ S` using `by show FCh D m n x - FCh D m n x ∈ A'`. Rewrite using `[sub_self]`. Conclude with `A'.zero_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite using `[sub_self, Set.indicator_of_mem hx, Pi.one_apply, mul_one, hg4]`. Establish `h1` using `hg5 (RCh D m n z - RCh D m n x)`. Establish `h2` using `hg6 (RCh D m n z - RCh D m n x)`. Simplify using `only [b, Set.indicator_apply]`. Use `split_ifs`.
-
-Simplify using `only [Pi.one_apply, mul_one]`. Conclude with `⟨h1, h2⟩`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bump_core {m n : ℕ} (x : Mx D m n) (A' : AddSubgroup (XF D m n)) (ho : IsOpen (A' : Set (XF D m n)))
     (hc : IsCompact (A' : Set (XF D m n))) {ε : ℝ} (hε : 0 < ε) :
@@ -493,9 +485,9 @@ open Topology Metric
 variable {D : D7}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`. Conclude with `RingHom.mem_ker.1 (Ideal.mem_inf.1 (h i j)).1`. Introduce `h i j`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Ideal.mem_inf.2 ⟨RingHom.mem_ker.2 (congrFun (congrFun h i) j), Ideal.mem_iInf.2 fun w => ?_⟩` and prove the remaining obligations. Conclude with `absurd trivial w.2`.
+A detailed English derivation is pending.
 -/
 theorem mxAt_true_iff {m n : ℕ} (a : Mx D m n) : MxAt (fun _ => True) a ↔ a.map (infPart D) = 0 := by
   constructor
@@ -507,25 +499,25 @@ theorem mxAt_true_iff {m n : ℕ} (a : Mx D m n) : MxAt (fun _ => True) a ↔ a.
     exact absurd trivial w.2
 
 /- English proof (translation)
-Rewrite using `[Homeomorph.symm_apply_eq, coordH_apply, map_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coordH_symm_zero (m n : ℕ) : (coordH D m n).symm (0, 0) = 0 := by
   rw [Homeomorph.symm_apply_eq, coordH_apply, map_zero, map_zero]
 
 /- English proof (translation)
-Establish `hR : ∀ a ∈ A, RCh D m n a = 0` using `fun a ha => (RCh_eq_zero_iff a).2 ((mxAt_true_iff a).1 (hA.fin a ha))`. Set `A' : AddSubgroup (XF D m n)` to `A.map (FCh D m n)`. Establish `hc : IsCompact (A' : Set (XF D m n))`. Rewrite using `[AddSubgroup.coe_map]`. Conclude with `hA.cpt.image (continuous_FCh m n)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ho : IsOpen (A' : Set (XF D m n))`. Use `AddSubgroup.isOpen_of_mem_nhds A' (g := 0) ?_` and prove the remaining obligations. Take `⟨U0, hU0o, h0, hU0⟩` from `hA.opn`. Set `ι0 : XF D m n → Mx D m n` to `fun q => (coordH D m n).symm (0, q)`. Establish `hι : Continuous ι0` using `(coordH D m n).symm.continuous.comp (continuous_const.prodMk continuous_id)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hι0 : ι0 0 = 0` using `coordH_symm_zero m n`. Use `Filter.mem_of_superset ((hU0o.preimage hι).mem_nhds (by rw [Set.mem_preimage, hι0]; exact h0)) ?_` and prove the remaining obligations. Introduce `q hq`. Establish `e : coordH D m n (ι0 q) = (0, q)` using `(coordH D m n).apply_symm_apply _`. Rewrite `e` using `[coordH_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hA0 : ι0 q ∈ A` using `hU0 _ hq ((mxAt_true_iff _).2 ((RCh_eq_zero_iff _).1 (congrArg Prod.fst e)))`. Conclude with `⟨ι0 q, hA0, congrArg Prod.snd e⟩`. Establish `hcont : Continuous fun p => (coordH D m n).symm (p, FCh D m n x)` using `(coordH D m n).symm.continuous.comp (continuous_id.prodMk continuous_const)`. Establish `hx : (coordH D m n).symm (RCh D m n x, FCh D m n x) = x`. Rewrite using `[← coordH_apply]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(coordH D m n).symm_apply_apply x`. Establish `hpre : (fun p => (coordH D m n).symm (p, FCh D m n x)) ⁻¹' U ∈ 𝓝 (RCh D m n x)` using `hcont.continuousAt.preimage_mem_nhds (by rw [hx]; exact hU)`. Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 hpre`. Take `⟨b, hb, hbx, hb01, hsupp, hper⟩` from `bump_core x A' ho hc hε`. Use `⟨b, hb, hbx, hb01, fun z hz => ?_, fun a ha z => hper a z (hR a ha) (AddSubgroup.mem_map_of_mem _ ha)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `hsupp z hz`. Take `⟨a, ha, hae⟩` from `AddSubgroup.mem_map.1 h2`. Use `⟨z - x - a, (FCh_eq_zero_iff _).1 ?_, ?_, by abel_nf; exact ha⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, hae, sub_self]`. Establish `e : x + (z - x - a) = (coordH D m n).symm (RCh D m n z, FCh D m n x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Homeomorph.eq_symm_apply, coordH_apply, map_add, map_add, map_sub, map_sub, map_sub, map_sub, hR a ha, hae]`. Apply the tactic sequence `congr 1 <;> abel`. Rewrite using `[e]`. Conclude with `hball (by rw [mem_ball, dist_eq_norm]; exact h1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.AscFin.exists_bump_le {m n : ℕ} (x : Mx D m n) (A : AddSubgroup (Mx D m n)) (hA : FinLat A) (U : Set (Mx D m n))
     (hU : U ∈ 𝓝 x) :

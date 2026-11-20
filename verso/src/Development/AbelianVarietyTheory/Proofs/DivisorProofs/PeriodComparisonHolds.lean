@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.PeriodComparisonOfG
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.GaussManinPeriodsHolds
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.PeriodFamily.periodComparison_of_gaussManinPeriods GlobalTheory.PeriodFamily.gaussManinPeriods_holds`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PeriodFamily.periodComparison_holds : GlobalTheory.Published.PeriodComparison :=
   GlobalTheory.PeriodFamily.periodComparison_of_gaussManinPeriods GlobalTheory.PeriodFamily.gaussManinPeriods_holds

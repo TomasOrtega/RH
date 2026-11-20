@@ -16,7 +16,7 @@ def cj {G K : Type} [Group G] [CommRing K] (Q : GL (Fin n) K) (ρ : G →* GL (F
   (MulAut.conj Q⁻¹).toMonoidHom.comp ρ
 
 /- English proof (translation)
-Use `show Q⁻¹ * ρ g * Q⁻¹⁻¹ = Q⁻¹ * ρ g * Q`. Rewrite using `[inv_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cj_apply {G K : Type} [Group G] [CommRing K] (Q : GL (Fin n) K) (ρ : G →* GL (Fin n) K) (g : G) :
     cj Q ρ g = Q⁻¹ * ρ g * Q := by

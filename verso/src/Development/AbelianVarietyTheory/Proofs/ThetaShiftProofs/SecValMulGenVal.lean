@@ -24,7 +24,7 @@ variable [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) 
 omit [IsScalarTower ℂ (FractionRing ℂ) ℂ] in
 
 /- English proof (translation)
-Rewrite using `[← map_nsmul, ← map_add, ← map_nsmul, ← map_add, Λ.ct]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_add_nsmul (Λ : GtAn a) (j : ℕ) (α mu : Λ.A.X) :
     Λ.u.ex (Λ.A.ct α + j • Λ.A.ct mu) = a.D₀.c (Λ.ε α + j • Λ.ε mu) := by
@@ -33,17 +33,17 @@ theorem ex_add_nsmul (Λ : GtAn a) (j : ℕ) (α mu : Λ.A.X) :
 omit [IsScalarTower ℂ (FractionRing ℂ) ℂ] in
 
 /- English proof (translation)
-Rewrite using `[expo, AnArc.exponent, AnArc.q, Λ.be_eq, Λ.be_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem expo_eq (Λ : GtAn a) (j : ℕ) (α mu : Λ.A.X) : expo a j (Λ.ε α) (Λ.ε mu) = Λ.A.exponent j α mu := by
   rw [expo, AnArc.exponent, AnArc.q, Λ.be_eq, Λ.be_eq]
 
 /- English proof (translation)
-Establish `h₁ : ∀ y x z, x = Λ.ε y → z = Λ.A.ct y → FrameValue.genVal Λ.u a.D₀.P.isLB ((Λ.ex0 v).s x) (show Sp ℂ ⟶ _ from 𝟙 (Sp ℂ)) ![z + v.2, z, v.2, 0] = eTwoPi (v.1 y)`. Introduce and unpack `y _ _ rfl rfl`. Conclude with `Λ.arcDict_expZero_section v y`. Establish `h₂ : ∀ y x z, x = Λ.ε y → z = Λ.A.ct y → FrameValue.genVal Λ.u a.D₀.P.isLB (a.D₀.psi x) (Out.jFK (R` using `ℂ) ℂ) (fun _ => z) = Λ.A.psi y := by`. Introduce and unpack `y _ _ rfl rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Λ.psi y`. Use `(congrArg₂ (· * ·) (secVal_feTranslate Λ.ah Λ.rig j (Λ.ct α) (Λ.ct mu) (Λ.psi α) (Λ.psi mu) (h₂ (mu + α) _ _ (map_add _ _ _).symm (map_add _ _ _).symm) s₀ v.2) (h₁ (α + j • mu) _ _ (by rw [map_add, map_nsmul]) (by rw [map_add, map_nsmul]))).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Λ.fn j α s₀ (v.2 + Λ.A.ct mu) * _ * _ = _`. Establish `n₁` using `(Λ.A.psi mu).ne_zero`. Establish `n₂` using `(Λ.A.psi α).ne_zero`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [AnArc.term, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_inv_eq_inv_val, Λ.A.psi_add]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem secVal_mul_genVal (Λ : GtAn a) (j : ℕ) (α mu : Λ.A.X) (s₀ : a.D₀.SecB j (Λ.ε α)) (v : Λ.A.V) :
     FrameValue.secVal Λ.u a.D₀.P.isLB (feTranslate a.D₀ j (Λ.ε mu) (Λ.ε α) s₀) (Λ.u.ex v.2).left
@@ -71,23 +71,19 @@ theorem secVal_mul_genVal (Λ : GtAn a) (j : ℕ) (α mu : Λ.A.X) (s₀ : a.D�
 end
 
 /- English proof (translation)
-Introduce `_ _ E _ _ _ H _ D l Xo c O _ β Y _ _ b a χ W Λ Ξ hW j _ α s₀ m f σ hf hE v jL hL`. Establish `hj : 1 ≤ j` using `Nat.one_le_iff_ne_zero.2 (NeZero.ne j)`. Establish `hm : ∀ mu, 0 ≤ (m : ℤ) + Λ.A.exponent j α mu` using `fun mu => expo_eq Λ j α mu ▸ (hf.1 (Λ.ε mu)).1`. Establish `hJ : (Ideal.span {(PowerSeries.X : ℂ⟦X⟧)}).map (algebraMap ℂ⟦X⟧ ℂ⟦X⟧) = Ideal.span {PowerSeries.X}` using `Ideal.map_id _`. Establish `: IsAdicComplete ((Ideal.span {(PowerSeries.X : ℂ⟦X⟧)}).map (algebraMap ℂ⟦X⟧ ℂ⟦X⟧)) ℂ⟦X⟧` using `hJ.symm ▸ (admissibleBase_powerSeries ℂ).2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : (show Sp ℂ⟦X⟧ ⟶ _ from (Ξ.g v).b.left) ≫ W.φ = spMap (PowerSeries.C (R` using `ℂ)) ≫ (Λ.u.ex v.2).left := ((Ξ.g_rel v 0).1 2).trans (congrArg (spMap (PowerSeries.C (R := ℂ)) ≫ ·) (Λ.ex0_b v))`. Take `⟨jM, hM⟩` from `exists_chart W.P.D.toPre.P.isLB ((show Sp ℂ⟦X⟧ ⟶ _ from (Ξ.g v).b.left) (cpt ℂ⟦X⟧))`. Use `replace hM := (top_le_iff_cpt (show Sp ℂ⟦X⟧ ⟶ _ from (Ξ.g v).b.left) _).2 hM`. Take `⟨j₀, h₀⟩ : ∃ j₀, ⊤ ≤ (Λ.u.ex v.2).left ⁻¹ᵁ a.D₀.P.L.U j₀` from `⟨_, FrameValue.le_chartAt a.D₀.P.isLB _⟩`. Establish `hd` using `ConstTerm.le_div (M := W.P.D.toPre.P.L) (φ := W.φ) (k := j₀) (show Sp ℂ⟦X⟧ ⟶ _ from (Ξ.g v).b.left) (hb ▸ FormalValue.top_le_comp h₀ _) hM`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ` using `Ξ.τ_eq v jL jM j₀ hL hd`. Establish `hu` using `FormalValue.isUnit_valR _ _ hd (W.w.s (fun _ => j₀, jM))`. Use `choose jf jt hc using FormalValue.exists_cohCharts (Ξ.g v) jM hM`. Establish `hs` using `exists_sum_sub_mem (i := fun mu => W.e (Λ.ε α + j • Λ.ε mu)) (fun _ _ h => Λ.ε.injective (FamFree.add_nsmul_inj hj _ _ _ (W.e.injective h))) (n := fun mu => ((m : ℤ) + Λ.A.exponent j α mu).toNat) (c := fun mu => Λ.A.term j α (Λ.fn j α s₀) mu v * Λ.u.fr j₀ v.2 ^ j) (h := fun x => …`. Rewrite using `[(hf.1 (Λ.ε mu)).2, ← secVal_mul_genVal, ← expo_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ConstTerm.core Λ.u (algebraMap ℂ⟦X⟧ ℂ⟦X⟧) (PowerSeries.C (R := ℂ)) W.w (Ξ.g v) (Λ.ex0 v) (ex_add_nsmul Λ j α mu) (Λ.ex0_b v) (Ξ.g_rel v _) _ _ _ (fun p => valR_smul_pullB hW j _ _ _ _ p _) jM j₀ _ _ (hc _) hd)`. Use the proof step `(fun x hx => by`. Establish `e : f x = 0` using `hf.2 x fun mu h => hx (Λ.ε.symm (W.e.symm mu)) (by`. Rewrite using `[Λ.ε.apply_symm_apply, map_add_nsmul, W.e.apply_symm_apply, h])`. Establish `e' : FormalValue.famVal (Ξ.g v) (f x) (jf x) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(HolHom.valR_eq _ _ (hc x).1 _).trans (map_zero _)`. Rewrite using `[e', zero_mul, mul_zero])`. Use the proof step `(L := fun k => Λ.A.level j α ((k : ℤ) - m)) (fun k mu => by`. Use `hm mu` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[AnArc.mem_level]`. Use the proof step `omega)`. Use `beta_reduce`. Rewrite using `[← algebraMap_mk_eq Λ.A j α _ v hm, ← map_pow, ← map_mul]`. Use `congrArg _ ((hu.pow j).mul_left_cancel (FormalValue.eq_of_forall_mk_eq ((Ideal.span {(PowerSeries.X : ℂ⟦X⟧)}).map (algebraMap ℂ⟦X⟧ ℂ⟦X⟧)) fun e => Ideal.Quotient.eq.2 ?_))` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨F, -, hF⟩` from `((FormalValue.value_eq_sum_expansion (admissibleBase_powerSeries ℂ) W.P.U (Ξ.g v) (Ξ.x v).left (Ξ.x_fm v)).2 j σ f hE).1 e`. Take `⟨F', hFF, h₂⟩` from `hs (e + 1) F`. Establish `h₁` using `hF F' jL jM jf jt hFF hL hM fun x _ => hc x`. Establish `e₁ : (PowerSeries.mk fun k : ℕ => ∑ mu ∈ Λ.A.level j α ((k : ℤ) - m), Λ.A.term j α (Λ.fn j α s₀) mu v * Λ.u.fr j₀ v.2 ^ j) = (PowerSeries.mk fun k : ℕ => ∑ mu ∈ Λ.A.level j α ((k : ℤ) - m), Λ.A.term j α (Λ.fn j α s₀) mu v) * PowerSeries.C (Λ.u.fr j₀ v.2) ^ j`. Use extensionality with `k`.
-
-Rewrite using `[← map_pow, PowerSeries.coeff_mul_C, PowerSeries.coeff_mk, PowerSeries.coeff_mk, Finset.sum_mul]`. Rewrite `h₂` using `[e₁, ← Finset.mul_sum, ← Ideal.mem_span_singleton, ← Ideal.span_singleton_pow]`. Use `replace h₂ := Ideal.pow_right_mono hJ.ge (e + 1) h₂`. Establish `h₃` using `congrArg (· ^ j) hτ`. Simplify using `only [mul_pow] at h₃`.
-
-Use `add_mem (Ideal.mul_mem_left _ (valR (A := ℂ⟦X⟧) (Ξ.g v).b.left _ (W.w.s (fun _ => j₀, jM)).val ^ j) h₁) (Ideal.mul_mem_left _ ((FormalValue.tau W.P.U.toUnifPre ((Ideal.span {(PowerSeries.X : ℂ⟦X⟧)}).map (algebraMap ℂ⟦X⟧ ℂ⟦X⟧)) (Ξ.x v).left jL jM).val ^ j) h₂) using 1` and compare the differences between its conclusion and the goal. Take the linear combination `(-(PowerSeries.mk fun k : ℕ => ∑ mu ∈ Λ.A.level j α ((k : ℤ) - m), Λ.A.term j α (Λ.fn j α s₀) mu v)) * h₃`.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem main : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (b : O →+* ℂ) (a : ArcIn D l β ℂ b) (χ : Sp ℂ⟦X⟧ ⟶ Y.X) (W : ArcWit Y a (Ideal.span {PowerSeries.X}) (PowerSeries.C (R := ℂ)) PowerSeries.X χ) (Λ : GtAn a) (Ξ : ConstPts W Λ) (hW : WitData a W.P.D W.P.oD W.φ W.he W.w W.e) (j : ℕ) [NeZero j] (α : Λ.A.X) (s₀ : a.D₀.SecB j (Λ.ε α)) (m : ℕ) (f : ∀ x, ConstFam.SecBMod W.P.D.toPre j x) (σ : Out.H0 W.P.U.LG.L j), ConstFam.IsIntegralForm hW j (Λ.ε α) s₀ m f → (∀ n, W.P.U.toUnifPre.ExpandsAt n j σ f) → Ξ.Vals σ (fun v => HahnSeries.single (m : ℤ) (1 : ℂ) * Λ.A.FSum j α (Λ.fn j α s₀) v) := by
   intro _ _ E _ _ _ H _ D l Xo c O _ β Y _ _ b a χ W Λ Ξ hW j _ α s₀ m f σ hf hE v jL hL

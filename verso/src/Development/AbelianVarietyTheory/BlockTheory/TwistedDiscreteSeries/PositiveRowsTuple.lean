@@ -66,19 +66,19 @@ def dimRows (b : Bool) : ℕ := Module.finrank ℂ ((R.EEat (R.levR F b)).comap 
 def dimQ (b : Bool) : ℕ := (lv (F.fc (R.toCx F).zs) b).dQ A.μ0
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dimQ_eq (b : Bool) :
     dimQ R F b = Module.finrank D.what₂.LL ((A.fam.R A.μ0).inV0 (F.lvl b) ((R.toCx F).Z A.μ0)) := by
   cases b <;> rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem pos_iff (b : Bool) : (lv (F.fc (R.toCx F).zs) b).Pos ↔ 0 < dimQ R F b := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[pos_iff, dimQ_eq, pos_iff_ne_zero, Ne, Submodule.finrank_eq_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pos_iff_ne_bot (b : Bool) :
     (lv (F.fc (R.toCx F).zs) b).Pos ↔ (A.fam.R A.μ0).inV0 (F.lvl b) ((R.toCx F).Z A.μ0) ≠ ⊥ := by
@@ -107,16 +107,16 @@ def QPos : Prop :=
   AtLargeScale fun _ _ _ _ _ _ _ _ _ _ _ R F => KerRational R → ∀ b, (lv (F.fc (R.toCx F).zs) b).Pos
 
 /- English proof (translation)
-The claim follows from `let ⟨L, h1, h2, h3⟩ := h ⟨L, h1, hx.trans h2, h3⟩`.
+A detailed English derivation is pending.
 -/
 theorem AtScale.mono {eps x0 x1 : ℝ} {D : D7} (h : AtScale eps x1 D) (hx : x0 ≤ x1) : AtScale eps x0 D :=
   let ⟨L, h1, h2, h3⟩ := h
   ⟨L, h1, hx.trans h2, h3⟩
 
 /- English proof (translation)
-Introduce `eps`. Take `⟨x1, h1⟩` from `h1 eps`. Take `⟨x2, h2⟩` from `h2 eps`. Use `⟨max x1 x2, fun D hD G _ _ Pl0 T A Ks _ _ _ R F hS hK b => ?_⟩` and prove the remaining obligations. Rewrite using `[pos_iff, h2 D (hD.mono (le_max_right _ _)) G Pl0 T A Ks R F hS hK b]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 D (hD.mono (le_max_left _ _)) G Pl0 T A Ks R F hS b`.
+A detailed English derivation is pending.
 -/
 theorem qPos_of (h1 : RowsPos) (h2 : DimQEq) : QPos := by
   intro eps

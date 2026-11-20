@@ -187,7 +187,7 @@ def DivEx (𝒮 : Slots) : Prop := StepW Pinned fun K B f T w => ∀ (Z : w.Lt) 
 def ThEx (𝒮 : Slots) : Prop := StepW Pinned fun K _ _ _ w => ∀ (Z : w.Lt) (l : Lv4 𝒮 K w Z), ∃ th : ThetaX (w.D Z), Nonempty (ThT l.n th)
 
 /- English proof (translation)
-The claim follows from `have p : StepW Start Pinned := StepW.of_all fun _ _ _ _ _ _ _ h => h.1 (p.and ((p.and ((p.and h2).trans h3)).trans h4)).trans h5`.
+A detailed English derivation is pending.
 -/
 theorem stepW_built {𝒮 : Slots} (h2 : StepW Start (Has2 𝒮)) (h3 : StepW (pinAnd (Has2 𝒮)) (Has3 𝒮))
     (h4 : StepW (pinAnd (Has3 𝒮)) (Has4 𝒮)) (h5 : StepW (pinAnd (Has4 𝒮)) (HasC (BuiltC 𝒮))) :
@@ -196,12 +196,12 @@ theorem stepW_built {𝒮 : Slots} (h2 : StepW Start (Has2 𝒮)) (h3 : StepW (p
   (p.and ((p.and ((p.and h2).trans h3)).trans h4)).trans h5
 
 /- English proof (translation)
-The claim follows from `Or.inl h`.
+Prove the first alternative.
 -/
 theorem supp_of_untw (w : ColW B f T) (h : T = TwDat.untw B T.pl) : Supp K B f T w := Or.inl h
 
 /- English proof (translation)
-Rewrite using `[h]`. Conclude with `⟨fun _ _ _ => ⟨rfl, rfl, rfl⟩, fun v => ⟨1, by change IsPrimitiveRoot _ (_ ^ 0); rw [pow_zero]; exact IsPrimitiveRoot.one⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem coh_of_untw (h : T = TwDat.untw B T.pl) : Coh B T := by
   rw [h]

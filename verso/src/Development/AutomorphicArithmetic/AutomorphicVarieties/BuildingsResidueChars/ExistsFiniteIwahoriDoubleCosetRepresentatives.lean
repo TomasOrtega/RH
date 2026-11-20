@@ -21,15 +21,13 @@ private def repsRel {Γ Ga Gp : Type} [Group Γ] [Group Ga] [Group Gp] (X : Fram
         group }
 
 /- English proof (translation)
-Introduce `Γ Ga Gp _ _ _ X U hU c`. Take `⟨s, hs⟩` from `hU`. Use `haveI : Finite (X.I.Iw 0 ⧸ (X.I.Iw c).subgroupOf (X.I.Iw 0)) := Nat.finite_of_card_ne_zero (iwFin Gp X.I c).1`. Use `haveI : Finite (Quotient (repsRel X U c)) := by`. Use `Finite.of_surjective (fun p : s × (X.I.Iw 0 ⧸ (X.I.Iw c).subgroupOf (X.I.Iw 0)) => Quotient.mk (repsRel X U c) ((p.1 : Ga × Gp) * (1, (p.2.out : Gp)))) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `q`. Proceed by induction on `q using Quotient.inductionOn with`. Consider the case `h g`. Take `⟨γ, x, hx, u, hu, b, hb, rfl⟩` from `hs g`. Take `⟨m, hm⟩` from `QuotientGroup.mk_out_eq_mul ((X.I.Iw c).subgroupOf (X.I.Iw 0)) ⟨b, hb⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation.
 
-Use `⟨(⟨x, hx⟩, ((⟨b, hb⟩ : X.I.Iw 0) : _ ⧸ _)), ?_⟩` and prove the remaining obligations. Use `symm`. Use `Quotient.sound ⟨γ, u, hu, ((m : X.I.Iw 0) : Gp)⁻¹, inv_mem (Subgroup.mem_subgroupOf.1 m.2), ?_⟩` and prove the remaining obligations. Simplify using `only [hm, Subgroup.coe_mul, mul_assoc, Prod.mk_mul_mk, one_mul, mul_inv_cancel, mul_one]`. Take `⟨N, ⟨e⟩⟩` from `Finite.exists_equiv_fin (Quotient (repsRel X U c))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨N, fun i => (e.symm i).out, fun g => ?_, fun i j γ u hu b hb h => ?_⟩` and prove the remaining obligations. Take `⟨γ, u, hu, b, hb, h⟩` from `(repsRel X U c).symm (Quotient.mk_out (s := repsRel X U c) g)`. Conclude with `⟨γ, e (Quotient.mk _ g), u, hu, b, hb, by simpa using h⟩`. Establish `h1 : Quotient.mk (repsRel X U c) (e.symm j).out = Quotient.mk (repsRel X U c) (e.symm i).out` using `Quotient.sound ⟨γ, u, hu, b, hb, h⟩`. Rewrite `h1` using `[Quotient.out_eq, Quotient.out_eq]`.
-
-Conclude with `(e.symm.injective h1).symm`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_finite_iwahori_doubleCoset_representatives :
     ∀ (Γ Ga Gp : Type) [Group Γ] [Group Ga] [Group Gp] (X : Frame Γ Ga Gp) (U : Subgroup X.Ub), X.FinLevel U → ∀ c : ℕ, ∃ (N : ℕ) (x : Fin N → Ga × Gp), (∀ g, ∃ γ i, ∃ u ∈ U, ∃ b ∈ X.I.Iw c, g = X.glob γ * x i * ((u : Ga), b)) ∧ (∀ i j γ, ∀ u ∈ U, ∀ b ∈ X.I.Iw c, x j = X.glob γ * x i * ((u : Ga), b) → i = j) := by

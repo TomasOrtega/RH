@@ -30,13 +30,13 @@ def entSub (𝒜 : StarSubalgebra ℂ A) : Subalgebra ℂ (SlopeTestRemainingCho
 variable {𝒜 : StarSubalgebra ℂ A}
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_entSub {M : SlopeTestRemainingChoices S A} : M ∈ entSub 𝒜 ↔ ∀ i j, M i j ∈ 𝒜 := by
   exact Iff.rfl
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[mem_entSub]`. Introduce `i j`. Rewrite using `[Matrix.star_apply]`. Conclude with `star_mem (h j i)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_mem_entSub {M : SlopeTestRemainingChoices S A} (h : M ∈ entSub 𝒜) : star M ∈ entSub 𝒜 := by
   rw [mem_entSub] at h ⊢
@@ -45,9 +45,7 @@ theorem star_mem_entSub {M : SlopeTestRemainingChoices S A} (h : M ∈ entSub �
   exact star_mem (h j i)
 
 /- English proof (translation)
-Rewrite using `[mem_entSub]`. Introduce `i j`. Simplify using `only [io, Matrix.scalar_apply, Matrix.diagonal_apply]`. Use `split_ifs`. Conclude with `h`.
-
-Conclude with `𝒜.zero_mem`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem io_mem {x : A} (h : x ∈ 𝒜) : (io x : SlopeTestRemainingChoices S A) ∈ entSub 𝒜 := by
   rw [mem_entSub]
@@ -58,9 +56,7 @@ theorem io_mem {x : A} (h : x ∈ 𝒜) : (io x : SlopeTestRemainingChoices S A)
   · exact 𝒜.zero_mem
 
 /- English proof (translation)
-Rewrite using `[mem_entSub]`. Introduce `x y`. Simplify using `only [eU, Matrix.of_apply]`. Use `split_ifs`. Conclude with `𝒜.one_mem`.
-
-Conclude with `𝒜.zero_mem`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eU_mem (a : S) (i j : Fin 2) : (eU a i j : SlopeTestRemainingChoices S A) ∈ entSub 𝒜 := by
   rw [mem_entSub]
@@ -73,7 +69,7 @@ theorem eU_mem (a : S) (i j : Fin 2) : (eU a i j : SlopeTestRemainingChoices S A
 def E2 (𝒜 : StarSubalgebra ℂ A) (M : M2 (SlopeTestRemainingChoices S A)) : Prop := ∀ i j, M i j ∈ entSub 𝒜
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `(entSub 𝒜).sum_mem fun k _ => (entSub 𝒜).mul_mem (hM i k) (hN k j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entries_mem_mul {M N : M2 (SlopeTestRemainingChoices S A)} (hM : E2 𝒜 M) (hN : E2 𝒜 N) : E2 𝒜 (M * N) := by
   intro i j
@@ -81,7 +77,7 @@ theorem entries_mem_mul {M N : M2 (SlopeTestRemainingChoices S A)} (hM : E2 𝒜
   exact (entSub 𝒜).sum_mem fun k _ => (entSub 𝒜).mul_mem (hM i k) (hN k j)
 
 /- English proof (translation)
-Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [ha, hb, hc, hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem entries_mem_of_four {a b c d : SlopeTestRemainingChoices S A} (ha : a ∈ entSub 𝒜) (hb : b ∈ entSub 𝒜) (hc : c ∈ entSub 𝒜) (hd : d ∈ entSub 𝒜) :
     E2 𝒜 !![a, b; c, d] := by
@@ -89,7 +85,7 @@ theorem entries_mem_of_four {a b c d : SlopeTestRemainingChoices S A} (ha : a �
   fin_cases i <;> fin_cases j <;> simp [ha, hb, hc, hd]
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `(entSub 𝒜).one_mem`. Conclude with `(entSub 𝒜).zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entries_mem_one : E2 𝒜 (1 : M2 (SlopeTestRemainingChoices S A)) := by
   intro i j
@@ -99,7 +95,7 @@ theorem entries_mem_one : E2 𝒜 (1 : M2 (SlopeTestRemainingChoices S A)) := by
   · exact (entSub 𝒜).zero_mem
 
 /- English proof (translation)
-Unfold `ins`. Conclude with `(entSub 𝒜).sum_mem fun i _ => (entSub 𝒜).sum_mem fun j _ => (entSub 𝒜).mul_mem (eU_mem a i j) (hM i j)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ins_mem (a : S) {M : M2 (SlopeTestRemainingChoices S A)} (hM : E2 𝒜 M) : ins a M ∈ entSub 𝒜 := by
   unfold ins
@@ -107,7 +103,7 @@ theorem ins_mem (a : S) {M : M2 (SlopeTestRemainingChoices S A)} (hM : E2 𝒜 M
     (entSub 𝒜).mul_mem (eU_mem a i j) (hM i j)
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.smul_apply]`. Conclude with `(entSub 𝒜).smul_mem (hM i j) a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_two_smul (a : ℂ) {M : M2 (SlopeTestRemainingChoices S A)} (hM : E2 𝒜 M) : E2 𝒜 (a • M) := by
   intro i j
@@ -115,7 +111,7 @@ theorem eval_two_smul (a : ℂ) {M : M2 (SlopeTestRemainingChoices S A)} (hM : E
   exact (entSub 𝒜).smul_mem (hM i j) a
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.sub_apply]`. Conclude with `sub_mem (hM i j) (hN i j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_two_sub {M N : M2 (SlopeTestRemainingChoices S A)} (hM : E2 𝒜 M) (hN : E2 𝒜 N) : E2 𝒜 (M - N) := by
   intro i j
@@ -123,28 +119,28 @@ theorem eval_two_sub {M N : M2 (SlopeTestRemainingChoices S A)} (hM : E2 𝒜 M)
   exact sub_mem (hM i j) (hN i j)
 
 /- English proof (translation)
-Introduce `i j`. Conclude with `eU_mem a j i`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem permutation_entries_mem (a : S) : E2 𝒜 (P0 a : M2 (SlopeTestRemainingChoices S A)) := by
   intro i j
   exact eU_mem a j i
 
 /- English proof (translation)
-Introduce `i j`. Conclude with `eU_mem a i j`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem permutation_left_entries_mem (a : S) : E2 𝒜 (Q0 a : M2 (SlopeTestRemainingChoices S A)) := by
   intro i j
   exact eU_mem a i j
 
 /- English proof (translation)
-Unfold `Rh0`. Conclude with `eval_two_smul _ (eval_two_sub (eval_two_smul _ entries_mem_one) (permutation_entries_mem a))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem reflection_entries_mem (a : S) (D : ℂ) : E2 𝒜 (Rh0 (K := ℂ) a D : M2 (SlopeTestRemainingChoices S A)) := by
   unfold Rh0
   exact eval_two_smul _ (eval_two_sub (eval_two_smul _ entries_mem_one) (permutation_entries_mem a))
 
 /- English proof (translation)
-Unfold `Rht0`. Conclude with `eval_two_smul _ (eval_two_sub (eval_two_smul _ entries_mem_one) (permutation_left_entries_mem b))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem reflection_transpose_entries_mem (b : S) (D : ℂ) : E2 𝒜 (Rht0 (K := ℂ) b D : M2 (SlopeTestRemainingChoices S A)) := by
   unfold Rht0
@@ -160,14 +156,14 @@ def Cl (𝒜 : StarSubalgebra ℂ A) (st : Start A) (f : FrameData S A) : Prop :
     (∀ Y ∈ st.inv, star Y = Y → f.xi Y ∈ entSub 𝒜)
 
 /- English proof (translation)
-Unfold `io`. Rewrite using `[← map_mul, L.GGi_GG, map_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem io_one_mul (L : LevelData A r) : (io L.GGi : SlopeTestRemainingChoices S A) * io L.GG = 1 := by
   unfold io
   rw [← map_mul, L.GGi_GG, map_one]
 
 /- English proof (translation)
-Rewrite using `[hf.frame_l Y h0 h1, mul_assoc _ f.F f.Fi, hf.F_Fi, mul_one]`. Establish `e1 : (io L.GGi : SlopeTestRemainingChoices S A) * io L.GG = 1` using `io_one_mul L`. Establish `e2` using `(hf.x_xi Y h0).2`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem l_eq (L : LevelData A r) (f : FrameData S A) (hf : IsFrame L f) {Y : ℂ} (h0 : Y ∈ f.inv)
     (h1 : Y + 1 ∈ f.inv) : f.l L Y = f.xi Y * io L.GGi * (f.F * f.TT Y 1 0 * f.Fi) := by
@@ -179,7 +175,7 @@ theorem l_eq (L : LevelData A r) (f : FrameData S A) (hf : IsFrame L f) {Y : ℂ
     _ = f.xi Y * io L.GGi * (io L.GG * f.x Y * f.l L Y) := by simp only [mul_assoc]
 
 /- English proof (translation)
-Conclude with `⟨io_mem (hz _ (by simp [zfns])), io_mem (hz _ (by simp [zfns])), io_mem (hz _ (by simp [zfns])), io_mem (hz _ (by simp [zfns])), io_mem (hz _ (by simp [zfns])), io_mem (hz _ (by simp [zfns]))⟩`.
+Supply the required witnesses or components.
 -/
 theorem zfn_mem (L : LevelData A r) (hz : ∀ g ∈ zfns L, g ∈ 𝒜) :
     (io L.ζ : SlopeTestRemainingChoices S A) ∈ entSub 𝒜 ∧ (io L.ζi : SlopeTestRemainingChoices S A) ∈ entSub 𝒜 ∧ (io L.ζb : SlopeTestRemainingChoices S A) ∈ entSub 𝒜 ∧
@@ -187,7 +183,7 @@ theorem zfn_mem (L : LevelData A r) (hz : ∀ g ∈ zfns L, g ∈ 𝒜) :
   exact ⟨io_mem (hz _ (by simp [zfns])), io_mem (hz _ (by simp [zfns])), io_mem (hz _ (by simp [zfns])), io_mem (hz _ (by simp [zfns])), io_mem (hz _ (by simp [zfns])), io_mem (hz _ (by simp [zfns]))⟩
 
 /- English proof (translation)
-Rewrite using `[l_eq L f hf h0 h1]`. Establish `hT` using `hC.2.2.2.2.1 Y hY 1 0`. Establish `hG` using `(zfn_mem (S := S) (𝒜 := 𝒜) L hz).2.2.2.2.2`. Conclude with `(entSub 𝒜).mul_mem ((entSub 𝒜).mul_mem (hC.2.2.2.2.2.2 Y hYs hY) hG) ((entSub 𝒜).mul_mem ((entSub 𝒜).mul_mem hC.1 hT) hC.2.1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem l_mem (L : LevelData A r) (st : Start A) (f : FrameData S A) (hf : IsFrame L f) (hC : Cl 𝒜 st f)
     (hz : ∀ g ∈ zfns L, g ∈ 𝒜) {Y : ℂ} (hY : star Y = Y) (hYs : Y ∈ st.inv) (h0 : Y ∈ f.inv)
@@ -199,41 +195,39 @@ theorem l_mem (L : LevelData A r) (st : Start A) (f : FrameData S A) (hf : IsFra
     ((entSub 𝒜).mul_mem ((entSub 𝒜).mul_mem hC.1 hT) hC.2.1)
 
 /- English proof (translation)
-Conclude with `io_mem (𝒜.mul_mem (𝒜.mul_mem (hz _ (by simp [zfns])) (hz _ (by simp [zfns]))) (hz _ (by simp [zfns])))`.
+A detailed English derivation is pending.
 -/
 theorem wt_mem (L : LevelData A r) (hz : ∀ g ∈ zfns L, g ∈ 𝒜) : (wt L : SlopeTestRemainingChoices S A) ∈ entSub 𝒜 := by
   exact io_mem (𝒜.mul_mem (𝒜.mul_mem (hz _ (by simp [zfns])) (hz _ (by simp [zfns]))) (hz _ (by simp [zfns])))
 
 /- English proof (translation)
-Conclude with `io_mem (𝒜.mul_mem (𝒜.mul_mem (hz _ (by simp [zfns])) (hz _ (by simp [zfns]))) (hz _ (by simp [zfns])))`.
+A detailed English derivation is pending.
 -/
 theorem wti_mem (L : LevelData A r) (hz : ∀ g ∈ zfns L, g ∈ 𝒜) : (wti L : SlopeTestRemainingChoices S A) ∈ entSub 𝒜 := by
   exact io_mem (𝒜.mul_mem (𝒜.mul_mem (hz _ (by simp [zfns])) (hz _ (by simp [zfns]))) (hz _ (by simp [zfns])))
 
 /- English proof (translation)
-Conclude with `(entSub 𝒜).mul_mem (pow_mem (wt_mem L hz) _) hC.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem d_mem (L : LevelData A r) (st : Start A) (f : FrameData S A) (hC : Cl 𝒜 st f)
     (hz : ∀ g ∈ zfns L, g ∈ 𝒜) : f.d L ∈ entSub 𝒜 := by
   exact (entSub 𝒜).mul_mem (pow_mem (wt_mem L hz) _) hC.2.2.1
 
 /- English proof (translation)
-Conclude with `(entSub 𝒜).mul_mem hC.2.2.2.1 (pow_mem (wti_mem L hz) _)`.
+A detailed English derivation is pending.
 -/
 theorem di_mem (L : LevelData A r) (st : Start A) (f : FrameData S A) (hC : Cl 𝒜 st f)
     (hz : ∀ g ∈ zfns L, g ∈ 𝒜) : f.di L ∈ entSub 𝒜 := by
   exact (entSub 𝒜).mul_mem hC.2.2.2.1 (pow_mem (wti_mem L hz) _)
 
 /- English proof (translation)
-Conclude with `(entSub 𝒜).smul_mem (entSub 𝒜).one_mem a`.
+A detailed English derivation is pending.
 -/
 theorem scal_mem (a : ℂ) : (a • (1 : SlopeTestRemainingChoices S A)) ∈ entSub 𝒜 := by
   exact (entSub 𝒜).smul_mem (entSub 𝒜).one_mem a
 
 /- English proof (translation)
-Use `⟨(entSub 𝒜).one_mem, (entSub 𝒜).one_mem, (entSub 𝒜).one_mem, (entSub 𝒜).one_mem, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `Y hY i j`. Conclude with `io_mem (hg.2.1 Y hY i j)`. Introduce `Y hY`. Conclude with `io_mem (hg.2.2.1 Y hY)`.
-
-Introduce `Y hYs hY`. Conclude with `io_mem (hg.2.2.2 Y hYs hY)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cl_start (L : LevelData A r) (st : Start A) (hg : Gens 𝒜 L st) : Cl 𝒜 st (st.frame : FrameData S A) := by
   refine ⟨(entSub 𝒜).one_mem, (entSub 𝒜).one_mem, (entSub 𝒜).one_mem, (entSub 𝒜).one_mem, ?_, ?_, ?_⟩
@@ -245,13 +239,9 @@ theorem cl_start (L : LevelData A r) (st : Start A) (hg : Gens 𝒜 L st) : Cl �
     exact io_mem (hg.2.2.2 Y hYs hY)
 
 /- English proof (translation)
-Establish `hl` using `l_mem L st f hf hC hz hY hYs h0 h1`. Take `⟨hz1, hz2, hz3, hz4, hz5, hz6⟩` from `zfn_mem (S := S) (𝒜 := 𝒜) L hz`. Establish `h0m : (0 : SlopeTestRemainingChoices S A) ∈ entSub 𝒜` using `(entSub 𝒜).zero_mem`. Establish `h1m : (1 : SlopeTestRemainingChoices S A) ∈ entSub 𝒜` using `(entSub 𝒜).one_mem`. Establish `hY1 : star (Ya + 1) = Ya + 1` using `by simp [hY]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(entSub 𝒜).mul_mem (ins_mem a (entries_mem_mul (entries_mem_of_four hz2 h0m h0m hz4) (entries_mem_of_four h1m h0m ((entSub 𝒜).mul_mem hz5 hl) hz5))) hC.1`. Conclude with `(entSub 𝒜).mul_mem hC.2.1 (ins_mem a (entries_mem_mul (entries_mem_of_four h1m h0m (neg_mem hl) hz6) (entries_mem_of_four hz1 h0m h0m hz3)))`. Conclude with `(entSub 𝒜).mul_mem hC.2.2.1 (ins_mem a (entries_mem_of_four ((entSub 𝒜).smul_mem (hC.2.2.2.2.2.2 (Ya + 1) hY1s hY1) _) h0m h0m (hC.2.2.2.2.2.1 Ya hY)))`. Conclude with `(entSub 𝒜).mul_mem hC.2.2.2.1 (ins_mem a (entries_mem_of_four ((entSub 𝒜).smul_mem (hC.2.2.2.2.2.1 (Ya + 1) hY1) _) h0m h0m (hC.2.2.2.2.2.2 Ya hYs hY)))`.
-
-Introduce `Y hYr`. Conclude with `entries_mem_mul (hC.2.2.2.2.1 Y hYr) (reflection_entries_mem a (Y - Ya))`. Introduce `Y hYr`. Conclude with `(entSub 𝒜).mul_mem (hC.2.2.2.2.2.1 Y hYr) (ins_mem a (entries_mem_of_four (scal_mem _) h0m h0m h1m))`. Introduce `Y hYs' hYr`.
-
-Conclude with `(entSub 𝒜).mul_mem (hC.2.2.2.2.2.2 Y hYs' hYr) (ins_mem a (entries_mem_of_four (scal_mem _) h0m h0m h1m))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cl_plus (L : LevelData A r) (st : Start A) (f : FrameData S A) (hf : IsFrame L f) (hC : Cl 𝒜 st f)
     (hz : ∀ g ∈ zfns L, g ∈ 𝒜) (a : S) {Ya : ℂ} (hY : star Ya = Ya) (hYs : Ya ∈ st.inv) (hY1s : Ya + 1 ∈ st.inv)
@@ -278,13 +268,11 @@ theorem cl_plus (L : LevelData A r) (st : Start A) (f : FrameData S A) (hf : IsF
     exact (entSub 𝒜).mul_mem (hC.2.2.2.2.2.2 Y hYs' hYr) (ins_mem a (entries_mem_of_four (scal_mem _) h0m h0m h1m))
 
 /- English proof (translation)
-Establish `hY1 : star (Yb - 1) = Yb - 1` using `by simp [hY]`. Establish `hl` using `l_mem L st f hf hC hz hY1 hYm1s hm1 (by rw [sub_add_cancel]; exact h0)`. Establish `hm : f.m L Yb ∈ entSub 𝒜` using `(entSub 𝒜).mul_mem ((entSub 𝒜).mul_mem (di_mem L st f hC hz) (star_mem_entSub hl)) (d_mem L st f hC hz)`. Take `⟨hz1, hz2, hz3, hz4, hz5, hz6⟩` from `zfn_mem (S := S) (𝒜 := 𝒜) L hz`. Establish `h0m : (0 : SlopeTestRemainingChoices S A) ∈ entSub 𝒜` using `(entSub 𝒜).zero_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1m : (1 : SlopeTestRemainingChoices S A) ∈ entSub 𝒜` using `(entSub 𝒜).one_mem`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(entSub 𝒜).mul_mem (ins_mem b (entries_mem_mul (entries_mem_of_four hz4 h0m h0m hz2) (entries_mem_of_four h1m h0m ((entSub 𝒜).mul_mem hz5 hm) hz5))) hC.1`. Conclude with `(entSub 𝒜).mul_mem hC.2.1 (ins_mem b (entries_mem_mul (entries_mem_of_four h1m h0m (neg_mem hm) hz6) (entries_mem_of_four hz3 h0m h0m hz1)))`. Conclude with `(entSub 𝒜).mul_mem hC.2.2.1 (ins_mem b (entries_mem_of_four ((entSub 𝒜).smul_mem (hC.2.2.2.2.2.2 (Yb - 1) hYm1s hY1) _) h0m h0m (hC.2.2.2.2.2.1 Yb hY)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(entSub 𝒜).mul_mem hC.2.2.2.1 (ins_mem b (entries_mem_of_four ((entSub 𝒜).smul_mem (hC.2.2.2.2.2.1 (Yb - 1) hY1) _) h0m h0m (hC.2.2.2.2.2.2 Yb hYs hY)))`. Introduce `Y hYr`. Conclude with `entries_mem_mul (reflection_transpose_entries_mem b (Yb - Y)) (hC.2.2.2.2.1 Y hYr)`. Introduce `Y hYr`. Conclude with `(entSub 𝒜).mul_mem (hC.2.2.2.2.2.1 Y hYr) (ins_mem b (entries_mem_of_four (scal_mem _) h0m h0m h1m))`.
-
-Introduce `Y hYs' hYr`. Conclude with `(entSub 𝒜).mul_mem (hC.2.2.2.2.2.2 Y hYs' hYr) (ins_mem b (entries_mem_of_four (scal_mem _) h0m h0m h1m))`.
+A detailed English derivation is pending.
 -/
 theorem cl_minus (L : LevelData A r) (st : Start A) (f : FrameData S A) (hf : IsFrame L f) (hC : Cl 𝒜 st f)
     (hz : ∀ g ∈ zfns L, g ∈ 𝒜) (b : S) {Yb : ℂ} (hY : star Yb = Yb) (hYs : Yb ∈ st.inv)
@@ -313,13 +301,13 @@ theorem cl_minus (L : LevelData A r) (st : Start A) (f : FrameData S A) (hf : Is
     exact (entSub 𝒜).mul_mem (hC.2.2.2.2.2.2 Y hYs' hYr) (ins_mem b (entries_mem_of_four (scal_mem _) h0m h0m h1m))
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact cl_start L st hg`. Consider the case `cons l w ih`. Take `⟨hnd, hst', hinv, hpw⟩` from `hA`. Rewrite `hnd` using `[List.map_cons, List.nodup_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpw'` using `List.pairwise_cons.mp hpw`. Establish `hA' : admitted st w` using `⟨hnd.2, fun l' hl' => hst' l' (by simp [hl']), fun l' hl' => hinv l' (by simp [hl']), hpw'.2⟩`. Establish `hC` using `ih hA'`. Establish `hf` using `Formalism.FourierDecayAlt.P.frame_of_admissible_word A S r L st w hL hst hA'`. Take `⟨hp0, hp1, hpm1, -, -⟩` from `hinv l (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hreal` using `hst' l (by simp)`. Establish `hd : ∀ l' ∈ w, ∀ n : ℤ, |n| ≤ 2 → l.pt - l'.pt ≠ (n : ℂ)` using `hpw'.1`. Establish `hz : ∀ g ∈ zfns L, g ∈ 𝒜` using `hg.1`. Establish `i0 : l.pt ∈ (ofWord L st w).inv` using `Formalism.FourierDecayAlt.P.Fr2.mem_inv L st w _ hp0 fun l' hl' => ⟨fun h => hd l' hl' (0) (by norm_num) (by push_cast; linear_combination h), fun h => hd l' hl' (1) (by norm_num) (by push_cast; linear_combination h), fun h => hd l' hl' (-1) (by norm_num) (by push_cast; linear_co …`. Establish `i1 : l.pt + 1 ∈ (ofWord L st w).inv` using `Formalism.FourierDecayAlt.P.Fr2.mem_inv L st w _ hp1 fun l' hl' => ⟨fun h => hd l' hl' (-1) (by norm_num) (by push_cast; linear_combination h), fun h => hd l' hl' (0) (by norm_num) (by push_cast; linear_combination h), fun h => hd l' hl' (-2) (by norm_num) (by push_cast; linear_c …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `im : l.pt - 1 ∈ (ofWord L st w).inv` using `Formalism.FourierDecayAlt.P.Fr2.mem_inv L st w _ hpm1 fun l' hl' => ⟨fun h => hd l' hl' (1) (by norm_num) (by push_cast; linear_combination h), fun h => hd l' hl' (2) (by norm_num) (by push_cast; linear_combination h), fun h => hd l' hl' (0) (by norm_num) (by push_cast; linear_co …`. Simplify using `only [ofWord]`. Use `split_ifs`. Conclude with `cl_plus L st _ hf hC hz l.intersection_update_fsHerm_neg_one hreal hp0 hp1 i0 i1`. Conclude with `cl_minus L st _ hf hC hz l.intersection_update_fsHerm_neg_one hreal hp0 hpm1 i0 im`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cl_ofWord (L : LevelData A r) (st : Start A) (hL : IsStarLevel L) (hst : IsLevelStart L st)
     (hg : Gens 𝒜 L st) (w : List (Letter ℂ S)) (hA : admitted st w) : Cl 𝒜 st (ofWord L st w) := by
@@ -349,7 +337,7 @@ theorem cl_ofWord (L : LevelData A r) (st : Start A) (hL : IsStarLevel L) (hst :
     · exact cl_minus L st _ hf hC hz l.intersection_update_fsHerm_neg_one hreal hp0 hpm1 i0 im
 
 /- English proof (translation)
-Establish `hC` using `cl_ofWord L st hL hst hg w hA`. Conclude with `⟨hC.1 e e', d_mem L st _ hC hg.1 e e'⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem frameAlg (L : LevelData A r) (st : Start A) (hL : IsStarLevel L) (hst : IsLevelStart L st)
     (hg : Gens 𝒜 L st) (w : List (Letter ℂ S)) (hA : admitted st w) (e e' : Ix S) :
@@ -365,7 +353,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Conclude with `adjTop_of_adjAlg P z z' π π' μ L st K l0 U hU hK fun w hw e e' => frameAlg L st hD.2.2.2.2.2.2.1 hD.2.2.2.2.2.2.2 hg w hw.1 e e'`.
+A detailed English derivation is pending.
 -/
 theorem adjTop_of_gens (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π') (μ : Measure (Mt P.k P.r))

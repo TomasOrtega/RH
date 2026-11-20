@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.Spread
 
 /- English proof (translation)
-Simplify using the standard rewrite rules. Use `first`. Consider the case `(simp only [pullback.lift_fst]; rw [← Category.assoc, ← pullback.condition, Category.comp_id])`. Consider the case `(erw [pullback.lift_fst]; rw [← Category.assoc, ← pullback.condition, Category.comp_id])`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eta_pullback_fst {S S' : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] (j : S' ⟶ S)
     [IsCommMonObj ((Over.pullback j).obj G)] :
@@ -29,16 +29,14 @@ theorem eta_pullback_fst {S S' : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonO
   | (erw [pullback.lift_fst]; rw [← Category.assoc, ← pullback.condition, Category.comp_id])
 
 /- English proof (translation)
-Simplify using `using Over.w η[G]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eta_left_hom {S : Scheme.{0}} (G : Over S) [GrpObj G] :
     η[G].left ≫ G.hom = 𝟙 _ := by
   simpa using Over.w η[G]
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `Ideal.exists_maximal C`. Use `letI : Field (C ⧸ m) := Ideal.Quotient.field m`. Use `haveI : Algebra.FiniteType k (C ⧸ m) := Algebra.FiniteType.trans (S := C) inferInstance inferInstance`. Use `haveI : Module.Finite k (C ⧸ m) := finite_of_finite_type_of_isJacobsonRing k (C ⧸ m)`. Set `e : k ≃ₐ[k] (C ⧸ m)` to `AlgEquiv.ofBijective (Algebra.ofId k (C ⧸ m)) IsAlgClosed.algebraMap_bijective_of_isIntegral`.
-
-Conclude with `⟨e.symm.toAlgHom.comp (Ideal.Quotient.mkₐ k m)⟩`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_algHom_of_finiteType (k C : Type) [Field k] [IsAlgClosed k] [CommRing C] [Nontrivial C]
     [Algebra k C] [Algebra.FiniteType k C] : Nonempty (C →ₐ[k] k) := by
@@ -51,9 +49,9 @@ theorem nonempty_algHom_of_finiteType (k C : Type) [Field k] [IsAlgClosed k] [Co
   exact ⟨e.symm.toAlgHom.comp (Ideal.Quotient.mkₐ k m)⟩
 
 /- English proof (translation)
-Simplify using the standard rewrite rules. Use `erw [pullback.lift_fst]`. Rewrite using `[← Category.assoc]`. Use `congr 1`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rw [Category.assoc] erw [Over.μ_pullback_left_fst_fst, pullback.lift_fst] try rfl`. Apply the tactic sequence `rw [Category.assoc] erw [Over.μ_pullback_left_fst_snd, pullback.lift_snd] try rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pullback_mu_fst_eq {S S' : Scheme.{0}} (G : Over S) [GrpObj G] (j : S' ⟶ S) :
     μ[(Over.pullback j).obj G].left ≫ pullback.fst G.hom j =
@@ -77,7 +75,7 @@ private theorem pullback_mu_fst_eq {S S' : Scheme.{0}} (G : Over S) [GrpObj G] (
     try rfl
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, GlobalTheory.ActDescent.pullback_map_left_fst, bcMap_fst_assoc, bcMap_fst]`. Establish `e1 : ((Over.pullback (spMap (algebraMap k₀ R))).map u).left ≫ pullback.snd Y.hom _ = pullback.snd X.hom _` using `Over.w _`. Establish `e2 : ((Over.pullback (spMap (algebraMap k₀ K))).map u).left ≫ pullback.snd Y.hom _ = pullback.snd X.hom _` using `Over.w _`. Rewrite using `[Category.assoc, e1, Category.assoc, bcMap_snd, bcMap_snd, ← Category.assoc, e2]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem bcMap_comp_pullback_map {k₀ K : Type} [Field k₀] [Field K] [Algebra k₀ K] (R : Subalgebra k₀ K)
     {X Y : Over (Sp k₀)} (u : X ⟶ Y) :
@@ -94,75 +92,65 @@ private theorem bcMap_comp_pullback_map {k₀ K : Type} [Field k₀] [Field K] [
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `k₀ K _ _ _ _ B _ hB f hf`. Establish `: IsCommMonObj B` using `hB.comm`. Establish `: Smooth B.hom` using `hB.smooth`. Establish `: IsProper B.hom` using `hB.proper`. Establish `hw : f.left ≫ pullback.snd B.hom (spMap (algebraMap k₀ K)) = pullback.snd _ _` using `Over.w f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ : (f.left ≫ pullback.fst B.hom (spMap (algebraMap k₀ K))) ≫ B.hom = pullback.fst B.hom (spMap (algebraMap k₀ K)) ≫ B.hom`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hw]`. Take `⟨R, ψ, hRfg, hψ1, hψ2⟩` from `exists_fg_comp_eq B.hom B.hom (f.left ≫ pullback.fst B.hom (spMap (algebraMap k₀ K))) hφ`. Establish `hcond : ψ ≫ B.hom = pullback.snd B.hom (spMap (algebraMap k₀ R)) ≫ spMap (algebraMap k₀ R)`. Rewrite using `[hψ1, pullback.condition]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `Ψl : pullback B.hom (spMap (algebraMap k₀ R)) ⟶ pullback B.hom (spMap (algebraMap k₀ R))` to `pullback.lift ψ (pullback.snd _ _) hcond`. Establish `hΨfst : Ψl ≫ pullback.fst _ _ = ψ` using `pullback.lift_fst _ _ _`. Establish `hΨsnd : Ψl ≫ pullback.snd _ _ = pullback.snd _ _` using `pullback.lift_snd _ _ _`. Set `Ψ : (Over.pullback (spMap (algebraMap k₀ R))).obj B ⟶ (Over.pullback (spMap (algebraMap k₀ R))).obj B` to `Over.homMk Ψl hΨsnd`. Use `haveI : Algebra.FiniteType k₀ R := (Subalgebra.fg_iff_finiteType R).mp hRfg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨g⟩` from `nonempty_algHom_of_finiteType k₀ R`. Establish `hgc : spMap g.toRingHom ≫ spMap (algebraMap k₀ R) = 𝟙 _` using `by first`. Consider the case `(rw [spMap_algHom_comp, Algebra.algebraMap_self]; simp [spMap])`. Consider the case `(rw [spMap_algHom_comp]; simp [spMap])`. Set `σ : B.left ⟶ pullback B.hom (spMap (algebraMap k₀ R))` to `pullback.lift (𝟙 _) (B.hom ≫ spMap g.toRingHom) (by rw [Category.id_comp, Category.assoc, hgc, Category.comp_id])`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hσfst : σ ≫ pullback.fst _ _ = 𝟙 _` using `pullback.lift_fst _ _ _`. Establish `hσsnd : σ ≫ pullback.snd _ _ = B.hom ≫ spMap g.toRingHom` using `pullback.lift_snd _ _ _`. Establish `hf0w : (σ ≫ Ψl ≫ pullback.fst _ _) ≫ B.hom = B.hom`. Rewrite using `[hΨfst, Category.assoc, hψ1, ← Category.assoc, hσfst, Category.id_comp]`. Set `f₀ : B ⟶ B` to `Over.homMk (σ ≫ Ψl ≫ pullback.fst _ _) hf0w`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hηR : η[(Over.pullback (spMap (algebraMap k₀ R))).obj B].left ≫ pullback.fst B.hom _ = spMap (algebraMap k₀ R) ≫ η[B].left` using `eta_pullback_fst B _`. Establish `hηK : η[(Over.pullback (spMap (algebraMap k₀ K))).obj B].left ≫ pullback.fst B.hom _ = spMap (algebraMap k₀ K) ≫ η[B].left` using `eta_pullback_fst B _`. Establish `hηRs : η[(Over.pullback (spMap (algebraMap k₀ R))).obj B].left ≫ pullback.snd B.hom _ = 𝟙 (Sp R)` using `Over.w η[(Over.pullback (spMap (algebraMap k₀ R))).obj B]`. Establish `hηKs : η[(Over.pullback (spMap (algebraMap k₀ K))).obj B].left ≫ pullback.snd B.hom _ = 𝟙 (Sp K)` using `Over.w η[(Over.pullback (spMap (algebraMap k₀ K))).obj B]`. Establish `hbcη : spMap R.val.toRingHom ≫ η[(Over.pullback (spMap (algebraMap k₀ R))).obj B].left = η[(Over.pullback (spMap (algebraMap k₀ K))).obj B].left ≫ bcMap B.hom R.val`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hηR, Category.assoc, bcMap_fst, hηK, ← Category.assoc, spMap_algHom_comp]`. Rewrite using `[Category.assoc, hηRs, Category.comp_id, Category.assoc, bcMap_snd, ← Category.assoc, hηKs, Category.id_comp]`. Establish `hfη : η[(Over.pullback (spMap (algebraMap k₀ K))).obj B].left ≫ f.left = η[(Over.pullback (spMap (algebraMap k₀ K))).obj B].left`. Rewrite using `[← Over.comp_left, IsMonHom.one_hom f]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective R.val.toRingHom` using `Subtype.val_injective`. Establish `hone : η[(Over.pullback (spMap (algebraMap k₀ R))).obj B].left ≫ ψ = η[(Over.pullback (spMap (algebraMap k₀ R))).obj B].left ≫ pullback.fst _ _`. Apply `point_ext R.val.toRingHom hinj B.hom` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hψ1]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, hbcη, Category.assoc]`. Use `_ = η[(Over.pullback (spMap (algebraMap k₀ K))).obj B].left ≫ f.left ≫ pullback.fst _ _ := by`. Rewrite using `[hψ2]`. Use `_ = η[(Over.pullback (spMap (algebraMap k₀ K))).obj B].left ≫ pullback.fst _ _ := by`. Rewrite using `[← Category.assoc, hfη]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `_ = spMap R.val.toRingHom ≫ η[(Over.pullback (spMap (algebraMap k₀ R))).obj B].left ≫ pullback.fst _ _ := by`. Rewrite using `[← Category.assoc, hbcη, Category.assoc, bcMap_fst]`. Establish `hΨone : η[(Over.pullback (spMap (algebraMap k₀ R))).obj B] ≫ Ψ = η[(Over.pullback (spMap (algebraMap k₀ R))).obj B]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (η[(Over.pullback (spMap (algebraMap k₀ R))).obj B].left ≫ Ψl) ≫ _ = _`. Rewrite using `[Category.assoc, hΨfst, hone]`. Use `show (η[(Over.pullback (spMap (algebraMap k₀ R))).obj B].left ≫ Ψl) ≫ _ = _`. Rewrite using `[Category.assoc, hΨsnd]`. Establish `hbcμ` using `bcMap_comp_pullback_map R μ[B]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `hbcfst` using `bcMap_comp_pullback_map R (fst B B)`. Establish `hbcsnd` using `bcMap_comp_pullback_map R (snd B B)`. Establish `hδμR : (Functor.OplaxMonoidal.δ (Over.pullback (spMap (algebraMap k₀ R))) B B).left ≫ μ[((Over.pullback (spMap (algebraMap k₀ R))).obj B)].left = ((Over.pullback (spMap (algebraMap k₀ R))).map μ[B]).left`. Rewrite using `[← Over.comp_left]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hδμK : (Functor.OplaxMonoidal.δ (Over.pullback (spMap (algebraMap k₀ K))) B B).left ≫ μ[((Over.pullback (spMap (algebraMap k₀ K))).obj B)].left = ((Over.pullback (spMap (algebraMap k₀ K))).map μ[B]).left`. Rewrite using `[← Over.comp_left]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hδfR : (Functor.OplaxMonoidal.δ (Over.pullback (spMap (algebraMap k₀ R))) B B).left ≫ (fst ((Over.pullback (spMap (algebraMap k₀ R))).obj B) ((Over.pullback (spMap (algebraMap k₀ R))).obj B)).left = ((Over.pullback (spMap (algebraMap k₀ R))).map (fst B B)).left`. Rewrite using `[← Over.comp_left, Functor.OplaxMonoidal.δ_fst]`. Establish `hδsR : (Functor.OplaxMonoidal.δ (Over.pullback (spMap (algebraMap k₀ R))) B B).left ≫ (snd ((Over.pullback (spMap (algebraMap k₀ R))).obj B) ((Over.pullback (spMap (algebraMap k₀ R))).obj B)).left = ((Over.pullback (spMap (algebraMap k₀ R))).map (snd B B)).left`. Rewrite using `[← Over.comp_left, Functor.OplaxMonoidal.δ_snd]`. Establish `hδfK : (Functor.OplaxMonoidal.δ (Over.pullback (spMap (algebraMap k₀ K))) B B).left ≫ (fst ((Over.pullback (spMap (algebraMap k₀ K))).obj B) ((Over.pullback (spMap (algebraMap k₀ K))).obj B)).left = ((Over.pullback (spMap (algebraMap k₀ K))).map (fst B B)).left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, Functor.OplaxMonoidal.δ_fst]`. Establish `hδsK : (Functor.OplaxMonoidal.δ (Over.pullback (spMap (algebraMap k₀ K))) B B).left ≫ (snd ((Over.pullback (spMap (algebraMap k₀ K))).obj B) ((Over.pullback (spMap (algebraMap k₀ K))).obj B)).left = ((Over.pullback (spMap (algebraMap k₀ K))).map (snd B B)).left`. Rewrite using `[← Over.comp_left, Functor.OplaxMonoidal.δ_snd]`. Establish `hffst : (f ⊗ₘ f).left ≫ (fst ((Over.pullback (spMap (algebraMap k₀ K))).obj B) ((Over.pullback (spMap (algebraMap k₀ K))).obj B)).left = (fst ((Over.pullback (spMap (algebraMap k₀ K))).obj B) ((Over.pullback (spMap (algebraMap k₀ K))).obj B)).left ≫ f.left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, tensorHom_fst]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfsnd : (f ⊗ₘ f).left ≫ (snd ((Over.pullback (spMap (algebraMap k₀ K))).obj B) ((Over.pullback (spMap (algebraMap k₀ K))).obj B)).left = (snd ((Over.pullback (spMap (algebraMap k₀ K))).obj B) ((Over.pullback (spMap (algebraMap k₀ K))).obj B)).left ≫ f.left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, tensorHom_snd]`. Establish `hfμ : μ[((Over.pullback (spMap (algebraMap k₀ K))).obj B)].left ≫ f.left = (f ⊗ₘ f).left ≫ μ[((Over.pullback (spMap (algebraMap k₀ K))).obj B)].left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, IsMonHom.mul_hom f]`. Establish `hLc : ((fst ((Over.pullback (spMap (algebraMap k₀ R))).obj B) ((Over.pullback (spMap (algebraMap k₀ R))).obj B)).left ≫ ψ) ≫ B.hom = ((snd ((Over.pullback (spMap (algebraMap k₀ R))).obj B) ((Over.pullback (spMap (algebraMap k₀ R))).obj B)).left ≫ ψ) ≫ B.hom`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, Category.assoc, hψ1, pullback.condition, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Conclude with `(Over.w (fst ((Over.pullback (spMap (algebraMap k₀ R))).obj B) ((Over.pullback (spMap (algebraMap k₀ R))).obj B))).trans (Over.w (snd ((Over.pullback (spMap (algebraMap k₀ R))).obj B) ((Over.pullback (spMap (algebraMap k₀ R))).obj B))).symm`. Establish `hμψ : μ[((Over.pullback (spMap (algebraMap k₀ R))).obj B)].left ≫ ψ = pullback.lift ((fst ((Over.pullback (spMap (algebraMap k₀ R))).obj B) ((Over.pullback (spMap (algebraMap k₀ R))).obj B)).left ≫ ψ) ((snd ((Over.pullback (spMap (algebraMap k₀ R))).obj B) ((Over.pullback (spMap …` using `by haveI : IsIso (Functor.OplaxMonoidal.δ (Over.pullback (spMap (algebraMap k₀ R))) B B).left := (inferInstance : IsIso ((Over.forget _).map (Functor.OplaxMonoidal.δ (Over.pullback (spMap (algebraMap k₀ R))) B B)))`. Rewrite using `[← cancel_epi (Functor.OplaxMonoidal.δ (Over.pullback (spMap (algebraMap k₀ R))) B B).left, ← Category.assoc, hδμR]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hom_ext_bcMap (B ⊗ B).hom R.val hinj B.hom` to reduce the goal to its premises. Establish `e1 : ((Over.pullback (spMap (algebraMap k₀ R))).map μ[B]).left ≫ pullback.snd B.hom (spMap (algebraMap k₀ R)) = pullback.snd (B ⊗ B).hom (spMap (algebraMap k₀ R))` using `Over.w _`. Establish `e2 : μ[B].left ≫ B.hom = pullback.fst B.hom B.hom ≫ B.hom` using `Over.w μ[B]`. Establish `e3 : (Functor.OplaxMonoidal.δ (Over.pullback (spMap (algebraMap k₀ R))) B B).left ≫ (fst ((Over.pullback (spMap (algebraMap k₀ R))).obj B) ((Over.pullback (spMap (algebraMap k₀ R))).obj B)).left ≫ pullback.snd B.hom (spMap (algebraMap k₀ R)) = pullback.snd (B ⊗ B).hom (spMap (alg …`. Rewrite using `[← Category.assoc, hδfR]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Over.w _`. Rewrite using `[Category.assoc, hcond, ← Category.assoc, e1, Category.assoc, Category.assoc, e2]`. Use `erw [pullback.lift_fst_assoc]`. Rewrite using `[Category.assoc, hcond, ← Category.assoc, ← Category.assoc, Category.assoc _ _ (pullback.snd _ _), e3]`. Apply the tactic sequence `try simp only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[reassoc_of% hbcμ, hψ2, ← hδμK]`. Apply the tactic sequence `try simp only [Category.assoc]`. Rewrite using `[reassoc_of% hfμ, pullback_mu_fst_eq]`. Apply the tactic sequence `try simp only [← Category.assoc]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Apply the tactic sequence `try simp only [Category.assoc] erw [pullback.lift_fst, pullback.lift_fst]`. Rewrite using `[reassoc_of% hffst, reassoc_of% hδfK, reassoc_of% hδfR, reassoc_of% hbcfst, hψ2]`. Apply the tactic sequence `try simp only [Category.assoc] erw [pullback.lift_snd, pullback.lift_snd]`. Rewrite using `[reassoc_of% hfsnd, reassoc_of% hδsK, reassoc_of% hδsR, reassoc_of% hbcsnd, hψ2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΨmul : μ[((Over.pullback (spMap (algebraMap k₀ R))).obj B)] ≫ Ψ = (Ψ ⊗ₘ Ψ) ≫ μ[((Over.pullback (spMap (algebraMap k₀ R))).obj B)]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show (μ[((Over.pullback (spMap (algebraMap k₀ R))).obj B)].left ≫ Ψl) ≫ _ = ((Ψ ⊗ₘ Ψ).left ≫ μ[((Over.pullback (spMap (algebraMap k₀ R))).obj B)].left) ≫ _`. Rewrite using `[Category.assoc, hΨfst, hμψ, Category.assoc, pullback_mu_fst_eq, ← Category.assoc (Ψ ⊗ₘ Ψ).left]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `erw [pullback.lift_fst, Category.assoc, pullback.lift_fst]`. Rewrite using `[← Category.assoc, ← Over.comp_left, tensorHom_fst, Over.comp_left, Category.assoc]`. Use `show _ = _ ≫ Ψl ≫ _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hΨfst]`. Use `erw [pullback.lift_snd, Category.assoc, pullback.lift_snd]`. Rewrite using `[← Category.assoc, ← Over.comp_left, tensorHom_snd, Over.comp_left, Category.assoc]`. Use `show _ = _ ≫ Ψl ≫ _`. Rewrite using `[hΨfst]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Over.w (μ[((Over.pullback (spMap (algebraMap k₀ R))).obj B)] ≫ Ψ)).trans (Over.w ((Ψ ⊗ₘ Ψ) ≫ μ[((Over.pullback (spMap (algebraMap k₀ R))).obj B)])).symm`. Establish `hΨmon : IsMonHom Ψ` using `⟨hΨone, hΨmul⟩`. Use `⟨R, g, Ψ, f₀, σ, hΨmon, ?_, ?_, hσfst, hσsnd, rfl⟩` and prove the remaining obligations. Establish `hf0l : f₀.left = σ ≫ ψ` using `by show σ ≫ Ψl ≫ _ = _`. Rewrite using `[hΨfst]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hησ : η[B].left ≫ σ = spMap g.toRingHom ≫ η[((Over.pullback (spMap (algebraMap k₀ R))).obj B)].left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Apply the tactic sequence `rw [Category.assoc, hσfst, Category.comp_id, Category.assoc, hηR, ← Category.assoc, hgc] first | exact (Category.id_comp _).symm | simp`. Rewrite using `[Category.assoc, hσsnd, ← Category.assoc, eta_left_hom, Category.id_comp, Category.assoc, hηRs, Category.comp_id]`. Establish `hf0one : η[B] ≫ f₀ = η[B]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, hf0l, ← Category.assoc, hησ, Category.assoc, hone, hηR, ← Category.assoc, hgc]`. Apply the tactic sequence `first | exact Category.id_comp _ | simp`. Establish `hτc : (pullback.fst B.hom B.hom ≫ σ) ≫ pullback.snd B.hom (spMap (algebraMap k₀ R)) = (pullback.snd B.hom B.hom ≫ σ) ≫ pullback.snd B.hom (spMap (algebraMap k₀ R))`. Rewrite using `[Category.assoc, Category.assoc, hσsnd, ← Category.assoc, ← Category.assoc, pullback.condition]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `τ : (B ⊗ B).left ⟶ (((Over.pullback (spMap (algebraMap k₀ R))).obj B) ⊗ ((Over.pullback (spMap (algebraMap k₀ R))).obj B)).left` to `pullback.lift _ _ hτc`. Establish `hτ1 : τ ≫ (fst ((Over.pullback (spMap (algebraMap k₀ R))).obj B) ((Over.pullback (spMap (algebraMap k₀ R))).obj B)).left = pullback.fst B.hom B.hom ≫ σ` using `pullback.lift_fst _ _ _`. Establish `hτ2 : τ ≫ (snd ((Over.pullback (spMap (algebraMap k₀ R))).obj B) ((Over.pullback (spMap (algebraMap k₀ R))).obj B)).left = pullback.snd B.hom B.hom ≫ σ` using `pullback.lift_snd _ _ _`. Establish `e2 : μ[B].left ≫ B.hom = pullback.fst B.hom B.hom ≫ B.hom` using `Over.w μ[B]`. Establish `e4 : μ[((Over.pullback (spMap (algebraMap k₀ R))).obj B)].left ≫ pullback.snd B.hom (spMap (algebraMap k₀ R)) = (fst ((Over.pullback (spMap (algebraMap k₀ R))).obj B) ((Over.pullback (spMap (algebraMap k₀ R))).obj B)).left ≫ pullback.snd B.hom (spMap (algebraMap k₀ R))` using `Over.w μ[((Over.pullback (spMap (algebraMap k₀ R))).obj B)]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hτl : τ ≫ pullback.lift ((fst ((Over.pullback (spMap (algebraMap k₀ R))).obj B) ((Over.pullback (spMap (algebraMap k₀ R))).obj B)).left ≫ pullback.fst B.hom (spMap (algebraMap k₀ R))) ((snd ((Over.pullback (spMap (algebraMap k₀ R))).obj B) ((Over.pullback (spMap (algebraMap k₀ R) …`. Rewrite using `[Category.assoc, Category.assoc, pullback.condition, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Conclude with `(Over.w (fst ((Over.pullback (spMap (algebraMap k₀ R))).obj B) ((Over.pullback (spMap (algebraMap k₀ R))).obj B))).trans (Over.w (snd ((Over.pullback (spMap (algebraMap k₀ R))).obj B) ((Over.pullback (spMap (algebraMap k₀ R))).obj B))).symm) = 𝟙 _ := by`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc] erw [pullback.lift_fst]`. Rewrite using `[← Category.assoc, hτ1, Category.assoc, hσfst, Category.comp_id]`. Apply the tactic sequence `first | exact (Category.id_comp _).symm | simp`. Rewrite using `[Category.assoc] erw [pullback.lift_snd]`. Rewrite using `[← Category.assoc, hτ2, Category.assoc, hσfst, Category.comp_id]`.
-
-Apply the tactic sequence `first | exact (Category.id_comp _).symm | simp`. Establish `hμσ : μ[B].left ≫ σ = τ ≫ μ[((Over.pullback (spMap (algebraMap k₀ R))).obj B)].left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Apply the tactic sequence `rw [Category.assoc, hσfst, Category.comp_id, Category.assoc, pullback_mu_fst_eq, ← Category.assoc, hτl] first | exact (Category.id_comp _).symm | simp`. Rewrite using `[Category.assoc, hσsnd, ← Category.assoc, e2, Category.assoc, Category.assoc τ, e4, ← Category.assoc τ, hτ1, Category.assoc (pullback.fst B.hom B.hom) σ, hσsnd]`.
-
-Establish `hf0fst : (f₀ ⊗ₘ f₀).left ≫ (fst B B).left = (fst B B).left ≫ f₀.left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, tensorHom_fst]`. Establish `hf0snd : (f₀ ⊗ₘ f₀).left ≫ (snd B B).left = (snd B B).left ≫ f₀.left`. Rewrite using `[← Over.comp_left, ← Over.comp_left, tensorHom_snd]`. Establish `hf0mul : μ[B] ≫ f₀ = (f₀ ⊗ₘ f₀) ≫ μ[B]`.
-
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Over.comp_left, hf0l, ← Category.assoc, hμσ, Category.assoc, hμψ, ← Category.assoc]`. Use `congr 1`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc] erw [pullback.lift_fst, hf0fst]`.
-
-Rewrite using `[← Category.assoc, hτ1, Category.assoc, hf0l]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc] erw [pullback.lift_snd, hf0snd]`. Rewrite using `[← Category.assoc, hτ2, Category.assoc, hf0l]`. Both sides reduce to the same expression.
-
-Conclude with `⟨hf0one, hf0mul⟩`. Use `show bcMap B.hom R.val ≫ Ψl ≫ _ = _`. Rewrite using `[hΨfst, hψ2]`.
+Both sides reduce to the same expression. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_endo_spread_specialise : ∀ (k₀ K : Type) [Field k₀] [IsAlgClosed k₀] [Field K] [Algebra k₀ K]
     (B : Over (Sp k₀)) [GrpObj B], IsAbelianScheme B →

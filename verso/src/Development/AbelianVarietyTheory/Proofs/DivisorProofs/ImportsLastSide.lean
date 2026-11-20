@@ -10,13 +10,13 @@ open scoped ContDiff
 namespace GlobalTheory.PolyShapeFinite
 
 /- English proof (translation)
-Introduce `n ε F P`. Set `r : UJ ε → ℝ` to `fun g => ∑ z : {z : Fin n × Fin n // ε z.1 = true ∧ ε z.2 = false}, ‖(toM g) z.1.1 z.1.2‖ ^ 2`. Set `ev : UJ ε → ((Fin n × Fin n) ⊕ (Fin n × Fin n)) → ℂ` to `fun g => Sum.elim (fun z : Fin n × Fin n => (toM g) z.1 z.2) (fun z : Fin n × Fin n => star ((toM g) z.1 z.2))`. Set `L : MvPolynomial ((Fin n × Fin n) ⊕ (Fin n × Fin n)) ℂ →ₗ[ℂ] (UJ ε → ℂ)` to `{ toFun := fun Q g => ((F (r g) : ℝ) : ℂ) * MvPolynomial.eval (ev g) Q map_add' := fun Q Q' => by funext g; simp [mul_add] map_smul' := fun c Q => by funext g; simp [MvPolynomial.smul_eq_C_mul, mul_left_comm] }`. Unfold `IsBiFinite`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Replace the relevant objects with their definitions.
 
-Establish `hle : Submodule.span ℂ {φ : UJ ε → ℂ | ∃ k ∈ KG ε, ∃ k' ∈ KG ε, φ = fun g => ((F (r (k * g * k')) : ℝ) : ℂ) * MvPolynomial.eval (ev (k * g * k')) P} ≤ (MvPolynomial.restrictTotalDegree _ ℂ P.totalDegree).map L`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `φ ⟨k, hk, k', hk', rfl⟩`. Take `⟨Q, hQ, hQe⟩` from `GlobalTheory.T.exists_poly_entries_conj_left_right_mul n (toM k) (toM k') P`. Use `⟨Q, (MvPolynomial.mem_restrictTotalDegree _ _ _).2 hQ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `g`. Establish `h1 : r (k * g * k') = r g` using `(GlobalTheory.T.offDiagBlockNorm_mul_invariant n ε).2 ⟨k, hk⟩ ⟨k', hk'⟩ g`. Establish `h2 : toM (k * g * k') = toM k * toM g * toM k'` using `rfl`. Establish `h3 : MvPolynomial.eval (ev (k * g * k')) P = MvPolynomial.eval (ev g) Q`. Simplify using `only [ev, h2]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hQe (toM g)`. Use `show ((F (r g) : ℝ) : ℂ) * MvPolynomial.eval (ev g) Q = _`. Rewrite using `[h1, h3]`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (n : ℕ) (ε : Fin n → Bool) (F : ℝ → ℝ) (P : MvPolynomial ((Fin n × Fin n) ⊕ (Fin n × Fin n)) ℂ), IsBiFinite (KG ε) (fun g : UJ ε => ((F (∑ z : {z : Fin n × Fin n // ε z.1 = true ∧ ε z.2 = false}, ‖(toM g) z.1.1 z.1.2‖ ^ 2) : ℝ) : ℂ) * MvPolynomial.eval (Sum.elim (fun z : Fin n × Fin n => (toM g) z.1 z.2) (fun z : Fin n × Fin n => star ((toM g) z.1 z.2))) P) := by
   intro n ε F P

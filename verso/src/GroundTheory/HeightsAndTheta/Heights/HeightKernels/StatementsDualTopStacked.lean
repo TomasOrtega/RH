@@ -14,14 +14,14 @@ namespace DualTopStackedExistence
 variable {K : Type} [Field K] [NumberField K] {i : ℕ}
 
 /- English proof (translation)
-Introduce `_ hφ x hx` and use `hφ x (h hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dualLattice_mono {F F' : HermLattice K i} (h : F'.lattice ≤ F.lattice) :
     dualLattice F ≤ dualLattice F' :=
   fun _ hφ x hx => hφ x (h hx)
 
 /- English proof (translation)
-Establish `h` using `(LinearEquiv.ofBijective (Matrix.mulVecLin (dualEmbMatrix b)) hb).finrank_eq`. Rewrite `h` using `[Module.finrank_fintype_fun_eq_card, Module.finrank_fintype_fun_eq_card]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_eq_of_bijective {F : HermLattice K i} {T : Type} [Fintype T] [DecidableEq T]
     (b : Module.Basis T ℤ (dualLattice F))
@@ -32,9 +32,9 @@ theorem card_eq_of_bijective {F : HermLattice K i} {T : Type} [Fintype T] [Decid
   exact h.symm
 
 /- English proof (translation)
-Set `eN` to `Submodule.comapSubtypeEquivOfLe (dualLattice_mono h)`. Establish `hrank : Module.finrank ℤ ((dualLattice F).comap (dualLattice F').subtype) = Module.finrank ℤ (dualLattice F')`. Rewrite using `[eN.finrank_eq, Module.finrank_eq_card_basis b, Module.finrank_eq_card_basis b', hcard]`. Take `⟨b₁', a, ab, hab⟩` from `Submodule.exists_smith_normal_form_of_rank_eq b' hrank`. Use `⟨ab.map eN, b₁', a, fun t => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `congrArg (fun x : dualLattice F' => (x : Fin i → K)) (hab t)`. Simplify using `only [Module.Basis.map_apply]`. Rewrite using `[Submodule.comapSubtypeEquivOfLe_apply_coe]`. Simplify using `using h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_stacked {F F' : HermLattice K i} (h : F'.lattice ≤ F.lattice) {T T' : Type} [Fintype T]
     [DecidableEq T] [Fintype T'] [DecidableEq T'] (b : Module.Basis T ℤ (dualLattice F))
@@ -68,7 +68,7 @@ def DualTopStacked.Statement : Prop :=
           geomDeg (grassIdeal 1 1 (i - 1)) (fsMulti (plBlocks 1 1 (i - 1))) (1 * 1 * (i - 1))
 
 /- English proof (translation)
-Take `⟨T', hT', hdT', ⟨b'⟩⟩` from `DualLatticeBasisExists.proof ℚ 1 HermLattice.twiceStandardExample`. Establish `hcard : Fintype.card Unit = Fintype.card T'`. Rewrite using `[DualTopStackedExistence.card_eq_of_bijective dualBasisStandard dualEmbMatrix_standard_bijective, DualTopStackedExistence.card_eq_of_bijective b' (DualEmbBijective.proof ℚ 1 _ T' b')]`. Take `⟨b₁, b₁', a, hab⟩` from `DualTopStackedExistence.exists_stacked twiceStandardExample_le dualBasisStandard b' hcard`. Conclude with `⟨T', hT', hdT', b₁, b₁', a, DualEmbBijective.proof ℚ 1 _ T' b₁, DualEmbBijective.proof ℚ 1 _ T' b₁', twiceStandardExample_le, hab, le_rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example : ∃ (T : Type) (_ : Fintype T) (_ : DecidableEq T)
     (b : Module.Basis T ℤ (dualLattice (HermLattice.standard ℚ 1)))

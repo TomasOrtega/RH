@@ -20,7 +20,7 @@ def uNull : Submodule R (∀ i, M i) where
 
 variable {F I M} in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_uNull {p : ∀ i, M i} :
     p ∈ uNull F I M ↔ ∀ j, ∀ᶠ i in F, p i ∈ (I j • ⊤ : Submodule R (M i)) := Iff.rfl
@@ -30,13 +30,13 @@ abbrev ULim : Type := (∀ i, M i) ⧸ uNull F I M
 def ULim.mk : (∀ i, M i) →ₗ[R] ULim F I M := (uNull F I M).mkQ
 
 /- English proof (translation)
-The claim follows from `Submodule.mkQ_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem ULim.mk_surjective : Function.Surjective (ULim.mk F I M) := Submodule.mkQ_surjective _
 
 variable {F I M} in
 /- English proof (translation)
-Use `show (uNull F I M).mkQ p = 0 ↔ _`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ULim.mk_eq_zero {p : ∀ i, M i} :
     ULim.mk F I M p = 0 ↔ ∀ j, ∀ᶠ i in F, p i ∈ (I j • ⊤ : Submodule R (M i)) := by
@@ -66,7 +66,7 @@ def ULim.scal (r : ι → R) : ULim F I M →ₗ[R] ULim F I M :=
   ULim.map F (fun _ => le_rfl) fun i => r i • LinearMap.id
 
 /- English proof (translation)
-Take `⟨p, rfl⟩` from `ULim.mk_surjective F I M x`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem ULim.scal_const (r : R) (x : ULim F I M) : ULim.scal F I M (fun _ => r) x = r • x := by
   obtain ⟨p, rfl⟩ := ULim.mk_surjective F I M x
@@ -78,7 +78,7 @@ abbrev UProd : Type := ULim F (fun _ => (⊥ : Ideal R)) M
 
 variable {F M} in
 /- English proof (translation)
-Rewrite using `[ULim.mk_eq_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UProd.mk_eq_zero {p : ∀ i, M i} :
     ULim.mk F (fun _ => (⊥ : Ideal R)) M p = 0 ↔ ∀ᶠ i in F, p i = 0 := by
@@ -86,9 +86,9 @@ theorem UProd.mk_eq_zero {p : ∀ i, M i} :
   simp
 
 /- English proof (translation)
-Use `⟨Submodule.liftQ _ (LinearMap.proj i₀) fun p hp => ?_, ⟨?_, ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Simplify using `using hp 0`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨p, rfl⟩` from `ULim.mk_surjective _ _ M x`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `UProd.mk_eq_zero.2 hx`. Introduce `m`. Conclude with `⟨ULim.mk _ _ M (Pi.single i₀ m), by show (Pi.single i₀ m : ∀ i, M i) i₀ = m simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UProd.pure_bijective (i₀ : ι) :
     ∃ e : UProd R (pure i₀) M →ₗ[R] M i₀, Function.Bijective e ∧ ∀ p, e (ULim.mk _ _ M p) = p i₀ := by
@@ -116,7 +116,7 @@ def QRegAt (M : Type) [AddCommGroup M] [Module R M] (y : σ → R) (J : Ideal R)
       ∀ α, c α ∈ ((Ideal.span (Set.range y) ⊔ J) • ⊤ : Submodule R M)
 
 /- English proof (translation)
-Unfold `GlobalTheory.IsQuasiRegularSeq QRegAt`. Simplify using `only [sup_bot_eq]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem isQuasiRegularSeq_iff_qRegAt (M : Type) [AddCommGroup M] [Module R M] (y : σ → R) :
     GlobalTheory.IsQuasiRegularSeq M y ↔ ∀ a, QRegAt M y ⊥ a := by
@@ -124,7 +124,7 @@ theorem isQuasiRegularSeq_iff_qRegAt (M : Type) [AddCommGroup M] [Module R M] (y
   simp only [sup_bot_eq]
 
 /- English proof (translation)
-Introduce `_ _ _` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem qRegAt_top (M : Type) [AddCommGroup M] [Module R M] (y : σ → R) (a : ℕ) : QRegAt M y ⊤ a :=
   fun _ _ _ => by simp

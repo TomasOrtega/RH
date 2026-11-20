@@ -13,9 +13,9 @@ noncomputable section
 namespace UpperTheory.TP.W
 
 /- English proof (translation)
-Establish `hsup : ∀ g, (Function.mulSupport fun i => s i ^ WithZero.log (w i g)).Finite` using `fun g => (hfin g).subset fun i hi h => hi (by simp [h])`. Use `⟨{ toFun := fun g => ∏ᶠ i, s i ^ WithZero.log (w i g), map_one' := ?_, map_mul' := ?_ }, fun _ => rfl⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `x y`. Rewrite using `[← finprod_mul_distrib (hsup x) (hsup y)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `finprod_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[map_mul, WithZero.log_mul (hne i x) (hne i y), _root_.zpow_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_signChar {ι G : Type} [CommGroup G] (w : ι → G →* WithZero (Multiplicative ℤ))
     (hne : ∀ i g, w i g ≠ 0) (hfin : ∀ g, {i | w i g ≠ 1}.Finite) (s : ι → Circle) :
@@ -30,7 +30,7 @@ private theorem exists_signChar {ι G : Type} [CommGroup G] (w : ι → G →* W
     rw [map_mul, WithZero.log_mul (hne i x) (hne i y), _root_.zpow_add]
 
 /- English proof (translation)
-Rewrite using `[finprod_eq_prod f hf]`. Use `Finset.prod_involution (fun i _ => c i) (fun i _ => h1 i) (fun i _ => h2 i) (fun i hi => ?_) (fun i _ => hc i)` and prove the remaining obligations. Rewrite `hi`, the goal using `[Set.Finite.mem_toFinset, Function.mem_mulSupport]`. Introduce `h`. Conclude with `hi (by simpa [h] using h1 i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem finprod_invol {ι : Type} (c : ι → ι) (hc : ∀ i, c (c i) = i) (f : ι → Circle)
     (hf : (Function.mulSupport f).Finite) (h1 : ∀ i, f i * f (c i) = 1) (h2 : ∀ i, f i ≠ 1 → c i ≠ i) :
@@ -54,20 +54,20 @@ private def cj (h : IsCMExt F E σ) (P : HeightOneSpectrum (𝓞 E)) : HeightOne
     exact hx0 (by rw [← sgOF_sgOF h x, this, map_zero])⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_cj (h : IsCMExt F E σ) (P : HeightOneSpectrum (𝓞 E)) (r : 𝓞 E) :
     r ∈ (cj h P).asIdeal ↔ sgOF σ r ∈ P.asIdeal := Iff.rfl
 
 /- English proof (translation)
-Use `HeightOneSpectrum.ext (Ideal.ext fun r => ?_)` and prove the remaining obligations. Rewrite using `[mem_cj, mem_cj, sgOF_sgOF h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cj_cj (h : IsCMExt F E σ) (P : HeightOneSpectrum (𝓞 E)) : cj h (cj h P) = P := by
   refine HeightOneSpectrum.ext (Ideal.ext fun r => ?_)
   rw [mem_cj, mem_cj, sgOF_sgOF h]
 
 /- English proof (translation)
-Introduce `r hr`. Rewrite `hr`, the goal using `[mem_cj]`. Rewrite using `[sgOF_sgOF h]`. Use `hP _ hr` as an intermediate fact. Rewrite `this` using `[sgOF_sgOF h]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem cj_fx (h : IsCMExt F E σ) {P : HeightOneSpectrum (𝓞 E)} (hP : Fx σ P) : Fx σ (cj h P) := by
   intro r hr
@@ -77,7 +77,7 @@ private theorem cj_fx (h : IsCMExt F E σ) {P : HeightOneSpectrum (𝓞 E)} (hP 
   rwa [sgOF_sgOF h] at this
 
 /- English proof (translation)
-Introduce `r hr`. Establish `h1 : r ∈ (cj h P).asIdeal` using `by rw [hP]; exact hr`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem fx_of_cj_eq (h : IsCMExt F E σ) {P : HeightOneSpectrum (𝓞 E)} (hP : cj h P = P) : Fx σ P := by
   intro r hr
@@ -85,7 +85,7 @@ private theorem fx_of_cj_eq (h : IsCMExt F E σ) {P : HeightOneSpectrum (𝓞 E)
   exact h1
 
 /- English proof (translation)
-Use `HeightOneSpectrum.ext ?_` and prove the remaining obligations. Use `show (P.asIdeal.comap (sgOF σ)).comap (algebraMap (𝓞 F) (𝓞 E)) = P.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E))`. Rewrite using `[Ideal.comap_comap]`. Use `congr 1`. Conclude with `RingHom.ext sgOF_alg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem under_cj (h : IsCMExt F E σ) (P : HeightOneSpectrum (𝓞 E)) :
     (cj h P).under (𝓞 F) = P.under (𝓞 F) := by
@@ -96,7 +96,7 @@ private theorem under_cj (h : IsCMExt F E σ) (P : HeightOneSpectrum (𝓞 E)) :
   exact RingHom.ext sgOF_alg
 
 /- English proof (translation)
-Set `e : 𝓞 E ≃+* 𝓞 E` to `RingEquiv.ofRingHom (sgOF σ) (sgOF σ) (RingHom.ext (sgOF_sgOF h)) (RingHom.ext (sgOF_sgOF h))`. Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Use `Nat.card_congr (Ideal.quotientEquiv (cj h P).asIdeal P.asIdeal e ?_).toEquiv` and prove the remaining obligations. Conclude with `(Ideal.map_comap_of_surjective (e : 𝓞 E →+* 𝓞 E) e.surjective P.asIdeal).symm`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem absNorm_cj (h : IsCMExt F E σ) (P : HeightOneSpectrum (𝓞 E)) :
     Ideal.absNorm (cj h P).asIdeal = Ideal.absNorm P.asIdeal := by
@@ -107,9 +107,9 @@ private theorem absNorm_cj (h : IsCMExt F E σ) (P : HeightOneSpectrum (𝓞 E))
   exact (Ideal.map_comap_of_surjective (e : 𝓞 E →+* 𝓞 E) e.surjective P.asIdeal).symm
 
 /- English proof (translation)
-Establish `: Algebra.IsQuadraticExtension F E` using `{ finrank_eq_two' := h.2.2.1 }`. Establish `: IsGalois F E` using `inferInstance`. Establish `e1` using `Ideal.ramificationIdxIn_eq_ramificationIdx ((cj h P).asIdeal.under (𝓞 F)) (cj h P).asIdeal (E ≃ₐ[F] E)`. Establish `e2` using `Ideal.ramificationIdxIn_eq_ramificationIdx (P.asIdeal.under (𝓞 F)) P.asIdeal (E ≃ₐ[F] E)`. Establish `e3 : (cj h P).asIdeal.under (𝓞 F) = P.asIdeal.under (𝓞 F)` using `congrArg HeightOneSpectrum.asIdeal (under_cj h P)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← e1, ← e2, e3]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem ram_cj (h : IsCMExt F E σ) (P : HeightOneSpectrum (𝓞 E)) :
     (cj h P).asIdeal.ramificationIdx (𝓞 F) = P.asIdeal.ramificationIdx (𝓞 F) := by
@@ -125,14 +125,14 @@ private def sgn (σ : E →ₐ[F] E) (lam : ℕ →* ℂ) (P : HeightOneSpectrum
     if lam (Ideal.absNorm P.asIdeal) = (Real.sqrt (Ideal.absNorm P.asIdeal) : ℂ) then 1 else -1
 
 /- English proof (translation)
-Unfold `sgn`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sgn_mul (lam : ℕ →* ℂ) (P : HeightOneSpectrum (𝓞 E)) : sgn σ lam P * sgn σ lam P = 1 := by
   unfold sgn
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `: Fx σ (cj h P) ↔ Fx σ P` using `⟨fun a => cj_cj h P ▸ cj_fx h a, cj_fx h⟩`. Unfold `sgn`. Simplify using `only [this, absNorm_cj]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem sgn_cj (h : IsCMExt F E σ) (lam : ℕ →* ℂ) (P : HeightOneSpectrum (𝓞 E)) :
     sgn σ lam (cj h P) = sgn σ lam P := by
@@ -141,11 +141,9 @@ private theorem sgn_cj (h : IsCMExt F E σ) (lam : ℕ →* ℂ) (P : HeightOneS
   simp only [this, absNorm_cj]
 
 /- English proof (translation)
-Establish `h2 : lam (Ideal.absNorm P.asIdeal) ^ 2 = (Ideal.absNorm P.asIdeal : ℂ)`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Conclude with `(hlam.2 P.asIdeal P.isMaximal (Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot)).1`. Establish `h3 : ((Real.sqrt (Ideal.absNorm P.asIdeal) : ℝ) : ℂ) ^ 2 = (Ideal.absNorm P.asIdeal : ℂ)`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _), Complex.ofReal_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `sgn`. Rewrite using `[if_neg hP]`. Use `split_ifs with h`. Simplify using `using h`. Establish `h4` using `sq_eq_sq_iff_eq_or_eq_neg.1 (h2.trans h3.symm)`.
-
-Simplify using `using h4.resolve_left h`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem lam_eq {lam : ℕ →* ℂ} (hlam : GoodNorm (sgOF σ) lam) {P : HeightOneSpectrum (𝓞 E)} (hP : ¬ Fx σ P) :
     lam (Ideal.absNorm P.asIdeal) = (sgn σ lam P : ℂ) * (Real.sqrt (Ideal.absNorm P.asIdeal) : ℂ) := by
@@ -162,13 +160,13 @@ private theorem lam_eq {lam : ℕ →* ℂ} (hlam : GoodNorm (sgOF σ) lam) {P :
     simpa using h4.resolve_left h
 
 /- English proof (translation)
-The claim follows from `((Group.isUnit z).map (wv F E Q)).ne_zero`.
+A detailed English derivation is pending.
 -/
 private theorem wv_ne (Q : HeightOneSpectrum (𝓞 E)) (z : (AEF F E)ˣ) : wv F E Q z ≠ 0 :=
   ((Group.isUnit z).map (wv F E Q)).ne_zero
 
 /- English proof (translation)
-Establish `e : wv F E Q z * wv F E Q z⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 private theorem wv_eq_one {Q : HeightOneSpectrum (𝓞 E)} {z : (AEF F E)ˣ} (h1 : Valued.v (ev F E Q z) ≤ 1)
     (h2 : Valued.v (ev F E Q ((z⁻¹ : (AEF F E)ˣ) : AEF F E)) ≤ 1) : wv F E Q z = 1 := by
@@ -178,14 +176,14 @@ private theorem wv_eq_one {Q : HeightOneSpectrum (𝓞 E)} {z : (AEF F E)ˣ} (h1
     _ ≤ wv F E Q z := mul_le_of_le_one_right' h2
 
 /- English proof (translation)
-Use `filter_upwards [(GlobalTheory.LFun.finAdEquiv F E (finPartF F E y)).2] with Q hQ`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 hQ`.
+A detailed English derivation is pending.
 -/
 private theorem ev_int (y : AEF F E) : ∀ᶠ Q in Filter.cofinite, Valued.v (ev F E Q y) ≤ 1 := by
   filter_upwards [(GlobalTheory.LFun.finAdEquiv F E (finPartF F E y)).2] with Q hQ
   exact (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 hQ
 
 /- English proof (translation)
-Use `(Filter.eventually_cofinite.1 ((ev_int (z : AEF F E)).and (ev_int ((z⁻¹ : (AEF F E)ˣ) : AEF F E)))).subset ?_` and prove the remaining obligations. Introduce `Q hQ hc`. Conclude with `hQ (wv_eq_one hc.1 hc.2)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem wv_fin (z : (AEF F E)ˣ) : {Q | wv F E Q z ≠ 1}.Finite := by
   refine (Filter.eventually_cofinite.1 ((ev_int (z : AEF F E)).and (ev_int ((z⁻¹ : (AEF F E)ˣ) : AEF F E)))).subset ?_
@@ -193,11 +191,11 @@ private theorem wv_fin (z : (AEF F E)ˣ) : {Q | wv F E Q z ≠ 1}.Finite := by
   exact hQ (wv_eq_one hc.1 hc.2)
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem g hg`. Take `⟨t, ⟨c, hc, e⟩, o, rfl⟩` from `hg`. Rewrite `e` using `[one_smul]`. Use `AddSubgroup.subset_closure ⟨c, hc, o, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, PositivityTheory.ThKW.Eta.fin_j, e]`. Use `show (c ⊗ₜ[F] (1 : E)) * ((1 : Af F) ⊗ₜ[F] (o : E)) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 private theorem fin_of_SE {z : AF F ⊗[F] E} (hz : z ∈ GlobalTheory.HeckeExtend.SE F E) : finPartF F E z ∈ Formalism.IndefR.LiftF.intAEF F E := by
   induction hz using AddSubgroup.closure_induction with
@@ -213,7 +211,7 @@ private theorem fin_of_SE {z : AF F ⊗[F] E} (hz : z ∈ GlobalTheory.HeckeExte
   | neg x _ hx => rw [map_neg]; exact neg_mem hx
 
 /- English proof (translation)
-The claim follows from `wv_eq_one ((int_iff _).1 (fin_of_SE (PositivityTheory.ThKW.Eta.mem_SE_of_CE hz.1)) Q) ((int_iff _).1 (fin_of_SE (PositivityTheory.ThKW.Eta.mem_SE_of_CE hz.2)) Q)`.
+A detailed English derivation is pending.
 -/
 private theorem wv_of_WE {z : (AEF F E)ˣ} (hz : z ∈ GlobalTheory.HeckeExtend.WE F E 1) (Q : HeightOneSpectrum (𝓞 E)) :
     wv F E Q z = 1 :=
@@ -221,11 +219,9 @@ private theorem wv_of_WE {z : (AEF F E)ˣ} (hz : z ∈ GlobalTheory.HeckeExtend.
     ((int_iff _).1 (fin_of_SE (PositivityTheory.ThKW.Eta.mem_SE_of_CE hz.2)) Q)
 
 /- English proof (translation)
-Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hWo : IsOpen (GlobalTheory.HeckeExtend.WE F E 1 : Set (AF F ⊗[F] E)ˣ)`. Establish `ho` using `GlobalTheory.HeckeExtend.CE_isOpen F E 1 one_pos`. Establish `hcv : Continuous fun z : (AF F ⊗[F] E)ˣ => (z : AF F ⊗[F] E) - 1` using `Units.continuous_val.sub continuous_const`. Establish `hci : Continuous fun z : (AF F ⊗[F] E)ˣ => ((z⁻¹ : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) - 1` using `Units.continuous_coe_inv.sub continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(ho.preimage hcv).inter (ho.preimage hci)`. Use `continuous_of_continuousAt_one _ ?_` and prove the remaining obligations. Unfold `ContinuousAt`. Rewrite using `[map_one]`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations.
-
-Use `filter_upwards [hWo.mem_nhds (one_mem _)] with z hz`. Conclude with `(h z hz).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem continuous_of_WE (κ : (AEF F E)ˣ →* Circle) (h : ∀ z ∈ GlobalTheory.HeckeExtend.WE F E 1, κ z = 1) :
     Continuous κ := by
@@ -245,9 +241,9 @@ private theorem continuous_of_WE (κ : (AEF F E)ˣ →* Circle) (h : ∀ z ∈ G
   exact (h z hz).symm
 
 /- English proof (translation)
-Substitute `hv` using the available equality. Establish `h0 : (sndA F (a : AF F)) (Q.under (𝓞 F)) ≠ 0` using `(a.isUnit.map ((evalV F (Q.under (𝓞 F))).comp (sndA F))).ne_zero`. Rewrite using `[wv_apply]`. Express the relevant statement in the definitionally equal form `Valued.v (ev F E Q (algebraMap (AF F) (AEF F E) (a : AF F))) = _`. Rewrite using `[ev_alg]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `valued_complMap rfl h0`.
+A detailed English derivation is pending.
 -/
 private theorem wv_idFF {v : HeightOneSpectrum (𝓞 F)} {Q : HeightOneSpectrum (𝓞 E)} (hv : Q.under (𝓞 F) = v)
     (a : (AF F)ˣ) : wv F E Q (idFF F E a) =
@@ -261,19 +257,19 @@ private theorem wv_idFF {v : HeightOneSpectrum (𝓞 F)} {Q : HeightOneSpectrum 
   exact valued_complMap rfl h0
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h lam hlam`. Take `⟨κ, hκ⟩` from `exists_signChar (wv F E) wv_ne wv_fin (sgn σ lam)`. Establish `hsup : ∀ z, (Function.mulSupport fun Q => sgn σ lam Q ^ WithZero.log (wv F E Q z)).Finite` using `fun z => (wv_fin z).subset fun i hi h => hi (by simp [h])`. Use `⟨κ, ?_, fun z => ?_, fun a => ?_, fun z hz => ?_, fun P hP z h1 h2 => ?_⟩` and prove the remaining obligations. Conclude with `continuous_of_WE κ fun z hz => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hκ]`. Simplify using `[wv_of_WE hz]`. Rewrite using `[hκ, ← finprod_mul_distrib (hsup z) (hsup z)]`. Establish `: ∀ Q, sgn σ lam Q ^ WithZero.log (wv F E Q z) * sgn σ lam Q ^ WithZero.log (wv F E Q z) = 1` using `fun Q => by`. Rewrite using `[← _root_.mul_zpow, sgn_mul, _root_.one_zpow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`. Rewrite using `[hκ]`. Use `finprod_invol (cj h) (cj_cj h) _ (hsup _) (fun P => ?_) (fun P hP hc => hP ?_)` and prove the remaining obligations. Distinguish the cases in `hP : Fx σ P`. Establish `a1 : sgn σ lam P = 1` using `if_pos hP`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : sgn σ lam (cj h P) = 1` using `if_pos (cj_fx h hP)`. Rewrite using `[a1, a2, _root_.one_zpow, _root_.one_zpow, one_mul]`. Establish `e : wv F E (cj h P) (idFF F E a) = wv F E P (idFF F E a)`. Rewrite using `[wv_idFF (under_cj h P), ram_cj, wv_idFF rfl]`. Rewrite using `[sgn_cj, e, ← _root_.mul_zpow, sgn_mul, _root_.one_zpow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: sgn σ lam P = 1` using `if_pos (fx_of_cj_eq h hc)`. Rewrite using `[this, _root_.one_zpow]`. Rewrite using `[hκ]`. Establish `: ∀ Q, sgn σ lam Q ^ WithZero.log (wv F E Q z) = 1` using `fun Q => by`. Distinguish the cases in `hQ : Fx σ Q`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `a1 : sgn σ lam Q = 1` using `if_pos hQ`. Rewrite using `[a1, _root_.one_zpow]`. Simplify using `[hz Q hQ]`. Simplify using `[this]`. Establish `e : κ z = sgn σ lam P`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hκ, finprod_eq_single _ P (fun Q hQ => by simp [h2 Q hQ]), h1, WithZero.log_exp, _root_.zpow_neg, zpow_one]`. Conclude with `inv_eq_of_mul_eq_one_left (sgn_mul lam P)`. Rewrite using `[e]`. Conclude with `lam_eq hlam hP`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kapEx : KapEx := by
   intro F E _ _ _ _ _ σ h lam hlam

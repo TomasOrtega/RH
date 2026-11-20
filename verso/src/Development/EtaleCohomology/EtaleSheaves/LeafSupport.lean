@@ -24,7 +24,7 @@ def LeafCochainVanish : Prop := ∀ (R : Type) [CommRing R] {U V E : Spc} (f : U
     γ = 0
 
 /- English proof (translation)
-Unfold `Sx.sub`. Establish `e` using `NatTrans.congr_app (f.naturality (SimplexCategory.subinterval j l h).op) (op Y)`. Conclude with `(ConcreteCategory.congr_hom e y).symm`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sub_map {U E : Spc} (f : U ⟶ E) {N : ℕ} {Y : Scheme.{0}} (y : Sx U N Y) (j l : ℕ) (h : j + l ≤ N) :
     Sx.sub ((f.app _).app _ y) j l h = (f.app _).app _ (Sx.sub y j l h) := by
@@ -33,13 +33,13 @@ theorem sub_map {U E : Spc} (f : U ⟶ E) {N : ℕ} {Y : Scheme.{0}} (y : Sx U N
   exact (ConcreteCategory.congr_hom e y).symm
 
 /- English proof (translation)
-Introduce `q _ U V E f g hc n m i j a b ha hb`. Take `⟨α, rfl, hα⟩` from `h2 (ZMod q) f hc.1 (tw q i) n a ha`. Take `⟨β, rfl, hβ⟩` from `h2 (ZMod q) g hc.2.1 (tw q j) m b hb`. Take `⟨γ, hAW, hcup⟩` from `h1 q E α β`. Rewrite using `[hcup]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `: γ.1 = 0`. Apply `h3 (ZMod q) f g hc` to reduce the goal to its premises. Introduce `N w h Y y`. Rewrite using `[hAW N w h Y]`. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sub_map f y 0 (p : ℕ), hα]`. Simplify using the standard rewrite rules. Introduce `N w h Y y`. Rewrite using `[hAW N w h Y]`. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sub_map g y (p : ℕ) (N - p), hβ]`. Simplify using the standard rewrite rules. Establish `hγ : γ = 0` using `Subtype.ext this`. Rewrite using `[hγ]`. Conclude with `CohomologyClass.mk_zero _ _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafA6supp_of (h1 : LeafAWSpec) (h2 : LeafRepVanish) (h3 : LeafCochainVanish) : LateralTheory.E.D2.LeafA6supp := by
   intro q _ U V E f g hc n m i j a b ha hb

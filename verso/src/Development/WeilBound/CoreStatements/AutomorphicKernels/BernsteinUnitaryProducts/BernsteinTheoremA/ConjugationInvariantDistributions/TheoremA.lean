@@ -15,7 +15,7 @@ def ConjInvariant (H : Subgroup G) (D : Module.Dual ℂ (locallyConstantCompactS
   ∀ h ∈ H, ∀ f : locallyConstantCompactSupport G ℂ ℂ, D (biTranslL h h f) = D f
 
 /- English proof (translation)
-Introduce `h hh f` and use `hD h (hHK hh) f`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ConjInvariant.mono {H K : Subgroup G} (hHK : H ≤ K)
     {D : Module.Dual ℂ (locallyConstantCompactSupport G ℂ ℂ)} (hD : ConjInvariant K D) :
@@ -26,7 +26,7 @@ def deltaOne : Module.Dual ℂ (locallyConstantCompactSupport G ℂ ℂ) :=
   (LinearMap.proj (R := ℂ) (φ := fun _ : G => ℂ) (1 : G)).comp (locallyConstantCompactSupport G ℂ ℂ).subtype
 
 /- English proof (translation)
-Introduce `h _ f`. Use `show (biTranslL h h f : G → ℂ) 1 = (f : G → ℂ) 1`. Rewrite using `[coe_biTranslL]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conjInvariant_deltaOne (H : Subgroup G) : ConjInvariant H (deltaOne (G := G)) := by
   intro h _ f
@@ -46,7 +46,7 @@ def BernsteinTheoremA' : Prop :=
     ∀ (g : GL (Fin (n + 1)) k) f, D (biTranslL g g f) = D f
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H k _ _ _ _ n D hD g f`. Conclude with `H k n D hD g (Subgroup.mem_top g) f`. Introduce `H k _ _ _ _ n D hD g _ f`. Conclude with `H k n D hD g f`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem bernsteinTheoremA_iff : BernsteinTheoremA ↔ BernsteinTheoremA' := by
   constructor
@@ -56,7 +56,7 @@ theorem bernsteinTheoremA_iff : BernsteinTheoremA ↔ BernsteinTheoremA' := by
     exact H k n D hD g f
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨conjInvariant_deltaOne _, conjInvariant_deltaOne _⟩`.
+Supply the required witnesses or components.
 -/
 theorem conjInvariant_deltaOne' (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n : ℕ) :
@@ -65,9 +65,9 @@ theorem conjInvariant_deltaOne' (k : Type) [Field k] [ValuativeRel k] [Topologic
   ⟨conjInvariant_deltaOne _, conjInvariant_deltaOne _⟩
 
 /- English proof (translation)
-Take `⟨K, hK⟩` from `exists_compactOpenSubgroup (G := GL (Fin (n + 1)) k)`. Introduce `h`. Set `f : locallyConstantCompactSupport (GL (Fin (n + 1)) k) ℂ ℂ` to `⟨(K : Set (GL (Fin (n + 1)) k)).indicator (fun _ => (1 : ℂ)), indicator_mem_locallyConstantCompactSupport hK K.isOpen 1⟩`. Establish `h1 : deltaOne (G` using `GL (Fin (n + 1)) k) f = 1 := by show (K : Set (GL (Fin (n + 1)) k)).indicator (fun _ => (1 : ℂ)) 1 = 1`. Conclude with `Set.indicator_of_mem (one_mem K) _`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h, LinearMap.zero_apply]`. Conclude with `zero_ne_one h1`.
+A detailed English derivation is pending.
 -/
 theorem deltaOne_ne_zero (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n : ℕ) : deltaOne (G := GL (Fin (n + 1)) k) ≠ 0 := by

@@ -97,15 +97,13 @@ def PoincNormal (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ) : Prop :=
     ∀ γ : X.Γ, ∀ x ∈ C, ‖poincTerm X la P γ x‖ ≤ u γ
 
 /- English proof (translation)
-Use `set Z := zBlock X z τ with hZ`. Establish `hn : zNorm X z τ < 1` using `hz τ`. Establish `hquad : ∀ x, star x ⬝ᵥ ((1 - Zᴴ * Z) *ᵥ x) = star x ⬝ᵥ x - star (Z *ᵥ x) ⬝ᵥ (Z *ᵥ x)`. Introduce `x`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, dotProduct_sub, ← Matrix.mulVec_mulVec, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsq : ∀ {ι : Type} [Fintype ι] (v : ι → ℂ), star v ⬝ᵥ v = ((‖WithLp.toLp 2 v‖ ^ 2 : ℝ) : ℂ)`. Introduce `ι _ v`. Establish `h` using `inner_self_eq_norm_sq_to_K (𝕜 := ℂ) (WithLp.toLp 2 v)`. Rewrite `h` using `[EuclideanSpace.inner_toLp_toLp, dotProduct_comm]`. Rewrite using `[Complex.ofReal_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hpd : (1 - Zᴴ * Z).PosDef`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos ?_ ?_` and prove the remaining obligations. Simplify using `[Matrix.IsHermitian, Matrix.conjTranspose_sub, Matrix.conjTranspose_mul]`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hquad, hsq, hsq, ← Complex.ofReal_sub, Complex.zero_lt_real, sub_pos]`. Establish `hx0 : 0 < ‖WithLp.toLp 2 x‖` using `norm_pos_iff.mpr (by simpa using hx)`. Establish `hle : ‖WithLp.toLp 2 (Z *ᵥ x)‖ ≤ zNorm X z τ * ‖WithLp.toLp 2 x‖` using `(LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin Z)).le_opNorm (WithLp.toLp 2 x)`. Establish `hlt : ‖WithLp.toLp 2 (Z *ᵥ x)‖ < ‖WithLp.toLp 2 x‖` using `lt_of_le_of_lt hle (by nlinarith [norm_nonneg (WithLp.toLp 2 (Z *ᵥ x))])`. Conclude with `pow_lt_pow_left₀ hlt (norm_nonneg _) two_ne_zero`.
-
-Establish `hdet` using `hpd.det_pos`. Conclude with `(Complex.lt_def.mp hdet).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem zDet_pos {z : V (nd X)} (hz : z ∈ Om X) (τ : X.Ψ) : 0 < zDet X z τ := by
   set Z := zBlock X z τ with hZ

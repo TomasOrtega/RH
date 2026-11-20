@@ -14,7 +14,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum.SquareSpread
 
 /- English proof (translation)
-The claim follows from `TopCat.Presheaf.germ_res_apply _ (homOfLE h) x hx s`.
+A detailed English derivation is pending.
 -/
 theorem germ_res_hom {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) {x : X} (hx : x ∈ V) (s : Γ(X, U)) :
     (X.presheaf.germ V x hx).hom ((X.presheaf.map (homOfLE h).op).hom s) =
@@ -22,7 +22,7 @@ theorem germ_res_hom {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) {x : X} (hx 
   TopCat.Presheaf.germ_res_apply _ (homOfLE h) x hx s
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res_hom {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (s : Γ(X, U)) :
     (X.presheaf.map (homOfLE h₂).op).hom ((X.presheaf.map (homOfLE h₁).op).hom s) =
@@ -31,9 +31,9 @@ theorem res_res_hom {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : 
   rfl
 
 /- English proof (translation)
-Take `⟨W, hxW, iU, iV, e⟩` from `TopCat.Presheaf.germ_eq X.presheaf x hx hx s t h`. Use `⟨W, iU.le, hxW, ?_⟩` and prove the remaining obligations. Establish `h1 : iU = homOfLE iU.le` using `rfl`. Establish `h2 : iV = homOfLE iU.le` using `Subsingleton.elim _ _`. Rewrite `e` using `[h1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[h2]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_res_eq {X : Scheme.{0}} {U : X.Opens} {x : X} (hx : x ∈ U) (s t : Γ(X, U))
     (h : (X.presheaf.germ U x hx).hom s = (X.presheaf.germ U x hx).hom t) :
@@ -52,21 +52,21 @@ end GlobalTheory.Mum.SquareSpread
 open GlobalTheory.Mum.SquareSpread in
 
 /- English proof (translation)
-Introduce `X L2 h x j₀ hx u a ha hh`. Take `⟨W₁, hW₁, hx₁, a', ha'⟩` from `TopCat.Presheaf.exists_le_germ_eq X.presheaf a hx`. Take `⟨W₂, hW₂, hx₂, u', hu'⟩` from `TopCat.Presheaf.exists_le_germ_eq X.presheaf (u : X.presheaf.stalk x) hx₁`. Take `⟨W₃, hW₃, hx₃, v', hv'⟩` from `TopCat.Presheaf.exists_le_germ_eq X.presheaf ((u⁻¹ : (X.presheaf.stalk x)ˣ) : X.presheaf.stalk x) hx₂`. Establish `l31 : W₃ ≤ W₁` using `hW₃.trans hW₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `l30 : W₃ ≤ L2.U j₀` using `l31.trans hW₁`. Use `set A : Γ(X, W₃) := (X.presheaf.map (homOfLE l31).op).hom a' with hA`. Use `set U' : Γ(X, W₃) := (X.presheaf.map (homOfLE hW₃).op).hom u' with hU'`. Use `set H : Γ(X, W₃) := (X.presheaf.map (homOfLE l30).op).hom (h.f j₀) with hH`. Establish `gA : (X.presheaf.germ W₃ x hx₃).hom A = a` using `by rw [hA, germ_res_hom]; exact ha'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gU : (X.presheaf.germ W₃ x hx₃).hom U' = u` using `by rw [hU', germ_res_hom]; exact hu'`. Establish `gV : (X.presheaf.germ W₃ x hx₃).hom v' = ((u⁻¹ : (X.presheaf.stalk x)ˣ) : X.presheaf.stalk x)` using `hv'`. Establish `gH : (X.presheaf.germ W₃ x hx₃).hom H = u * a ^ 2` using `by rw [hH, germ_res_hom]; exact hh`. Take `⟨W₄, hW₄, hx₄, e₄⟩` from `exists_res_eq hx₃ (U' * v') 1 (by`. Rewrite using `[map_mul, map_one, gU, gV, Units.mul_inv])`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨W₅, hW₅, hx₅, e₅⟩` from `exists_res_eq hx₃ H (U' * A ^ 2) (by`. Rewrite using `[map_mul, map_pow, gU, gA, gH])`. Establish `lV3 : W₄ ⊓ W₅ ≤ W₃` using `inf_le_left.trans hW₄`. Establish `hxV : x ∈ W₄ ⊓ W₅` using `⟨hx₄, hx₅⟩`. Establish `e₄' : (X.presheaf.map (homOfLE lV3).op).hom U' * (X.presheaf.map (homOfLE lV3).op).hom v' = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, ← map_one (X.presheaf.map (homOfLE lV3).op).hom, ← res_res_hom hW₄ (inf_le_left : W₄ ⊓ W₅ ≤ W₄), ← res_res_hom hW₄ (inf_le_left : W₄ ⊓ W₅ ≤ W₄) 1, e₄]`. Establish `e₅' : (X.presheaf.map (homOfLE lV3).op).hom H = (X.presheaf.map (homOfLE lV3).op).hom U' * ((X.presheaf.map (homOfLE lV3).op).hom A) ^ 2`. Rewrite using `[← map_pow, ← map_mul, ← res_res_hom hW₅ (inf_le_right : W₄ ⊓ W₅ ≤ W₅), ← res_res_hom hW₅ (inf_le_right : W₄ ⊓ W₅ ≤ W₅) (U' * A ^ 2), e₅]`. Set `uV : Γ(X, W₄ ⊓ W₅)ˣ` to `⟨_, _, e₄', by rw [mul_comm]; exact e₄'⟩`. Use `⟨W₄ ⊓ W₅, hxV, (X.presheaf.map (homOfLE lV3).op).hom A, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Apply `ha` to reduce the goal to its premises. Rewrite using `[← gA, ← germ_res_hom lV3 hxV, h0, map_zero]`. Introduce `j`. Establish `k : W₄ ⊓ W₅ ⊓ L2.U j ≤ L2.U j ⊓ L2.U j₀` using `le_inf inf_le_right (inf_le_left.trans (lV3.trans l30))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨res k (L2.g j j₀) * Units.map (X.presheaf.map (homOfLE (inf_le_left : W₄ ⊓ W₅ ⊓ L2.U j ≤ W₄ ⊓ W₅)).op).hom uV, ?_⟩` and prove the remaining obligations. Establish `c` using `congrArg (X.presheaf.map (homOfLE k).op).hom (h.compat j j₀)`. Rewrite `c` using `[map_mul, res_res_hom, res_res_hom]`. Establish `e6` using `congrArg (X.presheaf.map (homOfLE (inf_le_left : W₄ ⊓ W₅ ⊓ L2.U j ≤ W₄ ⊓ W₅)).op).hom e₅'`. Rewrite `e6` using `[map_mul, map_pow, hH, res_res_hom, res_res_hom, res_res_hom]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, Units.coe_map, res, Units.coe_map]`. Simplify using `only [MonoidHom.coe_coe, hA, res_res_hom] at e6 ⊢`. Rewrite using `[c, e6, _root_.mul_assoc]`. Use `congr 2`. Conclude with `(res_res_hom lV3 _ U').symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.unit_mul_sq_spread : ∀ (X : Scheme.{0}) (L2 : LB X) (h : L2.Sec) (x : X) (j₀ : L2.ι) (hx : x ∈ L2.U j₀) (u : (X.presheaf.stalk x)ˣ) (a : X.presheaf.stalk x), a ≠ 0 → (X.presheaf.germ (L2.U j₀) x hx).hom (h.f j₀) = u * a ^ 2 → ∃ V : X.Opens, x ∈ V ∧ ∃ a : Γ(X, V), a ≠ 0 ∧ ∀ j, ∃ u : Γ(X, V ⊓ L2.U j)ˣ, (X.presheaf.map (homOfLE inf_le_right).op).hom (h.f j) = (u : Γ(X, V ⊓ L2.U j)) * (X.presheaf.map (homOfLE inf_le_left).op).hom a ^ 2 := by
   intro X L2 h x j₀ hx u a ha hh

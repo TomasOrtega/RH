@@ -2,9 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.TheoremsMuLinked.D
 open Matrix IsLocalRing UpperTheory.V UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.Pa UpperTheory.V.Th UpperTheory.V.Th.Coc
 
 /- English proof (translation)
-Introduce `hu`. Establish `h2 : IsUnit (y - algebraMap O R (x y))`. Assume the negation of the conclusion as `hn`. Establish `h3 : y - algebraMap O R (x y) ∈ maximalIdeal R` using `hn`. Establish `h4 : algebraMap O R (x y) ∈ maximalIdeal R` using `by simpa using Ideal.sub_mem _ hy h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h4 (hu.map _)`. Establish `h5` using `h2.map x`. Rewrite `h5` using `[map_sub, AlgHom.commutes]`. Simplify using `at h5`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem x_loc {O R : Type} [CommRing O] [IsLocalRing O] [CommRing R] [IsLocalRing R] [Algebra O R]
     (x : R →ₐ[O] O) (y : R) (hy : y ∈ maximalIdeal R) : x y ∈ maximalIdeal O := by
@@ -19,13 +19,13 @@ private theorem x_loc {O R : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Is
   simp at h5
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `a ha`. Rewrite `ha` using `[zero_add, pow_one]`. Use `⟨by simpa using x_loc x a ha, by simp⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `succ k ih`. Introduce `a ha`. Rewrite `ha` using `[pow_succ]`. Use `Submodule.mul_induction_on ha (fun b hb c hc => ?_) (fun b c hb hc => ?_)` and prove the remaining obligations. Take `⟨h1, h2⟩` from `ih b hb`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `x_loc x c hc`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, pow_succ _ (k + 1)]`. Conclude with `Ideal.mul_mem_mul h1 h3`. Rewrite using `[h b c]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.add_mem _ (Submodule.smul_mem_smul h1 Submodule.mem_top) ?_` and prove the remaining obligations. Rewrite using `[pow_succ', Submodule.mul_smul]`. Conclude with `Submodule.smul_mem_smul h3 h2`. Rewrite using `[map_add, map_add]`. Conclude with `⟨Ideal.add_mem _ hb.1 hc.1, Submodule.add_mem _ hb.2 hc.2⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem der_pow {O R X : Type} [CommRing O] [IsLocalRing O] [CommRing R] [IsLocalRing R] [Algebra O R]
     [AddCommGroup X] [Module O X] (x : R →ₐ[O] O) (δ : R →ₗ[O] X) (h : IsDer x δ) (k : ℕ) :
@@ -53,11 +53,9 @@ private theorem der_pow {O R X : Type} [CommRing O] [IsLocalRing O] [CommRing R]
       exact ⟨Ideal.add_mem _ hb.1 hc.1, Submodule.add_mem _ hb.2 hc.2⟩
 
 /- English proof (translation)
-Introduce `O R Γ _ _ _ _ _ _ m`. Use `⟨fun f hf => hf m, fun x δ h f hf => ?_⟩` and prove the remaining obligations. Establish `hk : ∀ a ∈ maximalIdeal R ^ (m + 1), δ a = 0` using `fun a ha => by`. Use `Submodule.smul_induction_on (p := fun z => z = 0) (der_pow x δ h m a ha).2 (fun r hr z _ => ?_) (fun u v hu hv => by rw [hu, hv, add_zero])` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.2 hr, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hf (m + 1)`. Rewrite `h1`, the goal using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g`. Use `filter_upwards [h1 g] with g' hg`. Rewrite using `[← sub_eq_zero, ← map_sub]`.
-
-Conclude with `hk _ (Ideal.Quotient.eq.1 hg)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Coc.lcDer :
     ∀ {O R Γ : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [IsCO O R] [TopologicalSpace Γ] (m : ℕ), (∀ f : Γ → O, AdicCont (maximalIdeal O) f → IsLocallyConstant fun g => Ideal.Quotient.mk (maximalIdeal O ^ m) (f g)) ∧ ∀ (x : R →ₐ[O] O) (δ : R →ₗ[O] Om O m), IsDer x δ → ∀ f : Γ → R, AdicCont (maximalIdeal R) f → IsLocallyConstant fun g => δ (f g) := by

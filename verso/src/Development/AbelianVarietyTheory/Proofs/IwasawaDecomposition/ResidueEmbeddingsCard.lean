@@ -9,9 +9,9 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace NumberField IsDedekindDom
 namespace GlobalTheory.TrueGeo.ResidueCard
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (i.residueFieldMap z).hom` using `fun a => by`. Take `⟨b, rfl⟩` from `Z.residue_surjective z a`. Take `⟨c, rfl⟩` from `i.stalkMap_surjective z b`. Conclude with `⟨X.residue _ c, congrArg (fun f => f.hom c) (Scheme.residue_residueFieldMap i z)⟩`. Set `e` to `RingEquiv.ofBijective _ ⟨(i.residueFieldMap z).hom.injective, hs⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `Nat.card_congr ⟨fun φ => φ.comp e.symm.toRingHom, fun φ => φ.comp e.toRingHom, fun φ => by ext; simp, fun φ => by ext; simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem card_ringHom_eq {X Z : Scheme.{0}} (i : Z ⟶ X) [IsPreimmersion i] (z : Z) :
     Nat.card (X.residueField (i z) →+* ℂ) = Nat.card (Z.residueField z →+* ℂ) := by
@@ -24,7 +24,7 @@ theorem card_ringHom_eq {X Z : Scheme.{0}} (i : Z ⟶ X) [IsPreimmersion i] (z :
     fun φ => by ext; simp, fun φ => by ext; simp⟩
 
 /- English proof (translation)
-Use `haveI : NumberField L := NumberField.of_module_finite F L`. Rewrite using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, AlgHom.card, NumberField.Embeddings.card, Module.finrank_mul_finrank]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_emb (F L : Type) [Field F] [NumberField F] [Field L] [Algebra F L] [Module.Finite F L] :
     Nat.card (L →+* ℂ) = Module.finrank ℚ F * Nat.card (L →ₐ[F] AlgebraicClosure F) := by
@@ -33,15 +33,15 @@ theorem card_emb (F L : Type) [Field F] [NumberField F] [Field L] [Algebra F L] 
     Module.finrank_mul_finrank]
 
 /- English proof (translation)
-Use `isClosed_singleton_iff_isClosedImmersion.1 hx` as an intermediate fact. Take `⟨φ, hφ⟩` from `Spec.map_surjective (X.fromSpecResidueField x ≫ s)`. Establish `hfin : IsFinite (Spec.map φ)`. Rewrite using `[hφ]`. Conclude with `isFinite_iff_locallyOfFiniteType_of_jacobsonSpace.2 inferInstance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Use `letI : Algebra F (X.residueField x) := φ.hom.toAlgebra`. Use `haveI : Module.Finite F (X.residueField x) := (IsFinite.SpecMap_iff φ).1 hfin`. Establish `hP (ψ : X.residueField x →ₐ[F] AlgebraicClosure F) : (Spec.map (CommRingCat.ofHom ψ.toRingHom) ≫ X.fromSpecResidueField x) ≫ s = spMap (algebraMap F (AlgebraicClosure F))`. Establish `h : φ ≫ CommRingCat.ofHom ψ.toRingHom = CommRingCat.ofHom (algebraMap F (AlgebraicClosure F))` using `CommRingCat.hom_ext ψ.comp_algebraMap`. Rewrite using `[Category.assoc, ← hφ, ← Spec.map_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `congrArg Spec.map h`. Set `P : (X.residueField x →ₐ[F] AlgebraicClosure F) → {y : {y : Sp (AlgebraicClosure F) ⟶ X // y ≫ s = spMap (algebraMap F (AlgebraicClosure F))} // below y.1 = x}` to `fun ψ => ⟨⟨Spec.map (CommRingCat.ofHom ψ.toRingHom) ≫ X.fromSpecResidueField x, hP ψ⟩, ExtConj.below_comp x _⟩`. Establish `hb : Function.Bijective P`. Use `⟨fun a b h => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : Spec.map (CommRingCat.ofHom a.toRingHom) ≫ X.fromSpecResidueField x = Spec.map (CommRingCat.ofHom b.toRingHom) ≫ X.fromSpecResidueField x` using `congrArg (fun t => t.1.1) h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `congrArg CommRingCat.Hom.hom (Spec.map_injective ((cancel_mono _).1 h1))`. Conclude with `AlgHom.coe_ringHom_injective h2`. Introduce and unpack `⟨⟨y, hy⟩, hyx⟩`. Take `⟨ψ, h⟩` from `ExtConj.factor y x hyx`. Establish `h2 : Spec.map (φ ≫ ψ) = Spec.map (CommRingCat.ofHom (algebraMap F (AlgebraicClosure F)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Spec.map_comp, hφ, ← Category.assoc, h]`. Conclude with `hy`. Establish `h3` using `Spec.map_injective h2`. Conclude with `⟨⟨ψ.hom, fun a => congrArg (fun t => t.hom a) h3⟩, Subtype.ext (Subtype.ext h)⟩`. Rewrite using `[card_emb F (X.residueField x), Nat.card_congr (Equiv.ofBijective P hb)]`.
+A detailed English derivation is pending.
 -/
 theorem card_parity_sign_length_of_eq {F : Type} [Field F] [NumberField F] {X : Scheme.{0}} (s : X ⟶ Sp F)
     [LocallyOfFiniteType s] (x : X) (hx : IsClosed ({x} : Set X)) :
@@ -83,7 +83,7 @@ theorem card_parity_sign_length_of_eq {F : Type} [Field F] [NumberField F] {X : 
   rw [card_emb F (X.residueField x), Nat.card_congr (Equiv.ofBijective P hb)]
 
 /- English proof (translation)
-Introduce `F _ _ Y M x hx`. Establish `h1 : IsPreimmersion (spMap (algebraMap (𝓞 F) F))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 F))`. Use `haveI : IsPreimmersion M.j := MorphismProperty.of_isPullback (P := @IsPreimmersion) M.pb.flip h1`. Rewrite using `[card_ringHom_eq]`. Conclude with `card_parity_sign_length_of_eq Y.str x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (M : TrueGeo.Model Y) (x : Y.X), IsClosed ({x} : Set Y.X) → Nat.card (M.X.residueField (M.j x) →+* ℂ) = Module.finrank ℚ F * Nat.card {y : AlgPt Y // below y.1 = x} := by
   intro F _ _ Y M x hx

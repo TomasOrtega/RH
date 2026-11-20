@@ -12,9 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ hB D A G _ _ hG U O _ _ _ o a`. Establish `hE` using `(GlobalTheory.Mum.endData_symm_and_ofOAct R D.toPre).2 O o a`. Take `⟨b, hb⟩` from `GlobalTheory.T.exists_adjointEndomorphisms_action_uniformisedThickenings R hB.1 D A G hG U _ _ _ _ hE`. Take `⟨g, hg, hgb⟩` from `GlobalTheory.T.mumford_formalEndomorphism_algebraic R hB D A G hG U _ _ _ _ hE b hb`. Take `⟨f, hf, hact⟩` from `GlobalTheory.Mum.GenericEnd.exists_generic_of_formal U.toUnifPre (o.onB.act a) (DistribMulAction.toAddMonoidHom D.toPre.X (star a)) b hb g hg hgb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfun : (⇑(DistribMulAction.toAddMonoidHom D.toPre.X (star a)) : D.toPre.X → D.toPre.X) = fun χ => star a • χ`. Use function extensionality and compare the values at `fun χ => DistribMulAction.toAddMonoidHom_apply _ _ χ`. Rewrite `hact` using `[hfun]`. Conclude with `⟨f, hf, hact⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.Mum.GenericEnd.main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (U : Unif (maximalIdeal R) D A G) (O : Type) [Ring O] [StarRing O] [Module O D.toPre.X] (o : D.toPre.OAct O) (a : O), ∃ f : A.A ⟶ A.A, IsMonHom f ∧ ∀ g : G ⟶ G, IsMonHom g → (Over.pullback (jK R)).map g ≫ U.gen.hom = U.gen.hom ≫ f → ActsAs U.toUnifPre (o.onB.act a) (fun χ => star a • χ) g := by
   intro R _ _ _ hB D A G _ _ hG U O _ _ _ o a

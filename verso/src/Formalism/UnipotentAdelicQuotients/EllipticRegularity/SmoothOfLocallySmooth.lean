@@ -6,9 +6,9 @@ open MeasureTheory Metric Filter Topology
 open scoped ContDiff FourierTransform ENNReal
 
 /- English proof (translation)
-Introduce `d g _ _ ξ`. Rewrite using `[Real.fourier_eq']`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show g y * eF ξ y = Complex.exp (((-2 * Real.pi * inner ℝ y ξ : ℝ) : ℂ) * Complex.I) • g y`. Rewrite using `[smul_eq_mul, mul_comm (Complex.exp _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [eF]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integralFourierChar : FourierPair := by
   intro d g _ _ ξ
@@ -23,9 +23,7 @@ theorem integralFourierChar : FourierPair := by
   ring
 
 /- English proof (translation)
-Introduce `d x0 r hr`. Set `f : ContDiffBump x0` to `⟨r / 4, r / 2, by positivity, by linarith⟩`. Use `⟨f, f.contDiff, f.hasCompactSupport, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[f.tsupport_eq]`. Conclude with `closedBall_subset_ball (show r / 2 < r by linarith)`.
-
-Use `filter_upwards [ball_mem_nhds x0 (show (0 : ℝ) < r / 4 by positivity)] with y hy`. Conclude with `f.one_of_mem_closedBall (ball_subset_closedBall hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsBump : Bump := by
   intro d x0 r hr
@@ -37,11 +35,11 @@ theorem existsBump : Bump := by
     exact f.one_of_mem_closedBall (ball_subset_closedBall hy)
 
 /- English proof (translation)
-Introduce `d U u χ hU hu hχs hχc hχt`. Establish `hχ' : Continuous (fun x => (χ x : ℂ))` using `Complex.continuous_ofReal.comp hχs.continuous`. Establish `hsub : tsupport (cut χ u) ⊆ tsupport χ`. Apply `closure_mono` to reduce the goal to its premises. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h0`. Apply `hx` to reduce the goal to its premises. Establish `h0' : χ x = 0` using `by simpa using h0`. Simplify using `[cut, h0']`. Establish `hcont : ContinuousOn (cut χ u) U` using `hχ'.continuousOn.mul hu`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `⟨hcont.continuous_of_tsupport_subset hU (hsub.trans hχt), IsCompact.of_isClosed_subset hχc (isClosed_tsupport _) hsub⟩`.
+Supply the required witnesses or components.
 -/
 theorem cutoffContinuous : CutCont := by
   intro d U u χ hU hu hχs hχc hχt
@@ -58,7 +56,7 @@ theorem cutoffContinuous : CutCont := by
     IsCompact.of_isClosed_subset hχc (isClosed_tsupport _) hsub⟩
 
 /- English proof (translation)
-Introduce `d U f _ h x hx`. Take `⟨χ, hχ1, hχf⟩` from `h x hx`. Establish `heq : cut χ f =ᶠ[𝓝 x] f` using `by filter_upwards [hχ1] with y hy`. Simplify using `[cut, hy]`. Conclude with `(hχf.contDiffAt.congr_of_eventuallyEq heq.symm).contDiffWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smoothOfLocallySmooth : LocalGlobal := by
   intro d U f _ h x hx

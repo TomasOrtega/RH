@@ -9,9 +9,9 @@ open scoped InnerProductSpace
 namespace GlobalTheory.HolDS
 
 /- English proof (translation)
-Take `⟨K⟩ : Nonempty (TopologicalSpace.PositiveCompacts H)` from `inferInstance`. Establish `h0 : ν K ≠ 0` using `(Measure.measure_pos_of_nonempty_interior ν K.interior_nonempty).ne'`. Establish `h1 : ν K ≠ ⊤` using `K.isCompact.measure_lt_top.ne`. Establish `h2 : (c : ENNReal) * ν K = 1 * ν K` using `by conv_rhs => rw [← h]`. Rewrite using `[one_mul, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[ENNReal.mul_left_inj h0 h1]`. Conclude with `h2` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_smul_haar_eq {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [MeasurableSpace H]
     [BorelSpace H] [LocallyCompactSpace H] (ν : Measure H) [ν.IsHaarMeasure] {c : NNReal} (h : c • ν = ν) :
@@ -26,19 +26,17 @@ theorem eq_one_of_smul_haar_eq {H : Type} [Group H] [TopologicalSpace H] [IsTopo
   exact_mod_cast h2
 
 /- English proof (translation)
-Introduce `p q T`. Establish `h` using `blockOrd_finSumFinEquiv p q`. Use `haveI := GlobalTheory.RealPar.SqInt.isHaarMeasure_map_covU h T`. Use `set ε : Fin (p + q) → Bool := fun i => (finSumFinEquiv.symm i).isLeft`. Use `set f := GlobalTheory.RealPar.SqInt.covU h T`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf : Measurable f` using `(GlobalTheory.RealPar.SqInt.continuous_covU h T).measurable`. Take `⟨c, hc⟩ : ∃ c : NNReal, T.haar.map f = c • Formalism.REAL.muG ε` from `⟨_, Measure.isMulLeftInvariant_eq_smul _ _⟩`. Establish `hR : T.haar.IsMulRightInvariant`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Establish `hg` using `Measure.map_right_mul_eq_modularCharacterFun_smul T.haar g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (T.haar.map (· * g)).map f = T.haar.map f`. Establish `h2 : (T.haar.map (· * g)).map f = (T.haar.map f).map (· * f g)`. Rewrite using `[Measure.map_map hf (measurable_mul_const g), Measure.map_map (measurable_mul_const _) hf]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h2, hc, Measure.map_smul, Formalism.REAL.indefinite_unitary_unimodular _ ε (f g)]`. Rewrite `h1` using `[hg, Measure.map_smul]`. Rewrite using `[hg, eq_one_of_smul_haar_eq _ h1, one_smul]`. Use `⟨hR, ⟨?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : T.haar.inv.IsHaarMeasure := { toIsFiniteMeasureOnCompacts := inferInstance toIsMulLeftInvariant := inferInstance toIsOpenPosMeasure := inferInstance }`. Take `⟨d, hd⟩ : ∃ d : NNReal, T.haar.inv = d • T.haar` from `⟨_, Measure.isMulLeftInvariant_eq_smul _ _⟩`. Establish `h1 : T.haar.inv.map f = T.haar.map f`. Establish `h2 : T.haar.inv.map f = (T.haar.map f).map (fun x => x⁻¹)`. Rewrite using `[Measure.inv_def, Measure.map_map hf measurable_inv, Measure.map_map measurable_inv hf]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[h2, hc, Measure.map_smul, Formalism.REAL.invInvariant_of Formalism.REAL.indefinite_unitary_unimodular _ ε]`. Rewrite `h1` using `[hd, Measure.map_smul]`.
-
-Rewrite using `[hd, eq_one_of_smul_haar_eq _ h1, one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_unimodular : ∀ (p q : ℕ) (T : GrpData p q), T.haar.IsMulRightInvariant ∧ T.haar.IsInvInvariant := by
   intro p q T

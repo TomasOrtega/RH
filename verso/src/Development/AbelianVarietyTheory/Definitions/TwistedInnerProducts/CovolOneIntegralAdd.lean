@@ -48,65 +48,65 @@ Both sides reduce to the same expression.
 theorem ratW_eq (V W : HSp D) (γ : Matrix (Fin V.rank) (Fin W.rank) D.host.E) : ratW V W γ = rat γ := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ratMx {x : Mx D m n} : x ∈ ratMx D m n ↔ ∃ γ, rat γ = x := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨γ, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem rat_mem (γ : Matrix (Fin m) (Fin n) D.host.E) : rat γ ∈ ratMx D m n := ⟨γ, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)`.
+A detailed English derivation is pending.
 -/
 theorem incA_injective : Function.Injective (incA D) :=
   Algebra.TensorProduct.includeRight_injective (NumberField.AdeleRing.algebraMap_injective (𝓞 D.host.F) D.host.F)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Matrix.map_injective incA_injective h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rat_injective : Function.Injective (rat : Matrix (Fin m) (Fin n) D.host.E → Mx D m n) :=
   fun _ _ h => Matrix.map_injective incA_injective h
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem rat_mul (M : Matrix (Fin l) (Fin m) D.host.E) (N : Matrix (Fin m) (Fin n) D.host.E) :
     rat (M * N) = rat M ⬝ rat N := Matrix.map_mul
 
 /- English proof (translation)
-The claim follows from `Matrix.map_add _ (map_add (incA D)) M N`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem rat_add (M N : Matrix (Fin m) (Fin n) D.host.E) : rat (M + N) = rat M + rat N :=
   Matrix.map_add _ (map_add (incA D)) M N
 
 /- English proof (translation)
-The claim follows from `Matrix.map_sub _ (map_sub (incA D)) M N`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem rat_sub (M N : Matrix (Fin m) (Fin n) D.host.E) : rat (M - N) = rat M - rat N :=
   Matrix.map_sub _ (map_sub (incA D)) M N
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Conclude with `map_neg (incA D) (M i j)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 @[simp] theorem rat_neg (M : Matrix (Fin m) (Fin n) D.host.E) : rat (-M) = -rat M := by
   funext i j; exact map_neg (incA D) (M i j)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_zero _ (map_zero (incA D))`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem rat_zero : rat (0 : Matrix (Fin m) (Fin n) D.host.E) = 0 :=
   Matrix.map_zero _ (map_zero (incA D))
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero (incA D)) (map_one (incA D))`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem rat_one : rat (1 : Matrix (Fin n) (Fin n) D.host.E) = 1 :=
   Matrix.map_one _ (map_zero (incA D)) (map_one (incA D))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Conclude with `map_mul (incA D) a (M i j)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 @[simp] theorem rat_smul (a : D.host.E) (M : Matrix (Fin m) (Fin n) D.host.E) : rat (a • M) = incA D a • rat M := by
   funext i j; exact map_mul (incA D) a (M i j)
@@ -123,78 +123,78 @@ theorem cT_sig (M : Matrix (Fin m) (Fin n) D.host.E) :
     Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) M = Mᴴ := rfl
 
 /- English proof (translation)
-The claim follows from `Formalism.UG.cT_mul (cA D) x y`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem adj_mul (x : Mx D l m) (y : Mx D m n) : adj (x ⬝ y) = adj y ⬝ adj x :=
   Formalism.UG.cT_mul (cA D) x y
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Conclude with `map_add (cA D) (x j i) (y j i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 @[simp] theorem adj_add (x y : Mx D m n) : adj (x + y) = adj x + adj y := by
   funext i j; exact map_add (cA D) (x j i) (y j i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Conclude with `map_sub (cA D) (x j i) (y j i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 @[simp] theorem adj_sub (x y : Mx D m n) : adj (x - y) = adj x - adj y := by
   funext i j; exact map_sub (cA D) (x j i) (y j i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Conclude with `map_neg (cA D) (x j i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 @[simp] theorem adj_neg (x : Mx D m n) : adj (-x) = -adj x := by
   funext i j; exact map_neg (cA D) (x j i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Conclude with `map_zero (cA D)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 @[simp] theorem adj_zero : adj (0 : Mx D m n) = 0 := by
   funext i j; exact map_zero (cA D)
 
 /- English proof (translation)
-The claim follows from `Formalism.UG.cT_one (cA D)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem adj_one : adj (1 : Mx D n n) = 1 := Formalism.UG.cT_one (cA D)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Conclude with `cA_cA (x i j)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 @[simp] theorem adj_adj (x : Mx D m n) : adj (adj x) = x := by
   funext i j; exact cA_cA (x i j)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Conclude with `map_mul (cA D) a (x j i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 @[simp] theorem adj_smul (a : AE D) (x : Mx D m n) : adj (a • x) = cA D a • adj x := by
   funext i j; exact map_mul (cA D) a (x j i)
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, map_sum]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem trace_adj (x : Mx D n n) : (adj x).trace = cA D x.trace := by
   simp only [Matrix.trace, map_sum]; rfl
 
 /- English proof (translation)
-Rewrite using `[half, GlobalTheory.DualPairCheck.cA_incA]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem cA_half : cA D (half D) = half D := by
   rw [half, GlobalTheory.DualPairCheck.cA_incA]; congr 1; simp
 
 /- English proof (translation)
-Rewrite using `[half, ← map_add, add_halves, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem half_add_half : half D + half D = 1 := by
   rw [half, ← map_add, add_halves, map_one]
 
 /- English proof (translation)
-Rewrite using `[← add_smul, half_add_half, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem half_smul_add (x : Mx D m n) : half D • x + half D • x = x := by
   rw [← add_smul, half_add_half, one_smul]
 
 /- English proof (translation)
-The claim follows from `(continuous_id.matrix_map GlobalTheory.FockCompare.ThetaCont.continuous_conj).matrix_transpose`.
+A detailed English derivation is pending.
 -/
 theorem continuous_adj : Continuous (adj : Mx D m n → Mx D n m) :=
   (continuous_id.matrix_map GlobalTheory.FockCompare.ThetaCont.continuous_conj).matrix_transpose
@@ -206,58 +206,58 @@ section Gram
 variable (S : HSp D)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Conclude with `GlobalTheory.DualPairCheck.gram_star S j i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem gram_conjTranspose : S.gramᴴ = S.gram := by
   funext i j; exact GlobalTheory.DualPairCheck.gram_star S j i
 
 /- English proof (translation)
-The claim follows from `isUnit_iff_ne_zero.2 (gram_det_ne S)`.
+A detailed English derivation is pending.
 -/
 theorem gram_isUnit_det : IsUnit S.gram.det := isUnit_iff_ne_zero.2 (gram_det_ne S)
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_nonsing_inv, gram_conjTranspose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gramInv_conjTranspose : (S.gram⁻¹)ᴴ = S.gram⁻¹ := by
   rw [Matrix.conjTranspose_nonsing_inv, gram_conjTranspose]
 
 /- English proof (translation)
-Rewrite using `[gA, ← rat_conjTranspose, gram_conjTranspose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem adj_gA : adj (gA S) = gA S := by rw [gA, ← rat_conjTranspose, gram_conjTranspose]
 
 /- English proof (translation)
-Rewrite using `[giA, ← rat_conjTranspose, gramInv_conjTranspose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem adj_giA : adj (giA S) = giA S := by rw [giA, ← rat_conjTranspose, gramInv_conjTranspose]
 
 /- English proof (translation)
-Rewrite using `[giA, gA, ← rat_mul, Matrix.nonsing_inv_mul _ (gram_isUnit_det S), rat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem giA_mul_gA : giA S * gA S = 1 := by
   rw [giA, gA, ← rat_mul, Matrix.nonsing_inv_mul _ (gram_isUnit_det S), rat_one]
 
 /- English proof (translation)
-Rewrite using `[giA, gA, ← rat_mul, Matrix.mul_nonsing_inv _ (gram_isUnit_det S), rat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem gA_mul_giA : gA S * giA S = 1 := by
   rw [giA, gA, ← rat_mul, Matrix.mul_nonsing_inv _ (gram_isUnit_det S), rat_one]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, giA_mul_gA, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem giA_gA_cancel {n : ℕ} (x : Mx D S.rank n) : giA S ⬝ (gA S ⬝ x) = x := by
   rw [← Matrix.mul_assoc, giA_mul_gA, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, gA_mul_giA, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem gA_giA_cancel {n : ℕ} (x : Mx D S.rank n) : gA S ⬝ (giA S ⬝ x) = x := by
   rw [← Matrix.mul_assoc, gA_mul_giA, Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `only [hO, Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Finset.mul_sum, mul_assoc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem hO_eq_trace (T : HSp D) (x y : WO S T) : hO S T x y = (giA S ⬝ (adj y ⬝ (gA T ⬝ x))).trace := by
   simp only [hO, Matrix.trace, Matrix.diag_apply, Matrix.mul_apply, Finset.mul_sum, mul_assoc]
@@ -270,7 +270,7 @@ section Unit
 variable (S : HSp D)
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc]`. Conclude with `mt_rel S g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mt_unitary (g : GA D S) : adj (mt S g) * (gA S * mt S g) = gA S := by
   rw [← Matrix.mul_assoc]; exact mt_rel S g
@@ -286,17 +286,17 @@ Both sides reduce to the same expression.
 @[simp] theorem mt_one : mt S 1 = 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[← mt_mul, inv_mul_cancel, mt_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_inv_mul (g : GA D S) : mt S g⁻¹ * mt S g = 1 := by rw [← mt_mul, inv_mul_cancel, mt_one]
 
 /- English proof (translation)
-Rewrite using `[← mt_mul, mul_inv_cancel, mt_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_mul_inv (g : GA D S) : mt S g * mt S g⁻¹ = 1 := by rw [← mt_mul, mul_inv_cancel, mt_one]
 
 /- English proof (translation)
-Establish `h : giA S * (adj (mt S g) * gA S) * mt S g = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, mt_unitary, giA_mul_gA]`. Rewrite using `[← Matrix.one_mul (mt S g⁻¹), ← h, Matrix.mul_assoc, mt_mul_inv, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mt_inv (g : GA D S) : mt S g⁻¹ = giA S * (adj (mt S g) * gA S) := by
   have h : giA S * (adj (mt S g) * gA S) * mt S g = 1 := by
@@ -304,7 +304,7 @@ theorem mt_inv (g : GA D S) : mt S g⁻¹ = giA S * (adj (mt S g) * gA S) := by
   rw [← Matrix.one_mul (mt S g⁻¹), ← h, Matrix.mul_assoc, mt_mul_inv, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Subtype.ext (Units.ext h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mt_injective : Function.Injective (mt S) := fun _ _ h => Subtype.ext (Units.ext h)
 
@@ -320,11 +320,11 @@ Both sides reduce to the same expression.
 @[simp] theorem mt_ofMat (M : Mx D S.rank S.rank) (h : adj M * (gA S * M) = gA S) : mt S (ofMat S M h) = M := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, -, h⟩`. Conclude with `⟨γ.1, congrArg Units.val h⟩`. Introduce and unpack `⟨γ, hγ⟩ replace hγ : rat γ = mt S g := hγ`. Establish `h : γᴴ * S.gram * γ = S.gram`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Apply `rat_injective` to reduce the goal to its premises. Rewrite using `[rat_mul, rat_mul, rat_conjTranspose, hγ]`. Conclude with `mt_rel S g`. Establish `h1 : S.gram⁻¹ * (γᴴ * S.gram) * γ = 1`. Rewrite using `[Matrix.mul_assoc, h, Matrix.nonsing_inv_mul _ (gram_isUnit_det S)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨γ, _, mul_eq_one_comm.1 h1, h1⟩, h, Units.ext hγ⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_GQ_iff (g : GA D S) : g ∈ GQ S ↔ mt S g ∈ ratMx D S.rank S.rank := by
   constructor
@@ -341,13 +341,13 @@ theorem mem_GQ_iff (g : GA D S) : g ∈ GQ S ↔ mt S g ∈ ratMx D S.rank S.ran
     exact ⟨⟨γ, _, mul_eq_one_comm.1 h1, h1⟩, h, Units.ext hγ⟩
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mt : Continuous (mt S) :=
   Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-Use `Continuous.subtype_mk (f := fun x => matHom S (φ x)) (Units.continuous_iff.2 ⟨h, ?_⟩) _` and prove the remaining obligations. Establish `: (fun x => ((matHom S (φ x))⁻¹ : GL _ _).1) = fun x => giA S * (adj (mt S (φ x)) * gA S)`. Use function extensionality and compare the values at `fun x => mt_inv S (φ x)`. Rewrite using `[this]`. Conclude with `continuous_const.matrix_mul ((continuous_adj.comp h).matrix_mul continuous_const)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_mt {X : Type} [TopologicalSpace X] {φ : X → GA D S} (h : Continuous fun x => mt S (φ x)) :
     Continuous φ := by
@@ -369,7 +369,7 @@ section Rat
 variable {l m n : ℕ}
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `mem_ratMx.1 hx`. Take `⟨b, rfl⟩` from `mem_ratMx.1 hy`. Conclude with `⟨a * b, rat_mul a b⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ratMx_mul {x : Mx D l m} {y : Mx D m n} (hx : x ∈ ratMx D l m) (hy : y ∈ ratMx D m n) :
     x ⬝ y ∈ ratMx D l n := by
@@ -378,21 +378,21 @@ theorem ratMx_mul {x : Mx D l m} {y : Mx D m n} (hx : x ∈ ratMx D l m) (hy : y
   exact ⟨a * b, rat_mul a b⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `mem_ratMx.1 hx`. Conclude with `⟨aᴴ, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ratMx_adj {x : Mx D m n} (hx : x ∈ ratMx D m n) : adj x ∈ ratMx D n m := by
   obtain ⟨a, rfl⟩ := mem_ratMx.1 hx
   exact ⟨aᴴ, rfl⟩
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `mem_ratMx.1 hx`. Conclude with `⟨a • b, rat_smul a b⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ratMx_smul (a : D.host.E) {x : Mx D m n} (hx : x ∈ ratMx D m n) : incA D a • x ∈ ratMx D m n := by
   obtain ⟨b, rfl⟩ := mem_ratMx.1 hx
   exact ⟨a • b, rat_smul a b⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, rat_one⟩`.
+Supply the required witnesses or components.
 -/
 theorem ratMx_one : (1 : Mx D n n) ∈ ratMx D n n := ⟨1, rat_one⟩
 
@@ -403,7 +403,7 @@ section Lattice
 variable (D) (m n : ℕ)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AdelicMatrixLattice.lattice D (Examples₂.posSpace Examples₂.star_isIntegral m) (Examples₂.posSpace Examples₂.star_isIntegral n)`.
+A detailed English derivation is pending.
 -/
 theorem lattice_Mx : IsTopologicalAddGroup (Mx D m n) ∧ LocallyCompactSpace (Mx D m n) ∧
     SecondCountableTopology (Mx D m n) ∧ T2Space (Mx D m n) ∧ DiscreteTopology (ratMx D m n) ∧
@@ -411,7 +411,7 @@ theorem lattice_Mx : IsTopologicalAddGroup (Mx D m n) ∧ LocallyCompactSpace (M
   GlobalTheory.AdelicMatrixLattice.lattice D (Examples₂.posSpace Examples₂.star_isIntegral m) (Examples₂.posSpace Examples₂.star_isIntegral n)
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `lattice_Mx D m n`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Conclude with `(GlobalTheory.exists_normalise_meanSquare_of_cocompact (Mx D m n) (ratMx D m n) K hK hKc (fun _ => 1) continuous_const (fun h => one_ne_zero (congrFun h 0)) (fun _ _ _ => rfl)).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isCovolOne : ∃ μ 𝓕, IsCovolOne (ratMx D m n) μ 𝓕 := by
   obtain ⟨i1, i2, i3, i4, i5, K, hK, hKc⟩ := lattice_Mx D m n
@@ -422,9 +422,9 @@ theorem exists_isCovolOne : ∃ μ 𝓕, IsCovolOne (ratMx D m n) μ 𝓕 := by
 variable {D m n}
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -⟩` from `lattice_Mx D m n`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Use `haveI : Countable (ratMx D m n) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Take `⟨hμ, hF, h1⟩` from `h`. Take `⟨hμ', hF', h1'⟩` from `h'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `Measure.isAddLeftInvariant_eq_smul μ' μ`. Establish `hF2 : IsAddFundamentalDomain (ratMx D m n) 𝓕 μ'` using `hF.mono (by rw [e]; exact Measure.smul_absolutelyContinuous)`. Establish `h2 : μ' 𝓕 = 1` using `(hF2.measure_eq hF').trans h1'`. Rewrite `h2` using `[e, Measure.smul_apply, h1, ENNReal.smul_def, smul_eq_mul, mul_one, ENNReal.coe_eq_one]`. Rewrite using `[e, h2, one_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covolOne_measure_eq {μ μ' : Measure (Mx D m n)} {𝓕 𝓕' : Set (Mx D m n)}
     (h : IsCovolOne (ratMx D m n) μ 𝓕) (h' : IsCovolOne (ratMx D m n) μ' 𝓕') : μ' = μ := by
@@ -440,9 +440,7 @@ theorem covolOne_measure_eq {μ μ' : Measure (Mx D m n)} {𝓕 𝓕' : Set (Mx 
   rw [e, h2, one_smul]
 
 /- English proof (translation)
-Take `rfl` from `covolOne_measure_eq h h'`. Take `⟨i1, i2, i3, i4, i5, -⟩` from `lattice_Mx D m n`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Use `haveI : Countable (ratMx D m n) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Use `haveI := h.1`.
-
-Conclude with `h'.2.1.setIntegral_eq h.2.1 fun γ a => hφ γ γ.2 a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem covolOne_integral_eq {μ μ' : Measure (Mx D m n)} {𝓕 𝓕' : Set (Mx D m n)}
     (h : IsCovolOne (ratMx D m n) μ 𝓕) (h' : IsCovolOne (ratMx D m n) μ' 𝓕') (φ : Mx D m n → ℂ)
@@ -455,9 +453,9 @@ theorem covolOne_integral_eq {μ μ' : Measure (Mx D m n)} {𝓕 𝓕' : Set (Mx
   exact h'.2.1.setIntegral_eq h.2.1 fun γ a => hφ γ γ.2 a
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `lattice_Mx D m n`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by rw [Measure.restrict_apply_univ, h.2.2]; exact ENNReal.one_lt_top⟩`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hc.continuousOn`. Use `Integrable.of_bound hc.measurable.aestronglyMeasurable C (Filter.Eventually.of_forall fun a => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨γ, hγ, ha⟩` from `hKc a`. Rewrite using `[← hφ γ hγ a]`. Conclude with `hC _ ha`.
+A detailed English derivation is pending.
 -/
 theorem covolOne_integrableOn {μ : Measure (Mx D m n)} {𝓕 : Set (Mx D m n)}
     (h : IsCovolOne (ratMx D m n) μ 𝓕) (φ : Mx D m n → ℂ) (hc : Continuous φ)
@@ -472,9 +470,9 @@ theorem covolOne_integrableOn {μ : Measure (Mx D m n)} {𝓕 : Set (Mx D m n)}
   exact hC _ ha
 
 /- English proof (translation)
-Take `⟨i1, i2, i3, i4, i5, -⟩` from `lattice_Mx D m n`. Use `haveI : BorelSpace (Mx D m n) := ⟨rfl⟩`. Use `haveI : Countable (ratMx D m n) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Use `haveI := h.1`. Establish `h1 : IsAddFundamentalDomain (ratMx D m n) (u +ᵥ 𝓕) μ` using `h.2.1.vadd_of_comm u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h.2.1.setIntegral_eq h1 (f := φ) fun γ w => hφ γ γ.2 w]`. Establish `h2` using `(measurePreserving_add_left μ u).setIntegral_image_emb (measurableEmbedding_addLeft u) φ 𝓕`. Simplify using `only [add_comm _ u]`. Conclude with `h2.symm`.
+A detailed English derivation is pending.
 -/
 theorem covolOne_integral_add {μ : Measure (Mx D m n)} {𝓕 : Set (Mx D m n)}
     (h : IsCovolOne (ratMx D m n) μ 𝓕) (φ : Mx D m n → ℂ)
@@ -511,32 +509,32 @@ theorem symplO_eq (S T : HSp D) (x y : WO S T) :
     symplO S T x y = Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * hO S T x y) := rfl
 
 /- English proof (translation)
-Rewrite using `[symplOH_eq, hO_eq_trace, Matrix.mul_zero, Matrix.mul_zero, Matrix.mul_zero, Matrix.trace_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_zero_left (S T : HSp D) (y : WO S T) : symplOH S T 0 y = 0 := by
   rw [symplOH_eq, hO_eq_trace, Matrix.mul_zero, Matrix.mul_zero, Matrix.mul_zero, Matrix.trace_zero, map_zero]
 
 /- English proof (translation)
-Rewrite using `[symplOH_eq, hO_eq_trace, adj_zero, Matrix.zero_mul, Matrix.mul_zero, Matrix.trace_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_zero_right (S T : HSp D) (x : WO S T) : symplOH S T x 0 = 0 := by
   rw [symplOH_eq, hO_eq_trace, adj_zero, Matrix.zero_mul, Matrix.mul_zero, Matrix.trace_zero, map_zero]
 
 /- English proof (translation)
-Rewrite using `[symplOH, symplOH, GlobalTheory.OrientedHeis.symplO_skew, mul_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_skew (S T : HSp D) (x y : WO S T) : symplOH S T y x = -symplOH S T x y := by
   rw [symplOH, symplOH, GlobalTheory.OrientedHeis.symplO_skew, mul_neg]
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_mul, hx, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mul_eq_zero_left {B : Type} [CommRing B] (φ : AE D →+* B) {l m n : ℕ} {x : Mx D l m} (hx : x.map φ = 0)
     (y : Mx D m n) : (x ⬝ y).map φ = 0 := by
   rw [Matrix.map_mul, hx, Matrix.zero_mul]
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_mul, hy, Matrix.mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mul_eq_zero_right {B : Type} [CommRing B] (φ : AE D →+* B) {l m n : ℕ} (x : Mx D l m) {y : Mx D m n}
     (hy : y.map φ = 0) : (x ⬝ y).map φ = 0 := by
@@ -553,13 +551,13 @@ Both sides reduce to the same expression.
 theorem sandwich_apply {k l m n : ℕ} (P : Mx D k l) (Q : Mx D m n) (w : Mx D l m) : sandwich P Q w = P ⬝ w ⬝ Q := rfl
 
 /- English proof (translation)
-The claim follows from `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sandwich {k l m n : ℕ} (P : Mx D k l) (Q : Mx D m n) : Continuous (sandwich P Q) :=
   (continuous_const.matrix_mul continuous_id).matrix_mul continuous_const
 
 /- English proof (translation)
-The claim follows from `map_mul_eq_zero_left φ (map_mul_eq_zero_right φ P hw) Q`.
+A detailed English derivation is pending.
 -/
 theorem map_sandwich {B : Type} [CommRing B] (φ : AE D →+* B) {k l m n : ℕ} (P : Mx D k l) (Q : Mx D m n)
     {w : Mx D l m} (hw : w.map φ = 0) : (sandwich P Q w).map φ = 0 :=
@@ -568,15 +566,13 @@ theorem map_sandwich {B : Type} [CommRing B] (φ : AE D →+* B) {k l m n : ℕ}
 variable {ψ : AddChar (AF D.host.F) ℂ} {S T S₁ T₁ S₂ T₂ : HSp D}
 
 /- English proof (translation)
-Establish `e₁ : sandwich (rat P₁) (rat Q₁) (ratW T S γ) = ratW T₁ S₁ (P₁ * γ * Q₁)`. Rewrite using `[ratW_eq, ratW_eq, rat_mul, rat_mul]`. Both sides reduce to the same expression. Establish `e₂ : sandwich (rat P₂) (rat Q₂) (ratW T S γ) = ratW T₂ S₂ (P₂ * γ * Q₂)`. Rewrite using `[ratW_eq, ratW_eq, rat_mul, rat_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[map_add, map_add, h, e₁, e₂, h₁.quasi, h₂.quasi, neg_add, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `level := by`. Take `⟨U₁, hU₁, k₁⟩` from `h₁.level`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U₂, hU₂, k₂⟩` from `h₂.level`. Use `⟨U₁.comap (sandwich (rat P₁) (rat Q₁)) ⊓ U₂.comap (sandwich (rat P₂) (rat Q₂)), (hU₁.preimage (continuous_sandwich _ _)).inter (hU₂.preimage (continuous_sandwich _ _)), fun u hu h0 => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Establish `e₁` using `congrFun (k₁ _ hu.1 (map_sandwich _ _ _ h0)) (sandwich (rat P₁) (rat Q₁) w)`. Establish `e₂` using `congrFun (k₂ _ hu.2 (map_sandwich _ _ _ h0)) (sandwich (rat P₂) (rat Q₂) w)`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [heisO] at e₁ e₂ ⊢`. Rewrite using `[← e₁, ← e₂, h, AddChar.map_add_eq_mul, map_add, map_add]`. Expand and normalize the polynomial expressions, which then agree. Use `cont := (h₁.cont.comp (continuous_sandwich _ _)).mul (h₂.cont.comp (continuous_sandwich _ _))`. Use `smooth k L hL h0 w := by`.
-
-Simplify using `only [map_add]`. Conclude with `(h₁.smooth k ((sandwich (rat P₁) (rat Q₁)).comp L) ((continuous_sandwich _ _).comp hL) (fun t => map_sandwich _ _ _ (h0 t)) _).mul (h₂.smooth k ((sandwich (rat P₂) (rat Q₂)).comp L) ((continuous_sandwich _ _).comp hL) (fun t => map_sandwich _ _ _ (h0 t)) _)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isThetaFunO_prod (P₁ : Matrix (Fin T₁.rank) (Fin T.rank) D.host.E) (Q₁ : Matrix (Fin S.rank) (Fin S₁.rank) D.host.E)
     (P₂ : Matrix (Fin T₂.rank) (Fin T.rank) D.host.E) (Q₂ : Matrix (Fin S.rank) (Fin S₂.rank) D.host.E)

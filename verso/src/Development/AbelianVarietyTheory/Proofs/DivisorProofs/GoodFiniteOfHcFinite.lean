@@ -12,7 +12,7 @@ namespace GlobalTheory.GoodFiniteDim
 variable {D : D7}
 
 /- English proof (translation)
-Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.ThetaIntegrand.eventually_princ V β T] with κ hh`. Take `⟨h1, h2, h3⟩` from `hh`. Conclude with `⟨⟨h1, h2⟩, Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => mem_princAt.2 ⟨h2, h3 PP hP⟩⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isOpen_comap_Kg (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (T : Finset (Pl D.host.E)) :
     IsOpen (((Kg D.sp.cm V.gram β T).comap (finE V) : Subgroup (GA D V)) : Set (GA D V)) := by
@@ -23,11 +23,11 @@ theorem isOpen_comap_Kg (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (T : Fins
   exact ⟨⟨h1, h2⟩, Subgroup.mem_iInf.2 fun PP => Subgroup.mem_iInf.2 fun hP => mem_princAt.2 ⟨h2, h3 PP hP⟩⟩
 
 /- English proof (translation)
-Establish `h3 : ∀ PP ∈ T, redFn β PP x = 1`. Establish `h1 : x ∈ ⨅ PP ∈ T, princAt β PP` using `hx.2`. Conclude with `fun PP hP => (mem_princAt.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h1 PP) hP)).2`. Establish `h4 : rTup β L x = 1`. Use function extensionality and compare the values at `PP`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show upperLeftBlock L.hr (redFn β PP.1 x) = 1`. Rewrite using `[h3 PP.1 (hg PP.2)]`. Conclude with `blockDiagonalExtendByOnePrimeField_one _ _`. Unfold `levFn`. Rewrite using `[h4, blockDiagonalExtendByOnePrimeField_one, one_mul, Finset.prod_eq_one, Finset.prod_eq_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `PP hP`. Rewrite using `[h3 PP (hq hP), dBlk, blockDiagonalExtendByOnePrimeField_one, map_one]`. Introduce `PP hP`. Use `Finset.prod_eq_one fun c _ => ?_` and prove the remaining obligations. Rewrite using `[h3 PP (hg hP), dBlk, blockDiagonalExtendByOnePrimeField_one, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levFn_eq_one {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat D.host.E ℂ V.rank} {T : Finset (Pl D.host.E)}
     (hg : L.Pg ⊆ T) (hq : L.Q ⊆ T) {x : GL (Fin V.rank) (Lev.EAf D)} (hx : x ∈ Kg D.sp.cm V.gram β T) :
@@ -48,7 +48,7 @@ theorem levFn_eq_one {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {L : LevDat 
     rw [h3 PP (hg hP), dBlk, blockDiagonalExtendByOnePrimeField_one, map_one]
 
 /- English proof (translation)
-Use `⟨_, isOpen_comap_Kg V β (L.Pg ∪ L.Q), fun k hk hf => ⟨⟨hf, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Conclude with `Kg_le_lev (D := L) (T := L.Pg ∪ L.Q) Finset.subset_union_left Finset.subset_union_right hk`. Unfold `levChi`. Rewrite using `[levFn_eq_one Finset.subset_union_left Finset.subset_union_right hk, Units.val_one]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_open_subgroup (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L : LevDat D.host.E ℂ V.rank) :
     ∃ U : Subgroup (GA D V), IsOpen (U : Set (GA D V)) ∧
@@ -60,7 +60,7 @@ theorem exists_open_subgroup (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (L :
     rw [levFn_eq_one Finset.subset_union_left Finset.subset_union_right hk, Units.val_one]
 
 /- English proof (translation)
-Introduce `θ hθ pb Pg _ pl _ red ψ _ om _ Sb _ j h1 h2 hj M β _`. Use `h θ j h1 h2 M _ _ hθ (exists_open_subgroup (D.sp.W j) β (GlobalTheory.IndefiniteRowSideFullHecke.GoodReductionModelReading.levelDatumAtBasePrime (D.sp.W j) Pg ψ))` as an intermediate fact. Conclude with `Submodule.finiteDimensional_of_le (goodPart_le θ M _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem goodFinite_of_hcFinite' (D : D7)
     (h : ∀ θ (j : ℕ), 1 ≤ j → j ≤ D.R.m → ∀ (M : GlobalTheory.IndefiniteRowSideFullHecke.GoodReductionModelReading.ModelW D j) J χ, HCFinite θ M J χ) :
@@ -70,7 +70,7 @@ theorem goodFinite_of_hcFinite' (D : D7)
   exact Submodule.finiteDimensional_of_le (goodPart_le θ M _ _ _)
 
 /- English proof (translation)
-Introduce `D h θ hθ pb Pg _ pl _ red ψ _ om _ Sb _ j _ _ hj M β _`. Use `h θ _ _ M _ _ hθ (exists_open_subgroup (D.sp.W j) β (GlobalTheory.IndefiniteRowSideFullHecke.GoodReductionModelReading.levelDatumAtBasePrime (D.sp.W j) Pg ψ))` as an intermediate fact. Conclude with `Submodule.finiteDimensional_of_le (goodPart_le θ M _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem goodFinite_of_hcFinite : ∀ D : Formalism.BasicNotions.D7,
     (∀ θ (V : Formalism.BasicNotions.TH.HSp D) S (M : Formalism.IndefR.Mult.DSModel V S) J χ, Formalism.IndefR.Mult.HCFinite θ M J χ) →

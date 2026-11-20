@@ -27,11 +27,11 @@ section Transport
 variable {S : Type*} [CommRing S] {L L' : Type*} [Field L] [Field L'] [Algebra S L] [Algebra S L']
 
 /- English proof (translation)
-Unfold `locIn`. Rewrite using `[RingHom.map_closure]`. Use `congr 1`. Use extensionality with `u`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨_, ⟨a, b, hb, rfl⟩, rfl⟩`. Conclude with `⟨e a, e b, fun h => hb ((hpP b).mpr h), by simp [he, map_div₀]⟩`. Introduce and unpack `⟨a', b', hb', rfl⟩`. Use `⟨(e.symm a' : L) / e.symm b', ⟨e.symm a', e.symm b', fun h => hb' ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `using (hpP (e.symm b')).mp h`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [RingHom.coe_coe, map_div₀, ← he, AlgEquiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem locIn_map (φ : L ≃ₐ[S] L') (A : Subalgebra S L) (B : Subalgebra S L') (e : A ≃ₐ[S] B)
     (he : ∀ a, (e a : L') = φ a) (p : Ideal A) (P : Ideal B) (hpP : ∀ a, a ∈ p ↔ e a ∈ P) :
@@ -49,7 +49,7 @@ theorem locIn_map (φ : L ≃ₐ[S] L') (A : Subalgebra S L) (B : Subalgebra S L
     · simp only [RingHom.coe_coe, map_div₀, ← he, AlgEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Unfold `chartRingOver`. Rewrite using `[AlgHom.map_adjoin, ← Set.range_comp]`. Use `congr 1`. Use extensionality with `u`. Simplify using `[map_div₀]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem chartRingOver_comp {K : Type} {ι : K → Type} (φ : L ≃ₐ[S] L') (v : (Σ k, ι k) → L) (c : ∀ k, ι k) :
     chartRingOver S (fun q => φ (v q)) c = (chartRingOver S v c).map (φ : L →ₐ[S] L') := by
@@ -71,9 +71,9 @@ theorem chartEquiv_coe {K : Type} {ι : K → Type} (φ : L ≃ₐ[S] L') (v : (
   rfl
 
 /- English proof (translation)
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, P, hP, rfl⟩`. Establish `hc' : ∀ k, v ⟨k, c k⟩ ≠ 0` using `fun k h => hc k (by simp [h])`. Use `⟨_, ⟨c, hc', P.comap (chartEquiv φ v c : chartRingOver S v c →+* _), inferInstance, rfl⟩, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `locIn_map φ _ _ (chartEquiv φ v c) (chartEquiv_coe φ v c) _ P (fun a => Iff.rfl)`. Introduce and unpack `⟨_, ⟨c, hc, p, hp, rfl⟩, rfl⟩`. Establish `hc' : ∀ k, φ (v ⟨k, c k⟩) ≠ 0` using `fun k => by simpa using hc k`. Use `⟨c, hc', p.comap ((chartEquiv φ v c).symm : _ →+* chartRingOver S v c), inferInstance, ?_⟩` and prove the remaining obligations. Conclude with `locIn_map φ _ _ (chartEquiv φ v c) (chartEquiv_coe φ v c) p _ (fun a => by rw [Ideal.mem_comap, RingHom.coe_coe, AlgEquiv.symm_apply_apply])`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem modelPts_comp {K : Type} {ι : K → Type} (φ : L ≃ₐ[S] L') (v : (Σ k, ι k) → L) :
     modelPts S (fun q => φ (v q)) = Subring.map (φ : L →+* L') '' modelPts S v := by
@@ -90,9 +90,9 @@ theorem modelPts_comp {K : Type} {ι : K → Type} (φ : L ≃ₐ[S] L') (v : (�
       (fun a => by rw [Ideal.mem_comap, RingHom.coe_coe, AlgEquiv.symm_apply_apply])
 
 /- English proof (translation)
-Set `φ₀ : L ≃+* L'` to `(RingHom.quotientKerEquivOfSurjective hr).symm.trans ((Ideal.quotEquivOfEq hker).trans (RingHom.quotientKerEquivOfSurjective hr'))`. Establish `hφ₀ : ∀ u, φ₀ (r u) = r' u` using `fun u => by`. Simplify using `only [φ₀, RingEquiv.trans_apply, RingHom.quotientKerEquivOfSurjective_symm_apply, Ideal.quotEquivOfEq_mk, RingHom.quotientKerEquivOfSurjective_apply_mk]`. Use `⟨AlgEquiv.ofRingEquiv (f := φ₀) fun s => ?_, fun u => hφ₀ u⟩` and prove the remaining obligations. Take `⟨u, hu, hu'⟩` from `hS s`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hu, hφ₀, hu']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_algEquiv_of_ker_eq {R : Type*} [CommRing R] (r : R →+* L) (r' : R →+* L')
     (hr : Function.Surjective r) (hr' : Function.Surjective r') (hker : RingHom.ker r = RingHom.ker r')
@@ -108,7 +108,7 @@ theorem exists_algEquiv_of_ker_eq {R : Type*} [CommRing R] (r : R →+* L) (r' :
   rw [← hu, hφ₀, hu']
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_closure, RingHom.coe_coe, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_closure_of_image (φ : L ≃ₐ[S] L') {X : Set L} {Y : Set L'} (h : φ '' X = Y) :
     (Subring.closure X).map (φ : L →+* L') = Subring.closure Y := by
@@ -117,9 +117,9 @@ theorem map_closure_of_image (φ : L ≃ₐ[S] L') {X : Set L} {Y : Set L'} (h :
 end Transport
 
 /- English proof (translation)
-Set `e` to `RingEquiv.subringCongr hloc.symm`. Use `exists_algEquiv_of_ker_eq (resMap y c p) ((resMap y' c' p').comp e.toRingHom) (resMap_surjective y c p) ((resMap_surjective y' c' p').comp e.surjective) ?_ ?_` and prove the remaining obligations. Use extensionality with `u`. Rewrite using `[RingHom.mem_ker, RingHom.mem_ker]`. Use `show resMap y c p u = 0 ↔ resMap y' c' p' (e u) = 0`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[resMap_eq_zero_iff, resMap_eq_zero_iff, isUnit_map_iff]`. Introduce `s`. Establish `hs : algebraMap S Ω s ∈ locIn (chartRingOver S y c) p` using `(mem_locIn_chart_iff y c p).mpr ⟨algebraMap S _ s, 1, Ideal.one_notMem p, by simp⟩`. Conclude with `⟨⟨_, hs⟩, resMap_algebraMap y c p s hs, resMap_algebraMap y' c' p' s _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_resEquiv {S : Type} [CommRing S] {K : Type} {ι : K → Type} {K' : Type} {ι' : K' → Type}
     {Ω : Type} [Field Ω] [Algebra S Ω] (y : (Σ k, ι k) → Ω) (y' : (Σ k, ι' k) → Ω)
@@ -141,11 +141,11 @@ theorem exists_resEquiv {S : Type} [CommRing S] {K : Type} {ι : K → Type} {K'
     exact ⟨⟨_, hs⟩, resMap_algebraMap y c p s hs, resMap_algebraMap y' c' p' s _⟩
 
 /- English proof (translation)
-Establish `hz' : z ≤ locIn (chartRingOver S y' c') p'` using `hloc.symm ▸ hz`. Rewrite using `[resImage_eq y c p z hz, resImage_eq y' c' p' z hz']`. Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨u, hu, rfl⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨RingEquiv.subringCongr hloc.symm u, ?_, hφ u⟩` and prove the remaining obligations. Rewrite using `[coe_subringCongr]`. Conclude with `hu`. Introduce and unpack `⟨u', hu', rfl⟩`. Use `⟨resMap y c p ((RingEquiv.subringCongr hloc.symm).symm u'), ⟨_, ?_, rfl⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_subringCongr_symm]`. Conclude with `hu'`. Rewrite using `[hφ, RingEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_resImage {S : Type} [CommRing S] {K : Type} {ι : K → Type} {K' : Type} {ι' : K' → Type}
     {Ω : Type} [Field Ω] [Algebra S Ω] (y : (Σ k, ι k) → Ω) (y' : (Σ k, ι' k) → Ω)
@@ -171,9 +171,9 @@ theorem image_resImage {S : Type} [CommRing S] {K : Type} {ι : K → Type} {K' 
     · rw [hφ, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[modelPts_comp φ (modVec S y c p), h S K ι Ω y c p hc, h S K' ι' Ω y' c' p' hc', hloc, ← hyy']`. Use extensionality with `z'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨z, hz, hzO, rfl⟩, rfl⟩`. Conclude with `⟨z, hz, hzO, map_closure_of_image φ (himg z hzO)⟩`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨z, hz, hzO, rfl⟩`. Conclude with `⟨_, ⟨z, hz, hzO, rfl⟩, map_closure_of_image φ (himg z hzO)⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem sameModel_modVec (h : RestrictionPointsAll.Statement) {S : Type} [CommRing S] {K : Type} {ι : K → Type}
     {K' : Type} {ι' : K' → Type} {Ω : Type} [Field Ω] [Algebra S Ω] (y : (Σ k, ι k) → Ω) (y' : (Σ k, ι' k) → Ω)
@@ -193,7 +193,7 @@ theorem sameModel_modVec (h : RestrictionPointsAll.Statement) {S : Type} [CommRi
     exact ⟨_, ⟨z, hz, hzO, rfl⟩, map_closure_of_image φ (himg z hzO)⟩
 
 /- English proof (translation)
-Introduce `S _ K _ ι K' ι' Ω _ _ y y' hyy' c p _ hc c' p' _ hc' hloc`. Take `⟨φ, hφ⟩` from `exists_resEquiv y y' c p c' p' hloc`. Establish `himg` using `image_resImage y y' c p c' p' hloc φ hφ`. Conclude with `⟨φ, fun z _ hz => himg z hz, sameModel_modVec h y y' hyy' c p hc c' p' hc' hloc φ himg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem RestrictionSame.proof (h : RestrictionPointsAll.Statement) : RestrictionSame.Statement := by
   intro S _ K _ ι K' ι' Ω _ _ y y' hyy' c p _ hc c' p' _ hc' hloc

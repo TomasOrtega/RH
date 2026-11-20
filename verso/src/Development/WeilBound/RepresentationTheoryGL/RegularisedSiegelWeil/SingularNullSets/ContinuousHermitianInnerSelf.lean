@@ -21,7 +21,7 @@ namespace PositivityTheory.Rg.Rsw.L.LToS
 variable {D : D7} {a b c r t : ℕ}
 
 /- English proof (translation)
-Establish `h : mm M x - x = (M - 1) * x` using `by rw [Matrix.sub_mul, Matrix.one_mul]`. Rewrite using `[h, ← Matrix.smul_mul, hM]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fix_mul_left {e : AE D} {M : Mx D a a} (hM : e • (M - 1) = M - 1) (x : Mx D a b) :
     e • (mm M x - x) = mm M x - x := by
@@ -29,7 +29,7 @@ theorem fix_mul_left {e : AE D} {M : Mx D a a} (hM : e • (M - 1) = M - 1) (x :
   rw [h, ← Matrix.smul_mul, hM]
 
 /- English proof (translation)
-Rewrite using `[add_sub_cancel_left]`. Use `show e • (x * y) = x * y`. Rewrite using `[← Matrix.mul_smul, hy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_add_mul {e : AE D} {y : Mx D b c} (hy : e • y = y) (x : Mx D a b) (z : Mx D a c) :
     e • (z + mm x y - z) = z + mm x y - z := by
@@ -38,7 +38,7 @@ theorem fix_add_mul {e : AE D} {y : Mx D b c} (hy : e • y = y) (x : Mx D a b) 
   rw [← Matrix.mul_smul, hy]
 
 /- English proof (translation)
-Establish `h : mm x g - x = x * (g - 1)` using `by rw [Matrix.mul_sub, Matrix.mul_one]`. Rewrite using `[h, ← Matrix.mul_smul, hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fix_mul_right {e : AE D} {g : Mx D b b} (hg : e • (g - 1) = g - 1) (x : Mx D a b) :
     e • (mm x g - x) = mm x g - x := by
@@ -46,71 +46,71 @@ theorem fix_mul_right {e : AE D} {g : Mx D b b} (hg : e • (g - 1) = g - 1) (x 
   rw [h, ← Matrix.mul_smul, hg]
 
 /- English proof (translation)
-Simplify using `only [mm, Matrix.mul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hc_U (e : AE D) (M : Mx D a a) (z : Mx D a b × Mx D a c) :
     (mm M (e • z.1), mm M (e • z.2)) = (e • mm M z.1, e • mm M z.2) := by
   simp only [mm, Matrix.mul_smul]
 
 /- English proof (translation)
-Simplify using `only [mm, Matrix.smul_mul, smul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hc_S (e : AE D) (y : Mx D b c) (z : Mx D a b × Mx D a c) :
     (e • z.1, e • z.2 + mm (e • z.1) y) = (e • z.1, e • (z.2 + mm z.1 y)) := by
   simp only [mm, Matrix.smul_mul, smul_add]
 
 /- English proof (translation)
-Simplify using `only [mm, Matrix.smul_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hc_C (e : AE D) (g : Mx D c c) (z : Mx D a b × Mx D a c) :
     (e • z.1, mm (e • z.2) g) = (e • z.1, e • mm z.2 g) := by
   simp only [mm, Matrix.smul_mul]
 
 /- English proof (translation)
-The claim follows from `continuous_snd.add (continuous_fst.matrix_mul continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_addMul (y : Mx D b c) : Continuous fun z : Mx D a b × Mx D a c => z.2 + mm z.1 y :=
   continuous_snd.add (continuous_fst.matrix_mul continuous_const)
 
 /- English proof (translation)
-The claim follows from `(continuous_fst.prodMk (continuous_addMul y)).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_S (y : Mx D b c) : Measurable fun z : Mx D a b × Mx D a c => (z.1, z.2 + mm z.1 y) :=
   (continuous_fst.prodMk (continuous_addMul y)).measurable
 
 /- English proof (translation)
-The claim follows from `continuous_snd.matrix_mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mulR (M : Mx D c c) : Continuous fun z : Mx D a b × Mx D a c => mm z.2 M :=
   continuous_snd.matrix_mul continuous_const
 
 /- English proof (translation)
-The claim follows from `(continuous_fst.prodMk (continuous_mulR M)).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_C (M : Mx D c c) : Measurable fun z : Mx D a b × Mx D a c => (z.1, mm z.2 M) :=
   (continuous_fst.prodMk (continuous_mulR M)).measurable
 
 /- English proof (translation)
-Use `show Continuous fun z : Mx D V.rank r × Mx D V.rank t => adj z.1 * (gA V * z.1)`. Conclude with `(continuous_adj.comp continuous_fst).matrix_mul (continuous_const.matrix_mul continuous_fst)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_hermitian_inner_self (V : HSp D) : Continuous fun z : Mx D V.rank r × Mx D V.rank t => ip V z.1 z.1 := by
   show Continuous fun z : Mx D V.rank r × Mx D V.rank t => adj z.1 * (gA V * z.1)
   exact (continuous_adj.comp continuous_fst).matrix_mul (continuous_const.matrix_mul continuous_fst)
 
 /- English proof (translation)
-Establish `hA : MeasurableSet {z : Mx D V.rank r × Mx D V.rank t | IntOff S z.1 ∧ IntOff S z.2}` using `(((isClosed_intOff S).preimage continuous_fst).inter ((isClosed_intOff S).preimage continuous_snd)).measurableSet`. Establish `hf : Measurable fun z : Mx D V.rank r × Mx D V.rank t => (e • z.1, e • z.2)` using `((continuous_fst.const_smul e).prodMk (continuous_snd.const_smul e)).measurable`. Use `hν.fin` as an intermediate fact. Use `⟨⟨fun K hK => ?_⟩, ?_, fun h hh => ?_, fun y hy => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨K', hK', hmem⟩` from `boxP he hK`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Measure.map_apply hf hK.measurableSet, Measure.restrict_apply (hf hK.measurableSet)]`. Conclude with `lt_of_le_of_lt (measure_mono fun z hz => hmem z hz.2.1 hz.2.2 hz.1) hK'.measure_lt_top`. Establish `hG : IsClosed {z : Mx D V.rank r × Mx D V.rank t | e • z.1 = z.1 ∧ e • z.2 = z.2 ∧ ip V z.1 z.1 = e • rat b₀.1 ∧ qv V b₀ z = 0}` using `(isClosed_eq (continuous_fst.const_smul e) continuous_fst).inter ((isClosed_eq (continuous_snd.const_smul e) continuous_snd).inter ((isClosed_eq (continuous_hermitian_inner_self V) continuous_const).inter (isClosed_qv V b₀)))`. Establish `hm : MeasurableSet {z : Mx D V.rank r × Mx D V.rank t | ¬ (e • z.1 = z.1 ∧ e • z.2 = z.2 ∧ ip V z.1 z.1 = e • rat b₀.1 ∧ qv V b₀ z = 0)}` using `hG.isOpen_compl.measurableSet`. Rewrite using `[Measure.map_apply hf hm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `nonpos_iff_eq_zero.1 ?_` and prove the remaining obligations. Use `(Measure.restrict_apply_le _ _).trans (le_of_eq (measure_mono_null (fun z hz => ?_) hν.supp))` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq] at hz ⊢`. Introduce `hg`. Apply `hz` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, h3, h4⟩` from `hg`. Use `⟨by rw [smul_smul, hee.1], by rw [smul_smul, hee.1], ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ip_smul hee, h3, one_smul]`. Rewrite using `[qv_smul hee, h4, smul_zero]`. Establish `hφ : Measurable fun z : Mx D V.rank r × Mx D V.rank t => (mm (mt V h) z.1, mm (mt V h) z.2)` using `((continuous_const.matrix_mul continuous_fst).prodMk (continuous_const.matrix_mul continuous_snd)).measurable`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `map_transport (κ := 1) hA hf hφ hφ ?_ (fun z => hc_U e (mt V h) z) (by rw [one_smul]; exact hν.invU h (one_smul _ _))`. Rewrite `key` using `[one_smul]`. Then use the resulting hypothesis. Use extensionality with `z`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq]`. Rewrite using `[intOff_iff he (fix_mul_left hh z.1), intOff_iff he (fix_mul_left hh z.2)]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `map_transport (κ := 1) hA hf (measurable_S y) (measurable_S y) ?_ (fun z => hc_S e y z) (by rw [one_smul]; exact hν.invS y (one_smul _ _))`. Rewrite `key` using `[one_smul]`. Then use the resulting hypothesis. Use extensionality with `z`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq]`. Rewrite using `[intOff_iff he (fix_add_mul hy z.1 z.2)]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `map_transport hA hf (measurable_C (a := V.rank) (b := r) g.1) (measurable_C (a := V.rank) (b := r) g.1) (by`. Use extensionality with `z`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq]`. Rewrite using `[intOff_iff he (fix_mul_right hg z.2)])`. Use the proof step `(fun z => hc_C e g.1 z) (hν.cov g (one_smul _ _))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOrb_e {V : HSp D} {b₀ : HermE D r} {S : Finset (Pl D)} {e : AE D} (he : IsIdem S e)
     (hee : e * e = e ∧ cA D e = e) {ν : Measure (Mx D V.rank r × Mx D V.rank t)} (hν : IsOrb V b₀ 1 ν) :
@@ -164,9 +164,7 @@ theorem isOrb_e {V : HSp D} {b₀ : HermE D r} {S : Finset (Pl D)} {e : AE D} (h
       (fun z => hc_C e g.1 z) (hν.cov g (one_smul _ _))
 
 /- English proof (translation)
-Introduce `D r t V b₀ _`. Take `⟨S₁, h₁⟩` from `exists_intOff (rat b₀.1⁻¹ : Mx D r r)`. Take `⟨S₂, h₂⟩` from `exists_intOff (gA V)`. Use `⟨S₁ ∪ S₂, fun S hS e he ν hν => ⟨isOrb_e he ((hI D S).2 e he) hν, fun z hz1 hz2 => ⟨?_, yv_smul ((hI D S).2 e he) V b₀ z⟩⟩⟩` and prove the remaining obligations. Use `show IntOff S (mm (rat b₀.1⁻¹) (mm (adj z.1) (mm (gA V) z.2)))`.
-
-Conclude with `intOff_mul (h₁ S (Finset.union_subset_left hS)) (intOff_mul (intOff_adj hz1) (intOff_mul (h₂ S (Finset.union_subset_right hS)) hz2))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem toS_of (hI : IdemEx) : ToS := by
   classical
@@ -184,7 +182,7 @@ end PositivityTheory.Rg.Rsw.L.LToS
 namespace PositivityTheory.Rg.Rsw.L
 
 /- English proof (translation)
-The claim follows from `LToS.toS_of`.
+A detailed English derivation is pending.
 -/
 theorem toS : IdemEx → ToS := LToS.toS_of
 

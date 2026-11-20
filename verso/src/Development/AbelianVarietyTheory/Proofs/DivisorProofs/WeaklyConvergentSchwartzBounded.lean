@@ -6,21 +6,21 @@ namespace GlobalTheory.WeakBddSchwartz
 variable {ι : Type}
 
 /- English proof (translation)
-Establish `h1` using `(memℓp_gen_iff (p := 1) (by norm_num)).1 (lp.memℓp c)`. Simplify using `using h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma summable_norm_lp1 (c : lp (fun _ : ι => ℂ) 1) : Summable fun i => ‖c i‖ := by
   have h1 := (memℓp_gen_iff (p := 1) (by norm_num)).1 (lp.memℓp c)
   simpa using h1
 
 /- English proof (translation)
-Rewrite using `[lp.norm_eq_tsum_rpow (p := 1) (by norm_num)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma norm_lp1 (c : lp (fun _ : ι => ℂ) 1) : ‖c‖ = ∑' i, ‖c i‖ := by
   rw [lp.norm_eq_tsum_rpow (p := 1) (by norm_num)]
   simp
 
 /- English proof (translation)
-Use `Summable.of_norm_bounded ((summable_norm_lp1 c).mul_right M) (fun i => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (h i) (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma summable_mul (c : lp (fun _ : ι => ℂ) 1) {a : ι → ℂ} {M : ℝ} (h : ∀ i, ‖a i‖ ≤ M) :
     Summable fun i => c i * a i := by
@@ -28,7 +28,7 @@ lemma summable_mul (c : lp (fun _ : ι => ℂ) 1) {a : ι → ℂ} {M : ℝ} (h 
   rw [norm_mul]; exact mul_le_mul_of_nonneg_left (h i) (norm_nonneg _)
 
 /- English proof (translation)
-Establish `hs` using `((summable_norm_lp1 c).hasSum.mul_right M)`. Use `(tsum_of_norm_bounded hs (fun i => ?_)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (h i) (norm_nonneg _)`. Rewrite using `[norm_lp1, mul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pair_le (c : lp (fun _ : ι => ℂ) 1) {a : ι → ℂ} {M : ℝ} (h : ∀ i, ‖a i‖ ≤ M) :
     ‖∑' i, c i * a i‖ ≤ M * ‖c‖ := by
@@ -56,7 +56,7 @@ lemma pair_apply (a : ι → ℂ) (M : ℝ) (h : ∀ i, ‖a i‖ ≤ M) (c : lp
     pair a M h c = ∑' i, c i * a i := rfl
 
 /- English proof (translation)
-Rewrite using `[pair_apply, tsum_eq_single i]`. Simplify using `[lp.coeFn_single]`. Introduce `j hj`. Simplify using `[lp.coeFn_single, Pi.single_apply, hj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 lemma pair_single [DecidableEq ι] (a : ι → ℂ) (M : ℝ) (h : ∀ i, ‖a i‖ ≤ M) (i : ι) :
     pair a M h (lp.single 1 i 1) = a i := by
@@ -71,9 +71,9 @@ noncomputable def lam (k n : ℕ) (f : SchwartzMap V ℂ) (p : V × (Fin n → V
   ((‖p.1‖ ^ k / ∏ i, ‖p.2 i‖ : ℝ) : ℂ) * iteratedFDeriv ℝ n f p.1 p.2
 
 /- English proof (translation)
-Break down `p with ⟨x, m⟩` into its components or cases. Simplify using `only [lam, norm_mul, Complex.norm_real]`. Rewrite using `[Real.norm_of_nonneg (by positivity)]`. Distinguish the cases in `hp : ∏ i, ‖m i‖ = 0`. Simplify using `[hp]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hpos : 0 < ∏ i, ‖m i‖` using `lt_of_le_of_ne (by positivity) (Ne.symm hp)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma lam_bound (k n : ℕ) (f : SchwartzMap V ℂ) (p : V × (Fin n → V)) :
     ‖lam k n f p‖ ≤ SchwartzMap.seminorm ℂ k n f := by
@@ -90,13 +90,13 @@ lemma lam_bound (k n : ℕ) (f : SchwartzMap V ℂ) (p : V × (Fin n → V)) :
       _ ≤ SchwartzMap.seminorm ℂ k n f := SchwartzMap.le_seminorm ℂ k n f x
 
 /- English proof (translation)
-The claim follows from `(f.smooth ⊤).contDiffAt.of_le (by exact_mod_cast le_top)`.
+A detailed English derivation is pending.
 -/
 lemma cda (n : ℕ) (f : SchwartzMap V ℂ) (x : V) : ContDiffAt ℝ n f x :=
   (f.smooth ⊤).contDiffAt.of_le (by exact_mod_cast le_top)
 
 /- English proof (translation)
-Simplify using `only [lam]`. Rewrite using `[show (⇑(f + g) : V → ℂ) = ⇑f + ⇑g from rfl]`. Rewrite using `[iteratedFDeriv_add_apply (cda n f p.1) (cda n g p.1)]`. Simplify using `[mul_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma lam_add (k n : ℕ) (f g : SchwartzMap V ℂ) (p : V × (Fin n → V)) :
     lam k n (f + g) p = lam k n f p + lam k n g p := by
@@ -106,7 +106,7 @@ lemma lam_add (k n : ℕ) (f g : SchwartzMap V ℂ) (p : V × (Fin n → V)) :
   simp [mul_add]
 
 /- English proof (translation)
-Simplify using `only [lam]`. Rewrite using `[show (⇑(r • f) : V → ℂ) = r • ⇑f from rfl]`. Rewrite using `[iteratedFDeriv_const_smul_apply (cda n f p.1)]`. Simplify using `only [ContinuousMultilinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma lam_smul (k n : ℕ) (r : ℂ) (f : SchwartzMap V ℂ) (p : V × (Fin n → V)) :
     lam k n (r • f) p = r * lam k n f p := by
@@ -144,19 +144,19 @@ namespace GlobalTheory
 open GlobalTheory.WeakBddSchwartz in
 
 /- English proof (translation)
-Introduce `V _ _ _ f f₀ hf k n`. Set `A : ℕ → lp (fun _ : V × (Fin n → V) => ℂ) 1 →L[ℂ] ℂ` to `fun j => pair (lam k n (f j)) _ (lam_bound k n (f j))`. Establish `hpt : ∀ c, ∃ C, ∀ j, ‖A j c‖ ≤ C`. Introduce `c`. Take `⟨C, hC⟩` from `isBounded_iff_forall_norm_le.1 (Metric.isBounded_range_of_tendsto _ (hf (testCLM k n c)))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨C, fun j => hC _ ⟨j, rfl⟩⟩`. Take `⟨C, hC⟩` from `banach_steinhaus hpt`. Use `⟨max C 0, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Use `_root_.SchwartzMap.seminorm_le_bound ℂ k n (f j) (le_max_right _ _) (fun x => ?_)` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `set B := max C 0 with hB`. Establish `hB0 : 0 ≤ B` using `le_max_right _ _`. Establish `hl : ∀ m : Fin n → V, ‖lam k n (f j) (x, m)‖ ≤ B`. Introduce `m`. Establish `h1` using `(A j).le_opNorm (lp.single 1 (x, m) 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[show A j (lp.single 1 (x, m) 1) = lam k n (f j) (x, m) from pair_single _ _ _ _, lp.norm_single (by norm_num), norm_one, mul_one]`. Conclude with `h1.trans ((hC j).trans (le_max_left _ _))`. Distinguish the cases in `hx : ‖x‖ ^ k = 0`. Rewrite using `[hx, zero_mul]`. Conclude with `hB0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hxpos : 0 < ‖x‖ ^ k` using `lt_of_le_of_ne (by positivity) (Ne.symm hx)`. Rewrite using `[← le_div_iff₀' hxpos]`. Use `ContinuousMultilinearMap.opNorm_le_bound (by positivity) (fun m => ?_)` and prove the remaining obligations. Distinguish the cases in `hp : ∏ i, ‖m i‖ = 0`. Take `⟨i, -, hi⟩` from `Finset.prod_eq_zero_iff.1 hp`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[(iteratedFDeriv ℝ n (f j) x).map_coord_zero i (norm_eq_zero.1 hi)]`. Simplify using `[hp]`. Establish `hppos : 0 < ∏ i, ‖m i‖` using `lt_of_le_of_ne (by positivity) (Ne.symm hp)`. Establish `h` using `hl m`. Simplify using `only [lam, norm_mul, Complex.norm_real] at h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h` using `[Real.norm_of_nonneg (by positivity), div_mul_eq_mul_div, div_le_iff₀ hppos]`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hxpos]`. Combine the linear relations using `[mul_comm (‖x‖ ^ k) ‖iteratedFDeriv ℝ n (f j) x m‖]`.
+A detailed English derivation is pending.
 -/
 theorem SchwartzMap.bddAbove_seminorm_of_weak_tendsto :
     ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]

@@ -10,7 +10,7 @@ namespace PositivityTheory.Rg.BcB.SpectralAccumulation
 attribute [local instance] borelH
 
 /- English proof (translation)
-The claim follows from `| _, .leaf V _, h => hPQ _ V h | _, .node t₁ t₂, h => ⟨Tr.AllLeaves.mono hPQ t₁ h.1, Tr.AllLeaves.mono hPQ t₂ h.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem Tr.AllLeaves.mono {E : Type} [Field E] [NumberField E] [IsCMField E]
     {P Q : ∀ M : ℕ, Submodule ℂ (Sm E M) → Prop} (hPQ : ∀ M V, P M V → Q M V) :

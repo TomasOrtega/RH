@@ -6,19 +6,19 @@ import Mathlib.RingTheory.GradedAlgebra.Radical
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Establish `key : ∀ x ∈ Ideal.map (algebraMap B A) p, ∃ c ∈ p, GradedAlgebra.proj 𝒜 0 x = algebraMap B A c`. Introduce `x hx`. Establish `hx' : x ∈ (p • (⊤ : Submodule B A))`. Rewrite using `[Ideal.smul_top_eq_map]`. Conclude with `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_induction_on (p := fun x => ∃ c ∈ p, GradedAlgebra.proj 𝒜 0 x = algebraMap B A c) hx' ?_ ?_` and prove the remaining obligations. Introduce `b hb y _`. Establish `hy : GradedAlgebra.proj 𝒜 0 y ∈ 𝒜 0`. Rewrite using `[GradedAlgebra.proj_apply]`. Conclude with `SetLike.coe_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hy` using `[h0]`. Take `⟨c, hc⟩` from `Submodule.mem_one.mp hy`. Use `⟨b * c, p.mul_mem_right c hb, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, ← hc, Algebra.smul_def, map_mul]`. Introduce `x y hx hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hxc⟩` from `hx`. Take `⟨d, hd, hyd⟩` from `hy`. Conclude with `⟨c + d, p.add_mem hc hd, by rw [map_add, hxc, hyd, map_add]⟩`. Establish `hdisj : Disjoint ((Ideal.map (algebraMap B A) p : Ideal A) : Set A) (Algebra.algebraMapSubmonoid A p.primeCompl : Set A)`. Rewrite using `[Set.disjoint_left]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `x hxJ ⟨s, hs, rfl⟩`. Take `⟨c, hc, he⟩` from `key _ hxJ`. Rewrite `he` using `[GradedAlgebra.proj_apply, DirectSum.decompose_of_mem_same 𝒜 (SetLike.algebraMap_mem_graded 𝒜 s)]`. Conclude with `hs (by rw [hinj he]; exact hc)`. Take `⟨P, hP, hJP, hPd⟩` from `Ideal.exists_le_prime_disjoint _ _ hdisj`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(P.homogeneousCore 𝒜).toIdeal, Ideal.IsPrime.homogeneousCore (𝒜 := 𝒜) hP, (P.homogeneousCore 𝒜).isHomogeneous, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Introduce `b hb`. Rewrite `hb` using `[Ideal.mem_comap]`. Establish `hbP : algebraMap B A b ∈ P` using `Ideal.toIdeal_homogeneousCore_le 𝒜 P hb`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hnb`. Conclude with `Set.disjoint_left.mp hPd hbP ⟨b, hnb, rfl⟩`. Introduce `b hb`. Rewrite using `[Ideal.mem_comap]`. Conclude with `Ideal.mem_homogeneousCore_of_homogeneous_of_mem ⟨0, SetLike.algebraMap_mem_graded 𝒜 b⟩ (hJP (Ideal.mem_map_of_mem _ hb))`.
+A detailed English derivation is pending.
 -/
 private theorem ex_core {B A : Type} [CommRing B] [CommRing A] [Algebra B A] (𝒜 : ℤ → Submodule B A) [GradedAlgebra 𝒜]
     (h0 : 𝒜 0 = 1) (hinj : Function.Injective (algebraMap B A)) (p : Ideal B) [p.IsPrime] :
@@ -65,19 +65,17 @@ private theorem ex_core {B A : Type} [CommRing B] [CommRing A] [Algebra B A] (�
       (hJP (Ideal.mem_map_of_mem _ hb))
 
 /- English proof (translation)
-Establish `key : ∀ Q : Polynomial B, Polynomial.aeval a Q ∈ η → ∀ k, Q.coeff k ∈ η.comap (algebraMap B A)`. Introduce `Q hQ k`. Establish `hn : Q.natDegree < Q.natDegree + k + 1` using `by omega`. Rewrite `hQ` using `[Polynomial.aeval_eq_sum_range' hn]`. Establish `hmem : ∀ i : ℕ, Q.coeff i • a ^ i ∈ 𝒜 (i • α)` using `fun i => Submodule.smul_mem _ _ (SetLike.pow_mem_graded i ha)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : GradedAlgebra.proj 𝒜 (k • α) (∑ i ∈ Finset.range (Q.natDegree + k + 1), Q.coeff i • a ^ i) ∈ η`. Rewrite using `[GradedAlgebra.proj_apply]`. Conclude with `(Ideal.IsHomogeneous.mem_iff 𝒜 hh).1 hQ _`. Rewrite `h2` using `[map_sum, Finset.sum_eq_single k]`. Rewrite `h2` using `[GradedAlgebra.proj_apply, DirectSum.decompose_of_mem_same 𝒜 (hmem k), Algebra.smul_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hη.mem_or_mem h2 with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (hη.mem_of_pow_mem _ h) ha'`. Introduce `i _ hik`. Rewrite using `[GradedAlgebra.proj_apply, DirectSum.decompose_of_mem_ne 𝒜 (hmem i)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `he`. Apply `hik` to reduce the goal to its premises. Establish `he' : (i : ℤ) * α = (k : ℤ) * α` using `by simpa [nsmul_eq_mul] using he`. Conclude with `mul_right_cancel₀ hα he'` after adjusting the coercions. Introduce `hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd (Finset.mem_range.2 (by omega)) hk`. Establish `htr : Transcendental (B ⧸ η.comap (algebraMap B A)) (Ideal.Quotient.mk η a)`. Rewrite using `[transcendental_iff]`. Introduce `P hP`. Take `⟨Q, rfl⟩` from `Polynomial.map_surjective (Ideal.Quotient.mk (η.comap (algebraMap B A))) Ideal.Quotient.mk_surjective P`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : Polynomial.aeval (Ideal.Quotient.mk η a) (Q.map (Ideal.Quotient.mk (η.comap (algebraMap B A)))) = Ideal.Quotient.mk η (Polynomial.aeval a Q)`. Establish `e1` using `Polynomial.aeval_map_algebraMap (B ⧸ η.comap (algebraMap B A)) (Ideal.Quotient.mk η a) Q`. Rewrite `e1` using `[Ideal.Quotient.algebraMap_eq]`. Rewrite using `[e1, ← Ideal.Quotient.mkₐ_eq_mk B η, Polynomial.aeval_algHom_apply]`. Rewrite `hP` using `[e, Ideal.Quotient.eq_zero_iff_mem]`.
-
-Use extensionality with `k`. Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_zero, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `key Q hP k`. Use `haveI : Algebra.Transcendental (B ⧸ η.comap (algebraMap B A)) (A ⧸ η) := ⟨⟨_, htr⟩⟩`. Conclude with `Cardinal.one_le_iff_pos.2 (trdeg_pos _ _)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem one_le_td {B A : Type} [CommRing B] [CommRing A] [Algebra B A] (𝒜 : ℤ → Submodule B A)
     [GradedAlgebra 𝒜] (η : Ideal A) (hη : η.IsPrime) (hh : η.IsHomogeneous 𝒜) {a : A} {α : ℤ} (ha : a ∈ 𝒜 α)
@@ -124,17 +122,15 @@ private theorem one_le_td {B A : Type} [CommRing B] [CommRing A] [Algebra B A] (
   exact Cardinal.one_le_iff_pos.2 (trdeg_pos _ _)
 
 /- English proof (translation)
-Take `⟨m, hm⟩ : ∃ m : ℕ, (m : ℤ) = α` from `⟨α.toNat, Int.toNat_of_nonneg hα.le⟩`. Take `⟨k, hk⟩ : ∃ k : ℕ, (k : ℤ) = -β` from `⟨(-β).toNat, Int.toNat_of_nonneg (by omega)⟩`. Establish `hm0 : 0 < m` using `by omega`. Establish `hk0 : 0 < k` using `by omega`. Establish `hmem : a ^ k * b ^ m ∈ 𝒜 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `SetLike.mul_mem_graded (SetLike.pow_mem_graded k ha) (SetLike.pow_mem_graded m hb)`. Establish `he : k • α + m • β = 0`. Rewrite using `[nsmul_eq_mul, nsmul_eq_mul, hk, hm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[he]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hmem` using `[h0]`. Take `⟨x, hx⟩` from `Submodule.mem_one.mp hmem`. Establish `hc : a ^ k * b ^ m ∉ ξ`. Introduce `hin`. Break down `hξ.mem_or_mem hin with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `ha' (hξ.mem_of_pow_mem _ h)`. Conclude with `hb' (hξ.mem_of_pow_mem _ h)`. Establish `hxξ : x ∉ ξ.comap (algebraMap B A)`. Rewrite using `[Ideal.mem_comap, hx]`. Conclude with `hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `hxη : x ∉ η.comap (algebraMap B A)` using `fun hin => hxξ (hle hin)`. Rewrite `hxη` using `[Ideal.mem_comap, hx]`. Prove the components needed by the constructor for the conclusion. Introduce `hin`. Conclude with `hxη (Ideal.mul_mem_right _ _ (Ideal.pow_mem_of_mem _ hin _ hk0))`.
-
-Introduce `hin`. Conclude with `hxη (Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ hin _ hm0))`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem pair {B A : Type} [CommRing B] [CommRing A] [Algebra B A] (𝒜 : ℤ → Submodule B A)
     [SetLike.GradedMonoid 𝒜] (h0 : 𝒜 0 = 1) {ξ η : Ideal A} (hξ : ξ.IsPrime)
@@ -169,7 +165,7 @@ private theorem pair {B A : Type} [CommRing B] [CommRing A] [Algebra B A] (𝒜 
     exact hxη (Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ hin _ hm0))
 
 /- English proof (translation)
-Establish `: (i : ℕ) < j` using `h`. Unfold `w`. Apply the tactic sequence `split_ifs <;> omega`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem w_lt {n : ℕ} {i j : Fin n} (h : i < j) : w n j < w n i := by
   have : (i : ℕ) < j := h
@@ -177,23 +173,19 @@ private theorem w_lt {n : ℕ} {i j : Fin n} (h : i < j) : w n j < w n i := by
   split_ifs <;> omega
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ F C₀ n hF hn S p ξ hp hξ hTI hle`. Take `⟨hint, hgm, h0, -, -, -, hr⟩` from `gr_A hF hn S`. Use `letI : GradedAlgebra S.gr := { hgm, hint.chooseDecomposition with }`. Establish `hinj : Function.Injective (algebraMap S.B S.A)`. Introduce `x y hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `congrArg (fun z : S.A => (z : S.R)) hxy`. Take `⟨η, hηp, hηh, hηc⟩` from `ex_core S.gr h0 hinj p`. Establish `hP` using `hTI.1.1`. Establish `hM` using `hTI.1.2`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [NRep.triP, NRep.triM, Ideal.span_le, Set.not_subset] at hP hM`. Take `⟨_, ⟨g, i, j, hji, rfl⟩, hb⟩` from `hP`. Take `⟨_, ⟨g', i', j', hij', rfl⟩, ha⟩` from `hM`. Establish `hbd : w n i - w n j < 0` using `by have := w_lt hji; omega`. Establish `had : 0 < w n i' - w n j'` using `by have := w_lt hij'; omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle' : η.comap (algebraMap S.B S.A) ≤ ξ.comap (algebraMap S.B S.A)`. Rewrite using `[hηc]`. Conclude with `hle`. Establish `hab` using `pair S.gr h0 hξ hle' (hr g' i' j') (hr g i j) had hbd ha hb`. Use `⟨η, hηp, ?_, hηc, ⟨⟨?_, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `le_antisymm` to reduce the goal to its premises. Establish `e` using `(Ideal.IsHomogeneous.iff_eq S.gr η).mp hηh`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `_ ⟨⟨x, hxh⟩, hx, rfl⟩`. Conclude with `⟨hx, hxh⟩`.
+Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.span_le.2 fun x hx => hx.1`. Introduce `h`. Conclude with `hab.2 (h (Ideal.subset_span ⟨g, i, j, hji, rfl⟩))`. Introduce `h`. Conclude with `hab.1 (h (Ideal.subset_span ⟨g', i', j', hij', rfl⟩))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `h3 h`. Establish `hE` using `hTI.2 h3`. Simplify using `only [NRep.ee, Ideal.span_le, Set.not_subset] at hE`. Take `⟨_, ⟨g'', i'', j'', hodd, rfl⟩, hc⟩` from `hE`. Establish `hne : w n i'' - w n j'' ≠ 0`.
-
-Introduce and unpack `h0'`. Rewrite `hodd` using `[h0']`. Conclude with `(Int.not_odd_iff_even.2 ⟨0, by norm_num⟩) hodd`. Establish `hcη : S.u.r g'' i'' j'' ∉ η`. Break down `lt_or_gt_of_ne hne with hneg | hpos` into its components or cases.
-
-Conclude with `(pair S.gr h0 hξ hle' (hr g' i' j') (hr g'' i'' j'') had hneg ha hc).2`. Conclude with `(pair S.gr h0 hξ hle' (hr g'' i'' j'') (hr g i j) hpos hbd hc hb).1`. Conclude with `hcη (h (Ideal.subset_span ⟨g'', i'', j'', hodd, rfl⟩))`. Conclude with `le_antisymm (fibre hF hn S η hηp ⟨fun h => hab.2 (h (Ideal.subset_span ⟨g, i, j, hji, rfl⟩)), fun h => hab.1 (h (Ideal.subset_span ⟨g', i', j', hij', rfl⟩))⟩) (one_le_td S.gr η hηp hηh (hr g' i' j') had.ne' hab.1)`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.frobenius_corner_lift_two_to_three :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ S : Space O F n, ∀ (p : Ideal S.B) (ξ : Ideal S.A), p.IsPrime → ξ.IsPrime → S.u.TI ξ → p ≤ S.π ξ → ∃ η : Ideal S.A, η.IsPrime ∧ S.IsHom η ∧ S.π η = p ∧ S.u.TI η ∧ S.td η = 1 := by

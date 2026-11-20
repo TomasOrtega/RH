@@ -22,9 +22,9 @@ noncomputable section
 namespace GlobalTheory.AnisoCovol
 
 /- English proof (translation)
-Use `choose K hK hK' using fun x : G => exists_compact_mem_nhds x`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x : G => ((↑) : G → G ⧸ Γ) '' interior (K x)) (fun x => QuotientGroup.isOpenMap_coe _ isOpen_interior) (fun q _ => by`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective q`. Conclude with `Set.mem_iUnion.2 ⟨x, x, mem_interior_iff_mem_nhds.2 (hK' x), rfl⟩)`. Use `⟨(⋃ x ∈ t, K x)⁻¹, (t.isCompact_biUnion fun x _ => hK x).inv, fun y => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx, z, hz, e⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ ((y⁻¹ : G) : G ⧸ Γ)))`. Use `⟨z⁻¹ * y⁻¹, QuotientGroup.eq.1 e, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_inv, show (z⁻¹ * y⁻¹ * y)⁻¹ = z by group]`. Conclude with `Set.mem_iUnion₂.2 ⟨x, hx, interior_subset hz⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compact_cover {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] (Γ : Subgroup G) [CompactSpace (G ⧸ Γ)] :
@@ -42,9 +42,9 @@ theorem exists_compact_cover {G : Type} [Group G] [TopologicalSpace G] [IsTopolo
   exact Set.mem_iUnion₂.2 ⟨x, hx, interior_subset hz⟩
 
 /- English proof (translation)
-Establish `hsub : 𝓕 ⊆ ⋃ g : Γ, ((g • K) ∩ 𝓕)`. Introduce `x hx`. Take `⟨g, hg, hk⟩` from `hcov x`. Use `Set.mem_iUnion.2 ⟨(⟨g, hg⟩ : Γ)⁻¹, ?_, hx⟩` and prove the remaining obligations. Rewrite using `[Set.mem_inv_smul_set_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk`. Use `ne_of_lt ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem measure_ne_top_of_cover {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G] (Γ : Subgroup G) [Countable Γ] {K : Set G} (hK : IsCompact K)
@@ -75,21 +75,21 @@ abbrev tensFlip (D : D7) : D.host.E ⊗[D.host.F] AF D.host.F ≃+* AF D.host.F 
   (Algebra.TensorProduct.comm D.host.F D.host.E (AF D.host.F)).toRingEquiv
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.inclE, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tensFlip_inclE (e : D.host.E) :
     tensFlip D (Formalism.UG.inclE (F := D.host.F) (AF D.host.F) e) = inclR (F := D.host.F) (AF D.host.F) e := by
   simp [Formalism.UG.inclE, inclR]
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.inclE, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tensFlip_symm_inclR (e : D.host.E) :
     (tensFlip D).symm (inclR (F := D.host.F) (AF D.host.F) e) = Formalism.UG.inclE (F := D.host.F) (AF D.host.F) e := by
   simp [Formalism.UG.inclE, inclR]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [Formalism.UG.sigR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR]`. Consider the case `add x y hx hy => simp only [RingEquiv.map_add, RingHom.map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensFlip_sig (x : D.host.E ⊗[D.host.F] AF D.host.F) :
     Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF D.host.F) D.sp.cm.sig (tensFlip D x) =
@@ -100,7 +100,7 @@ theorem tensFlip_sig (x : D.host.E ⊗[D.host.F] AF D.host.F) :
   | add x y hx hy => simp only [RingEquiv.map_add, RingHom.map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [Formalism.UG.sigR, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR]`. Consider the case `add x y hx hy => simp only [RingEquiv.map_add, RingHom.map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensFlip_symm_sig (x : AF D.host.F ⊗[D.host.F] D.host.E) :
     Formalism.UG.sigR D.sp.cm.sig (AF D.host.F) ((tensFlip D).symm x) =
@@ -113,7 +113,7 @@ theorem tensFlip_symm_sig (x : AF D.host.F ⊗[D.host.F] D.host.E) :
 variable {D : D7} (V : HSp D)
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `tensFlip_inclE _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem tensFlip_gram :
     (V.gram.map (Formalism.UG.inclE (F := D.host.F) (AF D.host.F))).map (tensFlip D).toRingHom = JR (AF D.host.F) V.gram := by
@@ -121,7 +121,7 @@ theorem tensFlip_gram :
   exact tensFlip_inclE _
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `tensFlip_symm_inclR _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem tensFlip_symm_gram :
     (JR (AF D.host.F) V.gram).map (tensFlip D).symm.toRingHom = V.gram.map (Formalism.UG.inclE (F := D.host.F) (AF D.host.F)) := by
@@ -150,7 +150,7 @@ theorem val_uFlipSymm (g : GA D V) :
       Formalism.UG.bc (tensFlip D).symm.toRingHom (GlobalTheory.AdelicU.matHom (AF D.host.F) D.sp.cm.sig V.gram g) := rfl
 
 /- English proof (translation)
-Rewrite using `[bc_bc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem bc_inclR (γ : GF V) :
     Formalism.UG.bc (inclR (F := D.host.F) (AF D.host.F)) γ.1 =
@@ -159,7 +159,7 @@ theorem bc_inclR (γ : GF V) :
   congr 1
 
 /- English proof (translation)
-Rewrite using `[bc_bc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem bc_symm_inclR (γ : GF V) :
     Formalism.UG.bc (tensFlip D).symm.toRingHom (Formalism.UG.bc (inclR (F := D.host.F) (AF D.host.F)) γ.1) =
@@ -170,7 +170,7 @@ theorem bc_symm_inclR (γ : GF V) :
 variable {D : D7} (V : HSp D)
 
 /- English proof (translation)
-Establish `h3 : Formalism.UG.bc (tensFlip D).toRingHom (g.1 * Formalism.UG.bc (Formalism.UG.inclE (F` using `D.host.F) (AF D.host.F)) γ.1) = Formalism.UG.bc (tensFlip D).toRingHom (Formalism.UG.bc (Formalism.UG.inclE (F := D.host.F) (AF D.host.F)) γ.1 * g.1) := congrArg _ (Subgroup.mem_centralizer_singleton_iff.1 g.2.2)`. Rewrite `h3` using `[MonoidHom.map_mul, MonoidHom.map_mul, ← bc_inclR]`. Conclude with `Subgroup.mem_centralizer_singleton_iff.2 (Subtype.ext h3)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uFlip_mem (γ : GF V) (g : GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.centPts D.sp.cm.sig V.gram γ.1 (AF D.host.F)) :
     uFlip V (Subgroup.inclusion inf_le_left g) ∈ cent (rat V γ) := by
@@ -185,18 +185,18 @@ def centFlip (γ : GF V) :
   ((uFlip V).comp (Subgroup.inclusion inf_le_left)).codRestrict _ (uFlip_mem V γ)
 
 /- English proof (translation)
-The claim follows from `matHom_uFlip V _`.
+A detailed English derivation is pending.
 -/
 theorem matHom_centFlip (γ : GF V) (g : GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.centPts D.sp.cm.sig V.gram γ.1 (AF D.host.F)) :
     GlobalTheory.AdelicU.matHom (AF D.host.F) D.sp.cm.sig V.gram (centFlip V γ g : GA D V) = Formalism.UG.bc (tensFlip D).toRingHom g.1 :=
   matHom_uFlip V _
 
 /- English proof (translation)
-Introduce `y`. Establish `hy : GlobalTheory.AdelicU.matHom (AF D.host.F) D.sp.cm.sig V.gram y.1 * Formalism.UG.bc (inclR (F` using `D.host.F) (AF D.host.F)) γ.1 = Formalism.UG.bc (inclR (F := D.host.F) (AF D.host.F)) γ.1 * GlobalTheory.AdelicU.matHom (AF D.host.F) D.sp.cm.sig V.gram y.1 := congrArg Subtype.val (Subgroup.mem_centralizer_singleton_iff.1 y.2)`. Establish `hx : ((uFlipSymm V y.1 : Formalism.UG.UPts D.sp.cm.sig V.gram (AF D.host.F)) : GL (Fin V.rank) (D.host.E ⊗[D.host.F] AF D.host.F)) ∈ Subgroup.centralizer {Formalism.UG.bc (Formalism.UG.inclE (F` using `D.host.F) (AF D.host.F)) γ.1} := by`. Use `Subgroup.mem_centralizer_singleton_iff.2 ?_` and prove the remaining obligations. Establish `e` using `congrArg (Formalism.UG.bc (tensFlip D).symm.toRingHom) hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[MonoidHom.map_mul, MonoidHom.map_mul, bc_symm_inclR]`. Rewrite using `[val_uFlipSymm]`. Conclude with `e`. Use `⟨⟨_, (uFlipSymm V y.1).2, hx⟩, Subtype.ext (GlobalTheory.AdelicU.matHom_injective (AF D.host.F) D.sp.cm.sig V.gram ?_)⟩` and prove the remaining obligations. Rewrite using `[matHom_centFlip]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show Formalism.UG.bc (tensFlip D).toRingHom ((uFlipSymm V y.1 : Formalism.UG.UPts D.sp.cm.sig V.gram (AF D.host.F)) : GL (Fin V.rank) (D.host.E ⊗[D.host.F] AF D.host.F)) = _`. Rewrite using `[val_uFlipSymm, bc_bc]`. Use extensionality with `i j`. Simplify using `[Formalism.UG.bc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem centFlip_surjective (γ : GF V) : Function.Surjective (centFlip V γ) := by
   intro y
@@ -220,7 +220,7 @@ theorem centFlip_surjective (γ : GF V) : Function.Surjective (centFlip V γ) :=
   simp [Formalism.UG.bc]
 
 /- English proof (translation)
-Take `⟨δ, hδ, e⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 ha)`. Use `Subgroup.mem_subgroupOf.2 (Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨δ, hδ.1, ?_⟩))` and prove the remaining obligations. Use `show _ = GlobalTheory.AdelicU.matHom (AF D.host.F) D.sp.cm.sig V.gram (centFlip V γ a : GA D V)`. Rewrite using `[matHom_centFlip, ← e, bc_bc]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem centFlip_rat (γ : GF V) (a : GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.centPts D.sp.cm.sig V.gram γ.1 (AF D.host.F))
     (ha : a ∈ ((GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.centRat D.sp.cm.sig V.gram γ.1).map
@@ -236,9 +236,9 @@ theorem centFlip_rat (γ : GF V) (a : GlobalTheory.IndefiniteRowSideFullHecke.Ce
 variable {D : D7} (V : HSp D)
 
 /- English proof (translation)
-Use `letI := Formalism.BasicNotions.tensTopL (F := D.host.F) (E := D.host.E) (AF D.host.F)`. Use `letI : Algebra (AF D.host.F) (D.host.E ⊗[D.host.F] AF D.host.F) := Algebra.TensorProduct.rightAlgebra`. Use `haveI : IsModuleTopology (AF D.host.F) (D.host.E ⊗[D.host.F] AF D.host.F) := ⟨rfl⟩`. Use `haveI : IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E) := ⟨rfl⟩`. Set `L : D.host.E ⊗[D.host.F] AF D.host.F →ₗ[AF D.host.F] AF D.host.F ⊗[D.host.F] D.host.E` to `{ toFun := tensFlip D map_add' := fun x y => (tensFlip D).map_add x y map_smul' := fun a x => by`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Algebra.smul_def, RingEquiv.map_mul, Algebra.smul_def]`. Use `rfl }`. Conclude with `IsModuleTopology.continuous_of_linearMap L`.
+A detailed English derivation is pending.
 -/
 theorem continuous_tensFlip :
     letI := Formalism.BasicNotions.tensTopL (F := D.host.F) (E := D.host.E) (AF D.host.F)
@@ -256,9 +256,9 @@ theorem continuous_tensFlip :
   exact IsModuleTopology.continuous_of_linearMap L
 
 /- English proof (translation)
-Use `letI := Formalism.BasicNotions.tensTopL (F := D.host.F) (E := D.host.E) (AF D.host.F)`. Establish `hf : Continuous (tensFlip D)` using `continuous_tensFlip`. Establish `hbc : Continuous (Formalism.UG.bc (n` using `Fin V.rank) (tensFlip D).toRingHom) := Units.continuous_iff.2 ⟨Units.continuous_val.matrix_map hf, Units.continuous_coe_inv.matrix_map hf⟩`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Use `(GlobalTheory.AdelicU.isEmbedding_matHom (AF D.host.F) D.sp.cm.sig V.gram).continuous_iff.2 ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hbc.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_centFlip (γ : GF V) :
     letI := Formalism.BasicNotions.tensTopL (F := D.host.F) (E := D.host.E) (AF D.host.F)
@@ -272,11 +272,11 @@ theorem continuous_centFlip (γ : GF V) :
   exact hbc.comp continuous_subtype_val
 
 /- English proof (translation)
-Use `letI := Formalism.BasicNotions.tensTopL (F := D.host.F) (E := D.host.E) (AF D.host.F)`. Establish `hc' : CompactSpace (GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.centPts D.sp.cm.sig V.gram γ.1 (AF D.host.F) ⧸ ((GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.centRat D.sp.cm.sig V.gram γ.1).map (Formalism.UG.bc (Formalism.UG.inclE (F` using `D.host.F) (AF D.host.F)))).subgroupOf (GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.centPts D.sp.cm.sig V.gram γ.1 (AF D.host.F))) := hc`. Set `q` to `Quotient.map' (s₁ := QuotientGroup.leftRel (((GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.centRat D.sp.cm.sig V.gram γ.1).map (Formalism.UG.bc (Formalism.UG.inclE (F := D.host.F) (AF D.host.F)))).subgroupOf (GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTe …`. Use `QuotientGroup.leftRel_apply.2 ?_` and prove the remaining obligations. Rewrite using `[← MonoidHom.map_inv, ← MonoidHom.map_mul]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `centFlip_rat V γ _ (QuotientGroup.leftRel_apply.1 h)`. Establish `hq : Continuous q` using `(continuous_centFlip V γ).quotient_map' _`. Establish `hs : Function.Surjective q`. Introduce `z`. Take `⟨y, rfl⟩` from `QuotientGroup.mk_surjective z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `centFlip_surjective V γ y`. Conclude with `⟨QuotientGroup.mk x, rfl⟩`. Conclude with `hs.compactSpace hq`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem compactSpace_cent (γ : GF V) (hc : GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.AdelicCompact D.sp.cm.sig V.gram γ.1) :
     CompactSpace (cent (rat V γ) ⧸ (GQ V).subgroupOf (cent (rat V γ))) := by
@@ -303,7 +303,7 @@ theorem compactSpace_cent (γ : GF V) (hc : GlobalTheory.IndefiniteRowSideFullHe
 variable {D : D7}
 
 /- English proof (translation)
-Use `haveI : Countable D.host.E := (Module.finBasis ℚ D.host.E).equivFun.injective.countable`. Use `haveI : Countable (Matrix (Fin V.rank) (Fin V.rank) D.host.E) := inferInstanceAs (Countable (Fin V.rank → Fin V.rank → D.host.E))`. Use `haveI : Countable (GL (Fin V.rank) D.host.E) := Units.val_injective.countable`. Conclude with `Subtype.countable`.
+A detailed English derivation is pending.
 -/
 theorem countable_GF (V : HSp D) : Countable (GF V) := by
   haveI : Countable D.host.E := (Module.finBasis ℚ D.host.E).equivFun.injective.countable
@@ -313,7 +313,7 @@ theorem countable_GF (V : HSp D) : Countable (GF V) := by
   exact Subtype.countable
 
 /- English proof (translation)
-Use `haveI := countable_GF V`. Use `Function.Surjective.countable (f := fun δ : GF V => (⟨rat V δ, Subgroup.mem_subgroupOf.2 (Subgroup.mem_map.2 ⟨δ, δ.2, rfl⟩)⟩ : GQ V)) fun x => ?_` and prove the remaining obligations. Take `⟨δ, hδ, e⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 x.2)`. Conclude with `⟨⟨δ, hδ⟩, Subtype.ext (Subtype.ext e)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem countable_GQ (V : HSp D) : Countable (GQ V) := by
   haveI := countable_GF V
@@ -323,11 +323,9 @@ theorem countable_GQ (V : HSp D) : Countable (GQ V) := by
   exact ⟨⟨δ, hδ⟩, Subtype.ext (Subtype.ext e)⟩
 
 /- English proof (translation)
-Introduce `hR D V γ hγ k Kf _ _ he hf dt _ 𝓣 h𝓣`. Establish `hreg` using `GlobalTheory.ConjLevi.RegularData.isRegular_of_isRegSS γ hγ`. Establish `hc` using `(hR.2 D.host.F D.host.E (Fin V.rank) D.sp.cm.sig V.gram γ.1 hreg k Kf he).2 hf`. Use `haveI := compactSpace_cent V γ hc`. Use `haveI : LocallyCompactSpace (cent (rat V γ)) := (isClosed_cent (rat V γ)).locallyCompactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨K, hK, hcov⟩` from `exists_compact_cover ((GQ V).subgroupOf (cent (rat V γ)))`. Use `haveI := countable_GQ V`. Use `haveI : Countable ((GQ V).subgroupOf (cent (rat V γ))) := Function.Injective.countable (f := fun x : (GQ V).subgroupOf (cent (rat V γ)) => (⟨x.1.1, x.2⟩ : GQ V)) fun a b h => by`. Establish `e` using `Subtype.mk.inj h`. Conclude with `Subtype.ext (Subtype.ext e)`.
-
-Conclude with `lt_top_iff_ne_top.2 (measure_ne_top_of_cover _ hK hcov dt h𝓣)`.
+A detailed English derivation is pending.
 -/
 theorem covol_lt_top : GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.RegularSemisimple → ∀ (D : D7) (V : HSp D) (γ : GF V), IsRegSS γ.1.1 → ∀ (k : ℕ) (Kf : Fin k → Type) [∀ i, Field (Kf i)] [∀ i, Algebra D.host.F (Kf i)], Nonempty (GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.plusAlg D.sp.cm.sig V.gram γ.1.1 ≃ₐ[D.host.F] ∀ i, Kf i) → (∀ i, IsField (TensorProduct D.host.F (Kf i) D.host.E)) → ∀ (dt : Measure (cent (rat V γ))) [dt.IsHaarMeasure] (𝓣 : Set (cent (rat V γ))), IsFundamentalDomain ((GQ V).subgroupOf (cent (rat V γ))) 𝓣 dt → dt 𝓣 < ⊤ := by
   intro hR D V γ hγ k Kf _ _ he hf dt _ 𝓣 h𝓣

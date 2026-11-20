@@ -70,9 +70,9 @@ def NormBridge (P : Parts X u u') (hr : P.S.G.r = D.R.rS) : Prop :=
           (Formalism.FourierDecayAlt.B.gq (P.T (P.τ.symm v)).base (phiQ P hr cv)))‖
 
 /- English proof (translation)
-Use `haveI := FiniteDimensional.complete ℂ Wp`. Use `haveI := FiniteDimensional.complete ℂ Wq`. Establish `key : ∀ {κ : Type} [Fintype κ] (c : OrthonormalBasis κ ℂ Wq), ∑ i, ‖A (c i)‖ ^ 2 = (LinearMap.trace ℂ Wq (((ContinuousLinearMap.adjoint A).comp A : Wq →L[ℂ] Wq) : Wq →ₗ[ℂ] Wq)).re`. Introduce `κ _ c`. Rewrite using `[LinearMap.trace_eq_sum_inner _ c, Complex.re_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.coe_coe, ContinuousLinearMap.comp_apply, ContinuousLinearMap.adjoint_inner_right, inner_self_eq_norm_sq_to_K]`. Use `norm_cast`. Rewrite using `[key b, key b']`.
+Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_norm_sq_apply_basis_indep {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {ι ι' : Type} [Fintype ι] [Fintype ι']
@@ -91,9 +91,7 @@ private theorem sum_norm_sq_apply_basis_indep {Wp Wq : Type} [NormedAddCommGroup
   rw [key b, key b']
 
 /- English proof (translation)
-Use `haveI := FiniteDimensional.complete ℂ Wp`. Use `haveI := FiniteDimensional.complete ℂ Wq`. Simplify using `only [hs2, Formalism.FourierDecayAlt.B.hsVec, PiLp.norm_sq_eq_of_L2, ContinuousLinearMap.comp_apply, ContinuousLinearEquiv.coe_coe, LinearIsometryEquiv.coe_toContinuousLinearEquiv, LinearIsometryEquiv.norm_map]`. Apply the tactic sequence `try simp only [PiLp.toLp_apply]`. Establish `hb : ∀ i, e'.symm (stdOrthonormalBasis ℂ V' i) = ((stdOrthonormalBasis ℂ V').map e'.symm) i` using `fun i => by`.
-
-Rewrite using `[OrthonormalBasis.map_apply]`. Simplify using `only [hb]`. Conclude with `sum_norm_sq_apply_basis_indep _ _ A`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hilbertSchmidt_conj_isometry {Wp Wq : Type} {V V' : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] [NormedAddCommGroup V]
@@ -112,7 +110,7 @@ theorem hilbertSchmidt_conj_isometry {Wp Wq : Type} {V V' : Type*} [NormedAddCom
   exact sum_norm_sq_apply_basis_indep _ _ A
 
 /- English proof (translation)
-Introduce `p w hp hrep hG h h' hD v y`. Take `⟨γ', μRv, ν, hH, hJ, hO⟩` from `hB hsc hR hFX hBase hEmb hBuilt νl hνl p w hp hrep hG h h' hD v`. Rewrite using `[hJ y, hpin v γ' μRv ν hH, ContinuousLinearMap.comp_apply, ContinuousLinearMap.comp_apply, hO]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem placeJ_of_pin (P : Parts X u u') (sc : ℝ) (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k)
     (hpin : PinCov P) (hB : JointBridge P sc i0 i0') (hsc : 0 < sc) (hR : StRel X u u') (hFX : P.FromX)
@@ -125,7 +123,7 @@ theorem placeJ_of_pin (P : Parts X u u') (sc : ℝ) (i0 i0' : ∀ _ : InfinitePl
   rfl
 
 /- English proof (translation)
-Introduce `v g cv hc hZ`. Take `⟨μRv, ν, hH, hJ, hn⟩` from `hB hFX hBuilt hg v g cv hc hZ`. Rewrite using `[hJ, hpin v g μRv ν hH, hilbertSchmidt_conj_isometry, hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem placeNormG_of_pin (P : Parts X u u') (hr : P.S.G.r = D.R.rS) (hpin : PinCov P) (hB : NormBridge P hr)
     (hFX : P.FromX) (hBuilt : P.Built) (hg : 0 < P.S.g) : PlaceNormG P hr := by
@@ -134,7 +132,7 @@ theorem placeNormG_of_pin (P : Parts X u u') (hr : P.S.G.r = D.R.rS) (hpin : Pin
   rw [hJ, hpin v g μRv ν hH, hilbertSchmidt_conj_isometry, hn]
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.Carrier.JointFinal.joint_tensor_factorization P sc i0 i0' νq hN hR hLU hGP (fun νl hνl => placeJ_of_pin P sc i0 i0' hpin hB hsc hR hFX hBase hEmb hBuilt νl hνl)`.
+A detailed English derivation is pending.
 -/
 theorem jointTensor_of_pin (P : Parts X u u') (sc : ℝ) (i0 i0' : ∀ _ : InfinitePlace X.B.I.F, Fin D.R.k)
     (νq : X.B.I.Ginf → Measure X.B.I.Ginf) (hN : NuQPin X u u' νq) (hR : StRel X u u') (hLU : LocUni X u u')

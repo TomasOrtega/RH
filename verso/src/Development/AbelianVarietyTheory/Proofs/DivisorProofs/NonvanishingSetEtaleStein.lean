@@ -16,7 +16,7 @@ open scoped ENNReal ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[A.nsq_eq_chart hs hy]`. Establish `h1 : ‖τ i y‖ ^ 2 ≠ 0` using `by positivity`. Rewrite using `[Real.log_mul h1 (Real.exp_pos _).ne', Real.log_exp, norm_inv, inv_pow, Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nzStein_germ {n : ℕ} {Y : Type} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
     [MeasurableSpace Y] [BorelSpace Y] {ι La : Type} [AddCommGroup La] (A : WeightedAtlas n Y ι La)
@@ -29,9 +29,9 @@ theorem nzStein_germ {n : ℕ} {Y : Type} [TopologicalSpace Y] [T2Space Y] [Seco
   ring
 
 /- English proof (translation)
-Establish `hT : (A.chart i).target ∈ 𝓝 (A.chart i y)` using `(A.chart i).open_target.mem_nhds ((A.chart i).map_source hy)`. Establish `hd : DifferentiableOn ℂ (τ i ∘ (A.chart i).symm) (A.chart i).target`. Simplify `hs.1 i` using `[WeightedAtlas.IsSec, WeightedAtlas.IsSecOn]`. Establish `hτc : ContDiffAt ℝ ∞ (τ i ∘ (A.chart i).symm) (A.chart i y)`. Establish `h : ContDiffAt ℂ ∞ (τ i ∘ (A.chart i).symm) (A.chart i y)` using `(ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn n _ _ (A.chart i).open_target hd).contDiffAt hT`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h.restrict_scalars ℝ`. Establish `hne : (τ i ∘ (A.chart i).symm) (A.chart i y) ≠ 0`. Simplify `hτ` using `[(A.chart i).left_inv hy]`. Establish `hlog` using `((hτc.inv hne).norm_sq ℝ).log (by simpa using hne)`. Simplify `hlog` using `[Function.comp_def]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem nzStein_smoothLog {n : ℕ} {Y : Type} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
     [MeasurableSpace Y] [BorelSpace Y] {ι La : Type} [AddCommGroup La] (A : WeightedAtlas n Y ι La)
@@ -52,11 +52,11 @@ theorem nzStein_smoothLog {n : ℕ} {Y : Type} [TopologicalSpace Y] [T2Space Y] 
   simpa [Function.comp_def] using hlog
 
 /- English proof (translation)
-Establish `hT : (A.chart i).target ∈ 𝓝 (A.chart i y)` using `(A.chart i).open_target.mem_nhds ((A.chart i).map_source hy)`. Establish `hph : ContDiffAt ℝ ∞ (A.ph Λ i ∘ (A.chart i).symm) (A.chart i y)` using `(A.smooth_ph Λ i).contDiffAt hT`. Establish `hd : DifferentiableOn ℂ (τ i ∘ (A.chart i).symm) (A.chart i).target`. Simplify `hs.1 i` using `[WeightedAtlas.IsSec, WeightedAtlas.IsSecOn]`. Establish `hτc : ContDiffAt ℝ ∞ (τ i ∘ (A.chart i).symm) (A.chart i y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h : ContDiffAt ℂ ∞ (τ i ∘ (A.chart i).symm) (A.chart i y)` using `(ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn n _ _ (A.chart i).open_target hd).contDiffAt hT`. Conclude with `h.restrict_scalars ℝ`. Establish `hne : (τ i ∘ (A.chart i).symm) (A.chart i y) ≠ 0`. Simplify `hτ` using `[(A.chart i).left_inv hy]`. Establish `hinv : ContDiffAt ℝ ∞ (fun v => ((τ i ∘ (A.chart i).symm) v)⁻¹) (A.chart i y)` using `hτc.inv hne`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : ContDiffAt ℝ ∞ (fun v => ‖((τ i ∘ (A.chart i).symm) v)⁻¹‖ ^ 2) (A.chart i y)` using `hinv.norm_sq ℝ`. Establish `hlog : ContDiffAt ℝ ∞ (fun v => Real.log (‖((τ i ∘ (A.chart i).symm) v)⁻¹‖ ^ 2)) (A.chart i y)` using `hsq.log (by simpa using hne)`. Conclude with `(hph.add contDiffAt_const).add (by simpa [Function.comp_def] using hlog)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nzStein_smooth {n : ℕ} {Y : Type} [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y]
     [MeasurableSpace Y] [BorelSpace Y] {ι La : Type} [AddCommGroup La] (A : WeightedAtlas n Y ι La)
@@ -91,29 +91,27 @@ end GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n Y _ _ _ _ _ _ ι La _ A Λ τ z hs hpos hE`. Establish `hW : ∀ x ∈ nz A τ, ∀ᶠ y in 𝓝 x, (fun y => -Real.log (A.nsq Λ τ y)) y = (fun y => (A.ph Λ (A.pick x) y + 0) + Real.log (‖(τ (A.pick x) y)⁻¹‖ ^ 2)) y`. Introduce `x hx`. Establish `hO : IsOpen ((A.chart (A.pick x)).source ∩ τ (A.pick x) ⁻¹' {0}ᶜ)` using `(A.continuousOn_sec hs (A.pick x)).isOpen_inter_preimage (A.chart (A.pick x)).open_source isOpen_compl_singleton`. Use `filter_upwards [hO.mem_nhds ⟨A.mem_pick x, hx⟩] with y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `nzStein_germ A hs (A.pick x) hy.1 hy.2`. Establish `hT : ∀ x, Tendsto (A.chart (A.pick x)).symm (𝓝 (A.chart (A.pick x) x)) (𝓝 x)`. Introduce `x`. Use `(A.chart (A.pick x)).continuousAt_symm ((A.chart (A.pick x)).map_source (A.mem_pick x))` as an intermediate fact. Rewrite `this` using `[ContinuousAt, (A.chart (A.pick x)).left_inv (A.mem_pick x)]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsm : ∀ x ∈ nz A τ, ContDiffAt ℝ ∞ ((fun y => -Real.log (A.nsq Λ τ y)) ∘ (A.chart (A.pick x)).symm) (A.chart (A.pick x) x)`. Introduce `x hx`. Use `(nzStein_smooth A hs (A.pick x) (A.mem_pick x) hx).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [(hT x).eventually (hW x hx)] with v hv`. Conclude with `hv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlev : ∀ x ∈ nz A τ, ∀ ξ : Fin n → ℂ, 0 ≤ A.leviAt (A.pick x) (fun y => -Real.log (A.nsq Λ τ y)) x ξ`. Introduce `x hx ξ`. Establish `hxi : x ∈ (A.chart (A.pick x)).source` using `A.mem_pick x`. Rewrite using `[leviAt_congr A (A.pick x) _ _ x hxi (hW x hx) ξ]`. Establish `hT' : (A.chart (A.pick x)).target ∈ 𝓝 (A.chart (A.pick x) x)` using `(A.chart (A.pick x)).open_target.mem_nhds ((A.chart (A.pick x)).map_source hxi)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : ContDiffAt ℝ 2 ((fun y => A.ph Λ (A.pick x) y + 0) ∘ (A.chart (A.pick x)).symm) (A.chart (A.pick x) x)`. Establish `: ContDiffAt ℝ ∞ (A.ph Λ (A.pick x) ∘ (A.chart (A.pick x)).symm) (A.chart (A.pick x) x)` using `(A.smooth_ph Λ (A.pick x)).contDiffAt hT'`. Conclude with `(this.add contDiffAt_const).of_le (WithTop.coe_le_coe.mpr le_top)`. Establish `hg : ContDiffAt ℝ 2 ((fun y => Real.log (‖(τ (A.pick x) y)⁻¹‖ ^ 2)) ∘ (A.chart (A.pick x)).symm) (A.chart (A.pick x) x)` using `(nzStein_smoothLog A hs (A.pick x) hxi hx).of_le (WithTop.coe_le_coe.mpr le_top)`. Establish `hd : DifferentiableOn ℂ (τ (A.pick x) ∘ (A.chart (A.pick x)).symm) (A.chart (A.pick x)).target`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `hs.1 (A.pick x)` using `[WeightedAtlas.IsSec, WeightedAtlas.IsSecOn]`. Establish `hO : IsOpen ((A.chart (A.pick x)).source ∩ τ (A.pick x) ⁻¹' {0}ᶜ)` using `(A.continuousOn_sec hs (A.pick x)).isOpen_inter_preimage (A.chart (A.pick x)).open_source isOpen_compl_singleton`. Establish `hh : ∀ᶠ v in 𝓝 (A.chart (A.pick x) x), DifferentiableAt ℂ ((fun y => (τ (A.pick x) y)⁻¹) ∘ (A.chart (A.pick x)).symm) v` using `by filter_upwards [(A.chart (A.pick x)).open_target.mem_nhds ((A.chart (A.pick x)).map_source hxi), (hT x).eventually (hO.mem_nhds ⟨hxi, hx⟩)] with v hv1 hv2`. Conclude with `(hd.differentiableAt ((A.chart (A.pick x)).open_target.mem_nhds hv1)).inv hv2.2`. Establish `E1` using `leviAt_add A (A.pick x) (fun y => A.ph Λ (A.pick x) y + 0) (fun y => Real.log (‖(τ (A.pick x) y)⁻¹‖ ^ 2)) x hf hg ξ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `E2` using `leviAt_log_normSq A (A.pick x) (fun y => (τ (A.pick x) y)⁻¹) x hxi hh (inv_ne_zero hx) ξ`. Establish `hp` using `hpos (A.pick x) x hxi ξ`. Simplify using `only at E1 E2 hp`. Rewrite using `[E1, E2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hLH : IsLocalHomeomorph (fun y : nz A τ => z y)` using `GlobalTheory.T.etale_isLocalHomeomorph' n Y ι La A _ z hE`. Establish `hSm : SmoothR n (fun y : nz A τ => z y) (fun y : nz A τ => -Real.log (A.nsq Λ τ y))` using `(GlobalTheory.T.smooth_and_smoothR_of_contDiffAt_in_charts n Y ι La A _ z hE).2 (fun y => -Real.log (A.nsq Λ τ y)) (fun x hx => ⟨A.pick x, A.mem_pick x, hsm x hx⟩)`. Establish `hLv : LeviNonneg n (fun y : nz A τ => z y) (fun y : nz A τ => -Real.log (A.nsq Λ τ y))` using `GlobalTheory.T.etale_leviNonneg_of_chart_plurisubharmonic n Y ι La A _ z hE (fun y => -Real.log (A.nsq Λ τ y)) (fun x hx => ⟨A.pick x, A.mem_pick x, hsm x hx, hlev x hx⟩)`. Establish `hC : ∀ a : ℝ, IsCompact {y : nz A τ | -Real.log (A.nsq Λ τ y) ≤ a}`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : IsCompact {y : Y | Real.exp (-a) ≤ A.nsq Λ τ y}` using `(isClosed_le continuous_const (A.continuous_nsq hs)).isCompact`. Establish `hsub : {y : Y | Real.exp (-a) ≤ A.nsq Λ τ y} ⊆ nz A τ`. Introduce `y hy`. Use `show τ (A.pick y) y ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h1 : Real.exp (-a) ≤ A.nsq Λ τ y` using `hy`. Establish `h2 : A.nsq Λ τ y = 0` using `by simp [WeightedAtlas.nsq, h0]`. Use `Real.exp_pos (-a)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `heq : {y : nz A τ | -Real.log (A.nsq Λ τ y) ≤ a} = Subtype.val ⁻¹' {y : Y | Real.exp (-a) ≤ A.nsq Λ τ y}`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `⟨y, hy⟩`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage]`. Establish `hne : τ (A.pick y) y ≠ 0` using `hy`. Establish `hp : 0 < A.nsq Λ τ y`. Unfold `WeightedAtlas.nsq`.
-
-Check the signs of the components of the expression. Rewrite using `[neg_le, Real.le_log_iff_exp_le hp]`. Rewrite using `[heq, Subtype.isCompact_iff, Set.image_preimage_eq_of_subset (by rw [Subtype.range_coe]; exact hsub)]`. Conclude with `hK`. Conclude with `⟨⟨fun y => z y, hLH, fun y => -Real.log (A.nsq Λ τ y), hSm, hLv, hC⟩, rfl, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nzEtaleStein : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] [CompactSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (Λ : La) (τ : ι → Y → ℂ) (z : Y → V n), A.IsSec Λ τ → A.Pos Λ (fun _ => 0) → Etale A (nz A τ) z → ∃ X : EtaleStein n (nz A τ), X.z = (fun y : nz A τ => z y) ∧ X.e = fun y : nz A τ => -Real.log (A.nsq Λ τ y) := by
   intro n Y _ _ _ _ _ _ ι La _ A Λ τ z hs hpos hE

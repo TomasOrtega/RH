@@ -23,7 +23,7 @@ def homOfSumCoords {n₁ n₂ n : Type u} (e : n₁ ⊕ n₂ ≃ n) (S : Scheme.
 
 @[simp]
 /- English proof (translation)
-Simplify using `[homOfSumCoords]`. Use the proof step `@[simp]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem homOfSumCoords_appTop_coord_inl {n₁ n₂ n : Type u} (e : n₁ ⊕ n₂ ≃ n) (S : Scheme.{u})
     {X : Scheme.{u}} (f : X ⟶ AffineSpace n₁ S) (g : X ⟶ AffineSpace n₂ S) (a : n₁) :
@@ -33,7 +33,7 @@ theorem homOfSumCoords_appTop_coord_inl {n₁ n₂ n : Type u} (e : n₁ ⊕ n�
 
 @[simp]
 /- English proof (translation)
-Simplify using `[homOfSumCoords]`.
+Simplify using the standard rewrite rules.
 -/
 theorem homOfSumCoords_appTop_coord_inr {n₁ n₂ n : Type u} (e : n₁ ⊕ n₂ ≃ n) (S : Scheme.{u})
     {X : Scheme.{u}} (f : X ⟶ AffineSpace n₁ S) (g : X ⟶ AffineSpace n₂ S) (b : n₂) :
@@ -42,7 +42,7 @@ theorem homOfSumCoords_appTop_coord_inr {n₁ n₂ n : Type u} (e : n₁ ⊕ n�
   simp [homOfSumCoords]
 
 /- English proof (translation)
-Use `AffineSpace.hom_ext ?_ (fun a => ?_)` and prove the remaining obligations. Simplify using `[homOfSumCoords]`. Rewrite using `[AlgebraicGeometry.Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem homOfSumCoords_comp_reindex_inl {n₁ n₂ n : Type u} (e : n₁ ⊕ n₂ ≃ n) (S : Scheme.{u})
     {X : Scheme.{u}} (f : X ⟶ AffineSpace n₁ S) (g : X ⟶ AffineSpace n₂ S) :
@@ -53,7 +53,7 @@ private theorem homOfSumCoords_comp_reindex_inl {n₁ n₂ n : Type u} (e : n₁
     simp
 
 /- English proof (translation)
-Use `AffineSpace.hom_ext ?_ (fun b => ?_)` and prove the remaining obligations. Simplify `hfg` using `[homOfSumCoords]`. Rewrite using `[AlgebraicGeometry.Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem homOfSumCoords_comp_reindex_inr {n₁ n₂ n : Type u} (e : n₁ ⊕ n₂ ≃ n) (S : Scheme.{u})
     {X : Scheme.{u}} (f : X ⟶ AffineSpace n₁ S) (g : X ⟶ AffineSpace n₂ S)
@@ -65,11 +65,11 @@ private theorem homOfSumCoords_comp_reindex_inr {n₁ n₂ n : Type u} (e : n₁
     simp
 
 /- English proof (translation)
-Use `AffineSpace.hom_ext ?_ (fun i => ?_)` and prove the remaining obligations. Establish `h : (m ≫ AffineSpace.reindex (S` using `S) (fun a : n₁ => e (Sum.inl a))) ≫ (AffineSpace n₁ S ↘ S) = f ≫ (AffineSpace n₁ S ↘ S) := by rw [h₁]`. Simplify `h` using `[homOfSumCoords]`. Take `⟨j, rfl⟩ : ∃ j, e j = i` from `⟨e.symm i, e.apply_symm_apply i⟩`. Take `(a | b)` from `j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h : (m ≫ AffineSpace.reindex (S` using `S) (fun a : n₁ => e (Sum.inl a))).appTop (AffineSpace.coord S a) = f.appTop (AffineSpace.coord S a) := by rw [h₁]`. Rewrite `h` using `[AlgebraicGeometry.Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`. Simplify using `using h`. Establish `h : (m ≫ AffineSpace.reindex (S` using `S) (fun b : n₂ => e (Sum.inr b))).appTop (AffineSpace.coord S b) = g.appTop (AffineSpace.coord S b) := by rw [h₂]`. Rewrite `h` using `[AlgebraicGeometry.Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem eq_homOfSumCoords_of_comp_reindex {n₁ n₂ n : Type u} (e : n₁ ⊕ n₂ ≃ n) (S : Scheme.{u})
     {X : Scheme.{u}} (f : X ⟶ AffineSpace n₁ S) (g : X ⟶ AffineSpace n₂ S)
@@ -93,13 +93,11 @@ private theorem eq_homOfSumCoords_of_comp_reindex {n₁ n₂ n : Type u} (e : n�
       simpa using h
 
 /- English proof (translation)
-Establish `hcomm : CommSq (AffineSpace.reindex (S` using `S) (fun a : n₁ => e (Sum.inl a))) (AffineSpace.reindex (S := S) (fun b : n₂ => e (Sum.inr b))) (AffineSpace n₁ S ↘ S) (AffineSpace n₂ S ↘ S) := ⟨by simp⟩`. Establish `hcond : Limits.pullback.fst (AffineSpace n₁ S ↘ S) (AffineSpace n₂ S ↘ S) ≫ (AffineSpace n₁ S ↘ S) = Limits.pullback.snd (AffineSpace n₁ S ↘ S) (AffineSpace n₂ S ↘ S) ≫ (AffineSpace n₂ S ↘ S)` using `Limits.pullback.condition`. Establish `hA : homOfSumCoords e S (Limits.pullback.fst (AffineSpace n₁ S ↘ S) (AffineSpace n₂ S ↘ S)) (Limits.pullback.snd (AffineSpace n₁ S ↘ S) (AffineSpace n₂ S ↘ S)) ≫ AffineSpace.reindex (S` using `S) (fun a : n₁ => e (Sum.inl a)) = Limits.pullback.fst (AffineSpace n₁ S ↘ S) (AffineSpace n₂ S ↘ S) := homOfSumCoords_comp_reindex_inl e S _ _`. Establish `hB : homOfSumCoords e S (Limits.pullback.fst (AffineSpace n₁ S ↘ S) (AffineSpace n₂ S ↘ S)) (Limits.pullback.snd (AffineSpace n₁ S ↘ S) (AffineSpace n₂ S ↘ S)) ≫ AffineSpace.reindex (S` using `S) (fun b : n₂ => e (Sum.inr b)) = Limits.pullback.snd (AffineSpace n₁ S ↘ S) (AffineSpace n₂ S ↘ S) := homOfSumCoords_comp_reindex_inr e S _ _ hcond`. Establish `hid : (𝟙 (AffineSpace n S)) = homOfSumCoords e S (AffineSpace.reindex (S` using `S) (fun a : n₁ => e (Sum.inl a))) (AffineSpace.reindex (S := S) (fun b : n₂ => e (Sum.inr b))) := eq_homOfSumCoords_of_comp_reindex e S _ _ _ (Category.id_comp _) (Category.id_comp _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsPullback.of_iso_pullback hcomm { hom := Limits.pullback.lift _ _ hcomm.w inv := homOfSumCoords e S (Limits.pullback.fst (AffineSpace n₁ S ↘ S) (AffineSpace n₂ S ↘ S)) (Limits.pullback.snd (AffineSpace n₁ S ↘ S) (AffineSpace n₂ S ↘ S)) hom_inv_id := ?_ inv_hom_id := ?_ } (Limits …` and prove the remaining obligations. Rewrite using `[hid]`. Use `eq_homOfSumCoords_of_comp_reindex e S _ _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hA]`. Conclude with `Limits.pullback.lift_fst _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hB]`. Conclude with `Limits.pullback.lift_snd _ _ _`. Use `Limits.pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Limits.pullback.lift_fst, Category.id_comp]`. Conclude with `hA`.
-
-Rewrite using `[Category.assoc, Limits.pullback.lift_snd, Category.id_comp]`. Conclude with `hB`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_reindex_of_sumEquiv {n₁ n₂ n : Type u} (e : n₁ ⊕ n₂ ≃ n) (S : Scheme.{u}) :
     IsPullback
@@ -160,21 +158,21 @@ def sumUliftEquivUliftSum (n m : ℕ) :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem sumUliftEquivUliftSum_inl (n m : ℕ) (a : Fin n) :
     sumUliftEquivUliftSum.{u} n m (Sum.inl (ULift.up a)) = ULift.up (Sum.inl a) := rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem sumUliftEquivUliftSum_inr (n m : ℕ) (b : Fin m) :
     sumUliftEquivUliftSum.{u} n m (Sum.inr (ULift.up b)) = ULift.up (Sum.inr b) := rfl
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem sumUliftEquivUliftSum_symm_inl (n m : ℕ) (a : Fin n) :
     (sumUliftEquivUliftSum.{u} n m).symm (ULift.up (Sum.inl a)) = Sum.inl (ULift.up a) := rfl
@@ -198,7 +196,7 @@ def projLeft (k : Type u) [Field k] (n m : ℕ) :
 
 @[simp]
 /- English proof (translation)
-Simplify using `[projRight]`. Use the proof step `@[simp]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem projRight_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (n m : ℕ) :
     projRight k n m ≫ affineSpaceIndexedByToSpec k (ULift.{u} (Fin m)) =
@@ -207,7 +205,7 @@ theorem projRight_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (n m : 
 
 @[simp]
 /- English proof (translation)
-Simplify using `[projRight]`. Use the proof step `@[simp]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem projRight_appTop_coord (k : Type u) [Field k] (n m : ℕ) (j : Fin m) :
     (projRight k n m).appTop
@@ -218,7 +216,7 @@ theorem projRight_appTop_coord (k : Type u) [Field k] (n m : ℕ) (j : Fin m) :
 
 @[simp]
 /- English proof (translation)
-Simplify using `[projLeft]`. Use the proof step `@[simp]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem projLeft_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (n m : ℕ) :
     projLeft k n m ≫ affineSpaceIndexedByToSpec k (ULift.{u} (Fin n)) =
@@ -227,7 +225,7 @@ theorem projLeft_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (n m : �
 
 @[simp]
 /- English proof (translation)
-Simplify using `[projLeft]`.
+Simplify using the standard rewrite rules.
 -/
 theorem projLeft_appTop_coord (k : Type u) [Field k] (n m : ℕ) (j : Fin n) :
     (projLeft k n m).appTop
@@ -237,7 +235,7 @@ theorem projLeft_appTop_coord (k : Type u) [Field k] (n m : ℕ) (j : Fin n) :
   simp [projLeft]
 
 /- English proof (translation)
-The claim follows from `isPullback_reindex_of_sumEquiv (sumUliftEquivUliftSum.{u} n m) (Spec (CommRingCat.of k))`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_projLeft_projRight (k : Type u) [Field k] (n m : ℕ) :
     IsPullback (projLeft k n m) (projRight k n m)
@@ -246,7 +244,7 @@ theorem isPullback_projLeft_projRight (k : Type u) [Field k] (n m : ℕ) :
   isPullback_reindex_of_sumEquiv (sumUliftEquivUliftSum.{u} n m) (Spec (CommRingCat.of k))
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Smooth) (isPullback_projLeft_projRight k n m) (hs k n)`.
+A detailed English derivation is pending.
 -/
 theorem smooth_projRight (hs : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k] (n m : ℕ) :
     AlgebraicGeometry.Smooth (projRight k n m) :=
@@ -254,7 +252,7 @@ theorem smooth_projRight (hs : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k] (
     (isPullback_projLeft_projRight k n m) (hs k n)
 
 /- English proof (translation)
-Establish `hsm : AlgebraicGeometry.Smooth (affineSpaceIndexedByToSpec k (ULift.{u} (Fin m)))` using `hs k m`. Establish `hpb : IsPullback (projLeft k n m) (projRight k n m) (affineSpaceIndexedByToSpec k (ULift.{u} (Fin n))) (affineSpaceIndexedByToSpec k (ULift.{u} (Fin m)))` using `isPullback_reindex_of_sumEquiv (sumUliftEquivUliftSum.{u} n m) (Spec (CommRingCat.of k))`. Conclude with `MorphismProperty.IsStableUnderBaseChange.of_isPullback hpb.flip hsm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_projLeft (hs : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k] (n m : ℕ) :
     AlgebraicGeometry.Smooth (projLeft k n m) := by
@@ -283,7 +281,7 @@ def prodMapOnPreimage (k : Type u) [Field k] (n m c : ℕ)
         i.down)
 
 /- English proof (translation)
-Simplify using `[prodMapOnPreimage]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prodMapOnPreimage_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k] (n m c : ℕ)
     (U : (affineSpaceIndexedBy k (ULift.{u} (Fin n))).Opens)
@@ -293,9 +291,9 @@ theorem prodMapOnPreimage_comp_affineSpaceIndexedByToSpec (k : Type u) [Field k]
   simp [prodMapOnPreimage]
 
 /- English proof (translation)
-Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, projRight_comp_affineSpaceIndexedByToSpec, Category.assoc, projRight_comp_affineSpaceIndexedByToSpec, prodMapOnPreimage_comp_affineSpaceIndexedByToSpec]`. Introduce and unpack `⟨j⟩`. Simplify using `only [AlgebraicGeometry.Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`. Rewrite using `[projRight_appTop_coord, projRight_appTop_coord]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[prodMapOnPreimage]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prodMapOnPreimage_comp_projRight (k : Type u) [Field k] (n m c : ℕ)
     (U : (affineSpaceIndexedBy k (ULift.{u} (Fin n))).Opens)
@@ -310,11 +308,9 @@ theorem prodMapOnPreimage_comp_projRight (k : Type u) [Field k] (n m c : ℕ)
     simp [prodMapOnPreimage]
 
 /- English proof (translation)
-Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Establish `h1 : (AlgebraicGeometry.morphismRestrict (projLeft k n m) U ≫ φ) ≫ affineSpaceIndexedByToSpec k (ULift.{u} (Fin c)) = (projLeft k n m ⁻¹ᵁ U).ι ≫ affineSpaceIndexedByToSpec k (ULift.{u} (Fin n ⊕ Fin m))`. Rewrite using `[Category.assoc, hφ, morphismRestrict_ι_assoc, projLeft_comp_affineSpaceIndexedByToSpec]`. Establish `h2 : (prodMapOnPreimage k n m c U φ ≫ projLeft k c m) ≫ affineSpaceIndexedByToSpec k (ULift.{u} (Fin c)) = (projLeft k n m ⁻¹ᵁ U).ι ≫ affineSpaceIndexedByToSpec k (ULift.{u} (Fin n ⊕ Fin m))`. Rewrite using `[Category.assoc, projLeft_comp_affineSpaceIndexedByToSpec, prodMapOnPreimage_comp_affineSpaceIndexedByToSpec]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.trans h2.symm`. Introduce and unpack `⟨j⟩`. Establish `h : (prodMapOnPreimage k n m c U φ ≫ projLeft k c m).appTop (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up j)) = (AlgebraicGeometry.morphismRestrict (projLeft k n m) U ≫ φ).appTop (AffineSpace.coord (Spec (CommRingCat.of k)) (ULift.up j))`. Rewrite using `[AlgebraicGeometry.Scheme.Hom.comp_appTop, CommRingCat.comp_apply, projLeft_appTop_coord]`. Simplify using `[prodMapOnPreimage]`.
-
-Conclude with `h.symm`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem morphismRestrict_projLeft_comp (k : Type u) [Field k] (n m c : ℕ)
     (U : (affineSpaceIndexedBy k (ULift.{u} (Fin n))).Opens)
@@ -343,9 +339,7 @@ theorem morphismRestrict_projLeft_comp (k : Type u) [Field k] (n m c : ℕ)
     exact h.symm
 
 /- English proof (translation)
-Establish `hsq1 : IsPullback (AlgebraicGeometry.morphismRestrict (projLeft k n m) U) (projLeft k n m ⁻¹ᵁ U).ι U.ι (projLeft k n m)` using `AlgebraicGeometry.isPullback_morphismRestrict (projLeft k n m) U`. Establish `hstar` using `hsq1.paste_vert (isPullback_projLeft_projRight k n m)`. Establish `hstar' : IsPullback (AlgebraicGeometry.morphismRestrict (projLeft k n m) U) (prodMapOnPreimage k n m c U φ ≫ projRight k c m) (φ ≫ affineSpaceIndexedByToSpec k (ULift.{u} (Fin c))) (affineSpaceIndexedByToSpec k (ULift.{u} (Fin m)))`. Rewrite using `[prodMapOnPreimage_comp_projRight, hφ]`. Conclude with `hstar`.
-
-Conclude with `(hstar'.of_bot (morphismRestrict_projLeft_comp k n m c U φ hφ) (isPullback_projLeft_projRight k c m)).flip`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_prodMapOnPreimage (k : Type u) [Field k] (n m c : ℕ)
     (U : (affineSpaceIndexedBy k (ULift.{u} (Fin n))).Opens)
@@ -369,7 +363,7 @@ theorem isPullback_prodMapOnPreimage (k : Type u) [Field k] (n m c : ℕ)
     (isPullback_projLeft_projRight k c m)).flip
 
 /- English proof (translation)
-Establish `hsmooth : AlgebraicGeometry.Smooth φ` using `‹AlgebraicGeometry.Smooth φ›`. Conclude with `MorphismProperty.of_isPullback (P := @AlgebraicGeometry.Smooth) (isPullback_prodMapOnPreimage k n m c U φ hφ).flip hsmooth`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_prodMapOnPreimage (_hs : AffineSpaceIsSmooth.{u}) (k : Type u) [Field k] (n m c : ℕ)
     (U : (affineSpaceIndexedBy k (ULift.{u} (Fin n))).Opens)

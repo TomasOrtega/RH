@@ -24,7 +24,7 @@ def Lv : Submodule (𝓞 D.host.E) (Fin (VS D).rank → D.host.E) :=
   (VS D).L0.comap ((crdE D).toLinearMap.restrictScalars (𝓞 D.host.E))
 
 /- English proof (translation)
-Simplify using `only [Lv, Submodule.mem_comap, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe, crdE, Module.Basis.equivFun_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Lv (x : Fin (VS D).rank → D.host.E) :
     x ∈ Lv D ↔ (∑ i, x i • (VS D).frame i) ∈ (VS D).L0 := by
@@ -32,9 +32,9 @@ theorem mem_Lv (x : Fin (VS D).rank → D.host.E) :
     Module.Basis.equivFun_symm_apply]
 
 /- English proof (translation)
-Unfold `Formalism.UG.hform Jv`. Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, Finset.mul_sum, RingHom.id_apply]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show (VS D).gram i j = (VS D).hT ((VS D).frame i) ((VS D).frame j) from rfl]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hform_eq (x y : Fin (VS D).rank → D.host.E) :
     Formalism.UG.hform (starRingEnd D.host.E) (Jv D) x y =
@@ -54,7 +54,7 @@ namespace Formalism.L2.SG.InstExistsPf
 variable (D : D7)
 
 /- English proof (translation)
-Unfold `Formalism.UG.IsHerm Formalism.UG.cT`. Use extensionality with `i j`. Conclude with `(VS D).herm.eq ((VS D).frame j) ((VS D).frame i)`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem J_herm : Formalism.UG.IsHerm (starRingEnd D.host.E) (Jv D) := by
   unfold Formalism.UG.IsHerm Formalism.UG.cT
@@ -62,11 +62,11 @@ theorem J_herm : Formalism.UG.IsHerm (starRingEnd D.host.E) (Jv D) := by
   exact (VS D).herm.eq ((VS D).frame j) ((VS D).frame i)
 
 /- English proof (translation)
-Introduce `hdet`. Take `⟨v, hv, hJv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Apply `hv` to reduce the goal to its premises. Establish `hrow : ∀ i, ∑ j, Jv D i j * v j = 0` using `fun i => by`. Use `congrFun hJv i` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.mulVec, dotProduct]`. Establish `hy : ∀ x, (VS D).hT x (∑ j, v j • (VS D).frame j) = 0`. Introduce `x`. Rewrite using `[← (VS D).frame.sum_repr x, ← hform_eq D (⇑((VS D).frame.repr x)) v]`. Unfold `Formalism.UG.hform`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [mul_assoc, ← Finset.mul_sum, hrow, mul_zero, Finset.sum_const_zero]`. Establish `h0` using `(VS D).nondeg.2 _ hy`. Use function extensionality and compare the values at `i`. Conclude with `Fintype.linearIndependent_iff.mp (VS D).frame.linearIndependent v h0 i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem J_det : (Jv D).det ≠ 0 := by
   intro hdet
@@ -85,9 +85,9 @@ theorem J_det : (Jv D).det ≠ 0 := by
   exact Fintype.linearIndependent_iff.mp (VS D).frame.linearIndependent v h0 i
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Lv, Submodule.mem_comap, Submodule.mem_map, LinearMap.restrictScalars_apply, LinearEquiv.coe_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨_, h, (crdE D).symm_apply_apply x⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Rewrite using `[LinearEquiv.apply_symm_apply]` and apply the resulting hypothesis.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem Lv_eq_map : Lv D = (VS D).L0.map ((crdE D).symm.toLinearMap.restrictScalars (𝓞 D.host.E)) := by
   ext x
@@ -99,27 +99,27 @@ theorem Lv_eq_map : Lv D = (VS D).L0.map ((crdE D).symm.toLinearMap.restrictScal
     rwa [LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[Lv_eq_map]`. Conclude with `Submodule.FG.map _ (VS D).standardTuple_isLattice.fg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem L_fg : (Lv D).FG := by
   rw [Lv_eq_map]
   exact Submodule.FG.map _ (VS D).standardTuple_isLattice.fg
 
 /- English proof (translation)
-Rewrite using `[Lv_eq_map, Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, (VS D).standardTuple_isLattice.span_eq_top, Submodule.map_top, LinearEquiv.range]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem L_span : Submodule.span D.host.E ((Lv D : Set (Fin (VS D).rank → D.host.E))) = ⊤ := by
   rw [Lv_eq_map, Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image,
     (VS D).standardTuple_isLattice.span_eq_top, Submodule.map_top, LinearEquiv.range]
 
 /- English proof (translation)
-Establish `hU` using `(VS D).baseLattice_isUnimodular`. Unfold `Formalism.HermitianLatticesTheory.IsUnimodular Formalism.HermitianLatticesTheory.dual at hU`. Rewrite using `[mem_Lv]`. Use `conv_lhs => rw [← hU]`. Simplify using `only [Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.mem_one, RingHom.mem_range]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Rewrite `hy` using `[mem_Lv]`. Rewrite using `[hform_eq]`. Take `⟨a, ha⟩` from `h _ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, ha⟩`. Introduce `h w hw`. Establish `hw' : (⇑((VS D).frame.repr w)) ∈ Lv D`. Rewrite using `[mem_Lv, (VS D).frame.sum_repr]`. Conclude with `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha⟩` from `h _ hw'`. Rewrite `ha` using `[hform_eq, (VS D).frame.sum_repr]`. Conclude with `⟨a, ha⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem L_dual (x : Fin (VS D).rank → D.host.E) : x ∈ Lv D ↔
     ∀ y ∈ Lv D, Formalism.UG.hform (starRingEnd D.host.E) (Jv D) y x ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := by
@@ -150,7 +150,7 @@ namespace Formalism.L2.SG.InstExistsPf
 variable (D : D7)
 
 /- English proof (translation)
-Unfold `VS`. Rewrite using `[D.sp.Y_rank 0 (Nat.zero_le _)]`. Simplify using `[Ranks.rankY]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rank_eq : (VS D).rank = D.R.r := by
   unfold VS
@@ -160,9 +160,9 @@ theorem rank_eq : (VS D).rank = D.R.r := by
 def epsV : Fin (VS D).rank → Bool := fun i => epsS D.R (Fin.cast (rank_eq D) i)
 
 /- English proof (translation)
-Proceed by induction on `b with`. Consider the case `zero`. Simplify using `only [Nat.mul_zero, Nat.add_zero]`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => (1 : ℕ)) (fun n hn => by simp [Finset.mem_range.mp hn])]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ b ih`. Rewrite using `[show a + 2 * (b + 1) = a + 2 * b + 1 + 1 by ring, Finset.sum_range_succ, Finset.sum_range_succ, ih]`. Apply the tactic sequence `split_ifs <;> simp_all <;> omega`.
+Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem card_range_filter_lt_or_even_eq (a b : ℕ) :
     ∑ n ∈ Finset.range (a + 2 * b),
@@ -177,11 +177,11 @@ private theorem card_range_filter_lt_or_even_eq (a b : ℕ) :
     split_ifs <;> simp_all <;> omega
 
 /- English proof (translation)
-Unfold `epsV epsS`. Rewrite using `[Finset.card_filter]`. Simplify using `only [Fin.coe_cast]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun n => if (if n < D.R.k - 1 then true else decide ((n - (D.R.k - 1)) % 2 = 0)) = true then 1 else 0) (VS D).rank]`. Establish `hm` using `D.R.two_le_m`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk` using `D.R.m_add_three_le_k`. Take `⟨j, hj⟩` from `D.R.m_even`. Establish `hr0` using `rank_eq D`. Unfold `Ranks.r at hr0`. Establish `hr : (VS D).rank = (D.R.k - 1) + 2 * (D.R.m / 2)` using `by omega`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[hr, card_range_filter_lt_or_even_eq]`. Unfold `Ranks.rS`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_epsV : (Finset.univ.filter fun i => epsV D i = true).card = D.R.k + D.R.rS := by
   unfold epsV epsS
@@ -201,9 +201,9 @@ theorem card_epsV : (Finset.univ.filter fun i => epsV D i = true).card = D.R.k +
   omega
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_subtype_compl, Fintype.card_subtype, card_epsV, Fintype.card_fin]`. Establish `hm` using `D.R.two_le_m`. Establish `hk` using `D.R.m_add_three_le_k`. Take `⟨j, hj⟩` from `D.R.m_even`. Establish `hr0` using `rank_eq D`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `Ranks.r at hr0`. Unfold `Ranks.rS`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_not_epsV : Fintype.card {i // ¬ epsV D i = true} = D.R.rS + 1 := by
   rw [Fintype.card_subtype_compl, Fintype.card_subtype, card_epsV, Fintype.card_fin]
@@ -222,9 +222,9 @@ def eSgn : Fin (VS D).rank ≃ Fin (D.R.k + D.R.rS) ⊕ Fin (D.R.rS + 1) :=
       (Fintype.equivFinOfCardEq (card_not_epsV D)))
 
 /- English proof (translation)
-Distinguish the cases in `h : epsV D i = true`. Rewrite using `[h]`. Simplify using `[eSgn, h]`. Simplify using `only [Bool.not_eq_true] at h`. Rewrite using `[h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[eSgn, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eSgn_isLeft (i : Fin (VS D).rank) : (eSgn D i).isLeft = epsV D i := by
   by_cases h : epsV D i = true
@@ -235,16 +235,16 @@ theorem eSgn_isLeft (i : Fin (VS D).rank) : (eSgn D i).isLeft = epsV D i := by
     simp [eSgn, h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_eq {m p : Type} (M : Matrix m p ℂ) : Formalism.UG.cT (starRingEnd ℂ) M = Mᴴ := by
   ext i j
   simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, Formalism.UG.Jpq, Matrix.diagonal_apply]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Establish `ha` using `he a`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases hea : e a with x | x <;> simp_all [Matrix.one_apply]`. Rewrite using `[if_neg hab]`. Establish `hne : e a ≠ e b` using `fun h => hab (e.injective h)`. Apply the tactic sequence `rcases hea : e a with x | x <;> rcases heb : e b with y | y <;> simp_all [Matrix.one_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Jpq_sub (p q : ℕ) {n : Type} [DecidableEq n] (e : n ≃ Fin p ⊕ Fin q) (ε : n → Bool) (he : ∀ i, (e i).isLeft = ε i) :
     (Formalism.UG.Jpq p q).submatrix e e = Matrix.diagonal fun a => if ε a then (1 : ℂ) else -1 := by
@@ -259,11 +259,11 @@ theorem Jpq_sub (p q : ℕ) {n : Type} [DecidableEq n] (e : n ≃ Fin p ⊕ Fin 
     rcases hea : e a with x | x <;> rcases heb : e b with y | y <;> simp_all [Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hs : Formalism.UG.HasSignature ((VS D).gram.map (embS D τ)) (D.R.k + D.R.rS) (D.R.rS + 1)`. Establish `h0` using `D.sp.Y_sig 0 (embS D τ)`. Rewrite `h0` using `[D.sp.baseSpace_signature_eq]`. Conclude with `h0`. Take `⟨e, P, hP⟩` from `hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hP` using `[cT_eq]`. Use `⟨P.val.submatrix e (eSgn D), ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : P.val.submatrix e (eSgn D) * (P⁻¹).val.submatrix (eSgn D) e = 1`. Rewrite using `[Matrix.submatrix_mul_equiv, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.submatrix_one_equiv]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).mpr (Matrix.isUnit_det_of_right_inverse h1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show (Jv D).map (embS D τ) = (VS D).gram.map (embS D τ) from rfl]`. Establish `hGe : (VS D).gram.map (embS D τ) = (Matrix.reindex e e ((VS D).gram.map (embS D τ))).submatrix e e`. Simplify using `[Matrix.reindex_apply, Matrix.submatrix_submatrix]`. Rewrite using `[hGe, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, hP]`. Conclude with `Jpq_sub _ _ (eSgn D) (epsV D) (eSgn_isLeft D)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_P (τ : D.what₂.Tau) : ∃ P : Matrix (Fin (VS D).rank) (Fin (VS D).rank) ℂ, IsUnit P ∧
     Pᴴ * (Jv D).map (embS D τ) * P = Formalism.REAL.Jm (epsV D) := by
@@ -292,9 +292,9 @@ namespace Formalism.L2.SG.InstExistsPf
 variable (D : D7)
 
 /- English proof (translation)
-Unfold `embS`. Express the relevant statement in the definitionally equal form `_ = (Formalism.L2.Host.realPl D.host (D.eTau τ)).embedding a`. Unfold `Formalism.L2.Host.realPl`. Rewrite using `[InfinitePlace.embedding_mk_eq_of_isReal]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← InfinitePlace.isReal_mk_iff]`. Conclude with `NumberField.IsTotallyReal.isReal _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embS_over (τ : D.what₂.Tau) (a : D.host.F) :
     embS D τ (algebraMap D.host.F D.host.E a) = (Formalism.L2.Host.tauPl D τ).embedding a := by
@@ -341,7 +341,7 @@ def instanceOfRecord : UnitaryGroupInstance D where
   eps_eq := fun _ _ => rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨instanceOfRecord D⟩`.
+Supply the required witnesses or components.
 -/
 theorem instExists : InstExists D := ⟨instanceOfRecord D⟩
 

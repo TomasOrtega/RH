@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.FockTransl
 
 /- English proof (translation)
-Establish `h1 : ∀ τ i, Integrable (fun w : Fin a → ℂ => ∏ j, g τ i j (w j))` using `fun τ i => Integrable.fintype_prod (f := fun j (w : ℂ) => g τ i j w) (hg τ i)`. Establish `h2 : ∀ τ, Integrable (fun w : Fin b → Fin a → ℂ => ∏ i, ∏ j, g τ i j (w i j))` using `fun τ => Integrable.fintype_prod (f := fun i (w : Fin a → ℂ) => ∏ j, g τ i j (w j)) (h1 τ)`. Conclude with `Integrable.fintype_prod (f := fun τ (w : Fin b → Fin a → ℂ) => ∏ i, ∏ j, g τ i j (w i j)) h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_vcx_prod {ι : Type} [Fintype ι] {a b : ℕ} (g : ι → Fin b → Fin a → ℂ → ℂ)
     (hg : ∀ τ i j, Integrable (g τ i j)) :
@@ -24,7 +24,7 @@ theorem integrable_vcx_prod {ι : Type} [Fintype ι] {a b : ℕ} (g : ι → Fin
   exact Integrable.fintype_prod (f := fun τ (w : Fin b → Fin a → ℂ) => ∏ i, ∏ j, g τ i j (w i j)) h2
 
 /- English proof (translation)
-Establish `h : -gq c z / 2 = ∑ τ, ∑ i, ∑ j, (-(c τ * ‖z τ i j‖ ^ 2) / 2)`. Simplify using `[gq, Finset.sum_div, Finset.sum_neg_distrib, neg_div]`. Rewrite using `[h]`. Simplify using `only [Real.exp_sum]`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/
@@ -38,7 +38,7 @@ theorem exp_gq_eq_prod {ι : Type} [Fintype ι] {a b : ℕ} (c : ι → ℝ) (z 
   rfl
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.integrable_norm_pow_mul_exp_neg_mul_norm_sq (E := ℂ) n (b := c / 2) (by positivity)`. Use `h.mono' (Continuous.aestronglyMeasurable (by fun_prop)) (ae_of_all _ fun w => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, Complex.norm_conj, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le]`. Apply `le_of_eq` to reduce the goal to its premises. Use `congr 2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -53,9 +53,9 @@ theorem integrable_conj_pow_mul_gauss (n : ℕ) {c : ℝ} (hc : 0 < c) :
   ring
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.integrable_exp_neg_mul_norm_sq (E := ℂ) (b := c / 4) (by positivity)).const_mul (Real.exp (c * ‖u‖ ^ 2))`. Use `h.mono' (Continuous.aestronglyMeasurable (by fun_prop)) (ae_of_all _ fun w => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_exp, Complex.norm_real, Real.norm_of_nonneg (Real.exp_pos _).le, ← Real.exp_add, ← Real.exp_add]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `h1 : ((c : ℂ) * u * conj w).re ≤ c * (‖u‖ * ‖w‖)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul, norm_mul, Complex.norm_conj, Complex.norm_real, Real.norm_of_nonneg hc.le]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ‖u‖ * ‖w‖ ≤ ‖u‖ ^ 2 + ‖w‖ ^ 2 / 4` using `by nlinarith [sq_nonneg (‖u‖ - ‖w‖ / 2)]`. Establish `h3` using `mul_le_mul_of_nonneg_left h2 hc.le`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -77,11 +77,11 @@ theorem integrable_exp_bargmann_mul_gauss (u : ℂ) {c : ℝ} (hc : 0 < c) :
   nlinarith
 
 /- English proof (translation)
-Introduce `ι _ a b c hc`. Prove the components needed by the constructor for the conclusion. Introduce `m`. Establish `h` using `integrable_vcx_prod (fun τ i j w => conj w ^ m (τ, i, j) * (Real.exp (-(c τ * ‖w‖ ^ 2) / 2) : ℂ)) (fun τ i j => integrable_conj_pow_mul_gauss _ (hc τ))`. Use `h.congr (ae_of_all _ fun z => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[conjMono, exp_gq_eq_prod, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Simplify using `only [Fintype.prod_prod_type, Finset.prod_mul_distrib]`. Introduce `z₀`. Establish `h` using `integrable_vcx_prod (fun τ i j w => Complex.exp ((c τ : ℂ) * z₀ τ i j * conj w) * (Real.exp (-(c τ * ‖w‖ ^ 2) / 2) : ℂ)) (fun τ i j => integrable_exp_bargmann_mul_gauss _ (hc τ))`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `h.congr (ae_of_all _ fun z => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[bk, exp_gq_eq_prod]`. Simplify using `only [Complex.exp_sum, Finset.prod_mul_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integrable_conjMono_bargmann_gauss : ∀ (ι : Type) [Fintype ι] (a b : ℕ) (c : ι → ℝ), (∀ τ, 0 < c τ) →
     (∀ m : DVar ι a b →₀ ℕ, Integrable fun z => conjMono m z * (Real.exp (-gq c z / 2) : ℂ)) ∧

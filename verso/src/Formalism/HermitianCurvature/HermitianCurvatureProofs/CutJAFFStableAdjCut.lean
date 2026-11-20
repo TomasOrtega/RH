@@ -36,7 +36,7 @@ def AdjInt : Prop :=
           ∫ x : Mt k r, B.hsInner (B.rho D p (B.opAdj Θ f) (Matrix.of x)) (φ (Matrix.of x)) ∂D.μG
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D Θ hs hc f hf hfc hfs p hp g hg`. Take `⟨c1, c2⟩` from `hC k r Wp Wq D Θ hs f hf hfc hfs p hp`. Conclude with `hF k r Wp Wq D _ _ c1 c2 (fun φ h1 h2 h3 => hI k r Wp Wq D Θ hs hc f hf hfc hfs p hp φ h1 h2 h3) g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem adjComm_of_parts (hF : FundG) (hC : AdjCont) (hI : AdjInt) : AdjComm := by
   intro k r Wp Wq _ _ _ _ _ _ D Θ hs hc f hf hfc hfs p hp g hg

@@ -16,13 +16,13 @@ open GlobalTheory.ZM
 namespace GlobalTheory.ZM.CoordChart
 
 /- English proof (translation)
-Use `set V := (j ≫ x).opensRange with hV`. Set `s : V.toScheme ⟶ X` to `(j ≫ x).isoOpensRange.inv ≫ j`. Establish `hs : s ≫ x = V.ι`. Rewrite using `[← cancel_epi (j ≫ x).isoOpensRange.hom]`. Simplify using `only [s, Category.assoc, Iso.hom_inv_id_assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(Scheme.Hom.isoOpensRange_hom_ι (j ≫ x)).symm`. Establish `hr : Set.range s ⊆ Set.range (x ⁻¹ᵁ V).ι`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Use `show x (s y) ∈ V`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : x (s y) = V.ι y` using `by rw [← Scheme.Hom.comp_apply, hs]`. Rewrite using `[e]`. Establish `hm : V.ι y ∈ Set.range V.ι` using `⟨y, rfl⟩`. Rewrite `hm` using `[Scheme.Opens.range_ι]`. Conclude with `hm`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `s'` to `IsOpenImmersion.lift (x ⁻¹ᵁ V).ι s hr`. Establish `h1 : s' ≫ (x ⁻¹ᵁ V).ι = s` using `IsOpenImmersion.lift_fac _ _ _`. Use `⟨⟨s', ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono ((x ⁻¹ᵁ V).ι ≫ x), Category.assoc, reassoc_of% h1, hs, morphismRestrict_ι, Category.id_comp]`. Rewrite using `[← cancel_mono V.ι, Category.assoc, morphismRestrict_ι, reassoc_of% h1, hs, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isIso_restrict_lemma {X Z Y : Scheme.{0}} (x : X ⟶ Z) [Mono x] (j : Y ⟶ X)
     [IsOpenImmersion (j ≫ x)] : IsIso (x ∣_ (j ≫ x).opensRange) := by
@@ -49,9 +49,9 @@ private theorem isIso_restrict_lemma {X Z Y : Scheme.{0}} (x : X ⟶ Z) [Mono x]
   · rw [← cancel_mono V.ι, Category.assoc, morphismRestrict_ι, reassoc_of% h1, hs, Category.id_comp]
 
 /- English proof (translation)
-Use `choose Y j hj hp using h`. Use `IsZariskiLocalAtTarget.of_range_subset_iSup (P := @IsOpenImmersion) (fun p => (j p ≫ x).opensRange) ?_ (fun p => ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Simplify using `only [TopologicalSpace.Opens.coe_iSup, Set.mem_iUnion, SetLike.mem_coe]`. Conclude with `⟨p, by rw [Scheme.Hom.mem_opensRange]; exact hp p⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `isIso_restrict_lemma x (j p) infer_instance` as an intermediate fact.
+A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_of_mono_of_local {X Z : Scheme.{0}} (x : X ⟶ Z) [Mono x]
     (h : ∀ p : X, ∃ (Y : Scheme.{0}) (j : Y ⟶ X), IsOpenImmersion (j ≫ x) ∧
@@ -66,14 +66,14 @@ theorem isOpenImmersion_of_mono_of_local {X Z : Scheme.{0}} (x : X ⟶ Z) [Mono 
     infer_instance
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, CommRingCat.ofHom_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, ← Spec.map_comp, CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Establish `e` using `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`. Simplify using `using e`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem spMap_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) :
     f = g := by
@@ -81,7 +81,7 @@ theorem spMap_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : 
   simpa using e
 
 /- English proof (translation)
-Use `⟨(Spec.preimage y).hom, ?_⟩` and prove the remaining obligations. Simplify using `only [spMap, CommRingCat.ofHom_hom, Spec.map_preimage]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_spMap {A B : Type} [CommRing A] [CommRing B] (y : Sp B ⟶ Sp A) :
     ∃ f : A →+* B, y = spMap f := by
@@ -89,9 +89,9 @@ theorem exists_spMap {A B : Type} [CommRing A] [CommRing B] (y : Sp B ⟶ Sp A) 
   simp only [spMap, CommRingCat.ofHom_hom, Spec.map_preimage]
 
 /- English proof (translation)
-Use `⟨fun {W} a b hab => ?_⟩` and prove the remaining obligations. Establish `key : ∀ (B : Type) [CommRing B] (t : Sp B ⟶ W), t ≫ a = t ≫ b`. Introduce `B _ t`. Take `⟨f, hf⟩` from `exists_spMap (t ≫ a)`. Take `⟨g, hg⟩` from `exists_spMap (t ≫ b)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfg : f = g` using `h _ f g (by rw [← hf, ← hg, Category.assoc, Category.assoc, hab])`. Rewrite using `[hf, hg, hfg]`. Conclude with `W.affineOpenCover.openCover.hom_ext a b (fun k => key (W.affineOpenCover.X k) (W.affineOpenCover.openCover.f k))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mono_of_ring_points {A : Type} [CommRing A] {Z : Scheme.{0}} (x : Sp A ⟶ Z)
     (h : ∀ (B : Type) [CommRing B] (f g : A →+* B), spMap f ≫ x = spMap g ≫ x → f = g) : Mono x := by
@@ -106,39 +106,35 @@ theorem mono_of_ring_points {A : Type} [CommRing A] {Z : Scheme.{0}} (x : Sp A �
     (fun k => key (W.affineOpenCover.X k) (W.affineOpenCover.openCover.f k))
 
 /- English proof (translation)
-Introduce `R σ _ I Z s M th i hP`. Take `⟨hM, hpts, hrep⟩` from `hP`. Use `set J := I ⊔ Ideal.span {MvPolynomial.X i - 1} with hJ`. Use `set q := Ideal.Quotient.mk J with hq`. Establish `hq1 : q (MvPolynomial.X i) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← sub_eq_zero, ← map_one q, ← map_sub, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_sup_right (Ideal.subset_span rfl)`. Establish `hev : ∀ F, MvPolynomial.eval₂ (q.comp MvPolynomial.C) (fun a => q (MvPolynomial.X a)) F = q F`. Introduce `F`. Establish `e : MvPolynomial.eval₂Hom (q.comp MvPolynomial.C) (fun a => q (MvPolynomial.X a)) = q` using `MvPolynomial.ringHom_ext (fun r => by simp) (fun a => by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `RingHom.congr_fun e F`. Take `⟨x, ⟨hxs, hxc⟩, -⟩` from `hrep _ (q.comp MvPolynomial.C) (fun a => q (MvPolynomial.X a)) (by rw [Ideal.eq_top_iff_one, ← hq1]; exact Ideal.subset_span ⟨i, rfl⟩) (fun F hF => by rw [hev, Ideal.Quotient.eq_zero_iff_mem]; exact Ideal.mem_sup_left hF)`. Establish `hmono : Mono x`. Apply `mono_of_ring_points` to reduce the goal to its premises. Introduce `B _ f g hfg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hcf` using `GlobalTheory.ZM.Coord.baseChange hxc f`. Establish `hcg` using `GlobalTheory.ZM.Coord.baseChange hxc g`. Rewrite `hcf` using `[hfg]`. Take `⟨u, hu⟩` from `GlobalTheory.ZM.Coord.unique hM hcg hcf`. Establish `hu1 : (u : B) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e` using `hu i`. Simplify using `only [hq1, map_one] at e`. Simplify using `using e.symm`. Establish `hv : ∀ a, f (q (MvPolynomial.X a)) = g (q (MvPolynomial.X a))` using `fun a => by`. Rewrite using `[hu a, hu1, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : f.comp (q.comp MvPolynomial.C) = g.comp (q.comp MvPolynomial.C)`. Apply `spMap_inj` to reduce the goal to its premises. Rewrite using `[← spMap_comp (q.comp MvPolynomial.C) f, ← spMap_comp (q.comp MvPolynomial.C) g, ← hxs, reassoc_of% hfg]`. Establish `hc : f.comp q = g.comp q` using `MvPolynomial.ringHom_ext (fun r => by simpa using RingHom.congr_fun hb r) (fun a => by simpa using hv a)`. Conclude with `Ideal.Quotient.ringHom_ext hc`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hsub : Set.range x ⊆ (Out.nonzeroLocus (th i) : Set Z)`. Introduce and unpack `_ ⟨p, rfl⟩`. Use `(GlobalTheory.ZM.CoordMove.mem_nonzeroLocus_iff hM i p hxc).2 ?_` and prove the remaining obligations. Use `show q (MvPolynomial.X i) ∉ p.asIdeal`. Rewrite using `[hq1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `fun h1 => p.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Establish `hloc : ∀ z ∈ (Out.nonzeroLocus (th i) : Set Z), ∃ (B : Type) (_ : CommRing B) (ψ : (MvPolynomial σ R ⧸ J) →+* B), IsOpenImmersion (spMap ψ ≫ x) ∧ z ∈ Set.range (spMap ψ ≫ x)`. Introduce `z hz`. Take `⟨R', _, x', v', hx'o, ⟨p, rfl⟩, hx'c⟩` from `(GlobalTheory.T.sectionCoordinateVector_exists_locally Z M σ th hM).2.2 z`. Establish `hp : v' i ∉ p.asIdeal` using `(GlobalTheory.ZM.CoordMove.mem_nonzeroLocus_iff hM i p hx'c).1 hz`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hunit : IsUnit (algebraMap R' (Localization.Away (v' i)) (v' i))` using `IsLocalization.Away.algebraMap_isUnit (v' i)`. Establish `hc1` using `GlobalTheory.ZM.Coord.scale (GlobalTheory.ZM.Coord.baseChange hx'c (algebraMap R' (Localization.Away (v' i)))) hunit.unit⁻¹`. Use `set w : σ → Localization.Away (v' i) := fun a => ((hunit.unit⁻¹ : (Localization.Away (v' i))ˣ) : Localization.Away (v' i)) * algebraMap R' (Localization.Away (v' i)) (v' a) with hw`. Establish `hwi : w i = 1` using `by simp [w]`. Take `⟨β', hβ'⟩` from `exists_spMap ((spMap (algebraMap R' (Localization.Away (v' i))) ≫ x') ≫ s)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨hspan, hI⟩` from `hpts _ β' _ w hβ' hc1`. Establish `hker : J ≤ RingHom.ker (MvPolynomial.eval₂Hom β' w)`. Use `sup_le (fun F hF => hI F hF) (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ rfl`. Simplify using `[hwi]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `ψ : (MvPolynomial σ R ⧸ J) →+* Localization.Away (v' i)` to `Ideal.Quotient.lift J (MvPolynomial.eval₂Hom β' w) (fun F hF => hker hF)`. Establish `hψC : ∀ r, ψ (q (MvPolynomial.C r)) = β' r` using `fun r => (Ideal.Quotient.lift_mk J _ _).trans (by simp)`. Establish `hψX : ∀ a, ψ (q (MvPolynomial.X a)) = w a` using `fun a => (Ideal.Quotient.lift_mk J _ _).trans (by simp)`. Take `⟨y, -, hyu⟩` from `hrep _ β' w hspan hI`. Establish `e2 : spMap (algebraMap R' (Localization.Away (v' i))) ≫ x' = y` using `hyu _ ⟨hβ', hc1⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Establish `e1 : spMap ψ ≫ x = y`. Use `hyu _ ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hxs, spMap_comp]`. Use `congr 1`. Conclude with `RingHom.ext hψC`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `GlobalTheory.ZM.Coord.baseChange hxc ψ`. Use `e using 2 with a` and compare the differences between its conclusion and the goal. Conclude with `(hψX a).symm`. Establish `hrange` using `PrimeSpectrum.localization_away_comap_range (Localization.Away (v' i)) (v' i)`. Establish `hpm : p ∈ Set.range (PrimeSpectrum.comap (algebraMap R' (Localization.Away (v' i))))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hrange]`. Conclude with `hp`. Take `⟨p', hp'⟩` from `hpm`. Use `⟨Localization.Away (v' i), inferInstance, ψ, ?_, p', ?_⟩` and prove the remaining obligations. Rewrite using `[e1, ← e2] infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e1, ← e2] show x' (PrimeSpectrum.comap (algebraMap R' (Localization.Away (v' i))) p') = x' p`. Rewrite using `[hp']`. Use `hmono` as an intermediate fact. Use `⟨x, ?_, ?_, hxs, hxc⟩` and prove the remaining obligations. Apply `isOpenImmersion_of_mono_of_local x` to reduce the goal to its premises.
-
-Introduce `p`. Take `⟨B, _, ψ, h1, h2⟩` from `hloc (x p) (hsub ⟨p, rfl⟩)`. Conclude with `⟨Sp B, spMap ψ, h1, h2⟩`. Use `Set.Subset.antisymm hsub (fun z hz => ?_)` and prove the remaining obligations. Take `⟨B, _, ψ, -, ⟨b, hb⟩⟩` from `hloc z hz`.
-
-Conclude with `⟨(spMap ψ) b, hb⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_chart : ∀ (R σ : Type) [CommRing R] (I : Ideal (MvPolynomial σ R)) (Z : Scheme.{0}) (s : Z ⟶ Sp R) (M : LB Z) (th : σ → M.Sec) (i : σ), ProjRep I s M th → ∃ x : Sp (MvPolynomial σ R ⧸ (I ⊔ Ideal.span {MvPolynomial.X i - 1})) ⟶ Z, IsOpenImmersion x ∧ Set.range x = (Out.nonzeroLocus (th i) : Set Z) ∧ x ≫ s = spMap ((Ideal.Quotient.mk _).comp MvPolynomial.C) ∧ SecCoord M th x (fun a => Ideal.Quotient.mk _ (MvPolynomial.X a)) := by
   intro R σ _ I Z s M th i hP

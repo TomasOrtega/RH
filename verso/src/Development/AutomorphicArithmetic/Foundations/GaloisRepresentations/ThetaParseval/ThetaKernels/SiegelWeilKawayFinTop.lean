@@ -22,11 +22,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 namespace SDf
 variable (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ)
 /- English proof (translation)
-Take `⟨-, ⟨ε, w₀, hw₀, -⟩, -⟩` from `hA F E σ d`. Establish `he : eInf F • inFrame d.b x = eInf F • (1 : Matrix _ _ (AE F E))` using `(_root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.cw_one_iff_k d _).1 hx`. Take `⟨x₁, x₂, x₃, x₄, t, c, b, a, a', hxe, h1, h2, h3, h4, ht, hc, hb, -, ha'⟩` from `hD F E σ d ε w₀ hw₀ (eInf F) eInf_mul_self x he`. Take `⟨AW, BW, hW⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.stepW_k d hT hA ε w₀ hw₀`. Establish `hW3` using `_root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.step_comp_k d (_root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.step_comp_k d hW hW) hW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h4' : w₀ * (w₀ * w₀ * w₀) = 1` using `by simpa only [mul_assoc] using _root_.PositivityTheory.SiegelWeilFormula.RD_k.w_four_pf hw₀`. Take `⟨BC, hC⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.step_conj_k d hT hW hW3 (_root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.stepN_k d hT x₂ c h2 hc) h4'`. Establish `hinv : w₀⁻¹ = w₀ * w₀ * w₀` using `(eq_inv_of_mul_eq_one_left (_root_.PositivityTheory.SiegelWeilFormula.RD_k.w_four_pf hw₀)).symm`. Take `⟨BM, hM⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.stepM_k d hT x₃ a a' h3 ha'`. Establish `hall` using `_root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.step_comp_k d (_root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.step_comp_k d (_root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.step_comp_k d (_root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.stepN_k d hT x₁ t h1 ht) hC …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hxe, hinv]`. Conclude with `⟨_, hall⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem step_of_triv_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (hA : _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties) (hD : _root_.PositivityTheory.SiegelWeilFormula.AdDecomp_k) (x : d.G) (hx : ∀ w, d.cw w (inFrame d.b x) = 1) :
     ∃ B, _root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.StepF_k d x id B := by
@@ -47,35 +47,31 @@ end SDf
 namespace SDf
 variable (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ)
 /- English proof (translation)
-Introduce `g hg`. Use `set G : Mx F E d.m d.n → ℂ := fun X => g (_root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.fcrd_k d X) with hGdef`. Establish `hG : _root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.InvInf_k d G` using `_root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.fcrd_invInf_k d g`. Establish `hBG` using `(hB.2 G hG).1`. Use `set g₁ : (Fin d.m × Fin d.n × Fin 2 → Af F) → ℂ := fun y => B G (d.cmb fun k => pairA F 0 (y k)) with hg₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hfc : ∀ y, _root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.fcrd_k d (d.cmb fun k => pairA F 0 (y k)) = y` using `fun y => by`. Use function extensionality and compare the values at `k`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.fcrd_k, _root_.PositivityTheory.SiegelWeilFormula.KFock.crd_cmb_k]`. Both sides reduce to the same expression. Establish `hBg : ∀ X, B G X = g₁ (_root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.fcrd_k d X)` using `fun X => _root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.invInf_fcrd_k d hBG X`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hg0 : g = 0`. Use `⟨0, (SB _).zero_mem, fun f hf Φ hΦ hTΦ => ?_⟩` and prove the remaining obligations. Establish `hΦ0 : Φ = 0` using `d.T_inj hT Φ hΦ (by rw [hTΦ, hg0]; funext X; simp)`. Substitute `hΦ0` using the available equality. Rewrite using `[map_zero, d.T_zero]`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `X`. Simplify using the standard rewrite rules. Use `⟨g₁, ?_, fun f hf Φ hΦ hTΦ => ?_⟩` and prove the remaining obligations. Use `swap`. Establish `e` using `(hB.2 G hG).2 f hf Φ hΦ hTΦ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Use function extensionality and compare the values at `X`. Simplify using `only [id]`. Rewrite using `[hBg X]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨φ, v₀, hv₀⟩` from `exists_schwartz_ne (κ := Fin d.m × Fin d.n × Fin 2) F`. Use `set f₀ : Mx F E d.m d.n → ℂ := fun X => φ fun k => InfiniteAdeleRing.ringEquiv_mixedSpace F (d.crd X k).1 with hf₀d`. Establish `hf₀ : _root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.InvFin_k d f₀`. Introduce `X Z hZ`. Establish `hZ'` using `(_root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.cw_zero_iff_k d Z).1 hZ`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (φ fun k => _) = φ fun k => _`. Use `congr 1`. Use function extensionality and compare the values at `k`. Establish `: (d.crd Z k).1 = 0`. Rewrite using `[← eInf_fst_mul (d.crd Z k), ← _root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.crd_smul_k, hZ']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[_root_.PositivityTheory.SiegelWeilFormula.SD_k.crd]`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.crd_add_k]`. Express the relevant statement in the definitionally equal form `InfiniteAdeleRing.ringEquiv_mixedSpace F ((d.crd X k).1 + (d.crd Z k).1) = _`. Rewrite using `[this, add_zero]`. Establish `hmem : (fun X => f₀ X * G X) ∈ d.schM` using `by show (fun c => f₀ (d.cmb c) * G (d.cmb c)) ∈ schA F (Fin d.m × Fin d.n × Fin 2)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun c => f₀ (d.cmb c) * G (d.cmb c)) = pureA F (⇑φ) g`. Use function extensionality and compare the values at `c`. Use `show (φ fun k => InfiniteAdeleRing.ringEquiv_mixedSpace F (d.crd (d.cmb c) k).1) * g (fun k => (d.crd (d.cmb c) k).2) = _`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFock.crd_cmb_k]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Submodule.subset_span ⟨φ, g, hg, rfl⟩`. Take `⟨Φ₀, hΦ₀, hTΦ₀⟩` from `(hT.1 F E σ d).2.1 _ hmem`. Establish `e` using `(hB.2 G hG).2 f₀ hf₀ Φ₀ hΦ₀ hTΦ₀`. Establish `hm` using `(hT.1 F E σ d).1 _ (d.om_sch x Φ₀ hΦ₀)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm` using `[e]`. Establish `hs` using `slice_mem _ hm (fun k => (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (v₀ k))`. Establish `e2 : (fun y : Fin d.m × Fin d.n × Fin 2 → Af F => (fun X => id f₀ X * B G X) (d.cmb fun k => pairA F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (v₀ k)) (y k))) = φ v₀ • g₁`. Use function extensionality and compare the values at `y`. Simplify using `only [id, Pi.smul_apply, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hBg]`. Establish `h1 : _root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.fcrd_k d (d.cmb fun k => pairA F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (v₀ k)) (y k)) = y`. Use function extensionality and compare the values at `k`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.fcrd_k, _root_.PositivityTheory.SiegelWeilFormula.KFock.crd_cmb_k]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Use `congr 1`. Use `show (φ fun k => InfiniteAdeleRing.ringEquiv_mixedSpace F (d.crd (d.cmb _) k).1) = _`. Rewrite using `[_root_.PositivityTheory.SiegelWeilFormula.KFock.crd_cmb_k]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `k`. Conclude with `(InfiniteAdeleRing.ringEquiv_mixedSpace F).apply_symm_apply (v₀ k)`. Establish `hs' : φ v₀ • g₁ ∈ SB (Fin d.m × Fin d.n × Fin 2 → Af F)`. Rewrite using `[← e2]`. Conclude with `hs`.
-
-Use `(SB (Fin d.m × Fin d.n × Fin 2 → Af F)).smul_mem (φ v₀)⁻¹ hs'` as an intermediate fact. Rewrite `this` using `[smul_smul, inv_mul_cancel₀ hv₀, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finAct_step_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (x : d.G) {B : (Mx F E d.m d.n → ℂ) → Mx F E d.m d.n → ℂ} (hB : _root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.StepF_k d x id B) :
     ∀ g ∈ SB (Fin d.m × Fin d.n × Fin 2 → Af F), ∃ g' ∈ SB (Fin d.m × Fin d.n × Fin 2 → Af F),
@@ -159,7 +155,7 @@ theorem finAct_step_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (x
   rwa [smul_smul, inv_mul_cancel₀ hv₀, one_smul] at this
 end SDf
 /- English proof (translation)
-Introduce `hT hA hD F E _ _ _ _ _ σ d x hx`. Take `⟨B, hB⟩` from `_root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.step_of_triv_k d hT hA hD x hx`. Conclude with `_root_.PositivityTheory.SiegelWeilFormula.KAway.SDf.finAct_step_k d hT x hB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finAct_of_k : _root_.PositivityTheory.SiegelWeilFormula.TAll_k → _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties → _root_.PositivityTheory.SiegelWeilFormula.AdDecomp_k → _root_.PositivityTheory.SiegelWeilFormula.FinAct_k := by
   intro hT hA hD F E _ _ _ _ _ σ d x hx

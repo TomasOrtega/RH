@@ -10,7 +10,7 @@ def cols (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r) :
   Matrix.of fun p j => gramVec k r z z' γ j p
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [cols, Matrix.conjTranspose_apply, Matrix.of_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma cols_conjTranspose (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r) :
     (cols k r z z' γ)ᴴ = Matrix.of fun i j => star (gramVec k r z z' γ i j) := by
@@ -18,7 +18,7 @@ lemma cols_conjTranspose (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : 
   simp only [cols, Matrix.conjTranspose_apply, Matrix.of_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[cols_conjTranspose]`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, cols, gramM, herm, dotProduct, Matrix.mulVec, Finset.sum_mul, Finset.mul_sum, Pi.star_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -33,7 +33,7 @@ lemma gram_eq (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r) 
   ring
 
 /- English proof (translation)
-Rewrite using `[← gram_eq]`. Simplify using `only [herm, Matrix.star_mulVec]`. Rewrite using `[← Matrix.dotProduct_mulVec]`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma herm_cols (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r)
     (c : Fin (r + 1) ⊕ Fin (r + 1) → ℂ) :
@@ -44,9 +44,9 @@ lemma herm_cols (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r
   simp only [Matrix.mulVec_mulVec, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `h0 : ((cols k r z z' γ)ᴴ * Hpk k r) *ᵥ v = 0`. Establish `h` using `hv`. Simplify using `only [Uperp, LinearMap.mem_ker, Matrix.mulVecLin_apply] at h`. Rewrite using `[cols_conjTranspose]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [herm, Matrix.star_mulVec]`. Rewrite using `[← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, h0, dotProduct_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma herm_perp (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r)
     (v : Fin (2 * r + k + 1) → ℂ) (hv : v ∈ Uperp k r z z' γ) (c : Fin (r + 1) ⊕ Fin (r + 1) → ℂ) :
@@ -60,7 +60,7 @@ lemma herm_perp (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r
   rw [← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, h0, dotProduct_zero]
 
 /- English proof (translation)
-Rewrite using `[ggHerm_swap _ (Formalism.QuantumDeterminants.GBasic.Hpk_herm k r), herm_perp k r z z' γ v hv c, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma herm_perp' (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k r)
     (v : Fin (2 * r + k + 1) → ℂ) (hv : v ∈ Uperp k r z z' γ) (c : Fin (r + 1) ⊕ Fin (r + 1) → ℂ) :
@@ -68,7 +68,7 @@ lemma herm_perp' (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : B.Mat k 
   rw [ggHerm_swap _ (Formalism.QuantumDeterminants.GBasic.Hpk_herm k r), herm_perp k r z z' γ v hv c, star_zero]
 
 /- English proof (translation)
-Simplify using `only [herm] at h1 h2 ⊢`. Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_smul, star_add, star_smul, add_dotProduct, dotProduct_add, smul_dotProduct, dotProduct_smul, h1, h2, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma herm_add_smul {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (w v : Fin n → ℂ) (t : ℂ)
     (h1 : herm H v w = 0) (h2 : herm H w v = 0) :
@@ -79,9 +79,9 @@ lemma herm_add_smul {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (w v : Fin n → 
   ring
 
 /- English proof (translation)
-Establish `hm : fromBlocks (1 : Matrix (Fin m) (Fin m) ℂ) 0 0 (-1) *ᵥ Sum.elim (0 : Fin m → ℂ) a = Sum.elim (0 : Fin m → ℂ) (-a)`. Use extensionality with `i`. Apply the tactic sequence `cases i <;> simp [Matrix.fromBlocks_mulVec, Matrix.neg_mulVec, Matrix.one_mulVec]`. Rewrite using `[hm]`. Simplify using `only [dotProduct, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, Pi.star_apply, Pi.zero_apply, Pi.neg_apply, star_zero, zero_mul, Finset.sum_const_zero, zero_add, Complex.re_sum, Complex.normSq_apply, ← Finset.sum_neg_distrib]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Complex.mul_re, Complex.neg_re, Complex.neg_im, Complex.star_def, Complex.conj_re, Complex.conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma blk_re {m : ℕ} (a : Fin m → ℂ) :
     (star (Sum.elim (0 : Fin m → ℂ) a) ⬝ᵥ
@@ -106,27 +106,25 @@ def emb (m : ℕ) : (Fin m → ℂ) →ₗ[ℂ] (Fin m ⊕ Fin m → ℂ) where
   map_smul' c a := by funext i; cases i <;> simp
 
 /- English proof (translation)
-Introduce `k r z z' γ hs hp hdet hQ v hv hv0`. Take `⟨Q, -, hQG⟩` from `hQ`. Assume the negation of the conclusion as `hneg`. Establish `hvv : (herm (Hpk k r) v v).re ≤ 0` using `not_lt.mp hneg`. Set `L : (Fin (r + 1) → ℂ) →ₗ[ℂ] (Fin (2 * r + k + 1) → ℂ)` to `(Matrix.mulVecLin (cols k r z z' γ * Q)).comp (emb (r + 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hLa : ∀ a, L a = cols k r z z' γ *ᵥ (Q *ᵥ Sum.elim 0 a)`. Introduce `a`. Use `show (cols k r z z' γ * Q) *ᵥ Sum.elim 0 a = _`. Rewrite using `[Matrix.mulVec_mulVec]`. Establish `hLre : ∀ a, (herm (Hpk k r) (L a) (L a)).re = -∑ b, Complex.normSq (a b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Rewrite using `[hLa, herm_cols, ← blk_re a, ← hQG, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Establish `hperp : ∀ a, herm (Hpk k r) v (L a) = 0 ∧ herm (Hpk k r) (L a) v = 0` using `fun a => by`. Rewrite using `[hLa]`. Conclude with `⟨herm_perp k r z z' γ v hv _, herm_perp' k r z z' γ v hv _⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `M : ((Fin (r + 1) → ℂ) × ℂ) →ₗ[ℂ] (Fin (2 * r + k + 1) → ℂ)` to `L.coprod (LinearMap.toSpanSingleton ℂ _ v)`. Establish `hM : ∀ p, M p = L p.1 + p.2 • v` using `fun p => by`. Simplify using `[M, LinearMap.coprod_apply, LinearMap.toSpanSingleton_apply]`. Establish `hMre : ∀ p, (herm (Hpk k r) (M p) (M p)).re = -∑ b, Complex.normSq (p.1 b) + Complex.normSq p.2 * (herm (Hpk k r) v v).re`. Introduce `p`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ht : star p.2 * p.2 = (Complex.normSq p.2 : ℂ)`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression. Rewrite using `[hM, herm_add_smul _ _ _ _ (hperp p.1).1 (hperp p.1).2, Complex.add_re, hLre, ht, Complex.re_ofReal_mul]`. Establish `hsum : ∀ a : Fin (r + 1) → ℂ, 0 ≤ ∑ b, Complex.normSq (a b)` using `fun a => Finset.sum_nonneg fun b _ => Complex.normSq_nonneg _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnp : ∀ x ∈ LinearMap.range M, (herm (Hpk k r) x x).re ≤ 0`. Introduce and unpack `x ⟨p, rfl⟩`. Rewrite using `[hMre]`. Establish `h1` using `hsum p.1`. Establish `h2 : Complex.normSq p.2 * (herm (Hpk k r) v v).re ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos (Complex.normSq_nonneg _) hvv`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinj : Function.Injective M`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `p hp0`. Establish `hre` using `hMre p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hre` using `[hp0]`. Establish `h0 : (herm (Hpk k r) (0 : Fin (2 * r + k + 1) → ℂ) 0).re = 0` using `by simp [herm]`. Rewrite `hre` using `[h0]`. Establish `h1` using `hsum p.1`. Establish `h2 : Complex.normSq p.2 * (herm (Hpk k r) v v).re ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos (Complex.normSq_nonneg _) hvv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : ∑ b, Complex.normSq (p.1 b) = 0` using `by linarith`. Establish `ha : p.1 = 0`. Use function extensionality and compare the values at `b`. Establish `hb` using `(Finset.sum_eq_zero_iff_of_nonneg (fun b _ => Complex.normSq_nonneg (p.1 b))).1 hs0 b (Finset.mem_univ b)`. Simplify using `using hb`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `ht : p.2 • v = 0`. Rewrite `hp0` using `[hM, ha, map_zero, zero_add]`. Conclude with `hp0`. Conclude with `Prod.ext ha ((smul_eq_zero.1 ht).resolve_right hv0)`. Establish `hdim` using `hN k r (LinearMap.range M) hnp`.
-
-Rewrite `hdim` using `[LinearMap.finrank_range_of_inj hinj]`. Simplify using `[Module.finrank_prod, Module.finrank_fin_fun] at hdim`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uPos_of (hN : NegBound) : UPos := by
   intro k r z z' γ hs hp hdet hQ v hv hv0

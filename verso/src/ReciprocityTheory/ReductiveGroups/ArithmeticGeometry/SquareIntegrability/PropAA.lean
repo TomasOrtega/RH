@@ -43,9 +43,9 @@ def paJet (c : ℕ) (H : EuclideanSpace ℂ ι → ℂ) : EuclideanSpace ℂ ι 
   ∑ α ∈ paS c, (paD α H / paFact α) • paMono α
 
 /- English proof (translation)
-Simplify using `only [paS, Finset.mem_filter, Finset.mem_map, Fintype.mem_piFinset, Finset.mem_range, Equiv.coe_toEmbedding]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Conclude with `h`. Introduce `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨α, fun i => ?_, by simp⟩, h⟩` and prove the remaining obligations. Use `Finsupp.le_degree i α` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem mem_paS {c : ℕ} {α : ι →₀ ℕ} : α ∈ paS c ↔ α.degree ≤ c := by
   simp only [paS, Finset.mem_filter, Finset.mem_map, Fintype.mem_piFinset, Finset.mem_range,
@@ -58,18 +58,18 @@ theorem mem_paS {c : ℕ} {α : ι →₀ ℕ} : α ∈ paS c ↔ α.degree ≤ 
     omega
 
 /- English proof (translation)
-The claim follows from `mem_paS.1 h`.
+A detailed English derivation is pending.
 -/
 theorem paS_deg {c : ℕ} {α : ι →₀ ℕ} (h : α ∈ paS c) : α.degree ≤ c := mem_paS.1 h
 
 /- English proof (translation)
-Rewrite using `[Finsupp.degree_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_eq_degree (s : ι →₀ ℕ) : (s.sum fun _ e => e) = s.degree := by
   rw [Finsupp.degree_apply]; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Use `conv_lhs => rw [paPF, p.as_sum, map_sum]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, paMono, paPF, MvPolynomial.eval_monomial]`. Use `Finset.sum_congr rfl fun m _ => by ring` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem paPF_eq_sum (p : MvPolynomial ι ℂ) :
     paPF p = ∑ m ∈ p.support, p.coeff m • paMono m := by
@@ -79,13 +79,13 @@ theorem paPF_eq_sum (p : MvPolynomial ι ℂ) :
   refine Finset.sum_congr rfl fun m _ => by ring
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨α, h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem paMono_mem {c : ℕ} {α : ι →₀ ℕ} (h : α ∈ paS c) : paMono α ∈ paPoly c :=
   Submodule.subset_span ⟨α, h, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[paPF_eq_sum]`. Use `Submodule.sum_mem _ fun m hm => Submodule.smul_mem _ _ (paMono_mem (mem_paS.2 ?_))` and prove the remaining obligations. Use `MvPolynomial.le_totalDegree hm` as an intermediate fact. Rewrite `this` using `[sum_eq_degree]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem paPF_mem_paPoly {c : ℕ} {p : MvPolynomial ι ℂ} (hp : p.totalDegree ≤ c) :
     paPF p ∈ paPoly c := by
@@ -96,23 +96,23 @@ theorem paPF_mem_paPoly {c : ℕ} {p : MvPolynomial ι ℂ} (hp : p.totalDegree 
   omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `[paPF]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem paPF_add (p r : MvPolynomial ι ℂ) : paPF (p + r) = paPF p + paPF r := by
   funext v; simp [paPF]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `[paPF]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem paPF_smul (a : ℂ) (p : MvPolynomial ι ℂ) : paPF (MvPolynomial.C a * p) = a • paPF p := by
   funext v; simp [paPF]
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨α, hα, rfl⟩` from `hx`. Use `⟨MvPolynomial.monomial α 1, ?_, rfl⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Consider the case `zero => exact ⟨0, by simp, by funext v; simp [paPF]⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨p, hp, rfl⟩` from `hx`. Take `⟨r, hr, rfl⟩` from `hy`. Conclude with `⟨p + r, (MvPolynomial.totalDegree_add _ _).trans (max_le hp hr), (paPF_add p r).symm⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul a x _ hx`. Take `⟨p, hp, rfl⟩` from `hx`. Use `⟨MvPolynomial.C a * p, ?_, (paPF_smul a p).symm⟩` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Simplify using `using hp`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem paPoly_exists {c : ℕ} {F : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ paPoly c) :
     ∃ p : MvPolynomial ι ℂ, p.totalDegree ≤ c ∧ F = paPF p := by
@@ -136,33 +136,33 @@ theorem paPoly_exists {c : ℕ} {F : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ 
     simpa using hp
 
 /- English proof (translation)
-The claim follows from `Submodule.sum_mem _ fun α hα => Submodule.smul_mem _ _ (paMono_mem hα)`.
+A detailed English derivation is pending.
 -/
 theorem paJet_mem (c : ℕ) (H : EuclideanSpace ℂ ι → ℂ) : paJet c H ∈ paPoly c :=
   Submodule.sum_mem _ fun α hα => Submodule.smul_mem _ _ (paMono_mem hα)
 
 /- English proof (translation)
-The claim follows from `FiniteDimensional.span_of_finite ℂ ((paS c).finite_toSet.image _)`.
+A detailed English derivation is pending.
 -/
 theorem paPoly_fd (c : ℕ) : FiniteDimensional ℂ (paPoly (ι := ι) c) :=
   FiniteDimensional.span_of_finite ℂ ((paS c).finite_toSet.image _)
 
 /- English proof (translation)
-Unfold `paPF`. Conclude with `(MvPolynomial.continuous_eval p).comp (by fun_prop)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem paPF_continuous (p : MvPolynomial ι ℂ) : Continuous (paPF p) := by
   unfold paPF
   exact (MvPolynomial.continuous_eval p).comp (by fun_prop)
 
 /- English proof (translation)
-Take `⟨p, -, rfl⟩` from `paPoly_exists hF`. Conclude with `paPF_continuous p`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem paPoly_continuous {c : ℕ} {F : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ paPoly c) : Continuous F := by
   obtain ⟨p, -, rfl⟩ := paPoly_exists hF
   exact paPF_continuous p
 
 /- English proof (translation)
-Simplify using `only [paMono, paPF, MvPolynomial.eval_monomial, one_mul, Finsupp.prod, norm_prod, norm_pow]`. Rewrite using `[Finsupp.degree_apply, ← Finset.prod_pow_eq_pow_sum]`. Conclude with `Finset.prod_le_prod (fun i _ => by positivity) (fun i _ => pow_le_pow_left₀ (norm_nonneg _) (PiLp.norm_apply_le v i) _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem paMono_norm_le (α : ι →₀ ℕ) (v : EuclideanSpace ℂ ι) : ‖paMono α v‖ ≤ ‖v‖ ^ α.degree := by
   simp only [paMono, paPF, MvPolynomial.eval_monomial, one_mul, Finsupp.prod, norm_prod, norm_pow]
@@ -171,13 +171,13 @@ theorem paMono_norm_le (α : ι →₀ ℕ) (v : EuclideanSpace ℂ ι) : ‖paM
     (fun i _ => pow_le_pow_left₀ (norm_nonneg _) (PiLp.norm_apply_le v i) _)
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨α, hα, rfl⟩` from `hx`. Use `⟨1, zero_le_one, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[one_mul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(paMono_norm_le α v).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Consider the case `zero => exact ⟨0, le_rfl, fun v => by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨C1, h1, hC1⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨C2, h2, hC2⟩` from `hy`. Conclude with `⟨C1 + C2, by positivity, fun v => (norm_add_le _ _).trans (by`. Use `hC1 v` as an intermediate fact. Use `hC2 v` as an intermediate fact. Use the proof step `nlinarith)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `smul a x _ hx`. Take `⟨C, h, hC⟩` from `hx`. Use `⟨‖a‖ * C, by positivity, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC v) (norm_nonneg _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem paPoly_growth {c : ℕ} {F : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ paPoly c) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ v, ‖F v‖ ≤ C * (1 + ‖v‖) ^ c := by
@@ -202,18 +202,18 @@ theorem paPoly_growth {c : ℕ} {F : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ 
     exact mul_le_mul_of_nonneg_left (hC v) (norm_nonneg _)
 
 /- English proof (translation)
-The claim follows from `Real.exp_pos _`.
+A detailed English derivation is pending.
 -/
 theorem paW_pos (q : ℕ) (v : EuclideanSpace ℂ ι) : 0 < paW q v := Real.exp_pos _
 
 /- English proof (translation)
-Unfold `paW`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem paW_continuous (q : ℕ) : Continuous (paW (ι := ι) q) := by
   unfold paW; fun_prop
 
 /- English proof (translation)
-Use `(GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := EuclideanSpace ℂ ι) (b := (b : ℂ)) (by simpa using hb) 0 0).norm` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [zero_mul, add_zero, Complex.norm_exp]`. Use `congr 1`. Rewrite using `[← Complex.ofReal_pow, ← Complex.ofReal_neg, ← Complex.ofReal_mul, Complex.ofReal_re]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem pa_gauss_integrable {b : ℝ} (hb : 0 < b) :
     Integrable (fun v : EuclideanSpace ℂ ι => Real.exp (-b * ‖v‖ ^ 2)) := by
@@ -225,7 +225,7 @@ theorem pa_gauss_integrable {b : ℝ} (hb : 0 < b) :
   rw [← Complex.ofReal_pow, ← Complex.ofReal_neg, ← Complex.ofReal_mul, Complex.ofReal_re]
 
 /- English proof (translation)
-Break down `le_total t 1 with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ t ^ n` using `pow_nonneg ht n`. Use polynomial arithmetic with `[pow_pos (two_pos (α := ℝ)) n]`. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem pa_one_add_pow_le (n : ℕ) {t : ℝ} (ht : 0 ≤ t) : (1 + t) ^ n ≤ 2 ^ n * (1 + t ^ n) := by
   rcases le_total t 1 with h | h
@@ -238,7 +238,7 @@ theorem pa_one_add_pow_le (n : ℕ) {t : ℝ} (ht : 0 ≤ t) : (1 + t) ^ n ≤ 2
       _ ≤ 2 ^ n * (1 + t ^ n) := by nlinarith [pow_pos (two_pos (α := ℝ)) n]
 
 /- English proof (translation)
-Establish `h1` using `pow_mul_exp_neg_mul_sq_le n hb ht`. Establish `h2 : Real.exp (-b * t ^ 2) ≤ Real.exp (-(b / 2) * t ^ 2)` using `Real.exp_le_exp.mpr (by nlinarith [sq_nonneg t])`. Establish `h3` using `pa_one_add_pow_le n ht`. Establish `hE : 0 ≤ Real.exp (-b * t ^ 2)` using `(Real.exp_pos _).le`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem pa_pow_gauss_le (n : ℕ) {b t : ℝ} (hb : 0 < b) (ht : 0 ≤ t) :
     (1 + t) ^ n * Real.exp (-b * t ^ 2) ≤
@@ -256,7 +256,7 @@ theorem pa_pow_gauss_le (n : ℕ) {b t : ℝ} (hb : 0 < b) (ht : 0 ≤ t) :
     _ = _ := by ring
 
 /- English proof (translation)
-Use `((pa_gauss_integrable (ι := ι) (half_pos hb)).const_mul (C * (2 ^ n * (2 + n.factorial * (2 / b) ^ n)))).mono' hf.aestronglyMeasurable (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Use `(h v).trans ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (pa_pow_gauss_le n hb (norm_nonneg v)) hC`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pa_integrable_of_le {E' : Type*} [NormedAddCommGroup E'] {f : EuclideanSpace ℂ ι → E'}
     (hf : Continuous f) (n : ℕ) {b C : ℝ} (hb : 0 < b) (hC : 0 ≤ C)
@@ -269,9 +269,9 @@ theorem pa_integrable_of_le {E' : Type*} [NormedAddCommGroup E'] {f : EuclideanS
   exact mul_le_mul_of_nonneg_left (pa_pow_gauss_le n hb (norm_nonneg v)) hC
 
 /- English proof (translation)
-Take `⟨C1, h1, hC1⟩` from `paPoly_growth hF`. Take `⟨C2, h2, hC2⟩` from `paPoly_growth hG`. Use `⟨C1 * C2, by positivity, fun v => ?_⟩` and prove the remaining obligations. Establish `hw` using `(paW_pos q v).le`. Establish `e : (1 + ‖v‖) ^ (2 * c) = (1 + ‖v‖) ^ c * (1 + ‖v‖) ^ c` using `by rw [two_mul, pow_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, paW]`. Use `mul_le_mul (hC1 v) (hC2 v) (norm_nonneg _) (by positivity)` as an intermediate fact. Establish `hw'` using `Real.exp_pos (-(q * Real.pi) * ‖v‖ ^ 2)`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem pa_bound2 {q c : ℕ} (hq : 1 ≤ q) {F G : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ paPoly c)
     (hG : G ∈ paPoly c) : ∃ C : ℝ, 0 ≤ C ∧ ∀ v, ‖F v‖ * ‖G v‖ * paW q v ≤
@@ -287,11 +287,11 @@ theorem pa_bound2 {q c : ℕ} (hq : 1 ≤ q) {F G : EuclideanSpace ℂ ι → �
   nlinarith
 
 /- English proof (translation)
-Take `⟨C, hC, h⟩` from `pa_bound2 hq hF hG`. Establish `hb : 0 < (q : ℝ) * Real.pi`. Establish `: (1 : ℝ) ≤ q` using `by exact_mod_cast hq`. Check the signs of the components of the expression. Use `pa_integrable_of_le (by` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `paPoly_continuous hF` as an intermediate fact. Use `paPoly_continuous hG` as an intermediate fact. Use `paW_continuous (ι := ι) q` as an intermediate fact. Use the proof step `fun_prop) (2 * c) hb hC (fun v => ?_)`. Rewrite using `[norm_mul, norm_mul, RCLike.norm_conj, Complex.norm_real, Real.norm_of_nonneg (paW_pos q v).le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h v` using `[neg_mul]`.
+A detailed English derivation is pending.
 -/
 theorem gaussianInner_integrable {q c : ℕ} (hq : 1 ≤ q) {F G : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ paPoly c)
     (hG : G ∈ paPoly c) :
@@ -307,7 +307,7 @@ theorem gaussianInner_integrable {q c : ℕ} (hq : 1 ≤ q) {F G : EuclideanSpac
   simpa [neg_mul] using h v
 
 /- English proof (translation)
-Use `(gaussianInner_integrable hq hF hG).norm` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Simplify using `only [norm_mul, RCLike.norm_conj, Complex.norm_real, Real.norm_of_nonneg (paW_pos q v).le]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem gaussianInner_integrable_norm {q c : ℕ} (hq : 1 ≤ q) {F G : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ paPoly c)
     (hG : G ∈ paPoly c) : Integrable (fun v => ‖F v‖ * ‖G v‖ * paW q v) := by
@@ -316,7 +316,7 @@ theorem gaussianInner_integrable_norm {q c : ℕ} (hq : 1 ≤ q) {F G : Euclidea
   simp only [norm_mul, RCLike.norm_conj, Complex.norm_real, Real.norm_of_nonneg (paW_pos q v).le]
 
 /- English proof (translation)
-Unfold `paIP`. Rewrite using `[← integral_add (gaussianInner_integrable hq hF hH) (gaussianInner_integrable hq hG hH)]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Simplify using `only [Pi.add_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -327,7 +327,7 @@ theorem gaussianInner_add_left {q c : ℕ} (hq : 1 ≤ q) {F G H : EuclideanSpac
   congr 1; funext v; simp only [Pi.add_apply]; ring
 
 /- English proof (translation)
-Unfold `paIP`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -338,7 +338,7 @@ theorem gaussianInner_smul_left (q : ℕ) (a : ℂ) (F G : EuclideanSpace ℂ ι
   congr 1; funext v; simp only [Pi.smul_apply, smul_eq_mul]; ring
 
 /- English proof (translation)
-Unfold `paIP`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Simplify using `only [map_mul, Complex.conj_conj, Complex.conj_ofReal]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -351,9 +351,9 @@ theorem gaussianInner_conj_symm (q : ℕ) (F G : EuclideanSpace ℂ ι → ℂ) 
   ring
 
 /- English proof (translation)
-Unfold `paIP`. Rewrite using `[← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gaussianInner_self (q : ℕ) (F : EuclideanSpace ℂ ι → ℂ) :
     paIP q F F = ((∫ v, ‖F v‖ ^ 2 * paW q v : ℝ) : ℂ) := by
@@ -364,7 +364,7 @@ theorem gaussianInner_self (q : ℕ) (F : EuclideanSpace ℂ ι → ℂ) :
   push_cast; ring
 
 /- English proof (translation)
-Rewrite using `[gaussianInner_self, Complex.ofReal_re]`. Conclude with `⟨rfl, integral_nonneg fun v => by have := paW_pos q v; positivity⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem gaussianInner_self_re (q : ℕ) (F : EuclideanSpace ℂ ι → ℂ) :
     paIP q F F = ((paIP q F F).re : ℂ) ∧ 0 ≤ (paIP q F F).re := by
@@ -372,13 +372,13 @@ theorem gaussianInner_self_re (q : ℕ) (F : EuclideanSpace ℂ ι → ℂ) :
   exact ⟨rfl, integral_nonneg fun v => by have := paW_pos q v; positivity⟩
 
 /- English proof (translation)
-Rewrite using `[← Real.sqrt_mul hA]`. Break down `hX.lt_or_eq with hX | hX` into its components or cases. Break down `hA.lt_or_eq with hA' | hA'` into its components or cases. Use `h (X / A) (div_pos hX hA')` as an intermediate fact. Establish `e : (X / A) ^ 2 * A = X * (X / A)` using `by field_simp`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e]`. Establish `h2 : X * X ≤ A * B`. Establish `: X * (X / A) ≤ B` using `by nlinarith`. Rewrite `this` using `[mul_div_assoc', div_le_iff₀ hA']`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `Real.le_sqrt_of_sq_le (by nlinarith)`. It suffices to derive a contradiction. Use `h ((B + 1) / X) (by positivity)` as an intermediate fact. Rewrite `this` using `[← hA']`. Establish `e : 2 * ((B + 1) / X) * X = 2 * (B + 1)` using `by field_simp`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← hX]`. Conclude with `Real.sqrt_nonneg _`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pa_cs_real {X A B : ℝ} (hX : 0 ≤ X) (hA : 0 ≤ A) (hB : 0 ≤ B)
     (h : ∀ t : ℝ, 0 < t → 2 * t * X ≤ t ^ 2 * A + B) : X ≤ Real.sqrt A * Real.sqrt B := by
@@ -402,15 +402,15 @@ theorem pa_cs_real {X A B : ℝ} (hX : 0 ≤ X) (hA : 0 ≤ A) (hB : 0 ≤ B)
   · rw [← hX]; exact Real.sqrt_nonneg _
 
 /- English proof (translation)
-Establish `hA : (paIP q F F).re = ∫ v, ‖F v‖ * ‖F v‖ * paW q v`. Rewrite using `[gaussianInner_self, Complex.ofReal_re]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hB : (paIP q G G).re = ∫ v, ‖G v‖ * ‖G v‖ * paW q v`. Rewrite using `[gaussianInner_self, Complex.ofReal_re]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1 : ‖paIP q F G‖ ≤ ∫ v, ‖F v‖ * ‖G v‖ * paW q v`. Unfold `paIP`. Use `(norm_integral_le_integral_norm _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `v`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [norm_mul, RCLike.norm_conj, Complex.norm_real, Real.norm_of_nonneg (paW_pos q v).le]`. Use `h1.trans ?_` and prove the remaining obligations. Unfold `paN`. Rewrite using `[hA, hB]`. Use `pa_cs_real (integral_nonneg fun v => by have := paW_pos q v; positivity) (integral_nonneg fun v => by have := paW_pos q v; positivity) (integral_nonneg fun v => by have := paW_pos q v; positivity) fun t ht => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← integral_const_mul, ← integral_const_mul, ← integral_add ((gaussianInner_integrable_norm hq hF hF).const_mul _) (gaussianInner_integrable_norm hq hG hG)]`. Use `integral_mono ((gaussianInner_integrable_norm hq hF hG).const_mul _) (((gaussianInner_integrable_norm hq hF hF).const_mul _).add (gaussianInner_integrable_norm hq hG hG)) fun v => ?_` and prove the remaining obligations. Use `(paW_pos q v).le` as an intermediate fact. Establish `h2 : 0 ≤ (t * ‖F v‖ - ‖G v‖) ^ 2 * paW q v` using `by positivity`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -441,17 +441,15 @@ theorem norm_gaussianInner_le {q c : ℕ} (hq : 1 ≤ q) {F G : EuclideanSpace �
   nlinarith
 
 /- English proof (translation)
-Take `⟨-, hre⟩` from `gaussianInner_self_re q F`. Establish `hz : (paIP q F F).re = 0`. Unfold `paN at h0`. Use `Real.sqrt_eq_zero'.mp h0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hz` using `[gaussianInner_self, Complex.ofReal_re]`. Establish `hi : Integrable (fun v => ‖F v‖ ^ 2 * paW q v)`. Use `gaussianInner_integrable_norm hq hF hF` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Simplify using `only`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hc : Continuous (fun v => ‖F v‖ ^ 2 * paW q v)`. Use `paPoly_continuous hF` as an intermediate fact. Use `paW_continuous (ι := ι) q` as an intermediate fact. Use `fun_prop`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun v => by have := paW_pos q v; positivity) hi).1 hz`. Establish `heq` using `(Continuous.ae_eq_iff_eq volume hc continuous_const).1 hae`. Use function extensionality and compare the values at `v`. Use `congrFun heq v` as an intermediate fact. Simplify using `only [Pi.zero_apply] at this ⊢`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hw` using `paW_pos q v`. Establish `: ‖F v‖ ^ 2 = 0`. Break down `mul_eq_zero.mp this with h | h` into its components or cases. Conclude with `h`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Conclude with `norm_eq_zero.mp ((pow_eq_zero_iff two_ne_zero).mp this)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem paN_eq_zero {q c : ℕ} (hq : 1 ≤ q) {F : EuclideanSpace ℂ ι → ℂ} (hF : F ∈ paPoly c)
     (h0 : paN q F = 0) : F = 0 := by
@@ -480,7 +478,7 @@ theorem paN_eq_zero {q c : ℕ} (hq : 1 ≤ q) {F : EuclideanSpace ℂ ι → �
   exact norm_eq_zero.mp ((pow_eq_zero_iff two_ne_zero).mp this)
 
 /- English proof (translation)
-Rewrite using `[← Finsupp.toMultiset_toFinsupp a, h, Finsupp.toMultiset_toFinsupp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pa_tm_inj {a b : ι →₀ ℕ} (h : Finsupp.toMultiset a = Finsupp.toMultiset b) : a = b := by
   rw [← Finsupp.toMultiset_toFinsupp a, h, Finsupp.toMultiset_toFinsupp]
@@ -490,22 +488,22 @@ def paPD : (n : ℕ) → (Fin n → ι) → MvPolynomial ι ℂ → MvPolynomial
   | n + 1, m, p => paPD n (Fin.init m) (MvPolynomial.pderiv (m (Fin.last n)) p)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Simplify using `[paPF]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem paPF_X_mul (p : MvPolynomial ι ℂ) (j : ι) :
     paPF (p * MvPolynomial.X j) = paPF p * fun v : EuclideanSpace ℂ ι => v j := by
   funext v; simp [paPF]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `e : paPF (MvPolynomial.C a) = fun _ : EuclideanSpace ℂ ι => a` using `by funext v; simp [paPF]`. Rewrite using `[e]`. Use `⟨differentiable_const a, fun j y => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[paPF]`. Consider the case `add p r hp hr`. Rewrite using `[paPF_add]`. Use `⟨hp.1.add hr.1, fun j y => ?_⟩` and prove the remaining obligations. Rewrite using `[fderiv_add (hp.1 y) (hr.1 y), ContinuousLinearMap.add_apply, hp.2, hr.2, map_add, paPF_add]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `mul_X p k hp`. Establish `hd : Differentiable ℂ (fun v : EuclideanSpace ℂ ι => v k)` using `(EuclideanSpace.proj k : EuclideanSpace ℂ ι →L[ℂ] ℂ).differentiable`. Rewrite using `[paPF_X_mul]`. Use `⟨hp.1.mul hd, fun j y => ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[fderiv_mul (hp.1 y) (hd y)]`. Establish `e1 : fderiv ℂ (fun v : EuclideanSpace ℂ ι => v k) y = (EuclideanSpace.proj k : EuclideanSpace ℂ ι →L[ℂ] ℂ)` using `(EuclideanSpace.proj k : EuclideanSpace ℂ ι →L[ℂ] ℂ).fderiv`. Rewrite using `[ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smul_apply, e1, hp.2, Derivation.leibniz, MvPolynomial.pderiv_X]`. Simplify using `only [EuclideanSpace.coe_proj, EuclideanSpace.single_apply, smul_eq_mul, paPF, map_add, map_mul, MvPolynomial.eval_X, Pi.single_apply]`. Distinguish the cases in `h : j = k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Apply the tactic sequence `subst h; simp <;> ring`. Apply the tactic sequence `simp [h, Ne.symm h] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem paPF_diff (p : MvPolynomial ι ℂ) : Differentiable ℂ (paPF p) ∧
     ∀ (j : ι) (y : EuclideanSpace ℂ ι),
@@ -539,9 +537,9 @@ theorem paPF_diff (p : MvPolynomial ι ℂ) : Differentiable ℂ (paPF p) ∧
     · simp [h, Ne.symm h] <;> ring
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `e : paPF (MvPolynomial.C a) = fun _ : EuclideanSpace ℂ ι => a` using `by funext v; simp [paPF]`. Rewrite using `[e]`. Conclude with `contDiff_const`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add p r hp hr => rw [paPF_add]`. Conclude with `hp.add hr`. Consider the case `mul_X p k hp`. Rewrite using `[paPF_X_mul]`. Conclude with `hp.mul (EuclideanSpace.proj k : EuclideanSpace ℂ ι →L[ℂ] ℂ).contDiff`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem paPF_contDiff (p : MvPolynomial ι ℂ) : ContDiff ℂ (⊤ : ℕ∞) (paPF p) := by
   induction p using MvPolynomial.induction_on with
@@ -554,11 +552,11 @@ theorem paPF_contDiff (p : MvPolynomial ι ℂ) : ContDiff ℂ (⊤ : ℕ∞) (p
     exact hp.mul (EuclideanSpace.proj k : EuclideanSpace ℂ ι →L[ℂ] ℂ).contDiff
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro p m x`. Simplify using `[paPD]`. Consider the case `succ n ih`. Introduce `p m x`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[iteratedFDeriv_succ_apply_right]`. Establish `hc : ContDiff ℂ (⊤ : ℕ∞) (fderiv ℂ (paPF p))` using `(paPF_contDiff p).fderiv_right (by simp)`. Rewrite using `[← iteratedFDeriv_clm_apply_const_apply hc (by exact_mod_cast le_top)]`. Establish `e : (fun y => fderiv ℂ (paPF p) y (EuclideanSpace.single (m (Fin.last n)) 1)) = paPF (MvPolynomial.pderiv (m (Fin.last n)) p)`. Use function extensionality and compare the values at `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(paPF_diff p).2 _ y`. Rewrite using `[e]`. Conclude with `ih _ (Fin.init m) x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem paPF_iter (n : ℕ) : ∀ (p : MvPolynomial ι ℂ) (m : Fin n → ι) (x : EuclideanSpace ℂ ι),
     iteratedFDeriv ℂ n (paPF p) x (fun k => EuclideanSpace.single (m k) 1) = paPF (paPD n m p) x := by
@@ -577,9 +575,9 @@ theorem paPF_iter (n : ℕ) : ∀ (p : MvPolynomial ι ℂ) (m : Fin n → ι) (
     exact ih _ (Fin.init m) x
 
 /- English proof (translation)
-Unfold `paFact`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ i), ← Finset.mul_prod_erase _ _ (Finset.mem_univ i)]`. Establish `e : ∏ x ∈ Finset.univ.erase i, (β x).factorial = ∏ x ∈ Finset.univ.erase i, ((β - Finsupp.single i 1 : ι →₀ ℕ) x).factorial`. Use `Finset.prod_congr rfl fun x hx => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.tsub_apply, Finsupp.single_apply, if_neg (Finset.ne_of_mem_erase hx).symm, Nat.sub_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Finsupp.tsub_apply, Finsupp.single_eq_same]`. Take `⟨k, hk⟩ : ∃ k, β i = k + 1` from `⟨β i - 1, by omega⟩`. Rewrite using `[hk, Nat.add_sub_cancel, Nat.factorial_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem paFact_succ (β : ι →₀ ℕ) (i : ι) (h : 1 ≤ β i) :
     (paFact β : ℂ) = (β i : ℂ) * paFact (β - Finsupp.single i 1) := by
@@ -595,19 +593,19 @@ theorem paFact_succ (β : ι →₀ ℕ) (i : ι) (h : 1 ≤ β i) :
   push_cast; ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `m β a`. Simplify using `only [paPD, MvPolynomial.constantCoeff_monomial, List.ofFn_zero, Multiset.coe_nil]`. Distinguish the cases in `h : β = 0`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[paFact]`. Rewrite using `[if_neg h, if_neg]`. Introduce `h2; exact h (pa_tm_inj (by rw [h2, Finsupp.toMultiset_zero]))`. Consider the case `succ n ih`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Introduce `m β a`. Simplify using `only [paPD, MvPolynomial.pderiv_monomial]`. Rewrite using `[ih]`. Use `set i := m (Fin.last n)`. Establish `hl : ((List.ofFn m : List ι) : Multiset ι) = (List.ofFn (Fin.init m) : Multiset ι) + {i}`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.ofFn_succ', List.concat_eq_append, ← Multiset.coe_add]`. Both sides reduce to the same expression. Rewrite using `[hl]`. Distinguish the cases in `hb : β i = 0`. Rewrite using `[hb]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.cast_zero, mul_zero, zero_mul, ite_self]`. Rewrite using `[if_neg]`. Introduce `h`. Use `congrArg (Multiset.count i) h` as an intermediate fact. Rewrite `this` using `[Finsupp.count_toMultiset, hb, Multiset.count_add, Multiset.count_singleton_self]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hb1 : 1 ≤ β i` using `Nat.one_le_iff_ne_zero.mpr hb`. Establish `hle : Finsupp.single i 1 ≤ β` using `Finsupp.single_le_iff.mpr hb1`. Establish `hsplit : Finsupp.toMultiset β = Finsupp.toMultiset (β - Finsupp.single i 1) + {i}` using `by conv_lhs => rw [← tsub_add_cancel_of_le hle]`. Rewrite using `[map_add, Finsupp.toMultiset_single, one_nsmul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit]`. Distinguish the cases in `hc : Finsupp.toMultiset (β - Finsupp.single i 1) = (List.ofFn (Fin.init m) : Multiset ι)`. Rewrite using `[if_pos hc, if_pos (by rw [hc]), paFact_succ β i hb1]; ring`. Rewrite using `[if_neg hc, if_neg (fun h => hc (add_right_cancel h))]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem paPD_monomial (n : ℕ) : ∀ (m : Fin n → ι) (β : ι →₀ ℕ) (a : ℂ),
     MvPolynomial.constantCoeff (paPD n m (MvPolynomial.monomial β a)) =
@@ -648,7 +646,7 @@ theorem paPD_monomial (n : ℕ) : ∀ (m : Fin n → ι) (β : ι →₀ ℕ) (a
       · rw [if_neg hc, if_neg (fun h => hc (add_right_cancel h))]
 
 /- English proof (translation)
-Establish `: (fun i => (0 : EuclideanSpace ℂ ι) i) = 0` using `by funext i; simp`. Use `show MvPolynomial.eval (fun i => (0 : EuclideanSpace ℂ ι) i) p = _`. Rewrite using `[this, MvPolynomial.eval_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem paPF_zero (p : MvPolynomial ι ℂ) : paPF p 0 = MvPolynomial.constantCoeff p := by
   have : (fun i => (0 : EuclideanSpace ℂ ι) i) = 0 := by funext i; simp
@@ -656,11 +654,11 @@ theorem paPF_zero (p : MvPolynomial ι ℂ) : paPF p 0 = MvPolynomial.constantCo
   rw [this, MvPolynomial.eval_zero]
 
 /- English proof (translation)
-Unfold `paD polyDeriv`. Rewrite using `[MvPolynomial.support_monomial, if_neg one_ne_zero, Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl, one_mul]`. Use `paPF_iter _ (MvPolynomial.monomial β 1) (fun k => (Finsupp.toMultiset α).toList.get (k.cast (Multiset.length_toList _).symm)) 0` as an intermediate fact. Simplify using `only at this ⊢`. Rewrite using `[paMono, this, paPF_zero, paPD_monomial]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : List.ofFn (fun k : Fin (Multiset.card (Finsupp.toMultiset α)) => (Finsupp.toMultiset α).toList.get (k.cast (Multiset.length_toList _).symm)) = (Finsupp.toMultiset α).toList`. Apply `List.ext_get (by simp)` to reduce the goal to its premises. Introduce `k h1 h2`. Simplify using the standard rewrite rules. Rewrite using `[hl, Multiset.coe_toList]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : α = β`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun h' => h (pa_tm_inj h').symm), if_neg h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem paD_mono (α β : ι →₀ ℕ) : paD α (paMono β) = if α = β then (paFact α : ℂ) else 0 := by
   unfold paD polyDeriv

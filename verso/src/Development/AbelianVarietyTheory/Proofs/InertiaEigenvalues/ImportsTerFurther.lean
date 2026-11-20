@@ -11,7 +11,7 @@ open scoped Formalism.Per
 namespace GlobalTheory.PMon.Gauss
 
 /- English proof (translation)
-Unfold `φc tc`. Rewrite using `[(GlobalTheory.CrisMaps.phiA_extends l).alg]`. Use `congr 1`. Rewrite using `[GlobalTheory.RingBasics.φA_apply, WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, frobenius_def]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem φc_tc (l : ℕ) [Fact l.Prime] (y : Formalism.Per.Fl l) : φc l (tc l y) = tc l (y ^ l) := by
   unfold φc tc
@@ -20,7 +20,7 @@ theorem φc_tc (l : ℕ) [Fact l.Prime] (y : Formalism.Per.Fl l) : φc l (tc l y
   rw [GlobalTheory.RingBasics.φA_apply, WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, frobenius_def]
 
 /- English proof (translation)
-Introduce `l _ y` and use `φc_tc l y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem frob_teich : ∀ (l : ℕ) [Fact l.Prime] (y : Formalism.Per.Fl l), φc l (tc l y) = tc l (y ^ l) :=
   fun l _ y => φc_tc l y

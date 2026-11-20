@@ -14,11 +14,11 @@ open GlobalTheory.Poinc
 
 namespace GlobalTheory.Poinc.LinearValuationCongruences
 /- English proof (translation)
-Take `⟨s, hs⟩` from `(IsNoetherian.noetherian (maximalIdeal A) : (maximalIdeal A).FG)`. Set `F : A → NNReal` to `fun g => ⟨‖f g‖, norm_nonneg _⟩`. Establish `hmem : ∀ g ∈ s, g ∈ maximalIdeal A` using `fun g hg => hs ▸ Submodule.subset_span hg`. Use `⟨(s.sup F : NNReal), NNReal.coe_nonneg _, ?_, fun h hh => ?_⟩` and prove the remaining obligations. Establish `: s.sup F < 1` using `(Finset.sup_lt_iff (by simp)).2 fun g hg => NNReal.coe_lt_coe.1 (h2 g (hmem g hg))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Rewrite `hh` using `[← hs]`. Proceed by induction on `hh using Submodule.span_induction with`. Consider the case `mem x hx => exact NNReal.coe_le_coe.2 (Finset.le_sup (f := F) hx)`. Consider the case `zero => simp`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le hx hy)`. Consider the case `smul r x _ hx`. Rewrite using `[smul_eq_mul, map_mul, norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) (h1 r)).trans hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho {A K : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A] [NormedField K] [IsUltrametricDist K]
     (f : A →+* K) (h1 : ∀ h, ‖f h‖ ≤ 1) (h2 : ∀ h ∈ maximalIdeal A, ‖f h‖ < 1) :
@@ -38,13 +38,13 @@ theorem rho {A K : Type} [CommRing A] [IsLocalRing A] [IsNoetherianRing A] [Norm
       rw [smul_eq_mul, map_mul, norm_mul]; exact (mul_le_of_le_one_left (norm_nonneg _) (h1 r)).trans hx
 
 /- English proof (translation)
-Establish `hkR : (0 : ℝ) < k` using `by exact_mod_cast hk`. Establish `hβR : ∀ x y, (β x y : ℝ) = ∑ j, ((c j : ℝ) / k) * (γ j x y : ℝ)` using `fun x y => by`. Establish `h0` using `LinearMap.congr_fun₂ hβ x y`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, nsmul_eq_mul] at h0`. Establish `h : (k : ℝ) * β x y = ∑ j, (c j : ℝ) * (γ j x y : ℝ)` using `by exact_mod_cast h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[show ∑ j, ((c j : ℝ) / k) * (γ j x y : ℝ) = (∑ j, (c j : ℝ) * γ j x y) / k by`. Rewrite using `[Finset.sum_div]; exact Finset.sum_congr rfl fun j _ => by ring]`. Rewrite using `[eq_div_iff hkR.ne', ← h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hev : φ.evalZ β = ∑ j, ((c j : ℝ) / k) * φ.evalZ (γ j)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← hγ _ (fun j => by positivity)]`. Use `show φ.eval X (fun x y => (β x y : ℝ)) = _`. Use `congr 1`. Use function extensionality and compare the values at `x y`. Conclude with `hβR x y`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hev, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem linVal {O : Type} [CommRing O] {bar : O → O} {φ : InvFun O} {d : ℕ} {X : Type} [AddCommGroup X] [Module O X]
     [Module.Finite O X] {r m : ℕ} {γ : Fin r → LinearMap.BilinForm ℤ X} {a : Fin m → X} (hγ : φ.LinearOn γ)
@@ -71,11 +71,9 @@ theorem linVal {O : Type} [CommRing O] {bar : O → O} {φ : InvFun O} {d : ℕ}
     _ = _ := by push_cast; exact Finset.sum_congr rfl fun i _ => (hβR _ _).symm
 
 /- English proof (translation)
-Establish `hpos : 0 < ‖g a‖` using `(norm_nonneg _).trans_lt hz`. Establish `hrest : ‖∑ μ ∈ S.erase a, g μ‖ < ‖g a‖`. Break down `(S.erase a).eq_empty_or_nonempty with h | h` into its components or cases. Simplify using `[h, hpos]`. Take `⟨μ, hμ, hmax⟩` from `Finset.exists_max_image (S.erase a) (fun μ => ‖g μ‖) h`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `(IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) hmax).trans_lt (hlt μ (Finset.mem_of_mem_erase hμ) (Finset.ne_of_mem_erase hμ))`. Establish `hsum : ‖∑ μ ∈ S, g μ‖ = ‖g a‖`. Rewrite using `[← Finset.add_sum_erase S g ha, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hrest.ne', max_eq_left hrest.le]`. Use `IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (x := z - ∑ μ ∈ S, g μ) (y := ∑ μ ∈ S, g μ) (by rw [hsum]; exact hz.ne)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, hsum, max_eq_right hz.le]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dom {K ι : Type} [NormedField K] [IsUltrametricDist K] (S : Finset ι) (g : ι → K) {a : ι} (ha : a ∈ S)
     (hlt : ∀ μ ∈ S, μ ≠ a → ‖g μ‖ < ‖g a‖) (z : K) (hz : ‖z - ∑ μ ∈ S, g μ‖ < ‖g a‖) : ‖z‖ = ‖g a‖ := by
@@ -96,7 +94,7 @@ theorem dom {K ι : Type} [NormedField K] [IsUltrametricDist K] (S : Finset ι) 
   exact this
 
 /- English proof (translation)
-Establish `hex : ∃ n : ℕ, ∃ x, x ≠ 0 ∧ β x x = n` using `⟨(β x₀ x₀).toNat, x₀, hx₀, (Int.toNat_of_nonneg (hpos x₀ hx₀).le).symm⟩`. Take `⟨x, hx, hxn⟩` from `Nat.find_spec hex`. Use `⟨x, hx, fun x' hx' => ?_⟩` and prove the remaining obligations. Rewrite using `[hxn, ← Int.toNat_of_nonneg (hpos x' hx').le]`. Conclude with `Nat.find_min' hex ⟨x', hx', (Int.toNat_of_nonneg (hpos x' hx').le).symm⟩` after adjusting the coercions.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leastVal {X : Type} [AddCommGroup X] (β : LinearMap.BilinForm ℤ X) (hpos : ∀ x, x ≠ 0 → 0 < β x x) {x₀ : X}
     (hx₀ : x₀ ≠ 0) : ∃ x, x ≠ 0 ∧ ∀ x', x' ≠ 0 → β x x ≤ β x' x' := by
@@ -109,11 +107,11 @@ theorem leastVal {X : Type} [AddCommGroup X] (β : LinearMap.BilinForm ℤ X) (h
   exact_mod_cast Nat.find_min' hex ⟨x', hx', (Int.toNat_of_nonneg (hpos x' hx').le).symm⟩
 
 /- English proof (translation)
-Introduce `x`. Establish `hx : x ∈ Submodule.span ℤ (Set.range a)` using `hspan ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => obtain ⟨i, rfl⟩ := hy`. Conclude with `h i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨w, hw⟩` from `hy`. Take `⟨w', hw'⟩` from `hz`. Conclude with `⟨w + w', by rw [map_add, hw, hw', smul_add]; abel⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `smul n y _ hy`. Take `⟨w, hw⟩` from `hy`. Conclude with `⟨n • w, by rw [map_zsmul, hw, smul_add, smul_comm]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem congMod_of_span {X : Type} [AddCommGroup X] (N : ℕ) (g : X →+ X) {m : ℕ} (a : Fin m → X)
     (hspan : Submodule.span ℤ (Set.range a) = ⊤) (h : ∀ i, CongMod N (g (a i)) (a i)) : ∀ x, CongMod N (g x) x := by
@@ -130,11 +128,11 @@ theorem congMod_of_span {X : Type} [AddCommGroup X] (N : ℕ) (g : X →+ X) {m 
     exact ⟨n • w, by rw [map_zsmul, hw, smul_add, smul_comm]⟩
 
 /- English proof (translation)
-Take `⟨hk1, ε, hε⟩` from `hk`. Use `⟨fun c x => ?_, ε, ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `h1 c x`. Take `⟨w', hw'⟩` from `hk1 c (g x)`. Use `⟨k w + w', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hw, map_add, map_nsmul, hw', smul_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[← LinearMap.comp_assoc, LinearMap.det_comp]`. Take `⟨u, hu⟩` from `hε`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `h2`. Establish `e1 : LinearMap.det (ε.toLinearMap ∘ₗ k) = N * u + 1` using `by linarith`. Establish `e2 : LinearMap.det g = N * v + 1` using `by linarith`. Rewrite using `[e1, e2]`. Conclude with `⟨u * (N * v + 1) + v, by ring⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem unimod_comp (O : Type) [CommRing O] {X₀ X : Type} [AddCommGroup X₀] [Module O X₀] [AddCommGroup X] [Module O X]
     {N : ℕ} {k : X₀ →ₗ[ℤ] X} (hk : IsUnimodMod O N k) {g : X₀ →ₗ[ℤ] X₀}
@@ -156,7 +154,7 @@ theorem unimod_comp (O : Type) [CommRing O] {X₀ X : Type} [AddCommGroup X₀] 
     exact ⟨u * (N * v + 1) + v, by ring⟩
 
 /- English proof (translation)
-Unfold `qW`. Rewrite using `[Fintype.sum_eq_single 0 (fun u hu => Fintype.sum_eq_zero _ fun v => by simp [hu])]`. Rewrite using `[Fintype.sum_eq_single 0 (fun v hv => by simp [hv])]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem qW_single {s : ℕ} (W : Matrix (Fin (s + 1)) (Fin (s + 1)) ℤ) {X : Type} [AddCommGroup X]
     (β : LinearMap.BilinForm ℤ X) (x : X) : qW W β (fun u => if u = 0 then x else 0) = W 0 0 * β x x := by
@@ -169,71 +167,65 @@ end GlobalTheory.Poinc.LinearValuationCongruences
 open GlobalTheory.Poinc.LinearValuationCongruences in
 
 /- English proof (translation)
-Introduce `O _ _ bar hB q φ hφ d₀ hS s W hW N₁ p _ hN₁ A _ _ _ Φ hLam hFour y₀ e`. Take `⟨cW, hcW0, hcW⟩` from `GlobalTheory.T.weightedLatticeQuadraticSum_ge_diagonal (s + 1) W hW`. Take `⟨C, hC⟩` from `hLam`. Establish `hW00 : 0 < W 0 0`. Use `hW.diag_pos (i := 0)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdcast : (((W 0 0).toNat * d₀ : ℕ) : ℝ) = (W 0 0 : ℝ) * d₀`. Rewrite using `[Nat.cast_mul]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `congrArg (Int.cast : ℤ → ℝ) (Int.toNat_of_nonneg hW00.le)` after adjusting the coercions. Establish `hnn : ∀ y (x : Φ.X y), 0 ≤ Φ.β y x x` using `fun y x => by`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Conclude with `(Φ.pos y x hx).le`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hX₀ : Subsingleton (Φ.X y₀)`. Take `⟨N, -, -, k, Q, t, -, hk, -⟩` from `hFour y₀ 0`. Establish `hsub : ∀ y, Subsingleton (Φ.X y)` using `fun y => by`. Take `⟨-, ε, -⟩` from `hk y`. Conclude with `ε.toEquiv.subsingleton`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h0 : ∀ y, φ.evalZ (Φ.β y) = 0` using `fun y => by haveI := hsub y`. Conclude with `φ.eval_of_subsingleton _`. Use `⟨1, ?_, fun y => Or.inl ?_⟩` and prove the remaining obligations. Simplify using `[h0]`. Simplify using `[h0, Φ.ev_le]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hX₀` using `[not_subsingleton_iff_nontrivial]`. Establish `hPF` using `hφ (Φ.X y₀) (Φ.rank_le y₀)`. Take `⟨r, γ, k₀, c₀, hγ, hk₀, hc₀, hβ₀⟩` from `GlobalTheory.T.exists_smoothCone_interior_definite_balancedForm O bar φ (Φ.X y₀) hPF (Φ.β y₀) (Φ.bal y₀) (Φ.pos y₀)`. Take `⟨m, a₀, hsup⟩` from `hS (Φ.X y₀) (Φ.rank_le y₀) r γ hγ`. Establish `hD` using `linVal hγ.linear hsup hk₀ hβ₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨T, hT⟩ : ∃ T : ℝ, T = (W 0 0 : ℝ) * ((∑ i, Φ.β y₀ (a₀ i) (a₀ i) : ℤ) : ℝ)` from `⟨_, rfl⟩`. Establish `hT' : (((W 0 0).toNat * d₀ : ℕ) : ℝ) * φ.evalZ (Φ.β y₀) = T` using `by rw [hdcast, mul_assoc, hD, hT]`. Take `⟨a, ha⟩ : ∃ a : Fin m × Fin (s + 1) → Φ.X y₀, ∀ i u, a (i, u) = if u = 0 then a₀ i else 0` from `⟨fun iu => if iu.2 = 0 then a₀ iu.1 else 0, fun _ _ => rfl⟩`. Establish `ha' : ∀ i, (fun u => a (i, u)) = fun u => if u = 0 then a₀ i else 0` using `fun i => funext (ha i)`. Establish `hspan : Submodule.span ℤ (Set.range a) = ⊤`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `eq_top_iff.2 (hsup.span.symm.le.trans (Submodule.span_mono ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨(i, 0), by simp [ha]⟩`. Take `⟨ρ, hρ0, hρ1, hρ⟩` from `rho (Φ.ev y₀) (Φ.ev_le y₀) (Φ.ev_lt y₀)`. Take `⟨E₀, hE₀⟩ : ∃ E : ℝ, E = Real.exp (-(Φ.sc y₀ * T))` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hE₀pos : 0 < E₀` using `hE₀ ▸ Real.exp_pos _`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hE₀pos hρ1`. Establish `hsmall : ∀ h ∈ maximalIdeal A, ‖Φ.ev y₀ h‖ ^ (max e n) < E₀` using `fun h hh => lt_of_le_of_lt ((pow_le_pow_left₀ (norm_nonneg _) (hρ h hh) _).trans (pow_le_pow_of_le_one hρ0 hρ1.le (le_max_right e n))) hn`. Take `⟨K, hK⟩ : ∃ K : ℝ, K = max (C * (max e n : ℕ) / cW) ((T + 1) / cW)` from `⟨_, rfl⟩`. Establish `hK1 : C * (max e n : ℕ) ≤ cW * K`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← div_le_iff₀' hcW0, hK]`. Conclude with `le_max_left _ _`. Establish `hK2 : T < cW * K`. Establish `: (T + 1) / cW ≤ K` using `hK ▸ le_max_right _ _`. Rewrite `this` using `[div_le_iff₀' hcW0]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨N₀, hN₀⟩` from `GlobalTheory.T.congruent_tuple_unimodular_image_or_large O bar hB (Φ.X y₀) (Fin m × Fin (s + 1)) a hspan K`. Take `⟨N, hNN₀, hN₁N, k, Q, t, hkid, hk, ⟨hTle, hTeq⟩, hfour⟩` from `hFour y₀ N₀`. Use `choose c hc using fun i => hTeq y₀ (fun u => a (i, u))`. Take `⟨f, hf⟩` from `hfour m a c (max e n)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hterm : ∀ y (lam : ℝ), 0 ≤ lam → (∀ x, x ≠ 0 → lam ≤ Φ.β y x x) → ∀ μ ∈ orbit O N₁ N (k y) a, (∃ g : Φ.X y₀ ≃ₗ[O] Φ.X y, (∀ iu, g (a iu) = μ iu) ∧ ∑ i, (qW W (Φ.β y) (fun u => μ (i, u)) : ℝ) = (W 0 0 : ℝ) * ((∑ i, Φ.β y (g (a₀ i)) (g (a₀ i)) : ℤ) : ℝ) ∧ (W 0 0 : ℝ) * d₀ * φ.evalZ …`. Introduce `y lam hlam0 hlam μ hμ`. Take `⟨g, g1, g2, -, g4⟩` from `hμ`. Break down `hN₀ N hNN₀ (Φ.X y) (Φ.β y) (Φ.bal y) (hnn y) lam hlam0 hlam (k y ∘ₗ g) μ (unimod_comp O (hk y) g1 g2) (fun i => g4 i) with ⟨g', hg'⟩ | hbig` into its components or cases. Use `left`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hμi : ∀ i, (fun u => μ (i, u)) = fun u => if u = 0 then g' (a₀ i) else 0` using `fun i => funext fun u => by`. Apply the tactic sequence `rw [← hg', ha]; by_cases hu : u = 0 <;> simp [hu]`. Establish `hsum : ∑ i, (qW W (Φ.β y) (fun u => μ (i, u)) : ℝ) = (W 0 0 : ℝ) * ((∑ i, Φ.β y (g' (a₀ i)) (g' (a₀ i)) : ℤ) : ℝ)`. Simplify using `only [hμi, qW_single]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Finset.mul_sum]`. Use `⟨g', hg', hsum, ?_⟩` and prove the remaining obligations. Use `hsup.le (pull g'.toLinearMap (Φ.β y)) (pull_mem _ (Φ.bal y)) (fun x => hnn y _)` as an intermediate fact. Rewrite `this` using `[evalZ_pull φ g'.surjective]`. Rewrite using `[hsum, mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_left ?_ (by exact_mod_cast hW00.le)` and prove the remaining obligations. Simplify using `using this`. Use `right`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left hbig hcW0.le`. Use `_ = ∑ i, cW * ((∑ u, Φ.β y (μ (i, u)) (μ (i, u)) : ℤ) : ℝ) := by push_cast; rw [Fintype.sum_prod_type, Finset.mul_sum]`. Use `_ ≤ _ := Finset.sum_le_sum fun i _ => hcW (Φ.X y) (Φ.β y) (Φ.bal y).1 (hnn y) _`. Establish `hnorm : ∀ y (μ : Fin m × Fin (s + 1) → Φ.X y), ‖∏ i, t y (fun u => μ (i, u)) (c i)‖ ≤ Real.exp (-(Φ.sc y * ∑ i, (qW W (Φ.β y) (fun u => μ (i, u)) : ℝ)))`. Introduce `y μ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[norm_prod, Finset.mul_sum, ← Finset.sum_neg_distrib, Real.exp_sum]`. Conclude with `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun i _ => hTle y _ _`. Use `⟨f, ?_, fun y => ?_⟩` and prove the remaining obligations. Take `⟨h₁, hh₁, hf₁⟩` from `hf y₀`. Take `⟨S, hSo, hSout, hSa⟩` from `hf₁ (E₀ / 2) (by positivity)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `haorb : a ∈ orbit O N₁ N (k y₀) a` using `⟨LinearMap.id, fun c x => ⟨0, by simp⟩, by simp, fun x => ⟨0, by simp⟩, fun i => ⟨0, by simp [hkid]⟩⟩`. Establish `hqa : ∑ i, (qW W (Φ.β y₀) (fun u => a (i, u)) : ℝ) = T`. Simplify using `only [ha', qW_single]`. Rewrite using `[hT, Int.cast_sum, Finset.mul_sum]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Establish `hta : ‖∏ i, t y₀ (fun u => a (i, u)) (c i)‖ = E₀`. Rewrite using `[norm_prod]`. Simplify using `only [hc]`. Rewrite using `[← Real.exp_sum, Finset.sum_neg_distrib, ← Finset.mul_sum, hqa, hE₀]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `haS : a ∈ S`. Assume the negation of the conclusion as `hn`. Use `hSout a haorb hn` as an intermediate fact. Rewrite `this` using `[hqa, ← hE₀]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hT', ← hE₀, ← hta]`. Use `dom S (fun μ => ∏ i, t y₀ (fun u => μ (i, u)) (c i)) haS (fun μ hμS hμa => ?_) _ ?_` and prove the remaining obligations. Rewrite using `[hta, hE₀]`. Use `(hnorm y₀ μ).trans_lt (Real.exp_lt_exp.2 (neg_lt_neg (mul_lt_mul_of_pos_left ?_ (Φ.sc_pos y₀))))` and prove the remaining obligations. Establish `hμo` using `hSo hμS`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `hterm y₀ 1 zero_le_one (fun x hx => by` into its components or cases. Use `Φ.pos y₀ x hx; exact_mod_cast (show (1 : ℤ) ≤ _ by omega)) μ hμo with` as an intermediate fact. Use the proof step `⟨g, hg, hsum, -⟩ | hbig`. Rewrite using `[hsum, hT]`. Assume the negation of the conclusion as `hle`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_neg at hle`. Establish `hle' : ((∑ i, Φ.β y₀ (g (a₀ i)) (g (a₀ i)) : ℤ) : ℝ) ≤ ((∑ i, Φ.β y₀ (a₀ i) (a₀ i) : ℤ) : ℝ)` using `le_of_mul_le_mul_left hle (by exact_mod_cast hW00)`. Establish `hge` using `hsup.le (pull g.toLinearMap (Φ.β y₀)) (pull_mem _ (Φ.bal y₀)) (fun x => hnn y₀ _)`. Rewrite `hge` using `[evalZ_pull φ g.surjective]`. Establish `heq : (d₀ : ℝ) * φ.evalZ (Φ.β y₀) = ((∑ i, Φ.β y₀ (g (a₀ i)) (g (a₀ i)) : ℤ) : ℝ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Use `le_antisymm (by simpa using hge) ?_` and prove the remaining obligations. Rewrite using `[hD]`. Conclude with `hle'`. Take `⟨γ', -, -, h3, h4⟩` from `hμo`. Establish `hcong : ∀ x, CongMod N₁ (g x) x`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congMod_of_span N₁ g.toLinearMap.toAddMonoidHom a₀ hsup.span fun i => ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `hN₁N`. Take `⟨w, hw⟩` from `h4 (i, 0)`. Take `⟨w', hw'⟩` from `h3 (a (i, 0))`. Use `⟨w' + t • w, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e1 : g (a₀ i) = μ (i, 0)` using `by rw [← hg, ha]; simp`. Use `show g (a₀ i) = _`. Rewrite using `[e1, hw, hkid, LinearMap.id_apply, hw', ht, mul_smul, smul_add]`. Simplify using `only [ha, ↓reduceIte]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hid` using `GlobalTheory.T.leadingTerm_unique_supported_balancedCone O bar φ d₀ (Φ.X y₀) hPF r m γ a₀ hγ hsup (Φ.β y₀) k₀ c₀ hk₀ hc₀ hβ₀ (Φ.pos y₀) g N₁ hN₁ hcong heq`. Conclude with `hμa (funext fun iu => by rw [← hg, hid])`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hta]`. Conclude with `hSa.trans_lt (max_lt (by linarith) (hsmall h₁ hh₁))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hXy : Subsingleton (Φ.X y)`. Use `left`. Establish `: φ.evalZ (Φ.β y) = 0` using `φ.eval_of_subsingleton _`. Simplify using `[this, Φ.ev_le]`. Rewrite `hXy` using `[not_subsingleton_iff_nontrivial]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨x₁, hx₁⟩` from `exists_ne (0 : Φ.X y)`. Take `⟨x, hx, hxmin⟩` from `leastVal (Φ.β y) (Φ.pos y) hx₁`. Establish `hlam0 : (0 : ℝ) ≤ Φ.β y x x` using `by exact_mod_cast (Φ.pos y x hx).le`. Take `⟨h₂, hh₂, hC₂⟩` from `hC y x hx`. Take `⟨h₁, hh₁, hf₁⟩` from `hf y`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Prove the first alternative. Prove the second alternative.
 
-Take `⟨S, hSo, -, hSa⟩` from `hf₁ (Real.exp (-(Φ.sc y * ((((W 0 0).toNat * d₀ : ℕ) : ℝ) * φ.evalZ (Φ.β y))))) (Real.exp_pos _)`. Establish `hsum : ‖∑ μ ∈ S, ∏ i, t y (fun u => μ (i, u)) (c i)‖ ≤ max (Real.exp (-(Φ.sc y * ((((W 0 0).toNat * d₀ : ℕ) : ℝ) * φ.evalZ (Φ.β y))))) (‖Φ.ev y h₂‖ ^ (max e n))`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (le_max_of_le_left (Real.exp_pos _).le) fun μ hμ => (hnorm y μ).trans ?_` and prove the remaining obligations. Break down `hterm y _ hlam0 (fun x' hx' => by exact_mod_cast hxmin x' hx') μ (hSo hμ) with ⟨g, -, -, hle⟩ | hbig` into its components or cases. Use `le_max_of_le_left (Real.exp_le_exp.2 (neg_le_neg (mul_le_mul_of_nonneg_left ?_ (Φ.sc_pos y).le)))` and prove the remaining obligations.
-
-Rewrite using `[hdcast]`. Conclude with `hle`. Use `le_max_of_le_right ?_` and prove the remaining obligations. Establish `h3 : C * (max e n : ℕ) * (Φ.β y x x : ℝ) ≤ ∑ i, (qW W (Φ.β y) (fun u => μ (i, u)) : ℝ)` using `(mul_le_mul_of_nonneg_right hK1 hlam0).trans hbig`. Establish `h4` using `mul_le_mul_of_nonneg_left h3 (Φ.sc_pos y).le`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hfy` using `(IsUltrametricDist.norm_add_le_max (Φ.ev y f - ∑ μ ∈ S, ∏ i, t y (fun u => μ (i, u)) (c i)) (∑ μ ∈ S, ∏ i, t y (fun u => μ (i, u)) (c i))).trans (max_le_max hSa hsum)`. Rewrite `hfy` using `[sub_add_cancel]`. Establish `hpow : ∀ h : A, ‖Φ.ev y h‖ ^ (max e n) ≤ ‖Φ.ev y h‖ ^ e` using `fun h => pow_le_pow_of_le_one (norm_nonneg _) (Φ.ev_le y h) (le_max_left e n)`. Simplify using `only [le_max_iff] at hfy`.
-
-Break down `hfy with (h | h) | (h | h)` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨h₁, hh₁, h.trans (hpow h₁)⟩`. Conclude with `Or.inl h`. Conclude with `Or.inr ⟨h₂, hh₂, h.trans (hpow h₂)⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Poinc.approx_of_fpre : ∀ (O : Type) [CommRing O] [Module.Finite ℤ O] (bar : O → O), BddAct bar → ∀ (q : ℕ) (φ : InvFun O), IsPolFan bar q φ → ∀ d₀, HasSupports bar q φ d₀ → ∀ (s : ℕ) (W : Matrix (Fin (s + 1)) (Fin (s + 1)) ℤ), PosW W → ∀ (N₁ p : ℕ) [Fact p.Prime], 3 ≤ N₁ → ∀ (A : Type) [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (Φ : FPre bar q p A), Φ.abelian₂ → Φ.Four W N₁ → Φ.Approx φ ((W 0 0).toNat * d₀) := by
   intro O _ _ bar hB q φ hφ d₀ hS s W hW N₁ p _ hN₁ A _ _ _ Φ hLam hFour y₀ e

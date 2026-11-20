@@ -2,17 +2,17 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.PicData
 open CategoryTheory TensorProduct UpperTheory.PicD
 
 /- English proof (translation)
-Establish `e0 : f.toRingHom.comp (algebraMap A C) = algebraMap A E` using `f.comp_algebraMap`. Establish `e1 : (Algebra.TensorProduct.map f f).toRingHom.comp (i1 A C).toRingHom = (i1 A E).toRingHom.comp f.toRingHom`. Apply the tactic sequence `ext x <;> simp`. Establish `e2 : (Algebra.TensorProduct.map f f).toRingHom.comp (i2 A C).toRingHom = (i2 A E).toRingHom.comp f.toRingHom`. Apply the tactic sequence `ext x <;> simp`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `key : ∀ (c : C) (x : C ⊗[A] C), Algebra.TensorProduct.map f f (c • x) = f c • Algebra.TensorProduct.map f f x`. Introduce `c x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [TensorProduct.smul_tmul']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp [smul_add, ha, hb]`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[P.diff_mapDegZero, h.dw, P.mapDegOne_comp, e0]`. Rewrite using `[← P.mapDegZero_ofUnit, h.hg, map_sub, P.mapDegZero_comp, P.mapDegZero_comp, P.mapDegZero_comp, P.mapDegZero_comp, e1, e2]`. Introduce `m`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (Algebra.TensorProduct.map f f) (h.ht m)` as an intermediate fact. Rewrite `this` using `[key]`. Simplify using `using this`. Use `letI : Algebra C E := f.toRingHom.toAlgebra haveI : IsScalarTower A C E := IsScalarTower.of_algebraMap_eq' e0.symm`. Establish `hb1 : IsBaseChange C t` using `IsBaseChange.of_equiv (LinearEquiv.ofBijective _ h.bij) (fun x => by simp)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hb2` using `hb1.comp (IsBaseChange.linearMap C E)`. Establish `: LinearMap.liftBaseChange E (f.toLinearMap ∘ₗ t) = hb2.equiv.toLinearMap`. Use extensionality with `m`. Simplify using `[IsBaseChange.equiv_tmul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Conclude with `hb2.equiv.bijective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.PicD.Data.Triv.mapAlg (P : Data) {A : Type} [CommRing A]
     {z : P.S1.obj (CommRingCat.of A)} {M : Type} [AddCommGroup M] [Module A M]
@@ -55,7 +55,7 @@ private theorem UpperTheory.PicD.Data.Triv.mapAlg (P : Data) {A : Type} [CommRin
     exact hb2.equiv.bijective
 
 /- English proof (translation)
-Introduce `P A _ z z' M M' _ _ _ _ hM hM'`. Take `⟨C, _, _, hf, he, w, g, t, h⟩` from `hM`. Take `⟨C', _, _, hf', he', w', g', t', h'⟩` from `hM'`. Conclude with `⟨C ⊗[A] C', inferInstance, inferInstance, Module.FaithfullyFlat.trans A C _, Algebra.Etale.comp A C _, _, _, _, _, _, _, UpperTheory.PicD.Data.Triv.mapAlg P h Algebra.TensorProduct.includeLeft, UpperTheory.PicD.Data.Triv.mapAlg P h' Algebra.TensorProduct.includeRight⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.exists_etale_trivialization_of_two_invertibleModuleTorsors :
     ∀ (P : Data) (A : Type) [CommRing A] (z z' : P.S1.obj (CommRingCat.of A)) (M M' : Type) [AddCommGroup M] [Module A M]

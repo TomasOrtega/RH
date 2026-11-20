@@ -18,9 +18,9 @@ def EtaLocD : Prop :=
     (if ∀ x : (D.s.atP p).Ep, x ≠ 0 → IsUnit x then (-1 : ℝ) else 1) = etaF D.host.E D.host.F p.asIdeal
 
 /- English proof (translation)
-Unfold `alphaStd`. Rewrite using `[← Finset.prod_union]`. Use `congr 1`. Use extensionality with `i`. Simplify using `only [Finset.mem_union, Finset.mem_Icc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.disjoint_left]`. Introduce `i hi hi'`. Simplify using `only [Finset.mem_Icc] at hi hi'`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem alpha_split' {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K]
     (𝔭 : Ideal (𝓞 F)) {a b : ℕ} (hab : a ≤ b) :
@@ -38,11 +38,11 @@ theorem alpha_split' {K F : Type} [Field K] [NumberField K] [StarRing K] [Field 
     omega
 
 /- English proof (translation)
-Introduce `D δ M _ p c hc`. Take `⟨hK, hF, -⟩` from `field_dictionary_holds D`. Establish `hm` using `Formalism.L2.SG.Pf.NcArithG.rm_eq D`. Establish `hk5 : D.R.m + 3 ≤ D.R.k` using `D.R.m_add_three_le_k`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `PI.UnitaryGroupMassFormula.CntFormula.residue_field_card D p`. Establish `hmax : p.asIdeal.IsMaximal` using `p.isMaximal`. Establish `hpos` using `alphaStd_pos hK hF hmax (D.R.k - 1 - c)`. Rewrite using `[eq_div_iff hpos.ne', alpha_split' (K := D.host.E) p.asIdeal (show D.R.k - 1 - c ≤ D.R.r by omega), mul_comm]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `Formalism.L2.SG.DensExact.densProd`. Rewrite using `[hq, hη D p, show D.R.r + 1 - (2 * (D.R.rS + 1) + c) = D.R.k - 1 - c + 1 by omega]`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[zpow_neg, zpow_natCast]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem densProdVal_of (hη : EtaLocD) : DensProdVal := by
   intro D δ M _ p c hc

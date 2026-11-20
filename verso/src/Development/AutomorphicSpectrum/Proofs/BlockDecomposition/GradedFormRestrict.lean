@@ -9,7 +9,7 @@ namespace GlobalTheory.CompanionTheory.GrForm
 variable {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)}
 
 /- English proof (translation)
-Establish `h` using `hQ _ T.property`. Establish `h'` using `hQ _ T'.property`. Express the relevant statement in the definitionally equal form `u i T'.obj - φ.hom.φ (u i T.obj) ∈ T'.obj.J`. Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations. Rewrite using `[hu i T'.obj h', ev_nat φ.hom h h' (t i), ← hu i T.obj h]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -25,7 +25,7 @@ theorem lift_cocycle_mem {W : X.Opens} {d : ℕ} {t : Fin d → Γ(X, W)} {u : F
   rfl
 
 /- English proof (translation)
-Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations. Rewrite using `[lft_spec T h f, lft_spec T h' (rs hW f), ev_res hW T h h' f]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lft_res_sub_mem {W W' : X.Opens} (hW : W' ≤ W) (T : Thick (LL q)) (h : InU W T) (h' : InU W' T) (f : Γ(X, W)) :
     lft W T f - lft W' T (rs hW f) ∈ T.J := by
@@ -33,15 +33,15 @@ theorem lft_res_sub_mem {W W' : X.Opens} (hW : W' ≤ W) (T : Thick (LL q)) (h :
   rw [lft_spec T h f, lft_spec T h' (rs hW f), ev_res hW T h h' f]
 
 /- English proof (translation)
-Introduce `O _ X q W W' hW d t u hu P P' hPP hP hP' r x c hc`. Take `⟨f, hf, rfl, hz⟩` from `hc`. Establish `hF` using `GlobalTheory.CompanionTheory.DPFil.isFil_sFil P'`. Establish `hP'W : ∀ T, P' T → InU W T` using `fun T h => hP T (hPP T h)`. Use `⟨(resU (GF q r) hPP).pullC r f, ?_, rfl, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(resU (GF q r) hPP).d_pullC r f` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Establish `hf' : CH.d (P.ι ⋙ GF q r) r f = 0` using `hf`. Rewrite using `[hf', map_zero]`. Introduce `s`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hz (s ⋙ ObjectProperty.ιOfLE hPP)).trans ?_` and prove the remaining obligations. Use `Ideal.Quotient.eq.2 ?_` and prove the remaining obligations. Establish `hdiff : ∀ I : Idx r d, wz (Φ` using `sP P') (fun i T => u i T.obj) I.1 s * ((show (sP P').A.obj (s.obj (Fin.last r)) from lft W (s.obj (Fin.last r)).obj (x I)) - (show (sP P').A.obj (s.obj (Fin.last r)) from lft W' (s.obj (Fin.last r)).obj (rs hW (x I)))) ∈ (sFil P' ((r : ℤ) + 1)).S (s.obj (Fin.last r)) := by`. Introduce `I`. Establish `hw` using `wz_mem hF (fun i T => u i T.obj) (fun i {T T'} φ => lift_cocycle_mem hu hP'W i φ) I.1 s`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hδ : (show (sP P').A.obj (s.obj (Fin.last r)) from lft W (s.obj (Fin.last r)).obj (x I)) - (show (sP P').A.obj (s.obj (Fin.last r)) from lft W' (s.obj (Fin.last r)).obj (rs hW (x I))) ∈ (sFil P' ((1 : ℕ) : ℤ)).S (s.obj (Fin.last r))`. Establish `e : (sFil P' ((1 : ℕ) : ℤ)).S (s.obj (Fin.last r)) = (sP P').J.S (s.obj (Fin.last r))` using `hF.one _`. Rewrite using `[e]`. Conclude with `lft_res_sub_mem hW _ (hP'W _ (s.obj (Fin.last r)).property) (hP' _ (s.obj (Fin.last r)).property) (x I)`. Use `hF.mul r 1 _ hw hδ` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hsum` using `Ideal.sum_mem _ (t := Finset.univ) (fun I _ => hdiff I)`. Simplify using `only [mul_sub, Finset.sum_sub_distrib] at hsum`. Conclude with `hsum`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stRes : StRes := by
   intro O _ X q W W' hW d t u hu P P' hPP hP hP' r x c hc

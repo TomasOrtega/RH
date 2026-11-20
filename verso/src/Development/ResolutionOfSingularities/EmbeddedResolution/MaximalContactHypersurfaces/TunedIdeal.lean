@@ -12,28 +12,28 @@ theorem tuningWeight_eq_sum (m : ℕ) (c : ℕ → ℕ) :
     tuningWeight m c = ∑ j ∈ Finset.range m, (m - j) * c j := rfl
 
 /- English proof (translation)
-Simplify using `[tuningWeight, Nat.mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tuningWeight_fun_add (m : ℕ) (c d : ℕ → ℕ) :
     tuningWeight m (fun j => c j + d j) = tuningWeight m c + tuningWeight m d := by
   simp [tuningWeight, Nat.mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-The claim follows from `tuningWeight_fun_add m c d`.
+A detailed English derivation is pending.
 -/
 theorem tuningWeight_add (m : ℕ) (c d : ℕ → ℕ) :
     tuningWeight m (c + d) = tuningWeight m c + tuningWeight m d :=
   tuningWeight_fun_add m c d
 
 /- English proof (translation)
-Simplify using `[tuningWeight, Finset.mul_sum, Nat.mul_left_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tuningWeight_mul_left (m n : ℕ) (c : ℕ → ℕ) :
     tuningWeight m (fun j => n * c j) = n * tuningWeight m c := by
   simp [tuningWeight, Finset.mul_sum, Nat.mul_left_comm]
 
 /- English proof (translation)
-Establish `: (n • c) = fun j => n * c j`. Use function extensionality and compare the values at `j`. Simplify using `[Pi.smul_apply, smul_eq_mul]`. Rewrite using `[this, tuningWeight_mul_left]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tuningWeight_nsmul (m n : ℕ) (c : ℕ → ℕ) :
     tuningWeight m (n • c) = n * tuningWeight m c := by
@@ -43,9 +43,9 @@ theorem tuningWeight_nsmul (m n : ℕ) (c : ℕ → ℕ) :
   rw [this, tuningWeight_mul_left]
 
 /- English proof (translation)
-Rewrite using `[tuningWeight_eq_sum, Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Introduce `hni`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd hi hni`.
+A detailed English derivation is pending.
 -/
 theorem tuningWeight_single (m i : ℕ) (hi : i ∈ Finset.range m) :
     tuningWeight m (Pi.single i 1) = m - i := by
@@ -57,7 +57,7 @@ theorem tuningWeight_single (m i : ℕ) (hi : i ∈ Finset.range m) :
     exact absurd hi hni
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[List.range_succ, List.map_append, List.prod_append, ih, Finset.prod_range_succ]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem listProd_map_range_eq_prod {M : Type*} [CommMonoid M] (f : ℕ → M) (m : ℕ) :
     (List.map f (List.range m)).prod = ∏ j ∈ Finset.range m, f j := by
@@ -81,14 +81,14 @@ theorem tuningMonomial_eq_prod (J : Ideal S) (m : ℕ) (c : ℕ → ℕ) :
     tuningMonomial k J m c = ∏ j ∈ Finset.range m, derivIdealIterate k j J ^ c j := rfl
 
 /- English proof (translation)
-Simplify using `[tuningMonomial_eq_prod, Ideal.one_eq_top]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tuningMonomial_zero (J : Ideal S) (m : ℕ) :
     tuningMonomial k J m (fun _ => 0) = ⊤ := by
   simp [tuningMonomial_eq_prod, Ideal.one_eq_top]
 
 /- English proof (translation)
-Rewrite using `[tuningMonomial_eq_prod, tuningMonomial_eq_prod, tuningMonomial_eq_prod, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun j _ => (pow_add _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tuningMonomial_mul_fun_add (J : Ideal S) (m : ℕ) (c d : ℕ → ℕ) :
     tuningMonomial k J m c * tuningMonomial k J m d = tuningMonomial k J m (fun j => c j + d j) := by
@@ -96,14 +96,14 @@ theorem tuningMonomial_mul_fun_add (J : Ideal S) (m : ℕ) (c d : ℕ → ℕ) :
   exact Finset.prod_congr rfl fun j _ => (pow_add _ _ _).symm
 
 /- English proof (translation)
-The claim follows from `tuningMonomial_mul_fun_add k J m c d`.
+A detailed English derivation is pending.
 -/
 theorem tuningMonomial_mul (J : Ideal S) (m : ℕ) (c d : ℕ → ℕ) :
     tuningMonomial k J m c * tuningMonomial k J m d = tuningMonomial k J m (c + d) :=
   tuningMonomial_mul_fun_add k J m c d
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[Finset.prod_range_succ, mul_pow, ih, Finset.prod_range_succ, ← pow_mul, Nat.mul_comm (c m) n]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem prod_derivIdealIterate_pow_pow (J : Ideal S) (m n : ℕ) (c : ℕ → ℕ) :
     (∏ j ∈ Finset.range m, derivIdealIterate k j J ^ c j) ^ n
@@ -115,7 +115,7 @@ private theorem prod_derivIdealIterate_pow_pow (J : Ideal S) (m n : ℕ) (c : �
         Nat.mul_comm (c m) n]
 
 /- English proof (translation)
-Rewrite using `[tuningMonomial_eq_prod, tuningMonomial_eq_prod]`. Conclude with `prod_derivIdealIterate_pow_pow k J m n c`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tuningMonomial_pow_fun_mul (J : Ideal S) (m n : ℕ) (c : ℕ → ℕ) :
     tuningMonomial k J m c ^ n = tuningMonomial k J m (fun j => n * c j) := by
@@ -123,7 +123,7 @@ theorem tuningMonomial_pow_fun_mul (J : Ideal S) (m n : ℕ) (c : ℕ → ℕ) :
   exact prod_derivIdealIterate_pow_pow k J m n c
 
 /- English proof (translation)
-Establish `h : (n • c) = fun j => n * c j`. Use function extensionality and compare the values at `j`. Simplify using `[Pi.smul_apply, smul_eq_mul]`. Rewrite using `[h, tuningMonomial_pow_fun_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tuningMonomial_pow (J : Ideal S) (m n : ℕ) (c : ℕ → ℕ) :
     tuningMonomial k J m c ^ n = tuningMonomial k J m (n • c) := by
@@ -133,9 +133,9 @@ theorem tuningMonomial_pow (J : Ideal S) (m n : ℕ) (c : ℕ → ℕ) :
   rw [h, tuningMonomial_pow_fun_mul]
 
 /- English proof (translation)
-Rewrite using `[tuningMonomial_eq_prod, Finset.prod_eq_single i]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`. Introduce `hni`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd hi hni`.
+A detailed English derivation is pending.
 -/
 theorem tuningMonomial_single (J : Ideal S) (m i : ℕ) (hi : i ∈ Finset.range m) :
     tuningMonomial k J m (Pi.single i 1) = derivIdealIterate k i J := by
@@ -156,14 +156,14 @@ theorem tunedIdeal_eq_iSup (J : Ideal S) (m s : ℕ) :
     tunedIdeal k J m s = ⨆ c : ℕ → ℕ, ⨆ _ : s ≤ tuningWeight m c, tuningMonomial k J m c := rfl
 
 /- English proof (translation)
-The claim follows from `le_iSup_of_le c (le_iSup_of_le hc le_rfl)`.
+A detailed English derivation is pending.
 -/
 theorem tuningMonomial_le_tunedIdeal (J : Ideal S) (m s : ℕ) (c : ℕ → ℕ)
     (hc : s ≤ tuningWeight m c) : tuningMonomial k J m c ≤ tunedIdeal k J m s :=
   le_iSup_of_le c (le_iSup_of_le hc le_rfl)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h c hc`. Conclude with `le_trans (tuningMonomial_le_tunedIdeal k J m s c hc) h`. Introduce `h`. Conclude with `iSup_le fun c => iSup_le fun hc => h c hc`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tunedIdeal_le_iff (J : Ideal S) (m s : ℕ) (K : Ideal S) :
     tunedIdeal k J m s ≤ K ↔ ∀ c : ℕ → ℕ, s ≤ tuningWeight m c → tuningMonomial k J m c ≤ K := by
@@ -174,7 +174,7 @@ theorem tunedIdeal_le_iff (J : Ideal S) (m s : ℕ) (K : Ideal S) :
     exact iSup_le fun c => iSup_le fun hc => h c hc
 
 /- English proof (translation)
-Use `eq_top_iff.mpr ?_` and prove the remaining obligations. Rewrite using `[← tuningMonomial_zero k J m]`. Conclude with `tuningMonomial_le_tunedIdeal k J m 0 (fun _ => 0) (Nat.zero_le _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tunedIdeal_zero (J : Ideal S) (m : ℕ) : tunedIdeal k J m 0 = ⊤ := by
   refine eq_top_iff.mpr ?_
@@ -182,7 +182,7 @@ theorem tunedIdeal_zero (J : Ideal S) (m : ℕ) : tunedIdeal k J m 0 = ⊤ := by
   exact tuningMonomial_le_tunedIdeal k J m 0 (fun _ => 0) (Nat.zero_le _)
 
 /- English proof (translation)
-Rewrite using `[tunedIdeal_le_iff]`. Introduce `c hc`. Conclude with `tuningMonomial_le_tunedIdeal k J m s c (le_trans h hc)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tunedIdeal_antitone (J : Ideal S) (m : ℕ) {s t : ℕ} (h : s ≤ t) :
     tunedIdeal k J m t ≤ tunedIdeal k J m s := by
@@ -191,11 +191,11 @@ theorem tunedIdeal_antitone (J : Ideal S) (m : ℕ) {s t : ℕ} (h : s ≤ t) :
   exact tuningMonomial_le_tunedIdeal k J m s c (le_trans h hc)
 
 /- English proof (translation)
-Rewrite using `[tunedIdeal_eq_iSup, tunedIdeal_eq_iSup, Submodule.iSup_mul]`. Use `iSup_le fun c => ?_` and prove the remaining obligations. Rewrite using `[Submodule.iSup_mul]`. Use `iSup_le fun hc => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mul_iSup]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `iSup_le fun d => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mul_iSup]`. Use `iSup_le fun hd => ?_` and prove the remaining obligations. Rewrite using `[tuningMonomial_mul_fun_add]`. Use `tuningMonomial_le_tunedIdeal k J m _ _ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[tuningWeight_fun_add]`. Conclude with `Nat.add_le_add hc hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tunedIdeal_mul_le (J : Ideal S) (m s t : ℕ) :
     tunedIdeal k J m s * tunedIdeal k J m t ≤ tunedIdeal k J m (s + t) := by
@@ -213,7 +213,7 @@ theorem tunedIdeal_mul_le (J : Ideal S) (m s t : ℕ) :
   exact Nat.add_le_add hc hd
 
 /- English proof (translation)
-Use `Ideal.mul_le.mpr ?_` and prove the remaining obligations. Introduce `b hb z hz`. Break down `Submodule.mem_sup.mp hz with ⟨x, hx, y, hy, rfl⟩` into its components or cases. Rewrite using `[mul_add]`. Conclude with `Submodule.add_mem T (hX (Ideal.mul_mem_mul hb hx)) (hY (Ideal.mul_mem_mul hb hy))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mul_sup_le {R : Type*} [CommRing R] (B X Y T : Ideal R)
     (hX : B * X ≤ T) (hY : B * Y ≤ T) : B * (X ⊔ Y) ≤ T := by
@@ -224,7 +224,7 @@ private theorem mul_sup_le {R : Type*} [CommRing R] (B X Y T : Ideal R)
   exact Submodule.add_mem T (hX (Ideal.mul_mem_mul hb hx)) (hY (Ideal.mul_mem_mul hb hy))
 
 /- English proof (translation)
-Rewrite using `[Ideal.one_eq_top]`. Conclude with `derivIdeal_top A`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem derivIdeal_one {A : Type*} [CommRing A] {R : Type*} [CommRing R]
     [Algebra A R] : derivIdeal A (1 : Ideal R) = 1 := by
@@ -232,9 +232,9 @@ private theorem derivIdeal_one {A : Type*} [CommRing A] {R : Type*} [CommRing R]
   exact derivIdeal_top A
 
 /- English proof (translation)
-Establish `hmem : i ∈ Finset.range m` using `Finset.mem_range.mpr hi`. Establish `keyc : tuningWeight m c = (m - i) * c i + ∑ j ∈ (Finset.range m).erase i, (m - j) * c j`. Rewrite using `[tuningWeight_eq_sum]`. Conclude with `(Finset.add_sum_erase (Finset.range m) (fun j => (m - j) * c j) hmem).symm`. Establish `keyd : tuningWeight m d = (m - i) * d i + ∑ j ∈ (Finset.range m).erase i, (m - j) * d j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tuningWeight_eq_sum]`. Conclude with `(Finset.add_sum_erase (Finset.range m) (fun j => (m - j) * d j) hmem).symm`. Establish `h3 : ∑ j ∈ (Finset.range m).erase i, (m - j) * d j = ∑ j ∈ (Finset.range m).erase i, (m - j) * c j` using `Finset.sum_congr rfl fun j hj => by rw [hne j (Finset.ne_of_mem_erase hj)]`. Rewrite using `[keyc, keyd, h3, ← hdi]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem tuningWeight_eq_add_sub_of_succ (m i : ℕ) (hi : i < m) (c d : ℕ → ℕ)
     (hne : ∀ j, j ≠ i → d j = c j) (hdi : d i + 1 = c i) :
@@ -255,9 +255,9 @@ private theorem tuningWeight_eq_add_sub_of_succ (m i : ℕ) (hi : i < m) (c d : 
   ring
 
 /- English proof (translation)
-Establish `hmem : i ∈ Finset.range m` using `Finset.mem_range.mpr hi`. Establish `keyd : tuningMonomial A J m d = derivIdealIterate A i J ^ d i * ∏ j ∈ (Finset.range m).erase i, derivIdealIterate A j J ^ d j`. Rewrite using `[tuningMonomial_eq_prod]`. Conclude with `(Finset.mul_prod_erase (Finset.range m) (fun j => derivIdealIterate A j J ^ d j) hmem).symm`. Establish `keyc : tuningMonomial A J m c = derivIdealIterate A i J ^ c i * ∏ j ∈ (Finset.range m).erase i, derivIdealIterate A j J ^ c j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tuningMonomial_eq_prod]`. Conclude with `(Finset.mul_prod_erase (Finset.range m) (fun j => derivIdealIterate A j J ^ c j) hmem).symm`. Establish `h3 : ∏ j ∈ (Finset.range m).erase i, derivIdealIterate A j J ^ d j = ∏ j ∈ (Finset.range m).erase i, derivIdealIterate A j J ^ c j` using `Finset.prod_congr rfl fun j hj => by rw [hne j (Finset.ne_of_mem_erase hj)]`. Rewrite using `[keyd, keyc, h3, hdi, pow_succ]`. Simplify using `only [mul_comm, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem tuningMonomial_eq_derivIdealIterate_mul_of_succ {A : Type*} [CommRing A] {R : Type*} [CommRing R]
     [Algebra A R] (J : Ideal R) (m i : ℕ) (hi : i < m) (c d : ℕ → ℕ)
@@ -281,9 +281,9 @@ private theorem tuningMonomial_eq_derivIdealIterate_mul_of_succ {A : Type*} [Com
   simp only [mul_comm, mul_assoc]
 
 /- English proof (translation)
-Establish `hw : tuningWeight m c = tuningWeight m d + (m - i)` using `tuningWeight_eq_add_sub_of_succ m i hi c d hne hdi`. Break down `Nat.lt_or_ge (i + 1) m with hlt | hge` into its components or cases. Establish `hmono : tuningMonomial A J m (fun j => if j = i + 1 then d j + 1 else d j) = derivIdealIterate A (i + 1) J * tuningMonomial A J m d` using `tuningMonomial_eq_derivIdealIterate_mul_of_succ J m (i + 1) hlt d (fun j => if j = i + 1 then d j + 1 else d j) (fun j hj => by simp [hj]) (by simp)`. Establish `hw' : tuningWeight m (fun j => if j = i + 1 then d j + 1 else d j) = tuningWeight m d + (m - (i + 1))` using `tuningWeight_eq_add_sub_of_succ m (i + 1) hlt (fun j => if j = i + 1 then d j + 1 else d j) d (fun j hj => by simp [hj]) (by simp)`. Use `le_trans (le_of_eq hmono.symm) (tuningMonomial_le_tunedIdeal A J m s (fun j => if j = i + 1 then d j + 1 else d j) ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Establish `hle : derivIdealIterate A (i + 1) J * tuningMonomial A J m d ≤ tuningMonomial A J m d` using `Ideal.mul_le.mpr fun r _ t ht => Ideal.mul_mem_left _ r ht`. Use `le_trans hle (tuningMonomial_le_tunedIdeal A J m s d ?_)` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem derivIdealIterate_succ_mul_tuningMonomial_le {A : Type*} [CommRing A] {R : Type*}
     [CommRing R] [Algebra A R] (J : Ideal R) (m s i : ℕ) (hi : i < m) (c d : ℕ → ℕ)
@@ -309,23 +309,21 @@ private theorem derivIdealIterate_succ_mul_tuningMonomial_le {A : Type*} [CommRi
     omega
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `B h1 _`. Rewrite using `[Finset.range_zero, Finset.prod_empty, derivIdeal_one, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[Finset.range_zero, Finset.prod_empty, mul_one]`. Conclude with `h1`. Consider the case `succ n ih`. Introduce `B h1 h2`. Rewrite `h1` using `[Finset.prod_range_succ]`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_range_succ]`. Use `le_trans (Ideal.mul_mono le_rfl (derivIdeal_mul_le A _ _)) ?_` and prove the remaining obligations. Use `mul_sup_le B _ _ T ?_ ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos (c n) with h0 | hpos` into its components or cases. Rewrite `h1` using `[h0, pow_zero, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, pow_zero, derivIdeal_one, mul_one]`. Conclude with `h1`. Take `⟨e, he⟩ : ∃ e, c n = e + 1` from `⟨c n - 1, by omega⟩`. Establish `hq1 : (∏ j ∈ Finset.range n, derivIdealIterate A j J ^ (if j = n then e else c j)) = ∏ j ∈ Finset.range n, derivIdealIterate A j J ^ c j` using `Finset.prod_congr rfl fun j hj => by`. Rewrite using `[if_neg (Nat.ne_of_lt (Finset.mem_range.mp hj))]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq2 : derivIdealIterate A n J ^ (if n = n then e else c n) = derivIdealIterate A n J ^ e` using `by simp`. Establish `hprod : (∏ j ∈ Finset.range (n + 1), derivIdealIterate A j J ^ (if j = n then e else c j)) = (∏ j ∈ Finset.range n, derivIdealIterate A j J ^ c j) * derivIdealIterate A n J ^ e`. Rewrite using `[Finset.prod_range_succ, hq1, hq2]`. Establish `hd : B * (derivIdealIterate A (n + 1) J * ((∏ j ∈ Finset.range n, derivIdealIterate A j J ^ c j) * derivIdealIterate A n J ^ e)) ≤ T`. Rewrite using `[← hprod]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 n (Nat.lt_succ_self n) (fun j => if j = n then e else c j) (fun j hj => by simp [hj]) (by simp [he])`. Establish `hstep : derivIdeal A (derivIdealIterate A n J ^ c n) ≤ derivIdealIterate A n J ^ e * derivIdealIterate A (n + 1) J`. Rewrite using `[he, derivIdealIterate_succ]`. Conclude with `derivIdeal_pow_succ_le A (derivIdealIterate A n J) e`. Use `le_trans (Ideal.mul_mono le_rfl (Ideal.mul_mono le_rfl hstep)) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `le_trans (le_of_eq ?_) hd` and prove the remaining obligations. Simplify using `only [mul_comm, mul_left_comm, mul_assoc]`. Establish `heq : B * (derivIdealIterate A n J ^ c n * derivIdeal A (∏ j ∈ Finset.range n, derivIdealIterate A j J ^ c j)) = (B * derivIdealIterate A n J ^ c n) * derivIdeal A (∏ j ∈ Finset.range n, derivIdealIterate A j J ^ c j)` using `(mul_assoc _ _ _).symm`. Rewrite using `[heq]`. Use `ih (B * derivIdealIterate A n J ^ c n) ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `le_trans (le_of_eq ?_) h1` and prove the remaining obligations. Simplify using `only [mul_comm, mul_assoc]`. Introduce `i hi d hne hdi`. Establish `hd` using `h2 i (Nat.lt_succ_of_lt hi) d hne hdi`. Rewrite `hd` using `[Finset.prod_range_succ, hne n (by omega : n ≠ i)]`.
-
-Use `le_trans (le_of_eq ?_) hd` and prove the remaining obligations. Simplify using `only [mul_comm, mul_left_comm, mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mul_derivIdeal_prod_le {A : Type*} [CommRing A] {R : Type*} [CommRing R]
     [Algebra A R] (J T : Ideal R) (c : ℕ → ℕ) :
@@ -393,11 +391,11 @@ private theorem mul_derivIdeal_prod_le {A : Type*} [CommRing A] {R : Type*} [Com
           simp only [mul_comm, mul_left_comm, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[tunedIdeal_eq_iSup k J m (s + 1)]`. Use `(derivIdeal_iSup_le k _).trans (iSup_le ?_)` and prove the remaining obligations. Introduce `c`. Use `(derivIdeal_iSup_le k _).trans (iSup_le ?_)` and prove the remaining obligations. Introduce `hc`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[tuningMonomial_eq_prod]`. Use `le_trans (le_of_eq (one_mul _).symm) ?_` and prove the remaining obligations. Use `mul_derivIdeal_prod_le J (tunedIdeal k J m s) c m 1 ?_ ?_` and prove the remaining obligations. Rewrite using `[one_mul]`. Conclude with `tuningMonomial_le_tunedIdeal k J m s c (by omega)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi d hne hdi`. Rewrite using `[one_mul]`. Conclude with `derivIdealIterate_succ_mul_tuningMonomial_le J m s i hi c d hne hdi hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivIdeal_tunedIdeal_succ_le (J : Ideal S) (m s : ℕ) :
     derivIdeal k (tunedIdeal k J m (s + 1)) ≤ tunedIdeal k J m s := by
@@ -416,11 +414,11 @@ theorem derivIdeal_tunedIdeal_succ_le (J : Ideal S) (m s : ℕ) :
     exact derivIdealIterate_succ_mul_tuningMonomial_le J m s i hi c d hne hdi hc
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Simplify using `only [derivIdealIterate_zero, Nat.sub_zero]`. Conclude with `le_rfl`. Consider the case `succ j ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[derivIdealIterate_succ]`. Use `le_trans (derivIdeal_mono k ih) ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos (s - j) with h | h` into its components or cases. Establish `hsj : s - (j + 1) = 0` using `by omega`. Rewrite using `[hsj, tunedIdeal_zero]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `le_top`. Take `⟨t, ht⟩ : ∃ t, s - j = t + 1` from `⟨s - j - 1, by omega⟩`. Establish `hsj : s - (j + 1) = t` using `by omega`. Rewrite using `[ht, hsj]`. Conclude with `derivIdeal_tunedIdeal_succ_le k J m t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivIdealIterate_tunedIdeal_le (J : Ideal S) (m s j : ℕ) :
     derivIdealIterate k j (tunedIdeal k J m s) ≤ tunedIdeal k J m (s - j) := by
@@ -441,11 +439,11 @@ theorem derivIdealIterate_tunedIdeal_le (J : Ideal S) (m s j : ℕ) :
         exact derivIdeal_tunedIdeal_succ_le k J m t
 
 /- English proof (translation)
-Establish `hss : s - (s - 1) = 1` using `by omega`. Establish `hsum : 1 + (s - 1) = s` using `by omega`. Establish `h1 : derivIdealIterate k (s - 1) (tunedIdeal k J m s) ≤ tunedIdeal k J m 1`. Establish `h` using `derivIdealIterate_tunedIdeal_le k J m s (s - 1)`. Rewrite `h` using `[hss]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : derivIdeal k (tunedIdeal k J m s) ≤ tunedIdeal k J m (s - 1)`. Establish `h` using `derivIdealIterate_tunedIdeal_le k J m s 1`. Rewrite `h` using `[derivIdealIterate_one]`. Then use the resulting hypothesis. Use `le_trans (Ideal.mul_mono h1 h2) ?_` and prove the remaining obligations. Establish `h3` using `tunedIdeal_mul_le k J m 1 (s - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h3` using `[hsum]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem derivIdealIterate_mul_derivIdeal_tunedIdeal_le (J : Ideal S) (m s : ℕ) (hs : 1 ≤ s) :
     derivIdealIterate k (s - 1) (tunedIdeal k J m s) * derivIdeal k (tunedIdeal k J m s) ≤
@@ -463,9 +461,7 @@ theorem derivIdealIterate_mul_derivIdeal_tunedIdeal_le (J : Ideal S) (m s : ℕ)
   rwa [hsum] at h3
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `hz : tuningWeight m c = 0`. Rewrite using `[tuningWeight_eq_sum]`. Conclude with `Finset.sum_eq_zero fun j hj => by rw [hcon j hj, Nat.mul_zero]`.
-
-Rewrite `hc` using `[hz]`. Conclude with `Nat.not_succ_le_zero 0 hc`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_ne_zero_of_one_le_tuningWeight {m : ℕ} {c : ℕ → ℕ}
     (hc : 1 ≤ tuningWeight m c) : ∃ j ∈ Finset.range m, c j ≠ 0 := by
@@ -478,9 +474,9 @@ private theorem exists_ne_zero_of_one_le_tuningWeight {m : ℕ} {c : ℕ → ℕ
   exact Nat.not_succ_le_zero 0 hc
 
 /- English proof (translation)
-Rewrite using `[tunedIdeal_le_iff]`. Introduce `c hc`. Take `⟨j, hj, hcj⟩` from `exists_ne_zero_of_one_le_tuningWeight hc`. Establish `hjm : j ≤ m - 1` using `Nat.le_sub_one_of_lt (Finset.mem_range.mp hj)`. Use `le_trans ?_ (derivIdealIterate_le_of_le k hjm J)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsplit : derivIdealIterate k j J ^ c j * ∏ x ∈ (Finset.range m).erase j, derivIdealIterate k x J ^ c x = ∏ x ∈ Finset.range m, derivIdealIterate k x J ^ c x` using `Finset.mul_prod_erase (Finset.range m) (fun x => derivIdealIterate k x J ^ c x) hj`. Rewrite using `[tuningMonomial_eq_prod, ← hsplit]`. Conclude with `le_trans Ideal.mul_le_left (Ideal.pow_le_self hcj)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tunedIdeal_one_le_derivIdealIterate (J : Ideal S) (m : ℕ) (_hm : 1 ≤ m) :
     tunedIdeal k J m 1 ≤ derivIdealIterate k (m - 1) J := by
@@ -497,9 +493,9 @@ theorem tunedIdeal_one_le_derivIdealIterate (J : Ideal S) (m : ℕ) (_hm : 1 ≤
   exact le_trans Ideal.mul_le_left (Ideal.pow_le_self hcj)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h c hc`. Conclude with `le_trans (Ideal.mul_mono le_rfl (tuningMonomial_le_tunedIdeal k J m s c hc)) h`. Introduce `h`. Rewrite using `[tunedIdeal_eq_iSup, Submodule.mul_iSup]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup_le fun c => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mul_iSup]`. Conclude with `iSup_le fun hc => h c hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_tunedIdeal_le_iff (I J : Ideal S) (m s : ℕ) (K : Ideal S) :
     I * tunedIdeal k J m s ≤ K ↔
@@ -514,11 +510,11 @@ theorem mul_tunedIdeal_le_iff (I J : Ideal S) (m s : ℕ) (K : Ideal S) :
     exact iSup_le fun hc => h c hc
 
 /- English proof (translation)
-Establish `hmem : (m - 1) ∈ Finset.range m` using `Finset.mem_range.mpr (by omega)`. Establish `hspan : Ideal.span {x ^ n} ≤ tuningMonomial k J m (n • Pi.single (m - 1) 1)`. Rewrite using `[← tuningMonomial_pow, tuningMonomial_single k J m (m - 1) hmem, Ideal.span_singleton_le_iff_mem]`. Conclude with `Ideal.pow_mem_pow hx n`. Use `le_trans (Ideal.mul_mono hspan le_rfl) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tuningMonomial_mul]`. Use `tuningMonomial_le_tunedIdeal k J m _ _ ?_` and prove the remaining obligations. Rewrite using `[tuningWeight_add, tuningWeight_nsmul, tuningWeight_single m (m - 1) hmem]`. Establish `hmm : m - (m - 1) = 1` using `by omega`. Rewrite using `[hmm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem span_pow_mul_tuningMonomial_le (J : Ideal S) (m : ℕ) (hm : 1 ≤ m) {x : S}
     (hx : x ∈ derivIdealIterate k (m - 1) J) (n : ℕ) (c : ℕ → ℕ) :
@@ -537,7 +533,7 @@ theorem span_pow_mul_tuningMonomial_le (J : Ideal S) (m : ℕ) (hm : 1 ≤ m) {x
   omega
 
 /- English proof (translation)
-Rewrite using `[mul_tunedIdeal_le_iff]`. Introduce `c hc`. Use `le_trans (span_pow_mul_tuningMonomial_le k J m hm hx n c) ?_` and prove the remaining obligations. Conclude with `tunedIdeal_antitone k J m (Nat.add_le_add_right hc n)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem span_pow_mul_tunedIdeal_le (J : Ideal S) (m : ℕ) (hm : 1 ≤ m) {x : S}
     (hx : x ∈ derivIdealIterate k (m - 1) J) (n t : ℕ) :
@@ -552,9 +548,9 @@ section
 variable [Algebra ℚ S]
 
 /- English proof (translation)
-Establish `hpos : (0 : ℚ) < (n : ℚ) + 1` using `by positivity`. Establish `hq : ((n : ℚ) + 1) ≠ 0` using `hpos.ne'`. Establish `hmap : algebraMap ℚ A ((n : ℚ) + 1) = (n : A) + 1`. Rewrite using `[map_add, map_one, map_natCast]`. Establish `h1 : algebraMap ℚ A ((n : ℚ) + 1)⁻¹ * (((n : A) + 1) * y) ∈ I` using `Ideal.mul_mem_left I _ h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hmap, ← mul_assoc, ← map_mul, inv_mul_cancel₀ hq, map_one, one_mul]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_of_natCast_add_one_mul_mem {A : Type*} [CommRing A] [Algebra ℚ A] (n : ℕ)
     (I : Ideal A) (y : A) (h : ((n : A) + 1) * y ∈ I) : y ∈ I := by
@@ -568,7 +564,7 @@ private theorem mem_of_natCast_add_one_mul_mem {A : Type*} [CommRing A] [Algebra
   exact h1
 
 /- English proof (translation)
-Establish `hg' : g ∈ tunedIdeal R J m (s - n)` using `derivIdealIterate_tunedIdeal_le R J m s n hg`. Conclude with `span_pow_mul_tunedIdeal_le R J m hm hx p (s - n) (Ideal.mul_mem_mul (Ideal.mem_span_singleton_self (x ^ p)) hg')`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem pow_mul_mem_tunedIdeal (R : Type*) [CommRing R] {A : Type*} [CommRing A]
     [Algebra R A] (J : Ideal A) (m : ℕ) (hm : 1 ≤ m) {x : A}
@@ -580,17 +576,17 @@ private theorem pow_mul_mem_tunedIdeal (R : Type*) [CommRing R] {A : Type*} [Com
     (Ideal.mul_mem_mul (Ideal.mem_span_singleton_self (x ^ p)) hg')
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `n hn g hg`. Establish `h1 : x ^ n * g ∈ tunedIdeal R J m ((s - n) + n)` using `pow_mul_mem_tunedIdeal R J m hm hx s n n hg`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : s + 1 ≤ (s - n) + n` using `by omega`. Conclude with `le_derivIdeal R _ (tunedIdeal_antitone R J m h2 h1)`. Consider the case `succ d ih`. Introduce `n hn g hg`. Establish `h1 : x ^ (n + 1) * g ∈ tunedIdeal R J m ((s - n) + (n + 1))` using `pow_mul_mem_tunedIdeal R J m hm hx s n (n + 1) hg`.
+Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : s + 1 ≤ (s - n) + (n + 1)` using `by omega`. Establish `h3 : x ^ (n + 1) * g ∈ tunedIdeal R J m (s + 1)` using `tunedIdeal_antitone R J m h2 h1`. Establish `h4 : δ (x ^ (n + 1) * g) ∈ derivIdeal R (tunedIdeal R J m (s + 1))` using `derivation_apply_mem_derivIdeal R (tunedIdeal R J m (s + 1)) δ h3`. Establish `h5 : δ g ∈ derivIdealIterate R (n + 1) (tunedIdeal R J m s)`. Rewrite using `[derivIdealIterate_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `derivation_apply_mem_derivIdeal R (derivIdealIterate R n (tunedIdeal R J m s)) δ hg`. Establish `h6 : x ^ (n + 1) * δ g ∈ derivIdeal R (tunedIdeal R J m (s + 1))` using `ih (n + 1) (by omega) (δ g) h5`. Establish `hd1 : δ (x ^ (n + 1)) = ((n : A) + 1) * x ^ n`. Establish `hpow` using `δ.leibniz_pow x (n + 1)`. Rewrite `hpow` using `[hδ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hpow`. Establish `hkey : ((n : A) + 1) * (x ^ n * g) = δ (x ^ (n + 1) * g) - x ^ (n + 1) * δ g`. Rewrite using `[Derivation.leibniz, hd1]`. Simplify using `only [smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mem_of_natCast_add_one_mul_mem n (derivIdeal R (tunedIdeal R J m (s + 1))) (x ^ n * g) ?_` and prove the remaining obligations. Rewrite using `[hkey]`. Conclude with `Submodule.sub_mem _ h4 h6`.
+A detailed English derivation is pending.
 -/
 private theorem pow_mul_mem_derivIdeal_tunedIdeal_succ (R : Type*) [CommRing R] {A : Type*}
     [CommRing A] [Algebra R A] [Algebra ℚ A] (J : Ideal A) (m : ℕ) (hm : 1 ≤ m) {x : A}
@@ -634,7 +630,7 @@ private theorem pow_mul_mem_derivIdeal_tunedIdeal_succ (R : Type*) [CommRing R] 
       exact Submodule.sub_mem _ h4 h6
 
 /- English proof (translation)
-Introduce `g hg`. Establish `h` using `pow_mul_mem_derivIdeal_tunedIdeal_succ k J m hm hx δ hδ s (s + 1) 0 (by omega) g (by rw [derivIdealIterate_zero]; exact hg)`. Rewrite `h` using `[pow_zero, one_mul]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem tunedIdeal_le_derivIdeal_tunedIdeal_succ (J : Ideal S) (m : ℕ) (hm : 1 ≤ m) {x : S}
     (hx : x ∈ derivIdealIterate k (m - 1) J) (δ : Derivation k S S) (hδ : δ x = 1) (s : ℕ) :

@@ -32,16 +32,16 @@ def RestCloudMaps : Prop :=
             (g ∘ₗ L a') ∈ CCL' R lam0 t (c₂ - 2 * TT.card * ccl) e)
 
 /- English proof (translation)
-Introduce `O _ _ _ σ ρ z1 z2 h1 h2 N B` and use `KP.lemmaSMat σ ρ z1 z2 h1 h2 N B`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lemmaSMat : LemmaSMat := fun O _ _ _ σ ρ z1 z2 h1 h2 N B => KP.lemmaSMat σ ρ z1 z2 h1 h2 N B
 
 /- English proof (translation)
-Introduce `p n' R mm hmm TT a ccl aw bw lam0 A B hBase hDom hzero hAB h8 t c₂ D₁ κ₁ κ₂ hD hDc hNc hκ0 hκ1 hκ2 hρ1 hρ2 e he`. Take `⟨nb, io, U, L, ka, hnb, hka, h24, hiso, hmem⟩` from `hC p n' R mm hmm TT a ccl aw bw lam0 A B hBase hDom hzero hAB h8 e he`. Take `⟨hio, hU, hL⟩` from `hmem t c₂ hNc`. Take `⟨n1, hX1, f1⟩` from `hρ1 e he`. Take `⟨n2, hX2, f2⟩` from `hρ2 e he`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, hfac⟩` from `cloud_count R lemmaSMat hRet hBP hD3 _ _ lam0 (flattened_weight_dominant _ _ _) (flattened_weight_dominant _ _ _) e he t c₂ (c₂ - 2 * TT.card * ccl) (Nat.sub_le _ _) D₁ hD hDc nb (TT.card * ⌈kappaOneExponent p a (mm + 1)⌉₊) io U L ka hka h24 hiso hio hU hL n1 n2 f1 f2`. Use `⟨nb * r, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hnb]`. Use `push_cast`. Use `mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (2 * D₁ + ((TT.card * ⌈kappaOneExponent p a (mm + 1)⌉₊ : ℕ) : ℝ)) = 2 * D₁ + (TT.card : ℝ) * (⌈kappaOneExponent p a (mm + 1)⌉₊ : ℕ)` using `by push_cast; ring`. Rewrite using `[← this]`. Conclude with `hfac`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cloud_prop_of_maps_retraction_basis (hC : RestCloudMaps) (hRet : LatRetract) (hBP : BePerfect) (hD3 : DualHeightBasis) : CloudLowerBoundWeyl := by
   intro p n' R mm hmm TT a ccl aw bw lam0 A B hBase hDom hzero hAB h8 t c₂ D₁ κ₁ κ₂ hD hDc hNc hκ0 hκ1 hκ2 hρ1 hρ2 e he

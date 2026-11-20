@@ -14,7 +14,7 @@ open scoped ContDiff Matrix
 namespace GlobalTheory.GoodTop
 
 /- English proof (translation)
-Introduce `F _ σ X m E O H H₀ ι _ ρ hρ h1 c y hy`. Establish `hc : IsHoloChart c.e` using `c.holo`. Establish `key` using `GlobalTheory.T.sum_transgressionTopCoeffComplex_partitionOfUnity_eq_zero (fun i v => ρ i (c.e.symm v)) (fun v => H₀ (E.nonempty (under y)).choose (c.e.symm v) ()) (fun v => H (E.nonempty (under y)).choose (c.e.symm v) ()) (c.e y) (fun i => (contDiffAt_holoChart hc hy (hρ i y)).di …`. Simplify using `only [corrDens, corrTop]`. Rewrite using `[← Finset.mul_sum, ← Complex.re_sum, key]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

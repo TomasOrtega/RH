@@ -63,11 +63,11 @@ namespace GlobalTheory.BigTop.Fun.Close
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Unfold `cloud`. Use `split_ifs with h`. Simplify using `only [GlobalTheory.SignedHC.GridData.ofHCParam]`. Unfold `GlobalTheory.SignedHC.GridData.extend`. Use `split_ifs with h2`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h0, h1⟩` from `L.cloud_v ((Fintype.equivFin D.what₂.Tau).symm ⟨τ, h⟩) ⟨i - 2, h2⟩`. Use `⟨Int.floor_nonneg.mpr (by exact_mod_cast h0), ?_⟩` and prove the remaining obligations. Establish `hf` using `Int.floor_le ((D.hc ((Fintype.equivFin D.what₂.Tau).symm ⟨τ, h⟩)).v ⟨i - 2, h2⟩)`. Establish `hf' : (((⌊(D.hc ((Fintype.equivFin D.what₂.Tau).symm ⟨τ, h⟩)).v ⟨i - 2, h2⟩⌋ : ℤ) : ℚ) : ℝ) ≤ (((D.hc ((Fintype.equivFin D.what₂.Tau).symm ⟨τ, h⟩)).v ⟨i - 2, h2⟩ : ℚ) : ℝ)` using `by exact_mod_cast hf`. Move the coercions through the operations in `at hf' ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `⟨le_rfl, by simpa using L.Sc_pos.le⟩`. Conclude with `⟨le_rfl, by simpa using L.Sc_pos.le⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cloudIcc {D : D7} (L : SizeData₂ D) (τ i : ℕ) :
     0 ≤ cloud D τ i ∧ (cloud D τ i : ℝ) ≤ L.Sc := by
@@ -87,11 +87,11 @@ theorem cloudIcc {D : D7} (L : SizeData₂ D) (τ i : ℕ) :
   · exact ⟨le_rfl, by simpa using L.Sc_pos.le⟩
 
 /- English proof (translation)
-Establish `hL : O.Lc ≤ ⌊S⌋₊`. Unfold `FunData.Lc`. Use `Finset.sup_le fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.le_floor_iff h0]`. Take `⟨a0, a1⟩` from `hcl τ 2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b0, -⟩` from `hcl τ O.k`. Establish `h : ((O.cl τ 2 - O.cl τ O.k).toNat : ℤ) ≤ O.cl τ 2` using `by omega`. Establish `h' : (((O.cl τ 2 - O.cl τ O.k).toNat : ℤ) : ℝ) ≤ ((O.cl τ 2 : ℤ) : ℝ)` using `by exact_mod_cast h`. Move the coercions through the operations in `at h'`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem lcLeOfCloud {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {Df : DefSide Bs}
     (O : FunData K Df) (S : ℝ) (h0 : 0 ≤ S) (hcl : ∀ τ i, 0 ≤ O.cl τ i ∧ (O.cl τ i : ℝ) ≤ S) :
@@ -110,13 +110,11 @@ theorem lcLeOfCloud {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefB
     _ ≤ S := Nat.floor_le h0
 
 /- English proof (translation)
-Establish `hk` using `P.kS_le`. Establish `hk1 : (1 : ℝ) ≤ D.R.k`. Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 1 ≤ D.R.k)` after adjusting the coercions. Establish `hn : (1 : ℝ) ≤ D.R.n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Ranks.n`. Conclude with `(show 1 ≤ D.R.ord from D.R.ord_pos)` after adjusting the coercions. Establish `hx : 0 < L.sc.x` using `by linarith [L.sc.one_lt_alt]`. Establish `hb : 0 < L.sc.b` using `Real.exp_pos _`. Establish `hX : 1 ≤ L.sc.X'` using `Real.one_le_exp (Real.rpow_nonneg hx.le _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hw : L.sc.w'' D.R.n ≤ L.sc.b`. Unfold `Scale.w'' Scale.b' Scale.a`. Rewrite using `[div_le_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hS` using `L.Sc_pos`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem scLeB {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) : L.Sc ≤ L.sc.b := by
   have hk := P.kS_le
@@ -138,21 +136,19 @@ theorem scLeB {D : D7} {L : SizeData₂ D} (P : ParameterChoice' D L) : L.Sc ≤
   nlinarith
 
 /- English proof (translation)
-Use `⟨0, fun CF _ => ⟨1, one_pos, fun eps heps _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH hF _ => ?_⟩⟩⟩` and prove the remaining obligations. Introduce `_`. Use `⟨0, fun C _ => ?_⟩` and prove the remaining obligations. Establish `hW : PageWin Fm` using `hF.2.1`. Use `⟨max (Fm.x1 + 1) ((8 : ℝ) ^ (1 / eps)), fun x hx hx0 i p _ d _ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx1 : 1 < x` using `lt_trans Fm.one_lt_family_threshold hx`. Establish `hx0' : (0 : ℝ) < x` using `by linarith`. Establish `h8 : (8 : ℝ) ≤ x ^ (8 * eps)`. Establish `e1 : (8 : ℝ) = ((8 : ℝ) ^ (1 / eps)) ^ eps`. Rewrite using `[← Real.rpow_mul (by norm_num), one_div, inv_mul_cancel₀ heps.ne', Real.rpow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ((8 : ℝ) ^ (1 / eps)) ^ eps ≤ x ^ eps` using `Real.rpow_le_rpow (by positivity) (le_trans (le_max_right _ _) hx0) heps.le`. Establish `e3 : x ^ eps ≤ x ^ (8 * eps)` using `Real.rpow_le_rpow_of_exponent_le hx1.le (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨⟨hn, -⟩, ⟨-, hm⟩, -⟩` from `hW x hx i`. Establish `hδ : (Fm.L x i).sc.delta1 ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `Scale.delta1`. Conclude with `Real.rpow_le_one_of_one_le_of_nonpos (Fm.L x i).sc.one_lt_alt.le (by linarith [(Fm.L x i).sc.eps_pos])`. Establish `hδ0 : 0 ≤ (Fm.L x i).sc.delta1`. Unfold `Scale.delta1`. Conclude with `Real.rpow_nonneg (by linarith [(Fm.L x i).sc.one_lt_alt]) _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm4 : (((Fm.D x i).R.m : ℕ) : ℝ) ^ 4 ≤ (((Fm.D x i).R.f : ℕ) : ℝ)`. Establish `hs` using `Real.sq_sqrt (mul_nonneg hx0'.le hδ0)`. Establish `hs0` using `Real.sqrt_nonneg (x * (Fm.L x i).sc.delta1)`. Establish `hm0 : (0 : ℝ) ≤ ((Fm.D x i).R.m : ℝ)` using `by positivity`. Establish `hm2 : (((Fm.D x i).R.m : ℕ) : ℝ) ^ 2 ≤ 4 * x` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm4' : (((Fm.D x i).R.m : ℕ) : ℝ) ^ 4 ≤ 16 * x ^ 2` using `by nlinarith`. Establish `hpow : x ^ ((2 : ℝ) + 8 * eps) = x ^ 2 * x ^ (8 * eps)`. Rewrite using `[Real.rpow_add hx0', Real.rpow_two]`. Establish `hf : (((Fm.D x i).R.f : ℕ) : ℝ) = 2 * ((Fm.D x i).R.n : ℝ)`. Unfold `Ranks.f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hf]`. Establish `hx2 : 0 ≤ x ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
-
-Use `⟨⟨(Fm.D x i).R.two_le_m, (Fm.D x i).R.m_add_three_le_k, by exact_mod_cast hm4, (Fm.D x i).R.f_le_k⟩, ?_⟩` and prove the remaining obligations. Use `show (FunData.Lc d.O : ℝ) ≤ (Fm.L x i).sc.b`. Conclude with `(lcLeOfCloud d.O (Fm.L x i).Sc (Fm.L x i).Sc_pos.le (fun τ j => cloudIcc (Fm.L x i) τ j)).trans (scLeB (Fm.params x hx i))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem desHLeaf : DesH := by
   refine ⟨0, fun CF _ => ⟨1, one_pos, fun eps heps _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH hF _ => ?_⟩⟩⟩
@@ -199,11 +195,11 @@ theorem desHLeaf : DesH := by
     (fun τ j => cloudIcc (Fm.L x i) τ j)).trans (scLeB (Fm.params x hx i))
 
 /- English proof (translation)
-Introduce `hP hH hTD hTr hTw hZ hR hAg hMa hFS hL`. Take `⟨hDenSum, hThbSt, hOneSqSt, hBotSmall, hBotNe, hFieldDat, hTorEx, hDenEx, hBotEx, hLNe, hTriEx, hTower⟩` from `GlobalTheory.T.square_top_statements_of_inputs hP.howeDualityReal hP hH hTD hTr hZ hR hAg hMa`. Take `⟨hFin, hAway, hInf⟩` from `GlobalTheory.T.sum_size_finite_away_infinite hP`. Take `⟨hSumOK, hConst, hLin, hF2, hSumRat⟩` from `GlobalTheory.T.theta_integral_row_statements hP hAg hMa`. Establish `hInj` using `GlobalTheory.RowTest.injK_of_separates hFS (GlobalTheory.RowTest.convK_withReal_all hP (GlobalTheory.T.lifts_cuspidal_of_functoriality hP))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hSize` using `GlobalTheory.T.size_at_holds`. Establish `hSet` using `GlobalTheory.T.set_at_of_size_at hSize`. Establish `hDl` using `GlobalTheory.T.log_deriv_L_one_bound_family hP`. Establish `hInp` using `GlobalTheory.T.cmThetaNormBoundHypotheses_satisfied`. Establish `hIntSt` using `GlobalTheory.T.classSumDenominatorBound_of_cmThetaHypotheses hInp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hArchSt` using `GlobalTheory.ArchTop.archSt_of_inp hInp`. Establish `hThA` using `GlobalTheory.T.toric_ratio_family_estimate (GlobalTheory.ToricTransport.toricRatioConjugates_of_transport hTw) hSet hDl hFieldDat hTorEx`. Establish `hSq` using `GlobalTheory.T.square_ratio_in_embedding_range hP hAg hMa hSet hDl hConst hLNe hTriEx hTower`. Establish `hB : Bundle` using `@GlobalTheory.BigTop.Fun.bundle_of_rows`. Conclude with `GlobalTheory.BigTop.Fun.fun0Fit_of_leaves _ _ hB GlobalTheory.T.scaling_function_bound (GlobalTheory.T.field_data_existence_of_sums hSet hDl hSumOK hSumRat hConst hSq hIntSt hFieldDat hTorEx hDenEx hBotEx hBotSmall) (GlobalTheory.T.multiplicity_at_fitted_points hSet) (GlobalTheor …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fun0Fit_close : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.Published.HeckeFunctionalEquationAbs → GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.ToricDenominator →
     GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.Transport → GlobalTheory.ToricTransport.TwistedTransport → GlobalTheory.IndefiniteRowSideFullHecke.ZetaValueIdeals.ZetaDenominators → GlobalTheory.SqTop.Refl →

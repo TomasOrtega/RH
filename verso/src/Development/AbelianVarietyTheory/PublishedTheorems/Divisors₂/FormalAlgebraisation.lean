@@ -48,7 +48,7 @@ namespace FormalAlgebraisation
 variable {R : Type} [CommRing R] [IsNoetherianRing R] {I : Ideal R}
 
 /- English proof (translation)
-The claim follows from `H R I hI X Z hX inferInstance inferInstance inferInstance (fun e => thickObj R I e X) (fun e => thickMap R I e X) (fun e => pullback.fst X.hom (thick R I e)) (fun _ => IsPullback.of_hasPullback _ _) (fun _ => (pullback.lift_fst _ _ _).trans (Category.comp_id _)) f (fun e => (hf e …`.
+A detailed English derivation is pending.
 -/
 theorem Morphisms.existsUnique_thick (H : Morphisms) (hI : IsAdicComplete I R)
     (X Z : Over (Spec (CommRingCat.of R))) [hX : IsProper X.hom] [hZ : IsProper Z.hom]
@@ -63,7 +63,7 @@ theorem Morphisms.existsUnique_thick (H : Morphisms) (hI : IsAdicComplete I R)
     (fun e => (hf e).trans pullback.condition) hc
 
 /- English proof (translation)
-The claim follows from `(H.existsUnique_thick hI X Z (fun e => pullback.fst X.hom (thick R I e) ≫ g'.left) (fun e => by rw [Category.assoc, Over.w]) (fun e => by rw [← Category.assoc] exact congrArg (· ≫ g'.left) ((pullback.lift_fst _ _ _).trans (Category.comp_id _)))).unique h (fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem Morphisms.hom_ext (H : Morphisms) (hI : IsAdicComplete I R)
     {X Z : Over (Spec (CommRingCat.of R))} [IsProper X.hom] [IsProper Z.hom] {g g' : X ⟶ Z}
@@ -77,7 +77,7 @@ theorem Morphisms.hom_ext (H : Morphisms) (hI : IsAdicComplete I R)
     h (fun _ => rfl)
 
 /- English proof (translation)
-Take `⟨g, hg, hu⟩` from `H R I hI X X' hX inferInstance inferInstance inferInstance Y β b hb hβ b' (fun e => (hb' e).w) hβ'`. Take `⟨k, hk, -⟩` from `H R I hI X' X hX' inferInstance inferInstance inferInstance Y β b' hb' hβ' b (fun e => (hb e).w) hβ`. Use `⟨⟨g, k, ?_, ?_⟩, hg, hu⟩` and prove the remaining obligations. Conclude with `(H R I hI X X hX inferInstance inferInstance inferInstance Y β b hb hβ b (fun e => (hb e).w) hβ).unique (fun e => by rw [Over.comp_left, ← Category.assoc, hg, hk]) (fun e => Category.comp_id _)`. Conclude with `(H R I hI X' X' hX' inferInstance inferInstance inferInstance Y β b' hb' hβ' b' (fun e => (hb' e).w) hβ').unique (fun e => by rw [Over.comp_left, ← Category.assoc, hk, hg]) (fun e => Category.comp_id _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Morphisms.exists_iso (H : Morphisms) (hI : IsAdicComplete I R)
     {X X' : Over (Spec (CommRingCat.of R))} [hX : IsProper X.hom] [hX' : IsProper X'.hom]

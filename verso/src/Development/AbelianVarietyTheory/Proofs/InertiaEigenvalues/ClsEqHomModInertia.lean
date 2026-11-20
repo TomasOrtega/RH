@@ -34,11 +34,11 @@ def cl {X : Type} [AddCommGroup X] [Module O X] (f : G → X) (hf : IsLcHom f) :
 variable {X X' : Type} [AddCommGroup X] [Module O X] [AddCommGroup X'] [Module O X']
 
 /- English proof (translation)
-Proceed by induction on `c using Submodule.Quotient.induction_on with`. Consider the case `_ z`. Establish `hlc : IsLocallyConstant (z : G → O ⊗[O] X)` using `z.2.1.1`. Use `⟨fun g => TensorProduct.lid O X ((z : G → O ⊗[O] X) g), ⟨hlc.comp _, fun g h => by` and prove the remaining obligations. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.AdmissibleCharUnramified.cocycle_add Γ X z g h, map_add]⟩, ?_⟩`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Unfold `cl`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Use `show (1 : O) ⊗ₜ[O] TensorProduct.lid O X ((z : G → O ⊗[O] X) g) = (z : G → O ⊗[O] X) g`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← TensorProduct.lid_symm_apply, LinearEquiv.symm_apply_apply]`.
+A detailed English derivation is pending.
 -/
 theorem exists_cl (c : H1 (twCoef (Γ.Wchi 1) Γ.χ₁ X) ⊤) : ∃ f hf, cl Γ f hf = c := by
   induction c using Submodule.Quotient.induction_on with
@@ -55,13 +55,13 @@ theorem exists_cl (c : H1 (twCoef (Γ.Wchi 1) Γ.χ₁ X) ⊤) : ∃ f hf, cl Γ
   rw [← TensorProduct.lid_symm_apply, LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.comp φ, fun g h => by simp only [hf.2 g h, map_add]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsLcHom.map {f : G → X} (hf : IsLcHom f) (φ : X →ₗ[O] X') : IsLcHom (fun g => φ (f g)) :=
   ⟨hf.1.comp φ, fun g h => by simp only [hf.2 g h, map_add]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.comp₂ hf'.1 (· - ·), fun g h => by show f (g * h) - f' (g * h) = (f g - f' g) + (f h - f' h) rw [hf.2 g h, hf'.2 g h]; abel⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsLcHom.sub {f f' : G → X} (hf : IsLcHom f) (hf' : IsLcHom f') : IsLcHom (fun g => f g - f' g) :=
   ⟨hf.1.comp₂ hf'.1 (· - ·), fun g h => by
@@ -75,9 +75,9 @@ theorem coefH1_cl {f : G → X} (hf : IsLcHom f) (φ : X →ₗ[O] X') :
     coefH1 (Γ.Wchi 1) Γ.χ₁ φ (cl Γ f hf) = cl Γ _ (hf.map φ) := rfl
 
 /- English proof (translation)
-Unfold `cl`. Rewrite using `[← Submodule.Quotient.mk_sub]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show (1 : O) ⊗ₜ[O] (f g - f' g) = (1 : O) ⊗ₜ[O] f g - (1 : O) ⊗ₜ[O] f' g`. Conclude with `TensorProduct.tmul_sub _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem cl_sub {f f' : G → X} (hf : IsLcHom f) (hf' : IsLcHom f') :
     cl Γ _ (hf.sub hf') = cl Γ f hf - cl Γ f' hf' := by
@@ -90,11 +90,11 @@ theorem cl_sub {f f' : G → X} (hf : IsLcHom f) (hf' : IsLcHom f') :
   exact TensorProduct.tmul_sub _ _ _
 
 /- English proof (translation)
-Unfold `cl at h`. Rewrite `h` using `[← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_add, Submodule.Quotient.mk_eq_zero]`. Establish `h' : ((a • coc Γ f hf + b • coc Γ f' hf' : ↥(Z1 (twCoef (Γ.Wchi 1) Γ.χ₁ X) ⊤)) : G → O ⊗[O] X) ∈ ReciprocityTheory.Def.B1 (twCoef (Γ.Wchi 1) Γ.χ₁ X) ⊤` using `h`. Take `⟨m, -, hm⟩` from `Submodule.mem_map.1 h'`. Establish `h1` using `congrFun hm g`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : (ReciprocityTheory.Def.d0 (twCoef (Γ.Wchi 1) Γ.χ₁ X) m) g = 0` using `by show twCoef (Γ.Wchi 1) Γ.χ₁ X g m - m = 0`. Rewrite using `[twCoef_chi_one, sub_self]`. Rewrite `h1` using `[h0]`. Establish `h2 : a • ((1 : O) ⊗ₜ[O] f g) + b • ((1 : O) ⊗ₜ[O] f' g) = (0 : O ⊗[O] X)` using `h1.symm`. Establish `h3` using `congrArg (TensorProduct.lid O X) h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h3`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_comb {f f' : G → X} (hf : IsLcHom f) (hf' : IsLcHom f') (a b : O)
     (h : a • cl Γ f hf + b • cl Γ f' hf' = 0) (g : G) : a • f g + b • f' g = 0 := by
@@ -114,7 +114,7 @@ theorem eq_zero_of_comb {f f' : G → X} (hf : IsLcHom f) (hf' : IsLcHom f') (a 
   simpa using h3
 
 /- English proof (translation)
-Unfold `homModInertia`. Use `⟨coc Γ f hf, rfl, fun g hg => ?_⟩` and prove the remaining obligations. Use `show (1 : O) ⊗ₜ[O] f g = 0`. Rewrite using `[h g hg, TensorProduct.tmul_zero]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cl_mem_hom {f : G → X} (hf : IsLcHom f) (I : Subgroup G) (h : ∀ g ∈ I, f g = 0) :
     cl Γ f hf ∈ homModInertia Γ X I := by
@@ -124,15 +124,15 @@ theorem cl_mem_hom {f : G → X} (hf : IsLcHom f) (I : Subgroup G) (h : ∀ g �
   rw [h g hg, TensorProduct.tmul_zero]
 
 /- English proof (translation)
-Use `⟨?_, fun g h => by simp only [map_mul, toAdd_mul, map_add, add_smul]⟩` and prove the remaining obligations. Establish `hadd : ∀ s t : ℤ_[l], algebraMap ℤ_[l] O (s + t) • x = algebraMap ℤ_[l] O s • x + algebraMap ℤ_[l] O t • x` using `fun s t => by`. Rewrite using `[map_add, add_smul]`. Establish `hN0 : Nat.card X ≠ 0` using `Nat.card_pos.ne'`. Take `⟨e, m, hm, hNe⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hN0 l (Fact.out : l.Prime).one_lt.ne'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmu : IsUnit (m : ℤ_[l])`. Rewrite using `[PadicInt.isUnit_iff, PadicInt.norm_natCast_eq_one_iff]`. Conclude with `((Nat.Prime.coprime_iff_not_dvd Fact.out).2 hm)`. Take `⟨u, hu⟩` from `hmu`. Establish `hkill : ∀ w : ℤ_[l], algebraMap ℤ_[l] O ((l : ℤ_[l]) ^ e * w) • x = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w`. Establish `hw : ((l : ℤ_[l]) ^ e * w) = ((Nat.card X : ℕ) : ℤ_[l]) * ((↑u⁻¹ : ℤ_[l]) * w)`. Rewrite using `[hNe, Nat.cast_mul, Nat.cast_pow, ← hu, mul_assoc, ← mul_assoc (u : ℤ_[l]), Units.mul_inv, one_mul]`. Rewrite using `[hw, map_mul, map_natCast, mul_smul, Nat.cast_smul_eq_nsmul, card_nsmul_eq_zero']`. Establish `hlc : IsLocallyConstant (fun t : ℤ_[l] => algebraMap ℤ_[l] O t • x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `t`. Establish `hpos : (0 : ℝ) < (l : ℝ) ^ (-(e : ℤ))` using `zpow_pos (by exact_mod_cast (Fact.out : l.Prime).pos) _`. Use `filter_upwards [Metric.closedBall_mem_nhds t hpos] with s hs`. Rewrite `hs` using `[Metric.mem_closedBall, dist_eq_norm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.1 ((PadicInt.norm_le_pow_iff_mem_span_pow (s - t) e).1 hs)`. Establish `hst : s = t + (l : ℤ_[l]) ^ e * w` using `by rw [mul_comm, hw]; ring`. Use `show algebraMap ℤ_[l] O s • x = algebraMap ℤ_[l] O t • x`. Rewrite using `[hst, hadd, hkill, add_zero]`. Conclude with `hlc.comp_continuous (continuous_toAdd.comp hν)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLcHom_unr {l : ℕ} [Fact l.Prime] [Algebra ℤ_[l] O] [Finite X] (ν : G →* Multiplicative ℤ_[l])
     (hν : Continuous ν) (x : X) : IsLcHom (fun g => algebraMap ℤ_[l] O (Multiplicative.toAdd (ν g)) • x) := by
@@ -165,13 +165,11 @@ theorem isLcHom_unr {l : ℕ} [Fact l.Prime] [Algebra ℤ_[l] O] [Finite X] (ν 
   exact hlc.comp_continuous (continuous_toAdd.comp hν)
 
 /- English proof (translation)
-Establish `hmax : (Ideal.span {lam}).IsMaximal` using `hm ▸ IsLocalRing.maximalIdeal.isMaximal O`. Set `_ : Field (O ⧸ Ideal.span {lam})` to `Ideal.Quotient.field _`. Establish `hne : (Ideal.span {lam} • ⊤ : Submodule O Y) ≠ ⊤`. Introduce `h`. Establish `hb` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (Ideal.span {lam}) (⊤ : Submodule O Y) Module.Finite.fg_top h.ge (by rw [← hm]; exact IsLocalRing.maximalIdeal_le_jacobson ⊥)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `top_ne_bot hb`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y : Y, y ∉ (Ideal.span {lam} • ⊤ : Submodule O Y) := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hne (eq_top_iff.2 fun y _ => hc y)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `hq : (Submodule.mkQ (Ideal.span {lam} • ⊤ : Submodule O Y)) y ≠ 0`. Rewrite using `[Submodule.mkQ_apply, Ne, Submodule.Quotient.mk_eq_zero]` and apply the resulting hypothesis. Take `⟨ψ, hψ⟩` from `Module.Projective.exists_dual_ne_zero (O ⧸ Ideal.span {lam}) hq`. Use `⟨(ψ.restrictScalars O).comp (Submodule.mkQ _), fun h => hψ ?_⟩` and prove the remaining obligations. Use `LinearMap.congr_fun h y` as an intermediate fact.
-
-Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_map_res [IsLocalRing O] {lam : O} (hm : IsLocalRing.maximalIdeal O = Ideal.span {lam})
     (Y : Type) [AddCommGroup Y] [Module O Y] [Finite Y] [Nontrivial Y] :
@@ -195,41 +193,35 @@ theorem exists_map_res [IsLocalRing O] {lam : O} (hm : IsLocalRing.maximalIdeal 
   simpa using this
 
 /- English proof (translation)
-Establish `hmax : (Ideal.span {Γ.lam}).IsMaximal` using `hm ▸ IsLocalRing.maximalIdeal.isMaximal O`. Use `Set.Subset.antisymm ?_ (hunr X)` and prove the remaining obligations. Introduce `c hc`. Take `⟨f, hf, rfl⟩` from `exists_cl Γ c`. Establish `hu : IsLcHom (fun g => algebraMap ℤ_[l] O (Multiplicative.toAdd (ν g)) • f F)` using `isLcHom_unr ν hν (f F)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `huI : ∀ g ∈ I, algebraMap ℤ_[l] O (Multiplicative.toAdd (ν g)) • f F = 0`. Introduce `g hg`. Simplify using `[hI g hg]`. Use `set h : G → X := fun g => f g - algebraMap ℤ_[l] O (Multiplicative.toAdd (ν g)) • f F with hh_eq`. Establish `hh : IsLcHom h` using `hf.sub hu`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhF : h F = 0` using `by simp [hh_eq, hF]`. Establish `hclu : cl Γ _ hu ∈ A X` using `hunr X (cl_mem_hom Γ hu I huI)`. Take `⟨B, hB⟩` from `hsub X`. Establish `hclh : cl Γ h hh ∈ A X`. Establish `hd : cl Γ h hh = cl Γ f hf - cl Γ _ hu` using `cl_sub Γ hf hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hc`, `hclu`, the goal using `[hB]`. Rewrite using `[hd]`. Conclude with `B.sub_mem hc hclu`. Establish `hzero : ∀ g, h g = 0`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `push_neg at hne`. Take `⟨g₀, hg₀⟩` from `hne`. Use `set Y : Submodule O X := Submodule.span O (Set.range h) with hY_eq`. Establish `hY : ∀ g, h g ∈ Y` using `fun g => Submodule.subset_span ⟨g, rfl⟩`. Use `set hY' : G → ↥Y := fun g => ⟨h g, hY g⟩ with hY'_eq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hYlc : IsLcHom hY'`. Use `⟨?_, fun a b => Subtype.ext (hh.2 a b)⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Use `filter_upwards [(IsLocallyConstant.iff_eventually_eq h).1 hh.1 x] with y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `Subtype.ext hy`. Establish `: Nontrivial ↥Y` using `⟨⟨hY' g₀, 0, fun e => hg₀ (congrArg Subtype.val e)⟩⟩`. Take `⟨φ, hφ⟩` from `exists_map_res hm ↥Y`. Establish `hex : ∃ g, φ (hY' g) ≠ 0`. Assume the negation of the conclusion as `hall`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `push_neg at hall`. Apply `hφ` to reduce the goal to its premises. Establish `hle : Y ≤ (LinearMap.ker φ).map Y.subtype`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_map.2 ⟨hY' g, hall g, rfl⟩`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `y`. Take `⟨y', hy', hyy⟩` from `Submodule.mem_map.1 (hle y.2)`. Establish `hyy' : y' = y` using `Subtype.ext hyy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← hyy']`. Simplify using `using hy'`. Take `⟨g₁, hg₁⟩` from `hex`. Establish `hclY : cl Γ hY' hYlc ∈ A ↥Y`. Use `(hmap ↥Y X Y.subtype (cl Γ hY' hYlc)).2 Y.injective_subtype ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[coefH1_cl]`. Conclude with `hclh`. Establish `hc1 : cl Γ _ (hYlc.map φ) ∈ A (resK Γ)`. Use `(hmap ↥Y (resK Γ) φ (cl Γ hY' hYlc)).1 hclY` as an intermediate fact. Rewrite `this` using `[coefH1_cl]`. Then use the resulting hypothesis.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu1 : IsLcHom (fun g => algebraMap ℤ_[l] O (Multiplicative.toAdd (ν g)) • (1 : resK Γ))` using `isLcHom_unr ν hν 1`. Establish `hc0 : cl Γ _ hu1 ∈ A (resK Γ)` using `hunr (resK Γ) (cl_mem_hom Γ hu1 I (fun g hg => by simp [hI g hg]))`. Establish `hmk : ∀ a : O, algebraMap O (resK Γ) a = 0 ↔ Γ.lam ∣ a` using `fun a => by`. Rewrite using `[Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton]`. Establish `hle` using `hres 2 ![cl Γ _ hu1, cl Γ _ (hYlc.map φ)] ?_ ?_`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Introduce `a fin_cases a`. Simplify using `using hc0`. Simplify using `using hc1`. Introduce `x hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[Fin.sum_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one] at hx`. Establish `hcomb` using `eq_zero_of_comb Γ hu1 (hYlc.map φ) (x 0) (x 1) hx`. Establish `h0 : Γ.lam ∣ x 0`. Use `hcomb F` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hYF : hY' F = 0` using `Subtype.ext hhF`. Simplify using `only [hF, toAdd_ofAdd, map_one, hYF, map_zero, Algebra.smul_def, mul_one, mul_zero, add_zero] at this`. Conclude with `(hmk _).1 this`. Establish `h1 : Γ.lam ∣ x 1`. Use `hcomb g₁` as an intermediate fact.
-
-Rewrite `this` using `[Algebra.smul_def (x 0), (hmk _).2 h0, zero_mul, zero_add, Algebra.smul_def]`. Conclude with `(hmk _).1 ((mul_eq_zero.1 this).resolve_right hg₁)`. Introduce `a`. Use `fin_cases a`. Simplify using `using h0`.
-
-Simplify using `using h1`. Apply `cl_mem_hom Γ hf I` to reduce the goal to its premises. Introduce `g hg`. Establish `h1 : f g - algebraMap ℤ_[l] O (Multiplicative.toAdd (ν g)) • f F = 0` using `hzero g`. Rewrite `h1` using `[sub_eq_zero]`.
-
-Rewrite using `[h1, huI g hg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_hom_of_res {l : ℕ} [Fact l.Prime] [Algebra ℤ_[l] O] [IsLocalRing O]
     (hm : IsLocalRing.maximalIdeal O = Ideal.span {Γ.lam}) [Finite (resK Γ)]
@@ -342,13 +334,11 @@ theorem eq_hom_of_res {l : ℕ} [Fact l.Prime] [Algebra ℤ_[l] O] [IsLocalRing 
 end Gen
 
 /- English proof (translation)
-Take `⟨⟨⟨hdom, hdvr, -⟩, -⟩, hfin⟩` from `GlobalTheory.LocalIntegers.good_integers l LL`. Establish `hloc : IsLocalRing ↥(OL LL)` using `@IsDiscreteValuationRing.toIsLocalRing _ _ hdom hdvr`. Establish `hmax : IsLocalRing.maximalIdeal ↥(OL LL) = Ideal.span {lam}` using `(@IsDiscreteValuationRing.irreducible_iff_uniformizer _ _ hdom hdvr lam).1 h`. Use `⟨hloc, hmax, ?_⟩` and prove the remaining obligations. Establish `hl : ((l : ℕ) : ↥(OL LL)) ∈ IsLocalRing.maximalIdeal ↥(OL LL)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `LL.2` as an intermediate fact. Use `(GlobalTheory.mem_maximalIdeal_integralClosure_iff LL.1 ((l : ℕ) : ↥(OL LL))).2 ?_` and prove the remaining obligations. Establish `hc : ((((l : ℕ) : ↥(OL LL)) : ↥LL.1) : PadicAlgCl l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])`. Simplify using the standard rewrite rules. Rewrite using `[hc, PadicAlgCl.norm_extends]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Padic.norm_p_lt_one`. Establish `hle : Ideal.span {((l : ℕ) : ↥(OL LL)) ^ 1} ≤ Ideal.span {lam}`. Rewrite using `[pow_one, Ideal.span_le, Set.singleton_subset_iff, ← hmax]`. Conclude with `hl`. Use `hfin 1` as an intermediate fact.
-
-Conclude with `Finite.of_surjective _ (Ideal.Quotient.factor_surjective hle)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem local_res {l : ℕ} [Fact l.Prime] (LL : FinExt l) {lam : ↥(OL LL)} (h : Irreducible lam) :
     ∃ _ : IsLocalRing ↥(OL LL), IsLocalRing.maximalIdeal ↥(OL LL) = Ideal.span {lam} ∧
@@ -373,9 +363,9 @@ theorem local_res {l : ℕ} [Fact l.Prime] (LL : FinExt l) {lam : ↥(OL LL)} (h
   exact Finite.of_surjective _ (Ideal.Quotient.factor_surjective hle)
 
 /- English proof (translation)
-Introduce `l _ P S h0 hb hu X _ _ _`. Take `⟨F, ν, hν, hI, hF, -⟩` from `GlobalTheory.T.exists_frobenius_gen_degree_hom_to_Zl S.K`. Establish `hst : Standing P S.K S.LL S.emb S.Γ.lam` using `S.hyp.1`. Take `⟨_, hm, hfin⟩` from `local_res S.LL hst.2.2.2.2.2`. Use `eq_hom_of_res S.Γ hm (IK S.K) F ν hν hI hF (fun X _ _ => S.cls (S.Γ.Wchi 1) X) ?_ ?_ hb hu X` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `X _ _ _`. Conclude with `(h0 X).1`. Introduce `X _ _ _ X' _ _ _ f c`. Conclude with `(h0 X).2.2 X' f c`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cls_eq_homModInertia : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (S : TopSit P), S.Lem0 (S.Γ.Wchi 1) →
     S.ResBound (S.Γ.Wchi 1) 1 → S.UnrAdm → ∀ (X : Type) [AddCommGroup X] [Module S.O X] [Finite X],

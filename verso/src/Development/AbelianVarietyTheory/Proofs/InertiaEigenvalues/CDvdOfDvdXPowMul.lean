@@ -11,7 +11,7 @@ section General
 variable {B : Type} [CommRing B] (b : B)
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.mem_ker, ← AdicCompletion.pow_smul_top_eq_ker_eval (Submodule.fg_span_singleton b), Ideal.smul_top_eq_map, Submodule.restrictScalars_mem, Ideal.span_singleton_pow, Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton, map_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_dvd_iff_eval (k : ℕ) (x : AdicCompletion (Ideal.span {b}) B) :
     (algebraMap B (AdicCompletion (Ideal.span {b}) B) b) ^ k ∣ x ↔
@@ -22,7 +22,7 @@ theorem pow_dvd_iff_eval (k : ℕ) (x : AdicCompletion (Ideal.span {b}) B) :
     map_pow]
 
 /- English proof (translation)
-Rewrite using `[AdicCompletion.algebraMap_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eval_algebraMap (k : ℕ) (c : B) :
     AdicCompletion.eval (Ideal.span {b}) B k (algebraMap B (AdicCompletion (Ideal.span {b}) B) c)
@@ -31,7 +31,7 @@ theorem eval_algebraMap (k : ℕ) (c : B) :
   rfl
 
 /- English proof (translation)
-Rewrite `h` using `[pow_dvd_iff_eval, eval_algebraMap, Submodule.Quotient.mk_eq_zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_dvd_of_pow_dvd (k : ℕ) (c : B)
     (h : (algebraMap B (AdicCompletion (Ideal.span {b}) B) b) ^ k ∣
@@ -41,7 +41,7 @@ theorem pow_dvd_of_pow_dvd (k : ℕ) (c : B)
   exact h
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Submodule.Quotient.mk_surjective _ (AdicCompletion.eval (Ideal.span {b}) B k x)`. Conclude with `⟨c, by rw [pow_dvd_iff_eval, map_sub, eval_algebraMap, hc, sub_self]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pow_dvd_sub (k : ℕ) (x : AdicCompletion (Ideal.span {b}) B) :
     ∃ c : B, (algebraMap B (AdicCompletion (Ideal.span {b}) B) b) ^ k ∣
@@ -51,7 +51,7 @@ theorem exists_pow_dvd_sub (k : ℕ) (x : AdicCompletion (Ideal.span {b}) B) :
   exact ⟨c, by rw [pow_dvd_iff_eval, map_sub, eval_algebraMap, hc, sub_self]⟩
 
 /- English proof (translation)
-Establish `h : Ideal.span {algebraMap B (AdicCompletion (Ideal.span {b}) B) b} = (Ideal.span {b}).map (algebraMap B (AdicCompletion (Ideal.span {b}) B))`. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Rewrite using `[h, IsAdicComplete.map_algebraMap_iff]`. Conclude with `AdicCompletion.isAdicComplete (Submodule.fg_span_singleton b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem complete : IsAdicComplete
     (Ideal.span {algebraMap B (AdicCompletion (Ideal.span {b}) B) b})
@@ -67,9 +67,9 @@ end General
 variable {O : Type} [CommRing O]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, rfl⟩ n`. Rewrite using `[coeff_C_mul]`. Conclude with `dvd_mul_right _ _`. Introduce `h choose q hq using h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨PowerSeries.mk q, PowerSeries.ext fun n => by rw [coeff_C_mul, coeff_mk, hq]⟩`.
+A detailed English derivation is pending.
 -/
 theorem C_dvd_iff (c : O) (a : O⟦X⟧) : C c ∣ a ↔ ∀ n, c ∣ coeff n a := by
   constructor
@@ -81,7 +81,7 @@ theorem C_dvd_iff (c : O) (a : O⟦X⟧) : C c ∣ a ↔ ∀ n, c ∣ coeff n a 
     exact ⟨PowerSeries.mk q, PowerSeries.ext fun n => by rw [coeff_C_mul, coeff_mk, hq]⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[C_dvd_iff]`. Introduce `n`. Use `h (n + m)` as an intermediate fact. Rewrite `this` using `[coeff_X_pow_mul]`. Then use the resulting hypothesis.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem C_dvd_of_dvd_X_pow_mul (c : O) (m : ℕ) (a : O⟦X⟧) (h : C c ∣ X ^ m * a) : C c ∣ a := by
   rw [C_dvd_iff] at h ⊢
@@ -90,9 +90,9 @@ theorem C_dvd_of_dvd_X_pow_mul (c : O) (m : ℕ) (a : O⟦X⟧) (h : C c ∣ X ^
   rwa [coeff_X_pow_mul] at this
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `h`. Take `⟨m, q, hq⟩` from `IsLocalization.Away.surj (X : O⟦X⟧) z`. Establish `h1 : algebraMap O⟦X⟧ (Localization.Away (X : O⟦X⟧)) (X ^ m * a) = algebraMap O⟦X⟧ (Localization.Away (X : O⟦X⟧)) (C c * q)`. Rewrite using `[map_mul, map_mul, map_pow, hz, ← hq]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨n, hn⟩` from `IsLocalization.Away.exists_of_eq (X : O⟦X⟧) h1`. Use `C_dvd_of_dvd_X_pow_mul c (n + m) a ⟨X ^ n * q, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, mul_assoc, hn]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem C_dvd_of_dvd_away (c : O) (a : O⟦X⟧)
     (h : algebraMap O⟦X⟧ (Localization.Away (X : O⟦X⟧)) (C c) ∣
@@ -107,7 +107,7 @@ theorem C_dvd_of_dvd_away (c : O) (a : O⟦X⟧)
   rw [pow_add, mul_assoc, hn]; ring
 
 /- English proof (translation)
-Rewrite using `[AdicCompletion.algebraMap_apply, AdicCompletion.algebraMap_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem algebraMap_EE (l : ℕ) (a : O⟦X⟧) : algebraMap O⟦X⟧ (EE O l) a =
     algebraMap (Localization.Away (X : O⟦X⟧)) (EE O l)
@@ -115,9 +115,9 @@ theorem algebraMap_EE (l : ℕ) (a : O⟦X⟧) : algebraMap O⟦X⟧ (EE O l) a 
   rw [AdicCompletion.algebraMap_apply, AdicCompletion.algebraMap_apply]; rfl
 
 /- English proof (translation)
-Rewrite `h` using `[algebraMap_EE, ← map_natCast (algebraMap (Localization.Away (X : O⟦X⟧)) (EE O l)) l]`. Establish `h2` using `pow_dvd_of_pow_dvd _ k _ h`. Establish `e : (l : O⟦X⟧) ^ k = C ((l : O) ^ k)` using `by rw [map_pow, map_natCast]`. Rewrite using `[e]`. Apply `C_dvd_of_dvd_away` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← e, map_pow, map_natCast]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem saturated (l : ℕ) (a : O⟦X⟧) (k : ℕ)
     (h : (l : EE O l) ^ k ∣ algebraMap O⟦X⟧ (EE O l) a) : (l : O⟦X⟧) ^ k ∣ a := by
@@ -135,15 +135,15 @@ namespace GlobalTheory.NB.LT
 open EEBasic
 
 /- English proof (translation)
-Introduce `l O _ _ _ _ _ _ hl`. Use `⟨?_, ?_, ?_, ?_, saturated l⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Use `PowerSeries.ext fun n => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zero]`. Use `IsHausdorff.haus (I := IsLocalRing.maximalIdeal O) inferInstance _ fun k => ?_` and prove the remaining obligations. Establish `h1` using `saturated l a k (by rw [ha]; exact dvd_zero _)`. Establish `e : (l : O⟦X⟧) ^ k = C ((l : O) ^ k)` using `by rw [map_pow, map_natCast]`. Rewrite `h1` using `[e, C_dvd_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨q, hq⟩` from `h1 n`. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, hq]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow ((IsLocalRing.mem_maximalIdeal _).2 hl) k)`. Rewrite using `[algebraMap_EE]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit (X : O⟦X⟧)).map _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `complete (l : Localization.Away (X : O⟦X⟧))` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Introduce `x k`. Take `⟨c, hc⟩` from `exists_pow_dvd_sub (l : Localization.Away (X : O⟦X⟧)) k x`. Rewrite `hc` using `[map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, q, hq⟩` from `IsLocalization.Away.surj (X : O⟦X⟧) c`. Use `⟨q, m, ?_⟩` and prove the remaining obligations. Rewrite using `[algebraMap_EE l q, ← hq, map_mul, algebraMap_EE, map_pow (algebraMap O⟦X⟧ _), ← sub_mul]`. Conclude with `hc.mul_right _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem EE_basic : ∀ {l : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [CharZero O], l.Prime → ¬ IsUnit (l : O) → Function.Injective (algebraMap O⟦X⟧ (EE O l)) ∧ IsUnit (algebraMap O⟦X⟧ (EE O l) X) ∧ IsAdicComplete (Ideal.span {(l : EE O l)}) (EE O l) ∧ (∀ (x : EE O l) (k : ℕ), ∃ (a : O⟦X⟧) (m : ℕ), (l : EE O l) ^ k ∣ x * algebraMap O⟦X⟧ (EE O l) (X ^ m) - algebraMap O⟦X⟧ (EE O l) a) ∧ (∀ (a : O⟦X⟧) (k : ℕ), (l : EE O l) ^ k ∣ algebraMap O⟦X⟧ (EE O l) a → (l : O⟦X⟧) ^ k ∣ a) := by
   intro l O _ _ _ _ _ _ hl

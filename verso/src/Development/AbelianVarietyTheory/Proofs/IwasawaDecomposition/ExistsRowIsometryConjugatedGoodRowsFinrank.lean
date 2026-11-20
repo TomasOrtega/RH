@@ -11,11 +11,9 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formali
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Set `e` to `conjL (muX X)`. Set `j : conjRows X ≃+ HHX X` to `{ toFun := fun f => ⟨e f, f.2⟩ invFun := fun g => ⟨e.symm g, by show e.toLinearEquiv.toLinearMap (e.symm g) ∈ HHX X`. Simplify using `using g.2⟩`. Use `left_inv := fun f => by ext1; simp`. Use `right_inv := fun g => by ext1; simp`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `map_add' := fun f g => by ext1; simp }`. Establish `hbij : Function.Bijective (starRingEnd ℂ : ℂ → ℂ)` using `Function.Involutive.bijective (fun z => by simp)`. Establish `hr` using `rank_eq_of_equiv_equiv (starRingEnd ℂ : ℂ → ℂ) j hbij (fun r m => by ext1 show e (r • (m : L2X X)) = (starRingEnd ℂ r) • e m`. Conclude with `e.map_smulₛₗ r m)`. Unfold `Module.finrank`.
-
-Rewrite using `[hr]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_conjRows_eq {D : D7} (X : HidaSetting D) :
     Module.finrank ℂ (conjRows X) = Module.finrank ℂ (HHX X) := by
@@ -38,7 +36,7 @@ theorem finrank_conjRows_eq {D : D7} (X : HidaSetting D) :
   rw [hr]
 
 /- English proof (translation)
-Introduce `D G' _ _ Pl0 T A Ks _ _ _ R F X h G t v₀ c eE hc hv₀ hE hrange hnorm hle hJ1 hJ2`. Use `⟨fun hD => ?_, exists_rowJ_of_evalOn hc hv₀ hE hrange hnorm hle hJ2⟩` and prove the remaining obligations. Take `⟨J1, -⟩` from `hJ1`. Establish `hD' : D.what₂.Dall = Module.finrank ℂ (MultR R F)` using `hD`. Rewrite using `[hD', J1.finrank_eq, finrank_conjRows_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_rowJ_and_finrank_HHX : ∀ (D : D7) (G' : Type) [Group G'] [Fintype G'] (Pl0 T : Type) (A : FamIn D.what₂.LL G' Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (G : GoodOp X) (t : GA D (D.sp.Y 0)) (v₀ : (MP R).Vec) (c : ℝ) (eE : D.what₂.EE →ₗ[ℂ] R.HE.H), 0 < c → (∀ τ, ‖(v₀ τ : (MP R).H τ)‖ = 1) → R.models_HE → LinearMap.range eE = (R.EEat (R.levR F true)).comap R.HE.e → (∀ x, ‖eE x‖ ^ 2 = RealDat.nP F true * ‖x‖ ^ 2) → (R.EEat (R.levR F true) ≤ R.EEat R.triv) → EvalOn R X h t v₀ c (MultR R F) (conjRows X) → EvalOn R X h t v₀ c (EP R F) (EEC X G) → (DallTie R F → Module.finrank ℂ (HHX X) = D.what₂.Dall) ∧ ∃ j : D.what₂.EE ≃ₗᵢ[ℂ] EEC X G, RowJ R eE X h G t j := by
   intro D G' _ _ Pl0 T A Ks _ _ _ R F X h G t v₀ c eE hc hv₀ hE hrange hnorm hle hJ1 hJ2

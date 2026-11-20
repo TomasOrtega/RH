@@ -15,9 +15,9 @@ section Core
 variable {B : Type} [CommRing B] {n : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Use `h (Pi.single j 1) (fun k => by` as an intermediate fact. Break down `eq_or_ne k j with rfl | hk` into its components or cases. Simplify using the standard rewrite rules.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[hk]) i`. Simplify using `using this`. Introduce `h v hv i show ∑ j, y i j * v j ∈ S`. Conclude with `S.sum_mem fun j _ => S.mul_mem (h i j) (hv j)`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_iff (S : Subring B) (y : Matrix (Fin n) (Fin n) B) :
     (∀ v : Fin n → B, (∀ i, v i ∈ S) → ∀ i, y.mulVec v i ∈ S) ↔ ∀ i j, y i j ∈ S := by
@@ -33,13 +33,13 @@ theorem mulVec_mem_iff (S : Subring B) (y : Matrix (Fin n) (Fin n) B) :
     exact S.sum_mem fun j _ => S.mul_mem (h i j) (hv j)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu⟩`. Establish `h1 : Units.map (S.subtype.mapMatrix (m` using `Fin n)).toMonoidHom u = y := Units.ext hu`. Substitute `h1` using the available equality. Use `⟨fun i j => (u.val i j).2, fun i j => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_inv]`. Conclude with `((u⁻¹).val i j).2`. Introduce and unpack `⟨h1, h2⟩`. Establish `inj : Function.Injective (S.subtype.mapMatrix (m` using `Fin n)) := Matrix.map_injective S.subtype_injective`. Set `a : Matrix (Fin n) (Fin n) S` to `Matrix.of fun i j => ⟨_, h1 i j⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `b : Matrix (Fin n) (Fin n) S` to `Matrix.of fun i j => ⟨_, h2 i j⟩`. Establish `ha : S.subtype.mapMatrix a = y.val` using `rfl`. Establish `hb : S.subtype.mapMatrix b = (y⁻¹).val` using `rfl`. Use `⟨⟨a, b, inj ?_, inj ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[map_mul, ha, hb, map_one, Units.mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, ha, hb, map_one, Units.inv_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_int_iff (S : Subring B) (y : GL (Fin n) B) :
     (∃ u : GL (Fin n) S, u.val.map S.subtype = y.val) ↔
@@ -63,21 +63,21 @@ theorem exists_int_iff (S : Subring B) (y : GL (Fin n) B) :
     · rw [map_mul, ha, hb, map_one, Units.inv_mul]
 
 /- English proof (translation)
-Establish `key : ∀ (x : GL (Fin n) B) (k : GL (Fin n) A), x.val = k.val.map e → ((∀ z ∈ L, k.val.mulVec z ∈ L) ↔ ∀ i j, (β⁻¹ * x * β).val i j ∈ S)`. Introduce `x k hx`. Establish `hm : ∀ z : Fin n → A, (β⁻¹).val.mulVec (fun a => e (k.val.mulVec z a)) = (β⁻¹ * x * β).val.mulVec ((β⁻¹).val.mulVec (fun a => e (z a)))`. Introduce `z`. Establish `: (fun a => e (k.val.mulVec z a)) = x.val.mulVec (fun a => e (z a))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[hx, RingHom.map_mulVec]`. Both sides reduce to the same expression. Rewrite using `[this, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul, mul_inv_cancel_right]`. Rewrite using `[← mulVec_mem_iff]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h v hv choose z hz using fun a => he.2 (β.val.mulVec v a)`. Establish `hz' : (β⁻¹).val.mulVec (fun a => e (z a)) = v`. Rewrite using `[show (fun a => e (z a)) = β.val.mulVec v from funext hz, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Use `(hL _).1 (h z ((hL z).2 (by rw [hz']; exact hv)))` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hm, hz']`. Then use the resulting hypothesis. Introduce `h z hz`. Rewrite using `[hL, hm]`. Conclude with `h _ ((hL z).1 hz)`. Establish `hx' : (x⁻¹).val = (k⁻¹).val.map e`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Units.map (e.mapMatrix (m` using `Fin n)).toMonoidHom k = x := Units.ext hx.symm`. Rewrite using `[← h1, ← map_inv]`. Both sides reduce to the same expression. Establish `hi : (β⁻¹ * x * β)⁻¹ = β⁻¹ * x⁻¹ * β` using `by group`. Rewrite using `[exists_int_iff, hi, ← key x k hx, ← key x⁻¹ k⁻¹ hx']`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun z hz => h ▸ ⟨z, hz, rfl⟩, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[← h]`. Take `⟨w, hw, rfl⟩` from `hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]` and apply the resulting hypothesis. Introduce and unpack `⟨h1, h2⟩`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `h1 z hz`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `z hz`. Conclude with `⟨_, h2 z hz, by rw [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]⟩`.
+A detailed English derivation is pending.
 -/
 theorem image_eq_iff {A : Type} [CommRing A] (e : A →+* B) (he : Function.Bijective e) (S : Subring B)
     (β x : GL (Fin n) B) (k : GL (Fin n) A) (hx : x.val = k.val.map e) (L : Set (Fin n → A))
@@ -127,9 +127,9 @@ theorem image_eq_iff {A : Type} [CommRing A] (e : A →+* B) (he : Function.Bije
 end Core
 
 /- English proof (translation)
-Use `exists_congr fun u => ?_` and prove the remaining obligations. Use `show β * Formalism.L2.DIV.intGL F E n u * β⁻¹ = x ↔ (Formalism.L2.DIV.intGL F E n u).val = _`. Rewrite using `[← Units.ext_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `group`. Introduce `h`. Rewrite using `[h]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_St_iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :
@@ -143,7 +143,7 @@ theorem mem_St_iff {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   · intro h; rw [h]; group
 
 /- English proof (translation)
-Introduce `D V r hr β hβ κ`. Substitute `hr` using the available equality. Rewrite using `[mem_St_iff]`. Conclude with `image_eq_iff (swapAE D) (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).bijective (LatticeBasisLifts.OAf D) β _ (finHom V κ) rfl _ hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gLat_eq_latHat_iff : ∀ (D : D7) (V : HSp D) (r : ℕ) (hr : V.rank = r) (β : GL (Fin r) (EAf D)), LatticeBasisLifts.IsLatBasis V hr β → ∀ κ : GA D V, gLat V κ = (latHat V : Set (Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E)) ↔ LatticeBasisLifts.finR V hr κ ∈ Formalism.L2.DIV.St β := by
   intro D V r hr β hβ κ

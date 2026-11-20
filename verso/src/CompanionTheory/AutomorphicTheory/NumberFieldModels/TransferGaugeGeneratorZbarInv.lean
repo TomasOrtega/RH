@@ -14,7 +14,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
   {P : M.Par} {Bs : B.RealPlaceData P.k P.r Wp Wq} {e : M.Ty P → ℂ → (Wq →L[ℂ] Wp)}
 
 /- English proof (translation)
-Use `⟨q.2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[hpl.2.2.2.1, hpl.2.2.2.2.1]`. Conclude with `q.2.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qr_of (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (q : MA.Qp P.r P.TT) :
     q.1 ∈ NF.QR P.k P.r Bs.z Bs.z' := by
@@ -23,21 +23,21 @@ theorem qr_of (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (q : MA.Qp P.r P.TT) :
   exact q.2.2
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR Bs.z_mem Bs.z'_mem Bs.sec (qr_of hpl q)`.
+A detailed English derivation is pending.
 -/
 theorem mu_domR (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (q : MA.Qp P.r P.TT) :
     (q.1.1, NF.muZ P.k P.r Bs.μsec q.1.2) ∈ Q.DomR P.k P.r Bs.z Bs.z' :=
   Formalism.FourierDecayAlt.P.NFRadRedA.mem_domR Bs.z_mem Bs.z'_mem Bs.sec (qr_of hpl q)
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.NFRadRedA.zeta_muZ Bs.z_mem Bs.z'_mem Bs.sec (qr_of hpl q).2`.
+A detailed English derivation is pending.
 -/
 theorem zeta_mu (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (q : MA.Qp P.r P.TT) :
     Q.zetaL P.k P.r Bs.z Bs.z' (Fin.last P.r) (NF.muZ P.k P.r Bs.μsec q.1.2) = q.1.2 :=
   Formalism.FourierDecayAlt.P.NFRadRedA.zeta_muZ Bs.z_mem Bs.z'_mem Bs.sec (qr_of hpl q).2
 
 /- English proof (translation)
-Unfold `Q.GGl`. Rewrite using `[zeta_mu hpl q, hpl.2.2.2.1, hpl.2.2.2.2.1]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gg_mu (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (q : MA.Qp P.r P.TT) :
     Q.GGl P.k P.r Bs.z Bs.z' (NF.muZ P.k P.r Bs.μsec q.1.2) = Complex.normSq q.1.2 - P.TT := by
@@ -46,7 +46,7 @@ theorem gg_mu (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (q : MA.Qp P.r P.TT) :
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.FourierDecayAlt.P.Qx5.isOpen_OpR P.k P.r Bs.z Bs.z', fun _ _ => Formalism.FourierDecayAlt.P.Qx5.Dp_dom P.k P.r Bs.z Bs.z', fun q => (mu_domR hpl q).2.2, fun x₀ hx₀ hg₀ => Φ.2.2.1 x₀ (Formalism.FourierDecayAlt.P.Qx5.mem_DomR_of_OpR hx₀ hg₀), fun _ hc => Formalism.Fourie …`.
+Supply the required witnesses or components.
 -/
 theorem famR_rad (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') :
     FamR P Bs (fun _ => Formalism.FourierDecayAlt.P.Qx5.Dp P.k P.r Bs.z Bs.z') (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) :=
@@ -62,9 +62,9 @@ theorem tr_eq (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') :
     tr P Bs e Φ = trR P Bs.μsec e (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ρ`. Unfold `trR`. Use `congr 1`. Use function extensionality and compare the values at `q`. Use `h _ (mu_domR hpl q)` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only at this`. Simplify using `only [rawR, this]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem trR_congr (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') {Φ Ψ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)}
     (h : ∀ x ∈ Q.DomR P.k P.r Bs.z Bs.z', Φ x.1 x.2 = Ψ x.1 x.2) : trR P Bs.μsec e Φ = trR P Bs.μsec e Ψ := by
@@ -77,7 +77,7 @@ theorem trR_congr (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') {Φ Ψ : Q.Fn P.k 
   simp only [rawR, this]
 
 /- English proof (translation)
-Rewrite using `[tr_eq, trR_congr hpl h]`. Use function extensionality and compare the values at `ρ`. Use `show MA.toSm P (rawJ P Bs e _ ρ) = _`. Rewrite using `[tc_rawJ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem trJB_of_rad (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') {Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'}
     {F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)} (h : Top.IsRadOf P Bs Φ F) : trJB P Bs e (B.JF Bs F) = tr P Bs e Φ := by
@@ -93,7 +93,7 @@ variable (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (hk : 2 ≤ P.k) (he : IsFr
 include hpl hk he
 
 /- English proof (translation)
-The claim follows from `trR_add _ _ _ _ (fun ρ => smR hpl hk he (famR_rad hpl Φ) ρ) (fun ρ => smR hpl hk he (famR_rad hpl Ψ) ρ)`.
+A detailed English derivation is pending.
 -/
 theorem tr_add (Φ Ψ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : tr P Bs e (Φ + Ψ) = tr P Bs e Φ + tr P Bs e Ψ :=
   trR_add _ _ _ _ (fun ρ => smR hpl hk he (famR_rad hpl Φ) ρ) (fun ρ => smR hpl hk he (famR_rad hpl Ψ) ρ)
@@ -115,9 +115,9 @@ def tiedAlg : Subalgebra ℂ (Q.Pr (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') × 
     exact trR_smul _ _ z _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ρ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `q`. Rewrite using `[tr_eq, tr_eq, trR_val hpl hk he (famR_rad hpl _) ρ q]`. Use `show _ = (φ : MA.Qp P.r P.TT → ℂ) q * ((trR P Bs.μsec e (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) ρ : MA.SmQ P.r P.TT) : MA.Qp P.r P.TT → ℂ) q`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[trR_val hpl hk he (famR_rad hpl _) ρ q, hφ q]`. Use `hT Φ _ (mu_domR hpl q)` as an intermediate fact. Simplify using `only at this`. Simplify using `only [rawR, this, hsV_smul, inner_smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tr_mul (T : Module.End ℂ (Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π')) (f : (Fin P.r → ℂ) × Q.Mx P.k P.r → ℂ)
     (hT : ∀ Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π', ∀ x ∈ Q.DomR P.k P.r Bs.z Bs.z',
@@ -143,13 +143,13 @@ section coords
 variable {r : ℕ} {TT : ℝ}
 
 /- English proof (translation)
-Simplify using `[MA.coordE, MA.zE, M.vz]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordE_vz (x : MA.E r) : MA.coordE (M.vz) x = x.2 := by
   simp [MA.coordE, MA.zE, M.vz]
 
 /- English proof (translation)
-Simplify using `[MA.coordE, MA.zE, M.vzb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordE_vzb (x : MA.E r) : MA.coordE (M.vzb) x = star x.2 := by
   simp [MA.coordE, MA.zE, M.vzb]
@@ -157,7 +157,7 @@ theorem coordE_vzb (x : MA.E r) : MA.coordE (M.vzb) x = star x.2 := by
 def ggQ (r : ℕ) (TT : ℝ) : MA.SmQ r TT := (MA.anQ r TT).gg TT
 
 /- English proof (translation)
-Use `show MA.coordE M.vz q.1 * MA.coordE M.vzb q.1 - (TT : ℂ) = _`. Rewrite using `[coordE_vz, coordE_vzb, Complex.star_def, Complex.mul_conj]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gg_apply (q : MA.Qp r TT) :
     (ggQ r TT : MA.Qp r TT → ℂ) q = ((Complex.normSq q.1.2 - TT : ℝ) : ℂ) := by
@@ -167,13 +167,13 @@ theorem gg_apply (q : MA.Qp r TT) :
   rfl
 
 /- English proof (translation)
-Establish `hsm : (fun q : MA.Qp r TT => ((φ : MA.Qp r TT → ℂ) q)⁻¹) ∈ MA.smSub r TT` using `by show ContDiffOn ℝ MA.sm (MA.ext fun q : MA.Qp r TT => ((φ : MA.Qp r TT → ℂ) q)⁻¹) (MA.Qset r TT)`. Establish `h0 : ContDiffOn ℝ MA.sm (MA.ext (φ : MA.Qp r TT → ℂ)) (MA.Qset r TT)` using `φ.2`. Use `(h0.inv fun x hx => ?_).congr fun x hx => ?_` and prove the remaining obligations. Simplify using `only [MA.ext, hx, dif_pos]`. Conclude with `hφ _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[MA.ext, hx]`. Set `w : MA.SmQ r TT` to `⟨_, hsm⟩`. Establish `h1 : φ * w = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `q`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `mul_inv_cancel₀ (hφ q)`. Establish `h2 : w * φ = 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `q`. Conclude with `inv_mul_cancel₀ (hφ q)`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `u : (MA.SmQ r TT)ˣ` to `⟨φ, w, h1, h2⟩`. Establish `hu : (u : MA.SmQ r TT) = φ` using `rfl`. Rewrite using `[← hu, Ring.inverse_unit]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inv_apply (φ : MA.SmQ r TT) (hφ : ∀ q, (φ : MA.Qp r TT → ℂ) q ≠ 0) (q : MA.Qp r TT) :
     ((Ring.inverse φ : MA.SmQ r TT) : MA.Qp r TT → ℂ) q = ((φ : MA.Qp r TT → ℂ) q)⁻¹ := by
@@ -198,9 +198,9 @@ theorem inv_apply (φ : MA.SmQ r TT) (hφ : ∀ q, (φ : MA.Qp r TT → ℂ) q �
 end coords
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : P.TT < Complex.normSq q.1.2` using `q.2.2`. Establish `h2 : 0 < P.TT`. Use `mul_pos Bs.T_pos Bs.T'_pos` as an intermediate fact. Rewrite `this` using `[hpl.2.2.2.1, hpl.2.2.2.2.1]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[h, map_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem zeta_ne (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (q : MA.Qp P.r P.TT) : q.1.2 ≠ 0 := by
   intro h
@@ -218,7 +218,7 @@ variable (hpl : Q.IsPlace P Bs.z Bs.z' Bs.π Bs.π') (hk : 2 ≤ P.k) (he : IsFr
 include hpl hk he
 
 /- English proof (translation)
-The claim follows from `tr_mul hpl hk he (X.fn j) (fun x => Q.fnVal P.k P.r Bs.z Bs.z' j x.2) (fun Φ x hx => X.fn_apply j Φ x hx) φ hφ Φ`.
+A detailed English derivation is pending.
 -/
 theorem tr_fn (j : Fin 6) (φ : MA.SmQ P.r P.TT)
     (hφ : ∀ q : MA.Qp P.r P.TT, (φ : MA.Qp P.r P.TT → ℂ) q =
@@ -227,7 +227,7 @@ theorem tr_fn (j : Fin 6) (φ : MA.SmQ P.r P.TT)
   tr_mul hpl hk he (X.fn j) (fun x => Q.fnVal P.k P.r Bs.z Bs.z' j x.2) (fun Φ x hx => X.fn_apply j Φ x hx) φ hφ Φ
 
 /- English proof (translation)
-The claim follows from `tr_mul hpl hk he (X.op l i) (fun x => f x.1) (fun Φ x _ => by rw [X.op_apply]; exact hf _ _ _) φ hφ Φ`.
+A detailed English derivation is pending.
 -/
 theorem tr_opmul (l : Fin P.r) (i : Fin 6) (f : (Fin P.r → ℂ) → ℂ)
     (hf : ∀ (Φ : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) c g, Q.crd (opL l i) Φ c g = f c • Φ c g) (φ : MA.SmQ P.r P.TT)
@@ -236,7 +236,7 @@ theorem tr_opmul (l : Fin P.r) (i : Fin 6) (f : (Fin P.r → ℂ) → ℂ)
   tr_mul hpl hk he (X.op l i) (fun x => f x.1) (fun Φ x _ => by rw [X.op_apply]; exact hf _ _ _) φ hφ Φ
 
 /- English proof (translation)
-Rewrite using `[tr_eq, trR_congr hpl (Ψ := Q.QL P.k P.r Bs.z Bs.z' (Fin.last P.r) (Y : ℂ) a b Φ) (fun x hx => X.t_apply Y a b Φ x hx)]`. Use function extensionality and compare the values at `ρ`. Conclude with `hG _ _ (famR_rad hpl Φ) Y a b ρ`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem transfer_torus_action (hG : GaugeQQ P Bs e) (Y : ℝ) (a b : Fin 2) (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') :
     tr P Bs e (X.t Y a b Φ) = MA.actA P (MA.QQr P (MA.DQ P) (Y : ℂ) a b) (tr P Bs e Φ) := by
@@ -246,7 +246,7 @@ theorem transfer_torus_action (hG : GaugeQQ P Bs e) (Y : ℝ) (a b : Fin 2) (Φ 
   exact hG _ _ (famR_rad hpl Φ) Y a b ρ
 
 /- English proof (translation)
-Use `show trR P Bs.μsec e (X.op l 0 Φ) = MA.actA P (MA.siteA P (MA.DQ P) l).p _`. Rewrite using `[X.op_apply, actA_p]`. Conclude with `trR_p hpl hk he (famR_rad hpl Φ) l`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transfer_operator_p (l : Fin P.r) (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') :
     tr P Bs e (X.op l 0 Φ) = MA.actA P (MA.pA P (MA.DQ P) l) (tr P Bs e Φ) := by
@@ -255,7 +255,7 @@ theorem transfer_operator_p (l : Fin P.r) (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π
   exact trR_p hpl hk he (famR_rad hpl Φ) l
 
 /- English proof (translation)
-Use `show trR P Bs.μsec e (X.op l 3 Φ) = _`. Rewrite using `[X.op_apply, MA.pbA, actA_sc]`. Conclude with `trR_pb hpl hk he (famR_rad hpl Φ) l`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transfer_operator_pbar (l : Fin P.r) (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') :
     tr P Bs e (X.op l 3 Φ) = MA.actA P (MA.pbA P (MA.DQ P) l) (tr P Bs e Φ) := by
@@ -264,7 +264,7 @@ theorem transfer_operator_pbar (l : Fin P.r) (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs
   exact trR_pb hpl hk he (famR_rad hpl Φ) l
 
 /- English proof (translation)
-Rewrite using `[MA.cA, actA_sc]`. Conclude with `tr_opmul hpl hk he X l 1 (fun c => c l) (fun _ _ _ => rfl) (MA.coordQ (M.vc l)) (fun q => coordE_vc _ _) Φ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transfer_operator_c (l : Fin P.r) (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') :
     tr P Bs e (X.op l 1 Φ) = MA.actA P (MA.cA P (MA.DQ P) l) (tr P Bs e Φ) := by
@@ -272,7 +272,7 @@ theorem transfer_operator_c (l : Fin P.r) (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π
   exact tr_opmul hpl hk he X l 1 (fun c => c l) (fun _ _ _ => rfl) (MA.coordQ (M.vc l)) (fun q => coordE_vc _ _) Φ
 
 /- English proof (translation)
-Rewrite using `[MA.cbA, actA_sc]`. Conclude with `tr_opmul hpl hk he X l 4 (fun c => star (c l)) (fun _ _ _ => rfl) (MA.coordQ (M.vcb l)) (fun q => coordE_vcb _ _) Φ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transfer_operator_cbar (l : Fin P.r) (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') :
     tr P Bs e (X.op l 4 Φ) = MA.actA P (MA.cbA P (MA.DQ P) l) (tr P Bs e Φ) := by
@@ -281,7 +281,7 @@ theorem transfer_operator_cbar (l : Fin P.r) (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs
     (fun q => coordE_vcb _ _) Φ
 
 /- English proof (translation)
-Rewrite using `[MA.ciA, actA_sc]`. Conclude with `tr_opmul hpl hk he X l 2 (fun c => (c l)⁻¹) (fun _ _ _ => rfl) (Ring.inverse (MA.coordQ (M.vc l))) (fun q => by rw [inv_coordQ_apply _ (fun x hx => by rw [coordE_vc]; exact hx.1 _), coordE_vc]) Φ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transfer_operator_c_inv (l : Fin P.r) (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') :
     tr P Bs e (X.op l 2 Φ) = MA.actA P (MA.ciA P (MA.DQ P) l) (tr P Bs e Φ) := by
@@ -290,7 +290,7 @@ theorem transfer_operator_c_inv (l : Fin P.r) (Φ : Q.RadSp P.k P.r Bs.z Bs.z' B
     (fun q => by rw [inv_coordQ_apply _ (fun x hx => by rw [coordE_vc]; exact hx.1 _), coordE_vc]) Φ
 
 /- English proof (translation)
-Rewrite using `[MA.cbiA, actA_sc]`. Conclude with `tr_opmul hpl hk he X l 5 (fun c => (star (c l))⁻¹) (fun _ _ _ => rfl) (Ring.inverse (MA.coordQ (M.vcb l))) (fun q => by`. Rewrite using `[inv_coordQ_apply _ (fun x hx => by rw [coordE_vcb]; exact (star_ne_zero).2 (hx.1 _)), coordE_vcb]) Φ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transfer_operator_cbar_inv (l : Fin P.r) (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') :
     tr P Bs e (X.op l 5 Φ) = MA.actA P (MA.cbiA P (MA.DQ P) l) (tr P Bs e Φ) := by
@@ -300,7 +300,7 @@ theorem transfer_operator_cbar_inv (l : Fin P.r) (Φ : Q.RadSp P.k P.r Bs.z Bs.z
       rw [inv_coordQ_apply _ (fun x hx => by rw [coordE_vcb]; exact (star_ne_zero).2 (hx.1 _)), coordE_vcb]) Φ
 
 /- English proof (translation)
-Rewrite using `[MA.zA, actA_sc]`. Conclude with `tr_fn hpl hk he X 0 (MA.coordQ M.vz) (fun q => by`. Simplify using `only [Q.fnVal, zeta_mu hpl q]`. Conclude with `coordE_vz _) Φ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem transfer_gauge_generator_z (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') :
     tr P Bs e (X.fn 0 Φ) = MA.actA P (MA.zA P (MA.DQ P)) (tr P Bs e Φ) := by
@@ -309,7 +309,7 @@ theorem transfer_gauge_generator_z (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'
     simp only [Q.fnVal, zeta_mu hpl q]; exact coordE_vz _) Φ
 
 /- English proof (translation)
-Rewrite using `[MA.ziA, actA_sc]`. Conclude with `tr_fn hpl hk he X 1 (Ring.inverse (MA.coordQ M.vz)) (fun q => by`. Rewrite using `[inv_coordQ_apply _ (fun x hx => by rw [coordE_vz]; exact zeta_ne hpl ⟨x, hx⟩), coordE_vz]`. Simplify using `only [Q.fnVal, zeta_mu hpl q]) Φ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem transfer_gauge_generator_z_inv (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') :
     tr P Bs e (X.fn 1 Φ) = MA.actA P (MA.ziA P (MA.DQ P)) (tr P Bs e Φ) := by
@@ -319,7 +319,7 @@ theorem transfer_gauge_generator_z_inv (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs
     simp only [Q.fnVal, zeta_mu hpl q]) Φ
 
 /- English proof (translation)
-Rewrite using `[MA.zbA, actA_sc]`. Conclude with `tr_fn hpl hk he X 2 (MA.coordQ M.vzb) (fun q => by`. Simplify using `only [Q.fnVal, zeta_mu hpl q]`. Conclude with `coordE_vzb _) Φ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem transfer_gauge_generator_zbar (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') :
     tr P Bs e (X.fn 2 Φ) = MA.actA P (MA.zbA P (MA.DQ P)) (tr P Bs e Φ) := by
@@ -328,7 +328,7 @@ theorem transfer_gauge_generator_zbar (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.
     simp only [Q.fnVal, zeta_mu hpl q]; exact coordE_vzb _) Φ
 
 /- English proof (translation)
-Rewrite using `[MA.zbiA, actA_sc]`. Conclude with `tr_fn hpl hk he X 3 (Ring.inverse (MA.coordQ M.vzb)) (fun q => by`. Rewrite using `[inv_coordQ_apply _ (fun x hx => by rw [coordE_vzb]; exact (star_ne_zero).2 (zeta_ne hpl ⟨x, hx⟩)), coordE_vzb]`. Simplify using `only [Q.fnVal, zeta_mu hpl q]) Φ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem transfer_gauge_generator_zbar_inv (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') :
     tr P Bs e (X.fn 3 Φ) = MA.actA P (MA.zbiA P (MA.DQ P)) (tr P Bs e Φ) := by
@@ -338,7 +338,7 @@ theorem transfer_gauge_generator_zbar_inv (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π
     simp only [Q.fnVal, zeta_mu hpl q]) Φ
 
 /- English proof (translation)
-Rewrite using `[MA.ggA, actA_sc]`. Conclude with `tr_fn hpl hk he X 4 (ggQ P.r P.TT) (fun q => by`. Rewrite using `[gg_apply]`. Simplify using `only [Q.fnVal, gg_mu hpl q]) Φ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem transfer_gauge_generator_ggi (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') :
     tr P Bs e (X.fn 4 Φ) = MA.actA P (MA.ggA P (MA.DQ P)) (tr P Bs e Φ) := by
@@ -347,9 +347,9 @@ theorem transfer_gauge_generator_ggi (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.�
     rw [gg_apply]; simp only [Q.fnVal, gg_mu hpl q]) Φ
 
 /- English proof (translation)
-Rewrite using `[MA.ggiA, actA_sc]`. Use `tr_fn hpl hk he X 5 (Ring.inverse (ggQ P.r P.TT)) (fun q => ?_) Φ` and prove the remaining obligations. Rewrite using `[inv_apply _ (fun q' => by`. Rewrite using `[gg_apply]`. Conclude with `Complex.ofReal_ne_zero.2 (sub_pos.2 q'.2.2).ne'), gg_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Q.fnVal, gg_mu hpl q]`.
+A detailed English derivation is pending.
 -/
 theorem transfer_gauge_generator_gg_inv (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') :
     tr P Bs e (X.fn 5 Φ) = MA.actA P (MA.ggiA P (MA.DQ P)) (tr P Bs e Φ) := by
@@ -362,9 +362,9 @@ theorem transfer_gauge_generator_gg_inv (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π B
 end gens
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15⟩` from `h`. Take `⟨b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15⟩` from `h'`. Consider the cases of `L`. Consider the cases of `L'`. Simplify using `only at a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14 a15 b1 b2 b3 b4 b5 b6 b7 b8 b9 b10 b11 b12 b13 b14 b15`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Substitute `a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 a14 a15` using the available equality. Substitute `b1 b2 b3 b4 b5 b6 b7 b8 b9 b10 b11 b12 b13 b14 b15` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem modelLevel_unique {L L' : R.LevelData (MA.A P (MA.DQ P)) P.r} (h : MA.IsModelLevel P (MA.DQ P) L)
     (h' : MA.IsModelLevel P (MA.DQ P) L') : L = L' := by

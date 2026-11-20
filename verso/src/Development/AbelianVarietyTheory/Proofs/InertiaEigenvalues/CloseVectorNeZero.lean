@@ -8,7 +8,7 @@ namespace GlobalTheory.PhiGam.Close
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Simplify using `[vv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vv_alg : vv k = algebraMap k⟦X⟧ k⸨X⸩ PowerSeries.X := by
   simp [vv]
@@ -18,7 +18,7 @@ variable {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Mo
 
 omit [Module k V] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x, hx, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_sh_of (a : ℕ) (N : Submodule k⟦X⟧ V) {x : V} (hx : x ∈ N) : vv k ^ a • x ∈ sh a N :=
   ⟨x, hx, by simp⟩
@@ -29,7 +29,7 @@ variable {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Mo
   [IsScalarTower k⟦X⟧ k⸨X⸩ V] in
 omit [Module k V] in
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `_root_.GlobalTheory.PhiGam.mem_sh_iff_exists.mp hx`. Simplify `h y hy` using `[zpow_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem _root_.GlobalTheory.PhiGam.Close.sh_le {a : ℕ} {N N' : Submodule k⟦X⟧ V}
     (h : ∀ x ∈ N, _root_.GlobalTheory.PhiGam.vv k ^ a • x ∈ N') :
@@ -40,7 +40,7 @@ theorem _root_.GlobalTheory.PhiGam.Close.sh_le {a : ℕ} {N N' : Submodule k⟦X
 
 omit [Module k V] in
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[sh]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sh_zero (N : Submodule k⟦X⟧ V) : sh (-0) N = N := by
   ext x; simp [sh]
@@ -50,7 +50,7 @@ variable {k : Type} [Field k] in
 variable {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V]
   [IsScalarTower k⟦X⟧ k⸨X⸩ V] in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.PhiGam.vv_eq_coe_X, map_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma laurentSeriesVariableV_pow_eq_ofPowerSeries_lemma (n : ℕ) :
     _root_.GlobalTheory.PhiGam.vv k ^ n = HahnSeries.ofPowerSeries ℤ k (PowerSeries.X ^ n) := by
@@ -62,7 +62,7 @@ variable {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Mo
   [IsScalarTower k⟦X⟧ k⸨X⸩ V] in
 omit [Module k V] in
 /- English proof (translation)
-Establish `key : _root_.GlobalTheory.PhiGam.vv k ^ b • x = (PowerSeries.X ^ (b - a) : k⟦X⟧) • (_root_.GlobalTheory.PhiGam.vv k ^ a • x)`. Rewrite using `[← algebraMap_smul k⸨X⸩ (PowerSeries.X ^ (b - a) : k⟦X⟧) (_root_.GlobalTheory.PhiGam.vv k ^ a • x), LaurentSeries.coe_algebraMap, ← laurentSeriesVariableV_pow_eq_ofPowerSeries_lemma, smul_smul, ← pow_add, Nat.sub_add_cancel hab]`. Rewrite using `[key]`. Conclude with `N.smul_mem _ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.PhiGam.Close.pow_smul_mem {N : Submodule k⟦X⟧ V} {a b : ℕ} (hab : a ≤ b) {x : V}
     (h : _root_.GlobalTheory.PhiGam.vv k ^ a • x ∈ N) :
@@ -80,9 +80,9 @@ variable {k : Type} [Field k] in
 variable {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V]
   [IsScalarTower k⟦X⟧ k⸨X⸩ V] in
 /- English proof (translation)
-Establish `e` using `c.single_order_mul_powerSeriesPart`. Generalize the expression as in `c.order = t at e ⊢`. Generalize the expression as in `c.powerSeriesPart = p at e`. Substitute `e` using the available equality. Use `⟨(-t).toNat, PowerSeries.X ^ (t + (-t).toNat).toNat * p, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, laurentSeriesVariableV_pow_eq_ofPowerSeries_lemma, HahnSeries.ofPowerSeries_X_pow, HahnSeries.ofPowerSeries_X_pow, ← mul_assoc, HahnSeries.single_mul_single, one_mul]`. Establish `h : (((t + ((-t).toNat : ℤ)).toNat : ℕ) : ℤ) = ((-t).toNat : ℤ) + t` using `by omega`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma exists_laurentVariable_pow_mul_eq_ofPowerSeries_lemma_2 (c : k⸨X⸩) :
     ∃ (b : ℕ) (p : k⟦X⟧), _root_.GlobalTheory.PhiGam.vv k ^ b * c = HahnSeries.ofPowerSeries ℤ k p := by
@@ -101,23 +101,23 @@ variable {k : Type} [Field k] in
 variable {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V]
   [IsScalarTower k⟦X⟧ k⸨X⸩ V] in
 /- English proof (translation)
-Establish `hq` using `Nat.lt_mul_div_succ m hl`. Generalize the expression as in `m / l = q at hq ⊢`. Distinguish the cases in `hc0 : c = 0`. Conclude with `⟨0, by simp [hc0]⟩`. Establish `hp0 : PowerSeries.constantCoeff c.powerSeriesPart ≠ 0`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, LaurentSeries.powerSeriesPart_coeff]`. Simplify using `using (mt HahnSeries.coeff_order_eq_zero.mp hc0)`. Establish `e` using `c.single_order_mul_powerSeriesPart`. Generalize the expression as in `c.order = t at e`. Generalize the expression as in `c.powerSeriesPart = p at e hp0`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Substitute `e` using the available equality. Distinguish the cases in `ht : -(q : ℤ) ≤ t`. Use `⟨PowerSeries.X ^ ((q : ℤ) + t).toNat * p, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, HahnSeries.ofPowerSeries_X_pow, laurentSeriesVariableV_pow_eq_ofPowerSeries_lemma, HahnSeries.ofPowerSeries_X_pow, ← mul_assoc, HahnSeries.single_mul_single, one_mul]`. Establish `h : ((((q : ℤ) + t).toNat : ℕ) : ℤ) = (q : ℤ) + t` using `by omega`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h]`. It suffices to derive a contradiction. Use `push_neg at ht`. Take `⟨s, hs⟩ : ∃ s : ℕ, (s : ℤ) = -t` from `⟨(-t).toNat, by omega⟩`. Establish `hms : m < l * s` using `lt_of_lt_of_le hq (Nat.mul_le_mul_left l (by omega))`.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `R.φ_int p`. Take `⟨b', hb'⟩` from `R.φ_int p⁻¹`. Establish `hbb : b * b' = 1` using `(HahnSeries.ofPowerSeries_injective : Function.Injective (HahnSeries.ofPowerSeries ℤ k)) (by`. Rewrite using `[map_mul, ← hb, ← hb', ← map_mul, ← map_mul, PowerSeries.mul_inv_cancel _ hp0, map_one, map_one])`. Establish `hb0 : PowerSeries.constantCoeff b ≠ 0` using `fun h0 => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg PowerSeries.constantCoeff hbb` as an intermediate fact. Simplify using `[h0] at this`. Take `⟨u, hu⟩` from `R.φ_v`. Take `⟨q', hq'⟩` from `hc`. Establish `e1 : _root_.GlobalTheory.PhiGam.vv k ^ s * ((HahnSeries.single t) 1 * (HahnSeries.ofPowerSeries ℤ k) p) = HahnSeries.ofPowerSeries ℤ k p`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[laurentSeriesVariableV_pow_eq_ofPowerSeries_lemma, HahnSeries.ofPowerSeries_X_pow, ← mul_assoc, HahnSeries.single_mul_single, one_mul, hs, neg_add_cancel]`. Conclude with `one_mul _`. Establish `e2 : (HahnSeries.ofPowerSeries ℤ k (u : k⟦X⟧) * _root_.GlobalTheory.PhiGam.vv k ^ l) ^ s * R.φ ((HahnSeries.single t) 1 * (HahnSeries.ofPowerSeries ℤ k) p) = HahnSeries.ofPowerSeries ℤ k b`. Rewrite using `[← hu, ← map_pow, ← map_mul, e1, hb]`. Establish `rhs : HahnSeries.ofPowerSeries ℤ k ((u : k⟦X⟧) ^ s * PowerSeries.X ^ (l * s - m) * q') = (HahnSeries.ofPowerSeries ℤ k (u : k⟦X⟧)) ^ s * _root_.GlobalTheory.PhiGam.vv k ^ (l * s - m) * HahnSeries.ofPowerSeries ℤ k q'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[laurentSeriesVariableV_pow_eq_ofPowerSeries_lemma, map_mul, map_mul, map_pow]`. Establish `split : _root_.GlobalTheory.PhiGam.vv k ^ (l * s) = _root_.GlobalTheory.PhiGam.vv k ^ (l * s - m) * _root_.GlobalTheory.PhiGam.vv k ^ m`. Rewrite using `[← pow_add, Nat.sub_add_cancel hms.le]`. Establish `e3 : HahnSeries.ofPowerSeries ℤ k b = HahnSeries.ofPowerSeries ℤ k ((u : k⟦X⟧) ^ s * PowerSeries.X ^ (l * s - m) * q')`. Rewrite using `[← e2, rhs, hq', mul_pow, ← pow_mul, split]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e4` using `congrArg PowerSeries.constantCoeff (HahnSeries.ofPowerSeries_injective e3)`. Establish `hpos : 0 < l * s - m` using `by omega`. Simplify using `[PowerSeries.constantCoeff_X, zero_pow hpos.ne'] at e4`. Conclude with `hb0 e4`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma laurentVariable_pow_mul_mem_of_frobenius_lemma_3 {l : ℕ} (hl : 0 < l) (R : _root_.GlobalTheory.PhiGam.RingPG k l) (m : ℕ) (c : k⸨X⸩)
     (hc : _root_.GlobalTheory.PhiGam.vv k ^ m * R.φ c ∈ Set.range (HahnSeries.ofPowerSeries ℤ k)) :
@@ -184,45 +184,39 @@ variable {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Mo
   [IsScalarTower k⟦X⟧ k⸨X⸩ V] in
 
 /- English proof (translation)
-Take `⟨hfg, hspan⟩` from `hN`. Establish `hf' : ∀ (a : k⸨X⸩) (y : V), f (a • y) = R.φ a • f y` using `hf`. Establish `smul_eq : ∀ (p : k⟦X⟧) (y : V), p • y = HahnSeries.ofPowerSeries ℤ k p • y` using `fun p y => by`. Rewrite using `[← LaurentSeries.coe_algebraMap, algebraMap_smul]`. Use `haveI : Module.Finite k⟦X⟧ N := Module.Finite.iff_fg.mpr hfg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Module.IsTorsionFree k⟦X⟧ N := ⟨fun p hp y z hyz => by`. Establish `hp0 : HahnSeries.ofPowerSeries ℤ k p ≠ 0` using `fun h0 => hp.ne_zero ((HahnSeries.ofPowerSeries_injective : Function.Injective (HahnSeries.ofPowerSeries ℤ k)) (h0.trans (map_zero _).symm))`. Establish `h1` using `congrArg Subtype.val hyz`. Simplify using `only [Submodule.coe_smul] at h1`. Rewrite `h1` using `[smul_eq, smul_eq]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `Subtype.ext (smul_right_injective V hp0 h1)⟩`. Use `haveI : Module.Free k⟦X⟧ N := Module.free_of_finite_type_torsion_free'`. Set `b` to `Module.Free.chooseBasis k⟦X⟧ N`. Set `e : Module.Free.ChooseBasisIndex k⟦X⟧ N → V` to `fun i => (b i : V)`. Establish `mem_N : ∀ y ∈ N, ∃ g : Module.Free.ChooseBasisIndex k⟦X⟧ N → k⟦X⟧, y = ∑ i, HahnSeries.ofPowerSeries ℤ k (g i) • e i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `y hy`. Use `⟨fun i => b.repr ⟨y, hy⟩ i, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val (b.sum_repr ⟨y, hy⟩)` as an intermediate fact. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at this`. Simplify using `only [e, ← smul_eq]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `this.symm`. Establish `espan : ⊤ ≤ Submodule.span k⸨X⸩ (Set.range e)`. Rewrite using `[← hspan]`. Use `Submodule.span_le.mpr fun y hy => ?_` and prove the remaining obligations. Take `⟨g, rfl⟩` from `mem_N y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `eindep : LinearIndependent k⸨X⸩ e`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `hex` using `fun i => exists_laurentVariable_pow_mul_eq_ofPowerSeries_lemma_2 (k := k) (g i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `choose a r hr using hex`. Use `set A := Finset.univ.sup a`. Establish `hA : ∀ i, _root_.GlobalTheory.PhiGam.vv k ^ A * g i = HahnSeries.ofPowerSeries ℤ k (PowerSeries.X ^ (A - a i) * r i)`. Introduce `i`. Rewrite using `[map_mul, ← laurentSeriesVariableV_pow_eq_ofPowerSeries_lemma, ← hr, ← mul_assoc, ← pow_add, Nat.sub_add_cancel (Finset.le_sup (f := a) (Finset.mem_univ i))]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : ∑ i, (PowerSeries.X ^ (A - a i) * r i) • b i = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Submodule.coe_zero]`. Simplify using `only [smul_eq, ← hA, ← smul_smul]`. Rewrite using `[← Finset.smul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [e] at hg`. Rewrite using `[hg, smul_zero]`. Establish `hz` using `Fintype.linearIndependent_iff.mp b.linearIndependent _ hsum`. Introduce `i`. Establish `h0 : _root_.GlobalTheory.PhiGam.vv k ^ A * g i = 0` using `by rw [hA, hz i, map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(mul_eq_zero.mp h0).resolve_left (pow_ne_zero _ (_root_.GlobalTheory.PhiGam.vv_ne_zero k))`. Set `eB` to `Module.Basis.mk eindep espan`. Establish `f_sum : ∀ c : Module.Free.ChooseBasisIndex k⟦X⟧ N → k⸨X⸩, f (∑ i, c i • e i) = ∑ i, R.φ (c i) • f (e i)`. Introduce `c`. Rewrite using `[map_sum]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hf']`. Establish `fespan : ⊤ ≤ Submodule.span k⸨X⸩ (Set.range (fun i => f (e i)))`. Rewrite using `[← het]`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hy : ∑ i, eB.repr y i • e i = y`. Simplify `eB.sum_repr y` using `only [eB, Module.Basis.mk_apply]`. Rewrite using `[← hy, f_sum]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `findep : LinearIndependent k⸨X⸩ (fun i => f (e i))` using `linearIndependent_of_top_le_span_of_card_eq_finrank fespan (Module.finrank_eq_card_basis eB).symm`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `fB` to `Module.Basis.mk findep fespan`. Establish `fB_repr : ∀ c : Module.Free.ChooseBasisIndex k⟦X⟧ N → k⸨X⸩, fB.repr (∑ i, c i • f (e i)) = c`. Introduce `c`. Use `fB.repr_sum_self c` as an intermediate fact. Simplify using `only [fB, Module.Basis.mk_apply] at this`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Set `P : Submodule k⟦X⟧ V` to `{ carrier := {y | ∀ i, fB.repr y i ∈ Set.range (HahnSeries.ofPowerSeries ℤ k)} add_mem' := by`. Introduce and unpack `y z hy hz i`. Take `⟨p, hp⟩` from `hy i`. Take `⟨p', hp'⟩` from `hz i`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨p + p', by simp [hp, hp']⟩`. Use the proof step `zero_mem' := fun i => ⟨0, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `p y hy i`. Take `⟨p', hp'⟩` from `hy i`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `⟨p * p', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq, map_smul, Finsupp.smul_apply, smul_eq_mul, ← hp', map_mul] }`. Establish `span_le : _root_.GlobalTheory.PhiGam.pull f N ≤ P`. Unfold `_root_.GlobalTheory.PhiGam.pull`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩ i`. Take `⟨g, rfl⟩` from `mem_N y hy`. Rewrite using `[f_sum, fB_repr]`. Take `⟨c, hc⟩` from `R.φ_int (g i)`. Conclude with `⟨c, hc.symm⟩`.
-
-Establish `hx : ∑ i, eB.repr x i • e i = x`. Simplify `eB.sum_repr x` using `only [eB, Module.Basis.mk_apply]`. Establish `hP` using `span_le h`. Rewrite `hP` using `[← hx, f_sum, Finset.smul_sum]`. Simplify using `only [smul_smul] at hP`.
-
-Establish `hcoef : ∀ i, _root_.GlobalTheory.PhiGam.vv k ^ (m / l) * eB.repr x i ∈ Set.range (HahnSeries.ofPowerSeries ℤ k)`. Introduce `i`. Use `hP i` as an intermediate fact. Rewrite `this` using `[fB_repr]`. Conclude with `laurentVariable_pow_mul_mem_of_frobenius_lemma_3 hl R m _ this`.
-
-Use `choose r hr using hcoef`. Rewrite using `[← hx, Finset.smul_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← hr i, ← smul_eq]`. Conclude with `Submodule.smul_mem _ _ (b i).2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.PhiGam.Close.key {l : ℕ} (hl : 0 < l)
     (R : _root_.GlobalTheory.PhiGam.RingPG k l) [FiniteDimensional k⸨X⸩ V] (f : V →ₗ[k] V)
@@ -350,17 +344,15 @@ variable {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Mo
 omit [Module k V] in
 
 /- English proof (translation)
-Set `S : Submodule k⸨X⸩ V` to `{ carrier := {x | ∃ a : ℕ, _root_.GlobalTheory.PhiGam.vv k ^ a • x ∈ N'} add_mem' := by`. Introduce and unpack `x y ⟨a, ha⟩ ⟨b, hb⟩`. Use `⟨max a b, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Conclude with `N'.add_mem (_root_.GlobalTheory.PhiGam.Close.pow_smul_mem (le_max_left a b) ha) (_root_.GlobalTheory.PhiGam.Close.pow_smul_mem (le_max_right a b) hb)`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use the proof step `zero_mem' := ⟨0, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c x ⟨a, ha⟩`. Take `⟨b, p, hp⟩` from `exists_laurentVariable_pow_mul_eq_ofPowerSeries_lemma_2 c`. Use `⟨b + a, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : _root_.GlobalTheory.PhiGam.vv k ^ (b + a) * c = (_root_.GlobalTheory.PhiGam.vv k ^ b * c) * _root_.GlobalTheory.PhiGam.vv k ^ a` using `by ring`. Rewrite using `[smul_smul, e, ← smul_smul, hp, ← LaurentSeries.coe_algebraMap, algebraMap_smul]`. Conclude with `N'.smul_mem p ha }`. Establish `hS : ∀ x : V, x ∈ S`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : Submodule.span k⸨X⸩ (N' : Set V) ≤ S` using `Submodule.span_le.mpr (fun y hy => ⟨0, by simpa using hy⟩)`. Rewrite `hle` using `[hN']`. Conclude with `hle Submodule.mem_top`. Use `choose f hf using hS`. Take `⟨s, hs⟩` from `hN`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `⟨s.sup f, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← hs]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact _root_.GlobalTheory.PhiGam.Close.pow_smul_mem (Finset.le_sup (f := f) hy) (hf y)`. Consider the case `zero => simp`.
-
-Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `N'.add_mem hy hz`. Consider the case `smul p y _ hy`. Rewrite using `[← algebraMap_smul k⸨X⸩ p y, smul_smul, mul_comm, ← smul_smul, algebraMap_smul]`. Conclude with `N'.smul_mem p hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.PhiGam.Close.exists_pow {N N' : Submodule k⟦X⟧ V} (hN : N.FG)
     (hN' : Submodule.span k⸨X⸩ (N' : Set V) = ⊤) :
@@ -405,19 +397,19 @@ variable {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Mo
   [IsScalarTower k⟦X⟧ k⸨X⸩ V] in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.PhiGam.sg`. Establish `hl0 : (0 : ℝ) < l` using `by exact_mod_cast (by omega : 0 < l)`. Establish `hsum` using `_root_.GlobalTheory.PhiGam.summable_sg (l := l) (by omega) h i`. Establish `step : ∀ J : ℕ, ∀ i : ZMod n, (a i : ℝ) ≤ a (i + J) / (l : ℝ) ^ J + ∑ j ∈ Finset.range J, (h (i + ((j + 1 : ℕ) : ZMod n)) : ℝ) / (l : ℝ) ^ (j + 1)`. Introduce `J`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `J with`. Consider the case `zero => intro i`. Simplify using the standard rewrite rules. Consider the case `succ J ih`. Introduce `i`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `ih i`. Establish `h2 : ((l * a (i + J) : ℕ) : ℝ) ≤ ((a (i + J + 1) + h (i + J + 1) : ℕ) : ℝ)` using `by exact_mod_cast ha (i + J)`. Move the coercions through the operations in `at h2`. Establish `e : i + ((J + 1 : ℕ) : ZMod n) = i + (J : ZMod n) + 1` using `by push_cast; ring`. Rewrite using `[Finset.sum_range_succ, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : (0 : ℝ) < (l : ℝ) ^ (J + 1)` using `by positivity`. Establish `h3 : (a (i + J) : ℝ) / (l : ℝ) ^ J ≤ a (i + J + 1) / (l : ℝ) ^ (J + 1) + h (i + J + 1) / (l : ℝ) ^ (J + 1)`. Rewrite using `[← add_div, le_div_iff₀ hp, pow_succ, ← mul_assoc, div_mul_cancel₀ _ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Apply `Nat.le_floor` to reduce the goal to its premises. Use `set S := ∑' j : ℕ, (h (i + ((j + 1 : ℕ) : ZMod n)) : ℝ) / (l : ℝ) ^ (j + 1)`. Use `set M : ℝ := ∑ j, (a j : ℝ)`. Establish `bound : ∀ J : ℕ, (a i : ℝ) ≤ M / (l : ℝ) ^ J + S`. Introduce `J`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : (a (i + J) : ℝ) ≤ M` using `Finset.single_le_sum (f := fun j => (a j : ℝ)) (fun j _ => by positivity) (Finset.mem_univ _)`. Establish `hpart : ∑ j ∈ Finset.range J, (h (i + ((j + 1 : ℕ) : ZMod n)) : ℝ) / (l : ℝ) ^ (j + 1) ≤ S` using `hsum.sum_le_tsum _ (fun j _ => by positivity)`. Use `step J i` as an intermediate fact. Establish `: (a (i + J) : ℝ) / (l : ℝ) ^ J ≤ M / (l : ℝ) ^ J` using `div_le_div_of_nonneg_right hM (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `lim : Filter.Tendsto (fun J : ℕ => M / (l : ℝ) ^ J + S) Filter.atTop (nhds (0 + S))` using `(tendsto_const_nhds.div_atTop (tendsto_pow_atTop_atTop_of_one_lt (by exact_mod_cast hl))).add tendsto_const_nhds`. Rewrite `lim` using `[zero_add]`. Conclude with `ge_of_tendsto' lim bound`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.PhiGam.Close.le_sg {l : ℕ} (hl : 1 < l) {n : ℕ} [NeZero n]
     (h a : ZMod n → ℕ) (ha : ∀ i, l * a i ≤ a (i + 1) + h (i + 1)) (i : ZMod n) :
@@ -462,13 +454,11 @@ theorem _root_.GlobalTheory.PhiGam.Close.le_sg {l : ℕ} (hl : 1 < l) {n : ℕ} 
   exact ge_of_tendsto' lim bound
 
 /- English proof (translation)
-Introduce `k _ l hl _ R n _ V _ _ _ _ _ _ _ _ D h N₁ N₂ h₁ h₂ c₁ c₂ i`. Establish `hex : ∀ i, ∃ a : ℕ, ∀ x ∈ N₁ i, vv k ^ a • x ∈ N₂ i` using `fun i => exists_pow (h₁ i).1 (h₂ i).2`. Establish `hrec : ∀ i, Nat.find (hex (i - 1)) ≤ (Nat.find (hex i) + h i) / l`. Introduce `i`. Use `Nat.find_min' _ fun x hx => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `key hl.out.pos R (D.φ i) (D.φ_semi i) (D.etale i) _ (h₂ _) _ x ?_` and prove the remaining obligations. Establish `e1 : D.φ i x ∈ N₁ i`. Use `(c₁ i).1 (Submodule.subset_span ⟨x, hx, rfl⟩)` as an intermediate fact. Rewrite `this` using `[sh_zero]`. Then use the resulting hypothesis. Establish `e2` using `(c₂ i).2 (mem_sh_of (h i) _ (Nat.find_spec (hex i) _ e1))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `e2` using `[← mul_smul, ← pow_add, add_comm]`. Then use the resulting hypothesis. Establish `hle` using `le_sg hl.out.one_lt h (fun i => Nat.find (hex i)) (fun i => by`. Use `hrec (i + 1)` as an intermediate fact. Simplify using `only [add_sub_cancel_right] at this`. Conclude with `(Nat.mul_le_mul_left l this).trans (Nat.mul_div_le _ _)) i`.
-
-Conclude with `sh_le fun x hx => pow_smul_mem hle (Nat.find_spec (hex i) x hx)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : ∀ {k : Type} [Field k] {l : ℕ} [Fact l.Prime] [CharP k l] (R : RingPG k l) {n : ℕ} [NeZero n] {V : Type} [AddCommGroup V] [Module k⸨X⸩ V] [Module k⟦X⟧ V] [Module k V] [IsScalarTower k⟦X⟧ k⸨X⸩ V] [IsScalarTower k k⸨X⸩ V] [IsScalarTower k k⟦X⟧ V] [FiniteDimensional k⸨X⸩ V] (D : ModPG R n V), ∀ (h : ZMod n → ℕ) (N₁ N₂ : ZMod n → Submodule k⟦X⟧ V), (∀ i, IsLat (N₁ i)) → (∀ i, IsLat (N₂ i)) → CondAB D.φ (fun _ => 0) (fun i => h i) N₁ → CondAB D.φ (fun _ => 0) (fun i => h i) N₂ → ∀ i, sh (sg l h i) (N₁ i) ≤ N₂ i := by
   intro k _ l hl _ R n _ V _ _ _ _ _ _ _ _ D h N₁ N₂ h₁ h₂ c₁ c₂ i

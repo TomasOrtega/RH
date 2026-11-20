@@ -13,9 +13,7 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ X p hs hp hg`. Use `haveI := hs`. Use `haveI := hp`. Use `haveI := hg`. Use `haveI : GeometricallyIntegral p := forall_geometricallyIntegral_of_smooth_of_geometricallyConnected X _ p hs hg`.
-
-Use `haveI : IsIso p.appTop := ProperFunctions.isIso_appTop_of_field p`. Conclude with `ConcreteCategory.bijective_of_isIso p.appTop`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem bijective_appTop_of_smooth_of_isProper_of_geometricallyConnected :
     ∀ (K : Type) [Field K] (X : Scheme.{0}) (p : X ⟶ Sp K), Smooth p → IsProper p →

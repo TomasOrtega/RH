@@ -36,7 +36,7 @@ def evHom : MvPowerSeries κ R →+* A :=
     (MvPowerSeries.substAlgHom (R := R) (ChartCompare.hasSubst_C a ha)).toRingHom
 
 /- English proof (translation)
-Simplify using `[evHom, MvPowerSeries.coe_substAlgHom, ChartCompare.subst_C_eq f a ha]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evHom_apply (f : MvPowerSeries κ R) : evHom ha f = nEval f a := by
   simp [evHom, MvPowerSeries.coe_substAlgHom, ChartCompare.subst_C_eq f a ha]
@@ -44,19 +44,19 @@ theorem evHom_apply (f : MvPowerSeries κ R) : evHom ha f = nEval f a := by
 include ha
 
 /- English proof (translation)
-Simplify using `only [← evHom_apply ha, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nEval_add (f g : MvPowerSeries κ R) : nEval (f + g) a = nEval f a + nEval g a := by
   simp only [← evHom_apply ha, map_add]
 
 /- English proof (translation)
-Simplify using `only [← evHom_apply ha, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nEval_sub (f g : MvPowerSeries κ R) : nEval (f - g) a = nEval f a - nEval g a := by
   simp only [← evHom_apply ha, map_sub]
 
 /- English proof (translation)
-Simplify using `only [← evHom_apply ha, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nEval_one : nEval (1 : MvPowerSeries κ R) a = 1 := by simp only [← evHom_apply ha, map_one]
 
@@ -144,20 +144,20 @@ section Basic
 variable {s : Sp Ω ⟶ S} {s' : Sp Ω ⟶ S'} {G : Over S} [GrpObj G] {p : ℕ}
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.ModuliIntegralCharts.H1.GermD.homAt_comp s f g`.
+A detailed English derivation is pending.
 -/
 theorem hom_comp {A B C : Type} [CommRing A] [Algebra Ω A] [CommRing B] [Algebra Ω B] [CommRing C] [Algebra Ω C]
     (f : A →ₐ[Ω] B) (g : B →ₐ[Ω] C) : homAt s g ≫ homAt s f = homAt s (g.comp f) :=
   Formalism.MainNotions.ModuliIntegralCharts.H1.GermD.homAt_comp s f g
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.ModuliIntegralCharts.H1.GermD.homAt_id s`.
+A detailed English derivation is pending.
 -/
 theorem hom_id {A : Type} [CommRing A] [Algebra Ω A] : homAt s (AlgHom.id Ω A) = 𝟙 _ :=
   Formalism.MainNotions.ModuliIntegralCharts.H1.GermD.homAt_id s
 
 /- English proof (translation)
-Use `h.2 A 0 0 (zero_pow hp) (zero_pow hp)` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsAlpha.zero {g : Fam s G} (h : IsAlpha p s G g) (hp : p ≠ 0) (A : Type) [CommRing A] [Algebra Ω A] :
     g A 0 = 1 := by
@@ -166,7 +166,7 @@ theorem IsAlpha.zero {g : Fam s G} (h : IsAlpha p s G g) (hp : p ≠ 0) (A : Typ
   exact left_eq_mul.1 this
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using h.zero hp A`. Consider the case `succ n ih => rw [Nat.cast_succ, add_mul, _root_.one_mul, h.2 A _ _ (by rw [mul_pow, ha, mul_zero]) ha, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem IsAlpha.nsmul {g : Fam s G} (h : IsAlpha p s G g) (hp : p ≠ 0) {A : Type} [CommRing A] [Algebra Ω A] {a : A}
     (ha : a ^ p = 0) (n : ℕ) : g A (n * a) = g A a ^ n := by
@@ -175,14 +175,14 @@ theorem IsAlpha.nsmul {g : Fam s G} (h : IsAlpha p s G g) (hp : p ≠ 0) {A : Ty
   | succ n ih => rw [Nat.cast_succ, add_mul, _root_.one_mul, h.2 A _ _ (by rw [mul_pow, ha, mul_zero]) ha, ih, pow_succ]
 
 /- English proof (translation)
-Rewrite using `[← h.nsmul hp ha, ← map_natCast (algebraMap Ω A), CharP.cast_eq_zero, map_zero, zero_mul, h.zero hp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem IsAlpha.pow_eq_one [CharP Ω p] {g : Fam s G} (h : IsAlpha p s G g) (hp : p ≠ 0) {A : Type} [CommRing A]
     [Algebra Ω A] {a : A} (ha : a ^ p = 0) : g A a ^ p = 1 := by
   rw [← h.nsmul hp ha, ← map_natCast (algebraMap Ω A), CharP.cast_eq_zero, map_zero, zero_mul, h.zero hp]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun A A' _ _ _ _ f a ha => by beta_reduce; rw [h.1 A A' f a ha, hτ.1], fun A _ _ a a' ha ha' => by beta_reduce; rw [h.2 A a a' ha ha', map_mul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsAlpha.map {B : Over S'} [GrpObj B] {X : Type} [AddCommGroup X] {τ : PtHom s s' G B} {io : TorHom s G X}
     (hτ : IsTorExt s s' G B X τ io) {g : Fam s G} (h : IsAlpha p s G g) :
@@ -191,9 +191,9 @@ theorem IsAlpha.map {B : Over S'} [GrpObj B] {X : Type} [AddCommGroup X] {τ : P
     fun A _ _ a a' ha ha' => by beta_reduce; rw [h.2 A a a' ha ha', map_mul]⟩
 
 /- English proof (translation)
-Take `⟨ζ, hζ, -⟩` from `UU.existsUnique_cubWeil c hx hy`. Establish `e` using `congrArg Units.val ((hζ.comp (homAt s f)).unique h)`. Establish `inj : Function.Injective (homAt s f).left.appTop.hom`. Establish `h₁` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (f : A →+* B))`. Establish `h₂ : Function.Injective ((Scheme.ΓSpecIso (CommRingCat.of A)).hom ≫ CommRingCat.ofHom (f : A →+* B)).hom` using `hf.comp (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of A)).hom).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h₂` using `[← h₁]`. Conclude with `Function.Injective.of_comp (f := (Scheme.ΓSpecIso (CommRingCat.of B)).hom.hom) h₂`. Take `rfl : ζ = 1` from `Units.ext (inj (e.trans (map_one _).symm))`. Conclude with `hζ`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cubWeil_of_injective [IsCommMonObj G] {L : RigLB G} {c : CubicalStr G L} {n : ℕ} {A B : Type} [CommRing A]
     [Algebra Ω A] [CommRing B] [Algebra Ω B] (f : A →ₐ[Ω] B) (hf : Function.Injective f) {x y : overAt s A ⟶ G}
@@ -210,7 +210,7 @@ theorem cubWeil_of_injective [IsCommMonObj G] {L : RigLB G} {c : CubicalStr G L}
   exact hζ
 
 /- English proof (translation)
-Simplify using `using (h.symm.mul_left h'.symm).symm`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cubWeil_mul_right [IsCommMonObj G] {L : RigLB G} {c : CubicalStr G L} {n : ℕ} {T : Over S} {x y y' : T ⟶ G}
     (h : CubWeil c n x y 1) (h' : CubWeil c n x y' 1) : CubWeil c n x (y * y') 1 := by

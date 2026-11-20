@@ -9,21 +9,21 @@ noncomputable section
 variable {TT : ℝ} {α : ℂ → ℂ}
 
 /- English proof (translation)
-Conclude with `(contDiffOn_bet hα).continuousOn`.
+A detailed English derivation is pending.
 -/
 theorem continuousOn_bet (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) α (An TT)) :
     ContinuousOn (bet α) (Hh TT) := by
   exact (contDiffOn_bet hα).continuousOn
 
 /- English proof (translation)
-Conclude with `(continuousOn_bet hα).comp_continuous (by fun_prop) (vert_mem hTT)`.
+A detailed English derivation is pending.
 -/
 theorem cont_vert (hTT : 0 ≤ TT) (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) α (An TT)) :
     Continuous fun θ : ℝ => bet α (x0 TT + (θ : ℂ) * I) := by
   exact (continuousOn_bet hα).comp_continuous (by fun_prop) (vert_mem hTT)
 
 /- English proof (translation)
-Establish `hint : IntervalIntegrable (fun θ : ℝ => I * bet α (x0 TT + (θ : ℂ) * I)) MeasureTheory.volume 0 (2 * Real.pi)` using `(continuous_const.mul (cont_vert hTT hα)).intervalIntegrable _ _`. Rewrite using `[circleIntegral_eq hTT, ← Complex.imCLM_apply, ← ContinuousLinearMap.intervalIntegral_comp_comm _ hint]`. Use `congr 1`. Use function extensionality and compare the values at `θ`. Simplify using `[Complex.mul_im]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem im_circleIntegral (hTT : 0 ≤ TT) (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) α (An TT)) :
     (circleIntegral α 0 (TT + 1)).im = ∫ θ in (0 : ℝ)..2 * Real.pi, (bet α (x0 TT + (θ : ℂ) * I)).re := by
@@ -36,11 +36,11 @@ theorem im_circleIntegral (hTT : 0 ≤ TT) (hα : ContDiffOn ℝ ((⊤ : ℕ∞)
   simp [Complex.mul_im]
 
 /- English proof (translation)
-Rewrite using `[im_circleIntegral hTT hα]`. Establish `hw : x0 TT + 2 * Real.pi * I - x0 TT = ((2 * Real.pi : ℝ) : ℂ) * I` using `by push_cast; ring`. Establish `harg : ∀ t : ℝ, x0 TT + (t : ℂ) * (((2 * Real.pi : ℝ) : ℂ) * I) = x0 TT + ((2 * Real.pi * t : ℝ) : ℂ) * I`. Introduce `t`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `him : ∀ z : ℂ, (z * (((2 * Real.pi : ℝ) : ℂ) * I)).im = 2 * Real.pi * z.re`. Introduce `z`. Simplify using `[Complex.mul_im, Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [th, prim, hw, om_apply, harg, him]`. Rewrite using `[intervalIntegral.integral_const_mul, intervalIntegral.integral_const_mul, intervalIntegral.integral_comp_mul_left (f := fun θ : ℝ => (bet α (x0 TT + (θ : ℂ) * I)).re) (by positivity : (2 * Real.pi) ≠ 0)]`. Simplify using `only [mul_zero, mul_one, smul_eq_mul]`. Establish `hpi : (2 * Real.pi) * (2 * Real.pi)⁻¹ = 1` using `mul_inv_cancel₀ (by positivity)`. Rewrite using `[← mul_assoc (2 * Real.pi), hpi, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem th_top (hTT : 0 ≤ TT) (hα : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) α (An TT)) :
     th TT α (x0 TT + 2 * Real.pi * I) = 2 * (circleIntegral α 0 (TT + 1)).im := by

@@ -5,19 +5,19 @@ namespace PositivityTheory.HtPt.Pdvr
 open Polynomial IsLocalRing
 
 /- English proof (translation)
-Take `⟨P, hP, hdeg, hPm⟩` from `lifts_and_degree_eq_and_monic ((mem_lifts q).mpr (map_surjective (residue V) residue_surjective q)) hm`. Establish `hPi : Irreducible P` using `Monic.irreducible_of_irreducible_map (residue V) P hPm (hP ▸ hq)`. Establish `: IsDomain (AdjoinRoot P)` using `AdjoinRoot.isDomain_of_prime hPi.prime`. Establish `hinj : Function.Injective (AdjoinRoot.of P)` using `AdjoinRoot.of.injective_of_degree_ne_zero (hdeg ▸ (degree_pos_of_irreducible hq).ne')`. Establish `: Module.Finite V (AdjoinRoot P)` using `hPm.finite_adjoinRoot`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmax : (Ideal.map (AdjoinRoot.of P) (maximalIdeal V)).IsMaximal`. Apply `Ideal.Quotient.maximal_of_isField` to reduce the goal to its premises. Establish `: Fact (Irreducible (P.map (residue V)))` using `⟨hP ▸ hq⟩`. Establish `h1 : IsField (AdjoinRoot (P.map (residue V)))` using `Field.toIsField _`. Conclude with `MulEquiv.isField h1 (AdjoinRoot.quotEquivQuotMap P (maximalIdeal V)).toRingEquiv.toMulEquiv`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huniq : ∀ M : Ideal (AdjoinRoot P), M.IsMaximal → M = Ideal.map (AdjoinRoot.of P) (maximalIdeal V)`. Introduce `M hM`. Establish `h1 : (M.comap (algebraMap V (AdjoinRoot P))).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal M`. Establish `h2` using `eq_maximalIdeal h1`. Use `(hmax.eq_of_le hM.ne_top ?_).symm` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_le_iff_le_comap, ← h2]`. Conclude with `le_rfl`. Establish `: IsLocalRing (AdjoinRoot P)` using `.of_unique_max_ideal ⟨_, hmax, huniq⟩`. Establish `hme : maximalIdeal (AdjoinRoot P) = Ideal.map (AdjoinRoot.of P) (maximalIdeal V)` using `huniq _ inferInstance`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible V`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hme' : maximalIdeal (AdjoinRoot P) = Ideal.span {AdjoinRoot.of P π}`. Rewrite using `[hme, hπ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]`. Establish `hnf : ¬ IsField (AdjoinRoot P)`. Rewrite using `[isField_iff_maximalIdeal_eq, hme', Ideal.span_singleton_eq_bot]`. Conclude with `fun h => hπ.ne_zero (hinj (h.trans (map_zero _).symm))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsNoetherianRing (AdjoinRoot P)` using `IsNoetherianRing.of_finite V _`. Establish `hdvr : IsDiscreteValuationRing (AdjoinRoot P)` using `((IsDiscreteValuationRing.TFAE (AdjoinRoot P) hnf).out 0 4).mpr (show (maximalIdeal (AdjoinRoot P)).IsPrincipal from ⟨_, hme'⟩)`. Establish `hloc : IsLocalHom (AdjoinRoot.of P)`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: AdjoinRoot.of P a ∈ maximalIdeal (AdjoinRoot P)` using `hme ▸ Ideal.mem_map_of_mem _ h`. Conclude with `this ha`. Use `⟨AdjoinRoot P, inferInstance, inferInstance, hdvr, AdjoinRoot.of P, hloc, hinj, residue _ (AdjoinRoot.root P), ?_⟩` and prove the remaining obligations. Rewrite using `[← hP, Polynomial.map_map, ResidueField.map_comp_residue, IsRoot.def, eval_map, ← Polynomial.hom_eval₂, AdjoinRoot.eval₂_root, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_root (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     (q : (ResidueField V)[X]) (hm : q.Monic) (hq : Irreducible q) :
@@ -72,17 +72,15 @@ theorem exists_root (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRin
     ← Polynomial.hom_eval₂, AdjoinRoot.eval₂_root, map_zero]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `V _ _ _ q hq`. Conclude with `⟨V, inferInstance, inferInstance, inferInstance, RingHom.id V, inferInstance, Function.injective_id, (Splits.of_natDegree_eq_zero hq).map _⟩`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `V _ _ _ q hq`. Establish `hq0 : q ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hq`. Establish `hnu : ¬ IsUnit q` using `not_isUnit_of_natDegree_pos q (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨g, hgm, hgi, hgd⟩` from `exists_monic_irreducible_factor q hnu`. Take `⟨R, _, _, _, f, _, hf, a, ha⟩` from `exists_root V g hgm hgi`. Establish `hr : (q.map (ResidueField.map f)).IsRoot a` using `ha.dvd (Polynomial.map_dvd _ hgd)`. Take `⟨q', hq'⟩` from `dvd_iff_isRoot.mpr hr`. Establish `hq1 : q.map (ResidueField.map f) ≠ 0` using `Polynomial.map_ne_zero hq0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd : q'.natDegree = n`. Establish `h1` using `congrArg natDegree hq'`. Establish `h2 : q' ≠ 0`. Introduce and unpack `rfl`. Conclude with `hq1 (by rw [hq', mul_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[natDegree_map, natDegree_mul (X_sub_C_ne_zero a) h2, natDegree_X_sub_C]`. Use linear arithmetic over natural numbers and integers. Take `⟨S, _, _, _, f', _, hf', hs⟩` from `ih R q' hd`. Use `⟨S, inferInstance, inferInstance, inferInstance, f'.comp f, inferInstance, hf'.comp hf, ?_⟩` and prove the remaining obligations. Rewrite using `[ResidueField.map_comp, ← Polynomial.map_map, hq', Polynomial.map_mul]`.
-
-Conclude with `((Splits.X_sub_C a).map _).mul hs`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_splits (n : ℕ) : ∀ (V : Type) [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] (q : (ResidueField V)[X]), q.natDegree = n →
@@ -119,31 +117,27 @@ theorem exists_splits (n : ℕ) : ∀ (V : Type) [CommRing V] [IsDomain V]
     exact ((Splits.X_sub_C a).map _).mul hs
 
 /- English proof (translation)
-Set `R` to `AdicCompletion (maximalIdeal V) V`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Set `ϖ : R` to `algebraMap V R π`. Establish `hme : maximalIdeal R = Ideal.span {ϖ}`. Use `AdicCompletion.maximalIdeal_eq_map.trans ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg (Ideal.map (algebraMap V R)) hπ.maximalIdeal_eq).trans ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_span, Set.image_singleton]`. Establish `hreg : ∀ r : V, r ≠ 0 → ∀ x : R, algebraMap V R r * x = 0 → x = 0`. Introduce `r hr x hx`. Establish `h1 : IsSMulRegular R r` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (mem_nonZeroDivisors_of_ne_zero hr)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `h1` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `r • x = r • (0 : R)`. Rewrite using `[smul_zero, Algebra.smul_def, hx]`. Establish `hfac : ∀ x : R, x ≠ 0 → ∃ (n : ℕ) (u : Rˣ), ϖ ^ n * u = x`. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hex : ∃ n : ℕ, ¬ ϖ ^ n ∣ x`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hx` to reduce the goal to its premises. Use `IsHausdorff.haus' (I := maximalIdeal R) x fun n => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, hme, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Conclude with `h n`. Establish `h0 : Nat.find hex ≠ 0`. Introduce `h`. Use `Nat.find_spec hex` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[h, pow_zero]`. Conclude with `this (one_dvd _)`. Take `⟨n, hn⟩` from `Nat.exists_eq_succ_of_ne_zero h0`. Establish `h1 : ϖ ^ n ∣ x` using `not_not.mp (Nat.find_min hex (by omega))`. Take `⟨y, rfl⟩` from `h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hy : IsUnit y`. Assume the negation of the conclusion as `h`. Establish `h2 : y ∈ maximalIdeal R` using `h`. Rewrite `h2` using `[hme, Ideal.mem_span_singleton]`. Establish `h3` using `Nat.find_spec hex`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `h3` using `[hn, pow_succ]`. Conclude with `h3 (mul_dvd_mul_left _ h2)`. Conclude with `⟨n, hy.unit, rfl⟩`. Establish `: NoZeroDivisors R` using `⟨fun {a b} hab => by`. Distinguish the cases in `ha : a = 0`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Or.inl ha`. Use `right`. Take `⟨n, u, rfl⟩` from `hfac a ha`. Establish `h1 : algebraMap V R (π ^ n) * (u * b) = 0`. Rewrite using `[map_pow, ← mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hab`. Establish `h2` using `hreg _ (pow_ne_zero n hπ.ne_zero) _ h1`. Conclude with `(Units.mul_right_eq_zero u).mp h2⟩`. Establish `: IsDomain R` using `NoZeroDivisors.to_isDomain R`. Establish `hinj : Function.Injective (algebraMap V R)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `h`. Conclude with `one_ne_zero (hreg a h 1 (by rw [ha, zero_mul]))`. Establish `hϖ0 : ϖ ≠ 0` using `fun h => hπ.ne_zero (hinj (h.trans (map_zero _).symm))`.
-
-Establish `hϖ : Irreducible ϖ`. Use `Prime.irreducible ((Ideal.span_singleton_prime hϖ0).mp ?_)` and prove the remaining obligations. Rewrite using `[← hme]`. Use `infer_instance`. Establish `hdvr : IsDiscreteValuationRing R` using `IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨ϖ, hϖ, fun {x} hx => hfac x hx⟩`.
-
-Conclude with `⟨R, inferInstance, inferInstance, hdvr, algebraMap V R, inferInstance, (inferInstance : IsAdicComplete (maximalIdeal R) R), hinj⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_complete (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] :
     ∃ (R : Type) (_ : CommRing R) (_ : IsDomain R) (_ : IsDiscreteValuationRing R)
@@ -218,15 +212,15 @@ theorem exists_complete (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuatio
     (inferInstance : IsAdicComplete (maximalIdeal R) R), hinj⟩
 
 /- English proof (translation)
-Introduce `V _ _ _ l _ _ _`. Set `b` to `Module.finBasis (ResidueField V) l`. Set `q : (ResidueField V)[X]` to `∏ i, minpoly (ResidueField V) (b i)`. Establish `hint : ∀ x : l, IsIntegral (ResidueField V) x` using `fun x => Algebra.IsIntegral.isIntegral x`. Establish `hq0 : q ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun i _ => minpoly.ne_zero (hint _)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨S, _, _, _, f, _, hf, hs⟩` from `exists_splits _ V q rfl`. Take `⟨R, _, _, _, g, _, hR, hg⟩` from `exists_complete S`. Establish `hs' : (q.map (ResidueField.map (g.comp f))).Splits`. Rewrite using `[ResidueField.map_comp, ← Polynomial.map_map]`. Conclude with `hs.map _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `: Algebra (ResidueField V) (ResidueField R)` to `(ResidueField.map (g.comp f)).toAlgebra`. Establish `htop : IntermediateField.adjoin (ResidueField V) (Set.range b) = ⊤`. Rewrite using `[IntermediateField.adjoin_eq_top_iff, eq_top_iff]`. Introduce `x _`. Establish `: x ∈ Submodule.span (ResidueField V) (Set.range b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[b.span_eq]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `Algebra.span_le_adjoin _ _ this`. Choose the witnesses or unpack the hypotheses as in `⟨s⟩ : Nonempty (l →ₐ[ResidueField V] ResidueField R) := by`. Use `IntermediateField.nonempty_algHom_of_adjoin_splits ?_ htop` and prove the remaining obligations.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Use `⟨hint _, ?_⟩` and prove the remaining obligations. Conclude with `hs'.of_dvd (Polynomial.map_ne_zero hq0) (Polynomial.map_dvd _ (Finset.dvd_prod_of_mem _ (Finset.mem_univ i)))`. Conclude with `⟨R, inferInstance, inferInstance, inferInstance, g.comp f, inferInstance, s.toRingHom, hR, hg.comp hf, s.comp_algebraMap⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dvr_ext : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (l : Type)
     [Field l] [Algebra (IsLocalRing.ResidueField V) l]

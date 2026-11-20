@@ -18,41 +18,35 @@ variable {S T : Type*} [CommRing S] [CommRing T] [Algebra S T] (M : Submonoid S)
   [IsLocalization M T]
 
 /- English proof (translation)
-Use `set W' := W.map (algebraMap S T)`. Use `set J' := J.map (algebraMap S T)`. Establish `hcomap : W'.comap (algebraMap S T) = W` using `IsLocalization.under_map_of_isPrime_disjoint M T ‹_› hW`. Establish `hnot : ∀ x : S, x ∉ W → algebraMap S T x ∉ W'` using `fun x hx h => hx (hcomap ▸ Ideal.mem_comap.mpr h)`. Use `haveI : IsLocalization.AtPrime (Localization.AtPrime W') W := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `IsLocalization.isLocalization_isLocalization_atPrime_isLocalization M (Localization.AtPrime W') W'` as an intermediate fact. Unfold `IsLocalization.AtPrime at this ⊢`. Use `this using 2` and compare the differences between its conclusion and the goal. Conclude with `hcomap.symm`. Set `σ : Localization.AtPrime W ≃ₐ[S] Localization.AtPrime W'` to `IsLocalization.algEquiv W.primeCompl _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Set `N` to `LocalizedModule W'.primeCompl (T ⧸ J')`. Use `letI iAN : Module (Localization.AtPrime W) N := Module.compHom N (σ : Localization.AtPrime W →+* Localization.AtPrime W')`. Use `letI iAB : Algebra (Localization.AtPrime W) (Localization.AtPrime W') := (σ : Localization.AtPrime W →+* Localization.AtPrime W').toAlgebra`. Use `haveI : IsScalarTower (Localization.AtPrime W) (Localization.AtPrime W') N := ⟨fun a b n => mul_smul (σ a) b n⟩`. Use `haveI : IsScalarTower S (Localization.AtPrime W) N := by`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨fun s a n => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_smul, Algebra.smul_def]`. Use `_ = algebraMap S (Localization.AtPrime W') s • (σ a • n) := mul_smul _ _ _`. Use `_ = algebraMap T (Localization.AtPrime W') (algebraMap S T s) • (σ a • n) := by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← IsScalarTower.algebraMap_apply]`. Use `_ = algebraMap S T s • (σ a • n) := algebraMap_smul _ _ _`. Use `_ = s • (σ a • n) := algebraMap_smul _ _ _`. Use `_ = s • (a • n) := rfl`. Set `q : (S ⧸ J) →ₐ[S] (T ⧸ J')` to `Ideal.quotientMapₐ J' (Algebra.ofId S T) (fun x hx => Ideal.mem_comap.mpr (Ideal.mem_map_of_mem _ hx))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `g : (S ⧸ J) →ₗ[S] N` to `{ toFun := fun x => LocalizedModule.mk (q x) 1 map_add' := fun x y => by`. Rewrite using `[map_add, LocalizedModule.mk_add_mk, one_smul, one_smul, mul_one]`. Use the proof step `map_smul' := fun s x => by`. Simplify using `only [RingHom.id_apply]`. Rewrite using `[LocalizedModule.smul'_mk, map_smul] }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hm : ∀ m : M, (m : S) ∉ W` using `fun m hm => Set.disjoint_left.mp hW m.2 hm`. Establish `hden : ∀ (t : T) (b : S) (m' : M), t ∉ W' → t * algebraMap S T m' = algebraMap S T b → b ∉ W`. Introduce `t b m' ht hb hbW`. Establish `: t * algebraMap S T m' ∈ W'` using `hb ▸ Ideal.mem_map_of_mem _ hbW`. Break down `(inferInstance : W'.IsPrime).mem_or_mem this with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `ht h`. Conclude with `hm m' (hcomap ▸ Ideal.mem_comap.mpr h)`. Use `haveI hg : IsLocalizedModule W.primeCompl g := by`. Prove the components needed by the constructor for the conclusion. Introduce `s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Module.End.isUnit_iff]`. Establish `hu` using `IsLocalizedModule.map_units (LocalizedModule.mkLinearMap W'.primeCompl (T ⧸ J')) (⟨algebraMap S T s, hnot s s.2⟩ : W'.primeCompl)`. Rewrite `hu` using `[Module.End.isUnit_iff]`. Use `hu using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Module.algebraMap_end_apply]`. Conclude with `(algebraMap_smul T (s : S) n).symm`. Introduce `n`. Proceed by induction on `n using LocalizedModule.induction_on with`. Consider the case `h y t`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y0, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨⟨a, m⟩, hy⟩` from `IsLocalization.surj M y0`. Take `⟨⟨b, m'⟩, ht⟩` from `IsLocalization.surj M (t : T)`. Simplify using `only at hy ht`. Establish `hb : b ∉ W` using `hden t b m' t.2 ht`.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨⟨Ideal.Quotient.mk J (a * m'), ⟨b * m, W.primeCompl.mul_mem hb (hm m)⟩⟩, ?_⟩` and prove the remaining obligations. Use `show (b * m) • LocalizedModule.mk (Ideal.Quotient.mk J' y0) t = LocalizedModule.mk (Ideal.Quotient.mk J' (algebraMap S T (a * m'))) 1`. Rewrite using `[LocalizedModule.smul'_mk, LocalizedModule.mk_eq, ← algebraMap_smul T (b * m)]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul, one_smul, one_smul, Submonoid.smul_def]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk J' (algebraMap S T (b * m) * y0) = Ideal.Quotient.mk J' ((t : T) * algebraMap S T (a * m'))`. Use `congr 1`. Simplify using `only [map_mul]`. Take the linear combination `(algebraMap S T b) * hy - (algebraMap S T a) * ht`. Introduce `x₁ x₂ h`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x₁, rfl⟩` from `Ideal.Quotient.mk_surjective x₁`. Take `⟨x₂, rfl⟩` from `Ideal.Quotient.mk_surjective x₂`. Express the relevant statement in the definitionally equal form `LocalizedModule.mk (Ideal.Quotient.mk J' (algebraMap S T x₁)) 1 = LocalizedModule.mk (Ideal.Quotient.mk J' (algebraMap S T x₂)) 1 at h`. Take `⟨u, hu⟩` from `LocalizedModule.mk_eq.mp h`. Rewrite `hu` using `[one_smul, one_smul, Submonoid.smul_def, Submonoid.smul_def]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk J' ((u : T) * algebraMap S T x₁) = Ideal.Quotient.mk J' ((u : T) * algebraMap S T x₂) at hu`. Rewrite `hu` using `[Ideal.Quotient.eq]`. Take `⟨⟨c, m''⟩, hc⟩` from `IsLocalization.surj M (u : T)`. Simplify using `only at hc`. Establish `hcW : c ∉ W` using `hden u c m'' u.2 hc`.
-
-Establish `hmem : algebraMap S T (c * (x₁ - x₂)) ∈ J'`. Use `J'.mul_mem_left (algebraMap S T m'') hu` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul, map_sub, ← hc]`. Expand and normalize the polynomial expressions, which then agree.
-
-Take `⟨m3, hm3, hJ⟩` from `(IsLocalization.algebraMap_mem_map_algebraMap_iff (M := M) (S := T) J _).mp hmem`. Use `⟨⟨m3 * c, W.primeCompl.mul_mem (hm ⟨m3, hm3⟩) hcW⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Submonoid.smul_def, Submonoid.smul_def, Algebra.smul_def, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, ← map_mul, Ideal.Quotient.eq]`. Use `hJ using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
-
-Set `e : LocalizedModule W.primeCompl (S ⧸ J) ≃ₗ[S] N` to `IsLocalizedModule.iso W.primeCompl g`. Rewrite using `[(e.extendScalarsOfIsLocalization W.primeCompl (Localization.AtPrime W)).length_eq]`. Conclude with `Module.length_eq_of_surjective σ.surjective`.
+A detailed English derivation is pending.
 -/
 theorem length_eq (J W : Ideal S) [W.IsPrime] (hW : Disjoint (M : Set S) W)
     [(W.map (algebraMap S T)).IsPrime] :
@@ -176,9 +170,9 @@ variable {K : Type*} {ι : K → Type*} {O : Type*} [CommRing O] [IsDomain O]
   [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨a, ha, rfl⟩ haW`. Establish `ha0 : a ≠ 0` using `nonZeroDivisors.ne_zero ha`. Take `⟨k, u, hu⟩` from `IsDiscreteValuationRing.associated_pow_irreducible ha0 hϖ`. Establish `hpow : (C ϖ : MRing ι O) ^ k ∈ W`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, ← hu, map_mul]`. Conclude with `W.mul_mem_right _ haW`. Conclude with `hW (‹W.IsPrime›.mem_of_pow_mem k hpow)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem disjoint_nonZeroDivisors {ϖ : O} (hϖ : Irreducible ϖ) (W : Ideal (MRing ι O)) [W.IsPrime]
     (hW : (C ϖ : MRing ι O) ∉ W) :
@@ -200,43 +194,37 @@ end GenericCycleCorresp
 attribute [local instance] MvPolynomial.algebraMvPolynomial in
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P s _ _ _ n`. Set `M : Submonoid (MRing ι O)` to `(nonZeroDivisors O).map (C (σ := (Σ k, ι k)) (R := O))`. Establish `hgen : ∀ W : Ideal (MRing ι O), genFib W = W.map (algebraMap (MRing ι O) (MRing ι (FractionRing O)))` using `fun _ => rfl`. Use `set J := P ⊔ Ideal.span {s}`. Use `set s' := MvPolynomial.map (algebraMap O (FractionRing O)) s`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ : genFib P ⊔ Ideal.span {s'} = J.map (algebraMap (MRing ι O) (MRing ι (FractionRing O)))`. Rewrite using `[Ideal.map_sup, Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression. Establish `hϖM : (C ϖ : MRing ι O) ∈ M` using `⟨ϖ, mem_nonZeroDivisors_of_ne_zero hϖ.ne_zero, rfl⟩`. Establish `hcorr : ∀ W : Ideal (MRing ι O), W.IsPrime → (C ϖ : MRing ι O) ∉ W → (genFib W).IsPrime ∧ (genFib W).comap (algebraMap (MRing ι O) (MRing ι (FractionRing O))) = W`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `W hWp hWϖ`. Establish `hd` using `GenericCycleCorresp.disjoint_nonZeroDivisors hϖ W hWϖ`. Conclude with `⟨IsLocalization.isPrime_of_isPrime_disjoint M _ W hWp hd, IsLocalization.under_map_of_isPrime_disjoint M (MRing ι (FractionRing O)) hWp hd⟩`. Establish `hmin : ∀ W : Ideal (MRing ι O), W ∈ J.minimalPrimes → (C ϖ : MRing ι O) ∉ W → genFib W ∈ (genFib P ⊔ Ideal.span {s'}).minimalPrimes`. Introduce `W hWm hWϖ`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJ, IsLocalization.minimalPrimes_map M]`. Use `show (genFib W).comap (algebraMap (MRing ι O) (MRing ι (FractionRing O))) ∈ J.minimalPrimes`. Rewrite using `[(hcorr W hWm.1.1 hWϖ).2]`. Conclude with `hWm`. Establish `hkey : ∀ W : Ideal (MRing ι O), W ∈ J.minimalPrimes → (C ϖ : MRing ι O) ∉ W → divCycle P s W = divCycle (genFib P) s' (genFib W)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `W hWm hWϖ`. Use `haveI hWp : W.IsPrime := hWm.1.1`. Take `⟨hWp', hcomap⟩` from `hcorr W hWp hWϖ`. Establish `hrel : IsRelevant (genFib W) ↔ IsRelevant W`. Use `forall_congr' fun k => exists_congr fun i => not_congr ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `hX : (X ⟨k, i⟩ : MRing ι (FractionRing O)) = algebraMap (MRing ι O) (MRing ι (FractionRing O)) (X ⟨k, i⟩)` using `(MvPolynomial.map_X _ _).symm`. Rewrite using `[hX, ← Ideal.mem_comap, hcomap]`. Establish `hl : ∀ (h₁ : W.IsPrime) (h₂ : (genFib W).IsPrime), @multAt _ _ _ _ J W h₁ = @multAt _ _ _ _ (genFib P ⊔ Ideal.span {s'}) (genFib W) h₂`. Introduce `h₁ h₂`. Unfold `multAt`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJ]`. Use `haveI : (W.map (algebraMap (MRing ι O) (MRing ι (FractionRing O)))).IsPrime := h₂`. Conclude with `GenericCycleCorresp.length_eq M J W (GenericCycleCorresp.disjoint_nonZeroDivisors hϖ W hWϖ)`. Unfold `divCycle`. Distinguish the cases in `hr : IsRelevant W`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[dif_pos ⟨hWm, hr⟩, dif_pos ⟨hmin W hWm hWϖ, hrel.mpr hr⟩, hl]`. Rewrite using `[dif_neg (fun h => hr h.2), dif_neg (fun h => hr (hrel.mp h.2))]`. Establish `hsupp : ∀ (Q : Ideal (MRing ι (FractionRing O))) (x) (W : Ideal (MRing ι (FractionRing O))), divCycle Q x W ≠ 0 → W ∈ (Q ⊔ Ideal.span {x}).minimalPrimes`. Introduce `Q x W h`. Unfold `divCycle at h`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `split_ifs at h with hh`. Conclude with `hh.1`. Conclude with `absurd rfl h`. Establish `hsupp0 : ∀ W : Ideal (MRing ι O), divCycle P s W ≠ 0 → W ∈ J.minimalPrimes`. Introduce `W h`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Unfold `divCycle at h`. Use `split_ifs at h with hh`. Conclude with `hh.1`. Conclude with `absurd rfl h`. Unfold `cycEval`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Set `A : Set (Ideal (MRing ι O))` to `{W | W ∈ J.minimalPrimes ∧ (C ϖ : MRing ι O) ∉ W}`. Set `B : Set (Ideal (MRing ι (FractionRing O)))` to `(genFib P ⊔ Ideal.span {s'}).minimalPrimes`. Establish `hA : (∑ᶠ W, divCycle P s W * (if (C ϖ : MRing ι O) ∈ W then 0 else n (genFib W))) = ∑ᶠ W ∈ A, divCycle P s W * (if (C ϖ : MRing ι O) ∈ W then 0 else n (genFib W))`. Rewrite using `[finsum_mem_def]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `W`. Use `symm`. Rewrite using `[Set.indicator_apply_eq_self]`. Introduce `hW`. Distinguish the cases in `hϖW : (C ϖ : MRing ι O) ∈ W`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[if_pos hϖW, mul_zero]`. Establish `: divCycle P s W = 0`. Assume the negation of the conclusion as `h`. Conclude with `hW ⟨hsupp0 W h, hϖW⟩`. Rewrite using `[this, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hB : (∑ᶠ W, divCycle (genFib P) s' W * n W) = ∑ᶠ W ∈ B, divCycle (genFib P) s' W * n W`. Rewrite using `[finsum_mem_def]`. Use `congr 1`. Use function extensionality and compare the values at `W`. Use `symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Set.indicator_apply_eq_self]`. Introduce `hW`. Establish `: divCycle (genFib P) s' W = 0`. Assume the negation of the conclusion as `h`. Conclude with `hW (hsupp _ _ W h)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this, zero_mul]`. Rewrite using `[hA, hB]`. Use `finsum_mem_eq_of_bijOn genFib ⟨?_, ?_, ?_⟩ ?_` and prove the remaining obligations. Introduce `W hW`. Conclude with `hmin W hW.1 hW.2`.
-
-Introduce `W₁ hW₁ W₂ hW₂ h`. Rewrite using `[← (hcorr W₁ hW₁.1.1.1 hW₁.2).2, ← (hcorr W₂ hW₂.1.1.1 hW₂.2).2]`. Conclude with `congrArg _ h`. Introduce `W' hW'`. Establish `hW'p : W'.IsPrime` using `hW'.1.1`.
-
-Establish `hW'm` using `hW'`. Express the relevant statement in the definitionally equal form `W' ∈ (genFib P ⊔ Ideal.span {s'}).minimalPrimes at hW'm`. Rewrite `hW'm` using `[hJ, IsLocalization.minimalPrimes_map M]`. Use `⟨W'.comap (algebraMap (MRing ι O) (MRing ι (FractionRing O))), ⟨hW'm, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `h`.
-
-Rewrite `h` using `[Ideal.mem_comap]`. Conclude with `hW'p.ne_top (Ideal.eq_top_of_isUnit_mem _ h (IsLocalization.map_units (MRing ι (FractionRing O)) (⟨_, hϖM⟩ : M)))`. Conclude with `IsLocalization.map_under M (MRing ι (FractionRing O)) W'`. Introduce `W hW`. Rewrite using `[if_neg hW.2, hkey W hW.1 hW.2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GenericCycleCorresp.proof : GenericCycleCorresp.Statement.{u} := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ P s _ _ _ n

@@ -11,7 +11,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open GlobalTheory.UnitLemma GlobalTheory.InertUnitOrb
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.InertUnitOrb.LatOnto.exists_unitLat_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSelfDualLatticeStandardHermitian.lean&line=39#L39)
 -/

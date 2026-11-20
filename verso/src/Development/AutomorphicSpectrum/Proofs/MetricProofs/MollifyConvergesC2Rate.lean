@@ -8,21 +8,19 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-Introduce `D ρ V K u w hV hK hKV hu hw`. Take `⟨C, ε₀, hε₀, hC⟩` from `ReciprocityTheory.AnForm.A.mollification_second_order D ρ V K u hV (by exact_mod_cast contDiffOn_infty.1 hu 3) hK hKV`. Establish `hsmallt : ∀ᶠ t in 𝓝[>] (0 : ℝ), t < ε₀ / 2` using `nhdsWithin_le_nhds (Iio_mem_nhds (by positivity))`. Establish `key : ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ z ∈ K, |ReciprocityTheory.AnForm.A.molli ρ t (w t) z - u z| ≤ C * t ∧ ‖fderiv ℝ (ReciprocityTheory.AnForm.A.molli ρ t (w t)) z - fderiv ℝ u z‖ ≤ C * t ∧ ‖fderiv ℝ (fderiv ℝ (ReciprocityTheory.AnForm.A.molli ρ t (w t))) z - fderiv ℝ (fderiv ℝ u) z‖ ≤ …` using `by filter_upwards [self_mem_nhdsWithin, hsmallt, hw] with t ht htε hwt z hz`. Establish `ht0 : 0 < t` using `ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz2 : z ∈ ReciprocityTheory.AnForm.A.shrink V (2 * t)` using `(hC (2 * t) (by linarith) (by linarith) z hz).1`. Take `⟨-, h0, h1, h2⟩` from `hC t ht0 (by linarith) z hz`. Establish `hev : ReciprocityTheory.AnForm.A.molli ρ t (w t) =ᶠ[𝓝 z] ReciprocityTheory.AnForm.A.molli ρ t u` using `by filter_upwards [ball_mem_nhds z ht0] with y hy`. Use `ReciprocityTheory.AnForm.A.molli_congr ρ ht0 (U := V) ?_ hwt` and prove the remaining obligations. Introduce `x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hz2` to reduce the goal to its premises. Rewrite `hx`, the goal using `[mem_closedBall]`. Rewrite `hy` using `[mem_ball]`. Combine the linear relations using `[dist_triangle x y z]`. Rewrite using `[hev.eq_of_nhds, hev.fderiv_eq, hev.fderiv.fderiv_eq]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨h0, h1, h2⟩`. Establish `hsmall : ∀ δ : ℝ, 0 < δ → ∀ᶠ t in 𝓝[>] (0 : ℝ), C * t < δ`. Introduce `δ hδ`. Establish `h : Tendsto (fun t : ℝ => C * t) (𝓝[>] 0) (𝓝 0)`. Establish `h' : Tendsto (fun t : ℝ => C * t) (𝓝 0) (𝓝 (C * 0))` using `(continuous_const.mul continuous_id).tendsto 0`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h'` using `[mul_zero]`. Conclude with `h'.mono_left nhdsWithin_le_nhds`. Conclude with `h.eventually (Iio_mem_nhds hδ)`. Use `⟨?_, ?_, ?_, C, key.mono fun t ht z hz => (ht z hz).2.1⟩` and prove the remaining obligations. Rewrite using `[Metric.tendstoUniformlyOn_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `δ hδ`. Use `filter_upwards [key, hsmall δ hδ] with t ht htδ z hz`. Rewrite using `[dist_comm, Real.dist_eq]`. Conclude with `lt_of_le_of_lt (ht z hz).1 htδ`. Rewrite using `[Metric.tendstoUniformlyOn_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `δ hδ`. Use `filter_upwards [key, hsmall δ hδ] with t ht htδ z hz`. Rewrite using `[dist_comm, dist_eq_norm]`. Conclude with `lt_of_le_of_lt (ht z hz).2.1 htδ`. Rewrite using `[Metric.tendstoUniformlyOn_iff]`.
-
-Introduce `δ hδ`. Use `filter_upwards [key, hsmall δ hδ] with t ht htδ z hz`. Rewrite using `[dist_comm, dist_eq_norm]`. Conclude with `lt_of_le_of_lt (ht z hz).2.2 htδ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mollify_converges_C2_rate :
     ∀ (D : ℕ) (ρ : ReciprocityTheory.AnForm.A.Mollifier D) (V K : Set (Fin D → ℂ)) (u : (Fin D → ℂ) → ℝ) (w : ℝ → (Fin D → ℂ) → ℝ), IsOpen V → IsCompact K → K ⊆ V → ContDiffOn ℝ ∞ u V → (∀ᶠ t in 𝓝[>] (0 : ℝ), Set.EqOn (w t) u V) → TendstoUniformlyOn (fun t => ReciprocityTheory.AnForm.A.molli ρ t (w t)) (u) (𝓝[>] 0) K ∧ TendstoUniformlyOn (fun t => fderiv ℝ (ReciprocityTheory.AnForm.A.molli ρ t (w t))) (fderiv ℝ (u)) (𝓝[>] 0) K ∧ TendstoUniformlyOn (fun t => fderiv ℝ (fderiv ℝ (ReciprocityTheory.AnForm.A.molli ρ t (w t)))) (fderiv ℝ (fderiv ℝ (u))) (𝓝[>] 0) K ∧ ∃ M : ℝ, ∀ᶠ t in 𝓝[>] (0 : ℝ), ∀ z ∈ K, ‖fderiv ℝ (ReciprocityTheory.AnForm.A.molli ρ t (w t)) z - fderiv ℝ (u) z‖ ≤ M * t := by

@@ -20,9 +20,9 @@ namespace GlobalTheory.GenericCentre
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
 
 /- English proof (translation)
-Take `⟨⟨p, φ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField k X).symm.surjective x`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at h ⊢`. Establish `hp : p = ξ`. Rewrite using `[← h, Scheme.Hom.comp_apply, Scheme.fromSpecResidueField_apply]`. Substitute `hp` using the available equality.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Conclude with `⟨φ.hom, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_residue_factor {X : Scheme.{0}} {k : Type} [Field k] (x : Sp k ⟶ X) (ξ : X) (q : Sp k) (h : x q = ξ) :
     ∃ ι : X.residueField ξ →+* k, spMap ι ≫ X.fromSpecResidueField ξ = x := by
@@ -34,7 +34,7 @@ theorem exists_residue_factor {X : Scheme.{0}} {k : Type} [Field k] (x : Sp k �
   exact ⟨φ.hom, rfl⟩
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem spMap_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) : f = g :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective h)
@@ -43,9 +43,9 @@ attribute [local instance] Over.cartesianMonoidalCategory in
 open MonObj in
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `h`. Set `δ : tEpsG (spMap φ ≫ x) ⟶ tEpsG x` to `Over.homMk (spMap (dualMap φ)) (by show spMap (dualMap φ) ≫ spMap (algebraMap S (DualNumber S)) ≫ x = spMap (algebraMap S' (DualNumber S')) ≫ spMap φ ≫ x`. Rewrite using `[← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', dualMap_comp_alg])`. Use `⟨fun i => δ ≫ u i, fun i => ?_, ?_⟩` and prove the remaining obligations. Use `show spMap (dualMap φ) ≫ (u i).left = _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu i, ← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', dualMap_comp_epsMul]`. Establish `h` using `map_list_prod (Formalism.L2.Pj.preHom (G := t.G) δ) (List.ofFn u)`. Rewrite `h` using `[List.map_ofFn]`. Conclude with `congrArg (fun g => g.left) h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCombAtG_map {X : Scheme.{0}} (t : SAB H X) {S S' : Type} [CommRing S] [CommRing S'] (φ : S →+* S')
     {x : Sp S ⟶ X} {m : ℕ} {v : Fin m → (Sp (DualNumber S) ⟶ t.G.left)} {a : Fin m → S}
@@ -66,7 +66,7 @@ theorem isCombAtG_map {X : Scheme.{0}} (t : SAB H X) {S S' : Type} [CommRing S] 
 attribute [local instance] Over.cartesianMonoidalCategory in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, (isCombAtG_iff t x (fun j => ovT (hv j)) a _).2 rfl, isTanAtG_of _ (combT_tan _ _ (fun j => smT_zero_ovT (hv j)) a)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_comb {X : Scheme.{0}} (t : SAB H X) {S : Type} [CommRing S] {x : Sp S ⟶ X} {m : ℕ}
     {v : Fin m → (Sp (DualNumber S) ⟶ t.G.left)} (hv : ∀ j, IsTanAtG t x (v j)) (a : Fin m → S) :
@@ -77,7 +77,7 @@ theorem exists_comb {X : Scheme.{0}} (t : SAB H X) {S : Type} [CommRing S] {x : 
 attribute [local instance] Over.cartesianMonoidalCategory in
 
 /- English proof (translation)
-The claim follows from `((isCombAtG_iff t x (fun j => ovT (hv j)) a _).1 h).symm.trans ((isCombAtG_iff t x (fun j => ovT (hv j)) a _).1 h')`.
+A detailed English derivation is pending.
 -/
 theorem comb_unique {X : Scheme.{0}} (t : SAB H X) {S : Type} [CommRing S] {x : Sp S ⟶ X} {m : ℕ}
     {v : Fin m → (Sp (DualNumber S) ⟶ t.G.left)} (hv : ∀ j, IsTanAtG t x (v j)) {a : Fin m → S}
@@ -85,7 +85,7 @@ theorem comb_unique {X : Scheme.{0}} (t : SAB H X) {S : Type} [CommRing S] {x : 
   ((isCombAtG_iff t x (fun j => ovT (hv j)) a _).1 h).symm.trans ((isCombAtG_iff t x (fun j => ovT (hv j)) a _).1 h')
 
 /- English proof (translation)
-Establish `hi : Function.Injective ((algebraMap B (FractionRing B)).comp φ)` using `(IsFractionRing.injective B _).comp h`. Use `⟨IsFractionRing.lift (K := FractionRing A) hi, RingHom.ext fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, IsFractionRing.lift_algebraMap]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_frac_map {A B : Type} [CommRing A] [IsDomain A] [CommRing B] [IsDomain B] (φ : A →+* B)
     (h : Function.Injective φ) : ∃ φF : FractionRing A →+* FractionRing B,
@@ -97,23 +97,21 @@ theorem exists_frac_map {A B : Type} [CommRing A] [IsDomain A] [CommRing B] [IsD
 variable {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
 /- English proof (translation)
-Take `⟨_, _, hfr, hover⟩` from `GlobalTheory.T.ramification_bound_over_dvr c.F la O β hB.1 hB.2`. Use `letI : Algebra O c.F := β.toAlgebra`. Establish `: CharZero O` using `RingHom.charZero β`. Establish `: IsProper Y.s` using `projProper O Y.X Y.s Y.proj`. Establish `: IsPreimmersion (spMap β)` using `IsPreimmersion.of_isLocalization (nonZeroDivisors O)`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Y.jQ_open` as an intermediate fact. Establish `: IsPreimmersion Y.j` using `by unfold Model.j; infer_instance`. Set `g : Sp (kap Z) ⟶ Xo.XF c` to `genSp Z`. Establish `: IsPreimmersion g` using `by unfold g genSp; infer_instance`. Establish `hg : g ≫ pullback.snd _ _ = spMap (algebraMap c.F (kap Z))` using `(Spec.map_preimage _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjs : Y.j ≫ Y.s = pullback.snd _ _ ≫ spMap β` using `by show (Y.jQ ≫ pullback.fst _ _) ≫ Y.s = _`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over]`. Set `a : O →+* kap Z` to `(algebraMap c.F (kap Z)).comp β`. Establish `htr : letI` using `a.toAlgebra; ((Dw.dim : ℕ) : Cardinal) ≤ Algebra.trdeg O (kap Z) := by`. Use `letI := a.toAlgebra`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `: IsScalarTower O c.F (kap Z)` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Rewrite using `[← trdeg_add_eq O c.F (A := kap Z), kapTrdeg_pf Xo c Z]`. Conclude with `le_add_self`. Establish `hga : (g ≫ Y.j) ≫ Y.s = spMap a`. Rewrite using `[Category.assoc, hjs, ← Category.assoc, hg, spMap_comp' β]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨T₀, yt₀, ψ, b, hb, hs, hgen, hd⟩` from `GlobalTheory.T.complete_dvr_point_lifting O Y.X Y.s (kap Z) (g ≫ Y.j) a ((algebraMap c.F (kap Z)).injective.comp hB.1) hga Dw.dim htr`. Take `⟨T, φ, hφ, hinj, s, hs'⟩` from `GlobalTheory.T.complete_dvr_residue_transcendence T₀`. Take `⟨φF, hφF⟩` from `exists_frac_map φ hinj`. Establish `hba : (algebraMap T₀.V T₀.Fr).comp b = ψ.comp a`. Apply `spMap_inj` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← spMap_comp' b, ← hs, ← Category.assoc, hgen, Category.assoc, hga, spMap_comp' a]`. Take `⟨e, he⟩` from `hover T ((φF.comp ψ).comp (algebraMap c.F (kap Z))) (φ.comp b) inferInstance (by`. Rewrite using `[← RingHom.comp_assoc, ← hφF, RingHom.comp_assoc, hba]`. Use the proof step `rfl)`. Take `⟨ι₀, hι₀⟩` from `exists_residue_factor (spMap (residue T₀.V) ≫ yt₀) (yt₀ (closedPoint T₀.V)) (closedPoint (ResidueField T₀.V)) ((Scheme.Hom.comp_apply _ _ _).trans (congrArg yt₀ (comap_closedPoint (residue T₀.V))))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨T, _, e, he, spMap φ ≫ yt₀, spMap (φF.comp ψ) ≫ g, _, (ResidueField.map φ).comp ι₀, ?_, ?_, fun q => ?_, ?_, hd, s, ?_⟩` and prove the remaining obligations. Rewrite using `[← spMap_comp', Category.assoc, Category.assoc, ← hgen, ← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', hφF]`. Rewrite using `[Category.assoc, hg, spMap_comp']`. Establish `h1 : (spMap (φF.comp ψ) ≫ g) q = genPt Z` using `(Scheme.Hom.comp_apply _ _ _).trans (Scheme.fromSpecResidueField_apply _ _)`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Conclude with `((Z.2.1 : IsIrreducible (Z : Set (Xo.XF c))).isGenericPoint_genericPoint (isClosed_of_mem_irreducibleComponents _ Z.2)).mem`. Rewrite using `[← spMap_comp', Category.assoc, hι₀, ← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', ResidueField.map_comp_residue]`. Use `letI := ι₀.toAlgebra`. Use `letI := (ResidueField.map φ).toAlgebra`. Use `letI := ((ResidueField.map φ).comp ι₀).toAlgebra`.
-
-Establish `: IsScalarTower (Y.X.residueField (yt₀ (closedPoint T₀.V))) (ResidueField T₀.V) (ResidueField T.V)` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Conclude with `AlgebraicIndependent.restrictScalars ι₀.injective hs'`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_centre (la : HeightOneSpectrum (𝓞 c.F)) (Y : Model Xo c β) (hB : PointsOfFlagModel.BaseAt la β) (Z : Comp Xo c) :
     ∃ (T : CDVR) (io : c.F →+* T.Fr) (e : ℕ) (_ : OverLa la T.V io e) (yt : Sp T.V ⟶ Y.X) (z : Sp T.Fr ⟶ Xo.XF c)

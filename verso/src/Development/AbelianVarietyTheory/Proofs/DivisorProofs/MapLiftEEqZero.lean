@@ -14,14 +14,14 @@ namespace GlobalTheory.HoweLocal.NormLift
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `Prod.ext (funext fun w => hi w) (GlobalTheory.AdelicU.af_ext fun u => hf u)`.
+A detailed English derivation is pending.
 -/
 theorem adele_ext {a b : AF F} (hf : ∀ u, evFin F u a = evFin F u b) (hi : ∀ w, evInf F w a = evInf F w b) :
     a = b :=
   Prod.ext (funext fun w => hi w) (GlobalTheory.AdelicU.af_ext fun u => hf u)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AdelicU.evalV_singleFin_ne h b`.
+A detailed English derivation is pending.
 -/
 theorem evFin_liftV_ne {u v : Pl F} (h : u ≠ v) (b : Fv F v) : evFin F u (GlobalTheory.LatVac.liftV v b) = 0 :=
   GlobalTheory.AdelicU.evalV_singleFin_ne h b
@@ -32,9 +32,9 @@ Both sides reduce to the same expression.
 theorem evInf_liftV (w : InfinitePlace F) (v : Pl F) (b : Fv F v) : evInf F w (GlobalTheory.LatVac.liftV v b) = 0 := rfl
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`. Consider the case `tmul a e`. Simplify using `only [GlobalTheory.HoweLocal.liftE, TensorProduct.map_tmul, LinearMap.id_coe, id_eq]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Rewrite using `[Algebra.TensorProduct.map_tmul, hf, TensorProduct.zero_tmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_liftE_eq_zero {B : Type} [CommRing B] [Algebra F B] (f : AF F →ₐ[F] B) (v : Pl F)
     (hf : ∀ b, f (GlobalTheory.LatVac.liftV v b) = 0) (y : Fv F v ⊗[F] E) :
@@ -47,7 +47,7 @@ theorem map_liftE_eq_zero {B : Type} [CommRing B] [Algebra F B] (f : AF F →ₐ
     rw [Algebra.TensorProduct.map_tmul, hf, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.HoweLocal.norm_map_tensor, map_add (Algebra.TensorProduct.map f (AlgHom.id F E)), map_liftE_eq_zero f v hf, add_zero, map_one, map_one, map_add f, hf, add_zero, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_away {B : Type} [CommRing B] [Algebra F B] (f : AF F →ₐ[F] B) (v : Pl F)
     (hf : ∀ b, f (GlobalTheory.LatVac.liftV v b) = 0) (y : Fv F v ⊗[F] E) (a : Fv F v) :
@@ -56,11 +56,9 @@ theorem comp_away {B : Type} [CommRing B] [Algebra F B] (f : AF F →ₐ[F] B) (
     map_liftE_eq_zero f v hf, add_zero, map_one, map_one, map_add f, hf, add_zero, map_one]
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[Units.coe_map, GlobalTheory.HoweLocal.liftU_val, GlobalTheory.HoweLocal.liftUF_val, Units.coe_map]`. Use `adele_ext (fun u => ?_) (fun w => comp_away _ v (evInf_liftV w v) _ _)` and prove the remaining obligations. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `h1` using `GlobalTheory.HoweLocal.norm_map_tensor (evFin F u) (1 + GlobalTheory.HoweLocal.liftE u ((z : Fv F u ⊗[F] E) - 1) : AF F ⊗[F] E)`. Establish `h2 : Algebra.TensorProduct.map (evFin F u) (AlgHom.id F E) (GlobalTheory.HoweLocal.liftE u ((z : Fv F u ⊗[F] E) - 1)) = (z : Fv F u ⊗[F] E) - 1` using `GlobalTheory.HoweLocal.LocCoords.compFin_liftE u _`. Rewrite `h1` using `[map_add, map_one, h2, add_sub_cancel]`. Rewrite using `[map_add (evFin F u), map_one, GlobalTheory.LatVac.evFin_liftV, add_sub_cancel]`. Conclude with `h1.symm`.
-
-Conclude with `comp_away _ v (evFin_liftV_ne h) _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_liftU (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F)
     (z : (Fv F v ⊗[F] E)ˣ) :

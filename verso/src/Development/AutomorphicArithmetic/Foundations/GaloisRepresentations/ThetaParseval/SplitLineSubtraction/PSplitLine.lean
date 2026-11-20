@@ -27,7 +27,7 @@ private lemma sumRep_val (s : Γ →* GL (Fin m) k) (c : Γ →* kˣ) (g : Γ) :
           finSumFinEquiv.symm finSumFinEquiv.symm := rfl
 
 /- English proof (translation)
-Simplify using `[rk1, Subsingleton.elim i j]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma rankOneRep_val (c : Γ →* kˣ) (g : Γ) (i j : Fin 1) :
     ((rk1 c g : GL (Fin 1) k) : Matrix (Fin 1) (Fin 1) k) i j = (c g : k) := by
@@ -65,11 +65,11 @@ private def colM {W' : Submodule k (Fin (m + 1) → k)} (b : Module.Basis (Fin m
   Matrix.of fun i => Sum.elim (fun j => (b j : Fin (m + 1) → k) i) (fun _ => v i)
 
 /- English proof (translation)
-Use extensionality with `i j`. Break down `j with j | j` into its components or cases. Establish `h1 : ((r g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) * colM b v) i (Sum.inl j) = ((r g : Matrix (Fin (m + 1)) (Fin (m + 1)) k).mulVec (b j : Fin (m + 1) → k)) i` using `rfl`. Establish `h2` using `b.sum_repr (resHom r hinv g (b j))`. Establish `h4 : ((resHom r hinv g (b j) : W') : Fin (m + 1) → k) = (r g : Matrix (Fin (m + 1)) (Fin (m + 1)) k).mulVec (b j : Fin (m + 1) → k)` using `rfl`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ((r g : Matrix (Fin (m + 1)) (Fin (m + 1)) k).mulVec (b j : Fin (m + 1) → k)) i = ∑ a, (b.repr (resHom r hinv g (b j))) a * (b a : Fin (m + 1) → k) i`. Establish `h5` using `congrArg (fun u : W' => (u : Fin (m + 1) → k) i) h2`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h5`. Rewrite using `[← h4, h5]`. Rewrite using `[h1, h3, Matrix.mul_apply, Fintype.sum_sum_type]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[subRep_val, colM, LinearMap.toMatrix_apply, mul_comm]`. Establish `h1 : ((r g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) * colM b v) i (Sum.inr j) = ((r g : Matrix (Fin (m + 1)) (Fin (m + 1)) k).mulVec v) i` using `rfl`. Rewrite using `[h1, hv g, Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `[colM, rankOneRep_val, mul_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma intertw (r : Γ →* GL (Fin (m + 1)) k) {W' : Submodule k (Fin (m + 1) → k)}
     (hinv : IsInv r W') (b : Module.Basis (Fin m) k W') (c : Γ →* kˣ) (v : Fin (m + 1) → k)
@@ -98,9 +98,9 @@ private lemma intertw (r : Γ →* GL (Fin (m + 1)) k) {W' : Submodule k (Fin (m
     simp [colM, rankOneRep_val, mul_comm]
 
 /- English proof (translation)
-Use `LinearIndependent.sum_type (b.linearIndependent.map' W'.subtype (Submodule.ker_subtype W')) (LinearIndependent.of_subsingleton (0 : Fin 1) hv0) ?_` and prove the remaining obligations. Use `Disjoint.mono ?_ ?_ hc.disjoint.symm` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `(b j).2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.range_const]`.
+A detailed English derivation is pending.
 -/
 private lemma col_indep {W' : Submodule k (Fin (m + 1) → k)} (b : Module.Basis (Fin m) k W')
     {v : Fin (m + 1) → k} (hv0 : v ≠ 0) (hc : IsCompl (Submodule.span k {v}) W') :
@@ -119,17 +119,17 @@ end SplitLineAux
 end UpperTheory.Gal.TP.Sub
 
 /- English proof (translation)
-Introduce `Γ k _ _ m r hss c ⟨v, hv0, hv⟩`. Establish `hW : IsInv r (Submodule.span k {v})`. Introduce `g x hx`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Rewrite using `[Matrix.mulVec_smul, hv g, smul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self v))`. Take `⟨W', hinv, hc⟩` from `hss _ hW`. Establish `hfr : Module.finrank k W' = m`. Establish `h` using `Submodule.finrank_add_eq_of_isCompl hc`. Rewrite `h` using `[finrank_span_singleton hv0, Module.finrank_fin_fun]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Set `b : Module.Basis (Fin m) k W'` to `Module.finBasisOfFinrankEq k W' hfr`. Set `Q : Matrix (Fin (m + 1)) (Fin (m + 1)) k` to `(colM b v).submatrix id finSumFinEquiv.symm`. Establish `hQ : IsUnit Q`. Rewrite using `[← Matrix.linearIndependent_cols_iff_isUnit]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(col_indep b hv0 hc).comp finSumFinEquiv.symm finSumFinEquiv.symm.injective` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `j i`. Apply the tactic sequence `rcases h : finSumFinEquiv.symm j with j' | j' <;> simp [Q, colM, Matrix.col, h]`. Take `⟨q, hq⟩` from `hQ`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨subRep r hinv b, q⁻¹, fun g => ?_⟩` and prove the remaining obligations. Establish `key : (r g : Matrix (Fin (m + 1)) (Fin (m + 1)) k) * Q = Q * (sumRep (subRep r hinv b) (rk1 c) g : GL (Fin (m + 1)) k)`. Rewrite using `[sumRep_val]`. Express the relevant statement in the definitionally equal form `_ * (colM b v).submatrix id finSumFinEquiv.symm = (colM b v).submatrix id finSumFinEquiv.symm * _`. Rewrite using `[Matrix.submatrix_mul_equiv, ← intertw r hinv b c v hv g]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Both sides reduce to the same expression. Establish `key2 : r g * q = q * sumRep (subRep r hinv b) (rk1 c) g` using `Units.ext (by`. Simplify `key)` using `[hq]`. Rewrite using `[inv_inv, mul_assoc, key2, ← mul_assoc, inv_mul_cancel, one_mul]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Sub.splitLine_holds : SplitLine := by
   intro Γ k _ _ m r hss c ⟨v, hv0, hv⟩

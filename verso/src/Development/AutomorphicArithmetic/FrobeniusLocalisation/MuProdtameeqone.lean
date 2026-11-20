@@ -10,15 +10,15 @@ open UpperTheory.HF
 open NumberField IsDedekindDomain Formalism.HC Formalism.L2.Host GlobalTheory.Mem.Chr GlobalTheory
 
 /- English proof (translation)
-Introduce `φ H p hp hs Q hQ ω θ hθ ζ hζ`. Establish `hG : IsGalois ℚ H.E` using `H.galois`. Establish `hGK : IsGalois H.K H.E` using `IsGalois.tower_top_of_isGalois ℚ H.K H.E`. Establish `memS : ∀ w, w ∈ aboveF (L` using `H.E) H.K Q ↔ w.under (𝓞 H.K) = Q := fun w => by`. Rewrite using `[aboveF, Set.Finite.mem_toFinset, Set.mem_setOf_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `overp : ∀ w ∈ aboveF (L` using `H.E) H.K Q, ((p : ℕ) : 𝓞 H.E) ∈ w.asIdeal := by`. Introduce `w hw`. Establish `h1 : ((p : ℕ) : 𝓞 H.K) ∈ (w.under (𝓞 H.K)).asIdeal` using `by rw [(memS w).1 hw]; exact hQ`. Establish `h2 : ((p : ℕ) : 𝓞 H.K) ∈ Ideal.under (𝓞 H.K) w.asIdeal` using `h1`. Rewrite `h2` using `[Ideal.mem_under, map_natCast]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`. Use `UpperTheory.prod_residue_char_norm_one_unit_eq_one H.K H.E p hp Q _ memS (fun w hw => ?_) ω θ (fun w hw a ha => ?_) ζ (H.der.norm_mu _ hζ)` and prove the remaining obligations. Establish `h` using `((H.splitsC_facts p hp).2 hs).2.2 w (overp w hw)`. Conclude with `⟨h.1, h.2.1⟩`. Establish `hu : IsUnit (Ideal.Quotient.mk w.asIdeal (a : 𝓞 H.E))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.2 ha`. Establish `h0 : Ideal.Quotient.mk w.asIdeal (p : 𝓞 H.E) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 (overp w hw)`. Establish `h1` using `congrArg (Int.cast : ℤ → 𝓞 H.E ⧸ w.asIdeal) huv`. Rewrite `h0`, the goal using `[map_natCast]`. Move the coercions through the operations in `at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h0, mul_zero, add_zero, mul_comm]`. Conclude with `IsUnit.of_mul_eq_one _ h1`. Conclude with `⟨hu.unit, rfl, hθ w hw a ha _ rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.HF.Formalism.HC.HostAx.prod_tame_eq_one :
     ∀ {φ : Frame} (H : HostAx φ) (p : ℕ), p.Prime → SplitsC H.E p → ∀ (Q : HeightOneSpectrum (𝓞 H.K)), ((p : ℕ) : 𝓞 H.K) ∈ Q.asIdeal →

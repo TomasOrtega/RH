@@ -9,27 +9,27 @@ namespace PositivityTheory.Rg.Rs
 
 open InductionInStages ParabolicProjection in
 /- English proof (translation)
-Introduce `E _ _ _ r s a d₁ d₂ V V₁ V₂ π hV hV₁ hV₂ hemb h₁ h₂`. Take `⟨T, hTmem, hTinj, hTeq⟩` from `hemb`. Take `⟨hs₁, ν₁, hν₁, f₁, hf₁mem, hf₁inj, hf₁eq⟩` from `h₁`. Take `⟨hs₂, ν₂, hν₂, f₂, hf₂mem, hf₂inj, hf₂eq⟩` from `h₂`. Use `set z₁ : ℂ := ((s : ℂ) - d₂) / 2 with hz₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set z₂ : ℂ := ((d₁ : ℂ) - r) / 2 with hz₂`. Take `⟨T', hT'eq, hT'u, hT'sl⟩` from `hI E r s V (tw V₁ z₁) (tw V₂ z₂) T (twMap r z₁ f₁) (twMap s z₂ f₂) hV.stable hV.aut (isStable_tw hV₁.stable z₁) (isStable_tw hV₂.stable z₂) hTeq hTmem (twMap_equiv hV₁.stable hf₁eq) (twMap_equiv hV₂.stable hf₂eq)`. Establish `hr : r = d₁ * a` using `sum_const_eq hs₁`. Establish `hs : s = d₂ * a` using `sum_const_eq hs₂`. Establish `H : ∑ _ : Fin (d₁ + d₂), a = r + s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul]`. Rewrite using `[hr, hs]`. Expand and normalize the polynomial expressions, which then agree. Set `ν : Fin (d₁ + d₂) → HChar E` to `fun i => Model.absC E ((-spehExp (d₁ + d₂) i + a * spehExp (d₁ + d₂) i : ℝ) : ℂ)`. Establish `hsl : ∀ φ ∈ V, ∀ (k : Kinf E (r + s)) (g : GL (Fin (r + s)) (Af E)), ∃ (n : ℕ) (ψ₁ : Fin n → Sm E r) (ψ₂ : Fin n → Sm E s), (∀ i, ψ₁ i ∈ tw V₁ z₁) ∧ (∀ i, ψ₂ i ∈ tw V₂ z₂) ∧ (∀ m : GA E r × GA E s, (T φ).1 (lev (Ad E) r s m * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) …`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `φ hφ k g`. Take `⟨n, ψ₁, ψ₂, h1, h2, he⟩` from `tensor_pair_finite_sum ((hTmem φ hφ).2 k g)`. Conclude with `⟨n, ψ₁, ψ₂, h1, h2, he, hT'sl φ hφ k g n ψ₁ ψ₂ h1 h2 he⟩`. Use `⟨H, ν, fun i => isAbsPow_absC _, T', fun φ hφ => ?_, ?_, hT'eq⟩` and prove the remaining obligations. Use `mem_indForms_of_slices hs₁ hs₂ H (fam₁ := fun b => π.twist (ν₁ b)) (fam₂ := fun b => π.twist (ν₂ b)) (z₁ := z₁) (z₂ := z₂) (fun b => ?_) (fun b => ?_) (hT'u φ hφ) (fun k g => ?_) ?_ ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← CuspSub.twist_mul, eq_absC (hν₁ b), absC_mul]`. Use `congrArg (fun x => π.twist (Model.absC E x)) ?_` and prove the remaining obligations. Simplify using `only [spehExp, Fin.val_castAdd, hz₁, hs]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← CuspSub.twist_mul, eq_absC (hν₂ b), absC_mul]`. Use `congrArg (fun x => π.twist (Model.absC E x)) ?_` and prove the remaining obligations. Simplify using `only [spehExp, Fin.val_natAdd, hz₂, hr]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨n, ψ₁, ψ₂, h1, h2, -, he⟩` from `hsl φ hφ k g`. Conclude with `⟨n, fun i => twMap r z₁ f₁ (ψ₁ i), fun i => twMap s z₂ f₂ (ψ₂ i), fun i => twMap_mem hf₁mem _ (h1 i), fun i => twMap_mem hf₂mem _ (h2 i), he⟩`. Use `isOpen_stab_of_mem_nhds (finRep E (r + s)) (T' φ) (Filter.mem_of_superset ((hV.aut φ hφ).level.mem_nhds (by simp)) fun k hk => ?_)` and prove the remaining obligations. Establish `hk' : finRep E (r + s) k φ = φ` using `hk`. Conclude with `(hT'eq (.fin k) φ hφ).symm.trans (congrArg T' hk')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `(hV.aut φ hφ).kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k => cptRep E (r + s) k φ)).map T') (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, Submodule.subset_span ⟨k, rfl⟩, hT'eq (.cpt k) φ hφ⟩`. Take `⟨φ₀, hφ₀, hφ₀ne⟩` from `(Submodule.ne_bot_iff V).1 hV.ne_bot`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `inj_of_irred hV hT'eq ⟨φ₀, hφ₀, fun h0 => ?_⟩` and prove the remaining obligations. Establish `hTne : T φ₀ ≠ 0` using `fun h => hφ₀ne (hTinj φ₀ hφ₀ h)`. Take `⟨k, g, m, hne⟩` from `exists_slice_ne hTne (hTmem φ₀ hφ₀).1`. Take `⟨n, ψ₁, ψ₂, h1, h2, he, he'⟩` from `hsl φ₀ hφ₀ k g`. Rewrite `hne` using `[he m]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hθ₁` using `sum_left_ne hne`. Establish `hθ₁m : ∑ i, (ψ₂ i).1 m.2 • ψ₁ i ∈ tw V₁ z₁` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (h1 i)`. Take `⟨b₁, hb₁⟩` from `step_left (twMap r z₁ f₁) (fun h => hθ₁ (twMap_ne hf₁inj _ hθ₁m h))`. Establish `hθ₂` using `sum_right_ne (ψ₁ := fun i => twMap r z₁ f₁ (ψ₁ i)) hb₁`. Establish `hθ₂m : ∑ i, (twMap r z₁ f₁ (ψ₁ i)).1 b₁ • ψ₂ i ∈ tw V₂ z₂` using `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (h2 i)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨b₂, hb₂⟩` from `step_right (twMap s z₂ f₂) (fun h => hθ₂ (twMap_ne hf₂inj _ hθ₂m h))`. Use `hb₂ ?_` and prove the remaining obligations. Use `he' (b₁, b₂)` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stages_of (hI : IndMap) : Stages := by
   intro E _ _ _ r s a d₁ d₂ V V₁ V₂ π hV hV₁ hV₂ hemb h₁ h₂

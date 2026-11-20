@@ -13,15 +13,15 @@ open GlobalTheory.PlaceRead
 open GlobalTheory.HeightCounting.Up (PrN)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y hx hy`. Take `⟨c, e⟩` from `hx`. Take `⟨c', e'⟩` from `hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨c + c', ?_⟩` and prove the remaining obligations. Rewrite using `[e, e']`. Simplify using `[TensorProduct.add_tmul, Finset.sum_add_distrib]`. Consider the case `tmul a f`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) fun c => v.repr f c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `choose y hy using hd`. Establish `e : (d : O) • (a ⊗ₜ[O] f) = ∑ c, (y c • a) ⊗ₜ[O] v c`. Rewrite using `[← TensorProduct.tmul_smul]`. Use `conv_lhs => rw [← v.sum_repr f]`. Rewrite using `[Finset.smul_sum, TensorProduct.tmul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul, ← algebraMap_smul K (y c), hy, smul_assoc]`. Establish `h0` using `hinj d (nonZeroDivisors.coe_ne_zero d)`. Use `⟨fun c => (algebraMap O L d)⁻¹ • y c • a, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[← algebraMap_smul L (d : O)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← inv_smul_smul₀ h0 (a ⊗ₜ[O] f), e, Finset.smul_sum]`. Simplify using `only [TensorProduct.smul_tmul']`.
+A detailed English derivation is pending.
 -/
 private theorem tensor_exists_basis_expansion {O K L M ι : Type*} [CommRing O] [IsDomain O] [Field K] [Algebra O K] [IsFractionRing O K]
     [Field L] [Algebra O L] [AddCommGroup M] [Module O M] [Module K M] [IsScalarTower O K M] [Fintype ι]
@@ -51,17 +51,17 @@ private theorem tensor_exists_basis_expansion {O K L M ι : Type*} [CommRing O] 
     simp only [TensorProduct.smul_tmul']
 
 /- English proof (translation)
-Take `⟨α, rfl⟩` from `hsp A`. Establish `hind` using `Fintype.linearIndependent_iff.1 hli`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Rewrite `h` using `[map_zero, smul_zero, map_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hR] at h`. Establish `h2 : ∀ a, α a = 0` using `fun a => ε.injective ((hind _ h a).trans (map_zero _).symm)`. Simplify using `[h2]`. Take `⟨β, rfl⟩` from `hsp B`. Introduce `hB`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[map_sum, map_sum]`. Simplify using `only [hR] at h`. Establish `h1 : ∀ a, ε (α a) - z * ε (β a) = 0` using `hind (fun a => ε (α a) - z * ε (β a)) (by`. Simplify using `only [sub_smul, mul_smul, Finset.sum_sub_distrib, ← Finset.smul_sum, h, sub_self])`. Establish `h2 : ∃ a, β a ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hB (by simp [hc])`. Take `⟨a0, ha0⟩` from `h2`. Establish `h3 : ε (β a0) ≠ 0` using `(map_ne_zero ε).2 ha0`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : ε (α a0 / β a0) = z`. Rewrite using `[map_div₀, sub_eq_zero.1 (h1 a0), mul_div_cancel_right₀ _ h3]`. Use `⟨α a0 / β a0, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul]`. Use `congr 1`. Apply `ε.injective` to reduce the goal to its premises. Rewrite using `[map_mul, ht, sub_eq_zero.1 (h1 a)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tensor_scalar_relation {O L M N ι : Type*} [CommRing O] [Field L] [Algebra O L] [AddCommGroup M] [Module O M]
     [AddCommGroup N] [Module ℂ N] [Fintype ι] (ε : L →+* ℂ) (v : ι → M) (r : M → N) (R : L ⊗[O] M →ₛₗ[ε] N)
@@ -99,9 +99,9 @@ private theorem tensor_scalar_relation {O L M N ι : Type*} [CommRing O] [Field 
     rw [map_mul, ht, sub_eq_zero.1 (h1 a)]
 
 /- English proof (translation)
-Introduce `D c w ρ hρ j rd hF ε hε A B z h`. Set `v` to `Module.finBasis (FractionRing (D.ntw.O (c.twI w))) (D.nexp.Fm (c.twI w) (j.1 + 1) (c.sd w))`. Establish `hinj : ∀ d : D.ntw.O (c.twI w), d ≠ 0 → algebraMap _ (KE c w) d ≠ 0` using `fun d hd h0 => by`. Establish `h1` using `congrArg ε h0`. Rewrite `h1` using `[IsScalarTower.algebraMap_apply _ (D.ntw.Ok (c.twI w) (c.k' w)) (KE c w), hε.apply, hρ.ek_e, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hd (ρ.eO_injective (c.twI w) (c.sd w) (h1.trans (map_zero _).symm))`. Conclude with `tensor_scalar_relation ε v rd (rdF rd hρ hε) (rdF_tmul hρ hε) (hF _ v v.linearIndependent) (tensor_exists_basis_expansion hinj v) A B z h`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.chosenField_forms_proportional_of_readings : ∀ (D : D7) (c : NChoice D) (w : D.what₂.places.Pl) (ρ : Setup D.ntw) (hρ : ρ.Good) (j : Fin D.R.m) (rd : Rd ρ D.nexp (c.twI w) j (c.sd w)), Faithful rd → ∀ (ε : KE c w →+* ℂ) (hε : Extends ρ ε) (A B : KE c w ⊗[D.ntw.O (c.twI w)] D.nexp.Fm (c.twI w) (j.1 + 1) (c.sd w)) (z : ℂ),
   rdF rd hρ hε A = z • rdF rd hρ hε B → (B = 0 → A = 0) ∧ (B ≠ 0 → ∃ t : KE c w, ε t = z ∧ A = t • B) := by

@@ -11,11 +11,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-Introduce `K _ ι _ K₂ _ ι₂ _ P d g δ hP hg hne`. Take `⟨h1, h2⟩` from `GlobalTheory.T.graph_ideal_arithmetic_variety_image K ι K₂ ι₂ P d g δ hP hg hne`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Introduce `G J hJ`. Establish `hP' : IsArithVar (imageZ inlV (graphIdeal P g)) d` using `by rw [h2]; exact hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hF : IsProjVarF (fibreIdeal Sum.inl G) 0` using `GlobalTheory.CompanionTheory.Ar.Giv.fibreDim K ι (K ⊕ K₂) (Sum.elim ι ι₂) Sum.inl inlV (graphIdeal P g) d 0 G isBlockMap_inl h1 hP'`. Establish `hrel` using `hF.1.2.2`. Set `i : ∀ k, fibreIdx (Sum.elim ι ι₂) (Sum.inl : K → K ⊕ K₂) k` to `fun k => (hrel k).choose`. Establish `hi : IsChart (fibreIdeal Sum.inl G) i` using `fun k => (hrel k).choose_spec`. Rewrite using `[hJ.1 _ _ i hF hi]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.graph_ideal_fibre_chart_degree K ι K₂ ι₂ P g hP.2.1.1 hne h2 G i hi` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem graphStatement : GraphStatement := by
   intro K _ ι _ K₂ _ ι₂ _ P d g δ hP hg hne

@@ -23,7 +23,7 @@ section Generic
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
 
 /- English proof (translation)
-Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_eventually_eq f).2 fun x => ?_)` and prove the remaining obligations. Establish `hop : IsOpen {y : G | x⁻¹ * y ∈ L}` using `ho.preimage (continuous_const.mul continuous_id)`. Use `filter_upwards [hop.mem_nhds (by simp [L.one_mem] : x ∈ {y : G | x⁻¹ * y ∈ L})] with y hy`. Use `(h.2 _ hy x).2` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isHecke_continuous {L : Subgroup G} (ho : IsOpen (L : Set G)) {f : G → ℂ} (h : IsHecke L f) : Continuous f := by
   refine IsLocallyConstant.continuous ((IsLocallyConstant.iff_eventually_eq f).2 fun x => ?_)
@@ -33,23 +33,21 @@ theorem isHecke_continuous {L : Subgroup G} (ho : IsOpen (L : Set G)) {f : G →
   rwa [mul_inv_cancel_left] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨HasCompactSupport.zero, fun _ _ _ => ⟨rfl, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHecke_zero (L : Subgroup G) : IsHecke L (fun _ : G => (0 : ℂ)) :=
   ⟨HasCompactSupport.zero, fun _ _ _ => ⟨rfl, rfl⟩⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.LocHecke.isHecke_smul z h`.
+A detailed English derivation is pending.
 -/
 theorem isHecke_const_mul {L : Subgroup G} {f : G → ℂ} (z : ℂ) (h : IsHecke L f) : IsHecke L (fun y => z * f y) :=
   GlobalTheory.CompanionTheory.LocHecke.isHecke_smul z h
 
 /- English proof (translation)
-Use `⟨?_, fun k hk x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `key : ∀ s : Finset I, HasCompactSupport (fun y => ∑ i ∈ s, f i y)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using `only [Finset.sum_empty]`. Conclude with `HasCompactSupport.zero`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `(h a).1.add ih`.
-
-Conclude with `key Finset.univ`. Conclude with `Finset.sum_congr rfl fun i _ => ((h i).2 k hk x).1`. Conclude with `Finset.sum_congr rfl fun i _ => ((h i).2 k hk x).2`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHecke_sum {L : Subgroup G} {I : Type} [Fintype I] {f : I → G → ℂ} (h : ∀ i, IsHecke L (f i)) :
     IsHecke L (fun y => ∑ i, f i y) := by
@@ -68,9 +66,9 @@ theorem isHecke_sum {L : Subgroup G} {I : Type} [Fintype I] {f : I → G → ℂ
   · exact Finset.sum_congr rfl fun i _ => ((h i).2 k hk x).2
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.CompanionTheory.LocHecke.conv_formula ho hle hidx hf (isHecke_const_mul r hg) y`. Establish `h2` using `GlobalTheory.CompanionTheory.LocHecke.conv_formula ho hle hidx hf hg y`. Establish `e : ∑ᶠ q : G ⧸ L, f q.out * (r * g (q.out⁻¹ * y)) = r * ∑ᶠ q : G ⧸ L, f q.out * g (q.out⁻¹ * y)`. Rewrite using `[mul_finsum]`. Conclude with `finsum_congr fun q => by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, e, mul_left_comm]`.
+A detailed English derivation is pending.
 -/
 theorem conv_const {K L : Subgroup G} (ho : IsOpen (L : Set G)) (hle : L ≤ K) (hidx : L.relIndex K ≠ 0)
     {f g : G → ℂ} (hf : IsHecke L f) (hg : IsHecke L g) (r : ℂ) (y : G) :
@@ -83,15 +81,13 @@ theorem conv_const {K L : Subgroup G} (ho : IsOpen (L : Set G)) (hle : L ≤ K) 
   rw [h1, h2, e, mul_left_comm]
 
 /- English proof (translation)
-Establish `hF : IsHecke L (fun z => ∑ i, a i * f i z)` using `isHecke_sum fun i => isHecke_const_mul _ (hf i)`. Establish `hG : IsHecke L (fun z => ∑ j, b j * g j z)` using `isHecke_sum fun j => isHecke_const_mul _ (hg j)`. Establish `h1` using `GlobalTheory.CompanionTheory.LocHecke.conv_formula ho hle hidx hF hG y`. Establish `hfin : ∀ i j, (Function.support fun q : G ⧸ L => f i q.out * g j (q.out⁻¹ * y)).Finite` using `fun i j => (GlobalTheory.TwTrLin.finite_out_support ho (hf i).1).subset fun q hq => left_ne_zero_of_mul hq`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ q : G ⧸ L, (∑ i, a i * f i q.out) * (∑ j, b j * g j (q.out⁻¹ * y)) = ∑ i, ∑ j, a i * b j * (f i q.out * g j (q.out⁻¹ * y))`. Introduce `q`. Rewrite using `[Finset.sum_mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Repeatedly rewrite using `[e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_sum_comm _ _ fun i _ => ?_, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[finsum_sum_comm _ _ fun j _ => ?_, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.LocHecke.conv_formula ho hle hidx (hf i) (hg j) y, ← mul_finsum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `(hfin i j).subset fun q hq h0 => hq (by simp [h0])`. Use `Set.Finite.subset (Set.Finite.biUnion (Finset.univ : Finset J).finite_toSet fun j _ => hfin i j) ?_` and prove the remaining obligations. Introduce `q hq`. Take `⟨j, -, hj⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hq`.
-
-Establish `: f i q.out * g j (q.out⁻¹ * y) ≠ 0` using `fun h0 => hj (by simp [h0])`. Conclude with `Set.mem_biUnion (Finset.mem_coe.2 (Finset.mem_univ j)) this`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conv_sum_sum {K L : Subgroup G} (ho : IsOpen (L : Set G)) (hle : L ≤ K) (hidx : L.relIndex K ≠ 0)
     {I J : Type} [Fintype I] [Fintype J] (a : I → ℂ) (f : I → G → ℂ) (b : J → ℂ) (g : J → G → ℂ)
@@ -124,17 +120,17 @@ theorem conv_sum_sum {K L : Subgroup G} (ho : IsOpen (L : Set G)) (hle : L ≤ K
     exact Set.mem_biUnion (Finset.mem_coe.2 (Finset.mem_univ j)) this
 
 /- English proof (translation)
-Establish `hmem : ∀ q : G ⧸ L, q ≠ QuotientGroup.mk y → q.out⁻¹ * y ∉ L`. Introduce `q hq hm`. Apply `hq` to reduce the goal to its premises. Rewrite using `[← QuotientGroup.out_eq' q]`. Conclude with `QuotientGroup.eq.2 hm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ((L.relIndex K : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hidx`. Rewrite using `[GlobalTheory.CompanionTheory.LocHecke.hint_eq K L hle hidx _ ?_ ?_]`. Rewrite using `[finsum_eq_single _ (QuotientGroup.mk y : G ⧸ L) ?_]`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul L y`. Establish `h2 : (QuotientGroup.mk y : G ⧸ L).out⁻¹ * y ∈ L`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (y * (h : G))⁻¹ * y = (h : G)⁻¹` using `by group`. Rewrite using `[hh, e]`. Conclude with `L.inv_mem h.2`. Rewrite using `[Set.indicator_of_mem (by exact h2), hh, hr _ h.2]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `q hq`. Rewrite using `[Set.indicator_of_notMem (hmem q hq), mul_zero]`. Introduce `k hk x`. Rewrite using `[hr k hk x]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (x * k)⁻¹ * y = k⁻¹ * (x⁻¹ * y)` using `by group`. Rewrite using `[this]`. Establish `hiff : k⁻¹ * (x⁻¹ * y) ∈ L ↔ x⁻¹ * y ∈ L` using `L.mul_mem_cancel_left (L.inv_mem hk)`. Simplify using `only [Set.indicator, SetLike.mem_coe, hiff]`. Use `(Set.finite_singleton (QuotientGroup.mk y : G ⧸ L)).subset fun q hq => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hne`. Apply `hq` to reduce the goal to its premises. Rewrite using `[Set.indicator_of_notMem (hmem q hne), mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_unit {K L : Subgroup G} (hle : L ≤ K) (hidx : L.relIndex K ≠ 0) {f : G → ℂ}
     (hr : ∀ k ∈ L, ∀ x, f (x * k) = f x) (y : G) :
@@ -171,11 +167,11 @@ theorem conv_unit {K L : Subgroup G} (hle : L ≤ K) (hidx : L.relIndex K ≠ 0)
 end Generic
 
 /- English proof (translation)
-Establish `key : ∀ d : ℕ, ∀ i j : Fin m, (j : ℕ) = i + d → l j ≤ l i`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `i j e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `le_of_eq (congrArg l (Fin.ext e))`. Consider the case `succ d ih`. Introduce `i j e`. Establish `hlt : (i : ℕ) + d < m` using `by have := j.2; omega`. Establish `h1` using `ih i ⟨i + d, hlt⟩ rfl`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `h.1 ⟨i + d, hlt⟩ j (by simp only []; omega)`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `i j hij`. Conclude with `key (j - i) i j (by have : (i : ℕ) ≤ j := hij; omega)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cone_anti {m : ℕ} {l : Fin m → ℤ} (h : Cone l) : Antitone l := by
   have key : ∀ d : ℕ, ∀ i j : Fin m, (j : ℕ) = i + d → l j ≤ l i := by
@@ -194,9 +190,9 @@ theorem cone_anti {m : ℕ} {l : Fin m → ℤ} (h : Cone l) : Antitone l := by
   exact key (j - i) i j (by have : (i : ℕ) ≤ j := hij; omega)
 
 /- English proof (translation)
-Use `⟨fun i j e => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `h.1 i j e` as an intermediate fact. Use `h'.1 i j e` as an intermediate fact. Simplify using `only [Pi.add_apply]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `h.2 i` as an intermediate fact. Use `h'.2 i` as an intermediate fact. Simplify using `only [Pi.add_apply]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem cone_add {m : ℕ} {l l' : Fin m → ℤ} (h : Cone l) (h' : Cone l') : Cone (l + l') := by
   refine ⟨fun i j e => ?_, fun i => ?_⟩
@@ -210,7 +206,7 @@ theorem cone_add {m : ℕ} {l l' : Fin m → ℤ} (h : Cone l) (h' : Cone l') : 
     linarith
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [lOf, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lOf_add {n : ℕ} (x x' : Fin n → ℤ) : lOf (x + x') = lOf x + lOf x' := by
   funext i
@@ -218,11 +214,11 @@ theorem lOf_add {n : ℕ} (x x' : Fin n → ℤ) : lOf (x + x') = lOf x + lOf x'
   ring
 
 /- English proof (translation)
-Establish `hm : ∀ i j : Fin (n / 2), max (l i + l' i) (l j + l' j) = max (l i) (l j) + max (l' i) (l' j)`. Introduce `i j`. Break down `le_total i j with hij | hij` into its components or cases. Establish `h1` using `cone_anti h hij`. Establish `h2` using `cone_anti h' hij`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[max_eq_left h1, max_eq_left h2, max_eq_left (add_le_add h1 h2)]`. Establish `h1` using `cone_anti h hij`. Establish `h2` using `cone_anti h' hij`. Rewrite using `[max_eq_right h1, max_eq_right h2, max_eq_right (add_le_add h1 h2)]`. Unfold `vRes`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [Pi.add_apply, hm, Finset.sum_add_distrib]`. Apply the tactic sequence `split_ifs <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vRes_add {n : ℕ} (a : ℕ) {l l' : Fin (n / 2) → ℤ} (h : Cone l) (h' : Cone l') (s : Finset (Fin (n / 2))) :
     vRes n a (l + l') s = vRes n a l s + vRes n a l' s := by
@@ -240,13 +236,13 @@ theorem vRes_add {n : ℕ} (a : ℕ) {l l' : Fin (n / 2) → ℤ} (h : Cone l) (
   split_ifs <;> ring
 
 /- English proof (translation)
-Introduce `_ _ hij` and use `hx.antitone ((S.orderEmbOfFin h).monotone hij)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem restr_anti {n m : ℕ} {x : Fin n → ℤ} (hx : StrictAnti x) (S : Finset (Fin n)) (h : S.card = m) :
     Antitone (restr x S h) := fun _ _ hij => hx.antitone ((S.orderEmbOfFin h).monotone hij)
 
 /- English proof (translation)
-Unfold `Subgroup.relIndex`. Rewrite using `[← Subgroup.index_prod, ← Subgroup.index_comap_of_surjective ((H.subgroupOf K).prod (H'.subgroupOf K')) (f := (Subgroup.prodEquiv K K').toMonoidHom) (Subgroup.prodEquiv K K').surjective]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem relIndex_prod {A B : Type} [Group A] [Group B] (H K : Subgroup A) (H' K' : Subgroup B) :
     (H.prod H').relIndex (K.prod K') = H.relIndex K * H'.relIndex K' := by
@@ -259,11 +255,11 @@ theorem relIndex_prod {A B : Type} [Group A] [Group B] (H K : Subgroup A) (H' K'
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `: (∃ x ∈ iwU n w b, ∃ z ∈ iwU n w b, (k * γ).1 = x.1 * (b * tdiag ϖ (wexp n l) * b⁻¹) * z.1) ↔ (∃ x ∈ iwU n w b, ∃ z ∈ iwU n w b, γ.1 = x.1 * (b * tdiag ϖ (wexp n l) * b⁻¹) * z.1)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, z, hz, e⟩`. Use `⟨k⁻¹ * x, mul_mem (inv_mem hk) hx, z, hz, ?_⟩` and prove the remaining obligations. Establish `e' : k.1 * γ.1 = x.1 * (b * tdiag ϖ (wexp n l) * b⁻¹) * z.1` using `e`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show γ.1 = k.1⁻¹ * x.1 * (b * tdiag ϖ (wexp n l) * b⁻¹) * z.1`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨x, hx, z, hz, e⟩`. Use `⟨k * x, mul_mem hk hx, z, hz, ?_⟩` and prove the remaining obligations. Use `show k.1 * γ.1 = k.1 * x.1 * (b * tdiag ϖ (wexp n l) * b⁻¹) * z.1`.
+Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Simplify using `only [mul_assoc]`. Simplify using `only [fU, this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fU_left {w : Pl E} {n : ℕ} (b : GLw n w) (ϖ : (w.adicCompletion E)ˣ) (l : Fin (n / 2) → ℤ) {k : UL n w}
     (hk : k ∈ iwU n w b) (γ : UL n w) : fU n w b ϖ l (k * γ) = fU n w b ϖ l γ := by
@@ -284,11 +280,11 @@ theorem fU_left {w : Pl E} {n : ℕ} (b : GLw n w) (ϖ : (w.adicCompletion E)ˣ)
   simp only [fU, this]
 
 /- English proof (translation)
-Establish `: (∃ x ∈ iwU n w b, ∃ z ∈ iwU n w b, (γ * k).1 = x.1 * (b * tdiag ϖ (wexp n l) * b⁻¹) * z.1) ↔ (∃ x ∈ iwU n w b, ∃ z ∈ iwU n w b, γ.1 = x.1 * (b * tdiag ϖ (wexp n l) * b⁻¹) * z.1)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, z, hz, e⟩`. Use `⟨x, hx, z * k⁻¹, mul_mem hz (inv_mem hk), ?_⟩` and prove the remaining obligations. Establish `e' : γ.1 * k.1 = x.1 * (b * tdiag ϖ (wexp n l) * b⁻¹) * z.1` using `e`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show γ.1 = x.1 * (b * tdiag ϖ (wexp n l) * b⁻¹) * (z.1 * k.1⁻¹)`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `⟨x, hx, z, hz, e⟩`. Use `⟨x, hx, z * k, mul_mem hz hk, ?_⟩` and prove the remaining obligations. Use `show γ.1 * k.1 = x.1 * (b * tdiag ϖ (wexp n l) * b⁻¹) * (z.1 * k.1)`.
+Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Simplify using `only [mul_assoc]`. Simplify using `only [fU, this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fU_right {w : Pl E} {n : ℕ} (b : GLw n w) (ϖ : (w.adicCompletion E)ˣ) (l : Fin (n / 2) → ℤ) {k : UL n w}
     (hk : k ∈ iwU n w b) (γ : UL n w) : fU n w b ϖ l (γ * k) = fU n w b ϖ l γ := by
@@ -309,7 +305,7 @@ theorem fU_right {w : Pl E} {n : ℕ} (b : GLw n w) (ϖ : (w.adicCompletion E)ˣ
   simp only [fU, this]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(GlobalTheory.CompanionTheory.IwLevels.isCompact_support_fU hw n b ϖ l hc).closure, fun _ hk x => ⟨fU_left b ϖ l hk x, fU_right b ϖ l hk x⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem fU_hecke {w : Pl E} (hw : ¬ IsSplitAt w) {n : ℕ} (b : GLw n w) (ϖ : (w.adicCompletion E)ˣ)
     (l : Fin (n / 2) → ℤ) (hc : Continuous (cj w)) : IsHecke (iwU n w b) (fU n w b ϖ l) :=
@@ -317,9 +313,9 @@ theorem fU_hecke {w : Pl E} (hw : ¬ IsSplitAt w) {n : ℕ} (b : GLw n w) (ϖ : 
     fun _ hk x => ⟨fU_left b ϖ l hk x, fU_right b ϖ l hk x⟩⟩
 
 /- English proof (translation)
-Establish `: (∃ x ∈ iwGL n w, ∃ z ∈ iwGL n w, i * g = x * t * z) ↔ (∃ x ∈ iwGL n w, ∃ z ∈ iwGL n w, g = x * t * z)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, z, hz, e⟩`. Use `⟨i⁻¹ * x, mul_mem (inv_mem hi) hx, z, hz, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Introduce and unpack `⟨x, hx, z, hz, e⟩`. Conclude with `⟨i * x, mul_mem hi hx, z, hz, by rw [e]; simp only [mul_assoc]⟩`. Simplify using `only [dcos, this]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 theorem dcos_left' {n : ℕ} {w : Pl E} (t : GLw n w) {i : GLw n w} (hi : i ∈ iwGL n w) (g : GLw n w) :
     dcos n w t (i * g) = dcos n w t g := by
@@ -334,9 +330,9 @@ theorem dcos_left' {n : ℕ} {w : Pl E} (t : GLw n w) {i : GLw n w} (hi : i ∈ 
   simp only [dcos, this]
 
 /- English proof (translation)
-Establish `: (∃ x ∈ iwGL n w, ∃ z ∈ iwGL n w, g * i = x * t * z) ↔ (∃ x ∈ iwGL n w, ∃ z ∈ iwGL n w, g = x * t * z)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, z, hz, e⟩`. Use `⟨x, hx, z * i⁻¹, mul_mem hz (inv_mem hi), ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Introduce and unpack `⟨x, hx, z, hz, e⟩`. Conclude with `⟨x, hx, z * i, mul_mem hz hi, by rw [e]; simp only [mul_assoc]⟩`. Simplify using `only [dcos, this]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 theorem dcos_right' {n : ℕ} {w : Pl E} (t : GLw n w) {i : GLw n w} (hi : i ∈ iwGL n w) (g : GLw n w) :
     dcos n w t (g * i) = dcos n w t g := by
@@ -354,9 +350,9 @@ def dd (a b : ℕ) (w : Pl E) (t₁ : GLw a w) (t₂ : GLw b w) : GLw a w × GLw
   fun m => dcos a w t₁ m.1 * dcos b w t₂ m.2
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.CompanionTheory.IwFacts.isCompact_support_dcos w a t₁`. Establish `h2` using `GlobalTheory.CompanionTheory.IwFacts.isCompact_support_dcos w b t₂`. Use `⟨HasCompactSupport.intro' (h1.prod h2) (h1.prod h2).isClosed fun y hy => ?_, fun k hk x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hy ⟨left_ne_zero_of_mul hne, right_ne_zero_of_mul hne⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Simplify using `only [dd, Prod.fst_mul, Prod.snd_mul, dcos_left' _ hk.1, dcos_left' _ hk.2]`. Simplify using `only [dd, Prod.fst_mul, Prod.snd_mul, dcos_right' _ hk.1, dcos_right' _ hk.2]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dd_hecke (a b : ℕ) (w : Pl E) (t₁ : GLw a w) (t₂ : GLw b w) :
     IsHecke ((iwGL a w).prod (iwGL b w)) (dd a b w t₁ t₂) := by
@@ -369,7 +365,7 @@ theorem dd_hecke (a b : ℕ) (w : Pl E) (t₁ : GLw a w) (t₂ : GLw b w) :
   · simp only [dd, Prod.fst_mul, Prod.snd_mul, dcos_right' _ hk.1, dcos_right' _ hk.2]
 
 /- English proof (translation)
-Rewrite using `[Subgroup.coe_prod]`. Conclude with `(GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori (w.adicCompletion E) (Fin a)).prod (GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori (w.adicCompletion E) (Fin b))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwahori_pair_open (a b : ℕ) (w : Pl E) : IsOpen (((iwGL a w).prod (iwGL b w) : Subgroup _) : Set (GLw a w × GLw b w)) := by
   rw [Subgroup.coe_prod]
@@ -377,21 +373,21 @@ theorem iwahori_pair_open (a b : ℕ) (w : Pl E) : IsOpen (((iwGL a w).prod (iwG
     (GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori (w.adicCompletion E) (Fin b))
 
 /- English proof (translation)
-The claim follows from `Subgroup.prod_mono (GlobalTheory.CompanionTheory.IwLevels.iwGL_le_KGL w a) (GlobalTheory.CompanionTheory.IwLevels.iwGL_le_KGL w b)`.
+A detailed English derivation is pending.
 -/
 theorem iwahori_pair_le_maximal (a b : ℕ) (w : Pl E) :
     (iwGL a w).prod (iwGL b w) ≤ (GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b) :=
   Subgroup.prod_mono (GlobalTheory.CompanionTheory.IwLevels.iwGL_le_KGL w a) (GlobalTheory.CompanionTheory.IwLevels.iwGL_le_KGL w b)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.IwLevels.relIndex_ne_zero (GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori (w.adicCompletion E) (Fin a)) (GlobalTheory.CompanionTheory.IwLevels.isCompact_KGL w a)`.
+A detailed English derivation is pending.
 -/
 theorem iw_idx (a : ℕ) (w : Pl E) : (iwGL a w).relIndex (GlobalTheory.LFun.KGL w a) ≠ 0 :=
   GlobalTheory.CompanionTheory.IwLevels.relIndex_ne_zero (GlobalTheory.SmGL.IwahoriOnto.isOpen_iwahori (w.adicCompletion E) (Fin a))
     (GlobalTheory.CompanionTheory.IwLevels.isCompact_KGL w a)
 
 /- English proof (translation)
-Rewrite using `[relIndex_prod]`. Conclude with `mul_ne_zero (iw_idx a w) (iw_idx b w)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwahori_pair_index_ne_zero (a b : ℕ) (w : Pl E) :
     ((iwGL a w).prod (iwGL b w)).relIndex ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) ≠ 0 := by
@@ -406,11 +402,9 @@ def tm (n : ℕ) (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) (a : ℕ) (x : Fin n �
   else 0
 
 /- English proof (translation)
-Distinguish the cases in `h : admitted n a s`. Establish `e : tm n w ϖ a x s = fun y => (-qh w) ^ (-vRes n a (lOf x) s) * dd a (n - a) w (tdiag ϖ (restr x _ h.2.2.2.1)) (tdiag ϖ (restr x _ h.2.2.2.2)) y`. Use function extensionality and compare the values at `y`. Conclude with `dif_pos h`. Rewrite using `[e]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isHecke_const_mul _ (dd_hecke _ _ _ _ _)`. Establish `e : tm n w ϖ a x s = fun _ => 0`. Use function extensionality and compare the values at `y`. Conclude with `dif_neg h`. Rewrite using `[e]`.
-
-Conclude with `isHecke_zero _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tm_hecke (n : ℕ) (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) (a : ℕ) (x : Fin n → ℤ) (s : Finset (Fin (n / 2))) :
     IsHecke ((iwGL a w).prod (iwGL (n - a) w)) (tm n w ϖ a x s) := by
@@ -428,7 +422,7 @@ theorem tm_hecke (n : ℕ) (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) (a : ℕ) (x
     exact isHecke_zero _
 
 /- English proof (translation)
-Unfold `entT tm`. Distinguish the cases in `h : admitted n a s`. Simplify using `only [dif_pos h, dd]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Simplify using `[dif_neg h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem entT_eq (n : ℕ) (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) (a : ℕ) {J : Type} [Fintype J] (c : J → ℂ)
     (x : J → Fin n → ℤ) (s : Finset (Fin (n / 2))) (y : GLw a w × GLw (n - a) w) :
@@ -440,7 +434,7 @@ theorem entT_eq (n : ℕ) (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) (a : ℕ) {J 
   · simp [dif_neg h]
 
 /- English proof (translation)
-Establish `e : entT n w ϖ a c x s = fun y => ∑ j, c j * tm n w ϖ a (x j) s y` using `funext (entT_eq n w ϖ a c x s)`. Rewrite using `[e]`. Conclude with `isHecke_sum fun j => isHecke_const_mul _ (tm_hecke n w ϖ a (x j) s)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entT_hecke (n : ℕ) (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) (a : ℕ) {J : Type} [Fintype J] (c : J → ℂ)
     (x : J → Fin n → ℤ) (s : Finset (Fin (n / 2))) :
@@ -450,13 +444,11 @@ theorem entT_hecke (n : ℕ) (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) (a : ℕ) 
   exact isHecke_sum fun j => isHecke_const_mul _ (tm_hecke n w ϖ a (x j) s)
 
 /- English proof (translation)
-Unfold `phiX`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `hA : admitted n a s`. Rewrite using `[dif_pos (⟨hA.1, hA.2.1, hA.2.2.1⟩ : _ ∧ _ ∧ _), dif_pos hA.2.2.2.1, dif_pos hA.2.2.2.2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Unfold `tm`. Rewrite using `[dif_pos hA]`. Unfold `cR dd`. Expand and normalize the polynomial expressions, which then agree. Establish `: tm n w ϖ a x s y = 0` using `dif_neg hA`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[this, mul_zero]`. Use `split_ifs with h1 h2 h3`. Conclude with `absurd ⟨h1.1, h1.2.1, h1.2.2, h2, h3⟩ hA`. Both sides reduce to the same expression. Both sides reduce to the same expression.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem phiX_eq (n : ℕ) (w : Pl E) (b : GLw n w) (ϖ : (w.adicCompletion E)ˣ) (x : Fin n → ℤ) (a : ℕ)
     (y : GLw a w × GLw (n - a) w) : phiX n w b ϖ x a y = cR n a w b * ∑ s, tm n w ϖ a x s y := by
@@ -478,7 +470,7 @@ theorem phiX_eq (n : ℕ) (w : Pl E) (b : GLw n w) (ϖ : (w.adicCompletion E)ˣ)
     · rfl
 
 /- English proof (translation)
-Establish `e : phiX n w b ϖ x a = fun y => cR n a w b * ∑ s, tm n w ϖ a x s y` using `funext (phiX_eq n w b ϖ x a)`. Rewrite using `[e]`. Conclude with `isHecke_const_mul _ (isHecke_sum fun s => tm_hecke n w ϖ a x s)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiX_hecke (n : ℕ) (w : Pl E) (b : GLw n w) (ϖ : (w.adicCompletion E)ˣ) (x : Fin n → ℤ) (a : ℕ) :
     IsHecke ((iwGL a w).prod (iwGL (n - a) w)) (phiX n w b ϖ x a) := by
@@ -487,7 +479,7 @@ theorem phiX_hecke (n : ℕ) (w : Pl E) (b : GLw n w) (ϖ : (w.adicCompletion E)
   exact isHecke_const_mul _ (isHecke_sum fun s => tm_hecke n w ϖ a x s)
 
 /- English proof (translation)
-Use `neg_ne_zero.2 ?_` and prove the remaining obligations. Unfold `qh`. Establish `h : 0 < (qV E w : ℝ)` using `Nat.cast_pos.2 (Nat.pos_of_ne_zero (GlobalTheory.LFun.qV_ne_zero w))`. Conclude with `(Real.sqrt_pos.2 h).ne'` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem qh_ne {w : Pl E} : -qh w ≠ 0 := by
   refine neg_ne_zero.2 ?_
@@ -496,14 +488,14 @@ theorem qh_ne {w : Pl E} : -qh w ≠ 0 := by
   exact_mod_cast (Real.sqrt_pos.2 h).ne'
 
 /- English proof (translation)
-Rewrite using `[vRes_add a h h', neg_add, zpow_add₀ qh_ne]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_add_q {w : Pl E} (n a : ℕ) {l l' : Fin (n / 2) → ℤ} (h : Cone l) (h' : Cone l') (s : Finset (Fin (n / 2))) :
     (-qh w) ^ (-vRes n a (l + l') s) = (-qh w) ^ (-vRes n a l s) * (-qh w) ^ (-vRes n a l' s) := by
   rw [vRes_add a h h', neg_add, zpow_add₀ qh_ne]
 
 /- English proof (translation)
-Unfold `entT`. Rewrite using `[dif_pos h]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [dd]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem entT_adm (n : ℕ) (w : Pl E) (ϖ : (w.adicCompletion E)ˣ) (a : ℕ) {J : Type} [Fintype J] (c : J → ℂ)
     (x : J → Fin n → ℤ) {s : Finset (Fin (n / 2))} (h : admitted n a s) (y : GLw a w × GLw (n - a) w) :
@@ -521,17 +513,17 @@ abbrev beta (a b : ℕ) (w : Pl E) : ℂ :=
 abbrev alpha (n : ℕ) (w : Pl E) (b : GLw n w) : ℂ := (((iwU n w b).relIndex (KL n w) : ℕ) : ℂ)⁻¹
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Distinguish the cases in `h : admitted n a s`. Establish `ho` using `iwahori_pair_open a (n - a) w`. Establish `hle` using `iwahori_pair_le_maximal a (n - a) w`. Establish `hidx` using `iwahori_pair_index_ne_zero a (n - a) w`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : entT n w ϖ a c x s = fun z => ∑ j, (c j * (-qh w) ^ (-vRes n a (lOf (x j)) s)) * dd a (n - a) w (tdiag ϖ (restr (x j) _ h.2.2.2.1)) (tdiag ϖ (restr (x j) _ h.2.2.2.2)) z`. Use function extensionality and compare the values at `(entT_adm n w ϖ a c x h)`. Establish `e2 : entT n w ϖ a c' x' s = fun z => ∑ j, (c' j * (-qh w) ^ (-vRes n a (lOf (x' j)) s)) * dd a (n - a) w (tdiag ϖ (restr (x' j) _ h.2.2.2.1)) (tdiag ϖ (restr (x' j) _ h.2.2.2.2)) z`. Use function extensionality and compare the values at `(entT_adm n w ϖ a c' x' h)`. Establish `s1 : mconv (entT n w ϖ a c x s) (fun y => r * entT n w ϖ a c' x' s y) y = r * hint ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w (n - a))) (fun z => entT n w ϖ a c x s z * entT n w ϖ a c' x' s (z⁻¹ * y))` using `conv_const ho hle hidx (entT_hecke n w ϖ a c x s) (entT_hecke n w ϖ a c' x' s) r y`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `s2` using `conv_sum_sum ho hle hidx (fun j => c j * (-qh w) ^ (-vRes n a (lOf (x j)) s)) (fun j => dd a (n - a) w (tdiag ϖ (restr (x j) _ h.2.2.2.1)) (tdiag ϖ (restr (x j) _ h.2.2.2.2))) (fun j => c' j * (-qh w) ^ (-vRes n a (lOf (x' j)) s)) (fun j => dd a (n - a) w (tdiag ϖ (restr (x' j) _ …`. Establish `s3 : ∀ j j', hint ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w (n - a))) (fun z => dd a (n - a) w (tdiag ϖ (restr (x j) _ h.2.2.2.1)) (tdiag ϖ (restr (x j) _ h.2.2.2.2)) z * dd a (n - a) w (tdiag ϖ (restr (x' j') _ h.2.2.2.1)) (tdiag ϖ (restr (x' j') _ h.2.2.2.2)) ( …` using `fun j j' => congrFun (hD E w ϖ hϖ a (n - a) _ _ _ _ (restr_anti (hx j).1 _ _) (restr_anti (hx' j').1 _ _) (restr_anti (hx j).1 _ _) (restr_anti (hx' j').1 _ _)) y`. Rewrite using `[s1, e1, e2]`. Use `(congrArg (fun t : ℂ => r * t) s2).trans ?_` and prove the remaining obligations. Simplify using `only [s3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[entT_adm n w ϖ a _ _ h y, Fintype.sum_prod_type]`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations. Simplify using `only [lOf_add, pow_add_q n a (hx j).2 (hx' j').2 s]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1 : entT n w ϖ a c x s = fun _ => 0`. Use function extensionality and compare the values at `z`. Conclude with `dif_neg h`. Establish `e2 : entT n w ϖ a (fun p : J × J' => c p.1 * c' p.2) (fun p => x p.1 + x' p.2) s y = 0` using `dif_neg h`. Rewrite using `[e2, e1, mul_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[mconv, hint]`.
+A detailed English derivation is pending.
 -/
 theorem mconv_entT (hD : DcosMul) {w : Pl E} (n : ℕ) (ϖ : (w.adicCompletion E)ˣ) (hϖ : IsUnifAt ϖ) (a : ℕ)
     {J J' : Type} [Fintype J] [Fintype J'] (c : J → ℂ) (x : J → Fin n → ℤ) (c' : J' → ℂ) (x' : J' → Fin n → ℤ)
@@ -583,13 +575,13 @@ theorem mconv_entT (hD : DcosMul) {w : Pl E} (n : ℕ) (ϖ : (w.adicCompletion E
     simp [mconv, hint]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Establish `hc : Continuous (cj w)` using `(GlobalTheory.T.placeConjugation_properties_cmField E hU w).1`. Establish `ho` using `GlobalTheory.CompanionTheory.IwLevels.isOpen_iwU n w b`. Establish `hle` using `GlobalTheory.CompanionTheory.IwLevels.iwU_le_KL n w b hb.1`. Establish `hidx : (iwU n w b).relIndex (KL n w) ≠ 0` using `GlobalTheory.CompanionTheory.IwLevels.relIndex_ne_zero ho (GlobalTheory.CompanionTheory.IwLevels.isCompact_KL hw n hc)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : ∀ l, IsHecke (iwU n w b) (fU n w b ϖ l)` using `fun l => fU_hecke hw b ϖ l hc`. Establish `hS : ∀ {I : Type} [Fintype I] (d : I → ℂ) (z : I → Fin n → ℤ), IsHecke (iwU n w b) (fun γ => ∑ j, d j * fU n w b ϖ (lOf (z j)) γ)` using `fun d z => isHecke_sum fun j => isHecke_const_mul _ (hH _)`. Establish `s1 : lconv (fun γ => ∑ j, c j * fU n w b ϖ (lOf (x j)) γ) (fun γ => r * ∑ j, c' j * fU n w b ϖ (lOf (x' j)) γ) y = r * hint (KL n w) (fun z => (∑ j, c j * fU n w b ϖ (lOf (x j)) z) * (∑ j, c' j * fU n w b ϖ (lOf (x' j)) (z⁻¹ * y)))` using `conv_const ho hle hidx (hS c x) (hS c' x') r y`. Establish `s2` using `conv_sum_sum ho hle hidx c (fun j => fU n w b ϖ (lOf (x j))) c' (fun j => fU n w b ϖ (lOf (x' j))) (fun j => hH _) (fun j => hH _) y`. Establish `s3 : ∀ j j', hint (KL n w) (fun z => fU n w b ϖ (lOf (x j)) z * fU n w b ϖ (lOf (x' j')) (z⁻¹ * y)) = alpha n w b * fU n w b ϖ (lOf (x j + x' j')) y` using `fun j j' => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun (hFU E hU w hw n b hb ϖ hϖ _ _ (hx j).2 (hx' j').2) y` as an intermediate fact. Rewrite using `[lOf_add]`. Conclude with `this`. Rewrite using `[s1, s2]`. Simplify using `only [s3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun j' _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lconv_comb (hFU : FUMul) (hU : Unr E) {w : Pl E} (hw : ¬ IsSplitAt w) {n : ℕ} {b : GLw n w} (hb : IsWitt n w b)
     {ϖ : (w.adicCompletion E)ˣ} (hϖ : IsUnifAt ϖ) {J J' : Type} [Fintype J] [Fintype J'] (c : J → ℂ)
@@ -627,17 +619,15 @@ theorem lconv_comb (hFU : FUMul) (hU : Unr E) {w : Pl E} (hw : ¬ IsSplitAt w) {
   ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Use `⟨J, inferInstance, c, x, hx, ?_, fun s => ?_⟩` and prove the remaining obligations. Establish `hc : Continuous (cj w)` using `(GlobalTheory.T.placeConjugation_properties_cmField E hU w).1`. Establish `ho` using `GlobalTheory.CompanionTheory.IwLevels.isOpen_iwU n w b`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle` using `GlobalTheory.CompanionTheory.IwLevels.iwU_le_KL n w b hb.1`. Establish `hidx : (iwU n w b).relIndex (KL n w) ≠ 0` using `GlobalTheory.CompanionTheory.IwLevels.relIndex_ne_zero ho (GlobalTheory.CompanionTheory.IwLevels.isCompact_KL hw n hc)`. Establish `hq : IsHecke (iwU n w b) (fun γ => ∑ j, c j * fU n w b ϖ (lOf (x j)) γ)` using `isHecke_sum fun j => isHecke_const_mul _ (fU_hecke hw b ϖ _ hc)`. Use function extensionality and compare the values at `y`. Use `conv_unit (f := fun γ => ∑ j, c j * fU n w b ϖ (lOf (x j)) γ) hle hidx (fun k hk z => (hq.2 k hk z).2) y` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite using `[pow_zero, one_mul]`. Conclude with `this`. Use function extensionality and compare the values at `y`. Use `conv_unit (iwahori_pair_le_maximal a (n - a) w) (iwahori_pair_index_ne_zero a (n - a) w) (fun k hk z => ((entT_hecke n w ϖ a c x s).2 k hk z).2) y` as an intermediate fact. Rewrite using `[pow_zero, one_mul]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `this`. Consider the case `succ k ih`. Take `⟨J', _, c', x', hx', e1, e2⟩` from `ih`. Use `⟨J × J', inferInstance, fun p => c p.1 * c' p.2, fun p => x p.1 + x' p.2, fun p => ⟨?_, ?_⟩, ?_, fun s => ?_⟩` and prove the remaining obligations. Conclude with `fun i j hij => add_lt_add ((hx p.1).1 hij) ((hx' p.2).1 hij)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lOf_add]`. Conclude with `cone_add (hx p.1).2 (hx' p.2).2`. Use `show lconv _ (lpow (iwU n w b) _ (k + 1)) = _`. Rewrite using `[e1, lconv_comb hFU hU hw hb hϖ c x c' x' hx hx', pow_succ]`. Use `show mconv _ (mpow w _ (k + 1)) = _`.
-
-Rewrite using `[e2, mconv_entT hD n ϖ hϖ a c x c' x' hx hx', pow_succ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_claim (hFU : FUMul) (hD : DcosMul) (hU : Unr E) {w : Pl E} (hw : ¬ IsSplitAt w) {n : ℕ} (a : ℕ)
     {b : GLw n w} (hb : IsWitt n w b) {ϖ : (w.adicCompletion E)ˣ} (hϖ : IsUnifAt ϖ) {J : Type} [Fintype J]
@@ -678,17 +668,17 @@ theorem pow_claim (hFU : FUMul) (hD : DcosMul) (hU : Unr E) {w : Pl E} (hw : ¬ 
       rw [e2, mconv_entT hD n ϖ hϖ a c x c' x' hx hx', pow_succ]
 
 /- English proof (translation)
-Introduce `hM4 hFU hD hLin E _ _ _ hU w hw n a ha b hb ϖ hϖ J _ c x hx k hk`. Take `⟨k, rfl⟩ : ∃ k', k = k' + 1` from `⟨k - 1, by omega⟩`. Take `⟨J', _, c', x', hx', e1, e2⟩` from `pow_claim hFU hD hU hw a hb hϖ c x hx k`. Establish `hc : Continuous (cj w)` using `(GlobalTheory.T.placeConjugation_properties_cmField E hU w).1`. Establish `hoU` using `GlobalTheory.CompanionTheory.IwLevels.isOpen_iwU n w b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hoG` using `iwahori_pair_open a (n - a) w`. Establish `hm` using `hLin E n a (n - a) w 1 J' (fun j => alpha n w b ^ k * c' j) (fun j => fU n w b ϖ (lOf (x' j))) (fun j => phiX n w b ϖ (x' j) a) (fun j => ⟨isHecke_continuous hoU (fU_hecke hw b ϖ _ hc), (fU_hecke hw b ϖ _ hc).1, isHecke_continuous hoG (phiX_hecke n w b ϖ _ a), (phiX_hecke n w b ϖ …`. Establish `hcon : cR n a w b * beta a (n - a) w = alpha n w b`. Establish `h1 : (((iwGL a w).relIndex (GlobalTheory.LFun.KGL w a) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (iw_idx a w)`. Establish `h2 : (((iwGL (n - a) w).relIndex (GlobalTheory.LFun.KGL w (n - a)) : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (iw_idx (n - a) w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `cR beta alpha`. Rewrite using `[relIndex_prod, Nat.cast_mul]`. Clear the denominators using the available nonvanishing facts. Establish `ef : lpow (iwU n w b) (fun γ => ∑ j, c j * fU n w b ϖ (lOf (x j)) γ) (k + 1) = fun γ => ∑ j, (alpha n w b ^ k * c' j) * fU n w b ϖ (lOf (x' j)) γ`. Rewrite using `[e1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `γ`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Establish `eφ : (fun y => cR n a w b ^ (k + 1) * ∑ s, mpow w (entT n w ϖ a c x s) (k + 1) y) = fun y => ∑ j, (alpha n w b ^ k * c' j) * phiX n w b ϖ (x' j) a y`. Use function extensionality and compare the values at `y`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [e2, entT_eq, phiX_eq]`. Establish `e3 : ∑ s, beta a (n - a) w ^ k * ∑ j, c' j * tm n w ϖ a (x' j) s y = beta a (n - a) w ^ k * ∑ j, c' j * ∑ s, tm n w ϖ a (x' j) s y`. Rewrite using `[← Finset.mul_sum, Finset.sum_comm]`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[e3, ← hcon, mul_pow, Finset.mul_sum, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ef, eφ]`. Conclude with `hm`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matchTOf : MatchTOf := by
   intro hM4 hFU hD hLin E _ _ _ hU w hw n a ha b hb ϖ hϖ J _ c x hx k hk

@@ -14,13 +14,13 @@ open Formalism.DivisionValues Formalism.EigenvalueLevelCeiling Formalism.L2.Inde
 variable {eps : ℝ} {Fm : Formalism.MainNotions.FamP eps}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Fm.x1 + 1, fun x hx i => Formalism.MainNotions.DIV.La_nonneg (Fm.L x i) (Fm.sizes x (by linarith) i).2.2.2.2.2.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem la_of (Fm : Formalism.MainNotions.FamP eps) : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, 0 ≤ (Fm.L x i).La :=
   ⟨Fm.x1 + 1, fun x hx i => Formalism.MainNotions.DIV.La_nonneg (Fm.L x i) (Fm.sizes x (by linarith) i).2.2.2.2.2.2.1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Fm.x1 + 1, fun x hx i => Formalism.MainNotions.WeightDegreeSizes.zero_gain_above_family Fm x (by linarith) i⟩`.
+Supply the required witnesses or components.
 -/
 theorem za_of (Fm : Formalism.MainNotions.FamP eps) : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, (Fm.L x i).ZeroAbove :=
   ⟨Fm.x1 + 1, fun x hx i => Formalism.MainNotions.WeightDegreeSizes.zero_gain_above_family Fm x (by linarith) i⟩

@@ -29,26 +29,26 @@ section Meas
 variable [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-The claim follows from `(continuous_modulus.comp ((continuous_id.matrix_elem i j).comp Units.continuous_val)).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_entry (i j : Fin 2) :
     Measurable fun g : GL (Fin 2) F => modulus (g.val i j) :=
   (continuous_modulus.comp ((continuous_id.matrix_elem i j).comp Units.continuous_val)).measurable
 
 /- English proof (translation)
-The claim follows from `(continuous_modulus.comp (Continuous.matrix_det Units.continuous_val)).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_detm : Measurable fun g : GL (Fin 2) F => modulus (g.val).det :=
   (continuous_modulus.comp (Continuous.matrix_det Units.continuous_val)).measurable
 
 /- English proof (translation)
-Establish `hq1 : (1 : ℝ) < (residueCard F : ℝ)` using `by exact_mod_cast one_lt_residueCard (K := F)`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt c hq1`. Use `lt_of_le_of_lt (measure_mono ?_) (isCompact_valBall (K := F) (-(n : ℤ))).measure_lt_top` and prove the remaining obligations. Introduce `x hx`. Distinguish the cases in `h0 : x = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[h0]`. Conclude with `zero_mem _`. Establish `hmod : (modulus x : ℝ) = (residueCard F : ℝ) ^ (-ord x)`. Rewrite using `[modulus_of_ne_zero h0]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h1 : (residueCard F : ℝ) ^ (-ord x) < (residueCard F : ℝ) ^ (n : ℤ)`. Rewrite using `[zpow_natCast, ← hmod]`. Conclude with `lt_of_le_of_lt hx hn`. Establish `h2` using `(zpow_lt_zpow_iff_right₀ hq1).1 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[SetLike.mem_coe, mem_valBall_iff_le_ord h0]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem ball_lt_top (μ : Measure F) [μ.IsAddHaarMeasure] (c : ℝ) :
     μ {x : F | (modulus x : ℝ) ≤ c} < ⊤ := by

@@ -22,9 +22,9 @@ def EtaSp : Prop :=
     ∃ x : Fv F v ⊗[F] E, x * x = x ∧ x ≠ 0 ∧ x ≠ 1
 
 /- English proof (translation)
-Introduce `hstd hun`. Unfold `etaV`. Prove the components needed by the constructor for the conclusion. Introduce `h hp split_ifs at h with hx`. Take `⟨x, h1, h2, h3⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Break down `hI hstd hun hp x h1 with h0 | h0` into its components or cases. Conclude with `h2 h0`. Conclude with `h3 h0`. Introduce `hp`. Rewrite using `[if_pos (hS hstd hun hp)]`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etaLink_of (hI : EtaIn σ J ψ v) (hS : EtaSp σ J ψ v) : EtaLink σ J ψ v := by
   intro hstd hun
@@ -40,7 +40,7 @@ theorem etaLink_of (hI : EtaIn σ J ψ v) (hS : EtaSp σ J ψ v) : EtaLink σ J 
     rw [if_pos (hS hstd hun hp)]
 
 /- English proof (translation)
-The claim follows from `resAlg_of_eta σ J ψ v (etaLink_of σ J ψ v hI hS)`.
+A detailed English derivation is pending.
 -/
 theorem resAlg_of_etaSp (hI : EtaIn σ J ψ v) (hS : EtaSp σ J ψ v) : ResAlg σ J ψ v :=
   resAlg_of_eta σ J ψ v (etaLink_of σ J ψ v hI hS)

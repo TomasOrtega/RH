@@ -7,9 +7,9 @@ namespace GroundTheory.BlockD.FourierDecayAlt.WaveGridLiftGrid
 open Finset
 
 /- English proof (translation)
-Establish `hb0 : 0 ≤ b` using `by linarith`. Establish `h1 : (2 + c) ^ 2 ≤ b ^ 2` using `pow_le_pow_left₀ (by linarith) (by linarith) 2`. Establish `h2 : (k : ℝ) ^ 2 ≤ b ^ 2` using `pow_le_pow_left₀ (Nat.cast_nonneg k) hkb 2`. Establish `h3 : (3 * b) ^ (2 * r + 3) ≤ (b * b) ^ (2 * r + 3)` using `pow_le_pow_left₀ (by linarith) (by nlinarith) _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Apply `mul_le_mul (mul_le_mul h1 h2 (sq_nonneg _) (sq_nonneg _)) h3 (pow_nonneg (by linarith) _) (mul_nonneg (sq_nonneg _) (sq_nonneg _))` to reduce the goal to its premises. Use `_ = b ^ (4 * r + 10) := by ring`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem bracket_const_le (k r : ℕ) (c b : ℝ) (hc : 0 ≤ c) (hb : 3 ≤ b) (hkb : (k : ℝ) ≤ b)
     (hcb : c + 2 ≤ b) :
@@ -26,11 +26,11 @@ theorem bracket_const_le (k r : ℕ) (c b : ℝ) (hc : 0 ≤ c) (hb : 3 ≤ b) (
     _ = b ^ (4 * r + 10) := by ring
 
 /- English proof (translation)
-Establish `hP1` using `bracket_le k r lam u e c g b Y 0 hk hc hg (Or.inl rfl) (by linarith) hY hlam hgap hp hden`. Establish `hP2` using `bracket_le k r lam v e' c g b Y 1 hk hc hg (Or.inr rfl) (by linarith) hY hlam hgap hp' hden'`. Simplify using `only [add_zero] at hP1`. Establish `hKc` using `bracket_const_le k r c b hc hb hkb hcb`. Establish `hKc0 : 0 ≤ (2 + c) ^ 2 * (k : ℝ) ^ 2 * (3 * b) ^ (2 * r + 3)` using `mul_nonneg (mul_nonneg (sq_nonneg _) (sq_nonneg _)) (pow_nonneg (by linarith) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPu : 0 ≤ ∏ i ∈ Icc 1 k, |Y + 1 / 2 + u i|` using `prod_nonneg fun _ _ => abs_nonneg _`. Establish `hPv : 0 ≤ ∏ i ∈ Icc 1 k, |Y + 1 / 2 + v i|` using `prod_nonneg fun _ _ => abs_nonneg _`. Establish `hQ : 0 ≤ ∏ s ∈ Icc 1 (k + 2 * r + 1), (|Y + 1 + lam s| + c)` using `prod_nonneg fun _ _ => add_nonneg (abs_nonneg _) hc`. Unfold `Pst`. Rewrite using `[prod_mul_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem pst_mul_le (k r : ℕ) (lam u v : ℕ → ℝ) (e e' : ℕ) (c g b Y : ℝ) (hk : 2 ≤ k) (hc : 0 ≤ c)
     (hg : 1 + c ≤ g) (hb : 3 ≤ b) (hkb : (k : ℝ) ≤ b) (hcb : c + 2 ≤ b) (hY : |Y| ≤ b)

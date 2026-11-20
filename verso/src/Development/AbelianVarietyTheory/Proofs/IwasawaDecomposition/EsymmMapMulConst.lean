@@ -21,9 +21,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CuspFrobSplit
 
 /- English proof (translation)
-Unfold `Multiset.esymm`. Rewrite using `[Multiset.powersetCard_map, Multiset.map_map, ← Multiset.sum_map_mul_left]`. Use `congr 1`. Use `Multiset.map_congr rfl fun t ht => ?_` and prove the remaining obligations. Establish `hk : Multiset.card t = k` using `(Multiset.mem_powersetCard.1 ht).2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, Multiset.prod_map_mul, Multiset.map_id', Multiset.map_const', Multiset.prod_replicate, hk]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem esymm_map_mul_const (s : Multiset ℂ) (c : ℂ) (k : ℕ) :
     (s.map (fun x => x * c)).esymm k = c ^ k * s.esymm k := by
@@ -37,37 +37,37 @@ theorem esymm_map_mul_const (s : Multiset ℂ) (c : ℂ) (k : ℕ) :
   ring
 
 /- English proof (translation)
-Introduce `D cf Rw Sb eig hV hE j hj1 hj2 σ hiso hgood π hcsd hloc`. Take `⟨bar, hinj, hbar⟩` from `GlobalTheory.ConjPoly.exists_conj D`. Set `j' : Fin D.R.m` to `⟨j - 1, by omega⟩`. Establish `hjj : (j' : ℕ) + 1 = j` using `by simp only [j']; omega`. Establish `hfin : (bar ⁻¹' ((Sb : Set (PlE D.host)) ∪ {v | ¬ (cf.mu0 j').UnrAt v})).Finite` using `(Sb.finite_toSet.union (GlobalTheory.Mem.UnrAe.finite_ramified _)).preimage hinj.injOn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Filter.eventually_cofinite.2 (hfin.subset ?_)` and prove the remaining obligations. Introduce `w hw`. Simplify using `only [Set.mem_setOf_eq] at hw`. Assume the negation of the conclusion as `hw'`. Apply `hw` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hsplit`. Simplify using `only [Set.mem_preimage, Set.mem_union, Finset.mem_coe, Set.mem_setOf_eq, not_or, not_not] at hw'`. Take `⟨hSb, hunrμ⟩` from `hw'`. Take `⟨hc, -, hsp⟩` from `hbar w`. Establish `hPs : IsSplitPl D.host (bar w)` using `hsp hsplit`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hE'` using `hE j' σ (by rw [hjj]; exact hiso) hgood (bar w) hPs hSb`. Rewrite `hE'` using `[hjj]`. Take `⟨hunrP, heig⟩` from `hE'`. Rewrite `hunrP`, `heig` using `[← hloc (bar w) hPs]`. Take `⟨hunrw, hfw⟩` from `D.naut.csd_unr π (bar w) w hcsd (GlobalTheory.ToricDenomCheck.isConj_symm hc) hunrP`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hfP : D.naut.frobEig (D.naut.locG π (bar w)) = (D.naut.frobEig (D.naut.locG π w)).map (fun x => x⁻¹)`. Rewrite using `[hfw, Multiset.map_map]`. Simplify using the standard rewrite rules. Establish `hcard : (D.naut.frobEig (D.naut.locG π w)).card = D.R.r`. Rewrite using `[D.naut.frobEig_card _ hunrw, D.naut.locG_dim]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmemS : ∀ x, x ∈ (embLL0 D).fieldRange → x ∈ Set.range (embLL0 D)` using `fun x h => (RingHom.mem_fieldRange).1 h`. Establish `hNS : ∀ n : ℕ, (n : ℂ) ∈ (embLL0 D).fieldRange` using `fun n => natCast_mem _ n`. Establish `hN0 : (Formalism.ConjugateSelfDual.normV (bar w) : ℂ) ≠ 0` using `by exact_mod_cast GlobalTheory.ConjPoly.normV_ne_zero (bar w)`. Establish `hμ0 : (((cf.mu0 j').val (bar w) : ℂˣ) : ℂ) ≠ 0` using `Units.ne_zero _`. Take `⟨yμ, hyμ⟩` from `hV.mu0 j' (bar w) hunrμ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hμS : (((cf.mu0 j').val (bar w) : ℂˣ) : ℂ) ∈ (embLL0 D).fieldRange` using `⟨yμ, by rw [hyμ]; simp [Formalism.L2.Host.HChar.valTw]⟩`. Establish `hAk : ∀ k, 1 ≤ k → k ≤ D.R.r → (D.naut.frobEig (D.naut.locG π w)).esymm k ∈ (embLL0 D).fieldRange`. Introduce `k hk1 hk2`. Establish `h` using `heig k hk1 hk2`. Rewrite `h` using `[hfP, Multiset.map_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfun : (fun a : ℂ => a⁻¹ * (((cf.mu0 j').val (bar w) : ℂˣ) : ℂ)⁻¹ * ((Formalism.ConjugateSelfDual.normV (bar w) : ℂ) ^ (D.R.nV / 2))⁻¹) ∘ (fun x : ℂ => x⁻¹) = fun x => x * ((((cf.mu0 j').val (bar w) : ℂˣ) : ℂ)⁻¹ * ((Formalism.ConjugateSelfDual.normV (bar w) : ℂ) ^ (D.R.nV / 2))⁻¹ …`. Use function extensionality and compare the values at `x`. Simplify using `[mul_assoc]`. Rewrite `h` using `[hfun, esymm_map_mul_const]`. Establish `hd : ((((cf.mu0 j').val (bar w) : ℂˣ) : ℂ)⁻¹ * ((Formalism.ConjugateSelfDual.normV (bar w) : ℂ) ^ (D.R.nV / 2))⁻¹) ≠ 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hμ0, hN0]`. Establish `hdS : ((((cf.mu0 j').val (bar w) : ℂˣ) : ℂ)⁻¹ * ((Formalism.ConjugateSelfDual.normV (bar w) : ℂ) ^ (D.R.nV / 2))⁻¹) ∈ (embLL0 D).fieldRange` using `Subfield.mul_mem _ (Subfield.inv_mem _ hμS) (Subfield.inv_mem _ (Subfield.pow_mem _ (hNS _) _))`. Establish `hpow : ((Formalism.ConjugateSelfDual.normV (bar w) : ℂ) ^ (k * (D.R.r - k) / 2)) ≠ 0` using `pow_ne_zero _ hN0`. Establish `heq : (D.naut.frobEig (D.naut.locG π w)).esymm k = D.what₂.embLL ↑(eig j σ k (bar w)) * ((Formalism.ConjugateSelfDual.normV (bar w) : ℂ) ^ (k * (D.R.r - k) / 2))⁻¹ * (((((cf.mu0 j').val (bar w) : ℂˣ) : ℂ)⁻¹ * ((Formalism.ConjugateSelfDual.normV (bar w) : ℂ) ^ (D.R.nV / 2))⁻¹) ^ k …`. Rewrite using `[h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[heq]`. Use `Subfield.mul_mem _ (Subfield.mul_mem _ ⟨eig j σ k (bar w), rfl⟩ (Subfield.inv_mem _ (Subfield.pow_mem _ (hNS _) _))) (Subfield.inv_mem _ (Subfield.pow_mem _ hdS _))` and prove the remaining obligations. Establish `hr : Odd D.R.r`. Take `⟨a, ha⟩` from `D.R.k_even`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `D.R.m_even`. Use `D.R.two_le_m` as an intermediate fact. Conclude with `⟨a + b - 1, by simp only [Formalism.BasicNotions.Ranks.r]; omega⟩`. Take `⟨q, hq⟩` from `hr`. Establish `hs : ((Formalism.ConjugateSelfDual.normV w : ℕ) : ℂ) ^ ((((1 - (D.R.r : ℝ)) / 2 : ℝ)) : ℂ) = ((Formalism.ConjugateSelfDual.normV w : ℂ) ^ q)⁻¹`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: ((((1 - (D.R.r : ℝ)) / 2 : ℝ)) : ℂ) = -(q : ℂ)`. Rewrite using `[hq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.cpow_neg, Complex.cpow_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Unfold `Formalism.MainNotions.N.galPol`. Rewrite using `[D.naut.frobEig_tw _ _ hunrw, hs]`. Establish `hBk : ∀ k, k ≤ D.R.r → ((D.naut.frobEig (D.naut.locG π w)).map (fun x => x * ((Formalism.ConjugateSelfDual.normV w : ℂ) ^ q)⁻¹)).esymm k ∈ (embLL0 D).fieldRange`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k hk`. Break down `Nat.eq_zero_or_pos k with rfl | hk1` into its components or cases. Establish `: Multiset.esymm ((D.naut.frobEig (D.naut.locG π w)).map (fun x => x * ((Formalism.ConjugateSelfDual.normV w : ℂ) ^ q)⁻¹)) 0 = 1`. Simplify using `[Multiset.esymm, Multiset.powersetCard_zero_left]`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subfield.one_mem _`. Rewrite using `[esymm_map_mul_const]`. Conclude with `Subfield.mul_mem _ (Subfield.pow_mem _ (Subfield.inv_mem _ (Subfield.pow_mem _ (hNS _) _)) _) (hAk k hk1 hk)`. Establish `hBc : ((D.naut.frobEig (D.naut.locG π w)).map (fun x => x * ((Formalism.ConjugateSelfDual.normV w : ℂ) ^ q)⁻¹)).card = D.R.r`. Rewrite using `[Multiset.card_map, hcard]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `le_or_gt n D.R.r with hn | hn` into its components or cases. Rewrite using `[Multiset.prod_X_sub_C_coeff _ (hBc.symm ▸ hn), hBc]`. Conclude with `hmemS _ (Subfield.mul_mem _ (Subfield.pow_mem _ (Subfield.neg_mem _ (Subfield.one_mem _)) _) (hBk _ (by omega)))`. Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by rw [Polynomial.natDegree_multiset_prod_X_sub_C_eq_card, hBc]; exact hn)]`. Conclude with `⟨0, map_zero _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem galPol_lifts_ae : ∀ (D : D7) (cf : CharFrame D) (Rw : GlobalTheory.HeightCounting.RowSide D) (Sb : Finset (PlE D.host)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0), ValLL0 D cf → GlobalTheory.TwInputs.EigTrue D cf Rw Sb eig → ∀ j, 1 ≤ j → j ≤ D.R.m → ∀ σ, D.what₂.isot j σ ≠ ⊥ → D.nd.goodRow σ → ∀ π : D.naut.CG D.R.r, D.naut.csd π → (∀ w, IsSplitPl D.host w → D.naut.locG π w = Rw.locR σ w) → ∀ᶠ w in Filter.cofinite, IsSplitPl D.host w → galPol D.naut (D.naut.lpTw (D.naut.locG π w) ((1 - (D.R.r : ℝ)) / 2)) ∈ Polynomial.lifts (embLL0 D) := by
   intro D cf Rw Sb eig hV hE j hj1 hj2 σ hiso hgood π hcsd hloc

@@ -23,7 +23,7 @@ variable {A : Type*} [Ring A] [Algebra ℂ A]
 def fac (lin : Prop) [Decidable lin] (B : A) : A[X] := (if lin then X else 0) + C B
 
 /- English proof (translation)
-Unfold `fac`. Use `split_ifs`. Conclude with `(natDegree_add_le _ _).trans (by simp [natDegree_X_le])`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem natDegree_fac (lin : Prop) [Decidable lin] (B : A) :
     (fac lin B).natDegree ≤ if lin then 1 else 0 := by
@@ -36,7 +36,7 @@ def prodP {m : ℕ} (lin : Fin m → Prop) [DecidablePred lin] (B : Fin m → A)
   (List.ofFn fun l => fac (lin l) (B l)).prod
 
 /- English proof (translation)
-The claim follows from `| 0, lin, _, B => by simp [prodP] | m + 1, lin, _, B => by unfold prodP rw [List.ofFn_succ, List.prod_cons, Fin.sum_univ_succ] refine (natDegree_mul_le).trans (add_le_add (natDegree_fac _ _) ?_) exact natDegree_prodP (fun l => lin l.succ) (fun l => B l.succ)`.
+A detailed English derivation is pending.
 -/
 theorem natDegree_prodP : ∀ {m : ℕ} (lin : Fin m → Prop) [DecidablePred lin] (B : Fin m → A),
     (prodP lin B).natDegree ≤ ∑ l, (if lin l then 1 else 0)
@@ -48,9 +48,9 @@ theorem natDegree_prodP : ∀ {m : ℕ} (lin : Fin m → Prop) [DecidablePred li
     exact natDegree_prodP (fun l => lin l.succ) (fun l => B l.succ)
 
 /- English proof (translation)
-Unfold `prodP`. Rewrite using `[eval₂_list_prod_noncomm]`. Rewrite using `[List.map_ofFn]`. Use `congrArg List.prod (congrArg List.ofFn (funext fun l => ?_))` and prove the remaining obligations. Simplify using `only [Function.comp, fac, eval₂_add, eval₂_C, RingHom.id_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Introduce `p _ k`. Conclude with `(Algebra.commutes Y _).symm`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eval_prodP {m : ℕ} (lin : Fin m → Prop) [DecidablePred lin] (B : Fin m → A) (Y : ℂ) :
     eval₂ (RingHom.id A) (algebraMap ℂ A Y) (prodP lin B) =
@@ -65,7 +65,7 @@ theorem eval_prodP {m : ℕ} (lin : Fin m → Prop) [DecidablePred lin] (B : Fin
     exact (Algebra.commutes Y _).symm
 
 /- English proof (translation)
-The claim follows from `| 0, B => by simp | m + 1, B => by have ih := coeff_all (fun l : Fin m => B l.succ) have hdeg : (List.ofFn fun l : Fin m => (X + C (B l.succ) : A[X])).prod.natDegree ≤ m := by have := natDegree_prodP (fun _ : Fin m => True) (fun l => B l.succ) simp only [if_true, Finset.sum_const …`.
+A detailed English derivation is pending.
 -/
 theorem coeff_all : ∀ {m : ℕ} (B : Fin m → A),
     (List.ofFn fun l => (X + C (B l) : A[X])).prod.coeff m = 1 ∧
@@ -96,35 +96,33 @@ end TopAlg
 
 open TopAlg in
 /- English proof (translation)
-Introduce `A _ _ n E h`. Set `lin : Equiv.Perm (Fin n) → Fin n → Prop` to `fun σ l => σ l = l`. Set `B : Equiv.Perm (Fin n) → Fin n → A` to `fun σ l => (if σ l = l then algebraMap ℂ A (h - ((l : ℕ) : ℂ)) else 0) + E (σ l) l`. Set `Pσ : Equiv.Perm (Fin n) → A[X]` to `fun σ => prodP (lin σ) (B σ)`. Use `⟨fun j => ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : A) * (Pσ σ).coeff j, fun Y => ?_, fun hn => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfac : ∀ σ : Equiv.Perm (Fin n), (List.ofFn fun k : Fin n => Tm E (Y + h - (k : ℂ)) (id (σ k)) (id k)).prod = ∑ j ∈ Finset.range (n + 1), Y ^ j • (Pσ σ).coeff j`. Introduce `σ`. Establish `e1 : (List.ofFn fun k : Fin n => Tm E (Y + h - (k : ℂ)) (id (σ k)) (id k)) = List.ofFn fun l => (if lin σ l then algebraMap ℂ A Y else 0) + B σ l`. Use `congr 1`. Use function extensionality and compare the values at `l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Tm, id, lin, B]`. Use `split_ifs with hl`. Establish `: Y + h - ((l : ℕ) : ℂ) = Y + (h - ((l : ℕ) : ℂ))` using `by ring`. Rewrite using `[this, map_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[e1, ← eval_prodP]`. Establish `hdeg : (Pσ σ).natDegree < n + 1`. Use `natDegree_prodP (lin σ) (B σ)` as an intermediate fact. Establish `h2 : ∑ l : Fin n, (if lin σ l then 1 else 0) ≤ n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `show (prodP (lin σ) (B σ)).natDegree < n + 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[eval₂_eq_sum_range' (RingHom.id A) hdeg]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[RingHom.id_apply, ← map_pow, ← Algebra.commutes, ← Algebra.smul_def]`. Unfold `qminor`. Repeatedly rewrite using `[hfac, Finset.mul_sum, mul_smul_comm]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Rewrite using `[Finset.smul_sum]`. Simplify using `only`. Rewrite using `[Finset.sum_eq_single (1 : Equiv.Perm (Fin n))]`. Simplify using `only [Equiv.Perm.sign_one, Units.val_one, Int.cast_one, one_mul]`. Establish `e1 : Pσ 1 = (List.ofFn fun l => (X + C (B 1 l) : A[X])).prod` using `by show prodP (lin 1) (B 1) = _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `prodP fac`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `l`. Rewrite using `[if_pos (show lin 1 l from rfl)]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, (coeff_all (B 1)).2 hn]`. Simplify using `only [B, Equiv.Perm.one_apply, if_true]`. Rewrite using `[Finset.sum_add_distrib, add_comm, ← map_sum]`. Use `congr 1`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Establish `hs : ∑ l : Fin n, ((l : ℕ) : ℂ) = (n : ℂ) * ((n : ℂ) - 1) / 2`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun l => ((l : ℕ) : ℂ)) n]`. Use `Finset.sum_range_id_mul_two n` as an intermediate fact. Establish `hc : ((∑ i ∈ Finset.range n, i : ℕ) : ℂ) * 2 = (n : ℂ) * ((n : ℂ) - 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← Nat.cast_ofNat, ← Nat.cast_mul, this]`. Break down `Nat.eq_zero_or_pos n with h0 | h0` into its components or cases. Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Nat.cast_mul, Nat.cast_sub (by omega)]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using the standard rewrite rules. Move the coercions through the operations in `at hc`. Take the linear combination `hc / 2`. Rewrite using `[hs]`. Introduce `σ _ hσ`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : 2 ≤ σ.support.card` using `Equiv.Perm.two_le_card_support_of_ne_one hσ`. Establish `hdeg` using `natDegree_prodP (lin σ) (B σ)`. Establish `hcount : ∑ l : Fin n, (if lin σ l then 1 else 0) + σ.support.card = n`. Establish `hsupp : σ.support.card = ∑ l : Fin n, (if ¬ lin σ l then 1 else 0)`. Rewrite using `[Finset.sum_boole, Nat.cast_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hsupp, ← Finset.sum_add_distrib]`. Combine the equalities or inequalities in the displayed calculation. Establish `: (Pσ σ).coeff (n - 1) = 0` using `coeff_eq_zero_of_natDegree_lt (by show (prodP (lin σ) (B σ)).natDegree < n - 1; omega)`. Rewrite using `[this, mul_zero]`.
-
-Introduce `h1`. Conclude with `absurd (Finset.mem_univ _) h1`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem quadratic_top_algebra_holds : QTopAlg := by
   intro A _ _ n E h

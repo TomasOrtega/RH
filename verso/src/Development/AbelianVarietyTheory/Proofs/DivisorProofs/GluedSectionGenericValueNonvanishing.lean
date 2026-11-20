@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.UMin.ThBdl.Glued
 
 /- English proof (translation)
-Establish `hU : ⊤ ≤ y ⁻¹ᵁ U` using `fun a ha => h (hy ha)`. Unfold `valF`. Rewrite using `[dif_pos hy, dif_pos hU]`. Use `congr 1`. Use `show (X.presheaf.map (homOfLE h).op ≫ y.appLE W ⊤ hy).hom f = _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.map_appLE]`.
+A detailed English derivation is pending.
 -/
 theorem valF_resG {F : Type} [Field F] {X : Scheme.{0}} (y : Sp F ⟶ X) {U W : X.Opens} (h : W ≤ U) (f : Γ(X, U))
     (hy : ⊤ ≤ y ⁻¹ᵁ W) : valF y W (resG X h f) = valF y U f := by
@@ -28,15 +28,15 @@ theorem valF_resG {F : Type} [Field F] {X : Scheme.{0}} (y : Sp F ⟶ X) {U W : 
   rw [Scheme.Hom.map_appLE]
 
 /- English proof (translation)
-Introduce `S G _ L K _ ξ V κ N s s' v hN hsup hres hgen hnz`. Use `⟨fun ⟨k⟩ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨hξk, hk⟩` from `hgen k`. Use `⟨hξk.trans (hN k), ?_⟩` and prove the remaining obligations. Rewrite using `[← hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `j`. Unfold `genPull`. Rewrite using `[← hres k (j 0)]`. Use `show _ = (G.left.presheaf.map _ ≫ (snd (Over.mk ξ) G).left.appLE _ _ _).hom (s' (j 0))`. Rewrite using `[Scheme.Hom.map_appLE]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `K' _ _ x hx`. Take `⟨p⟩ : Nonempty (Sp K')` from `inferInstance`. Establish `hp : x p ∈ (⨆ k, N k : S.Opens)` using `hsup ▸ hx ⟨p, rfl⟩`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hp`. Establish `hxk : Set.range x ⊆ N k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[Subsingleton.elim q p]`. Conclude with `hk`. Take `⟨y, i, hyx, hyr, hval⟩` from `hnz k K' x hxk`. Use `⟨y, i, hyx, fun z hz => ⟨(hyr hz).1, hN k (hyr hz).2⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite `hval` using `[← hres k i]`. Use `hval using 1` and compare the differences between its conclusion and the goal. Conclude with `(valF_resG y _ (s' i) ((GlobalTheory.ZH.top_le_preimage_iff _ _).2 hyr)).symm`.
+A detailed English derivation is pending.
 -/
 theorem glued : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (L : LB G.left) (K : Type) [Field K] (ξ : Sp K ⟶ S)
     (V : S.Opens) (κ : Type) (N : κ → S.Opens) (s : ∀ k, LocSec G L (N k)) (s' : LocSec G L V)

@@ -6,9 +6,9 @@ open scoped TensorProduct DirectSum
 namespace LateralTheory.EtaleFoundations
 
 /- English proof (translation)
-Use `⟨((DFinsupp.support x).sup fun p => p.1.1.toNat : ℕ), fun p hp => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Establish `hm : p ∈ DFinsupp.support x` using `(DFinsupp.mem_support_iff).2 h`. Establish `h1 : p.1.1.toNat ≤ (DFinsupp.support x).sup fun p => p.1.1.toNat` using `Finset.le_sup (f := fun p => p.1.1.toNat) hm`. Establish `h2 : p.1.1 ≤ (p.1.1.toNat : ℤ)` using `Int.self_le_toNat _`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ((p.1.1.toNat : ℕ) : ℤ) ≤ (((DFinsupp.support x).sup fun p => p.1.1.toNat : ℕ) : ℤ)` using `by exact_mod_cast h1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem stair_tens_top {R : Type} [CommRing R] {C J : Cx R} {U : Scheme.{0}} {w : ℤ} (x : Tens C J U w) :
     ∃ s : ℤ, ∀ p, s < p.1.1 → x p = 0 := by
@@ -22,13 +22,13 @@ theorem stair_tens_top {R : Type} [CommRing R] {C J : Cx R} {U : Scheme.{0}} {w 
   omega
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⊤, (Scheme.etaleTopology).top_mem U, fun V g _ => h V g⟩`.
+Supply the required witnesses or components.
 -/
 theorem stair_loc_top (U : Scheme.{0}) (P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop) (h : ∀ V g, P V g) : Loc U P :=
   ⟨⊤, (Scheme.etaleTopology).top_mem U, fun V g _ => h V g⟩
 
 /- English proof (translation)
-Establish `h` using `hF.eq_of_src (𝟙 F) 0`. Use `congrArg (fun m : F ⟶ F => (m.hom.app (op U)).hom y) h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem stair_sec_zero {R : Type} [CommRing R] {F : Shv R} (hF : IsZero F) (U : Scheme.{0}) (y : Sec F U) : y = 0 := by
   have h := hF.eq_of_src (𝟙 F) 0
@@ -36,9 +36,9 @@ theorem stair_sec_zero {R : Type} [CommRing R] {F : Shv R} (hF : IsZero F) (U : 
   simpa using this
 
 /- English proof (translation)
-Establish `hz` using `C.isZero_of_isStrictlyGE a p.1.1 hp`. Establish `key : ∀ y : Sec (C.X p.1.1) U ⊗[ULift.{1} R] Sec (J.X p.1.2) U, y = 0`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul u v => rw [stair_sec_zero hz U u, TensorProduct.zero_tmul]`. Consider the case `add u v hu hv => rw [hu, hv, add_zero]`. Conclude with `key _`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem stair_tens_low {R : Type} [CommRing R] {C J : Cx R} (a : ℤ) [C.IsStrictlyGE a] {U : Scheme.{0}} {w : ℤ}
     (x : Tens C J U w) (p : {p : ℤ × ℤ // p.1 + p.2 = w}) (hp : p.1.1 < a) : x p = 0 := by
@@ -52,7 +52,7 @@ theorem stair_tens_low {R : Type} [CommRing R] {C J : Cx R} (a : ℤ) [C.IsStric
   exact key _
 
 /- English proof (translation)
-Establish `h1 : Sec.map (T.sc w).g (Sec.map (T.sc w).f z) = ((((T.sc w).f ≫ (T.sc w).g).hom.app (op V)).hom z)` using `rfl`. Rewrite using `[h1, (T.sc w).zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem stair_fg_zero {R : Type} [CommRing R] (T : Cx R) (w : ℤ) {V : Scheme.{0}} (z : Sec (T.sc w).X₁ V) :
     Sec.map (T.sc w).g (Sec.map (T.sc w).f z) = 0 := by
@@ -81,21 +81,19 @@ def EtaleTensorCycleLocallyLowersTopDegree : Prop :=
         ∃ z : Sec (T.sc w).X₁ V, τ.lift V w x' = Sec.res g (τ.lift U w x) - (show Sec (T.X w) V from Sec.map (T.sc w).f z)
 
 /- English proof (translation)
-Introduce `R _ C J T a b _ _ τ hτ hJ hC`. Establish `hrow` using `hA R hJ hC`. Establish `key : ∀ n : ℕ, ∀ (w : ℤ) (U : Scheme.{0}) (x : Tens C J U w), (∀ p, a - 1 + n < p.1.1 → x p = 0) → Sec.map (T.sc w).g (τ.lift U w x) = 0 → Loc U fun V g => ∃ z : Sec (T.sc w).X₁ V, Sec.map (T.sc w).f z = Sec.res g (τ.lift U w x)`. Introduce `n`. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Introduce `w U x hx _`. Establish `h0 : x = 0`. Use extensionality with `p`. Distinguish the cases in `hp : p.1.1 < a`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Simplify using `using stair_tens_low a x p hp`. Simplify using `using hx p (by push_cast; omega)`. Use `stair_loc_top _ _ fun V g => ⟨0, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `simp [h0] <;> rfl`. Consider the case `succ n ih`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Introduce `w U x hx hc`. Use `stair_loc_bind U _ _ (hS R τ hτ hrow w (a - 1 + (n + 1 : ℕ)) U x hx hc) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨x', hx', z, hz⟩`. Establish `hc' : Sec.map (T.sc w).g (τ.lift V w x') = 0`. Rewrite using `[hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : Sec.map (T.sc w).g (Sec.res g (τ.lift U w x) - (show Sec (T.X w) V from Sec.map (T.sc w).f z)) = Sec.map (T.sc w).g (Sec.res g (τ.lift U w x)) - Sec.map (T.sc w).g (Sec.map (T.sc w).f z)`. Conclude with `map_sub _ _ _`. Rewrite using `[e1, stair_fg_zero, sub_zero]`. Conclude with `(stair_map_res (T.sc w).g g (τ.lift U w x)).trans ((congrArg (Sec.res g) hc).trans (map_zero _))`. Use `stair_loc_mono V _ _ (ih w V x' (fun p hp => hx' p (by push_cast at hp ⊢; omega)) hc') ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `W k ⟨z', hz'⟩`. Use `⟨z' + Sec.res k z, ?_⟩` and prove the remaining obligations. Establish `e2 : Sec.map (T.sc w).f (z' + Sec.res k z) = Sec.map (T.sc w).f z' + Sec.map (T.sc w).f (Sec.res k z)`. Simplify using `only [Sec.map, map_add]`. Establish `e3 : Sec.res k (Sec.res g (τ.lift U w x) - (show Sec (T.X w) V from Sec.map (T.sc w).f z)) = Sec.res k (Sec.res g (τ.lift U w x)) - Sec.res k (show Sec (T.X w) V from Sec.map (T.sc w).f z)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `map_sub _ _ _`. Rewrite using `[e2, hz', hz, e3, stair_map_res, stair_res_res]`. Conclude with `sub_add_cancel _ _`. Introduce `w U x hx`. Take `⟨s, hs⟩` from `stair_tens_top x`.
-
-Conclude with `key (s - (a - 1)).toNat w U x (fun p hp => hs p (by omega)) hx`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem etale_tensor_cycles_locally_lift_of_row_exact_and_descent (hA : EtaleTensorWithFlatPreservesLocalExactness)
     (hS : EtaleTensorCycleLocallyLowersTopDegree) : EtaleTensorCyclesLocallyLiftOfFlatBounded := by

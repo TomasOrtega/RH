@@ -5,9 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PrimitiveFrobenius
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Establish `ha0 : 0 ≤ a` using `by simpa using hy 1 0 (Ideal.zero_mem _)`. Rewrite using `[Metric.continuous_iff']`. Introduce `g0 ε hε`. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one hε ha1`. Establish `hopen` using `(hf N).isOpen_fiber ((Ideal.Quotient.mk (I ^ N)) (f g0))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `filter_upwards [hopen.mem_nhds rfl] with g hg`. Rewrite using `[dist_eq_norm, ← map_sub]`. Conclude with `lt_of_le_of_lt (hy N _ (Ideal.Quotient.eq.mp hg)) hN`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cont_of_adic {Γ R K : Type} [TopologicalSpace Γ] [CommRing R] [NormedRing K] (I : Ideal R)
     (y : R →+* K) (a : ℝ) (ha1 : a < 1) (hy : ∀ n, ∀ x ∈ I ^ n, ‖y x‖ ≤ a ^ n)
@@ -22,17 +22,15 @@ private theorem cont_of_adic {Γ R K : Type} [TopologicalSpace Γ] [CommRing R] 
   exact lt_of_le_of_lt (hy N _ (Ideal.Quotient.eq.mp hg)) hN
 
 /- English proof (translation)
-Introduce `l _ 𝔞 e he ι Γ _ _ P hP`. Take `⟨A, _, _, _, f, P₁, hf, hc, rfl⟩` from `hP`. Take `⟨inj, loc, -, -, -⟩` from `hf`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible A`. Set `y : A →+* PadicAlgCl l` to `(e : 𝔞.K →+* PadicAlgCl l).comp (𝔞.toK.comp f)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hV : ∀ v : 𝔞.V, ‖e (v : 𝔞.K)‖ ≤ 1` using `fun v => (he.2 _).mp v.2`. Establish `hle : ∀ x : A, ‖y x‖ ≤ 1` using `fun x => hV (f x)`. Establish `hlt : ‖y ϖ‖ < 1`. Use `lt_of_le_of_ne (hle ϖ) fun h1 => hϖ.not_isUnit ?_` and prove the remaining obligations. Establish `hne : (f ϖ : 𝔞.K) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h0' : f ϖ = 0` using `Subtype.ext h0`. Conclude with `hϖ.ne_zero (inj (by rw [h0', map_zero]))`. Establish `h1' : ‖e (f ϖ : 𝔞.K)‖ = 1` using `h1`. Establish `hinv : ((f ϖ : 𝔞.K))⁻¹ ∈ 𝔞.V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he.2, map_inv₀, norm_inv, h1', inv_one]`. Establish `hu : IsUnit (f ϖ)` using `IsUnit.of_mul_eq_one (⟨_, hinv⟩ : 𝔞.V) (Subtype.ext (mul_inv_cancel₀ hne))`. Use `haveI := loc`. Conclude with `(isUnit_map_iff f ϖ).mp hu`. Establish `hpow : ∀ n, ∀ x ∈ maximalIdeal A ^ n, ‖y x‖ ≤ ‖y ϖ‖ ^ n`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `n x hx`. Rewrite `hx` using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨c, rfl⟩` from `hx`. Rewrite using `[map_mul, map_pow, norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_right (pow_nonneg (norm_nonneg _) _) (hle c)`.
-
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Establish `hc' : AdicCont (maximalIdeal A) fun g => P₁.r g i j`. Unfold `PD.Cont at hc`. Conclude with `hc i j`. Conclude with `cont_of_adic (maximalIdeal A) y _ hlt hpow (fun g => P₁.r g i j) hc'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.smallCont :
     ∀ {l : ℕ} [Fact l.Prime] (𝔞 : Amb l) (e : 𝔞.K ≃+* PadicAlgCl l), 𝔞.IsZero e → ∀ {ι Γ : Type} [Group Γ] [TopologicalSpace Γ]

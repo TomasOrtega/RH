@@ -17,25 +17,25 @@ private lemma UpperTheory.Reformulated.B.ShiftMap.shift_apply {G H : Type} [Grou
     (g : G) (φ : H → ℂ) (z : H) : UpperTheory.Reformulated.B.ShiftMap.shift p g φ z = φ ((p g)⁻¹ * z) := rfl
 
 /- English proof (translation)
-Introduce `G H _ _ _ _ _ _ p hp f hf hfd`. Use `set V : Submodule ℂ (H → ℂ) := Submodule.span ℂ (Set.range fun (k : G) (z : H) ↦ f ((p k)⁻¹ * z)) with hV`. Establish `hinv : ∀ g : G, ∀ φ ∈ V, UpperTheory.Reformulated.B.ShiftMap.shift p g φ ∈ V`. Introduce `g`. Establish `h : V ≤ V.comap (UpperTheory.Reformulated.B.ShiftMap.shift p g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hV, Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Use `Submodule.subset_span ⟨g * k, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Simplify using `[UpperTheory.Reformulated.B.ShiftMap.shift_apply, mul_assoc]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun φ hφ => h hφ`. Establish `hcont : ∀ φ ∈ V, Continuous φ`. Introduce `φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem φ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `h`. Conclude with `hf.comp (continuous_const.mul continuous_id)`. Consider the case `zero => exact continuous_zero`. Consider the case `add a b _ _ ha hb => exact ha.add hb`. Consider the case `smul c a _ ha => exact ha.const_smul c`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hfV : f ∈ V` using `Submodule.subset_span ⟨1, by funext z; simp⟩`. Set `σ : G →* (V →ₗ[ℂ] V)` to `{ toFun := fun g => (UpperTheory.Reformulated.B.ShiftMap.shift p g).restrict (hinv g) map_one' := by`. Use extensionality with `φ z`. Simplify using `[UpperTheory.Reformulated.B.ShiftMap.shift_apply]`. Use the proof step `map_mul' := by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `g h`. Use extensionality with `φ z`. Simplify using `[UpperTheory.Reformulated.B.ShiftMap.shift_apply, mul_assoc] }`. Establish `hσ : ∀ (g : G) (φ : V) (z : H), (σ g φ : H → ℂ) z = (φ : H → ℂ) ((p g)⁻¹ * z)` using `fun _ _ _ => rfl`. Set `b` to `Module.finBasis ℂ V`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Set `e` to `LinearMap.toMatrixAlgEquiv b`. Use `⟨Module.finrank ℂ V, (e.toAlgHom.toRingHom.toMonoidHom).comp σ, ?_, ?_⟩` and prove the remaining obligations. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun g : G => σ g (b j)`. Use `Continuous.subtype_mk (continuous_pi fun z => ?_) _` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(hcont _ (b j).2).comp (hp.inv.mul continuous_const)`. Establish `h2 : Continuous (b.coord i)` using `LinearMap.continuous_of_finiteDimensional _`. Use `(h2.comp h1).congr fun g => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = LinearMap.toMatrixAlgEquiv b (σ g) i j`. Rewrite using `[LinearMap.toMatrixAlgEquiv_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Introduce `x hx z`. Establish `h1 : (x.sum fun k c => c • σ k) = 0`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_zero, ← hx, Finsupp.sum, Finsupp.sum, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Both sides reduce to the same expression. Establish `h2` using `congrArg (fun T : V →ₗ[ℂ] V => (T ⟨f, hfV⟩ : H → ℂ) z) h1`. Simplify `h2` using `[Finsupp.sum, LinearMap.sum_apply, Finset.sum_apply, hσ]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ShiftMap.finite_translates_matrix_coefficient :
     ∀ (G H : Type) [inst : Group G] [inst_1 : TopologicalSpace G] [IsTopologicalGroup G]

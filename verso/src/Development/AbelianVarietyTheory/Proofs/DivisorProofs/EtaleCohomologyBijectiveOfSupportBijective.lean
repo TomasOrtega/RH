@@ -13,9 +13,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC.ConeLocalization
 
 /- English proof (translation)
-Use `haveI := (GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties R F).2.1`. Use `haveI := (GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties R G).2.1`. Use `haveI := (GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties R F).2.2.1`. Use `haveI := (GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties R G).2.2.1`. Use `haveI : ∀ n, Injective ((mappingCone (resMap R φ)).X n) := fun n => Injective.of_iso (HomologicalComplex.homotopyCofiber.XIsoBiprod (resMap R φ) n (n + 1) rfl).symm inferInstance`.
-
-Use `haveI : (mappingCone (resMap R φ)).IsStrictlyGE (-1) := CochainComplex.isStrictlyGE_mappingCone _ 0 0 (-1)`. Conclude with `isKInjective_of_injective _ (-1)`.
+A detailed English derivation is pending.
 -/
 theorem cone_kinj (R : Type) [CommRing R] {F G : Shv R} (φ : F ⟶ G) :
     (mappingCone (resMap R φ)).IsKInjective := by
@@ -29,7 +27,7 @@ theorem cone_kinj (R : Type) [CommRing R] {F G : Shv R} (φ : F ⟶ G) :
   exact isKInjective_of_injective _ (-1)
 
 /- English proof (translation)
-Introduce `U hU n b hb`. Conclude with `GlobalTheory.T.mappingCone_locallyExact_of_component_sections R (resMap R φ) U n (GlobalTheory.T.mappingCone_resolution_localChase_on_support R E φ hφ U hU n) b hb`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cone_loc (R : Type) [CommRing R] (E : Spc) {F G : Shv R} (φ : F ⟶ G)
     (hφ : ∀ U : Scheme.{0}, Nonempty (Sx E 0 U) → Function.Bijective (Sec.map φ (U := U))) :
@@ -43,11 +41,11 @@ theorem cone_loc (R : Type) [CommRing R] (E : Spc) {F G : Shv R} (φ : F ⟶ G)
 end GlobalTheory.EtC.ConeLocalization
 
 /- English proof (translation)
-Introduce `R _ E F G φ hφ`. Use `haveI := GlobalTheory.EtC.ConeLocalization.cone_kinj R φ`. Establish `hC` using `GlobalTheory.T.subsingleton_hypercohomology_of_locallyExact_on_support R E (mappingCone (resMap R φ)) (GlobalTheory.EtC.ConeLocalization.cone_loc R E φ hφ)`. Establish `ex` using `GlobalTheory.T.hypercohomology_mappingCone_second_variable_exact R ((chains R).obj E) (resMap R φ)`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by ring⟩`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `((ex m).2.2 x).1 hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subsingleton.elim y 0, map_zero]`. Introduce `y`. Conclude with `((ex n).1 y).1 (Subsingleton.elim _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.a10 : GlobalTheory.EtC.A10 := by
   intro R _ E F G φ hφ

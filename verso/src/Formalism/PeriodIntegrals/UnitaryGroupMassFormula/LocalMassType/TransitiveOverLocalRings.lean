@@ -7,15 +7,15 @@ namespace PI.LocMassTypW.WCoreP
 open Matrix Module
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨w, ⟨⟨t, ht⟩, z⟩⟩ h`. Simplify using `only [LinearMap.coprod_apply, LinearMap.comp_apply, Submodule.subtype_apply] at h`. Establish `hb` using `congrArg b h`. Rewrite `hb` using `[map_add, map_add, hbs, hζb, add_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hbaw : b (a w) ∈ T`. Rewrite using `[eq_neg_of_add_eq_zero_left hb]`. Conclude with `T.neg_mem ht`. Establish `h0` using `hT w hbaw`. Establish `ht0 : t = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb` using `[h0, zero_add]`. Conclude with `hb`. Substitute `ht0` using the available equality. Rewrite `h` using `[map_zero, zero_add]`. Establish `hz : ζ z = a (-w)`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_neg]`. Conclude with `eq_neg_of_add_eq_zero_right h`. Establish `z0 : z = 0` using `hζ (by rw [hζa z (-w) hz, map_zero])`. Substitute `z0` using the available equality. Rewrite `h` using `[map_zero, add_zero]`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Establish `w0 : w = 0` using `ha (by rw [h, map_zero])`. Substitute `w0` using the available equality. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem model_inj {K V W Z : Type*} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W]
     [Module K W] [AddCommGroup Z] [Module K Z]
@@ -51,15 +51,15 @@ theorem model_inj {K V W Z : Type*} [Field K] [AddCommGroup V] [Module K V] [Add
   rfl
 
 /- English proof (translation)
-Use `set S := LinearMap.range a ⊓ LinearMap.ker b with hSdef`. Take `⟨C, hC⟩` from `Submodule.exists_isCompl (Submodule.comap (LinearMap.ker b).subtype S)`. Use `⟨C.map (LinearMap.ker b).subtype, Submodule.map_subtype_le _ _, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz hza`. Take `⟨c, hc, rfl⟩` from `Submodule.mem_map.mp hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcS : c ∈ Submodule.comap (LinearMap.ker b).subtype S` using `⟨hza, c.2⟩`. Establish `h0 : c = 0` using `(Submodule.disjoint_def.mp hC.disjoint) c hcS hc`. Rewrite using `[h0, map_zero]`. Establish `h1` using `Submodule.finrank_add_eq_of_isCompl hC`. Rewrite `h1` using `[← Submodule.finrank_map_subtype_eq (LinearMap.ker b) (Submodule.comap _ S), Submodule.map_comap_subtype]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.finrank_map_subtype_eq]`. Establish `h2 : finrank K ↥(LinearMap.ker b ⊓ S) = finrank K (LinearMap.ker (b ∘ₗ a))`. Establish `hS : LinearMap.ker b ⊓ S = (LinearMap.ker (b ∘ₗ a)).map a`. Rewrite using `[LinearMap.ker_comp, Submodule.map_comap_eq, hSdef, inf_comm, inf_assoc, inf_idem]`. Rewrite using `[hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Submodule.equivMapOfInjective a ha _).finrank_eq.symm`. Establish `h3 : finrank K (LinearMap.ker b) + finrank K W = finrank K V`. Establish `h4` using `LinearMap.finrank_range_add_finrank_ker b`. Establish `hr : LinearMap.range b = ⊤` using `LinearMap.range_eq_top.mpr fun w => ⟨s w, hbs w⟩`. Rewrite `h4` using `[hr, finrank_top]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem exists_Z {K V W : Type*} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W]
     [Module K W] [FiniteDimensional K V] [FiniteDimensional K W]
@@ -92,23 +92,21 @@ theorem exists_Z {K V W : Type*} [Field K] [AddCommGroup V] [Module K V] [AddCom
     omega
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `Submodule.exists_isCompl (LinearMap.range (b ∘ₗ a))`. Take `⟨Z, hZb, hZa, hZd⟩` from `exists_Z a b s ha hs`. Take `⟨Z0, hZ0b, hZ0a, hZ0d⟩` from `exists_Z a0 b0 s0 ha0 hs0`. Establish `hba : b ∘ₗ a = b0 ∘ₗ a0` using `LinearMap.ext hc`. Establish `hTcond : ∀ w, b (a w) ∈ T → b (a w) = 0` using `fun w h => (Submodule.disjoint_def.mp hT.disjoint) _ ⟨w, rfl⟩ h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT0cond : ∀ w, b0 (a0 w) ∈ T → b0 (a0 w) = 0` using `fun w h => by`. Rewrite `h`, the goal using `[← hc]`. Conclude with `hTcond w h`. Use `set F := LinearMap.coprod a (LinearMap.coprod (s ∘ₗ T.subtype) Z.subtype) with hF`. Use `set F0 := LinearMap.coprod a0 (LinearMap.coprod (s0 ∘ₗ T.subtype) Z0.subtype) with hF0`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFi : Function.Injective F` using `model_inj a b s T Z.subtype ha hs hTcond Subtype.val_injective (fun z => LinearMap.mem_ker.mp (hZb z.2)) (fun z w h => hZa z z.2 ⟨w, h.symm⟩)`. Establish `hF0i : Function.Injective F0` using `model_inj a0 b0 s0 T Z0.subtype ha0 hs0 hT0cond Subtype.val_injective (fun z => LinearMap.mem_ker.mp (hZ0b z.2)) (fun z w h => hZ0a z z.2 ⟨w, h.symm⟩)`. Establish `hTd : finrank K T = finrank K (LinearMap.ker (b ∘ₗ a))`. Establish `h1` using `Submodule.finrank_add_eq_of_isCompl hT`. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker (b ∘ₗ a)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hdim : finrank K (W × T × Z) = finrank K V`. Rewrite using `[Module.finrank_prod, Module.finrank_prod, hTd]`. Use linear arithmetic over natural numbers and integers. Establish `hdim0 : finrank K (W × T × Z0) = finrank K V`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[Module.finrank_prod, Module.finrank_prod, hTd, hba]`. Use linear arithmetic over natural numbers and integers. Establish `hZZ : finrank K Z0 = finrank K Z`. Establish `h1` using `hZd`. Establish `h2` using `hZ0d`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression.
 
-Rewrite `h1` using `[hba]`. Use linear arithmetic over natural numbers and integers. Set `EF : (W × T × Z) ≃ₗ[K] V` to `LinearEquiv.ofBijective F ⟨hFi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mp hFi⟩`. Set `EF0 : (W × T × Z0) ≃ₗ[K] V` to `LinearEquiv.ofBijective F0 ⟨hF0i, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim0).mp hF0i⟩`. Set `φ : Z0 ≃ₗ[K] Z` to `LinearEquiv.ofFinrankEq Z0 Z hZZ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `G : (W × T × Z0) ≃ₗ[K] (W × T × Z)` to `(LinearEquiv.refl K W).prodCongr ((LinearEquiv.refl K T).prodCongr φ)`. Use `⟨EF0.symm.trans (G.trans EF), fun w => ?_, fun v => ?_⟩` and prove the remaining obligations. Establish `h1 : EF0.symm (a0 w) = (w, 0, 0)`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Use `show a0 w = F0 (w, 0, 0)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `[hF0]`. Simplify using `only [LinearEquiv.trans_apply, h1]`. Use `show F (G (w, 0, 0)) = a w`. Simplify using `[hF, G]`. Take `⟨⟨w, t, z0⟩, rfl⟩` from `EF0.surjective v`.
-
-Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`. Use `show b (F (G (w, t, z0))) = b0 (F0 (w, t, z0))`. Establish `hz : b (φ z0 : V) = 0` using `LinearMap.mem_ker.mp (hZb (φ z0).2)`. Establish `hz0 : b0 (z0 : V) = 0` using `LinearMap.mem_ker.mp (hZ0b z0.2)`. Simplify using `only [hF, hF0, G, LinearEquiv.prodCongr_apply, LinearEquiv.refl_apply, LinearMap.coprod_apply, LinearMap.comp_apply, Submodule.subtype_apply, map_add, hs, hs0, hz, hz0, hc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem field_core {K V W : Type*} [Field K] [AddCommGroup V] [Module K V] [AddCommGroup W]
     [Module K W] [FiniteDimensional K V] [FiniteDimensional K W]
@@ -173,17 +171,15 @@ theorem field_core {K V W : Type*} [Field K] [AddCommGroup V] [Module K V] [AddC
       LinearMap.comp_apply, Submodule.subtype_apply, map_add, hs, hs0, hz, hz0, hc]
 
 /- English proof (translation)
-Establish `inj : ∀ {A' : Matrix (Fin n) (Fin m) K} {L' : Matrix (Fin m) (Fin n) K}, L' * A' = 1 → Function.Injective (Matrix.toLin' A')`. Introduce `A' L' h x y hxy`. Establish `h2` using `congrArg (Matrix.toLin' L') hxy`. Simplify `h2` using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec, h]`. Establish `sec : ∀ {B' : Matrix (Fin n) (Fin m) K} {M' : Matrix (Fin m) (Fin n) K}, M' * B' = 1 → ∀ w, Matrix.toLin' B'ᵀ (Matrix.toLin' M'ᵀ w) = w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `B' M' h w`. Simplify using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec, ← Matrix.transpose_mul, h]`. Establish `hC' : Bᵀ * A = B0ᵀ * A0`. Establish `h` using `congrArg Matrix.transpose hC`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h.symm`. Take `⟨e, he1, he2⟩` from `field_core (Matrix.toLin' A0) (Matrix.toLin' A) (Matrix.toLin' B0ᵀ) (Matrix.toLin' Bᵀ) (Matrix.toLin' M0ᵀ) (Matrix.toLin' Mᵀ) (inj hL0) (inj hL) (sec hM0) (sec hM) (fun w => by simp [Matrix.toLin'_apply, Matrix.mulVec_mulVec, hC'])`. Use `⟨LinearMap.toMatrix' (e : (Fin n → K) →ₗ[K] (Fin n → K)), ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h : LinearMap.toMatrix' (e : (Fin n → K) →ₗ[K] (Fin n → K)) * LinearMap.toMatrix' (e.symm : (Fin n → K) →ₗ[K] (Fin n → K)) = 1`. Rewrite using `[← LinearMap.toMatrix'_comp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (e : (Fin n → K) →ₗ[K] (Fin n → K)) ∘ₗ (e.symm : (Fin n → K) →ₗ[K] (Fin n → K)) = LinearMap.id`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[h2, LinearMap.toMatrix'_id]`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).mpr (Matrix.isUnit_det_of_right_inverse h)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.toMatrix'_toLin' A0, ← LinearMap.toMatrix'_comp]`. Establish `h : (e : (Fin n → K) →ₗ[K] (Fin n → K)) ∘ₗ Matrix.toLin' A0 = Matrix.toLin' A` using `LinearMap.ext he1`. Rewrite using `[h, LinearMap.toMatrix'_toLin']`. Rewrite using `[← LinearMap.toMatrix'_toLin' Bᵀ, ← LinearMap.toMatrix'_comp]`. Establish `h : Matrix.toLin' Bᵀ ∘ₗ (e : (Fin n → K) →ₗ[K] (Fin n → K)) = Matrix.toLin' B0ᵀ` using `LinearMap.ext he2`.
-
-Rewrite using `[h, LinearMap.toMatrix'_toLin']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem field_mat {K : Type*} [Field K] {n m : ℕ} (A0 A B0 B : Matrix (Fin n) (Fin m) K)
     (L0 L M0 M : Matrix (Fin m) (Fin n) K) (hL0 : L0 * A0 = 1) (hL : L * A = 1)
@@ -229,11 +225,11 @@ def k1 {R : Type*} [CommRing R] {n m : ℕ} (A B0 B : Matrix (Fin n) (Fin m) R)
   A * L0 + Mᵀ * B0ᵀ - Mᵀ * Bᵀ * A * L0
 
 /- English proof (translation)
-Establish `hBM : Bᵀ * Mᵀ = 1` using `by rw [← Matrix.transpose_mul, hM, Matrix.transpose_one]`. Establish `hQ : (1 - A0 * L0) * A0 = 0`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, hL0, Matrix.mul_one, sub_self]`. Establish `hP : Bᵀ * (1 - Mᵀ * Bᵀ) = 0`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, hBM, Matrix.one_mul, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[Matrix.add_mul, Matrix.mul_assoc ((1 - Mᵀ * Bᵀ) * X), hQ, Matrix.mul_zero, add_zero]`. Simplify using `only [k1, Matrix.sub_mul, Matrix.add_mul, Matrix.mul_assoc, hL0, Matrix.mul_one]`. Rewrite using `[hC']`. Normalize the expressions using the abelian group laws.
+Prove the components needed by the constructor for the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[Matrix.mul_add, ← Matrix.mul_assoc Bᵀ ((1 - Mᵀ * Bᵀ) * X), ← Matrix.mul_assoc Bᵀ, hP, Matrix.zero_mul, Matrix.zero_mul, add_zero]`. Simplify using `only [k1, Matrix.mul_add, Matrix.mul_sub, ← Matrix.mul_assoc, hBM, Matrix.one_mul]`. Normalize the expressions using the abelian group laws.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem affine_sol {R : Type*} [CommRing R] {n m : ℕ} (A0 A B0 B : Matrix (Fin n) (Fin m) R)
     (L0 M : Matrix (Fin m) (Fin n) R) (hL0 : L0 * A0 = 1) (hM : M * B = 1)
@@ -256,7 +252,7 @@ theorem affine_sol {R : Type*} [CommRing R] {n m : ℕ} (A0 A B0 B : Matrix (Fin
     abel
 
 /- English proof (translation)
-Establish `e1 : Mᵀ * Bᵀ * h = 0` using `by rw [Matrix.mul_assoc, h2, Matrix.mul_zero]`. Establish `e2 : h * (1 - A0 * L0) = h`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, h1, Matrix.zero_mul, sub_zero]`. Rewrite using `[Matrix.sub_mul, Matrix.one_mul, e1, sub_zero, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_fix {R : Type*} [CommRing R] {n m : ℕ} (A0 B : Matrix (Fin n) (Fin m) R)
     (L0 M : Matrix (Fin m) (Fin n) R) (h : Matrix (Fin n) (Fin n) R)
@@ -274,21 +270,19 @@ namespace PI.LocMassTypW
 open Matrix WCoreP
 
 /- English proof (translation)
-Introduce `O _ _ n m A0 A B0 B ⟨L0, hL0⟩ ⟨L, hL⟩ ⟨M0, hM0⟩ ⟨M, hM⟩ hC`. Use `set f := IsLocalRing.residue O with hf`. Establish `hmap1 : ∀ {X : Matrix (Fin m) (Fin n) O} {Y : Matrix (Fin n) (Fin m) O}, X * Y = 1 → X.map f * Y.map f = 1`. Introduce `X Y h`. Rewrite using `[← Matrix.map_mul, h, Matrix.map_one _ (map_zero f) (map_one f)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hCf : (A0.map f)ᵀ * B0.map f = (A.map f)ᵀ * B.map f`. Rewrite using `[← Matrix.transpose_map, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, hC]`. Take `⟨kb, hkbu, hkbA, hkbB⟩` from `field_mat (A0.map f) (A.map f) (B0.map f) (B.map f) (L0.map f) (L.map f) (M0.map f) (M.map f) (hmap1 hL0) (hmap1 hL) (hmap1 hM0) (hmap1 hM) hCf`. Establish `hC' : B0ᵀ * A0 = Bᵀ * A`. Establish `h` using `congrArg Matrix.transpose hC`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `only [Matrix.transpose_mul, Matrix.transpose_transpose]`. Take `⟨hk1A, hk1B⟩` from `affine_sol A0 A B0 B L0 M hL0 hM hC' 0`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero] at hk1A hk1B`. Use `set hbar := kb - (k1 A B0 B L0 M).map f with hhbar`. Establish `hb1 : hbar * A0.map f = 0`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hhbar, Matrix.sub_mul, hkbA, ← Matrix.map_mul, hk1A, sub_self]`. Establish `hb2 : (B.map f)ᵀ * hbar = 0`. Rewrite using `[hhbar, Matrix.mul_sub, hkbB, ← Matrix.transpose_map (M := B), ← Matrix.map_mul, hk1B, Matrix.transpose_map, sub_self]`. Establish `hproj` using `proj_fix (A0.map f) (B.map f) (L0.map f) (M.map f) hbar hb1 hb2`. Set `X : Matrix (Fin n) (Fin n) O` to `fun i j => Function.surjInv IsLocalRing.residue_surjective (hbar i j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hX : X.map f = hbar`. Use extensionality with `i j`. Conclude with `Function.surjInv_eq IsLocalRing.residue_surjective (hbar i j)`. Take `⟨hkA, hkB⟩` from `affine_sol A0 A B0 B L0 M hL0 hM hC' X`. Use `set k := k1 A B0 B L0 M + (1 - Mᵀ * Bᵀ) * X * (1 - A0 * L0) with hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hkmap : k.map f = kb`. Rewrite using `[← RingHom.mapMatrix_apply, hk]`. Simplify using `only [map_add, map_mul, map_sub, map_one, RingHom.mapMatrix_apply]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, Matrix.transpose_map, hX, hproj, hhbar]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨k, ?_, hkA, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.isUnit_iff_isUnit_det, ← IsLocalRing.residue_ne_zero_iff_isUnit]`. Establish `hdet : IsLocalRing.residue O k.det = kb.det`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, ← hf, hkmap]`. Rewrite using `[hdet]`.
-
-Conclude with `((Matrix.isUnit_iff_isUnit_det kb).mp hkbu).ne_zero`. Establish `h` using `congrArg Matrix.transpose hkB`. Simplify `h` using `only [Matrix.transpose_mul, Matrix.transpose_transpose]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem transitiveOverLocalRings : WCore := by
   intro O _ _ n m A0 A B0 B ⟨L0, hL0⟩ ⟨L, hL⟩ ⟨M0, hM0⟩ ⟨M, hM⟩ hC

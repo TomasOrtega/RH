@@ -7,13 +7,13 @@ namespace GlobalTheory.RepsMod
 variable {H : Type} [AddCommGroup H]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hR`. Use `symm`. Use `choose r hr hrl using fun i (hi : i ∈ s) => h3 (f i) (hf i hi)`. Use `Finset.sum_bij r hr ?_ ?_ ?_` and prove the remaining obligations. Introduce `i hi j hj hij`.
+Extract witnesses or component facts from the available result. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj i hi j hj` to reduce the goal to its premises. Use `Λ.sub_mem (hrl i hi) (hrl j hj)` as an intermediate fact. Rewrite `this` using `[hij]`. Simplify using `using this`. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi, hl⟩` from `hsurj y (h1 y hy)`. Use `⟨i, hi, ?_⟩` and prove the remaining obligations. Use `symm`. Apply `h2 y hy _ (hr i hi)` to reduce the goal to its premises. Use `Λ.add_mem hl (hrl i hi)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Introduce `i hi`. Use `hF (r i hi) (h1 _ (hr i hi)) _ (hrl i hi) (B.sub_mem (hf i hi) (h1 _ (hr i hi)))` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sum_eq_of_family {M ι : Type} [AddCommMonoid M] {Λ B : AddSubgroup H} {R : Finset H}
     (hR : IsReps Λ B R) (s : Finset ι) (f : ι → H) (hf : ∀ i ∈ s, f i ∈ B)
@@ -41,7 +41,7 @@ theorem sum_eq_of_family {M ι : Type} [AddCommMonoid M] {Λ B : AddSubgroup H} 
     simpa using this
 
 /- English proof (translation)
-Rewrite using `[QuotientAddGroup.eq_iff_sub_mem, AddSubgroup.mem_addSubgroupOf]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem out_sub_mem_iff (Λ B : AddSubgroup H) (x y : B) :
     ((x : H) - y ∈ Λ) ↔ (QuotientAddGroup.mk x : B ⧸ Λ.addSubgroupOf B) = QuotientAddGroup.mk y := by
@@ -49,7 +49,7 @@ theorem out_sub_mem_iff (Λ B : AddSubgroup H) (x y : B) :
   simp
 
 /- English proof (translation)
-Rewrite `h` using `[out_sub_mem_iff]`. Simplify using `using h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem out_inj (Λ B : AddSubgroup H) (c d : B ⧸ Λ.addSubgroupOf B)
     (h : ((c.out : B) : H) - (d.out : B) ∈ Λ) : c = d := by
@@ -57,7 +57,7 @@ theorem out_inj (Λ B : AddSubgroup H) (c d : B ⧸ Λ.addSubgroupOf B)
   simpa using h
 
 /- English proof (translation)
-Use `⟨QuotientAddGroup.mk ⟨y, hy⟩, ?_⟩` and prove the remaining obligations. Use `(out_sub_mem_iff Λ B ⟨y, hy⟩ (Quotient.out (QuotientAddGroup.mk ⟨y, hy⟩ : B ⧸ Λ.addSubgroupOf B))).2 (by simp)` as an intermediate fact. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem out_surj (Λ B : AddSubgroup H) (y : H) (hy : y ∈ B) :
     ∃ c : B ⧸ Λ.addSubgroupOf B, y - ((c.out : B) : H) ∈ Λ := by
@@ -66,11 +66,11 @@ theorem out_surj (Λ B : AddSubgroup H) (y : H) (hy : y ∈ B) :
   exact this
 
 /- English proof (translation)
-Establish `: Finite (B ⧸ Λ.addSubgroupOf B)` using `Nat.finite_of_card_ne_zero h`. Use `Fintype.ofFinite (B ⧸ Λ.addSubgroupOf B)` as an intermediate fact. Use `⟨Finset.univ.image (fun c : B ⧸ Λ.addSubgroupOf B => ((c.out : B) : H)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.1 hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `(c.out).2`. Introduce `x hx y hy hxy`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.1 hx`. Take `⟨d, -, rfl⟩` from `Finset.mem_image.1 hy`. Rewrite using `[out_inj Λ B c d hxy]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Take `⟨c, hc⟩` from `out_surj Λ B y hy`. Conclude with `⟨_, Finset.mem_image.2 ⟨c, Finset.mem_univ _, rfl⟩, hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_reps (Λ B : AddSubgroup H) (h : Λ.relIndex B ≠ 0) : ∃ R : Finset H, IsReps Λ B R := by
   classical
@@ -89,11 +89,11 @@ theorem exists_reps (Λ B : AddSubgroup H) (h : Λ.relIndex B ≠ 0) : ∃ R : F
     exact ⟨_, Finset.mem_image.2 ⟨c, Finset.mem_univ _, rfl⟩, hc⟩
 
 /- English proof (translation)
-Establish `: Finite (B ⧸ Λ.addSubgroupOf B)`. Use `Finite.of_surjective (fun x : R => (QuotientAddGroup.mk ⟨x.1, hR.1 _ x.2⟩ : B ⧸ Λ.addSubgroupOf B)) ?_` and prove the remaining obligations. Introduce `c`. Take `⟨x, hx, hl⟩` from `hR.2.2 _ (c.out).2`. Use `⟨⟨x, hx⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(out_sub_mem_iff Λ B c.out ⟨x, hR.1 _ hx⟩).1 hl` as an intermediate fact. Simplify using `using this.symm`. Use `Fintype.ofFinite (B ⧸ Λ.addSubgroupOf B)` as an intermediate fact. Establish `h` using `sum_eq_of_family hR Finset.univ (fun c : B ⧸ Λ.addSubgroupOf B => ((c.out : B) : H)) (fun c _ => (c.out).2) (fun c _ d _ h => out_inj Λ B c d h) (fun y hy => by`. Take `⟨c, hc⟩` from `out_surj Λ B y hy`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, Finset.mem_univ _, hc⟩) (fun _ => (1 : ℕ)) (fun _ _ _ _ _ => rfl)`. Simplify using `only [Finset.sum_const, smul_eq_mul, mul_one, Finset.card_univ] at h`. Rewrite using `[h, ← Nat.card_eq_fintype_card]`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem card_reps (Λ B : AddSubgroup H) (R : Finset H) (hR : IsReps Λ B R) :
     R.card = Λ.relIndex B := by
@@ -116,15 +116,13 @@ theorem card_reps (Λ B : AddSubgroup H) (R : Finset H) (hR : IsReps Λ B R) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_product']`. Use `sum_eq_of_family hR (R₂ ×ˢ R₁) (fun p => p.2 + p.1) ?_ ?_ ?_ F hF` and prove the remaining obligations. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_product]`. Conclude with `B.add_mem (h1 (hR₁.1 _ hp.2)) (h2 (hR₂.1 _ hp.1))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp q hq hpq`. Rewrite `hp`, `hq` using `[Finset.mem_product]`. Establish `e : p.2 + p.1 - (q.2 + q.1) = (p.2 - q.2) + (p.1 - q.1)` using `by abel`. Simplify using `only [e] at hpq`. Establish `a1` using `hi _ (B₁.sub_mem (hR₁.1 _ hp.2) (hR₁.1 _ hq.2)) _ (B₂.sub_mem (hR₂.1 _ hp.1) (hR₂.1 _ hq.1)) hpq`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : p.1 - q.1 ∈ Λ`. Use `Λ.sub_mem hpq a1` as an intermediate fact. Simplify using `using this`. Conclude with `Prod.ext (hR₂.2.1 _ hp.1 _ hq.1 a2) (hR₁.2.1 _ hp.2 _ hq.2 a1)`. Introduce `y hy`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y₁, hy₁, y₂, hy₂, hl⟩` from `hs y hy`. Take `⟨r₁, hr₁, hl₁⟩` from `hR₁.2.2 _ hy₁`. Take `⟨r₂, hr₂, hl₂⟩` from `hR₂.2.2 _ hy₂`. Use `⟨(r₂, r₁), Finset.mem_product.2 ⟨hr₂, hr₁⟩, ?_⟩` and prove the remaining obligations. Establish `e : y - (r₁ + r₂) = (y - (y₁ + y₂)) + (y₁ - r₁) + (y₂ - r₂)` using `by abel`.
-
-Simplify using `only [e]`. Conclude with `Λ.add_mem (Λ.add_mem hl hl₁) hl₂`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_prod_reps (M : Type) [AddCommMonoid M] (Λ B B₁ B₂ : AddSubgroup H) (R R₁ R₂ : Finset H)
     (F : H → M) (h1 : B₁ ≤ B) (h2 : B₂ ≤ B) (hs : ∀ y ∈ B, ∃ y₁ ∈ B₁, ∃ y₂ ∈ B₂, y - (y₁ + y₂) ∈ Λ)
@@ -156,11 +154,11 @@ theorem sum_prod_reps (M : Type) [AddCommMonoid M] (Λ B B₁ B₂ : AddSubgroup
     exact Λ.add_mem (Λ.add_mem hl hl₁) hl₂
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[Finset.sum_congr rfl (fun y hy => h y (hR.1 y hy))]`. Simplify using the standard rewrite rules. Introduce `h push Not at h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y₀, hy₀, hne⟩` from `h`. Establish `key` using `sum_eq_of_family hR R (fun y => y₀ + y) (fun y hy => B.add_mem hy₀ (hR.1 y hy)) (fun x hx y hy hxy => hR.2.1 x hx y hy (by simpa using hxy)) (fun y hy => by`. Take `⟨x, hx, hl⟩` from `hR.2.2 _ (B.sub_mem hy hy₀)`. Conclude with `⟨x, hx, by rwa [← sub_sub]⟩) φ`. Use the proof step `(fun y hy l hl hlB => by rw [hm y hy l hlB, h1 l hlB hl, mul_one])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[Finset.sum_congr rfl (fun y hy => hm y₀ hy₀ y (hR.1 y hy)), ← Finset.mul_sum]`. Establish `: (φ y₀ - 1) * ∑ y ∈ R, φ y = 0` using `by rw [_root_.sub_mul, one_mul, ← key, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sum_char_reps (K : Type) [Field K] (Λ B : AddSubgroup H) (R : Finset H) (φ : H → K)
     (hR : IsReps Λ B R) (hm : ∀ x ∈ B, ∀ y ∈ B, φ (x + y) = φ x * φ y)
@@ -185,9 +183,9 @@ theorem sum_char_reps (K : Type) [Field K] (Λ B : AddSubgroup H) (R : Finset H)
     exact (mul_eq_zero.1 this).resolve_left (sub_ne_zero.2 hne)
 
 /- English proof (translation)
-Introduce `hd`. Establish `: Finite (B ⧸ Λ.addSubgroupOf B)` using `Nat.finite_of_card_ne_zero h`. Use `Fact.mk hp` as an intermediate fact. Take `⟨c, hcc⟩` from `exists_prime_addOrderOf_dvd_card' (G := B ⧸ Λ.addSubgroupOf B) p hd`. Establish `h0 : g • c = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective c`. Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`. Simplify using `using hg x x.2`. Establish `hdg : p ∣ g` using `hcc ▸ addOrderOf_dvd_of_nsmul_eq_zero h0`. Conclude with `(hp.coprime_iff_not_dvd.1 hc.symm) hdg`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_dvd_relIndex (Λ B : AddSubgroup H) (g p : ℕ) (hp : p.Prime) (hc : Nat.Coprime g p)
     (h : Λ.relIndex B ≠ 0) (hg : ∀ x ∈ B, g • x ∈ Λ) : ¬ p ∣ Λ.relIndex B := by
@@ -203,7 +201,7 @@ theorem not_dvd_relIndex (Λ B : AddSubgroup H) (g p : ℕ) (hp : p.Prime) (hc :
   exact (hp.coprime_iff_not_dvd.1 hc.symm) hdg
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨exists_reps, card_reps, sum_prod_reps, sum_char_reps, not_dvd_relIndex⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem reps_facts : ∀ (H : Type) [AddCommGroup H], (∀ Λ B : AddSubgroup H, Λ.relIndex B ≠ 0 → ∃ R : Finset H, IsReps Λ B R) ∧ (∀ (Λ B : AddSubgroup H) (R : Finset H), IsReps Λ B R → R.card = Λ.relIndex B) ∧ (∀ (M : Type) [AddCommMonoid M] (Λ B B₁ B₂ : AddSubgroup H) (R R₁ R₂ : Finset H) (F : H → M), B₁ ≤ B → B₂ ≤ B → (∀ y ∈ B, ∃ y₁ ∈ B₁, ∃ y₂ ∈ B₂, y - (y₁ + y₂) ∈ Λ) → (∀ y₁ ∈ B₁, ∀ y₂ ∈ B₂, y₁ + y₂ ∈ Λ → y₁ ∈ Λ) → IsReps Λ B R → IsReps Λ B₁ R₁ → IsReps Λ B₂ R₂ → (∀ y ∈ B, ∀ l ∈ Λ, l ∈ B → F (y + l) = F y) → ∑ y ∈ R, F y = ∑ y₂ ∈ R₂, ∑ y₁ ∈ R₁, F (y₁ + y₂)) ∧ (∀ (K : Type) [Field K] (Λ B : AddSubgroup H) (R : Finset H) (φ : H → K), IsReps Λ B R → (∀ x ∈ B, ∀ y ∈ B, φ (x + y) = φ x * φ y) → (∀ x ∈ B, x ∈ Λ → φ x = 1) → ((∀ y ∈ B, φ y = 1) → ∑ y ∈ R, φ y = (R.card : K)) ∧ ((¬ ∀ y ∈ B, φ y = 1) → ∑ y ∈ R, φ y = 0)) ∧ ∀ (Λ B : AddSubgroup H) (g p : ℕ), p.Prime → Nat.Coprime g p → Λ.relIndex B ≠ 0 → (∀ x ∈ B, g • x ∈ Λ) → ¬ p ∣ Λ.relIndex B :=
   fun _ _ => ⟨exists_reps, card_reps, sum_prod_reps, sum_char_reps, not_dvd_relIndex⟩

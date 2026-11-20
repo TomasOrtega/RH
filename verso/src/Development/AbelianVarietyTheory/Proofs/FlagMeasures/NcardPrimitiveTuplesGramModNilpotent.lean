@@ -6,11 +6,11 @@ open scoped Classical
 namespace GlobalTheory.GramCount
 
 /- English proof (translation)
-Establish `hσ : ∀ b, φ (Function.surjInv hs b) = b` using `Function.surjInv_eq hs`. Set `E : (Fin m → Fin n → A) ≃ (Fin m → Fin n → B) × (Fin m → Fin n → {u : A // φ u = 0})` to `{ toFun := fun x => (fun a i => φ (x a i), fun a i => ⟨x a i - Function.surjInv hs (φ (x a i)), by rw [map_sub, hσ, sub_self]⟩) invFun := fun q a i => Function.surjInv hs (q.1 a i) + (q.2 a i).1 left_inv := fun x => by funext a i; simp right_inv := fun q => by`. Take `⟨q1, q2⟩` from `q`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `a i`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[hσ, (q2 a i).2]`. Use function extensionality and compare the values at `a i`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hσ, (q2 a i).2] }`. Establish `e2 : {x : Fin m → Fin n → A | (fun a i => φ (x a i)) ∈ T} ≃ T × (Fin m → Fin n → {u : A // φ u = 0})` using `(E.subtypeEquiv (p := fun x : Fin m → Fin n → A => (fun a i => φ (x a i)) ∈ T) (q := fun q : (Fin m → Fin n → B) × (Fin m → Fin n → {u : A // φ u = 0}) => q.1 ∈ T) (fun x => Iff.rfl)).trans Equiv.prodSubtypeFstEquivSubtypeProd`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [← Nat.card_coe_set_eq]`. Rewrite using `[Nat.card_congr e2, Nat.card_prod, Nat.card_fun, Nat.card_fun, Nat.card_fin, Nat.card_fin]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma ncard_preimage_surjective_eq {A B : Type} [CommRing A] [CommRing B]
     (φ : A →+* B) (hs : Function.Surjective φ) (m n : ℕ)
@@ -39,13 +39,13 @@ private lemma ncard_preimage_surjective_eq {A B : Type} [CommRing A] [CommRing B
   ring
 
 /- English proof (translation)
-Establish `hk' : ∀ u, φ u = 0 → IsUnit (1 + u)` using `fun u hu => by`. Take `⟨v, rfl⟩` from `(hk u).1 hu`. Conclude with `(Commute.all p v).isNilpotent_mul_right hp |>.isUnit_one_add`. Establish `hset : {x : Fin m → Fin n → A | Prim c x ∧ ∀ a b, p ∣ ip c (x b) (x a) - G a b} = {x | (fun a i => φ (x a i)) ∈ sols c' n (G.map φ)}`. Use extensionality with `x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, sols]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hG⟩`. Use `⟨Prim.map c c' φ hφ hx, fun a b => ?_⟩` and prove the remaining obligations. Establish `h` using `(hk _).2 (hG a b)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[map_sub, map_ip c c' φ hφ]`. Simplify `h` using `[Matrix.map_apply, sub_eq_zero]`. Introduce and unpack `⟨hx, hG⟩`. Use `⟨prim_of_map c hc c' φ hφ hs hk' hx, fun a b => (hk _).1 ?_⟩` and prove the remaining obligations. Establish `h` using `hG a b`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_apply] at h`. Rewrite using `[map_sub, map_ip c c' φ hφ, h, sub_self]`. Rewrite using `[hset, ncard_preimage_surjective_eq φ hs m n, Nat.card_congr (Equiv.subtypeEquivRight hk)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ncard_gram_mod_eq_card_ker_pow_mul {A B : Type} [CommRing A] [Finite A] [CommRing B]
     (c : A →+* A) (c' : B →+* B) (hc : ∀ u, c (c u) = u) (p : A) (hp : IsNilpotent p)

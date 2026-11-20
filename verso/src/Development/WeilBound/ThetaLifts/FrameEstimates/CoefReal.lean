@@ -4,7 +4,7 @@ import Development.WeilBound.ThetaLifts.FrameEstimates.CoefRealA
 namespace PositivityTheory.ThKEst
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ N` and use `RealFourierCoefficientBounds.main N`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coefReal_of : CoefReal := fun _ _ _ _ _ _ N => RealFourierCoefficientBounds.main N
 
